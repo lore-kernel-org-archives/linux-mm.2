@@ -4,181 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE258D37E33
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 14:27:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C48D1D37E3A
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 14:36:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46BEF6B0005; Wed, 14 Jan 2026 09:27:23 -0500 (EST)
+	id DD6866B0005; Wed, 14 Jan 2026 09:36:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EF0B6B0088; Wed, 14 Jan 2026 09:27:23 -0500 (EST)
+	id D844D6B0088; Wed, 14 Jan 2026 09:36:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29D236B0089; Wed, 14 Jan 2026 09:27:23 -0500 (EST)
+	id C65B46B0089; Wed, 14 Jan 2026 09:36:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1689A6B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:27:23 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2EC1713B35B
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:27:22 +0000 (UTC)
-X-FDA: 84330797124.02.2E340AE
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B59071C0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:27:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MW4GGyfe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=74Ziwu1o;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hHY3ND4u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GUme21VT;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768400840; a=rsa-sha256;
-	cv=none;
-	b=UBa2LTIedcf4IOEObh9HlagCA0a6OO1AiSa3LF/dSYj10vUQy+koo1lyF2vtM30nRaRWob
-	piOp8G4MUu+sRRld14SBHx7KxuJAV6pzbN8VYMCVFKimzx1scfY+iyZcIF21/Ewdi4nWRR
-	0FdMlzdfb4jxJH+0+iA3ihqqnCiyNWQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MW4GGyfe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=74Ziwu1o;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hHY3ND4u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GUme21VT;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B27516B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:36:47 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F6CEC1DEA
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:36:47 +0000 (UTC)
+X-FDA: 84330820854.25.175BC79
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8A0981C0002
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:36:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=wBO1cDgX;
+	spf=pass (imf18.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768400840;
+	s=arc-20220608; t=1768401405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l1v0fTkoGFDb/2np0GkwTVI3vsgeJZfvm+cmCONlDas=;
-	b=VeP7ssdY3DfoiXKYJHVmFLJWUTDOiS/mAQlexR3t0gONu6n0OMeSUtWyoWZxCCBE9O0pcR
-	VkPYHE8p/zIGdIKxeLzZ8PoN9gimr++ZerOLUF0Q+dUzwE7l2Zbj3ycfFc/XhzzV42AlAc
-	CmX9U1NOs3FwJLtxVSbpnofqEJofMtc=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EDEAB5C9B8;
-	Wed, 14 Jan 2026 14:27:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768400837; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l1v0fTkoGFDb/2np0GkwTVI3vsgeJZfvm+cmCONlDas=;
-	b=MW4GGyfeD0H7IgguxMIa/dYigPdhrxD4Z3yvY7MhjhSiUg9bjmx4T6mMsvvmOVhevTqWlh
-	31HCauJzcC92UmslUAgwrxyDVonaoTub6QWNF1+0n99JlHmzQUX/L2gCEznO0Obmkwgvpd
-	qLnVDR8Ge8ad7EdfjAXcS/YuKdGFB/0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768400837;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l1v0fTkoGFDb/2np0GkwTVI3vsgeJZfvm+cmCONlDas=;
-	b=74Ziwu1owD5J4geJcvPlUD03GnMXK+HKYH3tuHSnLMFgBNAc3z1FgXDN3UR0kMki59HZwE
-	nOD4ft32O04b2ZCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768400835; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l1v0fTkoGFDb/2np0GkwTVI3vsgeJZfvm+cmCONlDas=;
-	b=hHY3ND4uN0cYet/7VWBW3y2R8NXoagb+5Rxgi2abwvsDNro8+UqxQQLvRwNCIFlrP2STMR
-	LIy1RnqHZbWNxY2ue+RIvyaoggBiwiNX0cZkN2HVSmNjJiNsk5QgAzWSZXlP46CmHPuRa0
-	UrCCnRl8r/T7llospToIoJ2HGZhDXcs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768400835;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l1v0fTkoGFDb/2np0GkwTVI3vsgeJZfvm+cmCONlDas=;
-	b=GUme21VTNXlFWevXsX5cmlTrN9JJgiwozTGx5imoWCX9R83M6CNecchjx/dEon2mbnFcsI
-	LUNE7jf1wl0NOqBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C28E43EA63;
-	Wed, 14 Jan 2026 14:27:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EbC7LsOnZ2nwSgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 14 Jan 2026 14:27:15 +0000
-Message-ID: <dd21a95e-3c78-4259-a20a-4d580bea96ee@suse.cz>
-Date: Wed, 14 Jan 2026 15:27:15 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=a4JTIpkP7Lienlrmm6a5VnUFXePFWSCp1ppP2dbbkgA=;
+	b=Q9icuZ+Ax2HKsqJ0CGh8/D240xevxWo2rlLKtTrwbv+WDZ+yNXR1UQyzupGmnYoHa/UnsG
+	sjO0e9MYr9wF8VbmKX5I7MRGcypjj/fX3YpX+i3OVu/JBiDDov4vx++NAYgDIosE9POu7C
+	mYnGPneXwZFVVcbbeWb53MD+EUDIUDw=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=wBO1cDgX;
+	spf=pass (imf18.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768401405; a=rsa-sha256;
+	cv=none;
+	b=Ddh/hU2M20M5WB8XH7at5G0I91LCakBiyJbKfG4lzkdFY7YdUjR+6E5LgMm/OzzHZXHQnT
+	LKj+9YNgsPs1gjWeYjEAmc8LHmWceAywjlT9H+tMovFGx4Vv2UjQvAiBhz0f3k2rjVF9+e
+	8xCOeA+tUEW04mFMrAC2REhwOLVKIf4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1768401404;
+	bh=a4JTIpkP7Lienlrmm6a5VnUFXePFWSCp1ppP2dbbkgA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=wBO1cDgXgkiUkGrtHBWZaWXqXHfUTrJFFFuHCPcnjGC+LVjjcddGdSdoluNx6jvIp
+	 suCLLqVmcEWWhO2O5evgtqhHhYZw6MK9OrLPVdlc9Nh7uiqTEScRXbdhBNUHeksaX5
+	 QjtJC87XDkVoVjX1VBo2vDnDdL9rf9jvxYyrCUExqrkHyyN3Pjf0KN9raAn7N49DjW
+	 JLSKv0NITJ8THXHwPED8AILq2OCZq7IWm+oh6oLoWXHiS0pZvSjXxEXFwVes0KJCfE
+	 YFE8C8rUrH7zSFWZU9YcZUvGOoGpmQw3w72iCEKZOGSdeTPzz2+ZoKA5c36pcYhbGU
+	 U7/DkJFq6fNfA==
+Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4drpbJ3WKwzl8N;
+	Wed, 14 Jan 2026 09:36:44 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: [PATCH v2 1/1] mm: Fix OOM killer inaccuracy on large many-core systems
+Date: Wed, 14 Jan 2026 09:36:42 -0500
+Message-Id: <20260114143642.47333-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] slab: fix kmalloc_nolock() context check for
- PREEMPT_RT
-Content-Language: en-US
-To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Alexei Starovoitov <ast@kernel.org>,
- "open list:SLAB ALLOCATOR" <linux-mm@kvack.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT"
- <linux-rt-devel@lists.linux.dev>
-Cc: skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
- syzbot+b1546ad4a95331b2101e@syzkaller.appspotmail.com
-References: <20260113150639.48407-1-swarajgaikwad1925@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260113150639.48407-1-swarajgaikwad1925@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B59071C0005
-X-Stat-Signature: o955ygwgd4jgyia6hajrqfggdy3ak14w
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8A0981C0002
+X-Stat-Signature: c6bmdrqk8q7o1ajeamzsdrp8zccwwtrk
 X-Rspam-User: 
-X-HE-Tag: 1768400839-161937
-X-HE-Meta: U2FsdGVkX1+KSFBpuBPeH+lGVu7d+fLHKxhOHwD4QANo6HnpQ75n5L2trqHLOLop6Q873Ynn1J18yL4kdNgI3uQDzghd5FNtmpi6QDOK/OvfRjYEkd0GS2gRHl2wgyjoyPvQxNzXe+zkGdr7MVDSWDnkBTTrJgnW1xAOFFZbFHZRnkEjmIrYm4ji859sXZnGJWmmvDB9J3yuDOEkO0KZgrBbYFbopoEE1AwtzR/ynFGHL258ke19nwhMOz4iO50CuL+MhwinUb1I+Qh1V/1hBHQVuAXj2pcT7PF2JV790KQf3Mt7EaSwtWeLLJd8evHheXvfbLpKl0HV4YUAl5R3aZ1GFLZy9+pP4g2Q43ScrVes7SZQdj4zCvH2Xilu/VOpVDADINE3d+4ZsqGaRi57+xwyhQKkbR+oCUJCWYbvnHn7xWep1+/pTkYNKSccJZXtDk+tuxf+xrX9zJIF5AG5eRXdforB5W7d+bgtOzjsNwswJJpC2rQvdykuzovjKJoy555/XX9ZfZ9lgJU8ZnBraEtoGcJ4M3YWOOkxF9SKy8ve4hOVp+8MBURV9LqYBLWGfIFuptlfbjdzjTRs4C2ox5cR/drTLdLo5+u9MQaylvaGCk2ZksBl97FES6Inwh2oK14Bl94Ec9AS8Hq4ypDqJqTE6CLB88oiSIpdSM8z2kCwoT4wVUOm1CAfgyDSuiPJyRaugqUbzmYewX3yncj+PemIBIJGtcUGn+Xg+XcGw6y05i7wQSOPPECrUDf6CfZf9uIxcdXS3F6iiBlDQlnW1nU7YEJtoNjLKveXCjQY9WRrIrgandehepQWWRBNT3Hlzgtf+JwGAWID88SW9O4pdvcE5PDv3McF7peC+4geRiDWzj+jieL1T2z+75FY8ihciEN3758KjxrnAAhvh+9+gXiqtX0/iyl//0rSsZzDtnbMoDlUCC2q3PzIYsMVt9RP+o93+p4gii0o4wHJLzA
- Pxk2q7lr
- A7yIXekeQrgyHI7GWVhHCUcm+CCZ/7ssSseW/fee0z7aFI2UMgYyajj4FMXldmASiQXCXr/yT5FP7CCIRaunCrCdnNFhwwp+UVp28SaBxPLOZRPQDeIopNVTfZRgLaR5DZQL6p6jz7ESi61OatJ+SMAPrcBqCreCqkpo0cWI1SOvVQESJ/oHrBI5jhaOnegKELWcht2N3IxD1byoAXT/bjtQRerH7z+rLz2x/pymLTXzQbuqBQlUnvjCXBDhjxeQtUR3ywVO3Ccbz7Kj+l2/1kMqxrnqai5eHQaeup780YaNyXhf0pv2ZNJUL0/kqWZis2OIdkTZVr+XMtg5Y4wyaCHFns5gJXyoDEN+EVBRDHPgtaKy3FnspCBdCN/kvSGN6aDHqwTTDnyPwLepLIIWNSBZkenI8kYJ2B70tnhRk9R0nONOS7+SzSyzPkU8m2ASZ6n3V6C3aXX+ROho3pJOWfOMcAvHTirD/fLnvM6qEZ9tOGdIXEK+hCE/SWei0TUExt4/CAbmr6NY6kVJOJ1V3M/LJhBWRqZuQ2+bq2g0xApJXPX6+9RVa62RVJLcVpLcontXi
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768401405-389941
+X-HE-Meta: U2FsdGVkX19mrYqk3Rkk7Be0l5zDH0tyH12L0BiZvT4l5bJyboPc8tXm4cpnyAlbAzTXtULBdmTPLi5ji17B+5s1FM+GKXTKlr9V07QIJDBPnsLOoShNWFM44vKOYgotnrlZvPRxLMIGykagDIxNof1nimz4+GaFgJ8Lfo2v5Q83AStJIK51lZBvF1/87lAnaGs/nqYzw50mwZ3FjSDNb3kGAHXq3M0q/MgG3spZCTjKLs+5K9GsAiy9IpIRUtr1QayYpwssq+OplA5hetSzq3I9ohiyXsMTKereoQfoZ+fU4hwer1hbZ06zwOVHbJ0zpvj0GQ+3T/Xamx+9jhqFk3zjMYzAOc6bt2cXyEcpZb3foddgN+8W/DM4fdSf3f9zK5C/AyrRxJ5IjDwIjqFDtrY3AcW9mgcFnOO2YpqXN2Je2tpkog+2hEZTXVCo8VHizY7UzsLJEf1olaHjHiMzs+SmBJruFPrMBD1SzTqmAnrgPq5GMbT/iel7MIPbqNlJJwGdORwLJ9+qvcst4nwB1txe2VOL5EOuD+CYstQ/HU/QHc90wWFrM6EitQacIPuCI7QYL5aOEDD2eOMv7Va4RR33uD+wYawMsDwvoOReZew9GdgEIKj/UM99nQ4VIVPpY155WjIsHskmu3s0FHoW9mDeheKT0Aha6M0dbpIumndT7MvW3nfTJiA0zWnKNxzT32wslZRKLmGhGzH9hEXiPiknB5SUAP3eWfAaxTM3loZQrvcISnHFw55X1TCbP+K1P5Vte3bvIGPR3bWk0IzeU9XtNYlE1eouGne+UGoEIZ/CYQYGWb21Bga/2hEAejDxGeM/KwU2iZ53WX1+OTvRXA4kJRe/3/yI1+ed0b3mnKJEykBN067JFxbEee/rcJDLg3EZeqI//FFdO1pTgUYcDdc8esxpGxI/NjmpSN51Lhkj+4rol5hT5pZ2ya+cAq1jxqF1RwjOLHv0LZPea7y
+ jQSnx28D
+ aCK0s9HSSt5oFSd3UK6LxMQr+nDEp77Z3Mi5p6F4sLL7ZPdGSHhJ1PDiefgsGsEkuNt3jvUlycMmQeuqnsXAIEZME0FcdReOSMfAn1E3DFowCPk7Z+as0HSBa+y2joF7ENWmvOjffIX0RZcemmqsHUPwHTKrpO84YUFMr/jsk1u0a9odoosYClMyPdwLW/hMD+woD6hcULkIUCbFXW8LHUrJvZyi0aqeXB6uejgMHzeV336xiZZiOzyXgRhEgJjfROSAmXYiTWSb4HRZDx3XB2MugHWyNRAKydnkK+02kEjZt8wcqOFvNYAZFzu4MJRdp9EjH9T1+fDgiBm9PiIkER8gXi8IuiKPUb4MrjEJ9DZg2t8IkmxL5qer7Rw+1dOyXdDannCHvpWWE2YkBJQ+7XAu9QPup8xEKbAnrcQHFfHTOTVTAl4tS5Gt6ouVjz1XlpHwTVYr5uj4AeQ/EVQXcfQ+9rQBRiN1QpE7gcia3T28ACU5KkXQktMNhQGl81IIuIhb3p0Bhq61lSaCtGRRwXZIqiZK67/ZfBDB09K8SLd7IIjn1z61R+incE4proPl+iAcyQ1VdLEbkrMw+w7WhK39i/q32JfZevS6/D6F4NqOHIMYjTxWChTWUeLSCDd+BzPS1Sce3Lq5zQRY5Co/ZOQN0cndU+e35mjHrOLfv47RQD4obTQd08HSPsU5W+72vyLV8gBtN3AIfLATonhDBQn/drTNBIhuNtQv0IaOKSYWxtpVwcrrjP1EAm4BGq/vTvknMsUq8F6Pt0Uqzvxxil+QVeB0ym7HTvQ/+BU8ipPJQ6ZuDVhUWF2s2z5hqYo4buAS5skONZ5AJOOi4+YFkx0kEJXD2xghfHByJweBHuOxV2MHS/TeU3qC2G8wpF3LHpVOnTRlzFH1Xx0a6sNpEhfpgLGmcFOcwM6QcrMAqJujQDdCwbOwqvfUqwRS9/U7/yTncJG1aXYG8Jy9gwWOywglCoeLo
+ W+eaUlGz
+ Ch27LTH3pCzP4hY6277a+G63Yk+k5g1XQy2uTt6Vv9jmox1AcysTvjXPJvwlrP4clO8DhUY/yBtCMqlwCfypnw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,69 +122,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/13/26 16:06, Swaraj Gaikwad wrote:
-> On PREEMPT_RT kernels, local_lock becomes a sleeping lock. The current
-> check in kmalloc_nolock() only verifies we're not in NMI or hard IRQ
-> context, but misses the case where preemption is disabled.
-> 
-> When a BPF program runs from a tracepoint with preemption disabled
-> (preempt_count > 0), kmalloc_nolock() proceeds to call
-> local_lock_irqsave() which attempts to acquire a sleeping lock,
-> triggering:
-> 
->   BUG: sleeping function called from invalid context
->   in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 6128
->   preempt_count: 2, expected: 0
-> 
-> Fix this by checking !preemptible() on PREEMPT_RT, which directly
-> expresses the constraint that we cannot take a sleeping lock when
-> preemption is disabled. This encompasses the previous checks for NMI
-> and hard IRQ contexts while also catching cases where preemption is
-> disabled.
-> 
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> Reported-by: syzbot+b1546ad4a95331b2101e@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=b1546ad4a95331b2101e
-> Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+Use the precise, albeit slower, precise RSS counter sums for the OOM
+killer task selection and console dumps. The approximated value is
+too imprecise on large many-core systems.
 
-Added to slab/for-next-fixes, thanks!
+The following rss tracking issues were noted by Sweet Tea Dorminy [1],
+which lead to picking wrong tasks as OOM kill target:
 
-> ---
-> Changes in v2:
-> - Simplified condition from (in_nmi() || in_hardirq() || preempt_count())
->   to !preemptible() as suggested by Luis Claudio R. Goncalves and agreed
->   by Vlastimil Babka
-> - Updated comment to reflect the more descriptive check
-> 
-> Tested by building with syz config and running the syzbot
-> reproducer - kernel no longer crashes.
-> 
->  mm/slub.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 2acce22590f8..642f4744d5c6 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5689,8 +5689,12 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
->  	if (unlikely(!size))
->  		return ZERO_SIZE_PTR;
-> 
-> -	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
-> -		/* kmalloc_nolock() in PREEMPT_RT is not supported from irq */
-> +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && !preemptible())
-> +		/*
-> +		 * kmalloc_nolock() in PREEMPT_RT is not supported from
-> +		 * non-preemptible context because local_lock becomes a
-> +		 * sleeping lock on RT.
-> +		 */
->  		return NULL;
->  retry:
->  	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
-> 
-> base-commit: 559e608c46553c107dbba19dae0854af7b219400
-> --
-> 2.52.0
-> 
+  Recently, several internal services had an RSS usage regression as part of a
+  kernel upgrade. Previously, they were on a pre-6.2 kernel and were able to
+  read RSS statistics in a backup watchdog process to monitor and decide if
+  they'd overrun their memory budget. Now, however, a representative service
+  with five threads, expected to use about a hundred MB of memory, on a 250-cpu
+  machine had memory usage tens of megabytes different from the expected amount
+  -- this constituted a significant percentage of inaccuracy, causing the
+  watchdog to act.
+
+  This was a result of commit f1a7941243c1 ("mm: convert mm's rss stats
+  into percpu_counter") [1].  Previously, the memory error was bounded by
+  64*nr_threads pages, a very livable megabyte. Now, however, as a result of
+  scheduler decisions moving the threads around the CPUs, the memory error could
+  be as large as a gigabyte.
+
+  This is a really tremendous inaccuracy for any few-threaded program on a
+  large machine and impedes monitoring significantly. These stat counters are
+  also used to make OOM killing decisions, so this additional inaccuracy could
+  make a big difference in OOM situations -- either resulting in the wrong
+  process being killed, or in less memory being returned from an OOM-kill than
+  expected.
+
+Here is a (possibly incomplete) list of the prior approaches that were
+used or proposed, along with their downside:
+
+1) Per-thread rss tracking: large error on many-thread processes.
+
+2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
+   increased system time in make test workloads [1]. Moreover, the
+   inaccuracy increases with O(n^2) with the number of CPUs.
+
+3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
+   error is high with systems that have lots of NUMA nodes (32 times
+   the number of NUMA nodes).
+
+commit 82241a83cd15 ("mm: fix the inaccurate memory statistics issue for
+users") introduced get_mm_counter_sum() for precise proc memory status
+queries for some proc files.
+
+The simple fix proposed here is to do the precise per-cpu counters sum
+every time a counter value needs to be read. This applies to the OOM
+killer task selection, oom task console dumps (printk).
+
+This change increases the latency introduced when the OOM killer
+executes in favor of doing a more precise OOM target task selection.
+Effectively, the OOM killer iterates on all tasks, for all relevant page
+types, for which the precise sum iterates on all possible CPUs.
+
+As a reference, here is the execution time of the OOM killer
+before/after the change:
+
+AMD EPYC 9654 96-Core (2 sockets)
+Within a KVM, configured with 256 logical cpus.
+
+                                  |  before  |  after   |
+----------------------------------|----------|----------|
+nr_processes=40                   |  0.3 ms  |   0.5 ms |
+nr_processes=10000                |  3.0 ms  |  80.0 ms |
+
+Suggested-by: Michal Hocko <mhocko@suse.com>
+Fixes: f1a7941243c1 ("mm: convert mm's rss stats into percpu_counter")
+Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Martin Liu <liumartin@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: christian.koenig@amd.com
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mm@kvack.org
+Cc: stable@vger.kernel.org
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+---
+This patch replaces v1. It's aimed at mm-new.
+
+Changes since v1:
+- Only change the oom killer RSS values from approximated to precise
+  sums. Do not change other RSS values users.
+---
+ include/linux/mm.h |  7 +++++++
+ mm/oom_kill.c      | 22 +++++++++++-----------
+ 2 files changed, 18 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6f959d8ca4b4..bfa1307264df 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2901,6 +2901,13 @@ static inline unsigned long get_mm_rss(struct mm_struct *mm)
+ 		get_mm_counter(mm, MM_SHMEMPAGES);
+ }
+ 
++static inline unsigned long get_mm_rss_sum(struct mm_struct *mm)
++{
++	return get_mm_counter_sum(mm, MM_FILEPAGES) +
++		get_mm_counter_sum(mm, MM_ANONPAGES) +
++		get_mm_counter_sum(mm, MM_SHMEMPAGES);
++}
++
+ static inline unsigned long get_mm_hiwater_rss(struct mm_struct *mm)
+ {
+ 	return max(mm->hiwater_rss, get_mm_rss(mm));
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5eb11fbba704..214cb8cb939b 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -228,7 +228,7 @@ long oom_badness(struct task_struct *p, unsigned long totalpages)
+ 	 * The baseline for the badness score is the proportion of RAM that each
+ 	 * task's rss, pagetable and swap space use.
+ 	 */
+-	points = get_mm_rss(p->mm) + get_mm_counter(p->mm, MM_SWAPENTS) +
++	points = get_mm_rss_sum(p->mm) + get_mm_counter_sum(p->mm, MM_SWAPENTS) +
+ 		mm_pgtables_bytes(p->mm) / PAGE_SIZE;
+ 	task_unlock(p);
+ 
+@@ -402,10 +402,10 @@ static int dump_task(struct task_struct *p, void *arg)
+ 
+ 	pr_info("[%7d] %5d %5d %8lu %8lu %8lu %8lu %9lu %8ld %8lu         %5hd %s\n",
+ 		task->pid, from_kuid(&init_user_ns, task_uid(task)),
+-		task->tgid, task->mm->total_vm, get_mm_rss(task->mm),
+-		get_mm_counter(task->mm, MM_ANONPAGES), get_mm_counter(task->mm, MM_FILEPAGES),
+-		get_mm_counter(task->mm, MM_SHMEMPAGES), mm_pgtables_bytes(task->mm),
+-		get_mm_counter(task->mm, MM_SWAPENTS),
++		task->tgid, task->mm->total_vm, get_mm_rss_sum(task->mm),
++		get_mm_counter_sum(task->mm, MM_ANONPAGES), get_mm_counter_sum(task->mm, MM_FILEPAGES),
++		get_mm_counter_sum(task->mm, MM_SHMEMPAGES), mm_pgtables_bytes(task->mm),
++		get_mm_counter_sum(task->mm, MM_SWAPENTS),
+ 		task->signal->oom_score_adj, task->comm);
+ 	task_unlock(task);
+ 
+@@ -604,9 +604,9 @@ static bool oom_reap_task_mm(struct task_struct *tsk, struct mm_struct *mm)
+ 
+ 	pr_info("oom_reaper: reaped process %d (%s), now anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB\n",
+ 			task_pid_nr(tsk), tsk->comm,
+-			K(get_mm_counter(mm, MM_ANONPAGES)),
+-			K(get_mm_counter(mm, MM_FILEPAGES)),
+-			K(get_mm_counter(mm, MM_SHMEMPAGES)));
++			K(get_mm_counter_sum(mm, MM_ANONPAGES)),
++			K(get_mm_counter_sum(mm, MM_FILEPAGES)),
++			K(get_mm_counter_sum(mm, MM_SHMEMPAGES)));
+ out_finish:
+ 	trace_finish_task_reaping(tsk->pid);
+ out_unlock:
+@@ -960,9 +960,9 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+ 	mark_oom_victim(victim);
+ 	pr_err("%s: Killed process %d (%s) total-vm:%lukB, anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB, UID:%u pgtables:%lukB oom_score_adj:%hd\n",
+ 		message, task_pid_nr(victim), victim->comm, K(mm->total_vm),
+-		K(get_mm_counter(mm, MM_ANONPAGES)),
+-		K(get_mm_counter(mm, MM_FILEPAGES)),
+-		K(get_mm_counter(mm, MM_SHMEMPAGES)),
++		K(get_mm_counter_sum(mm, MM_ANONPAGES)),
++		K(get_mm_counter_sum(mm, MM_FILEPAGES)),
++		K(get_mm_counter_sum(mm, MM_SHMEMPAGES)),
+ 		from_kuid(&init_user_ns, task_uid(victim)),
+ 		mm_pgtables_bytes(mm) >> 10, victim->signal->oom_score_adj);
+ 	task_unlock(victim);
+-- 
+2.39.5
 
 
