@@ -4,137 +4,239 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32F85D38FEF
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:48:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A9EFD38FEC
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:52:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AE936B009F; Wed, 14 Jan 2026 11:48:06 -0500 (EST)
+	id 727E06B0096; Wed, 14 Jan 2026 11:52:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 999C66B00A0; Wed, 14 Jan 2026 11:48:06 -0500 (EST)
+	id 700236B009B; Wed, 14 Jan 2026 11:52:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89BD56B00A1; Wed, 14 Jan 2026 11:48:06 -0500 (EST)
+	id 5D7C46B00A1; Wed, 14 Jan 2026 11:52:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B60B6B009F
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:48:06 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 138DC5958C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:48:06 +0000 (UTC)
-X-FDA: 84331151772.08.1F745FF
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E1FCC1C0003
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:48:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=RZrRKAdj;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768409284;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 47BDE6B0096
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:52:57 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA0065951B
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:52:56 +0000 (UTC)
+X-FDA: 84331163952.28.384D169
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4385680013
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:52:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HRMlMSKH;
+	spf=pass (imf02.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768409573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cWihw0KAMXVM/F7Z84yiMzol9tq02jR8sEQFJ5oi4pA=;
-	b=P4/SYjVQlMueAzbAHyWBtWjmv+29TfYekSFVVd7r6bvpPI9LyduId0WVGq/esQxCsaW6Ri
-	6wUrkMOZ3nQWUJ6ZdsqqtIaBYA5D0wbS/C+SjFSeGdrpflU2kpKfPEuCnm774PsETfbURQ
-	phDEzmCwZkTP6YMnRA79A543EiAgBM8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=RZrRKAdj;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768409284; a=rsa-sha256;
-	cv=none;
-	b=qI5SV6m7qZTqO0pTX6ucEOedt6OpkdY0ZtwZVTTYOe1P8OYcMt2+wxyB/hVuaAhJ2rCtCu
-	OD+jtvd03tsUmQx3Lk314yT3zmwsALSHCZVUcFQxpYd1g7JzZuCs5wuovc1d/r3f0qUfhp
-	wMFxHq29zMcEzR0pzoZj6O8S4XKLbeY=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47ed9b04365so421135e9.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:48:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768409282; x=1769014082; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cWihw0KAMXVM/F7Z84yiMzol9tq02jR8sEQFJ5oi4pA=;
-        b=RZrRKAdjzyqvcRVk+dZcEF03BSoP9eLEqmMZPB1fG2dADyyhRXMzsHHjPxAsbDjl3f
-         TekHUyDbxujKqUkNKE1ED7vvdFeADkk/+4kweWt8JH0Oy1ss/odoXpfiqgQzSKrWr4lr
-         To7ON9Y0tGR3swNCzaeGPH6MfyeUCs9TzkeIGTHBthzfidu/+A3Y94wjMZKTCV5VqlZ2
-         MUaSMDGsN1kb1S56xWThdghcPaB8PisPujkFFHZ+pTaaGAY3YpyZfLQGcLMF19bLQNbx
-         HcRIrMUi6fYqYE4JB6r+4buMrwfwGzMJsygt++M9CNIN88ZI1FoFLUAMDLYxxcdL2tby
-         1b4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768409282; x=1769014082;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cWihw0KAMXVM/F7Z84yiMzol9tq02jR8sEQFJ5oi4pA=;
-        b=Kx/h0awLHNn+ln1nXb5B3himPxyJWorQC+fld01h7T3JDJAoabOjJlNM1YSeGm5qDF
-         kMFw3YsEJ7wLp/x3xEVGxicetxgO9hjb0WW51/UhJ6Znw+H2w1PygkzwFMXiXU7XsTRk
-         /tUpMv5GqGG+9Kwath5JOtSZPFeicH+Q4+hJr6g2/+VYt3vRcAfMLiE052T4fj5EwlY1
-         Ttt0QcfImbmLhJ59Xa+bg6nXG2Dx0BMkx7VW+lqYstKo1JtyVGSHNsQNEJtdQ5bjwOYw
-         6i7fcbZjja/+YtBVV6WH7iOW0wM+RAtTjj19lfLtWK2dtFxCqCOcj1jbcTOgtqalAlHm
-         BDiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzxIs56KgfPRotdAQ3c4VnzpFA7LJG0E9JW0g8e6LnrEIUyofuUrw+VkrRragkfKJrtRbXPe64Mw==@kvack.org
-X-Gm-Message-State: AOJu0YwPLBX5dS4Pom5gKzAauQKPbI8VgazgqcFxLoKEU57L0kX4U5IH
-	yHiLXoBStkyqEQIFzyxEJnrGJ2KUXj7nHkUdAzzsdFes+XzcME5ekuh0YBAVimZOdl8=
-X-Gm-Gg: AY/fxX54e4wUTjppwCIf5M9fwEv/IJ4dkp4cy2etl9TGDxNoL5dXtF6MoKX5ZhTHJPn
-	VDXid/Z0py4a6UX3ZiP2rCxTi5QvYsqCLaqER2Ksb6tlqo4fyUVVyH4dg47E56tE0ehitxRc4sl
-	8h8TS6vVR+6KUwIGQwFKxDsBlJUj5H9QpNeCijXDCMzLBEDZ+2pLDCI/eU3eWDf0HpOMxWGDdHC
-	0i9BPkvCXVLvs9NUvfjvGh7tt9tTlJu5c9cRNBb1SCIyfLI1JjesKZr5ndp/WF6MrLw7LvKcpbf
-	sI+iRxk9MyiRm2d+YPQp+tWQ7Htb05PjrFJvx+OLAkWNpwNq2pvyePoJnfbXAPUSus8Q+/bcTIS
-	HWljkhCRluwWMZzSd9IjW/e2Ebb6or+fHnrWNeCRWNQcEr7g/pSBSGkmwkbzp8yBzulPP5jiFhu
-	Dy3c6VEF8eDP2kCyl4PmlLOebM
-X-Received: by 2002:a05:600c:8b88:b0:477:561f:6fc8 with SMTP id 5b1f17b1804b1-47ee32e0281mr38831005e9.5.1768409282338;
-        Wed, 14 Jan 2026 08:48:02 -0800 (PST)
-Received: from localhost (109-81-19-111.rct.o2.cz. [109.81.19.111])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47f4b267661sm439365e9.13.2026.01.14.08.48.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 08:48:01 -0800 (PST)
-Date: Wed, 14 Jan 2026 17:48:00 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v16 2/3] mm: Improve RSS counter approximation accuracy
- for proc interfaces
-Message-ID: <aWfIwKzzIihhByJ9@tiehlicka>
-References: <20260114145915.49926-1-mathieu.desnoyers@efficios.com>
- <20260114145915.49926-3-mathieu.desnoyers@efficios.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=1+jNOizPTpemCUGsr4FWTdYC98LVuNWXNm7QXDxqV9Q=;
+	b=aQhdG9JKAY/XLqMgEC9pLPhFdF+qgIwOGovW0UrepMdFDFVcFopbyNf7JRV+Or7fQgxnXU
+	OXlQAwtzOFoaOrkO47+wLS14md4bY0Tya2yXsc8zCOeXgN3jZrEPe07v4c7diQhouhUUM+
+	tOIEMz9TBveL3dmOhhBAx6JUGBQfZbw=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HRMlMSKH;
+	spf=pass (imf02.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768409573; a=rsa-sha256;
+	cv=fail;
+	b=aFCCYxeWQi7bOyFadRfVtNrQ5HjF9iDhqxhUeVAzRGRIMOtm2EILQ71AWlA7+3zQvOCiVl
+	6uXbwiUylJ5qe5JlCqjeOa5sxJ5lpXsdfQl8eZQfA4+0jgGShynLqyHcyqg2TPO0ss2mqv
+	pGuqfY4hcLS23XTHE2yqcPNU103TTYQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768409573; x=1799945573;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=WfbzxbITEGoAL1xbGEtdwLj9k8ZG3D0N8YGOzuVF0I8=;
+  b=HRMlMSKHRS4ZrYryb6Ul3qqc/hx0IdPIbE88aXueOPH9rqO84YR2pT1J
+   5Cb8qCNAJxNr2QeQHni3uf86ZoEqCcCbkWkMbmct8Wb7i/B6DZi4l6axz
+   fk2DtZ6hv6ox3OkV1kwv9h17S0PGvyCljq6412kPpCb1bIKZaB7U35wCR
+   PMlUqXPKfl8ahJVlqN2AHjf3o7Vc1sRWeG8/3irc7ZP6D4Cyg8lmkom78
+   Yni66t6opSYJKpv+CxFn7WN5SCDVLFvrQD4ikqTXYAL5NVgy5msEHP7tm
+   uU/3U1csahKV4nvhzYDacnL5aJX9k5RbIULQsYgW4V4dXxg5euUxdHZ9u
+   w==;
+X-CSE-ConnectionGUID: EGEPXtz7SH64eBI+Yatl0w==
+X-CSE-MsgGUID: 1eqvKayKTQeKaRiGTWBMkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="87291891"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="87291891"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 08:52:52 -0800
+X-CSE-ConnectionGUID: nVyvET4SRvm/Pet97iVpMw==
+X-CSE-MsgGUID: mhs0Q5QzS8u2gYrCsAttnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="227852928"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 08:52:51 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 14 Jan 2026 08:52:51 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Wed, 14 Jan 2026 08:52:51 -0800
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.52)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 14 Jan 2026 08:52:51 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XBwsOCw6p9pcY5+U4PmVTdfqrhpCtFO0ss2xmO240jX/mrtE0qC5RKUH3U31/3V0hJhic97EXMeXynn7PaAdT4hAulmwBFnTvEZ4onsokUpuICI8/NYT5zRSQOP/vLrFlCpWcrkqiYoBD2C5Xzuzd8dBZ023irSKAJg+5352wzm7XXIA9xTTQGpRrga7PGqhky+RzR7/Q1RjZH2QcblP/SCi2Y+n5O3cYQsjN0JjqfCNtufpkDc4FEq8hHvGFpaJbghPcnSBCr16eeEbF2lFJsw5YwNSw3fIgCvlZ0pK/LkyTXpyXlBFv5oDyTXSTBkeESxkNCxV/bTmE3SB5Qrxyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1+jNOizPTpemCUGsr4FWTdYC98LVuNWXNm7QXDxqV9Q=;
+ b=pZATMxpCzNn8JRdcu2nUhTnbMIcQeGIFbQ3qp/+sNXJ9wOs7IHzhxNk5Qg04aO0O1kpdc/kcAB+vP9KwZ2HiCKPxg3/t1pkXyxJ+U0ZToeLfFuC8mAJMHIYtW7cfm6VWPx7qttKPU3oSiWLrjqYB4vSdDwOLcg7v5/oHdA5ZS7X18KiXqO1XwLicqbEAkIZKVUGi+bnfhcUvZ3L/2sIprl0cQYsENpShSMZD/ij7ZHivJhsL8T0RlkMJIb9MVY9UW8aA4BJgipcihmMUwuJlG9MATsqi3BiXCjInxsoi6LXYs/4Gi6bBK6NisLwxWibzqW0LwJ5ADiaHlpCsdTIAJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL0PR11MB3282.namprd11.prod.outlook.com (2603:10b6:208:6a::32)
+ by DM4PR11MB5263.namprd11.prod.outlook.com (2603:10b6:5:38a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Wed, 14 Jan
+ 2026 16:52:49 +0000
+Received: from BL0PR11MB3282.namprd11.prod.outlook.com
+ ([fe80::5050:537c:f8b:6a19]) by BL0PR11MB3282.namprd11.prod.outlook.com
+ ([fe80::5050:537c:f8b:6a19%4]) with mapi id 15.20.9520.005; Wed, 14 Jan 2026
+ 16:52:49 +0000
+Date: Wed, 14 Jan 2026 17:52:25 +0100
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+CC: Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Andrey Ryabinin
+	<ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, "Dmitry
+ Vyukov" <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton
+	<akpm@linux-foundation.org>, <kasan-dev@googlegroups.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: Re: [PATCH v8 13/14] x86/kasan: Logical bit shift for
+ kasan_mem_to_shadow
+Message-ID: <aWfDiNl9-9bVrc7U@wieczorr-mobl1.localdomain>
+References: <cover.1768233085.git.m.wieczorretman@pm.me>
+ <b1dcc32aa58fd94196885842e0e7f7501182a7c4.1768233085.git.m.wieczorretman@pm.me>
+ <CA+fCnZd+ANJ2w4R7ww7GTM=92UGGFKpaL1h56iRMN2Lr14QN5w@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20260114145915.49926-3-mathieu.desnoyers@efficios.com>
-X-Stat-Signature: yhdkysyomjn7gbkw5quaue58t7sx7ijr
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+fCnZd+ANJ2w4R7ww7GTM=92UGGFKpaL1h56iRMN2Lr14QN5w@mail.gmail.com>
+X-ClientProxiedBy: LO2P123CA0004.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:a6::16) To BL0PR11MB3282.namprd11.prod.outlook.com
+ (2603:10b6:208:6a::32)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR11MB3282:EE_|DM4PR11MB5263:EE_
+X-MS-Office365-Filtering-Correlation-Id: d58722b2-f60f-4817-c2fa-08de538d5974
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NmNOSWlaSUtmRmtuMm5naWZHY3h4bUZhaUF0cm9OQUR6UHlvSkV6YXNvZ3hR?=
+ =?utf-8?B?byttUFFRNHZxK2ZSdnJHNnpOVDg2STArcUNGUWpUUUYxZkx1QkJGdElPcGZa?=
+ =?utf-8?B?M3lzRDB6cFlCbWFkeDVBZGc1akxlanVQS0NQSXp1aXBjZjM5aU1wYzRZVlBQ?=
+ =?utf-8?B?ZFpWSmpMYjV6WXJjckg5S0l6cDFJK1hwRTJRcTYyUjA1c2tTYlZyOTNmREJ1?=
+ =?utf-8?B?RElvZyt1aWxXdG1mU2wwc0RrNlpRUzUrRk9QU1lmak82S0JQMmhGZjduSGJk?=
+ =?utf-8?B?N1hwWDNldkFIYnFRSUQxTE5iWXpnYWcwWitLWFRRdTZGdnBoMFU3QzYySTh6?=
+ =?utf-8?B?QmJvYnAwRWFpK3lzeE1UcEczZFp4T3kzZUFrUGFqM3J3RGVJbC9ZZU5oUk8r?=
+ =?utf-8?B?dG8rckYvSlg2OWNOWCtrcTVpYmt5T3VBckRVWS9LNG82YWRyaW9KUTVEUURq?=
+ =?utf-8?B?V2JEMWVQamwxc0JRb0NZMHYwZHhUQXNpOXl1M1VJTURybkFvSjlrWlgxbk5K?=
+ =?utf-8?B?cGFOTEtUVjNOdlhhTG5URGJFNjREajF5cFNVU0VwRVJVR2NkMmNQTFY0TTZu?=
+ =?utf-8?B?Q1JBOXd1NHBBd3lmZkpUYzU2WkhoelVtWTFtb2pheDRsSjFVckFHWFk4dU84?=
+ =?utf-8?B?MmlpVElpZ3pySms3enRwSXBnZ3ZnbFUxa1FlcWwyWE4yNFJxQzlIWGM4Z3RM?=
+ =?utf-8?B?L285c2d1SEk1Wnh5Umt2dkl1SzRDanlsZXlMQmRnam9NbmE2eUo1d3Z0a1hV?=
+ =?utf-8?B?bXJmaWZOc04zcDA3cEd0bWdLRWhYZDFuS1JXVHpxZVJzNk1UY0NWY3ZVVEZy?=
+ =?utf-8?B?ZGM0VFlWZEF1TmtEcEplSitZQmEvb0xZWVZ1M2ozSGFYZmFmUmxHdWREaGhU?=
+ =?utf-8?B?bVlIandPZEw1VEc4VUtPWHBrbFpzbkxkc2huUm5xUGZRK054N1JTby8rYytX?=
+ =?utf-8?B?cHFGQXRtTTh4WXEvRGFJZXVYbnJLNzRKcFdsYkprTnphK1B4ZGQyOGpkYjJ4?=
+ =?utf-8?B?blE5OVpyanR3VEZXUFNXdnBxb0YxRkN0OHRCVjU4aGVueGNVUEpyNTZjczhC?=
+ =?utf-8?B?MXpZUTg5dGw0d04rd2FkRjhxQzJuOFo1TW4wQzJpdHp5WXNGVUtxSm90dk1r?=
+ =?utf-8?B?NDlPQmZQTEt1cE9DdU42bUVleGowOEI0TUpObkQ2eGorUmRhYXlnMjdJNTlh?=
+ =?utf-8?B?MjlkTmNVc08yUWRKcXg5a1FDaXQwRnpldVA3SmVIUU5VQmRnSTU2dVBXbjd1?=
+ =?utf-8?B?NVpvUER0ZGZESlR1b0JsYi9qNXV0a0ZFdG53ZmxWdVhhTXM2N3N1bVJwS3RV?=
+ =?utf-8?B?U2YwUlNxdm9iekJiRSttdDNWRk9XYVYxN055d2ptcE5KZmErdXRrRXNOcnl5?=
+ =?utf-8?B?M3RPbXgwOWRyNWVxT0RWOVBsTTl4emRNQWVOU0ZHS2tLaWcvUlpFUjFKdC92?=
+ =?utf-8?B?cDl6N01kMGhCSk5YY0p2ZHp1M2loOFZWVEtVSFZHZk9Qam5TbkNoVmJJQzl4?=
+ =?utf-8?B?R2dQUXgycHBzTVdqbXpLZS9BOERYSHFiY3Y5ZlBvL2lTdFhGOUZ3ZWFKYmJW?=
+ =?utf-8?B?ckNSQkNMVVJONlREWnlub3VtSklpSDgzaWR4QXcyZXE0dWd5K1FwV0NLOVZI?=
+ =?utf-8?B?b29JNVhMd2t1Wm94em5XM1BvMGdVbUdEREJjYnNFTnQwZGpDL2xRdW16WnBI?=
+ =?utf-8?B?T1l0eGllcVFZUVV3ajE0MG9GWU1DNTduQVIvRVdDRUhveGE0T3dQWklNSkNV?=
+ =?utf-8?B?S1lwZDZUTGhuUTRwT2g3N3RBQlNaS1pkWUtaaElSbXQ0eFRucm5SKzZneTRr?=
+ =?utf-8?B?Q29mQ2dzcDRQcWdLZXRGUjMzb3grbkhTN2hXMXN4ZWt6bEszK1ZyN1Z2T2dQ?=
+ =?utf-8?B?QVRLQm95MlhyNTJKb1VuRmZSNmQ2SzlrRDE4RDhmUkFveG5JQTZweTh5aVA0?=
+ =?utf-8?B?MnZYbGhUellFa1BaREVxUkVaRW5JN05uclZSdEV4OWVtZTdIMkR4bUdFck1R?=
+ =?utf-8?B?Qm94VGVIdG9xejI3bVN0TitHVW5RdVR4K3lIWHdpN3czMDIyUUl0akRPQ1Ey?=
+ =?utf-8?B?VTFqQ3puYmVZeDYyajlmRkpXMHJLYndHL0Z1M0lKMk5iaVBXRldBSk1NYks2?=
+ =?utf-8?Q?gx3w=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB3282.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c2VDMm5HUVd1RkVLRVFKaUs4ZG5FbVBRK2psSUFaaXJvNVMrSnlkYm92TGh2?=
+ =?utf-8?B?N2ZDWDl1Vm9aVml2U3R2d0JCWC9GTXRvcS9HaThIRzV6eVRWVEI0VSs2UUhx?=
+ =?utf-8?B?dXJqU3FxN0s0Zm9xRlBGajkzVi9XSkdOdW1pQUZzMEN1a1BDUTcwUUFaTTFp?=
+ =?utf-8?B?OElqTWNzUkVoTUxyYnIxcEhrVXNXRXBlYjhGeHp6QThEZFVxbWtQWU9qdjFu?=
+ =?utf-8?B?QkVmVFoxTnhGV1AvNERoUHBLQ21EeXFFWkZIQ1JHWmh1bVJoa2wzRmRBdU44?=
+ =?utf-8?B?d3lkZWptSWNkV0NSSCt3TWlOaWVuSlVFVjhrdnlUSkRLenovQWY5UHJTc3pw?=
+ =?utf-8?B?SkV4ZWNnc09rT1BmUUo0NlpVNGovcGd4TFdMS3J0NDcrSUFGbXFMb0xIUUdF?=
+ =?utf-8?B?VktHWnJkNnNuYTRtRXZub2hicE9sWkxyd1ZFSm1ZRE8xVXp5dXhvWVk4US9J?=
+ =?utf-8?B?dVRCZXF5aEViZEh5aDMyNzFIWTh1QlFicGxtd1c1RjhVdHBaU21VbHBlYjlV?=
+ =?utf-8?B?STdnT2ZBaDFLWDdDT2ZPbUg1b09kN2NXRzdDcjNUVndSK3BHYXpmM3JYWUpM?=
+ =?utf-8?B?YjVlaFc3bUVJZlp4NVBQcHE4U3FGU3BuVFgxdnA3TEE3WlJuZjJxL2JOT2Vr?=
+ =?utf-8?B?aTRQTnlzdXBMcXo4WTBrYjlGM3o5bUhwY2RWY3d3UEluN0tScm0vbWtIWnpy?=
+ =?utf-8?B?bVAvZmYyM2V4dmwzREJxSGRKTFk3bFF4OS9hU1NYd1JPUWU5K3h0YlJqZjQx?=
+ =?utf-8?B?R2k1ZUY5TVV6QVRIQ1hnQk5adWRSOVIxV2Nvd0tJNi9qaW1TZEhUVDRrRmFG?=
+ =?utf-8?B?TWpTdkl3Z3BnSW5jcDVCdnowM3VkUHlSb3gwbkNJS2hicmlHTEIzSkF4NEQw?=
+ =?utf-8?B?ZmJlUi9VaExMYTJzZWVOcVAxbTd4M1g3VHRpS1ZmN2puaGoxanBnL1drRGw5?=
+ =?utf-8?B?bkVEYlRkYXhLemYwaEI4SXB2MDZnL1BjaU1mWnRjeTY4UzdOY3BuaVhHYnFO?=
+ =?utf-8?B?WHdYRy9Db2ZqaFBuWm84MkUwaDQ5aVczTjZPS29Mb2lKUDlBTzBtSThTUFd2?=
+ =?utf-8?B?bDlJMVJHbmpxZlhyaDh1bzMwR0hjbzdCSmtJNmZZRXo5RWtPWHVDQ0RYZElP?=
+ =?utf-8?B?RjFIaE82RFZ3WGdyUVpOdWFMUDdINS9neFNzVGFhdzAwdUt4aUc5cXdZZmU2?=
+ =?utf-8?B?THhaY3k3NlBMYllkZU53VjlTS0NrN1NxZDduYmR2Y0l2azF3OEZlVzFUV1dY?=
+ =?utf-8?B?NWlFK253SFB6YURWMjl6d2ZvSFAveEovYVd6bVZoUEZKNld1TjNoSjVLb2ww?=
+ =?utf-8?B?aTltUk53dHlCNCtlV3hmcStRTEJNR2srajRYU21hRHBCeDlERjdXTkh3SjRZ?=
+ =?utf-8?B?QmFsaTRrZFdHMkZRb2dmc1JWYTk1S3pIR2JaZ3pTRUo3TGxpT0NmTE1HMFIx?=
+ =?utf-8?B?NTdDK214S2J4UTl0UjRkNm1rZENtU291d21BMlZOTWl2VUxFUWI0OHN0Mkpu?=
+ =?utf-8?B?eVdzclJ2UXoyOU5jUDhzQWJlbXE0VDdnd3hLbys2dzJIZUYxWjRtSTlCT0l2?=
+ =?utf-8?B?NnRWSDlYZGk2TmNVQUk5WWswY0RXZm9MZkI2K0pNanFDbUhjSTdpb0xSL1NP?=
+ =?utf-8?B?blVIZEJBeGZ5c25sK0s1dTltSGNjeXJhZ1JTcGVWMVd4VDd6b2YxaTlTZmZn?=
+ =?utf-8?B?a1ZJQ1prak4yMHFFMStlb2I5VkhJSVB0a3FMY1pCMk1HaTRVbldMdHF0cGVF?=
+ =?utf-8?B?NWFhVlQwWHVZZFV6cm85SE10UU80R1JsRmk3dHNRZFN1dk91T0dyTGwrNTJL?=
+ =?utf-8?B?ZytYNVE3dUlrMUYrTWVDZmxRSURPQ3o5MHdZZmwwbEdHYUREaURVRGc2Qkdt?=
+ =?utf-8?B?ZzhMNi96ZGNoQ2JzTEFnZFhwdFI2RmRXSjV5REJDZ2xxWlNUVnlFamZQNnla?=
+ =?utf-8?B?bnZJMi9TZHZTUzJsUkFGVUx4dE1xN25SZjE2ZTNnREw2aVdtZk0zQTF0ZkE4?=
+ =?utf-8?B?cm5OOGVwdG1XV0ZnUld2WEk5cEFWSm1kUXB3eGt1djc0MU4rY0pBbERNYjdK?=
+ =?utf-8?B?NmgxYm5TSmhqczhNVUplKzNVUi9Za25kbVBxQjJWUWVuSURQZlVrQjE1eGxr?=
+ =?utf-8?B?R2lndFRNWGcwemhsNk9zQm45NDVCSVZKbThVdmVKalJRMCtQVFBCYWxTRWt5?=
+ =?utf-8?B?MHM2ZGJoRFdEMnA2SzFZR1owWnppYkV2MXoySU5FTFkrc2xCanR1MXhTL3FY?=
+ =?utf-8?B?VmZHT1k2N2xvWmVpY29PRXBLZk1jbTBoQm1yK0trS1VLZUZTSG1zcXVJLzNQ?=
+ =?utf-8?B?SytPdkJZVG9jdXpOY1NOZ2t5YlZaTXREdURoS245STk0Y2d3UlgvQjZFNHR0?=
+ =?utf-8?Q?6KhmexRlaGbr1ucqB2QJYrUS2skTppb1KLzyT?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d58722b2-f60f-4817-c2fa-08de538d5974
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB3282.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 16:52:49.1768
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9r+5jP7RibuNEyfhLC0dRVFm055de6mHaU9qrhLNuuWTQZheleu+fF22e8a1aiYbbK8b77jCnhZZfYn9XTAWkJ87kGpbgYn9SACL4Sxedso=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5263
+X-OriginatorOrg: intel.com
+X-Stat-Signature: y5jdabp4jzzqnz6sazpjqchwxennieo3
+X-Rspamd-Queue-Id: 4385680013
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1FCC1C0003
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768409283-877632
-X-HE-Meta: U2FsdGVkX1873lEIrhcID25XFW+LWSTJozjlpNcNSQX7IpEp/DNdt6soalCZ5wNmuekN51GQi5kDdzUJa0ZxGIMG5LJNOTiXdOC8NwKY91aHTwrrOWN6Pp1h1gluH5mtzH4TH+/wizvTJwxNCjKkCnx32Zty60iqGfncLKehQKPSXui98F58/maxboPWQIt5R/zC6EaUSOFHbgtuz56aKE3Sj8+BQzShLBxBE7hnEzNMuNW9F0C/xYtiBkDf60aWMMpjNC4U9feCmDYDNVdaxA0xO/tpbCX2IM0b9wl/cu6t/wBFVyKYtxPhFt6hay1Hw/E5RJLWnD0iNbsHBuRJhFX994ePwdk/ec57QtWGor3Tpuf4F9rqSmm4dRokmy5EIX1iFAwVeZokWEkcyBbuS46zPH1eFKBVR+HACaoL4IGq/BixD7UTfAV71jSA0wL1ek9Gp9FeA6v+t+gJJFeOUWnTWUCoGziW5zju3n2LwaSoR0XH+7b2K68sRnuWU5TLAUuN8cHv9qd2RbG94B89EUxWVQ8O39yQbPv6D7ZRdox3YzXx3/I8ccr6aDwQ3Ci9+Kybk4gEJvO8lbsGW9HnjHiQty2x6fMjjfy/foQvxOeY8aX0727pE7xEVAtDcAOg6KoBhdaNBasHv6VOy2lSbaZnSSalbiTd5UnVGQQZs4fI7r/M4AbDFOYrrb8XizPMiQlfadlkCpLpe4AbXcYhSj1+fj+ndsWDHkBwj3jhnARNmNOt+6I3Q6Xu37LzZq8GgSx05H2GvrfmfFlMiiGwSCKxixYju0eZXepXp5FqIrErRhqiVcp4pOk6rAyroOGDOkLHiGqsZOutdUKRWZFMtNu0R43AdOH4r3fbxx5n/HpTIKMjXbOF9Vubfafk2PwGLOzHq0ckQFQiWrNFzNHX+jZQ6yufbmzfkyS6tqonQ6A3f13Rirphka5b4qC4RTHbcRXpeezCLda+iHWrdPO
- 2Lr44+qa
- mRRUyqB5BcfoB54PHeuk7s/BIbVAK1IkhwjGwrWqBFF9Pv0tJo17qS0u6dTylgvOq7+4vAZSIKTNXoD7SlI5bHLS7dL0DlNQLrOLmkBUpGuv3nlEi5ThVbah0OmtT6CC/je1k+HgwZOVRYJVCSS3Rg7tOb+y2GWt+6NhWXnOgfa/YJh6GFwFdSwdBPxhV9S4U9XR0magZYVjEDBGS3uL6x+y+fmnNkRipV687+3960x1rP744fIMvR7NZ/fhnbwM6K2jOQJGJAcBWtd3mJW2XNOtkSKHN6RpM+cQ2ouycQ4FChQbQYX2EHqaqK0KE54ZuOOtiXCFuyTaD9KbOELW1/eIQjiFkNxlzSKZkQwAtUOLkinjsv4+yPcH6nTE0zPGmvUDdGvSzbIMOaWoj2MyqsdAJyl2G1MauS96a8g3md60+a4c=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768409573-137139
+X-HE-Meta: U2FsdGVkX1+bQCAVfzQI3Q1huF7b1+SuHJo2tDFB/TfbcGey0wGBuabIA7daKfz5wSDpSYfKZCKLPGwSV1yBzV16+kdCpYosQnZ/Ubwpcx7N4lI7O7hX/WqGRWj8gjZtrYNMHxTYxDG1iQrt2Uc/BSQ5zXSYTBmK0XWCF8Cq9oamgCq+aFkt41vt4yk11wedlao/fRh+GrslfVa+Xo9LbD7ERQ25Wjf7ufy2kTRDgVSeXBlj5vXoQgNPT4ubWoQo2rl6G7eNcz+/aqFyDRTjgkeP4BPhm2i5O0zbQb3rKtNc/tUnU+pHWBWgui0cUEiqeMq+btz//jv5wK3/MkVUBIk+CujXxu9+6D8571qMw3qcLo6pQFro4FSKl+dVSXZs6g7vuD6OZFVDeAjSBWdaoSnEkDHhSBw6LerQ0qLT7eKRQJE2lUqIS/evZrM74ZlQtjcyC+3KwwoTuGByZAeHd833rOF9JNTqCiyUmrLByY9VQ3k0pBdrtU3N34VNCS5q/cn6VD+V++hltAgPm2OdjgntsW4+CJ/FCA72laff64lrxQdjZzwpykIqGZSSeX7PtPE1iFrZVsSQo05GU7ne7v/4N84W7wySaajF42yN5wLSpnW10CtqIKZaUXl2t75vBD8E1IFC81W8Q4LWPe/w9Y1w03bIoHk75WoG8uyatyPLTeEneauxcXqmxkMLC0e4P/v89pzqgTeCJIO0ptTUI9R4+HUFChAL+/jPQdfCwupsm48wZjJyJ24L7WVJgGI2trUk9BFtaenhuxRKekMiLpr8cn6cx/AZFMK9cbB1aMLqFvkvMypUZm/Wm8CJKvabOgVLfOjyWpl8L0GAjlUqGdS93jEsZGVBXdFGVCHpb50EoQ5IgKPAftzTQc9frmh7yx7zgZK+VvfAke+zny/F1sq6Em2vN1wpBSMYxajp7HqnGtea0GdUeL09ujSkDo8AUNbwmwXTZMDLIqKAnJt
+ 3XUAkZSO
+ GoRVG+qtPx6rVNef/7HxfjjFeiobGXgg3GSnYLhenltjEtQThBw4v3mY4OMaGp3jEO02+nQ6MiOYL6WH5G6E0gb2DRSOBxxWBTY7QhS8orWsw5xXM0nzyTaWTfiQS/ewM1blKYfCE7uvcpiZz9b6BPYFnVOH2fKt+1VOeSmjl5+8M5pAMvrPVgocAS1B4Jkh/EizAi1U44V6ZTpTmJpBhrfKFySsuqoLyBDxqfDQeHnxy8EYF9bi3aCJEQXrslCDL2t+cbXTTHqddIJG1EojSfJET8GPKRbOv+pehUjcQyoOJZ2UjnRGy5hCwhAY5uY4DoZSeyFCQC5dYJZ40OuY1G7mz3TCcV+dFPkr+WPbYwtwYwxIm3/N6iFj4nsjg/DbU+XccwvXdMPbfVi6JGHNzWZLFdUA4o4ui55+nIyusacr0BNdwdcKuOEWFtHlg8BEO/ds93G7gFKC6UokVSQTSWM8tT7j23xbqvoVUrg60xy6VV9mc+FI6OXF7KAzfWglvT+Gy1nHbu8Ek1wplj0XKvmhy8kbYhPKLKou5RhvNx8MbagzmWu6RaSSvQYx2Ezyf5RdHF/kr0qgw4FEmHicSHUBBseH7hQRHNC31
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,107 +245,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 14-01-26 09:59:14, Mathieu Desnoyers wrote:
-> Use hierarchical per-cpu counters for RSS tracking to improve the
-> accuracy of per-mm RSS sum approximation on large many-core systems [1].
-> This improves the accuracy of the RSS values returned by proc
-> interfaces.
-> 
-> This is also a preparation step to introduce a 2-pass OOM killer task
-> selection which leverages the approximation and accuracy ranges to
-> quickly eliminate tasks which are outside of the range of the current
-> selection, and thus reduce the latency introduced by execution of the
-> OOM killer.
-> 
-> Here is a (possibly incomplete) list of the prior approaches that were
-> used or proposed, along with their downside:
-> 
-> 1) Per-thread rss tracking: large error on many-thread processes.
-> 
-> 2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
->    increased system time in make test workloads [1]. Moreover, the
->    inaccuracy increases with O(n^2) with the number of CPUs.
-> 
-> 3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
->    error is high with systems that have lots of NUMA nodes (32 times
->    the number of NUMA nodes).
-> 
-> 4) Use a percise per-cpu counter sum for each counter value query:
->    Requires iteration on each possible CPUs for each sum, which
->    adds overhead (and thus increases OOM killer latency) on large
->    many-core systems running many processes.
-> 
-> The approach proposed here is to replace the per-cpu counters by the
-> hierarchical per-cpu counters, which bounds the inaccuracy based on the
-> system topology with O(N*logN).
-> 
-> * Testing results:
-> 
-> Test hardware: 2 sockets AMD EPYC 9654 96-Core Processor (384 logical CPUs total)
-> 
-> Methodology:
-> 
-> Comparing the current upstream implementation with the hierarchical
-> counters is done by keeping both implementations wired up in parallel,
-> and running a single-process, single-threaded program which hops
-> randomly across CPUs in the system, calling mmap(2) and munmap(2) on
-> random CPUs, keeping track of an array of allocated mappings, randomly
-> choosing entries to either map or unmap.
-> 
-> get_mm_counter() is instrumented to compare the upstream counter
-> approximation to the precise value, and print the delta when going over
-> a given threshold. The delta of the hierarchical counter approximation
-> to the precise value is also printed for comparison.
-> 
-> After a few minutes running this test, the upstream implementation
-> counter approximation reaches a 1GB delta from the
-> precise value, compared to 80MB delta with the hierarchical counter.
-> The hierarchical counter provides a guaranteed maximum approximation
-> inaccuracy of 192MB on that hardware topology.
-> 
-> * Fast path implementation comparison
-> 
-> The new inline percpu_counter_tree_add() uses a this_cpu_add_return()
-> for the fast path (under a certain allocation size threshold).  Above
-> that, it calls a slow path which "trickles up" the carry to upper level
-> counters with atomic_add_return.
-> 
-> In comparison, the upstream counters implementation calls
-> percpu_counter_add_batch which uses this_cpu_try_cmpxchg() on the fast
-> path, and does a raw_spin_lock_irqsave above a certain threshold.
-> 
-> The hierarchical implementation is therefore expected to have less
-> contention on mid-sized allocations than the upstream counters because
-> the atomic counters tracking those bits are only shared across nearby
-> CPUs. In comparison, the upstream counters immediately use a global
-> spinlock when reaching the threshold.
-> 
-> * Benchmarks
-> 
-> Using will-it-scale page_fault1 benchmarks to compare the upstream
-> counters to the hierarchical counters. This is done with hyperthreading
-> disabled. The speedup is within the standard deviation of the upstream
-> runs, so the overhead is not significant.
-> 
->                                           upstream   hierarchical    speedup
-> page_fault1_processes -s 100 -t 1           614783         615558      +0.1%
-> page_fault1_threads -s 100 -t 1             612788         612447      -0.1%
-> page_fault1_processes -s 100 -t 96        37994977       37932035      -0.2%
-> page_fault1_threads -s 100 -t 96           2484130        2504860      +0.8%
-> page_fault1_processes -s 100 -t 192       71262917       71118830      -0.2%
-> page_fault1_threads -s 100 -t 192          2446437        2469296      +0.1%
-> 
-> This change depends on the following patch:
-> "mm: Fix OOM killer inaccuracy on large many-core systems" [2]
+On 2026-01-13 at 02:21:22 +0100, Andrey Konovalov wrote:
+>On Mon, Jan 12, 2026 at 6:28 PM Maciej Wieczor-Retman
+><m.wieczorretman@pm.me> wrote:
+>>
+>> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+...
+>>
+>>         /*
+>> -        * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shift
+>> +        * For Generic KASAN and Software Tag-Based mode on the x86
+>> +        * architecture, kasan_mem_to_shadow() uses the logical right shift
+>>          * and never overflows with the chosen KASAN_SHADOW_OFFSET values (on
+>>          * both x86 and arm64). Thus, the possible shadow addresses (even for
+>>          * bogus pointers) belong to a single contiguous region that is the
+>>          * result of kasan_mem_to_shadow() applied to the whole address space.
+>>          */
+>> -       if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
+>> +       if (IS_ENABLED(CONFIG_KASAN_GENERIC) || IS_ENABLED(CONFIG_X86_64)) {
+>
+>Not a functionality but just a code organization related concern:
+>
+>Here, we embed the CONFIG_X86_64 special case in the core KASAN code,
+>but the __kasan_mem_to_shadow definition to use the logical shift
+>exists in the x86-64 arch code, and it just copy-pastes one of the
+>cases from the core kasan_mem_to_shadow definition.
+>
+>Should we just move the x86-64 special case to the core KASAN code too
+>then? I.e., change the kasan_mem_to_shadow definition in
+>include/linux/kasan.h to check for IS_ENABLED(CONFIG_X86_64)).
+>
+>And we could also add a comment there explaining how using the logical
+>shift for SW_TAGS benefits some architectures (just arm64 for now, but
+>riscv in the future as well). And put your comment about why it's not
+>worth it for x86 there as well.
+>
+>I don't have a strong preference, just an idea.
+>
+>Any thoughts?
 
-As mentioned in the previous patch, it would be great to explicitly
-mention what is the memory price for the new tracking data structure.
+I'm a fan of trying to keep as much arch code in the arch directories.
 
-Other than that this seems like a generally useful improvement for
-larger systems and it is my understanding that it doesn't add almost any
-overhead on small end systems, correct?
+How about before putting a call here instead like:
+
+	if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
+		if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
+		    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
+			return;
+	}
+
+	arch_kasan_non_canonical_hook()
+There would be the generic non-arch part above (and anything shared that might
+make sense here in the future) and all the arch related code would be hidden in
+the per-arch helper.
+
+So then we could move the part below:
+	if (IS_ENABLED(CONFIG_KASAN_SW_TAGS) && IS_ENABLED(CONFIG_ARM64)) {
+		if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0xFFULL << 56)) ||
+		    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
+			return;
+	}
+to /arch/arm64.
+
+For x86 we'd need to duplicate the generic part into
+arch_kasan_non_canonical_hook() call in /arch/x86. That seems quiet tidy to me,
+granted the duplication isn't great but it would keep the non-arch part as
+shared as possible. What do you think?
+
+>
+>>                 if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
+>>                     addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
+>>                         return;
+>
+>There's also a comment lower in the function that needs to be updated
+>to mention Software Tag-Based mode on arm64 specifically.
+
+Okay, I'll add that in
+
+>
+>
+>
+>
+>> --
+>> 2.52.0
+>>
+>>
 
 -- 
-Michal Hocko
-SUSE Labs
+Kind regards
+Maciej Wieczór-Retman
 
