@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACBE8D31A12
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 07:00:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A99D31A13
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 07:01:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F5896B008C; Wed, 14 Jan 2026 02:00:59 -0500 (EST)
+	id 6A9746B0092; Wed, 14 Jan 2026 02:01:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E75F6B0092; Wed, 14 Jan 2026 02:00:59 -0500 (EST)
+	id 64E836B0093; Wed, 14 Jan 2026 02:01:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2C316B0093; Wed, 14 Jan 2026 02:00:58 -0500 (EST)
+	id 51D546B0095; Wed, 14 Jan 2026 02:01:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E3FB36B008C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:00:58 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 716CBC1AC7
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:00:58 +0000 (UTC)
-X-FDA: 84329672196.07.70CEBAD
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4366D6B0092
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:01:00 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F19781603C3
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:00:59 +0000 (UTC)
+X-FDA: 84329672238.29.D2BE52B
 Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B6AC91A0004
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:00:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0El7bEYO;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 38D6018000C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:00:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kaPtygFM;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of 3Jz9naQgKCJQz6B476yC4CC492.0CA96BIL-AA8Jy08.CF4@flex--bingjiao.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3Jz9naQgKCJQz6B476yC4CC492.0CA96BIL-AA8Jy08.CF4@flex--bingjiao.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768374056; a=rsa-sha256;
+	spf=pass (imf24.hostedemail.com: domain of 3KD9naQgKCJU07C587zD5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--bingjiao.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3KD9naQgKCJU07C587zD5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--bingjiao.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768374058; a=rsa-sha256;
 	cv=none;
-	b=m7ZIShp0fd1NcPRMe7CZ0UduD+NnYg0JnaYEdd2NyyXXub6sthc9Avbxz0FEMOpiQ1mowF
-	lcGg9ftdNh5hUuas7NXFLl2IE3tj0UeZIw+pwlDScPHZxLu227lIXGLzDV7K9u9JUe8JnZ
-	ss6Cx28Qkf+OCim6U7+mrkj4l/uHZUg=
+	b=u4v3A43ICF3BG7t9xvkMeMX6fdZU0OSXzP4R4K5q6OTpIv5qAtHTInwdECeDfmzT7OG+59
+	0WF5aJPIcR0Xkm++rRsgXlrwURP2dZA7bij3zJSIbgFnTZlhd22gdXi8BrR2DDdX6YPgtP
+	8gA2Lc+NdChBqx1SEr7gEtZtGCCqe5o=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0El7bEYO;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kaPtygFM;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of 3Jz9naQgKCJQz6B476yC4CC492.0CA96BIL-AA8Jy08.CF4@flex--bingjiao.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3Jz9naQgKCJQz6B476yC4CC492.0CA96BIL-AA8Jy08.CF4@flex--bingjiao.bounces.google.com
+	spf=pass (imf24.hostedemail.com: domain of 3KD9naQgKCJU07C587zD5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--bingjiao.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3KD9naQgKCJU07C587zD5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--bingjiao.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768374056;
+	s=arc-20220608; t=1768374058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cyv6P5VtGm/MbLQqPn/8e2BMzUG89IA/lF6ABr1FhIs=;
-	b=DEpIIATApUVWTWqC1Pf3VUKKaLx5L8Ca8ldLljPZ8GCPgNKax/8Kp+3AdgaMnaKxcUKQAs
-	RBWP/W9GglaIQ+R2lq/tsrm04zNIByINvDjrqbiee/DnU8y7pcjTsYdNlXJZhB4JGjhIlr
-	/o1OxoSwHBT5acIs/49JT8gURHiBXnY=
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2b1766192e6so7298448eec.1
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:00:56 -0800 (PST)
+	bh=t/KY0VdnopC2hmLm4xwT6Iw+Xhnz6LnQa/Hsf1VK0I8=;
+	b=eQBfmTzDU6dEQ03IXCB2H4O7jD7yCzZqF605CzOPU9fjf9DgjGBpwe5HeRy6NW+X7muEbH
+	w8Ot3bgfV9yI5pkg7prh1JPge0mLNQ+kAk0Bzeu38vqkua7iwNGnzwsvkc67Nb8//QdQiy
+	XmX+yUrzXWmF05u1/N+5xiUmwhGP3Ig=
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2b04f8c5e84so9719644eec.1
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:00:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768374055; x=1768978855; darn=kvack.org;
+        d=google.com; s=20230601; t=1768374057; x=1768978857; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cyv6P5VtGm/MbLQqPn/8e2BMzUG89IA/lF6ABr1FhIs=;
-        b=0El7bEYOb1eQPI65CZijEBmVp+I7I2h3krjDNIGDwXrZk95q3WdOQjs8rGzaZ8mHlO
-         Wl2IKAmu1adJYfrCDhFGdS2925ObaCMUUlh8qY+/JrFlqbAWqZKqNyy+CjM5BrT1XWa8
-         cHmYPvOyhlKICVjY73aOBajTMJWxePcepdey73VH4UQpZshD4W9pR0nLzqUNrlTQOQGa
-         QPFNVCtV2tDGbBMr9pJSAeGJjV2cAOsH7m+oKyJ4UJo59h0k+9DsuyCBbsRZ1GG+tESI
-         n+nuCE9dsLiy6MiDsJ1WVNQGYIgOzhNxbp1guLn59UnwJXAX1YKNSvfvw+6nSC5kSL4i
-         r7yQ==
+        bh=t/KY0VdnopC2hmLm4xwT6Iw+Xhnz6LnQa/Hsf1VK0I8=;
+        b=kaPtygFMi9KDVStUnCQ+rwtZ9/rGyXdSCtUHDwTanc7FDG1YSqHKxZ9RVIF9aJ6MtL
+         glUdnquS6NLIkSeugBK3jcjnoZ1foMzquOjZE1YJ9JJClpR47IQV5LliT20x3yTbjwC3
+         NkiLZM73eO45k6fqS0TYcpPkVY2sI/AF2WRKoSxqQaq8I0hn/CzVVDG/gKnKuJYqr2Bh
+         7NZRZzOByazAWzoY20IwE8aauO2sY7ais0EC8JX/vQEPZgYjU/HFH1jjAe2oKZtcxy/q
+         Z4D09HFhdV4TcGGSP+Yv+mUstoCxalaUl93znCedHXHJzGFbPNsmDxd8QffiUUvv6anG
+         T1VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768374055; x=1768978855;
+        d=1e100.net; s=20230601; t=1768374057; x=1768978857;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cyv6P5VtGm/MbLQqPn/8e2BMzUG89IA/lF6ABr1FhIs=;
-        b=NuZungkf9QOJnYsG+0+kC99EFRw0/+XfkJbDLlbRO7hH5URcOSPo4aT96wKl9Nh2I4
-         IbMVH0RonKqlXIqqInpW3aepTNYXkpnwb2/VBO+u/CGEEIVsntn1XZV9arEKYJHOZNlT
-         dpcc5n5uNC6n5+YybfoK6kukxiVBbdmLTSDDdaHRltUuIjp+P5KOXfyhQbpI5cvI7t1K
-         x956RsEax/nax9NZuXnRLJGwnMmPTxeRC57GoCxadNV65Z5eroSHjuoBXQO64NeEbvGV
-         6NC6y7XTQT9aSe39imn2vBAFZRamnmsoF6ZS5+DktUIHvk0I4ipAEYd+9n5BpClCM4FV
-         rrBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGHK83IAqEsdeVq3DCzDfLKTxHv/BnkUzKt7qsn9uOC2yfFbyVMn9Ysr+yj/sf9vOUNam4IErkdQ==@kvack.org
-X-Gm-Message-State: AOJu0YwS5O6wCVWiOA7YwspJ3ZhdOlT9usO9EFZd5JLKm/bufyjAhqwk
-	2tYJc4FFqS6eNFUnOVSPUJk7opZAg4tmYj95GwTdA9xNZu9f63x4ducpZ068kkuGTtuDZXmpXoz
-	hy+xV71gz7Bv+HA==
-X-Received: from dlbeg14.prod.google.com ([2002:a05:7022:f8e:b0:123:2e41:8b40])
+        bh=t/KY0VdnopC2hmLm4xwT6Iw+Xhnz6LnQa/Hsf1VK0I8=;
+        b=QDAhRMjCfQUfICd6nQgxVvXwYj0wvOnYNKvjbRD7wosqRdORks1GGR3mRU/3A82tK+
+         xNXyfXF6kiLl9FwGoUGUOTYRTbyejRfjmeey5lBF/N99Uk5CtbBB+XwTjuq+IrRFsr5O
+         ztKg92h2lGFTvJFaaKdbakNcWEjOJ1neNXaKRcqUdi2OlpRO/D7uGwL+Dadz70x5kBVM
+         UWiOMKPpng4IIf9FBlTpVPCj3tgr1t0KKdOEFRhlw24fjqAHrPzjH83c7KfNUZKG5Ete
+         MM0az9FamoMTsCJhuSEf/zgyT6F+MkyGDP05rLtKQZmbxARECXsG//Y2MVweuFlE53j2
+         KjNA==
+X-Forwarded-Encrypted: i=1; AJvYcCVo9XjO2uHyYV45rThbaifo+NgorYLn5QvsN2jzIG0sPFeuo8KaP65HXeYlu0cNKGC6t54KxvPLuA==@kvack.org
+X-Gm-Message-State: AOJu0YwxSlivoQb2GVoYVe/pEMQ5OyR8Nxnxbwq+FK6sjU9+T/U2vPzl
+	Eud4GhnX8/agod7ctY+jTImHaLcr0NgC/QpJBBmxeHoIGcroM98qylklBGfD7KkJ+TvzpcpPzs6
+	tzdY7TMgyrK/LmQ==
+X-Received: from dltt13.prod.google.com ([2002:a05:701a:c96d:b0:121:79a7:ec2d])
  (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:3f84:b0:123:3424:eb5b with SMTP id a92af1059eb24-12336a400d8mr1564087c88.18.1768374055383;
- Tue, 13 Jan 2026 23:00:55 -0800 (PST)
-Date: Wed, 14 Jan 2026 06:59:48 +0000
-In-Reply-To: <20260108033248.2791579-1-bingjiao@google.com>
+ 2002:a05:7022:f30a:b0:119:e56b:91d1 with SMTP id a92af1059eb24-12336a13555mr1101663c88.2.1768374056893;
+ Tue, 13 Jan 2026 23:00:56 -0800 (PST)
+Date: Wed, 14 Jan 2026 06:59:49 +0000
+In-Reply-To: <20260114070053.2446770-1-bingjiao@google.com>
 Mime-Version: 1.0
-References: <20260108033248.2791579-1-bingjiao@google.com>
+References: <20260108033248.2791579-1-bingjiao@google.com> <20260114070053.2446770-1-bingjiao@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260114070053.2446770-1-bingjiao@google.com>
-Subject: [PATCH v8 0/2] mm/vmscan: select the closest preferred node in demote_folio_list()
+Message-ID: <20260114070053.2446770-2-bingjiao@google.com>
+Subject: [PATCH v8 2/2] mm/vmscan: select the closest preferred node in demote_folio_list()
 From: Bing Jiao <bingjiao@google.com>
 To: bingjiao@google.com
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
@@ -100,13 +100,13 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B6AC91A0004
-X-Stat-Signature: bgrbuzaopzfefjzhf1h7guzhn4nyidfb
+X-Rspamd-Queue-Id: 38D6018000C
+X-Stat-Signature: x5hj5sdhc15zbsto7ggzcoy6ftuwbicb
 X-Rspam-User: 
-X-HE-Tag: 1768374056-419214
-X-HE-Meta: U2FsdGVkX1/TZCjZVW6KQpiL4BpkqaIsqUPMomrl+in1n67lErvFA1JB1baT9ZSzSo8KP/3Gkb8jP07Pb1z5UC9Mp3PlvUUU5+EPmFA/KwtDy2w2QzAAomloI/LG/Lu0PGS9LP7ZG5i19VqRDetBn7/QFDQVSstOeHD/uJoBsrfZ8tGsem3T260UcHE6oqc2Uh5rfs6tc3aMGfTpJz7wSGf/dzsddxIxgEh6/1Ptd2RtQF5E0qPlTM8DK7mU94+dwmwvnJjzUMVqAvAB7huoav4zFwaJNv57lygcVYrimbn2IhAvYg7KLMBQRlQ3Ql0200ik42GkCbjktCffW9YslqRy+g61kxAF0jzPKqOXe/073OTlaNZ10N427RPzHIdwdMOqIX8d11wsAWDSpPW4ckM1NnXbyO5comD+++9GTB2v6YRleN51/9o91c/7rRO7gCrBzkE5zmUjTMSxw4t0KcgF3jEREfYobBUJCUQ1yrWK59l9629aJoW0hVa61Jr0Kg4kDmeM7YlfP+bvWzyvacry51MrqWA3+83RZB2wS0nGrI0ZpYYfEqBVLhLy14F0f/vOOoag7wvkNtf8kpogMs6b5iaI24uH6buXCTdKI+goe/W4IQnA/8Iy5ngRcYtZNzrssPqsYuAspWKxGE13BjDzBLdQaUTQH6Rz2Jv0ZmntM1A9Gpv7GkgH0yYSR+pkiifKmvR2+WowHTIObrQvOD1dzNvynCT/vasZ0xBVhTurlEPL/eJlGuPIcUhzNjZDWk3gg7Iqcz8bWN0Iwc6IO2vY09dkbzg8cVSIsToy1JcsN0mBK1YTqfbfSSzF2DHwEqVdheY9xU6Nv/b8hVojTa7oPeaKmYS0llGlnUpA3+981WuyaK5t3H9KVWIfSXuvclIvpDZ/A9NGwh+YgBWscUqJi9eWl3lUpOcEQqoAPpBwy0ndjoF5TtfQbpSKu22x58JDX53awTvH9MhowfD
- vxYZT7/d
- NAgd179aUaGl5M+MDX++70YffLdJSxxO+wRnwOxg3kGGR3zyBx8/wO8Y3wIuLZvYXjTu+I3TFpcYYEl1tFY9NQ7GhpQWvcyXDXVGedrhT3Cr/X4EJ+4Pr6hKru6bftkHO/P50NWQP7Qt5KtUpwb+5kGYeM1EvWXa7hXkIDeQBmVF0V7YWIy6nB/xKVXqka1rpyNoKEssD/1DRPViqVx7nPOypCCBXhjElWMVq2K4RbgE5J6UBSafHeSONy5ysGNZvQZMwnoxUwIUfv+wCYIwiFHhBwkY+TBWrgmkyseWGj8Gtp6qyOWF5zNfomP6kmeJYhL76ggxdo2y2k/q/Fs8pou75OuAhlOZPqVUiUlefyFzHSp1U7jvN24FqshDpddG4ICXHXdfo2GhLgOuHcJaRxIeZvzuRZ53i00FUlGfFSWPmG4cTZF0Akc/eM75nDX22gsA8GcI32VbkXbeNs1aG6V+8TwDLNQJLocGpxEFGd8w+TZbwBCR6v+h2gT/jugiZHEey+WqaVNIKzyLbHAhvmXxRtYONZYuQ3QpeleV4VwbiBF5Tqux1vdb83yWhU8LwwA1jYcwnV1GVaTlD4/xAU9zzKv2j2PpPDrekdM0Km+DpRbo37XvvbJWKU44A0CluSzipeHEDrrXDuqqAV7c3OqKkt6W9mhDODn5y390KEFy4goM4W+9o9axvBg==
+X-HE-Tag: 1768374057-499296
+X-HE-Meta: U2FsdGVkX19aKqIV9hu/lN6adTmjdGmrBqQfLTsxoJQUFG1qeR6apAMXTyAajMAWc5W+W54StdBdToWya/lecAc9ep5AHEVEOFIsbFMFpu74jh+BGQseKepxwqhFakhnglNuBTw+fA3+Jme0wxQQacu6RMWRaFJM5cjpQWc21o6R2R14YX6nVX2q8G/j3Ij3Q7eiWdxp93UhqyID/3gazCEkYkWYdJmEJSPXmU6Irglkuj1lua64oU475rF3Vp2RpmudqiKFuufbbiexFGMSUNgFDoPqo2eU0LDr740K4WbZ7ZgF3xXfAzW7RrfKKQrHIWGLj5u/i8KyWJSaM9Re7mDT4/nOfMMjh9ujNOof/LVK3iEfJ1MBj1QfdZaaax2bdHmgiwKB60FiK7JJti+FibVC8onqGrj3DwWSXrh3Bbz2z7XWRn09q68QnBsAcKfWRi5b22kb7MLlvfeiTZKCGgzF1CLtatjMJssY4+5f2koI+tKwYZksF1BXcwQzc5ZpHjHAAKG99Nj8jfiyfcgMik5gCZjO2FUWBYXT2HHlXcqce0gRITY7u3h1bFDIjT081l5oxuhkI7NWcGMELBFltoydISdtjLYJhB38Vr6JrqDWRzT7Cf5OlO8aRFEcGKlPsNyu3z9bSAX3189cSmOliiYQZXhMecokMX1XUg9VlxVKKV4bjv0AMxJRDkKviLzd7HITg6QKDhAtZ0tn61++W4jET6IUkWneSNizNHJE8IwWcPZdWd7iNSOMddMWtrx24XVVSqyrUxvBuiERcKlXTlSjE7FPoKSWtJgmrMnDSUZT4KHRu83vfEgljZONMKQfdRg/ptlbmpsDebAA9XRLBxhu70G9KP7nhtT9BMvxSfHLP7OBjig2TLwjZ46b1jRhdjJRsUVjxv1R0z7hxrgyiBIZ6wgAmIWYX4S11nlVnBMqKogRuSKxLDhJBA0Qt2LnKqidWuvGY5P2GHgdSWE
+ QsqfBbAB
+ 5qV/6qGjdeMHzb6f0yTPZYIcvDMuinN+rZEYIjKLCD5bHsUlvGCCBjpsMfYurFJ3J1iSDj2so84glSGenkswF/TBiHF+uO5rzZ/D0U72j2IUiCVGJG5gd6o7k+QnbpgxUVJtkrKZQNagB0xH7Z6DU+zzfP1adAGaRN6+k22N/MrKiqzikI6HRFoDkfs+XknoErPQP91ZU4d/PCJysLpEY164yTsXAfn/CHAFuqIooec26ePuCXZi11WZwHAACxIMafFtJFqzg00j8IenQEimFVMh0kJRVN+6cwqXGO7uJGJvYnvAhAWVCfR4k6huC6ULflmpDj0AY+iI/7OK/fnGubUDqJ8U41NQ3rzBE4VKpEIK5OIrdozcWUHOx+t7H/5kKXJmoJU7TGW2aLdjp5pbyIJ0ztEEHBLTAR5B1RnRhvShWBq61vv06USUSISw5tjuVbioCKwcf/pb/9gCtdvssNsO4vN8lqhtEVlrFhta5zZtmBGJ5OvZYCAmxr4PTCFgPlkmqsEu9pou7HhhSHyY3O3qtn3oekWHC80Wo3tGjxRXTLsQeS9DKYlkDqbndgTIHHHREOk3DAqFDX34Rsk5OhdGmlDK35wLO1VYUshEPKySBvwkIQO2S9bnrNDBLnoXBhWy3PGXULubKApGHSNnhLvzslC6f3leeKujJl43zvWotF4U1qt/aLvAQhjFv/QXhUW1b6jBRTXHYI/8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,59 +115,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[Patch v7 2/2] tries to traverse the demotion targets hierarchically
-until a preferred node within mems_allowed is found.
+The preferred demotion node (migration_target_control.nid) should be the
+one closest to the source node to minimize migration latency.  Currently,
+a discrepancy exists where demote_folio_list() randomly selects an allowed
+node if the preferred node from next_demotion_node() is not set in
+mems_allowed.
 
-However, node_demotion[node].preferred may not contain all nodes in the
-next memory tier. For example, in the below typograph:
+To address it, update next_demotion_node() to return preferred nodes,
+allowing the caller to select the preferred one.  Also update
+demote_folio_list() to get the closest node from allowed if all
+preferred nodes are not set in mems_allowed.
 
-  Top-tier  Node 0 ---- Node 1
-             |            |
-             |            |
-  Far-tier  Node 2      Node 3
+It ensures that the preferred demotion target is consistently the closest
+available node to the source node.
 
-node_demotion[0].preferred: [2]
-node_demotion[1].preferred: [3]
-node_demotion[2].preferred: []
-node_demotion[3].preferred: []
-
-If mems_allowed is [3], demote_folio_list() cannot find a valid demotion
-target when demoting pages from Node 0. Because next_demotion_node(0)
-returns Node 2 and [2], which are not in mems_allowed; the second call
-to next_demotion_node(2) returns NUMA_NO_NODE.
-
-This patch uses find_next_best_node() to find the closest node when all
-preferred nodes are not in mems_allowed, mimicking the logic
-of establish_demotion_targets().
-
-
-Hi Andrew,
-
-Could you please remove Commit fd8cb9a8cedc ("mm/vmscan: select the closest
-preferred node in demote_folio_list()") and Commit 127714c76c46
-("mm/vmscan: fix uninitialized variable in demote_folio_list()") from
-the mm-unstable branch, as this patch serves as a full replacement for
-both.
-
-I suggest allowing some time for this to be thoroughly reviewed in case
-there are any remaining edge cases or issues I overlooked.
-
-Because no modifications to [Patch v7 1/2], I did not attach a new
-version of it.
-
-Thanks!
-
-Best regards,
-Bing
-
-Bing Jiao (1):
-  mm/vmscan: select the closest preferred node in demote_folio_list()
-
+Signed-off-by: Bing Jiao <bingjiao@google.com>
+---
  include/linux/memory-tiers.h |  6 +++---
  mm/memory-tiers.c            | 11 +++++++----
  mm/vmscan.c                  | 30 +++++++++++++++++++++++-------
  3 files changed, 33 insertions(+), 14 deletions(-)
 
+diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+index 7a805796fcfd..87652042f2c2 100644
+--- a/include/linux/memory-tiers.h
++++ b/include/linux/memory-tiers.h
+@@ -53,11 +53,11 @@ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+ 						  struct list_head *memory_types);
+ void mt_put_memory_types(struct list_head *memory_types);
+ #ifdef CONFIG_MIGRATION
+-int next_demotion_node(int node);
++int next_demotion_node(int node, nodemask_t *preferred_nodes);
+ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
+ bool node_is_toptier(int node);
+ #else
+-static inline int next_demotion_node(int node)
++static inline int next_demotion_node(int node, nodemask_t *preferred_nodes)
+ {
+ 	return NUMA_NO_NODE;
+ }
+@@ -101,7 +101,7 @@ static inline void clear_node_memory_type(int node, struct memory_dev_type *memt
+
+ }
+
+-static inline int next_demotion_node(int node)
++static inline int next_demotion_node(int node, nodemask_t *preferred_nodes)
+ {
+ 	return NUMA_NO_NODE;
+ }
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index 20aab9c19c5e..c71a865e9dd8 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -320,13 +320,14 @@ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
+ /**
+  * next_demotion_node() - Get the next node in the demotion path
+  * @node: The starting node to lookup the next node
++ * @preferred_nodes: The pointer to nodemask of all preferred nodes to return
+  *
+  * Return: node id for next memory node in the demotion path hierarchy
+- * from @node; NUMA_NO_NODE if @node is terminal.  This does not keep
+- * @node online or guarantee that it *continues* to be the next demotion
+- * target.
++ * from @node; NUMA_NO_NODE if @node is terminal. Also returns all preferred
++ * nodes in @preferred_nodes. This does not keep @node online or guarantee
++ * that it *continues* to be the next demotion target.
+  */
+-int next_demotion_node(int node)
++int next_demotion_node(int node, nodemask_t *preferred_nodes)
+ {
+ 	struct demotion_nodes *nd;
+ 	int target;
+@@ -357,6 +358,8 @@ int next_demotion_node(int node)
+ 	 * target node randomly seems better until now.
+ 	 */
+ 	target = node_random(&nd->preferred);
++	if (preferred_nodes)
++		nodes_copy(*preferred_nodes, nd->preferred);
+ 	rcu_read_unlock();
+
+ 	return target;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 71617891bcde..18f4425bd750 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1023,9 +1023,10 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+ 				      struct pglist_data *pgdat,
+ 				      struct mem_cgroup *memcg)
+ {
+-	int target_nid = next_demotion_node(pgdat->node_id);
++	int target_nid;
+ 	unsigned int nr_succeeded;
+ 	nodemask_t allowed_mask;
++	nodemask_t preferred;
+
+ 	struct migration_target_control mtc = {
+ 		/*
+@@ -1042,17 +1043,32 @@ static unsigned int demote_folio_list(struct list_head *demote_folios,
+ 	if (list_empty(demote_folios))
+ 		return 0;
+
+-	if (target_nid == NUMA_NO_NODE)
+-		/* No lower-tier nodes or nodes were hot-unplugged. */
+-		return 0;
+-
+ 	node_get_allowed_targets(pgdat, &allowed_mask);
+ 	mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
+ 	if (nodes_empty(allowed_mask))
+ 		return 0;
+
+-	if (!node_isset(target_nid, allowed_mask))
+-		target_nid = node_random(&allowed_mask);
++	target_nid = next_demotion_node(pgdat->node_id, &preferred);
++	if (target_nid == NUMA_NO_NODE)
++		/* No lower-tier nodes (e.g., nodes were hot-unplugged) */
++		return 0;
++
++	if (!node_isset(target_nid, allowed_mask)) {
++		/* Filter out preferred nodes that are not in allowed. */
++		nodes_and(preferred, preferred, allowed_mask);
++		if (!nodes_empty(preferred)) {
++			/* Randomly select one node from preferred. */
++			target_nid = node_random(&preferred);
++		} else {
++			/* Get the closest node from allowed. */
++			nodes_complement(preferred, allowed_mask);
++			target_nid = find_next_best_node(pgdat->node_id,
++							 &preferred);
++			if (target_nid == NUMA_NO_NODE)
++				return 0;
++		}
++	}
++
+ 	mtc.nid = target_nid;
+
+ 	/* Demotion ignores all cpuset and mempolicy settings */
 --
 2.52.0.457.g6b5491de43-goog
 
