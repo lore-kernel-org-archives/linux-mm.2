@@ -4,136 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AC16D37E3E
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:30:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EBD4D37E4F
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:39:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB8706B0089; Wed, 14 Jan 2026 10:30:43 -0500 (EST)
+	id 6397D6B0005; Wed, 14 Jan 2026 10:39:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C66056B008C; Wed, 14 Jan 2026 10:30:43 -0500 (EST)
+	id 611C16B0088; Wed, 14 Jan 2026 10:39:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4B466B0092; Wed, 14 Jan 2026 10:30:43 -0500 (EST)
+	id 4F3476B0089; Wed, 14 Jan 2026 10:39:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A224C6B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:30:43 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4ADDBBA0E5
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:30:43 +0000 (UTC)
-X-FDA: 84330956766.02.4C486B1
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 23541A001F
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:30:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=CgA4btdW;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768404641;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 40BA56B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:39:06 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F29A6140586
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:39:05 +0000 (UTC)
+X-FDA: 84330977850.01.03F41E6
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 25B5BA0018
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:39:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=T7fVHLaJ;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=94744532ae=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=94744532ae=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768405143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LHI4NLCuinMSMqSID/uXnOXOA3QVWgmhvFfo1463h8g=;
-	b=Uqw8mmn2OKpUViBZJnlxyurva13KQcTBr0gjliQx54lEw7NayIuM6u+4t/Y7ua18H0p34X
-	55yM3LR8D/Us5xpdiCCipCCizS/5ExZG/SW13W/JSwTLAY6702Usbt/nFrDw3ft+s+9bg7
-	YpsgMuBlvsdl/vd6vNYgu4MWfTx3ffo=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=CgA4btdW;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768404641; a=rsa-sha256;
-	cv=pass;
-	b=B/XUU/uykSaSVpkBerzQV6qOgRx28BVyoIIWqDzK3Zi3kJimuaAlCEFgrrysDHxOcvjYyh
-	IV9fqZdEZvT44oYpvxRdRmg3fChz/G3LweeB2SAckBz8UFIh2c5zIBSfXQgCRvBZ+GcSI6
-	m+rcO8yAGi/vi5pq/hvZZM8yjBFYc74=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-501511aa012so171521cf.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:30:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768404640; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lRrPmQ4OErOowRyoczHOBXXKXhdVIn9vRWk7C8xanwRuHXymOP44IfQqqn1rYTqoqB
-         gBbEkdJWAqJQGF8uLEn7pQBDztYKWRVfphh0HQL766bMdGcXPFGUHh5AWf9EfIW3qn4Z
-         y15Qas7CXEYL8P/hrkSZWoIF7+RTi4gtSP0cX5vZ4pGSOZJEf5xHSub8rD/IBSeLOOon
-         YLeRbBGC7S+i23QcqwxLqFOu5gipZiPLy0D5z7bG3K19jceNpl2N/g0KlxHKVmCg8ydG
-         w0tfgbqTO/K2CoQdiG346adeLaVjrH1CEJ8qZUlQsoOfaStvnztgNRDoWtVLup2WPg2a
-         Ul7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LHI4NLCuinMSMqSID/uXnOXOA3QVWgmhvFfo1463h8g=;
-        fh=oqN2MLFs2JPgEibU93yuUzSfe0IjsbjvqZSFAFetgR8=;
-        b=jCIWWMWhm7xl9YeH3Eh3M4J7EKMRcPP4ifk1iW2EOcYfxlHNga1Ucv2Co97ZPKL2qU
-         oXWwLXGmbQgXyhbmRVTOhZI91dgDlBRPpHfg9ERWFMXPl5uDst33jB7LqKjQspFR9/9m
-         VFlUStHH/O1LlX9yMTf7YmaNiRZIvqbCLklagZhbFbPm9N13R6eEWCC5ikaF8c7HZW/W
-         zELkF940Vg8sHtC5LhYmY7xYLVYELNLc8FTLgZdVR++8QjmWMsXCqRTRqN4phKuDh66L
-         YTtjhb95ke8Lsvct3Pi+so8BhB4iNaau+oxtKNTxSBa+2OBzDGyrsrBECuv3fSOZWJdl
-         CR0A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768404640; x=1769009440; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LHI4NLCuinMSMqSID/uXnOXOA3QVWgmhvFfo1463h8g=;
-        b=CgA4btdW6pXy/o6+TW4UxE3MOY4P42bFYoStlG1IvQK/MeVivQaj2fsgeXUbr0ICrP
-         2PmTbvTuP/l1gUAxGT2MSlenrXWWiAu9tMgEQ2bJ9GfKZctMnIZrQl4IjoG8rE68eJ7a
-         Cjmym64RW1p010FM1BV4nPvd5r40P4C9NXNG2GYkQOkcGwex4oBcBsWgcwGR3E8h8dnx
-         M7VQCj5S34G9tiG7c4n5oP1ZZJoa618XFc4wL0gdv+48mowjox9uCrupJzNULPnznhJp
-         /9c8zgFGoZ8o9YZwZCCduAtEnOjGIgaPmZ6g3Jvxh25y15aLTJgqiObHo5PVnjB70Uip
-         UJyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768404640; x=1769009440;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LHI4NLCuinMSMqSID/uXnOXOA3QVWgmhvFfo1463h8g=;
-        b=dm5xWRKQiNJqFbp2LzPowejIGGAkf8DDXt1Gll029i1XZIw8bIOHUNDg21PGZJk0RO
-         5DZ/eoIGSeJ9n36tEAfKolztdO8DBICKiMj4BPiyRJzTWhvkP5F4VeccEiPBhf5SS3qY
-         XPm5aNl082gVNKkvf6v6Pbwks62s2ukq4fOBmk6t7KY77RiqREcdFFaSt8lY8Mv3N2Yq
-         KNp3b1wbmt0042ITuLlKxmxWCNqqGU/y1I3R8AOq9wr5EEXdJq0ZUSxU2HDJ10IbB/3s
-         qAoW7YpKwxTisn0uXJT66arXhyx3DVxI/l7Ws7VoI/cN2hWvRzN/jugL8CZHMiR7Pt92
-         nisw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBO18sydG3oODXEb/aIxJ2qn/N3ntJfMvAXayXTLtg5JU7qtHOwBJx/SGxaxjwDrZXjsEvE57pBw==@kvack.org
-X-Gm-Message-State: AOJu0Yy6e4wjbfF9OS1UR5vMv2HNnAmjkV9L79s0pnmGy8osgMNpnrrV
-	lFeaSfloMRnCtF9LI9pcxJMAxcXa4p0EfETxB/i/+uPn6Q0EuoKGpfc2UJLqVTirNFx/MqCTIDB
-	kep1VsNYjjUvcBeoCEDKd09Zxt/1SKgsSu+6CC76O
-X-Gm-Gg: AY/fxX6jSLceJLlsOPWspF2r9yrb1wHCPA0YE4xBxYqTwkK4yKkONqUg/Mk4p43GsyI
-	AMMVLAud+M3TdNGLMEjV6MdsnWdvSASO4cYY73m/wMcRHEcHl+wAGWOvFEXeNZsVd4Zp+2PEt3Q
-	8nLmcNkU1xN4JiZh5gekO7tP2AuAe7jQ65Gg5vtZDm2SX4JTzvxxYjqcno61S4jPtOckPWb+8Pe
-	8sS/O+l8m7vx3e+FbObCMscbdwBkBuFc/tZrpT6WMCIS4NKt2ZX9ZjprZcKR7YetChATtG9xVc6
-	Yv/cCZC6lMw8cZ0mn3F01e0JMg==
-X-Received: by 2002:ac8:7d44:0:b0:4ed:ff79:e678 with SMTP id
- d75a77b69052e-5014826ed12mr12371711cf.18.1768404639804; Wed, 14 Jan 2026
- 07:30:39 -0800 (PST)
+	bh=pAL5cu5jPGbLJVgoDHq3JNHxEt+U9LIWKPFnXJkix+s=;
+	b=ngqb2YQePpfVkFXBDm2Uh3nPI8uWDZiEKFPD0nSU6bOmxp8ahDRS6m9WtiHWf73cX7aK/W
+	MYBlXSdoUVgzJQwM9ZJjkRz5BfdGysJ+zfQ8+FTAxx3xgdyuZZSrSHFSKs8Kh6kS88PCLx
+	8sQ103LuANmiYAahqPGgrD7DBFXZsWM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=T7fVHLaJ;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=94744532ae=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=94744532ae=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768405143; a=rsa-sha256;
+	cv=none;
+	b=l9CR7K+Bh2NVR0gGMCXNm09Bdg0LOYng7QRBkZjLTQ6hiiA+GUaoRczQZiJ6VJguMVQ/5Y
+	iCENA/d4+5+BMHRtZc5MjN+OoHzCZsMIriVqmYWYrbCD9qL6ibMiwc/3IEedAHDiQEIgTZ
+	G/SOgji7Diwsd9XqWnsVVTHxcWhsU6Q=
+Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60EETBUs2381891;
+	Wed, 14 Jan 2026 07:38:41 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=pAL5cu5jPGbLJVgoDHq3JNHxEt+U9LIWKPFnXJkix+s=; b=T7fVHLaJqFWb
+	qNp7T3jGnrH5DaOOZo8/WmdNic9a8xNKfY4+lZqVUP2EOh874OsP8CDYOPtknVJj
+	intIllHZObsNcomFNdFlw5kpYZsaoJ5B+eSPwJsJ0mYB3VDKGTQzFqaGr5YAR4t7
+	5m0OtJTBDgRJoCkQxr3CwDi64iOUCzOlJmkc4pnr2oYEtRhA3r7T680KLEjXdSJk
+	3Sy4LbKlEDw5yiPJ8VrNx8ptYQT8T/A2z+boNSwgZcDEUgs16k4H18tSmgwlPycA
+	V3zizZnga+kwHDe9DJpILu9iL6/Tx7dqMIXhti7xpeLJJN8eQMRrDGJ0rofQOP9C
+	aYRIURueJA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4bp0fywpv9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 14 Jan 2026 07:38:40 -0800 (PST)
+Received: from devbig003.atn7.facebook.com (2620:10d:c0a8:1b::8e35) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Wed, 14 Jan 2026 15:38:04 +0000
+From: Chris Mason <clm@meta.com>
+To: Jane Chu <jane.chu@oracle.com>
+CC: Chris Mason <clm@meta.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <stable@vger.kernel.org>,
+        <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
+        <linmiaohe@huawei.com>, <jiaqiyan@google.com>,
+        <william.roche@oracle.com>, <rientjes@google.com>,
+        <akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
+        <Liam.Howlett@Oracle.com>, <rppt@kernel.org>, <surenb@google.com>,
+        <mhocko@suse.com>, <willy@infradead.org>
+Subject: Re: [PATCH v4 1/2] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
+Date: Wed, 14 Jan 2026 07:37:47 -0800
+Message-ID: <20260114153749.3004663-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260113080751.2173497-1-jane.chu@oracle.com>
+References:
 MIME-Version: 1.0
-References: <CAJuCfpFTJUowSAjNum1zecDJYuyUi84vUNkoNNf=CnUwpsTVeg@mail.gmail.com>
- <20260114072507.163364-1-ranxiaokai627@163.com>
-In-Reply-To: <20260114072507.163364-1-ranxiaokai627@163.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 14 Jan 2026 07:30:28 -0800
-X-Gm-Features: AZwV_Qg3oxN8zwRkmODCQEHZCf-5rb3Om5ZoPZ21CjCRt6TeEP_vWdO9jDrUyNU
-Message-ID: <CAJuCfpHaHa=g35jVrB+NL6xwh266ohNv7GUekZxPU0qsribJwg@mail.gmail.com>
-Subject: Re: [PATCH] alloc_tag: remove sysctl prefix from mem_profiling boot parameter
-To: ranxiaokai627@163.com
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, corbet@lwn.net, 
-	david@kernel.org, kent.overstreet@linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	mhocko@suse.com, ran.xiaokai@zte.com.cn, rppt@kernel.org, vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: k9aex6t1dogwnxxrbdr4xeuii3hkc7sz
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [2620:10d:c0a8:1b::8e35]
+X-Proofpoint-ORIG-GUID: 0eQgpU3jhXliYXyCog7oiydOA_WFBhGB
+X-Authority-Analysis: v=2.4 cv=QKplhwLL c=1 sm=1 tr=0 ts=6967b881 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=TZCTYgXrSeyIqYBwcG0A:9
+X-Proofpoint-GUID: 0eQgpU3jhXliYXyCog7oiydOA_WFBhGB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDEzMSBTYWx0ZWRfXwribbCof2dL+
+ wsCpW9qYgWRbKngq9oNe1iNWe9pEa+q7VC1ZstItuI7wUB3PeWdiZEskNkHFWm0LyKlFrvFtUt3
+ 0W8V/QmrFUjLq0C2ymCa9xcH0dI/QVS9QLVCW8Fsf4uX5FBDRYZIVG0I1fg/GQRsCOm3RonKtqq
+ vm060xEGZs3F8wMSbJrisrwWPGn5SWG8i9mSEQb/cgjE5aUyqJy/kaYr/ePWA7P+qX7m1zr7otd
+ msQ0vq/25VMXTn3KSKGtnByMGayThaXUySPA0Npeyrm1MWz9b7ThWEbTkUH9xjBj371HczlufFJ
+ g8mk1H0zWk6F9n0iXczj7vZqfxsDsvZMW4hCDi2Pn30dmg3jQyMHY+lQGQDUkNCoMf+Y//VKItb
+ AoCIgdENAkfJDIiH8E3ucH84eHQ6HnPPMNwWSxbozAVLaleBWZWLccW7gbNQfTBnPjx3A5exEpe
+ fHWkduDXAdWDpLdABtA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-14_04,2026-01-14_01,2025-10-01_01
+X-Stat-Signature: qa9hiwi968ra6q8s85sxead1apx3k7bx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 23541A001F
+X-Rspamd-Queue-Id: 25B5BA0018
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1768404641-255641
-X-HE-Meta: U2FsdGVkX1+ibqK46uNjenX0+4TB5h9pRco43bv/MphRHfy1cd0bREeZWAv++ocf4jFbWmjByZYOyJcOl8VkzSVDyJtdYXa3TRw07oowNNLmsxNUe2IZAOMoB48sAs8Itt0tSo4Bg+RnXbDXFGr//n4Y6shWrWajvEizo2K4vPSk1H0U1E8PTY/ZTYOa+BVxEvudkJ6xFUb1Hf3eEn35enuONVa/wtlGoicn7B13Ja+UpzIxn/5pkKIjcWDVSYSEgLJWt/0p36BnwYz5Oc6ps9VIXUItD9xIAqNcW1p5sEa3hzYzm0GkkJnhEoygGmy0RbzdXjbtYRmjwvSglF4ks1lRbMyTtDu6Zta0fquBGOKwnSvqIdD/EJODUbJlBHuF7s8fiDy/j9woZJcI2VPkCrhY4wZh5n80RdZn1CjktyeLsqjTnsMA9wF+fj7ZXCKnQzDc5vr0nZ3MsBky5uf2vHANfMIBFz4+CeW52UBZpudwcceIAOXXsmNu5oh3BveZS8lguDrPFkNg28YH21wRtuPER2t6a1vrsbkHmet2kmLH75y3fmT7hBfKs78EbzDHMhiUa0q+W7NLbynXHesRtHvLi0T5mUIVOq5g+3Sd5Y30lBacjTaqEdTkAitPGaAYSqVkWyiTK6EIXN1Rjgbo/V1fqG6BYpcm+D7w9KPA99N4f3Qkyx4nrjUUiQAnQWPxxAM4QgCHbZ1n9SWsaK8MbvOWs+z2yeGaVPMp5oxSMEL7s9fURxfDs3qr7j9Poep5xtMoN+1AubUH/pqHBGIKTtxr9+rZ8iVK57fu+GH5tZTwTrQwip3kDbNdzH1EmGZuqSNWji5mol106+NrpCATJhc5zxGgGR+RY+TCUZDkUdnLG+J1cMrkLRf5dc8qy82+huj9h7mN+UKOugI/z7SQXr0KtRBFpmKvh5+gbYgnVPViiyW3nEaqtibBx/n2rIzkY8iajPAZMZVDjLYD71/
- 450T+78g
- rpspJVHddOunmmBNQL/nGVdzoRs838uKNLUFVSEgxVONC6yUruJpPLsFN0OjTT3/aQVCw6UG8TzH5eXX6/8NrxYqeKPBp9EQ8FD27Iw5HppVlGUyhWYu7p6Gwmf3CRaSs6RqkDf0HG3gZHWER++wRONNvxTix0C4oAHDxr0qVh2/LfuzAL0swDlsYqsW3z8IXJOQ+jiXUJ5dcHXi1EwCSetblA0Cua/L1UFLOJ5FXlXHm/oRRZgagXluxFy/ujTFcJzSOHM1MQ+3x08FpiaxSFdgUsU9Qm8KVv8aGewKu01Q84ySa7UOA/3MukI77SeeovoVgDde9cygpRxvBOvsUrIF1BSAZDimJHiZzXSvrYIjYmtEhljsZy+xIq4vR4pJ8/ruVharwVRSzYCc=
+X-HE-Tag: 1768405142-897813
+X-HE-Meta: U2FsdGVkX18UDPSABESpXQlwOjBVzaXgQJfORQpd/ben5WBsddJVin62AcLCTrGnfxmPheZ1y2lsCmCsW5FaAJFBx2HapMlC7MM9klCikxiAGoTmEOrHH0fcMQbFHWprK2pI72L7YFJ30QUUzSHF+ZAHkgTtgxnMJLU/o4gmf6iCc0ytN6cbEC5UDUQa28yNLbXcMsgOarJGws6+KSLaFJK0/zB5JbVf4Djad4Xgv7zZUR9ENipMFpMA6fvczLcY4XBQPyhwiB6i6uiRmeClNqvQshePXHrOTCx/IGjmKouVknqdL0lv4HZGDTMBXEmHznAqIulfv61W7/G3akRiKa3mhHOnND7obdrPAIVvrrS0dlg1V5bM3wE70dASfHcCAGjIyFT1tzeRox5XQZdpPvbo+djWsE/CRKct/XDIPlym1TrZ4JEpMg06tPY3TS5wuSWMYMBfjWbZLsLbrZCqZ+AUzV4JWqJ5IPPXbVAAtW6rdFqIHMZkra6VTY+Bv/lIphOchab1aTgZ9gG3+LG8h7gUqDe3BLne0d40ysOrEaPXZmEK0eJsSnOwlycs+5tF7nidDnoPAxT+YER2oPm6fMFOQLhGIBn/K73IQOQAjJdfy/O2Com3FNVMam8lgs04WuHZe1B2LzcE/pIj+ysICqQF7awNFibJwuStOBEjDbpcIk6sgWlWDFWSdobdWMfc1aVZm4x9aJo1U9cBgo0x6oP6FgJtdAlAgl8VrZfzLRsMdBvkjkqc1D0jZ71e0NIOuJI2wZ3krYJOwpEdrGNkDvd45eDYdmof+bWL05Ha57IujzgJjAa3K673z2tzChgy/uGW0vr6mLQcXWdNhpVlnfU784JZBL3BJjCk3xx5reGPBIAjQFJi/l5cLp/4AcDsUgqROzvsiUtxtc5h9hLKd/cU+h9HvNLvryai7lYldE7Gdlv3lfKmailw1KBBXMYeOJFTQS/HB/VYbWbGU6l
+ vzwn/CXE
+ g743xVas+p9x0kxXz/AZIdydry1WlKJygi/IXfHnob0jiaIM1pxBHwmrlQFTpkYVucndeY1kbBGmmCyueWcfjgXWHNGLlRt9orIAw0wUgFu6OETMynI5tCYZMV3Tgt9dZhE5h/2MGaIdkJprgwEMQhzxqGApjjSQPdhJ/U+3IWJmNWuGurVBBnW7y7gjgZT/KeO2zlRb311SduxfG7LJVGfoQV8mz4T8d75iZO6PQocObjN1sn+ej1z7Ren0TswQWUviZ71/y+nydI4Xe8BETgha3aZgtK7LoIPFlxUu6n7G3q42gpiG/Ht0bsJ9wuHAVmXMNM6ky4lFjlQYyqVk0VWxux/9H4YVwaQI2LJJMh7EA1Fmxi4tgPRCM3vkQNYXxH/tk/V+F7beRczFK5uY6AReg5kn6FULS6qDXaAvld96P4HRJoy0JyG/Zf3wyeWjiFT/r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,135 +123,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 11:25=E2=80=AFPM <ranxiaokai627@163.com> wrote:
->
-> >On Mon, Jan 12, 2026 at 7:50=E2=80=AFPM Kent Overstreet
-> ><kent.overstreet@linux.dev> wrote:
-> >>
-> >> On Tue, Jan 13, 2026 at 03:27:35AM +0000, ranxiaokai627@163.com wrote:
-> >> > >On Fri, Jan 09, 2026 at 06:24:19AM +0000, ranxiaokai627@163.com wro=
-te:
-> >> > >> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >> > >>
-> >> > >> Boot parameters prefixed with "sysctl." are processed separately
-> >> > >> during the final stage of system initialization via kernel_init()=
-->
-> >> > >> do_sysctl_args(). Since mem_profiling support should be parsed
-> >> > >> in early boot stage, it is unsuitable for centralized handling
-> >> > >> in do_sysctl_args().
-> >> > >> Also, when CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled,
-> >> > >> the sysctl.vm.mem_profiling entry is not writable and will cause
-> >> > >> a warning. To prevent duplicate processing of sysctl.vm.mem_profi=
-ling,
-> >> > >> rename the boot parameter to "mem_profiling".
-> >> > >>
-> >> > >> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >> > >
-> >> > >How was this observed/detected?
-> >> >
-> >> > Actually no kernel bug or funtional defect was observed through test=
-ing.
-> >> > Via code reading, i found after commit [1],
-> >> > boot parameters prefixed with sysctl is processed redundantly.
-> >
-> >I was able to reproduce the warning by enabling
-> >CONFIG_MEM_ALLOC_PROFILING,
-> >CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
-> >CONFIG_MEM_ALLOC_PROFILING_DEBUG, CONFIG_SYSCTL and setting
-> >CONFIG_CMDLINE=3D"1".
-> >The fix I posted eliminates that warning. Ran, you can post my
-> >suggestion yourself with me as Suggested-by or I can post it with you
-> >as Reported-by. Let me know your preference.
->
-> I think this version is better.
->
-> [PATCH] alloc_tag: fix rw permission issue when handling boot parameter
->
-> Boot parameters prefixed with "sysctl." are processed
-> during the final stage of system initialization via kernel_init()->
-> do_sysctl_args(). When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled,
-> the sysctl.vm.mem_profiling entry is not writable and will cause
-> a warning.
->
-> Before run_init_process(), system initialization executes in kernel
-> thread context. Use current->mm to distinguish sysctl writes during
-> do_sysctl_args() from user-space triggered ones.
->
-> And when the proc_handler is from do_sysctl_args(), always return success
-> because the same value was already set by setup_early_mem_profiling()
-> and this eliminates a permission denied warning.
->
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Suggested-by: Suren Baghdasaryan <surenb@google.
+On Tue, 13 Jan 2026 01:07:50 -0700 Jane Chu <jane.chu@oracle.com> wrote:
 
-Please fix the above tag, it should end with ">" instead of "." and
-send a v2 as a separate email, not a reply to the original thread.
-Otherwise LGTM. Feel free to add:
+> When a newly poisoned subpage ends up in an already poisoned hugetlb
+> folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
+> is not. Fix the inconsistency by designating action_result() to update
+> them both.
+> 
+> While at it, define __get_huge_page_for_hwpoison() return values in terms
+> of symbol names for better readibility. Also rename
+> folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
+> function does more than the conventional bit setting and the fact
+> three possible return values are expected.
+> 
 
-Acked-by: Suren Baghdasaryan <surenb@google.com>
+Hi everyone,
 
-> ---
->  lib/alloc_tag.c | 22 ++++++++++++++++------
->  1 file changed, 16 insertions(+), 6 deletions(-)
->
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index 846a5b5b44a4..00ae4673a271 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -776,8 +776,22 @@ EXPORT_SYMBOL(page_alloc_tagging_ops);
->  static int proc_mem_profiling_handler(const struct ctl_table *table, int=
- write,
->                                       void *buffer, size_t *lenp, loff_t =
-*ppos)
->  {
-> -       if (!mem_profiling_support && write)
-> -               return -EINVAL;
-> +       if (write) {
-> +               /*
-> +                * Call from do_sysctl_args() which is a no-op since the =
-same
-> +                * value was already set by setup_early_mem_profiling.
-> +                * Return success to avoid warnings from do_sysctl_args()=
-.
-> +                */
-> +               if (!current->mm)
-> +                       return 0;
-> +
-> +#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
-> +               /* User can't toggle profiling while debugging */
-> +               return -EACCES;
-> +#endif
-> +               if (!mem_profiling_support)
-> +                       return -EINVAL;
-> +       }
->
->         return proc_do_static_key(table, write, buffer, lenp, ppos);
->  }
-> @@ -787,11 +801,7 @@ static const struct ctl_table memory_allocation_prof=
-iling_sysctls[] =3D {
->         {
->                 .procname       =3D "mem_profiling",
->                 .data           =3D &mem_alloc_profiling_key,
-> -#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
-> -               .mode           =3D 0444,
-> -#else
->                 .mode           =3D 0644,
-> -#endif
->                 .proc_handler   =3D proc_mem_profiling_handler,
->         },
->  };
-> --
-> 2.25.1
->
->
-> >> When bcachefs was in the kernel, I spent an inordinate amount of time =
-in
-> >> code reviews trying to convince people that yes, they really do need t=
-o
-> >> be testing their code.
-> >>
-> >> Strangely enough, I have never had this issue with project contributor=
-s
-> >> who did not come to the project by way of the kernel community... :)
->
+I ran mm-new through the AI patch review prompts, and this commit was flagged.
+The review below looks right to me:
+
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+
+[ ... ]
+
+> @@ -2029,22 +2037,29 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
+>  	*hugetlb = 1;
+>  retry:
+>  	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+> -	if (res == 2) { /* fallback to normal page handling */
+> +	switch (res) {
+> +	case -EINVAL:	/* fallback to normal page handling */
+>  		*hugetlb = 0;
+>  		return 0;
+> -	} else if (res == -EHWPOISON) {
+> -		if (flags & MF_ACTION_REQUIRED) {
+> -			folio = page_folio(p);
+> -			res = kill_accessing_process(current, folio_pfn(folio), flags);
+> -		}
+> -		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+> -		return res;
+> -	} else if (res == -EBUSY) {
+> +	case -EBUSY:
+>  		if (!(flags & MF_NO_RETRY)) {
+>  			flags |= MF_NO_RETRY;
+>  			goto retry;
+>  		}
+>  		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+> +	case MF_HUGETLB_FOLIO_PRE_POISONED:
+> +	case MF_HUGETLB_PAGE_PRE_POISON:
+> +		if (flags & MF_ACTION_REQUIRED) {
+> +			folio = page_folio(p);
+> +			res = kill_accessing_process(current, folio_pfn(folio), flags);
+> +		}
+> +		if (res == MF_HUGETLB_FOLIO_PRE_POISONED)
+
+When MF_ACTION_REQUIRED is set, kill_accessing_process() overwrites res
+before this check. kill_accessing_process() returns either 0 or
+-EHWPOISON, so the check for MF_HUGETLB_FOLIO_PRE_POISONED (which is 3)
+will always be false in that path.
+
+This means action_result() will be called with MF_MSG_HUGE instead of
+MF_MSG_ALREADY_POISONED. Looking at action_result():
+
+    if (type != MF_MSG_ALREADY_POISONED && type != MF_MSG_PFN_MAP) {
+        num_poisoned_pages_inc(pfn);
+        update_per_node_mf_stats(pfn, result);
+    }
+
+Does this cause incorrect counter increments for already-poisoned pages
+when MF_ACTION_REQUIRED is set? The original code called action_result()
+unconditionally with MF_MSG_ALREADY_POISONED regardless of whether
+kill_accessing_process() was called.
+
+Should a separate variable preserve the original res value before the
+call to kill_accessing_process()?
+
+> +			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+> +		else
+> +			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
+> +		return res;
+
+
 
