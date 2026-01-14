@@ -4,96 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC688D31A02
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 03:24:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3710FD31A09
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 03:25:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303216B0089; Tue, 13 Jan 2026 22:24:37 -0500 (EST)
+	id 52C406B0089; Tue, 13 Jan 2026 22:25:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B0F76B008C; Tue, 13 Jan 2026 22:24:37 -0500 (EST)
+	id 4ABE36B008C; Tue, 13 Jan 2026 22:25:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B10F6B0092; Tue, 13 Jan 2026 22:24:37 -0500 (EST)
+	id 384286B0092; Tue, 13 Jan 2026 22:25:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A57B6B0089
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:24:37 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B1831AD721
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 03:24:36 +0000 (UTC)
-X-FDA: 84329126952.02.C385711
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7017B80007
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 03:24:33 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of wang.yaxin@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=wang.yaxin@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 260DC6B0089
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:25:42 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C9F5F160342
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 03:25:41 +0000 (UTC)
+X-FDA: 84329129682.08.A48CC3C
+Received: from mail-dl1-f67.google.com (mail-dl1-f67.google.com [74.125.82.67])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 06B2B40004
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 03:25:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WdfjdkLa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768361140; a=rsa-sha256;
+	cv=none;
+	b=NkxwsSlZxKg0Ox7CkZG6zhROUeSqoOr8l5xSQfN91Jjok1SAKT+oSf579tp/8+QHudremm
+	XyT/vjMGVY0ihaE/6o+/xHVhCWdoAvDegQimpuyMR2rFymzdnWd00zuNEOuWWYvi6n7AOx
+	T2oLwleAcBFZdiX1Gdf0RRTDD9l+5q0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WdfjdkLa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768361074;
+	s=arc-20220608; t=1768361140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=lLc/hwfTg2aUotxaFMe4VP6VThBSxzsG6ZHvTkBJzmY=;
-	b=fkOqJxcYpYnz6vC+aei9t5y/TKqXnrftFzjY5nBZg4VtlAwQyXWhoDsAzkNKUW/iG+9nSJ
-	7J2/T7p8njNFDPrtC+eDTKXsm2gvWEEvMgiqv02Y9cHt7go10LbQbLyHNtHjmoDpYo6zl8
-	Sw5UxeS4zxu9Sn6HpC1ED79ek+rkn/Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768361074; a=rsa-sha256;
-	cv=none;
-	b=nHcpQkAUFn6CgyhZIqcEw8hyVq0JzUePJjVEUlTjrp8iC864A8Aillm2M4mnREDE7taGAj
-	fJTPjypMGTvBH6ufWw/GlTqQUsFbIh4ipmMHJdhLhZVRgBApgfxWoMi+OVBbTL9Hhmsb3Y
-	tdIrQe5p0SEZz9RVjhurEA+YPrrBsDM=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of wang.yaxin@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=wang.yaxin@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4drWgc3QpTz6Fy6F;
-	Wed, 14 Jan 2026 11:24:28 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 60E3OG20017867;
-	Wed, 14 Jan 2026 11:24:16 +0800 (+08)
-	(envelope-from wang.yaxin@zte.com.cn)
-Received: from mapi (xaxapp04[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Wed, 14 Jan 2026 11:24:17 +0800 (CST)
-X-Zmail-TransId: 2afb69670c61485-b4fe3
-X-Mailer: Zmail v1.0
-Message-ID: <202601141124178748cM66DJW2fzNea7Uym1mG@zte.com.cn>
-Date: Wed, 14 Jan 2026 11:24:17 +0800 (CST)
-Mime-Version: 1.0
-From: <wang.yaxin@zte.com.cn>
-To: <akpm@linux-foundation.org>, <liam.howlett@oracle.com>,
-        <lorenzo.stoakes@oracle.com>, <david@kernel.org>
-Cc: <vbabka@suse.cz>, <jannh@google.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <xu.xin16@zte.com.cn>,
-        <yang.yang29@zte.com.cn>, <wang.yaxin@zte.com.cn>,
-        <fan.yu9@zte.com.cn>, <he.peilin@zte.com.cn>, <tu.qiang35@zte.com.cn>,
-        <qiu.yutan@zte.com.cn>, <jiang.kun2@zte.com.cn>,
-        <lu.zhongjun@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIG1tL21hZHZpc2U6IHByZWZlciBWTUEgbG9jayBmb3IgTUFEVl9SRU1PVkU=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 60E3OG20017867
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: wang.yaxin@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Wed, 14 Jan 2026 11:24:29 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69670C6C.001/4drWgc3QpTz6Fy6F
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7017B80007
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LbWLobpjJa8xgEi+LiwpClMK13xKffaVB3M347EXltk=;
+	b=7vu5RJUUkmOR8LRMVf91d39GOJthmHSblZQGKKbuWwBAFk8QNxaJGGT09zThwv0WtkgHQE
+	eCYqyfKMFrFU+beb+R+BqFsS3piH8R3b8GPeemNZAIpFddwE2mmfIrclQHH8h12ysZKObL
+	R//wbbUQERzuvdadXY3k179NPb8HXDM=
+Received: by mail-dl1-f67.google.com with SMTP id a92af1059eb24-12332910300so2420788c88.0
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 19:25:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768361139; x=1768965939; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LbWLobpjJa8xgEi+LiwpClMK13xKffaVB3M347EXltk=;
+        b=WdfjdkLa/+uz2kjAGgLlqgkSt/FKRmBnD5CtXpUPcVyfavZnV+CLnQJavZuuZV6B0M
+         oW6Bu1sVZChrJ5kB6wWMyyFysFQx2zie94VwB7Cqwkziwwocnk9pujZS5O98adw4P5L2
+         eS9UfdTlpvYHl/mkqQ1Pv1Hn6U3CckSyjpFWHFbomQLoqwWfRFskmOHnmrs/Y23Iw2uM
+         s/lwKYXWmKvaL4fwjfliRBkitpoPggiSs8tUXBYOzgcaxDUKy564FsKUyr2LlJG6LMY7
+         nu/vR6ARo9+offFYg4OP5WELn2h9uzO43V2mf6lbYsdprxPwSt8384fYRUF7i9HlNaiP
+         dvRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768361139; x=1768965939;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LbWLobpjJa8xgEi+LiwpClMK13xKffaVB3M347EXltk=;
+        b=jXngqhIC7amsrMEH1DvJH5Jb6z+hnevw9ZltoZua2ArzjILckz5Hy2E6mcgyB2RHiO
+         aDuckDJz04Yfnb6ODlgZQVlx6fD9rQHiTDupHG1gmNH1sU5bdkOyRfYJ9tloscauvOjL
+         gznQQgnpzMEP02DgzRfXoC9QkzWp9P7rf249SpbF24Vuuxzjk2glVZPhu9V5K9U5LGcb
+         jFc0lXM5ohy9ciSwaAiAnmkFvLPYI1RQVLr3zebhMhc6COaVO1rrt8oiKkgDdJPw5N/d
+         GK4byu1QunOzCYSTAXXOwlS708oF6wzG4jNKW5sfsbH6aSKk263unHIfktzxusQIXpnJ
+         miJg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6LSF67COV0G6OGI03DgKDykhJshXdDE1sJ9nqhqSnR8SrE6f8czOWnWb6Zsok6/GwIrkdMTDN3Q==@kvack.org
+X-Gm-Message-State: AOJu0YziNBxCBttb1hUa9vopt8opMnnpk9/zog2u/hr6WpHkoqLKawM4
+	9Qx81sNUR8hpNZNzHZ+KvVdx1ZUhSE+5pcEYgcngXnrYsM223WQjEOW2
+X-Gm-Gg: AY/fxX62ckJSAnhhDoGKKroo6Xo7wH4c5UPwL1H7LkknlKXtV0DuxPdp0+B/B6hlarf
+	0NnXfEnj/s27rUsfef+De/hUpr9Uzd9zyoOZZG3PHkDq0AtP3+Iq+jx19kTRSDUCXOHWSi0M/zH
+	j8vMCA8Usputpfg+jaDn+ei9Cuts32epARj+DUbk65hN+YAKUbbYFqg/OffRNxM5vuAWdOOeXxP
+	sDYm6kTBHHy1xF5xDMsyMAMBKSG8b3f6BoAua+auuJMShQ12BtldDwVlWtqFzZF3jG0H1tpKk77
+	OiOYH5DUAidUGzAT+0RQywllhtrotIjkfndg9P+oHIa3XKGdzyyEiiDghh8OZfwYeNLX0pv44jc
+	KCB19OKc1MpmP1Ky8QEQrEnxb4z2V4FuCqR9xE8E+lngPtX7C2UH7Z1kpmgc24QL0+yQLk6mrhC
+	nW
+X-Received: by 2002:a05:701b:2504:b0:11b:ca88:c503 with SMTP id a92af1059eb24-12336a33f69mr1176816c88.3.1768361138641;
+        Tue, 13 Jan 2026 19:25:38 -0800 (PST)
+Received: from localhost.localdomain ([2607:f130:0:11a::31])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f248c246sm29706885c88.11.2026.01.13.19.25.31
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 13 Jan 2026 19:25:38 -0800 (PST)
+From: wang lian <lianux.mm@gmail.com>
+To: sj@kernel.org
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	damon@lists.linux.dev,
+	david@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@suse.cz,
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH 07/11] Docs/admin-guide/mm/damon/lru_sort: document filter_young_pages
+Date: Wed, 14 Jan 2026 11:25:16 +0800
+Message-ID: <20260114032516.83483-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260113152717.70459-8-sj@kernel.org>
+References: <20260113152717.70459-8-sj@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 06B2B40004
+X-Stat-Signature: o54agqy94boe7kmhgybdg3z5r3u8u6xd
 X-Rspam-User: 
-X-Stat-Signature: yyhybomosupxrjfd4gpgxzbmbif1u8eq
-X-HE-Tag: 1768361073-171371
-X-HE-Meta: U2FsdGVkX1/CU93/Kxje6Bjtzi2SmymAO9vTsta1RT0Daop+FDgh1XCoSNmDUmS2iKVLLUzz+QUY5HwloGnSCxI5SPpGjFRd8dcYAmvpN81+tUjZvPo7MJ9/e3bfRsoQXMeXgo4rO5EGCEsHMGBnrr9LX7hE6puDSUO9Cw/t1R3nHtQaG1txP7LjtHINaPh/dw1kUZdC/Y7d90cTN5oubJMZ9g0rpo5AtCJBDumesf3mSZue+OrswuRpRzi3L1aJvuM2Je9MmyPKxNr2vV8EX3y4/6HaerYv5QA2OWnDiVgTykqWJeLuWJvn8VmvncEoelr8sO70w50l2RkXwGHTFGzMQWWoFP4fLlhuXGQrgMBLoFcix47uiNHZsuc8OVCSNBqfqutIG1wE8EHmMCDaXAEDuaXqV4hHDbPuuGltqnPiP//vE53mU0601I3g+PeV4Q7o8j7MrpSBVwC5yh2OlJ6G2XZMVmWqtuAD87eNgwcCkCKBsTyqheG3/n9FMubcUyqbnaP9LYcL60AW2azy5sxQKujmLunl+YnPc0CrLuTeavw+KVK+7l1yMOUDjUfVhNjBAeHmr1JwI7kzKeZR2+MQH1/7BxbGUkmO0ZGQkqBdImPZ3KzX+NB6qliA9aMlnW8EH7RC0ZPuuUgQsuMS40agdnk/JQ9GrCwD1HKRQCLiivhiRXKLI3427xgWMRlqlyG+psCzYre+/HWcq5KBLtLJ/h19Kx0QqSZlv9StCAXKZwZMMYkTVTOO4VkXqrsFMWO51s3EGnc+wfghhJM7I71+idFkkfKaTO5cNV8WJIE7CBikZKPlhQOx2dIqTRfXUIALVM7cAofrM/zKrC3BgSQk/iJ0sPCzSQJq4vZrQvqIYxwIiYkdsOxqNqFH8qxmD63s2opQ+4WLapHEDgm8dwCR6j8KmqeBHlTqfDcTSSWTGN4T11eZTl8HIsy5QUMQrMFzmXJLpAukx66pUJh
- IX89Pr77
- UZSEtCsnHUgqnWGk/8LeYJ7qqR6gXuCKbl0kW9skQ76pkDWKAoSClnEJDmJY+wOjyqW7rXIuWFXkk3ReZHLLjJpGKT0pPDYC1CaUN1teXZ76kymxWH/DGOtuF7CVnbj6tG2/tHOulXfmaIlxEgjnl3vVx9yiNblENmHmxWoGbcLi12gQ4pnurNwReSrA594UymcJsd8Sj9VptEZU2U64uTJ6nYH+/NvOUd/48iD1amBLZkbx7hK9FUa9hz8zEhj32AmBTUxdup/Pmswk=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1768361139-886241
+X-HE-Meta: U2FsdGVkX1+E3UG7PZSPKCjNfTszo/TMAceCsFXPyY6MA72KuKl2/31QLUDbnsShADCq3ik8zg7Iqua3plZ5PMH+Y9cSEy1LXzUdfViNHLPHBR3sbawN/3hXCqDyhutOIYJ/GPTxOZ8PVX5sufvgoww9eYi5x1nVk0ABrlmEQaefiLj81+5HIjlTR04gMpICwgYQpAUYGkUtPT0oKKuD3CRFTfNGVBa+XOvRYEQXDeRuAX9N3r9Iti9hbMjsfXWY50A+51KjJ36QtWCBsOJT8bHC4I0s6nRULXEGNHwEmUXMWHOgoNuHlwzd47ebjm85CODTLi6jQCaghBie7EnF/+TfEjKuTh6xOF/Gq90sMWxteXKj0geqlsZTqJESUBxtJVHqREklsZ/Rypio8BSqUb9PyiMAc2hoUgKnk7UuljaxqOEqtRqOmWI4FVUr6FzOGnrwVeRO2zEf986lfK/KASVRE3ZboXBpj+6RQoOA0ocWDg4JH+ToIi2DxI8xEQniyd1/RMgAYVhd7hcpkjSYcgQEMkkZR/wShoSfqSsE3NgM4BJLrDeZbofUAwlMNYZIfENBSTlgROs1Bb46Zf4b86T814YgNtxlvkaaEFhkvkxzm4zJYVG3fXKX06ozVny6+oassrWDBsvGGqQDedyIvD4Gthtr1aXMXFgwKM7kl1E2nv1Nwt+V9P1MIDmr+OooZBrpM1CjftavhD9EmDTfWgd75n6xiozO+dfPpvDFZ5WoXL1zo9CBEzrtSPJVGwp7BAWVvl96YEuLz/NjPRz5NcdJhB+/J0D4oNOYVpLWs1QY6txYjTfQJxSarLgRPsYGMXcGvgJRc8EW9PsS3TO1GAN22YRJ6M0eRSoLd2MUr9T+JpMb0/F+lN1Na3pBfCM21f3N5Y7MW2qokqNjaDeweuFhcMPMvGR0S0LKpPY4+K/IufeDrDJB7xsPcJ0mkz1sjmi/Zm+x0X63le+vrn+
+ 74kXQjtB
+ ki21Oeumb03kg9BHsV7XC40/4kYLynVWSQMU1zkYUTkXxlBbfTG8I/bbDt+IBAMxYtUlOarFEiBniqrNA0z8umVAAmRK7B7RFLlhvvXHhTM434sqig9zep7qhfbdn2vrgzzd96lrfRFt8+sc7NOAMSFpU8FCUi3MRk7z7yDiRWhq3Sk9Hk/FHx5nW5Yj6f5CtpvuidM5jjT8zOau6lqyyf/qB1wd+Ar7uye9CCiwhm7qdX7JpP2ekOU3m0hZZrrvv1Q3ckYGC18hZLH1K9dm5lP/bkWVhOTuGvpXsqnXMURWXFqru2PUxalrJnCPM5S7raksmAhm7BNhXXqPrfcgZ44J7zLfU7O9VKOr3FmOOoh9HN/0xWQ3EIwU5u88xW6YSaCydL23idgjYGnOVawyti+sKP+EcnFszAVnSk3DkwTMdAaGj34MgsDpgrEHFKCv63Uwa4RFlknswe+BWfsZBLH0k5ehMxY3RneLG6L1BGBW9HgwPaiv23wCCYAE+EAaoS9UDAav33EMKgAhHgp9TrBXrEpgSSI9JUgD67DM3BxviRm3InHAzl7WzgPiBldrJlYhQf4O4HwFhUKi2wFhFFn7cUFnZMuP7B8hE+9Evg8Nh8VKVk882yLyAfU4B9PQvColZIQLUbYxQibwUxOJ9+jkSqzhdztpnEUAMfSWifHnysVHJSD37McyUaVw4tnlFOBcA4HkQ0374wsCU+w2Vi5vN8cqLxOkoCgQU
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000007, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,101 +130,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jiang Kun <jiang.kun2@zte.com.cn>
 
-MADV_REMOVE currently runs under the process-wide mmap_read_lock() and
-temporarily drops and reacquires it around filesystem hole-punching.
-For single-VMA, local-mm, non-UFFD-armed ranges we can safely operate
-under the finer-grained per-VMA read lock to reduce contention and lock
-hold time, while preserving semantics.
+> Document the new DAMON_LRU_SORT parameter, filter_young_pages.  It can
+> be used to use page level access re-check for the LRU sorting.
 
-This patch:
-- Switches MADV_REMOVE to prefer MADVISE_VMA_READ_LOCK via get_lock_mode().
-- Adds a branch in madvise_remove():
-  * Under VMA lock: avoid mark_mmap_lock_dropped() and mmap lock churn;
-    take a file reference and call vfs_fallocate() directly.
-  * Under mmap read lock fallback: preserve existing behavior including
-    userfaultfd_remove() coordination and temporary mmap_read_unlock/lock
-    around vfs_fallocate().
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 
-Constraints and fallback:
-- try_vma_read_lock() enforces single VMA, local mm, and userfaultfd
-  not armed (userfaultfd_armed(vma) == false). If any condition fails,
-  we fall back to mmap_read_lock(mm) and use the original path.
-- Semantics are unchanged: permission checks, VM_LOCKED rejection,
-  shared-may-write requirement, error propagation all remain as before.
+Acked-by: wang lian <lianux.mm@gmail.com>
 
-Signed-off-by: Jiang Kun <jiang.kun2@zte.com.cn>
-Signed-off-by: Yaxin Wang <wang.yaxin@zte.com.cn>
----
- mm/madvise.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 6bf7009fa5ce..279ec5169879 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -1015,7 +1015,19 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
- 	unsigned long start = madv_behavior->range.start;
- 	unsigned long end = madv_behavior->range.end;
-
--	mark_mmap_lock_dropped(madv_behavior);
-+	/*
-+	 * Prefer VMA read lock path: when operating under VMA lock, we avoid
-+	 * dropping/reacquiring the mmap lock and directly perform the filesystem
-+	 * operation while the VMA is read-locked. We still take and drop a file
-+	 * reference to protect against concurrent file changes.
-+	 *
-+	 * When operating under mmap read lock (fallback), preserve existing
-+	 * behaviour: mark lock dropped, coordinate with userfaultfd_remove(),
-+	 * temporarily drop mmap_read_lock around vfs_fallocate(), and then
-+	 * reacquire it.
-+	 */
-+	if (madv_behavior->lock_mode == MADVISE_MMAP_READ_LOCK)
-+		mark_mmap_lock_dropped(madv_behavior);
-
- 	if (vma->vm_flags & VM_LOCKED)
- 		return -EINVAL;
-@@ -1033,12 +1045,19 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
- 			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-
- 	/*
--	 * Filesystem's fallocate may need to take i_rwsem.  We need to
--	 * explicitly grab a reference because the vma (and hence the
--	 * vma's reference to the file) can go away as soon as we drop
--	 * mmap_lock.
-+	 * Execute filesystem punch-hole under appropriate locking.
-+	 * - VMA lock path: no mmap lock held; call vfs_fallocate() directly.
-+	 * - mmap lock path: follow existing protocol including UFFD coordination
-+	 *   and temporary mmap_read_unlock/lock around the filesystem call.
- 	 */
- 	get_file(f);
-+	if (madv_behavior->lock_mode == MADVISE_VMA_READ_LOCK) {
-+		error = vfs_fallocate(f,
-+					FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+					offset, end - start);
-+		fput(f);
-+		return error;
-+	}
- 	if (userfaultfd_remove(vma, start, end)) {
- 		/* mmap_lock was not released by userfaultfd_remove() */
- 		mmap_read_unlock(mm);
-@@ -1754,7 +1773,6 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
- 		return MADVISE_NO_LOCK;
-
- 	switch (madv_behavior->behavior) {
--	case MADV_REMOVE:
- 	case MADV_WILLNEED:
- 	case MADV_COLD:
- 	case MADV_PAGEOUT:
-@@ -1762,6 +1780,7 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
- 	case MADV_POPULATE_WRITE:
- 	case MADV_COLLAPSE:
- 		return MADVISE_MMAP_READ_LOCK;
-+	case MADV_REMOVE:
- 	case MADV_GUARD_INSTALL:
- 	case MADV_GUARD_REMOVE:
- 	case MADV_DONTNEED:
--- 
-2.43.5
+--
+Best Regards,
+wang lian
 
