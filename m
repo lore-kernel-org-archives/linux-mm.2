@@ -4,156 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0900DD37E27
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 13:07:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9782D37E25
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 13:07:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ED9D6B00A2; Wed, 14 Jan 2026 08:07:08 -0500 (EST)
+	id 4D0576B00A3; Wed, 14 Jan 2026 08:07:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6718A6B00A3; Wed, 14 Jan 2026 08:07:08 -0500 (EST)
+	id 4A3476B00A5; Wed, 14 Jan 2026 08:07:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 553766B00A5; Wed, 14 Jan 2026 08:07:08 -0500 (EST)
+	id 3BA016B00A7; Wed, 14 Jan 2026 08:07:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 446246B00A2
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:07:08 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 84E031BCD0
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:07:07 +0000 (UTC)
-X-FDA: 84330594894.24.AFE248E
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9E4C040012
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:07:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CsUTToet;
-	spf=none (imf07.hostedemail.com: domain of BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 27AAE6B00A3
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:07:11 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C841359276
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:07:10 +0000 (UTC)
+X-FDA: 84330595020.27.67C5B5C
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D90F620002
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:07:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NEjx0P0Q;
+	spf=pass (imf13.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768396025;
+	s=arc-20220608; t=1768396029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=frpDmmp1i4r1AZelS3CVor2fKx/lP0Tq5j8/mhEG/8s=;
-	b=7DLqioijn2Zm4+BMN+ElnuEoORmyiyIaPcIXxUmjCR9pafTzYHyE/W8TVcR4gthcEStGzO
-	0+IDvwyESN91xDjdTOJyP0GzxUfapbTFbSzwjnXsdrHbcyYMvBf2ZbdRBi/8vOoZMBRog+
-	lh2LqGKw0Vsx+bzYkFwL5veL7yznoNc=
+	bh=xSspBM8EaxGFzihjOax4j8BH2eLMLR9IBJtyij5U9Gc=;
+	b=RI1Np4RB8CuT2hqIs1zcHt7GMFVFZrP9oo8KYKb3rU40/qzfZyxHWno9waLwGIerORvnEt
+	dcHYQh8ppxkqKgZcNaxwLRLl9CvXZyYCjY3BcicNKAlzmuKgnonE+8eL4KG08916KBrFSL
+	i7c7i/6cOdK1ZM4xSBg120Y/Z1+LEhQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=CsUTToet;
-	spf=none (imf07.hostedemail.com: domain of BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768396025; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NEjx0P0Q;
+	spf=pass (imf13.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768396029; a=rsa-sha256;
 	cv=none;
-	b=rG2yVybHhDOSnWTQJaJEQ4518I/GTio+JYfJLtqdesYEAwaSJqhaeClLSeCE7mOpA63lNY
-	QlmP32iSudIMIbO4BBNbKaCvbLJ2IE6u0OgVCPYPILR6uuXRiYqy50NKgdUJLXWL1eI27W
-	0lGSTBe9DlKGTGARPQRSnBMgskSJ8n4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=frpDmmp1i4r1AZelS3CVor2fKx/lP0Tq5j8/mhEG/8s=; b=CsUTToetKF+Id6BSRt8PfLBnAS
-	Y0ul3yOPNvK2EqLosGUY3uqxb0rBGjpkb3pFkF+nzL0tn0KOBAl2xhlehcW9SbJloDYCaYos/fI+R
-	/3mikrJStWJrWeOJzR2PeycF0eBRtBI6m7fleAVeDpZJmAWb5/mhUGXdyVHOSGGKP+FgMpRotCkGe
-	U4rxrSW9vdcoJ/4xvbYl6nQLLy/pVnBBXwulC6bpAsoSvSw4Aw1pxxyPY2C1RxEdi/vm7DGCPqLOa
-	XPJH2SpQwhbv/9XjUm+ADr7Kr9Po4kKl3x0XMHBhpwdVI/FJYFR2ISU4AMVB1IFKkKKX1rv/bPqoF
-	Uf0wlX6w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg0Zb-00000009Gnt-0ut4;
-	Wed, 14 Jan 2026 13:06:07 +0000
-Date: Wed, 14 Jan 2026 05:06:07 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	Nicolas Pitre <nico@fluxnic.net>, Anders Larsen <al@alarsen.net>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
-	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
- lease support
-Message-ID: <aWeUv2UUJ_NdgozS@infradead.org>
-References: <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
- <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
- <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
- <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
- <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
- <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
- <aWZcoyQLvbJKUxDU@infradead.org>
- <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org>
- <aWc3mwBNs8LNFN4W@infradead.org>
- <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
+	b=BRzP7PfcqR/1eIpN6LbKz70JLAtFb+wycCQyeraQChitWGjQOv4ofwYhU0UoQQ+INnP9Uz
+	bCxn9q4Otq2c1EVeNr/jMTJUMREdgr9Yiz7otNfgZ25rMDFuSe27ke64op30Q5EMlwrHbk
+	ESuI9hzwdmO0k5f11ITuSecObMzF568=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64dfb22c7e4so1556863a12.1
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:07:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768396027; x=1769000827; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xSspBM8EaxGFzihjOax4j8BH2eLMLR9IBJtyij5U9Gc=;
+        b=NEjx0P0QDpPWC4pY7j5H4FtlIU9u/hxhCndChhYk/WawOXCJWAI0uhw1fmvXJSBSOU
+         wE/ywvZ6rmvSrPQpcKJjHavUH5wroRO8riW1n/iJ6EAPytmdbp8vxSMSBnM+FYnO2DFl
+         5gVgNZ4QKneSOkq+1Nc8Q9wIAL0cBNM7/TnM5wly1QF5Kqta/5CxSoKAXcqFG2xhUPlE
+         gmaxNC+7Biq4rMt2pBw9p9AVGi9KoO856vtOaXNfCs0ZkXyUqvp/0i/JCEY7T0ou2ORv
+         pAJpQXaxMMZwy69L8lAlNPljv/drd6wTqo/KKLanvItCvBNfsuhsjYoSfcJe1uCwydHj
+         vefg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768396027; x=1769000827;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xSspBM8EaxGFzihjOax4j8BH2eLMLR9IBJtyij5U9Gc=;
+        b=YQWN3MF++H7fwaQWvFeyBWoOPUOhi9m8JHPaqdaYJLxlwmcF++cYiC7xWWBgXVNG9J
+         cyNWOkScuu0XDqcoDUwq6thHSLnOVwn1mrM5OJVVdEXZaUejQraC/h4ItIbEExkpG2ki
+         ZxnmoMQ1T9MYtiNuHwC26qk1E2I1wl4J+a5ZwA3bEI5Pu8TnF4j4xlRNXsSwJM7aRLyq
+         kNXlp9Ixxh2wRCHc9ngVX9gX/3Dxz+FQucoBm6bb81aYTfPNNlh8ST7D/+iSwXDihqZ5
+         5LgTOd1ZQI04Lfm3z971hxE4ftcg2nBjjBGbpGhTrjzua8f6WC1banY+F/WI9gBUL4j6
+         TfBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUL41c+H8HEjVp1TL7RVHxX4yMnmI00WHOS88aMXtVeFc7RMnKSvsoDHi752pd0B3v4v7NRF64zrQ==@kvack.org
+X-Gm-Message-State: AOJu0YxsNHfgtiVJvWT3kZpGhpRR+8Jxutu8OzzLn7VfrKAu63JfQzDQ
+	BdjT/EPxWsg767f9vpuzPbeY+hRNr3Mvd+FFFb2HyImscrluJ/Dvz5E4TMyBRmJLBiZmCynvhbX
+	yVVQtfP/kGAQSy6ividjrn8hJrsZ5LvQ=
+X-Gm-Gg: AY/fxX7eWZSmYZ2y3LPOxJc+KyiGG/QPUsQWrXl/oCeKcLw3ErtzfJUVFCjy2uzPz4E
+	PfKB53TjRG7REfAzC9x3xaw7G+jslwSxddT22DYmXkT606YH7zF6a1bQr99qJNlfV+9uONaKGa/
+	lEvI0kjdYs8z6GI202Sy1KMtO6BGd5yBpywpXV7PWrlvThUWeol9RuNi03BO/RwnyEba3xhcC7f
+	uSqaO5CE8hrw1KwWNAcdB1XfSZnmQp/PX/2octyW3U/jZfYz9qiEOmn/lQfQE0CdIWLUJEeOwW6
+	0nwmirgKeDPvefxwAdZtTmxPcw==
+X-Received: by 2002:a17:906:31c7:b0:b87:113b:d63b with SMTP id
+ a640c23a62f3a-b87359b6b66mr376283666b.27.1768396026693; Wed, 14 Jan 2026
+ 05:07:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: ckhq597npnk75mqk3j9f1e4ezrkgewkg
-X-Rspamd-Queue-Id: 9E4C040012
+References: <3d8398f1-0130-4d3b-ac54-d23877811747@kernel.org>
+ <20260114113635.97621-1-lizhe.67@bytedance.com> <97413239-2bdc-456f-8511-65fb9f1e301c@kernel.org>
+ <CAGudoHGb1w92gn89BBuMQOmvcVZkwvt8CK8hFtGg3xmHphmiEw@mail.gmail.com>
+ <d9fbc00d-182b-4463-b718-73c2f0eef3a0@kernel.org> <1edfe356-8334-42d2-9d68-7c5bf21a01db@kernel.org>
+In-Reply-To: <1edfe356-8334-42d2-9d68-7c5bf21a01db@kernel.org>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Wed, 14 Jan 2026 14:06:54 +0100
+X-Gm-Features: AZwV_QgStGGgdGZJwipL8s0JB8braZ3cD-WwqXt2daeumLC2PI4hepcGAVk6Es4
+Message-ID: <CAGudoHEyxsPnJ2M+LWkPEb94L2Xp0iqH6O==hCUZE1woLzZB0Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org, 
+	ankur.a.arora@oracle.com, fvdl@google.com, joao.m.martins@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
+	muchun.song@linux.dev, osalvador@suse.de, raghavendra.kt@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768396024-106149
-X-HE-Meta: U2FsdGVkX1+5D8rGTLeF0swVTyTurVV9cNJ/Ih5Lg5saOJiKXp2q1FehrNOgXZCn2+V9ERL2LwQTo9Dc9drjUq2nMVv4jzonISdhzp+6sBg7NC8purX9b1Lbx6r3ypNQid5LMdkcCWSCUW26/p7YXYrmjLzIgi4tdyaa1uxa2NXYO9+Q+dz/NcQvSx+7LMSD6BtgoFPJDQufQYNwWHdq4CM+AqzyRn8OHcAm+gSy7p8qe8Rimu+eFCbq57o/D1/GWRn3b5FquOVQ9C9bzEFkx4iqwWtH7zMmMYWHB67931qli6CDMwIfY8uH84Vuojtj6/igQGSLarSIc9vXV58tckSJy63X9Dox3RGtg25w8WRmiz7be19HExNA72CcgPmBevkcYyOj7TGyKRGTxT22PHf9AEe5U+m3Q/pKxaNhf99J5gwOFsl+IsRYfLU1olGzZFYI7tvmvY8TnyShvkcj3JiFl7AnYolvSGrcv4Cmp7EgXoJtw8gO1LfJcRtxVz1scgLztBmrU39YODEb2an1OnGNLhVH9Lo9NJGg1WiZdZWz4qdZwzLJnXnzWV75nOLVSIVLtZAhYcwDnv+XNMbIGrKmLsEHNth5X1iXv8vELAco+yAAt6s6WaEE9BFwqu1bvJrPsuXU3KWtnhuteST064reaaIFfCYajaF6kM+zmVzRoo4kh0zbx78Zz62Zhms1Nv2ugReNUg+SeAnrwIvh60lSmpKO9sxGMXCjWCC/HhfnUW/iE57v8N2+aFlZjXnZ7D1MsayBdLSrILRjn/34c8O84nwwBdZ/Aew28TjiCXEwGpDPIOnZEaclHSIyYvzzucBMX3Q+9JJK37fQjK8w/O+V/vveP6QmVrnxUaArQ+fDqbPGtBekjd8PAZQzC5EBcrCBRTJAlPHpSIuvPccs7nU56jN1+srkFl0YDRN0EPmYnWGrr5fpGr/h/80guIlsScGVPuSfwATP4N5cD3f
- j+hqE8co
- W0RyMSZ9xhJw5LbKAM9UUswuHeqPKEwRNtLohyw4SI2fVeaugnos5jhGtybF8iFoSog/FQ1qXuHodljKL8j4BtIQMW8h36+MMjcoZMMbbw9ViFvukNEwVsNYsmHSHwuS1pK3+gXcd9/jSNuh+/J7p5CaFXqkNt0kdNwyUWOi6hLOgAIiAdsDcV2n3B86Vk/nekBM0wpvtOC7h6OOGlsNk3nNXdOeGUCaOLrDIOP7UfZfqYE2bIKZBGXadIsHzto8msgAQiNupljmCPHiiorh0VqDqHTLq+RJpGPkv+sF5UDBkgpmB3dXJovS1GdZ7Geo5YqR+4ZbD44c0BMxBR26hbPjiJtScSWmT3KohbDqTesbKdJhZ3e6NEgBvuOFnF1+fVMIzxdW2QWf7LleEO7FIQdHTy8Txx36qKq6gh4AfU/lGyOLqjKP1R3uK8O18HVsf9SSrBlpesjBKhOUXBBiFrpH8xVIyuz3voQCvbdST7FNVYGBmmxfDZj1YF1pigElHzEbtvJqegwLHTfEOnegHkG96X2RrsUHffY9Iuyw86lcG5s0tSjGHj1YcUu0nDvix7jFtPM8HwMcSgCh6omTgO+VMBjR4tWeWrK+VXpLIM8CscMhOvI3pA4be1qHLh7c0Isbj4iwyKMLZ7lZSy/f1ZGbVlw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D90F620002
+X-Stat-Signature: kkx1u9nfokdiebz8au9p9q6iuobnxfes
+X-HE-Tag: 1768396028-935141
+X-HE-Meta: U2FsdGVkX19W/dh50hJ5yZ5BUL8XTrP6exvjC1e3hFrZX4pZOAZMO4yMyWMsR/jI2BhDnTEbf+x5zkfN8+Z5hKnL1wy6WdAeIgjMsSb7bC1Dif/K3AOCUUhuceHsbCJPFHoAut70kECbndPn+EsDq0w4mAQGhrwlRi8CYse+T7VCYTXJIeUNN6sP/hHUsDo+1+rayTUaEZztXM0XbDDixpeuD0FRThmp9IrbJnvmtCb+3//DJkOLdp9ZEtX+obC6HrJl9KevzM+TJi1mxqJQkVz4ERBDeUxDeBWjxCgG4NgsQ719s7TKM0B023P3g4ANJmXaGT+rbcqu70WHPkB0ZkdCX+K3unA1AHl1+11ogLXQ4vrO3e8/dW2up4kEPxXQuOwBOlGcDVdNlqzzT29MHe6/MrwxJAqHJZHqL74E1vcDTIT4v8iw+s2Mv1+kJMasDrwD3s/1N0Vz8dFZbHlbpS9FrFqNahs3TAHC4vUpfsZPg2GCQm7aciVsR8ID7Uta7HdiFU1rVKzOfULX+m0nTFVOigkFnXA6aJIT4/VlPTUdfeTyDE/96ia8ia0WGTs2IJXAZI8v928UM2z8wI8s7i+wyjnB4g5RXviPrW2+by3VaDcDdjEQmJ0avQ8qkVGRqEtq5AQ7Q+fJ6HSDcV6hLTeiQggOQCzrZmPmL74rSxzRrkisZP5cVivrvZZ3HYU61X2XCqrhwwukRuxh94olxDBzLg65rQhSMwEk2G0QHfcs5MRl8RONlXm0l4L4fiqlktf0QNSM1zT7KO9uBsC791NGINbMgXUTdsjkK82do/5DyhaRMhS5ykN9pXSu62pMFQMgQxCWToV3NNyHjAPAq6iL2TldqxizWQHJCnzj04Pl/exuWJhu6LfCQRht6Vj1vI7MyfzqqxpfwtV1onvXVUFlUPdS3F1AKSLd7C1wyMH0v8AyU2P6T3OjCpVxu3bLRa6Wxsy8T1OpNjp0KGK
+ /gL0NpD0
+ /V5SfdO6XW4vE4vqngyO105eFCeT+RKi/72BJYoVff5+wbeHVwMauVLag9fwPY9nAaCjJIAe3pvwZVBNrIvg3di/qcPgmvm3Mpbn+cENzUyYdEQaif7JdkbEEyr77uhp4HxRXc7jciblGp6xMeM8MxW0NE1ms/8idCMrLWMVAmKWYUw0MMABoirYDfPEcKWSmz9UXrlca4ETcTCOMEkp4U8yT+bcpxKgmTjVZlUXOLKW9dQbMVvKxTVTptR5q1BRQqumbOw8u5UejxNX+RnUnfm+7cWfK5AdVDFue2z7SrSy+1HZL2oHqt9TI3yqgE1bdT+Ffu8q6sIfSnU18elkAwULqSUhHtbgPkJHtITUI+Lobuv13Uvlw7jV88/7z0usZoqfV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,56 +121,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 10:34:04AM +0100, Amir Goldstein wrote:
-> On Wed, Jan 14, 2026 at 7:28 AM Christoph Hellwig <hch@infradead.org> wrote:
+On Wed, Jan 14, 2026 at 1:41=E2=80=AFPM David Hildenbrand (Red Hat)
+<david@kernel.org> wrote:
+>
+> On 1/14/26 13:33, David Hildenbrand (Red Hat) wrote:
+> > On 1/14/26 13:11, Mateusz Guzik wrote:
+> >> On Wed, Jan 14, 2026 at 12:55=E2=80=AFPM David Hildenbrand (Red Hat)
+> >> <david@kernel.org> wrote:
+> >>> You said "I wonder if implementing hugepage pre-zeroing directly with=
+in
+> >>> the kernel would be a simpler and more direct way to accelerate VM
+> >>> creation".
+> >>>
+> >>> And I agree. But to make that fly (no user space polling interface), =
+I
+> >>> was wondering whether we could do it like "init_on_free" and let whoe=
+ver
+> >>> frees a hugetlb folio just reinitialize it with 0.
+> >>>
+> >>> No kernel thread, no user space thread involved.
+> >>>
+> >>
+> >> i don't see how this is supposed to address the stated problem of
+> >> zeroing being incredibly expensive.
 > >
-> > On Tue, Jan 13, 2026 at 12:06:42PM -0500, Jeff Layton wrote:
-> > > Fair point, but it's not that hard to conceive of a situation where
-> > > someone inadvertantly exports cgroupfs or some similar filesystem:
+> > The price of zeroing has to be paid somewhere.
 > >
-> > Sure.  But how is this worse than accidentally exporting private data
-> > or any other misconfiguration?
+
+Of course.
+
+I'm stating that with dedicated threads for zeroing, provided there is
+some memory available along with cpu time, it can be paid while
+nothing actively needs these pages.
+
+> > Currently it's done at allocation time, we could move it to freeing tim=
+e.
 > >
-> 
-> My POV is that it is less about security (as your question implies), and
-> more about correctness.
+> > That would make application startup faster and application shutdown slo=
+wer.
+> >
+> > And we're aware that application shutdown can be expensive, which is wh=
+y
+> > e.g., QEMU implements an async shutdown operation, where the MM gets
+> > torn down from another process.
+>
+> Also, just to mention it, assuming a VM is backed by a hugetlb file, the
+> user space thread destroying that file (or parts of it by punshing holes
+> and freeing hugetlb folios) would be paying that price.
+>
+> That could be done whenever there is a CPU to spare to perform some freei=
+ng.
+>
+> But again, I think the main motivation here is "increase application
+> startup", not optimize that the zeroing happens at specific points in
+> time during system operation (e.g., when idle etc).
+>
 
-I was just replying to Jeff.
+Framing this as "increase application startup" and merely shifting the
+overhead to shutdown seems like gaming the problem statement to me.
+The real problem is total real time spent on it while pages are
+needed.
 
-> The special thing about NFS export, as opposed to, say, ksmbd, is
-> open by file handle, IOW, the export_operations.
-> 
-> I perceive this as a very strange and undesired situation when NFS
-> file handles do not behave as persistent file handles.
+Support for background zeroing can give you more usable pages provided
+it has the cpu + ram to do it. If it does not, you are in the worst
+case in the same spot as with zeroing on free.
 
-That is not just very strange, but actually broken (discounting the
-obscure volatile file handles features not implemented in Linux NFS
-and NFSD).  And the export ops always worked under the assumption
-that these file handles are indeed persistent.  If they're not we
-do have a problem.
+Let's take a look at some examples.
 
-> 
-> cgroupfs, pidfs, nsfs, all gained open_by_handle_at() capability for
-> a known reason, which was NOT NFS export.
-> 
-> If the author of open_by_handle_at() support (i.e. brauner) does not
-> wish to imply that those fs should be exported to NFS, why object?
+Say there are no free huge pages and you kill a vm + start a new one.
+On top of that all CPUs are pegged as is. In this case total time is
+the same for "zero on free" as it is for background zeroing.
 
-Because "want to export" is a stupid category.
+Say the system is freshly booted and you start up a vm. There are no
+pre-zeroed pages available so it suffers at start time no matter what.
+However, with some support for background zeroing, the machinery could
+respond to demand and do it in parallel in some capacity, shortening
+the real time needed.
 
-OTOH "NFS exporting doesn't actually properly work because someone
-overloaded export_ops with different semantics" is a valid category.
-
-> We could have the opt-in/out of NFS export fixes per EXPORT_OP_
-> flags and we could even think of allowing admin to make this decision
-> per vfsmount (e.g. for cgroupfs).
-> 
-> In any case, I fail to see how objecting to the possibility of NFS export
-> opt-out serves anyone.
-
-You're still think of it the wrong way.  If we do have file systems
-that break the original exportfs semantics we need to fix that, and
-something like a "stable handles" flag will work well for that.  But
-a totally arbitrary "is exportable" flag is total nonsense.
-
+Say a little bit of real time passes and you start another vm. With
+merely zeroing on free there are still no pre-zeroed pages available
+so it again suffers the overhead. With background zeroing some of the
+that memory would be already sorted out, speeding up said startup.
 
