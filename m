@@ -4,124 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CE96D3CC80
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 22:13:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2613D3CC82
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 22:29:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0A1E6B0005; Wed, 14 Jan 2026 17:13:21 -0500 (EST)
+	id E929B6B0005; Wed, 14 Jan 2026 17:29:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B7AC6B0089; Wed, 14 Jan 2026 17:13:21 -0500 (EST)
+	id E40796B0089; Wed, 14 Jan 2026 17:29:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A3956B008A; Wed, 14 Jan 2026 17:13:21 -0500 (EST)
+	id D21CD6B008A; Wed, 14 Jan 2026 17:29:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7987F6B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:13:21 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A575137FF9
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:13:21 +0000 (UTC)
-X-FDA: 84331971402.26.B60AE61
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E24CCC000A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:13:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MfvGhUcd;
-	spf=pass (imf10.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768428799; a=rsa-sha256;
-	cv=none;
-	b=WaTJrUJ3mehOJbR0DorIIRKb0KbD3lx08rRt9Y8Dt7UDQFV2Y277kX58WcVAi8FLHPyuh+
-	kXofJRtGrLxObPvnnkSkA0fOUlpw5Dl6YtkdLMN6AFRNyzisPO73bXDHQgo0/B7PQ0NSs+
-	ZG7rIh2Lbn0fyP6Hjhlg0YmDl9B6630=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MfvGhUcd;
-	spf=pass (imf10.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C1C746B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:29:31 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1AC221A0136
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:29:31 +0000 (UTC)
+X-FDA: 84332012142.24.A0CBB35
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4F4A240008
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:29:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EJEzYcZm;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768428799;
+	s=arc-20220608; t=1768429769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9te7Py4jVWEi/zTRZhhdfHD436sqYIG62vqnpysxH8E=;
-	b=CQE6FCGNctpfX45LcXxBNW3M9tFkHKKf8TZ/cpgQ2Y45Kl/dPg/XYJepO0KdsD7Vleuhox
-	7jlcwmqbQRqae9s6vLIBcvn+01PIhZaQ67g7NWCPrWM0aYhMyFACHvuWBMn9njtmTYbVSV
-	C4+m9zonooV9UEFs7XmG/4a8G6DKtvU=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47f3b7ef761so1693675e9.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:13:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768428797; x=1769033597; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9te7Py4jVWEi/zTRZhhdfHD436sqYIG62vqnpysxH8E=;
-        b=MfvGhUcdc9UrJm9UOjxC/KzhiZvAtHO9sFu3b5V+NBCUd0cd+XFYs+xORnMEqZSCu3
-         TfNmAUC8U2Nv7JQxB0FrNPG4bB3J/Ofgpw9D5CUMlg1dhDpkzOPAH+hcLVcNqEe2UqjL
-         0/MxJafAjZC/m2xMLAN6+BtKi3g8Tt13Olow81x4WTNXcI1z8Er9gfnqdpLW8cGOK1x8
-         B9OTTsIpnQIm5qDRN3FaHpVOK8IlwhgvQpi1n88j0EUdScSVl09VZrUOUp0NA+4tj3BH
-         bFiha4PtAsZYZc6cEL6em4/kdtFc2JV6Xy1suW1D8n3oFTunl8EEfTayAJuKTu4dprZi
-         gK4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768428797; x=1769033597;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9te7Py4jVWEi/zTRZhhdfHD436sqYIG62vqnpysxH8E=;
-        b=nPk5BwvQlWNex7vrOivQpaplHjbzz9oYoP/9MKUmJDrH4FAeZXGTYmKwekir1vXBHf
-         mJXKEGry8oPxWZekWPuxhW7sVfFmacT5TT5nnkEZFQJHYmVs2QTnvm40rb4NBtznSCoP
-         Ubqb/vmBc8Lp9EnuK5I3PpJD8TfbDBYH0tZGRHKW32M/Bh4/lNPivQkDwruDA4b1/lfS
-         4NHZr0QFUvE6XQqXbWLhpDySJJbnuEbPKDi4vEUCafYqDrYMK1WWRYgfD7Du4EWJT4ew
-         rSkiTERKYlDTGKlRcLoENbwzbkdLB+eYFhcaWcAFXoZh0gWTXgXqcoEqDSSL9x5VGIIj
-         QX7g==
-X-Forwarded-Encrypted: i=1; AJvYcCV5pwIpBV4ZIWWypCUgJZu/VxWy3mP5a0Rq22HtaqSE+uiAxoeLsWtTUSr8MED+hxbvP0XaCPkOSQ==@kvack.org
-X-Gm-Message-State: AOJu0YwK82aKCMeEZ3u+6bHzAS3q1hkOncPHa4oUKITKln9fWcjqoIyD
-	qu388LzckqV19szuErOum5C0N+VUUij3rFquJB0rG4BgLzTNwrFVibuw03vXYOkodkw=
-X-Gm-Gg: AY/fxX7eClGXnkRaG8//aWTGRNVnr91zDUwzJIXwUN0K7GcoJpPo1fTZF1jdJgl2CSz
-	894EbczKvyPWHq5ut4pvLzWMMpZxd5+LgzH9cHXqiO6JsZAx0/s2YcP7EtBfs/kUvnazjxEzSO5
-	ZJfHEahg4CUR4MAGRr6yQU4nJ6IRKLG3lzzjpZwr8g5hIN6XtjWOCiu9jHfjsfSLK0pbMz4pfHe
-	8g1LFCXPqy5NUEj09UG/Q6si+lqA2paCb5J8b6eDfHu0iLfyd8QJxewz5ct4qmSCVKGlfuI7N4Y
-	TW0Bzxubq0rbb/eV+aL9SC1g/gxDROCxR1QZV6ntABPD9FR6u7i1uL1zTaBLhJR1Y3VwhkbooWw
-	gcx6mTVyJG8kbabzQVqnkOrCs7Oy4BJxVsdnibnRusfmPYDwYtKSJJOOXVDGPwJJPS/o9fshDsI
-	/tOg==
-X-Received: by 2002:a05:600c:34cd:b0:46e:4e6d:79f4 with SMTP id 5b1f17b1804b1-47ee33117d3mr49883055e9.15.1768428797424;
-        Wed, 14 Jan 2026 14:13:17 -0800 (PST)
-Received: from blackbook2 ([84.19.86.74])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-434af6b1455sm1617183f8f.22.2026.01.14.14.13.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 14:13:16 -0800 (PST)
-Date: Wed, 14 Jan 2026 23:13:14 +0100
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Alistair Popple <apopple@nvidia.com>, Byungchul Park <byungchul@sk.com>, 
-	David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Rakie Kim <rakie.kim@sk.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Tejun Heo <tj@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Waiman Long <longman@redhat.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Zi Yan <ziy@nvidia.com>, cgroups@vger.kernel.org, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] cgroup: use nodes_and() output where appropriate
-Message-ID: <qhobdtdwtkux7n5r3b64itvpe7zchm3ovpfmazim3v5ilg34kr@5o5wu3chh5b6>
-References: <20260114172217.861204-1-ynorov@nvidia.com>
- <20260114172217.861204-4-ynorov@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260114172217.861204-4-ynorov@nvidia.com>
-X-Stat-Signature: wndcs8hkn9acuy3b9bqhb1x9nkz1h6r3
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E24CCC000A
+	bh=F436+uVzdG3hzuttrg+5weC4aqoXmW2wQVyUhsH3Pmg=;
+	b=g7Gknn2Ga2KMwEE9tUD8R+ToexeGcqY0xf9zO14XhoG/VPA2KHGSaIX6GCQuWK4Dz/PxtD
+	R/6wmZ6opXMNib5Bg9bbGohLQX4/FnKdQFA19qrR0BsWWVgKb8ojibMskkuiLBDXeyVp+/
+	Kx860S1NnY8pfRgnHu3xz2Yp3uFCf70=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EJEzYcZm;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768429769; a=rsa-sha256;
+	cv=none;
+	b=eveNLyh5igQKo1WjXdq2Comn8855pX4Bx/sd+po8d4j0UUXQeTif9AlxWl2sjx9Vb6AncK
+	sth6AXzfCin4V+APz0WRbTTJLnXVJczzlOoCAm7K3hwR7j4OvfcXOoSt0VhpUxQT9ZygRO
+	trEeiPq2j+ISA4bufVvEy70IImnucts=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1B32B43948;
+	Wed, 14 Jan 2026 22:29:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414DDC4CEF7;
+	Wed, 14 Jan 2026 22:29:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768429768;
+	bh=UaZFr4hl10mcWar3ySggf/yWyzFeKQkv3nU3vZ2O4q8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EJEzYcZmclR6eee5WcA+Z0GsBCXTzw/VoU9qux0aE2D1CLbb/tFDjfcBlF1fBDezM
+	 MsN3isOQhq5clBGCFHYhbnHT4pAVwePw0QNdNvriXn8YbsG8oHOxhXjE0Ak57lf5t1
+	 szPwNdCy42G6FVmKsPyLmShMBWQ6STCuDAwyil8c=
+Date: Wed, 14 Jan 2026 14:29:21 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Baoquan He <bhe@redhat.com>, Barry Song
+ <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, Nhat Pham
+ <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand
+ <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park
+ <youngjun.park@lge.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, "Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+ Chris Mason <clm@meta.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH v5 14/19] mm, swap: cleanup swap entry management
+ workflow
+Message-Id: <20260114142921.1b47d27a3bb22b41ed0c5526@linux-foundation.org>
+In-Reply-To: <CAMgjq7AUz10uETVm8ozDWcB3XohkOqf0i33KGrAquvEVvfp5cg@mail.gmail.com>
+References: <20251220-swap-table-p2-v5-0-8862a265a033@tencent.com>
+	<20251220-swap-table-p2-v5-14-8862a265a033@tencent.com>
+	<CAMgjq7AUz10uETVm8ozDWcB3XohkOqf0i33KGrAquvEVvfp5cg@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 454wstdo4jtto4o3gyg8dndwekcqgmw6
+X-Rspamd-Queue-Id: 4F4A240008
 X-Rspam-User: 
-X-HE-Tag: 1768428798-320309
-X-HE-Meta: U2FsdGVkX18crZ97iRkjVF7TDvK0KfYaYLSFqV0YBiXozJfOU18z5FFsQleNo8vMtjjJAaPSZwRVMBqf6+cwnJWvy+BJSVURIGJKVpwZjvQ42Bn2WMBRt1Yal+ftkAaVEBvdZRKRsabKw7o4jkN0zcEEPcw0J0dZxiG0cWaQpIYPBPrQle+8H/1XMBK42Yf70Fra7fzxYmzcldzZcuWKQosRFpwoy2sIxv1ZlFqSZ1FUjJu635tJUy5A7kRNIrUfiwdtN+xzUBn9PauUDgrqm0+i+iSshe8buWOXJIHdJcIgZUfKAg5oNdjK81pwCpJI5tdChJCqUtrzig7T0BsQ0Xg/jCkJi7qnF9xhBhywHEakN4qcG2Jb0YyKKWcXF2DqSaMRHULCfcfN/oX3neNxIy/yHMuNsZ+A9oHfBPcX3UdWsugZc15lm29+I9jcC6TRoIhSyVklEVp3xJ1kwiiFpOjUb3z7vyCm1DnbTbCtwN6oDDkLSZBx+FEOo93E300fLijUFeRCiytZ1CstrxsnyRfLOdEWDx1zrbH/D5x5pi8Q4MbMvWTCuQeGe89tFuqwMOq+3gmZiUJ80HWHxe/CGNlOCqCxMZljjD+EEtClEozzDRoYVw9visVjr3m9gi/GeSytjNQC6kgHF/SabN/WVOU6UcJOA5b0lDa2rCu9+HUvHs1qQ5NRRPh7OGY8pwAkWdjyMJpZ9+GVvlcaFyYyfDp9mGvO6zSOr9A2icxFYiN/V/wwigkN2XjspfAZ5x58qk5eITiAz5uz7x796xZmyHIs5cmWTAodDqPvHLPZbjg85RkdiVNQkWlPDm4g/YSoN9wD5ER2nXLgpV4DL2kjRk+j8h/rtONcG5hMzbmPjRCG9HXhWFhdWzGv5tZHRWxwMBlDufZyMMn/C+M/dj31Q9uWcA/O3d61R5lnO0LdRrow56OOVQBUUibu7Wtc0ZVYkWIrI1HrX0M7tTvBXzT
- xqOB3HNq
- mf8LTuzBOhGjQumBW39O81fElfoQzLTxxXQfdPJ3XzVnyZd3N9YsLCLuphWgWz97olFtDI0LF2NAiQ6vgZW1MpmcrRx+zMBCDnGssDHUyKqq/89bWrQxxBRNqxQBNZVlvJ4ArUlPuQ+Uv8ztOJHnqQgDNpPbqR3DI4zneTmFWbRyJgNj3rBcYxiP2wPG6ZDFik5CvsPp+YZXt6aeJbGvtQiAUYT2ZV2g4aueyt67Flg0D5fvGOfl0S9/evd+WQMjiD4tBdGvCUQDgoSANJpu7qcscNNoETnuu/dCo5o3+V/oDOSZxlOF4jOxfrbsf4Ahk9tD/r08aqVKo6uA6r5UCcXis0hE+ikdz/p9MfeFsMWJRzjhsiUbDt29a7j8JfJXGhc/XZEWQH+mrhruR97Kr6MBNSK+AYFsiIA8j6cyJBeEu5osrecy4OAeMRNhUV68OJeIczZbvf3LkXhyAE5FfyqvJs75UR9EoC+1QfM5wVYFQG2GWZVo6//H4d71zZeX+GylVjIlgMsyaBMDAIL00Nimd+aNjRVbqaKfIblmgUqJOc6DxsUMS2F0ogA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768429769-7159
+X-HE-Meta: U2FsdGVkX1+4oW83siIPBWSNRuFV4aBOoH0jIEfKTeOaVPggDIL+hPVrTv33AAACT5TYIeWoRiQyGsVOvVBSuH6Z58Vmgi8EC1b99Q2auakuY1e9VfXvhnHHlHLo84mr/Ug2cvUmXfbhT+cHgHel6xCBbXHkH5kvE8SIQ38qDsjO0BJLFc5FVPwIn1e5zgeGOnShbw4llOwUWx7DnzwLVjKdISsIgaDX1UBcYSoh2vLmgGzmKgHcKZfJmQZ3X8OOrPior8GtPUd0jdAJhWhoDVTdo/OC39TWWF32T6B0sBEZIVyEDEYtCKaZLRSXHQkKBQ1DVIRHJnw3OpK5LRgmRGMAN99IncWZlH80p2y/GKoNw0EuJXVyHziGVHMVX9ej0JDISWFTmD0QUVaz5UZjDXnWHzgBCykUn4Xw/S7zlQxThnMa2pMbBa5Xgn0UonRxVmktD3mIe39osFZOTi1fWCzqyP63QA+YyFRZxi8jlbLF4gkJG+AguveCWWyvLT95wgbFBijSfg3KgXBubEBlq7RAtBlpr0LPX/bgqo6XbvFWQrOcQQtRnGoSvreVI16Ux75T/qDdz+FXoAymQM1jmfh8h0NAHk5ssBjMgwCoiwmHHLdRmDbOWbYhpdn+ZYDXkkZhpcYEpgkGU82wSeJy1yVjMHLN/Cy0rOvny2KJsd7CuNnwesdCB5VjkleXVfjdi4iRcR8JpVGqvbMNesEO12a9ch/4A1BOSvs3byFPbutltC8hhar9QuJE7RadBmCdbo88yHaYPOFjiJy9gWodF9r1DBAvYutUjIfc7P5K3W60JQRRNsk8JXGF1X2fxnIlyCsusAKY+0ZzpVEklXCKdJHtO8OJz774j+tUNzdb5REmg4EJbFWv8tZJeX+BChzKW67n65qHFn5LXW4tnJfiUOBkTxX5+RmfQ8+Jj+G+HR/xw8RXr8frLeMZudQoSgH9pUy3g9pJGt4az7CtwmT
+ ow423dak
+ IA02kcD8ktxzfcr8FHzTgurNmE7quDIUrHNC1/JrnTAhCB8Hn7aws04Ha7N3JAaMCmNgu6xaia5vJMzCl1rXX1eePmbuC/sVLoa+5LZtHFqjZK3TXtuArTG/Wm8WC3nDjUCvXXQNFJ/oy5Dbl+oQphoB0Mr+iZioe8cM9+TbMdOBZPXKp6HLhaBOw1uDMZm1Y/eJEmfsn0sQg+/Q7SjXxUX24Egf3LxXfOkzx9Zo9HB3Y0PYA0kRQJLzoXA04pziiwJRr+e00Lsm0ht9Ny3r3ljwljK8pC2RhC6YALOxzvj5Kbw4yGFOWBBGEDADwr5ztlg+hPNSnp4fvDFF9vtbVHqyhBQ0LRuyqeSTWIk47odRrpU9yviAPQ8JzjVS79HFftgSeylx9VZPEAeVceRAETrNXG7+IdTezLokV7sKqTtM1+/Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,18 +102,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 12:22:15PM -0500, Yury Norov <ynorov@nvidia.com> wrote:
-> Now that nodes_and() returns true if the result nodemask is not empty,
-> drop useless nodes_intersects() in guarantee_online_mems() and
-> nodes_empty() in update_nodemasks_hier(), which both are O(N).
-> 
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
-> ---
->  kernel/cgroup/cpuset.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+On Thu, 15 Jan 2026 00:53:41 +0800 Kairui Song <ryncsn@gmail.com> wrote:
 
-Nice improvement.
+> Is it convenient for you to squash this attached fix into this patch?
 
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Done, below
+
+> That's the two issues from Chris Mason and Lai Yi combined in a clean
+> to apply format, only 3 lines change.
+
+Let's cc them!
+
+> There might be minor conflict by removing the WARN_ON in two following
+> patches, but should be easy to resolve. I can send a v6 if that's
+> troublesome.
+
+All fixed up, thanks.
+
+
+From: Kairui Song <kasong@tencent.com>
+Subject: mm, swap: fix locking and leaking with hibernation snapshot releasing
+Date: Thu, 15 Jan 2026 00:15:27 +0800
+
+fix leak, per Chris Mason.  Remove WARN_ON, per Lai Yi
+
+Link: https://lkml.kernel.org/r/CAMgjq7AUz10uETVm8ozDWcB3XohkOqf0i33KGrAquvEVvfp5cg@mail.gmail.com
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Cc: Lai Yi <yi1.lai@linux.intel.com>
+Cc: Chris Mason <clm@fb.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/power/swap.c |    2 +-
+ mm/swapfile.c       |    1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+
+--- a/kernel/power/swap.c~mm-swap-cleanup-swap-entry-management-workflow-fix
++++ a/kernel/power/swap.c
+@@ -199,7 +199,7 @@ void free_all_swap_pages(int swap)
+ 		ext = rb_entry(node, struct swsusp_extent, node);
+ 		rb_erase(node, &swsusp_extents);
+ 
+-		for (offset = ext->start; offset < ext->end; offset++)
++		for (offset = ext->start; offset <= ext->end; offset++)
+ 			swap_free_hibernation_slot(swp_entry(swap, offset));
+ 
+ 		kfree(ext);
+--- a/mm/swapfile.c~mm-swap-cleanup-swap-entry-management-workflow-fix
++++ a/mm/swapfile.c
+@@ -2096,7 +2096,6 @@ void swap_free_hibernation_slot(swp_entr
+ 
+ 	ci = swap_cluster_lock(si, offset);
+ 	swap_entry_put_locked(si, ci, entry, 1);
+-	WARN_ON(swap_entry_swapped(si, entry));
+ 	swap_cluster_unlock(ci);
+ 
+ 	/* In theory readahead might add it to the swap cache by accident */
+_
 
 
