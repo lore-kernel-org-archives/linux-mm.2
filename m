@@ -4,250 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10646D3CC88
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 23:35:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5218D3CC87
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 23:38:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 737DD6B0005; Wed, 14 Jan 2026 18:35:10 -0500 (EST)
+	id 2166A6B0005; Wed, 14 Jan 2026 18:38:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E5D36B0089; Wed, 14 Jan 2026 18:35:10 -0500 (EST)
+	id 1BDFF6B0089; Wed, 14 Jan 2026 18:38:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59CFD6B008A; Wed, 14 Jan 2026 18:35:10 -0500 (EST)
+	id 0CD756B008A; Wed, 14 Jan 2026 18:38:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4438E6B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:35:10 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3CE0C03EF
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 23:35:09 +0000 (UTC)
-X-FDA: 84332177538.21.0319A5B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 61FFD18000E
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 23:35:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g3RYlIB4;
-	spf=pass (imf24.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768433706;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC42A6B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:38:38 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DAE686D11
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 23:38:38 +0000 (UTC)
+X-FDA: 84332186316.11.30BA885
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 55420C0008
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 23:38:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VbvG7L1p;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768433916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ovaDhem9RfUk3RAV5bk7tNTaHBHZ7a7a21ExXE14uvg=;
-	b=usYA3QatZbDgq5V+fNoUWOxaFOUetwORb58cuOICfRy/2T2wDnOa0gpekGHVYBQbXI9Qhc
-	sA2r822AAqgAsKhHKeH6aE+hg+OjON3uSnlbAhazor6muNqjddS1kvmSZz21MiJaYWJExj
-	N9fHkLf+gJWy6yRSA/gSS3W1h+8hp30=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=g3RYlIB4;
-	spf=pass (imf24.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768433706; a=rsa-sha256;
-	cv=fail;
-	b=0zwrxAaAd0I7Y1mktjSDlrxEZi6QW1KklRayMPiMCFFkBeawLkJZZtqxreBPLJMTVb1Yf1
-	86gHiCc2NNP+S5ZcVfdRDnEgB8vYoG694FoM/8LrIOaY/bw2EP9Fc2m0GCVu1dUy5fHRCZ
-	rXgJ3jdEivO22Jy48k1o8S7y0ESvOUA=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LcNqjjVNWGvtcLpjNLxX0c3jlyHG2NeY3ipzqJwQYkk=;
+	b=w9gGaiIoxKbas9vZHVLmdyAFNqtSz4Xe3x00hdGg9ZkM1YAzdan4KCqMiqF6C85LUhxw0X
+	u3zSS/9YMz0NDcAYsddi5XwhvTY46QMtk/DGMbqIHma37DY7Z/8ReeagtpTWn9YroK03mH
+	vtzaqvMegOemWCBDib+bgkM7p3OMa5k=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VbvG7L1p;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768433916; a=rsa-sha256;
+	cv=none;
+	b=qHsYT7s+aeVGUiRMH0bb7OmzmlLFLIPrKJI1gLTnSf0Lq0tvFB0weG67zGHm+8ToejOsSu
+	xz6rhksUepGnBDBI+uGAIxzunWagufCrnIr8Xa2vEgr7CdtIwsNrOBdejQnZWCHzeqF+El
+	PBhUVhfX1v+zmTZicJ/ve8t3rpD2gxk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768433706; x=1799969706;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=RyYbB2uq7zAceRge+5vonDlsmjYwFL56nlxHnzDbdy4=;
-  b=g3RYlIB4uCPhVhq3FkgiOIix47pcz0U6Q+tGYqxXGggIUr+cj9S8uN2P
-   /d150dpsyKIjcIHjFkDwX0woiH7UDhkcZUZLs18J330EZkRmrR+mNO4R6
-   ctFk3gATZHLAjUV2RtpegLZE/O9/CYG3GHOMD6VolcUiB4D0U+JgMFCJU
-   2BXnyfV2elBUY7VOeA3RNm8hQgafY0qWyQkjKxo+19m5zIfaAV59+8n0l
-   TwLhP8pt1kIVGScnz9rgddCjNetqUJv9kb1BFtDkylrV47XkbOt+W34hX
-   E3AqKAwMs1ghGhTUUbZ1F5l9beMkp1CgkpVn5c8zkkUZ+g5dRyqO9Xyp1
-   w==;
-X-CSE-ConnectionGUID: SryhZ49SQvCIIlD4hW5jnA==
-X-CSE-MsgGUID: 0yU2OQrFSXCKoEwywBCTlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="87320832"
+  t=1768433916; x=1799969916;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=u0ggc6HpVniJWvMa3hoyVMdQ7otmCYiUkNcnnUNjD4Q=;
+  b=VbvG7L1peaomsKAVap7Kw/Yooj1eM4MTNYPYgqknDkB43fdnvp289fXS
+   zApQx3ctk4MMZgZWoApyMV+Aagvrx8QuAeAdbzI+KihbNR0Q37y+cqCJO
+   suh2EryaFlaXaaOSFHyTiLYua+BqlXk1N4N2eMvDeyvHGwsbAUf5taa6n
+   WhONlZUnFQRXSYQ1ZZNsORaXhMfeJT4k2rE7ddGuTuxfY+MpoJLfS0x4D
+   IpF1HSXcfJ7pM5op7U5bnt8vZ30qfFjSCizoVsj+uWLG3s73lAPKFlJIF
+   kTQp0ExKXUgNaps2c5tksm6Spn/Au2oi9uv69/5G+fmUAj3kuoavtdfmw
+   g==;
+X-CSE-ConnectionGUID: HtbfRyLRTOy6HMkJzl3yJg==
+X-CSE-MsgGUID: 7CNA7Yj4R5Wabd2NLruQAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="69827229"
 X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="87320832"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 15:34:55 -0800
-X-CSE-ConnectionGUID: CmCjwDc2TL28+yBMJhejNg==
-X-CSE-MsgGUID: 2W17jTd2T0GdRRG/+0YxoA==
+   d="scan'208";a="69827229"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 15:38:35 -0800
+X-CSE-ConnectionGUID: dca36A3BRXOhNp1Clj7iNA==
+X-CSE-MsgGUID: pNKP+L72RZejs9ctcdOIiA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="209664990"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 15:34:53 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 14 Jan 2026 15:34:28 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Wed, 14 Jan 2026 15:34:28 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.6) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 14 Jan 2026 15:34:27 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GCYrXZpmOJLs/n8xKjSuPZQXvQYg95Ib53UlZDYd5em79fZYhTJD8HDyxnws1rTvsXn/iPaUmF9i3JM1vCm99w56r/F+FkCgCymg2hPvDKUPfev0VcGTKoDj0rcdUGTdu9t4ERhyZWidSLgBglbuJBf4UU7Hjmyfyb69GJKrOfP3akT3J6sELScw7475sJydz6Yr8qc8JaRQLxNQRWaGtT/Tc9RRPySycy9uqXhBkPYKQmRhCsR9/GJPC5b0Ve14VOnZS9YTaH7vl0ZRhKySFoM7G99boC+SsEh++b1Lg6ka3TU5SgGWjV0ZeJmg2PQnOVt1qsrNzZ73C2nluLzIyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ovaDhem9RfUk3RAV5bk7tNTaHBHZ7a7a21ExXE14uvg=;
- b=dfuqZzUuQ1SFJeNVLSjeeEouD11ymGSE88pw1bUSymmI8rfjT15tIBdqmELYFbQRmMD+dXmf6vyjzADajw+XYQlB+VZR6I6W5OkOE3infTywW57gwaWxDQatQfMW7hvS8cOEVMKQfv4YCPhwukuVa3eu+hqVcr135v6qOa2LepBkJvbC2YQ6hr9tyz7vW9NAf27Zs6qV2PuP369qRWwGbWBuJCAQSLAsj5+EspvKk7G8k4eJbpJlAN1PIv2cOKNU9XeCKw2AAb6iWlGH4Ci+/PL2eM3kuA0TRKNzRpNwlpezaUHeRG8BhpZ92+wHN+Z+3lPHOo4kOm3pP3bsSBj8MQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by DS7PR11MB7782.namprd11.prod.outlook.com (2603:10b6:8:e0::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.4; Wed, 14 Jan 2026 23:34:25 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Wed, 14 Jan 2026
- 23:34:25 +0000
-Date: Wed, 14 Jan 2026 15:34:21 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: Francois Dugast <francois.dugast@intel.com>,
-	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, Zi Yan
-	<ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>, adhavan Srinivasan
-	<maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman
-	<mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, Christian =?iso-8859-1?Q?K=F6nig?=
-	<christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
-	<simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Balbir
- Singh" <balbirs@nvidia.com>, <linuxppc-dev@lists.ozlabs.org>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<amd-gfx@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
-	<linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
- private folios
-Message-ID: <aWgn/THidvOQf9n2@lstrano-desk.jf.intel.com>
-References: <20260114192111.1267147-1-francois.dugast@intel.com>
- <20260114192111.1267147-2-francois.dugast@intel.com>
- <20260114134825.8bf1cb3e897c8e41c73dc8ae@linux-foundation.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260114134825.8bf1cb3e897c8e41c73dc8ae@linux-foundation.org>
-X-ClientProxiedBy: BYAPR02CA0044.namprd02.prod.outlook.com
- (2603:10b6:a03:54::21) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+   d="scan'208";a="209863486"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 14 Jan 2026 15:38:31 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vgARZ-00000000HCa-0hGP;
+	Wed, 14 Jan 2026 23:38:29 +0000
+Date: Thu, 15 Jan 2026 07:37:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ =?utf-8?Q?"Bj=C3=B6rn?= =?utf-8?Q?_T=C3=B6pel"?= <bjorn@rivosinc.com>,
+ Jason Gunthorpe <jgg@nvidia.com>
+Subject: fs/dax.c:728:39: sparse: sparse: incorrect type in argument
+ 1 (different base types)
+Message-ID: <202601150722.hIi3GSF6-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DS7PR11MB7782:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa94c84f-066e-41c1-5a23-08de53c573d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YkJQSU44cXNvSnIvLzJGUUhzSW1RdmFkSGorUEtuaWxDQ0hLOWl3VTc4cGww?=
- =?utf-8?B?VGlxczc2ayt1MHU0Y005czZTb05UeFFYNTJ0a3ZJanMrdVhZNWFsVFVxOWRS?=
- =?utf-8?B?aGF4WTE4c1RORmlKUGx3TzYrc29LUytiL2lPTjMxTTFVMUhMeG5JTFRMWXln?=
- =?utf-8?B?bWppQ1g3SDhVelZPaFdGKzNzdWt4NkY3b0t2ZnVyMlJyTE5YTDV2S1JaOFlL?=
- =?utf-8?B?QlBaek9pSzE2YTVSS1ZGUFduL2FDZ1RVcFVaNytYZ2k0U2xIb2sydzM5MjJm?=
- =?utf-8?B?bndUYVhZZTZzbHhzNkltbVJ0VFNQelgvU2pHRmZqNHpTeTF0TWNXQWI4bnYv?=
- =?utf-8?B?VnA2WkNEa1RzR01jcHhaK2lLQkIrTjZTeGNXNEJvVjNMSEdNWTZBNUltR0dZ?=
- =?utf-8?B?ZFFNcC85OFVEOThtM0Rmb0tpcnVueSsvTk9MT21QR3FuVFNONzQ3OVMxcUxH?=
- =?utf-8?B?UFExNUFVU3R6RW82TjJZblg1MDc4YzFhSGhzRWZUaEs4bVFKR25HZVZJbXlZ?=
- =?utf-8?B?aDdLc3daelNoL013OHFZallZUTJ5UDlYbERQVisvZHBkems0U3JSZENaZmN2?=
- =?utf-8?B?UnVPQmxQYmJUZEIzRklMR2ZZWURhS1VaMzJaV3RFUisvSUt4anVqVmhGQldn?=
- =?utf-8?B?MjdDVjF2V2t2VU1XK1BvWm5nQmxLUUZsQ0YzUkM4aXRvWFRtM1NuUlA3M3dk?=
- =?utf-8?B?bURvbnNHSC8vWk56aGtJUENLSXVmR0JPSkZEd05vb0ZRNGRkUEM5U2cwRVU3?=
- =?utf-8?B?N3g5cHM3NFVsNWJWcUo0eXBEeVF6WU1mRkhUeGUvNjJBQmpsbFhxOEl6Zldx?=
- =?utf-8?B?bEVlcUxoSmplNVdDbmlhbTYxbHRYZlpYWktPNDlZZHRtNnFNeGJXSVNQN0pq?=
- =?utf-8?B?SGowK1RrQWJJdTF4Ui9ONXBUc2tXcXo1ZWZtRXRkaXJhbWJKNU1LUnhjNW5Q?=
- =?utf-8?B?OVU1dVI0VWVCalVRRXNFREpZL0ozdzJUcGJCRlVnbHZHNHhQcmpmVDZtRS9Y?=
- =?utf-8?B?WXQwQlhkUjhuNkpXZFVLcDJvdE9UNzR5Rm1nUlBxWDU5RUgrb2ZXQVUrZEpm?=
- =?utf-8?B?UnNmaCtzYkNMS0lCcytVZUE5Q0I1MTNKMEdmMzZma0pqcnRSbEdWZUwxWWtv?=
- =?utf-8?B?SFFSS0ViRXdsUkhsU2Y2Y1lGTXV3K3N5SzEzRlVhQURpRThka1dQQXMzMUZv?=
- =?utf-8?B?YTF1VWhkVFZPVlN1SU1vL2UwQkhsZGJTNkgybnV0alVwZ0NRQ1ZkU1JkNEJE?=
- =?utf-8?B?WWdqeitsTnRKRGZ6akxJcTNnaXh4MVhEanRabWhjb0h4WW12VUpJMHdrN1pY?=
- =?utf-8?B?QVRvYjBRR0ZnSVBaUFdqS3JCQnlJWUFnN2R3dm80S09lcFMycndCMVhqSHQv?=
- =?utf-8?B?bDZ2cjkzVFJlQ2lZMmxTNS81cDRJTjJXa1lXUElGNTg0ZHl6TDZaWG40anl4?=
- =?utf-8?B?MGlkVXNIV29IdzI1a0xYek1IUlhUeDVPa3M2OCtBNmpsRTdtU0F5V2ZzOG1U?=
- =?utf-8?B?dHA5Y3h5Smx1YTAvZU9XQUNpYlUrVE9yQmxJMjhXR202bXcyTGM1YVMybURs?=
- =?utf-8?B?S05QK1lmQTlSY2FQZ0FzTVlkUHFRdU1jOCtkNzFoMkFFMU5ZbyswN2NRM1pw?=
- =?utf-8?B?T3poRkF6dk5zSm10TmEvU1cyK3ZBZTNWVmtldG1DWWpqTVJZSUgyZElwc1lr?=
- =?utf-8?B?SnVmMGZqWC90OHVOcENXWjdTY1ZzTTRVU1FDcWpPd2J0Q1pHV3kwNkkzamF0?=
- =?utf-8?B?UXJNdHB4RzFlMUR3Yi9SU1RWaWlXaFF6TE5OVHhkK2FYeWV4V09ZWVJvTTE3?=
- =?utf-8?B?dllLTE5NTExkU08wR3dXcW9tOVhoMUwrdUFXeDhZTVB0ZHRUd1JvQzdRRG03?=
- =?utf-8?B?RDVINGhUZGxSUzRSTDJ5d2ZQWnZabWhNVlJGV0RtY0pQUHNjbDZxeGo1OFdX?=
- =?utf-8?B?b1JBNS90TkNwV3dZaVFJZE85UXdCNXFSbXZJWGwxdnpQbnpqS2JzWVh5MmxI?=
- =?utf-8?B?T3FnTHFPMmkwb1J5YkpKdEc2eDFTSTRSS0JsK1lqVFNiZktXRUVENXY5bEFF?=
- =?utf-8?B?UC9wWW1QTDVNc3lFejR2OXpDTWZ4dnUxRlBJZ2xab1FBQVFxcDBHdW5ROUUz?=
- =?utf-8?Q?q+DA=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cG9XbmFoR0NHc28rTmUzL0tPMFNWdUkrQzhuTURObjJVWHFJTFF3UytLU3JQ?=
- =?utf-8?B?bDVwTElmU3dCZU5lWWk0OFNyZm1IT1czNmtqUHZVQkdaUjhZbnNBeDBjMW14?=
- =?utf-8?B?RDRCMzBmbWNWNnA1SU9CZUFtQUVJS3FYazQyVGp2MnFUckRzazhMbk5XbC8x?=
- =?utf-8?B?OGRnZmNueHRHOThGczFVR2NjSzJSU2Y5M1NJSUhJS0dvNTJmRGlMM0Q0VFBV?=
- =?utf-8?B?V2g3alBzWS9pcnU5TzZTMUpBVG4vMWsvWUNiei9NWW5RME9QZW5KQlVXZ0NF?=
- =?utf-8?B?Z2dtT0tVRk90ay85a0N6bDNXcDhWUU0wa1NtNTZzUXArTnd4WGhBYk5JRHFP?=
- =?utf-8?B?eDhsT0tuVzBzUkh2dUpOL0ZiQlNZVFhXclFUc2VGbGpUNnhCSlAyMUN3L1hH?=
- =?utf-8?B?QzVQWXFkd20zYmc1QlU2eWN1b0Y0MzlCU0hRN2s0VGhpcjhqSnlOL2x6RUNB?=
- =?utf-8?B?bm9GU01tTWJoUytlQWxGbUNUOUJ6VmxIczRTV2YyK0hMOEMvS0lkS01QdUxt?=
- =?utf-8?B?U0UwNzFGbnJJU1BPZHdMRFRzSzFCYnRuNUVNM1dQV2FBeGtoSlFNSTZDTVE0?=
- =?utf-8?B?Y0hmRi9FUHFkRXJwVitCK1ZXeFpmbjNORkpFMlJOcDdWT2o0dzhiZTExMlha?=
- =?utf-8?B?eEdocWlTWVBnQkYwdXYzaVNYa1JiZk56enlwd092UG9uZ2lXbkYrM2k5MnBa?=
- =?utf-8?B?TEZJYTN1Qk5KZTd6S0I0UVRwQ2Zaa0pGT3Y5ekFGTmp2RGk3M2FnajFuejdB?=
- =?utf-8?B?T2dNT2FNNUNxS0pRUWoxVnJ6citpZFdUT0VvbFpHbGladk96WkhpMmEwVFQy?=
- =?utf-8?B?MURmTll4d3lPaGtHUW9KSUZLZVNpbDNPK2NuNW5xaEN1U0E4T25GcHRsZ0hv?=
- =?utf-8?B?cDFOMElFWWZSWkZHOFNOUVZxNXVYRWV2MENOd0ZsakdMVTFhTHJ2ZFhXU1M0?=
- =?utf-8?B?TnF2eUI1ZU5jeEljWis1UnFscDFQclhLTUh2YXJCYmpJNVNTMjJBSk0vR0kw?=
- =?utf-8?B?OE5jYXA0N1F0QlRJYWxPdFlXdGZnMnJiZkJyMkhyeHEvcEpoWUFWT3F2K0sx?=
- =?utf-8?B?WFpMUjdRall0MDNBYUJLenh1UmVWb2pBS3hDSHA3M3BVUTFQaGp6bDdqQmNh?=
- =?utf-8?B?c245SW5kdHJwT2htOHloVWRIeDNMT3BkbEloU2tKLytrRmFqdW85Q3NmWFZJ?=
- =?utf-8?B?VmlEZERteUsxYmh0eXhCN21RS2k1cS9XSnJXMEFjNDlZN0x6UUJHMU1hOXNM?=
- =?utf-8?B?UkVmUnQwbzErbkNLNkMwRG9QbjZUTmlMVUxpb1p2YjhFZDlVK1lWRVJlbHA1?=
- =?utf-8?B?cldVYUgvOTFVblJaZ0k0Qkt1Yy92VEtCRldNTGdKb2Y4TDNObDVENFRsbFJw?=
- =?utf-8?B?YUtiUkdtVDNhQnp6R2o2T1hRZmY0d2xCbWxHSlM0M0hCK2p5UGpLbnY0d1p3?=
- =?utf-8?B?WHI4eEYyd1BtY2NtcFliZitrU1pRRlpBSW9JclZPS3N5K0lOckxxbFIvSVRJ?=
- =?utf-8?B?ZTUrV0ZiWEtLRndqczZra0lNT255UXUra2lqTjFUTUNiOFdjSm9zU24rNTZ0?=
- =?utf-8?B?d2Y5T3hSNGwySjdxek9yY2s2UE81cERKWjJTQkRDMzc4UGlxWHRLV2cvS2xN?=
- =?utf-8?B?OE9Fakl4bWRQcTM1NjBUSGRGWnZVd09qZmw3Wk5DVFZYWkV3OXlTUWxRTVND?=
- =?utf-8?B?VERYbmY2OW1aNkJZdi8yVHhMbWw0aHZwNFBwZVJHZldoTWdQNURNMmJxMFFx?=
- =?utf-8?B?S2FnREwyRWp0Ty9jYmZRckFUbSs5K1FmdkVLR2Z3Z2tuU1h1YXZNRGdvUGFI?=
- =?utf-8?B?TFFTYldub1JGNDl2Zi9ac2xucEFLOWtWMmZ4M3h1SkVZRVRuT0tvaTljQ2xO?=
- =?utf-8?B?Nk82Mlh1aWQ3czAzRThRL0JjVjVMQkhYOXhMenpkejRCaFFEN0x4OGxGMUc5?=
- =?utf-8?B?ZmdMOXpGdGVsdlVIR2h2bzVENFFmMlQvN2xiWWN5cTZTdHVxVlJONFpkMDhu?=
- =?utf-8?B?SmVzUTR2YjAyTjNwb2JVSjkyVU9XeTIxVWo3b3VvVkJxVVZzWnNpdUpkYUR3?=
- =?utf-8?B?cmliSzdRTXZPZ0FxZ3lPZm85RmZrckxSWTlJY1hpWXlPZnFIM0tFQVh2b3pK?=
- =?utf-8?B?ZEErK1g5ZmxublIyK0Z5UEhTZTlab0hyY0cwd1VHYmRHb0NYZ09OLzBUU0J6?=
- =?utf-8?B?ZnBaLzJRN1VpTGlSajJpU2FaUFdiZ0JSNlVEYjRkbDQzV1hPWGtaSmdNTG93?=
- =?utf-8?B?UEExbCtadThNbURtWEFZRkJHRlJ3WnBqS2ZtN2FQSmlHRk12MEppdVR1NkJZ?=
- =?utf-8?B?SUNqeVd0ZnRUZmxEZEZQaUhLT0IxSm4yOVdrbmlwMTVmdklJeEZEbE9yeUd2?=
- =?utf-8?Q?wzMFe5FE+rjl/IaQ=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa94c84f-066e-41c1-5a23-08de53c573d1
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 23:34:25.2029
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KyDMEZB73ndGm1F4looedSCsL3EqSokjyCzKvOKye+nFQdyNLHz9G/bLiBTV00oi0Wvc64VfYMtkyp0Bs3YqMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7782
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 61FFD18000E
-X-Stat-Signature: inqbn49wd6jbccmstzdxpr5nfyqa5f65
-X-HE-Tag: 1768433705-40162
-X-HE-Meta: U2FsdGVkX19COkw+bHCG9lQO0xtsOuPz4z8JGvL3Gb8dwNH9BF4Ht+Lma0MR/teGt5+lcek2YASn+UsraDnnOTh8uobpDtnAZyfVz6YStmSKmfAwDsa03txUfEyfrBdXs0qy3JJVxkiQj/hBeEkhLcUP8LEpOhz1rmuoKo5MN0Rd353wXF94Q52iBWxE4q4loavtbISW1KEI8tIBGday/CSzal+BErOM/dEquWeaAbDPcV2nZliRKCSM/RRR0mOmp/KtyWNCxynz1SCXApMZZEnI0mOcCrxNOstBt4FqZy7PUOab2hXhKaoet9QT8vaxU0ye5VREj63hR0sTsCQsvVifMhJWgaVtP/MpiBbitz3sCo+o53P86elIsmw8xR+5uNeBS0/UWydCExbGDtyB1e9NcmWyu1nfYqrm/Vt20VofrMiUcQ8r7z7BTcl2wrwBTMOE/8ynVh9WCkafMDhYUVG+iF4X0nwhfomSxxu38876klbDp6e9DQPsT9ddjfd6BXL8TJZpMcsXk0ct/hx63+DYKbqxkPDHQEG82jJHnlkE0aH7EuC6qlL5tFltMHMhg3mWM1uHbvRZRspSjPPzxyxn3f0614mePQRnn67pCcICCy6iOAiVT2az1q0aNglydZM5GSZou+/5P7yLDQorO81z5VtM+34hEe53QaQueNUCKaURzqOi8SAkhbsmdDLk44fqZRhTWC44ezjH1d5iaQL2yr7QZBM/ATAwYO17jP/QUBu6W4ma1ErZ5UlrYiq+Kwhyu4lcutLebcJVyfgTzGT1MjhP10NlJyHYWFcFH4NDt3FwefHez+1CzgMR/09Eo+Vgxm8nKRfFghM9rAHrEbpafBUyZN2QMhAvT2/Y96Lgsjd1WwUw4NPyLRGDA2EoNVqqgx3e/cg+A8Rjs2HQ1dFHQtRVbK6X2mymn4L9d/UD4yvArIgmiYk0nOAOBfSRlgmQV9s0zWHA2PnKBpI
- lhUvYGQi
- w/Az2VIUGCTS3XCu9cng1wSNzF63+Hjms4AiDiT9EKVghIlB+hun9GrGaHi4G5/Zps2vvBcDPbv54/F8jek/U0bAP0R6jzBo7oKWIqSOt0pYgPGqtJu/1kQdCHbsTsEZEnGlkir6LHaobzSAFsKXuoY00NRhuw+TIM6FmJ+m39pcodi0D64QFTGojZituiyFslQXp8LCwt9u1a7hQlknUTtdA1BX2p7c7ffsKfoImiuKxfxR03ErvRZYwwAcmYehP572usR7EbGLG8zJFEmqMgcUrWkpRJ8QnTJpoUcoqNWCdOcvlaYnhJ8vk/l4MEshalI1dNS+Gra6Ws/fS6I+gHK+rADZVFW2cGVfm9lI6eI/nEeY+wG/PjU3TI98GVQUs6MbNybeMzXDHWxhBL0gSyeaznCVHjvQx8/f/D1/MKs1TTrXticfUazqabKgr3wxDs6/OcaRf57faR+dcT3K6m8391HS6sOl9w/ZG89qqX3mrRwfqY5yOKvufBeMMOwI14cUfKV9c9ocpAMkzS+EDa1SGucqdGjmTPk7taLebfTo+9qgD6g8SUFb/+uX0Z6G59dnd
+X-Rspamd-Queue-Id: 55420C0008
+X-Stat-Signature: pgo9kp837y5pd9p46m6dahu4qacy9wro
+X-HE-Tag: 1768433916-759153
+X-HE-Meta: U2FsdGVkX1+G5iBoO7uIR/BEJrdexXPgbFrn/tbgvCwoFcBu5oIVIyXKyx4N9+5F7t0zp4Z7j+jvud1TosTJ4n+GTZqK4LqC24fAcLssoiYuwpHaxfxxFTcZdILcuzbsMeMs+w2+TAjw4zM4Dp+ACGyH7ZlNz1I0nrCWmts33vLT6aWP/vn1mgsu1/rAJcnx6EmY4wKmTs8Lv902qbWLB3Bse5epXlbmwL0CA5Xsyqk4ccU1MUgQT6gIwgFE32coiSuDJRKszmjzk0BYT7OR5SRWRAh/c8zXmMYmKi4CJ/esak05nZY8VoFNBhExU2rYsRViHDiygavE1uu0F30WsmYZaSikcqIGpQdy6AfEgwSjZA10EPQa4y4h3+yHFzEYe9GecAbFibjD2PZFmvXLeTzw7DmMUXhXkiA8FfsKDEtw/qAh66Ow/PPIwKrA1UQUb51AeDKNvLzmIbdK6hhX+DOiCyYrALYC1MVAUheuuQQ8Y2siG5hd3aGMBpVU1AQdJqSX9k+LzD/FurRvNtbhHq+TFkDcRKUMVQbyiIkJVANC815bM1QvcRZ++Psni85jakT98jJ2yleRCu0upBIP7qBDD+AXBIkckvcV7IlVG/bCcwLZs5O8zJPYBKgPGo1Ql+AxQuZ34lf7/4Lk5Qb3VmCJ2JPluLQzztPoKAPTeJ3RPrvSDnNO7X7HpKjcaavot9yIfLm1zF8Pe8/RZEldwle/tGTYg4ELr2TZeBuk3HmHzriTXrqgqHM9L3Ks98DwGVuqKV+QZxjgsAkTHvnlSznub/l9iX2m8pho+hHQupM5Af7PIZm1d6oesCl/gE5zS8pgwSHOrrWHZLv5KwpE6pahanPxT8WTOiPW7QJPuQnOIQ2sazvic5wcOqLF0vDLkBJTZpHcH4urbWUCUbNB5sSvXj7HJC8PjYn3g5EEbfWt63PpCPFCXPZwE01LohJqCORp+/gnohobkYdj7uo
+ /+GFcenF
+ 7yRGAoqdIIysbjyPhjcvPeEQbEs6ezXubodaCldDKYi1JwdVjjdeGarZSRGjZTQMyMYk9pU1ILDWb8hh0QLnpXQBbBHIIygpyVKYVF6GAMLbW6AFjiU1S4Ci6+7biO68lR2QeY3ghodpsYCaUtcp/zGeMJJG8PCjMWgh0lbQ/aKX7AQEWYsFEjTNITdEoL2uPblm7TgaNRffX/vlPLMcb8C5zSEsZkWZMXWf2hj8abymASouAQBhnvJsqq0dR5tsFe5nQOrFpf6dDZ3yPIPMvHvVkxVAyJoEaMiwq6wBMl3Zq1GrY2+zOAbztTgxz18dUhnJ3l4TdLR7B+Esyp8McEiyQA9CwdsEObH9g4k0QDU0trmZEklZnmRUm5okmV0KuE8Y4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -256,32 +107,276 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 01:48:25PM -0800, Andrew Morton wrote:
-> On Wed, 14 Jan 2026 20:19:52 +0100 Francois Dugast <francois.dugast@intel.com> wrote:
-> 
-> > Reinitialize metadata for large zone device private folios in
-> > zone_device_page_init prior to creating a higher-order zone device
-> > private folio. This step is necessary when the folio’s order changes
-> > dynamically between zone_device_page_init calls to avoid building a
-> > corrupt folio. As part of the metadata reinitialization, the dev_pagemap
-> > must be passed in from the caller because the pgmap stored in the folio
-> > page may have been overwritten with a compound head.
-> 
-> Thanks.  What are the worst-case userspace-visible effects of the bug?
+Hi Alistair,
 
-If you reallocate a subset of pages from what was originally a large
-device folio, the pgmap mapping becomes invalid because it was
-overwritten by the compound head, and this can crash the kernel.
+First bad commit (maybe != root cause):
 
-Alternatively, consider the case where the original folio had an order
-of 9 and _nr_pages was set. If you then reallocate the folio plus one as
-an individual page, the flags would still have PG_locked set, causing a
-hang the next time you try to lock the page.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   944aacb68baf7624ab8d277d0ebf07f025ca137c
+commit: d438d273417055241ebaaf1ba3be23459fc27cba mm: remove devmap related functions and page table bits
+date:   6 months ago
+config: s390-randconfig-r123-20260115 (https://download.01.org/0day-ci/archive/20260115/202601150722.hIi3GSF6-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260115/202601150722.hIi3GSF6-lkp@intel.com/reproduce)
 
-This is pretty bad if drivers implement a buddy allocator for device
-pages (Xe does; Nouveau doesn’t, which is why they haven’t hit this
-issue). Only Nouveau enables large device pages in 6.19 but probably
-best to have kernel flying around with known issues.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601150722.hIi3GSF6-lkp@intel.com/
 
-Matt
+sparse warnings: (new ones prefixed by >>)
+   fs/dax.c: note: in included file (through include/trace/trace_events.h, include/trace/define_trace.h, include/trace/events/fs_dax.h):
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:10:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:10:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:10:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+   include/trace/events/fs_dax.h:105:1: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned long mask @@     got restricted vm_fault_t @@
+   include/trace/events/fs_dax.h:105:1: sparse:     expected unsigned long mask
+   include/trace/events/fs_dax.h:105:1: sparse:     got restricted vm_fault_t
+>> fs/dax.c:728:39: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:728:39: sparse:     expected unsigned long v
+   fs/dax.c:728:39: sparse:     got restricted vm_fault_t
+   fs/dax.c:730:39: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:730:39: sparse:     expected unsigned long v
+   fs/dax.c:730:39: sparse:     got restricted vm_fault_t
+   fs/dax.c:734:31: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned long v @@     got restricted vm_fault_t @@
+   fs/dax.c:734:31: sparse:     expected unsigned long v
+   fs/dax.c:734:31: sparse:     got restricted vm_fault_t
+   fs/dax.c:1370:41: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:1370:41: sparse:     expected int result
+   fs/dax.c:1370:41: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+>> fs/dax.c:1878:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
+   fs/dax.c:1878:21: sparse:     expected int ret
+   fs/dax.c:1878:21: sparse:     got restricted vm_fault_t
+   fs/dax.c:1881:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
+   fs/dax.c:1881:21: sparse:     expected int ret
+   fs/dax.c:1881:21: sparse:     got restricted vm_fault_t
+>> fs/dax.c:1884:16: sparse: sparse: incorrect type in return expression (different base types) @@     expected restricted vm_fault_t @@     got int ret @@
+   fs/dax.c:1884:16: sparse:     expected restricted vm_fault_t
+   fs/dax.c:1884:16: sparse:     got int ret
+>> fs/dax.c:1902:46: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [usertype] ret @@
+   fs/dax.c:1902:46: sparse:     expected int result
+   fs/dax.c:1902:46: sparse:     got restricted vm_fault_t [usertype] ret
+>> fs/dax.c:1918:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted vm_fault_t [assigned] [usertype] ret @@     got unsigned long @@
+   fs/dax.c:1918:21: sparse:     expected restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:1918:21: sparse:     got unsigned long
+   fs/dax.c:1961:51: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:1961:51: sparse:     expected int result
+   fs/dax.c:1961:51: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2041:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted vm_fault_t [assigned] [usertype] ret @@     got unsigned long @@
+   fs/dax.c:2041:21: sparse:     expected restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2041:21: sparse:     got unsigned long
+   fs/dax.c:2076:62: sparse: sparse: incorrect type in argument 4 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:2076:62: sparse:     expected int result
+   fs/dax.c:2076:62: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:2138:55: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t @@
+   fs/dax.c:2138:55: sparse:     expected int result
+   fs/dax.c:2138:55: sparse:     got restricted vm_fault_t
+   fs/dax.c:2156:58: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected int result @@     got restricted vm_fault_t [assigned] [usertype] ret @@
+   fs/dax.c:2156:58: sparse:     expected int result
+   fs/dax.c:2156:58: sparse:     got restricted vm_fault_t [assigned] [usertype] ret
+   fs/dax.c:279:13: sparse: sparse: context imbalance in 'wait_entry_unlocked' - unexpected unlock
+   fs/dax.c:509:49: sparse: sparse: context imbalance in 'dax_lock_folio' - different lock contexts for basic block
+   fs/dax.c:576:17: sparse: sparse: context imbalance in 'dax_lock_mapping_entry' - different lock contexts for basic block
+   fs/dax.c:1142:9: sparse: sparse: context imbalance in 'dax_writeback_one' - unexpected unlock
+
+vim +728 fs/dax.c
+
+2f437effc689ef Shiyang Ruan            2022-06-03  621  
+ac401cc782429c Jan Kara                2016-05-12  622  /*
+a77d19f46a37c0 Matthew Wilcox          2018-03-27  623   * Find page cache entry at given index. If it is a DAX entry, return it
+a77d19f46a37c0 Matthew Wilcox          2018-03-27  624   * with the entry locked. If the page cache doesn't contain an entry at
+a77d19f46a37c0 Matthew Wilcox          2018-03-27  625   * that index, add a locked empty entry.
+ac401cc782429c Jan Kara                2016-05-12  626   *
+3159f943aafdba Matthew Wilcox          2017-11-03  627   * When requesting an entry with size DAX_PMD, grab_mapping_entry() will
+b15cd800682fca Matthew Wilcox          2018-03-29  628   * either return that locked entry or will return VM_FAULT_FALLBACK.
+b15cd800682fca Matthew Wilcox          2018-03-29  629   * This will happen if there are any PTE entries within the PMD range
+b15cd800682fca Matthew Wilcox          2018-03-29  630   * that we are requesting.
+642261ac995e01 Ross Zwisler            2016-11-08  631   *
+b15cd800682fca Matthew Wilcox          2018-03-29  632   * We always favor PTE entries over PMD entries. There isn't a flow where we
+b15cd800682fca Matthew Wilcox          2018-03-29  633   * evict PTE entries in order to 'upgrade' them to a PMD entry.  A PMD
+b15cd800682fca Matthew Wilcox          2018-03-29  634   * insertion will fail if it finds any PTE entries already in the tree, and a
+b15cd800682fca Matthew Wilcox          2018-03-29  635   * PTE insertion will cause an existing PMD entry to be unmapped and
+b15cd800682fca Matthew Wilcox          2018-03-29  636   * downgraded to PTE entries.  This happens for both PMD zero pages as
+b15cd800682fca Matthew Wilcox          2018-03-29  637   * well as PMD empty entries.
+642261ac995e01 Ross Zwisler            2016-11-08  638   *
+b15cd800682fca Matthew Wilcox          2018-03-29  639   * The exception to this downgrade path is for PMD entries that have
+b15cd800682fca Matthew Wilcox          2018-03-29  640   * real storage backing them.  We will leave these real PMD entries in
+b15cd800682fca Matthew Wilcox          2018-03-29  641   * the tree, and PTE writes will simply dirty the entire PMD entry.
+642261ac995e01 Ross Zwisler            2016-11-08  642   *
+ac401cc782429c Jan Kara                2016-05-12  643   * Note: Unlike filemap_fault() we don't honor FAULT_FLAG_RETRY flags. For
+ac401cc782429c Jan Kara                2016-05-12  644   * persistent memory the benefit is doubtful. We can add that later if we can
+ac401cc782429c Jan Kara                2016-05-12  645   * show it helps.
+b15cd800682fca Matthew Wilcox          2018-03-29  646   *
+b15cd800682fca Matthew Wilcox          2018-03-29  647   * On error, this function does not return an ERR_PTR.  Instead it returns
+b15cd800682fca Matthew Wilcox          2018-03-29  648   * a VM_FAULT code, encoded as an xarray internal entry.  The ERR_PTR values
+b15cd800682fca Matthew Wilcox          2018-03-29  649   * overlap with xarray value entries.
+ac401cc782429c Jan Kara                2016-05-12  650   */
+b15cd800682fca Matthew Wilcox          2018-03-29  651  static void *grab_mapping_entry(struct xa_state *xas,
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  652) 		struct address_space *mapping, unsigned int order)
+ac401cc782429c Jan Kara                2016-05-12  653  {
+b15cd800682fca Matthew Wilcox          2018-03-29  654  	unsigned long index = xas->xa_index;
+1a14e3779dd58c Jan Kara                2021-06-28  655  	bool pmd_downgrade;	/* splitting PMD entry into PTE entries? */
+b15cd800682fca Matthew Wilcox          2018-03-29  656  	void *entry;
+ac401cc782429c Jan Kara                2016-05-12  657  
+b15cd800682fca Matthew Wilcox          2018-03-29  658  retry:
+1a14e3779dd58c Jan Kara                2021-06-28  659  	pmd_downgrade = false;
+b15cd800682fca Matthew Wilcox          2018-03-29  660  	xas_lock_irq(xas);
+6be3e21d25ca2d Alistair Popple         2025-02-28  661  	entry = get_next_unlocked_entry(xas, order);
+642261ac995e01 Ross Zwisler            2016-11-08  662  
+b15cd800682fca Matthew Wilcox          2018-03-29  663  	if (entry) {
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  664) 		if (dax_is_conflict(entry))
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  665) 			goto fallback;
+0e40de0338d005 Matthew Wilcox          2018-11-16  666  		if (!xa_is_value(entry)) {
+49688e654e48ae Hao Li                  2020-07-29  667  			xas_set_err(xas, -EIO);
+91d25ba8a6b0d8 Ross Zwisler            2017-09-06  668  			goto out_unlock;
+91d25ba8a6b0d8 Ross Zwisler            2017-09-06  669  		}
+91d25ba8a6b0d8 Ross Zwisler            2017-09-06  670  
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  671) 		if (order == 0) {
+91d25ba8a6b0d8 Ross Zwisler            2017-09-06  672  			if (dax_is_pmd_entry(entry) &&
+642261ac995e01 Ross Zwisler            2016-11-08  673  			    (dax_is_zero_entry(entry) ||
+642261ac995e01 Ross Zwisler            2016-11-08  674  			     dax_is_empty_entry(entry))) {
+642261ac995e01 Ross Zwisler            2016-11-08  675  				pmd_downgrade = true;
+642261ac995e01 Ross Zwisler            2016-11-08  676  			}
+642261ac995e01 Ross Zwisler            2016-11-08  677  		}
+642261ac995e01 Ross Zwisler            2016-11-08  678  	}
+642261ac995e01 Ross Zwisler            2016-11-08  679  
+642261ac995e01 Ross Zwisler            2016-11-08  680  	if (pmd_downgrade) {
+642261ac995e01 Ross Zwisler            2016-11-08  681  		/*
+642261ac995e01 Ross Zwisler            2016-11-08  682  		 * Make sure 'entry' remains valid while we drop
+b93b016313b3ba Matthew Wilcox          2018-04-10  683  		 * the i_pages lock.
+642261ac995e01 Ross Zwisler            2016-11-08  684  		 */
+b15cd800682fca Matthew Wilcox          2018-03-29  685  		dax_lock_entry(xas, entry);
+642261ac995e01 Ross Zwisler            2016-11-08  686  
+642261ac995e01 Ross Zwisler            2016-11-08  687  		/*
+642261ac995e01 Ross Zwisler            2016-11-08  688  		 * Besides huge zero pages the only other thing that gets
+642261ac995e01 Ross Zwisler            2016-11-08  689  		 * downgraded are empty entries which don't need to be
+642261ac995e01 Ross Zwisler            2016-11-08  690  		 * unmapped.
+642261ac995e01 Ross Zwisler            2016-11-08  691  		 */
+b15cd800682fca Matthew Wilcox          2018-03-29  692  		if (dax_is_zero_entry(entry)) {
+b15cd800682fca Matthew Wilcox          2018-03-29  693  			xas_unlock_irq(xas);
+b15cd800682fca Matthew Wilcox          2018-03-29  694  			unmap_mapping_pages(mapping,
+b15cd800682fca Matthew Wilcox          2018-03-29  695  					xas->xa_index & ~PG_PMD_COLOUR,
+977fbdcd5986c9 Matthew Wilcox          2018-01-31  696  					PG_PMD_NR, false);
+b15cd800682fca Matthew Wilcox          2018-03-29  697  			xas_reset(xas);
+b15cd800682fca Matthew Wilcox          2018-03-29  698  			xas_lock_irq(xas);
+e11f8b7b6c4ea1 Ross Zwisler            2017-04-07  699  		}
+e11f8b7b6c4ea1 Ross Zwisler            2017-04-07  700  
+d2c997c0f14535 Dan Williams            2017-12-22  701  		dax_disassociate_entry(entry, mapping, false);
+b15cd800682fca Matthew Wilcox          2018-03-29  702  		xas_store(xas, NULL);	/* undo the PMD join */
+698ab77aebffe0 Vivek Goyal             2021-04-28  703  		dax_wake_entry(xas, entry, WAKE_ALL);
+7f0e07fb028951 Matthew Wilcox (Oracle  2021-05-04  704) 		mapping->nrpages -= PG_PMD_NR;
+b15cd800682fca Matthew Wilcox          2018-03-29  705  		entry = NULL;
+b15cd800682fca Matthew Wilcox          2018-03-29  706  		xas_set(xas, index);
+642261ac995e01 Ross Zwisler            2016-11-08  707  	}
+642261ac995e01 Ross Zwisler            2016-11-08  708  
+b15cd800682fca Matthew Wilcox          2018-03-29  709  	if (entry) {
+b15cd800682fca Matthew Wilcox          2018-03-29  710  		dax_lock_entry(xas, entry);
+b15cd800682fca Matthew Wilcox          2018-03-29  711  	} else {
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  712) 		unsigned long flags = DAX_EMPTY;
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  713) 
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  714) 		if (order > 0)
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  715) 			flags |= DAX_PMD;
+23c84eb7837514 Matthew Wilcox (Oracle  2019-07-03  716) 		entry = dax_make_entry(pfn_to_pfn_t(0), flags);
+b15cd800682fca Matthew Wilcox          2018-03-29  717  		dax_lock_entry(xas, entry);
+b15cd800682fca Matthew Wilcox          2018-03-29  718  		if (xas_error(xas))
+b15cd800682fca Matthew Wilcox          2018-03-29  719  			goto out_unlock;
+7f0e07fb028951 Matthew Wilcox (Oracle  2021-05-04  720) 		mapping->nrpages += 1UL << order;
+ac401cc782429c Jan Kara                2016-05-12  721  	}
+b15cd800682fca Matthew Wilcox          2018-03-29  722  
+642261ac995e01 Ross Zwisler            2016-11-08  723  out_unlock:
+b15cd800682fca Matthew Wilcox          2018-03-29  724  	xas_unlock_irq(xas);
+b15cd800682fca Matthew Wilcox          2018-03-29  725  	if (xas_nomem(xas, mapping_gfp_mask(mapping) & ~__GFP_HIGHMEM))
+b15cd800682fca Matthew Wilcox          2018-03-29  726  		goto retry;
+b15cd800682fca Matthew Wilcox          2018-03-29  727  	if (xas->xa_node == XA_ERROR(-ENOMEM))
+b15cd800682fca Matthew Wilcox          2018-03-29 @728  		return xa_mk_internal(VM_FAULT_OOM);
+b15cd800682fca Matthew Wilcox          2018-03-29  729  	if (xas_error(xas))
+b15cd800682fca Matthew Wilcox          2018-03-29 @730  		return xa_mk_internal(VM_FAULT_SIGBUS);
+e3ad61c64abcee Ross Zwisler            2016-11-08  731  	return entry;
+b15cd800682fca Matthew Wilcox          2018-03-29  732  fallback:
+b15cd800682fca Matthew Wilcox          2018-03-29  733  	xas_unlock_irq(xas);
+b15cd800682fca Matthew Wilcox          2018-03-29  734  	return xa_mk_internal(VM_FAULT_FALLBACK);
+ac401cc782429c Jan Kara                2016-05-12  735  }
+ac401cc782429c Jan Kara                2016-05-12  736  
+
+:::::: The code at line 728 was first introduced by commit
+:::::: b15cd800682fcaf27048b05e42f5c208e4c756c0 dax: Convert page fault handlers to XArray
+
+:::::: TO: Matthew Wilcox <willy@infradead.org>
+:::::: CC: Matthew Wilcox <willy@infradead.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
