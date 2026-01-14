@@ -4,102 +4,234 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B89D31A13
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 07:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C8AD31A18
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 07:13:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD3F36B0089; Wed, 14 Jan 2026 02:03:59 -0500 (EST)
+	id 18CBC6B0089; Wed, 14 Jan 2026 02:13:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7E906B008C; Wed, 14 Jan 2026 02:03:59 -0500 (EST)
+	id 13A636B008C; Wed, 14 Jan 2026 02:13:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A73336B0092; Wed, 14 Jan 2026 02:03:59 -0500 (EST)
+	id F33806B0092; Wed, 14 Jan 2026 02:13:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 945386B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:03:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44B12C19D1
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:03:59 +0000 (UTC)
-X-FDA: 84329679798.20.F97CDD9
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C676E1C0004
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:03:57 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nl+KKXJG;
-	spf=pass (imf20.hostedemail.com: domain of nroycea@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=nroycea@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768374237;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E05346B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:13:15 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8CEA21BB14
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:13:15 +0000 (UTC)
+X-FDA: 84329703150.26.4B9D895
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E41EB100004
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:13:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="ACu/1HJd";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=fGR137IO;
+	spf=pass (imf05.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768374792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=pYxNT3iWLQ0QEUjiEbEpnARlU5xv39cAFrdK070asVw=;
-	b=GU1UPXIOFCXdjrBCuK2XTHxGsWoY4FK5di+Sl30W3V0aw1WzjgdrM0mVyjkijes2Rf5YGL
-	0Xtg8ly9JbFpr1XlCE2Wco/1AEYT+UbgSEag+YpUt4LRuOD/c8p3XDPM7WBLq/AXO+ECDX
-	jNBNp/K93qV1fgcgYTNVkjZYMlmQqCc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nl+KKXJG;
-	spf=pass (imf20.hostedemail.com: domain of nroycea@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=nroycea@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768374237; a=rsa-sha256;
-	cv=none;
-	b=5vDjEEONRvwv3+VjUZEzeBvnI1oZeElkW2LFxPO46tSgDoYi0oCW5F9emFDXqLjFAqfW6l
-	IRi7SkVJuWjq1Rm6QZ437hOt7+GVfVnfnf+Mtrgd5oPxpbYAyT8t+2rLptiQ3Aa8MCRB1u
-	U50Am9E1bcZc+wjWKg/FAe2qGETremI=
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-121bf277922so10076458c88.0
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 23:03:57 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cBrf3ZdPsqtWT4qm2B3YhY+GmA0S+6TxnQMYiClYWaY=;
+	b=DVZae7Gm3FRyqKGV9omlBQDUOjeleVo0jh1EfY+fdlO9y9beFdd3AVrrUtgYO2U6aBqv3O
+	EoGqlKdVK5GLJEcawRR1ag4Dn0ySnJPUnwkWjZTu++R8pNPoG8e+qTn0KnCwU24FteAYoW
+	e8VXOlOgHFt1yy9L8XOSCMCync6/Yxc=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="ACu/1HJd";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=fGR137IO;
+	spf=pass (imf05.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768374792; a=rsa-sha256;
+	cv=pass;
+	b=CxegOh2OkSusMzjBw1su9eKjRnPDAC0Z9MRkP/K8wdFsyo/gLTj5buVSXy1G5pa0+hk0X1
+	OqgnanH6mQ+4dWXxZ2HfGnxzodCNIIwef4Pp9mz1mVgmvl/Q/IS4V28LqmVaKRwbrfTs3G
+	RxZPz16zboPTzvjNXw16JLUdeXDY9wA=
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60E2Y3Rm654678;
+	Wed, 14 Jan 2026 07:13:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=cBrf3ZdPsqtWT4qm2B
+	3YhY+GmA0S+6TxnQMYiClYWaY=; b=ACu/1HJde0kKoIvNKKjeXrk/IjqVEkT0Fp
+	b8gAujBjilPElblHuBU+onQdd6lCky3JwGV1CXEsEeraGZJLw9zaOOj+72kIJ7UV
+	3KYzxqIgZrhPI93upvgb1CQQ9Njh/1B++0p/ZypWxJNIiVWV0+CB7/b9OE8gWe/l
+	PtPPnWNnXpU2gMsyAw/lZX/k1wG/rrKVSFC8wWbChYU6UmVZSBW1AaxR+Qx+F4eW
+	OxFnps945zAbHCwxECzUJ24i6scVlP9mlphmUAeKWKigCsXEVDZ4/AfCPjlOvEqB
+	vz4UmWGgYpkh4OSagY5PYlXfIzZ72v3DZJbX7qTNQmv91+omVvPg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkqq54qht-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 Jan 2026 07:13:06 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60E5L0Z1008258;
+	Wed, 14 Jan 2026 07:13:06 GMT
+Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012034.outbound.protection.outlook.com [40.107.209.34])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd79ewqx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 Jan 2026 07:13:06 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LmLte4U6fAoXDoyQ2wa+Ef8OoLClCgFmfboT3bVTlwoO57KRhbi0jlaTr9KhfrJsEWfPXVi+TWQwTHmxmEXa4J/+5BgFEBEJnHiQrbEyb4Fc4fBqlITiBfCKc5UKTTsQ2BeyUVsorkHuWsjT40RgkkBAOG50dP4cJz3xLAhHBZSPCn8jbHeSLSs7fhCQpbNYZIgdqjK1fzInYfKZUs0wdN4qGrXsii6O3+gpEw2CLkPhhnjuDSk9G+ywLlAiJLuizlhk5YWiGwXZzLthUYIEpTeuopWTTN2VUl2AqgN82K8BuzTXKsf0hbcYOdLN7fSjnbEECKUyPzC3TegzgwAPxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cBrf3ZdPsqtWT4qm2B3YhY+GmA0S+6TxnQMYiClYWaY=;
+ b=wzvyEXq7YPHzZi7pfvsJEHFCqCARzYKK2wf7BImaqvwEpV2EihG82ZqVsJmehPbpRKSqyf8nt6IU81SrXCfGLV4JQpVSzT8sj9WPGkvuCeHwOJlDNrNsDp/C2DfW0Jq/fa4Sz1XovzPKz/fXsIu/vLiwTJyCpajvW50R8kSCwi6D8eqnCr+hchFBb+tOLazNBhvSTZgasJ8BAT5it7YCiA9NBOHLREj64PKcPL1XO0clY6dC2dAFq4/d8ojL/S43rVtCqIBQZRVZvSNx32BKjuqtoOOKtl0VM5luYHb63SYs/3W67xAtpx0GIRqIET+CJyc1HjXn8O1xl3f1bAMSRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768374236; x=1768979036; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pYxNT3iWLQ0QEUjiEbEpnARlU5xv39cAFrdK070asVw=;
-        b=nl+KKXJGYtIc6j6qUq7FLfDtqeP3mV+YAsiAr66iYL21uujLmBE0Qhl0D534e2RI5A
-         yy/lyzVCif8cpYfBaYRtqLfmpsbgWShws4ZVcglptOrolsg/2Br4vqPGHU33Vy/HDA1c
-         wKFboulFaLfmv6+TGOlUKOT8e4Sind9JodRIHwvIWJS0sc3t+F5/f1Ol1q3hJ6fsKA7E
-         tUXlL998nQBkZ9woAeDrfbaOBKXYzn0jrYOmtE/QixiANhfrcMpElR6Vha/NyOanzdFf
-         mpXIeZCSsgLsjW4Xq2qwWttcXKd+SICK1beBeDGG8bIqe2GZlX1JW0vDU8hQFuoCVPHu
-         k4bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768374236; x=1768979036;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pYxNT3iWLQ0QEUjiEbEpnARlU5xv39cAFrdK070asVw=;
-        b=lGFUbLN9+FKRrQ+f3nTYpFKHBH65jt+ei0apOAVLE6yMjMvByXaUCpaiy7SX5pf4wy
-         4u2R1EOKHOU/MtFMNaTeJ8oOEHKwSpl7sfah+lMQGM3QGQcyodUZZZnHnl07AilxcRG8
-         o+OPS+qjhz8PiypLkSg5XCwz2PRNnxbEA8KBhyZ1RLs/xCRFvpsGs8HT5ZGGFyoBFBqo
-         +lcCzQAheZueUUDp7olU40A5LNCRLLKaEICP2rkBwtLkbeC/4HxUdhE0pkZeciFGkPgi
-         VanmRJdjH7Kd5XhLhhMxFV2e9lMRM+Qql+2CnP8FySFqEZ2MaF+e0c4wk1Eb8HXDloRl
-         F5sA==
-X-Gm-Message-State: AOJu0YwXC4IN22CJLHno/NzlZwXD+V7M4ByI4Skq4zlU4ZvVKk6DV6lJ
-	ois8NfGOLf4rvuhJTXXAnN+qWqAKYjfroi2IASZZYpqkhlKBeP9LMgEmpw0xhlI2NEJB3kYpsqB
-	RdZCta+hAZAbS3G7Bj+UzRCjteKZMVe/vpKEKjeA=
-X-Gm-Gg: AY/fxX7K0OBdwED2e6PNB16bIou0ic6GrDEUTIHDmYZ1dqt6lucrgOc1uW+OyeMgGSf
-	r5cWjZ9XmIDq1zecHmviGW8pMuY/9tHxyywAIwHouZDWtr0/YHRQqLfx36S9U1FNGO4Y+/h+k2i
-	99kCvmPerPRPU3HhJeh76sZfpUWUT431zlPTBpAEXOBZ1O1lvRHzMl/ZfAE6B9iRpvuIP607HxA
-	YwHI//3rIwCeKnPU50/WtyAzpFQRqdOsALvpbqU8t9vIWfdjF55FyJ/0H8xasrWkDqrZjPp
-X-Received: by 2002:a05:7022:e992:b0:11b:65e:f35 with SMTP id
- a92af1059eb24-12336a23120mr1559347c88.7.1768374236405; Tue, 13 Jan 2026
- 23:03:56 -0800 (PST)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cBrf3ZdPsqtWT4qm2B3YhY+GmA0S+6TxnQMYiClYWaY=;
+ b=fGR137IOcvb8R3C5gH722IBSo8dAu4RWbHtj7H0HxcjBLd7hLCDeaOskZg4ZhbqIs7I1H0kQK3aK3MzUPRucr8vbWLCgmdadI5z2nr2CDyktc2TqvAedz1R554P7rg0JyRMjLE8uLWX/vdsXGE2mw9cnRRKprS47uWFzhFL+pP8=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by CH0PR10MB7499.namprd10.prod.outlook.com (2603:10b6:610:182::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Wed, 14 Jan
+ 2026 07:13:03 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9499.005; Wed, 14 Jan 2026
+ 07:13:03 +0000
+Date: Wed, 14 Jan 2026 16:12:55 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org,
+        Vlastimil Babka <vbabka@suse.cz>, linux-fsdevel@vger.kernel.org,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Mateusz Guzik <mguzik@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 00/15] kmem_cache instances with static storage
+ duration
+Message-ID: <aWdB90WCfsArtwOw@hyeyoo>
+References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
+ <CAHk-=wiibHkNcsvsVpQLCMNJOh-dxEXNqXUxfQ63CTqX5w04Pg@mail.gmail.com>
+ <20260110061600.GB3634291@ZenIV>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260110061600.GB3634291@ZenIV>
+X-ClientProxiedBy: SE2P216CA0184.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2c5::11) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-From: Nathan Royce <nroycea+kernel@gmail.com>
-Date: Wed, 14 Jan 2026 01:03:20 -0600
-X-Gm-Features: AZwV_QiGfFltaJ2lzVzNuYaKV8ZfX3mpfQ8_pJXXGJFhOW8wo1gl4L1K_rd0_IA
-Message-ID: <CALaQ_ho-dx9CTee_-R1VFreX=jB3Zbdjo68fdnnwC1cPoPcjVg@mail.gmail.com>
-Subject: TmpFs Incorporation Of FsCrypt?
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Hugh Dickins <hughd@google.com>
-Content-Type: multipart/alternative; boundary="00000000000030e345064853b66d"
-X-Rspamd-Queue-Id: C676E1C0004
-X-Stat-Signature: swbtnkenmbrg4o5npknk8z7wickqj3o4
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CH0PR10MB7499:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae9f0072-4541-4d62-259b-08de533c5b5e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+/TZS1xx7G19zMAgRDasU9qX1REAEUq4+L6xT5B4nC2Hzo1OWfDr/wJc1qcc?=
+ =?us-ascii?Q?UvZndhaZobRR5iHtXDezQlhx2BAjhCMWQ/pTEILyW0YcVj4OyqMaXmm/of3l?=
+ =?us-ascii?Q?VtQUN0cxVzqSungwNf0DFJDFNvI2wXWUynVX/jBeV1ff/20crjOxkT+IWZOp?=
+ =?us-ascii?Q?/Fryj1TH8UCrDUIfTFHZMT2+Em89rcM7YG2LnnwaBdPkErP3cmHFHnfV2cLT?=
+ =?us-ascii?Q?pnIwnFf4M1RmpFejyG64pkazWw7Rxf2SfZn9QoaqJLRqlq11XQjCQmjq5rXn?=
+ =?us-ascii?Q?4qOjXC2/GpfaT1+9pitQUjBMkUDg5DMXcyhpedGeQEtI8pFbr3D/ydVufXKQ?=
+ =?us-ascii?Q?UIp0VmCV9WqFIhWblgRcl/FUZTnETJnIvmHbl4PY1D2FuKJ0qf4/mBT1taQv?=
+ =?us-ascii?Q?2e39lDq/esfhu40HDlcfq7YVsSJRsQJSNFza99uGc9vR1pBh4H+kWC9dvWHC?=
+ =?us-ascii?Q?+1pX8+kc0rPONbEVSunbReVT1Jsn3QKxuCy2trXahEIkGhClyYdyAmt6iIsv?=
+ =?us-ascii?Q?bIXdSxzDDq12T7uSFRDlhMcXl057BMhWZNcRpXLRJhVSilhLB9m1WhFYM2wW?=
+ =?us-ascii?Q?pYTcuB5Vfg9fAqeGQ3s0CVWtzwM8VL/+rcD7ZSQqaEzQ4KRxKMknTzYUjhHI?=
+ =?us-ascii?Q?Wc48/n/q4jJx+DNTnb2zESRTKt/LDjTup2GM6YtvMYSZhz/m+2VIEKIwCH/F?=
+ =?us-ascii?Q?tYV2+1iekNg49j1dq4HyRY2YgowMozkfNIvJqtIIl/2/DpaZx7PG2lCvKDR8?=
+ =?us-ascii?Q?vw/nvThi2WXLEb+xOnHeTs/ElgtOVYIlFecRhQIZcKg1mEVFao44qegy5GMh?=
+ =?us-ascii?Q?yPdIj0pTCpVZxrpTZxmvgFNZVo5rBLpmBwclGH7h73/nQfIpQ9Cvo2ky9UQk?=
+ =?us-ascii?Q?jbZuU7GnztzWho4ehiErK9ro7IXEzAAXVwArbW5t3yzE8XhfcWZGwy/Ta1Eo?=
+ =?us-ascii?Q?QWF1r8sWwl7fup1Xlhff6mIZ8TcPQ1SYwc4qPFSAGvLRpwcY+cnKK6MVY7I4?=
+ =?us-ascii?Q?aUDhFjk/BsxdMLNJyKQUxtMBm+0ejmY9T4xLXApp5XFvguLzrdnuBQbVb6qV?=
+ =?us-ascii?Q?KywFk23M6nUq/+fqXhpmvajvvTu5RhzFS0Erp+qAVqVnuYcjm9lo9jKGjBpz?=
+ =?us-ascii?Q?8A1jhlNWEKkukigCBClZkZ1/JfxXNSjyOC3fx/Lk2daZQAHrMqHxndqJJie/?=
+ =?us-ascii?Q?0X6NuX9dlLtgEPtjwPAPncaV3glm0izjTuNKzneOWPijUkAD/eiHEe+kO4I0?=
+ =?us-ascii?Q?Fa/sup8nKMnlYiMlg+zzRsV4+wOfYQEYiK+055CVyCkOfC4m8X29bfpdVRA/?=
+ =?us-ascii?Q?3hlnFIFD7br5BN+5Lk6HYOSKd+mBVFPcfhaORSfOWl16JJIrRo2N8WrEahzT?=
+ =?us-ascii?Q?srOOqT5kV3ll7CW0cVhWDLuklVCLSPDK6n6Y6ZD6x9pXwbewVRErh2fSM75p?=
+ =?us-ascii?Q?YReSa4XHvZZl8YOGRCx+u7ig8y81ohVF?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?l5hCHSs/Sqov9RxB8Ow0lOn0nmp2lXbPQRNZoZufX4+aSW539rxMbeUh45qx?=
+ =?us-ascii?Q?zmnPtF6BFUXnxV7cu63Vki5FDEBhrCHfEbvvUxlZ7mUwqGCB1cER16/0nuBK?=
+ =?us-ascii?Q?Ysvd7Z74dGr6D4ahiDsFTojOl2uP813veSqE4ewLKsVww8n+bl5oO0mH1bcL?=
+ =?us-ascii?Q?WU+8UGrf1rCTEYPd2Y9A35ZgJzbzo2x5MpoLT+TX+2HyUz4i9/Gg1zG+eHHG?=
+ =?us-ascii?Q?eAKSSXq5ZGuPAeGrMIqHy/E9vaYq2F0R+sE7DFiswLFV/2R6JcipILs1RVen?=
+ =?us-ascii?Q?8ehJS7Q1qK/yps63z06awS51IrS9+dzPI+u6WiVNqa9FR7e7PTM5gcA+/U0x?=
+ =?us-ascii?Q?1W7FcqwxVT5jxElWXlhcjYl4bwa94qfYCBAOyEyFHHQOkAOmQns9+D0a/hcT?=
+ =?us-ascii?Q?n92c5FQ0O41pLyZL8RjdSwjMiMR/e2AJuyjWRhXAfJfWVSuf9b19ehFcqmDM?=
+ =?us-ascii?Q?GdWitiVDppEE2VNI1xw427aTTSdKxBwooooD/b/ecdserFoQbou5LGcE8D96?=
+ =?us-ascii?Q?/4afj5WhGyMkpa3z22ppymi3d60X/EYnDYsKhdny1b22B8EfjAlxdvY00EtP?=
+ =?us-ascii?Q?//N5vMhf5v9jwwrwX9vk015vsLODOhMpbQ0eLfuFIVMIecOb8NxUM8oV0zGf?=
+ =?us-ascii?Q?ExHEoy6GXcevDr0fsyMGuOEP1IL1F4lCGVxpH/UW7+3d4Y7Lhtnql2HpqwpP?=
+ =?us-ascii?Q?/isfe5H+Wg7uZqj5RoJdgsXiz7jVfwnngJh2mnwbzib6TJJsn3KUAVY1A4T5?=
+ =?us-ascii?Q?mj1xLCSDCG+lYAYIh/d9vQkelZtsLcnv5+ZIGhq61ftWHOzmxliwQpfP4QLw?=
+ =?us-ascii?Q?Ny2CP8q8YkwrA7J5huCqowC6l3tOaEHLqEPsTOMqDBsuwaxhLF2RjoETI2SR?=
+ =?us-ascii?Q?1pLOSKjSfhBLmYrlMQ9wS5BQ+wltEW0kOsKMV5rsr700L25/fXLSqwN65mOc?=
+ =?us-ascii?Q?6SuhsinldE1KqrS4zzorIOfJ/b6UY/qeZws9vgzH++u4i6nAGTeci6JHQVeM?=
+ =?us-ascii?Q?hezIGMiw1tb7BCWK1ERWuo1MOOqf56Od2v9Wm+3WfuVh+MT3HpQ6N+o+NYzq?=
+ =?us-ascii?Q?zon81RaYoDPjdiH4x6SPW0ILeaslwgFE5d2w2D4VwrhTODQwETo8xibGTNij?=
+ =?us-ascii?Q?HGBPae32TDTmYxyEH9TYlbWK/170oUVjpSgg7GAmQCXUa12tyq+vj9pPs/6U?=
+ =?us-ascii?Q?OFFySLy9dV4/Dx5vUXgthAvOFJMhM8YHrBnHVVeIOiq0P2u1MAu8QqFkA7Mb?=
+ =?us-ascii?Q?0Ke1WS/rdO6qKggRifK1Uucb9Ibqh1jqzZkwfXwAQXJCoOj+LvVwQzC57woh?=
+ =?us-ascii?Q?e/xjb5Jn+c0lsx4WZSoQB1gzvryICProtTVkoVpXsoWrOMItUmWqDOUWeULI?=
+ =?us-ascii?Q?Ec7RTfGOsBpao66qIIaAhj7dpUogt3DWATpRFS3WLwhVGl9HEbzNeu7dUJ7U?=
+ =?us-ascii?Q?ODohBgAc7XGpq+Gv6IlFi74Sz4o9QOzJ3j0HdcwTo1r+jCQBZjs08swWf2D7?=
+ =?us-ascii?Q?TxsQ0yj1X7Z8wYOD0ghl/3RDvW7gxK98uDIy5ZbWxsUPdhT22w7DxGZ3G6zq?=
+ =?us-ascii?Q?hL28vqA5+p/KOZWTaYKKL6sD1MDh9a33ylFuv6/fp9sERnUlL95m1Lup9c4s?=
+ =?us-ascii?Q?IfVUVUMQo3fB5VWyYMMkJVRiDfy3iGqsF/QEDwI0sh/EIuXxJiUztZVlyY83?=
+ =?us-ascii?Q?eVPmzRE94Eo93iKNoMjYmHhE8FZij0ooBhmYjK7EPQJ2GVGbovAgjRVVgrSA?=
+ =?us-ascii?Q?RpjRfzZ1iA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	UpbxaB2saEXsRUpE/AgRlQUfQKM4i1oK1MWkA8uEfwMzPMxkt6MnVd7vGRVv8tUC/AHrT+DIX2JzM1Ntl6Uek1uaK0vZg/7AxFmcRvOnk4TSFIdpjQj9A6OVgsR6HuWsHL2xYvI34AdrWNyOSz+EHnblcp9dRN7h1hk5vnqYc7PNFtMwEIRrilffepz6IEnoHcEST3QbhyXoKiP6iq0kRMOIlQ68UfmXPY/gGIBUYQ84u1ewfmPzGRbGxFqd8blrQDh5zjOKfFsmsQKj6vffPeukVq6FT+7PCmCGRtRAWhG8LTAZnzyk2BLwb0vi8IKD8F31Nh/lzrFAl9VJGAIFlR97gP0QYXF37nqnR3rnju6o4pOzb7Jqvk++QSuhlVQvvl617JDZ5jhrn8U+W6Gr38j4f8lelPNznLsVFXJSd40Uo2vCmDVxrlWKyvzeXxgEyNMtFV0lpBSoKsxYyq/4QF0V5JDVTMdHqPicnX2vIh7M3XQ8yGbbLa7/Jvnc07xYULsmd46lD21UJKi3mcr+KVTFgT+bS+Xy8Yn0WfXX+PHsSUXfYqj0m+HcFUW8zgnLXOLpuPVYu7GmqW93NSkndszc6/0B+u+uumRtM42XDQQ=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae9f0072-4541-4d62-259b-08de533c5b5e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 07:13:03.2504
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uvHOHO36J1fVUHRLWPGY38b/fmmWeqyHAvyyb430LWw6s0V8/9MSpSskUxVGHBIOmiONbYVS3UUD61h2H/wiYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB7499
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-14_02,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ mlxscore=0 adultscore=0 phishscore=0 malwarescore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2512120000 definitions=main-2601140054
+X-Proofpoint-ORIG-GUID: pP3a6m8YkaN_h5w800cwR-rnjsf5n6tX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDA1NSBTYWx0ZWRfX54MUSGBsL63q
+ vF+rcnTuQjWJuv5CygaOtQLbo7lgWdnvBqpWq5nVVmzGkB/QEOWfBkclwBMemjzkDUHDxo9E8LJ
+ 9Itv+HbskOhn+gw/C/AgtdIOOF6EToaNeiT0XZVjs73mZiX2aXIYeKnacK0NuZFw467d79SZvPC
+ F8lW/96jdfd8ZbvBaSrtjqGi7rkLpa/qyBTj+tZlODnC3y/YRXqwShXUgi/qPN2yUvhOuC0EKsF
+ c3m9c2TowHkHYJOVN2cIa2kP/fQTLw+L5usmJ60nvWSBc3l/nUjMWFIlIZcixu8nUoT+aOqHjp/
+ eHblqVhkbzk6/bNaRuQlVD7qU+hoNIjXCS0qeB+U7wRN7160HuUM9J7bnWnG/6x/6SDCiiIr0lO
+ 77uhB7/scSZRr7yblq1oh/+BweDeLfOY53iz2nfu2JaonlY0qyPZ+5IogIw59YIwZOXPhrZoSQ/
+ Om9nkdBV0n3k2RxdN8Q==
+X-Authority-Analysis: v=2.4 cv=J9KnLQnS c=1 sm=1 tr=0 ts=69674202 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=drOt6m5kAAAA:8 a=sYDH7GT7DCu-enPuqqQA:9 a=CjuIK1q_8ugA:10
+ a=RMMjzBEyIzXRtoq5n5K6:22
+X-Proofpoint-GUID: pP3a6m8YkaN_h5w800cwR-rnjsf5n6tX
+X-Stat-Signature: w15warzqfk8zs83e8yjwdam9uhdq5a7j
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768374237-568816
-X-HE-Meta: U2FsdGVkX19RxHa3ZadAcd99n+7mGWLEAkEqqdxyQKfR2BYyh3NvLZFK/Zul3q9O5ZYDSq6ICsXarh0EjBQ19zUp8qIo42J6ZyY6kx2AWB5xRI5HEzGwjYanw/pgWYL7VmXwAfDI90MfwwRhsrLJwuvFM4GLoa687cF332MglJfnCGPi3M+3bCRsK7lW5mZm+VV5GXPchx1XvOsKoqiaw7xTur+2sEBu7Hm0OgFR4XSCSiaNlxTcfBN72948E1NYWSTc0GqV7i4BOhefiNo/Oo+YZXuMsZVMCjW8Ju7I7YmtwQ1NAYvLEMHPadlZLo4M/RcWdArgntDJu++6BiZ4WdVtyG5P5sFZsWA8O/FencUbLxmvZdi/85m96v+SI/78cBFkC3k2jIAVcPScAQX4DNFpCYiC/zY1CQKV2buJ/W3DYlbavmdMbc3kYaraBnXc1NnFedwKXC3l8enM5gcx4SdobX9iDzdoPpoTSef06aIzA4xo/nh2iVhJkmpW+TFH00zur1OcfUhO1VC93gBL1d8Mgc7vsS/idZbdL1DivuY+NKFKVJGIMtLYAa825ijhKNA4gS4y3yVJwVij02YjnxCEq5xLPjwsW8G0aBKWo9CBRxOAXYgFhgl7nf1+AHGQtl5P7VgzjCwqNNl/Rm2D4gMH4cRgtK6kKhokvMbAnLZbUk5gNeZrbQ3oiN/xM7FSiTGQrwlrevDZE6QcKZsn56P9RJtl1tMk7Q3GtXicU9McLGJ6N6BA5XWAhWHVcjoDh6HiH4a8VcRGrUe4SYuau2S6NGJajLfy95BgzanUoZjM+Jl4BEoglSDqyoAFosZ66HGUZGwq87d/S7HGopG+t+cZ9aoLq7oot+/WSVy4/eYsvvYeGox4f2sgnLtmChgOlPjnjbxJDO9kOEYuLNxqXurCtNRKty286RuwfFDyHxiq/7TGh8854YFyxOM/3CdPNRsL7FSOHU3Ntb5b3IV
- EmUOHzn8
- FNQT16HTfbf2e6Ohvog7JydXh9/rziowOUdd6sMT4Qidha6LbnFOAGrzW3sh06wq9X4oKE4y3K2m65iCv2GB51wYNMqxn17P5gU6/
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.007489, version=1.2.4
+X-Rspamd-Queue-Id: E41EB100004
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768374791-303951
+X-HE-Meta: U2FsdGVkX18NdEaC/Mll9mLkZwLRfB/4tb2gPkGRTKTmDSXfK2rty0JB7wtaUgosEauuLG88MX1JISs8mx/P1ObNLJb3LcvdcUv10aWZz/bdrOhlNKdYgStUn2fgkbYlmrw5F5sVFPFQ7mBZBmoxyKlVGEcBWQzO/rRQPRU4TFDxCz9HbBLVzZEo06ubfDoW4ZRQzFt8vVnXVb48/a1dzTcn/ANEEa1q5YzeUBeakYInii2BS1XEELkpKCxZUCPe102NaSKez2GKbtsbBWKZhSw1AerIGZjhRUaTq5/brJWaDLUjaiW9OzD3wMgBsmA+QAoNp75U6hnGTcOZb/XkvaMjIpkDZP1pxYYmMUdRfOZqJZEVgkLjWwf1LLb3f/udxcS+jrx1atWGe5H08X20VqWWWGC0iOtX4JUxK9sERGp5oNqGXyLh/4L6IbmKXzlcLYTZXAOno8rLatRJEb8HIfNHgWTYupQWYwcLKHx+0OsRPlFigpIBOMBNVfacLAICqyuD+KYEC4Qw63HYI7VIxmDCgzHHcR7bK01uHxDuPoW2eLaWW+MGDCy4wdOVXYFz/OFxB8ZuoSDcmLZTGDANrrgR3y90QVFWuGhlWfnbjS+tnRomny7/R01WJwOPh6ZNNNuXEqnQECUAutqH0Izz7AFWRtUQUU7HXwuhFCJ7xPpVrTjE3wabouwXAhdJlBKcbwO+HwTZfxxQwuD8NmPeIG1F5K110mw//2JM2bEDjRH5zQy2/ShycjbaGOCRoEr2grsypbsuLFpNueybrBm661D8SE6kJPxRtEKVNBZVCha1sEKFj0u2NNOA31AV6blnSRL76EYQggHkngwPix6FTGJNjTaQuJ+RbFa6+OW3cV4Xl+cbSB/F1aa8Dae64fdU/4wpRmJp4PQH2FcEDnkttBAuNrppY+ks1TZQ8pvWEQpCBQYi9RvLRk8s5M2xkLRjZeb/ljSNssjHhT+qse8
+ sBCL/GMA
+ Eq3jlU1OJjNRkWw5/1KD5VG0fRWEUr/WW450tOihFinet4XyP0V7ApFwYjxNO39+w9TGaha4TYu75aBNJxdZl82/Sa2mlgqFEKJQdsrJ0umzWgtQHHb1kE02xtGRLe9i84I78fU7AJe2Xxn4g0YPlOhGJC6sA4R4J+xS1wUjwTScRu/oNIFh8sLaSLWv4u5ik5Acgz9PBCPmzsHS5/zAKVnQE03gnB3dQ4GcI+aZKjS71YHuvLn8oZNu0ClikLwR8A6+8rSPLTIukxUizjXooDr+pnHJC/mbvxdTWAvaGHzHYnuu3wEyjQ9U5qbhYmyoQkqMDQCAxEve4ZsX9tH7xBsinqmmIJw832NCoYjwIMywK0wNFZzYTKR1uiq0GD/f4KTpRnP+9QV+pLpjktpIm92rfm9pJZvJtsBg5ghrHRBypdaWpIRYxaSRkPmlYc7ugna6cS129qrjPId10uau1Ycp6ghtzqmNiUR3p4vgqjk2GT/ShmPJmR122SyGXgxFcIpiDY/kq2ipepM3KEjot2PtS0u5FtHOqOanK0L+f+Gm5vCOTsTil1LGaX7ZEj9Rv7wJD/fZbFCgSSxiacYjxIReiEKqtZd/wl6a1ZAMiciUu7k5G8A7c/+VPnBBwoxkZaz4uL4k9kk9rC2Koz4yesK9HS8cjPnUPwh6AmQrpfQd5S4KgSWu9keBffAKdbxe23ulQnk+vLyNwbFIh3Y/c7Kf/o7upxh/uXjOx
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,55 +239,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---00000000000030e345064853b66d
-Content-Type: text/plain; charset="UTF-8"
+On Sat, Jan 10, 2026 at 06:16:00AM +0000, Al Viro wrote:
+> On Fri, Jan 09, 2026 at 07:33:41PM -1000, Linus Torvalds wrote:
+> > On Fri, 9 Jan 2026 at 18:01, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > >
+> > >         There's an alternative approach applicable at least to the caches
+> > > that are never destroyed, which covers a lot of them.  No matter what,
+> > > runtime_const for pointers is not going to be faster than plain &,
+> > > so if we had struct kmem_cache instances with static storage duration, we
+> > > would be at least no worse off than we are with runtime_const variants.
+> > 
+> > I like it. Much better than runtime_const for these things.
+> > 
+> > That said, I don't love the commit messages. "turn xyzzy
+> > static-duration" reads very oddly to me, and because I saw the emails
+> > out of order originally it just made me go "whaa?"
+> > 
+> > So can we please explain this some more obvious way. Maybe just "Make
+> > xyz be statically allocated". Yes, I'm nitpicking, but I feel like
+> > explaining core patches is worth the effort.
+> 
+> Point, but TBH the tail of the series is basically a demo for conversions
+> as well as "this is what I'd been testing, FSVO".  In non-RFC form these
+> would be folded into fewer commits, if nothing else...
+> 
+> I'd really like to hear comments on the first two commits from SLAB
+> maintainers - for example, if slab_flags_t bits are considered a scarce
+> resource, the second commit would need to be modified.  Still doable, but
 
-I recently saw the PRs for BTRFS relating to FSCRYPT, and thought I'd
-explore the fscrypt package.
+I think it's okay to introduce a new cache flag as long as it's simpler.
+IMHO it's not a scarce resource (yet).
 
-I started with `status` before moving to `setup` on the `/tmp` path which
-is tmpfs.
-As expected I'm sure, I got: `[ERROR] fscrypt setup: filesystem type tmpfs
-is not supported for fscrypt setup`
+> representation would be more convoluted...
+> 
+> Another question is whether it's worth checking for accidental call
+> of e.g. kmem_cache_setup() on an already initialized cache, statically
+> or dynamically allocated.
 
-Looking in https://github.com/google/fscrypt, I saw:
-https://github.com/google/fscrypt/blob/ea916da7fa9844cc3da608e75510f478c7b09f7d/cli-tests/t_not_supported.sh
-which coincides with my presumably expected error.
+No strong opinion from me.
 
-But I also saw: `The source files are located on an in-memory filesystem
-such as tmpfs.` in the main README, which makes me wonder if there is
-intent/plan to bring fscrypt to tmpfs.
+> Again, up to maintainers - their subsystem,
+> their preferences.
 
-I'm kind of thinking a use case of having keys and/or a password manager
-database on external/encrypted storage, that gets transferred to some
-random path in `/run/user/<#>` (tmpfs) on login where it is encrypted as
-well (then the storage is unmounted/locked/removed), and the respective
-program that uses the file(s) would point to a freshly generated config
-that points to the random location.
-
---00000000000030e345064853b66d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">I recently saw the PRs for BTRFS relating to FSCRYPT, and =
-thought I&#39;d explore the fscrypt package.<div><br><div>I started with `s=
-tatus` before moving to `setup` on the `/tmp` path which is tmpfs.</div><di=
-v>As expected I&#39;m sure, I got: `[ERROR] fscrypt setup: filesystem type =
-tmpfs is not supported for fscrypt setup`</div><div><br></div><div>Looking =
-in=C2=A0<a href=3D"https://github.com/google/fscrypt">https://github.com/go=
-ogle/fscrypt</a>, I saw:=C2=A0<a href=3D"https://github.com/google/fscrypt/=
-blob/ea916da7fa9844cc3da608e75510f478c7b09f7d/cli-tests/t_not_supported.sh"=
->https://github.com/google/fscrypt/blob/ea916da7fa9844cc3da608e75510f478c7b=
-09f7d/cli-tests/t_not_supported.sh</a> which coincides with my presumably e=
-xpected error.</div></div><div><br></div><div>But I also saw: `The source f=
-iles are located on an in-memory filesystem such as tmpfs.` in the main REA=
-DME, which makes me wonder if there is intent/plan to bring fscrypt to tmpf=
-s.</div><div><br></div><div>I&#39;m kind of thinking a use case of having k=
-eys and/or a password manager database on external/encrypted storage, that =
-gets transferred to some random path in `/run/user/&lt;#&gt;` (tmpfs) on lo=
-gin where it is encrypted as well (then the storage is unmounted/locked/rem=
-oved), and the respective program that uses the file(s) would point to a fr=
-eshly generated config that points to the random location.</div></div>
-
---00000000000030e345064853b66d--
+-- 
+Cheers,
+Harry / Hyeonggon
 
