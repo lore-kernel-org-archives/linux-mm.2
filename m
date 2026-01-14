@@ -4,110 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28391D37E3D
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 14:58:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53DE2D37E3D
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 14:59:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91F436B0088; Wed, 14 Jan 2026 09:58:00 -0500 (EST)
+	id BFEFB6B0089; Wed, 14 Jan 2026 09:59:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8ECFC6B008C; Wed, 14 Jan 2026 09:58:00 -0500 (EST)
+	id BB5FC6B0092; Wed, 14 Jan 2026 09:59:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 820496B0092; Wed, 14 Jan 2026 09:58:00 -0500 (EST)
+	id A98206B0093; Wed, 14 Jan 2026 09:59:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 717BB6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:58:00 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E52FD8BF76
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:57:59 +0000 (UTC)
-X-FDA: 84330874278.04.85B7178
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3D78520006
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:57:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Yuoc2KhH;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768402677; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 979C16B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:59:22 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 657511A02EE
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:59:22 +0000 (UTC)
+X-FDA: 84330877764.20.D144325
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D96E21C0008
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:59:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=EgpdmmB0;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf21.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768402760; a=rsa-sha256;
 	cv=none;
-	b=7t847MOVEB5ZBq9shKp2uLpvrrEaMa7mqIRM2eoIbZGq6fATZ4TjHA/lVFj3KwpGKMbxQM
-	ww7jjUr7DUy/5i8+UyPS88IMkXl8eC4IZEaeclRjhVL7eMweeqLVuY3IRTC7KM5WROPPOn
-	guhK8DmpXqA9kyxhdU57JPag3RQXu0A=
+	b=Eh+Obgok8eYo4T+Y7Dmc0xUvnX91Yrjcw8Qo+JFxyFkmXmkX676Wrf400WbhYqHrtSdf55
+	O0OTy95Dw1LhBr1z3epE7Q7Vmcayj+IB0qQ4v39PPX/TP4m4wMqlFKwXyWkGeDTOE3k5u6
+	Nda2vBkVXjkSlAAeyyJ7UrkiJ9ae3zM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Yuoc2KhH;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=EgpdmmB0;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf21.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768402677;
+	s=arc-20220608; t=1768402760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0kMOOHovPFqNdPW3v419Vpdi4zpW0ewRV/ZPKYJAiDo=;
-	b=h/fmAqAFfWhXqbBEBeBFMNS+TYOdrW02E2eEAniJMs9ewszPXSsIR/WM3U9/SJMHibdlvX
-	x3zYNHnG0/9p1zt8olLkFkxU5co/ykUqqzJRobfr6VMQdheiN/IaSwa/A/OhPjX4r0AxMY
-	p/s3tieFEnn0SXip/fpLltYWcQ89z9U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768402678; x=1799938678;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=FslN2L09yYFbdDNdXcQIOdZUN9q5mwNNHyvbq2eRO9o=;
-  b=Yuoc2KhHmKGeXCiklF3Munenr58FKg2HAbHxA1KCWspC1v+uZbRC7sGX
-   xeUWMi9Jo5NiaYkrxcGFMwh5XAjiaiM6CQ6H5GLU4h1nRZkuHAKaWF+xR
-   7+okPpX+h3Xs+FQuDn8AUTxkb1oCEiCCzK/o2Arp4g32BsTUpXr1+bxDX
-   pP262BgfLZ5eLIA7CXoBYECiArv+9MgII/97kY+LnfMq142JsFqvAJ7XG
-   +Y+6MS9HxH1OQJiZyKBGXtfhvseS/7QDUZ++szWoqTvbr2S1JlqLH0vsf
-   mgjFjXJMegcfHBDachfyENeumXLr8v2GYdIBDH3xJs8iPy2gD1+hSzoK9
-   g==;
-X-CSE-ConnectionGUID: hIF6OokBT8ujniA6tgGFag==
-X-CSE-MsgGUID: QE8kMK/3TiKBI0HB5dDEPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="69622454"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="69622454"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 06:57:56 -0800
-X-CSE-ConnectionGUID: s1J9TIOqSo6jHPDZE2Z4JA==
-X-CSE-MsgGUID: +l7YJBXmRZSVvVtkW6Wg2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="204723017"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 14 Jan 2026 06:57:53 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vg2Ji-00000000GW8-2mSy;
-	Wed, 14 Jan 2026 14:57:50 +0000
-Date: Wed, 14 Jan 2026 22:57:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: mpenttil@redhat.com, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=gmDWQxZXl+iq5JtzXMv1UfK4Kj8WDaLba3HxCXNbTAQ=;
+	b=no9yeaEfHoxvUom8vGGw87Xc50J3OxnuvXUwNP639wqs359p/WOFBMtUsbU3/qcp2mVEZ6
+	MHRAzEOnMFonLczJB6UIRfyLYyuBJFOrwQ4j/11/PYiq1t4eVTpNyulCP1Mx/E7dANQqoh
+	TufIM+2JyI5fKZfmqvfLzWHwzCxvJlI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1768402760;
+	bh=gmDWQxZXl+iq5JtzXMv1UfK4Kj8WDaLba3HxCXNbTAQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EgpdmmB0iMS3s52XNQ4OgK/nv1/dt8wN4bABj6J/VpYqJeI+Lwqj6hh/z22KzuxbP
+	 D6VTr8rQAP07R2bVV3x7I8EvA50BSRZK9xTbbr6fZJ0J7gjOgIGDXUO88eKKlcYz1+
+	 MbBLEcMlJGKQ/pCMgU+fY/bsJBXBDmla5XwPscX4mBRUZphWBCU4yCnbzrvRyuCrVq
+	 JsEvgMAbJM5OQYBYpIhaidMLaCaOpo9DDEnyH/TNZ78Y/DX45AUhiAVF2gCVXiF/Fh
+	 KaD6/13uRKUplAwxGTUm6/bKtq7d1jnydfPPube5mmOxltUe7YTZ6/GpBiR6H3lY1e
+	 qmCxRnV3dyRnw==
+Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4drq5N0jGHzkxF;
+	Wed, 14 Jan 2026 09:59:20 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
 	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH 1/3] mm: unified hmm fault and migrate device pagewalk
- paths
-Message-ID: <202601142231.LW22PqTJ-lkp@intel.com>
-References: <20260114091923.3950465-2-mpenttil@redhat.com>
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: [PATCH v16 0/3] Improve proc RSS accuracy and OOM killer latency
+Date: Wed, 14 Jan 2026 09:59:12 -0500
+Message-Id: <20260114145915.49926-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260114091923.3950465-2-mpenttil@redhat.com>
+X-Rspamd-Queue-Id: D96E21C0008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 9uhqip17pqptkpdm55f36x3ond3bacjy
 X-Rspam-User: 
-X-Stat-Signature: qagyaiuaq9e4nqe5w66e7rcxpzn9qbqc
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3D78520006
-X-HE-Tag: 1768402677-866367
-X-HE-Meta: U2FsdGVkX190EvXj7xERkMgeGrB7wvcQMiwp52gIxPta1qWFWStpXo4PuAYvOtCADEryHKehheV1NjlYssOZ530h6fdpQFSrwHTafiYKS0+zBIJoVR7OWiNfKjvKHHsucdMbHk2BaLcUZxgeOj7sFTs/2SzQhkAYM4Kyf4W1lxrZ1sdF5deKDA8CN5HCBbvdWoM4DCP2Lnl1mQXznMxu36IbwI0q5NAsmXvLNJbjRs9kgYC49/B3r0/RY9HvyBTn4cEQ7Hx7bnXYi5aI9Xmrzp4XPKEZaExUmDjgkoIboZYerJF94Ajv+37LKV4e0Gyv1Rh2ArWGmcSq6uSdgBE2/DQxzO9avTj9QbFYdAGl3Fqf907ZI5NRFue1uxuh38xpBrK2ejASSvbx9hQz6SeimL8UnVqg8hZL2GUkjS+Psyk7R/0i23hn9iQ4875LoqY8ObFfok4xnpxB5clr8ie0kZ29ghKhKlmk20P5+YGsHti0wryr04T6BJoyZu3nZDpjnvYPPkhAOTy8lbCO3vaaeKIqml0qzMWqmPkUrcvi2SFWtyXr33jFxnpONsu3p9OJrsWg6U/syGCCeSdAvRb0cLSToMf5fUzndvs82DP01qGgRd+aAQTRAPDPb2/uu72rHeQ1zpCEYisGWdvKg1DqLM/tN4VmixlJMycosekoqd/wGZeeodA6kre1/eqmrL35wH8wWB6CV9ste0BAvGSpDZmdKAdsH46w8+RzMNwEyxn8FgnybTcJveaYwK66MPyIen2awOy6z3p0pIG/1DSfaFxe+GR1J2CsKbdug5Onfk6n1PRqWB4UFRRfJXSuGZFnxUB/YvaFtS2Fa5J55CRLIQaFbkA0mPFBsVQU9xZD0BdDI5YcDbf6NLjEzD1pBeunOYbMkTk+TwmC54KKyfN0e8/S1hHyf0BvR+SYmpm1v31uaMnO+SDZQIwSPVuX+QUS98sKxmSciCIquZpdZiy
- 3EIdUxJK
- boBcKLmx+7QBb2NtKN5IIl3179KvqQFI08E2Gi9NsasFXh636GD5rKrehePsfyu4mkG3ysa8woIm+/aBhNHY10G/JQx3e7EhFSJ1nRV1n+w8ytoLFB4EEpFgzsgD0HsGeQE824is13+D/Gcpw9xHxSPHD1tBZ/Ako4yL01vKBEsnibBzRrXrQ4MSqfWPwY8HBoqENAGc9relUB0Q8YF9T+qG3Rzvp+FyVmRpQd9F5wOkM7t3C0un6MEZREjYAdXczqdRExVBAKgvE1dhmGyR0mXZfnIkpIRtLD4t9GqFdNGN7nzRId0DugSjHBt8KnUoffuD9PVXIsBo6GkwatlAsCV6I8MaC2wazldqKW8mnJB4G8Ek+sNMQcjYVErS7MKeN6uF16EWhVH14aAq79r8Lwqmc7Q==
+X-HE-Tag: 1768402760-333901
+X-HE-Meta: U2FsdGVkX1+f6HruuwD8Yaa8TdExH/1qHrXXr7q8fb9+u+BxqzMAHhQ4wD0CBWzo/zeCXoOd0l68+Ej8GclszulT3TFh73cX2KFT+t083lw+qHMwmVEXFNuPQQjXgq1wpUzDTdSuVM/pNGtwA67TpSGiHjprdnvtgVfkN5epnAaP1gvarWLu69y1cUWHoD2Z04WO3TlptyKLWVvtI/iw5JwZKlIMNvSw86psDldTKvj4KTrM18eP2+rxC/pJPjJAKRyQSh2b8mmJSSReNcy69AtDFUprGPSKxrRg6TaBueNkj6EZ7aLOeRcZq8e0roBr7LkipH30NHzrkWXlEIbSwPSMURFJNr4zcpAkFiXmJ1sOoNlBgyasED4vzHymHLGV/nOPFKGZpImBeQO0gZjT9KY/CSQzyjNXmTB6Xw7mE3DwboExn9qqczpEN/JqjeNAhM5MOzrHpX7VVXqrrQuhKwydEgVLGmILhU83eN84OJ5yOQCjMuHayihPBpa1chemPFRzrAgOcJgBIJlUgZC9Pm/IQS8hlmPQvOAaK5I9cRun6BMRX2lcoWiPoQuONSLWhelqtOwFuS66fuTBIUZlpypluF1WlljlqaKTTcG0Oot92Naz3g/TIhtfkRw7SJvrQJi3bf88RqIhbA5KFZzMfLBMlR17qjlyQzmV1n+E68cyVPDe++560fiekwj0v/gKc1c+FodhxqYvl6MgYHxtXx56JFe9jRPxHvNkh4e00PMlBg6jN91iRxx08D5WgOy3XvaZWAd+ayu2fyIyLGgyEuz8ZWNvqhlIOceDyEO42OFQEI5Wwryq4Kkb/GPnQjOB0+NLNnwbmZuSGgVI2ZYnuiNEZfK7LXA6SCtkmxZflXjsV9KaVoWQBR5CxT+CJutwNlX16jvFtcsUy8483G1gMtFMNpfJ7Po8B0cbXaFjvFDnWoCPAo6mhGYPyzHgVZnalgDHQS1A4KViBxqgYRw
+ C1OzmFQl
+ JcmKifif1AEalbutV/tGYECxwrtFvi0tvcc/JCQ8cFXnq1w0gl3A05A+3c5lbb4pYXtp28E9Felf8lfbJYeoUzIyiuHKRkABzTHL43Jy9M0Jy0mdNJphMkOb2BzrVFCnG+6ubBorFgEc+mlTz2l56tB8f6ZsUjrbl1lZH1BOVUebV3kMROaQ1CHXiD+KFOLLpYYMt0dW9XrHVakDsP7B/WhYXK57xhK5uXCjhisqDV8JldgmzjniA4YTESlRMJdLVVJ1hrqtnQz6zQGrO35QljllfAhl+wqJ+tJngLr/mb13Mc8eFlqNr+vUpKA9bkEMfNAUAn563UoJnEvC0STE7D6zKisdIWVXvHGDZGMOvvLec0ob2TAFIoTR7qrkEYnXpw9oi+W+ZVUdrNYACnt27SEICNPzbBn5KhJ+t0I2/X1Pous4U3yJJsivGFVmA5bEXUU/R8J92mRuNE8SfOYUuZ7SelAs0IjuHmlYx5X68FYsdxyin+vKS+vO7G/ImHOgVJTDT57bamlCfE58VgjhocY5pFMTcWTgGTI/o27BEDEX810yUSfuJOnY050LBRV4YyfIRxn0aJcc8PBflmDn/hCkTu1wxVmNGiZBpx3+ZnEY+V9I7MOWenFxo3OAGkcy7eysgOLLyUzLmptSPMcMQ68qdZbRvAl5Qz3x0RNSh7ik42Q1nA5fWXxsSzarQeMmrkd8Savb2Mqk0tDmEUrqcH0tMTBZ2K/EaPRvk4IeJswWQSrLZ8r+xBUVOEEP4kZOTvOrJTVrortriVSTRmaNp7u2cNOwehjYVNb/wIgV3mJouw0HosbgV7AG+hLXtHDq3/JjnJeRHlJqCJcPIbtdkphK+K9OQASVrzgvdm+7/0RM6tBJYTjqutLzRWD3CpcXouwEu7/IzdHnCReI3kasCrSyfIoAfeMk41ECEx3gA/We13NJLOTN24QxLUaVN3DO0Q6U58/Mxlg+fBGZgdpE7uLVdyije
+ d3/U9hmp
+ 91fQpC3gLNs1hspk4gFxRCUJP9kg2y18zUXl8yXfURHeKWREuLGaIH6KTX0xjVqvuENCxiYiX2m3LGvO6HTClA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,105 +121,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+This series use the hierarchical tree counter approximation (hpcc) to:
 
-kernel test robot noticed the following build warnings:
+* Increase accuracy of approximated RSS counters exposed through proc
+  interfaces:
 
-[auto build test WARNING on akpm-mm/mm-nonmm-unstable]
-[also build test WARNING on linus/master v6.19-rc5 next-20260114]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+With a test program hopping across CPUs doing frequent mmap/munmap
+operations, the upstream implementation approximation reaches a 1GB
+delta from the precise value after a few minutes, compared to a 80MB
+delta with the hierarchical counter. The hierarchical counter provides a
+guaranteed maximum approximation inaccuracy of 192MB on that hardware
+topology.
+ 
+* Implement the OOM killer task selection with a 2-pass algorithm. This
+  is a latency reduction improvement of the OOM killer task selection:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/mpenttil-redhat-com/mm-unified-hmm-fault-and-migrate-device-pagewalk-paths/20260114-172232
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20260114091923.3950465-2-mpenttil%40redhat.com
-patch subject: [PATCH 1/3] mm: unified hmm fault and migrate device pagewalk paths
-config: parisc-allyesconfig (https://download.01.org/0day-ci/archive/20260114/202601142231.LW22PqTJ-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601142231.LW22PqTJ-lkp@intel.com/reproduce)
+Testing the execution time of select_bad_process() with a single
+tail -f /dev/zero:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601142231.LW22PqTJ-lkp@intel.com/
+    AMD EPYC 9654 96-Core (2 sockets)
+    Within a KVM, configured with 256 logical cpus.
 
-All warnings (new ones prefixed by >>):
+                                      | precise sum |   hpcc   |
+    ----------------------------------|-------------|----------|
+    nr_processes=40                   |    0.5 ms   |   0.3 ms |
+    nr_processes=10000                |   80.0 ms   |   7.9 ms |
 
-   mm/hmm.c: In function 'hmm_vma_handle_absent_pmd':
->> mm/hmm.c:423:27: warning: unused variable 'range' [-Wunused-variable]
-     423 |         struct hmm_range *range = hmm_vma_walk->range;
-         |                           ^~~~~
+I'm sending this series to gather feedback. I plan to re-submit it for
+inclusion into mm-new _after_ the next merge window closes, so the bug
+fix "mm: Fix OOM killer inaccuracy on large many-core systems" can be
+tested in the current release cycle.
 
+Andrew, if you have a prior version of this specific series in mm-new,
+please drop it for now.
 
-vim +/range +423 mm/hmm.c
+This series is based on v6.19-rc4, on top of the following three
+preparation series:
 
-53f5c3f489ecddc Jérôme Glisse   2018-04-10  369  
-10b9feee2d0dc81 Francois Dugast 2025-09-08  370  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
-10b9feee2d0dc81 Francois Dugast 2025-09-08  371  static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
-10b9feee2d0dc81 Francois Dugast 2025-09-08  372  				     unsigned long end, unsigned long *hmm_pfns,
-10b9feee2d0dc81 Francois Dugast 2025-09-08  373  				     pmd_t pmd)
-10b9feee2d0dc81 Francois Dugast 2025-09-08  374  {
-10b9feee2d0dc81 Francois Dugast 2025-09-08  375  	struct hmm_vma_walk *hmm_vma_walk = walk->private;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  376  	struct hmm_range *range = hmm_vma_walk->range;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  377  	unsigned long npages = (end - start) >> PAGE_SHIFT;
-0ac881efe164685 Lorenzo Stoakes 2025-11-10  378  	const softleaf_t entry = softleaf_from_pmd(pmd);
-10b9feee2d0dc81 Francois Dugast 2025-09-08  379  	unsigned long addr = start;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  380  	unsigned int required_fault;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  381  
-0ac881efe164685 Lorenzo Stoakes 2025-11-10  382  	if (softleaf_is_device_private(entry) &&
-0ac881efe164685 Lorenzo Stoakes 2025-11-10  383  	    softleaf_to_folio(entry)->pgmap->owner ==
-10b9feee2d0dc81 Francois Dugast 2025-09-08  384  	    range->dev_private_owner) {
-10b9feee2d0dc81 Francois Dugast 2025-09-08  385  		unsigned long cpu_flags = HMM_PFN_VALID |
-10b9feee2d0dc81 Francois Dugast 2025-09-08  386  			hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
-0ac881efe164685 Lorenzo Stoakes 2025-11-10  387  		unsigned long pfn = softleaf_to_pfn(entry);
-10b9feee2d0dc81 Francois Dugast 2025-09-08  388  		unsigned long i;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  389  
-0ac881efe164685 Lorenzo Stoakes 2025-11-10  390  		if (softleaf_is_device_private_write(entry))
-10b9feee2d0dc81 Francois Dugast 2025-09-08  391  			cpu_flags |= HMM_PFN_WRITE;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  392  
-10b9feee2d0dc81 Francois Dugast 2025-09-08  393  		/*
-10b9feee2d0dc81 Francois Dugast 2025-09-08  394  		 * Fully populate the PFN list though subsequent PFNs could be
-10b9feee2d0dc81 Francois Dugast 2025-09-08  395  		 * inferred, because drivers which are not yet aware of large
-10b9feee2d0dc81 Francois Dugast 2025-09-08  396  		 * folios probably do not support sparsely populated PFN lists.
-10b9feee2d0dc81 Francois Dugast 2025-09-08  397  		 */
-10b9feee2d0dc81 Francois Dugast 2025-09-08  398  		for (i = 0; addr < end; addr += PAGE_SIZE, i++, pfn++) {
-10b9feee2d0dc81 Francois Dugast 2025-09-08  399  			hmm_pfns[i] &= HMM_PFN_INOUT_FLAGS;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  400  			hmm_pfns[i] |= pfn | cpu_flags;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  401  		}
-10b9feee2d0dc81 Francois Dugast 2025-09-08  402  
-10b9feee2d0dc81 Francois Dugast 2025-09-08  403  		return 0;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  404  	}
-10b9feee2d0dc81 Francois Dugast 2025-09-08  405  
-10b9feee2d0dc81 Francois Dugast 2025-09-08  406  	required_fault = hmm_range_need_fault(hmm_vma_walk, hmm_pfns,
-10b9feee2d0dc81 Francois Dugast 2025-09-08  407  					      npages, 0);
-10b9feee2d0dc81 Francois Dugast 2025-09-08  408  	if (required_fault) {
-0ac881efe164685 Lorenzo Stoakes 2025-11-10  409  		if (softleaf_is_device_private(entry))
-10b9feee2d0dc81 Francois Dugast 2025-09-08  410  			return hmm_vma_fault(addr, end, required_fault, walk);
-10b9feee2d0dc81 Francois Dugast 2025-09-08  411  		else
-10b9feee2d0dc81 Francois Dugast 2025-09-08  412  			return -EFAULT;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  413  	}
-10b9feee2d0dc81 Francois Dugast 2025-09-08  414  
-70d15e6adfafc3e Mika Penttilä   2026-01-14  415  	return hmm_pfns_fill(start, end, hmm_vma_walk, HMM_PFN_ERROR);
-10b9feee2d0dc81 Francois Dugast 2025-09-08  416  }
-10b9feee2d0dc81 Francois Dugast 2025-09-08  417  #else
-10b9feee2d0dc81 Francois Dugast 2025-09-08  418  static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
-10b9feee2d0dc81 Francois Dugast 2025-09-08  419  				     unsigned long end, unsigned long *hmm_pfns,
-10b9feee2d0dc81 Francois Dugast 2025-09-08  420  				     pmd_t pmd)
-10b9feee2d0dc81 Francois Dugast 2025-09-08  421  {
-10b9feee2d0dc81 Francois Dugast 2025-09-08  422  	struct hmm_vma_walk *hmm_vma_walk = walk->private;
-10b9feee2d0dc81 Francois Dugast 2025-09-08 @423  	struct hmm_range *range = hmm_vma_walk->range;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  424  	unsigned long npages = (end - start) >> PAGE_SHIFT;
-10b9feee2d0dc81 Francois Dugast 2025-09-08  425  
-10b9feee2d0dc81 Francois Dugast 2025-09-08  426  	if (hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, 0))
-10b9feee2d0dc81 Francois Dugast 2025-09-08  427  		return -EFAULT;
-70d15e6adfafc3e Mika Penttilä   2026-01-14  428  	return hmm_pfns_fill(start, end, hmm_vma_walk, HMM_PFN_ERROR);
-10b9feee2d0dc81 Francois Dugast 2025-09-08  429  }
-10b9feee2d0dc81 Francois Dugast 2025-09-08  430  #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
-10b9feee2d0dc81 Francois Dugast 2025-09-08  431  
+https://lore.kernel.org/linux-mm/20251224173358.647691-1-mathieu.desnoyers@efficios.com/T/#t
+https://lore.kernel.org/linux-mm/20251224173810.648699-1-mathieu.desnoyers@efficios.com/T/#t
+https://lore.kernel.org/linux-mm/20260114143642.47333-1-mathieu.desnoyers@efficios.com/
+
+Thanks,
+
+Mathieu
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Martin Liu <liumartin@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: christian.koenig@amd.com
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mm@kvack.org
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+
+Mathieu Desnoyers (3):
+  lib: Introduce hierarchical per-cpu counters
+  mm: Improve RSS counter approximation accuracy for proc interfaces
+  mm: Reduce latency of OOM killer task selection with 2-pass algorithm
+
+ .../core-api/percpu-counter-tree.rst          |  75 ++
+ fs/proc/base.c                                |   2 +-
+ include/linux/mm.h                            |  49 +-
+ include/linux/mm_types.h                      |  54 +-
+ include/linux/oom.h                           |  11 +-
+ include/linux/percpu_counter_tree.h           | 367 ++++++++++
+ include/trace/events/kmem.h                   |   2 +-
+ init/main.c                                   |   2 +
+ kernel/fork.c                                 |  22 +-
+ lib/Makefile                                  |   1 +
+ lib/percpu_counter_tree.c                     | 679 ++++++++++++++++++
+ mm/oom_kill.c                                 |  84 ++-
+ 12 files changed, 1295 insertions(+), 53 deletions(-)
+ create mode 100644 Documentation/core-api/percpu-counter-tree.rst
+ create mode 100644 include/linux/percpu_counter_tree.h
+ create mode 100644 lib/percpu_counter_tree.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.5
 
