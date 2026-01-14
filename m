@@ -4,183 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37652D37E2E
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 13:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD449D37E32
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 13:28:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 720266B00A1; Wed, 14 Jan 2026 08:14:34 -0500 (EST)
+	id DF9016B0098; Wed, 14 Jan 2026 08:28:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FD126B00A2; Wed, 14 Jan 2026 08:14:34 -0500 (EST)
+	id DA6A96B0099; Wed, 14 Jan 2026 08:28:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CC276B00A4; Wed, 14 Jan 2026 08:14:34 -0500 (EST)
+	id CA5A66B009B; Wed, 14 Jan 2026 08:28:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 46E3E6B00A1
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:14:34 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F18E7B9B61
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:14:33 +0000 (UTC)
-X-FDA: 84330613626.12.A5A9C3A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 46C25100010
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:14:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0hhvUfpL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kg0VZ14t;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0hhvUfpL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kg0VZ14t;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768396471; a=rsa-sha256;
-	cv=none;
-	b=xr1Yvsb80uFa1CHY0VyNrbxwdtYFf7/q0vcQClwgXjHLypaxaTmCE8qaEMVSnJ0AQUJZIO
-	CFxv96f7uTRtFSzlIf51SvJ4fDDtz5BR0rpzT41xzZqQuIrFw9DWLBRv1yr984DKWHvP8A
-	DAdBwS2JS50jIE2pS00jsSsCAs/cDck=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0hhvUfpL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kg0VZ14t;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0hhvUfpL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kg0VZ14t;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BA0F46B0098
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:28:14 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 664151AD79C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:28:14 +0000 (UTC)
+X-FDA: 84330648108.07.D7AB6B0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AC634C0003
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:28:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aG2aW26I;
+	spf=pass (imf28.hostedemail.com: domain of yi1.lai@linux.intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=yi1.lai@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768396471;
+	s=arc-20220608; t=1768397292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
-	b=sCf1kF19huLEHy8eb8CeMtdKXDh48qg4a5mLDa0aTyE0EmiBV9YyvysCtubjvbRVcP0E8z
-	Md8s3InJqVG4UGmwokXrTeE8hdLmJWtSBKGTSyhdX73mazEhARlJ/IWseDduH8tzRMQ3fo
-	2gVSOsktLtWUTc0UkJ8oEIwz1ofSlBE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 55BD03402B;
-	Wed, 14 Jan 2026 13:14:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768396469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
-	b=0hhvUfpLf9D05/9CTU6aSEENOoKkyCOCKWSVL6wFyaZe4cYREGkq6JaI7olAj3VUDtFhNV
-	u4iksMIyM5bnn8ovN+sTZTifvJaaFmbBdefqlv6rGPghGeuFhj1nOahwF+IVQajNk16lmS
-	p5guWt8XbwZwVBmYSaNxb7H0khjEylQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768396469;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
-	b=kg0VZ14tKCBNG9hn1SQQ/+S1iZXh2JmVMyFUz1fTYA29aKuEPwJOkVm/vFhkBycmACbC3T
-	qhR8Oz/QGjnfHcBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768396469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
-	b=0hhvUfpLf9D05/9CTU6aSEENOoKkyCOCKWSVL6wFyaZe4cYREGkq6JaI7olAj3VUDtFhNV
-	u4iksMIyM5bnn8ovN+sTZTifvJaaFmbBdefqlv6rGPghGeuFhj1nOahwF+IVQajNk16lmS
-	p5guWt8XbwZwVBmYSaNxb7H0khjEylQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768396469;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FsTG5iVeM/SDmd5f2bL2EZ5iVc5vb5sMbUUarUjEyRY=;
-	b=kg0VZ14tKCBNG9hn1SQQ/+S1iZXh2JmVMyFUz1fTYA29aKuEPwJOkVm/vFhkBycmACbC3T
-	qhR8Oz/QGjnfHcBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 27FCA3EA63;
-	Wed, 14 Jan 2026 13:14:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8+l2CbWWZ2kDfQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 14 Jan 2026 13:14:29 +0000
-Message-ID: <f5cc5a84-57fc-4fd4-aa74-fc89fdcbb042@suse.cz>
-Date: Wed, 14 Jan 2026 14:14:28 +0100
+	bh=WWA6VtVB3sILZbHUpDofBgcZ2BxBWJxrF5lpnyozntA=;
+	b=uN5DcTKJSWC64U8ZQh58/ONh7I0ASLtRRM0qtAHDwZjBOhzbcEq+cOaaQ4WDqw9PTeNjjE
+	ETYWSNbAcynPAhw6DT3keHKKP48sv5WR0agjZs5ZWntwjmOYjglJAOFNdjKzv9dMXH6DkA
+	PI2/wwX3bNPXxN4fjKTWV3FYUNqtb8A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768397292; a=rsa-sha256;
+	cv=none;
+	b=p2rFVbinjpiZufNiyTX6XyM7DhthoYl64KtGae+cUD0pq36sEPpBOsZhtWlHbeEwEE71Bb
+	J2o+9H5NyWBOaYPhxUjgVQMfFnmM7U/OcUg6/RiACt80OgfmKf6klCYhA0EbQGgEOhFTv0
+	ZSZOIX5anbf5FcJLb0UnE1jg2urI5rM=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aG2aW26I;
+	spf=pass (imf28.hostedemail.com: domain of yi1.lai@linux.intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=yi1.lai@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768397292; x=1799933292;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=drFNgjA8qXHpljbntcl8BlBSYuo3kCvxKvrLsGSOAXM=;
+  b=aG2aW26IvqTwhi1Wkmf8YveFPx3QhwPNUX2qV4tRqc/PJAnwz1w7+Izh
+   n4JoORW2AxrkmWPuqg2KHqodY25N8bYHy+ljTuizjJatMwGICq7lwksLC
+   m2YlZvgGvZgf2QK7ajSfp0eJyp67QMLZ3wqdkiuwDnv/agVuJEG633zca
+   oaiB6MXrEmsg07e9OQjOgTym0aFd3B9BLDN2ALFv9ZZQ6jmrdUTZaE0b3
+   xXxeXK6a02bUqtM9YR2gzEIXPW+8WIjSeJQvGImuwBJoO2jVQ8HyGGeN9
+   bBDGir1KEKaYs0nVRniMbCgB+yWoVI2Dz9vPk3nRfyOAObU2wPSZ13IYl
+   A==;
+X-CSE-ConnectionGUID: 7ilelJrAR9SFy8PI7zIZBw==
+X-CSE-MsgGUID: Tpq4IDkyQJWw/VDyo6u6iA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="81140995"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="81140995"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 05:28:08 -0800
+X-CSE-ConnectionGUID: 6Sx48oIiQyOVKT8FQiMakA==
+X-CSE-MsgGUID: nqkvukhNTwSAHSvJbLRSVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="209525497"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 05:28:04 -0800
+Date: Wed, 14 Jan 2026 21:28:00 +0800
+From: "Lai, Yi" <yi1.lai@linux.intel.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
+	linux-pm@vger.kernel.org,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Subject: Re: [PATCH v5 14/19] mm, swap: cleanup swap entry management workflow
+Message-ID: <aWeZ4LmfwiS9iwYF@ly-workstation>
+References: <20251220-swap-table-p2-v5-0-8862a265a033@tencent.com>
+ <20251220-swap-table-p2-v5-14-8862a265a033@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] slab: fix kmalloc_nolock() context check for
- PREEMPT_RT
-Content-Language: en-US
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Alexei Starovoitov <ast@kernel.org>,
- "open list:SLAB ALLOCATOR" <linux-mm@kvack.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT"
- <linux-rt-devel@lists.linux.dev>, skhan@linuxfoundation.org,
- david.hunter.linux@gmail.com,
- syzbot+b1546ad4a95331b2101e@syzkaller.appspotmail.com
-References: <20260113150639.48407-1-swarajgaikwad1925@gmail.com>
- <20260113180036.Zl8j3vIY@linutronix.de>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260113180036.Zl8j3vIY@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251220-swap-table-p2-v5-14-8862a265a033@tencent.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AC634C0003
 X-Rspam-User: 
-X-Stat-Signature: 9k4aezaw8ywn55bjo5aph6kheakjhkd1
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 46C25100010
-X-HE-Tag: 1768396471-610848
-X-HE-Meta: U2FsdGVkX19BjlEl4x8BS4za/6Wj4LkPSH/9w1brpe3xM1M2IRNn7A61cXUgnarT1tRRxf//0YqCb/CEHmTxmGDkzAmu5drrxR5qQvUvu2qIW57JgVN6b6kXgGn+t4ChNOBcC1mPCeoV7sSUApwgnUzdo53KD6yMRlx96yaXLsmJmMkXyHkgt48GdqfEI1wVv4w80NERApNqD/YwqHP2Ul4mcjiliBX3f6KbYbkye2aus9myNdEZAU7lmqvJYnrNHdBHVcrz2UOAKvslecg4bgGM6qsNqoigW6kudC18pgbo6jKJKhgXcDHXKEoKm7U+oj9T90rMscTzzFzf3AZiH9BIeBTOyVLdTkNtaonuDxvCHvGsr2p9wF0VKLgzccda71/h+9+AT/vtto9qy2g1sHJ3MMFR9bgZNXTn+9fSKnUzp3df1QyaRIRj78MlX3brNqO5QNKbIi+TA5vx5DoqVMToW0kSyauNNqTDbLEr911zMe2gHQzw4+pi3n8pjTexvsxo7XSWNiWoo3+I/cq9kY/jMVKxxcGECYOFKtB+pkXAp5fbe7JQhw2TEsknkGlSsPJe1rkiEkKAZmWUbwAwGV83smIwdmjoBfqchOJ7M7HG6OAB33bducq3URfOeUZoert49c471DRi5XRPYIFTmeNHjOeo9wDlIhFUaHL+eyqF6NNz3rImOgktSDG9wIfaYGX7DeNGBp2YLxyMgb7s/v0gcwLSOkTcKXT2Kj3JkQpGW3pIyzYPsR9HbgAu24vMJ9OUDP5QQ2qmUqKARSAZpK9c5nYX0VurBJwCX0i0dbQ7V0IeM/bfQ9NKl5uD6DUntUYCPZFJU8x65lllBX6dLFvwI47P0PsV21O27o1lrXtwehiFK//V5wmBRGGqbfHz2gGn7GK56zGM8JWsuxi3ptcw6Sq3nOnkxvmJ96kWimA/gBQAwP0x9t87lB6Ze4Xp3l5V1/xp38zT7Hf1xQs
- YJfe8ini
- XrB+ga6ucPm/xmMeJvcHcp0JQ2HISwkj2JxZxBRXSmFbkJ64gFa2PEqi/swLud7j7OJ0DES5M4ApanTWTIhVUjrK1+lyI3NilqBwdIF3OobwJE4p+C4vjii97uYKBPXZpVYI31HC6ymdfoO7tVLuiHJ2rxJqDYeUlc2RC+Y+/+tInD6xjWMpsrhv1O/kEZU/aVWXZU7j+DLtq4eQH2HQ+h5CeGkDndzjHywpMKnb0wWTBg/8RJWZr1Pp6ysoOsfCIKiwKQb24WTTDWc/NriD2LzD2qfUnu6+gxayoFiKNkKZZeU32KIDKJ8mb1zXhDGNctCu3v57sJsHwiLlmXAWjiNZrMSO9/3jZOV2+ocRA/B+IBb62t8rgo0ppfmSApj9b/BP8fq9CrlG6D6Us/fc4FEECPz5ntV6AxI9enr5ft0476d6aCMpQQzDhdA==
+X-Stat-Signature: dbekkytwg5zj5zjbo3hhbdsn89mj4zz8
+X-HE-Tag: 1768397291-752224
+X-HE-Meta: U2FsdGVkX1/7oNj8CXjVBcZHkeexmzdFl87qXhieR+zckt88EVO4Je+ci8OE2+NlR9CPn+j0BQzkGRvT3JwTvts2HjKCD10KbxfkhKG1q9ND1DujmsHDOc/B6ieCip8XgQlkqv+RvGBfIJsJrst5RFYOZ7hmwGAhmb6fZVVCLfC68PY/xO8yYDZ00HuhhA2jnsCtHll+IPuAV8xcKvmfneNcbc0A6usndlGAeAFrAfTSDThys+YFxjYcMv0ggIqFsAWNv6dTJ2zch04YFuJr06K0vFkTxYKC3n3fTkY09S70Occkm++adoy0n8V6fosBb/1UJ7pf4yM8VNDUUYbPWkoMruXbxecz+dCoGZcMQ8S50nNb23pa9kDYGZWSANMdIT6+QO2tAS6ODnSUXR+RrodD6M2IkavAHLSurRMckTb5HyiLO4tmMDnxaGsSyuUXLztav+owTSw8ri9R8AnROfcC+NnLMbeUkXP5ywbEj1Quq7MQilJyDrP55VvXq7BWaPP36cl3D14LUQi7LOY9JGIkAuZz3suWGN9cpKJSbcmzPQ5tjr3SvbEuMeUqGuflfkSzAmRcl3R7b5uEI2Cg8tEn6E1yXMOXFniLd4ceUCHbpOb9EeofOLWJcF3y91oyFnGhFP4290bqeKND4VruhQau18Nr1v3TkpzpTtJInDVOYfBC0ZYu5QtBYaUS4IEoPOFmiwcCkaOqZfMJ5xXgJ3TgYRu5LwxFSbtcTDkmW4fssJj6mRgN3ArPughoS7Ec6qmeeI9ZeDbVGoBSZZI3s8B92/bHMIn+xsUXMXCT3ptr/9OVqu9jS4PMAVwnf7ci6gexcdUPNMjcMBGBp29KOBadPE3UZ7bPP/p8+0XVwwGR5ootPiflDQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,32 +116,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/13/26 19:00, Sebastian Andrzej Siewior wrote:
-> 
-> I would say that despite the _nolock() suffix a local_lock() is still
-> acquired. The !PREEMPT_RT does a trylock.
-> 
-> As I noticed this myself today while looking at other patches, was the
-> trylock removed on RT by accident, was it there only in an earlier
-> version which was never merged and will it ever come back so we can go
-> back to !nmi || !hardirq?
+Hi Kairui Song,
 
-IIRC there was no version that would do always a trylock on RT (or maybe
-there was some early one but run into trouble quickly?). The problem was
-converting the slub code to deal with situations where initially trylock
-suceeds in the given context, but then it's dropped and later needed again,
-and failing that later trylock would be too complex to unwind. So instead we
-do the local_lock_is_locked() check upfront and then trust that all nested
-local_lock_cpu_slab()'s can't fail. And unfortunately this doesn't very play
-well with RT semantics.
+Greetings!
 
-> 
->> +		 */
->>  		return NULL;
->>  retry:
->>  	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
->> 
-> 
-> Sebastian
+I used Syzkaller and found that there is possible deadlock in swap_free_hibernation_slot in linux-next next-20260113.
+
+After bisection and the first bad commit is:
+"
+33be6f68989d mm. swap: cleanup swap entry management workflow
+"
+
+All detailed into can be found at:
+https://github.com/laifryiee/syzkaller_logs/tree/main/260114_102849_swap_free_hibernation_slot
+Syzkaller repro code:
+https://github.com/laifryiee/syzkaller_logs/tree/main/260114_102849_swap_free_hibernation_slot/repro.c
+Syzkaller repro syscall steps:
+https://github.com/laifryiee/syzkaller_logs/tree/main/260114_102849_swap_free_hibernation_slot/repro.prog
+Syzkaller report:
+https://github.com/laifryiee/syzkaller_logs/tree/main/260114_102849_swap_free_hibernation_slot/repro.report
+Kconfig(make olddefconfig):
+https://github.com/laifryiee/syzkaller_logs/tree/main/260114_102849_swap_free_hibernation_slot/kconfig_origin
+Bisect info:
+https://github.com/laifryiee/syzkaller_logs/tree/main/260114_102849_swap_free_hibernation_slot/bisect_info.log
+bzImage:
+https://github.com/laifryiee/syzkaller_logs/raw/refs/heads/main/260114_102849_swap_free_hibernation_slot/bzImage_0f853ca2a798ead9d24d39cad99b0966815c582a
+Issue dmesg:
+https://github.com/laifryiee/syzkaller_logs/blob/main/260114_102849_swap_free_hibernation_slot/0f853ca2a798ead9d24d39cad99b0966815c582a_dmesg.log
+
+"
+[   62.477554] ============================================
+[   62.477802] WARNING: possible recursive locking detected
+[   62.478059] 6.19.0-rc5-next-20260113-0f853ca2a798 #1 Not tainted
+[   62.478324] --------------------------------------------
+[   62.478549] repro/668 is trying to acquire lock:
+[   62.478759] ffff888011664018 (&cluster_info[i].lock){+.+.}-{3:3}, at: swap_free_hibernation_slot+0x13e/0x2a0
+[   62.479271]
+[   62.479271] but task is already holding lock:
+[   62.479519] ffff888011664018 (&cluster_info[i].lock){+.+.}-{3:3}, at: swap_free_hibernation_slot+0xfa/0x2a0
+[   62.479984]
+[   62.479984] other info that might help us debug this:
+[   62.480293]  Possible unsafe locking scenario:
+[   62.480293]
+[   62.480565]        CPU0
+[   62.480686]        ----
+[   62.480809]   lock(&cluster_info[i].lock);
+[   62.481010]   lock(&cluster_info[i].lock);
+[   62.481205]
+[   62.481205]  *** DEADLOCK ***
+[   62.481205]
+[   62.481481]  May be due to missing lock nesting notation
+[   62.481481]
+[   62.481802] 2 locks held by repro/668:
+[   62.481981]  #0: ffffffff87542e28 (system_transition_mutex){+.+.}-{4:4}, at: lock_system_sleep+0x92/0xb0
+[   62.482439]  #1: ffff888011664018 (&cluster_info[i].lock){+.+.}-{3:3}, at: swap_free_hibernation_slot+0xfa/0x0
+[   62.482936]
+[   62.482936] stack backtrace:
+[   62.483131] CPU: 0 UID: 0 PID: 668 Comm: repro Not tainted 6.19.0-rc5-next-20260113-0f853ca2a798 #1 PREEMPT(l
+[   62.483143] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.q4
+[   62.483151] Call Trace:
+[   62.483156]  <TASK>
+[   62.483160]  dump_stack_lvl+0xea/0x150
+[   62.483195]  dump_stack+0x19/0x20
+[   62.483206]  print_deadlock_bug+0x22e/0x300
+[   62.483215]  __lock_acquire+0x1325/0x2210
+[   62.483226]  lock_acquire+0x170/0x2f0
+[   62.483234]  ? swap_free_hibernation_slot+0x13e/0x2a0
+[   62.483249]  _raw_spin_lock+0x38/0x50
+[   62.483267]  ? swap_free_hibernation_slot+0x13e/0x2a0
+[   62.483279]  swap_free_hibernation_slot+0x13e/0x2a0
+[   62.483291]  ? __pfx_swap_free_hibernation_slot+0x10/0x10
+[   62.483303]  ? locks_remove_file+0xe2/0x7f0
+[   62.483322]  ? __pfx_snapshot_release+0x10/0x10
+[   62.483331]  free_all_swap_pages+0xdd/0x160
+[   62.483339]  ? __pfx_snapshot_release+0x10/0x10
+[   62.483346]  snapshot_release+0xac/0x200
+[   62.483353]  __fput+0x41f/0xb70
+[   62.483369]  ____fput+0x22/0x30
+[   62.483376]  task_work_run+0x19e/0x2b0
+[   62.483391]  ? __pfx_task_work_run+0x10/0x10
+[   62.483398]  ? nsproxy_free+0x2da/0x5b0
+[   62.483410]  ? switch_task_namespaces+0x118/0x130
+[   62.483421]  do_exit+0x869/0x2810
+[   62.483435]  ? do_group_exit+0x1d8/0x2c0
+[   62.483445]  ? __pfx_do_exit+0x10/0x10
+[   62.483451]  ? __this_cpu_preempt_check+0x21/0x30
+[   62.483463]  ? _raw_spin_unlock_irq+0x2c/0x60
+[   62.483474]  ? lockdep_hardirqs_on+0x85/0x110
+[   62.483486]  ? _raw_spin_unlock_irq+0x2c/0x60
+[   62.483498]  ? trace_hardirqs_on+0x26/0x130
+[   62.483516]  do_group_exit+0xe4/0x2c0
+[   62.483524]  __x64_sys_exit_group+0x4d/0x60
+[   62.483531]  x64_sys_call+0x21a2/0x21b0
+[   62.483544]  do_syscall_64+0x6d/0x1180
+[   62.483560]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   62.483584] RIP: 0033:0x7fe84fb18a4d
+[   62.483595] Code: Unable to access opcode bytes at 0x7fe84fb18a23.
+[   62.483602] RSP: 002b:00007fff3e35c928 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+[   62.483610] RAX: ffffffffffffffda RBX: 00007fe84fbf69e0 RCX: 00007fe84fb18a4d
+[   62.483615] RDX: 00000000000000e7 RSI: ffffffffffffff80 RDI: 0000000000000001
+[   62.483620] RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000020
+[   62.483624] R10: 00007fff3e35c7d0 R11: 0000000000000246 R12: 00007fe84fbf69e0
+[   62.483629] R13: 00007fe84fbfbf00 R14: 0000000000000001 R15: 00007fe84fbfbee8
+[   62.483640]  </TASK>
+"
+
+Hope this cound be insightful to you.
+
+Regards,
+Yi Lai
+
+---
+
+If you don't need the following environment to reproduce the problem or if you
+already have one reproduced environment, please ignore the following information.
+
+How to reproduce:
+git clone https://gitlab.com/xupengfe/repro_vm_env.git
+cd repro_vm_env
+tar -xvf repro_vm_env.tar.gz
+cd repro_vm_env; ./start3.sh  // it needs qemu-system-x86_64 and I used v7.1.0
+  // start3.sh will load bzImage_2241ab53cbb5cdb08a6b2d4688feb13971058f65 v6.2-rc5 kernel
+  // You could change the bzImage_xxx as you want
+  // Maybe you need to remove line "-drive if=pflash,format=raw,readonly=on,file=./OVMF_CODE.fd \" for different qemu version
+You could use below command to log in, there is no password for root.
+ssh -p 10023 root@localhost
+
+After login vm(virtual machine) successfully, you could transfer reproduced
+binary to the vm by below way, and reproduce the problem in vm:
+gcc -pthread -o repro repro.c
+scp -P 10023 repro root@localhost:/root/
+
+Get the bzImage for target kernel:
+Please use target kconfig and copy it to kernel_src/.config
+make olddefconfig
+make -jx bzImage           //x should equal or less than cpu num your pc has
+
+Fill the bzImage file into above start3.sh to load the target kernel in vm.
+
+
+Tips:
+If you already have qemu-system-x86_64, please ignore below info.
+If you want to install qemu v7.1.0 version:
+git clone https://github.com/qemu/qemu.git
+cd qemu
+git checkout -f v7.1.0
+mkdir build
+cd build
+yum install -y ninja-build.x86_64
+yum -y install libslirp-devel.x86_64
+../configure --target-list=x86_64-softmmu --enable-kvm --enable-vnc --enable-gtk --enable-sdl --enable-usb-redir --enable-slirp
+make
+make install 
 
 
