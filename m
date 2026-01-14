@@ -4,94 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55FC2D3CC83
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 22:12:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CE96D3CC80
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 22:13:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC1216B0005; Wed, 14 Jan 2026 17:12:08 -0500 (EST)
+	id A0A1E6B0005; Wed, 14 Jan 2026 17:13:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6EE16B0089; Wed, 14 Jan 2026 17:12:08 -0500 (EST)
+	id 9B7AC6B0089; Wed, 14 Jan 2026 17:13:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7ACB6B008A; Wed, 14 Jan 2026 17:12:08 -0500 (EST)
+	id 8A3956B008A; Wed, 14 Jan 2026 17:13:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 941D86B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:12:08 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4075E1DF179
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:12:08 +0000 (UTC)
-X-FDA: 84331968336.30.C47F554
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9F15A140008
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:12:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WSuNNom6;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768428726; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7987F6B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:13:21 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A575137FF9
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:13:21 +0000 (UTC)
+X-FDA: 84331971402.26.B60AE61
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E24CCC000A
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:13:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=MfvGhUcd;
+	spf=pass (imf10.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768428799; a=rsa-sha256;
 	cv=none;
-	b=O72/cjcQGcV8rq1XHYLoi0yf0wMHjsujGZIJXITSFSwnxVXY+MIwuHS4foMrkC7LkWVi3E
-	6UzsyRb+iOQTMQJbP6R2UHB0qNsM1OSxXg1bPp6MwCWRjHTjVPDZVexXrtCM3TwhkbwWps
-	rJ4/dJooy88R6lInMfNoAhHVLAkqeck=
+	b=WaTJrUJ3mehOJbR0DorIIRKb0KbD3lx08rRt9Y8Dt7UDQFV2Y277kX58WcVAi8FLHPyuh+
+	kXofJRtGrLxObPvnnkSkA0fOUlpw5Dl6YtkdLMN6AFRNyzisPO73bXDHQgo0/B7PQ0NSs+
+	ZG7rIh2Lbn0fyP6Hjhlg0YmDl9B6630=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WSuNNom6;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=MfvGhUcd;
+	spf=pass (imf10.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768428726;
+	s=arc-20220608; t=1768428799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pSRcG995XydfiL3jwGFnTPHyOQQqVgj+rZVXeEwdYvM=;
-	b=JN8nkOx4sMkYQL3LVGZNNF2mqk4v0gO8m5ft92FpBBdhkj4939yj6F38ewJEkKobfguLWC
-	4kOci4DnfZTzq0+DgN3nGf/+XyVSa2W3cO+mAkaLV6o1ogoOgOEubwPIxUomBSWup4tWMV
-	Ti5MXJqFC6hFPK9VuatG2JVaT+ZBqYw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EF3216000A;
-	Wed, 14 Jan 2026 22:12:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01033C4CEF7;
-	Wed, 14 Jan 2026 22:12:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768428725;
-	bh=t5WWRCehJoLylAD+uLC9ZU6ijAK40ffTm6B6Yhk+ORo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WSuNNom6LSt95XERmTGPYvgiAT7FgMuu/OJHMHhSrrMr/BB/rY8B/qYezagnd6lNS
-	 MfsU3Th1CVCTSqLcxSp8b+PlMfjGErMD31qESGOHa9+ejBISiYs3EPdvaEcB+Ud90z
-	 H2cAfHKkH69QDFOumPOeRmIL7M3w912eyX0VQ+hk=
-Date: Wed, 14 Jan 2026 14:12:04 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt
- <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, Rik van
- Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Jann Horn
- <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko
- <mhocko@suse.com>, Pedro Falcato <pfalcato@suse.de>, Chris Li
- <chriscli@google.com>, Barry Song <v-songbaohua@oppo.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/8] mm/rmap: remove unnecessary root lock dance in
- anon_vma clone, unmap
-Message-Id: <20260114141204.d13c3a00aec1333e8ad45a8c@linux-foundation.org>
-In-Reply-To: <2808d8d8-e772-4210-ada4-2b39d30c7029@lucifer.local>
-References: <cover.1767711638.git.lorenzo.stoakes@oracle.com>
-	<9b5a438237e4ea3b19a986a4f8fddb8848cba54a.1767711638.git.lorenzo.stoakes@oracle.com>
-	<CAJuCfpGcdZE_Qnm4c7MgyZfZr7fepXuJkc=6ucwUNwUo_JjU0Q@mail.gmail.com>
-	<2808d8d8-e772-4210-ada4-2b39d30c7029@lucifer.local>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gmr5nbnn4u5umq4qsh6r1933ppkrri4r
+	bh=9te7Py4jVWEi/zTRZhhdfHD436sqYIG62vqnpysxH8E=;
+	b=CQE6FCGNctpfX45LcXxBNW3M9tFkHKKf8TZ/cpgQ2Y45Kl/dPg/XYJepO0KdsD7Vleuhox
+	7jlcwmqbQRqae9s6vLIBcvn+01PIhZaQ67g7NWCPrWM0aYhMyFACHvuWBMn9njtmTYbVSV
+	C4+m9zonooV9UEFs7XmG/4a8G6DKtvU=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47f3b7ef761so1693675e9.0
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 14:13:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768428797; x=1769033597; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9te7Py4jVWEi/zTRZhhdfHD436sqYIG62vqnpysxH8E=;
+        b=MfvGhUcdc9UrJm9UOjxC/KzhiZvAtHO9sFu3b5V+NBCUd0cd+XFYs+xORnMEqZSCu3
+         TfNmAUC8U2Nv7JQxB0FrNPG4bB3J/Ofgpw9D5CUMlg1dhDpkzOPAH+hcLVcNqEe2UqjL
+         0/MxJafAjZC/m2xMLAN6+BtKi3g8Tt13Olow81x4WTNXcI1z8Er9gfnqdpLW8cGOK1x8
+         B9OTTsIpnQIm5qDRN3FaHpVOK8IlwhgvQpi1n88j0EUdScSVl09VZrUOUp0NA+4tj3BH
+         bFiha4PtAsZYZc6cEL6em4/kdtFc2JV6Xy1suW1D8n3oFTunl8EEfTayAJuKTu4dprZi
+         gK4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768428797; x=1769033597;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9te7Py4jVWEi/zTRZhhdfHD436sqYIG62vqnpysxH8E=;
+        b=nPk5BwvQlWNex7vrOivQpaplHjbzz9oYoP/9MKUmJDrH4FAeZXGTYmKwekir1vXBHf
+         mJXKEGry8oPxWZekWPuxhW7sVfFmacT5TT5nnkEZFQJHYmVs2QTnvm40rb4NBtznSCoP
+         Ubqb/vmBc8Lp9EnuK5I3PpJD8TfbDBYH0tZGRHKW32M/Bh4/lNPivQkDwruDA4b1/lfS
+         4NHZr0QFUvE6XQqXbWLhpDySJJbnuEbPKDi4vEUCafYqDrYMK1WWRYgfD7Du4EWJT4ew
+         rSkiTERKYlDTGKlRcLoENbwzbkdLB+eYFhcaWcAFXoZh0gWTXgXqcoEqDSSL9x5VGIIj
+         QX7g==
+X-Forwarded-Encrypted: i=1; AJvYcCV5pwIpBV4ZIWWypCUgJZu/VxWy3mP5a0Rq22HtaqSE+uiAxoeLsWtTUSr8MED+hxbvP0XaCPkOSQ==@kvack.org
+X-Gm-Message-State: AOJu0YwK82aKCMeEZ3u+6bHzAS3q1hkOncPHa4oUKITKln9fWcjqoIyD
+	qu388LzckqV19szuErOum5C0N+VUUij3rFquJB0rG4BgLzTNwrFVibuw03vXYOkodkw=
+X-Gm-Gg: AY/fxX7eClGXnkRaG8//aWTGRNVnr91zDUwzJIXwUN0K7GcoJpPo1fTZF1jdJgl2CSz
+	894EbczKvyPWHq5ut4pvLzWMMpZxd5+LgzH9cHXqiO6JsZAx0/s2YcP7EtBfs/kUvnazjxEzSO5
+	ZJfHEahg4CUR4MAGRr6yQU4nJ6IRKLG3lzzjpZwr8g5hIN6XtjWOCiu9jHfjsfSLK0pbMz4pfHe
+	8g1LFCXPqy5NUEj09UG/Q6si+lqA2paCb5J8b6eDfHu0iLfyd8QJxewz5ct4qmSCVKGlfuI7N4Y
+	TW0Bzxubq0rbb/eV+aL9SC1g/gxDROCxR1QZV6ntABPD9FR6u7i1uL1zTaBLhJR1Y3VwhkbooWw
+	gcx6mTVyJG8kbabzQVqnkOrCs7Oy4BJxVsdnibnRusfmPYDwYtKSJJOOXVDGPwJJPS/o9fshDsI
+	/tOg==
+X-Received: by 2002:a05:600c:34cd:b0:46e:4e6d:79f4 with SMTP id 5b1f17b1804b1-47ee33117d3mr49883055e9.15.1768428797424;
+        Wed, 14 Jan 2026 14:13:17 -0800 (PST)
+Received: from blackbook2 ([84.19.86.74])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-434af6b1455sm1617183f8f.22.2026.01.14.14.13.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 14:13:16 -0800 (PST)
+Date: Wed, 14 Jan 2026 23:13:14 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alistair Popple <apopple@nvidia.com>, Byungchul Park <byungchul@sk.com>, 
+	David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Rakie Kim <rakie.kim@sk.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Tejun Heo <tj@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Waiman Long <longman@redhat.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Zi Yan <ziy@nvidia.com>, cgroups@vger.kernel.org, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] cgroup: use nodes_and() output where appropriate
+Message-ID: <qhobdtdwtkux7n5r3b64itvpe7zchm3ovpfmazim3v5ilg34kr@5o5wu3chh5b6>
+References: <20260114172217.861204-1-ynorov@nvidia.com>
+ <20260114172217.861204-4-ynorov@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260114172217.861204-4-ynorov@nvidia.com>
+X-Stat-Signature: wndcs8hkn9acuy3b9bqhb1x9nkz1h6r3
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9F15A140008
+X-Rspamd-Queue-Id: E24CCC000A
 X-Rspam-User: 
-X-HE-Tag: 1768428726-670432
-X-HE-Meta: U2FsdGVkX1/4IZsamS/tGJwyJ1Edv+HgrDL/LB3DpK/rn9ACf2bUV5R0dxmge4vQLQYYR8qfzx6UMyysxNVqek39cGnE4lrv5NOto+LbY66YW23O6KlZcPKdYEM/SiHlr84eGwJpM9I8kooPMfgC+U4dA6aknIc4Uhd8ulYJmS2sbWrUDFhanmYKJdKS63MsKdMm8g3jO241MICqpZ9LxjxIFeYqx0q2rvQ/auP7aYgkG1oIves9nsD6q4cRdf5pbGOJ6VjM9itGeRWzn6duHy9WrgVgCl484OCkZBxxyfTU/Y0XV/ybLPQ92vSmcmY5KAIxAtGDdYxTpbLTdd79WIHXlGV68ZmftyrzWVT/fPWqPl8vaZ+zDUJJIznR4CmhpcG6vUSRVibjeAcxCvu4XCM9VOz6VH2QRPd8+zpB+ysj6g938CpcvvJ0GMA5X2/AW9hV7VYtLTSmgg7YMTCotzsSsPc6lpdYcpppxPBZmVxsQLlikDBslv8wDFacSSv7cVCA06nWxptMFvzMpx2If0Ol1+hpv+Ay6js0kRw56wnj1Y3ysggvV+Ro4GT1MCq7WuYs37A3LO9wWOF5GEAfp8X0aYOb2FdmaD9q251Rm8roaHDHjIg37WEkVlG05l83Otwjx/G8Sw05mi0PsXhijgs35eE5LdpGGIxESLfT3RMG/ga7FEi3+LyjqhcuS7wnpycUTJX18ZIKK30xVt8MOllV0ht9BDayF2Qfxgv2fredtlVztSe39NCwTQviAFSbS8KagB1V/LzRBNqNSYFCH8xAKSvONVHX/8FI1M2jIS+s6u4IsVNxnxQV9IlI61Ly7Yue9WqgJJNK8dYrjA/vMRhm7cE8SNbp0aZCP69vkddZZco3shWRnrpBIWAdN8hUvMXw9BDQNHxc96qTvuvgqz3cIXClzOf/XjJauMseZ+8emlSgWlkRWRUtgEPw8CgSIDs+KW5YkSfs/HCC6Bg
- tnovPego
- KbI7wvZl3xTyWJtmNy/eaozoY88d/ZTqM+AqkSu5o0HrgckMdDg3XvEtQJ8t40dXm1DDrAkTnoQGBW1WRppuTQartFIIItrxCSHXXCHJ8GZ7/Xeta4bz3HGXHzu/GREAf4SECCEFAxZS/eIUpnVSQJM2PD4FlE/ZZ1U8AyEzW+/rl1e0VqtzSmECJm6n0kYRpVqTlWReeLPuHL1kSBZ52/Jsybrppjq5Rf5Sb/Bf6Tovt/BRB2QJ48YWmT84lyMkEctshs47rlTFJgjjq8fCH+LRkZIQc5hzUejDEnHH2m7og+6qOTBfwrZoGMsXl1cn49HQI
+X-HE-Tag: 1768428798-320309
+X-HE-Meta: U2FsdGVkX18crZ97iRkjVF7TDvK0KfYaYLSFqV0YBiXozJfOU18z5FFsQleNo8vMtjjJAaPSZwRVMBqf6+cwnJWvy+BJSVURIGJKVpwZjvQ42Bn2WMBRt1Yal+ftkAaVEBvdZRKRsabKw7o4jkN0zcEEPcw0J0dZxiG0cWaQpIYPBPrQle+8H/1XMBK42Yf70Fra7fzxYmzcldzZcuWKQosRFpwoy2sIxv1ZlFqSZ1FUjJu635tJUy5A7kRNIrUfiwdtN+xzUBn9PauUDgrqm0+i+iSshe8buWOXJIHdJcIgZUfKAg5oNdjK81pwCpJI5tdChJCqUtrzig7T0BsQ0Xg/jCkJi7qnF9xhBhywHEakN4qcG2Jb0YyKKWcXF2DqSaMRHULCfcfN/oX3neNxIy/yHMuNsZ+A9oHfBPcX3UdWsugZc15lm29+I9jcC6TRoIhSyVklEVp3xJ1kwiiFpOjUb3z7vyCm1DnbTbCtwN6oDDkLSZBx+FEOo93E300fLijUFeRCiytZ1CstrxsnyRfLOdEWDx1zrbH/D5x5pi8Q4MbMvWTCuQeGe89tFuqwMOq+3gmZiUJ80HWHxe/CGNlOCqCxMZljjD+EEtClEozzDRoYVw9visVjr3m9gi/GeSytjNQC6kgHF/SabN/WVOU6UcJOA5b0lDa2rCu9+HUvHs1qQ5NRRPh7OGY8pwAkWdjyMJpZ9+GVvlcaFyYyfDp9mGvO6zSOr9A2icxFYiN/V/wwigkN2XjspfAZ5x58qk5eITiAz5uz7x796xZmyHIs5cmWTAodDqPvHLPZbjg85RkdiVNQkWlPDm4g/YSoN9wD5ER2nXLgpV4DL2kjRk+j8h/rtONcG5hMzbmPjRCG9HXhWFhdWzGv5tZHRWxwMBlDufZyMMn/C+M/dj31Q9uWcA/O3d61R5lnO0LdRrow56OOVQBUUibu7Wtc0ZVYkWIrI1HrX0M7tTvBXzT
+ xqOB3HNq
+ mf8LTuzBOhGjQumBW39O81fElfoQzLTxxXQfdPJ3XzVnyZd3N9YsLCLuphWgWz97olFtDI0LF2NAiQ6vgZW1MpmcrRx+zMBCDnGssDHUyKqq/89bWrQxxBRNqxQBNZVlvJ4ArUlPuQ+Uv8ztOJHnqQgDNpPbqR3DI4zneTmFWbRyJgNj3rBcYxiP2wPG6ZDFik5CvsPp+YZXt6aeJbGvtQiAUYT2ZV2g4aueyt67Flg0D5fvGOfl0S9/evd+WQMjiD4tBdGvCUQDgoSANJpu7qcscNNoETnuu/dCo5o3+V/oDOSZxlOF4jOxfrbsf4Ahk9tD/r08aqVKo6uA6r5UCcXis0hE+ikdz/p9MfeFsMWJRzjhsiUbDt29a7j8JfJXGhc/XZEWQH+mrhruR97Kr6MBNSK+AYFsiIA8j6cyJBeEu5osrecy4OAeMRNhUV68OJeIczZbvf3LkXhyAE5FfyqvJs75UR9EoC+1QfM5wVYFQG2GWZVo6//H4d71zZeX+GylVjIlgMsyaBMDAIL00Nimd+aNjRVbqaKfIblmgUqJOc6DxsUMS2F0ogA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,55 +130,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Jan 2026 17:54:07 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-
-> > >  {
-> > > @@ -310,26 +284,28 @@ static void cleanup_partial_anon_vmas(struct vm_area_struct *vma);
-> > >  int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
-> > >  {
-> > >         struct anon_vma_chain *avc, *pavc;
-> > > -       struct anon_vma *root = NULL;
-> > >
-> > >         check_anon_vma_clone(dst, src);
-> > >
-> > >         if (!src->anon_vma)
-> > >                 return 0;
-> > >
-> > > +       check_anon_vma_clone(dst, src);
-> >
-> > check_anon_vma_clone() was already called 4 lines above. I'm guessing
-> > this was accidentally carried over from the previous version?
-> >
+On Wed, Jan 14, 2026 at 12:22:15PM -0500, Yury Norov <ynorov@nvidia.com> wrote:
+> Now that nodes_and() returns true if the result nodemask is not empty,
+> drop useless nodes_intersects() in guarantee_online_mems() and
+> nodes_empty() in update_nodemasks_hier(), which both are O(N).
 > 
-> Yeah I don't know why this is here, in the tree it isn't, maybe Andrew noticed
-> and elided? :)
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> ---
+>  kernel/cgroup/cpuset.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
-Thanks, but I wouldn't have done that silently.
+Nice improvement.
 
-The later "mm/rmap: separate out fork-only logic on anon_vma_clone()" removed it:
-
-: @@ -281,17 +317,17 @@ static void cleanup_partial_anon_vmas(st
-:   *
-:   * Returns: 0 on success, -ENOMEM on failure.
-:   */
-: -int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
-: +int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src,
-: +		   enum vma_operation operation)
-:  {
-:  	struct anon_vma_chain *avc, *pavc;
-: +	struct anon_vma *active_anon_vma = src->anon_vma;
-:  
-: -	check_anon_vma_clone(dst, src);
-: +	check_anon_vma_clone(dst, src, operation);
-:  
-: -	if (!src->anon_vma)
-: +	if (!active_anon_vma)
-:  		return 0;
-:  
-: -	check_anon_vma_clone(dst, src);
-: -
-:  	/*
-:  	 * Allocate AVCs. We don't need an anon_vma lock for this as we
-:  	 * are not updating the anon_vma rbtree nor are we changing
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
 
 
