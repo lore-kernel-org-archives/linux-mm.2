@@ -4,89 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B62D31A0F
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 05:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFF8D31A0F
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 06:05:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9CCF6B0089; Wed, 14 Jan 2026 00:53:19 -0500 (EST)
+	id AD2A96B0089; Wed, 14 Jan 2026 01:05:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4A9A6B008C; Wed, 14 Jan 2026 00:53:19 -0500 (EST)
+	id A89A46B008C; Wed, 14 Jan 2026 01:05:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 922776B0092; Wed, 14 Jan 2026 00:53:19 -0500 (EST)
+	id 9B69B6B0092; Wed, 14 Jan 2026 01:05:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C7296B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 00:53:19 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43A80C1A02
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:53:19 +0000 (UTC)
-X-FDA: 84329501718.17.D7DD1B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A90524000A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:53:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tDpC5MJV;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 88F966B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:05:21 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2697F5891E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:05:21 +0000 (UTC)
+X-FDA: 84329532042.30.62996C5
+Received: from mail-dl1-f67.google.com (mail-dl1-f67.google.com [74.125.82.67])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 55E7D1A0004
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:05:19 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iAcRm4jz;
+	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768369997;
+	s=arc-20220608; t=1768370719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uocmb0ofz5XPAProLoNyXFTCSzhqcYQ0t0xPWsNt5S8=;
-	b=4e2rheHnBrKzk59rDed/k5Hvt+ZtRuZxcc+ALkZBkIXzRTYE4EtY7CQf3zO0AVA+kyVe7L
-	lXxe/7HQ8al4KlTNSPsDWIUv+jkTZhB+N6K2kg+T6HpXG6hU0eQ9z9DO5A74ZXFb8TlVQk
-	6RLhbp1B5AqFmH3yBDOenN/PocAlDjA=
+	bh=UuOoBajVj0wkg0g4yo/s1ny3PHf3Yl5+HedHG//0BQQ=;
+	b=08oSsGNDN8xi+9VA7O0doym6UfkQVGYGNSw30xb9EpiFTfgNBWMqnZkC0lzL+dnZcQwFKK
+	lofkJJkbwtgVTY4nBEY8acO6bzOYE6TrSDZGPVnntpw2YzPLceJWFWMkHiyrT9jdVqNApQ
+	uXmDTfsJIij8hnSgeUB3/8xJ50vMyjw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tDpC5MJV;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768369997; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iAcRm4jz;
+	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768370719; a=rsa-sha256;
 	cv=none;
-	b=WTHf34jjR6bPaYZhQlPp9DxKJHWGOiszr0DZn/gKh7SNLO4eYi0V+hVx7K5jjSZYU7yVpu
-	KfmxkqqEghWBuh580AZaHhqm+Qm22wmuxVpA2+/LhZdIhWQri1u89kSl+twIS44iH1lqeE
-	89BnPaC7kqikjx8zQMGIKTf++n0NOIo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C68160052;
-	Wed, 14 Jan 2026 05:53:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9208DC4CEF7;
-	Wed, 14 Jan 2026 05:53:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768369996;
-	bh=V+SlBavLJRAAZg4Ll9BOkS3GsX17kKE4EmJ2ubSxjKE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tDpC5MJVH1/nhAPRueH4hsrd7ITCEK5QtUFuz21OuvxBEEOaa8IMvhT64bPEg3bu7
-	 +vWn6q1EMRHj9vn40URiDRiKLrqS3iIaaDkM+gOgbVBS/GiKt3L+LAiL04T5PeLikE
-	 G82mbGia4WIS/5mjXs60WEpyK6FXeFwQOKfGeJG02E7CKRDIXTzDSv/wGOCSAgAbRX
-	 ZWcsKJQpVWxtsL/xmxy0SaUSdySkyYGfv9bNGTZdS9LBRRkYG1o2wgH3vHra7THZu4
-	 +FI/W4VABwLr/E/XVWEr5xoz5yWyfrn2OWrB3NleDzsqe9u7wZcXeFhnnF/8sL/kzs
-	 tzO1qbfiUN2lg==
-From: SeongJae Park <sj@kernel.org>
-To: wang lian <lianux.mm@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
+	b=sbgYtN2KkZP1ggguS49GpBVDawsqx91tU6Md8WYIGu0M4G6TMAlIt2ETgOp/b+HvPTDjMd
+	8AwuqazkX+Vc+odKNeV2H++uyQiAQfAwFxWSn7ad8erK+U8RIJQAlIMHeMFj+eGsrQCBv0
+	Z98eruVFAvELkN/FI4DRLwI77/8TDFk=
+Received: by mail-dl1-f67.google.com with SMTP id a92af1059eb24-11f1fb91996so78540c88.1
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:05:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768370718; x=1768975518; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UuOoBajVj0wkg0g4yo/s1ny3PHf3Yl5+HedHG//0BQQ=;
+        b=iAcRm4jza6BiHqazKvw98apnA62KKoCZqA5jrZCRj/KZd1sG7gyJP1rhU4Opp3glKs
+         z9+QD80ERfTiZwisu3TQ+h5g4fOWXoEEDy5ryE/FE1X8CvinYMht9dX+LaPkK4Mtdxpc
+         cadJIJfggsm1W9WAuU3N0Ddo/X6bvsb89Evn/Nktosw0OFW/k28hJlaUi0HeQV78Zm66
+         GJRxg4Ll/a2qpzdBZJkSo4mRcAVB7muNd8nRVxjbZXf/ifeAdu/rEuVuDPpFz9f+7suc
+         y81psWo//U5FIYamjy2uRCLVnrulbDBElH78DFVNC/x7nRogpsp+TRgZUyexI2IoTk6l
+         eHlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768370718; x=1768975518;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UuOoBajVj0wkg0g4yo/s1ny3PHf3Yl5+HedHG//0BQQ=;
+        b=WAokyBW9LYrpVTWBUqj06uMhC5S39K9rCiI05QhJ5wOQzmjcPppEDjB48UTUuZaOww
+         7wsIdheEv70CjWqOVJwKhr/UBdZK2/hL7/vfWil3us8Hw/I5bDKIrugcAx+x1i6jL6xl
+         AY+yl7jiVR8rQV8ombB8jEewrFH+ldDgJn7NMjrUw1tyQ9+psdxNEoY1+jgbrEYPuech
+         GWfvowvR0/pbOmXbKG8itewU3r8l39arysV9VRS5Kfl1yE/YSWmxeAMPSZ7BbJEjx4n0
+         OthovQFmqXk1XoUydaaQFBi4vdrdCNWm4mWlKF/TrSk7TkIFDBbusG+VsUhANkVtMWDd
+         Pmnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVd2D8gcXB9sE6Ww/vdDWZF13l35Uph+b4jo9MbPzQABS9e8fjKPNPQzGSrVaC2018e54Lbc381gQ==@kvack.org
+X-Gm-Message-State: AOJu0YwQ9lvU8Ywuhoce5EQ65uudPzDKQFJ3+Iojc5W8VrEE+wwZNXgA
+	Ik+Ukp6turb4ZsOaunwuD3+QpLsQHyq5V0J9Jnlyy226OUvAZZ/VbFAL
+X-Gm-Gg: AY/fxX43DYjTePdNEXvdbcS70Y24CHQFT4S7tnj5U8EAHDtNFGnKj/qHndf7+KI6S7c
+	XyTJGCr/KLDlcGwqqONxpRsJH7DOAZiAc7shrKZoxtG4ODXQx6H9o+LRD7B1Jd6k0KPzSLVt+5+
+	Ou9Z0Lwk0lpJd4Aqa98nxrSpxYbi4vk0Y0kDN1Y2fUtLpw0dFb+uld++9nFe/jqn89YZWO7xK9h
+	8RcA6ROOkkAb93oTlv5l4XhRr76XkynXcZwrtNLuPQ8VMW8gZhUKSIUHXFZ/c1FQwh8P5PRLZs0
+	jHEOX3XC0U7USiH/Mv1ekkq13qdjjdtuVpKnjqOYoCl8bY9pRVk3aoPbirKOLOFv9QI8z41bzip
+	xTQAv6I8AQzfIjtakCBWyAzfJKNHNADQSCFgDjtkDYXcbGQMwJkykGRGkx573TWbmWnS2m0CelM
+	C1
+X-Received: by 2002:a05:7023:906:b0:11a:4ffb:9825 with SMTP id a92af1059eb24-12336a47f3cmr1905143c88.6.1768370718015;
+        Tue, 13 Jan 2026 22:05:18 -0800 (PST)
+Received: from localhost.localdomain ([2607:f130:0:11a::31])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f248c239sm24911154c88.9.2026.01.13.22.05.13
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 13 Jan 2026 22:05:17 -0800 (PST)
+From: wang lian <lianux.mm@gmail.com>
+To: sj@kernel.org
+Cc: Liam.Howlett@oracle.com,
 	akpm@linux-foundation.org,
+	corbet@lwn.net,
 	damon@lists.linux.dev,
+	david@kernel.org,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 08/11] mm/damon/lru_sort: support active:inactive memory ratio based auto-tuning
-Date: Tue, 13 Jan 2026 21:53:07 -0800
-Message-ID: <20260114055308.79884-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260114053629.85750-1-lianux.mm@gmail.com>
-References: 
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@suse.cz,
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH 09/11] Docs/admin-guide/mm/damon/lru_sort: document active_mem_bp parameter
+Date: Wed, 14 Jan 2026 14:05:04 +0800
+Message-ID: <20260114060504.87119-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260113152717.70459-10-sj@kernel.org>
+References: <20260113152717.70459-10-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ennaags3kueucbnbf7gsw55nitdwampf
+X-Rspamd-Queue-Id: 55E7D1A0004
 X-Rspam-User: 
-X-Stat-Signature: 5w6xzibm7tqhstaxqdxip1jfrjzarar4
-X-Rspamd-Queue-Id: A90524000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768369997-614812
-X-HE-Meta: U2FsdGVkX19rw5AIsvDr6cODt7oRoQgv1f/XQ+XFni8kAvQjEliy7s3FIMAglvEf5gaIFBabRah99VybWpdrV9snxLiM3CaNptENT0Pj/NHHF47ljHysrhZt2OtET+WKCRDuCoRi/+HanZIg/GBg6ddupFPFuyQrim2PjxyqRDEEWZOTBCEvzkURSLmS1dtNO5mfZtM0i+lyxm5x0BiX271Ie+9xCQZDMSEGvNHDF5CZo8q0rZnx31L60SBCfUt81S/CrNF6IO0BkT6/7+wvL9GTHzbUpvK5Ggkn2fzwElmrFylGDz5JgCaTGcGMpoU1vhzBDYmWLENfA6al++4YjmeHK01TjUj56C1LtRt6UdIJGXT22umsPD/1vSXzavbr2EXpmQ9FPuIiv4sUqtguz+PhP4Go+zuqxcEKgw/fonM5dQalOFtqf5P0nvrMer0Ge/kSCEjcQz8Odn0AKsEx2oLj3AuQrzQTwSegMkSq3a2Rzj73rnZMAVeXi2q3cw1Rfsfu86Hq0IH6HSzHozUEq+2A9FUO/tocg/gBqGMf7WE3VAnAgoOMg7h2EBdBNcdHg+q7gslxMVFZxnk44bWloK0VBxF4EfTZfdFMY7Q3vxpZMfzd28d4fjjpCxaBv7gKmUJwkTh2bDAqrVahjzZPYI6q/UuKgmqzIx46/dUPlkOVhLfw7RiQeDA668ahA1PA9oCcXhhSkWqYYJx6ZClJq1BRLbQXM2RKT6x+BbCPSNLrdqmu8UZy5e7i+xVEQkALhhxJi/Ioca4CCAm+DiasEWNzW42ohyLFrGZzSqidEbsyhKaA6OVD+TlWPvj45cVIoV7cq+tyHAf0pFe2k4y7cdbr/MWLXmX1W6L14jBwPwaSqZA6ZzW3rqQDGyxPs0uXPncyMCwhSEoUY+GqUMN5DnIuGpVCloVb581KtblyZveu5XvTn9fLwJ//y36am2ONQ8v4JKlpNgliKoTwzkV
- T8R+w6jE
- arvQwCrGAfjfrRxmOIYag0XIRys021znBMzwpp0KVefmc/E8CSrw8BLPV2br+D5qrKdc87HIZzWvAxW47fecMRSsGwfdiNeJpK1uKXZKjqeI413bNeaU+h4dr0zsFnOhoH3cWQuFL3bA4E5VM+RPMXjCQl+JaW03RuDHm90S1KFuqDlEYBZO8MH1e0x4YJD9+jzxJajobP6qLdyc7KtYVtMwodXijAdD/fmKh/5D2ghmqNMKnVdnbab6xto72O4IBmmVe6cRi/MVIZH4xAmKTkqzh4ob6oHf0zofVujlTEFU4aN+Fhisrma+eAcXY8iZ/2s3prdTdowY5NO5Ggh1WHpQBWLyK6BZsTHnguM58F2K9MceXurKlr8lhTw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768370719-908750
+X-HE-Meta: U2FsdGVkX1/i1lfLZd7P1pgkb35e+7iuI9MrAVyI0l2DRm6KNurS7/Ga+/LODqTQ9iz5vpMg8agahqePficl/0mNIqZwcpgo+rnDh42vsLBPSU296B8ZXyHadMflTpWpbm3YmqkBldKypBCc8Z8g9i5nV/FWfTQZQ+T3myslte23jQF1ccFbwF5iOOBLPVa7DvKfl3VYo5s83VsIpxxdqjEqi7XTa1muCzL7z+ZrtU52ZSeY2YI1wyhfO1khDPbQI58KRbI3T6wYarmkEFr1njWXOwVxPRu+2HHx1e70ICLj/Oqy0y+/vzOFn4bjnbf4Ibl8bJ2ceWjl5iTp647ecbKOcsbpl9iMGg9dgT4K9BwVFlUTvz23M3a7AZOYyxeItd9vDa03ttJzVt0VzRlsxL45co89ZMTMCZms02CFuUhtVFr2Ekj9zrqXqlQJ0mRWUeozLq3g9LATeXlydlt6mNExRvk/2Wg14RQE70hTN85uFkOS13WbyuAGRlwOIqgLRqF48AWEkugVOw1tos7oN1IjQjN8wqzaap9myr+HbS5IXPqadb6ZapbP/97WN+JaLFzX9+U4e9ZYD3Dd7qXT9av9XK0Lzs7RhG5OYgVaQbGkrXOnCukuI+mulDtbyLeL7mbHQXMtckFxCALyG27SoTjSbBSlwhhluiDQJY6hH51OGLC+71SiU1PzEZt5wnn57rvIQ9d+Aq29eiQKCqjg4TgVwO87dFIX5zCaEHiSVHXlp4HGQqQy7VF1CqfVSohoNl+V0XbiRsCxZpRQCN+JZ1f40HlMOxL0lbhsDxYNyQLVZVqo2gnWFBKeKACDrkWk0ske/CttlZv9MBy7uSF6BqjOkFFr918wU01cSoljWCtaSp1ADt/BsLRb7gEBvkMTvv3on9fNJlyKi9eAMgSrHEDBiOuEMwQAvWaDTc69mnv3bokbIk9Otpd2qU25lMqTUqsye/7NdnSVGQu01HQ
+ 6Y1vCCX/
+ sk0ORSnbVRZzv04hsRYfzAvrnCRI+PLd4M/bQ/Nssi2U3fGWE8xh/FFC8O3Lmen3wUXWYATjceGIkGm0prhlL6zbkyVaYEpSSZfeQBo9oYHJnI0Zro4eldm6OsTrfAqUftNsleHMKui3YDdaV6YysswFyjczn1U//UdxQRP6moLPA+1B6+gFQ6w3y5nIRcSc8weOeoFamTKRzXYQOvZ0baSzW1X/9FGMa3zK76Su7EZkeDZblyNSicfKf0pTKOoavcN3ML/5dY4exi5xMot4sxtQVVJgr0nUKfj80PFzUn6viR/nftVVyW6hNS2/Mt2MGO1FUh3xYze7VbED0/A29GBji/x4zVeOwWt+OI/564MIx83hDLqdS0h5cxdIaJQ1alFo04VTLbktajN9P3mDKHSvF5MC8EJwguYef8bgN+WoPd+QkOAyWfApHIpkRE3icinwIDnt+eUi50o8d6AB8gIz+A97rWqUpUR5ppuw0f5baAS5cEYvn283+8Nxa+DZ+3fsovGG4d3oWdLTf1oZYUKvN8+hZtXdPv9KgWpgc0wgn4cg30Z8BUq+y2I0Kr4v/GwcBkQGEBVuTHR5yt3HNdaOpdKumLhf6hTwItR4kitxd85TTwxkMB4p06Msl9mK/TaG6/gIKJ6VD87NA1nEAfa7LGEGwk+S2ba1CrISbq6wKEcYTM9srXfDwfBGDZGWlxaoml/Y27BnlVYJpzGG3eaZHN2/glfZ/Yk2r6XIJYXeX8NQ=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,81 +130,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Jan 2026 13:36:28 +0800 wang lian <lianux.mm@gmail.com> wrote:
 
-> 
-> > Doing DAMOS_LRU_[DE]PRIO with DAMOS_QUOTA_[IN]ACTIVE_MEM_BP based quota
-> > auto-tuning can be easy and intuitive, compared to the manual
-> > [de]prioritization target access pattern thresholds tuning.  For
-> > example, users can ask DAMON to "find hot/cold pages and
-> > activate/deactivate those aiming 50:50 active:inactive memory size." But
-> > DAMON_LRU_SORT has no interface to do that.  Add a module parameter for
-> > setting the target ratio.
-> 
-> > Signed-off-by: SeongJae Park <sj@kernel.org>
-> 
-> ```
-> > +static int damon_lru_sort_add_quota_goals(struct damos *hot_scheme,
-> > +		struct damos *cold_scheme)
-> > +{
-> > 	struct damos_quota_goal *goal;
-> > +
-> > +	if (!active_mem_bp)
-> > +		return 0;
-> > +	goal = damos_new_quota_goal(DAMOS_QUOTA_ACTIVE_MEM_BP, active_mem_bp);
-> > +	if (!goal)
-> > +		return -ENOMEM;
-> > +	damos_add_quota_goal(&hot_scheme->quota, goal);
-> > +	/* aim 0.2 % goal conflict, to keep little ping pong */
-> > +	goal = damos_new_quota_goal(DAMOS_QUOTA_INACTIVE_MEM_BP,
-> > +			10000 - active_mem_bp + 2);
-> > +	if (!goal)
-> > +		return -ENOMEM;
-> > +	damos_add_quota_goal(&hot_scheme->quota, goal);
-> > +	return 0;
-> > +}
-> 
-> The second goal (Inactive ratio target) is added to hot_scheme again. 
-> Should this be cold_scheme? Currently the cold_scheme parameter appears to be unused.
+> Document a newly added DAMON_LRU_SORT parameter for doing auto-tuning
+> aiming an active to inactive memory size ratio.
 
-You are right, thank you for catching this, Wang!
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 
-Andrew, could you please add below attaching fixup?
-
-
-Thanks,
-SJ
-
-[...]
-=== >8 ===
-From c8dbbf0cfb01de606d47f455bccc2d7b2d6d07ef Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Tue, 13 Jan 2026 21:48:53 -0800
-Subject: [PATCH] mm/damon/lru_sort: add inactive mem ratio quota goal to
- cold_scheme
-
-damon_lru_sort_add_quota_goals() is adding inactive memory ratio quota
-goal, which is for cold pages scheme, to hot pages scheme.  Fix it.
-
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/lru_sort.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index f3a9dfc246b6..8af97642912a 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -238,7 +238,7 @@ static int damon_lru_sort_add_quota_goals(struct damos *hot_scheme,
- 			10000 - active_mem_bp + 2);
- 	if (!goal)
- 		return -ENOMEM;
--	damos_add_quota_goal(&hot_scheme->quota, goal);
-+	damos_add_quota_goal(&cold_scheme->quota, goal);
- 	return 0;
- }
- 
--- 
-2.47.3
-
+Acked-by: wang lian <lianux.mm@gmail.com>
+--
+Best Regards,
+wang lian
 
