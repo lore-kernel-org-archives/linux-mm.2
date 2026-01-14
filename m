@@ -4,137 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB276D39000
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 960C4D38FF2
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:30:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FD4E6B0089; Wed, 14 Jan 2026 12:30:04 -0500 (EST)
+	id E69B46B008C; Wed, 14 Jan 2026 12:30:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A7786B008A; Wed, 14 Jan 2026 12:30:04 -0500 (EST)
+	id E183E6B0093; Wed, 14 Jan 2026 12:30:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ADBB6B0093; Wed, 14 Jan 2026 12:30:04 -0500 (EST)
+	id D1A2E6B0096; Wed, 14 Jan 2026 12:30:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 09AC36B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:30:04 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A0626C1DA4
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:30:03 +0000 (UTC)
-X-FDA: 84331257486.05.7C538BD
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 92C8C100007
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:30:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yTG8mLZ6;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf05.hostedemail.com: domain of jannh@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=jannh@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768411801; a=rsa-sha256;
-	cv=pass;
-	b=UC+L4CaYM6eUV93y+QvEZS4dd5SAjIx8cMI4tRlIFMbqd9g72rsU1FVBpXTe/HXClxM/FW
-	Y49OTBC/f+bqEe9IJyfDJHIFoGnuD1PrdMftoucmz5YlnQlJ2HN6byIjgUeSH8v5JvyaSS
-	TOf1vzsPLQb862wPql7yzgubxzZeGRM=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yTG8mLZ6;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf05.hostedemail.com: domain of jannh@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=jannh@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768411801;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C02E66B008C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:30:33 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75FFDBA235
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:30:33 +0000 (UTC)
+X-FDA: 84331258746.19.F101B99
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BE0B6C0015
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:30:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XM81uToJ;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768411831; a=rsa-sha256;
+	cv=none;
+	b=u5D+TnfsGduu/1QNinII3SWqD9pB4eBYc5CJyRA/+3aDBPqhWrZFq9fc2mQBRmlso3ppVe
+	Jp/vCHqiYyLAYG8uB0zLDNK8qjYQH3T6RQf1MzsnsSi8FRo2iAKi1rCw6n6JDpxiZ43Vlz
+	iZa8Jxu5PuvPaYzjQ/P+7iMoRwP02FQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XM81uToJ;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768411831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YnyhC9GK7hBOachWXyV8AkYNbzuqJQ81tevxMlLvUM4=;
-	b=KAbhfkpqjeGvQnGgbvtKFy6Gg5Noah+Ybe2c12cPpVD7kiatoIx/iM/O8tu4y+iXEEwF9h
-	fgMEW4KEUOBNdjjpQsnfyRIxlQJ5yb+AlvYKW16B9O0ZKWBkylrHcmIjniwPGjTuzmXxv0
-	dq72pVmzUcurLbsAe3FDYcszUqgh9f8=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6505d147ce4so11576a12.0
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:30:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768411800; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EzPbgj4oK8jo6dEik5Byt+y8pAFXd3nM4YPZMzc8jb0DxIjOv6UUAElgxKiEqYZXeE
-         UQSYhOckaSLajwti79buaL3538pK/2CEhZ78i9LNJo+jUnDmRTeiIWwDHwPmkSOBC3bO
-         taUWAocrkrtuz0qfgTnWZGq/MIcba0YhLvGnnwIoyJnddGEKuvJ5B8y6S/J1PJ77OMyO
-         BVAQo3aLPUJ3+rKF6k5QhxsharThUhWiGHIyhYatK5Am8gSdqkfTC+LZ6x3oGKtLHNhT
-         AtVC3mi9sfCq/mheocK8Uj9RMFXFCgYgaMwLXgHFojYC86AvXbnpD77a5JVdXV8gQyAX
-         cUVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YnyhC9GK7hBOachWXyV8AkYNbzuqJQ81tevxMlLvUM4=;
-        fh=2Z9tzG58PwnIIWWCqnux6/yzbLN6rMwOxC4RvpO2hvg=;
-        b=MMakw5aQeQucYqH1w2WvrP4ejiXAaJP/e04pPE5g8dDWe73Y+sMKvwZ4h+NigrXDTw
-         P8JqwMfQirhQrD/py0xR6TfrUz+x0h0vzfZtB7odDk+sBLfaXf2EmKnVL9Waob9Q/hgY
-         CAQZ01mUt+fhiaXoJqrMVpvVbS2mIET8Hxu+Xv0dTtwBml8wtPYngbhAknIYx/+xx2vN
-         j19egcM+6zzA3FwBe6/t1xEjCWiIwgDH9zyitERa2Jay3ZrCe4hfdkCijMAm3NxoD13v
-         RvFfK7pEUZFqCqD+Ga/Tbay2jUPx0m2rY8NdMufA1g7wN6xoBQCEjattsy7bscYWY0/V
-         3cdg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768411800; x=1769016600; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YnyhC9GK7hBOachWXyV8AkYNbzuqJQ81tevxMlLvUM4=;
-        b=yTG8mLZ6oFycvl6WcYOArXOQr7UvBxyKKAOAVNUGIaqjtxP4uJGkSac1ABDcXHG6Ry
-         0lhVjXrrsf8+dm5T4cTpLMTkaREhZol0qva222fvQgZPSjrOZT+YEb5LQRZVpwtKIJJy
-         BW1qTT+NdLEMDNF9NW3q4NuXQFvac/4H5L6gDyK4ByIHvFQpIcnYgKfoGjTmI5Q8gEYx
-         x6soIL/Kw7SrsX7WS4gHY+LoSgqreH7AwPg1CJuD6j1goRS7u2Rp9EwGLo8FL4PGbCjl
-         Nb30LqJ7rVGvuOk6jJbgg/6VU01Z0P60IxTKBr8lW56E6sy9+wrmFCnj5vaSyU5uh4ru
-         M0Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768411800; x=1769016600;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YnyhC9GK7hBOachWXyV8AkYNbzuqJQ81tevxMlLvUM4=;
-        b=MYDMPkKu83XA2la4j2eMJSlTgpqCgV2O7XDPFki6tn5Qpjqs9YHRFh+4qKiuHarkCt
-         h7PwOrtyb29BzKwGfUrdpY3K7qmu49hkBZQftc1z7QChfCi5ucy9grMKZk470fMie62k
-         aD8FmKNNFdZGnHReaDY5q0Uh2kjegiG0CnyjCkPzj1FU7t1wgAhavxferspmZ4XCW4g9
-         TUEhyuS3VEwE3oOS5qjAg4uChiyTzxWqxy6I0ozELa3UivtooA9EpY1LaW5lMfrOBsin
-         EjiU4RIQcwPBQWwdtveFsL1hHoTv3p6AXpW4qFYyzsZi7CyL9XXmJeQzVXyFsSF8H35R
-         0AnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX20CoGpt+hPYN3r7t+Jv8IaZb2WyCN5hsNNY97NmOzZ86HxvpJFxKiaJOT8HBGc5vaSBtnOBVibw==@kvack.org
-X-Gm-Message-State: AOJu0Yx9RnjKftKQ+57b1QkffC1S7YXQWE9XzxoPma277TQ4OS64PK/C
-	yZ+D5ZwW0mAvW9/MSgcfnbCiMGaMbChMCaxM/DRnzR2YMH1YGq52opf6O3zl0/r+C1NvnoCshn+
-	o/6CdMfwl2MBj8uIaSEWiOHsqKrVDpmNfXAjRDFqB
-X-Gm-Gg: AY/fxX4Qs3t66aKBQertekFNxH4UyvB/aW+gvR0zRf/7SQAvChD2dL4VwJL/pYQm9rl
-	/419Xv9f8BPXkVrY9YWzOWMXpfNilQWVHNuJLaZs+BR/hJL5EG0vMtLlPlTBa8Lk/Qm31QskfNX
-	zzvcCy+TCdtFLDe/4NroOz8QYwaULcIn7whvwgwfil/HPkaWsUzPMYaI3+3Qi2KXuJx5lNVEn78
-	ykYdBuhpHxJfMfN3f8bQCxE6eSmgXh2Zjvkc6fpI5jXUWJasn2NohW2OZwfjNtI+dWOsUFzGBf+
-	7rwIflLwliLphS/ubm1T+AJ7QA==
-X-Received: by 2002:a05:6402:291:b0:649:8aa1:e524 with SMTP id
- 4fb4d7f45d1cf-653edfba76cmr36805a12.11.1768411799706; Wed, 14 Jan 2026
- 09:29:59 -0800 (PST)
+	bh=zOHLChz2LwrbaZTPyfem0BlhRzOqzHmBPgYZf9Hqr9Q=;
+	b=MGvi1Zx/KgFYjcXQP3fL3YycBld7Xp+/DPdAEQXaiej4KmweygE4cRwjDYjxEVBAlVv3W9
+	wJCtQfSamwjSB0inD8r+5KV9tN7N55I1bnw1d/BzLzJctpNfm0gtVwrjhrz4jjlo6JJFVO
+	8BVWYtnxFBgTrotiusil0zJ1qA/31kM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0064C60052;
+	Wed, 14 Jan 2026 17:30:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DC8C4CEF7;
+	Wed, 14 Jan 2026 17:30:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768411830;
+	bh=hwNrqKA8AlHPcVAA3NPkwsp4ijTzIp4nlEDnDkoEX8M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XM81uToJyiYMw/1XFamfWLJfbjbhZq4H+WDl1MDE4XJ/V6c7SW8xH8G1t38NSD3I4
+	 DDTX+mdio9NVjVitwYe+jDKUEgRKwU6oGzlGHIxpZ7GVPVZ9LDpWLi9vY3N4RgHjXD
+	 Il0TXIbcrRpESIc7ozCshMH+IbH52UibSOsnUVrbRYrK+vyrcjQind9V7GHTCB8vAW
+	 WtLU/9wbAm+9Dqg9Y1U3u3Q+pGy9gv+nsvKIUvRN0M0zkr0PcZzA3MuxG6YhDOIekV
+	 8r8LdsupZ3UWycZ7Rxjz8GiLwg3gpJrSe3fjeMJJeh7n/KVktkp06CcST6d7eRWkHD
+	 CCO5b62lO+g/A==
+Message-ID: <f239e391-ac7c-4d26-ab82-4024a77ec3d3@kernel.org>
+Date: Wed, 14 Jan 2026 18:30:24 +0100
 MIME-Version: 1.0
-References: <6967c517.050a0220.150504.0007.GAE@google.com> <CACT4Y+aFaijS_CvzTnHB+ecg5nzYW1-MWPSp-Ad_0ax85=DvCQ@mail.gmail.com>
- <CAG48ez0iyjjZn1U7LeG4SBXjRGo3PR-a0MWEhAJZ02vHOUA6BA@mail.gmail.com> <CACT4Y+Z24oSCssMnYwtCkGHpCKTOX2J4x+8HNoGovVxeZ5_TzQ@mail.gmail.com>
-In-Reply-To: <CACT4Y+Z24oSCssMnYwtCkGHpCKTOX2J4x+8HNoGovVxeZ5_TzQ@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 14 Jan 2026 18:29:23 +0100
-X-Gm-Features: AZwV_QgCAfK4wS_XUsDtZLsynTlKLNtwR3wPWS1VSCey_m0Q3Wts5Y5vpwRb2bE
-Message-ID: <CAG48ez0q6ZXAk8D3frvXyeMsFDYfmY0sc=PkE6bRM8QP0gEVfg@mail.gmail.com>
-Subject: Re: [syzbot] [mm?] KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prepare
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: syzbot <syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com>, 
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
-	harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lorenzo.stoakes@oracle.com, riel@surriel.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/4] iommu: debug-pagealloc: Track IOMMU pages
+To: Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh <smostafa@google.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org, will@kernel.org,
+ robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, xiaqinxin@huawei.com, baolu.lu@linux.intel.com,
+ rdunlap@infradead.org, Samiullah Khawaja <skhawaja@google.com>
+References: <20260109195111.GQ545276@ziepe.ca>
+ <CAFgf54r_au6isA10Nrve=MHL455X=tKhNsSwH1ej-TX08J3xLA@mail.gmail.com>
+ <20260112133256.GB745888@ziepe.ca>
+ <CAFgf54psxPrsvujStPNtrzxiKOsJF+aVrN7BcNxxmAF4wDmRXA@mail.gmail.com>
+ <20260112135208.GD745888@ziepe.ca>
+ <CAFgf54q+9Y5TtGJDB=8q_BW-0F=TM7zBbCcMzvtvr_N2WMnd-w@mail.gmail.com>
+ <746f5adb-1d91-4ca2-8ae0-a2d171203b66@kernel.org>
+ <CAFgf54pbkfdFr6biE8BiNKBnTBFWxXGmvxsZ0E+C1C44c9AW_g@mail.gmail.com>
+ <482f2f36-e906-492a-a80c-987bf7359d83@kernel.org>
+ <CAFgf54ovfnTHmMuZGk73SEEKsP3k-_exR1wqUE4W9tLYKv_iDw@mail.gmail.com>
+ <20260113150828.GP745888@ziepe.ca>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260113150828.GP745888@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BE0B6C0015
+X-Stat-Signature: qdsz6wd1c6sfao3geumjbbsxtyxbi75i
 X-Rspam-User: 
-X-Stat-Signature: hokcz9m59eay5ran8wckemiu7fkfpn3z
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 92C8C100007
-X-HE-Tag: 1768411801-545246
-X-HE-Meta: U2FsdGVkX1/vfwj1JN8QUbQbjCg53FPfHSH4KZ45AazY7vNZzUJ8OVy4C5T2NbiJhSDbpsGSAeSWg4hRvCFjfOcuhKi4ctzvk58gFBuXkuH1OQ2GkRz1rUInfcS8+gf9amsO7iCS1AktltwB6uXz3bmrepe3ns9qDFgTMYGXlxWO6Z0nRiw2JQhQ0+uxhwsV6GdN/txTz1tg9oDlDPrQb9rtny6y0uS59EyuXaxkf5Ad2p3I+h7OXU8GFDUNieJ4AcB6Hvu9a1QnLob0C4+3mhyWpDWd+U7GR5iFXxbt5smxJ2WhejMBJsnAJLFPH/QQGb2Qu+gDcxnxdQqJ9MCwy4pwGYQtQHVXR93hptV/foD5mhjvmwYr/Ypiuw7cUEi3FlMVpLXxjC6ThV0KNB9h/r39/zwm0/q6N2egClqoF5FArCqqVG5k1W/UJLKXoiTe/IhRf6bpgLrGVlMzFbAZJyi0PXhTO8ZoMc559JMo+QkpqeVS++o7RSwnI3poUPy6b45mqfeEbD4R0Rm8Vi7BSJwNPaYxIENp6mv2ksG6Tzv9/8ZWTsdkcY/b/E4gcz74GXkhKwX8AG8J+1R19c9x0nGc5GiebSldKpiAjgbpC2/CzhvWlKCVMtuJAembJJmc07uu4ixCXvYFAqx5hpS5gLkIDE+ZbBev43JnvqZUHOjkpbgOhIVv8yNdzYamlKQDeoeH5MYesxX0Pn6fBiP2iqZ+OcFQ/81sYZZ6Lp8ZUUGNRCwqpCKeZrOm71kdBdArrQ3CFOPGQGWJ69pG7JTkN7Jea9H8W2RxEbOg2JTPst5Wpc+ZlzSzvNaLzf5cl57xqRrVWNHME8sb3zsQBHHQCXaBF4F2m85DYFHz3/f9G/jmCwZJFnW4ku/UoWUZeeXD/d/u6kkzM3yMOi5Vbl5fHM1T7mwzDSJJQ2Z5m2tyJdKYImTorCn7+ZVqRJbVvydBdgnH2DbinpvTckL5r44
- cxJ7m06b
- BZZkqNJKXYHVMoSqU/JQIyXRx8RsiEnIx+hnsgLHi5kHKdKo1jrQCMNWgKB/O8u9J+n7B4muKzCez81cDIJ4hq/0Tg8lX9DB0IXs6jirzuhzKh9cJTiLbsmbHR4w8s6Q7XoKGr11WIlatLUZne99OeRt51JObEbnOgSAJ+zz4VnVFvUBWDjJgQHuG3gzCQhQKXOt2pkzRIm2pQkdUoiaEqVlK40jodcNrcVXnYQwsQgySKaX6mQxOTk3LYoyPqMaWX5KD3ENhUpWrByWS+F6yo9EA1G0b6dXk8tAdiIGzvMlJ7i4MLg9XkkHD3z1hdxW8qDMKKVrgHWVAl5Jf3k8v4YzDee+VgHx/V16VnYcoWi57eUs55u5ipTOTEOZdq54G61IReHD5WkO6fqAapWbigdd7D5qXKPYjuoOC+tmy5tJBPFLvB9h85mFKW3++xvZZa4+N9ZJ1wDH5Fs2Wy1EMGVKUjm/uBop0vrUSZOHwF4rEWdPx3yARBci7ZQQ3DfRSrszIoighGOMdFDBs4WCCfDqJXqtacAXL4efskbP4uqRgID8dDT9Av/cihwp3zp+BCNcbJUQCrsZ/m9aNyJI7Qu2ZHTM1S7tO8O2RA1OVfA7Z1Cq1q/pHYliyXWiXvkmhbPgmUuP2TqCtBDwG5PmkmpKPAuTfMym74/2N14HgieKU1URYNZdEXR3/H9oTa8vvgrks8k40BpyDDIJyi6s8DBQD+w==
+X-HE-Tag: 1768411831-912677
+X-HE-Meta: U2FsdGVkX1+hD/ZZHifnrtQ4N2BuhEo+l10GsrAfjE22kVBGpTTj2RDV8i2tPL3RaMkA46hyjlK4V6nzDRuRNwA8qORG+X7YuldWGUMP+imIEBOHNavfOteJUpposorWuNmq0R3364bhE4r2Oopwz7/FDg5izFwOXwFiS98/ntQsVKs23UPyVrUViPJEgl8arD71T6GNJjlpc12jpNqXneGuMSU3/RTAltsqnYU7TFyNInC5IHxknce1kWIvp/wlBbrvP+ew4q6GS6f+7ZXAKUFEU7odfMbKi6y4fuicMEAcEKb4zihUn8t4Y7WHZ1GSs+zWoqklV20CcW+NNpNw4/CXveCsmGIPpA3wpzA5VJ57LBs25U0e+GdpO85qIb+xG1wMr9PasWarcPzd/PncUTmV9FWEAWjP3wiYlGcEXW0sn+2cz14UC54t/W1Zv3ROksuvwhLFOpapbeXEK6lZSClpDORwRTJtsmZaTDttACJyyGJRDFVNNvNPGnH0t05qYVPxZKYHo9YUBynkURRE4dVdfQrdZZcfc5Z5x2iQZBDIo90hVInhEQAj/JTvjGer5Ca0YElBavmv8ZUBd6vX6mocitqrU5puGAfadvGl4RTSsS2QkdOzbQa6iOaVPzs2T6f/VJl+Dd5Vzpqo5GWACj3yvX0clES/6UNUJR9KWtHIE432armgZDxvFslXqXK8Un89Ef/C1a3bNxEtEHAe95/xcu2cgI4i4ZtNcN8AghVPL9Z22jxD65YcZrS5ho0E+OMDidF22Vtp/gJ2TJbBFz9h2QJQmfEwBQU5JikGOi1G7vEx+slY4HZOP5wJdvbzJdlHWhRp9gKyOGqQt/a/1Lg+SrTNWQ6SuFIDlnEHZ9umJBN4kBwT2MaEPqHZRHv7dYDCKZtFFt+qDiRO8nregRhRGs6zdzyxonWrZr5PzdxVpWZEgORHmIpBtM0HQlBFAmcs7kt1pwc8gMUNUeN
+ Y/6IPswp
+ Qw5SFTfOO0dxT5Aj4OkVaIyhkQ6KR7wXaZsS1YpX0737iVqmSAsNimwNZ3IBksc/GEY8uKTlvDKrknU4RaQmc2VI3UBU3u0XhYh7OEf8EXXt72KlY6kZe0flBMxI3KtBbahZAW0ooMec97PHQZ4whol7F+QcAYnSALF0CUPasj4mXYPSJjUNwTpwB6qiSNPhEKWiMUOqi9+gJ7P5A4EM7ijQVsRxTZjBeUcnV0e7frdZpYsBaNdltVt8sKXvbrLsgDYVu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,189 +152,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 6:06=E2=80=AFPM Dmitry Vyukov <dvyukov@google.com> =
-wrote:
-> On Wed, 14 Jan 2026 at 18:00, Jann Horn <jannh@google.com> wrote:
-> > On Wed, Jan 14, 2026 at 5:43=E2=80=AFPM Dmitry Vyukov <dvyukov@google.c=
-om> wrote:
-> > > On Wed, 14 Jan 2026 at 17:32, syzbot
-> > > <syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com> wrote:
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > BUG: KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prepare
-> > > >
-> > > > write to 0xffff88811c751e80 of 8 bytes by task 13471 on cpu 1:
-> > > >  __anon_vma_prepare+0x172/0x2f0 mm/rmap.c:212
-> > > >  __vmf_anon_prepare+0x91/0x100 mm/memory.c:3673
-> > > >  hugetlb_no_page+0x1c4/0x10d0 mm/hugetlb.c:5782
-> > > >  hugetlb_fault+0x4cf/0xce0 mm/hugetlb.c:-1
-> > > >  handle_mm_fault+0x1894/0x2c60 mm/memory.c:6578
-> > [...]
-> > > > read to 0xffff88811c751e80 of 8 bytes by task 13473 on cpu 0:
-> > > >  __vmf_anon_prepare+0x26/0x100 mm/memory.c:3667
-> > > >  hugetlb_no_page+0x1c4/0x10d0 mm/hugetlb.c:5782
-> > > >  hugetlb_fault+0x4cf/0xce0 mm/hugetlb.c:-1
-> > > >  handle_mm_fault+0x1894/0x2c60 mm/memory.c:6578
-> > [...]
-> > > >
-> > > > value changed: 0x0000000000000000 -> 0xffff888104ecca28
-> > > >
-> > > > Reported by Kernel Concurrency Sanitizer on:
-> > > > CPU: 0 UID: 0 PID: 13473 Comm: syz.2.3219 Tainted: G        W      =
-     syzkaller #0 PREEMPT(voluntary)
-> > > > Tainted: [W]=3DWARN
-> > > > Hardware name: Google Google Compute Engine/Google Compute Engine, =
-BIOS Google 10/25/2025
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > > Hi Harry,
-> > >
-> > > I see you've been debugging:
-> > > KASAN: slab-use-after-free Read in folio_remove_rmap_ptes
-> > > https://lore.kernel.org/all/694e3dc6.050a0220.35954c.0066.GAE@google.=
-com/T/
-> > >
-> > > Can that bug be caused by this data race?
-> > > Below is an explanation by Gemini LLM as to why this race is harmful.
-> > > Obviously take it with a grain of salt, but with my limited mm
-> > > knowledge it does not look immediately wrong (re rmap invariant).
-> > >
-> > > However, now digging into details I see that this Lorenzo's patch
-> > > also marked as fixing "KASAN: slab-use-after-free Read in
-> > > folio_remove_rmap_ptes":
-> > >
-> > > mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
-> > > https://lore.kernel.org/all/b7930ad2b1503a657e29fe928eb33061d7eadf5b.=
-1767638272.git.lorenzo.stoakes@oracle.com/T/
-> > >
-> > > So perhaps the race is still benign (or points to another issue?)
-> > >
-> > > Here is what LLM said about the race:
-> > > -----
-> > >
-> > > The bug report is actionable and points to a harmful data race in the=
- Linux
-> > > kernel's memory management subsystem, specifically in the handling of
-> > > anonymous `hugetlb` mappings.
-> >
-> > This data race is not specific to hugetlb at all, and it isn't caused
-> > by any recent changes. It's a longstanding thing in core MM, but it's
-> > pretty benign as far as I know.
-> >
-> > Fundamentally, the field vma->anon_vma can be read while only holding
-> > the mmap lock in read mode; and it can concurrently be changed from
-> > NULL to non-NULL.
-> >
-> > One scenario to cause such a data race is to create a new anonymous
-> > VMA, then trigger two concurrent page faults inside this VMA. Assume a
-> > configuration with VMA locking disabled for simplicity, so that both
-> > faults happen under the mmap lock in read mode. This will lead to two
-> > concurrent calls to __vmf_anon_prepare()
-> > (https://elixir.bootlin.com/linux/v6.18.5/source/mm/memory.c#L3623),
-> > both threads only holding the mmap_lock in read mode.
-> > __vmf_anon_prepare() is essentially this (from
-> > https://elixir.bootlin.com/linux/v6.18.5/source/mm/memory.c#L3623,
-> > with VMA locking code removed):
-> >
-> > vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
-> > {
-> >         struct vm_area_struct *vma =3D vmf->vma;
-> >         vm_fault_t ret =3D 0;
-> >
-> >         if (likely(vma->anon_vma))
-> >                 return 0;
-> >         [...]
-> >         if (__anon_vma_prepare(vma))
-> >                 ret =3D VM_FAULT_OOM;
-> >         [...]
-> >         return ret;
-> > }
-> >
-> > int __anon_vma_prepare(struct vm_area_struct *vma)
-> > {
-> >         struct mm_struct *mm =3D vma->vm_mm;
-> >         struct anon_vma *anon_vma, *allocated;
-> >         struct anon_vma_chain *avc;
-> >
-> >         [...]
-> >
-> >         [... allocate stuff ...]
-> >
-> >         anon_vma_lock_write(anon_vma);
-> >         /* page_table_lock to protect against threads */
-> >         spin_lock(&mm->page_table_lock);
-> >         if (likely(!vma->anon_vma)) {
-> >                 vma->anon_vma =3D anon_vma;
-> >                 [...]
-> >         }
-> >         spin_unlock(&mm->page_table_lock);
-> >         anon_vma_unlock_write(anon_vma);
-> >
-> >         [... cleanup ...]
-> >
-> >         return 0;
-> >
-> >         [... error handling ...]
-> > }
-> >
-> > So if one thread reaches the "vma->anon_vma =3D anon_vma" assignment
-> > while the other thread is running the "if (likely(vma->anon_vma))"
-> > check, you get a (AFAIK benign) data race.
->
-> Thanks for checking, Jann.
->
-> To double check"
->
-> "vma->anon_vma =3D anon_vma" is done w/o store-release, so the lockless
-> readers can't read anon_vma contents, is it correct? So none of them
-> really reading anon_vma, right?
+On 1/13/26 16:08, Jason Gunthorpe wrote:
+> On Tue, Jan 13, 2026 at 10:49:28AM +0000, Mostafa Saleh wrote:
+>> Would you have a problem if we added a new function in page_ext
+>> "page_ext_from_phys()" as Jason suggested?
+> 
+> Given the hidden complexity that David just pointed out I think this
+> is essential to encapsulate it in a function.
+> 
+> The function must be able to accept any phys_addr_t and safely returns
+> NULL if page_ext cannot be used for some reason.
 
-I think you are right that this should be using store-release;
-searching around, I also mentioned this in
-<https://lore.kernel.org/all/CAG48ez0qsAM-dkOUDetmNBSK4typ5t_FvMvtGiB7wQsP-=
-G1jVg@mail.gmail.com/>:
+Right. I think pfn_to_online_page() is the appropriate check.
 
-| > +Note that there are some exceptions to this - the `anon_vma`
-field is permitted
-| > +to be written to under mmap read lock and is instead serialised
-by the `struct
-| > +mm_struct` field `page_table_lock`. In addition the `vm_mm` and all
-|
-| Hm, we really ought to add some smp_store_release() and READ_ONCE(),
-| or something along those lines, around our ->anon_vma accesses...
-| especially the "vma->anon_vma =3D anon_vma" assignment in
-| __anon_vma_prepare() looks to me like, on architectures like arm64
-| with write-write reordering, we could theoretically end up making a
-| new anon_vma pointer visible to a concurrent page fault before the
-| anon_vma has been initialized? Though I have no idea if that is
-| practically possible, stuff would have to be reordered quite a bit for
-| that to happen...
+@Mostafa, I saw you already sent a v7, is the pfn_to_online_page() stuff 
+handled in there?
 
-I just noticed that I tried fixing this back in 2023, I don't
-remember why that didn't end up landing; the memory ordering was kind
-of messy to think about:
-<https://lore.kernel.org/all/20230726214103.3261108-4-jannh@google.com/>
+-- 
+Cheers
 
-> Also, anon_vma_chain_link and num_active_vmas++ indeed happen after
-> assignment to anon_vma:
->
->     /* page_table_lock to protect against threads */
->     spin_lock(&mm->page_table_lock);
->     if (likely(!vma->anon_vma)) {
->         vma->anon_vma =3D anon_vma;
->         anon_vma_chain_link(vma, avc, anon_vma);
->         anon_vma->num_active_vmas++;
->         allocated =3D NULL;
->         avc =3D NULL;
->     }
->     spin_unlock(&mm->page_table_lock);
->
-> So the lockless readers that observe anon_vma!=3DNULL won't rely on
-> these invariants, right?
-
-Yeah, that stuff should be sufficiently protected because of the anon_vma l=
-ock.
+David
 
