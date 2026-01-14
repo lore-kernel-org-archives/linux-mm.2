@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB9B3D29FF0
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 11:38:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3351D29FF4
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 11:40:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CFCA6B00CD; Wed, 14 Jan 2026 06:38:54 -0500 (EST)
+	id 5579A6B0089; Wed, 14 Jan 2026 06:40:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B0856B00CE; Wed, 14 Jan 2026 06:38:54 -0500 (EST)
+	id 505066B0098; Wed, 14 Jan 2026 06:40:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BCEC6B00CF; Wed, 14 Jan 2026 06:38:54 -0500 (EST)
+	id 407526B00A0; Wed, 14 Jan 2026 06:40:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 18AE96B00CD
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:38:54 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D269B1ADF39
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:38:53 +0000 (UTC)
-X-FDA: 84330372546.08.80AB646
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BC336B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:40:57 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D552EC1C88
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:40:56 +0000 (UTC)
+X-FDA: 84330377712.15.CF5AA40
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 03CFA120006
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:38:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t8XwR8ZY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768390732; a=rsa-sha256;
-	cv=none;
-	b=dCiBbbTDkhbEiSpW1UM6UOAfbapLt+Q+CLv1ErO519oq5rKbqh80RrcnBrM8bV/1CSswY9
-	DiM7hFc4rmRwdobavbhcjb/dsYLBq8+RiD93e5kE3cAaAYCJkaEJ7xhHYTDN9StncUerNf
-	gNkGFtYrzSiP+NugeA2phOEMK43g8zI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t8XwR8ZY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 11BE6A0003
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:40:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EnISaw+M;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768390732;
+	s=arc-20220608; t=1768390855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RYLrr/cX0UVDGT6xloQArzoWtc+De0ABukqG1A3xh5Q=;
-	b=0Cg8BveX/D++UxFkpUFZDHcdblB+x3CtY5Tfz8LKFluTUUV4orlPBggU5rWuJy4TPYa8Yo
-	BwH1iQynqnkQtPtoUoNcJ+KnT4CQPNKp/3PSkALeyCx0hhAGuAVziris57PbNRpHep58dC
-	yaI5YU47YaKaf7rkqj2q8NLr8cxurHY=
+	bh=wtYK3QIgkxwpwKczKOSBFxk9X3ruwHfu3bc5AbbSRrQ=;
+	b=TTkM0uLg9VGh1/Y/x8FUsIBMB6ibNMB7K2vgl8zfBHsWUqk/5Dpa2BR19GnEnqcwulyV2G
+	hKw3iAR6r7mfgsYeyfJHYQEbreqAnA2UPYKeVzY2Sl3MXXBKrAwm1rHVNrnan5HBlQ+oDP
+	K8T4IDf5N1caqORH/zlc/HuvxlZTYSE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768390855; a=rsa-sha256;
+	cv=none;
+	b=Tww3OWwHxS4qyx7zywcz4xQlYP7KKKXXNGighnCIwcx/WJnrdlJaKKjDFwNedzK24bcOKO
+	+6Llf/NGAfdDIDpwx6/rBO0Efa26w+arouN/xCz5ibyaRRbBU53XZs6N3ySPHf1/uBp0vz
+	BMZoXL1CHGdB3rDMP/SpJV1JdmuxHNs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EnISaw+M;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0F6894352E;
-	Wed, 14 Jan 2026 11:38:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E15C4CEF7;
-	Wed, 14 Jan 2026 11:38:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 11544415F7;
+	Wed, 14 Jan 2026 11:40:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD01DC4CEF7;
+	Wed, 14 Jan 2026 11:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768390730;
-	bh=N+JcgHrCqUlqtZ0JzAO9E354TauL4x4Xr1CJuE7QA5M=;
+	s=k20201202; t=1768390853;
+	bh=dP+lw/+mW6tC9mSGsXiahpdhcfiBeFh8hQKPJymjUzU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t8XwR8ZYw9FvGsR9lpKPKi8DZnbwTNFyy5JfSxjmWu+r6iZSuUzx9YDcoLmnfOydl
-	 Psz9OKj7nVNblg11mtNrEFRtBmswAWp3WS2W8yiFPcUHz09BnpMSxhmX6hiKQCuglH
-	 nGY5DxT5n4FUkYJA2JPNJCZICVSmwQNizIb26hrP8jo/b/EGRT8vMXVLdFgHOra/i7
-	 UGZP38Zupkmxp1rpeCCk7lurEiU2oP1xB0mYaRaW1vRt23Ar8mPAz1O/CmKKMFP8/P
-	 Dsz/wCp08YdYUsLlGlsvTkmgxPR9wTNniJqXj717FjHgScGBhtkxfr2MiH5MIJT7j8
-	 hKJENpzIX4erg==
-Message-ID: <da715a5d-e187-436d-b5ff-153b1f7c8106@kernel.org>
-Date: Wed, 14 Jan 2026 12:38:46 +0100
+	b=EnISaw+MJcidIWBxl3b2zyOxLiLqneya2LRIly1pSz+adbT+hIsMBszDoq/1XxQzT
+	 EOwmS08G5yDnzw3r7FRUZbwaLNcO/rA2YGJYEh6jGR7CihhTNJ3W5qnRq9k8bhEE0f
+	 w+Zj/ndDQj8tzdfVTWrkrIpIj6lgzt8m3oN54PgePS0YgN3ZLCtqEEYtP1dVZmviF+
+	 GXwlHxwRsG6SIi1jjZ7Hb+inHCPLpl8RCg4taWSRR2ZmA+H6GBWHVBVnnPKxhFs8z3
+	 3pc/+pqwE7BOkwJMB53XTwf6BAlt0meA22RFzZYte+rzecCVAlxWKeH6lZ0/orHghG
+	 v+pgANAGokrGQ==
+Message-ID: <9924fc6c-e3ad-422a-ad60-756efccba0aa@kernel.org>
+Date: Wed, 14 Jan 2026 12:40:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v4 2/6] mm: khugepaged: refine scan progress number
+Subject: Re: [PATCH mm-new v4 3/6] mm: khugepaged: just skip when the memory
+ has been collapsed
 To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org
 Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
  baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
 References: <20260111121909.8410-1-yanglincheng@kylinos.cn>
- <20260111121909.8410-3-yanglincheng@kylinos.cn>
+ <20260111121909.8410-4-yanglincheng@kylinos.cn>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260111121909.8410-3-yanglincheng@kylinos.cn>
+In-Reply-To: <20260111121909.8410-4-yanglincheng@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 03CFA120006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 4hn7gs46191ocptamnwzd1y9uxgnxa9m
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 11BE6A0003
 X-Rspam-User: 
-X-HE-Tag: 1768390731-710832
-X-HE-Meta: U2FsdGVkX18VA4ZHi22tCuzRLmr9t16U8mAJlnD7WnednDZzXBuyE5KpHSkbD9+AW5USuoezT+ktsQNICk/8t/FOAss/TDzKE0fQyElzifpmyRYru6NkHct9fScxi9MTia/9twbFv0XoBXgZegZnDK+jTrGfh8Y8rfLh+tyvLHINWZG3pX2Uko5hsybicl0Lsr0mlleX6YpwBDDf0F5uLUVrlxhFniMjpdVNwGDi19R/lMNGf9ZQZBYmvxAVQ6Pe6Uy9dFBa+GTl7kIz4x9/W0y7XNIAWQ7CSecQd9X2RobY4b+n6OfDd68rN12x4eI6LfP0TkfrGh5Z1xi5ij1egZWY1Xn7c1eZNxfDZyRa3IjWsyUiqkQdQR7z43b98m/bfTrBx6L9NNtwbgsm707poEbrlnI7/93AjjuXx7NBF8hXEyz1vcOLv/O/0eVaccPjFFGAPhLxKD+89LkDQVKQxk/vTycJNHKKXU6eXZzaU59kHHuJm45vuhLBvZZu+svre9/5OlBM3A6hCvRYPzQSadwrZeoP0iJYkFVmFGfCc8GQ27J0rc9vpjjtfXIcN8ABssFDLHX1ZpA2V/C9UYhSCLkkEJ+yH0OC/kwGT2MHjr+A5MKXu4MK0yC81w12/VYhRiVNn7l5Ho5CUjesA+bhNPmYU2wucl6f5qOTKOAj12+Q6wYbSO7JKpJhcNxgvFJzxov4YtZzswy1fykk8yJr/00W33nz7Hy5URkTf1yZBKqHptBZ1c9ap3zA808P4Y2UeJiGx3oHlzqb7ExWrayTYJPgTLLUtuTNIwISreb3+G8XAV0PwtafLYyiWDtLvBtuVCAyYB9ZHUboKobn10oNioLolG+Cmjl8QjFJcJL1XKbnsUr5Ht6DcTfWJc65IEiO+HLiX2jo3YGvhr9iXDpff4sEf9ExgUJg1ZrZWl+fFzBiSG6FAjllvLRq1df42vCHfMBjlMIt4V00YC8yx10
- CBUho4UA
- fPZo14bmkVEmIMOSbEsuYv49DIsVrP8TaPb5y1RWXoQbtAIwJT/QTHtRiU5vcEO9NEAF1Aq4tKVQH6MO2QtPYN1RHU7jKuhZ958N8AjxUHBSS+pSOpjGETeeBakCmHqZHpw9RzI2O+yNItgtd6F9O3pGJBSLmW934jIUYOMUkQueHJiG3whkb4mXZAI1EowXoELIkVnK68GvXoX6gYit3fl/IMaJ4YugKaAnBXlZ8WQRRWMI8ZSyH0DcveTISm1PJiR+wI8tzI8GlZYyHerJWTLNpCZQeLLVjcANsNpdew0wuZR0JvrJGTZQz3PEEhEFQZ4TYD6cSR9Eu0Kb8X6UpwIQ81g==
+X-Stat-Signature: gcxyd6iayb57b54wm8b9ygmarpmruuqd
+X-HE-Tag: 1768390854-364739
+X-HE-Meta: U2FsdGVkX1/0+Cf99C6+MbnnWspX6P4VFgtAyYswUBhZlUgodkne1fq/37RaIU9BmEf1K9ZZ8YetfmXKgsGVGspL75fP1/491Vgx/UqubrdQ/1TaoptD+CYTxUdYX0eUdRNx61378aTlUEW1Jk/oXbfYwH9WxDCcOiC9QTXwh+61VZKKnZCXsTaUpJOr7qHYvE6ZOTP6OeqFS3/cjGKNCX3dUmvzbbbP2v2XB0j+d9g6SgtHID/hVUIUkjLeJYDbLlgsJaxcpAK55s61d8tVWoMEYLYHHrHVz+fJMrLO9g/wlAhINjhN/l7mYOrMWc22gYA/XvFZg3LNbvXstzqGj+GU740pcl3Q480cjvH5TNWNQ1Dp16Af/txUjoge+fffYJrHtbLy1/F/WR6Kea13gwPCtEczsUDQB6oAud9d/POTaUsInXtSr3bgfKGMURGS190RgN+y6BcTLMadDMEKguhY0XgLSbo/WGK6Fp7jrV8XpbIIYq/tgd8B4Jzovtleu7ggIC93IdWKZrrzSnZBd0g+RO9iVEtsMUhAT2wwr/Crkg9C3hymO7V2IzSW1cjTeWpyqXYIKz4b8UHsMosoSRcr8aUs/S2lNtCDkWsIn23GSs68qc1anf8esPxJFGtFVQbVnXhV23EJW31i6lBJ+MgmXCUsMmGIul3jEoVfB9yWx/VhEnz2HSZFIiE+U8JQHqaTCiVF0volDJpF05hjOHefWURHcCu6KNjH1BDUZnV3sliG/jadVLY8tK8XmUa38wJTRJCgFoQ5YaBdaweTwHgyOKtARCAOfvoJ8f3G7a4eb3O8W4Ct/EBq0GH7+KxyuiCarLh+KpGzYtOr237J3Apj3C67H2stl54o44+4ftXPH+BOSIqx0UQXhBCq0q+EQ/i5aXPRY0iIRGim+Xu6GgrGmyz0wjznixG8eK2uwHV6ZaGC4U4cesYVbznUO1cC709GIH4wRFO8nTc6Rko
+ rgv2wNC2
+ 0ClFU7rYvZG4L6+WGK108gn13jL592OHvvs48ca3plnscbJPINyPzqJHX72T05RuPTglwGgFBf6Jz0tL49AOS4BYm4wEg46SLiWIEHN8nt6CUFisP+SXHwfLVNHQ2sevhp3UrXvOxUQ+xgkHhzHArpABenhnGGdiI+4yYFhgJpY4CJtHk+qwVB4JfapybcGvAfU3eiQBn5nt4ht8yL/eNx1noKGrVtFh/6Nw6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,100 +141,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 1/11/26 13:19, Vernon Yang wrote:
-> Currently, each scan always increases "progress" by HPAGE_PMD_NR,
-> even if only scanning a single pte.
+> The following data is traced by bpftrace on a desktop system. After
+> the system has been left idle for 10 minutes upon booting, a lot of
+> SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full scan
+> by khugepaged.
 > 
-> This patch does not change the original semantics of "progress", it
-> simply uses the exact number of PTEs counted to replace HPAGE_PMD_NR.
+> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+> @scan_pmd_status[6]: 2           ## SCAN_EXCEED_SHARED_PTE
+> @scan_pmd_status[3]: 142         ## SCAN_PMD_MAPPED
+> @scan_pmd_status[2]: 178         ## SCAN_NO_PTE_TABLE
+> total progress size: 674 MB
+> Total time         : 419 seconds ## include khugepaged_scan_sleep_millisecs
 > 
-> Let me provide a detailed example:
+> The khugepaged_scan list save all task that support collapse into hugepage,
+> as long as the task is not destroyed, khugepaged will not remove it from
+> the khugepaged_scan list. This exist a phenomenon where task has already
+> collapsed all memory regions into hugepage, but khugepaged continues to
+> scan it, which wastes CPU time and invalid, and due to
+> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+> scanning a large number of invalid task, so scanning really valid task
+> is later.
 > 
-> static int hpage_collapse_scan_pmd()
-> {
-> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
-> 	     _pte++, addr += PAGE_SIZE) {
-> 		pte_t pteval = ptep_get(_pte);
-> 		...
-> 		if (pte_uffd_wp(pteval)) { <-- first scan hit
-> 			result = SCAN_PTE_UFFD_WP;
-> 			goto out_unmap;
-> 		}
-> 	}
-> }
+> After applying this patch, when the memory is either SCAN_PMD_MAPPED or
+> SCAN_NO_PTE_TABLE, just skip it, as follow:
 > 
-> During the first scan, if pte_uffd_wp(pteval) is true, the loop exits
-> directly. In practice, only one PTE is scanned before termination.
-> Here, "progress += 1" reflects the actual number of PTEs scanned, but
-> previously "progress += HPAGE_PMD_NR" always.
+> @scan_pmd_status[6]: 2
+> @scan_pmd_status[3]: 147
+> @scan_pmd_status[2]: 173
+> total progress size: 45 MB
+> Total time         : 20 seconds
 > 
 > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
 > ---
->   mm/khugepaged.c | 28 ++++++++++++++++++++++------
->   1 file changed, 22 insertions(+), 6 deletions(-)
+>   mm/khugepaged.c | 17 +++++++++++------
+>   1 file changed, 11 insertions(+), 6 deletions(-)
 > 
 > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 2e570f83778c..5c6015ac7b5e 100644
+> index 5c6015ac7b5e..6df2857d94c6 100644
 > --- a/mm/khugepaged.c
 > +++ b/mm/khugepaged.c
-> @@ -1249,6 +1249,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
->   static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
->   						struct vm_area_struct *vma,
->   						unsigned long start_addr, bool *mmap_locked,
-> +						int *cur_progress,
->   						struct collapse_control *cc)
->   {
->   	pmd_t *pmd;
-> @@ -1264,19 +1265,27 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
->   	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+> @@ -68,7 +68,10 @@ enum scan_result {
+>   static struct task_struct *khugepaged_thread __read_mostly;
+>   static DEFINE_MUTEX(khugepaged_mutex);
 >   
+> -/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
+> +/*
+> + * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+> + * every 10 second.
+> + */
+>   static unsigned int khugepaged_pages_to_scan __read_mostly;
+>   static unsigned int khugepaged_pages_collapsed;
+>   static unsigned int khugepaged_full_scans;
+> @@ -1267,7 +1270,7 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
 >   	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
-> -	if (result != SCAN_SUCCEED)
-> +	if (result != SCAN_SUCCEED) {
-> +		if (cur_progress)
-> +			*cur_progress = HPAGE_PMD_NR;
->   		goto out;
-> +	}
->   
->   	memset(cc->node_load, 0, sizeof(cc->node_load));
->   	nodes_clear(cc->alloc_nmask);
->   	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
->   	if (!pte) {
-> +		if (cur_progress)
-> +			*cur_progress = HPAGE_PMD_NR;
->   		result = SCAN_NO_PTE_TABLE;
+>   	if (result != SCAN_SUCCEED) {
+>   		if (cur_progress)
+> -			*cur_progress = HPAGE_PMD_NR;
+> +			*cur_progress = 1;
 >   		goto out;
 >   	}
 >   
->   	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
->   	     _pte++, addr += PAGE_SIZE) {
-> +		if (cur_progress)
-> +			*cur_progress += 1;
-> +
->   		pte_t pteval = ptep_get(_pte);
->   		if (pte_none_or_zero(pteval)) {
->   			++none_or_zero;
-> @@ -2297,6 +2306,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->   
->   static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
->   						 struct file *file, pgoff_t start,
-> +						 int *cur_progress,
->   						 struct collapse_control *cc)
->   {
->   	struct folio *folio = NULL;
-> @@ -2337,6 +2347,9 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
+> @@ -1276,7 +1279,7 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+>   	if (!pte) {
+>   		if (cur_progress)
+> -			*cur_progress = HPAGE_PMD_NR;
+> +			*cur_progress = 1;
+>   		result = SCAN_NO_PTE_TABLE;
+>   		goto out;
+>   	}
+
+The above checks are clear.
+
+> @@ -2347,9 +2350,6 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
 >   			continue;
 >   		}
 >   
-> +		if (cur_progress)
-> +			*cur_progress += folio_nr_pages(folio);
-> +
+> -		if (cur_progress)
+> -			*cur_progress += folio_nr_pages(folio);
+> -
 
-Okay, I had another look and I think the file path is confusing. We're 
-scanning xarray entries. But then, we only count some entries and not 
-others.
+This is a all a bit hairy.
 
-Can we just keep that alone in this patch? That is, always indicate a 
-progress of HPAGE_PMD_NR right at the start of the function?
+Assume we found a single 4k folio in the xarray, but then collapse a 2M THP.
+
+Is the progress really "1" ?
+
+What about shmem swap entries (xa_is_value)?
+
+So I think the whole file path needs more thought
 
 -- 
 Cheers
