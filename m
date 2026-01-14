@@ -4,146 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 960C4D38FF2
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:30:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27A42D38FF2
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:33:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E69B46B008C; Wed, 14 Jan 2026 12:30:33 -0500 (EST)
+	id 8E2636B0089; Wed, 14 Jan 2026 12:33:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E183E6B0093; Wed, 14 Jan 2026 12:30:33 -0500 (EST)
+	id 8A8866B008C; Wed, 14 Jan 2026 12:33:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1A2E6B0096; Wed, 14 Jan 2026 12:30:33 -0500 (EST)
+	id 7E2EB6B0092; Wed, 14 Jan 2026 12:33:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C02E66B008C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:30:33 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75FFDBA235
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:30:33 +0000 (UTC)
-X-FDA: 84331258746.19.F101B99
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BE0B6C0015
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:30:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XM81uToJ;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768411831; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CEC06B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:33:12 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1DCD0BA259
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:33:12 +0000 (UTC)
+X-FDA: 84331265424.30.494F199
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4A39F40009
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:33:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=pC47ahXs;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768411990; a=rsa-sha256;
 	cv=none;
-	b=u5D+TnfsGduu/1QNinII3SWqD9pB4eBYc5CJyRA/+3aDBPqhWrZFq9fc2mQBRmlso3ppVe
-	Jp/vCHqiYyLAYG8uB0zLDNK8qjYQH3T6RQf1MzsnsSi8FRo2iAKi1rCw6n6JDpxiZ43Vlz
-	iZa8Jxu5PuvPaYzjQ/P+7iMoRwP02FQ=
+	b=V3XG+5N6E1Om9G4Bte502TG4Xuf+E96kmPMsDlcvRqV9QF6PIGyPF6VpxGkOA0qd25cyCo
+	u5g8Neo7XFrR3WaA92mTBdKiJDFYMhw2BPWZD0QLyg3PkUfzj3QtEOO13zxNKf0rPkE9Hl
+	QBsso9p5csPR6tWOPdPpWeU3KT+7044=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XM81uToJ;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=pC47ahXs;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768411831;
+	s=arc-20220608; t=1768411990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zOHLChz2LwrbaZTPyfem0BlhRzOqzHmBPgYZf9Hqr9Q=;
-	b=MGvi1Zx/KgFYjcXQP3fL3YycBld7Xp+/DPdAEQXaiej4KmweygE4cRwjDYjxEVBAlVv3W9
-	wJCtQfSamwjSB0inD8r+5KV9tN7N55I1bnw1d/BzLzJctpNfm0gtVwrjhrz4jjlo6JJFVO
-	8BVWYtnxFBgTrotiusil0zJ1qA/31kM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0064C60052;
-	Wed, 14 Jan 2026 17:30:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DC8C4CEF7;
-	Wed, 14 Jan 2026 17:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768411830;
-	bh=hwNrqKA8AlHPcVAA3NPkwsp4ijTzIp4nlEDnDkoEX8M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XM81uToJyiYMw/1XFamfWLJfbjbhZq4H+WDl1MDE4XJ/V6c7SW8xH8G1t38NSD3I4
-	 DDTX+mdio9NVjVitwYe+jDKUEgRKwU6oGzlGHIxpZ7GVPVZ9LDpWLi9vY3N4RgHjXD
-	 Il0TXIbcrRpESIc7ozCshMH+IbH52UibSOsnUVrbRYrK+vyrcjQind9V7GHTCB8vAW
-	 WtLU/9wbAm+9Dqg9Y1U3u3Q+pGy9gv+nsvKIUvRN0M0zkr0PcZzA3MuxG6YhDOIekV
-	 8r8LdsupZ3UWycZ7Rxjz8GiLwg3gpJrSe3fjeMJJeh7n/KVktkp06CcST6d7eRWkHD
-	 CCO5b62lO+g/A==
-Message-ID: <f239e391-ac7c-4d26-ab82-4024a77ec3d3@kernel.org>
-Date: Wed, 14 Jan 2026 18:30:24 +0100
+	bh=bCjYai9Len2QQEYBKyLKOlFSVdw2VqJPxFxPg7dhnMU=;
+	b=JnExrePapd90yzCiHWQZpU9RZtfeyBD3mSYrvMaEWD6WSQFWAf1H+QdE+/3UIFiODMztJg
+	eqwj1iz4FJRVTe3K6BpTGjUpABuQt2NZV3VC9pOYOF6/Ft7D32snj/r74jyyX5i7stIMWr
+	Men1dxQHKigxM7rQbQJx73rCfHFVj+g=
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c52e25e636so7878285a.2
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:33:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1768411989; x=1769016789; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bCjYai9Len2QQEYBKyLKOlFSVdw2VqJPxFxPg7dhnMU=;
+        b=pC47ahXsyk3PjeZYtBxGZfXH7wvmQk0nzmO7gahh9VxegzxAxJz3n2DYSsn0qYcCKx
+         oFV81HvHNTIpUFLTolyOSSEZjtNjkwxM0jHm457flVVGjtNiS7dHDmueWA65iwdzp0bi
+         kAQSxEpR/+v8uMo6k0d0IVjppIKd2Rb/BVDn806Sov5xRE76s1ZPUi52y9gfnhGTlgmP
+         /iu4Rl7tBmSm/gV9utqfT2nghOcxynyee76G1hU9MEZmNCIWQJm+TgJujGM4Vup+691D
+         lPPEtMawSPt83e/zffy3rOyTWPR7Wir1QTMArKQranTHUA2XGSI5UlFQHRXWG087Ce0R
+         cRGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768411989; x=1769016789;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bCjYai9Len2QQEYBKyLKOlFSVdw2VqJPxFxPg7dhnMU=;
+        b=mpm9EXeDQgmhGitohdjNxMSKaBcs76IYiwap3RFABW8G/u3gByG7VCihbt6fAdN+PB
+         opXMkvg+RzMe+PEbqRLSatbWEysoiapvCt6U1rXJKlym0Rj01eg/289HWePhVIUeNb3W
+         C1jHGBhIrMGtF+2lJ8jsL+60sAKVnkdbfAhfiDHqGB3e/KlfsWPqp2bIwQ9wc5ncXjda
+         L1pyAF3ervQ1vIuksBbc88s+ymiMrL6xPuOx3pSaT988n+V5Fh5XWkZzNkX8ykwmGaFL
+         UBh88dlTf7C+H5e1jd4oF8D+chw0M4UvrAURcI11V6EAheAg+d5DyqDqz7ougdXb+KIm
+         n0Iw==
+X-Gm-Message-State: AOJu0YxxOskeRYbjGnfqy9BcR4kV5k/5w+yL4jr6YvFF9hVmQz43VL4B
+	/GOVqE7Xf/JLD1Owy7cX+c8r1HaFX2TlU4fp8S/+63IekwIoKkDFV7fNSHZ0bFkmzNU=
+X-Gm-Gg: AY/fxX5xqCDVYglr6Mubfu7jj2Esee111HOlw0V9k1hpU38VP1Is7/5C3N9EDYWRRTE
+	gZA/gzcDbqwd9fQGcFetFDk5hKB4mMwzFpVp4Jemu+FaMg65lfOpN82hrvGHLpQDVQmiH91gfYF
+	7GvghBRMGB13rV7SKyNitwcoHXcpGrb5FFyXQyAn+raS6u1zNerNqSpsyXbzNFHyl7xk6n3DLfR
+	gfKTh1/D/tmMKC0IIQ758oKGwE/4dIXUnfCx2Y1xvvJg9syAWcDFY6xd0C+KLYpgHlTLFZbtYVy
+	3yh6gdFLmht240FH8imDBXk0mZAI9FddaU3oJ8GSRoBEiTTrR6n+kbeB8t7O7eoBZCsNGE2A0Ub
+	yw0QtX7/Vul6xou7wk0eWEYBzdIXxZrtthxcacJLUO86lGCoA63QUeBui8wfGBBFGfZcYXpjokG
+	AkNi+0BZ9A7LYynGzBnxvYo5HEhuz8etN4un9GJGR5N99KkJvLG1v417QkMI1iV0iv4gDxkA==
+X-Received: by 2002:a05:620a:458b:b0:8b2:7290:27da with SMTP id af79cd13be357-8c52fafd245mr470291685a.12.1768411989233;
+        Wed, 14 Jan 2026 09:33:09 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c530b6e7d4sm198764985a.28.2026.01.14.09.33.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 09:33:08 -0800 (PST)
+Date: Wed, 14 Jan 2026 12:32:36 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+	kernel-team@meta.com, dan.j.williams@intel.com,
+	vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
+	jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, osalvador@suse.de, akpm@linux-foundation.org
+Subject: Re: [PATCH 7/8] dax/kmem: add sysfs interface for runtime hotplug
+ state control
+Message-ID: <aWfTNGMqn7S3b9z9@gourry-fedora-PF4VCD3F>
+References: <20260114085201.3222597-1-gourry@gourry.net>
+ <20260114085201.3222597-8-gourry@gourry.net>
+ <3555385d-23de-492c-8192-a991f91d4343@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/4] iommu: debug-pagealloc: Track IOMMU pages
-To: Jason Gunthorpe <jgg@ziepe.ca>, Mostafa Saleh <smostafa@google.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org, will@kernel.org,
- robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz,
- surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, xiaqinxin@huawei.com, baolu.lu@linux.intel.com,
- rdunlap@infradead.org, Samiullah Khawaja <skhawaja@google.com>
-References: <20260109195111.GQ545276@ziepe.ca>
- <CAFgf54r_au6isA10Nrve=MHL455X=tKhNsSwH1ej-TX08J3xLA@mail.gmail.com>
- <20260112133256.GB745888@ziepe.ca>
- <CAFgf54psxPrsvujStPNtrzxiKOsJF+aVrN7BcNxxmAF4wDmRXA@mail.gmail.com>
- <20260112135208.GD745888@ziepe.ca>
- <CAFgf54q+9Y5TtGJDB=8q_BW-0F=TM7zBbCcMzvtvr_N2WMnd-w@mail.gmail.com>
- <746f5adb-1d91-4ca2-8ae0-a2d171203b66@kernel.org>
- <CAFgf54pbkfdFr6biE8BiNKBnTBFWxXGmvxsZ0E+C1C44c9AW_g@mail.gmail.com>
- <482f2f36-e906-492a-a80c-987bf7359d83@kernel.org>
- <CAFgf54ovfnTHmMuZGk73SEEKsP3k-_exR1wqUE4W9tLYKv_iDw@mail.gmail.com>
- <20260113150828.GP745888@ziepe.ca>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260113150828.GP745888@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3555385d-23de-492c-8192-a991f91d4343@kernel.org>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BE0B6C0015
-X-Stat-Signature: qdsz6wd1c6sfao3geumjbbsxtyxbi75i
+X-Rspamd-Queue-Id: 4A39F40009
+X-Stat-Signature: z91ha6z5n3cyn3fidzg9fwnn5qi7ebkb
 X-Rspam-User: 
-X-HE-Tag: 1768411831-912677
-X-HE-Meta: U2FsdGVkX1+hD/ZZHifnrtQ4N2BuhEo+l10GsrAfjE22kVBGpTTj2RDV8i2tPL3RaMkA46hyjlK4V6nzDRuRNwA8qORG+X7YuldWGUMP+imIEBOHNavfOteJUpposorWuNmq0R3364bhE4r2Oopwz7/FDg5izFwOXwFiS98/ntQsVKs23UPyVrUViPJEgl8arD71T6GNJjlpc12jpNqXneGuMSU3/RTAltsqnYU7TFyNInC5IHxknce1kWIvp/wlBbrvP+ew4q6GS6f+7ZXAKUFEU7odfMbKi6y4fuicMEAcEKb4zihUn8t4Y7WHZ1GSs+zWoqklV20CcW+NNpNw4/CXveCsmGIPpA3wpzA5VJ57LBs25U0e+GdpO85qIb+xG1wMr9PasWarcPzd/PncUTmV9FWEAWjP3wiYlGcEXW0sn+2cz14UC54t/W1Zv3ROksuvwhLFOpapbeXEK6lZSClpDORwRTJtsmZaTDttACJyyGJRDFVNNvNPGnH0t05qYVPxZKYHo9YUBynkURRE4dVdfQrdZZcfc5Z5x2iQZBDIo90hVInhEQAj/JTvjGer5Ca0YElBavmv8ZUBd6vX6mocitqrU5puGAfadvGl4RTSsS2QkdOzbQa6iOaVPzs2T6f/VJl+Dd5Vzpqo5GWACj3yvX0clES/6UNUJR9KWtHIE432armgZDxvFslXqXK8Un89Ef/C1a3bNxEtEHAe95/xcu2cgI4i4ZtNcN8AghVPL9Z22jxD65YcZrS5ho0E+OMDidF22Vtp/gJ2TJbBFz9h2QJQmfEwBQU5JikGOi1G7vEx+slY4HZOP5wJdvbzJdlHWhRp9gKyOGqQt/a/1Lg+SrTNWQ6SuFIDlnEHZ9umJBN4kBwT2MaEPqHZRHv7dYDCKZtFFt+qDiRO8nregRhRGs6zdzyxonWrZr5PzdxVpWZEgORHmIpBtM0HQlBFAmcs7kt1pwc8gMUNUeN
- Y/6IPswp
- Qw5SFTfOO0dxT5Aj4OkVaIyhkQ6KR7wXaZsS1YpX0737iVqmSAsNimwNZ3IBksc/GEY8uKTlvDKrknU4RaQmc2VI3UBU3u0XhYh7OEf8EXXt72KlY6kZe0flBMxI3KtBbahZAW0ooMec97PHQZ4whol7F+QcAYnSALF0CUPasj4mXYPSJjUNwTpwB6qiSNPhEKWiMUOqi9+gJ7P5A4EM7ijQVsRxTZjBeUcnV0e7frdZpYsBaNdltVt8sKXvbrLsgDYVu
+X-HE-Tag: 1768411990-307397
+X-HE-Meta: U2FsdGVkX19Fb3y8Jv3xERG7pRORtVZ7ClIPxfLXe5IqT7TDs/E/3efPC3y91CprSQ08CjLIAoEylWRTZGbCaYnrv2YWeko3Zt+u3eEBsJt87xunszj0oGeD3BPtzblCEFV0sQo4E/J7ZS2I6IpZsDZFRez7zO/Yn2OEeAGRXER7Qj3PTrMg9n3R+kbLCDJweiLIOlP5JJuJtl6llRW/E4CCil2GqZnG58SnbFk5XI13grKeFDKbj7XJFMDSl3Rqng1zBOPnwErkg90sLDJdxOR5/TQSmKUwdPGotI2AesXT88P6gLUVND7WhDSfxogimNNMSfLujS9pnYzDqo7SpKyan9YOFQBvcY/9ZCV+A1aApUdrH6acVOETvf9NC3wRRjjOlbGKtMg0RvvAwbjaNi4K6c0pXT9cP2OemKBiX6HCCRa9BC5vx0NsctD0qc5SjTnI3I8ussTsjNASOBM8vZQpV0tvUQ6LdchEWIMiychRQUOL2PHIIRl875VXPVQN6vDBqhYqq6Fs/+rl5nDYaJ0LaBqfw9m5Ycl8xaE3vBdkJIHLHomxVfgbblp86m0aURLIz+cSvMp0gNdqKkgMJoxHxyI4AbKjkvudhls3F5peEIv3Tnt2uLo9uApFC4z3rvRzFgow8iTia974HwNoED+rw0jfYKniu419g4R71Q2LL8FWtjLNEskOqY5c7ZncoNalcU389ZAIy2o0ibxPWWEyhsqk9HiURgKHCFKb2SJnfuOq5kM0HYBuRkSoP6b+ooAak93TIoRgVwZrJ09w0RBTYcavZMlkmpxL2uUW75ZaWadZIt52C4OXzPZdawEtv+9SmWaHRzi4kW/2fUkMzYURmdFl1oaRMXqaknYLBnGpwt6O3BkKsp+PKnMVCppQa8A7VEMaYP0Nqd6Rt0dGskasP9RVcRAekKXUrldSGgl/evNYei0mNm94pkEHhaEvFwQUgrjqZgmMcqg5H3d
+ NiZY6ntf
+ LoVkRS3Pq1FuqvkH83+wuEfewbzMVPXTlY/A+jXmhHJJJHIS9AzUd57noXeMoaYzn0HhmvSWV/z7BEbbsilK7kG3fx3z9qPwL+Q5FEEl/ze++u0WyKy4Y0M9RTskx4CER+9u7ssYV5QIsetaXj1TpJoI1Mf3izxYSKr6jcZ9tiDVjhCej9lBqdq2pzlQNo/gAvAWOiYFa/nd0ziGn8c2s8BhzvotSGhznPRHkYW0OsMsmVUKvARHR1rSBg/xyC+lnTvbcuJ3Ltp8tKLYYhMtkZV9BNGHIy8Bbjv4FCTE6592JCpkgoq8BbWN+YO5k68eVClYCrtNurNomW1k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,24 +123,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/13/26 16:08, Jason Gunthorpe wrote:
-> On Tue, Jan 13, 2026 at 10:49:28AM +0000, Mostafa Saleh wrote:
->> Would you have a problem if we added a new function in page_ext
->> "page_ext_from_phys()" as Jason suggested?
+On Wed, Jan 14, 2026 at 11:55:21AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/14/26 09:51, Gregory Price wrote:
+> > The dax kmem driver currently onlines memory automatically during
+> > probe using the system's default online policy but provides no way
+> > to control or query the memory state at runtime. Users cannot change
+> > the online type after probe, and there's no atomic way to offline and
+> > remove memory blocks together.
+> > 
+> > Add a new 'hotplug' sysfs attribute that allows userspace to control
+> > and query the memory state. The interface supports the following states:
+> > 
+> >    - "offline": memory is added but not online
+> >    - "online": memory is online as normal system RAM
+> >    - "online_movable": memory is online in ZONE_MOVABLE
+> >    - "unplug": memory is offlined and removed
+> > 
+> > The initial state after probe uses MMOP_SYSTEM_DEFAULT to preserve
+> > backwards compatibility - existing systems with auto-online policies
+> > will continue to work as before.
+> > 
+> > The state machine enforces valid transitions:
+> >    - From offline: can transition to online, online_movable, or unplug
+> >    - From online/online_movable: can transition to offline or unplug
+> >    - Cannot switch directly between online and online_movable
 > 
-> Given the hidden complexity that David just pointed out I think this
-> is essential to encapsulate it in a function.
+> Do we have to support these transitions right from the start?
 > 
-> The function must be able to accept any phys_addr_t and safely returns
-> NULL if page_ext cannot be used for some reason.
+> What are the use cases for adding memory as offline and then onlining it,
+> and why do we have to support that through this interface?
+>
 
-Right. I think pfn_to_online_page() is the appropriate check.
+the default build config does this, so anyone using the SYSTEM_DEFAULT
+will have to at least support this unless we want to change peoples
+existing systems.  They'll expect to use the existing pattern.
 
-@Mostafa, I saw you already sent a v7, is the pfn_to_online_page() stuff 
-handled in there?
+That is:
 
--- 
-Cheers
+add_memory_driver_managed(, SYSTEM_DEFAULT) -> offline
+echo online[_*] -> memory*/state
 
-David
+If we disallow "offline", then we essentially leave it "unplugged" and
+the second line (existing user policy) breaks.
+
+I thought this would be considered "breaking userland".
+
+I could see disallow "offline" if the memory is "online", and just force
+"unplug".
+
+> It would be a lot simpler if we would only allow
+> 
+> >    - "offline": memory is added but not online
+> >    - "online": memory is online as normal system RAM
+> >    - "online_movable": memory is online in ZONE_MOVABLE
+> >    - "unplug": memory is offlined and removed
+> 
+> That is, transitioning from offline to online or vice versa fails with
+> -ENOSUPP. User space can do that itself through sysfs and if there is ever a
+> good use case we can extend this interface here to allow it.
+> 
+> Or is there a good use case that really requires this?
+> 
+
+There's no good use case, just existing users and expected behavior.
+
+~Gregory
 
