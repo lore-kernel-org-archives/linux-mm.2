@@ -4,258 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 213CCD39003
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 18:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42CBDD39005
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 18:24:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 866C86B0088; Wed, 14 Jan 2026 13:15:56 -0500 (EST)
+	id 640786B0088; Wed, 14 Jan 2026 13:24:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8147E6B0089; Wed, 14 Jan 2026 13:15:56 -0500 (EST)
+	id 60E0E6B0089; Wed, 14 Jan 2026 13:24:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CBC76B008A; Wed, 14 Jan 2026 13:15:56 -0500 (EST)
+	id 4EFEA6B008A; Wed, 14 Jan 2026 13:24:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 587C46B0088
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:15:56 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2FBB59799
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:15:55 +0000 (UTC)
-X-FDA: 84331373070.08.F2241B1
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 54B8E20007
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:15:52 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=PJBnftnw;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Qa4W5jvc;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D2BB6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:24:18 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C58A0BA2DC
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:24:17 +0000 (UTC)
+X-FDA: 84331394154.15.D8B2079
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id AFF901A0011
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:24:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CZD8MyUp;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768415055; a=rsa-sha256;
+	cv=pass;
+	b=phcGPDSe1sApYHyGbvE+KnOC9BxOEBAHETuiO8017hsoICFYueufUOI2swh+9ygygoY8CZ
+	/PK8gqy0cUUWaIUknUMppHza+9qP4jJrn1FzgnMJXLvgBfKNJBkSYPQTVCHBwBJFsZpgVl
+	lzOJpxtX+rf0RsdnKtBiMQVt/NWpBA4=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CZD8MyUp;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768414552;
+	s=arc-20220608; t=1768415055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YKgmsL9xt/mhdoUkJCXfDnocF1i/Oa+3JdOUx+9Vod0=;
-	b=GVwmw0QYSYT4VUfoHJQB3xBmqqWFXAerpxZIskOjhO+xyTZerpnI7lseQ3c6QrLoIecgDg
-	KBm6b+mUZSTSPxj/2yp72+ZU7WL/wOAPkNGFzm2/1TVpufP8cQucVoO860q+NdqLgS06wW
-	Jj7VeyG8Y+wo+kRyY7hcZRrmjuHfpY8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768414552; a=rsa-sha256;
-	cv=pass;
-	b=hSueEs0A8PTfrOtW7ND/CpY11rqgGmSKdOIzvBiRASxwpHECyJP5X5RzQQZm54l14w5Yt6
-	4kwCMj4y2cTvPzkw0bvwnX/mcmxkkvTZ1yz3hUqtwcAZU/isI4+G4sJxJW+9uVr/Vem1sQ
-	5XS7PPC5sEl/3VeYD+ecwSqw7dwNPlM=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=PJBnftnw;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Qa4W5jvc;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60E7G2ZI2753003;
-	Wed, 14 Jan 2026 18:15:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=YKgmsL9xt/mhdoUkJCXfDnocF1i/Oa+3JdOUx+9Vod0=; b=
-	PJBnftnw7nc031Q6Sf15MoQNIVYn2LCwJzfsiNcF8Cr0++AKYavl8hFXR2R4M4cp
-	HrLxD/DjJi6/xz7cdakoBitbAbOgc1bt4j3XyQm2LXjBn8tsNV/ze9LFiC6NDu8X
-	Qut7TyyC3/ano6ckMsciHbcwQIkAdDX1c7deFFHaTq9wNBWESb2Rtfv2BLQxScQs
-	/4pYg/T0vAeYeJezr9qiQtiYxhFJm0GXrz+kQC7MoqnATdi54wNHEhZg++0tA6CX
-	O/fP96YPbXMUjGuuJV8NljQIcMbEKpJOaiZsYX3Hrppt6WnVQPrrV6u6TKEmtlrZ
-	yflMi3GRV/4kGiEirew48w==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkpwgnpk7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Jan 2026 18:15:34 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60EHrYOS029137;
-	Wed, 14 Jan 2026 18:15:33 GMT
-Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010014.outbound.protection.outlook.com [52.101.193.14])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7m4tde-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Jan 2026 18:15:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K7JXzwimt+Jshz63CQ8cPxdrJ/NFOqn528h6soRVDU8fbCpFzAs3gJbtR2CeQSukRMGhtTT9W1iolZYqKjN2+NcOPTk5l9BKh2WrVp0bgYkIJUJFS70qye72MQ8ruJEyto3MnZ7GqvU41lDTla6RjWRqpgSNG5Cl39+YmnbX+N3CthJZklF3MuLZUx4OtYXNVoVbRkU7LapEmFFnogrlp5VDVPh279R6i2EHZEd4VJXiMQdO1W1bVgLrotl48IQB6o5MMercCl4Ablx9/IitTbg9DLERo7kPIlyhe3pDNGaq5cP2z2ET6x54b7LMzstxuDVpbJPB3DwRsYIj2IA5LA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YKgmsL9xt/mhdoUkJCXfDnocF1i/Oa+3JdOUx+9Vod0=;
- b=xHxL6Ff5RQSoirM9Cp4Qshb7PAmRlJbBzZ7WJ3ZU0pUXcxMft3V0bfQDllroUZ2CTcKrWiLRkp+92bgZcVQyBeOb0hgqiVyX61aNljIMrAP6p3zdqV+usbDM8N5DdVIm0errMtsTwAbVqEEI8U7TQGPf+YWefZhSalZY802yL018jcKW2xGCpc104TSDqFTbB3gF41z9MzuDfM+MDmqnRA9odqyUjDhAcJeV+llZrH9mYVfkO/UsT2Jnai3Fl0nrtmVUA7gdvxjYGdYZf4i0dvAN9CSLlPgPFZPcTVuD9/aduOVxQR3jUOxmtYs/6U8yV03ve5DLHR9CU+ooZ8HpEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=Dfg4XYGk5XyeYtVfQ6Zn1brUb+xWMxA29+l07+I3qE4=;
+	b=SBF2xeoIzTfhZyzrx+9MfWDXYJOQbeDw+rOYA1HJJmgwewWNtuZNnCuc+N74c2pSFyYoI7
+	XEbP5rA3QhnjJsGq9cjuI3Mw9Ec8jWx6PQvqgncykKdhrDsVy+PoLjS+MTKvSo6ribohil
+	ZLqx7jvG/6U61bnZL6yWieQG0fJ1O9U=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-652fe3bf65aso664a12.1
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:24:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768415054; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NIJclmyh6nUV3f+P0VSvCakCZsgTstf4Ir7CgQOGcH6G0SQXPNPt2lflihMqOPI69k
+         GCgpU/yquoviiBfXK6w/MFGRH+6kyCjVJKfi+NCEzv2C9uRQ3noCqOCBH4r6GoWbGKqG
+         ycZ9HEHpyyAQflxFBlYT2U3HgfHHr1hOVaKrzv7j+lmjOVDuudZvDJH6pXJRiDWBvfZf
+         OwjonivWaT3xA3yH8hgag4g9pn3BWsfh6fQ1Yp2tIJ6nLh/ZeOZOx3SKP+TV7MAtTcjg
+         jVEsLpV1H81IaobpAru73vqIHS9SUlNDLdNb40R6I4sZeRI/zPCuXt0gGKzlW6jo1UCK
+         j6zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Dfg4XYGk5XyeYtVfQ6Zn1brUb+xWMxA29+l07+I3qE4=;
+        fh=b2UpycgwDA8592yl/RgqlVGgKaWqaLo4iLZ+XpjT59A=;
+        b=LqXH4jDo1WfxhHeRS906C+i58RnzPuBExtFGrwoBcgatn6HF3y/3OiMzK5QP0GZtwk
+         7duILGqCUGXSq3TvWFXDXJjHF9SIHk1dsT9wM3eOSupfRV+VH4+QOMGQJpnFcdduDhLq
+         7O4CVWs7I16sPGfJIrnDpDVoV+HSiDJ7i9wFhjYyMIs0NvrSKEvB12CxLnwdmWXCfi3j
+         TmpVizZj9hegfBoLk5MDURpwtZE3l0bYFEx73xipcNNYhls1P3RRs5LQwsdmv+5rGiKr
+         9WpWL3MUsEv/lFH6ZETQGxRyYHs2P05niuu9g/G9p4vBXZfx8vrHsM+dZu+9SY3asy5F
+         aJfA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YKgmsL9xt/mhdoUkJCXfDnocF1i/Oa+3JdOUx+9Vod0=;
- b=Qa4W5jvcCuAtBaNYXEI1gB+EwNMGOUNakD7tbEH1ZrgId5+v9em8iQNFa6SUciA7RPfDZQ7wCWfAasIo/BE8PvUrMfuCBXiHudHt7cXAVwaj+ntPH3Xn4yAk8nUFNUsR5ukDjE/s6mWOq5Zxyh+oDgim+QuMu6gBbrsi/96FMFg=
-Received: from DS0PR10MB7364.namprd10.prod.outlook.com (2603:10b6:8:fe::6) by
- IA3PR10MB8186.namprd10.prod.outlook.com (2603:10b6:208:511::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Wed, 14 Jan
- 2026 18:15:29 +0000
-Received: from DS0PR10MB7364.namprd10.prod.outlook.com
- ([fe80::a4df:c903:e1aa:322f]) by DS0PR10MB7364.namprd10.prod.outlook.com
- ([fe80::a4df:c903:e1aa:322f%5]) with mapi id 15.20.9520.005; Wed, 14 Jan 2026
- 18:15:29 +0000
-Message-ID: <43df0859-ee93-45cb-9c1f-5492df613ac1@oracle.com>
-Date: Wed, 14 Jan 2026 10:15:25 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] mm/memory-failure: fix missing ->mf_stats count in
- hugetlb poison
-To: Chris Mason <clm@meta.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
-        muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
-        linmiaohe@huawei.com, jiaqiyan@google.com, william.roche@oracle.com,
-        rientjes@google.com, akpm@linux-foundation.org,
-        lorenzo.stoakes@oracle.com, Liam.Howlett@Oracle.com, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com, willy@infradead.org
-References: <20260114153749.3004663-1-clm@meta.com>
-Content-Language: en-US
-From: jane.chu@oracle.com
-In-Reply-To: <20260114153749.3004663-1-clm@meta.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0084.namprd05.prod.outlook.com
- (2603:10b6:a03:332::29) To DS0PR10MB7364.namprd10.prod.outlook.com
- (2603:10b6:8:fe::6)
+        d=google.com; s=20230601; t=1768415054; x=1769019854; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Dfg4XYGk5XyeYtVfQ6Zn1brUb+xWMxA29+l07+I3qE4=;
+        b=CZD8MyUpfvm+4pXNHeoOkHuAHWNtdLHbaSXCu9PQe10jTKfAM6949NhgvP9JMANhKq
+         08xjhRmIuoLv58hysS6ld3N41y+TDDqQiXjx1J/CU9DdWHvJDO7aQXWEeb7cNrJ6P/A8
+         UqEVwkfeqQ+5VhB5UvZOra+XT79Coj8GZBJszF/h02P41/RqfWevOra6maV5DvzhqEAC
+         6k06AYEFpcyvMvRYYdnEwHbTHeum1TnMrTs6p5jbITQ4Smg7LvR0MVhRrF10HTFuWsl1
+         MKHd8j/OH4Xhf+0qtqLauIAm/5NQB5gxqgDStQR9P9tAuDY2yQHEDHMZgnRUcokYf7wJ
+         fJ3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768415054; x=1769019854;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Dfg4XYGk5XyeYtVfQ6Zn1brUb+xWMxA29+l07+I3qE4=;
+        b=QFcThTT4MzOX957x2wa4rpGfxC3tEUBBJN9abLOjyut5rSlgksuPsHm6tSJ4pIxTmw
+         6XmKvsbG3L06XYsaQ14Brzd+kY2a9nl3AWYDbNkOYJk/AnyPFhK691ylACUvePX4JMjC
+         786tpFz6G7Cz94F9HW8JyFnYy7FXz3wepD7rETyJ9oWajR5hklK6STgrgx+O4TpLOp1e
+         ba+OZ8mHFfebk0eeBu3SonhX4VF5nkItdry+f3wzG3Otc7moURBOKJIK2uVMfGPsWLbG
+         RcdwZKItGSvwnZfdHu93yL8Bju9efKGgyuOyddllvO+oklM37jgRQF0YFMy0mYCi2hqQ
+         glRA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqJ7dwvooGh+ysM8rEsWnCGf0j81gBIW5wkfQZggBCYilrvIj+sNNQQCmKfnrjFpypnM9BUxB+Ag==@kvack.org
+X-Gm-Message-State: AOJu0YwYREtPGyUgSVhUTY2DF7CmGb4OIRE2Mt/cKpw+h8ghFO0De7S7
+	ub54FtmmuXU2jYgfzjrw/VPOUJuJZWnosW627ctnMoPcHnkmTPer0DsTVnq0ypWBeXULohKKE1U
+	2h/zBZFDv4XiZWR10Bds1fIkqgLKwGcjWq5Q9Yumc
+X-Gm-Gg: AY/fxX4e+FH7Tp3f2nua3vCcwMceGgjkwpVsuxRBOiLmhuoXAAQ10mT/djxl5AHy3Pu
+	f8d/y18MTftBh4YHd7X17X7GElSQR9RCDXHo2N0KIS4stvLExgAahyte5JXWr07iq5k5zEom921
+	WvfMcr1E0jNCylwJpqaHA+IWZ/gJiw30ZHFVrNOORfPNCgoT/b+KcKUD8t2ZWpxoWT4CyIIkF2U
+	mm13oylDoOP+F0TycwfCkf3nz+nGMD+m4mkzxGqHSLZiGdprzLzCi7L+x3J/ZhaxB7EHs1G6m9k
+	yxc0tfHO08vSnld8nJI58a/O4w==
+X-Received: by 2002:aa7:d408:0:b0:64f:fb8a:399 with SMTP id
+ 4fb4d7f45d1cf-65419faf909mr1864a12.3.1768415053711; Wed, 14 Jan 2026 10:24:13
+ -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB7364:EE_|IA3PR10MB8186:EE_
-X-MS-Office365-Filtering-Correlation-Id: c789eeae-2b16-459b-c160-08de5398e61e
-X-LD-Processed: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?VFIyODdxMFhWN0V0djl5SVhTcGdDZ1ZWMUN5dkRrVjhTbXpncjNyK1l6MFhF?=
- =?utf-8?B?cTJ2VUtiOHFodUEwWGpkNmQzN2RXY29UNTRpQldkOXpFV29MckVNejBYUGd2?=
- =?utf-8?B?OWp1TmhwVTFwWlFNamVQKzg2M2N5THpHRlJkV3NrcHhvVDVENFg0d293V2Jy?=
- =?utf-8?B?V3AxQWdmcW4wOE1TRy9uVmlMVWh2ZVpTVmJFVk5iQkF0eCtXQVYwZlZzdlMv?=
- =?utf-8?B?b2NXMHRHSjNQZTh5Mkx0SUEveVBrMUZnWVl5TlI2UXhsVVM0R21FS29KeUky?=
- =?utf-8?B?YXV4NjhoakcwVkNvMVRBcFZXT2diN3l5RUh6blBHR0sxTDFGZzVkMnN4THpR?=
- =?utf-8?B?UGRaSFQyL0E2RlljaE13ZE9IK3dzM004bHZYRHRzaUYreDVCQXorR0JiKzhY?=
- =?utf-8?B?dlhMZ1VyNWFOTXBzeWZvdUdNOFFPWE5QaW1mekF6QUdMZDJYTk02cjRaR1Bi?=
- =?utf-8?B?eVN3Qlp0cGgycGd4Z1Q5NHUxcVZwMFE4WnJmZkFPNG9KUVJTUWxKQTdEWWxX?=
- =?utf-8?B?Wkgra3dGQjkyTlU4blJDT2Y3bmhhdHQ5SjFoWFlONm5yMjJDdElUN3BVZU9N?=
- =?utf-8?B?SmZjUm1OdzJXOExqS3dzY0Q1L2syQ0dLWVorNS9qQlFRYUtEOWpEWkxqeU5S?=
- =?utf-8?B?WlB0bGYzREtvYklXODNobGd5Q2dXeElBWm84cGMzSDZoMzlveDQ4Q1dHdVdo?=
- =?utf-8?B?YmQvV0tnTTlCQ08xMmRnK0l6U25kQjJRekYzTGJHSy82VmlZbjBnVFB5ZEts?=
- =?utf-8?B?amlQRks5aEIvdDNjTFdTWkpHN1Fob2s2VXJGNTN5THZNU0lkTDVhdmdUTEdu?=
- =?utf-8?B?OFpUZjNCSDhMaVJlRWJIYnkyMjNvKzdPcGd2c1hxMEwremZKT09yUUpHNGZw?=
- =?utf-8?B?OHNPQ3NRZGFGdld0aEtiVFgxZUZsWnJvekh2dGFTckF0NXloV1phenJYUGsz?=
- =?utf-8?B?enlMWmVsaWZXN1k1WUZzUmw0RjZHZTYzQ21FNkE1ZlJCc1RyUDJVWkQwRWty?=
- =?utf-8?B?UWZZekFDS3AwTkRya0o4Z09jMDZoOThGZmhmKzMyRm9GQXhIMlRCK3EwejBB?=
- =?utf-8?B?TDJINEVPOUo5RjU3Yk5rMmRSUUNyQkFCaDdEa2FNWmtYTXp6RURpbElaVkQv?=
- =?utf-8?B?anBJbW1Va29xL1ZsRFFiMkR0a0FyYTZWRFNYN3pTN2VRcXZsQUxTeWRxcmdB?=
- =?utf-8?B?QUNBSU5RcktzZyt1b0dMdFRHeUZnZlVaNEJJQk40c2tFcU5ua1VvbDl4ZXJM?=
- =?utf-8?B?Wmh5SHo3dDdEY0RkUUZDQloyK3RvWFBmY01RNkFTRGFFUUNteWZUR0JIb1lJ?=
- =?utf-8?B?RTRUdElRakJlVmpXVm4ycVR3SzVBMFBQU2Z2QXkraWNhZjhWL1FhRnY1VjFX?=
- =?utf-8?B?WTFaandUMkNvWjVWYzVwNXQ0ZEZHcFlraHBVbjZLRDBNM2V3R2xMR1RFeEp0?=
- =?utf-8?B?dVZRRnVHS2hWcjZUaVRNMnFvQ2RCNXIvS0dFOU5sYjAvNUtza2w4d2pVYm82?=
- =?utf-8?B?aFhSS3ZtTlJLeFJvdjNuUzBCQjNGeXlYTnQ5Q1dtUUcyK3lsUjVoRFNOVnE1?=
- =?utf-8?B?ZXNPVFFFTnYxaGtxazZrRkFpNUVySHhCYTk0ZXRnNnI3c2FwREZHVXpQOEhU?=
- =?utf-8?B?VUx1dktiODBTMFRqL3d2OTJSa3E0K3hwUmJBTEM4MHdaeHcwU0xDdkZOaXJ2?=
- =?utf-8?B?Vk9rdEM0M0U2TStkNUFOei93Sm5ia0JhT1VQMCtaQjNwMy83TndrN1BpWXd0?=
- =?utf-8?B?UjVycy9SOUh2QXhueGpTZ05sT0NyUDFBMHcvZExMUnNhMWl1Q2Y3RWNzVVh2?=
- =?utf-8?B?VlVlZ20rYUxnT0cyUVlabjF4TWpqMmY5SVl2eWN5NmZsdEJyWi9LbTMrRVIx?=
- =?utf-8?B?OGpLeVl4ZU9ZZ1JFZm5wNTlQc3pONUVPbGZUTlB0VmswVlFGQXR0eWwyTy9Q?=
- =?utf-8?B?M0Y1a1lEOUxUcTIxenlMRVJaTlB4T1Fady9JcmpQekRLclNCbHlzdURtLzkz?=
- =?utf-8?B?d0FPN3I1ZGgyZzZoTzJSancxOEdTS2ZJanhET1JKYXZzakFPTGJmMnd1UHgx?=
- =?utf-8?B?V3U4amJLSmRObjBZRVhxNnliL3JONTNmVzVEUUF2MXgvUEdYdlpqL0l3VEVD?=
- =?utf-8?Q?fCig=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7364.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?VHB3eWR6MXhqNWhGRmcwOHVMQ0UrMDdkNHAyeEJta0NjWFZ3R0RtT25YZjJ2?=
- =?utf-8?B?ZWRLdkNDd1R2ckYzSVlZNHkyRFRrbDkxaFRMcTdpZmsyOWQwMktqYk1SVTRH?=
- =?utf-8?B?c21reW9XWE10ZllTNm9QZ0Y2eTNXQlArbjhueWFqMVRDN2dhbktZaWtNR1pl?=
- =?utf-8?B?YnhOd3Y3L3Q3M3JHVHVYNmJ3cUxvMUVtdGttdTUxQ1lTaXo1OEpoRHozTGdR?=
- =?utf-8?B?Z3BqbGxXZGw2WnAwTDY5d0dFdW9TcGRXaU1nWFZWMmZOTGdhRUd5MmJwSTBE?=
- =?utf-8?B?ZFBwekdRR0l3Nklha1dTS0ZmdkQxUnh1eGtmTTNrVWFNSVdqOUs4ZDJxdE9y?=
- =?utf-8?B?dHpnWmZDNkFZWXN6Uy8xR2lGYlBQbnVMS1J6bDFuVEVrRzc3OEk4S3Z1a282?=
- =?utf-8?B?SzJjaWt6cTNPLyswMnFiU1VkYm1mQklqWkY0dk5CWnQ5WGVwcC9RaDdsS0dB?=
- =?utf-8?B?ZFRYODU2Rmpxc0s1TGRlcmlQL2dXZTE3SDhZZWZIKzdSa21JbzAxdEMzL1hR?=
- =?utf-8?B?bitBakx6c3I3aHAyZ2E1L00zNEQ5cTZkbHA3bkNmZlh3c09Yd1FXNGxBWEhQ?=
- =?utf-8?B?Y3ZNVHBpd1lXWlRwQ2I1azBud2ZpMzRibE1LNHBGOTRCdkNZb24vblFXZ3Zs?=
- =?utf-8?B?RFExVzlnVjdNZ0VlZnZpeGNOUTlYWTZicmkrUEJFSDczNm8ySzA0K242eFNL?=
- =?utf-8?B?UHV2THhWWTNLVXdOU09aNGUra09OT3Z6c3dlTkFmT0lqR1VPZFdPc25ESDRx?=
- =?utf-8?B?NmRHdlhwc3Q2ZE1PNmc0ZnRBYUVpVUtsSFZOd2dDRjAxQS9oYUpWZVNrcG9t?=
- =?utf-8?B?eHlCTERTSnFQNjlwQkZYck9wVUhmQ1VZdXJ4eTNhRDJ2UlhSUjNDd2pSdFMv?=
- =?utf-8?B?Vk1YM0o0QjlWQTJSTEtyVWR2aVBWMlhUeVUrS3hTV0VCOENSNlBVdXFiMCtQ?=
- =?utf-8?B?Rm5GVjNzak5qbUx4WUl4cGNiR2l0cjRSd2U1eWpQV3NNQVdUYkRycEg4d0Nl?=
- =?utf-8?B?a1d2U2kxNWptdnZDT2lDMUIrOUVQb3pSSVJjMU1TYk1PRXE4M3puMzJsS2JQ?=
- =?utf-8?B?eVgycW9Dd0VGaVFnZ2pPbk9pVFlBQW00bXpkWTQ5TVpwK0RqZytTOHBDc1kw?=
- =?utf-8?B?T0NQdmVpZnNXcEtybEVtRzlLeEh1VmwxSkpxMnZtdFFLNHdzZmo2YVVSa0g1?=
- =?utf-8?B?MS9YSnBXQ1hYRzlZNStNblNXN2Jzam5TZGFoMC90MkZnZTZDa1RpRklkVk4r?=
- =?utf-8?B?V05NRjdEdUVPa0gweUtVWTJpTmI1ZFdYTUMyR0RPMWd2OU5zNzY0R1RGQnkx?=
- =?utf-8?B?WjdxL3R6bFNPaDNOZmdyOVlIWko1VWlrUEloY0ZaVW5HLzhiWHFlRjN0SEtR?=
- =?utf-8?B?WFNFdWs1LzIwNEVMQ0g5N0VlcnFrZGJXYlNvRlhsTVNtRTlENGppQm54bk5O?=
- =?utf-8?B?SW9YV2Noc2lJZEp0eEFZaWp2cWtHWW5zRU1oeUFMbm1oOE40NEZ0bnFWQ0Z3?=
- =?utf-8?B?Tmd3Mi9OK0t5S0E2c0xPRkhyN05FR2xmTXcrL3JzMjlxNzFtWURDSUtkc2dI?=
- =?utf-8?B?b2IzZi93TTJCUFlLdEs2YzNPVU9tVTYzcTNaM25MVnorMyttUUpFZXB1VzVt?=
- =?utf-8?B?NkQyV3I1aHppdE9MTllHUGhhTVRGczZ6YThrWEN1b1czUTVKbkFWUUhJeWVh?=
- =?utf-8?B?QWlHSXJLU3VMOG5YZitCcjlBcThJVjQ2alFxdzdDUUlUVWFuODRqRlRFQ01X?=
- =?utf-8?B?aEVYRkphby9veWtyWlVSdXY1RDE2VDhic0ZTOEJ3WEc2Q1JDci9KbGFBQWpQ?=
- =?utf-8?B?ODhYTDIydUZESi95ZllqYVozRjVQUW43TWxMQXduVDZtcFI1RkxHMXRMc0Iw?=
- =?utf-8?B?bzZWUEZpQXZnTnRvbWpDTWJuczE5YjN1ZG1BQzY1VlZsVVRCWkY1RmNvOStu?=
- =?utf-8?B?dkNBelpuSHRKUlpkcjB1eG5WUVRzbUx2MndJS3FsK2RVRDk5K1N0bWlPUWdU?=
- =?utf-8?B?MmpqNUVtdHQrWm5EOFNCNXNjbVBGNEkySmdnQ2tTcmZnSFdRUWxTbVhqWnRZ?=
- =?utf-8?B?R0orOE5vaXpJTmNwTWtCbVFQU2ZYZFNVeXd5aXh6MnJyUjVSUGgxczBHU3JV?=
- =?utf-8?B?NGJQYTE2aVhxN3JvM3VVeFZjd2ZkVG0rWmJyUHhycStNbEV0ZjJWWlZPSzNl?=
- =?utf-8?B?UEF5MExnbDRMckMwV2xyZEVJYTVOVkRzZktDbWtwNGxnMENGTG5Od0wxL2tz?=
- =?utf-8?B?UTN4azhJUmU0QjJMeTI2R1lVaUpGbHVXRFA0T2t2VjkyaThJS1NWb1l2SmdJ?=
- =?utf-8?B?RURacm1PbW5YOUJVcUpiai9UbFVuMXBLM25BcjIxVDRRL2RGblQ1UT09?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	ELVWhIAoc63sXaOZiITttTAMGp2V9IJY0s0hFgxqGC4ZivN+8Bp6lBDdqk7mWAgXHeNWIuzPL4V3t5paJtKSZIzEtQqR+bRX9g2nw+on0brwfYe1K1Tb+tnsiVijWxWfxkwlNxl0iwuep0CeVb5KNFhiXOpaXW8v5YgPi02j4W/IAEPgsBllSTtOXgZRZgg1CE+n6i53p2SeHGe0+LU5HYIeFAWEZnhb15VIxpBQ3jcxCCT2+GON8xw6nqqM9jQpXMz6Fqs9fVh7XmdiLnQxrVoNkKp0rrkjiihS9BlMTxxJJ5SorMuPGWcYP5CBcrJm8npke2vcsIHgx+svVj6ks3ecdYQRDWJVg2+K+SjVjkIb9mUvymHZvL3tubeD/6oFNHahX946L8jk9mU7obXgPVF/Ges6hirbCF//6HQY2XBIzoOcCHqoCtituliVSptYlmcQ+i1CgP1j5DatwiNFOc+9lml21Qykcvinxej5JeXVmMof4QJluyPPOrySKWWo5AeIObdwIFHCXJSr8p7CNPKi5QHrHQivsGXMGOItu6wdiUmfWOEmtBWACTkw1r6OH5WdsiBnDKzigHRzgDNZcRF247ySZ5povsm+nSiS60c=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c789eeae-2b16-459b-c160-08de5398e61e
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7364.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 18:15:29.5533
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RRFRyOnYdi0fqUr+IcUL/cqX4rwsgTlkByihn0S8mnq7fWI9UY1Co7HldS+tu0OmO1SY24f6b5hhBUNnPTsYaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8186
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-14_05,2026-01-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
- mlxlogscore=999 suspectscore=0 mlxscore=0 phishscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2512120000 definitions=main-2601140151
-X-Proofpoint-GUID: dn9NqlMZWdYNNWtLo53TGFmK6FDyXUr9
-X-Proofpoint-ORIG-GUID: dn9NqlMZWdYNNWtLo53TGFmK6FDyXUr9
-X-Authority-Analysis: v=2.4 cv=ZtLg6t7G c=1 sm=1 tr=0 ts=6967dd46 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=0-JsNAt8oz3B69UVJK4A:9 a=QEXdDO2ut3YA:10 cc=ntf
- awl=host:12109
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDE1MSBTYWx0ZWRfXwq6Ev5lpkrBN
- s/6/JPx2TJRmlEseaUnwYG+/R8pF9YcAIM4+ykvZiaJcfcKqZRAolU7tYUySB/ShNPmh1EJK9yb
- y1lbrmQ22ZXlwX8k4WJ0ZmCI3QKfp4xjNmdwpxzA01zGPJRsrqJa8ZP6C49VG2TZcxtxJK7t+fH
- WqbFClqc8Z3KFa89YB105RXuc1h80tcqozGEwC8c3E2CFd7gaeuezfLdkWdR5R8VeM478JmG3kF
- N3fwuQt8GTb+bXVMPJg6ocLz0J3/z98l3eHZREVsOw95z0iP9a5Q/X7RhVIVATr1lQjxDl+aLGd
- kY+Nu0EBAGuVEBR4RRYbZlkZJha2A7sZzgcD9dg1rX1PKOGnTVhqLeQtac5gSC0UthY1uPGsnh8
- VbFmWnNsI4ebyPy8uvcBAbqPgAO1LwMeVtaY6gcidftsJbB5TXSk6YSLfEnkEjeq9VpRl4bLYlW
- 0xAI+h/tT8JsEedN8D9Se7oF6t043HVQhsZ9ruR0=
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 54B8E20007
+References: <6967c517.050a0220.150504.0007.GAE@google.com> <CACT4Y+aFaijS_CvzTnHB+ecg5nzYW1-MWPSp-Ad_0ax85=DvCQ@mail.gmail.com>
+ <CAG48ez0iyjjZn1U7LeG4SBXjRGo3PR-a0MWEhAJZ02vHOUA6BA@mail.gmail.com>
+ <CACT4Y+Z24oSCssMnYwtCkGHpCKTOX2J4x+8HNoGovVxeZ5_TzQ@mail.gmail.com>
+ <CAG48ez0q6ZXAk8D3frvXyeMsFDYfmY0sc=PkE6bRM8QP0gEVfg@mail.gmail.com>
+ <CAG48ez3+t-uv88cUhG6=YfMyRVW5REi3-aaW3a_yXSZDK38_ow@mail.gmail.com> <96aec792-7d10-4dfa-bf35-cc94300f4d2b@lucifer.local>
+In-Reply-To: <96aec792-7d10-4dfa-bf35-cc94300f4d2b@lucifer.local>
+From: Jann Horn <jannh@google.com>
+Date: Wed, 14 Jan 2026 19:23:37 +0100
+X-Gm-Features: AZwV_QgRabxVZuILWEIFIySjqjbCby_iTvUdmzj0cwpmGC6K8SyEoosZBv36THA
+Message-ID: <CAG48ez28kdkX1imCj3rDYNTi9PKQBx9Cqf+N2Rg92o9BEdo9QA@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prepare
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>, 
+	syzbot <syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com>, 
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
+	harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	riel@surriel.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: AFF901A0011
+X-Stat-Signature: 17dfgcfpp7yoxirh4jzibsap45zgxyf1
 X-Rspam-User: 
-X-Stat-Signature: kahcpqt1tcyifj33i9ab9mh83joo5b6b
-X-HE-Tag: 1768414552-600692
-X-HE-Meta: U2FsdGVkX19mqpjQFkaUX6kMYZRfk2krExlFHa2afMK0lW4+8ukG7N2I6Kckt7ySZsMWbvq6tV0ejYlzckzBAvIHwZ3j1nxfImgJZ0/tx+FhVhH92BB0kZLzst7iPi1FEFnwcsY1T/0eQOY2hGPvRsPFfIR1ei1mLTXVoCp63CIBkTOmIKWqjlaEFCE2LQ6EhhfNDYXjXv5pwo3FHnhMn+LEC3xKCO3/oGcm5cMSexmLN3bNzNF+i7VeWo4lohcyWCc+9w+n9sUNVrkTQ1hOJlRFT1xKxo9l4Hk99Cb05HlCiOAq4gpfOrXKXqwb/61RWEGNGIH28N3Ix5L/76jit4nBYHTJ9e+9fFy4iSqtxmIO+Ldg5KC0tiSqSUZSi7cO0PXP2xteYxrtbFvnr4LympcBkycT3+o/1qfFmVCGKvSO+XFmk1Uwe5qdJ2X19mKXh1h365MiUA5bjSJ51x+PnuZx9gn5CPlho/IcA0KUnXVXA9csnTe2QW4ZfxwbjBJ+XwHbcTelUCmEumq5Pe9AVL0eHkYDkRnNb9HL2VGPTkniRLuIrDF5XySnYs2NBkXMhGg9TCj96xCehWiSbpHtbvFyRx1bUrbWCeguK73Uue0axuIFf0YpWkjpUmZM4PXp84ATU8YG3HRR934djcGqV+LUuMSPqfs6BwyZ4dPx051HFcDhuL5dalhYhSTN4+5/fOF8tNTUgwK3xWF4bSCsqS9daYo9cuE8vnNVaeTD7e7D5NWsRS1WmzHMBMKipsc0TjtSH9fsd37rnQBshTPIqyDb5qjMQQl0OUJrvi0wZydOqNDsDlGrjZgRlkjBiH9TLee3g+aWFhZ95VZajhYQ2cUq/UHGfCCOWbKFaKuAfF76TVEw7hf00Xr04XbspDZGG2ag+Lgu0rulmtneq1klEsMApX8MzxeexCWIJUbLapxb0wKcB2Q9MdmIsD0XWuGMRGwAZwrYFhEvfFtSGqR
- j/NFpYMU
- dRnjZPOx62CTeB9SrcC2+6R5b1L5rvLSoBU2JV/fIs++Etq/CBjlzrW5Shp0vzoTkwy5VUR2NgtsbY+34vlVO/WTLtMAz3KPlGgHS35FeUAmZRwrwhs3oOyiFwc5DpSIUTwRgnBKSe5IaSZpssWeZ5x/hOVvwVLbcZMNhVDBQH5AcZRv544lwkcIydCtr9vlm3eg8XunLn1c6n15ITJZFGzOmOfHSrdkT/25vrig3RePAbRkqS/OmgPwEIy0uOGv13oL8sObfTJeLBaJPAJpPG7MmNKAbsdkb1BYaI4d+xYBkEX2d3erUEh7tq4Zz2zAQVxu2/VW2fE5JTvkwIUDqlZmEdfFVS3ZhT+lYMLBzg7KARMNunZ7KjCjtu6RlCNJ1EJqW4+ni0koC1ieSIErpeu5apaoyV23PU7dXArHAyFrZ3fYBJUKHfNu7Dj7ZQF+eozTvQhr0n7OcaaE60Pscwjba20iHhlVFUjw0VRsLCYF3mUCphqrX1TNZiLONjvUxuZYOJG7aU0ODQvrH4Zad1ebFd6jHFh4kMH6HIUGNlBtOxdaO3TjDuymcIcIVcVBWn89ia37XvSUVjCfuydRx4LKLkxcvKaV7K8EWXyhW5XzAV/iOcfMDQjsQNudiDAu1EYBdNH7CNoKiV7fqOfHCI8CTps0R2xLNkCuUx/n3pKrKUdOqVwhicKPSAyYtnUYR1u52ldZoUxshYzlA5gDjqNBICSk/cxo5rJXZp93PAI9269iGa30/rGrYfmKOAeJGhPrf15I70GRzJPt5PGkKZaHx/g==
+X-HE-Tag: 1768415055-783218
+X-HE-Meta: U2FsdGVkX18s/3RPXPAK+wDzR503kBIdWZq0sLX6lF6/itEUe//7QvNk+0HrEAYpZj+A+gKHOFPwCFdc7lqP6zFJgpJSPZAoFfVkzVrEXKpXvzD2KCGuKv91WG3ZmepDmlHuhP9nNt/eh2fOu8qqf/+f90wizpeSi/qyC7CLhRLRkAid4OG2tnka7uVB9vZ5IlS0uXMEYeiNct0k8vIhX3JT6E790hIxxkyL+wP3tca+yplYxQ4ZE+YPfMKtpS3k6ApPjwPcxrLh2FiKt3Dg3/LhcQaExsMrrpVzY5MSgE1Lk8Y9fb6ZR2aKG/gt+zCeVx7THFYn+0Yu50dVAJAYYHsoF+RGD4xb7djdsKZDDgaH67EPh/ETa6mH6CHyVpJTxkZETPvW7G1HMZnBmOylplqj97tnwHB9axOQdlV2L+YZIgIBE27ea+rwlmkKxaEJU2xykboOO/PN7/lg2RJYlo8TGC1p+M/gg5pKgynGrcNaT8GIsVzhO7FurcJ3TSfDLBZPaa83TiLwdksonV2I7D/GSnD+lvRPt9YHJzq2kfykz8ANZx9DvU0D3jplfnzKmoEVNGInMsrHEe1ak0A8Y7bbgZkUHHNh4JAEAfc8VbB2NqKNrYRRXz4eBx5QkMBjdi+Bg/NJxCD4e8JnW1GEc9qVQ5GSClKBB/IdAD0MvfZ+jROH12/y6/CnHjkFXKV+RlG8wyWzGB/+llOWNLCduN9ccf0FBDz4hmx8Iboa3B1zffzrFxxIbZGOAu2bKJuLnVpogdPyvKxWR5OBAktpWAORQ45TqOO3QLxEooT389n7K4eBwINy/0SGuNexMT8Pn6KEa3j4yymfCles9MZEnCpfLRazuBlGIvqEQxDCO2dRvozzHQrJGVjsuWZhyUS0yLg+zaGjPk4eJL+ClAMkpCjzFMGWbu80M7FI/jT8XtvjP/k0rWTQm0smwAV8H+oZ1ic+A6iTPUgzi1HT7ew
+ gs+HFqkn
+ 4vNAAyMIcr8zBXMF/WsWtMtTyZ5t0n0LOXSoVwE7cddbbmik7bFObuKIL0NDBg8mGU0XAlakEBnP/BWe2x7Q71CeB2ygFUP7atxQzxyFEHPUu7QBDQrlG56/SkmMSREpIrdGeMPwquXzQfB636eUHLRuPl9pqRBnoVZ8sFL1lTnrO052pJvpf2Ihg4ZjN31sbgLgxULj10PmovA0zOO76xd5AVbW4dJrXA17FnZNUBF076/PaJFI0bgQ1bY/HpxQJkL01t+uG0IqJtt4Af5QIojahPauPVRAnJyrQz/XQWYKqnXvYDaideM4UJgXrDxsiaLh3f7GPBKQJQCJ//oDKQ0f3l/KD8/eAFbHcg4LcMC+nsRqMjuufm8dcPAXL+Cm9No6TajtqoZ8SZy3Mg/7Q/d6O1wDTd8UOE6WDyHARx+HPju2oeIF9qqXfFAcWPndX9UCyjFTCFDRlRikwDX0FfMxTYS216pyscmzteVmHnsX44KRk1Z1LWSHw/6u+NsD/mQD7JMLpoFV486wGl9AEHawj+fg/or8mTyIIIrCkWhG2K9g1zTn/GZXSwMyBlySyCz8tYClxscGHuD6JTowEReFC4JoW9Zlp23zTmd5eQEB8K22Qw/aqPGChKe0qY0MH5sif2xbbdNPGbYqD/zKGNMcTq/RXrRy7LzRpu98QMaKUUBNj78ofKuVNq/qgnK7fVCc8dm6oQLzGg98ze+zeeZqe/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -264,99 +146,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jan 14, 2026 at 7:02=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+> On Wed, Jan 14, 2026 at 06:48:37PM +0100, Jann Horn wrote:
+> > On Wed, Jan 14, 2026 at 6:29=E2=80=AFPM Jann Horn <jannh@google.com> wr=
+ote:
+> > > On Wed, Jan 14, 2026 at 6:06=E2=80=AFPM Dmitry Vyukov <dvyukov@google=
+.com> wrote:
+> > > > On Wed, 14 Jan 2026 at 18:00, Jann Horn <jannh@google.com> wrote:
+> > > > > On Wed, Jan 14, 2026 at 5:43=E2=80=AFPM Dmitry Vyukov <dvyukov@go=
+ogle.com> wrote:
+> > > > > > On Wed, 14 Jan 2026 at 17:32, syzbot
+> > > > > > <syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com> wrote:
+> > > > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > > > > > BUG: KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prep=
+are
+> > > > > > >
+> > > > > > > write to 0xffff88811c751e80 of 8 bytes by task 13471 on cpu 1=
+:
+> > > > > > >  __anon_vma_prepare+0x172/0x2f0 mm/rmap.c:212
+> > > > > > >  __vmf_anon_prepare+0x91/0x100 mm/memory.c:3673
+> > > > > > >  hugetlb_no_page+0x1c4/0x10d0 mm/hugetlb.c:5782
+> > > > > > >  hugetlb_fault+0x4cf/0xce0 mm/hugetlb.c:-1
+> > > > > > >  handle_mm_fault+0x1894/0x2c60 mm/memory.c:6578
+> > > > > [...]
+> > > > > > > read to 0xffff88811c751e80 of 8 bytes by task 13473 on cpu 0:
+> > > > > > >  __vmf_anon_prepare+0x26/0x100 mm/memory.c:3667
+> > > > > > >  hugetlb_no_page+0x1c4/0x10d0 mm/hugetlb.c:5782
+> > > > > > >  hugetlb_fault+0x4cf/0xce0 mm/hugetlb.c:-1
+> > > > > > >  handle_mm_fault+0x1894/0x2c60 mm/memory.c:6578
+> > > > > [...]
+> > > > > > >
+> > > > > > > value changed: 0x0000000000000000 -> 0xffff888104ecca28
+> > > > > > >
+> > > > > > > Reported by Kernel Concurrency Sanitizer on:
+> > > > > > > CPU: 0 UID: 0 PID: 13473 Comm: syz.2.3219 Tainted: G        W=
+           syzkaller #0 PREEMPT(voluntary)
+> > > > > > > Tainted: [W]=3DWARN
+> > > > > > > Hardware name: Google Google Compute Engine/Google Compute En=
+gine, BIOS Google 10/25/2025
+> > > > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > > > >
+> > > > > > Hi Harry,
+> > > > > >
+> > > > > > I see you've been debugging:
+> > > > > > KASAN: slab-use-after-free Read in folio_remove_rmap_ptes
+> > > > > > https://lore.kernel.org/all/694e3dc6.050a0220.35954c.0066.GAE@g=
+oogle.com/T/
+> > > > > >
+> > > > > > Can that bug be caused by this data race?
+> > > > > > Below is an explanation by Gemini LLM as to why this race is ha=
+rmful.
+> > > > > > Obviously take it with a grain of salt, but with my limited mm
+> > > > > > knowledge it does not look immediately wrong (re rmap invariant=
+).
+> > > > > >
+> > > > > > However, now digging into details I see that this Lorenzo's pat=
+ch
+> > > > > > also marked as fixing "KASAN: slab-use-after-free Read in
+> > > > > > folio_remove_rmap_ptes":
+> > > > > >
+> > > > > > mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
+> > > > > > https://lore.kernel.org/all/b7930ad2b1503a657e29fe928eb33061d7e=
+adf5b.1767638272.git.lorenzo.stoakes@oracle.com/T/
+> > > > > >
+> > > > > > So perhaps the race is still benign (or points to another issue=
+?)
+> > > > > >
+> > > > > > Here is what LLM said about the race:
+> > > > > > -----
+> > > > > >
+> > > > > > The bug report is actionable and points to a harmful data race =
+in the Linux
+> > > > > > kernel's memory management subsystem, specifically in the handl=
+ing of
+> > > > > > anonymous `hugetlb` mappings.
+> > > > >
+> > > > > This data race is not specific to hugetlb at all, and it isn't ca=
+used
+> > > > > by any recent changes. It's a longstanding thing in core MM, but =
+it's
+> > > > > pretty benign as far as I know.
+> > > > >
+> > > > > Fundamentally, the field vma->anon_vma can be read while only hol=
+ding
+> > > > > the mmap lock in read mode; and it can concurrently be changed fr=
+om
+> > > > > NULL to non-NULL.
+>
+> Well isn't that what the page_table_lock is for...?
 
-On 1/14/2026 7:37 AM, Chris Mason wrote:
-> On Tue, 13 Jan 2026 01:07:50 -0700 Jane Chu <jane.chu@oracle.com> wrote:
-> 
->> When a newly poisoned subpage ends up in an already poisoned hugetlb
->> folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
->> is not. Fix the inconsistency by designating action_result() to update
->> them both.
->>
->> While at it, define __get_huge_page_for_hwpoison() return values in terms
->> of symbol names for better readibility. Also rename
->> folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
->> function does more than the conventional bit setting and the fact
->> three possible return values are expected.
->>
-> 
-> Hi everyone,
-> 
-> I ran mm-new through the AI patch review prompts, and this commit was flagged.
-> The review below looks right to me:
-> 
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
-> 
-> [ ... ]
-> 
->> @@ -2029,22 +2037,29 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
->>   	*hugetlb = 1;
->>   retry:
->>   	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
->> -	if (res == 2) { /* fallback to normal page handling */
->> +	switch (res) {
->> +	case -EINVAL:	/* fallback to normal page handling */
->>   		*hugetlb = 0;
->>   		return 0;
->> -	} else if (res == -EHWPOISON) {
->> -		if (flags & MF_ACTION_REQUIRED) {
->> -			folio = page_folio(p);
->> -			res = kill_accessing_process(current, folio_pfn(folio), flags);
->> -		}
->> -		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
->> -		return res;
->> -	} else if (res == -EBUSY) {
->> +	case -EBUSY:
->>   		if (!(flags & MF_NO_RETRY)) {
->>   			flags |= MF_NO_RETRY;
->>   			goto retry;
->>   		}
->>   		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
->> +	case MF_HUGETLB_FOLIO_PRE_POISONED:
->> +	case MF_HUGETLB_PAGE_PRE_POISON:
->> +		if (flags & MF_ACTION_REQUIRED) {
->> +			folio = page_folio(p);
->> +			res = kill_accessing_process(current, folio_pfn(folio), flags);
->> +		}
->> +		if (res == MF_HUGETLB_FOLIO_PRE_POISONED)
-> 
-> When MF_ACTION_REQUIRED is set, kill_accessing_process() overwrites res
-> before this check. kill_accessing_process() returns either 0 or
-> -EHWPOISON, so the check for MF_HUGETLB_FOLIO_PRE_POISONED (which is 3)
-> will always be false in that path.
-> 
-> This means action_result() will be called with MF_MSG_HUGE instead of
-> MF_MSG_ALREADY_POISONED. Looking at action_result():
-> 
->      if (type != MF_MSG_ALREADY_POISONED && type != MF_MSG_PFN_MAP) {
->          num_poisoned_pages_inc(pfn);
->          update_per_node_mf_stats(pfn, result);
->      }
-> 
-> Does this cause incorrect counter increments for already-poisoned pages
-> when MF_ACTION_REQUIRED is set? The original code called action_result()
-> unconditionally with MF_MSG_ALREADY_POISONED regardless of whether
-> kill_accessing_process() was called.
-> 
-> Should a separate variable preserve the original res value before the
-> call to kill_accessing_process()?
+The page_table_lock prevents writer-writer data races, but not
+reader-writer data races. (It is only held by writers, not by
+readers.)
 
-Good catch!  William Roche has also pointed out the same issue to me in 
-private.  I will fix it in v5 soon.
+> > > > >
+> > > > > One scenario to cause such a data race is to create a new anonymo=
+us
+> > > > > VMA, then trigger two concurrent page faults inside this VMA. Ass=
+ume a
+> > > > > configuration with VMA locking disabled for simplicity, so that b=
+oth
+> > > > > faults happen under the mmap lock in read mode. This will lead to=
+ two
+> > > > > concurrent calls to __vmf_anon_prepare()
+> > > > > (https://elixir.bootlin.com/linux/v6.18.5/source/mm/memory.c#L362=
+3),
+> > > > > both threads only holding the mmap_lock in read mode.
+> > > > > __vmf_anon_prepare() is essentially this (from
+> > > > > https://elixir.bootlin.com/linux/v6.18.5/source/mm/memory.c#L3623=
+,
+> > > > > with VMA locking code removed):
+> > > > >
+> > > > > vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+> > > > > {
+> > > > >         struct vm_area_struct *vma =3D vmf->vma;
+> > > > >         vm_fault_t ret =3D 0;
+> > > > >
+> > > > >         if (likely(vma->anon_vma))
+> > > > >                 return 0;
+> > > > >         [...]
+> > > > >         if (__anon_vma_prepare(vma))
+> > > > >                 ret =3D VM_FAULT_OOM;
+> > > > >         [...]
+> > > > >         return ret;
+> > > > > }
+> > > > >
+> > > > > int __anon_vma_prepare(struct vm_area_struct *vma)
+> > > > > {
+> > > > >         struct mm_struct *mm =3D vma->vm_mm;
+> > > > >         struct anon_vma *anon_vma, *allocated;
+> > > > >         struct anon_vma_chain *avc;
+> > > > >
+> > > > >         [...]
+> > > > >
+> > > > >         [... allocate stuff ...]
+> > > > >
+> > > > >         anon_vma_lock_write(anon_vma);
+> > > > >         /* page_table_lock to protect against threads */
+> > > > >         spin_lock(&mm->page_table_lock);
+> > > > >         if (likely(!vma->anon_vma)) {
+> > > > >                 vma->anon_vma =3D anon_vma;
+> > > > >                 [...]
+> > > > >         }
+> > > > >         spin_unlock(&mm->page_table_lock);
+> > > > >         anon_vma_unlock_write(anon_vma);
+> > > > >
+> > > > >         [... cleanup ...]
+> > > > >
+> > > > >         return 0;
+> > > > >
+> > > > >         [... error handling ...]
+> > > > > }
+> > > > >
+> > > > > So if one thread reaches the "vma->anon_vma =3D anon_vma" assignm=
+ent
+> > > > > while the other thread is running the "if (likely(vma->anon_vma))=
+"
+> > > > > check, you get a (AFAIK benign) data race.
+> > > >
+> > > > Thanks for checking, Jann.
+> > > >
+> > > > To double check"
+> > > >
+> > > > "vma->anon_vma =3D anon_vma" is done w/o store-release, so the lock=
+less
+> > > > readers can't read anon_vma contents, is it correct? So none of the=
+m
+> > > > really reading anon_vma, right?
+> > >
+> > > I think you are right that this should be using store-release;
+> > > searching around, I also mentioned this in
+> > > <https://lore.kernel.org/all/CAG48ez0qsAM-dkOUDetmNBSK4typ5t_FvMvtGiB=
+7wQsP-G1jVg@mail.gmail.com/>:
+> > >
+> > > | > +Note that there are some exceptions to this - the `anon_vma`
+> > > field is permitted
+> > > | > +to be written to under mmap read lock and is instead serialised
+> > > by the `struct
+> > > | > +mm_struct` field `page_table_lock`. In addition the `vm_mm` and =
+all
+> > > |
+> > > | Hm, we really ought to add some smp_store_release() and READ_ONCE()=
+,
+> > > | or something along those lines, around our ->anon_vma accesses...
+> > > | especially the "vma->anon_vma =3D anon_vma" assignment in
+> > > | __anon_vma_prepare() looks to me like, on architectures like arm64
+> > > | with write-write reordering, we could theoretically end up making a
+> > > | new anon_vma pointer visible to a concurrent page fault before the
+> > > | anon_vma has been initialized? Though I have no idea if that is
+> > > | practically possible, stuff would have to be reordered quite a bit =
+for
+> > > | that to happen...
+>
+> As far as the page fault is concerned it only really cares about whether =
+it
+> exists or not, not whether it's initialised.
 
-thanks,
--jane
+Hmm, yeah, I'm not sure if anything in the page fault path actually
+directly accesses the anon_vma. The page fault path does eventually
+re-publish the anon_vma pointer with `WRITE_ONCE(folio->mapping,
+(struct address_space *) anon_vma)` in __folio_set_anon() though,
+which could then potentially allow a third thread to walk through
+folio->mapping and observe the uninitialized anon_vma...
 
+Looking at the situation on latest stable (v6.18.5), two racing faults
+on _adjacent_ anonymous VMAs could also end up with one thread writing
+->anon_vma while the other thread executes reusable_anon_vma(),
+loading the pointer to that anon_vma and accessing its
+->anon_vma_chain.
 
-> 
->> +			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
->> +		else
->> +			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
->> +		return res;
-> 
-> 
-> 
-
+> The operations that check/modify fields within the anon_vma are protected=
+ by the
+> anon rmap lock (my recent series takes advantage of this to avoid holding=
+ that
+> lock during AVC allocation for instance).
+>
+> This lock also protects the interval tree.
 
