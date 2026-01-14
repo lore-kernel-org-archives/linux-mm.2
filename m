@@ -4,109 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 134C5D38FEB
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:43:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A888D38FEA
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:43:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CF956B0088; Wed, 14 Jan 2026 11:43:04 -0500 (EST)
+	id 851A06B0089; Wed, 14 Jan 2026 11:43:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 785C46B0089; Wed, 14 Jan 2026 11:43:04 -0500 (EST)
+	id 7FBFD6B008A; Wed, 14 Jan 2026 11:43:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67B346B008A; Wed, 14 Jan 2026 11:43:04 -0500 (EST)
+	id 7292F6B008C; Wed, 14 Jan 2026 11:43:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 530AC6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:43:04 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C770C1ADFF6
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:43:03 +0000 (UTC)
-X-FDA: 84331139046.08.954DCD7
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D9F121C0010
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:43:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hgGI6agn;
-	spf=pass (imf20.hostedemail.com: domain of dvyukov@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=dvyukov@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768408982; a=rsa-sha256;
-	cv=none;
-	b=5lZi9SblVrJcz1tcmjcsUuKfaC+5joOJ3XPInlCvuOXKCfG0RQRNHPmmxi+ki5gh/+jhuB
-	0fA3rXRy+mQLhVoVoMa1HEu1V+DmjnRsp6u7zfaxXxJuEJeUIzCx+CX4vDHEBh5rvzw9TY
-	k50ZEXJIzgoRtDN2GC6Sknl7EBPeid8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hgGI6agn;
-	spf=pass (imf20.hostedemail.com: domain of dvyukov@google.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=dvyukov@google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 619656B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:43:33 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 30EF2160588
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:43:33 +0000 (UTC)
+X-FDA: 84331140306.28.7BE9E50
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 73A721A0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:43:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BVCTxA7z;
+	spf=pass (imf19.hostedemail.com: domain of 3scdnaQgKCDIgacghOTOUccUZS.QcaZWbil-aaYjOQY.cfU@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3scdnaQgKCDIgacghOTOUccUZS.QcaZWbil-aaYjOQY.cfU@flex--smostafa.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768408982;
+	s=arc-20220608; t=1768409011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hyga6UwPxM24vKU5/IaISzXVkfv7qgVIk+gV0jQM3nw=;
-	b=DhvSuNIZc8MpKeOJ15WUmaaVf7zLeqAis2TuCNIflj/ReS9luIQifS/w4Dl/l7hXX9RSnt
-	DMCXOcjPi7T4R+58BUOaHQobibGza9jFfH/jgcgoD7IZnvr9uUZZHkD9dR1ul6RO7mP4Xn
-	RSYBQ1GQbu0ug50i7R6sLo2PNYdVQyQ=
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59b685d2b79so8635680e87.3
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:43:01 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ptbGfqhARAg/OJu3oyRxs8/LiGbyPAv+mElQ7v4+SEE=;
+	b=XYhCRVn8T5fRI7IVR0CX7c5p1wg99+EAyiyRQoiI4BAQtlV6z1TxmNuhuSyksP7bLBJt9m
+	suzyomZcSHEOmrAgcLIj7U+2suNI0cMcOM34fY5ujGVjAQ5XGPaGsoH6KuBWjWAsf11EID
+	SXMFoendtsnd/YKyK5fV9NoY4XA1UM0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BVCTxA7z;
+	spf=pass (imf19.hostedemail.com: domain of 3scdnaQgKCDIgacghOTOUccUZS.QcaZWbil-aaYjOQY.cfU@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3scdnaQgKCDIgacghOTOUccUZS.QcaZWbil-aaYjOQY.cfU@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768409011; a=rsa-sha256;
+	cv=none;
+	b=1H/xra4JnrieMYNdzHtbTVxK6tvz4T56Ozvh5V4w7vk2NEtgQY/jGfBtVodOzV6zAvJyLD
+	+Cf97cdW4FFBmXUVn+vUAyq6wYqevWVllj2FB7e/WJtFb/JqBV1MxSni9TQwX30Eb/14vg
+	Bmxv2cZQJwyyx7Z6JVJ6I/xk/t0Hxyk=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430fe16b481so17121f8f.3
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:43:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768408980; x=1769013780; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hyga6UwPxM24vKU5/IaISzXVkfv7qgVIk+gV0jQM3nw=;
-        b=hgGI6agnceCl6euGVB+RQov9oe76MWad7POcHlZG5Fm4UwH7CftnONtV54CWpF6GU5
-         QxZMs1GhEqAsvrxqAHoXmisBg8OlawXSpFFKG+F4jN5Gn7M1mPafxxvTHkUXuUvigZUT
-         PdpZ99r8Dem0OdoL1SsU6aY6CiakMshzx3XdiBUtUBisAHKRrLZGNnGqi8mTEZvc4h/N
-         oHFJp/VkmzKSWRxunkcCtUnOgtRfrlrsa4mZf+CISOd6bV3/Hr9Jvg+E1+NtIZValzy4
-         tTCecDndPpw/2sZSKuf1Y2BxZEGlQ1msvYEoB9dUFowHgXyh6FQeiynOd4WDp3sJS9W0
-         jMXg==
+        d=google.com; s=20230601; t=1768409010; x=1769013810; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ptbGfqhARAg/OJu3oyRxs8/LiGbyPAv+mElQ7v4+SEE=;
+        b=BVCTxA7zW7zHguSOB5BXoiQP2lVP0Ug4mhh0hN+WRGpIZLVnPIetLNV0jSxz/kLH/t
+         3jW15//TH9+XgO8WyRr6DCPfIhspU9u1j34wSEGkv3PsAxNMIHwWQrAcj18D7Tdg4Kyl
+         1FrzQzvo/Ff827XcKpDQQXCtAHPVpiZGKp1agqsCqpM0Cw2AQSU8wlbjk7Nr8FGlCPz+
+         2HhVMlSQtXs1PyxDCd0L46a5fTHD8p1iRTw13VHCj/d4tLd6PjbiIXKW7ZgyWc62/QJb
+         KCxJBp59oa2HWXEZ4j50UttrEwMcbY7YP3gvUsAPHudqsfNj7kOldckhIMOs1Kjlnx4R
+         e8oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768408980; x=1769013780;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1768409010; x=1769013810;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Hyga6UwPxM24vKU5/IaISzXVkfv7qgVIk+gV0jQM3nw=;
-        b=nFj04U0g5yftcBGtLK+mSqMQAItGeR/RMKGcuYkk/8ckw2NYJRfyy6hhdfOUMt0kuq
-         z8H0w5m9svu4pZ1OodkCKsTXrdsXvWsvGCFXNrRwasWS+xbk+zCMhosMGPsIyR0V/5LS
-         iCmNyycUs+VQRAz2bHaCIpDywIypFnBadPu1T2A5bLK7uTsF4mmebtvVlcnkNSVvNjAA
-         k8OUsgYk7awrkrnzZxUoHgeU3833wn3h+G5Oq3ra/6ycJOyHM6dPvHo2nZKnfGsFXdBv
-         ijFGRuXWtrSn+9s5zZ6EjLbIrAIpEBfNcCSikF4z3+gGf/n2i30TNgno/oiMyuydPXyM
-         pzNg==
-X-Forwarded-Encrypted: i=1; AJvYcCWDvfsf5Pb+8pY/VZU7tHYh85wvtWl9sNkdCbBmGdf0urg1ZHFsqf8rgc+lRzoRk+cs6zazouIsfQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz4PMeiBBaa2g1R3SLyOjGinfpZ1mBC35beNoMaztypnaFw0+3g
-	E4zenf8j54nTAFgQuAJiTip2nBzNeWs+BdkKr4yhVpEaomOgJpbkWsZEcNeIVA7IZFL5MB1l1sr
-	GeaCKikgfhZkS8LawXDUpYM/1Pf5pbCgETiv4KKAz
-X-Gm-Gg: AY/fxX6vSgYOkSvUGRIzRYk+nSYoebVFTII5TiufkU+kRLljf3ilBF0hhKeBOKDQLhB
-	yMUsMyMhrx082NsusEnCyY6QbsBBeqJ4oecMeToY2fvuHq3IckIBJJwZ6AekSAg5E0X2AVfmghO
-	zK8heLEql+bgkIzcSWd3oCeEmwugf5lcv75aWtty2x/h7mOjHujL3kH6FrL1HPL//cIYhQFLEzh
-	vyxNxziSWrjrhzYEosU/T1NwSKtZNC6QMzAKFCPdTZFKp2lHXSkBk3TCc/lKa0q+vbgZm6OTtA6
-	nnh0POqiInT/QRF6WL+p7MRu/hIY
-X-Received: by 2002:a05:651c:1502:b0:383:5c1e:bf00 with SMTP id
- 38308e7fff4ca-3836066b07cmr10129691fa.14.1768408979200; Wed, 14 Jan 2026
- 08:42:59 -0800 (PST)
-MIME-Version: 1.0
-References: <6967c517.050a0220.150504.0007.GAE@google.com>
-In-Reply-To: <6967c517.050a0220.150504.0007.GAE@google.com>
-From: Dmitry Vyukov <dvyukov@google.com>
-Date: Wed, 14 Jan 2026 17:42:47 +0100
-X-Gm-Features: AZwV_QgxKNPoiXuSYnRpaTJ5CcOamXfdwriqdqH_KAJXf7MGF23Sc2L26Vz6mGk
-Message-ID: <CACT4Y+aFaijS_CvzTnHB+ecg5nzYW1-MWPSp-Ad_0ax85=DvCQ@mail.gmail.com>
-Subject: Re: [syzbot] [mm?] KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prepare
-To: syzbot <syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, 
-	harry.yoo@oracle.com, jannh@google.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, riel@surriel.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+        bh=ptbGfqhARAg/OJu3oyRxs8/LiGbyPAv+mElQ7v4+SEE=;
+        b=EIHO1ZJG9k3h13quOIXDsUUgmBs/xMqVni02h91u06y5tMJjGl9YpoOC5WaI4aiU0P
+         6yEhJ3Rb8G6ozOKeYs2gK6bjOWZY3/QS6JS5I/EmjP4XkpyqE9D+ckSsl3AET7cXrURi
+         pXMWbC01+Zffw/mRehinyWw5jo7q1blnoEXNKstWiCBFWdud0iNQlLLVWYTJVjgKs1vP
+         im7VTWRUqfUihkntX9fwhqMRQ18qj01pCHZa6PIH8T2PyO4J2AxnJLoCHXBvcyIhx5St
+         yD+NWYyfei+bDaTKg5cY5UF/qS0q/i5JAlX/tVdnTu1ecKfSZJdRZ62v8d9xsyctbUnz
+         SMsQ==
+X-Gm-Message-State: AOJu0YwjxzlUpFwPsTUJbVxKtOTHYjN2j1o/nYvdc6Q0F1BxH8o/E6lP
+	9NM21nrLLyCDJq4/O7rd90CjWhy+CYIz0eP+oPFSJKpeFE2r1NCzINpXgZn7uPpGxC+Sfnprluv
+	6tYhnLCRbhNeIw+RNKFIwTKHpZuW8hMnwkESAZv2SOcSQcWsxpNypcH+F3l/etxq+K/U9xq0gj+
+	GENzuvWzMOGRFoS1M6L/hdnHHFWcuPcQG6Tn5wua0eRA==
+X-Received: from wmbem10.prod.google.com ([2002:a05:600c:820a:b0:479:3624:3472])
+ (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e0f:b0:477:73cc:82c2 with SMTP id 5b1f17b1804b1-47ee32fcef4mr41658405e9.9.1768409009960;
+ Wed, 14 Jan 2026 08:43:29 -0800 (PST)
+Date: Wed, 14 Jan 2026 16:43:17 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260114164322.787125-1-smostafa@google.com>
+Subject: [PATCH v7 0/5] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+From: Mostafa Saleh <smostafa@google.com>
+To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
+	Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D9F121C0010
-X-Stat-Signature: j8ozkherffzd13f5d51n6geim66637wb
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 73A721A0005
+X-Stat-Signature: 314ar5nfs1dztqogtnzz4g7c5hagw8cb
 X-Rspam-User: 
-X-HE-Tag: 1768408981-157504
-X-HE-Meta: U2FsdGVkX1/aWXEQxoP4rNb1vczn69Kv66mD0ZvWvOGdptfWMtCPrB7s7ro9iD42HMY7YqgtOPuk7on1zvRaYgDYgXyHH8AEkEZUQ/7oOql3aBS1IOa/p3Jv36ietF80xxY711chrXOYAnCwY7UkHiFDj3OIRe35XccvAixhQ1HQfy+DJ12GZUOS0Vkn7GEwA7gG6VOvFsD5uf8vJ0BtTQHFQKgfs47OGc4CHIK8sOi2c+BYqJvEpmeaYNdP/KjKhVoT45vyUgzh3SBT8hLwzz2Xjv5LC03zZW/W7pKLDOoXJlWFEnXNoq+CZRzOsQdur9WYs1uSzRPI942udNfIoIt5zBqf5/0vnKMb1Tpm78reSypmQuAWCoJt/mEe1x903tA+ZnXYgci71QQTMA4gXXOCXu1MOOlPGM0GOvuAD/MLSnIXrQJg++A7PPVdbucXBoWu+rZ7D0pL+CSaqo9SsJcga01AycFvyu8k3GHH1PH9rp6Tk4pY1PFRf6us5nL0eSsU1Wb5UZSw+tdeRlhHgLs04CMFElHdBaQ4srOdF3PhBSFyO/J8brpLNhFX69zr7+3i0ekGzqXThjrpEiR7tzWsmyVWxfkScddiDOEDSiWwXrQkA3Our0vJmWTDllZsOO2uKA/KkUgoDx8bdF/fZFAF+OzuoFFB8tYehtkboQz9RxQ2zyfEw7i5d6dYzhUAtgrNtbsUgSjX+/r0rW/T8c+MAZ43X7nzypJ/KCiBmKWuRyq98iW38avaGfP9lP/tVEypZWkNbkHkOaZxNMNmH6tmcPdSFU5I8xyLDAc9/tRf86Jk57cVEYL70dHZf8qSHx+JMKKw46Ed68g4B0ffVBwq0mUyCHgTJae8sqA3ePR37H7lrFpgpeAOGdxGNXMTFilhXlPz8EoGMyyP38LNVOLBuQESmFc3cbqfQe3M34Q5KuXDf1+99ik8N49ycoEBQh4G/8/v8r5LkWpUEGZ
- aQdQO1oN
- Chpsqp9LMrxXPs/VWOdN7B0DRB2WtNTuUM1EcAhYa8m0fTOCDTWKlkWWM6NO2e//eBXXni2ECWlScmwAdxVCyaQd054OOPifUEzmizDPAHphrQzodpk3W5wkd5sKfH+l75WTWFvJsxHKuzIcFgxdECSzXJTkZkQpjWt7zVIBz/6R9Qwlef+oTU+HxZaS1vHdH2Ruq0PhkUlmWyjJivKGofepZ3SzaswM4I1utJxDnbQSzeo+Obrrg5sAHgKFZ5lCTIXf5PkKT/YJMhmzUE9Fg153TMXgzEJe4SIALFRegX/QDVkNWKwXsdLFw/97AOMESAO8LLnWL7VvJ6nRu/7j7k0zGqAtLdaoSleFlQBBrQqLzjOyWWRhpmspq8ba9knXfGS7JYuELJiaiKbxoXEirrXYRadEn219/8J/7YPzElfmW4A3iKa4ob8Nd9a+x2xsbtwIajrCutwpUA4OgANgmu9F1b1m+8NKeAHlFKs8hyDdIP4XmeGOEVF4KbVsf3Qmj00KGRXgqSXXr9kr+d61Btd3KvlbttlgU/Fe2sAJG6R/El054J/v3M5C3QXQbhPRKt9O5txA3E/1mbKpYSaZ01ejE2ITUBAjCBm+VEcKJgTsqypXJXedzMhRQ+sjKlUt7dWbpiKaUcqtmTdVLOj/zkRIvRjt1Y/bPjFBDTv4VyguYwrT9CxkffVWAoLyOS6kclKPHtyWjq3a7ZfMVkXzOFc8MWMMeWf4B9dtvOChgQrs+BcWlai/bko5Ls7pA3+HoWNIa8wywMPCLy9Q3hLgK1hol585RsHyKxQFzR3xlJ+NFyPvN508kkGzd4qlwlJCNUjly/zxmXrr8rncH7c0TIuNq4msqYlmywOLqqk5RX/OrmnKxlJ2RdICmwb1W/XfTj4MPiMhtYomhGSjfXEzkrGuuGGu69PlQRoix22rswkbRz0BvxPA4oSYNXIP4Qtz+Z0fWL7xLR92xXNo=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768409011-780296
+X-HE-Meta: U2FsdGVkX18wOQKwlVVJelW5HK6I1WVnFkkaUT+PT4rAktEDjYdZ/1ehpwe1kULOmOmva6gCd8x3NpZU3dEC6l8hMQAKPd9aBOn6SRGd9e/QqFLmI5TsEHyIst/paGtb8oW/lQeP1tpS+Bp6NiBYNiyRuB0V0USyVUdgQTfjcyuqU0hQGF/5MXrGOLQb4GHzm1KXz5spWnNniwL/9CNn6uxfAOvlwUXIqeeW1vTLUW1mrLyx9lm2ek24XpPH0ffs4DgKtK3hQmqfl6rucJJpyexNVtwSjJkU8vLST1goPW8GrPEEk9PIi96c+3hGqM+a+c4UwmQCUiOqddBMGFN+SCUnGYH9Djc5DRRq+uQsFPytChqzCoevxmRN7aGt47ymy0aBs1v1iNY/+cV0/0s6juoA7mrHc/BYCi3Y/BWugWrh6vRDSsWuRBUYk75ZiSnTv5TSLC6XTzjAg07TV0jo+RGcy2GQV2CcyGfMrtUVvRW3F9HFE0CpBURBvMFvuhbjGKuhfvR74GWsKZHYXW4zDoLhy+9jSjRbqzC8/zfBLJnXlIkfh6NLYcjZKBW0ByjQE5UZnMllRhxHxjEcsdsIUybz5gYbF0i81W36iqQkIGm4bL0v96f/YLYlwm/jFSofZyow0dDWxAOQ+vNHAamqVZiayfvc+TM2zby8u2LawApgvCwlPn6xau5i87CYsnw6wl2PbWWgrOwvet9pJIPxnHOaq9yM1T7q6kLK/3+4MpmR1GCF4yF5c4kbr3nto3CPB4SdVmI97b3cvKRznopP+vGrzw6LPUJuPbi85ygRMO8oeTAEn17+XSixjBRoKKNAwWzIlouYaReUN6djD/rxTX6+0c6vY//tPJCvR+bijZ3BvsR3InUYV7UBHtCHxjPSsWOJBbQkFASWi6NaDNWeNbP2AQTcwuL1K4udZObQg0QpAwWGhyFP5cksld0e2MKKtgevpYlJtxjleZXXAFA
+ BHsoxzoz
+ toC2uNVC2Xz22+eqV8PiBlDMLRuQmhNDdwn7OyYau/CSPnLirS0iX8xeZFybLDgbwXWz67LtIx0mtBdzyT5t27zWGEXoPb8udim4Offe50XVmz0arnoUMvDh5RSD2TuOMJbosralZazCbCbYpqbT+O0qCKSea67T7x4mIzKm5EXacb9lJqN4ztgPEWwWQpAUtydjkdRUrvsE2wgP+tWzkreUH5TmwIDMqewTt8y74nawMaF3CSGpjoo5/73d74G4jCYowpu6FbKFJhAq+3tBqtZLqrmtXJCONAL5YurYmmJU+f/1tUwcheSxJxm+gyzCZip75F7yDA5EJEvcXJxPycmps3KED7K0/2jeAttrK5Rqmyycq/jGsnVZlNaPMz6T2dPDEH8mA4H+nEwbvP7rBb9mvyWNitgZJSYP5iYoEjHldAGylI8W53f6oK1s56seawrauMpJPl32fVNmN12QZR417PUEZG1eJuKVM+3eSJ6FgAWCVkwgU4PnCqoB+dFuK9IkZEDaaDBcqScSB/DU5ZY217cLLlsxhC7j08jYHOt/JSZ698Rf7eGvE3YZHe2GwS7Letvu1iDyqYTnE342IlWLT22odYEkU31yQNEKXbSQdqIKT59meuvv6Xtfax64xrKVK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,158 +113,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Jan 2026 at 17:32, syzbot
-<syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com> wrote:
->
-> Hello,
->
-> syzbot found the following issue on:
->
-> HEAD commit:    cfd4039213e7 Merge tag 'io_uring-6.19-20251208' of git://g..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1554d992580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=c3201432211be40f
-> dashboard link: https://syzkaller.appspot.com/bug?extid=f5d897f5194d92aa1769
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
->
-> Unfortunately, I don't have any reproducer for this issue yet.
->
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/9f556ae6e3c4/disk-cfd40392.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/efcf53c1d459/vmlinux-cfd40392.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/858f42961336/bzImage-cfd40392.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+f5d897f5194d92aa1769@syzkaller.appspotmail.com
->
-> ==================================================================
-> BUG: KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prepare
->
-> write to 0xffff88811c751e80 of 8 bytes by task 13471 on cpu 1:
->  __anon_vma_prepare+0x172/0x2f0 mm/rmap.c:212
->  __vmf_anon_prepare+0x91/0x100 mm/memory.c:3673
->  hugetlb_no_page+0x1c4/0x10d0 mm/hugetlb.c:5782
->  hugetlb_fault+0x4cf/0xce0 mm/hugetlb.c:-1
->  handle_mm_fault+0x1894/0x2c60 mm/memory.c:6578
->  do_user_addr_fault+0x3fe/0x1080 arch/x86/mm/fault.c:1387
->  handle_page_fault arch/x86/mm/fault.c:1476 [inline]
->  exc_page_fault+0x62/0xa0 arch/x86/mm/fault.c:1532
->  asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
->  fault_in_readable+0xad/0x170 mm/gup.c:-1
->  fault_in_iov_iter_readable+0x129/0x210 lib/iov_iter.c:106
->  generic_perform_write+0x3cf/0x490 mm/filemap.c:4363
->  shmem_file_write_iter+0xc5/0xf0 mm/shmem.c:3490
->  new_sync_write fs/read_write.c:593 [inline]
->  vfs_write+0x52a/0x960 fs/read_write.c:686
->  ksys_pwrite64 fs/read_write.c:793 [inline]
->  __do_sys_pwrite64 fs/read_write.c:801 [inline]
->  __se_sys_pwrite64 fs/read_write.c:798 [inline]
->  __x64_sys_pwrite64+0xfd/0x150 fs/read_write.c:798
->  x64_sys_call+0x9f7/0x3000 arch/x86/include/generated/asm/syscalls_64.h:19
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xd8/0x2a0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> read to 0xffff88811c751e80 of 8 bytes by task 13473 on cpu 0:
->  __vmf_anon_prepare+0x26/0x100 mm/memory.c:3667
->  hugetlb_no_page+0x1c4/0x10d0 mm/hugetlb.c:5782
->  hugetlb_fault+0x4cf/0xce0 mm/hugetlb.c:-1
->  handle_mm_fault+0x1894/0x2c60 mm/memory.c:6578
->  faultin_page mm/gup.c:1126 [inline]
->  __get_user_pages+0x1024/0x1ed0 mm/gup.c:1428
->  populate_vma_page_range mm/gup.c:1860 [inline]
->  __mm_populate+0x243/0x3a0 mm/gup.c:1963
->  mm_populate include/linux/mm.h:3701 [inline]
->  vm_mmap_pgoff+0x232/0x2e0 mm/util.c:586
->  ksys_mmap_pgoff+0x268/0x310 mm/mmap.c:604
->  x64_sys_call+0x16bb/0x3000 arch/x86/include/generated/asm/syscalls_64.h:10
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xd8/0x2a0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> value changed: 0x0000000000000000 -> 0xffff888104ecca28
->
-> Reported by Kernel Concurrency Sanitizer on:
-> CPU: 0 UID: 0 PID: 13473 Comm: syz.2.3219 Tainted: G        W           syzkaller #0 PREEMPT(voluntary)
-> Tainted: [W]=WARN
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-> ==================================================================
+Overview
+--------
+This patch series introduces a new debugging feature,
+IOMMU_DEBUG_PAGEALLOC, designed to catch DMA use-after-free bugs
+and IOMMU mapping leaks from buggy drivers.
 
-Hi Harry,
+The kernel has powerful sanitizers like KASAN and DEBUG_PAGEALLOC
+for catching CPU-side memory corruption. However, there is limited
+runtime sanitization for DMA mappings managed by the IOMMU. A buggy
+driver can free a page while it is still mapped for DMA, leading to
+memory corruption or use-after-free vulnerabilities when that page is
+reallocated and used for a different purpose.
 
-I see you've been debugging:
-KASAN: slab-use-after-free Read in folio_remove_rmap_ptes
-https://lore.kernel.org/all/694e3dc6.050a0220.35954c.0066.GAE@google.com/T/
+Inspired by DEBUG_PAGEALLOC, this sanitizer tracks IOMMU mappings on a
+per-page basis, as it=E2=80=99s not possible to unmap the pages, because it
+requires to lock and walk all domains on every kernel free, instead we
+rely on page_ext to add an IOMMU-specific mapping reference count for
+each page.
+And on each page allocated/freed from the kernel we simply check the
+count and WARN if it is not zero, and dumping page owner information
+if enabled.
 
-Can that bug be caused by this data race?
-Below is an explanation by Gemini LLM as to why this race is harmful.
-Obviously take it with a grain of salt, but with my limited mm
-knowledge it does not look immediately wrong (re rmap invariant).
+Concurrency
+-----------
+By design this check is racy where one caller can map pages just after
+the check, which can lead to false negatives.
+In my opinion this is acceptable for sanitizers (for ex KCSAN have
+that property).
+Otherwise we have to implement locks in iommu_map/unmap for all domains
+which is not favourable even for a debug feature.
+The sanitizer only guarantees that the refcount itself doesn=E2=80=99t get
+corrupted using atomics. And there are no false positives.
 
-However, now digging into details I see that this Lorenzo's patch
-also marked as fixing "KASAN: slab-use-after-free Read in
-folio_remove_rmap_ptes":
+CPU vs IOMMU Page Size
+----------------------
+IOMMUs can use different page sizes and which can be non-homogeneous;
+not even all of them have the same page size.
 
-mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
-https://lore.kernel.org/all/b7930ad2b1503a657e29fe928eb33061d7eadf5b.1767638272.git.lorenzo.stoakes@oracle.com/T/
+To solve this, the refcount is always incremented and decremented in
+units of the smallest page size supported by the IOMMU domain. This
+ensures the accounting remains consistent regardless of the size of
+the map or unmap operation, otherwise double counting can happen.
 
-So perhaps the race is still benign (or points to another issue?)
+Testing & Performance
+---------------------
+Earlier versions were tested on Morello with Arm64 + SMMUv3
+This version was tested and benchmarked on Lenovo IdeaCentre X Gen 10
+Snapdragon.
 
-Here is what LLM said about the race:
------
+With dma_map_benchmark, tested on both SMMUv3 and SMMUv3, where:
 
-The bug report is actionable and points to a harmful data race in the Linux
-kernel's memory management subsystem, specifically in the handling of
-anonymous `hugetlb` mappings.
+CONFIG refers to "CONFIG_IOMMU_DEBUG_PAGEALLOC"
+cmdline refers to "iommu.debug_pagealloc"
+Numbers are (map latency)/(unmap latency), lower is better.
 
-**Analysis:**
+SMMUv3:
+echo dma_map_benchmark > /sys/bus/pci/devices/0005\:01\:00.0/driver_overrid=
+e
+echo 0005:01:00.0 >  /sys/bus/pci/devices/0005\:01\:00.0/driver/unbind
+echo 0005:01:00.0 > /sys/bus/pci/drivers/dma_map_benchmark/bind
+./dma_map_benchmark -t $threads -g $nr_pages
 
-1.  **Race Location:** The data race occurs on the `vma->anon_vma` field
-       of a `struct vm_area_struct`.
-    *   **Writer:** Task 13471 executes `__anon_vma_prepare` in `mm/rmap.c`.
-        This function initializes the `anon_vma` for a VMA. It holds
-        `mm->page_table_lock` and writes to `vma->anon_vma` (line 211 in the
-        viewed source, corresponding to the report's `mm/rmap.c:212` area).
-    *   **Reader:** Task 13473 executes `__vmf_anon_prepare` in `mm/memory.c`.
-        This function is an optimization wrapper that checks if
-        `vma->anon_vma` is already set (line 3666/3667) to avoid the overhead
-        of `__anon_vma_prepare`. This check is performed **without** holding
-        `mm->page_table_lock`.
+			CONFIG=3Dn    CONFIG=3Dy    CONFIG=3Dy
+			            cmdline=3D0   cmdline=3D1
+4K - 1 thread		0.0/1.8     0.0/1.8     0.1/1.9
+4K - 8 threads		0.2/6.2     0.2/6.1     0.3/6.8
+1M - 1 thread		0.5/54.3    0.5/54.4    6.7/74.4
+1M - 8 threads		1.2/339.7   1.1/340.9   10.5/331.7
 
-2.  **Consistency:** The report is consistent. Both tasks are handling
-`hugetlb` page faults (`hugetlb_no_page` -> `__vmf_anon_prepare`).
-The writer stack shows it proceeded into `__anon_vma_prepare` (implying
-`vma->anon_vma` was NULL initially), while the reader stack shows it
-reading `vma->anon_vma`. The value change `0x0000000000000000 ->
-0xffff888104ecca28` confirms initialization from NULL to a pointer.
 
-3.  **Harmfulness (Why it is not benign):**
-    *   In `__anon_vma_prepare`, the code currently initializes
-    `vma->anon_vma` **before** linking the VMA to the `anon_vma`
-    structure via `anon_vma_chain_link`.
-    *   ```c
-        vma->anon_vma = anon_vma;
-        anon_vma_chain_link(vma, avc, anon_vma);
-        ```
-    *   Because the reader (`__vmf_anon_prepare`) checks `vma->anon_vma`
-    locklessly, it can see the non-NULL value before `anon_vma_chain_link`
-    has completed (due to compiler/CPU reordering or simple preemption
-    between the two statements).
-    *   If the reader proceeds, it assumes the `anon_vma` is fully ready.
-    It then maps a page and sets `folio->mapping = anon_vma`.
-    *   However, if `anon_vma_chain_link` hasn't finished, the `anon_vma`
-    (specifically its interval tree) does not yet contain the entry for
-    this `vma`.
-    *   This breaks the reverse mapping (rmap) invariant. If the kernel
-    subsequently tries to unmap or migrate this page (finding it via
-    `folio->mapping`), `rmap_walk` will fail to find the VMA in the
-    `anon_vma`'s interval tree. This can lead to pages being effectively
-    pinned, migration failures, or in worst-case scenarios (like memory
-    corruption handling or specific reclaim paths), logical errors where
-    a page is assumed unmapped when it is not.
+SMMUv2:
+echo dma_map_benchmark > /sys/bus/platform/devices/ac0000.geniqup/driver_ov=
+erride
+echo ac0000.geniqup >  /sys/bus/platform/devices/ac0000.geniqup/driver/unbi=
+nd
+echo ac0000.geniqup > /sys/bus/platform/drivers/dma_map_benchmark/bind
+./dma_map_benchmark -t $threads -g $nr_pages
 
-4.  **Fix:** The fix requires enforcing ordering. `vma->anon_vma` should
-be set **after** `anon_vma_chain_link` is complete, and `smp_store_release`
-/ `smp_load_acquire` (or equivalent barriers) should be used to ensure the
-reader observes the fully initialized state.
+			CONFIG=3Dn    CONFIG=3Dy    CONFIG=3Dy
+			            cmdline=3D0   cmdline=3D1
+4K - 1 thread		0.6/3.9     0.6/3.9     0.7/4.0
+4K - 8 threads		1.0/19.6    1.0/19.7    1.1/19.9
+1M - 1 thread		61.8/372.0  61.8/374.9  68.1/396.7
+1M - 8 threads		89.4/1470.5 89.9/1362.9 100.3/1373.3
+
+Changes in v7:
+v6: https://lore.kernel.org/linux-iommu/20260109171805.901995-1-smostafa@go=
+ogle.com/
+- Add a new function page_ext_get_phys() and use it instead of
+  pfn_valid() + phys_to_page().
+- Drop R-bs on patch 4.
+
+Changes in v6:
+v5: https://lore.kernel.org/linux-iommu/20260106162200.2223655-1-smostafa@g=
+oogle.com/
+- Remove wrong logic for handling unmap with bigger size than requested
+  and warn instead.
+- Collect R-bs and Acked-by
+
+Changes in v5:
+v4: https://lore.kernel.org/all/20251211125928.3258905-1-smostafa@google.co=
+m/
+- Fix typo in comment
+- Collect Baolu R-bs
+
+Main changes in v4:
+v3: https://lore.kernel.org/all/20251124200811.2942432-1-smostafa@google.co=
+m/
+- Update the kernel parameter format in docs based on Randy feedback
+- Update commit subjects
+- Add IOMMU only functions in iommu-priv.h based on Baolu feedback
+
+Main changes in v3: (Most of them addressing Will comments)
+v2: https://lore.kernel.org/linux-iommu/20251106163953.1971067-1-smostafa@g=
+oogle.com/
+- Reword the Kconfig help
+- Use unmap_begin/end instead of unmap/remap
+- Use relaxed accessors when refcounting
+- Fix a bug with checking the returned address from iova_to_phys
+- Add more hardening checks (overflow)
+- Add more debug info on assertions (dump_page_owner())
+- Handle cases where unmap returns larger size as the core code seems
+  to tolerate that.
+- Drop Tested-by tags from Qinxin as the code logic changed
+
+Main changes in v2:
+v1: https://lore.kernel.org/linux-iommu/20251003173229.1533640-1-smostafa@g=
+oogle.com/
+- Address J=C3=B6rg comments about #ifdefs and static keys
+- Reword the Kconfig help
+- Drop RFC
+- Collect t-b from Qinxin
+- Minor cleanups
+
+Mostafa Saleh (5):
+  mm/page_ext: Add page_ext_get_phys()
+  iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
+  iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
+  iommu: debug-pagealloc: Track IOMMU pages
+  iommu: debug-pagealloc: Check mapped/unmapped kernel memory
+
+ .../admin-guide/kernel-parameters.txt         |   9 +
+ drivers/iommu/Kconfig                         |  19 ++
+ drivers/iommu/Makefile                        |   1 +
+ drivers/iommu/iommu-debug-pagealloc.c         | 169 ++++++++++++++++++
+ drivers/iommu/iommu-priv.h                    |  58 ++++++
+ drivers/iommu/iommu.c                         |  11 +-
+ include/linux/iommu-debug-pagealloc.h         |  32 ++++
+ include/linux/mm.h                            |   5 +
+ include/linux/page_ext.h                      |   6 +
+ mm/page_ext.c                                 |  27 +++
+ 10 files changed, 335 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iommu/iommu-debug-pagealloc.c
+ create mode 100644 include/linux/iommu-debug-pagealloc.h
+
+--=20
+2.52.0.457.g6b5491de43-goog
+
 
