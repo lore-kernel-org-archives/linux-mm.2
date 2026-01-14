@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A004D29FF9
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 12:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE0E0D29FFE
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 12:35:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C85BF6B00AB; Wed, 14 Jan 2026 07:34:06 -0500 (EST)
+	id 22F446B0005; Wed, 14 Jan 2026 07:35:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3D0D6B00AD; Wed, 14 Jan 2026 07:34:06 -0500 (EST)
+	id 1E1EC6B0088; Wed, 14 Jan 2026 07:35:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B35CE6B00B0; Wed, 14 Jan 2026 07:34:06 -0500 (EST)
+	id 1056B6B0098; Wed, 14 Jan 2026 07:35:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A10216B00AB
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:34:06 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4DC60590F7
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:34:06 +0000 (UTC)
-X-FDA: 84330511692.30.8DDEF53
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 910FC80013
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:34:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uHMW9ELs;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 038396B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:35:13 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CC22E13B041
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:35:12 +0000 (UTC)
+X-FDA: 84330514464.15.CBF0C1A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E41B240009
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:35:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mAfDNxFS;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768394111; a=rsa-sha256;
+	cv=none;
+	b=tvlDcTWCecqIuqeuRJQST+FQ9Hb+f942FgQRdjcVY1nWSRPBy0jGuaEdHqK78l6IOaVVnU
+	nTd5bEqNEEX0DjtAiaMdrgIvCEg9hqB8QuQbjwqKbP/yw4lA8vm/72wMAQe4uURXuueneZ
+	zW77n0kAahLKmfoqAHhSb5WPQaJx+6o=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mAfDNxFS;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768394044;
+	s=arc-20220608; t=1768394111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e4fxDGkJ1COpEfs4fY1a9Gx0b/7xeRqG565p5ki+goM=;
-	b=LJfPjDXKfnSCBkpg3YLYMkWyo5zHrZ4HXCQgd73Snc4OB0Cq5ZozJsBYEpDn5JNIedW/yZ
-	8vr/lNnQObkN6FcWwAMnma+rR/qM0Ngv1ZONJejuCVk+F9nZsy4ib6nXq2bUm6Ki3S79Mk
-	NWhIXHEyZCT+hhKAMDNsbPG/cxCKquw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uHMW9ELs;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768394044; a=rsa-sha256;
-	cv=none;
-	b=kHgyU5cRJkjZ0t9bTIpMJrTKzbmcLFWKOEuah2qpZpIcBPsRkB6sVTBVKWqljXcNVrpmkK
-	AK9SOPVRPVHkuGGlVGhElNBnSxzoICV62A5/NjlSfKe/YHEPNhATZXyOynvusifoTfe+Ka
-	eSgjGlRfGyA1VzYtdVlt4+3+cUokitg=
+	bh=llj2dkqvkc1XJCZtSI9kTU5e+oETf00KSuTbXHQEWH4=;
+	b=MZZfnEamw6K71f7gAk/yRfHlYiKtsDrtIwfp8cBggNgRbKp4THVMH4Mh6k6eFbEtwMqACx
+	5umG9NWy1OHrazDHvO+5O4r6y6EogHdsuZCwMpUHfC7Np1NQjp1pOjJZMRIU1EIMyO9UWa
+	Flk122dv97Dp5WrcdrBb7ClTXXnNYCk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00D736001D;
-	Wed, 14 Jan 2026 12:34:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA9FC4CEF7;
-	Wed, 14 Jan 2026 12:34:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F26E643699;
+	Wed, 14 Jan 2026 12:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516ADC4CEF7;
+	Wed, 14 Jan 2026 12:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768394043;
-	bh=ys9Z38f6Y6o7m07b4bNBktaqcRj928XOOy+6g1SpdLc=;
+	s=k20201202; t=1768394109;
+	bh=y7ks6oY9d9Q4DYkcqLMxQYtbLOi6piXmD3mlg2qqFYE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uHMW9ELshB5+oqMK9HOY1STYyJFt2NP/1+UxQONqAwFCb64OIicSVpvCHoS6nxdO8
-	 spSHGbQ1TBZ0NqTrA+LVfbLJu0i8YhlcX+UY73J7YufBN7GETK6aUZdS7ghGbRHvnQ
-	 8VymyDGHGkHBnEDe0wyBFLO7J+ZqLv0KpNxLOEciSIszKz74SeBlciXlM8yE/ARNMq
-	 NQMu6N9/8ZpingNitvv+enlsZUSyGCrIrsba12pAYj6disWQimMTFj01yqVW6cM3EH
-	 NB4lHUqqJcOby8xjY8vQIJJHnUPr206f6nOC//D6uPR/j12ZGBAJMfD4G+E8qMIQfJ
-	 HnE8jn9dEXz4w==
-Message-ID: <d9fbc00d-182b-4463-b718-73c2f0eef3a0@kernel.org>
-Date: Wed, 14 Jan 2026 13:33:58 +0100
+	b=mAfDNxFSv20EHeiytc8Wgrn7dY5F/8OaJhCIg1rqU8Jdwp3DIYNtpZ/dGQgZJPgBw
+	 98CnJHQgnuXpp+neaDVlVCbapWy69yJOtPQZhL5+1rEgbOoRTReEfpY03vV4Btp/bN
+	 N6br+ZZQ6INYvN+s3q+R7CAfK41b/tZFuupMozFGaoIKekaGUAFcrHGFdb/0Yk9bDH
+	 e0glnOPEhe7b9eoVK7svCE6W/EOirGLpPMxUcsnLgEuwF7HZzFkeoSPVFgJFRGymrd
+	 7MNKMmmH1ffH7dgCaIX+g/MTrllS9kVDsB3PQ4GV8tHYl51C2zswUcpWGt7FxO4C4v
+	 UhAdeOTq6E47w==
+Message-ID: <fdcf51d1-9aa8-463b-82e6-97d6efe3750d@kernel.org>
+Date: Wed, 14 Jan 2026 13:35:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
- ankur.a.arora@oracle.com, fvdl@google.com, joao.m.martins@oracle.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
- muchun.song@linux.dev, osalvador@suse.de, raghavendra.kt@amd.com
-References: <3d8398f1-0130-4d3b-ac54-d23877811747@kernel.org>
- <20260114113635.97621-1-lizhe.67@bytedance.com>
- <97413239-2bdc-456f-8511-65fb9f1e301c@kernel.org>
- <CAGudoHGb1w92gn89BBuMQOmvcVZkwvt8CK8hFtGg3xmHphmiEw@mail.gmail.com>
+Subject: Re: [PATCH mm-hotfixes] mm: remove unnecessary and incorrect mmap
+ lock assert
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ SeongJae Park <sj@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Chris Mason <clm@meta.com>
+References: <20260114115619.1087466-1-lorenzo.stoakes@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <CAGudoHGb1w92gn89BBuMQOmvcVZkwvt8CK8hFtGg3xmHphmiEw@mail.gmail.com>
+In-Reply-To: <20260114115619.1087466-1-lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 910FC80013
-X-Stat-Signature: iki6rri1jgeef56e8h95kays3mkyj3as
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E41B240009
+X-Stat-Signature: o981y6t7y88uu5qjyy8h1r3waersjwtu
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768394044-193554
-X-HE-Meta: U2FsdGVkX1/Ao6u2lRbnzXw/kufTuqzNNkTstEM1NmAgpmMv9FKc/S61ibqPgmdPZaUYYBkBjOKPJvBbKJlz5+XYBSCMEwxwLJzDiDBa0WwiEffDGQ/W7OyrF/uGf8CKR9tJr/mmEdVi6QW9AbYk1MkA1ZiUJudRfrDUDWQ0rJsE+oLK/nb2v8RYYQIDOCK3v1jbgQSaPDC+6N5zb27XMrQrG47LDI1raFUbhzbU15v0YLsoDL9SpQV2KK6xJpHeuTfzX4YhTq+corq2XVTZ2h/qUJsAPVlCmqu+xE/BP3qI4V+sDyUS3vsrdOf0M5/ItOGD7mkBUL7aY4LgxCG04vFj55zV1VDW57whi/P2/JfoYUsXn59p6OXjBqepIa8A4/QWZu48nrxN7qZQAH6mhgB4QYRLVn1CssHAtreXEQlBsfmaNzvQarYOOgisvL/x0VH5+eH/uSg4AQXibmVmdmbK2DLJ1bVyR1ajonW3a44JDQCK0qUMP1+UlX2kvYgCCoFNuC7pDdXjm+OKT0+B1Tfpj9X/QiGSkhx90RcsBFhbpuH505yBBxpKoBh3+ZbYWIIgwPgEm9uc17/l1NkXwoUkl5yn9KnWfxC8WIBxo6a+059ZQz0132d/dZgkP676HNVgJjRbCcDxMVxCe2ZJ9m3IhGqy0dCPbppPSa9Sz/NNw8yw7JMbmRRO+/fo8ZPXhaUKkdb02jDmRdBwdPNATYNlLpdHx/Y5ywZoQGhF1WjmZhXGJ9IZqqsJQEfwxQR9vPoUPuDQ4EbT5jc+AgrHnVcnyM+0k7NRLbz+1j1SEg8w6WBoxqbNPdM7crxbuN1eQiw156tJvcpQDxhsgxQONNU2X6byxxkMaOOikmDkFHYadBwR+jLMH+UBBP4O0gtJfCQdAjNfVSMs2Izwu++7PdDKGj/J8J8VNacnFcjayn5hqckquh3FDJMGLgP6ka6noEK+irvBsdVAH0F6Gnu
- Xia294Qn
- UAijbnZJjrksaG6X8PJJIV1MkIM84IgNqd6VbQ0Hi312xsjOkBHRjKe55b0qjNlIV7oqVzakKXIbF6+WWj+M1OhYFMqseLLyt962YOBGipu+6SUsLworMDkjL/SA7Gtf5eA0Mrwq8HZ8KKnxMrZetQS5y6dqfaDkQaV1pTPcvLQXOM7hUitNcfvG1cTJOZ+T4t8P280rBwyrB69+fPb9fDQK4dkLjoJT2pK0FQGJ6Bof3oIWOUoPMkWJfXXIm1tbtTgEP4ackeEjBTQ8Bs1jQpFX+q6+JFYS6Ytj7LmRATIyjuqfyJTztbVgt7Q==
+X-HE-Tag: 1768394110-458721
+X-HE-Meta: U2FsdGVkX1+JmvG2rgfT8WVU9eBBuACLRNpz/MxBHU6aaR/NxvhUvBRQoshaQIXwgxdmYEmI/Ca7Ha3jJOWZnvNReDYS8n4SO3O/vgA+y5KALA3rCJHO1gFYPF1G68DKjo3utzc/Hmrxoz7bt90roYOSyHh33EMTKFGgm1WstYdcqp9QDKv28VM8/JPIl49VvW4bZ2nB2WWxaSOsDXnUymJ6kIoEP23wHKtIJhjysG0p/ug7jcf7j7V3YSEY19I5fF7eDRpHDn+DvxPGWkqe6CfNhQnM4rfEDeqfo0AWl8viTjTofubdMUTEwPB7nzm9HOk3YTRpug29WVqDoNJqUpvXIQRk6GOgR2uqb18w+7UwblYbc5BWU0XBd7/MUIAwO8zgofrPfUvO512+Bg7ZKFB6VRmBteFsqe9f/YiM7NdoZzLXyBxufNTJmZPXnCGjZDlvdqfT+UrCP3cj104YacwQkyHHcCeq7DrErlpMMP5i60eYD7+2gP+B4MKNNl27xHobdLnQfWHiHyCGwi0DVyUU4b0QCvt0D0SemgDmjKBb3y2V1HYoqMFpobi5tD92mA+o1Wnw9mTv+k+GruwiH3iPgvvKsfvzjQu1oElLEVV0qyq53NIyLdx+066fr63S/j82L45old8OjhjbUP6ay8hZ0Q+ZKT/A0YujB00o9/J/Nknp7xJ7gKhfSHhuY0TH1PhkoU3Wgk9Nz8ZPlsp8VfqleyiMvV3k8ekZ5KM/6dv0ushIyA77mkqexm+tvbGdQoy20PHVGEr+Z13HbElLWm/jz2R4dJtxrI+JQNt622TQPkouPAzMbKlSSkC4fvGWWafar9UmGRPsLPLgG8tjS/dw3A0AcTxE6NWfopiVhuOoGnPDya4gVmg0B0B1opvdeSkcU9oLjz7Rw/q9urGxt3XipVNmAvn/+mRKjF4nKPGU379emgK38bgqnwLP60Dg8Cibl2+xmVKMN3SM6qR
+ l2g5nzqE
+ J/PSlrDRUN/wuC5CnOjKp/PWQ7TZPXJ8AVGxZ9CnbpLSW+SkD2HeKrUwBFO+PhQjlo+ExfodUxJ5q4xw0kHvteSyOpABte5FcrF+Dj7s70tVlbnfn0eQEM2jcuBLY8IDGoXcbSRosxpO0A2C5yj99GTQNzv4YwaLyB2gN/mUwKA+2WkqtNV+LLVq9kAttjSk33kHDnUYjJ+NoVZgeRAGjtv4bgjZ+q48BFhRwHYr+oM3PMFA5yD1ngkqTSL9NTYOgtgatitnAdEmNtLv2arWpjaLkOzUcISvYYwtGL+cIFc9sHsLHwHiU5sJFPcwWEWOpYeZPJqSehmMigYbvmm5OYmASBUxHkEdvk1FOs3swJ2pubV8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,49 +142,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/14/26 13:11, Mateusz Guzik wrote:
-> On Wed, Jan 14, 2026 at 12:55 PM David Hildenbrand (Red Hat)
-> <david@kernel.org> wrote:
->> You said "I wonder if implementing hugepage pre-zeroing directly within
->> the kernel would be a simpler and more direct way to accelerate VM
->> creation".
->>
->> And I agree. But to make that fly (no user space polling interface), I
->> was wondering whether we could do it like "init_on_free" and let whoever
->> frees a hugetlb folio just reinitialize it with 0.
->>
->> No kernel thread, no user space thread involved.
->>
+On 1/14/26 12:56, Lorenzo Stoakes wrote:
+> This check was introduced by commit 42fc541404f2 ("mmap locking API: add
+> mmap_assert_locked() and mmap_assert_write_locked()") which replaced a
+> VM_BUG_ON_VMA() over rwsem_is_locked from commit a00cc7d9dd93 ("mm, x86:
+> add support for PUD-sized transparent hugepages"), i.e. the commit that
+> introduced PUD THPs.
 > 
-> i don't see how this is supposed to address the stated problem of
-> zeroing being incredibly expensive.
-
-The price of zeroing has to be paid somewhere.
-
-Currently it's done at allocation time, we could move it to freeing time.
-
-That would make application startup faster and application shutdown slower.
-
-And we're aware that application shutdown can be expensive, which is why 
-e.g., QEMU implements an async shutdown operation, where the MM gets 
-torn down from another process.
-
+> These seem to be careful asserts introduced to ensure that locks are held
+> in general, however for a zap we require that VMAs are kept stable, and
+> this is a requirement that has held perfectly well for a long time.
 > 
-> With machinery to pre-zero and depending on availability of CPU time +
-> pages eligible for allocation but not yet zeroed vs vm
-> startups/teardowns frequency, there is some amount of real time which
-> wont be spent waiting on said zeroing because it was already done.
+> These were long before VMA locks and thus there appears to be no reason to
+> think this is assert is there for anything other than 'stabilised VMA'.
 > 
-> Any approach which keeps the overhead with the program allocating the
-> page can't take advantage of it, even if said overhead is paid at the
-> end of its life.
+> Asserting that the VMA under examination is stable only in the case of a
+> THP PUD is strange and unnecessary. If we wish to be careful and assert
+> such things, we should do so at the zap level.
+> 
+> However in any case the current situation is already simply incorrect - a
+> VMA lock suffices here.
+> 
+> Remove the assert for now as it is unnecessarily, incorrect and unhelpful,
+> subsequent work can introduce an assert in general for zapping if required.
+> 
+> Fixes: 2ab7f1bbafc9 ("mm/madvise: allow guard page install/remove under VMA lock")
+> Reported-by: Chris Mason <clm@meta.com>
+> Closes: https://lore.kernel.org/all/20260113220856.2358195-1-clm@meta.com/
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Let's read again at the main use case of this change here is, as stated:
+Makes sense to me
 
-"... there are some use cases where a large number of hugetlb
-pages are touched when an application (such as a VM backed by these
-pages) starts. For 256 1G pages and 40ms per page, this would take
-10 seconds, a noticeable delay."
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
