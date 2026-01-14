@@ -4,88 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB0CAD37E3F
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:20:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D22D37E42
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 15:21:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2026D6B0089; Wed, 14 Jan 2026 10:20:59 -0500 (EST)
+	id AF6966B008C; Wed, 14 Jan 2026 10:21:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1840A6B008C; Wed, 14 Jan 2026 10:20:59 -0500 (EST)
+	id A8FEA6B0092; Wed, 14 Jan 2026 10:21:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BADB6B0092; Wed, 14 Jan 2026 10:20:59 -0500 (EST)
+	id 9C66B6B0093; Wed, 14 Jan 2026 10:21:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F08246B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:20:58 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85F728BFE6
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:20:58 +0000 (UTC)
-X-FDA: 84330932196.03.4FB8BE0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B153214001C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:20:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CoVWVWto;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C3CF6B008C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:21:38 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EACA5917E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:21:38 +0000 (UTC)
+X-FDA: 84330933876.04.691E3ED
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 545C7140002
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 15:21:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.167.170 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768404056;
+	s=arc-20220608; t=1768404096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4BE+dSupHqcy3zUsEyof1iEo44gy2K6FXsNqqEaEd8M=;
-	b=zcuHkHKKhbcATHjNnSGtDkmkZC/6hFEWPxP3CM32EOI+2CLDnpfANMn3WL9smnzwO2Sxpi
-	/5pGOFqnYTGwwWRPFmPdSIQxxREGzmFITmooV/V8As6gMMZErdzDgqBFCgiqXq9puPDSU0
-	TdJyDmiVg6mX3dHEoAgFc1AWt6VYruU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dI9Phsj/nSMNdFp89o7zHIAUGa2rQCyWo79deKjR47o=;
+	b=7U1nHP166JiTekpMxZ6ai6QSfqES0lQm9R39pzYH39GdagazAt6/wfQOR08pFZzlv1lYIn
+	zCLYCNc3exYwWYcKbxXDhUIRqRaHRY8stp1QsDQx+X2OjSPjZUXNFop+aV22AuFnjl2IwR
+	okC+IhTK1hdWXz7ehhMh2pWAHN4rioc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CoVWVWto;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768404056; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.167.170 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768404096; a=rsa-sha256;
 	cv=none;
-	b=FH/stZRUG+P46uZjXe01FCNW543Jpjp0Qx2/wSaKaEmQp+zyyL+06/tVp47ktLgAYnnPzQ
-	FWiYfmvY6JkyBFP9Ht7pomjEmBSnlAw0apf2LUUgwmtbfDykH5EngGxgqQsK5yG6lc239U
-	AytxHTIhB/LXiwyIjpuq3BuaaxcPomc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D852A40611;
-	Wed, 14 Jan 2026 15:20:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98387C16AAE;
-	Wed, 14 Jan 2026 15:20:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768404055;
-	bh=D5tB8wxme+mhdJymsubX32VBj8KaE1ZvdlhzozuhqS8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoVWVWtoNYSIuaM67czxWeeltkCUUM80TykrLoivBpiUQqYxmyWbnuHJnKczmocJH
-	 8ocxMluyjqNFYjFautQzhwSISBzNuifxGxBl9smTmeva7k2IsUuzDG0ieIzKMseJXz
-	 nxFWOMJhyK8cEDM/9V7VR99FNq5YytDF9ncfv+F+jDejbMJQVrOr48Xm1OzLFMWeiE
-	 Ot/fX6A4c2ETe+rlKCRiyZ/Ef0t8rzFPicEa0EtWjA1LbPDCRY4LBMglfvGzr8JNNI
-	 ezoyqtnr6hS594O2HbIMd0j4QL6D4T/hAZc46Teem52N+zfOnJyGyFN/nnL1IgfQrm
-	 uwBDEOX6o+5cg==
-From: SeongJae Park <sj@kernel.org>
+	b=St+k9kcbT0eYJQ6+DQTe1s4BzaKm4SZjUI/iVuhQDSapF+tclVJZeZo5gdrdnqZZDJBMm0
+	94skRfd12TJ5ICiEEfeinwGRLiEl64FbDj7kR8uXPfng/AHpvko39QsnQzzDKPO8/Pdn7t
+	xp9AgpKJ2BuxUY10th+ohTjiglJcVm4=
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-45c7400259bso281519b6e.3
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:21:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768404095; x=1769008895;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dI9Phsj/nSMNdFp89o7zHIAUGa2rQCyWo79deKjR47o=;
+        b=nrB04uKUlP+hVBxR/KJlqx5Ul1H47/N/YFQZ0ldxYOGbVtwr2jAxotpJ6HDp1ifBDK
+         43LvQlLAe8reJh5P+YMl/p4qMltn7IrXNv/dznRZWqfq/Df3yAT9TEpun5CrXO7ADlJs
+         QO+Osanqn2KLAkWND9+bhrwD9mlva6tSJQUAf6BUEUNLWupr5auTShRHI3cE9/WPyNbe
+         eGpYAeyUDgmOXVK2RQNe9AmdnLQ4DYEeYuBsyii+I/IYUtDoqGOAcA54zG1F0JUhScx5
+         u98ThixXWlBHiPJnEIYZ8Nr3J66gxa5FW3i/puEjw8UsGga5P4MfPfWlr4cEaEbJTfQ7
+         FZkw==
+X-Forwarded-Encrypted: i=1; AJvYcCUgOxQ3w2ThBulJZStHFg8pQkMClFT/KdGAeJ4kK2YIjNa2DwP7/c4yi0w1H5Vl/70481RmDGI+4g==@kvack.org
+X-Gm-Message-State: AOJu0YzIPokFJmBxB/PCLhiQEMBK4kMCo9tITi926zDmFDBTgHUFzHpM
+	5A8epUHyYjfyCm4C3JHvT6KNevk62E5xzbw61pq8PQ6zwrWwHSXnC0jv
+X-Gm-Gg: AY/fxX5oj75hqBY9NwEWPgSlSoLMcRzefJfP2M9fFi6OJ9Au8lZsJtfuKpwayzCzagS
+	bldYzYdWuPwCs6FEuGGK7QaVAyd4tT4uXcvrg66ux/AxZ5FuuMLrsvFN6STJ8STvDMVD3JySohy
+	CrEJxGEt/RQ6jEFH2GFwa7cJYErRLKCABP6GSOj/oB3vhdNjpl4pIOCtOu5thVRzC+Ll+Z/Qnet
+	vfhzwQoJGGX8mNSIpDiEPCX24HBUnmkmFUjzN5iVVDZ6k2zrYGQ90EKuVTuGhvQvFi3kG6gcCMB
+	bin1vqn5Aqv2gDoJl7EWFYPJKCaAwB01WcwTxGI3icVqKCWfA8AwFLX1jSdwuemCBoKv7D45c45
+	KYy/6dXBmxc3fedC4HnXM3i73oeog1/XNOQyg+IGLqZQwvPiMNDJPv5uy1bk3HaqzIwsDi5wNEM
+	hfsUjgSrEjZ2iw
+X-Received: by 2002:a05:6808:528e:b0:45a:5584:9bf5 with SMTP id 5614622812f47-45c714331e3mr1702212b6e.4.1768404095351;
+        Wed, 14 Jan 2026 07:21:35 -0800 (PST)
+Received: from gmail.com ([2a03:2880:10ff:40::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-45a5e288bc7sm11600518b6e.12.2026.01.14.07.21.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 07:21:34 -0800 (PST)
+Date: Wed, 14 Jan 2026 07:21:33 -0800
+From: Breno Leitao <leitao@debian.org>
 To: Chris Mason <clm@meta.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 01/12] mm/damon/core: introduce nr_snapshots damos stat
-Date: Wed, 14 Jan 2026 07:20:48 -0800
-Message-ID: <20260114152049.99727-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260114122959.1164957-1-clm@meta.com>
-References: 
+Cc: Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/kfence: add reboot notifier to disable KFENCE on
+ shutdown
+Message-ID: <p7gi44yt26bpjbjkvuhd54tqp3vn7z6wq346gmvazg5t3kir4p@gdf64eax44rm>
+References: <20251127-kfence-v2-1-daeccb5ef9aa@debian.org>
+ <20260113140234.677117-1-clm@meta.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5kzhwf6itf7t835srimhdxypmszs5s9p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260113140234.677117-1-clm@meta.com>
+X-Stat-Signature: e4gq117fnascmmfxayfmchzrfgwnfu1i
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B153214001C
+X-Rspamd-Queue-Id: 545C7140002
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1768404056-528791
-X-HE-Meta: U2FsdGVkX1/oivxV4SSR/m2bzCeb8FDNx1OFoMZeOD2AZoY2xakcdrNtdn5hD6IrT8DDQuB/c+AgVFk6UrvQGmvmBmojgGGPM/yF1FBuo+RU3srwHhv7UuN31cnQaZkwEdYIojW/GMSKRlSECM4aUM7CelgRJk51AJtkpB92X2W7cg6n13JYmU+t/nOxijH06B6I+iwPkn7M/y7z2l7J39iBjtV8yeRXVrcyv8QkTrAuBLBMdYA+zUJiWp7ZFDfKZoihJAmGHgIewMWtLjFeF9fwDq5IrOEwcq5V+Vi5oK6fhYObc9uTOzMK/LpRsaWdBKYuz1fqbxA3kyb/Uv4ScLOSYHNWkiJ186oe9Ha208qVfg67Ino/u7drGw81zhKqkHGt0ZpKak0TynInBh+OeFnZRxGnPRYY3XfZ4hnbvrkPU1RBpfdO4av9WzjHFRUpq12NFKTx/hKFFtrVmEYw/8F32DpOILhxZzromv+QThT1MBe92M19FY9W6evNTLp3MjPMm7oMu94dQmHbqrqct2cdc8+4h8BTWzt2siAmdWHzuqP9erQsx9TgiT60A6h+23YrxdeDpWZMCEj0ldRt3q2n2Xl5HnBncjzOLtRSavWpmWEdvbk/E+E4wWO1GCBtWWcCJ13ZLG8cz1O/6oQnQBTggPhl2aI3jqHcPvIvcvmcwwwdbevqcHF0vXfoSAAvs1NN+b+SXuqTLFZcTLxlflnRwskns7GAomzqDwqaA3ByXae0zqNYgFS9YnHtvpku9ck/yCwvoDMbM53URay7GDjXl8z35B77WURhBCx50Tq3F/4q4MtAOoaO6Fg4XxgFAz8J3krqT1oNfPxRQJHQ14ojvFxE1GWwGOvGGlvy42NTRgmfCNaOKILYYBw//OoVCzEiUVnqDC4CUdevmQtZ0wAoHJ6Xs3VKNq6TX90uSS+bQU1wohumZqXbVOA40DbFtoBZYhn/xBSMtxLyeY9
- Gx7AAd83
- 5o7SsNOFDHKpkFG4KFCCEBvNX8DSljdKa72ETg7TeTPKjDf/NHkVfoCW8Ohl9D7iU1nQRTN87YAiwD/VtfIOCrlpNJoFbnBndJSHoFiux8ob01bUkcOXeOuNvy9GjYHMlBU8k+xzcw4mU7QXiEV7CRFzVdLUe+qbVjT4eTAG2Rz0CfNLmJKVRQbhnelVe686ymUUSOxorDzOoE5MCQ/nCmm3yyCpLd4o8slYZhvlKVc+jlhIKn9XflrADlAJkFnp4NgrfR/fOarfJ4jct3Z++2jSLKw05/HppC/CcKWh1a96eW/wrbrxvXUpko77Fb0sG8ZwWO3BSeGsuUQE=
+X-HE-Tag: 1768404096-695989
+X-HE-Meta: U2FsdGVkX19jQWTjb48qBG+V1YrVicXhSkJy6MUQpsW6Ep++lJdzJxm9L/8iDl6QK5ysUKJO5g3yyzL8+Zbur5ePaSvfVBMxsPlBHBzGw1I9q6EzmCKk0mUbcTXYPkx4jnLIJ7uRAZxY5FlTenqITLMa8BM8Kvk3JSLWyzaLTEIIOlLc8EaugHoSDhWLiMdQjHHR4PPAcSFLfyzOdLf4YCgNB7pTvxWYu5UdMhnq56Ey0urTsmB8c7iJi3DucSuy/xVwkfc+WVsqOxtkbyzP9AxnjJs2Dap3FZplEyXcm04o5ildRwNIS/5vXdXRzpy8RMwaAwHKc5auzg61zFFCQuH3WNjp4xy+E6iiUSRxgx6Fv+5IVxjTMi8f8HRB3IK2g6nEniMqg/N9c+GNDrlHFz01aiYwEi8QrA+UmnjQFKUVW1cD7G5HD3ZD+VSp7WWaltnp2YBrThEvkJD7EDogxfAtMee6/wd//VrdTEoGsXMSQ09TWi8mC5ucARlp2QHJ18fkcLEPGXWUaFJmOr3gpTaJRUbiyD56hJr03Jfr+6RnBVFb5bzgYe4M6nrNDCCoHUoENk0NkUngrWQlP2NluEcJ6nSHOlvoaupYfShAJ3CPh275AZ7x8eZa8nwQvZI9ydJmJDYxsKLjF4k5+SSQa5owNB1hHbYYOcbTZArkb1tW6CmHMVcPg07S5vE3J7l+dU1/oCx5L4mMhEVdNrNADlfPrO7zlQvuewlFVf2//okyyYjMy4J2rNwKV2geydpv9hDwUsX48AtExAvpc0Xkn7fL0OXSWSvITGDKtjAnezgKetkEdUFhONSYTOseoJDtTO1N60pIb/rHZqgI8p2jmmezP0yblM5GDupDgr1jcAInf8doC/Eh4XqZT8u6tm2iycK0LHPq8MtGW/6rdfz1mgdqyOkGG3pOi+zSNUchZ2v+s8z5WSdAWY7pY8OEqv6c/hyqWt0iECy7Em30tPt
+ dROoIcuI
+ E6I24I5SkpgbOcd5Sj874uLfl28aPs7INjoXpAFV9AHIBLkrPb/B8NgT5/Sdb/IzB1kcI89YGaYOJMzjgSxnZ5u60cRpWkNi1wiD744f0PtvYNJ/BmSeKpLBM958WPH8qE5U5lxgw7QzomDN/bevRvgLSckrMaF6OG0fEDTU8FCOcq7hNoGjr2NL5Pisq2ztYhBtBy1tNNVykRZQRcCYibBUoLpszPb8ZNUk8Zn/yafvix79krAQFbc+uy8NK5XTZZPWLppocJMyWQr06STjy2vYoUU8yn8lmFx5oUh6uGVXxK2jwGMYyVSa4GpIXHhiN8ENL7la3XiAfzFdwnltT5GrBBRcAfnhovntCDcmVvJaa4Ixhwb+ZG3HmBAQogrKWE62GSvzpIbcXu6M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,133 +108,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Jan 2026 04:29:56 -0800 Chris Mason <clm@meta.com> wrote:
+Hello Chris,
 
-> On Tue, 16 Dec 2025 00:01:14 -0800 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > DAMON generates monitoring results snapshots for every sampling
-> > interval.  DAMOS applies given schemes on the regions of the snapshots,
-> > for every apply interval of the scheme.
-> > 
-> > DAMOS stat informs a given scheme has tried to how many memory entities
-> > and applied, in the region and byte level.  In some use cases including
-> > user-space oriented tuning and investigations, it is useful to know that
-> > in the DAMON-snapshot level.  Introduce a new stat, namely nr_snapshots
-> > for DAMON core API callers.
-> 
-> Hi everyone,
-> 
-> I ran mm-new through the AI review prompts and this one was flagged:
-
-Thank you Chris, this is a very helpful and great gift for the community!
-
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> > @@ -157,6 +157,12 @@ void damon_destroy_region(struct damon_region *r, struct damon_target *t)
-> >  	damon_free_region(r);
-> >  }
+On Tue, Jan 13, 2026 at 06:02:27AM -0800, Chris Mason wrote:
+> On Thu, 27 Nov 2025 06:51:54 -0800 Breno Leitao <leitao@debian.org> wrote:
+> > @@ -820,6 +821,25 @@ static struct notifier_block kfence_check_canary_notifier = {
+> >  static struct delayed_work kfence_timer;
 > >
-> > +static bool damon_is_last_region(struct damon_region *r,
-> > +		struct damon_target *t)
+> >  #ifdef CONFIG_KFENCE_STATIC_KEYS
+> > +static int kfence_reboot_callback(struct notifier_block *nb,
+> > +				  unsigned long action, void *data)
 > > +{
-> > +	return list_is_last(&t->regions_list, &r->list);
->                            ^^^^^^^^^^^^^^^^  ^^^^^^^^
+> > +	/*
+> > +	 * Disable kfence to avoid static keys IPI synchronization during
+> > +	 * late shutdown/kexec
+> > +	 */
+> > +	WRITE_ONCE(kfence_enabled, false);
+> > +	/* Cancel any pending timer work */
+> > +	cancel_delayed_work_sync(&kfence_timer);
+>                    ^^^^^^^^^^^^^^^
 > 
-> Are the arguments to list_is_last() swapped here? The kernel's
-> list_is_last() expects (entry, head) but this passes (head, entry).
+> Can cancel_delayed_work_sync() deadlock here?
 > 
-> Looking at include/linux/list.h:
+> If toggle_allocation_gate() is currently executing and blocked inside
+> wait_event_idle() (waiting for kfence_allocation_gate > 0), then
+> cancel_delayed_work_sync() will block forever waiting for the work to
+> complete.
 > 
->     static inline int list_is_last(const struct list_head *list,
->                                    const struct list_head *head)
->     {
->         return list->next == head;
->     }
+> The wait_event_idle() condition depends only on allocations occurring
+> to increment kfence_allocation_gate - setting kfence_enabled to false
+> does not wake up this wait. During shutdown when allocations may have
+> stopped, the work item could remain blocked indefinitely, causing the
+> reboot notifier to hang.
 > 
-> The current code checks if t->regions_list.next == &r->list, which will
-> be true when r is the first region in the list, not the last.
+> The call chain is:
+>   kfence_reboot_callback()
+>     -> cancel_delayed_work_sync(&kfence_timer)
+>        -> __flush_work()
+>           -> wait_for_completion(&barr.done)
+>              // waits forever because...
 > 
-> Compare with the existing damon_last_region() in include/linux/damon.h
-> which correctly uses &t->regions_list as the head:
-> 
->     static inline struct damon_region *damon_last_region(struct damon_target *t)
->     {
->         return list_last_entry(&t->regions_list, struct damon_region, list);
->     }
-> 
-> Should this be:
-> 
->     return list_is_last(&r->list, &t->regions_list);
-> 
-> > +}
-> > +
-> 
-> [ ... ]
-> 
-> > @@ -1978,10 +1984,11 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
-> 
-> [ ... ]
-> 
-> > +		if (damon_is_last_region(r, t))
-> > +			s->stat.nr_snapshots++;
-> 
-> If the list_is_last() arguments are indeed swapped, this will increment
-> nr_snapshots when processing the first region of each target rather than
-> the last, causing the stat to be counted once per target instead of once
-> per complete snapshot.
+>   toggle_allocation_gate() [currently running]
+>     -> wait_event_idle(allocation_wait, kfence_allocation_gate > 0)
+>        // never wakes up if no allocations happen
 
-AI is all correct.  Note that this is not making user-visible issues, though it
-is clearly a bug that better to be fixed.  I explain the reason in below fixup
-patch.
-
-Andrew, the commit to fix is in mm-unstable.  Could you please squash below
-attaching fixup to the commit?
+This is spot on, I think this is a real case if the following happen:
 
 
-Thanks,
-SJ
+1) toggle_allocation_gate() passed beyond kfence_enabled and is waiting
+   for kfence_allocation_gate to be > 0.
+   a) kfence_allocation_gate is increased on allocation time
 
-[...]
-=== >8 ===
-From 551b89fd05f0c40c824d2a5c0ca6c2a63766fbab Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Wed, 14 Jan 2026 06:57:38 -0800
-Subject: [PATCH] mm/damon/core: fix wrong list_is_last() call in
- damons_is_last_region()
+2) There is no more kernel allocation, thus, kfence_allocation_gate is
+   not incremented
 
-damon_is_last_region() is calling list_is_last() with swapped arguments.
-As a result, it works like damon_is_first_region().  Not that this is
-not making user-visible impact, because the function is only used to
-increment nr_snapshots stat once per DAMOS' regions iteration, and the
-stat is exposed users only after the iteration is completed.  That's why
-it passed a user space test.  Nonetheless, the bug is a bug and could
-cause real user issues in future.  Fix it by correcting the order of
-arguments for list_lis_last().
+3) cancel_delayed_work_sync() is for kfence_allocation_gate > 0, but
+   given there is no more allocation, this will never happen.
 
-Reported-by: Chris Mason <clm@meta.com>
-Closes: https://lore.kernel.org/20260114122959.1164957-1-clm@meta.com
-Fixes: bbb3a45f1923 ("mm/damon/core: introduce nr_snapshots damos stat") # mm-unstable
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Would it be safer to use cancel_delayed_work() (non-sync) here.
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 385900733a0b..5d7e58cbd9fe 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -190,7 +190,7 @@ void damon_destroy_region(struct damon_region *r, struct damon_target *t)
- static bool damon_is_last_region(struct damon_region *r,
- 		struct damon_target *t)
- {
--	return list_is_last(&t->regions_list, &r->list);
-+	return list_is_last(&r->list, &t->regions_list);
- }
- 
- /*
--- 
-2.47.3
+In this case toggle_allocation_gate() task will continue to be idle,
+waiting for to be kfence_allocation_gate > 0 forever, but it will not
+block the notifiers, unless we wake them up.
 
+Is this a problem?
+
+Maybe a more robust solution would include:
+
+1) s/cancel_delayed_work_sync()/cancel_delayed_work().
+  - This would unblock the notifier
+
+or/and some of the followings
+
+2) Return from wait_event_idle() if kfence_enabled got disabled.
+  - Remove the waiters once kfence got disabled
+  - Cons: kfence_allocation_gate will continue to be negative
+
+3) Wake up everyone in the allocation_wait() list
+  - This might not be necessary if we got 2, since they will wake
+    themselves once kfence_enabled got to 0
+  - Cons: kfence_allocation_gate will continue to be negative
+
+4) bump kfence_allocation_gate > 1 on the notifier
+  - Avoid kfence allocation completely after it got disabled.
+  - Cons: it is unclear if we I cant set kfence_allocation_gate = 1 from
+    the notifier.
+
+
+Thanks for the report, 
+--breno
 
