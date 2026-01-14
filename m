@@ -4,156 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ED93D31A09
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 06:29:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A723ED31A0F
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 06:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF3D56B0089; Wed, 14 Jan 2026 01:29:39 -0500 (EST)
+	id 1C51B6B0089; Wed, 14 Jan 2026 01:30:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB4FC6B008C; Wed, 14 Jan 2026 01:29:39 -0500 (EST)
+	id 1AE346B008C; Wed, 14 Jan 2026 01:30:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8CC96B0092; Wed, 14 Jan 2026 01:29:39 -0500 (EST)
+	id 090596B0092; Wed, 14 Jan 2026 01:30:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C97E36B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:29:39 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 93E6DC1A79
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:29:39 +0000 (UTC)
-X-FDA: 84329593278.11.F11DAC3
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E40B4100002
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:29:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=MkKROcR+;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf05.hostedemail.com: domain of BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768372177; a=rsa-sha256;
-	cv=none;
-	b=31BfMOkfQ0eYNMJCpadigTP1rULhXxn4drgQpo/+x/C63shTW7BNH60irdGGFaUz41N30+
-	PPtKIwjAL/mufQCMjf2XmdhJljZY2ktIZCt3i4AGx/IwebsaO2gSGVj3GEvthpXwZEJp47
-	qx2CeFCqCWZLvZVk7BZsaeqQ2QiGTrE=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=MkKROcR+;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf05.hostedemail.com: domain of BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+26d5290b15125d0fae64+8179+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EF6366B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:30:49 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 723C21403AD
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:30:49 +0000 (UTC)
+X-FDA: 84329596218.27.7CCAD02
+Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9EF594000E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:30:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PlQLt0VC;
+	spf=pass (imf04.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768372177;
+	s=arc-20220608; t=1768372247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t1lJVfHRx2M73EEQBeyjJ4ZU0g5MJMBt85jgXIscgqk=;
-	b=WKEphjYYJpgf0xPDpQVLA/x8fQKOyxHtnooQUdhjWSj9ToWgLL2LJReW1Bqb/9aqRTTa+f
-	C3GpodfHp4aTOi3oOS+om57jcVZkjKIeqqWKGLJw835oo0+UrBylFgh0oQxfQ6ve8xqYXY
-	XkWrsb3zJrHisuoqaAtiudJeJ37Wxvc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=t1lJVfHRx2M73EEQBeyjJ4ZU0g5MJMBt85jgXIscgqk=; b=MkKROcR+fTRxETHChOoegafJYd
-	rVnSIecuPjzpPHAi79Z/9E8hnQE/6D+duG7uKE8Etw/Bm6dWntrsVhsVurmjDh6xZsV+8pHxkeSoJ
-	ndNxzNYJknNqsW3hr24nqZHB3ULW5yRVpmnifag0V9pVxlQPJMOiWJmWmZkBz5qjZPdJ3c+mjXSGp
-	4Jy+no+6j4YYszNuWSWw4+r+n062YwVhPa2zS+YyqyK8Q1gdzXfH19dNw1oI7HYA5BvmSfu1ZVJSl
-	ACN0osF2p0zrPz6GjW8Z8JvD9QXvhwnkzyztUTe+XucT4knsGMqADhm06qixbeOjah8JvRXTt4+np
-	/3dA1Z+Q==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfuN1-000000087m5-2rva;
-	Wed, 14 Jan 2026 06:28:43 +0000
-Date: Tue, 13 Jan 2026 22:28:43 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	Nicolas Pitre <nico@fluxnic.net>, Anders Larsen <al@alarsen.net>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
-	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
- lease support
-Message-ID: <aWc3mwBNs8LNFN4W@infradead.org>
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
- <m3mywef74xhcakianlrovrnaadnhzhfqjfusulkcnyioforfml@j2xnk7dzkmv4>
- <8af369636c32b868f83669c49aea708ca3b894ac.camel@kernel.org>
- <CAOQ4uxgD+Sgbbg9K2U0SF9TyUOBb==Z6auShUWc4FfPaDCQ=rg@mail.gmail.com>
- <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
- <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
- <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
- <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
- <aWZcoyQLvbJKUxDU@infradead.org>
- <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org>
+	bh=wsT/ZmfFtzhm606qNq9BAjdXFdDwemXIaKcdGEE/foc=;
+	b=NHUdQb3bfsh9uwvEbEVPc5b7v8INepC22kUgwWBZyghEpxcaExbqXQI0rikDhiz158BvIG
+	eXaIOVefhyNxS5+D6sEgcC9VhjugBG/pfZRqGn342/9sataRlw6IsXLn1M+FjXhee9ic5z
+	BDxNyCqk26B2p/AJHDeqhUU35ruahXA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PlQLt0VC;
+	spf=pass (imf04.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768372247; a=rsa-sha256;
+	cv=none;
+	b=cHu7JSxY2nRg1lq640rGP3BxE//h9bIdCLNpOGDlFeCwxnzUyTIBBNOIhgx0O+rB1iySFi
+	xjdYx4b9GC5nE7rI/C+9mYPmllvbEgZeITaCzXOkK1sP9P0nzc2fplD4wYv93fxrlARNMx
+	38hCRzhC3EL66Z6s7kHmgNW9o+lo1ik=
+Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2af41f558f5so8833807eec.1
+        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:30:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768372246; x=1768977046; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wsT/ZmfFtzhm606qNq9BAjdXFdDwemXIaKcdGEE/foc=;
+        b=PlQLt0VCZaCShdZu4Fxo26GROzcFRk+o5Hm32LMU2eLaiacNTzOqh7q6NZiPM9m3G1
+         /lJbICYberobCt49r3RfJku2SS8SNI2Hldarspw1MvmEzuxtY5ikrTlKrvc+Ienk6zuG
+         TZCArJlRPMHPOnj4HNDIw6jQkyXNrr7vuOY/Z/5fHP0dwiBAttiqFGD0sWJdDyijgNAX
+         3IW12/T4vjxDNGLEMOADpi16Tey7eyNTjZQuDldZsQVNYK6qrZ/Le7Tt2O0yy+monkza
+         Al9eAciD27fvThs1L7W8awySwEucNL6MtwoF0cvcwPbwh/emQrtQlpmbTMuPLmdvuA9t
+         w0Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768372246; x=1768977046;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wsT/ZmfFtzhm606qNq9BAjdXFdDwemXIaKcdGEE/foc=;
+        b=RZ2fGd7RcmADmsTOzflLeYLqrXz9KlMlGCRBWZKYBpsLY0EWT1YzpQm6gky7w3zIVz
+         zhBHG4ql+jxKDvCKOrkcmmQaGXr6KbEd/7zzA2YAqd3dUcQoYrvwDPNI2f741UGVi3K4
+         rjeI2VlkXzIJGjp4YWno1fmNgmNfpJtlor6Yzr2e70xitbleCuen5K0jDr959S9QuwMS
+         YkYrQyLBivrSVvwvDwPbhE4Sc6YdPfVqfZ/REoLQX3E2bC6EcVEmo5yX436wi00NrHyF
+         99QP6lo1ayJiL7bH5y+wSQ2oqE1pEcSvpPYOkyvj3T5Jg6Z2xR2LDt3sYm1i6czJem8+
+         wrrA==
+X-Forwarded-Encrypted: i=1; AJvYcCULjAP61eDrpxRct2b13xdY12wxWsAIRAisS9l0UXgFwCqgqmm9WdL6YxsW8JZ9rZ1wOvM/0JVH6w==@kvack.org
+X-Gm-Message-State: AOJu0YzfY4iHfLYzmqa1mzX4M2URt3+IDbDitVz0i2YmmcbCHD8MpJ+Q
+	eScYMyKTFU1LfQaPMFLuk6mVoPteCnf008cKVl6kMhfE3JxgWOJA+bQ3
+X-Gm-Gg: AY/fxX7ZqP3eY10OLWok5+lHbwF76BvGqw4fdVpbxJ3M0FEmOkJi4hHjYaP9RBSx916
+	4mcbDr0sxqcJ73/7m2MXrB6cMLKjGWrqTUlecjYq2JEVgspHoMD02WJ/duZWOExaDtUbUr/NhGX
+	LrnY0apjwE977ITlIKtCIJHsEcDkHJjExCJwFmsNs3v97qt/MKoLN+PuiE1civbEajZClT8T319
+	OaZ1+rEFdMG6Pin1Edf075gOGsrmW0V2jmjfUS/q/EjX7mMN9RZodE4+3WNybWyRSc+xqleZW4F
+	MDCJUfUAWRseeWNliv6GnpAkaRuEeLrbmNo+sCkzad9ReBpQPaoH2/gL4SNm7ElSTu3oeVYEWcz
+	3XmGO8MitNvUB86WfOc8f/6KU+Eb8CYmbgw7f15pUmoOTYIZ/M19rLw3HDnai12HPIvrymtODr9
+	2j
+X-Received: by 2002:a05:7300:a286:b0:2a4:3593:466d with SMTP id 5a478bee46e88-2b486b72a9bmr2703868eec.9.1768372246284;
+        Tue, 13 Jan 2026 22:30:46 -0800 (PST)
+Received: from localhost.localdomain ([2607:f130:0:11a::31])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1706a5d3dsm18126062eec.13.2026.01.13.22.30.41
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 13 Jan 2026 22:30:46 -0800 (PST)
+From: wang lian <lianux.mm@gmail.com>
+To: sj@kernel.org
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	damon@lists.linux.dev,
+	david@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@suse.cz,
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH 11/11] Docs/admin-guide/mm/damon/lru_sort: document intervals autotuning
+Date: Wed, 14 Jan 2026 14:30:33 +0800
+Message-ID: <20260114063033.88885-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260113152717.70459-12-sj@kernel.org>
+References: <20260113152717.70459-12-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E40B4100002
-X-Stat-Signature: qhbnzgaidf73p5kuxyqodhcxqyefownf
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9EF594000E
+X-Stat-Signature: 7c1to74y9ys3qtc8nzo5bba4pz3upbzp
 X-Rspam-User: 
-X-HE-Tag: 1768372176-814373
-X-HE-Meta: U2FsdGVkX1/d8JPnOVmSijonxqoacb6/TA0X9pRpYXdkv5Oi+xiBg84ZAwiKaGpiZ5As4DBMXjWgcNurkXxgLi+mRhxpc8RHKTvs9L/4Il5JUbCirJ9wKmsi8w+3aZ1EP6zLDI1WyBBE+2WfML4RpjYg7DU1FRMruKeFCv+M+44JBRFc+h0Lc3MZpbSMEVv55O8Hzn11fXqXdDPQ+z+fvSkLLGs6z3NYox/fLEDJv2pN9mir8X6RU9o+EhId5rixVvYgQTrYZAKGMO2k3xzbI+/GtOefQKEERzrnZrZmJM+cGuwZHeWA4ee3thPHZjcl9aeXQu7ysvAlt8DSetDK84x8Ywfkwjmhb5zBMJi/Jv+kcVn1JASEV0McipCvkyw07fp+QmEGjhAwb7Amu+QOJXtd1JGWYXji1+gcxF2dhneMZ/kkpEv8ct1Uo+2xkGXvCD3hux7kbC4gs2FVQMemxfebvdieeB6M8bdVSFW8+PRtK9zO9hvJ1b6MQDtkGKLyJ0kcofBhHAsGcW5VVy1+Vs7tZgHqF8CzE6txWrKDIkjWDlOejehPXNTjEu31VvqPdFe5GDRuUPVqq7uAVEQDM6LiSDJz+tDzRsuP0Kq4o7NWrFLpPGYfKopXAdhqxabSJ0et69zYkPg89QoVSk0NKFjpC/az5fBM5Nd5hLMhGEX6GeZn7qQ+HN+Wz0+ZXm/4QbMBIRNDZ+wwCzi+tyoXijAOLvzLhyDAAKY8/J9AbtVKT8CfYBv8zCldp9Bh79kKNmg2UOdFV9+IljZcsKhyeR8yYMu3uAfi/qtiJljwB4RCXHangxGrmX3mIG6sGD07wvgbGLAsC8rL3Ow1TgSlTA+UzAIXc9mUoUNGKK0oSuTgup6sFgDrD3NJH11pwv08AJVmqYbXLwuXBNPaBTGuVa8Sbw8OltaMEGioSwERyY+BOJwR84IDU48zLcmxkgR2cvODCUhlURiu2h8igpc
- uWBAlVv6
- yFEGbva0mDvUb5RueK52EKghrjuXt+89mt5yBG6OEE/UAFZ2/JxfasyWSAaqAgq5Z9c+BMQnl7keNxmxVl0sGTNT9KCcAJNGatQKV4nyo1OKrWOmIFIUgLUIJdfmRwea9UwO6f1pw1f3ywFfX78kZoELbBemQkwrOhbu4LyKGytpcYiu0ZphTu5Wgr5y9qyK/ynNUDVMeCVc8bcgEdTI6vtYpg+217fdsgmoSP6vt9T1Zq8abkJE9PK6sE3RW+oeCCNN/fyNEqD+HlUAVCmz458WtopRB2T0CbFa4kg9y33I4qvbT4uaqcWdR60rPTXlbZwpBYD74oP3KY9oU4f9PtP2ATVBFJdel2mBwzkJf37xPjE1wMw3UUhPDjIFFkd4Nm5m+uMsbf/wq+FeG+fLNcNBzhMe4+NUoINMhViGW9bmaV0+alqoGjMyl61y8aIi3WnmhoL1spZl/JEST2saceDM6bXOgpiqXDZiA7Dc521CsLSDeWndP/ZWzmAMePdYEK9MqPTh2k893x3iHnXO4/9AJE47Cz8umhkt82Q+H0yee9Vbh7F/zjaP08bza03GFIu5wGreImVe9lLq286bhVzdHrQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768372247-622082
+X-HE-Meta: U2FsdGVkX1/YfaG+kVsU6MM1B7t2fdUoIdOM6Lvc9aM6rvSXTakF5PAEwoQfT1HuQERWnuyqG5QjVUc0f7kVnQPQFCAIFdxncZpmz5I+GhzYrC4tjL5MCg5TZwYG8CQ7MGYT8IhDjAgrei8kx3r+qjr3JiBCVogkaJ/dmSBd1OVYzmWsZT+NUtwO11Pdb9fA63HQsjo0GZq5N8frt4im/yIAFAaA27Ywu7tGYsQZiYLH930PGVsEBF0qyKjwPs2uyYUcvnutJvl6YgIy/GKlD3jttq4r2XXEeLW4ImZEOefwa9K6ctrTg98XQgYMW6B1Yyout3d6jICcZ8Q0Pt0fsSTsBxVQNi+g1GjQyOkyt6GXFEFSmpknyj1hKCCUkmB0rqxNq0QvSnS3GA/aeoEDUNAV7F3mtAiGvBlKXBHXVtiB5MVJNkLkbEb/Ts6U93zut9w+pauHALxlFZ7JRlTj5kiHFXO/zjCpBLysDrjrA7v1Tj3JaRGgzZUg7VEDzP4/v2msSU6VNzdx0xcD1o3C8TxrO5atieQThUpdViJIrVUueZo7iFCG+PDgbfqv6yXMQusyH8zWkSq/chrQUL/yg8GtkqZwGnkfLUk9a58FRqNM8/AmM89sQ8IvjuOZtgvwjwDYI5Y9DW8ej1oYsn/1anb3tQjUpnNt6F9RjLEIT0BLPov0d4t6ZysC0/7T67ItCUTihEzGzReExp3zlJEYImTShyd4or7ZJtX0bV1xf8ryFPlIQxzo8LX/y7wLKGFbW9X2Dh6kWLyWPez2M0XCBib1v7akmc9OsKFcmTqizKCTp2FjehBznVQa9/BbqRxEiJ7+YDd14ZB+RIsT/w9o5u5zE6OHDmhaA0ERt+ofVTKWu8cePiVwAAFWidD+TxpM+IUJyfjFxqU+IDK7p/2E28I5lrAh6UzpXYqZBwWmd4sDxlvCc9Lj7WXAcJnZr/4qTpo3qNtkJ74iIn10lH7
+ lGQmMYWT
+ 8koLD+MgslFpScCJe0bxzyWcsxuegM8TC2Vqy5OdV6HlccdlNkSS4K7lfioc4KHWdVMyZq+gbFb0vZVehC60TUDR0Mtrnzhw4Xx2fRXQJeUCFSuvploezGyZLWq/ejt7rGF5ACHvzjvn+nQ9CP2YWvyEPPml8L8HUZ8FwqQ9wD8rBiXOd4MW4uEyRYorNdtAq2IxiwqUTrysbP7cV6NS9WP1oYUVXzRnt2S+4JjVMbRFTk7U8EWiI50IB2KsjMhR00+yY/Vft8VF9jg1XfonOKJts6dSMxXOtW4AA7HgrdO2PTKu88qvIHBcSIlAxhGyC74Ipwem3j+kREpeYPcU7TI3vrfZY9ENvbo1xGPGH+i5Ue+Nq/y3tNvoeb+zfwDjWtvq0Pq5uXVmCo5EHj6fiXl2POw+AsZ2ArRsU3Nsy0afODHHa/vTcaMeJW4mcry931hTn9P0RE8yCoJf8PwmekSK78RpKArOSRiuU7Ih36/9lex6bNqw1uHNJ9HTcfJf/yYLJS7ihOXPq8VKCRh3bfm5gSf5FHzqNLM6S/2eMo8MtI093W/M6erzsyVtN6sTnIka9iPnMictcvCNUM2Fl7f1pVjS/KdPlSJBm+psNtARVzxY4sq+w1SkI6oYkvv77dn5ct9hXG23HVUQwjbR2VsxaeT29yVpkj25GaK458GasSlUfn7Oyse9VvEvMXDWPNO7F8vB12D2GY46RuWFYm2J1kD1Vr3QyWZ4Dmd0nRr/Yj10=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000007, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,11 +130,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 12:06:42PM -0500, Jeff Layton wrote:
-> Fair point, but it's not that hard to conceive of a situation where
-> someone inadvertantly exports cgroupfs or some similar filesystem:
 
-Sure.  But how is this worse than accidentally exporting private data
-or any other misconfiguration?
+> Document a newly added DAMON_LRU_SORT module parameter for using
+> monitoring intervals auto-tuning feature of DAMON.
 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+
+Acked-by: wang lian <lianux.mm@gmail.com>
+--
+Best Regards,
+wang lian
 
