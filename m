@@ -4,96 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA38D37E33
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 13:55:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9102DD37E37
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 13:56:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F28B06B009F; Wed, 14 Jan 2026 08:55:33 -0500 (EST)
+	id EBD836B0093; Wed, 14 Jan 2026 08:56:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F00586B00A4; Wed, 14 Jan 2026 08:55:33 -0500 (EST)
+	id E936B6B00A6; Wed, 14 Jan 2026 08:56:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2C8D6B00A5; Wed, 14 Jan 2026 08:55:33 -0500 (EST)
+	id D687D6B00AE; Wed, 14 Jan 2026 08:56:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CF9AF6B009F
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:55:33 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B05DB99B1
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:55:33 +0000 (UTC)
-X-FDA: 84330716946.07.369388F
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1ACC6100004
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:55:29 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=meyPpgHK;
-	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C2CFA6B0093
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:56:14 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 745FA1ADF95
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:56:14 +0000 (UTC)
+X-FDA: 84330718668.24.B56640C
+Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3DA5940010
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:56:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ffnXSZmM;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf27.hostedemail.com: domain of "prvs=4674f03ca=kalyazin@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=4674f03ca=kalyazin@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768398972; a=rsa-sha256;
+	cv=none;
+	b=B/qPqxApprLIddL+i7gwTqGn8rGQGoheN8pJAuaWDJ/Gyy+9P1ThFYNplqAb2MDGeEu6El
+	kTZmebJHNjOgExWiC6awFcoO72NY45gLUdPmt+TliJEnEJIoumgAI5JMHId3aqop4bLj+V
+	T5VBQ3f0lXsApsLT7WpDaefDG+De2AI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ffnXSZmM;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf27.hostedemail.com: domain of "prvs=4674f03ca=kalyazin@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=4674f03ca=kalyazin@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768398931;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768398972;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lLhImaTtyQlUStc6IBTxCVEdxc2yGG1I8evBeFzrV1Q=;
-	b=EzVrRhhE5zFw4a2JE0QIwhM3dgXhN0ysUE+2pDCqNSH2G0Skhn9jy7cUh6RQFdTt031Y5Y
-	YergYGI1w6trcwvYzOVAJ2f2BrLhxVDz2Pyv/wARTAtknJAoDygwelqFVp4Nt/wXy349/K
-	qA6TUrsFSAoxDIwC3zIK8iQmenevT3s=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=meyPpgHK;
-	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768398931; a=rsa-sha256;
-	cv=none;
-	b=4RpcLYBVGwkoxBa784o+Bclrt6e7osQqdEGcaBWMX73ulXzJ/qf6V3FIkSnH6vQ/657Xmo
-	y8n7WQNoRWotOfRFwSxpGzC/KmHR/zOD1KhOHf6z7sztLR5dPb+GTHSAHhTih/PzB1mz+p
-	xhBBp1dGzRGTiBioaJjHLUInsyEk/gY=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=lLhImaTtyQlUStc6IBTxCVEdxc2yGG1I8evBeFzrV1Q=;
-	b=meyPpgHKcsjUtNYQYEvHPS8R8QUo2L15poBmKSyDQm9sF+52Nux948X14T3+JOC8LJbp6q54W
-	N+Ccw3RdQq2XqSxoS1GUQCJPPM9mW13YI2zV1IYbThNJzOjC8zX/p3ooSK3igXuaH9kCS4cPZbM
-	ud1DAdFEQgzzTxCQuJZGmPw=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4drnc85f6QznTVP;
-	Wed, 14 Jan 2026 21:52:24 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id E89D940562;
-	Wed, 14 Jan 2026 21:55:24 +0800 (CST)
-Received: from localhost.localdomain (10.50.87.83) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 14 Jan 2026 21:55:24 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>
-CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
-	<ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
-	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
-	<willy@infradead.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 3/5] mm: hugetlb: optimize replace_free_hugepage_folios()
-Date: Wed, 14 Jan 2026 21:55:12 +0800
-Message-ID: <20260114135512.2159799-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20260112150954.1802953-4-wangkefeng.wang@huawei.com>
-References: <20260112150954.1802953-4-wangkefeng.wang@huawei.com>
+	bh=Sv4MlCPNVERmcNp9kqSjh82IbrnYTRQgNTSc/lKG79A=;
+	b=LhZpk8vZaq+6VBUh6sOduNpLlv/P83lKtRpt0iONHRViDcIxBxBn3n6fjaLQBz8Siih1ue
+	qIKU7z8lnVV8JArlrvf3gCiuQj3pvo9UX526DfMle8/fHLSnmrpBA/HrbfT7HslYABl+MI
+	xEae5GFngPrQEQ+KCjHJSzq05JBNUd8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1768398972; x=1799934972;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=Sv4MlCPNVERmcNp9kqSjh82IbrnYTRQgNTSc/lKG79A=;
+  b=ffnXSZmMfxZ6YR5GD01pYZnBtd0iCiO2Ufcqg221AYrvGN+htLBqDhx1
+   PKvQuyGk3CPa9HK2xOqBM1faAUGSOcKjMDUIpzOJYwHPlnat0oAXsa9n2
+   wZ8J9SjV7/joQXU5hCSRZr3EHePixFJWtt4sBkYyL4kcyA7Y44r/WY0iw
+   yOHtUxJ+E0DpnQMvSuK7rciEXA60n+dXKzY3+lpHv+6/TODYFbcz7Ukrv
+   rURYwifnd19K4Mgnp/lVFxrSp1fVg9MNeZhTaM+EaVQhoInvnb4qDpGZ/
+   IN13OmPZrdO4CEwNRqohhW3JmwEV43bSw5/QVlIw480/ZnCHBe+cEYnF7
+   A==;
+X-CSE-ConnectionGUID: cW2/bP43S+W7GDw53OvOsA==
+X-CSE-MsgGUID: D23VOrnzTJOU3brwm1eZ2w==
+X-IronPort-AV: E=Sophos;i="6.21,225,1763424000"; 
+   d="scan'208";a="7791279"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 13:55:52 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:11343]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.30.60:2525] with esmtp (Farcaster)
+ id 8a859852-980a-4ccf-94d2-9c29b54debef; Wed, 14 Jan 2026 13:55:52 +0000 (UTC)
+X-Farcaster-Flow-ID: 8a859852-980a-4ccf-94d2-9c29b54debef
+Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
+ Wed, 14 Jan 2026 13:55:51 +0000
+Received: from [192.168.15.25] (10.106.82.12) by EX19D005EUB003.ant.amazon.com
+ (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35; Wed, 14 Jan 2026
+ 13:55:48 +0000
+Message-ID: <d204f259-c965-466f-bd75-bb0f767ed8f1@amazon.com>
+Date: Wed, 14 Jan 2026 13:55:43 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v8 05/13] KVM: guest_memfd: Add flag to remove from direct
+ map
+To: Vlastimil Babka <vbabka@suse.cz>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "bpf@vger.kernel.org"
+	<bpf@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org"
+	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "rppt@kernel.org"
+	<rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+	<mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net"
+	<daniel@iogearbox.net>, "andrii@kernel.org" <andrii@kernel.org>,
+	"martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
+	<eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
+	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
+	"haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
+	<jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
+	<jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>,
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
+	"shuah@kernel.org" <shuah@kernel.org>, "riel@surriel.com" <riel@surriel.com>,
+	"baohua@kernel.org" <baohua@kernel.org>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>,
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
+	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, "ackerleytng@google.com"
+	<ackerleytng@google.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
+	"prsampat@amd.com" <prsampat@amd.com>, "mlevitsk@redhat.com"
+	<mlevitsk@redhat.com>, "isaku.yamahata@intel.com" <isaku.yamahata@intel.com>,
+	"jmattson@google.com" <jmattson@google.com>, "jthoughton@google.com"
+	<jthoughton@google.com>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "vannapurve@google.com"
+	<vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>,
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "patrick.roy@linux.dev"
+	<patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri,
+ Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>
+References: <20251205165743.9341-1-kalyazin@amazon.com>
+ <20251205165743.9341-6-kalyazin@amazon.com>
+ <c68efe59-5405-4be5-a768-f27ce27d59d7@suse.cz>
+Content-Language: en-US
+From: Nikita Kalyazin <kalyazin@amazon.com>
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
+ CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
+ i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
+In-Reply-To: <c68efe59-5405-4be5-a768-f27ce27d59d7@suse.cz>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.106.82.12]
+X-ClientProxiedBy: EX19D010EUC001.ant.amazon.com (10.252.51.232) To
+ EX19D005EUB003.ant.amazon.com (10.252.51.31)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3DA5940010
+X-Stat-Signature: exc9wp1jxwynmsca15nzpmxjq7octh54
 X-Rspam-User: 
-X-Stat-Signature: 11d4guajwc19hdtxghnx7a8395t3ph8x
-X-Rspamd-Queue-Id: 1ACC6100004
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768398929-27591
-X-HE-Meta: U2FsdGVkX1/ggYv1fO5iwz+bDRblia+wQCXeOUtszz7rxCJykIsPcsVATzUg9a8P73qmnhsLJldSVgKC9nzF1Tf1QjvGFUictOVGz2GAqFXsd+lTQsjaSGlQegpfgK13Z2odfNo5u9Xjh+LrKOmshUKiXzx3V2IOqzu19pOJ2dzpNZEbKZ80tmmEor9Nqv0+Xjs2Uv96ArRebQGvbGO/e5F+2jvqFpUEx9EcHB8JJvemlHBOd8OodUryFW1gKfBR62DRKuHDnGcKfvms2Qc6RSIc8euGwdIH8kOdgPQMNd0pKGSMdoXMugQqaQlW54Tqv9jJSfLBLEuH8wtuWn9dFQPguXq77hM3KmoRyoSRvre9WJyiKQgM+MDKGHc1+bEz5RZBJ8ZM3jxtXjEBuXema6jYN+40ULJkY1Oi1UFRvG7+TLMvXjB5ndDx5tfvvR1Ucju57HO44e82U+iej1NEldgVs2yZVPK5C3XYYjAggeCBtaAStXEVbtXV9NZ54LnGSFjOL7I0FxNWaA0v0EV3bnzAk2qOJ426x5UI951YIYaXIhd3Z3t5M5IhLtV4g9Qw2c553Q079wNhkcwanybh9SbSJQEcgOzdeXV95sfmz7gvFLhLf4Gybw/nhIjPPcbWL8nX8pGPx/6ppmNxUwaWm8dAjdsD9AniGDBSGZYX4WHCS81hB8JD6uwcrVcqz53aoY7X+cf6hUEynD/NODDvTP9Ey9t/Jz3vxT5/oAb51HM1FGV7eslwD+njxsePdwW9HCHYPnxa0SB03fp88lb6g6DhjQfPnRUMLxcKz3+Q6GdvUgheDPRwbDyjtL7DN8lNlpew9RpzqS8WrsiwM6i574UPggmb14i4i+pNF5SfaMeSFny9u8gKPExSBT/vGfFjTKuvuTUBfCT5PezfNnRbEy1qN1LaT33uK6i2+dITJYjKLcgpSjgB+Bcu/F1Tcg98AqEAiGZW55zIvkWL3s8
- vwSPLDUt
- 5Yh7Slco6C2fhu2cyNzuVOzBuc8uVbk77phvAcuCmkjbOFVtl3bRmib7sX3DDdxp3tXB5iW1Ur0e3lG0EU4w0tO9ZITEfa5e5nyAHSdasvLJxLkUmvATA1DM4xPkpnLHrdLEoPD+wEUyiSqp0WeAB2Wa8K517vngv3MF1tlFDioWp9HDUTpfC7oG9+ijhH7/Es4dvZAo2C0DeJDlfuBh8ecJ0jjAQlcMyZvtVyUy2vNyQhe2KIKa28AZM7Ei7EkDBEskyOTM+ApkqSuF9skQI1Mziq+eC8+6vDusA9Je1gK5HV/jPwzBshxBKj+H3bC/gL3lXa6fZiSm6x7gfGJd1lIwtNQ==
+X-HE-Tag: 1768398972-47027
+X-HE-Meta: U2FsdGVkX18tuKyIuZSzm2ZUNN48WvS9xVQb+Myx5LTJv3x1L6/jDIjEpA7Dv87vp0gk22/CI1tO5Liec/vU9d8ZrOvz4yT2MxKSEYrvpWNNpyV+zXn7KhpBFic8zjAetrEirGfdKRCKj83H5wOxY7qOpMxX6vkw07AoRxfmL5E1xWginkWS2wLUIQyjq4fAOp0coM4XuRVicGsZ3FH4rXunsgah41l6QWGQphA2q0sQMQplXLYO0q5UOGBXL1lYnko6BQ7jZqTja8h/P27m4qX20sIF5m7CQ0LfkHXKzaMu5ZtRXVzAPQrFi1+OCiHIAw7z7TyJLIGgJ2NU+ImKfwI/C6spAeKiCm/pdI2pkTiQjNbLfYEzmPaUb8xWFmVf24H+qrwT1umFw9HEh/Mlv1t52QJcN6Bwt8F9tsCXGvx7B0njC3FmbYLCG3usoYGuj5sG5GSFKfu0LIF95y71O1GkUYqDeJaUWzS1+yvFqwvojdN7NPnVszHNy4YQ784Q+8pfyPXSbkSDKhvpXCCwRFxYGfXMTV4AC0HYT2+9v6JJm+wmMkIhdx1+VuiuUtJHr3PJZlJUTKbI5vTMa5yau/zSC9oqpgA1OTl7kSx+ZrDmtHXj0ZQrOnT4v6q0bYloXuEhLeoQntp2PDOP8f1+7NMjexmFd7ewBF1OV4YiqjaLoyjoFVW+iFRF9fBLgNZwD+xmNOKGVSrsaqw9HaafI6E3bJZBD+Oc1i8ZLxP3LCT/mp26alIDJ0Oq5S/GhHABlAInafYQjr5zNuXEouhHmzB9G8Nao0bg/Pu++esHYTKfUquDn1YAU32Njez2kjjUHH/xrLBelP+20J3SmB402tCEwFtms6lsaiAo5GNgjTvjJ3lzEtdiIDnfytylKhT5ZAfiCbtMrh1FYQUaZszTNwNwlQy5BIWMiXbCrjEKt6JDz82EnhNBd6Yfid0aqgFTTe01VEkIhDPPV9BBrjb
+ ayklBb4+
+ EFJzv5i7bUJks53w2sVxhzO62Z2pURtNO9xzBTkLjtBjHEoVTBnbk1b8JxOhIPNOpk8Voe9d9JykvLP9ruHI7pCFQKlTY5fS9YTmkVmukFywI4S8ctRgpCqPe2YZG5LdH5clU5oOg8QlsZzZNuSZEXqnqnYpjpOxYBTI+EhrfqMnk9wB0aYLK/8oAewHIk6+dqz5JS5i+xLUuLj0XbRCf5GIWB8UpmXagXIJvITHhRuznkmjeN9iXd7g1jBhfKXN5JXhDC5kcKbbbJtUXt9oMt1up4+jMT+1PI0E7XU64nxFeAuB6GoWb68AkQHRuzq/A3A7Efk537H92C6j1EQ7QyQT91F7fyKsRWkhtR+9Qav1qfnDE5bsRHMyVoIhNbW7aCfsIhFHNVZs7+2KzvdbPwtaLa2m5MpVpJyCmU0uy50mFN7Blw22BRYkngPsbXWivW2SlKQakjW7R2HlWua2wu8WzKRrjluhVTSNaeAPghCy6I2GLs3IT/NFOjUupJSltUYmIuFejbIafqgkV0F6+ZKKYtRzR57p35kq1aEZ2jQ0LPr93HNLUR01DnMkIx4uqmSWz4SxU/dKLOYthaqzAB2h+kRuiy1j2oXk1LTv37U8tiEUfK+BkKtqZmbKFSOZgDKjhHlaPo2TCve3VesEBdtf/4A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,107 +176,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If no free hugepage folios are available, there is no need to perform
-any replacement operations. Additionally, gigantic folios should not
-be replaced under any circumstances. Therefore, we only check for the
-presence of non-gigantic folios, also adding the gigantic folio check
-to avoid accidental replacement.
 
-To optimize performance, we skip unnecessary iterations over pfn
-for compound pages and high-order buddy pages to save processing time.
 
-A simple test on machine with 114G free memory, allocate 120 * 1G
-HugeTLB folios(104 successfully returned),
+On 08/12/2025 08:43, Vlastimil Babka wrote:
+> On 12/5/25 17:58, Kalyazin, Nikita wrote:
+>> +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
+>> +{
+>> +     int r = 0;
+>> +     unsigned long addr = (unsigned long) folio_address(folio);
+>> +     u64 gmem_flags = GMEM_I(folio_inode(folio))->flags;
+>> +
+>> +     if (kvm_gmem_folio_no_direct_map(folio) || !(gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP))
+>> +             goto out;
+>> +
+>> +     r = set_direct_map_valid_noflush(folio_page(folio, 0), folio_nr_pages(folio),
+>> +                                      false);
+>> +
+>> +     if (r)
+>> +             goto out;
+>> +
+>> +     folio->private = (void *) KVM_GMEM_FOLIO_NO_DIRECT_MAP;
+> 
+> With Dave's suggestion on patch 1/13 to have folio_zap_direct_map(), setting
+> this folio->private flag wouldn't be possible between the zap and tlb flush,
+> but it's not an issue to set it before the zap, right?
 
-  time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+I can't see an issue with that.  Did it in the v9.
 
-Before: 0m0.602s
-After:  0m0.431s
+> 
+>> +     flush_tlb_kernel_range(addr, addr + folio_size(folio));
+>> +
+>> +out:
+>> +     return r;
+>> +}
+>> +
+>> +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
+>> +{
+>> +     /*
+>> +      * Direct map restoration cannot fail, as the only error condition
+>> +      * for direct map manipulation is failure to allocate page tables
+>> +      * when splitting huge pages, but this split would have already
+>> +      * happened in set_direct_map_invalid_noflush() in kvm_gmem_folio_zap_direct_map().
+>> +      * Thus set_direct_map_valid_noflush() here only updates prot bits.
+>> +      */
+>> +     if (kvm_gmem_folio_no_direct_map(folio))
+>> +             set_direct_map_valid_noflush(folio_page(folio, 0), folio_nr_pages(folio),
+>> +                                      true);
+> 
+> I think you're missing here clearing KVM_GMEM_FOLIO_NO_DIRECT_MAP from
+> folio->private, which means if there's another
+> kvm_gmem_folio_zap_direct_map() call on it in the future, it will do nothing?
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
+You're very right, thanks.  Fixed in the v9.
 
-v2:
-- Turn back to use alloc_and_dissolve_hugetlb_folio() since Oscar
-  pointed out that the return value is different. Then adding
-  gigantic folio check independently, also update changelog.
-
- mm/hugetlb.c | 54 ++++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 44 insertions(+), 10 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 8c197307db0c..e3c34718fc98 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2806,23 +2806,57 @@ int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list)
-  */
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
- {
--	struct folio *folio;
-+	unsigned long nr = 0;
-+	struct page *page;
-+	struct hstate *h;
-+	LIST_HEAD(list);
- 	int ret = 0;
- 
--	LIST_HEAD(isolate_list);
-+	/* Avoid pfn iterations if no free non-gigantic huge pages */
-+	for_each_hstate(h) {
-+		if (hstate_is_gigantic(h))
-+			continue;
-+
-+		nr += h->free_huge_pages;
-+		if (nr)
-+			break;
-+	}
-+
-+	if (!nr)
-+		return 0;
- 
- 	while (start_pfn < end_pfn) {
--		folio = pfn_folio(start_pfn);
-+		page = pfn_to_page(start_pfn);
-+		nr = 1;
- 
--		/* Not to disrupt normal path by vainly holding hugetlb_lock */
--		if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
--			ret = alloc_and_dissolve_hugetlb_folio(folio, &isolate_list);
--			if (ret)
--				break;
-+		if (PageHuge(page) || PageCompound(page)) {
-+			struct folio *folio = page_folio(page);
-+
-+			nr = folio_nr_pages(folio) - folio_page_idx(folio, page);
-+
-+			/* Not to disrupt normal path by vainly holding hugetlb_lock */
-+			if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
-+				if (order_is_gigantic(folio_order(folio)))
-+					return -ENOMEM;
-+
-+				ret = alloc_and_dissolve_hugetlb_folio(folio, &list);
-+				if (ret)
-+					break;
-+
-+				putback_movable_pages(&list);
-+			}
-+		} else if (PageBuddy(page)) {
-+			/*
-+			 * Buddy order check without zone lock is unsafe and
-+			 * the order is maybe invalid, but race should be
-+			 * small, and the worst thing is skipping free hugetlb.
-+			 */
-+			const unsigned int order = buddy_order_unsafe(page);
- 
--			putback_movable_pages(&isolate_list);
-+			if (order <= MAX_PAGE_ORDER)
-+				nr = 1UL << order;
- 		}
--		start_pfn++;
-+		start_pfn += nr;
- 	}
- 
- 	return ret;
--- 
-2.27.0
+> 
+>> +}
+>> +
+>>   static inline void kvm_gmem_mark_prepared(struct folio *folio)
+>>   {
+>>        folio_mark_uptodate(folio);
+>> @@ -398,6 +444,7 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>>        struct inode *inode = file_inode(vmf->vma->vm_file);
+>>        struct folio *folio;
+>>        vm_fault_t ret = VM_FAULT_LOCKED;
+>> +     int err;
+>>
+>>        if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+>>                return VM_FAULT_SIGBUS;
+>> @@ -423,6 +470,12 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>>                kvm_gmem_mark_prepared(folio);
+>>        }
+>>
+>> +     err = kvm_gmem_folio_zap_direct_map(folio);
+>> +     if (err) {
+>> +             ret = vmf_error(err);
+>> +             goto out_folio;
+>> +     }
+>> +
+>>        vmf->page = folio_file_page(folio, vmf->pgoff);
+>>
+>>   out_folio:
+>> @@ -533,6 +586,8 @@ static void kvm_gmem_free_folio(struct folio *folio)
+>>        kvm_pfn_t pfn = page_to_pfn(page);
+>>        int order = folio_order(folio);
+>>
+>> +     kvm_gmem_folio_restore_direct_map(folio);
+>> +
+>>        kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+>>   }
+>>
+>> @@ -596,6 +651,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+>>        /* Unmovable mappings are supposed to be marked unevictable as well. */
+>>        WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+>>
+>> +     if (flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)
+>> +             mapping_set_no_direct_map(inode->i_mapping);
+>> +
+>>        GMEM_I(inode)->flags = flags;
+>>
+>>        file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
+>> @@ -807,6 +865,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>        if (!is_prepared)
+>>                r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>>
+>> +     kvm_gmem_folio_zap_direct_map(folio);
+>> +
+>>        folio_unlock(folio);
+>>
+>>        if (!r)
+> 
 
 
