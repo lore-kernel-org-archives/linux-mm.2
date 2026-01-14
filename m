@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFB74D29FE7
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 10:49:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79577D29FEB
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 10:55:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C96F6B0005; Wed, 14 Jan 2026 05:49:28 -0500 (EST)
+	id DDE7F6B0005; Wed, 14 Jan 2026 05:55:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 477026B0088; Wed, 14 Jan 2026 05:49:28 -0500 (EST)
+	id D8CCD6B0088; Wed, 14 Jan 2026 05:55:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37D0E6B0089; Wed, 14 Jan 2026 05:49:28 -0500 (EST)
+	id C74F86B0089; Wed, 14 Jan 2026 05:55:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 27E7B6B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:49:28 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E0D57B98F1
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:49:27 +0000 (UTC)
-X-FDA: 84330247974.02.6502307
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B48A76B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:55:30 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BB911BBC3
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:55:30 +0000 (UTC)
+X-FDA: 84330263220.21.3E66EBD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 05BD41C000D
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:49:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZalrBIh+;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5FEE280007
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:55:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UFqFErqz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768388128; a=rsa-sha256;
+	cv=none;
+	b=EqRBAqV+96VtqcFOp4u0LN1zpK+3BGk4kB0qQiT1Kcl8ZY8yYZlZYwUwC97vXYGr69PAVN
+	jhCCkGbZasC8fsVZZzwUdBWannwVpLnxOE0B1xMhBp6ONZce/5RsgXjYonKcS7sRWVzvA7
+	jc1hDPAaV64ymR08sY7yosvNws3R9lI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UFqFErqz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768387766;
+	s=arc-20220608; t=1768388128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yHljD2KSk+AyOLhFgKljoeT4RVHw13m3ZypQFkUkChw=;
-	b=25u0WSbSOIDfgw6dqQv5CDRZqN2FWZTtGHbyAIV5aDRbqggP/vBNbs09RqlvCUSxmKSBl6
-	ElRcu+H0TFFAmMn2oe2UGDPZpwLFgrT0iAoSGd8QznWuKTJMchjzd5Fd4XpX2sWz1CukgL
-	/0qDGCsLaGE1IxXKo+6SbtVlYvXvRPQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZalrBIh+;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768387766; a=rsa-sha256;
-	cv=none;
-	b=LDX6ylsspUovwjRkQv2jAVn2qr+jfS+B75Ez3iFTDCXaaz5JTF7x7sgQlto8L8G7raU4JM
-	YjcIofVX/DocBvAX1UUNrIZKTWZUhn7WSfOAaP48c1Q1Uk04ie56bUTuTkcZLmdWp9Tp+q
-	JD0m10DBkNs/lLuMHUVoM6zlynPFg5E=
+	bh=GWsYTbEUqYTnBQebt8qIrjTRS0sJxZPKFd+c9faVrvg=;
+	b=4gBQq/dT+Fjx7OgBKuXdZGX48XLr6XwP0xWmNhxo12miB/+COgHoLberQutNR+EupNWlGe
+	7HzpGVOTnvys25+ItandgpvjqVYMRBNnguSK7IvWlm4QOKnOrihw3eIigqFQH5CbN2SCKW
+	OLRfBap4IQjaQ9n/K85CzU39L8te0Nc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AD06D40982;
-	Wed, 14 Jan 2026 10:49:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45EFC4CEF7;
-	Wed, 14 Jan 2026 10:49:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6538D403B9;
+	Wed, 14 Jan 2026 10:55:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F41C4CEF7;
+	Wed, 14 Jan 2026 10:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768387764;
-	bh=79/0LC4XFZkQa9FcixVBMSelu5diVWBx5HiiyCfVe6U=;
+	s=k20201202; t=1768388127;
+	bh=hIuzYS6a+N3lbpi7hIrLjsDBa5QpNFERvUevfsOEfh4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZalrBIh+6TpqN7ymyXJCpyYRdW7dF3W8SHHJm8rtm4xILFsYOGZ1dYTT0+5OJuITx
-	 FAF+b88uA8O4ghuRa0FYLpUH2HMkIDWp1zQ/wH4dWLTzXl/f52M53Weh7lUAJIUtYd
-	 QIMO8H4LcGaYyDDipdBsn+13+EA9Yo594MvVJ4PkMk9/i8hwn1re6TZKqRuFLDLieF
-	 b5CbUtqCpzlGAVDLThfdkLSY9Q0nU18U6jHNb6C2aeg2fMgX5W6xEy+xTduL1NPwVv
-	 /xYDwlwS6XmoV8fvratJYauAscLKY/ixlIzEJjty50BxwlgRFyRxAkk0hmF4Hk/F5m
-	 n36k2s8+S77vw==
-Message-ID: <6a9db6ff-2fe8-4be6-baba-7db7913898f2@kernel.org>
-Date: Wed, 14 Jan 2026 11:49:19 +0100
+	b=UFqFErqzPJ9xHsMZc9dlgwx8hnhxKPXXPYUA7gEGkj+uw1ZDtSkdXfwehvBaAUol6
+	 /waiG99gkQrkadIv8oSCIckIZblqs4CzJfSq1HCXsQYuoX/lPqgirgy1JXbyvF2jMp
+	 yls+m+cGqpmVjJ1+5oLRmxDTJx4caD6F6XcJxGkgXJZqBk4sKs0U/zCZW+nlvJD3dc
+	 2TmzI4xtK2riCIBJCO7FIdzuy5ipOvxHnUH3EiP66tjgWs7KYS2vxMt0pNJ2EbXS5q
+	 CC2/9ogYjJtlFKGXCK6PAXDRVwgYd8IjzO3GXNqhfcRjF0tZ/1NnTW+EtjPa22nxTZ
+	 Z0gLImtzc6lZA==
+Message-ID: <3555385d-23de-492c-8192-a991f91d4343@kernel.org>
+Date: Wed, 14 Jan 2026 11:55:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] mm/memory_hotplug: return online type from
- add_memory_driver_managed()
+Subject: Re: [PATCH 7/8] dax/kmem: add sysfs interface for runtime hotplug
+ state control
 To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
 Cc: linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
  linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
@@ -78,7 +78,7 @@ Cc: linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
  xuanzhuo@linux.alibaba.com, eperezma@redhat.com, osalvador@suse.de,
  akpm@linux-foundation.org
 References: <20260114085201.3222597-1-gourry@gourry.net>
- <20260114085201.3222597-5-gourry@gourry.net>
+ <20260114085201.3222597-8-gourry@gourry.net>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260114085201.3222597-5-gourry@gourry.net>
+In-Reply-To: <20260114085201.3222597-8-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5txr1jkemgsxqw9re17rupic1376acbd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 05BD41C000D
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768387765-278231
-X-HE-Meta: U2FsdGVkX1+DxDfawCULugYWxylCEDiObBGbMh/1USrXI7IA3RcbgPpH19ODKwpOzO/6+Zdewl6VB/LTrVzaFgfXNswLKSy6sVdg6jnoYUaPwovBdANgP/+aHN59ULzh5HrRqyHEMTHi7X4D56r5ppWWguCwlclQM60A27c8HXHllUU3RY6JG0vlT0RmjQ6iX7XnAT+BrVwodjmd0Rbcx8AINbSdxGGfZ8FkL5u9dBPghxnyFfoVDfo0ivNN76a6dir2ZdJdnoEl94JwtvfRBer9XtJkaEnvfXMH0hS5/pDYDhOzfuCOlLR8vDkxEIR1TYSRrobfrkcI1ApQcNF2pgN9lEddCWlyxv0fFSU+tSAqcvV+qOW4u0PKfKrVRA8/2YKA93ReZLm0L0YOMOSi4cWiot+1tocsllNtwesWmkdntyG2RhDbPJykHetsx9LVNSv1Zn0B4KxjIX4/QStLHVPLcKVD14Hzas2ZSF+9RBHdhKj0t7ABt6cwdNfdKTHtNcM21O4cfvUC/VYEkkYUxexB2FOI/xzZc+SoWqdDpL3yNQ8ZlKGFtvsSOE/mbqwQQI/Xouz5hAeF7lXELYdSbxGhlXsp+NhKvMInRIiRiNtDu9U1y1ofaDAI0GFs9OdmlVj3ZYW1+J9N9lJEdULCPoppR0LGJtpzi+2Wp7zIE6jvL2HLUPB1k/jEkxJ4YPHOhu1Nw0dQohw7EQ1AI8T0/VsXG0bZbNnYwvvLlWK0IOmH4YaLP/enqkSBipCqkxb0gD6opXtl8VfHyhQToA0FxHlgo0pSLf8o88hx1viJU9V95LoLra1B+e2+h1sACZFVOI70P8Eqw1+33xxVN15kcQMGvXZOv61PHP8C6f+g9q2jly7pdqdGE9F55BTtA+OT2bjsZfxkCLE4QQL7nYNxc6PlqDZ5rpfXPSPegR/TcsjaRPk6LNp+kBTvwkPKiToaHptW6rkQirbApHGb+y+
- 9kwMEflY
- iJbKYZiwmbhIQEm6EY0W5wl0OA2Ur73Y5JiCfA2xc0BzSVnJx1AmIly0SVlKWfjblwk/Ed2IC/ChEkgqQMdOC8/AducR8q1WITXciBJQ7fM+PuczSLVSSyaQyaS4P3Qi9De8wW0VlKIPkIN0g8DGSqw9Y6ZlQL+0XwQEfmnOkkd3j7eOE21YSKrHaI8GxGYFUJ59YnR/N8/rnHhtHJjL+IbYKJ8qhNK66G9DUtNRCofFyC5xL7rOIHGcbQ2uj+CSHXDZrxMY+JSz7DhAd7iHyZWkvQx/RZl3FJxajY6Mu6x4jjUmgiOZ3AKfnWQ==
+X-Stat-Signature: j61xe1pkeydo5o46p6heqkyejetswmop
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5FEE280007
+X-HE-Tag: 1768388128-923316
+X-HE-Meta: U2FsdGVkX18kNXeLF5aMcUtDZ7VpyQ4ytjvOOcD/4B8UAYZGlMh1sPOQX3hv79LJAmJJQE0chssgPTvb6Jx46idWYPe2diZc9NeClIo783trB0VusVFNHp8a2+zsIFGpx51+NmN8sevlkpBUU9+Z/655UGcWIdypQvIoQH8kCcpeh48G6Ld6ReAv3zwtTgKPWGvbnX84g73UWvOi99I2ALKjvgkEvDkrm8Z6ulYhR9oy+4TiAhGc/lO4YF1OpeUkPNr02CbsZQtHetj1SfY6/rzTFmAXl1MNpCoEqLkHnt8/n5KNR16bN+x4GXEcdKZyzDoV9D7RuPOXKyQYPSOpMH0kqeBG+JUbwnst0Me24sYxWTF8BIYEzybK0svWxHm53DuhqSZXTFwl7R4SR8JetigMUpbEhuULBKHIlblMSSNYoEvfxhtPMAIZmkqZVMu8QqWlSZ+UB1APsU8rFfJk1cmC7tmSDz+2obZeob8p5LCWPiJxo8cd6EdM3eQML2VAJPB1wufnfCOj71/pDtu0CCGzqK6wkfoy/GOqDzM5RrBmFACwn0cOyftFBza0V+kYuNLjes5IVvUPBz7ouw/fksCW1Bia5L8jOre39cO2VBHonWOWsb/5FOgd6xy3cVqQpaM5lPM0VwcUPNnMjXHoleklU+IXDIdPN068Nuf/x1yv6EKzELYmiKyFugze9auUq2cknj6ENIehYHlJJkEWzx6XZo5ljnDr6txVpLYbY2+hGWdOrEFfhr2H67iaixYuKoAQHUsuAP+TV73vbRVaU05Gs2HsORnziXC/RAGE66vlWzKUc3qtbsfrnGXvx+CW7t5ot7qHYM923VzvubjEJByZiWC6odne7rCcgmfeOc8DkQ0IbLmaROlT1M7Ei8rTZ050DVRyqEdl7kl1DQacxok6khzL8SQAoXTd5AVYpwQFN2Fn/k+GB/s0YhVT4p29PQBW5W623S1+MLSEf1I
+ H97OoktH
+ kNcLj3k/1zcrzb15P9TEjwkOeoBp5pD/P12nvc8Box3x1HVGDejIju+8M3VWZjRt/oLoxYoRHamI9kYJl6Lo43Up7UbPeZT9+2m/P1oSRN029uKN7++4CcwaFw7f6GHu5dFeR5BNVidJIbYMFFekRSRBzt4SeFq5n5lAyVgIBgs8j+mdf/17YUCJ5I0OGKsH1wtSVCL+gFgW3EM2DeCYLju7NsyG7J/QW0iTU0c1VMWaHHgnT7/Dng3L8nfNKQZguUfE2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,14 +144,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 1/14/26 09:51, Gregory Price wrote:
-> Change add_memory_driver_managed() to return the online type (MMOP_*)
-> on success instead of 0. This allows callers to determine the actual
-> online state of the memory after addition, which is important when
-> MMOP_SYSTEM_DEFAULT is used and the actual online type depends on the
-> system default policy.
+> The dax kmem driver currently onlines memory automatically during
+> probe using the system's default online policy but provides no way
+> to control or query the memory state at runtime. Users cannot change
+> the online type after probe, and there's no atomic way to offline and
+> remove memory blocks together.
+> 
+> Add a new 'hotplug' sysfs attribute that allows userspace to control
+> and query the memory state. The interface supports the following states:
+> 
+>    - "offline": memory is added but not online
+>    - "online": memory is online as normal system RAM
+>    - "online_movable": memory is online in ZONE_MOVABLE
+>    - "unplug": memory is offlined and removed
+> 
+> The initial state after probe uses MMOP_SYSTEM_DEFAULT to preserve
+> backwards compatibility - existing systems with auto-online policies
+> will continue to work as before.
+> 
+> The state machine enforces valid transitions:
+>    - From offline: can transition to online, online_movable, or unplug
+>    - From online/online_movable: can transition to offline or unplug
+>    - Cannot switch directly between online and online_movable
 
-Another reason to just let the caller handle MMOP_SYSTEM_DEFAULT itself 
-by calling mhp_get_default_online_type() :)
+Do we have to support these transitions right from the start?
+
+What are the use cases for adding memory as offline and then onlining 
+it, and why do we have to support that through this interface?
+
+It would be a lot simpler if we would only allow
+
+ >    - "offline": memory is added but not online
+ >    - "online": memory is online as normal system RAM
+ >    - "online_movable": memory is online in ZONE_MOVABLE
+ >    - "unplug": memory is offlined and removed
+
+That is, transitioning from offline to online or vice versa fails with 
+-ENOSUPP. User space can do that itself through sysfs and if there is 
+ever a good use case we can extend this interface here to allow it.
+
+Or is there a good use case that really requires this?
 
 -- 
 Cheers
