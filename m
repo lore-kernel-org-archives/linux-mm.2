@@ -4,112 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6691D38FEB
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CF24D38FED
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:47:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C615B6B0095; Wed, 14 Jan 2026 11:43:38 -0500 (EST)
+	id C93806B0089; Wed, 14 Jan 2026 11:47:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCA276B0096; Wed, 14 Jan 2026 11:43:38 -0500 (EST)
+	id C3F746B009E; Wed, 14 Jan 2026 11:47:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AABC86B0098; Wed, 14 Jan 2026 11:43:38 -0500 (EST)
+	id B3F2C6B009F; Wed, 14 Jan 2026 11:47:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 948B16B0095
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:43:38 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A94016058A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:43:38 +0000 (UTC)
-X-FDA: 84331140516.13.793FDA6
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7977840005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:43:36 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="I1N/mVtb";
-	spf=pass (imf07.hostedemail.com: domain of 3tsdnaQgKCDclfhlmTYTZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--smostafa.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3tsdnaQgKCDclfhlmTYTZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--smostafa.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A38026B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:47:09 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F5D0BA149
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:47:09 +0000 (UTC)
+X-FDA: 84331149378.16.3AB62F4
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 94CE3A0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:47:06 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BnWXNoFA;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768409016;
+	s=arc-20220608; t=1768409227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lp9W32Kped56Je6lvPD7Xlxv6Ozf5Aka/rllxnPof5w=;
-	b=zASTzAKxFLZczxf0ueyFBEvgci0rCEiDJYuWNOrARX1CltAl+VkUKJ9981nzJ28kRTh3Ma
-	1fT75BKKgOM/wwAbg4uIvorPM+x0paECmKvtoWn8RYx2PWq9uNWHehDg2xnLkIceXrkV2y
-	j9Px9HX0K+JGKMM67LgMIxDy3pjMxUs=
+	bh=I39HASnXsqxc9xQWRogWEaHpTvzjVn/oJBE3vNlPdms=;
+	b=T9JTK5Zyh1DQZc328cSsERhFddDGQrB3JRUi9VrjfP4/0a2+jzGzk7GqAJ1PN064OT/F3w
+	vvfGAiKCT2n94d0xJ9HLdQCvdy4RtO5B66x8kaa1L26TJEKJTSDC4h0OCSi/sM8hE+24lu
+	YSl/xBhGJRh+8nPIz+jVA+yqbhgf3ro=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="I1N/mVtb";
-	spf=pass (imf07.hostedemail.com: domain of 3tsdnaQgKCDclfhlmTYTZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--smostafa.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3tsdnaQgKCDclfhlmTYTZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--smostafa.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768409016; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BnWXNoFA;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768409227; a=rsa-sha256;
 	cv=none;
-	b=4NmtY6GzzFQZcPchHFBZDH8U91imx6IAZoRCRMJQR9k0epOwpB18+HvoeWubuzj94xejDU
-	RjOCll762V4bcRL/qYoXfp44Cr9AJQYhh4m/DXBlZoFxGMjXOmJA+UeP7V+NN5EfHwJXjk
-	CgWm1UU69HC/uiK/lsCcKDfcmxyzdjY=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775e00b16fso196705e9.2
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:43:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768409015; x=1769013815; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lp9W32Kped56Je6lvPD7Xlxv6Ozf5Aka/rllxnPof5w=;
-        b=I1N/mVtbk2wTCPz2pjsaOGcLMonig/fkil1A2hut1vQ5qKZnCQ7PtTyfROlqIj6pIr
-         acFT/dKpNjGcZcIjH5AlCBkup72mdesh26zlT4/Y0fy7RqtJpv3UlbQiJKefeuYxTGnB
-         SQ38fgHTeyvR6BlRMpdI8mfXD30Fe7NYU/YkXa0LSyjHZ5P4bsBbdPcJ6A+CI+Zo4KQH
-         N8mNa8wXJ4sLTYPPdQhGJnrwOapC6R7ppapcjmIt0hota1BjlBW2CQ6OUZ9wYnSkFx1O
-         St6Ivq6NDYfJeqri+BDKjA2PclnAGDCoYWhpRa18jODfI1Pz7B9e5rRULQNa1dZPq45z
-         wPlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768409015; x=1769013815;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lp9W32Kped56Je6lvPD7Xlxv6Ozf5Aka/rllxnPof5w=;
-        b=IH9mezYzqKRV+X28Y0qBpjcQshtSaSfhv8gKUjwOivQl5bhPL0zfKEIo/uIkcxomME
-         UBiL1rKiOr8ePzXrFRxfWOlqWlMpsozPwv7zOu9clVJ2DwQUpta1uHgskNGtiogdkQM2
-         8C9TMJbIoJTLaFZcMXvkIZbcAvmZIgU8sGstT5R3mKsBop7Ca9DL7yWEit8vKHO8lnkv
-         CRbGgIh4JidC5kwl11GOiWFSiiRcYsB1MaFsfkn3SGWwKtPFz1wr73nLzd/fEg2prdab
-         w6Fnp3KkzsW8z7nO+Dm6tweltuZEENemfag+qUCezLYTutnctWt20VOMyyBRrMDZvPgS
-         aYVQ==
-X-Gm-Message-State: AOJu0YxAs7ZAZQ+l9sJMPDQT3LUYP1UeCd9qOtvUDRlB1j3HHJxwK9nh
-	XRWykuc/bWpR2P+gWYebmHWDrpADgHLtOnmFf3G6CzlzgFt0nTn5JPwjZC+TnXZrb716aU19FHG
-	pJTsl+ObGW5karN/Zdzd16iENvfd2wbLcjqnVSHw5XIS1N9URArX4Vrq2bSWABeSb0fTlMLMvtt
-	MBv4mMJZiziKfmUmdQsA7sIJXI2kXmxQgM60TqlqTU6Q==
-X-Received: from wmbd23.prod.google.com ([2002:a05:600c:58d7:b0:477:9654:b44c])
- (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5285:b0:477:7ab8:aba with SMTP id 5b1f17b1804b1-47ee32e0be0mr36180785e9.1.1768409014935;
- Wed, 14 Jan 2026 08:43:34 -0800 (PST)
-Date: Wed, 14 Jan 2026 16:43:22 +0000
-In-Reply-To: <20260114164322.787125-1-smostafa@google.com>
-Mime-Version: 1.0
-References: <20260114164322.787125-1-smostafa@google.com>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260114164322.787125-6-smostafa@google.com>
-Subject: [PATCH v7 5/5] iommu: debug-pagealloc: Check mapped/unmapped kernel memory
-From: Mostafa Saleh <smostafa@google.com>
-To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
-	Mostafa Saleh <smostafa@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Pranjal Shrivastava <praan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: jroth1hm5roscpmhwrn8dbnmx4qxmp43
-X-Rspamd-Queue-Id: 7977840005
+	b=gdDRJAK198kdLp9YvE3Ds5lfMdf+8F8kctPBGcZo+ggcvoSKBPcJy92a/4NrAbh1T+x6l8
+	VuoetooDGg7rFMteElk1Ok2X3lwIZvaVNnDcTq2uBXius6cYoBYiWwZn5JjE+kjlWviFmX
+	2zHyXpUZeeVLLEkCqo8oaYftcS6u+64=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768409227; x=1799945227;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LsduvWdE521sHVk8zAXpbZYRmWsiFUTl1UjUbzQRAxE=;
+  b=BnWXNoFA0xo7jrwRAL/i/zYT9AGf1n9zWxsBPsL1gO2r6TZYsV7vpUea
+   cnhbAFXdm0w/hSGGgWdeaRqYmb4Om0kEfBM0LeE+AvIxo/IhwPp0wxKgR
+   8ABLII1sz6QFlVMwRHUeYIC/zFtNh/KVms9Gd11b+2vaM6r3MHUKLgJRo
+   f9RRBWdv0qH50XWNNuMkJ3KgrRhDdDFLWxjvhqF+AKxie+3/3HmgXLMyp
+   JYW7pKf0n9m0PmDLaITEWYnPgHzxWAjCEHDBVCUDt6KPgUmUZM79+ZGVf
+   rIOZQFbEAvtWG/I5byiWzq2j/pJDUSSTYmA4rCNo03yM+dJ4RVnbWZsEG
+   Q==;
+X-CSE-ConnectionGUID: KeZcSCBQRxu81e/p3RlKZQ==
+X-CSE-MsgGUID: z66phPRSTiqrYnX5vY9tLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="80433676"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="80433676"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 08:47:05 -0800
+X-CSE-ConnectionGUID: hoja1WWcSDCX1doRuk9J1A==
+X-CSE-MsgGUID: ZU2sdGa3T7Sqs/x+nSwX/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="209772062"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 14 Jan 2026 08:47:02 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vg41L-00000000GfQ-0f0V;
+	Wed, 14 Jan 2026 16:46:59 +0000
+Date: Thu, 15 Jan 2026 00:46:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: mpenttil@redhat.com, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: Re: [PATCH 1/3] mm: unified hmm fault and migrate device pagewalk
+ paths
+Message-ID: <202601150035.taEgRkxK-lkp@intel.com>
+References: <20260114091923.3950465-2-mpenttil@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260114091923.3950465-2-mpenttil@redhat.com>
+X-Stat-Signature: irg4sk8p5ai5rz41u5ipsm7su86o54yy
+X-Rspamd-Queue-Id: 94CE3A0005
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1768409016-749292
-X-HE-Meta: U2FsdGVkX19k0rnk+1TXF6+G4/OM4KBR+xNqeMq+tmY6QDTFw4qjF0MpGpaDEqtZLctBRsrWmlu8zzhfTLK7BNGxlQwpOGKnAorcCz816RHeBTEUpgBq5vqi1tQFKQpITJryATJqbu1IQUPW+nUuw4KEjCD7CEupGhcMy7L0/e+4mdtqvOaf3+9bticY6n/BWNFVgiubfd055kO0GQjGdkUJ2mQICg1x4zRK2vSIvUdJzgKSIwG3uqP1n6Lg0l2f7has0uN8MqNaAYtyf8b10E55Vxa501M1JmI3cBP/JlVWA/Za2vRMWtoMLLeO1BddvnMZHtfKa1e/8k+Y9Gw4kWMcvm2YqwLVX8R04IuQExjKIbJF7BEdhSMvZiFbhueWXEzEwvCZUJqBNssI+6/Dzxcw1en9uuaXwy10GI3jo3d2wlyAwvn4ojWtqhFev3MsTQWGbZd/IL+68S+oQzEIuMVk/7Hhfpq8uk+qCFNQJYXLmUNHfdmXZIZv/5g1im3cjWM8rbzOKGO509VhyDyveMVh+WV9Yst8l3KJuO7KlVhkQ69CW7ckwsDH+fwpSMtxYI2pddbv01xlUXrEiRD01qxz2DjerXhG12XDIngtzuv6MuWDxPRXkEtIl+juwy/aalkbS19rF4c1QsHhm6MWuywxCBl/EfSvOkYeGnAnEPwUM2Pp5C6AYBG0/HodsILclq3nlvhMiAWhSjfdJOgoVtf43eVI7sdB+MgkUNsvFbmaMqUYe7wjjgODb0AElFK2zQMcG3aL2d0hJKVFowGRGmGWm6i9Jc2oGNnbcgfKWdDSkPpCAVPv3jqJI/Ng8NtVEdZk1eZbDgCLD6JIGB3gpYMQcC79Ve1Po1SvHxHNebRlTQ00vlSYwUzG/iHCX+5BlShaP9y2HnGVBc84iy+8nJVWeRFQZ0k09oIC20Q4yr1OSP6K7Xv92L+0F0WoqlDA4gmTIlWVVfsQ9ydrAEG
- 33mFw4GR
- IAZs/4thUxDpYdMwgPvi3e4ryppBfgWWMRCunQGm5Ph8c7Y5IK2UlXwx3ZMGMKmYinAYpvv/5gf3Tvgog8Shrr0fk/ho1gNNtKUw4VjRDuS3SkdRGsv3kZcxC80qBNA35xpYPCCnaEp1FVWnbHmYgg+a7XUeNHipAuM2YMShOURHf/Eu0iwmdLa9+1Z5q1BgQjWqXtVGZ0hFAsphcxL8gajgoAakJA8uj6/9k9Vq7Y5RpGWYdWNQx0hlEur8K7rZ4ty6FnEIhPtJNHmaCobbRN9u0OXZf9g4w/TuXZQA2PCpPFdt0PWjoA112vgU2JR0O6g7S1MziKbEXF+QRUVMvNw0zVAvyzjYu/I8hRm9qQap7IqUr2Z4ooHns/EGFM/vWHP27lQEMRLQAH6u5hUXmrfZaUoW9FfE+DG21LOaR24ZFD1R+l729/ckjzB2f2DzKyDNwE6y0DUmStA6OcnWmPBM1tbu+0+p49TwOXwvsF9sloYrXMUlJsnzlcEEMuSVWRt33ToESyy0hDtraU9UAWTqzqcDPEmyggkucwGIW5f7u2/5SW3wLOa458+XWXAtg7pKCiK+vMwA7m1qnml+v6U9jJYhxPvMVF8CXVPi+gBhSjRI=
+X-HE-Tag: 1768409226-310443
+X-HE-Meta: U2FsdGVkX1/o7pyAQmR/jgW4GafhR35heES4SaFwIrJQW1EvhAgHNywuIj61qt7eGEgyYt1H/dexgevtdzrIx7bMe8zavweVe9XNh9kgxvOyDx0LcYwvpMx1WTnmqYbNRZDugsVRR/W919eRBbBofmUuQl98yAPqlMsxmHJd590ZSoG1ozhrdLFa/T3I09+2TntNuQ/uBBBR3dF6RCU0lVisChdFl2RBVFfDETAd7Lmjpow5YcP7onk08RPWT5IP7aHWKYL+jJ1aSpOlWtmfAHd8e+J5sVY+96rtHm32McXiolQM3Aj1TYA8Y1dhCMkckZG4Ma1IHmGLaStFJ1PSITJHhJZq7dSPXPCEtMQHzE5OPJen4MYVLyTvUXQ9LF1eKdWQHH1uMRgReaAvnR/ThgQe5Xy5zilmZ4vxSXyMnUAEF9xN3lhtF11anN5Eik0Y5ayTKUuR7QAvM+HjUPr0TVL97sf7uMkJyBQE0CpV+IyMu6xfUxAXxNp9VZ4zzm5H3cAuNCSFH9T/7vLw5zTh5n26OJOMoSOeETwMI/YAET3wTPZdqXK0tn8JbdMWXUvUWVN+HPXTISgCt/KAD4mphgGcdfkgzSXHt6ZXfMcRW6OnLUWB2tiob6yhCFw9vFg4/mRpPfdGzBB/nHfklLjZvKG1k68ptI73ncg+sHOjUBJ7Q9LEqsXtd/N3ZXGdRpLv85fBhGqcOIf1oG/7Mi4d0GAQWJHr1ClDKnTEMjsoIXa2v0TCSUr7idXrx8PWULO+Q3fXtPisP9uTKP/1CKcbSRHQfNLJAon85waXhCX8FVGGI4/XCZirSPew02F+n6l1EogZAyYKOqGcItHBgGf2B3VyFLYJKkxn/9w6Yjn43oGkuBJpUECcS1QqrH0XluZy+2vJgTmg+T8VBrEPX05aeamL2DPa3neWYz78MoCRQVuYmL0laQUwkZv+ghJnnB9lYlyZZOhTrSrXmpdJpo4
+ roe1uqNq
+ W74N/X1d4wha19Lm4DQ4uhGRIpciHrbxHJDeitUylMNtft3RUWUmZ3b/xFX7ykcWgOtzHEKk6IOWQmtgzNgffMCCNFvwsVRe8d34CJA3XbcgsmpQAzA/QpcwNh3ClJUD2Rh3WwSSH7pFR7elCoplqWNTV5foZ1AKH0/u4kPwH7cIp1ZcF4cLPrUZjTK93jwzjVUfzAA0VOpfa6noHANsbAaMKe62wnXJCqD5Hh+QpMOOEZ7+9JklZLS4iqri4Zezo8zUmiIbjUhYnvG+2mLlOtDn8qXNV2XpTM0YwjdlRqACUDGATOlPABYJKkPiz/UcQxT/bc2id/Rq8MFViW3r137HvWGCYwNPye+KV2x3KzFWc37ecqc0m/zArZEwxgGboh1oH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,127 +115,252 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now, as the page_ext holds count of IOMMU mappings, we can use it to
-assert that any page allocated/freed is indeed not in the IOMMU.
+Hi,
 
-The sanitizer doesn=E2=80=99t protect against mapping/unmapping during this
-period. However, that=E2=80=99s less harmful as the page is not used by the
-kernel.
+kernel test robot noticed the following build errors:
 
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
----
- drivers/iommu/iommu-debug-pagealloc.c | 23 +++++++++++++++++++++++
- include/linux/iommu-debug-pagealloc.h | 14 ++++++++++++++
- include/linux/mm.h                    |  5 +++++
- 3 files changed, 42 insertions(+)
+[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
+[also build test ERROR on linus/master v6.19-rc5 next-20260114]
+[cannot apply to akpm-mm/mm-everything]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-de=
-bug-pagealloc.c
-index 3ce3385588b2..a283b5dbe26f 100644
---- a/drivers/iommu/iommu-debug-pagealloc.c
-+++ b/drivers/iommu/iommu-debug-pagealloc.c
-@@ -9,6 +9,7 @@
- #include <linux/iommu-debug-pagealloc.h>
- #include <linux/kernel.h>
- #include <linux/page_ext.h>
-+#include <linux/page_owner.h>
-=20
- #include "iommu-priv.h"
-=20
-@@ -75,6 +76,28 @@ static size_t iommu_debug_page_size(struct iommu_domain =
-*domain)
- 	return 1UL << __ffs(domain->pgsize_bitmap);
- }
-=20
-+static bool iommu_debug_page_count(const struct page *page)
-+{
-+	unsigned int ref;
-+	struct page_ext *page_ext =3D page_ext_get(page);
-+	struct iommu_debug_metadata *d =3D get_iommu_data(page_ext);
-+
-+	ref =3D atomic_read(&d->ref);
-+	page_ext_put(page_ext);
-+	return ref !=3D 0;
-+}
-+
-+void __iommu_debug_check_unmapped(const struct page *page, int numpages)
-+{
-+	while (numpages--) {
-+		if (WARN_ON(iommu_debug_page_count(page))) {
-+			pr_warn("iommu: Detected page leak!\n");
-+			dump_page_owner(page);
-+		}
-+		page++;
-+	}
-+}
-+
- void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size=
-_t size)
- {
- 	size_t off, end;
-diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-de=
-bug-pagealloc.h
-index a439d6815ca1..46c3c1f70150 100644
---- a/include/linux/iommu-debug-pagealloc.h
-+++ b/include/linux/iommu-debug-pagealloc.h
-@@ -13,6 +13,20 @@ DECLARE_STATIC_KEY_FALSE(iommu_debug_initialized);
-=20
- extern struct page_ext_operations page_iommu_debug_ops;
-=20
-+void __iommu_debug_check_unmapped(const struct page *page, int numpages);
-+
-+static inline void iommu_debug_check_unmapped(const struct page *page, int=
- numpages)
-+{
-+	if (static_branch_unlikely(&iommu_debug_initialized))
-+		__iommu_debug_check_unmapped(page, numpages);
-+}
-+
-+#else
-+static inline void iommu_debug_check_unmapped(const struct page *page,
-+					      int numpages)
-+{
-+}
-+
- #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
-=20
- #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6f959d8ca4b4..32205d2a24b2 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -36,6 +36,7 @@
- #include <linux/rcuwait.h>
- #include <linux/bitmap.h>
- #include <linux/bitops.h>
-+#include <linux/iommu-debug-pagealloc.h>
-=20
- struct mempolicy;
- struct anon_vma;
-@@ -4133,12 +4134,16 @@ extern void __kernel_map_pages(struct page *page, i=
-nt numpages, int enable);
- #ifdef CONFIG_DEBUG_PAGEALLOC
- static inline void debug_pagealloc_map_pages(struct page *page, int numpag=
-es)
- {
-+	iommu_debug_check_unmapped(page, numpages);
-+
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 1);
- }
-=20
- static inline void debug_pagealloc_unmap_pages(struct page *page, int nump=
-ages)
- {
-+	iommu_debug_check_unmapped(page, numpages);
-+
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 0);
- }
---=20
-2.52.0.457.g6b5491de43-goog
+url:    https://github.com/intel-lab-lkp/linux/commits/mpenttil-redhat-com/mm-unified-hmm-fault-and-migrate-device-pagewalk-paths/20260114-172232
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+patch link:    https://lore.kernel.org/r/20260114091923.3950465-2-mpenttil%40redhat.com
+patch subject: [PATCH 1/3] mm: unified hmm fault and migrate device pagewalk paths
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20260115/202601150035.taEgRkxK-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260115/202601150035.taEgRkxK-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601150035.taEgRkxK-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/hmm.c:423:20: warning: unused variable 'range' [-Wunused-variable]
+     423 |         struct hmm_range *range = hmm_vma_walk->range;
+         |                           ^~~~~
+>> mm/hmm.c:781:4: error: call to undeclared function 'flush_tlb_range'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     781 |                         flush_tlb_range(walk->vma, addr, addr + PAGE_SIZE);
+         |                         ^
+   mm/hmm.c:781:4: note: did you mean 'flush_cache_range'?
+   include/asm-generic/cacheflush.h:35:20: note: 'flush_cache_range' declared here
+      35 | static inline void flush_cache_range(struct vm_area_struct *vma,
+         |                    ^
+   1 warning and 1 error generated.
+
+
+vim +/flush_tlb_range +781 mm/hmm.c
+
+   587	
+   588	/*
+   589	 * Install migration entries if migration requested, either from fault
+   590	 * or migrate paths.
+   591	 *
+   592	 */
+   593	static int hmm_vma_handle_migrate_prepare(const struct mm_walk *walk,
+   594						  pmd_t *pmdp,
+   595						  unsigned long addr,
+   596						  unsigned long *hmm_pfn)
+   597	{
+   598		struct hmm_vma_walk *hmm_vma_walk = walk->private;
+   599		struct hmm_range *range = hmm_vma_walk->range;
+   600		struct migrate_vma *migrate = range->migrate;
+   601		struct mm_struct *mm = walk->vma->vm_mm;
+   602		struct folio *fault_folio = NULL;
+   603		enum migrate_vma_info minfo;
+   604		struct dev_pagemap *pgmap;
+   605		bool anon_exclusive;
+   606		struct folio *folio;
+   607		unsigned long pfn;
+   608		struct page *page;
+   609		softleaf_t entry;
+   610		pte_t pte, swp_pte;
+   611		spinlock_t *ptl;
+   612		bool writable = false;
+   613		pte_t *ptep;
+   614	
+   615		// Do we want to migrate at all?
+   616		minfo = hmm_select_migrate(range);
+   617		if (!minfo)
+   618			return 0;
+   619	
+   620		fault_folio = (migrate && migrate->fault_page) ?
+   621			page_folio(migrate->fault_page) : NULL;
+   622	
+   623	again:
+   624		ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+   625		if (!ptep)
+   626			return 0;
+   627	
+   628		pte = ptep_get(ptep);
+   629	
+   630		if (pte_none(pte)) {
+   631			// migrate without faulting case
+   632			if (vma_is_anonymous(walk->vma)) {
+   633				*hmm_pfn &= HMM_PFN_INOUT_FLAGS;
+   634				*hmm_pfn |= HMM_PFN_MIGRATE | HMM_PFN_VALID;
+   635				goto out;
+   636			}
+   637		}
+   638	
+   639		if (!pte_present(pte)) {
+   640			/*
+   641			 * Only care about unaddressable device page special
+   642			 * page table entry. Other special swap entries are not
+   643			 * migratable, and we ignore regular swapped page.
+   644			 */
+   645			entry = softleaf_from_pte(pte);
+   646			if (!softleaf_is_device_private(entry))
+   647				goto out;
+   648	
+   649			if (!(minfo & MIGRATE_VMA_SELECT_DEVICE_PRIVATE))
+   650				goto out;
+   651	
+   652			page = softleaf_to_page(entry);
+   653			folio = page_folio(page);
+   654			if (folio->pgmap->owner != migrate->pgmap_owner)
+   655				goto out;
+   656	
+   657			if (folio_test_large(folio)) {
+   658				int ret;
+   659	
+   660				pte_unmap_unlock(ptep, ptl);
+   661				ret = migrate_vma_split_folio(folio,
+   662							      migrate->fault_page);
+   663				if (ret)
+   664					goto out_unlocked;
+   665				goto again;
+   666			}
+   667	
+   668			pfn = page_to_pfn(page);
+   669			if (softleaf_is_device_private_write(entry))
+   670				writable = true;
+   671		} else {
+   672			pfn = pte_pfn(pte);
+   673			if (is_zero_pfn(pfn) &&
+   674			    (minfo & MIGRATE_VMA_SELECT_SYSTEM)) {
+   675				*hmm_pfn = HMM_PFN_MIGRATE|HMM_PFN_VALID;
+   676				goto out;
+   677			}
+   678			page = vm_normal_page(walk->vma, addr, pte);
+   679			if (page && !is_zone_device_page(page) &&
+   680			    !(minfo & MIGRATE_VMA_SELECT_SYSTEM)) {
+   681				goto out;
+   682			} else if (page && is_device_coherent_page(page)) {
+   683				pgmap = page_pgmap(page);
+   684	
+   685				if (!(minfo &
+   686				      MIGRATE_VMA_SELECT_DEVICE_COHERENT) ||
+   687				    pgmap->owner != migrate->pgmap_owner)
+   688					goto out;
+   689			}
+   690	
+   691			folio = page_folio(page);
+   692			if (folio_test_large(folio)) {
+   693				int ret;
+   694	
+   695				pte_unmap_unlock(ptep, ptl);
+   696				ret = migrate_vma_split_folio(folio,
+   697							      migrate->fault_page);
+   698				if (ret)
+   699					goto out_unlocked;
+   700	
+   701				goto again;
+   702			}
+   703	
+   704			writable = pte_write(pte);
+   705		}
+   706	
+   707		if (!page || !page->mapping)
+   708			goto out;
+   709	
+   710		/*
+   711		 * By getting a reference on the folio we pin it and that blocks
+   712		 * any kind of migration. Side effect is that it "freezes" the
+   713		 * pte.
+   714		 *
+   715		 * We drop this reference after isolating the folio from the lru
+   716		 * for non device folio (device folio are not on the lru and thus
+   717		 * can't be dropped from it).
+   718		 */
+   719		folio = page_folio(page);
+   720		folio_get(folio);
+   721	
+   722		/*
+   723		 * We rely on folio_trylock() to avoid deadlock between
+   724		 * concurrent migrations where each is waiting on the others
+   725		 * folio lock. If we can't immediately lock the folio we fail this
+   726		 * migration as it is only best effort anyway.
+   727		 *
+   728		 * If we can lock the folio it's safe to set up a migration entry
+   729		 * now. In the common case where the folio is mapped once in a
+   730		 * single process setting up the migration entry now is an
+   731		 * optimisation to avoid walking the rmap later with
+   732		 * try_to_migrate().
+   733		 */
+   734	
+   735		if (fault_folio == folio || folio_trylock(folio)) {
+   736			anon_exclusive = folio_test_anon(folio) &&
+   737				PageAnonExclusive(page);
+   738	
+   739			flush_cache_page(walk->vma, addr, pfn);
+   740	
+   741			if (anon_exclusive) {
+   742				pte = ptep_clear_flush(walk->vma, addr, ptep);
+   743	
+   744				if (folio_try_share_anon_rmap_pte(folio, page)) {
+   745					set_pte_at(mm, addr, ptep, pte);
+   746					folio_unlock(folio);
+   747					folio_put(folio);
+   748					goto out;
+   749				}
+   750			} else {
+   751				pte = ptep_get_and_clear(mm, addr, ptep);
+   752			}
+   753	
+   754			/* Setup special migration page table entry */
+   755			if (writable)
+   756				entry = make_writable_migration_entry(pfn);
+   757			else if (anon_exclusive)
+   758				entry = make_readable_exclusive_migration_entry(pfn);
+   759			else
+   760				entry = make_readable_migration_entry(pfn);
+   761	
+   762			swp_pte = swp_entry_to_pte(entry);
+   763			if (pte_present(pte)) {
+   764				if (pte_soft_dirty(pte))
+   765					swp_pte = pte_swp_mksoft_dirty(swp_pte);
+   766				if (pte_uffd_wp(pte))
+   767					swp_pte = pte_swp_mkuffd_wp(swp_pte);
+   768			} else {
+   769				if (pte_swp_soft_dirty(pte))
+   770					swp_pte = pte_swp_mksoft_dirty(swp_pte);
+   771				if (pte_swp_uffd_wp(pte))
+   772					swp_pte = pte_swp_mkuffd_wp(swp_pte);
+   773			}
+   774	
+   775			set_pte_at(mm, addr, ptep, swp_pte);
+   776			folio_remove_rmap_pte(folio, page, walk->vma);
+   777			folio_put(folio);
+   778			*hmm_pfn |= HMM_PFN_MIGRATE;
+   779	
+   780			if (pte_present(pte))
+ > 781				flush_tlb_range(walk->vma, addr, addr + PAGE_SIZE);
+   782		} else
+   783			folio_put(folio);
+   784	out:
+   785		pte_unmap_unlock(ptep, ptl);
+   786		return 0;
+   787	out_unlocked:
+   788		return -1;
+   789	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
