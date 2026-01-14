@@ -4,116 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5511AD29FED
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 11:08:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E31DCD29FED
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 11:13:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F4CE6B0005; Wed, 14 Jan 2026 06:08:08 -0500 (EST)
+	id 1C61F6B0005; Wed, 14 Jan 2026 06:13:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CB3E6B0088; Wed, 14 Jan 2026 06:08:08 -0500 (EST)
+	id 149BA6B0088; Wed, 14 Jan 2026 06:13:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D40D6B0089; Wed, 14 Jan 2026 06:08:08 -0500 (EST)
+	id 02B066B0089; Wed, 14 Jan 2026 06:13:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BD476B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:08:08 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17CF8C1C39
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:08:08 +0000 (UTC)
-X-FDA: 84330295056.11.F500CE2
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1D8851A0004
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:08:05 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=RcSG6S0o;
-	spf=pass (imf19.hostedemail.com: domain of pmladek@suse.com designates 209.85.221.68 as permitted sender) smtp.mailfrom=pmladek@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id E57E06B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:13:22 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 927FC1603D9
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:13:22 +0000 (UTC)
+X-FDA: 84330308244.30.272DD6D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CF1C6180010
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:13:20 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O9I8PGtL;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768388886;
+	s=arc-20220608; t=1768389200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zsZRaUIv311mQjR1/d/UwzmBCVEkDM2qHnJQZ9QsbMg=;
-	b=Zkjsj4Hybv4v1eagU2Rgro5FdoGSH+nP0SYCkyeT4yFGTiuAKt3JVxIajZXsKE9rec4dHG
-	rm8R22O79Z08Io8M1qhn21VNSWiXbf7fBAljUcmzwE4Ch3wjEtWqg31ZUvUkcJk9H5RP+B
-	8gCF6CaJyfKVCDv2BoCcXtq4r0M0Sn8=
+	bh=DzUYxb2ZBEYqX/OHgcfN7i9R9sW6zy9ZkhQTYR6yJJQ=;
+	b=yjp7kg+GyMRIcl5w7dI0TL5zIrRixcX3LAgLIst7OTi0G90ktolxpYKqzMHzI0lEeMqznt
+	I38BrNM9/va8vwL3IS0iN8uj28yw1n3AifmgB+AtD9IB9CR1NS4OlVIX0U2W0I4xepWE9R
+	+2drp5CRk5+8GIwmCk8/g8nVA6SslOk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=RcSG6S0o;
-	spf=pass (imf19.hostedemail.com: domain of pmladek@suse.com designates 209.85.221.68 as permitted sender) smtp.mailfrom=pmladek@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768388886; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O9I8PGtL;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768389200; a=rsa-sha256;
 	cv=none;
-	b=WLerHT7hk/QvHxCkvv5DHxNzShQSPN1NzUVhpxHrMQqykheOmP8AzIdlEVOKRy5dr0t4L+
-	D4I5j4cLatYE6uhlh/pFw9MG0dtyVtiLcUzplx8Hw3T3K4UUEpE9X1vhw3PRG/71zSWGNS
-	Pfeck160FJQkol4JcU6gg+hkISTGuFM=
-Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-432d256c2a9so4754697f8f.3
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 03:08:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768388884; x=1768993684; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zsZRaUIv311mQjR1/d/UwzmBCVEkDM2qHnJQZ9QsbMg=;
-        b=RcSG6S0owALjwPPCvXzeTejCyuVP4Mvk4RAJbXoXCwSaY9aViH1Jk4QC3ruy3krmz4
-         1/2Qs5KgtYtckfTL1veY+xZeSBZbEwNKZTptqXPZbjz/JaXp/WtqPAN8YAgG6/u9nwq4
-         DlD/eAvTcib7WposdUux05rvn/p9y9lCw82CPoJI+xf8+bIw1QEWN9eYWCqzw0CpuE2z
-         cm8w08qb+f4opLGK4TmnTZuZnFECrJ4p1ZmiSLzUmBzCub5IP06GqGqtJFv8qeZJykYX
-         wqL7JllWWwDtjTsgxA8U7t6yf0/hsTMEzdhtvuvx7yqHI0nFioqWGg9N7md8z+/SdYRT
-         RdTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768388884; x=1768993684;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zsZRaUIv311mQjR1/d/UwzmBCVEkDM2qHnJQZ9QsbMg=;
-        b=R+9qMKyO8WQIENXsNnJAYEPH1eVmxxKP8w1me5wNyiEX8OIGQiE5n8QuesWqH0aL6b
-         mA/v/aV1zs/PNp9c7pFehe7UxpzWG4mEGVc7jADRZsvrzyNP2GcNbxky8cK4B9kkiYqq
-         4eHuPJJrvN0I8RhHBL09jyFyXD6WFi18BnxgmjQ3qWxGWpxih6Y2Z33SVCnNedaaan+d
-         3vjPqtAkCXaNJC8Iul3tk3IQEcNJ3Z4lS90+HwuHtuPIAt3cbXqgZJHgVucZ4M7Bom06
-         L3UNrpa5nIzr1bK6gA2NYfEMYpC+NJ3vdTL0AnM97GwBodgDOMB70gVI/scM7tNKdYfW
-         BWQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWE6cgrOKoS9uFEFjrbGvkudEuOwvh1o2p7Pro/F5uxJQyMzh5XhkC2l6jEjBP67svsqilGfaGXLw==@kvack.org
-X-Gm-Message-State: AOJu0Yzo+l8sIf9wBrUmK9sRxTs4XOxQvGsC3PrJRcwIhuNjd549K/mL
-	kTrSUgttfGul655HXwZtYCvMJ8eQQosEeBdLcD56ilQGmGtpRLO9qlc7DRdZRX+RRjA=
-X-Gm-Gg: AY/fxX4pIJiU6fMfsubcpBOTsJS7sxdy0grMWOD8G0sNlYKDs7dyGzaj4QSwLNDs+TH
-	EkVcTba3/vBqQpcz7OQpjD/N52Dkoby1xMjMU74ggPo6ejnMHRK0n2JFUMKflCA9PjmTdHEfkAx
-	/j+xO6/8tVPMi6uenCj7QIutV8S3JrmJHsMt8qG/q6HXFIWvZFpT8HQ7hxQyDHgAwTCBr5Z/XA3
-	8nCdDa2XELd2qzZytWD1CEU2egP0+jKTbIXrzHFPmst2lNNsAH+gtwOQQxOdGBynjQY4D4g+ATK
-	hiyV5OCwRmeYxmg66jSviaI0K39oXysH0vazjBCHGEnbCUdi+3+Bo9xe/w9JpCtyS//VQFx/hm4
-	7z5YMTkeWeVmB7rPHGK6G/i2ChvmI9fp+RyCwmIXLZHu3kCaPoXhBZa6E+p4WL6kAuqJgldeSek
-	e2Nnn/AlOE4uSzJg==
-X-Received: by 2002:a05:6000:402b:b0:430:f41f:bd5a with SMTP id ffacd0b85a97d-4342c5727bamr2462178f8f.57.1768388884316;
-        Wed, 14 Jan 2026 03:08:04 -0800 (PST)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432d286cdecsm35938006f8f.7.2026.01.14.03.08.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 03:08:04 -0800 (PST)
-Date: Wed, 14 Jan 2026 12:08:02 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-nonmm-unstable 77/129]
- arch/loongarch/net/bpf_jit.c:1322:7: error: call to undeclared function
- '__bpf_address_lookup'; ISO C99 and later do not support implicit function
- declarations
-Message-ID: <aWd5EoT9dGUwEbE4@pathway.suse.cz>
-References: <202601140159.I4b0kwpE-lkp@intel.com>
- <20260113094801.d3c7b9d327959c6bcb8f4db6@linux-foundation.org>
+	b=Ao4u541laaq2OpWmA4OfZqufquT67BB/hhTDO2UaE5mET+V4Cbr4ERoKBJFxEN2YbG7kOI
+	cmignoYpMFTyoUcPVVZ3eWjK+yZbHq9TCQ/X45uZSX3/X18P+qSJdkE0OliB+zHrbo5TBZ
+	TK7o9HyX2n1Vd7VZM6QeRi3IxbLC1OA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C3AB6001D;
+	Wed, 14 Jan 2026 11:13:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82FEC4CEF7;
+	Wed, 14 Jan 2026 11:13:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768389199;
+	bh=OXfU2Jhb5DlsC1S/wbS8RkJ55TIq54m6w773DJVKjrs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=O9I8PGtLJWa9DIBRghbCyKURocY6wNLozHNI/XwJoO+Xy5sbuUqV/kQiwg3c0Bny7
+	 av+b7ToiQqQRoTZ/M2y1p68hSq6A7m/00VGRElsa8U2FGTmEO/qcFYcG9cDCBlRn4+
+	 VWXe07l3Rem4dHGPLf3c5jILT9FIAmwpX8woztHMk6RfMRIkGYaaiLPczGrd73+HHp
+	 iewAeyIJObVirsAPI180O76zM208vcADCEHutE9u0ofLI0/iYA/YbH76Tzm8qDqvVL
+	 DE9IAyBY6MHrhw5UuIJ9rQU4fFVIwtUdLGGd5SuqqirzqXQnHvpb+TiY8cMJvoUJOv
+	 8UhJQMiYEQPBQ==
+Message-ID: <a7da047e-0064-4f21-9f8b-fa4bcf40dca3@kernel.org>
+Date: Wed, 14 Jan 2026 12:13:14 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260113094801.d3c7b9d327959c6bcb8f4db6@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/2] mm/memory hotplug/unplug: Optimize
+ zone->contiguous update when changes pfn range
+To: "Li, Tianyou" <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+ Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+References: <20251222145807.11351-1-tianyou.li@intel.com>
+ <20251222145807.11351-3-tianyou.li@intel.com>
+ <2786022e-91ba-4ac3-98ef-bf7daad0467a@kernel.org>
+ <e9d52093-d11e-4e0d-9bb9-88e0ffb78a19@intel.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <e9d52093-d11e-4e0d-9bb9-88e0ffb78a19@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CF1C6180010
+X-Stat-Signature: 5yw46zwgzn3h3tkfg1p7razq1c33wuz1
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1D8851A0004
-X-Stat-Signature: c3f1fxd9yoh39fxjqzgxf5nayjszrhcf
-X-HE-Tag: 1768388885-248645
-X-HE-Meta: U2FsdGVkX1+bmQ6mLLBjg9xfQdHPHjRN4XwbLJvqGEqFtJQ0jgVZqrzpOHrgn/b6ZV0P4jMsplN/Wy6nfS5nCBLqJqeaS/puJU24yNcSvihiAAivMUOcvCsjcpklS33Jj8Vv1lszXE3wWmLVkftXnwj7gZrZmX5j9n1vGyjQsXHif+MkW5oG7vk5Pn6vfq4ECPyiO1mmKkAfzIPTwCuOgkgxH7Uxd4sjVzybMtnCiOVLPo/oxugfVklISirlMYczn21RUVP82rvKDNLdUhWmvtYU1jOLKn9gbgFNQ/iJcGgZ92jwMJnJQil7qOHiD+SfVhyvJj7lZ5v8p6L5/Zz7hqth9c4unOYOd3Vi6YRVKvzvG7p2aDKS2IGmZpcGtpuTVW9kfGdV6HoLvEzPBu1xwY1pkB+U0qc3uVyF4pUKHD4T/QlLcfmDuu34DzGNMJTYjfzgk7qKCYrbPu5WcGjx5WCoqaAbZp0kvtsAgyKNMtW7hFH/DS9o9PZMHyvcfHledkixa6JY7rx6INJK88ztflj85gwyXFUua1rAOiAp9TLWMpQyWgdow35MxgDyq5vPrk34oWW8ekRVgwGPMdOil4HQJn0S1KTcqEYIeJs3AyYz+1rQyADe47ZBM0UuQ/Vb9Y/A08FS9Ioymmsempa6Q4iKCQFy8Io5PdqzavRqE1spWwwx/yIPTKvD75AmDcG30qnnM4FHyxF47Duhqew5I8uQJYqjk+fX/T0FMIfYDZa+0nY3acQj9Suaw68Vv3qCjkbjzMViTVVuWDW1IQbJ+ij+a9EGjVMWjDoKbbKifyNeRyMC+7gnxegy9gzQmsB7r7+gWkOQtkqI45T3TgGm/hFQie7ulXKQFamKxxOpFshbaRjwHz6B1O02cmh7aXuGzdWX1ANX/KfSQ46QfnvANeOsDbgkjZXDsqv9plWjqQ8zSeWy2UWBTf0bJAmP2f980KSc6W3FYHedoqfU/fO
- ID33Op1P
- wvzwEPhaeuoDzwKRGUcWYTNcD2BvfBcseqxuA31ONyMxZno88yI92e+eCcQcnNajyAphDBKSjgfeoeWz/eJFZJvxbM6ZLd6jpBUxqAIuZkzaeqzhUxMiTzdQLMt/h8Q20cZAsgjGt55E5udMyKqINoGDOIQBlK2oA0Ok6fbE+rJrq0VIXNEW84C4FHv6m/51FuLJydsCMJWcYQX9Lb/1D+Rl9LLKKZKcCFiklpPws5TmiHs+xKFQxhef2v7VCIDKsslGUfyttAaX/4pww0+oh3kfPeJzFS0jVQoXji/g20UeaWIrHy6MlALYHpbRzIe62J5lt1dssdr9AQ+F3nvsf8LMPTiPtEj1hkasfDTu9ooWHwwZCKkhD+aYYBSSP/hSK4eZtWlYjeqz7p/6Y5HoJht9xt1RccBvQj9VwlucDvIAoQf+bzkRO9yAm1nvbj0gCCTQef6IPVCYIe2HOBz9aDdbo5vQ5bqvw7Xj508welx9u3hfJTgBNbAU3UEQFlputIFKsr3AfEww1vZIORoexiA+ogz42tnbNh8punsATf/E2aGs9PJd1VbkEBdu+DxxVnb+Z/G8kEEtixt0=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768389200-761045
+X-HE-Meta: U2FsdGVkX19JhIXJR9IJAlwqs7p64P+g8U4ZXYofUdoYdb4IIyZDIiMYMRGOjk7ZL+1cFH/psYShHk8aU8Bffotn2z3WyNmcKYERlbIHW0Lm4kDjZLiki7xVoW4lwIjE8ALm3fxtJuV0TkRIlNGFe7g3ZkLJ2zo6N/FEgjJ+vd2lcZGI7ARXK3ZwpVlg6ZDzxDaURfnUZSHOygJAg9uXYqVFZu5/AWfD+kzOGhnD3YRTQwhGxE1p2VlFhBFqiAROXA/fkGCR9YbqHIG3uKJgLSEe5RDW5VNWg++nJ9l9Cz2x2d7drGlHSEbD3xJOLmntPbvjgN6bz+95Xfeqvpl70iZRNmg65Byg9NFBhCg7CspIfFI0rZ6VWSHmu9f0Jrm8yjTCD9PqVqhr3vGnF9JVObWQGj6U+UihKf9gVmnU4rGejKtGSjJPNbEcGh0jdRvxiQJ9eUrf3coqpH2Oy9AQeth+kQyYM1Hd9s2hxrUAo5zvJ/Jm6GXy1orMkAxOHzFB8JCoUveQtprXBHvDyVfcmk1h8cS+mPQE4u2mCylhAIXpJg33x62eB66nyoGhayGsCQbMV1+MyeLyszZd+WVdVbzny9f2vPl3kWFi4pNtXa1vJcFkpvVOiIWV/jUSZH8ZR4B1FzuErOKzypleYUZTcqKqo0PMBdU+LVRZr2LRqc7jHcvT2VC/U4wbjPBep4TwgZ8PzKhzivk3LWbM0l+SiTCxzItZb/sTtQI8hvar+BEcg65wotnANTaIPaFn8Lng/DBbXsffBRbvqZ9iQv1nqYgnB1FhRlNa0dyT+jpA7Pb65ctj18DuN+4EIgj+86TwDZaIITAqAI4fOYZLPwRX3wAe26jWjrLWDC7oXSDVV8UusGtrWzy63xMrcdS/ZUpLeHJAQLZj+/s8mv/psxM8BcAQoh1BLaLjf9/cby+U6sCER2DTx3lyHH5qNaGcl4UlIYX42t7yqt1xAk4OhGg
+ gefINFMw
+ ojCXc3dSkwO4s6W0d4bwCPxWjn97D3dSFlzG1bYjb8YamNfiLZVIUsQqabhCK2hmXsHQlmYmcXXsx3gesnkdSQH85ubPoGm668akzLbzJsrfOeIJQLN178NwwpRMJL2nT9eSLF1XSO+Su/iMk95fUmmGeXUGvFDv+DPcbodcWzhXQAQQhX1zNmQ1OwM/dpjoH6udlYcZJTg9LbBDFAG4aCPB5upaChTFFMOwxGjfQWXbSAXvDzxCIWgtn/PKa7PmI0V+QBCWaEQmV0LDk/ED2gWdFsVJuUP9yAWhSPgXKJ2jYfkAl6P+zmmIolfpyKUNhPfvI6/fJaOvkySQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,60 +145,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 2026-01-13 09:48:01, Andrew Morton wrote:
-> On Wed, 14 Jan 2026 01:37:38 +0800 kernel test robot <lkp@intel.com> wrote:
-> 
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-> > head:   01c8de771f4a779caac5d841b1cb2207ac23330a
-> > commit: 0f1766dc93f077061bf42cc6222bb2ade96422a4 [77/129] kallsyms/bpf: rename __bpf_address_lookup() to bpf_address_lookup()
-> > config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20260114/202601140159.I4b0kwpE-lkp@intel.com/config)
-> > compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140159.I4b0kwpE-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202601140159.I4b0kwpE-lkp@intel.com/
-> > 
-> > All errors (new ones prefixed by >>):
-> > 
-> > >> arch/loongarch/net/bpf_jit.c:1322:7: error: call to undeclared function '__bpf_address_lookup'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-> >     1322 |         if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
-> >          |              ^
-> >    arch/loongarch/net/bpf_jit.c:1322:7: note: did you mean 'bpf_address_lookup'?
-> >    include/linux/filter.h:1378:5: note: 'bpf_address_lookup' declared here
-> >     1378 | int bpf_address_lookup(unsigned long addr, unsigned long *size,
-> >          |     ^
-> >    1 error generated.
-> 
-> Thanks.  Presumably this:
-> 
-> --- a/arch/loongarch/net/bpf_jit.c~kallsyms-bpf-rename-__bpf_address_lookup-to-bpf_address_lookup-fix
-> +++ a/arch/loongarch/net/bpf_jit.c
-> @@ -1319,7 +1319,7 @@ int bpf_arch_text_poke(void *ip, enum bp
->  	/* Only poking bpf text is supported. Since kernel function entry
->  	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
->  	 */
-> -	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
-> +	if (!bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
->  		return -ENOTSUPP;
->  
->  	image = ip - offset;
-> _
+>>
+>> This is nasty. I would wish we could just leave that code path alone.
+>>
+>> In particular: I am 99% sure that we never ever run into this case in
+>> practice.
+>>
+>> E.g., on x86, we can have up to 2 GiB memory blocks. But the memmap of
+>> that is 64/4096*2GiB == 32 MB ... and a memory section is 128 MiB.
+>>
+>>
+>> As commented on patch #1, we should drop the set_zone_contiguous() in
+>> this function either way and let online_pages() deal with it.
+>>
+>> We just have to make sure that we don't create some inconsistencies by
+>> doing that.
+>>
+>> Can you double-check?
 
-Yes, this is correct.
+I thought about this some more, and it's all a bit nasty. We have to get this right.
 
-JFYI, the "problematic" code has been added into arch/loongarch/net/bpf_jit.c
-just a two weeks ago by the commit 73721d8676771c6c ("LoongArch: BPF: Enhance
-the bpf_arch_text_poke() function").
+Losing the optimization for memmap_on_memory users indicates that we are doing the wrong thing.
 
-The good thing is that it is already in the mainline. It has been
-added in 6.19-rc4, see
-https://lore.kernel.org/all/CAHk-=wjO7Jq1dR7rdDA2wY=jwg4TTq-C6PjJz0=N=1dSO=3NTg@mail.gmail.com/
+You could introduce the set_zone_contiguous() in this patch here. But then, I think instead of
 
-I see that you have already pushed a fix into -mm tree.
-Thanks a lot for fixing it.
++	/*
++	 * If the allocated memmap pages are not in a full section, keep the
++	 * contiguous state as ZONE_CONTIG_NO.
++	 */
++	if (IS_ALIGNED(end_pfn, PAGES_PER_SECTION))
++		new_contiguous_state = zone_contig_state_after_growing(zone,
++								pfn, nr_pages);
++
 
-Best Regards,
-Petr
+We'd actually unconditionally have to do that, no?
+
+-- 
+Cheers
+
+David
 
