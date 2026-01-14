@@ -4,112 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CCBCD29FF7
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 12:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A004D29FF9
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 12:34:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F4BB6B00AD; Wed, 14 Jan 2026 07:30:24 -0500 (EST)
+	id C85BF6B00AB; Wed, 14 Jan 2026 07:34:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79D8B6B00B0; Wed, 14 Jan 2026 07:30:24 -0500 (EST)
+	id C3D0D6B00AD; Wed, 14 Jan 2026 07:34:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AE8C6B00B2; Wed, 14 Jan 2026 07:30:24 -0500 (EST)
+	id B35CE6B00B0; Wed, 14 Jan 2026 07:34:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58E786B00AD
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:30:24 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 311CA1A04C5
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:30:24 +0000 (UTC)
-X-FDA: 84330502368.07.3BA6F10
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3168F40012
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:30:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=rU0LOMSt;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=94744532ae=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=94744532ae=clm@meta.com"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768393822; a=rsa-sha256;
-	cv=none;
-	b=pYUH8XsJSYNptnW2AlmESah0WC25xJi+XfN3DiADQ39euEeNVw6Bl72S+kcweZ53eMIiGq
-	frDO/2Rj7n1yok76Mv2LATHkC2RrcdDMf6EpEzCMJ0KzYFgr6iENbU02geZYqOVAY+YgN6
-	1XZXN2jbEuCTY9co6ANIhQkyjNJo8ic=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=rU0LOMSt;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=94744532ae=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=94744532ae=clm@meta.com"
+	by kanga.kvack.org (Postfix) with ESMTP id A10216B00AB
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 07:34:06 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4DC60590F7
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:34:06 +0000 (UTC)
+X-FDA: 84330511692.30.8DDEF53
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 910FC80013
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:34:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uHMW9ELs;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768393822;
+	s=arc-20220608; t=1768394044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3xx7hVX5a7BDbwvL9Uo4YtUuy/fcXiraO3yJp5fQH2k=;
-	b=JaCq3vC0x72sRpikCizddbxkn4wU51oMxkJA5qhKY3dgdbBrWm0WtZHFnlYE2Y5DoaXiLY
-	v72ct8+6PIKOfDW5zqnW7vjpkj/dlWS9yrQnH50QRHks1iqYszPszEU2ZkXA9RdE45QAx4
-	fAmiVp+g7PwR0iSeLAnDqBSNiCt9WQ8=
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 60E0vj3v1639598;
-	Wed, 14 Jan 2026 04:30:19 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=3xx7hVX5a7BDbwvL9Uo4YtUuy/fcXiraO3yJp5fQH2k=; b=rU0LOMSteOlW
-	9r7vQKWgxw5heSTb3auWr3qNqJk1h2ypjqE8LWOQO2RLMvwwYDChX/LItDB8Z/wv
-	F3d1OiEZ3zvGuRBy2y2yZbrPjxgu99uGutgnQpSMV8Ez6QLGduoSEClZ1vtOFkbO
-	Yyjtd31i/YZaYzSNAxLnuYhXG1w79jKl2yt8GhniA9osKWAiav835cY/MgoaefX1
-	5JrNFoUnU0RawqV0In39EIsE++gtp1qf1OZAlDuDPYb904Fxd5YgpTiFG1mqJtdu
-	xIrC6yPrgVG2dsUuNVoHjpbie/uiARF2HdnU3mFv5rgnCtIFVar8SsoYJx1v9Ck+
-	XqZUFfzKuw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4bp12ac1ur-3
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 14 Jan 2026 04:30:18 -0800 (PST)
-Received: from devbig003.atn7.facebook.com (2620:10d:c085:208::f) by
- mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Wed, 14 Jan 2026 12:30:17 +0000
-From: Chris Mason <clm@meta.com>
-To: SeongJae Park <sj@kernel.org>
-CC: Chris Mason <clm@meta.com>, Andrew Morton <akpm@linux-foundation.org>,
-        <damon@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>
-Subject: Re: [PATCH 01/12] mm/damon/core: introduce nr_snapshots damos stat
-Date: Wed, 14 Jan 2026 04:29:56 -0800
-Message-ID: <20260114122959.1164957-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251216080128.42991-2-sj@kernel.org>
-References:
+	bh=e4fxDGkJ1COpEfs4fY1a9Gx0b/7xeRqG565p5ki+goM=;
+	b=LJfPjDXKfnSCBkpg3YLYMkWyo5zHrZ4HXCQgd73Snc4OB0Cq5ZozJsBYEpDn5JNIedW/yZ
+	8vr/lNnQObkN6FcWwAMnma+rR/qM0Ngv1ZONJejuCVk+F9nZsy4ib6nXq2bUm6Ki3S79Mk
+	NWhIXHEyZCT+hhKAMDNsbPG/cxCKquw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uHMW9ELs;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768394044; a=rsa-sha256;
+	cv=none;
+	b=kHgyU5cRJkjZ0t9bTIpMJrTKzbmcLFWKOEuah2qpZpIcBPsRkB6sVTBVKWqljXcNVrpmkK
+	AK9SOPVRPVHkuGGlVGhElNBnSxzoICV62A5/NjlSfKe/YHEPNhATZXyOynvusifoTfe+Ka
+	eSgjGlRfGyA1VzYtdVlt4+3+cUokitg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 00D736001D;
+	Wed, 14 Jan 2026 12:34:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA9FC4CEF7;
+	Wed, 14 Jan 2026 12:34:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768394043;
+	bh=ys9Z38f6Y6o7m07b4bNBktaqcRj928XOOy+6g1SpdLc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uHMW9ELshB5+oqMK9HOY1STYyJFt2NP/1+UxQONqAwFCb64OIicSVpvCHoS6nxdO8
+	 spSHGbQ1TBZ0NqTrA+LVfbLJu0i8YhlcX+UY73J7YufBN7GETK6aUZdS7ghGbRHvnQ
+	 8VymyDGHGkHBnEDe0wyBFLO7J+ZqLv0KpNxLOEciSIszKz74SeBlciXlM8yE/ARNMq
+	 NQMu6N9/8ZpingNitvv+enlsZUSyGCrIrsba12pAYj6disWQimMTFj01yqVW6cM3EH
+	 NB4lHUqqJcOby8xjY8vQIJJHnUPr206f6nOC//D6uPR/j12ZGBAJMfD4G+E8qMIQfJ
+	 HnE8jn9dEXz4w==
+Message-ID: <d9fbc00d-182b-4463-b718-73c2f0eef3a0@kernel.org>
+Date: Wed, 14 Jan 2026 13:33:58 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
+ ankur.a.arora@oracle.com, fvdl@google.com, joao.m.martins@oracle.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
+ muchun.song@linux.dev, osalvador@suse.de, raghavendra.kt@amd.com
+References: <3d8398f1-0130-4d3b-ac54-d23877811747@kernel.org>
+ <20260114113635.97621-1-lizhe.67@bytedance.com>
+ <97413239-2bdc-456f-8511-65fb9f1e301c@kernel.org>
+ <CAGudoHGb1w92gn89BBuMQOmvcVZkwvt8CK8hFtGg3xmHphmiEw@mail.gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <CAGudoHGb1w92gn89BBuMQOmvcVZkwvt8CK8hFtGg3xmHphmiEw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [2620:10d:c085:208::f]
-X-Proofpoint-ORIG-GUID: 1v6XLzs9dHS1tuZRU45PQbVeWuBiXluk
-X-Proofpoint-GUID: 1v6XLzs9dHS1tuZRU45PQbVeWuBiXluk
-X-Authority-Analysis: v=2.4 cv=KcjfcAYD c=1 sm=1 tr=0 ts=69678c5b cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8
- a=Od8CE_c8tX5E95hOnl0A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDEwMiBTYWx0ZWRfX9d+dKIcMmmue
- KZAqq/ogQtdckoPBnAQgakFwp4xMH0Jrz3NtsWqstVgYJA+NyFXzOqVCNirS+M4xR4rIJWjnlqv
- dbuXIJ2RgEw7TrQJ0PNIizF5skvXiGGxuQUmkahww2UZi1qiOGb3a+QHWRk3zIqvnI9h7FNhmjE
- yn6BZP/2JLh1MXjNjr1xjhcMTKv/gzXSOTbiSTreltZcgo0qZ3ajB3aPSFaJr5wAJYnyXWlu8rQ
- zzaqtDDZ/D6lzauzOPb/FS19qnNnQR2204lYsdZ7MbeVbfNoVfNfNeAPP59ebTFS+OQBR2hyzX6
- LyV82SQA0z1QG29EGpd5n5NMWcn8xluKLtsUPOXy4NebXwP/qa4wbBKvSgR4LtNt07fSQ3aeeC9
- qkZltodZ42JMcjNtIXmiL3AVIF+EzcLYgn2xcmKFynotQksrN5Fu+mlmFgI5vgtTt6a5YhEKE3I
- F7VDvpmRClolCnMnDog==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-14_04,2026-01-09_02,2025-10-01_01
-X-Rspamd-Queue-Id: 3168F40012
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7scfq5utti7rs533wkya561eqg5mbkmo
+X-Rspamd-Queue-Id: 910FC80013
+X-Stat-Signature: iki6rri1jgeef56e8h95kays3mkyj3as
 X-Rspam-User: 
-X-HE-Tag: 1768393822-799134
-X-HE-Meta: U2FsdGVkX18B0LQi+g/XouB4aX7jwMhLEFOozu3LwtMGxKb1+OUbfyQ0evdhXe+gl/304bdFelETl6T0tuL5+K/ySdf5MQUqtrD6nFxKotXQ446mTXCA8sYp0FvG+4axBOJmgLaalLa6ov1Hk0q56g8FO86VaULOexX/LmsT5KP+ngbum+jGORj98OSLYZeBhLus16XPJENeyQOPSZQZmRZROpC+JLUuOvfbq0XbltFf3MfCpo2SGahg/auXbvgbZKg11kJFeZtlsDfUWlG+f1NfLkxDCfIR3All+TgZe/JSv+7Luqf8uNWGSx0kQg4eNumFtX1xqpiiDKN+BkJVIIsdwTVrTJu8f2A9xFNOkkRk81CI7SgP4GsdK55nGnrd+nFyvetCBbUYPjaNhxpqCQJmZqwDRkBt544n0Tym+JXZnmh5MwdIZUr9iQZD1wjNXguaYZJ3MI0dFSWi1SjNBgQ7avfJTMg+hbOoFkyqgbtOKa/fb+n1T/q/FUJt0SU6Rj3rbu7ETcNle3KnbVhsqxO9qD2Uw+WGdAc+ZnGHlfl9j1pj/YParwBggSQ1odxw96DB7DwL0EWlkZ/Ebfzo4xP98Sg+PRIWPqOVyzDGNrnIS4Vo1PqgjttKjEq3IqFvOnPyALirqfyDQsQf0+T6pQ2/EdMYMNMNe+blRwhSCcPsjXtPq9mOLU4ftKg9fMTjB2IpxULDQfE7YYfSBZWO2ooa1WLBsiROckE+rqXtt0XSLzOzzCk64PwF26ixU3VU75gthEVsRfkhXDBtWHABQf3+ZznmBRFMOFkJWpymqqkMdbcaavMNhF0qiacHZOfwNCJfjXSuRY6T6DTOWPYhyPpwRB8Vc6wxWsQGYjGkiwGuWP+hj+TcXt3l05j5LiyhcLFXU90+0J8HKeVcmFRxox+LxVmkGzVzRs1ofNQgYBm0eFHUAkwEPZE2jPtERQ10cYRU/wYpCXbAc0nfsfc
- qr2MQpdx
- Jy4Le8VBFaHsEX44H9BuTLPY2Q0o1XWosr4eJBe7yEFnU+qw7QkxKL1WVfKUQEbhUFtOCvldLXOKV2wSYbcGGQYLnO3sYXVXiJ1XVxWmbu4tvZUYvP19oO+szh84SntjoCGNGTBov2m/UTHNeJYoeTSsqTvOrPqXcz0qqs1wcggW6bf0B6a89NXjN28NffP2gbzEk1FYXKhCpWbc9OTp9aLbNvAnvmNCGMeieVbeUIkZ9kow59hqHTdvk7HE+J6iwyzJQU7SILBWjJZpz14DzzecMeGsEb2E9pXkv06j90mGX5aNCvJTI1f0IupZ4iCDQjAH9ibX6ZfZd8mzZwuMyavw6QlK92wg4PdrpJ1FmLQ3L+yfSNg7BQyBY8Qgyl+F6R/w3ql2BuZNd8Jbc6byby9q6/A==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768394044-193554
+X-HE-Meta: U2FsdGVkX1/Ao6u2lRbnzXw/kufTuqzNNkTstEM1NmAgpmMv9FKc/S61ibqPgmdPZaUYYBkBjOKPJvBbKJlz5+XYBSCMEwxwLJzDiDBa0WwiEffDGQ/W7OyrF/uGf8CKR9tJr/mmEdVi6QW9AbYk1MkA1ZiUJudRfrDUDWQ0rJsE+oLK/nb2v8RYYQIDOCK3v1jbgQSaPDC+6N5zb27XMrQrG47LDI1raFUbhzbU15v0YLsoDL9SpQV2KK6xJpHeuTfzX4YhTq+corq2XVTZ2h/qUJsAPVlCmqu+xE/BP3qI4V+sDyUS3vsrdOf0M5/ItOGD7mkBUL7aY4LgxCG04vFj55zV1VDW57whi/P2/JfoYUsXn59p6OXjBqepIa8A4/QWZu48nrxN7qZQAH6mhgB4QYRLVn1CssHAtreXEQlBsfmaNzvQarYOOgisvL/x0VH5+eH/uSg4AQXibmVmdmbK2DLJ1bVyR1ajonW3a44JDQCK0qUMP1+UlX2kvYgCCoFNuC7pDdXjm+OKT0+B1Tfpj9X/QiGSkhx90RcsBFhbpuH505yBBxpKoBh3+ZbYWIIgwPgEm9uc17/l1NkXwoUkl5yn9KnWfxC8WIBxo6a+059ZQz0132d/dZgkP676HNVgJjRbCcDxMVxCe2ZJ9m3IhGqy0dCPbppPSa9Sz/NNw8yw7JMbmRRO+/fo8ZPXhaUKkdb02jDmRdBwdPNATYNlLpdHx/Y5ywZoQGhF1WjmZhXGJ9IZqqsJQEfwxQR9vPoUPuDQ4EbT5jc+AgrHnVcnyM+0k7NRLbz+1j1SEg8w6WBoxqbNPdM7crxbuN1eQiw156tJvcpQDxhsgxQONNU2X6byxxkMaOOikmDkFHYadBwR+jLMH+UBBP4O0gtJfCQdAjNfVSMs2Izwu++7PdDKGj/J8J8VNacnFcjayn5hqckquh3FDJMGLgP6ka6noEK+irvBsdVAH0F6Gnu
+ Xia294Qn
+ UAijbnZJjrksaG6X8PJJIV1MkIM84IgNqd6VbQ0Hi312xsjOkBHRjKe55b0qjNlIV7oqVzakKXIbF6+WWj+M1OhYFMqseLLyt962YOBGipu+6SUsLworMDkjL/SA7Gtf5eA0Mrwq8HZ8KKnxMrZetQS5y6dqfaDkQaV1pTPcvLQXOM7hUitNcfvG1cTJOZ+T4t8P280rBwyrB69+fPb9fDQK4dkLjoJT2pK0FQGJ6Bof3oIWOUoPMkWJfXXIm1tbtTgEP4ackeEjBTQ8Bs1jQpFX+q6+JFYS6Ytj7LmRATIyjuqfyJTztbVgt7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,80 +142,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Dec 2025 00:01:14 -0800 SeongJae Park <sj@kernel.org> wrote:
-
-> DAMON generates monitoring results snapshots for every sampling
-> interval.  DAMOS applies given schemes on the regions of the snapshots,
-> for every apply interval of the scheme.
+On 1/14/26 13:11, Mateusz Guzik wrote:
+> On Wed, Jan 14, 2026 at 12:55 PM David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
+>> You said "I wonder if implementing hugepage pre-zeroing directly within
+>> the kernel would be a simpler and more direct way to accelerate VM
+>> creation".
+>>
+>> And I agree. But to make that fly (no user space polling interface), I
+>> was wondering whether we could do it like "init_on_free" and let whoever
+>> frees a hugetlb folio just reinitialize it with 0.
+>>
+>> No kernel thread, no user space thread involved.
+>>
 > 
-> DAMOS stat informs a given scheme has tried to how many memory entities
-> and applied, in the region and byte level.  In some use cases including
-> user-space oriented tuning and investigations, it is useful to know that
-> in the DAMON-snapshot level.  Introduce a new stat, namely nr_snapshots
-> for DAMON core API callers.
+> i don't see how this is supposed to address the stated problem of
+> zeroing being incredibly expensive.
 
-Hi everyone,
+The price of zeroing has to be paid somewhere.
 
-I ran mm-new through the AI review prompts and this one was flagged:
+Currently it's done at allocation time, we could move it to freeing time.
 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -157,6 +157,12 @@ void damon_destroy_region(struct damon_region *r, struct damon_target *t)
->  	damon_free_region(r);
->  }
->
-> +static bool damon_is_last_region(struct damon_region *r,
-> +		struct damon_target *t)
-> +{
-> +	return list_is_last(&t->regions_list, &r->list);
-                           ^^^^^^^^^^^^^^^^  ^^^^^^^^
+That would make application startup faster and application shutdown slower.
 
-Are the arguments to list_is_last() swapped here? The kernel's
-list_is_last() expects (entry, head) but this passes (head, entry).
+And we're aware that application shutdown can be expensive, which is why 
+e.g., QEMU implements an async shutdown operation, where the MM gets 
+torn down from another process.
 
-Looking at include/linux/list.h:
+> 
+> With machinery to pre-zero and depending on availability of CPU time +
+> pages eligible for allocation but not yet zeroed vs vm
+> startups/teardowns frequency, there is some amount of real time which
+> wont be spent waiting on said zeroing because it was already done.
+> 
+> Any approach which keeps the overhead with the program allocating the
+> page can't take advantage of it, even if said overhead is paid at the
+> end of its life.
 
-    static inline int list_is_last(const struct list_head *list,
-                                   const struct list_head *head)
-    {
-        return list->next == head;
-    }
+Let's read again at the main use case of this change here is, as stated:
 
-The current code checks if t->regions_list.next == &r->list, which will
-be true when r is the first region in the list, not the last.
+"... there are some use cases where a large number of hugetlb
+pages are touched when an application (such as a VM backed by these
+pages) starts. For 256 1G pages and 40ms per page, this would take
+10 seconds, a noticeable delay."
 
-Compare with the existing damon_last_region() in include/linux/damon.h
-which correctly uses &t->regions_list as the head:
+-- 
+Cheers
 
-    static inline struct damon_region *damon_last_region(struct damon_target *t)
-    {
-        return list_last_entry(&t->regions_list, struct damon_region, list);
-    }
-
-Should this be:
-
-    return list_is_last(&r->list, &t->regions_list);
-
-> +}
-> +
-
-[ ... ]
-
-> @@ -1978,10 +1984,11 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
-
-[ ... ]
-
-> +		if (damon_is_last_region(r, t))
-> +			s->stat.nr_snapshots++;
-
-If the list_is_last() arguments are indeed swapped, this will increment
-nr_snapshots when processing the first region of each target rather than
-the last, causing the stat to be counted once per target instead of once
-per complete snapshot.
-
->  	}
->  }
-
-
+David
 
