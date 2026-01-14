@@ -4,109 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CF24D38FED
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:47:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66030D38FEC
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:47:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C93806B0089; Wed, 14 Jan 2026 11:47:09 -0500 (EST)
+	id 9D11B6B009E; Wed, 14 Jan 2026 11:47:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3F746B009E; Wed, 14 Jan 2026 11:47:09 -0500 (EST)
+	id 9929A6B009F; Wed, 14 Jan 2026 11:47:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3F2C6B009F; Wed, 14 Jan 2026 11:47:09 -0500 (EST)
+	id 8A1A76B00A0; Wed, 14 Jan 2026 11:47:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A38026B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:47:09 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F5D0BA149
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:47:09 +0000 (UTC)
-X-FDA: 84331149378.16.3AB62F4
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 94CE3A0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:47:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BnWXNoFA;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768409227;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BF996B009E
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:47:34 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25E73160589
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:47:34 +0000 (UTC)
+X-FDA: 84331150428.09.C515D49
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 396A340016
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:47:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=cHunZRKy;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768409252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I39HASnXsqxc9xQWRogWEaHpTvzjVn/oJBE3vNlPdms=;
-	b=T9JTK5Zyh1DQZc328cSsERhFddDGQrB3JRUi9VrjfP4/0a2+jzGzk7GqAJ1PN064OT/F3w
-	vvfGAiKCT2n94d0xJ9HLdQCvdy4RtO5B66x8kaa1L26TJEKJTSDC4h0OCSi/sM8hE+24lu
-	YSl/xBhGJRh+8nPIz+jVA+yqbhgf3ro=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BnWXNoFA;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768409227; a=rsa-sha256;
-	cv=none;
-	b=gdDRJAK198kdLp9YvE3Ds5lfMdf+8F8kctPBGcZo+ggcvoSKBPcJy92a/4NrAbh1T+x6l8
-	VuoetooDGg7rFMteElk1Ok2X3lwIZvaVNnDcTq2uBXius6cYoBYiWwZn5JjE+kjlWviFmX
-	2zHyXpUZeeVLLEkCqo8oaYftcS6u+64=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768409227; x=1799945227;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LsduvWdE521sHVk8zAXpbZYRmWsiFUTl1UjUbzQRAxE=;
-  b=BnWXNoFA0xo7jrwRAL/i/zYT9AGf1n9zWxsBPsL1gO2r6TZYsV7vpUea
-   cnhbAFXdm0w/hSGGgWdeaRqYmb4Om0kEfBM0LeE+AvIxo/IhwPp0wxKgR
-   8ABLII1sz6QFlVMwRHUeYIC/zFtNh/KVms9Gd11b+2vaM6r3MHUKLgJRo
-   f9RRBWdv0qH50XWNNuMkJ3KgrRhDdDFLWxjvhqF+AKxie+3/3HmgXLMyp
-   JYW7pKf0n9m0PmDLaITEWYnPgHzxWAjCEHDBVCUDt6KPgUmUZM79+ZGVf
-   rIOZQFbEAvtWG/I5byiWzq2j/pJDUSSTYmA4rCNo03yM+dJ4RVnbWZsEG
-   Q==;
-X-CSE-ConnectionGUID: KeZcSCBQRxu81e/p3RlKZQ==
-X-CSE-MsgGUID: z66phPRSTiqrYnX5vY9tLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="80433676"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="80433676"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 08:47:05 -0800
-X-CSE-ConnectionGUID: hoja1WWcSDCX1doRuk9J1A==
-X-CSE-MsgGUID: ZU2sdGa3T7Sqs/x+nSwX/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="209772062"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 14 Jan 2026 08:47:02 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vg41L-00000000GfQ-0f0V;
-	Wed, 14 Jan 2026 16:46:59 +0000
-Date: Thu, 15 Jan 2026 00:46:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: mpenttil@redhat.com, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH 1/3] mm: unified hmm fault and migrate device pagewalk
- paths
-Message-ID: <202601150035.taEgRkxK-lkp@intel.com>
-References: <20260114091923.3950465-2-mpenttil@redhat.com>
+	bh=mR0xZVzYTsPG93rYPsbKDoH7TrzLvbtVf7Vpqg5oGxY=;
+	b=506/RtfWOHj7iVG8gaJx7YP4EyHEJqUe4Vs9PBCFJXRl0wf9OAEOImfQyBYj4DEPIRVXEX
+	2Y57m35l6C4/8Xuqxp8QIEGWwfALKfY5pFDtkvYo5TQVaLnKhCmy0mPXIjta/uFgInX0XS
+	3BQMXBCi0o/dKuxiiR2KRcM+Igag87w=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=cHunZRKy;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768409252; a=rsa-sha256;
+	cv=pass;
+	b=l0Yonp2hWsPaha0eVUNMhq+lAo/2tgSy0oXXfrll0+TN+24bAujhjSB+Ai68JZKYz+cstl
+	S/YNuFbBHJGyVDeOHb0VhOwvE23CIEwdAZIb7v/SoyIt1AXRzla0I2sWYw0UJiAKpWFIoD
+	cW/Tiz+FRxjthmwRLp/49BV4Lf0UH3k=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5014b5d8551so356091cf.0
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:47:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768409251; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jZwaP2+01GhDf2MfwGyaNOm/QvDzgMmhOY6ak8m85NYgXb42/1dOoOnrhKnfAZlF4t
+         scdUKBuawGM3r/gmdlwuvSoCSewCALMxpNGVRd5UdcNoes7j7vrUL+acv4QCS8HP4KHv
+         Ehh5GOLCMfvP3ktKN7p3TuWMBry6+A0ZehiiooVhbFtkqwHPRGy12uuK7z8mBIN5NCfZ
+         dX5Y+1I1VEgNxPRucZujhQF+H5xwoHfhiAEVoE8Ry6nYVz7Tpbdxw9kl6Mrxz4vMKtiN
+         Rx/00gNyzO2SiawQc8qg9sub1T3xnc0O+2MxgXlFWVJwEZ0z8i6cvVYh0XslaPEnvCic
+         pYoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mR0xZVzYTsPG93rYPsbKDoH7TrzLvbtVf7Vpqg5oGxY=;
+        fh=9LH+2Fuhf9EsTtteAr+k6GddD7kRKW+/q3OzenKHDEU=;
+        b=SKhUk7Pj9p3wE1mvr3qR4G2ZoGPcPMIvu0wOA6mlkbcrecawY0kEjSzjeqa2rjLd51
+         1oYn7k3Pl07pg0I+y4H+Iva+AkcBVlgOgcZmeAxImu8ndnQXqG+Dfh1Yp865KuyqmUOB
+         B96VNyfsvsicLYBxaeXKqdsMM8U/iQUgaoeU9adFKskJ8TeP/af89amFmxDRN/vmnofA
+         JKZomFwYiYX/Cmnljs3Qnaunx5baBTS97lvhXfS1vpiptpRjIS8dUVf/p4prIh60w3WK
+         Wy8ho4FiIZMVUWfhR0iCktZvicYaupRD2k17L3ep0GezA4zRhXT4mJZXE+OEhIpjvAXZ
+         A2Fg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768409251; x=1769014051; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mR0xZVzYTsPG93rYPsbKDoH7TrzLvbtVf7Vpqg5oGxY=;
+        b=cHunZRKywZEQFDj1U3gqyjKGoHTVoq0Pk2o3dtkonS7/wwaigPaR2k8plCPbYGDm0Z
+         Bd+0F/bkQaa4fT6Y8ifsov78302E1zx8YeRULCphHuEZDFmkBMvQLFTMtz835u4lO0/L
+         9G/Ko1B5Dv7oJlgjgjckSAalAPNBpgcMR8jMUn1e7sdC31kQEVDyvZKoFOyspqRCd+0d
+         1IBAMuN/kridXLVDidGbdi0u8b4F35t3ZoPG8lndllEHnC5p5NlHaxUf16jcDb1k7Yui
+         nLiJHzTiYSwLBNXj3hkDsoo40utZYaSox0fbCdC2AGA2yCcgoZ5n7DC/onJehC63RIIe
+         VpPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768409251; x=1769014051;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mR0xZVzYTsPG93rYPsbKDoH7TrzLvbtVf7Vpqg5oGxY=;
+        b=Pydz/hHIDXem6YqxdjVKQNrji/gzEZKHVGPesxeyv07sMAQyCnszWcDs2vSh6hnUx1
+         nr5jCK3F+TmrqYehdX7H4X79ZVqlU7KIAVZbqX7GYJG0HzqKeGUAZoT8Uxb8sF1/veaa
+         ele6mLpEDwyQDdewSq9bPOiKlRw+vnDHmXtrQ2TNkQtDfoUET9tPMosJbPse8iWinxqM
+         nysHEXiviHlM6Pwk8XBavjexHZRkYL87+KcgDJQdfaYfw9DQTilsZPT21AGzvgvm5RDF
+         c1ZaUBw2ci5TtzUpx6Y+3HuH9RM9wLiPr8IvdorXKGA/E7ortYUw8y+R6nDZKUxJtlGP
+         0H9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVRHqgXhUt1ga1zGtKnFZysNVZGMAethod/H7E7mwurgK1sS4UD1qej4RnNtzTAo4TWrFnDMKgB8w==@kvack.org
+X-Gm-Message-State: AOJu0YwPX/XFWecyAMUbYhkeaiaQILqguP37YF6umEC6MZGyv9QwBYlC
+	EPkY2o0I7Rp+Xm4qvKWT/EyrOE1hNThjPlbbnZfF/M9/BcMjRAS1a4840hTFCtSd/OjWHW8muR5
+	W61U2ugcmzfu5KIsLhz1PtoL6jf05ZlMnCxwmN6tB
+X-Gm-Gg: AY/fxX62/LuNlikE95VryuJk3+U5559KZPBC9K1Xwyw2u7Qa0FncNk5ar7O3WhNDrqO
+	DJV7UOmt/4zfIYwHMlGkKjqSOj7AHhzemxZmACiZSOJ2OJrSUUt4pOd2X2bBwwDDttgNUun3cs4
+	HSmAJA84RYSmnWf9eg9az+jReEok1MY1wUjKqNDTh6PSpm3hn5uxlxLFhnvtQpR4sEvWVtvvBBY
+	LLng80tG9lv98ARR1/7HbaitISHMQd38JQPw8JvB4KSic0tuqqP2cPCjWnN71ovaO5XrHhCjdmF
+	E148COxHGf4A+N//38PfvluPxZnUve00AJ5e
+X-Received: by 2002:ac8:7d44:0:b0:4ed:a65c:88d0 with SMTP id
+ d75a77b69052e-5014819f273mr12918591cf.6.1768409250623; Wed, 14 Jan 2026
+ 08:47:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114091923.3950465-2-mpenttil@redhat.com>
-X-Stat-Signature: irg4sk8p5ai5rz41u5ipsm7su86o54yy
-X-Rspamd-Queue-Id: 94CE3A0005
+References: <cover.1767711638.git.lorenzo.stoakes@oracle.com>
+ <f0855a0b4e68d877baa222a636a8a14c4e820bf0.1767711638.git.lorenzo.stoakes@oracle.com>
+ <lig6eozf2jtpyzccgl2rbsq2sinafipogezxhbyyqorelgxbae@ruu2blv4wvi5>
+In-Reply-To: <lig6eozf2jtpyzccgl2rbsq2sinafipogezxhbyyqorelgxbae@ruu2blv4wvi5>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 14 Jan 2026 08:47:19 -0800
+X-Gm-Features: AZwV_QjKhy51qD2jcgk-YG7XCRtRsDHXq83OoEPDAw8Tpqe7RO6nNd_Kli1zEr8
+Message-ID: <CAJuCfpGT9OEmYw5VhaWtWJY9ZCv6_UNYZwohT9iFXPx5mV5oSQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/8] mm/rmap: skip unfaulted VMAs on anon_vma clone, unlink
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 396A340016
+X-Stat-Signature: tu566t54abk1ppyueipszm136z1oahej
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768409226-310443
-X-HE-Meta: U2FsdGVkX1/o7pyAQmR/jgW4GafhR35heES4SaFwIrJQW1EvhAgHNywuIj61qt7eGEgyYt1H/dexgevtdzrIx7bMe8zavweVe9XNh9kgxvOyDx0LcYwvpMx1WTnmqYbNRZDugsVRR/W919eRBbBofmUuQl98yAPqlMsxmHJd590ZSoG1ozhrdLFa/T3I09+2TntNuQ/uBBBR3dF6RCU0lVisChdFl2RBVFfDETAd7Lmjpow5YcP7onk08RPWT5IP7aHWKYL+jJ1aSpOlWtmfAHd8e+J5sVY+96rtHm32McXiolQM3Aj1TYA8Y1dhCMkckZG4Ma1IHmGLaStFJ1PSITJHhJZq7dSPXPCEtMQHzE5OPJen4MYVLyTvUXQ9LF1eKdWQHH1uMRgReaAvnR/ThgQe5Xy5zilmZ4vxSXyMnUAEF9xN3lhtF11anN5Eik0Y5ayTKUuR7QAvM+HjUPr0TVL97sf7uMkJyBQE0CpV+IyMu6xfUxAXxNp9VZ4zzm5H3cAuNCSFH9T/7vLw5zTh5n26OJOMoSOeETwMI/YAET3wTPZdqXK0tn8JbdMWXUvUWVN+HPXTISgCt/KAD4mphgGcdfkgzSXHt6ZXfMcRW6OnLUWB2tiob6yhCFw9vFg4/mRpPfdGzBB/nHfklLjZvKG1k68ptI73ncg+sHOjUBJ7Q9LEqsXtd/N3ZXGdRpLv85fBhGqcOIf1oG/7Mi4d0GAQWJHr1ClDKnTEMjsoIXa2v0TCSUr7idXrx8PWULO+Q3fXtPisP9uTKP/1CKcbSRHQfNLJAon85waXhCX8FVGGI4/XCZirSPew02F+n6l1EogZAyYKOqGcItHBgGf2B3VyFLYJKkxn/9w6Yjn43oGkuBJpUECcS1QqrH0XluZy+2vJgTmg+T8VBrEPX05aeamL2DPa3neWYz78MoCRQVuYmL0laQUwkZv+ghJnnB9lYlyZZOhTrSrXmpdJpo4
- roe1uqNq
- W74N/X1d4wha19Lm4DQ4uhGRIpciHrbxHJDeitUylMNtft3RUWUmZ3b/xFX7ykcWgOtzHEKk6IOWQmtgzNgffMCCNFvwsVRe8d34CJA3XbcgsmpQAzA/QpcwNh3ClJUD2Rh3WwSSH7pFR7elCoplqWNTV5foZ1AKH0/u4kPwH7cIp1ZcF4cLPrUZjTK93jwzjVUfzAA0VOpfa6noHANsbAaMKe62wnXJCqD5Hh+QpMOOEZ7+9JklZLS4iqri4Zezo8zUmiIbjUhYnvG+2mLlOtDn8qXNV2XpTM0YwjdlRqACUDGATOlPABYJKkPiz/UcQxT/bc2id/Rq8MFViW3r137HvWGCYwNPye+KV2x3KzFWc37ecqc0m/zArZEwxgGboh1oH
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768409251-457725
+X-HE-Meta: U2FsdGVkX19BUlM+tgeLRZzJEVefn+F7XL1OPGLYNq975d54y/6UDY387/mDmAIkMny/TpfDPtjorFs2oMfte80MDK1b1+peQedeASLQSFthCuH20li/PDbIGYYdxa2VHp56eClwVN7OgfHgs+rtTPy0vonrYNSOm9l7ww1mz+pwdPExjJMLknAM2kOKMaxozrwznqIhCWh2ydHWXRzUsWZnNVMTa6BLmoLf4YoflWGBswTbg2dN2qB590N/4qwN9kx14SnFUdW3gkL43fDum+sdInDsZL30+bFTiEDfiFBMtrfze0QBgIKOcfbeIu/A5pKfEqDuJoyEooHHqtmJVhll5zFGjLPHZcJuJ0BS8S2LVaJPobTawqrCnY/AK4Tb0On5Kq6ZTjijnPywSyn6OnmNz49tQBw6F0Ef2EOq8Cx5zqmMJXpaM7NGfgpqOcJ/JOjFvKg1+jpebaRQD+sZ5UgX53HtzM3hRUkXggyyT44BIlfrO43VbJbgS3qoxizI9EyA9NVgyPbBRNnDb0x92ZA4kUOPbT68N3ulUb8bhvRelNbJZy4IPX1sR5WFS1ON1orqBgC2x+Z1IHgU1RS+7NNhsVjqkWBuPbKLUZYl/y+7IDfCQx3rBExjqFSgRG9cg+yO02SS2IVacpjAap1WT7PPvIT0WHM/LWwvYHsCGoduiqprn13iRXYOAzb4RJ1Dlawlap8xg6W754bFCHu7Us+nXk4+eANhGMj0pPeWDO6JVC1UHy4xYew7rFNwLYj2rSHgba2ICapASPhPA1xPDJ3+mbUzxxNr4Tq5zQ80hruGxVWcUG75mkkaLyXPWh5jHO1jVS1ckp3FxfstymfMRUt+vB8X1i8K29ky/SbV+uGos7Oh+OfPyj3QLCxeANsKcNv1f6wPyUULMheu97Ra3RFhSUGgX3pVlQ2o43QaN4hJINURkTMQ+1RrFzHhbJAHvNHMT95idPzI22nuslH
+ 5Ky9FMnx
+ qHf9QchUkLYgk20pP57u98k4yz0kIC7yHykdOz0eJmvtL3aC4Yndzkuf0MuqwrCBufylWt/CwjvX/DLGG9bMPvmhNWV9+mnI4O4n/1pQgfksVWJwPDISPEJ40wCfXasy9vnrTXe3LDN+pst1NgrBdNkijxoDivKU7NWgchzybDU8tMeB3nMRCDIL6VJkTJHyFKChQO/nEOT0RL3/40UT/P2x0wwwyadHoQ8kfYdx+ePEYEnOS9ZTTsTIZdxv5601j3D0A004mIWdp/y3vV37djvmURw7KLIi4Pkui7u6pseh7T7opAMva/WenAMoPyyxs2eGXVUIfvPNuQLA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,252 +145,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue, Jan 6, 2026 at 10:34=E2=80=AFAM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
+>
+> * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [260106 10:04]:
+> > For both anon_vma_clone() and unlink_anon_vmas(), if the source VMA or =
+the
+> > VMA to be linked are unfaulted (e.g. !vma->anon_vma), then the function=
+s do
+> > nothing. Simply exit early in these cases.
+> >
+> > In the unlink_anon_vmas() case we can also remove a conditional that ch=
+ecks
+> > whether vma->anon_vma is set.
+> >
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-kernel test robot noticed the following build errors:
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
-[also build test ERROR on linus/master v6.19-rc5 next-20260114]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/mpenttil-redhat-com/mm-unified-hmm-fault-and-migrate-device-pagewalk-paths/20260114-172232
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20260114091923.3950465-2-mpenttil%40redhat.com
-patch subject: [PATCH 1/3] mm: unified hmm fault and migrate device pagewalk paths
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20260115/202601150035.taEgRkxK-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260115/202601150035.taEgRkxK-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601150035.taEgRkxK-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   mm/hmm.c:423:20: warning: unused variable 'range' [-Wunused-variable]
-     423 |         struct hmm_range *range = hmm_vma_walk->range;
-         |                           ^~~~~
->> mm/hmm.c:781:4: error: call to undeclared function 'flush_tlb_range'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     781 |                         flush_tlb_range(walk->vma, addr, addr + PAGE_SIZE);
-         |                         ^
-   mm/hmm.c:781:4: note: did you mean 'flush_cache_range'?
-   include/asm-generic/cacheflush.h:35:20: note: 'flush_cache_range' declared here
-      35 | static inline void flush_cache_range(struct vm_area_struct *vma,
-         |                    ^
-   1 warning and 1 error generated.
-
-
-vim +/flush_tlb_range +781 mm/hmm.c
-
-   587	
-   588	/*
-   589	 * Install migration entries if migration requested, either from fault
-   590	 * or migrate paths.
-   591	 *
-   592	 */
-   593	static int hmm_vma_handle_migrate_prepare(const struct mm_walk *walk,
-   594						  pmd_t *pmdp,
-   595						  unsigned long addr,
-   596						  unsigned long *hmm_pfn)
-   597	{
-   598		struct hmm_vma_walk *hmm_vma_walk = walk->private;
-   599		struct hmm_range *range = hmm_vma_walk->range;
-   600		struct migrate_vma *migrate = range->migrate;
-   601		struct mm_struct *mm = walk->vma->vm_mm;
-   602		struct folio *fault_folio = NULL;
-   603		enum migrate_vma_info minfo;
-   604		struct dev_pagemap *pgmap;
-   605		bool anon_exclusive;
-   606		struct folio *folio;
-   607		unsigned long pfn;
-   608		struct page *page;
-   609		softleaf_t entry;
-   610		pte_t pte, swp_pte;
-   611		spinlock_t *ptl;
-   612		bool writable = false;
-   613		pte_t *ptep;
-   614	
-   615		// Do we want to migrate at all?
-   616		minfo = hmm_select_migrate(range);
-   617		if (!minfo)
-   618			return 0;
-   619	
-   620		fault_folio = (migrate && migrate->fault_page) ?
-   621			page_folio(migrate->fault_page) : NULL;
-   622	
-   623	again:
-   624		ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-   625		if (!ptep)
-   626			return 0;
-   627	
-   628		pte = ptep_get(ptep);
-   629	
-   630		if (pte_none(pte)) {
-   631			// migrate without faulting case
-   632			if (vma_is_anonymous(walk->vma)) {
-   633				*hmm_pfn &= HMM_PFN_INOUT_FLAGS;
-   634				*hmm_pfn |= HMM_PFN_MIGRATE | HMM_PFN_VALID;
-   635				goto out;
-   636			}
-   637		}
-   638	
-   639		if (!pte_present(pte)) {
-   640			/*
-   641			 * Only care about unaddressable device page special
-   642			 * page table entry. Other special swap entries are not
-   643			 * migratable, and we ignore regular swapped page.
-   644			 */
-   645			entry = softleaf_from_pte(pte);
-   646			if (!softleaf_is_device_private(entry))
-   647				goto out;
-   648	
-   649			if (!(minfo & MIGRATE_VMA_SELECT_DEVICE_PRIVATE))
-   650				goto out;
-   651	
-   652			page = softleaf_to_page(entry);
-   653			folio = page_folio(page);
-   654			if (folio->pgmap->owner != migrate->pgmap_owner)
-   655				goto out;
-   656	
-   657			if (folio_test_large(folio)) {
-   658				int ret;
-   659	
-   660				pte_unmap_unlock(ptep, ptl);
-   661				ret = migrate_vma_split_folio(folio,
-   662							      migrate->fault_page);
-   663				if (ret)
-   664					goto out_unlocked;
-   665				goto again;
-   666			}
-   667	
-   668			pfn = page_to_pfn(page);
-   669			if (softleaf_is_device_private_write(entry))
-   670				writable = true;
-   671		} else {
-   672			pfn = pte_pfn(pte);
-   673			if (is_zero_pfn(pfn) &&
-   674			    (minfo & MIGRATE_VMA_SELECT_SYSTEM)) {
-   675				*hmm_pfn = HMM_PFN_MIGRATE|HMM_PFN_VALID;
-   676				goto out;
-   677			}
-   678			page = vm_normal_page(walk->vma, addr, pte);
-   679			if (page && !is_zone_device_page(page) &&
-   680			    !(minfo & MIGRATE_VMA_SELECT_SYSTEM)) {
-   681				goto out;
-   682			} else if (page && is_device_coherent_page(page)) {
-   683				pgmap = page_pgmap(page);
-   684	
-   685				if (!(minfo &
-   686				      MIGRATE_VMA_SELECT_DEVICE_COHERENT) ||
-   687				    pgmap->owner != migrate->pgmap_owner)
-   688					goto out;
-   689			}
-   690	
-   691			folio = page_folio(page);
-   692			if (folio_test_large(folio)) {
-   693				int ret;
-   694	
-   695				pte_unmap_unlock(ptep, ptl);
-   696				ret = migrate_vma_split_folio(folio,
-   697							      migrate->fault_page);
-   698				if (ret)
-   699					goto out_unlocked;
-   700	
-   701				goto again;
-   702			}
-   703	
-   704			writable = pte_write(pte);
-   705		}
-   706	
-   707		if (!page || !page->mapping)
-   708			goto out;
-   709	
-   710		/*
-   711		 * By getting a reference on the folio we pin it and that blocks
-   712		 * any kind of migration. Side effect is that it "freezes" the
-   713		 * pte.
-   714		 *
-   715		 * We drop this reference after isolating the folio from the lru
-   716		 * for non device folio (device folio are not on the lru and thus
-   717		 * can't be dropped from it).
-   718		 */
-   719		folio = page_folio(page);
-   720		folio_get(folio);
-   721	
-   722		/*
-   723		 * We rely on folio_trylock() to avoid deadlock between
-   724		 * concurrent migrations where each is waiting on the others
-   725		 * folio lock. If we can't immediately lock the folio we fail this
-   726		 * migration as it is only best effort anyway.
-   727		 *
-   728		 * If we can lock the folio it's safe to set up a migration entry
-   729		 * now. In the common case where the folio is mapped once in a
-   730		 * single process setting up the migration entry now is an
-   731		 * optimisation to avoid walking the rmap later with
-   732		 * try_to_migrate().
-   733		 */
-   734	
-   735		if (fault_folio == folio || folio_trylock(folio)) {
-   736			anon_exclusive = folio_test_anon(folio) &&
-   737				PageAnonExclusive(page);
-   738	
-   739			flush_cache_page(walk->vma, addr, pfn);
-   740	
-   741			if (anon_exclusive) {
-   742				pte = ptep_clear_flush(walk->vma, addr, ptep);
-   743	
-   744				if (folio_try_share_anon_rmap_pte(folio, page)) {
-   745					set_pte_at(mm, addr, ptep, pte);
-   746					folio_unlock(folio);
-   747					folio_put(folio);
-   748					goto out;
-   749				}
-   750			} else {
-   751				pte = ptep_get_and_clear(mm, addr, ptep);
-   752			}
-   753	
-   754			/* Setup special migration page table entry */
-   755			if (writable)
-   756				entry = make_writable_migration_entry(pfn);
-   757			else if (anon_exclusive)
-   758				entry = make_readable_exclusive_migration_entry(pfn);
-   759			else
-   760				entry = make_readable_migration_entry(pfn);
-   761	
-   762			swp_pte = swp_entry_to_pte(entry);
-   763			if (pte_present(pte)) {
-   764				if (pte_soft_dirty(pte))
-   765					swp_pte = pte_swp_mksoft_dirty(swp_pte);
-   766				if (pte_uffd_wp(pte))
-   767					swp_pte = pte_swp_mkuffd_wp(swp_pte);
-   768			} else {
-   769				if (pte_swp_soft_dirty(pte))
-   770					swp_pte = pte_swp_mksoft_dirty(swp_pte);
-   771				if (pte_swp_uffd_wp(pte))
-   772					swp_pte = pte_swp_mkuffd_wp(swp_pte);
-   773			}
-   774	
-   775			set_pte_at(mm, addr, ptep, swp_pte);
-   776			folio_remove_rmap_pte(folio, page, walk->vma);
-   777			folio_put(folio);
-   778			*hmm_pfn |= HMM_PFN_MIGRATE;
-   779	
-   780			if (pte_present(pte))
- > 781				flush_tlb_range(walk->vma, addr, addr + PAGE_SIZE);
-   782		} else
-   783			folio_put(folio);
-   784	out:
-   785		pte_unmap_unlock(ptep, ptl);
-   786		return 0;
-   787	out_unlocked:
-   788		return -1;
-   789	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> > ---
+> >  mm/rmap.c | 22 +++++++++++++---------
+> >  1 file changed, 13 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/mm/rmap.c b/mm/rmap.c
+> > index 54ccf884d90a..de2cbe860566 100644
+> > --- a/mm/rmap.c
+> > +++ b/mm/rmap.c
+> > @@ -314,6 +314,9 @@ int anon_vma_clone(struct vm_area_struct *dst, stru=
+ct vm_area_struct *src)
+> >
+> >       check_anon_vma_clone(dst, src);
+> >
+> > +     if (!src->anon_vma)
+> > +             return 0;
+> > +
+> >       list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_vma)=
+ {
+> >               struct anon_vma *anon_vma;
+> >
+> > @@ -474,7 +477,10 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
+> >       mmap_assert_locked(vma->vm_mm);
+> >
+> >       /* Unfaulted is a no-op. */
+> > -     VM_WARN_ON_ONCE(!vma->anon_vma && !list_empty(&vma->anon_vma_chai=
+n));
+> > +     if (!vma->anon_vma) {
+> > +             VM_WARN_ON_ONCE(!list_empty(&vma->anon_vma_chain));
+> > +             return;
+> > +     }
+> >
+> >       /*
+> >        * Unlink each anon_vma chained to the VMA.  This list is ordered
+> > @@ -498,15 +504,13 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
+> >               list_del(&avc->same_vma);
+> >               anon_vma_chain_free(avc);
+> >       }
+> > -     if (vma->anon_vma) {
+> > -             vma->anon_vma->num_active_vmas--;
+> >
+> > -             /*
+> > -              * vma would still be needed after unlink, and anon_vma w=
+ill be prepared
+> > -              * when handle fault.
+> > -              */
+> > -             vma->anon_vma =3D NULL;
+> > -     }
+> > +     vma->anon_vma->num_active_vmas--;
+> > +     /*
+> > +      * vma would still be needed after unlink, and anon_vma will be p=
+repared
+> > +      * when handle fault.
+> > +      */
+> > +     vma->anon_vma =3D NULL;
+> >       unlock_anon_vma_root(root);
+> >
+> >       /*
+> > --
+> > 2.52.0
+> >
 
