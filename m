@@ -4,108 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6047D39003
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 18:05:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDB84D39003
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 18:12:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 351F66B0088; Wed, 14 Jan 2026 13:05:19 -0500 (EST)
+	id 5FA9D6B0088; Wed, 14 Jan 2026 13:12:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB906B0089; Wed, 14 Jan 2026 13:05:19 -0500 (EST)
+	id 5A78B6B0089; Wed, 14 Jan 2026 13:12:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DB0E6B008A; Wed, 14 Jan 2026 13:05:19 -0500 (EST)
+	id 4B49B6B008A; Wed, 14 Jan 2026 13:12:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C5E16B0088
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:05:19 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CBD5259810
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:05:18 +0000 (UTC)
-X-FDA: 84331346316.20.F7DE4EA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DDE434000A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:05:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=R2xXD641;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3557E6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 13:12:23 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DAC7159799
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:12:22 +0000 (UTC)
+X-FDA: 84331364124.28.4DC0C6F
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 10AC31A0010
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:12:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=h3Ndcfyv;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768414341; a=rsa-sha256;
+	cv=none;
+	b=r6CKRTvx957Uoq1JjvIQ+k7BEQCHAanJJOy8DaAzy+POxHszghq3r2jhRPx70WUltMn79p
+	qYNHtNH/o+tag5VAB/clZppcNurUQCdCQOGhIFsI0gyGom7BTYAJxEEkinnDtEudpYt+cC
+	Uokmg2OK0hE1ewleRvLzZy9OZ166qa0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=h3Ndcfyv;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768413916;
+	s=arc-20220608; t=1768414341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+M0+6AFaSVTi31FqR6M6pU4s1ldRTCXncxC/hdvcpjo=;
-	b=qyj8dDjGzvWwlnWAQ1HMy6YPTWdx2XOYhOddnAVRSVLJ9bZHFxyGUEuQd6+HdKkqTu8PST
-	iJFqFQ9xo3YEIcIX3E2elps/8GWlODZt/aQ07Pp5WPgyHa7tzZXWc0N5HkIjgFaHef6BnW
-	M65BrCy3XaXYFsQN1J3jat9oChuxtJw=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=R2xXD641;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768413916; a=rsa-sha256;
-	cv=none;
-	b=20ES6SCoUvy7KPQcvfLFIZ7Ng16LLFYoN2ZAwP6dlC4KIS+IgOf4Zy6gv/DHTrnC9TUnM9
-	CexqfJoBSZnT7Skrp4SwBmM2+nIuBq20Tq98crxkZ67kqQTFDhRK+OZB3lEWqBzYb+KNnn
-	f8/dj+5I5kyfPTNQcH2w81diGkt6ctM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768413916; x=1799949916;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LlaGqzTDfng3Tgg+O+lRqxSp3VAlDdxXFdUmlzpIn5k=;
-  b=R2xXD641Q/NXFgDRw2W35fWnNcgcbzFBjlvrQJ5697W9VlcLFGjWFSjk
-   b4I2V46mMCCTzJ7fixX0Gj1yfe5ZqOUKjUlAODlSwhoA3Z43+ne5z4BtI
-   6Tya1hCZW/2W6ikm5oU2WEuM3lj4CNPqsPZXEuWI08WT3wu5kBm07JNXA
-   5jk6C9TzV8N9qlXUxmD0iDHMJPaOegNA0PyUZ2yAU5uHKTz9D3IxZxgJY
-   TBZqXti4AAZSDwZPcoP7WLEqO+CSuB8KnNRTXm7sopBrDBI91Klj6vTmq
-   Z1fPFZNcQq88jgn9K/3H9X8sx9UXwv9Oe7vLQcFknTOSY7J4+i5AL5z4c
-   g==;
-X-CSE-ConnectionGUID: ibRpYrS4R+eLlMfx9JrQ0Q==
-X-CSE-MsgGUID: cPFpEdjTRVadxbvmBkhLjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="69772255"
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="69772255"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 10:05:14 -0800
-X-CSE-ConnectionGUID: U60Y1ubTQWmjnHP9IXP1sA==
-X-CSE-MsgGUID: 1ucytVeoR+WDdax7RARjhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="203959086"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 14 Jan 2026 10:05:09 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vg5Ew-00000000GnQ-3OSu;
-	Wed, 14 Jan 2026 18:05:06 +0000
-Date: Thu, 15 Jan 2026 02:04:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: mpenttil@redhat.com, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH 1/3] mm: unified hmm fault and migrate device pagewalk
- paths
-Message-ID: <202601150107.djcXDbUn-lkp@intel.com>
-References: <20260114091923.3950465-2-mpenttil@redhat.com>
+	bh=MfgGnc8yYPLi9t7dHOsu001XcSCAHL7N89lmWN6W/2k=;
+	b=V5vfRwhY8d6ZhpLL0kpzI09LvS3Yp8/YLL4cCNC2iSTXBvXruyDveQBLbIn3T24xNgs+TQ
+	ZbhmlMhBydxMQoMx+aBmAuGVlRK8BBMo88SbdgRi7kmvWv5oKjBpzeV05hD/MiGo/wGoES
+	TodVUita8gkZtbQqaVXu6YasxvYP1XM=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-88a3b9ddd40so232086d6.1
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:12:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1768414340; x=1769019140; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MfgGnc8yYPLi9t7dHOsu001XcSCAHL7N89lmWN6W/2k=;
+        b=h3NdcfyvyKeLz0OkJhEQnjiYDh13JvvBqTZeIdZNEHj/GaKZSiW/tjQ/EcxEjNhjpG
+         KiQf7Am0/nbQIxCoSnxcQ/eZMg4LLi81IpCtV88Nzu7UQkhrm0UQU76XFXllnXny5Kre
+         SQH9ZEcZsrDV0PmZEo2nsgxWzu7zSR6NDBvGYCYvRob5Gn/iWadWaeIx94qqcvOslENY
+         nRRCzpoHWIPu64V5Rcq5qmq7QJmlp6k39aTq3t5BRPC30JCdzPbOP1xtnUX+jS7AVAyZ
+         0yP549Ki+EDBeA8Uv4CZ1c+Axse4XNHgXig0mLG80U9cSVY8SHBfMhlix+hwGkyRwQk7
+         4uHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768414340; x=1769019140;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MfgGnc8yYPLi9t7dHOsu001XcSCAHL7N89lmWN6W/2k=;
+        b=pgbnqwYX4ugXA5IwyeUyfkhglL0503ScmiDTJ2T8XvTe3zf/g8A/uCR3SyzjSvp9cl
+         /kAjVtwMFxCg0LuAb6LLrd/zRuZH3Op0QV1zZW+95bovYql2k77oxnBRnfSLHfvwrhRD
+         WCt1Lkr2TA60/Y/VoVymjxVQn54dIwR/TxO6pC8LN1Z2uo6gW9EF0jTBZhQHY5EznRzo
+         0OCtnabWAGlD2K9XtCDSdawmYS+NfHfbDk1HPNUfjSqb9r1acorvHpqj32fcmdKDX72I
+         +ueWQ8D6vgErhDxswWx9YQ1qEwXOJxV8lfZKNOt6v0g8fmIMfUB2j2PenFLYNBTg0QFh
+         ZCBw==
+X-Gm-Message-State: AOJu0YxPEhSHlZ0T8ijVqxQq5IRqG+hJF4Pe4Oo7toQfl1HdAFaoLCC+
+	FTI6LwhnELfyGDYoeUsFtmfRJ6CBjhOPvomCYgM2GhRqLXFYrpsktpRO7FA9CAlLAGY=
+X-Gm-Gg: AY/fxX593hZ9iXQM3s0Etf4piJKiuBE/HvCE/I4iuN3fGjD+7gKxoEupxunGTG9a3vV
+	K7gdVGmL+9fPDA/V067ZnVo79+hOKqQxSj4n0YRn0ixZNxSqzicQbegdf4a4/88ul9lyZsnB+bV
+	STOZVqsLnrlJNSq25sgCEuPfGaPtaNgvd/ifZ+e/Swzfw6cohB/r5luLeXOQ18QVSKqrP7ZUHQn
+	l/v9yaBCfnqMXcEkQuyowcj5qgIAAAYn0XEve4hunKDQcJ3n3OxzkAAUWdk3JG1X9mxTpAM35c5
+	GH7ppHZoRRA6aM+PsToUaB0WO0AjaSnHG2jbIX68ybj73epJInpeyiXGmV2w8WG1g23vDOJuRSD
+	xFoCgifF4uoE2FDXqbdG02Id/ic7ABpVIQjHpJI6L23pClOiJQAG08J37ZIeY8RVyzu5tdu5pSG
+	j+Eq4Yu1XfXc+0ir/a/P30yqHSx1ouADo5qHgjbz7xRIE4y+5HoC9gFUEZnBCYPNgiDCltxA==
+X-Received: by 2002:a05:6214:10c2:b0:785:aa57:b5bb with SMTP id 6a1803df08f44-892743cfe92mr35226416d6.43.1768414339907;
+        Wed, 14 Jan 2026 10:12:19 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770d17a3sm181634186d6.9.2026.01.14.10.12.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 10:12:19 -0800 (PST)
+Date: Wed, 14 Jan 2026 13:11:46 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+	kernel-team@meta.com, dan.j.williams@intel.com,
+	vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
+	jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, osalvador@suse.de, akpm@linux-foundation.org
+Subject: Re: [PATCH 7/8] dax/kmem: add sysfs interface for runtime hotplug
+ state control
+Message-ID: <aWfcYjZVrROHfGyh@gourry-fedora-PF4VCD3F>
+References: <20260114085201.3222597-1-gourry@gourry.net>
+ <20260114085201.3222597-8-gourry@gourry.net>
+ <3555385d-23de-492c-8192-a991f91d4343@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260114091923.3950465-2-mpenttil@redhat.com>
-X-Stat-Signature: 1on7m93hekyr6kn74mhnf1zhrz76cf8q
-X-Rspamd-Queue-Id: DDE434000A
+In-Reply-To: <3555385d-23de-492c-8192-a991f91d4343@kernel.org>
+X-Rspamd-Queue-Id: 10AC31A0010
+X-Rspamd-Server: rspam06
+X-Stat-Signature: pxbbdoc564mxm9dhzem6fqr4ooi8mq3f
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768413915-704362
-X-HE-Meta: U2FsdGVkX19C/X5KMQQGgoeo0/CQZ6y83BmmHyGbgOWXHpjubTkvWLv2j8SUAzEzVkyJTHQo/iiE8R5nqI3cV4b9dkPFdNq/ctkWxUXhpe1dZteKZ7rpGPRA8QzZaWJ5BE+1dnF3YspcBew2A6lkl7F9OQlXIgZlsPphL/nNTVvnVxr3JBRC+ZBI3DB9jBbSwhdBsnELoEjx5OToiscE+PgOr5Q/x4MpYJ0atgnnRZzGK4Nfj1Qiu95u4xBuYAIz3D2Lu10rL0SbAXzm/D+P847oBr0Xz4/87bTy3zSQ5TyHBjdclCo0i1WQkMrr7CUuxuTVybwF4ZwIm8UIdg/J62S5mbLWygkex68gKnGr10Exb/8HifEaaf7ADaEAAtfRqEciSs/MUl7mYoNyBsOZ+isRdttBF/tRtkcgEl4lWn1Qx3mpIRiJcV42GozQCvnpcHGiIi/1ums7lDietkKG/qjEyYXciQK4YRSb6G6juBgQ+pgLsAt8OKo8bwgb8nyJMlk1jCyRUY5zB+IpwnL6JOhkKp+eWc7LIyHl4P+IJ77hLl9Th07cvnnyj8+LAE54OBtbpCV7UVPPmd5uokvuff0h8S61oFttFyaz7IGrRwWVHab3irYK0Oa0gAkCaI29z+L7+XZ9H0x7PlaFshDo0VoAFeGHuWbnJNR7NIXHHgwpcE45VaD/HYMDhdQjByT6oVUuiOWAWpE//JhK1eSFfU9fyoqcNMsHW6P6kb15DoVtMsAEBaccYGVH4NsOCIFYIm3jPW2Vd8huw/pOv1wUYRyHXkT4CkNia1K/dFJ57Tvxu6kAPrZOzbqFWFolslHMe7ZzNvc8NGFEN5wP99huNZy8A4W0VgibtZy9xGhJPUGg/i9skQc/GL3HiRfw48OP/ka05+88aigHVM8GHklaUaQmadAy6nEv+kFYJ0e6mN3xDpBQT8xnFbNjVH6QexDj8GrWwVO8ye6q6oaLdvE
- eF43D6aT
- ozpzPSdnZDST+M3fHLnJdcxW0MGCywGUWc4sMV0lrwtaWVydgFlEutmIYDvPljQCKDYt809ahCxQPgTWVSQDc8OALHwrBa3kJt+7liNhaWP0erTqCElNWFr6bNHoeTSEMplmvRGuuc0022qBm+yHy+lC6Wpd7RLMoppLLiTV50rTKBRIf222OhKe5Ktc+M1m14wAtJT8TCBKTQ0EGQb8Fx5R7G3JzJ852tY+xjJA7vRYSFNE5i2NJAiXrgQ3iK9lB+8R3Hhu6XKOsqL8lKhkvS0q49Dika2UJsrDEm3oUsfKLUQ6bxzR9kZxx5sk2yc3y1bUHnHnqH8C7w0W2r/w6MzAqeIqHH3XNz/OSM2g5ZOhCbPyCjwZRe4ahJy5Y6X+RgPpl
+X-HE-Tag: 1768414340-152684
+X-HE-Meta: U2FsdGVkX1+aadDjymxYGCiYqzg+OZNn2H9cp6lM1ONNnGWBihVPeeFmrEdkR4pbECyFa4w2U6buOaVR9xS5JrE3uXRo/dUngMsWLiuhJp/nAm9zaAd4CX4ITioydqNI/geUAu5I2P8vN8nA6mPROATxdvrk4/VqfQTvsT6uMPAuZvXwf9/MnXelgDqEL633OlZvKFUPaP9SMfUhs+BdrHXAkl1rhxBOF5QNwDk5GplZqZFDDV1qoOZ4wxBOGn+QZJUL54meMvtLHiTrJehTc7ALr50G3XMj5YVlwCMWkAKoUWTXtnkomJm4G2DI7bU+zoUhvb7DO0ZyDpy2L/1GdBHMs995z0DgSZSH6iDRvYQpaxlbb0muWoHusS1brO/K5Yl1qGlLIlHeqhwGwnZ/18wJL5ZvG1QM9lH/rESak194l4tjRHZkG+HRcNAKIbsdbsFsuo1WT6u09HXb4DAevJaKSOHMUunKEY+Us9HWEjI2LQ5RbRAk+dbLyLVgLqKjmGP7Y1xsA2NbxxAoZ760xD1isi9jVlEcC/f1ev7gBq7jAfMuz1uxCfpR748pidAFnCPqI+oFYpdSfce1CIJ3fRYskoh6qy1+KnWQtUss/QnGjeBDlen6gF3/dCIV9yKjg/UnNfQLOqAuLoaFH+Lcbndopr3LJAdnX6/qzRv1kWgpnDgbErdEvVe9ExbphKRw8OEDd7v7biZyPaVYaWw0aazv4UcLew5r1ScHBSmnnelxjKOidoA+Tk9xZAAkfQHhUZxhr7sAxTgdL/WYqqaMf4mKHgoSOjwEEjkzHIhOcXy4G905QjB7hcEo3KcvId0NSvnaZTwRKt/7swlMwatbFAtRqRwsxSE4cZg0IVh4tPucjJImxut7yF4cz1y82DTNrK07QyI3pPn9nAT6EYTh+3W44AVmLtIhpUpelpyQkjQ63XmDHxkJ3pyFte3Irv0q6z1rDNqAU0P5Pdirks9
+ IwH997Zh
+ uXBdVyRdG/PWD8DzvfcPSkULfnhZEunAUUAAQNbqh5OpZOouXiNCc/z9w+rtGJksxVAZwVN6haFG/qfFTso9pTJBagB5I2KBL9DJDAasJ+huF8aW4VKr0Ke7pMNEMXPTmZap/njbfpgdbxTsVpDYSIhaUHyqmAGOCk1YxYeO+JCVPQ9LDiSp1K5TJAyi+j+eOH6/12Akethfw+1Z/hsLTQz0JvH5QL4PTl++5hthDz9U20Y/eSv6BUfer9MrhQQNoWIKQvhTeM3rlP9h5QyZgNcMm8x6Xm/soyy1cpkMcYP4V4J1v5yjZrL7gp6YMeFAu9c0KJ26C69joScU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,189 +123,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Wed, Jan 14, 2026 at 11:55:21AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/14/26 09:51, Gregory Price wrote:
+> > The dax kmem driver currently onlines memory automatically during
+> > probe using the system's default online policy but provides no way
+> > to control or query the memory state at runtime. Users cannot change
+> > the online type after probe, and there's no atomic way to offline and
+> > remove memory blocks together.
+> > 
+> > Add a new 'hotplug' sysfs attribute that allows userspace to control
+> > and query the memory state. The interface supports the following states:
+> > 
+> >    - "offline": memory is added but not online
+> >    - "online": memory is online as normal system RAM
+> >    - "online_movable": memory is online in ZONE_MOVABLE
+> >    - "unplug": memory is offlined and removed
+> > 
+> > The initial state after probe uses MMOP_SYSTEM_DEFAULT to preserve
+> > backwards compatibility - existing systems with auto-online policies
+> > will continue to work as before.
+> > 
+> > The state machine enforces valid transitions:
+> >    - From offline: can transition to online, online_movable, or unplug
+> >    - From online/online_movable: can transition to offline or unplug
+> >    - Cannot switch directly between online and online_movable
+> 
+> Do we have to support these transitions right from the start?
+> 
+> What are the use cases for adding memory as offline and then onlining it,
+> and why do we have to support that through this interface?
+> 
 
-kernel test robot noticed the following build errors:
+After a re-read of the feedback - are you suggested to basically kill the
+entire offline state of blocks entirely? (e.g. if a driver calls to
+offline a block, instead fully unplug it)
 
-[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
-[also build test ERROR on linus/master v6.19-rc5 next-20260114]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I took a look at the acpi and ppc code you suggested, and I think they
+also have "expect offline then online" as a default expectation.  I
+can't speak to those users requirements.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/mpenttil-redhat-com/mm-unified-hmm-fault-and-migrate-device-pagewalk-paths/20260114-172232
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20260114091923.3950465-2-mpenttil%40redhat.com
-patch subject: [PATCH 1/3] mm: unified hmm fault and migrate device pagewalk paths
-config: hexagon-randconfig-r063-20260114 (https://download.01.org/0day-ci/archive/20260115/202601150107.djcXDbUn-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260115/202601150107.djcXDbUn-lkp@intel.com/reproduce)
+This would definitely break things like daxctl/ndctl, but maybe that's
+preferable?  I pointed out that patch 8 does this anyway - and I'd like
+input from ndctl folks as to whether that should end in a NACK.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601150107.djcXDbUn-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/hmm.c:49:30: error: incomplete result type 'enum migrate_vma_info' in function definition
-      49 | static enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
-         |                              ^
-   mm/hmm.c:49:13: note: forward declaration of 'enum migrate_vma_info'
-      49 | static enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
-         |             ^
->> mm/hmm.c:51:24: error: variable has incomplete type 'enum migrate_vma_info'
-      51 |         enum migrate_vma_info minfo;
-         |                               ^
-   mm/hmm.c:49:13: note: forward declaration of 'enum migrate_vma_info'
-      49 | static enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
-         |             ^
->> mm/hmm.c:53:41: error: incomplete definition of type 'struct migrate_vma'
-      53 |         minfo = range->migrate ? range->migrate->flags : 0;
-         |                                  ~~~~~~~~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
->> mm/hmm.c:55:3: error: use of undeclared identifier 'MIGRATE_VMA_SELECT_SYSTEM'
-      55 |                 MIGRATE_VMA_SELECT_SYSTEM : 0;
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/hmm.c:65:24: error: variable has incomplete type 'enum migrate_vma_info'
-      65 |         enum migrate_vma_info minfo;
-         |                               ^
-   mm/hmm.c:49:13: note: forward declaration of 'enum migrate_vma_info'
-      49 | static enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
-         |             ^
->> mm/hmm.c:77:15: error: use of undeclared identifier 'MIGRATE_VMA_SELECT_COMPOUND'
-      77 |             (minfo & MIGRATE_VMA_SELECT_COMPOUND) &&
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/hmm.c:423:20: warning: unused variable 'range' [-Wunused-variable]
-     423 |         struct hmm_range *range = hmm_vma_walk->range;
-         |                           ^~~~~
-   mm/hmm.c:493:24: error: variable has incomplete type 'enum migrate_vma_info'
-     493 |         enum migrate_vma_info minfo;
-         |                               ^
-   mm/hmm.c:49:13: note: forward declaration of 'enum migrate_vma_info'
-      49 | static enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
-         |             ^
-   mm/hmm.c:502:35: error: incomplete definition of type 'struct migrate_vma'
-     502 |         fault_folio = (migrate && migrate->fault_page) ?
-         |                                   ~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
-   mm/hmm.c:503:21: error: incomplete definition of type 'struct migrate_vma'
-     503 |                 page_folio(migrate->fault_page) : NULL;
-         |                            ~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
-   mm/hmm.c:503:21: error: incomplete definition of type 'struct migrate_vma'
-     503 |                 page_folio(migrate->fault_page) : NULL;
-         |                            ~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
-   mm/hmm.c:503:21: error: incomplete definition of type 'struct migrate_vma'
-     503 |                 page_folio(migrate->fault_page) : NULL;
-         |                            ~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
-   mm/hmm.c:512:17: error: use of undeclared identifier 'MIGRATE_VMA_SELECT_SYSTEM'
-     512 |                 if (!(minfo & MIGRATE_VMA_SELECT_SYSTEM))
-         |                               ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/hmm.c:529:17: error: use of undeclared identifier 'MIGRATE_VMA_SELECT_DEVICE_PRIVATE'
-     529 |                 if (!(minfo & MIGRATE_VMA_SELECT_DEVICE_PRIVATE))
-         |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/hmm.c:531:37: error: incomplete definition of type 'struct migrate_vma'
-     531 |                 if (folio->pgmap->owner != migrate->pgmap_owner)
-         |                                            ~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
-   mm/hmm.c:548:14: error: incomplete definition of type 'struct migrate_vma'
-     548 |             (migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
-         |              ~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
-   mm/hmm.c:548:24: error: use of undeclared identifier 'MIGRATE_VMA_SELECT_COMPOUND'
-     548 |             (migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
-         |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/hmm.c:603:24: error: variable has incomplete type 'enum migrate_vma_info'
-     603 |         enum migrate_vma_info minfo;
-         |                               ^
-   mm/hmm.c:49:13: note: forward declaration of 'enum migrate_vma_info'
-      49 | static enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
-         |             ^
-   mm/hmm.c:620:35: error: incomplete definition of type 'struct migrate_vma'
-     620 |         fault_folio = (migrate && migrate->fault_page) ?
-         |                                   ~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
-   mm/hmm.c:621:21: error: incomplete definition of type 'struct migrate_vma'
-     621 |                 page_folio(migrate->fault_page) : NULL;
-         |                            ~~~~~~~^
-   include/linux/hmm.h:15:8: note: forward declaration of 'struct migrate_vma'
-      15 | struct migrate_vma;
-         |        ^
-   fatal error: too many errors emitted, stopping now [-ferror-limit=]
-   1 warning and 20 errors generated.
-
-
-vim +49 mm/hmm.c
-
-    48	
-  > 49	static enum migrate_vma_info hmm_select_migrate(struct hmm_range *range)
-    50	{
-  > 51		enum migrate_vma_info minfo;
-    52	
-  > 53		minfo = range->migrate ? range->migrate->flags : 0;
-    54		minfo |= (range->default_flags & HMM_PFN_REQ_MIGRATE) ?
-  > 55			MIGRATE_VMA_SELECT_SYSTEM : 0;
-    56	
-    57		return minfo;
-    58	}
-    59	
-    60	static int hmm_pfns_fill(unsigned long addr, unsigned long end,
-    61				 struct hmm_vma_walk *hmm_vma_walk, unsigned long cpu_flags)
-    62	{
-    63		struct hmm_range *range = hmm_vma_walk->range;
-    64		unsigned long i = (addr - range->start) >> PAGE_SHIFT;
-    65		enum migrate_vma_info minfo;
-    66		bool migrate = false;
-    67	
-    68		minfo = hmm_select_migrate(range);
-    69		if (cpu_flags != HMM_PFN_ERROR) {
-    70			if (minfo && (vma_is_anonymous(hmm_vma_walk->vma))) {
-    71				cpu_flags |= (HMM_PFN_VALID | HMM_PFN_MIGRATE);
-    72				migrate = true;
-    73			}
-    74		}
-    75	
-    76		if (migrate && thp_migration_supported() &&
-  > 77		    (minfo & MIGRATE_VMA_SELECT_COMPOUND) &&
-    78		    IS_ALIGNED(addr, HPAGE_PMD_SIZE) &&
-    79		    IS_ALIGNED(end, HPAGE_PMD_SIZE)) {
-    80			range->hmm_pfns[i] &= HMM_PFN_INOUT_FLAGS;
-    81			range->hmm_pfns[i] |= cpu_flags | HMM_PFN_COMPOUND;
-    82			addr += PAGE_SIZE;
-    83			i++;
-    84			cpu_flags = 0;
-    85		}
-    86	
-    87		for (; addr < end; addr += PAGE_SIZE, i++) {
-    88			range->hmm_pfns[i] &= HMM_PFN_INOUT_FLAGS;
-    89			range->hmm_pfns[i] |= cpu_flags;
-    90		}
-    91	
-    92		return 0;
-    93	}
-    94	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+~Gregory
 
