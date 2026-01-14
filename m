@@ -4,88 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5AE9D31A0E
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 06:08:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FB5DD31A0E
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 06:19:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4A506B0092; Wed, 14 Jan 2026 01:08:02 -0500 (EST)
+	id C48B76B0089; Wed, 14 Jan 2026 01:19:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1A926B0093; Wed, 14 Jan 2026 01:08:02 -0500 (EST)
+	id BF6496B008C; Wed, 14 Jan 2026 01:19:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1CE86B0095; Wed, 14 Jan 2026 01:08:02 -0500 (EST)
+	id AF5256B0092; Wed, 14 Jan 2026 01:19:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AD9DE6B0092
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:08:02 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 296EA8B701
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:08:02 +0000 (UTC)
-X-FDA: 84329538804.01.69D98F9
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1FA66140007
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:07:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aocnKVEZ;
-	spf=pass (imf26.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768370880; a=rsa-sha256;
-	cv=none;
-	b=peSI79TJeoLIJBHKENqntq5SQjZonIIjQXviaY/xW8AmX3zz7SwjUhw6NDrLyGsEXGggGm
-	8pWr9IeV4hrMcZkOV+Lh2ayQoNsh8DQt68txPkDhl1A0jUmrDWLzxsmALcM5BquDVuGORD
-	3tjm+sfNJZfjWqhqwUjI4xS6BQ7gMDY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aocnKVEZ;
-	spf=pass (imf26.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B0D36B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:19:07 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2AC04C19DB
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:19:07 +0000 (UTC)
+X-FDA: 84329566734.24.58FC416
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 011534000D
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:19:04 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=none (imf01.hostedemail.com: domain of macro@orcam.me.uk has no SPF policy when checking 78.133.224.34) smtp.mailfrom=macro@orcam.me.uk;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768370880;
+	s=arc-20220608; t=1768371545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n08rQGqpj11nHUCAMi/f22AsHiR2vC2VJqIQFlhq3C0=;
-	b=sgACQaHuLL1/e1wj/JTWeRdeyMhEfH+anpDRpespHb4Pe92+9q1qV5sVW6uAKbidtTFD7Z
-	VWBOU9+gS3g5iLnzDNbB/cwnghw/Gqabk1l5aADkDkVJqRljxy8tzBBeGHerNmENpolmD+
-	4nQPlAs3kv32jC/qijK0W9XkiblFt1Y=
-Date: Wed, 14 Jan 2026 14:07:40 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768370877;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n08rQGqpj11nHUCAMi/f22AsHiR2vC2VJqIQFlhq3C0=;
-	b=aocnKVEZHdabReIBzLtHc4eH9MCvPxD4G9Li3UrFrEnWwqKeJbytpoUf6108HwbT4NGKqv
-	bKXABswQaYr3WHFnE54bKiWZg9mlayWZe3Sd/RMTM23Ge60CYdGvI1qsem8a9YlHAOe6qF
-	n8Ku2yw4G7PErZYVlmAs+sjic6Ezs8g=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH RFC v2 09/20] slab: remove cpu (partial) slabs usage from
- allocation paths
-Message-ID: <3k4wy7gavxczpqn63jt66423fqa3wvdztigvbmejbvcpbr7ld2@fbylldpeuvgi>
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
- <20260112-sheaves-for-all-v2-9-98225cfb50cf@suse.cz>
+	bh=yaBUQH6VotuDw0xa0VH4bBKRLI+wRtCej0AtnQAvIc0=;
+	b=qOO6D/61pUeE7Mcj6ahwpUj39PCxRzRvRVcSDR8OggGE/D4/UjA9e9nyt3kxBntdijhkVa
+	WAxTFdYdEpJUTAFFgBywy8wxxdKUyNW9yUwZTTeAv3sn+AFA8jE+gdEg+ekANAgBNwiKFL
+	Pr32s6ZjBRa5rbRC77fuJo7eSftUPqs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=none (imf01.hostedemail.com: domain of macro@orcam.me.uk has no SPF policy when checking 78.133.224.34) smtp.mailfrom=macro@orcam.me.uk;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768371545; a=rsa-sha256;
+	cv=none;
+	b=loTbmcLkQSCvwboat8PCnokHnRJ7v+NDtzqJH5Qq58PhjUkiwh9+UVvP9CHZ/VNaHD9LyT
+	PTb9lvkSd4YIKhgitTEb0unXgiU1uequJrftNG4D+Rh3umCSgk84/Iyoj7w6e54Q2f9I47
+	L8nozchTTQ9Z39BnTC5zpr4GE1GLKno=
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 3824192009D; Wed, 14 Jan 2026 07:19:02 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 361CE92009C;
+	Wed, 14 Jan 2026 06:19:02 +0000 (GMT)
+Date: Wed, 14 Jan 2026 06:19:02 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: David Laight <david.laight.linux@gmail.com>
+cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
+    linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+    Linux Memory Management List <linux-mm@kvack.org>, 
+    Nicolas Pitre <npitre@baylibre.com>, linux-mips@vger.kernel.org, 
+    Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: Re: mips64-linux-ld: div64.c:undefined reference to `__multi3'
+In-Reply-To: <20260113200455.3dffe121@pumpkin>
+Message-ID: <alpine.DEB.2.21.2601140453090.6421@angie.orcam.me.uk>
+References: <202601140146.hMLODc6v-lkp@intel.com> <20260113200455.3dffe121@pumpkin>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260112-sheaves-for-all-v2-9-98225cfb50cf@suse.cz>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1FA66140007
-X-Stat-Signature: qatywd81kknnmztf6zghdgo14x7az59e
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1768370879-225350
-X-HE-Meta: U2FsdGVkX18F3FMYFsJQ/vMOudqIvKmaqGNOR+LxV0XME3iDE/n0DoPm0gliXgjf485sEXBCn5oxXIh81AXOuWWh5WtzujmtRwyPhdjbxW9C6A/NiIXEaXit+jrTwwRsuFKBnXwh7PeMQW+lvG0hh10p5iqUgetMf2nSKf/Yvhj0JY8g36MiKkIlVHaxR3ChDqLN1RCw1W719kZadA3V9/rI5kSp3usHQ8PafskoeF/9N1l3nZJCFwMbwnU+44QyRYc4Xgyu5udycvFF+wiyd9eOUazrnGJVqVPnKZP+YOGzQVYrTYEI5V0ClGy7AqE6OWxmeYkKdga5t9iAJgLZWBoEEOsbREk6t55F4xGqcvdLJHFIBEjKUcLVuvK74dwbZDRIDe4/UNaLNRonuQjA/VxHaPqMdus48Bo0ttvn5tMW1FjHQqDKkrCg9hnV98qpKdVMXYRN3D/8MVSvhXx1tOCRAg3TOx7XsqaNolJoX6kXcWZLX7t/i/V2b49zrJTX89bZ0TaZ0OfbrqjUtezMCLKt7WQnQfoP1Cixq5iHLp9BDb8J9dYUWWxPoJtXGrMLUXSF21DGdpI6+xpRH5U7EeW4tYP0At2AifepmJSD3ptaNrn1S/ZxoNmrJO7/NKLqIV9f8rcmY3dq/FE4+ttasB9vtHycKW4IEzoufGayyUoWd98K1vOY3CiDDIaO1Cr6dZo7w/sEA6h5Y0H6S4MciEtCe7tyIQXc07NSBYnJSFP7ZUPQP0LQmQjmDWRy72HbL1rRyzd4kjcYFFvFBz1ze46k6oFchdrVFSdSodsSxFQPunYdTiXNwk848x6cgHkccSONLdGjpC+twKT2GiXmdDzRrdfGv6cmXuMR/lv9HaUU11VCxAzZ3nN78TsG6CfURa9FmSjOJTdZXchL0WyWLv8zpMj9BnU/slTsg5DdXAEJFltee1yiCSl6CFc9Bl0yd/gc89iD9XvTUVb7zR5
- 5BDcFvo1
- AsH3pvJjZalVdRuTvRnCIauSS4NYZLYdyeVgftU50qecKaauPFXnPVfCZj+5hiZ0bEbY+QOWQD5/VdVTD5MvxiRwux4coU6hoYxYtZWDhDJltZw5n4Fb3XkmuhR6QTrTGyXl3YTYaDCMtz4mIeWWt3GwbGhZUkM99JEVh7HcINtFTU/JYflPgHMEgOV7nwn+amr9PBZgqhMUMNhZmdKHgzcvqnA==
+X-Stat-Signature: 4zx66hfo5tr7aassf994r1qd7ey73cyi
+X-Rspamd-Queue-Id: 011534000D
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768371544-939792
+X-HE-Meta: U2FsdGVkX1/YcfqTbrJL3ZIYJqOJPTd7nE/QTB3huANcBJ1jjQZnZCCKhTWq2B3SsSwY5T4lTOXgorp2TmkTJ3xbMHa7poAVaCb7ASKsk/n/zq/pabxvx1n119mCaRiNlslo4aT97chKoVzTRsjYc8KRyBNtMIrp4pFk/e5bRBXpNKKrtSdaC0rRBhUcfjOV6E4/wZjFErggwqb0+DXxPgnvfZVGIiGiEY29B5Q2rf7rQhrm5mQiNxV6oqtTZAsZiYIcX0P79qlGpvQR19Qk8vRTShQaUHpxn8i13dfCLh20Lr5WmGplKv1uMDuSsqLTLApylFw6Sb2QR7Zup8BkEbH62kbT+ew1Phd63LQsl1TIZKBzgGrMNxVpuy70myHyGe/PJXTusqXBpASLqUUUz9JK2zXJNiILzwxcs8nnqoqbkXZhNGVaiXfYQp7ezEUPoRg7LMZL2ecFZJcJGxqtcKAeG3asG2EMM3/ImZKueAokyO1heeCrSdf/xk5v0rZNjW7uvFDkG5TpGhUkbd3uMLzL7xL1CFiXOLmWUZB7ua7ewbAmS0OdimmtlYc8Xws7EUDpV2dGxwsLlhZoBJiwXEV3Vi1GibDHnySg4eNT9KA0VOT9yrFB8D6lxvfpPx56FwGyA8SWbGaLRwmRbuvFjkmLwqaUJUEFqjib7lmZlmnVilxEBYyCAkSPFSMnRboQpi5tVVfW5MP7y6mIshTP/2zKViG6Q9S+WzZ+LVItItpvBk/uP5Cy36U7XxR5uuT9srTnff3pf4purWjICeOMDjycuuoEWcWQNsEi+9v9W+eJWklfQ+PI3L2rXnAyNIDX9CaoCDiEHWy6ht27zK2+TwA1dujXyAno/iml5iyyYyVu6wEWK5YQmSIc+rE2OBwL6n/B7WSvCbnfFNti4NaK8QkLGuPGtk8n1MH2gcTPF0uku64Q1Pr9MBtCFflBdWNroKVF3OSIFnEQetDKctR
+ bfq+re0B
+ nVj16jjb/6FM3qPeq2WSKGwstQ1htbZrdvi5WLhUebwVsAfUTfgZA8a9Yz7RC2nhpwGcP1E3ZN/7Qi3v44e/Rv6Xxm0lMOahCjQqgKYmRDUPgDW0y1tfW+1x1vbtYV59fmRcyvaqjrH/WtnzR3VqHjU3FAPWQedpU/Qq3wEmAOBUYbI60K9OcfQofZD+hm10ra1Oeg/SrFdltWx54Pmb4hrVwriIHH39acV+HgkuRfVjHlu8FRSpjLiis1xwyBiX9vLa9wHsAi6/doXVkc+aKpI6aIhJDx+ZzVX5OZmP6IvD2Vbs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,869 +84,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 04:17:03PM +0100, Vlastimil Babka wrote:
-> We now rely on sheaves as the percpu caching layer and can refill them
-> directly from partial or newly allocated slabs. Start removing the cpu
-> (partial) slabs code, first from allocation paths.
-> 
-> This means that any allocation not satisfied from percpu sheaves will
-> end up in ___slab_alloc(), where we remove the usage of cpu (partial)
-> slabs, so it will only perform get_partial() or new_slab().
-> 
-> In get_partial_node() we used to return a slab for freezing as the cpu
-> slab and to refill the partial slab. Now we only want to return a single
-> object and leave the slab on the list (unless it became full). We can't
-> simply reuse alloc_single_from_partial() as that assumes freeing uses
-> free_to_partial_list(). Instead we need to use __slab_update_freelist()
-> to work properly against a racing __slab_free().
-> 
-> The rest of the changes is removing functions that no longer have any
-> callers.
-> 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/slub.c | 611 ++++++++------------------------------------------------------
->  1 file changed, 78 insertions(+), 533 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index b568801edec2..7173f6716382 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -245,7 +245,6 @@ static DEFINE_STATIC_KEY_FALSE(strict_numa);
->  struct partial_context {
->  	gfp_t flags;
->  	unsigned int orig_size;
-> -	void *object;
->  	unsigned int min_objects;
->  	unsigned int max_objects;
->  	struct list_head slabs;
-> @@ -599,36 +598,6 @@ static inline void *get_freepointer(struct kmem_cache *s, void *object)
->  	return freelist_ptr_decode(s, p, ptr_addr);
->  }
->  
-> -static void prefetch_freepointer(const struct kmem_cache *s, void *object)
-> -{
-> -	prefetchw(object + s->offset);
-> -}
-> -
-> -/*
-> - * When running under KMSAN, get_freepointer_safe() may return an uninitialized
-> - * pointer value in the case the current thread loses the race for the next
-> - * memory chunk in the freelist. In that case this_cpu_cmpxchg_double() in
-> - * slab_alloc_node() will fail, so the uninitialized value won't be used, but
-> - * KMSAN will still check all arguments of cmpxchg because of imperfect
-> - * handling of inline assembly.
-> - * To work around this problem, we apply __no_kmsan_checks to ensure that
-> - * get_freepointer_safe() returns initialized memory.
-> - */
-> -__no_kmsan_checks
-> -static inline void *get_freepointer_safe(struct kmem_cache *s, void *object)
-> -{
-> -	unsigned long freepointer_addr;
-> -	freeptr_t p;
-> -
-> -	if (!debug_pagealloc_enabled_static())
-> -		return get_freepointer(s, object);
-> -
-> -	object = kasan_reset_tag(object);
-> -	freepointer_addr = (unsigned long)object + s->offset;
-> -	copy_from_kernel_nofault(&p, (freeptr_t *)freepointer_addr, sizeof(p));
-> -	return freelist_ptr_decode(s, p, freepointer_addr);
-> -}
-> -
->  static inline void set_freepointer(struct kmem_cache *s, void *object, void *fp)
->  {
->  	unsigned long freeptr_addr = (unsigned long)object + s->offset;
-> @@ -708,23 +677,11 @@ static void slub_set_cpu_partial(struct kmem_cache *s, unsigned int nr_objects)
->  	nr_slabs = DIV_ROUND_UP(nr_objects * 2, oo_objects(s->oo));
->  	s->cpu_partial_slabs = nr_slabs;
->  }
-> -
-> -static inline unsigned int slub_get_cpu_partial(struct kmem_cache *s)
-> -{
-> -	return s->cpu_partial_slabs;
-> -}
-> -#else
-> -#ifdef SLAB_SUPPORTS_SYSFS
-> +#elif defined(SLAB_SUPPORTS_SYSFS)
->  static inline void
->  slub_set_cpu_partial(struct kmem_cache *s, unsigned int nr_objects)
->  {
->  }
-> -#endif
-> -
-> -static inline unsigned int slub_get_cpu_partial(struct kmem_cache *s)
-> -{
-> -	return 0;
-> -}
->  #endif /* CONFIG_SLUB_CPU_PARTIAL */
->  
->  /*
-> @@ -1065,7 +1022,7 @@ static void set_track_update(struct kmem_cache *s, void *object,
->  	p->handle = handle;
->  #endif
->  	p->addr = addr;
-> -	p->cpu = smp_processor_id();
-> +	p->cpu = raw_smp_processor_id();
->  	p->pid = current->pid;
->  	p->when = jiffies;
->  }
-> @@ -3571,15 +3528,15 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
->  }
->  
->  /*
-> - * Try to allocate a partial slab from a specific node.
-> + * Try to allocate object from a partial slab on a specific node.
->   */
-> -static struct slab *get_partial_node(struct kmem_cache *s,
-> -				     struct kmem_cache_node *n,
-> -				     struct partial_context *pc)
-> +static void *get_partial_node(struct kmem_cache *s,
-> +			      struct kmem_cache_node *n,
-> +			      struct partial_context *pc)
->  {
-> -	struct slab *slab, *slab2, *partial = NULL;
-> +	struct slab *slab, *slab2;
->  	unsigned long flags;
-> -	unsigned int partial_slabs = 0;
-> +	void *object = NULL;
->  
->  	/*
->  	 * Racy check. If we mistakenly see no partial slabs then we
-> @@ -3595,54 +3552,55 @@ static struct slab *get_partial_node(struct kmem_cache *s,
->  	else if (!spin_trylock_irqsave(&n->list_lock, flags))
->  		return NULL;
->  	list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
-> +
-> +		struct freelist_counters old, new;
-> +
->  		if (!pfmemalloc_match(slab, pc->flags))
->  			continue;
->  
->  		if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
-> -			void *object = alloc_single_from_partial(s, n, slab,
-> +			object = alloc_single_from_partial(s, n, slab,
->  							pc->orig_size);
-> -			if (object) {
-> -				partial = slab;
-> -				pc->object = object;
-> +			if (object)
->  				break;
-> -			}
->  			continue;
->  		}
->  
-> -		remove_partial(n, slab);
-> +		/*
-> +		 * get a single object from the slab. This might race against
-> +		 * __slab_free(), which however has to take the list_lock if
-> +		 * it's about to make the slab fully free.
-> +		 */
-> +		do {
-> +			old.freelist = slab->freelist;
-> +			old.counters = slab->counters;
->  
-> -		if (!partial) {
-> -			partial = slab;
-> -			stat(s, ALLOC_FROM_PARTIAL);
-> +			new.freelist = get_freepointer(s, old.freelist);
-> +			new.counters = old.counters;
-> +			new.inuse++;
->  
-> -			if ((slub_get_cpu_partial(s) == 0)) {
-> -				break;
-> -			}
-> -		} else {
-> -			put_cpu_partial(s, slab, 0);
-> -			stat(s, CPU_PARTIAL_NODE);
-> +		} while (!__slab_update_freelist(s, slab, &old, &new, "get_partial_node"));
->  
-> -			if (++partial_slabs > slub_get_cpu_partial(s) / 2) {
-> -				break;
-> -			}
-> -		}
-> +		object = old.freelist;
-> +		if (!new.freelist)
-> +			remove_partial(n, slab);
-> +
-> +		break;
->  	}
->  	spin_unlock_irqrestore(&n->list_lock, flags);
-> -	return partial;
-> +	return object;
->  }
->  
->  /*
-> - * Get a slab from somewhere. Search in increasing NUMA distances.
-> + * Get an object from somewhere. Search in increasing NUMA distances.
->   */
-> -static struct slab *get_any_partial(struct kmem_cache *s,
-> -				    struct partial_context *pc)
-> +static void *get_any_partial(struct kmem_cache *s, struct partial_context *pc)
->  {
->  #ifdef CONFIG_NUMA
->  	struct zonelist *zonelist;
->  	struct zoneref *z;
->  	struct zone *zone;
->  	enum zone_type highest_zoneidx = gfp_zone(pc->flags);
-> -	struct slab *slab;
->  	unsigned int cpuset_mems_cookie;
->  
->  	/*
-> @@ -3677,8 +3635,8 @@ static struct slab *get_any_partial(struct kmem_cache *s,
->  
->  			if (n && cpuset_zone_allowed(zone, pc->flags) &&
->  					n->nr_partial > s->min_partial) {
-> -				slab = get_partial_node(s, n, pc);
-> -				if (slab) {
-> +				void *object = get_partial_node(s, n, pc);
-> +				if (object) {
->  					/*
->  					 * Don't check read_mems_allowed_retry()
->  					 * here - if mems_allowed was updated in
-> @@ -3686,7 +3644,7 @@ static struct slab *get_any_partial(struct kmem_cache *s,
->  					 * between allocation and the cpuset
->  					 * update
->  					 */
-> -					return slab;
-> +					return object;
->  				}
->  			}
->  		}
-> @@ -3696,20 +3654,20 @@ static struct slab *get_any_partial(struct kmem_cache *s,
->  }
->  
->  /*
-> - * Get a partial slab, lock it and return it.
-> + * Get an object from a partial slab
->   */
-> -static struct slab *get_partial(struct kmem_cache *s, int node,
-> -				struct partial_context *pc)
-> +static void *get_partial(struct kmem_cache *s, int node,
-> +			 struct partial_context *pc)
->  {
-> -	struct slab *slab;
->  	int searchnode = node;
-> +	void *object;
->  
->  	if (node == NUMA_NO_NODE)
->  		searchnode = numa_mem_id();
->  
-> -	slab = get_partial_node(s, get_node(s, searchnode), pc);
-> -	if (slab || (node != NUMA_NO_NODE && (pc->flags & __GFP_THISNODE)))
-> -		return slab;
-> +	object = get_partial_node(s, get_node(s, searchnode), pc);
-> +	if (object || (node != NUMA_NO_NODE && (pc->flags & __GFP_THISNODE)))
-> +		return object;
->  
->  	return get_any_partial(s, pc);
->  }
-> @@ -4269,19 +4227,6 @@ static int slub_cpu_dead(unsigned int cpu)
->  	return 0;
->  }
->  
-> -/*
-> - * Check if the objects in a per cpu structure fit numa
-> - * locality expectations.
-> - */
-> -static inline int node_match(struct slab *slab, int node)
-> -{
-> -#ifdef CONFIG_NUMA
-> -	if (node != NUMA_NO_NODE && slab_nid(slab) != node)
-> -		return 0;
-> -#endif
-> -	return 1;
-> -}
-> -
->  #ifdef CONFIG_SLUB_DEBUG
->  static int count_free(struct slab *slab)
->  {
-> @@ -4466,36 +4411,6 @@ __update_cpu_freelist_fast(struct kmem_cache *s,
->  					     &old.freelist_tid, new.freelist_tid);
->  }
->  
-> -/*
-> - * Check the slab->freelist and either transfer the freelist to the
-> - * per cpu freelist or deactivate the slab.
-> - *
-> - * The slab is still frozen if the return value is not NULL.
-> - *
-> - * If this function returns NULL then the slab has been unfrozen.
-> - */
-> -static inline void *get_freelist(struct kmem_cache *s, struct slab *slab)
-> -{
-> -	struct freelist_counters old, new;
-> -
-> -	lockdep_assert_held(this_cpu_ptr(&s->cpu_slab->lock));
-> -
-> -	do {
-> -		old.freelist = slab->freelist;
-> -		old.counters = slab->counters;
-> -
-> -		new.freelist = NULL;
-> -		new.counters = old.counters;
-> -
-> -		new.inuse = old.objects;
-> -		new.frozen = old.freelist != NULL;
-> -
-> -
-> -	} while (!__slab_update_freelist(s, slab, &old, &new, "get_freelist"));
-> -
-> -	return old.freelist;
-> -}
-> -
->  /*
->   * Get the slab's freelist and do not freeze it.
->   *
-> @@ -4523,29 +4438,6 @@ static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *sla
->  	return old.freelist;
->  }
->  
-> -/*
-> - * Freeze the partial slab and return the pointer to the freelist.
-> - */
-> -static inline void *freeze_slab(struct kmem_cache *s, struct slab *slab)
-> -{
-> -	struct freelist_counters old, new;
-> -
-> -	do {
-> -		old.freelist = slab->freelist;
-> -		old.counters = slab->counters;
-> -
-> -		new.freelist = NULL;
-> -		new.counters = old.counters;
-> -		VM_BUG_ON(new.frozen);
-> -
-> -		new.inuse = old.objects;
-> -		new.frozen = 1;
-> -
-> -	} while (!slab_update_freelist(s, slab, &old, &new, "freeze_slab"));
-> -
-> -	return old.freelist;
-> -}
-> -
->  /*
->   * If the object has been wiped upon free, make sure it's fully initialized by
->   * zeroing out freelist pointer.
-> @@ -4603,172 +4495,24 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
->  
->  	return allocated;
->  }
-> -
->  /*
-> - * Slow path. The lockless freelist is empty or we need to perform
-> - * debugging duties.
-> - *
-> - * Processing is still very fast if new objects have been freed to the
-> - * regular freelist. In that case we simply take over the regular freelist
-> - * as the lockless freelist and zap the regular freelist.
-> - *
-> - * If that is not working then we fall back to the partial lists. We take the
-> - * first element of the freelist as the object to allocate now and move the
-> - * rest of the freelist to the lockless freelist.
-> - *
-> - * And if we were unable to get a new slab from the partial slab lists then
-> - * we need to allocate a new slab. This is the slowest path since it involves
-> - * a call to the page allocator and the setup of a new slab.
-> + * Slow path. We failed to allocate via percpu sheaves or they are not available
-> + * due to bootstrap or debugging enabled or SLUB_TINY.
->   *
-> - * Version of __slab_alloc to use when we know that preemption is
-> - * already disabled (which is the case for bulk allocation).
-> + * We try to allocate from partial slab lists and fall back to allocating a new
-> + * slab.
->   */
->  static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
-> -			  unsigned long addr, struct kmem_cache_cpu *c, unsigned int orig_size)
-> +			   unsigned long addr, unsigned int orig_size)
->  {
->  	bool allow_spin = gfpflags_allow_spinning(gfpflags);
->  	void *freelist;
->  	struct slab *slab;
-> -	unsigned long flags;
->  	struct partial_context pc;
->  	bool try_thisnode = true;
->  
->  	stat(s, ALLOC_SLOWPATH);
->  
-> -reread_slab:
-> -
-> -	slab = READ_ONCE(c->slab);
-> -	if (!slab) {
-> -		/*
-> -		 * if the node is not online or has no normal memory, just
-> -		 * ignore the node constraint
-> -		 */
-> -		if (unlikely(node != NUMA_NO_NODE &&
-> -			     !node_isset(node, slab_nodes)))
-> -			node = NUMA_NO_NODE;
-> -		goto new_slab;
-> -	}
-> -
-> -	if (unlikely(!node_match(slab, node))) {
-> -		/*
-> -		 * same as above but node_match() being false already
-> -		 * implies node != NUMA_NO_NODE.
-> -		 *
-> -		 * We don't strictly honor pfmemalloc and NUMA preferences
-> -		 * when !allow_spin because:
-> -		 *
-> -		 * 1. Most kmalloc() users allocate objects on the local node,
-> -		 *    so kmalloc_nolock() tries not to interfere with them by
-> -		 *    deactivating the cpu slab.
-> -		 *
-> -		 * 2. Deactivating due to NUMA or pfmemalloc mismatch may cause
-> -		 *    unnecessary slab allocations even when n->partial list
-> -		 *    is not empty.
-> -		 */
-> -		if (!node_isset(node, slab_nodes) ||
-> -		    !allow_spin) {
-> -			node = NUMA_NO_NODE;
-> -		} else {
-> -			stat(s, ALLOC_NODE_MISMATCH);
-> -			goto deactivate_slab;
-> -		}
-> -	}
-> -
-> -	/*
-> -	 * By rights, we should be searching for a slab page that was
-> -	 * PFMEMALLOC but right now, we are losing the pfmemalloc
-> -	 * information when the page leaves the per-cpu allocator
-> -	 */
-> -	if (unlikely(!pfmemalloc_match(slab, gfpflags) && allow_spin))
-> -		goto deactivate_slab;
-> -
-> -	/* must check again c->slab in case we got preempted and it changed */
-> -	local_lock_cpu_slab(s, flags);
-> -
-> -	if (unlikely(slab != c->slab)) {
-> -		local_unlock_cpu_slab(s, flags);
-> -		goto reread_slab;
-> -	}
-> -	freelist = c->freelist;
-> -	if (freelist)
-> -		goto load_freelist;
-> -
-> -	freelist = get_freelist(s, slab);
-> -
-> -	if (!freelist) {
-> -		c->slab = NULL;
-> -		c->tid = next_tid(c->tid);
-> -		local_unlock_cpu_slab(s, flags);
-> -		stat(s, DEACTIVATE_BYPASS);
-> -		goto new_slab;
-> -	}
-> -
-> -	stat(s, ALLOC_REFILL);
-> -
-> -load_freelist:
-> -
-> -	lockdep_assert_held(this_cpu_ptr(&s->cpu_slab->lock));
-> -
-> -	/*
-> -	 * freelist is pointing to the list of objects to be used.
-> -	 * slab is pointing to the slab from which the objects are obtained.
-> -	 * That slab must be frozen for per cpu allocations to work.
-> -	 */
-> -	VM_BUG_ON(!c->slab->frozen);
-> -	c->freelist = get_freepointer(s, freelist);
-> -	c->tid = next_tid(c->tid);
-> -	local_unlock_cpu_slab(s, flags);
-> -	return freelist;
-> -
-> -deactivate_slab:
-> -
-> -	local_lock_cpu_slab(s, flags);
-> -	if (slab != c->slab) {
-> -		local_unlock_cpu_slab(s, flags);
-> -		goto reread_slab;
-> -	}
-> -	freelist = c->freelist;
-> -	c->slab = NULL;
-> -	c->freelist = NULL;
-> -	c->tid = next_tid(c->tid);
-> -	local_unlock_cpu_slab(s, flags);
-> -	deactivate_slab(s, slab, freelist);
-> -
-> -new_slab:
-> -
-> -#ifdef CONFIG_SLUB_CPU_PARTIAL
-> -	while (slub_percpu_partial(c)) {
-> -		local_lock_cpu_slab(s, flags);
-> -		if (unlikely(c->slab)) {
-> -			local_unlock_cpu_slab(s, flags);
-> -			goto reread_slab;
-> -		}
-> -		if (unlikely(!slub_percpu_partial(c))) {
-> -			local_unlock_cpu_slab(s, flags);
-> -			/* we were preempted and partial list got empty */
-> -			goto new_objects;
-> -		}
-> -
-> -		slab = slub_percpu_partial(c);
-> -		slub_set_percpu_partial(c, slab);
-> -
-> -		if (likely(node_match(slab, node) &&
-> -			   pfmemalloc_match(slab, gfpflags)) ||
-> -		    !allow_spin) {
-> -			c->slab = slab;
-> -			freelist = get_freelist(s, slab);
-> -			VM_BUG_ON(!freelist);
-> -			stat(s, CPU_PARTIAL_ALLOC);
-> -			goto load_freelist;
-> -		}
-> -
-> -		local_unlock_cpu_slab(s, flags);
-> -
-> -		slab->next = NULL;
-> -		__put_partials(s, slab);
-> -	}
-> -#endif
-> -
->  new_objects:
->  
->  	pc.flags = gfpflags;
-> @@ -4793,33 +4537,11 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
->  	}
->  
->  	pc.orig_size = orig_size;
-> -	slab = get_partial(s, node, &pc);
-> -	if (slab) {
-> -		if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
-> -			freelist = pc.object;
-> -			/*
-> -			 * For debug caches here we had to go through
-> -			 * alloc_single_from_partial() so just store the
-> -			 * tracking info and return the object.
-> -			 *
-> -			 * Due to disabled preemption we need to disallow
-> -			 * blocking. The flags are further adjusted by
-> -			 * gfp_nested_mask() in stack_depot itself.
-> -			 */
-> -			if (s->flags & SLAB_STORE_USER)
-> -				set_track(s, freelist, TRACK_ALLOC, addr,
-> -					  gfpflags & ~(__GFP_DIRECT_RECLAIM));
-> -
-> -			return freelist;
-> -		}
-> -
-> -		freelist = freeze_slab(s, slab);
-> -		goto retry_load_slab;
-> -	}
-> +	freelist = get_partial(s, node, &pc);
-> +	if (freelist)
-> +		goto success;
->  
-> -	slub_put_cpu_ptr(s->cpu_slab);
->  	slab = new_slab(s, pc.flags, node);
-> -	c = slub_get_cpu_ptr(s->cpu_slab);
->  
->  	if (unlikely(!slab)) {
->  		if (node != NUMA_NO_NODE && !(gfpflags & __GFP_THISNODE)
-> @@ -4836,68 +4558,31 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
->  	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
->  		freelist = alloc_single_from_new_slab(s, slab, orig_size, gfpflags);
->  
-> -		if (unlikely(!freelist)) {
-> -			/* This could cause an endless loop. Fail instead. */
-> -			if (!allow_spin)
-> -				return NULL;
-> -			goto new_objects;
-> +		if (likely(freelist)) {
-> +			goto success;
->  		}
-> +	} else {
-> +		alloc_from_new_slab(s, slab, &freelist, 1, allow_spin);
+On Tue, 13 Jan 2026, David Laight wrote:
 
-IIUC, when CONFIG_SLUB_DEBUG is enabled, each successful new_slab() call
-should have a matching inc_slabs_node(), since __kmem_cache_shutdown()
-rely on the accounting done by inc_slabs_node(). Here
-alloc_single_from_new_slab() does call inc_slabs_node(), but
-alloc_from_new_slab() doesn't. Could this mismatch cause any issues?
+> > All errors (new ones prefixed by >>):
+> > 
+> >    mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
+> >    div64.c:(.text+0x84): undefined reference to `__multi3'
+> > >> mips64-linux-ld: div64.c:(.text+0x11c): undefined reference to `__multi3'  
+> > 
+> 
+> This looks like a bug in the mips 'port'.
+> arch/mips/lib/multi3.c has the comment:
+> 
+> /*
+>  * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
+>  * that specific case only we implement that intrinsic here.
+>  *
+>  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
+>  */
+> #if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
+> 
+> So this code is excluded for gcc 8.5 but the compiler is generating the call.
+> 
+> Looking at the git log for that file there is a comment that includes:
+> 	"we wouldn't expect any calls to __multi3 to be generated from
+> 	 kernel code".
+> Not true....
+> Not sure why the link didn't fail before though, something subtle must
+> have changed.
+> 
+> I think the fix is just to remove the gcc version check.
 
->  
-> -		if (s->flags & SLAB_STORE_USER)
-> -			set_track(s, freelist, TRACK_ALLOC, addr,
-> -				  gfpflags & ~(__GFP_DIRECT_RECLAIM));
-> -
-> -		return freelist;
-> -	}
-> -
-> -	/*
-> -	 * No other reference to the slab yet so we can
-> -	 * muck around with it freely without cmpxchg
-> -	 */
-> -	freelist = slab->freelist;
-> -	slab->freelist = NULL;
-> -	slab->inuse = slab->objects;
-> -	slab->frozen = 1;
-> -
-> -	inc_slabs_node(s, slab_nid(slab), slab->objects);
-> -
-> -	if (unlikely(!pfmemalloc_match(slab, gfpflags) && allow_spin)) {
-> -		/*
-> -		 * For !pfmemalloc_match() case we don't load freelist so that
-> -		 * we don't make further mismatched allocations easier.
-> -		 */
-> -		deactivate_slab(s, slab, get_freepointer(s, freelist));
-> -		return freelist;
-> +		/* we don't need to check SLAB_STORE_USER here */
-> +		if (likely(freelist)) {
-> +			return freelist;
-> +		}
->  	}
->  
-> -retry_load_slab:
-> -
-> -	local_lock_cpu_slab(s, flags);
-> -	if (unlikely(c->slab)) {
-> -		void *flush_freelist = c->freelist;
-> -		struct slab *flush_slab = c->slab;
-> -
-> -		c->slab = NULL;
-> -		c->freelist = NULL;
-> -		c->tid = next_tid(c->tid);
-> -
-> -		local_unlock_cpu_slab(s, flags);
-> -
-> -		if (unlikely(!allow_spin)) {
-> -			/* Reentrant slub cannot take locks, defer */
-> -			defer_deactivate_slab(flush_slab, flush_freelist);
-> -		} else {
-> -			deactivate_slab(s, flush_slab, flush_freelist);
-> -		}
-> +	if (allow_spin)
-> +		goto new_objects;
->  
-> -		stat(s, CPUSLAB_FLUSH);
-> +	/* This could cause an endless loop. Fail instead. */
-> +	return NULL;
->  
-> -		goto retry_load_slab;
-> -	}
-> -	c->slab = slab;
-> +success:
-> +	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
-> +		set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
->  
-> -	goto load_freelist;
-> +	return freelist;
->  }
-> +
->  /*
->   * We disallow kprobes in ___slab_alloc() to prevent reentrance
->   *
-> @@ -4912,87 +4597,11 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
->   */
->  NOKPROBE_SYMBOL(___slab_alloc);
->  
-> -/*
-> - * A wrapper for ___slab_alloc() for contexts where preemption is not yet
-> - * disabled. Compensates for possible cpu changes by refetching the per cpu area
-> - * pointer.
-> - */
-> -static void *__slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
-> -			  unsigned long addr, struct kmem_cache_cpu *c, unsigned int orig_size)
-> -{
-> -	void *p;
-> -
-> -#ifdef CONFIG_PREEMPT_COUNT
-> -	/*
-> -	 * We may have been preempted and rescheduled on a different
-> -	 * cpu before disabling preemption. Need to reload cpu area
-> -	 * pointer.
-> -	 */
-> -	c = slub_get_cpu_ptr(s->cpu_slab);
-> -#endif
-> -	if (unlikely(!gfpflags_allow_spinning(gfpflags))) {
-> -		if (local_lock_is_locked(&s->cpu_slab->lock)) {
-> -			/*
-> -			 * EBUSY is an internal signal to kmalloc_nolock() to
-> -			 * retry a different bucket. It's not propagated
-> -			 * to the caller.
-> -			 */
-> -			p = ERR_PTR(-EBUSY);
-> -			goto out;
-> -		}
-> -	}
-> -	p = ___slab_alloc(s, gfpflags, node, addr, c, orig_size);
-> -out:
-> -#ifdef CONFIG_PREEMPT_COUNT
-> -	slub_put_cpu_ptr(s->cpu_slab);
-> -#endif
-> -	return p;
-> -}
-> -
->  static __always_inline void *__slab_alloc_node(struct kmem_cache *s,
->  		gfp_t gfpflags, int node, unsigned long addr, size_t orig_size)
->  {
-> -	struct kmem_cache_cpu *c;
-> -	struct slab *slab;
-> -	unsigned long tid;
->  	void *object;
->  
-> -redo:
-> -	/*
-> -	 * Must read kmem_cache cpu data via this cpu ptr. Preemption is
-> -	 * enabled. We may switch back and forth between cpus while
-> -	 * reading from one cpu area. That does not matter as long
-> -	 * as we end up on the original cpu again when doing the cmpxchg.
-> -	 *
-> -	 * We must guarantee that tid and kmem_cache_cpu are retrieved on the
-> -	 * same cpu. We read first the kmem_cache_cpu pointer and use it to read
-> -	 * the tid. If we are preempted and switched to another cpu between the
-> -	 * two reads, it's OK as the two are still associated with the same cpu
-> -	 * and cmpxchg later will validate the cpu.
-> -	 */
-> -	c = raw_cpu_ptr(s->cpu_slab);
-> -	tid = READ_ONCE(c->tid);
-> -
-> -	/*
-> -	 * Irqless object alloc/free algorithm used here depends on sequence
-> -	 * of fetching cpu_slab's data. tid should be fetched before anything
-> -	 * on c to guarantee that object and slab associated with previous tid
-> -	 * won't be used with current tid. If we fetch tid first, object and
-> -	 * slab could be one associated with next tid and our alloc/free
-> -	 * request will be failed. In this case, we will retry. So, no problem.
-> -	 */
-> -	barrier();
-> -
-> -	/*
-> -	 * The transaction ids are globally unique per cpu and per operation on
-> -	 * a per cpu queue. Thus they can be guarantee that the cmpxchg_double
-> -	 * occurs on the right processor and that there was no operation on the
-> -	 * linked list in between.
-> -	 */
-> -
-> -	object = c->freelist;
-> -	slab = c->slab;
-> -
->  #ifdef CONFIG_NUMA
->  	if (static_branch_unlikely(&strict_numa) &&
->  			node == NUMA_NO_NODE) {
-> @@ -5001,47 +4610,20 @@ static __always_inline void *__slab_alloc_node(struct kmem_cache *s,
->  
->  		if (mpol) {
->  			/*
-> -			 * Special BIND rule support. If existing slab
-> +			 * Special BIND rule support. If the local node
->  			 * is in permitted set then do not redirect
->  			 * to a particular node.
->  			 * Otherwise we apply the memory policy to get
->  			 * the node we need to allocate on.
->  			 */
-> -			if (mpol->mode != MPOL_BIND || !slab ||
-> -					!node_isset(slab_nid(slab), mpol->nodes))
-> -
-> +			if (mpol->mode != MPOL_BIND ||
-> +					!node_isset(numa_mem_id(), mpol->nodes))
->  				node = mempolicy_slab_node();
->  		}
->  	}
->  #endif
->  
-> -	if (!USE_LOCKLESS_FAST_PATH() ||
-> -	    unlikely(!object || !slab || !node_match(slab, node))) {
-> -		object = __slab_alloc(s, gfpflags, node, addr, c, orig_size);
-> -	} else {
-> -		void *next_object = get_freepointer_safe(s, object);
-> -
-> -		/*
-> -		 * The cmpxchg will only match if there was no additional
-> -		 * operation and if we are on the right processor.
-> -		 *
-> -		 * The cmpxchg does the following atomically (without lock
-> -		 * semantics!)
-> -		 * 1. Relocate first pointer to the current per cpu area.
-> -		 * 2. Verify that tid and freelist have not been changed
-> -		 * 3. If they were not changed replace tid and freelist
-> -		 *
-> -		 * Since this is without lock semantics the protection is only
-> -		 * against code executing on this cpu *not* from access by
-> -		 * other cpus.
-> -		 */
-> -		if (unlikely(!__update_cpu_freelist_fast(s, object, next_object, tid))) {
-> -			note_cmpxchg_failure("slab_alloc", s, tid);
-> -			goto redo;
-> -		}
-> -		prefetch_freepointer(s, next_object);
-> -		stat(s, ALLOC_FASTPATH);
-> -	}
-> +	object = ___slab_alloc(s, gfpflags, node, addr, orig_size);
->  
->  	return object;
->  }
-> @@ -7709,62 +7291,25 @@ static inline
->  int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
->  			    void **p)
->  {
-> -	struct kmem_cache_cpu *c;
-> -	unsigned long irqflags;
->  	int i;
->  
->  	/*
-> -	 * Drain objects in the per cpu slab, while disabling local
-> -	 * IRQs, which protects against PREEMPT and interrupts
-> -	 * handlers invoking normal fastpath.
-> +	 * TODO: this might be more efficient (if necessary) by reusing
-> +	 * __refill_objects()
->  	 */
-> -	c = slub_get_cpu_ptr(s->cpu_slab);
-> -	local_lock_irqsave(&s->cpu_slab->lock, irqflags);
-> -
->  	for (i = 0; i < size; i++) {
-> -		void *object = c->freelist;
->  
-> -		if (unlikely(!object)) {
-> -			/*
-> -			 * We may have removed an object from c->freelist using
-> -			 * the fastpath in the previous iteration; in that case,
-> -			 * c->tid has not been bumped yet.
-> -			 * Since ___slab_alloc() may reenable interrupts while
-> -			 * allocating memory, we should bump c->tid now.
-> -			 */
-> -			c->tid = next_tid(c->tid);
-> +		p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
-> +				     s->object_size);
-> +		if (unlikely(!p[i]))
-> +			goto error;
->  
-> -			local_unlock_irqrestore(&s->cpu_slab->lock, irqflags);
-> -
-> -			/*
-> -			 * Invoking slow path likely have side-effect
-> -			 * of re-populating per CPU c->freelist
-> -			 */
-> -			p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE,
-> -					    _RET_IP_, c, s->object_size);
-> -			if (unlikely(!p[i]))
-> -				goto error;
-> -
-> -			c = this_cpu_ptr(s->cpu_slab);
-> -			maybe_wipe_obj_freeptr(s, p[i]);
-> -
-> -			local_lock_irqsave(&s->cpu_slab->lock, irqflags);
-> -
-> -			continue; /* goto for-loop */
-> -		}
-> -		c->freelist = get_freepointer(s, object);
-> -		p[i] = object;
->  		maybe_wipe_obj_freeptr(s, p[i]);
-> -		stat(s, ALLOC_FASTPATH);
->  	}
-> -	c->tid = next_tid(c->tid);
-> -	local_unlock_irqrestore(&s->cpu_slab->lock, irqflags);
-> -	slub_put_cpu_ptr(s->cpu_slab);
->  
->  	return i;
->  
->  error:
-> -	slub_put_cpu_ptr(s->cpu_slab);
->  	__kmem_cache_free_bulk(s, i, p);
->  	return 0;
->  
-> 
-> -- 
-> 2.52.0
-> 
+ Or rather fix the version check.  The GCC fix went in with GCC 10:
+
+$ git log -1 --pretty=oneline 48b2123f6336
+48b2123f6336ba6c06846d7c8b60bd14eaeae7ec re PR target/82981 (unnecessary __multi3 call for mips64r6 linux kernel)
+$ git show 48b2123f6336:gcc/BASE-VER
+10.0.0
+$ 
+
+I don't know why the PR got it all wrong; I've fixed it now.
+
+  Maciej
 
