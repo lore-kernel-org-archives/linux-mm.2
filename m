@@ -4,121 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96BEAD38FF2
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:34:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAA9AD38FF9
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 17:36:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BAD96B0005; Wed, 14 Jan 2026 12:34:41 -0500 (EST)
+	id 4A0AA6B0089; Wed, 14 Jan 2026 12:36:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 051F16B0088; Wed, 14 Jan 2026 12:34:41 -0500 (EST)
+	id 4819C6B008A; Wed, 14 Jan 2026 12:36:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA0276B0089; Wed, 14 Jan 2026 12:34:40 -0500 (EST)
+	id 380F56B0092; Wed, 14 Jan 2026 12:36:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D44CC6B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:34:40 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8A75DC219C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:34:40 +0000 (UTC)
-X-FDA: 84331269120.19.01C69ED
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 95F68160012
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:34:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jZbXVKiv;
-	spf=pass (imf08.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 27E696B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 12:36:38 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1350C2226
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:36:37 +0000 (UTC)
+X-FDA: 84331274034.07.2FB5602
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1655A12000D
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 17:36:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=T4eteCYy;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768412196; a=rsa-sha256;
+	cv=none;
+	b=6UuiHjt4sK8y2WxddVW/d/xX1mKZMUW/TYa+9I/5GNzbSTlK5afq68MODx3oKXE0ziN0Iz
+	If9YIZk5pxn3FCEDNVr9tYU9HqELb42U7DEFL/Z5logT1jv0xCcj5iPe6c+FPgcD2f/k3e
+	jDJ72zTs7XKXtfRwSPig2thyof40Z7w=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=T4eteCYy;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768412078;
+	s=arc-20220608; t=1768412196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WJ7m2Kae0rt7KDMZbiJnTHcyU/qgip1RiScuagqlCWo=;
-	b=s5ROrIO35eZDQqzzzEP+qNhgkqLpGu2Yu4sIn1z6QeLy76dz1Rf6e4cb+970kETxs8Fk59
-	S9SbGED+GCOo8R+gd+qo6+sVIrOMaP7lID5HYvfYrLemwhEbP6AZ5YaR0wYahkfrmAl00v
-	uVg+Y8Xs3U3CvemTnZEIwzI+HgxjCVc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jZbXVKiv;
-	spf=pass (imf08.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768412078; a=rsa-sha256;
-	cv=none;
-	b=7mkzlegtl5SfK92Pr7nEKr5XbNemUezIKL0shKGIoTWA57weUlotPwSkR4m2tFFWXGI41v
-	7VlxphyGrnGz56n2dJCzQG1CrS7qXA8hZxa7Kb+Fz6yJCgX7gZ+6OYMcbWr6/Qh2rYq3gU
-	GvSquesIVyb+RHhMkEupxcppkYKBd+E=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47ee974e230so846175e9.2
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:34:38 -0800 (PST)
+	bh=figB8dzHwd2D0XvRaWeBpTz4+U95P61NoReY1arrqU0=;
+	b=cx1fASej2GWfly/dhM0snaSZzwo+NDkfFtiQaZ5JM6rZTk4WqLGX1ee6xgV62kMX44zlYe
+	bSo4ezeqlrG4Hyt2ifxiPPzTHcYZWngfKFKpMTq0hTAT0F+uBjhlew3eOjPXW93++AJ3+G
+	sVRKUmo8qoe7zX29W6foWyfqmCjcEjg=
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8b2ec756de0so6313385a.3
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 09:36:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768412077; x=1769016877; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WJ7m2Kae0rt7KDMZbiJnTHcyU/qgip1RiScuagqlCWo=;
-        b=jZbXVKivrmKgzUTUrEAhzpcUfTzJHw19iWPEaPCxlQsxw4n3cfwRdN2biNia1ec/dS
-         B2+p95fLvW+0bl4bojVNRmZn/nIL9mz9+md/wuy7vnej6WYydq9Sr8esv1v+/Ra+WRMq
-         Mzw46yMI8szgxU0fujLsPHezMQsFsy33orJEgZJwvvSk2byg9jdsmfhkbeI9UBdlj9yI
-         6niOzRRm7aJvx2qNXRCrB4erHJKPG7Lrs6UZeq2o9qK2UgVMe/CKfNGva4hn7ojKDnpZ
-         mmVJkhvL129rYUlCv1ro4CUC6Vn3KD2TPrh7b62uu+0u777zbkJ/sa6MrQxCkpu+JLx0
-         PJwg==
+        d=gourry.net; s=google; t=1768412195; x=1769016995; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=figB8dzHwd2D0XvRaWeBpTz4+U95P61NoReY1arrqU0=;
+        b=T4eteCYyvvNXxbuf90RVbR3LzdfDr90NXBiou1/Qv8kmYOmSfVkF7QZIlf1dRl2KNB
+         sKFK7ms1jQ2j743SnM+BhBghVB2sbnVBuJiNTjZxBbHZGB5HK6ieLvSUVfDobUyBDI8h
+         h6OF8Mgn1goJTho3GAvWjIEm2jDEL3oVbFBQRVj2OdaKBUWFHP9EPj4Nhq4kaAjLmstU
+         pA4Yf5985Gw7sWQFot8x4ZUATvijda4A/krr/6Jpik5E2VJgEJ/JtrDafxTCNUWje1Zb
+         IfPN5NZmwNuzh0GsX82WqkLahueExKpzYmFDXXYno6Ha6XPn7g8nCF+qpODNihJaw49h
+         oqEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768412077; x=1769016877;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WJ7m2Kae0rt7KDMZbiJnTHcyU/qgip1RiScuagqlCWo=;
-        b=QpTGZS7jBRYNm3kxpk3+cjkjwzuetwHpbgkFsRY4oC/yCUvkKf1c5cTIPRK0uKeREd
-         DYsEadQqwAksGRbGRIBoQqjKejZJk7Jl1bVjkft1iyZ0ixklKqJm1b09PEkd4rDJsZYx
-         dXzVuiJpLBJwX6kMf2M1FRDgxGLeuM4xWMAZ+VSddFXSjIfmEOesVXm2tLwXLQSp8F1l
-         7ojJ6nh5A8udov7/O/C9DPgbsC1qJFE0rQdn36wWuqky5rhu+USFJpZ20lnen9UOTVAp
-         zE+aOM0BPigpfmU/bfLMEVCyWEziq9mUebE/kzYO0B/WgDXKjOG+/rQh0qdGGYZfpBbo
-         bq5A==
-X-Forwarded-Encrypted: i=1; AJvYcCV0cNEMvTlDrtvQ8bu6zFzlwCccNWpM9WZpM36tDvjgiuLKgAOS8zoDiVNto9vg9OmacOc7ZhMyiA==@kvack.org
-X-Gm-Message-State: AOJu0YwRtf+BUfoZ2ESQeZnlAaDmDlymJyo2TEuXqPyPzHB5hP4IGU3G
-	gS7Y27WswTKEj1iB//Mfyv0ZUPh2ky+w4w4yY9+CwLLarRBcHEyJiSLSRDmEuA==
-X-Gm-Gg: AY/fxX5n/9KsHDLYajTohXJXIPUmfGNCPUV1EWPSZsmrxDfGpMlBAGRAYHWK4kpi0JW
-	gYVwl02An/Y2JQppKxAPYAxxh82KoWV3z1kKfccHJkeFa2gl32FrXfzeYSaSLggGDZ7LLM+/5B2
-	xuXfYn3MavZWgkA0MWLwTteDnnvWHKzmZWoucZzb0WlCkdVcUmfv6GSorVH14ycHkrwv1a89yKI
-	W1phOUj6tWWAI7RioYvmQahWAfRRVdwO4tt1/pgQ/ycV+bGZP8D6/LHyzZsoayvKpPOoUBaBkaP
-	H+JX5ESnGbE/c55hl+D07H+1Jqo2QAtU7dYiwHw/5AMSVSjHPx5A50YFaynqak/j18j4JNEaYdR
-	FDw1xBv+zW+KKHMp+RQSq/mH9SNGndXh8eMvxNxAYMEtXbqYKQXIhhFB7jfP2GB7tjM47hXMrp+
-	WdvRrD8T7PatIlo0WszyqfK/gkMAtwbShWwrRNlomnr8VR6R9IqneJ
-X-Received: by 2002:a05:600c:a46:b0:477:73e9:dc17 with SMTP id 5b1f17b1804b1-47ee338c00cmr46093135e9.35.1768412076765;
-        Wed, 14 Jan 2026 09:34:36 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ee2725b54sm27307345e9.1.2026.01.14.09.34.36
+        d=1e100.net; s=20230601; t=1768412195; x=1769016995;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=figB8dzHwd2D0XvRaWeBpTz4+U95P61NoReY1arrqU0=;
+        b=B+g/NiK2WpLmGkQ2mragqyMUGg4RHm32zWEVdf4+tgnKzTn5Kg2IvRyvHvauYhJnc3
+         73Mua8TF0LdsKzNxUjInpyT9IS5zzSkuzv8Tz8M9n8mzLyABeeB01fDhEY5wsG70/GkA
+         MQj5N+g7QWQ2jvz5OXSl7/SKpmjb0mUDNoA6KzLKdVekstiMP0nGX7sCqowakRkAQXd5
+         XKCFJhbeVFibbnfe6k27ZcQxP5JygP/lz5E69RNawlxzf6dFGf/u69wHI7vyz7GCozVn
+         VEYCv3j8UZiebm8vznW1P2QPi8/4FVSad0OmsFJBRAVNax22QpQgIRuJmHuYuT1LyyRI
+         wn8w==
+X-Gm-Message-State: AOJu0Ywh5kSgl0ruI3OAA5ysM5jyDzk63JPpSUs90n8rzWWb+sMzNPxy
+	sodGgVVqXn0arAKDnvseBBjelfav1ZNJi7HFoopZ3n06aYdU6pqg2UyQ1CfRlp4Jnlf1/o2CwF6
+	2d1PtFGM=
+X-Gm-Gg: AY/fxX7QjB7fZ905Z5LiQnpiv58a/MBl+l3lJu8issrrFBeW2Glg9BZL2zxBWk4oJHD
+	iXCBOSWSbb3D1NFBHsQxSHBqUoBpSWrri//AqfIkML+quuOY/ejVxsUQlGEMvPozBw3NXKdTKNs
+	Nz8Q50ZP15b/FHTDd2yUS5lVlbIg/CQDEjEhFHbP09jPYXbO69DsAYo4FS/c8v+tschY23n5+nk
+	KnF/J2O7zUDPT3MZnTkmpOMXRrwOEP+s4/g3hbwMJNx4I8OlaO7x1k3T7jKWmL4FpWFlQN1u8zL
+	uGBXJwdCwPNpMAc0JRGV9yysiOA6reWDLQkwG1FliCUIVVgCrXvymSyG1SYKvdtQx+4ztS0wtSV
+	C2gAjIX7FUv3M6XfUlSZBxCmazPTZMnfAcD/xde5S2j52RgqOYETj2c3oJFvf49Og8seMGXqMmI
+	6KMlckZh5qpEZtKNxY6qFWdR0WTO5ueaKCCpiHzxRk6XYKeeYcgWiFZkPWRjpO1PGTxewViA==
+X-Received: by 2002:a05:620a:4502:b0:8b9:7a1a:8c73 with SMTP id af79cd13be357-8c52fb90a04mr537400485a.46.1768412195222;
+        Wed, 14 Jan 2026 09:36:35 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c530a6bdbdsm200764785a.10.2026.01.14.09.36.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 09:34:36 -0800 (PST)
-Date: Wed, 14 Jan 2026 17:34:35 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>, Nicolas Pitre
- <npitre@baylibre.com>, linux-mips@vger.kernel.org, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>
-Subject: Re: mips64-linux-ld: div64.c:undefined reference to `__multi3'
-Message-ID: <20260114173435.51cf556d@pumpkin>
-In-Reply-To: <alpine.DEB.2.21.2601141530510.6421@angie.orcam.me.uk>
-References: <202601140146.hMLODc6v-lkp@intel.com>
-	<20260113200455.3dffe121@pumpkin>
-	<alpine.DEB.2.21.2601140453090.6421@angie.orcam.me.uk>
-	<20260114103103.216aa122@pumpkin>
-	<alpine.DEB.2.21.2601141530510.6421@angie.orcam.me.uk>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Wed, 14 Jan 2026 09:36:34 -0800 (PST)
+Date: Wed, 14 Jan 2026 12:36:02 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+	kernel-team@meta.com, dan.j.williams@intel.com,
+	vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
+	jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, osalvador@suse.de, akpm@linux-foundation.org,
+	Hannes Reinecke <hare@suse.de>
+Subject: Re: [PATCH 8/8] dax/kmem: add memory notifier to block external
+ state changes
+Message-ID: <aWfUAiag6khaLJpq@gourry-fedora-PF4VCD3F>
+References: <20260114085201.3222597-1-gourry@gourry.net>
+ <20260114085201.3222597-9-gourry@gourry.net>
+ <d1938a63-839b-44a5-a68f-34ad290fef21@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d1938a63-839b-44a5-a68f-34ad290fef21@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: tj8c1prgnghmwhf1ks18sgqxhfrkzf7h
-X-Rspamd-Queue-Id: 95F68160012
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768412078-2695
-X-HE-Meta: U2FsdGVkX1+HhQbAY30AAc8SMP1KupmcRngYGOyosmK+5ouMvlL1EY0Pzlfl1+EEkVkigUSSCgSL9lijDLyxT3JN7PV5eMIqTdPwNI6JMwMR89Q6UH++vrMatrTLPb3oTQhP0KOZ4diCnakFRdZiep6HtuGv/vuKx74quasnCyqOOJptFliGyc9KkKWdi646xLefWvFdUSH56IXahzFur8fNr+PCXdI0kiOxE1Z1n3dh/Z10VrB2hUSN9CmzLABwdf/JxK2nZl+jDmkF8RKSeQ4tyniLpnO9G2+SSrJWxMoMAuCux/8Z5v8YoX/UjtXhJR2+xdmlJOFNQV5HRnoE5VhJzlqqSBnMhqlbRv7PhhMtjaMXZgOz8JJE4ljyRdwtFgml9M1hjOFCmEuL6TDlVcTMl/CM/LseEs3CE4eB2ag8tDbVEWtRJN9rvh18La54nkceXYLkYTGqVng8G+14tNLw+mQ3/vRcGQPObrnJNbMzevF0wEsMhqgyMfwztdtIw2V7/ZEb6U9GcT2G5vHP08wXl6BzllvwE/EVhVwwRNCEqdATb8pFT3dsMBw2fQDOknj7EFCEMrvgMepzpYviwRJmFaJoOS6lug9mMopZvIVhDCoCtWh98b/2HGAv+CEVL7tNzVKXrwq8VTy3FkCVspn1ZYu2a/2Fk8EyDy0sVUrPouTtbc2GuG4JR1EA/d8UPgT26yGp5SXeficggRPXkyZ38vehSu5rXW//St5sjTkEjlRtuMCq+vXqssMTyEOpFlHfBjklErej1ODFcQ1e38boG2GHUb2+uc2D8WlORKwPlNbrTXQwcK7ZcAPGBKasTjIEV1+OAaOa5lT6YtY9xwsp+b7dav28IluGL78l8Yt9XtFVx6jvKr2jRicedrpDrLn9moZg//kJEkoz7Gt2av8j6ynsXfNiLy6zpyNCNcQ1O/zmC5ze5W98/3JXuWNtfIkuTwXdIm+vJfFK8IO
- ekrKZoaA
- NYQdl2CzI9kUmwZGnGiAAUjOCv/YyfP+DH5g8/vYarfaY8dqmbeYY0f6QzSf/Y2I0rzoAMFMddrlIP3MRB+Rp0XLK50oM3LFO0eO3AmtAc5HvZMDs2ORqWLMXDrEQJEwKNhKlVfZm4k4fErHHXJ1khwrQHNKQnCn02/GZqcGe19zr4AzggkIKIqV4bMpQL6oL5wSRwLi49adbBXj21WqjjPWu5tIL+duX4+5hHvdXG994ndnsunxLKgZjhmlacQpEvxkF/XynKeMhNRt9uadYGrwkKzEUnz5YqaTFS477VKvt51Jr4rEDacTaAvqrIcQSmplahyBebL5y2P7SYKWvgGXvYR7C3+8+Gj5ypeRGm/r9NiOlmU6tLTn3pmTjOcfeNS8KU2mJovd2adgK0undOgPw/FMqSOBqR65k5/ajxiRlKkId3kIc75t9coDFP1zttcSC/KlutJOVC3XvzCnv9fD40QjgG0lzVSLQk3H4aEnEXprUSnPlcj0QVwAUpvlb87n92IBP4KaXgZxEyqbl/qVmSQ==
+X-Stat-Signature: yk4ph1on6d61jya6kruq1wbzitq3558n
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1655A12000D
+X-HE-Tag: 1768412195-559834
+X-HE-Meta: U2FsdGVkX1/FI+Rgi83cqmeJ1gSJLc2FPyOxAtlGrxtmN+qYpu7YxZF8sYJLiAc2xNN3hssYG2TmCa8Y8K4bvJUlyTGU5ErSrijPVU7nMn4QGiOyOt+w0UrcRe7nu3NA+893xS2ipMTd6xbv8ZGWbUsd1pbA39rCs6W0SnQsyop+dqZQje26PNaS13X//hSLJjWz20QibFOuDAp5TzNjCoagwyt43WtFXEYP/EkTfSBcVFF0PWyUeis2jXoY1KRKMWoyKO/9XVuZQ2AoE4yCUVNvuiGG0oWG5XOl2VXi2qtW7uvBrPHIekIA0ExLJ/+zKMGx+evF/1uS1538p/kJ7TyMVyd6dZiiyd+FzWAcrYwdtUDPOXEd9xbRrxjAPR9bqsbAggj9JVqm7iVmSj6x39+Ani4d2AmgkXlIjrCWNyfzunk8JFKI+2KdZlklRaaUI3SVBVCIw1jP7h+GIWLUbo0YohN4flq12gYukUKNLt7PvjL6yzmwjrM194rd54Zw3QNtJJ5UQY+tWLei/vCaexKtnfsZrtTuhNA+MH7XrzyrxkBY5vkTQBnwrobTCNfY0Y8DhbwB8yAYolfAesyMKrit2Cs+OnJE3iGYLY2MzczhQ3Jp1SFD/8xLahpBeqUwRwecXt6RtPbWWoqEkvnNkSGgvwAQ3JR4xiFsiE3J9HrA8AE0jiG/PiX5nr2LPYnl+Adf9VRjRth59f1ZDDFyQHTwQ+ZEGWfFp6Vjbp/wIxA6LC4v7kzOJex+8EZLXyvwBabLsebPGJL8JzaPlikabT8VL2IqCesiriefGmNGLicYpXrtL7qSQ8LEO7009uXdwk9i29hhQmAQjsQMkYI2HbJkWDtXOEV2n3yJGPjwl/aHE2CAGA4UV2ReYKzdtwO0IK+a2JOQCXlKizfsV/nRwZf7uLHMSSHJewJuljXZeOKfUAW4sMg676wqfsfBM06ZoH15dt6JrTaEcFB9v/y
+ sAS9eHz3
+ RFk7tEepwU58Oau5rlalgPbz27bjrYdEOEd8rN2z8PGksuoQSq1m4fIRR5y3cGM7BjClJ95ap8ucDix0VYv6iJNf5I68ZrPAIrbIIuD6lB1HQ0L2iZBmSUDwzmILfDJAkOcYikDt4QkrA7B2ufgnknxSOySeLYQ/6XTb1tHN5Utc7QT7SsJ0hO3nhppToOt7dq4N/M714ulP1yKeN4pAQU7thLumG3xmKNMC2XyALMZLoHV/6eSgnm5KeI3CsmWu13qcLmr4luEp+t+XGI/TBDMnQArxqAn059OetqLyZlvZDaFkjuOmrEDERfupmD4RNFpr/sw0KlywFMdc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,80 +125,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Jan 2026 15:50:09 +0000 (GMT)
-"Maciej W. Rozycki" <macro@orcam.me.uk> wrote:
-
-> On Wed, 14 Jan 2026, David Laight wrote:
-> 
-> > > > Looking at the git log for that file there is a comment that includes:
-> > > > 	"we wouldn't expect any calls to __multi3 to be generated from
-> > > > 	 kernel code".
-> > > > Not true....
-> > > > Not sure why the link didn't fail before though, something subtle must
-> > > > have changed.
-> > > > 
-> > > > I think the fix is just to remove the gcc version check.    
-> > > 
-> > >  Or rather fix the version check.  The GCC fix went in with GCC 10:  
+On Wed, Jan 14, 2026 at 10:44:08AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/14/26 09:52, Gregory Price wrote:
+> > Add a memory notifier to prevent external operations from changing the
+> > online/offline state of memory blocks managed by dax_kmem. This ensures
+> > state changes only occur through the driver's hotplug sysfs interface,
+> > providing consistent state tracking and preventing races with auto-online
+> > policies or direct memory block sysfs manipulation.
 > > 
-> > Does that mean the GCC 10 generates the multiply instructions and never calls
-> > __multi3?
-> > (Rather than just not using __multi3() for that specific example.)  
+> > The notifier uses a transition protocol with memory barriers:
+> >    - Before initiating a state change, set target_state then in_transition
+> >    - Use a barrier to ensure target_state is visible before in_transition
+> >    - The notifier checks in_transition, then uses barrier before reading
+> >      target_state to ensure proper ordering on weakly-ordered architectures
+> > 
+> > The notifier callback:
+> >    - Returns NOTIFY_DONE for non-overlapping memory (not our concern)
+> >    - Returns NOTIFY_BAD if in_transition is false (block external ops)
+> >    - Validates the memory event matches target_state (MEM_GOING_ONLINE
+> >      for online operations, MEM_GOING_OFFLINE for offline/unplug)
+> >    - Returns NOTIFY_OK only for driver-initiated operations with matching
+> >      target_state
+> > 
+> > This prevents scenarios where:
+> >    - Auto-online policies re-online memory the driver is trying to offline
 > 
->  Of course it still does call `__multi3' for 128x128bit multiplication.  
-> It doesn't for widening 64x64bit one though, which was a missed case for 
-> MIPS64r6 only, having been supported by GCC ever since MIPS III ISA.  I 
-> think we do want to fail link in the 128x128bit case.
-
-That's fine by me.
-I only get blamed for the widening one :-)
-
-...
->  Distinct RTL insns are produced, so all the usual RTL optimisations 
-> apply (in addition to any tree optimisations already made):
-> 
-> mul_u64_u64_add_u64:
-> 	.frame	$sp,0,$31		# vars= 0, regs= 0/0, args= 0, gp= 0
-> 	.mask	0x00000000,0
-> 	.fmask	0x00000000,0
-> 	.set	noreorder
-> 	.set	nomacro
-> 	dmul	$2,$5,$6	 # 9	[c=20 l=4]  muldi3_mul3_nohilo
-> 	dmuhu	$5,$5,$6	 # 10	[c=44 l=4]  umuldi3_highpart_r6
-> 	daddu	$7,$2,$7	 # 14	[c=4 l=4]  *adddi3/1
-> 	sltu	$2,$7,$2	 # 16	[c=4 l=4]  *sltu_didi
-> 	sd	$7,0($4)	 # 21	[c=4 l=4]  *movdi_64bit/4
-> 	jr	$31	 # 44	[c=0 l=4]  *simple_return
-> 	daddu	$2,$2,$5	 # 29	[c=4 l=4]  *adddi3/1
-> 
-> (hmm, I wonder why the cost for the high-part RTX is over twice that for 
-> the low-part one; this seems outright wrong, also taking the possibility 
-> of fusing into account).
-
-They might be different, if the wide multiply is implemented with multiple
-narrow ones then the high result bits don't need to be generated if only
-the low result bits are needed.
-If the data is clocked through a single multiplier that might be significant,
-but probably not double (I think you need 3/4 of the products).
-If the results of separate narrow multipliers have to be added together
-then the carry-ripple of all the adds might make a small difference, but I'd
-only expect 1 (perhaps 2) clocks for that.
-If those are gcc's costs I suspect they may not match reality, after all they
-usually only have to be 'good enough' or 'reasonable'.
-
-I nearly got the 32x32 multiply to run in a single clock on my Nios-II
-re-implementation, but the 64bit ripple carry delayed things too much for
-the other logic that needed to happen to feed the product back into the ALU.
-The product itself could be latched - so it wasn't far off.
-I think I could have fed back the low bits, but that would have been
-complicated. Detecting 'short' (18bit by 18bit) unsigned multiplies
-would have been more use - they are common for array indexes.
-(That was a 'fun' project... Nios-II is, AFICT, basically MIPS 32.)
-
-	David
-
-> 
->   Maciej
+> Is this still a problem when using offline_and_remove_memory() ?
 > 
 
+I just remembered another reason I did this:  
+
+echo offline > memoryN/state
+
+This leaves the dax/hotplug state in an inconsistent state.
+
+if you do the above for every block in a dax region, `daxN.M/hotplug`
+still shows up as online.
+
+This just hard-locks the state to consistent (unless an online/offline
+fails along with its rollback).
+
+The additional complexity seemed warranted for that, but if you're happy
+to leave users to their footguns I'm not going to argue it.
+
+---
+
+I just realized this breaks the current ndctl pattern and would force
+ndctl to convert to `hotplug` since memory block onlining will fail.
+
+~Gregory
 
