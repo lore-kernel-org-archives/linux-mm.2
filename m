@@ -4,116 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67045D31A09
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 02:58:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63B3ED31A02
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 03:18:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE8696B008C; Tue, 13 Jan 2026 21:58:04 -0500 (EST)
+	id B481E6B0089; Tue, 13 Jan 2026 22:18:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8C6B6B0092; Tue, 13 Jan 2026 21:58:04 -0500 (EST)
+	id AEB736B008C; Tue, 13 Jan 2026 22:18:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8EBA6B0093; Tue, 13 Jan 2026 21:58:04 -0500 (EST)
+	id A2B406B0092; Tue, 13 Jan 2026 22:18:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AC63A6B008C
-	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 21:58:04 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4949458677
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:58:04 +0000 (UTC)
-X-FDA: 84329060088.22.0840557
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 74218C0002
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 02:58:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H45tM0Ei;
-	spf=pass (imf10.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8E34C6B0089
+	for <linux-mm@kvack.org>; Tue, 13 Jan 2026 22:18:55 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F4ED8B543
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 03:18:55 +0000 (UTC)
+X-FDA: 84329112630.12.15BCA50
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2BBA7140007
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 03:18:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MvYrejet;
+	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768359482;
+	s=arc-20220608; t=1768360733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qb8rwnsuMbygV2NKFyD/w8kWzaNcBgvAZYAG3Un3Hx8=;
-	b=yVH7Gld8WNTHuHupcE6O7ll0XzyF0bW8McgRmdjDj5mJt4Jl+v/WdYn1TwzSCqXlxbho5j
-	hYhZx+THCEifTGVJjkK/T7wRi+y6YrK3UiC4la5at1/IP0fm3ThFEvAp5KeCwsQxL7/SNo
-	ndHdu3p1o9LAtEIx1MZZskyRlHY6jC4=
+	bh=WGeHR91DnaFjXcFfiXwgbC4LRrRNSlt1d1O4e0c5nlk=;
+	b=41D5IZp0vmx+eCwPiZ/VlpmO7iuPlREA2YQt4b5WT9C4eLolqmk/FhBXf8kePSVQdNHTGP
+	1yDP5m+KcNeiuAcLn1dFTCgX0DxHgnJhEhXfQtyUu4ZvrB9wub7fI+3twDnx+ZkvVJBaaG
+	jaXsiqn0SDqrBmr265/I+I4B+nYA7Pg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=H45tM0Ei;
-	spf=pass (imf10.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768359482; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MvYrejet;
+	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768360733; a=rsa-sha256;
 	cv=none;
-	b=v77OAGeRcRc5jeMTqnWbIKzCLM0zmrp8CBq/PnM0RrvC/To2rOo658jZ5pXvnEmHVagB/N
-	m2hKnUEV/9ENJBZtPmwpY5Ja+zlEbK5yBrEJOSKs5xQkujLNM2d/aEHtLDu1IXDO5Wmd+K
-	MJouq+HA0rrRi6zIKq4cjleI0NUyizs=
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-121b14d0089so9288903c88.0
-        for <linux-mm@kvack.org>; Tue, 13 Jan 2026 18:58:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768359481; x=1768964281; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qb8rwnsuMbygV2NKFyD/w8kWzaNcBgvAZYAG3Un3Hx8=;
-        b=H45tM0EiNwRdFds2D2WSZ+QtpjNfHEWstBMfCfLWS3OhVrHiQJag+VcDfDE8n4EMkJ
-         AP38xGHWUg5XmkviZlOwf/PKml+mKSXmeDgJPhikZTD6ChMkmRdB2zFXMIZde5MuQEK2
-         bgd9DuhGp4i3b/3PzVT8q61SoqkXxM71fG3fp1U2A17qqLoNThj9eOFnOuIo6AtfAj2Z
-         YvIdCU6h6/ScOETFqnl6LqgzflX+SEFaxDAEHNAoXnlWhp3CubouB424pQaFI+tE5OP7
-         USYy+dqJum8xC5qunPGkOV3K1ghk+eUfGZRa9wy03QA1c+XZ331zNxFIYnR4kL6LQoKB
-         AAhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768359481; x=1768964281;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qb8rwnsuMbygV2NKFyD/w8kWzaNcBgvAZYAG3Un3Hx8=;
-        b=KffIAPFaHyIAzLnxKJEplRHTpV9TNCmKsX4OFVoPWJp99BmxjlLEbtgU+KGh0ZpDAZ
-         RaotD5XM8hP/pQwxtCxu+K10/Jl968mNJ3aMA7N5pHuPzE2pE06dkOSrlGd5KBcimjyT
-         Ws/DL9StjYFknfDYu/vvYmWz7vKspEYsj3xHzfalNaL7qzxWWsSp91NfUiehaBVw/3n7
-         9E4jOadnQSw4txI0kHjHKTAr2XVom1nzPWXibUrGiEJlMJBSgfsSYcBPaW4Hat7yjWGM
-         H8Zl1F4Vjs0WC0V3C6EpsNWWtXMx/U/3coieBQAvCyP+kgNw3bJn3SCC1MfYJ4WkS49u
-         Hmbw==
-X-Forwarded-Encrypted: i=1; AJvYcCXekDTtkFV1yMcKJeqKodRfMC3wcXclEy67roaXF9tMHnLovzzu8rG/9/P5fMAotHOJMZ+E3M2NzQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw6Eo0CVeV+0OTsImu/kMpONIrjeqGZcg5pWGaMfV5CapO/LxHs
-	z4RzigGD3RNbsnHlayaB9PCXLipRBKgDRskkdJhdtbt6q5X8QoAESx3G
-X-Gm-Gg: AY/fxX7m/81SrrZnw+lrzUkYdKRlnDgyrUJao4aQKGbwgnaElUnK6K8AtgVvIHMq2t7
-	7DN6ZYA3a8+akSgvMm12gHnM5QGjOlsrqcnb9N0/mX9wkt4050SVFexWr428X9XlCbNUT98UjOC
-	czZvpbmPqtHyrXRUCQyqIPD1aN940nhhMQhW90fK+I63WoR+i5kA79aVExX5iUFidKhHKDOhX5g
-	fOG31yaMraVFKJ0F3eQsUNKWXsDRIxZieqZ9964qwZZxz1XE86GgdX1hqUtc/3IFQStCOqNPPP7
-	OcJysBFDSGN8jLmU4j0OL2JEL14rRbmBkUgwzxl6N/p/J94WDwVS2Nju+uB0EVDh1FQeCXjb2JE
-	NWU6VUCIoHsw8AkdOVLljDgHk9QmD3d0HOkW/4PxrLivzyKn+qsK2WR4IEqanDwelFM7nmPBtr9
-	rG
-X-Received: by 2002:a05:7022:e803:b0:11b:b3a1:713c with SMTP id a92af1059eb24-12336a0c131mr1161500c88.9.1768359481063;
-        Tue, 13 Jan 2026 18:58:01 -0800 (PST)
-Received: from localhost.localdomain ([2607:f130:0:11a::31])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f243421esm29604541c88.2.2026.01.13.18.57.58
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 13 Jan 2026 18:58:00 -0800 (PST)
-From: wang lian <lianux.mm@gmail.com>
-To: sj@kernel.org
-Cc: akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wang lian <lianux.mm@gmail.com>
-Subject: Re: [PATCH 02/11] mm/damon/sysfs-schemes: support DAMOS_QUOTA_[IN]ACTIVE_MEM_BP
-Date: Wed, 14 Jan 2026 10:57:52 +0800
-Message-ID: <20260114025752.82096-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260113152717.70459-3-sj@kernel.org>
-References: <20260113152717.70459-3-sj@kernel.org>
+	b=mf7rf0DdGgAKFvUGXnIQXLf1k/Renj3AQeN7O4hx6k+Y47JRqQEAJKspZD6KOCchZbx/mO
+	V+it+epYnvoxSpQ7cvQminzYt7rMwDpGKBptAqsIwJriGVxMwmFGwcU87jUl5Q+jafmIaS
+	Rp1ivttaAuc1QCM1YSh3FzcJvS7gs6g=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768360728; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=WGeHR91DnaFjXcFfiXwgbC4LRrRNSlt1d1O4e0c5nlk=;
+	b=MvYrejetuKh0S/yxpbp7nf0Njm6how9FRINmGN1hleAHWCw+3Uj1ZpHOaN4vwsu4v68R3kgyMFTaBGToHFrhde8IN7Wfj4MInYZehxh6VVhzAg7qkcyBeCTwMousZOexGdrbsIj8cuU+3G2DcE9NLnBSRD8uYRHxpXX5K6RttmI=
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wx0hUXu_1768360725 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 14 Jan 2026 11:18:46 +0800
+Message-ID: <b5621fc0-5fe0-4ba8-a6f1-84f09f54d186@linux.alibaba.com>
+Date: Wed, 14 Jan 2026 11:18:44 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] mm: Fix OOM killer and proc stats inaccuracy on
+ large many-core systems
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
+ Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>,
+ christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>,
+ SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <liam.howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Christian Brauner <brauner@kernel.org>,
+ Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ linux-mm@kvack.org, stable@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik
+ <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
+ Aboorva Devarajan <aboorvad@linux.ibm.com>
+References: <20260113194734.28983-1-mathieu.desnoyers@efficios.com>
+ <20260113194734.28983-2-mathieu.desnoyers@efficios.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260113194734.28983-2-mathieu.desnoyers@efficios.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3i6dncchihp4xseqmqe77wcndp15rq5u
+X-Stat-Signature: 7yicpn15ajtzrsnkip88z6gip1d15maz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 74218C0002
+X-Rspamd-Queue-Id: 2BBA7140007
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1768359482-17635
-X-HE-Meta: U2FsdGVkX19KNG4aESokH/LVd9L0u/BlrsdGSmhhyMkk4kVxoe0IwiU35Qn53RRbaoOXneuF1KZUqENiE3CqTs6f9IKo3+83uYriSPgvYPjHhw3SVMHF+VOwerNreudVuuw6aeI5Fbe0Ozj2SA759F0cgLFXsZ8Gj01TeI8hE4dbVuACub8MMSqG51vKusbpBBD4czQ+QSGmiAsk47mBwWYPBA2EeuwO8lzwcum6PW/Gr5vgpctEKwkYEfLbt8Fd+iYU8BJL/pYUL2Dev6+OPjiEPaRe70wTmgke5xBmdXjrPRE84e+4T9RQ832YtY32AYudXPq+IQiwD+yfoeDvxPPaTLoNZ6G4WRiMZFKbQEHbCNJsPO1kYq7x2BH4WGvwSqgI2B8otSByYlPGu7Q0j9El3wlyak6ewlUb31Ttf8wJNZresYQdJdPR9pL2RE4JU6MBuuM8g7adD4mCOaYB31rgWBW7CiPSiD9+Az77PTPuksg4XZzMOelbwtv36NS93obABYOBePUtM/2si5uKL1iKqxoUosA3dt0MwwZn9jDiFMyV9gMFdH/jYXWxtmS7dKgO9g4PM03mYihdL4Jb3sOhAg8aRPTGFBSJny5mmhZEFC5I+8JJ2an25pZ1bll9ti0avLf0lqFsPjeYUM0pRMgO2XxsEIIGszM4Km4OxLxpslubnIJ7fKK01cXSAzBny5b+cjekXOKPl3+CaCAEZV7LbtGFxufIXgkNG1nvI658yFzH6H+bp/lhTXuOhDV9FuEmfgNbVGoIGUlnRDiebUf3Yb2bRIN3C1ZAHIzMILYHPKJhuGFtvq93Sc79hDb1LPYbOxORFNU9A7kbKd2/iOlO3NJ6y/HL/zcUbn2A5IGwJE81h0P2L8Zi7kyKuRafwNmgfeh6oO449dnDp0ozdtoKqlTkVSoyf+pEXzKgFghPFQDbXFJy7OLWFtE2aWokrGjb3cGrgXpKxiCKROk
- 1IvrlMOD
- 867LkWGKb63kJEFmQiTcNcFFYCOOkYZyI8IY28vbw66qQAhUm2hU8RWXNcRWn//AhkV2kEX2uMlrpXkylnLgmxyIdRLdCyFHa/yDBsjk4Txjubkp24CXyrtyYk/JUvSHTq3wh+SS7Dg46IQbZlPvZkyzgkjlIr2+5uQMhwYKevPjUXJ6svGjlTlPSmrjDyO/Lqjhh/ASbnbRwkuAu0/BjJSlZDeFmsR7mt5dlgoOxAk0zjH+wYec6q7XxvHjO4FJvhOV4S/TCISNHzE1qZrjKxXfDlRREeSmnSZ4HOtvLYrhAIssb4OljiE//ij2XnSS4Ns2xvHpB63mZz+UsIyUTGlgnHjmtsDHb6Sxq/Xpkn+yTqiA2G43e7wfkCHqi3edM60rt3sabeaiPctc/ln69RHF/V2IM0SqO2tFLBbvKwHC3jJwIaOqvrWFsUeQ5zHuQxe/lakvbhOvEByauy+hwYJajGly9wf5CvjbqqjgcZnYuRBxshXXbUz+94gGhiHPomR/jl+K7OT5eDSs4JKJRSW/bd5jnZ2sRfpQk/f1Xh4oCg8o=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000193, version=1.2.4
+X-HE-Tag: 1768360731-898216
+X-HE-Meta: U2FsdGVkX1+6QEanS6+ZGCEkfUT3zrVEYevc2ymZswJPKvvFFMIijYN06NOeM9sXfVmwz8yXQDt7H+c4Tbv3Wj4Rt7oQkNIeCKmoXMMdZg6Ax5E7CRxGHuqW9jnUgvoknk9QREsj8NuPSlLKzQEoIMbE368zrv1uzFrIOqXkrCoB+r+VRXj+m+Blm66t8UYyJwS90TxCHQs/8B19QrbXHlxMcn4xyRW917fwgQDaK4tY1ozjBFKtE78edbLR3SQukH+KS2tMSZ47L+SZWmO3olti3IZryLLc8raH8GieJzGwfDTuzCtR+p90xdCMDpk33H7sGC/Cb+S2ZYfDR+DOwUfasX0z/vxiMT9NuTWXfpB7gB63wwMVvbOzYNilMZFaX0INFJ309gZ4aBm0uGFEZKf9TKQtdfzbiDKzCjNA/enYFT4vdsqn/wKpEueOisHDv+7L3BPxA/xt21StttaRErWBJNqFC1H2xpLzkIFFtFKMd5IC+zpMh0JHa51GzBYijV8jJWg1mkjkeMcoK+ZL9K9dQtZ80EzNuR913Hpt5P4yT3Lnrgz5/pCOaQKLBTloDLXcWwg3W2aAqQWNRZ+VirAGp/X/s+IXX0AIu1VRfCYLVS9Zoib51arlGnOjHPd88PI8/aKB11d7dG8Z9zdm1k9Iy8yAUdfCHxRrDHDrQETayuJXXlBlli6/Jnad4uw8VSqmBzpd7JbXEhV5s/nPkUC/mbsIJvYIu3ab6pLn7jelejbFatze/kcBnsOFwKQ1F0riCpEO2Tb0bp/aK/zYdxiJ8QC4g//vSPt9N4WVTOr1Ekkp7ldLb6kDTdDaDm1lkFn+Py1VqXCbPYrYFIZhTEACeev5nIg2+TQNQn6YGX1deXphE7kPCH6yMloLVKAFNxuP287yenxQLZfBFuM1gzGeSkO0DGH7ifUqgrM/AFlrDoMNt9zy/9bkFbQH86JJqeAWB1C+F6iwv0WJ1Mr
+ yfM2hTKI
+ vHykmZJbgdZOuPqbfbsijn6+zoP7rl8BJ6zjpP8OL0xkZhv8ZSQh61d0XmyT2KD85Bf9FXmUVR2zD27N03duBxDr2wuhUqu+2SBQu71XvRMD5lqkNGY2S8H9AAqcQZTKIfVFAm6p8I8KOOyI7jA8SbX2NkP1TlUO6esOFpDEdRTm7uPPio7lg+cuTHPAjKY5KRlDdW8y/y6mv9kNAqBl22fhpk6iSDTuEeqgF51TIH+JzmCEM7wjRZVflVOxYxd/mvNsDuVnJPeaUTIPT5Fcms9QTmjmmlC3AJoo45OlrYMAH6dg3Uy7JKUJAqvAfuVUZy8WG4j3/0qXoWqq1poyMT5knyW1Sg1ZRsZGj+4KKnx0dqHtelXEP0Ov4kSQFu42iowBNzQoKr/emxgsJHbJG3xsA2f/SuQ+1pZ5oGWm4TgyLwR4kVgHoGdh7ATb/ca4Ci7kEwHq/2bd6gr6nxbdURTicvBA3Vk9pMnYF9GMT2BZ6pi6Ffwu+QWgQpTtIwmk6zfimuAoj/5eeV8T3RvMdfnBPd6xtypEXTfBK1nKers9YNZDvMzeq/LFA0V0aONpxhHtSjkMd5Q2NFN1GYrDvfJD3FTjlGoVk6p4WIakoYViFnXmdln23ulkpZ5boNoxbVKT3B2B3ElM1igdA6Sr8Qg2Wk6ayLQTEuAXoHeMbZ/eIwSpbmfNPxqSLzLR1xjbvUc4HecS1ADSljtrezxQuSz2MQSlWgvjvGQCRo7YM5LUV+LNK5MWdccf6lFpfDqVlyXSki8LAJXTagkGeT1pL82+Mns+Bj+qvHveV/nkc7kuYUqtinOMwrZlZbXgXqxZQagYd2EFTiN4yblBHzfy+DIzreZCJ6KtdADsTFuJ6hXWj7xZWMzfXhE8wPPr6xeuN8HJe4415EBDHxAwYKChpYrIlGiospFPiL184Qzl7hO4TkI6iDxbGmUTsNjiiMX0gjg+HmBd7VTwpgSZFrdwaISzUwkjc
+ ys2DQGKY
+ PKlz+cqrFjspLK8a1nhgVAG/1jvpBwxX5raDHL98MXjqm2Maj5kGRMhmSgOv0DTlGyqfBgFLd+KZAUYNYMpF6xFe20Vc2uqUwO0+sgSEVuyRnVsFjox3JgtmcNNPEqubIxVLHsSW8so=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,20 +109,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
-> Add support of DAMOS_QUOTA_[IN]ACTIVE_MEM_BP on DAMON sysfs interface.
-> Users can use [in]active_mem_bp keyword input to the target_metric sysfs
-> file to use the new DAMOS quota auto-tune target metrics.
+On 1/14/26 3:47 AM, Mathieu Desnoyers wrote:
+> Use the precise, albeit slower, precise RSS counter sums for the OOM
+> killer task selection and proc statistics. The approximated value is
+> too imprecise on large many-core systems.
+> 
+> The following rss tracking issues were noted by Sweet Tea Dorminy [1],
+> which lead to picking wrong tasks as OOM kill target:
+> 
+>    Recently, several internal services had an RSS usage regression as part of a
+>    kernel upgrade. Previously, they were on a pre-6.2 kernel and were able to
+>    read RSS statistics in a backup watchdog process to monitor and decide if
+>    they'd overrun their memory budget. Now, however, a representative service
+>    with five threads, expected to use about a hundred MB of memory, on a 250-cpu
+>    machine had memory usage tens of megabytes different from the expected amount
+>    -- this constituted a significant percentage of inaccuracy, causing the
+>    watchdog to act.
+> 
+>    This was a result of commit f1a7941243c1 ("mm: convert mm's rss stats
+>    into percpu_counter") [1].  Previously, the memory error was bounded by
+>    64*nr_threads pages, a very livable megabyte. Now, however, as a result of
+>    scheduler decisions moving the threads around the CPUs, the memory error could
+>    be as large as a gigabyte.
+> 
+>    This is a really tremendous inaccuracy for any few-threaded program on a
+>    large machine and impedes monitoring significantly. These stat counters are
+>    also used to make OOM killing decisions, so this additional inaccuracy could
+>    make a big difference in OOM situations -- either resulting in the wrong
+>    process being killed, or in less memory being returned from an OOM-kill than
+>    expected.
+> 
+> Here is a (possibly incomplete) list of the prior approaches that were
+> used or proposed, along with their downside:
+> 
+> 1) Per-thread rss tracking: large error on many-thread processes.
+> 
+> 2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
+>     increased system time in make test workloads [1]. Moreover, the
+>     inaccuracy increases with O(n^2) with the number of CPUs.
+> 
+> 3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
+>     error is high with systems that have lots of NUMA nodes (32 times
+>     the number of NUMA nodes).
+> 
+> The simple fix proposed here is to do the precise per-cpu counters sum
+> every time a counter value needs to be read. This applies to the OOM
+> killer task selection, to the /proc statistics, and to the oom mark_victim
+> trace event.
+> 
+> Note that commit 82241a83cd15 ("mm: fix the inaccurate memory statistics
+> issue for users") introduced get_mm_counter_sum() for precise proc
+> memory status queries for _some_ proc files. This change renames
+> get_mm_counter_sum() to get_mm_counter(), thus moving the rest of the
+> proc files to the precise sum.
 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
+I'm not against this patch. However, I’m concerned that it may affect 
+not only the rest of the proc files, but also fork(), which calls 
+get_mm_rss(). At least we should evaluate its impact on fork()?
 
-Hi SeongJae,
+> This change effectively increases the latency introduced when the OOM
+> killer executes in favor of doing a more precise OOM target task
+> selection. Effectively, the OOM killer iterates on all tasks, for all
+> relevant page types, for which the precise sum iterates on all possible
+> CPUs.
+> 
+> As a reference, here is the execution time of the OOM killer
+> before/after the change:
+> 
+> AMD EPYC 9654 96-Core (2 sockets)
+> Within a KVM, configured with 256 logical cpus.
+> 
+>                                    |  before  |  after   |
+> ----------------------------------|----------|----------|
+> nr_processes=40                   |  0.3 ms  |   0.5 ms |
+> nr_processes=10000                |  3.0 ms  |  80.0 ms |
+> 
+> Suggested-by: Michal Hocko <mhocko@suse.com>
+> Fixes: f1a7941243c1 ("mm: convert mm's rss stats into percpu_counter")
+> Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
+> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Paul E. McKenney" <paulmck@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Dennis Zhou <dennis@kernel.org>
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: Christoph Lameter <cl@linux.com>
+> Cc: Martin Liu <liumartin@google.com>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: christian.koenig@amd.com
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: SeongJae Park <sj@kernel.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Miaohe Lin <linmiaohe@huawei.com>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: linux-mm@kvack.org
+> Cc: stable@vger.kernel.org
+> Cc: linux-trace-kernel@vger.kernel.org
+> Cc: Yu Zhao <yuzhao@google.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Mateusz Guzik <mjguzik@gmail.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+> ---
+>   fs/proc/task_mmu.c | 14 +++++++-------
+>   include/linux/mm.h |  5 -----
+>   2 files changed, 7 insertions(+), 12 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 81dfc26bfae8..8ca4fbf53fc5 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -39,9 +39,9 @@ void task_mem(struct seq_file *m, struct mm_struct *mm)
+>   	unsigned long text, lib, swap, anon, file, shmem;
+>   	unsigned long hiwater_vm, total_vm, hiwater_rss, total_rss;
+>   
+> -	anon = get_mm_counter_sum(mm, MM_ANONPAGES);
+> -	file = get_mm_counter_sum(mm, MM_FILEPAGES);
+> -	shmem = get_mm_counter_sum(mm, MM_SHMEMPAGES);
+> +	anon = get_mm_counter(mm, MM_ANONPAGES);
+> +	file = get_mm_counter(mm, MM_FILEPAGES);
+> +	shmem = get_mm_counter(mm, MM_SHMEMPAGES);
+>   
+>   	/*
+>   	 * Note: to minimize their overhead, mm maintains hiwater_vm and
+> @@ -62,7 +62,7 @@ void task_mem(struct seq_file *m, struct mm_struct *mm)
+>   	text = min(text, mm->exec_vm << PAGE_SHIFT);
+>   	lib = (mm->exec_vm << PAGE_SHIFT) - text;
+>   
+> -	swap = get_mm_counter_sum(mm, MM_SWAPENTS);
+> +	swap = get_mm_counter(mm, MM_SWAPENTS);
+>   	SEQ_PUT_DEC("VmPeak:\t", hiwater_vm);
+>   	SEQ_PUT_DEC(" kB\nVmSize:\t", total_vm);
+>   	SEQ_PUT_DEC(" kB\nVmLck:\t", mm->locked_vm);
+> @@ -95,12 +95,12 @@ unsigned long task_statm(struct mm_struct *mm,
+>   			 unsigned long *shared, unsigned long *text,
+>   			 unsigned long *data, unsigned long *resident)
+>   {
+> -	*shared = get_mm_counter_sum(mm, MM_FILEPAGES) +
+> -			get_mm_counter_sum(mm, MM_SHMEMPAGES);
+> +	*shared = get_mm_counter(mm, MM_FILEPAGES) +
+> +			get_mm_counter(mm, MM_SHMEMPAGES);
+>   	*text = (PAGE_ALIGN(mm->end_code) - (mm->start_code & PAGE_MASK))
+>   								>> PAGE_SHIFT;
+>   	*data = mm->data_vm + mm->stack_vm;
+> -	*resident = *shared + get_mm_counter_sum(mm, MM_ANONPAGES);
+> +	*resident = *shared + get_mm_counter(mm, MM_ANONPAGES);
+>   	return mm->total_vm;
+>   }
+>   
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6f959d8ca4b4..d096bb3593ba 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2847,11 +2847,6 @@ static inline bool get_user_page_fast_only(unsigned long addr,
+>    * per-process(per-mm_struct) statistics.
+>    */
+>   static inline unsigned long get_mm_counter(struct mm_struct *mm, int member)
+> -{
+> -	return percpu_counter_read_positive(&mm->rss_stat[member]);
+> -}
+> -
+> -static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
+>   {
+>   	return percpu_counter_sum_positive(&mm->rss_stat[member]);
+>   }
 
-The sysfs interface updates look correct.
-
-Acked-by: wang lian <lianux.mm@gmail.com>
-
---
-Best Regards,
-wang lian
 
