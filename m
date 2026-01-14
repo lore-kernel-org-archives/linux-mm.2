@@ -4,78 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FB5DD31A0E
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 06:19:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E85A2D31A0E
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 06:25:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C48B76B0089; Wed, 14 Jan 2026 01:19:07 -0500 (EST)
+	id 460766B0089; Wed, 14 Jan 2026 01:25:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF6496B008C; Wed, 14 Jan 2026 01:19:07 -0500 (EST)
+	id 40E066B008C; Wed, 14 Jan 2026 01:25:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5256B0092; Wed, 14 Jan 2026 01:19:07 -0500 (EST)
+	id 2E5846B0092; Wed, 14 Jan 2026 01:25:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B0D36B0089
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:19:07 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2AC04C19DB
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:19:07 +0000 (UTC)
-X-FDA: 84329566734.24.58FC416
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 011534000D
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:19:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	spf=none (imf01.hostedemail.com: domain of macro@orcam.me.uk has no SPF policy when checking 78.133.224.34) smtp.mailfrom=macro@orcam.me.uk;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B9116B0089
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 01:25:54 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A24AF1403B1
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:25:53 +0000 (UTC)
+X-FDA: 84329583786.26.C117D17
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9E756100008
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 06:25:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sDrtDcU6;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768371545;
+	s=arc-20220608; t=1768371952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yaBUQH6VotuDw0xa0VH4bBKRLI+wRtCej0AtnQAvIc0=;
-	b=qOO6D/61pUeE7Mcj6ahwpUj39PCxRzRvRVcSDR8OggGE/D4/UjA9e9nyt3kxBntdijhkVa
-	WAxTFdYdEpJUTAFFgBywy8wxxdKUyNW9yUwZTTeAv3sn+AFA8jE+gdEg+ekANAgBNwiKFL
-	Pr32s6ZjBRa5rbRC77fuJo7eSftUPqs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IFFYK3SE7r2jMbbMc8V7DFpSaOQnml1wlEvXbwdqn0w=;
+	b=5cEfVe1+ocMKDw6SbD7I+2rQpp1buK8nHbuUwUH1J9h6JSzyCfwoyxLd0sxUqpSRScq1WW
+	WEOXIPGKtZtVUWQefxgdgkoZ5Thdn4xJds9wyhHw18CfNBBvDDrG+vWc1brj+KiM76+ivb
+	v5rdyW2UZ8cmpoTcqP1dPgoqNHEwrt8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=none (imf01.hostedemail.com: domain of macro@orcam.me.uk has no SPF policy when checking 78.133.224.34) smtp.mailfrom=macro@orcam.me.uk;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768371545; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sDrtDcU6;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768371952; a=rsa-sha256;
 	cv=none;
-	b=loTbmcLkQSCvwboat8PCnokHnRJ7v+NDtzqJH5Qq58PhjUkiwh9+UVvP9CHZ/VNaHD9LyT
-	PTb9lvkSd4YIKhgitTEb0unXgiU1uequJrftNG4D+Rh3umCSgk84/Iyoj7w6e54Q2f9I47
-	L8nozchTTQ9Z39BnTC5zpr4GE1GLKno=
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 3824192009D; Wed, 14 Jan 2026 07:19:02 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 361CE92009C;
-	Wed, 14 Jan 2026 06:19:02 +0000 (GMT)
-Date: Wed, 14 Jan 2026 06:19:02 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: David Laight <david.laight.linux@gmail.com>
-cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
-    linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-    Linux Memory Management List <linux-mm@kvack.org>, 
-    Nicolas Pitre <npitre@baylibre.com>, linux-mips@vger.kernel.org, 
-    Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: mips64-linux-ld: div64.c:undefined reference to `__multi3'
-In-Reply-To: <20260113200455.3dffe121@pumpkin>
-Message-ID: <alpine.DEB.2.21.2601140453090.6421@angie.orcam.me.uk>
-References: <202601140146.hMLODc6v-lkp@intel.com> <20260113200455.3dffe121@pumpkin>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	b=7za162KwqRfHZx2Z8siVkZpcqwSdbY0cwoCODIp5tcAsK17VKip7iY5j8soZ83lwiixFCw
+	9iRg3QW8p6TcQuWDoes+bxdnOtn4Dxrgat0/zN75wfJJCyDwBVfVy0hoXqnWCBFuCKrwq0
+	b75SbLwOWPwflm2uvPZDlSPgXP3bhR8=
+Message-ID: <3d8dd14c-d3a7-4cae-99e3-10ebe4ad52aa@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768371949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IFFYK3SE7r2jMbbMc8V7DFpSaOQnml1wlEvXbwdqn0w=;
+	b=sDrtDcU6+9FNmrn80sPQ0xpW9+mgxv3nW9uh9blN+4oe8m5pKHBBbepifPRNQIAzUCFlHt
+	CR4rAUx1rUe1a3w1eTQRFumSat5ztHxZ9Fb9IqVGEduxYj4DSgXBpGW0y7/bm4lAc3Dhg8
+	9eg0V0X6+Xv/jOpaN6RTcaQETl/FM2M=
+Date: Wed, 14 Jan 2026 14:25:36 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [PATCH v6 4/4] mm: thp: reparent the split queue during memcg
+ offline
+To: Harry Yoo <harry.yoo@oracle.com>, Chris Mason <clm@meta.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, akpm@linux-foundation.org, richard.weiyang@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <8703f907c4d1f7e8a2ef2bfed3036a84fa53028b.1762762324.git.zhengqi.arch@bytedance.com>
+ <20260113220046.2274684-1-clm@meta.com> <aWcrVRT_RjxdjoN7@hyeyoo>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aWcrVRT_RjxdjoN7@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: dprzq1uwho7xuk8n71akndyku1dzmddt
 X-Rspam-User: 
-X-Stat-Signature: 4zx66hfo5tr7aassf994r1qd7ey73cyi
-X-Rspamd-Queue-Id: 011534000D
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768371544-939792
-X-HE-Meta: U2FsdGVkX1/YcfqTbrJL3ZIYJqOJPTd7nE/QTB3huANcBJ1jjQZnZCCKhTWq2B3SsSwY5T4lTOXgorp2TmkTJ3xbMHa7poAVaCb7ASKsk/n/zq/pabxvx1n119mCaRiNlslo4aT97chKoVzTRsjYc8KRyBNtMIrp4pFk/e5bRBXpNKKrtSdaC0rRBhUcfjOV6E4/wZjFErggwqb0+DXxPgnvfZVGIiGiEY29B5Q2rf7rQhrm5mQiNxV6oqtTZAsZiYIcX0P79qlGpvQR19Qk8vRTShQaUHpxn8i13dfCLh20Lr5WmGplKv1uMDuSsqLTLApylFw6Sb2QR7Zup8BkEbH62kbT+ew1Phd63LQsl1TIZKBzgGrMNxVpuy70myHyGe/PJXTusqXBpASLqUUUz9JK2zXJNiILzwxcs8nnqoqbkXZhNGVaiXfYQp7ezEUPoRg7LMZL2ecFZJcJGxqtcKAeG3asG2EMM3/ImZKueAokyO1heeCrSdf/xk5v0rZNjW7uvFDkG5TpGhUkbd3uMLzL7xL1CFiXOLmWUZB7ua7ewbAmS0OdimmtlYc8Xws7EUDpV2dGxwsLlhZoBJiwXEV3Vi1GibDHnySg4eNT9KA0VOT9yrFB8D6lxvfpPx56FwGyA8SWbGaLRwmRbuvFjkmLwqaUJUEFqjib7lmZlmnVilxEBYyCAkSPFSMnRboQpi5tVVfW5MP7y6mIshTP/2zKViG6Q9S+WzZ+LVItItpvBk/uP5Cy36U7XxR5uuT9srTnff3pf4purWjICeOMDjycuuoEWcWQNsEi+9v9W+eJWklfQ+PI3L2rXnAyNIDX9CaoCDiEHWy6ht27zK2+TwA1dujXyAno/iml5iyyYyVu6wEWK5YQmSIc+rE2OBwL6n/B7WSvCbnfFNti4NaK8QkLGuPGtk8n1MH2gcTPF0uku64Q1Pr9MBtCFflBdWNroKVF3OSIFnEQetDKctR
- bfq+re0B
- nVj16jjb/6FM3qPeq2WSKGwstQ1htbZrdvi5WLhUebwVsAfUTfgZA8a9Yz7RC2nhpwGcP1E3ZN/7Qi3v44e/Rv6Xxm0lMOahCjQqgKYmRDUPgDW0y1tfW+1x1vbtYV59fmRcyvaqjrH/WtnzR3VqHjU3FAPWQedpU/Qq3wEmAOBUYbI60K9OcfQofZD+hm10ra1Oeg/SrFdltWx54Pmb4hrVwriIHH39acV+HgkuRfVjHlu8FRSpjLiis1xwyBiX9vLa9wHsAi6/doXVkc+aKpI6aIhJDx+ZzVX5OZmP6IvD2Vbs=
+X-Rspamd-Queue-Id: 9E756100008
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768371951-9337
+X-HE-Meta: U2FsdGVkX1+bMyxUsfoTrmYB0o0F5ImqJNwkmqiPwNmrwUXanK8L6g7N9iGeHtkmJPkN6BZ2R30FhHxbUwhU+1O9LZEQSEyGhZUUDusKuRhKwOqpr7xXGmZzhfGyy057PZze8sarHdopgwIedZQ1sSQnDN/MT5oxndz3jxlpsqJBtfw0V1ag3EeY3Xe6MREeoS+bcBCopiEeytU3kGN+KZXDviy3H8NqMBTsKr3BcVX7FeD6dpua6zssDMhERgd6Sb/64Q/REIfwJLZ8f6UonZDHiS1dvQsILOy8RL6szwyfLUQ48c2IPnmWvncIRr4GjVIq+I2UgSatolDsfP/dxlHv/KoDK7NXQqwg64XRugGuVjEN0s4sVfpFDpQzSm7vGiwDb6DVpBlc7x3oOF3SDwXPAU/FCAU2pxIBzpG7ej+WAeQOvSgeKCayThgoQlqReBZOnkELsipneLZ/PuSu7ibJWYXqk0N7VFJge4BXY5Fpd+ouieiz9I1Jm7QTDT28f9REFePb0DX99qqyzzUq8VXiieSGXIE/56MHj1iEmC93RSmtGo6LXsuuYzmbZCZpzVS5XoAC1jU4R8mS27eg2tQ+2aZM9jjKyJpIzSGG2IXsfzwlEgYTPDNKcgIsat4BezH6dYROixGrAN78AKlu+V/svUTFaARUrNHb+ambD98yPvF6Bqk1Pa9Br0dbFIfNlJ3WxLbAge0lZOkbliEafKslwQt5U++XFaTLChaeUJB1CRce3Vsgs7UVhWrXCOmnyKirB53VruzgEnLkypUBKVif9QM32n6lcNibPRLMQT6WMfPJzgL05y78PqYBcY5idVyJY6lJ08QUuAorYlmHmt15WWy963WF/qFvuW9rgIAs8h4eIqzupSlifZgqZ9ikFuP9pjtXkxNBkvOu4ElTfZL8gacMKlPT0+6wZfaCLq5o3LVfaNhWsUlT2q68+X5KbWaErhkcNpJ5dv74Is8
+ 3ALwCrLF
+ iHD+ICUvDpcQ1D2puV+TRDoW651CAvUmoDppiyanaY04lxSRIFtMqjWxWwDyIqEFnD3RL75t4iqLj1v9T3/3HFSKEJAI1pyYYAMVdnKZZoNsYfZIhoBluGPftwg0qZMipvWlZJm7TFRAByOfSFnEH3ZX/DaDC2XVYn1M0TMbKeQ/hEDdjQwDzg0z9OojY09xBrVmYNFWakfCLQtBySsBH9QGNLHoWebTMUKP1Y7i8MYfKmBgPZMCyPjfEOCvwuvfjaU5t/rcAfFrQqwhiS18ohf3nfBSF319S7hC2uPg/JfrmjUlOj/YkxpReEoLK4zTBwo9rP8qaHFoFM5Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -84,46 +97,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 13 Jan 2026, David Laight wrote:
 
-> > All errors (new ones prefixed by >>):
-> > 
-> >    mips64-linux-ld: lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
-> >    div64.c:(.text+0x84): undefined reference to `__multi3'
-> > >> mips64-linux-ld: div64.c:(.text+0x11c): undefined reference to `__multi3'  
-> > 
-> 
-> This looks like a bug in the mips 'port'.
-> arch/mips/lib/multi3.c has the comment:
-> 
-> /*
->  * GCC 7 & older can suboptimally generate __multi3 calls for mips64r6, so for
->  * that specific case only we implement that intrinsic here.
->  *
->  * See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82981
->  */
-> #if defined(CONFIG_64BIT) && defined(CONFIG_CPU_MIPSR6) && (__GNUC__ < 8)
-> 
-> So this code is excluded for gcc 8.5 but the compiler is generating the call.
-> 
-> Looking at the git log for that file there is a comment that includes:
-> 	"we wouldn't expect any calls to __multi3 to be generated from
-> 	 kernel code".
-> Not true....
-> Not sure why the link didn't fail before though, something subtle must
-> have changed.
-> 
-> I think the fix is just to remove the gcc version check.
 
- Or rather fix the version check.  The GCC fix went in with GCC 10:
+On 1/14/26 1:36 PM, Harry Yoo wrote:
+> On Tue, Jan 13, 2026 at 02:00:43PM -0800, Chris Mason wrote:
+>> On Mon, 10 Nov 2025 16:17:58 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+>>
+>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>
+>>> Similar to list_lru, the split queue is relatively independent and does
+>>> not need to be reparented along with objcg and LRU folios (holding
+>>> objcg lock and lru lock). So let's apply the similar mechanism as list_lru
+>>> to reparent the split queue separately when memcg is offine.
+>>>
+>>
+>> Hi everyone,
+>>
+>> I'm running all of the MM commits since v6.18 through the AI patch review
+>> tools, and this one was flagged.  I'm much less confident in this report,
+>> AI tends to get these races wrong:
+>>
+>> [AI review output]
+>>
+>>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>>> index b0c6a4635c67b..cc6db20d7dca0 100644
+>>> --- a/include/linux/memcontrol.h
+>>> +++ b/include/linux/memcontrol.h
+>>> @@ -1775,6 +1775,12 @@ static inline void count_objcg_events(struct obj_cgroup *objcg,
+>>>   bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
+>>>
+>>>   void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg);
+>>> +
+>>> +static inline bool memcg_is_dying(struct mem_cgroup *memcg)
+>>> +{
+>>> +	return memcg ? css_is_dying(&memcg->css) : false;
+>>> +}
+>>
+>> [ ... ]
+>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 13684e5376e82..d17d3810a882c 100644
+>>
+>> [ ... ]
+>>
+>>> @@ -1129,8 +1140,14 @@ split_queue_lock_irqsave(int nid, struct mem_cgroup *memcg, unsigned long *flags
+>>>   {
+>>>   	struct deferred_split *queue;
+>>>
+>>> +retry:
+>>>   	queue = memcg_split_queue(nid, memcg);
+>>>   	spin_lock_irqsave(&queue->split_queue_lock, *flags);
+>>> +	if (unlikely(memcg_is_dying(memcg))) {
+>>> +		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
+>>> +		memcg = parent_mem_cgroup(memcg);
+>>> +		goto retry;
+>>> +	}
+>>>
+>>>   	return queue;
+>>>   }
+>>
+>> There appears to be a race window that can cause split_queue_len counter
+>> mismatch. Between the time CSS_DYING is set (in kill_css()) and when
+>> reparent_deferred_split_queue() actually runs (asynchronously in
+>> css_offline), folios can be unqueued via __folio_unqueue_deferred_split().
+>>
+>> In this scenario:
+>>    __folio_unqueue_deferred_split()
+>>      -> folio_split_queue_lock_irqsave()
+>>         -> split_queue_lock_irqsave() sees memcg_is_dying() == true
+>>         -> returns parent's queue (locked)
+>>      -> ds_queue->split_queue_len-- decrements parent's counter
+>>      -> list_del_init() removes folio from child's list
+>>
+>> The folio is correctly removed from the child's list (list_del_init is
+>> self-referential), but the wrong queue's counter is decremented.
+> 
+> Good point. Sounds pretty possible to me?
+> 
+> I don't think there's anything that prevents it from unqueued
+> before it's reparented.
+> 
+>> If the parent queue was empty (split_queue_len == 0), this would cause an
+>> unsigned long underflow to ULONG_MAX.
+> 
+> Although the accounting mismatch will only persist until
+> reparent_deferred_split_queue() reparents the deferred split queue.
 
-$ git log -1 --pretty=oneline 48b2123f6336
-48b2123f6336ba6c06846d7c8b60bd14eaeae7ec re PR target/82981 (unnecessary __multi3 call for mips64r6 linux kernel)
-$ git show 48b2123f6336:gcc/BASE-VER
-10.0.0
-$ 
+This period is very short, and the only thing affected should be
+deferred_split_count(), but it does not cause a system error.
 
-I don't know why the PR got it all wrong; I've fixed it now.
+So I think maybe we can leave it unrepaired.
 
-  Maciej
+> 
+> Ideally this should be fixed by checking if the folio has been
+> reparented after acquiring the split queue lock, but since we don't reparent
+> LRU pages yet ... do we need a band-aid before then?
+> 
+> Do we want to have is_dying property in the split queue as it was in v2? [1]
+> [1] https://lore.kernel.org/linux-mm/55370bda7b2df617033ac12116c1712144bb7591.1758618527.git.zhengqi.arch@bytedance.com
+> 
+>> Could this be addressed by checking that the folio is actually in the
+>> queue being unlocked, perhaps by verifying the list head matches before
+>> decrementing split_queue_len?
+> 
+>> [ ... ]
+>>
+>>> @@ -3920,6 +3920,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+>>>   	zswap_memcg_offline_cleanup(memcg);
+>>>
+>>>   	memcg_offline_kmem(memcg);
+>>> +	reparent_deferred_split_queue(memcg);
+>>
+>> The race window exists because CSS_DYING is set in kill_css() before
+>> css_offline() callbacks run asynchronously. The comment in split_queue_lock
+>> mentions that THPs will be "hidden from the shrinker side" during this
+>> period, but does not address the counter accounting issue when folios
+>> are unqueued.
+> 
+
 
