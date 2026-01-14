@@ -4,80 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A944D29FE3
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 10:30:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6DA8D29FE5
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 10:41:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9023E6B0005; Wed, 14 Jan 2026 05:30:22 -0500 (EST)
+	id D36C26B0005; Wed, 14 Jan 2026 05:41:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B0206B0088; Wed, 14 Jan 2026 05:30:22 -0500 (EST)
+	id CE4076B0088; Wed, 14 Jan 2026 05:41:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 784D96B0089; Wed, 14 Jan 2026 05:30:22 -0500 (EST)
+	id BC5AE6B0089; Wed, 14 Jan 2026 05:41:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6916D6B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:30:22 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1CA98160442
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:30:22 +0000 (UTC)
-X-FDA: 84330199884.18.E7F31D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 500D040015
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:30:20 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DYfpyomb;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768386620; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A5D756B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:41:55 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 633D41ADF5C
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:41:55 +0000 (UTC)
+X-FDA: 84330228990.03.C6BA445
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B297A8000A
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:41:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J7U48QQy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768387313; a=rsa-sha256;
 	cv=none;
-	b=rrOEbre+6yBtqRNMcqfHZqp3GkJEmJGdQR7061LK8L2PXMI43ImfqimO0sa8dPz9/4l0L7
-	8LBGl7u9VS2+/+MHcW7yYcpjII9kcBwbNd1QT3xP1wzKoPoiPsZ0Wq84TliVZmnuAvF8L4
-	i8Uamlv2YD25iKz/EHxlWTsCTYFi7+8=
+	b=Du5p4LYdthFBNrmRoflP1Lszb/WmLK+S6cSoOzt4UVpcLNufWKljjEfTH0zv7xQE3IzCUO
+	3GREUsL+xFT7PbIakODpUmOUxWqeNZIro5sixVIDBMBEJfSInYxWMjYL+YfgNL/vOb4Bid
+	y+oEm9xAz+JHfbQ835oufhtMOCxqevM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DYfpyomb;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J7U48QQy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768386620;
+	s=arc-20220608; t=1768387313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t7JaYK1WTxqquiC0gesKwz4QBsEUF+tk5sKU6ZZufi8=;
-	b=2tPM4TJxy6Kee8/8Ue+QjLRFHIC8bW1/ptXQw60OhwDKLi3Q8bzw+6TrOczN878VHioYy7
-	OjLRh0zusAtJEOhy3UfnmUt3GQR/ODBkTU/0xtcCGPUj8W1xrI1RWbaET6+aOddjiOjPd/
-	uBuR6u9ELLZfDOhz7bYmCRLH/+E1NeM=
+	bh=OYl+g5eG7u9KPierY9FTty1i9dNEgVFRHJIq0VcmWxQ=;
+	b=OVLvZvduWJYyyBAzntu5ykvcM7tOvfT23l3kwVVjO/ji0MjJ/QnBBW4gqxgEoxgiJdaQpT
+	uAOSronuakBDGoc7pa0NrNkcSsqZa2GLs2f7kORzO5qBOuBhsVUl3y1D1JALo+B1koerf1
+	klfKx1XW7ij+tYBt4U0SN+kCoC0ryXQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9B3F760051;
-	Wed, 14 Jan 2026 10:30:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE35C4CEF7;
-	Wed, 14 Jan 2026 10:30:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B0A1443CCF;
+	Wed, 14 Jan 2026 10:41:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD36C4CEF7;
+	Wed, 14 Jan 2026 10:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768386619;
-	bh=77eN+I93e/xYMMtzRTv9G1YoYjUEH5vEbzp1mfa2DjI=;
+	s=k20201202; t=1768387312;
+	bh=bnSwEejEd+dUBVdPcR47MVQZG1UBBrNB0/uQd3LWVro=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DYfpyomb3EQk2nMVNlKn6qt/87F2u+pToxXfZxzOlMqt1ACFTaOF/IEsA0RV0VY6t
-	 ydoOkZBhkOW3zLWlGWxOVPy/IOJTlZoHr7CinQuPrYOnYWMrTBHFOR8S89l/G3zIZ0
-	 XY9OkKqDpulpiqClfXz+HqUL6yu2/XzKZ+eE1Sd2KOcC0bhjUrEBkSfdL6T51u4DcO
-	 StZZxajFX0AiS0SO5spKL5MrJr2NIh91ihPGoqPTYxYafroL6lpa9FgG3gl1wfBB9B
-	 6lxpMS1HMBojP8SJ9OUykFnKqRU3axu9Och9r34zxi+gub1WSbtF4Clv5X3QVMyleb
-	 tE5OZ0SRjjB2A==
-Message-ID: <4f2c6106-9cc1-4196-8b20-83b297ae7195@kernel.org>
-Date: Wed, 14 Jan 2026 11:30:13 +0100
+	b=J7U48QQyCuy6Sg0jort3YyrgS4UhK10c7UN3FNmOyIi2+LGDqT2MbRMhZ/iryGQs0
+	 mNLJ8DClURwJ9l6hVL98wnZ4VFGulO+ePvBKh1FYKasmJrYiv87KAv9tHBi1sQt4SI
+	 IcP8f9q9A8ztPw+A3g1EndeigJriodZAvgvfrLv847f44O7iC82FnaummysSIivUAj
+	 EEOpQcZPBldgE/a1+9toYUN5TmhAxcComXCJo+LjlRxjtD6BdvXp56l/3llJs7p7x5
+	 RfuVm9GVa/x13huGB0p5kPb3hwPdH9zfTbp611w4lyzqtpC0BqltSW+g0ouvH2EJ/K
+	 IAYhK1ekh1OCA==
+Message-ID: <3d8398f1-0130-4d3b-ac54-d23877811747@kernel.org>
+Date: Wed, 14 Jan 2026 11:41:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/memory_hotplug: Add support to accept memory
- during hot-add
-To: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
- akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
- michael.roth@amd.com
-References: <20260112202300.43546-1-prsampat@amd.com>
- <20260112202300.43546-2-prsampat@amd.com>
+Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, ankur.a.arora@oracle.com, fvdl@google.com,
+ joao.m.martins@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mhocko@suse.com, mjguzik@gmail.com, muchun.song@linux.dev,
+ osalvador@suse.de, raghavendra.kt@amd.com
+References: <7963534f-cce8-4330-8a67-3f31bd6b2166@kernel.org>
+ <20260113124147.48460-1-lizhe.67@bytedance.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +121,15 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260112202300.43546-2-prsampat@amd.com>
+In-Reply-To: <20260113124147.48460-1-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 500D040015
-X-Stat-Signature: dy81ohqhq1n6cmjitxiebo6y9kekypgx
 X-Rspam-User: 
-X-HE-Tag: 1768386620-355250
-X-HE-Meta: U2FsdGVkX1+e2yReiHXhiYN53U0tfkYsSlgqpFA1q7wyezuBKxjk/oMIoJf/YLW+RL23gJ7gUZmwgaVuMYXhKfkxzDUz6kIYFpiCFeV/6xPkno0JHTeSOmdjYYvxGnDz4onFKMZHCsa3tzCLLQw0Mg+Rfb8wL9c3BFl9oGRirrJInLFUx07zJUYy0p100FQsPrJGlTmsJs04UBIl4QKsqB74eFBhkWCT8FVC0Vt3duy+U9q1eEVOlM76zoOSX7HtYO1GCM3OeGNbRKQwJaJXRDUxrjr3U82i5eec3n1sLRq256qNDfI76lAS3jgv4EezRSFn+sglZ1E0sjxhChHqRdGXDfXFWGtd1axme2cZfowvQs+7Q8fek1acuyY5yibKbY6frRc5BonjL9i8sf3QylzoBY9jzkp2hfxDrCBkAOxOuVQ5oycWW0+ApO/PRXynO3XmI66W2aota9LXFHUSKtV4sqx1QUQ5+ByExGfQUvs31s7zUYn4ihlvIJLfqpZpbHO+tVioccvlBjwZzXyLxxRv0qBN3ZJqvDToc9VHrcgaEJJ2pAkRFQN6LHUDbSwkw2xJ/i2AwxS6ozTe6Hdpff74WirYnzxCMHFN9tlQrRGOoWeZ28FDod6+hVne/B+3adF1BMdBV+aJfzFpGDV1LXLCbC/NA9xYVyUCaD0JT6UjS7pxtJnALOXLEBBGeLPNQZqOyf7eKjySo7HPUCiIF4FczWxX3drn42K6Mv53xniig9gt96S/PbNwAvQlOSFUc17s8IEx/hpp0D6OyVdg1PtM/TEjn+OjgyE9Rx+WG5i2+XTv/hsd/DRT4vEKDMaJvfvotlpU2h+dzoeoX8yni7xA9m7sGSK0sHKQEJ/Y/ggS/UVNt2Hxn+Y7sNuEePMnEe7kwpQZEVnGe2r9SalAMzA6DmhGiWBmFTOokZLdvEHNF4fVBu4XPmsj/382o3+4tJXjaEuhHg9a+ZeAFtO
- xfjPg1nO
- w1j2CmRr632L1croLRX30/JnwCMvc2eqijksbq3OclQe9Fp3buj5W/NhrMe/SXmU5FTx4+oofuwOFZUEOyS+6x7QGzL+ALxam/k+/LO/1m2g0oYgiIPcG1CFS6ApVJaEvkub2piB7a3qFPXn0fQlJnXeyDAVNGXsoa1qaHWdjx6I1LygMgGLksstz4qWyNDbj/+hmmwwkpxLbTyNuj8hld/k6nlKgqUDIOjnUky362jOtEX7n31BvVCL3BNNW3mwLDwBDlXjFPURhfZjb76Sf0POoLMwSgcGTh8T6JkWt4mIVEeFuy7/RAryXM8lCKUiQhR25agDfi7+cLmLdmh+TYUkEGd+DSFtKhcjeyhwxb3dKTVc=
+X-Stat-Signature: pu6wrnae8omsmm9qkef3fabrxqm5xpcc
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B297A8000A
+X-HE-Tag: 1768387313-475521
+X-HE-Meta: U2FsdGVkX19lfUlefm4CUdBl8aepgjaDmv0SAdJ83+sCbg8L6SqQXl8B55PRUY3JcZLgFx57xWGalMwhwLctt/ERgInu8ILEaq3vZfu0wv7WSdj0tmh9BWqW8dbQI3F49ky+3lONj6iDzqlp5Xiwa970cKG66FFdQJ21dBapHYf2rOk//8zG188GAUlS8iAmuqDsiVPu2KyiPciVfLYArm9xywCSvZ1/y6/Eyt6iynD+ZTUymBeKWKgdkD2CCh5qLxjTVaHOc/kM4tnd9YQqqeqdaanpfdHNeSTjgEF7461SsqoUlH8zZh3PyYi5bRuFjMecOVwJud6+gd7Mf/PtLqTQrJhftpXsam/2cn2GzIJ0c2IvE9FVd31xHYO0/mpiBabO9gNIuNb7tUSb34Z1kp8CONMpJmQ9VzHivc5rU+Oj5FaNE6yOHuEeqnrN0ADdZP0bk/JD0Ewh7lnf/VtAwvSs9hMg3D3isOMwcLARIyXSlZ1A2mYxIwqt6GvVrvgQz6v8QavUpxNuiGtSavbBP2Afmh/mlqoZvxjeBaCQ97jyNUIU/2uv9ovkZ5LGJ2ZlhA1JRtslygkb4sPR1X1tn0GafirMhf6lN9LKnTiuAxtDeOn+J40ymwGsf3mkvVYkzlgtfb3PNzsBqpowb6rqKTT36jIMQy1SsmAkmRMIshDRYehac8BTCgZfYu5c1M78glnpvNPlVM2K6EkDIDwz5kUasjErA79AAymm5uC9I2EJ4hatnPgMvaFo6QdKz5MDDCE9iGAzkj8MM/tkZ7lfVpUpOQEd6qoVomWxtiRCjnJ5cn7jfvST5izk1nSe3tJYV5mciOPUQirQAzHJ3qC0K/I4lrrRy/hnGyPd57K83y4B0iS8XVGXW1/I7kv/rNi8wxSu1lqsDGDF4Wu3MutHdREaOBzgtQm8sJtBYuSWV9v4aV9WiWwzvA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,49 +138,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/12/26 21:22, Pratik R. Sampat wrote:
-> Confidential computing guests require memory to be accepted before use.
-> The unaccepted memory bitmap maintained by firmware does not track
-> hotplugged memory ranges.
+On 1/13/26 13:41, Li Zhe wrote:
+> On Tue, 13 Jan 2026 11:15:29 +0100, david@kernel.org wrote:
 > 
-> Call arch_accept_memory() during the hot-add path to explicitly validate
-> and transition the newly added memory to a private state, making it
-> usable by the guest.
+>> On 1/13/26 07:37, Li Zhe wrote:
+>>> On Mon, 12 Jan 2026 20:52:12 +0100, david@kernel.org wrote:
+>>>
+>>>>> As for concern (4), I believe it is orthogonal to this patchset, and
+>>>>> the cover letter already contains a performance comparison that
+>>>>> demonstrates the additional benefit.
+>>>>>
+>>>>>> I did see some comments in [1] about QEMU supporting user-mode
+>>>>>> parallel zero-page operations; I'm just not sure what the current
+>>>>>> state of that support looks like, or what the corresponding benchmark
+>>>>>> numbers are.
+>>>>>
+>>>>> As noted above, QEMU already employs a parallel page-touch mechanism,
+>>>>> yet the elapsed time remains noticeable. I am not deeply familiar with
+>>>>> QEMU; please correct me if I am mistaken.
+>>>>
+>>>> I implemented some part of the parallel preallocation support in QEMU.
+>>>>
+>>>> With QEMU, you can specify the number of threads and even specify the
+>>>> NUMA-placement of these threads. So you can pretty much fine-tune that
+>>>> for an environment.
+>>>>
+>>>> You still pre-zero all hugetlb pages at VM startup time, just in
+>>>> parallel though. So you pay some price at APP startup time.
+>>>
+>>> Hi David,
+>>>
+>>> Thank you for the comprehensive explanation.
+>>>
+>>> You are absolutely correct: QEMU's parallel preallocation is performed
+>>> only during VM start-up. We submitted this patch series mainly
+>>> because we observed that, even with the existing parallel mechanism,
+>>> launching large-size VMs still incurs prohibitive delays. (Bringing up
+>>> a 2 TB VM still requires more than 40 seconds for zeroing)
+>>>
+>>>> If you know that you will run such a VM (or something else) later, you
+>>>> could pre-zero the memory from user space by using a hugetlb-backed file
+>>>> and supplying that to QEMU as memory backend for the VM. Then, you can
+>>>> start your VM without any pre-zeroing.
+>>>>
+>>>> I guess that approach should work universally. Of course, there are
+>>>> limitations, as you would have to know how much memory an app needs, and
+>>>> have a way to supply that memory in form of a file to that app.
+>>>
+>>> Regarding user-space pre-zeroing, I agree that it is feasible once the
+>>> VM's memory footprint is known. We evaluated this approach internally;
+>>> however, in production environments, it is almost impossible to predict
+>>> the exact amount of memory a VM will require.
+>>
+>> Of course, you could preallocate to the expected maximum and then
+>> truncate the file to the size you need :)
 > 
-> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
-> ---
->   mm/memory_hotplug.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index a63ec679d861..8cfbf0541430 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -38,6 +38,7 @@
->   #include <linux/node.h>
->   
->   #include <asm/tlbflush.h>
-> +#include <asm/unaccepted_memory.h>
->   
->   #include "internal.h"
->   #include "shuffle.h"
-> @@ -1567,6 +1568,9 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->   	if (!strcmp(res->name, "System RAM"))
->   		firmware_map_add_hotplug(start, start + size, "System RAM");
->   
-> +	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
-> +		arch_accept_memory(start, start + size);
-> +
->   	/* device_online() will take the lock when calling online_pages() */
->   	mem_hotplug_done();
->   
+> The solution you described seems similar to delegating hugepage
+> management to a userspace daemon. I haven't explored this approach
+> before, but it appears quite complex. Beyond ensuring secure memory
+> isolation between VMs, we would also need to handle scenarios where
+> the management daemon or the QEMU process crashes, which implies
+> implementing robust recovery and memory reclamation mechanisms. 
 
-As discussed, for things like virtio-mem or the HV-balloon this might be 
-the wrong thing to do, but I don't expect these mechanisms to be used in 
-CoCo environments just yet (and doing so would require enabling work for 
-them).
+Yes, but I don't think that's particularly complicated. You have to 
+remove the backing file, yes.
 
-So I'm fine with this for now.
+> Do
+> you happen to have any documentation or references regarding
+> userspace hugepage management that I could look into? 
+
+Not really any documentation. I pretty much only know how QEMU+libvirt 
+ends up using it :)
+
+> Compared to
+> the userspace approach, I wonder if implementing hugepage
+> pre-zeroing directly within the kernel would be a simpler and more
+> direct way to accelerate VM creation.
+
+I mean, yes. I don't particularly enjoy user-space having to poll for 
+pre-zeroing of pages ... it feels like an odd interface for something 
+that is supposed to be simple.
+
+I do understand the reasoning that "zeroing must be charged to 
+somebody", and that using a kthread is a bit suboptimal as well.
+
+
+Here is a thought: with "init_on_free", we charge zeroing of pages to 
+whoever frees a page.
+
+Can't we have a hugetlb mode where we zero hugetlb folios as they are 
+getting freed back to the hugetlb allcoator? IOW, we charge it to 
+whoever puts the last reference.
+
+just a thought, maybe it was discussed before ...
 
 -- 
 Cheers
