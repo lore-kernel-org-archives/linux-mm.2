@@ -4,138 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1E89D38FEE
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:56:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45BB7D38FEC
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 16:59:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5790A6B0093; Wed, 14 Jan 2026 11:56:17 -0500 (EST)
+	id AC2DC6B0005; Wed, 14 Jan 2026 11:59:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53CCB6B009B; Wed, 14 Jan 2026 11:56:17 -0500 (EST)
+	id A70B76B0089; Wed, 14 Jan 2026 11:59:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41E1B6B009E; Wed, 14 Jan 2026 11:56:17 -0500 (EST)
+	id 959466B009D; Wed, 14 Jan 2026 11:59:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 314786B0093
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:56:17 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C98A05944C
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:56:16 +0000 (UTC)
-X-FDA: 84331172352.29.9D2460A
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BAF8220019
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:56:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cVdGhete;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768409774; a=rsa-sha256;
-	cv=pass;
-	b=AzeZOIuC5Wj4jS1la2YYtIeSqZLQmGY2q9kn3Rxi3vgUsWoeiAtK3ElCvOyuBdxBVEzGFK
-	o+C15XOhMYpM352HRa09Z0/Tb+0qBe3l3SsKm0SkWPlnl2tJ6GTC4z/WqxqaVH6AkszKqr
-	MHyxD2rCJD3ZiupVBJBsqo2BYKiiXLY=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cVdGhete;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768409774;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 861286B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 11:59:19 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E50C8C090
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:59:19 +0000 (UTC)
+X-FDA: 84331180038.22.F9C8BFC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6F85AA0013
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:59:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r5rGUtxb;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768409957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yTF+36UIWJnydGFbwFd4vW3/jAnpAQHtZMxf/xj0fXk=;
-	b=cZtgftwrI4+PcjTYXlZb76Hx5ne7h6f2+GiFfpvjvfzCAXuHdwjtjstNCRhpJpTFoPh4g+
-	b28zLq99BkdKgSvqqrpawV824yb5nmWLxuQMHvJRuQnnUbRkD7r/l71PF6TM4X+wJ5qJC/
-	kkpaPV47YGzg6YxARGDis1OigS4TP/M=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64b66d427e9so9964a12.1
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 08:56:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768409773; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VDNBrFL1OWdar/qPjFyg33h3iluh7th8OUdTmUmFeibLrRiF5Ijogn4hrURiNVVOwi
-         N3MKMBnUji2zbQ8/2T3WVds8DwkNVaL7YE3vcIe17GR7QvYsvbjBa6RUvDs2zxpS4MJK
-         YlydyHr4pB4pzs3yN1Brl9gjfKLYbUt4qoDRH8Ts03AqStjfL7tltq1RlgY9PqcLQm51
-         sksq8vqphJWiF7qMbotFRv7KoqcGXfxxhMmfpghzrfSFgu3RMAnC1IxHNEs1uo6KlN2n
-         LkX47jYY1G9cttrYo522Yr7GNdHDpSMzoLKFAIBNTSsQde4bcDwoEAaLbWbYHsrbo0lm
-         fxWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yTF+36UIWJnydGFbwFd4vW3/jAnpAQHtZMxf/xj0fXk=;
-        fh=GclaYKwtLTWBYZy4OA6daxuawLReufhqC3goLy+3zBo=;
-        b=VwPPnfUtvw18UY8tVthJe6eNqAkZvGvULNlDncqh0vYHyIMLpn6fyASy0sZtdKJDw3
-         biL3Plu0r2kqgOWU1lneRPK5AmsCKB5g1HumVIsw5RBEPMSubPGgb/rHmKNrENsBh1JD
-         EzN8MgZPOodo4Xhh62jsgpJ7ddNyqoE8VYzhfAnwqTJjP274XRvjTJYw79RRLMSrLfXr
-         lw5zm1BMe/9oORf2Z7cV9hm8mquH4MdwZQTCaP+OuJhI9Y+zV77UTwlWm2tA0kEArPp1
-         zKQX2beIowJ18Qtsy4PCjwlTXFlEZA+ayRsEg8POcjBk9erPuruJWGT0S1l+mN7z6IAs
-         SMyQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768409773; x=1769014573; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yTF+36UIWJnydGFbwFd4vW3/jAnpAQHtZMxf/xj0fXk=;
-        b=cVdGhete2IknUX6F4Tt1/ulQ80jDPYHw1HequKRE0L5IjCi//rk7A3vVwr8m4inT5B
-         gm1Jr9fAwQfOLsctUonEkJcbT73cqSG9MTFr1i+WkX37+AiDChTiWN7p00kY6ICIIBdF
-         aAGcTAksMJJSL3kSAd7v7pp/t1oUPFcUamzA40a1IhqGTaAn9JqChW9LPI9r+tfngLg4
-         Jr8+M/WX1006guUMBbeKAcaf3zfd0P69xiG70e3WpUswcBtYF3344U2DtMdZMFbt8V6P
-         5T4V3vMrWVHPxpG5fSxHqk7WIVifMst/LZll2Lc0bCuwoMrUAaq10DsnUm7SyCWYq33A
-         heKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768409773; x=1769014573;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yTF+36UIWJnydGFbwFd4vW3/jAnpAQHtZMxf/xj0fXk=;
-        b=b5y/ryJhJtfFSq48SlDIocT3xQh0gQWMuUaTpsEgR5ktQCJk0RA1d9+z4Lbu1iMmtw
-         N0oAlYqtjM8oo2atn00kcLfFhBQEiB2sfe9l2/a3Q0+qAUBv2qxtVrdS5AMw/TKVMwh2
-         zIC0IcsVRexXY/jawqo/eMPvxs+mPDGUWgB9bMQpZLDZEK0b6+Fu6CKfDSnfHkNyjvs1
-         0N0CZWZI+gKGeH4+wUE11Wd5sB+XmGm/rUmYPZH5RHdO7KdXOQ1L2t7uMA++2JKw8pjr
-         F0Jm3KzDgSJl+w391itPsA6BJgsioL+6OTZRmsvvIst0tLHAtml704Fa8cghUS/V32pJ
-         aNBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUCbcjjvoBRfl7NExVkKIXOdj+7Uyw71yc1TWUnewm/mT3nhZ+QFnKVKABU6e1Of7EzXJ+W8TJu4Q==@kvack.org
-X-Gm-Message-State: AOJu0YwYVZCApf80AqvnVP4ajbSg7x6yDo0ZArbWMgDimqexaFL5An/9
-	21V7E3Y2NKf8XCwrQCYx02gU+3qrBAstkNkeYsPgetZ3If55cCVIJpKknMv3tRYsAHXpQje/OiL
-	TZ9UFTeBWoSkGn1220oxCnuuorHGrBzLTQ2HHQte8
-X-Gm-Gg: AY/fxX6aZUKa5KCCCgXMBb4vfJ/jmH75s4sd2vI8ymic7XSt5qmAj90fokM4XhQWFlK
-	J9by+oXF85FZ9jQhnsAI4A7hIOovW8+MhZ0LPYfsCa6Nn5s7avmMT0hFOMe1q9CA2zcg2+mSfNO
-	BQHc47Rq1Y2klqW1E0uDqRs4dDJr/Xj5CS8k1F6ZyiWQKJf11mLRee8AIw+mpDTeO1A/rn28x4S
-	pJqObP1A259sy3ENwEFM1OAqVtRUbDAcMFhYZ6djJdLpGESAMfm+DSLqQnwj+JAhePAObCEtjsy
-	Yhw4EXoIGRwR3fNhS5BkJww1sA==
-X-Received: by 2002:aa7:c0da:0:b0:643:6984:cee9 with SMTP id
- 4fb4d7f45d1cf-653ebdf7372mr40365a12.12.1768409772913; Wed, 14 Jan 2026
- 08:56:12 -0800 (PST)
+	bh=4reHESkUnWbue68fQZhTbic5vkjEaLiEpDDiEBelZ90=;
+	b=d6fTDw7pH5SlfLiqLqWK5MApfmOzqETByks6dJ+8UUwHgbD5KpC2g8YrlQfE9uxQcrwnC+
+	PPGKIkRN2VIr5vpjboDvH1jBt8Vj3/4lDHNsEgLb5vVpgJWoOOep2BZPy9tivqHx61ut6Q
+	1Fj5NSk9aiThyP0eOcyHgTEEY89OEnk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r5rGUtxb;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768409957; a=rsa-sha256;
+	cv=none;
+	b=TstVykrQMBfX8JCqVBFuMbzDtO1pWavFJe854wXnqHyjrnKvXApxj393RvGXPWZpatclcF
+	KyZ/ZHcDeEmMoIXmhRt+aV12ukHC+z2pBk67WTI5peVCbZ0PLYFVmKuHW96lS5WFSF+BX0
+	Tn71KKvcI1cI6rwsY14PtOq026st/ZQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4CCD843E6F;
+	Wed, 14 Jan 2026 16:59:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DD4C4CEF7;
+	Wed, 14 Jan 2026 16:58:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768409956;
+	bh=B0iF/dvyn/kec3053bYjCb0vU7YgriPK61h7HY9oPK0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r5rGUtxbTEFRVIwKmrHc2xHpl8euv4Jw61qaIMJHTpRKz2a4Wpu0xrGEmM+eetht/
+	 4kyUSIxUQSya+dfCBPaIyUSuOepCAXBVpCLeUw9fXTaK0jHnNxz6JsxoBI0MeNnHe/
+	 vId4RJ2fHC56O9ppqki5yeCg8P2YagaI8NbnorlgkUhxqq4FrrxrB8qQpQ47T0KUNW
+	 eYsitdf330m4rKkulB74dq5rn6lk3DOk5FWv5qS9Wio7TIXz3v9cpvERGIp6LF6tfC
+	 3Ws/w2epkFANtwCr7qac4IeIbQNoqU3eltzoWZlT5jAI12pCtBM4YHIACXBKdiJhyN
+	 3eE40h0j90mxw==
+Date: Wed, 14 Jan 2026 18:58:51 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Chris Mason <clm@meta.com>, Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, jasonmiu@google.com,
+	graf@amazon.com, dmatlack@google.com, rientjes@google.com,
+	corbet@lwn.net, rdunlap@infradead.org,
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
+	vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v8 14/18] mm: memfd_luo: allow preserving memfd
+Message-ID: <aWfLS48tG7XInpNN@kernel.org>
+References: <20251125165850.3389713-15-pasha.tatashin@soleen.com>
+ <20260113140927.1074142-1-clm@meta.com>
 MIME-Version: 1.0
-References: <cover.1767711638.git.lorenzo.stoakes@oracle.com> <9b5a438237e4ea3b19a986a4f8fddb8848cba54a.1767711638.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <9b5a438237e4ea3b19a986a4f8fddb8848cba54a.1767711638.git.lorenzo.stoakes@oracle.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 14 Jan 2026 08:55:58 -0800
-X-Gm-Features: AZwV_QhSbEnB9eAMxxEw_e0l9AFigUqaVaWXSMzZTtnKutpaOknTrgr1OmB44RM
-Message-ID: <CAJuCfpGcdZE_Qnm4c7MgyZfZr7fepXuJkc=6ucwUNwUo_JjU0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 3/8] mm/rmap: remove unnecessary root lock dance in
- anon_vma clone, unmap
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BAF8220019
-X-Stat-Signature: wkkijo6j18deipostaqj8hsascu6kuhi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260113140927.1074142-1-clm@meta.com>
+X-Rspamd-Queue-Id: 6F85AA0013
+X-Stat-Signature: 1bqbmo7xgr3we4bf617jqrpjomfbbo5p
 X-Rspam-User: 
-X-HE-Tag: 1768409774-331855
-X-HE-Meta: U2FsdGVkX19usAHHBH6LHNdBtJvN7xMnW1NNuwLNEVyobgui7S48iQbGlLGMj2uFz+q9olRtHEwB2+98b4DO237Ie5tlYjrkQfD7IGLkCrJvDknlpEFVMTQvRyeK5QQTfar++IsCEDPzz4RkmRoxrGYRsFzieuZTRH3ZOf7txcBf9pLa9INE4Gp2My3/V5IRmQAnOqeupu0YWLDmaT6PVBWaW6ZsxkUUwMdOidBthjoFUf4o6yDw9z9Y8fgTKAHkXbbJO5dwblCJ3faaVLZW52oOnYysGHcqbHfcllYKmNK+qluwzloPheGOVBY3iJxP6vqeXGsqEVdorYMNzUpAGy9l47jGnMhM6jp/afajR5ZChh/HISCAhQvVogN7L5u/G5NcGlR4VT52LVrzCCeMkdu3Q71EwkM+SAoUium85/4GlFLYari4t/H+zdV4a6BIXiv+j/JgrdHWyP7Ogw4A8NXU1oSbOz+aNNmRRZcBYB8dMaMlCIIaWNp0BIMRhyd2bPbEdfKJTjxN4Ex2uLn1RcwbORvqGfj5tsSIpnEdhURLri9Y4aiQPaYpNbjjctYdNCWXgBKdrK5TXHPCXOOWe0B0RBvvcfFPuhod+ANjxutjC13ZTPeX+trkPvoo5JEaeVs1SK3eKXN48/MIefpMAbMZODqRrs2DimdEfFrX9SfsKUnV8+ry4EwrmCLlkjNNmGmvTtE/gHOXG0mLRUvOuyZyREjHoTbMdasgYhgcGGg1DhJJIVua8H5GhxX3Q7iH3eSlPwV3QcE7PsX1Gdd4oiZgk45hBRum+5fOimxhdTjpYHNZ/vhSXwpRxMMyzAdvaYLihs55WMkYFUtE/3MmBHN7+Fh9s1XptGCjtNy4qOIBO1MZT7Sv/qtvP/W1/5PFFx0eGLqHOMkWYYid5jQUp4fDaXhtgfbv3F9cQCLpGKKMHvcnS9n2kFqE1QazKUMF3lrvzmc5bd8zWtH/5TO
- zqqv6dxV
- IfbFt6qRRmEqxBdL2h093ZS9ZeFpwDyDXohxZwncK3/8a58BqvGPybQx6OdUQ4sYdbfNQZrtWZiwaTlnyGML1zG5q5D3+/cgqGV/Xwh12epuZeQc3UUjHCvdS4L7B5GnbQXDahcuI0Q2bi6i9g/Fnu5Le6LAtgfSm+azjmXdMKiFlMPucIt0JxaQmXll3RzS/LeELSZK2kTzA8NO8Kcj5gJbGKDYz9u5RNwYHa7NNcJwkr6Aq5Nw2xHlIaelZvyaFUTEEUurXoHmzWdYKZ8L9xaqXcQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768409957-740953
+X-HE-Meta: U2FsdGVkX1+2LqEOiMCPYyGlbfYZePI8cTMyIlzhG17ZIxHYZudJ1dpgVF+nyy2NsQc1DnYHpwhLqHBsyPy8z+gpyLf0+Izf80YwfcrOgG+oRQiJCmqE7kuiN8mn0rNhTS0gQWQ2itJDsC/32TblrWqm1U8reTUOHuBanwpStKY5P4gtDVM/KCgjei6fauFcfl0j/0ysrI+qzkVcRgwiDOer4wXchI6fr+Z1JxzoaBQPsz2NJh8qjuARBcYu0dMV0ixoize1E2wfuj/VK7ESgINSLxBOMkCnaZSvBJgtG3Ce5O8wZA1CpruEGwWz7MhN2br4KSjbAQkcgr1h24RUDQxQWZ0xCVnYfVcmEES2mBr0qQoIp6X87MJte0MkTYhE7l+JBr+h8Z5+6dn+6L020oc8sfgvXeSY9v6EwuXXzcHv4Q07UxBR3tJU3nTANOYMjCnvu8KO/iQU0PHqO1JWUQNTTL0GPy7B/QyBiR2u6w51Dv2q6dIVshAI5NGEHTRFeAJnaMeszV2VCtjLMTHej6EoGYqCQRAqW/wsGbp54CGUPjlWoWHsgy1KEzJ49X3pwCzd+oeOWt3QIdNmamR2GsonPTN6U1IcsO7B9tcUbT1VywAdpQFAN5Uwd97Z5PUhupS8iGVY4wen5Xp4uJ6fr1seZ29LagEz6pT8Ft8P45PLfsSpb0elgSAQYmnbJADhIPHSV9nEb8RGMOd4MUdK/j7nvIoKjrHj3NM/58wqat8Ye6dfks0mCES02mm0adxOyp1H4YzOZ5uqBB5m3P7ay6D2JJ7YBEm5siM2X/Guz2hNDIgR4ysYTgddidwagMM4+zuUBM9dJvvnuxVgIk7nkUOAIb9+nHs71O3IYv+T12OfFdoLtgln/MOUrBmD05o2z29FI/mWI32Wbxfoc3e2H9y1VAlEkF2fxwR8B3mUbH9lHwOrDF3aSkbgEbG/0Dqj0tqbFFPJXZn6ruYvx2L
+ 8OpUxViW
+ AWwqJcWlBxHZpLswLl6ttvC3W3NEIlS5KJCmMriHsKOaTgiY7OcFppp7CkNL5LxNfwP+V/iY6JSxuzX6mvDe8Cke//pqqY7NJYR+kXXexXI2Kkub8LLp+CmVVKADqyOwNRN1cR0cCWyYZKXUzcX/fbyYzEWsQ0IFk6iifcqTqOcx6XbTAcqB8q5OZpEvT3jarRn0OFTYQOtQO8tR/DxzxbrF2b+TGbtGe+2i9LlOEQJb+TLX7fDjar8BkQ7Vhd/oxkmO2J1mhMWo6Y9OntMxICWdqJREAexaiNfwLzeGm1D2Zc9bWKQ0Cr5WIPvuJonO4noxTnTQ4Y1dpUx4xCj0zQGBBoQqcJlIEWSS3X9J3gmisDHTpJNyLEsOzT+y4K/I2v3T5FnWjOlCyvFLgAN0B/7Gp/edEyHE6Exb3drmpPIy4DZieP2g/UIAucg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,175 +118,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 6, 2026 at 7:04=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> The root anon_vma of all anon_vma's linked to a VMA must by definition be
-> the same - a VMA and all of its descendants/ancestors must exist in the
-> same CoW chain.
->
-> Commit bb4aa39676f7 ("mm: avoid repeated anon_vma lock/unlock sequences i=
-n
-> anon_vma_clone()") introduced paranoid checking of the root anon_vma
-> remaining the same throughout all AVC's in 2011.
->
-> I think 15 years later we can safely assume that this is always the case.
->
-> Additionally, since unfaulted VMAs being cloned from or unlinked are
-> no-op's, we can simply lock the anon_vma's associated with this rather th=
-an
-> doing any specific dance around this.
->
-> This removes unnecessary checks and makes it clear that the root anon_vma
-> is shared between all anon_vma's in a given VMA's anon_vma_chain.
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  mm/rmap.c | 51 +++++++++++++++------------------------------------
->  1 file changed, 15 insertions(+), 36 deletions(-)
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index de2cbe860566..6ac42671bedd 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -232,32 +232,6 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
->         return -ENOMEM;
->  }
->
-> -/*
-> - * This is a useful helper function for locking the anon_vma root as
-> - * we traverse the vma->anon_vma_chain, looping over anon_vma's that
-> - * have the same vma.
-> - *
-> - * Such anon_vma's should have the same root, so you'd expect to see
-> - * just a single mutex_lock for the whole traversal.
-> - */
-> -static inline struct anon_vma *lock_anon_vma_root(struct anon_vma *root,=
- struct anon_vma *anon_vma)
-> -{
-> -       struct anon_vma *new_root =3D anon_vma->root;
-> -       if (new_root !=3D root) {
-> -               if (WARN_ON_ONCE(root))
-> -                       up_write(&root->rwsem);
-> -               root =3D new_root;
-> -               down_write(&root->rwsem);
-> -       }
-> -       return root;
-> -}
-> -
-> -static inline void unlock_anon_vma_root(struct anon_vma *root)
-> -{
-> -       if (root)
-> -               up_write(&root->rwsem);
-> -}
-> -
->  static void check_anon_vma_clone(struct vm_area_struct *dst,
->                                  struct vm_area_struct *src)
->  {
-> @@ -310,26 +284,28 @@ static void cleanup_partial_anon_vmas(struct vm_are=
-a_struct *vma);
->  int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *sr=
-c)
->  {
->         struct anon_vma_chain *avc, *pavc;
-> -       struct anon_vma *root =3D NULL;
->
->         check_anon_vma_clone(dst, src);
->
->         if (!src->anon_vma)
->                 return 0;
->
-> +       check_anon_vma_clone(dst, src);
+On Tue, Jan 13, 2026 at 06:09:23AM -0800, Chris Mason wrote:
+> On Tue, 25 Nov 2025 11:58:44 -0500 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+> 
+> Hi everyone,
+> 
+> I'm running the v6.19 mm commits through patch review automation, and this
+> commit was flagged.  I don't know this code well, but it looks like it
+> might be a real bug.
+> 
+> [AI review output below]
+> 
+> > diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> > new file mode 100644
+> > index 0000000000000..4f6ba63b43105
+> > --- /dev/null
+> > +++ b/mm/memfd_luo.c
+> 
+> [ ... ]
+> 
+> > +static int memfd_luo_retrieve_folios(struct file *file,
+> > +				     struct memfd_luo_folio_ser *folios_ser,
+> > +				     u64 nr_folios)
+> > +{
+> > +	struct inode *inode = file_inode(file);
+> > +	struct address_space *mapping = inode->i_mapping;
+> > +	struct folio *folio;
+> > +	int err = -EIO;
+> > +	long i;
+> > +
+> > +	for (i = 0; i < nr_folios; i++) {
+> 
+> [ ... ]
+> 
+> > +		err = shmem_add_to_page_cache(folio, mapping, index, NULL,
+> > +					      mapping_gfp_mask(mapping));
+> > +		if (err) {
+> > +			pr_err("shmem: failed to add to page cache folio index %ld: %d\n",
+> > +			       i, err);
+> > +			goto unlock_folio;
+> > +		}
+> > +
+> > +		if (flags & MEMFD_LUO_FOLIO_UPTODATE)
+> > +			folio_mark_uptodate(folio);
+> > +		if (flags & MEMFD_LUO_FOLIO_DIRTY)
+> > +			folio_mark_dirty(folio);
+> > +
+> > +		err = shmem_inode_acct_blocks(inode, 1);
+> > +		if (err) {
+> > +			pr_err("shmem: failed to account folio index %ld: %d\n",
+> > +			       i, err);
+> > +			goto unlock_folio;
+> > +		}
+> 
+> When shmem_inode_acct_blocks() fails here, the folio has already been
+> added to the page cache by shmem_add_to_page_cache(). Should the folio be
+> removed from the page cache before going to unlock_folio?
+> 
+> Looking at shmem_alloc_and_add_folio() in mm/shmem.c, when
+> shmem_inode_acct_blocks() fails after the folio has been added, it calls
+> filemap_remove_folio() to remove it:
+> 
+>     error = shmem_inode_acct_blocks(inode, pages);
+>     if (error) {
+>         ...
+>         if (error) {
+>             filemap_remove_folio(folio);
+>             goto unlock;
+>         }
+>     }
+> 
+> Without this, the folio remains in the page cache (counted in
+> mapping->nrpages) but info->alloced is not incremented (since
+> shmem_recalc_inode is not called). This could cause shmem accounting
+> inconsistency.
+ 
+My understanding that if anything fails in memfd_luo_retrieve_folios() the
+file is destroyed anyway and the accounting wouldn't matter.
 
-check_anon_vma_clone() was already called 4 lines above. I'm guessing
-this was accidentally carried over from the previous version?
+But to be on the safe side we should fix the error handling here.
+@Pratyush, what do you say?
 
-> +
-> +       /* All anon_vma's share the same root. */
-> +       anon_vma_lock_write(src->anon_vma);
->         list_for_each_entry_reverse(pavc, &src->anon_vma_chain, same_vma)=
- {
->                 struct anon_vma *anon_vma;
->
->                 avc =3D anon_vma_chain_alloc(GFP_NOWAIT);
->                 if (unlikely(!avc)) {
-> -                       unlock_anon_vma_root(root);
-> -                       root =3D NULL;
-> +                       anon_vma_unlock_write(src->anon_vma);
->                         avc =3D anon_vma_chain_alloc(GFP_KERNEL);
->                         if (!avc)
->                                 goto enomem_failure;
-> +                       anon_vma_lock_write(src->anon_vma);
->                 }
->                 anon_vma =3D pavc->anon_vma;
-> -               root =3D lock_anon_vma_root(root, anon_vma);
->                 anon_vma_chain_link(dst, avc, anon_vma);
->
->                 /*
-> @@ -346,7 +322,8 @@ int anon_vma_clone(struct vm_area_struct *dst, struct=
- vm_area_struct *src)
->         }
->         if (dst->anon_vma)
->                 dst->anon_vma->num_active_vmas++;
-> -       unlock_anon_vma_root(root);
-> +
-> +       anon_vma_unlock_write(src->anon_vma);
->         return 0;
->
->   enomem_failure:
-> @@ -471,17 +448,19 @@ static void cleanup_partial_anon_vmas(struct vm_are=
-a_struct *vma)
->  void unlink_anon_vmas(struct vm_area_struct *vma)
->  {
->         struct anon_vma_chain *avc, *next;
-> -       struct anon_vma *root =3D NULL;
-> +       struct anon_vma *active_anon_vma =3D vma->anon_vma;
->
->         /* Always hold mmap lock, read-lock on unmap possibly. */
->         mmap_assert_locked(vma->vm_mm);
->
->         /* Unfaulted is a no-op. */
-> -       if (!vma->anon_vma) {
-> +       if (!active_anon_vma) {
->                 VM_WARN_ON_ONCE(!list_empty(&vma->anon_vma_chain));
->                 return;
->         }
->
-> +       anon_vma_lock_write(active_anon_vma);
-> +
->         /*
->          * Unlink each anon_vma chained to the VMA.  This list is ordered
->          * from newest to oldest, ensuring the root anon_vma gets freed l=
-ast.
-> @@ -489,7 +468,6 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
->         list_for_each_entry_safe(avc, next, &vma->anon_vma_chain, same_vm=
-a) {
->                 struct anon_vma *anon_vma =3D avc->anon_vma;
->
-> -               root =3D lock_anon_vma_root(root, anon_vma);
->                 anon_vma_interval_tree_remove(avc, &anon_vma->rb_root);
->
->                 /*
-> @@ -505,13 +483,14 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
->                 anon_vma_chain_free(avc);
->         }
->
-> -       vma->anon_vma->num_active_vmas--;
-> +       active_anon_vma->num_active_vmas--;
->         /*
->          * vma would still be needed after unlink, and anon_vma will be p=
-repared
->          * when handle fault.
->          */
->         vma->anon_vma =3D NULL;
-> -       unlock_anon_vma_root(root);
-> +       anon_vma_unlock_write(active_anon_vma);
-> +
->
->         /*
->          * Iterate the list once more, it now only contains empty and unl=
-inked
-> --
-> 2.52.0
->
+-- 
+Sincerely yours,
+Mike.
 
