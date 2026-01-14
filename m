@@ -4,81 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5038D30CF7
-	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 10:21:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 802C1D30CF8
+	for <linux-mm@archiver.kernel.org>; Wed, 14 Jan 2026 10:25:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40BE46B0005; Wed, 14 Jan 2026 05:21:43 -0500 (EST)
+	id D716A6B0005; Wed, 14 Jan 2026 05:25:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C26E6B0088; Wed, 14 Jan 2026 05:21:43 -0500 (EST)
+	id D1F9F6B0088; Wed, 14 Jan 2026 05:25:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EF5D6B0089; Wed, 14 Jan 2026 05:21:43 -0500 (EST)
+	id C1FB56B0089; Wed, 14 Jan 2026 05:25:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C8B96B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:21:43 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BA4CE58A8B
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:21:42 +0000 (UTC)
-X-FDA: 84330178044.10.44849B6
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B25916B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 05:25:03 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A0ADC1CB9
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:25:03 +0000 (UTC)
+X-FDA: 84330186486.14.F9213ED
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DBD8814000B
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:21:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lBWjGqhc;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 95574100006
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 10:25:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u7HDROVN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768386301; a=rsa-sha256;
+	cv=none;
+	b=lJbscy1jlyh1qFzR8fQ7CMkpkWvoTggWI5Rp6MUtgNNNNw+V/Zfw2SL4qTQIGISW++TEFo
+	aiR76Sko28pLLZcjfU4eQ69KeWs0M2x26Nfbg04C+ML7oMtBD2RMIO5O6M2Gkc4ut99qwG
+	85dOQzobVnxQEUTLuASohC8J1ZdC93E=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u7HDROVN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768386101;
+	s=arc-20220608; t=1768386301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z8aJtVvbRzsiAtY/hiWT40D/EF9i3XyrTV19yZjoL6U=;
-	b=DwjYB/la5dAfyWKgwfhAvHSkcWZ/NRqvNXy9TUezh6iZE/6BJRRaKwA1oTmi7bd5Cdy5kh
-	PIqUmM9nXVMiEoCzk6JsMHYC46UluqEPXN95+bmhl9HgiW7M+77NfC/oP24oyxXsvDrmmS
-	EGA4BWcfS5LV8URYfR3bKkc+PB9IUMU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lBWjGqhc;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768386101; a=rsa-sha256;
-	cv=none;
-	b=8r56h8TGPJOKzotPjZvYH3Lk2fTrTB+W6R1Zrskq3oTaj/U3BG9Q7mgB3tWyUIaDwTuVI5
-	5xZMqX66feJtw3tZq9LR/1+4opiLJCMGbF+e2sdrQSJmTEQuoqIBdmxOmSrW9AKB6CGWqJ
-	3KddDSLoXQJLNL9/UF1L9gB6+LnmizI=
+	bh=DJaUPuwHUqEgA5DBbQOka0VD5S6WEnklhoJk7zxt78w=;
+	b=dNleqs1T23dyf7PBmd4cVLVXGgOFbkoIqK/eO3fULxxLky4IcHtT8oUJ7aTFjcPvQSNdIm
+	t8XDZ/fyRdq/F0wAux+k9xBjqTtj7Rw9m92kqGRM3sqnHKaRHus8RCcDuuNhqnrscufshD
+	ZXcnyxeVxOJx3x7OjlgMNFVRhmx7jf4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EE1EC44087;
-	Wed, 14 Jan 2026 10:21:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAE5C4CEF7;
-	Wed, 14 Jan 2026 10:21:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A28CF43D7B;
+	Wed, 14 Jan 2026 10:25:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8529AC4CEF7;
+	Wed, 14 Jan 2026 10:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768386099;
-	bh=dR3qY5H03vmCPmwiWE/Ol6xHu9f+QHLOlM/lwC6MVSw=;
+	s=k20201202; t=1768386300;
+	bh=GuHpF+6RmdzfwSAF7TH1se1OHKCtKDO93WP3i/0TrS0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lBWjGqhcI2v+Rn3qGOPRNBALX+51iuz8W8YJNFc90uM3aPZshbIie02KuJWSA2oGB
-	 Is0zvPkwo2J3M7UYLFRXNe4q0G58tZfXYe0L9rX7bUl7bLSqmznfN56M1Tmrk+Yetv
-	 Z3lE8U/OoDJTx00QFYbUn0vMO5nDJdztPSUu2zeoX/Fsx8OMPvbk5myKZBg3ceZ/+b
-	 rlrwUI+PcC5qrHrmS9NhshWtDwYWL1OZR0WvNLqxB/rCUmN/+dhYkkFazWGxSoXmFE
-	 iS09g6BTh78dc9qKzDLmnHs+EATo5eHtifNt2SWKYkSyIH33Dtpg0w/TAOLXBdTxk9
-	 Pj0H9dWO4SnCQ==
-Message-ID: <b3d435d2-643f-4dad-9928-bc7fb5080181@kernel.org>
-Date: Wed, 14 Jan 2026 11:21:34 +0100
+	b=u7HDROVNmg4kf/SpiPZyAdk0G3o+oWovgIZGE52LqzNXQJo+94l2+faabdjcUbbuO
+	 WRFJsce/I32G9huyKT9rZy9ZuZRgUDu1IK/1TjmT0Ye7JkBpCWZM7UR8oD/ayluVqU
+	 QQZyGYtpF6Xomrg1T5udaMiQ09QlC8P8Qe7AsBSBT6bJoBdT5I83+mHrxXXPxCu3sF
+	 n0Q7vwnQoU6nr0a22PbdDOgWKVsvXqVjxsYC32meVt+p9AQL89N4AbXQW35SQJkXdx
+	 Xa7db9GQ3G4fYoXsN/y/Odbkk6ydnH1p7il5P4uKPF2jV/bdyO4bXPkXhP417b8kCi
+	 vJNo3UIVTniCg==
+Message-ID: <baef0334-02ea-4732-aa0f-029098879cbd@kernel.org>
+Date: Wed, 14 Jan 2026 11:24:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] mm/memory_hotplug: add APIs for explicit online type
- control
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
- kernel-team@meta.com, dan.j.williams@intel.com, vishal.l.verma@intel.com,
- dave.jiang@intel.com, mst@redhat.com, jasowang@redhat.com,
- xuanzhuo@linux.alibaba.com, eperezma@redhat.com, osalvador@suse.de,
- akpm@linux-foundation.org
-References: <20260114085201.3222597-1-gourry@gourry.net>
- <20260114085201.3222597-4-gourry@gourry.net>
+Subject: Re: [PATCH 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
+ address range
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
+Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
+ yang.yang29@zte.com.cn, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Rik van Riel <riel@surriel.com>
+References: <202601141040594302w9Pnbc3vzQLMkh8bQ80D@zte.com.cn>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260114085201.3222597-4-gourry@gourry.net>
+In-Reply-To: <202601141040594302w9Pnbc3vzQLMkh8bQ80D@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1841am9oz17kkxkbkgf7gxxm4qx1fsom
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 95574100006
+X-Stat-Signature: hyrd9nxj6fhuyeg7bhmqqwfu4ej7747k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DBD8814000B
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768386100-228850
-X-HE-Meta: U2FsdGVkX1/ouLPY91cvqOmx+uqaAAacHd2U2EFK5VMKZlKR+udzqwiKkXtnx+90Ra59ss5qBKQpGFVZCTBSzgAcoSFQKSkTbohW5hhvHYYkETnKAV3H27lCkyO+DAXlFUBx9ZIlPspqlEfFKpqx71xF1/hwmzuu96HCGsuo+aVCmPBlePzlsD/3NNPXG9WytXJgHjQBb5wDqtLfgbiOnb6z+Rq0MmaD8OLfpGLchSQj11ilqPqnvR1fIFAGRxr8CjRubsMtePgkbjO0v4HI2gRkjwnm9sFGT5krOdEuwd3JURxb7v/z3S8GVXwlTns2o1wX9fvP6ZdUy0A0mVEK7WREQRuLq3CzijrdhsNiiPLySjig29FRZaLfNdyIwancx5FxU5G6ih0CFwwCjOrWgwzD99Eqrc4w4yupBtvAr2Y6zzi8KQCdRJ3W6PGp+JMPHEzfQxui+s5au4RCo1LYPwibDIK/PjPfr5JV+YWIc2tsRdQ4XCl3rSzq1OFjIXolhf5LTA494oO3xwWsLoJc+DVpXZFqxV7fhPLZzVIu9m4TIKHRaH6Kn/Nzm3/amEZkslsxUkKCeGepwg+vQLkKWVDbDZtK0c7b8L28rE744BSRMaFzf376ecLx45MTjPXmf8xhw50s2alN/Q2k7sjNYr0J4B2istFYHCJcu/bkybhLeBpTy3d+Q57qvWVXPIDkRlloS/pzo18Isf9F2q5TWrnWKEa7FL9YT/tEYbFxo2ZF5bP5jfl3E02pKVVR9baIyAPCcbSYqVcNHzTsc+xGjkAv8uGtaYkVnQTbILDRReB2QZ1/aG31PhCZJASYMFtvY8jEaHTsuvEHjx+/xyg1qHhMzhYMsYouvwnm7cflNmSQhIcxFi9QI8uvPWENd6R1f6AHPxaO2t+cna4QqDOZYI4Jgj1wjdtel6L+TsTz5aKILBwrS/qhwjDr/rSSRTQ3FMApWmJYDsTSYNFa1UF
- +S4Omc6V
- L1UF9p9xjDd1bSnFcW6ZKJTG5M8PS74Cw22DYtt9PiQvEJIUPSCEH+chJ/qyt6NHPKnljZMNk1oNJ5S8G2vvXPw7R18FVsjMr6sRH0a0uxOYYjiIi4d95w/6DhJw2PHarqmnTTzcAmjELSqFOWChIrMkzSHLGvxsrT8K2qcj3YLj97a+waPlk7sYrvHJ0YiZ5KMA9ppGe61hkbP0RwNyqluBh62RMU08IaQMb1VsAQEqedjoMVxa8nBaMDuEeGkJYzV17LJHqTwx9+c0iucNUEWABuI4n5U9ws1obZlr0mvlZNNeBlYQp4GUmGpPbstnI/CGFiFifDJErhiGPAb7JRje9t2gPKmyi5g85v3JRzTikUo4=
+X-HE-Tag: 1768386301-830908
+X-HE-Meta: U2FsdGVkX1/ZdRJLpy3g2nezYhvH9D9tNi1M2pyKKOM1plAtgi6OthQ0cWqwhUDyOrTmDEYRU/IyBvC5VpmQRtDx2btgDsbiVma94YD176Mp63ZzqgqPGs85dnA49a1u/d0yIlnIKmxk8/i44zn7llUukRpwVD9336KeanFFC+KFQOF6Bn2yMCyDVJfnVPMbko1GbDhagdQuIvUaw3E/UfvAzsSlSK36bKhrJpR3bdoo7I4xK/hVIEBrvT0Ydv2zEmNOhM0uonpC1mJP5SALiYJl08jc/EidwfrXHCqGGQZxBdswMtrtqWRIZPwSSHewM9nVfqt7NvDw9H7jE/em9usSRTpBpdQeTgUufu7w8VXEmUdwOtSpVX4TbKGgrQOm4LFWtLS5SI2+e0XpSipRKGw36GE4163DoH+UJf1AstYdVHZfFQs2o/bdl6acr6TnHk1RMf/zjYF2c2SaKYKo5YqBbD5HqVgqfr1r2LHB9YNngKtvvNtGPjvmnHWQ1kKq8w2q2Laj5DuBYeZuG3X8EaZ6C/5WCeiDXShI6NSq9Een04gE8lshmWXO+yc1bijkNuMPTlHwibE18UeauJJDJPOGAJl4witI/m8npXw2zlf+j8WwWY/xOSqkxTrq0QAt4Z3GibU8bIk7kJsagtf1dq5/3yoTVwwg5ahX7tpppV4IO4Z247ESCSf55EMY024TWPe+cIKbluvlY7zJpfqBdiZoUOhmSiPJbvmD/j1TDuivDXILukpYhFE0HnytLfZBbedGDrzlJIwo7CwTuG+LBxbdyDvmldoZeag4Bf7ulKJV5CQyfAO1CFa6UgyxcWXdaUBkHAYjsNNpfW0FFg+T/YzVUomj03yXuqweTR0oLVMZnuGS2qDLUX8IpW6dmQJa6+beiXAzeld/tzrKO1B/ZIhkz5lpjV9RjuBpBkwZz26kwK++22TxSz2NYQ251JHUaUnBSkdaPlXnTJEgQf9
+ +DkHrgHl
+ qnKRXTqFAEJTqsVukNRN0nvtw+sajj7dzhg4bOV79QX+/99FIKtg6ybDgmfOXDRqt7vEyy7OncEXrQILiFUCWg9+Zec3duaB3pE7MKEBG1UuvIYoQxAcPqA1gWBtsYY7z3ShgslRfjpi3D37IduFpvlM2Uiuck3rL0F1PqLdGsVL/9kbj/6fp8IRk52RZX3DA8Xm0QMgEyHc4UOxbMRqsakOqxG2f0HoY7FY4oVnzdjGpfQd0MIhH1jV2ya+jaiBKPTLlD3K7kbTjZA2+OESzShY8mfAIQPPeEgq80crpUkp2pjRsDXnPnBcjDur+ge94TEyqW6xwQBj8B9vJhyjFOjhPB1kegg5Q21TIyEMTSAlTV1k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,231 +139,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/14/26 09:51, Gregory Price wrote:
-> Add new memory hotplug APIs that allow callers to explicitly control
-> the online type when adding or managing memory:
+On 1/14/26 03:40, xu.xin16@zte.com.cn wrote:
+>>> Solution
+>>> ========
+>>> In fact, we can significantly improve performance by passing a more precise
+>>> range based on the given addr. Since the original pages merged by KSM
+>>> correspond to anonymous VMAs, the page offset can be calculated as
+>>> pgoff = address >> PAGE_SHIFT. Therefore, we can optimize the call by
+>>> defining:
+>>>
+>>> 	pgoff_start = rmap_item->address >> PAGE_SHIFT;
+>>> 	pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;
+>>>
+>>> Performance
+>>> ===========
+>>> In our real embedded Linux environment, the measured metrcis were as follows:
+>>>
+>>> 1) Time_ms: Max time for holding anon_vma lock in a single rmap_walk_ksm.
+>>> 2) Nr_iteration_total: The max times of iterations in a loop of anon_vma_interval_tree_foreach
+>>> 3) Skip_addr_out_of_range: The max times of skipping due to the first check (vma->vm_start
+>>>               and vma->vm_end) in a loop of anon_vma_interval_tree_foreach.
+>>> 4) Skip_mm_mismatch: The max times of skipping due to the second check (rmap_item->mm == vma->vm_mm)
+>>>               in a loop of anon_vma_interval_tree_foreach.
+>>>
+>>> The result is as follows:
+>>>
+>>>                    Time_ms      Nr_iteration_total    Skip_addr_out_of_range   Skip_mm_mismatch
+>>> Before patched:  228.65       22169                 22168                    0
+>>> After pacthed:   0.396        3                     0                        2
+>>
+>> Nice improvement.
+>>
+>> Can you make your reproducer available?
 > 
->    - Extend add_memory_driver_managed() with an online_type parameter:
->      Callers can now specify MMOP_ONLINE, MMOP_ONLINE_KERNEL, or
->      MMOP_ONLINE_MOVABLE to online with that type, MMOP_OFFLINE to leave
->      memory offline, or MMOP_SYSTEM_DEFAULT to use the system default
->      policy. Update virtio_mem to pass MMOP_SYSTEM_DEFAULT to maintain
->      existing behavior.
+> I'll do my best to try it. The original test data was derived from real business scenarios,
+> but it's quite complex. I'll try to simplify this high-latency scenario into a more
+> understandable demo as a reproduction program.
 
-I wonder if we rather want to add a new interface 
-(add_and_online_memory_driver_managed()) where we can restrict it to 
-known kernel modules that do not violate user-space onlining policies.
+Ah, I thought it was some benchmark ran on an embedded environment.
 
-For dax we know that user space will define the policy.
+How did you end up measuring these numbers?
 
 > 
->    - online_memory_range(): online a previously-added memory range with
->      a specified online type (MMOP_ONLINE, MMOP_ONLINE_KERNEL, or
->      MMOP_ONLINE_MOVABLE). Validates that the type is valid for onlining.
-
-Why not simply online_memory() and offline_memory() ?
-
+>>
+>>>
+>>> Co-developed-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+>>> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+>>> ---
+>>>    mm/ksm.c | 6 +++++-
+>>>    1 file changed, 5 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/ksm.c b/mm/ksm.c
+>>> index 335e7151e4a1..0a074ad8e867 100644
+>>> --- a/mm/ksm.c
+>>> +++ b/mm/ksm.c
+>>> @@ -3172,6 +3172,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+>>>    		struct anon_vma_chain *vmac;
+>>>    		struct vm_area_struct *vma;
+>>>    		unsigned long addr;
+>>> +		pgoff_t pgoff_start, pgoff_end;
+>>>
+>>>    		cond_resched();
+>>>    		if (!anon_vma_trylock_read(anon_vma)) {
+>>> @@ -3185,8 +3186,11 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+>>>    		/* Ignore the stable/unstable/sqnr flags */
+>>>    		addr = rmap_item->address & PAGE_MASK;
+>>>
+>>> +		pgoff_start = rmap_item->address >> PAGE_SHIFT;
+>>> +		pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;
+>>
+>> KSM folios are always order-0, so you can keep it simple and hard-code
+>> PAGE_SIZE here.
+>>
+>> You can also initialize both values directly and make them const.
 > 
->    - offline_memory(): offline a memory range without removing it. This
->      is a wrapper around the internal __offline_memory() that handles
->      locking. Useful for drivers that want to offline memory blocks
->      before performing other operations.
-> 
+> Yes, I'll do it in v2.
 
-These two should be not exported to arbitrary kernel modules. Use 
-EXPORT_SYMBOL_FOR_MODULES() if required, or do not export them at all.
-
-> These APIs enable drivers like dax_kmem to implement sophisticated
-> memory management policies, such as adding memory offline and deferring
-> the online decision to userspace.
-> 
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->   drivers/dax/kmem.c             |  3 +-
->   drivers/virtio/virtio_mem.c    |  3 +-
->   include/linux/memory_hotplug.h |  4 ++-
->   mm/memory_hotplug.c            | 63 ++++++++++++++++++++++++++++++++--
->   4 files changed, 68 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> index c036e4d0b610..5e0cf94a9620 100644
-> --- a/drivers/dax/kmem.c
-> +++ b/drivers/dax/kmem.c
-> @@ -175,7 +175,8 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->   		 * this as RAM automatically.
->   		 */
->   		rc = add_memory_driver_managed(data->mgid, range.start,
-> -				range_len(&range), kmem_name, mhp_flags);
-> +				range_len(&range), kmem_name, mhp_flags,
-> +				MMOP_SYSTEM_DEFAULT);
->   
->   		if (rc) {
->   			dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
-> diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-> index 1688ecd69a04..b1ec8f2b9e31 100644
-> --- a/drivers/virtio/virtio_mem.c
-> +++ b/drivers/virtio/virtio_mem.c
-> @@ -654,7 +654,8 @@ static int virtio_mem_add_memory(struct virtio_mem *vm, uint64_t addr,
->   	/* Memory might get onlined immediately. */
->   	atomic64_add(size, &vm->offline_size);
->   	rc = add_memory_driver_managed(vm->mgid, addr, size, vm->resource_name,
-> -				       MHP_MERGE_RESOURCE | MHP_NID_IS_MGID);
-> +				       MHP_MERGE_RESOURCE | MHP_NID_IS_MGID,
-> +				       MMOP_SYSTEM_DEFAULT);
->   	if (rc) {
->   		atomic64_sub(size, &vm->offline_size);
->   		dev_warn(&vm->vdev->dev, "adding memory failed: %d\n", rc);
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index d5407264d72a..0f98bea6da65 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -265,6 +265,7 @@ static inline void pgdat_resize_init(struct pglist_data *pgdat) {}
->   extern void try_offline_node(int nid);
->   extern int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->   			 struct zone *zone, struct memory_group *group);
-> +extern int offline_memory(u64 start, u64 size);
-
-No new "extern" for functions.
-
->   extern int remove_memory(u64 start, u64 size);
->   extern void __remove_memory(u64 start, u64 size);
->   extern int offline_and_remove_memory(u64 start, u64 size);
-> @@ -297,7 +298,8 @@ extern int add_memory_resource(int nid, struct resource *resource,
->   			       mhp_t mhp_flags);
->   extern int add_memory_driver_managed(int nid, u64 start, u64 size,
->   				     const char *resource_name,
-> -				     mhp_t mhp_flags);
-> +				     mhp_t mhp_flags, int online_type);
-> +extern int online_memory_range(u64 start, u64 size, int online_type);
->   extern void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
->   				   unsigned long nr_pages,
->   				   struct vmem_altmap *altmap, int migratetype,
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index ab73c8fcc0f1..515ff9d18039 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1343,6 +1343,34 @@ static int online_memory_block(struct memory_block *mem, void *arg)
->   	return device_online(&mem->dev);
->   }
->   
-> +/**
-> + * online_memory_range - online memory blocks in a range
-> + * @start: physical start address of memory region
-> + * @size: size of memory region
-> + * @online_type: MMOP_ONLINE, MMOP_ONLINE_KERNEL, or MMOP_ONLINE_MOVABLE
-
-I wonder if we instead want something that consumes all parameters like
-
-int online_or_offline_memory(int online_type)
-
-Then it's easier to use and we don't really have to document the 
-"online_type" that much to hand-select some values.
-
-(I'm sure there are better nameing suggestions :) )
-
-
-Should we document what happens if the memory is already online, but was 
-onlined to a different zone?
-
-> + *
-> + * Online all memory blocks in the specified range with the given online type.
-> + * The memory must have already been added to the system.
-> + *
-> + * Returns 0 on success, negative error code on failure.
-> + */
-> +int online_memory_range(u64 start, u64 size, int online_type)
-> +{
-> +	int rc;
-> +
-> +	if (online_type == MMOP_OFFLINE ||
-> +	    online_type > MMOP_ONLINE_MOVABLE)
-> +		return -EINVAL;
-> +
-> +	lock_device_hotplug();
-> +	rc = walk_memory_blocks(start, size, &online_type,
-> +				online_memory_block);
-> +	unlock_device_hotplug();
-> +
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_GPL(online_memory_range);
-> +
->   #ifndef arch_supports_memmap_on_memory
->   static inline bool arch_supports_memmap_on_memory(unsigned long vmemmap_size)
->   {
-> @@ -1656,9 +1684,16 @@ EXPORT_SYMBOL_GPL(add_memory);
->    *
->    * The resource_name (visible via /proc/iomem) has to have the format
->    * "System RAM ($DRIVER)".
-> + *
-> + * @online_type specifies the online behavior: MMOP_ONLINE, MMOP_ONLINE_KERNEL,
-> + * MMOP_ONLINE_MOVABLE to online with that type, MMOP_OFFLINE to leave offline,
-> + * or MMOP_SYSTEM_DEFAULT to use the system default policy.
-> + *
-
-I think we can simplify this documentation. Especially, one 
-MMOP_SYSTEM_DEFAULT is gone.
-
-> + * Returns 0 on success, negative error code on failure.
->    */
->   int add_memory_driver_managed(int nid, u64 start, u64 size,
-> -			      const char *resource_name, mhp_t mhp_flags)
-> +			      const char *resource_name, mhp_t mhp_flags,
-> +			      int online_type)
->   {
->   	struct resource *res;
->   	int rc;
-> @@ -1668,6 +1703,13 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
->   	    resource_name[strlen(resource_name) - 1] != ')')
->   		return -EINVAL;
->   
-> +	/* Convert system default to actual online type */
-> +	if (online_type == MMOP_SYSTEM_DEFAULT)
-> +		online_type = mhp_get_default_online_type();
-> +
-> +	if (online_type < 0 || online_type > MMOP_ONLINE_MOVABLE)
-> +		return -EINVAL;
-> +
->   	lock_device_hotplug();
->   
->   	res = register_memory_resource(start, size, resource_name);
-> @@ -1676,7 +1718,7 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
->   		goto out_unlock;
->   	}
->   
-> -	rc = add_memory_resource(nid, res, mhp_flags);
-> +	rc = __add_memory_resource(nid, res, mhp_flags, online_type);
->   	if (rc < 0)
->   		release_memory_resource(res);
->   
-> @@ -2412,6 +2454,23 @@ static int __offline_memory(u64 start, u64 size)
->   	return rc;
->   }
->   
-> +/*
-> + * Try to offline a memory range. Might take a long time to finish in case
-> + * memory is still in use. In case of failure, already offlined memory blocks
-> + * will be re-onlined.
-> + */
-
-Proper kerneldoc? :)
-
-> +int offline_memory(u64 start, u64 size)
-> +{
-> +	int rc;
-> +
-> +	lock_device_hotplug();
-> +	rc = __offline_memory(start, size);
-> +	unlock_device_hotplug();
-> +
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_GPL(offline_memory);
-> +
->   /*
->    * Try to offline and remove memory. Might take a long time to finish in case
->    * memory is still in use. Primarily useful for memory devices that logically
-
+To me, this looks reasonable, but getting some eyes from people more 
+familiar with KSM+interval-tree handling would be great. (CCing also Rik)
 
 -- 
 Cheers
