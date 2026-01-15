@@ -4,94 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCEE2D46604
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:27:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A43BD46600
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:33:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32B686B0096; Thu, 15 Jan 2026 12:27:20 -0500 (EST)
+	id 5D9256B0088; Thu, 15 Jan 2026 12:33:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F19E6B0098; Thu, 15 Jan 2026 12:27:20 -0500 (EST)
+	id 587246B0089; Thu, 15 Jan 2026 12:33:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2143B6B0099; Thu, 15 Jan 2026 12:27:20 -0500 (EST)
+	id 45E876B008A; Thu, 15 Jan 2026 12:33:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FF2D6B0096
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:27:20 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B3E6C140401
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:27:19 +0000 (UTC)
-X-FDA: 84334879398.27.D12B19D
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E02A910000B
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:27:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=seBq2pCn;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 32B5D6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:33:21 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAA3314041A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:33:20 +0000 (UTC)
+X-FDA: 84334894560.20.09635FD
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D2B15140015
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:33:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ovV1I9h9;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768498398; a=rsa-sha256;
+	cv=none;
+	b=skqJCBDnSC6PNlvElQSZy6ShPzDuv/Fiktky2KH6Otyo7hnYQQfMvKJTxBPL/74Ss24ZoN
+	V4DeO7hfZ+iHin7mrc/PW5xIknRbkfOT0rnXwuxISLwTfvVxuAtAJWkrWAtPNU8rQDg0p8
+	vz1yXo211pgdD9m1Br9DVCFG2yftqVg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ovV1I9h9;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768498038;
+	s=arc-20220608; t=1768498398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9FK61OSEd0UmY2wqnN+WlOD2t6xQO8MJ1jOlEc9XBMg=;
-	b=tRanEUDyR2Opn3JgdcvJBHtIb/TSjSGPX9S2/ARjsc+1PoQYjxE4c768sQ6dRCDuWynvri
-	r5RE7rJQSYVhEBCihjw7yCb/THh5StZxkz+AodO0Sxn9PEr+fHQp1BwB0ARqBt25FYM0Hw
-	rW4SV0iZ41WYTDR1GtJcyY+16uQpLbA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=seBq2pCn;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768498038; a=rsa-sha256;
-	cv=none;
-	b=Dp5shVs8ZDbPoWGNyOg7woni6aXF9aSYEltdM9w03UM5J0UJfsvNOwy9i+xGPM9AcpFQPW
-	h2XG78rwq0yX374mYyFDsFaSnaW5f5d2BCrbXM0tQTLLhSs7WRpqNDe820C+hUJZLuwPkh
-	Ftf31wPHv5itHuFjdycFEZumpOlnlBA=
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-88a3bba9fd4so13055876d6.2
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:27:17 -0800 (PST)
+	bh=HELVBq+JbyCXR2ZFI5M9lAV4vG/kM2Ay1hf/o0jB9SU=;
+	b=h6aC8Wgj7wKWTPng/zw6JPRpEdcyupKwzU61mPWeP4zltgeHdk/Xsh7nbbU4uLrVHV6tGc
+	t1neESKujdcUqplLIxVAY1IfuPihW0sKYa3X8b9riE9udkzLC3Bz+ynTv7yiM1yiBv+jlq
+	ffrtHO6aZWXlj0U7BO7m8sPMZtocYAI=
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-88a2fe9e200so10268626d6.0
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:33:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1768498037; x=1769102837; darn=kvack.org;
+        d=gourry.net; s=google; t=1768498398; x=1769103198; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9FK61OSEd0UmY2wqnN+WlOD2t6xQO8MJ1jOlEc9XBMg=;
-        b=seBq2pCnMn2R5fvQVuHc/BnpJA0SCIsVERKGtFI0bgtim9voNmLuP5GiNnReD5TtDV
-         4c4kS42KD5sD1nQA8lENMrqaYaNL/trkPJUW3U6GrbEe5Eq1gDXeM4FZpyraDGuRxNb6
-         +SvHHXeslfjW2ACc0XvByXohKm+D3AcHqiLMb1OPKac/tj61JcioOXiVfvn9yzw5LYAn
-         KvaJXxUy3FCBGu7BAd8wkoCCfufsLvAATWzkEWUtPvNO/ymazSdMVjqtIe9rsvlmDRQ8
-         sxudxfi0c8ttSMJQ0ytabmoJOcKJIFxibqRva8rrTjrwIbl+PFAFQW/oTqHz2+O7xjz3
-         3kjw==
+        bh=HELVBq+JbyCXR2ZFI5M9lAV4vG/kM2Ay1hf/o0jB9SU=;
+        b=ovV1I9h9ABF6CYMSoh3cmjoIPemJmrseypCVgXDy28bDsXHNeyv30gpBJWm4IEXl1P
+         CT7kElFMkDhYurU9ecCduseM/x18yfMdP6A/YfY2iEIjRniqmJ1eL7tApM9bF5R6EiPb
+         HJRK7KCUnzyxO2Ilg1m6tCEDdoHJ+knb8iMJkBx3JkTkxhAItbsQQOUe15XYFAHgN7oC
+         QNocMKjDuNlQtmBdkodIdDnag86AZkg/ykkNHSyABnQVvokHqwtciDfJnQ4RKCls0dQl
+         hus3aBzKuBAfOl9rTeo4wvfbhAx7ackZ6+ndc+RHiQE9AyYXTlY54BsCd6faxW/Tf5Kj
+         uTnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768498037; x=1769102837;
+        d=1e100.net; s=20230601; t=1768498398; x=1769103198;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9FK61OSEd0UmY2wqnN+WlOD2t6xQO8MJ1jOlEc9XBMg=;
-        b=O0YauNmTNA0od/QT5gWhnJEcJi6kqs9nMun5haH1kmDXFEfBvivFHdLrJFvfTtIPy+
-         CNAnRbA4B1i5wdqDKXVV1DSTCOl3EUkRPo8qZqSdA+V1k6W3wisRKrwPr8BI1LWd3tx8
-         lbyl7rGveFybpNmfcrgYmhTiU4iuESIAkOme3zFNvXgj5Bru+eUHQzUqn5CGQUuuYVCA
-         iR3VZ0FfxROwYUGJc6+gUz5MKKNcN6ZJ92jIRdGqV93/1mDh5lJnJitZoGdiPi+NAZys
-         8PPTfqQjeqBeibiWoaA4csFsdlndFXiNS1ryn0w559q2t/hj5RyK1xJ2yjVTTYw1czwU
-         hlFw==
-X-Gm-Message-State: AOJu0Yzw8VcpMrRtAkqxPD3J5MmltIIkM/3dnv9YzSQ8tGas06ZZHzGH
-	dSdLTLzdh80B+ifaO3joW88hK+weQezJ4Ez2h1ipww7MUIFVO2SNYUvdp/Gv/McFC2M=
-X-Gm-Gg: AY/fxX5snvwuj4Zo84FGoYC54e9KvlIDO7qdFMxTXL6kWD5Rh3kpePlb43axfpYp+QM
-	VpI2XySaNJRC2uS7IWP4UgTx/xDmR5Agyq5ojoWH570lhe08+OqxJteWvxJU6VqWyg9Q4oeDb6m
-	FDtK8xqspEFkxfteS4+nUvz3wfZ1wurID8TrwU/YV9RT9+k1e24q+Vz0X3tMRpk7Gr+eOsBxlxA
-	ahjdVjVZh9jyE/1JTZkbBeHRTUwdfs5u5lJ4lHO/A1dbMYoi8DAknsXjQdNfqdvW0yca7vM5rdc
-	pWrrZtDB6zzGAjCiXg7Cejd+yqL3jv47jY1w6zkH8+2kn63oZeLTyWOY2EINTs8yL7mWJq6+Hqh
-	EDjpbF1wwj0fjhKl8qo1ltbURVg4F9kWZsvXeVHStcpDF2bHWzJNB+AgDKOQb8EShEbv/aQUW4k
-	7SWU1mqMGfTqViglKzoeHYmbuXChnUTHprTTJLocXTB9lBXd6Sgz+Hk/Ngpdxd60aw43AMKA==
-X-Received: by 2002:a05:6214:4007:b0:889:b6f1:1f30 with SMTP id 6a1803df08f44-8942dbf5199mr2798016d6.18.1768498036628;
-        Thu, 15 Jan 2026 09:27:16 -0800 (PST)
+        bh=HELVBq+JbyCXR2ZFI5M9lAV4vG/kM2Ay1hf/o0jB9SU=;
+        b=DDOFY/OickstQUc948XTM5c91blc6EWG1jbjXZ1n6ilO1Jz7t2AdmFfgGCSe+wnXtA
+         TzcsRUaeG/NClqlhvdLhrc6FeV1wg1spy+YnUxlXTj6QiZj8w/rC4TKSZKhBGHzJWe9n
+         P4iyzLpi35Uc+OD1cO+1PvX7cCcIYcTPkozVaV/GHjGVuVmEeEcpv169XrzEahsjj7tV
+         E3epSoPVGQFZZOsgz+lg0NIxws/bSKISUXXvikUWYPR2cV5mvsTXVGh1JnGEWBjNTpMG
+         NIXEn/PmrSB6QkSDBLyGSs0/ilXPVWmEpAgDl8s07SD4xtRaZqHyDcdLChaiinSX+0Xm
+         N4tw==
+X-Forwarded-Encrypted: i=1; AJvYcCWj7iiUySEjqEZOzK2quMlwh+izACEU9TNpyFjBzzzj7gzsfz4mVoNTXInxImJz5P0eHy25uo/GYQ==@kvack.org
+X-Gm-Message-State: AOJu0YwmienXqo20udKspn6PFyHJTdPblYFUxMW/PTh19Z/tCB8/IXns
+	oNhqzFpzG1F+5lTCWg6NQ5d28NxGZwTD/E94hk9N9hjPsK9iGswwsgtWwW6I7y2ljZ6TgaOlySp
+	DHbqVaAQ=
+X-Gm-Gg: AY/fxX63bIagP8Q6yC7fqjSxzTt4KnrowUwM/YvPrwAtAtmM0tABquloaF89fjp8kqy
+	x4CR2y2o3gRNNrV2gZwot1GL8LeZ/iYzVxNzt5PBBaL/+U1T32sKr8A9Qbczzs/KQ8imHSCaz+x
+	6bgbS9wcbu8eKsSZp0I83BN06Dq8T2F1VMkGGhKdHRBaZin6CCEyWxjW/DPzuQg1Uib55Eyb6WM
+	lNYocz4bZTWI1OG7tfoGLcvvRZ7mX01AGaxccuzTIdJGAlFF+fzNxX0OGuMbQIhH2Aa18Ghcobo
+	cucGxRhk7v2LoDG1Wv6psbRADMsm6SjaLLHVqRIyFALAfnbnbMTLxfF9I8aZB9A436tUX+540BV
+	D3CdKLG0JEqo9Sna88dTMOwg2nCIjeTOE6wxEozGnN4uGGO3qGKWPUpbac/vf4Uoc4mcFj9+JR7
+	8Tf2GgEgdQ9bts/ZI4pDsu3uCT0gFqjCsDsLBWKRBCiTSXx7Glb8FaQC8iSxNiZrI5qfZ8Mg==
+X-Received: by 2002:ad4:5f8e:0:b0:880:541c:8243 with SMTP id 6a1803df08f44-8942dd060f8mr2986496d6.1.1768498397481;
+        Thu, 15 Jan 2026 09:33:17 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89077253305sm219364246d6.41.2026.01.15.09.27.13
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e47d897sm548586d6.0.2026.01.15.09.33.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 09:27:14 -0800 (PST)
-Date: Thu, 15 Jan 2026 12:26:41 -0500
+        Thu, 15 Jan 2026 09:33:15 -0800 (PST)
+Date: Thu, 15 Jan 2026 12:32:41 -0500
 From: Gregory Price <gourry@gourry.net>
 To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
+Cc: Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
 	longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
@@ -107,33 +110,34 @@ Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
 	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
 	linux@rasmusvillemoes.dk, rientjes@google.com,
 	shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, chengming.zhou@linux.dev,
-	roman.gushchin@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
+	shikemeng@huaweicloud.com, bhe@redhat.com, baohua@kernel.org,
+	chengming.zhou@linux.dev, roman.gushchin@linux.dev,
+	muchun.song@linux.dev, osalvador@suse.de, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, cl@gentwo.org,
+	harry.yoo@oracle.com, zhengqi.arch@bytedance.com
 Subject: Re: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
-Message-ID: <aWkjUXpyLEJyc-C0@gourry-fedora-PF4VCD3F>
+Message-ID: <aWkkuaYt0cEyvbGj@gourry-fedora-PF4VCD3F>
 References: <20260108203755.1163107-1-gourry@gourry.net>
  <20260108203755.1163107-8-gourry@gourry.net>
  <i6o5k4xumd5i3ehl6ifk3554sowd2qe7yul7vhaqlh2zo6y7is@z2ky4m432wd6>
  <aWF1uDdP75gOCGLm@gourry-fedora-PF4VCD3F>
  <4ftthovin57fi4blr2mardw4elwfsiv6vrkhrjqjsfvvuuugjj@uivjc5uzj5ys>
- <aWWEvAaUmpA_0ERP@gourry-fedora-PF4VCD3F>
- <fkxcxh4eilncsbtwt7jmuiaxrfvuidlnbovesa6m7eoif5tmxc@r34c5zy4nr4y>
+ <CAKEwX=MftJXOE8H=m1C=_RVL8cu516efixTwcaQMBB9pdj=K+g@mail.gmail.com>
+ <CAKEwX=M8=vDO_pg5EJWiaNnJQpob8=NWvbZzssKKPpzs24wj+A@mail.gmail.com>
+ <e6eydzdvuiktmalhcmoiwsgzjbw5v7t4532fkbroylwr5cqetx@v6pgjaoxgmyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fkxcxh4eilncsbtwt7jmuiaxrfvuidlnbovesa6m7eoif5tmxc@r34c5zy4nr4y>
-X-Stat-Signature: 9a6fz5kpknr418qzkjrzxrrfn7w6n83j
+In-Reply-To: <e6eydzdvuiktmalhcmoiwsgzjbw5v7t4532fkbroylwr5cqetx@v6pgjaoxgmyz>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D2B15140015
+X-Stat-Signature: e19w46ehuo39b99u99nyiuqrkf37sw8t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E02A910000B
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768498037-963655
-X-HE-Meta: U2FsdGVkX19fQoxIl449FePtI2NSJXC5PajsLgJqgUqCaSsnEz68PwZDasVLw71/AaPOPvBsDMqb26/yrEm0iMV+eSmS4+z0T13CAmMgVA8+WMMsQuTAwgDcvjFEskzUnxPuEEk2eDXGGlK96ZKI8h5BxbJANJsxIqRSZz+/RQmOU2n7Ts9czayrj0spCwxRWBLSoa5tTFSnqOBjYQ+vYk+/gQFkTYOGQCPhlRvhU3G5PCXGWbYQv/VO09X37Sh5lSCgBL61z4IJOjiwIeTPjprJ4OmVfR59Rk7ubAeo5x48katkS4BHSjG1SNcDBYJCEs6ZRPaLbBpH+ihcJpFHu6fFe2PS8W0qM8Ih02vspkuiP4ZWWa+C9mbGOHxUoJfw89Yr4v9nKzV5IUSKLQAuK9aCzy/6mK/B0gOjy3oOhHXSj0ehRI3QKzqvfhHh3N3h4tqFA1iHg5IakoAuwqRbHLQ/GX4F5OcTietWhnc812zu0J3Zapo5580pU8Jztl6R+jM671N0wsJBU5g1q+5S3uCJDpIE0sz2tz4ge3Ix7QuG6KyjmEYXR9RZjyKVR7lNPnz7/0EIxvYiBFuZOUXX5YzaICUXUetRC0usV6hwhhq+w6RKGDLCHvNZOkIX9TteS5nowE0qBid+z6CwSjeFLbb68wdKmv9wh5wDxUT5i9zK6uaC6GkcOF3FakxLg0L5WTUZNYsFi0eqZe2gqM+ihJ6ZEkYQFiirgMw2iSl+d50wu1CTmc6CXLEZa2SDUv09nKAMPGvq2xxe3rg1WIETB6QtUDxMeNmQ6IboElyeo2e6grHtcnwfNoc+CaoMqw/6mxy4Acc8xib1xH2n9K77aLR1RLToPCSllbOhLPZIbbzrDHBLLCph55N6rGw8d2/SgcHeZh0Bpoja5nlrPkwWjkfQ+xo4bqPtI4ARodJVkbZefICT4GvhL8sVdBWYm4D1r9QagDvpsSxWSsqoUCM
- 4p+AW2wU
- FFE/SqHtq25r707QDKZ7m7d7UdLX/a+X4uKhwrwxJI30f9rKTHTU9dtmvlAFtxW5pxXkHU5/9o+r9nu6et7xYERpCI+fESWBUWCYmyII3VVtTc6jgLwTCj1EgXe3TM2x2bGyZZNKIX8ItXPHOibb7zB64CIylVkilzC+1D6g7g2lNTi6PtfvlEeQ1bUeMQvIwMsywze1r0gK8S4Ze2YMJGToPoYuQn77kyuktJuGiT4HJSxIthMjbpw4/4N6S+tFKw4WaCy0NkQFQ+FZejc0MesmVzJXtxiTmYfV58tcVPv4NSrhbnPIIfP0ChU7/rFRQr/cd6K9GVEJc5ZCDWNzmC3JlZYIU0mQlx58D17qao9w2h3hkKWIOEwrcmMOnN9QaaHOmq1FE0gKlxUVy5+gJyyRr9g==
+X-HE-Tag: 1768498398-186186
+X-HE-Meta: U2FsdGVkX18DZqoD1OaqpjMM9Yc8uh03EQs6gEJ1biSgK5ho+W/1h8OsYxuDlPhCZImr0Kdyp3Q5zVcowPxmt+UPSvZuAbxh74da+KwAl708QGnv0PQzZt4Fh9BGhWsYbXLlLiRSA/kZgv2SzUL1/6GwGh3/SuDziIN9UJY6hvv/VIm2rhYPyJOE0rmB0mJDkdP4u41+2if4uwh+ASlCWNW5+CGRIDH5HwrMK6pFX7txoRTpgPUmYWrfOQSLz57FLFOtdhSjAdHPgP+UHPagcCFtyhLIkCYeJfk0mspLqdY2xKLIq/I4gPyQUDXO3j6ZK1F0jV04ovxqwYuqrYAr2htnZTGOTKkCTYrIm1L+UH2u/lOClscbUvI2oVzK+waEGMKyNoqENt5OXzkMJn0yvt0HmQU+uv6wnpuxI48GEektiDc+P9P/nXXHE4mI/5l+cnHwfGw0IKrRBYvsx4DsdcLS6WsALxuwYYPnQ3j3OjKIM1WErGxxNoHtZ+i/XKl7hFgrc9rzbXV9Rqy/Wg0GGaCh8rL2wAKQ64e+4fS/7CdN/1/MTZ1ECE5ixmDcRSm0sjkejtitBKa8MPA4Wz+9leEccHtCY+2tSN0+y3nx9T0gpgM5tEijaeBWnkzmttQboXJFOR6ZxLLYh6SYrfKd6z8jcaotmogqnS9tzWdE8qC7RPfE2hiB7Zi17d1FjQ9qtUUzraP5bHT6+qYvLYqgY5mFVATr6BOgDsPcHQT04vesQVlCvRTH5XQsbGzvW2wtKnz6XTEFAQTQ5QlkV7W5/XBfDKMy07VrlfuHCspm1t/AEBLFZOzH5f6ATNfrDebFeUy8DESp97Zmilg3KtUn0ixqcqlwl2bAQc+rPXGZJLdntACzTKU+taoXSrWfpGTjsKPyUHBW7uPTwXp8/RtHZXKdNJZFrucbBI2K9acKfSF785bLkuFI/c50yToN8pVgixU5T/3pdsTYMZkxZX8
+ 0elLJVbI
+ BXB+qKg2ANxgPesZnqnH2G44pPTDCVGl3o8f5Ewh+xbNpyvrvtbkAzPj8QCBPr3gBr4a3qV7YjzYAECkTBK5BC0x6vyQOjSDApJ9HRV12PCGLNLfosVC6wX4Al1q/aJh/JheHO85TOzs+z3qkH7CtqmSSRh7SauIEjzL66ngXpyB2rt5vAF0nXEfRvRltno2qJPTRNEofH4Y/9HRR07m8YIfX6ZAzfWOBu+FO0yq7yr8GbwjHMxEPLYQC3H2iSD2AjOZAVM81mO3ZJc6ECcoG+i/lLGqh3JDjzFfexcWYy6krTWlQqiFgop94031bKijN24JZl01XVKRgzEABj2D+4hGDWJOzz+RqMbfn92j3BGYtQ5NjaCnX+L4zj4cp9zBi2H+C/ZeTfuLstsfFXkV4Qu0AgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,45 +146,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > For the first go, yeah.  A cram.c would need special page table handling
-> > bits that will take a while to get right.  We can make use of the
-> > hardware differently in the meantime.
-> 
-> Makes sense.
-> 
-> I just want to point out that using compressed memory with zswap doesn't
-> buy us much in terms of reclaim latency, so the main goal here is just
-> saving memory on the top tier, not improving performance, right?
->
-
-Yeah first goal is to just demonstrate such an accelerator can even work
-as a top-tier memory saving mechanism.  But hard to say whether reclaim
-latency will be affected appreciably - won't know until we get there :]
-
-I'm totally prepared for this to be a science experiment that gets
-thrown away.
-
+On Thu, Jan 15, 2026 at 05:00:04PM +0000, Yosry Ahmed wrote:
 > > 
-> > I will probably need some help to get the accounting right if I'm being
-> > honest.  I can't say I fully understanding the implications here, but
-> > what you describe makes sense.
-> > 
+> > 2. Just enable zswap shrinker and have memory reclaim move these pages
+> > into disk swap. This will have a much more drastic performance
+> > implications though :)
 > 
-> Yeah it's counter-intuitive. Zswap needs to charge less than PAGE_SIZE
-> so that memcg tracking continues to make sense with reclaim (i.e. usage
-> goes down), but if zswap consumed a full page from the system
-> perspective, the math won't math.
+> I think what you're getting it as that we can still make forward
+> progress after memory lands in compressed cxl. But moving memory to
+> compressed cxl is already forward progress that reclaim won't capture if
+> we charge memory as a full page. I think this is the crux of the issue.
 > 
-> Separate limits *could* be the answer, but it's harder to configure and
-> existing configuration won't "just work" with compressed memory.
->
+> We need to figure out how to make accounting work such that moving
+> memory to compressed cxl is forward progress, but make sure we don't
+> break the overall accounting consisteny. If we only charge the actual
+> compressed size, then from the system perspective there is a page that
+> is only partially charged and the rest of it is more-or-less leaked.
 
-I think you are right. I am also inquiring whether individual page
-compression data is retrievable.  If so, then this actually should be a
-trivial integration.
-
-If not then this is probably ending up on the cutting room floor and
-going straight to a full cram.c implementation.
+Which is comically fine - because the actual capacity of the node is
+functionally a lie anyway :D
 
 ~Gregory
 
