@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB2D6D4662F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:47:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3945FD4662B
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:48:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AD166B0005; Thu, 15 Jan 2026 16:47:33 -0500 (EST)
+	id 9E9F06B0092; Thu, 15 Jan 2026 16:48:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3309C6B008C; Thu, 15 Jan 2026 16:47:33 -0500 (EST)
+	id 9A1416B0095; Thu, 15 Jan 2026 16:48:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 212076B0092; Thu, 15 Jan 2026 16:47:33 -0500 (EST)
+	id 8A3496B0096; Thu, 15 Jan 2026 16:48:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E3BD6B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:47:33 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B63E21A03FC
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:47:32 +0000 (UTC)
-X-FDA: 84335535144.22.5D04C1A
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D1325100003
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:47:30 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="gwj/0bG5";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768513650; a=rsa-sha256;
-	cv=none;
-	b=AfyXLhyEAWSwxgeTsTyNLTVVIShXey4gST5Oxp4U9B5quwauco5Zmzf0khmjE7zOJ5y7JY
-	CqeodLn/KzXTrB0ePvFyJqFmXm/GXpf7lOgrzhVfBM4daGOsG5t5RNMKSu4E0QrzXwkgky
-	UrG6l9I8wi9Na17QpJazmYYLtKmw4z8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="gwj/0bG5";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B8996B0092
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:48:13 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1FDE28BBCD
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:48:13 +0000 (UTC)
+X-FDA: 84335536866.19.0EEAE60
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 33B3D180004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:48:11 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CY2SyrCC;
+	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768513650;
+	s=arc-20220608; t=1768513691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YBmCHfpLlL8iGEYc8icjykZfZHQFfzihdrkSCqexEsw=;
-	b=o28vTL5iRiGnward7qGA0cClNhVQ0UTQqfBRgdm78INxJBaXs0N45XHigMkB833wpoBg63
-	xEOO1UUJPc2NNp/GEz+ua+5JAaDuBB2YnoVgIgYI3kPRMczksbuMJZnT9pwFMTgEoIwNAO
-	S7U3SB4e4QvBwGjmojSFPF7lHg/d24o=
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-56367b39e3eso1678003e0c.1
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:47:30 -0800 (PST)
+	bh=z1tpnpSOuS/Js87YOF2H5fRocDrhGRoFky0mpImVftk=;
+	b=ZYpc08pryUesTWEGeS4x4pV5E6G+Lt9WGNOWGmb6x1J6Yveiu6O8f4D+cX1WbCc2bgiySW
+	E8UZ0T94QfLwxIwGXS1Fdp9CcUCbusSnIG2gztv1NcH4ixJupV0gTQP9vdSj2k7vJxsEYk
+	lOJYwJSS92hQqTiUCfrZREQoezgvOg8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CY2SyrCC;
+	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768513691; a=rsa-sha256;
+	cv=none;
+	b=YCaxWTQL+DUPjJ61LEQ0V8QaS44+/bPAiXONuQx6uDPufs0kY2dP8BqQUNrXDubkJOxkQk
+	QM20RFzV85J8CMr8oysCuz+rpdvAZKMbnFkE1LqiBwUVN6pDbYsoLP8oZp0epYFuqShF8O
+	/1OeHaE3s4ybS8qG3oaSi9QP1x0GV3s=
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-5ef31a77afbso1723989137.0
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:48:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768513650; x=1769118450; darn=kvack.org;
+        d=google.com; s=20230601; t=1768513690; x=1769118490; darn=kvack.org;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YBmCHfpLlL8iGEYc8icjykZfZHQFfzihdrkSCqexEsw=;
-        b=gwj/0bG5grLrEJq9uQJ0epQ6m24Z5D7mdYrbOWCF8noTgutRaoKn2wFpChEqrav9wr
-         aYxc/V7PiTEpTA8gcB3YsO0y5FQsT/hbooK+0VWHvr0f8GUU3xcwKlQesho+k4g0O12z
-         Wp7EDxgnKYHdsKUIMMCzE+fqEvb2j0z0LldS/d1S5iEbIRSimTnSWs3MVR69e8kGpS8U
-         O3dJPEuviXgBzke8G+iFXshjueWrefHjh2bghDfdSgDosBFifRkT5nEGQmta1ipWMgwG
-         ANX791Bl6wqrsIvcA4KdhUdLf/5tbIrR99FVYcNuSOE6qtBSX4HJuCX+J5BV7fdHTfUz
-         1c6A==
+        bh=z1tpnpSOuS/Js87YOF2H5fRocDrhGRoFky0mpImVftk=;
+        b=CY2SyrCCBx/0Qnt5srdzdHadRVUTWYjBQdmZ6Jy/Wn9anM81qTezzmkWkhRIIDcEvd
+         IWY32NsBr7kVHR3da+JzACWgz3ANLL0PIpUx00+x3kcKXzbr+SwtAZDeEyUUV5o0nLWj
+         CgS2Q8oG67nLQ/NZY0TorRYcsLZFqomv45dN8dMmntEAMPVIYvMGeW911a1poZE0qpLD
+         6z+1bIDymQ3UcamvN9LipSbiq+2nCpCf4PSYYleWF6Ni7Sc6le3iaYBBJfDg0tfipist
+         6jCg1Z33n2PHmU+kKMmitEsixMFLJOC/xu6VHnqK/XL5lw7X3dwyKlE5rjkE3wVY84Rj
+         z7YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768513650; x=1769118450;
+        d=1e100.net; s=20230601; t=1768513690; x=1769118490;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YBmCHfpLlL8iGEYc8icjykZfZHQFfzihdrkSCqexEsw=;
-        b=k+m/e1hPwxzO6dP1zsqRoXv0TC9ZEXZt5D9p1Q2DQ4b06klOFOfWsDGdzZ0vNLc/zO
-         HSqQkdBEzvARu1D08voWMpkuvINVdthuyj+5YyTdi9a93n0aW/DDnjJ4vHZhFchSUCPz
-         u4YUT349ZRjB6av2SwSUzGQYT6GdgzTQ8DyBB1cr1sWDCjn2C7KiX566Uj17WlIJbd74
-         r1+S04ymNDu5AD6mmTBJaV0QxjwTRyUYfzgsTMa0Y1tIfhYZg84E/bK4oBvGlsQlrAkW
-         PbKjyBmDetY4vUd4CiexxP4kf/b7JUuml/CiBOgTg23uFpymYETh+DTDjpo7uy11u39w
-         9Zeg==
-X-Forwarded-Encrypted: i=1; AJvYcCVUpcBzkKVev2KBSp7doDaZVDYdTAwKYiwPy3O584euX926b8PqhNEyjlf9rgcC2tRAWrTvaYwpLQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz6aaOkW/zFk+3YL1BLOmb6IrTcJ22IMKzGJIAVP8oWKXS4vYxb
-	s5sCX+kJLC1twjKKjUAwef3RNywcp4kt9lnaIQyhw4OeVZkfuzFUYb0uviUeYYPuxwt4GEuZsor
-	BPUvNSA+TmSiC0TzhyzNQmDVKfqJ8o3vi5epXesvV
-X-Gm-Gg: AY/fxX6w6Ju3GqM3LkP8UcNrrqFvJ65T4TnUb1Nz+SOL/qs0/OLaETvc+FNbmidQpE5
-	0pQLeCXrbEeKxIyiIOuXN2B0XYbhfmis+scFoaCmg5APQdPkFkzzx30hHAPiTnpzdA6f6zZT4jL
-	eKiL8xXCBl51mWcFo5XLOC0lOIl6gHkdbHy1A5kVQt3cVrbDSQ1OzvrFeVzfC1frrof+o6NoZZk
-	dPUeYTrHyi9s8Iz+k+UQx3f+8vBpcYbRgKQ65LoAKfYZ+KSyWREroWBLgqKKOiNqrhrciDbh92o
-	nYsq9x2kEse54Ak1rrJkdPIWBA==
-X-Received: by 2002:a05:6122:500a:b0:563:466c:2 with SMTP id
- 71dfb90a1353d-563aa9aae66mr1528951e0c.5.1768513649399; Thu, 15 Jan 2026
- 13:47:29 -0800 (PST)
+        bh=z1tpnpSOuS/Js87YOF2H5fRocDrhGRoFky0mpImVftk=;
+        b=JgQz4/3V9lVo6//L3EdAAlSB+4P6Vwr3g2q7jUawjjyGNWuPqdvRvnkYomkKFIPs32
+         zWkLa30FOVWKnEwMuPpayh7SeRds1Zgfiw2Qrfa1pM0H4PMQZ9vD1hfDfRWrse1TQmsv
+         8hia+FfZnFoeWAt4SY9Ub3YvUJtZLmcbrYW6piXAb4WlIZ5Yix6u+Q0OOx+YbeY0VBfo
+         9ZxhHMvqswftAjSb5QjMMFLzsoA82RH+OezsccTRjywWj1yC0dRvjxhF9ljdloDlsWPw
+         C+iNSAGg7vJynqmu+6EZViSAveIxIy7H8etlL/LV2Us6Lrajsg5auHFYLm0j7pme8ymK
+         90Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCVfbMzZADgQr37LlKkXANSwkHWybt6/s5R61OPNX3rh5AAGeRnufkHKqWLTtC35BNVDE6dJOQGD3g==@kvack.org
+X-Gm-Message-State: AOJu0Yz9Rows//bFKDkJ8LrLpS8mh+QKsA+idqr/+VQDpAavO61gfGBC
+	n0KTaS3l/5nkWk9evODsSF99xa/svzXDWa8vtOqLu2U9+zDTM01HH0A2AeWhNO0pPvUcITVJzBz
+	Qbg573/XUIAQDC0iLfdKTA4sSiq/O4cUO/ls7TIi6
+X-Gm-Gg: AY/fxX6jeLHUfsVJtHoZV50dVAeVUhoaRttvCT1MEKpYCFrFC3pdhXsYShVoTZTfEkN
+	w09CD0CGNUMoXuz5QWIRq+cIJYvOwmnsL9Pwn1pLhH1DvKLLQxKnNmfklJitSobNjBcG450y1D1
+	eC9e8dV4pNco6hkjW3cTbqGeUWDk1ImZV6o+d9rjsBuW06ZQeNfOmwYI0H7/Lw7SjaI5m2B6H6l
+	bZ27r8F5WECq5iZme1bWbEQfnjF+CvQhYV1XCfDPgPrUF7E1GKJG7Kug2JXtZcFQ1zPSUdmQ3PC
+	rGpn/beS+LKf6lB0lix1RdEziNSe3uG8TUw+
+X-Received: by 2002:a05:6102:f13:b0:5ec:3107:6b71 with SMTP id
+ ada2fe7eead31-5f192508297mr1821684137.14.1768513689093; Thu, 15 Jan 2026
+ 13:48:09 -0800 (PST)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 15 Jan 2026 13:47:28 -0800
+ HTTPREST; Thu, 15 Jan 2026 13:48:08 -0800
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 15 Jan 2026 13:47:28 -0800
+ HTTPREST; Thu, 15 Jan 2026 13:48:08 -0800
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260114134510.1835-5-kalyazin@amazon.com>
-References: <20260114134510.1835-1-kalyazin@amazon.com> <20260114134510.1835-5-kalyazin@amazon.com>
+In-Reply-To: <20260114134510.1835-6-kalyazin@amazon.com>
+References: <20260114134510.1835-1-kalyazin@amazon.com> <20260114134510.1835-6-kalyazin@amazon.com>
 MIME-Version: 1.0
-Date: Thu, 15 Jan 2026 13:47:28 -0800
-X-Gm-Features: AZwV_QiX95-0WFEZIhu3a0jzKlg7ft8DnUjTu2uxi7sdZ3xYcaUb3m6pe5q87wE
-Message-ID: <CAEvNRgFihTZg_-R8yEytDLVxbiF34nFgTEsghMp6tzBvazVqoA@mail.gmail.com>
-Subject: Re: [PATCH v9 04/13] KVM: guest_memfd: Add stub for kvm_arch_gmem_invalidate
+Date: Thu, 15 Jan 2026 13:48:08 -0800
+X-Gm-Features: AZwV_QhGkMBioMKFssSOB50hq7Zm3qSZq1aP9Of9c8wem-vUHGjRo2vWaCWRwKU
+Message-ID: <CAEvNRgEhcTE70RLiQo2C_XUdF31qSkQ6yHwpUiXPWb6+6mmA0A@mail.gmail.com>
+Subject: Re: [PATCH v9 05/13] KVM: x86: define kvm_arch_gmem_supports_no_direct_map()
 To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
 	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
@@ -151,14 +151,14 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.ne
 	"Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
 	"Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco" <xmarcalx@amazon.co.uk>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D1325100003
-X-Stat-Signature: fcsa9kaw1nwa4phcopiss9kijjakizzp
+X-Rspamd-Queue-Id: 33B3D180004
+X-Stat-Signature: 8js351gi6gskkmz85xijma4syzxr8awa
 X-Rspam-User: 
-X-HE-Tag: 1768513650-504427
-X-HE-Meta: U2FsdGVkX19/JAQ/Js25WAzOVBwud8groFyRwy1iqhTjJ2sBVeMaAyxx2ylEIV4+55IbuVDSHfcSVB8NJdl016riSJGvkatup/7f3vNza2d44X8XU5p5+lwpCGZDy36Xj4hTJ4UHUVrxMQyFERZUpw9EnLwVql+2gKl5YZKuOPNH0KqSzzMNWWwCpLx2i0VuXK9AOfabD24WBcODZSTtj0yziW9Yniir8l7WD9oIfc5xQW9uNJj5ypIl54P5LaCaRk0r6XajFZRfpfAdqIMIXLEkfzNCBonGnrMxo7R8T/I2ijMJDPd9rKFcDYzi7bCud+JvsvAxSLTz/zj+jqJGm9/pXbzllVQWWv7DTocGdLMUl5sqX9vmzkmh7ui3Pfeduj1eE3atqLNGkb6rAexgarC2jkpciFHsdj71uwrSELvMlQqKVrwgwNLygiHilqvMQ2DGtrlb7TBM9USwLjU7HYFeVSDojUBBfi+N8utX1UySSg6MysqYJgS5rmN4OSovM6rRjwvpBUKCItSFWGp6InLtSVeAOjXP1dh4BIr/n0mX0sjGrgjnNA+nnI8xMLNzrG5cOV6yLOQoKCE6viIds4XqHfdOi8sObmS34bh18okKpy+5bE380fw9O2Um80dERkq6/tfLHAg+FUZrct1kUcwAzECAzN/vKT5oxQmTruRT48ntIjr5jDiNH7T5jW7/KQ5Nhz5HaXTNXSWNcE0/5XOq1ADTFz69nbH+tpE+B0by7HpvG7GblbwAmykDIrTpTGgE66Vxktl5w63GuTuIU1wNYHv+lYS+Mgcs0Y9TIePzrAYc0otahr6o/N5NT3DvtZ3WcdzBOmJ1sq2N6Qbnl0BkmpaBb9aSYMMgtoY2gQdtVwzYDatbRzS7HnQqZZuMy/2RbZFySG9NUT+ddlij+aFMO9WYD3z45arHmBejUgnCa/aoYtlj63fyc/FstogAjdHb4YJhRrR+Y/yGRrp
- TGZ/BfKP
- i6a6s7FuYy9EudonJuEVDIGwk13y/Ubo3AOdzD+GWRjE0rnSzTg9cyVESvTKhUs9XOSlefYk83TyZltiqjOiFEfWvfYas71P6XWsdr25Tab9pzxurLeFrRQp9lX0Ld6y8e0S+wgXXuWNj9jDzRYI6gWDFp9oTaaEb8cdEAHjtMTDxwaQUgddHk3/jxsVF9Gbc2MjFp0wxsuSPiAfSVxy38LeMzQgVQXJtDJEcCso9oK7WfqXE5/8Qeh29NY8WcuOFbNeEoaX+fhk2yorDnSWsqE+y8EIrIGU4xLqxEooNdmWkS54ntqqz8qLWhiZSfLSb+qdC6Z1rTL7DLn17SQEVkOb11jikRnFXKNz2OhZ96ngP3GOFe298jqMEdCFWVXtfwNLRCn932kyT7Plf9IC+4yqM1WlATxvip5pXdPxozeImTc39qehkcYBfSSJZdRCYt3MVHSPdMoBO8f4f5OhwNu/kv+F0GXJMCjh/g0lOIrQrhl0lPkL4jE8u/8RPuiWajbbE
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768513691-720579
+X-HE-Meta: U2FsdGVkX1/Ws0EcTePbH0CP94XDtt5hgwNEJkrSKXILqGaOemVQbexSEld0nCWR1d9DZsLIObQ6RIBHQ5tmADON8gx2RjTsX+F2bBANs2HXkHMB+SgA6TXykxmGR2i1XoGYY01eTb+e+skC8EK1RfxB8SjKIlihW/nYCiCbU3V/Wn5/h3zbCeW5M4xTsjRY2gv+MZqFU5CwZfNGkLSQpPqx4/kEB007OMxXiblGCILcnfANQyH/K/huCDcdrghT1tLf2s0UqfCaG7nOr6z9HcxK6q97UVjvVmAPo+izm7bmqW1QvRe5z3PYaGfPVkkb2qXgfs3TMqZfAfvuFLkw3n4pyj1+GInZfoONKuU+O5ycpkTsSluySfn/+UgXJuGccxKqOk1s5N2B2/Fbn4RSbCDjcMDbWBFm4i49TEbkcodmSTNHwXX+EnZfO5FLCZBZAHcfX0bHwRJokKwZwp5gQednj75luX6yAk/mGx6MSo5avkhxG7rOGXcj3LmDccEY5RFfu9t688aI4J1aUSDj1gEyQkPw0QlKFiCf9pJqtjImKc75Np1kxrntCkNWhHOjUdvNsEbZ1Hvpf4vyGS1VSvk+ozn+jq+0cXu9ERYrUVd5x7Wx8x/BCHLaLViNCjQsUaryZXOM1EgrJv6HbjdcCCWsvwFFlrb8GI6Fn6IdvxCCEj38xw1qnP5M7QS1MGg18dh5Sv/zfdlCDLe/jzoOvm+xHlovkgVJtDi8Mzx++c6gc+PHH1P/JuyY3l3Yu92QUVO0BGY77GNMztuoYxHWhlBkJYIsdNarJu0T8qhsu8Ea+8zV1+Wc1kymHmTXbLxYztxd4nzgUWCC/2THHQGDwRTLYXYibSgllH4NVqHsmj6Y58f5RN7+ZcdXmRkhA+7QXChGPGwCKvFp2Ld7LJAfHiGzhkb4RvSF0tcev3Raoesrgi8EIRlIwRfHAv2DYGM1NuFmOI2W7Ha2bYoim9Y
+ ZeQ+stHz
+ A0yMNB/IEhNUlroeAcpz52i2zK0QmoOzpasZQupOaCm/VeUpdZp5c6Oq31wxQpm1ioyT77VF6+wOmSlOeOYl51s3iqeYgrH5nuL8k4Id8lxCWuFeQrjWXq5JYdGgt85beZkvgjEXPxxfzozQxU11AVrFutsaElrzBZ4BAE7Rico/XrU8ug+isCisUiXW4RwIUGSc/OuL3EuIDV+PIrPnHHo40Sxcb0lcioeJV55/2xBap4/jcUN6ElFVIirVs4PqgrA7X0Q5QrRi/jl9Zjzjc8qhDrM7htQ7cnBq8X/oqjdMbr/ph37UFOS0oiDDbpyYt5NpMu767cVMERl5Zk0iOncMwyMg+fsTG179Hm8cLyXq5seTF1jAv5T5eg/1exuWs74LYkGY4OIOjt0ntpMSJRCZhPScc/EqI2n3AzCrp17M4wNrGaZYm01eLJQBjzg1mAsDgM1pl/ZMmNTHo6NhHTgLcu/jbglo9b0uvBOWjs8wHyPs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -171,66 +171,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 > From: Patrick Roy <patrick.roy@linux.dev>
 >
-> Add a no-op stub for kvm_arch_gmem_invalidate if
-> CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=n. This allows defining
-> kvm_gmem_free_folio without ifdef-ery, which allows more cleanly using
-> guest_memfd's free_folio callback for non-arch-invalidation related
-> code.
+> x86 supports GUEST_MEMFD_FLAG_NO_DIRECT_MAP whenever direct map
+> modifications are possible (which is always the case).
 >
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 > Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
 > Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
 > ---
->  include/linux/kvm_host.h | 2 ++
->  virt/kvm/guest_memfd.c   | 4 ----
->  2 files changed, 2 insertions(+), 4 deletions(-)
+>  arch/x86/include/asm/kvm_host.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 >
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index d93f75b05ae2..27796a09d29b 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2589,6 +2589,8 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 5a3bfa293e8b..68bd29a52f24 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -28,6 +28,7 @@
+>  #include <linux/sched/vhost_task.h>
+>  #include <linux/call_once.h>
+>  #include <linux/atomic.h>
+> +#include <linux/set_memory.h>
 >
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
->  void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
-> +#else
-> +static inline void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end) { }
->  #endif
->
->  #ifdef CONFIG_KVM_GENERIC_PRE_FAULT_MEMORY
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index fdaea3422c30..92e7f8c1f303 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -527,7 +527,6 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
->  	return MF_DELAYED;
+>  #include <asm/apic.h>
+>  #include <asm/pvclock-abi.h>
+> @@ -2481,4 +2482,12 @@ static inline bool kvm_arch_has_irq_bypass(void)
+>  	return enable_device_posted_irqs;
 >  }
 >
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
->  static void kvm_gmem_free_folio(struct folio *folio)
->  {
->  	struct page *page = folio_page(folio, 0);
-> @@ -536,15 +535,12 @@ static void kvm_gmem_free_folio(struct folio *folio)
->
->  	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
->  }
-> -#endif
->
->  static const struct address_space_operations kvm_gmem_aops = {
->  	.dirty_folio = noop_dirty_folio,
->  	.migrate_folio	= kvm_gmem_migrate_folio,
->  	.error_remove_folio = kvm_gmem_error_folio,
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
->  	.free_folio = kvm_gmem_free_folio,
-> -#endif
->  };
->
->  static int kvm_gmem_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> +#ifdef CONFIG_KVM_GUEST_MEMFD
+> +static inline bool kvm_arch_gmem_supports_no_direct_map(void)
+> +{
+> +	return can_set_direct_map();
+> +}
+> +#define kvm_arch_gmem_supports_no_direct_map kvm_arch_gmem_supports_no_direct_map
+> +#endif /* CONFIG_KVM_GUEST_MEMFD */
+> +
+>  #endif /* _ASM_X86_KVM_HOST_H */
 > --
 > 2.50.1
-
-Like this change, thanks!
 
 Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 
