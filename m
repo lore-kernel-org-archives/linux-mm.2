@@ -4,128 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD6ED46600
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:27:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCEE2D46604
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:27:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B399D6B0088; Thu, 15 Jan 2026 12:27:11 -0500 (EST)
+	id 32B686B0096; Thu, 15 Jan 2026 12:27:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0AA66B0096; Thu, 15 Jan 2026 12:27:11 -0500 (EST)
+	id 2F19E6B0098; Thu, 15 Jan 2026 12:27:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1A7B6B0098; Thu, 15 Jan 2026 12:27:11 -0500 (EST)
+	id 2143B6B0099; Thu, 15 Jan 2026 12:27:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EC196B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:27:11 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56771C1C41
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:27:11 +0000 (UTC)
-X-FDA: 84334879062.05.335A057
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0A56D1A0009
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:27:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=acae8XOA;
-	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FF2D6B0096
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:27:20 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B3E6C140401
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:27:19 +0000 (UTC)
+X-FDA: 84334879398.27.D12B19D
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E02A910000B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:27:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=seBq2pCn;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768498029;
+	s=arc-20220608; t=1768498038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0bCHkVRU/U5rQgsQH9vl2iyXpnOOqBXnwog+zjgM/cU=;
-	b=S84yiHNeb9Lcs14BvIVPpNaGZWS2Khlj+7T/uC1CkC7Zm/pa9csMnzst2maCTuOgpIhk2Z
-	3rKcM93M8hmH9X/HFZQhAa4ksnCLA7AI1I7F2KtoXCxVGBXOKzTByTqEuadISFfsMR5rwN
-	KlDtCxc9LQM9dePlFdhvv0s+hhqKHNI=
+	bh=9FK61OSEd0UmY2wqnN+WlOD2t6xQO8MJ1jOlEc9XBMg=;
+	b=tRanEUDyR2Opn3JgdcvJBHtIb/TSjSGPX9S2/ARjsc+1PoQYjxE4c768sQ6dRCDuWynvri
+	r5RE7rJQSYVhEBCihjw7yCb/THh5StZxkz+AodO0Sxn9PEr+fHQp1BwB0ARqBt25FYM0Hw
+	rW4SV0iZ41WYTDR1GtJcyY+16uQpLbA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=acae8XOA;
-	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768498029; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=seBq2pCn;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768498038; a=rsa-sha256;
 	cv=none;
-	b=iEnru/eoZsIVpcMQj4mnyeIkiDUEKFvBlisEuEaLVQB5SOjImLKtrgmLXmkZp1guS+tioz
-	ooPtHLvPKdRZ/j3aqf1vX68oLVshoS8+MEqETXqcb+BXQ2QlIvVFccdjFeSg08BsDc9Xee
-	Xjf/lWYPTJtpo2NIEpxGFEogzcKf8Z0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 031B244351;
-	Thu, 15 Jan 2026 17:27:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65452C19422;
-	Thu, 15 Jan 2026 17:27:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768498027;
-	bh=efvNFfmmF55G1OFW1ALmJUn6yfpTkuk/CjfnMcYZ/94=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=acae8XOA+V0EFGSWN3XUYMscNvAOo5loDdvJECOaKFaNAMNRTDs7SL3tUjLPb5zWx
-	 e0TVqOM7bVQPslulGtaSad40Em1YRIrN5U3E8vJlrP7w1aD8vRQ5QimJH3b9c+HKgu
-	 h+US2ILkv1WBC4A9OgmB9VMAqhrW5cXgqDPTzwIKCkJWRFtbh1llfpK83zXuC9R9VS
-	 hZk0X6JZxtPF4nGDIYCNboepa6LzYAoIh1kLmOYivLoDxxP+g3Tr6zi+uGJJz0BOST
-	 5S9G9nZ8zoc7J8G+QuH5rKjpppF7gBy86wnVt4EkB8UkWEZ5ZdYjPGy9JHaRsv6SQI
-	 cBJNtlsGsTYtA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 88920F4006B;
-	Thu, 15 Jan 2026 12:27:06 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 15 Jan 2026 12:27:06 -0500
-X-ME-Sender: <xms:aiNpaT67TyoasDbt1LAROzmdavez0EtG9XZ4hLt70D1cKeF4kR28qQ>
-    <xme:aiNpaUSMkyWdh7DErH-Zld6tQc8ZERPmUFwtPHiJo7TC-uFmQ-mUMGc0RrqKH1W7K
-    hUsTZzCYDaA0JQfC1wRgZ-WLF3u73AcuTx1PlHFF4l5jVctTvliMOs>
-X-ME-Received: <xmr:aiNpaT3XOAMXAUpRbHD_dzICsRzXQL064V-i-NcakVjqhVQa3dW9BzPkom0NLA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdeiieehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinh
-    hugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhn
-    gheslhhinhhugidruggvvhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurd
-    horhhgpdhrtghpthhtohepuhhsrghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrg
-    guohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
-X-ME-Proxy: <xmx:aiNpab66OzbiPAXpkXGHGfosXzW-t3DjGgOmKWPezmlE8xkE66bv6Q>
-    <xmx:aiNpaSsiBrJrQ_mf7q9WA0ALDkKSbdHKuxzeWLSaCSLI3Nx2vvkdQw>
-    <xmx:aiNpaUNYWLfnJJLjSaZfGmAGcEdoXy2A1Ve0aJ9clipvfyy4PoAiAg>
-    <xmx:aiNpadWQz6_MT3yRWc7sv9_TKNcCU1R0c277-2wZxFDQfefaYrnXjw>
-    <xmx:aiNpaV1jQGUDbMggZzPUu3pCUoZ-tdr2sJjWOjqWt79gBJT8zU_6To9b>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Jan 2026 12:27:03 -0500 (EST)
-Date: Thu, 15 Jan 2026 17:26:58 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
-	Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>, 
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv3 02/15] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
-Message-ID: <aWkivSMMKX3AGdMw@thinkstation>
-References: <20260115144604.822702-1-kas@kernel.org>
- <20260115144604.822702-3-kas@kernel.org>
- <be57dfa5-e6fa-4ce6-93c1-239436ff6e89@kernel.org>
- <bf788cfe-ac2e-4ffc-9349-64d9c36bf072@kernel.org>
+	b=Dp5shVs8ZDbPoWGNyOg7woni6aXF9aSYEltdM9w03UM5J0UJfsvNOwy9i+xGPM9AcpFQPW
+	h2XG78rwq0yX374mYyFDsFaSnaW5f5d2BCrbXM0tQTLLhSs7WRpqNDe820C+hUJZLuwPkh
+	Ftf31wPHv5itHuFjdycFEZumpOlnlBA=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-88a3bba9fd4so13055876d6.2
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:27:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1768498037; x=1769102837; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9FK61OSEd0UmY2wqnN+WlOD2t6xQO8MJ1jOlEc9XBMg=;
+        b=seBq2pCnMn2R5fvQVuHc/BnpJA0SCIsVERKGtFI0bgtim9voNmLuP5GiNnReD5TtDV
+         4c4kS42KD5sD1nQA8lENMrqaYaNL/trkPJUW3U6GrbEe5Eq1gDXeM4FZpyraDGuRxNb6
+         +SvHHXeslfjW2ACc0XvByXohKm+D3AcHqiLMb1OPKac/tj61JcioOXiVfvn9yzw5LYAn
+         KvaJXxUy3FCBGu7BAd8wkoCCfufsLvAATWzkEWUtPvNO/ymazSdMVjqtIe9rsvlmDRQ8
+         sxudxfi0c8ttSMJQ0ytabmoJOcKJIFxibqRva8rrTjrwIbl+PFAFQW/oTqHz2+O7xjz3
+         3kjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768498037; x=1769102837;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9FK61OSEd0UmY2wqnN+WlOD2t6xQO8MJ1jOlEc9XBMg=;
+        b=O0YauNmTNA0od/QT5gWhnJEcJi6kqs9nMun5haH1kmDXFEfBvivFHdLrJFvfTtIPy+
+         CNAnRbA4B1i5wdqDKXVV1DSTCOl3EUkRPo8qZqSdA+V1k6W3wisRKrwPr8BI1LWd3tx8
+         lbyl7rGveFybpNmfcrgYmhTiU4iuESIAkOme3zFNvXgj5Bru+eUHQzUqn5CGQUuuYVCA
+         iR3VZ0FfxROwYUGJc6+gUz5MKKNcN6ZJ92jIRdGqV93/1mDh5lJnJitZoGdiPi+NAZys
+         8PPTfqQjeqBeibiWoaA4csFsdlndFXiNS1ryn0w559q2t/hj5RyK1xJ2yjVTTYw1czwU
+         hlFw==
+X-Gm-Message-State: AOJu0Yzw8VcpMrRtAkqxPD3J5MmltIIkM/3dnv9YzSQ8tGas06ZZHzGH
+	dSdLTLzdh80B+ifaO3joW88hK+weQezJ4Ez2h1ipww7MUIFVO2SNYUvdp/Gv/McFC2M=
+X-Gm-Gg: AY/fxX5snvwuj4Zo84FGoYC54e9KvlIDO7qdFMxTXL6kWD5Rh3kpePlb43axfpYp+QM
+	VpI2XySaNJRC2uS7IWP4UgTx/xDmR5Agyq5ojoWH570lhe08+OqxJteWvxJU6VqWyg9Q4oeDb6m
+	FDtK8xqspEFkxfteS4+nUvz3wfZ1wurID8TrwU/YV9RT9+k1e24q+Vz0X3tMRpk7Gr+eOsBxlxA
+	ahjdVjVZh9jyE/1JTZkbBeHRTUwdfs5u5lJ4lHO/A1dbMYoi8DAknsXjQdNfqdvW0yca7vM5rdc
+	pWrrZtDB6zzGAjCiXg7Cejd+yqL3jv47jY1w6zkH8+2kn63oZeLTyWOY2EINTs8yL7mWJq6+Hqh
+	EDjpbF1wwj0fjhKl8qo1ltbURVg4F9kWZsvXeVHStcpDF2bHWzJNB+AgDKOQb8EShEbv/aQUW4k
+	7SWU1mqMGfTqViglKzoeHYmbuXChnUTHprTTJLocXTB9lBXd6Sgz+Hk/Ngpdxd60aw43AMKA==
+X-Received: by 2002:a05:6214:4007:b0:889:b6f1:1f30 with SMTP id 6a1803df08f44-8942dbf5199mr2798016d6.18.1768498036628;
+        Thu, 15 Jan 2026 09:27:16 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89077253305sm219364246d6.41.2026.01.15.09.27.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 09:27:14 -0800 (PST)
+Date: Thu, 15 Jan 2026 12:26:41 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
+	longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, corbet@lwn.net, gregkh@linuxfoundation.org,
+	rafael@kernel.org, dakr@kernel.org, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, dan.j.williams@intel.com,
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
+	david@kernel.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, rientjes@google.com,
+	shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, chengming.zhou@linux.dev,
+	roman.gushchin@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
+Subject: Re: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
+Message-ID: <aWkjUXpyLEJyc-C0@gourry-fedora-PF4VCD3F>
+References: <20260108203755.1163107-1-gourry@gourry.net>
+ <20260108203755.1163107-8-gourry@gourry.net>
+ <i6o5k4xumd5i3ehl6ifk3554sowd2qe7yul7vhaqlh2zo6y7is@z2ky4m432wd6>
+ <aWF1uDdP75gOCGLm@gourry-fedora-PF4VCD3F>
+ <4ftthovin57fi4blr2mardw4elwfsiv6vrkhrjqjsfvvuuugjj@uivjc5uzj5ys>
+ <aWWEvAaUmpA_0ERP@gourry-fedora-PF4VCD3F>
+ <fkxcxh4eilncsbtwt7jmuiaxrfvuidlnbovesa6m7eoif5tmxc@r34c5zy4nr4y>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bf788cfe-ac2e-4ffc-9349-64d9c36bf072@kernel.org>
-X-Rspamd-Queue-Id: 0A56D1A0009
-X-Stat-Signature: gk7fosiautjdhocf7oujs4g5nhei6a3s
+In-Reply-To: <fkxcxh4eilncsbtwt7jmuiaxrfvuidlnbovesa6m7eoif5tmxc@r34c5zy4nr4y>
+X-Stat-Signature: 9a6fz5kpknr418qzkjrzxrrfn7w6n83j
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768498028-942011
-X-HE-Meta: U2FsdGVkX19G3IZrA7XH/NylNQH4WjVlKHQMu3PMCv6il1eKXJf1sDWX3PPb5UW+U/vCqy7Uh+9TtByvmgAtXvgOSKqQ1eaCyBZSFBlFCWir1jK3+dOhPTHvAOAMKcZFdCflWfWxA9laRIzhwnkykCyqF5a593vOsTFu2DG3KU7VKOE4dO/LE1LQ7OltuhUHC84Ogh50+2bP2VIa9/tT3zGA9+GzFxXBAUo0eTmMVrQIWUKNn+ZfyVtYo3gIbp4zTeCePvRHxhwvId+MeEEzUkDpUT2KEf/kOE7fmnOvM93hXvZl1NQsxM7tKLFfuZ+xrJLWbMXZzC4xYUwO32VYzN8quBt+be/lW0BUmNjjctLfPbTrPo3eIUw90Y+wfWNRHSV5Q1jUeE7X1rSuMELyqhaPttsjlh5WdfHErIaKA0rUUXlaJtW6O2JpMrDBNI69ZO/9Sa+YFIrMRyKKy+BrQun3nc7M9BOSYtziTerSDj3rteWo6xkqatuiRR3Pq3657EKx1kUHMdRvvOLp2g5sE0vDLrAonrXvAf/946TyiRSBbWRm4emhrw6VBuUgTk1tW47RNlkm1Yb37YPB17Z9zjxxNHY8PtmobyU7rTIqFOMj4pY/P8omwDCHcR4SuPHvD8K8a2uKYxdIjJRinlzyGfJdlXFYCbnEA0LjuMLRiPIpuRmKCZtk1uG4igPsuYKjcexy7yU+JnHemikDMHXtTospRhmRpv20tiIzsV8b5644PffNeeVExPYUrDuFDnW9vcDc6ExDJgq/uxIIovN2m+Ry8O8PtKzqayH3n9cxWpbS2pw3EASB8yRdZ7w+sTVpIbkiXUIeQCpUJifzmamDyjBLWO6KHuOUVwUGO6YgJuZqMEOc+lnAf4U2ZwQ/ahyobvM6Aog+hDG+8Se6O6JdxtUSgUqod1PIXJNrsnOYF32Vum8q5FEoPC+ag5U7Rb1S3CtzD9WiOBoRbncQpw7
- maExSBZX
- 6qYXP2V3TYLJqqeJVc24nED21bH3iQMOL1FcdxnS6l327M40Zp3gfpio6e7crJDd53QxbkzKVIoDnLeTZ/w7YpkxmsczFWDIVxA46Fvhc3gyKDK2OiZqqvK5TCsKJfPpPGLt/NnUy57qSm89orn74WYNcfY2kFsrLw3Pum15ug9vzD7ntcvjdZ6VqkNvRQFBP7ryYUvNznV/3brZXu/oq16vwBtsd4T3SnZRtVkcSlxA/JERfyv0aYJ46AlqC6XxMj9z12u9ekeIXfGhwDOpXjZApko+CHn1Q1cheanMBFP1jiG08/CQAxoMpPsTdwY7wbJQjp+SctYjozXdoJk232KEmTNpACG/fPjpZ
+X-Rspamd-Queue-Id: E02A910000B
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768498037-963655
+X-HE-Meta: U2FsdGVkX19fQoxIl449FePtI2NSJXC5PajsLgJqgUqCaSsnEz68PwZDasVLw71/AaPOPvBsDMqb26/yrEm0iMV+eSmS4+z0T13CAmMgVA8+WMMsQuTAwgDcvjFEskzUnxPuEEk2eDXGGlK96ZKI8h5BxbJANJsxIqRSZz+/RQmOU2n7Ts9czayrj0spCwxRWBLSoa5tTFSnqOBjYQ+vYk+/gQFkTYOGQCPhlRvhU3G5PCXGWbYQv/VO09X37Sh5lSCgBL61z4IJOjiwIeTPjprJ4OmVfR59Rk7ubAeo5x48katkS4BHSjG1SNcDBYJCEs6ZRPaLbBpH+ihcJpFHu6fFe2PS8W0qM8Ih02vspkuiP4ZWWa+C9mbGOHxUoJfw89Yr4v9nKzV5IUSKLQAuK9aCzy/6mK/B0gOjy3oOhHXSj0ehRI3QKzqvfhHh3N3h4tqFA1iHg5IakoAuwqRbHLQ/GX4F5OcTietWhnc812zu0J3Zapo5580pU8Jztl6R+jM671N0wsJBU5g1q+5S3uCJDpIE0sz2tz4ge3Ix7QuG6KyjmEYXR9RZjyKVR7lNPnz7/0EIxvYiBFuZOUXX5YzaICUXUetRC0usV6hwhhq+w6RKGDLCHvNZOkIX9TteS5nowE0qBid+z6CwSjeFLbb68wdKmv9wh5wDxUT5i9zK6uaC6GkcOF3FakxLg0L5WTUZNYsFi0eqZe2gqM+ihJ6ZEkYQFiirgMw2iSl+d50wu1CTmc6CXLEZa2SDUv09nKAMPGvq2xxe3rg1WIETB6QtUDxMeNmQ6IboElyeo2e6grHtcnwfNoc+CaoMqw/6mxy4Acc8xib1xH2n9K77aLR1RLToPCSllbOhLPZIbbzrDHBLLCph55N6rGw8d2/SgcHeZh0Bpoja5nlrPkwWjkfQ+xo4bqPtI4ARodJVkbZefICT4GvhL8sVdBWYm4D1r9QagDvpsSxWSsqoUCM
+ 4p+AW2wU
+ FFE/SqHtq25r707QDKZ7m7d7UdLX/a+X4uKhwrwxJI30f9rKTHTU9dtmvlAFtxW5pxXkHU5/9o+r9nu6et7xYERpCI+fESWBUWCYmyII3VVtTc6jgLwTCj1EgXe3TM2x2bGyZZNKIX8ItXPHOibb7zB64CIylVkilzC+1D6g7g2lNTi6PtfvlEeQ1bUeMQvIwMsywze1r0gK8S4Ze2YMJGToPoYuQn77kyuktJuGiT4HJSxIthMjbpw4/4N6S+tFKw4WaCy0NkQFQ+FZejc0MesmVzJXtxiTmYfV58tcVPv4NSrhbnPIIfP0ChU7/rFRQr/cd6K9GVEJc5ZCDWNzmC3JlZYIU0mQlx58D17qao9w2h3hkKWIOEwrcmMOnN9QaaHOmq1FE0gKlxUVy5+gJyyRr9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,33 +142,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 05:48:20PM +0100, David Hildenbrand (Red Hat) wrote:
-> On 1/15/26 17:35, David Hildenbrand (Red Hat) wrote:
-> > On 1/15/26 15:45, Kiryl Shutsemau wrote:
-> > > Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
+> > For the first go, yeah.  A cram.c would need special page table handling
+> > bits that will take a while to get right.  We can make use of the
+> > hardware differently in the meantime.
+> 
+> Makes sense.
+> 
+> I just want to point out that using compressed memory with zswap doesn't
+> buy us much in terms of reclaim latency, so the main goal here is just
+> saving memory on the top tier, not improving performance, right?
+>
+
+Yeah first goal is to just demonstrate such an accelerator can even work
+as a top-tier memory saving mechanism.  But hard to say whether reclaim
+latency will be affected appreciably - won't know until we get there :]
+
+I'm totally prepared for this to be a science experiment that gets
+thrown away.
+
 > > 
-> > Why should that belong to mmzone.h ? Semantically doesn't make sense, no?
+> > I will probably need some help to get the accounting right if I'm being
+> > honest.  I can't say I fully understanding the implications here, but
+> > what you describe makes sense.
+> > 
 > 
-> To clarify, I would have moved it to something more folio-type specific, not
-> something buddy/zone specific.
+> Yeah it's counter-intuitive. Zswap needs to charge less than PAGE_SIZE
+> so that memcg tracking continues to make sense with reclaim (i.e. usage
+> goes down), but if zswap consumed a full page from the system
+> perspective, the math won't math.
 > 
-> I guess page-flags.h + mm.h are our dumping ground for folio handling. I
-> would have moved it to the former.
+> Separate limits *could* be the answer, but it's harder to configure and
+> existing configuration won't "just work" with compressed memory.
+>
 
-I moved it next to MAX_PAGE_ORDER definition which seemed to be logical.
-Moving MAX_PAGE_ORDER around is much more risky (will likely generate a
-lot of build bugs) and outside of the scope of the patchset.
+I think you are right. I am also inquiring whether individual page
+compression data is retrievable.  If so, then this actually should be a
+trivial integration.
 
-I think wherever they will be moved, it should be moved together.
+If not then this is probably ending up on the cutting room floor and
+going straight to a full cram.c implementation.
 
-> Likely we want some folio.h in some distant future.
-
-Sounds like a plan! :P
-
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
-Thanks!
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+~Gregory
 
