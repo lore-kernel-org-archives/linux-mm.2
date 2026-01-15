@@ -4,111 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C2A8D3CCA0
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 03:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EDAFD3CCA5
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 03:18:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0C356B0088; Wed, 14 Jan 2026 22:13:55 -0500 (EST)
+	id C28396B0088; Wed, 14 Jan 2026 22:18:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB9EA6B0089; Wed, 14 Jan 2026 22:13:55 -0500 (EST)
+	id BFFAF6B0089; Wed, 14 Jan 2026 22:18:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBC4E6B008A; Wed, 14 Jan 2026 22:13:55 -0500 (EST)
+	id B0B056B008A; Wed, 14 Jan 2026 22:18:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C96C86B0088
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:13:55 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85B141401AB
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:13:55 +0000 (UTC)
-X-FDA: 84332728830.17.A4167B9
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9415080009
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:13:53 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=ldLfHJq6;
-	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FAEA6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:18:24 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FB1588C52
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:18:24 +0000 (UTC)
+X-FDA: 84332740128.07.EDDD39E
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 675FC4000B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:18:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LWbtqDmM;
+	spf=pass (imf01.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768446833;
+	s=arc-20220608; t=1768447102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Jw+mUY3hA7BYhlUNwtrUxUYy8CLTFaUlLtDD3kSUDM=;
-	b=DPvCwbs/QZ+b3nfAw/qeLwJ3uGG70PEXEqBJ2B3fZK0BFy+h4LvBxn2vQbKhvavSr7b4k8
-	nSXfhjPC/g4NzECi2J5kHGHqnecf/GIG3fENt0uD4sRBFCCyFznopOGqOFdNefsSHRl47S
-	pWg+6TvNza9yxhHzzbvNu9/QqGeDQSU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=ldLfHJq6;
-	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768446833; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ftYr0Vux/TRKiah+jH/Pg17vHKfQ65hz71Fr3PI0YMo=;
+	b=whBu4JvbBsUd1vtEFh2t0Vapwe9JKAljVuvFH2sYpqtp1OZqJAm588OHrn6Xdv48oHrcYl
+	rtspyDIqBjwlYw89Wzl9fnk1YEVAn068Xoy6xK0nwY6+3eVNIup9Sq7Jh4msTZnMktcXL5
+	V4myWobgONTppwZ6uG8Wi8EHSCFvGJc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768447102; a=rsa-sha256;
 	cv=none;
-	b=uXFbw+iYVH5lqF9mhAedI430tod5P0l0Jhn2lwYnnb36W3G69nnLGUkuXutlkNNAaayV3t
-	M5D49VUx3HFxGNCO1gEoIEZzdAJZG6DkdM+slZPO4Y+bfgarEDWtA0mUX/nW0ghT3EGvbQ
-	eYcb1FxR/c7grVHNtIcspqKmJ9VPFw0=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a07fac8aa1so3640355ad.1
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:13:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1768446832; x=1769051632; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Jw+mUY3hA7BYhlUNwtrUxUYy8CLTFaUlLtDD3kSUDM=;
-        b=ldLfHJq6aclA9vV/KhLZt8idjxxbZ8n59krz4X6plWCTA8+WYWUsPxIv8u4UdDLd+0
-         W7oLgy87PjIYKcGd5zRH9mfvzTxuPDKvk0eqFImYz/YJ5gFL4y7A09NoxeBXLHvsVAvI
-         dDJ1iseCb6Y7YWebwUwE11h322fZo7N42veDk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768446832; x=1769051632;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Jw+mUY3hA7BYhlUNwtrUxUYy8CLTFaUlLtDD3kSUDM=;
-        b=HHvFnA6kcMKeFgq1Xg8ROrcguHNUsUchweyWaXZXJS44eXHd3F3RfWkj+++RQKork3
-         qgPJiXUmT+r1bYrOw0RpgDwd3ulyacPozKmFC+W+FPglWNZbxeYTXBkeVHD67wUI+FA9
-         WYSXT4/AchA4iqbqFm+TReYppBzN72AmhYiRBuGTK31pXVFdifNwIRcTScZhvsL1Z6lZ
-         V3tLggJExuQeQOsE7jsrXAGT81tnjQTfCu4nZc1uc0uPSOqM6u1la7oviD8aDRUDXz7O
-         fdM1BPfekT7izSai8YB5nXtJRltMS6vEM2XmK0bAlvz18bi4coLEH0WCLW9Lvs4EwzFk
-         359Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW03Dq9RgMYN/zcLb6ERYe5KfCfQgLmZX8L6G1HhQE7vopLv/c0nyDgASeY4lZ+kIj37iWsT7xvcQ==@kvack.org
-X-Gm-Message-State: AOJu0YwOjcPhxJA5/4NrDxS9Y6SBuaijJZrK6IOkmXUC777xeR6RKNkk
-	btoEw76hWdyELZ0VMpOTKH9CW/lPankYhzewjIw1hAPzJjOguUvYZCo7M9pCfslz3Q==
-X-Gm-Gg: AY/fxX6eOem7ML0BhQ86ZPatD74TOykNbb7Dr9y9YdjTHo9MxtBO6rPKFSf73GKOOio
-	+Y7E8pb5X5zkkbSRXYxomRLxMdNlEUzJSMRvTGJUeXmzNmaxKzxuYy5oTPpKZW6FmnRQ6/XO/Li
-	FpTQXMs7kd4WCY0ayPOlDNg4ING1IoNWctoBklNvNvAMagQIvNLkX9FynwbYS9nAnxR+oic6i3z
-	bmMeFVbhdZe/1xH3hEWPufPaEqe/N9HCYUY31i0wSOJcq6Dqv1D0jHO41/2SHlbtAkrFesgSAvg
-	Lh9ZXDKkBTbd/yrrK0Y4shRexd5Xdmu4yzL9+0uo77/2L5hmUPz33OAc5J++J5Im265CbguLAFv
-	C7ZGG2IGZVya6k94RO+igEnvCF+HHSrE2v8HV7FrdymygIrtZtKVga7Hyaf0fJ6lKnscSVN60e8
-	I9Nzyzy38bEDUctThPQRpGpDhpzNyfsfYudB+ii7/vSetk5zKv6v0=
-X-Received: by 2002:a17:903:41c2:b0:2a0:de4f:c99 with SMTP id d9443c01a7336-2a599ded072mr37132945ad.9.1768446832370;
-        Wed, 14 Jan 2026 19:13:52 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:36c2:991a:5236:1fe5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c5ce06sm235752335ad.44.2026.01.14.19.13.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 19:13:51 -0800 (PST)
-Date: Thu, 15 Jan 2026 12:13:46 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Chris Mason <clm@meta.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
-	Brian Geffon <bgeffon@google.com>, David Stevens <stevensd@google.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-block@vger.kernel.org
-Subject: Re: [PATCH 1/3] zram: use u32 for entry ac_time tracking
-Message-ID: <5dm7qshgxenr6urnd4mdis75r6zpk2rlzcey4svjsp6m4jvnqw@iq4myzyiwm6u>
-References: <d7c0b48450c70eeb5fd8acd6ecd23593f30dbf1f.1765775954.git.senozhatsky@chromium.org>
- <20260114124522.1326519-1-clm@meta.com>
+	b=8CA+PCPXHwQG9DwlJY06C840X7c9wUjMz1wpkEHaTgzBcZnGRCpZHshkP8V3PA0P/wntcF
+	DqZhrJ4xeuxc5rcnH3Zzp7evnpjyyrLXc478gAweZWB2MlO7dz+ddk9f/06ROhFzmi+jaD
+	O4n+762xQxnz7MmpthG/rF6Qpb7u/jE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LWbtqDmM;
+	spf=pass (imf01.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ft
+	Yr0Vux/TRKiah+jH/Pg17vHKfQ65hz71Fr3PI0YMo=; b=LWbtqDmMcfS5RpDZUT
+	WiwVFY/JrqB3o+Jpc8Ww3TkBPk2gVYXFN+nYcme2HbyOg3/InI5L7TmRkzAK54VC
+	btzO3QUMc7+ndiG7BmXQ0Wl8ecA7hytDWJlbEi12A/qB5zz8kISkUDWD1zoGqKPP
+	8rxWFKt0yzp4n3tPrg1k/cXjI=
+Received: from ubuntu24-z.. (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wCHOLvbW2hpqcCoGQ--.22184S2;
+	Thu, 15 Jan 2026 11:15:40 +0800 (CST)
+From: ranxiaokai627@163.com
+To: surenb@google.com,
+	kent.overstreet@linux.dev,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com
+Subject: [PATCH v2] alloc_tag: fix rw permission issue when handling boot parameter
+Date: Thu, 15 Jan 2026 03:15:36 +0000
+Message-ID: <20260115031536.164254-1-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114124522.1326519-1-clm@meta.com>
-X-Stat-Signature: 7igs9co9qxkk1c1refag6eatfwufudrh
-X-Rspamd-Queue-Id: 9415080009
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCHOLvbW2hpqcCoGQ--.22184S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tw1ktrW3CF15ur15GryUKFg_yoW8trWUpF
+	Z5Wr15Krs5JFyxCF93Aa4Ikryftan7tw43trZFgFW2vwnxKrWDJr1rtrWxtF12qFZrCF4r
+	X3WY9rWkWw45J3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zMeHg9UUUUU=
+X-Originating-IP: [117.176.243.29]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7RyCzmloW9yDPAAA3E
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 675FC4000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768446833-467502
-X-HE-Meta: U2FsdGVkX19qB5jexq89IJ41q/6Mko2RFQe0wz8S5nGfUDs1seSqrIhYqCUmPMW6J+IULrQfLWehp6SMqXBI3i+23SUaqEJdFWwNim0AzCtUcalZvD/bJshnStQ65NpNzjqPei/iYJKfeC0tx52gHHkOip1QiY1e70JyKdf6cao+8EHlj+tntqdBdpqzCnqFj+uAAKwObZKCd9GlJU23rvqaSMoQlCwToMX4jkmCh5xQApwtjaudDBYnuATh6lx1PQ+QNA3NF3cfRdx+XUywVoWVIIwi2FPdlUiCsV0IiMmP5S2XcwbP/ij+1oGk8ZPnXcfi1fpKQtQXEs6SqvtW5HUTZCKvsmVJQ8+1Xd/4SYHs61uphmw5jhE4pVAhaFrkunE1pYofAFF4dwr3GmOi2z/CQ7cxL/ugzpmyk50RfiT3g+jbVpMHVf/S3LYQpvC+JsqQTOxSt+/s/UbXDDZrlFIO4Jafgo0wdzwvdXMmn4uTVc32/UAhIRiYffuFQAo2t0DGz3xTiNqN5Go33AmLxu+CCF9IFRJuD6hk5VCxzo+gBDXzPHb35jICsGWgvkLvPl2FZ7197YLg2yua7ez0Fp8vh1OcDgzH+jVH5cQ8l2xLk8B3i19X6YmaoPG+z0/vi3nJOqjMHus4eLR8in2uV+jZArzq9fV0BU5r/lECqB+rmzgMtb17+TjEOSTf6LOdRaaRjSOim26co/acIekrCet7IeBRtXLjhajITL9xj8ItgRbhODGnIRDxdiAcI23skb3wR1TWhFWSrK/utVg/vZFy8B+09gU0eUkB8ig8ZxOhlLIza/sg44qWDMNWe7SJkOz0yzQBidW8WsflmmJD2G/eMCaUSS/+mMWluZD94SgqBscsIYvejiqBGk6fxtjMwofaIT2Iqn95072iZaprON3N7RRIQWzVomunQyyUyoZrsuit46NW1tVCONsMX/f/TSuopkyYjfsRVmKJcJw
- zovgEy6c
- XekrRzi1gkt1su/99A95FUPX/Fcbtcobnz/P4dlCFoongYkpMfmryrk7UGEcR2y8tLZxp9XcYtynjix+DzkvdLNYp8mAOmGREQhoZ3c1LGmOBBp+HjMKMyXTMTgFD3ypgsQC/HsF8exoeHtDwR6CP55SO5I06WrTPKLrrFAiX4ZzCkJqfwekAl1XXNOgkSWt/Rff4JIJBw82kefv7GFrCjt6xsfeXi6h0k039tywVgjW5hmugwABZtppYsA9TW7OmaUcBJtt/2c4GAGlziFNV9Vrd4zDR3M0EKZHEAS+pf3RC14e/t7JYmFDNPaDqN/+pn2wOYTrnlBItK5lSkBKTV5UR1dlgE2C57JCLZnC69L0GgzkqWMFw0YP/Ifp3wBJIXWkqulGSFIDMwX9PuJkmqiDcrd7ykmiRJsUwA1SaosTkflRkcTp2PiXfFCARTxPINOIr1xDnduVgj8oOKdJrZvRoLOSqPzdYXh1geimASc5srjo=
+X-Stat-Signature: jcu631bp88anpn398echcdi8cjcerctc
+X-HE-Tag: 1768447101-548319
+X-HE-Meta: U2FsdGVkX19rYN7W8EKaeyCPAK+LUFQldlaGf2/VRML49lHoU92PmZgh33lBP9M0E//kt42CsYDtUjjumtFU/927+pV1h6MsLy1p7fY2GkXJDZOilwFRHy7vVjaCeeVfrvmozRhYfcImR3Q/EGVG7jnp4hfpsicORzA8yCVXtvpJGLacbnDX62U+V8Tl1NzNEwUKW+IcW8qDElhPqBG+cLNYuMb1K0MHWLUDilLEKwFHSlhJOdH12cy0dzpXTyjSjSuQCkCjOL3HSZiYk/up+M5aJ8+5tRKPtOQGU9NCbT1+pdXJSpoqFDHk7+g/WU38HmOrpZr7PPPPFPDtqdcPtMfZqAV7yPXtK2vCJc6pjUGa2Fue35WErqdvuq3vrHPPoioD6xdKJ4t4DcysQ3SFeHkHNM5LnGneNl3ZVAy9Gkn9BkeW/cI5HWY6+39m1vWQ1EE7b4cfyyTnHQj/yyO/FlaZGevbTk1dRKaLU85DGHggxYmcZOyeWjwlDgR/uVEc5GwaiLY7UVlRJsSZNFV54eDBCRfU6S/L2nBc9b7b+UOLQ6DsUgxtJUnh0iKNEWLeE3fUI5BYmA5pb6c4DPKNTF1z+Wkb2wd4OT9+0VJaOoZ/MgHpIA7vkBsksNrZF49yQ2Sqhx8JRzNWb1isbvhtlnzt1q4pzYIlDPpypFFLzbnjo0yUZoHEFsHfooKCXcUurs292oDUL4ub/T0+FtKqSSy72rCa1afmF9IZqjznukKmUK/K/8dBQNk/44l3RieZJopJtRULc6is7sG5JU4hQkX3fYVEIdrK9uxg2iLAdWvefBw4w40E4S3GIUh3ADeStladHzxNy+ZcFR92szYCfHFnnVEfrMJFkxHLrlYdZo2AnYv+sNjtrqbzp2luqHFeEaeq8YebmnhHBQuHaJUaKGnJ1bdj2aDT17pOyx8/5ryGy7wgcUYEt7qA5XnZfOdj5LrUpfIcoyd3Y6AKH//
+ g/U2LPiO
+ okBt4GFdX/a8mBFgBcBbKM3ot2a+j/VUkhw1so0mRvBVjgMF9SVxxLNXPNHRA92SZmGavoB105jz+ESjespyCnOeA5Di6E+rjLasYQpHeibOROhIX08rHAPDRP+RBafqmRUzM96NzSff8/+ZHPitmTPzh5CcEhkbcZ0/lJ+SW5bjeu3q6GZLpPJ9BbB81lzG1whG76ahai2maSHfv86LImVoj9UFqmVA+qrXsJvuCqahW0QSOYbpjDLfWwZh+tE9TZd3jLWJMY0xoG4sqGWTMgLn7hpHEU0X4QOArr75G/fpIPdJ8hed1ApnSTel4R47YsmKMQlrdgQxK/Brt8s2JqNJvJr9EZl6Q8VA5z+cq043HxPLNAmbgx6/gvzThdI4JlyaIMN/ZvcEJQwOOIESCHoBycfl54GtEpLTAtlCuMUecWHvwFB7Tk7jXwgj+ZW/77nZcYk9Yj0WGgF4R8gALidyuzQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,54 +94,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/14 04:45), Chris Mason wrote:
-> > @@ -1588,7 +1588,7 @@ static ssize_t read_block_state(struct file *file, char __user *buf,
-> >  		if (!zram_allocated(zram, index))
-> >  			goto next;
-> >
-> > -		ts = ktime_to_timespec64(zram->table[index].ac_time);
-> > +		ts = ktime_to_timespec64(zram->table[index].attr.ac_time);
-> >  		copied = snprintf(kbuf + written, count,
-> >  			"%12zd %12lld.%06lu %c%c%c%c%c%c\n",
-> >  			index, (s64)ts.tv_sec,
-> >  			ts.tv_nsec / NSEC_PER_USEC,
-> 
-> ktime_to_timespec64() is defined as ns_to_timespec64(), which expects
-> nanoseconds.  Since ac_time now stores seconds, will this produce
-> incorrect output?
-> 
-> For example, if ac_time is 3600 (representing 1 hour of uptime),
-> ns_to_timespec64(3600) would compute ts.tv_sec = 3600 / 1000000000 = 0
-> and ts.tv_nsec = 3600, resulting in "0.000003" instead of "3600.000000".
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Good catch.
+Boot parameters prefixed with "sysctl." are processed
+during the final stage of system initialization via kernel_init()->
+do_sysctl_args(). When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled,
+the sysctl.vm.mem_profiling entry is not writable and will cause
+a warning.
 
-I think it simply should be like this now (I don't think anyone uses
-this function tho):
+Before run_init_process(), system initialization executes in kernel
+thread context. Use current->mm to distinguish sysctl writes during
+do_sysctl_args() from user-space triggered ones.
 
+And when the proc_handler is from do_sysctl_args(), always return success
+because the same value was already set by setup_early_mem_profiling()
+and this eliminates a permission denied warning.
+
+Suggested-by: Suren Baghdasaryan <surenb@google.com>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 ---
- drivers/block/zram/zram_drv.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ lib/alloc_tag.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index cc51aa8b6181..912711faa4e4 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1579,11 +1579,9 @@ static ssize_t read_block_state(struct file *file, char __user *buf,
- 		if (!slot_allocated(zram, index))
- 			goto next;
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index 846a5b5b44a4..00ae4673a271 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -776,8 +776,22 @@ EXPORT_SYMBOL(page_alloc_tagging_ops);
+ static int proc_mem_profiling_handler(const struct ctl_table *table, int write,
+ 				      void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	if (!mem_profiling_support && write)
+-		return -EINVAL;
++	if (write) {
++		/*
++		 * Call from do_sysctl_args() which is a no-op since the same
++		 * value was already set by setup_early_mem_profiling.
++		 * Return success to avoid warnings from do_sysctl_args().
++		 */
++		if (!current->mm)
++			return 0;
++
++#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
++		/* User can't toggle profiling while debugging */
++		return -EACCES;
++#endif
++		if (!mem_profiling_support)
++			return -EINVAL;
++	}
  
--		ts = ktime_to_timespec64(zram->table[index].attr.ac_time);
- 		copied = snprintf(kbuf + written, count,
--			"%12zd %12lld.%06lu %c%c%c%c%c%c\n",
--			index, (s64)ts.tv_sec,
--			ts.tv_nsec / NSEC_PER_USEC,
-+			"%12zd %12u.%06lu %c%c%c%c%c%c\n",
-+			index, zram->table[index].attr.ac_time, 0,
- 			test_slot_flag(zram, index, ZRAM_SAME) ? 's' : '.',
- 			test_slot_flag(zram, index, ZRAM_WB) ? 'w' : '.',
- 			test_slot_flag(zram, index, ZRAM_HUGE) ? 'h' : '.',
+ 	return proc_do_static_key(table, write, buffer, lenp, ppos);
+ }
+@@ -787,11 +801,7 @@ static const struct ctl_table memory_allocation_profiling_sysctls[] = {
+ 	{
+ 		.procname	= "mem_profiling",
+ 		.data		= &mem_alloc_profiling_key,
+-#ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
+-		.mode		= 0444,
+-#else
+ 		.mode		= 0644,
+-#endif
+ 		.proc_handler	= proc_mem_profiling_handler,
+ 	},
+ };
 -- 
-2.52.0.457.g6b5491de43-goog
+2.25.1
+
 
 
