@@ -4,117 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7157D41144
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:25:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C54BD41149
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:27:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DE1A6B00A7; Thu, 15 Jan 2026 04:25:28 -0500 (EST)
+	id E27176B00BC; Thu, 15 Jan 2026 04:26:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B2AE6B00AA; Thu, 15 Jan 2026 04:25:28 -0500 (EST)
+	id DC82D6B00BE; Thu, 15 Jan 2026 04:26:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B58D6B00AC; Thu, 15 Jan 2026 04:25:28 -0500 (EST)
+	id CA0B16B00BF; Thu, 15 Jan 2026 04:26:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F417D6B00A7
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:25:27 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D22331A0278
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:25:27 +0000 (UTC)
-X-FDA: 84333665094.26.FC1E1AF
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E8452120006
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:25:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dg8tyO+u;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BBE126B00BC
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:26:59 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6CB328A87B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:26:59 +0000 (UTC)
+X-FDA: 84333668958.25.D2145B5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 74F321C0002
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:26:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GTPbEKNv;
+	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768469126;
+	s=arc-20220608; t=1768469217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WYui0318UOsS6VyHkKkmfrBiXM5qykug+UUq04REjYo=;
-	b=CJ+8+TQYQOT/v42GtgLyNqEwnEmjSy2p3RjBWK9A1Ku7O2jCOzUqZHR9v6gFmVQuq5wpaJ
-	PYl4qnjJPF4jqbrX3mxTTDUaemsWwiNFYmtwCj6nOTuplxxfpBeIO4pb1YM474q1bJQPEg
-	+Vb/N2xDfJaa1lNYjhP96VznvF33k6Q=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dg8tyO+u;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768469126; a=rsa-sha256;
+	bh=o3P5TXz9n5urVuMSto49THOUDq4k6hsZfwksZf+Xzdg=;
+	b=WcasXYoiunsh40HB0TjAW6moEpl03Kf3Hz+p8Z6eDsvef04Qlf9gPEmjMIcFd4+/vopgqS
+	rBRfhrjMO26aid3W9a3Afl80G5u/aOyJOJU560rZ4bkpO+cDYkhM38dTHpnkePgo4V06FH
+	7iJuS0MKsgX97E0P7ufqo7OAxfGeOx0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768469217; a=rsa-sha256;
 	cv=none;
-	b=Gczwu1TLgI8kaGFxApcAFd5/bMVI3mqcARm5beIUuQFotMcGdmuvcVg+J7u7Q6klTdVMjY
-	TXySLNT2I8aSgPZOYPGXzCRifax6WOkBKgbeZubN7Nv06BaMNVDGm7WsnryQNwyyu3leqH
-	7u8iHFYxqvWP4QuZzL0wqIBolA+a/yg=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-64d02c01865so1106411a12.1
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 01:25:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768469124; x=1769073924; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WYui0318UOsS6VyHkKkmfrBiXM5qykug+UUq04REjYo=;
-        b=dg8tyO+uvHffPYkHO7SRGs8BQKdugizXy0joWKFrS3XEij4Z7ocLCn9lgGknw+Us5F
-         BYIs9S87QLZ8tcxZFDxHR2xrXf9GlX/KMPewZ/IazgNPYEA5qj4qgJN2I60YFA3zdjMB
-         P7E0KbBPxl99mTF6rMVRCmxBtrpizTK17lYLxL3Br7L5PojSGEWV24hJmtomoWRhHzFF
-         CCqvj349ME0cHRkbjT3q23QOuAoOnJRk8I1R3T3T4E8b8gSjV4F90XvNrUUarMLftfmR
-         S0tUaiZL43DAbPfTkckg/NkhZAdZIb+ekzMB5AVQ0A/JTgg80Vozj3stdD+pglZ6WcFB
-         2Wgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768469124; x=1769073924;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WYui0318UOsS6VyHkKkmfrBiXM5qykug+UUq04REjYo=;
-        b=pWQkTY7vy1k94N9qbTQD8jg7XfnbqptbDghn0kmCVf/kUOtn3ehYzVnAd3Fi3/yXTE
-         3nt3sDa6S0gap3Zqmfns1O5CyB2Gsn72qFnQHNXRwGT8uuFXRPDLoVRrf7zsQEay92W4
-         /eq3Uq7Gd9UKWMsWcuYD+H34asQ9sBhxYZh857nBibMwvh8MgcnP1C32YriDjh9/RIZS
-         flkIGrk2psFheQsM2/LzMhRCE45xwz38OQpNRdr4NIwXMQTsNqc2Sw/RIoXYepH1YbXP
-         arpvCX5wr408RFI+O6Fj8EQXAX0cF7tr0+UO6s1+/n6q13ms1EnZMvdFq42k4pVhNQIb
-         ZojQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAk2SS1tAni+TLBk4H5+tJciEJw5UtSsUoN6TnY6FsjJY2xksK5HrHce4zol8aswBVShNUrwaTjA==@kvack.org
-X-Gm-Message-State: AOJu0YwpEHjS425rlRZ3aa/dV2as33hsy9Sg/bxcCuOcM69il7nY4qhj
-	eLg6iDSX1VbpNKyerQMzowW4EUlewN6V9KFjvOmEj6723Y1CpooeolAYkFLrKvjNTcPPHNx0cAD
-	jDx4Dbl11Z1ENRFIhsgmOy6NkZHfeKoY=
-X-Gm-Gg: AY/fxX4RkssqJZrJ2PMekBt4KxI30c4QAKCbkOG6YF9yGNk1Q81b7MaOtUsCeeDQzci
-	TzDOx0A06XShuG0i6g4qubLxrg/ja0Ykqcr+MTTcZsGi5qGz3qIuOZaPMSqtwb1kH/r1gqM55/D
-	0GvFWssRd3JGFF8Tw9L6NMRhjZ3+Njc0yNZzxTI+pc4WQriTo2Pj2Igvzabk6nyKH/chcRRgAri
-	j+YmXDbVw0mUwfgeGQf8uAlnxn34EevIGdXOL4ukhVy65868AHO1D2qyJITBaoNyQydKkfOVAru
-	VDS8676D3AI1N7xx/QNqWeccn1gF
-X-Received: by 2002:a05:6402:2804:b0:650:891f:1c06 with SMTP id
- 4fb4d7f45d1cf-653ec115969mr4596435a12.12.1768469124088; Thu, 15 Jan 2026
- 01:25:24 -0800 (PST)
+	b=xK2gZx52RDvhmNDRzAP9KLCTPW9So7qdMx7UmbfQ1fj+gVHJY2ji+ck5eF83pmazfQ/e7p
+	lNKWEJEXS5KtMTthTgzB1QsC0II1IIEShSjQKLxE7soX9knqGxSQpsOlxPejxetEHjZNM1
+	oOa/sIjKeikLRPA30UYHkIo4fYIZbfA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GTPbEKNv;
+	spf=pass (imf18.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768469216;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o3P5TXz9n5urVuMSto49THOUDq4k6hsZfwksZf+Xzdg=;
+	b=GTPbEKNv/izx7XIIDaEzfYfGIzl4SYts/eHc9xJCuCXH1GMBMPBnuiSCWeJbVBvubANgdN
+	YdDI16ptomUcDvL6zVsgsYeQF+poLd+Th6q5yNmsLSv8KTXoSrdzM2JBQK8scMJEFUQxuO
+	LnWDZPAeL3IOHVDM8vlWk5VsER636Xs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-3KKHiIK4PEicFgHIz8RiFw-1; Thu,
+ 15 Jan 2026 04:26:52 -0500
+X-MC-Unique: 3KKHiIK4PEicFgHIz8RiFw-1
+X-Mimecast-MFC-AGG-ID: 3KKHiIK4PEicFgHIz8RiFw_1768469209
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B9EE51800473;
+	Thu, 15 Jan 2026 09:26:48 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.110])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA338180066A;
+	Thu, 15 Jan 2026 09:26:46 +0000 (UTC)
+Date: Thu, 15 Jan 2026 17:26:42 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	chenridong@huaweicloud.com, mkoutny@suse.com,
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v3 23/30] mm: do not open-code lruvec lock
+Message-ID: <aWiy0mDN0Ed9mLiG@MiWiFi-R3L-srv>
+References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+ <33fef62fd821f669fcdc999e54c4035a4e91b47d.1768389889.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-References: <20260115001405.3513440-1-robin.kuo@mediatek.com>
-In-Reply-To: <20260115001405.3513440-1-robin.kuo@mediatek.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 15 Jan 2026 17:24:45 +0800
-X-Gm-Features: AZwV_QidmYXnF7h9yz4oq7n444gRgXoBRtnbiVEv5D6iVPSwvP_31krseRm0_Mw
-Message-ID: <CAMgjq7Db38sNdsGe121oBFshiJz+vUrKWf5BjB3djAYUr40LLA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] Restore swap_space attr aviod krn panic
-To: robin.kuo@mediatek.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, wsd_upstream@mediatek.com, 
-	casper.li@mediatek.com, chinwen.chang@mediatek.com, Andrew.Yang@mediatek.com, 
-	Qun-wei.Lin@mediatek.com, oliver.sang@intel.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ocqzybg7b9iw9fcfh8ajmker3rw85ykp
-X-Rspamd-Queue-Id: E8452120006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <33fef62fd821f669fcdc999e54c4035a4e91b47d.1768389889.git.zhengqi.arch@bytedance.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 74F321C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768469125-380192
-X-HE-Meta: U2FsdGVkX1/QSnVORVfEKWLaipmm5qy+jc0X4GM8npxqlj9Iw8IkoDdHmsPkdR4ZxtWHpKKwo1W4t/nmuswN/aRB7vNSilZlIWYRcJMNbDgkX/1aPgCtAbKo26LJoYlUUro0Ok52QBntulFfnu37pUUbhvUTz390y/C+5SRikm0hD0wVntbih+4TfQ3VF/PK1nbBs7WqAsVfTivBizbjSMjIICEjpaK5e/+QcMeGkTB9FWrvbSPSr5poMkyQ4b9r7IJlzt8w8E6GETIzoLdU8J6ve+yUV0ZCj4CZ3vyma+b5F+S2fuMUYKf3UonrAgIXYHnrTNC1WKq1LIXOJ9woWxHci68ZNie6+OLoG6e7HU2Zbozh8aTFBUrTZKo/0ijQOZDOXFs/8OlGL3/kpC+CLyKmp8c48T3VZbZ42Obyw1ZY7F3F+bWh3D6vhidrpNUOixyJcTe8l21y0w2bZw2ngwEOagSPxLwzY+MxXOyDufemdNDr2ehxZHQbllgHn/+2HneniaZt0vcc4kJcGdioa6L31y0HvO3yVQlj27FxKoxIMGDqXYQOKpqS4AQWwEphwipqYFWFZXViz4BaOlpue9CXVI4Iyf9Ght+P0YuE953nw9c3qBfAlYTCGuIKrqyi1lii9OJubZeyykVlvJBNMyZK2YWWbDCtXtfOLU/rHISpphM/gTMKijGeAeGrLfDDp6DkqayfbA6osWtoN4smicONJ6BaLSqB3pIc9TOM3uqBC8bgT1DsAKDVcNGiIOnTSTXMOhbfdMztayMuSGqadLnJ6eskrk3oGWGipwvYtgC+wOeWXlaiu+EXwobj0Yixl0jZdsF/w/wNJgW88gMT+DGpRnYHVPqovcKYrwTVluNpMnplO/bp09/+Hi57fpcSrwqWG491s3gXSX6ENNcsnIY+FOQwptIhiZS6gkY0m9XLpM2/X6wjTZwl6to5oLQCq2UEPNHbfjHTcbljrFi
- 2h4rJSqN
- faaytDbPIeqW5kKDs5SoF6rnuBCblRqYhOOtPmXGLCDQnjvYicxrDA69JavFjrqJU5sysATcu0XADxKDXNzCwf+kVjTRXjI6BA2bWUeaNwG9q7G+X8jXedDC7/JLHLHjlmpTTj7/k/5cV1VX5CZBCCJlMoUs/Z+Vu8XtkOGfKMf6yfPatbHv19ZihZIyf7+2A1Pb1qYpri0u+YnAAPo6gLo0vPrxJDxB3jZFXyRxWLFeMsytrwDEKvXxB9AJKt0ddELfj0l39aU6+LP5eUkka1XGNXFn47QHl5eBVl8zSsKFkhxRnFVKPpK73p7NdcKtjpXyW/EdlLezadstFCkRs+ZH/D8YjlSZQvZDTBim7TISFsRJXnRzTklErBs+vL4p+vA+CK2Ey7l/5lZgWi0gVfmX+SJthbBd51nk3PI00j60kqZ6sanT/Xghd0obFfBJm0Hc0GQ4EFLrvoXtaT7yiNVWLnho5KjBD/XOQsNrshJQOS2uI5snZ799OYGotakGICuUJftdQeIeEtrHYYD3gQQvKurA6eRjcCjepZWxpYw8VjiL+y7nFUAjOh5dsgBmQw+lESmyOHGNb/84ZP3rhlnBEufjbyLnU6Wf2+Uc2DY+Q6oI=
+X-Stat-Signature: jiywjg1y7x5aw6bifmyjy7zn9y8ydu1n
+X-HE-Tag: 1768469217-977023
+X-HE-Meta: U2FsdGVkX191/2bCwr5lQ0U7jXPwoaxAI+dyLZjsiJibtZ09i8XvLB/A0c3ZwFL8TafmVTcBQvCOy1TLk5pT5eajgnc+4iK/ouRB1F4TXEQNS8+2ws+bWB5adUlH+CjcEfszctt2O/XQ31LVZAKahKHoHaSV1tYKCTWzi+XUL+jrs1cKlFt4qeIvcwm47r7V4og6WKCQmL9vdGchSUfEsp8pBDAdLSOaOxfpqKKwFgxUlZmqp86lFFsX8+iSNUDEMVe7CL3MazR04luLW2Lv0D+9Q3o801MrG05vj1tcwBEE5M50YM2lCwgX6VmkoTspZug5gthq1Oad6I0qiDge2oZt5EhCJEl+8DNFpgcXtB8tTdjaC73aT18nIXNBj8tFy1CRoeMtQ6SvBz6yz05WKx3Rt1f1iNXaK2kaCNxdupvq2xjuODZt4NSA1vQJfeMo5ci1762cxCYt+zZxn045NNE+2Rfu+2rDXfXvjLuVclImSbgX/BgQv6XdqTTl7/upVxVuVI4vbRIVQrfh4ajv1CgPRQANbKbOXWM+HrPCObTVvH+cGIP+Vz6RfOpJcx0bx4JKnU04Mnbv0jhI02JoITCrHP64gghl2b9kVhBycRhMJhrAzs0f7T6WC8IdOb+y9jJAgpqn1qrKpRm+SM0IlP2bmTXDheyQvUHhCvbOPJRCcEe9Gks0whyiyRMDwJlTcCwtZADPWO3wIczmb3bVRwEgHnyTzp/G7oWGmnTtJME3gVdBzFVfoyKEfJSIqKI1OorefcJqMf/kC3VkjdvTXbCDOxjec2JXrH8HuoQNWm4RTGmx5qLJngGd74GyQBTlkLLZfH+NVxdwgYuFAA8O4pQ4/dJXGQ/NfbwLxM6l2Lg9lsFV17/UnOQQfM1Dovm7RBp+ep9TDyGyWIewNo+3F4nbLzNK0sx224d18uGRUwgIAJlsrwZpDJ875JSTG8fhqq9KnPzJm2Co/H4qiGP
+ 6yUfBPKN
+ LCooAcVZw8NOfh/bcvDc3yClu6fJnTcAtCRf5kCas6apNZCkjw+q1S8tFTutRqztx1F9xzMd07zbcZwXkNWjOvmJO8kVS9u/RJXTghrZTi19ZSyvl40tuRBmasXJKDHX9bJh7xBFC4ccG3yIJggw9Ejz6KSlOG57tMPE4NjKy9EO30A8N/ZlcwXu9m132AfGAc8+G+XnprOHrWP+f6uoBDnQkksZc8Ee6dmiWhn/bC6+d/ylzJAXa4RbUcHUtL+6BJnrGgTT2+wHiKGPWRdbN4c/fOEHHxDBLhZw3CyJXJzAanxolio7b8ZdHbpsd3w5DmG8NV80F/WJqVyZcDYw1WEYO0kpVhmiLsinsVO6iGm85QJrT2mxqNyVwJRsqhv4IuwIx0jgsQyn+rewK4E4VHS4eHl+40Po2C55SEpBymzKg0eY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,50 +112,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 8:14=E2=80=AFAM <robin.kuo@mediatek.com> wrote:
->
-> From: "robin.kuo" <robin.kuo@mediatek.com>
->
-> Restore swap_space attr avoid krn panic
+On 01/14/26 at 07:32pm, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> Now we have lruvec_unlock(), lruvec_unlock_irq() and
+> lruvec_unlock_irqrestore(), but not the paired lruvec_lock(),
+                                  ~~ typo, 'no'?
+> lruvec_lock_irq() and lruvec_lock_irqsave().
+> 
+> There is currently no use case for lruvec_lock_irqsave(), so only
+> introduce lruvec_lock() and lruvec_lock_irq(), and change all open-code
 
-Also a nitpick, you may want to add "mm, swap:" prefix to the patch summary=
-.
+  I didn't see lruvec_lock() is introduced in this patch, do I miss
+  anthing?
 
-> Commit 8b47299a411a ('mm, swap: mark swap address space ro and add
-> context debug check') made the swap address space read-only.
-> It may lead to kernel panic if arch_prepare_to_swap returns a failure
-> under heavy memory pressure as follows,
->
-> el1_abort+0x40/0x64
-> el1h_64_sync_handler+0x48/0xcc
-> el1h_64_sync+0x84/0x88
-> errseq_set+0x4c/0xb8 (P)
-> __filemap_set_wb_err+0x20/0xd0
-> shrink_folio_list+0xc20/0x11cc
-> evict_folios+0x1520/0x1be4
-> try_to_shrink_lruvec+0x27c/0x3dc
-> shrink_one+0x9c/0x228
-> shrink_node+0xb3c/0xeac
-> do_try_to_free_pages+0x170/0x4f0
-> try_to_free_pages+0x334/0x534
-> __alloc_pages_direct_reclaim+0x90/0x158
-> __alloc_pages_slowpath+0x334/0x588
-> __alloc_frozen_pages_noprof+0x224/0x2fc
-> __folio_alloc_noprof+0x14/0x64
-> vma_alloc_zeroed_movable_folio+0x34/0x44
-> do_pte_missing+0xad4/0x1040
-> handle_mm_fault+0x4a4/0x790
-> do_page_fault+0x288/0x5f8
-> do_translation_fault+0x38/0x54
-> do_mem_abort+0x54/0xa8
->
-> Restore swap address space as not ro to avoid the panic.
+> places to use these helper function. This looks cleaner and prepares for
+> reparenting LRU pages, preventing user from missing RCU lock calls due to
+> open-code lruvec lock.
+> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+>  include/linux/memcontrol.h |  5 +++++
+>  mm/vmscan.c                | 38 +++++++++++++++++++-------------------
+>  2 files changed, 24 insertions(+), 19 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index f1556759d0d3f..4b6f20dc694ba 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -1499,6 +1499,11 @@ static inline struct lruvec *parent_lruvec(struct lruvec *lruvec)
+>  	return mem_cgroup_lruvec(memcg, lruvec_pgdat(lruvec));
+>  }
+>  
+> +static inline void lruvec_lock_irq(struct lruvec *lruvec)
+> +{
+> +	spin_lock_irq(&lruvec->lru_lock);
+> +}
+> +
+>  static inline void lruvec_unlock(struct lruvec *lruvec)
+>  {
+>  	spin_unlock(&lruvec->lru_lock);
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index f206d4dac9e77..c48ff6e05e004 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -2020,7 +2020,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+>  
+>  	lru_add_drain();
+>  
+> -	spin_lock_irq(&lruvec->lru_lock);
+> +	lruvec_lock_irq(lruvec);
+>  
+>  	nr_taken = isolate_lru_folios(nr_to_scan, lruvec, &folio_list,
+>  				     &nr_scanned, sc, lru);
+> @@ -2032,7 +2032,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+>  	count_memcg_events(lruvec_memcg(lruvec), item, nr_scanned);
+>  	__count_vm_events(PGSCAN_ANON + file, nr_scanned);
+>  
+> -	spin_unlock_irq(&lruvec->lru_lock);
+> +	lruvec_unlock_irq(lruvec);
+>  
+>  	if (nr_taken == 0)
+>  		return 0;
+> @@ -2051,7 +2051,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+>  	count_memcg_events(lruvec_memcg(lruvec), item, nr_reclaimed);
+>  	count_vm_events(PGSTEAL_ANON + file, nr_reclaimed);
+>  
+> -	spin_lock_irq(&lruvec->lru_lock);
+> +	lruvec_lock_irq(lruvec);
+>  	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
+>  					nr_scanned - nr_reclaimed);
+>  
+> @@ -2130,7 +2130,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+>  
+>  	lru_add_drain();
+>  
+> -	spin_lock_irq(&lruvec->lru_lock);
+> +	lruvec_lock_irq(lruvec);
+>  
+>  	nr_taken = isolate_lru_folios(nr_to_scan, lruvec, &l_hold,
+>  				     &nr_scanned, sc, lru);
+> @@ -2141,7 +2141,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+>  		__count_vm_events(PGREFILL, nr_scanned);
+>  	count_memcg_events(lruvec_memcg(lruvec), PGREFILL, nr_scanned);
+>  
+> -	spin_unlock_irq(&lruvec->lru_lock);
+> +	lruvec_unlock_irq(lruvec);
+>  
+>  	while (!list_empty(&l_hold)) {
+>  		struct folio *folio;
+> @@ -2197,7 +2197,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+>  	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_deactivate);
+>  	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+>  
+> -	spin_lock_irq(&lruvec->lru_lock);
+> +	lruvec_lock_irq(lruvec);
+>  	lru_note_cost_unlock_irq(lruvec, file, 0, nr_rotated);
+>  	trace_mm_vmscan_lru_shrink_active(pgdat->node_id, nr_taken, nr_activate,
+>  			nr_deactivate, nr_rotated, sc->priority, file);
+> @@ -3832,9 +3832,9 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
+>  		}
+>  
+>  		if (walk->batched) {
+> -			spin_lock_irq(&lruvec->lru_lock);
+> +			lruvec_lock_irq(lruvec);
+>  			reset_batch_size(walk);
+> -			spin_unlock_irq(&lruvec->lru_lock);
+> +			lruvec_unlock_irq(lruvec);
+>  		}
+>  
+>  		cond_resched();
+> @@ -3993,7 +3993,7 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
+>  	if (seq < READ_ONCE(lrugen->max_seq))
+>  		return false;
+>  
+> -	spin_lock_irq(&lruvec->lru_lock);
+> +	lruvec_lock_irq(lruvec);
+>  
+>  	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+>  
+> @@ -4008,7 +4008,7 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
+>  		if (inc_min_seq(lruvec, type, swappiness))
+>  			continue;
+>  
+> -		spin_unlock_irq(&lruvec->lru_lock);
+> +		lruvec_unlock_irq(lruvec);
+>  		cond_resched();
+>  		goto restart;
+>  	}
+> @@ -4043,7 +4043,7 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
+>  	/* make sure preceding modifications appear */
+>  	smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
+>  unlock:
+> -	spin_unlock_irq(&lruvec->lru_lock);
+> +	lruvec_unlock_irq(lruvec);
+>  
+>  	return success;
+>  }
+> @@ -4739,7 +4739,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>  	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>  
+> -	spin_lock_irq(&lruvec->lru_lock);
+> +	lruvec_lock_irq(lruvec);
+>  
+>  	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, &type, &list);
+>  
+> @@ -4748,7 +4748,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS > lrugen->max_seq)
+>  		scanned = 0;
+>  
+> -	spin_unlock_irq(&lruvec->lru_lock);
+> +	lruvec_unlock_irq(lruvec);
+>  
+>  	if (list_empty(&list))
+>  		return scanned;
+> @@ -4786,9 +4786,9 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  	walk = current->reclaim_state->mm_walk;
+>  	if (walk && walk->batched) {
+>  		walk->lruvec = lruvec;
+> -		spin_lock_irq(&lruvec->lru_lock);
+> +		lruvec_lock_irq(lruvec);
+>  		reset_batch_size(walk);
+> -		spin_unlock_irq(&lruvec->lru_lock);
+> +		lruvec_unlock_irq(lruvec);
+>  	}
+>  
+>  	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+> @@ -5226,7 +5226,7 @@ static void lru_gen_change_state(bool enabled)
+>  		for_each_node(nid) {
+>  			struct lruvec *lruvec = get_lruvec(memcg, nid);
+>  
+> -			spin_lock_irq(&lruvec->lru_lock);
+> +			lruvec_lock_irq(lruvec);
+>  
+>  			VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+>  			VM_WARN_ON_ONCE(!state_is_valid(lruvec));
+> @@ -5234,12 +5234,12 @@ static void lru_gen_change_state(bool enabled)
+>  			lruvec->lrugen.enabled = enabled;
+>  
+>  			while (!(enabled ? fill_evictable(lruvec) : drain_evictable(lruvec))) {
+> -				spin_unlock_irq(&lruvec->lru_lock);
+> +				lruvec_unlock_irq(lruvec);
+>  				cond_resched();
+> -				spin_lock_irq(&lruvec->lru_lock);
+> +				lruvec_lock_irq(lruvec);
+>  			}
+>  
+> -			spin_unlock_irq(&lruvec->lru_lock);
+> +			lruvec_unlock_irq(lruvec);
+>  		}
+>  
+>  		cond_resched();
+> -- 
+> 2.20.1
+> 
+> 
 
-For a stable backport simply making it not RO is simpler and better.
-We can do the cleanup and add debug attr as I mentioned in another
-reply later.
-
-So for this change with Cc stable:
-
-Acked-by: Kairui Song <kasong@tencent.com>
 
