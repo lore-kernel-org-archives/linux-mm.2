@@ -4,114 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BDD0D3CCA3
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 02:39:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 686A1D3CCA6
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 02:40:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AE566B0088; Wed, 14 Jan 2026 21:39:37 -0500 (EST)
+	id CF31E6B0088; Wed, 14 Jan 2026 21:40:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35BDA6B0089; Wed, 14 Jan 2026 21:39:37 -0500 (EST)
+	id CDB346B0089; Wed, 14 Jan 2026 21:40:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23D646B008A; Wed, 14 Jan 2026 21:39:37 -0500 (EST)
+	id BD7786B008A; Wed, 14 Jan 2026 21:40:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1275D6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 21:39:37 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5FA718862E
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:39:36 +0000 (UTC)
-X-FDA: 84332642352.19.3924EC2
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7E7CE1C0007
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:39:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Vh/Ap+qh";
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AC4C76B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 21:40:47 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5CBFB1601B5
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:40:47 +0000 (UTC)
+X-FDA: 84332645334.22.601517C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B629E10000A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:40:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Vfb3gBTf;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768444774; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768444845; a=rsa-sha256;
 	cv=none;
-	b=gHbTTxqeFpmVooCiWkdy0DkgfSY7/ugtcEN6TUTtQX0N69gQaffclMl4CMgQ1lUdrVuvUS
-	EoSFRvzby3F++r7HYw/t2+dbaurlgs4514U6XMjSRoR7KdBxHVe1kXdxqXo2lqyzbNhQae
-	N9OKIWiftjqWS61d8s8Fh7g75yLpvzE=
+	b=llkqxch9xpkFpkvzVSgaFxpY15LPG5mTcofg/vMImCxACJgAWt269l8fv9xpXyrA9qeJO0
+	tXuG6TeqecHxLwtcn9uus59+we5v2hZ59CihHauulZbKT2wRCSppV0qp6nBV3f4DChSJGq
+	8FDjgPQjpeovZGuzQWnTn9kHGcMVBhQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Vh/Ap+qh";
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Vfb3gBTf;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768444774;
+	s=arc-20220608; t=1768444845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qcW/hY6JWQg4aPWEmrNXUmJDtQucQInwfAPavQZW27U=;
-	b=04+TlzewaMeJVYSicdNJSAekbtEzljRyiZlzQdzcOQET5IiD2U9utXf5MedHGRgbBugY2Z
-	IvCJUQzb1iXwJYSz6pQGC1UDGFVNF8FSSMn8jt4Yh7DIRgbpN1yGW5IAgby435kx62Ujax
-	BuG0VYvpuWmM/eiUGBDTnwj1oCMhmpw=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4ee14ba3d9cso5260491cf.1
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 18:39:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1768444773; x=1769049573; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qcW/hY6JWQg4aPWEmrNXUmJDtQucQInwfAPavQZW27U=;
-        b=Vh/Ap+qhvP/xs5XMZLFfj0Fn+EUbdthe1RUDhWTe5DM1NUm/BFP8Dkh+QNwwiKE1in
-         ozPJ8Zpd3SWWvCFJ05ni6t3jKqus3RYUcqUZW0s38VShHO+WageQ0IlkUgBKeUIcLZDV
-         rLfQz+W4OdJNe4DYUDg+0zH3BPdsi3qqZq5JbTilVupPNcBY3dMOm1Eh81t+mGBHi914
-         xcce0KkjkJmsfXDA1qP0oXKSvBIy340R+wcGlBx/uG564PhmRkaKWqz46Oo0SAjb8t5f
-         DMx3uKCaaARWuua+7GVH/rKIBZTnYBozZRz/D8BE1M0XmeAzWgszZWiR83YSfHmGxhKU
-         upCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768444773; x=1769049573;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qcW/hY6JWQg4aPWEmrNXUmJDtQucQInwfAPavQZW27U=;
-        b=iF4Wqszn5YM8FUAsxuSsjtmd1pRKFfTmG3ngkrFP8yI3/4tmNr8jLe04qgdH8Ligw8
-         Zy2RA1frgxZmjpRwuzpxWVZLOzwMdlFe2I4T+G3fLGeVYyKwNCTi0PHZI/LvWNDruAI8
-         91EKShpDP1nbuDyQAEXl1KrgrOVqicmXimL6errdwTD+HdE/7ZIAYMvIw6yPc655bXI2
-         ev/RejKnnBTX3JRz6L+1pVPgAErxyCOndzp30tY2Q+fy2P7Bei3rkYz2ph+ANGmsZeYu
-         bdT6eXplxzdKOtUolVULNlGgC1DjdCncTHVH7QscCcIHl6bSYIFyVeNoNtwh8x3Y5U0L
-         9Skg==
-X-Gm-Message-State: AOJu0YxcI6q+wvTklQwBJ+w3GWEHgbG/nw2GjCswdLHB2eowPjR7zK1O
-	Vv3easPxXhHxrWXImPZe7J2A1hfAmWj5BvbUISLZiC2L+YMGr/3NaXAc9DirUHvgC+2LoRJIEO3
-	rhbycjKY=
-X-Gm-Gg: AY/fxX6G4Y3gMhGav2y1eEdj37ebCmP4CkTF/im6zGAGrbEUHeOXn6t9IteWaOczgAt
-	X2+6eCWfZZJRn6JWUbuIzS4BfX8rGQrcVrjZQ/IBeUfoDWQCkVxWTmLbFIiO9xZV6z8HmbotTAC
-	DfKgmvXIybLWf1SPiiO/SjBGGmxZkAfKCIwDLfuBy5OkB+lLR7sdJBpG2O/yeM4id9/kilgy06x
-	PIZ5kPfqlms4QV4JDtCzNBPoDuLqslbEZ++Wb5aGobZztwf3ttosK8ZxrxA+juWrbAumKJSxmRK
-	+FbugpSEVTyIiOHv2awWzUB1W8dNnnBSnflvc5cRDcBVoxbsaiN3pdeJJa6qREIayYzwF455aw9
-	G9jDOWKlroLelwFNm/5dTISA7U2InrNNeppcwQqwDnRvOaN7gJMas7p6HkDR6Eg0aqrXjo/zcrJ
-	iHwJ/fvCccmS8fbQyn89IP5lMroKlM/RczYB1U5E50YOpay4Y0ya9NfV+CuyIURJO73POyVyl83
-	SM=
-X-Received: by 2002:a05:622a:400b:b0:4ee:1f22:3613 with SMTP id d75a77b69052e-5014a96778amr49477661cf.62.1768444773152;
-        Wed, 14 Jan 2026 18:39:33 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50148ee050esm26777371cf.30.2026.01.14.18.39.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 18:39:32 -0800 (PST)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH] dax/kmem: add build config for protected dax memory blocks
-Date: Wed, 14 Jan 2026 21:38:54 -0500
-Message-ID: <20260115023854.3484175-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251113145815.2926823-1-gourry@gourry.net>
-References: <20251113145815.2926823-1-gourry@gourry.net>
-MIME-Version: 1.0
+	bh=wPg1Rmvkx3e8pTULbrjUB1f5F5lTCXFNy35V+rVVRpY=;
+	b=lnlKV1r/bpOA2FYsrKy0XbYHYRdp9wdXGr3z3cntYf/fuhHp1us3SaBEk2kB6iCiOrJQf2
+	o4VxxW/KFoAiP9W3iVnwmBYDOFI7xSyK0p9g5VMdxuszVSum31N1PSCg2d367QJHhgPtu/
+	7W8GozAx1Y/IYsUrUvUCbo0+48OJS1s=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1036C60144;
+	Thu, 15 Jan 2026 02:40:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4C2C4CEF7;
+	Thu, 15 Jan 2026 02:40:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768444844;
+	bh=kEIihbTO7hsA7HfHf64JRGq8WxboK1l9W0XcXEHbfeo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Vfb3gBTf+rsrpPAPcJ/Dig6SSOOLelLK4b09yec6FTVrBjTNJT3KBH/W/IuyCOUUG
+	 rWCMabju6IaOer0i0XS9FstGNEW6IG96OZlxk9eDNmuYljuhHuOo2Q6G5GIosWUK/o
+	 TtHClSrBGTI6P5GEFzOrr+RjoUt0V7nWJ0JUctS8=
+Date: Wed, 14 Jan 2026 18:40:42 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, Zi Yan
+ <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>, adhavan Srinivasan
+ <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
+ <tzimmermann@suse.de>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
+ <dakr@kernel.org>, "David Hildenbrand" <david@kernel.org>, Oscar Salvador
+ <osalvador@suse.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, Leon Romanovsky
+ <leon@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Balbir Singh"
+ <balbirs@nvidia.com>, <linuxppc-dev@lists.ozlabs.org>,
+ <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <amd-gfx@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
+ <linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Message-Id: <20260114184042.64fc3df3e43e6e62870bb705@linux-foundation.org>
+In-Reply-To: <aWgr9Fp+0AeTu4zL@lstrano-desk.jf.intel.com>
+References: <20260114192111.1267147-1-francois.dugast@intel.com>
+	<20260114192111.1267147-2-francois.dugast@intel.com>
+	<20260114134825.8bf1cb3e897c8e41c73dc8ae@linux-foundation.org>
+	<aWgn/THidvOQf9n2@lstrano-desk.jf.intel.com>
+	<aWgr9Fp+0AeTu4zL@lstrano-desk.jf.intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bkguriait1hjufw9nunne7y6wtbxuaqx
+X-Stat-Signature: 4g8umxk89tupxk4uassu4ssnmnoh7h1i
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7E7CE1C0007
+X-Rspamd-Queue-Id: B629E10000A
 X-Rspam-User: 
-X-HE-Tag: 1768444774-53794
-X-HE-Meta: U2FsdGVkX1/EAywGb+qPXDXEW/1elzHN/signCas1Hn4vqowlYhEw4QYkU3q26UW8N+KpdFSK+tPj1CUoKK8EaeZzF11X3p+iuNXSiClufyQVNVQqbLs0NQNki09u/8H3FPtNjs5XymeanaJBDeWCATJMQuUsYRYKzOjqwYNSrpaWaLA9Jrd//OvHUHvWgRXdZg0VazcLFniRaAXSwXjAUt1LnCVqNgxmZkh3MLABIFyXXhUdq4uwSRWj6JbNWFaKL46KRqNfdkCUeEc75Eipr3u43OKmZeI3ERmAz3mT/xM0uob33BL4Cn77hz/4wveILzc6H8FGWaCwPdbegMWY4NKpiRdVakEwkEeO87+/u7N9198xjMg1zCNGkr/Y77pLXIJOT31MKSL+YuJSoOMw4dM/ws9cCfvCpgCmLYsJyNEcORiYWGfTgn21ivsJKxcxsseJye6DoTXNq+JZLNKYt0YdbXfJ6QT7ONE696YN3U6L7XkBlkPGgvR+uk83pg7LJBjZ8rPIGOAkOJmtO+4SenjgLAwXgyEPz3fpS2ay5wR+3xuucSGwKzLB1MxmHsB75Z9vs3JW4Hq1VlIpQr3qhEYjvHO7fuhoNGnZ1Mg3QapsBJYAA1c37KgPrrX3kT0W1HYF2tDZh8XC7kvpYo/ozUvzzQw8xldZfTM/iESeKtkmdkiswrVFntbzQbw/d9qBN90XCgfPr+lZa486oLvcpolB9X/sFlCDPN/arF2gGrkBH/2h7xBMya0FfoyVUiVl4546cY9Y1wZw5u85yjKnK0nHZDWv65xz7qHFZRU8aPq+vQlFkAXU65BPHssTWtKhdmYDM79sHE9ZMQzT3X0m8T3MjU01RVTlBEM/d6EU5WCA9KwMj4CkQHzOkB+/R12fW+Q4C2hzqaG5lcTndGTi3ATvNAFwIBenGzcK2FNGI/kpQWY42VCQ0GeDVmBAIESxKshRKuDh/fQtwZcWbA
- JYP1xEXp
- j3+pTjrSBFGYkwiNAU/XqzbE0EYJFlgslD81LWjHrZS4nJ4GKvSJlHHl0T97Fsp6R5l1fC9mQBbXAGlfaptm/Lx97cms3nbxQvU9HpPb8lxcsxn8KQqp1qqz8CgCFBHgZLkgvnyRjYPfqVLpXskttyKnbzkxaIt2R05XQrXaU/uCKI/JOadN2lCFxxcXUX3peNJRBH0LRTK3TLEMLFyHvjyrxswgMbdTUsVq5JP1cpw6j4JfXNSeG2flzgC6/5YXSJFSmlQ5hrXsvF/6wemDsfT6kwMt8h2TRq0vYvGoqwXWMoV6wx3F2ZgygXcSu3NOhOW8o
+X-HE-Tag: 1768444845-249687
+X-HE-Meta: U2FsdGVkX19Ikpt5sAesYfLk7rgIoriZ08xJuA1nLFzQQNQJE77+NSa6E8rUuOehNKK/d04351R0iO1B4CoHi6xmpCx8JvDmZ2/ZeyRxLmLOXOaTJzKLXn7sTEXufsTEKuMK9IJuC2hiq/ehTIrrJ7M7SKvbDkou1/21TnrTjuzM9nuxILFaW+mgQSS7/5zUNdSnA5yM3n7XsZtpguhSVPwsqCtG3RDI5CVaaNf77wmCHfHBs8+x06OYrf3M7/4/NTEd2/IZEPb17WVnr10c3IRUncrMCXGPShLvM0hMfDcGwV44cmb9KARulteJaH5lDmdIz9wdwiMgeVllWbEdGtsszvyAsBpiIOxhJVrYbxYXYtoTe0FCukIeHo1BXOUNOQw+qS9PopMoo6zY582trERWufnu4r7IIZx8UncgybpOVtapd0JrIciOfnKae+keudnOVSUn4eKe6hDkXNB6Yurtizua47x2wF0LfhNLkPElmzuDoir5pMNX8eOULQjJc2dxFR2lrJbQ2oC/oOBh7eBROMVcEN3siovuxhS6/Gqvtxq8Qhw801WBIsKA+569k4VaoE5YhRUui8igjqV/HIemlpSt5WJXEKGXm5wdP0HN2BUQJVnHT/V8qctxr5anCDCd++EdJip9csQk3Rb9HiHXq93x/XpuYMidlFEatgBYPhjsi+nmrUHzRaQoH3UaGThSfwsmill6Q5z4RM9H6YmQ8IPp5HRG6zDS7X+NEi+8L8dcgtyPV1Fc3M2FBPVVBzgfDGSlKKK1etQF4Ca5t8W2NNa8bHEBUsdboLC1lVnh25vDyDjVEgpl1x9aK08vIrH0LwqqPB1dxe0D7oBH/eblOY5Hkjxj949zX/omFPwFSbc7G37u/h2CuVqqw1dct0o6tcMbtiu8jSbOeMMzWrLhxBlrx8ZCH763cmVwnfh1qI15YtL2uAONMJFvivCgiu8PVXYE20Bd/AeyfzU
+ Xsm4c4by
+ RV5IFjCb72rivqX563UMRBOgYxZfVuHxTtjPAyVGgIDf0Re2LEkNcQ9fRDpjQzQtfZgOZCZVVM+bw5WNfwSHfhQgtatVgPsDAhmRz9x7BGwGIwob6WSM0npBE/o6ISaTcBM77XCIFJPRsBFJ0WzVySGCJOCooj0yZyhWFHZqbLYj11RopkXQnq11PQ/Dkoa/7neiwPXTDilmpTTd2E1apFe0PUF5C1XagnwaGSRTqBnywfvyEu1rfAdOMJ4xmRI1qliNa9PTiIVfHBdO7vDf5BEUAn3PoPtKF6bGxnVVUy88WxfoJk7qfBAMycsLDY+zHI9J7cXoIGlVWD88Yn9SamlzvQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,114 +114,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since this protection may break userspace tools, it should
-be an opt-in until those tools have time to update to the
-new daxN.M/hotplug interface instead of memory blocks.
+On Wed, 14 Jan 2026 15:51:16 -0800 Matthew Brost <matthew.brost@intel.com> wrote:
 
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Gregory Price <gourry@gourry.net>
----
- drivers/dax/Kconfig | 18 ++++++++++++++++++
- drivers/dax/kmem.c  | 29 ++++++++++++++++++++---------
- 2 files changed, 38 insertions(+), 9 deletions(-)
+> On Wed, Jan 14, 2026 at 03:34:21PM -0800, Matthew Brost wrote:
+> > On Wed, Jan 14, 2026 at 01:48:25PM -0800, Andrew Morton wrote:
+> > > On Wed, 14 Jan 2026 20:19:52 +0100 Francois Dugast <francois.dugast@intel.com> wrote:
+> > > 
+> > > > Reinitialize metadata for large zone device private folios in
+> > > > zone_device_page_init prior to creating a higher-order zone device
+> > > > private folio. This step is necessary when the folio’s order changes
+> > > > dynamically between zone_device_page_init calls to avoid building a
+> > > > corrupt folio. As part of the metadata reinitialization, the dev_pagemap
+> > > > must be passed in from the caller because the pgmap stored in the folio
+> > > > page may have been overwritten with a compound head.
+> > > 
+> > > Thanks.  What are the worst-case userspace-visible effects of the bug?
+> > 
+> > If you reallocate a subset of pages from what was originally a large
+> > device folio, the pgmap mapping becomes invalid because it was
+> > overwritten by the compound head, and this can crash the kernel.
+> > 
+> > Alternatively, consider the case where the original folio had an order
+> > of 9 and _nr_pages was set. If you then reallocate the folio plus one as
+> 
+> s/_nr_pages/the order was encoded the page flags.
+> 
+> ...
+>
+> s/best to have kernel/best to not have kernels
+> 
 
-diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
-index d656e4c0eb84..cc13c22eb8f8 100644
---- a/drivers/dax/Kconfig
-+++ b/drivers/dax/Kconfig
-@@ -78,4 +78,22 @@ config DEV_DAX_KMEM
- 
- 	  Say N if unsure.
- 
-+config DEV_DAX_KMEM_PROTECTED
-+	bool "Protect DAX_KMEM memory blocks being changed"
-+	depends on DEV_DAX_KMEM
-+	default n
-+	help
-+	  Prevents actions from outside the KMEM DAX driver from changing
-+	  DAX KMEM memory block states. For example, the memory block
-+	  sysfs functions (online, state) will return -EBUSY, and normal
-+	  calls to memory_hotplug functions from other drivers and kernel
-+	  sources will fail.
-+
-+	  This may break existing memory block management patterns that
-+	  depend on offlining DAX KMEM blocks from userland before unbinding
-+	  the driver.  Use this only if your tools have been updated to use
-+	  the daxN.M/hotplug interface.
-+
-+	  Say N if unsure.
-+
- endif
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index f3562f65376c..094b8a51099e 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -184,6 +184,21 @@ static int dax_kmem_memory_notifier_cb(struct notifier_block *nb,
- 	return NOTIFY_BAD;
- }
- 
-+static int dax_kmem_register_notifier(struct dax_kmem_data *data)
-+{
-+	if (!IS_ENABLED(DEV_DAX_KMEM_PROTECTED))
-+		return 0;
-+	data->mem_nb.notifier_call = dax_kmem_memory_notifier_cb;
-+	return register_memory_notifier(&data->mem_nb);
-+}
-+
-+static void dax_kmem_unregister_notifier(struct dax_kmem_data *data)
-+{
-+	if (!IS_ENABLED(DEV_DAX_KMEM_PROTECTED))
-+		return;
-+	unregister_memory_notifier(&data->mem_nb);
-+}
-+
- /**
-  * dax_kmem_do_hotplug - hotplug memory for dax kmem device
-  * @dev_dax: the dev_dax instance
-@@ -563,13 +578,9 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
- 	if (rc < 0)
- 		goto err_resources;
- 
--	/* Register memory notifier to block external operations */
--	data->mem_nb.notifier_call = dax_kmem_memory_notifier_cb;
--	rc = register_memory_notifier(&data->mem_nb);
--	if (rc) {
--		dev_warn(dev, "failed to register memory notifier\n");
-+	rc = dax_kmem_register_notifier(data);
-+	if (rc)
- 		goto err_notifier;
--	}
- 
- 	/*
- 	 * Hotplug using the system default policy - this preserves backwards
-@@ -595,7 +606,7 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
- 	return 0;
- 
- err_hotplug:
--	unregister_memory_notifier(&data->mem_nb);
-+	dax_kmem_unregister_notifier(data);
- err_notifier:
- 	dax_kmem_cleanup_resources(dev_dax, data);
- err_resources:
-@@ -619,7 +630,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
- 
- 	device_remove_file(dev, &dev_attr_hotplug);
- 	dax_kmem_cleanup_resources(dev_dax, data);
--	unregister_memory_notifier(&data->mem_nb);
-+	dax_kmem_unregister_notifier(data);
- 	memory_group_unregister(data->mgid);
- 	kfree(data->res_name);
- 	kfree(data);
-@@ -640,7 +651,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
- 	struct dax_kmem_data *data = dev_get_drvdata(dev);
- 
- 	device_remove_file(dev, &dev_attr_hotplug);
--	unregister_memory_notifier(&data->mem_nb);
-+	dax_kmem_unregister_notifier(data);
- 
- 	/*
- 	 * Without hotremove purposely leak the request_mem_region() for the
--- 
-2.52.0
+Great, thanks.  I pasted all the above into the changelog to help
+explain our reasons.  I'll retain the patch in mm-hotfixes, targeting
+6.19-rcX.  The remainder of the series is DRM stuff, NotMyProblem.  I
+assume that getting this into 6.19-rcX is helpful to DRM - if not, and
+if taking this via the DRM tree is preferable then let's discuss.
+
+Can reviewers please take a look at this reasonably promptly?
+
+
+btw, this patch uses
+
++		struct folio *new_folio = (struct folio *)new_page;
+
+Was page_folio() unsuitable?
 
 
