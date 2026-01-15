@@ -4,144 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC92DD46601
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:53:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D825CD46600
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:55:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51C656B008A; Thu, 15 Jan 2026 11:53:50 -0500 (EST)
+	id 3212F6B0088; Thu, 15 Jan 2026 11:55:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CA1D6B008C; Thu, 15 Jan 2026 11:53:50 -0500 (EST)
+	id 2A4B76B008A; Thu, 15 Jan 2026 11:55:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ABCD6B0092; Thu, 15 Jan 2026 11:53:50 -0500 (EST)
+	id 1A3AB6B008C; Thu, 15 Jan 2026 11:55:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 29E5B6B008A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:53:50 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8EC8B16041C
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:53:49 +0000 (UTC)
-X-FDA: 84334794978.07.07720C9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 12187140008
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:53:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jh+3YafA;
-	spf=pass (imf26.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 030236B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:55:44 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A5D6013AD6F
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:55:43 +0000 (UTC)
+X-FDA: 84334799766.04.660B709
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 90AF640008
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:55:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OkCmGmZT;
+	spf=pass (imf12.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768496027;
+	s=arc-20220608; t=1768496142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5su/nAHmwHcmkA811BDe3v/5JJsozj0l7oyd1uJGuPg=;
-	b=hD3RYsRxdnyw371TTE267JwCiJ9tzGhwUQFf5KRCAVCJMh5g1RwUe3Yo18mHEz/tx9Ricf
-	6wwzoZ95U4Twti3HAg4ryhkFldo0Z6bH0SkuBrcFwQW4a5ZRsN6DJrPkqgBXI5T+WnJYe3
-	y/B+xPHEnnabkjmEB6QY4Jw3hLnydMQ=
+	bh=oN0TuaNOYXt16rCu+jFV5kzSUAKS5IS1k0m12m1o9aA=;
+	b=gOIOk6/psWqNXKux1NKD1Uzva0LBCzF0AyLhw51pLBDjfhzaNFag9dJDqXq2kg3ZztX+jP
+	dMfuVOu9JRgbCKHxvlh3b9YDFMu9bviwgsTZkr9vfKUYuHuMEfRnZzOPVqZzde+sDCy2V0
+	TZbBODnSOubTzas0W9JyrzJdJBWLhIE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jh+3YafA;
-	spf=pass (imf26.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768496027; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OkCmGmZT;
+	spf=pass (imf12.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768496142; a=rsa-sha256;
 	cv=none;
-	b=St1WcNE3x/GQxE2l02donDudjzzFBcDqHemrB4jhEz+ddMT1BTWYgH/wyfjMUqDTqRcOCk
-	7fHZ1ZJoxFgn+dPdyexE0tz9aqI/MhlgqhlT/0PNgUMoOk0kIK1Wu9xuFgD8PanY1aO7AQ
-	zBVY3U827Bt9PWOwuY/vaqVl6O6lmyw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768496026;
+	b=Y6uhHJth7U3+kq6phM/9jJC3beGz5WzLe9sgaDs+ZAUitaB/IviJ9CayH98HiKjMmDDKBU
+	DlO5HIrGXRP+sejpknQXd0ifCe/yPODrksn8JYki9Knu4YDcgZ0tLwuv/R831JidF16OtQ
+	i9pO7mTXhQ++b7EN7Fuy8NTwzIUvrrY=
+Date: Thu, 15 Jan 2026 16:55:22 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768496138;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5su/nAHmwHcmkA811BDe3v/5JJsozj0l7oyd1uJGuPg=;
-	b=Jh+3YafArW+CCsVuXIOQ9BsYxgScd3P5Cf9sqpUa/reaECAbjn6Cuazr+bP+7xib6DlVs1
-	zgtHrtjOQFFk/VWZi8htiWABCBOxv5lXnGc0k61QV9VLugFT5MgTuIOUSZk+/8ui+1eetp
-	nh+DusbFQQ+OoJ24l0Ff4+6a+yGSUIw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-8DtY-H3SNfankAQj83pT9A-1; Thu, 15 Jan 2026 11:53:45 -0500
-X-MC-Unique: 8DtY-H3SNfankAQj83pT9A-1
-X-Mimecast-MFC-AGG-ID: 8DtY-H3SNfankAQj83pT9A_1768496024
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-47d62cc05daso11524315e9.3
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:53:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768496024; x=1769100824;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5su/nAHmwHcmkA811BDe3v/5JJsozj0l7oyd1uJGuPg=;
-        b=W6C5d537EsZ2+XxXvdaC4EbME/qHj5EnLVWjvfln1EXoYAKwC2aMG6DbqdbTHUDBOY
-         NQNumD4lyPcq8f6Ujjzy7zPcc02hEzTt8hZoGu7kT0ZjOChs5Jx/0r3IFkJIjuixBEYx
-         iVAWeN4i1ZA88yI08H0DPZs5Uf9+cnEUpOCR2bpUKihY1UcauiqJd+L7pgJADwyYI7l2
-         BMpOu6Ia54vqO7OCqviCg3ljAmk4EUdY/0u6ZRCFtBuWmbko7Go9dp/QOij52p02H/JK
-         v9FHZnXdOyVTpR13mjmuY1xnBRKQaBRffNzaZuJzSCDtxTEVMmoBo6nEam9gMGKIGo4V
-         v6Og==
-X-Forwarded-Encrypted: i=1; AJvYcCXw887f3hkPpqr4BhZK8rXqSUkd2c92QXXIGVNhz5cpNKDGyEFpJeRXOvTKTECaoplbbJpCgfUz5Q==@kvack.org
-X-Gm-Message-State: AOJu0Yyxm2b5p4lq1RQ9TrddCbh4fMp1uEL2DxaXo4ShiC6bxvt9h7fr
-	SuBxH5a7QPu3rAac0OpWybNwdAnU6A4XMoDxwTgYu9pglKyj9Q6ndRjEIc37feVQKWkiOcbmAg3
-	27Bxx7ScK3bcz9E72UgQ9x85JC4I92dEOHfiJRJMCitQszDYggb1JYCUxfze9
-X-Gm-Gg: AY/fxX61EoD2TeqZQ+xr5L2I/M2wUqx1wooF8g0zwbbh/K5aP3IBPUBv4O15LXsVPiu
-	w70jrj6YRwI/NGjGKQqiAC9XaaV1AYmRPtATCMp6o5lX4gTZov4cOG/VpkonEZTsnw8mK7GG/id
-	By8gJ9C16QiBapui6MMbTqF38FoehhovX91TmEU2vzNjYoZMJco0AdQVZDoE5eUyqXOvDCQ3B/Y
-	S3kuqdKEErIiM8fCUIYgmWrnhjlrT2IGjM5R6eEsijKimVVmjyvQYZGyNWclFVNljbkNm21nZe5
-	yCWNmQiUpMCZesT9fw9sthTZckZVXrBnPd8Lqh8bCgozJ0LPm8hO7vkjwvorWY4KHXojcYgR6fU
-	t0ysE0KphIc5J4TJVYLhE1R5zFr9ktw==
-X-Received: by 2002:a05:600c:5487:b0:46f:d682:3c3d with SMTP id 5b1f17b1804b1-4801e30d482mr5165385e9.13.1768496024071;
-        Thu, 15 Jan 2026 08:53:44 -0800 (PST)
-X-Received: by 2002:a05:600c:5487:b0:46f:d682:3c3d with SMTP id 5b1f17b1804b1-4801e30d482mr5165105e9.13.1768496023585;
-        Thu, 15 Jan 2026 08:53:43 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-35-22.inter.net.il. [80.230.35.22])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356992681esm58497f8f.11.2026.01.15.08.53.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 08:53:42 -0800 (PST)
-Date: Thu, 15 Jan 2026 11:53:39 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v2 22/23] mm: rename CONFIG_MEMORY_BALLOON ->
- CONFIG_BALLOON
-Message-ID: <20260115115228-mutt-send-email-mst@kernel.org>
-References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-23-david@kernel.org>
- <219f7be4-8355-4376-bf97-3410c6e23867@lucifer.local>
- <37fdb994-59d1-4196-b377-f3f749148b19@kernel.org>
+	bh=oN0TuaNOYXt16rCu+jFV5kzSUAKS5IS1k0m12m1o9aA=;
+	b=OkCmGmZTlnLaXdUsV+HoNugWY3ZhFbdWednaJHtUzZ1vPpgYt21cQJubRfzCCYlcKC/B+6
+	7B0kXUT18tvaZ/7o/q+dIgKTf2MKrNG5GPlQs0MKcv1mOfmD7Md5NF3K4sREyoozvSzTlV
+	FkEqH9n+WmZgm82NA56jWhAADHzOb9E=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	kernel-team@meta.com, longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org, 
+	mkoutny@suse.com, corbet@lwn.net, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com, 
+	ira.weiny@intel.com, dan.j.williams@intel.com, akpm@linux-foundation.org, 
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
+	ziy@nvidia.com, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, 
+	rientjes@google.com, shakeel.butt@linux.dev, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
+	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	osalvador@suse.de, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
+Subject: Re: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
+Message-ID: <fkxcxh4eilncsbtwt7jmuiaxrfvuidlnbovesa6m7eoif5tmxc@r34c5zy4nr4y>
+References: <20260108203755.1163107-1-gourry@gourry.net>
+ <20260108203755.1163107-8-gourry@gourry.net>
+ <i6o5k4xumd5i3ehl6ifk3554sowd2qe7yul7vhaqlh2zo6y7is@z2ky4m432wd6>
+ <aWF1uDdP75gOCGLm@gourry-fedora-PF4VCD3F>
+ <4ftthovin57fi4blr2mardw4elwfsiv6vrkhrjqjsfvvuuugjj@uivjc5uzj5ys>
+ <aWWEvAaUmpA_0ERP@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-In-Reply-To: <37fdb994-59d1-4196-b377-f3f749148b19@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Sb-iwNtajm1xjtk5jgki1vbzA6qpf0GKbec-e-jSk1c_1768496024
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <aWWEvAaUmpA_0ERP@gourry-fedora-PF4VCD3F>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 90AF640008
+X-Stat-Signature: js59nwqc77utw9ibeajiegm481jpbghx
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 12187140008
-X-Stat-Signature: iwuuw7wshrfkbruija8o3rwtunwd6jnt
-X-HE-Tag: 1768496026-112800
-X-HE-Meta: U2FsdGVkX1+J9mE/Cz3t0jL2/UNXp+pG0DCfA4HDxg/j27bdqWrGCdtkE5pu2V6Tx/iVxS53Y6o6eNApcEm25RcNOdSCSckTQL2qdW1cRdFb49/E6yCcAsJkbuFJy7i19VGMVjHS5BHCu99mV8MxxdnkMBlgWXJTPO0Z6CGuGkWlW20yEc6JzDFv9+mxNZY9z0kyOrfl/Wu8N/4KuEHsmV+D6rOMIptpOYHLwl/kbWQyGQPCwO/ddn+SmW98HvwX3wCwVZTYeIA8QYlQ0lSHnVu4DAxB/o2xL9qDxjJjM6DMQYiEaVdDVXfn3iUNRNbwuwEwUsdeo44a+kcnsgeRp2hKxlg3U5sTdxlYEJrPScGEwYhik4WyRwE73SmmTCV0GqyE9zFZiFXYYiwDZoeDNuTEddbGGKiG9ZTN1Hg2WuJtvvNjGXKEoOlV9FZmXzvdhHBLetXo+i4sZ9CcB3df8t1UqjeleladRP75ELY7+O7+uoYU236mEGp2t6NAPCyieiShELBQK2Adt6OMtquiHpdqLkH6IWQRy+9DvFa1WYKjFOJfggPT1k9jSqXuqhgDnxAWRuvDRP4s/FcOWM3mC/nz3p+EN7QSBkMJfrHIpMWg15BYB3t30l4nINdbjL0B3MGyNZ0CgHU0HI/gpTTkUnjyVHAv2NprFyGYjVjOtQ7CJmuDeuXm4JaQSZyvH5XYNuFeHuSBinqMBUimMRNpFKJwltR0VlB0I/a72iRxJk6IvbJkWMALtMlIUs6y0BsURoY4b3ck/jXuUcr8ymNxSqOjr+sqOrbVvaYKZv+n6imJtrffMrNLx3q0Kd7BIwVuGFtU9a/LyTsrgOVtkq85LEeG73UHQdxR30bxunfoUr9Zxl2qyo285OnV7hjSv6Y2C98QV1sTQJTnuJd2zW5dQ57JMAVi2X8wYip6WHMPMkS24Y2QNtba0RTfjRdztHhVfNu9DqkQLTMTXRXwPue
- 9WVIaSt8
- BvXnZ2CuaT+6gIueMYxWbVWeqVsnQcDPdCMk9q01siA3vKnyPqr+n39daCzzKyBwi7tfSLMRygF6UUpBhHaDGR00gCqvb0ixElTvQ6B4FtMl6givOAALaeBMLxPOWNkzlJlUpuwI0djAuVP4W9cPwMTuNnspWgkFUBIwuWWae2WiPFN2QjYO8Bp7+R1sLvqccasZlyNkxCzyAYg9/wA1tm4e00T6C7FgDXdMg10rDTX7u0STzPcxbt1qWmIjkAEyQjOgApquqmro8eH9PtCJb//FQanJD5cZ2nDUxsX8gRPz3cOkc8sBoFQzKyKuUsXSrBuUD264ABBvsGIyhXGWDtKcUKNrZYsXsUueiky2yuFBhLeMSBXynk5tildy45zLSh52glgDAqDr1O26AY03eIfVL3BkIjCAYpWBkUCOnKe2Cwq8=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768496141-369194
+X-HE-Meta: U2FsdGVkX1/WK95MdTfqaE10nVEfFhm0fWcBluPUKA+jxuwKkqlOInuM/CiLYofAX7Xyq82pVVLASxDRT2L4L5Kzh6//xZxxrOLZVQZTH8UDVF/5LADiENIG6swqRNOY3NMyDXM6cdp8ASUuHBTdIbR+/pSgCceKO2VXP5EyAYw9YGFXnIWqb63Qnv6DQ2jLVS9Y4U0HvEa7GvthtcyXQ8Ow2KVf9QUA1sb/FDnRRSBTxGEtPvVpTmuxyOnVwZ8Sz2QvxsXwmYGX9n7eVVPXFpc5Vo3sbcsBJRnq7NSIUbVanCadRsLqia8YoaDiw4QOXcZo8lHYCzia2TQl9yg8TAjzQZIwoNZKZoRCDWS1Y4o/jgFsrJOA/tqPDmCFyllvqJlmWduAlwrJQEgsnr6VH+ACWTgNpMWNZgg9LHTFLoBiy0jXGHUoVf3ShqV6NcGjMPFabItlv/kuAsLY7bMtFW0xkMjqkashf6JSjw4w0e3h5DD3jdSjbq+avtsoKsNsphEzvY7K74ambv+WqLBRmIEpitwdGjmy6HH8CkmkSJW2nHytH4GIBPQDHw7ndm4A8e2GJC7uYyFFzF3YSt33GmcnvahQ1uZHHRLtOycMsh+UwtuDRcR+p2XCJePNa6J5cSyaiQePEMNHKZ9eTMLzfSkSyj25THRCZJQU6bMomXp/5GHdSo3F2xW1hNv5OKSX8g9JiTRtI+Nkfd5Eq9f70v73zEmIsky9KP7p4zSlzpWfJ/f3apD3XshRtuVqi/8OjMajMoGDKvHmR8F0dXWnl4gh2E223o8knKNp1DD+DN4ADhn125M72LYCUrYcIh9G5vlSc1S/lVPK78w6S6cnu7F7DdUfrmO7blZ8mb3hEbpuOWEJ0LVhsYHZGAkugI/NWqGzaZckAuNJGyEtx34Ay0d8SWlcYvVybambNYbwijz5uqWhavT6Pmf0A7Zhgic4Zlk9t3tMG9j5/lly99d
+ b3affgmv
+ TEc3T4Qr3DLns4WByub8b5YAzO+NEfTrcNf2SGfT0DcWZTVIZ8ZBY3Wd6gO00OvRSICJuI51pnE39sPkt1bCMttq60N0zt18L9V0iNYBmcMw9T+b/qZPdsBOGD3k6YOvkD3+N2J54lxcY5MshRKE0YOd9KKGPsIGMAeeglW4oCZcZyQSEvy2xcf9fVaDc6/08AjMSRcC0kjQIqsAiKw8Z2pEJPSVjpPftGj/K/ycofc3zuLPZz8Vhw4nZOZBkZeRVO9F+uGvnV7vUrbaGuKnzRhOb8Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,24 +107,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 05:33:56PM +0100, David Hildenbrand (Red Hat) wrote:
-> I'll note that the spec also defines a "DEVICE ID of Virtio Cpu balloon device as 47". But
-> no changes really happened in the spec with that for the last two years (only the
-> id is reserved).
+On Mon, Jan 12, 2026 at 06:33:16PM -0500, Gregory Price wrote:
+> On Mon, Jan 12, 2026 at 09:13:26PM +0000, Yosry Ahmed wrote:
+> > On Fri, Jan 09, 2026 at 04:40:08PM -0500, Gregory Price wrote:
+> > > On Fri, Jan 09, 2026 at 04:00:00PM +0000, Yosry Ahmed wrote:
+> > > > On Thu, Jan 08, 2026 at 03:37:54PM -0500, Gregory Price wrote:
+> > > 
+> > > Hardware Says : 8GB
+> > > Hardware Has  : 1GB
+> > > Node Capacity : 8GB
+> > > 
+> > > The capacity numbers are static.  Even with hotplug, they must be
+> > > considered static - because the runtime compression ratio can change.
+> > > 
+> > > If the device fails to achieve a 4:1 compression ratio, and real usage
+> > > starts to exceed real capacity - the system will fail.
+> > > (dropped writes, poisons, machine checks, etc).
+> > > 
+> > > We can mitigate this with strong write-controls and querying the device
+> > > for compression ratio data prior to actually migrating a page. 
+> > 
+> > I am a little bit confused about this. Why do we only need to query the
+> > device before migrating the page?
+> >
 > 
+> Because there is no other interposition point at which we could.
+> Everything is memory semantic - it reduces to memcpy().
 > 
-> [1] https://docs.oasis-open.org/virtio/virtio/v1.4/virtio-v1.4.html#x1-4260001
-
-
-Maybe that's a good reason to keep calling it "memory balloon".
-
-And hey, there's also the floating, pops easily kind and maybe someone
-will use those with linux in some way :)
-
-
-> -- 
-> Cheers
+> The actual question you're asking is "What happens if we write the page
+> and we're out of memory?"
 > 
-> David
+> The answer is:  The page gets poisoned and the write gets dropped.
+> 
+> That's it.  The writer does not get notified.  The next reader of that
+> memory will hit POISON and the failure process will happen (MCE or
+> SIGBUS, essentially).
+> 
+> > Are we checking if the device has enough memory for the worst case
+> > scenario (i.e. PAGE_SIZE)?
+> > 
+> > Or are we checking if the device can compress this specific page and
+> > checking if it can compress it and store it? This seems like it could be
+> > racy and there might be some throwaway work.
+> > 
+> 
+> We essentially need to capture the current compression ratio and
+> real-usage to determine whether there's another page available.
+> 
+> It is definitely racey, and the best we can do is set reasonable
+> real-memory-usage limits to prevent ever finding ourselves in that
+> scenario.  That most likely means requiring the hardware send an
+> interrupt when usage and/or ratio hit some threshhold and setting a
+> "NO ALLOCATION ALLOWED" bit.
+> 
+> But in software we can also try to query/track this as well, but we may
+> not be able to query the device at allocation time (or at least that
+> would be horribly non-performant).
+> 
+> So yeah, it's racy.
 
+Yeah I think we should track it in software if possible to completely
+avoid the poison scenario you describe above. Relying on setting a
+reasonable limit and a certain compression ratio doesn't sound too
+comforting.
+
+> 
+> > I guess my question is: why not just give the page to the device and get
+> > either: successfully compressed and stored OR failed?
+> > 
+> 
+> Yeah this is what I meant by this whole thing being sunk into the
+> callback.  I think that's reasonable.
+> 
+> > Another question, can the device or driver be configured such that we
+> > reject pages that compress poorly to avoid wasting memory and BW on the
+> > device for little savings?
+> > 
+> 
+> Memory semantics :]
+> 
+> memcpy(dst, src) -> no indication of compression ratio
+
+Right..
+
+> 
+> > > on *write* access:
+> > > - promote to real page
+> > > - clean up the compressed page
+> > 
+> > This makes sense. I am assuming the main benefit of zswap.c over cram.c
+> > in this scenario is limiting read accesses as well.
+> >
+> 
+> For the first go, yeah.  A cram.c would need special page table handling
+> bits that will take a while to get right.  We can make use of the
+> hardware differently in the meantime.
+
+Makes sense.
+
+I just want to point out that using compressed memory with zswap doesn't
+buy us much in terms of reclaim latency, so the main goal here is just
+saving memory on the top tier, not improving performance, right?
+
+> 
+> > > --- assuming there isn't a way and we have to deal with fuzzy math ---
+> > > 
+> > > The goal should definitely be to leave the charging statistics the same
+> > > from the perspective of services - i.e zswap should charge a whole page,
+> > > because according to the OS it just used a whole page.
+> > > 
+> > > What this would mean is memcg would have to work with fuzzy data.
+> > > If 1GB is charged and the compression ratio is 4:1, reclaim should
+> > > operate (by way of callback) like it has used 256MB.
+> > > 
+> > > I think this is the best you can do without tracking individual pages.
+> > 
+> > This part needs more thought. Zswap cannot charge a full page because
+> > then from the memcg perspective reclaim is not making any progress.
+> > OTOH, as you mention, from the system perspective we just consumed a
+> > full page, so not charging that would be inconsistent.
+> > 
+> > This is not a zswap-specific thing though, even with cram.c we have to
+> > figure out how to charge memory on the compressed node to the memcg.
+> > It's perhaps not as much of a problem as with zswap because we are not
+> > dealing with reclaim not making progress.
+> >
+> > Maybe the memcg limits need to be "enlightened" about different tiers?
+> > We did have such discussions in the past outside the context of
+> > compressed memory, for memory tiering in general.
+> > 
+> > Not sure if this is the right place to discuss this, but I see the memcg
+> > folks CC'd so maybe it is :)
+> >
+> 
+> I will probably need some help to get the accounting right if I'm being
+> honest.  I can't say I fully understanding the implications here, but
+> what you describe makes sense.
+> 
+> One of the assumptions you have in zswap is that there's some known
+> REAL chunk of memory X-GB, and the compression ratio dictates that you
+> get to cram more than X-GB of data in there.
+> 
+> This device flips that on its head.  It lies to the system and says
+> there's X-GB, and you can only actually use a fraction of it in the
+> worst case - and in the best case you use all of it.
+> 
+> So in that sense, zswap has "infinite upside" (if you're infinitely
+> compressible), whereas this device has "limited upside" (node capacity).
+> 
+> That changes how you account for things entirely, and that's why
+> entry->length always has to be PAGE_SIZE.  Even if the device can tell
+> us the real size, i'm not sure how useful that is - you still have to
+> charge for an entire `struct page`.
+> 
+> Time for a good long :think:
+
+Yeah it's counter-intuitive. Zswap needs to charge less than PAGE_SIZE
+so that memcg tracking continues to make sense with reclaim (i.e. usage
+goes down), but if zswap consumed a full page from the system
+perspective, the math won't math.
+
+Separate limits *could* be the answer, but it's harder to configure and
+existing configuration won't "just work" with compressed memory.
+
+> 
+> > > 
+> > > This is ignorance of zswap on my part, and yeah good point.  Will look
+> > > into this accounting a little more.
+> > 
+> > This is similar-ish to the memcg charging problem, how do we count the
+> > compressed memory usage toward the global zswap limit? Do we keep this
+> > limit for the top-tier? If not, do we charge full size for pages in
+> > c.zswap or compressed size?
+> > 
+> > Do we need a separate limit for c.zswap? Probably not if the whole node
+> > is dedicated for zswap usage.
+> >
+> 
+> Since we're accounting for entire `struct page` usage vs the hard cap of
+> (device_capcity / PAGE_SIZE) - then this might actually be the answer.
+> 
+> > > 
+> > > Thank you again for taking a look, this has been enlightening.  Good
+> > > takeaways for the rest of the N_PRIVATE design.
+> > 
+> > Thanks for kicking off the discussion here, an interesting problem to
+> > solve for sure :)
+> > 
+> 
+> One of the more interesting ones i've had in a few years :]
+> 
+> Cheers,
+> ~Gregory
 
