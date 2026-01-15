@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE0E3D46604
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:47:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF984D46607
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:47:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 187596B008A; Thu, 15 Jan 2026 12:47:01 -0500 (EST)
+	id 479076B0089; Thu, 15 Jan 2026 12:47:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1305F6B008C; Thu, 15 Jan 2026 12:47:01 -0500 (EST)
+	id 4237C6B008C; Thu, 15 Jan 2026 12:47:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE20A6B0092; Thu, 15 Jan 2026 12:47:00 -0500 (EST)
+	id 32FF76B0092; Thu, 15 Jan 2026 12:47:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DC15D6B008A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:47:00 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B51D11A043C
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:47:00 +0000 (UTC)
-X-FDA: 84334929000.15.FDCBF55
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 26CDB6B0089
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:47:08 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05D611A0441
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:47:08 +0000 (UTC)
+X-FDA: 84334929336.13.DCC10B4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E5B5080006
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:46:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="aN/rWVsZ";
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768499219; a=rsa-sha256;
-	cv=none;
-	b=jlZonj5fpGcOSNAYTJwtPeALTV9iL3OpC2GmXWAUrPAno0RUy1n3aILk2kB8TP09HKfnxM
-	D5n4LerkC0YqyRSQKLTsTLwnVciRRAELtTTb1utKlsuX3DuWmnC33BS94qmj21bIH9olXI
-	1PXsqTEnrMepp+hMl2mjK0dUxgRdMAQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="aN/rWVsZ";
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 539F9100002
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:47:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YT77vFZ2;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768499219;
+	s=arc-20220608; t=1768499226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c6W9rS1L0fb44L/Qvc0l6GLZE0oaj4dGC2DB+JF1JWs=;
-	b=g4wyv9shkVVOVjdOkZ5ZpgA9PowK7J+3g+PZ57niO5b1OONQLb/9CixUTNJsZ8jynn2uU2
-	UnwM59r3mWsNTlRdf9cLIzm6+0ESG3o/wLGmN+VRRGFpetVKAtCtBwFnHpyGMb/lBmF9B5
-	AwFoIpTL6mSNrdD5FB4PuMR2G452Usg=
+	bh=dUftHhOvNR6RUT3RynV2bsB+MJ8Bt788NuzGnjlky/8=;
+	b=FDjmSpSJxQTlYcgCt3fGOKTEb9z4/2VAmrlwrMoi7sJLdcRFsBKfAKOjv19+PX9g06lEcT
+	MQbe4iZBMzlpiZsAqkgJB0lypKEef7s/jCcaKY/ixqSPPSB2gjfdUSS1VtR1gF6YgIGD61
+	VlKf59XR1vmol1q0Tn7Iev7ORQcB8jU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YT77vFZ2;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768499226; a=rsa-sha256;
+	cv=none;
+	b=MvHAhT8Tm3KZYnvNvtRP37wxZMQmBa9w8Zdj852+WfLIrRqeHxLCe+eiawIgnwlqF5waEZ
+	cxdJQoMYz/yHaumpCi5rgyPPLmxbJf0qcvOCHpr+Pdf6pxULNL5Sq1w2xVywP/Ym963n8G
+	2J1tn5wC3tPxAxqTlxXfn/VQNdf5asg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D573E44379;
-	Thu, 15 Jan 2026 17:46:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDABBC116D0;
-	Thu, 15 Jan 2026 17:46:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8492341B3A;
+	Thu, 15 Jan 2026 17:47:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4442C116D0;
+	Thu, 15 Jan 2026 17:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768499217;
-	bh=KG3/QqkLWkU5xCkH5gCixEue8EH45XFlDtjNOlWXOCw=;
+	s=korg; t=1768499225;
+	bh=C0SodaDfVTiyD9izfNenedvQEytBtrnvMR6/MpPi0+Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aN/rWVsZhxyQxbAGV6aAfpnyTBmZHYIcOKfGC1RzU/XnkFJoUcqg54DQMyMrB0bVx
-	 e7Q3rJu95EnLHQbb+26Bk/i4pOpgX9n77m/D6KBtlYai56hGy0xSSBLcLZq8rFCmn1
-	 GJBKhnpi889zYGezWxiSrkp5SyvbQsRcNyoihPAg=
-Date: Thu, 15 Jan 2026 09:46:56 -0800
+	b=YT77vFZ2+7Mb4JRJnlkEcCnCQ3FdCi/XnGOboKt/d4mGB5ja5LxRc2AK/LHwAQK1D
+	 r2IzpDbFlLtgWyVyyl0Dy4RU9OnH55YSUvc85GZ7VFqSc7zqtiR4SALjv7HmtZs/Jj
+	 i1UfLPTGugFvU3Ffxhzzq9yBJ3aZKF79RmfCPLJY=
+Date: Thu, 15 Jan 2026 09:47:04 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Qi Zheng <qi.zheng@linux.dev>
 Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
@@ -73,24 +73,24 @@ Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
  hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
  lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 26/30 fix] mm: mglru: do not call update_lru_size()
- during reparenting
-Message-Id: <20260115094656.d34a828cc6bde0e0f8511071@linux-foundation.org>
-In-Reply-To: <20260115104444.85986-1-qi.zheng@linux.dev>
-References: <92e0728fed3d68855173352416cf8077670610f0.1768389889.git.zhengqi.arch@bytedance.com>
-	<20260115104444.85986-1-qi.zheng@linux.dev>
+Subject: Re: [PATCH v3 28/30 fix 1/2] mm: memcontrol: fix
+ lruvec_stats->state_local reparenting
+Message-Id: <20260115094704.17d35583bbcff28677b5bc12@linux-foundation.org>
+In-Reply-To: <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
+References: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
+	<e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: uzfz4n7ugusufo8pj31ww9xixiwq71xu
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E5B5080006
-X-HE-Tag: 1768499218-555178
-X-HE-Meta: U2FsdGVkX19Gn4kqUR2Lmm93NKI6Y1n122vwGHia1IyugpLameKAEz3f94bnH+IsC0dOyPcSpUeuclVwzcGYbCW/vE0sDHfdvUgJu6umyJp23s1r54Id3ujuWlEZbzZ84xXQA/s8sHd3O9xh8CIiOaGmSAEsExxlK9LVhJMD9ViwewsfNHUUb27mA6y7kdUUbpI+vfhd1MyogDCfJruN4qH924x2ASYRBYtlVcWT6vf3OmU4CtZMA2Aao1d2f2d14xVSRkJBzelnDUldiPJEcMnsWzZ0Lgvqh9N5MeUBy5Y8BW8N9dtJqySGOlF1tF00+XfY/jI8tHB0nHAwjW5yJ1TuqsnRPkPR4NyseLf0IfdjQRCDQ6MuGRyWBNxnw/l1HYcQmLXcFmcJNDHsAx6FKeuceMfblkV8WrnGSTX+fcPqchKslQ19EA6/2uLvhq/+DS6maRfCpAETPBF1LwbTxw5ZAb1kH9BLFgE47FipKiWcrmc5Y/P2LjvSMK1KCx8YsuqAw289ikHeb7u5hP64ZeRgK3BdWbnPOD5aUxqxfPYJOUenz/X7U0j454qUQihh1m50LRqnH/QALYt2s0mYuxDOXgpKi2eJylBUh6Qg6MD0J/N4O41GOHFc3+Mt8cMx37hDhiI9fgd3exG//kiVe6Iv/mOZaHrySeddR4Qts+tjbT3IwTLVuPjvxkVEB44dIOUYtxQOOQNzdI3fgV1PIAJ4Hjw/b3+PKm9VSpvufI9KeASzcjRerOjFX3/MLwwGbcrESMnMdDecDbIL63+PbPcwd4wXgYKK08vBFGIcT3yEc4b4JfYKrt1t9tUtPAqde9j7XjojXHpJPWdrz4J4Vh3tAq++QFeAEQRbUjmoMis48+OJywLXTAtQAcSRN1lIj3EcKWJ5E+BpuEKzYpgcmYZk+uTOE6wTlRFv5UdWZ6Ve4W1gKtRt0VpwQYMV/xNvYDPAUraneWmuf+a57od
- wJg0gI+U
- LEeXjXJvAn4M+cWDUa/TMtCmPBd+1u4AkIVmoxp5xdjN2QPPUDPOvq9VmU7QpPZwfldAEXhGOgMBIdYaG66fPvEJUb6MGyBXFCPwUB7AvA/oLvz0d+S4nKbH/ecMw+0eTIP4Pk2LG/xs2JweFBO22wqrN7bvPTrb+ekqaWrxVZrgCs0RPof2ZXLRTnLfhXoXopNNBSOcn9pGxfBrEBs0yu67YdBnXHLj0zta5B9wARzHDypbqYfRkHyYU8xMDy3PY3EJ7LxB/v+oI/H4aRVhdPV7JYWCYD2OUHo++24zedBVzslNuXMc3EV6nMwsnd/yeSSAg
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 539F9100002
+X-Stat-Signature: ow3isz3n3fut74jzdbofsgpb7doxgdfr
+X-HE-Tag: 1768499226-574052
+X-HE-Meta: U2FsdGVkX188fHWETtBDe+e4GMBIx4Jnmb0EAaAZkq9TPMB4n4s8Plr2qXI86EzxkCLwqFWZni8yw7xeyo1+N+pWZFDpHGtEUh9msVku3foCk3aI6U+212RW/DgqO1j0x0MEdx3kbNpKOW59Uk8qnnxASzVN/Y4OjH40muGUNl4djh03vCDOap5HRqGIDPBhVgn2zSZ2QyS05g7sgTuvhwTFh4k29zn1MpFN6oL7goEP/4Psq1u5vPWDpgd4ro3JPvG1EfnXlfXjCJntLuu9iPFCWsxlLo9qmLVhCISYUC47cC6SZDOe5eGSKOfsBWPy3wEGK1LEAwEIZdW9Xi5hRHrnby/+RdTyxjf5oahLt3frhdh0kNO0X7yzN8QYrt8T7X5sfJOpVxXzlklW6uqcozKrO0/11Wbmeufc2G2f5QcRV5wrZa82ZQh4RE2RW77zHt4Eb2ejmjKWj55ECFSiyNegkLaRdyiZFDKTJxWxg55B8s7sZhdTJOEwxaJgAcVdIVEq3TXc444zYY/1ztCl/0pDlh0CnpMt/hZNuZkQqrUsJ78qzjLqupjrQs3JVMpHvDNqf6EmEvuj2Me9qbTgGtW2F/Dz5UaHLdVN/Spqsp8RY8yLTWzynJ5bQhxSXLTi1vwQNSxYvlQvK92Vw8zcfImGxdSs+sK9J78HKf/wOJEomPWj3yAvd53IjKN+F+s1KN9ITQcSjh8OxxcHi1dkjqth3JueeRKv1px8lcKFFRUtIuYEfJ6Lq2edPokCP3lGFDivczy7GlZphgtZn/kDtSadcR1PSag6yX9t5EZRYiyZ8uyNXfjnFRsuwZQrTcSnxJ46MJHiZSLaRVBmfg8Tvu1zQLzuxz34Ex8kUzTHVERn+1KKatgwcO2sqGuULT4Graka2QnaKvF7Stt7O8WxcryN63shzFiqztbpDeTHEQq82onpldg+ArOSVE1+vTM8SSLfhxuQWfuXnyKsVIS
+ s69JIq5Q
+ cWjGnc27IbJJ665yxXCt6xFLNdSpYUTjBThBQyOUgnjWqRUYE82UOaDZ/GfoY0SQMVBD+I71nVc0dIe5nc4V5ezodiysOR1tUXPfQ1qYRLtJ2gxfEYAA/cTiG1CsEF2S+j2cPK7Wzgd7QRznAnyvVuIoxOwr4p0rzwx2UM5unjD1hhzOfatIaPi+ogIytVQaG7QTcxzfGLo2+07boF0ev8H+yIN0bhICJ7frOjUcDWlzL740qyITVksuBP53PWMOrvAaFtsbSkPn00JnqopXXvQNDMjKl2Gpy2lpzLhMniqB4n+jSV4MOtopuLkCT9b09YBejHT/wzw+f4IO8fLzh2n9R48cDN+nWG9Xl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,15 +99,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 18:44:44 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+On Thu, 15 Jan 2026 18:41:38 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
 > From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Only non-hierarchical lruvec_stats->state_local needs to be reparented,
-> so handle it in reparent_state_local(), and remove the unreasonable
-> update_lru_size() call in __lru_gen_reparent_memcg().
-> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Thanks, added as a squashable fix against "mm: vmscan: prepare for
-reparenting MGLRU folios".
+What was "fixed"?
+
+I queued this and [2/2] as squashable fixes against "mm: memcontrol:
+prepare for reparenting state_local".
+
 
