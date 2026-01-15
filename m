@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A065AD39010
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:51:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC92DD46601
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:53:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16AB36B0089; Thu, 15 Jan 2026 11:51:01 -0500 (EST)
+	id 51C656B008A; Thu, 15 Jan 2026 11:53:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 149716B008C; Thu, 15 Jan 2026 11:51:01 -0500 (EST)
+	id 4CA1D6B008C; Thu, 15 Jan 2026 11:53:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04ADF6B0092; Thu, 15 Jan 2026 11:51:00 -0500 (EST)
+	id 3ABCD6B0092; Thu, 15 Jan 2026 11:53:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7AD26B0089
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:51:00 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9AC43160406
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:51:00 +0000 (UTC)
-X-FDA: 84334787880.25.8504987
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 29E5B6B008A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:53:50 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8EC8B16041C
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:53:49 +0000 (UTC)
+X-FDA: 84334794978.07.07720C9
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 489114000D
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:50:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jAP089gj;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768495858; a=rsa-sha256;
-	cv=none;
-	b=OSkdD1QceCTuBrlk4Ck1WaLMxUHE3weksYropeoI30+DqhChkEK5IXdN7atw8TGIuUJ0Vw
-	J2j5Qr2D6fhq7tvpUjJc/gPsYEMq9wOW2NX5z9+0fzSEHgJZualkeh/+6bOML6stNMIibW
-	qt19fldjdOtK0Kc3JoVWVi2QzelL46A=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jAP089gj;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	by imf26.hostedemail.com (Postfix) with ESMTP id 12187140008
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:53:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jh+3YafA;
+	spf=pass (imf26.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768495858;
+	s=arc-20220608; t=1768496027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SljNJ9ya7guEeZDCesmPS6qTlCZIDBdh9EBAuJaiH00=;
-	b=oZbZCx1AWJBM7lYihviwfAbpBMX71gFuoucIdpjlRrcgcbNoL18HzVuH+5XCCQF2+FiQso
-	dpI1jvRmtoP0OkV6UnNCUG/ic3MPoVppYFIU2aZTSfSwbc1fjcbmcuBdtIVd6OurDVLaDr
-	kqgcOXHxPOs1J74JqNmFH0Rb6IjC8dQ=
+	bh=5su/nAHmwHcmkA811BDe3v/5JJsozj0l7oyd1uJGuPg=;
+	b=hD3RYsRxdnyw371TTE267JwCiJ9tzGhwUQFf5KRCAVCJMh5g1RwUe3Yo18mHEz/tx9Ricf
+	6wwzoZ95U4Twti3HAg4ryhkFldo0Z6bH0SkuBrcFwQW4a5ZRsN6DJrPkqgBXI5T+WnJYe3
+	y/B+xPHEnnabkjmEB6QY4Jw3hLnydMQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Jh+3YafA;
+	spf=pass (imf26.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768496027; a=rsa-sha256;
+	cv=none;
+	b=St1WcNE3x/GQxE2l02donDudjzzFBcDqHemrB4jhEz+ddMT1BTWYgH/wyfjMUqDTqRcOCk
+	7fHZ1ZJoxFgn+dPdyexE0tz9aqI/MhlgqhlT/0PNgUMoOk0kIK1Wu9xuFgD8PanY1aO7AQ
+	zBVY3U827Bt9PWOwuY/vaqVl6O6lmyw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768495857;
+	s=mimecast20190719; t=1768496026;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SljNJ9ya7guEeZDCesmPS6qTlCZIDBdh9EBAuJaiH00=;
-	b=jAP089gjR4c3y1KcIKcwlWcrrFlP6AAT4dfEbrhC4z0gOUbFuAdeJ3eGK8GkYun3D0cOKo
-	popN74Dh4JrSswUxtg3icUB+59836aT0q0jAAvKf2hwCEFPplWz78pE0v9r7J3E7yRg4ki
-	lMyq1CzU4o+TPcMYGGYogLX3ahIIgFo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=5su/nAHmwHcmkA811BDe3v/5JJsozj0l7oyd1uJGuPg=;
+	b=Jh+3YafArW+CCsVuXIOQ9BsYxgScd3P5Cf9sqpUa/reaECAbjn6Cuazr+bP+7xib6DlVs1
+	zgtHrtjOQFFk/VWZi8htiWABCBOxv5lXnGc0k61QV9VLugFT5MgTuIOUSZk+/8ui+1eetp
+	nh+DusbFQQ+OoJ24l0Ff4+6a+yGSUIw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-CQ6xqS26Ot-R0ucrYnSk3A-1; Thu, 15 Jan 2026 11:50:54 -0500
-X-MC-Unique: CQ6xqS26Ot-R0ucrYnSk3A-1
-X-Mimecast-MFC-AGG-ID: CQ6xqS26Ot-R0ucrYnSk3A_1768495853
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4801da6f5c9so2101895e9.1
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:50:54 -0800 (PST)
+ us-mta-134-8DtY-H3SNfankAQj83pT9A-1; Thu, 15 Jan 2026 11:53:45 -0500
+X-MC-Unique: 8DtY-H3SNfankAQj83pT9A-1
+X-Mimecast-MFC-AGG-ID: 8DtY-H3SNfankAQj83pT9A_1768496024
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-47d62cc05daso11524315e9.3
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:53:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768495853; x=1769100653;
+        d=1e100.net; s=20230601; t=1768496024; x=1769100824;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SljNJ9ya7guEeZDCesmPS6qTlCZIDBdh9EBAuJaiH00=;
-        b=A++zNL1J4PUk7ho7UO4aOWVSptssCZjZ8NIWLQ7rbo+mDDarmwwHKVMZi+FEJ4Rq6h
-         lPqK/gwnzaLpRFxYPZmsoYKEAUP+BZ6fxyiiIaP0+Q32IaY5+BTWT8VlOE1ppNQVOiC4
-         kN+SF7YVwXh0nvQsdtP4Hz+dUSdRssn63NBclOliBeHAqzID4JjIyy71+M3rQyBlkT0z
-         7sd8wTWHr+zJ9TX6a1Hl6Rv7AHb6/wxqg+K+96CDA8QM+BrTGShWaHDajscU8eWOC820
-         WwK+d/yuI0uMWmC+PH6ydKVgr9m/Kj59lgZbsk6Oy665hhUbf+Hw+hUYPIP3dJhTvBih
-         xEcA==
-X-Forwarded-Encrypted: i=1; AJvYcCX1ANH5jvUt287WGUjBqq9AADJimQ/452kOmEsgtA2GPSXJL13jTjBFTsisHPCU/LXS2QSybLYXrg==@kvack.org
-X-Gm-Message-State: AOJu0YzSkz2AzaOYnm3ISmXgWdXffYDy7mBGvahU5wJBRzALjvT7PLej
-	1bPkslF4QFCLL9rDvw/T15Zjf0VejZCyS4wt53bJ9irzACkrnsY8EyXgtvuba7b5u2jlrHEAaa6
-	MRgOXfjhPCuyuTLQgQ8Y9ALEcMx2BqgI8TneKZh2HHtcrffE9kTrw
-X-Gm-Gg: AY/fxX7YolffZ2wISQoAhcMOH8Zs62J5yoXZrsWe4HBsCVeHCTrgQDBS/WZGes8pIMz
-	ZGUNUAPw9yYlTuf5hvQnnppucWUSlGY8hFFbOwgjfhqQ7INXTyuf9gEWJpVeBMfkStrXeaPWS1y
-	qhQgnACqZXEU7iqrfqP40MsIswhujtbCv7KsGFieHTXPMADS6os5zR1NxuCKoxlbFUwVD40wr/E
-	+S+cjJdCLmc+yi+rPJvLnCO3gixv4i+FV5M9KXa7VmF+G4Z4A4R3sorU5l3VMDtQYaIopy8xwKm
-	4bvYPHDcMRjcuW1ezYM2CY8FjCIQ5bcCBrh88WEGGJ1ECLh3byIqJUPrut9AS1OG6p+YyR2mQI0
-	HI2iV15Y8xRGC5/jMj5hpOtLekoOZkQ==
-X-Received: by 2002:a05:600c:45d5:b0:47d:264e:b35a with SMTP id 5b1f17b1804b1-4801e30aecbmr4637365e9.13.1768495853197;
-        Thu, 15 Jan 2026 08:50:53 -0800 (PST)
-X-Received: by 2002:a05:600c:45d5:b0:47d:264e:b35a with SMTP id 5b1f17b1804b1-4801e30aecbmr4636905e9.13.1768495852632;
-        Thu, 15 Jan 2026 08:50:52 -0800 (PST)
+        bh=5su/nAHmwHcmkA811BDe3v/5JJsozj0l7oyd1uJGuPg=;
+        b=W6C5d537EsZ2+XxXvdaC4EbME/qHj5EnLVWjvfln1EXoYAKwC2aMG6DbqdbTHUDBOY
+         NQNumD4lyPcq8f6Ujjzy7zPcc02hEzTt8hZoGu7kT0ZjOChs5Jx/0r3IFkJIjuixBEYx
+         iVAWeN4i1ZA88yI08H0DPZs5Uf9+cnEUpOCR2bpUKihY1UcauiqJd+L7pgJADwyYI7l2
+         BMpOu6Ia54vqO7OCqviCg3ljAmk4EUdY/0u6ZRCFtBuWmbko7Go9dp/QOij52p02H/JK
+         v9FHZnXdOyVTpR13mjmuY1xnBRKQaBRffNzaZuJzSCDtxTEVMmoBo6nEam9gMGKIGo4V
+         v6Og==
+X-Forwarded-Encrypted: i=1; AJvYcCXw887f3hkPpqr4BhZK8rXqSUkd2c92QXXIGVNhz5cpNKDGyEFpJeRXOvTKTECaoplbbJpCgfUz5Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyxm2b5p4lq1RQ9TrddCbh4fMp1uEL2DxaXo4ShiC6bxvt9h7fr
+	SuBxH5a7QPu3rAac0OpWybNwdAnU6A4XMoDxwTgYu9pglKyj9Q6ndRjEIc37feVQKWkiOcbmAg3
+	27Bxx7ScK3bcz9E72UgQ9x85JC4I92dEOHfiJRJMCitQszDYggb1JYCUxfze9
+X-Gm-Gg: AY/fxX61EoD2TeqZQ+xr5L2I/M2wUqx1wooF8g0zwbbh/K5aP3IBPUBv4O15LXsVPiu
+	w70jrj6YRwI/NGjGKQqiAC9XaaV1AYmRPtATCMp6o5lX4gTZov4cOG/VpkonEZTsnw8mK7GG/id
+	By8gJ9C16QiBapui6MMbTqF38FoehhovX91TmEU2vzNjYoZMJco0AdQVZDoE5eUyqXOvDCQ3B/Y
+	S3kuqdKEErIiM8fCUIYgmWrnhjlrT2IGjM5R6eEsijKimVVmjyvQYZGyNWclFVNljbkNm21nZe5
+	yCWNmQiUpMCZesT9fw9sthTZckZVXrBnPd8Lqh8bCgozJ0LPm8hO7vkjwvorWY4KHXojcYgR6fU
+	t0ysE0KphIc5J4TJVYLhE1R5zFr9ktw==
+X-Received: by 2002:a05:600c:5487:b0:46f:d682:3c3d with SMTP id 5b1f17b1804b1-4801e30d482mr5165385e9.13.1768496024071;
+        Thu, 15 Jan 2026 08:53:44 -0800 (PST)
+X-Received: by 2002:a05:600c:5487:b0:46f:d682:3c3d with SMTP id 5b1f17b1804b1-4801e30d482mr5165105e9.13.1768496023585;
+        Thu, 15 Jan 2026 08:53:43 -0800 (PST)
 Received: from redhat.com (IGLD-80-230-35-22.inter.net.il. [80.230.35.22])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47f4289b7aasm57337815e9.2.2026.01.15.08.50.49
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356992681esm58497f8f.11.2026.01.15.08.53.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 08:50:51 -0800 (PST)
-Date: Thu, 15 Jan 2026 11:50:47 -0500
+        Thu, 15 Jan 2026 08:53:42 -0800 (PST)
+Date: Thu, 15 Jan 2026 11:53:39 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -122,7 +122,7 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Zi Yan <ziy@nvidia.com>
 Subject: Re: [PATCH v2 22/23] mm: rename CONFIG_MEMORY_BALLOON ->
  CONFIG_BALLOON
-Message-ID: <20260115114849-mutt-send-email-mst@kernel.org>
+Message-ID: <20260115115228-mutt-send-email-mst@kernel.org>
 References: <20260115092015.3928975-1-david@kernel.org>
  <20260115092015.3928975-23-david@kernel.org>
  <219f7be4-8355-4376-bf97-3410c6e23867@lucifer.local>
@@ -130,18 +130,18 @@ References: <20260115092015.3928975-1-david@kernel.org>
 MIME-Version: 1.0
 In-Reply-To: <37fdb994-59d1-4196-b377-f3f749148b19@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GU6WTvrVt3IWJo5BtPJ_Do8T1DPC_8Pl94-IaOBtF-I_1768495853
+X-Mimecast-MFC-PROC-ID: Sb-iwNtajm1xjtk5jgki1vbzA6qpf0GKbec-e-jSk1c_1768496024
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 489114000D
-X-Stat-Signature: ywhsut6z37zrbffcsjagtsgngpo79xiz
 X-Rspam-User: 
-X-HE-Tag: 1768495858-587604
-X-HE-Meta: U2FsdGVkX1/YHU8NkQSxwlZ3Uo7oZdw0nAuqI949InN2lY0IfbRELesQrn3AId+Nc1QCk5ziXtbQljTpULXw+0gJCuSHMzOItFAePXcz7wF8NsC/+JlaFK+4wr6thbxPmz/5WmTF4smCs5YA0Y2URsWswyr6uEUqanOi9nOoMMa6cIBTNGJJIu3DUfIVVvN48YJbmhGllzVpJEKcnFi4imt2jWVvq7kgdxi6OmD+VvMCbBPatPl3Rc4fVzzYoQweTFOXQl+nf8BoJTMQXXexq2Zrh/AozKlw12BqkITrZHqaYoJtziGMdIhROzVGwk+3CEhzvFZashCE0B1DlOyC5XHkL1datiu/TmwO0WtHWnCTp8EpOlKnwBz8ZTe//nJ8CSUAjaJG5K7noE5kjT1NxUwdVJrnHo2bOaR1QAkm4wC8MgQPRJv5vcijYTlmZxD20iNWLZjVkB4hj55ELsyiqeByljy65KEI3uGrelcfPVuOP6CBD46mY2VpllDJgaTvS7GmjT5vvk1ec8Kn3ydAHZhIlUiZcbRzNOoK8OdmxxO2juD9Eu9Pcx+0b91p7FFDl8AcZyZJ7C/v8KOKJDxCjxKYsmc3rvoMTBc+U28UXoepOInL/U2RgdKlfy3U1FFcR/A0LTDpH3HW8nyoHQenw0OKJBf9AqCjBKEquTrUmWoy1VUmn8lzTv9GkA2uhUpxCa69y1sRY6ow5OcUtfk1lf1Hvx2oHjMuYwqgxd/D5I/d7jRJd8HnzOE8wvfChGUTVb1hRAJlvFZk+zPpeP9TH9F9r5O18PWSlF53pAEzBI2T0D+ywzF80mceBKeeM6/sX7BLXLSm1Qy7WRtuxh6TqPXD0Je4NZXjBsjk6/Iuqn6SDHaN6wL9gbzzlxjxwRZoGphlAA0zoFxdrmn72EXEGwL68oNdWRgjqHp8Db7l3W79yMJX4M4R+VO90/r9mdTNg0r2X7Ym+r+AKyzcA7B
- 6/2rR2fy
- NsHJr2fXjVkuVwjZ7LFbHHJi6sfiMN4O+k1ouliI03yctUWNc1npEhETmbleuCctph431Yj6YrLK+gdd47deHRs+Kf6CEiwhwHJ74VLFSQDbKgUYLm3dWVByXW+rl/Yzd4DB9bMuydLsh4Bay5MiSLd5kq6qzDlTyODCYe9F/8/IVxn9QrmGxI8nj+qe+35eboicXDibUq+vv3urOwQ+ZlP9+RabiebnyXNwd19JH2OCr1ZM5/1KyxHjOH2rDBno8WDbboqntPQgdlw20CTwjJNbW9xB69B/hMDEGzr3W4u5pOdJ+mRWgr94kJj/qfRMO57kW14XMw0N29ZoeLd8pSJbaJtJ98mbXy4JpKFS6ong+fPeyN/K6Vx8QoSgb/vsITtBgH316kLdGPK0l572uEo3zeHH2TdPdkfKN8g8pYssJcDXNP+LHqpiOeuHrGH5K5cE9JgTSZ87lmJVs2mvwSsnK/w==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 12187140008
+X-Stat-Signature: iwuuw7wshrfkbruija8o3rwtunwd6jnt
+X-HE-Tag: 1768496026-112800
+X-HE-Meta: U2FsdGVkX1+J9mE/Cz3t0jL2/UNXp+pG0DCfA4HDxg/j27bdqWrGCdtkE5pu2V6Tx/iVxS53Y6o6eNApcEm25RcNOdSCSckTQL2qdW1cRdFb49/E6yCcAsJkbuFJy7i19VGMVjHS5BHCu99mV8MxxdnkMBlgWXJTPO0Z6CGuGkWlW20yEc6JzDFv9+mxNZY9z0kyOrfl/Wu8N/4KuEHsmV+D6rOMIptpOYHLwl/kbWQyGQPCwO/ddn+SmW98HvwX3wCwVZTYeIA8QYlQ0lSHnVu4DAxB/o2xL9qDxjJjM6DMQYiEaVdDVXfn3iUNRNbwuwEwUsdeo44a+kcnsgeRp2hKxlg3U5sTdxlYEJrPScGEwYhik4WyRwE73SmmTCV0GqyE9zFZiFXYYiwDZoeDNuTEddbGGKiG9ZTN1Hg2WuJtvvNjGXKEoOlV9FZmXzvdhHBLetXo+i4sZ9CcB3df8t1UqjeleladRP75ELY7+O7+uoYU236mEGp2t6NAPCyieiShELBQK2Adt6OMtquiHpdqLkH6IWQRy+9DvFa1WYKjFOJfggPT1k9jSqXuqhgDnxAWRuvDRP4s/FcOWM3mC/nz3p+EN7QSBkMJfrHIpMWg15BYB3t30l4nINdbjL0B3MGyNZ0CgHU0HI/gpTTkUnjyVHAv2NprFyGYjVjOtQ7CJmuDeuXm4JaQSZyvH5XYNuFeHuSBinqMBUimMRNpFKJwltR0VlB0I/a72iRxJk6IvbJkWMALtMlIUs6y0BsURoY4b3ck/jXuUcr8ymNxSqOjr+sqOrbVvaYKZv+n6imJtrffMrNLx3q0Kd7BIwVuGFtU9a/LyTsrgOVtkq85LEeG73UHQdxR30bxunfoUr9Zxl2qyo285OnV7hjSv6Y2C98QV1sTQJTnuJd2zW5dQ57JMAVi2X8wYip6WHMPMkS24Y2QNtba0RTfjRdztHhVfNu9DqkQLTMTXRXwPue
+ 9WVIaSt8
+ BvXnZ2CuaT+6gIueMYxWbVWeqVsnQcDPdCMk9q01siA3vKnyPqr+n39daCzzKyBwi7tfSLMRygF6UUpBhHaDGR00gCqvb0ixElTvQ6B4FtMl6givOAALaeBMLxPOWNkzlJlUpuwI0djAuVP4W9cPwMTuNnspWgkFUBIwuWWae2WiPFN2QjYO8Bp7+R1sLvqccasZlyNkxCzyAYg9/wA1tm4e00T6C7FgDXdMg10rDTX7u0STzPcxbt1qWmIjkAEyQjOgApquqmro8eH9PtCJb//FQanJD5cZ2nDUxsX8gRPz3cOkc8sBoFQzKyKuUsXSrBuUD264ABBvsGIyhXGWDtKcUKNrZYsXsUueiky2yuFBhLeMSBXynk5tildy45zLSh52glgDAqDr1O26AY03eIfVL3BkIjCAYpWBkUCOnKe2Cwq8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,60 +151,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Thu, Jan 15, 2026 at 05:33:56PM +0100, David Hildenbrand (Red Hat) wrote:
-> On 1/15/26 14:55, Lorenzo Stoakes wrote:
-> > On Thu, Jan 15, 2026 at 10:20:12AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > Let's make it consistent with the naming of the files but also with the
-> > > naming of CONFIG_BALLOON_MIGRATION.
-> > > 
-> > > While at it, add a "/* CONFIG_BALLOON */".
-> > 
-> > Probably not relevant but cheap for me to share :) so grepped for
-> > 'memory_balloon' and saw:
-> > 
-> > include/uapi/linux/virtio_ids.h
-> > 44:#define VIRTIO_ID_MEMORY_BALLOON	13 /* virtio memory balloon */
-> > 
-> > This maybe relevant (I guess this isn't actually used anywhere?) though
-> > interesting there is also VIRTIO_ID_BALLOON... hmm :)
-> 
-> Yeah, we want to leave the virtio stuff alone.
-> 
-> Now you'll learn something you probably wish you wouldn't know:
-> 
-> As you spotted, there is
-> 
-> 	#define VIRTIO_ID_BALLOON               5 /* virtio balloon */
-> 
-> And
-> 
-> 	#define VIRTIO_ID_MEMORY_BALLOON        13 /* virtio memory balloon */
-> 
-> 
-> The virtio-spec [1] defines ID 5 to be the "Traditional Memory Balloon Device".
-> 
-> And in there, we document that
-> 
-> "This is the traditional balloon device. The device number 13 is reserved for
-> a new memory balloon interface, with different semantics, which is expected
-> in a future version of the standard. "
-> 
-> That's in the spec already like, forever. Likely, at some point someone wanted to implement a
-> new version (for whatever reason) and defined ID 13. But that never happened.
-
-yea Rusty wanted to do that. balloon has lots of weird bugs like it does
-not really works with large guests. We really need to get around to
-fixing this, and maybe it's cleaner to do that with a new ID
-than trying and failing to use the old one, was the thinking.
-
-> So now we have these beautiful two device IDs.
-> 
 > I'll note that the spec also defines a "DEVICE ID of Virtio Cpu balloon device as 47". But
 > no changes really happened in the spec with that for the last two years (only the
 > id is reserved).
 > 
 > 
 > [1] https://docs.oasis-open.org/virtio/virtio/v1.4/virtio-v1.4.html#x1-4260001
-> 
+
+
+Maybe that's a good reason to keep calling it "memory balloon".
+
+And hey, there's also the floating, pops easily kind and maybe someone
+will use those with linux in some way :)
+
+
 > -- 
 > Cheers
 > 
