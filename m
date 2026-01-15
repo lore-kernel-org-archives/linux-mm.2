@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05C32D3CC9E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 01:42:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A774D3CCA0
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 02:07:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 545566B0005; Wed, 14 Jan 2026 20:42:17 -0500 (EST)
+	id 287B06B0088; Wed, 14 Jan 2026 21:07:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F2DE6B0089; Wed, 14 Jan 2026 20:42:17 -0500 (EST)
+	id 2321F6B0089; Wed, 14 Jan 2026 21:07:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 405726B008A; Wed, 14 Jan 2026 20:42:17 -0500 (EST)
+	id 13F226B008A; Wed, 14 Jan 2026 21:07:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 310C36B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 20:42:17 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9C155648B
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 01:42:16 +0000 (UTC)
-X-FDA: 84332497872.12.5ADBE80
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B4DB6A0003
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 01:42:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F354D6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 21:07:27 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98CDD140199
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:07:27 +0000 (UTC)
+X-FDA: 84332561334.15.6CBF948
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B68C540009
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:07:25 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Bp13AEWD;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768442846; a=rsa-sha256;
+	cv=none;
+	b=wadInBMtpRp/RifNm0JlQP31ASxIk2lk0jhEYRBpeLfwvbB167UXWqKnl5UyDRQ3FFY0HR
+	LhpymhIFIB+uH3kYnDc+JB6cf+lGMcaLm07+sRm9jaMdmZicgV9a9d+hCsF6rMJhdV8S0k
+	ikROYZ5zSQ2Ti6SiUsD93ClLbywELII=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Bp13AEWD;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768441334;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768442846;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KDUg9V+e32mue4bpvU6EUm0sGQ0VEWHze86noZ+/sGM=;
-	b=cqHOhyF0FM/6/9+jX6s9hfB92BUgjTm6ktNZRM1X3goufiSjPEHBkBDrD+EpukoveSV/0F
-	ved6NXmR6nQFq8uUOYsgPW2ZigElkTXwyphAWOElAPrnCQEisEuD+WQAOnjO5+K+BZXtUa
-	PhygtYkKYPzYKcFU3iKCzBhyGBKlT+c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768441334; a=rsa-sha256;
-	cv=none;
-	b=WYr9RDA1io7SnrM0KypP5mGlOTvM0xDl/mQdj8xlkSNCr8ODLBv/xnYn3torh4h9JvOLbj
-	IrR8VDlzFqfYY6puzkZZSJz3JXgXgHp1MLESZ9iZkBU5yo/5x2TE/VyQ+D6hRcN+9yMrj/
-	xE2BQOe+swpPgQwY8j5LgHNGUNRkVSM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4ds5M61FSBz8Xs6v;
-	Thu, 15 Jan 2026 09:42:10 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl2.zte.com.cn with SMTP id 60F1fvqu027662;
-	Thu, 15 Jan 2026 09:41:57 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Thu, 15 Jan 2026 09:41:58 +0800 (CST)
-X-Zmail-TransId: 2afa696845e6ce8-562ab
-X-Mailer: Zmail v1.0
-Message-ID: <20260115094158027CMmlQ9-DLqT6FPvCswVli@zte.com.cn>
-In-Reply-To: <baef0334-02ea-4732-aa0f-029098879cbd@kernel.org>
-References: 202601141040594302w9Pnbc3vzQLMkh8bQ80D@zte.com.cn,baef0334-02ea-4732-aa0f-029098879cbd@kernel.org
-Date: Thu, 15 Jan 2026 09:41:58 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <david@kernel.org>
-Cc: <akpm@linux-foundation.org>, <chengming.zhou@linux.dev>,
-        <hughd@google.com>, <wang.yaxin@zte.com.cn>, <yang.yang29@zte.com.cn>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <riel@surriel.com>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAyLzJdIGtzbTogT3B0aW1pemUgcm1hcF93YWxrX2tzbSBieSBwYXNzaW5nIGEgc3VpdGFibGUgYWRkcmVzcyByYW5nZQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 60F1fvqu027662
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 15 Jan 2026 09:42:10 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 696845F2.000/4ds5M61FSBz8Xs6v
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B4DB6A0003
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=r+f8khbZNKCitWXbbKRIX1aPxZKAHv2BKTDxI/rs3qQ=;
+	b=jAo+/BxeeiHfY5vigXcK6X5bvzzJUPSZAzub2rBPJusJOqJC+wDrqqH6D5rCPZ5lWM4ZGn
+	HCkn0b0v2GXpOm9cEUEV88L59YRd5rd0uairfp1Vt4c63wL5gFQHxQ8hZojImChG+l/k40
+	I32o7lFR4g38JOHrDvxTX6M4Q7APVTI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=r+f8khbZNKCitWXbbKRIX1aPxZKAHv2BKTDxI/rs3qQ=; b=Bp13AEWDueP/X5dOq2Crlva3zp
+	LObUkWbEx7P+fPaxVAVj7ECbXDtIt5fJQNi0W8/xeeAdqwQDMhG6aotDntGpnjPIlpDrLLXiKbW7y
+	db69OsKZlPTXJY9hFApPOExXuwlJquBKPVPYlsfy27zSM5iEqc5lTBlIuN437J8zhOo9bRJ3HNX7t
+	RizsEzCpgihY/8odVNz7ZqRlbeEBouXkkD+tnYyfw4WaNguyubnoxktd1QQC0rhX+BU9ysp/moenZ
+	ZmL11G1jHS2NCQPDaLmxGJb3XNNlPtRsT3+g9Sz3nikP4QLqjwq1piFDSaFUaSPvv7auGAMPa6+Q5
+	/cnA2QOA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vgCn4-00000000fv9-1myE;
+	Thu, 15 Jan 2026 02:08:51 +0000
+Date: Thu, 15 Jan 2026 02:08:50 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
+	Harry Yoo <harry.yoo@oracle.com>, linux-fsdevel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Mateusz Guzik <mguzik@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 00/15] kmem_cache instances with static storage
+ duration
+Message-ID: <20260115020850.GX3634291@ZenIV>
+References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
+ <0727b5a1-078f-0055-fc52-61b80bc5d59e@gentwo.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0727b5a1-078f-0055-fc52-61b80bc5d59e@gentwo.org>
+X-Stat-Signature: it3bbtbezuj41y1khhq6qff1q6fa9z6h
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B68C540009
 X-Rspam-User: 
-X-Stat-Signature: qo1gk9te1izfko43jheojspqyawiw49d
-X-HE-Tag: 1768441333-479403
-X-HE-Meta: U2FsdGVkX192E45ZtpDyanjlpxkdJDjpenPytUFgKBZ2Omray465ZU8DA2oKmQGAK5BX3yyTTsFsFycgnVnMncC65AXYKs1gF7SCyAru0jzvPn9Dv8hR+wXsM1hUpZCLmf/FHsKf+vPbrrZ0zQQoqvr1Bg28SR6WbwWgTho0TrbHCycdNGKkIXF+dTmej+wSBmBcvPDwkanoD2zsgi6Kj1V5myhAUUiAhAREdOxbi6MSStDj+IkNM6TY98ud2q37gTUPGY1Gwu40pMaGBqK8yDGW9j1auP+NRDCD1HVpINcmvpLlhSejZN65CdlAbLS8mHHeTSJqtqkCf9R9KkaLMRfHQBCqtaMEmhf7/DMuxthum53wrBIf94S1McaqSFyv3wazt+OnbIRzOwzVqIaKvF7AsBdJCVScsUua3MKZedoYLj68bsgMgy35W3h6YVadvtC37UXC7p+ejh2ycB1S1xrbTBrkwMDOsY+Ibu+OLEneezsAJwqZc4JZaYYsWCQP4iCjpUr6rI9lilHZBeq81DnXaDnztWq/Ynzd6con9grL0c4f1H+8diL0lzC+S/HEg3ylJzv70F3ZF2eyeo3UNGbgwuxDTQyfHRdajJXzymeEfBVz4vMPY/fTcRl3L6gvSA69ciCCM9tjQJ4ZmQN0kvSPl/QEJ+pOM6EOUbNKoWxkuSDTtcyDtPoQWoqun0AX6WDrW0rYEi/5aHJmTlcc/UVAtMfm4GqDMhgTScvge6Pm9ZM8crHSJsWXto1dcN597ptbM+o4mGjmRufUIRTEO7tq/IfXXS/CEqTuKSHNpBTcQ9xfRWN7uAu0h0lCGQjqz5VauWcNPls9dXcwzr4Oc1G7/j/n1Wvgeac1m21zk5dN/lJhHCgpSn0b7KFZoswhiLS5YIV/hByaToIhS/YAyME/1mX5ThWr9Ui1w6/u2ZTIQWpfOTOmBR4vJZuNT0LA2SD6KRcvNu/PEmrg8p9
- W45/VslH
- 66BJ0UGiOZeSb7dknLY0zfCJ2sjK7ZFA1FvkhQ2yiE8K/yo0e/ZUq13TUYTHQY7vG522mmtPk+2JTMJztR9WG94WrYH3+TNEJzOj8F/EUdb0YPSfKrdIkLJ8IlguT9WZ1CmZIATJQfrtiMEzrrN7AMC24PRw4PEnMLEBweULc/n/DoZCWU9z0SwWaqNUw2GzXVT+NQpgHRj0hdxE=
+X-HE-Tag: 1768442845-461427
+X-HE-Meta: U2FsdGVkX1877LXnemBnwy5iweuDzD/RYWEib7fQA3p1K0QIFAJVM5v7DedtRPs6Afws4rNXbx8ib316ddh+dw36VwH+glH+vBGhgsfLU4hAYlD7iSJWRpuQf+BD4pDRk2Zx8SvaKIleMyRa1EPcg/XH9MrDBHIFe3uArkoqaBXg8OI2lUOLBCGANqfaeOwZVcUrhw+7wioVMObVHygDTKln2usOMCbyne+zRYkaD7xwUSR15eBGn//hFA4rKWzsLrbWGZFDXw6ocXV7ItAxUfWogKq/Ujj0eDXLj3YJRQFn53CVOfbtgRWMxP5mI4gPITyMKmaywijqsoohiifxEtSkZ1OUtcMy5t4s4qMQ29oChQK3ov0rQHJN2xepeXUttDTqaAc/e9NVK3oPk/LW7ISqiKq5jisdpS4uqn6DUZneADCyN5XWME2EfrHesBAwZRY4Qj0fHVOHOOgfYCZkCr/D4468S3e9F7YA8gdN5DUAe/nk8E6607BCsoyIy36Pza4+9THzBm6Sj3Q4UU4wj5/jfH1pYPsYiAe8acxtcdjBRDNM1uMlEXk9gbwH6vanv6RwmFQGFtY+74IX2ywS1xSBG5ZLkasxyvxef66kh7yteybIXcYMtERZXCnF2+IC04jrd+ZRsu+GH0Z2N6+2+bOb8QKpoe50yuszZo0djZmbWBDyu/cPlfS2qYqylDdjmA/EEAzEqI28v0p7gT2YE4eeqTq3Ju+yDJW7ImPP/MFC43Sbh9HFhpeMr9kqHMQQTJweVWuevRagTRGrqTpUMbjb5yxT1fwypSy0HsuehV8wbIHuGjP757hVT4k3/kb8WF2K4xmlFu7CP2iToTv5i+8TPciE8VssOYmzmZn712gKNJFWZFj2ht031jHTTm0FuDC81I8SqePdCLz7iykExQGWIjKl2n7hm1QKLgRrWV7g6xg74JyNkeFRu8TzQn8vjQvDZ2KAda8q16yFSWT
+ MeHBnrgD
+ gP/unlJRJezmUc7jbAbPbqZmsQZ9hzmir4tqhVNRKql+CZCg84J47NUSKYCoKtuGN02VhxZbs/xtlyl9SKMmSBB7+zpK//dguIz5aSkdeXcewgQF39INauXGlS0RJRsQWMjd+ZBVzzluG4oi5GxK+tiMH+rtvjZMkXn/1hVROvkrEKVIpQOHjejqbYwzeuQ4vAO6zVpn+70t+1WC5ZN9Nt6CqGGD1VRofwN7Ewp1GlYPxQ3Jyi1/nk+24VuPrUISIE5b+1THiko+iuDs0xZGhKlP8FQn6BhTxcmbCkqZGlYDeb8cVqDhNIqrWGWq4I7Rlg5fDwMQRN1Vkd3ICq728+HLfQj0HcKcAJgcTio05nq9Fy+UgMyiaNOKYSe5NDs/Jpj47JCdWXHXKJFdUlLUx/1w1swAJxoCK0ay3oFUWzHHLDwN9sCwuO56L7tV/yVz0ipBJCKv42O8ZbF1M0U0dgnx3s7DMHiDezF9EfHxE6XEqzG8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,46 +94,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >>> Solution
-> >>> ========
-> >>> In fact, we can significantly improve performance by passing a more precise
-> >>> range based on the given addr. Since the original pages merged by KSM
-> >>> correspond to anonymous VMAs, the page offset can be calculated as
-> >>> pgoff = address >> PAGE_SHIFT. Therefore, we can optimize the call by
-> >>> defining:
-> >>>
-> >>> 	pgoff_start = rmap_item->address >> PAGE_SHIFT;
-> >>> 	pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;
-> >>>
-> >>> Performance
-> >>> ===========
-> >>> In our real embedded Linux environment, the measured metrcis were as follows:
-> >>>
-> >>> 1) Time_ms: Max time for holding anon_vma lock in a single rmap_walk_ksm.
-> >>> 2) Nr_iteration_total: The max times of iterations in a loop of anon_vma_interval_tree_foreach
-> >>> 3) Skip_addr_out_of_range: The max times of skipping due to the first check (vma->vm_start
-> >>>               and vma->vm_end) in a loop of anon_vma_interval_tree_foreach.
-> >>> 4) Skip_mm_mismatch: The max times of skipping due to the second check (rmap_item->mm == vma->vm_mm)
-> >>>               in a loop of anon_vma_interval_tree_foreach.
-> >>>
-> >>> The result is as follows:
-> >>>
-> >>>                    Time_ms      Nr_iteration_total    Skip_addr_out_of_range   Skip_mm_mismatch
-> >>> Before patched:  228.65       22169                 22168                    0
-> >>> After pacthed:   0.396        3                     0                        2
-> >>
-> >> Nice improvement.
-> >>
-> >> Can you make your reproducer available?
-> > 
-> > I'll do my best to try it. The original test data was derived from real business scenarios,
-> > but it's quite complex. I'll try to simplify this high-latency scenario into a more
-> > understandable demo as a reproduction program.
+On Wed, Jan 14, 2026 at 04:46:04PM -0800, Christoph Lameter (Ampere) wrote:
+> On Sat, 10 Jan 2026, Al Viro wrote:
 > 
-> Ah, I thought it was some benchmark ran on an embedded environment.
+> > 1) as it is, struct kmem_cache is opaque for anything outside of a few
+> > files in mm/*; that avoids serious headache with header dependencies,
+> > etc., and it's not something we want to lose.  Solution: struct
+> > kmem_cache_opaque, with the size and alignment identical to struct
+> > kmem_cache.  Calculation of size and alignment can be done via the same
+> > mechanism we use for asm-offsets.h and rq-offsets.h, with build-time
+> > check for mismatches.  With that done, we get an opaque type defined in
+> > linux/slab-static.h that can be used for declaring those caches.
+> > In linux/slab.h we add a forward declaration of kmem_cache_opaque +
+> > helper (to_kmem_cache()) converting a pointer to kmem_cache_opaque
+> > into pointer to kmem_cache.
 > 
-> How did you end up measuring these numbers?
+> Hmmm. A new kernel infrastructure feature: Opaque objects
 > 
+> Would that an deserve a separate abstraction so it is usable by other
+> subsystems?
 
-That was done by inserting livepatch.ko to modify the rmap_walk_ksm().
+*shrug*
+
+Probably could be done, but I don't see many applications for that.
+Note that in this case objects are either of "never destroyed at all"
+sort or "never destroyed until rmmod" one, and the latter already
+requires a pretty careful handling.
+
+If it's dynamically allocated, we have much more straightforward
+mechanisms - see e.g. struct mount vs. struct vfsmount, where most
+of the containing object is opaque for everyone outside of several
+files in fs/*.c and the public part is embedded into it.
+
+I'm not saying that no other similar cases exist, but until somebody
+comes up with other examples...
 
