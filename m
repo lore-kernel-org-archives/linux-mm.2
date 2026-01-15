@@ -4,155 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6911D3CCAF
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 06:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0157D3CCB3
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 07:01:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29EC46B0088; Thu, 15 Jan 2026 01:43:38 -0500 (EST)
+	id B406E6B0088; Thu, 15 Jan 2026 02:01:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26BD46B0089; Thu, 15 Jan 2026 01:43:38 -0500 (EST)
+	id B1E426B0089; Thu, 15 Jan 2026 02:01:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12E946B008A; Thu, 15 Jan 2026 01:43:38 -0500 (EST)
+	id A244E6B008A; Thu, 15 Jan 2026 02:01:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 014FC6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 01:43:37 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 936DF570A7
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 06:43:37 +0000 (UTC)
-X-FDA: 84333257274.19.0D1D1A3
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 59A76A0008
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 06:43:35 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=VGObqK5v;
-	spf=none (imf25.hostedemail.com: domain of BATV+cdf73ff56b16bd1381a0+8180+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+cdf73ff56b16bd1381a0+8180+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 90ED56B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:01:07 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D37C160210
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:01:07 +0000 (UTC)
+X-FDA: 84333301374.07.7067EC5
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 42F25140007
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:01:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=leemhuis.info header.s=he214686 header.b=rNc3Xwoq;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of linux@leemhuis.info designates 80.237.130.52 as permitted sender) smtp.mailfrom=linux@leemhuis.info
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768460465; a=rsa-sha256;
+	cv=none;
+	b=efM95bG6qnZH3ez14DC9NW1ykLkCUdRg/0kfGmH9PSnRmCQy6xf0UbbvNQFzhIcmkQpZwL
+	onS6DJC83AbpatkAd4/Sb5+h4w2q3ahUovW7Wft48DQOPM7CT6dKPLA/K2UkTToD3UVBdi
+	k8n250f5RpoiYRhz+DEm8/NbYoPtiVk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=leemhuis.info header.s=he214686 header.b=rNc3Xwoq;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of linux@leemhuis.info designates 80.237.130.52 as permitted sender) smtp.mailfrom=linux@leemhuis.info
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768459415;
+	s=arc-20220608; t=1768460465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/I/lmC8LP3DXdryYas7yQPVnLzGMCsU6bnNnqo9iZUY=;
-	b=rGsLnqg33AV5/rhDgU8fUWpBEqQOk+Xkl1ILqDQo3KObnCOdfp4Ot3Uq/PO/5d9I9AuB47
-	+mSuNGDK+Ev2ZJyaCOvLceeruMvq/pIQ7g2z9oBmdOISkxCUMzOU/fiOPOmjESxVZrHNdt
-	hCtTunMa96ew/WID0OHCKJXq7BExjOc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=VGObqK5v;
-	spf=none (imf25.hostedemail.com: domain of BATV+cdf73ff56b16bd1381a0+8180+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+cdf73ff56b16bd1381a0+8180+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768459415; a=rsa-sha256;
-	cv=none;
-	b=ox7e7E630FeBh7NyU19Ci4ip1ptG3PvcqnAENTwwDzhC0paPK+mcoqiQYReXIGtZlmRZ9i
-	NSDn51YNUzc0B4IxYKWu19nb0fXFHwpDyZYYhDgh6fQ2rzLjNUuZStCO3TKL0lw35wj055
-	EPJBLA6XL/2BCi2czlYE7p8ZuWyPUGk=
+	bh=92kyb/l1XrVqgOYYCDlnzdTp1L5gMW6g0JF4poxao5Y=;
+	b=SUTB0LYOg9zQN41DNImOK4Ibz/VfRNXoTSe6f2OOIrHj3+uYKgVu/EkOCEmEyQw3JpmCMa
+	hcVl8YVWmf2BSdnhzwhy5NeGM8p07He0YbK2uIWgRFuBVH6Dn8m9EIdW0KrtX3sOGPHdvH
+	f4RtBz+PxgW0m+QJxAYLp/51n/VQzZg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/I/lmC8LP3DXdryYas7yQPVnLzGMCsU6bnNnqo9iZUY=; b=VGObqK5voCZEvaOS2sd8k58SOl
-	1MKXHul0UIxtbNustQjF3TiNBO5A5DEV+7luUQDjVEmdj1o6ZXj7/RHbsW5uQ8FHghSmNa8RGSf/Z
-	lqXP7DBojYS/m9d+kpswr79pVrMANdI/lJ+/vLktuyA9+4LwMwmW4ZudctP5Nn8fgcUOpIxP4H3bZ
-	wZU+Uv2sOpV/KHIJNeQwI3FUfk0W1FapF8T8lBqL+KFM3MrFgZ4F2CMZTLhz100xPKnoPJhHW7ms9
-	sJwJmQ51fc9hgVLMQHKjPH4dx2dyuUWDE38tPmbeAdELv7G3/fIrEXIlcOTJgefaGpHmCuyNcNjpw
-	8JLGu1tA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgH4C-0000000Brtc-23Ey;
-	Thu, 15 Jan 2026 06:42:48 +0000
-Date: Wed, 14 Jan 2026 22:42:48 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	Nicolas Pitre <nico@fluxnic.net>, Anders Larsen <al@alarsen.net>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
-	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
- lease support
-Message-ID: <aWiMaMwI6nYGX9Bq@infradead.org>
-References: <ec78bf021fa1f6243798945943541ba171e337e7.camel@kernel.org>
- <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
- <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
- <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
- <aWZcoyQLvbJKUxDU@infradead.org>
- <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org>
- <aWc3mwBNs8LNFN4W@infradead.org>
- <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
- <aWeUv2UUJ_NdgozS@infradead.org>
- <20260114-klarstellen-blamieren-0b7d40182800@brauner>
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=92kyb/l1XrVqgOYYCDlnzdTp1L5gMW6g0JF4poxao5Y=; t=1768460465;
+	x=1768892465; b=rNc3XwoqLFyxi+RJ6f/QupfNeVwxVfKigLtyIaQv7cSyjLLqNxqAleUABVRk3
+	I+mYTXE5lSOr9MH6GMClikTT5RxopSQiU7vjwl2HLhGIS7P7WJM/QZHpy6zqSwPmy8jCjPO6WudbS
+	17dP4elrCqKSTN8vBF5yrq9K/mEY5HJ/uW+fzW8nJsplP4TbC6Qe4KsdeFdTUQhG/4o2Ll/njsV2+
+	08eSCqheCpPOs3w1gPvIWeHxWva3EJugHumNA9NkJW1Wbjf3qYVaoK0Q8H8nPQTwVWG3F4SvsUKUZ
+	GatY9QvLAYwpM6n8IXzeeFmazn3c3OIEYTPmBYZERy8ES7KzGw==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1vgHLq-00ENNS-0R;
+	Thu, 15 Jan 2026 08:01:02 +0100
+Message-ID: <16ea64d1-2a9b-46f9-9fcc-42958f599eb6@leemhuis.info>
+Date: Thu, 15 Jan 2026 08:00:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114-klarstellen-blamieren-0b7d40182800@brauner>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 59A76A0008
-X-Stat-Signature: bcb36g13hzykeet39ofkdtcpbpma9heq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4.1 00/10] x86/entry/vdso: clean up the vdso build, vdso
+ updates
+To: "H. Peter Anvin" <hpa@zytor.com>
+References: <vdso-cleanup-patch-4.1@zytor.com>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linux-sgx@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+In-Reply-To: <vdso-cleanup-patch-4.1@zytor.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1768460465;5fd59061;
+X-HE-SMSGID: 1vgHLq-00ENNS-0R
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768459415-451488
-X-HE-Meta: U2FsdGVkX1+bVyksVQHz8/firHJcMJ4NyzV4M7nnNcWNp37C2TgBWoajFFG3Q9mgoaKvS2n16cq0TFZAjcjX2wBXl6uc6nAD+P97lzTr4B/VtUBTGnEQMcqppC+OfSTv4FJwN+1+zvA/+fiQr/ZwNpk2gH7r3oFZkvfVDIh+Q7wy1jNIayA0I+idnbiy/iZVA8CxKGqU1EblG+0FbErmGqOp5o0k/0SIcm9nWdfNMKMGJBMq7xYx6WdVhpNJvEDy5iV5B8bFkWfrdYWLPj0buNYLu3FYFqYdYKvGC35AdGSxxzp+ZQqaRjXp4xD6kyjF3gRsL4GPVv2vHrWAHjHgeiKnmBuxPMN7qFrQv3EjqC7NsEPSMgy1HxSKuEH0M82XBH3gOmA58pYsMfc1I7a36aHZRNRqDsCPTNMLGt6AZpyYsHtNMD+eCPRVnwo070Nj2Wqr3FN2rhz8y0jV9hKlCTAkhVuCmCOKxMlSirAzI+rD/soI/Lttaz7+jLMgmWZAokar5TzUUMuuU7XEAFO4f9tnNHX6GPwxpK3vL82MXxR+5Ne0vDWIuxORYtbXBVC81obE2gWwHzZPbRtOpeW796S5nBrvgeyB/zCeprF1u1bvl3jeXjG2HShIVlt7bvluBNiSBSnXFQFC/CzZzBEcYUjBOo6msyf/cOBR60ZEziUvTFYh/p1xrX8rC8x0iFyMsImu8FvFSEOdHI4CP0gmVwrTD/IJQjQ9ZkbhV3coURA0hiTASXBszzcwKS5DRPg903EzCa/27clkv6ysZ6V+DY5OOEVCYllr5ljF+Iwq1ZZfNK0VPCBnRkKchRsHcffj+dE2LFYudaLIG1MOxjKAfkAXRo/tz2ZdHEpypo3Sn028TNKfcB4R3ugZ/OKoNYrf16/kmrt9JtcV2kX/f8SmaW9i03/aQJsaidSY4RQP2sa+fk/2FRLbxRpi4CM6Pe4drS9OEQ2bloENrLQPZzR
- uL6rGkXW
- Gyg/MG4PP6Kg46jgQmPATQP662rev972H132Ut8VL81UEJrK1d/DTGBpr8at7n1/PTVLpKkkWKh9UwHy08mJMJCU4Lnb5Dv90LEv+dFPKxAa46tvVLEPG/QPXoK+xm6zY/Ru1IcoxjjxudOq1YAmMmm/WrKWJ7Z8sL9ZOSzJYD33qi4tTzIsOuRYUU2ZARBVOawsQxeKy07uO1JIA0xAFCjVofk3t3X1DzK5XJKDdb/dczU5/iummCuDVQpKBe4v+iRoKDt9uAeWrJIcwRRAxFvIdh+Y5vwFR/bSOwQcQR3LeVIXR9tj65OChVHcEKvsCK3QAbdY69T1PuFO2r9qMrejNBcufMURraiDHX/MZIhJYbxjMGD5L/uopCHjWUpHrdSAptCXOrAUGMDUKWWdmsXGErRBm0YziIlKisdJImcApRjhDOV24EGAiGi4bCW077eoaSc0ZAHffsJBFB8JyvLVz7DcV5sOOPxlfbk+NMCMPlKvjXZ9HIHl8VGeYx3XtriSPVEHsFCcYxjJUZ8IIT8Brfw==
+X-Stat-Signature: b3hyfygzwy8jtsnijhniubaiz4r6eoap
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 42F25140007
+X-HE-Tag: 1768460465-57239
+X-HE-Meta: U2FsdGVkX1+AWyzlTHWTo3egosEwcLx6SQWr6dQ5iZ+1ChiFL+BW/4BYGqXQOEDnOaKT+ZlFRkJpmTNsoFEzx9CA/rNZzHIzWDIbkoFtFILdjrYCCyoxc6wMSHt76mqEVoPfcNfRRpwjQYnRvXC11H8aHmI58p8yQXRLm5x+3uIjHst/w3q88QrTtxgGFhrKiULOweF2a5KxbDzvwNDkIr4MhlXn77zf0JGleQe2wrQ63s3h1MH7wv7ec8o0UCkRhGhZt0mZsNZ9JNTYq4llzqF6GHPbnazkP4njLTMEG/zyPd3EqwD2UYjZn4aJRQT5n9bBfSUP7IQ/CCssE1G5XFPslb9QiZX7c7NmAoPkj6jXe3DcSK5D7I6SVwRerg5S/yf6iW5u5847ns+FvR1m1z0c7wpzuTjzsgzXbi0wBTvi7ZuKXRVfPMD5n9iPE1QsZTbNT+EilYtORXAGQ0VrXL9bFCL9ZyaWMvB2iwH59fpQ7DXH7kLX1RM8U9AmDQHWFQrNSD+Z5rFiW1u4L1DoJoYfVj6k/L0BlJf+6gGnDdA2VWrBAQvUVTHtgtDyGHx7A/Aap3ptq+3g8AkA/M4nyJ3qvnOzmtfDW9D/QBCgd3Ui+dD6P951qbhQ0+hV+HvCsz9saZ75o1Mwlpz/O3kX31Oc2+k5QE1QOcEv8rFpodGWiosfpeav7ypjbDXJkd0/E0PROFX1aehboured6lCQ51jAm6UFdCtedAvxkZqtdZAb6OPGhONCPKM9pwMydh5VQ9C1bemwcu4NFKM82WQiTNV6etavD5R/Nu+yD4d3cBfJZqtm2ajry7jJv6L0Lz9ZCiAHmdfQmfAcaToDMiK99gDr7qLwgX++4KqLDRTaPO4PM6mgrAla2tQG/kgU0P8RS5bPcYR7gzKgHdDhtULVmWpL6TOK0Ss
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,29 +141,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 04:20:13PM +0100, Christian Brauner wrote:
-> > You're still think of it the wrong way.  If we do have file systems
-> > that break the original exportfs semantics we need to fix that, and
-> > something like a "stable handles" flag will work well for that.  But
-> > a totally arbitrary "is exportable" flag is total nonsense.
-> 
-> File handles can legitimately be conceptualized independently of
-> exporting a filesystem. If we wanted to tear those concepts apart
-> implementation wise we could.
-> 
-> It is complete nonsense to expect the kernel to support exporting any
-> arbitrary internal filesystem or to not support file handles at all.
+[stripped down the list of recipients quite a bit] 
 
-You are going even further down the path of entirely missing the point
-(or the two points by now).
+On 1/6/26 22:18, H. Peter Anvin wrote:
+> [...]
+> This patchset cleans up the vdso build by building the 32- and 64-bit
+> vdsos in separate directories, moving the vdso2c tool to
+> arch/x86/tools, and by merging common code and especially Makefile
+> rules between the 32- and 64-bit vdsos to the greatest extent
+> possible. [...]
 
-If a file systems meets all technical requirements of being nfsd
-exportable and the users asks for it, it is not our job to make an
-arbitrary policy decision to say no.
+Lo! My daily -next builds for Fedora failed on x86_64 (other archs
+worked fine). Haven't checked, but from the error message I wonder
+if this might be due to the changes from this patch-set that showed
+up in -next today:
 
-If it does not meet the technical requirements it obviously should
-not be exportable.  And it seems like the spread of file handles
-beyond nfs exporting created some ambiguity here, which we need to
-fix.
++ /usr/bin/make -s 'HOSTCFLAGS=-O2  -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -m64 -march=x86-64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -mtls-dialect=gnu2    ' 'HOSTLDFLAGS=-Wl,-z,relro -Wl,--as-needed  -Wl,-z,pack-relative-relocs -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld -specs=/usr/lib/rpm/redhat/redhat-hardened-ld-errors -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -Wl,--build-id=sha1 -specs=/usr/lib/rpm/redhat/redhat-package-notes  ' ARCH=x86_64 INSTALL_MOD_PATH=/builddir/build/BUILD/kernel-6.19.0-build/BUILDROOT vdso_install KERNELRELEASE=6.19.0-0.0.next.20260115.439.vanilla.fc44.x86_64+rt
+readelf: Error: 'arch/x86/entry/vdso/vdso32.so.dbg': No such file
+readelf: Error: 'arch/x86/entry/vdso/vdso64.so.dbg': No such file
+scripts/Makefile.vdsoinst:33: warning: overriding recipe for target '/builddir/build/BUILD/kernel-6.19.0-build/BUILDROOT/lib/modules/6.19.0-0.0.next.20260115.439.vanilla.fc44.x86_64+rt/vdso/.build-id/.debug'
+scripts/Makefile.vdsoinst:33: warning: ignoring old recipe for target '/builddir/build/BUILD/kernel-6.19.0-build/BUILDROOT/lib/modules/6.19.0-0.0.next.20260115.439.vanilla.fc44.x86_64+rt/vdso/.build-id/.debug'
+make[2]: *** No rule to make target 'arch/x86/entry/vdso/vdso32.so.dbg', needed by '/builddir/build/BUILD/kernel-6.19.0-build/BUILDROOT/lib/modules/6.19.0-0.0.next.20260115.439.vanilla.fc44.x86_64+rt/vdso/vdso32.so'.  Stop.
+make[1]: *** [/builddir/build/BUILD/kernel-6.19.0-build/kernel-next-20260115/linux-6.19.0-0.0.next.20260115.439.vanilla.fc44.x86_64/Makefile:1459: vdso_install] Error 2
+make: *** [Makefile:256: __sub-make] Error 2
 
+Full log:
+https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-rawhide-x86_64/10010857-next-next-all/builder-live.log.gz
+
+Ciao, Thorsten
 
