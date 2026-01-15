@@ -4,140 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23A73D39010
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:49:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A065AD39010
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:51:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 246186B0088; Thu, 15 Jan 2026 11:49:52 -0500 (EST)
+	id 16AB36B0089; Thu, 15 Jan 2026 11:51:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F92C6B0089; Thu, 15 Jan 2026 11:49:52 -0500 (EST)
+	id 149716B008C; Thu, 15 Jan 2026 11:51:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 109086B008C; Thu, 15 Jan 2026 11:49:52 -0500 (EST)
+	id 04ADF6B0092; Thu, 15 Jan 2026 11:51:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 00F5A6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:49:51 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A64821603CD
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:49:51 +0000 (UTC)
-X-FDA: 84334784982.13.B42AFDE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E098214000B
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:49:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HYrzVqfv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768495789; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E7AD26B0089
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:51:00 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9AC43160406
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:51:00 +0000 (UTC)
+X-FDA: 84334787880.25.8504987
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 489114000D
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:50:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jAP089gj;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768495858; a=rsa-sha256;
 	cv=none;
-	b=L1AnjxgNHTMd2Oj2a0CS3xuUX93c0E5Biay95QuvLmQIH+aPxxknyWtaV9YMz7EusRX8ax
-	6WRv4vErhdczxfvo8cHPwBOYkq3cwnemaGbkIPwpiUEKhbt1rQk/CKITyNqbyJr6KgriHG
-	xYeCS8Hap5c6DQs+pU4EipIpfNoBO+g=
+	b=OSkdD1QceCTuBrlk4Ck1WaLMxUHE3weksYropeoI30+DqhChkEK5IXdN7atw8TGIuUJ0Vw
+	J2j5Qr2D6fhq7tvpUjJc/gPsYEMq9wOW2NX5z9+0fzSEHgJZualkeh/+6bOML6stNMIibW
+	qt19fldjdOtK0Kc3JoVWVi2QzelL46A=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HYrzVqfv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jAP089gj;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768495789;
+	s=arc-20220608; t=1768495858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ANYD19zVm1JWh1JbyYi2C85kNMPGMA1rYPyjQ1oZb3U=;
-	b=t294ytP9a23Taqi6VCij8tTVXewfmD5eMMjHyjmzMEW5uoOELCVKmN4iNEmResSuI7cVGz
-	p1lk85/sF4RQ9bv/jh4YOw23zagKjORjN5N8b4dA8XvxqLDQq/JlwsXG7cxdOM6wJYuGZK
-	ElcX8GACyVumbZoiWotASPB/W1EVsLs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 47A9A60121;
-	Thu, 15 Jan 2026 16:49:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4344C19421;
-	Thu, 15 Jan 2026 16:49:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768495789;
-	bh=IpZqoR5qAaoKI8w1KTi83tkryc1MfgEtvAY62yPtvPM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HYrzVqfvqaeT4uBNVa/cbuS9BTam0Js1TKLqrPNiFk8aBczK7nXvKIHUpt65VkwCb
-	 CDZV9rG2yPmFspuBOwY5N4n8g2rELHh2qDWBR+qX/76buwnVT9k8Y3Ni1NqZYxue+B
-	 pYVDdGMSy9uLD6wepEFOLv3OWj2F3fkNWJmzR/KC08NmgYy3bw5ZFH/fIglxYcFE+A
-	 lQ0mbp9V/1+faH5BEvM1YMdO6r42QX0S9XSQ6rBRohcUvFCBujKZQ/3rlfPGvaCZ7L
-	 FIAwHMAqnawHANWDmMFFuYLPirZFywgHXtdfdiANmYCkMXoGEgnX1kc0Is/k7TbGpM
-	 AKPmMLws8a5uQ==
-Message-ID: <30ae1623-63f9-4729-9c19-9b0a9a0ae9f1@kernel.org>
-Date: Thu, 15 Jan 2026 17:49:43 +0100
+	bh=SljNJ9ya7guEeZDCesmPS6qTlCZIDBdh9EBAuJaiH00=;
+	b=oZbZCx1AWJBM7lYihviwfAbpBMX71gFuoucIdpjlRrcgcbNoL18HzVuH+5XCCQF2+FiQso
+	dpI1jvRmtoP0OkV6UnNCUG/ic3MPoVppYFIU2aZTSfSwbc1fjcbmcuBdtIVd6OurDVLaDr
+	kqgcOXHxPOs1J74JqNmFH0Rb6IjC8dQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768495857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SljNJ9ya7guEeZDCesmPS6qTlCZIDBdh9EBAuJaiH00=;
+	b=jAP089gjR4c3y1KcIKcwlWcrrFlP6AAT4dfEbrhC4z0gOUbFuAdeJ3eGK8GkYun3D0cOKo
+	popN74Dh4JrSswUxtg3icUB+59836aT0q0jAAvKf2hwCEFPplWz78pE0v9r7J3E7yRg4ki
+	lMyq1CzU4o+TPcMYGGYogLX3ahIIgFo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-CQ6xqS26Ot-R0ucrYnSk3A-1; Thu, 15 Jan 2026 11:50:54 -0500
+X-MC-Unique: CQ6xqS26Ot-R0ucrYnSk3A-1
+X-Mimecast-MFC-AGG-ID: CQ6xqS26Ot-R0ucrYnSk3A_1768495853
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4801da6f5c9so2101895e9.1
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:50:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768495853; x=1769100653;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SljNJ9ya7guEeZDCesmPS6qTlCZIDBdh9EBAuJaiH00=;
+        b=A++zNL1J4PUk7ho7UO4aOWVSptssCZjZ8NIWLQ7rbo+mDDarmwwHKVMZi+FEJ4Rq6h
+         lPqK/gwnzaLpRFxYPZmsoYKEAUP+BZ6fxyiiIaP0+Q32IaY5+BTWT8VlOE1ppNQVOiC4
+         kN+SF7YVwXh0nvQsdtP4Hz+dUSdRssn63NBclOliBeHAqzID4JjIyy71+M3rQyBlkT0z
+         7sd8wTWHr+zJ9TX6a1Hl6Rv7AHb6/wxqg+K+96CDA8QM+BrTGShWaHDajscU8eWOC820
+         WwK+d/yuI0uMWmC+PH6ydKVgr9m/Kj59lgZbsk6Oy665hhUbf+Hw+hUYPIP3dJhTvBih
+         xEcA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1ANH5jvUt287WGUjBqq9AADJimQ/452kOmEsgtA2GPSXJL13jTjBFTsisHPCU/LXS2QSybLYXrg==@kvack.org
+X-Gm-Message-State: AOJu0YzSkz2AzaOYnm3ISmXgWdXffYDy7mBGvahU5wJBRzALjvT7PLej
+	1bPkslF4QFCLL9rDvw/T15Zjf0VejZCyS4wt53bJ9irzACkrnsY8EyXgtvuba7b5u2jlrHEAaa6
+	MRgOXfjhPCuyuTLQgQ8Y9ALEcMx2BqgI8TneKZh2HHtcrffE9kTrw
+X-Gm-Gg: AY/fxX7YolffZ2wISQoAhcMOH8Zs62J5yoXZrsWe4HBsCVeHCTrgQDBS/WZGes8pIMz
+	ZGUNUAPw9yYlTuf5hvQnnppucWUSlGY8hFFbOwgjfhqQ7INXTyuf9gEWJpVeBMfkStrXeaPWS1y
+	qhQgnACqZXEU7iqrfqP40MsIswhujtbCv7KsGFieHTXPMADS6os5zR1NxuCKoxlbFUwVD40wr/E
+	+S+cjJdCLmc+yi+rPJvLnCO3gixv4i+FV5M9KXa7VmF+G4Z4A4R3sorU5l3VMDtQYaIopy8xwKm
+	4bvYPHDcMRjcuW1ezYM2CY8FjCIQ5bcCBrh88WEGGJ1ECLh3byIqJUPrut9AS1OG6p+YyR2mQI0
+	HI2iV15Y8xRGC5/jMj5hpOtLekoOZkQ==
+X-Received: by 2002:a05:600c:45d5:b0:47d:264e:b35a with SMTP id 5b1f17b1804b1-4801e30aecbmr4637365e9.13.1768495853197;
+        Thu, 15 Jan 2026 08:50:53 -0800 (PST)
+X-Received: by 2002:a05:600c:45d5:b0:47d:264e:b35a with SMTP id 5b1f17b1804b1-4801e30aecbmr4636905e9.13.1768495852632;
+        Thu, 15 Jan 2026 08:50:52 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-35-22.inter.net.il. [80.230.35.22])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47f4289b7aasm57337815e9.2.2026.01.15.08.50.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 08:50:51 -0800 (PST)
+Date: Thu, 15 Jan 2026 11:50:47 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v2 22/23] mm: rename CONFIG_MEMORY_BALLOON ->
+ CONFIG_BALLOON
+Message-ID: <20260115114849-mutt-send-email-mst@kernel.org>
+References: <20260115092015.3928975-1-david@kernel.org>
+ <20260115092015.3928975-23-david@kernel.org>
+ <219f7be4-8355-4376-bf97-3410c6e23867@lucifer.local>
+ <37fdb994-59d1-4196-b377-f3f749148b19@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 10/15] mm/hugetlb: Remove fake head pages
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20260115144604.822702-1-kas@kernel.org>
- <20260115144604.822702-11-kas@kernel.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260115144604.822702-11-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <37fdb994-59d1-4196-b377-f3f749148b19@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: GU6WTvrVt3IWJo5BtPJ_Do8T1DPC_8Pl94-IaOBtF-I_1768495853
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 489114000D
+X-Stat-Signature: ywhsut6z37zrbffcsjagtsgngpo79xiz
 X-Rspam-User: 
-X-Stat-Signature: qw1dwnjhiyiai4w5953qe1rc49hy6fgo
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E098214000B
-X-HE-Tag: 1768495789-286371
-X-HE-Meta: U2FsdGVkX1/bkj8HqR+GOrae9e3K3NQCD4mxaDtSInoLTWl1fhCI+kjabn2ldEmbdEqVzmYfPsAYQslf3c9ly0va0H0/65NuK5QuRhUyzH3rveWgHis5z0wc1ncMQ2SnQVHue85fGBzl6nQzVWmqkLfYnixzrZ6DujE5v9AtPhpyjiCkTv8ovEkPvpf2yw3j+XrB80fJRDNVJNQTF6hbda8hdiaZNL4VAtQogjU96ZeWhN5pKOl3KEH2DJCasDfrfzs1UmaxUGQwiMYMqafE+Hd0/5s7eb4mHKEjBxENYyJqHdQ225c5yGontS2rto3CxaZVbG8+tp3xA29sG8JIcjn9hbo55m62NXwy/6F8FjumbsI1xy+96IOOBu+DUxo3UK3Zy18/veOHuTjn2VwL0mgcRkEqk9HnoIR9aLb56uxxyYxQ9muHFSb+DTwrO5qCOvrf4kcIh1Gc2VyDU56mY2S6w4IgvTeHA1c4lYyfXApWjuA0Hsqm+sHTQ6+UVUcR94Iio+MYb10HjuxmdFJ3ecsYAGN1sIUqsIO964MuFQOIUtH2QpnpXnpVjf/wc1gCtHaZEhdwtFa0cl9fv2OzoEchuijeOGrnQCSuk2YmL0ioIkHvSulYTbTAK359nWMoOOFAatFO85AnBdasGnVk7Ei/JmLxDS/d4eWdZUgcUgUI1QHC2AzZu5i1F2GJeYg6uiuBFb8VTMk9mCLaYHzznS4m7Qpj0dCI5PLUukXxFzEOfZ75qZWixWoG5lUTGnQCtpBNUIxY8/Yf6OpIoo14xJT7K87z4lEXgdRZjA/fdHs6RIJ7grj8ecsSEDPMThm15H4AFF7gfQMkl6jWBAXg5DNq3uy05EqPFbxiQEqO9O/jP+iuMr0+ZVOo3nA2hyjnGP068SfEX2op6P0cGHIB3yQz7RJsD+sWYFPLtaYwMLueDyipT//lgprbxPslSV3IHB0oC8GGHt2268+0t7/
- klmP3r7m
- v8nSTBDqhxrAN5yoWr5gVpjiSIBv2GpytlwEhPgkxUS0msCDfpeyGzA/D5+hly5/EkJpjBBX4LZspHdcN64XWi/1pdtzk0HigNdiHPDHLtE7f2pznxDao9QR61vF0Z4fS/d8FovOiaNXWu0ioDa4R34HJTlrDulZeiduKZT3hw3GxxEP1vJQRMPE89Y3nvdvqcdH833oz96rMTBtu7dWUwiog1cIcgMa0ZD+qJ4ZIr+IPGs9qleLZWm/9u++utkcr78MuWMj73A5WDaf8PGULwpRABw==
+X-HE-Tag: 1768495858-587604
+X-HE-Meta: U2FsdGVkX1/YHU8NkQSxwlZ3Uo7oZdw0nAuqI949InN2lY0IfbRELesQrn3AId+Nc1QCk5ziXtbQljTpULXw+0gJCuSHMzOItFAePXcz7wF8NsC/+JlaFK+4wr6thbxPmz/5WmTF4smCs5YA0Y2URsWswyr6uEUqanOi9nOoMMa6cIBTNGJJIu3DUfIVVvN48YJbmhGllzVpJEKcnFi4imt2jWVvq7kgdxi6OmD+VvMCbBPatPl3Rc4fVzzYoQweTFOXQl+nf8BoJTMQXXexq2Zrh/AozKlw12BqkITrZHqaYoJtziGMdIhROzVGwk+3CEhzvFZashCE0B1DlOyC5XHkL1datiu/TmwO0WtHWnCTp8EpOlKnwBz8ZTe//nJ8CSUAjaJG5K7noE5kjT1NxUwdVJrnHo2bOaR1QAkm4wC8MgQPRJv5vcijYTlmZxD20iNWLZjVkB4hj55ELsyiqeByljy65KEI3uGrelcfPVuOP6CBD46mY2VpllDJgaTvS7GmjT5vvk1ec8Kn3ydAHZhIlUiZcbRzNOoK8OdmxxO2juD9Eu9Pcx+0b91p7FFDl8AcZyZJ7C/v8KOKJDxCjxKYsmc3rvoMTBc+U28UXoepOInL/U2RgdKlfy3U1FFcR/A0LTDpH3HW8nyoHQenw0OKJBf9AqCjBKEquTrUmWoy1VUmn8lzTv9GkA2uhUpxCa69y1sRY6ow5OcUtfk1lf1Hvx2oHjMuYwqgxd/D5I/d7jRJd8HnzOE8wvfChGUTVb1hRAJlvFZk+zPpeP9TH9F9r5O18PWSlF53pAEzBI2T0D+ywzF80mceBKeeM6/sX7BLXLSm1Qy7WRtuxh6TqPXD0Je4NZXjBsjk6/Iuqn6SDHaN6wL9gbzzlxjxwRZoGphlAA0zoFxdrmn72EXEGwL68oNdWRgjqHp8Db7l3W79yMJX4M4R+VO90/r9mdTNg0r2X7Ym+r+AKyzcA7B
+ 6/2rR2fy
+ NsHJr2fXjVkuVwjZ7LFbHHJi6sfiMN4O+k1ouliI03yctUWNc1npEhETmbleuCctph431Yj6YrLK+gdd47deHRs+Kf6CEiwhwHJ74VLFSQDbKgUYLm3dWVByXW+rl/Yzd4DB9bMuydLsh4Bay5MiSLd5kq6qzDlTyODCYe9F/8/IVxn9QrmGxI8nj+qe+35eboicXDibUq+vv3urOwQ+ZlP9+RabiebnyXNwd19JH2OCr1ZM5/1KyxHjOH2rDBno8WDbboqntPQgdlw20CTwjJNbW9xB69B/hMDEGzr3W4u5pOdJ+mRWgr94kJj/qfRMO57kW14XMw0N29ZoeLd8pSJbaJtJ98mbXy4JpKFS6ong+fPeyN/K6Vx8QoSgb/vsITtBgH316kLdGPK0l572uEo3zeHH2TdPdkfKN8g8pYssJcDXNP+LHqpiOeuHrGH5K5cE9JgTSZ87lmJVs2mvwSsnK/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,52 +150,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 15:45, Kiryl Shutsemau wrote:
-> HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
-> vmemmap pages for huge pages and remapping the freed range to a single
-> page containing the struct page metadata.
+On Thu, Jan 15, 2026 at 05:33:56PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/15/26 14:55, Lorenzo Stoakes wrote:
+> > On Thu, Jan 15, 2026 at 10:20:12AM +0100, David Hildenbrand (Red Hat) wrote:
+> > > Let's make it consistent with the naming of the files but also with the
+> > > naming of CONFIG_BALLOON_MIGRATION.
+> > > 
+> > > While at it, add a "/* CONFIG_BALLOON */".
+> > 
+> > Probably not relevant but cheap for me to share :) so grepped for
+> > 'memory_balloon' and saw:
+> > 
+> > include/uapi/linux/virtio_ids.h
+> > 44:#define VIRTIO_ID_MEMORY_BALLOON	13 /* virtio memory balloon */
+> > 
+> > This maybe relevant (I guess this isn't actually used anywhere?) though
+> > interesting there is also VIRTIO_ID_BALLOON... hmm :)
 > 
-> With the new mask-based compound_info encoding (for power-of-2 struct
-> page sizes), all tail pages of the same order are now identical
-> regardless of which compound page they belong to. This means the tail
-> pages can be truly shared without fake heads.
+> Yeah, we want to leave the virtio stuff alone.
 > 
-> Allocate a single page of initialized tail struct pages per NUMA node
-> per order in the vmemmap_tails[] array in pglist_data. All huge pages
-> of that order on the node share this tail page, mapped read-only into
-> their vmemmap. The head page remains unique per huge page.
+> Now you'll learn something you probably wish you wouldn't know:
 > 
-> This eliminates fake heads while maintaining the same memory savings,
-> and simplifies compound_head() by removing fake head detection.
+> As you spotted, there is
 > 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> ---
->   include/linux/mmzone.h | 16 ++++++++++++++-
->   mm/hugetlb_vmemmap.c   | 44 ++++++++++++++++++++++++++++++++++++++++--
->   mm/sparse-vmemmap.c    | 44 ++++++++++++++++++++++++++++++++++--------
->   3 files changed, 93 insertions(+), 11 deletions(-)
+> 	#define VIRTIO_ID_BALLOON               5 /* virtio balloon */
 > 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 322ed4c42cfc..2ee3eb610291 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -82,7 +82,11 @@
->    * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
->    * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
->    */
-> -#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
-> +#ifdef CONFIG_64BIT
-> +#define MAX_FOLIO_ORDER		(34 - PAGE_SHIFT)
-> +#else
-> +#define MAX_FOLIO_ORDER		(30 - PAGE_SHIFT)
-> +#endif
+> And
+> 
+> 	#define VIRTIO_ID_MEMORY_BALLOON        13 /* virtio memory balloon */
+> 
+> 
+> The virtio-spec [1] defines ID 5 to be the "Traditional Memory Balloon Device".
+> 
+> And in there, we document that
+> 
+> "This is the traditional balloon device. The device number 13 is reserved for
+> a new memory balloon interface, with different semantics, which is expected
+> in a future version of the standard. "
+> 
+> That's in the spec already like, forever. Likely, at some point someone wanted to implement a
+> new version (for whatever reason) and defined ID 13. But that never happened.
 
-Where do these magic values stem from, and how do they related to the 
-comment above that clearly spells out 16G vs. 1G ?
+yea Rusty wanted to do that. balloon has lots of weird bugs like it does
+not really works with large guests. We really need to get around to
+fixing this, and maybe it's cleaner to do that with a new ID
+than trying and failing to use the old one, was the thinking.
 
+> So now we have these beautiful two device IDs.
+> 
+> I'll note that the spec also defines a "DEVICE ID of Virtio Cpu balloon device as 47". But
+> no changes really happened in the spec with that for the last two years (only the
+> id is reserved).
+> 
+> 
+> [1] https://docs.oasis-open.org/virtio/virtio/v1.4/virtio-v1.4.html#x1-4260001
+> 
+> -- 
+> Cheers
+> 
+> David
 
--- 
-Cheers
-
-David
 
