@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 050E9D4661F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:32:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A829DD4661F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:33:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 659F26B00F0; Thu, 15 Jan 2026 15:32:18 -0500 (EST)
+	id 16A7C6B00FC; Thu, 15 Jan 2026 15:33:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 607346B00F6; Thu, 15 Jan 2026 15:32:18 -0500 (EST)
+	id 154F46B00FF; Thu, 15 Jan 2026 15:33:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 513AA6B00F9; Thu, 15 Jan 2026 15:32:18 -0500 (EST)
+	id 057A96B0100; Thu, 15 Jan 2026 15:33:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D46A6B00F0
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:32:18 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12ED4C19A8
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:32:18 +0000 (UTC)
-X-FDA: 84335345556.14.817554F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 257DF18000C
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:32:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oRarhh0Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768509136; a=rsa-sha256;
-	cv=none;
-	b=QBsxRkCTzLwxNK1ijjV2TtCxp2Lb45tF3nC3RjUmvNYRnXFUhuaCc5pti7WgpzmLpF/q6Y
-	uEN6eJwvp3Upr0vPsUxKQTyp3c4geb2YsF6BvA4nxxRICnfvcxV0y4KAcw8EArMH+vOZx9
-	9ji5fc/yZrOoAUZIA0TKqQEdxEMpjac=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oRarhh0Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E83116B00FC
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:32:59 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BB1411AD4C1
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:32:59 +0000 (UTC)
+X-FDA: 84335347278.17.295A7B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EE326180009
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:32:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fEJIQfP9;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768509136;
+	s=arc-20220608; t=1768509178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iYofIRjX7ZrhwqeqanPlsLLCxh8N9vAIvdmThhg2B6Q=;
-	b=5E9laklQGsk+Ebiadmi7BiUmi+BPcDoaP4uerbphe62vUThIM6E7Wsr6JllpLrsLpcoEOY
-	UIZyiVpyWL0UEtMMo+MwCoIFvFiLGwXcV4TVoEImNr81x04rzzRIchpGGqZ30ehGglq/j9
-	rMi0aiRSYJ3CtUPZB53ytYNvIqvPbpo=
+	bh=VCNFn5DBU2Jv/KC5GGkHPC7oUI++TLF/bHMX8xHCyII=;
+	b=o0HMaHIbKwuX4N2d7XKceJ6Mr4WGaweVhAYlQ94kqSQt7gaLyn1ShMOIVveE8JOQlfoXch
+	FIGNy1yg/MvvfY3rfoYNg1qO/fWy7KXFbvsffgezFuG0TPLa5h/wUI7cZQ+3wemmsfvNx4
+	idiktbWh8k63eN3XVl1wMLnXdzr/04k=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fEJIQfP9;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768509178; a=rsa-sha256;
+	cv=none;
+	b=m5IqjVlnqhVxIv1/vyBlV4RfvpcMhbtEW74kCViFiKuov2c9JT4yB0gL9m7Lz65V9DtRwQ
+	hjKNJTLrr2TAhzmtsW29RyVY7vik5wecioG/ogpwsJRgILkM/WvxWzfAo52kbBWMxAhm7d
+	xu+es/Vw3tOyd9PLgJTbcGXYHuGsNuc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2517842D8E;
-	Thu, 15 Jan 2026 20:32:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADACCC116D0;
-	Thu, 15 Jan 2026 20:32:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 656A760130;
+	Thu, 15 Jan 2026 20:32:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC3CC116D0;
+	Thu, 15 Jan 2026 20:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768509135;
-	bh=cmj3833hotxY1oRntmtkl+ykczZyy1Qii4tX7N5CuZo=;
+	s=k20201202; t=1768509177;
+	bh=n84jUXZgJMWY9VaIzCspmt6QuYtqGAcwUf5ea6q90Dc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oRarhh0YHIIo8PX4jeox4uEB+M/H9/rMRXVXxZj3mb0Nd0aqs2A5/GNynyXcSA3Y+
-	 uTiOLffWXpTQRuti7kAER8SRIxDmT45V2J/iSsQqviNWL0yaRwOH7taUU80h4PZqbQ
-	 RQCPVIfPUU35ncOdipSmV2CPft0nCq/mNJfBjQmnCEpUAZpEn7I8R2iHLBoyH6HUtw
-	 qqgxZDYat4UTZUj4i1eWm4K7E+qT6aFgznZzhk1OvvyKqscoZwbfDI1I+Ex7bQkO/N
-	 KPXaKnawSRtOHohMGGyODsGoElx4rjRxDDogkVy7gQPgm+5zLb7rJkyK4yCn/cU/gt
-	 ouLUyYlPfUtMg==
-Message-ID: <39e03f57-7a6a-4526-afc6-986646d2e84b@kernel.org>
-Date: Thu, 15 Jan 2026 21:32:06 +0100
+	b=fEJIQfP9+zYw6kYjcJ+ig069WspPjqhx1SQpc6mQKfxfBYZlapuhZ2TIhprqUOE5d
+	 SL5KkFFAlL5jn7NMbIIRQ9KwcaXO+LdmZlLY6YY91/3R+iD0ZcAT1HJENKijnPm+4i
+	 UZ3jziGNrsfeCxNfLT3+Fp5vOThVAcp7G/wqZVYLHb7/KHDvLs0/Olx8/5PgCacTOX
+	 q4XMQSdrT/Oz2iPfX9pkUvO1XeWGuuOM+jjiH7VfOfDWUATOrYZNKpa0ak/L0FZe/O
+	 nnuufoLb6yDv8/z3Z0/mXiqFol0d2VKE/6yC09ZCoqWsFXJsk1oz7521gZhvlRQP1I
+	 eOJecmuL523nA==
+Message-ID: <222db635-e326-42ed-a121-ca302f0fdcbe@kernel.org>
+Date: Thu, 15 Jan 2026 21:32:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] nodemask: propagate boolean for nodes_and{,not}
+Subject: Re: [PATCH 2/3] mm: use nodes_and() return value to simplify client
+ code
 To: Yury Norov <ynorov@nvidia.com>, Andrew Morton
  <akpm@linux-foundation.org>, Alistair Popple <apopple@nvidia.com>,
  Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
@@ -86,7 +87,7 @@ Cc: Yury Norov <yury.norov@gmail.com>,
  Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260114172217.861204-1-ynorov@nvidia.com>
- <20260114172217.861204-2-ynorov@nvidia.com>
+ <20260114172217.861204-3-ynorov@nvidia.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260114172217.861204-2-ynorov@nvidia.com>
+In-Reply-To: <20260114172217.861204-3-ynorov@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 257DF18000C
-X-Stat-Signature: e5pcbzeimg6bw6sdgotk4pwxwf4o53e4
+X-Rspamd-Queue-Id: EE326180009
+X-Stat-Signature: ib9ju5pui8qzqus9f71h8kcg373cs83u
 X-Rspam-User: 
-X-HE-Tag: 1768509135-246577
-X-HE-Meta: U2FsdGVkX188H14vE8VNpEPVKan2B9bZVrjE3+N6u9c19csig/1Fq8WSYAbxQv1LjRqDxy97lX5DMJv8UwTrLfJTsdhFxP+C7IwclwibnW34XYKoBfr6DtjnppcSthzZzJaFytm6n99LeL+cJ89gdj/RKkmm+3o+G52fhQpiWoH0i89GI7c90QCHoTazf95sXgjb9PRzjl6mNkbJnv6l/6cWh2IBa/7W9NdFpAlJLKT7W24OcqFmJGLKsq0bvA6PYcBPcIVY9u6pG4qQmF42vBlDxw+lYy/v9w8zaVx/xo6qdpcBog7nQod3qcD/90587qJoFwnhQ7tGRhUbyAPdZYGAJNzgl67v54/UjEnKs1QSBIJs6wMZu40ryccU3eZDxEbx89L3RaTUc1vNtxhzKv5xlxo0evKUz56+LOOkQcSxiVD08I8bQF1m17l+BB4qPXB3hWyYoFQvdOLf9JB+h4E67GtAc2gM1YnjWOk6ZY6iz37MsvL5TCgMlo3GtxUAKMrTdgOSDGfvLP2YBD5ffvjZraVbICntT4v67iuPs3KiwHlX1u27LX65wxYTs12VGMZ9jIp3Q9xwvJfB+94NvNCxD9kcQhF1v6AlOsurueuSLHNTFQosmOqGrR5fLkcO9gtU6EaZrI5/9nnke6ksqvnx/jaC+kOGNJG+1GGit+2lzrm2gkYCMHYXB12niI52I4mJxB8G1CpuOP0E2p/TzKwMtcUvnWPu6R92JPDpUEjlIQqlKorsEwY5zY0XKFGBGYq1CfiUN+UPLmRhagY7moKv8ag2h1U0G0AAgEKYK9CJjy/5Gk703t+h6TY8pUJ9oJd6LuwLukQlCx9094FHc4yazxcICYtPglxpa4cW/OdULvx+sodFLjVhPzgc04N4PKKbneqBhk1tlKPLGMj1DMZjk3SKmIslh/erGmQFty5KGQUMT6uAe9LX7SHnBIASkyzRtVIkJQHXtVZUjpU
- //NWaCE+
- ow5pzhri188fx3OeiuaUuCdfxcAlb4vRwrmTQ4r3dEJ6RKHblsFPELkLla8uAYYXCetLDoRd+VRESL/xdXIjyYzlGSav/sHaNyBSchq4t0aDAT3LmV63fcHB7tlu5JSg5DaoRgQ6kVGE98usxAGx8Y+uZL75eeJf7fvKwpctrB7rb2TQo55W6WyGKlB637dMgrL+PJ1Y3vZ6gm1wSa2xl89mdJTaDefRKtC6dF91y2wS9e5poRAk9+J4veMG1oCGjCmDNN5vIA+mYzCMfhxG0XAwyt9MExRp4cjCa/XN68wF4kNLyGJLr2LLdSh1bJEWiF5V2vZQbZJq2mwMM67v4n3qQ/j2oq3+Cr1wO4Xkp6s1N3B9JPfgsqMtm9d70NOl1JgFzCZRThv9WZvWWW1W+G0d5eYkFMJRgpfHKCDQDUyZ9B5Q=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768509177-737815
+X-HE-Meta: U2FsdGVkX19FlDYK6TF9BE56D09tYv665TJu+ooCWMUBI4hM3937o/DSo0SecCks9U9dEyHKxLGK76awN3oGoA6GBtlsaXZH3yxctH1VnVdntV9CNE6+SDYxNoWjybClDoP2Bu1h0ApEpwJslD5Tme6ednNeRbpAR3hR1n01BdObjdKRfnVadANFTrLK1wllTKcWtWaLePcKAj/NPO+Kxj1UPr0ZHS8IkvekJlyY6KEV57lLJNZ51Np0vLI/G8C3QXRCl9Dy+1Qcv7fykwm9BK+w3RtkrZNvRo44v9UD0yKQg5/fBFh4R1ur80lmXJRdvSNy49CxZ1cSuOwhNeUnhP3Zkf00/PLZdGogSOSG42El8gkPj2QO2SRa55s9P68bqqyAqOr0KssnsX96JkQcmj3ykieOigWlYmzYlfjmoMurvpikLqBAkOe0v7gK9uqaMCKvpAMLHs9vF6dRERn2P+J7cbX3kf7nhpD0W8ehXaIWMf+4M2ipIUSTchPvwy1wunM88wsKUWTPncfdtVAMqiJkBa9FSG0WYzThX65VlDdGsTufEe6L5VvPqmfIgRNR6gXtZatYQThTUml5QaZcCAuI9wCp9UHeGce7Z7VVcqZapc5c6H0Qp4OFhbw3hHa+atGpk2+M7oBSpTBnlDELrICsQ9ruHRug6rgwR4gmvoyoZwXsJJV8SrJlerIuWEQp0DXnl659/50vcR4ghcduEU+rAimlbUqXJ8EbRoMsuw/SNnBlhQRXgLdSXz6K8j/grNja2x19ZnaZh/J/NkfVPLJ8yPZjcwb6xeMroaNmNPDhTOJyjfgOguiXPxvac+lVCH59Kqd1BOtEF5Bl31Z/ueihWUJ1uJh0GHCiD5WYZGOcjwCLk/YMD583LzsQZ5Vk8fzZCwmK28x16eI0FBu3JyxcLmfzQ7reGH3uaIk3zmYOKUYopyCWtdavNutw4LiF8o1sCPpJoH6GPNu2U3H
+ 6r8BPmPM
+ twL8WIeG9CpGuWFtUBO9aYzzS5vtEuYry1yli6zXEH+Ylp8ZXg88ywxsMlAWFHJyQzPJXLyWt07RmAhXPeMRCH6KQzuqWyfd63vG1hrYbwC5+u/7jLytpIwvJObSSHEiBQQafku+5sNoa0OXsPQc5uv08QnnykmmE+EwnfqbovC7NHkn11+4SqIY2hWC7O19KnXCfWkK8v8MgCj7kDBT9aikUMQuuviH5FB0pcMcygiyRJVSM9Dsa8dbAQHqOFJ2CSZ2YEx1pfuzLfgh5ykCyFmmjXC5y/NsSsGJyP3KIq9b6nqpC3P6qZ8fHVQz9d6uNlmB3HwBSZfQQu3PH0bcHLBETTnG8E5oKbzx+MZ6cnDkJCQPk21mBCor6MYIqSbAjlTXcgDWZNY3jF8xOLOJocRIVhH5Irigsx/LS+2jGogLjr1M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,17 +153,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 1/14/26 18:22, Yury Norov wrote:
-> Bitmap functions bitmap_and{,not} return boolean depending on emptiness
-> of the result bitmap. The corresponding nodemask helpers ignore the
-> returned value.
-> 
-> Propagate the underlying bitmaps result to nodemasks users, as it
-> simplifies user code.
+> establish_demotion_targets() and kernel_migrate_pages() call
+> node_empty() immediately after calling nodes_and(). Now that
+> nodes_and() return false if nodemask is empty, drop the latter.
 > 
 > Signed-off-by: Yury Norov <ynorov@nvidia.com>
-> ---
 
-Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
