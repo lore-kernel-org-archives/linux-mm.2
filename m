@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DABCED33A04
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23A73D39010
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:49:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F37D6B008A; Thu, 15 Jan 2026 11:48:30 -0500 (EST)
+	id 246186B0088; Thu, 15 Jan 2026 11:49:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D5486B008C; Thu, 15 Jan 2026 11:48:30 -0500 (EST)
+	id 1F92C6B0089; Thu, 15 Jan 2026 11:49:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E1F06B0092; Thu, 15 Jan 2026 11:48:30 -0500 (EST)
+	id 109086B008C; Thu, 15 Jan 2026 11:49:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F1296B008A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:48:30 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D593C1403FE
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:48:29 +0000 (UTC)
-X-FDA: 84334781538.06.97E8B14
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 00F5A6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:49:51 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A64821603CD
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:49:51 +0000 (UTC)
+X-FDA: 84334784982.13.B42AFDE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2CE5020004
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:48:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d6rnX8sc;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id E098214000B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:49:49 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HYrzVqfv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768495789; a=rsa-sha256;
+	cv=none;
+	b=L1AnjxgNHTMd2Oj2a0CS3xuUX93c0E5Biay95QuvLmQIH+aPxxknyWtaV9YMz7EusRX8ax
+	6WRv4vErhdczxfvo8cHPwBOYkq3cwnemaGbkIPwpiUEKhbt1rQk/CKITyNqbyJr6KgriHG
+	xYeCS8Hap5c6DQs+pU4EipIpfNoBO+g=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HYrzVqfv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768495708;
+	s=arc-20220608; t=1768495789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dkin0h3TKFLsGAddK7GXI4UmRCo4xtW7DIU+ftX0KIA=;
-	b=v76VdoM9jHZ86lUPqBt3scDMShDJPZ/nI9u2gFNAvbwxFEXYZ0DcG1yQnw8WdoenbVUp7N
-	jNrj8ZRwsScJcrLD18f13+HkJf+adzHu+ZjkXF8W+L0/7fuISugL7F2TDUuJdenygNhuiz
-	DlZiuJ+eN8GPVaLXvA0c3DfD/ET01xU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768495708; a=rsa-sha256;
-	cv=none;
-	b=XNlT1mEXlIE7KS+osxHzzC/ST8EjuVZb/oENBRdMdez1soH6s9MkIHtsjePu5zxnYdYcGt
-	tqQkeGLZUBAhNEWCo119CnFeISpJ5oU6aY9TDfU7yoXweLg7BrbQheNR2DlKSWJQ5J0L1n
-	RV+C8T9Gx43py/d7dM2bw+AZwrKUsBE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d6rnX8sc;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ANYD19zVm1JWh1JbyYi2C85kNMPGMA1rYPyjQ1oZb3U=;
+	b=t294ytP9a23Taqi6VCij8tTVXewfmD5eMMjHyjmzMEW5uoOELCVKmN4iNEmResSuI7cVGz
+	p1lk85/sF4RQ9bv/jh4YOw23zagKjORjN5N8b4dA8XvxqLDQq/JlwsXG7cxdOM6wJYuGZK
+	ElcX8GACyVumbZoiWotASPB/W1EVsLs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7816360121;
-	Thu, 15 Jan 2026 16:48:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCE2C116D0;
-	Thu, 15 Jan 2026 16:48:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 47A9A60121;
+	Thu, 15 Jan 2026 16:49:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4344C19421;
+	Thu, 15 Jan 2026 16:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768495707;
-	bh=Y/FHsbbtc/ckGu7zda3NuoNYgKRvaJ4zIG4RoSqARBI=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=d6rnX8scxqYgKDlQDSnoVAaWLHn3BmwdpFGxB8PESwL9wfoU6sSFu6HGEqF0HUmOg
-	 4w50NWmjSXgZshmAFggR7E86eYy4eS2iV9Sf5TxKhFCnGtspXSGpW/WEwh0I2sYW56
-	 T3+V1EIiuPjuUibtspH6Sk/4P5sctTHJ+2X1NQ46g/78b4nr7IccxWVyYQ8QdJhwN4
-	 DS4ZlxldceS7Ja3/QXyioXwlEOmQoVhdCujORDcsetapQuwsHk/rkTdxW99xm0QBtl
-	 cipnartReX30SR+xfeFc73SxuESwyVEHP2I0Vi1qxnkJhRSRc8tMzLu22FCCtgMJwj
-	 i5nDv3kjhYpFA==
-Message-ID: <bf788cfe-ac2e-4ffc-9349-64d9c36bf072@kernel.org>
-Date: Thu, 15 Jan 2026 17:48:20 +0100
+	s=k20201202; t=1768495789;
+	bh=IpZqoR5qAaoKI8w1KTi83tkryc1MfgEtvAY62yPtvPM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HYrzVqfvqaeT4uBNVa/cbuS9BTam0Js1TKLqrPNiFk8aBczK7nXvKIHUpt65VkwCb
+	 CDZV9rG2yPmFspuBOwY5N4n8g2rELHh2qDWBR+qX/76buwnVT9k8Y3Ni1NqZYxue+B
+	 pYVDdGMSy9uLD6wepEFOLv3OWj2F3fkNWJmzR/KC08NmgYy3bw5ZFH/fIglxYcFE+A
+	 lQ0mbp9V/1+faH5BEvM1YMdO6r42QX0S9XSQ6rBRohcUvFCBujKZQ/3rlfPGvaCZ7L
+	 FIAwHMAqnawHANWDmMFFuYLPirZFywgHXtdfdiANmYCkMXoGEgnX1kc0Is/k7TbGpM
+	 AKPmMLws8a5uQ==
+Message-ID: <30ae1623-63f9-4729-9c19-9b0a9a0ae9f1@kernel.org>
+Date: Thu, 15 Jan 2026 17:49:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 02/15] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCHv3 10/15] mm/hugetlb: Remove fake head pages
 To: Kiryl Shutsemau <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
@@ -82,8 +81,8 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org
 References: <20260115144604.822702-1-kas@kernel.org>
- <20260115144604.822702-3-kas@kernel.org>
- <be57dfa5-e6fa-4ce6-93c1-239436ff6e89@kernel.org>
+ <20260115144604.822702-11-kas@kernel.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -128,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <be57dfa5-e6fa-4ce6-93c1-239436ff6e89@kernel.org>
+In-Reply-To: <20260115144604.822702-11-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2CE5020004
 X-Rspam-User: 
-X-Stat-Signature: peypbunojwhpeuhzmwqsxr7d9czwgc7w
-X-HE-Tag: 1768495708-973818
-X-HE-Meta: U2FsdGVkX18oN+ivMOqNiVQ0GJSCOgbzcFz4aNqJeIoeAhjKYimqwc/e+nv2WncRZASxgrIjRjZOzxZuyAAm8M+yS9DNF6VABYs8JAENksc71+VF0PaLC5E3+UoeDzraK8Vao5rluAYpZDxqNXrGM0YYr0eXHOCMiaDAA/sZtlump7Ke1YHHYjH1SZJMBPVL6g/Fep0vAja8THynK4lMa4n0wz59+A25btvgQEjTY5CPx2yzE7VnqIaGZYGYi9+p4V+mMC8rb/P69FpXvObUrbfvSRfwPjH7/3y+YqenME3WaBcDqR7Art+sl39ZupwCBWebLtdXPFIQlLvHevY+rWz0YH7B3/GyLFOatiwzFLZhdCUqW/ur5xP7HYbLNT1rZWLfW6MunI8PnEkkq73r3ly6mU1FYTVt/gzFo2YI3hd69LDwgDmPSqdJvNLedxtn6bMYn7jAI9ft9xfUHYp8RVIy9Jf01bbn+gqmrbWu+GS79K3NAOhe+vSvQQQojUmDUPpNz9m147kNSid0JcWWVO8aN4A4d4ImQJvW9mdeYcvFusduMQRe99s0ZjvNit1bO+UKrXBDwuQENWaObF+zOol+j7T/+7MGsgB9SlpiziEDc4rfQuDIgdbFM52vZGDyAohlxqpVmxd2K/KUdWnZ/1zR0b5LTrWw1GBT5pOP7ew22HLqicTpOD/ccaCc+OBnlJiF/bXqOY66vzGtESt37+UPvOeIzpvNM7X6Yb52tlCgYbNUl0wtn4jkqBkaTETbi/dMsAMKb0DbWQ4+krrxhm53a6obDY2titnh4tFghdcTpydjCspr+1vLAPNyhqhZp5haM1CCHdPI1FFtRE9MQOkeENPYdCYaa1dOBp6p2M23iagEwEQZiNVxKqkQx5OGAH4uHG3m9USBLY6KfyzFToUp4QF439rjshAB4Y5/vP/ZVQbiYq33o9LjkTEFkLcEXiE9vXQGJe7UdO8Bd5J
- 6koIUAmE
- T7vndqhQvOyPfPzp3NcSwu6pb5FslskVW22pu6oqOPfA0aqbhqxnadiSOzfRp6gC2l4DgYXoc08DL9pF1f/cGc/5jmKLIWVrEBrXjqiaHVlUa8DoEprc1KUpvAkualdkp/xy/xK3o9UKrtHwlEQemm+lT7QrkOoDmN4Tg1T1hjW+LBLD+ScWEh5elybnOdAYlpc+bJa9fRvuwyiOnMI7cuPaG7LPd7tXPPjAl4ygF9toS5eQn12PTCEtI3TBeBxijeD6UJVoKJ3E8TvPus33ioWtxcCAcTlHqpAAFtRyrNsNvH4gdSVuUZqc9jj+jLlsI8e/pRLR8f6mKYEo=
+X-Stat-Signature: qw1dwnjhiyiai4w5953qe1rc49hy6fgo
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E098214000B
+X-HE-Tag: 1768495789-286371
+X-HE-Meta: U2FsdGVkX1/bkj8HqR+GOrae9e3K3NQCD4mxaDtSInoLTWl1fhCI+kjabn2ldEmbdEqVzmYfPsAYQslf3c9ly0va0H0/65NuK5QuRhUyzH3rveWgHis5z0wc1ncMQ2SnQVHue85fGBzl6nQzVWmqkLfYnixzrZ6DujE5v9AtPhpyjiCkTv8ovEkPvpf2yw3j+XrB80fJRDNVJNQTF6hbda8hdiaZNL4VAtQogjU96ZeWhN5pKOl3KEH2DJCasDfrfzs1UmaxUGQwiMYMqafE+Hd0/5s7eb4mHKEjBxENYyJqHdQ225c5yGontS2rto3CxaZVbG8+tp3xA29sG8JIcjn9hbo55m62NXwy/6F8FjumbsI1xy+96IOOBu+DUxo3UK3Zy18/veOHuTjn2VwL0mgcRkEqk9HnoIR9aLb56uxxyYxQ9muHFSb+DTwrO5qCOvrf4kcIh1Gc2VyDU56mY2S6w4IgvTeHA1c4lYyfXApWjuA0Hsqm+sHTQ6+UVUcR94Iio+MYb10HjuxmdFJ3ecsYAGN1sIUqsIO964MuFQOIUtH2QpnpXnpVjf/wc1gCtHaZEhdwtFa0cl9fv2OzoEchuijeOGrnQCSuk2YmL0ioIkHvSulYTbTAK359nWMoOOFAatFO85AnBdasGnVk7Ei/JmLxDS/d4eWdZUgcUgUI1QHC2AzZu5i1F2GJeYg6uiuBFb8VTMk9mCLaYHzznS4m7Qpj0dCI5PLUukXxFzEOfZ75qZWixWoG5lUTGnQCtpBNUIxY8/Yf6OpIoo14xJT7K87z4lEXgdRZjA/fdHs6RIJ7grj8ecsSEDPMThm15H4AFF7gfQMkl6jWBAXg5DNq3uy05EqPFbxiQEqO9O/jP+iuMr0+ZVOo3nA2hyjnGP068SfEX2op6P0cGHIB3yQz7RJsD+sWYFPLtaYwMLueDyipT//lgprbxPslSV3IHB0oC8GGHt2268+0t7/
+ klmP3r7m
+ v8nSTBDqhxrAN5yoWr5gVpjiSIBv2GpytlwEhPgkxUS0msCDfpeyGzA/D5+hly5/EkJpjBBX4LZspHdcN64XWi/1pdtzk0HigNdiHPDHLtE7f2pznxDao9QR61vF0Z4fS/d8FovOiaNXWu0ioDa4R34HJTlrDulZeiduKZT3hw3GxxEP1vJQRMPE89Y3nvdvqcdH833oz96rMTBtu7dWUwiog1cIcgMa0ZD+qJ4ZIr+IPGs9qleLZWm/9u++utkcr78MuWMj73A5WDaf8PGULwpRABw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,21 +146,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 17:35, David Hildenbrand (Red Hat) wrote:
-> On 1/15/26 15:45, Kiryl Shutsemau wrote:
->> Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
+On 1/15/26 15:45, Kiryl Shutsemau wrote:
+> HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
+> vmemmap pages for huge pages and remapping the freed range to a single
+> page containing the struct page metadata.
 > 
-> Why should that belong to mmzone.h ? Semantically doesn't make sense, no?
+> With the new mask-based compound_info encoding (for power-of-2 struct
+> page sizes), all tail pages of the same order are now identical
+> regardless of which compound page they belong to. This means the tail
+> pages can be truly shared without fake heads.
+> 
+> Allocate a single page of initialized tail struct pages per NUMA node
+> per order in the vmemmap_tails[] array in pglist_data. All huge pages
+> of that order on the node share this tail page, mapped read-only into
+> their vmemmap. The head page remains unique per huge page.
+> 
+> This eliminates fake heads while maintaining the same memory savings,
+> and simplifies compound_head() by removing fake head detection.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> ---
+>   include/linux/mmzone.h | 16 ++++++++++++++-
+>   mm/hugetlb_vmemmap.c   | 44 ++++++++++++++++++++++++++++++++++++++++--
+>   mm/sparse-vmemmap.c    | 44 ++++++++++++++++++++++++++++++++++--------
+>   3 files changed, 93 insertions(+), 11 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 322ed4c42cfc..2ee3eb610291 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -82,7 +82,11 @@
+>    * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+>    * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+>    */
+> -#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
+> +#ifdef CONFIG_64BIT
+> +#define MAX_FOLIO_ORDER		(34 - PAGE_SHIFT)
+> +#else
+> +#define MAX_FOLIO_ORDER		(30 - PAGE_SHIFT)
+> +#endif
 
-To clarify, I would have moved it to something more folio-type specific, 
-not something buddy/zone specific.
+Where do these magic values stem from, and how do they related to the 
+comment above that clearly spells out 16G vs. 1G ?
 
-I guess page-flags.h + mm.h are our dumping ground for folio handling. I 
-would have moved it to the former.
-
-Likely we want some folio.h in some distant future.
-
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
