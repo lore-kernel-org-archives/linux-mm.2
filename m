@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCE9D41144
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:21:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 036D7D41144
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:21:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF1806B0088; Thu, 15 Jan 2026 04:21:42 -0500 (EST)
+	id 67D196B00A6; Thu, 15 Jan 2026 04:21:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC5FD6B00A6; Thu, 15 Jan 2026 04:21:42 -0500 (EST)
+	id 644BC6B00A9; Thu, 15 Jan 2026 04:21:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD1816B00A8; Thu, 15 Jan 2026 04:21:42 -0500 (EST)
+	id 592616B00AA; Thu, 15 Jan 2026 04:21:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CB5AD6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:21:42 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 93219B76EB
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:21:42 +0000 (UTC)
-X-FDA: 84333655644.02.12045E3
+	by kanga.kvack.org (Postfix) with ESMTP id 46EC16B00A6
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:21:49 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05D438AA62
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:21:49 +0000 (UTC)
+X-FDA: 84333655938.25.37BE039
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0BA95100004
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:21:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gjHo4SPq;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768468901; a=rsa-sha256;
-	cv=none;
-	b=v6BJnPJIkxEtPd/YUHG5swg+L6AH89saaT16zKZigTBS/+qtDSTtGAAONfpdbRyRpPgBYC
-	DDCEXI/BE4TyPgvV9zQl94aThANUmrfpkz3zBm81VXguB5L2+puJnH4uDMhNRvmzDnV9B7
-	dj35laJ+vaeixRly1w5ascqxj20PlUo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gjHo4SPq;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 718E64000E
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:21:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OFYSnzrR;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768468901;
+	s=arc-20220608; t=1768468907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yedf5pTsTIH7yZA71uFz0MYlxe8DVcPZiVuQOgyPLN4=;
-	b=5/hmNscwFf53OopDZFundPbYJqT0YdnxVvpJwFRAosJashvtpDwtuxZMbac+zfKcpFq7wz
-	IEg/wIxFKd9FR4xtjV4XodARHtyi5BqPUIzvFcMfsofABGLFSZp6BosqL+2punhc5NPVEa
-	3X81eDpzAEupQXJjQGNKMKRCR+t4CTU=
+	bh=mQK/s74PjQsybo7IufNQRVQZSXZogi5TVyOZzcgmn8Y=;
+	b=iyD1U+AzcfNOAc4RwIiCKXgCwrKsZtPF+N0zvRuJ36T48JHtLjZaKz/lp9E6B6hIwE6AC9
+	r6xlyeW3+QOTMDzd1EPiiJrn7k+rLjd0gM10MceXpC+XK0WgFdv0BNeWko9i2d+ZdjmBFU
+	ftNfaYdm5DKJAl7/vc0P84OjCBh2faw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OFYSnzrR;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768468907; a=rsa-sha256;
+	cv=none;
+	b=do5fiQcyZ23UD3zR6BZckw/bq6eUEuiX+QhFXpxl3iCkF/47btKGa5hNDOpGF3o+thHak2
+	z1YDH8MYg/J7X07vNJ/0jF3V4gSJF9/VxulztEOxzHV3NuzjGwUbZ5NO+jKsw9ZwhoDPge
+	e/i0x6Rz4gndKoJ1rxvd3z/niU7NxOw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 694F5601B2;
+	by tor.source.kernel.org (Postfix) with ESMTP id 10AE8601AF;
+	Thu, 15 Jan 2026 09:21:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3F7C116D0;
 	Thu, 15 Jan 2026 09:21:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84860C116D0;
-	Thu, 15 Jan 2026 09:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768468900;
-	bh=7Fok2QOLie23GL34zkS9ujQ08CnApW1sZfbHS9ad6qc=;
+	s=k20201202; t=1768468906;
+	bh=QfJODb3fLD5hI0yqpV8bPffFJbeeNR9z0J/ex3110GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjHo4SPqXCwAV3VLQdXz/juLHBwZNkzTqrcYtbfYSxBaSvH+n5lb5GZqiD2ycVH9Q
-	 TO+0ZInpSdsqpUqW1vje/qktqMIJNqUZasZtMkmbImz/v+3qyrOUvBLbYel/59dZDx
-	 CHaY+HvEtsPTc6G7ult2MmEWMmgpWMOvgO+sq9j3mSWbmchbR6+3m1WPyJdO/H1dDr
-	 xyP5tNDrUHa5hiq/htOY6d+se+LFPUr2DuRQUibb7RzdR+pFQ8MEF7mIJgiyIz7du9
-	 PJ3LVFh7wFYG3SEZEOBq/kYev6Zmqjg9nRgcroBBwNzHwezu+BBiIaey87TRFW5RDP
-	 ahbnv9gDliQ9A==
+	b=OFYSnzrRIk8CUweoFvnALc8UkccAxZt/i3iCriyBA+I/zJLMeME8Mp2WVUoiICN3b
+	 CBVMgtFX/1kPf6qCUSX8OuUmfeDlgSrLnIZMdi1GXhai8maIA8s0xRP63jmbrO9BkO
+	 2arju4rT7IQiibRnpqgIe+UbVDQRnOx3QuBgrDXkDgnbUIey/MD/gCgq1h9VbyOCmg
+	 BMg15H/nhYtfsbk8SCZQSruMTcFGWI/6EcjjsDuezMPHOdQ9Mv/NfXCh0wJGwx2Cmn
+	 MsAxSB0BlH4irDhYEedCtspCpCYR72b65QBxumJxnErOBx0dBYbhsHJdwr4/+xuw1e
+	 TFQdfFS4JjoLQ==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -92,22 +92,22 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v2 11/23] drivers/virtio/virtio_balloon: stop using balloon_page_push/pop()
-Date: Thu, 15 Jan 2026 10:20:01 +0100
-Message-ID: <20260115092015.3928975-12-david@kernel.org>
+Subject: [PATCH v2 12/23] mm/balloon_compaction: remove balloon_page_push/pop()
+Date: Thu, 15 Jan 2026 10:20:02 +0100
+Message-ID: <20260115092015.3928975-13-david@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115092015.3928975-1-david@kernel.org>
 References: <20260115092015.3928975-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0BA95100004
-X-Stat-Signature: krrbixwqkfwnpko7udkkzgcf6yit1tgy
+X-Stat-Signature: kdibhc3spnfq4qyx35rfa8ohc6r9emoy
 X-Rspam-User: 
-X-HE-Tag: 1768468900-808127
-X-HE-Meta: U2FsdGVkX1+aR+DJxZMkSWRP3kzKNjchWorsS50EwBTVY1atHP7VkSfr4OVE3/1jI43fXmguzFBy/K9JyNhKKc/KZhwa5071cp0/PaCy+CPrL3973Lp0kHxPLNpqg0VbpYTEvQrifUzbTda3zzu5SJUmkmzFR4nXORTkdKs+phEZ6AY1ldcO99d8uR8lelu5xxyNYhlxg65y5ZjgWxp2bPGdtKHLxNuGqQL1MHh8scuZMhR5dPWi2JtVXUyIc93snnmB+TFILgo+tTvPCPmdMMXqRSmJCyadVpVR62Jxs3HvdxY0+fl77wEow/zv+ztnZWMSfHtm7WDUg/QlB5Ra1BL+PtbRAcRqVr+k3GDrX4TYLFm8c6L8uZ09dFDKPYVpPsASvkLzvXfg2UjDrK4QGO/SieJ0RfYMWRbVHipgh+CfzzVcf4g8pwhBA5MFfqaM1D2z0J6Ie1KBOQpba3v7sTK82RoW2v0I1JC47eu8LxZ8CcOrZzfNEKF1tKYBGD7Im6ajpxNUdrpnnnJ6j63Qpuo9bsYBi68Ox/dUm8J6Vmu+sBUjLfCGOHu4zXPXYqolFpjxGCnsVnGAUTJnaFkrSsNuIEYG6erMeMIV6YxT/BQD5bQqGioX4lCzlfgZG3zXvjB7ILoFJ4jCc0Mf1pC7cOVRP6LX7TM/uR4sDSqfQp/T+5e1w4geP7drp3WZYuuOH5uJomb0juzR/GljbLW8an9c6l/UFcWhW9Bw18O3vNYP/NVdQt9JKN10+ifzjooHjztCNuwemhYhZRm1wKDlNi5FW1O0KXYibc85LhwPaJmiUj2D99I2R45AhATRrLFm5CUSbScDgaBfLnWQraX6GoKay8gDUsXjLwP+3XN8w32VYcuFj6L/+Lny8QSv+oRqc4wT5TN38EMT0hXORNi31uI9bIag3ieghvyG+M9pjHDW6qpFwJoLkwRJg1/L6jWGMw7jgfFoAYwfvLCsPNz
- BzsTMReo
- A6lws637nq84785pxU3BzvUu3K1HlMPjbxPpCFcgN/d6O0Jqe/QSetvKCx92OvVsVSXVt84awcYrCdiWf0stljn7/sxDVue5Eo/FzMyA+HxKqCY3H5BtUcf8XK01WKCVgwHsIZV4XiqJTcE89cKREzVliVsNUY0kyc5iEvi3n48wXQkKrj+lmq90lVkXz6kiKJ7jiqjXWp7eRIb0jGCdz8QvX6daioKn9TVEPIh4zCm7IML7ZQ7mWQmq5/qRff2MczZym91AhlE7Pdv1Wm6qc5dw/Bw==
+X-Rspamd-Queue-Id: 718E64000E
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768468907-323117
+X-HE-Meta: U2FsdGVkX18VvlpxjrhbpvGIVR6sEf33rN3q7INb+Glfy6xESLb6Svm3Eu0a2W52irvp3f2oEzNt5y5wiWcUrcCNLL4T/J3s1TwbR/YxK9zyi0svHuo1VnOrH/S9CW+eycwlTN1mdtfy40MbWUXm2yyzhiI9eCFR4R96o+qtwqZz3lw4lI8uLZxdRt2tqaKO/LWuTsMC3TU9CsgdedQ518GIMqkaNDWAD5hnlIyU12/VVPLS0oPa36oqwaIZifV6sSP9DGUOBdofXZ1rXoyFydgkj9H1P3Dp8qots02B7cN7usb6DWPvic0p13vfbxKJ+Hs+6FeJeBYAvBT4QiAWJJUD1CoAPMHoyRFnEyTGfZQsDiRIS0EQuVc1SerAax8TsM4skHNYw5Rm5MX32kkpvFxQeKdf4mEJCbZ3NKsFQkfQg13QW1vp0AIMbYnFbqtjqmLXFC/hM5urflf0uLGp//ejIlbmnVimR141LtZVF0ybvzz1kQn4B8Ki3LUpbnObnWn10OEZN4Lc6IDcoQrnjScY8OF9uykpJRgSHd6VaR0Up34nper43kG2EL82EZBHJ3WYS+cZIDhZpARuyVytWFLK5Qyr/oK0buyDgXqiCHM4OK89zSjwlU7KMAWQi7nYObpusuv9WR9jMiaN3HU2PhXoIeJgIRKGwXSK9JSZbgs3DVm29o6NLMIcVjv1bKRYXZ/4PnJ1BJMRVp2KGKHujk7fKd5en+2QiVlZWjWhER2Govn9C4G8px5IOHnwklJ5bsrrhfyY/sxuPlTlXd02rijVdV1Bu7BMHmEbnduoXwYSjQnjByMAzhjjp/nUtmfVpvaooTaKSDfYjZqwQMsUFUmUTkugreV4T7ws5uSTKdBBiz6P+3jeWc7gcYShyh5Yb/Uxqif7er7zDucxeJ1h7MUgOtDO6OdD4Z02qt8/z3PzX84yq56zqr/WPl1lobYkrnoJGIWUIbk7mKWGkOf
+ E1G9o2Jb
+ +AgziO3yADxigEeV7hPaMNYM4D1FquUQHmzBLWEPYa3+sievuPum/IaS0+rqIRB6gzjOoqV8NWVqH2V/Erbypprc+x+qO+MR+kpttqvEUSK8v+MW1cp07kodnSWCBtly3/C49bqdJyJXuvVtC23CNa6BAlEeAVvk75lkgcd/+L9YJQ4mNycqjyBD0gUW4cQHuvuEJTo2V4LGs83DTDAioIYiWMIZ3BxSLP8+2S1pRkaT4+xmP77CtQ/K/bYmJdRnEuJEUbaDxg9oMS/MywrZyvZZ7DQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,85 +116,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's stop using these functions so we can remove them. They look like
-belonging to the balloon API for managing the device balloon list when
-really they are just simple helpers only used by virtio-balloon.
-
-Let's just inline them and switch to a proper
-list_for_each_entry_safe().
+Let's remove these helpers as they are unused now.
 
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- drivers/virtio/virtio_balloon.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ include/linux/balloon_compaction.h | 30 ------------------------------
+ mm/balloon_compaction.c            |  5 ++---
+ 2 files changed, 2 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index 15c1cf5fd249c..6ae00de78b61b 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -242,8 +242,8 @@ static void set_page_pfns(struct virtio_balloon *vb,
- static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
- {
- 	unsigned int num_allocated_pages;
-+	struct page *page, *next;
- 	unsigned int num_pfns;
--	struct page *page;
- 	LIST_HEAD(pages);
- 
- 	/* We can only do one array worth at a time. */
-@@ -262,14 +262,15 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
- 			break;
- 		}
- 
--		balloon_page_push(&pages, page);
-+		list_add(&page->lru, &pages);
- 	}
- 
- 	mutex_lock(&vb->balloon_lock);
- 
- 	vb->num_pfns = 0;
- 
--	while ((page = balloon_page_pop(&pages))) {
-+	list_for_each_entry_safe(page, next, &pages, lru) {
-+		list_del(&page->lru);
- 		balloon_page_enqueue(&vb->vb_dev_info, page);
- 
- 		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
-@@ -474,15 +475,19 @@ static inline s64 towards_target(struct virtio_balloon *vb)
- static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
- 					     unsigned long num_to_return)
- {
--	struct page *page;
--	unsigned long num_returned;
-+	unsigned long num_returned = 0;
-+	struct page *page, *next;
-+
-+	if (unlikely(!num_to_return))
-+		return 0;
- 
- 	spin_lock_irq(&vb->free_page_list_lock);
--	for (num_returned = 0; num_returned < num_to_return; num_returned++) {
--		page = balloon_page_pop(&vb->free_page_list);
--		if (!page)
--			break;
-+
-+	list_for_each_entry_safe(page, next, &vb->free_page_list, lru) {
-+		list_del(&page->lru);
- 		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-+		if (++num_returned == num_to_return)
-+			break;
- 	}
- 	vb->num_free_page_blocks -= num_returned;
- 	spin_unlock_irq(&vb->free_page_list_lock);
-@@ -717,7 +722,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
- 		}
- 		virtqueue_kick(vq);
- 		spin_lock_irq(&vb->free_page_list_lock);
--		balloon_page_push(&vb->free_page_list, page);
-+		list_add(&page->lru, &vb->free_page_list);
- 		vb->num_free_page_blocks++;
- 		spin_unlock_irq(&vb->free_page_list_lock);
- 	} else {
+diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
+index 1452ea0635245..e5451cf1f6589 100644
+--- a/include/linux/balloon_compaction.h
++++ b/include/linux/balloon_compaction.h
+@@ -126,34 +126,4 @@ static inline void balloon_page_finalize(struct page *page)
+ 		set_page_private(page, 0);
+ 	/* PageOffline is sticky until the page is freed to the buddy. */
+ }
+-
+-/*
+- * balloon_page_push - insert a page into a page list.
+- * @head : pointer to list
+- * @page : page to be added
+- *
+- * Caller must ensure the page is private and protect the list.
+- */
+-static inline void balloon_page_push(struct list_head *pages, struct page *page)
+-{
+-	list_add(&page->lru, pages);
+-}
+-
+-/*
+- * balloon_page_pop - remove a page from a page list.
+- * @head : pointer to list
+- * @page : page to be added
+- *
+- * Caller must ensure the page is private and protect the list.
+- */
+-static inline struct page *balloon_page_pop(struct list_head *pages)
+-{
+-	struct page *page = list_first_entry_or_null(pages, struct page, lru);
+-
+-	if (!page)
+-		return NULL;
+-
+-	list_del(&page->lru);
+-	return page;
+-}
+ #endif /* _LINUX_BALLOON_COMPACTION_H */
+diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
+index c44e0b62203cc..90b2d61a593b7 100644
+--- a/mm/balloon_compaction.c
++++ b/mm/balloon_compaction.c
+@@ -128,9 +128,8 @@ EXPORT_SYMBOL_GPL(balloon_page_alloc);
+  * Drivers must call this function to properly enqueue a new allocated balloon
+  * page before definitively removing the page from the guest system.
+  *
+- * Drivers must not call balloon_page_enqueue on pages that have been pushed to
+- * a list with balloon_page_push before removing them with balloon_page_pop. To
+- * enqueue a list of pages, use balloon_page_list_enqueue instead.
++ * Drivers must not enqueue pages while page->lru is still in
++ * use, and must not use page->lru until a page was unqueued again.
+  */
+ void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
+ 			  struct page *page)
 -- 
 2.52.0
 
