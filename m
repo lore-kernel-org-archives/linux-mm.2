@@ -4,140 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38F0CD44C7A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:35:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 967A4D44C7F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:43:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85F116B0089; Thu, 15 Jan 2026 11:35:40 -0500 (EST)
+	id 05E066B0088; Thu, 15 Jan 2026 11:43:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 829A76B008A; Thu, 15 Jan 2026 11:35:40 -0500 (EST)
+	id 00BEE6B0089; Thu, 15 Jan 2026 11:43:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72BDC6B008C; Thu, 15 Jan 2026 11:35:40 -0500 (EST)
+	id E4CC86B008A; Thu, 15 Jan 2026 11:43:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 606FC6B0089
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:35:40 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECFB91AE4A4
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:35:39 +0000 (UTC)
-X-FDA: 84334749198.13.E7A3DC8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1A0EA1C0013
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:35:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rwEAajmA;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D19856B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:43:19 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70A7E160412
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:43:19 +0000 (UTC)
+X-FDA: 84334768518.25.AA6C833
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 73D611C0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:43:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=lAZsD8D3;
+	spf=pass (imf18.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.30 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768494938;
+	s=arc-20220608; t=1768495397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+v4xd+/KuFqeZKNdIJDEA02GcrXGWWvbn3HyEpVyDdQ=;
-	b=KQzmfC0CwTppvlGDnBc2s8jhbv8NtZaeNmMVpVSl4kpxyC8w8/i0nXq26y1lS1JJuxbQqB
-	/uqlq60EWuCX456/42p031e6aK/o6XjlrEf18oWuHoQcdgTixL9d0Zsp/bizpTsxSC6+Wc
-	BFTMukuz1meePRY295GD8cTNLYrvEXw=
+	bh=0mJ77Ei2Ao2nIh3bxf+lreguMZ0Ww1g/bobwuzi9ljs=;
+	b=n3RJ8oU65i7D7Cb5cfyLBYMqe7T6+erwrwMXWYx23zOtJ4ou0z8jNbLUwRad2aHe2bdywr
+	favp1Dg67//US202yVD2uNbRH7cCNI5ovbR+q037OKxA5nWKXTtosniB+3pFfDwyqykeI5
+	0pg1Mv3ogL/TZEXUhE+MtwRqwX86du4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rwEAajmA;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768494938; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=lAZsD8D3;
+	spf=pass (imf18.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.30 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768495397; a=rsa-sha256;
 	cv=none;
-	b=ibP4ucWWKLHunlC+Vx7saarBSV41MOHsnVqaPdd91Wsz8ZjvxyRqT444autQ3CPMrWLul5
-	3VYL776TL/PDedC7rFDLneGPsHwiENZYVWork9zqwou05W3yN34J5acND5UHNzsGEGVjYq
-	zhO5Bg1e9Uv1G596WiJj9fSav8Haa/A=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A205441B7;
-	Thu, 15 Jan 2026 16:35:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7E9C116D0;
-	Thu, 15 Jan 2026 16:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768494937;
-	bh=WkGd+S9X8HZuOVaKovh1nuFPEjR1qyneI4tbR/riCJw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rwEAajmAeF9Dju7pLBLBFA+V/SjNSUKyu5CH/wuYCzVJTlUSsnB8coQqV4jYsIAG4
-	 fLhV7pCz8pipFqHSiIH5D1DvqiTVth/mZPKyaIs+YFPzzf0++Elb9W0nIYbCOBMAGa
-	 eQ5qu3dzUOKiYyWcwTjoSxee80QO6JXP5l8yTU7x4UlVABuOXHxH37y0CzLekHzGOY
-	 UbnfWT9iU6PegxtH7tddO4mX7QJBDCBgLvTrCGLrY4vSmPaJVYG29E9aj4n2jDUJAL
-	 UQDJksMqf/UihFDQlYYaftNzKw0SFPzO6mSLlxgRL5DBqWDIfDCwLw6QhxT8fP+Ayu
-	 OrpJ4/j+L51uw==
-Message-ID: <be57dfa5-e6fa-4ce6-93c1-239436ff6e89@kernel.org>
-Date: Thu, 15 Jan 2026 17:35:31 +0100
+	b=vLt0P6WJ9nnaXlQUmGRGmUG+0Kan2jqF8SMKF1anSqnN/FfsifTbbWJ9FKkprqQl4+BvcL
+	knimXcXYaYNSABA6OrxMELcwSsJmpRKoEzOXhDrHEer0TH5mazPaPU/Wi1awzqNVWXh7MN
+	Ijb13cPB/IWi9vcU57LJ9kVsGhKcirM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1768495394; x=1768754594;
+	bh=0mJ77Ei2Ao2nIh3bxf+lreguMZ0Ww1g/bobwuzi9ljs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=lAZsD8D3unGZMo/Ckb/tyLKxupjS3Nhvwkfy20n2p9F3zjjen1TALC5j3tgch2rFv
+	 RRDnWwR4rIGpih5Pxx3HdJirLwdxMx6DLsT7n2H+6oKHiq/xaQH/4Dqf0xOrDEyAFU
+	 Ul6nnZWUE5vTSvF6EXKIAD0e3mmyoNGN+iCYAnVpldq7QV8vLHTsLW9kI0xmbCQpT2
+	 Fg52ycPyGHHgifKOkowE17GbNUWDcmxDNHvc3dLyfkA/alofOAbPwzjWg513otpeMA
+	 RTZHe25sGTpKbMHEEnIAAdKTN/fuTKAeQPU7SFuNDD2zaEvNBy2qZHeozR2ApLAhNm
+	 4twRqSK1iE1yw==
+Date: Thu, 15 Jan 2026 16:43:08 +0000
+To: Andrey Konovalov <andreyknvl@gmail.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v8 13/14] x86/kasan: Logical bit shift for kasan_mem_to_shadow
+Message-ID: <aWkVn8iY27APFYy_@wieczorr-mobl1.localdomain>
+In-Reply-To: <CA+fCnZd4rJvKzdMPmpYmNSto_dbJ_v6fdNYv-13_vC2+bu-4bg@mail.gmail.com>
+References: <cover.1768233085.git.m.wieczorretman@pm.me> <b1dcc32aa58fd94196885842e0e7f7501182a7c4.1768233085.git.m.wieczorretman@pm.me> <CA+fCnZd+ANJ2w4R7ww7GTM=92UGGFKpaL1h56iRMN2Lr14QN5w@mail.gmail.com> <aWfDiNl9-9bVrc7U@wieczorr-mobl1.localdomain> <CA+fCnZd4rJvKzdMPmpYmNSto_dbJ_v6fdNYv-13_vC2+bu-4bg@mail.gmail.com>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 13c6233a9439a29467710c147956a9b472747181
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 02/15] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20260115144604.822702-1-kas@kernel.org>
- <20260115144604.822702-3-kas@kernel.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260115144604.822702-3-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1A0EA1C0013
-X-Stat-Signature: yse1k9dk6hsfas473sfjpkgkqaj7qd5d
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: opu7mabeyyuhny9eyzuuxf53hgrde1x8
+X-Rspamd-Queue-Id: 73D611C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768494937-219268
-X-HE-Meta: U2FsdGVkX19h0oovQWcUnUtdTHgdtybvRL9aH7aTEkJRJ+rAU6zJ99aclyCaOQXHb2Kw18NTDc+K+sqXk39MYVSzE6PF7S+BBU0ybbgrRjeDFP4HUHizqlH9aVZukf5JiuzGdUlwMP7GMlropW4XqT50FxGv/eWWEpdWTxQLYfvQPJPaVNW7kijm0RrSUQZ1iwpm+yWfSlYy9CP8FmwKKcKjrUKnuIzZbEbnOCxbJ50+FYmxD6+3G297GiV9P8BxlCWpdp+gONf4HcpSneW5VRXjy9xLI2EqgLP9xiGWW3Y3eteaVh/YOTKlZgYeThLWUgLgGWkmiQ4Bf+Q3irz7j29weHJSR+Qv0yVlr182DqvxBoCKC1RC3A1N+JCHhFLzUSh5aUcd2bbYfeFy4xbvBK9x3Kd1VnCgzu40L+1MJ8uTB7Ghp/tYWREFFRfxalUhGswB/HbGYVgYRF7q2R7kJolSerSZgOb8uTRxd9KwEpWgHV2gh6xLZbkheL9i/YOUTJLquwDDAlv4+EdDsdE7s/wA4nRRDeVA4Iy/+oZDYNUA/0fHxyskjpO+oX3S4PBSRg0VEI6QrmgP8jQSbCd1GGKGo5jx4F/jzzL8fQ0ePezzeSsLgubTeyHb5/n1hgY4A3Of/vNpdkHMexyhQOgPvMsOJagQ7EbuLXBfiQBgljvxU3+qctiIHhXDg9PIUzVzO6XQwmPcz2WdwVOeX5xJcOtkYfIXY5ytARSmSghZv4RkMxUtaB7Su+Kh4LsUY3ZmQ/VnSN5maJcIeiMLpoWJ3QJdKSRRe/EygpY3xtYbHNG8f+8lkpcPwp59OxbLp+NJiIZU4NR7JKvAmla7CuwIyMpPHVys3JCPvzleVn5CpNfg6WWE7+lDHgxCi1ylhbvGLretpxxcvOBW9VHyj7BA/EGBKV2g5wZJHCxwW+YH6Bog9mnFRMaXxdiehYoMcFmI/A7oaWunNWAVafqpUUS
- BCHO7Qwz
- frn+nNbd7zf/dfC5GBi+gsq43T4NeS5BRM5M9aZIRbKmRRSxTlsxiY0xNa2C+tqYURcMsgnFIiJ3y7HFgYnUbR4KlLq6S8KmW2bWDEqVwmMFdr5XLbhkICiCT8mw8rqKVS8Na9Ygoorq98nyukL8Q7buCSD9WWOTmKCCjdw14SZ4nelhcLAOvo+6vN7l7UqZ7EWiRjczXuXcxEA2UXCq7XiYm4G3FT0mFJiEuKVSm9LBRcJZIHfn4jeF01Zy6fivAtZmq5Jj7tCsE7MF1fxsU5xX7hFoLpEOWMVRPj6tO1/w7CZW/u9EpR5ot6A==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768495397-228459
+X-HE-Meta: U2FsdGVkX18ZbbITXVOPyxAzBgcNpooCz326BELOO/DGr0PKVpr9ZR1/V5tu/hvcZuWxfJCDqugQ3AAr4PzXW68AFqgvx2hwaMWVgawbaw0d+p8cNn5BrJQjynbnBN/hZlvthBFvlTU7C5WO2FrcygkkkZ/Jds4sSAVQvFbiJ0899JGbwl//M0fou/stlgg8x95vLUHEyt+4OhIhmL2xtyspA8akbsjAc6c+mp1DWpytgHY8e94ZudmCqOyxnAvZsqT8FQO1FgpL5B1dyvaTyKoU5QqsfX1PfasIh/iSws7/xLyOFJ34Wpskx/cEMTi9vx2S3BCOX9AyHLqVMN41PCsQ3GvRVJGVumKywSL1mjJoPZ2K9Skbn2fRsKCKdYwbRxg3xJEdUMaubW4rOWFqkJPpPpAcYJw10DvLAOpQJEYF2C8WYBdTkBbOJtMMbXVl743ruZzJncGSPV4palZR2EkCyl+Or6fUZqDMAgWyLzOkrd3j0nXg6L71mJRLRHlga3CcHjCDF4s/1M8gTHW50UG7FYCLkIIS/Jpy5ukpeU5gewPfQOzgRQIGtWL+9Ps4RShqIKrCB3mmxWwyawWwDAQfFOsIQMtttzCxmtI3cBpQNrRVjdmQVOYttAnG6jabAt1NPuzV0jWEnn0kUCDwAEN/Zc6jwA64wZHu1Jw3MaWbwu02sHUbJ5sCnou4PNQ6cZsZQhJQVSX72UXNtesLhy4hAbau0+sjw9fD6w3UjOhwtbute45xPChW96XvlqyDI8NQZJ443gLk6CsiXlCO9XXyFw/PuWHQ4bYv467prfBdClagEq96116rAEHqv9jcWd1x3cHbloNUp4Stgf9yiX4dcGLS6jLuvdoAZV/hQBH5inGQSkdltZm+tamgL/v4lzg04netyOiPf0Dj2shU0+IjIHeJ04wtWwR743oIkQsxAxf/AEq30orgfDd+cMkAXPJG0w549FT7QUHFVxi
+ peOTcDQh
+ 19/Chz69UtxfHDquvMSe6LkHz0ZA8FxqKlHiRNgIxP1pGH2EvO+NKdL5EH7gx7MEBvwUMxR5zIPAsn05ZnBA/Re4EetDlrH+VuBxxz3u2G2T18V5ecBlilLKdPKvIOGb8YyIzjIBWrEy/jxzSXyYKrEOUDekSXzP95IF12qYo4RU93eB1ZOcbbV3wzXrK4m58YCfLx5ZHtA9sbw7rmHhW0TTZoIwnenfjTff8zGDH+9Z+Vg8YEfb+VOcFeObZzp7sumuFDSONMo2hy1IduDi3AIMrj9z5bX6t38/zhUSlNcdgvKnRx2hFfKhZOg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,13 +90,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 15:45, Kiryl Shutsemau wrote:
-> Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
+On 2026-01-15 at 04:57:15 +0100, Andrey Konovalov wrote:
+>On Wed, Jan 14, 2026 at 5:52=E2=80=AFPM Maciej Wieczor-Retman
+><maciej.wieczor-retman@intel.com> wrote:
+>>
+>> I'm a fan of trying to keep as much arch code in the arch directories.
+>>
+>> How about before putting a call here instead like:
+>>
+>>         if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
+>>                 if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0=
+ULL)) ||
+>>                     addr > (unsigned long)kasan_mem_to_shadow((void *)(~=
+0ULL)))
+>>                         return;
+>>         }
+>>
+>>         arch_kasan_non_canonical_hook()
+>> There would be the generic non-arch part above (and anything shared that=
+ might
+>> make sense here in the future) and all the arch related code would be hi=
+dden in
+>> the per-arch helper.
+>>
+>> So then we could move the part below:
+>>         if (IS_ENABLED(CONFIG_KASAN_SW_TAGS) && IS_ENABLED(CONFIG_ARM64)=
+) {
+>>                 if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0=
+xFFULL << 56)) ||
+>>                     addr > (unsigned long)kasan_mem_to_shadow((void *)(~=
+0ULL)))
+>>                         return;
+>>         }
+>> to /arch/arm64.
+>>
+>> For x86 we'd need to duplicate the generic part into
+>> arch_kasan_non_canonical_hook() call in /arch/x86. That seems quiet tidy=
+ to me,
+>> granted the duplication isn't great but it would keep the non-arch part =
+as
+>> shared as possible. What do you think?
+>
+>Sounds good to me too, thanks!
 
-Why should that belong to mmzone.h ? Semantically doesn't make sense, no?
+x86 was easy to do because the kasan_mem_to_shadow() was already in the
+asm/kasan.h. arm64 took a bit more changes since I had to write the
+arch_kasan_non_canonical_hook in a separate file that would import the
+linux/kasan.h header in order to use kasan_mem_to_shadow(). Anyway below ar=
+e the
+relevant bits from the patch - does that look okay? Or would you prefer som=
+e
+different names/placements?
 
--- 
-Cheers
+diff --git a/arch/arm64/include/asm/kasan.h b/arch/arm64/include/asm/kasan.=
+h
+index b167e9d3da91..16b1f2ca3ea8 100644
+--- a/arch/arm64/include/asm/kasan.h
++++ b/arch/arm64/include/asm/kasan.h
+@@ -17,6 +17,8 @@
+=20
+ asmlinkage void kasan_early_init(void);
+ void kasan_init(void);
++bool __arch_kasan_non_canonical_hook(unsigned long addr);
++#define arch_kasan_non_canonical_hook(addr) __arch_kasan_non_canonical_hoo=
+k(addr)
+=20
+ #else
+ static inline void kasan_init(void) { }
 
-David
+diff --git a/arch/arm64/mm/Makefile b/arch/arm64/mm/Makefile
+index c26489cf96cd..a122ea67eced 100644
+--- a/arch/arm64/mm/Makefile
++++ b/arch/arm64/mm/Makefile
+@@ -15,4 +15,6 @@ obj-$(CONFIG_ARM64_GCS)=09=09+=3D gcs.o
+ KASAN_SANITIZE_physaddr.o=09+=3D n
+=20
+ obj-$(CONFIG_KASAN)=09=09+=3D kasan_init.o
++obj-$(CONFIG_KASAN)=09=09+=3D kasan.o
+ KASAN_SANITIZE_kasan_init.o=09:=3D n
++KASAN_SANITIZE_kasan.o=09=09:=3D n
+diff --git a/arch/arm64/mm/kasan.c b/arch/arm64/mm/kasan.c
+new file mode 100644
+index 000000000000..b94d5fb480ca
+--- /dev/null
++++ b/arch/arm64/mm/kasan.c
+@@ -0,0 +1,31 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * This file contains ARM64 specific KASAN code.
++ */
++
++#include <linux/kasan.h>
++
++bool __arch_kasan_non_canonical_hook(unsigned long addr) {
++=09/*
++=09 * For Software Tag-Based KASAN, kasan_mem_to_shadow() uses the
++=09 * arithmetic shift. Normally, this would make checking for a possible
++=09 * shadow address complicated, as the shadow address computation
++=09 * operation would overflow only for some memory addresses. However, du=
+e
++=09 * to the chosen KASAN_SHADOW_OFFSET values and the fact the
++=09 * kasan_mem_to_shadow() only operates on pointers with the tag reset,
++=09 * the overflow always happens.
++=09 *
++=09 * For arm64, the top byte of the pointer gets reset to 0xFF. Thus, the
++=09 * possible shadow addresses belong to a region that is the result of
++=09 * kasan_mem_to_shadow() applied to the memory range
++=09 * [0xFF000000000000, 0xFFFFFFFFFFFFFFFF]. Despite the overflow, the
++=09 * resulting possible shadow region is contiguous, as the overflow
++=09 * happens for both 0xFF000000000000 and 0xFFFFFFFFFFFFFFFF.
++=09 */
++=09if (IS_ENABLED(CONFIG_KASAN_SW_TAGS)) {
++=09=09if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0xFFULL << 56=
+)) ||
++=09=09    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
++=09=09=09return true;
++=09}
++=09return false;
++}
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 9c6ac4b62eb9..146eecae4e9c 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+...
+@@ -403,6 +409,13 @@ static __always_inline bool kasan_check_byte(const voi=
+d *addr)
+ =09return true;
+ }
+=20
++#ifndef arch_kasan_non_canonical_hook
++static inline bool arch_kasan_non_canonical_hook(unsigned long addr)
++{
++=09return false;
++}
++#endif
++
+ #else /* CONFIG_KASAN */
+=20
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index 62c01b4527eb..1c4893729ff6 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -642,10 +642,19 @@ void kasan_non_canonical_hook(unsigned long addr)
+ =09const char *bug_type;
+=20
+ =09/*
+-=09 * All addresses that came as a result of the memory-to-shadow mapping
+-=09 * (even for bogus pointers) must be >=3D KASAN_SHADOW_OFFSET.
++=09 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shif=
+t
++=09 * and never overflows with the chosen KASAN_SHADOW_OFFSET values. Thus=
+,
++=09 * the possible shadow addresses (even for bogus pointers) belong to a
++=09 * single contiguous region that is the result of kasan_mem_to_shadow()
++=09 * applied to the whole address space.
+ =09 */
+-=09if (addr < KASAN_SHADOW_OFFSET)
++=09if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
++=09=09if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
++=09=09    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
++=09=09=09return;
++=09}
++
++=09if(arch_kasan_non_canonical_hook(addr))
+ =09=09return;
+
+--=20
+Kind regards
+Maciej Wiecz=C3=B3r-Retman
+
 
