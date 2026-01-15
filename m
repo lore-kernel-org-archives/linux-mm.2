@@ -4,113 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC430D4661E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:07:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 692A4D4661E
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:08:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CCAF6B00F4; Thu, 15 Jan 2026 15:07:59 -0500 (EST)
+	id CC2486B0005; Thu, 15 Jan 2026 15:08:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B79C6B00F6; Thu, 15 Jan 2026 15:07:59 -0500 (EST)
+	id C825E6B00F3; Thu, 15 Jan 2026 15:08:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BAF96B00F8; Thu, 15 Jan 2026 15:07:59 -0500 (EST)
+	id BB04A6B00F6; Thu, 15 Jan 2026 15:08:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BFAC6B00F4
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:07:59 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D008713B0AB
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:07:58 +0000 (UTC)
-X-FDA: 84335284236.22.4036ADE
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 25627C0002
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:07:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WjRwao0R;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A8F9A6B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:08:57 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 67B4F13B0E5
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:08:57 +0000 (UTC)
+X-FDA: 84335286714.08.D5FD967
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EDAB3180012
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:08:54 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="hoh/2tcz";
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768507677;
+	s=arc-20220608; t=1768507735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5VF9kI5O9H97HnOZtL/a0iX1DIBiawVieSoxgvaDO+U=;
-	b=wq7Hn4RiDTabLqpTnstVs2+CoVKSW2KUYXmtTSefEb+BORNtgFoW55KvfoIONcVdbeFqIN
-	2mFyK31WiYWOpYYeB9ldW9cH3GkmrpcTvvOxq7wdHPl0liLrzkEF3dKpp7O6UJ6WQro8Me
-	jS+SypGJ3pyHHLyiadGPM0SHS6L1iHg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768507677; a=rsa-sha256;
-	cv=none;
-	b=EngGnx8ZKOqSj0HKw8YLU3NcdKbC9LVRLDFWZ1kZHUEhyYhAWYBJafpK6MAM4c0/aE7o5W
-	GZ80p3M/1jnmxsrXLwvpIaE6H0XYq1lNLImYs2xMbOfBfAbQHpLVUHM2EZExrOugPpQQuq
-	KC3HX5rNK5VVp7atofosCOLLOfc4Dss=
+	bh=CpcZ01AOghjGeaLwyn84qH9jVj5LGN2Ssm7hC2lsYoc=;
+	b=UGreMA2QJRrPMgNMIcK8G9fSwJi7xOhYucKGLf3gJ5po1bjcCi6yQqpQ1vt6tDLXkwWige
+	M2QlH3NE5NxEXM4Xl6tpT3/KyY1yIruzM3kaD5RCgI4/JHM3jrfYO45CNrb4wA9fs8/0YK
+	f2qwyzEi4JDYv30yDXgk00dLTBIUbgk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WjRwao0R;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-78f99901ed5so12882347b3.3
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:07:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768507676; x=1769112476; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5VF9kI5O9H97HnOZtL/a0iX1DIBiawVieSoxgvaDO+U=;
-        b=WjRwao0RDPabwFJdQ7Cy2s82nTNjlSxJ5MYejDDKJcaGSALdr2DFU7P4r3PZKN3WYG
-         cCgHknj87qDmAjZO7/d89J0WU82WRhPIhO2TYLslXOXoKqTvAVoHnIL+kgQNJFDkgyjs
-         1Sa2PBBfPmJk9G301/oPfoV8/uTPGfiW7aTlgPICk5c+9IuH1G4pTMasEGhXZeNKrcni
-         hAS6uiqVJnvJ/WMgyrRdG6CtunCJR4ORUZ7uLXNROE8Lj3TI6oMwCX+738x/SZix6pv8
-         TGaQsW1FsyC29WnZLofYHC4DEXQPb1xvN7ZHg/4KYRoZkmcS9jQtkDpV0Bgi2+DzE3/a
-         6vKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768507676; x=1769112476;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5VF9kI5O9H97HnOZtL/a0iX1DIBiawVieSoxgvaDO+U=;
-        b=gyUNKhz7dcyDanZPZPnVF9T/aCVYXpkGdO6FE+0HTV8SIxRDt0e4qhZvuqhya+WLmE
-         fCxbr6ODrr4dHBhFGmeOmqu2Fmx0Cju7xS0Cyj5fwToQayQA0Ljq931QghOKTB0i5oT3
-         uVRK1atEn+InYhhnCAAzAAaUEzbwWJJKZtSNvIRSgxABWdBF5ovYbc736ba+9fBbuJnw
-         SVm8hvGW+YudKA7CmXQuk6llaDsdJ9JVoLYMIcAvhS/PhN/K15F09iTHbtjjsVClIZfF
-         Jn7YeNKN7I/nCCBZZjVpKnYG/1cj9wLEmoVkHn0A9MVV2G//qaZ9O/dwJY0qbUGeRx2j
-         I85w==
-X-Forwarded-Encrypted: i=1; AJvYcCX2wuRRNj6ftMZsSQ+v90jjJ3PheaQYTmbKQiuey+PMhjW4tNvy/4f0hIy4l5sdzm33Xk6cCdizRg==@kvack.org
-X-Gm-Message-State: AOJu0YwPGSXsVw69EfZq877BorJAWLFvYkZ4bm7WEuc8xzStgKPLgxk+
-	wlgQy/rw8CXwNcKKmREgXRtOP04d6Q0jbXgvDxsTbESPNhK4uRghxQyg
-X-Gm-Gg: AY/fxX6mXKv/uHf1J6TzBD9T4I8WFEkC3vNAwzsEUKbHlYb/ueOS9oDrGPwcEOyq77B
-	r2ZBGbuGSJ+C8vZQIiEFg7YNRGKzGkzFjLwMK9YJue2sEwnMcJWzQ5vGU0oaHBuEz+WeTFRODtu
-	AbwsKKE8CqBBlNlbvVbsNhePG7lM47PiAVy8x3VB+Aj4sadn/b/iZidq8sw/F+beM12C0ps9B71
-	ZF6lhVFIlcBbUKDUEJticbcXO7ESrENNmEhHpIvveMNO7P0kVdxtBiYunQfAlxEjWenWo4tt3ba
-	d65ZuUxaYHpCO/Isk9h0V5YDo5ifO8/4lT0VujcSroqMlnInhxw1RtoTavC8OiLqejLAYmFHVl2
-	6ul5zZsoTv92ILBquqAYOlyP2rR7GVy7yL+KO8ct5CU9CV8EBT8iaVsNjpV9Ge/D6h3F+2KNW07
-	gddvdBwTHQNg==
-X-Received: by 2002:a05:690c:1a:b0:786:5620:fae9 with SMTP id 00721157ae682-793c53c6ba6mr8735327b3.54.1768507675354;
-        Thu, 15 Jan 2026 12:07:55 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:70::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-793c68c4167sm1111377b3.52.2026.01.15.12.07.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 12:07:54 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="hoh/2tcz";
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768507735; a=rsa-sha256;
+	cv=none;
+	b=g/2RzhhSTd1VyRpKG2E1y2/KpuwOcNZuCkcP6c3h7UXbti22qBEzaCPHb5VJRhJjot13eF
+	sWe9dtev3/88yWFLCW2Sa3fy0aYtlwnAzQsxTIBk8/fuZB7i5kTFunuPHOW9b2yvyxmnsI
+	SPsptrCzvq2bwE0Bo2U6AyS1Kmqr2aU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CpcZ01AOghjGeaLwyn84qH9jVj5LGN2Ssm7hC2lsYoc=; b=hoh/2tcz2jPraqGGEY46dkSGUP
+	z2s1G26gHd9gkuXFmx9lgJNzSHgmxpLWCRUHbmFyvAL1GO53T215xwEBbQ6bINIBBOIh8OqXorFvJ
+	SUGMnhQ2kmkE5WfTKQ+57Lldej58aFN2GUk67xtDqtTpMfxQ3idzgVnD83YRJ5CQUp9luSkCN0h77
+	tWmlgru51ElN22k001F3F8bEghn0ousWSGqXEzXRU2e3Ykvj50pwNLe00H3tlH+6gkIEg2m1HPIql
+	3o1V+4dwRuX42wm3xiUlV99ZKDfREuy25HJVUifmo0HY2TN/zwT/c82l5RJGc7otfeTndoWcZHilE
+	0mjisBaA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vgTeG-00000008OJj-1vjs;
+	Thu, 15 Jan 2026 20:08:52 +0000
+Date: Thu, 15 Jan 2026 20:08:52 +0000
+From: Matthew Wilcox <willy@infradead.org>
 To: Manish Kumar <manish1588@gmail.com>
-Cc: akpm@linux-foundation.org,
-	linux-mm@kvack.org,
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: prefer 'unsigned int' over bare 'unsigned' in page_alloc.c
-Date: Thu, 15 Jan 2026 15:07:52 -0500
-Message-ID: <20260115200753.1002036-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260115194845.118064-1-manish1588@gmail.com>
-References: 
+Subject: Re: [PATCH] mm: prefer 'unsigned int' over bare 'unsigned' in
+ page_alloc.c
+Message-ID: <aWlJVMat-YH16Y7p@casper.infradead.org>
+References: <20260115194845.118064-1-manish1588@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 25627C0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115194845.118064-1-manish1588@gmail.com>
+X-Stat-Signature: d69zybhrxyp3ykkdzsn54kbuc78x57ca
+X-Rspamd-Queue-Id: EDAB3180012
 X-Rspam-User: 
-X-Stat-Signature: 58m8mnk9ohjhqum9tc6tkhsdg5w8kxxi
-X-HE-Tag: 1768507676-280292
-X-HE-Meta: U2FsdGVkX18dNAfeDxXsZwi2Tr60Fgj2+MrJ5o1y8gVTltCX2YMBJGGp+aWl1y4DcJMU7PY99215s8ANU09S/Xa/afiotpl/fm3NTqeR+9o0VVqHfWYqOkF8qQbh8rTj4eI9MKXpHTnuOocdxovJk1IlkVuY8LwtGeA9Nny+LsR05Ub0SZNkVgeujfK54BcDm+/IL5PXpEO6gHQD/FqQrv2ybuRU14xFtlhKMVosUyOH00EX46Lf7Q0Nyh3a0DFXW0dHsXYKnV0S1NgQZhWc1+B4wfH6riND2gvDAeExunkS8KcvwEaRaK/rzvw5bpxviAWDpTme++SVSVAQcvCBc3Zc4znsUd3Rxw5BP2TC+Qz6hneW1PMbgE7czZd9S9pLYngPNOi5Fk5mMK2i1/9haU6ITo2ab9jQhJyWj54huYME7ZZG40Vz3vjmWNVMpJKSHq1QJYgI/tOOt8UW5FbW2fkdCVDTTGK9VJEwyA2bltvNROD5N7ZSga2KgENUtevzhY6PBESOzxNxRzqBKIfSJzHv6r7PxqDMi5ULjsgbvbyPwqq3wujIoDvnOuc6mwNbyoFxxDGuusaZE+pMzEIzf4YqSbLb+Mm7JLiFTuwO1CMdrSosfskblPQGkFCkiH4OS7LzBizEket0vhyg+VchJiUPnNTHFN4qqTMIRPKdU//Ut/ub9FoHyCkkM8wiOVPXBC+cZ768ooBr4TpcNTKGbSzgJzUBABX2Cp8gAAzUs2V9dGGCVWSOX2mg9FbChpisBYBiYdcf8GCXd0RrzHWtbrXHGH51j6xNbR6scH4SxRtuyptljQT9UBIQkI9FLXrY9dAxljWnFkO3G0LnMlr4I7KIHDKlsxzcp0NB3oYy3ISoV97EF53BhE+QPoYQIJcq+py0blZrJC29Fbkz0GAinsgEr15F9cxmokHOtmeofZPWm19dS3oVIYKZYQF3dJ00IsvkiMBFXv1Ds2bGqvv
- f9CqCdtf
- CEP0fDr/mnSWZ7tan/cxX2YUe3jEgZ7+e+7S7CbiA4i03ued884I2lkhbK6nqLJZEKnmvSoIRqnEDbFy5hI0PErcAVwwsnZXSGWJggwHgMe5W2DLPLv+kkAevifdtgeQj4a8mm9lCTi0KBt8kfyMT6CLhRGjdTkotnfSZQgnf4/WCyl04RUCavi5oPQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768507734-954789
+X-HE-Meta: U2FsdGVkX18AbwdZN1Jvii4kRfwYrpp79dZZXSX41Dx0/yTnAQPEaQpj6IMNSA5mtRQSLp3tU59pNGdVS9sZuXbZUw7vrN16s/8zFKHDmjx33i2IdD2lkwi5+UOuyiypkFvcNwkJc1OyZUKhIPjHYz8jkFsmB0xBp80znG4QcS9v1Zoa/jjaNKMY9TWTq53uT+PGH3M2qtqQHoY46S0mVz7dXbC35/9T0X7Fu749OEzatmL2C9C/wO7uPLAmbU8h1UZyb1S4pZaOLd3Tx+0N483fnjbMMcy35JCLCgXr/viYoizE5qqgWcWBW6dLnhGV3u+x88BM55+8hPymYcSOd6xLhEgutWre08Cje0lxjVT5QpNfnGghKY97xKmXNSgnoE3Bu5B7IEDCajBPZa2nEmglixLeq+Ml6P30jRIQbk40EqvvRQ8sGIIImtMJ74Jek+hXcV7kaCsoSFEM6OoVHsSarsr8E6WP3a8g7LJRjAERKMGz0Ip12PZLlcj2LrG3kszW7+sZrOOYOv9Bp/904Fo/YqfUPnzcI4HKdw+hAgX9ODCpsfLJFqqHVFCBmJQl+ZDr43a7Lt2nefu3Rsq9zd8mjS4E7H13Vs8/mPgIq5FJs9KWBfm5ZBwPSy/3V6ZWiNlvAea7BOxNaXiUX/GCAeutr3jM2c+bY4G/XB64cs0QzDkoEVDSdd/Ra4MFJy2/0U6Llq7Bw2DfgPpd8QAsHDYviia44ng5Ad1xAPVeng6MdvK5Irzz2r8GYNlU9uqzJasOm02v0CHEL0W1zMtcVT2qLCR3j96mzYEuc8OSbUJh9XA7z9VTgBvlls6NmwjxY81hsmgyPopmFHjePoqfGdtGmVqznZWZry7ERjnpI8/saOFFFBw6YaV4r7qBgp3Hjc8wviwTQAA9VAtVpWcicrQZ8GnqInqNpL7G5ra9bIG5gOUF5sN6UvxrzUs6EDWpU6qoFsl4hDB0g+knE/2
+ Dzo+4SN+
+ 2fHbxS62SQPugQoIiCyHOrf0ZOMMYs5nYJaT/GOOC1fYUaICPC0SoQM9u3NPFPK2+HhBRTXnn+/lQbq3B3KO5jnumK0qfprFrNz+XADnBFzYqZDakDxN4aQ+q/2kFEGKe6FWipjr+QVqVjerNarbp/jIO5kbFGdyEyh8vqGQZPdwSMXxPZ8pbiTgeeKlu2nBXZ4OOanLWVsSHv7Zf5W10lOf6lVt/6IAWRchgghL0SoYYbPOk20t1eKvRvZmaCt1LSmfHR/82PtWGKCBJiiJdF20SN1dJiu4sk2HJyvnBEptAhBE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,29 +90,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Jan 2026 01:18:45 +0530 Manish Kumar <manish1588@gmail.com> wrote:
-
+On Fri, Jan 16, 2026 at 01:18:45AM +0530, Manish Kumar wrote:
 > Change the declaration of 'seq' from 'unsigned' to 'unsigned int'
 > to follow kernel coding style. No functional change.
-> 
-> Signed-off-by: Manish Kumar <manish1588@gmail.com>
 
-Hello Manish, I hope you're doing well!
-
-The patch looks good to me. However, I just have a few comments about the
-other patches that you've recently sent out as well.
-
-I think it could be very helpful for reviewers, if you grouped related commits
-together (in this case, mm/page_alloc.c cleanups) into a single patchset.
-This lets the reviewers view all related commits together, in each others'
-contexts.
-
-It would also be super helpful to Cc some of the reviewers / maintainers who
-are relevant to the change you are making! scripts/get_maintainer.pl will
-give you a good idea of who might be people who are expereinced in the area
-and are willing to review the patch.
-
-Thank you for the patchset, have a great day!
-
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Please don't send these kind of unnecessary cleanup patches to mm.
 
