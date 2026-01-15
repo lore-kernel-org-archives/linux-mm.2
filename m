@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B6AD4662B
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:57:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC584D4662B
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:59:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 214E16B00C4; Thu, 15 Jan 2026 16:57:38 -0500 (EST)
+	id 19AB26B0005; Thu, 15 Jan 2026 16:59:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C2596B00C5; Thu, 15 Jan 2026 16:57:38 -0500 (EST)
+	id 172AB6B008C; Thu, 15 Jan 2026 16:59:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C4696B00C6; Thu, 15 Jan 2026 16:57:38 -0500 (EST)
+	id 0A9F56B0095; Thu, 15 Jan 2026 16:59:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ED3736B00C4
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:57:37 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8111B13B138
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:57:37 +0000 (UTC)
-X-FDA: 84335560554.23.92272B5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EC4C86B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:59:47 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A0C94C1A97
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:59:47 +0000 (UTC)
+X-FDA: 84335566014.28.35941DD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AA8C2C000E
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:57:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="VFBjGK/T";
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id CA4ED40013
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:59:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="N/q4xual";
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768514386; a=rsa-sha256;
+	cv=none;
+	b=er/T2gga54St+gJnegihXyGTfQsIMIJtAd03wPlEdtISekAJDKrVld14JaHoXY+KM1vM/J
+	W1zq/Hy1qLEK7GEw2HkmB8V96xsG4V7+1qdqmm1gsHa0W9GXdRF0kvT+uldjLdL1qqjF/b
+	q5yGQf/q/3zf+0Xs9/zeGRFNeryzpYM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="N/q4xual";
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768514255;
+	s=arc-20220608; t=1768514385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8PQtFpfasUJZPyqcLywyf5xnr8JHR8X/Z8+P6UmrHSY=;
-	b=0Ea+7+AiiaKC4if9UYsFR+VzHQBbKhmqjhaOvRvrulgjSoieSId1ojEZeRjuf38gwIRKcz
-	DyHiDS37gllRH7q2/Nbj6Tcf8LHAvLo6zaq5dOSLOt1/ZxupwrIyFRZ4nt+7vlQ4AIFdmK
-	WInYEHEeojvW/MGr7GxdwzVNnfVmSOA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="VFBjGK/T";
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768514255; a=rsa-sha256;
-	cv=none;
-	b=Y97b4VhpJjwDSHsEAfgyn3y3jtpnAYWTu+dEE8z0VYYGVqLFemP4+TlSnpcJ1/awXwJ0YM
-	gyPu9UOMWPPVtnMnK+5nq8y0raLSDJjgbhsTqFX+hb7Y8PakdNVzb0jp0N3ueZHYOcEpDL
-	R+OdayqDtotbNvZi/xTAfcu6X8LwV1k=
+	bh=A2CZQFbE0Ein0moABkbgF1EXx8+kwPukVTbP7/HuBzc=;
+	b=AWFjQWb9QZLXwnt20sAthRBi8vZ/UPHM7qpiojP7pzLkjYvsfnlZZJzKGGy+RHvEE1y3Au
+	MpolesCP1NHn+YztYFROivvOxKIsVWwmUQ2NwLHoRjMMoF3MUAJ2RCI0BCy6YYfRm5b94C
+	3V7nO7timKswv4OfiveeBpC6WTpNAPk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71B6843985;
-	Thu, 15 Jan 2026 21:57:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFD1C116D0;
-	Thu, 15 Jan 2026 21:57:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C1536403D6;
+	Thu, 15 Jan 2026 21:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B054C116D0;
+	Thu, 15 Jan 2026 21:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768514254;
-	bh=FojpOiLAXUy8PRO6EnBczv5H+af01sTZZJr44RU5hig=;
+	s=korg; t=1768514384;
+	bh=8jlcVgdHaP7bz8GH5lHbtaAvk0c1AbsLQUU1eMGngws=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VFBjGK/ThAVVKbG1zjNk4C+8Sw40IM0eslRG7Ea92qvFMUa95KS+YydlkyayI99xH
-	 cDawAoePrHk+EdhNFx54QW5+LSbF/7ExaRuwVNAlvlOOi7aXSBJk+5bTuTLMheq7A8
-	 QFhLedJthc6ACUZM2VON6iVGAuSe68HiXszWBSrc=
-Date: Thu, 15 Jan 2026 13:57:33 -0800
+	b=N/q4xualLsWaXEUvD6XSf0/r7zOO/Ano8FQ+Ffzu6ZAErp8MilSxrSLi+umQr5F21
+	 sKQ6kBEe/R4g9DtdXLCNPGJ1rxlteINTAtT+hqKE3fZIQWBY8qO1TgRWg8bVldrhKc
+	 01ZTY7URoJFmQNMdSHbSZn+/n2XkxPNBYc6pXTl4=
+Date: Thu, 15 Jan 2026 13:59:42 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, Muchun Song
  <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 3/3] mm/hugetlb: Enforce brace style
-Message-Id: <20260115135733.27537586dc0716620c6b1180@linux-foundation.org>
-In-Reply-To: <20260115211446.1429024-1-joshua.hahnjy@gmail.com>
-References: <a0760613-5c57-4f04-848b-a0a6ff05c0e8@kernel.org>
-	<20260115211446.1429024-1-joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH 2/3] mm/hugetlb: Remove unnecessary if condition
+Message-Id: <20260115135942.843342c483b44232b599a61f@linux-foundation.org>
+In-Reply-To: <20260115211053.1406264-1-joshua.hahnjy@gmail.com>
+References: <a63c7a84-99d9-40c6-93cc-6c6fd46c4333@kernel.org>
+	<20260115211053.1406264-1-joshua.hahnjy@gmail.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: py8j5ww4mc5rf4nn5ja8uk4eni5m5dto
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CA4ED40013
+X-Stat-Signature: qy83g3e1nk3o1k6ye7ayx5yaj7u7rd7o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AA8C2C000E
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768514255-171051
-X-HE-Meta: U2FsdGVkX18o+5CfQo+jTvHpBgEu/uAT+QfG3YJfm4sXZCD0tjYRKq3wYgJO7rz//NkbKhLcBPO3bOry2gSenaZLzEDQN6yeN8BVWKVBz/6i1sksQnLcn1PuwT+I5rIbRyM9kGI9EHepWS9HrXtyyvIzMKOP1D5qXRF+FITfSDrVkthcPR8HZOaIwUH0horQW9mp4A9MOX9zrbiVQ0wIo62O73dSkxK7FAxEzoxycCpx2VOakQCvgshij9NMVdcHa2vwXx3Iiors5faW4nSCWgsRELZMFB6nCIU0fpsFBHvk1IxUV48t3RhkyvAabdn7EQH+ElZOC+3KqxUHAno+VxjtjOe+Md9yIX3U8yMio5ckv6A1qQxefS0nFLo3r5NGO8d9zd+903Un1Ohjt0gSRqJXidbK+3SXhB13MH9qQ9B4QSlaNkCp1CzX3XkLq++Zdzed7A1jMVaS+0hZKKZMPp7+UPu0vxDI1PXH9/gV9ae6zgmjg5Wg37FJNrKs61eGMa9sWEz/xqDs4zoBvCmI/MNzKNlW435aEFhS7ZGITEjRqMjRP5dbff9AoPHc+29Og4jcJELDyqochOqggUxE0popRq6KtbbCs+1la8qqT4liYJezIPJivuDxJ9pPT/54zFu7aacdcWVlFnT2gCyRpK7glvdrN/QWfvffHEKTDF7yle45Ld4LOSxUPGb1zOxuJRkuvPQjR0NS2St5VFSmxy9lvSgClq1ns7eL+utbQKvybI8p8nezqySeggU6tuHGkOEHsc73VLSLFNDbrMOjCQio8vNNHceQ/qlbtr/30aMTqTQV9dO3a/KLjelgFEUuq3Im6ijinFwvxjPRZq9aHn51//62E5UgVL9HARYV8YFyUT1jbgeXTHYn6vYIj6gtme8i00VWzxKT4pVsTFv3Bujsf1BPBTDdVLhGNrRY/pmDJNRpH56qvJ5bwGWMBBXjSlOskyvMK58o2gOCkIv
- gfAzdOYN
- 4/hQttQApI50OVXwkp0+mFQyEUlAE34+1WHo8c+SB0TjuTP1Z/jW+2UMywjXVebMWpVHI5kIFhG2hpraJwx/i1aSUANCdUQQRlu5tqcMZEo+2W/sGb7qT04VhvOyyZSieDWGs2ejQ51iNEB4gGyNWE8g5UCTgm8xxlKbCHKhL2eGMEDCTo044IQYHUGOSv04OWr+TPYoqw9f4/HkhoweKgKFLpyW+DT59XAv0fZU0G3fCfRvktqHphgfi9lZG2slwXanjRrjoGBTZtqHAVQ2Bzh8xSk3JVHe+ZnD/6Ns5NJeoFRXTQqugSPs0NYqiBXhf1jLbJ0YeGnmo5C1+A2Pl+A4AZdqn3Cd1ZoajXoqsQYw7xM0=
+X-HE-Tag: 1768514385-688408
+X-HE-Meta: U2FsdGVkX1+bHlrXu0oWZp/bUJquKf54l30L3VBFqImz30ucTPryW/mHiE94+zbQRZZgMpufWhe9/+ZB88fPjpQY/7qLxHc6sa597y6LmWBeKNkOheSYeJNnyhyHErk6qCywRvBR4r5wTUSdiYGzThhkJHe+13ECd/7Ymfb26DqfnIyZDYhV7Wh1t0+K59QFLnIjSH5Ubwz/VmydK7z4suP2rxlsaRfES2g6FOpsICC1gf9h2IrghBW3E872OUSvUdapyjrLtatJcURpeKtqtemcPyESFAYVTFlYiq9+zSIyCNgC7fALhaSmy/aoBUic8HJ/tBFGiez3SThrXkJrvyOg8eZwZlPXsNF3IWZlgHcoU26mgd7J2z9OPGH7++g4T5GqPV01cKGMXvjBSYcWq7Y0BYUqyzHCcf+95yIhNR3dvlm+1AF/Cr8CntFvLUaXnZxZavi9DtS2jg8TwhwNB1qqejeVkX752F9s+LLoaQJJiZxXRlfXLqdD31JA9Cu4IG6JbmJ/7Qbpxg0dyHx3pd0V+abD0z8GwmVs6UNg+666VfKajdNbExKuptdVYGv7iMGCAb9zDOUlZxkVt8NPuofv9cZN6BhV0/YgXYkt6kVEyod/Qbk32RDLzUTmhfQknha9iNl5FSbmhzd6u9FTuz7XEGi305IflSIfo38n1stiUSj6HVAcUEetNF3aNKY7Ar4fceCPdix1gTHvFIh+jWwgI+tK96rmWKxux8Aj7Ry1MqiVxwMXELSytFUQYGvt1ONbclgx101g9lR4/9RkqjQfLIpaS1bFY9L3ld+k8k6rME4LG0GlJL5bXpVlens+0XHSntbmDqc5XfmcBiBH17UgW7m+C/9GIV+un5NP62EXYJvn9FQipLdjp/iXOD0lLchHeU39SGJfJSrtYTCEkDSaxT0safdhQ2Vp2sfDxLzPiuN8OzuzrXW27uW99ED56VZRdTrHVn3LqrGug9b
+ w/ZxL0WE
+ ntlcZvalDSpbnNBV7fZX8vQc6oC8W8+LR9dz3ea58FXOyes2OFBp4zl3XTp+FTzhLZt6YY7VnvPs+u2r0IZJJwJQ9W2MwbfBj+leMN0A3BNeDoMyf/PZWxxDz7VM7ipgL1AFj0EyV//qP8WFLdgrMkc3D7knPIJ8uxZMmhfrhUgQz2bV6jWAyAmGBu8IQhYogb79ZSZhAFfIGJc8iKORwLiq3cXHhcdhWMzoRSGlf27MTRdrTUoh+QUdgfQnVuhTcRWTHu17ge43HA87fdhkU9UD0eqx6TevIh0Ax8Chw5mQYegWN/TO9kbs1xypF3ghGm8QV8HzGMTe6LBOAqIiweQLhYrovovCyboTC7FdzISqLK/g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,46 +92,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 16:14:46 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Thu, 15 Jan 2026 16:10:51 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-> On Thu, 15 Jan 2026 21:10:41 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
-> 
-> > On 1/15/26 19:14, Joshua Hahn wrote:
-> > > Documentation/process/coding-style.rst explicitly notes that if only one
-> > > branch of a conditional statement is a single statement, braces should
-> > > be used in both branches. Enforce this in mm/hugetlb.c.
-> > > 
-> > > No functional change intended.
-> > > 
-> > > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > > ---
+> > > -				spin_unlock_irq(&hugetlb_lock);
+> > > -			}
+> > > +			spin_lock_irq(&hugetlb_lock);
+> > > +			hugetlb_cgroup_uncharge_folio_rsvd(
+> > > +			    hstate_index(h), pages_per_huge_page(h),
+> > > +			    folio);
+> > > +			spin_unlock_irq(&hugetlb_lock);
+> > >   		}
+> > >   	}
+> > >   
 > > 
-> > [...]
+> > MAP_CHG_NEEDED = 1
 > > 
-> > >   		update_and_free_hugetlb_folio(h, folio, false);
-> > >   		return rc;
-> > > @@ -2672,11 +2675,13 @@ void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
-> > >   				 * be consumed on a subsequent allocation.
-> > >   				 */
-> > >   				folio_set_hugetlb_restore_reserve(folio);
-> > > -		} else
-> > > +		} else {
-> > >   			/*
-> > >   			 * No reservation present, do nothing
-> > >   			 */
-> > >   			 vma_end_reservation(h, vma, address);
-> > > +
-> > 
-> > But why the empty line? :)
+> > Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 > 
-> Hello David,
-> 
-> Whoops, I totally forgot to run checkpatch on this one. I think Andrew
-> also noticed this, he sent a fixlet for it.
+> Thank you David, I agree it's helpful to include MAP_CHG_NEEDED != 0.
 
-I did.
+Oh.
 
-> Sorry for this! I'll fix it up in v2. 
+> Will add in the v2! Have a great day : -)
 
-I'm not actually seeing a need for a v2, unless something else changed?
+While in there, this:
+
+> > > +			hugetlb_cgroup_uncharge_folio_rsvd(
+> > > +			    hstate_index(h), pages_per_huge_page(h),
+> > > +			    folio);
+
+contains now-less-needed 80-column party tricks.
 
