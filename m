@@ -4,103 +4,256 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08102D3CCBF
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 07:55:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB40ED3CCBF
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 07:58:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 405D06B0088; Thu, 15 Jan 2026 02:55:38 -0500 (EST)
+	id 5A9D06B0088; Thu, 15 Jan 2026 02:58:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B3AD6B0089; Thu, 15 Jan 2026 02:55:38 -0500 (EST)
+	id 556F06B0089; Thu, 15 Jan 2026 02:58:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C04E6B008A; Thu, 15 Jan 2026 02:55:38 -0500 (EST)
+	id 4025D6B008A; Thu, 15 Jan 2026 02:58:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 181D86B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:55:38 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BE752160227
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:55:37 +0000 (UTC)
-X-FDA: 84333438714.05.3900D6E
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 643FE1C000E
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:55:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=1aXwVL7S;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768463736; a=rsa-sha256;
-	cv=none;
-	b=eyshOWzo23u3UyrktnpZX/4ugEjq8FSiCNnycEk6e4Acyk4QPgOU9/zaxYNMgcU2MvioIx
-	VeUsgKF9mudMLpM17/EDs0m/ttlcQIXtk5WaZAC4Xd5hvoyQQ4tEvj3F51mGU1hEbjYGJC
-	yR7h12MUoY8JW2EL39w6T6yFWc8+i08=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=1aXwVL7S;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768463736;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AD176B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:58:05 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC64A1AD89B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:58:04 +0000 (UTC)
+X-FDA: 84333444888.06.76B3CAB
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 282F9120005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:58:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bAilPHms;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf29.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768463881; a=rsa-sha256;
+	cv=fail;
+	b=fWXkcIKv92cDdb7FEAHRebKpVp5WlRiqraZT9yvniCrIZu7ns4ZxCxu6x1QHVctaqbLS13
+	CGn505jNjwqTRWrLHs3DqvF2xb3H95ZWpeCnoCDLwG9IHv8zIH6+8BVVfT5Ec8qu0Eyhvl
+	bz6qXJVNqLHC+u2Jhmq/4YkLuUhFhsA=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bAilPHms;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf29.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768463881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3LCkFVnIN3e5GhO01onT+0WWHPAZo4gI38LP5FKzlZQ=;
-	b=kzaCdpEspvqQo3+Xc5mFyUc/xXploLR/u6LOQtdbvpu/UYPo0FXg+ZEKhWiWBncwG+XRGx
-	2TfQgJRXGQVS4uP+52WuOJ7pgFpDGdpVszWJvyXhIWXTj4+ejSpuP3sJF9lFwIu6z95KNa
-	L+q3SJ48BsG6WhYfbfcxRbU5XwaBymo=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=3LCkFVnIN3e5GhO01onT+0WWHPAZo4gI38LP5FKzlZQ=;
-	b=1aXwVL7S63gAymZoQFKJ1etYX4xbsWQGN/rs/tZolZWju0V3gBptFEY4UO32fvMe+Exn9Cv2k
-	4ZUhiGJBHOF9ytXG/wzoVA6BpJyWZTzDxYxZWd/3Qk0aaVujl1JcPvUr910PwZjcMCOUQnCjNEx
-	sK8e7k5vNsyaUGu22M5Vtuo=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dsFZN3hGtznTXb;
-	Thu, 15 Jan 2026 15:52:28 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3603A40539;
-	Thu, 15 Jan 2026 15:55:28 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+	bh=LxFkfqfqOTcbhnYzoDaunaaLMveA2QGXUz1sv8YUiTQ=;
+	b=nWXDEokfgCwvbYJ8GBZgSDXDIJwuMw0omydWjHTmGmbqpYS6/SD/sUphX0JIA6oIoj4V7Z
+	wJY9gUrHSzNr/FxIl4NIoPGH0lj4rNmPC2xvlEMieNukMAu2oiAGnqeM9BCQyAYvXOoghP
+	l5J3mwptzYF8y28fAOhyrzQ7a+Hfp9M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768463882; x=1799999882;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=pUGbflTKQC/BJVFanjLBSlinEyzJwa/j71TndeMqIO4=;
+  b=bAilPHms918Oi0eugyJVaPNRH2Vu+etGXGzetaTQ5lV6b96htKUSj64H
+   /jvLbhYsM5SW3xgIO0eDHEspTYl2K2ydUng/hDVm45cugsWgstoz7FDSl
+   LWGBeOcNBAlIJFqeRwXRHNlVXGIYu+iB4nQ/cX2da0FP3lvXfETZlmTBi
+   GXnqbTLVPFvsV4MvrfxTyO6+bPnugJz95UkgZMxwra2O0+PYWwk7xDuge
+   RN9cQAlRhtkkyLqef4R5OHwfF+CK24vlWouV9Ofjwlei0O70BQTs87mEY
+   iEUivBVkonlJgJthC5YiZScoFycgqXRxarIJUZ02pXMthCZAgTAuC10no
+   A==;
+X-CSE-ConnectionGUID: Nzu6dkbaRaCLOaVY0CRJHg==
+X-CSE-MsgGUID: AWBdIKCCQjun6G9jhL46hQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="81212388"
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="81212388"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 23:58:00 -0800
+X-CSE-ConnectionGUID: ejILirPsQYCfG23pvvJeww==
+X-CSE-MsgGUID: pZ3MkHzRSvOerjN3HscExw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="209358978"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 23:57:59 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 15 Jan 2026 15:55:27 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ 15.2.2562.29; Wed, 14 Jan 2026 23:57:58 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 15 Jan 2026 15:55:27 +0800
-Subject: Re: [PATCH] mm/page_alloc: Fix freeing of failed-split poisoned
- compound pages
-To: Boudewijn van der Heide <boudewijn@delta-utec.com>, <ziy@nvidia.com>,
-	Jiaqi Yan <jiaqiyan@google.com>
-CC: <akpm@linux-foundation.org>, <hannes@cmpxchg.org>, <jackmanb@google.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <mhocko@suse.com>,
-	<nao.horiguchi@gmail.com>, <osalvador@suse.de>, <surenb@google.com>,
-	<vbabka@suse.cz>
-References: <54CB622C-0BB0-4772-A939-162D63433A00@nvidia.com>
- <20260114144824.69960-1-boudewijn@delta-utec.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <be8c25f3-8540-6c28-e2f1-8034118ef04a@huawei.com>
-Date: Thu, 15 Jan 2026 15:55:26 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <20260114144824.69960-1-boudewijn@delta-utec.com>
+ 15.2.2562.29 via Frontend Transport; Wed, 14 Jan 2026 23:57:58 -0800
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.38) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 14 Jan 2026 23:57:58 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SunHax+5vEDxlDF0gKUwLX7/5Gc3m898vq01VYhB8sGbE6goQKndfPO2LuBb5MaRukIH/vRsjQCbkTTgcz7xBsqqJQ70I4TgAVxShB8/1XZXCj7chMvABMgRxSlxXlpJK5k4WBhuAqGkPIeXoirs74+8TVHziU7IPUJqzKokuhjIseKtbX0agH3jDiD0ltWLV2XdzM5oS9iHDYV8zmH8DAyAPU9r8ywt6gHgkr/S1Nj+kkK8wcC1CzZ+fzIz2PdBjJkbEKPqHYKrIjPbdJ8cAgF9+MzvDXOUKxD8Ukq1pdrJ4D58zn2sCuvMJPCo/wiwpN303gFa17jctNPsjh9ZOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LxFkfqfqOTcbhnYzoDaunaaLMveA2QGXUz1sv8YUiTQ=;
+ b=auy6YwM0Ta8gVLwWYMQ0sieIdhJCg+v55VhZdem+BhaPbrQeSvhH2M13nIkQ/sKb+SrclHgPDjnyE+a8jiKGMFnhGQeNun2DOL3rhIsWpi/eZUP6gO/w+m43y/c0YMJWKdmraZLEH134g0Ol7eB486F4UtSSdsjSzJFh1iMfcUv3LIBJcHAYqH0xfVT8KXWSsdvdOrkNAd7A8e9+S9ZXcR3NojQSqjb1Oi1iEwrVTWNvBxxWsM2btyZ2EicWjkqbxYcnfNgypiz30n01RSWLYErC/nJwkz/nnQo+8/mKdAHJe1Z53Pu/DocfFOV6NXAbrFotsQ8s6TnJGvUlwAbtIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by DS7PR11MB6015.namprd11.prod.outlook.com (2603:10b6:8:74::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
+ 2026 07:57:55 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Thu, 15 Jan 2026
+ 07:57:55 +0000
+Date: Wed, 14 Jan 2026 23:57:52 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Alistair Popple <apopple@nvidia.com>
+CC: Balbir Singh <balbirs@nvidia.com>, Francois Dugast
+	<francois.dugast@intel.com>, <intel-xe@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, Zi Yan <ziy@nvidia.com>, "adhavan
+ Srinivasan" <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
+	<chleroy@kernel.org>, Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher
+	<alexander.deucher@amd.com>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+	<simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, "Andrew
+ Morton" <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Leon
+ Romanovsky" <leon@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+	<vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+	<surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+	<linuxppc-dev@lists.ozlabs.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+	<nouveau@lists.freedesktop.org>, <linux-mm@kvack.org>,
+	<linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Message-ID: <aWieAOZx4Ghua6Bv@lstrano-desk.jf.intel.com>
+References: <20260114192111.1267147-1-francois.dugast@intel.com>
+ <20260114192111.1267147-2-francois.dugast@intel.com>
+ <4cd42f41-660d-40a6-8365-e06fa4fca6a1@nvidia.com>
+ <aWhT6i3lFxkqnbST@lstrano-desk.jf.intel.com>
+ <5in4ndnpn2lwohjyxhibwxf7hidmens6twi7x2jtgwrnhye3jb@yuvuwph44fpv>
 Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5in4ndnpn2lwohjyxhibwxf7hidmens6twi7x2jtgwrnhye3jb@yuvuwph44fpv>
+X-ClientProxiedBy: BYAPR11CA0070.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::47) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DS7PR11MB6015:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6bdff4de-a435-4d48-fad0-08de540bcac9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?d29hVUtQNnBYMlNYN2RWR2loaHIreHN0cXJ2QVd3bWFIWDNmdmZKSjEvalJO?=
+ =?utf-8?B?eUdtRGNHbE0wdGJvOXNJUEprbndaelVMclIvc1hZWmRSVnlNbHlydUsydFE1?=
+ =?utf-8?B?empOUWdySllZSTJEYWkrSGtlb2VLT3JpakVuSE0vMDhqL0FGcVc5TTlOcWxW?=
+ =?utf-8?B?VlpRRVoxVWxkd3lUaURsTWVWTTZxd2NNOVA4clRsMmJQYWdsQkF2ck9oM211?=
+ =?utf-8?B?bVhXSkRLTml0WTArSmYvZUdTVGI5TUdCd2JWRElkUE1oODhaTWNOb21INUt4?=
+ =?utf-8?B?TG5rMGhaSmNBN2RYaGRTSndMblNibW1JWEM1ai9ncDZGUnZWeXdYNkZZTDFG?=
+ =?utf-8?B?NTNFZ3pjUSttTFNHTU5hcFZ6R0NxS0tBekd3WnZBZGt0cXBHRDRTeDBSVXZw?=
+ =?utf-8?B?Ym1ZNWo2Tk5XRkV3U21mSEIyVE4rTXRKZUYxblpxY3dYQ2FJU2tYV3dNdDYx?=
+ =?utf-8?B?Z2VoenpMTWZkalVkM1NuOG5mcndZZDdUY2J2TEVvZTJoWWZpTnVCYWdneFFn?=
+ =?utf-8?B?QTdWSWVINCtDT1Z0eEtGcHUwaFJYQ1p3dWN6dUQyN3IxdmRsU3JCT3NDNGo5?=
+ =?utf-8?B?S1dlRUdONjltY2tEb0k4S2k1K1FDbGNnOXVOK21TOEJLZDRWNUdkckdrSkdX?=
+ =?utf-8?B?WmZRcDRWQ0J1YUwyQlFMeE03Nlo3M2V6ZWdseWtvZnNjWmxraUxaYk1IUHFZ?=
+ =?utf-8?B?UlFvUkRJblFTRnJoc0xkbTg0SkE5OWVYZGJZQVBEOGwzbHM5QndKVVBuYm9m?=
+ =?utf-8?B?UTRNbDVmcXhLcGc1UEJDNi9id3VEUU94cW1lWTEzMG9yVXhMRkx6eVcwdGFW?=
+ =?utf-8?B?eEV3Q0dqWml4U1Mwelo5NCtaUzhEWm1nNVhXRWhDQmVhbU54UHpnNjhVSFVV?=
+ =?utf-8?B?ais5U3dlc29Ia2IxM1pRYlM2NHJZZUppQXZaWkNBTmNOa3NmK2dZZDlsUVhZ?=
+ =?utf-8?B?dGFFYXpORDU0MGdqVmpxcWEwQnQzRXZSWVpGMnozWXUzUk5UdVEwLzY1NVQz?=
+ =?utf-8?B?b21oVXJzSDBNWE1UMVlidnpualo0bUVPcHY5bVhvRWQ3Q2plYXVDNFVpckJS?=
+ =?utf-8?B?UHVabXdsS3MrVEVGWk9SWmV4L1MrVFNGeXZKMXdrdzdzVnErY1k4a2VJS3dx?=
+ =?utf-8?B?WDF2ZExMQVUzNkdUZ3VsQTQ3UGQ5T3B0MmZodjV3Mi9RNGh6dERoQmRub0hW?=
+ =?utf-8?B?bG5DZWdpTFhvdUppOFBwdlBBRmlid2ZySUVUMC9ndGxHcThZOC9WeS9YeFZm?=
+ =?utf-8?B?cDFCMWowcDI3UWluTVhDNk90SC91bnMwSDVTNHpFRXNoM2VpdldYZ3lzYmcz?=
+ =?utf-8?B?dDNvOC9EMnNmMGhPeVgra1lCNXk1TGI5NjVlK2xYTmpLNTZSZVY1U3hzbExj?=
+ =?utf-8?B?dW1Vb3lUR1lVSGJ4WG9WdXgwcjBteVBiSUVhQ1JadGtMakh4VGRHanlTM0Jp?=
+ =?utf-8?B?ODBRVDA1QWNGb1VwRy9RcS9PSWxvZ1JpL05QOXZlK2hkQlBkUFFhQlZzYnpr?=
+ =?utf-8?B?YitSRUx1bVFyZGFValljZ085dE9Ma1E5WWRMc2hjVmxkdUJiVXd1clM2dGUw?=
+ =?utf-8?B?MnRZY0xnb05ZVGtLZnUyQkRUeVRtbkpiOXR0L0ZvQXJTQkRZUWYvWVZIN2lw?=
+ =?utf-8?B?bUNyMTBJQnpmT05EVVNDeHg4SkovTmdLeE9iQ1JFcmtvc2VDUUNRU01Gb1RW?=
+ =?utf-8?B?OXJjK04rR2c5eVpjOVRhMXJ5SDRtdWEwNHllUWl0dkl5UmkwbGpUalpyRjQ1?=
+ =?utf-8?B?azJnUTg0MGd3b0JHem04eWFWVHp2ZlladFNVaGNqeGExb1ducjYxQ1NMdmRU?=
+ =?utf-8?B?K1haUjZ2YlJtTGpodmtvVDJRbHZ4Y1F6YWpFVlZLWG8wM0FpbUQ1SkEzQkVm?=
+ =?utf-8?B?YWh0dnk5UUo0Z1FMeCszYXhtclZuN0VicWhYUkdOZFp6eHMwL2o2WmJ4eUhJ?=
+ =?utf-8?B?c1BmWHRJcVB3dXo5OVBEdm14dkQ1T1NZUk9ZVllHSU96N3pXNVduV3J4OWxo?=
+ =?utf-8?B?YTF2bFNSd1E2cThmMUpCQ0xSNjlGUERvYWowbWNIa1F0R3JjT3VpZmpnTHdH?=
+ =?utf-8?B?U1VCd2U2em1xOE1aakNOc3NZTllzMHNkVm90SitZQXhyemR1R0F5YVVwYnli?=
+ =?utf-8?Q?yGsI=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VlFvVnViVzZxNVFPbmJnS3hiTlVOcE9VNlY0TVhscGxqVDN3V2hXS2xGYjBs?=
+ =?utf-8?B?M2QyVkNkRmthVE81Rk42M1Q1Q0NYU3JqSUxaOEZSRTI2akYrWDljZkVuTlV0?=
+ =?utf-8?B?NE9aYVdtRXNuVkpXb05hT09IV1BUckVxdzlTSzRpTmFlZWZQaUowbi9rM3ZK?=
+ =?utf-8?B?aTY0QnV6SVgxWG9zRXR1YnptTEhGb3I1NGVHZlZralhUT0FsSzVPb1E0UkZ4?=
+ =?utf-8?B?dTI2a3JUV3VRcVRMZVlPcWZzT1ltbC9PeW5obFpyMFo5WkxGbVRsV2c1U2VM?=
+ =?utf-8?B?RzczQkswTzR2QUdRb3QvZ3gxUW9wcWZnNTFndHRUN3dnQWxZNmhpRndyN3RP?=
+ =?utf-8?B?OSs5YXFHQ0M0VlllOTh0S2htdll5a2d4bHF1aCtqYkZvWUluT282TDBpUnF2?=
+ =?utf-8?B?UWhBVW5sekowbHRNck5CSUovaTcybzU5cVc1ei9pK3Y0a0IzL0I5NENETEo4?=
+ =?utf-8?B?R001ZzFzRWJibUVEU1ovNUQ3UUJrbWt4Q1hzM0F4MDFkc0xvZlM2SUVSV1Ns?=
+ =?utf-8?B?K2IrdjczY3h6UHhka3NxZ1JVbms5Qm9RWURHalU4dkVHcVpIOUR3NVN3WDQ4?=
+ =?utf-8?B?bG5qRHg2VTZFMWo1SGpjc2R1QXVrWGs3YzFBdXBRWDc1OWhPQnNxR0lyOVAr?=
+ =?utf-8?B?NlVIMFFKNHZVU2tKQksyaVdVRCtlbllWQXdGa3kyRE95YTU4NjUyUFVZcmEw?=
+ =?utf-8?B?T005ZFNyWlN5M1NSWEMwQUw3UHlEU0VEUnNDM2FKY3d5L2lKK0w4SlpCdFY4?=
+ =?utf-8?B?NVhnY3RVb0dFbkgvbFlFL3FCQmtveFY4UjRBOGJyUWR3RUVSbHAyUUcva2w1?=
+ =?utf-8?B?MkQzNjdKQVViZ042MHBPcllINFRHTWsxQ2tEbUwzMGZJMVF6ZU5NSnpzMzJJ?=
+ =?utf-8?B?RVRQQm14cWEvQ0VLNDFsUXowcThyVWFOK1habGd1aXhkRGhTWnVMRUVuaHpk?=
+ =?utf-8?B?bXRKV3Z5UmpMdkoraUxwZTZ2eTUzb3dWY1htRHVpbTN2T0VDZlJSK29FRjhj?=
+ =?utf-8?B?c240UUVQc3ZDenF1N1dMWld2WHc0Sks0cERXSGdkWENUKytFdUlkRlNPRWRr?=
+ =?utf-8?B?em5mRkdUTGFNSEIyM3BpenR1M2k1WHdLdTlzc3FlNkw2Q0V3bzJqRXo1c1Ax?=
+ =?utf-8?B?M0FkWlJwM3dEYTUzckpNMWpmbHRiVnpZYWF0Yk5OZHg5YVpuSTBrU1ZGK2pt?=
+ =?utf-8?B?dFZaSWpmUE9HK2VsN3VVWlpQVitYSFdjbHBJdFRKOWxXZzBkZnNVMzdiQm0w?=
+ =?utf-8?B?QlBoOWIxVU1COVdCVzM1T3VTUkNKd3l5MDZGSytjLzloMFJlVXlyaThTcDJZ?=
+ =?utf-8?B?WWdLTlZ0SWRlUngwdjRNWGpHY004TkJKa211dEhuSVp2aUw4TFJuOTRBRnhG?=
+ =?utf-8?B?M1hLVFZaSHVIQ2NHWC8rYWphL3hLQ0V6dnZZNU9UU01ZWVVEODE0OVZrc1JC?=
+ =?utf-8?B?QWk5Slk3bFg1bExjQWtOMEhBMjV2TmFlYUVmTlcvMVFBSlV5dlN4dkZRamY2?=
+ =?utf-8?B?bkxKeGZJZE01cERkRS94TTQ0ckZnZDRiakJlMkNsUHlDTDVDc1BGd3dYWEJV?=
+ =?utf-8?B?dS85TDhVOUptVzgyN01SUmF0MWtKV1JVc3N4VWlkMU5mbWZ2ZGl0TnNyTDBH?=
+ =?utf-8?B?OHdBWSs5SzVJcjQwWDgrUDc3M3BrQ3RKRVUzekQ2czNMSDZ0enFKalJ4S1Jh?=
+ =?utf-8?B?aGdPTUY1N3JxT3JEcVJ6QUgxd3F3bzRrbWZqN1JZNDQ2NXNJS2NueDllbWND?=
+ =?utf-8?B?Tk8zNkpZSG9mNmlpYXZKaDFwYVRFd0ZQRzAvMU9CUmZPTVNjNjQ5S1g1VmhG?=
+ =?utf-8?B?MmpxZWdiaEc5bGJweHNzMks5NjZPWDBtZDVWNlBrbCtjY2JjQTltc0grNVdC?=
+ =?utf-8?B?MXFrQ1B5dG5zSm1qS2VWMThtbW9kdUVWUGplcnR6cm9KbVdBcVJCUFBlMUE4?=
+ =?utf-8?B?bjIwc05sNnkwQnhvV0t4cjMrSEVPeWR4UFJOcjVTWUs4b1doV1JGVUpocEVm?=
+ =?utf-8?B?L1lkcHdacWx0L1pqN1lqV2o5c2ViWlR5OFUwbVJiSDFEM3E0NVFCUkZxTm5V?=
+ =?utf-8?B?MGZEQ3piOVA0V0dKcG4xV29KN2pmNHVpTVhOQ1dsYnRzUXVhbGdiaFowSXhX?=
+ =?utf-8?B?Q0hBTXZmaUlLZ043ekV5RmRBaTRNcVpORUlyVEZRWmk1eGwrYkhOU1NtbFBr?=
+ =?utf-8?B?Mnh1ZTdGeHFqcGsvclliTytLOUFZTVZjRHQrOHJhMU1GNXNITDVrZ1p3Q3k4?=
+ =?utf-8?B?akZmY0FwNjhNZVUveS94QnExeHU3eWUyNU94b3M2NmVnNDdhdlBETTcxNUxh?=
+ =?utf-8?B?SVJKcFdFWUNNQWo4YUkySlpZSmNOY1RVUjlXMVhXeUtzcmtwaTZNQTBORk1X?=
+ =?utf-8?Q?78AZk1uXGQSY55Fw=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6bdff4de-a435-4d48-fad0-08de540bcac9
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 07:57:55.8316
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7R2wWnHhJrYlDt5Bxnayg8vtn1Sj8vkM1whymJ/2pUTvs5BcuYrjtS1tFIRX0B+ERak/aX249vyDEpm1N3GmOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6015
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: 282F9120005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: k8ykkt9t94zkuwwc8w6j4g1c7wbdh71z
 X-Rspam-User: 
-X-Stat-Signature: 3o7z6nmdr14mojzxn7twza66xbft1bi9
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 643FE1C000E
-X-HE-Tag: 1768463734-208507
-X-HE-Meta: U2FsdGVkX1+hdP5tAdK4youph22zoytvA/EIzwoVMLJMBx3njcQlg3GyCgfNfMyOIU/OTJi9FmiwlA4UiA7jX3pMnUc71TnocTdVKJGHxn+dWwNTjAXqA4UsG/jcN1pXpUDTa0DcHRGWgCPEZETmnRf3u96kOJS39TYr17Ldr9zRLlevDpGYZsYwD91mnr8qNrhbeE8XzW71jX6PBPQ1gJymeLmrU5nCvEQk0tEAQAO4Qya75cofE/jlNa9NyTPxX2y45rAbvhWjtr0uyhzqHlDme2UN5t7Dto4sBMldby/cANZEwcVpt6ESkMgRWehzrjJtXtw9sJyPfMBVf4fA0b9OUAs166ynFoqtBon9vlcaxkvTa9J0UpoLvmw7KU71iqQGvxu5W4CmC9oqaTd6QYuvYfBgXsHm4/+2m+750WULJrGwLbHaCjRPriqyNJDItxS4UXcK1QRXnBOtHG6IN903eGW7rnbj5xtuaRyDLlt7iX1hi9fs4tW5/glfd/eZ1g9wDOcj+bm1mgA3XUDt6tivBHskpeWE0TTT8mCHu8uiDfxyJ3eYViiNOv/ICWKDoUci32SQ3hT+4GDAwQGkdQ/KklrV91GeMiBE5pYoqvIMGRUptlOFt75aMyXOjwOaaN8z547oOMxxtv6LnXIVIM1ulcEdRxIAJobKACLWki8Fuqa3nGJFmTrzJPKEj5YwyGfl6B1nN3IzPaT4Egns4+0RqPm8IHaKffGd4Ra5gkLm1yuB/nFz3n2UzNpHTFm67BTKzj4hixf1KO9VQ1kyOJufvJy9SgG4JPy/D4wOOu/sGgd75pin7u2X/CfU18365zSa8M1WtmVO1T2ahPin0PEKAQEQcLL87n5FdsBviUn+/UZByiezRCScofmWmwzgjratPYIVmrZB/lVbEmnC3V9103PGFSfqdwMUtcLOLaRiXTWmk4MOBPTjgkGMB9tEU0Eas4D1vqIM8PdCzFf
- vxoJP5FM
- uVtwhFFrNZLI2uqojV2enz/yFCW39o0WgOJC8QS3Sx5D8UunRAzUc7zfzniqc/gdaUENZW1BHgAgRZnw=
+X-HE-Tag: 1768463880-723017
+X-HE-Meta: U2FsdGVkX1+mDWBFTrICVJ2TNdLXzloN26fDdT2ziFGKl4uu55I0gVTlfO3fl55l7EmsmWD/VvN3cufcLG64RWQPameEwFC4y1qIbzhsn5TH+A6M62tYePGFQ16s60G6we27TgcNbuTpsVVvMso6yxvKDS28EPYyXuncVeet9JoOtn6xmKd0WMB0crTie0nL0zJCaQ4qiI6pftSM/1VWU22fajAooa7DovnvdLX9W4JAKlzxx+EqWVbM77gYoYsuqDgVK07IHL5yJG9WL3NPt6jx7JmwL/8wCUnAnbv+xKFipiMxou82dfBP/SV9SV9ilrlCw5iI/ilgpStDJso3voIoBjCyd+eEJwgQSFYINGPBUXxE3k4wx2euNHjiXCw4j10Nb2srrvhG5S/LV5C3PUnz7srM9//Y9CYN/Oqd6+RKdj36cNpZTLYnJp0zyROQqAb/IggqLRsf5+RAPkPZbRo80UCy1PwRTNz8xD/sUmNG/15FlhMfEErs7UTB9Sv/d/IMtr6aUZRok51l+Gle9PfLpz4X3gANOfQdyYY9lJhHSif9zVUFHIhbNY9gT4TwiTTfJAeIFoH4claGPVDThSGJwO8FAcOqBMamK5dUOWjC5XN4VMEH1gLFYgcIkw+/Cy5RTqzUE9A0pH8RoYCWN1MVm8b0W100bctTGd0oylXaj8LcdJxB42Iury+28EpsnljcpRvKtS/RXTLSudicj6hc12M2X20TCSEGufimx/3IOgQQMELLSthteEL45F6TbCjvO2+sfmcrMqqc4XjNCVVUf6JJ/tZUQwqAPgnxaOeEKykBtTzBo/TzGwy4MhKJWOf8PP/9xqVQFbicGNOguYkerZmCDP5v0MfY2L+ZvJMqscRLySo2khxTt6stXWWsG0r0YvKPDAyoKoQ1ysIH/Jd2RpC9FLJihvv3HM5mPJMpW6h+IFRar2JMZYS/zAeRgIGbDf52LqisuiCiutc
+ D5dJGHdN
+ OYBENeiDVWyjRd5aJFKyziQfbaepQ6Wy5SJ+VHCW0Q/wrL/hKOaq23TuYzIjqKUc3C7yioi4YQniumtXL0Ef8QUXr6RVikuD/TAXRfp8GwBTTSk0pQMIu7Ib77dpCrBlieuCFZQVzZTKZZdT+fFCKB4OCZLak/coL3E6HVxupgYEdZvfUEuppbQPZgLCBpEzO/rhjjR7KcDUvSFo7N8jLnf+ionzTS4gW2I9VAHQ+myccU+xzRSwVCHWKkFSfJKZL+hRQkrJYoo326mfZyh2Pm8lNK2Ibn3l3YC2U06OeHlz8x5sa7Me44oRMYD1ReNmwoFrqzOMsfRy1YkGipr5V5uoUHtEb3JLTinm6poZUcm3I2cm7ij+9UJQt8al8fjJ2jMQiNtTF8C4hCdwoVgys2GgovjvjJ4F2y/8Hkl8W3XQIbEH7/K5eJc+eTiO4OZBcQ99ZorMTEyz2tTIL4uSpCEZ+2oKQvK7kO+2HvIcwCjakdUN60w5xuV9Ykdb21lojcwSZlZo930JYSyyAqb4Wv8zc8EUcoIOvEZPW2NxkuCtm55evacvWoT9HgKfYB8+IN3YuV2JkkH67ph3LeBvl9xzpvk7M4lMKFuT8f+al/1jXcIrywmE+mLCOqJEOm5hFOTIJY9x9Y1Cq5dVkyEJLKmETcDi+LPnDiiM21sCcdNMpkMtOG7HxcCk0LkTD994zaC1Dg+PQ2FRI/jH8tNZH7JvUZY559qInAfT9ZKaOPCSTIi4scUXrUILcZ8HqUOcdx1TylkbEUTuNq/83iOXx4rmCSyWLjr8OQH7Im/RLvjBEspWOvl9Dj4Nu+W5Up0L2SVCqOi/YX+Iu9kuZknwbJpkYnDpVk46P7KYsPK1FIZKwYmzmWZBaNi5ZUGY/JalRfeiTNnyB4CiZe1J7bngfVmUeASaUWNWowb8DG7riL4l0KgY9O1ee5w/UaWz40C85QBvISzffcVsNGz4JpHuyMhxn0u9k
+ C/EL47SR
+ s4MyFpQpqcWLmaozQko7KexI1ke/JQYTyQHpRXl900Cct7yboXLGt4DDiDbkNTqrTfgfrKlXp/+FBrGLMz5i6VN+zJTTxrzsJdp3lviaj5217r599ersysk++t4X8kNdQUXZEpxnqpU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,53 +262,240 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/1/14 22:48, Boudewijn van der Heide wrote:
->>> free_pages_prepare() only handles poisoned order-0 pages.
->>> In memory_failure() (hard offline), pages
->>> are poisoned before attempting to split huge pages. If the split fails,
->>> the page remains a compound (order > 0) but is already poisoned. However,
->>> Soft-offline pages are always poisoned as order-0 after migration, so
->>> they are unaffected.
->>>
->>> The '!order' check causes these poisoned compound pages to skip
->>> poison handling, leaving them in the buddy allocator.
->>>
->>> Worst case, a poisoned compound page could be reallocated,
->>> potentially leading to crashes, silent data corruption,
->>> or unwanted memory containment actions before the poison bit is detected.
->>>
->>> This patch removes the '&& !order' restriction. Cleanup functions in the
->>> poison-handling block correctly handle non-zero order pages, making
->>> this change safe.
+On Thu, Jan 15, 2026 at 06:13:15PM +1100, Alistair Popple wrote:
+> On 2026-01-15 at 13:41 +1100, Matthew Brost <matthew.brost@intel.com> wrote...
+> > On Thu, Jan 15, 2026 at 01:36:11PM +1100, Balbir Singh wrote:
+> > > On 1/15/26 06:19, Francois Dugast wrote:
+> > > > From: Matthew Brost <matthew.brost@intel.com>
+> > > > 
+> > > > Reinitialize metadata for large zone device private folios in
+> > > > zone_device_page_init prior to creating a higher-order zone device
+> > > > private folio. This step is necessary when the folio’s order changes
+> > > > dynamically between zone_device_page_init calls to avoid building a
+> > > > corrupt folio. As part of the metadata reinitialization, the dev_pagemap
+> > > > must be passed in from the caller because the pgmap stored in the folio
+> > > > page may have been overwritten with a compound head.
+> > > > 
+> > > > Cc: Zi Yan <ziy@nvidia.com>
+> > > > Cc: Alistair Popple <apopple@nvidia.com>
+> > > > Cc: adhavan Srinivasan <maddy@linux.ibm.com>
+> > > > Cc: Nicholas Piggin <npiggin@gmail.com>
+> > > > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > > > Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+> > > > Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+> > > > Cc: Alex Deucher <alexander.deucher@amd.com>
+> > > > Cc: "Christian König" <christian.koenig@amd.com>
+> > > > Cc: David Airlie <airlied@gmail.com>
+> > > > Cc: Simona Vetter <simona@ffwll.ch>
+> > > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > > > Cc: Maxime Ripard <mripard@kernel.org>
+> > > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > > > Cc: Lyude Paul <lyude@redhat.com>
+> > > > Cc: Danilo Krummrich <dakr@kernel.org>
+> > > > Cc: David Hildenbrand <david@kernel.org>
+> > > > Cc: Oscar Salvador <osalvador@suse.de>
+> > > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > > Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> > > > Cc: Leon Romanovsky <leon@kernel.org>
+> > > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > > > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > > > Cc: Mike Rapoport <rppt@kernel.org>
+> > > > Cc: Suren Baghdasaryan <surenb@google.com>
+> > > > Cc: Michal Hocko <mhocko@suse.com>
+> > > > Cc: Balbir Singh <balbirs@nvidia.com>
+> > > > Cc: linuxppc-dev@lists.ozlabs.org
+> > > > Cc: kvm@vger.kernel.org
+> > > > Cc: linux-kernel@vger.kernel.org
+> > > > Cc: amd-gfx@lists.freedesktop.org
+> > > > Cc: dri-devel@lists.freedesktop.org
+> > > > Cc: nouveau@lists.freedesktop.org
+> > > > Cc: linux-mm@kvack.org
+> > > > Cc: linux-cxl@vger.kernel.org
+> > > > Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+> > > > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> > > > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> > > > ---
+> > > >  arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
+> > > >  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
+> > > >  drivers/gpu/drm/drm_pagemap.c            |  2 +-
+> > > >  drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
+> > > >  include/linux/memremap.h                 |  9 ++++++---
+> > > >  lib/test_hmm.c                           |  4 +++-
+> > > >  mm/memremap.c                            | 20 +++++++++++++++++++-
+> > > >  7 files changed, 32 insertions(+), 9 deletions(-)
+> > > > 
+> > > > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > > index e5000bef90f2..7cf9310de0ec 100644
+> > > > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > > @@ -723,7 +723,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
+> > > >  
+> > > >  	dpage = pfn_to_page(uvmem_pfn);
+> > > >  	dpage->zone_device_data = pvt;
+> > > > -	zone_device_page_init(dpage, 0);
+> > > > +	zone_device_page_init(dpage, &kvmppc_uvmem_pgmap, 0);
+> > > >  	return dpage;
+> > > >  out_clear:
+> > > >  	spin_lock(&kvmppc_uvmem_bitmap_lock);
+> > > > diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > > > index af53e796ea1b..6ada7b4af7c6 100644
+> > > > --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > > > +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > > > @@ -217,7 +217,7 @@ svm_migrate_get_vram_page(struct svm_range *prange, unsigned long pfn)
+> > > >  	page = pfn_to_page(pfn);
+> > > >  	svm_range_bo_ref(prange->svm_bo);
+> > > >  	page->zone_device_data = prange->svm_bo;
+> > > > -	zone_device_page_init(page, 0);
+> > > > +	zone_device_page_init(page, page_pgmap(page), 0);
+> > > >  }
+> > > >  
+> > > >  static void
+> > > > diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
+> > > > index 03ee39a761a4..c497726b0147 100644
+> > > > --- a/drivers/gpu/drm/drm_pagemap.c
+> > > > +++ b/drivers/gpu/drm/drm_pagemap.c
+> > > > @@ -201,7 +201,7 @@ static void drm_pagemap_get_devmem_page(struct page *page,
+> > > >  					struct drm_pagemap_zdd *zdd)
+> > > >  {
+> > > >  	page->zone_device_data = drm_pagemap_zdd_get(zdd);
+> > > > -	zone_device_page_init(page, 0);
+> > > > +	zone_device_page_init(page, zdd->dpagemap->pagemap, 0);
+> > > >  }
+> > > >  
+> > > >  /**
+> > > > diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > > > index 58071652679d..3d8031296eed 100644
+> > > > --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > > > +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > > > @@ -425,7 +425,7 @@ nouveau_dmem_page_alloc_locked(struct nouveau_drm *drm, bool is_large)
+> > > >  			order = ilog2(DMEM_CHUNK_NPAGES);
+> > > >  	}
+> > > >  
+> > > > -	zone_device_folio_init(folio, order);
+> > > > +	zone_device_folio_init(folio, page_pgmap(folio_page(folio, 0)), order);
+> > > >  	return page;
+> > > >  }
+> > > >  
+> > > > diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+> > > > index 713ec0435b48..e3c2ccf872a8 100644
+> > > > --- a/include/linux/memremap.h
+> > > > +++ b/include/linux/memremap.h
+> > > > @@ -224,7 +224,8 @@ static inline bool is_fsdax_page(const struct page *page)
+> > > >  }
+> > > >  
+> > > >  #ifdef CONFIG_ZONE_DEVICE
+> > > > -void zone_device_page_init(struct page *page, unsigned int order);
+> > > > +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> > > > +			   unsigned int order);
+> > > >  void *memremap_pages(struct dev_pagemap *pgmap, int nid);
+> > > >  void memunmap_pages(struct dev_pagemap *pgmap);
+> > > >  void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
+> > > > @@ -234,9 +235,11 @@ bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
+> > > >  
+> > > >  unsigned long memremap_compat_align(void);
+> > > >  
+> > > > -static inline void zone_device_folio_init(struct folio *folio, unsigned int order)
+> > > > +static inline void zone_device_folio_init(struct folio *folio,
+> > > > +					  struct dev_pagemap *pgmap,
+> > > > +					  unsigned int order)
+> > > >  {
+> > > > -	zone_device_page_init(&folio->page, order);
+> > > > +	zone_device_page_init(&folio->page, pgmap, order);
+> > > >  	if (order)
+> > > >  		folio_set_large_rmappable(folio);
+> > > >  }
+> > > > diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> > > > index 8af169d3873a..455a6862ae50 100644
+> > > > --- a/lib/test_hmm.c
+> > > > +++ b/lib/test_hmm.c
+> > > > @@ -662,7 +662,9 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
+> > > >  			goto error;
+> > > >  	}
+> > > >  
+> > > > -	zone_device_folio_init(page_folio(dpage), order);
+> > > > +	zone_device_folio_init(page_folio(dpage),
+> > > > +			       page_pgmap(folio_page(page_folio(dpage), 0)),
+> > > > +			       order);
+> > > >  	dpage->zone_device_data = rpage;
+> > > >  	return dpage;
+> > > >  
+> > > > diff --git a/mm/memremap.c b/mm/memremap.c
+> > > > index 63c6ab4fdf08..6f46ab14662b 100644
+> > > > --- a/mm/memremap.c
+> > > > +++ b/mm/memremap.c
+> > > > @@ -477,10 +477,28 @@ void free_zone_device_folio(struct folio *folio)
+> > > >  	}
+> > > >  }
+> > > >  
+> > > > -void zone_device_page_init(struct page *page, unsigned int order)
+> > > > +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> > > > +			   unsigned int order)
+> > > >  {
+> > > > +	struct page *new_page = page;
+> > > > +	unsigned int i;
+> > > > +
+> > > >  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+> > > >  
+> > > > +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
+> > > > +		struct folio *new_folio = (struct folio *)new_page;
+> > > > +
+> > > > +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
+> > > > +#ifdef NR_PAGES_IN_LARGE_FOLIO
+> > > > +		((struct folio *)(new_page - 1))->_nr_pages = 0;
+> > > > +#endif
+> > > 
+> > > Not sure I follow the new_page - 1? What happens when order is 0?
+> > > 
+> > 
+> > This is just to get _nr_pages in the new_page as folio->_nr_pages is in
+> > the folio's second page. So it just modifying itself. I agree this is a
+> > bit goofy but couldn't think of a better way to do this. In the page
+> > structure this is the memcg_data field on most builds.
 > 
->> This is not a fix. IIUC, for >0 order free pages, memory failure uses
->> take_page_off_buddy() in a different code path.
->>
+> I still don't follow - page == new_page == new_folio so isn't
+> &new_page->_nr_pages the same as &new_folio->_nr_pages? I don't understand why
+> we would care about the a second page here.
 > 
-> Thanks again for the quick response and clarification! 
->>From my understanding, 
-> you correctly noted that take_page_off_buddy() handles already-free pages, 
-> removing them from the buddy lists and setting SetPageHWPoisonTakenOff(). 
-> This prevents those pages from re-entering the buddy allocator.
 
-Thanks both.
+I just replied to another email—this is quite confusing, but let me try
+here...
 
+Memory layout of a folio:
+
+page0
+page1 <-- this is where _nr_pages is
+...
+
+So ((struct folio *)(new_page - 1))->_nr_pages is pointing to memory at
+new_page but using casting to determine the _nr_pages location.
+
+At this point, we have no idea if _nr_pages in new_page was set by a
+prior larger folio, so we just blindly clear it, which is safe. This is
+no different than what folio_reset_order() does; we just do it for every
+single page’s memory within the orderi passed in.
+
+Matt
+
+>  - Alistair
 > 
-> My concern is about in-use THP-backed compound pages:
-> 1. A compound page is in use. 
-> 2. memory_failure() marks it poisoned (TestSetPageHWPoison).
-> 3. try_to_split_thp_page() fails.
-> 4. The process using the THP may be killed; 
->         the page remains compound and poisoned.
-> 5. Later, when the page is finally freed, it reaches free_pages_prepare();
->         'take_page_off_buddy()' is not invoked in this path.
-
-Yes, this is also a problematic scenario for Hugetlb HugePage. And Jiaqi works on
-it now [1]. I think Jiaqi's patches might apply to THP scenario too. Add @Jiaqi to
-verify this.
-
-[1]: https://lore.kernel.org/all/20260112004923.888429-1-jiaqiyan@google.com/
-
-Thanks.
-.
+> > 
+> > Matt
+> > 
+> > > > +		new_folio->mapping = NULL;
+> > > > +		new_folio->pgmap = pgmap;	/* Also clear compound head */
+> > > > +		new_folio->share = 0;   /* fsdax only, unused for device private */
+> > > > +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
+> > > > +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
+> > > > +	}
+> > > > +
+> > > >  	/*
+> > > >  	 * Drivers shouldn't be allocating pages after calling
+> > > >  	 * memunmap_pages().
+> > > 
+> > > I wish we did not have to pass in the pgmap, but I can see why
+> > > we can't rely on the existing pgmap
+> > > 
+> > > Balbir
+> > > 
 
