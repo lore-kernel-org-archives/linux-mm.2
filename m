@@ -4,90 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D0FD46627
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 22:42:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14581D4662F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 22:42:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 059326B00B0; Thu, 15 Jan 2026 17:42:33 -0500 (EST)
+	id 7D3ED6B0005; Thu, 15 Jan 2026 17:42:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0065A6B00B2; Thu, 15 Jan 2026 17:42:32 -0500 (EST)
+	id 7ABCA6B008C; Thu, 15 Jan 2026 17:42:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E54CE6B00B3; Thu, 15 Jan 2026 17:42:32 -0500 (EST)
+	id 6AA4D6B0092; Thu, 15 Jan 2026 17:42:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D2A316B00B0
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:42:32 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65B22C1F4D
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:42:32 +0000 (UTC)
-X-FDA: 84335673744.14.010A521
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8E9ED140006
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:42:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jvvlukGD;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768516950; a=rsa-sha256;
-	cv=none;
-	b=a2JbEk8nD3nO3Pwoc31HGQdpojpWZ9BYQu/KlsGKQUnzBi3yyxEcf9RauZeMp8BlT3cxMl
-	Hs0NNXFuTcCyKIYmp/vO1r2yhwHpu4jKq1lDcr4Aammjm/M4c288H1NgmW5UduLgJkrT7P
-	FUZAG/CjZKLhqXTprmurbRy7wibeZZ8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jvvlukGD;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 569726B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:42:55 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E405C1F16
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:42:55 +0000 (UTC)
+X-FDA: 84335674710.17.D42D153
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0A42F120002
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:42:52 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mlJXDlVs;
+	spf=pass (imf29.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768516950;
+	s=arc-20220608; t=1768516973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+FEm0x5aKssRxzaLAYqQl16pjOzP6Bdvh22Kxex3Wdo=;
-	b=wYnJbdURQtRyhCnrwHNc85ozfeISn/x9v1CP0qLph7d8pwccvK7V82F0BQ5PJ2tD7UASEO
-	aHKfRf7khe8YyXYcIPq9VdUBLKJ9Uy0hq0UkBAnxV2W/fU7tkNjUz8IO5FZyHQOLjz/rb8
-	y83gmO5f6SUg1UbhgaT4v+XPEjyg9fo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7A71B4359D;
-	Thu, 15 Jan 2026 22:42:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADC5C116D0;
-	Thu, 15 Jan 2026 22:42:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768516949;
-	bh=oIPvoP22Dv13jvX/u25cqLAmHxRkYmNrQ5CvK4mPGM0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jvvlukGDfP2wrA9R2xVzYb/qm0EuQanCWY7Q51Pt3uLR5YtRd75hd5FgXM7KSw9wj
-	 sTrEDdnJWlaI+M2OoaCpZldM7FJlhc/c/XRcz66XeCUrOI3wYCfqks0MCQe2TJy+1o
-	 hVVVm3DAVTx2hvcMEYx9qEeoVuZijVWaA7oJPDWA=
-Date: Thu, 15 Jan 2026 14:42:28 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: David Hildenbrand <david@kernel.org>, Oscar Salvador
- <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
- <linux-mm@kvack.org>, <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>,
- Zi Yan <ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
- <willy@infradead.org>
-Subject: Re: [PATCH v2 3/5] mm: hugetlb: optimize
- replace_free_hugepage_folios()
-Message-Id: <20260115144228.4b103d0b37b0f3fd017a4d9c@linux-foundation.org>
-In-Reply-To: <20260114135512.2159799-1-wangkefeng.wang@huawei.com>
-References: <20260112150954.1802953-4-wangkefeng.wang@huawei.com>
-	<20260114135512.2159799-1-wangkefeng.wang@huawei.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	bh=vQuagjPxslA3/GbLy8OgugPdFRJI5tMwgAjobUXXgeg=;
+	b=iiFPZ4QFXd2hnnXVj/nQSZQx3qTMtJCRYAZAO5S9RMDr+7kngSYHBcxVi5j/RcwjzglKfa
+	P2jyy6HEjBsFRUJy/PR18jfFXH4ooMUJqsiQ1QXLZ9mB3cKPZA1Z6bAZyqjNxcdpRVAc8z
+	M6R97ig0G9rr/1ZRGWmvc3QqYpuRcLU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mlJXDlVs;
+	spf=pass (imf29.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768516973; a=rsa-sha256;
+	cv=none;
+	b=1/89qbTXS3fOK9BCckWsjeqq/LCz7Y0kB+RBw9daHZW6wcBdfNeMF4or0Nm72y1okUjQMQ
+	fdQceq7JoyOMOre8uf0Eb0uDDV1mPBdgsnhKVlHp+K+x6xKNPKt2BmEOmGd3C8zy1L8D7A
+	ulFMHq5lly3Oxr+p87DElsRaTuLje7A=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59b89e1cf34so230940e87.1
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:42:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768516971; x=1769121771; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vQuagjPxslA3/GbLy8OgugPdFRJI5tMwgAjobUXXgeg=;
+        b=mlJXDlVsnZSr/UC6ywWlWn4S/9yodO1AodK3vOTCLs6WnajDquXGc3FpEZbQ+aR21r
+         M0GHkpe+xiKCbBr9zBIZj9oqN9yjzZh5TXSKNMfOCGkE5BLsSIe0C/JTpBkpeFphM5zB
+         ULETjSTYocu4iUPYlYAIA+Wf/dVQsbpwAQOdeJpP8jjxRbvcmIMn+qE7qHTP3/Z91C6Q
+         bnpHoewOn9GYhgFg4xx2g7aJ6HIyISC5qa0f0KdajozR06cEbGjq/TLuvdR/B8ixfCDy
+         bj0KnSJVT4UCPRzo/XxU7uU03LrekHFRxU49GOl7xSgXbfSvHmFTOprDNk1cjfC/XdLt
+         TDXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768516971; x=1769121771;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vQuagjPxslA3/GbLy8OgugPdFRJI5tMwgAjobUXXgeg=;
+        b=QC4yrqHPo+6CJZWisUuBOcbs04pqBHfs1MjFA24G3YlNe5cGBHMbpg+yDDfNoLUebI
+         GtRNudSia0lTBlQXthhcVIki0O/oY1kuj2YM/tUfD6ba5iqfV2/oYPYo3wMekNOWKr1f
+         4o1KvJCXeBq62Lch0WRkXJ8ouousLF7hh5TE59qj2mj94UGqc3S8nxNP2H+J9gGOXK3s
+         uvEITOC2ie92XQwLniWHMC3Kg7MBfZQ768O+Bs4Y1qOBNBpCyq3GQ+mTnleRx9HrbKqN
+         NMz/rnFguNuU6d9rkCLOACa+Q99JDf+gz/2DqfhCGw+y4H7CGyyz3HEpgRtM/U97y/uU
+         cRHA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNm7KaILQED/J4lNJ5M3JR9vOSYwSVYKRPx8hdmCz0cOHDyF0o0o5qRiVbGrgEQsCsZXaSMTLBtg==@kvack.org
+X-Gm-Message-State: AOJu0Yy1l7/4omPPvhBqEfuT4WeCacVIxCnUo98CtEz+0lyyGN0bkF7H
+	uhMvpYVda9e4CtQs1bVqfQ4Te5xpWLsaoRPdQjO1Z+F5hRraa1bOdYWM
+X-Gm-Gg: AY/fxX5jt3+WaEjPq11VfXV3ik48zwNQVrENfp2unlGvnbECdbOafPWUL1PxtBS+btX
+	Edisq+1jKSZmtmLNsVDfN4UJyzZyOwjLCaBJguhmUHNZbKl28B6jThslwQrN0UI5w7lWtPXdQ5R
+	4vQv0nZMuhP+H03sUws03CkQfjPltvNgiOnuUV7oSFf6S1J1EYnyVbWxtlAh1rEp8/BhHlyX3HE
+	bpkBRioL/WkvPtRbJI6M0OXfTza5jTqODjEA7U0EuC9eWrLKIy0++B7Oif0XMVS1jC+sEtrlpRy
+	IcVy7hLj980fCoww0Gj5KtB5ovbrE25Qs1OJrnznS1ZUik0Q7oIHAGHoHI6kG8bN21LuUPjLWmP
+	dLpfrL8f4+Qq4p87BJWz8vqlNJnaFxoIeBArPK7E75rSofmOR5lcaW46qCDPjCMBavzEMH1NsG2
+	zN7ijB9N5jJBHxQohBo2Q=
+X-Received: by 2002:a05:6512:63d1:20b0:59b:7be4:8c40 with SMTP id 2adb3069b0e04-59baef130e4mr131958e87.8.1768516970797;
+        Thu, 15 Jan 2026 14:42:50 -0800 (PST)
+Received: from [192.168.0.18] ([87.116.178.235])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf35434bsm209044e87.45.2026.01.15.14.42.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Jan 2026 14:42:50 -0800 (PST)
+Message-ID: <2592f303-05f5-4646-b59f-38cb7549834e@gmail.com>
+Date: Thu, 15 Jan 2026 23:42:02 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 01/14] kasan: sw_tags: Use arithmetic shift for shadow
+ computation
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: Samuel Holland <samuel.holland@sifive.com>,
+ Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, llvm@lists.linux.dev
+References: <cover.1768233085.git.m.wieczorretman@pm.me>
+ <4f31939d55d886f21c91272398fe43a32ea36b3f.1768233085.git.m.wieczorretman@pm.me>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <4f31939d55d886f21c91272398fe43a32ea36b3f.1768233085.git.m.wieczorretman@pm.me>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8E9ED140006
-X-Stat-Signature: mjbxqcdyitmunig8pdybo1o4hhtjqipz
+X-Stat-Signature: w17udziwyo6e9fn3ts8r5oyp7i9acf1q
 X-Rspam-User: 
-X-HE-Tag: 1768516950-99458
-X-HE-Meta: U2FsdGVkX18zZXaqfjgcwd6StRoKJ5KANtqpOyN1b5fxgFh2CecTq2c/r6MMttKwMI+RXe1ps9tcSeWJs9+TvAJ0Nt5e0Pnu30czaVNJV1BnIMpquYEByizIZ66XgfeoW16puTyLI16KqRUCVvz14ErxwpUYPdcdu5ircVIWjTSB0aqWozqhVPNwdwriVyJR0GozRwx2789gv4qA0PrhOMbY0lLilZYhA8OD2+ZcD3pdOsELeHc3IG6HJi6kLYkldmLPLkS9N84P0RTHQjE78q+a6WqqxfLBIkQG0eXmz55BWxW/7srR6MxylImxur/vZHTlJrji5xvibB2T8Sjd+vmSPtnKlb/Xlwek9pMzNYeUVQuKT+37wbnCgyDdwxxmy7hvluCKqwU5U6MrYb6kBPpJeprYjmlAutBxVZvJS/O50AXkwoTUc3QyL1Rqqab55lYh2b/N7zx3lJI9FsIi1iXnnEFDCwmLnFUbeOQ8UDqUM/TQGsvoWdzsqBLNDFOR4zlqtS4CFpMEKfyGRvA8iDHhKoloFyTh41LO4QmyXFp/JHGEn9i9hGPmF7Hf2Mz8leQ9R+T8pO7Txbr6ZLsk4E2TH7Z7xUGkOPGEyjIkh/Zd0nx8YhQP2nDfnyWTsy1TDpmdgOf7KD3LwW/uISBC8x/WEpn+WZS3WvWSirVofxLwhRaO6o9me9PQfAJyp2ZrsMFcGLRGjmjgxW+wgtgRHK77u1ucWrQPcUafrBjrPUP2AeLHMqG0knUDxxe1l+zwjypBZJeD6ect9+JImOyctZUliQ1+w/qXyDAIXBDTJM/RZZtDg9TP6OOhClkhEPxRNLQL3V6yU/0c+fun4CaxawaUxxgHkBA5n+rAkulZe1L2HUd+ECZTN7GofCvIR7Djw0r7HUcDePD1ia5XKmv5n30ZECiwcu6S4yRvXneLYbyZHFCLbkli1Dyx/RkufvT4vpDI+9lhU9yz7CP8rRe
- 22DIXI7I
- mZgtE9b7YiYU9mzolZ58WHG3ojsD4CwYvYdmEQW+sFPMQf9P1W6OlDg+l2SenAKUImPc2b2Kw9XOPGMi4t0xX5gnj/1SU3BfaHXKb92lpAQeqmxQrhbGm19WirVJRuVsVoZPXrMImCaylW15qQLs8PPtdFl0wmqj3QKaAUF5z9L9L/2CEsOLd8DZYNZK4Lbe96YjzPYHIO9XcOHDcJW+00eiEFa89vDe1NSvJFHURtqa92bIlk9F1cIawY6Lt7/htZDCHeTtRyj+6RfVjqofS1hKlazSdDYxIdAwiNN6xJuVVGpk/U8T/3NY6jRgSh/dZ0/iHjOKURdE2Oh+O5hdZyWrxatCfsZGLkbZ1O0Z0PG9hoPJ1SD2m2II7buUKzEhW1swWLm0hrSj4KDg7PhAJwjJdwezdS5wQknF9K74DDsGSf25Q0i2N3Iv0GCpjuvcOcsrsFdiihOe7kenKt2Pgzb0os5myzjoJu0Xb9R580upUP84+soGyU5A1kmNau9vkVct0mUs5EVaKlvaRuzKqPyk6/A5U6xKL7I6ai3vFJuybEgLcnGjQPBoIu4ybA/i/pttUk2IPg6GjyNnx5IeWYML+Bw==
+X-Rspamd-Queue-Id: 0A42F120002
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768516972-968829
+X-HE-Meta: U2FsdGVkX19EeJIlQR4jqUF1k0eY0JLqiCVv9OpalNHJ/XRLQQcEzOzd9Gz9nnut/FsVV+vnCbXtLa0vDq/Dt65nBkQ7SKQp/6T1xrholJwiTfuoy2ynRQvOgceTka6LvM80/5ZRw0+HUQssgYPuRfrMXqlfyI2q4Wf9nk/GdNQmw9wphOkmspJXdETY6Fn1sPAiPdnRE/4ZmQSDKwJwh1iI2juThcPG+c4V4++Dt8fJ62d6DMf29GZsjpmilWKJO0fWj1+Ao6HiU6Wwli3XGGU3iEaGHEIm2vYMJao9/royFl4GJQ5Hn/2CeL3FcQzzZTT4+NSxXleugKOjZe47JcZ3X/s5qVz6nzVfFW8rx9UaOlI2GC21/AozDkEsn7pU2K+ZkrO9OQue5av+dKDfbL6NzxIRa1OlcjWv7j9Ng44vqUAke463JXCI7Uo992d8HyG1neYuP7eJQKnI2olgICYC0l6XcFarDOkEyHJV37+mW/PusBcBFSKdTueWZwGAmzOJn6kFziuD+Pf/Ase+kxh81Hvht6CRDIk9VAoap2hqfazAAfFbGM8V4caxQyhPrGmPxGjFmJKpRM0yZ6VkeAA8fT2fO5FLYrXf3UxWWffP0qE1Unn2pnYb+8HLjUgmh+6te0GKQaAtZmxKVBmw//YrY30daBID6EwLyn0UpVVOAiijfJpzVD1TUpQAGmQLKdz02BI0UpyHQ/69A0TNVcFgpfWBw9qI0BpUzm418HAIiTdTRmFiR91yRtOy4bwihUZfiSp7jaSc26hg4HlqSo0Xl4VpgIVm7i6A5+Jfefh8psDANMvPpvvaXiavDf9czDTXMiqnHTD/2K2w94Coh5jFx2UDZKyPaP51mskX6o02gauB8pT5qKn5R7zDaun63CaWh9c1FC7QpQcvJHTMiQ02FXRxO3dyfGR2na7N1lYvaa/lUZL1YZZdJOrZMQzuIBi1nwv3lO3W4SdkKxO
+ Pum75IU3
+ PbqCbWTif0nUhBYVE2YYdZMN41JUjo+mPNokI/SawZPAin2/ddq2dC/FzpRVJsOmV+gvnBuw7rL5um4lh1/uwAYFkNfn1wjqvLIt+oH9K3LIZNbxXMuP5a3tKov540f4Vz6rAgBKCvBiU2bceXqrFZNX4vHj8Zuqe5yWk6yZA1KuJGqoiCBgBy14OceZjauTs3Flsn2bSIwofrZKs8T3uE50uxq5/USjWhwayHfkQfDead78tvy+G0beHvtFRM8fbKiZKvd3s/Y5FOVP+tcq4wrrvwrQ5Z+F8Q9Apv9KNXLPn5ttsiArkPtVtq/10832w1Z6HhrGfhS/Ow4uIADdJzY9fr//53t+IrkR6KHJtFFVDqRUzLI9pN53LO4tEr12RMBx+F5+UNPzX1mVViHrPn9YBTw6/pleWNnWtuDhOzEdIauii3rE6kLq/OwcBWgDjawu/jRMhKbCcdp7nASH/LSuSdZhUVV8AnYrgr6kQkmCNBJLAytyGRjkyfyFFHoUI6auwsTztTqbtJMZvJTmOFqZ92NMDK60KhMLzeQNZWxFJjuwb/LCJ6Z858wJVAyAbt0MmqkJfBylFypnRXJJwtWoESw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,162 +136,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Jan 2026 21:55:12 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
-
-> If no free hugepage folios are available, there is no need to perform
-> any replacement operations. Additionally, gigantic folios should not
-> be replaced under any circumstances. Therefore, we only check for the
-> presence of non-gigantic folios, also adding the gigantic folio check
-> to avoid accidental replacement.
-> 
-> To optimize performance, we skip unnecessary iterations over pfn
-> for compound pages and high-order buddy pages to save processing time.
-> 
-> A simple test on machine with 114G free memory, allocate 120 * 1G
-> HugeTLB folios(104 successfully returned),
-> 
->   time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
-> 
-> Before: 0m0.602s
-> After:  0m0.431s
-> 
-
-Thanks, I'll queue this as a -fix, below.
-
-nit: the function has become rather a jumble of bailout styles:
-
-:				if (order_is_gigantic(folio_order(folio)))
-: 					return -ENOMEM;
-
-This could have done ret=-ENOMEM;break;
-
-: 
-: 				ret = alloc_and_dissolve_hugetlb_folio(folio, &list);
-: 				if (ret)
-: 					break;
-
-While this could have done `return ret;'!
-
-Single-return-point is preferred style, I think.  Mainly to help avoid
-leakage of resources and locks as the code evolves.
-
-How does this look on top?
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm-hugetlb-optimize-replace_free_hugepage_folios-v2-fix
-Date: Thu Jan 15 02:34:07 PM PST 2026
-
-use single-return-point style, tweak comment
-
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-optimize-replace_free_hugepage_folios-v2-fix
-+++ a/mm/hugetlb.c
-@@ -2834,10 +2834,15 @@ int replace_free_hugepage_folios(unsigne
- 
- 			nr = folio_nr_pages(folio) - folio_page_idx(folio, page);
- 
--			/* Not to disrupt normal path by vainly holding hugetlb_lock */
-+			/*
-+			 * Don't disrupt normal path by vainly holding
-+			 * hugetlb_lock
-+			 */
- 			if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
--				if (order_is_gigantic(folio_order(folio)))
--					return -ENOMEM;
-+				if (order_is_gigantic(folio_order(folio))) {
-+					ret = -ENOMEM;
-+					break;
-+				}
- 
- 				ret = alloc_and_dissolve_hugetlb_folio(folio, &list);
- 				if (ret)
-_
 
 
+On 1/12/26 6:27 PM, Maciej Wieczor-Retman wrote:
+  
+> diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+> index 62c01b4527eb..b5beb1b10bd2 100644
+> --- a/mm/kasan/report.c
+> +++ b/mm/kasan/report.c
+> @@ -642,11 +642,39 @@ void kasan_non_canonical_hook(unsigned long addr)
+>  	const char *bug_type;
+>  
+>  	/*
+> -	 * All addresses that came as a result of the memory-to-shadow mapping
+> -	 * (even for bogus pointers) must be >= KASAN_SHADOW_OFFSET.
+> +	 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shift
+> +	 * and never overflows with the chosen KASAN_SHADOW_OFFSET values (on
+> +	 * both x86 and arm64). Thus, the possible shadow addresses (even for
+> +	 * bogus pointers) belong to a single contiguous region that is the
+> +	 * result of kasan_mem_to_shadow() applied to the whole address space.
+>  	 */
+> -	if (addr < KASAN_SHADOW_OFFSET)
+> -		return;
+> +	if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
+> +		if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
+> +		    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
+> +			return;
+> +	}
+> +
+> +	/*
+> +	 * For Software Tag-Based KASAN, kasan_mem_to_shadow() uses the
+> +	 * arithmetic shift. Normally, this would make checking for a possible
+> +	 * shadow address complicated, as the shadow address computation
+> +	 * operation would overflow only for some memory addresses. However, due
+> +	 * to the chosen KASAN_SHADOW_OFFSET values and the fact the
+> +	 * kasan_mem_to_shadow() only operates on pointers with the tag reset,
+> +	 * the overflow always happens.
+> +	 *
+> +	 * For arm64, the top byte of the pointer gets reset to 0xFF. Thus, the
+> +	 * possible shadow addresses belong to a region that is the result of
+> +	 * kasan_mem_to_shadow() applied to the memory range
+> +	 * [0xFF000000000000, 0xFFFFFFFFFFFFFFFF]. Despite the overflow, the
+                  ^ Missing couple 00 here
 
+> +	 * resulting possible shadow region is contiguous, as the overflow
+> +	 * happens for both 0xFF000000000000 and 0xFFFFFFFFFFFFFFFF.
+                                  ^ same as above
 
+> +	 */
+> +	if (IS_ENABLED(CONFIG_KASAN_SW_TAGS) && IS_ENABLED(CONFIG_ARM64)) {
+> +		if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0xFFULL << 56)) ||
 
+This will not work for inline mode because compiler uses logical shift.
+Consider NULL-ptr derefernce. Compiler will calculate shadow address for 0 as:
+      (((0x0 | 0xffULL) << 56) >> 4)+0xffff800000000000ULL = 0x0fef8000....0
+Which is less than ((0xFF00...00LL) >> 4) +  0xffff800000000000ULL = 0xffff800...0
+So we will bail out here.
+Perhaps we could do addr |= 0xFFLL to fix this
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: mm: hugetlb: optimize replace_free_hugepage_folios()
-Date: Wed, 14 Jan 2026 21:55:12 +0800
-
-Turn back to use alloc_and_dissolve_hugetlb_folio() since Oscar pointed
-out that the return value is different.  Then adding gigantic folio check
-independently, also update changelog.
-
-Link: https://lkml.kernel.org/r/20260114135512.2159799-1-wangkefeng.wang@huawei.com
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-optimize-replace_free_hugepage_folios-v2
-+++ a/mm/hugetlb.c
-@@ -2810,6 +2810,7 @@ int replace_free_hugepage_folios(unsigne
- 	struct page *page;
- 	struct hstate *h;
- 	LIST_HEAD(list);
-+	int ret = 0;
- 
- 	/* Avoid pfn iterations if no free non-gigantic huge pages */
- 	for_each_hstate(h) {
-@@ -2835,9 +2836,13 @@ int replace_free_hugepage_folios(unsigne
- 
- 			/* Not to disrupt normal path by vainly holding hugetlb_lock */
- 			if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
--				if (isolate_or_dissolve_huge_folio(folio, &list))
-+				if (order_is_gigantic(folio_order(folio)))
- 					return -ENOMEM;
- 
-+				ret = alloc_and_dissolve_hugetlb_folio(folio, &list);
-+				if (ret)
-+					break;
-+
- 				putback_movable_pages(&list);
- 			}
- 		} else if (PageBuddy(page)) {
-@@ -2851,11 +2856,10 @@ int replace_free_hugepage_folios(unsigne
- 			if (order <= MAX_PAGE_ORDER)
- 				nr = 1UL << order;
- 		}
--
- 		start_pfn += nr;
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- void wait_for_freed_hugetlb_folios(void)
-_
-
+> +		    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
+> +			return;
+> +	}
+>  
+>  	orig_addr = (unsigned long)kasan_shadow_to_mem((void *)addr);
+>  
 
