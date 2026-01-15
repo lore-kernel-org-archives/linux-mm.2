@@ -4,237 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A3E0D4661E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 19:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27ABFD46617
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:00:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5ABA36B00CC; Thu, 15 Jan 2026 14:50:16 -0500 (EST)
+	id 754356B00F8; Thu, 15 Jan 2026 15:00:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58CE16B00F0; Thu, 15 Jan 2026 14:50:16 -0500 (EST)
+	id 7024B6B00F9; Thu, 15 Jan 2026 15:00:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 458306B00FE; Thu, 15 Jan 2026 14:50:16 -0500 (EST)
+	id 5B9B46B00FB; Thu, 15 Jan 2026 15:00:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 327376B00CC
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:50:16 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C1E78BB29
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:50:16 +0000 (UTC)
-X-FDA: 84335239632.05.34551DC
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5D68E2000F
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:50:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mfL11jOj;
-	spf=pass (imf13.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 45F856B00F8
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:00:38 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E58F41BBC4
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:00:37 +0000 (UTC)
+X-FDA: 84335265714.17.EB8A762
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A316AA0007
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:00:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=iV60u5Y3;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of ackerleytng@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768506612;
+	s=arc-20220608; t=1768507235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VwpL1oKJyS1p/aErWcgKTgtysx+5ip0yAw2CjbMvGSE=;
-	b=lSJ9Nh1zhBQla9907XzSucSAg7Ok4DZhiytcbf0hNc/llwCfbQ8phllc4OOuYr6Qji3Fo8
-	OaKVsvc36+JSI/7gJMmVVi7GgJFtQsZKRnwnKUX+NSqTGMfika9ESOtYAsJvBxDCoW+Kqp
-	i8z+nU8lUZ3yY4rNazt3f+KNZSCIAbs=
+	bh=qj8h6BORpJwq1gCbueilyNjyLieLucwDic0ANZ8jZ4g=;
+	b=SFwjf5I3ASFdODxuST73Yd+qJv2x5+LjI+kL363TvFZ1Snm4Q9URvSWJ23sH0AelMyMOAY
+	UI05vCO1gknsQZs7auTfRMeP/Ce4o07q385Z5zBzlNx3KM98d9nVrdngFTslpvHyRpHSql
+	z1z/Xp0XHy+cn2xhEDRypvuJ6K6GLkk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768507235; a=rsa-sha256;
+	cv=pass;
+	b=CJv60TZ9/GpiWylpZYgOEB9atDFx7rtkIX1TWYQ/dALFUfsTycKoxjjock0TEnxSVSnWQJ
+	SW3RHCEET37uzknnF64F5sNsAnmBEyZ3EjfsMUr3g5qgtNqW/0WB4fuqGnmaFvXVjTdB8z
+	yzuU8VUB8nc0TI1ir3NhQbD5aelnEJs=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mfL11jOj;
-	spf=pass (imf13.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768506612; a=rsa-sha256;
-	cv=fail;
-	b=IuUAo33E1YEQAf1gQRZMmY6Ksti0h6gqh+GzernQ7Ea7UmKVjJOWHiKAOhTVob8Is8zqT9
-	/gJW4KfybAjBNQcSc8zU1a3yWZu8x6arP9HNapZ3a8o9UoaN69R9CUau2t3wmsfQHTYjEU
-	lzRGo6KCit/jyRxpdtYKsGFj/V0Koxk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768506612; x=1800042612;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=esQsXuEGU9/K5u0CQ86ZXzsiWT+RzLFX1vCjtYBnbWo=;
-  b=mfL11jOjz693+AQmPZ+5xW4ibDXr6Bb6UmBXzo2QYPi/eYI8fmU1DlUu
-   M7/kBISu6kukdLi1HrGYoH6oLPmxNW1PXjP2pqy/sMQr28HHIFbgJoUdW
-   zxnhQExoq4R3e8wn3h+zk6qOMzrGpvh3DOiNJ4L3SmkHqIQiSADS5Wt4B
-   x5UuC9yTFzIjAdLP3nAiSZtuxJt03pV9/pmlaR5Gpw5UubBhK0Flhz5zu
-   +NctY02bIBqsGdpbBRBV3NZaNz+itm0unA9te0MApZ52LDZd9GadEQLPO
-   hkX+HDjubz8ZbvX4N2O6BfAaMHmynHf+Emebz8X+jNSsh8UgtrM7P4Pfq
-   g==;
-X-CSE-ConnectionGUID: 6TkefmnhSSyGAQIuqXIs4g==
-X-CSE-MsgGUID: jUhWIeBkQWGsp1dWIdZRpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="80540247"
-X-IronPort-AV: E=Sophos;i="6.21,229,1763452800"; 
-   d="scan'208";a="80540247"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 11:50:11 -0800
-X-CSE-ConnectionGUID: omFCSVHRS7+pRnfdFEhYtQ==
-X-CSE-MsgGUID: ka3fXhVISD6rpHnkVPjz1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,229,1763452800"; 
-   d="scan'208";a="205455004"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 11:50:10 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 15 Jan 2026 11:50:10 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 15 Jan 2026 11:50:10 -0800
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.57) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 15 Jan 2026 11:50:10 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XC72WodXATvN5jptIRzF1vayd899SFikqJQJ//llwvHEDkIJg8ResUPIMvlX4w+6iCeliZrfT2gDAb78vCQle6SHpuinsLgCV+1ma24nXTT54W4DRPtl8yrfopyo8jbAhRrY8XdZmWAWIlwjwx5x4bR5rHH52/ZgkTkQsbFq1zKaU4X3Ma93CgXCnU+oWM17aAqXG4KFEWjhXEf/9P1/BzJ9YbsDjoDk+WRR02c3eBS5zvcq0MdKAnLdPLy3rqBBu3k3pU80GcT46dkk9ydjRTQ4MYaRiBRoP9YSLdDwMSmehoZB5bjhh3GgMPFSOzE4+TXtke8z+YyS7eoiniGpCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VwpL1oKJyS1p/aErWcgKTgtysx+5ip0yAw2CjbMvGSE=;
- b=r5TPQDHSsQrTOzlTtmEb7cZgekuYg/HH1Y91Ps/B1yKIM9chgvS2OUW/AQQSxkBm3OzZAoW9Zkl3pYv3oNJOWTai8FFDdTakGY5hCMaqUE64Qj1R3esKnmH5EjZcC8qN4ceX/HMzCDvvTFlkqWD0lTXEcts+qiR+T7kS5H77GAYKzZtjdjKr0cQmi603lThKXPktZCuBuqksuWkH3ZUASsI0hxlyBcYaNbtGoIVHn2OvHYRIiIEW3JRGBp4FMjqm9KWiZH28FkrsVql3ifUSfS07FWjtIiuVws6kBuXIF8QJpPoxhBTSlL77Z+uf6zHjq1OIJNPQkT82E3x1Dp4DNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by PH8PR11MB7989.namprd11.prod.outlook.com (2603:10b6:510:258::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
- 2026 19:50:07 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff%4]) with mapi id 15.20.9499.005; Thu, 15 Jan 2026
- 19:50:07 +0000
-From: <dan.j.williams@intel.com>
-Date: Thu, 15 Jan 2026 11:50:04 -0800
-To: Andrew Morton <akpm@linux-foundation.org>, Cui Chao
-	<cuichao1753@phytium.com.cn>
-CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Mike Rapoport
-	<rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-Message-ID: <696944eca1837_34d2a10056@dwillia2-mobl4.notmuch>
-In-Reply-To: <20260115101858.85fd7b8e837c1c92a4fdc5f0@linux-foundation.org>
-References: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
- <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
- <20260108094812.8757ce3ad8370668eaafb29c@linux-foundation.org>
- <9132054c-3017-4af0-84e0-e4359b0794a6@phytium.com.cn>
- <20260115101858.85fd7b8e837c1c92a4fdc5f0@linux-foundation.org>
-Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID of
- CFMW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0007.namprd13.prod.outlook.com
- (2603:10b6:a03:2c0::12) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=iV60u5Y3;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of ackerleytng@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59b8364e4ccso1569903e87.3
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:00:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768507234; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZtdR5A9HYlYfhujgesBQdBzVClPb0cl68s8tM1CItYa1u1NY5VUbac9FaCzPafg44Q
+         2qg70FxV5KEN4NEXm7VsrMqsBoVibDcdGIw3MIUsl6KIpX1n1mr5rE34tP4SuT8h+R0/
+         /Zk18HaF/VP4z9jZpHXQ3uuYgIRYrJ6FE4gRa/jFvDszr/8Y2iDNSIWHjy88+mXxpetN
+         36KPVupxi2GwX7MA+OaKGlhiGNOB7xSp7ug6rkroDVlAAxDQEqBb9Emd5bESWaqaHtul
+         /fr59qkZ6zdQeWEKwYo907CU8H05nQuAwcD5chPRv1sxYJm1BjVdjUutEzDcOQtouaAb
+         GZDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=qj8h6BORpJwq1gCbueilyNjyLieLucwDic0ANZ8jZ4g=;
+        fh=VqlVQL27S78HoZlcfPJhRZSzNCO5zUc7wGdBUnzbKfk=;
+        b=lDbQg0zcqN1AnAa9BRcRcy/7OwLBaYRLjVjClsNMz+8ZRe1ZHTBmLYuzms7BjGRm0w
+         FCexHkCxMDMadqnNurDFSM6AwYia75gzjmMzf3wVOPN+chliUFxeNc+f1IY1rN63RtiB
+         Ss5GKYVR79MO/UwIijrZvmrDDI8rrL7kQOY0RvOIW9pbr5E8TvmDTQKfZ3K9oNfC0Q19
+         TgxsiLVWcS1GqiX0WO11ZCSZo59t09R5V7irtSpGNVO1A8lgaK+TVtLB8sNkKc/ZMHel
+         +DS3O1BJxAGTKZY5zvWcU79XRsoF4W49r48KRYyvYbgDM2rBsYnGKPP2hH2MSyyWOCIZ
+         B0DA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768507234; x=1769112034; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qj8h6BORpJwq1gCbueilyNjyLieLucwDic0ANZ8jZ4g=;
+        b=iV60u5Y3Q1Ot1jQhCcnnD5KBxsBpzBCQSZVlj9bAqZFo0u6wvw860hQc+OIfm+NT8M
+         Mpw5KyUejby2xK8Wvh5c0P3OdsttcbuRAau9US1Fs/STGnVRk9Z5jWaOMRjZGdcAo/bP
+         IfEYP84RdWu6Gbioefmb8a776Rm3u3yjrXfqZykHY+77ts4Z1EakD1Mm54TcoMfax6om
+         qD4NYtXp8OvOYtVc2b/wmbeN7Lldn3GoHGeH3bBc/F9pmTeJUO2WWjv8xFpLne6V2n5x
+         LCcfurKwz7D9JzNOJi8kM7yHYtTRqSIb4zr0hH/9p2rchpLJKBUvGrdCEiQpy40pLk9l
+         zM2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768507234; x=1769112034;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qj8h6BORpJwq1gCbueilyNjyLieLucwDic0ANZ8jZ4g=;
+        b=KL4VgtyPjA/BGteL2ZcSE+G6WkBse+DXIkEZQdl8eH5c2SQOL0ac9/ObvDUq1sMIYx
+         yxAjzdUC03o/u5BC4+yGKNrOycCO4lhOlioHO+NByO+hLL9WhuEYKCNchitpUBDC4uJK
+         lS2Yh84TakZW2yPFBcVXIMYP5jJZjn1LY4ScKXpGTuwEura2VV2plfoySQr/qJXSZ653
+         XKbDfE/3zW06FUQ8BiedjeU1he3OrJR9pF03EWdrigETlPfseJBAHfIwnfdyryp2PLpt
+         gwDbyo9ESxqqumoFG+ZIWDqPrptU5HaTCUZc5Nakq2fLD0Q9+Ye5PR2dO26DFQSob0Fl
+         9mNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUt7HfnHK/8CUDWM+eg86MxtCvBHMkMy9bjCltU9/nW8WAEPKHh+Hm6gw0+YDYFbPEYrJA5ZO9fXg==@kvack.org
+X-Gm-Message-State: AOJu0YxbwYPPm+pRa/R+84YwwFCehpo9XBk86w5X0BHwD/vgZr3j/wUV
+	iFTaAlr8Vf3wMXwOHumPBvhyX3q0sWSScDatcRnfxifS7EDIOLFXWl+etKs8cdzWsx52q5NrZ5A
+	jCWaMw84Ld/XF0PcXF+LS7CzrVUBuzA+1IE2mGc3z
+X-Gm-Gg: AY/fxX64/fEfzmVnQHt1hvqd/zyec2oYiwMqXgq+5uibpR9KbYsSsrlqWkTsEN/gIt1
+	KWxSsqSof3eTm6wJ6z3/rjLF2y5iYIJtWug97+We0f5bvyBUV8N5CmdMTDbRMAzXAdKh+yRFC7B
+	VUwYxXHLEgozG63c6+n0rlIbSj2nj9sB1X/7HtsJzgvXOn494Khr8Eu0EgaqEFnDX9I+L5naqUJ
+	y6igV9a+HamQsDOBI+zTPpahDDn9zF5EFTpt9DjwJ3ZLlsleFEYEOC6hZ11hYSrDc/B9JsaUuLm
+	tdCOQTMDeqzOqYuuA5dlVN4NAg==
+X-Received: by 2002:ac2:51c8:0:b0:596:9bfa:91a4 with SMTP id
+ 2adb3069b0e04-59baeec5ba2mr223831e87.2.1768507233115; Thu, 15 Jan 2026
+ 12:00:33 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 15 Jan 2026 12:00:31 -0800
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 15 Jan 2026 12:00:30 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260114134510.1835-8-kalyazin@amazon.com>
+References: <20260114134510.1835-1-kalyazin@amazon.com> <20260114134510.1835-8-kalyazin@amazon.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH8PR11MB7989:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0832a00a-eaa1-4957-1f0c-08de546f48b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZHlJQ2ROUDlsY05mUDYzcGlWYTQ1dWM3STdvTlJSQmlSbUpodGFWWkhiZ01l?=
- =?utf-8?B?M0FWd1BLQzI5RWlRbXFQc3hGOVRBY1BvcDY0Qlk0NkU0SkpKRzQwd3kwNW9h?=
- =?utf-8?B?K00zWlhkNHRhb2JmNkxlMGIwVmxPTGxXWG9CazlEa1daTDRCcnJoc3ozRDlo?=
- =?utf-8?B?MTJHMG1lNG52S3p6eEYzWjZ3SnpWYjI5VjI1Nk5IS1lOSUt1RnpNTnlmVDIy?=
- =?utf-8?B?UHRuamRTWU52blpJRDIyZ0llVEpxS3pkaU85bWVFSitqeWVoREhMU3pzUFhj?=
- =?utf-8?B?aUltYTcrMHpXK2lsVkc5aHZQaFBiV0hzSXp3M0ticWRRS3NvcjVrU2tvME1N?=
- =?utf-8?B?Rm1qTGZCWGpoSDdhSTV6ekdhbU8wSjRxZTV6TEtOTjVXS3lLNTYyTjZoeEt1?=
- =?utf-8?B?cGIrRkQ2QUZrNUJadWZPQzl0UWRob0E5cTkrWGlzMW5PWFNROUg4QnNEUFM3?=
- =?utf-8?B?L1pyNWhmc2lrd1hOMTdRaFFCc2gyZXYrZ3hXOU1zZi9ETnduOGFZcGJMUGNh?=
- =?utf-8?B?Z044WUJ0Y3phcjAyMTRrc2NRcUkwd1VtMjF4eVR0dkdaSkFyQWRjRktXdVp5?=
- =?utf-8?B?SDZaMG16YjVLTm9kR3VXTlFReWNJQk42ZzBwL1hhTXJOZEtQLy9MeFZWSWVS?=
- =?utf-8?B?U3lJV3cxNTA4VHdzdUwweFliMjBGSUJVcnVxS0E3L0RmT01xN3VnK2drMi9n?=
- =?utf-8?B?Smo1NGUzdWlDYXRmLzJ1bkdOYWdwb0plT3diK2FBcmtwN1lubGVDd0ZFRkta?=
- =?utf-8?B?Z2RSRWM0ZFB1aHVxbnJLaUs4cUs1dEd6SjdtOTFaeURuWHYwTkQxWi9FNC9x?=
- =?utf-8?B?YmFuelcrUUJ0bXBNVk9MSWlzSjZ2T2pQWGRxSzdWZUZUY2tJT1lhYWtCdlJo?=
- =?utf-8?B?T3VUNWEvQzNSSXRJMUFtZEJ2NGQzWG9YeFVsTkJ3b0JEbitjTSs2MGFJSStZ?=
- =?utf-8?B?MTZ4WHdnMmhDa1RjbXhKbXhJY1ZpRi9ZRUgwajZ5NlJsYlBtZW1ualBzeVVB?=
- =?utf-8?B?SHNmZmkwcHV0bWdhcmw5MFN4emJkVTE5bDFsNXZhUUpmYkpIdWk1SmZMSEtZ?=
- =?utf-8?B?MUhBeGxyZ251QnZmR3RKTHJZUzRkUDh4Y01DT296dkdtbkdvKzgwcG8wZ2ow?=
- =?utf-8?B?M2FEelJ4UnNEaE1BYmRRbVVQbXZQNHkrdjNhMnQybEtab20vdDNoTXVOV2s2?=
- =?utf-8?B?RkFUWXJmTVk1Q0djenU2YXlVbkNJVncwV3JyeDRtK0FIdFpHQ013MzhjK3Vv?=
- =?utf-8?B?ZVhVUUJuQmNLbFZtMEN3ZWZuWlR1YVFsUTBiU0kvSXF5VmJoMmxyQTVqNCtH?=
- =?utf-8?B?ZWF1ZmV0cVNmMTRlZ1dJdnkvZEVta21WdDA0blJIU0FldkVZa21pYzFtTEtj?=
- =?utf-8?B?bE4rVm5vWko5UHdEOWNVRFEwVm9ucjlaTTFpVkE4anBzQzZ5aU1QUmVMeHBz?=
- =?utf-8?B?dXAzZ05rT1p6SjNCK2QrUVBSaUdwSTBIV29acmhRQm1qVkZXcGJmc3lLa2R2?=
- =?utf-8?B?bU1vTU5ablhjOWtqVldwKzA4Y3MxS3gydG80Rm9ZZjdwU2tLamhpMlh1K01H?=
- =?utf-8?B?UXhFSmNaVklGVk0zbGhSY2l2S3JNKzBlWHgwV2tGb0RHdDZuWktrN0RDQ2l2?=
- =?utf-8?B?RFhadFFmRGVxSU5mOTM1ZnNpY0I2eHAxQnBKdThBMjdPcnhiMThNR2VtZGxB?=
- =?utf-8?B?OTdKR2c1dFJNYlFTWTNKcWI0ZVBzYkwwT0FEd2d1NVRiRWp0c1FIaG54bjBM?=
- =?utf-8?B?SVRjZncwcDJBWGtReno2ZlIvendSNGJidk9EN3dIYTdhd0toTVM5TzA4RE9J?=
- =?utf-8?B?ME9vLzJJZzBBQ2VTOGNGUEdXd3JoTEVxcFlzaFNRc2R5a2pyL1JNVWtraHY5?=
- =?utf-8?B?ckswQTJOUVhUN3FiRXI0SzM2ZU9kM0w4VEw5cWYvV1RCY0poNzNoSW9FcWph?=
- =?utf-8?B?ZkU1V1k3WHU5S0xsSVFwU2hNcFh6MFRiYkl1aHJLS1RsNnlhaEdSSWVySzRY?=
- =?utf-8?B?MVNObFJkdGVxZ0hSU3VjdDdGTHBWRzltUityQ1p4UW9IZllMZDN3WDRMNGtm?=
- =?utf-8?B?UnF3c0R2OFhrdEZPZ1orTFB1UXVSbDVLeVVCdUNOVHRvSnlHQkkxT3lZMUQ3?=
- =?utf-8?Q?/z4Q=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VzJWMlZCVU9pSW9yc05ucjN0NklhcUN0R3V6S2x5Sjd5dmljMkFzdjVacWIz?=
- =?utf-8?B?dE1sdnN2bVFVS0o5dnczbmtkcnhWZmdFaHNZVXNWWU9wMjZpRXltSFQvZWdu?=
- =?utf-8?B?bFFQMVFKUmR5WFlZamszbkFKYVdBM3p1TXl1M0FkdEJ1Sys0aG1pU1IwL1hw?=
- =?utf-8?B?UCtvemlTNDUvMURYcTdoNCtKTCtQbnU0NkxPb2JBVjNETGJ1QXk5WEYyR2h5?=
- =?utf-8?B?UzdtNnpyalRwSDg0Wlo3S3dHTnNqbk1xc1crM3hpTS9CbENxZ01wM3A2VzhM?=
- =?utf-8?B?RTdONSt3VnlISmVadFJnVFp5NTlhYnhLMHFBM0FlYmZ5cDFzTnBGWFIwVXpm?=
- =?utf-8?B?R2JrYzE2dCtXeVkwVGNaSUs4b1FIRkE2RFVXTmNreWtCYUROQmJYdGtmakM0?=
- =?utf-8?B?aDRvaXA5TExGUnluckxpd2hudFdFRERucDJ4bmpwWjhNT2RpTFM4MTZLdFNN?=
- =?utf-8?B?TjFhY3ZydERwTFNtMEVkYlkxek4xV2dURU80VitWYVhzelhEcDN6bU9RbUFq?=
- =?utf-8?B?QWxqcDRwWDJHT0FTMVFsVjhyZVlyRXYwMkpzSklLVlpCZWZiZ1FmTEtFRGlU?=
- =?utf-8?B?bW41TmtwT0FqcGNNbkpiTTBwTkM0QmZwS0pPTjFwTEZ6ODk5NGpWUjh1VXRK?=
- =?utf-8?B?TXNKR0I4SnBlb1JRTTBPa002RCtkdXlWOUFNUFJ3cnhidzJpS3d0RUFzY0lw?=
- =?utf-8?B?Y1pTL1ZUYkJxbkEwSjhUVW9YbEZMa3VqVkVFb1VMU1A1Y3crUHZlMTZzVnRm?=
- =?utf-8?B?V241eCsvRFg5T3ZIN3o0dk1pdU1sUTd6ZWxiK285RlBNYjN6WWYzaGtxSjlX?=
- =?utf-8?B?aTdjRCtya1pCckI3N0xsWHdoUVRlZ3JISDhFZjZ0bC93dURSWlNhMWRlSVhp?=
- =?utf-8?B?L3RTR2xHT0hwa25HaklVcnJPa2tOdUE5MENTNlRjVmRMOFk4QXdCQ2l1Z1ZJ?=
- =?utf-8?B?L2htZ1dRNUFJazNaT1ZZS2l5K0tLYzhLOU9TVXZqOStRUGdDbUw1ZEJLSU9R?=
- =?utf-8?B?RG5hMGVLZlNvaDRmOVpBSTd0WHliNTg3NVR4OWpsa044a2JUMmpiaUFVSHR3?=
- =?utf-8?B?dHlOL1NjUzdpemhRS01wVGlTUVljTDdJYXJSSkNOK2VpbVozLzFuT1hlNzhN?=
- =?utf-8?B?M3Fqczd5a0lwd3ZnSm1YdlBWczNDVlJTeVl0VXFVOXFCbUZjYVpJSEtHSmc1?=
- =?utf-8?B?MldpN2hDbFRLZklXbDR2TjRSZVZMR1NsbC9VSDdza3FlL3Y2RHZIbE1oOFVy?=
- =?utf-8?B?aXhpSWZHSnhtY0Zrc3JFMUdkWkxkc014V2ZQbE91aUhHdzdNOTltNWFoMXFT?=
- =?utf-8?B?UFlMNXgrQkYyeWw2ejhMakxDNzhaZ3owb1QyL0NFSUNSMDBxcXFocVA1QW9L?=
- =?utf-8?B?TUlkc01MUC9DQVF1dDdlL3JHZGFmQXVuTlNWZ0w1bHBVcVhoVFEwd0N2QVBq?=
- =?utf-8?B?ak5IUEI0ZkMxam0zYndVVFNOdkZwcWFEVWVvRzJ4cVNQc2tpUVlLaTNYd2RL?=
- =?utf-8?B?S1IySlhMSXdRblpFWWM5cnZqc1ZoK1ozRW5nR2hCSDlTVEV1OVJtWExjN0JI?=
- =?utf-8?B?QUJhWnZNZmVyTjVvc1Zqemh2RjcxQzR1N05UTTBLNDl1b1FtSENFRnVqOUlo?=
- =?utf-8?B?QkZldExGRHpZekx2QmxjcHV1OWlRZEdZL2owVlA3aVJTYjkyRXBib2w4SGEw?=
- =?utf-8?B?Z3N2MFZYbmEwRkdTKzEvRi9hMmVQOXVuNUlYZ3NXMWRweCtJSUZYL0VsZ203?=
- =?utf-8?B?YzFqcTEydCt2MHhHUXpuc285OWt6VDZrMDJBWGNlWEFMbkJ1Yk91aWhXNXlC?=
- =?utf-8?B?azJJaEgybE9Ebk1oMXdMQ0NYbHprQ0N3ZllVYzdwR3lUVjJXdkV6THhYbmlN?=
- =?utf-8?B?ZVNqSUJRWkN1KzQwSEREVi9xZVFKN3dBSXhkcFR2bW9sSVZtUytaZk5lTCtt?=
- =?utf-8?B?akZvNVdQeHYrbVBYRWlEenhWSi90d213N1IrM3E1VHhKVGxOMENrSlpYOWhI?=
- =?utf-8?B?b0M4NUllYjUyZ3JENU9uTkN6a0pEMG5LeFBzQ0tiayswV0pGVTJZS2s4Z0FT?=
- =?utf-8?B?TXZVYmJ1RVBTZ1RIMzBFRWkwSTlvWC94MXVMTW03ZzlJTkE0Vk1DRy8xTzNN?=
- =?utf-8?B?UklFZkNKQlprSFlFWDFkSFR1M1JMd1lRYVNMVDNzZ1lQNjg1ZVhHeHYxQVN1?=
- =?utf-8?B?R3M5eGNGZUp3WVlOMzM0bnFwNlVOQ0M3bHdncnRyaTFMVlhLS3ZpWEVud2Vq?=
- =?utf-8?B?NElvOWR4dXJpUXNEY25SblY3RVFzVkkza0xYNVErdUwyN1pLU0YwUmNEYmpE?=
- =?utf-8?B?eTRuQkhwNllxYk5ZUGI3NFlRZFJqNERUaFM1aUpXZnQ4RWozUzhNaTJ3dC8x?=
- =?utf-8?Q?cXo72RnmnTIe1Rig=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0832a00a-eaa1-4957-1f0c-08de546f48b0
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 19:50:07.2007
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OMdD+x/FgLrXh2yDJpthlua80D9euzqgDlQc8oWC4bIHrWM6sq1cx9IpVQlTlt5PTrdoo3lEiKsQv0ozN3QGWQObyPuvta/ai/QIhX9HTxo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7989
-X-OriginatorOrg: intel.com
-X-Stat-Signature: uc39s85666ma8ytde9h6ezyzwaidewbh
+Date: Thu, 15 Jan 2026 12:00:30 -0800
+X-Gm-Features: AZwV_QjBsd3lTOri7HGHELmcazvDzXzFF30pFq7CI4dK0BruDZK-2GmBwhNuHRw
+Message-ID: <CAEvNRgEzVhEzr-3GWTsE7GSBsPdvVLq7WFEeLHzcmMe=R9S51w@mail.gmail.com>
+Subject: Re: [PATCH v9 07/13] KVM: guest_memfd: Add flag to remove from direct map
+To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, 
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"shuah@kernel.org" <shuah@kernel.org>, "riel@surriel.com" <riel@surriel.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>, 
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"coxu@redhat.com" <coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, 
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "prsampat@amd.com" <prsampat@amd.com>, 
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, 
+	"alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
+	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, 
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, 
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, 
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
+	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, 
+	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>, 
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>, 
+	"Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	"Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco" <xmarcalx@amazon.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A316AA0007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D68E2000F
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768506612-13966
-X-HE-Meta: U2FsdGVkX19mR5iB5BuVlFNe1iozmIsWH61HQFvRU76lpyxygH1vbnKmyBT2dLd1iAk9aQhFlx4j7VZp/uCJtGDGLpkdkOeF77vAVjjtFG+DkhNiUo4EoowlI7jkcNo2LK4ww8qR80SV/FyDeqgq0yX4EcvdcyF62rZFW0TLeoamEsqyesOh0PwNqZHtZAZT1opd6bzB1m2103C3qnSPtmZSLq6cywusiRYbGu2Kks6d3pl0Pn4bToVBt+tBlOZk5X6WyM0vMlABd046ues3F6AW5Sj6R/zDCi0uEWOI4eWqB2IRoLWXUoDZLUpSMpYqkjZwceOBVPTP/D5UVjzDiPuEWvZh5537oo6faHHhIVDQS9XEcuhtf8Ft+vAmSCbTx/zx6GIjxJF9Y1qkd0JYeigj8YGMZMIB147WuCdJ3Ad+bXJZ17oBEyN9rU6gRCzWicUs0cnVZHnwe5ht7KXE0M8PMwIm+5PK9LLA7ppVVkIVQ0BjOmO+D6WgL99L9ItdgU23ksxkjB9BCtES4N/4L8IQbd/iGMqCfPTdZ90qNoYoG3cxxqjhYIaGcNFOcisIu19hgD7nYVPh1E2bpL6/mI3HxhA/VTYJsavqRKjKbWGhmSpLZo4r3NRZYTkCbKryhGtVxchvgX5PA1n38BFhbhU6wjrDSua/hqI0f6RuFsSyFNgI7ED1Bct39hLJ7dzzhw77aPf6oY7ii8WUoCJIE0jm8cdlAWJVRJATLiQQUqShKkPBLB4BR6mYC/r/Pd8JHppKrWFIHUTuDeWU1fwISalmDfekCIZCYGpE6CoT33YxuIf5wVTXP+7s26iOqaWVV3kbVbjCH2r5f0w5B0iC+OURV45tuoGZlBWyxzmypNn3DbSYdz4qXWFiokevXdVYO64T3Za/C2jmGxaBiJsBLUseuhyO9RwuRa5ACdYgAla2zZfRfW2y8YTtASCLRa7g+7qQHcA435NYi5yHpDd
- V40sWb9p
- yikwAUhHR/5V2eqUpB1lLOrp5af9ZW4Kv9lROSdAMNjsWEglxFwzifm/UiFYNDetAwY+G4CJwimBTHo0HXzkJ9JDh9v0S1uJ167I2lXBXORXJ8pbQ4Q/k1SR2WPckv+foyHwGYgaBMx/TmCUxmNHjErcKQgauXWPV1nqI0Qqrlmo35MHRsRMCy3h7NMDvcXkqVpfLfAv5x5g1khU/sNQ5psOR41Q8CyCIOfz78ZIEcW/y+uELZUySn5sVx8VMSBoz+FqtwKbXVAnqxfy0wn+2DncbbPjjbveAmfO4quIgmPEiOqxJraX+abWsHtiKjxLv2rta61JGihku4/pUyigSu1fuX8rxVK7bjHTEEwmk6q1F55RKsgrrGVdu+iiCog4mknZcBvw7SECLGIOzBq/lh8XwJLCXfgXslOKTYCdptyc52UdP2JjYuCqQbBfON/HK/DYWhihRtPPeHfuPBuak9NQPHt7ftinbampfZXawrnasRKCUCPzlwxiyR32PwLXk7+YG7mOnkwdR9+iR7wKtn3/kPWqQSmZxZiZw
+X-Stat-Signature: inj1x9o1bxznqhr5inf9meq48etpet6w
+X-HE-Tag: 1768507235-115415
+X-HE-Meta: U2FsdGVkX1+MUeCR8eT64n/sQgFp6pX5DyrCYWGHvlqaq39npUX/ELSOB55UHG0GyMC+MreafYzVfVCG1nhCP+Fy7+FvLfIlM3WBuCij6Ak2WvAv7vJaqv7C8in819aLrQhEr3buzlaKEhy7qLJXJ1yXSJcqZY0OIv4RzE67jrYzbVuor6F/FypxSBumbaEo8QdxflywAQdbBmKLAPhsghjkrReOSG4sIoc9s9X4iMWRJPQJGzyF9ZD4Q6hQFs1MrPRLMGQXJ4R7RJv7/XRuuA1Id+h5FBHbOakmaI7VUPNRkBzTKwgFXW988Loq0xrXDyDJbh1txWhdrXlXwx9fa7IVMPoWpP6o65gS06xgsAFGCDgwnliUxX+m7BE03rk8/ERw2Ty+Jsp9tPJ2vJxdEZ/vn418Gqc3SOw6YfU1dQjLGkTlEzTjxy4077lfGSo3KIBEF3Grp8HEpqh8ym/YPOW60IF/3T7ed+OOv+EZXbNEDkxSfdoqZvFhD47bTSvHTAKreK54O5ZHf8RT6vJxmo/VdNF3qXCTsxo5R/3uWg+N7Oxy6i8Zl/8yK/bmd1bmtcI9i4dZE3eKEElh/cnP77AMbUlga83u3w9NtDAeRpwOHQn1a3sOSOvLF3lHZQXhGMiwco9nwrAYllJ1LgObxVdS/MSDwl5JSAOjtdkMRpLuGzVQNRzuHFdmM2UjQsysZQwxtq/C4IHxqkDsLUGsOqPZIpewHp4fqrzqD5dOKF63MKb69Pb7jqIouG4CmfH5mEhqd897OeLGZ45RQLT8w16SLsGjKV33nPYmAsJF6WlTXbl8s0lUIyVWqGB6tsaW2jb6hAmvWZz7eXvH6M7PKsfo0jxzUkp9aR9rqzVzKnnrqvoTr1gfHsuoflqjDnxQWRQgtks8gBemqEw5Nhhp5EKb7LLWSD0A6zeAAP7FTjEVlwBMcIdheHcHZ965x3siVTeT/adaL57iaXjWb7/
+ JeoGakkR
+ CfOYySPHijG3T2Hj/hNPLTllZ8YS1Hls/PDUeAs6649m22UUPVdS2p0o+PFU7FyjZtiGBf0NzDHiaLiRXmFNjULo/T5zX3Ss3C/L84FDf82J5wplKby5U2pqPGUSELmk4Kk02W8vtw6mcLIuLk0zl04MnK5XF/4OMQopwb8IEDafsGm1bBZih010f/HFnvdIY/8GQu16A4TcIZbaQaIWV2JTj0M9U1Sa1XW1zMnQQkPWxAlLatmYprQRV+oGHKsHsFGKXYNZTk7X4F5rsk0AkQG5V1W0y1LRM7/LKgx3atXjawWtN7NHDPQh4OyX1+5VglAaTNGpZw5wUoN3W0cfP3NQbe8q3Rif9+WJn7hHjWlxbIDEwP0EEYWW7TAS9H9JTqhrLHKpsOxYMinw5vs23ppNJxfqzV9c6OFC824QMWHAoTEl4Rpd9XEFAodvGVNyZww4v62En5FJkS1iunLBRC6PJ0sqSZOVhXhIKGUgjnpak93QvxvcHmlthjqFFBR6v6EO2jEZZo+82EJ+zw/UgfIioG8wUCVl5ml7V
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -243,44 +190,270 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andrew Morton wrote:
-> On Thu, 15 Jan 2026 17:43:02 +0800 Cui Chao <cuichao1753@phytium.com.cn> wrote:
-> 
-> > When a CXL RAM region is created in userspace, the memory capacity of 
-> > the newly created region is not added to the CFMW-dedicated NUMA node. 
-> > Instead, it is accumulated into an existing NUMA node (e.g., NUMA0 
-> > containing RAM). This makes it impossible to clearly distinguish between 
-> > the two types of memory, which may affect memory-tiering applications.
-> > 
-> 
-> OK, thanks, I added this to the changelog.  Please retain it when
-> sending v3.
-> 
-> What I'm actually looking for here are answers to the questions
-> 
->   Should we backport this into -stable kernels and if so, why?
->   And if not, why not?
-> 
-> So a very complete description of the runtime effects really helps
-> myself and others to decide which kernels to patch.  And it helps
-> people to understand *why* we made that decision.
-> 
-> And sorry, but "may affect memory-tiering applications" isn't very
-> complete!
-> 
-> So please, tell us how much our users are hurting from this and please
-> make a recommendation on the backporting decision.
-> 
+"Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
 
-To add on here, Cui, please describe which shipping hardware platforms
-in the wild create physical address maps like this. For example, if this
-is something that only occurs in QEMU configurations or similar, then
-the urgency is low and it is debatable if Linux should even worry about
-fixing it.
+> From: Patrick Roy <patrick.roy@linux.dev>
+>
+> Add GUEST_MEMFD_FLAG_NO_DIRECT_MAP flag for KVM_CREATE_GUEST_MEMFD()
+> ioctl. When set, guest_memfd folios will be removed from the direct map
+> after preparation, with direct map entries only restored when the folios
+> are freed.
+>
+> To ensure these folios do not end up in places where the kernel cannot
+> deal with them, set AS_NO_DIRECT_MAP on the guest_memfd's struct
+> address_space if GUEST_MEMFD_FLAG_NO_DIRECT_MAP is requested.
+>
+> Note that this flag causes removal of direct map entries for all
+> guest_memfd folios independent of whether they are "shared" or "private"
+> (although current guest_memfd only supports either all folios in the
+> "shared" state, or all folios in the "private" state if
+> GUEST_MEMFD_FLAG_MMAP is not set). The usecase for removing direct map
+> entries of also the shared parts of guest_memfd are a special type of
+> non-CoCo VM where, host userspace is trusted to have access to all of
+> guest memory, but where Spectre-style transient execution attacks
+> through the host kernel's direct map should still be mitigated.  In this
+> setup, KVM retains access to guest memory via userspace mappings of
+> guest_memfd, which are reflected back into KVM's memslots via
+> userspace_addr. This is needed for things like MMIO emulation on x86_64
+> to work.
+>
+> Direct map entries are zapped right before guest or userspace mappings
+> of gmem folios are set up, e.g. in kvm_gmem_fault_user_mapping() or
+> kvm_gmem_get_pfn() [called from the KVM MMU code]. The only place where
+> a gmem folio can be allocated without being mapped anywhere is
+> kvm_gmem_populate(), where handling potential failures of direct map
+> removal is not possible (by the time direct map removal is attempted,
+> the folio is already marked as prepared, meaning attempting to re-try
+> kvm_gmem_populate() would just result in -EEXIST without fixing up the
+> direct map state). These folios are then removed form the direct map
+> upon kvm_gmem_get_pfn(), e.g. when they are mapped into the guest later.
+>
+> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+> ---
+>  Documentation/virt/kvm/api.rst | 22 ++++++++------
+>  include/linux/kvm_host.h       | 12 ++++++++
+>  include/uapi/linux/kvm.h       |  1 +
+>  virt/kvm/guest_memfd.c         | 54 ++++++++++++++++++++++++++++++++++
+>  4 files changed, 80 insertions(+), 9 deletions(-)
+>
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 01a3abef8abb..c5f54f1370c8 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6440,15 +6440,19 @@ a single guest_memfd file, but the bound ranges must not overlap).
+>  The capability KVM_CAP_GUEST_MEMFD_FLAGS enumerates the `flags` that can be
+>  specified via KVM_CREATE_GUEST_MEMFD.  Currently defined flags:
+>
+> -  ============================ ================================================
+> -  GUEST_MEMFD_FLAG_MMAP        Enable using mmap() on the guest_memfd file
+> -                               descriptor.
+> -  GUEST_MEMFD_FLAG_INIT_SHARED Make all memory in the file shared during
+> -                               KVM_CREATE_GUEST_MEMFD (memory files created
+> -                               without INIT_SHARED will be marked private).
+> -                               Shared memory can be faulted into host userspace
+> -                               page tables. Private memory cannot.
+> -  ============================ ================================================
+> +  ============================== ================================================
+> +  GUEST_MEMFD_FLAG_MMAP          Enable using mmap() on the guest_memfd file
+> +                                 descriptor.
+> +  GUEST_MEMFD_FLAG_INIT_SHARED   Make all memory in the file shared during
+> +                                 KVM_CREATE_GUEST_MEMFD (memory files created
+> +                                 without INIT_SHARED will be marked private).
+> +                                 Shared memory can be faulted into host userspace
+> +                                 page tables. Private memory cannot.
+> +  GUEST_MEMFD_FLAG_NO_DIRECT_MAP The guest_memfd instance will behave similarly
+> +                                 to memfd_secret, and unmaps the memory backing
 
-I know that x86 platforms typically do not do this. It is also
-within the realm of possibility for platform firmware to fix. So in
-addition to platform impact please also clarify why folks can not just
-ask for a firmware update to get this fixed without updating their
-kernel.
+Perhaps the reference to memfd_secret can be dropped to avoid anyone
+assuming further similarities between guest_memfd and memfd_secret. This
+could just say that "The guest_memfd instance will unmap the memory
+backing it from the kernel's address space...".
+
+> +                                 it from the kernel's address space before
+> +                                 being passed off to userspace or the guest.
+> +  ============================== ================================================
+>
+>  When the KVM MMU performs a PFN lookup to service a guest fault and the backing
+>  guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 27796a09d29b..d4d5306075bf 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -738,10 +738,22 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
+>  	if (!kvm || kvm_arch_supports_gmem_init_shared(kvm))
+>  		flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
+>
+> +	if (kvm_arch_gmem_supports_no_direct_map())
+> +		flags |= GUEST_MEMFD_FLAG_NO_DIRECT_MAP;
+> +
+>  	return flags;
+>  }
+>  #endif
+>
+> +#ifdef CONFIG_KVM_GUEST_MEMFD
+> +#ifndef kvm_arch_gmem_supports_no_direct_map
+> +static inline bool kvm_arch_gmem_supports_no_direct_map(void)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +#endif /* CONFIG_KVM_GUEST_MEMFD */
+> +
+>  #ifndef kvm_arch_has_readonly_mem
+>  static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
+>  {
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index dddb781b0507..60341e1ba1be 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1612,6 +1612,7 @@ struct kvm_memory_attributes {
+>  #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
+>  #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
+>  #define GUEST_MEMFD_FLAG_INIT_SHARED	(1ULL << 1)
+> +#define GUEST_MEMFD_FLAG_NO_DIRECT_MAP	(1ULL << 2)
+>
+>  struct kvm_create_guest_memfd {
+>  	__u64 size;
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 92e7f8c1f303..43f64c11467a 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -7,6 +7,9 @@
+>  #include <linux/mempolicy.h>
+>  #include <linux/pseudo_fs.h>
+>  #include <linux/pagemap.h>
+> +#include <linux/set_memory.h>
+> +
+> +#include <asm/tlbflush.h>
+>
+>  #include "kvm_mm.h"
+>
+> @@ -76,6 +79,43 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
+>  	return 0;
+>  }
+>
+> +#define KVM_GMEM_FOLIO_NO_DIRECT_MAP BIT(0)
+> +
+> +static bool kvm_gmem_folio_no_direct_map(struct folio *folio)
+> +{
+> +	return ((u64) folio->private) & KVM_GMEM_FOLIO_NO_DIRECT_MAP;
+
+Nit: I think there shouldn't be a space between (u64) and what's being casted.
+
+> +}
+> +
+> +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
+> +{
+> +	u64 gmem_flags = GMEM_I(folio_inode(folio))->flags;
+> +	int r = 0;
+> +
+> +	if (kvm_gmem_folio_no_direct_map(folio) || !(gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP))
+> +		goto out;
+> +
+> +	folio->private = (void *)((u64)folio->private | KVM_GMEM_FOLIO_NO_DIRECT_MAP);
+> +	r = folio_zap_direct_map(folio);
+> +
+> +out:
+> +	return r;
+> +}
+> +
+> +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
+> +{
+> +	/*
+> +	 * Direct map restoration cannot fail, as the only error condition
+> +	 * for direct map manipulation is failure to allocate page tables
+> +	 * when splitting huge pages, but this split would have already
+> +	 * happened in folio_zap_direct_map() in kvm_gmem_folio_zap_direct_map().
+> +	 * Thus folio_restore_direct_map() here only updates prot bits.
+> +	 */
+
+Thanks for this comment :)
+
+> +	if (kvm_gmem_folio_no_direct_map(folio)) {
+> +		WARN_ON_ONCE(folio_restore_direct_map(folio));
+> +		folio->private = (void *)((u64)folio->private & ~KVM_GMEM_FOLIO_NO_DIRECT_MAP);
+> +	}
+> +}
+> +
+>  static inline void kvm_gmem_mark_prepared(struct folio *folio)
+>  {
+>  	folio_mark_uptodate(folio);
+> @@ -398,6 +438,7 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>  	struct inode *inode = file_inode(vmf->vma->vm_file);
+>  	struct folio *folio;
+>  	vm_fault_t ret = VM_FAULT_LOCKED;
+> +	int err;
+>
+>  	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+>  		return VM_FAULT_SIGBUS;
+> @@ -423,6 +464,12 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>  		kvm_gmem_mark_prepared(folio);
+>  	}
+>
+> +	err = kvm_gmem_folio_zap_direct_map(folio);
+
+Perhaps the check for gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP should
+be done here before making the call to kvm_gmem_folio_zap_direct_map()
+to make it more obvious that zapping is conditional.
+
+Perhaps also add a check for kvm_arch_gmem_supports_no_direct_map() so
+this call can be completely removed by the compiler if it wasn't
+compiled in.
+
+The kvm_gmem_folio_no_direct_map() check should probably remain in
+kvm_gmem_folio_zap_direct_map() since that's a "if already zapped, don't
+zap again" check.
+
+> +	if (err) {
+> +		ret = vmf_error(err);
+> +		goto out_folio;
+> +	}
+> +
+>  	vmf->page = folio_file_page(folio, vmf->pgoff);
+>
+>  out_folio:
+> @@ -533,6 +580,8 @@ static void kvm_gmem_free_folio(struct folio *folio)
+>  	kvm_pfn_t pfn = page_to_pfn(page);
+>  	int order = folio_order(folio);
+>
+> +	kvm_gmem_folio_restore_direct_map(folio);
+> +
+
+I can't decide if the kvm_gmem_folio_no_direct_map(folio) should be in
+the caller or within kvm_gmem_folio_restore_direct_map(), since this
+time it's a folio-specific property being checked.
+
+Perhaps also add a check for kvm_arch_gmem_supports_no_direct_map() so
+this call can be completely removed by the compiler if it wasn't
+compiled in. IIUC whether the check is added in the caller or within
+kvm_gmem_folio_restore_direct_map() the call can still be elided.
+
+>  	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+>  }
+>
+> @@ -596,6 +645,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+>  	/* Unmovable mappings are supposed to be marked unevictable as well. */
+>  	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+>
+> +	if (flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)
+> +		mapping_set_no_direct_map(inode->i_mapping);
+> +
+>  	GMEM_I(inode)->flags = flags;
+>
+>  	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
+> @@ -807,6 +859,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	if (!is_prepared)
+>  		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>
+> +	kvm_gmem_folio_zap_direct_map(folio);
+> +
+
+Is there a reason why errors are not handled when faulting private memory?
+
+>  	folio_unlock(folio);
+>
+>  	if (!r)
+> --
+> 2.50.1
 
