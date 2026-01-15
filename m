@@ -4,101 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2CC8D3CCB1
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 05:46:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25AFED3CCB1
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 05:47:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF24D6B0088; Thu, 15 Jan 2026 00:46:04 -0500 (EST)
+	id 61B906B0088; Thu, 15 Jan 2026 00:47:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9F866B0089; Thu, 15 Jan 2026 00:46:04 -0500 (EST)
+	id 5C5C86B0089; Thu, 15 Jan 2026 00:47:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9E7A6B008A; Thu, 15 Jan 2026 00:46:04 -0500 (EST)
+	id 4DEC66B008A; Thu, 15 Jan 2026 00:47:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CAC8F6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:46:04 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E48E896E5
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:46:04 +0000 (UTC)
-X-FDA: 84333112248.19.7701639
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C068840005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:46:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KhYXrz7O;
-	spf=pass (imf07.hostedemail.com: domain of 3GX9oaQYKCAw463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3GX9oaQYKCAw463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768455962;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CD6C6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:47:40 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D405D160203
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:47:39 +0000 (UTC)
+X-FDA: 84333116238.10.209D6A9
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1C867A0003
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:47:37 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IkmCyUgG;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768456058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=aDAvyad0Gd6nn9PvkirLJfs5+fzAbzM3y3l25Mdn4/I=;
-	b=qXRHAdftCcqMwavMajb+NbhiFjWymRJCSJhudAfl3NCuDGwue5EqXByfxX882crqoceUBK
-	hk2j6yq697dpKG6UvS+Mt51/qnA1nJJ9reqqNteaCx6UnRvYShtnSb40ymEO1tyS5xGBLz
-	of80jlnfQ5tWtxYMZFiZDpO93jD/Mfg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KhYXrz7O;
-	spf=pass (imf07.hostedemail.com: domain of 3GX9oaQYKCAw463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3GX9oaQYKCAw463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768455962; a=rsa-sha256;
-	cv=none;
-	b=WzR8XjBldj+KJWcANdPjQxoSX0LgHzhUk8zwNPKfgNMyBs1FFQiu6dYW2gJy4hTNwxn4j4
-	6SttNGMICe82LZkUcGJZ2CNSqj3y2VN1Hg6kX9WmXBZvPxEJQ89N8LO2sGhXIOrcqoqrp8
-	g7BqsYbgkOqAvWfZYd8c4bYislep2KM=
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2b6a8b32fa9so470440eec.1
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 21:46:02 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=D7owkq+vNrkOnZ4Uf9xDVh685P9y4fUEQ3B6cYaXJRc=;
+	b=VRrzQe2ZBpwXtGAgNGQtD0tXLAa9ItzoCA7CJHPgJBv6pLSI8aN9zxtYSS4wEknZvKavBS
+	DU0PejJAlIVeGpcraCBEvf/6+Lt0zeizBRMt8FBXGuqvTNv9IXLwo6YmOgDTT5jdnlW0wX
+	ECsmgLbDL4vly+Z/iwrMLdImlMX3drk=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IkmCyUgG;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768456058; a=rsa-sha256;
+	cv=pass;
+	b=sDeQoNCayo6Q0aEy9ehfqhXsfPf4WAkc/Y/7jyHNQ+bEhqa3qWWtos8ZmbMUdx5Bv4I0C5
+	uCFpezPgjHVBd0cgZXh1icNkkkXtg+frzMEj6vZn36JY86Rzs+EwMzo5NdBVMOMtwD2pXP
+	HtSXOfGlscE5ED0jewzdEcgf7ABpKJ4=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5014b5d8551so259621cf.0
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 21:47:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768456057; cv=none;
+        d=google.com; s=arc-20240605;
+        b=akY49UDP2jzgHLQJ6d/0vuY6YMIyDYydBVOQieKyMnPT+ur9F1G2SJ0OeHv1dZVZ0D
+         n/H1bVPzfktfJIHI+72YZtsV1rtb72bE6PuE1KoDvSs6JVAvF56DdgkkQMgimuLSnwdL
+         rexj115n3AMKQktJV9uoQQTsA4uL8g/j+q5DKM4RRgzkQnSTwnPdkyUDRWS5d4BA53rr
+         a5Ui2EUvXV48rmdurJKDurjbPPdDEtjKDK2b+XVxlOZCC2DVi1UcBA7XFtFrbV3w3d3o
+         dcxzn6AJB52KolR0XcPvtE3nXHPZz66mtW6A5SMbwYumXGEv+Cgt2kOjbWKAbM+ylss0
+         Ka6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=D7owkq+vNrkOnZ4Uf9xDVh685P9y4fUEQ3B6cYaXJRc=;
+        fh=kVIUoybH7vhLfPO9xfnWBmT1h50wS+nCARNOwosGHH0=;
+        b=HPsNBM8ex0Tap1QfG9HItSniO5gMe+OlzpFA7PfZzu9dlEySrJQMLMp+oUWEt1ZIV1
+         LuanM3M2bc524lZHGGzDdQwnQM5G75Tzh7c1kQT7uMC5DrgmonprUkI3vuYxy1QFIlDP
+         2E86ryeQzQLeLgE82Vot7/JHKb8aLUNyyen1dKd/YXhNmoG5p/4TWIQ2v958layhkv/B
+         MPVboKehXWJN65Lpd9LACCLSPoqet3j92PSKFGnWYoAfDOjPue+3EalaXn1sUNCAmSJZ
+         JVty5UXTZFm91YXbdpxftM3Deqfo1alhek7Lbww3RmSllP4STsmBvIrC4rQQzfDR4/8n
+         re9Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768455961; x=1769060761; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aDAvyad0Gd6nn9PvkirLJfs5+fzAbzM3y3l25Mdn4/I=;
-        b=KhYXrz7OGClcfJoMGuZb2+Q30rR0qxjbRbKZYtiZMN5b9hyF/mnvSsRb8MwY8nXuaI
-         nfGlROEx24QEnplFcM8TR9JXuZIvQjyCpXUEe43tQE4Kw7ZPRB7nzjBLbTCNr+rOiooE
-         kfn4PUTUQ72WuqsV74i/GMrPKdBYmuLNKorV/xyb6Ze9dQ4z/wOmMhHNJlgs0qmsqm35
-         VZczKi0XsYty1kzMKsj8aCsxyCDbYFdYcW9RHj7zPLERzU/SInhDb3gCXzJCQbwbIzE8
-         2laPAftyMFRZK15IRG5twE/LwtENpvtn79veDUQUjOBp1cG/WdKtSLcM5uruqOTh+M2S
-         2VhA==
+        d=google.com; s=20230601; t=1768456057; x=1769060857; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D7owkq+vNrkOnZ4Uf9xDVh685P9y4fUEQ3B6cYaXJRc=;
+        b=IkmCyUgGM1tYNDZ18j6J/qiAapAOwdPiwX40nZ+1px1c+/XEAItzwjrjhRFnj3wS9G
+         v0FkKol2+jucqpX9szEthzc0ZWopz/4UYLyMz/ADuETPFMihKMWBmsYCEKSIsQlKcZ9S
+         JgqNfkISeW9US1Nq7eg0llTiiC6TWrwpAa3y7Vee0nH5VXimWPXH8B8jostb0k97B9UW
+         FLdSLPWtdTKrSfsmH0fLI+zPvaonxJy6xOSnKTxx7zS9pd7vK1jo9EEWOYQKkbBuiOGY
+         7CBZYQJe3esZOacKpOS0lRkeCWQLqO7EYhJlfKL/xvHJXzEv+NUwT6StnaEJats2MR77
+         OQVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768455961; x=1769060761;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aDAvyad0Gd6nn9PvkirLJfs5+fzAbzM3y3l25Mdn4/I=;
-        b=vqFGCKzr/LmdnETfVT3D04tFovtrvm9dlZBK18ir95iwLM2US7jio6hFxpdLvL25Q0
-         6WFVtTpeyHYHBugtEENT6IBuLj5n/JT7tqA/GuUqNZ51ro9rClp3pgKgMGyNxBhm3B5B
-         8nIiXl8qtG2Sww7gPlhKnwbsTp0wUZj71o+5fIF/LBpcoRXu9wrEXiaE68TN3mH59Lri
-         mzNLQSmH3u/1Tgyx10WMnO5qWSuSfPltT/yc0t52O75qGNFXPCkNFwXmkJiasrsW49LA
-         qQUu2Sk94+jpL/SmqWkdvHwyU+ueSrqNXupZe33rSq0hVtJFvehLvdKJ/9UjlAlWv5HI
-         s+Sw==
-X-Forwarded-Encrypted: i=1; AJvYcCWK15k7boFz7k1YJj8RTrqSWSaDgnKhtYZKXNC6TwbAVvrJbEp2W7IUAo7pkmzigPHRzCaC6HWTbQ==@kvack.org
-X-Gm-Message-State: AOJu0YxaB0MhiX/NgNefjMnqqKB2154zadKn6t6lznIq6Frfbe7Aeobr
-	GUKcoeRU4CzxP6nO1VE3L5BrbgAAeVnuxmCv5apIbBREXA4smga6YV/QgntVhVRi57tmO7gzTkN
-	M85BQgg==
-X-Received: from dybb6.prod.google.com ([2002:a05:693c:6086:b0:2a2:4eb1:3771])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:688:b0:2ac:2480:f0ac
- with SMTP id 5a478bee46e88-2b48f5bac9emr4987449eec.23.1768455961332; Wed, 14
- Jan 2026 21:46:01 -0800 (PST)
-Date: Wed, 14 Jan 2026 21:45:57 -0800
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260115054557.2127777-1-surenb@google.com>
-Subject: [PATCH 1/1] Docs/mm/allocation-profiling: describe sysctrl
- limitations in debug mode
+        d=1e100.net; s=20230601; t=1768456057; x=1769060857;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D7owkq+vNrkOnZ4Uf9xDVh685P9y4fUEQ3B6cYaXJRc=;
+        b=DSUoSdiOUTspucWTzZqF8L3GMI0n2EfRq5AKyOKt4r0fPS6585zqxYvc3o+uVkNDt9
+         gJvVtDTB9l4B9oxkjVsV0bjCpKOrlSSaFXi6n6C+m8vbMjUarnJIlQz04uM1JNvyB0EJ
+         Lux9rT93MfrbXrJahKxLI/32RKqcx6IJNUJBnDGjgQSoirEHtXlgpFahZ3YlFuL9H+z5
+         Dqqj17jpRnxmFegVNcM7IfZ8zhDvVdjlVcsOwrAf46t595TXPqmfzQyXYObtoP8/zcf2
+         99J13o2mEmOF2It3VPVLWBrHZpncIG8wd7PAesPToR6GyWmqZrPjvyJWJ3FYMUD0t3SH
+         mmQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSLcEwsr18LdWzVjVfTHP/dqXqjI2mCVA1FDW5faRg5qdo8C9insI9Nv/ogINlh2lpOMRBmiblig==@kvack.org
+X-Gm-Message-State: AOJu0Ywz0STA4waPcaYRqniJAjNCH2m4KV/5RldcHAAeFpXUteZ9gEzy
+	Ai4HfDd5LSdoxVlwHQ/YlCiA7YWrT+gGuhqFZo5R+JkB5RPh6ez+VLIoli+pXZ4rVvsSKOs3kT5
+	uFH7Ot5pr5z5cZUCWSZCcur3KCLnN94j3iZxdw9L/
+X-Gm-Gg: AY/fxX5f++/wU25XKb0kqATJkmXtX3H3wx9T79oSPqLJaeYBec9sphDcY+YNP2P1nb9
+	dyG6ZWnAsrINUhVs4ZufFtE2ZDaLmDOmOPNdiNFC1K9SKpsOZoJIhmH3pPqn65HssOpoYcAIO3Y
+	y+73L44iYYryjUKOH/BzQmJquZeputKJ+9nYa2AngDfXbBgc+61ptoLrytnFHKJ64TBzORLt49g
+	e+XjMDuKk8amdG4Mc/oRWittVB0bm+BJobVWCmcVEKbtefwwLz40/b4aYOCZf4/PIJwdA==
+X-Received: by 2002:a05:622a:10b:b0:4ff:c109:6a4 with SMTP id
+ d75a77b69052e-501debdf6bemr6888091cf.4.1768456056729; Wed, 14 Jan 2026
+ 21:47:36 -0800 (PST)
+MIME-Version: 1.0
+References: <20260115031536.164254-1-ranxiaokai627@163.com>
+ <20260114192336.9d98f0330bfd6c8638762dd0@linux-foundation.org> <CAJuCfpEFZNwmpwfUqM45StJKPZG3s+qZpv8Vy2ohF6StsL4LGg@mail.gmail.com>
+In-Reply-To: <CAJuCfpEFZNwmpwfUqM45StJKPZG3s+qZpv8Vy2ohF6StsL4LGg@mail.gmail.com>
 From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, corbet@lwn.net, ranxiaokai627@163.com, 
-	ran.xiaokai@zte.com.cn, surenb@google.com, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+Date: Wed, 14 Jan 2026 21:47:25 -0800
+X-Gm-Features: AZwV_QgPLYk_wvubGcMzqYA4qu8cXgd98BFVN0miWrf_RQBG3AlBQbPQf-gYpd4
+Message-ID: <CAJuCfpG=FsWar2jXXNAaRCWZf6UA8_Pw0QGAOTcf0=tbV_MeDg@mail.gmail.com>
+Subject: Re: [PATCH v2] alloc_tag: fix rw permission issue when handling boot parameter
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: ranxiaokai627@163.com, kent.overstreet@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: C068840005
-X-Stat-Signature: 685wphpuftheg6x6f3wdtsar43qdfcex
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768455962-836047
-X-HE-Meta: U2FsdGVkX1+IBkk2TOiQiZ14SpYKv7B6FE0MIrpf5QMh4Ck2rDCzb3BZcciPMi+2BetWb/YfwYe8yA1Vv/wJBoShFCR29lewvzuEWSvf9jmmjfl8zpAJJhZoaTNdoMvmedN0ciINKWM+h535eI/GPIwaJnQJGSMqjN0BiUb8Cju35W4rBB7DVVcZ8UYnY6sJYRZ+PweeQFrAdfAOxeC7XBSCaGHPnbwqWwpL+RwsesmwroymCH2rI/ewjKDyOgVMPvXGcsQLUPh52SIko75OVfIojaackIvOCAyvjQ86rA0NO/6EDGY7lBwJYGyNQezidsfiANOu+SnzhjYPYb5J/6b2ff2Wvp/aTnYpFsCaTJSNofJqqHYwX28FJ6Mbr6/3M7ENJ1cPw6N/xG8xG3KO92mloaKKZU08F7pfOCoNzxpsykMejkUl+BZGmGDkhuslM/XNzAflP+i65+7Uah8pVevNH8/UUQtsWqtN4VRHylnFvXJ6YBhAuMGXV/KrPk2BGYaSqD6XPenPYVYr0hNDZbpTW8xmSrLQnlDi604hQM1Pq/jNvAiMxFLg6hqDx66E4/Doh14xEMwOgkmTVbso41a3hseOG4id0LFVffUOqsPfFyMYVsrUXg5ZoLVWAKlzQeUFFhpY+MemA2/a4DVb0ZiD3CVNnip4m++gndpgMOmNPEtkk5foELq+gDMAk1shKO8rWPuXPU48b4By7KjE4Xy2eyx2g1YXdch/lrR5IaMMeYR91nZYxm2nwIu+zZmqrxeS5yoLFSHMI08Od5FLNTFs2OpNxHjVeQQJM89DAuUWjknrMzzABNFHIiNNcpJP8uq9Mx989joMHNjmZYbWjUaUGQ7N34L/vqm+9GnilYc4k0df6z+kWL0jLkney9bFsVdO8GspiVxxZaaxwdQWDEqEjkXebnyMLDVauVWUJDJDb0ywQ4pE20bu5QERjzJwIdMtmtdkb1lt/xyz1co
- 8OBJhg9u
- +O51ub0B7zwlHTv0Db8++LpYLTkFNUh0fqj/FPcmImYsBYI8NSKJPaeGSdqhMHNrraKp8x5OppQL7gqGBeDvm+J0fFMTAz4bGkft41YK6vY8itMe49cTuS5USyrmD8G+cR6ctdTXHXn6l91SbQJVpXChBDGDAVPOqeoRQAkct971A2aM9sNkq7i9icy71OBISYT1U8U+/DK4TZuzPwgB7yoIZiWub16EClDQIwRX6q4YlfNl2kEcWQTouWgSUg5hXY0ASD8kglnzPEvRKbGE7HWZ0TEVqVHtF5etgn9ZNHch90yPHEIwDfeqLPeFwLT4fCrYfPlSrdg53b87cUwKYoafw3cjCNOcWYe2/Yyt7EfWOTVXyR3KhVn6TK7tdfi8WxpftnHP4VH6+9/DPS82ISu8a7t3FFtXqxPu88aM5J0xVGrr9zWUpE4zeO3lu8NpxhptmwkmnYi6PNBR6qsORGABOIzLwIOwl1ej8+Z3O/tP1QOJjJqoyDMLo7u7e58+AMy+dm4B9tH8ItfFw05m1V+YHEdhRVSleQTJKAaOoZFQRVVOaYnZCY8ZYJIUpl0jc8jWzCFt79UQXTsDq4v/ee17FhtK3GxJRxaawdsZe3yNDyKroBi2Lpz0d5A==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1C867A0003
+X-Stat-Signature: bs5r3co73ng3n45zuuaqm7mh6uoqip1r
+X-HE-Tag: 1768456057-21264
+X-HE-Meta: U2FsdGVkX1+x1I3CDjHqr7IXT7Djo09dRx3Ng7flXjpyOwHpPxlPqX40dQSkZMJ6yn2iYIDl7/Kvt+NsEYyyi18g+CtufGjTzqsQGXE1MJMy9e7TtWHGeyASxcr//28ACgwAslg9E2Oos4IfkuKAUKauCfqi5aelYieHPaVkSEtTlcJ1VVp1VkvRzbDepsKDUvx5ACLqlHVOAnJY59jQEPffaDiY5cNYHbyBTNPF0yRi94tDeXOoJMsIxfpmvc3F06Y/XGLiIaQF0mxapJkwlqtj0sJ3xDCimWRRMtl9Fws3ehazRfq27UoBnv1Ea3G/r2gSUf8p8Ddxajg0J1o6jG++pH6oXkIGKEeA361cz+xT52MjZOMLvklVnmqbxO0PCUkK0jGVS3Q2r04WT4VzA+e5d1G+wxrlI4qsPAIYcbz+OdN7osIzO/hEHoEWFUlY/kVUsDs4oCSIbDyO/sE2mBCWeToivxSG3rERM2O478vEpvZxGUiYQJhAYnQnJhloTONuODUgfHlS74fs0H8UA9fuDhPgwoz4j0KThC4fRb462s7+YajuIYFL6MZYr+Rz+ifHvo6xoFjbya9VHho9YL6TW3KfS45Lcs7c8v8RTCvL2eAerKMhiuy4/ntOt89tZmtVLr80LIKEHm3ruhbBaY77w3XQOCENriaWosH+JvwzTKpOVYOTD2Ha4HkQ+xReAH//Js8VyiHCuoCUd1PZgX7FlewwCkA769WyC12ypeE1/oeiyXoH4ORxcNTCKs1zbhigeb4QykXnbNKkcygMn8NDVuxXj3sh/BKv42LnTZWnfQ1SoxJ8QAkwDLS1RYl21wx6v5jmAQklODwWh+twzPGdwcRIsrRUnYSlSOIBFL+nhAhhsNvtyXbABfJ5mHcT7LJB9qiF2W6WkTewFhrbH3p0OHHRRk6LNZYSc/cT8d1uoUvjZIjG8Jx1pODCFdlB0L7q+XXwRdDhcvr2JQe
+ 8HzOaaRs
+ tVcMwBk6UukAGlCMZkYTlKZtQnA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,60 +139,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, /proc/sys/vm/mem_profiling is
-read-only to avoid debug warnings in a scenario when an allocation is
-made while profiling is disabled (allocation does not get an allocation
-tag), then profiling gets enabled and allocation gets freed (warning due
-to the allocation missing allocation tag).
+On Wed, Jan 14, 2026 at 8:58=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Wed, Jan 14, 2026 at 7:23=E2=80=AFPM Andrew Morton <akpm@linux-foundat=
+ion.org> wrote:
+> >
+> > On Thu, 15 Jan 2026 03:15:36 +0000 ranxiaokai627@163.com wrote:
+> >
+> > > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> > >
+> > > Boot parameters prefixed with "sysctl." are processed
+> > > during the final stage of system initialization via kernel_init()->
+> > > do_sysctl_args(). When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled,
+> > > the sysctl.vm.mem_profiling entry is not writable and will cause
+> > > a warning.
+> >
+> > This sounds strange.  Why would setting a Kconfig debug thing disable
+> > alteration of a runtime control?
+>
+> If debug is enabled we don't want the users toggling profiling on and
+> off because all allocations made while profiling is off will have no
+> tags. If used later enables profiling and these allocations get freed,
+> each one will prodice a warning about missing tag. We want to avoid
+> that by disallowing to toggle this control at runtime when debugging
+> is enabled.
+>
+> > Documentation/mm/allocation-profiling.rst provided no hint.
+>
+> True. I'll post a patch to add that limitation there with description why=
+.
 
-Fixes: ebdf9ad4ca98 ("memprofiling: documentation")
-Reported-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: stable@vger.kernel.org
----
- Documentation/admin-guide/sysctl/vm.rst   |  4 ++++
- Documentation/mm/allocation-profiling.rst | 10 ++++++++++
- 2 files changed, 14 insertions(+)
+Documentation update is posted at
+https://lore.kernel.org/all/20260115054557.2127777-1-surenb@google.com/
 
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 9096e2d77c2a..8577ea91e226 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -487,6 +487,10 @@ memory allocations.
- 
- The default value depends on CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.
- 
-+When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, this control is read-only to avoid
-+warnings produces by allocations made while profiling is disabled and freed
-+when it's enabled.
-+
- 
- memory_failure_early_kill
- =========================
-diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
-index 316311240e6a..058d2faffb75 100644
---- a/Documentation/mm/allocation-profiling.rst
-+++ b/Documentation/mm/allocation-profiling.rst
-@@ -33,6 +33,16 @@ Boot parameter:
- sysctl:
-   /proc/sys/vm/mem_profiling
- 
-+  1: Enable memory profiling.
-+
-+  0: Disable memory profiling.
-+
-+  The default value depends on CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.
-+
-+  When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, this control is read-only to avoid
-+  warnings produces by allocations made while profiling is disabled and freed
-+  when it's enabled.
-+
- Runtime info:
-   /proc/allocinfo
- 
-
-base-commit: 560d6a4c4951ae76b5c6d5b5b8650276706f68ac
--- 
-2.52.0.457.g6b5491de43-goog
-
+>
+> >
+> > > Before run_init_process(), system initialization executes in kernel
+> > > thread context. Use current->mm to distinguish sysctl writes during
+> > > do_sysctl_args() from user-space triggered ones.
+> > >
+> > > And when the proc_handler is from do_sysctl_args(), always return suc=
+cess
+> > > because the same value was already set by setup_early_mem_profiling()
+> > > and this eliminates a permission denied warning.
+> > >
+> > > Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> > > Acked-by: Suren Baghdasaryan <surenb@google.com>
+> > > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> >
+> > Should we backport it?
+>
+> I'm not sure a single boot time warning produced only in debug mode
+> warrants backporting. Do you think we should do it anyway?
 
