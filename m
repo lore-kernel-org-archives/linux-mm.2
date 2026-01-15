@@ -4,135 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0520D46603
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD6ED46600
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:27:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 429196B0095; Thu, 15 Jan 2026 12:26:31 -0500 (EST)
+	id B399D6B0088; Thu, 15 Jan 2026 12:27:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FA526B0096; Thu, 15 Jan 2026 12:26:31 -0500 (EST)
+	id B0AA66B0096; Thu, 15 Jan 2026 12:27:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FDB46B0098; Thu, 15 Jan 2026 12:26:31 -0500 (EST)
+	id A1A7B6B0098; Thu, 15 Jan 2026 12:27:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DFA46B0095
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:26:31 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B58B5140402
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:26:30 +0000 (UTC)
-X-FDA: 84334877340.08.1DCDBF9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EC196B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:27:11 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56771C1C41
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:27:11 +0000 (UTC)
+X-FDA: 84334879062.05.335A057
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D5C671C0004
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:26:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ERo6pPRP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768497989; a=rsa-sha256;
-	cv=none;
-	b=1CBFDpOxw3jEVPNTlnedxM4HpbU2iBYa6NM4SoHp2a9cd/Tg8ZlbTlMVwrgZT/m9bMSzM+
-	xeK0p2Ob7wr+V/dtFJd0e0I6a6UZLcyZXug8pRtkwG2K1xCHEFrNJ2VZe+psXU81A0v76y
-	yBdNpk6wKIvDDZVD8bxvOrzmzYYL9Uw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ERo6pPRP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0A56D1A0009
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:27:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=acae8XOA;
+	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768497989;
+	s=arc-20220608; t=1768498029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P/jeozxCdYsY4xK+4tAkz+O6OeGUBZFY8ek257m8HUw=;
-	b=g93nyy8D+o1f2IYYYIhVtKWPyWUzTYfmRDj/zfHEc9CQWT/9ZMovY/lWpj42r/27QEV/6X
-	Vt3fVTe/Ww+K16ruPciE3KWSbp6GOvsiWncmAm5Ha9hpT4l7TIXz4J6Mh5PWqvbnNA7WWo
-	cJuHvIN6IujjpRPgaatowvYNz4LYIDs=
+	bh=0bCHkVRU/U5rQgsQH9vl2iyXpnOOqBXnwog+zjgM/cU=;
+	b=S84yiHNeb9Lcs14BvIVPpNaGZWS2Khlj+7T/uC1CkC7Zm/pa9csMnzst2maCTuOgpIhk2Z
+	3rKcM93M8hmH9X/HFZQhAa4ksnCLA7AI1I7F2KtoXCxVGBXOKzTByTqEuadISFfsMR5rwN
+	KlDtCxc9LQM9dePlFdhvv0s+hhqKHNI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=acae8XOA;
+	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768498029; a=rsa-sha256;
+	cv=none;
+	b=iEnru/eoZsIVpcMQj4mnyeIkiDUEKFvBlisEuEaLVQB5SOjImLKtrgmLXmkZp1guS+tioz
+	ooPtHLvPKdRZ/j3aqf1vX68oLVshoS8+MEqETXqcb+BXQ2QlIvVFccdjFeSg08BsDc9Xee
+	Xjf/lWYPTJtpo2NIEpxGFEogzcKf8Z0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D94284085B;
-	Thu, 15 Jan 2026 17:26:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C4EC19422;
-	Thu, 15 Jan 2026 17:26:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 031B244351;
+	Thu, 15 Jan 2026 17:27:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65452C19422;
+	Thu, 15 Jan 2026 17:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768497987;
-	bh=3kMg3+tU6CStGaP/2jSc6EBS4YSAzWA1eqL/7/QkxAU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ERo6pPRPc9N7MiF0CC5Ky920nNhr7uR3t/RZtcVc8WK7Ihzyq0keU29lB42a7yKlw
-	 HtTmJBYUpV15tthGIpOjiWPn438FBi1t2CXbnnOgKAoQmnpyqrpMikuWnkhtbNKxIc
-	 swl78vFHVCxCLJC62JT153qN6bFQi8nGdaA5ymtRwnVkCeH7B5lpErjGNvFcegPAyj
-	 +oI/PiEvMAnam5dgCyFJ483ZCQtF0O1ODBfz2qaoYa/Pe/KauGBc0oNK9XrWbBAKr6
-	 RpB9m9+bLwQ+tuHAZRACbND4oN4AA0PFYgAZLY569VsXsMyt/8+YPmpPS1RzerggB0
-	 MtDke8z/QK6wg==
-Message-ID: <eb3e6ae9-d296-465f-a5a9-963da4d8ce6a@kernel.org>
-Date: Thu, 15 Jan 2026 18:26:21 +0100
+	s=k20201202; t=1768498027;
+	bh=efvNFfmmF55G1OFW1ALmJUn6yfpTkuk/CjfnMcYZ/94=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=acae8XOA+V0EFGSWN3XUYMscNvAOo5loDdvJECOaKFaNAMNRTDs7SL3tUjLPb5zWx
+	 e0TVqOM7bVQPslulGtaSad40Em1YRIrN5U3E8vJlrP7w1aD8vRQ5QimJH3b9c+HKgu
+	 h+US2ILkv1WBC4A9OgmB9VMAqhrW5cXgqDPTzwIKCkJWRFtbh1llfpK83zXuC9R9VS
+	 hZk0X6JZxtPF4nGDIYCNboepa6LzYAoIh1kLmOYivLoDxxP+g3Tr6zi+uGJJz0BOST
+	 5S9G9nZ8zoc7J8G+QuH5rKjpppF7gBy86wnVt4EkB8UkWEZ5ZdYjPGy9JHaRsv6SQI
+	 cBJNtlsGsTYtA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 88920F4006B;
+	Thu, 15 Jan 2026 12:27:06 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Thu, 15 Jan 2026 12:27:06 -0500
+X-ME-Sender: <xms:aiNpaT67TyoasDbt1LAROzmdavez0EtG9XZ4hLt70D1cKeF4kR28qQ>
+    <xme:aiNpaUSMkyWdh7DErH-Zld6tQc8ZERPmUFwtPHiJo7TC-uFmQ-mUMGc0RrqKH1W7K
+    hUsTZzCYDaA0JQfC1wRgZ-WLF3u73AcuTx1PlHFF4l5jVctTvliMOs>
+X-ME-Received: <xmr:aiNpaT3XOAMXAUpRbHD_dzICsRzXQL064V-i-NcakVjqhVQa3dW9BzPkom0NLA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdeiieehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinh
+    hugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhn
+    gheslhhinhhugidruggvvhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurd
+    horhhgpdhrtghpthhtohepuhhsrghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrg
+    guohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
+X-ME-Proxy: <xmx:aiNpab66OzbiPAXpkXGHGfosXzW-t3DjGgOmKWPezmlE8xkE66bv6Q>
+    <xmx:aiNpaSsiBrJrQ_mf7q9WA0ALDkKSbdHKuxzeWLSaCSLI3Nx2vvkdQw>
+    <xmx:aiNpaUNYWLfnJJLjSaZfGmAGcEdoXy2A1Ve0aJ9clipvfyy4PoAiAg>
+    <xmx:aiNpadWQz6_MT3yRWc7sv9_TKNcCU1R0c277-2wZxFDQfefaYrnXjw>
+    <xmx:aiNpaV1jQGUDbMggZzPUu3pCUoZ-tdr2sJjWOjqWt79gBJT8zU_6To9b>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Jan 2026 12:27:03 -0500 (EST)
+Date: Thu, 15 Jan 2026 17:26:58 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
+	Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>, 
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCHv3 02/15] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
+Message-ID: <aWkivSMMKX3AGdMw@thinkstation>
+References: <20260115144604.822702-1-kas@kernel.org>
+ <20260115144604.822702-3-kas@kernel.org>
+ <be57dfa5-e6fa-4ce6-93c1-239436ff6e89@kernel.org>
+ <bf788cfe-ac2e-4ffc-9349-64d9c36bf072@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] add runtime hotplug state control
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
- kernel-team@meta.com, dan.j.williams@intel.com, vishal.l.verma@intel.com,
- dave.jiang@intel.com, mst@redhat.com, jasowang@redhat.com,
- xuanzhuo@linux.alibaba.com, eperezma@redhat.com, osalvador@suse.de,
- akpm@linux-foundation.org
-References: <20260114235022.3437787-1-gourry@gourry.net>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260114235022.3437787-1-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D5C671C0004
-X-Stat-Signature: rb6rew1ttd86jqtu7hgms9fa7nsuh434
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf788cfe-ac2e-4ffc-9349-64d9c36bf072@kernel.org>
+X-Rspamd-Queue-Id: 0A56D1A0009
+X-Stat-Signature: gk7fosiautjdhocf7oujs4g5nhei6a3s
 X-Rspam-User: 
-X-HE-Tag: 1768497988-205862
-X-HE-Meta: U2FsdGVkX19FwT7cYQ1Suf/YxMSar4kOYm5ZFuiPge1hmlhB0tT1YcHEwcuEbhrC1P9yfNHtT4Q/tSn9Lt9tb1auP92sVLwJ0dCzfs3FGyBZBOCEU6rK+LWvFWxucuOEXTtOkFUv3a9rK5J6n8T2G/8rjB23K2qMvvJkvY5Td+dqVWmIMBDFewzvLP8AXE04/XQGVo+iJBlOsp36D3t0bDujDhd3qSjhjts+32AiOrY84iz3UFTPa5m+awVNWru48xKt4ddibb1AezcTUFLJZrxHKOcWQkOii609eMTWZZDjMPFtFnHzyvZN7XhpJi6forPREc5Fre6/F4Z+TTiGkUZWaOPkztwxvc9E9q9xozRWnJ4/4KlqGwCBaEMiwrmkmv9H1jXlYBXTe04E3TlO5hH7flPX9mDsu6x848Dp1N5ULKzxf9Ywb2+qupbhnN6MRUEWbhfKqlxUMz/WjjBbEl+bfM/tjiWK5CEG8ryY1SDfB2+Y+obEMDykMqhC3+T+HWZFrIDYKxsdaONjEX+W2dErs+DO9nhIWLzDjflgc53sqgqZHGi79BgrUGvCYDuY5xJ5YHAQzmgtdBEbLERpRU2d6tZBvFceS4ebiv1TF9Ve8eOQkP35Fif5/mZU8UTn3AiVIlcTRxxdv6Ip7IWhVCNJh+/ZXUlbf/dsz70KwdpDlKkevyAnT00v1cOMHQhXS7L7DcspL52aqUZ2ppmax+JmWAAX6yDz/IDjLmS/dlMaacTVgP62iy4fP6Pp/3Ewhf29LAnjpqinalATrt/VNFAClW/IDOHHopgPhIO8sb+J0Xoz8asBwRfgREpFX3hgftkLjSc4VaeQiATgK9OvIAnJ2t8kzWXB0nKpSUvBIyH8aiH++ZJ8JDkO8CRiqzlhaAr/3WqMsyo4AQFwqiOCLn9zHQsXeBYHkAz97tk9IVTPFGLD9aYnCUqJVBTk3JUYCiby/GVrgz/Ppr8/KMb
- E4bRyPTu
- RNY2LLWtwvjN2dJGKktImC8lxMvRah4/FDKa70ycntYwUe3J4CyYWSdlUUoR5hhqhEHFqXX14eLThvNttEsL7QxUc5A7lX49e5jYipaAWtuRVEWCh99B2KQ+Dn+QY6ZhLS5V56SSOUyPtbZGyZGG2myvXzoRXHE7NkMODcBFyv9Tul1aJ/b3gHPJNOqkTlvWGX3dkuO6RXjPiHeXx9HMfKxnspMgWnEwbVjvl6WfbDMF/Nk6c+EZzuDw/3daiRxm9s4X8
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768498028-942011
+X-HE-Meta: U2FsdGVkX19G3IZrA7XH/NylNQH4WjVlKHQMu3PMCv6il1eKXJf1sDWX3PPb5UW+U/vCqy7Uh+9TtByvmgAtXvgOSKqQ1eaCyBZSFBlFCWir1jK3+dOhPTHvAOAMKcZFdCflWfWxA9laRIzhwnkykCyqF5a593vOsTFu2DG3KU7VKOE4dO/LE1LQ7OltuhUHC84Ogh50+2bP2VIa9/tT3zGA9+GzFxXBAUo0eTmMVrQIWUKNn+ZfyVtYo3gIbp4zTeCePvRHxhwvId+MeEEzUkDpUT2KEf/kOE7fmnOvM93hXvZl1NQsxM7tKLFfuZ+xrJLWbMXZzC4xYUwO32VYzN8quBt+be/lW0BUmNjjctLfPbTrPo3eIUw90Y+wfWNRHSV5Q1jUeE7X1rSuMELyqhaPttsjlh5WdfHErIaKA0rUUXlaJtW6O2JpMrDBNI69ZO/9Sa+YFIrMRyKKy+BrQun3nc7M9BOSYtziTerSDj3rteWo6xkqatuiRR3Pq3657EKx1kUHMdRvvOLp2g5sE0vDLrAonrXvAf/946TyiRSBbWRm4emhrw6VBuUgTk1tW47RNlkm1Yb37YPB17Z9zjxxNHY8PtmobyU7rTIqFOMj4pY/P8omwDCHcR4SuPHvD8K8a2uKYxdIjJRinlzyGfJdlXFYCbnEA0LjuMLRiPIpuRmKCZtk1uG4igPsuYKjcexy7yU+JnHemikDMHXtTospRhmRpv20tiIzsV8b5644PffNeeVExPYUrDuFDnW9vcDc6ExDJgq/uxIIovN2m+Ry8O8PtKzqayH3n9cxWpbS2pw3EASB8yRdZ7w+sTVpIbkiXUIeQCpUJifzmamDyjBLWO6KHuOUVwUGO6YgJuZqMEOc+lnAf4U2ZwQ/ahyobvM6Aog+hDG+8Se6O6JdxtUSgUqod1PIXJNrsnOYF32Vum8q5FEoPC+ag5U7Rb1S3CtzD9WiOBoRbncQpw7
+ maExSBZX
+ 6qYXP2V3TYLJqqeJVc24nED21bH3iQMOL1FcdxnS6l327M40Zp3gfpio6e7crJDd53QxbkzKVIoDnLeTZ/w7YpkxmsczFWDIVxA46Fvhc3gyKDK2OiZqqvK5TCsKJfPpPGLt/NnUy57qSm89orn74WYNcfY2kFsrLw3Pum15ug9vzD7ntcvjdZ6VqkNvRQFBP7ryYUvNznV/3brZXu/oq16vwBtsd4T3SnZRtVkcSlxA/JERfyv0aYJ46AlqC6XxMj9z12u9ekeIXfGhwDOpXjZApko+CHn1Q1cheanMBFP1jiG08/CQAxoMpPsTdwY7wbJQjp+SctYjozXdoJk232KEmTNpACG/fPjpZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,33 +134,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 00:50, Gregory Price wrote:
-> The dax kmem driver currently onlines memory automatically during
-> probe using the system's default online policy but provides no way
-> to control or query the entire region state at runtime.
+On Thu, Jan 15, 2026 at 05:48:20PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/15/26 17:35, David Hildenbrand (Red Hat) wrote:
+> > On 1/15/26 15:45, Kiryl Shutsemau wrote:
+> > > Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
+> > 
+> > Why should that belong to mmzone.h ? Semantically doesn't make sense, no?
 > 
-> This series adds a sysfs interface to control DAX kmem memory
-> hotplug state, and refactors the memory_hotplug paths to make it
-> possible for drivers to request an online type at hotplug time.
+> To clarify, I would have moved it to something more folio-type specific, not
+> something buddy/zone specific.
+> 
+> I guess page-flags.h + mm.h are our dumping ground for folio handling. I
+> would have moved it to the former.
 
-Gregory, slow down a bit please. I haven't even had the chance to go 
-through your replies on v1.
+I moved it next to MAX_PAGE_ORDER definition which seemed to be logical.
+Moving MAX_PAGE_ORDER around is much more risky (will likely generate a
+lot of build bugs) and outside of the scope of the patchset.
 
-I'm currently on PTO and don't have the full day to review stuff :) And 
-boy oh boy, do I have a lot of stuff in my inbox.
+I think wherever they will be moved, it should be moved together.
 
-Maybe given this is the second time the patch subject is suboptimal is 
-another sign to slow down a bit? :P
+> Likely we want some folio.h in some distant future.
 
+Sounds like a plan! :P
 
-* Subject: [PATCH 0/8] dax/kmem: add runtime hotplug state control
-* [PATCH v2 0/5] add runtime hotplug state control
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-I guess it should be "[PATCH v2 0/5] dax/kmem:add runtime hotplug state 
-control"
+Thanks!
 
 -- 
-Cheers
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
