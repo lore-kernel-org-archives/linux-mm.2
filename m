@@ -4,177 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F07F5D4662E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:38:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26AC6D46627
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:40:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 473286B008A; Thu, 15 Jan 2026 16:38:04 -0500 (EST)
+	id 89FC16B00CB; Thu, 15 Jan 2026 16:40:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4201D6B00CE; Thu, 15 Jan 2026 16:38:04 -0500 (EST)
+	id 877A16B00CC; Thu, 15 Jan 2026 16:40:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F81E6B00CF; Thu, 15 Jan 2026 16:38:04 -0500 (EST)
+	id 7763D6B00CE; Thu, 15 Jan 2026 16:40:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C49A6B008A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:38:04 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C259013B144
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:38:03 +0000 (UTC)
-X-FDA: 84335511246.19.F0DBA93
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AAF5D20004
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:38:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cNYvRCtA;
-	spf=pass (imf13.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 648E66B00CB
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:40:33 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1175BB9B89
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:40:33 +0000 (UTC)
+X-FDA: 84335517546.21.A30DEB6
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 35FE040015
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:40:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Tu2MC55W;
+	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768513081;
+	s=arc-20220608; t=1768513231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bIvvdJO8RSmQOYhZYgNuTCBL8X7KIXl7wt2Qia9EIAk=;
-	b=MmocyqqLHzcnWqL3ssT0y3Znkz4FNAEnlhQCGqz99WHiYmLo85KiCDwn2uI6kqSxHcGbmp
-	DjTn3oAVcKuePc3Snnem+LbiZWhCi5jDe8sjAs5qqEo3gTspbNnyGIJg01PGd0ZWVMYUAJ
-	WaH03Hx4OHxTzuoWVMyCTvXrYPOjD/I=
+	bh=4NEsY4l4MT9Q6cBqefYtZtOy3s+dR+V7JNDYTBav7MA=;
+	b=fxsYnu/benB+qBC8twIiQV8x4I0R7CxA0PxflVQMeJ7D12Ah1eAKRdBqE8wy7O3JqFj19B
+	WhzlqhTErz1WweGYGH7aERhUynHPIeqmp7usAK+TixM65OeOCOeV7tcfjQNg4RbcQ36MrL
+	YuFcha4fHA6YNxwrBjuxxJFhOKnYSWc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cNYvRCtA;
-	spf=pass (imf13.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768513081; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Tu2MC55W;
+	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768513231; a=rsa-sha256;
 	cv=none;
-	b=npvY/ROEk3QQZTxU5WVPmYqqeiDaMPA11VSdy9hu4/yIGggCBMkX2hwTLGWPkgulYjUMS5
-	KNUuxDJyFU3qdRIq+PfJ311VSlYVSe+y2h2PGxwLF71PFvSwCYkap/rxWiJyqmDW7wE61B
-	jn94vtGtmUQ7CU8tGwfKNyu32HEO6Eo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 653E060167;
-	Thu, 15 Jan 2026 21:38:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E7EC4AF0E;
-	Thu, 15 Jan 2026 21:37:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768513080;
-	bh=0fqCmxD4yKmMSe6/QFTJtZ3ssoTn2Cuf5H+QMDU346c=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=cNYvRCtAFr3nio6ZJmSXonm+4Nbnqg0ooZICNUqxoP7XTHZvA1sq5emt+58bZli1v
-	 oJkAFDqsC8s9exFsPnwjrufRoIKYcNVLkronVW7KfwhObFyoMdVkQc5HZF/9RGxbhF
-	 F8t+tIqxHXmQeBkIAg74UokUULOqKsZjdX1zKlQqnLNffUaBGWeNAgAEVlrJmM1boN
-	 LUW1r4fLYT+64uz3Pbcw+N6aibwePtoH6t9exvd7VQjlJQQfeBnIAca7oYTbPKx1xL
-	 5lZKkhqKesuIWnoeYbXAqAZWFIhec2xBYGvSLr8p1N4f33jTCoUrpWPHuga5OksBPp
-	 OM0ntrYikD9aw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id F1990F4006D;
-	Thu, 15 Jan 2026 16:37:57 -0500 (EST)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Thu, 15 Jan 2026 16:37:58 -0500
-X-ME-Sender: <xms:NV5pafcNmSFQIrTUccBn8Az-kRf21swc3EUsgXiRuArMqrmkgSAOag>
-    <xme:NV5paQCw-b3hO3NIG8gXajpY4N_T9w2owcI72ATnDXD-wEPGkb_1VwQQ44qF5W9Sb
-    ycL-FXfJ-_J1d0wNMhW4e2tIJ1IW7TLmfEPTlqwXsxG-MEXb98h5wU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdejudehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedfvehhuhgt
-    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeegheduieeiveevheelheelueeghffhtddtheelhfdutddtheeileetkeelvedtjeen
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomheptghhuhgtkhhlvghvvghrodhmvghsmhhtphgruhht
-    hhhpvghrshhonhgrlhhithihqdduieefgeelleelheelqdefvdelkeeggedvfedqtggvlh
-    eppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpdhnsggprhgtphhtthho
-    peehtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhgvihhlsegsrhhofihnrd
-    hnrghmvgdprhgtphhtthhopegrughilhhgvghrrdhkvghrnhgvlhesughilhhgvghrrdgt
-    rgdprhgtphhtthhopehslhgrvhgrseguuhgsvgihkhhordgtohhmpdhrtghpthhtohepjh
-    hlsggvtgesvghvihhlphhlrghnrdhorhhgpdhrtghpthhtohepmhgrrhhksehfrghshhgv
-    hhdrtghomhdprhgtphhtthhopegtlhhmsehfsgdrtghomhdprhgtphhtthhopegurghvih
-    gusehfrhhomhhorhgsihhtrdgtohhmpdhrtghpthhtoheprghmihhrjeefihhlsehgmhgr
-    ihhlrdgtohhmpdhrtghpthhtohepihgurhihohhmohhvsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:NV5paY71nyiHdxo8pzq2FPJ9wXP4gwvmybtteXjfGQDHBXmjGzMpkg>
-    <xmx:NV5paf2q85cEvYskTRa6REbYfWFmhv1wT9xJbgW0M4zwirU4htMbuQ>
-    <xmx:NV5paRIn4Ky98h162YQ0v5KUSHllZyM6UcKPFtRPRap3WHWdtGOYVw>
-    <xmx:NV5pad_yPpJ8jq6536MO88REqfP8PL0dMv2ASaMKib8OBSJTuLx8og>
-    <xmx:NV5paYQD3sBPEihbrDG1vMHuPz-F3Rw0TEVa9JsrMb-OENl5ypTH7YFK>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B4F44780070; Thu, 15 Jan 2026 16:37:57 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	b=q33UWZ+M+lQ7ysxf8cV/cbsGOX3KSDEf01CiAMr+aa5qsiKKQOSx0ai/g2tz3ZZqrh/5w9
+	Rpf6eYfLchpz7x0K3gHVV/QZmQY4Q1vcf29OZ1GgDY6pszvSwzHAIHo5iWWekS0lcvBwki
+	8bAV0+TRRiQmu2nZRjFasHRHdTjC/YI=
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-940c539de8fso896017241.0
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:40:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768513230; x=1769118030; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4NEsY4l4MT9Q6cBqefYtZtOy3s+dR+V7JNDYTBav7MA=;
+        b=Tu2MC55WMLw3jWexEimgvwSXySXr7ipnTDSVxMqsya+4E12zdZfG7MWxkAQS9qKllu
+         yMUiJ8o0UHJwRGM0ST2uxEadQoNE+1lN2qnP9o32vigVSIVonWlGIEQSoU4PzqqG0lp4
+         S72Paby/JSkYU9AdtczRINIoIZFF4jt0QelsqhUbzWksdaSGbAzKWNgSOEgwoMUUDEzN
+         cPjxcL+XetW0M++pwiZoK5453SWHv6SH96gXNnhWg13UtS1yWDpvAAW4096T8BAspNFG
+         rzVGbJeWMhjnRoOGbjB0CsDGP4mXnV6UTePd4l+OG/envXcx1sqaNrZ0LTJcgOCJxBoo
+         yEEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768513230; x=1769118030;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4NEsY4l4MT9Q6cBqefYtZtOy3s+dR+V7JNDYTBav7MA=;
+        b=jaowdy8ifoEIaEO9+MUaCvfWP4xpHZT3jzZEo6SakkICShldSAKvCjdHYeatDYDdCS
+         cfSBZ8ZkLkYIW87B9byRp9Iluk9Wnub9zG4733aGpGSRyLjKK5/Vlyi5yuFKGtRuU0CU
+         O0BWWL+CH/mhnU+qySVbQgrwgjqLdfVaBzElqBqocZAdFTyXFg9ooHbzuP7PQ7tQD/MC
+         RjFqS8NAX3EbjSOSxDoy6QZJ2c9vvOIkla18EP85Bsc4bluYXOQe5otqsaS3vOeqgk7G
+         B8cwUWH9LlU/WDxStPa+rA+2NhomY1+H2SkaIqH/nw4UCsWOvuC61rbbLvVuxb7OJNO6
+         bqcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUEY9CLEQYZCPmtPn/5uXTt2wnhSyv/HGeiW9DM353+cyOTyrwkMVo2+0ZzbMYYw+WM33ZkJU2gA==@kvack.org
+X-Gm-Message-State: AOJu0Yyqa2a1V+hPO/cd60cP80VC8jMotDeoxu7TzRYZI8U+tVKch6Mb
+	TN3UJ1TzSrzb9TuT85biqX5cb67spJwE51yc9TdmdrvJG7P7WvL7d1PAvaGYgvAyT/gPIQ4Z53b
+	kHj2rfdfDfzj0K4owv3KCTqQseG2pxflFf3y/iIZD
+X-Gm-Gg: AY/fxX7i/ZB8tzvsxTS4QhWBOIOGlDcRpoUr5WF+vnI3vySfoKsOiZoQTklWn/sJqq7
+	ZqzGgEv4y9pxjljzScIKyoSFl4Oxw1zt36RLx23MsGdUQyTeDC+CZj6kwF177KhhqP6Duzd/1R/
+	e5PY3+u3daDtAExnVoCGoNbFeUkPVNhxMW4Xfj4l1jrzAIZVXbnP2fLXaoaNS6Y4ZTnz4u2popH
+	zaXSEddBmNnw9HqIwckDZQioub7PmSeh+6jIlKj+P6ZWtesotRMrY2WsHnD9c8e/L/J/PP3VzoI
+	QMjU7C/4KIC6nt7ujmpJylWVM5H77XHbWjeu
+X-Received: by 2002:a05:6102:947:b0:5db:cec7:810b with SMTP id
+ ada2fe7eead31-5f1a556dabcmr465899137.29.1768513229577; Thu, 15 Jan 2026
+ 13:40:29 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 15 Jan 2026 13:40:28 -0800
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 15 Jan 2026 13:40:28 -0800
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260114134510.1835-3-kalyazin@amazon.com>
+References: <20260114134510.1835-1-kalyazin@amazon.com> <20260114134510.1835-3-kalyazin@amazon.com>
 MIME-Version: 1.0
-X-ThreadId: A7-j_yKLHrMN
-Date: Thu, 15 Jan 2026 16:37:27 -0500
-From: "Chuck Lever" <cel@kernel.org>
-To: "Dave Chinner" <david@fromorbit.com>
-Cc: "Amir Goldstein" <amir73il@gmail.com>,
- "Jeff Layton" <jlayton@kernel.org>,
- "Christian Brauner" <brauner@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Chuck Lever" <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Hugh Dickins" <hughd@google.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Theodore Tso" <tytso@mit.edu>,
- "Andreas Dilger" <adilger.kernel@dilger.ca>, "Jan Kara" <jack@suse.com>,
- "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
- "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
- "Sandeep Dhavale" <dhavale@google.com>,
- "Hongbo Li" <lihongbo22@huawei.com>, "Chunhai Guo" <guochunhai@vivo.com>,
- "Carlos Maiolino" <cem@kernel.org>, "Ilya Dryomov" <idryomov@gmail.com>,
- "Alex Markuze" <amarkuze@redhat.com>,
- "Viacheslav Dubeyko" <slava@dubeyko.com>, "Chris Mason" <clm@fb.com>,
- "David Sterba" <dsterba@suse.com>,
- "Luis de Bethencourt" <luisbg@kernel.org>,
- "Salah Triki" <salah.triki@gmail.com>,
- "Phillip Lougher" <phillip@squashfs.org.uk>,
- "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
- "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
- "Shyam Prasad N" <sprasad@microsoft.com>,
- "Bharath SM" <bharathsm@microsoft.com>,
- "Miklos Szeredi" <miklos@szeredi.hu>,
- "Mike Marshall" <hubcap@omnibond.com>,
- "Martin Brandenburg" <martin@omnibond.com>,
- "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
- "Joseph Qi" <joseph.qi@linux.alibaba.com>,
- "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
- "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
- "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "Dave Kleikamp" <shaggy@kernel.org>,
- "David Woodhouse" <dwmw2@infradead.org>,
- "Richard Weinberger" <richard@nod.at>, "Jan Kara" <jack@suse.cz>,
- "Andreas Gruenbacher" <agruenba@redhat.com>,
- "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
- "Jaegeuk Kim" <jaegeuk@kernel.org>,
- "Christoph Hellwig" <hch@infradead.org>, linux-nfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-ext4@vger.kernel.org,
- linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
- linux-unionfs@vger.kernel.org, devel@lists.orangefs.org,
- ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev,
- linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
- linux-mtd@lists.infradead.org, gfs2@lists.linux.dev,
- linux-f2fs-devel@lists.sourceforge.net
-Message-Id: <06dcc4b6-7457-4094-a1c6-586ce518020f@app.fastmail.com>
-In-Reply-To: <aWlXfBImnC_jhTw4@dread.disaster.area>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
- <d486fdb8-686c-4426-9fac-49b7dbc28765@app.fastmail.com>
- <CAOQ4uxhnoTC6KBmRVx2xhvTXYg1hRkCJWrq2eoBQGHKC3sv3Hw@mail.gmail.com>
- <4d9967cc-a454-46cf-909b-b8ab2d18358d@kernel.org>
- <aWlXfBImnC_jhTw4@dread.disaster.area>
-Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to nfsd export
- support
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AAF5D20004
-X-Stat-Signature: s4djty5dxgsj8ymdxj8em5zh93gx16sr
+Date: Thu, 15 Jan 2026 13:40:28 -0800
+X-Gm-Features: AZwV_Qj-0gm6vYHJJ3iH96aBpuGEWZXgwnMiQkeNvlZWuDVc-Nc0GygCth2Cvyc
+Message-ID: <CAEvNRgGrpv5h04s+btubhUFHo=d6mBFbr2BVrMt=bWuWOztdJQ@mail.gmail.com>
+Subject: Re: [PATCH v9 02/13] mm/gup: drop secretmem optimization from gup_fast_folio_allowed
+To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, 
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"shuah@kernel.org" <shuah@kernel.org>, "riel@surriel.com" <riel@surriel.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>, 
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"coxu@redhat.com" <coxu@redhat.com>, "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, 
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "prsampat@amd.com" <prsampat@amd.com>, 
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, 
+	"alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
+	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, 
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, 
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, 
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
+	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, 
+	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>, 
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>, 
+	"Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	"Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco" <xmarcalx@amazon.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 35FE040015
+X-Stat-Signature: s7k9n1dsx349oztatsjbgtkucbnst4eo
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768513081-198291
-X-HE-Meta: U2FsdGVkX1+XyecEK+eHauQdBcRv+d4HnUC5lwNFLv/XQ6ccH28SprMxLkCY7o9qJU2o467LcCEoirJrW9gk3ixo3UC+tM1CE8lvXCuilJSjwlYEuLJb3WyLTrv6hoqNgciMtEX42BJVYMOG0k82erajuCYrRcg1q4ZRXCISzQe1yGuQa0SpkzuZuGv586ZOZyezuL3wkiDe4+MhDVuwfkJjqiJ+bm9HiYFeaCAvIuV3soWJdqt/HVYh86JCusI7i1UJbi3VzvW6ES5DPCn3rkGUUsN3bhRSLIlvIIwp/xorzKPm7v/7xTqHxkfseyMvAzuNYQbUHh3NjaHkTPWjxLsY6fHyCJ6Jhk93rfFoGYz+H338krqQrrpEOCWdfIV83PoYRYv5sEs3dKncWu7MHh/FOCBc/4VyrV/xawrCTRByHPlBXK0n4tUrRwmYMq1Z3ldB6hozR/4nUjt6tJ0+z/KYO6M5HDFI41hX8X+tn00ozXkzKw/VU1iRJQgxxn1fgR3kMjItk3KaWQpVQeX0eU0PYTKYxb+QNyvJr88r3Ih+NT9STd9oBPE45iUzHh89Ejy/BkvJjyMezPeWz2Z27eNBg5Z3cWH+KrzdqpWlR/JznZqmxzcHPNS8D2R6N8EeOZeWLxfNT70lOqisl8sIFy1gUPWU9ewA6iiIl+pYcbZZBZ+5yJothE7VJLYstkg+Cl5igJqWzH9dQIYdR+8BjZhhYBHf/tG5fRJKsBCOtbTzddTjBaVSUjf8uqLk+Uf/+tMtFUswBWYil745pZfLfg4RcTwO+5hNzCLKSW9sDV7vJESqbR7GKaBkhY4A2SXQGg9Aflb148I0vI4NG8lfxalehygHOyeQrve9ATxdDR4HozBGzgWg1E5qh4u3NJeWc6rUZpObmL2N5eimCcgMffUv5BH3H4PpDy0qPs+sy6ibkiW16HVAzzxYVtCChL/HoKjha1CTmAwbaPD5Qtw
- 16IndwAm
- 5JVUctghDtrI0HrUbdy9F6hN6cfFcLj40xYUml55Pv8lil1Zjxa3nCngyx6WXYgUugvoQt7DgernEvF7AthEmdgWILn90CY38KEEaQzbCu1+7rnx958B81QsVntBzyiMrK3Qub7jRoMjcRJaABTqWZghMJp+lTEJN7fYLuNPyB0qSBjWeK8qIqwStq4e8MXmiwEX2y/iSzUSRwTXGAx8ZgTgrrVNLuYJ0dC8AFNrCZtT3D74kqXvYxR6XG1f+2GRhNkpre6zS2eggim/wmqeQGKKNhyGkG9n8N3sjXIKmuXq1OWY7yHscQCJczTOUFvhIJWv7xaR0Q4Ef8QM=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768513231-365119
+X-HE-Meta: U2FsdGVkX1+RsFRf5xm4YWat/cj1KZvk3gcDug2F06IFYYdnJzJ/HHTPG6OkmuS9VABxUEBsaskGnfNZhjN/1waKIdEUfZ7T/A8XjB7z8ER4JB0idzYdtbpbTnBOY1e/nQi5mhyE7EaCRsQvBVIgsswJTf9nqtiJVdBDuLKPZ0hg//JjuAVK910nib0HS3LsAY59cZN+HmRmCORiV0KRmqUs7/WTdcHfM8ZPUfAdK3WjYlvgcsDpunmxTMrWNWEBlEHwSORQi5GmoJfrxEkdtEk2VO/emAnmUZcAv46m1FYN9gHHlELpfnRy5q8yMapPvEKfVcuPK39jBBMjICJDSibiIn3kph7tnLtIqsOUrh+voG15SeHPw99iHpkrORpZs02IeCLr2fjGdUUi8vNyrj7MPt/WpErI43s/7qHAfg4cW27UB0x0/pbrQQgmPQUmaeIqwtSq3aIOI9YN6UJEZgQ/ayNMGYf2KrOkqrdhv9G9G/Ewi2W320hP5IGCMwr4tuqm0NqySrtLnut8J0AOjJHmSidDVlTv1ABFca04LRL5bvDiZ1gTjzQ51q6dKT1rwvxIHaWWymbp+Jr4B2Lsz1NNNtmniDpcsikKXqWaFfV3BixYLm/f8JMr3hc+6ppKN+KTh8u6SSmEoZkQBHJ0EgeluX3nI3q51WjoT7x+FUYEhnxZ+wZy23f8m0KQ/Pyn6qWNwlotyzonpeX3Ve6nfWTeEGOAZgJyZcqEMXiNsrC3qcczd9qgOCtQuG+UTc72LpOZiSiVdLPsHfTmQDU899ga3ocPdS1+qAam/EC3I6J8Imouwo5+NQIpGDjl7e5Gmji1RNiXT81zd9bhNzaPUe7U4O6BY2crQcDz4j1r6A/afUQqqmDsM0Gwnkn1luPWYuOr+2MKYgPD5h1DBNK4OwQhOHCpDU8ioe/jOqSjaNdvyBi+j6BZPIvz7mtZnFv3Ra1K3FmjdFo4lfVVMjK
+ IW9QOOaM
+ yGt3t1GA3m3rCgUGMX0Pwgr5dvXDDZ3b1o1aZ4jmZIRqu7Y9a3j6175mSYmupDE3ASX6fueDT6rps2KxmwsTYfGesBM3EFkMc4WL7Msu3glje6dLjkUepx1a8Pc/z1EJgmv1urtBZDYV2BUKvZislDZ1pwN/iO5VORjAbCXzEmEAZWIVz6pJTS6GtsiMaqpSSk7rM6pKs/akwT6+HoVrKtLhw32tcqsCt1ptgbxvgwY0GzL2nvyb7F9ZKQhvCSvaXqlCN+1DzLxw1cYgTOe8XIVIk6DsbDkz0KBSOhrLOHuQ6KRMsHCyXsOL4PWMWI9xtmeaUWQF+IozJgpWW80E+rnUmrMuxIiW/WVGEasgttGqENveoumSA4h8J5/wfoxNitbp0KMlmYB0p2cZYDWkB2xJqkqvnDTzlB7YfC7pCKyA3Ref4knGJw4dyx/g/8rwqdVptP27S64ttPvgYaZ2bQCBiWe0pw5ecI0H8E2MOCjrFV0t7g2sj2ojV4A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,99 +167,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+"Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
+
+> From: Patrick Roy <patrick.roy@linux.dev>
+>
+> This drops an optimization in gup_fast_folio_allowed() where
+> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
+> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
+> by default"), so the secretmem check did not actually end up elided in
+> most cases anymore anyway.
+>
+> This is in preparation of the generalization of handling mappings where
+> direct map entries of folios are set to not present.  Currently,
+> mappings that match this description are secretmem mappings
+> (memfd_secret()).  Later, some guest_memfd configurations will also fall
+> into this category.
+>
+> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+> ---
+>  mm/gup.c | 11 +----------
+>  1 file changed, 1 insertion(+), 10 deletions(-)
+>
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 95d948c8e86c..9cad53acbc99 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2739,7 +2739,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>  {
+>  	bool reject_file_backed = false;
+>  	struct address_space *mapping;
+> -	bool check_secretmem = false;
+>  	unsigned long mapping_flags;
+>
+>  	/*
+> @@ -2751,14 +2750,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+
+Copying some lines the diff didn't contain:
+
+	/*
+	 * If we aren't pinning then no problematic write can occur. A long term
+	 * pin is the most egregious case so this is the one we disallow.
+	 */
+	if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) ==
+	    (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
+
+If we're pinning, can we already return true here? IIUC this function
+is passed a folio that is file-backed, and the check if (!mapping) is
+just there to catch the case where the mapping got truncated.
+
+Or should we wait for the check where the mapping got truncated? If so,
+then maybe we can move this "are we pinning" check to after this check
+and remove the reject_file_backed variable?
+
+	/*
+	 * The mapping may have been truncated, in any case we cannot determine
+	 * if this mapping is safe - fall back to slow path to determine how to
+	 * proceed.
+	 */
+	if (!mapping)
+		return false;
 
 
-On Thu, Jan 15, 2026, at 4:09 PM, Dave Chinner wrote:
-> On Thu, Jan 15, 2026 at 02:37:09PM -0500, Chuck Lever wrote:
->> On 1/15/26 2:14 PM, Amir Goldstein wrote:
->> > On Thu, Jan 15, 2026 at 7:32=E2=80=AFPM Chuck Lever <cel@kernel.org=
-> wrote:
->> >>
->> >>
->> >>
->> >> On Thu, Jan 15, 2026, at 1:17 PM, Amir Goldstein wrote:
->> >>> On Thu, Jan 15, 2026 at 6:48=E2=80=AFPM Jeff Layton <jlayton@kern=
-el.org> wrote:
->> >>>>
->> >>>> In recent years, a number of filesystems that can't present stab=
-le
->> >>>> filehandles have grown struct export_operations. They've mostly =
-done
->> >>>> this for local use-cases (enabling open_by_handle_at() and the l=
-ike).
->> >>>> Unfortunately, having export_operations is generally sufficient =
-to make
->> >>>> a filesystem be considered exportable via nfsd, but that require=
-s that
->> >>>> the server present stable filehandles.
->> >>>
->> >>> Where does the term "stable file handles" come from? and what doe=
-s it mean?
->> >>> Why not "persistent handles", which is described in NFS and SMB s=
-pecs?
->> >>>
->> >>> Not to mention that EXPORT_OP_PERSISTENT_HANDLES was Acked
->> >>> by both Christoph and Christian:
->> >>>
->> >>> https://lore.kernel.org/linux-fsdevel/20260115-rundgang-leihgabe-=
-12018e93c00c@brauner/
->> >>>
->> >>> Am I missing anything?
->> >>
->> >> PERSISTENT generally implies that the file handle is saved on
->> >> persistent storage. This is not true of tmpfs.
->> >=20
->> > That's one way of interpreting "persistent".
->> > Another way is "continuing to exist or occur over a prolonged perio=
-d."
->> > which works well for tmpfs that is mounted for a long time.
->>=20
->> I think we can be a lot more precise about the guarantee: The file
->> handle does not change for the life of the inode it represents. It
+>  		reject_file_backed = true;
 >
-> <pedantic mode engaged>
+>  	/* We hold a folio reference, so we can safely access folio fields. */
+> -
+> -	/* secretmem folios are always order-0 folios. */
+> -	if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))
+> -		check_secretmem = true;
+> -
+> -	if (!reject_file_backed && !check_secretmem)
+> -		return true;
+> -
+>  	if (WARN_ON_ONCE(folio_test_slab(folio)))
+>  		return false;
 >
-> File handles most definitely change over the life of a /physical/
-> inode. Unlinking a file does not require ending the life of the
-> physical object that provides the persistent data store for the
-> file.
->
-> e.g. XFS dynamically allocates physical inodes might in a life cycle
-> that looks somewhat life this:
->
-> 	allocate physical inode
-> 	insert record into allocated inode index
-> 	mark inode as free
->
-> 	while (don't need to free physical inode) {
-> 		...
-> 		allocate inode for a new file
-> 		update persistent inode metadata to generate new filehandle
-> 		mark inode in use
-> 		...
-> 		unlink file
-> 		mark inode free
-> 	}
->
-> 	remove inode from allocated inode index
-> 	free physical inode
->
-> i.e. a free inode is still an -allocated, indexed inode- in the
-> filesystem, and until we physically remove it from the filesystem
-> the inode life cycle has not ended.
->
-> IOWs, the physical (persistent) inode lifetime can span the lifetime
-> of -many- files. However, the filesystem guarantees that the handle
-> generated for that inode is different for each file it represents
-> over the whole inode life time.
->
-> Hence I think that file handle stability/persistence needs to be
-> defined in terms of -file lifetimes-, not the lifetimes of the
-> filesystem objects implement the file's persistent data store.
-
-Fair enough, "inode" is the wrong term to use here.
-
-
---=20
-Chuck Lever
+> @@ -2800,7 +2791,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+>  	 * At this point, we know the mapping is non-null and points to an
+>  	 * address_space object.
+>  	 */
+> -	if (check_secretmem && secretmem_mapping(mapping))
+> +	if (secretmem_mapping(mapping))
+>  		return false;
+>  	/* The only remaining allowed file system is shmem. */
+>  	return !reject_file_backed || shmem_mapping(mapping);
+> --
+> 2.50.1
 
