@@ -4,107 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C34D3CCAA
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 03:42:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F9E9D3CCA7
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 03:47:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F2436B0088; Wed, 14 Jan 2026 22:42:01 -0500 (EST)
+	id D5BAC6B0088; Wed, 14 Jan 2026 22:47:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39FEB6B0089; Wed, 14 Jan 2026 22:42:01 -0500 (EST)
+	id D09B86B0089; Wed, 14 Jan 2026 22:47:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2826A6B008A; Wed, 14 Jan 2026 22:42:01 -0500 (EST)
+	id BEB536B008A; Wed, 14 Jan 2026 22:47:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 106CB6B0088
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:42:01 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 45BDB1398B3
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:42:00 +0000 (UTC)
-X-FDA: 84332799600.21.DCB54E7
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 522DC40008
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:41:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=imeh2gQy;
-	spf=pass (imf11.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768448518; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB0FE6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:47:24 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36CB756433
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:47:24 +0000 (UTC)
+X-FDA: 84332813208.04.6E190BD
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9F2D6C000A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:47:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tKEz2bV2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768448842; a=rsa-sha256;
 	cv=none;
-	b=RNfmdhrhrEnJiVofI1rRvRLFPqgbJh9ODLDbD304hzZheFZuG/GuADhxhY5E2QpzSRXOfJ
-	YtiATgr2p+/jHx6TzKpA1ljPr76D/tvPfonn2Ko6Ar7jO33F86mUIE5LLHaQn1ijWgFvdV
-	mhZYzd8Nkm4jMwbeb2QjCWBnkqZPwB8=
+	b=n2moptLF1OjAalGyanFlh8JMQOseU6EncnEBiDztX8355z0bfhVFHSziHHxlys6JCyIUdA
+	uzRcoUdmzNcYJIKu9GrFgIPQhGE26l48amNcDJWU/PTadQq2QQyJKKTorHtKcTKNG1xO0o
+	ikORJ6vCoNljsVDAhL2j3ZL2gnbwaiU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=imeh2gQy;
-	spf=pass (imf11.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tKEz2bV2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768448518;
+	s=arc-20220608; t=1768448842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MVQCjDWM4p7/HO/QYULMb9geDprLDOiFu5R6foDcOj0=;
-	b=exG8yIibTxJDsDVtQPlDR7J4lyw04263+DKo18+Q/jI5ElmVMbcD+H6Sf30ThrIQGx1ghf
-	L+lQkFFtFY53zvEw0Q6SwG2kzXPiKzmEgZ0GO8Jk/rmj6joY/YfeRWr0Gv0XYj7r8ExY2P
-	L3VIGGPAtu7VJwjBihDu+o8NJJKqUbw=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=MVQCjDWM4p7/HO/QYULMb9geDprLDOiFu5R6foDcOj0=;
-	b=imeh2gQyFkyUWsl5mFaJuNUGqN7XbF0qR8ILODVsp4Lb0q1mS5ISKDudG6BOgs/xEeqIGSDqb
-	t42QeVxLA1OtUYhGGmRj29WPtY3i3bJ2Cr1zNNwlp6rrKZJeuZTsckkgqpb3fl3ooAGGSLl0kjy
-	MXUdXoxcs/IAeMJhDvOzKFM=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4ds7xL30bfzRhRw;
-	Thu, 15 Jan 2026 11:38:30 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id B9AB0201E9;
-	Thu, 15 Jan 2026 11:41:50 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 15 Jan 2026 11:41:50 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 15 Jan 2026 11:41:49 +0800
-Subject: Re: [PATCH v3 3/3] mm/memory-failure: refactor page_handle_poison()
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: <nao.horiguchi@gmail.com>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <william.roche@oracle.com>,
-	<tony.luck@intel.com>, <wangkefeng.wang@huawei.com>, <jane.chu@oracle.com>,
-	<akpm@linux-foundation.org>, <osalvador@suse.de>, <muchun.song@linux.dev>,
-	<rientjes@google.com>, <duenwen@google.com>, <jthoughton@google.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <jackmanb@google.com>,
-	<hannes@cmpxchg.org>, <ziy@nvidia.com>, <harry.yoo@oracle.com>,
-	<willy@infradead.org>
-References: <20260112004923.888429-1-jiaqiyan@google.com>
- <20260112004923.888429-4-jiaqiyan@google.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <e996cec7-f2ed-38ae-3f8a-c89ef61ffa49@huawei.com>
-Date: Thu, 15 Jan 2026 11:41:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=6NuGNan8e6U/xEMs4AC1GrNFBgKW5vvEKh59uciMY3Y=;
+	b=sdizT2j8HZkw+AHj77zeRD44gocxoUVQirpcd7h5DqVMeaXBXKCkBHcmuCGf2ETl5LpGXU
+	mprtdVOMDmzeBizVKmMO0yDCgbB/+d6QFznYxVI9euBXGBW2uItYqJGQ5IzKGRXCZvnJlx
+	xzQhe0aMrpHlzXyWJF+RC0Z/RgWAXyI=
+Message-ID: <e01a57e0-abbb-4c40-8264-4a212a3ec07b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768448838;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NuGNan8e6U/xEMs4AC1GrNFBgKW5vvEKh59uciMY3Y=;
+	b=tKEz2bV2zbbzUWK/Uh6ApIMeNVExEvQkPTlpCS+spEHJMManJ6WHfiGERVFRctxWh0JjkH
+	UkV1pt8Fx0rr4WdRICo94O3tceJKGlwVAWW/jq+mjgOnDh+eBiaW3Pe/rvDMpMDBx1EH/V
+	mcjaoo/Z1D827V9Qdx73loLpPNqH9Dw=
+Date: Thu, 15 Jan 2026 11:47:06 +0800
 MIME-Version: 1.0
-In-Reply-To: <20260112004923.888429-4-jiaqiyan@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Subject: Re: [syzbot ci] Re: Eliminate Dying Memory Cgroup
+To: syzbot ci <syzbot+ci7d2110b831be06f6@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apais@linux.microsoft.com,
+ axelrasmussen@google.com, cgroups@vger.kernel.org, chengming.zhou@linux.dev,
+ chenridong@huawei.com, chenridong@huaweicloud.com, david@kernel.org,
+ hamzamahfooz@linux.microsoft.com, hannes@cmpxchg.org, harry.yoo@oracle.com,
+ hughd@google.com, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, mkoutny@suse.com,
+ muchun.song@linux.dev, nphamcs@gmail.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, songmuchun@bytedance.com, weixugc@google.com,
+ yosry.ahmed@linux.dev, yuanchu@google.com, zhengqi.arch@bytedance.com,
+ ziy@nvidia.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <6967cd38.050a0220.58bed.0001.GAE@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <6967cd38.050a0220.58bed.0001.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Stat-Signature: 8nn9rgc4qh39578edhwtn8nqagt56owe
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 522DC40008
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1768448516-986006
-X-HE-Meta: U2FsdGVkX1+xRT0habAHvYJxLYjSkRW6jlQNJc30TTYokraVDP1JrB7mdz+n6o3ex7VvkLSUTU3zfQ38yF8OXT9E4VAVzJOVLPc2ydV4TUzzV+3HVUZAoXzo23yZ+f7GVaq13YHzWiL0SwB/Aiy/hNmqlccabS3iwlRFckk0PCV0/mdUnLR2x8oaq1WJi0/CfdI7/c/KTLjle2Srov7cjSvoNpLIs8KNnO0k6In8jUpjzlTZlHYGEhSXbWyF8FhJz9F7/tzYKMxUUVU5EbgrHhVTVGZKsaFw6my1HRsqIFifAdt/UeGJJ//tJ9fgpsgflmBfxpx8qMD1AxBgec7zTIyVFFgUvqSYYkuA4CFWfRh+cAOWMNdD27+1XsX4NUfT1hLiL7B4K6+xrdveJQYmc2/Fu1UrVQRwegji/LsqMOtsalEDEavl9soEe3++E0iutUrjOq2wiuNvLU3wX6uwBn3PtSaASdZKAIeRczw6Y+vQw+ATS0MAlgb7idtG45JtEA1db55bsn664hizi3HZ8284KUSCmsUCEFnnmN2ZgPSFozdmRGAGO9GiC4DTfefe53WB9TZiEXsJiim+woyQlgNcjeOnw+mdGqBs4RW+zCHTZxn7om/z23gpn/lSzNzxDAL0L1Y7kXIHpmMwvWCdkk1nA2PTdKVuwdmiMaSPkaJ1krHu7sDlWJ65exRJXCXwgVDcvhuclpCmTw1vp9SshWDpViyOCIY2lFgxbcidDjkjKjiWZ/yqzVVeVRBlmM3m7N67q1GFKvvQ4MquitwT/vYuPlLmSd0Wcm4LGLKNZjVDunXDE/uikcdQFep9rzL+PFYiEQM4vL8gWu+YOolWSpu69N7NjRFVnU7wfHIDXva8Cj5covqO71Y/fIcVUOpK2Cdc7FO9CPzK9QVtpVtpbHwqltJjQBCG7SEZQwM20BNSZLmBpN9L/4kkoAY/sBuhUQdRFmqYSeFJU/yG0kF
- 7GWbgysW
- q7p0H6NWui2nVSQBboZEb3Iq97x4k/P29F3rXsem3GWL53VJtdyY8axOt0eyHSQzmsJBnUyWUlVo8yyrweVHWSw/muy78eqEyRC+k8Tki1tAFEP2z/xB0OlHUrwPV5B+yOzriCPLYgMTaaqGEMqGqt4tSBT3dU+2zGFDGjVLzDs4ny91jYVgYIz3mMPOCw8LFB5irSDEhOXmE8QIhziaVYzbEAZ15euCwm7U+LbXinU8Gu65p5HwR3WNyjmnNsq51MsW84XiwNhDy5V8F5NxL6U2vYiV0lxVNyIgHMQWskRVCVTlEWbbgIZhN3iH2q4bLIzOOggoQIInzeZ2VzGSBq5hI9g6z//Qn6FpANdhFfxgKVcjdhe1op8gnJZGYZTpiFKaLKgt4j6EopTdNoxQ5BbNMaUiXhVllHwgNkufDCtgSpb0=
+X-Stat-Signature: o1w71kk6qxqedjpc7k71f61qgwtmxz95
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9F2D6C000A
+X-HE-Tag: 1768448840-148744
+X-HE-Meta: U2FsdGVkX1+Z/ptvmkjoTVGT3d4vc2YJQ//TL3xEC3R6fcdcLjgkpCLaHLDzyXbrNk3tT9wtBgNXKz1lXh3djMyD8XUdrmfKwHDuP7B/f0dgl/g7llIyDw0pctEJQntnmOaTAZCceRZ73ISNVbdhG5MxdkhUQQWix9I92iT0tNY8s021GWQYRFeiocJNfFAvylrW+mXu8SSpefslLCJTl9KNey1mFF/HuYPZ+HEuD0MtG1JOA2ErMzBO1cMA5FpYklTvH3DKF05cTCNjgU9V2jH8pIbmlh+8GwkANoBfrFKpaTCoI/ECZwedyeLHcR5NXi+FWhjZL5LByfcFuOYSYqZNlQ0tVFBYeAoRImPKFDAMS76EYRxO7C6Ahp6YxRacbPONfqUMSMXPqaMDVzrM0wzj5TALUP/Y4jJQU1h7hPCv5Kbo/wu7L8nyXLlbQkoohLM+bP29OSSs51ZpsriDIbD3FOZbpEiRyrZYtlG0XMF2qtpthdti30YtSI64kv8RxtXbrKJMQaNA/xq4z1gJA9+yAAwWnt3AFfBUqRfkY59D2463A/iBQlhaHwmi/EmY22sxyhJfH0n8YsiaZh/nvVULn6KnqBoAopFLcy4nYJyXjQbVt47zKAjSoQ1V1K6sHjGYsJqbsidmphKdQVu9Wc2NN1v/NLqWkVN6FghTixAQKc8imLcqfNJF4zBXtgmic8SgL5lZi+fyH2z1BSCR7xpaVBYJ6luEFKJSUEjF0U0EuMFfwkcorc9QkzIlfEpfgpZ8LPk26KCvGQC4lFvLZzU4pyUGuI38F77F7t8Vk9PGKKsdtidXF5wYWDCFTWhIVyBjJothCq+sU6UzvJ1cX+BJhlgvtBt+69xHcei7NF036X2W2Ygj+L0Ydmg/a8prS8wLxKLZXEKNuk1loPxTdDRDcdvX67Gjru/niNQJYPR0meCj+U/2PDh4tv5bEZMTkTef5qdzrrs/o8JP+7U
+ Im0gCWJ8
+ SKakIFIjHqqvGXY6XFRZNJ6/f6Y8R3ES8eN5adgokcQWd5dyUzK0u1hK7436IsMAcL6DgErF2RNIYLpLj+XR2v3vcsE8RbqxwGuPVEWvKoo5GkES5AqjGZk34CeMti5NA2QMqRhYrRrXNIBeldw+5CDJZi6KSkEiUlQYZrKBPmt/gGOjXdeYGtZxsCWRxK24YcuaRSHNRXJA/J48ET+T8za/NaNUwT92n4msFgr/FJElRKioL+HMpfH5LwO75DqeFTz1/v2vaYrqbBI9AmdnB2B/O1kz0dzvza2qL7BvItx1jydtmlAKyssFUceVYiydM5aI7JcSMebs3PX3Yqminwpd/mBNeJI5NQTPRgbUlWuzeUOXuneSWMbTa+PYga2gPnbawcz1OvixBT1N2UaLSANnF/5AQtSipkv/VmxCI3XrRhZ0kb3oGSZ6q+li+eY44fs01oHm45Xbi986kShllyMnffKHaPqTIhGdBwyVQH4dzy5jlc1XvoV0Nq1uRhZke7bI8Xs18FygHUdjMRpGvJeKTsGBT+wNea6okXYB8hsZRmRnuXcABrLERbi5kXtZrJYPr/NzALzbg0R9ae5AmbIrQAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,220 +99,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/1/12 8:49, Jiaqi Yan wrote:
-> Now that HWPoison page(s) within HugeTLB page will be rejected by
-> buddy allocator during dissolve_free_hugetlb_folio(), there is no
-> need to drain_all_pages() and take_page_off_buddy() anymore. In fact,
-> calling take_page_off_buddy() after dissolve_free_hugetlb_folio()
-> succeeded returns false, making caller think page_handl_poion() failed.
 
-s/page_handl_poion/page_handle_poison/
 
+On 1/15/26 1:07 AM, syzbot ci wrote:
+> syzbot ci has tested the following series
 > 
-> On the other hand, for hardware corrupted pages in buddy allocator,
-> take_page_off_buddy() is still a must-have.
+> [v3] Eliminate Dying Memory Cgroup
+> https://lore.kernel.org/all/cover.1768389889.git.zhengqi.arch@bytedance.com
+> * [PATCH v3 01/30] mm: memcontrol: remove dead code of checking parent memory cgroup
+> * [PATCH v3 02/30] mm: workingset: use folio_lruvec() in workingset_refault()
+> * [PATCH v3 03/30] mm: rename unlock_page_lruvec_irq and its variants
+> * [PATCH v3 04/30] mm: vmscan: prepare for the refactoring the move_folios_to_lru()
+> * [PATCH v3 05/30] mm: vmscan: refactor move_folios_to_lru()
+> * [PATCH v3 06/30] mm: memcontrol: allocate object cgroup for non-kmem case
+> * [PATCH v3 07/30] mm: memcontrol: return root object cgroup for root memory cgroup
+> * [PATCH v3 08/30] mm: memcontrol: prevent memory cgroup release in get_mem_cgroup_from_folio()
+> * [PATCH v3 09/30] buffer: prevent memory cgroup release in folio_alloc_buffers()
+> * [PATCH v3 10/30] writeback: prevent memory cgroup release in writeback module
+> * [PATCH v3 11/30] mm: memcontrol: prevent memory cgroup release in count_memcg_folio_events()
+> * [PATCH v3 12/30] mm: page_io: prevent memory cgroup release in page_io module
+> * [PATCH v3 13/30] mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
+> * [PATCH v3 14/30] mm: mglru: prevent memory cgroup release in mglru
+> * [PATCH v3 15/30] mm: memcontrol: prevent memory cgroup release in mem_cgroup_swap_full()
+> * [PATCH v3 16/30] mm: workingset: prevent memory cgroup release in lru_gen_eviction()
+> * [PATCH v3 17/30] mm: thp: prevent memory cgroup release in folio_split_queue_lock{_irqsave}()
+> * [PATCH v3 18/30] mm: zswap: prevent memory cgroup release in zswap_compress()
+> * [PATCH v3 19/30] mm: workingset: prevent lruvec release in workingset_refault()
+> * [PATCH v3 20/30] mm: zswap: prevent lruvec release in zswap_folio_swapin()
+> * [PATCH v3 21/30] mm: swap: prevent lruvec release in lru_gen_clear_refs()
+> * [PATCH v3 22/30] mm: workingset: prevent lruvec release in workingset_activation()
+> * [PATCH v3 23/30] mm: do not open-code lruvec lock
+> * [PATCH v3 24/30] mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
+> * [PATCH v3 25/30] mm: vmscan: prepare for reparenting traditional LRU folios
+> * [PATCH v3 26/30] mm: vmscan: prepare for reparenting MGLRU folios
+> * [PATCH v3 27/30] mm: memcontrol: refactor memcg_reparent_objcgs()
+> * [PATCH v3 28/30] mm: memcontrol: prepare for reparenting state_local
+> * [PATCH v3 29/30] mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios
+> * [PATCH v3 30/30] mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
 > 
-> Given hugepage and free buddy page should be treated differently,
-> refactor page_handle_poison() and __page_handle_poison():
+> and found the following issue:
+> UBSAN: array-index-out-of-bounds in reparent_memcg_lruvec_state_local
 > 
-> - __page_handle_poison() is unwind into page_handle_poison().
+> Full report is available here:
+> https://ci.syzbot.org/series/45c0b58d-255a-4579-9880-497bdbd4fb99
 > 
-> - Callers of page_handle_poison() also need to explicitly tell if
->   page is HugeTLB hugepage or free buddy page.
+> ***
 > 
-> - Add helper hugepage_handle_poison() for several existing HugeTLB
->   specific callsites.
+> UBSAN: array-index-out-of-bounds in reparent_memcg_lruvec_state_local
 > 
-> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> tree:      linux-next
+> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+> base:      b775e489bec70895b7ef6b66927886bbac79598f
+> arch:      amd64
+> compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> config:    https://ci.syzbot.org/builds/4d8819ab-0f94-42e8-bd70-87c7e83c37d2/config
+> syz repro: https://ci.syzbot.org/findings/7850f5dd-4ac7-4b74-85ff-a75ddddebbee/syz_repro
+> 
+> ------------[ cut here ]------------
+> UBSAN: array-index-out-of-bounds in mm/memcontrol.c:530:3
+> index 33 is out of range for type 'long[33]'
+
+Oh, the size of lruvec_stats->state_local is NR_MEMCG_NODE_STAT_ITEMS,
+but memcg1_stats contains MEMCG_SWAP, which is outside the array range.
+
+It seems that only the following items need to be reparented:
+
+1). NR_LRU_LISTS
+2). NR_SLAB_RECLAIMABLE_B + NR_SLAB_UNRECLAIMABLE_B
+
+But for 2), since we reparented the slab page a long time ago, it seems
+there has always been a problem. So this patchset will only handle 1).
+
+
+> CPU: 1 UID: 0 PID: 31 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+> Workqueue: cgroup_offline css_killed_work_fn
+> Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+>   ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
+>   __ubsan_handle_out_of_bounds+0xe8/0xf0 lib/ubsan.c:455
+>   reparent_memcg_lruvec_state_local+0x34f/0x460 mm/memcontrol.c:530
+>   reparent_memcg1_lruvec_state_local+0xa7/0xc0 mm/memcontrol-v1.c:1917
+>   reparent_state_local mm/memcontrol.c:242 [inline]
+>   memcg_reparent_objcgs mm/memcontrol.c:299 [inline]
+>   mem_cgroup_css_offline+0xc7c/0xc90 mm/memcontrol.c:4054
+>   offline_css kernel/cgroup/cgroup.c:5760 [inline]
+>   css_killed_work_fn+0x12f/0x570 kernel/cgroup/cgroup.c:6055
+>   process_one_work+0x949/0x15a0 kernel/workqueue.c:3279
+>   process_scheduled_works kernel/workqueue.c:3362 [inline]
+>   worker_thread+0x9af/0xee0 kernel/workqueue.c:3443
+>   kthread+0x388/0x470 kernel/kthread.c:467
+>   ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+>   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+>   </TASK>
+> ---[ end trace ]---
+> Kernel panic - not syncing: UBSAN: panic_on_warn set ...
+> CPU: 1 UID: 0 PID: 31 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+> Workqueue: cgroup_offline css_killed_work_fn
+> Call Trace:
+>   <TASK>
+>   vpanic+0x1e0/0x670 kernel/panic.c:490
+>   panic+0xc5/0xd0 kernel/panic.c:627
+>   check_panic_on_warn+0x89/0xb0 kernel/panic.c:377
+>   __ubsan_handle_out_of_bounds+0xe8/0xf0 lib/ubsan.c:455
+>   reparent_memcg_lruvec_state_local+0x34f/0x460 mm/memcontrol.c:530
+>   reparent_memcg1_lruvec_state_local+0xa7/0xc0 mm/memcontrol-v1.c:1917
+>   reparent_state_local mm/memcontrol.c:242 [inline]
+>   memcg_reparent_objcgs mm/memcontrol.c:299 [inline]
+>   mem_cgroup_css_offline+0xc7c/0xc90 mm/memcontrol.c:4054
+>   offline_css kernel/cgroup/cgroup.c:5760 [inline]
+>   css_killed_work_fn+0x12f/0x570 kernel/cgroup/cgroup.c:6055
+>   process_one_work+0x949/0x15a0 kernel/workqueue.c:3279
+>   process_scheduled_works kernel/workqueue.c:3362 [inline]
+>   worker_thread+0x9af/0xee0 kernel/workqueue.c:3443
+>   kthread+0x388/0x470 kernel/kthread.c:467
+>   ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+>   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+>   </TASK>
+> Kernel Offset: disabled
+> Rebooting in 86400 seconds..
+> 
+> 
+> ***
+> 
+> If these findings have caused you to resend the series or submit a
+> separate fix, please add the following tag to your commit message:
+>    Tested-by: syzbot@syzkaller.appspotmail.com
+> 
 > ---
->  mm/memory-failure.c | 84 ++++++++++++++++++++++-----------------------
->  1 file changed, 41 insertions(+), 43 deletions(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index d204de6c9792a..1fdaee1e48bb8 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -162,54 +162,48 @@ static struct rb_root_cached pfn_space_itree = RB_ROOT_CACHED;
->  
->  static DEFINE_MUTEX(pfn_space_lock);
->  
-> -/*
-> - * Return values:
-> - *   1:   the page is dissolved (if needed) and taken off from buddy,
-> - *   0:   the page is dissolved (if needed) and not taken off from buddy,
-> - *   < 0: failed to dissolve.
-> +/**
-> + * Handle the HugeTLB hugepage that @page belongs to. Return values:
-> + *   = 0: the hugepage is free hugepage and is dissolved.
-
-In soft offline scene, dissolve_free_hugetlb_folio would return 0 when the page becomes
-a normal page due to race.
-
-> + *   < 0: hugepage is in-use or failed to dissolve.
->   */
-> -static int __page_handle_poison(struct page *page)
-> +static int hugepage_handle_poison(struct page *page)
->  {
-> -	int ret;
-> +	return dissolve_free_hugetlb_folio(page_folio(page));
-> +}
-> +
-> +/**
-> + * Helper at the end of handling @page having hardware errors.
-> + * @huge: @page is part of a HugeTLB hugepage.
-> + * @free: @page is free buddy page.
-> + * @release: memory-failure module should release a pending refcount.
-> + */
-> +static bool page_handle_poison(struct page *page, bool huge, bool free,
-> +			       bool release)
-> +{
-> +	int ret = 0;
->  
->  	/*
-> -	 * zone_pcp_disable() can't be used here. It will
-> -	 * hold pcp_batch_high_lock and dissolve_free_hugetlb_folio() might hold
-> -	 * cpu_hotplug_lock via static_key_slow_dec() when hugetlb vmemmap
-> -	 * optimization is enabled. This will break current lock dependency
-> -	 * chain and leads to deadlock.
-> -	 * Disabling pcp before dissolving the page was a deterministic
-> -	 * approach because we made sure that those pages cannot end up in any
-> -	 * PCP list. Draining PCP lists expels those pages to the buddy system,
-> -	 * but nothing guarantees that those pages do not get back to a PCP
-> -	 * queue if we need to refill those.
-> +	 * Buddy allocator will exclude the HWPoison page after hugepage
-> +	 * is successfully dissolved.
->  	 */
-> -	ret = dissolve_free_hugetlb_folio(page_folio(page));
-> -	if (!ret) {
-> +	if (huge)
-> +		ret = hugepage_handle_poison(page);
-> +
-> +	if (free) {
-
-Nit: huge and free won't be both true. So we could write it as:
-	if (huge) {
-		...
-	} else if (free) {
-
->  		drain_all_pages(page_zone(page));
-> -		ret = take_page_off_buddy(page);
-> +		ret = take_page_off_buddy(page) ? 0 : -1;
->  	}
->  
-> -	return ret;
-> -}
-> -
-> -static bool page_handle_poison(struct page *page, bool hugepage_or_freepage, bool release)
-> -{
-> -	if (hugepage_or_freepage) {
-> +	if ((huge || free) && ret < 0)
-
-Nit: ret won't be <0 if both huge and free are false. So I think we might simplify it as:
-
-	if (ret < 0)
-
->  		/*
-> -		 * Doing this check for free pages is also fine since
-> -		 * dissolve_free_hugetlb_folio() returns 0 for non-hugetlb folios as well.
-> +		 * We could fail to take off the target page from buddy
-> +		 * for example due to racy page allocation, but that's
-> +		 * acceptable because soft-offlined page is not broken
-> +		 * and if someone really want to use it, they should
-> +		 * take it.
->  		 */
-> -		if (__page_handle_poison(page) <= 0)
-> -			/*
-> -			 * We could fail to take off the target page from buddy
-> -			 * for example due to racy page allocation, but that's
-> -			 * acceptable because soft-offlined page is not broken
-> -			 * and if someone really want to use it, they should
-> -			 * take it.
-> -			 */
-> -			return false;
-> -	}
-> +		return false;
->  
->  	SetPageHWPoison(page);
->  	if (release)
-> @@ -1174,7 +1168,7 @@ static int me_huge_page(struct page_state *ps, struct page *p)
->  		 * subpages.
->  		 */
->  		folio_put(folio);
-> -		if (__page_handle_poison(p) > 0) {
-> +		if (!hugepage_handle_poison(p)) {
->  			page_ref_inc(p);
->  			res = MF_RECOVERED;
->  		} else {
-> @@ -2067,7 +2061,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
->  	 */
->  	if (res == 0) {
->  		folio_unlock(folio);
-> -		if (__page_handle_poison(p) > 0) {
-> +		if (!hugepage_handle_poison(p)) {
->  			page_ref_inc(p);
->  			res = MF_RECOVERED;
->  		} else {
-> @@ -2815,7 +2809,7 @@ static int soft_offline_in_use_page(struct page *page)
->  
->  	if (ret) {
->  		pr_info("%#lx: invalidated\n", pfn);
-> -		page_handle_poison(page, false, true);
-> +		page_handle_poison(page, false, false, true);
->  		return 0;
->  	}
->  
-> @@ -2836,7 +2830,7 @@ static int soft_offline_in_use_page(struct page *page)
->  		if (!ret) {
->  			bool release = !huge;
->  
-> -			if (!page_handle_poison(page, huge, release))
-> +			if (!page_handle_poison(page, huge, false, release))
-
-This might not work for soft offline. PageHWPoison is not yet set so folio_clear_hugetlb_hwpoison
-won't be called when dissolve hugetlb hugepages...
-
->  				ret = -EBUSY;
->  		} else {
->  			if (!list_empty(&pagelist))
-> @@ -2884,6 +2878,8 @@ int soft_offline_page(unsigned long pfn, int flags)
->  {
->  	int ret;
->  	bool try_again = true;
-> +	bool huge;
-> +	bool free;
->  	struct page *page;
->  
->  	if (!pfn_valid(pfn)) {
-> @@ -2929,7 +2925,9 @@ int soft_offline_page(unsigned long pfn, int flags)
->  	if (ret > 0) {
->  		ret = soft_offline_in_use_page(page);
->  	} else if (ret == 0) {
-> -		if (!page_handle_poison(page, true, false)) {
-> +		huge = folio_test_hugetlb(page_folio(page));
-
-folio_test_hugetlb check is racy because there's no guarantee that hugetlb hugepage won't
-be dissolved before calling page_handle_poison. That will lead to problem...
-
-soft_offline_page
-  folio_test_hugetlb -- true now
-  page_handle_poison
-  /* Hugepage is dissolved somewhere. */
-    hugepage_handle_poison -- return 0 because page is normal page or free buddy page.
-    SetPageHWPoison(page);
-    page_ref_inc(page); -- refcnt is increased while page might be on buddy...
-
-> +		free = is_free_buddy_page(page);
-> +		if (!page_handle_poison(page, huge, free, false)) {
-
-We assume free is always true due to ret is 0. So we can write it as:
-	if (!page_handle_poison(page, huge, true, false)) {
-
->  			if (try_again) {
->  				try_again = false;
->  				flags &= ~MF_COUNT_INCREASED;
-> 
-
-Thanks.
-.
+> This report is generated by a bot. It may contain errors.
+> syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
 
