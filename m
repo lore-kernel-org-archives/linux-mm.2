@@ -4,74 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF84ED46617
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 191CED46617
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 540976B00F4; Thu, 15 Jan 2026 15:05:20 -0500 (EST)
+	id 7FB846B0005; Thu, 15 Jan 2026 15:06:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EE386B00F6; Thu, 15 Jan 2026 15:05:20 -0500 (EST)
+	id 7C6476B008A; Thu, 15 Jan 2026 15:06:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A59A6B00F8; Thu, 15 Jan 2026 15:05:20 -0500 (EST)
+	id 67D296B008C; Thu, 15 Jan 2026 15:06:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D536B00F4
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:05:20 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ECB3BB9A6E
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:05:19 +0000 (UTC)
-X-FDA: 84335277558.13.871746A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 11D60100004
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:05:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZTa8MIJd;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 594016B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:06:04 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1314B13B0BF
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:06:04 +0000 (UTC)
+X-FDA: 84335279448.11.444AD26
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 450601C0011
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:06:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O9u0J1eI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768507561; a=rsa-sha256;
+	cv=none;
+	b=7XyG2QE3BA0riKPTg6cbiPGsC8Au5E8VqlX3KRouEDo+fqt2yDv3c0UNLAxxMh66Q8vjzW
+	cFLFqs5siU533zqg3RkEI5mQV4kiddMSoTPtkEw/mr81P9EgBO+5k+gyhZ1NtwtsKJ5sNA
+	FnIpf+xw8j1txEihCjvcPyTl/wzhXZI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O9u0J1eI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768507518;
+	s=arc-20220608; t=1768507561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kfSKNyz3xqAjIF1ki0fwiUUCENKT9VvGXQQbY+rUZVo=;
-	b=5V4QCN9Xoc3n6/lP1CPMZbqHgiwjmvK2Mk/dfDayeVm+OtNJ5AJkJOZFN+2r4VP5i8XdRg
-	Ayi8+NNTc4kWXADrIGi3EnEdlJUcDxQeCxSVEUSGkpC3ujbikS0rITA2xaPcAOo0WXRM/P
-	Y/BA4unhT6WxAN8AmTrT62xtnkm0fb8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768507518; a=rsa-sha256;
-	cv=none;
-	b=VlBpdv3zZYp4ACK+aMU9veDbzcKClIIejlYBrgp7eXQP4h0gXV5BENjac4B7ZFI8tD067J
-	bD9haVMlkBq3vjKBbd1L2SFj3SCsWIqlCb8UGK72S9sxelHqLdB7AZVLPAG0N1j7TrjF9X
-	sn1SJCNR8zveF6I02E7TsR6nF7dlNXY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZTa8MIJd;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=QR2Dgkytc5b38WGCVddUEiIlmC4atoWY0t2oKu1M+lk=;
+	b=UkPHSjXgt551Gwnx6pqArm/7sDShMKd+MglEsT5NZf7FRgLFEuAy4XbAP3DGCZzJUS708I
+	5bJKUIJ80heZOhl75a2fVTfMUC0a0Y9BDYkJ95uPTsZy1qy2fII/rh1m+ntnE0RiFrUvXT
+	VvWcxggCIHO24xYieE4cAXHV5ezIgPg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E324742A52;
-	Thu, 15 Jan 2026 20:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28F2C116D0;
-	Thu, 15 Jan 2026 20:04:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D2A160167;
+	Thu, 15 Jan 2026 20:06:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916F3C16AAE;
+	Thu, 15 Jan 2026 20:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768507516;
-	bh=lQjunlFmWyMO2lfyt6MHYKOuxFN86jW9uoYrdok36A8=;
+	s=k20201202; t=1768507560;
+	bh=/Lm/cQ9KIdEqaaWKki03cmuum9MrucbonYVIjYH818M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZTa8MIJdGFVQHgLEluZ/7czewla0UppxdIHdajnxQJ86ydTVGfwKSu4XthtERI+Vz
-	 S7jrcXlBas27eS2MD4ilzRDMMXPl6T6E9jYdkN/V3bG/5qyCeBpbvRRFaNhMqR87Hm
-	 yrOWl7tr7bFwfCbSmttXaEGvHuYhAhBIYs9iTNdkypXcZ/3ehKbdUJ5MQS1tZScIOZ
-	 Lz9G5U6aHuy7cuX5bsreQjYhVzcGgutkYcdoBCPkgmmWwt3c+xpapY6koSIGNeH02C
-	 QufrTuCkot6ZMrQ56wj3oSRSVREgueyuJyGpm1FzrzpV7YI01LIlEB9EnK1pBzpzlg
-	 IStbdOwUJqRaA==
-Message-ID: <e00da5d6-3589-481d-adb0-6c57e727486b@kernel.org>
-Date: Thu, 15 Jan 2026 21:04:53 +0100
+	b=O9u0J1eIRihxKr5zUB4ypIjP14vCCSOt21wOcHu1CjjTUe4M2/FwpBFEeZFhTeiiN
+	 JpaYWCpuQfRoQvHUmsJSQ/x4Gem9BP4aeYu0ESw4FG+nbCfU2XB1eb42KSzHf0CChu
+	 /w/MGvvPPKIB1faCQ/snYVf2ogs3ndSI1dQgZpekp6GnmHaXSVwAD8G7R6tlxlWqWr
+	 8QpKSe0qBPrxHhF3H5cwPuTQVeobV4EG/CoX7uWK8O31hJINQw1IlbbCxfZ4SKLqWE
+	 s6odfsHBjSloFK+AYdCE8jAWn9P5kaxB/0XRHh6xgj1z3nFOrjdQx6FsL25eGM5OIK
+	 2KevP7wjRCs+w==
+Message-ID: <2219ec0f-edc4-4267-b251-ee060fd951e2@kernel.org>
+Date: Thu, 15 Jan 2026 21:05:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 02/13] mm/gup: drop secretmem optimization from
- gup_fast_folio_allowed
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+Subject: Re: [PATCH v9 01/13] set_memory: add folio_{zap, restore}_direct_map
+ helpers
+To: kalyazin@amazon.com, Matthew Wilcox <willy@infradead.org>,
+ "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  "linux-arm-kernel@lists.infradead.org"
@@ -84,9 +85,9 @@ To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
  "kernel@xen0n.name" <kernel@xen0n.name>,
  "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
  "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
+ "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+ <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
  "oupton@kernel.org" <oupton@kernel.org>,
  "joey.gouly@arm.com" <joey.gouly@arm.com>,
  "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
@@ -99,7 +100,6 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
  "luto@kernel.org" <luto@kernel.org>,
  "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
  "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
  "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
  "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
@@ -154,7 +154,9 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
  <xmarcalx@amazon.co.uk>
 References: <20260114134510.1835-1-kalyazin@amazon.com>
- <20260114134510.1835-3-kalyazin@amazon.com>
+ <20260114134510.1835-2-kalyazin@amazon.com>
+ <aWkN4yzwPtotaTeq@casper.infradead.org>
+ <34b246e9-0f7a-4ed6-9e43-845c4238bf41@amazon.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -200,17 +202,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260114134510.1835-3-kalyazin@amazon.com>
+In-Reply-To: <34b246e9-0f7a-4ed6-9e43-845c4238bf41@amazon.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 11D60100004
+X-Rspamd-Queue-Id: 450601C0011
+X-Rspamd-Server: rspam06
+X-Stat-Signature: fn937oy6y9o6cao8zfef5qfrjbccdgmg
 X-Rspam-User: 
-X-Stat-Signature: eakt1hh4y3pj1713mmtufusgqfpxardr
-X-HE-Tag: 1768507517-121699
-X-HE-Meta: U2FsdGVkX19GXUmKoPK4U7O+cWgzmJVs8he4LVsaIUJenePdBYOsUQk+FWxTN7sPo2iEdcKgbQhWuZxfQ2jkawG0ddgWR6wfHWDtjEhJBF1duEY531JVWvNbhiAe6ZA74URY//kILh4pqdW5Z18aix0AlI4b/sHGwbIG/nJt3QDP2D36QspOhU0XK1nknWXpNdv4M71glZiHs/d3u/C+nAcrKE0NxUWU9Jl4Ou76eB9PVgZ4ca9eEFH4Y2Z3iNA82Z0UOG3DilHSt0fnHEvE1JbA7w/ZM206cRC/uxi8xd7LuEnRtq6MZNzW8faITuwPGotMNAsHMd58VMFnjV+0ZyJsNGIilKfmi7ub6U/c3S2W4HYOJnBGdMPStNKEeGkXz+vIrnqaka1xfcWp54SV5DWu2HRueJHWFBVr9f7O/IoSEuJdL/qDHwzdvT4kldq3tsbLDICzMstyiXTZ/L9OB7L6TNgGnpIJFKLKVK1KM9wY4RO8V1aXnzntOjJfy0+d4gsnqIFoPy2w9DqUCaZUnxAZ0gD4R9hE1mVuIeoontNC3xKhmu7vppY6KBl19HhEVVXXx1WOKSwCgdJk4Nq+3Z4jXB/8bRrJWliAn+TO+fqxYCSlQg5AlJCtRQA/1DkU1R+QHZyGpadjqQ4HmQusL0IfnDdeVWolFkayC7JXDRPTiI2FD1zbDm3+gP4OG20OYDdsOm9d+5Ok0Z34Q6Wu23N9DAnc4k8F2HyS0Nepdpw0A9HS6ugORd/WPTtQcAxsuVxPXhXwjcuxK/Fr82tU7z9wpcGktp67X4jyQP5H4ePGuxQDcpAf+6XCJIt9cogI8Ft68t9g+sLiE+TrPVnfeT+215C0OJL1KUD74POpLqb3Pcx/l6pXNbLtOqRlp5u7D4rixfji33IBvCc26VGLeKdeZY7yXGxyYxCgf8wOnIoKbDmL9kDwdTWoA83TIeLMQ9JkJOZBDBSkK+uoqhy
- MjCQqXm8
- oitsQ3iziPuPj/x0uv5bZL3/DoqalZgaXliQ945Hy/H4oWn3GEd7y24SJPwv/FpL1d8XsCf63P64q7wyi1riJQZr6vU9zXAGJ2cFwjcLCDd/ZbjUU2MLGpdn4V3mjbc0PnWnI+zz3LKStJzANO4SewVbFHx+qdwdtxid8PoUEOfhj6UwrssI0y83br2LzYkQE1PWcDrNU1k2VvqJV3324AzCurwGRLZMPqX54EkiVZgzHlu18Q0Axop5D2G/7v6lzn3lrIylOKxZQyJzChPgu1+ta9kd0+7mX+tN1srHYB6iUej3cgtohknrlzR45/XsNIFhKIdBnZVH0nrLmIjVBSuraNSOIe5t58diBAXeJXIs0dCj2rS4wGLm6MbQp7tJJpr2sJdoFwaqEt38rItYvJsaq3wOBbgLo0sEE9VBWpfQgdSjM5cwPDRJ9xXLGmzm2/gC2YgzJyZlpmC4oaaVn+R31Gw==
+X-HE-Tag: 1768507561-77066
+X-HE-Meta: U2FsdGVkX1/IXE0mb+M1P6//k+DJ9GnOSa/H/gFuZQiM+mY9pbeaEnPBQXG4d6on2NoCHA2iF5dnnaw5DigntJ27btsG1aRwlfNvz128ynU4kJK4SdCRj+GVs8Yn6/8DzD7KBksIK2pgWbqn51n4Npgvl0Hbw3Kf3Dp5S1nEtKyTTy0pCnNb+fSC78qPi9mRt3qsNyS/DYS01dtggFkD+aZNXufgHz6J38FLyNbJ70Z7tl+ZJk4xIMZQXvgrK5l6f+cU653lGQ8GpR2kKjWJx3q1iFkIm89qkuUEkdtP1M8InfpAI4z3OLfEdHAUmQs8ckfqsexIau4XsB6u1K9tyvsJnNpHUOdI3qJxw45S5i5Sbt+s2hLcrBgm8rLIdNXFjuE8wKMNMXeMmx2AMohkNmuwWezsESPjW0vCWr+wjRfA3NuSJ4BxiS8NS5lqiQDdQCeYS4TJBqW2y+izo0KuuI81jADcu2V5/7BWaDZpuAc3mXfgX6JcOiq/kMJTBIpjjVXFvFlnU8Yutm2I3HUhIuqppedszNURGakB1zgAsshFYnI2L5uQxZvsLtIoGFML+wweIDymVlez6mXwxegxds0ckn9xSLlWV/hamayxr0MB0qZ+3peQ8Vkzab2U9vI5vXORbJALp793qryIFXxykSim2PetemnH6DfWBcyKcjQbEG4wXMvhLXkmVHpeaEaOpFsVWU/Y2ezeYvW2B9KR2U2JKYey5qhZKJX0Rmfsso6n9128zaiHduathVPmNgXyKI5lKNVK5FTVdEkV0D/f5vCbOYAHlOoZ/iZ0NGey4b3yARSsvSn/N8xMjxIOFXkZjs5YkMrdkhNkOMUk38pfpJGk2OSMkYx+JNVriBdXEbLyoaw5g67nXR11BDGTrRdQRsnKaebUFIa03/WJKk2NCKtyMQflZQ+RQLo+i223NzacY5oZEZHQL4gzgi7xXwqAX2ueqOtreOiCeYEY8l3
+ t93oWn0P
+ JXJKlsR91b4IoQjrjJhKmMaYaOY/BN8ddmdaJlzRH/EJI3hje8Ren49iIGZ7dLQM2HaNF3P1IPSCz5BwEJ05Na5WWFq4mHrduosafyzoNn0Ndsb0vJ3ANpOuMVYe2qwZTzyfRGd8qYfn8qyEBhGbDQjBViVSCbWvFyv2tDXUFLwDP00dEv75UVUxiyGwPRnEq4YNNvfsMxhzyTvk5otYWb7bswSvjgga1rVW9or3C7ecRKdlILJHa7zLX4cPTz+JAAsVHfcmqW3RVIEo9Gmo5AzuEC62Y5VIpd4L6eJ+Ui5tVbTaUqPTzHlBDNV1bXYnnWyKlOJ9KQ/OV2VsATkLuOzrQS599/8NwLkgCwpb97iktNbaf1UvBvkFppcTyHZSX089/tpKCzvboOAjAYw8Ld6VG4M4fIEL/rgfv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,26 +221,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/14/26 14:45, Kalyazin, Nikita wrote:
-> From: Patrick Roy <patrick.roy@linux.dev>
+On 1/15/26 18:45, Nikita Kalyazin wrote:
 > 
-> This drops an optimization in gup_fast_folio_allowed() where
-> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
-> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
-> by default"), so the secretmem check did not actually end up elided in
-> most cases anymore anyway.
 > 
-> This is in preparation of the generalization of handling mappings where
-> direct map entries of folios are set to not present.  Currently,
-> mappings that match this description are secretmem mappings
-> (memfd_secret()).  Later, some guest_memfd configurations will also fall
-> into this category.
+> On 15/01/2026 15:55, Matthew Wilcox wrote:
+>> On Wed, Jan 14, 2026 at 01:45:23PM +0000, Kalyazin, Nikita wrote:
+>>> +int folio_zap_direct_map(struct folio *folio)
+>>> +{
+>>> +     return set_direct_map_valid_noflush(folio_page(folio, 0),
+>>> +                                         folio_nr_pages(folio), false);
+>>> +}
+>>
+>> The implementation isn't the greatest.  None of the implementations
+>> of set_direct_map_valid_noflush() actually do anything with the struct
+>> page; they all call page_address() or page_to_virt() (fundamentally the
+>> same thing).  So converting folio->page->address is a bit inefficient.
+>>
+>> It feels like we should change set_direct_map_valid_noflush() to take a
+>> const void * and pass either page_address() or folio_address(), depending
+>> whether the caller has a page or a folio.  What do you think?
 > 
-> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+> I have nothing against that.  execmem_set_direct_map_valid() appears to
+> be the only other user of set_direct_map_valid_noflush() so it isn't
+> going to be a broad change.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Makes perfect sense to me :)
 
 -- 
 Cheers
