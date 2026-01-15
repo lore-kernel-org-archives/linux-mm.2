@@ -4,116 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45195D46606
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDD63D46607
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:45:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7E656B0088; Thu, 15 Jan 2026 12:42:48 -0500 (EST)
+	id 16E7B6B0088; Thu, 15 Jan 2026 12:45:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A28E96B0089; Thu, 15 Jan 2026 12:42:48 -0500 (EST)
+	id 11CA96B0089; Thu, 15 Jan 2026 12:45:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 955C06B008A; Thu, 15 Jan 2026 12:42:48 -0500 (EST)
+	id 01F176B008A; Thu, 15 Jan 2026 12:45:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 878BF6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:42:48 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40E271A041D
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:42:48 +0000 (UTC)
-X-FDA: 84334918416.23.F95E45A
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A63DA8000C
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:42:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="BKjh/WYK";
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E75566B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:45:49 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8FBA7140414
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:45:49 +0000 (UTC)
+X-FDA: 84334926018.06.29192E1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A6F8C180004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:45:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nYJy6A9T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768499147; a=rsa-sha256;
+	cv=none;
+	b=xYLBKvp5WKK/rwuRJKI9CelR5FdIuwDWisGf4k8NW+j5a3Z0IpjE3TDEPpzHbZcvARBw4e
+	PRh29DGjQN0XfU2jkviEeg+m4H/544WWpkjwFsM73AUMEEPo8OrUEifBjbuRtQCMQ7F9WQ
+	oklJd+Kw/JkJTrREHhbUU6wdgoDBmZA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nYJy6A9T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768498966;
+	s=arc-20220608; t=1768499147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qzIg+4sDQXFup5j8N72u0s9znKRCdSZxBT6As8A61p4=;
-	b=ylWmVxVSEqyVnilhLrDJvb9RbmTjTbj89RZkXGKL0T96vnHxZS+BmnpA2t/xja26Pp1Yig
-	SPtaYTavBsAmqf/UrmXBzZw/0GQNyhCgx76pGfBMfsN0zEuTGMiDVx7i56jJ/2ZLCTZlY4
-	T2TQkMTVhOKR52IdSP3qeulsU3wpjLk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="BKjh/WYK";
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768498966; a=rsa-sha256;
-	cv=none;
-	b=scUCZ5O14c95VwhLkmxRPqlMZ3icGWXdm39+hUW5HElQ3ORZbv1LvO4Rd7iU793DOSma20
-	4ZAnlyppCKBz2lylgey0xiVoEaArSvDqcikV5ZB62i8N4DCoF4kchzT23zfw+QZ6bgT5rR
-	SJOsyzikiniaFALS50itfXf8jj9/8x8=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8c2c36c10dbso139470185a.2
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:42:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1768498966; x=1769103766; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qzIg+4sDQXFup5j8N72u0s9znKRCdSZxBT6As8A61p4=;
-        b=BKjh/WYK9GVSItKyw6uu1vIWfXUkhmq2uuE4q5eVgvTGGmyDxUeIKjtQD2MJTsujYN
-         5OrVhQexD/wvMym1ogRPXJtFHXOw41wJaG6Rv11rGb+1JnNBiAma9693wEi6OHemPxw6
-         n5zDPditgaN6D2i4Y6rofViGUAtN+0u7IEaAIK94HfCsAUY4N2hpBKAeJJ1TpuSwloik
-         7kr8/T1IzU/EotufP/lMMdWJ/N3ZUeOOZAjGnQtFhBNyqT41vrX5uXZIM1csPduFRExQ
-         GJDNo99Gq3hfMkUQcNPWtDiYIeGLH1CoAzBgFnTtlU9KUtCFCZddyF5RHI/A4a5tKigt
-         izDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768498966; x=1769103766;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qzIg+4sDQXFup5j8N72u0s9znKRCdSZxBT6As8A61p4=;
-        b=g/qVFxMRhNLx3SQsApRkHWfnYuIEb3h3DdG1f+H+pCkBpTnJj3as5Yy5RCkwYEgu3h
-         hrSNvsnWIUBHXTay2SXaBFE6fDaMz2Z3oshpw1/WQwVFeKyYB+efgIwpa6BkrmjPrKvi
-         ALnLC1iHg+PSGsdQIbfOeAo9M/C7Mqi2LYwfCcSt+Ns7MShQ5yyvFnt6eewuwpNrEMA0
-         +lWSaE3gWkYp/Tvv4FdZqiCWEAag8nXN5Q9n3I7yvLBJPF8y8Pxlp8sM1FY8tX4cYv7l
-         VQjyFBx93UTi2J/QTolVw7qmj70ELyhWUM7HJtXJCGjkskYYJfSDt9jn/IFvCYssNJth
-         yOSw==
-X-Gm-Message-State: AOJu0Yxq9MpdiEWYzo0Ge9YIql74yX35b7A4JvS2MQqkY8dMVdQvpjx0
-	ErM4uWqC7l1bh1oRRCICZgaTIu9j6/B+SLBJcLxWkdnKL2Toyc2tHaunWfvYGk9SIJq3XxAW/+M
-	vhZFC9xs=
-X-Gm-Gg: AY/fxX7nXP80DMl5KXtL4ddCmofu+l30nxpMBTNcXMmPQM9vxPe/SraNRAkk0pFelUJ
-	dIEnSP81c4nHU4z26PBXTVY6YR1IcUGHzmZAbuj1WWrvZW/Ow9TS2uQNGEfBzUZm4DHbmePy5Mu
-	AQ6BjZcOLeOumLyK+OTGBy+Ph03UXPlXuCsCDCgxGeEJx5Bm1PwH2xDJhWGo4cqdTwacZ5fUdKW
-	6rwHzg4e34tn2/0Ytamn/xOITlSWkLNMSUvLcUHB2WHMYzmJTN5kP+xdrrRwjHElw/gLrLwIwrN
-	VL4mEWovvTCnPRoGw4PvXRV7pgk+GQKORKEUyrtRaovgDF4jBmuOsTFGcX6Ixlm84oqA7sy3IGM
-	8qa93vr2Xwa0kh7pdP+DbfcI25xONkZXTwfVeq9jxJP7O3oRbFWqIgU1nEMNygjlhCR4VMiOmZB
-	ZFbPPWg+/W75sQ5FbPNwzNtCN2yHnrmg2tg3/xhQucWMbHQaegVQnDvNflezPCXr2Dp1jq5A==
-X-Received: by 2002:a05:620a:6c0d:b0:8b2:e533:66f7 with SMTP id af79cd13be357-8c6a66da89bmr35061185a.10.1768498965430;
-        Thu, 15 Jan 2026 09:42:45 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c530bacb43sm463952585a.41.2026.01.15.09.42.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 09:42:44 -0800 (PST)
-Date: Thu, 15 Jan 2026 12:42:11 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
-	kernel-team@meta.com, dan.j.williams@intel.com,
-	vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
-	jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, osalvador@suse.de, akpm@linux-foundation.org
-Subject: Re: [PATCH v2 0/5] add runtime hotplug state control
-Message-ID: <aWkm8zVc9zy1w3eM@gourry-fedora-PF4VCD3F>
-References: <20260114235022.3437787-1-gourry@gourry.net>
- <eb3e6ae9-d296-465f-a5a9-963da4d8ce6a@kernel.org>
+	bh=6oSYpWu7GGXcDoy1LiPrg0RmKnqdyyX94CIN3T2gqsE=;
+	b=1taGYaiTkaNFphwwbbyBtuaorg/NoS7CwnT/aB9KKYJnpWR7M075LA+7gC0FXVj1vDB7G0
+	mOPDrpRe7y9bCU7supSa9nL/fqy4hBc9rxLXFZ5NtwBcMbV4AMeMW7hfoS4Q7dPVl18eow
+	nsscDE525gq8r441g1uAejtjVzeG1gI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B993E40D70;
+	Thu, 15 Jan 2026 17:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A14CC16AAE;
+	Thu, 15 Jan 2026 17:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768499146;
+	bh=NKP/tku6cMDuVGoK2diSQ2fB/LmycsGoKdg789sJ9Os=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nYJy6A9T9kR4JzP3jLbFrMuhD5QSni458tPEJNyZe9FnKgyjHYih4jU0WRXNUw0LH
+	 pTfMZriffkXiZFrvSAmt26mME740xZvARzVdizcMhnRc89em6g58j90U8fliJfpYwe
+	 tFUU+KlCvMBpPF+bLn4w7s4XRCwgC+B0vm1IyFUZ42QTOICVZNSrT62YkoTsI7DamE
+	 HNrdZNKrSI9J3wtjVhk5Cy8AK8PvjrHFv7Gj/IjQYvxCF8FCRMmYqGKlP59yLokCVg
+	 2HALZ1mRoGMKbke+ujLSlpAU0HvbyypzJsd/AG/kSOirOW1Lhoj2+gs5groxWjFcit
+	 Tz2O0IjV/zg0Q==
+Message-ID: <bdf9681f-04a0-42e0-b319-d247b14a7cba@kernel.org>
+Date: Thu, 15 Jan 2026 18:45:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eb3e6ae9-d296-465f-a5a9-963da4d8ce6a@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv3 02/15] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20260115144604.822702-1-kas@kernel.org>
+ <20260115144604.822702-3-kas@kernel.org>
+ <be57dfa5-e6fa-4ce6-93c1-239436ff6e89@kernel.org>
+ <bf788cfe-ac2e-4ffc-9349-64d9c36bf072@kernel.org>
+ <aWkivSMMKX3AGdMw@thinkstation>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <aWkivSMMKX3AGdMw@thinkstation>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A6F8C180004
+X-Stat-Signature: 1d8dd4fnz3o16rhmdanytwp4unhr1h7i
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A63DA8000C
-X-Stat-Signature: 7oxge9gs91psxk6giiyua8tji4kwmf5s
-X-HE-Tag: 1768498966-174792
-X-HE-Meta: U2FsdGVkX192LCiH+lyurit6MPBwXFH+wFnVERtzqGuOK1kwefQFXXHmcTdOQQdqKk2PuMN3KmaurN+t0bAgDL9fR+P5CDFAm8k3la9L/T12NCrLeajlD2971yONyKdKQ4Ny6cs0thhYSTiQIcUJ03RWicrWfxSJO/8a/Qp0/PqObsNSCz3p0OsxhNOX0M7J42XxQoj8P2Gri5BZ8zuSqkcBeE5KVsIlywmXVCeLLd53tdfjAmjZNDwmypDWR+WWSEpELYx6uGMvFQv1fwnN4q7dtEkXBAwiXmPKdEWoqHwZXkjiMXSqzRryn/+LkCNhTEBPmBwRhr/xn3DjmOuas9JStLvXfm6BfXg+VWDr1CypsGs9AS0JPpZM4Ba2qqi4kF/Ep9p/OXzVCMozZ6yv9d1743W86fPvtvz3Ac3tCefvCjIWlpsLJsv7a7XqwgU7QGCVxwxfHt0+uGoAS9F+4Abdl6TO51LSvzcXwtyEgh/V1+JqzIZFOrd2vt/5HlXIev4KCASGGaBWFvaE4w35pkmhuA32t9qq4KBzm7yMku3ht61C3TOm5nQfr5Fc9CmdfL7O7GXah1g4JH4bAg7mmiyjbQ7M3DYLjmDMDHXZVUiRiYP0gjZ6qxM2kHUjMX3XqsvcCdhhes2SCYuF9tOg+hn6csNnCfsxVqgrMVpVRmvPtBN/sQotteCf0BytDzBekYiqBslOItukoDjcpcjuxoaf2sETBTqW/Lqhs9TAyrJ+s65wNat8kGc8m/fJIpPwjBqDRrzLaEEWvtwspFrXAHUFq4xt3HuWz7pZwdQl9tl3qyY6qbHqCS/MkBLFYlHTyXdgUxfbdOBPFOO8sdpWbJ/MJ7M7Ui5W7gEjwoJtdg1CNdTMOOpOj3ZDa2DMNEMp0Tis61Ip+WbcJCoTyee1rrr+jstvcXX3XLAq1NF5W9gEDeW4DI2pNf7AS8gL3qITPgU5hG4EawiDz/JLkgL
- HgEbALPh
- wyr0Tth88L0klSCKR+M6K1LNSa7xCrk/fXDAk
+X-HE-Tag: 1768499147-256820
+X-HE-Meta: U2FsdGVkX1+aghgBMGuS9/oBFkEs/IvpllSC+SE3DWOXGEoQEyOzPIpsK4zp80GhjH+gDOVJ03HigVNtUbKpzgdEa3L+9Yxj+uWwwWXR+EMjfUAxxdH9aBDMryy63HjGXdlLjuHwDtnDPhVQBPfEkRfa+r1z/GuX8VvPeKDEfQZj7BzahUlgK8NOI1mEQqg3lrdn8Kt169UsvGLCFmIh9nc2zVt9MX10t270ZLNOU3Gp984ecIYpKFcVkuDcN7ScuCfBLxer6YZ3ZM5yav/4SofpbV8+5E1SGBIkuGUY/qIsIHWj1vEiN0COo1OFiao9EFHDof6xwOordpmllpXS3vOjHp/SpqNpSwOs1sxVIuWP3Ewlo14R/0qp6Zo32KmZdnuD86e5k0KtJ5M6EZRMFzBJxELUC0N/j75x382QqpaNHhN7EKnf+sJxE6QkVSzCHwDxuq1Om6K+QzKt92D11Buk4qTRjdsnBLkJGli6i44ctOuZVW8YErqWAZYfpE23mXauyTkYwE6qQp7Dopyx+q6Wmh0tQqFeJ+oj+7ApiNDQFKxIAxGjdRYMLGQ+06mgVGZ1jd8tHeOcTmWsnLHmE3FXYljeUJO3HF2H0GAe7czvLVmTWipb0Cbiw/yRs28oMh2l0SM6tz2lc4H3geGkGNeN1OqoWEpwXzrEC1rHpUSUp7Y4k5kSVxZTNkn6zFGg81YYYP/4cTRgHNaxHmEuj5sqkaUTk/wyutIVRnqeq5xdspOzO707UgiR5351kAUS43XKeP1tigg6dz/e5qwpktQHPWqCu7IJrflcbYozJ3gJz+6FaFcUNzMyvQ1gKYlVVLoHkyna7YNl1uuHWJ0WugksNcV5dtUFQTklhKVVVaVZhVbT0d4lXUBM73abUMGT/lO5NUJNs6crrWGlOf4GgudL3wRO9k7kILVkK7DoRS+qhIQpy25yPGhwmVWekqvMTqOYxfMI56ES9S/ELaj
+ Mr+oefRu
+ quhFe8mFuTnxAneXZsoisNu6CMIJbD6HGxwDZPCMMn8Fxs/e8RbTKEqWHbV14nHMCko2m+LmoA8GhIF2mlGBMBiH0fBIweRn3UgH8zNR+c4sGpvXE0hbdoZL7ruOfiyUnlRHf1qLwoxWIdSpba9kqfJl+KhctjllZf5TMyNqTvW1FlzFK2lNBWxiyhDEJfBvQH/IB9O49e/Ak4Ybf3Q4RTetR3q7ARQOicrPWZNj2RG+sS4ki4WOldTTopUciS2SKV0Jtg2kZ0Y/NB94mQSc/EjjXdwHvFOOAjbNEX7gxpbuSmrX/4mNoeIJuCg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,32 +149,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 06:26:21PM +0100, David Hildenbrand (Red Hat) wrote:
-> On 1/15/26 00:50, Gregory Price wrote:
-> > The dax kmem driver currently onlines memory automatically during
-> > probe using the system's default online policy but provides no way
-> > to control or query the entire region state at runtime.
-> > 
-> > This series adds a sysfs interface to control DAX kmem memory
-> > hotplug state, and refactors the memory_hotplug paths to make it
-> > possible for drivers to request an online type at hotplug time.
+On 1/15/26 18:26, Kiryl Shutsemau wrote:
+> On Thu, Jan 15, 2026 at 05:48:20PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/15/26 17:35, David Hildenbrand (Red Hat) wrote:
+>>> On 1/15/26 15:45, Kiryl Shutsemau wrote:
+>>>> Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
+>>>
+>>> Why should that belong to mmzone.h ? Semantically doesn't make sense, no?
+>>
+>> To clarify, I would have moved it to something more folio-type specific, not
+>> something buddy/zone specific.
+>>
+>> I guess page-flags.h + mm.h are our dumping ground for folio handling. I
+>> would have moved it to the former.
 > 
-> Gregory, slow down a bit please. I haven't even had the chance to go through
-> your replies on v1.
->
+> I moved it next to MAX_PAGE_ORDER definition which seemed to be logical.
 
-Sorry, i realized your feedback on v1 showed there was just too much
-complexity.  I would ignore v1 entirely at this point, this version is
-significantly simpler.
+MAX_PAGE_ORDER is a buddy concept. MAX_FOLIO_ORDER is not a buddy concept.
 
-> I'm currently on PTO and don't have the full day to review stuff :) And boy
-> oh boy, do I have a lot of stuff in my inbox.
->
-> Maybe given this is the second time the patch subject is suboptimal is
-> another sign to slow down a bit? :P
-> 
+-- 
+Cheers
 
-Apologies, and I will let this one sit.
-
-~Gregory
+David
 
