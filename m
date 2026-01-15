@@ -4,93 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8F60D41173
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 11:57:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0AB5D41178
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 12:01:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EA296B0088; Thu, 15 Jan 2026 06:57:49 -0500 (EST)
+	id 27F146B008A; Thu, 15 Jan 2026 07:01:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26E976B0089; Thu, 15 Jan 2026 06:57:49 -0500 (EST)
+	id 22D026B008C; Thu, 15 Jan 2026 07:01:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16CDA6B008A; Thu, 15 Jan 2026 06:57:49 -0500 (EST)
+	id 138DD6B0092; Thu, 15 Jan 2026 07:01:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 03E9B6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 06:57:49 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 963EE1A0219
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:57:48 +0000 (UTC)
-X-FDA: 84334049016.29.B51AB74
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D2ABE40009
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:57:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0402E6B008A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:01:55 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A869AB836A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:01:54 +0000 (UTC)
+X-FDA: 84334059348.28.0B6AB6D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EF4C4C0004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:01:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768478266;
+	s=arc-20220608; t=1768478512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=A3rug3MKRgLRsxY9DZAIrRo9HUPJqq9G6GVnDKQjgBc=;
-	b=tr10na/Ub+0Mqd7s9rNUTNlMoh8ut/1Ti9XHT4NmVq5o86XlwG9uHrcgTKz+dO/CwYE3w7
-	cLPzICpcsTsochXYso4RhbjPFxtbhKyVttBUVT5AdH7DYFItaC2WzZSooekpLZ/bLLy7fy
-	OTJ9nWZ07EFgcI1O33gXk7GzHcGHyjQ=
+	bh=Ud/J85QV+BEQ0bP0JtZ4ngTyr5lpqKGqcXK2k5Mpbe4=;
+	b=jz0HWJPwp+qC2uNlv3FncnBRHV5zGZ/hiK/4ll6beRzYi6N1XvwWqzrvTG2DLOsUJdKhMX
+	p8OQw8vjjE/TZehZvGneISh5LGgWAg6QNt0SsLx1KS5PWc/89X7sH4C/qJggV+iY0Cx2/a
+	DWaKMsM9ZP4VQS2xNDnNRJlmWtgdzms=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf22.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768478266; a=rsa-sha256;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768478512; a=rsa-sha256;
 	cv=none;
-	b=im4h8TRaxR5QvPL7lskC23CfiBrvQ3rPsUVqtN5QNtW/Ln4nnZv/0R/UNI7f3mt+7qMdzo
-	Q0zODBVW9CQEjDnTXOG9ii0xVUa4f7+y46wiNPIbPqn/IUlQhPr9MhLTag3JaAPSHr/DiX
-	4kqr0x+bt8pHlP3MYzyI5BMCv324sI0=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dsM0v6KZczHnGk9;
-	Thu, 15 Jan 2026 19:57:19 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id B38134056A;
-	Thu, 15 Jan 2026 19:57:41 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 15 Jan
- 2026 11:57:40 +0000
-Date: Thu, 15 Jan 2026 11:57:39 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-CC: Li Zhe <lizhe.67@bytedance.com>, <akpm@linux-foundation.org>,
-	<ankur.a.arora@oracle.com>, <fvdl@google.com>, <joao.m.martins@oracle.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <mhocko@suse.com>,
-	<mjguzik@gmail.com>, <muchun.song@linux.dev>, <osalvador@suse.de>,
-	<raghavendra.kt@amd.com>, <linux-cxl@vger.kernel.org>, Davidlohr Bueso
-	<dave@stgolabs.net>, Gregory Price <gourry@gourry.net>, Dan Williams
-	<dan.j.williams@intel.com>, <zhanjie9@hisilicon.com>,
-	<wangzhou1@hisilicon.com>
-Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
-Message-ID: <20260115115739.00007cf6@huawei.com>
-In-Reply-To: <83798495-915b-4a5d-9638-f5b3de913b71@kernel.org>
-References: <9daa39e6-9653-45cc-8c00-abf5f3bae974@kernel.org>
-	<20260115093641.44404-1-lizhe.67@bytedance.com>
-	<83798495-915b-4a5d-9638-f5b3de913b71@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	b=iqNsp+jr7cL3Pbkx0ClEVynv5EWv1yAFvIimfzCcuBi4xLdmJip0nf4mzNOykZXCBnIXYi
+	4xLlpd8Sm+0f9JVDV/Xqv5BikUy43d8+fwWaHgxxDlYjxdg94If6zMq17UhC7uMc2ADQzX
+	4Ii/seUFh4V/e9p/WuRJQyjhW+wVCxY=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8CEAD3368D;
+	Thu, 15 Jan 2026 12:01:50 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 543513EA63;
+	Thu, 15 Jan 2026 12:01:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NDM1FC7XaGnnWwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 15 Jan 2026 12:01:50 +0000
+Message-ID: <2c4c2b2e-bf96-4c4a-a66c-93b66553030c@suse.cz>
+Date: Thu, 15 Jan 2026 13:01:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 23/23] MAINTAINERS: move memory balloon infrastructure
+ to "MEMORY MANAGEMENT - BALLOON"
+Content-Language: en-US
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
+ virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
+ <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
+References: <20260115092015.3928975-1-david@kernel.org>
+ <20260115092015.3928975-24-david@kernel.org>
+ <f2ce1126-0059-481c-b54f-0b09518666d3@lucifer.local>
+ <284775bd-767d-45f8-b66b-96709dabcc5e@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <284775bd-767d-45f8-b66b-96709dabcc5e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Stat-Signature: q7hnmny4ksdmttdxyhj9f3tq38631p1d
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: EF4C4C0004
+X-Stat-Signature: ym5r8o8sidoipurqk73fupkcusrwh4mr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D2ABE40009
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768478265-545750
-X-HE-Meta: U2FsdGVkX19ZhMAihey6Z3cwCsDNAvPObbuSGgHllij+79PpvYc3XU09q4d8Q2OUHYauvFeGawXy5McrZkoDPrXaMxw34ROEHgGev+VSUlkWk6L951DlPUNnX5mS/JM64macwcz4EEZXWMOY5fP+4cjXZoQ0nQQneyOXZJ+lpDHj6WcYMTHabCgPM/ylapzrsSXmQYCb13xpa2wXWAohIxLQGh/yCvL/AYFdzqVkfESdeqSfBt6p0m86wOeSqjCqGKJ9iUy6zCHFDQA7QgO7VwQWDm9nlA9D9614CRFIkTuwlR1fu95hZ4+V8rSn/tcsm2e31YdN85yfpFeCfcLKYqGVsm2Kc72eMESxh0WVO1UqQKHp1WPkHM6+l4fjgt5S8XrZBhM0ctfBH82xP3t2w8zuoYp9kT4I+cTa1t8cAQsctcP3tCaQ6/aQVRJQnX2kiPHLltprQIwX+6tGsD8zBc3alUMZMVaOZSWVmUoKixNDRkqWiUHyfLLSwwfRWEFUIoSp2A6Uy+bvZNasAmuG1TpiuYHfOBaEzmBA9aflSDrnYpUcEYaVUAi2BBW5zw6SPq2wqgzcg3iHti1jNSgmZvNp8kyKWnRzOHwGGWmgRQefHvT5DjSddS1BGdLG7IP8TwGw5HOkQMPm4olsZ7Z2dHXQEvwynvQuXmk/P2DIGxDYceCxWyWoGtE2CzVaDGeDhUj4tO8lCgUJbLZQnfE1PXtI+TbfbIuIL0QNpyFXjXLqh2KY57GuOtG1yAUrzzX8Qhe1ZgjZd9Ck4bbZgf+O4ovNwvlma6ijQIvXs+TbHm9i/7Mqiv6Ob5ax6PVAAYEYyWgnRWZrc3SI4GKrlFjLpmvnffi2EkgitpYTzVUQ0eTxG8+Yj/7OSrOT7tdFfTFhahiBZLZlkRrMaO7qA+AN8EU9/1Tbd8l7f9M2kNz8HNH3RkKnG/JXaxeGSPbO+USxftUv04sCZCSRFWllKmJ
- 2NX1NHQY
- LGd9vF9LRiWQyiuVBLv9yc3grWdldtR9xmqmMIv+ucoRzxvJtY+aNzzdIBKcv6etLHLOZsOm7j8p4jUKRudEOmJs22qKLwX94cSMSYsrhDJNevLd+ywnbJgtkPKS9ruUVAvaE6u3JGwFIHo40oPiJtQHpckcvRk9by7Rb3+H+1GIRTW0uwDnmRMFp+rRJ5MNc/PbJ3DY94TmxiSfo48pB2+NYPOF29cTJmRtfbET35Dc3JaDhqgNoOMLpNw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768478511-163296
+X-HE-Meta: U2FsdGVkX1+S4ynkvYtAQ6od0xm3/l13zcm4EkLrldC/Hj38YPnKaZ8/eRhpQ9MQLAUx+SdaY1esYfufjgGCAHyW8rvK4aPxzG8pwqwOC2FGBKH9c5+VoJ8ZX2vtXACwuYXphUriM6mqSPgbMsu6/fX9VgvWrTYXeu4IEtbJ1REs4+VW11Sdh54sH2Kzi+RGh+QJwRDRf58xPZH6D9YLn0LZKyfwIAk2lD715xYclK1qheBlUQ9EcF497Lc0NbnRulFg2gz5r0w3xmaDAafwR2Y1cHZhkO34M8oMF+tkq7Mx/bxd6cLaCDyDuue3G4vxIrUGrDR+VLgxnBKJYR/F0iiZfgRy1AzTIHdQDs/Ptna5x30SCacmO1npXKkOr7yb1Kww2plYl+TQHIMOqdYflZKOKbI+KCqI0EADu9aS9EPQ6K2HwFRQsYS9fPX/S8bZp3VCZr76bwbHBUHUEWSsyvwkL3LomZ66ePbHrJrN2C6/YDsza0cmysCOM1JHnbbCaCK2YCjRfgLb1ateFKBpu1WVllVpKTnDhWjF8ZKgYnQ4gzEZurlnt0Uxrz0W60XhwHQyAtN1cow9pPHiSueKs8V7giZrGWPozodTIy48RyXpSrl6I5akBjBZXBFU4S1+PGfbUMnyu8F8Aah9kR097r93v8BKAr1TC2BQlv1MZ1aC7aGR2u4Vjp9nbhQTn6bN8SLse516PKt+ZsR5iudtQ+cLx+i5Cwhc9MLsL6wqiz8pgOxls16PrbudigH1xteq2Hf2P6lYFk0Hmv+Xl0zjztHSb+VQZ9DqMzY6r5V0i3y38ub8rtjh1kA5NSdsbinRdewhdfIJJSW8PQJIOAQ0DQb7MvMqDXCXy0tnk6Up6eyboAOpuwnCkJpvkzOavNsS+Lzzp/4cRzdlFXkYl3At1W5GwiHDgx2YaZSCpbK9bv2oEQ7QyiQJ9kDLw/I18jWQpxgZgY5epGBN2+pnRk3
+ c8nH4Yzv
+ pjvYWR/XxGEQXs5AsynjPWbOdqgL4/i84L7iA9XTioCf0z38oD0OVbc+Cqf2Ee2gD5E1EKb6KatMG08lUo71b+fmBzt/gJbV09mMO6iNETNj0ZpUtvm6+pKxFna5mBSrIFN8UHVshx2gR174IVRwhxYBZwEat0H4zJ+oCtsvTdnox+/88YfQLt27emGa/PQYIw47xVN9/+533m6P5wEgedUkXXVTmGT941nrfsr7G8qgYS5EbNEmBc+1kRctsNhae6wcOTfdPz401b+xJ5xhPymTgO++d/y5GZszsjtsTe5dsg0mjj9b8SGUo9WZ+JysXU6LvQSZmERnJJskEta8z/XB4lUmZyLyQF0ZxVPtHJmNyjxA3iI7weFCrkw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,178 +158,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 12:08:03 +0100
-"David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+On 1/15/26 12:25, David Hildenbrand (Red Hat) wrote:
+> On 1/15/26 10:39, Lorenzo Stoakes wrote:
+>> On Thu, Jan 15, 2026 at 10:20:13AM +0100, David Hildenbrand (Red Hat) wrote:
+>>> Nowadays, there is nothing virtio-balloon specific anymore about these
+>>> files, the basic infrastructure is used by multiple memory balloon
+>>> drivers.
+>>>
+>>> For now we'll route it through Andrew's tree, maybe in some future it
+>>> makes sense to route this through a separate tree.
+>>>
+>>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> 
+>> Assuming below fixed + Michael's concern addressed, LGTM so:
+>> 
+>> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> 
+>>> ---
+>>>   MAINTAINERS | 12 ++++++++++--
+>>>   1 file changed, 10 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>> index de8f89ca1149f..b974f8c1c2225 100644
+>>> --- a/MAINTAINERS
+>>> +++ b/MAINTAINERS
+>>> @@ -16454,6 +16454,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
+>>>   F:	mm/
+>>>   F:	tools/mm/
+>>>
+>>> +MEMORY MANAGEMENT - BALLOON
+>>> +M:	Andrew Morton <akpm@linux-foundation.org>
+>>> +M:	David Hildenbrand <david@redhat.com>
+>> 
+>> david@kernel.org you mean? ;)
+> 
+> Maybe I just want all the patches to go to /dev/null soon? ;)
+> 
+> The following on top:
+> 
+> 
+>  From 3d344330b1ff6088582fe8e3bbff49d1557eba22 Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Date: Thu, 15 Jan 2026 12:23:57 +0100
+> Subject: [PATCH] fixup: MAINTAINERS: move memory balloon infrastructure to
+>   "MEMORY MANAGEMENT - BALLOON"
+> 
+> CC the virt list and use the proper mail address.
+> 
+> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-> On 1/15/26 10:36, Li Zhe wrote:
-> > On Wed, 14 Jan 2026 18:21:08 +0100, david@kernel.org wrote:
-> >      
-> >>>> But again, I think the main motivation here is "increase application
-> >>>> startup", not optimize that the zeroing happens at specific points in
-> >>>> time during system operation (e.g., when idle etc).
-> >>>>  
-> >>>
-> >>> Framing this as "increase application startup" and merely shifting the
-> >>> overhead to shutdown seems like gaming the problem statement to me.
-> >>> The real problem is total real time spent on it while pages are
-> >>> needed.
-> >>>
-> >>> Support for background zeroing can give you more usable pages provided
-> >>> it has the cpu + ram to do it. If it does not, you are in the worst
-> >>> case in the same spot as with zeroing on free.
-> >>>
-> >>> Let's take a look at some examples.
-> >>>
-> >>> Say there are no free huge pages and you kill a vm + start a new one.
-> >>> On top of that all CPUs are pegged as is. In this case total time is
-> >>> the same for "zero on free" as it is for background zeroing.  
-> >>
-> >> Right. If the pages get freed to immediately get allocated again, it
-> >> doesn't really matter who does the freeing. There might be some details,
-> >> of course.
-> >>  
-> >>>
-> >>> Say the system is freshly booted and you start up a vm. There are no
-> >>> pre-zeroed pages available so it suffers at start time no matter what.
-> >>> However, with some support for background zeroing, the machinery could
-> >>> respond to demand and do it in parallel in some capacity, shortening
-> >>> the real time needed.  
-> >>
-> >> Just like for init_on_free, I would start with zeroing these pages
-> >> during boot.
-> >>
-> >> init_on_free assures that all pages in the buddy were zeroed out. Which
-> >> greatly simplifies the implementation, because there is no need to track
-> >> what was initialized and what was not.
-> >>
-> >> It's a good question if initialization during that should be done in
-> >> parallel, possibly asynchronously during boot. Reminds me a bit of
-> >> deferred page initialization during boot. But that is rather an
-> >> extension that could be added somewhat transparently on top later.
-> >>
-> >> If ever required we could dynamically enable this setting for a running
-> >> system. Whoever would enable it (flips the magic toggle) would zero out
-> >> all hugetlb pages that are already in the hugetlb allocator as free, but
-> >> not initialized yet.
-> >>
-> >> But again, these are extensions on top of the basic design of having all
-> >> free hugetlb folios be zeroed.
-> >>  
-> >>>
-> >>> Say a little bit of real time passes and you start another vm. With
-> >>> merely zeroing on free there are still no pre-zeroed pages available
-> >>> so it again suffers the overhead. With background zeroing some of the
-> >>> that memory would be already sorted out, speeding up said startup.  
-> >>
-> >> The moment they end up in the hugetlb allocator as free folios they
-> >> would have to get initialized.
-> >>
-> >> Now, I am sure there are downsides to this approach (how to speedup
-> >> process exit by parallelizing zeroing, if ever required)? But it sounds
-> >> like being a bit ... simpler without user space changes required. In
-> >> theory :)  
-> > 
-> > I strongly agree that init_on_free strategy effectively eliminates the
-> > latency incurred during VM creation. However, it appears to introduce
-> > two new issues.
-> > 
-> > First, the process that later allocates a page may not be the one that
-> > freed it, raising the question of which process should bear the cost
-> > of zeroing.  
-> 
-> Right now the cost is payed by the process that allocates a page. If you
-> shift that to the freeing path, it's still the same process, just at a
-> different point in time.
-> 
-> Of course, there are exceptions to that: if you have a hugetlb file that
-> is shared by multiple processes (-> process that essentially truncates
-> the file). Or if someone (GUP-pin) holds a reference to a file even after
-> it was truncated (not common but possible).
-> 
-> With CoW it would be the process that last unmaps the folio. CoW with
-> hugetlb is fortunately something that is rare (and rather shaky :) ).
-> 
-> > 
-> > Second, put_page() is executed atomically, making it inappropriate to
-> > invoke clear_page() within that context; off-loading the zeroing to a
-> > workqueue merely reopens the same accounting problem.  
-> 
-> I thought about this as well. For init_on_free we always invoke it for
-> up to 4MiB folios during put_page() on x86-64.
-> 
-> See __folio_put()->__free_frozen_pages()->free_pages_prepare()
-> 
-> Where we call kernel_init_pages(page, 1 << order);
-> 
-> So surely, for 2 MiB folios (hugetlb) this is not a problem.
-> 
-> ... but then, on arm64 with 64k base pages we have 512 MiB folios
-> (managed by the buddy!) where this is apparently not a problem? Or is
-> it and should be fixed?
-> 
-> So I would expect once we go up to 1 GiB, we might only reveal more
-> areas where we should have optimized in the first case by dropping
-> the reference outside the spin lock ... and these optimizations would
-> obviously (unless in hugetlb specific code ...) benefit init_on_free
-> setups as well (and page poisoning).
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+for both
 
-FWIW I'd be interesting in seeing if we can do the zeroing async and allow
-for hardware offloading. If it happens to be in CXL (and someone
-built the fancy bits) we can ask the device to zero ranges of memory
-for us.  If they built the HDM-DB stuff it's coherent too (came up
-in the Davidlohr's LPC Device-mem talk on HDM-DB + back invalidate
-support)
-+CC linux-cxl and Davidlohr + a few others.
-
-More locally this sounds like fun for DMA engines, though they are going
-to rapidly eat bandwidth up and so we'll need QoS stuff in place
-to stop them perturbing other workloads.
-
-Give me a list of 1Gig pages and this stuff becomes much more efficient
-than anything the CPU can do.
-
-Jonathan
-
+> ---
+>   MAINTAINERS | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> 
-> Looking at __unmap_hugepage_range(), for example, we already make sure
-> to not drop the reference while holding the PTL (spinlock).
-> 
-> In general, I think when using MMU gather we drop folio references out
-> of the PTL, because we know that it can hurt performance badly.
-> 
-> I documented some of the nasty things that can happen with MMU gather in
-> 
-> commit e61abd4490684de379b4a2ef1be2dbde39ac1ced
-> Author: David Hildenbrand <david@kernel.org>
-> Date:   Wed Feb 14 21:44:34 2024 +0100
-> 
->      mm/mmu_gather: improve cond_resched() handling with large folios and expensive page freeing
->      
->      In tlb_batch_pages_flush(), we can end up freeing up to 512 pages or now
->      up to 256 folio fragments that span more than one page, before we
->      conditionally reschedule.
->      
->      It's a pain that we have to handle cond_resched() in
->      tlb_batch_pages_flush() manually and cannot simply handle it in
->      release_pages() -- release_pages() can be called from atomic context.
->      Well, in a perfect world we wouldn't have to make our code more
->      complicated at all.
->      
->      With page poisoning and init_on_free, we might now run into soft lockups
->      when we free a lot of rather large folio fragments, because page freeing
->      time then depends on the actual memory size we are freeing instead of on
->      the number of folios that are involved.
->      
->      In the absolute (unlikely) worst case, on arm64 with 64k we will be able
->      to free up to 256 folio fragments that each span 512 MiB: zeroing out 128
->      GiB does sound like it might take a while.  But instead of ignoring this
->      unlikely case, let's just handle it.
-> 
-> 
-> But more general, when dealing with the PTL we try to put folio references outside
-> the lock (there are some cases in mm/memory.c where we apparently don't do it yet),
-> because freeing memory can take a while.
-> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b974f8c1c2225..11720728d92f2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16456,8 +16456,9 @@ F:	tools/mm/
+>   
+>   MEMORY MANAGEMENT - BALLOON
+>   M:	Andrew Morton <akpm@linux-foundation.org>
+> -M:	David Hildenbrand <david@redhat.com>
+> +M:	David Hildenbrand <david@kernel.org>
+>   L:	linux-mm@kvack.org
+> +L:	virtualization@lists.linux.dev
+>   S:	Maintained
+>   W:	http://www.linux-mm.org
+>   T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 
