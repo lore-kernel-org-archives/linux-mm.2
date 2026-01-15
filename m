@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 102BDD41144
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:22:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6865DD41144
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:23:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C81A6B00BB; Thu, 15 Jan 2026 04:22:58 -0500 (EST)
+	id CD57D6B00BD; Thu, 15 Jan 2026 04:23:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 772276B00BD; Thu, 15 Jan 2026 04:22:58 -0500 (EST)
+	id CA9F56B00BF; Thu, 15 Jan 2026 04:23:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 668946B00BE; Thu, 15 Jan 2026 04:22:58 -0500 (EST)
+	id BC9BC6B00C0; Thu, 15 Jan 2026 04:23:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 555986B00BB
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:22:58 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 236A1139FAC
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:22:58 +0000 (UTC)
-X-FDA: 84333658836.07.0B3D15D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC4C16B00BD
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:23:06 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A6560579EF
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:23:05 +0000 (UTC)
+X-FDA: 84333659130.21.3894B36
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 71F1A100003
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:22:56 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YGSJm4R7;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id EA9671C0006
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:23:02 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AAEkmlmh;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768468976;
+	s=arc-20220608; t=1768468983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TQE3ScVVmbY6AZ1BxUT/hBQHoX39GXwAcFJSeD4v1Fk=;
-	b=7VHPp8e2LxmT2Pgnz9agY1I+gIrQ3noaFZLs3X6fDl8fHOtTr1o/IsHHTB1d23brvgUj9r
-	z1bPUVoS5AvgDEmugqeh7HKNAJiV/rlkGfrBSSVwjosaTH3VKHcAs2ltr6qo/xvwmM5iRS
-	YqgZFgOw/bQyevcL2qMLQWPyumZlGfo=
+	bh=EJrhwFM7+l1lxczhOrVPKHhE+iuROxa+v88WKvwMQRY=;
+	b=d+J7h0Wdyr57WaovLzrs06YYsrp2Cb2bRrTVKARhB95vt9JDUATBmyJrNdl3JFAzDirygO
+	3LWLzMfWwoZEP8Vj0cyWXskDjnCwxODfFmFemb3aqcWcXnLg0TjP/DyKDDD1jKjPBAMC8v
+	sTdbElMwlQlDRxkukjbfTHZN24xEw/w=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YGSJm4R7;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AAEkmlmh;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768468976; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768468983; a=rsa-sha256;
 	cv=none;
-	b=CoP2PZTc4QMTvyisGN+DQfcT+CgDm7VxxKhFwR+A5zIV+0hVsIc0jT/Ac/udUjUQ+t5h2/
-	zU/lkNJAT3LAkUFCrckK3nQxHzN8B/ktjpgbmEBuFJA7551fNUKTc1afL7edRS9sqJQnzq
-	FKWC6XTuDLwfEyaT9NQCYalzumKiQj8=
+	b=QUwYRd/7byLnCao1BHtdXqIChYJ74L9VzNA5KcLifXIX4iYGUr2TP2c0vK9t2VaqZjqpjw
+	2rXJIk8gW52tuS6Qzduju8RhYIdu3EP4L1YqxDA9AkD4dZU6W9WYcvICG42/jaWwg5sBT8
+	r6dxFPfylgOV7FqXzn8oys1tl1xbcAY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABFDB40D81;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1AC2340D81;
+	Thu, 15 Jan 2026 09:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E0EC116D0;
 	Thu, 15 Jan 2026 09:22:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511E3C19423;
-	Thu, 15 Jan 2026 09:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768468975;
-	bh=p88E23dCTiy64PagmGaBE80XA04TjGF75KHH64+hMzk=;
+	s=k20201202; t=1768468982;
+	bh=7bbMIQHe4/weqHbDvWGJ/Jw7lMXhnWUDxpL265aHTuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGSJm4R7U/R58XrtXpfth8OYhuw9HdCkCtpWyccTsIRiLwmNpmCuzFOQjJE8hn4RB
-	 uz1otUzKMl+JqDw/m0o2g+c0JgWmf6LIEDWnjW3WcP6Gvgi+5AVgLTM1Tkg8i23lo0
-	 HscxoHnTt49CQRkbwTVeYEz4Qz+ebECUrYwNMCKBX0+CxNj01SL7fE/3p/Er6/91Bq
-	 qsTSS2JteQnFmUfiPFBKiInhJ4zHkCfhIxyV5hE4LzhJeFBY5JnDrPkZwPA036j2Zq
-	 pNR1R1afCa7a88Y+63spvI0c0ua4He1TcQa/OUzSv+MHhmqmsjSw5mliwnFBp0jb96
-	 0PDz3KSlgkcGA==
+	b=AAEkmlmhOTceSZ1CTH7c6V1r4hbYnHKCzeML4q4ap22b0eiu4voauLSYHnNcbJ82N
+	 VLuftsgMRoUyx0cMRJjfaaWJ6BiT8gRsgO+9Q5aY0E+33tpnidcAehdKF26sx0Twyc
+	 lSHIO4sFT4VXKuEckOYXFbcwO2lHkZw6isdac90GlKa7IY+CT1/zmbixS05MAgrjSs
+	 Z7apK7S7toMIAwBpwp/8ipTr2iGV5xeHGgBeyIIdb3peRCRXYh0JEuQ2LJWKHD9JLB
+	 XaIoAfBmxPPtpSqNRqqIm2BJ+5OlceBGoU7EDpzHi+ijxE9wxxjXP8/U4A5zoNmLHw
+	 5WaX+2zvRSF4w==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -92,22 +92,22 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v2 22/23] mm: rename CONFIG_MEMORY_BALLOON -> CONFIG_BALLOON
-Date: Thu, 15 Jan 2026 10:20:12 +0100
-Message-ID: <20260115092015.3928975-23-david@kernel.org>
+Subject: [PATCH v2 23/23] MAINTAINERS: move memory balloon infrastructure to "MEMORY MANAGEMENT - BALLOON"
+Date: Thu, 15 Jan 2026 10:20:13 +0100
+Message-ID: <20260115092015.3928975-24-david@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115092015.3928975-1-david@kernel.org>
 References: <20260115092015.3928975-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: orzaa7ukcecyo1u4dewk68ztifw3uegq
+X-Rspamd-Queue-Id: EA9671C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 71F1A100003
-X-Stat-Signature: rueu1pszaq8fenpqg8f5z631zhs9cdfk
-X-HE-Tag: 1768468976-242612
-X-HE-Meta: U2FsdGVkX1/8V2C+SHuLHB2i+HGcy5hYBZ1eF02zCffFW7sUwQ184v6KaO2sHOSrJQLkuTBqaKJaAapiy/M35j8mQftZ61HcxgDCU5lI3eJK4GlGEfsgoZnlAMLuoKF8VRlv21ClyhhRgkOfpfB+PYjJ92UIfHIk9RVLJTf+L6a9YIigR9WLFFbLBjS26IM8dOgJuHWkys5zfbvouTqznbkXgyofE8NikiRewoQQO8yD3vFv4FIU4qdGVN/n7JzqSqazhcqymS0EvnUOjYKkDOxzgctl9vGysmqNBY1zQQD1c8O8mLoI3sI/0GW9ExAsTZFOeFc06/DX3nAqD/cAPH12eaDxRcLuYtYuhVLooQIzGF1SvNNaXjufPyFdgne3qV7hZQhK5m/tdUgIjV7YwOMukN3qhItyoF3SuveLIIF98/Mhv4Cj5T2aiTzfhkPTXoEqZWEVZh1+28F6CwA3CKoBQVjhh8jeEQJU6YyGttEO0CBBorcFXfVLmWZd9Fse7qeXCjT2DbIaHx2kwuax3+y+QbqjjIS09ds8v5F7eI0X2VRQSAwqWxTE5X0K3AzsB4v4l/VM1HAmDsfLH7c3WygZQpDsrjdg9ca86QNIankoNW759SATETeKFolVm0loKRgqgw2V5HXix1JMO34w5hreQ36EM4fLR9J2wlIPbvrFGZki/tg71usSqlBuRz6L05qC8CkQzIb0jfa3v9TVrqjBccdct8LlAjBX60GSqsjtiq6IdGM0kYiDVf2swhiDKVIkRsK175kNA/shods6huUsP1+VKqraafsGcUYxpSgtLKAATSG3HzXjrsVC2249s22Deu4qz68bxb/1qmuhY01dsht+YrNZ3QUnN9DHZLTr4YJTPuPQ5uOFxD8i/rl11iqu3y7bUdajX3xHiPYMI1vlyAe+2r8FWwCqMIkry9uT6Cr8J7Qap17M/0ojALInaQXLiU63cVKCv0tvXuL
- KorjFdxG
- Vp3hcN8bq1zmF45Kb+IVnGQerNkBME2eorGcKRjk8wO6cUr7M3owk59UJU2BRhUqPRIgmvoCDGhFY+RAY4hr6TCwkE7WwLE85TvI6A7OadlluTblFOBaj9N7cKPcdZ9hx7JHub580CQEEUMTTS5XHnn9BvmrVAbRkGKUUDD1f92y5xxmpYyjTSvLKnOK933NQAFvkoMypvcolGVNoSeMl0w8/WGT+ExXDpk7MkmxoBwZ2zxK5H05ZxwrcD5t/owdLb+OGLcaJ4tThM7hlnxikG7U8IQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768468982-519907
+X-HE-Meta: U2FsdGVkX18GU3nZLA9dc08pI8HtSWDJyWlgkMHJiHMW3W6B+0KntTNNr8lCwampLA0GBFUa8LeNqcCjfaUJ1YVRNOH5M3xVay8X6fP+pBo2jvobUIx0S0LB8PUeQrJEcMGf8/HCDZNDCm4jHJfjtT4mccQ5sL9vQJWvApTOgyh+iqVE76vF+33D2ZpLOnr0SlSjwZ4JTHnCC0gneux4W6VSr3IPIRZBbVivFr89oVOQmlYIx+W/QhFxjVtXQ8XYObgzp0+eET15sR1AzQgDK/Y4xmjfB8n19Qbh4IbBLesIgkzEV1rM+NGtHZA4sdwLlVKM9sWbPv+eHQN/ppK3CCsKec3l9pe3w7ZcvBpusMFPpjzXNe2t4uy2H98ZMQpuvFgKgINzPxc6UgxYeLzyrhQgvCCbtGZ+hN74y4dFOmUjqbaxiatEsZ6HAgmZ5P0S30iLF9eSyhmpe3Qr52dbslG5pJ3g64YZSkK1Mu50l0UXRv/2QjDF9UtGRAS9XdbMwqQVUEM9dGq+W5wCR4DgZvsHDu0g8hcXvG1R1uGcXjgeOq0BDYa55zLPXThGSIC8iUH8TYhO+vTzUSWQVnZfr12C6lf5QShICojsZ2wHsrFdRJ/qv1YIQqUyYclF1JhNCAAfyuJurOdCc8W00bi7zHQpGx9sIxZ/xOz5IrtvYz0+CcemMjEPQ0FMM4ioe6h1/nLifT0r/t2dpXvZnX3IsNqthMCBpvz+jt+S1FiHS8Qj75pr37vJPv6nAkEVV+Ggn3RFpg0m7Rp7GlHmt8f77K3fsptklAQnLpW2krA7kCIrICaJRX8Wi9Dg8PZC8VW2/JDJNnIyoKWze9+JySPZ7+3OQqgyQrPiA3YVYHQr8Pcpt/8N45i+DZaJ8G0MSextP+NKMBiaS7kLk8RmtodKMSExZjHGGEhUTxTdKOImy/P6EfHwfl7r2pca80yeUvJ79fFOPfyXdPOmX7tUDBz
+ G5UvRchb
+ xyv9K0tZrkHUQFv5MfHc+uS+G0VqcIlJ9ifrwQ0c5Hi/4jO4QEPLZx1TMvin72t91Q8XToNayHT4rrrmdG19QfNx1zAXrRl+1an7VCpbwb2PPoR/lrDyyk1LoS6SysSG7iJG/aiXkmX57FE4HUyneYEOjncHir21iYLK4yn4Fi3H3S2OwUtDhhkuq470xT28ur/2cBEIDqJqjuWg+knh9zXwZcXBlH3CBZi/02dTVeYlAdyMYsI3fmiX7fTmhlT6RWYxjU+a2fDCugCkzXhqT+WoM/ScwzSPXweZ0vG4tVrv3Mbh6oPeyrVBNxka6ItFo6j9UiGSejeAOUrKdsq37ipqyxoKtitxxTy0b7gSU+6ITHHZlxZQVOssbn52L+a7vf0nGt2I0SV2fzOai7pYHRREX5IuLWGZ4+nU2RfLR/5juL+SPBt4WiWMKAQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,136 +116,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's make it consistent with the naming of the files but also with the
-naming of CONFIG_BALLOON_MIGRATION.
+Nowadays, there is nothing virtio-balloon specific anymore about these
+files, the basic infrastructure is used by multiple memory balloon
+drivers.
 
-While at it, add a "/* CONFIG_BALLOON */".
+For now we'll route it through Andrew's tree, maybe in some future it
+makes sense to route this through a separate tree.
 
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- arch/powerpc/platforms/pseries/Kconfig | 2 +-
- drivers/misc/Kconfig                   | 2 +-
- drivers/virtio/Kconfig                 | 2 +-
- include/linux/vm_event_item.h          | 4 ++--
- mm/Kconfig                             | 4 ++--
- mm/Makefile                            | 2 +-
- mm/vmstat.c                            | 4 ++--
- 7 files changed, 10 insertions(+), 10 deletions(-)
+ MAINTAINERS | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index 3e042218d6cd8..f7052b131a4c5 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -120,7 +120,7 @@ config PPC_SMLPAR
- config CMM
- 	tristate "Collaborative memory management"
- 	depends on PPC_SMLPAR
--	select MEMORY_BALLOON
-+	select BALLOON
- 	default y
- 	help
- 	  Select this option, if you want to enable the kernel interface
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index d7d41b054b982..5cc79d1517af5 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -410,7 +410,7 @@ config DS1682
- config VMWARE_BALLOON
- 	tristate "VMware Balloon Driver"
- 	depends on VMWARE_VMCI && X86 && HYPERVISOR_GUEST
--	select MEMORY_BALLOON
-+	select BALLOON
- 	help
- 	  This is VMware physical memory management driver which acts
- 	  like a "balloon" that can be inflated to reclaim physical pages
-diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
-index 6db5235a7693d..ce5bc0d9ea287 100644
---- a/drivers/virtio/Kconfig
-+++ b/drivers/virtio/Kconfig
-@@ -112,7 +112,7 @@ config VIRTIO_PMEM
- config VIRTIO_BALLOON
- 	tristate "Virtio balloon driver"
- 	depends on VIRTIO
--	select MEMORY_BALLOON
-+	select BALLOON
- 	select PAGE_REPORTING
- 	help
- 	 This driver supports increasing and decreasing the amount
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index fca34d3473b6b..22a139f82d75f 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -122,13 +122,13 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- 		THP_SWPOUT,
- 		THP_SWPOUT_FALLBACK,
- #endif
--#ifdef CONFIG_MEMORY_BALLOON
-+#ifdef CONFIG_BALLOON
- 		BALLOON_INFLATE,
- 		BALLOON_DEFLATE,
- #ifdef CONFIG_BALLOON_MIGRATION
- 		BALLOON_MIGRATE,
- #endif /* CONFIG_BALLOON_MIGRATION */
--#endif
-+#endif /* CONFIG_BALLOON */
- #ifdef CONFIG_DEBUG_TLBFLUSH
- 		NR_TLB_REMOTE_FLUSH,	/* cpu tried to flush others' tlbs */
- 		NR_TLB_REMOTE_FLUSH_RECEIVED,/* cpu received ipi for flush */
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 460a148d5b71a..8e23af521605e 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -593,7 +593,7 @@ config SPLIT_PMD_PTLOCKS
+diff --git a/MAINTAINERS b/MAINTAINERS
+index de8f89ca1149f..b974f8c1c2225 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16454,6 +16454,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
+ F:	mm/
+ F:	tools/mm/
  
- #
- # support for memory balloon
--config MEMORY_BALLOON
-+config BALLOON
- 	bool
++MEMORY MANAGEMENT - BALLOON
++M:	Andrew Morton <akpm@linux-foundation.org>
++M:	David Hildenbrand <david@redhat.com>
++L:	linux-mm@kvack.org
++S:	Maintained
++W:	http://www.linux-mm.org
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
++F:	include/linux/balloon.h
++F:	mm/balloon.c
++
+ MEMORY MANAGEMENT - CORE
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	David Hildenbrand <david@kernel.org>
+@@ -27536,9 +27546,7 @@ M:	David Hildenbrand <david@kernel.org>
+ L:	virtualization@lists.linux.dev
+ S:	Maintained
+ F:	drivers/virtio/virtio_balloon.c
+-F:	include/linux/balloon.h
+ F:	include/uapi/linux/virtio_balloon.h
+-F:	mm/balloon.c
  
- #
-@@ -601,7 +601,7 @@ config MEMORY_BALLOON
- config BALLOON_MIGRATION
- 	bool "Allow for balloon memory migration"
- 	default y
--	depends on MIGRATION && MEMORY_BALLOON
-+	depends on MIGRATION && BALLOON
- 	help
- 	  Allow for migration of pages inflated in a memory balloon such that
- 	  they can be allocated from memory areas only available for movable
-diff --git a/mm/Makefile b/mm/Makefile
-index 1e31e0a528dc1..0d85b10dbdde4 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -122,7 +122,7 @@ obj-$(CONFIG_CMA)	+= cma.o
- obj-$(CONFIG_NUMA) += numa.o
- obj-$(CONFIG_NUMA_MEMBLKS) += numa_memblks.o
- obj-$(CONFIG_NUMA_EMU) += numa_emulation.o
--obj-$(CONFIG_MEMORY_BALLOON) += balloon.o
-+obj-$(CONFIG_BALLOON) += balloon.o
- obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
- obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
- obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index e96a344ab5974..0f64c898f79f8 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1419,13 +1419,13 @@ const char * const vmstat_text[] = {
- 	[I(THP_SWPOUT)]				= "thp_swpout",
- 	[I(THP_SWPOUT_FALLBACK)]		= "thp_swpout_fallback",
- #endif
--#ifdef CONFIG_MEMORY_BALLOON
-+#ifdef CONFIG_BALLOON
- 	[I(BALLOON_INFLATE)]			= "balloon_inflate",
- 	[I(BALLOON_DEFLATE)]			= "balloon_deflate",
- #ifdef CONFIG_BALLOON_MIGRATION
- 	[I(BALLOON_MIGRATE)]			= "balloon_migrate",
- #endif /* CONFIG_BALLOON_MIGRATION */
--#endif /* CONFIG_MEMORY_BALLOON */
-+#endif /* CONFIG_BALLOON */
- #ifdef CONFIG_DEBUG_TLBFLUSH
- 	[I(NR_TLB_REMOTE_FLUSH)]		= "nr_tlb_remote_flush",
- 	[I(NR_TLB_REMOTE_FLUSH_RECEIVED)]	= "nr_tlb_remote_flush_received",
+ VIRTIO BLOCK AND SCSI DRIVERS
+ M:	"Michael S. Tsirkin" <mst@redhat.com>
 -- 
 2.52.0
 
