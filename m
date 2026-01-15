@@ -4,93 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A501BD4116C
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 11:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E45A3D41174
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 11:22:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03F1B6B0088; Thu, 15 Jan 2026 06:21:58 -0500 (EST)
+	id 527AC6B008A; Thu, 15 Jan 2026 06:22:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 012B06B0089; Thu, 15 Jan 2026 06:21:57 -0500 (EST)
+	id 4D2766B008C; Thu, 15 Jan 2026 06:22:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7B916B008A; Thu, 15 Jan 2026 06:21:57 -0500 (EST)
+	id 3F8C16B0092; Thu, 15 Jan 2026 06:22:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D7F536B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 06:21:57 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81ECF13A5FE
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:21:57 +0000 (UTC)
-X-FDA: 84333958674.12.D4A9102
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C1BEA1C0002
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:21:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YoE0cDx5;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 302166B008A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 06:22:25 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C79F91ADABD
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:22:24 +0000 (UTC)
+X-FDA: 84333959808.18.6152334
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E633F100006
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:22:22 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eq345J4z;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768476115;
+	s=arc-20220608; t=1768476143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H6CowDsFYs22GaLov61wu5wex8dy6IouM4bLjTvqW8A=;
-	b=xwuZinKPg7mx+diqjfTer8AK+LK++/M8FuSt/256KQ2WJGPkh0b+822SnKDWPQLhFti7+A
-	rA0oRBR5tCJMLbnTkfBRKOD3ODdYRryq8n1W0EnJ4p/DQeepgWqiIsUvnYqlRSnWegTjFB
-	xNMiSQfyS0HQP4wTdNLa7qbw7buZuSM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YoE0cDx5;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768476115; a=rsa-sha256;
+	bh=/uqqd9quCH0/nnsuDeC5Y/PVONnzka3eh3yRgCaY2BU=;
+	b=0tazIiJYZUpys4aG8zLS8POpKMTE1dSQoDLl0cWQGSbOOesMQNTL/C+FTDCNILgCJn5jb0
+	DqS97YkZTj2ln1G9O1v/iXDZIyGLpWBvLLaqL/y72V8hkcEslHrr+grD8J9GLGcc7ZIhAs
+	9OAn5EuSO7GUTYCpFT+k5UA5u9DKpfE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768476143; a=rsa-sha256;
 	cv=none;
-	b=TSKq1WElsYlMfg+A9s3Sxnh2C2c5ZSfpMhcoRghx3kDfVUcQ5ywljFuMeVLFBKOUFIa75D
-	oIJ7qG3zpsF61205W72o2+AXR+sAS58wlxuw1RHKSuWLQvn1kNHcmDEKKkzybmBlo7hJL1
-	ZLNhfwWJwEJcJpBcmKne4TIgktPgv+U=
+	b=FHLwBkaG0+d6R52ijf8Ormt3u3P31kGxSRdwBQoA2Usnpe8Ayy23KQVDV9GndGiHxCXVDU
+	NuPvVY32nRJFhxnxYnKDXIBhiyfuzyrNXs97VYjHxb6JlQwsK3SUYJzdtNQ9u+0MRQEc3n
+	fFmV76q2Fqq/pXoO5YjyPTZqJ4WMHjk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eq345J4z;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4D22D601AF;
-	Thu, 15 Jan 2026 11:21:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD3AC116D0;
-	Thu, 15 Jan 2026 11:21:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A14F84096C;
+	Thu, 15 Jan 2026 11:22:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68ABC116D0;
+	Thu, 15 Jan 2026 11:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768476115;
-	bh=2Z0C9R919FPjOvdBP9DKnEK/UqJnQnMt7nKfehB4BkI=;
+	s=k20201202; t=1768476141;
+	bh=I44va9OEt4jVcZBfMvPSjlSIjgMNsGiYT577FTZiAaA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YoE0cDx50jX40uMmr3HIpKOSOkp/Rg2BfN1hLuF/dzlFyBhJOCmrAZOo+gJVyt0C/
-	 pzAFV9WWBYwonww6PKWLutsK5V508powO6n6juDtlmIjWm7AN3psIaeFGZvyacJuom
-	 ijoqt7/Nf4pkLUAP57zP0FZ53yIw+VvRFUXxxa2S4qudNquTqBgvhWwiWZDcPxvpiu
-	 JZCaSRQDhQA0UXpha8AXI+z/SXs12fKEDrvuNqJ3fN8GsS8rrx46GSE+XrbtbrBraJ
-	 eWkPgnTCKLQBRYVQS0qEP+O3EFESV23lsa321/TFTfYngtU6l0rYJuaZc1rARziX0M
-	 4zW6jNx1OJcSQ==
-Message-ID: <acf9d35a-f8bc-44a6-9092-3a8c719c53c2@kernel.org>
-Date: Thu, 15 Jan 2026 12:21:46 +0100
+	b=Eq345J4zXsoXEojnzBTa/BT5NqCJGPr15PKbHZLjJ49rvtJ3huiO/X14J5xcjPKK5
+	 cVEVw2wQOaTcdC1B7RDfC7bHplcGjapCXtOak1TZCa5uqKikCa/dX6Htp1bE1pQYVM
+	 4g/tFNPRzX6RbccC7WJZuP5sUTRNgCZKrzmgAxAdoUNK+Sr5c6j/BB3e41JrWKLU82
+	 sxwQ/JE05o1SBN/kAVcTTHDvY7hGlX3/BvvL/Uo9DCC5prIIhkxRDASVmdIi8zwoQ5
+	 fXBiiPtW0+ir4Ojxde9w1lykaFQxWYx3njJirBoX8schsoUIBgEcSTOQ/fVkKbyytX
+	 IICNptCv/8+IQ==
+Message-ID: <21ba2222-0b68-4295-b046-77910488fc0e@kernel.org>
+Date: Thu, 15 Jan 2026 12:22:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 23/23] MAINTAINERS: move memory balloon infrastructure
  to "MEMORY MANAGEMENT - BALLOON"
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
- virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
- <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
-References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-24-david@kernel.org>
- <20260115043136-mutt-send-email-mst@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, arnd@arndb.de,
+ bcm-kernel-feedback-list@broadcom.com, christophe.leroy@csgroup.eu,
+ corbet@lwn.net, eperezma@redhat.com, gregkh@linuxfoundation.org,
+ jasowang@redhat.com, jerrin.shaji-george@broadcom.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, lorenzo.stoakes@oracle.com,
+ maddy@linux.ibm.com, mhocko@suse.com, mpe@ellerman.id.au, mst@redhat.com,
+ npiggin@gmail.com, osalvador@suse.de, rppt@kernel.org, surenb@google.com,
+ vbabka@suse.cz, virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com,
+ ziy@nvidia.com
+References: <20260115092015.3928975-24-david@kernel.org>
+ <20260115093827.12557-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260115043136-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260115093827.12557-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C1BEA1C0002
-X-Stat-Signature: xkki6foqhzae7q9533wsrbr6fwsd3b4r
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E633F100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768476115-492013
-X-HE-Meta: U2FsdGVkX18cCLd0n4ozMRWaTpjiTNyJZCVN7nYaRADVnJQRgYTtRXnCtLybTJVoj+27EU1VyXfsQz92SQWyAEPNmu/hZ62VMnfWkrD8tlYMPf3jF8jqIbdFFqMuVEV7xJ2jVFvd5DpI3DjIthleg4XvFMK2TYE3rwqm/KiARcr9PESctBKhO7ZLPo06aFvXzwXbtd0q6WVnQWO3PkJkoalfRc7GXm04tIjVVm8mbccE8D0I8keSozZxtpAPAWiDJzLGuxKf2Jkn1rPHl7qjmC/sIH4ieyV9/s2oCEQQ35AAlr0y2NZnob/XClRdRcVfcATHpHmu8PIT581LSLacXfr2dCyZOUJLsEV+ccdLmNncEQxvDaCGpl+oVXYNSDQUxHRRwJ7MsNxO6dOw7hKpVHDnExTx9xEbPhbgLkflaC3BPYMsfC+5A3T07Uaby1Wp4dLZld7aAn6Z4tOSJazHa2+looOypT/SVN6VvEXzkl8UBeYk7EefnK8jHTKZLa/s7bDemHKlcI3FuwpapZWT4Lse8OMhpNFgjMRIiyUVXJbCSanAy2UWvUJq9m6ewtpTsosW2iL0ivnuegeCrQQ2nwnuk7n9TxPue5O2AfxiheqxjRnUoyYpiJWPOtLJ6JbYq9DQ3BGbFMtBohq9rKrC2MGuN4Mcgu2ApfcjNo5J+dYXtNau1Ezhh6Ubra/d7BWAuzFby/ovz4CtMtSlCd7a2I7hh0uPfhTeIn4YQkhJQ6KyMGRUEFJ5dEgPbCeYnGHPctVOF6vlZI4xlavOOLopeYX2iNhu4dX0OCh1DAgApIUCGe7x0k4bvP7bNx01hOkr7m8O4IYcDJnfrQsxMmvQnTbdd2sO2cwORbAC+/2uuvubTdeLwZ57awO8BC/aqQLHmOeuWvGuRAxcrFbfFVV91xR2bOXYsJeW0ihokKNOpWUulGtAevW55fm8lajwpMmM3UCcqBCxR9xt5pkw2wk
- BdJV0HLw
- 2FgOXlv3C0qLtP1NKGG20vyPO+heDsrLciriaVmKIVatFeTP75+8ktv2lNYToL+MHnLQvArvGIfI2WVnPFn7D6GFIGwvjjBEZ0DJisFE1jgD3wvbRMkfXdVKAC3SzJOzqVU8aIndvYtGm4sbRziG6j40pfJkP+cuVzZyboHk9SaJN711+4uu2j54JmrfCAkZQnqlk+klPuoG5LV5ugqUCOe9I4He+C+Qtw6MSOU6f+rNc37IytmuojzqY29JKm4A8Yfw3bBEwNe52RSx9vmOOMCRhzBb5sC8rWKoN5HKfExi8zWFH0oK5hd5NdC+OS1bGLrSrwIsQfa+0wzqNA7ePYTVYNjOizlbkjmVX5532UTBlB6vcsMqXUQ+cRArM6iSZKcfdH/luqVVu5GvWeh8aQCzC3iqkxF/2c4HAd9TbCIdGDGM=
+X-Stat-Signature: pj3ymh6qpxtqzihqo19oyag44ngai3nd
+X-HE-Tag: 1768476142-840650
+X-HE-Meta: U2FsdGVkX1+mnGc/8lhf4Tw+kjUq0vk4p6AWIDzJGtuYyakNk5La0h3/d2xkFPHm/1N7QUMWOsksF1nnCt5kkoEGcJJFuLeEVgkY89101epd0qMs8g7prBh/bvsDPjEpv+WhgtU31IEB68aLV31sY/Iwb6b2J1i1DFXPub0YPWTC6/nRHEzSJGWByWQ0MN88xdY6RyDb08h2Rp0MfiNsGTJwYZt22N9IM0qWq/Ns+5K28vaxfcCLl1hIByTrbDiOP8z8d0NHT8SoMhk2doyP/Jeiwpvb6Xuh+0zfHCYxD/uLgNX1ieseejfytdZpTn6zRWugypGufElpIukMhHXFMNYceEVdvjaRZc3yx+bQYnDNrPxK3ujBES8HApY2p9kljlIFdMaLoNfCImlcsTWxfX1zKcm5ksH6L8Nz0zR3OWQb+9pT6hiOPVp8Jr6gVKgiO/yKN6U3bBRO43AIibPPMkxP8UeYPprqJv5gNvgrC+7u7dxAWh1Z/+eCv0VA4ApX2wMi6HPB+Up39wSrHqiTUBQ0Nyyo/u2VDdpbepjEp9n3BD0asK+0obYuS2AfHPtZCo3QfobBfqxveZV5Z+DEwTCzv1Cl4Exb4AbrTgGkO4r9Pnm45CeAnR5RKBdFXNaLqgnP5DkS2mJnLwk+//h6z/aPewepc2Gf3OMccs0ppEY2ZvDwBE4FH6TRTBKpFa7tSw6AS2/BSGScp3jEyYg+F1uwVqfvIwN9+o70EYxEcr3sBOL5tWCS52OQKULweWQQ2hPXFaeRZwRzIm/GmwR2l0mJ3wY3idXMRvXHp0rR21W3ewHdpnvBvNNzEVB0YO41hxeZr2Pjq80qVeW61pvIYUP/BugAhoz4IhKTi9rUxqQqsxmZQ9Bj9Zvg+m30hOjQ/STD53ITPq9PeX8Pp/22891I/LNZY2rhj9lIAdxjNODhEjahw+shXj899PEV16g0jXULFh3cah6caOToeQs
+ PX15O4Ci
+ TMauhqaxvVzTunuz+yfoFizSAluzdUNwjeiO8baoRh03nj4KjcMqxCZ7NhRbiDG9aCp2D5CCqZwFq7K0saGvOvRxh+ruR0tWmQ3Lizcki6ynwpE7jIaB0yEyKBRkCPqQlOlX8mBIN48WKvQB+d9AIvCSvLaeKOWIV1ulfvaSM5Wo/FfN944hOxp9AB60dAUZdrEITRqDkKLLSgZeBKBZod8uUK/a2dsGdZxlJjLBH1rQv0v69uzIPwpapTbyRyuDXgutYbRqkXY6X+EjFW07lRqgl+p6qbwvXRkZsan4FIuwFWx2uDMD+LLQGZG2xAjzN4mrLl6x2EY5mzeFgBOLN8wOkGLkxbj61VYf9JRaOUsG/c3Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,8 +147,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 10:32, Michael S. Tsirkin wrote:
-> On Thu, Jan 15, 2026 at 10:20:13AM +0100, David Hildenbrand (Red Hat) wrote:
+On 1/15/26 10:38, Lance Yang wrote:
+> 
+> On Thu, 15 Jan 2026 10:20:13 +0100, David Hildenbrand (Red Hat) wrote:
 >> Nowadays, there is nothing virtio-balloon specific anymore about these
 >> files, the basic infrastructure is used by multiple memory balloon
 >> drivers.
@@ -180,12 +173,10 @@ On 1/15/26 10:32, Michael S. Tsirkin wrote:
 >> +MEMORY MANAGEMENT - BALLOON
 >> +M:	Andrew Morton <akpm@linux-foundation.org>
 >> +M:	David Hildenbrand <david@redhat.com>
->> +L:	linux-mm@kvack.org
 > 
-> I'd still like virtualization@lists.linux.dev included, too.
+> Should it be david@kernel.org instead?
 
-Makes sense.
-
+Yes, the patch is apparently a bit older :)
 -- 
 Cheers
 
