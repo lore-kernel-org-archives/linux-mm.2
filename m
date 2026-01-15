@@ -4,115 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F165D4662F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 22:04:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8548D4662F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 22:07:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3A096B00BF; Thu, 15 Jan 2026 17:04:21 -0500 (EST)
+	id E5AFB6B0005; Thu, 15 Jan 2026 17:07:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBE5D6B00C0; Thu, 15 Jan 2026 17:04:21 -0500 (EST)
+	id DDEC96B008C; Thu, 15 Jan 2026 17:07:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC0856B00C2; Thu, 15 Jan 2026 17:04:21 -0500 (EST)
+	id CE0C56B0095; Thu, 15 Jan 2026 17:07:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A9E356B00BF
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:04:21 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6E2621A0376
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:04:21 +0000 (UTC)
-X-FDA: 84335577522.17.E70CE03
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9AF9A80005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:04:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RGMXfRz+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768514659; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B99C86B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:07:47 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4165458B11
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:07:47 +0000 (UTC)
+X-FDA: 84335586174.05.96C9318
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7DD17C000B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:07:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=c09TgZ58;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768514865; a=rsa-sha256;
 	cv=none;
-	b=PRXZfbaMKXa9CQ8Vmt4Eh9zDd9MI62oq1Q659tLGQRLPpMnEOKjOFdqx13UxAjj9eO3LzS
-	E3e8KxYoqUZA1ZblnGlhQ1t/L7MhUb0/pH+6JIWKeNDZp9JyNXoY3yTGsI0Bgj2pUpp4/9
-	RnvefDgsO3E7FgNtC/NKl6RHSo6PZdQ=
+	b=WZDRDYcLnyzw15zXmjOBdhYvcWnG1PHTxB+7vvgozb6AqL7vGsdRRmYOHc/uA7Y/xf7poe
+	BbGqsO2zgGji6xt33qpAWBwxeYyWZxSc1EYG7+6kk8jmd1/NMd0H3eefeWEl1YhNDLFzfi
+	lvYxqGleo+f01Lm6LOjUbhyI/eWHm3o=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RGMXfRz+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=c09TgZ58;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768514659;
+	s=arc-20220608; t=1768514865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+9teuZrdc+h3p8sfeWroQ6OaORAFW0bgvjwel3oUcI=;
-	b=YNG90YXaD5ZalDGY5ILGx55Z+7An3HR7A6VrIJn2UUsHduzB9ApDCM8uPIezLPbUxRr+n5
-	3VWKp9hgoEEm5wJYJGGto1WorDVis2PUrSK4KElgxC+fbznSL5K2pLdEjhZmi5UEmENKni
-	cCmk9x33bCL3vOQCGE1EGl2+E5Q++Ds=
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-790ac42fd00so13599917b3.3
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:04:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768514658; x=1769119458; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t+9teuZrdc+h3p8sfeWroQ6OaORAFW0bgvjwel3oUcI=;
-        b=RGMXfRz+hqV37DDB38x+BK12lOijnuTIufG5l5a5RNmnsvRVOy0HQPVRvdcubJ5jPf
-         LCXyLopvjZBBLiOWYBWrR+2lvLaQJtaOerETLr61e52SfsFMKirIYLuUPKR2tmRIq8iQ
-         4YzmtTb6eMrgJlmJyyD2Tf0+jAfB116l/BiAMGpkDfNbaXSN5JHow8hZYUYz/4YSKWJS
-         Ckp+IMsib+ePYMRJ5+QN2AyPOiso3kDTQ22IPoxf8sQYbt8ByFANX3XgQm5z9A2WEgsr
-         H9/iWHjAaSQS1YHNqhxW5O3gqJeKjfbwPtK8hZn5SJiJXMxeRvB2SwQ1tDPXrPm2M0ta
-         tsrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768514658; x=1769119458;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t+9teuZrdc+h3p8sfeWroQ6OaORAFW0bgvjwel3oUcI=;
-        b=H/6gKjDlAD/TMWzJNXIDjmDeR3PJOQghcCsqGrY44eZhoEvG7y37c7/RYurj/Sj7j+
-         WrsML8ch8gISBtEn+vaJwTuPtTWOX0IIEm/NtgvXtHRuuFmzK0kmmLdximIirbFUxuew
-         qe8DIu6yRcYNAb27ORJGGzJR8Q1RDaBalHQtVpixoRO93+S0OTo/VVFA1HvsJT2vvwOO
-         P+bUZoek0074CEKx4utA3aZhMMqLLrAei3B+VIBa/n8YnSjpJEcXx6bF3pi6MRa5watH
-         oPn3lzYdKpQ5K47IRRh8Y1pOxyHpF6+Rqsx6LV/IsoJYAFoHoR9wqzTGKsCAfpXkgnQx
-         EmuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWG+LXrUyT0acL/zn77ye7BCtIbgwP/r2JYjznGTQPAoTP2iKqxNfC3WdLGNIzfEkbHiHue8QteaA==@kvack.org
-X-Gm-Message-State: AOJu0YyIMQLEcTbjX0Xp4vw2j8WvPq/n0ZVr36pSZTGvPE5fKJD2Udjk
-	CWu59jTFb2esblPMMv/xO0crZlhdfpy0v3d6GUDVu8X1gsVUleiRuavv
-X-Gm-Gg: AY/fxX7NoITvjNRne2bVBRbPcOkg5KQuYHg7Qm9dpjSbU9YWuKoOIeQO3W4g+68fQA+
-	qgT0hjaGf9G4hAbptyNe4yyz2OuQ4S28YOwstqGSz4AAUCUW1mNGJ+3UJVRrPtO6CJHtG8wWE68
-	Rn1BlCGK6tyKQeErApwWhU9KHTzn88vLHU0ML4/faXAAokHm0DP1ls2P0HhWzwnR9ZaHM23LHiA
-	uCEH/I5Aja0E25vnlHZkc3CRSZRKWkNrZ4RPfAuBMnIgeCGDOA19nvI9mwMTsrl5jKrWipTlQpJ
-	nz3yW4x+xKxK6XnkNpEO2E4xp+rYl/hihtK3wDfJr+fOywKWH6uaRRZeXu3SdxgK16Ve+g1kK9P
-	HEyJ9DtLJUGGvhXg7yPw3j8Q5Ued8GoKnBFmYvFgyoHdITHzhsxPkqOAJQvMzCNz0UIx89IRzqo
-	PjODySLQ==
-X-Received: by 2002:a05:690c:13:b0:786:7a54:4624 with SMTP id 00721157ae682-793c523d4eamr22873687b3.7.1768514658560;
-        Thu, 15 Jan 2026 14:04:18 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-793c68312adsm2198147b3.33.2026.01.15.14.04.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 14:04:18 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] mm/hugetlb: Remove unnecessary if condition
-Date: Thu, 15 Jan 2026 17:04:16 -0500
-Message-ID: <20260115220416.1749150-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260115135942.843342c483b44232b599a61f@linux-foundation.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	bh=9RweGDy9hi+XhSYL959XswHHDwGBOE9WGO3p6TIk9HQ=;
+	b=CQIoiRrfrPvgxfsw/AUbfbQ6/Ylgg3K7mXyq4dObLJL2/3R95ONFUVWTNgaS1GzyKYZzue
+	wSb+ODAxFMkx1LAfF9F684grhFUHBx2BzXqeaCenff49ubhmajOEZdwZ4A3oFY3RtIlEVQ
+	/5juNJ+AIskgbI7HdHB7E+zrnkQYNFw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8BC83409D0;
+	Thu, 15 Jan 2026 22:07:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46889C116D0;
+	Thu, 15 Jan 2026 22:07:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768514864;
+	bh=W3Cr+RejR+eSzFWDIZeH7kRpZoscMgmTdLsXquo7HdU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=c09TgZ58wztqMmQaJ3qAKXi2wc+IryyFkL4oL81hS6kx168XYxN4THaoameBiTtnW
+	 OLcRPlXnqzBQz41pRk/sSplUaHVdYQ/bpky+B5rXvFugZuF9EWfYPCiZIT7ZvapCPl
+	 7JmaGvH53+iIMwIPvsaF7WbJJPhAoLrCNMgN2+qM=
+Date: Thu, 15 Jan 2026 14:07:43 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chris Mason
+ <clm@meta.com>
+Subject: Re: [PATCH 2/2] zram: fixup read_block_state()
+Message-Id: <20260115140743.f7ada77bc912595a580eaf7c@linux-foundation.org>
+In-Reply-To: <20260115033031.3818977-1-senozhatsky@chromium.org>
+References: <20251216022727.578BFC4CEF5@smtp.kernel.org>
+	<20260115033031.3818977-1-senozhatsky@chromium.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: okuawjdkde3dfhawrsaiashyn9frecxs
+X-Stat-Signature: 1z3bfchwfrd41ekowna5mcmyr83mi75f
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9AF9A80005
-X-HE-Tag: 1768514659-170260
-X-HE-Meta: U2FsdGVkX1/2WaA6O7jbP3PqbXhw/eYvXNblH82spJB0weqCtQy6ENDTldCn3w+s3lm340bxzrsAVJT0bgytthZRTtkW/Pl0/8NeePJ0ZAlbYA83vBHk6eX5hlrD3UBBpunIfgi8gdHFaJueaY/r19cCjyOvjuT/9tThS2/9iNZvZrSl/DaUYubMaIcf9dACUUmyrVgxc0eWvyD0+NbbAQQT4gyvNp3jU0wa0iD0/9EVo/I3ZtIfUTWNaeDe6FaEq7i321a1ogmG5ZgnXzUdc9dNSZmjV7pgebrd7A2L3/ORASDpCJ+wMW4mOyIyndY1fSUWe92C3MSah4A7x27UrIOW7YqxQL61IHnKAawsXPNupxlOku6viBCrxP0XNx42uS+u9alu2zVK2AgWa65u3Ilfurz60eWLmVgfUQm2UGfsaVHrCrGRpEl6bekOXl87YmNCXiLKqjTEldNn44Lb47FtFJERWqrAfQw7XqTKohp1okwU/+jUN+Ezq+yVKLlcR08aCW8JIz10/K7pKOqV4n9sGl3n0lqat0GKeQm4C6zK5TGb8aouW14he6Pb7DmRA8wuC0ZN15IVYAeK3XfMdk1osWqyErzPCQTxFqiaIWGcwM28a9X8VM0uFUy2vH5efPcWWeUnSp1IPet3VyHITujCTCiXL70gyYiLqeTZVPwvRjA26b5V1y9In6zRB7H/wrOQ1Tje7+uVSFirZr3U7ZVGr0FbePq/JBdX4lP/exoDzf2rn9K3CBgGxi0OCq4Z0QQLikKVAM4XmafdefsrrcUHkbd1r3pJGDxrJR4HYY9dz4BFDQKqf6hmOTriyhbFF0sKeN0c0+nb2TOqNHNN+tdpN3Iz28DZ81BKfg+h43xRwhs5rq7omF0mzUcPrUv9aYh+6GAL7vcOlxTC4XqwTtR0aJhfNKAi3wZ0cq8wrfrHNMkcfx1CZxcpEF2VIEYvDDsOeYjHFUkdOzmrCNw
- UfWEmwcE
- Y/T/Pm+G3Md9QD8+tmAHZqTIAv5MkPSaPj8ZaGGt3DrD4WroIqYABSyNunHK6MFF58/uaxBb9biPbwspTBRUZ1Mmu5kbNz61ye6xxV3Ti/h0F7R8dxLJT4TkA8Ll1nCOkV+vY0rHmYyYSxVpFzHC28/v0thIQ1FiP1GeOF4iv8zhaArG8qt6xZvk7yVAF1xufoTbDtB+KaEl0NZjH+WIcpq8fYFjFpACJ3PGBd3sZjkGHyQXMaChRlc0+qlbMV4gTHnI0o6cw0zJrgCUsXlJ+7nTQhcOn45D8rYdMuauUmnnxvQFeiq6p7azC46b1Ue3ZKSVwsKxwBrkPqvnbf8wmZY+I5Udxu84dqIe17ORAwYMco041ru6tVAffyiD7ol1Fdsqs51r1v7kPuG446OrMdwg7512lG2DNaAfF1k5Y1DV0xgAR7IIO7NVlVc6nqNp7t2Kim7xULS4wABPGyc67x+hWqM6rLPK7uIh16ajKbC076i942R90RmQRd9aOsYOX4BhzLMhlv1QwNXyyTTVV9KE8l2EpPPyqfFgZzg7D3FYeFT3u0+2YFfcusQZw8dd3dvaq6m/2uefHj6E=
+X-Rspamd-Queue-Id: 7DD17C000B
+X-HE-Tag: 1768514865-454067
+X-HE-Meta: U2FsdGVkX1/BSdZwF1S6Yz2xJjrDLxVukayw4rewxGKmZq+0IVXXYLovBE9laR7r0jNMNqKh/udHMgS88z/iBq/F07JRI/ZdxqAkoHSfEs4R4RC06fVlMmWrQMGn83azRnpcQEouq43oZft+c1LVO8DhCgVNvzQiM0RCTXdBSsd2KEP6RJTcJL5VCxNV1hWlGol58i+kuJwzkcP69HBBpPs84OotkiaxsyAIgxexfJ4XZMdAA0XyAd5x3jJVvTAyYkqP/53lDhq8Z3tQHZ5b/c2cypDurISeRLrX6sAhC/kiS/QIViAoyLS+/nDRUe+qvERL7kE6V/m6y6XT4JcLbc4KeVES3n7jv6L8RMpRatH98/W1uEksPh71qLLZop8fH9RRhsg5hcf2RLimzG3FI+sz/X4De/bIKdGZf4w4QE82uPxvXGcDyvqkyP0SmT48nAPuuiYqO3zqqVTF9HuC0hLUEt/+O7ecsy+U32vBDt9ymaedpFhB5ATG9SG/QUnVIOsUJPBQk7NAHzQyHjjDpUJHIYibb3mgL+mJ6J1PtgM2P0TdqiiYJ0NXU4VoH5Uur/CN4B7UQO4+V+fTvUeyWVNpDVi0YbYu+TvSU1s6+TRYP3eGYAhDSh6W1W8fg9JggCPEQ4dyzduwLmAZo0f14w9T3szXfecadUjbarQApyqhHCFRikqX2JFX+aFVm/7x/hFVV8wZnoACGNzYuwAJHhoA4WodYZPjYG8AuPLPxV6jODUcsPFRjNBfVcV38wGhUzlj+aBIBXoiFGNfmiOQQ7Tk3KpieUx5Ggwxlf3QwTcNBFOR30rl60oL7BQ0gLEchqEhV46Zh+baHBI3OI0ijV+KrTvI6CIUk2sPvFvLuZkut+yErGzE5CPhXI7oMDm2VzPxNb8GRDQWb0HWgg5WRiZ5GOltFB2yRTb2qbko1I7ikbtApdKDwGBG1DI3eG18V4X0AImh5e4BDjs/S+v
+ ds1+TFS0
+ 9WThmVsRsrPdJFHmQHP2yr1aaoyCaw0dU6wRLd6KS1UE1GXqRaP2kDcmi5/4Lakx3wPyhFPvyRBq5JZx364uis/93zQ/s3igBpObVdwr+s5c/36oUenWF7WmfbcCAAPQGdsXPajCFrnd3RLp/BPKbJGABrXT/Fwdk2Bpb0kHeqjy4wLDhcojbktVg/S2DTIvrOioanC8XPgBSrtzfm64XMOrcJuxe+v72rFIBx1vh7vtJX3FBIsMfOcJx/1YNfx++p+i0wyi49k9yEYL2cOrm2X2I9BtVSFMld65mhIv4SdgDFAqeDIft2Udx8uGfTBG14371Zk+jL3x3tFb2dcJMjfSBoOaTLaOePW+o9ffb/O+U2Ottf+3cv89CGscJgElhxPH5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,47 +91,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 13:59:42 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Thu, 15 Jan 2026 12:30:06 +0900 Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
 
-> On Thu, 15 Jan 2026 16:10:51 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
-> > > > -				spin_unlock_irq(&hugetlb_lock);
-> > > > -			}
-> > > > +			spin_lock_irq(&hugetlb_lock);
-> > > > +			hugetlb_cgroup_uncharge_folio_rsvd(
-> > > > +			    hstate_index(h), pages_per_huge_page(h),
-> > > > +			    folio);
-> > > > +			spin_unlock_irq(&hugetlb_lock);
-> > > >   		}
-> > > >   	}
-> > > >   
-> > > 
-> > > MAP_CHG_NEEDED = 1
-> > > 
-> > > Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> > 
-> > Thank you David, I agree it's helpful to include MAP_CHG_NEEDED != 0.
-> 
-> Oh.
-> 
-> > Will add in the v2! Have a great day : -)
-> 
-> While in there, this:
-> 
-> > > > +			hugetlb_cgroup_uncharge_folio_rsvd(
-> > > > +			    hstate_index(h), pages_per_huge_page(h),
-> > > > +			    folio);
-> 
-> contains now-less-needed 80-column party tricks.
+> ac_time is now in seconds, do not use ktime_to_timespec64()
 
-Ah, that's a nice catch as well. I'll be sure to include it as well!
+Please help me out here - which patch introduced the issue which Chris
+found?
 
-My bigger motivation for sending a v2 was mostly to separate out the
-fix from the cleanup patches. Since they are separate now, I'll send out a
-v2 for 2/3 and 3/3, while I wait for reviews for 1/3 and send out a v2 for
-that one at a later point. For what it's worth, I don't think the fix is
-super urgent : -)
+> Reported-by: Chris Mason <clm@meta.com>
 
-Thanks again, Andrew!
-Joshua
+The Closes: link would be helpful.
+
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> ---
+>  drivers/block/zram/zram_drv.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+> index cc51aa8b6181..912711faa4e4 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -1579,11 +1579,9 @@ static ssize_t read_block_state(struct file *file, char __user *buf,
+>  		if (!slot_allocated(zram, index))
+>  			goto next;
+>  
+> -		ts = ktime_to_timespec64(zram->table[index].attr.ac_time);
+>  		copied = snprintf(kbuf + written, count,
+> -			"%12zd %12lld.%06lu %c%c%c%c%c%c\n",
+> -			index, (s64)ts.tv_sec,
+> -			ts.tv_nsec / NSEC_PER_USEC,
+> +			"%12zd %12u.%06lu %c%c%c%c%c%c\n",
+> +			index, zram->table[index].attr.ac_time, 0,
+
+local `ts' is now unused?
+
+>  			test_slot_flag(zram, index, ZRAM_SAME) ? 's' : '.',
+>  			test_slot_flag(zram, index, ZRAM_WB) ? 'w' : '.',
+>  			test_slot_flag(zram, index, ZRAM_HUGE) ? 'h' : '.',
+
 
