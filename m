@@ -4,119 +4,218 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB87D3CCB1
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 05:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AFC2D3CCAF
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 05:27:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0B536B0088; Thu, 15 Jan 2026 00:02:48 -0500 (EST)
+	id D5AB36B0088; Thu, 15 Jan 2026 00:27:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ECA56B0089; Thu, 15 Jan 2026 00:02:48 -0500 (EST)
+	id D084D6B0089; Thu, 15 Jan 2026 00:27:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E1A76B008A; Thu, 15 Jan 2026 00:02:48 -0500 (EST)
+	id B8B406B008A; Thu, 15 Jan 2026 00:27:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7934B6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:02:48 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 477701ADBC
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:02:48 +0000 (UTC)
-X-FDA: 84333003216.09.C931711
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4484112000B
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:02:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=M2W93ZP9;
-	spf=pass (imf29.hostedemail.com: domain of david@fromorbit.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=david@fromorbit.com;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768453366;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A1B5F6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:27:38 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 38B30139C81
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:27:38 +0000 (UTC)
+X-FDA: 84333065796.29.517BC04
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010014.outbound.protection.outlook.com [52.101.61.14])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 541ACC0004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:27:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=IqwiDEfW;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of apopple@nvidia.com designates 52.101.61.14 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768454855; a=rsa-sha256;
+	cv=pass;
+	b=aCKhk3XoPzTuBuhThyC6zHAnV9i9AFtpFhml0GjYHIim0XfkIGY9CxKIoH2Vd8f9qspNAP
+	u17XWaljKy1MHsaxwdpfCuSUPL/rKNoI1edzz5Rds97WAHAf1ubP02hVGzuUi45WJChbza
+	bB3aQu+4UJgKerNjNzJkVeJrsUZL/I8=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=IqwiDEfW;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of apopple@nvidia.com designates 52.101.61.14 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768454855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uHtMZy+1Hf+5CFrdMNdv7JLbvIeaLMOR/Q+6FgomzqM=;
-	b=YJhHPTCr5TJzY6FjjRWjURgHSr/CdWVlilVXTDIvXlUgS9HQdnYfSvi+nfQSYyQrvvrywY
-	596kv8zgKBEy7RsSJJotnX4SToEgOOwZrqsd7LwoZehQSYNsCTB6idvoUmXlFv70vOos1s
-	V/FyDFEXNurUa2Gr+aWgKcHDGk7KWqs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=M2W93ZP9;
-	spf=pass (imf29.hostedemail.com: domain of david@fromorbit.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=david@fromorbit.com;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768453366; a=rsa-sha256;
-	cv=none;
-	b=idmEuD8gV0pVvuX6QsRlt0W83RJkGhNMN9hBV9lPibm9JKSiNvTweeE/hcZJRIRf2mKIwz
-	/zBbNDRSs7W7HgNrPOJDy/H0YjBGqfxDZWnl5J0atVraDKevfn/pnG8dwhiwNpn3j5KyrT
-	BKzsxs3oU1v+UtzdmQ0n5YHg+hcZTIU=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-81dbc0a99d2so248607b3a.1
-        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 21:02:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1768453365; x=1769058165; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uHtMZy+1Hf+5CFrdMNdv7JLbvIeaLMOR/Q+6FgomzqM=;
-        b=M2W93ZP9La8ZE+zHsoT54Gaii1cXZ40TpY+S6tCtWBsEneReuBUGMAfpoiV4FcxS1K
-         NSVlW9xoM9sjPWtJaN+p50Lo0Fis8BShgbt874fYis5olLLbvxw7ZfGM5DcDo+4GZC9V
-         w41hh72LzUXRGq2eqOp5FYc1qq6Ac2thWy8CBvqKqfUbBC3+duwD4O2jty7rYpyoj3+P
-         /6laIt+2c2uJMiu1suoyO4I6+4sYzAeYuCE5fgEQ72K66B77JxislWGUDClJcwm6uZL8
-         Wd7HvTf+q1fH0+cPcgSEndYb+/Av0s2z2IIsVdOAecQNtVpTrRhcunSqVq2a4CSgT84K
-         8GDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768453365; x=1769058165;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uHtMZy+1Hf+5CFrdMNdv7JLbvIeaLMOR/Q+6FgomzqM=;
-        b=LH8k2+oq9AriDMF5I2dQmX/+VjYEvQJtrZL496mSt9Ig5Clh5CVF457GpnCX/lbpAL
-         lNqQKbufKby5MKIRNZaMdDUm+LtMBPfSQIGvFrDfwT+T4+2pesm9GYFuAjpzscAWRzZk
-         J3a1LYw8vYtlLcRv/YUkwnZ+wS+Uv0jOOr+LTG18pIEAgy+6vdwGqMXjYiFe1k9xKJvY
-         oZMuKw5slMzuPXQgG4aUgUtFetwAAkU2OzVVM99toD9wvladLZxguiLmw8zlY5TXAoFx
-         aEFEJvPhTgwklF6xk9nLayr/im3GP34YmLA7KVsQgrfsDzl/pNaNKeAYczND5PjcQjtR
-         uCuw==
-X-Forwarded-Encrypted: i=1; AJvYcCX7KCaDp2Y2BJJvmSE1edFPShsUa0vhFr38TdwtYE/K3PUryyHd1e/LWLW23CIN2IIK6Ezs7ZO58w==@kvack.org
-X-Gm-Message-State: AOJu0Yw8e1yKzpKSuXhSJ5jefuWRrE8z8B4jFywjXYLYQ+9jkY4vVnws
-	KN3qQPcT/MOnxkGc4m0CPQHOhzaRewQZ3W0nXSHoiLkQBbGGt4/m1JEAQdAZEBKQaRI=
-X-Gm-Gg: AY/fxX4uUR/LrHbv5cIMlfTGEL9nAvMJ0eSnmTZkJ/jL04uxukddftWRrUgHgcDUMzk
-	G2HWftpM0rrFxYdEy4uz1CHdkZNZs5bDOaDtxEoYA1zAA94/7AankqCk5eOBDCo0L24TC87g7YC
-	Ugirx1R4uhgxjlhueFCz1eJDPYOK39ccYoRu3ZRFPL6ehRXKKla4S2n09BdN6XtyWzzlv2jPe+Q
-	rrd+vCl+Aov0UlzYS2Hk2B6MDp8ibAn7oksMcCf1GKy9BokwS7pAFini4Rak+HCk2hVc4YK8ghy
-	4AW80nuohQhuG7Mo9Qlmj9bMSqXIENu+Xx26k8b+kk+Drm8HdnH0cpkPJXeQ4oMolvF8I1OFde2
-	gtggo73hAMCACGIP6Jf423QrhjKTrYyx0+Jx2ITE3kJqz4cIzjk9F7Pm3fNXpTRqf4d/YDYnhYX
-	sOrurnuIK9KiMdf0hsjedgMBu2TNhm83t/WaJYxQ554TGt1vmNFCo46CgyQ0z6lP8=
-X-Received: by 2002:a05:6a20:9191:b0:341:262f:6510 with SMTP id adf61e73a8af0-38befbcabdamr4401639637.41.1768453363467;
-        Wed, 14 Jan 2026 21:02:43 -0800 (PST)
-Received: from dread.disaster.area (pa49-180-164-75.pa.nsw.optusnet.com.au. [49.180.164.75])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cc95d5dbfsm23665476a12.27.2026.01.14.21.02.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 21:02:43 -0800 (PST)
-Received: from dave by dread.disaster.area with local (Exim 4.99.1)
-	(envelope-from <david@fromorbit.com>)
-	id 1vgFVB-00000003cVO-2mpR;
-	Thu, 15 Jan 2026 16:02:33 +1100
-Date: Thu, 15 Jan 2026 16:02:33 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: guzebing <guzebing1612@gmail.com>
-Cc: brauner@kernel.org, djwong@kernel.org, hch@infradead.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, guzebing@bytedance.com,
-	syzbot@syzkaller.appspotmail.com,
-	Fengnan Chang <changfengnan@bytedance.com>, linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH v3] iomap: add allocation cache for iomap_dio
-Message-ID: <aWh06YoiJrR3-J-X@dread.disaster.area>
-References: <20260115021108.1913695-1-guzebing1612@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=oqkF8qFO4m1AXK8UhAnkZyaQ84SfZzU6O2W38CJYArs=;
+	b=V3rIUEg0NGJQUnAS2YyzgsqoL22dbJfS7jI2WRq99GL+bHI/LO31q1OYRNHSFCraDPB+dw
+	O2IYllcgiOGefeJvE3r2MgrSEfkneT/KaTJydpFuEuXY2AFTs1mhLL9HC3FW97+TRERTLM
+	U0fChd9eKhm5QDS3HS0B4E+cE3LWTKM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=e5fSKh4PnvMUux701XWR8dFs/IF0+zrXXgscGe1uIiMRzm0oEJ2L+9zi6M4pJIFcFFQzHyJSbGGk9TjSMr1wzW5lgRZyX+xrGLk8IdM48+/hVLV8YYVKz8Gg48EDTa7CtoBEFNqPtnOJLqOQW/HR56q4sTt8SibEUfH7XGAIu4IZkWRyeH40hTb6yKU0y2Z7QTMZGKG0ovH5XfhIZVTZOqI2P31euazR2Rt62tzBFD+VU5D3GswYMYaMSpzXjTVo/xq0s8mxCP/pLA4vk8IHvTrYYJZ5QQ52WOETHYSEf6JR0/83rntybJSi7/IuvJcaJ4aksI8hKk2bhYu04/to5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oqkF8qFO4m1AXK8UhAnkZyaQ84SfZzU6O2W38CJYArs=;
+ b=qLZ/eVPtsZtBe5LDHKFV7poKzELWGAoUYCPrZxV70LB99vv8KDj1mYbsEHTCcFHL3oEJRUGaGoOrOr+ZYzHgb6gcOg8wEa4q1FGaQHTyb60B8aSj3h1FueNjgMm09G0r/8adpJI67lPYFx+1DADbCmg3DWOd+8/Rma8zYcjZjl/qafKU4TTGy83vHEJ653yS3JmAYMblXEb/fvbkooM/wieGJ9KWyiJpy3JayMJAPIYuEfi9IsYyO+m1FfkVXA0BV23gdvyw2wBjJjPgpVpUtJt84ymT4u2aHrRf1F9/64ykdUd28QaLyE8zHp3XihVXzrBKlGmqnENmFqcHYLioiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oqkF8qFO4m1AXK8UhAnkZyaQ84SfZzU6O2W38CJYArs=;
+ b=IqwiDEfW9wwffpnkjro4GxRMjl7MVZAT+ECcvWeLxn1f0N6sCp+qkqTZ54eNhgHtlCpasxEx+1LeR8Ve+ZYr7xaRwe+Up4G9pXF9oQq9Yfkca8IeRDq+6NM936sRymySS2QdOrFuiKZhFc/S8had3uiXy8XIIkldB25kbsxapBoPyhKQRE3L5vRp/H9Mx2blV2ZEIJ2C/+04//cODXtw7BT4Nd1J3qVKMSOIF9stY+ca29MhnN6qxory39vU/oAIC04UZ02eWw9/CnF5yaC/kTiK1u9f6ib4GFFldotcSqCa9FJuT7oD95hpMHsQYsD9obITCKtvBopbFOFGNem/rA==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ PH7PR12MB6883.namprd12.prod.outlook.com (2603:10b6:510:1b9::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Thu, 15 Jan
+ 2026 05:27:31 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9520.005; Thu, 15 Jan 2026
+ 05:27:30 +0000
+Date: Thu, 15 Jan 2026 16:27:26 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>, 
+	adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Balbir Singh <balbirs@nvidia.com>, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Message-ID: <6spceodgfobizdaziju4yvvfydwvvik2wjyoyfuglozq533rgl@vmkotau3m3kw>
+References: <20260114192111.1267147-1-francois.dugast@intel.com>
+ <20260114192111.1267147-2-francois.dugast@intel.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260115021108.1913695-1-guzebing1612@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260114192111.1267147-2-francois.dugast@intel.com>
+X-ClientProxiedBy: SY6PR01CA0059.ausprd01.prod.outlook.com
+ (2603:10c6:10:ea::10) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|PH7PR12MB6883:EE_
+X-MS-Office365-Filtering-Correlation-Id: 23a9c9ca-c787-4c45-2ad5-08de53f6c72a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ckpSSWdQL0JLNTk1Ni9aVVI5TWs5K3dmZWROMFR1cHpwMzFQOW03bTNKakVZ?=
+ =?utf-8?B?WUszUUNjRmhvZkN4RFNyRGMxaUVDWWdIY0N4M1pMd091elJZN3J4WnNOb3Ix?=
+ =?utf-8?B?LzNLTkQyVGhDQkxtR1JEZFVmd0V1YkZGeEt4Q2tQbTZtNmpTVG56WDZrQ0cw?=
+ =?utf-8?B?QWVOM0g4Qy9UaXFwT0xPTFVVMVdxVHArbjNCTU1KVGhBeFJTc2VTbU5ESmMy?=
+ =?utf-8?B?UlZMcWhrbmU5WFVvMHFRZkhzR3dUTmVIYzV0N2EzajR4dWNwbDZYSndMcUpZ?=
+ =?utf-8?B?WmhvSUVYeWQ4K2U3QUVRVEpmSC9BeXJrZGRtUFV5bjV0Mk5vd0VaSE5yRnBp?=
+ =?utf-8?B?T3JmT21mWVhoZDM2ZDVjaENOSEJqdG1scVAxWVY1RXNYYURzckRDSmI0UkVX?=
+ =?utf-8?B?cGNHd3k3TUloaGFMdFkxcm40MlZacTZ0L0NVbFk2S1picUNGWFZUSEh2ekkw?=
+ =?utf-8?B?dy9uK0ZVMUcvVjVXYlAyZ0xzWUF2T3RSbHpHS1Y4eUlnU2RRdTZCNlVLUmpm?=
+ =?utf-8?B?bG90RjV1aGVoWk4rbGtiUnpBMFpsb0lTT0puc2hWNi82Ykt3SVErcjIyaEx2?=
+ =?utf-8?B?aFBaZ3ZTOVFMNkVCSjBvMnpjNlM0UHNDRForbHgxMWZNOGdRSFp3OUNoK0dP?=
+ =?utf-8?B?V09Qb3lRNG42WHFyWEhheGNzQkcrNmF2TmoyakJSSTMzOFdCblVyT0UvL2tp?=
+ =?utf-8?B?LzgzY0w2OVlxRXlWUU5kakp0SEIzWEhrY3BjeVBVNlFlR2tmTEluUG12SlZ2?=
+ =?utf-8?B?bjl6S1NMS0JBMTdzdW9SUWhqSTVndjY3NkI2UDZ6R3BERm5wcnErSkoxb3hj?=
+ =?utf-8?B?R080V0JyQlg4dUNhUkhlRmJiV3pEbDBnVCtJMnFKV2xMdTFDckkyT2F4RGJB?=
+ =?utf-8?B?TFVCZHhVTHhvZEpNTUFNUURhRkJkLzIyclVUemIxWkVIZDRya0lmdXdxS0Vj?=
+ =?utf-8?B?MC9EdE1jMGNoNWlJWFNwcXAzdUZibkdwN0huYk1QaFo4OENIQVdpY0VaKzJZ?=
+ =?utf-8?B?WHNLMUxmQWdpZmpCNmE5cHo4VlZWRUVacjVFbVl4NHB5UGwzaUU1WVd6QTBC?=
+ =?utf-8?B?WTdGYzRCS0JwYU9QZE90V1JLWjVvUEhhdFgxWmhELzJCZlBqUEVVUmNOSmxD?=
+ =?utf-8?B?SGtiWTRlb25NQnRNb05hQ2s5Tm9kT2Y2THV4a2Y2NUcrUWtabUd1YnNJN1My?=
+ =?utf-8?B?S1h0eGFPM2ZIN0oyVUdIVDZ1OU5DL2RJY08xamsrRzg0bmQwNUZVZ2tYUWdX?=
+ =?utf-8?B?bFJESWptdXVlam1lM0pZbkRDRUdTeFVLemJQZDRMdmpLS2VUUzdEcnRja3FW?=
+ =?utf-8?B?N1Jiay9jY3ZYSTRvSDJpc09FcG01L1BDR1p4eXZDSHh5OFNlYWtJVmZlbVZm?=
+ =?utf-8?B?R0wwYWVKdUJRNkhiQlNjb3U0SlZsWjgvMk1IYjF1ZnpDSXFjS0NEVGthRDdx?=
+ =?utf-8?B?d21aNlBDVE9adVVpWHZ0ZDhyQ0JUaUxnMWd1Znh2bnNwNE5SWGlRWXEralNO?=
+ =?utf-8?B?bjRHMkJXTUJ2bm5tRkc5OHZHR3FPRGk1Z2doL2xxS3FNYjZPUjBtekRZVXFL?=
+ =?utf-8?B?dEYzeGl2TE5zeTJnbVF3MzNzaEpRUlk1cjRvc0U0V3l4dlFyNGt5TWdXRnVI?=
+ =?utf-8?B?T0MwTk43ek9iNW0xbjBtempmMDFQMnlJU3pBeTY4ZzBhS3FjcUQ4dXY1eVdJ?=
+ =?utf-8?B?K1YvSEl1YldIekxjbjBzbHdQRlRTbHBPTElkemMyMzhSWGtuZXhMd01iVjR2?=
+ =?utf-8?B?cFh5eG9ISEZGR1BOMy8xYW82U1ZzTXd6cnBjVVVmTXVUMkpiVy9ENFhKZFVu?=
+ =?utf-8?B?ZjQ5VVU3TFBSRGZBZ25wVklzb1JuT0ozVmtQRTdORWQ1MnJZbDRBQUFKK3Ro?=
+ =?utf-8?B?UDExYWZRNzdCTGEzWGZ6TGhLblk3UEVSNi96ajhPVzBlb094R3pjSFFaK0dD?=
+ =?utf-8?B?VGxocDVCVnIrb0EzQjE1emhUZUE5RXJ2WDR3NGpmeVhLQ2Y1d1Y4UlJmQzZv?=
+ =?utf-8?B?WldpcFdONC9RY1lrcHAweE1LTkVGbEhWc3p4eDI4dndLS053K2dvbldhRzV3?=
+ =?utf-8?B?ODRUUFZUQ1Q4SC9aVFFhQkFPYSt1R2hoMnNvTGJvd0oyMUZzM1pPdXVyNU52?=
+ =?utf-8?Q?yqfI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OGd3K0owdmtTUWJkVGFWbUgrZ1pYNDFjWmdveExscHRWd1lYS3pLMEp1a29V?=
+ =?utf-8?B?WnU3VFR5enB0Ujk5b2YwVDdsTzNqVURQTGVCM1BhbEFBOVpMejNndFNWZGs3?=
+ =?utf-8?B?WlRiRFEwRHRYRGN0cGFnRFV3QXh5WHY5UnBBa3I3dTQyb1lRYUw4aGwwTm1i?=
+ =?utf-8?B?cDAvU1hSVHFrbGJDV3VZYUV1ZXJTNkNQYTUxSFRldWxFVWxNVjFrdzBmWUJv?=
+ =?utf-8?B?WlJzTTA4T28zaUM5NlhWZnRDTngvMm1Sek1oNVFXVjdjSktBNzBlazZnbHNu?=
+ =?utf-8?B?c3I4ZEh5OCs1QmFpdmt2eTd1OE5RY05jSzRlcEdLeVAxejZWN2J5dFlBKzls?=
+ =?utf-8?B?c2djTUJLUm9tWGJtSmRYM0VYUVorcmIvVnlSMEJ5Y0FYWU9paGYvQkZYYjFu?=
+ =?utf-8?B?VXd2Q2NxU2U3U2QvcGhiY2tJRGJUbWl5VlpLN3Yzd1IvZVdSWUtYaUpCMUdF?=
+ =?utf-8?B?d0duN3FWUmI3dnZqQndwY1NZbExoNWowRlN0cmJqakZpWXVyaXlDZldlTG1L?=
+ =?utf-8?B?TXN4eUxGaEVvN0NhL0NtRTNaK0xyQlVRQ2lkODJmQXFnV1U5bklCVEtJWWdw?=
+ =?utf-8?B?UG4xSy9QdXhja1psNzFxckk1ejBGcW5mV0hUWVI0a0VhUFZUTStCTEd0c212?=
+ =?utf-8?B?anpWcXliL21yMDA4bXdkVWNFc0s0ODdmaGo5UWxjbmFZTkFNa0EyR0pBOXN4?=
+ =?utf-8?B?QjBpK0lMQXdWeGRkZFVLZkVtN3RxREpQdE9wV01iOGs2cEhlNlNzUmJQamNu?=
+ =?utf-8?B?U1pTeU00UVd5ZUhlbDF3N3BRaGlOb21GUFRCSzlvcGVDYk00VFFWUWhxSHhv?=
+ =?utf-8?B?M1ZiQTRwVE9xTFhqREJ3UDVna2lkUURSRnJSTmt3cDRKclRQck5WVDRsamI0?=
+ =?utf-8?B?K3VSK1ZwOWJhamhtWXg2NU1QMlhuR1hYVEJnWmZyZkJwaFNLNzFKbHkwNGcw?=
+ =?utf-8?B?UW1xeTRQaU1QeTc1d25Bam40NUlseE1EOFJ6cmpocHZYMmlOWkg0ekMyUFVy?=
+ =?utf-8?B?bktwRnljR3dDK1VwbDBDbFIxSnEra3FRc084TzZwREh0K2ZpR3d2UkpUUUtk?=
+ =?utf-8?B?WElVeTBnUXowQ0ZFck1adlpCNDRiU2tRdHIxNThBMVcwWkx5WEhQV2VlYUdX?=
+ =?utf-8?B?VTh2VGk2M0lHbC9KbDBGU2FVYXViWWpndnpHL09TS2JIakxMbk52TitJRlJz?=
+ =?utf-8?B?dy91SWZOcTE1aUxxc1pMRHlLeGZ4WWowbVhIMUdoMEh2TW5IeTlNNElub0t3?=
+ =?utf-8?B?K3BtZFF3VXFzT2xXV0FGb0llZnFUTnRBeDE1L1hIOTVxQ1VMNnFXYUZQWllW?=
+ =?utf-8?B?cVhNVWtYUWE3WTF0c29xZXYxMk8rUDFaeXRXMlU2MG5oM1R5c0hoMXNvaHlQ?=
+ =?utf-8?B?eWZ4dHlLSFhWVHVuMCtUaVFSN3F1VVVzdFZVL0RPZEJHRy9RRzBHNDM2bHQ4?=
+ =?utf-8?B?bE1Wb0FBVXBYOHlseXc1V3FRdkhqbmJ2ZzVOY0tZRGowbWpUc1phTGQzTUpV?=
+ =?utf-8?B?U0JhRjhuc2JkM2Y4Q0ZYWVhKNlVQMUVUNHFBV09DS01DeU1jejZXY1ZEMU5i?=
+ =?utf-8?B?cHNubzRkVm9WSDJveWd6Y1pzSHBNbTMybmhmRGsxeVJtQk8zM2UwYUNjYXg1?=
+ =?utf-8?B?ei9IWnREQzhMZTNlNmM2SXBKT3ZDRjRCeDVON1lkNllzZVQ4WmJtN0E3S3pK?=
+ =?utf-8?B?Z3lOVzJudERMblRjQXczMVpIcUFQY0grYTE5Y2huRis3T0xMSjJUeVlubTQr?=
+ =?utf-8?B?NitEUDNhMm1KeEp6V1I2Z04ybDFSdDdYSXVlVE9kMEZkQkdUZDNQL2l0bDJO?=
+ =?utf-8?B?eExVbzR5R0RyQkpqcU9zQ3gzcHBrS1JHbEhuN2RtWkdMNXRJSzBzNi93SENR?=
+ =?utf-8?B?MXZTaE5WWkwraDFJRXNwVmNEQitFMnFxVjBOWUpsSEVnRmpTdkh2UFluMk83?=
+ =?utf-8?B?QmtuZVpVb09CcWtaVU5ESE5sL3RQTFVTQVBScFE4TFVNb2diWFBZTENWbFdy?=
+ =?utf-8?B?Qmh6anUvdTNVYVUrT2UwSnRsTkg0MnNaem9lMnBUNTdYZTVMVU9nQ2pnVTF4?=
+ =?utf-8?B?NDVST08rUTNyTjEvNnJsUEVYckpjZ1FnNnErZG8ycmYxQXNwNmE5b2pVZnJC?=
+ =?utf-8?B?dXQ4ZFQ3Sysxbk03SlJRcFR2NnVHRUdFMmVaNlk3R0FBUEQrbklMTm1PK2RO?=
+ =?utf-8?B?dDdaVUJmcEFiaWdvaW95c0VJeERMTjl0R05iWUhGdDFJUy9oenVaODYybUNP?=
+ =?utf-8?B?TXN6UWF3SUJKSXJRcUJDd1ZQRlBwZGVBMmZHYVQxWE9CRzdKYndrRkVRNVJ1?=
+ =?utf-8?B?OVkwcGg2alZsL1JiVnd0c2dTdHlOdWdjanZZalBWVk1xbFVDaStQQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23a9c9ca-c787-4c45-2ad5-08de53f6c72a
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 05:27:30.3588
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DIBuIjqvIxROdI3Q9ERbJ4IGyxgpUxujBvAWy2Ac3EswHO7dA78T63oUJkuFTVjrDp4pgutnJpjiNGhA3Wrn4w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6883
+X-Stat-Signature: uoi3e6bp193hj1bykf9cn3bamfqui4b8
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 541ACC0004
 X-Rspam-User: 
-X-Stat-Signature: dmt86nfg579tsssas3ttj7dtrafach88
-X-Rspamd-Queue-Id: 4484112000B
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768453366-615776
-X-HE-Meta: U2FsdGVkX19P0rDpDP9tuVL26x+Q65YYT/Rhnx4wmU/NNY8falm3d7HoPsGpfsnufyTG3wNDqzDouHnFkETnM+KEDzBL4E2o6Jmzj92vv7899LBuxy04cX9ybRnLQ9bjbsIkplXkMtHgeF6O24nOUKA5T0NXZlZgl38oaYNXcMRxiV0SIeKMfD6CTpBRT/WXizbmANlVzIZITGGAlRp9pRSfv1cAsHkTempjAx+fvZsmbvwfFvxeeHclL9QPPH9HTzahBMTAb++Y5GarEpRpdQK4mJuN+4ar1hdX84vcGQJhHaq1O0UdIPMUP1ZaKvK8QcFtJfjoNFYiBW16kBsqiOVDxKYKLSR/65t4hhda6MLXgZqVbhK0K8b2g9fqJqg3QEmyqRGM1LjyCe4pj3TCKEIDiyxSM55aPoVmuJOreP/1M3Gx/qU4ftQU8SQqkqtKxNlHU2xFdBCHbewdENfSLh2Ug/ZVDG5pyw15fu0NboY/AVK0OeQ0qHwEn9qhIqCmfghKzwcDYjQdoFo8kTzLHsw/sTTHKDVa31CV5bzq7aGsXYUZHISDX0bd5eLJKkMBocg42O/2ChcIz0m0owu2WM8eAQrgOfF6SADJy6YOIhItKekIMp/7Zkp7EQTwhkZGv8uaVShSzsaWTvzvuUk1KJl01Opk+GDOm0UrNolE267pSZtE7+cn+lgSfcHlrCyJ9+e5Uo2LBkpuQGnJOFGG5bo5lTigVKUfsdeKj4K8LerfAj+RIYHiGvJmUagKGFCWyP7QymlPRgpNqQWs4a802W9YlV4U+9UNg/9vaKf+ZJfYPpg2ro34rMGQ2OZCekAeTxbHcbHbQ8aywipc78vI+VSg3GF7EHqt5kspAdfoJKDlBO42JVw03kL8lsnSRzA9xspH/5BwFQGRWLcfDKjWl0RPCsPo0/PGAMKVkKwqCnkD46Gre6L8+xSJfteWEVCdLgvai49VgWw7ys18pBc
- JxrxNx8b
- Fo8L4Z2XnxPgYDQVZ06AAXtjaBpQLUxqzmmbKsHr0F/WysU3ftYOqKxBK+/FgQRpf9SMsTTHmMh0ZUD3rNhdPu1HmFs5aSRctoc0k8yiyhrbCJhFvYN5m90O7zYgqKpbMze16E/65XQKDDLChkmAQ/M0MUxxmdIjG1qvPo/GW8n0UnMdzMtsWL74A2crGFlvvpW0Ghh9GULWPZ62nLxLOQuPevo5HoRZbXNe0v3pdERNkSa1fJ5BhKKDGURsVL9XFzl4IYxPsC1imeB0XTiUDys5+za9hM/UXcPJyi8tBSzk7CZ75RYNP+O6hRP62UAa1gR9+9ywXFzmAPJ/ghFyO+CG47d1oEOrri6gdgbWObcO6FALjZSNde0DhHUoopedOP4ua93o/iZzf2NPVTBPfuOWU0vMVRMLKAKyAK3MQ2v2ojAltN7CLZCiHv0IlwDHjZUyOeo6pqrNAE2vUEkzYwjf1GRJqyPdY2NgLT7eawPDBeF16KxkcCwopsn6T0+hpP6YGqTrnoieGFz+kKlQb/MJxHovpe0avhLYWDEtTH6nKEgEVDsMp5y0lSl0t8kp6t86zpSoJ1ltGct/QZnKfIgf8eay/Qx5zDs4J086DqmOpIxo4BTVun4PodOnndST9RbV4QYJQHd7cOYrI2KjNBJKhCVUfzAf/vUPJTpOYg+MwJDpmbmMX72QEprMHzzzNyWIf
+X-HE-Tag: 1768454855-41362
+X-HE-Meta: U2FsdGVkX1/vekrED3QTCC1U7TnZjSG3HrG1TbYwLDLcHSuwKxQA24h+c2vraH9ZmZa6ZYyaLSrb6QfuDjrTClmGfX2BCbnI4GeXC+ojSHDPdeaL1jbwHtL2OAT1Nvq7vMKszPumo7+KWMEpavnvdOGpw8PfdM6aT8lkaLybtmLxe2WDmH/E7HwJ3yW3y+34PKDLGc42kfe4s+xsiYvSiX3bpWuyM0GBvPltcrzbLWbRbo/Oiv+ZZlw4mv5O/YgV7UgkMVRe/uSfOqt6eLFE92ytO62f1gKUEe3useFdVrfrt22n+Mqi0f61D5AtTvhqjmOHow73dPbMW2+AixFK9wEXGm7ovD9Mj29TQgHvjyyuJdAMC3awJihgYBagfXcK9LK8vbS+H8L4WyWGQ8ljFKQe3KckyoQ4R+3IHrMGeyH2xt/4z4ANSyt13C9OPfONLWJcgE9FB4I/i/g0J9CkUw6WZtza7QI1iVBRxDP476mnk8RZ0fOtYTmRPTM2phUJs79uCMLCY5Bc3oQw47ihgv3oGpFkIt5SBgEY3BkaSXUy701ZZ7Cp7vfvV4cJ9tuTQcXpP2SZF8sPB/vEff6uSKTb/HQbgQIwu6+h/fhuVCMxFsgqk9sG2u1R5urLz2h6Qsmoaptt0I3R2iuQhy+tW/mI4/1iu6WkdaPqpYDQ4SyrYsM/14pyhr6Uf9CWI50fNndEVVbeoOX+Skso0zUyS1LGeilNAim/n1YGqKDqgNMY1eirqfwTXjJtoyiEqvMdUlVdrfHTk3S+zP5EvkUvLG7BFeNfJoWIhrUuA6tza3Hflg+11WEK5z0+Sx3EOxBfpjtO6C/KJS9qFQYuoz1HumGdM8RRRmrC+wqb9B1f3jSE8IiPxgX9vgRFhk7AIy5oKOLluGGZtV75Bpxq4ycHCOH9Jm5PDHgAhgxaKl5EvJEyVV/9E65B19zf2IpHgf17cimMDXxIe9v9/V1/YFz
+ qyBBOqRN
+ TTEhIiUrKDb17ED0HRcCR8YViruUFaQFehSk2+OPyNZ2b6szOKoMjTrVleN2NMqwjAZRJTvzZ/mSQVrGi07rGhrIRH00ktCJil7AhwrSnW91dyHZLCfhljkWJWBoxuZl9hMlmq9/KsCsLQAa5jX/0BbpDQE6oG5X6M0P+v0ADo4F3WNltjeFnnKmUx3JoIc5yTI0dW9PLP5VMjkBeidBKabzMvv6IFGjVBwdg/F+Gc/uBWoGQA9U0ebV/BMRRD9Dxe6rAmvsa42cYwmq1UTrrCtDxTbf9YBkch7KeO2By3DjEonWa6CvVtDqLtjVN6B6vO+bkTCZLRBOgPzJE2gbOe2sRotaIuUXppLEUgWkqbp+zTwvNH4I71Z1bW1KWW0DEwxWfGbmxDzBaJc1WqAUr7xP9lYmy9bb37+yEsImACEn+0Ph4UWbgODTWtTKG0BADnD1F38LxUZfgW/ozceQYn2jkT/7/9JRMNGfmUgB9cfCv8qjHRQQvTnWsoESQ6Lq1wlJPvISP+TpRVkEp4q0apH/z4v/BXJ0lsV41yqKK2+LfGutoRoAdR/6t+z64VG/lHR1r1xc9if+FbwfiFbIg5LfvSDainzmoWSFRuKwOXvuJB25pYW6AKFO/3FGW4A/ghIO5jwRHU59SGItg6Ov+Zw7iMg2zIgNY2iXZVhZk6mXJQGN0DsEuqbNWk7cK40J+GgBtgPT5l68/uQzQZdTYJ6uswEF2DzwDTmpbVp61hs75fNN403ODduJWORJQ74sLjQsIqIkjbKyk8zhpcI0xB31NGbHW0KlOb36VkfddimOnkB0mHjHd7Z6oPFSvwJLgpaokpv19irNhj/kaKgD8TgmbFrbgFHAo6EryiyteX7zao429I0x3adlSs0ZCkEif7FfPu+8XQx55XnKM5gHhbqls9paxvzck0xECquXdDMRhBhhYBNGXi9/4gDwj1EimjhFSQ+GgtMwn1HGNAy3JHQgXfuki
+ 5wwgwOfu
+ ihmY+3qTjawA/VM6mbEsoNrUra7sRVqm75W8rp6MZXxcD91nsM5C7WMpjo2Li3GG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,374 +224,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[cc linux-mm]
-
-On Thu, Jan 15, 2026 at 10:11:08AM +0800, guzebing wrote:
-> As implemented by the bio structure, we do the same thing on the
-> iomap-dio structure. Add a per-cpu cache for iomap_dio allocations,
-> enabling us to quickly recycle them instead of going through the slab
-> allocator.
+On 2026-01-15 at 06:19 +1100, Francois Dugast <francois.dugast@intel.com> wrote...
+> From: Matthew Brost <matthew.brost@intel.com>
 > 
-> By making such changes, we can reduce memory allocation on the direct
-> IO path, so that direct IO will not block due to insufficient system
-> memory. In addition, for direct IO, the read performance of io_uring
-> is improved by about 2.6%.
+> Reinitialize metadata for large zone device private folios in
+> zone_device_page_init prior to creating a higher-order zone device
+> private folio. This step is necessary when the folio’s order changes
+> dynamically between zone_device_page_init calls to avoid building a
+> corrupt folio. As part of the metadata reinitialization, the dev_pagemap
+> must be passed in from the caller because the pgmap stored in the folio
+> page may have been overwritten with a compound head.
 
-Honestly, this just feels wrong.
+Thanks for fixing, a couple of minor comments below.
 
-If heap memory allocation has performance issues, then the right
-solution is to fix the memory allocator.
-
-Oh, wait, you're copy-pasting the hacky per-cpu bio allocator cache
-lists into the iomap DIO code.
-
-IMO, this really should be part of the generic memory allocation
-APIs, not repeatedly tacked on the outside of specific individual
-object allocations.
-
-<thinks a bit>
-
-Huh. per-cpu free lists is the traditional SLAB allocator
-architecture. That was removed a while back because SLUB performs
-better in most cases....
-
-<thinks a bit more>
-
-ISTR somebody was already working to optimise the SLUB allocator to
-address these corner case shortcomings w.r.t. traditional SLABs.
-
-Yup:
-
-
-commit 2d517aa09bbc4203f10cdee7e1d42f3bbdc1b1cd
-Author: Vlastimil Babka <vbabka@suse.cz>
-Date:   Wed Sep 3 14:59:45 2025 +0200
-
-    slab: add opt-in caching layer of percpu sheaves
-
-    Specifying a non-zero value for a new struct kmem_cache_args field
-    sheaf_capacity will setup a caching layer of percpu arrays called
-    sheaves of given capacity for the created cache.
-
-    Allocations from the cache will allocate via the percpu sheaves (main or
-    spare) as long as they have no NUMA node preference. Frees will also
-    put the object back into one of the sheaves.
-
-    When both percpu sheaves are found empty during an allocation, an empty
-    sheaf may be replaced with a full one from the per-node barn. If none
-    are available and the allocation is allowed to block, an empty sheaf is
-    refilled from slab(s) by an internal bulk alloc operation. When both
-    percpu sheaves are full during freeing, the barn can replace a full one
-    with an empty one, unless over a full sheaves limit. In that case a
-    sheaf is flushed to slab(s) by an internal bulk free operation. Flushing
-    sheaves and barns is also wired to the existing cpu flushing and cache
-    shrinking operations.
-
-    The sheaves do not distinguish NUMA locality of the cached objects. If
-    an allocation is requested with kmem_cache_alloc_node() (or a mempolicy
-    with strict_numa mode enabled) with a specific node (not NUMA_NO_NODE),
-    the sheaves are bypassed.
-
-    The bulk operations exposed to slab users also try to utilize the
-    sheaves as long as the necessary (full or empty) sheaves are available
-    on the cpu or in the barn. Once depleted, they will fallback to bulk
-    alloc/free to slabs directly to avoid double copying.
-
-    The sheaf_capacity value is exported in sysfs for observability.
-
-    Sysfs CONFIG_SLUB_STATS counters alloc_cpu_sheaf and free_cpu_sheaf
-    count objects allocated or freed using the sheaves (and thus not
-    counting towards the other alloc/free path counters). Counters
-    sheaf_refill and sheaf_flush count objects filled or flushed from or to
-    slab pages, and can be used to assess how effective the caching is. The
-    refill and flush operations will also count towards the usual
-    alloc_fastpath/slowpath, free_fastpath/slowpath and other counters for
-    the backing slabs.  For barn operations, barn_get and barn_put count how
-    many full sheaves were get from or put to the barn, the _fail variants
-    count how many such requests could not be satisfied mainly  because the
-    barn was either empty or full. While the barn also holds empty sheaves
-    to make some operations easier, these are not as critical to mandate own
-    counters.  Finally, there are sheaf_alloc/sheaf_free counters.
-
-    Access to the percpu sheaves is protected by local_trylock() when
-    potential callers include irq context, and local_lock() otherwise (such
-    as when we already know the gfp flags allow blocking). The trylock
-    failures should be rare and we can easily fallback. Each per-NUMA-node
-    barn has a spin_lock.
-
-    When slub_debug is enabled for a cache with sheaf_capacity also
-    specified, the latter is ignored so that allocations and frees reach the
-    slow path where debugging hooks are processed. Similarly, we ignore it
-    with CONFIG_SLUB_TINY which prefers low memory usage to performance.
-
-    [boot failure: https://lore.kernel.org/all/583eacf5-c971-451a-9f76-fed0e341b815@linux.ibm.com/ ]
-
-    Reported-and-tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-    Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-    Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-    Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-
-Yeah, recent code, functionality is not enabled by default yet. So,
-kmem_cache_alloc() with:
-
-struct kmem_cache_args {
-.....
-        /**
-         * @sheaf_capacity: Enable sheaves of given capacity for the cache.
-         *
-         * With a non-zero value, allocations from the cache go through caching
-         * arrays called sheaves. Each cpu has a main sheaf that's always
-         * present, and a spare sheaf that may be not present. When both become
-         * empty, there's an attempt to replace an empty sheaf with a full sheaf
-         * from the per-node barn.
-         *
-         * When no full sheaf is available, and gfp flags allow blocking, a
-         * sheaf is allocated and filled from slab(s) using bulk allocation.
-         * Otherwise the allocation falls back to the normal operation
-         * allocating a single object from a slab.
-         *
-         * Analogically when freeing and both percpu sheaves are full, the barn
-         * may replace it with an empty sheaf, unless it's over capacity. In
-         * that case a sheaf is bulk freed to slab pages.
-         *
-         * The sheaves do not enforce NUMA placement of objects, so allocations
-         * via kmem_cache_alloc_node() with a node specified other than
-         * NUMA_NO_NODE will bypass them.
-         *
-         * Bulk allocation and free operations also try to use the cpu sheaves
-         * and barn, but fallback to using slab pages directly.
-         *
-         * When slub_debug is enabled for the cache, the sheaf_capacity argument
-         * is ignored.
-         *
-         * %0 means no sheaves will be created.
-         */
-        unsigned int sheaf_capacity;
-}
-
-set to the value required is all we need. i.e. something like this
-in iomap_dio_init():
-
-
-	struct kmem_cache_args kmem_args = {
-		.sheaf_capacity = 256,
-	};
-
-	dio_kmem_cache = kmem_cache_create("iomap_dio", sizeof(struct iomap_dio),
-			&kmem_args, SLAB_PANIC | SLAB_ACCOUNT
-
-And changing the allocation to kmem_cache_alloc(dio_kmem_cache,
-GFP_KERNEL) should provide the same sort of performance improvement
-as this patch does.
-
-Can you test this, please?
-
-If it doesn't provide any performance improvment, then I suspect
-that Vlastimil will be interested to find out why....
-
-Also, if it does work, it is likely the bioset mempools (which are
-slab based) can be initialised similarly, removing the need for
-custom per-cpu free lists in the block layer, too.
-
--Dave.
-
-> 
-> v3:
-> kmalloc now is called outside the get_cpu/put_cpu code section.
-> 
-> v2:
-> Factor percpu cache into common code and the iomap module uses it.
-> 
-> v1:
-> https://lore.kernel.org/all/20251121090052.384823-1-guzebing1612@gmail.com/
-> 
-> Tested-by: syzbot@syzkaller.appspotmail.com
-> 
-> Suggested-by: Fengnan Chang <changfengnan@bytedance.com>
-> Signed-off-by: guzebing <guzebing1612@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: adhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+> Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: "Christian König" <christian.koenig@amd.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Leon Romanovsky <leon@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: kvm@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: amd-gfx@lists.freedesktop.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: nouveau@lists.freedesktop.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-cxl@vger.kernel.org
+> Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 > ---
->  fs/iomap/direct-io.c | 133 ++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 130 insertions(+), 3 deletions(-)
+>  arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
+>  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
+>  drivers/gpu/drm/drm_pagemap.c            |  2 +-
+>  drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
+>  include/linux/memremap.h                 |  9 ++++++---
+>  lib/test_hmm.c                           |  4 +++-
+>  mm/memremap.c                            | 20 +++++++++++++++++++-
+>  7 files changed, 32 insertions(+), 9 deletions(-)
 > 
-> diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
-> index 5d5d63efbd57..4421e4ad3a8f 100644
-> --- a/fs/iomap/direct-io.c
-> +++ b/fs/iomap/direct-io.c
-> @@ -56,6 +56,130 @@ struct iomap_dio {
->  	};
->  };
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index e5000bef90f2..7cf9310de0ec 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -723,7 +723,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
 >  
-> +#define PCPU_CACHE_IRQ_THRESHOLD	16
-> +#define PCPU_CACHE_ELEMENT_SIZE(pcpu_cache_list) \
-> +	(sizeof(struct pcpu_cache_element) + pcpu_cache_list->element_size)
-> +#define PCPU_CACHE_ELEMENT_GET_HEAD_FROM_PAYLOAD(payload) \
-> +	((struct pcpu_cache_element *)((unsigned long)(payload) - \
-> +				       sizeof(struct pcpu_cache_element)))
-> +#define PCPU_CACHE_ELEMENT_GET_PAYLOAD_FROM_HEAD(head) \
-> +	((void *)((unsigned long)(head) + sizeof(struct pcpu_cache_element)))
-> +
-> +struct pcpu_cache_element {
-> +	struct pcpu_cache_element	*next;
-> +	char	payload[];
-> +};
-> +struct pcpu_cache {
-> +	struct pcpu_cache_element	*free_list;
-> +	struct pcpu_cache_element	*free_list_irq;
-> +	int		nr;
-> +	int		nr_irq;
-> +};
-> +struct pcpu_cache_list {
-> +	struct pcpu_cache __percpu *cache;
-> +	size_t element_size;
-> +	int max_nr;
-> +};
-> +
-> +static struct pcpu_cache_list *pcpu_cache_list_create(int max_nr, size_t size)
-> +{
-> +	struct pcpu_cache_list *pcpu_cache_list;
-> +
-> +	pcpu_cache_list = kmalloc(sizeof(struct pcpu_cache_list), GFP_KERNEL);
-> +	if (!pcpu_cache_list)
-> +		return NULL;
-> +
-> +	pcpu_cache_list->element_size = size;
-> +	pcpu_cache_list->max_nr = max_nr;
-> +	pcpu_cache_list->cache = alloc_percpu(struct pcpu_cache);
-> +	if (!pcpu_cache_list->cache) {
-> +		kfree(pcpu_cache_list);
-> +		return NULL;
-> +	}
-> +	return pcpu_cache_list;
-> +}
-> +
-> +static void pcpu_cache_list_destroy(struct pcpu_cache_list *pcpu_cache_list)
-> +{
-> +	free_percpu(pcpu_cache_list->cache);
-> +	kfree(pcpu_cache_list);
-> +}
-> +
-> +static void irq_cache_splice(struct pcpu_cache *cache)
-> +{
-> +	unsigned long flags;
-> +
-> +	/* cache->free_list must be empty */
-> +	if (WARN_ON_ONCE(cache->free_list))
-> +		return;
-> +
-> +	local_irq_save(flags);
-> +	cache->free_list = cache->free_list_irq;
-> +	cache->free_list_irq = NULL;
-> +	cache->nr += cache->nr_irq;
-> +	cache->nr_irq = 0;
-> +	local_irq_restore(flags);
-> +}
-> +
-> +static void *pcpu_cache_list_alloc(struct pcpu_cache_list *pcpu_cache_list)
-> +{
-> +	struct pcpu_cache *cache;
-> +	struct pcpu_cache_element *cache_element;
-> +
-> +	cache = per_cpu_ptr(pcpu_cache_list->cache, get_cpu());
-> +	if (!cache->free_list) {
-> +		if (READ_ONCE(cache->nr_irq) >= PCPU_CACHE_IRQ_THRESHOLD)
-> +			irq_cache_splice(cache);
-> +		if (!cache->free_list) {
-> +			put_cpu();
-> +			cache_element = kmalloc(PCPU_CACHE_ELEMENT_SIZE(pcpu_cache_list),
-> +									GFP_KERNEL);
-> +			if (!cache_element)
-> +				return NULL;
-> +			return PCPU_CACHE_ELEMENT_GET_PAYLOAD_FROM_HEAD(cache_element);
-> +		}
-> +	}
-> +
-> +	cache_element = cache->free_list;
-> +	cache->free_list = cache_element->next;
-> +	cache->nr--;
-> +	put_cpu();
-> +	return PCPU_CACHE_ELEMENT_GET_PAYLOAD_FROM_HEAD(cache_element);
-> +}
-> +
-> +static void pcpu_cache_list_free(void *payload, struct pcpu_cache_list *pcpu_cache_list)
-> +{
-> +	struct pcpu_cache *cache;
-> +	struct pcpu_cache_element *cache_element;
-> +
-> +	cache_element = PCPU_CACHE_ELEMENT_GET_HEAD_FROM_PAYLOAD(payload);
-> +
-> +	cache = per_cpu_ptr(pcpu_cache_list->cache, get_cpu());
-> +	if (READ_ONCE(cache->nr_irq) + cache->nr >= pcpu_cache_list->max_nr)
-> +		goto out_free;
-> +
-> +	if (in_task()) {
-> +		cache_element->next = cache->free_list;
-> +		cache->free_list = cache_element;
-> +		cache->nr++;
-> +	} else if (in_hardirq()) {
-> +		lockdep_assert_irqs_disabled();
-> +		cache_element->next = cache->free_list_irq;
-> +		cache->free_list_irq = cache_element;
-> +		cache->nr_irq++;
-> +	} else {
-> +		goto out_free;
-> +	}
-> +	put_cpu();
-> +	return;
-> +out_free:
-> +	put_cpu();
-> +	kfree(cache_element);
-> +}
-> +
-> +#define DIO_ALLOC_CACHE_MAX		256
-> +static struct pcpu_cache_list *dio_pcpu_cache_list;
-> +
->  static struct bio *iomap_dio_alloc_bio(const struct iomap_iter *iter,
->  		struct iomap_dio *dio, unsigned short nr_vecs, blk_opf_t opf)
+>  	dpage = pfn_to_page(uvmem_pfn);
+>  	dpage->zone_device_data = pvt;
+> -	zone_device_page_init(dpage, 0);
+> +	zone_device_page_init(dpage, &kvmppc_uvmem_pgmap, 0);
+>  	return dpage;
+>  out_clear:
+>  	spin_lock(&kvmppc_uvmem_bitmap_lock);
+> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> index af53e796ea1b..6ada7b4af7c6 100644
+> --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> @@ -217,7 +217,7 @@ svm_migrate_get_vram_page(struct svm_range *prange, unsigned long pfn)
+>  	page = pfn_to_page(pfn);
+>  	svm_range_bo_ref(prange->svm_bo);
+>  	page->zone_device_data = prange->svm_bo;
+> -	zone_device_page_init(page, 0);
+> +	zone_device_page_init(page, page_pgmap(page), 0);
+>  }
+>  
+>  static void
+> diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
+> index 03ee39a761a4..c497726b0147 100644
+> --- a/drivers/gpu/drm/drm_pagemap.c
+> +++ b/drivers/gpu/drm/drm_pagemap.c
+> @@ -201,7 +201,7 @@ static void drm_pagemap_get_devmem_page(struct page *page,
+>  					struct drm_pagemap_zdd *zdd)
 >  {
-> @@ -135,7 +259,7 @@ ssize_t iomap_dio_complete(struct iomap_dio *dio)
->  			ret += dio->done_before;
+>  	page->zone_device_data = drm_pagemap_zdd_get(zdd);
+> -	zone_device_page_init(page, 0);
+> +	zone_device_page_init(page, zdd->dpagemap->pagemap, 0);
+>  }
+>  
+>  /**
+> diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> index 58071652679d..3d8031296eed 100644
+> --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> @@ -425,7 +425,7 @@ nouveau_dmem_page_alloc_locked(struct nouveau_drm *drm, bool is_large)
+>  			order = ilog2(DMEM_CHUNK_NPAGES);
 >  	}
->  	trace_iomap_dio_complete(iocb, dio->error, ret);
-> -	kfree(dio);
-> +	pcpu_cache_list_free(dio, dio_pcpu_cache_list);
->  	return ret;
+>  
+> -	zone_device_folio_init(folio, order);
+> +	zone_device_folio_init(folio, page_pgmap(folio_page(folio, 0)), order);
+>  	return page;
 >  }
->  EXPORT_SYMBOL_GPL(iomap_dio_complete);
-> @@ -620,7 +744,7 @@ __iomap_dio_rw(struct kiocb *iocb, struct iov_iter *iter,
->  	if (!iomi.len)
->  		return NULL;
 >  
-> -	dio = kmalloc(sizeof(*dio), GFP_KERNEL);
-> +	dio = pcpu_cache_list_alloc(dio_pcpu_cache_list);
->  	if (!dio)
->  		return ERR_PTR(-ENOMEM);
->  
-> @@ -804,7 +928,7 @@ __iomap_dio_rw(struct kiocb *iocb, struct iov_iter *iter,
->  	return dio;
->  
->  out_free_dio:
-> -	kfree(dio);
-> +	pcpu_cache_list_free(dio, dio_pcpu_cache_list);
->  	if (ret)
->  		return ERR_PTR(ret);
->  	return NULL;
-> @@ -834,6 +958,9 @@ static int __init iomap_dio_init(void)
->  	if (!zero_page)
->  		return -ENOMEM;
->  
-> +	dio_pcpu_cache_list = pcpu_cache_list_create(DIO_ALLOC_CACHE_MAX, sizeof(struct iomap_dio));
-> +	if (!dio_pcpu_cache_list)
-> +		return -ENOMEM;
->  	return 0;
+> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+> index 713ec0435b48..e3c2ccf872a8 100644
+> --- a/include/linux/memremap.h
+> +++ b/include/linux/memremap.h
+> @@ -224,7 +224,8 @@ static inline bool is_fsdax_page(const struct page *page)
 >  }
->  fs_initcall(iomap_dio_init);
-> -- 
-> 2.20.1
-> 
-> 
-> 
+>  
+>  #ifdef CONFIG_ZONE_DEVICE
+> -void zone_device_page_init(struct page *page, unsigned int order);
+> +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> +			   unsigned int order);
+>  void *memremap_pages(struct dev_pagemap *pgmap, int nid);
+>  void memunmap_pages(struct dev_pagemap *pgmap);
+>  void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
+> @@ -234,9 +235,11 @@ bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
+>  
+>  unsigned long memremap_compat_align(void);
+>  
+> -static inline void zone_device_folio_init(struct folio *folio, unsigned int order)
+> +static inline void zone_device_folio_init(struct folio *folio,
+> +					  struct dev_pagemap *pgmap,
+> +					  unsigned int order)
+>  {
+> -	zone_device_page_init(&folio->page, order);
+> +	zone_device_page_init(&folio->page, pgmap, order);
+>  	if (order)
+>  		folio_set_large_rmappable(folio);
+>  }
+> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> index 8af169d3873a..455a6862ae50 100644
+> --- a/lib/test_hmm.c
+> +++ b/lib/test_hmm.c
+> @@ -662,7 +662,9 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
+>  			goto error;
+>  	}
+>  
+> -	zone_device_folio_init(page_folio(dpage), order);
+> +	zone_device_folio_init(page_folio(dpage),
+> +			       page_pgmap(folio_page(page_folio(dpage), 0)),
+> +			       order);
+>  	dpage->zone_device_data = rpage;
+>  	return dpage;
+>  
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 63c6ab4fdf08..6f46ab14662b 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -477,10 +477,28 @@ void free_zone_device_folio(struct folio *folio)
+>  	}
+>  }
+>  
+> -void zone_device_page_init(struct page *page, unsigned int order)
+> +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> +			   unsigned int order)
+>  {
+> +	struct page *new_page = page;
+> +	unsigned int i;
+> +
+>  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+>  
+> +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
+> +		struct folio *new_folio = (struct folio *)new_page;
+> +
+> +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
 
--- 
-Dave Chinner
-david@fromorbit.com
+This seems odd to me, mainly due to the "magic" number. Why not just clear
+the flags entirely? Or at least explicitly just clear the flags you care about
+which would remove the need for the comment and  should let you use the proper
+PageFlag functions.
+
+> +#ifdef NR_PAGES_IN_LARGE_FOLIO
+> +		((struct folio *)(new_page - 1))->_nr_pages = 0;
+> +#endif
+> +		new_folio->mapping = NULL;
+> +		new_folio->pgmap = pgmap;	/* Also clear compound head */
+> +		new_folio->share = 0;   /* fsdax only, unused for device private */
+
+It would be nice if the FS DAX code actually used this as well. Is there a
+reason that change was dropped from the series?
+
+> +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
+> +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
+> +	}
+> +
+>  	/*
+>  	 * Drivers shouldn't be allocating pages after calling
+>  	 * memunmap_pages().
+> -- 
+> 2.43.0
+> 
 
