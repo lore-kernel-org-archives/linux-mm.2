@@ -4,85 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E7CD3CCA7
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 03:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01949D3CCA8
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 03:30:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E88216B008A; Wed, 14 Jan 2026 22:23:39 -0500 (EST)
+	id 519FA6B0088; Wed, 14 Jan 2026 22:30:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E35BE6B008C; Wed, 14 Jan 2026 22:23:39 -0500 (EST)
+	id 4C7166B0089; Wed, 14 Jan 2026 22:30:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D42A16B0092; Wed, 14 Jan 2026 22:23:39 -0500 (EST)
+	id 3D3856B008A; Wed, 14 Jan 2026 22:30:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C31306B008A
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:23:39 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 82B331401B2
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:23:39 +0000 (UTC)
-X-FDA: 84332753358.06.2A0D5CF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D5AAA40014
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:23:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2euoCv+b;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 294EB6B0088
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 22:30:43 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D55151A01B3
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:30:42 +0000 (UTC)
+X-FDA: 84332771124.01.7D0D2D9
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 05ADA1C000E
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:30:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=XXgWgTfo;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768447841; a=rsa-sha256;
+	cv=none;
+	b=7mt3pwVIz/hI6n6FbeNOnUQbxTzy2701oYe2hrc4FznEdVisvMmAHFo3HYEC0gVvwDfu6y
+	/aIG1ogoVsA3XxDAgITX3qlWpgiufoiJUZ5hHB8nzwPIsJ9KIGe0ODUBYoIEs5brg9xwk4
+	ehMdTZVeBZ8n8xIiYNl8+Udcz/6Xv14=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=XXgWgTfo;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768447417;
+	s=arc-20220608; t=1768447841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hQ4hXifsn2ZSkL3i0Km5rd6KhjDlM50In8Vfnkz7s9c=;
-	b=5RZyzFcN90dKhrMkaLqU98D7C2EYEE9ZJEDqgYGRBb+qv921u1fTvnlLNsRVqXxOiPPSEL
-	awi17ZdKn4reP7IIL5Bd2Tlh4zGGk7Z43PHjh3Y6aXx5df8wQgeSa/Xn+Jcz7RbNKv5/bt
-	9qf6YSmdIgrCDik4khwdMIzISLUyP9E=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2euoCv+b;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768447417; a=rsa-sha256;
-	cv=none;
-	b=Mb0bzYx+S2OL+9l3jWvAu+sPsc6EsNMrQpUMWdWPEh+zisU/asRmfaI1uBFce2gX3nAFQ0
-	Z1vl0U5oAwdUFKUTXfLidGTrS6ZnfPJuhpysTxXAHhfe1g6qbCfDiG+JVJxYCEnsL0fuSK
-	b2rDXh2DqswN1nXTgh6IFdqAQKBzHNo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E56B6012B;
-	Thu, 15 Jan 2026 03:23:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE03DC16AAE;
-	Thu, 15 Jan 2026 03:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768447417;
-	bh=KN+zYSn8tDmLJyikkQkmn3ngIxIivedgTmssIMwqF8A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=2euoCv+bvYSLHd+iLJPBfCTR9dYqkea4DbbiwXBQVYQLiOOXMeNpbH+FHFjIvShcI
-	 B/LLYSsCbZUlnmXrTOtJwOuJGFW2FgQG3FBnbyE1N8HBqOwClX0+VtD1Hpjt6azDwQ
-	 5FH5bUfl4KIXmED3ylS4at9EIfR9Ky6Nz3VS/utE=
-Date: Wed, 14 Jan 2026 19:23:36 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: ranxiaokai627@163.com
-Cc: surenb@google.com, kent.overstreet@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v2] alloc_tag: fix rw permission issue when handling
- boot parameter
-Message-Id: <20260114192336.9d98f0330bfd6c8638762dd0@linux-foundation.org>
-In-Reply-To: <20260115031536.164254-1-ranxiaokai627@163.com>
-References: <20260115031536.164254-1-ranxiaokai627@163.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7w8bzr7ux83qyjy8wdp1de3grf8bx1ws
+	bh=9Br/WVldnYvp/Xqxk58ta0hPmlF4BkmjTzaDCdRvzNk=;
+	b=ALc/LO16fkuLPxD3B4yJWvamqZ4BBQuE+g7cQBcWGLULQyEGg594OAmfwXQyICsWXkadtS
+	dj6Opx4azb6LN5irUrdjBP693Bhq9InDe5csDQUl6MKpPf+Up37/1rcrwSRg6LNhoBh3SY
+	HvYAHQuJKm8BYEb1MADPalkVs9LKucE=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-81f4e136481so204166b3a.3
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:30:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1768447840; x=1769052640; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9Br/WVldnYvp/Xqxk58ta0hPmlF4BkmjTzaDCdRvzNk=;
+        b=XXgWgTfoNJ1ZGbaBa4yAxUIZVl+r6Iq/R5Hk4kE4W4mU5CtHm2+/435PPa0C6DlEiU
+         6+jVO4/UcalxZYe4dSTeCjmvSzf2ggGCfWmmbAZI8K8Yvho4vhSRBR6SkIudAw8GMf2u
+         0wK7Py3uwCXlT9uIz0NPVvyKu78St0gyKPDN4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768447840; x=1769052640;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9Br/WVldnYvp/Xqxk58ta0hPmlF4BkmjTzaDCdRvzNk=;
+        b=Ago4FhO86SARZInEYifP9l1dukdNbJDdEXZNud6eGOchVS+xuGlN4PaSebiHxCogjm
+         Ax7JckYekJoLxVsHC1ndX/KtGdfgFQI9lEYeO+L/6DF9hcaMWXTh1GMcqQh1wB73ZAfg
+         oddkB4HASEZuIM2DtMizkUQCql01eZoIlsItYVrFQ3ocWoZeM0iriTqYtSNzayDgCsJj
+         xVyAMJmQx487489dv81Id6VlIuIDspFveVvOHZHmtjCcwP+HYdY0dzHIeCmK+zpeyUzt
+         LN5C2aQBJyn+vw8IW8nAGS6mgS0Rv1oYA5+4iM8g9r9n462ohhYJWCA2JDHl+M5sPImt
+         oefA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlOJkhP7sQoUnWCENpGSuXrOqOkCeElos7JUC3Np4bituQ1bRy3dJYJIT2QAFfuW7Ls6CrZVrAEQ==@kvack.org
+X-Gm-Message-State: AOJu0YxIH5gGgY11LdUgSvvBOd8Mzhmi9bRlxkxMk2j4A0Wqxin3UolN
+	HrAe7yqJ9lo/ZRZlG5zxaDjULEc438OhJ1J/vxADpdSlIFuASbfpzcMTIZdlZGdeBw==
+X-Gm-Gg: AY/fxX49oevLrNmYNwbO6Ynfd+3npDUwUlH+YD8sq82T9Ko9NHawk/zpI4w1fQzGrmL
+	rB0UyqulossgDVGBlcrKYxIyTnkS9kTDVB53JrC1KkB95MOBZW34/OWkGQcbrmsU/4ZSmMzOHAv
+	Ez8pnFJYH3ww5SW+ivOiZHQ8Ipva3zUih5dWa60/SA4+vx0HAnKnVtzD4ploNoUfEGTKvf5UvgK
+	E0MQWnLwyhUIc1ZziI68mQZGJfp0IxUkSPZ14QpV4GLofr8/t33wk+lNlwktwCoLxnFNATe17+r
+	A1gGFo2aCunv5JZqMj2xpniw21hcFTz4rUYFIciraP/bVMHGZXj9CrhpgtdNWWuPWjmZyM8CQIT
+	9ZYEobBnzCFUzP3ASr7yN0Q2qNulHfuYIPcINwrBVaeeiOcHkQ9rLphlrPQiTArRAMt4XVpxiw7
+	C7OXTR5/W47CHsPnJw3M0/wrxtsLFzaRa4k7bHZhUXpphwmV6PjkVn7VV5Hg1EV6y2zHnnqQ8bc
+	Q==
+X-Received: by 2002:a05:6a00:8d06:b0:81f:852b:a91e with SMTP id d2e1a72fcca58-81f852baa95mr2718846b3a.59.1768447839957;
+        Wed, 14 Jan 2026 19:30:39 -0800 (PST)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:36c2:991a:5236:1fe5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81f8e6a728asm930852b3a.62.2026.01.14.19.30.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 19:30:39 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Chris Mason <clm@meta.com>
+Subject: [PATCH 2/2] zram: fixup read_block_state()
+Date: Thu, 15 Jan 2026 12:30:06 +0900
+Message-ID: <20260115033031.3818977-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+In-Reply-To: <20251216022727.578BFC4CEF5@smtp.kernel.org>
+References: <20251216022727.578BFC4CEF5@smtp.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 05ADA1C000E
+X-Stat-Signature: 8gge88j3xybjm4h96pqbb4f4197uxrm3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D5AAA40014
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768447417-834606
-X-HE-Meta: U2FsdGVkX19/m+pstH10gYjIAoZoqr1ExG6C5L81jvmAz7qRStlY6o4qjyB7VxwHiTKzTXqo/WfdC8CKU5BV8M4uGp728Ms87sMfAye1ZL+GGn09CWK2TJ2/oe7v0uvLjyNlQQh6cAQRbDYMAXF8qgA2RZKsOzc+/rw+ZH3r+Yy+EbBnMCFYh+HFx/soqFhn1p4p7cy58ae42pK0++iIZTenT0U+i35SrijxbEFfOCHXACMXqRMXahlz3oC15myLOWpbdofFulBJJ2gM4BGNCToM10VbG/LEBDTXTLHkh8b/xUWzei9AYt9rrlBaZY2J5DksoWZ3BjVE+rSmlBT3gQUCmCuCnshDAzRt3Ku+1qc43rt5y6dFIFz+O+Yd8UC16mLvPr1ZwimSKA7wt5ygTGq/IW6XZ82gdftt5pHnGbIHISL6IuID5G0XaANCL4hWOmfAnhPlB96rR+dq2WAbpIWiE8YjvjczKHUmezs3n6DSJb4bqTea3VoenzRCgbH32b+dKz94CMrcBmEp11UAYtcWKmDKf8h7EaNmbcUKrzN6bmpBZXht9DOiATS3kFkq0F6YHiN0418DyyoDbkekyK0TnBdINWTmV7z2h+ISZTEgq9bkmXcLLxmbR8iBui1DILVrYFgTZQiyofy/6UaWK95M6KQNHf36XOqHxVuKjLoi0yYTXY+J6Ze2a/PgO7QjTX/ZgJtEg0WnRPTMkuZIkO544/Jg66QnhdORvmpy8r6LT9IVkkqwTozEPswznbRVvCCzZU4Lo0KyzyATyhc9b76/PKPO5AkImdHCt1bRWIXRufsUINtvNRxU+Us6ktfpkDTNj7eFJucRI0H6533rAht+FY7tzou0L1Kh7tkpuHRTY9u9zXZ2het2NvXNTLdDHlWcfFgQthDUKJ3JGSElc+30Nax4UypUZCZp2vx+yii8QeZvwGNQr2aDTYpBAgx/5HRb95sZTAEh4h9P1+s
- kmWlRAiK
- c56WjEjOERq3X8QEVVx9LYnvPAuHdLr1PG7zZR9MycdOwdrPM51F6c9tmV9r/IP89R80cq4yx6pfflEba41Xhxfm8nCJ4WyCcfna/6vYa2DxhhccZN76VxZzPTHP3cuXYcNHYMPZcaHuFiRoJG/wQvlm5bbHedQi1ez2DTjOPMiPyMC+Av25e0oLmcZHzY4G8APimEN37cpjrxGq15Z3sDgl8uc2Z7vAkQfxgLC2K8j+HdHkBO8/U70U7Bo1a2OQyNX/GfTzIOpxmtA/21jUEPZI8Z/+1WpTxAYWsRtuuEKPUzHeHl5JswxOvfBHUlLCRrVGR0SNReN7fH+4rj4kFI4JpRvq1o8q/Ka99hdiQoYxScIw=
+X-HE-Tag: 1768447840-551665
+X-HE-Meta: U2FsdGVkX1/vHZslpPuN5jMflgTvVhm6YhCampu0/32PhvBBE2dWlBPtHLYN4demnozx6FUYYvHIsK1Lc55bs0tdhuV+GJOMDDmBVhiY3ASRcpBRa8JZ0QGFswlEMu5Wsclq7OjdMrm3WWsi1XBy9KTDBSGs9S28/SLA5ehMQxsqizMWaRGP5LXWUoVcI+ANXIiPA0aW/cOp4igc6HXrnwQluynbIDSZ540D9L0eqCJOoZSeoo93w58QoIBJsYha5kfhEFF4hIiKAFYG6a+6Y2+bEFhA5E2TrqiQ0L/O41RHM8G4Rv9B4b81Wc/4lEHx53PIfxGTfFBJVeTbcUX8yaGRy0O6zUxhjgKyiPdyvtXXNlL5wl+U5DaCPzvS1vaL+3dO6Jss2XVbBt+ADnecrSH6lYoHp3gehLblVyaBdILNMiXJssQ5I80qn+7BEt6JVw8gAdcecBzATU1xvGZ3kgcD0zVp/hmA1yRECsUkzyeMtRGfHLMdV1gC9eayY1F6LPgP9IUO5NKigrTVL5F0MCjfsImXrAsxQoSKGyGEg+50S+ERQnR4Pl0dCPpX2GEoSPrlu9Xf9lwU0KaBjdTZ1SE3giqxZgDUFWg+s+XElti+e7X+vq3JlmWr82O77pJgGqiUx6k/q1cJCx0nZCIurpjF5LZ2YBseYK8zuvjKt4Lv2Jsqk7gOuLUGZ6U6LSYpt9ipGS+DNMj+rBoRZclK5LnkIyOqHTgsXSyJfLIR1nGbjr48cYkIRgHWV5jL/r+bS+MIMw2bEL4QiDp1upI8KAwT+dXgrXQT/HrGjBD6wO5v7AqpV/+oEhnuaLpKO9VOM8uQPV2axYKG5cB2OwJXmoXNFPlURACB1PSB0f0m+PoY8KnNcDKBImiLf30mPSZdftdzfL6/WnLOHh3+7W8rcwlxgkI5Qd1RdcC99pxZiVnzXetAewBHRp9sSCOSb9T3rSpKt9G4eTEKyPgh5Cu
+ jI/cLa40
+ 8x3zihw+edcqe2obTm11vAlYdnnn/BfUyFNgI+i5pYBqFWU4Bx5RLr+OpxF/dNfJG7qRyxI9NuQS211YIfVSYTE2e2IedgNsr2izeGu5lBxFO/yQ31GEEQFWOrHENvTao2GB0Gqmv4nT1z9Q7eWmRjAbVQRIQXfq4ZyexKp4jw2/Nd3NfjIgdUBuZck/CKQNCztRqKGgazyecYxRCAGeof4GPF/WOEvxnuEACq3ox+eFhU/umkOvAfkqTkvcN679iHU/2uzxH5nhONsf0T0yUhmyJJ5IAEKf5djymV1uotsphzrD58xbuHVMCM9qvVnn9gr0O0u6g1jQBC9v2YGXOj5KcWBXA2YrzfOj3tgG6mDPLxt6z++doZoGX6dkrMmhyIm8OK/4zcQxjlFDjxJPAPOjfaA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,31 +118,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 03:15:36 +0000 ranxiaokai627@163.com wrote:
+ac_time is now in seconds, do not use ktime_to_timespec64()
 
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> 
-> Boot parameters prefixed with "sysctl." are processed
-> during the final stage of system initialization via kernel_init()->
-> do_sysctl_args(). When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled,
-> the sysctl.vm.mem_profiling entry is not writable and will cause
-> a warning.
+Reported-by: Chris Mason <clm@meta.com>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ drivers/block/zram/zram_drv.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-This sounds strange.  Why would setting a Kconfig debug thing disable
-alteration of a runtime control? 
-Documentation/mm/allocation-profiling.rst provided no hint.
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index cc51aa8b6181..912711faa4e4 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1579,11 +1579,9 @@ static ssize_t read_block_state(struct file *file, char __user *buf,
+ 		if (!slot_allocated(zram, index))
+ 			goto next;
+ 
+-		ts = ktime_to_timespec64(zram->table[index].attr.ac_time);
+ 		copied = snprintf(kbuf + written, count,
+-			"%12zd %12lld.%06lu %c%c%c%c%c%c\n",
+-			index, (s64)ts.tv_sec,
+-			ts.tv_nsec / NSEC_PER_USEC,
++			"%12zd %12u.%06lu %c%c%c%c%c%c\n",
++			index, zram->table[index].attr.ac_time, 0,
+ 			test_slot_flag(zram, index, ZRAM_SAME) ? 's' : '.',
+ 			test_slot_flag(zram, index, ZRAM_WB) ? 'w' : '.',
+ 			test_slot_flag(zram, index, ZRAM_HUGE) ? 'h' : '.',
+-- 
+2.52.0.457.g6b5491de43-goog
 
-> Before run_init_process(), system initialization executes in kernel
-> thread context. Use current->mm to distinguish sysctl writes during
-> do_sysctl_args() from user-space triggered ones.
-> 
-> And when the proc_handler is from do_sysctl_args(), always return success
-> because the same value was already set by setup_early_mem_profiling()
-> and this eliminates a permission denied warning.
-> 
-> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> Acked-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-
-Should we backport it?
 
