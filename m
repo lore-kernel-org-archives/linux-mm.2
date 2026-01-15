@@ -4,87 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC221D4114C
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:37:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D828D41149
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:39:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C13F6B00B6; Thu, 15 Jan 2026 04:37:09 -0500 (EST)
+	id 33ED36B0093; Thu, 15 Jan 2026 04:39:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56F146B00B8; Thu, 15 Jan 2026 04:37:09 -0500 (EST)
+	id 2EC4F6B00B8; Thu, 15 Jan 2026 04:39:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 499326B00BA; Thu, 15 Jan 2026 04:37:09 -0500 (EST)
+	id 1C3F26B00BD; Thu, 15 Jan 2026 04:39:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3800F6B00B6
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:37:09 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9F1CB7848
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:37:08 +0000 (UTC)
-X-FDA: 84333694536.30.E68ACC2
-Received: from sg-1-105.ptr.blmpb.com (sg-1-105.ptr.blmpb.com [118.26.132.105])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5D1F880005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:37:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ld4zvJrM;
-	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.105 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AE2F6B0093
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:39:07 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1E83160266
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:39:06 +0000 (UTC)
+X-FDA: 84333699492.12.FC037D1
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf19.hostedemail.com (Postfix) with ESMTP id EB50D1A0008
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:39:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cRsnSkH3;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768469945; a=rsa-sha256;
+	cv=none;
+	b=gY1V4E3GfrXXaF0Txx+oDPbv2HfKySqx76gqMXFyPbV/gKWrqA1jWnQ5Ow5CPLGbZUide0
+	sVEOjl2SgLdY0/mjsHZZil/hAktEDq2lH2rsZQ51inaADUgtc8Hv68HsymADbvBaHf+ESk
+	qSLcAz6phQES+51jxCcJuSNi5ltjk3k=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cRsnSkH3;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768469827;
+	s=arc-20220608; t=1768469945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fk2RJ3eO3k5qQ8Xkg0gzN5tmD8UXjDhhHfjptuDS4jI=;
-	b=apU9gDs19E1IDxR5voHuwYvuNoygp4B0fU8OjPXVjNc417I20+F0Oc0Ab+l0qrrxhnajuv
-	PNa5MQMHPCW5stS9P0PmUOHfru7Xo5rAtzyc1DBUYRuT2PjsDaQoRbK2s1Q5Mef0bZtxo2
-	tFkVnla8J5sa6r7qPtOBQ/W0p+IIAFc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ld4zvJrM;
-	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 118.26.132.105 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768469827; a=rsa-sha256;
-	cv=none;
-	b=yeANniB6/kbDqwKdm6xzjSLlltuIvT2RJ0T3xzJCPqroFd5Hh+4x6wzhAzbh7n0gbQIqg2
-	XlpQWxggRqJ3CJdekK2oyQoYGxSTmnwt21YsJtWqmpZArlET2tj6I1o+F2FQPTAZxT6hop
-	kKZBSgTHXEvxJt/e6Z3f0TRWevY6Qxk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1768469818; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=fk2RJ3eO3k5qQ8Xkg0gzN5tmD8UXjDhhHfjptuDS4jI=;
- b=ld4zvJrMjLJtXzTom3TIhTkjQd7jcCWIcFEXAysIX4bkry1kq3/7xm+p4pwiHc2zEoHfZP
- Yy1Nh6DAn8sFYYs7xeM0r0HXtwKvuFa78WazZ8DX6FefVwQl/yvpvs/cotrgNkuoBrIaP6
- eKumNkYbQWkGPVpoWEWwmDDFo4ml5JIbvgkK3jpPazl+Oc6A3sRrZX9+gvYrgGBTMRm6DK
- 9lP5HXg6lXX0EUDdK/2NHuZUzVZCV2nu2/LS5qHr4XLj+DZ+FzIhGsiHcI3xNL570tiYce
- u+6C4YMdGtvchBN4Al1j2a7PxPaHvGJD9Mr2Ho3v8jLsV4jr87xsY2aaEwlVtQ==
-X-Mailer: git-send-email 2.45.2
-References: <9daa39e6-9653-45cc-8c00-abf5f3bae974@kernel.org>
-In-Reply-To: <9daa39e6-9653-45cc-8c00-abf5f3bae974@kernel.org>
-X-Lms-Return-Path: <lba+26968b538+ecdba2+kvack.org+lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Cc: <akpm@linux-foundation.org>, <ankur.a.arora@oracle.com>, 
-	<fvdl@google.com>, <joao.m.martins@oracle.com>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<lizhe.67@bytedance.com>, <mhocko@suse.com>, <mjguzik@gmail.com>, 
-	<muchun.song@linux.dev>, <osalvador@suse.de>, <raghavendra.kt@amd.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
-Message-Id: <20260115093641.44404-1-lizhe.67@bytedance.com>
-To: <david@kernel.org>
-Date: Thu, 15 Jan 2026 17:36:41 +0800
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5D1F880005
-X-Stat-Signature: omi8qdasg5j4u6ydj43dotur8bw1qrzx
+	bh=YVVqGZ3l+eUoAxt/83SPf9RM0AnIYY+mCB+ElcBndDc=;
+	b=37SwgcuLhxnWRqYZnFkzGD25s56h4dHDpme+zwJovDFweANuS4RIckeEGdEKk+c46oLYLz
+	HiU3G9iw+0Z24tDh0qcw1L2hVoNXudJBVNf+TaU26OCHu9HWLYnQ07VTSonDgtuAb0Iezi
+	vuYWarm07aJj5PvHE12jQpYbIGBhQl4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768469942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YVVqGZ3l+eUoAxt/83SPf9RM0AnIYY+mCB+ElcBndDc=;
+	b=cRsnSkH3HNWFooNCu45BiRhggR8i4eFVIEtaDBZS6rcUGpU4CX2VzbdCKKVVXZEpZefbox
+	1JDlPRjWkLPi/F4f3TbeE+mpwORW/695MiDjigp5P+ylTc7GZzfzqC+FKH1TT+SLK3VK8I
+	8wdyRK+A0I4ZOEoETVWvkMjzjg4EN0c=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	arnd@arndb.de,
+	bcm-kernel-feedback-list@broadcom.com,
+	christophe.leroy@csgroup.eu,
+	corbet@lwn.net,
+	eperezma@redhat.com,
+	gregkh@linuxfoundation.org,
+	jasowang@redhat.com,
+	jerrin.shaji-george@broadcom.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lorenzo.stoakes@oracle.com,
+	maddy@linux.ibm.com,
+	mhocko@suse.com,
+	mpe@ellerman.id.au,
+	mst@redhat.com,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@suse.cz,
+	virtualization@lists.linux.dev,
+	xuanzhuo@linux.alibaba.com,
+	ziy@nvidia.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 23/23] MAINTAINERS: move memory balloon infrastructure to "MEMORY MANAGEMENT - BALLOON"
+Date: Thu, 15 Jan 2026 17:38:27 +0800
+Message-ID: <20260115093827.12557-1-lance.yang@linux.dev>
+In-Reply-To: <20260115092015.3928975-24-david@kernel.org>
+References: <20260115092015.3928975-24-david@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 7kwc5kpqxik1pc8ut31n5g7asq8tzofx
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EB50D1A0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768469824-897995
-X-HE-Meta: U2FsdGVkX1/Ugbps8c41eNl7DORje8niL0dZlBhp76+SunEWqzYD3DEP/ac39pHB2gVjL/3CWKSC+6mM5MVhVH47fxXNMVtF7H6BEfMEDkVGi+nrYljLdp2F2PwZVIS8mAYywQ2cjxV+/OrHSB/b9UOZ1SDZX7F6ZK974tyWBPE6S0+Prz4Cm4hPKcPq8IhlH51hQtltlwuiWobrBxuzc08+qAurtRzVN2U8UE0HpOcb1wksStVQbkKE9KMqByjQ22GS9zJjsNFHxcoKWmPP+1nB2a7+I1VrMlVd0EtHRIsGsUiB45G0UBxLz7PYvpvccou5X3e/99ibzcgWOkV7EUmfcGx8k3SStmf/RI8YvDKlz8n27l1c7rHQEC1KxaZyzF0Skbxdg0yzlx5EafRYtHQUXIcdgd0ltm5kZgeLdl+mRbVD1as3S2tEoAsPQBMmJci2SmTxoKHWr7uXUQSNp3Lq195e7Dej/dsl+lyJavEJHXbiUa8EMXXI/V0SH7w7Dn+Ed3K49qM5OtVLkL+JpiT8N/yHzARVq60TH8hoTn246hzT7orheexHm3EOczpJ4ELktcazJW7d+2e26ltf6O9k5alkAE1HcG6VG8IylDN0jPAiCIq7YzWSwUeMUyf6wmWzrOVGGdiDJ72jFWb6ffWFvrPYt7INAcQVjaK5X/xra4FKME3ZDhsmTlP752w1XGNaZVkmt/2Lv3BwsbC9iac/IKuCMW0oNe7iPIjqggtmodgECbQutmi+X7ogbDCqYCVYRHmTAZ4whlX78Cc5t26r/WL59fAQ3hd+gcXFc2BWMLTKIM8Eu7nGRCfXUUyAPkGu5hsnhdDEcLEEYUpx5Ob+Jpjk8KriG94J/I97HXMkQnwz9qynWmU+4g581JuMaLm0Rmik054LP3t8JdeE/3RoTCnQU4XgjTSurwXLMKywevERNnwqlGGjbmgKM9v2fupuJ7qEB2qInOPR1oT
- uNT2sdzF
- d9PMR6w7fRTwKcWYU0APXOPruxRLttGzPxWLFoUhAy9LU0ItaNFswYzyxwRiAqnhDj8CTROh9WuI2Vtwa6ovUtK3O9TXs7TygxBPw/FDt0vd+lE4UQmkuSxdDrfJuUMeb01LG4+JZzWqwKERjiCWhQlaVXY/ceeg4XlJVCjnJQpmBzc8oca8B27hrU6ez0CZWQVLw3LNajAw3/KL40u66JtuS5w==
+X-HE-Tag: 1768469944-281722
+X-HE-Meta: U2FsdGVkX19T2MPOIkE6DPJKo4QkQZaHTQF/fXSfcXpieNAWdvnaqeDGYSERsy/C+Z2WnQvdhLGG7Ci+xJk/WUpLSnNpdDQ01+fyuuIhAkZTaVllTdUkyGi7JEnkgzm8kO/7AJnmtVNi2LKzvDHCO7Jjdudes5i9NkkbNic8b0oDk+/Ugm57DtLIgRfOZB9VEtq6+iB3N+CtGWGy+1NSeaTte1cd20KUigA6vCI/Th9079OZY7JGd8tpMpEZOgSCvB0LPUQm4zUY97rl+ynqMDID/I62rQFkBudaQJcPcBCssmqiUwimPbCbx7HROr+II6k5lhdcdO4La2572fLWAEyz/WBLVZiRxke4t7y7PU9yIZa4Y6j+6NWj8rotTuRO09MfxMZ9fTrRjW1A7rXAqEuwq1I4SZcJdZmp/OAUEYEJiUedS73+YTpcvtNw1Ibb7e/IP9wWga6hsh36jclaJFcmgqTQ3cUSJJg/8DmHoGNnD5FhEUVXaVl8+EZwtP9xBLg7qSJO9XGbrGkXiK78f0hnAqy07/6t1qz2YnEqxNKdtIdr23z+TEIndrWC7xiDlQKKwabj1U6Z0lYp5S+1VmrK2rmwfhSdY7MAksYUwaMnUjxDDv7SDgIJeOOsG+LRh9BQFPvFPbZBmjDsPverIJ9OSs6itpoe20yoSOff3yCf0iBk52CB5fggo1w6wtEYlB743UdOb5ZIJPsSPZjzMzO+lnYiKou5l9csxn3J7XC1wV58wScf6UK40fxi9qkZ4I/s+1Tp+kLqKdUbZNAodm5C/gFLItr3Vw7xJqUfjdHNBJu4IUitSgx9hFFNas/EDHC3UtdXYqeFXa1R4yb+qXUqgUxVzTIfjY546DHbrx/0SaIt/ER6DMRc7KA21SaQidxjNhobx6JnV89fT4WW4Gz1ZqquZOOVIoFHA5UsS2dQyR60ujsMfet9WgVmOmavsC8+UW+nJeOELil+Mr5
+ K2LHiqWK
+ yEgMQy5k/rdZqJfGSHciSbJja1ZS4msNozejbiRp6gXAai5rGjLUCE7dlVckVY409Eh+Te8hn5QPgXDfqIy+omlZy0cgZcVZ5kfYUfbx9ZyumDPUrMUOGE55ec7IAXnVHYuAFGqc+MIjashmWxoWPJYKrznIPS0q0wBJhyDCIpAluwUEfLQaRBw/Vf/lV3E0t3oR8wHufEnawlt2gI3XUxodmIU4efiSB73hCcDrlJOX3+kco3Jr8//8WxhoH6nLH9106GbZB6QnGn0nilZX2ty70wkbU35t6F+2y7w+hwSAM+QNoZFMsy64E+5V9APgcdww2VTomMyk9Q8oSWBqomrKDcrtYKeNKXE2oU0IGOynp7lbvquWMVaRaFbeZf3SDU5Bf32RgS0MkFvNR3xjA7S72TX+dRvQtIo7bjcp/xgledFk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,87 +113,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 14 Jan 2026 18:21:08 +0100, david@kernel.org wrote:
-  
-> >> But again, I think the main motivation here is "increase application
-> >> startup", not optimize that the zeroing happens at specific points in
-> >> time during system operation (e.g., when idle etc).
-> >>
-> > 
-> > Framing this as "increase application startup" and merely shifting the
-> > overhead to shutdown seems like gaming the problem statement to me.
-> > The real problem is total real time spent on it while pages are
-> > needed.
-> > 
-> > Support for background zeroing can give you more usable pages provided
-> > it has the cpu + ram to do it. If it does not, you are in the worst
-> > case in the same spot as with zeroing on free.
-> > 
-> > Let's take a look at some examples.
-> > 
-> > Say there are no free huge pages and you kill a vm + start a new one.
-> > On top of that all CPUs are pegged as is. In this case total time is
-> > the same for "zero on free" as it is for background zeroing.
-> 
-> Right. If the pages get freed to immediately get allocated again, it 
-> doesn't really matter who does the freeing. There might be some details, 
-> of course.
-> 
-> > 
-> > Say the system is freshly booted and you start up a vm. There are no
-> > pre-zeroed pages available so it suffers at start time no matter what.
-> > However, with some support for background zeroing, the machinery could
-> > respond to demand and do it in parallel in some capacity, shortening
-> > the real time needed.
-> 
-> Just like for init_on_free, I would start with zeroing these pages 
-> during boot.
-> 
-> init_on_free assures that all pages in the buddy were zeroed out. Which 
-> greatly simplifies the implementation, because there is no need to track 
-> what was initialized and what was not.
-> 
-> It's a good question if initialization during that should be done in 
-> parallel, possibly asynchronously during boot. Reminds me a bit of 
-> deferred page initialization during boot. But that is rather an 
-> extension that could be added somewhat transparently on top later.
-> 
-> If ever required we could dynamically enable this setting for a running 
-> system. Whoever would enable it (flips the magic toggle) would zero out 
-> all hugetlb pages that are already in the hugetlb allocator as free, but 
-> not initialized yet.
-> 
-> But again, these are extensions on top of the basic design of having all 
-> free hugetlb folios be zeroed.
-> 
-> > 
-> > Say a little bit of real time passes and you start another vm. With
-> > merely zeroing on free there are still no pre-zeroed pages available
-> > so it again suffers the overhead. With background zeroing some of the
-> > that memory would be already sorted out, speeding up said startup.
-> 
-> The moment they end up in the hugetlb allocator as free folios they 
-> would have to get initialized.
-> 
-> Now, I am sure there are downsides to this approach (how to speedup 
-> process exit by parallelizing zeroing, if ever required)? But it sounds 
-> like being a bit ... simpler without user space changes required. In 
-> theory :)
 
-I strongly agree that init_on_free strategy effectively eliminates the
-latency incurred during VM creation. However, it appears to introduce
-two new issues.
+On Thu, 15 Jan 2026 10:20:13 +0100, David Hildenbrand (Red Hat) wrote:
+> Nowadays, there is nothing virtio-balloon specific anymore about these
+> files, the basic infrastructure is used by multiple memory balloon
+> drivers.
+> 
+> For now we'll route it through Andrew's tree, maybe in some future it
+> makes sense to route this through a separate tree.
+> 
+> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> ---
+>  MAINTAINERS | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index de8f89ca1149f..b974f8c1c2225 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16454,6 +16454,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
+>  F:	mm/
+>  F:	tools/mm/
+>  
+> +MEMORY MANAGEMENT - BALLOON
+> +M:	Andrew Morton <akpm@linux-foundation.org>
+> +M:	David Hildenbrand <david@redhat.com>
 
-First, the process that later allocates a page may not be the one that
-freed it, raising the question of which process should bear the cost
-of zeroing.
+Should it be david@kernel.org instead?
 
-Second, put_page() is executed atomically, making it inappropriate to
-invoke clear_page() within that context; off-loading the zeroing to a
-workqueue merely reopens the same accounting problem.
-
-Do you have any recommendations regarding these issues?
-
-Thanks,
-Zhe
+> +L:	linux-mm@kvack.org
+> +S:	Maintained
+> +W:	http://www.linux-mm.org
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	include/linux/balloon.h
+> +F:	mm/balloon.c
+> +
+>  MEMORY MANAGEMENT - CORE
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+> @@ -27536,9 +27546,7 @@ M:	David Hildenbrand <david@kernel.org>
+>  L:	virtualization@lists.linux.dev
+>  S:	Maintained
+>  F:	drivers/virtio/virtio_balloon.c
+> -F:	include/linux/balloon.h
+>  F:	include/uapi/linux/virtio_balloon.h
+> -F:	mm/balloon.c
+>  
+>  VIRTIO BLOCK AND SCSI DRIVERS
+>  M:	"Michael S. Tsirkin" <mst@redhat.com>
 
