@@ -4,85 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E45A3D41174
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 11:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48781D41174
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 11:25:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 527AC6B008A; Thu, 15 Jan 2026 06:22:25 -0500 (EST)
+	id 9AC8F6B0088; Thu, 15 Jan 2026 06:25:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D2766B008C; Thu, 15 Jan 2026 06:22:25 -0500 (EST)
+	id 9849B6B0089; Thu, 15 Jan 2026 06:25:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F8C16B0092; Thu, 15 Jan 2026 06:22:25 -0500 (EST)
+	id 866496B008A; Thu, 15 Jan 2026 06:25:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 302166B008A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 06:22:25 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C79F91ADABD
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:22:24 +0000 (UTC)
-X-FDA: 84333959808.18.6152334
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 732186B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 06:25:20 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A2C11ADE11
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:25:20 +0000 (UTC)
+X-FDA: 84333967200.21.CC9CE34
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E633F100006
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:22:22 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eq345J4z;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5893818000A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:25:18 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ORih6Y0E;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768476318; a=rsa-sha256;
+	cv=none;
+	b=CJReQ+EiYK106nwVRGnX2qVUrIl9f0MXeIODLI2qu3AdgRKxYHnmlgpj1s1T7frk1jCMAX
+	QkpZNRPCPCFMv0bn0RXSYV05T79Vjy3GY7teTbWzMWQBk6DZhkFNus+7sEfJn8+eRLMmBl
+	GD/Xwku2wbkaBZId6pMnzrk9U3grmE8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ORih6Y0E;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768476143;
+	s=arc-20220608; t=1768476318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/uqqd9quCH0/nnsuDeC5Y/PVONnzka3eh3yRgCaY2BU=;
-	b=0tazIiJYZUpys4aG8zLS8POpKMTE1dSQoDLl0cWQGSbOOesMQNTL/C+FTDCNILgCJn5jb0
-	DqS97YkZTj2ln1G9O1v/iXDZIyGLpWBvLLaqL/y72V8hkcEslHrr+grD8J9GLGcc7ZIhAs
-	9OAn5EuSO7GUTYCpFT+k5UA5u9DKpfE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768476143; a=rsa-sha256;
-	cv=none;
-	b=FHLwBkaG0+d6R52ijf8Ormt3u3P31kGxSRdwBQoA2Usnpe8Ayy23KQVDV9GndGiHxCXVDU
-	NuPvVY32nRJFhxnxYnKDXIBhiyfuzyrNXs97VYjHxb6JlQwsK3SUYJzdtNQ9u+0MRQEc3n
-	fFmV76q2Fqq/pXoO5YjyPTZqJ4WMHjk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eq345J4z;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=o7lMu88GH9XNq/HvGTaD3HCpLqiOZ/rQwAlGAug/3K0=;
+	b=kfhk2SKwPWELWVoUqLlbZsQ9Ltv3MVT0iT4jY6+h+ygeB4txROm6f+0PhO0uvk95txxjS/
+	sNQubJg7VAe0J6LehsM6PYs0VkUZhBbYOf0QMUoSXg88rQTvZajCVVq8PdoDRW7BW7O8RC
+	xQRvUlo/HyuiCKs3p4+CIGUweepRXD8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A14F84096C;
-	Thu, 15 Jan 2026 11:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68ABC116D0;
-	Thu, 15 Jan 2026 11:22:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 44ECD433F7;
+	Thu, 15 Jan 2026 11:25:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CE0C116D0;
+	Thu, 15 Jan 2026 11:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768476141;
-	bh=I44va9OEt4jVcZBfMvPSjlSIjgMNsGiYT577FTZiAaA=;
+	s=k20201202; t=1768476317;
+	bh=NuUJNg7p9CvssE+wFfb/T6IHWjNCFDhowE2ia/5IzEk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Eq345J4zXsoXEojnzBTa/BT5NqCJGPr15PKbHZLjJ49rvtJ3huiO/X14J5xcjPKK5
-	 cVEVw2wQOaTcdC1B7RDfC7bHplcGjapCXtOak1TZCa5uqKikCa/dX6Htp1bE1pQYVM
-	 4g/tFNPRzX6RbccC7WJZuP5sUTRNgCZKrzmgAxAdoUNK+Sr5c6j/BB3e41JrWKLU82
-	 sxwQ/JE05o1SBN/kAVcTTHDvY7hGlX3/BvvL/Uo9DCC5prIIhkxRDASVmdIi8zwoQ5
-	 fXBiiPtW0+ir4Ojxde9w1lykaFQxWYx3njJirBoX8schsoUIBgEcSTOQ/fVkKbyytX
-	 IICNptCv/8+IQ==
-Message-ID: <21ba2222-0b68-4295-b046-77910488fc0e@kernel.org>
-Date: Thu, 15 Jan 2026 12:22:12 +0100
+	b=ORih6Y0EXFhuySDVAym0zw7a4Ro9HhQ5U76opqbKNnk7ft8cB7JfjO4eyVcBpdzUm
+	 Euwm1NacPErtdn3bWR0yhfRKmLZcbB4iCbSPV2IydL3OPEG9NuQ9sCxw6TbzHIM869
+	 thQLNel1cZWzkIjUrepp41qvXQkh80Bj77BR9o0Hq9nS2funrG0WrAUvF+6qMmJZD2
+	 t4yQPtM+vifkuyMZOJpeIWkuTrUGDBZYkxgI8lAdvAkT1BBvOYglNIeMVmaSJ8Zas0
+	 hdc/DrbqiigpQ/dBDd5g4D6FWaqjkDRzeohfNG2/KAOdiRIsIbjDMQByATMAS8bnbB
+	 e83vuA1vazYBQ==
+Message-ID: <284775bd-767d-45f8-b66b-96709dabcc5e@kernel.org>
+Date: Thu, 15 Jan 2026 12:25:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 23/23] MAINTAINERS: move memory balloon infrastructure
  to "MEMORY MANAGEMENT - BALLOON"
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, arnd@arndb.de,
- bcm-kernel-feedback-list@broadcom.com, christophe.leroy@csgroup.eu,
- corbet@lwn.net, eperezma@redhat.com, gregkh@linuxfoundation.org,
- jasowang@redhat.com, jerrin.shaji-george@broadcom.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, lorenzo.stoakes@oracle.com,
- maddy@linux.ibm.com, mhocko@suse.com, mpe@ellerman.id.au, mst@redhat.com,
- npiggin@gmail.com, osalvador@suse.de, rppt@kernel.org, surenb@google.com,
- vbabka@suse.cz, virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com,
- ziy@nvidia.com
-References: <20260115092015.3928975-24-david@kernel.org>
- <20260115093827.12557-1-lance.yang@linux.dev>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
+ virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
+ <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
+References: <20260115092015.3928975-1-david@kernel.org>
+ <20260115092015.3928975-24-david@kernel.org>
+ <f2ce1126-0059-481c-b54f-0b09518666d3@lucifer.local>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260115093827.12557-1-lance.yang@linux.dev>
+In-Reply-To: <f2ce1126-0059-481c-b54f-0b09518666d3@lucifer.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E633F100006
 X-Rspam-User: 
-X-Stat-Signature: pj3ymh6qpxtqzihqo19oyag44ngai3nd
-X-HE-Tag: 1768476142-840650
-X-HE-Meta: U2FsdGVkX1+mnGc/8lhf4Tw+kjUq0vk4p6AWIDzJGtuYyakNk5La0h3/d2xkFPHm/1N7QUMWOsksF1nnCt5kkoEGcJJFuLeEVgkY89101epd0qMs8g7prBh/bvsDPjEpv+WhgtU31IEB68aLV31sY/Iwb6b2J1i1DFXPub0YPWTC6/nRHEzSJGWByWQ0MN88xdY6RyDb08h2Rp0MfiNsGTJwYZt22N9IM0qWq/Ns+5K28vaxfcCLl1hIByTrbDiOP8z8d0NHT8SoMhk2doyP/Jeiwpvb6Xuh+0zfHCYxD/uLgNX1ieseejfytdZpTn6zRWugypGufElpIukMhHXFMNYceEVdvjaRZc3yx+bQYnDNrPxK3ujBES8HApY2p9kljlIFdMaLoNfCImlcsTWxfX1zKcm5ksH6L8Nz0zR3OWQb+9pT6hiOPVp8Jr6gVKgiO/yKN6U3bBRO43AIibPPMkxP8UeYPprqJv5gNvgrC+7u7dxAWh1Z/+eCv0VA4ApX2wMi6HPB+Up39wSrHqiTUBQ0Nyyo/u2VDdpbepjEp9n3BD0asK+0obYuS2AfHPtZCo3QfobBfqxveZV5Z+DEwTCzv1Cl4Exb4AbrTgGkO4r9Pnm45CeAnR5RKBdFXNaLqgnP5DkS2mJnLwk+//h6z/aPewepc2Gf3OMccs0ppEY2ZvDwBE4FH6TRTBKpFa7tSw6AS2/BSGScp3jEyYg+F1uwVqfvIwN9+o70EYxEcr3sBOL5tWCS52OQKULweWQQ2hPXFaeRZwRzIm/GmwR2l0mJ3wY3idXMRvXHp0rR21W3ewHdpnvBvNNzEVB0YO41hxeZr2Pjq80qVeW61pvIYUP/BugAhoz4IhKTi9rUxqQqsxmZQ9Bj9Zvg+m30hOjQ/STD53ITPq9PeX8Pp/22891I/LNZY2rhj9lIAdxjNODhEjahw+shXj899PEV16g0jXULFh3cah6caOToeQs
- PX15O4Ci
- TMauhqaxvVzTunuz+yfoFizSAluzdUNwjeiO8baoRh03nj4KjcMqxCZ7NhRbiDG9aCp2D5CCqZwFq7K0saGvOvRxh+ruR0tWmQ3Lizcki6ynwpE7jIaB0yEyKBRkCPqQlOlX8mBIN48WKvQB+d9AIvCSvLaeKOWIV1ulfvaSM5Wo/FfN944hOxp9AB60dAUZdrEITRqDkKLLSgZeBKBZod8uUK/a2dsGdZxlJjLBH1rQv0v69uzIPwpapTbyRyuDXgutYbRqkXY6X+EjFW07lRqgl+p6qbwvXRkZsan4FIuwFWx2uDMD+LLQGZG2xAjzN4mrLl6x2EY5mzeFgBOLN8wOkGLkxbj61VYf9JRaOUsG/c3Q=
+X-Stat-Signature: 1g8ac7ux16hratswuc656c66yk33infq
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5893818000A
+X-HE-Tag: 1768476318-661675
+X-HE-Meta: U2FsdGVkX19VMc+vGUiwuPbDaNhrVhHGNPL9imIhVVhu0ODbWLa95lBHEk11Q3WkNwUZkNSP5IQHvQQuXEBOLSxkAAuQVYP3Qgs50KRrIImJ0HCZpsGA1u7YtovCrIZ38bzEDiyuKoozmy7KD/7Lzo7RqG5B6oZZWPKZgRaMiYrcBJk9zvXualxK4gkUs1/jD3JkhLlbRAo08q8bv/ggANCeo4smT7rNfBsar7XJYpCeMSQyK0XTYnM6DBDZMW7l/VPf2KDM2hApDCG6kPaMGClpeQeAfoAnyYTq0cMeuin2zfTrCiN+EeCuIAaMKZHa4b1bRs+sy9GpU5WOzIGzwswsZowzKbypWo/8abomOZu8ZrmaG7nvd80xGrIXe66SdPg4FngalM0kSoiu27AUXwFcpElLQBj7C33PeQsw5NOTadxw9LhxOIO/ENLRomoIZnQ5uFJkU9KyMyWYguJylvUFGeiIirUUE+laA+aKGfzMpWsf1hZYT1edqK5h/zcIjtOGo2WK9hbijL3iv8ojmdHpJuhMQa89P+cbE4laUJLQm/4V58wbIdHPDqpIKyUvX5rR0R6Keb3QaAI4gDevgdksyfD6BnkDQFASBthG4GZrG/C5o1qWNNJrX3Td4NcGGDZ8pp7HmlakQwv8pXzO1jxMJVmdGb5xbWuya4rMUsjZ9p4kuxQXLTxDi5CGkqKcHD5ljTlHV/vzwGjhDKpd0SQ+axW46TvYjq4uNSBpdzPUO28F/WNb9JfSo+/qeiCrPmf3tcsU5SQpe6gZSGcr/X3+MMG/HN8tz3wAJUU14/vIorGCjDs9GIA6pSKEyDzQ2N6GbzHzENb6Tz2UBhTBxO5qdgvvF+u6uSgvlLMy4oOLH7gHVys7S1hRFAJiMWzdL5pBnbJBvABav68adaagHUQcVd07mpxWqUQWbUp+Z/atys2wyUkeSxE8etkukB5TbLp/TADybhr6DcQ//RB
+ 7zlfHLuR
+ WZDbWEsCfvEn1KEohyHikGmCTsfsUUUZ1vduJYu67YEeab5Pzg82l4X2lj8ud8w8URv63GhLKRx+S4J2ynGTGhXUS3++VyDv+Z2IbEidyRCifbT/RQvyvfhuVJ5soWvJRLF9qvu9RQ1Sb+eXyJ07x0UDx958upGfnIlbt/PuboVIrmdHE8ugi3YiQL8cauoIa4pxSSfeebKZucCHH079vj6tu36xz+99ns9Cy/v9EKuSXtbrcSmzN9W83mALaW6p7gJTZ8dw4Uo2FVU1eg/9LfTck1jMUP5JyqGS/K1WC+tY7/2sYSEULo5SWUuUzUoUp/E6TJceS8tqfZFR6v9DTpOB1vakwdzr5Vse6E4rfrG8kGv9LxwRpbLA2hrPwt98hUyCmAqLL0GNdsQUYdgY0F8p0KgqyeNMCVycO5GkeRd0hqXDPAF0PsNVRAwPNtILW0X9erT1VfH5INOgXwDlBJHBzSsCLgliBzr/uxnMs+ETV43hnMNHRuxbCWnpG9KKMvFIF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,9 +155,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 10:38, Lance Yang wrote:
-> 
-> On Thu, 15 Jan 2026 10:20:13 +0100, David Hildenbrand (Red Hat) wrote:
+On 1/15/26 10:39, Lorenzo Stoakes wrote:
+> On Thu, Jan 15, 2026 at 10:20:13AM +0100, David Hildenbrand (Red Hat) wrote:
 >> Nowadays, there is nothing virtio-balloon specific anymore about these
 >> files, the basic infrastructure is used by multiple memory balloon
 >> drivers.
@@ -158,6 +165,11 @@ On 1/15/26 10:38, Lance Yang wrote:
 >> makes sense to route this through a separate tree.
 >>
 >> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> 
+> Assuming below fixed + Michael's concern addressed, LGTM so:
+> 
+> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> 
 >> ---
 >>   MAINTAINERS | 12 ++++++++++--
 >>   1 file changed, 10 insertions(+), 2 deletions(-)
@@ -169,14 +181,52 @@ On 1/15/26 10:38, Lance Yang wrote:
 >> @@ -16454,6 +16454,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
 >>   F:	mm/
 >>   F:	tools/mm/
->>   
+>>
 >> +MEMORY MANAGEMENT - BALLOON
 >> +M:	Andrew Morton <akpm@linux-foundation.org>
 >> +M:	David Hildenbrand <david@redhat.com>
 > 
-> Should it be david@kernel.org instead?
+> david@kernel.org you mean? ;)
 
-Yes, the patch is apparently a bit older :)
+Maybe I just want all the patches to go to /dev/null soon? ;)
+
+The following on top:
+
+
+ From 3d344330b1ff6088582fe8e3bbff49d1557eba22 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Date: Thu, 15 Jan 2026 12:23:57 +0100
+Subject: [PATCH] fixup: MAINTAINERS: move memory balloon infrastructure to
+  "MEMORY MANAGEMENT - BALLOON"
+
+CC the virt list and use the proper mail address.
+
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+---
+  MAINTAINERS | 3 ++-
+  1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b974f8c1c2225..11720728d92f2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16456,8 +16456,9 @@ F:	tools/mm/
+  
+  MEMORY MANAGEMENT - BALLOON
+  M:	Andrew Morton <akpm@linux-foundation.org>
+-M:	David Hildenbrand <david@redhat.com>
++M:	David Hildenbrand <david@kernel.org>
+  L:	linux-mm@kvack.org
++L:	virtualization@lists.linux.dev
+  S:	Maintained
+  W:	http://www.linux-mm.org
+  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+-- 
+2.52.0
+
+
+Thanks!
+
 -- 
 Cheers
 
