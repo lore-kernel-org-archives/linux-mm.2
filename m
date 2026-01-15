@@ -4,109 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5360D46617
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 19:41:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64EBED46617
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 19:43:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15AED6B00FA; Thu, 15 Jan 2026 14:41:54 -0500 (EST)
+	id 8B5CE6B0088; Thu, 15 Jan 2026 14:43:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 135F06B00FB; Thu, 15 Jan 2026 14:41:54 -0500 (EST)
+	id 872A36B00B3; Thu, 15 Jan 2026 14:43:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0584C6B00FC; Thu, 15 Jan 2026 14:41:53 -0500 (EST)
+	id 7A94B6B00D2; Thu, 15 Jan 2026 14:43:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E3A626B00FA
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:41:53 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A3DB958EC9
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:41:53 +0000 (UTC)
-X-FDA: 84335218506.29.59AF1D8
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E6217160003
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:41:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nYFPEGLZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of manish1588@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=manish1588@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768506112; a=rsa-sha256;
-	cv=none;
-	b=hL/dY+bAPVW1HTyuzo3AoAodBTBSPNP+fIkEBGe5u+L6CPpQrIxeJjeHlhVvdhDz4TFWfp
-	HpCoXMKbV3JqD5vSChc4mZgq9k4DWKPM7lOEPWDg5IJh8eOB2YVMS1eFLLHFUQ58tDymep
-	KKyrs3SwvC20nXDg2ZVTWhe6aq+eNIg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nYFPEGLZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of manish1588@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=manish1588@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 674606B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:43:27 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 192E513AF24
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:43:27 +0000 (UTC)
+X-FDA: 84335222454.02.CEE8386
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 16D7340004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:43:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=evK83rBN;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768506112;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768506205;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WQl7iR/tVdOMMi2eZMZAf7ekxCObn9XxdapG7+LUjT8=;
-	b=cZoLus4rGwV5ANQtKO2OduLoWYkQgM4Ps6j4S0U+t2K/wCZQefuCqAZ2F4iL0WDVwWJ72A
-	vPpczudUo1PE3rVao89LEWS248Edr7OJnZ+SHagT8mUpGM6lWRn6MDuX64SDOTnf7haGUH
-	4ldPbR6z6ZtFoiwqkXSlBL0IG05B3ps=
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b98983bae80so527548a12.0
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:41:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768506111; x=1769110911; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WQl7iR/tVdOMMi2eZMZAf7ekxCObn9XxdapG7+LUjT8=;
-        b=nYFPEGLZKwPQSZ1joxdSUDTz+sRXguo2GvkrMC27JiRAQUkI9bmfUMhqfBP6/dhCo/
-         R02/WvdlSc/BdOqODHa+WOlxDFry7haVXz4Z8hLVlNZaoD8+Xz+VnpXWoa5MBTAUW+YL
-         1ttnIdGRxLvpfx9Kw3IrAD3gkLdYkG1S3ENG/pal5Py79rfteJKb5h2F2JKcH/VJX9lk
-         7IW2PRflTxCIhstpoJJeHrkBDsY3U1r4QefSK4fmcuxBvfXvVFnEIkz2Ry8ML0EKmC1v
-         p83BSY0mVl/s17we7wkvlaYy2oy8Dc55jyN2ANVEAjZXJAR5CqmXp7iDvDa54t9iZiMI
-         Nsog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768506111; x=1769110911;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WQl7iR/tVdOMMi2eZMZAf7ekxCObn9XxdapG7+LUjT8=;
-        b=sD63Dvartb4Hr8BmluOhkjcVMHVxwNM2WZGHoHGY1Wrrts9SidR8NAZodh/7eUlp5Y
-         AM9dI15/6M3ACsl8IwY5QBqqzaeRPQ1vr3u0HEwzw0IvoDJseNvL8EM66pxoTLpemNJn
-         hkkPQGByOQ6rA72AlNmtfTH7T3uTfyqTNM8ChJrZBQtnGwy/XH3cHjrhkGt3E3nNLXM6
-         WXhYXENhO6Zmru4tEMi6B08is2K1t600H4wWHACAXxfARt9cZ0J8cdZWqFR9qnfbyKOD
-         YX2a/FzrhFBDqAkRYL9mkPdiq/Sn+Nn5LKo8eNLbDzbOkmkMPqGg9QltxImBpmew3JeS
-         GfvQ==
-X-Gm-Message-State: AOJu0Yz0PC2At3/k+zhDkvdssZuzNNUIWxWQ2yCl24PuopJ8K9hMGkx2
-	vw7VLLlgeBzUnWo7JqNrrD/veGJ1ZxjTm+aQiw8IMZzStOq0LRGt4AQY
-X-Gm-Gg: AY/fxX7u/Uw+fxAhfseNu8jF0c87VOkyA0or02q8ehFsQQJ3wWrzwSw81Y91cFaXFyV
-	ZGmw+X1t915NdEkizARH6FlXivSjUsix+bk7sZGSInNdv+alKLGkcf/6yq/YhdRUmYu5ANhCX4a
-	uKoAqLh3Tb9Nd2W4zh43jpIImcNVxiM4RTl/0VmaB939Nq9o1WVdnKUa2HqBB+Ln9qfsTby1SRO
-	ADtT6GNDEdggGoim4TN8Y5UJsvtOyoCKuhB7rqVRdIYj1ClunRFphzD+mL5/dXpqtVvrotYVFw9
-	edXTRZfqcRtx4ZBZPoChztuQXxOjzv4utmOwLtPU1MQfmrwHXlVBrWrvb97cdBv4ygnXDhDtXXz
-	e/z9iOVxoQw6sePh0Adjf4vDPaBdRQI4vmAOe3YXd53Ddf0AG+xpoeYXBh139XOgG+4ifENVGFs
-	EjClDceWxr4owDdJhMHQ==
-X-Received: by 2002:a17:90a:d006:b0:343:c3d1:8b9b with SMTP id 98e67ed59e1d1-35273243355mr386349a91.19.1768506110825;
-        Thu, 15 Jan 2026 11:41:50 -0800 (PST)
-Received: from muxbit.. ([122.171.16.181])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3527306c41dsm213280a91.5.2026.01.15.11.41.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 11:41:50 -0800 (PST)
-From: Manish Kumar <manish1588@gmail.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Manish Kumar <manish1588@gmail.com>
-Subject: [PATCH] mm: add blank line after declaration in page_alloc.c
-Date: Fri, 16 Jan 2026 01:11:42 +0530
-Message-ID: <20260115194142.117144-1-manish1588@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=A23V1QRMEvs5cA8OvtUBzyK5zu+Y6qwqjP41AnCooiw=;
+	b=gB3LOdbmemOWd/K7cqlNbhTKIKxmzOnsyRUSpoxmSTL6U2MFDESBcEBhSQKPQweP6l+DSQ
+	mGV3NxC9YV2DX1JnWWuWhts8sJ5YRUbkJ3p5B7JxhvudhBLTjwdYKLk4Fyb7IslOtKXR53
+	Zz6DxFdBD24S3H+WTOgR6c9yTNZHAL0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=evK83rBN;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768506205; a=rsa-sha256;
+	cv=none;
+	b=7+cgJORBGqdIMWWTsqiKKnUC6GekqWtVroQjkIjuwfUPyCBwBbJC2i2aalRB8dBPsOW08n
+	97xT3U1Bae/FV91Xj0BXWblpRhhR1l/KeoyQQbz7C6oLosEV9szlePLtlT+1Sohep/D4A0
+	j2eNzN+VrO6IlRYvyr1S8ObKKXzrCYs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=A23V1QRMEvs5cA8OvtUBzyK5zu+Y6qwqjP41AnCooiw=; b=evK83rBNBmurb078aDPg0RCpe5
+	lBegr58Fcbk5MC+bakyDeXD3jhwiYBs8JKTAdfCioAd9gwHOydNi/1JhvqQ6xQSdWrncKN4rB+bfU
+	mTNAnm6fdzc+68gQX5nqz5slJy7F8I+DUiA8XM7TB6135ZWJdNNtGLQ7ryIOGKlstTGrIkkyNH4ud
+	hpVK8rQd1i63UxCsMT6n5ecuybCO+5+EmxNdKr1CdSzBPm4QXAjKo9lyvCuVY1N807YsGqpwTZJj6
+	JJzlzjc17yVqocbJ2Q7Ymg52LUIeqNo0p6XKgkY+td698I58vUVYgy3gJ6Mnw8O+woybuwuV4TWOb
+	VVFPcVwg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99 #2 (Red Hat Linux))
+	id 1vgTH0-00000002NbF-3BWn;
+	Thu, 15 Jan 2026 19:44:50 +0000
+Date: Thu, 15 Jan 2026 19:44:50 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
+	Harry Yoo <harry.yoo@oracle.com>, linux-fsdevel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Mateusz Guzik <mguzik@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 00/15] kmem_cache instances with static storage
+ duration
+Message-ID: <20260115194450.GA3634291@ZenIV>
+References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
+ <0727b5a1-078f-0055-fc52-61b80bc5d59e@gentwo.org>
+ <20260115020850.GX3634291@ZenIV>
+ <806cbde4-fc0b-7bf7-d22a-2205b46eaa96@gentwo.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E6217160003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 961gucpxwrifn8t53frywtxa1wyx5nic
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <806cbde4-fc0b-7bf7-d22a-2205b46eaa96@gentwo.org>
 X-Rspam-User: 
-X-HE-Tag: 1768506111-243324
-X-HE-Meta: U2FsdGVkX19M9xg7tB2mpahwLKQNYU+khe8f8LtVYIWxq+UrH4UVSP2AlZpHrAPK74W6l/ziKUoYytw9rkzoRoMzUJ1U1cQKlJRfIV22k0YuT5vpLh9hP/IwF4l64Zrgr7L1pk/T6cWHsZZihms8V0OcfN6S+G1UJxj/viYOOCl+ECSURKROeKDgMGWXMEcENLFHvWpmSJPXowwP764l0ZIbn3C9aEwMpAmh5ObWOTCo9fDYC/MtG9bNi+35mQCrncub7w1A9n/LlUeLxHyZD6QjoIJ5y7MjVy9wsKO88817vA3fssgDbGmOvqtE6F6LSFzDRti25FJk0zkaFw6Lt13mTCJe9M3BrXZ6GieeZDBckTgBilEEBwVLIOUF5gCiTPXhIyFvtBV3X8+7618dzRb1fYKOEEGwLQtoaYTo6/ahbPA74nIwHOtnhlwTKg+jSh/uGCXWWitCAuoYfwjBivdRNlAMXrxOnG/VSraZpkaOoPHzLg6xVm3rVwvPEAR9joY7twzF/kjJ8Oyd/gbe+2mxWh2MpK1vpw9geAt5Bf68UHq3j4ij0EjlUxcGGp70GrTuh9mn9reQz2iO1z5/CHTtU1pSiXpUvYnWCDUZQQi5u70pLH+Prs2bsx2ZAjFOQDd2Ty2G4/D0yhI9qtslRf8DVElNZuPXDzBVHfB6gmyx/Wep2JMZQbMnS0t5aY862nchGcd7aLjs1RcMNns48hXcS46Wmmgn1zUnjqwf1+GxKGEG3KzTpgSgdjosUH9JGzO/vijTKZxgdz4M6raeyE0P41gIFlR/I+t2iZHJpj8a+79uHs0ho/CYGOpT5xhUbMIoVUFFbTXayBAjjTepCLlT8CzLFQDrwm1HduIwUqSIpL7VhY/Dd79jSlLLi0l99Vh4pSKmZ+WDfTdm2v8ZlOE2H9JHtHafsjTA5NK8cNcm14vlgYuDRccIcy1YkcAGWqtwMkk/xq8hIxo+LsM
- dCYiQdI6
- CxBqqD/i1M6nvN45j/mjw0RmxThDT1GH9pKvGZwFM2beyANj602Ri82Fx3A0wlMC7OJylJZttlZMsh8wUwvwoYRJh/WBNHrXx7Il6GqbZRETBK9CUN9F2xEWXxTGalG7iDGqiRmZidchubLRylZQLK4waOtajz+zzZzDiKmv4NoYuU9zWm2PEvVMsTEvR/eEHqEyCSZkeGyFL56yQi5pWNoo+aI4/W8b/NtIVJbqQ+Lzodp62+KCm24VNicu9cSH8z7NGf+fGLULFnCZjx7LjuTuXHs5CO0EVPNAX5RA3jVmWv/QCeYowo4s9+BunoNl+bKXYr8Oz05TPNp2PkfOMwhZIwBcJuFATAH4B8U2gdI3noqhAVgIfSGnxvzBG9/kkIOnmx3UrmxGdGthZnjXkOwNSM9JWsR7Wy+8X
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 16D7340004
+X-Stat-Signature: f13fhxb67hstkjrpi9dw46tiiopddccw
+X-HE-Tag: 1768506204-670441
+X-HE-Meta: U2FsdGVkX19PT+aJ+AXMIysbvB8ujyOyLntgtex3Mvl0+BCLxqNQpqoVxiqXF1MvnSxQB/y7ocVKMSSWDRp/IvU4pbZyAItqHgnKyCiF3WqM/kbeF7pDJnSPvt9a/rzyeIvsWk2myUsnqv/CnTFo3/tnWrA+5rjBwGkE3IPYnfE2Q9m/hhOs55PvMcedIZ+ZvwdDmm1MI2vHGRML5G9mnVSA5gqMtoe4K+ex9mcSMk16C5iZVtKjxyHugkxikVMYweB1D34Xguy8kQxZBCyfhEnThgM1q2MBYCaag/8cjO4yjPy9KJoYL1mEU/+71piQKI7pYaBKOf7MAd6it2vz8AEicq/LXOM6Zafa0pV8y3621tHOrPWFCo4ytWPczP274bSFz/crwcLEihK9F3mhy/ip2rtzTVmExtbI/q0YLjqmq6VPbi5DjTvpzKb0CbZcheoYzH57ivHoIOvwskb1SkEgPMAQs+5nI97vewUk/s8MxnJhWf0VxiZD1lRBUoe/dsVjhFUWJaleCI+8bmMmSzkUr7mChUWhFYqk0Jvn1EXv46WrqtrKJOrTcfeHS4rUI1WPKA67s3+yxsisTaHQ5J6s9DDo8eUv56Iv66A1LiS6hiYY1kRIwPAdRNA5UItCF9PQFpImWKsSipRZ7/zJgWp8864v48+E79x9MeTugiQ1TG3bcJAdZEJxYrC7MiZpwyVtBRh26wABCAJLfOxz4GRFCqA9xzeYaV1Why7WRiz0hm29elldqyjRHeW8U22siPCCqrGPdVaPu6yyQTuWYC9WY6H8IZJbBax33OZVSNLtnSZFcIsR1ymB6wP+DcEbGh0LvR4QMjx7toYEGCmBtrp7iSN78B4wbmpu4Qiz+urqd1L3bI6ZwnsRJSXLsbvFOzgJ1tLgyltyZqCNFer3PD3nEDXmG+mi6Eyq0b1vfb7bOaN6rDttQYJCB4ts74o9kHiYi9KULKHsx7dMRBI
+ Rq/KYcm5
+ tfT6Md3CJ9PD6QawkTfZd77BC7Cb6G4L2vvijItZnCKuanelyWlIbmacFn5oZJovxYrY1N/US2k35SVd/TufOhJc5U1Mo60LkJYpHmGSwCs17Axgj4x3BFjn40R44ebIJeI6q7OFfxegUCl71zaEwOnG8TjInJwhscb3K4lYLWdNZ9wltfb5K73lVwAk5p4h9KtOqrZle3wrrt4YmEReELV44plpYSc0SxJoyfQDNLtZXk9+mU3aAQOW5Sudb13UzJr9XW5dJjBKJxCBt8ok7gnwIhCmnVOwMAHbsSnUPnLHFJ7ciq/BXSu0ib7q4MK2h9OtrtjhydZ/wl+X5knn33ztpZswm+1RcDlxMpNZXblD6VpTwWie5F2GQI7Mq/OGyA3hM70oWbQ/hMC1zlAUaHZ64PmkCTR08yDw2N8jQoehB2OzLcD0hd2/pg7vo39obeHqFKotef4jRWEbU8ipgFbVai5YTFGsS7BRTA5drhLwgxOQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,27 +96,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a blank line after the declaration of 'movable' to follow
-kernel coding style, improving readability. No functional change.
+On Thu, Jan 15, 2026 at 11:10:00AM -0800, Christoph Lameter (Ampere) wrote:
 
-Signed-off-by: Manish Kumar <manish1588@gmail.com>
----
- mm/page_alloc.c | 1 +
- 1 file changed, 1 insertion(+)
+> Internal functions exist in the slab allocator that do what you want if
+> the opaqueness requirement is dropped. F.e. for the creation of kmalloc
+> caches we use do_kmem_cache_create():
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index e8db6af741b5..231950d9d5c0 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -659,6 +659,7 @@ static inline unsigned int order_to_pindex(int migratetype, int order)
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	bool movable;
-+	
- 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
- 		VM_BUG_ON(order != HPAGE_PMD_ORDER);
- 
--- 
-2.43.0
-
+Yes, I know.  Do you really want to expose e.g. slab_caches and slab_mutex
+to the rest of the kernel?  Surgery needed to have __kmem_cache_create()
+do everything is not large - see the mm/slab_common.c parts in the first
+two commits in this series.
 
