@@ -4,117 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E7D7D29FFA
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 08:05:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A3B4D3CC9F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 08:14:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EFED6B0088; Thu, 15 Jan 2026 03:05:42 -0500 (EST)
+	id CC6646B0088; Thu, 15 Jan 2026 03:14:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99DFA6B0089; Thu, 15 Jan 2026 03:05:42 -0500 (EST)
+	id C49946B0089; Thu, 15 Jan 2026 03:14:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89C0F6B008A; Thu, 15 Jan 2026 03:05:42 -0500 (EST)
+	id B2B836B008A; Thu, 15 Jan 2026 03:14:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 78ABE6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:05:42 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EEE191B105
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:05:41 +0000 (UTC)
-X-FDA: 84333464082.21.7DBE641
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 05BFF40013
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:05:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=L6PiASeE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768464340; a=rsa-sha256;
-	cv=none;
-	b=YWrs5hQbHpS0E9B/NDO91+xLPBGQxW0pRQe834c5guOl68YRWY58HN2GwV26qQgEmQ9XGM
-	/dnhhCy4tee5SipoIJ7JGv/pnUtvUvHgZbBkn4CQm1Ic/gT+ZhXG4SLvnd4wnRzxLYCiTf
-	mWkUJm84f1AOTpU+XRV+DSY1HDS8s1Y=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=L6PiASeE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9E8FA6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 03:14:33 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48D6013A074
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:14:33 +0000 (UTC)
+X-FDA: 84333486426.25.3330214
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8350740015
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:14:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XnbS2cfp;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768464340;
+	s=arc-20220608; t=1768464871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eI5Aks8p/qGW9HFMkJeBYiCSRBBx6IXlghuKINHgvU8=;
-	b=AIO4CD6ugsNsFwfXjuI0M69s9Y/pDJ3/XPEZa8FjDuyC4i3eweUu08RdjHuBWtfiiqJxwN
-	w98KCZc0gdsc8jy+iIlMuAXA7XRBHCbuZxzAADus7oiZQwubTk6ovjek/aGkzoOz69MZiE
-	MIQpk6Vmj9pU7otJY6yzixoXM9Mj78U=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-34c84dc332cso287391a91.0
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:05:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768464339; x=1769069139; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eI5Aks8p/qGW9HFMkJeBYiCSRBBx6IXlghuKINHgvU8=;
-        b=L6PiASeEHGiJ0n+nwzdu5K+Io/aqq/wF/xjutLr2XACO2tR6p/XGK1Gi2qISwxyNrv
-         fazHNGhWsqnJeo0tlirXQJgk+CPmhL6YRYJYZvuCQxWuXD+jKdcmaNiwyfV0cNYjC7LN
-         Ph6WbpkRigy+2Lf3V4F2n7t13Nz1RN8YeCCxjGu2K+/WD2QKZAgpg3Mgybsg6tONRsUc
-         1dclp953vgCBEPa5Wo8mVImF54BEVqSVygCb607l65efroWGU7dtp1pgH6V3cgMFI++b
-         9cF75OEDnJGKDa3K/J5Dg1vDMJcU/w16Qz6YdW948xt3Ln16VMgCLUnNMGCSqQ6urT9s
-         QXeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768464339; x=1769069139;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eI5Aks8p/qGW9HFMkJeBYiCSRBBx6IXlghuKINHgvU8=;
-        b=cx7mgFbWTjGuAz/SUvFyYudiiEAX59osEr4X6iZh6rhZG4WjuM8tlVN8qp5rkyVbJw
-         dzfTl+/qWT1tmh8fKxOE2FUVWLJxX8De+IZ0EXrYdGI3retKEF5Q9UyelLwmiCyq9Aos
-         dKFs76ePPzjfhxVfidROPiipGBluZC6THGakSwfpek0wPsnfM/U0CH/50lg9aB9DEZoT
-         xLG3XwIKuEdnzTwOvxvUdD2XmUhcKqa3Jgtxrl6DJq9JOJoSgAnEoQX+qtDlIoMjq6mE
-         C4UhuxAY7Fr5DcNSDuzc/HgIjyPzOc/oQAyw9W2uJrEyMexh5BiXasAWW3dRsInXQqvR
-         tPyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLrosY+iyg54WBGmP2tuNKMjXAvBO1z9FmfjMohd2CuYgXlI0WiwDW28TK6AdLV1g7ygZM1SM7Eg==@kvack.org
-X-Gm-Message-State: AOJu0YwnAxjs++PT5184hFcDElM45z16EWOD4kZyjHcApFUc9sGFSDrX
-	aQ3pTAi2hH2833uWkoTnIjrNgaq6mlB+hIjCXQ3UhncJRxHRMGOCaa+9UUs4SHXrfv244DICq3N
-	iYHCcKKIe65C+5mF9gW7WKrToOkz6PHA=
-X-Gm-Gg: AY/fxX6dv/3Ox2yRx84iyNGqfym8w6KcTLOExirC5/LlS5CXvtT/ArwSfkSJiyN9Ca+
-	3VZ7JU0I3ddzZjH3UJNZ7kMYlegQ0jn/w5XXqndjNpl4TB5uqsO89eKV0JsL+KsI6iioAKswgmx
-	gFfn2pFgjWp8hGHFQiHssghm9hlhOOFPG8EpVcP0IS9rqItT71ZSyxbt95vqJdGtXH1pTFsWVnQ
-	LMdepL7wYe4qJeYyZBN8fdx0VqPGY8+vRBQkNakPa5q+ZF7M+oevX7zOhIzqUEYHLsjZgQwvD6M
-	Bznjtez2h4WmDygmzFWogb4/GFiH
-X-Received: by 2002:a17:90b:1d4e:b0:34f:6312:f22c with SMTP id
- 98e67ed59e1d1-3510afcbd46mr4909265a91.0.1768464338603; Thu, 15 Jan 2026
- 00:05:38 -0800 (PST)
+	bh=FXFHeU8QpH/lQamvGnH1b8chwcMeSz98NW19o+yr6yo=;
+	b=vxBfjYlD6Fb1fyaQ9SScXNBc2b59Ma8pBR0zq2/KQ6G0Ctc2HbPP0931q2yV+SiUPQy5v9
+	cPc0AN0PziLmhJXcgEOyrllufRsJhQ3FjyQE5w54eAESZXLx4Tn+e4VIZWIOKXfde2Pm+G
+	8llu0U/PP0wUDMIExJptl00KFfu9eHk=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XnbS2cfp;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768464871; a=rsa-sha256;
+	cv=none;
+	b=PASiq2/EIi3nXHxv8UMr46FXpTa7Npv6GFBTK4kwMLgjgJxLCLNmgEgO3PdrKdamigPH7O
+	975CU+ZV5W8GJ3RYcuXwf0O1lvuii5oQ1TmV9J3d1BLfh3EtOpwIC8o76HspQ4Hqa4oLDM
+	FnIspZfIHtvwAkW3xmwz0W+5hof5E10=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3DB4B406A8;
+	Thu, 15 Jan 2026 08:14:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64986C116D0;
+	Thu, 15 Jan 2026 08:14:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768464870;
+	bh=WiSNn2zvCUvnX3icYjakRozNqyZdq45DKgsu3cHWUEo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XnbS2cfpntTwX4GFJAoawDW2AeA5ZSsT+/PONrd75H6dIfGkNvM5vgeSHaOAPv8dM
+	 FrUnVk8caQ2ZgKDdkW59pGpZdLQn5pXMBsCnewkG8ZRPBAs5NmgswKQgR2jlXOGTLH
+	 1XC97DnUwAHpyZvcxc/R/9ANrCDd89hPll0MVVz035TWRgfHi07Ohy3FXm8Oi6cHMd
+	 K1B5BtZtQ3crjd06l/WXb42A7DNOvPmKTEyhkbAB9zRLk0VcQ62qYkO65llb6ehby+
+	 4dGtOQAqLPZ8prbPHH4nyrrHNN5EkPlne7JgZK52gq0fyn0vzFLiAfA69H2k4JHDn4
+	 iObH+Pt4IvcIg==
+Date: Thu, 15 Jan 2026 09:14:06 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Amir Goldstein <amir73il@gmail.com>, Jeff Layton <jlayton@kernel.org>, 
+	Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>, Luis de Bethencourt <luisbg@kernel.org>, 
+	Salah Triki <salah.triki@gmail.com>, Nicolas Pitre <nico@fluxnic.net>, Anders Larsen <al@alarsen.net>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>, 
+	Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
+	Dave Kleikamp <shaggy@kernel.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Phillip Lougher <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>, 
+	Alexander Aring <alex.aring@gmail.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev, 
+	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-mm@kvack.org, gfs2@lists.linux.dev, 
+	linux-doc@vger.kernel.org, v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, samba-technical@lists.samba.org
+Subject: Re: [PATCH 00/24] vfs: require filesystems to explicitly opt-in to
+ lease support
+Message-ID: <20260115-inspektion-kochbuch-505d8f94829e@brauner>
+References: <cb5d2da6-2090-4639-ad96-138342bba56d@oracle.com>
+ <ce700ee20834631eceededc8cd15fc5d00fee28e.camel@kernel.org>
+ <20260113-mondlicht-raven-82fc4eb70e9d@brauner>
+ <aWZcoyQLvbJKUxDU@infradead.org>
+ <ce418800f06aa61a7f47f0d19394988f87a3da07.camel@kernel.org>
+ <aWc3mwBNs8LNFN4W@infradead.org>
+ <CAOQ4uxhMjitW_DC9WK9eku51gE1Ft+ENhD=qq3uehwrHO=RByA@mail.gmail.com>
+ <aWeUv2UUJ_NdgozS@infradead.org>
+ <20260114-klarstellen-blamieren-0b7d40182800@brauner>
+ <aWiMaMwI6nYGX9Bq@infradead.org>
 MIME-Version: 1.0
-References: <20260115001405.3513440-1-robin.kuo@mediatek.com>
-In-Reply-To: <20260115001405.3513440-1-robin.kuo@mediatek.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 15 Jan 2026 16:04:58 +0800
-X-Gm-Features: AZwV_QgPLO0RVfJdVJxqFZ4Y4W_kG-gmBtwevH7JFUpri4EIC-T2EJV0cJ8my68
-Message-ID: <CAMgjq7CrKv7QJNFO_vg1_nXA+RSW83mu8X4cMSVd2tfMA==Wew@mail.gmail.com>
-Subject: Re: [PATCH 1/1] Restore swap_space attr aviod krn panic
-To: robin.kuo@mediatek.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, wsd_upstream@mediatek.com, 
-	casper.li@mediatek.com, chinwen.chang@mediatek.com, Andrew.Yang@mediatek.com, 
-	Qun-wei.Lin@mediatek.com, oliver.sang@intel.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 05BFF40013
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 4x3ba5rbk56rhb67ekhfukzg3pwhebw3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aWiMaMwI6nYGX9Bq@infradead.org>
 X-Rspam-User: 
-X-HE-Tag: 1768464339-630380
-X-HE-Meta: U2FsdGVkX1+f40AeRTT4hcgrvhIP7vBUnd8kN4a/sgb4V5mk6DmzEuwSf3uCmHSM9Iy5YtdIgHOg7gbSfcvPn5M3E4A7TIiN6q6uDpzHfinaNSS/1nWIhjW9fIRVRq69lX7vKtQRXug08q13gM2kUM5ytTKlsowRYtL1EKoU+O5qjgtZhf0SxVh/snXk/4KUBBznz+/czCfwPGW6M3nXtXvP8Z1BECNadBgAWXKwKK4P+e+ZFpSG+4i5JmAaxLBTYZQ2Vc1FUnMJDbGm02dPTNG9d4dmr4qa9siebe0Jrkae1N+jKpTgwhk9rJc7OHh4m+il7EgRehuJ30oJW9TPQrKePes5qvGsMDRHiUdebz7MTDCmBZ1AG6OWgGxzqe/cryZsPliUBhhRsZh5o1umg8FcEd9wc9czEBKxsmwpV4C77kTXBiwzt8lQOk6XcvekljkgOMsLa7LPxuqket6yHZciXumuhKQaN9nidDhnpol6O215DaVL0XHXlQUF25XeGqSNy7tlIvvHOEAah3eGySw7kf4VeaQ8+uWmQM8NlAIT6KymSG4r73YbbEn4dZ0HRb1aF7UV5N51I1jqKfL9V4CmiIekpC8+pojYyS7dL3UcDD9hC5rYtpl8aoFdtgsLSNCa8ols8UmJBr6Vpk9N17Y2WrETbso+w/16GMgrdxEqNwPclfyltaWFThPKpeCj2VtGBTJpojDVFe/hGUZhzublR4hKHdswPaHeITBZFs+AHKkLMK4IN7jfXmc19IrIioIjnf74AvUutLOM8diAinXhdUCjARXFobfyuGCEvJdsUowfxwcjTaYs3TMtxhNyDjUgND9VWjcBM5P8Hel4VFS94C5E7zPV6ll/1QECV4vawlpx/kPGu+mARF9QpZ5qYjeR/EhPWMic4VhabbFyvFXxcZhPisA66eZdwtpX/mpk4UzS+ZVwk0Lef3YoXQMF8xulziCpqAyb9HZ2a7U
- M+vx21ai
- J4ECDzV+oCgKCTmhpA9fuzQAkvewQq9OkRuj6/ah3Jyq9spGsGXfFUbu9JofweUAT338xuTdD/mckOuCJhGAy24EQi7L3vHAgwZ7Ho+94elx+M5Rpb57ADs+bsGXb29WU5JTxv5IeFP5I9WbTNB6htofdYkZL8/digavYBuvwJKdffEnoGYObLMuhodGbzwBWio9igMc6rWCPR90Oqhpw1DVdy+VDFGsVt5YwiTl1YniJuNTkvqyFOrjpdRMC8f8rfuhd5K2/d1TIywRCLDm3rS00E0xyigx2llZtHBJ423COXoexzLJiEmVl2Xoejfg7BEkmn92J0eWxKwQ40iGEhZS1xQdQxvBoBaOeW7lc+qjaKKfINBkdwDDVZbPSs3YZG71ULi1//rVKl1yuWyRABAVlXIGWNBTGj6PCoe+KZ0jSP+wAf76mceDAFya9PY+PW+a9Xdkjiz8lfAZMkvjT2aqPm03OV+wAiXhJa+3ZLgwrSxc8wujmZLXvhg==
+X-Stat-Signature: 9qomxwu9yf4jr9yuskxj9rbqqyzuexnj
+X-Rspamd-Queue-Id: 8350740015
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768464871-465351
+X-HE-Meta: U2FsdGVkX1/TzqHp3LNaWsg9rCsFoS6/pGn+ujQNxi1IYvlq0ZRzQjxqJE/UUtaTPOCFQzawUfwa6sPZ+nhfMPruVb24aVAGaPrHYVLH7AYjJNo4x4zKNlMJafs/gqtKxBqlDNgZrxakh598y8n7Q50n/jpItRoC425jEivJmz1Oev9Uq2Sih+JY4HD9WVGr2rp/L55LwhalfaBSKaNZcZn0bzWyPJzLwf1lmKC39q2E+Cd6DtigWu6jujWrSA1bM/l1u88UksiKFr6OPxPi4p+wH9/dwjBCt4/j/2NWtopVqfo0dvN4ijHXZtRybaZC1KCdOmapNXn5gc0FdeGt4VVRwdiVp8RRfWICoUq1EsrkyyRRb/j3v1yjnZ/ZAtMjvfUVNc9YZv72PE7z1XIfgVKvKzyPGev5EaluT6DdpZkZJflv1pUgPu1Lne/leknjw/7OJDSn9rDCO2b87hMPrJ3I2Z2Ct1E1zAqk3+0fLkED9M5GVHaxsGrQnUcsRYSHVIw0gKFPD0Z5OK1bHLhPckyTFzxd6SHlCzUJS/kOfqGFsWAvkipuv7OHdYRUA9DVsQKOuv4LGHHoG3N5abfq8TazvE7tOm14gha3hh4utDq9uqTDLCJUWlri4DVKv5NoT+vaa1LxhOx5E5Jsjs+erZSHP1XHkRN/UJTKam7trNJrd+/8DvCXZqKCIU2rEXjuRMJonVCU55g0MeU4mW0z8yiZlJh3bx3mEiQJejZpA7Fl1aSZmaK5ufV8gwYk+byRxryOZUM9HG8AeMbiLThF0l7C821A4QeF7KzO6LCa4N40yGknIhNZVQr1iayW4cE/x4+QDxWUngH0VpFcEBBxbjwJCPZnZgFMZI0uFNUbnReVBKvmt3KZAj2PKAy/HgscvKPzK/nTwLfVrbD8+vGzpCMgRjPaHm2d7rOQCE5/KVfoIv9wm91YKJhv0+pK1XWK4ILjfakxfiYoYqDy2tP
+ fofL2yTV
+ o1ByxnWh3nf0vXpTYKJn5G4NiQvkyucfy1QW0LM5N7agRIfUkVu5Efun4oN3N8ebp2ifmy1cJitAJSt3C9zztKwPF3a0QJdjX+3owSQvSsOP77BUh9Vm++zxuvSXThhw+FeQIBLMrFIoNr+uG0qZw/TVWdAhHxbXjKph9cfHyuP8p4OfAZZx2BTuLqw3EjZUxImOpJBQvkFKTg0WlD6q+jecdpH1s41z6GbLwHlFNvdvAeYugQUflD27pGUIXy4yS7AgRZffCeNJ+oSrhiUVIVLnApD5x3rbTeS/9YRrlWoiIPtHBlcKvNO3PzyDWdkVW1bGJF8ryULOjmtA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,163 +135,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 8:14=E2=80=AFAM <robin.kuo@mediatek.com> wrote:
->
-> From: "robin.kuo" <robin.kuo@mediatek.com>
->
-> Restore swap_space attr avoid krn panic
->
-> Commit 8b47299a411a ('mm, swap: mark swap address space ro and add
-> context debug check') made the swap address space read-only.
-> It may lead to kernel panic if arch_prepare_to_swap returns a failure
-> under heavy memory pressure as follows,
->
-> el1_abort+0x40/0x64
-> el1h_64_sync_handler+0x48/0xcc
-> el1h_64_sync+0x84/0x88
-> errseq_set+0x4c/0xb8 (P)
-> __filemap_set_wb_err+0x20/0xd0
-> shrink_folio_list+0xc20/0x11cc
-> evict_folios+0x1520/0x1be4
-> try_to_shrink_lruvec+0x27c/0x3dc
-> shrink_one+0x9c/0x228
-> shrink_node+0xb3c/0xeac
-> do_try_to_free_pages+0x170/0x4f0
-> try_to_free_pages+0x334/0x534
-> __alloc_pages_direct_reclaim+0x90/0x158
-> __alloc_pages_slowpath+0x334/0x588
-> __alloc_frozen_pages_noprof+0x224/0x2fc
-> __folio_alloc_noprof+0x14/0x64
-> vma_alloc_zeroed_movable_folio+0x34/0x44
-> do_pte_missing+0xad4/0x1040
-> handle_mm_fault+0x4a4/0x790
-> do_page_fault+0x288/0x5f8
-> do_translation_fault+0x38/0x54
-> do_mem_abort+0x54/0xa8
->
-> Restore swap address space as not ro to avoid the panic.
+On Wed, Jan 14, 2026 at 10:42:48PM -0800, Christoph Hellwig wrote:
+> On Wed, Jan 14, 2026 at 04:20:13PM +0100, Christian Brauner wrote:
+> > > You're still think of it the wrong way.  If we do have file systems
+> > > that break the original exportfs semantics we need to fix that, and
+> > > something like a "stable handles" flag will work well for that.  But
+> > > a totally arbitrary "is exportable" flag is total nonsense.
+> > 
+> > File handles can legitimately be conceptualized independently of
+> > exporting a filesystem. If we wanted to tear those concepts apart
+> > implementation wise we could.
+> > 
+> > It is complete nonsense to expect the kernel to support exporting any
+> > arbitrary internal filesystem or to not support file handles at all.
+> 
+> You are going even further down the path of entirely missing the point
+> (or the two points by now).
 
-Hi Robin
+You're arguing for the sake of arguing imho. You're getting exactly what
+we're all saying as evidenced by the last paragraph in your mail: it is
+entirely what this whole thing is about.
 
-Thanks very much for the patch! I'm fine with it with some suggestions:
+> If a file systems meets all technical requirements of being nfsd
+> exportable and the users asks for it, it is not our job to make an
+> arbitrary policy decision to say no.
 
-Marking it as RO was intentional to avoid silent unexpected usages of
-the swap space, the swap space is hollow now, as all content is now in
-the swap table.
+This is an entirely irrelevant point because we're talking about
+cgroupfs, nsfs, and pidfs. And they don't meet this criteria. cgroupfs
+is a _local resource management filesystem_ why would we ever want to
+support exporting it over the network. It allows to break the local
+delegation model as I've explained. cgroupfs shows _local processes_. So
+a server will see completely nonsensical PID identifiers listed in
+cgroup files and it can fsck around with processes in a remote system.
+Hard NAK. Entirely irrelevant if that filesystem meets the theoretical
+standards.
 
-For example the one you posted, calling filemap_set_wb_err for the
-swap space is meaningless, the error info will be ignored without any
-notice.
-In the comment for mapping_set_error (wrapper for filemap_set_wb_err):
- * When a writeback error occurs, most filesystems will want to call
- * mapping_set_error to record the error in the mapping so that it can be
- * reported when the application calls fsync(2).
+> If it does not meet the technical requirements it obviously should
+> not be exportable.  And it seems like the spread of file handles
+> beyond nfs exporting created some ambiguity here, which we need to
+> fix.
 
-So far there is no fsync for swap or other ways to report mapping
-errors to userspace. For example, __end_swap_bio_write will just print
-an error log if writetback failed. I went through the code, currently
-only arch_prepare_to_swap will cause a call to filemap_set_wb_err.
-Swap is not a persistent storage like normal FS, so simply bouncing
-the writeback folio back as active is good enough for almost all
-cases, like the one in end_swap_bio_write.
-
-Catching potential issues with RO/panic is overkill indeed. So I'm
-fine with dropping the RO by default. But perhaps we can keep the RO
-attribute at least for VM_DEBUG build? Like this:
-
-diff --git a/mm/swap.h b/mm/swap.h
-index eba4c04ad039..307cc71d3635 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -220,7 +220,12 @@ int swap_writeout(struct folio *folio, struct
-swap_iocb **swap_plug);
- void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
-
- /* linux/mm/swap_state.c */
--extern struct address_space swap_space __ro_after_init;
-+#ifdef CONFIG_DEBUG_VM
-+#define __swap_space_attr __ro_after_init
-+#else
-+#define __swap_space_attr __read_mostly
-+#endif
-+extern struct address_space swap_space __swap_space_attr;
- static inline struct address_space *swap_address_space(swp_entry_t entry)
- {
-        return &swap_space;
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 3916d144eddc..11273e0ec811 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -38,7 +38,7 @@ static const struct address_space_operations swap_aops =
-=3D {
- };
-
- /* Set swap_space as read only as swap cache is handled by swap table */
--struct address_space swap_space __ro_after_init =3D {
-+struct address_space swap_space __swap_space_attr =3D {
-        .a_ops =3D &swap_aops,
- };
-
----
-
-And as for this particular error marking issue you posted, maybe we
-should just drop the handle_write_error I think. That helper was
-useful when the filesystems are still using the .writepage interface,
-but now all filesystem have switched to .writepages and only swap may
-call that helper, which is no longer helpful, as the error info is
-completely ignored with no report back to userspace. Maybe we need
-something like this:
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 39f0336d9c29..62fe433aac0b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -477,27 +477,6 @@ static int reclaimer_offset(struct scan_control *sc)
-        return PGSTEAL_DIRECT - PGSTEAL_KSWAPD;
- }
-
--/*
-- * We detected a synchronous write error writing a folio out.  Probably
-- * -ENOSPC.  We need to propagate that into the address_space for a subseq=
-uent
-- * fsync(), msync() or close().
-- *
-- * The tricky part is that after writepage we cannot touch the mapping: no=
-thing
-- * prevents it from being freed up.  But we have a ref on the folio and on=
-ce
-- * that folio is locked, the mapping is pinned.
-- *
-- * We're allowed to run sleeping folio_lock() here because we know
-the caller has
-- * __GFP_FS.
-- */
--static void handle_write_error(struct address_space *mapping,
--                               struct folio *folio, int error)
--{
--       folio_lock(folio);
--       if (folio_mapping(folio) =3D=3D mapping)
--               mapping_set_error(mapping, error);
--       folio_unlock(folio);
--}
--
- static bool skip_throttle_noprogress(pg_data_t *pgdat)
- {
-        int reclaimable =3D 0, write_pending =3D 0;
-@@ -650,9 +629,10 @@ static pageout_t writeout(struct folio *folio,
-struct address_space *mapping,
-        else
-                res =3D swap_writeout(folio, plug);
-
--       if (res < 0)
--               handle_write_error(mapping, folio, res);
--       if (res =3D=3D AOP_WRITEPAGE_ACTIVATE) {
-+       if (res < 0) {
-+               pr_alert_ratelimited("Swap failure of folio (order:
-%d, error: %d)\n",
-+                                    folio_order(folio), res);
-+       } else if (res =3D=3D AOP_WRITEPAGE_ACTIVATE) {
-                folio_clear_reclaim(folio);
-                return PAGE_ACTIVATE;
-        }
+We are all in agreement here.
 
