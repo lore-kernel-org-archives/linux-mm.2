@@ -4,113 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E459D41167
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 10:37:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85456D41169
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 10:42:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C21A86B0088; Thu, 15 Jan 2026 05:37:38 -0500 (EST)
+	id E65756B0095; Thu, 15 Jan 2026 05:42:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC5E26B008A; Thu, 15 Jan 2026 05:37:38 -0500 (EST)
+	id DFB8B6B0096; Thu, 15 Jan 2026 05:42:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A87566B008C; Thu, 15 Jan 2026 05:37:38 -0500 (EST)
+	id CFE526B0098; Thu, 15 Jan 2026 05:42:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 955786B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:37:38 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 26D441B548
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:37:38 +0000 (UTC)
-X-FDA: 84333846996.09.73BA1DC
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 55A4C100008
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:37:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iOq7DtjD;
-	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768473456; a=rsa-sha256;
-	cv=none;
-	b=U7xzxwwDMncvqm1LyaWDzIzpdSfOiuj2x0FZfD7uz9ZuuInoCttG3/iHZ7K+fNyYPo+u1/
-	nStPjMVgIk28fSG1kpn7Wp1VNaMTqDYsgLEEMNrSo/ul9aZY/dUiGn4e+G9Js9NuzCZ8QK
-	VPvAWH2NtI7YIz+benYLJA/03up9HN4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iOq7DtjD;
-	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C0A116B0095
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:42:21 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 667ADB7C20
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:42:21 +0000 (UTC)
+X-FDA: 84333858882.27.D08DCA0
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5698616000C
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:42:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Wjil01Sl;
+	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768473456;
+	s=arc-20220608; t=1768473739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMHfTGtCn/Cp5rCdpRSRQAoNuPzm8mGo2uEIkJzXPew=;
-	b=tpWjGSuMaT5PW9I56+8XeJCPuMyEzQ6MIJ9Tp/uF1q3MAyq1NV57CluumjqI8cm1KWv7P1
-	Vw/x0gEvOnAeVPMwobb0sX0Wo6oBuHWyH7yxVO5Vde3lncytNSoJ2gs/U5H7m6OUOPnfzk
-	BTqAZ5ndEU2FcaQHZtsQrN3zGLODf5A=
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-6455a60c11fso509126d50.2
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:37:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768473455; x=1769078255; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wMHfTGtCn/Cp5rCdpRSRQAoNuPzm8mGo2uEIkJzXPew=;
-        b=iOq7DtjDnUDVkG/DccZVZ3p9JkMuWQaJB+JyAaDHEvvVdraL4KQVaGp/QFAwshWN+8
-         8z3asPWVC7+tjd3EGsAb39KEVQMEA47Uin4wv7sfP4XDTeaNQRc6mFo+liOkvqWBnvYC
-         FOZrFuaq7T90Yr+LTs4Uu83JgTpTh1LI0roZ1DpjYHjEj1au1Ss83DkqPEhNNSHc3ADv
-         Xf0jPs8COnAVOOoI9fWmUECSdqZ2z3NrjifSvR+25gLn1QycO+AWo8I5gzxFBRvjzafR
-         Eo+G6JLKG+oDZsIuKZdgO2al+U9LdAo59K8nXHSNt1TvyuqM3AbBH7Je3Jyfj8V2qhGE
-         KImw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768473455; x=1769078255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wMHfTGtCn/Cp5rCdpRSRQAoNuPzm8mGo2uEIkJzXPew=;
-        b=Wn7M9ovq5z6o/Tyoa3Wj93kvCWDXq8DcjqjnmQ4eye7BZJ8okkJS2/taIjU7tPgLkg
-         Qhv7VMjnm6jVVEvFUuv+mIZuLwFcKJ/Om0GypmKYapBr0vswhIPueDO3ibFK3U6RsqN6
-         h5sbOlzJ6KmGegPFRPDT5RCEOMqwdWz8i/LoOR0JF9vHdchEIOHNZmWQJtgO7YykrNi/
-         /gp8Eah0IqAuDQ5XMpbnT7qD0MS0BJpVSn4gBDE6AC6G0bSqxfXsNE4L4baM8cn/3PWc
-         6nlBol7449RgCFZaTYqvIct/01FzLnDqrdlQKdRBW09ARntheczZK3EzF0A9YbgVnrWC
-         oonw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKLDZ9nmrlIft8qOslm9a8zzwl3fqT2k9DRE1KRcTiA5RzdP14GL91ZxP3ye6uHHLFZ6hP7U1xPA==@kvack.org
-X-Gm-Message-State: AOJu0YwW3TcpyOoFgXL3irOo/jVgET3Q6D7lP15DFdxCrQhv+zcCTQXg
-	4LmaYTFxJ5ASwyUnG73E3YtZhuzBlQjhIdZc6r2+vuBFcRN5QhwaFDNGHJtsyPJS5jUjnvD7erF
-	9RaQ4INQ+todcFSaMTSy/GBcSqmhM3BQ=
-X-Gm-Gg: AY/fxX5RHpMyzs3v528aZr6DDXZUk5AeLsrRVIe9tk38P/Nlkd4aR1CAHo9pVlSvbD4
-	jT0X0kO5zH/G7MMf7stW+/IzcizUMG+eu0CYSAVbue/jCKvSqpfJPKbJnhd5e6YX5SB/280n1D3
-	8gK/HljMMeJOzUVA1rmwR/qiymLCUBY1r8mNUJbV+qOxWqFiNTk/ZiuEOTv1rJ+j6RFK4Ii3Axu
-	YDrxB9t5YndXUnl4MW4Ms2HrjQ1aqG1fLgxSEDNq+BKmbJB3IFQrW4QpTm4ciTgqaE+00A=
-X-Received: by 2002:a05:690e:1893:b0:646:5127:ad81 with SMTP id
- 956f58d0204a3-64901b29241mr4226063d50.95.1768473455240; Thu, 15 Jan 2026
- 02:37:35 -0800 (PST)
+	bh=35UwOuLDsnd+wCybJPYIumYnuCDYEBE4kSwMd4EKtLc=;
+	b=qkeNSsFI+T9EvMluz5qK59U/GXDeXUp8Vj2dtXDwwqwI9MU6F/t/jaRCLk2XrvgmnenPTG
+	ML1w9jbesPi9xmbE+J4b1uSxtovkPVTErz3cFLKja7z+D0Ju6FmtZcXFETN1LMOCvJUc0E
+	dahy4wUSRquQN8wEK5DOn0SFuGLgO0w=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Wjil01Sl;
+	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768473739; a=rsa-sha256;
+	cv=none;
+	b=Cu61te8hUGbmBVEK2mPzWcXICtWxOpsGP6s9vpwZQrGeh+1igpy264sp21EcPqssGQb8qe
+	8XtcsYCUi1vxDETyKWTu4/JiV4VU0zZ3gmJ21RwWDDI6UJZUEDz769QoI+6rji+Gd8Ix1n
+	6BUjnJWYEj0frpTN+MG4ktYgXH2EBc8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768473736;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=35UwOuLDsnd+wCybJPYIumYnuCDYEBE4kSwMd4EKtLc=;
+	b=Wjil01SlR/oO7ddWVF49DyCoOjfKHh07SUGNGDI5HCIsrjvSeoqifmv9AxWbx4+r/9Accg
+	xm/7eIh6IpHq1vGFGhm+D736fbxhaDbjIzkk4sdm67r6ezQZNKn6v6uQFw4duXQqns8ZX+
+	5kRtoV8q19bi9FkiFYCz+UndmsiMrCc=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v3 28/30 fix 1/2] mm: memcontrol: fix lruvec_stats->state_local reparenting
+Date: Thu, 15 Jan 2026 18:41:38 +0800
+Message-ID: <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
+References: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-References: <3f3d871a-6a86-354f-f83d-a871793a4a47@redhat.com>
- <20251211182429.3300562-1-safinaskar@gmail.com> <eb3a9746-83a0-8271-6bd6-867ecfa49aad@redhat.com>
- <CAPnZJGAvA+SpkMeOdZx+SZG=qZxSXOThO+Or1bgw=3QqCoEDgw@mail.gmail.com> <fc1d7900-3a5f-4b31-8aa3-8c8cd317d646@redhat.com>
-In-Reply-To: <fc1d7900-3a5f-4b31-8aa3-8c8cd317d646@redhat.com>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Thu, 15 Jan 2026 13:36:58 +0300
-X-Gm-Features: AZwV_Qhtkh4Hv5K6ULjZc1z1XJ89DJDGm5amELxKsmdkaAk7JPublSpdt5t7sQM
-Message-ID: <CAPnZJGBkR-ossXKGAj-62Wf-stiuWUwKQUGNo286J_jEiA+nDw@mail.gmail.com>
-Subject: Re: Hard system lock-ups when using encrypted swap and RAM is exhausted
-To: Zdenek Kabelac <zkabelac@redhat.com>
-Cc: Mikulas Patocka <mpatocka@redhat.com>, adrelanos@whonix.org, arraybolt3@gmail.com, 
-	cryptsetup@lists.linux.dev, dm-devel@lists.linux.dev, gmazyland@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 55A4C100008
-X-Stat-Signature: xffu37meoq7hauzax8ddfihxn9anhqo4
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1768473456-514439
-X-HE-Meta: U2FsdGVkX19Z6gpesp5970l3g/yxWaI5NKjkLXP7iI91ktnmRMv+tsqsoXkmEDeje5gG/ho85e8mfT36ZCJnvMwQcFg7R7a/G1KOB/4k1dK/sN1eWmWjufZ6lUBv0d/1xbIGXEk0+gB/I5ppZlkULSKcUIQEtX0/Gyfuxz/eEd8jlQioJEP0myDf8dVu2i5+ut/IbSLhEQmOwlmdazR3FFUX2lubYq5BNmrWP/6wKELUNytSCupIEbQXOFGmleONai5rUVcOcuxnQfUmghTlc8AJnIPyKMWHvi8gseuU6V8MpiGSIajCgi3sTkitfl3asMsmduRblYMDSYrsungDTIYqJxU/cI9d36aj4wly1T5ccTTlMFkSm3xMQ5dN1aC4316W3Ron3/wtWA65x0BkNfuutfUdAebf11hhubzb+ybzyBi5tsGkIfC7njm2QWmlFnBgfq/zc3XEabhNt/LXR+8BZYKwH07JQxW3djvB1eFz+AEBDHJ/tJsJiQWPHknQGp400JAMN7ljM84XztilsZr/50rYeDTJKG/XHdigAah0NHTMT/s/VJ7YtEdOXLnjzjIkuizNHUJYFHzG9eS2A7oMZKm4i0HyqlabYZJ4gMoeFG14Xffwcyol0Xgv7DMehI6WEk3xNIWKifrrz2ehCvzF6bfpEZ6ADBmDt5Ix6GyipwQxt/p/rg57DOyrCIV8PYTHTNJRTxXvc6fNCMYI3EcXbCUdS97mNAe2dSmY4Fbw9bkHjY+hZ5OtuiKvDNvFrCYqs/jJWkL41JLCD/yLDF4tamj1fkO01K9HuWbvDAIj2CvJOciY+AXcb9KKGB3B+WKytT+RXGF7UYVEQzRezPi6tfkjpNWcbuRi/F9zM7CiDsiH6thlJFN+J5/8W7vMwxzvT2xzKtw+40aA4e9qNYFLPCkO/LBX/b0uLfimzz7X1FmpvTwZRQCohiTIDZNdLOuFY/UF2JOnSdKJ5d+
- gxZGJ5fb
- ysz/Wdv+NXzXbvGgETc5ZmJDg46t3RJ3xbDGUyyWE+dzBGLZEEOaBXRWCj3gV+9g1wicP+56NnOR2P12C4Mm6sB03lC9UZ07q22P0UknOG3f4fC8ZyuA2plxYKunQlGZuuYeRMBitDQF8JttrhOQh7NXeblyUxHQUdWL0tf1dmxlgL1r6CkpfKU1Ra15Xer2uEXyUcSB4CXWkFsZuIc5CYs5Fu5Uw5pZn1BSV3LS0UHqESy3wEj2oO5uF099skYHmq3p0U59HF3hfX+fT3bcVME3DCQRKBjSzBDMbUrwSIMjAfYxFXiMk8rt/+zB2TmArX69SaViHY/qlrcUfnWxkVXrVLaDkWo40BNSmMGCdKe6hf3gQdyWijLDLww==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000032, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5698616000C
+X-Stat-Signature: ocbsr55m4mqkzutio9omdryk85kyojiy
+X-HE-Tag: 1768473739-987669
+X-HE-Meta: U2FsdGVkX1+Ldw3XLJKtgxwits0bsvEHuwIiW09LBnPSxHfn7qfH2A1wbkYxs9BeGDZI7QkYKTw5u+ci43QaRvINdqBi4mhkHOKbYktJjSUkZcH4gjNWMeN+4wt+CET5UO1HcIJzfpTIv42vfjkvck4vdz3K3Z9oqx2Q6OJf6xdTX622ytEH2W6MexRS8H3gha4a9ZiC8J2x2/qwUFYzF5MZV1td1p04vMPi5vI/8OyhBprMB9w6j291RjjXCLTA66rBAlqE7CMmO8Jrd3oesiB7tTbHj1M1d5H41estH64LWoOx1kuetbbGBAfVln0kKtSOlIJQ70Xg4fNx30JMPiCRGSMCJ1mAdt2nVPTXpiZxUcCb7g0GjGciR4sGAbWGUle2GLgFK4TBz0ut9e9VU4KKv8KTWUXYq18RmfHoZEa6vJ6H6mfl7XJ0+42ISxwMwgp1Ujn0VTw9lYv6XYQW5WD+5V+9x7T962wu9Tlv8gEfLtgD3UG/MHVjIxAO4rs2L9ACzJtS4KN0D2J1uolqg6lrOTmaMrJPVikr43d2p8JuRGlJ5xOUsCn7GlSistaNw54jGZoLU4yP2MHlZoiYsncyCiNxZqrT6S+czw5k9b/f69IzNpLVMGsxCPxxPzTbN4EkpBfpNkJp6qlrnm4RRA1AOlJq3jQUJ6EG4U8jmMgnySOuvyfhJTNz30HLsWKrRPmXXiYVeAR5k8RjJn27QzkMV5xOZCDZfQ6m0Hev4vtb43Ec0P4iySU1pzo/DBg/3ztPb9B4E8aPqcFBi2mq3HXX5K7Kz/dyecIWX9mO3HapZPsZMbp6ZEahKi7a9EWTzMA0niQWGGsoncp5r/h1hJ/hb6gl+KYkQMMHP/m1bzYHRDXlPTYZ9s9Up8nZTE0dIf7YTNR5ZcmwcVQEkyZjIyQjT2bbv3GgPsdNiKYB5duz2Is3Drm+sMs/4svO6ybCNEcBwYdomOWpLJgttrK
+ oaUiw4vq
+ 8gR8tjZO4SvHAMkUl/HnLUabcqe1QzLXl2D5v7Nel1vq9KZxmK1NoLslLFOkt/M+w+zt1WHfgvx5cUkhMOB+C4Pxp6W/nxnY6bx0S6kVU8I0968qIC3EBmXhH0DSfH42vn+k+UyEz6Bx+MITjRkSzbWfxdeLH798fJIwm2NATC70Hp7ENYffhUMyv5hqwcQXw68GlPyHq11cPdfma5DQ6gp9J+s9NyKsNP9czqHNC3c29rGrptQ6QkoQDlpCWoossycJXEtMIRTnRHeM=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,102 +110,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 11, 2026 at 4:34=E2=80=AFPM Zdenek Kabelac <zkabelac@redhat.com=
-> wrote:
-> You probably do need to configure your systemd-oom killer to prevent gett=
-ing
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-[[ I think I know why I get this behaviour, see section "Why
-dm-integrity behaves so"
-below. ]]
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ include/linux/memcontrol.h |  2 --
+ mm/memcontrol-v1.c         |  8 --------
+ mm/memcontrol-v1.h         |  5 ++++-
+ mm/memcontrol.c            | 19 ++++++++-----------
+ 4 files changed, 12 insertions(+), 22 deletions(-)
 
-I don't like systemd-oomd. It starts to kill processes long before
-both memory and
-swap is full.
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 1fe554eec1e25..e0b84b109b7ac 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -944,8 +944,6 @@ bool memcg_vm_event_item_valid(enum vm_event_item idx);
+ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
+ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 				      enum node_stat_item idx);
+-void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+-				       struct mem_cgroup *parent, int idx);
+ 
+ void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
+ void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 03b924920d6a5..daf9bad8c45ea 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -1909,14 +1909,6 @@ void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *pa
+ 		reparent_memcg_state_local(memcg, parent, memcg1_stats[i]);
+ }
+ 
+-void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(memcg1_stats); i++)
+-		reparent_memcg_lruvec_state_local(memcg, parent, memcg1_stats[i]);
+-}
+-
+ void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
+ {
+ 	unsigned long memory, memsw;
+diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+index 45528195d3578..5b1188f3d4173 100644
+--- a/mm/memcontrol-v1.h
++++ b/mm/memcontrol-v1.h
+@@ -75,7 +75,6 @@ void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
+ 
+ void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s);
+ void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
+-void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
+ 
+ void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages);
+ static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg)
+@@ -116,6 +115,10 @@ static inline void memcg1_uncharge_batch(struct mem_cgroup *memcg,
+ 
+ static inline void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s) {}
+ 
++static inline void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++{
++}
++
+ static inline void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages) {}
+ static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg) { return false; }
+ static inline bool memcg1_charge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages,
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 7333a37830051..b7b35143d4d2d 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -225,13 +225,13 @@ static inline struct obj_cgroup *__memcg_reparent_objcgs(struct mem_cgroup *memc
+ 	return objcg;
+ }
+ 
+-#ifdef CONFIG_MEMCG_V1
++static void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
++					      struct mem_cgroup *parent, int idx);
+ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force);
+ 
+ static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+ {
+-	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+-		return;
++	int i;
+ 
+ 	synchronize_rcu();
+ 
+@@ -239,13 +239,10 @@ static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgr
+ 
+ 	/* The following counts are all non-hierarchical and need to be reparented. */
+ 	reparent_memcg1_state_local(memcg, parent);
+-	reparent_memcg1_lruvec_state_local(memcg, parent);
+-}
+-#else
+-static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+-{
++
++	for (i = 0; i < NR_LRU_LISTS; i++)
++		reparent_memcg_lruvec_state_local(memcg, parent, i);
+ }
+-#endif
+ 
+ static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+ {
+@@ -510,8 +507,8 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 	return x;
+ }
+ 
+-void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+-				       struct mem_cgroup *parent, int idx)
++static void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
++					      struct mem_cgroup *parent, int idx)
+ {
+ 	int i = memcg_stats_index(idx);
+ 	int nid;
+-- 
+2.20.1
 
-Let me repeat what I need: I have big RAM and big swap. And I want OOM kill=
-er
-to kill processes only when absolutely necessary, i. e. when both RAM and s=
-wap
-is full. systemd-oomd is opposite of this: it kills processes long before t=
-hat
-moment, in misguided attempt to keep the system responsive.
-
-But for me my apps are more important than responsiveness. I. e. 4 minutes =
-long
-freezes I talk about are lesser evil than killing everything.
-
-So I explicitly disabled systemd-oomd on my system.
-
-> configuration - as OOM is supposed to kill userland RAM hogging task much
-
-I will repeat: "free -h" output at that moment showed that my RAM is full,
-but swap is 23% full (87 Gb out of 378 Gb are used). So, there is
-a lot of space.
-
-> So I think you should also show whole device tree of your system and some=
- more
-
-My system is not unusual at all. It is a laptop. With 64 Gb memory and
-378 Gb swap.
-
-I will repeat: swap is located on dm-integrity.
-
-CPU is Intel Core i9.
-
-> information - so there is even 'remote' chance trying to reproduce your s=
-cenario.
-
-Here are steps to reproduce:
-- Take some high-specced machine. I. e. this should be machine, which
-is fast, and which never experiences
-slowdowns in normal situations
-- Put swap on dm-integrity in journaled mode
-- RAM should be 64 Gb and swap should be 378 Gb
-- Open a lot of Chromium tabs until your RAM is nearly full and your
-swap is 23% full
-- Work at your computer for some days (play Youtube videos and perform
-various other activity)
-- At some point your whole computer will freeze for some time, say 4 minute=
-s
-- You will also notice that this happens with journaled dm-integrity
-mode, but doesn't happen in non-journaled mode
-- (Kernel version is 6.12.48)
-
-I'm nearly sure that everybody will be able to successfully reproduce
-this. I don't think precise device tree matters.
-
-=3D Why dm-integrity behaves so =3D
-
-I think I know why this happens.
-
-- Some process needs memory, but RAM is full
-- So kernel attempts to send some memory (i. e. some page) to swap
-- But swap is located on top of dm-integrity
-- And dm-integrity (in journaled mode) write everything twice: once to
-journal and then to final place
-- So dm-integrity layer at first writes that page to journal
-- But journal is cached. Using so-called dm-bufio cache
-- And this cache is located in RAM as opposed to disk!
-- So that page is written to dm-bufio cache, which is located in memory!
-- Thus this page is not actually removed from memory, it is merely
-moved from one
-memory place to another (!!!!!!)
-- This means that the system is still short of memory (!!!!!)
-- Thus kernel attempts to flush to swap more memory
-- But this merely causes whole process to repeat
-
-I think that is why I experience freezes. But I'm not sure about this.
-
-Also, I will repeat: this is merely an experience report. I'm not
-really interested
-in fixing of this bug. I merely sent this report for your information.
-I personally
-switched to non-journaled mode, and I'm happy.
-
-I'm okay with sharing more info about my setup. But I will not test any pat=
-ches.
-
---
-Askar Safin
 
