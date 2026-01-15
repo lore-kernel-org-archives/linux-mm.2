@@ -4,89 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8368DD46607
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 18:19:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37BFD4660C
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 18:22:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDF956B00C4; Thu, 15 Jan 2026 13:19:01 -0500 (EST)
+	id 0CF346B00C6; Thu, 15 Jan 2026 13:22:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E761A6B00C7; Thu, 15 Jan 2026 13:19:01 -0500 (EST)
+	id 08FED6B00C7; Thu, 15 Jan 2026 13:22:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAC8A6B00C8; Thu, 15 Jan 2026 13:19:01 -0500 (EST)
+	id ED47C6B00C8; Thu, 15 Jan 2026 13:22:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA0196B00C4
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:19:01 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97B201BB23
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:19:01 +0000 (UTC)
-X-FDA: 84335009682.02.71150B5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 07183100007
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:18:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=e814AiMP;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E05366B00C6
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:22:11 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1B62C1CBC
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:22:11 +0000 (UTC)
+X-FDA: 84335017662.26.5C5A28D
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B886D40013
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:22:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z4bqK/yO";
+	spf=pass (imf04.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768501140;
+	s=arc-20220608; t=1768501329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EFYHBPIUhMFvC8nNZ4RLw9YcCaFbdD2bSpveBTVTElY=;
-	b=RY4k/pnrl4QD6OgbGe9VtI56aOgasKDi3oWpNXnl1OaPHFivEJEeoDI91Wt5w9cuRyVC1e
-	TZ2p+S1xiJtpwl+8eW9bGZEJLdfj7f5FDgeUTKdTRJJGvw2BBUs07gNuhh6d2KN95th/5F
-	mBz9isxwvONzTu4Snak9nUMiNCzLn5s=
+	bh=d7IY8l2+i1WeuEXvkGd5lYKI5+uHV9G4YufUEOTseco=;
+	b=LjPZexWSQa6Oh8tVLoT3F8Aw5scr6hQapyn/7+w+srnlA5z7m/I7JHcSWKaGTRIdl5J/dG
+	lUhTi0r5wRs6rKA5ziJkHs1gSxWdjzUno3P0BW8WTMHhHW3Xy/yFBfCBx0aHd9HCnNLtrR
+	uuU3lVMIlmrlrfv2WBWMsyXkLohZNlw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=e814AiMP;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768501140; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z4bqK/yO";
+	spf=pass (imf04.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768501329; a=rsa-sha256;
 	cv=none;
-	b=mCqnG20Rk/KHjNVDXKqW0ZmvWx9duVHpNLCZ87DcMEKxDLdJEhvTIuR56kx1K/1OmtYTA7
-	lgdtJhll1cTQKUZ/LSTYhVKzvw9WJo+C8SdyiB91P8GkxIyWrUUZscJFVQfr/mGIiO9Egn
-	gNeqEIHrtozE0EK3/5iD2ubcOctGT9Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B11D6015E;
-	Thu, 15 Jan 2026 18:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2EDC116D0;
-	Thu, 15 Jan 2026 18:18:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768501139;
-	bh=OoxN+wiYLUXA84AAEzLFYI4Crg2HGDqLMAG7AyG/Wk0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=e814AiMP04MGQQdvcF/eHiGR3mf/DMRLiaDPWrPEkG74cX3rRLhEga06ol//9OChC
-	 vkULXBUpl0DbaS8P8n8lV4PmH+yaM1LyzgRYvkc1THr/VqmymRuJ47mo/jn4h8uQVB
-	 1kwCMTpAMOChF+x4dKZrsq1Dv3Akpd17X8oldoso=
-Date: Thu, 15 Jan 2026 10:18:58 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Cui Chao <cuichao1753@phytium.com.cn>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Mike Rapoport
- <rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID
- of CFMW
-Message-Id: <20260115101858.85fd7b8e837c1c92a4fdc5f0@linux-foundation.org>
-In-Reply-To: <9132054c-3017-4af0-84e0-e4359b0794a6@phytium.com.cn>
-References: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
-	<20260106031042.1606729-2-cuichao1753@phytium.com.cn>
-	<20260108094812.8757ce3ad8370668eaafb29c@linux-foundation.org>
-	<9132054c-3017-4af0-84e0-e4359b0794a6@phytium.com.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=GWpamt/rOszZAeuli3cK3mZDmvs+Zy5jgHopk+lhlengNu8Noxpgc3DaCLKW5hG9Bqs6ZX
+	qTNWot2p7j2cMo7VzGtNzXLsAtmjDNtEgdxDc3FllF/tCKUvDTSvkTv+uaZ6YuSf/qLoMl
+	0Sq6NSRdJtpQqn4IReSqQ7dFJTs6pIY=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64d1ef53cf3so1907068a12.0
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:22:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768501328; x=1769106128; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d7IY8l2+i1WeuEXvkGd5lYKI5+uHV9G4YufUEOTseco=;
+        b=Z4bqK/yOgqYP8myH5BRHC4/GxWq20UQfnlx/Tjrzpelg41A0NbZbmFHyDNKzq6OE01
+         mJleKZMT+gZ9yyHN/hm6GgLOXHPvlkDeKTb32Em907M65iBGeU2KwIeTKqXE4JU6dk3m
+         bYEC1SEntI7Mi05mHFTV6QZQwTdGLi2+eEGaUaikhvGRiRL7zEJZcsnoDFU1vTIJU/k1
+         zXlXJncCEULBxzaHzwUwg5fDDH/1gXFcYaS3Cj/23LCL/DqQ+ouXQooxqvRLdKptYKrI
+         Y5xFqQPKyAyXDYo3fm+EsiTJSMBJbGsnO+PzNqMEYsqA0Jyps74hiMiZ+dI8tIzACZDd
+         vX9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768501328; x=1769106128;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=d7IY8l2+i1WeuEXvkGd5lYKI5+uHV9G4YufUEOTseco=;
+        b=jtHpH9Ji7JBAjnaMauhmRB3KSRz/oaTDxpgAl+XjGMtFNwfRH2wd70iZS7hjHHOx7P
+         YuSIkWEsl5AP3NlAvD+SGW4X7ssY+hAMEr2HudZ72S2vH5SDDFGGgZtxwvrTBXf8I3qU
+         qzsg3eRy4WXLofU3c24iyEv9jvLGZC+ImfRZsEEu5o8qVvmLSgER/SE2oCCOAmJd5+HH
+         e9j0powbh0trpnUMcTT90YcJtYT3QGL6/UapqTOrw76hmnYijFVg0hGJngwhCRPOd8g8
+         XaHBy5e1nGdW+l145yXWJP6tBugP0oaYY+2NR0ZIyaANnqEA7xsfHJvArEtfgGtOcLGt
+         1NPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQp8IBe38Vxce1lpsB/oIXF+P9py36D9U5iFbaisyYARFHkbTdM0inAvTAeiDIJXHMBS+JrShNow==@kvack.org
+X-Gm-Message-State: AOJu0Yw0IcGoF0w74P/QcBq77KjIpsvkcIw+9Bt/pzbObtuV28DvMINF
+	H1kgAXUOit979r8hlVtxUzrJutu/ES1mGOKOTNiwUM+W5/x0/8WeKUKRb5W+IedmxuRmpFn/rFV
+	n7TrkKdiBdAV13EIWVulCREKbeReReJ4=
+X-Gm-Gg: AY/fxX7h+L4ZSxir2g/6zBTJLRopYadCvR5zDz5myhQTb/HPkHvTrFHcsru/UcIUZ8K
+	39yOt0ij6aVNHzGYrJh4OObw6a/Zogo6pvymLuRIar3BgywAbrkwtDkRe04NYDWF1eDsowcGmig
+	tsAB82Niup2LtVfuqxD8ELwHgO8RFi9XMv4B5MLOWjtQKb7hpwZ6KEovxXg5IY+MPQiHg6ZcV2F
+	QKQt2SIVnWpbD1vogtdAHPqZ5LTQa1mlY6C5jrr+ajlrSqoeQ9X5pQilUelY2IRIpkJxSE68N2N
+	ocCu4bTj2+wMo3pXj3dfIkUwN0p9fQ==
+X-Received: by 2002:a05:6402:2812:b0:64b:3f56:55c9 with SMTP id
+ 4fb4d7f45d1cf-65452cca336mr319308a12.26.1768501327990; Thu, 15 Jan 2026
+ 10:22:07 -0800 (PST)
+MIME-Version: 1.0
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org> <20260115-exportfs-nfsd-v1-16-8e80160e3c0c@kernel.org>
+In-Reply-To: <20260115-exportfs-nfsd-v1-16-8e80160e3c0c@kernel.org>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 15 Jan 2026 19:21:56 +0100
+X-Gm-Features: AZwV_Qjyapjv6JnFBHXmI5sSMthIqKsr1O8J34VK_oMMrDctP8UVkm6G-xvI8HQ
+Message-ID: <CAOQ4uxhnxipJcjznEoa_D2R91NDZRgT_TTouGA4PGJO-7R9spw@mail.gmail.com>
+Subject: Re: [PATCH 16/29] ovl: add EXPORT_OP_STABLE_HANDLES flag to export operations
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Gao Xiang <xiang@kernel.org>, 
+	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
+	Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
+	Phillip Lougher <phillip@squashfs.org.uk>, Steve French <sfrench@samba.org>, 
+	Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>, 
+	Andreas Gruenbacher <agruenba@redhat.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, Christoph Hellwig <hch@infradead.org>, linux-nfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-ext4@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+	linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	samba-technical@lists.samba.org, linux-unionfs@vger.kernel.org, 
+	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, 
+	linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, 
+	linux-f2fs-devel@lists.sourceforge.net
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B886D40013
+X-Stat-Signature: ytimp6e77k97jpqefpta6wsdrdt3nksw
 X-Rspam-User: 
-X-Stat-Signature: i1wje8pu1z9eojxiz1ky561bp1nkhaw5
-X-Rspamd-Queue-Id: 07183100007
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768501139-98902
-X-HE-Meta: U2FsdGVkX18VMxnD43RZfKqprcwgORTKjew9qO6GAIE0VJuaz8k97G95fXeTKNHuttgnD2Oehb6LAiSPQWEth8GaENnMdwMfMJ7Xy+o+sHkti6RcVG/lvDK+R/zNaQquhfrW3cuYGPR8lMPY/Q1YuxDzsA97VQrvfYt5nglumisIGlSOppwz4bnR+ZiWkxeQXVn9taX/yPGQkiSOtdET4f8t7FBbpfcG0LiP+Cuj3X43AuNzlqPgYZzW9xO8dCsgOOma7Qk8X0tTPRriCvC6AEiqfcR9V6FcwNkDKlk38OX7p6pXOxZber4ZD/MxhT5n2Tuj9I4qdWXoc9U+tnJLt9K00HYcqV/QdNEOsne7WfxDqQLFfxUh8FKdOihPsko0jAdJuGmgLMDP2ojEUSwfXireBqGGUBSwgn62KoTZ6cV7jQSc3SEvP9zvwSVr8K+ihk9p0ogbdfvBivFcXOE4medZCTPGFF0C0nx11z7qGS2VVj2J1dR7xnuBhzTm2qMT6xw8hbxFS/1vnfXvEMy6SlujFZlFmEquEepZlztGwtVxJ+NcooZIIC+yNPJZ0WCqjKIFaAAgX5ecVKjem4QnrjDbOjfMRiAyt1cQWdpaNBEQc5EwJBvDWsHvfYNfz2erOOYWvdFCbI2/JEBfemkZkOW9jyKzfmL2crmoEDM+OT2SgO7lZo1LOAQTxieEOrDY/tQ9wHGKuCv70XSH1WGKQIRJwI+A3t7xA7cBsU0aplqdFKGboD4b9wsgtG6xqcGzfOdCTeH8iMkYcka9fOVE0VR8oHCtT0on1uWOTQn9XyeEj977CyU9/0BowawjqPDAv1oTbp7Rhfx2aqdnErXjtaYqo38FY7TUR6GAIBubeqUQcTBEf/+DdAjNFU3rIsHVXwakYsutd/Pi5r/nFRDgxiNDy1l+kSQfhdxujjfdu2FBKm+6tBH5WIg5McMnAxqo7BECYQsgcUWM+0h4pI/
- BXovH9aL
- Se3vd/LLIn/avqGAkqbYoMdLhX+6tqBbZ8TVnHrE9SgXDymEBD1kCTj1cMwoR+SBPVD2FpJpRcH/TXiqAvkZ6Hz7ns25UDQjffSGK4bYJdhMvPxFqmiPKKbt1u53c0a3KnZqOqYIOC1pZJ0pW8uFOTzNoPCYhHLtnXkZhtfKatfWaOgOBS1FoCWEXrPdYXVRAMB/xjN2FaiLSEh0L4f9q3AaeEO5xSq5Q1o40tVuqD+kF3xkmveD+/YRomQnJfXrPNLCI0mREbOHLfC2Dm11EhS0vBOqDnVBsYOxCzJTdrCnP2+ng9EsGYfBiVEYdf3rFln5XvmYRsaxkzhtztgAb8XPyUKaSVLSOvXp2
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768501329-506909
+X-HE-Meta: U2FsdGVkX1+7ty1xrr3L/WtdE79U5LDtlikenoDZLuj7RsvUdmDWg76touQH+2lSy8tNbgZ9EWrfKa2b3VJ1qQ9NGDecbGEsnUJq/w0UTdRhFZT34NQhiJOq5Pb6uQS8EanT4sz4bW0OV86vya/Nj4VSqefxhPcWHIgYwE0kW/UOSxcjGCzfZj4Bo6C2pkNB5UMTMTsmkp1wF+o3LS5Zee+DgnnjcHuh7uW6JGD+k/fQngo8t5NSXozPb8xBqgGwcmySdr4UGe60g6HL9E1PZ7b3osnGYbLXkrw4QcBENLMI7wYxw7KemxKmpiN4SbCsOwDiMmDP1Toib6nmk9vQD7XoyCzPp9waQaVJ7jtBJmQWVAsMQeRQSP27JAHpNK2ER4hQQ4sQRIrehewJ1yxnSpzKsuTVN+DLS0tboURZXclyKnS8qP4YAxwQjorcd86KBtqlwrkd6pnGLaAhWFIbcwTm0xw0+FviS0D/cD1j36tw5f0YwUuP/8iDtkFYUgHb3AG0VCFTjlaGKqPbsQE55uAb20UaByIkM7txN6NDQP6DGAn6pSsywdeRqOOKATCbhPD5XA1/trk4P5T5GnRfG+V0uB49W928JC5vlL5o08ZnNC9vEYKr+2UJrcbgFjlTcSID9A/t78Crq6q5j19URqy1FG67Ki971F59ndUpWtbCaSD6rR3l2y4zHmK6CzSHMJsfd0E5WEORXDQ8jdl/aqmxaKA0gDP/ypMW87xcDqgDrVTqKj72lossfwD2ZWZZLWAopYbOQdBKT+Sb610csrdXMETrgwig7VZJKPDl/DgV9cqPRMwSMCq88vzUsJJjzvfzORBwL7WKmMcOBg++MkK7eRUIs1ZTa86gJJJZXwk7rxEVGTUuA6+bSPjAFNiyoc3bgfDyM9REvTaiPRoeDGnuMA6i5gkl9g7ph94FAAWiIVJSdxKbGByYHgr6u1g+YEbaHQD7xMzemqX+cxI
+ p+7I91nZ
+ 9cPkm/xqNI/c1rbAlY4fFt09DL5NlhRfOqD68hlO7bOVamNGmlngHyVkRcLX1JhFrcpsyyZQXxLCyZlkK0mpWQhguK4go+vwVbGAEN6qjc1U7ZUgAX491qjDn3+/oDNBNokbIqGCTrezWs+6/LChOn2/DtGcZiRhLfJ7vOwh/Kzl49d+MvM85iy36zX8Y2isGlC0d8LAQKexLA3ADYA9p5hgrl7D+hxufXiUJG+fR+Hoe69tc6VDcnFgZkaNlf70nyeECAM1Zsz9xoQdmoaOCY230enztPYm5Ia8XNx8XRTeC8NfgLBayHBWYjedqcVatzjnPRcl8t/E4Qv8myGLWjB3vY1GJzUN8rnsFDhUHa0IoF5FtGVrc8mJKQM28EZsviYyT2S+9usFjAPfic4eH+wPzPWfJLi/KYR89GvEtTjGgUKggxYmZU6GEC4s3UieRT/GlkVm2glVLY2lZCAlxMGJYGny9smDNghTD24sHiDvvPHy17EVXDk1BCt49+bSaOYJjBYxZolWfFGqx7SZbFZK03KKRHeWeCtGakrThh4uut0Nl91Su/446NzGaWyfJqwJ/S7zSxsP3O54=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,30 +147,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 17:43:02 +0800 Cui Chao <cuichao1753@phytium.com.cn> wrote:
+On Thu, Jan 15, 2026 at 6:49=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wr=
+ote:
+>
+> Add the EXPORT_OP_STABLE_HANDLES flag to overlayfs export operations to i=
+ndicate
+> that this filesystem can be exported via NFS.
+>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+>  fs/overlayfs/export.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+> index 83f80fdb156749e65a4ea0ab708cbff338dacdad..17c92a228120e1803135cc2b4=
+fe4180f5e343f88 100644
+> --- a/fs/overlayfs/export.c
+> +++ b/fs/overlayfs/export.c
+> @@ -865,9 +865,11 @@ const struct export_operations ovl_export_operations=
+ =3D {
+>         .fh_to_parent   =3D ovl_fh_to_parent,
+>         .get_name       =3D ovl_get_name,
+>         .get_parent     =3D ovl_get_parent,
+> +       .flags          =3D EXPORT_OP_STABLE_HANDLES,
+>  };
+>
+>  /* encode_fh() encodes non-decodable file handles with nfs_export=3Doff =
+*/
+>  const struct export_operations ovl_export_fid_operations =3D {
+>         .encode_fh      =3D ovl_encode_fh,
+> +       .flags          =3D EXPORT_OP_STABLE_HANDLES,
+>  };
+>
 
-> When a CXL RAM region is created in userspace, the memory capacity of 
-> the newly created region is not added to the CFMW-dedicated NUMA node. 
-> Instead, it is accumulated into an existing NUMA node (e.g., NUMA0 
-> containing RAM). This makes it impossible to clearly distinguish between 
-> the two types of memory, which may affect memory-tiering applications.
-> 
+Actually, see comment above:
+/* encode_fh() encodes non-decodable file handles with nfs_export=3Doff */
 
-OK, thanks, I added this to the changelog.  Please retain it when
-sending v3.
+That's the variant of export_ops when overlayfs cannot be nfs exported
+because its encoded file handles can change after copyup+reboot.
 
-What I'm actually looking for here are answers to the questions
-
-  Should we backport this into -stable kernels and if so, why?
-  And if not, why not?
-
-So a very complete description of the runtime effects really helps
-myself and others to decide which kernels to patch.  And it helps
-people to understand *why* we made that decision.
-
-And sorry, but "may affect memory-tiering applications" isn't very
-complete!
-
-So please, tell us how much our users are hurting from this and please
-make a recommendation on the backporting decision.
+Thanks,
+Amir.
 
