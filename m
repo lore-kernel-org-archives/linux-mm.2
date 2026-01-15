@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85456D41169
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 10:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2941D4116B
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 10:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E65756B0095; Thu, 15 Jan 2026 05:42:21 -0500 (EST)
+	id 4562F6B0096; Thu, 15 Jan 2026 05:42:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFB8B6B0096; Thu, 15 Jan 2026 05:42:21 -0500 (EST)
+	id 420CC6B0099; Thu, 15 Jan 2026 05:42:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFE526B0098; Thu, 15 Jan 2026 05:42:21 -0500 (EST)
+	id 340EF6B009B; Thu, 15 Jan 2026 05:42:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C0A116B0095
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:42:21 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 667ADB7C20
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:42:21 +0000 (UTC)
-X-FDA: 84333858882.27.D08DCA0
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5698616000C
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:42:19 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wjil01Sl;
-	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FB666B0096
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:42:27 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AAF631AD8F9
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:42:26 +0000 (UTC)
+X-FDA: 84333859092.05.9090B8F
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0680620002
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:42:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Gd1WwsIh;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768473739;
+	s=arc-20220608; t=1768473745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=35UwOuLDsnd+wCybJPYIumYnuCDYEBE4kSwMd4EKtLc=;
-	b=qkeNSsFI+T9EvMluz5qK59U/GXDeXUp8Vj2dtXDwwqwI9MU6F/t/jaRCLk2XrvgmnenPTG
-	ML1w9jbesPi9xmbE+J4b1uSxtovkPVTErz3cFLKja7z+D0Ju6FmtZcXFETN1LMOCvJUc0E
-	dahy4wUSRquQN8wEK5DOn0SFuGLgO0w=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wjil01Sl;
-	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768473739; a=rsa-sha256;
+	bh=E21X6Rw5hX+kzgnPEdRnLJU6eESdHa8WNZNfTERO9us=;
+	b=dd6YEkVnWRggXWchgCbhFHLGb2LP2NWgo0vdCyenoUfZtEoX6Oy6L4S3XujwVmINAjxATa
+	wKQAcYHYS/922fDyeYwU5+o0hZKQ+7mqv8n9C9OSspFVLCD6r8wT9JXBNJSxWq3Dspozou
+	6kD3hXaAiCJ86tnZJ/+IUhXZlFdOvnk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768473745; a=rsa-sha256;
 	cv=none;
-	b=Cu61te8hUGbmBVEK2mPzWcXICtWxOpsGP6s9vpwZQrGeh+1igpy264sp21EcPqssGQb8qe
-	8XtcsYCUi1vxDETyKWTu4/JiV4VU0zZ3gmJ21RwWDDI6UJZUEDz769QoI+6rji+Gd8Ix1n
-	6BUjnJWYEj0frpTN+MG4ktYgXH2EBc8=
+	b=0AE7VcM+dWUMl+HywIeN9I/8Lufeu140n5+JKy+r340CYzFNuwaGKLwMtRlZ6CnO2t0pVO
+	CELtFn6ktbBmixkZZewvcOPfd1q6aBukz70/ujs8SDGdSeeLcZp5pmDLG3N94t+F5QFPkv
+	vfzPDkl1e2YsJVkaQYxlAqaoMuHdomM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Gd1WwsIh;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768473736;
+	t=1768473743;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=35UwOuLDsnd+wCybJPYIumYnuCDYEBE4kSwMd4EKtLc=;
-	b=Wjil01SlR/oO7ddWVF49DyCoOjfKHh07SUGNGDI5HCIsrjvSeoqifmv9AxWbx4+r/9Accg
-	xm/7eIh6IpHq1vGFGhm+D736fbxhaDbjIzkk4sdm67r6ezQZNKn6v6uQFw4duXQqns8ZX+
-	5kRtoV8q19bi9FkiFYCz+UndmsiMrCc=
+	bh=E21X6Rw5hX+kzgnPEdRnLJU6eESdHa8WNZNfTERO9us=;
+	b=Gd1WwsIhns0nEOkvgNwLvRtzBTjlgigfzTtsf/Lb9TtF1sy9u8ynT8tTtHvToPAmD9bKkj
+	jySAiCoogyimKgEEdnUnz4OYpXIgetozQzJOLMdwOln6mXBS6sD9efPIvExQ3Bck6SDxKt
+	gdtnGkpuXaea0OZt5Mg6e1+YFZ9zmVw=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -86,22 +86,22 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v3 28/30 fix 1/2] mm: memcontrol: fix lruvec_stats->state_local reparenting
-Date: Thu, 15 Jan 2026 18:41:38 +0800
-Message-ID: <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
-In-Reply-To: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
-References: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v3 28/30 fix 2/2] mm: memcontrol: change state_locals to atomic_long_t type
+Date: Thu, 15 Jan 2026 18:41:39 +0800
+Message-ID: <4aad240fe536ce024c002087b2c395a197928e8a.1768473427.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
+References: <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0680620002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5698616000C
-X-Stat-Signature: ocbsr55m4mqkzutio9omdryk85kyojiy
-X-HE-Tag: 1768473739-987669
-X-HE-Meta: U2FsdGVkX1+Ldw3XLJKtgxwits0bsvEHuwIiW09LBnPSxHfn7qfH2A1wbkYxs9BeGDZI7QkYKTw5u+ci43QaRvINdqBi4mhkHOKbYktJjSUkZcH4gjNWMeN+4wt+CET5UO1HcIJzfpTIv42vfjkvck4vdz3K3Z9oqx2Q6OJf6xdTX622ytEH2W6MexRS8H3gha4a9ZiC8J2x2/qwUFYzF5MZV1td1p04vMPi5vI/8OyhBprMB9w6j291RjjXCLTA66rBAlqE7CMmO8Jrd3oesiB7tTbHj1M1d5H41estH64LWoOx1kuetbbGBAfVln0kKtSOlIJQ70Xg4fNx30JMPiCRGSMCJ1mAdt2nVPTXpiZxUcCb7g0GjGciR4sGAbWGUle2GLgFK4TBz0ut9e9VU4KKv8KTWUXYq18RmfHoZEa6vJ6H6mfl7XJ0+42ISxwMwgp1Ujn0VTw9lYv6XYQW5WD+5V+9x7T962wu9Tlv8gEfLtgD3UG/MHVjIxAO4rs2L9ACzJtS4KN0D2J1uolqg6lrOTmaMrJPVikr43d2p8JuRGlJ5xOUsCn7GlSistaNw54jGZoLU4yP2MHlZoiYsncyCiNxZqrT6S+czw5k9b/f69IzNpLVMGsxCPxxPzTbN4EkpBfpNkJp6qlrnm4RRA1AOlJq3jQUJ6EG4U8jmMgnySOuvyfhJTNz30HLsWKrRPmXXiYVeAR5k8RjJn27QzkMV5xOZCDZfQ6m0Hev4vtb43Ec0P4iySU1pzo/DBg/3ztPb9B4E8aPqcFBi2mq3HXX5K7Kz/dyecIWX9mO3HapZPsZMbp6ZEahKi7a9EWTzMA0niQWGGsoncp5r/h1hJ/hb6gl+KYkQMMHP/m1bzYHRDXlPTYZ9s9Up8nZTE0dIf7YTNR5ZcmwcVQEkyZjIyQjT2bbv3GgPsdNiKYB5duz2Is3Drm+sMs/4svO6ybCNEcBwYdomOWpLJgttrK
- oaUiw4vq
- 8gR8tjZO4SvHAMkUl/HnLUabcqe1QzLXl2D5v7Nel1vq9KZxmK1NoLslLFOkt/M+w+zt1WHfgvx5cUkhMOB+C4Pxp6W/nxnY6bx0S6kVU8I0968qIC3EBmXhH0DSfH42vn+k+UyEz6Bx+MITjRkSzbWfxdeLH798fJIwm2NATC70Hp7ENYffhUMyv5hqwcQXw68GlPyHq11cPdfma5DQ6gp9J+s9NyKsNP9czqHNC3c29rGrptQ6QkoQDlpCWoossycJXEtMIRTnRHeM=
+X-Stat-Signature: xnbidps9nwxktjggx11je6azbuxy8i6t
+X-HE-Tag: 1768473744-991545
+X-HE-Meta: U2FsdGVkX18nYfZavKaXR5n67ZIUPHq91tk5wzlkPZO2D6GzBQhuPilNYo5iun3lwPf4g6y41wttzO5y+kzg5b2yzmO2aJLomu2KXW7RkmlOsETdWECMfNCay3JWv3+4eS4aE7uAgsX99N0vRmS8AuNSYWueQ3hcHb2EhjBM5OZcZT4LDmLK74r4IGTnUeA9LnZSWd1ZMjT6eJLLWlDuj9mYHEoRjXef1ghCf6C19YCjO+euWAoTZO1qdGcxERmymaxu6qk/NNZMwO3bZgHqM1TNlaNj39OELgEnrutkEtBGHI0oFkP33XYzp2VrnZBJT7nWt/fNaLPtF4RiJkzNVIhogDRYrvBUNY18sK1j0yxSL9mv73pqRPgZVqq+RhU6bUSOzBvKEuk275427OHzaSMimr4xiIJsertJTsab9vMRZkj9rZxqZtD8i4SqiBp1IEMMowGBTvtYubLd7A6GXKABhW/V6awJUj15jG/luWRJQs7DHi0Z9BHu9se8x6pVGx+Q4K8LCu9nJzJMP6qRgTOe+rutlMKc2+6CDFql/aBsJrgMdZeHw9iI2BSoA+cy6A9LCPd4WjvRJQVzMl5nPxAZkw4NdukoLT8JlpgFnuq9iALiaAekB9JVdMjpWbCqMldHpefPBRYRzp4BIS8fo43NaC/muanUW0YnfkZUofQwZS+OZx/UZtNVnYZoFa18+CL/DqpndT0GoGjUUhYQooq2CjQvHAb8eU7uuR45XyHWx+TrtlT+PQdO1R4O3GFbW3uyYWMAnvxUbqZ4PBqUwYaIBUq4okKs7+RNmVpflJIweGAN/4KUk3FNqHGiTG+FhW2qhx8GZctHbLEdM2JFrpOwB2JW/nvdp/ZipVaLfVQQk7z/k+aAe/V/F5rPXX6/d3bqn1w+sQCmVzgXeATRxMgvuq8ze6phv/RlEZ8yiPIxUxLxWMRUKe00hlHqoY/Lf08zfNc+XlcgqoEa/6m
+ qge+mccw
+ 5fJqatjXkU8g8muUmw0HZ0bu7Tk3p30iIk4Se0blD4UicRhi9PMmXI+VzUTtt0AarYD8OQAKRfjTpOfqchivnpxixLQmNL7DNpMflMg2AqNMLio+xOmGsoJhL6XNDfHhVHvQULIiHgozK1UMnjjzY/271Mkg9lDx5nbHO1WpTMatjRjRhlS6X1PHZ935BtCAMO1JmBPedSTW08Q8pD3m9FC6rqXM1nWX1kAXJtL/2IzlqBIA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,116 +114,97 @@ From: Qi Zheng <zhengqi.arch@bytedance.com>
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- include/linux/memcontrol.h |  2 --
- mm/memcontrol-v1.c         |  8 --------
- mm/memcontrol-v1.h         |  5 ++++-
- mm/memcontrol.c            | 19 ++++++++-----------
- 4 files changed, 12 insertions(+), 22 deletions(-)
+ mm/memcontrol.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 1fe554eec1e25..e0b84b109b7ac 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -944,8 +944,6 @@ bool memcg_vm_event_item_valid(enum vm_event_item idx);
- unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
- unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 				      enum node_stat_item idx);
--void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
--				       struct mem_cgroup *parent, int idx);
- 
- void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
- void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 03b924920d6a5..daf9bad8c45ea 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -1909,14 +1909,6 @@ void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *pa
- 		reparent_memcg_state_local(memcg, parent, memcg1_stats[i]);
- }
- 
--void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
--{
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(memcg1_stats); i++)
--		reparent_memcg_lruvec_state_local(memcg, parent, memcg1_stats[i]);
--}
--
- void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
- {
- 	unsigned long memory, memsw;
-diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-index 45528195d3578..5b1188f3d4173 100644
---- a/mm/memcontrol-v1.h
-+++ b/mm/memcontrol-v1.h
-@@ -75,7 +75,6 @@ void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
- 
- void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s);
- void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
--void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent);
- 
- void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages);
- static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg)
-@@ -116,6 +115,10 @@ static inline void memcg1_uncharge_batch(struct mem_cgroup *memcg,
- 
- static inline void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s) {}
- 
-+static inline void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
-+{
-+}
-+
- static inline void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages) {}
- static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg) { return false; }
- static inline bool memcg1_charge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages,
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 7333a37830051..b7b35143d4d2d 100644
+index b7b35143d4d2d..c303c483f55a4 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -225,13 +225,13 @@ static inline struct obj_cgroup *__memcg_reparent_objcgs(struct mem_cgroup *memc
- 	return objcg;
+@@ -456,7 +456,7 @@ struct lruvec_stats {
+ 	long state[NR_MEMCG_NODE_STAT_ITEMS];
+ 
+ 	/* Non-hierarchical (CPU aggregated) state */
+-	long state_local[NR_MEMCG_NODE_STAT_ITEMS];
++	atomic_long_t state_local[NR_MEMCG_NODE_STAT_ITEMS];
+ 
+ 	/* Pending child counts during tree propagation */
+ 	long state_pending[NR_MEMCG_NODE_STAT_ITEMS];
+@@ -499,7 +499,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 		return 0;
+ 
+ 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	x = READ_ONCE(pn->lruvec_stats->state_local[i]);
++	x = atomic_long_read(&(pn->lruvec_stats->state_local[i]));
+ #ifdef CONFIG_SMP
+ 	if (x < 0)
+ 		x = 0;
+@@ -524,8 +524,7 @@ static void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+ 
+ 		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
+ 
+-		WRITE_ONCE(parent_pn->lruvec_stats->state_local[i],
+-			   parent_pn->lruvec_stats->state_local[i] + value);
++		atomic_long_add(value, &(parent_pn->lruvec_stats->state_local[i]));
+ 	}
  }
  
--#ifdef CONFIG_MEMCG_V1
-+static void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-+					      struct mem_cgroup *parent, int idx);
- static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force);
+@@ -620,8 +619,8 @@ struct memcg_vmstats {
+ 	unsigned long		events[NR_MEMCG_EVENTS];
  
- static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
- {
--	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
--		return;
-+	int i;
+ 	/* Non-hierarchical (CPU aggregated) page state & events */
+-	long			state_local[MEMCG_VMSTAT_SIZE];
+-	unsigned long		events_local[NR_MEMCG_EVENTS];
++	atomic_long_t		state_local[MEMCG_VMSTAT_SIZE];
++	atomic_long_t		events_local[NR_MEMCG_EVENTS];
  
- 	synchronize_rcu();
+ 	/* Pending child counts during tree propagation */
+ 	long			state_pending[MEMCG_VMSTAT_SIZE];
+@@ -824,7 +823,7 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
+ 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+ 		return 0;
  
-@@ -239,13 +239,10 @@ static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgr
+-	x = READ_ONCE(memcg->vmstats->state_local[i]);
++	x = atomic_long_read(&(memcg->vmstats->state_local[i]));
+ #ifdef CONFIG_SMP
+ 	if (x < 0)
+ 		x = 0;
+@@ -841,7 +840,7 @@ void reparent_memcg_state_local(struct mem_cgroup *memcg,
+ 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+ 		return;
  
- 	/* The following counts are all non-hierarchical and need to be reparented. */
- 	reparent_memcg1_state_local(memcg, parent);
--	reparent_memcg1_lruvec_state_local(memcg, parent);
--}
--#else
--static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
--{
-+
-+	for (i = 0; i < NR_LRU_LISTS; i++)
-+		reparent_memcg_lruvec_state_local(memcg, parent, i);
+-	WRITE_ONCE(parent->vmstats->state_local[i], parent->vmstats->state_local[i] + value);
++	atomic_long_add(value, &(parent->vmstats->state_local[i]));
  }
--#endif
+ #endif
  
- static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
- {
-@@ -510,8 +507,8 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 	return x;
+@@ -1001,7 +1000,7 @@ unsigned long memcg_events_local(struct mem_cgroup *memcg, int event)
+ 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, event))
+ 		return 0;
+ 
+-	return READ_ONCE(memcg->vmstats->events_local[i]);
++	return atomic_long_read(&(memcg->vmstats->events_local[i]));
  }
+ #endif
  
--void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
--				       struct mem_cgroup *parent, int idx)
-+static void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-+					      struct mem_cgroup *parent, int idx)
- {
- 	int i = memcg_stats_index(idx);
- 	int nid;
+@@ -4126,7 +4125,7 @@ struct aggregate_control {
+ 	/* pointer to the aggregated (CPU and subtree aggregated) counters */
+ 	long *aggregate;
+ 	/* pointer to the non-hierarchichal (CPU aggregated) counters */
+-	long *local;
++	atomic_long_t *local;
+ 	/* pointer to the pending child counters during tree propagation */
+ 	long *pending;
+ 	/* pointer to the parent's pending counters, could be NULL */
+@@ -4165,7 +4164,7 @@ static void mem_cgroup_stat_aggregate(struct aggregate_control *ac)
+ 
+ 		/* Aggregate counts on this level and propagate upwards */
+ 		if (delta_cpu)
+-			ac->local[i] += delta_cpu;
++			atomic_long_add(delta_cpu, &(ac->local[i]));
+ 
+ 		if (delta) {
+ 			ac->aggregate[i] += delta;
 -- 
 2.20.1
 
