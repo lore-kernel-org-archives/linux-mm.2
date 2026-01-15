@@ -4,110 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE9AAD46617
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:15:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2099D46617
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:16:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33D3D6B00DC; Thu, 15 Jan 2026 16:15:23 -0500 (EST)
+	id 54F756B0005; Thu, 15 Jan 2026 16:16:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EA4A6B00E1; Thu, 15 Jan 2026 16:15:23 -0500 (EST)
+	id 50F896B008A; Thu, 15 Jan 2026 16:16:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 221456B00E2; Thu, 15 Jan 2026 16:15:23 -0500 (EST)
+	id 411AC6B008C; Thu, 15 Jan 2026 16:16:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F0E16B00DC
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:15:23 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94DC6C1EB3
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:15:22 +0000 (UTC)
-X-FDA: 84335454084.04.9CFC9E9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E3DFE180009
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:15:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c3fypLHz;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 34EAC6B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:16:20 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EB58B1AE600
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:16:19 +0000 (UTC)
+X-FDA: 84335456478.14.CBDD442
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 03EBF180014
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:16:17 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j2iuKHAZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768511778; a=rsa-sha256;
+	cv=none;
+	b=5kvZDP3lDrLuuxt0tyivuHmaLhLb9Rwqj/vdePz4kjZ4tzjxkKAI8IWNKhiSPSJcK5AsGP
+	ygRyK3SEyz5PL37EaLZyi3l1732RPh7+DhVasdEJfBt9zI+ZsO+PYiBKo9kaGBPJFCMNvu
+	pX4vqHu+EKjzKxWwwPnu+57zZtHhm+I=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j2iuKHAZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768511720;
+	s=arc-20220608; t=1768511778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PS/w4qI2iNd98AaVptBp/28ScEe8EH7mqkZqanz/BW0=;
-	b=MkOUUpseSt37LSxrunHGLlr5GsOTAOKLvn748V4dG2bBPg2EUSIgzk3u+z8Wb0mlmJ0C98
-	ejxRPP50o/mPpDswkDIIDCt+JZFzGclNZEZtlqdFPJl8cDLEPh0XbSkeOAeBmNzXYEC6IF
-	UyX21dCJ3m6vMYtXEqoH0jMY/LMbhqU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c3fypLHz;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768511720; a=rsa-sha256;
-	cv=none;
-	b=qNk3PGykN1afjKNKv9KNZ90GMCLWJh9Ao4L72TXUYqquGgivQFBr/4PvGdnFMAqx/yTAbO
-	xyrvLpU2XU267Xyn+SzMpGohlwaghO9kM3hhAtnq48pjcY6wM99gzfCoIfY9G0a9tjs95H
-	fisAYXTVx9FwIEHT45E3kNCBB9meZAQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768511720; x=1800047720;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1A+T4CJFZG1miay751yy1KYlyXw8N+muZBboZSWUttM=;
-  b=c3fypLHzPXJXF2CNz0Gg+g8MqwwYO+cuMbhpdcR5RxTP3HSgA5pMlxWP
-   gF2mH8rOMKPr8SpeTkccMdKeBhhfisDJPn0BUj2FrOcZcJSPSCAh5u8Dt
-   BdzF0TpdbrYuQIyP6dykRytjKu+lJ6n63xp+cwKZHk2Yvdns8aHjL2EAJ
-   4byOwlxCbyglBBwQsxWad8noxRbAjBeHzUjVK/pPmJhUNHWaBEvxsdCJJ
-   /P5ft7dkcDWLNBAaS3ZKjtJFcGtbbB9IGHF6DG+cv8YCi7yCU5+JF+4/Y
-   DFYMIdL2XneyFuEt/37S/FdfPOoWYI7mjR5kkixN6jHgEsk8chcMOTdGn
-   g==;
-X-CSE-ConnectionGUID: fEKFLPYwRiGXrXeh3MogvQ==
-X-CSE-MsgGUID: U+hG+WFaQ0CKbHoi0GjmaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="80472114"
-X-IronPort-AV: E=Sophos;i="6.21,229,1763452800"; 
-   d="scan'208";a="80472114"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 13:15:19 -0800
-X-CSE-ConnectionGUID: eTlg1CJMQsGmMNMsaXqNIA==
-X-CSE-MsgGUID: UV4mjTkQR7uGcxNnXPA2WQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,229,1763452800"; 
-   d="scan'208";a="205543257"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 15 Jan 2026 13:15:15 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vgUgT-00000000K08-1fPo;
-	Thu, 15 Jan 2026 21:15:13 +0000
-Date: Fri, 16 Jan 2026 05:14:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Luigi Rizzo <lrizzo@google.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Willem de Bruijn <willemb@google.com>
-Subject: Re: [PATCH v4 3/3] genirq: Adaptive Global Software Interrupt
- Moderation (GSIM).
-Message-ID: <202601160433.z2rdE9lE-lkp@intel.com>
-References: <20260115155942.482137-4-lrizzo@google.com>
+	bh=H+9mozc10eWjnSy11UAmVM8jZUm8W/RHgrl10ZVwswE=;
+	b=s9MX80SM3NrXpxTCdvuMjwvPy++9knD/j14qEU0ZI2yVAbNISxi/jZ0kocgjBIqUcL1Pu8
+	zVyScSICabq48k+aXhpvZXcoKdJbirnxbSv1lrw44ns3XU46mvrrr0bKM0Hm3F6imeGxub
+	8PMdRoJ600a/SGY7wasA6qGikQSn5H4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DA009406CF;
+	Thu, 15 Jan 2026 21:16:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFFEC116D0;
+	Thu, 15 Jan 2026 21:16:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768511776;
+	bh=NspG+wXtNY6drzI2nCNeIS13ZfZIEcVokc2K7U3gJ8w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=j2iuKHAZFgaG7i6pXaE4ZcsJpB7OEHxj+al0olrVS706a5t+TISYmwqw4HI/L8r0W
+	 +zF5ffzRENrfM3nnppjlKrNSiQGLLzUP/PZiUJHgWRBLbwIS+k0cfZ4xcl7n1ZdZHJ
+	 e7i4xy8WtpXgNvGVJ7SwPT0J5hoZkPZrFAguTnnLup6j6PLVEqZ2F8Y112qwxZKgs4
+	 E11W6eOHEU/ffkw1kaxKc3Z4hrOJaAEq/ZF8egoR99Rc0u+kZRHeDaVjxeTuWf4nYb
+	 jiFNfR7QCmoEpngPyFYCfMT/kkoVDWyY0a4A66Z4cWFx4zutdRlWiTEyzaRCctvjfO
+	 ByrCgvNIVD6tQ==
+Message-ID: <63201bd0-4375-48d3-8955-5925221ae241@kernel.org>
+Date: Thu, 15 Jan 2026 22:16:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115155942.482137-4-lrizzo@google.com>
-X-Rspamd-Queue-Id: E3DFE180009
-X-Stat-Signature: m45oia3c44git4wuca5pe6ywsmziy1et
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] mm/hugetlb: Enforce brace style
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260115211446.1429024-1-joshua.hahnjy@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260115211446.1429024-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 03EBF180014
+X-Rspamd-Server: rspam06
+X-Stat-Signature: yxnq39wdky1gkhrecqgmu8jar3qr1pgo
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768511719-282381
-X-HE-Meta: U2FsdGVkX18rQuqJmgn3AebnlUaoxWvWz6zHxKTaJbZUzB/iiCADGtGttqvRC69rnGOz30s9vlptZSu3FZM0PJ6CZ7ndJWXKcW+gqmHRSLEOV/57Kk3veoZUduCDjVQ/gma+eP3fQlrjW5ljDGRlEASaVJw1IckE+BwDd5ujw+JekQYDAfQEFTOjX0JqrWPaWbi2S/XAgXqZRl46nfVGxJY8SF36A7jXDOaESry9r2/M2M8NsAzQTzTjfX8ya2vdQ9fL1yJdnfjDliW9w6UOGY3E39hgd9kIG2wvRJ9s0n49XiND/zEbAG4QOK4BgySMr5YMagPxiv2TCKhcCLKIowRG7wp7UyAkhPvrayNy0rUlLyFmzAlAHZWgguWVAwSJZFD1konKg2du0l1CqYrOaryW3wReRVsDTEe0MhPcT2hmwz8w39DynZ+MopGsMgPb5X1m4SOg+ghrF0vBPQ9sUhiLJr/1duBHM9cANC1jo1ULVHtdms2p+hEdTWTj/3HWi/TcQaE5yJ5ZQg5JceVKro+K5I6JWKTPjbUKB8NzqKW7PTsFw2f2VaL+D3dmmPK9hjCdA+PvWps+590T9TbVCmc2YIy0RLKHtTaESx7NfrK1vScQRnpdSm3nBFO+aHaGXdsRfHPcvatZrxDyVlhdULKTf005Wi3VNR/YQydqidfHjtJwiG9XXov/W4Ep8l05a+unFTU3DEzeBwlOMxD22ZrzHTnEMXsZcAKKqh25CSS6C7SwPwP5L2bHA8Bkpx3GcUcDNIDs5aWJRD2aEoyOd5D6UaWiR1/AZf5FrUUIpLbLyMh/gymwsNmuC2UNct/fLQMPdLfm10RRE/cCtbstHmdtxj11fo7kJPnzSm2idzOMJGYburyrCSk26HdlC+nYgkX6YrGvzsZLH7nZd7KghYIhfe1f75IpFrOfPcTlxU5Om1XstShljQZjkfjD2Ja8tEZiAYnbGyc5gYjPHje
- 6e6mQEVc
- J/yK6ELPe3GoRdX6heFf89c892XY/Lx3zO1PrBwF69Dfz3ob/KFFXH8elEOfgdjiQB1Z1eoxCsIyIy3ZqG7+p7wBfq1OjnvN7CIwF2cudOgkzz5fYid5ZUBshOYzzwkH3Bu/1ZctNtkG5omqm6neQb6whWGFxcEeiao/V4BSAo9TYG3zSgWm2cxjWj0IlB2Ll2QBxI+oSaRpLTwoudAU0XssgUKeDBBZx6FoUA/7onNhsMUcF0NTAh1eBRwLurj38GZ3H3Cg8CZbjE1S78y3QQAqD7iAMiYJT+muOUoQ3vb1YCKtBrk6N15D4YZ7jKJtptJk5CBUhC4hceLHv3Iahu2hmq+bVrYr0/Z7x85BCVXeCyDMm8LdLg2sZKYC0h9XYMlFVCEhyVDveRJuQCgdU5hr3in3YORD7rRxlJBcIDqElyNydxMra2HHto1vaC7P1S+Dg
+X-HE-Tag: 1768511777-495514
+X-HE-Meta: U2FsdGVkX19NEzl3jiplm1QX76yLo83gk1kEzNEnODr25MSeh/urcvgevLulVzB3NURbIVPX/Aqt3bPLtKJFkiAuYJx1033gQ7CMeUSLJRYFMzXudRHu08BTO2yej83djcLOJK04N8glwDI45uVUQUiDZy8q7RAqKIwm3OfeHvYUqFdWNJ8549h+ZW+Yt+t80dmYmPrKJoRg3iNHcfUtdMq/8EDLKT+ZhckPchg6nGDkucFF2phGjJTf8UMEOL22A/nGwhQrkLiwYarOU51a0s0ETlJYwj9qxONvc1TmRD8YE7p3ZwNbff/F3y2DHEhCw0lTJ2wppb2oYFeRpvwKvg4UOgeku/a8LwRj4MzKRtVyFPq6iPCL57GlvefM7rujWqLNYSEsLWinwyXOyRpkapuCICsvDWnSZ4OajogK/TIPZbwPR+2n3QzB3q24lgQgQYs3PipzZdlfxSuAh4S60V3SLGLnW8OSj6ZIaTQvLnQp94IJvhjjG1mYuAHvEBEUnwEM4JF8Gm5PKRL5vv+OLSOB8Yh/esZMTq4XR2h77dESqQaVgmT14gDJs9dFE9s1XZtrmQPIHQ7AVKkL7o8dnEgCRnRjXzMbBExAz/CxxJuavSwPT51WJ8JmhXoIupeE7rcRgb8okyDedg9bzj9AvL5x+WqzwihrwW+Eh/LgsIExdv/PvIdFfsNlMa7Bz/zMSICNecGPPev/GKQNPjf07xHCAjusKv1Q9wjTqB8BN8fDmgXT4B5DTcT2K0pjdXDkmDWfzt/nAnVvm+bl25+Kot5M7myE+6bMJ4iFrCFr4qr8E7a46Up0z23r340IHzhDwIhDkQmzUhh03ukXr6at6F+tXS8SbW62ZoGN+8I+AG5bmAu/ZCPFRwNqEmMjZP5qaF+UKKv+qm0cuVkLniUDBxH/OhdCUbogz9HD5nDWbgbMTyqraK+9VifDIptn/zk1bQlZqLABXFVSdTSFSB9
+ bVTn2bBW
+ jk2PDsaPnzte2UEJYXVaxpJXKJYvxhy6fEcgYhKrZiM003bACion9o+ytC6/iLWLjwo1D9kg+P2S15gQ6YZfjEitJ57IBS2G4/n9NSC8KOPB91KLx21XfffMrBLsEdbFqU2dUvnorxR1arBrccxxwgl6oE9c2j+0fAmxuzoQHyOj4Z4320XMX+XtJGz5HewrLvztMoDYEuvbk+aHpLDFOFHI+Og293ouixYxpUReQS714qWW1DBkeJUlbu6v9OPgF/wWCbjYYNj4MWR7Lm8MGitnQ/mUzkH35Iveh4ndsWXx4H5mDtvsZ2kiAFbz1ICtFbQQ53dbfDk2CzR/f2W7qUNO+lj3qPgigq7J9hLaYW0r8jnTkRLrWIZya3g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,116 +138,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Luigi,
+On 1/15/26 22:14, Joshua Hahn wrote:
+> On Thu, 15 Jan 2026 21:10:41 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+> 
+>> On 1/15/26 19:14, Joshua Hahn wrote:
+>>> Documentation/process/coding-style.rst explicitly notes that if only one
+>>> branch of a conditional statement is a single statement, braces should
+>>> be used in both branches. Enforce this in mm/hugetlb.c.
+>>>
+>>> No functional change intended.
+>>>
+>>> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>> ---
+>>
+>> [...]
+>>
+>>>    		update_and_free_hugetlb_folio(h, folio, false);
+>>>    		return rc;
+>>> @@ -2672,11 +2675,13 @@ void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
+>>>    				 * be consumed on a subsequent allocation.
+>>>    				 */
+>>>    				folio_set_hugetlb_restore_reserve(folio);
+>>> -		} else
+>>> +		} else {
+>>>    			/*
+>>>    			 * No reservation present, do nothing
+>>>    			 */
+>>>    			 vma_end_reservation(h, vma, address);
+>>> +
+>>
+>> But why the empty line? :)
+> 
+> Hello David,
+> 
+> Whoops, I totally forgot to run checkpatch on this one. I think Andrew
+> also noticed this, he sent a fixlet for it. Sorry for this! I'll fix it up
+> in v2.
 
-kernel test robot noticed the following build warnings:
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.19-rc5]
-[cannot apply to tip/irq/core next-20260115]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Luigi-Rizzo/genirq-Add-flags-for-software-interrupt-moderation/20260116-000808
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20260115155942.482137-4-lrizzo%40google.com
-patch subject: [PATCH v4 3/3] genirq: Adaptive Global Software Interrupt Moderation (GSIM).
-config: mips-randconfig-r051-20260116 (https://download.01.org/0day-ci/archive/20260116/202601160433.z2rdE9lE-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260116/202601160433.z2rdE9lE-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601160433.z2rdE9lE-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> kernel/irq/irq_moderation.c:432:40: warning: overflow in expression; result is 1'410'065'408 with type 'long' [-Winteger-overflow]
-     432 |                 recent = (now - epoch_start_ns) < 10 * NSEC_PER_SEC;
-         |                                                   ~~~^~~~~~~~~~~~~~
-   1 warning generated.
-
-
-vim +432 kernel/irq/irq_moderation.c
-
-   410	
-   411	/* Print statistics */
-   412	static void rd_stats(struct seq_file *p)
-   413	{
-   414		ulong global_intr_rate = 0, global_irq_high = 0;
-   415		ulong local_irq_high = 0, hardirq_high = 0;
-   416		uint delay_us = irq_mod_info.delay_us;
-   417		u64 now = ktime_get_ns();
-   418		int cpu, active_cpus = 0;
-   419	
-   420		seq_printf(p, HEAD_FMT,
-   421			   "# CPU", "irq/s", "loc_irq/s", "cpus", "delay_ns",
-   422			   "irq_hi", "loc_irq_hi", "hardirq_hi", "timer_set",
-   423			   "enqueue", "stray_irq");
-   424	
-   425		for_each_possible_cpu(cpu) {
-   426			struct irq_mod_state cur, *m = per_cpu_ptr(&irq_mod_state, cpu);
-   427			u64 epoch_start_ns;
-   428			bool recent;
-   429	
-   430			/* Accumulate and print only recent samples */
-   431			epoch_start_ns = atomic64_read(&m->epoch_start_ns);
- > 432			recent = (now - epoch_start_ns) < 10 * NSEC_PER_SEC;
-   433	
-   434			/* Copy statistics, will only use some 32bit values, races ok. */
-   435			data_race(cur = *per_cpu_ptr(&irq_mod_state, cpu));
-   436			if (recent) {
-   437				active_cpus++;
-   438				global_intr_rate += cur.global_intr_rate;
-   439			}
-   440	
-   441			global_irq_high += cur.global_irq_high;
-   442			local_irq_high += cur.local_irq_high;
-   443			hardirq_high += cur.hardirq_high;
-   444	
-   445			seq_printf(p, BODY_FMT,
-   446				   cpu,
-   447				   recent * cur.global_intr_rate,
-   448				   recent * cur.local_intr_rate,
-   449				   recent * (cur.scaled_cpu_count + 128) / 256,
-   450				   recent * cur.mod_ns,
-   451				   cur.global_irq_high,
-   452				   cur.local_irq_high,
-   453				   cur.hardirq_high,
-   454				   cur.timer_set,
-   455				   cur.enqueue,
-   456				   cur.stray_irq);
-   457		}
-   458	
-   459		seq_printf(p, "\n"
-   460			   "enabled              %s\n"
-   461			   "delay_us             %u\n"
-   462			   "target_intr_rate     %u\n"
-   463			   "hardirq_percent      %u\n"
-   464			   "update_ms            %u\n"
-   465			   "scale_cpus           %u\n",
-   466			   str_yes_no(delay_us > 0),
-   467			   delay_us,
-   468			   irq_mod_info.target_intr_rate, irq_mod_info.hardirq_percent,
-   469			   irq_mod_info.update_ms, irq_mod_info.scale_cpus);
-   470	
-   471		seq_printf(p,
-   472			   "intr_rate            %lu\n"
-   473			   "irq_high             %lu\n"
-   474			   "my_irq_high          %lu\n"
-   475			   "hardirq_percent_high %lu\n"
-   476			   "total_interrupts     %u\n"
-   477			   "total_cpus           %u\n",
-   478			   active_cpus ? global_intr_rate / active_cpus : 0,
-   479			   global_irq_high, local_irq_high, hardirq_high,
-   480			   READ_ONCE(*((u32 *)&irq_mod_info.total_intrs)),
-   481			   READ_ONCE(*((u32 *)&irq_mod_info.total_cpus)));
-   482	}
-   483	
+with that ;)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers
+
+David
 
