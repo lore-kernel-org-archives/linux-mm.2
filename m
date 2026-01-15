@@ -4,130 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14581D4662F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 22:42:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C54DD46638
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 22:54:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D3ED6B0005; Thu, 15 Jan 2026 17:42:55 -0500 (EST)
+	id 0CF1B6B00AA; Thu, 15 Jan 2026 17:54:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ABCA6B008C; Thu, 15 Jan 2026 17:42:55 -0500 (EST)
+	id 07CD56B00AB; Thu, 15 Jan 2026 17:54:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AA4D6B0092; Thu, 15 Jan 2026 17:42:55 -0500 (EST)
+	id EC0716B00AC; Thu, 15 Jan 2026 17:54:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 569726B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:42:55 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E405C1F16
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:42:55 +0000 (UTC)
-X-FDA: 84335674710.17.D42D153
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0A42F120002
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:42:52 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D7C406B00AA
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:54:33 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7EC82C1B5E
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:54:33 +0000 (UTC)
+X-FDA: 84335704026.02.4F7F994
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8CB99120005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:54:31 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mlJXDlVs;
-	spf=pass (imf29.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768516973;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vQuagjPxslA3/GbLy8OgugPdFRJI5tMwgAjobUXXgeg=;
-	b=iiFPZ4QFXd2hnnXVj/nQSZQx3qTMtJCRYAZAO5S9RMDr+7kngSYHBcxVi5j/RcwjzglKfa
-	P2jyy6HEjBsFRUJy/PR18jfFXH4ooMUJqsiQ1QXLZ9mB3cKPZA1Z6bAZyqjNxcdpRVAc8z
-	M6R97ig0G9rr/1ZRGWmvc3QqYpuRcLU=
+	dkim=pass header.d=chromium.org header.s=google header.b=AnqOm6RQ;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768517671; a=rsa-sha256;
+	cv=none;
+	b=sjxg/UdTd6oHqAmTD4a04399ihQNqiecbnIhGzTCKQVgTSNnoPfQ7tu5Kk+Gop5Rf6DfJx
+	iUuFbGiKnGNjM6Driy6CD6PsfkaSzcaSJ1HvQDGAMTo1V4sTb9cd+PUg3GAauEd5ipHiMm
+	Mn66Kkl2003UT/iSX+Eh2gzsjvMAdjE=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mlJXDlVs;
-	spf=pass (imf29.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768516973; a=rsa-sha256;
-	cv=none;
-	b=1/89qbTXS3fOK9BCckWsjeqq/LCz7Y0kB+RBw9daHZW6wcBdfNeMF4or0Nm72y1okUjQMQ
-	fdQceq7JoyOMOre8uf0Eb0uDDV1mPBdgsnhKVlHp+K+x6xKNPKt2BmEOmGd3C8zy1L8D7A
-	ulFMHq5lly3Oxr+p87DElsRaTuLje7A=
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59b89e1cf34so230940e87.1
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:42:52 -0800 (PST)
+	dkim=pass header.d=chromium.org header.s=google header.b=AnqOm6RQ;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768517671;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=reZxE7asEWiVI0EMu8bQnNYE+4B4+Kkux9l14QRm3R4=;
+	b=HtH0IQZeCREUaiUyy8unm+ZjRzKm1LvwLOr6pXaMhZwM3YEf2jLuIceigZEwdy9RYmt6QH
+	bhLcS6jOAJndh6NqqUKYphqlLCjot+DP/tpNkIOASXrGPctMSbaoPtMJIDu5L9vdgVgHe2
+	y9h1gyCJS82geePIUDGZHGHDza8sxKM=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-81e9d0cd082so1245888b3a.0
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:54:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768516971; x=1769121771; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vQuagjPxslA3/GbLy8OgugPdFRJI5tMwgAjobUXXgeg=;
-        b=mlJXDlVsnZSr/UC6ywWlWn4S/9yodO1AodK3vOTCLs6WnajDquXGc3FpEZbQ+aR21r
-         M0GHkpe+xiKCbBr9zBIZj9oqN9yjzZh5TXSKNMfOCGkE5BLsSIe0C/JTpBkpeFphM5zB
-         ULETjSTYocu4iUPYlYAIA+Wf/dVQsbpwAQOdeJpP8jjxRbvcmIMn+qE7qHTP3/Z91C6Q
-         bnpHoewOn9GYhgFg4xx2g7aJ6HIyISC5qa0f0KdajozR06cEbGjq/TLuvdR/B8ixfCDy
-         bj0KnSJVT4UCPRzo/XxU7uU03LrekHFRxU49GOl7xSgXbfSvHmFTOprDNk1cjfC/XdLt
-         TDXQ==
+        d=chromium.org; s=google; t=1768517670; x=1769122470; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=reZxE7asEWiVI0EMu8bQnNYE+4B4+Kkux9l14QRm3R4=;
+        b=AnqOm6RQUsy5akvm5XePFqxjAhDEMcu8mRp67CzIDapNERth2vhGDoCnBdLUXyBCOn
+         ykCJI2pE6V99Tr4t1NxkuvIWDclGFrYLkpHCR8qrMPCbSutiL0L3WZkZ/lEPL9TsSeVu
+         ne3d2uiRkviD3YCP2HZtP2EKI4JwOxrYa7KCM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768516971; x=1769121771;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vQuagjPxslA3/GbLy8OgugPdFRJI5tMwgAjobUXXgeg=;
-        b=QC4yrqHPo+6CJZWisUuBOcbs04pqBHfs1MjFA24G3YlNe5cGBHMbpg+yDDfNoLUebI
-         GtRNudSia0lTBlQXthhcVIki0O/oY1kuj2YM/tUfD6ba5iqfV2/oYPYo3wMekNOWKr1f
-         4o1KvJCXeBq62Lch0WRkXJ8ouousLF7hh5TE59qj2mj94UGqc3S8nxNP2H+J9gGOXK3s
-         uvEITOC2ie92XQwLniWHMC3Kg7MBfZQ768O+Bs4Y1qOBNBpCyq3GQ+mTnleRx9HrbKqN
-         NMz/rnFguNuU6d9rkCLOACa+Q99JDf+gz/2DqfhCGw+y4H7CGyyz3HEpgRtM/U97y/uU
-         cRHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNm7KaILQED/J4lNJ5M3JR9vOSYwSVYKRPx8hdmCz0cOHDyF0o0o5qRiVbGrgEQsCsZXaSMTLBtg==@kvack.org
-X-Gm-Message-State: AOJu0Yy1l7/4omPPvhBqEfuT4WeCacVIxCnUo98CtEz+0lyyGN0bkF7H
-	uhMvpYVda9e4CtQs1bVqfQ4Te5xpWLsaoRPdQjO1Z+F5hRraa1bOdYWM
-X-Gm-Gg: AY/fxX5jt3+WaEjPq11VfXV3ik48zwNQVrENfp2unlGvnbECdbOafPWUL1PxtBS+btX
-	Edisq+1jKSZmtmLNsVDfN4UJyzZyOwjLCaBJguhmUHNZbKl28B6jThslwQrN0UI5w7lWtPXdQ5R
-	4vQv0nZMuhP+H03sUws03CkQfjPltvNgiOnuUV7oSFf6S1J1EYnyVbWxtlAh1rEp8/BhHlyX3HE
-	bpkBRioL/WkvPtRbJI6M0OXfTza5jTqODjEA7U0EuC9eWrLKIy0++B7Oif0XMVS1jC+sEtrlpRy
-	IcVy7hLj980fCoww0Gj5KtB5ovbrE25Qs1OJrnznS1ZUik0Q7oIHAGHoHI6kG8bN21LuUPjLWmP
-	dLpfrL8f4+Qq4p87BJWz8vqlNJnaFxoIeBArPK7E75rSofmOR5lcaW46qCDPjCMBavzEMH1NsG2
-	zN7ijB9N5jJBHxQohBo2Q=
-X-Received: by 2002:a05:6512:63d1:20b0:59b:7be4:8c40 with SMTP id 2adb3069b0e04-59baef130e4mr131958e87.8.1768516970797;
-        Thu, 15 Jan 2026 14:42:50 -0800 (PST)
-Received: from [192.168.0.18] ([87.116.178.235])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf35434bsm209044e87.45.2026.01.15.14.42.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jan 2026 14:42:50 -0800 (PST)
-Message-ID: <2592f303-05f5-4646-b59f-38cb7549834e@gmail.com>
-Date: Thu, 15 Jan 2026 23:42:02 +0100
+        d=1e100.net; s=20230601; t=1768517670; x=1769122470;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=reZxE7asEWiVI0EMu8bQnNYE+4B4+Kkux9l14QRm3R4=;
+        b=ScVZYt1BJ52iEADUHMDv4mQQcPwGaSuh1J5PqzZLYIL3uAwf73jwDJr8zIEetEP1uH
+         K5SigYkePfMOkBVmO8btoLEzv/5snmXpVG4xZEQrCBI9Hq/gmQkBjGnk285OhVtDg6H5
+         5Lp17SEiQWp3XYVJfKLb2gWhDu7wyrBJt03G6+mc+hG7gsv283ETlCVtsA4QFZkebQgF
+         JKaGclLI+sVYLqyhqZmOGeTILRVvsgvgV3kuMTKja4gjg0PnpmebXAxnec8MSqqFjwg9
+         bfgT3oh66H5E8XaG9kAwiLhFOxmyi1fGKyVRnlBAJ9eGlv9qnsh8hOBiuzsHQr9ZYTXg
+         nOPg==
+X-Forwarded-Encrypted: i=1; AJvYcCXB2hD2SNXu38jjmR1NfjxcMc9hnHskFR2rYvMO2AA1UENvtsRRU0WxeYlRydaz89mvGbzuwgcBXg==@kvack.org
+X-Gm-Message-State: AOJu0YzPe52CF3J+ptasPG9pngHlDutjlCdMap0PgJde8atHQqilJAH4
+	nCw08/5B8XJHKKfkZCz0sVk+pwk9Plh2gnZCtjWSDje+HIj7X8xoV8FlZa5IpHvzzw==
+X-Gm-Gg: AY/fxX4EQ+LvYaaNYh6NFhSwdLTXyb9sbJ0edNr09ZvxaRoZhC3O0Cw+BlgTr0BtGJi
+	DFmZDg8uCyBCsMA3R4fpOjEChCPlp/thzqFBnRqCsNvQEl9psX0GM9bhFp63qYXzDo1bNEqwBwm
+	B7BseTkApEdO+/YifWAcr2nUT9bEGmKBvAlg3A9ROcU0I1xkmhkBIDrrg9ttm2wp152lU0K9Dxj
+	dBme03eBF239/41o1IjFxFLY77jgblUUPrgZXx8l5sauGvfJwGyjyRPVjNOxofncaqXsN8m7Wj+
+	ugW1FaJsPEiJW9y39xqjN+XXpXahlbynp55nbq3o4DTyaTsyOvdroLN61kSAzfojPIEKAcKJE4U
+	31xKHxBxo0nLbpE4YoO/KGkCUFTVJYQPFX8sOR69R0bQOc6YaWmXaZzvz0fpTz7IOdA7QKx0N3B
+	S+Fb41B4BJFNILT5vueDyyhOB0EtPXvKYXER6AMgCm5s/pMLyFiL/D0sCzd6I=
+X-Received: by 2002:a05:6a20:3d19:b0:366:14ac:e1df with SMTP id adf61e73a8af0-38e00db7745mr721247637.69.1768517670392;
+        Thu, 15 Jan 2026 14:54:30 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:ba7a:360:116f:dac])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190ab921sm3017215ad.8.2026.01.15.14.54.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 14:54:29 -0800 (PST)
+Date: Fri, 16 Jan 2026 07:54:25 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chris Mason <clm@meta.com>
+Subject: Re: [PATCH 2/2] zram: fixup read_block_state()
+Message-ID: <wstf2ujpdkz5evedgqr2awze7wdwcmcluxntkqk2eifp5axjpu@lawhwffyeg72>
+References: <20251216022727.578BFC4CEF5@smtp.kernel.org>
+ <20260115033031.3818977-1-senozhatsky@chromium.org>
+ <20260115140743.f7ada77bc912595a580eaf7c@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 01/14] kasan: sw_tags: Use arithmetic shift for shadow
- computation
-To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: Samuel Holland <samuel.holland@sifive.com>,
- Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, llvm@lists.linux.dev
-References: <cover.1768233085.git.m.wieczorretman@pm.me>
- <4f31939d55d886f21c91272398fe43a32ea36b3f.1768233085.git.m.wieczorretman@pm.me>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <4f31939d55d886f21c91272398fe43a32ea36b3f.1768233085.git.m.wieczorretman@pm.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: w17udziwyo6e9fn3ts8r5oyp7i9acf1q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115140743.f7ada77bc912595a580eaf7c@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A42F120002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768516972-968829
-X-HE-Meta: U2FsdGVkX19EeJIlQR4jqUF1k0eY0JLqiCVv9OpalNHJ/XRLQQcEzOzd9Gz9nnut/FsVV+vnCbXtLa0vDq/Dt65nBkQ7SKQp/6T1xrholJwiTfuoy2ynRQvOgceTka6LvM80/5ZRw0+HUQssgYPuRfrMXqlfyI2q4Wf9nk/GdNQmw9wphOkmspJXdETY6Fn1sPAiPdnRE/4ZmQSDKwJwh1iI2juThcPG+c4V4++Dt8fJ62d6DMf29GZsjpmilWKJO0fWj1+Ao6HiU6Wwli3XGGU3iEaGHEIm2vYMJao9/royFl4GJQ5Hn/2CeL3FcQzzZTT4+NSxXleugKOjZe47JcZ3X/s5qVz6nzVfFW8rx9UaOlI2GC21/AozDkEsn7pU2K+ZkrO9OQue5av+dKDfbL6NzxIRa1OlcjWv7j9Ng44vqUAke463JXCI7Uo992d8HyG1neYuP7eJQKnI2olgICYC0l6XcFarDOkEyHJV37+mW/PusBcBFSKdTueWZwGAmzOJn6kFziuD+Pf/Ase+kxh81Hvht6CRDIk9VAoap2hqfazAAfFbGM8V4caxQyhPrGmPxGjFmJKpRM0yZ6VkeAA8fT2fO5FLYrXf3UxWWffP0qE1Unn2pnYb+8HLjUgmh+6te0GKQaAtZmxKVBmw//YrY30daBID6EwLyn0UpVVOAiijfJpzVD1TUpQAGmQLKdz02BI0UpyHQ/69A0TNVcFgpfWBw9qI0BpUzm418HAIiTdTRmFiR91yRtOy4bwihUZfiSp7jaSc26hg4HlqSo0Xl4VpgIVm7i6A5+Jfefh8psDANMvPpvvaXiavDf9czDTXMiqnHTD/2K2w94Coh5jFx2UDZKyPaP51mskX6o02gauB8pT5qKn5R7zDaun63CaWh9c1FC7QpQcvJHTMiQ02FXRxO3dyfGR2na7N1lYvaa/lUZL1YZZdJOrZMQzuIBi1nwv3lO3W4SdkKxO
- Pum75IU3
- PbqCbWTif0nUhBYVE2YYdZMN41JUjo+mPNokI/SawZPAin2/ddq2dC/FzpRVJsOmV+gvnBuw7rL5um4lh1/uwAYFkNfn1wjqvLIt+oH9K3LIZNbxXMuP5a3tKov540f4Vz6rAgBKCvBiU2bceXqrFZNX4vHj8Zuqe5yWk6yZA1KuJGqoiCBgBy14OceZjauTs3Flsn2bSIwofrZKs8T3uE50uxq5/USjWhwayHfkQfDead78tvy+G0beHvtFRM8fbKiZKvd3s/Y5FOVP+tcq4wrrvwrQ5Z+F8Q9Apv9KNXLPn5ttsiArkPtVtq/10832w1Z6HhrGfhS/Ow4uIADdJzY9fr//53t+IrkR6KHJtFFVDqRUzLI9pN53LO4tEr12RMBx+F5+UNPzX1mVViHrPn9YBTw6/pleWNnWtuDhOzEdIauii3rE6kLq/OwcBWgDjawu/jRMhKbCcdp7nASH/LSuSdZhUVV8AnYrgr6kQkmCNBJLAytyGRjkyfyFFHoUI6auwsTztTqbtJMZvJTmOFqZ92NMDK60KhMLzeQNZWxFJjuwb/LCJ6Z858wJVAyAbt0MmqkJfBylFypnRXJJwtWoESw==
+X-Stat-Signature: g1hsayacqnarxrfywk5x9s6hn4ozrxfc
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8CB99120005
+X-HE-Tag: 1768517671-962243
+X-HE-Meta: U2FsdGVkX181aUqrDrMZHBayDzqIWIcNrwHEg+YqA59AR96+JtdL9Fo7Jh6qndmW4VLPk1jh3DNO/2IMsJDHfIqv7XZ1B+Cv1dgUZmRGB8FAt1ix6U6u3H6TURwilAoc9+NXJQll1CGg879ZI2AOzeJrdFiUZDwCiIO9Vo6OMxo8DiRcwMqlfWOtnI+3T/kWlhaZiWfFGQCrRiX5HkchrcD2oqC1TYYXd7ccP8pDuMkgyfhfdGdItfDPg59M8g66WJd05YwSHFb6M2NCx1fSBqY9hpWmIlqcsj76PRJY2swcimgNi71GnFv3GP9+Ht9D2Mn5Us2AEB/9uDfkaIhNpA3x7v1X2tChTZokdi2GdxNz4bq4yw78V1SobrSfDIBJh0gQLD8CuZkTeZYY+EfagCircccDfT44gMG2sUKVD7s4tkn9/EO7aioLZrPbpgV0C4/nOXRwNzqckmt4SEcyh4JqXwSIYwCKgix51pwEui+BmNawpLTr1gb3apG+6K0PqCmpbWdN4UZgP1TKDYfI7o2uu2/oszwBVvSDJyqfaY+nChu2ZT2Bp7IEjhWkE/L6rt/tl5XDx5UIGeQ2wSXl7UwDEV3Xf/F8+mGasLQ/mDM5Cwcw5ir//UUNiAYeqMzyI27hhP6GaFbkGzfF1saUcFtg3PnLbMgPHb0DAoj53jWgRx0ahJX7qY/fg1nISUIbl1k4vhz5ovEQHJVN2i/prUj7RKGPdtSFoVCsV+amKOShVUgxRMRRfu9S4gvUGoUArBpN3IbSVz6lMRaR6zosCNVauxbZF0+uqJMVL2/sj/JGheGibj5GvG2tTDtRL16PIBtl5gIF7pQI3F1hjwq638GfXW7hH4iQWg/27SscspDl2TBF93y857g7VRN9Jb/7QmXD47pToFZ9RvJ1rxJK91rCxz2yxFMVHgi7LfPeOAh2JboBu7f1mc79kXy7WqNkLgTdU7u90cphjRLVeHw
+ XNNZjC1q
+ kzJtADm4e+5a4YUCY49jKz85dd1AIkwKUEwCjzG2iAbIDyUCRjmyrrw7HVCjAQZfC1oo4aH1OnSPNas4LR2vsFHnvN1CfWf2J79KDPwAT3+c+IsE6IkHtrz8pAY7D1/wv5IXZeppQS1ZZAzt3uM/bGyQOwoWTAmNNXzu7ikjVdWxMq4v2eGrSRxtKGig4v+h2MEVhsmYGyPYfOvBKyLJcWhDjeNjIxDEcLB4LBYwx7WFj1AW9p2HJ33wpqwPZzzYbmbkljOrV33T9r0pAuKcc76G6fzmSXHKeYa/TXzGso8dQD520Y5Oo8PHfV7/W7iJ9ow1TENtlH6OnZwTvygEkrKaVHa19hcEoHG7peb09oknvguVFHhciaR3M13kFoEnjzz6UhMi4aR2S9QEFPTjDj8qhj7q0v6y7Ceg5nPjJZC/r/qULKD5lvo8WgIS6fls0d/XJhD1KzoWirdqIEuEvDxzhXZSwx3U7CebHiH6BBIF46KsLZhQuL1SWiZbeWxo0CmsB1DWtGXrlUjlcX1Cs+ugLiBq7a/9jxO5rYTrm9JfjtjsfQfwEijJdRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,68 +116,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On (26/01/15 14:07), Andrew Morton wrote:
+> On Thu, 15 Jan 2026 12:30:06 +0900 Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
+> 
+> > ac_time is now in seconds, do not use ktime_to_timespec64()
+> 
+> Please help me out here - which patch introduced the issue which Chris
+> found?
 
+This one:
+https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zram-use-u32-for-entry-ac_time-tracking.patch
 
-On 1/12/26 6:27 PM, Maciej Wieczor-Retman wrote:
-  
-> diff --git a/mm/kasan/report.c b/mm/kasan/report.c
-> index 62c01b4527eb..b5beb1b10bd2 100644
-> --- a/mm/kasan/report.c
-> +++ b/mm/kasan/report.c
-> @@ -642,11 +642,39 @@ void kasan_non_canonical_hook(unsigned long addr)
->  	const char *bug_type;
->  
->  	/*
-> -	 * All addresses that came as a result of the memory-to-shadow mapping
-> -	 * (even for bogus pointers) must be >= KASAN_SHADOW_OFFSET.
-> +	 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shift
-> +	 * and never overflows with the chosen KASAN_SHADOW_OFFSET values (on
-> +	 * both x86 and arm64). Thus, the possible shadow addresses (even for
-> +	 * bogus pointers) belong to a single contiguous region that is the
-> +	 * result of kasan_mem_to_shadow() applied to the whole address space.
->  	 */
-> -	if (addr < KASAN_SHADOW_OFFSET)
-> -		return;
-> +	if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
-> +		if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
-> +		    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
-> +			return;
-> +	}
-> +
-> +	/*
-> +	 * For Software Tag-Based KASAN, kasan_mem_to_shadow() uses the
-> +	 * arithmetic shift. Normally, this would make checking for a possible
-> +	 * shadow address complicated, as the shadow address computation
-> +	 * operation would overflow only for some memory addresses. However, due
-> +	 * to the chosen KASAN_SHADOW_OFFSET values and the fact the
-> +	 * kasan_mem_to_shadow() only operates on pointers with the tag reset,
-> +	 * the overflow always happens.
-> +	 *
-> +	 * For arm64, the top byte of the pointer gets reset to 0xFF. Thus, the
-> +	 * possible shadow addresses belong to a region that is the result of
-> +	 * kasan_mem_to_shadow() applied to the memory range
-> +	 * [0xFF000000000000, 0xFFFFFFFFFFFFFFFF]. Despite the overflow, the
-                  ^ Missing couple 00 here
+> > Reported-by: Chris Mason <clm@meta.com>
+> 
+> The Closes: link would be helpful.
 
-> +	 * resulting possible shadow region is contiguous, as the overflow
-> +	 * happens for both 0xFF000000000000 and 0xFFFFFFFFFFFFFFFF.
-                                  ^ same as above
+I thought that for fixup patches that are still in your tree we
+don't need Closes: tags.  If you prefer to have them, it should
+be this email:
+http://lore.kernel.org/linux-kernel/20260114124522.1326519-1-clm@meta.com
 
-> +	 */
-> +	if (IS_ENABLED(CONFIG_KASAN_SW_TAGS) && IS_ENABLED(CONFIG_ARM64)) {
-> +		if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0xFFULL << 56)) ||
+[..]
+> > -		ts = ktime_to_timespec64(zram->table[index].attr.ac_time);
+> >  		copied = snprintf(kbuf + written, count,
+> > -			"%12zd %12lld.%06lu %c%c%c%c%c%c\n",
+> > -			index, (s64)ts.tv_sec,
+> > -			ts.tv_nsec / NSEC_PER_USEC,
+> > +			"%12zd %12u.%06lu %c%c%c%c%c%c\n",
+> > +			index, zram->table[index].attr.ac_time, 0,
+> 
+> local `ts' is now unused?
 
-This will not work for inline mode because compiler uses logical shift.
-Consider NULL-ptr derefernce. Compiler will calculate shadow address for 0 as:
-      (((0x0 | 0xffULL) << 56) >> 4)+0xffff800000000000ULL = 0x0fef8000....0
-Which is less than ((0xFF00...00LL) >> 4) +  0xffff800000000000ULL = 0xffff800...0
-So we will bail out here.
-Perhaps we could do addr |= 0xFFLL to fix this
-
-> +		    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
-> +			return;
-> +	}
->  
->  	orig_addr = (unsigned long)kasan_shadow_to_mem((void *)addr);
->  
+Oh, yes.  Somehow my compiler didn't notice that.
 
