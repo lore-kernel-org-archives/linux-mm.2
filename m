@@ -4,105 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7644D3CC8B
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 00:14:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76218D3CC92
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 00:41:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5C786B0005; Wed, 14 Jan 2026 19:14:26 -0500 (EST)
+	id 9392B6B0005; Wed, 14 Jan 2026 19:41:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C09776B0089; Wed, 14 Jan 2026 19:14:26 -0500 (EST)
+	id 8BC426B0089; Wed, 14 Jan 2026 19:41:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B08DA6B008A; Wed, 14 Jan 2026 19:14:26 -0500 (EST)
+	id 79EA66B008A; Wed, 14 Jan 2026 19:41:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D9EF6B0005
-	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:14:26 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F45014015E
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:14:26 +0000 (UTC)
-X-FDA: 84332276532.02.073469D
-Received: from mailgw02.mediatek.com (mailgw02.mediatek.com [216.200.240.185])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 32FF180002
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:14:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=mediatek.com header.s=dk header.b=Nn0FNCwH;
-	spf=pass (imf02.hostedemail.com: domain of robin.kuo@mediatek.com designates 216.200.240.185 as permitted sender) smtp.mailfrom=robin.kuo@mediatek.com;
-	dmarc=pass (policy=quarantine) header.from=mediatek.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 689AE6B0005
+	for <linux-mm@kvack.org>; Wed, 14 Jan 2026 19:41:00 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BEDC160168
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:41:00 +0000 (UTC)
+X-FDA: 84332343480.20.DD12456
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 43A1E100004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 00:40:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NlOivHl3;
+	spf=pass (imf05.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768436064;
+	s=arc-20220608; t=1768437658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=C2EzlVROqB2WDA6Pfe0fjYxuGy8i+tTBtHgwz97po6Q=;
-	b=vGHQcg3m7qnqN7vrHv515PQsf/hYb+57Hq6bXprE2VekqGEf/Hiez422f+pBloGuayoY5f
-	7f8EHp6rmGhntUHUNeu5W+8dePVnMSffvLtjA9kEZT/wYchxNDJ8pJ5YYmRw3z+MpQG4Qt
-	UAh/ov2b03hQnFvS8ALjcfoojxS43zE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8kwQTxZEOGNZ+MI9z8E7dyWDZVVqYLa/Ly/GOaJt7Wk=;
+	b=XM8y3kGD+kI8cr2FM9+5EWg69LYSGZqJzlj/hq8TB5NUqn8TQDACKaaZYneLK3ecHoeWP7
+	ix5MATB4x0H+buKk8S1T1CVbahorbbRogKeY0xQRq9DLZyBNq1PUGDRoVhiGaOuNqJnFzD
+	2JYPMD9aSg1PP6H0oABJxkLaRA8xtlk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=mediatek.com header.s=dk header.b=Nn0FNCwH;
-	spf=pass (imf02.hostedemail.com: domain of robin.kuo@mediatek.com designates 216.200.240.185 as permitted sender) smtp.mailfrom=robin.kuo@mediatek.com;
-	dmarc=pass (policy=quarantine) header.from=mediatek.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768436064; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NlOivHl3;
+	spf=pass (imf05.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768437658; a=rsa-sha256;
 	cv=none;
-	b=S1dokY266B09BW5YurXqKGjEMteiRY2epjBJi1dxR/cs2btEh6RWu1ACGOzRl8iyOmXW0i
-	YHaR7mLw1t5tcK6RNx94359DbBVvwmNYB0dJQ3gQG586Altr9PpZoVwbEagLtlX3h4iMEH
-	WGm41RNFHHT8X4tL91fDHccN1jLfKh0=
-X-UUID: 225394baf1a711f08b17dd397dc63300-20260114
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=C2EzlVROqB2WDA6Pfe0fjYxuGy8i+tTBtHgwz97po6Q=;
-	b=Nn0FNCwHPIVkg7NjqU5uE28QJEb5jHxVFvvycJfwYSnCK/K/4ezcxzqGtArdt8KW2Uhfq4oaAHjKfvdPpy2fJKUW4634zRo6TL+2hatWduPRJr9+NY6W5USxU27r7Vosanwm5iukxBgjsM4kfG01udRtwSx74NwMYSE4k83NzR0=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.9,REQID:34ab7bb1-5998-4531-9740-8110a6c747b5,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:5047765,CLOUDID:f05285e8-ef90-4382-9c6f-55f2a0689a6b,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|123|836|888|898,TC:-5,Content:0|
-	15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
-	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 225394baf1a711f08b17dd397dc63300-20260114
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-	(envelope-from <robin.kuo@mediatek.com>)
-	(musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 856363866; Wed, 14 Jan 2026 17:14:18 -0700
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 15 Jan 2026 08:14:15 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Thu, 15 Jan 2026 08:14:15 +0800
-From: <robin.kuo@mediatek.com>
-To: <robin.kuo@mediatek.com>, Andrew Morton <akpm@linux-foundation.org>, Chris
- Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
-	<shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
-	<bhe@redhat.com>, Barry Song <baohua@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>
-CC: <wsd_upstream@mediatek.com>, <casper.li@mediatek.com>,
-	<chinwen.chang@mediatek.com>, <Andrew.Yang@mediatek.com>,
-	<Qun-wei.Lin@mediatek.com>, <oliver.sang@intel.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-Subject: [PATCH 1/1] Restore swap_space attr aviod krn panic
-Date: Thu, 15 Jan 2026 08:13:43 +0800
-Message-ID: <20260115001405.3513440-1-robin.kuo@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	b=793pIF5hu/f4C/jrcjYttAClKJL103srH7LLtz4Nmqz6PLiWAN/flM2YWwMvKdMYa1zDLa
+	Ap+fY7kOY2XyIYwFANKGYHZjkQKLxCNhHa0YwH/Piq/zaXkIijUTbiQ9tI4Eiglx9UI8QX
+	qZKkFDQoF591mzZN3r66yqLKjBEjId0=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-888bd3bd639so3365466d6.1
+        for <linux-mm@kvack.org>; Wed, 14 Jan 2026 16:40:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768437657; x=1769042457; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8kwQTxZEOGNZ+MI9z8E7dyWDZVVqYLa/Ly/GOaJt7Wk=;
+        b=NlOivHl3hL8DLPB0LOaUoqcdn3g5vvs7dbQSddIEEvUNqX6eMnTf5cGRjiYkDXvd+R
+         7GPNTDMa6dY/toD+jHTbV6DHoArt4X6i46DnDQ0svmWrdFt+rS8tILFWECKwVWuQkHhR
+         70feN2PRucZbc6HVsbOhDk721F+u72PfWqcobT5Sxp+OTu2tYRIbF01YFoiF4o3LNCGP
+         7iV7K9lNFH9Je9AzKkfuNtn2uPb/gesfTw+n/5KmbP//cpZXFspkiMCgKe7buxsOaxZL
+         z1yHsTHBwuOjqpWy9Yg/nwI2cRxqmEIVG0gB2AdtKvaHYXK0KBVBFvx/aJ9bmBU8KPwY
+         YlYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768437657; x=1769042457;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8kwQTxZEOGNZ+MI9z8E7dyWDZVVqYLa/Ly/GOaJt7Wk=;
+        b=dbIWI0oRYj9A9Qbwk56Pr0W4V/YFFaQuPnHkwqFVQvyLwhcvl8hjfRv1OtqO/WNhOW
+         D4CiIiR/2wy7Z56wxVB6Edt6AiflQKow74bpfUetkxGmu4m7OOF08ANnb8EY0XsvDsQG
+         cnWj36R7GYQiN2UP7oqXfh5j1Hcktm/jrY8ji5wX4ituwBmSf0GnJpKFFJ3hEcXPXfpO
+         r1qPWSBR8apS/Oqv9+98sEe+X8zgVyMqMU0pMP3xCxAKXvBMb17Ed2fdJlCGJx0WSgZV
+         LrWNI0Kls0MpW65Nqp0Fr9mBSFV98mi+mWVvQFEM0An+6PfXh9VJRjFq4e2crI5s9TNn
+         WQWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVKwlXwpmDnFCv4qZj7aAhje7WppPxPpOHybP1ilhgE/ui2QIV9SXjuqPK/BaYxahPxtAowqCZPSw==@kvack.org
+X-Gm-Message-State: AOJu0YzwlSW1dR8efrHNOG0b1w3ZgcCbGQutWMH0X2AOVuUt4Z+VtiLB
+	uRbfMfahws66TPcqqpfHSJ0MbUSDRtVhrFEHg+HpQgzfZW2dRCvV+yjbBvdwSqRhyzM2uCX5OYb
+	/0aoTqmX93hID/gjTG7RX7WNFmh76tno=
+X-Gm-Gg: AY/fxX6DPdJ/cKKzEYYLEQIKN8zBXlpPOLBavZz6OaScQUx2ZjfKWohvbvtG7q0w8Ru
+	VEiYYAjo2KMLGs3oHh31Vt/cN5j83uvtV4qwSAQc0DQlAzDY3QqXFRBg8A9If4Jf+tx1Z15uEGl
+	F188f5ood9egEEBOQM+dXbYjqselSn17f1BVU64oaUg57fxlmEaVJ8pOKICeATLe1nFjNkxGQ0x
+	3yTgXeupgGuuMcQ5SLG7faHXdBrn+1pjMH2ATpixfqYXJD941dZo7A4FsLyvF95uIBrE55loTBY
+	zEsmb0X2AWHiWuxUf1HKzrY=
+X-Received: by 2002:a05:6214:19e9:b0:880:88cf:59ff with SMTP id
+ 6a1803df08f44-8939813b73dmr21430456d6.22.1768437657315; Wed, 14 Jan 2026
+ 16:40:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 32FF180002
-X-Stat-Signature: pqu8tw3zdnu48h3fg64af8qojwf6c9km
+References: <20260113081453.8293-1-akinobu.mita@gmail.com> <20260113081453.8293-4-akinobu.mita@gmail.com>
+ <aWZLZzo5Hb1aFZ0j@tiehlicka> <CAC5umyib=XmPkTvRT6eAsMx+WDx0NkSP9djh4xkhLJgwk_v8Mw@mail.gmail.com>
+ <aWfXHKDzoQBsHxAp@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aWfXHKDzoQBsHxAp@gourry-fedora-PF4VCD3F>
+From: Akinobu Mita <akinobu.mita@gmail.com>
+Date: Thu, 15 Jan 2026 09:40:46 +0900
+X-Gm-Features: AZwV_Qgg18kLLSG8crf76_eOaHbqkvkT03IVgWC4bh_s308ae0riyhU-hM237pI
+Message-ID: <CAC5umyg+wubKoQSfpDQvNh3K5Y7+iOEYn6_BuKFd53kHDVE7aw@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] mm/vmscan: don't demote if there is not enough
+ free memory in the lower memory tier
+To: Gregory Price <gourry@gourry.net>
+Cc: Michal Hocko <mhocko@suse.com>, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	hannes@cmpxchg.org, david@kernel.org, zhengqi.arch@bytedance.com, 
+	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	bingjiao@google.com, jonathan.cameron@huawei.com, 
+	pratyush.brahma@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 43A1E100004
+X-Stat-Signature: iog96xmxcpjk4k6dhezuc1mmdfw83qqg
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1768436063-453220
-X-HE-Meta: U2FsdGVkX19UQaE+t4w0nls+Go0gLsRMtBaU3Lv+hF1h19XbXbcByu1rDzJKvyIEUWdzBPj/VB+LyvhQNNopckRGji1JMZBHUhfEIOQn+o7Ul0H4Bt3qrE8TAJnk3HrpQIXUu2S539CKY72RuIPnHyrURyhfVTP4E3I/XaLh5XT2JRaszpk3GYPHzomSGT8Z3V82/fMDc8PbpKTuqXYXPReF8n26I3A8bQW+THR2699gzsVrlcOERyFBBqNIwLK5fA2xekR64bfIUxBNBV2IkDe4GAVaqC0TeAI0Jftc6G0qL/HN6MoaGIZezunS69biDHBQasirBs0uTn56ueJGPkSlZGhIw+YFIauatSGhRP8PtDEk+yTrm13nxSglzWU/eG4WV+UKi0Np7xJLFR+PQrwgrwS4QIeYiOraz1YXhoXadebaU6r4CzNxRaMTsgeXyQmGrEv7A9QELca0qGSl3J/JDm7kXZeg96aOCHLMUSW5dnkDGCuAavbQhAU8omL06K/tJTqTaYSdjEOGSCe4QIjAbX+5A8CNP4tIoTw1VBHkQymSCmo1PxnV04EAdZPUsAlepFl8o9sxFiWuH3w2TwIR9NPEJglmVNsxeYhCs+kQeWWEeyg5Go4hPAk0HZWNZe2HT6lbF0fQi9POej+NTtvvevsSO1KfcdY1J6Pj8k5s71ckso+dbaPGczEnpILgrJSn46Ea59XXvW7mJ7OIL9JOga+vexmYCP1f8brdrv6rYpsgkZFTHwVesGZHSahYjqHUiYWFobVc9VSud+rxdK23YLrWJuiiBbxYHLFJb2UWq/8+Yc0e6yB6SqBTqTIP5GDJ6lYnNQ9jq72OJRsGPh+hn9ytJfNagAHixim6cSvVJNZQOtBaRo2daRZwgmSHk/xtxqE1Xt0EVrr+7aSlKLvs9Ok0oU9u3dWULUFLm3zJyQCOXBFp/xKbjpB+HBvp0cu1kkSWpUJV/Bt81X7
- bBpFxFSc
- GrPaRA5zD0TCxXif7nTlmszdF9LjjzkcXzJRKbThACgGAOmfkQ1fIQKP8jSdmPM6roY8A+ZbhVYPel3Kn/eTneyCkdxJ01GD5xLQRJkZgxXWT6MWJSw+t+nr7ZlV4AaMbRJHsQhpjBMn59zQRBc7CF4AHoXVzVYsJmCCoNJAggfT8ddrOGn/oo4eafd6oH0Z/vN3dNtd1lfkaB2pwj7JUmnor6JHqgtxOcLXS/N8Flkv/tb0EdFvc3Tm5FGl0uI9HnCXevIgrHw3aPk68yrfgfrw8TrbvpTWCBVDq6/biV2EjAGA+oX3/kYvhw8lShRdnhdwq
+X-HE-Tag: 1768437658-151211
+X-HE-Meta: U2FsdGVkX1+JmOAtr0up5gDCOfId1zC7kRKamX1WdhzKXa28H5Blig4gSnizG230VjuEmv2AAY+8smUhzXXJvUZBZlN/upCD8rwF3wpOkrrgX3Bh2k9tfFAf33LXV2cd2/P5tX58tEQWdF4uL6P/hboD0Mk8qi8sJi18jj1DeesGcGRvjFiwkgjuGKkNJk/w5jSRZLshYsyw8C7I0HVNr0lZzdSFsJaQqZL1t7p2dslYesqaQAEq8FUr/I0sb28q2vvLecEfRA/qV0GgpqsZg2ZTU23CXuhbPaOS1y3tyrHElO1HUVJF0bqpKCNReXfeTE7fthIFewik+Xu5QQ0fdn1y8edgnbioh/bl62b8GfAakDC7r2FrK9cngSiCy3GuIx0IR0fYiInCx3HiEY9ycGg7XfsuPPQx66PmZPXbeD9xis58gbfR76MZVmKUoBEIEFuOOt35ruhXEOTLk6gDg3ieOmTl3Eki7ipQ0QoOP0Kme0v9RIqRgX5rj/zdiupiX6MF+aQzsI/k3CvrC/SFU1kOWr+Z51pNMJ80E+7LJrZUPjVFGSXeh7H3fypCeX/xJZ19cASwRsliaMBX9cMCsBvg2h8o8TwYA/2a/hYalmqZ035cT4rge2VppJBcy8KWaAEqhxUhXdl4Zf+pAUFj1uBWnO8xY8IuF0yPbAgK8WnN0CFitAia4UT9VYeTmC4T3jaBgpEFnAHvUJ4DLmDNWGbDz6e9awP5tg3/u5LjqA3pgggoVarnDYvDyDSW2L3qBnov2RY+bgovlIDQV+W52t1hs8fHBo7UL4i3Q9BXv+LI0YgWYSFTpKRPMrkGsHpqQJXNQdfLE3Q95fXFKCsxJQn7B9Ii+FT2HrkUoZqNkQjUi96p9GQWC//xmQLKcPIN6OovMaTEBPoN3VTIWvfHs5qx34ApqZFRKKKX1wfuxaM7nKh+K+/duDoCCA0TuRgi6hss7nKbk1woN3d7kQV
+ 4lkGHTjB
+ hcPaUMqmyXczRFAi7bdAjAIp0CvgQYE6L2pj9tKFyhxqIBVApr6EfUUAuYfy7MOP/e9BsUyi0ojpnmFhv19wO0REbojXzeOpsrd3K+dy+pYsIBekEughq3bJBf2f2RsWUZTHL/KQuxGvcdimP2KBpY5UwHeY5i7Rp6tf7oJCHe2UObJvHZEMyIyTw9rdZaV1a5cQB4+Bpk2niPBJfJ7UduutpJDbNjkzxp9gABUzYxnn6HnWpIJlB3j3zIvb4Aio3Qsnf0UWTeLOY/5AwECUH250v16l/EdYkDrF5n9tk+3Cmsshjht36kpWnby98Uq0Mf5SiwfWF+W/ZQCC5FvXn85LsgSNM6ZqBROA0KFDjqpOOUZvJbURoKsErulSFjym6pwWscOSBmOx1G4ylmpsdUN6oyRqklcNtEG3LRD8Hfun4nD3ZMl7OiDOaUUgMFypdvHDvj8d1yJOaOE+N6kxzHV7P5W5Kck3fPIXdyLvxbjphGbCIB4doy/BJQ7kA/E1RNWgQcxTC504M9KcYtfOaLuuoAV8ljKsfxJBe/+MRRsse2wU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,74 +127,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "robin.kuo" <robin.kuo@mediatek.com>
+2026=E5=B9=B41=E6=9C=8815=E6=97=A5(=E6=9C=A8) 2:49 Gregory Price <gourry@go=
+urry.net>:
+>
+> On Wed, Jan 14, 2026 at 09:51:28PM +0900, Akinobu Mita wrote:
+> > can_demote() is called from four places.
+> > I tried modifying the patch to change the behavior only when can_demote=
+()
+> > is called from shrink_folio_list(), but the problem was not fixed
+> > (oom did not occur).
+> >
+> > Similarly, changing the behavior of can_demote() when called from
+> > can_reclaim_anon_pages(), shrink_folio_list(), and can_age_anon_pages()=
+,
+> > but not when called from get_swappiness(), did not fix the problem eith=
+er
+> > (oom did not occur).
+> >
+> > Conversely, changing the behavior only when called from get_swappiness(=
+),
+> > but not changing the behavior of can_reclaim_anon_pages(),
+> > shrink_folio_list(), and can_age_anon_pages(), fixed the problem
+> > (oom did occur).
+> >
+> > Therefore, it appears that the behavior of get_swappiness() is importan=
+t
+> > in this issue.
+>
+> "It appears that..." and the process of twiddling bits and observing
+> behavior does not strike confidence in this solution.
+>
+> Can you take another go at trying to define the bad interaction more
+> explicitly? I worry that we're modifying vmscan.c behavior to induce an
+> OOM for a corner case - but it will also cause another regression.
 
-Restore swap_space attr avoid krn panic
-
-Commit 8b47299a411a ('mm, swap: mark swap address space ro and add
-context debug check') made the swap address space read-only.
-It may lead to kernel panic if arch_prepare_to_swap returns a failure 
-under heavy memory pressure as follows,
-
-el1_abort+0x40/0x64
-el1h_64_sync_handler+0x48/0xcc
-el1h_64_sync+0x84/0x88
-errseq_set+0x4c/0xb8 (P)
-__filemap_set_wb_err+0x20/0xd0
-shrink_folio_list+0xc20/0x11cc
-evict_folios+0x1520/0x1be4
-try_to_shrink_lruvec+0x27c/0x3dc
-shrink_one+0x9c/0x228
-shrink_node+0xb3c/0xeac
-do_try_to_free_pages+0x170/0x4f0
-try_to_free_pages+0x334/0x534
-__alloc_pages_direct_reclaim+0x90/0x158
-__alloc_pages_slowpath+0x334/0x588
-__alloc_frozen_pages_noprof+0x224/0x2fc
-__folio_alloc_noprof+0x14/0x64
-vma_alloc_zeroed_movable_folio+0x34/0x44
-do_pte_missing+0xad4/0x1040
-handle_mm_fault+0x4a4/0x790
-do_page_fault+0x288/0x5f8
-do_translation_fault+0x38/0x54
-do_mem_abort+0x54/0xa8
-
-Restore swap address space as not ro to avoid the panic.
-
-Signed-off-by: robin.kuo <robin.kuo@mediatek.com>
----
- mm/swap.h       | 2 +-
- mm/swap_state.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/mm/swap.h b/mm/swap.h
-index d034c13d8dd2..1bd466da3039 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -198,7 +198,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
- void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
- 
- /* linux/mm/swap_state.c */
--extern struct address_space swap_space __ro_after_init;
-+extern struct address_space swap_space __read_mostly;
- static inline struct address_space *swap_address_space(swp_entry_t entry)
- {
- 	return &swap_space;
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 5f97c6ae70a2..44d228982521 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -37,8 +37,7 @@ static const struct address_space_operations swap_aops = {
- #endif
- };
- 
--/* Set swap_space as read only as swap cache is handled by swap table */
--struct address_space swap_space __ro_after_init = {
-+struct address_space swap_space __read_mostly = {
- 	.a_ops = &swap_aops,
- };
- 
--- 
-2.45.2
-
+I agree.
+It surprised me that the behavior of get_swappiness() had an impact on the
+issue, so I'll clarify its relationship to this issue.
 
