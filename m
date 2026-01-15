@@ -4,85 +4,239 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C39C0D4117E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 12:38:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5F62D4117E
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 12:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17A9D6B0092; Thu, 15 Jan 2026 07:38:26 -0500 (EST)
+	id 599B86B0088; Thu, 15 Jan 2026 07:41:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 162596B0096; Thu, 15 Jan 2026 07:38:26 -0500 (EST)
+	id 570D56B008A; Thu, 15 Jan 2026 07:41:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 078406B0098; Thu, 15 Jan 2026 07:38:25 -0500 (EST)
+	id 453136B0092; Thu, 15 Jan 2026 07:41:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DD6A26B0092
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:38:25 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AC4B813A930
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:38:25 +0000 (UTC)
-X-FDA: 84334151370.21.4596C0C
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EB92380002
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:38:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b="rapo8Ul/";
-	spf=pass (imf02.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768480704;
+	by kanga.kvack.org (Postfix) with ESMTP id 2F82B6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:41:09 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFB9858332
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:41:08 +0000 (UTC)
+X-FDA: 84334158216.04.F59C30A
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 60826180003
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:41:05 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=gmt913Yu;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ass352NQ;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768480865; a=rsa-sha256;
+	cv=pass;
+	b=DY785QJ0SYFV2wKeOY/8EgypUUzpctE0+KR68boY7r4iP3k1+Bb+FRrvhppDM7TPK69Ts6
+	7p8p53rWFBkBQe97E+HIFHZ9EKVG4nC4t5P1YnFt7tH9HGuEKIzGDpccqlU5ptgJfOFAyk
+	RIt/meGJEtmzU4KcuvGM07aiYp0WbKs=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=gmt913Yu;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ass352NQ;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768480865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CbI0FyXSbb6YAmZDeYFsFgsBILt9uByw9OReMAxXcLw=;
-	b=fm4QCzKn/bEXjMZs1Es79wqNBmMEV17NDXa51giBpF05wFTgkDVt8FLB+p7lknL05D+Lse
-	+8ESwbwP5IC1CMBu1pak8m+w+fBH27HwmPC5z2hyH1YnalQkK7N+fgVXJxp6yNAsBWG7mm
-	Y6VPxAovmSgydvAqtsPeCkP1h+9S8Uw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b="rapo8Ul/";
-	spf=pass (imf02.hostedemail.com: domain of tballasi@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=tballasi@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768480704; a=rsa-sha256;
-	cv=none;
-	b=k3DBjEJ1USSjhLWgWtiS6mjlAHXePiFb0HnBPxyNhMgtGvHJUHBLvcwj/ErfC0X86IVjmq
-	gvI/MAROrTROB7UnGaxcIKtmJGnFnkG+IzEHWpTOLa1mubx0p+53XaJxoA/RG0WkphU3Xs
-	pJPBsXunl79Yz7PI+G+iEkP5x0+7+6k=
-Received: from LAPTOP-U3CCR7C6.corp.microsoft.com (unknown [20.107.46.209])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 5CDEC20B7165;
-	Thu, 15 Jan 2026 04:38:21 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5CDEC20B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1768480702;
-	bh=CbI0FyXSbb6YAmZDeYFsFgsBILt9uByw9OReMAxXcLw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rapo8Ul/uEa5jDPQ8S6WmuQBVUYyNDQ/plF0jMu+OJqfd+nUo8/AXNNyV6oGHzmVj
-	 hYWKUmKi57O39oaB/eXc4xTpqRMdVk8kyUIb+JOc+atFw9ezbK0+o0oNFoWwGXXo+s
-	 JVsqI9xYHs9JKlatmx+1rYTPPeV4gdBa++0xuQUM=
-From: Thomas Ballasi <tballasi@linux.microsoft.com>
-To: tballasi@linux.microsoft.com
-Cc: akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	mhiramat@kernel.org,
-	rostedt@goodmis.org
-Subject: [PATCH v4 3/3] mm: vmscan: add PIDs to vmscan tracepoints
-Date: Thu, 15 Jan 2026 04:38:09 -0800
-Message-Id: <20260115123809.2257-4-tballasi@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260115123809.2257-1-tballasi@linux.microsoft.com>
-References: <20260105160423.23708-1-tballasi@linux.microsoft.com>
- <20260115123809.2257-1-tballasi@linux.microsoft.com>
+	bh=pUd/kv2lcFFW2hHf48J3Lo4+hROUx93JtEH7K2pEXsY=;
+	b=frR/0dLWmpp+bgIXwtmrzcfxj5kSWp70AnDx1tV8k1aXZe2wdakx7qIJ4HNYdpNkRx4eBA
+	zlytXtbRv6mQHslTkivFhQMYBPFzPZwPAFhd8Hq0I+1qbg3DexeK1ovC00T0KdMJmi/25P
+	6QdmD+tLvmavfeonSJZR1hF7Aps0OkQ=
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60FBCqOn1360856;
+	Thu, 15 Jan 2026 12:40:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=pUd/kv2lcFFW2hHf48
+	J3Lo4+hROUx93JtEH7K2pEXsY=; b=gmt913YuXBsLeQ+p67Fi8rHZRwKqDwMcus
+	00oWPnCjxofVAF1cdOUQd2Xqw/U9cUqrzPuNOqV9MXuQUgmNGXV32Ar8GgcrehHq
+	C/qFRNHdbZF1T1gqfCBns3ywDe2P23F/HUaKxRurn5VZ3KNntRKhSLKiTtGkrd/t
+	w3VWrxZykLyaf3cB6JMo+DARJLrU6yHD2E/Z2FJ96dMED+lA2kAlsIL4qT0GFIOj
+	u43IutOmfouK4bO0PkDIccl7nagwLASS+8SJie4ersLchnACPaq7vFiHeyXVtbVQ
+	gtSvyXpjV7xKB5wCQN0brICQuJQ/i2uLClbKj20ylYB4mFLuw67w==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bp5vp2wyb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Jan 2026 12:40:38 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60FCSr46004204;
+	Thu, 15 Jan 2026 12:40:37 GMT
+Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011010.outbound.protection.outlook.com [52.101.52.10])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7n335p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Jan 2026 12:40:37 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UnO7avXc1KVZ/txHOYiQGu4joQ4R0uv9r4yK8BBD/1R3NsqCWzGZh3WQBAaFBcZLCt+5I3bANuxF4rMvaCMjZkYQyWRufu8+OF3GDoeQ18o51DXyJREhCExAI+IAQiWTyRjZCMxUUhQGzb2IP/9orT8CE2+ufDuiFp3niAhUvMKauAPtOSKbzcvub6uLzQZ/Wh3oHliPJZv/Oa1Ml+pc4cCjotO0JUOvcvdr7vIhSD6XXxAjSboCQhW6YaYTa9Rxj+6KNHVVJr3ZkcgzNS+i9anxSRBodw0plMlr2cPRtOb4OWtUuKBXOhBgSt49w/QU9JrLeX1EvQjsJxAIp4XliA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pUd/kv2lcFFW2hHf48J3Lo4+hROUx93JtEH7K2pEXsY=;
+ b=lXd5NSZIcpgwmiaWq0ymxhIVNSyhkHZAjAEdz5qK3DtolU6p1QNfxh60rHiI7qtrqbCg2bI4XnrZrb5/HhilNstPN4GD7tXueTw8+fSabF0E7Y9XZnj87AiSdiowtJxizPJnOAPsbOlZd/etzaxmAWEf8KNN3KFH1bwK0LVJND/eEPgrsMhh4rtY2mHjwtqEcKNJoweFqa2z5Ul+RIkYqMLyZAau9dIVl538yfWZsCCQAJx06+p4VjaRhK+kKvw6s9KYLIzK1YXzKy/5mUALZsVcx9YVFVi0x11G3rZHkh97c8RtCgtlcj+Xk7jaIMjdIo2HFFLGnEAlRBgcEKmfbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pUd/kv2lcFFW2hHf48J3Lo4+hROUx93JtEH7K2pEXsY=;
+ b=ass352NQ8zO+0TMljrGTzs2p04vQ0GF9+EhrWt7E9dRsRZ+457UdtDC7ZwAEybYf4pCUmSAPUq0xJ+AaqzGaXHPzPIhoZ3b/H796xhcoc2Yx1ptcQpuh1g4s8AZk89WBJMAtQBIPIq18sTMKHeipFN8pBSJ/s43Vwx5rU1ATEdY=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by SA3PR10MB7072.namprd10.prod.outlook.com (2603:10b6:806:31d::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
+ 2026 12:40:12 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Thu, 15 Jan 2026
+ 12:40:12 +0000
+Date: Thu, 15 Jan 2026 12:40:12 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
+        mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+        muchun.song@linux.dev, david@kernel.org, ziy@nvidia.com,
+        harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
+        kamalesh.babulal@oracle.com, axelrasmussen@google.com,
+        yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com,
+        mkoutny@suse.com, hamzamahfooz@linux.microsoft.com,
+        apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+        Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v3 00/30] Eliminate Dying Memory Cgroup
+Message-ID: <0a5af01f-2bb3-4dbe-8d16-f1b56f016dee@lucifer.local>
+References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+ <20260114095839.eabf8106e97bf3bcf0917341@linux-foundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260114095839.eabf8106e97bf3bcf0917341@linux-foundation.org>
+X-ClientProxiedBy: LO2P265CA0416.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a0::20) To BL4PR10MB8229.namprd10.prod.outlook.com
+ (2603:10b6:208:4e6::14)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pp4t9uyw8zmzis8xmobp8wfqs4yrienr
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|SA3PR10MB7072:EE_
+X-MS-Office365-Filtering-Correlation-Id: c74eb249-2bef-44eb-0df5-08de543339d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?D5sYt2EyyTAWEaqbxhVbZysoauCFgM68OQYDAAlRbD3UWPcxocu4m8BPPIik?=
+ =?us-ascii?Q?G+TKmbBSHjimJHeMwRjcgXa3irk66A6hMiRJO/8s5SUxh2AFtBMnTv40Ch/R?=
+ =?us-ascii?Q?BhqJQ754zd9FsU4GQgX8nnzomAylOsRUWW7SaWjXuTi0a+acBHaCCwkOPGNM?=
+ =?us-ascii?Q?AGF9Ds8+6zJ8LBC/8FJZ+ori2MaQOqNW9YJ9PjoEykE1bPN0fC9H/csKooY1?=
+ =?us-ascii?Q?cON2Vx8aNssE3z7ob12DYlYJHWdB0Qk6xSE8qWKwiexiFvF7p4A1tYpbx1tK?=
+ =?us-ascii?Q?4WEb88MF+ddtum2IGk8Aha/LIn6CIuBdJ+QDIaa9fxM6TFZHkn3YrXAbwCr5?=
+ =?us-ascii?Q?UULl+6SfCBKqjICD6i9K07o46BIzCS16JwEmFXjOwXRBrY5fQjiAtJZoBsme?=
+ =?us-ascii?Q?30tdp6MbyXmuY/Bru8aLBtNdtkgVouGhWT+3K4spPbDq8FPFc1f4Lxa296TB?=
+ =?us-ascii?Q?3XWyHGedVNnm4m7dIKOanZOIIHTVYHup0DB2muIAvHu1bgOSbcWzLU8UrRLU?=
+ =?us-ascii?Q?XBN+jQpq56s+ajvvVi51uaeE+REu83X0j03iclC4JcjjSWTDZL9350R79Kt3?=
+ =?us-ascii?Q?RH/xnXUvb3iP9uX54/+nQfVtMLvDIZNi2DiiFcV8z3WydQS7/gqe8Ou8S0Sm?=
+ =?us-ascii?Q?iPUvnWnW+RTtvZE70d0awShoG6DtoAECbbYndIRb5m2rwRzdZB9e6MTYlCKt?=
+ =?us-ascii?Q?K4+HVUR78tsyksBjfjwpfNs6vAab/j99weyNxJg48hj2irEX8vAshUN1pS3s?=
+ =?us-ascii?Q?hShjoR133AjltlEDbPhpYR8eMUYCwtW/J/3UNYC8iA2DxzQVp0Z24q8aBavL?=
+ =?us-ascii?Q?VRO21IkBHrpLoYbE5eMJF2dZC7zPakRyxhYOn7vPDuOXSArbQ4nB3Si7/a1X?=
+ =?us-ascii?Q?seSuQ5gYxi41HRPM980/lryQLSclIw1enSLP9HDx5oRrrDvo3FkrQz4q1nC5?=
+ =?us-ascii?Q?W2E/a0Ya51IUXva/VEFeSNTvFoeqGVrrcwjiU9SwfQNBOKJZNN+ArponOV/2?=
+ =?us-ascii?Q?8nR68pgpG72kS84oWv9g8jUZY3cwFmd2KiQsHyAFUbxMjdBrJRWH1Icpgp/8?=
+ =?us-ascii?Q?fVyB2o7oN63UyKgSxhqTZVTafKIwUCGKFI/jQ2vPXFnolacNZyL7zuiaq7Rh?=
+ =?us-ascii?Q?Kd2+Mr66tBdjqOeCcW3FwNjK33fcq4AGGUuvlWJ3pkemLAJxkqcUzfv9KQLX?=
+ =?us-ascii?Q?OWO6yUuOMq4EdhtHP9ugUsfJJ84S2iqt4tne6oMx5UzJnyYXEFN8voReOq44?=
+ =?us-ascii?Q?/EORXb2NHbQAYdj6vhsCx+Or1zn+Aoxw/ssri7+ZFCDLNUXnQHDMiiXiJuXG?=
+ =?us-ascii?Q?tmfZ9XkPgKmyc78tNG31aT0xY4BbazrKxIyMhHzqHZnJT2vwcZnOScVdIJMu?=
+ =?us-ascii?Q?tz+DT++8P+jnLf5BZP6KPRx3kgBzQrlVSSf+hQN6I4ACZpIoxZnhm2zla+SX?=
+ =?us-ascii?Q?9Cnk81Afxy3z6huhKcEkirFVLJ1otZI+31S57aFesY4pyFk+A9+TKQEHfCWM?=
+ =?us-ascii?Q?H28+OvnAJvGo7nATT3kj1nw5/mKDKzQ5u2kkur8YIPN9u9tHeCQS8lQrBDoK?=
+ =?us-ascii?Q?ZA48SO3KJu1zMybCThM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VFCAFNkJux8lSpBNgytwGVX+OTkXmc/D58pewfAEShRKATBt+I13Kk4tw6GV?=
+ =?us-ascii?Q?CzW/ZaSIlKBwNaUhW7v2xnEkcA8oB4TQ3hkRxL5rqpTJYNJbnYOpWVdHEPAr?=
+ =?us-ascii?Q?nW6K0Vtm20T4WNjdZbLS4uJkJY9ahfoL9nt2/P9EAayZpTBFVLdAWDlGad2Q?=
+ =?us-ascii?Q?VBjqQUOid5MDlLi96Ko9jDeNh11tzsnGbEgqt5fO1cdmwOUGu1WybTvDk477?=
+ =?us-ascii?Q?dLT5+cndFZfI0t/g1VGEU+7aOzJTDit+C12dMz3MJV6OuQ6jFeJYi9VZCTFk?=
+ =?us-ascii?Q?veZSs/6gSfCOz+BX9kasV0CwBHpimH3+SjiweEXIGWo+qA5FKR9zeE/kr0Be?=
+ =?us-ascii?Q?C+WBuNTGgAlN0sVljRgEgelaeDLkoEeU/w1bdlu8GMO9mWrS3uRnoa3sHC3C?=
+ =?us-ascii?Q?/CwK0y0WymAI89HpuUhP2Lcn7fz1tj49sOqKNLS974sPj2WSRZK6+1T8Pr36?=
+ =?us-ascii?Q?QghSA8NvcSlc90NnOnTiKruMVk5N2P6eeMUXTE5d6M0vfm8SuPfv620J2QcY?=
+ =?us-ascii?Q?jb6ArCz0Yfap+8Rza1i5OghE+d9Jgn6WOew86edmy2jjYY94qwLsW7yjJIit?=
+ =?us-ascii?Q?xSfqhoTiPyrrGVPYocSY/Sk4thx+YlFeCIDdo93McYZ4sOdnOzIVnSs744Ra?=
+ =?us-ascii?Q?bH0GzL1LWH+48CtSZiBYCUR4NV93w44wVfbnRLVp46d+F4NalUOwGbkMN83m?=
+ =?us-ascii?Q?4k4DigY3ss4U0Edq6TxIPQeUJqDAwvN0WaC1FqiMnOPXZxIYU/9m0+Wzr2SQ?=
+ =?us-ascii?Q?yVVgpArFZpxmFwQCHg5OrmH49fjpZneyfkam2oRU6veRHnwJlmdnk7zZa0uT?=
+ =?us-ascii?Q?iMHucGcsV8MKt2ZO5SgwjdaZ58t6uLqI7uYt71L/z00RGA/S4KFcUWbQPW43?=
+ =?us-ascii?Q?l8IqMj6gLczrdZPyoOiBoM0H35v/7xZyWk4CezGfcAeDohFrzvBrd7IuTyFI?=
+ =?us-ascii?Q?Itgw6RZHinhiXzfTwIld9wvM7JxUw+UatzvAxB8aAeoAlMSbT/B/vKDpAhrw?=
+ =?us-ascii?Q?3t35X5DxWxDkFmaf7QYR/NpABxOOonBWIj1T6WVFYuGgX7rbOCVL9WA8VgCe?=
+ =?us-ascii?Q?uyZWKXbbD+rHxZnl3yMrCZ/wk3irmFFDW0pPLKoco0F0uwICQ4MZUBe+W0UB?=
+ =?us-ascii?Q?/FHTwZh/w0Iu6AIW4xgrtq/YvVLrfCOzW5HY9Z0aBe8IWvYLyzojAOADJhwl?=
+ =?us-ascii?Q?RpVtCxkXDbrY79YBkDi1Uo5WEbkrNea7qvrhAUwVL9tg5430Ci63ZrcTcIX1?=
+ =?us-ascii?Q?8VZhL+6ycwYGxcKlGYoN/CNSd96Zp+e0xwp7lGV74TpYqXc3PUIei6LIsYiA?=
+ =?us-ascii?Q?CBPJzb4vZ56OzSeIP2Ggk03n+/nmxXRDD84hpm6N5H28qMSme9ZnBtv+dcIF?=
+ =?us-ascii?Q?JX5re8KUwQGpxkV89eh5dRufheJfB3wq3vlgYPwbRCg78PDlvHKSbzCuKNRc?=
+ =?us-ascii?Q?l791SVA8kR0UQFlulpVqiqdkBAv3CwFLLjq5kiuS6URxzYRwqcsYGVfdNBSb?=
+ =?us-ascii?Q?1cB97D6YiyOVryLrffBlDwzKYGfs2UMlT+hnexOoBC96X6LvF56YrLdKdZ+q?=
+ =?us-ascii?Q?v1/m1H/Gq+nS6pyzOqG5lY6EwpGSB4gG+exLP7OpwH1KvRYgJWWTh+V71H51?=
+ =?us-ascii?Q?rYOVAeToyFss9gvETTybbKYv2v93ilq30+yjxPEmOlfjEC1YoLPW4SK7TcfU?=
+ =?us-ascii?Q?BZVQUGFtdj6mSiYvAScZEHyxi8/DGJ8DEFA2wK1u/Z1+sjwvS1f2FAXDoDVL?=
+ =?us-ascii?Q?pyxcQPCR6x/a7sPlDrgGq9kLUdGfmjQ=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Z2xd4yJmSNLaCg1pLVx+Ra5k0j8qqUTGrzWZQxsLW+Um3KLF25eYkd2CpNqgHtj7Sn+JEfOZR0zHmjgC0OjWVLWPN1Tj5qiHuAlDQrrniDWSa8+WO3a4Ui+RwMz4UUaCAvkhocBadlWEWX6wrRlBOkZO5TIImzjAI/OOvsppaNf6g4TJythzM32DwVy4U2Jc3PXWeZN0aqN2lqQUN6R14X7U1mV5VddN2cauCOqO6/H/eGHbQZBUGWquBycWk0UQohj6OXx6mK3ObXE+4kgeKvJNOQPFfHcYEXdbFTdPFO+m5J+afe8Yqduruidd6MoaCUcwpqXW47435u+bsuug0Fkggl4JhWgaJuyaetUT9XNm29AnjsZidlBBsPuyWYDxAikPN7i7DSLXGraAEISDfa5PVhlpNm8NfDZeRWNN57wCBRUfaMrNDeBMNvjkH1o1GS6t4z85mftb/DpXCzScxNuLsqaYBOZ8KEH6I1N9jC95qZ7XJ+w1DvBXiTfbzuIPITtAYVLv73C/i6WCUExWbdKY5MZf6nH1lQS04sSc7NhsnaBz1Eaxsn1aZXwPgB1uN9r7YW/rbwCVs8CbSi+XUWmuaqGhcLd2AIrmTJI/0cs=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c74eb249-2bef-44eb-0df5-08de543339d4
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 12:40:12.4466
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3oGFgk0uv3UzluU00Lszip5JObIfkK9vnYyIEPhWlLbtnSrqqFl1GY9YEbgJXuQXfz/LFUozZTJXrv3ob5JT5YhramxtAdk+MvtfI6hHgHc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR10MB7072
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-15_04,2026-01-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=977 suspectscore=0
+ malwarescore=0 spamscore=0 adultscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2512120000 definitions=main-2601150094
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDA5MyBTYWx0ZWRfX6heAYc3adYHA
+ hIpjT0tD51NFrJWHqtovQaj/8nqAHtnhJ6RpluaDm+pUgx6cD9WrC/8XDtyn0+u/zUq7O0J8xeq
+ lbWusn2i9Z9kPGITa1Of6uPOwSYfWn8bBdB16DOV7WgNJ39M24d36EsXZHLCrA4mYC5Asd0W3S4
+ gyGGqyynzoC67RKpvtKtWzgbl15SdiVDP5+Clw8C8RO3/ufhlbCbbcipCF+7dYPrseHTeyJJvCP
+ mCdNJ+E8qDh9QSJUzPveELAm8uO4GrFJ4ZFtIxWWyov2DAGoIhA+d5qI+T8cI0qeCQT9QLQZRlp
+ jCSYHBMP8WE3PiuZkBSifrJHth2cSPxuS7sp6tMCoEDCYP3Cfxn5xcz5dhuLZ/oylydggRFhbcZ
+ vzB56xVDGHnKvxlB/lNAlyeomJNbR1ZjMfMvU6Y1AvsmwCh9pO1Sw+pAezSdbzxSnLFyE2kTqll
+ rS1fIbV6zT71D6lQ0orBlkUFj1j0u6wBfh0xunKc=
+X-Proofpoint-GUID: iI2qt7iYxPODI0ijr_STkYTRpZ2TRUVT
+X-Authority-Analysis: v=2.4 cv=aZtsXBot c=1 sm=1 tr=0 ts=6968e046 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7Etcu_kTKpxH_ZaVkjYA:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10 cc=ntf
+ awl=host:12110
+X-Proofpoint-ORIG-GUID: iI2qt7iYxPODI0ijr_STkYTRpZ2TRUVT
+X-Rspamd-Queue-Id: 60826180003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hsxhahyjz3u5x7kchimoth1zhkjrpc4m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EB92380002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768480703-152907
-X-HE-Meta: U2FsdGVkX1/wQdP97wvpWxtDQMRJQRBrI8/ifWGQDM/4SsViCO7TPit6YZG32EQBZS4E9RsnmOLwHdJ0GP/Iapl8H7mHQVbtdLWwVFeYWHUtolbIxyp3Y0y8mVW9WT6ztcxDMMkMBrztwngtALgwguWICO5nx5u0rO4BWD3QEGc5f1KQ/j8QF3NCJWvukgLBHgr3CKMJT/FMN/n+jqbqZu54t3PlW2zbr3Apckru+hlYBEkaD7BdFMPrI8fZ/BT61oJ6GzvH+qqmDG2G3VnX89/yn9NTw8zKJvP0m1pCTpAPblvVwC4K5aS+pcyy2TuBYCNo99IVkM8NX5jmOQ3GKDgUBL0Z7akeE7ZvQM0D4VdxtUOCseZo5qN7sQrQVJ5MpHcdBfDXSC7/v4v8s8rrIsES96Zvjl9jZhkTDUUSdl6uK8buC0ZUYFtQ/PU1MsVI6t5J1XI91BM9f+ITKDH65MJ0qG1njTBqvijA0yREBFVOCodnZA7kLauCPw3OuuwGttmc7Mu7KL1SLFbRbstAmJanlwF20wzDXr0e3m18jTqNo7TvHJD/JA9oNhdpmbBcy0MjdkiM+Tiyr4Ppr6UFV9U6U1lDf1wdG1f95aH79dlzXCQ6TJOyW9JX8VTD+MZJrn0LaRxdWyvThJuMfjxCm72UJg9WY5QcSnahwgCqukwTkQeQMnViXXyoo7zeMmMd2BJhnX24BeRrg6bg1P1jPfj47F/1/SQmGj/te2cIRuuRcSY/8fxwXof+1kNdPUl6imKmHMEyyTrjViy+ktXAH2tejAf7pkB82U0E1OtqCMEWCqX36efuxv8CSj/YL9prv++yYi8h59E1Qdmz6FIW9zjgp0osD/bEww03Auu58HvedBCoo/i/Ma8fBGcwCTAvnWHIXmZ4LTTWLmRHhIINcZNEDsQlhSaqBRRMhSvoZ3UvgpnpSlV24Ef7sFIS/SqfDci4ODIm0Xq/VnC6ALn
- vcjb8xGO
- La7J8VkJeZ1OtFA/FQfwHD/rXnU3ujZzLWYOb2WXrNJislfXxQZOtfVWvSSbAM5XXG5d/dMylxwJF8qvwm9kU8auJcCxZEBDWHewOy5yF5i+aGlna9gMM1VVBRysPYWFBRKQCNCC/JM4qEx0TVmIAwP8buGd3lN2gaFkZjJmDyR+7fIbris3F+nCyoyoLGACs7lx6Xm5cPJl4RJEovjQ5PBsrfpO/g32WBkDSu8zJ/0TZkBpbNzd+QLOdosF9GmJ4zyBdMeVuzJlSyJZ1aAwD5c1+lxKuOzLVZuhG
+X-HE-Tag: 1768480865-13321
+X-HE-Meta: U2FsdGVkX18fJTHYiRCgsxpPm4/946dP+BWpu64aVMIY5YXvuRLvPvULkhFFlJO450D+AjuSQrhDVSO8cvQMeY3iFHO276bH726rAsXsiB/3W9OCV3yTlrxZCeyh3302cIIlYly8cs+fz0BIqvj3n1dbzOSynWGSQSCyfdmU6z4WiO98RWi5mjBkkrDAi1F/NhgWuGre4KTg/DkbzWGZ3yef2mk/9XOLlXteUWsBI+0bX/xbwn7sYeH/GM/lCBSyAWSqb59GfrQznngqJ2WiF+2ftaKEFLZNVFyBTmVsM4vjWMuVDKtfungVB0uDb1Ki8Xoz4KSWv2sKVNsqXtmPrUGhECsqfqtvMOMUTL59woKUPdZ7z0rtEWcsmhNNWPXoLDVQRNaEdF4/zDVENm09K79vOuurREcCckZcN9Y1Z1ckBd5pyy7dE35zIA1YjM0MY/9iVsUQ0VBuZYaM75Zn0ZQLey1h4k0R8uySvdWg40OLlWSbSfCq04aXvbW6qIgInzSNvLLanaLe+Posc0lYjlHzdmjtCZnz8gH20J7jHu4TgJuyE0nTBdazULNG5XmEKsXV9SnzszHUXf3dssLTEXUl7hao1J3RR13Gz4MxYdsvCWbafzW34HKIpJ5A3mvynQzexAFzGRFu1dp3Zgvsih4TUAuOHYCQ+tZQZ1cu/NYgWZlzS57JrTB0TfzJOPOgs8pcsEKNN4aBRWNy2Bn6ql8nn2CZSH8x84MerZA36tK8Bhqtvt5+IjUE5QtmiwSqIDF8G+uIKnVTBzzt1C4LbvfBPlS0/7rUhz8X6Z2PrAfGJkMawtlNggG6iUyl6Cp3w0tXFul+KRF47Ixv3+Jg3SAv7MZincq9FMej/BpxCSIXgm+YTYX7gnu32OkHu1kQOT2hFeLOi7pd0meHaXFCrHgCCz6MCwdP0RdeP7ww8WRXXrNf12ka2JLFQA8f8zqTXpB88iZ2ybOrZVyiTxe
+ 1piCbqMs
+ KywN9keZGb5sn2ihLlgHkKaVcLR1SQXuPo47CUSGm5Rglikgvk40JjdWsE96p1vkijNAJdelN5lAL70Zi2AyawsGF0CuI4QAhf/ZkEPGj2Ago1nU7qXkBO6Qg6jhpwfOfDWwfeFDOifUlQ1DW5ikxyQkj30OZMwI+QfUYFni5ZBV4WKBo36ARFgNdJn9rn7reBx0iF0s1hdxke8XZpDwRHGfcbeboQ3Qbjjyf/BRSvkO4qm7G7VE/h6Yc+5MOvspQ26IpsiDerRxsxJWIBghAiCJ+3cn1Q8+UxEUfP7Mr1Uhowpm4fSmPCUVD5GCAsYl95bl8M33H7BrpeMDJKKr8T1HaQ5rrtGSzxLjZQHJ24iGNhMkL9NsglEu1COhSP2b1Z+cN31tfH0gZ4JuuS+DPvZX4qIt1oKstNyOuouNC0hRmM+djGUDwshfc37weAF7qCToG2HxjZhKGkJlOrb86+v4HqC7pTLjb+f4f3LDDIuZg/5uJV3FNMefIO5OQDicXNwFtjF+BISYJZscwGiOu+qmM/S8t1QdJF2r8yfLu3e8Zogrjgk5PfXEJCoY+qqChV4qI6wYwKXnC/ZDjRKVB1xKBYe6s8ruqsJxgGS56KJU9FSdX8ABVjNan/lmOzzXAgT6XhKwyRBzIhpo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,145 +245,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The changes aims at adding additionnal tracepoints variables to help
-debuggers attribute them to specific processes.
+On Wed, Jan 14, 2026 at 09:58:39AM -0800, Andrew Morton wrote:
+> On Wed, 14 Jan 2026 19:26:43 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+>
+> > This patchset is intended to transfer the LRU pages to the object cgroup
+> > without holding a reference to the original memory cgroup in order to
+> > address the issue of the dying memory cgroup.
+>
+> Thanks.  I'll add this to mm.git for testing.  A patchset of this
+> magnitude at -rc5 is a little ambitious, but Linus is giving us an rc8
+> so let's see.
+>
+> I'll suppress the usual added-to-mm email spray.
 
-The PID field uses in_task() to reliably detect when we're in process
-context and can safely access current->pid.  When not in process
-context (such as in interrupt or in an asynchronous RCU context), the
-field is set to -1 as a sentinel value.
+Since this is so large and we are late on in the cycle can I in this case
+can I explicitly ask for at least 1 sub-M tag on each commit before
+queueing for Linus please?
 
-Signed-off-by: Thomas Ballasi <tballasi@linux.microsoft.com>
----
- include/trace/events/vmscan.h | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+We are seeing kernel bot reports here so let's obviously stabilise this for
+a while also.
 
-diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
-index 20160e79eb0d7..288589e3364b0 100644
---- a/include/trace/events/vmscan.h
-+++ b/include/trace/events/vmscan.h
-@@ -122,18 +122,22 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
- 		__field(	unsigned long,	gfp_flags	)
- 		__field(	u64,	memcg_id	)
- 		__field(	int,	order		)
-+		__field(	int,	pid		)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->gfp_flags	= (__force unsigned long)gfp_flags;
- 		__entry->order		= order;
-+		__entry->pid		= current->pid;
- 		__entry->memcg_id	= memcg_id;
- 	),
- 
--	TP_printk("order=%d gfp_flags=%s memcg_id=%llu",
-+	TP_printk("order=%d gfp_flags=%s pid=%d memcg_id=%llu %s",
- 		__entry->order,
- 		show_gfp_flags(__entry->gfp_flags),
--		__entry->memcg_id)
-+		__entry->pid,
-+		__entry->memcg_id,
-++		__event_in_irq() ? "(in-irq)" : "")
- );
- 
- DEFINE_EVENT(mm_vmscan_direct_reclaim_begin_template, mm_vmscan_direct_reclaim_begin,
-@@ -168,16 +172,20 @@ DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_end_template,
- 	TP_STRUCT__entry(
- 		__field(	unsigned long,	nr_reclaimed	)
- 		__field(	u64,	memcg_id	)
-+		__field(	int,	pid		)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->nr_reclaimed	= nr_reclaimed;
- 		__entry->memcg_id	= memcg_id;
-+		__entry->pid		= current->pid;
- 	),
- 
--	TP_printk("nr_reclaimed=%lu memcg_id=%llu",
-+	TP_printk("nr_reclaimed=%lu pid=%d memcg_id=%llu %s",
- 		__entry->nr_reclaimed,
--		__entry->memcg_id)
-+		__entry->pid,
-+		__entry->memcg_id,
-+		__event_in_irq() ? "(in-irq)" : "")
- );
- 
- DEFINE_EVENT(mm_vmscan_direct_reclaim_end_template, mm_vmscan_direct_reclaim_end,
-@@ -220,9 +228,10 @@ TRACE_EVENT(mm_shrink_slab_start,
- 		__field(unsigned long, cache_items)
- 		__field(unsigned long long, delta)
- 		__field(unsigned long, total_scan)
-+		__field(u64, memcg_id)
- 		__field(int, priority)
- 		__field(int, nid)
--		__field(u64, memcg_id)
-+		__field(int, pid)
- 	),
- 
- 	TP_fast_assign(
-@@ -236,19 +245,22 @@ TRACE_EVENT(mm_shrink_slab_start,
- 		__entry->priority = priority;
- 		__entry->nid = sc->nid;
- 		__entry->memcg_id = memcg_id;
-+		__entry->pid = current->pid;
- 	),
- 
--	TP_printk("%pS %p: nid: %d memcg_id: %llu objects to shrink %ld gfp_flags %s cache items %ld delta %lld total_scan %ld priority %d",
-+	TP_printk("%pS %p: nid: %d pid: %d memcg_id: %llu objects to shrink %ld gfp_flags %s cache items %ld delta %lld total_scan %ld priority %d %s",
- 		__entry->shrink,
- 		__entry->shr,
- 		__entry->nid,
-+		__entry->pid,
- 		__entry->memcg_id,
- 		__entry->nr_objects_to_shrink,
- 		show_gfp_flags(__entry->gfp_flags),
- 		__entry->cache_items,
- 		__entry->delta,
- 		__entry->total_scan,
--		__entry->priority)
-+		__entry->priority,
-++		__event_in_irq() ? "(in-irq)" : "")
- );
- 
- TRACE_EVENT(mm_shrink_slab_end,
-@@ -266,29 +278,32 @@ TRACE_EVENT(mm_shrink_slab_end,
- 		__field(long, total_scan)
- 		__field(int, nid)
- 		__field(int, retval)
-+		__field(int, pid)
- 		__field(u64, memcg_id)
- 	),
- 
- 	TP_fast_assign(
- 		__entry->shr = shr;
--		__entry->shrink = shr->scan_objects;
- 		__entry->unused_scan = unused_scan_cnt;
- 		__entry->new_scan = new_scan_cnt;
- 		__entry->total_scan = total_scan;
- 		__entry->nid = nid;
- 		__entry->retval = shrinker_retval;
-+		__entry->pid = current->pid;
- 		__entry->memcg_id = memcg_id;
- 	),
- 
--	TP_printk("%pS %p: nid: %d memcg_id: %llu unused scan count %ld new scan count %ld total_scan %ld last shrinker return val %d",
-+	TP_printk("%pS %p: nid: %d pid: %d memcg_id: %llu unused scan count %ld new scan count %ld total_scan %ld last shrinker return val %d %s",
- 		__entry->shrink,
- 		__entry->shr,
- 		__entry->nid,
-+		__entry->pid,
- 		__entry->memcg_id,
- 		__entry->unused_scan,
- 		__entry->new_scan,
- 		__entry->total_scan,
--		__entry->retval)
-+		__entry->retval,
-++		__event_in_irq() ? "(in-irq)" : "")
- );
- 
- TRACE_EVENT(mm_vmscan_lru_isolate,
--- 
-2.33.8
-
+Thanks, Lorenzo
 
