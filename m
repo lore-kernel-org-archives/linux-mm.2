@@ -4,84 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC59ED4114E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 10:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52CEDD41158
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 10:07:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 368E56B00AF; Thu, 15 Jan 2026 05:00:48 -0500 (EST)
+	id 93E3C6B008A; Thu, 15 Jan 2026 05:07:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 345AA6B00B0; Thu, 15 Jan 2026 05:00:48 -0500 (EST)
+	id 8EB3F6B0092; Thu, 15 Jan 2026 05:07:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24C3D6B00B1; Thu, 15 Jan 2026 05:00:48 -0500 (EST)
+	id 822286B0098; Thu, 15 Jan 2026 05:07:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 10D3A6B00AF
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:00:48 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C02F81ADBF8
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:00:47 +0000 (UTC)
-X-FDA: 84333754134.08.487F2D9
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9CF13140011
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:00:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U9SuuA1L;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 735A26B008A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 05:07:02 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AEC781602AF
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:07:01 +0000 (UTC)
+X-FDA: 84333769842.19.080A654
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 12EE11C000B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:06:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768471245;
+	s=arc-20220608; t=1768471620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ya8nAi114rbQsSwtfqViDZqZMj68VQCcDvy2eEcJ3Es=;
-	b=hZvbkRJkS3YLaPwI1cnsLWWpHTh8qVWm1hPgNCx74PED80Luzbd8Fko75h5NkEK+qYCCQO
-	EEHelWzHr1jcgXIG9FT14tOl/4gvXV+pZ/QfHf+1TPN9u2bz8vuZlQkCaZO7mb/ik3OlDB
-	M2uThmI1OmmZYaVDcPT3JQc7mz0njUQ=
+	 in-reply-to:in-reply-to:references:references;
+	bh=NIi6WkID40hmPs+fzjfqtwVUhSv+uj6waVW368OgFTY=;
+	b=dc5x43evE7m2ARiXCxOGOV2DGJu6m9TzF2A+XyhbhUKG3G/BX9u0/vIvtpji306UnLbbrc
+	MAkKooRCGA8LzhHkm2EHXuif9sDaLOaZM/dd5zIcBc8BsZG6uvVkZcxJePuKS4zBrGwFRF
+	pIC91may6XTUecdvKFd4v68QEVjQGsE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U9SuuA1L;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768471245; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768471620; a=rsa-sha256;
 	cv=none;
-	b=QkLigRZlctWBOD3pDgENNUPZTijotZe/L56k1jvkr5n2mTBPg411Hoau4HQKcNGOcaHD6u
-	K6y7HMhsXdzP1swlvjrlnq07aGsiP8R13bb5Rd2FiHAXDM83GtZhqvEIkSsr2VVDEp17fC
-	QW4ep9k5+SzQoqvqprxyvkm8bmdi4Z4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1768471240; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Ya8nAi114rbQsSwtfqViDZqZMj68VQCcDvy2eEcJ3Es=;
-	b=U9SuuA1LDdQQqEdhtStJFvk5cIFhtbV1YTjSpqakEKr8MjRKFW2bCcCqBApoghUQqQcuQ3ac7V74HrUJm5Ys9zvwJ+GKpjDvQwNK3ZsrJW5W7J3JIni+lPaM7gksNvI7wzAYwM0NdNRCTxJ+8ZfuFee9MZsIcRfkUeRizSEwaYI=
-Received: from 30.74.144.130(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wx68Cip_1768471236 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 15 Jan 2026 18:00:37 +0800
-Message-ID: <0bc3807e-2c1b-43af-9aab-665ce30d49d4@linux.alibaba.com>
-Date: Thu, 15 Jan 2026 18:00:36 +0800
+	b=pFV3NlUdXsrmVXzq2arKr7g0+9QrPpfYemiOvb7HogSV00RpXrdjXW5jNmF+vkdGVPZro5
+	f8UQQJ0HOtQGbvh8uwMasZB3KgwMFvm8Ys3Y9rzQbUzgPLheHo0PtlbhxTXMQNL2B+QHXg
+	7oXKd8js44A6Ft7Is4XpiBePLQbu2aE=
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwA3PSU4vGhpz1wiAw--.3171S2;
+	Thu, 15 Jan 2026 18:06:48 +0800 (CST)
+Received: from [10.22.77.56] (unknown [123.150.8.50])
+	by mail (Coremail) with SMTP id AQAAfwCH3us1vGhpfdsTAA--.20387S2;
+	Thu, 15 Jan 2026 18:06:46 +0800 (CST)
+Message-ID: <0e1e1b5f-df0c-459d-9cba-5bde5ad56ba3@phytium.com.cn>
+Date: Thu, 15 Jan 2026 18:06:45 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] mm/khugepaged: move tlb_remove_table_sync_one out
- from under PTL
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org
-Cc: ioworker0@gmail.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- ziy@nvidia.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260115071651.42626-1-lance.yang@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260115071651.42626-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID of
+ CFMW
+To: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+Cc: Wang Yinfeng <wangyinfeng@phytium.com.cn>, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Mike Rapoport <rppt@kernel.org>
+References: <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
+ <CALzOmR2z0noh74aCAd=QVUBgdn7Q+Hbevs-cr1EtV_zXCuQ=PA@mail.gmail.com>
+From: Cui Chao <cuichao1753@phytium.com.cn>
+In-Reply-To: <CALzOmR2z0noh74aCAd=QVUBgdn7Q+Hbevs-cr1EtV_zXCuQ=PA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rokh8s3m7b9ke7gjcbzuyonszo3z56my
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAfwCH3us1vGhpfdsTAA--.20387S2
+X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAQAGln+JMEtAABsF
+X-Coremail-Antispam: 1Uk129KBjvJXoWxuryfJrW8tFW5try5tr4fXwb_yoW5XF47pF
+	1aqa9YgF4kJr1xGFs293WUAw1IqFsa9F45XFZrCrnxZa1Ygr15Zryaqr1F9F1ktrWrCF1F
+	qF4Dt3WYvw1UZaDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
+X-Rspamd-Queue-Id: 12EE11C000B
+X-Stat-Signature: bda9hwmth4sghxut3f8szafy9skmo899
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9CF13140011
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768471244-569921
-X-HE-Meta: U2FsdGVkX19ulfthhH687Dx9IhsnEFmXcDJhWRKEzs+FBKX3qocebBU0YrK5aCgmn3FI6Gr6vAr69TTyFX/xps6n6pck/9pc7TFwRLHEI029Qvb0aXGvW9UBUBYkzEmy7QOVjHKfhMV7Wyz1sA9G9/rxPaNErK8itJydnfydj46u8RtXVj0oyGaL7ar2SUePZ+1W2aL9wERYisJLn5wTY6VDDHXBoZ99LEALOrK93O7FzUN6dIErraScroajEoCEUNKYc5P486T9DPXSnQlWu35IOiTuG5/+1hszF0S7xgRaN00T6a+y9m2FVTEhNdJpbsgA1rGZ21d+6uZjX7MwGva3UG1OuFbgGDVBxxuDkDmIlUgXvA9u24ikdEZsg3S6i8pijOD4PjbIDwPaK3DVFs0Tf1WQ9Q0GmWSVDN4U5GLeJC6UiO/dVzMU8BpW1sBz1ayvAr2pvXPJeNn52KBt+kS/5SLKfxfK8PEsvTxpBhzBI8o5HpviavfgFGhEYw1CNZBUowScrsMwMoWT355shpdWYVOn/x3J6JujrCac71B+xx7bW2l5FbA51DY+QvpIvoPvMIBmrYJF3kq2kGvkRF+n8ch2DMBuTo27OChiWy1KpI+3iNkBhbbF3MYuTwEiR9wq44HrsFsBMhtqWaIJwQQSyYzXc9JPIKXI2DQRvqKYY0eXFcopGkmIC8/ie3u9ZDrtCf4KzvlqM9z02UXJAp6FuK2tz9cKyy4RB3liTxzQVEdTgcAx24OdRz84CaPtfLtOmFS8SDWE+rLiQJqh4ZMHcm/3TJOP9+9xjWqsXWpDmsuC2hB4i3T0ZtGnbvbuzA63no7eSfnlsDRY2nHrlbM6YN6amQsDMK8Urij/YhqZATC97kTVUisB14A+6dsYa5dyFz5IfpScs753TDnysQ+1BvDQknv/2H2Pnu3jU2bH35F5wCyMLK7WmYZKqdWDY7865CoOASHePaOoCJE
- EfGeQBr3
- kl7GODNe7sq34lbDFLnUo0V1aI3Rb+XUZWJvONOY+nAcFKUin7TZmg80WHij9xtgmTW691huxVcNIh4FiJNjRMA4qbg/M+9XI138IRLBcYF56H7RHtBRNaFcrfWnX/5hHH/5vKnUaSA/RwHDV13p/eYN6zAoKs0oMdqVGJUZ9up1D97EkZ7LhIired3fsN81rc437Lx/zwETuEXvcKBsCI1Guh9pF+DuCDALo/hgItwWkg1B9eb79U2aB19hYwuSje3z69MrN0guecXGI+iYJGU+p3Zti20mcXGHUMLclVn74xqCtm7Im+zEWZB0oCzaJ09RVJV88+Cd8BR/K5k+zDEsghUu5HbLuR1qQ7JrWP4jXh3/TJvpMEyW1HQA4+Q/zvcWE+iKp0uKkB6k=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768471616-886784
+X-HE-Meta: U2FsdGVkX19m8AOx8kWITRTCNpCIZqo5mIUO3YHHHH4bmFsqoHyfHeh4Rl/q8rWSYR2KikCmFGyTQHu0WBl0rrpAIY4N5ZOnEvLjVhpFPEv7m85Pxkbn9wD/y25z31eUBTodTfLAMoi9SBf1HHDGrHcH9p6/TcRUDixEK2ZO3YUoVlSEo85ODOxUTvfa1wIfi4dUv6q2Rc/4h3YkZchxLh4/J6f6UrVfj5D9a8BaKuP0xiuKt6FKEg9yxN150wcAxQ24BPa1EeY68dHosWE3xjJtyxeL/KP1a5sXxDW+coH/2lExfMilrirwm8FqqGblyHySmAjSWV44Mx6wIOKvCD0YLYF3dVh2C4oBktHKthoc/845kFshw+7GOOUOEfn1fHsiIpzMKpoYJYm9nDOTYP4TWtc3ARc2EI7QvwdAE5y6Pw6XfuZ2GalE0Wtr01DpM3kWXR/dcNFPTaKvmjUXZcMO6QorqNqX7HHCbHKyXTO1W872DsNaTO++Eo+FjX4TYCwUusyZ7fKogH3ib7wdJ1hywQeDoq+jhmY1qKdG+Wj69S8QksTQtMUmdpSYfhyxZj5U2wUAZNZyfDfzNA5E0NrpwkvqJ91EC/Z6vHz8UJhmroqFDEw2p2I6vR6Q/snqEe80/dNX7o9otRISBV3nrWcvVFddCw99x7tY3Nid4w+ld761IuiU6pN8m7M7pWqY053+7MdQ0SNQsKBng0hjyVf1qbZUu9Msa2ult0n/ASyBo+328eLQ4icoaILvjAUoiSWmnFdPj0NRwwkQzJLmuoSe9ehsTPHUoUiDDxRYfpNjmu4e6uPhkaGotrUhNkwzaBtJYPJLCjoCPsqkCQA9lkpVpzvyypTpnRGeiY1CdkfVxs6f5GwXykzK4xs6IqyxWT+F5oWyI7E7LIv7DMBBOqe6fjjORAmmznkxu1c//dJ5cOK8lf3X2aHDCykMZk8melu+mqUgwAQSE1OJgdC
+ 4nbl3bkM
+ SoN381ExYWxgS2r6F21y6prfrj+iiSupmmpQ9rk9BxNT+h4yI3puekk1ZzS6twkmugvg8yLPAZML1FXMB4Xd3LYFRSQ/nOnTqHR+y1QRZLFvzA4KnsRme+a1e77atRYMu2yKIQiHTsIis7l+GgoWHYJ2srStrQM8k5AZMf8lYqxyfxuxph53UT0KH19Ua0Wu5YhWCCnLtm63UJMp3/VyyeQcOVA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,83 +94,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lance,
 
-On 1/15/26 3:16 PM, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
-> 
-> tlb_remove_table_sync_one() sends IPIs to all CPUs and waits for them,
-> which we really don't want to do while holding PTL.
+On 1/9/2026 5:35 PM, Pratyush Brahma wrote:
+> On Fri, Jan 9, 2026 at 12:44 PM Cui Chao <cuichao1753@phytium.com.cn> wrote:
+>> In some physical memory layout designs, the address space of CFMW
+>> resides between multiple segments of system memory belonging to
+>> the same NUMA node. In numa_cleanup_meminfo, these multiple segments
+>> of system memory are merged into a larger numa_memblk. When
+>> identifying which NUMA node the CFMW belongs to, it may be incorrectly
+>> assigned to the NUMA node of the merged system memory.
+>>
+>> Example memory layout:
+>>
+>> Physical address space:
+>>      0x00000000 - 0x1FFFFFFF  System RAM (node0)
+>>      0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+>>      0x40000000 - 0x5FFFFFFF  System RAM (node0)
+>>      0x60000000 - 0x7FFFFFFF  System RAM (node1)
+>>
+>> After numa_cleanup_meminfo, the two node0 segments are merged into one:
+>>      0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
+>>      0x60000000 - 0x7FFFFFFF  System RAM (node1)
+>>
+>> So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+>>
+>> To address this scenario, accurately identifying the correct NUMA node
+>> can be achieved by checking whether the region belongs to both
+>> numa_meminfo and numa_reserved_meminfo.
+>>
+>> Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>> ---
+>>   mm/numa_memblks.c | 5 +++--
+>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+>> index 5b009a9cd8b4..e91908ed8661 100644
+>> --- a/mm/numa_memblks.c
+>> +++ b/mm/numa_memblks.c
+>> @@ -568,15 +568,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
+>>   int phys_to_target_node(u64 start)
+>>   {
+>>          int nid = meminfo_to_nid(&numa_meminfo, start);
+>> +       int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
+>>
+>>          /*
+>>           * Prefer online nodes, but if reserved memory might be
+>>           * hot-added continue the search with reserved ranges.
+> It would be good to change this comment as well. With the new logic
+> you’re not just "continuing the search", you’re explicitly preferring
+> reserved on overlap.
+> Probably something like "Prefer numa_meminfo unless the address is
+> also described by reserved ranges, in which case use the reserved
+> nid."
 
-Could you add more comments to explain why this is safe for the PAE case?
+Thanks.
 
-For the non-PAE case, you added a new tlb_remove_table_sync_one(), why 
-we need this (to solve what problem)? Please also add more comments to 
-explain.
+I will revise the next version according to your suggestion.
 
-> Just move the call to after we release PTL, and drop the macro wrapper
-> while we're at it.
-> 
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
->   include/linux/pgtable.h | 4 ----
->   mm/khugepaged.c         | 5 +++--
->   2 files changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index eb8aacba3698..fb04ed22052c 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -755,7 +755,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
->   	return pmd;
->   }
->   #define pmdp_get_lockless pmdp_get_lockless
-> -#define pmdp_get_lockless_sync() tlb_remove_table_sync_one()
->   #endif /* CONFIG_PGTABLE_LEVELS > 2 */
->   #endif /* CONFIG_GUP_GET_PXX_LOW_HIGH */
->   
-> @@ -774,9 +773,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
->   {
->   	return pmdp_get(pmdp);
->   }
-> -static inline void pmdp_get_lockless_sync(void)
-> -{
-> -}
->   #endif
->   
->   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 9f790ec34400..0a6cebf880e0 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1664,10 +1664,10 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
->   		}
->   	}
->   	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
-> -	pmdp_get_lockless_sync();
->   	pte_unmap_unlock(start_pte, ptl);
->   	if (ptl != pml)
->   		spin_unlock(pml);
-> +	tlb_remove_table_sync_one();
->   
->   	mmu_notifier_invalidate_range_end(&range);
->   
-> @@ -1818,7 +1818,6 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
->   		 */
->   		if (likely(file_backed_vma_is_retractable(vma))) {
->   			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
-> -			pmdp_get_lockless_sync();
->   			success = true;
->   		}
->   
-> @@ -1826,6 +1825,8 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
->   			spin_unlock(ptl);
->   drop_pml:
->   		spin_unlock(pml);
-> +		if (success)
-> +			tlb_remove_table_sync_one();
->   
->   		mmu_notifier_invalidate_range_end(&range);
->   
+>>           */
+>> -       if (nid != NUMA_NO_NODE)
+>> +       if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
+>>                  return nid;
+>>
+>> -       return meminfo_to_nid(&numa_reserved_meminfo, start);
+>> +       return reserved_nid;
+>>   }
+>>   EXPORT_SYMBOL_GPL(phys_to_target_node);
+>>
+>> --
+>> 2.33.0
+>>
+-- 
+Best regards,
+Cui Chao.
 
 
