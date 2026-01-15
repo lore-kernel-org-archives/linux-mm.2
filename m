@@ -4,266 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D913D44C4F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 14:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D849DD44C4F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 14:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 848E86B0088; Thu, 15 Jan 2026 09:06:45 -0500 (EST)
+	id 4B3BE6B008A; Thu, 15 Jan 2026 09:09:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 820C86B0089; Thu, 15 Jan 2026 09:06:45 -0500 (EST)
+	id 461976B008C; Thu, 15 Jan 2026 09:09:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ADC06B008A; Thu, 15 Jan 2026 09:06:45 -0500 (EST)
+	id 343916B0092; Thu, 15 Jan 2026 09:09:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 55C1E6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:06:45 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D96C513AB68
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:06:44 +0000 (UTC)
-X-FDA: 84334373928.28.455B307
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 21651A0017
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:06:40 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 248BB6B008A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:09:40 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A66F858773
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:09:39 +0000 (UTC)
+X-FDA: 84334381278.29.9CEA2DA
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1CFFAA0014
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:09:35 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=heHtFfpI;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=n3p9LGy5;
-	spf=pass (imf25.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768486001;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VN8umt9L;
+	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768486178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=81SwDb2ZUODLNOB/N7wKJ9zbmpWP4I6Lt4Pj0c6Op7M=;
-	b=fUcCIOru2Ldpte7Dj+1QWC5vobeRLdIPye7TBGvPYWX3aBY7zK1vJaYmx0XItfJXib1Z0J
-	QvSCZK3E+OL8x4ZzZTZHuOSiWW9k3gMBsDKCu2xdnizny8HFQ/ho5bPnJ7flkLioPy7Wbr
-	U4rSazFxjcW45tVMBJw4CczXpSymOpE=
-ARC-Authentication-Results: i=2;
+	bh=MIpAv8VZm1fyBvDsuUrYNffY2jlmWo53T8xLzmAajew=;
+	b=gy5K/QeDH7NOV6nTwSkU8DOzMk6vGGbIs+VAW4vNEDXCHkttHOGG25aWovS+R+JMXsRZ0m
+	cvqIijalN3uUaQ/5JaX1pC5DYqbWs9CsoMkpIAV9runwTfF6bxPa9AcDJqh63bORVu/E0j
+	a+SByJfQwGB+hLp+HvFISozsa6+8gPU=
+ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=heHtFfpI;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=n3p9LGy5;
-	spf=pass (imf25.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768486001; a=rsa-sha256;
-	cv=pass;
-	b=noZ3OBMOgI8g7Pn8qwjkBhtnfnnqO4CjaXGQzsh//84EsIH25gkY1vkCMT9jGjjQMBCqPF
-	WR4H9zkv2gaBNMEg0rfZvD9A0/IUfxRZWF9XkSGnL4MGSY/SjUUg7Nk+Z44+/71zX7c+Pj
-	Uruowag/J67dYVRTgn8gAnjwtWAn+hc=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60FDjth72863589;
-	Thu, 15 Jan 2026 14:06:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=81SwDb2ZUODLNOB/N7
-	wKJ9zbmpWP4I6Lt4Pj0c6Op7M=; b=heHtFfpI6k6z3PxV6kxGp0iBEyUVVo5LHL
-	JB3NZKWxPyD031R1oFZB5LDcUiLB254BKVoxSA0/vac0mMOQ7IBlfWcqDucD+Iq/
-	VI7Hs0VEp8Dox0ED7E2ZULaRtA//0c6ByKLBT59hrYLEl/xq6yHj09uzNgw8JIg1
-	cwIWGNqo1gkudeWgsW3kHMhCd9PKp6M4Yaowyl6cssC7LA0MgzaKI2rMmg29rn2f
-	efNEv82gmp14Ydxo+EzKmiU7EMHTDPppJl/MYBEIfi0Tgj1ng+WF4lwfHt4SPNeq
-	QUmn3z1TGvnar4+BakiIXp1h9gHqUmsIXWwkXv8REgbO5h0200Ww==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkh7nr20q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 14:06:24 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60FC5UTP004547;
-	Thu, 15 Jan 2026 14:06:23 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012009.outbound.protection.outlook.com [40.93.195.9])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7bbehb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 14:06:23 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OxIz0v4B/8X8QyS1RP1WFAPTvDPeK8Q5l9HcgQpl9yN5Pbz9/z7EsEclJXN6S21M87ndg/P0hos73LEnaKKbUbyUjP4XZ49IRaZnG4htWOBb3UmHHWO+PSQz0pRIUT46/HPNfcV0G7sUuszyxvucvxTsNWQx8IWJRgyXyQ1MZYqi4oST0cSzmBvjnPdBvpz5TbTTDw5Jo2u7jEV+0bfypZAevv9R0HTWkHpbXmCUmb1y6rS9KvozHFJcR3uuUAe8ABWun+m6lN+f/YHBRcZ71kC34IQl7rqohd+S/yVQHHlukM2goR2Aq2kzf2l3TppOqmKeG/xBh0MLrL5VyQrs1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=81SwDb2ZUODLNOB/N7wKJ9zbmpWP4I6Lt4Pj0c6Op7M=;
- b=q1BrQJ7dVR+D5BSGIyClxph/HtLnaMSpTlUE6V8dmokE6UbuDlbWOItt1F7H6dM2Co011FL+vPvayhs9JDRgr14T497CZcYG64bLIanTaeNi+yVKgUNshMCTCrQqYXMjpMFArf+MRQzYqrisWd7cvu4OhrehztjY1EB2AllGN8MZC+aLmyqx4WKz1Q75veD7zelIXSLCTjCQxDydpWMLhjfEPseZ6oIgFKwqUz+chPQceFEqZIS3sjpoToizNreqOBvueDDTVOx9kw9J3qTZUYgrfuUvuNpQANoxzI9O7Ns3zZXUfIvhfIn2GoI2ogI5m/3Q1IChOUFYoLZqXWiPrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=81SwDb2ZUODLNOB/N7wKJ9zbmpWP4I6Lt4Pj0c6Op7M=;
- b=n3p9LGy5H0NWWlI2JzSinI6B98F9MdxROJGdVqeDpF7LWMaCNYwJtYPnFVi1y8+9ryJW2FOfwFwXVOG/ERkHYf8TC5S8MFFvDMeeGBlsY2s4dnD588wXFNpCcZ3RABc1SJ8WhNI6IWCJ9GTdFG2r9gHh7gkcKaPIMBhFE3A57EA=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by DS0PR10MB7201.namprd10.prod.outlook.com (2603:10b6:8:f2::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.4; Thu, 15 Jan 2026 14:06:19 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9520.003; Thu, 15 Jan 2026
- 14:06:18 +0000
-Date: Thu, 15 Jan 2026 09:06:13 -0500
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-        Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v2 05/23] mm/balloon_compaction: centralize
- adjust_managed_page_count() handling
-Message-ID: <vdgwo5wyvuxuijygb5jq4mv4wsxtj3lwweebynyc44iukoiecy@qjdu4qpxpokh>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org, virtualization@lists.linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
-References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-6-david@kernel.org>
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VN8umt9L;
+	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768486178; a=rsa-sha256;
+	cv=none;
+	b=l5dBy+yUlfLiBHLELtNzzu0AKJwmcrwhWvdqxmc1lFGbsOg52mlpx1mGDX/08eBsLTRcXc
+	eUr963DOvb/0opLfDCIyF2rgF2ck+0XFq95avdSjoCXD5Mkc/ANd1J5eAPEgLP3rdkhjok
+	3jJgYUtZx+5bTaubkFBLgtlAL0aqjo0=
+Date: Thu, 15 Jan 2026 22:09:17 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768486172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MIpAv8VZm1fyBvDsuUrYNffY2jlmWo53T8xLzmAajew=;
+	b=VN8umt9LoiWZ2tZPWRHkFq0mEe2RmnIpAyyZSI+knwUtj96/JTdF52EiEgEuQYVGaFxEIL
+	CHQXZ9KUfofeBK0ZbSIDN9feso+Q5vJgWNmHDNRttMJ3dHhmK/VzL8pqC++lXqbvWGa97c
+	HXxsXK65FI41Qva87qvPekkCF8pbaoc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH RFC v2 12/20] slab: remove defer_deactivate_slab()
+Message-ID: <sofeahffu5jj5xbre422lelbisfclwdul2i42j7odth3j4yzil@nyxfavdhwmuz>
+References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
+ <20260112-sheaves-for-all-v2-12-98225cfb50cf@suse.cz>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260115092015.3928975-6-david@kernel.org>
-User-Agent: NeoMutt/20250905
-X-ClientProxiedBy: YT4PR01CA0006.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:d1::8) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|DS0PR10MB7201:EE_
-X-MS-Office365-Filtering-Correlation-Id: a14e8496-2fa1-42c6-c399-08de543f40ed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?STHPXkOPhRd4cVUdDRMsLqWgq71P7Lwez3kU863/IYHXsyAYv5coz1v5hi7f?=
- =?us-ascii?Q?6p47XWW+s51hnh3K70v5+tzuUsjl1alpI3vFgsaew/4K9juZSsww/p4cfo0t?=
- =?us-ascii?Q?zFjmqGpHu9cPCM/MaDVru4Ng/ip+vxWocrLGvNcjhHiLCy2TyU2/a/gPotxl?=
- =?us-ascii?Q?ZJWFo39G3/A9ZJuWJS/r/QxqCk149DVXW0qJFTJeVOhjmWiBTMk63qnmkaBE?=
- =?us-ascii?Q?nQL5FGt9qKo1q4U0pJBT9G0aTrKV4KMTFg8bQtl9w14KH8U18y0igIUiutpu?=
- =?us-ascii?Q?DaUi9Fkyh3MtgCr2f5zYXT8a7iBLbDEthSbxEWSfCPzzkmZk+HnWx51DY4Qk?=
- =?us-ascii?Q?VBpsSgsbM00aljk6K5Bw5UQUYJd1smv8t9cV3odzfpSzCOpRQwvdN7lRoZrv?=
- =?us-ascii?Q?Aep85mRGZ7RdJV8IImS7ieEcg15tozYNU5YlAIXEVlTqkTlnUpVvnnqialpg?=
- =?us-ascii?Q?zIQwpamQzedo0+2hQbfFtn24CjQoBRzTzJzumN4UOscW4mThWCuLaNn0rlD3?=
- =?us-ascii?Q?UgHGCWWnBgEUFIy1tQnbJFp3xoaqKNdlVkUXDhlYe8U2ygraWrEHyAw2hSxn?=
- =?us-ascii?Q?vnC0ts6Sor0of3OcklAVED1HZabkTerjkttCWModU37cEQQb+Up1uU2iRbom?=
- =?us-ascii?Q?Cwcem2wN/KCcEiyJZVd8d6MTg7Ufp8fa9krPE/aeniuLO+Tk4umwq7XwdyOp?=
- =?us-ascii?Q?UEZGd6FrJLO65M4mw8UbmvqNRTdxSpPeAKIPyIEZzXL36lbSDoFcbR5JAP/H?=
- =?us-ascii?Q?Wwj6HnKZ5bZOjKriffQQTYwxngvAeIRebMXLjs1iEmSkDlHy6OxmvJ0ly6WH?=
- =?us-ascii?Q?YTrO4dypFd34iz7NCHWT+15hK0EEPdnlrVPPcFEdQ6YURcHzFrn+sOOrrZqI?=
- =?us-ascii?Q?wu2q1na0r0qU9G/DmFyGD5B2p+NxQyU1fd5oA/al6fdddEdCS0ZpIgXCHv1X?=
- =?us-ascii?Q?K2wpvHVrXjvbvqX1tY+lDZgYk3Gz1I3mbBW9580qNN13bWGRsaMG93VNN+Ip?=
- =?us-ascii?Q?SvSsh0uavoSzgf6WEGgNxwADPxH2hTOuhA6+PWm1idfeewsqMQm/Jdkbowlv?=
- =?us-ascii?Q?gstyBwTEDiqntFFUNnMAEZ4qb9vmeyQJAcuttO4vtBrE6b7BHswLpJ5FBaDn?=
- =?us-ascii?Q?5lMxWBzk+DRxwWv6GaVqoZg5rUwC27SvZ0Ph52LpKFgZ7xJ9sVZo0ugHF6dO?=
- =?us-ascii?Q?XjRbBGOf8k0pFEGohXDqQrK2sNQPW7+SwaMQq5Iq0Bvu9wP6dYUS0cuvuVVY?=
- =?us-ascii?Q?SklD/AlEPQqhiZX95DXbxoVnRBfo32jX3oORFkBaCZ0V46WdmJD+xmeiQ0Ex?=
- =?us-ascii?Q?TlVPmFaPsv3cmGUuqNrYnSimAjgdbmWWzwaIRIgx67r6pE5/T43/51G4cI2c?=
- =?us-ascii?Q?gBY/FsvVPKnN3/1bVT0Ubo+koXMb4wpo99oBWVFnyuZdT0MCF7RQifo8rx07?=
- =?us-ascii?Q?iITaDro2I6JaqJ1HCwPmXMhnvaEN74GjKSQijOFBrFIl+qnhzaPWbAVCsBN7?=
- =?us-ascii?Q?KU618E8Kl+XV+QgnU+W6S4+ogukYhTS2RwqP8pA/VgaMmnJv7ZujFIo8/21Y?=
- =?us-ascii?Q?LmEStCb+Kqi5JrxAC7E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hLoZL2J5tMhRvDqJBqxO3IyCPBjUW+e76MJLRc7Cq2MjBggEKPCX4m+/Gr02?=
- =?us-ascii?Q?ESyPr14vflX/23Ea1Srn5r7W+UdXgVv1nfWwh/xSOzLgWqvBvtESRZx1DAk4?=
- =?us-ascii?Q?a+HmWayk6ldS4uzwvGQm9jwa28MySTHREeuRUxqYgRqMe8TLg5aWiCTg0aeC?=
- =?us-ascii?Q?Uvz3LvJuKWztAQOKDtO861bcTwSc81lGP/KFkT8JESgL3IvLwhBY49VgPK//?=
- =?us-ascii?Q?JT6HC4ZmjE+AnaQ4cq4xCXUAwXPOQVHq4MxlLzQ8FfLN+8M9p/Etpmd1ESgq?=
- =?us-ascii?Q?thOb9e1FWJPTtxOoDSKyrJsuweKOB3WevJ1Emluk9S4myJVLElw6E3nzlk2I?=
- =?us-ascii?Q?m5N3Z0ZnmhyvzSxKksRS2CWPrYwd5X1tvfgxq+6wI/7SqrDW/bDvDhWbXkKa?=
- =?us-ascii?Q?EZlvOmaLwg0ZZWqyYU/CbEa3bU2kHxNmOjk2l2K6icZRilXYt94E8TxGL+gm?=
- =?us-ascii?Q?2oy6j8q5aKWpeZU3KNsJtpRgOzENpRWv2d+aBIlVewVu9jWY/edpa4uADP+u?=
- =?us-ascii?Q?Cho0xuJ65aR8f3X2F141qbiAQTgl5Ij7ytYxyZtvoThuREEqVTWsXV2gJ61K?=
- =?us-ascii?Q?ioSfnNR8Oii7t0bdy2DBzkJI+Cd0I+s7CYRNbHWhjkFvjqxLI6HL7Yic47r/?=
- =?us-ascii?Q?kCr7AXMij6vGdxhC+wjpzr9aVGwZtludFUhGqdsvgbqeSzo1XXF2LmGrIVuQ?=
- =?us-ascii?Q?eqCkAf0Ev1vvTtaef4fTEEbjquAlrRWdfse9NwHOH1uBd00PFdSwxtmuc87B?=
- =?us-ascii?Q?GPTOM1fPFNNDBZi3XaHUElwne+cQOF6WxYnEUhWWT6JKmwfXVDztbYr4nPVN?=
- =?us-ascii?Q?kYCbWk1t0uLvmFiBRvdG6XGx8j2ibHlx9nHVK/D+HLC08lT4SHOo0oXkXxbA?=
- =?us-ascii?Q?0xuZrULNcmDDq4e0BLL1BlbSkWfIpe4EiZ5QLzbrmFElaKit1Q3IEQySvxgx?=
- =?us-ascii?Q?ofsWsE2TuNxgy6tlyt5zSYorWjxlCTqHM77rM0rw5ZBd0/KOTPKKTU6Ah26K?=
- =?us-ascii?Q?hfRPR9hl/Mi16lX4Ks4tlrvmFAAGjLeW5k40F4OqoN7GLCkOYSN8WRzTJ7S4?=
- =?us-ascii?Q?diLD1+hb0gGECA0XLW8PIIUMiRdJdXuPkY/0T2G/6tZBsvwdnQJ9vBzoxb4J?=
- =?us-ascii?Q?VtqUCDNK+jh+24fOp/yXns5HHiWyHWjibVhe9jyeQNHrmsjkpE8ihN9ODWPv?=
- =?us-ascii?Q?XksUvljtOc2qU59LPzjUsS89R4DXD9YI3BZKK/jK8gSaaRnkAHIjKBBIgj3v?=
- =?us-ascii?Q?MRvIqFTWM8JEhQQ6XRkY+8/VoWnKFgVnz+zU9kxheNftLUHO+UsakLpFrjPN?=
- =?us-ascii?Q?07ljC9+sFn9w0JiXUmZKpPXCjVNkJK5fnITs4T8e5KlvmBRVosNduRMmFBl6?=
- =?us-ascii?Q?ppR/nMdiHx6bzpFAric9f5IWCIzjGOwy3Z7iYu+JeS/bFtGMWazjWboYZ4U6?=
- =?us-ascii?Q?KG7kr4HYEsON8K5pU+PK3EbJProbtPQyM00IfE0mEfip9X/9qjemNr7/oKL7?=
- =?us-ascii?Q?kIoycTgZoU9Zz8XtAZwBMvyHmAufTLbFJl++kXFLqhD7vC5Y3meOqWdHuX7l?=
- =?us-ascii?Q?Jz60P0+jIGsi7dhygrPQuX0MqNbbAvkH2z8G+izduHXGdWHcLrM+lEqna4lN?=
- =?us-ascii?Q?k4OaQuT7QL6WC39LomN++4UAo/D4XKtJRn5oXWTQmGF/+6bvUpy1dehGWHxA?=
- =?us-ascii?Q?BtD1d65OVONYIBFBLg+aXc6ZrdHEg+3EfNHUNdl6g2BOZd6vFFJJt1JUMPor?=
- =?us-ascii?Q?qK0hkonAdw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	3PZE06udBpZ24zEMgqrsul2z8ObeK50xSRoe94bIAdxBgO9XecXWwAFL4DwG74Yk7k9zcLQbSg8ndILvreQ/x7ypJ13cT9xJs70/GxcquQ97NGYmDFiDIl0nseio0SuNNGCyfrv45lWctyg0k1sgOu/zkIPgnU3eGJHssZUhs6nDHz18cB9sfio6w4IYNJQbMDLIOiPqsTDb4/fMUvhvbsjUKU+UjpSAEx4j7ML3KsIbFvyPH17Mw5ywbPdQPcw+z7shob3HvqCoJrePZ5LfAofBAkuF4hLe94brMLrgcbPknTiJRZUkG5esPnuOnx9GWmm9eYyqG1pK0+cN6Cxlg82XUn7Jmf+W+/zUAv9zV0O6Mse8NjHNrIrAKzXJevKVpfapd/ak56AJ9BhDvHvTuPCoyoVSp6JcZ6AvJq9Loi5g9uvd42GYf1RQpiHGydWlg6Q912df6MjrMl5SmXm1q8uTs9rVjhE4o+mxNP18MCCy0tuaS3fwW74ckq+dDzn2P0dcOxZPZtacmBEuDbLqN/Bja5qqwGKnefn2r8SY2Hrzt+Ita3V7OKanviWrdU6Qh7HeYGJW/SumhRafNp4jIJI6fXVUyEG5FYpxZBmDhd8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a14e8496-2fa1-42c6-c399-08de543f40ed
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 14:06:18.6332
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NA2cQCRlVBd/aSkL+qnjVNSt0frLp2MgQWKTPu3tEfo+CE0n40H+bb5dJEQYRkg5pWFmGVeSisZFGrL/L+Px5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7201
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-15_04,2026-01-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
- mlxlogscore=999 adultscore=0 suspectscore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2601150104
-X-Proofpoint-GUID: s8wI8iqfIigHJoUS-C8oEAUXy3MuF6Eu
-X-Authority-Analysis: v=2.4 cv=X7Bf6WTe c=1 sm=1 tr=0 ts=6968f460 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=dFmrGhp3TjRllwzZRqMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDEwNSBTYWx0ZWRfX8fatSKCT5E0G
- i/GsIQpnDdNrB04Ymv9FprMXDPcNAQzTsrE50oJ8aDyz/ZvT9Na6LmpGl5owzQlLrxiGcQrRQuo
- p+t+jW3ZHvDW8Le1jzYDVXmrGybhmm3VJHLm10Ag0HUx874uNdWvKuzelExH/RIPL/DbRZ4Vf+p
- +O0mpor0nfEeMm6PcjqoeHDH/Ta91J4uhGZFWxIlwfsYhFzR7SNtzaeyGznp1/vCNCYvsFGjTsK
- YNcaZv8YxNiaAKi/OqJ1mK5MDBlOckIoluF1KCQPT01p1cZTzOFiPGhfXQtrQXtnCvzSp8DLNAJ
- lGEa8od4tPP7bC7PMOKpzgdmiLQnjxAiFxD46IU/AbdaksiH7J0GU78tW5gxdb8gYrVr7BzcVpG
- bd81OCagn3PBrHdr0hU6gE6eucozsHdz5cM8CI5LhH5QIvyASkyyTexDxYi0OU5KRsdr7qUWdCr
- ftkXXHC83P20J+cAJZQ==
-X-Proofpoint-ORIG-GUID: s8wI8iqfIigHJoUS-C8oEAUXy3MuF6Eu
-X-Rspamd-Queue-Id: 21651A0017
-X-Stat-Signature: 13o3jiqcotsm3ibkq6mz46jgxhaeqfuy
+In-Reply-To: <20260112-sheaves-for-all-v2-12-98225cfb50cf@suse.cz>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 1CFFAA0014
+X-Stat-Signature: 6ppoyigke6zi7wkm61ros7kygf1uctwq
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768486000-474330
-X-HE-Meta: U2FsdGVkX189Cvcoj793Ccpuhq9Y9gMBvk38EX54UsgJmWTwUoQ7VRH5pBF40+1tlFd1lCGi416p8iV0ITti8T4+KtjFlwmpKEu38eF829t2A3UqZU73hM0KecC7CM3TVQstihE3O0TLFNVULOA41aH+j8pc/GWOdYuMN16cohmnSMoelvFYOi2MsyZSfdd6awySSPDwcrzWPmUKHSNqsKH0loPzNDcqZwnGWySZIoUhSHCgyY6kDuNA84TdfEUizEEmUG6VOHoinDzybxE/AuqioxgVjwBe/OUPw9A9R3ajxY1d9wyL05muAdbk+b/ZVEbIxKgbEe4QD0UaKQeicOxQ0uIlzUyqcSMWcREaD5LvSGslc3yOJUMPkhDrudlJeECLRMyTOBzwv3qf7x4apuzaw/ZiywL/WZjgTpHSFPf/pWnb1EIXdB9rhM31Svj5baJCRc4K1e45xnBaBU9MHAiB4oAwAGREojz312u5CEpLhjqeOMVaGIspqhYP4m34UCyLkz6U/I9vjoO3cSeqQKTt9+3xElcWVrv2KzTssTcN9f9feLtxuIrAcPAx7NCjRgb1oFl8+/PdHj5kl7ZvIOm2oavWQE1rGsuV1NCnH7NyFrHTnRJ6SgZJsXSj8obaFBeqsS5z16c7t8iEpASfgcxiDntyG69Oaz/xgzMtEZnYf2eguq+Id1BJlRlCN2r2PB2XoIcsYNiXN8m+DZgjHic864CaIwdgwdy1PNt1xigiSTMpZ8HlhOox8kcBA72e3oix8sAibHVsy7ohCy5xkGcKwBZojK2QlNfX6pIYQrHM18WYYUyavCpNBWmPgAU4Cg9q/tLH7CdyewwwlNCMT8HqDV6DNx6CHHEoi8mPfJ8M6YM6Aj7eRlJ8zWFnd1VHm87FRRZ5XhUcgKKqGdXpLlVlF+HPVhfIfrJmrJyrupTZFAAdj2fIdOGKGS6iejeyMlmYqKpT8RrqFqPBAy/
- OkJ20eVy
- Z/epBjv6ksboa9qHkk/iL2lDSSnuBvBsNGNChes2dgP7PmLHdTa6O1hkQC//8DbZ6YtyuYzOW7tW8iieZhj7fkivQuE+zwXNM2+/+OtKmg7EbTWOzgAtxZMQzeeSGHtcdz41g5s3QCsPOII/jo6sgVxyh/E7yN8rT/epAtimXAICeaHuW2kLvRh4BWikLsZfkce2mLh4WmGt4o1bQED3Wf/2uKwEtb/ocGkGcYyh6lLekb0s9QtTA8oRfX8ebaSAqHeo0ZVtYo6TMsNVT9EuhuNLfkguEEjs03+EJrx9z63qNEOMBoyaSXnfONy/DF8SIepPdd7AHsO9RFC3c17HnQARTo6JJjMxQ4sycum6EWh7AEHt1bopli0w+jlLe4iKAyuJ+FHfDgF3io4POHJ2A+uDXHX1NIKM3ACGuaWVBEWeKyEUeSTJalCdgHCp+TeogRYKe3XhG3oQOBWiiPGGHtCu4/p1zeArbrfL89VPPvgNlbluAbbMj0LyAV96OSeYBTkvFzrkrzXyliMXuAbXj/TQqfW2hI0YbAHlBuNrGLgb9YkLnszZ0Ib1MMeFWXr+Stl5w89pkKZ/mcgxc+pKtL3PM5sNLYqp93wNNvFgwYIzZjjjPowXMMpE80H15jB40vJVdqaHjjwdQNnuFFZ2fCSnX676XD/FVypGQg9x5CwFzEEy/nxavojgsjw==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768486175-401617
+X-HE-Meta: U2FsdGVkX185nXa0xzPN5GhvJJQBXQOYrWe/TJYRlZud7HRwE7hKsjChI0ijOgFIxXDtaey0SWvlE3B0AszL7LrZLwzaNzHvdZmlBeoRIlpIal8zc2srmWcAcEyFfyf1QeJa8Me88cgGYe3Z88+4w8w7hRu6UBBTJqOIo0LSVKEQgILAGN0d721nCjslrEt49LjQmGo/CcnYkD7qi7zOlZKl3pU1SAlVVD88n+hb1rnq5QaU5W0mfyB9Ob81QRziOliDMaQ/65a8nCHLiIIkWoIsG9S+9cm4gGcpK5MNWhzaY7ITEmeFePF5Se9Yx1DLu3Pxc1UkdeyBZcnMz1HQytdbEATqUBnPMh/3BF1q62pIFy0/ws4kCmxriLAvwfhq6es9nuisrjdhQHqcAR2q9zMvDNCJDbkmBAMR9iqIlnh2CRYRRHoAfHKMNh179A5SGd+6x3VuGGnf5i3alcvG+JkSlQZBLDPg/nlFLh3QhtQp/hPIHG3Mtl7/rdHAVKIiRdBFAa1du1pe2nzikY3vPlt30+Nt84dpMKdjD4JQLaiMkoPC5nHf+25ownC91SftsftCNBXDNSBfn3XhRD6bowQCBO7uwl11GflsaXkRMVR0DJM0wfS72jgLz9YZlt1drk/5s/vfPluy6dtSPhgazTJY2cnRg1CiBgLYBuu3f5AmdPdHSmakqAnoWtV1y/qxelV42goUrRqptgWfAqMztdRO1QEVcN55I4eq0WyLiHsuENU/qvCexZAVXcIHfG1OjMpbjRBXyD5SdoSqRFvZHPgu9+laqGls+JEyjXV3HEIJoqs2J7OsFY6aFuORLRcDkCC/Gpc6Y5JZb7nHBhc8I/pgYU/9IU+RrQbyN/g4rBYpYqkI/8MwmStXC06+MsxSwghgboMRqJezBJ1Qa2ybQjSQb+ErlkexuAPdbdhvUQ89W9iRXAyOxBSlbwQkVlorUzLVMSgcykxy0OT6awC
+ n1MnVHrQ
+ NjBzHDPtMlDx9KIJDi52In/o0JdOT/kFFFe+/1f9C56IzgIoH3bVpClAcZDkArBdsv5e0xc7QJa0F5IARUF6kfy6UDHmslMzsf5wt7DjXin1xI2PF6y1Ff0Gvcs2i8WevJfSOMxhev6X/tfXGTyXUwn6Fhi979HILQujMbj9N7G9Ki8Js1xbrsb7bGvDKhlOSH78zXGVGVxSaWwLjs2f6aNWprg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -272,193 +93,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* David Hildenbrand (Red Hat) <david@kernel.org> [260115 04:21]:
-> Let's centralize it, by allowing for the driver to enable this handling
-> through a new flag (bool for now) in the balloon device info.
+On Mon, Jan 12, 2026 at 04:17:06PM +0100, Vlastimil Babka wrote:
+> There are no more cpu slabs so we don't need their deferred
+> deactivation. The function is now only used from places where we
+> allocate a new slab but then can't spin on node list_lock to put it on
+> the partial list. Instead of the deferred action we can free it directly
+> via __free_slab(), we just need to tell it to use _nolock() freeing of
+> the underlying pages and take care of the accounting.
 > 
-> Note that we now adjust the counter when adding/removing a page into the
-> balloon list: when removing a page to deflate it, it will now happen
-> before the driver communicated with hypervisor, not afterwards.
+> Since free_frozen_pages_nolock() variant does not yet exist for code
+> outside of the page allocator, create it as a trivial wrapper for
+> __free_frozen_pages(..., FPI_TRYLOCK).
 > 
-> This shouldn't make a difference in practice.
-> 
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
-For what it's worth,
-
-Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > ---
->  arch/powerpc/platforms/pseries/cmm.c | 13 +------------
->  drivers/virtio/virtio_balloon.c      | 19 ++-----------------
->  include/linux/balloon_compaction.h   |  2 ++
->  mm/balloon_compaction.c              | 17 +++++++++++++++++
->  4 files changed, 22 insertions(+), 29 deletions(-)
+>  mm/internal.h   |  1 +
+>  mm/page_alloc.c |  5 +++++
+>  mm/slab.h       |  8 +-------
+>  mm/slub.c       | 51 ++++++++++++++++-----------------------------------
+>  4 files changed, 23 insertions(+), 42 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-> index 15f873f733a41..7fd8b3d7e7637 100644
-> --- a/arch/powerpc/platforms/pseries/cmm.c
-> +++ b/arch/powerpc/platforms/pseries/cmm.c
-> @@ -165,7 +165,6 @@ static long cmm_alloc_pages(long nr)
+> diff --git a/mm/internal.h b/mm/internal.h
+> index e430da900430..1f44ccb4badf 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -846,6 +846,7 @@ static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int ord
+>  struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int order);
+>  #define alloc_frozen_pages_nolock(...) \
+>  	alloc_hooks(alloc_frozen_pages_nolock_noprof(__VA_ARGS__))
+> +void free_frozen_pages_nolock(struct page *page, unsigned int order);
 >  
->  		balloon_page_enqueue(&b_dev_info, page);
->  		atomic_long_inc(&loaned_pages);
-> -		adjust_managed_page_count(page, -1);
->  		nr--;
->  	}
+>  extern void zone_pcp_reset(struct zone *zone);
+>  extern void zone_pcp_disable(struct zone *zone);
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 822e05f1a964..8a288ecfdd93 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2981,6 +2981,11 @@ void free_frozen_pages(struct page *page, unsigned int order)
+>  	__free_frozen_pages(page, order, FPI_NONE);
+>  }
 >  
-> @@ -190,7 +189,6 @@ static long cmm_free_pages(long nr)
->  		if (!page)
->  			break;
->  		plpar_page_set_active(page);
-> -		adjust_managed_page_count(page, 1);
->  		__free_page(page);
->  		atomic_long_dec(&loaned_pages);
->  		nr--;
-> @@ -515,16 +513,6 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
->  		return -EBUSY;
->  	}
+> +void free_frozen_pages_nolock(struct page *page, unsigned int order)
+> +{
+> +	__free_frozen_pages(page, order, FPI_TRYLOCK);
+> +}
+> +
+>  /*
+>   * Free a batch of folios
+>   */
+> diff --git a/mm/slab.h b/mm/slab.h
+> index e77260720994..4efec41b6445 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -71,13 +71,7 @@ struct slab {
+>  	struct kmem_cache *slab_cache;
+>  	union {
+>  		struct {
+> -			union {
+> -				struct list_head slab_list;
+> -				struct { /* For deferred deactivate_slab() */
+> -					struct llist_node llnode;
+> -					void *flush_freelist;
+> -				};
+> -			};
+> +			struct list_head slab_list;
+>  			/* Double-word boundary */
+>  			struct freelist_counters;
+>  		};
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 522a7e671a26..0effeb3b9552 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3248,7 +3248,7 @@ static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  		flags & (GFP_RECLAIM_MASK | GFP_CONSTRAINT_MASK), node);
+>  }
 >  
-> -	/*
-> -	 * When we migrate a page to a different zone, we have to fixup the
-> -	 * count of both involved zones as we adjusted the managed page count
-> -	 * when inflating.
-> -	 */
-> -	if (page_zone(page) != page_zone(newpage)) {
-> -		adjust_managed_page_count(page, 1);
-> -		adjust_managed_page_count(newpage, -1);
-> -	}
+> -static void __free_slab(struct kmem_cache *s, struct slab *slab)
+> +static void __free_slab(struct kmem_cache *s, struct slab *slab, bool allow_spin)
+>  {
+>  	struct page *page = slab_page(slab);
+>  	int order = compound_order(page);
+> @@ -3262,11 +3262,20 @@ static void __free_slab(struct kmem_cache *s, struct slab *slab)
+>  	free_frozen_pages(page, order);
+
+Here we missed using the newly added allow_spin.
+It should call free_frozen_pages_nolock() when !allow_spin.
+
+-- 
+Thanks,
+Hao
+
+>  }
+>  
+> +static void free_new_slab_nolock(struct kmem_cache *s, struct slab *slab)
+> +{
+> +	/*
+> +	 * Since it was just allocated, we can skip the actions in
+> +	 * discard_slab() and free_slab().
+> +	 */
+> +	__free_slab(s, slab, false);
+> +}
+> +
+>  static void rcu_free_slab(struct rcu_head *h)
+>  {
+>  	struct slab *slab = container_of(h, struct slab, rcu_head);
+>  
+> -	__free_slab(slab->slab_cache, slab);
+> +	__free_slab(slab->slab_cache, slab, true);
+>  }
+>  
+>  static void free_slab(struct kmem_cache *s, struct slab *slab)
+> @@ -3282,7 +3291,7 @@ static void free_slab(struct kmem_cache *s, struct slab *slab)
+>  	if (unlikely(s->flags & SLAB_TYPESAFE_BY_RCU))
+>  		call_rcu(&slab->rcu_head, rcu_free_slab);
+>  	else
+> -		__free_slab(s, slab);
+> +		__free_slab(s, slab, true);
+>  }
+>  
+>  static void discard_slab(struct kmem_cache *s, struct slab *slab)
+> @@ -3375,8 +3384,6 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
+>  	return object;
+>  }
+>  
+> -static void defer_deactivate_slab(struct slab *slab, void *flush_freelist);
 > -
->  	/*
->  	 * activate/"deflate" the old page. We ignore any errors just like the
->  	 * other callers.
-> @@ -551,6 +539,7 @@ static int cmm_init(void)
->  		return -EOPNOTSUPP;
+>  /*
+>   * Called only for kmem_cache_debug() caches to allocate from a freshly
+>   * allocated slab. Allocate a single object instead of whole freelist
+> @@ -3392,8 +3399,8 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+>  	void *object;
 >  
->  	balloon_devinfo_init(&b_dev_info);
-> +	b_dev_info.adjust_managed_page_count = true;
->  	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
->  		b_dev_info.migratepage = cmm_migratepage;
->  
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index df2756c071dae..15c1cf5fd249c 100644
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -274,9 +274,6 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
->  
->  		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
->  		vb->num_pages += VIRTIO_BALLOON_PAGES_PER_PAGE;
-> -		if (!virtio_has_feature(vb->vdev,
-> -					VIRTIO_BALLOON_F_DEFLATE_ON_OOM))
-> -			adjust_managed_page_count(page, -1);
->  		vb->num_pfns += VIRTIO_BALLOON_PAGES_PER_PAGE;
+>  	if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
+> -		/* Unlucky, discard newly allocated slab */
+> -		defer_deactivate_slab(slab, NULL);
+> +		/* Unlucky, discard newly allocated slab. */
+> +		free_new_slab_nolock(s, slab);
+>  		return NULL;
 >  	}
 >  
-> @@ -295,9 +292,6 @@ static void release_pages_balloon(struct virtio_balloon *vb,
->  	struct page *page, *next;
+> @@ -4262,7 +4269,7 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
 >  
->  	list_for_each_entry_safe(page, next, pages, lru) {
-> -		if (!virtio_has_feature(vb->vdev,
-> -					VIRTIO_BALLOON_F_DEFLATE_ON_OOM))
-> -			adjust_managed_page_count(page, 1);
->  		list_del(&page->lru);
->  		put_page(page); /* balloon reference */
+>  		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+>  			/* Unlucky, discard newly allocated slab */
+> -			defer_deactivate_slab(slab, NULL);
+> +			free_new_slab_nolock(s, slab);
+>  			return 0;
+>  		}
 >  	}
-> @@ -839,17 +833,6 @@ static int virtballoon_migratepage(struct balloon_dev_info *vb_dev_info,
->  	if (!mutex_trylock(&vb->balloon_lock))
->  		return -EAGAIN;
+> @@ -6031,7 +6038,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
 >  
-> -	/*
-> -	  * When we migrate a page to a different zone and adjusted the
-> -	  * managed page count when inflating, we have to fixup the count of
-> -	  * both involved zones.
-> -	  */
-> -	if (!virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_DEFLATE_ON_OOM) &&
-> -	    page_zone(page) != page_zone(newpage)) {
-> -		adjust_managed_page_count(page, 1);
-> -		adjust_managed_page_count(newpage, -1);
-> -	}
-> -
->  	/* balloon's page migration 1st step  -- inflate "newpage" */
->  	vb->num_pfns = VIRTIO_BALLOON_PAGES_PER_PAGE;
->  	set_page_pfns(vb, vb->pfns, newpage);
-> @@ -958,6 +941,8 @@ static int virtballoon_probe(struct virtio_device *vdev)
->  	if (err)
->  		goto out_free_vb;
->  
-> +	if (!virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_DEFLATE_ON_OOM))
-> +		vb->vb_dev_info.adjust_managed_page_count = true;
->  #ifdef CONFIG_BALLOON_COMPACTION
->  	vb->vb_dev_info.migratepage = virtballoon_migratepage;
->  #endif
-> diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-> index 7cfe48769239e..3109d3c43d306 100644
-> --- a/include/linux/balloon_compaction.h
-> +++ b/include/linux/balloon_compaction.h
-> @@ -56,6 +56,7 @@ struct balloon_dev_info {
->  	struct list_head pages;		/* Pages enqueued & handled to Host */
->  	int (*migratepage)(struct balloon_dev_info *, struct page *newpage,
->  			struct page *page, enum migrate_mode mode);
-> +	bool adjust_managed_page_count;
+>  struct defer_free {
+>  	struct llist_head objects;
+> -	struct llist_head slabs;
+>  	struct irq_work work;
 >  };
 >  
->  extern struct page *balloon_page_alloc(void);
-> @@ -73,6 +74,7 @@ static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
->  	spin_lock_init(&balloon->pages_lock);
->  	INIT_LIST_HEAD(&balloon->pages);
->  	balloon->migratepage = NULL;
-> +	balloon->adjust_managed_page_count = false;
+> @@ -6039,7 +6045,6 @@ static void free_deferred_objects(struct irq_work *work);
+>  
+>  static DEFINE_PER_CPU(struct defer_free, defer_free_objects) = {
+>  	.objects = LLIST_HEAD_INIT(objects),
+> -	.slabs = LLIST_HEAD_INIT(slabs),
+>  	.work = IRQ_WORK_INIT(free_deferred_objects),
+>  };
+>  
+> @@ -6052,10 +6057,9 @@ static void free_deferred_objects(struct irq_work *work)
+>  {
+>  	struct defer_free *df = container_of(work, struct defer_free, work);
+>  	struct llist_head *objs = &df->objects;
+> -	struct llist_head *slabs = &df->slabs;
+>  	struct llist_node *llnode, *pos, *t;
+>  
+> -	if (llist_empty(objs) && llist_empty(slabs))
+> +	if (llist_empty(objs))
+>  		return;
+>  
+>  	llnode = llist_del_all(objs);
+> @@ -6079,16 +6083,6 @@ static void free_deferred_objects(struct irq_work *work)
+>  
+>  		__slab_free(s, slab, x, x, 1, _THIS_IP_);
+>  	}
+> -
+> -	llnode = llist_del_all(slabs);
+> -	llist_for_each_safe(pos, t, llnode) {
+> -		struct slab *slab = container_of(pos, struct slab, llnode);
+> -
+> -		if (slab->frozen)
+> -			deactivate_slab(slab->slab_cache, slab, slab->flush_freelist);
+> -		else
+> -			free_slab(slab->slab_cache, slab);
+> -	}
 >  }
 >  
->  #ifdef CONFIG_BALLOON_COMPACTION
-> diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
-> index 5444c61bb9e76..fd9ec47cf4670 100644
-> --- a/mm/balloon_compaction.c
-> +++ b/mm/balloon_compaction.c
-> @@ -23,6 +23,8 @@ static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
->  	BUG_ON(!trylock_page(page));
->  	balloon_page_insert(b_dev_info, page);
->  	unlock_page(page);
-> +	if (b_dev_info->adjust_managed_page_count)
-> +		adjust_managed_page_count(page, -1);
->  	__count_vm_event(BALLOON_INFLATE);
->  	inc_node_page_state(page, NR_BALLOON_PAGES);
+>  static void defer_free(struct kmem_cache *s, void *head)
+> @@ -6102,19 +6096,6 @@ static void defer_free(struct kmem_cache *s, void *head)
+>  		irq_work_queue(&df->work);
 >  }
-> @@ -95,6 +97,8 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
->  			continue;
 >  
->  		list_del(&page->lru);
-> +		if (b_dev_info->adjust_managed_page_count)
-> +			adjust_managed_page_count(page, 1);
->  		balloon_page_finalize(page);
->  		__count_vm_event(BALLOON_DEFLATE);
->  		list_add(&page->lru, pages);
-> @@ -256,12 +260,25 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
->  
->  		balloon_page_insert(b_dev_info, newpage);
->  		__count_vm_event(BALLOON_MIGRATE);
-> +
-> +		if (b_dev_info->adjust_managed_page_count &&
-> +		    page_zone(page) != page_zone(newpage)) {
-> +			/*
-> +			 * When we migrate a page to a different zone we
-> +			 * have to fixup the count of both involved zones.
-> +			 */
-> +			adjust_managed_page_count(page, 1);
-> +			adjust_managed_page_count(newpage, -1);
-> +		}
->  		break;
->  	case -ENOENT:
->  		spin_lock_irqsave(&b_dev_info->pages_lock, flags);
->  
->  		/* Old page was deflated but new page not inflated. */
->  		__count_vm_event(BALLOON_DEFLATE);
-> +
-> +		if (b_dev_info->adjust_managed_page_count)
-> +			adjust_managed_page_count(page, 1);
->  		break;
->  	default:
->  		return rc;
+> -static void defer_deactivate_slab(struct slab *slab, void *flush_freelist)
+> -{
+> -	struct defer_free *df;
+> -
+> -	slab->flush_freelist = flush_freelist;
+> -
+> -	guard(preempt)();
+> -
+> -	df = this_cpu_ptr(&defer_free_objects);
+> -	if (llist_add(&slab->llnode, &df->slabs))
+> -		irq_work_queue(&df->work);
+> -}
+> -
+>  void defer_free_barrier(void)
+>  {
+>  	int cpu;
+> 
 > -- 
 > 2.52.0
 > 
