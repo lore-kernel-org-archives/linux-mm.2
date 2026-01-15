@@ -4,132 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D813DD46627
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:34:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F07F5D4662E
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 21:38:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E98306B00CF; Thu, 15 Jan 2026 16:34:31 -0500 (EST)
+	id 473286B008A; Thu, 15 Jan 2026 16:38:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2EF56B00D0; Thu, 15 Jan 2026 16:34:31 -0500 (EST)
+	id 4201D6B00CE; Thu, 15 Jan 2026 16:38:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D51D46B00D1; Thu, 15 Jan 2026 16:34:31 -0500 (EST)
+	id 2F81E6B00CF; Thu, 15 Jan 2026 16:38:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C11316B00CF
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:34:31 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 71DCF8A866
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:34:31 +0000 (UTC)
-X-FDA: 84335502342.03.BA34E23
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8465F14000A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:34:29 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U2ISp4b1;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C49A6B008A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:38:04 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C259013B144
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:38:03 +0000 (UTC)
+X-FDA: 84335511246.19.F0DBA93
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id AAF5D20004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:38:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cNYvRCtA;
+	spf=pass (imf13.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768512869;
+	s=arc-20220608; t=1768513081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nGpn9FbHKFqf9d1MqKArdMz27a+K/qjUaMw4b4Nr/fk=;
-	b=DRDHihUcVO/0uWlujYpIuFjtd9ssT6JtxmMd+wvskL5RWTSL8SriCasC7EbF2mrS0QMeFt
-	AJXNo9+l8CPUBBd5WprC2DRQOS229v3xafr4+o0KZdCVhq5oJrY66P/3K9+HyJBZUxB6BT
-	ANsQHYRCwzdXsa3isPsdC04G0lNx3Tk=
+	bh=bIvvdJO8RSmQOYhZYgNuTCBL8X7KIXl7wt2Qia9EIAk=;
+	b=MmocyqqLHzcnWqL3ssT0y3Znkz4FNAEnlhQCGqz99WHiYmLo85KiCDwn2uI6kqSxHcGbmp
+	DjTn3oAVcKuePc3Snnem+LbiZWhCi5jDe8sjAs5qqEo3gTspbNnyGIJg01PGd0ZWVMYUAJ
+	WaH03Hx4OHxTzuoWVMyCTvXrYPOjD/I=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U2ISp4b1;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cNYvRCtA;
+	spf=pass (imf13.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768512869; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768513081; a=rsa-sha256;
 	cv=none;
-	b=ezvxWj2duEulBxTeo1PBbsBqMWgp33XAFekWkbSRCGqimkOVX2Mi1iyGkguWVgj07mdxFp
-	p/yanSQablrxfPRB4bf0e0yDISBaSAsfDWobl30mBQzo3KjpiyFOvhU3hXeo7dM0YAqVsA
-	VnVmUILNvLk3dApFgqdsYrf80NoZxJs=
+	b=npvY/ROEk3QQZTxU5WVPmYqqeiDaMPA11VSdy9hu4/yIGggCBMkX2hwTLGWPkgulYjUMS5
+	KNUuxDJyFU3qdRIq+PfJ311VSlYVSe+y2h2PGxwLF71PFvSwCYkap/rxWiJyqmDW7wE61B
+	jn94vtGtmUQ7CU8tGwfKNyu32HEO6Eo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 77F614394C;
-	Thu, 15 Jan 2026 21:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CFDC116D0;
-	Thu, 15 Jan 2026 21:34:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 653E060167;
+	Thu, 15 Jan 2026 21:38:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E7EC4AF0E;
+	Thu, 15 Jan 2026 21:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768512868;
-	bh=ecMo0hL7WHMaPlM6mA68VqLafm/0FTfyXJVHdaGSl5c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U2ISp4b1yxaRXXBRwr4jhGGzkRnOU2lLqd7dgqIxOx0mJszWojhm0yTZJg4F2XcKK
-	 XfwJiU0524cuYRsy3K5NPSak2fj3iBLY0Y+P7f8IpBGO15GSHFXqwMIWpWNS6iEw0U
-	 Czku3y4DWMM0jBn9fE6go49fqCrEvKIfPohetgh0lkcPVeibuAl2nktlku/54KLDQp
-	 riX1lJS2YIDTkY8cac3IOossGqbzKwwDgHoc1QQzrwiMulAgIEArFN8HJnkbbCrYJz
-	 SgidSX1YWoqAnwmJ4lZy2LFsJsKIf4nuFTRY4oYsVfXZOM403/I7zMCzpRm6I7VIC6
-	 wCRZ2eZPpjo8g==
-Message-ID: <32c86644-d1b1-46a7-89a6-da5e99ba21c6@kernel.org>
-Date: Thu, 15 Jan 2026 22:34:25 +0100
+	s=k20201202; t=1768513080;
+	bh=0fqCmxD4yKmMSe6/QFTJtZ3ssoTn2Cuf5H+QMDU346c=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=cNYvRCtAFr3nio6ZJmSXonm+4Nbnqg0ooZICNUqxoP7XTHZvA1sq5emt+58bZli1v
+	 oJkAFDqsC8s9exFsPnwjrufRoIKYcNVLkronVW7KfwhObFyoMdVkQc5HZF/9RGxbhF
+	 F8t+tIqxHXmQeBkIAg74UokUULOqKsZjdX1zKlQqnLNffUaBGWeNAgAEVlrJmM1boN
+	 LUW1r4fLYT+64uz3Pbcw+N6aibwePtoH6t9exvd7VQjlJQQfeBnIAca7oYTbPKx1xL
+	 5lZKkhqKesuIWnoeYbXAqAZWFIhec2xBYGvSLr8p1N4f33jTCoUrpWPHuga5OksBPp
+	 OM0ntrYikD9aw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id F1990F4006D;
+	Thu, 15 Jan 2026 16:37:57 -0500 (EST)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Thu, 15 Jan 2026 16:37:58 -0500
+X-ME-Sender: <xms:NV5pafcNmSFQIrTUccBn8Az-kRf21swc3EUsgXiRuArMqrmkgSAOag>
+    <xme:NV5paQCw-b3hO3NIG8gXajpY4N_T9w2owcI72ATnDXD-wEPGkb_1VwQQ44qF5W9Sb
+    ycL-FXfJ-_J1d0wNMhW4e2tIJ1IW7TLmfEPTlqwXsxG-MEXb98h5wU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdejudehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedfvehhuhgt
+    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeegheduieeiveevheelheelueeghffhtddtheelhfdutddtheeileetkeelvedtjeen
+    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomheptghhuhgtkhhlvghvvghrodhmvghsmhhtphgruhht
+    hhhpvghrshhonhgrlhhithihqdduieefgeelleelheelqdefvdelkeeggedvfedqtggvlh
+    eppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhmpdhnsggprhgtphhtthho
+    peehtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhgvihhlsegsrhhofihnrd
+    hnrghmvgdprhgtphhtthhopegrughilhhgvghrrdhkvghrnhgvlhesughilhhgvghrrdgt
+    rgdprhgtphhtthhopehslhgrvhgrseguuhgsvgihkhhordgtohhmpdhrtghpthhtohepjh
+    hlsggvtgesvghvihhlphhlrghnrdhorhhgpdhrtghpthhtohepmhgrrhhksehfrghshhgv
+    hhdrtghomhdprhgtphhtthhopegtlhhmsehfsgdrtghomhdprhgtphhtthhopegurghvih
+    gusehfrhhomhhorhgsihhtrdgtohhmpdhrtghpthhtoheprghmihhrjeefihhlsehgmhgr
+    ihhlrdgtohhmpdhrtghpthhtohepihgurhihohhmohhvsehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:NV5paY71nyiHdxo8pzq2FPJ9wXP4gwvmybtteXjfGQDHBXmjGzMpkg>
+    <xmx:NV5paf2q85cEvYskTRa6REbYfWFmhv1wT9xJbgW0M4zwirU4htMbuQ>
+    <xmx:NV5paRIn4Ky98h162YQ0v5KUSHllZyM6UcKPFtRPRap3WHWdtGOYVw>
+    <xmx:NV5pad_yPpJ8jq6536MO88REqfP8PL0dMv2ASaMKib8OBSJTuLx8og>
+    <xmx:NV5paYQD3sBPEihbrDG1vMHuPz-F3Rw0TEVa9JsrMb-OENl5ypTH7YFK>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B4F44780070; Thu, 15 Jan 2026 16:37:57 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: fix VM_WARN_ONCE indentation in page_alloc.c
-To: Matthew Wilcox <willy@infradead.org>, Manish Kumar <manish1588@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260115201305.119383-1-manish1588@gmail.com>
- <aWlMp50lLH8xhx-Z@casper.infradead.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <aWlMp50lLH8xhx-Z@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: t7s3uwj79bhetfdcisup6b6nkftasnax
-X-Rspamd-Queue-Id: 8465F14000A
+X-ThreadId: A7-j_yKLHrMN
+Date: Thu, 15 Jan 2026 16:37:27 -0500
+From: "Chuck Lever" <cel@kernel.org>
+To: "Dave Chinner" <david@fromorbit.com>
+Cc: "Amir Goldstein" <amir73il@gmail.com>,
+ "Jeff Layton" <jlayton@kernel.org>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Chuck Lever" <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Theodore Tso" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>, "Jan Kara" <jack@suse.com>,
+ "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
+ "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
+ "Sandeep Dhavale" <dhavale@google.com>,
+ "Hongbo Li" <lihongbo22@huawei.com>, "Chunhai Guo" <guochunhai@vivo.com>,
+ "Carlos Maiolino" <cem@kernel.org>, "Ilya Dryomov" <idryomov@gmail.com>,
+ "Alex Markuze" <amarkuze@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>, "Chris Mason" <clm@fb.com>,
+ "David Sterba" <dsterba@suse.com>,
+ "Luis de Bethencourt" <luisbg@kernel.org>,
+ "Salah Triki" <salah.triki@gmail.com>,
+ "Phillip Lougher" <phillip@squashfs.org.uk>,
+ "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Dave Kleikamp" <shaggy@kernel.org>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>, "Jan Kara" <jack@suse.cz>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>,
+ "Christoph Hellwig" <hch@infradead.org>, linux-nfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+ linux-unionfs@vger.kernel.org, devel@lists.orangefs.org,
+ ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev,
+ linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+ linux-mtd@lists.infradead.org, gfs2@lists.linux.dev,
+ linux-f2fs-devel@lists.sourceforge.net
+Message-Id: <06dcc4b6-7457-4094-a1c6-586ce518020f@app.fastmail.com>
+In-Reply-To: <aWlXfBImnC_jhTw4@dread.disaster.area>
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
+ <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
+ <d486fdb8-686c-4426-9fac-49b7dbc28765@app.fastmail.com>
+ <CAOQ4uxhnoTC6KBmRVx2xhvTXYg1hRkCJWrq2eoBQGHKC3sv3Hw@mail.gmail.com>
+ <4d9967cc-a454-46cf-909b-b8ab2d18358d@kernel.org>
+ <aWlXfBImnC_jhTw4@dread.disaster.area>
+Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to nfsd export
+ support
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: AAF5D20004
+X-Stat-Signature: s4djty5dxgsj8ymdxj8em5zh93gx16sr
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768512869-59095
-X-HE-Meta: U2FsdGVkX1+AZl06KMQDnS82Ur1+ll9ZOOBRcgWVxJLLqrPjJxqeP6g7GE1Shu90yodEFwScCL1HdFrhwuXxJzVHia6OLXroxs+kY4Ym7933KNnhbrDBoe18aIfLi9qfYskBnOSKQay3etYzqkpAU0KJz7ILk1UFbsKhNef6SC194KDncIITFfAN6laFK2CmVs1qJtvnf7EgxpiaHubkF1l7sDjLRjlczkc568qvlNJuGp/+pxPVEnt5CBrv84K10FCk5yrry/rTMu+Goi//tKqGiaJVFkFEFjI5lsQA+kMrkps1iFnVva683wfLwEk0zb+KiYLjLouEJJ8i45bLfptAkeNkKYB40PNO+HM044LWeHuy5eipQZPRHRIWYYoP2ToGzJdjorpKI2IzLPE2Y5YgQCODcyVAMuGK7B8fN9iuJz8KlYQuWs1+VnKoHflPMbOqIGsazaXteKSJ/ACwZZf8zGqxjrnYWlmBYx0KcbQ7X20sCcUdzd2peMk/PBE4pgVwKqYE+Fn9gDtqlMvGAz1dZyHvcan86DXKizlbSdNnTF2P0Azf0az50wA9R0XW45IiZRT99qshEwOY96r3BEeVaFE6zv6IX+y9rOjGbUb9aVgVh4gMxLPr2yp6Nq/8pQ5nkrr00X11kntTqlHHvBjJftEOzsiAKrmZsNEumOvkdQ5B2LlNZyJrMrNpDmrN4jaVtI8TvHn+5/vGZ8xYsexTqLxOIVtEfqr9GFsE3jB+S3SQ5P3s/nVjIsb1pLihfhO+t8kMNJPGQDckbISUEtKf0deAAhh5dERl3L+AP7Kkrb0kdRukNZCROVED2FaX+boQrf3PqK0PVMnUItfJ7O7Si+NRviIYgO8Z6U8BYASyWX9RK7dnXK2mdpxq69ZogsbdcsPPc212WHPL+vmh0lZEA4O7uEzqhKpSi80jWHixm8hdM2HrkzQUPaa5eub5SNXvmgOqp+ZxUbFh7h/
- Lk76vA1e
- pMQ9juexUfXfsFCUH8LQamrDwFziG0Xv1nxjJweXe7iKQ/M2JEz75igpoQAalJsxE/EQR7TgX5rp9opF7mK3UqOGC185dTlu2+5WqqhHeVFuSIyMbtGN25+6/TTD428Yd0PysLsmE8PF2IfxHuIMjZGotBaoqB6iHv5Mq0U6Y9FM+AxL08aGUjhX4LuxqOFSpzyyDdjgYDnIxAHaHG56dMkvA477WiQiqgAHWgLBF0gM9cFD2P7lPxQIQWlry/cjMvqVHSYKGjpkuHDVwlcMSS+jZn5UmcKXgZsvILAKcfx8NBg1tBtgZJ/G3pxXkB1EazYZ+vrE8H6pqiQw=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768513081-198291
+X-HE-Meta: U2FsdGVkX1+XyecEK+eHauQdBcRv+d4HnUC5lwNFLv/XQ6ccH28SprMxLkCY7o9qJU2o467LcCEoirJrW9gk3ixo3UC+tM1CE8lvXCuilJSjwlYEuLJb3WyLTrv6hoqNgciMtEX42BJVYMOG0k82erajuCYrRcg1q4ZRXCISzQe1yGuQa0SpkzuZuGv586ZOZyezuL3wkiDe4+MhDVuwfkJjqiJ+bm9HiYFeaCAvIuV3soWJdqt/HVYh86JCusI7i1UJbi3VzvW6ES5DPCn3rkGUUsN3bhRSLIlvIIwp/xorzKPm7v/7xTqHxkfseyMvAzuNYQbUHh3NjaHkTPWjxLsY6fHyCJ6Jhk93rfFoGYz+H338krqQrrpEOCWdfIV83PoYRYv5sEs3dKncWu7MHh/FOCBc/4VyrV/xawrCTRByHPlBXK0n4tUrRwmYMq1Z3ldB6hozR/4nUjt6tJ0+z/KYO6M5HDFI41hX8X+tn00ozXkzKw/VU1iRJQgxxn1fgR3kMjItk3KaWQpVQeX0eU0PYTKYxb+QNyvJr88r3Ih+NT9STd9oBPE45iUzHh89Ejy/BkvJjyMezPeWz2Z27eNBg5Z3cWH+KrzdqpWlR/JznZqmxzcHPNS8D2R6N8EeOZeWLxfNT70lOqisl8sIFy1gUPWU9ewA6iiIl+pYcbZZBZ+5yJothE7VJLYstkg+Cl5igJqWzH9dQIYdR+8BjZhhYBHf/tG5fRJKsBCOtbTzddTjBaVSUjf8uqLk+Uf/+tMtFUswBWYil745pZfLfg4RcTwO+5hNzCLKSW9sDV7vJESqbR7GKaBkhY4A2SXQGg9Aflb148I0vI4NG8lfxalehygHOyeQrve9ATxdDR4HozBGzgWg1E5qh4u3NJeWc6rUZpObmL2N5eimCcgMffUv5BH3H4PpDy0qPs+sy6ibkiW16HVAzzxYVtCChL/HoKjha1CTmAwbaPD5Qtw
+ 16IndwAm
+ 5JVUctghDtrI0HrUbdy9F6hN6cfFcLj40xYUml55Pv8lil1Zjxa3nCngyx6WXYgUugvoQt7DgernEvF7AthEmdgWILn90CY38KEEaQzbCu1+7rnx958B81QsVntBzyiMrK3Qub7jRoMjcRJaABTqWZghMJp+lTEJN7fYLuNPyB0qSBjWeK8qIqwStq4e8MXmiwEX2y/iSzUSRwTXGAx8ZgTgrrVNLuYJ0dC8AFNrCZtT3D74kqXvYxR6XG1f+2GRhNkpre6zS2eggim/wmqeQGKKNhyGkG9n8N3sjXIKmuXq1OWY7yHscQCJczTOUFvhIJWv7xaR0Q4Ef8QM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,20 +183,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 21:23, Matthew Wilcox wrote:
-> On Fri, Jan 16, 2026 at 01:43:05AM +0530, Manish Kumar wrote:
->> Signed-off-by: Manish Kumar <manish1588@gmail.com>
-> 
-> Stop it.
-> 
 
-Manish, these tiny cleanup patches that don't add any real value just 
-consume reviewer and maintainer load.
 
-Flooding the list with them is frowned upon ;)
+On Thu, Jan 15, 2026, at 4:09 PM, Dave Chinner wrote:
+> On Thu, Jan 15, 2026 at 02:37:09PM -0500, Chuck Lever wrote:
+>> On 1/15/26 2:14 PM, Amir Goldstein wrote:
+>> > On Thu, Jan 15, 2026 at 7:32=E2=80=AFPM Chuck Lever <cel@kernel.org=
+> wrote:
+>> >>
+>> >>
+>> >>
+>> >> On Thu, Jan 15, 2026, at 1:17 PM, Amir Goldstein wrote:
+>> >>> On Thu, Jan 15, 2026 at 6:48=E2=80=AFPM Jeff Layton <jlayton@kern=
+el.org> wrote:
+>> >>>>
+>> >>>> In recent years, a number of filesystems that can't present stab=
+le
+>> >>>> filehandles have grown struct export_operations. They've mostly =
+done
+>> >>>> this for local use-cases (enabling open_by_handle_at() and the l=
+ike).
+>> >>>> Unfortunately, having export_operations is generally sufficient =
+to make
+>> >>>> a filesystem be considered exportable via nfsd, but that require=
+s that
+>> >>>> the server present stable filehandles.
+>> >>>
+>> >>> Where does the term "stable file handles" come from? and what doe=
+s it mean?
+>> >>> Why not "persistent handles", which is described in NFS and SMB s=
+pecs?
+>> >>>
+>> >>> Not to mention that EXPORT_OP_PERSISTENT_HANDLES was Acked
+>> >>> by both Christoph and Christian:
+>> >>>
+>> >>> https://lore.kernel.org/linux-fsdevel/20260115-rundgang-leihgabe-=
+12018e93c00c@brauner/
+>> >>>
+>> >>> Am I missing anything?
+>> >>
+>> >> PERSISTENT generally implies that the file handle is saved on
+>> >> persistent storage. This is not true of tmpfs.
+>> >=20
+>> > That's one way of interpreting "persistent".
+>> > Another way is "continuing to exist or occur over a prolonged perio=
+d."
+>> > which works well for tmpfs that is mounted for a long time.
+>>=20
+>> I think we can be a lot more precise about the guarantee: The file
+>> handle does not change for the life of the inode it represents. It
+>
+> <pedantic mode engaged>
+>
+> File handles most definitely change over the life of a /physical/
+> inode. Unlinking a file does not require ending the life of the
+> physical object that provides the persistent data store for the
+> file.
+>
+> e.g. XFS dynamically allocates physical inodes might in a life cycle
+> that looks somewhat life this:
+>
+> 	allocate physical inode
+> 	insert record into allocated inode index
+> 	mark inode as free
+>
+> 	while (don't need to free physical inode) {
+> 		...
+> 		allocate inode for a new file
+> 		update persistent inode metadata to generate new filehandle
+> 		mark inode in use
+> 		...
+> 		unlink file
+> 		mark inode free
+> 	}
+>
+> 	remove inode from allocated inode index
+> 	free physical inode
+>
+> i.e. a free inode is still an -allocated, indexed inode- in the
+> filesystem, and until we physically remove it from the filesystem
+> the inode life cycle has not ended.
+>
+> IOWs, the physical (persistent) inode lifetime can span the lifetime
+> of -many- files. However, the filesystem guarantees that the handle
+> generated for that inode is different for each file it represents
+> over the whole inode life time.
+>
+> Hence I think that file handle stability/persistence needs to be
+> defined in terms of -file lifetimes-, not the lifetimes of the
+> filesystem objects implement the file's persistent data store.
 
--- 
-Cheers
+Fair enough, "inode" is the wrong term to use here.
 
-David
+
+--=20
+Chuck Lever
 
