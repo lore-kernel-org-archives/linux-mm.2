@@ -4,93 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B709D44C7A
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:34:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38F0CD44C7A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:35:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B5546B0088; Thu, 15 Jan 2026 11:34:08 -0500 (EST)
+	id 85F116B0089; Thu, 15 Jan 2026 11:35:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58D5D6B0089; Thu, 15 Jan 2026 11:34:08 -0500 (EST)
+	id 829A76B008A; Thu, 15 Jan 2026 11:35:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AD306B008A; Thu, 15 Jan 2026 11:34:08 -0500 (EST)
+	id 72BDC6B008C; Thu, 15 Jan 2026 11:35:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CE736B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:34:08 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DDDA916041C
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:34:07 +0000 (UTC)
-X-FDA: 84334745334.25.86D6F10
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 606FC6B0089
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:35:40 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECFB91AE4A4
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:35:39 +0000 (UTC)
+X-FDA: 84334749198.13.E7A3DC8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 17E29180017
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:34:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=quFB9Of5;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768494846; a=rsa-sha256;
-	cv=none;
-	b=A4UD88oGdTSyBjgNnWXSahgRFAByx9WuXmXgElc7uVMqH5AUd0iGSFNRboUkbdUSmQuj6w
-	QnSzGKjliaZZHug1c7UClraLeMcLTwu0JWTi0KHNGv0nGHwL5EotkxIfAl2Xx1246hKCuH
-	Fo7o7/ob40Pqb3a7eQHH5VpyyFFNOmY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=quFB9Of5;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1A0EA1C0013
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:35:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rwEAajmA;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768494846;
+	s=arc-20220608; t=1768494938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nig7yH3SuIFztXEniKHzh3YF8SfC3vJxnJ3N5O0Eaks=;
-	b=lbYvoyCC/IiM4jzx30/DLuS24rlZc8bF5uzQhv67SxSUWYdBLkD+zcBU9ZVCPN0jPFKYrU
-	0BU1/vFqxfeWqhtkuYEIxyQuezkMxdNguojnJAvnVLFYF1IfCLWUnCerWt6SXG4cNMdhsW
-	JRIcl0v2fpJ32cYI6RNzKsGdf3LjPdc=
+	bh=+v4xd+/KuFqeZKNdIJDEA02GcrXGWWvbn3HyEpVyDdQ=;
+	b=KQzmfC0CwTppvlGDnBc2s8jhbv8NtZaeNmMVpVSl4kpxyC8w8/i0nXq26y1lS1JJuxbQqB
+	/uqlq60EWuCX456/42p031e6aK/o6XjlrEf18oWuHoQcdgTixL9d0Zsp/bizpTsxSC6+Wc
+	BFTMukuz1meePRY295GD8cTNLYrvEXw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rwEAajmA;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768494938; a=rsa-sha256;
+	cv=none;
+	b=ibP4ucWWKLHunlC+Vx7saarBSV41MOHsnVqaPdd91Wsz8ZjvxyRqT444autQ3CPMrWLul5
+	3VYL776TL/PDedC7rFDLneGPsHwiENZYVWork9zqwou05W3yN34J5acND5UHNzsGEGVjYq
+	zhO5Bg1e9Uv1G596WiJj9fSav8Haa/A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C3FE143FEF;
-	Thu, 15 Jan 2026 16:34:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C67C19422;
-	Thu, 15 Jan 2026 16:33:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2A205441B7;
+	Thu, 15 Jan 2026 16:35:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7E9C116D0;
+	Thu, 15 Jan 2026 16:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768494844;
-	bh=8hxhpYwatqg4ec2o/1bKwmlVi3StWJTQEmDCQHBf2HM=;
+	s=k20201202; t=1768494937;
+	bh=WkGd+S9X8HZuOVaKovh1nuFPEjR1qyneI4tbR/riCJw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=quFB9Of5eORu4Ot6l7yrlb+gSDrL7IV3sLfpi/BGIn2H5RovR9oIfLoMmaCjZF0UT
-	 aCgMWFBfwSVPIcRSBogpaoSibyzYGdFaEWbRQ7BYgQdm/JAinkyAwmmoMDoMQB8jet
-	 w1WlHBNhXCkYAa0S7greRyO98Vwu06B1uqXshcYQrAGpK5+DYRPN2deju3oBzqIVGy
-	 R13VoFjcpRxkKR8fYKdRz74vwVOKSm4AjkK4sW7rP+1AcSSbJY7y4XUNCTsFbaYWkk
-	 5G3Cx2mCBnDJnuVrNyMGv0b7OYo6/nsxYV5WX8wVOjAu+56KS7Lo19VFPw7E1dePHH
-	 SIoChbZRn1Rmw==
-Message-ID: <37fdb994-59d1-4196-b377-f3f749148b19@kernel.org>
-Date: Thu, 15 Jan 2026 17:33:56 +0100
+	b=rwEAajmAeF9Dju7pLBLBFA+V/SjNSUKyu5CH/wuYCzVJTlUSsnB8coQqV4jYsIAG4
+	 fLhV7pCz8pipFqHSiIH5D1DvqiTVth/mZPKyaIs+YFPzzf0++Elb9W0nIYbCOBMAGa
+	 eQ5qu3dzUOKiYyWcwTjoSxee80QO6JXP5l8yTU7x4UlVABuOXHxH37y0CzLekHzGOY
+	 UbnfWT9iU6PegxtH7tddO4mX7QJBDCBgLvTrCGLrY4vSmPaJVYG29E9aj4n2jDUJAL
+	 UQDJksMqf/UihFDQlYYaftNzKw0SFPzO6mSLlxgRL5DBqWDIfDCwLw6QhxT8fP+Ayu
+	 OrpJ4/j+L51uw==
+Message-ID: <be57dfa5-e6fa-4ce6-93c1-239436ff6e89@kernel.org>
+Date: Thu, 15 Jan 2026 17:35:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 22/23] mm: rename CONFIG_MEMORY_BALLOON ->
- CONFIG_BALLOON
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
- virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
- <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
-References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-23-david@kernel.org>
- <219f7be4-8355-4376-bf97-3410c6e23867@lucifer.local>
+Subject: Re: [PATCHv3 02/15] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
+To: Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20260115144604.822702-1-kas@kernel.org>
+ <20260115144604.822702-3-kas@kernel.org>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <219f7be4-8355-4376-bf97-3410c6e23867@lucifer.local>
+In-Reply-To: <20260115144604.822702-3-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: setgzokeku1zxqpc18yhk5uds6fw6cf3
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 17E29180017
+X-Rspamd-Queue-Id: 1A0EA1C0013
+X-Stat-Signature: yse1k9dk6hsfas473sfjpkgkqaj7qd5d
 X-Rspam-User: 
-X-HE-Tag: 1768494845-21991
-X-HE-Meta: U2FsdGVkX1+lsg0OLI6JMxXBAvymbjjD0W8BTGF0pMTtJ5PbbISnkkgAuY9+Cp5ZzhPItCoHyPnuFWQ47FAxbPCiBVsU87BfyDOQWf1qtINDmq3FlTy8rJnbmmBjYYP/l6KO7Iqhnx+LTQYaLjPyr8EXTpKmxQ9wNY7nNR9vojNd9bwNJQwI62/ZKdzrPzyvJfb7LbBSKkhOqMcOu6D9lHqXDHqnuFK3d5nGJFjzXBBl1i3eAiDxGXByjhQUBBRabh2HXJd3AWHPkf6Bby4X3uljVIlFhQlkmyfWlYNcQPKzMHvtlTRaDzoYfEk2JcIr5RRcYbZSdYsfuM8IVf02KDgV8Z1TbBu/QGmqvj2mGP1jrzJsvESmHf794sPI6gYM0RghmaMhE7EFIFQvENLs5RS83u/dlyjufAjBHjLytUwQr7ezY7FK8XmHB0xd9MlmLGx8fcS+Ov8mRa9jq0xTgw2dOYQKmBl9kxhkDv83txcWuVqw51Nm90027CoFeZ013gtZUjNJUnr+luO+UedIT5C+wv8IUBf1GMJs31k0vlSGRxL/flpp5tOqeCYie5DrJ/KOzUl5HOWA6SBJWtoGPAYPaJm3wMk8FRwr0YV3Mh+ZUZSLr+MVCsmDQPqhyjs2bmjdcq+PRGitVUTGtQjF6P1a5fsIj/0D1z+YGS8EDy/IPyoCyc3EeT4Gi9LuzYPP6AjO8/SzLq+cRG1TXOtAeLUqE2xpULCq7GfvyD1E0N4eIXGHbDLhTpB4Bv5Nxtulv91IoFr4VdwzLEsW9oVR2VpviRw22Z5kNaUpYUaL4AYnclhuVjN3CHrmLY7VzbZaX0iLHsYjGzVUsiXTD5jLTLMsDxt9jmzhCfwCztRK/F6uJUZlwGcswabMm03jRwRB7f6Yp/EEJRGu7ZDt/W7yPBmGL3BKJiDP2XvB1fcmz4Fjs2kPBoVmsfTcUc2ow9TkOXzdYg0phtiLzdHJFZm
- 01ZFNIkl
- Avfp/VfwO0aANk+s=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768494937-219268
+X-HE-Meta: U2FsdGVkX19h0oovQWcUnUtdTHgdtybvRL9aH7aTEkJRJ+rAU6zJ99aclyCaOQXHb2Kw18NTDc+K+sqXk39MYVSzE6PF7S+BBU0ybbgrRjeDFP4HUHizqlH9aVZukf5JiuzGdUlwMP7GMlropW4XqT50FxGv/eWWEpdWTxQLYfvQPJPaVNW7kijm0RrSUQZ1iwpm+yWfSlYy9CP8FmwKKcKjrUKnuIzZbEbnOCxbJ50+FYmxD6+3G297GiV9P8BxlCWpdp+gONf4HcpSneW5VRXjy9xLI2EqgLP9xiGWW3Y3eteaVh/YOTKlZgYeThLWUgLgGWkmiQ4Bf+Q3irz7j29weHJSR+Qv0yVlr182DqvxBoCKC1RC3A1N+JCHhFLzUSh5aUcd2bbYfeFy4xbvBK9x3Kd1VnCgzu40L+1MJ8uTB7Ghp/tYWREFFRfxalUhGswB/HbGYVgYRF7q2R7kJolSerSZgOb8uTRxd9KwEpWgHV2gh6xLZbkheL9i/YOUTJLquwDDAlv4+EdDsdE7s/wA4nRRDeVA4Iy/+oZDYNUA/0fHxyskjpO+oX3S4PBSRg0VEI6QrmgP8jQSbCd1GGKGo5jx4F/jzzL8fQ0ePezzeSsLgubTeyHb5/n1hgY4A3Of/vNpdkHMexyhQOgPvMsOJagQ7EbuLXBfiQBgljvxU3+qctiIHhXDg9PIUzVzO6XQwmPcz2WdwVOeX5xJcOtkYfIXY5ytARSmSghZv4RkMxUtaB7Su+Kh4LsUY3ZmQ/VnSN5maJcIeiMLpoWJ3QJdKSRRe/EygpY3xtYbHNG8f+8lkpcPwp59OxbLp+NJiIZU4NR7JKvAmla7CuwIyMpPHVys3JCPvzleVn5CpNfg6WWE7+lDHgxCi1ylhbvGLretpxxcvOBW9VHyj7BA/EGBKV2g5wZJHCxwW+YH6Bog9mnFRMaXxdiehYoMcFmI/A7oaWunNWAVafqpUUS
+ BCHO7Qwz
+ frn+nNbd7zf/dfC5GBi+gsq43T4NeS5BRM5M9aZIRbKmRRSxTlsxiY0xNa2C+tqYURcMsgnFIiJ3y7HFgYnUbR4KlLq6S8KmW2bWDEqVwmMFdr5XLbhkICiCT8mw8rqKVS8Na9Ygoorq98nyukL8Q7buCSD9WWOTmKCCjdw14SZ4nelhcLAOvo+6vN7l7UqZ7EWiRjczXuXcxEA2UXCq7XiYm4G3FT0mFJiEuKVSm9LBRcJZIHfn4jeF01Zy6fivAtZmq5Jj7tCsE7MF1fxsU5xX7hFoLpEOWMVRPj6tO1/w7CZW/u9EpR5ot6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,54 +146,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 14:55, Lorenzo Stoakes wrote:
-> On Thu, Jan 15, 2026 at 10:20:12AM +0100, David Hildenbrand (Red Hat) wrote:
->> Let's make it consistent with the naming of the files but also with the
->> naming of CONFIG_BALLOON_MIGRATION.
->>
->> While at it, add a "/* CONFIG_BALLOON */".
-> 
-> Probably not relevant but cheap for me to share :) so grepped for
-> 'memory_balloon' and saw:
-> 
-> include/uapi/linux/virtio_ids.h
-> 44:#define VIRTIO_ID_MEMORY_BALLOON	13 /* virtio memory balloon */
-> 
-> This maybe relevant (I guess this isn't actually used anywhere?) though
-> interesting there is also VIRTIO_ID_BALLOON... hmm :)
+On 1/15/26 15:45, Kiryl Shutsemau wrote:
+> Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
 
-Yeah, we want to leave the virtio stuff alone.
-
-Now you'll learn something you probably wish you wouldn't know:
-
-As you spotted, there is
-
-	#define VIRTIO_ID_BALLOON               5 /* virtio balloon */
-
-And
-
-	#define VIRTIO_ID_MEMORY_BALLOON        13 /* virtio memory balloon */
-
-
-The virtio-spec [1] defines ID 5 to be the "Traditional Memory Balloon Device".
-
-And in there, we document that
-
-"This is the traditional balloon device. The device number 13 is reserved for
-a new memory balloon interface, with different semantics, which is expected
-in a future version of the standard. "
-
-That's in the spec already like, forever. Likely, at some point someone wanted to implement a
-new version (for whatever reason) and defined ID 13. But that never happened.
-
-So now we have these beautiful two device IDs.
-
-I'll note that the spec also defines a "DEVICE ID of Virtio Cpu balloon device as 47". But
-no changes really happened in the spec with that for the last two years (only the
-id is reserved).
-
-
-[1] https://docs.oasis-open.org/virtio/virtio/v1.4/virtio-v1.4.html#x1-4260001
+Why should that belong to mmzone.h ? Semantically doesn't make sense, no?
 
 -- 
 Cheers
