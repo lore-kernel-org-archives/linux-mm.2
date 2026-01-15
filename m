@@ -4,141 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 506CAD4660D
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 18:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05B99D4660F
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 18:58:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABC526B0005; Thu, 15 Jan 2026 13:54:32 -0500 (EST)
+	id 458AB6B00C1; Thu, 15 Jan 2026 13:58:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A40396B0088; Thu, 15 Jan 2026 13:54:32 -0500 (EST)
+	id 43A886B00C2; Thu, 15 Jan 2026 13:58:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9178C6B008A; Thu, 15 Jan 2026 13:54:32 -0500 (EST)
+	id 370146B00C4; Thu, 15 Jan 2026 13:58:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F4156B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:54:32 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 153671BB7A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:54:32 +0000 (UTC)
-X-FDA: 84335099184.04.E14D2C4
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5F79A2000B
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:54:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e5KRqqz9;
-	spf=pass (imf13.hostedemail.com: domain of amir73il@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 23E556B00C1
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:58:51 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D1B1C14041D
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:58:50 +0000 (UTC)
+X-FDA: 84335110020.01.1757254
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B014D4000B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:58:48 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sasjx5xa;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768503270;
+	s=arc-20220608; t=1768503528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R/pIR9g5xBWqOZmQj/jDCO8xKQONNisoQQHHakrcMdk=;
-	b=Od00MiX7r7qf0O6RNUF9hvDaQD5mYsLkfAU4bMRugHdUg8fckFs2kmlctO+4f1abgGObB3
-	woBeNtWAM5aCghwe9mGfVarYGGN+2feMNSA9u3sQ3Uqhu2H4xvB7qgSu2S9N+dmCizFiYi
-	FAYy1NYLuWQA008oBB6PoLU3s4pQtHY=
+	bh=0O1BWycOQ+2FbDcO4CnFz87blFngabaJrYDMzKbHL78=;
+	b=TfcfrzUt79HDYEjyREYZrwtTdJJt0aNkhGC3eo7eMtz6VaA1qd0gzNTzuQqTfqjdgerfFC
+	mJwNN1WDdtmZarqRAeOpihVO9srQOuVRno75wvBvr7c4h+8JoDEAIdkrCL1mlAjSPh6aii
+	VbcO/FgIa87/AuAei1e5tWoG3ex6eH4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e5KRqqz9;
-	spf=pass (imf13.hostedemail.com: domain of amir73il@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768503270; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sasjx5xa;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768503528; a=rsa-sha256;
 	cv=none;
-	b=Zltz/8fwGKmTrMLS+aWyXC/EO1SSYz1I7cSAnJTvFhH5iS7HPwczxOixR+s3VDrgmKTrUk
-	uoO/5H9rVvbZYitz0AfMJJcCY6nYSmUCX64PdLrwfjm9rAceRC05bHiR+7dQCuD+Dp/9jE
-	M/qXcIRUwHooHcBBmPAlOz2teGKCvpQ=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42fed090e5fso668537f8f.1
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:54:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768503269; x=1769108069; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R/pIR9g5xBWqOZmQj/jDCO8xKQONNisoQQHHakrcMdk=;
-        b=e5KRqqz9SnZjMFPkKCJ1kQRka4R+/VxlaVPW5/WVqQ48i7EXwDn4oATPXp5bFogL+w
-         82AwAU4snszhHa4HPXAvXjqP1V7hQf6C1brkhBPAuro3BvyJrfGMutaX+/G7r/BmQW5/
-         x80nCg9WvA7Zd1lX/InPR+QfYZvh72wcjPbzXNuuM3zVSuyOZIP+y3BRQgiZUJbWm/Yr
-         ZC+/CmeHcdU7AIUNTk3zZ4ZsYoNxTOHR1DIXOOlm69ltAOHsQeWjc1C3k/F9ywmJpblU
-         7RfVtr65AnDedjOt9mlvHfa2IMZZinSFlOoGXkZjlYEY822u6L9BHTGwR71LuIelTPti
-         bQmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768503269; x=1769108069;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=R/pIR9g5xBWqOZmQj/jDCO8xKQONNisoQQHHakrcMdk=;
-        b=Y1c0T3Scs/TQq048MsTXFRMDSKZ2ix3RxV+k7pxwXs7YBD5Q74pPbjtg3AiJsTLIXG
-         P6k1XhnIWqgdAZaY/Sbmkf3Q7bEIZZYBJYA/I9Ylflj8KBgjwFOkGa5Jaj9MERIEyqfe
-         7xTQ+2RV1fA7R8SvOAOgWQzVymJEgw55It8bO5IzgDg1+mC0RUJG5SEMOiJI2O0X9k2p
-         cs+9WvwS0WP3hXvaSZUqtct6eZ21qfA+0xESl7ln9EOeLjofy1bvGl6C9gSOzk8NCBRF
-         XzhfeB3b/NPXQ9Qpwp38EJ1IBMrPFdZz+iz2WAOid/ccEab2/fUoTuzkukrvtLiRKRwn
-         eW/A==
-X-Forwarded-Encrypted: i=1; AJvYcCW4bkwQkHXzAMoxM9B++zh3Hg1hZ/h3C2YDY/x5XbQTLo4eFOYqJtlOaeRQH1hw503A5jEYQCv9VA==@kvack.org
-X-Gm-Message-State: AOJu0YzmoT4QSPagSz6aKzFidIZa4TDpvuv10ID2CFbp6nzRkHoRTP+M
-	kEccjf03Fq2kkP3q4dQ7kYM2gNqfFCALmdVQKHMW6okNwadVaYlWNPcAYbfXphG/ZCCGr2262rO
-	h8Dy3nmdn71Zyt4t9aM1/R4hubXyrhhY=
-X-Gm-Gg: AY/fxX7uYrhFLfy6ax4mBdJ0D0ViFRXr9vs4OyDbNG16ShGwbBuDITjiu/tDFFcEFBi
-	tKSIwwFEM6CC/kREF+6yZZ4vzmcqm3xoDvhhhn+Zpy6lTcHAqm5dXth9+DvFkgg//Bfq1wow5CC
-	NYl3qNL8N/Vt1lb5fYjBofo8bPMf44KSa0AI9saj70VLzp3YEWS48Wa3xtwdINSrkNcS+ZZ+GyN
-	QDmLLZvvxvGQFq4Pgs6+jYDw/HREV/ZMgjnegIdYm0COHe1DS0hJ8BvC6JdYPsWRDhjFeDJCQTo
-	c9NlSh0Xvjoumbbp+PP27fTP961/OQ==
-X-Received: by 2002:a05:6000:2313:b0:432:5c43:76 with SMTP id
- ffacd0b85a97d-43569bc17ebmr434376f8f.39.1768503268480; Thu, 15 Jan 2026
- 10:54:28 -0800 (PST)
+	b=375mTq89ZF5gT7dHUfaVMGYF1/dtSAC3WMkBAChLkNfFyYshqhGPl7xokWYWAAYZsRDak5
+	8ok21iHBX50rOhKhLqwjvA5w2fCnvdCJRMVsb9JtLny4xUsgWZZudVwXJcuNl+1a7ipZkR
+	2RCVhdy8xzPjBsPxk0+xvbHXaIq/UzQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AE3E343E0F;
+	Thu, 15 Jan 2026 18:58:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D872C16AAE;
+	Thu, 15 Jan 2026 18:58:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768503527;
+	bh=br/WucxsQfWbv74JcngU4crhnn9648apyx4EMg51Nd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sasjx5xawln9vY0ejx/Uss1AiypYRhOzfEiYuYsXYHgmxP1CZhZ5XKDisjnbSeCEy
+	 iJCxGE8JUkucMT8+AkTDkl7l8pbbjbU+ruToN9zlbEeiX0f0UEzWTj35jnQgVQMtOE
+	 oJGSR2HdswH353jNfh6vK9Rqwug/Zz9V5EtqP2UVFpmW1guZixlvmbJYgpTg0w7Nzs
+	 4ZzenwSYW7smbsxXPW4Ao+VJnm4OcheGsD/4AE+uhXAimMKHBgBJb/zrON86F4NlAe
+	 cERjuNHflUlC6ZmfPypxdSLbDth4mDkKDZ+isK/yShOqJNN+lzuWNJTvdQbqWc3ovg
+	 Vjyui/wfh216w==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 28396F4006A;
+	Thu, 15 Jan 2026 13:58:46 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 15 Jan 2026 13:58:46 -0500
+X-ME-Sender: <xms:5jhpaYljaUC2SCIpcZhjINK3IWcygkTtXXm5YnhRvkOJ6He9vERSvA>
+    <xme:5jhpaZ59SdkBvcEhx7rssChPoYX-6jwLyns5j8G8ftrrUGHiVNDKaDfXRB8DxQNIj
+    JY5j9bUSxa-d1NAMZTc3b5VJka1qu5jvE33uiL4IIBJamffO-VjwJE>
+X-ME-Received: <xmr:5jhpaQu4OdAaxKToHrVdSVLsP8LNFZY5Pu1UvgT7VODI3wD8Q8Q3TEUq_I-nSQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdeikeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinh
+    hugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhn
+    gheslhhinhhugidruggvvhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurd
+    horhhgpdhrtghpthhtohepuhhsrghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrg
+    guohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
+X-ME-Proxy: <xmx:5jhpafQpur2MUHsJnl9IgGl8z4rr86fNZdJpZzybljnSDNuGcWlirg>
+    <xmx:5jhpadg-Su3xLTcrQyGKa84e-l9Hjym4yOqmPhbdBnVxAA0b3pdIYw>
+    <xmx:5jhpaUacVMQOKqaibJXYkrZib5k9GCV-SvVDhJM72bFDZ9n9N7HZjg>
+    <xmx:5jhpaXrIWTSyMdhOaisIzLbbdEIM5bqqChKe7u1d-ElYx_QK9ZsVOQ>
+    <xmx:5jhpacxaOhipCeqCiezQ_fX_5p0ajN4ZLqSEISktNIGyaFOzWnNQTMuM>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Jan 2026 13:58:44 -0500 (EST)
+Date: Thu, 15 Jan 2026 18:58:39 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
+	Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>, 
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCHv3 10/15] mm/hugetlb: Remove fake head pages
+Message-ID: <aWk1tZyFZOOkF0AH@thinkstation>
+References: <20260115144604.822702-1-kas@kernel.org>
+ <20260115144604.822702-11-kas@kernel.org>
+ <30ae1623-63f9-4729-9c19-9b0a9a0ae9f1@kernel.org>
+ <aWkhbWR-3fWjeTaE@thinkstation>
+ <b10e3b2a-b298-4d27-b8ce-63327864c220@kernel.org>
 MIME-Version: 1.0
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org> <20260115-exportfs-nfsd-v1-26-8e80160e3c0c@kernel.org>
-In-Reply-To: <20260115-exportfs-nfsd-v1-26-8e80160e3c0c@kernel.org>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 15 Jan 2026 19:54:17 +0100
-X-Gm-Features: AZwV_QgNgqINU2MW0ct-_EKOImgQ1uAwJfq7nKBHPoIgHpyzlMCSNbXGV-6zTEg
-Message-ID: <CAOQ4uxh4VaVL9PD7-_Op9Xs-z5Qrx8g6x2x5FccujQX-Cw9RqQ@mail.gmail.com>
-Subject: Re: [PATCH 26/29] fuse: add EXPORT_OP_STABLE_HANDLES flag to export operations
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Theodore Ts'o" <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Gao Xiang <xiang@kernel.org>, 
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
-	Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
-	Phillip Lougher <phillip@squashfs.org.uk>, Steve French <sfrench@samba.org>, 
-	Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Mike Marshall <hubcap@omnibond.com>, 
-	Martin Brandenburg <martin@omnibond.com>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, Christoph Hellwig <hch@infradead.org>, linux-nfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-ext4@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
-	linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org, linux-unionfs@vger.kernel.org, 
-	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, 
-	linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, 
-	linux-f2fs-devel@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b10e3b2a-b298-4d27-b8ce-63327864c220@kernel.org>
+X-Stat-Signature: jw79sj1xtjnqxdzpseytq5agifm4x1ux
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5F79A2000B
-X-Stat-Signature: 9cqqmd3ros5pz4hm917xdf4buyt5hpfs
-X-HE-Tag: 1768503270-737366
-X-HE-Meta: U2FsdGVkX19SwS0XrJTb79H8fvgmNO3KCTo0f46q5XR7bQG9jcTkgcfbKbKnJc9mvdSPbaS9Yzu6dKPZwDOa0xSgvFwf+qALoDNwSgteGFxe0HlC2DgPJzQvZo/nRidrHiIY1Iy8FQ6pzl9AwRFyKGU5gKaljQGFU6jFSFyNLFY4gp66xRk8QYdyzaLDQixF0ubNX6/4grdXOGDedSFh7EmUjXemvwIemCE0ufBL2hnEG6oyQseu4lLMt58tQmbCNUqk3GAYcI6JHlLYmZNAN//G5yRPssGUaZniGldbAvM96sCPzOc+2cyMC/n968S1BCLzHHmguVjIUYltrVYDmpyYNW9jJm/s2+MBCx0JQevk/gPmfhs1LmKm1qRx0GIP86B7yKbtHWw0m7jnv16GTi8AiPXWJiotA32YmGBKLy2rjWBfy+sjy0PqWvKfqv5UNdBcpW4dlgbcaYqpuhQWHE03ivfBOE5ZnJJKKFyG7fefevOIEJW8msWxMaQpUBINqsmFe0yB42G0+EzpTERCOycD5Rsfu3KShN/xide5UnIt+xnVxpUVe6lup3dapFw2npHzOYt8WYmlySxj3zp++CH5PQrexKwFq7Wov+kmH4NNfne6wrklsVVWuz3KDsn3SH6QD9yWJ+I5xvjUi3Zaiplcw5i4tpk54n0xcQgjzUCqvlWYwu3zLIb+DNfDoO7/c3/JIVOZgE7IbtmIpWsj60vREJZHaNhFskTav8B0EOuuxfGWTrErkp//uopLz6ljRcZptrDynTT5VZ/ZoO1ksOmLZP3J/KguIZVHwa8SIwqRD+uuheyVCcwrQ+gVZdb92AD23F8DLwqmwx6XTpgGpgI4a7O3397YYpzm7YPSSK8pxUP7+Av+z5AMgLjNrKfa1vSbrxAbJ/rcz6kQk7hoA03v7bRJk6Sd5BD7Fw2g2IeNhCjYJnQFvGlXG48bWRf+JQkazI4gIkkHOr3iHMM
- yZHICkgn
- c7+tTGtuWmmFAapWjUfOfWmpy+JxBkmMMZFPm47cgeWFiAabvYLYdCE3KKdmBH6d/iVlFLlJxJiq23+j8ZmmPxDpm2ltpz9IxlsOkKmtA0i/3THDYgapr7nPRMxsdoCwx+VUc
+X-Rspamd-Queue-Id: B014D4000B
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768503528-884764
+X-HE-Meta: U2FsdGVkX18qpZHi8ieJY2VZ6qK8S/MfZEAf2rIj+t5z+6JtWDqME2QgEhbPgjnQrH/9UEJzjS7x65hq9uIwRlIZFceX6k7VjxOUxnoIhxcYJndEvTInS0DOqeyOH9KL03MyyRytYKx8E10aucG9Be8eYfcpHeZBQUji34WzSDZ/zMKg7Ds8X72ORZu0BdXI2SZMbEZoMOVzurVWlfM+HxwT6flh1zGmADzl99Bd/IDcZ46vsL+06YHj81Nxn8F4nAuOGe7SccrgBZakcHyoIceibvbA+O/gZ12D/nagSVrV1Bf+HzbEmIS1jbO4bhPxjJ2Rc+qEf/3hF8yhYELIZouQAufvW3rV8F8L4y2vZjIdTHG3NXvxoPf6Q7R0++Nn0PYLalrsdBT+fe0ADvs9R4JypZmNvoIEM8OuSHRrcQt3E9T/Zx5sYXOhmKLrg9cN594RsScKEFc8xBphCsXVVFV4L70zHZxHFe2ZZXifkITziBzuH6wnjrKD9XLIIjQGIfP5rdHMbAOvBpEhqm7B3LAKdJW+YhOXVpqIrdVbSlA8W1OnhT4AzitNWe/Z+nXLDOl8E+FwnvLqHs4edRpsmHSXAPY/gg87gPIWBosxlRItx9BYThC877WVC3dtzW4vs+cfZkW1vMXCYQ/3hINX9B6AggjU/KUHIvRTTMw8h72HO19TO8DXyJawfEejWnExftyzDmBbzSmr/4xcFg0Ak9gRsuzH5Jj+R38dPIptT1P24gcNlmvzOxk18eku2Ivm0xTts3FM8jdRD3BoYLF29/kOkxnvzr0EP9fjHQ9WCqABAQ8vqTb0mD4ZYhw2XD8aagRbIoxIgee5utf2if+g0KpcepWkxx/sqCr28d9RxrNZHAYB0qNy3NEoaNTXt+puUK5hcE0iA+BAakySVXJXSd+9XnnDW85v8b5GT/NAH3Lw0ZAb3Jv/8zHzrUZkblSJ7umxt52PyWmUwAdMx7F
+ bLqQIdnM
+ kpmtbUdUBqn3h7ZHAfCYqDkFRGjV8Qz2Tl9PVzFZRUcCYI+7saSnBmK+GL7z1lCPDBDrbFPGThACuzAufmPa8CFBEQGAn5e4jCjkwkHMaP5ddSAYcWsb7MUGc0rnSAyik9ZmvlPWduFWeU3YM94GtFaWkRwog69O/EZ7NzJQkZyLJmGs0tzhYpVY/yfNTZ0PZ9maBJ1oty0fAdPWeuMqGOftYRs0l6OqfpzF3wRoZFn+hvkrWFjC+uZ+qNeXgqOc0vDCyr1skEOisYxO58+z+lvwruFd0JZD5AUSh23b2mTn47bg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,38 +135,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 6:50=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wr=
-ote:
+On Thu, Jan 15, 2026 at 06:41:44PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 1/15/26 18:23, Kiryl Shutsemau wrote:
+> > On Thu, Jan 15, 2026 at 05:49:43PM +0100, David Hildenbrand (Red Hat) wrote:
+> > > On 1/15/26 15:45, Kiryl Shutsemau wrote:
+> > > > HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
+> > > > vmemmap pages for huge pages and remapping the freed range to a single
+> > > > page containing the struct page metadata.
+> > > > 
+> > > > With the new mask-based compound_info encoding (for power-of-2 struct
+> > > > page sizes), all tail pages of the same order are now identical
+> > > > regardless of which compound page they belong to. This means the tail
+> > > > pages can be truly shared without fake heads.
+> > > > 
+> > > > Allocate a single page of initialized tail struct pages per NUMA node
+> > > > per order in the vmemmap_tails[] array in pglist_data. All huge pages
+> > > > of that order on the node share this tail page, mapped read-only into
+> > > > their vmemmap. The head page remains unique per huge page.
+> > > > 
+> > > > This eliminates fake heads while maintaining the same memory savings,
+> > > > and simplifies compound_head() by removing fake head detection.
+> > > > 
+> > > > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > > > ---
+> > > >    include/linux/mmzone.h | 16 ++++++++++++++-
+> > > >    mm/hugetlb_vmemmap.c   | 44 ++++++++++++++++++++++++++++++++++++++++--
+> > > >    mm/sparse-vmemmap.c    | 44 ++++++++++++++++++++++++++++++++++--------
+> > > >    3 files changed, 93 insertions(+), 11 deletions(-)
+> > > > 
+> > > > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > > > index 322ed4c42cfc..2ee3eb610291 100644
+> > > > --- a/include/linux/mmzone.h
+> > > > +++ b/include/linux/mmzone.h
+> > > > @@ -82,7 +82,11 @@
+> > > >     * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+> > > >     * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+> > > >     */
+> > > > -#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
+> > > > +#ifdef CONFIG_64BIT
+> > > > +#define MAX_FOLIO_ORDER		(34 - PAGE_SHIFT)
+> > > > +#else
+> > > > +#define MAX_FOLIO_ORDER		(30 - PAGE_SHIFT)
+> > > > +#endif
+> > > 
+> > > Where do these magic values stem from, and how do they related to the
+> > > comment above that clearly spells out 16G vs. 1G ?
+> > 
+> > This doesn't change the resulting value: 1UL << 34 is 16GiB, 1UL << 30
+> > is 1G. Subtract PAGE_SHIFT to get the order.
+> > 
+> > The change allows the value to be used to define NR_VMEMMAP_TAILS which
+> > is used specify size of vmemmap_tails array.
+> 
+> get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G) should evaluate to a
+> constant by the compiler.
 >
-> Add the EXPORT_OP_STABLE_HANDLES flag to fuse export operations to indica=
-te
-> that this filesystem can be exported via NFS.
->
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->  fs/fuse/inode.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-> index 819e50d666224a6201cfc7f450e0bd37bfe32810..1652a98db639fd75e8201b681=
-a29c68b4eab093c 100644
-> --- a/fs/fuse/inode.c
-> +++ b/fs/fuse/inode.c
-> @@ -1208,6 +1208,7 @@ static struct dentry *fuse_get_parent(struct dentry=
- *child)
->  /* only for fid encoding; no support for file handle */
->  static const struct export_operations fuse_export_fid_operations =3D {
->         .encode_fh      =3D fuse_encode_fh,
-> +       .flags          =3D EXPORT_OP_STABLE_HANDLES,
->  };
+> See __builtin_constant_p handling in get_order().
+> 
+> If that is not working then we have to figure out why.
 
-These are used when the server declares FUSE_NO_EXPORT_SUPPORT
-so do not opt in for NFS export.
+asm-offsets.s compilation fails:
 
-The sad thing w.r.t FUSE is that in most likelihood server does not provide
-persistent handles also when it does not declare FUSE_NO_EXPORT_SUPPORT
-but we are stuck with that.
+../include/linux/mmzone.h:1574:16: error: fields must have a constant size:
+      'variable length array in structure' extension will never be supported
+ 1574 |         unsigned long vmemmap_tails[NR_VMEMMAP_TAILS];
 
-Thanks,
-Amir.
+Here's how preprocessor dump of vmemmap_tails looks like:
+
+ unsigned long vmemmap_tails[(get_order(1 ? (0x400000000ULL) : 0x40000000) - (( __builtin_constant_p(2 * ((1UL) << 12) / sizeof(struct page)) ? ((2 * ((1UL) << 12) / sizeof(struct page)) < 2 ? 0 : 63 - __builtin_clzll(2 * ((1UL) << 12) / sizeof(struct page))) : (sizeof(2 * ((1UL) << 12) / sizeof(struct page)) <= 4) ? __ilog2_u32(2 * ((1UL) << 12) / sizeof(struct page)) : __ilog2_u64(2 * ((1UL) << 12) / sizeof(struct page)) )) + 1)];
+
+And here's get_order():
+
+static inline __attribute__((__gnu_inline__)) __attribute__((__unused__)) __attribute__((no_instrument_function)) __attribute__((__always_inline__)) __attribute__((__const__)) int get_order(unsigned long size)
+{
+ if (__builtin_constant_p(size)) {
+  if (!size)
+   return 64 - 12;
+
+  if (size < (1UL << 12))
+   return 0;
+
+  return ( __builtin_constant_p((size) - 1) ? (((size) - 1) < 2 ? 0 : 63 - __builtin_clzll((size) - 1)) : (sizeof((size) - 1) <= 4) ? __ilog2_u32((size) - 1) : __ilog2_u64((size) - 1) ) - 12 + 1;
+ }
+
+ size--;
+ size >>= 12;
+
+
+
+ return fls64(size);
+
+}
+
+I am not sure why it is not compile-time constant. I have not dig
+deeper.
+
+Switching to ilog2(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G) - PAGE_SHIFT works,
+but I personally find my variant more readable.
+
+Do you want me to dig deeper to check if making get_order() work
+possible?
+
+> Was this only a specific config in where you ran into compile-time problems?
+
+I am not aware about any particular config dependency. Seems to be
+everywhere.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
