@@ -4,252 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55856D44C46
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 13:53:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E808D44C4C
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 13:53:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B73D86B0088; Thu, 15 Jan 2026 08:53:09 -0500 (EST)
+	id BCFA96B008A; Thu, 15 Jan 2026 08:53:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B55086B0089; Thu, 15 Jan 2026 08:53:09 -0500 (EST)
+	id B99C46B008C; Thu, 15 Jan 2026 08:53:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D8776B008A; Thu, 15 Jan 2026 08:53:09 -0500 (EST)
+	id AA6E96B0092; Thu, 15 Jan 2026 08:53:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8827C6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:53:09 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 104938B20A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:53:09 +0000 (UTC)
-X-FDA: 84334339698.08.0A41605
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9998020018
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:53:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=EnEzk1Bh;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=f25FHsFk;
-	spf=pass (imf03.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768485185;
+	by kanga.kvack.org (Postfix) with ESMTP id 96A156B008A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 08:53:41 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 592AE5880A
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:53:41 +0000 (UTC)
+X-FDA: 84334341042.04.1576186
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BDF3D180006
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:53:38 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BGvS6CKB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0i6hcDdq;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BGvS6CKB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0i6hcDdq;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768485219; a=rsa-sha256;
+	cv=none;
+	b=Fi267Xiv92KoxhjDMj+l83+JPOXv31zxbLs6df5HGIrQyz4uWwzzfOZNnws7KzpopVjkve
+	OYbrcvpIxKalEW3Ojt6PgIubGw9kyC/nwKX1iFxBGzwt98RquOkr9rq/cepH1W7om4KWZk
+	0grIqpNRWLYgy3BY7CwoAoXzl8ozrsI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BGvS6CKB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0i6hcDdq;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BGvS6CKB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0i6hcDdq;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768485219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h5WpEUw2WVc3Mj0gL6fktjVmkcle06OKkcqbkrlFfIY=;
-	b=zkBTZW2Yx+vkz/oZU55S92YHh8tdjiIHqhAEElv5lS7cQFzhxWflD5lcsC4Q3RhqPUVaOh
-	v0NHwkQlUZf6eKkfVSebt0ssUHGJMWpPS7wnYe+fBnu+Z1s/7bHVDFgm8MYnhPetVogdQF
-	kTOvcdZDvuysrlKvVkJBvWMzLDso+NY=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=EnEzk1Bh;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=f25FHsFk;
-	spf=pass (imf03.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768485185; a=rsa-sha256;
-	cv=pass;
-	b=NM5dNL9Xa7/fpF/JqtuqFDUhVxt9jZLwSKf6voWUZS82aHuWMY/FLU1GfX7kCgLMn5aYHE
-	oWWC/bBOoBTkHveEU8tijdYKF3tFzk9kiy26Wo0e+HYDHiAkZtFqzJz4OXyQ3tHpInSS7d
-	aZO8y4qJ0AB0booECZ5Cs6zxT4wzyzc=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60FBmapq2811623;
-	Thu, 15 Jan 2026 13:52:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=h5WpEUw2WVc3Mj0gL6
-	fktjVmkcle06OKkcqbkrlFfIY=; b=EnEzk1Bhen85LGHdYE4NuXa0CRJqBXJfGF
-	Y7j1Soveml1TMXbILf3gyrHmAkQcDPW97lnzNyv9zi04kxp4V9oYrwuSxGFpNcGA
-	jYV4RSflY/SANNHDtPmN/0aT/bNAl7YNl9nSG+zr67u9xVEbqHVI0/O7rYoAPV1G
-	cA3x+72QRa7y/1a6W1yaq/DR5x81n2GfgXaezfDOKXUKdgUmhE99L13kjA1lfJis
-	pcxlMvgNEtZai+TVq0HnQ1asaVOSBko1K3krGceo7TUDA5b2krE3tmU20bYt1dCY
-	elcUrEyVsULf7goaLFuZk/hYZldNbFroO2JCyKrgHhhG9R9SXd+Q==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkh7nr0ue-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 13:52:48 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60FBkl4X001857;
-	Thu, 15 Jan 2026 13:52:47 GMT
-Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012060.outbound.protection.outlook.com [40.107.209.60])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7bb0c6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 13:52:47 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fzxOSNW9GHQmudSr2vV7ikaFB0GbFE7OqWkxbzm3KVTGAFpTGMPSCY8Uv9lS2/wo0+BcI7oooivo+2FQpVE2qWqPfbO7tBEU/o+Hocg0sUuNTlqcBKTcET3FFqiaYfzeR/9P71ejKl1P1vnvIyH7ra6RC8QyGf5IFHmfght2V1dS8P2WQ/kwtOq7NdG9B+R+fdZ09rBL0H17IOOq43cEtkTDj3UeN9MSfGyYNMpkHJLNQFkUJL+SYf1rQmjU7YRfBzpNkMJoW57KQqUqIJtVzJo7A9MTgAsgbGedJEypejG0rqY8zewlvmmG3GSmodcE0GqXx/km7D1M9VE/izx0AQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h5WpEUw2WVc3Mj0gL6fktjVmkcle06OKkcqbkrlFfIY=;
- b=n8xue9BGP2rwoZOZOY20+fjei4NID27i39AODvy8bPxDA9O4o9mj7+KfYuV8xpksVqQymr6AmW7fPqrnxvxUr6vcNjkJF5xYNA74h8xouAw8L8mgteVE8Th+S7Ayp7PISX2D7L0heeTpVYqhqlGQfYv9r6TqixUvxIRf6VuFpHYH2RmoyHBTz1HI9IJhG0r5nWvQgXHpqnyluuVhb7+fAdN/L5KiFRrc7XFb1U56aSjUX5weEmjo4dVmeexd0u31lV6XU3hn2kyQfPzqyDHfyD+2AWoJuc04AAmnylL1LI2RaY5xp6AWiNk0NHYAdcXl6Lyoz0NXuiY9dINWkKFxww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h5WpEUw2WVc3Mj0gL6fktjVmkcle06OKkcqbkrlFfIY=;
- b=f25FHsFkOqcBMzMpjJhgHBZZ9Bfbv7yXwzfPjXCKOyF8ezSlc+B4OEL4dOknHsM/Xqu1iTCzhyCMevkrdFJZZekkJjWDuHj2KRXw6hI7XLKFKRXUmmS6NLckuwy8Wp8ti+pR7LpsPP/bmuxzx4e0w5ZvtkbVWPltp94KxhGn0Bs=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by BY5PR10MB4371.namprd10.prod.outlook.com (2603:10b6:a03:210::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Thu, 15 Jan
- 2026 13:52:44 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Thu, 15 Jan 2026
- 13:52:44 +0000
-Date: Thu, 15 Jan 2026 13:52:47 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-        Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v2 21/23] mm: rename CONFIG_BALLOON_COMPACTION to
- CONFIG_BALLOON_MIGRATION
-Message-ID: <76a1cf4e-7635-4bba-a350-d6f6da6fbe6e@lucifer.local>
-References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-22-david@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115092015.3928975-22-david@kernel.org>
-X-ClientProxiedBy: LO4P265CA0301.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:391::19) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+	bh=T6ReUDa8OO9JhozmVpJl2INs7RyRAxlBOkfOTzlca2k=;
+	b=WXfxcWzIEOIVwJ3Jy5jAWyuL+wxu+Q2YaR8eZv/T7UHrSn+2bhtPRiPGGZu3aJxVwFkTbN
+	9qKHAVYluhSNX2F8AUgwnsAQsKW36X2kggBouYpRPdpNmv/CeOUudolx2BjcrdboLC4r8Z
+	/96R+Lomgh3mRCQCYb12B/4NW8zAwfM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2D2535BCDE;
+	Thu, 15 Jan 2026 13:53:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768485217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T6ReUDa8OO9JhozmVpJl2INs7RyRAxlBOkfOTzlca2k=;
+	b=BGvS6CKBxykqWxnxPbblt4fcLzBnTqHy0PO+2o+x8BJ8lHTjvZR4mccehwZZycNZXhZ3+t
+	96Xi4R9LcRH4/mGJ25xYKQr7ppsqiU6kIiBezYKOHMq5c6p2X4WqL0+HVR5qbAcwBPfWFb
+	lznVEwdq4tWXoOrZ2cd/cB7cxZpBxFU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768485217;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T6ReUDa8OO9JhozmVpJl2INs7RyRAxlBOkfOTzlca2k=;
+	b=0i6hcDdqMW1dnPXUN04/qK0mRx6YE16ZZv4+SLn4ktdd28hdoSGfcZEWJZAkajcaXl3mJa
+	lNnDtJwaU81se1Dw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768485217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T6ReUDa8OO9JhozmVpJl2INs7RyRAxlBOkfOTzlca2k=;
+	b=BGvS6CKBxykqWxnxPbblt4fcLzBnTqHy0PO+2o+x8BJ8lHTjvZR4mccehwZZycNZXhZ3+t
+	96Xi4R9LcRH4/mGJ25xYKQr7ppsqiU6kIiBezYKOHMq5c6p2X4WqL0+HVR5qbAcwBPfWFb
+	lznVEwdq4tWXoOrZ2cd/cB7cxZpBxFU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768485217;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T6ReUDa8OO9JhozmVpJl2INs7RyRAxlBOkfOTzlca2k=;
+	b=0i6hcDdqMW1dnPXUN04/qK0mRx6YE16ZZv4+SLn4ktdd28hdoSGfcZEWJZAkajcaXl3mJa
+	lNnDtJwaU81se1Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D9363EA63;
+	Thu, 15 Jan 2026 13:53:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id kNb/AmHxaGkrRQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 15 Jan 2026 13:53:37 +0000
+Message-ID: <3aa7a303-677d-4ef5-8df1-b3c0fdfcc787@suse.cz>
+Date: Thu, 15 Jan 2026 14:53:36 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|BY5PR10MB4371:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d4ab2c9-50a9-41b3-bde0-08de543d5bb8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9xssNg0fJlfvZ8XuWTj83KMfA69XikLLeWy9GAxeH0QhmdF4slux5anguYm3?=
- =?us-ascii?Q?G/bn8Jkr/V4oxzLQ6XmF2VUV+N/iy8Ll7WPsRpiHqBE4DLGeSMXAy83ybD70?=
- =?us-ascii?Q?qfygtfVck2aTX5P6kl/o21sxWJKk4vxDaPBEhH7vSNGJIuQj4J+/JQ7Rn/MT?=
- =?us-ascii?Q?WYBHdGykh6fgCQVmqS/lm7rMSw7gLzSujrc/lxnGbCkTKwUXto6EDZiN7mzR?=
- =?us-ascii?Q?y6OXNDw0aPdcJ0ldMa5RSIPdKYmyDo9E7UzP93k1Hva5WldaiAeMVn0isqfm?=
- =?us-ascii?Q?q5aeqDm7qpiYW+vdjO0St5pCIg7DwTpXVSkl7ReXVjUt/yQQVeXOP7VUiP2w?=
- =?us-ascii?Q?OdobrYqosF2NaqLpE7sjKLfvlnAvTMcD1pA2diH5cntHv0q1HtlpOj0cksVO?=
- =?us-ascii?Q?0dUqyOPWVI/PuFqfSkH9jWty3I5VhdPVrWtvuSv7vs5mM03QiGUDtePf+9DA?=
- =?us-ascii?Q?Bp4KS3l2symlNd7gbrdmhibiIg2BaNKZhpHgJOVuQ6vzkgXp/bsMFZdGGrKI?=
- =?us-ascii?Q?Q3JzO9xFeI5tlS+7tZKWC0WQ947QVTLvT5vAec9bD9C6X4KtmjeChMSp1KnL?=
- =?us-ascii?Q?UVZQ/10fEoweJfLDMthSMmGro8kQaxisQQwYE/UbzpXhAi+AZEPaujS7uk70?=
- =?us-ascii?Q?86ouXaqOlhMsbyXJ8qq+cyHJ1FIJ6Mo4w2RLXzFIKTI0xBHg8+cxc/S1wnrk?=
- =?us-ascii?Q?rOa2rTNCuLbJtIw5y8/cr/Mq2+kF5Y9bNBkAFH4AzNmj540Os4fOGi2aGtgi?=
- =?us-ascii?Q?Ferb2mpdxbzEyaOQl40JjadzMSv6YeuQbvzujwf2/CXfGPF5QVMW1N1G50VR?=
- =?us-ascii?Q?ghrr51xhCOSyX2clV6J5CGLrR5EMkhx/xl0CZ9uk+G5kRxAxTvlTXKCIaGEk?=
- =?us-ascii?Q?ONT2rtGNGBkxHsdy+u8qCPpOge5osDHe/qQSyHrTiJxn2guNHXAfBPtwiNsf?=
- =?us-ascii?Q?wU03W5Dn3D7QmH8UVCYhSR/e404bxzBmDfObg2OErHPO5UBTqIn/K/CQFnFe?=
- =?us-ascii?Q?xNEs4iHT+BKslCL56uWDuwxIf/eOJHlMQWjnnbMuZR2g265wXXZYIs5446xI?=
- =?us-ascii?Q?kfpid3lz2i7f3eCEV4g758cZk4pwn2yPnOPU9iWXd+R/M8MpEtHH648E0jfj?=
- =?us-ascii?Q?F1mGSBJHhh6j311ry3S57cBOHE6bSNAUDjDGbucM2SMIhS8UjVRg1BuLw2zw?=
- =?us-ascii?Q?HFOZetYhC62oQ8WXtPyKDt3GlER3Cq1IFCF8Z7I1OoIzf+xovYeS433GRgxP?=
- =?us-ascii?Q?GtWqyGT3BA3eCicWhV1KmFh+jiXiWp6BzeVptk4DcU6z+m4ci8Fjpz5QNVy2?=
- =?us-ascii?Q?Z4oVGWKcj3zhSD72tj4uZKiu1VUHMHWTPPxy0Z/oPr9X96ufJySVi7cv7/80?=
- =?us-ascii?Q?qdkV0d+g/5L7J7jKPDRoUP+uu7nKXznIQ7HAMcAL+0uoJPI8xfAgKqiK6HWC?=
- =?us-ascii?Q?/9IRphrJG9bMbc1lHLfr9ADePw2jxEeUmjFEZi7zdCyiyA1MBB1eF1Qmo85t?=
- =?us-ascii?Q?Lj5Cce4Io9LGumP1PJJp+HVRYsAqz8pZ78Fi9y7fMg9dh7LG75k01Y2UpBIZ?=
- =?us-ascii?Q?hXOw6MiUUDBb4cR3YA0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9CfO1GVI3n1h+yTOjzZlBwLIGmKFmiOHDbCBAkVgs0F5p3jcDMi9GBNSGA4U?=
- =?us-ascii?Q?z0k1DM13h2BArpmYKNPzE9hw+QGKTCN3ZR9CORMgANgrXWNYcoWsCU9p/Nrh?=
- =?us-ascii?Q?5X/t+9/o5h/ogTTzHhnSW6sL2YK7lYIaAlWt3smPnd4JGsmGA9OV37AKoHfO?=
- =?us-ascii?Q?E7ZKrPrGQ08IezTotHsk+7TvI2zddceRMEnlY/ZUq86NVBF1ihZcJ89O13Qy?=
- =?us-ascii?Q?1//cuVa9eEcd99C5CTdRfjnpv+5xS7bMzZMI9CMvEiuUUj9D4nW89qN5CUZ8?=
- =?us-ascii?Q?XHlDkRCh9qOmExewPkGaUNgAow6Kdo0jJxcMLI+M6vFAqrQ4k3gzc5xON0p4?=
- =?us-ascii?Q?/mFbUgMeIEx6v+LR1yaneQjVojpjakv8SiV6aih0tK5XaMDYzKWy1laiF0o8?=
- =?us-ascii?Q?YUqBEDRJXiQJZOmHjmtVrGzW9Rk32kzd3yumxs9yMpFwp3sdntABeOOg9akf?=
- =?us-ascii?Q?PGHrlNR1fPejvbkbsgkYQUt8lJnSKusQi9frXcRK6XxjX78IPa/4LFIPLOj7?=
- =?us-ascii?Q?A1FiDpe03cMmyyJutODH7/Y/pQGN8XVQs0AUgJ5UL3recqTnLKiTMmhYvJTC?=
- =?us-ascii?Q?RepN35WmKYou9zPltVEdqricqOh5ahBDaU23dQbDKjQYbuN9aExdnzCfh1+m?=
- =?us-ascii?Q?5twiOqZNXwc8Eh9DZWMMJsBG3eSaA2z3bLQTahN/MBjBmiEty5p1VcAL7wdv?=
- =?us-ascii?Q?BlCf4qufnpqqKnAKV8sTMz3qtfISefSXq/mYb6QZuThVHAV137geVio8ct2n?=
- =?us-ascii?Q?1w+DQu8rQNhLIWMMa2mfxZf4mhJOo3AlR7vEGGjCzSj9aQdPgpwuNyqfnhxO?=
- =?us-ascii?Q?wurHWTC9ukLZ91fKx2SB421usggWmw3XPJrxxmwhenduCQ4Y3+vCiMFl5yzx?=
- =?us-ascii?Q?uXh59EuD7lHaERZm9inGppa0A5jyGTXIGThLgda2NnLDd71ef9FInNUiLvmT?=
- =?us-ascii?Q?2lSIepzvq0GCY/89IYL3ZTOeKXcIdbXyqkm+/Oi98qq/ppzzF0SwigOsuD67?=
- =?us-ascii?Q?JAFNnrxVE0lfxsU4bOz3y06EKoj/9UMrKekAwMtVCmTOPlDsVffUV2QtB2ev?=
- =?us-ascii?Q?Y6ZVWOXQn0MZPNJinYmNxwXPYnYMMH+nlip3jel9W6KBMYS2jER+hlvbsaMy?=
- =?us-ascii?Q?YiBSiUC0y8JkeGsqEkxTXjo88JCApSaFUR1tpGVtr3fPJW/FHV8mtS2os1h0?=
- =?us-ascii?Q?VbMRvWJCIrQAcGtZtj4FBG7RVlmprcp3H8az/CvECk8OddjMRAQHfh3gTdOV?=
- =?us-ascii?Q?B8x9TRsD6YeiVsXLSISwMq/0iWkAMcTg4InOSuE3mnthpi4PbJHTavhU/5jD?=
- =?us-ascii?Q?KpL7wgcttHj3ETBkOGMgnyuX/E3C6B2IsOugXb6g0mJr+tp18XVguZpwdtw6?=
- =?us-ascii?Q?a2Hq3QjgpAvfLl7pTh7gauTrTXVrvUq8V5LW7vnMLZvUdoggSGP4ro9YlOXv?=
- =?us-ascii?Q?DZs68zPAIbSHdi5rnBflDhqRBuMqa21kitFsHMmNeiC7hcjh8X9uprGAMiu3?=
- =?us-ascii?Q?Kuv6V3fvHnKW25XEBFQIoaLmCgkQQp47iwDQXi5xDq/YUy8s2JB2KkoMWphv?=
- =?us-ascii?Q?/8kqt4QVEQLaGJcLbS2CaDVndFlsuitIXJy1zGl+aX21GMovYY9hFC0fhRhj?=
- =?us-ascii?Q?zEEnh0vb0778mfsOFCmOEX3/RMdR9aofcro2X3cWO9EmVLs4VjSFII5jDeQ0?=
- =?us-ascii?Q?XuDsAfDyvypvLcia32EfkFf/OMWxcxr60EO36ORxyU4OH6o13f/54apYyqvj?=
- =?us-ascii?Q?FA3XIib1eMROAqM3Ns+ikFus+BHd9MQ=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	rmanQWo5wdmYiHK2Z42nXbedUCJTbrNLO7klhxRkadUs0sXJOzAjoJ1mGjzXm+CwvhCjNaNd63AD5Mo5JRJy2+KI8Y5MzyU22WCfT6aKNlgMezLQK85B1d0RhAGv5P831dJbgapSZDOV9UO4/49ZvAR39GeBu941rVKQyaJfhhMOUZaGv2Lq4Hwimj/ug3N607Ab/HQuAigIsN0hB6yNJIevz2jlBonmHgYEhJX8k6twGdw1vHFoulvylnMl3pA0MCg8iDcuwesXggY0pFd55lC2JFv7DiPlbimn4oKFVKHtl39VRmXHvYS4sAVfr/0AezASpre32wqHzn5qaYLFVMix0aWkGFi0DNRmgx3HYJ+xeOgH9nbSQv840Kj+msmxiirhWBPLUkhwZCFO7wuiJ3Dqxk7TzUEyd300Ynw2NCAmeYd65A3ly9QFdDhuQJ1brcwiGsvtvlRU/DIxrFrU0qchNKroi+HkLaysr0Tb71hdbBfKxUZMiJWCmrAnsI4D1HuswmZgR3lFSclxq4AkX3VTBZwrjpQG1Qf9hauvh/zguW0BhLOqGFbQyZwS9AsiB5WYXyDBXWp+GhR4AdhhiXby5JJ5/pWA4b6jJ9FB0nQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d4ab2c9-50a9-41b3-bde0-08de543d5bb8
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 13:52:44.2897
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xGsBw3+YWY8RSt8X+VjKNEeNKKduN33skpMuHkiaLIqJrcslXif3XWcARWoClzZlK7c5HztW2jG3MAO5PFeTTlhNKJ0wbmsyaP9amtsTwx0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4371
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-15_04,2026-01-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
- mlxlogscore=999 adultscore=0 suspectscore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2601150102
-X-Proofpoint-GUID: HukTMBWSbdGdgIsNZSKnL7-_GV8o8M-v
-X-Authority-Analysis: v=2.4 cv=X7Bf6WTe c=1 sm=1 tr=0 ts=6968f130 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=XraGVkj0le8dWsLnROYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDEwMiBTYWx0ZWRfX+WWLKp2WDPyW
- xK/oHuNK3e7kgzDuWgoKLg7b5UD/u7/tM1G16xoa0gBk26sJuPvhi+7dQSPaPzWwUs3wpPvupIx
- pohWgQA3MljyB/ko1XWYj8/GiPlRBGgH8cmmtuOk8vhmhILCUSCZ7cCn/zbkrciFRbCEifocaWv
- ZBB1jwYgflG2SDnp1LonAQUeyaNLJ3/DZVKjbFrCUrb0q1ftZvSeQBAnIQAhtSlzQJiJYxenfdG
- l4ExWutpNM9+Ud+1KC1RL2jE+BM+2bKMto/DKgHb/MWQFsCvx3DlpWHsR3EQERzQr7LcAdiCkdr
- wja+1nh0eJMC7lUDkKk2WNaHjOdDHGIOPQysTYNYAlmt5CsQVu8n+3vz+4CBKChkZntNIDLxiws
- BxeIhvtKwtrylvo28O1XnpyjCGnraWDjt+GvE2+lN2yj/l6OKMzbNDFVdVcL/BBd6XbaJrgxZFD
- xeOUBk2O1PmTpz70TVw==
-X-Proofpoint-ORIG-GUID: HukTMBWSbdGdgIsNZSKnL7-_GV8o8M-v
-X-Stat-Signature: fxoby9xdimw8heuqnucx3phmrqb5dor9
-X-Rspamd-Queue-Id: 9998020018
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 09/20] slab: remove cpu (partial) slabs usage from
+ allocation paths
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
+ <20260112-sheaves-for-all-v2-9-98225cfb50cf@suse.cz>
+ <3k4wy7gavxczpqn63jt66423fqa3wvdztigvbmejbvcpbr7ld2@fbylldpeuvgi>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <3k4wy7gavxczpqn63jt66423fqa3wvdztigvbmejbvcpbr7ld2@fbylldpeuvgi>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1fgxnnuujjhk7xyfui85f6ke6ere8m65
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BDF3D180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768485185-485612
-X-HE-Meta: U2FsdGVkX18gtur+JHBNkZphIdIFUG9CHLS0/bZ3spvaJf128FNVc8oRhMrCxWVH1cLflo+CjiFsxkMhbkMlHDLwrPlvxnw7NqcrulCybtYfl07TfPxWe48H0UOnpFpJsm0GErcWPdj0LvMjdv2mCdZUGYKyuxTquywtheATlPuxfD/Eq02DUIudSYnq0+KmmdFTlaWCy/zcVJqacHBV33YKpmY7bdJMcFfL44POJaTN2q+ieOebjOCVoPDJ4uu304nCeGDC5M3KXEjmb2zM7j2v1sMDbDjTDO8skUZKoeOcUk2dNiKcYOrCHI29eTvLohSD5+w9YhBiSmKrADydhb7AV8yg0HvC7kzrzSlR+ds9CmHXKa7vt5pjSu7EHCL03rHKvo6htmsI8yYSVig3aPIB6Cl9O+n6paRrRdzkmilWSx3+Ja4EX5uO1DLyj9LmEf+3TQ/n9A3MRflRRUDefmP9G6np10LyijDsBYxsn547UgewEHZVNgcvdNGnq6jqFWVpJanf8CWoC4E/orIixnllPa7Sn30TH+kcjeyqDCFWEE9R97KLAHh/mSXEE22ghAMqS09PJJ8k90qtzEB0W3AkI5zgDGu5vvFoox8JHCa3iOaU+eXLq8UFLzIpEjxaZBHOf2V8hx3V+pGrYhey2rTWog+EHhBpzHIIEl7AMzikURghkzo6pTwUiT5w1N5/k0Rz874TjcZi8T3nW6uMgWG54cjCIczquaEWYLBHCCuZYywcsKbZAoJB1Ed0gSxEPrkSsD184mb1rAKNZezvemT2rld5uBr+xJeXyqAhYQtcW++bfcrM+dWJGRmbMm7qptwIQ2C+gT6S2lmB1v9fgHVQ/zV8K/zdSDVYZmzEcdjGC+FWDt7hmarlMzmyAUPUQ9Pf9DNUaAIAXEEdroYJoEEsrJMv4tC2cLJCzv+UXnWIysRwtv8O03fmYTmJS8EKLS0Z6VXjnvlX6+lKZfb
- WhD2h9JG
- NEeSBHHbPmuyAJqCQsVMweEAHFdIinKwo0jyLnGSOgE5fv2HL0iXtiAjtayCOL+XLv11pPbGESwSUZDDgugldmsov/JkF/oLTRxeeadaaUg8IiMGRBYI5GUsvrTEoHeLg8+hhT04tbHoeiEaqcMg9nk69TYja1YqBPzlcBthQXuH1eqZWm02qpHJ9HrmwXaqIt3wpY5mc5p9aveSq1pZXT2JC68sEBsh5ZUXsVLGqxeakMUFETMgXpH4e/MoyKQjAZ/pvODrlm/8te1M+lfc+QjPmYLXzCJV85lO4Aqmi11wwi4jBNvkjnZPEUGf/UBXIlYrT+J1Ci7Kn16LY7VyB0tqVhyz4CgpnWdtzKgXK9Ll+LVJ6jJltE3UMxOPCJ6SBcKpl6SmepZAjoSzkH5xEPSUy05REeQWjwIboN1c+qxMg+UpEm4kjIovKWpxIbPQqCdk7infi8EUHwrC4nL4R+pAy+ZYPAOFGQdgCW76EjTzC36IvJ3li8WIBvCjKklMGv5Na1vnXxdB5Kxl/JIdmkG/0RWMS+tMv0i+HXKE2UEK5DxknKsjnTNk+noc6lCL2cRPwnY6pyOTo7QVvvVpopp/Sxc66AI/yEU/lk4dRlTFwAfZBxyS00IlXaiSmKCTH/gwdqEfTo2KjyU6s9cMOw5YAN5He74JZ/mBil5pckE2sc3LSqAoe6r2tRg==
+X-HE-Tag: 1768485218-792561
+X-HE-Meta: U2FsdGVkX1/NJ6jlGdU6d4Jr6DyoQiUdD5yFUfEDEfPpW0A2QuccfOe9Jl/TdkYb/hjz0ymjvmstUwd8alO/i3az5zEHZlTHjPvnCkNDH7Cn3lIUelSxhwsi3cyILXPXVNdHhULA8PnvAWT+YquMGGKCcdhYN+LnMSe1ShxR43IFeQonydASLb3K1NSJNHZd2PGJR8doHYF9h5uYptJebBcyHiuGzcIdVdeIWvN2ZXmDecSw0AcLvbsvlJ0z3ySPnblr0lp2vjmZcRsvQwBUGT7wp0kpMHT7tl0ZU0Uv7/FlwJgQmNlcllkPChcqtl/Ym9Q6Jw/lxbfqCx559XBhX8uUtqtpRp1S04StPnqyhHbIaU5AD4TgkjiGw1FgFKSujuoR+9/nbDRVpztcxP2n5xfwxSoJvrw/Gp5hR+3Bi7xHaNE71mEnPTfMTRPTyH8DjmchaJ6l/UW1fTft9c1jYvRRk8P1uvbkKxmRQjUWj0W52Gwp/B9tbRf8Z8K+TmBReIfYH/gz7zw/uE7Q8RFiB4fG2sQF1a18i1vYuM7vuoO+VSiBIDoG9XZKrgPFklSCMOSr6yOJ6UatcwrqE3t0i3fh758J9VqSmRmM5g91Du8LJOTf3qF4Gf7AVny0HHf39RnopgmtqS7NdtinLoWCpsjJFsMLj5+TOcAK6v1jE3Ue2qYA2r0VJ0Fw6QMd9H8fxrIpc95CrMcIYsVQsGcmoI/G99w0scqSXI/e0DoUoLosrsaXNArXD/Ro23Gk6mBRpGCh8B4EYchQ+IzR8f+koy5YeNXl2KJubcPKOcWDkHcaLzihHk+4a0idrbxjKI+5dxKqw4u27t5LRSSjkmT6nDuJkPDNnfB2CK2J1ep5Xd8NZ16Z5KRDlBnhf918YecaXbnk5KfU33TjiAg/KgMiQ8ps2lzQHqoS5ELD4y7MNICpsNoMssS6Ew5E1H7Hva7h3MXdqiYiDwLtjh61KAK
+ w7hKZ9Eg
+ 9/uYIBdSg5ofI+b8DCbYdr03XpJG+RcdGU0/QyIb0aWgWbU4oZDaK+C99dbu7E3hDTBTeDuIcG9Udzsp/rNh9WEf9b7fQEA4FAHfgAxHoPs/NjnF4YCuM0a1Qdv9g+lWg9zwOLEFu+3vg2/EdqR7F/dR4DNx7ALzzeUruXp31CmuHSwVmu0V6Hkhz9nbtVGXYXCTcSuyExyWt5LodoVsnlLQFi1A6DHmdRVfLZN6OWZ6ztxIH6NdmNR4nW9JgTuBe02zxO/fNLEcjI5YIUzQnEtuIKGVpN/w7Nw8s
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -258,302 +188,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 10:20:11AM +0100, David Hildenbrand (Red Hat) wrote:
-> While compaction depends on migration, the other direction is not the
-> case. So let's make it clearer that this is all about migration of
-> balloon pages.
->
-> Adjust all comments/docs in the core to talk about "migration" instead
-> of "compaction".
+On 1/14/26 07:07, Hao Li wrote:
+>> @@ -4836,68 +4558,31 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>>  	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
+>>  		freelist = alloc_single_from_new_slab(s, slab, orig_size, gfpflags);
+>>  
+>> -		if (unlikely(!freelist)) {
+>> -			/* This could cause an endless loop. Fail instead. */
+>> -			if (!allow_spin)
+>> -				return NULL;
+>> -			goto new_objects;
+>> +		if (likely(freelist)) {
+>> +			goto success;
+>>  		}
+>> +	} else {
+>> +		alloc_from_new_slab(s, slab, &freelist, 1, allow_spin);
+> 
+> IIUC, when CONFIG_SLUB_DEBUG is enabled, each successful new_slab() call
+> should have a matching inc_slabs_node(), since __kmem_cache_shutdown()
+> rely on the accounting done by inc_slabs_node(). Here
+> alloc_single_from_new_slab() does call inc_slabs_node(), but
+> alloc_from_new_slab() doesn't. Could this mismatch cause any issues?
 
-Saw:
+Great spot, thanks a lot! Yes we should do inc_slabs_node() here.
 
-include/linux/balloon.h:25: * performing balloon page compaction. In order to sort out these racy scenarios
-include/linux/balloon.h:26: * and safely perform balloon's page compaction and migration we must, always,
-Documentation/mm/page_migration.rst:175:balloon-compaction infrastructure residing in the core kernel.
-
-At this commit so maybe a few more to chase up?
-
->
-> While at it add some "/* CONFIG_BALLOON_MIGRATION */".
->
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
-Otherwise LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-> ---
->  Documentation/admin-guide/mm/memory-hotplug.rst |  8 ++++----
->  arch/powerpc/platforms/pseries/cmm.c            |  8 ++++----
->  drivers/misc/vmw_balloon.c                      |  8 ++++----
->  drivers/virtio/virtio_balloon.c                 |  6 +++---
->  include/linux/balloon.h                         |  2 +-
->  include/linux/vm_event_item.h                   |  4 ++--
->  mm/Kconfig                                      |  4 ++--
->  mm/balloon.c                                    | 10 +++++-----
->  mm/memory_hotplug.c                             |  4 ++--
->  mm/migrate.c                                    |  2 +-
->  mm/vmstat.c                                     |  4 ++--
->  11 files changed, 30 insertions(+), 30 deletions(-)
->
-> diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
-> index 6581558fd0d7a..0207f87251421 100644
-> --- a/Documentation/admin-guide/mm/memory-hotplug.rst
-> +++ b/Documentation/admin-guide/mm/memory-hotplug.rst
-> @@ -603,11 +603,11 @@ ZONE_MOVABLE, especially when fine-tuning zone ratios:
->    memory for metadata and page tables in the direct map; having a lot of offline
->    memory blocks is not a typical case, though.
->
-> -- Memory ballooning without balloon compaction is incompatible with
-> -  ZONE_MOVABLE. Only some implementations, such as virtio-balloon and
-> -  pseries CMM, fully support balloon compaction.
-> +- Memory ballooning without support for balloon memory migration is incompatible
-> +  with ZONE_MOVABLE. Only some implementations, such as virtio-balloon and
-> +  pseries CMM, fully support balloon memory migration.
->
-> -  Further, the CONFIG_BALLOON_COMPACTION kernel configuration option might be
-> +  Further, the CONFIG_BALLOON_MIGRATION kernel configuration option might be
->    disabled. In that case, balloon inflation will only perform unmovable
->    allocations and silently create a zone imbalance, usually triggered by
->    inflation requests from the hypervisor.
-> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-> index 7a3c4922685ab..8d83df12430f2 100644
-> --- a/arch/powerpc/platforms/pseries/cmm.c
-> +++ b/arch/powerpc/platforms/pseries/cmm.c
-> @@ -494,7 +494,7 @@ static struct notifier_block cmm_mem_nb = {
->  	.priority = CMM_MEM_HOTPLUG_PRI
->  };
->
-> -#ifdef CONFIG_BALLOON_COMPACTION
-> +#ifdef CONFIG_BALLOON_MIGRATION
->  static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
->  			   struct page *newpage, struct page *page,
->  			   enum migrate_mode mode)
-> @@ -520,10 +520,10 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
->  	plpar_page_set_active(page);
->  	return 0;
->  }
-> -#else /* CONFIG_BALLOON_COMPACTION */
-> +#else /* CONFIG_BALLOON_MIGRATION */
->  int cmm_migratepage(struct balloon_dev_info *b_dev_info, struct page *newpage,
->  		    struct page *page, enum migrate_mode mode);
-> -#endif /* CONFIG_BALLOON_COMPACTION */
-> +#endif /* CONFIG_BALLOON_MIGRATION */
->
->  /**
->   * cmm_init - Module initialization
-> @@ -540,7 +540,7 @@ static int cmm_init(void)
->
->  	balloon_devinfo_init(&b_dev_info);
->  	b_dev_info.adjust_managed_page_count = true;
-> -	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-> +	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
->  		b_dev_info.migratepage = cmm_migratepage;
->
->  	rc = register_oom_notifier(&cmm_oom_nb);
-> diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-> index 7fd3f709108c2..216a163959684 100644
-> --- a/drivers/misc/vmw_balloon.c
-> +++ b/drivers/misc/vmw_balloon.c
-> @@ -1719,7 +1719,7 @@ static inline void vmballoon_debugfs_exit(struct vmballoon *b)
->  #endif	/* CONFIG_DEBUG_FS */
->
->
-> -#ifdef CONFIG_BALLOON_COMPACTION
-> +#ifdef CONFIG_BALLOON_MIGRATION
->  /**
->   * vmballoon_migratepage() - migrates a balloon page.
->   * @b_dev_info: balloon device information descriptor.
-> @@ -1803,11 +1803,11 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
->  	up_read(&b->conf_sem);
->  	return ret;
->  }
-> -#else /* CONFIG_BALLOON_COMPACTION */
-> +#else /* CONFIG_BALLOON_MIGRATION */
->  int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
->  			  struct page *newpage, struct page *page,
->  			  enum migrate_mode mode);
-> -#endif /* CONFIG_BALLOON_COMPACTION */
-> +#endif /* CONFIG_BALLOON_MIGRATION */
->
->  static int __init vmballoon_init(void)
->  {
-> @@ -1827,7 +1827,7 @@ static int __init vmballoon_init(void)
->  		return error;
->
->  	balloon_devinfo_init(&balloon.b_dev_info);
-> -	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-> +	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
->  		balloon.b_dev_info.migratepage = vmballoon_migratepage;
->
->  	INIT_LIST_HEAD(&balloon.huge_pages);
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index de8041c3285a1..4e549abe59ff1 100644
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -802,7 +802,7 @@ static void report_free_page_func(struct work_struct *work)
->  	}
->  }
->
-> -#ifdef CONFIG_BALLOON_COMPACTION
-> +#ifdef CONFIG_BALLOON_MIGRATION
->  /*
->   * virtballoon_migratepage - perform the balloon page migration on behalf of
->   *			     a compaction thread.     (called under page lock)
-> @@ -851,7 +851,7 @@ static int virtballoon_migratepage(struct balloon_dev_info *vb_dev_info,
->  	mutex_unlock(&vb->balloon_lock);
->  	return 0;
->  }
-> -#endif /* CONFIG_BALLOON_COMPACTION */
-> +#endif /* CONFIG_BALLOON_MIGRATION */
->
->  static unsigned long shrink_free_pages(struct virtio_balloon *vb,
->  				       unsigned long pages_to_free)
-> @@ -948,7 +948,7 @@ static int virtballoon_probe(struct virtio_device *vdev)
->
->  	if (!virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_DEFLATE_ON_OOM))
->  		vb->vb_dev_info.adjust_managed_page_count = true;
-> -#ifdef CONFIG_BALLOON_COMPACTION
-> +#ifdef CONFIG_BALLOON_MIGRATION
->  	vb->vb_dev_info.migratepage = virtballoon_migratepage;
->  #endif
->  	if (virtio_has_feature(vdev, VIRTIO_BALLOON_F_FREE_PAGE_HINT)) {
-> diff --git a/include/linux/balloon.h b/include/linux/balloon.h
-> index 82585542300d6..e8da95ca4ad48 100644
-> --- a/include/linux/balloon.h
-> +++ b/include/linux/balloon.h
-> @@ -45,7 +45,7 @@
->
->  /*
->   * Balloon device information descriptor.
-> - * This struct is used to allow the common balloon compaction interface
-> + * This struct is used to allow the common balloon page migration interface
->   * procedures to find the proper balloon device holding memory pages they'll
->   * have to cope for page compaction / migration, as well as it serves the
->   * balloon driver as a page book-keeper for its registered balloon devices.
-> diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-> index 92f80b4d69a6d..fca34d3473b6b 100644
-> --- a/include/linux/vm_event_item.h
-> +++ b/include/linux/vm_event_item.h
-> @@ -125,9 +125,9 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
->  #ifdef CONFIG_MEMORY_BALLOON
->  		BALLOON_INFLATE,
->  		BALLOON_DEFLATE,
-> -#ifdef CONFIG_BALLOON_COMPACTION
-> +#ifdef CONFIG_BALLOON_MIGRATION
->  		BALLOON_MIGRATE,
-> -#endif
-> +#endif /* CONFIG_BALLOON_MIGRATION */
->  #endif
->  #ifdef CONFIG_DEBUG_TLBFLUSH
->  		NR_TLB_REMOTE_FLUSH,	/* cpu tried to flush others' tlbs */
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 0d13c1b36e1c1..460a148d5b71a 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -597,8 +597,8 @@ config MEMORY_BALLOON
->  	bool
->
->  #
-> -# support for memory balloon compaction
-> -config BALLOON_COMPACTION
-> +# support for memory balloon page migration
-> +config BALLOON_MIGRATION
->  	bool "Allow for balloon memory migration"
->  	default y
->  	depends on MIGRATION && MEMORY_BALLOON
-> diff --git a/mm/balloon.c b/mm/balloon.c
-> index 5734dae81e318..8a21c6b9a7f0a 100644
-> --- a/mm/balloon.c
-> +++ b/mm/balloon.c
-> @@ -34,7 +34,7 @@ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
->  {
->  	lockdep_assert_held(&balloon_pages_lock);
->  	__SetPageOffline(page);
-> -	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
-> +	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION)) {
->  		SetPageMovableOps(page);
->  		set_page_private(page, (unsigned long)balloon);
->  	}
-> @@ -51,7 +51,7 @@ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
->  static inline void balloon_page_finalize(struct page *page)
->  {
->  	lockdep_assert_held(&balloon_pages_lock);
-> -	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-> +	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
->  		set_page_private(page, 0);
->  	/* PageOffline is sticky until the page is freed to the buddy. */
->  }
-> @@ -153,7 +153,7 @@ struct page *balloon_page_alloc(void)
->  {
->  	gfp_t gfp_flags = __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
->
-> -	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-> +	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
->  		gfp_flags |= GFP_HIGHUSER_MOVABLE;
->  	else
->  		gfp_flags |= GFP_HIGHUSER;
-> @@ -232,7 +232,7 @@ struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info)
->  }
->  EXPORT_SYMBOL_GPL(balloon_page_dequeue);
->
-> -#ifdef CONFIG_BALLOON_COMPACTION
-> +#ifdef CONFIG_BALLOON_MIGRATION
->
->  static bool balloon_page_isolate(struct page *page, isolate_mode_t mode)
->
-> @@ -340,4 +340,4 @@ static int __init balloon_init(void)
->  }
->  core_initcall(balloon_init);
->
-> -#endif /* CONFIG_BALLOON_COMPACTION */
-> +#endif /* CONFIG_BALLOON_MIGRATION */
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 389989a28abe0..bc805029da517 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -946,8 +946,8 @@ static struct zone *default_kernel_zone_for_pfn(int nid, unsigned long start_pfn
->   * We rely on "present pages" instead of "managed pages", as the latter is
->   * highly unreliable and dynamic in virtualized environments, and does not
->   * consider boot time allocations. For example, memory ballooning adjusts the
-> - * managed pages when inflating/deflating the balloon, and balloon compaction
-> - * can even migrate inflated pages between zones.
-> + * managed pages when inflating/deflating the balloon, and balloon page
-> + * migration can even migrate inflated pages between zones.
->   *
->   * Using "present pages" is better but some things to keep in mind are:
->   *
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 4750a2ba15fef..1bf2cf8c44dd4 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -88,7 +88,7 @@ static const struct movable_operations *page_movable_ops(struct page *page)
->  	 * back to the buddy.
->  	 */
->  	if (PageOffline(page))
-> -		/* Only balloon compaction sets PageOffline pages movable. */
-> +		/* Only balloon page migration sets PageOffline pages movable. */
->  		return offline_movable_ops;
->  	if (PageZsmalloc(page))
->  		return zsmalloc_movable_ops;
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 6ae8891c9693e..e96a344ab5974 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1422,9 +1422,9 @@ const char * const vmstat_text[] = {
->  #ifdef CONFIG_MEMORY_BALLOON
->  	[I(BALLOON_INFLATE)]			= "balloon_inflate",
->  	[I(BALLOON_DEFLATE)]			= "balloon_deflate",
-> -#ifdef CONFIG_BALLOON_COMPACTION
-> +#ifdef CONFIG_BALLOON_MIGRATION
->  	[I(BALLOON_MIGRATE)]			= "balloon_migrate",
-> -#endif
-> +#endif /* CONFIG_BALLOON_MIGRATION */
->  #endif /* CONFIG_MEMORY_BALLOON */
->  #ifdef CONFIG_DEBUG_TLBFLUSH
->  	[I(NR_TLB_REMOTE_FLUSH)]		= "nr_tlb_remote_flush",
-> --
-> 2.52.0
->
+>>  
+>> -		if (s->flags & SLAB_STORE_USER)
+>> -			set_track(s, freelist, TRACK_ALLOC, addr,
+>> -				  gfpflags & ~(__GFP_DIRECT_RECLAIM));
+>> -
+>> -		return freelist;
+>> -	}
+>> -
+>> -	/*
+>> -	 * No other reference to the slab yet so we can
+>> -	 * muck around with it freely without cmpxchg
+>> -	 */
+>> -	freelist = slab->freelist;
+>> -	slab->freelist = NULL;
+>> -	slab->inuse = slab->objects;
+>> -	slab->frozen = 1;
+>> -
 
