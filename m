@@ -4,142 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA429D46602
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB5A7D46602
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:05:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60C966B008A; Thu, 15 Jan 2026 12:00:48 -0500 (EST)
+	id 59DCE6B0088; Thu, 15 Jan 2026 12:05:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B7146B008C; Thu, 15 Jan 2026 12:00:48 -0500 (EST)
+	id 575186B0089; Thu, 15 Jan 2026 12:05:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CFFD6B0092; Thu, 15 Jan 2026 12:00:48 -0500 (EST)
+	id 4A1986B008A; Thu, 15 Jan 2026 12:05:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DBB76B008A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:00:48 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2F24B9605
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:00:47 +0000 (UTC)
-X-FDA: 84334812534.08.F615E09
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CD0EB4000B
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:00:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="tBmRUSF/";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768496446;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C14F6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:05:40 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DEAE2C1C70
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:05:39 +0000 (UTC)
+X-FDA: 84334824798.29.F0D6B05
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E207E20011
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:05:37 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=q0KCzg6i;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768496737; a=rsa-sha256;
+	cv=pass;
+	b=8UCgpuiEJQ1S51r35uClJBRXOTZSFjDGfEemLvhYY5W114fQT6+sqzkWcDPN+uoON2kIRO
+	lFomEgfhK05vFuPk/ru6cIS5utt5VR7v6kIjjWR+8fEMRR3ty+Zk3FMcHPYTSQMtW3keoh
+	lhqFioH9ZQa61UKtUfDZ/Yzvo0btDf0=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=q0KCzg6i;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768496737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IKvtryMZGAeFknx0hrrGvGbj1czbv7zXhZw2wagyUD8=;
-	b=FiXWOUzKFD3S/J5dOeUYqslwAOSZzqt6yLXc8PKhXOf8pd7dVNMBMCzOAHFd5z1ReFjuxV
-	n/BbKZJs2+I4W22ym6lsNzUyqKJvC10B+jg7q4b/Ju0x3Hq9UBqGGKogSVhXxQIWE20BBB
-	4IUzqNsJ9zwgmO2IO/AVS8VKl4BG8Zk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="tBmRUSF/";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768496446; a=rsa-sha256;
-	cv=none;
-	b=ZO5al5y1bjq6AdhuoYdukna4ZDgw+iUM7zH0QGtBTzjiepdKIqV5WSZlghXpcTEmBVOJwy
-	QjYC8jZenU/zAz4pVYOWgfL2FXsp0MqT66ldCyD6/auEh/0tzOVBHqjXQlg5MaQO2sCQ1F
-	qQz0asxxyuLMIwNZRcN0Gz2Ngh6/dy0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB04D443E3;
-	Thu, 15 Jan 2026 17:00:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2088C19422;
-	Thu, 15 Jan 2026 17:00:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768496444;
-	bh=84ZzsHKAsmM4gPycYymqOGqKp1Uk7K/+crT20DmmNeo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tBmRUSF/WJWzAErGMwtJx3Ly6y9N4lTBa+f8BuBZ0FB9MHRKIdZe00jLd3lJ4NHVk
-	 bRflBmd16wdjqzwc3ny7gUFvXGQOHCbzqNGAzVz4Z6X3+8dRm239DQccpxEgfEOhUW
-	 4ZqXd+qhUZjFebPDwdKfSQc467jbqexLwIruYOBefLoxsX//rEaPct6nDDLehIPSFZ
-	 L1230G42T25WKqNf9FInSLhqkoiKl2Vuoe3O0EDyGgvm4V1dvexxMrOCSrS5w/rHcC
-	 hKAuh2xSGPSW84fBsM4oGZD0s5qBFqtHyCElZdpwdoYWjlf8P5uYmeXyWgbuCDHkTQ
-	 leJbLOWcHz+3Q==
-Message-ID: <4d47cd01-034d-4886-80c4-3861d2181e18@kernel.org>
-Date: Thu, 15 Jan 2026 18:00:38 +0100
+	bh=54li8Nl2hua4YlG/5pe5hANT9Dk06MGWYeEoawn3DKE=;
+	b=5UDvoZV7Zs5V76iRWgcsSt0c2HJUHsnOGUQX1IKJF/N71uueL0tb4LP2tYRZeSdL5m2ZNh
+	37RmZFsYQs7Nm7mByplvyw0ZA9Rsbvyf8/J1Ym3ZYT7CIm3OtTByOoBVFxt3QpxorXxojm
+	Qeu6VSt6HvmhArz1yF8CYE0oUaCv6Bc=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5014b5d8551so537491cf.0
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:05:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768496737; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jBt9ELH0+EJ6J4mbGhyYDiU46ZsCxAYwoBaq+2UM7G1MAZ+s2D3QYOnLURXnktTaGO
+         4eZJo8iPeoaE7pSAAhPTTQ9LaUfjBojYhDmG3jlNoCLGjqvseo99oCS8mEL5WFbztPLB
+         3BQOpDlNKLb0kgO8USv5IVelm/S7w0DMNHhJWssAN4m5v7sqzYZc0GLlbsIe1iPlP/nd
+         cVYUeGrMwl+eSCdxWHd/UvGQeYotStYvlRkZEPx70fFQU5F+IPKLsKqYUMS2sxHshFb3
+         dn1H0jeqDRBh5oB61V9G1SQUQHJK9rRkaf9tDTvgcekT11HPJz3E4727kzMjBbXdi34d
+         WWhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=54li8Nl2hua4YlG/5pe5hANT9Dk06MGWYeEoawn3DKE=;
+        fh=gAKozU44NQCEJ6KIrvO8EiOp7KuN/wcBGE2qyQ1PZLw=;
+        b=HqoF5KvjtrhgtjXIyioxbg755Rw7ejDrJQ/XMQW31ov/adY+czWVY3ShpMip2rCFbd
+         vrADg5GDgjaW6flM9fXqrx1Hq0GWH5o1NSOxbICZnrlZWeGqFDefaNFRSp/C+FXlHqlr
+         NGzvO1GNt0jpTDurb5RP+pqMZ/AE5G2u/qw1Xfo/IoIoMp61geHE4TRRR3q7vGdPVdsd
+         NOxwJUj1BLCBszom43dgsO7jmjNflOLakZs+nnAhwjBfRwhLq5ttfvr8sxg1cn9aMmkX
+         Pc0VduZBH94exBBY1tNy+ya7a2k+TSDnOiS1VevxHLHJlXitzj8yVagzD19tDY+cQCGo
+         /sog==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768496737; x=1769101537; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=54li8Nl2hua4YlG/5pe5hANT9Dk06MGWYeEoawn3DKE=;
+        b=q0KCzg6iDajg28/DCcfxHWN5fAsyNJ48Vm4kSFwfNfTXZuVMvvRBcPxk+puGQT3trZ
+         fo7VxauGo05cbqeUld9VjKOB95Od0niLkQeDZEPEwS+1lVXTAfVLI/hxDEWRkLmwFe76
+         qVfGfxQjPYufYWmGzOg/X51FgIWBZFH/Kc9NKPt2WzGh0Iy8ASoF5VzzPQEzqXKyUL13
+         4c9onH6VUyFUFEIT8PdW7BOgttlrhKjOW4JsRqWnPLqyPjWZkRt7KFjtTnopNvQfRHbC
+         fvWCqbW92TRhCI/ZFoEEhMGjpKGrxQHuNONEPkh2K14jmHnnnRl7KrKx4foEFy+n2N/M
+         GtCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768496737; x=1769101537;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=54li8Nl2hua4YlG/5pe5hANT9Dk06MGWYeEoawn3DKE=;
+        b=HfCuL1/9LUaIyhtA1sQJgkebcxe2gNtVTjldKgWQ689pRxQ5IhMqMIi1SdFXm1D7jX
+         2WHdX1R3z/4OmhOzrW325VL3oOahNhiRJvRNTw9KjKrFWkK+68o5suPhOjFH+aDyNm+/
+         Os9d9pN34rHllO1hW8JzERdOXzMcyM09NpFwDqH2bsWmCebJkfJ28CArx2MgVPgb+wwJ
+         cNg2rFvCiEWzSBxc+I89vPa0A/YTL8ay5huxZJhP3AkPb3tsRVGtyhus3p3VjgLu3XCv
+         Rhq22CGfuG0kvgb/PsN8xn1c68Rkf/Us4o2dGl6zOdY5a0gIRsFr7s2etqlpdXNWGnTj
+         aZeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWEn2sgBBx7NUW7jJ/ilwnDTTx2rp47zEy9w6nK086G+NDBIv9uZGyL0EBmp6Pm4+peg8bniVukYw==@kvack.org
+X-Gm-Message-State: AOJu0YyZbJazYTUgzx/TdDMZ/TnQbb3+aubgeN/FlPFGOfuHE0+e7u0b
+	CTF7A7+gSMWomdFvPUiz9iXAUVBe71vNuJ/PfM8HUuTWPT9+mwYrATQ5K7WU7xUjPj1IwgLPjtQ
+	VH5PeO+bfSV9c4xg/yFkrvgTfDCW4yK/w5Ny+xHXR
+X-Gm-Gg: AY/fxX6efoCPfeQU8/xHgvJQWx00I27m5Yx5iBDUapKSvmuMPe/vtlgSBA1YKpidWep
+	Vdzdt0xEcyzuYwLnEV5iooAhSrnoFySlZbW9KlXmoKsTkvgXv/iht9sAtG6wxA9aAM86nxWR+AD
+	+HZwoIKr08sKvVDz+zqQqalUDhgLVekW0gf/rwnym113duZq1uljYozdhFOCrah+RLYcZBYdf30
+	/KYcCGO0cML+mbXQkOOHMI/dSvqLzW0SZ0Js0ndQ0fJalmJh/V+voc8SONnYY9hcuP8kM+OK2nl
+	PyrE1YzKalYjzOtA4l+K5Y1oAg==
+X-Received: by 2002:ac8:7d44:0:b0:501:3b94:bcae with SMTP id
+ d75a77b69052e-501eab81d32mr11968081cf.8.1768496736612; Thu, 15 Jan 2026
+ 09:05:36 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] mm/memory hotplug/unplug: Optimize
- zone->contiguous update when changes pfn range
-To: "Li, Tianyou" <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
- Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
- Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-References: <20251222145807.11351-1-tianyou.li@intel.com>
- <20251222145807.11351-3-tianyou.li@intel.com>
- <2786022e-91ba-4ac3-98ef-bf7daad0467a@kernel.org>
- <e9d52093-d11e-4e0d-9bb9-88e0ffb78a19@intel.com>
- <a7da047e-0064-4f21-9f8b-fa4bcf40dca3@kernel.org>
- <d97a8744-6d49-4582-82fc-a38ee2ae06fc@intel.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <d97a8744-6d49-4582-82fc-a38ee2ae06fc@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260115054557.2127777-1-surenb@google.com> <aWiBv4A4QGJ1pr1l@casper.infradead.org>
+In-Reply-To: <aWiBv4A4QGJ1pr1l@casper.infradead.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 15 Jan 2026 09:05:25 -0800
+X-Gm-Features: AZwV_QjrzboZ9bNCbx-dGc7Nl_6nQsBcpSB2Pv5eAnsjMWYU5mH2P1l-S49q7HY
+Message-ID: <CAJuCfpEQZMVCz0WUQ9SOP6TBKxaT3ajpHi24Aqdd73RCsmi8rg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] Docs/mm/allocation-profiling: describe sysctrl
+ limitations in debug mode
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, corbet@lwn.net, 
+	ranxiaokai627@163.com, ran.xiaokai@zte.com.cn, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CD0EB4000B
-X-Stat-Signature: woprdb6xe4yp1w3kdxmf6xq8mynt9cfs
-X-HE-Tag: 1768496445-299899
-X-HE-Meta: U2FsdGVkX18qgDH3qoNPdsAb2aHP9KEWJXPrtz9jZpuhjpLnf55opWllCCdiT9dKNj3/FDHR8aFT4YWX8etvPBgZxJ3zvywsmyJ8Va0DzY9V9LxdXBqYaLQz+WCVMZzXS+FTUKBI3BbdOxkCIxk/nSapqxJYuLg72pjB84gQhdy5CkGDu6xhT+9tRnH/HduQCoT7vFmIsHGFNxumWF1jk6OoyTPfIstC31dQn43Cs+NJk1OEyJ7F0WDg2IXKhsyXvevKurGtqhZVbkYvIYBtcIEl3g52xMLB8LrhKtixFlo9j+O0ou2oFleviQZe3FwRH9Lh2giGN4nD2Rmv9IANYODu5KVS/xfwfmlZ4Ew2oUarWLAkCFFL2xtNm8xNHTKjZp4gAcCeFpgV4NHofOwK3+qIxqZMnlflc5Rw0BwpRbsRnhfp0pv5r03ZF8lkAfJBdKXZCdvdOpVyTYYxlGyDHGe64ExiMtfLpgvAwwrnbrktDg5Kx94xnSfE4O8YbxMnNczpaUqJsDd4s+k3vxcZXmqdS18CuyYBMKmc2wVxM8c9F4MO9XNj5GUIUsAs56MmNxPKpk6gKAC42SeMC/pnThaOQhSPQcBlHPq38IIwOYesZB+KfV3nTV2gJZQ6PQOmJl8ATnuF9kmjDqJLaKm1EhT95ZkPABOjQ19SUGrhvWFJSh5OVr91QexoUFOfIv5y2DcSomDQ5GqeK1c9Ru3pwNuIboUQd8YR/t//JRH7rwo1iPGyYCyyN6/+021DJeO4sGfWas+VR9rA9XbLsfW0V5uykcFlSDKt+0+gIe5Y49FjxR36SSMa5TELSEvBK5F4ERCLW+36ahtZOt9bOyHEEKCg4JJ8HkYePD361ymYNhbiM9KFnmy4pg0YbYcCgtRC2nS+gOugmaIccmm3uH2mB6nIOyK4A7LduAwKvIakOyeGlHUEmCgomDg7ZjhilF66hkcb9nOEweH/4DCP3YG
- 4/68MDSw
- KWofqkKqism+95bb9dv6SBScPXmxPx5DSgOAMpFkyxleAJrlsr9tFMBBr3qMX20L5F9O5WcYkg27FV46Vb3HHFJwK4Wa8zHLmG4x7Lq7nJZGQ0cSBQpodLDKfxOMsC4B6HapK9r2MtpfIupdjLLPriyabIydUVbzUjsvlk0QEmgamxCsELtYxJyqmV6vY6E/AyfwI6KR8m54P1oenXUbwuqP1txfJ7v5xAnncDKH8aUatP/hirS3DelHEtZYAcIZWUBjBZSOhA53O2BBQ4tXr9BBd/WWCluFBdh/6SgFrXmQrNLTpL9xJG5Y6mVHZIVf5C1EeCECJmUQ5kzKoOxqHK3+YB6O2C2h3olFt
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Stat-Signature: s48nstknnums18p954as3kctg46ko3c8
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E207E20011
+X-HE-Tag: 1768496737-305535
+X-HE-Meta: U2FsdGVkX1+bHpoftSJklODbt0CVY/UPKCKPr0r4HPSVqhUXkh7mspYYPOPnvZaexVOK1uF6AgURYDzteHw3ObWErCJo3eM7jl/yKMbqnuUBoPVnPUUp9keYzTJQNEdsfnZMBzeU2fA3pCpH6fH/2jzlsoldrWcPsqglCrMPl5Eq3eoUUMXjb4jb2vhExVC8aam+jVEoEjeLxRZRcrp6J5XRlKUXnikLfkRWx6SH5toxNTpslR3zCFpFlIZ8n33W7pe2etjMbJwiX9k9JML93uXeejpeiTyTSVlXv1dcd0NsJjgLbjvamMdgBr3EDSgD11phwqy3Yu6eVSjJpAs6W9DA1ne5VQTsQloreeu14vxN6yOabwS1rxzGxA7Jd2j/3WXw/c+/NEf4szGg1rslrxBg9tegoLZDqYAHsfbyrvh4k48uJZcnThCaPbkgX/H/l+93CINSEx9ZrFKLnQlwtyqUhV8s1U2jrWPzMRTPYwmXedcvtpCt9vLCg7euVQ9PyzdcS1mvYjEO5eJEm7mi7/WiP3voA0lyPFcm/cf/VEa81++x03w1pomm0k6v+5JE7sOxTXTkbAOYQ/51SOi2z2yK52HgWlwHHvZDUUry+1AjTr8fuL0IF7h1F6uMOKzICKGYNuYxS7wphzCIlNEHr4NzdvgKkv47o0EzD9+3Q46Aj7EL/UPlEhxe3nhAHiU5q7rijWY1mhB2E+Yq77UgiaU2kBI5LBfc8Zv8txkhRmuHovKdoMyfkOeFxSCwfQGB2804oz7UFlH6zlpDaU+QF0x+IpXbYQ1SMvl+RRUwYOUIK2zHq0hpRJYHLBX9IJY0vRMZMpUlqOsI/VM2Wxnmnq3DGCbZnEmPHqX8Cy+xHvpt+s4sJC1XyLm7y4VSE0hqJzWtg4WDqyjgXJuh67mDNALtX/7PKajiMMHwc96EHl5YY3HsQXn/w5RGAJvYf9Zb+O1aDGbVLJPm81m7lCo
+ y6+8u7Wp
+ +U13eVMLzHDcbMYiU3a/wh5qdRpW2M+R+PtqWJ4CmSO88yuQAM6rpXPskzeX9cgGLoO5VwXxrQ+a4jdK92DOwlmLXXgwqEH2lrwyqmLJga0be6SWK38eTqvYv5RCssfoL8zo/icX0sjNMvjpJG8fyQTJv74Y2yFLX3z1IDKgYW1bANfqePi9I76Zh417o87vji8upKkEEwiz+kJrq7dA4SDOwnSvVlg+fC8qqyNn9evtOmmX+0rGcsEvBkGo52BDxalQ1gTKWvCCjkeN+/elDvyddW/5KTw59GbC/yup6uQG7y5E=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,145 +141,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 16:09, Li, Tianyou wrote:
-> Sorry for my delayed response. Appreciated for all your suggestions
-> David. My thoughts inlined for your kind consideration.
-> 
-> On 1/14/2026 7:13 PM, David Hildenbrand (Red Hat) wrote:
->>>>
->>>> This is nasty. I would wish we could just leave that code path alone.
->>>>
->>>> In particular: I am 99% sure that we never ever run into this case in
->>>> practice.
->>>>
->>>> E.g., on x86, we can have up to 2 GiB memory blocks. But the memmap of
->>>> that is 64/4096*2GiB == 32 MB ... and a memory section is 128 MiB.
->>>>
->>>>
->>>> As commented on patch #1, we should drop the set_zone_contiguous() in
->>>> this function either way and let online_pages() deal with it.
->>>>
->>>> We just have to make sure that we don't create some inconsistencies by
->>>> doing that.
->>>>
->>>> Can you double-check?
->>
->> I thought about this some more, and it's all a bit nasty. We have to
->> get this right.
->>
->> Losing the optimization for memmap_on_memory users indicates that we
->> are doing the wrong thing.
->>
->> You could introduce the set_zone_contiguous() in this patch here. But
->> then, I think instead of
->>
->> +    /*
->> +     * If the allocated memmap pages are not in a full section, keep the
->> +     * contiguous state as ZONE_CONTIG_NO.
->> +     */
->> +    if (IS_ALIGNED(end_pfn, PAGES_PER_SECTION))
->> +        new_contiguous_state = zone_contig_state_after_growing(zone,
->> +                                pfn, nr_pages);
->> +
->>
->> We'd actually unconditionally have to do that, no?
->>
-> That's a great idea! Probably we need to move
-> the adjust_present_page_count right after mhp_init_memmap_on_memory to
-> keep the present_pages in sync.
-> 
-> When the zone is contiguous previously, there probably 2 situations:
-> 
-> 1. If new added range is at the start of the zone, then
-> after mhp_init_memmap_on_memory, the zone contiguous will be false at
-> fast path. It should be expected as long as the
-> adjust_present_page_count was called before the online_pages,
-> so zone_contig_state_after_growing in online_pages will return
-> ZONE_CONTIG_MAYBE, which is expected. Then the set_zone_contiguous in
-> online_pages will get correct result.
-> 
-> 2. If new added range is at the end of the zone, then
-> the zone_contig_state_after_growing will return ZONE_CONTIG_YES or
-> ZONE_CONTIG_NO, regardless of the memory section online or not. When the
-> contiguous check comes into the online_pages, it will follow the fast
-> path and get the correct contiguous state.
-> 
-> When the zone is not contiguous previously, in any case the new zone
-> contiguous state will be false in mhp_init_memmap_on_memory, because
-> either the nr_vmemmap_pages can not fill the hole or the memory section
-> is not online. If we update the present_pages correctly, then in
-> online_pages, the zone_contig_state_after_growing could have the chance
-> to return ZONE_CONTIG_MAYBE, and since all memory sections are onlined,
-> the set_zone_contiguous will get the correct result.
-> 
-> 
-> I am not sure if you'd like to consider another option: could we
-> encapsulate the mhp_init_memmap_on_memory and online_pages into one
-> function eg. online_memory_block_pages, and offline_memory_block_pages
-> correspondingly as well, in the memory_hotplug.c. So we can check the
-> zone contiguous state as the whole for the new added range.
-> 
-> int online_memory_block_pages(unsigned long start_pfn, unsigned long
-> nr_pages,
->               unsigned long nr_vmemmap_pages, struct zone *zone,
->               struct memory_group *group)
-> {
->       bool contiguous = zone->contiguous;
->       enum zone_contig_state new_contiguous_state;
->       int ret;
-> 
->       /*
->        * Calculate the new zone contig state before move_pfn_range_to_zone()
->        * sets the zone temporarily to non-contiguous.
->        */
->       new_contiguous_state = zone_contig_state_after_growing(zone, start_pfn,
->                                   nr_pages);
+On Wed, Jan 14, 2026 at 9:57=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> On Wed, Jan 14, 2026 at 09:45:57PM -0800, Suren Baghdasaryan wrote:
+> > +  warnings produces by allocations made while profiling is disabled an=
+d freed
+>
+> "produced"
 
-Should we clear the flag here?
-
-> 
->       if (nr_vmemmap_pages) {
->           ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages,
->                           zone);
->           if (ret)
->               goto restore_zone_contig;
->       }
-> 
->       ret = online_pages(start_pfn + nr_vmemmap_pages,
->                  nr_pages - nr_vmemmap_pages, zone, group);
->       if (ret) {
->           if (nr_vmemmap_pages)
->               mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
->           goto restore_zone_contig;
->       }
-> 
->       /*
->        * Account once onlining succeeded. If the zone was unpopulated, it is
->        * now already properly populated.
->        */
->       if (nr_vmemmap_pages)
->           adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
->                         nr_vmemmap_pages);
-> 
->       /*
->        * Now that the ranges are indicated as online, check whether the whole
->        * zone is contiguous.
->        */
->       set_zone_contiguous(zone, new_contiguous_state);
->       return 0;
-> 
-> restore_zone_contig:
->       zone->contiguous = contiguous;
->       return ret;
-> }
-
-That is even better, although it sucks to have to handle it on that 
-level, and that it's so far away from actual zone resizing code.
-
-Should we do the same on the offlining path?
-
--- 
-Cheers
-
-David
+Thanks! I'll wait for a day and if there are no other objections, I
+will post a fixed version.
 
