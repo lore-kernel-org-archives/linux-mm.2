@@ -4,174 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 026E4D46600
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 16:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24D9ED46602
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 689286B0089; Thu, 15 Jan 2026 11:59:17 -0500 (EST)
+	id 8C1716B0089; Thu, 15 Jan 2026 12:00:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 637066B008A; Thu, 15 Jan 2026 11:59:17 -0500 (EST)
+	id 896296B008A; Thu, 15 Jan 2026 12:00:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50F3A6B008C; Thu, 15 Jan 2026 11:59:17 -0500 (EST)
+	id 7C3646B008C; Thu, 15 Jan 2026 12:00:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 408F66B0089
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:59:17 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE03C888BE
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:59:16 +0000 (UTC)
-X-FDA: 84334808712.13.754750C
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 664E2C0002
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:59:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MUeBFayB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4anpiBji;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MUeBFayB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4anpiBji;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768496354; a=rsa-sha256;
-	cv=none;
-	b=hx0DX/rVH+LRpN6RhtARo/BY6+lXP8YSryQW5JEgvFkvS75JDpjP36ob7+N7Ai+4vv9VvX
-	6Bvj6py9nj9+FPBZePHcERjkVr9E4c5uPw4N4TtWJeZ+QsdBq0Fc1EiMX58yCJ77g4Pmoz
-	4tFrTJtQGe36RbSYSQML4n4SNWqrDgk=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MUeBFayB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4anpiBji;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MUeBFayB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4anpiBji;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E5916B0089
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:00:24 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2B3B140405
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:00:23 +0000 (UTC)
+X-FDA: 84334811526.05.E02783C
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 07289C0022
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:00:21 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wT445DsQ;
+	spf=pass (imf28.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768496354;
+	s=arc-20220608; t=1768496422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8ApPkUvBrjyWW5bWMQ3GGcWGPQHRsApbqSkpz1eomsc=;
-	b=odZw7j9DvUwiqxvauKnLMHr3WSamE5vJyy5C7vYLo6QQFRWIL/MgUzZTRbOuKY+YaARvgD
-	LA/x2vPm+p97Jv/OK5/QnBbKSmNf3F3H12lsmGRF1wNk8dX3XLrjQiyq0wT42Mho/aaGde
-	lagrRIbMe+J/QciPSpOEnLzcir+4jYE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C9B813375C;
-	Thu, 15 Jan 2026 16:59:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768496352; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=VFhntWShXHgOAIorUq2E/j9pvFsqctkiMpQmDw8UuZQ=;
+	b=JBN4ILF9tKDwQ7zu0DOBgLYWhGdaGlHCXElyXL9IZk3U7DzRvI7IL8hhrk6sb8oZs/zZB6
+	bWv95oGTZrEZfUOQSAmggFaqCnCz05XssSuY4eTds/OnbZe5iNRv5R9WzScB1+WJpv/2B3
+	0k6DICriyBOJkr95TQ/6ppEa/xzrKZE=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wT445DsQ;
+	spf=pass (imf28.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768496422; a=rsa-sha256;
+	cv=none;
+	b=kLLr/Z4oH5wdgup+l1HbQt22gi3UwoAvmosVk1gmVrjy021mBrBHQuRRyuKb7mTg7nuyDd
+	KrIimID8zUdyo/YktOLF32vaHgryWYi916v2oCpBT8BbCmKq9S7KsDri6w8Idx1k/sZ4jS
+	IBBSxZhcvNqf7wjAs71LqX3/dDq/pT0=
+Date: Thu, 15 Jan 2026 17:00:04 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768496417;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8ApPkUvBrjyWW5bWMQ3GGcWGPQHRsApbqSkpz1eomsc=;
-	b=MUeBFayBqN8xz45b03FhYnm4ZT1GyrZg8qfMd/TrKZPYoZe2h567tuZuUrLE18mxwJtk86
-	dGxQea3ZW5KuqwUjeeoOLJ45y870k44JXBDSYVq9VE5XF/dRKtpnAbuwRTgUHgMd+BNQf+
-	CKM1TbAJVKb2qI6YirpTuemdnbSoN1E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768496352;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8ApPkUvBrjyWW5bWMQ3GGcWGPQHRsApbqSkpz1eomsc=;
-	b=4anpiBjigLN/195m2i2zulO20fg4kU2BHE1+lmo0daC0kKO0OEGY9A0RNSSh0jsfq6Yhy2
-	et7xh8m4kg7iMBDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768496352; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8ApPkUvBrjyWW5bWMQ3GGcWGPQHRsApbqSkpz1eomsc=;
-	b=MUeBFayBqN8xz45b03FhYnm4ZT1GyrZg8qfMd/TrKZPYoZe2h567tuZuUrLE18mxwJtk86
-	dGxQea3ZW5KuqwUjeeoOLJ45y870k44JXBDSYVq9VE5XF/dRKtpnAbuwRTgUHgMd+BNQf+
-	CKM1TbAJVKb2qI6YirpTuemdnbSoN1E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768496352;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8ApPkUvBrjyWW5bWMQ3GGcWGPQHRsApbqSkpz1eomsc=;
-	b=4anpiBjigLN/195m2i2zulO20fg4kU2BHE1+lmo0daC0kKO0OEGY9A0RNSSh0jsfq6Yhy2
-	et7xh8m4kg7iMBDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B21273EA63;
-	Thu, 15 Jan 2026 16:59:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kRsoK+AcaWl4dgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 15 Jan 2026 16:59:12 +0000
-Message-ID: <19e0c58f-114c-4bbd-9bc0-25382d7d5cbb@suse.cz>
-Date: Thu, 15 Jan 2026 17:59:12 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=VFhntWShXHgOAIorUq2E/j9pvFsqctkiMpQmDw8UuZQ=;
+	b=wT445DsQd4/3Xmj+RvJ2Ntg8GFkTgTIfwuwltdPW2wrMKBYK1L/wQAA7vFELJHski3hyGh
+	MmBUfmpJyjXE7E7f69igcg9ZrmSZjp6krqT/hyIEEmg+mPBDUzac1RCa+KgWCgebP2ws3G
+	mIFyVcZuKu0Q3CLBz6F5nVMY3RU3Z6Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
+	longman@redhat.com, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, 
+	corbet@lwn.net, gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
+	dave@stgolabs.net, jonathan.cameron@huawei.com, dave.jiang@intel.com, 
+	alison.schofield@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com, 
+	dan.j.williams@intel.com, akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, 
+	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, rientjes@google.com, shakeel.butt@linux.dev, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, bhe@redhat.com, baohua@kernel.org, 
+	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	osalvador@suse.de, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, cl@gentwo.org, harry.yoo@oracle.com, zhengqi.arch@bytedance.com
+Subject: Re: [RFC PATCH v3 7/8] mm/zswap: compressed ram direct integration
+Message-ID: <e6eydzdvuiktmalhcmoiwsgzjbw5v7t4532fkbroylwr5cqetx@v6pgjaoxgmyz>
+References: <20260108203755.1163107-1-gourry@gourry.net>
+ <20260108203755.1163107-8-gourry@gourry.net>
+ <i6o5k4xumd5i3ehl6ifk3554sowd2qe7yul7vhaqlh2zo6y7is@z2ky4m432wd6>
+ <aWF1uDdP75gOCGLm@gourry-fedora-PF4VCD3F>
+ <4ftthovin57fi4blr2mardw4elwfsiv6vrkhrjqjsfvvuuugjj@uivjc5uzj5ys>
+ <CAKEwX=MftJXOE8H=m1C=_RVL8cu516efixTwcaQMBB9pdj=K+g@mail.gmail.com>
+ <CAKEwX=M8=vDO_pg5EJWiaNnJQpob8=NWvbZzssKKPpzs24wj+A@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/15] static kmem_cache instances for core caches
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Mateusz Guzik <mjguzik@gmail.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- linux-kernel@vger.kernel.org, "Christoph Lameter (Ampere)" <cl@gentwo.org>
-References: <20260110040217.1927971-1-viro@zeniv.linux.org.uk>
- <20260110040217.1927971-2-viro@zeniv.linux.org.uk> <aWdGEI6iQBl3Xibi@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aWdGEI6iQBl3Xibi@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 664E2C0002
-X-Stat-Signature: 6ah9ajhf1pgs611zr6rbncp13e7py3s8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=M8=vDO_pg5EJWiaNnJQpob8=NWvbZzssKKPpzs24wj+A@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1768496354-919640
-X-HE-Meta: U2FsdGVkX1+LEWJ1YOdIRuSAN1TMzgio/FitCf7d1ugQsbqXT/ywz58+3Nqd/wsmg0RkXAE0V7SI7odIQRcfj94XG83FNpx8/jQVAwoCRh5i6aEqiIEBtaRkAgHWW/46QhBck1SWV8Qky8UcfGoL2jmKQm4Plh/B/qd6oCbPhw3Fx4Kz8FdRZ80QZJo3pmcCIXWPaTKD/YH6RtTSwzMAT+ZV63k4s++d3r5S8TBMp3gctv17x7TpeE/TrCJQFUfu+qW4dULLR/6B69yhqMzSbOGeKVJP08QAKobFAonagYRsJhlg9U0xNtd10NEiiDmuM4KPslyEpuDPBnl83+3dWsmLFBph6ayRFnPi7T8+PE+IoNdyh/RspFMh62RYvjsi6+i8eAv0irBkXmYvUcn725/tanjSS+G0Kk2KGbp3GeHCW03xTyR+UwcXhhgYZdpweVpMQAiWx2k/9WUh52R47yjBFG8rEUmG/uoeXlmqa3vAf+AuBulhGmUr1uKtjS3W5KIZTTh8YZfXs4T8iSKBs2uUrm4E9Y28e4TgowUoISmlqODvns1h+n4nTfxi2Nl/K8hzLx1zklooXGyuzqKQYwywLAfvmo5F7uK0Xgo4reFV0jokfmKY0c3YE1faUVlfYPzbYXC04DSFGvBQ1GPBTPB/TmhNDYyq/6anrapUilWDmpFMsKX+nCx+S30qRWsddmJUBETqtCt2x3y1cV7SLfJJoi2Jlq0yNFSKNP1aePApGATHenC+6U+mkrdZgaIWnbax5oLchPK7Xgu53QcS3tEVj0UlA8QOE8A+dbaRBe7MeSSG76ZB4YJW0l42aH+PSagruLdg9PODrxzdngOf6SAEZaqAdn0nnGmLHm/qCBmKYtpMctL5r1SplA1NTMmatOk/wZTB3LMZnEXGvIOZlKCFuI0ktiKeg5otuWCWlI5NqpI63xZUtlxD07OQLY9MOKt89Q5YEgowGtodmtA
- sV0+nEA7
- Uw5o7ZalyCZcI8/vuSkfByhauWtg33BOVSxxWkw+tJVSD2vWACqIcI15+O0HBBAff8nZZe5uxbj17y1gc1G30YNrm/XegLNcFgQcPHY6ew8eLUiMhe4peNEcKCtEhGU3kNYb0KfhQCXeU4Xn/1c5pUEQsTPy6GSC77KgHYHv7iEHGEezMXoShd/Xy87AU1loSPZAlD0CuTnVY83nU7IVJ+Fs/NKL21JGEEZtyT2rg7aPv0xtym+mzEMedt0uk5gvccc599X6Ms73doFN2gxs5rRwy7I7Aa6oATEZGxuaZQ8Une8WnOxfQZE/uozzYoEW9hrDMB5MxNOIfeJs=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 07289C0022
+X-Stat-Signature: a7ugojzn4y7ueiow1zmexzacs88rzitz
+X-HE-Tag: 1768496421-769773
+X-HE-Meta: U2FsdGVkX1/hhHKEYZNtOOlC3ShVI454uCA9z8hvoHi1RV5CRZoEx8OnHkR3MWNUV/+diR+8aTVua6yLPK4RiDd3fCSvCMM1nNhcjgTP7oGiarASRcZILx4qVd8+bnIGYRe6+f2qN3VfqSooiFYtA15rAfchdK2VURACS+zHl3VyJU5gLKwBuCvRJU9uO1+5o/1luuMAeSYnTJCPZTlxAxLOZyK8OSeykVhOmhhBJkUaN8tE52vJorJfPn6D9lrpAyojfp1KdOwWTa4OD/H4X3/FOp9rJ6o5wadgxj2uJJOfg19Bn2xCBFwyW0Ga82ZNh6jKE5SGhIt+lSCYNj3M39s0NYV/pQsDgbFTfcDNSsVqPnq+VeF5VchzocYCseKXd36M2zLxO3QnhduM2tYtSzIpf8VcWqQByIGD7UM0/jutMSTiWCwo05SmYKnN8cfNgtWb7YIhYyAwDoerBhAuivQ91575q+/6gp/P2R/btoqnnq6lTFGuv3dxk/ATPbVf1BhHrqUddbAM8dDBfiVLlDDdoEZjt6PlCW+DIEM8OOjv9fX5b9fsKMmmFcnDB9FAxlQvxDveIEaYYBvwSjVuer4VHkfiqHWYtAqffpXlD0dVoxx2d2Vdc54f8RJXf995kGKLFo5LBmF5s/t2cgFcw/CRyqrYcMHw0rp31Coe+mgdfdUQF2K3sP69A/UqSFYny8p5Ejvfoi3xgr716cSwQpD+eZDYCRcrkpx8cxLX0jMZFGhs/Qdj+CtS7g7T6q6MmSnQJ0KiovGeMces374u2zbSnKFsEMKDwe6ath4lysW26iELVihZXfy3Xu7itABpqhZ/iwBjFJOZ8YEeE4SJnslzPhR27/lc0IZEukGhRWDnE/bV5JeUiWbcRNJBRvrwI0jj0rICATZwMXM1msno6E4iOdSijgcUX5S+eAQDM4ctL//OiCGJjj5ajlnWx986BE2gCUWnoFOAsNvdydc
+ EkW+y9GP
+ tk3R5oF4lcxHZ0ENMsJhigOSoa6ZNOSrWsD9o34iODDlin/xXiAmi7CoebeVx0deeE7yJwe1rr86HCbLAlsDfh7xxWgG4kEn5ktWszj8DPhiFiEwG5QAX2xhwYm1/sGk17qcrNkzBoh8cgvbN/FAx/jb5EDSXNFARU7HH3a204pcINqROY799zgJoi4/KADv5cvQZA1SADWQZPZhh4SjwBikKvYv2f05RUPzSa/0fFNoBn8wqxClW+urAkiBSXK3x2CgjTKSMlVo/Xf1GZGiSk552aILpOgTLd92RC3Ie3ZtgTkOomHWCCNNcO7xlNueGfI3aqu7InxVsgM4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,90 +111,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/14/26 08:30, Harry Yoo wrote:
-> On Sat, Jan 10, 2026 at 04:02:03AM +0000, Al Viro wrote:
->>         kmem_cache_create() and friends create new instances of
->> struct kmem_cache and return pointers to those.  Quite a few things in
->> core kernel are allocated from such caches; each allocation involves
->> dereferencing an assign-once pointer and for sufficiently hot ones that
->> dereferencing does show in profiles.
->> 
->>         There had been patches floating around switching some of those
->> to runtime_const infrastructure.  Unfortunately, it's arch-specific
->> and most of the architectures lack it.
->> 
->>         There's an alternative approach applicable at least to the caches
->> that are never destroyed, which covers a lot of them.  No matter what,
->> runtime_const for pointers is not going to be faster than plain &,
->> so if we had struct kmem_cache instances with static storage duration, we
->> would be at least no worse off than we are with runtime_const variants.
->> 
->>         There are obstacles to doing that, but they turn out to be easy
->> to deal with.
->> 
->> 1) as it is, struct kmem_cache is opaque for anything outside of a few
->> files in mm/*; that avoids serious headache with header dependencies,
->> etc., and it's not something we want to lose.  Solution: struct
->> kmem_cache_opaque, with the size and alignment identical to struct
->> kmem_cache.  Calculation of size and alignment can be done via the same
->> mechanism we use for asm-offsets.h and rq-offsets.h, with build-time
->> check for mismatches.  With that done, we get an opaque type defined in
->> linux/slab-static.h that can be used for declaring those caches.
->> In linux/slab.h we add a forward declaration of kmem_cache_opaque +
->> helper (to_kmem_cache()) converting a pointer to kmem_cache_opaque
->> into pointer to kmem_cache.
->> 
->> 2) real constructor of kmem_cache needs to be taught to deal with
->> preallocated instances.  That turns out to be easy - we already pass an
->> obscene amount of optional arguments via struct kmem_cache_args, so we
->> can stash the pointer to preallocated instance in there.  Changes in
->> mm/slab_common.c are very minor - we should treat preallocated caches
->> as unmergable, use the instance passed to us instead of allocating a
->> new one and we should not free them.  That's it.
+On Tue, Jan 13, 2026 at 04:49:20PM +0900, Nhat Pham wrote:
+> On Tue, Jan 13, 2026 at 4:35 PM Nhat Pham <nphamcs@gmail.com> wrote:
+> >
+> > > This part needs more thought. Zswap cannot charge a full page because
+> > > then from the memcg perspective reclaim is not making any progress.
+> > > OTOH, as you mention, from the system perspective we just consumed a
+> > > full page, so not charging that would be inconsistent.
+> > >
+> > > This is not a zswap-specific thing though, even with cram.c we have to
+> > > figure out how to charge memory on the compressed node to the memcg.
+> > > It's perhaps not as much of a problem as with zswap because we are not
+> > > dealing with reclaim not making progress.
+> > >
+> > > Maybe the memcg limits need to be "enlightened" about different tiers?
+> > > We did have such discussions in the past outside the context of
+> > > compressed memory, for memory tiering in general.
+> >
+> > What if we add a reclaim flag that says "hey, we are hitting actual
+> > memory limit and need to make memory reclaim forward progress".
+> >
+> > Then, we can have zswap skip compressed cxl backend and fall back to
+> > real compression.
+> >
+> > (Maybe also demotion, which only move memory from one node to another,
+> > as well as the new cram.c stuff? This will technically also save some
+> > wasted work, as in the status quo we will need to do a demotion pass
+> > first, before having to reclaiom memory from the bottom tier anyway?
+> > But not sure if we want this).
 > 
-> SLAB_NO_MERGE prevents both side of merging - when 1) creating the cache,
-> and when 2) another cache tries to create an alias from it.
+> Some more thoughts - right now demotion is kinda similar, right? We
+> move pages from one node (fast tier) to another (slow tier). This
+> frees up space in the fast tier, but it actually doesn't change the
+> memcg memory usage. So we are not making "forward progress" with this
+> either.
 > 
-> Avoiding 1) makes sense, but is there a reason to prevent 2)?
+> I suppose this is fine-ish, because reclaim subsystem can then proceed
+> by reclaiming from the bottom tier, which will now go to disk swap,
+> zswap, etc.
 > 
-> If it's fine for other caches to merge into a cache with static
-> duration, then it's sufficient to update find_mergeable() to not attempt
-> creating an alias during cache creation if args->preallocated is
-> specified (instead of using SLAB_NO_MERGE).
+> Can we achieve the same effect by making pages in
+> zswap-backed-by-compressed-cxl reclaimable:
+> 
+> 1. Recompression - take them off compressed cxl and store them in
+> zswap proper (i.e in-memory compression).
 
-The merging prevention is my biggest concern with the approach. We could
-potentially solve it by moving the sharing to a different layer than today's
-sharing of kmem_cache objects with refcount, and instead have separate
-instances that point to the same underlying storage (mainly the per-node and
-per-cpu slabs/sheaves). It's possible it would also simplify the suboptimal
-sysfs handling of today as the aliases could know their cache name and own
-their symlinks.
+I think the whole point of using compressed cxl with zswap is saving
+memory in the top-tier, so this would be counter-productive (probably
+even if we use slightly less memory in the top-tier).
 
-However slabs and sheaves do have a parent kmem_cache pointer. It's how e.g.
-kfree() works by virt_to_slab(obj) -> kmem_cache and then being like
-kmem_cache_free().
+> 
+> 2. Just enable zswap shrinker and have memory reclaim move these pages
+> into disk swap. This will have a much more drastic performance
+> implications though :)
 
-So we could have kmem_cache->primary_cache field where the primary would
-just point to self and aliasing caches to the primary, and newly created
-slabs and sheaves would read that ->primary_cache to assign their kmem_cache
-pointer. This is not a fasthpath operation so it shouldn't matter, and with
-that there wouldn't be any mix of differing cache pointers so the aliases
-could be destroyed easily. And then the primary cache wouldn't be able go
-away as long as there are aliases, as it is today.
+I think what you're getting it as that we can still make forward
+progress after memory lands in compressed cxl. But moving memory to
+compressed cxl is already forward progress that reclaim won't capture if
+we charge memory as a full page. I think this is the crux of the issue.
 
-Only a dynamic cache or a non-module static cache thus could become a
-primary, for module unload reasons.
-
-For this to work fully mergeable in all scenarios of the order of creating
-static vs dynamic aliases, there would however have to be a weird quirk for
-static module caches - when such a cache is created, and there's no
-compatible primary to become alias of, a dynamic, otherwise unused primary
-would need to be created just to become the owner of the slabs and sheaves.
-Because if a mergeable dynamic cache appears later, it would not be able to
-become a primary for the static module cache to become alias of, because the
-static module cache would already have existing slabs and sheaves pointing
-to it.
-
-And there might be other issues with this scheme I don't immediately see.
-But maybe it's feasible.
+We need to figure out how to make accounting work such that moving
+memory to compressed cxl is forward progress, but make sure we don't
+break the overall accounting consisteny. If we only charge the actual
+compressed size, then from the system perspective there is a page that
+is only partially charged and the rest of it is more-or-less leaked.
 
