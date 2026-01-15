@@ -4,133 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23915D3CCB2
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 07:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12029D3CC8A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 07:31:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AB746B0088; Thu, 15 Jan 2026 02:22:46 -0500 (EST)
+	id 0F0A06B0088; Thu, 15 Jan 2026 02:31:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 858EE6B0089; Thu, 15 Jan 2026 02:22:46 -0500 (EST)
+	id 0C8396B0089; Thu, 15 Jan 2026 02:31:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73A5B6B008A; Thu, 15 Jan 2026 02:22:46 -0500 (EST)
+	id F2D1D6B008A; Thu, 15 Jan 2026 02:31:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 605E46B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:22:46 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 063B21AF1C
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:22:46 +0000 (UTC)
-X-FDA: 84333355932.30.87A111D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BECC1C0007
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:22:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XudOJ7mX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=laRMAzTM;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EHOK3G7L;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hnIFZBUb;
-	spf=pass (imf22.hostedemail.com: domain of pvorel@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=pvorel@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768461764; a=rsa-sha256;
-	cv=none;
-	b=W6ITABHWnbWLAI4Tf6kBWgwWMHHiHrnfjVelWiGEkWv5UcSzYWORGGkR8wQv70Uc4Ub+rB
-	xCzAujKBj6e1Hx87pCaphI91gxa2xpgpR4fN7ccXzp0caMM/GFZK4kDb/xzZhejv8ZbrrP
-	1xAxeissoIdUPAND8jbWj1ltnWwAP+M=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XudOJ7mX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=laRMAzTM;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EHOK3G7L;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hnIFZBUb;
-	spf=pass (imf22.hostedemail.com: domain of pvorel@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=pvorel@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E038D6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:31:58 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 76FF11A018E
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:31:58 +0000 (UTC)
+X-FDA: 84333379116.26.B0A714E
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 25AF220009
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:31:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=JaKHEL8Y;
+	spf=pass (imf03.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768461764;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768462316;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AlpvlU9RUc1F4iCVSO3rQkbgCwaKD8hJUxYfFKTEWPM=;
-	b=eh8Jv9XoA/7nFXuTtJFKGaQsPNwxCbIWuSLRA5HGs4HBjiFPS8iz4M6Y8N7ioV1IW4kpsa
-	Ug6mjL62kn/6yITU8Jp49waNQwOsgfQgY1A/+y8H54AEc7RlAS0OZ6cwhQToRc4A7YfU7O
-	yfFoJSJR3A9TT+W4tfPkZhf08cOzOyQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D20F333694;
-	Thu, 15 Jan 2026 07:22:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768461762;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AlpvlU9RUc1F4iCVSO3rQkbgCwaKD8hJUxYfFKTEWPM=;
-	b=XudOJ7mXjnIlMu3K7TB0kagbLb1j6nnRvRPD/IEC0DEoJZdAWPKWq6viZgqjpf2X5VNEap
-	Cx6R4BrUaFXl+LF7szzxyk8SdYFXL4M/pMa7opi98bXMR//mtYJUpUBuLrzuwYVLVLhNNB
-	FuEkbP/vrzh1iC9/wFPY/VixADrHNso=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768461762;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AlpvlU9RUc1F4iCVSO3rQkbgCwaKD8hJUxYfFKTEWPM=;
-	b=laRMAzTMuY0e1xM1KJ0OlxKvtxtI3igNm1eI91cdWd7eQ9S5M3wV8LhKp8vZQkVLlPMwVa
-	8WJzcpBCjMt/ZbDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768461760;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AlpvlU9RUc1F4iCVSO3rQkbgCwaKD8hJUxYfFKTEWPM=;
-	b=EHOK3G7LUt5NFSkL63tRI1gVs6DgtgfLeW9tSWAhPSyJqR8Dpu9TteYq98YSkVWxb2dPfl
-	Cv5glKbITvpaCnUMw5WPyBYgW/f3xosTrbA43TNKzE8Jz4Rb1Wl24fBQGSVvLc9CCHS1k/
-	CrBgnU+hNvH4jTulh75LGJnARVM4ciU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768461760;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AlpvlU9RUc1F4iCVSO3rQkbgCwaKD8hJUxYfFKTEWPM=;
-	b=hnIFZBUbDdTh8Jjf23yzSwZRQKE4wan9Aarv1CEz22nKP5qYRqNhnXLw+iH2vLihSYeB0T
-	Da0DgR1RIODq1JCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B03F3EA63;
-	Thu, 15 Jan 2026 07:22:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oXj3IMCVaGmrRwAAD6G6ig
-	(envelope-from <pvorel@suse.cz>); Thu, 15 Jan 2026 07:22:40 +0000
-Date: Thu, 15 Jan 2026 08:22:31 +0100
-From: Petr Vorel <pvorel@suse.cz>
-To: cryolitia@uniontech.com
-Cc: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Cryolitia PukNgae via B4 Relay <devnull+cryolitia.uniontech.com@kernel.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, workflows@vger.kernel.org,
-	niecheng1@uniontech.com, ltp@lists.linux.it, zhanjun@uniontech.com
-Subject: Re: [LTP] [PATCH RESEND v2] checkpatch: Suppress warnings when
- Reported-by: is followed by Link:
-Message-ID: <20260115072231.GA438294@pevik>
-Reply-To: Petr Vorel <pvorel@suse.cz>
-References: <20260113-checkpatch-v2-1-5dfe8b9f4d90@uniontech.com>
+	bh=5dFnQyFRzBn2t4MUukpNZzTFF4PhWnExbW+AKUMLisU=;
+	b=Um03EOCbf2jCqrhA7NJVjAYWstVVH6chwuDlqlsHa2PvgnwRnhdcLgYt4Qdwiht8uMjX3t
+	7o2fuWYx2107EWGDJEhZ4QwRUS89uHLm0pqkLvAy72wovccMmIxnOxHG7khgEL81OvvsEu
+	VBOOiwvhWEMPIp+Bb2AF6qZz6L00IpI=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=JaKHEL8Y;
+	spf=pass (imf03.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768462316; a=rsa-sha256;
+	cv=none;
+	b=aEgaphH30roh1HCftTC7vERW5g/DJb+Cowb9VhlXQzva9ZlzX++SebB2Ba7jOyglknUp2A
+	XxwsNqH127STw4Zni0zO/CMrY83DxaT849CvjQVJTcNLFevahUYQB1A4OmTJpgou/EqjKN
+	J7mYXOaT9mgmrCRzTv3dNJNEbEQS2YE=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=5dFnQyFRzBn2t4MUukpNZzTFF4PhWnExbW+AKUMLisU=;
+	b=JaKHEL8Y/IPR1Cf5YY2IVD9M9zftKBScCC05h3tzuh3MwGU6pGQLT28Amtx5GcpkE3HCmUohI
+	RbGAufGmnt94cmn62OUN3X7f70Lu/qkjC8ikMAXdmkpI6JOvgCLT6zZ/SGdVW3zSZpkHKSF78ns
+	cbD/k58AX5v+7HaQIl1Q65w=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4dsF2h1VLlzRhR3;
+	Thu, 15 Jan 2026 15:28:28 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 998A740539;
+	Thu, 15 Jan 2026 15:31:48 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 15 Jan 2026 15:31:48 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 15 Jan 2026 15:31:47 +0800
+Subject: Re: [PATCH v5 1/2] mm/memory-failure: fix missing ->mf_stats count in
+ hugetlb poison
+To: Jane Chu <jane.chu@oracle.com>
+CC: <linux-mm@kvack.org>, <stable@vger.kernel.org>, <muchun.song@linux.dev>,
+	<osalvador@suse.de>, <david@kernel.org>, <jiaqiyan@google.com>,
+	<william.roche@oracle.com>, <rientjes@google.com>,
+	<akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
+	<Liam.Howlett@Oracle.com>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <willy@infradead.org>, <clm@meta.com>, linux-kernel
+	<linux-kernel@vger.kernel.org>
+References: <20260114213721.2295844-1-jane.chu@oracle.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <e3b0033b-0506-2ec2-239c-93a7ac7b0c2e@huawei.com>
+Date: Thu, 15 Jan 2026 15:31:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260113-checkpatch-v2-1-5dfe8b9f4d90@uniontech.com>
-X-Stat-Signature: hgu5ocjxi51ti39hk98q35kz7gcpgzoa
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BECC1C0007
+In-Reply-To: <20260114213721.2295844-1-jane.chu@oracle.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Stat-Signature: aqu8dkejcc76hh5ijrwsm77ch4f645mf
 X-Rspam-User: 
-X-HE-Tag: 1768461763-517434
-X-HE-Meta: U2FsdGVkX19zMediOG5mBOSYGgRES+JtZnSa1YU82OLpgsX/OMF2t4//1+lqP/ul6qF4VcPpXec9P7x6pr5Pj+VlOPyVjwIsrHXJihPMRh0gI9D/FRNcuSte1CA5O1mitu/KpCzKJPUyFEcymoH9LvfxcozHogjNMaLVXbmGqaWtc03BH2G5BMUkkRKtIrp5esiAMqfXVi/SmxXjriNn7ZZl64j2p5IMyyozRqo7MT5b2eKBdO+/StQFlcSOJFUHGtvwuXvHsymIbURozhp0wnuUmWhTbAhZQDuuM2NdXiPrBmBHhwgC5p97/O0yJ6/rnJLtjGmx4ccn6YsPJYobFWtfC8yEYvugiVZhW6rgnr0tak2wyKhyuyFGFltqn4VW5kaR3ke0w1A2G+USWCQ/z60+8djsXBGclV8ivz/e5npjgclUyXj7YTQ077MZNizjAa8ETQtIPJISG6ZLOEJzO8b9gdDxRXUrkwsF1A5oYq0rJZP1sem3zpgQm/2f4sI46v/5NXesI+8gtDllNLBKH9Uv3xPaQyu71o7OAXkf6RnvAfoM/xQvv61f1DT1rHsR4lk/u/frsUMOMrm6zfM7Z6bE/9mQKZDyvc3b4J8HC08xjtCcGwVRDm7HpLJqbCnCj5MHFcm2NDl5+PQwvABjexXrWNSXmOknNONbwAwddxW8dGq1sXkA4WYt8NgMNUjGHgpGpfwoksdKnOBH+bQ5GRk7/hMJRQUFfQnPa3mjkYIK1UlynNStrQNZFqB03tsfBxyCnZ9jZkYE0fNdBkTHTg1agw2EUXUnI+9TwwrukdwHcUgI5+GNiDHKOsXIBBBXZXuarnPFjJEka3aal/ICnyFQYnEFSWulu/FKvlSuL/0Ojs8GQTtFNnlsYuKu99jHbS5oXcH67bLjv4Y7UERGPX9SQDk5mHOBNctBfKLh5JNqrv5mfN5hKj/GlSfuHp6iC8djcnGPm3hwhOzjP5G
- ayQaQdmg
- 2C3TbEqQTNo7UCk9Jw5HRjN+ToQdqdFg4tc8MCzFOpo3DOppn8vSVbXO3AImPJeULIxTpZ4a0MxVBqgXXYyM09n5X5YM+Ef9dxyvQdmgckPKNc4WzhZHn09Tt2kXA+5ZJD05FGGbGoy9cTQSi/TAk7oEx4zcypRE0hg4hfktG9mW4HCXybhAAxoGwtUgEot/Udq5D4l1cDX710Y1JHPquvGtlFAob0BRkfewEQiFwnwqi4UQGiF/pr3IwHYdrUOLqZm79nQ867AgvW+d01NY6vFBTMH/1NWU/go2B4Cu0dzhMERwiZ3AmUbQvb+FJv1sr7t3OmsnuzOlc/aqv2FZQl4gEdKMeJr/xT9VBVWHIsNniX/Co1gG9J8k/SoPljCvZW/bEBLaI/byqANiwks/MEJmTjAO/x+UOCRAL0DY8L0wuhiWRErjgSMN/GBH/IYmr6QIOQSGPFxR44aW8eXIj1u8qBBgnR1SKi0ifbj9sZS8Hvpc9xg4wNRh4t7WwTHx0EZmjAKbj54dLAI05yug8pHvz8nspmIcsfHyALWn19YEnILI=
+X-Rspamd-Queue-Id: 25AF220009
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768462314-35452
+X-HE-Meta: U2FsdGVkX18tV6U2P9MxW8+u2Rlc3qcHkgg6xTfNRWkwndTubXzeIAKd/SP0FdGpaNWLyYzyuyEioVtlB5Gw74x3PDv2CpHQ8gxR7sWjCq01E1aVdhjLKkoUdLrcLrgbOYzi2Mz2PRvLOt9TleIVHgOlxwkxi34u1lR4d38wSEmmiW+eAaCAwjW1eq9RVnoL417i8BBv1c3inUiDfuaazUFvkv9/9nPVNgPKrTeT6ye2g8qHuU8VOvjVZ6J3dG+W59Qm8lfpsGn3JY3V3333QQbRjNUuu4sGFy21BRw3FfIo8igbadbhrbx/mp9pjLuZDREEWm++cig7lNsb/k3SLA6B5afUw3JtXT0+J78hD1J8S8Wk7R3+VmgrX4r66ca6ONbDEkPnzDE7BqC4vozdbDoqe6JVn12fPx7GgBR/caWVdTHLB+Edd9OwDqfjcug+hazLbWNEzlsAUMpn8EhHj5O1RycpzSaYrGPkCN3/YDDmF/fFGfALY85/RpxG4KitEvUWalIPECwiMGek9ecDBl06P30zgQu0DLxDxva53eRDuj1BdhM0os3sD/J7Df5wQpRZF8aOtZf+KBCvtvgdPwWVngXrsHLs0L9Ho4TffVHakVLBBAmZK/X0WEmtUHBmxb26nadDWCJroC+N5c0wP1pC2/qOJmZcG9ljHTrzmnoY+2uWbAceSrDB6jaV9B6IgF/7XumrozmmrQgXc1eZ/ovkNjXIykJJbWX8k4M2rQskxBKaW/KC0GfBnBbV6byxPiJ9yYmNdwbSTey7ZYYogQ8GCNauGCg7tezHP+LMjxvoLLlAORFJWj1K+oxoglfuIAaxwYID6Izqj6IYkQI3tmfmMA1mGDNR7zkA6HCRNHhMr1MTF2/qBAwuIvzX6S+KFrTG8hTj4a3lHbIVNSOSqLIYDi7yZ7B/JzAyI3KcYGTyc5i7wK5NCSWyO9/sAq1y/IM0DsSm4z+3/cRLVGu
+ Ev0fKTIM
+ B20lDD46EbOt+51sk48UBYGg8oSZ/euu7erqNLipTFnR/FXqxyi0AN5NPE+qS0FDqRBV/BF15OvCbNxpeTWhnbJGTs4J/GtJGKWMokCCRaHF5DjZsDE7pRyIsBiZPkkt++UsGDanh+hft8m8l2tOcN+7frYXEjoKDYfdMAztlHSxvPZ26OYh+yEMCOJqUJnoKcovngnU0YfnwUrtDidsamFHxdnT49Rq9Ub+H/oMToQNGRWYBtmAUd6VRiUz9lDJuPdsO0l7+oJSbtL+uSgp0hig1QKOyfTZ0U+tjkQSqHowIBAC6u0xox0Gw6qIlJljHY1YD8HXVC+2gzMsdweECUMXTXHtq2dN0M/9Q5mN+Imv61+7qBtlZjNoxdg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,54 +110,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Cryolitia,
-
-> From: Cryolitia PukNgae <cryolitia@uniontech.com>
-
-> > The tag should be followed by a Closes: tag pointing to the report,
-> > unless the report is not available on the web. The Link: tag can be
-> > used instead of Closes: if the patch fixes a part of the issue(s)
-> > being reported.
-
-Indeed, this is true, although there is a prerequisite:
-
-	The Link: tag can be used instead of Closes: if the patch fixes a part of
-	the issue(s) being reported.
-
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-
-I also see you Cc LTP ML. FYI we vendored scripts/checkpatch.pl (with occasional
-updates).
-
-Kind regards,
-Petr
-
-> Accroding to Documentation/process/submitting-patches.rst , Link: is
-> also acceptable to followed a Reported-by:
-
-> Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+On 2026/1/15 5:37, Jane Chu wrote:
+> When a newly poisoned subpage ends up in an already poisoned hugetlb
+> folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
+> is not. Fix the inconsistency by designating action_result() to update
+> them both.
+> 
+> While at it, define __get_huge_page_for_hwpoison() return values in terms
+> of symbol names for better readibility. Also rename
+> folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
+> function does more than the conventional bit setting and the fact
+> three possible return values are expected.
+> 
+> Fixes: 18f41fa616ee4 ("mm: memory-failure: bump memory failure stats to pglist_data")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
 > ---
-> Link to previous: https://lore.kernel.org/r/20251023-checkpatch-v1-1-ff73ed1027d6@uniontech.com
-> ---
->  scripts/checkpatch.pl | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> v5 -> v4:
+>   fix a bug pointed out by William and Chris, add comment.
+> v3 -> v4:
+>   incorporate/adapt David's suggestions.
+> v2 -> v3:
+>   No change.
+> v1 -> v2:
+>   adapted David and Liam's comment, define __get_huge_page_for_hwpoison()
+> return values in terms of symbol names instead of naked integers for better
+> readibility.  #define instead of enum is used since the function has footprint
+> outside MF, just try to limit the MF specifics local.
+>   also renamed folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison()
+> since the function does more than the conventional bit setting and the
+> fact three possible return values are expected.
+> 
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
 
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index c0250244cf7a..dac9d98133c6 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -3209,10 +3209,10 @@ sub process {
->  			if ($sign_off =~ /^reported(?:|-and-tested)-by:$/i) {
->  				if (!defined $lines[$linenr]) {
->  					WARN("BAD_REPORTED_BY_LINK",
-> -					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . "\n");
-> -				} elsif ($rawlines[$linenr] !~ /^closes:\s*/i) {
-> +					     "Reported-by: should be immediately followed by Closes: or Link: with a URL to the report\n" . $herecurr . "\n");
-> +				} elsif ($rawlines[$linenr] !~ /^(closes|link):\s*/i) {
->  					WARN("BAD_REPORTED_BY_LINK",
-> -					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . $rawlines[$linenr] . "\n");
-> +					     "Reported-by: should be immediately followed by Closes: or Link: with a URL to the report\n" . $herecurr . $rawlines[$linenr] . "\n");
->  				}
->  			}
+This patch looks good to me. A few nits below.
+
+> ---
+>  mm/memory-failure.c | 87 ++++++++++++++++++++++++++++-----------------
+>  1 file changed, 54 insertions(+), 33 deletions(-)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index fbc5a01260c8..2563718c34c6 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1883,12 +1883,24 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+>  	return count;
+>  }
+>  
+> -static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+> +#define	MF_HUGETLB_FOLIO_PRE_POISONED	3  /* folio already poisoned */
+> +#define	MF_HUGETLB_PAGE_PRE_POISONED	4  /* exact page already poisoned */
+> +/*
+> + * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
+> + * to keep track of the poisoned pages.
+> + * Return:
+> + *	0: folio was not already poisoned;
+> + *	MF_HUGETLB_FOLIO_PRE_POISONED: folio was already poisoned: either
+> + *		multiple pages being poisoned, or per page information unclear,
+> + *	MF_HUGETLB_PAGE_PRE_POISONED: folio was already poisoned, an exact
+> + *		poisoned page is being consumed again.
+> + */
+> +static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+>  {
+>  	struct llist_head *head;
+>  	struct raw_hwp_page *raw_hwp;
+>  	struct raw_hwp_page *p;
+> -	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
+> +	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
+>  
+>  	/*
+>  	 * Once the hwpoison hugepage has lost reliable raw error info,
+> @@ -1896,20 +1908,17 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+>  	 * so skip to add additional raw error info.
+>  	 */
+>  	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+> -		return -EHWPOISON;
+> +		return MF_HUGETLB_FOLIO_PRE_POISONED;
+>  	head = raw_hwp_list_head(folio);
+>  	llist_for_each_entry(p, head->first, node) {
+>  		if (p->page == page)
+> -			return -EHWPOISON;
+> +			return MF_HUGETLB_PAGE_PRE_POISONED;
+>  	}
+>  
+>  	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
+>  	if (raw_hwp) {
+>  		raw_hwp->page = page;
+>  		llist_add(&raw_hwp->node, head);
+> -		/* the first error event will be counted in action_result(). */
+> -		if (ret)
+> -			num_poisoned_pages_inc(page_to_pfn(page));
+>  	} else {
+>  		/*
+>  		 * Failed to save raw error info.  We no longer trace all
+> @@ -1955,44 +1964,43 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+>  	folio_free_raw_hwp(folio, true);
+>  }
+>  
+> +#define	MF_HUGETLB_FREED		0	/* freed hugepage */
+> +#define	MF_HUGETLB_IN_USED		1	/* in-use hugepage */
+
+It might be better to define all of them together. e.g.
+
+#define MF_HUGETLB_FREED		0 	/* freed hugepage */
+#define MF_HUGETLB_IN_USED		1	/* in-use hugepage */
+#define MF_HUGETLB_NON_HUGEPAGE		2	/* not a hugepage */
+#define MF_HUGETLB_FOLIO_PRE_POISONED	3  	/* folio already poisoned */
+#define MF_HUGETLB_PAGE_PRE_POISONED	4  	/* exact page already poisoned */
+#define MF_HUGETLB_RETRY		5	/* the hugepage is busy (try to retry) */
+
+>  /*
+>   * Called from hugetlb code with hugetlb_lock held.
+> - *
+> - * Return values:
+> - *   0             - free hugepage
+> - *   1             - in-use hugepage
+> - *   2             - not a hugepage
+> - *   -EBUSY        - the hugepage is busy (try to retry)
+> - *   -EHWPOISON    - the hugepage is already hwpoisoned
+>   */
+>  int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>  				 bool *migratable_cleared)
+>  {
+>  	struct page *page = pfn_to_page(pfn);
+>  	struct folio *folio = page_folio(page);
+> -	int ret = 2;	/* fallback to normal page handling */
+> +	int ret = -EINVAL;
+>  	bool count_increased = false;
+> +	int rc;
+>  
+>  	if (!folio_test_hugetlb(folio))
+>  		goto out;
+>  
+>  	if (flags & MF_COUNT_INCREASED) {
+> -		ret = 1;
+> +		ret = MF_HUGETLB_IN_USED;
+>  		count_increased = true;
+>  	} else if (folio_test_hugetlb_freed(folio)) {
+> -		ret = 0;
+> +		ret = MF_HUGETLB_FREED;
+>  	} else if (folio_test_hugetlb_migratable(folio)) {
+> -		ret = folio_try_get(folio);
+> -		if (ret)
+> +		if (folio_try_get(folio)) {
+> +			ret = MF_HUGETLB_IN_USED;
+>  			count_increased = true;
+> +		} else
+> +			ret = MF_HUGETLB_FREED;
+>  	} else {
+>  		ret = -EBUSY;
+>  		if (!(flags & MF_NO_RETRY))
+>  			goto out;
+>  	}
+>  
+> -	if (folio_set_hugetlb_hwpoison(folio, page)) {
+> -		ret = -EHWPOISON;
+> +	rc = hugetlb_update_hwpoison(folio, page);
+> +	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
+> +		ret = rc;
+>  		goto out;
+>  	}
+>  
+> @@ -2017,10 +2025,15 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>   * with basic operations like hugepage allocation/free/demotion.
+>   * So some of prechecks for hwpoison (pinning, and testing/setting
+>   * PageHWPoison) should be done in single hugetlb_lock range.
+> + * Returns:
+> + *	0		- not hugetlb, or recovered
+> + *	-EBUSY		- not recovered
+> + *	-EOPNOTSUPP	- hwpoison_filter'ed
+> + *	-EHWPOISON	- folio or exact page already poisoned
+>   */
+>  static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
+>  {
+> -	int res;
+> +	int res, rv;
+>  	struct page *p = pfn_to_page(pfn);
+>  	struct folio *folio;
+>  	unsigned long page_flags;
+> @@ -2029,22 +2042,30 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+>  	*hugetlb = 1;
+>  retry:
+>  	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+> -	if (res == 2) { /* fallback to normal page handling */
+> +	switch (res) {
+> +	case -EINVAL:	/* fallback to normal page handling */
+>  		*hugetlb = 0;
+>  		return 0;
+> -	} else if (res == -EHWPOISON) {
+> -		if (flags & MF_ACTION_REQUIRED) {
+> -			folio = page_folio(p);
+> -			res = kill_accessing_process(current, folio_pfn(folio), flags);
+> -		}
+> -		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+> -		return res;
+> -	} else if (res == -EBUSY) {
+> +	case -EBUSY:
+>  		if (!(flags & MF_NO_RETRY)) {
+>  			flags |= MF_NO_RETRY;
+>  			goto retry;
 >  		}
+>  		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+> +	case MF_HUGETLB_FOLIO_PRE_POISONED:
+> +	case MF_HUGETLB_PAGE_PRE_POISONED:
+> +		rv = -EHWPOISON;
+> +		if (flags & MF_ACTION_REQUIRED) {
+> +			folio = page_folio(p);
+> +			rv = kill_accessing_process(current, folio_pfn(folio), flags);
+> +		}
+> +		if (res == MF_HUGETLB_PAGE_PRE_POISONED)
+> +			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+> +		else
+> +			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
+> +		return rv;
+> +	default:
+
+Should we add a warn here?
+
+Thanks.
+.
 
