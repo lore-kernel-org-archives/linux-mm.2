@@ -4,145 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A386AD46617
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 19:40:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5360D46617
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 19:41:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19E506B00B3; Thu, 15 Jan 2026 14:40:24 -0500 (EST)
+	id 15AED6B00FA; Thu, 15 Jan 2026 14:41:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 152C06B00BD; Thu, 15 Jan 2026 14:40:24 -0500 (EST)
+	id 135F06B00FB; Thu, 15 Jan 2026 14:41:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 047FA6B00FB; Thu, 15 Jan 2026 14:40:23 -0500 (EST)
+	id 0584C6B00FC; Thu, 15 Jan 2026 14:41:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E73C76B00BD
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:40:23 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A14D513B027
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:40:23 +0000 (UTC)
-X-FDA: 84335214726.18.9B53411
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CD38DA0014
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:40:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JCULaqSi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768506021; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E3A626B00FA
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 14:41:53 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A3DB958EC9
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:41:53 +0000 (UTC)
+X-FDA: 84335218506.29.59AF1D8
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E6217160003
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:41:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nYFPEGLZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of manish1588@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=manish1588@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768506112; a=rsa-sha256;
 	cv=none;
-	b=C8xN4dtZyxOc7wgnLygdnpNTkO+2MSPOnuxYqASr4sLJ9ikS5EilGdZuRz5X3p/CfRLb5C
-	4Nuv00qC24XfLViICA7l44b1Qwp2ra1NRsriaLDKlEyWSLARZCalRznhti6QwuRic+YjIn
-	ASLJxqz4kH7+eVriEWPj5f3N3WYbapo=
+	b=hL/dY+bAPVW1HTyuzo3AoAodBTBSPNP+fIkEBGe5u+L6CPpQrIxeJjeHlhVvdhDz4TFWfp
+	HpCoXMKbV3JqD5vSChc4mZgq9k4DWKPM7lOEPWDg5IJh8eOB2YVMS1eFLLHFUQ58tDymep
+	KKyrs3SwvC20nXDg2ZVTWhe6aq+eNIg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JCULaqSi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nYFPEGLZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of manish1588@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=manish1588@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768506021;
+	s=arc-20220608; t=1768506112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WNlN8Fx1T41hagDm9ehN0JVcA6Z1bodiNt/ppoVd2+A=;
-	b=qLIo+BErhe0keAZzr4LwY5KSI2s80dLrcFXtxvzJZp+2jvp2d2c5XG9LNvRbXU9oN3ZQah
-	gX9vZIxvJAQVGceIuIk6kFu4+4xfzfOaafBm4/l8UPGreZG5IIX40EQohSFuvAO+X4lRqv
-	L6o5P2jZjsJtlXH9wlNtXf8ylOQlgdk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 343D26015E;
-	Thu, 15 Jan 2026 19:40:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4296C16AAE;
-	Thu, 15 Jan 2026 19:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768506020;
-	bh=nLGaqWdpnH8fEEVBvwXlgYEC0zyBCL56gElb3tVuEgQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JCULaqSiagqhvxYAXnBf6QFqboCKJo9CFWcUgzbmW/KxbKuSq3ws3wJEZqOFjN7i5
-	 ZEqFPJ5VJabscSnYwpOK0bwmhOGlZHn7L7ywxQyesZzR7i9yc80uDz+0diYQCK7r8h
-	 +ePYH6HLe5Fny+wdLdQpxqxNCBOBQ2AOmors7MInu/5HnaEiatL2cp0gk/qke/tnUn
-	 6ilQN8j4ZL+IvYc6LZtddA74UPBzh8jyxE37Pq6NBmi34aVheXNk7oyTxhlDnxPis0
-	 IhdpPGmwT8OGdkT7uxj6LqI7rInF8pEJSvXAyhFyiR5Jp5vVAAnyFZC5nwXN9QzxJ+
-	 AaZtzAWStrNQA==
-Message-ID: <84a00b16-0fd3-4a32-bb7a-f117dcdcf1e2@kernel.org>
-Date: Thu, 15 Jan 2026 20:40:13 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=WQl7iR/tVdOMMi2eZMZAf7ekxCObn9XxdapG7+LUjT8=;
+	b=cZoLus4rGwV5ANQtKO2OduLoWYkQgM4Ps6j4S0U+t2K/wCZQefuCqAZ2F4iL0WDVwWJ72A
+	vPpczudUo1PE3rVao89LEWS248Edr7OJnZ+SHagT8mUpGM6lWRn6MDuX64SDOTnf7haGUH
+	4ldPbR6z6ZtFoiwqkXSlBL0IG05B3ps=
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b98983bae80so527548a12.0
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 11:41:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768506111; x=1769110911; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WQl7iR/tVdOMMi2eZMZAf7ekxCObn9XxdapG7+LUjT8=;
+        b=nYFPEGLZKwPQSZ1joxdSUDTz+sRXguo2GvkrMC27JiRAQUkI9bmfUMhqfBP6/dhCo/
+         R02/WvdlSc/BdOqODHa+WOlxDFry7haVXz4Z8hLVlNZaoD8+Xz+VnpXWoa5MBTAUW+YL
+         1ttnIdGRxLvpfx9Kw3IrAD3gkLdYkG1S3ENG/pal5Py79rfteJKb5h2F2JKcH/VJX9lk
+         7IW2PRflTxCIhstpoJJeHrkBDsY3U1r4QefSK4fmcuxBvfXvVFnEIkz2Ry8ML0EKmC1v
+         p83BSY0mVl/s17we7wkvlaYy2oy8Dc55jyN2ANVEAjZXJAR5CqmXp7iDvDa54t9iZiMI
+         Nsog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768506111; x=1769110911;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WQl7iR/tVdOMMi2eZMZAf7ekxCObn9XxdapG7+LUjT8=;
+        b=sD63Dvartb4Hr8BmluOhkjcVMHVxwNM2WZGHoHGY1Wrrts9SidR8NAZodh/7eUlp5Y
+         AM9dI15/6M3ACsl8IwY5QBqqzaeRPQ1vr3u0HEwzw0IvoDJseNvL8EM66pxoTLpemNJn
+         hkkPQGByOQ6rA72AlNmtfTH7T3uTfyqTNM8ChJrZBQtnGwy/XH3cHjrhkGt3E3nNLXM6
+         WXhYXENhO6Zmru4tEMi6B08is2K1t600H4wWHACAXxfARt9cZ0J8cdZWqFR9qnfbyKOD
+         YX2a/FzrhFBDqAkRYL9mkPdiq/Sn+Nn5LKo8eNLbDzbOkmkMPqGg9QltxImBpmew3JeS
+         GfvQ==
+X-Gm-Message-State: AOJu0Yz0PC2At3/k+zhDkvdssZuzNNUIWxWQ2yCl24PuopJ8K9hMGkx2
+	vw7VLLlgeBzUnWo7JqNrrD/veGJ1ZxjTm+aQiw8IMZzStOq0LRGt4AQY
+X-Gm-Gg: AY/fxX7u/Uw+fxAhfseNu8jF0c87VOkyA0or02q8ehFsQQJ3wWrzwSw81Y91cFaXFyV
+	ZGmw+X1t915NdEkizARH6FlXivSjUsix+bk7sZGSInNdv+alKLGkcf/6yq/YhdRUmYu5ANhCX4a
+	uKoAqLh3Tb9Nd2W4zh43jpIImcNVxiM4RTl/0VmaB939Nq9o1WVdnKUa2HqBB+Ln9qfsTby1SRO
+	ADtT6GNDEdggGoim4TN8Y5UJsvtOyoCKuhB7rqVRdIYj1ClunRFphzD+mL5/dXpqtVvrotYVFw9
+	edXTRZfqcRtx4ZBZPoChztuQXxOjzv4utmOwLtPU1MQfmrwHXlVBrWrvb97cdBv4ygnXDhDtXXz
+	e/z9iOVxoQw6sePh0Adjf4vDPaBdRQI4vmAOe3YXd53Ddf0AG+xpoeYXBh139XOgG+4ifENVGFs
+	EjClDceWxr4owDdJhMHQ==
+X-Received: by 2002:a17:90a:d006:b0:343:c3d1:8b9b with SMTP id 98e67ed59e1d1-35273243355mr386349a91.19.1768506110825;
+        Thu, 15 Jan 2026 11:41:50 -0800 (PST)
+Received: from muxbit.. ([122.171.16.181])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3527306c41dsm213280a91.5.2026.01.15.11.41.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 11:41:50 -0800 (PST)
+From: Manish Kumar <manish1588@gmail.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Manish Kumar <manish1588@gmail.com>
+Subject: [PATCH] mm: add blank line after declaration in page_alloc.c
+Date: Fri, 16 Jan 2026 01:11:42 +0530
+Message-ID: <20260115194142.117144-1-manish1588@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3 0/4] mm/hugetlb: fixes for PMD table sharing
- (incl. using mmu_gather)
-To: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
- Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>,
- Nadav Amit <nadav.amit@gmail.com>
-References: <20251223214037.580860-1-david@kernel.org>
- <fa37f15c-e5a8-4502-ba82-c077ee7b8e5f@lucifer.local>
- <20260115100501.2b956d74aabfe142d37aa608@linux-foundation.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260115100501.2b956d74aabfe142d37aa608@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E6217160003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 961gucpxwrifn8t53frywtxa1wyx5nic
 X-Rspam-User: 
-X-Stat-Signature: frkajb4dm5m6mdtizhfndeqkmbbzxc46
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CD38DA0014
-X-HE-Tag: 1768506021-298167
-X-HE-Meta: U2FsdGVkX19Vz/cc0TQZ9F5SKvMhwK7hHBe6s17Nvp8BWb4qd0GFkljWbFMsT6IdoJY7IkEzw9kQH+xhzeTRmonQYY8+EbariXgmI8n3/EFRo4vHYymj4WWGj5nCW9jFIDU0aq7tahr0OhcHBfkC4VSOzG2VjRilaxB7G42/m8+OHN3xlaHNNCGSAf7OmSinlSakBx7F2dM53XOlNXR67jjisENQcHhC+vU00Jq5u++nakateFXF4+BbvlIEn/zELxdTi2etgK4wahH7eb0cGxD2UJVCsocbp+5VbulCPyzItdNKbbUOZtVEmPXFIdFLAQP9ZY/kBxIWLVecvygPsplUPqHeNzoAQxOWieS8mP/0TMGzZtx+JpeapO11SrO6hWZ5tbYUlZROhfGIA75Aw1tJ/GBZrXmLm4Uw+AWjbtRUGF/n16Puerjqea9atNt41QqwqlWtkbSkI67um3BpvtJmooujTB8NM/cgafjXayi+zEKawNy7xWbeMKobIsRzIfGIhz9RcZ2Gs9pkiQAOgjIlgXJ3wCz4CC1bQKqKfbkLOXWh4pOxTFYK2Pag3/eK7XHKPlgI9qN9WjCAk7tWKmRXYtmOg8SfrcoImp6H8gqwKMGq67eo7Jm5COdQrlmDq9wu3cN75Nq3BkozJGjlwT8cXVSCvNRr066LfpLgP/7eoZy8C1I8FC/ZhWiWt/UX5zONRN/J3dohVxSqjpmHiasL8p2IZ31SNABOmUZHp/5VS8rJrXTdtvxclSdui3zYuTDvtE4VFcb95UK7iJTatb8XxheED3h0q5LH2beCwwPyKbDeL6rtC4qQN2RO7hN/StnVZuB5jw1X4qMxbEP5Izxu5tWPyMR2oMwAvwNWIyR63gCi7NaeZZFWB/UWsVHqjwy0s7/aM4+xZjavCRfWtHRiejcpsp4g+zHL6zqhstMNpR+hJII9CGplMUXQxSDp0W3j7qt4QuY8n3FPgKw
- bBEW+Hcl
- YrmxrUXffiw2mDagAZQ77QWJnNPm76kOdcJbYlfQbeyYXNKwDDk/iwSWqw8YDAx+71ZEhFN3/6/kKnqO9R637ON/0hVZKCXnyQb/chE31dDOFFRdc/xMeDpCwEa7hmwqYZvUJIglW2Tt8/81ruI6Qozv5RvPqBAxcXvRSHOCA8/7Z0mDkUCbGZws1lvqRwccWrQCVd8g2TBKZIeTPqOu1kKaiM9pLWezTCfRdOhsjV6F7IDrDKUdvUDu1GgSwRbIuCsN2UZBbzT5hotGoCrfVzI2cflktQZ+Z+K3/dkjgj3vx5f7KOkcKohDBekx9ms4sDaAXzlTHVAmVaktRFOAj2I6fiM2hiEy2mtRavOtGxp97qka1i14gBeUHCdCxAT6sZA2KCneY2WtGX1hmnYLl+urdPQ==
+X-HE-Tag: 1768506111-243324
+X-HE-Meta: U2FsdGVkX19M9xg7tB2mpahwLKQNYU+khe8f8LtVYIWxq+UrH4UVSP2AlZpHrAPK74W6l/ziKUoYytw9rkzoRoMzUJ1U1cQKlJRfIV22k0YuT5vpLh9hP/IwF4l64Zrgr7L1pk/T6cWHsZZihms8V0OcfN6S+G1UJxj/viYOOCl+ECSURKROeKDgMGWXMEcENLFHvWpmSJPXowwP764l0ZIbn3C9aEwMpAmh5ObWOTCo9fDYC/MtG9bNi+35mQCrncub7w1A9n/LlUeLxHyZD6QjoIJ5y7MjVy9wsKO88817vA3fssgDbGmOvqtE6F6LSFzDRti25FJk0zkaFw6Lt13mTCJe9M3BrXZ6GieeZDBckTgBilEEBwVLIOUF5gCiTPXhIyFvtBV3X8+7618dzRb1fYKOEEGwLQtoaYTo6/ahbPA74nIwHOtnhlwTKg+jSh/uGCXWWitCAuoYfwjBivdRNlAMXrxOnG/VSraZpkaOoPHzLg6xVm3rVwvPEAR9joY7twzF/kjJ8Oyd/gbe+2mxWh2MpK1vpw9geAt5Bf68UHq3j4ij0EjlUxcGGp70GrTuh9mn9reQz2iO1z5/CHTtU1pSiXpUvYnWCDUZQQi5u70pLH+Prs2bsx2ZAjFOQDd2Ty2G4/D0yhI9qtslRf8DVElNZuPXDzBVHfB6gmyx/Wep2JMZQbMnS0t5aY862nchGcd7aLjs1RcMNns48hXcS46Wmmgn1zUnjqwf1+GxKGEG3KzTpgSgdjosUH9JGzO/vijTKZxgdz4M6raeyE0P41gIFlR/I+t2iZHJpj8a+79uHs0ho/CYGOpT5xhUbMIoVUFFbTXayBAjjTepCLlT8CzLFQDrwm1HduIwUqSIpL7VhY/Dd79jSlLLi0l99Vh4pSKmZ+WDfTdm2v8ZlOE2H9JHtHafsjTA5NK8cNcm14vlgYuDRccIcy1YkcAGWqtwMkk/xq8hIxo+LsM
+ dCYiQdI6
+ CxBqqD/i1M6nvN45j/mjw0RmxThDT1GH9pKvGZwFM2beyANj602Ri82Fx3A0wlMC7OJylJZttlZMsh8wUwvwoYRJh/WBNHrXx7Il6GqbZRETBK9CUN9F2xEWXxTGalG7iDGqiRmZidchubLRylZQLK4waOtajz+zzZzDiKmv4NoYuU9zWm2PEvVMsTEvR/eEHqEyCSZkeGyFL56yQi5pWNoo+aI4/W8b/NtIVJbqQ+Lzodp62+KCm24VNicu9cSH8z7NGf+fGLULFnCZjx7LjuTuXHs5CO0EVPNAX5RA3jVmWv/QCeYowo4s9+BunoNl+bKXYr8Oz05TPNp2PkfOMwhZIwBcJuFATAH4B8U2gdI3noqhAVgIfSGnxvzBG9/kkIOnmx3UrmxGdGthZnjXkOwNSM9JWsR7Wy+8X
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,67 +115,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 19:05, Andrew Morton wrote:
-> On Thu, 15 Jan 2026 17:22:30 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-> 
->> Any update on this series? It's a hotfix series and I don't see it queued
->> up anywhere in either mm-hotfixes-unstable or mm-hotfixes-stable, this
->> issue is causing ongoing problems for a lot of people, is there any reason
->> it's being delayed?
->>
->> It's received extensive approval and testing, so should be GTG right?
-> 
-> This has been in mm-unstable for a long time.  As the series had a
-> mixture of cc:stable and not-cc:stable patches, I figured we'd merge
-> them all into next merge window and let the -stable maintainers figure
-> it all out.
-> 
-> As this is more urgent than I believed, we need to figure out what to
-> do.
-> 
-> a) Pluck out the two cc:stable patches, merge just those into 6.19-rc.
-> 
-> b) Merge all of them into 6.19-rc, let -stable maintainers figure it out
+Add a blank line after the declaration of 'movable' to follow
+kernel coding style, improving readability. No functional change.
 
-Right. We can just CC: stable on comment fixes #2 and #3 to make 
-back-porting easier.
+Signed-off-by: Manish Kumar <manish1588@gmail.com>
+---
+ mm/page_alloc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
-> c) Stick with my original plan.
-> 
-> <checks>
-> 
-> The cc:stable "mm/hugetlb: fix excessive IPI broadcasts when unsharing
-> PMD tables using mmu_gather" has dependencies on the preceding two
-> non-cc:stable patches.
-
-At least one of them (doc update), yes.
-
-> 
-> So I'm thinking I add cc:stable to everything and send the whole series
-> into 6.19-rcX.  wdyt?
-
-Works for me.
-
-> 
-> 
-> Also, David, where do we stand with
-> 
-> : I'd love to get some generic hugetlb testing on arm64 and powerpc,
-> : that do hugetlb TLB flushing stuff a bit more special.
-> :
-> : I'll try doing some arm64 testing early in the new year myself.
-> 
-> ?
-
-Not done yet, unfortunately. (I don't (yet) have easy access to decent 
-arm64 hardware ;) )
-
-I still hope that Jann could quickly have a look, but it's been a while 
-already since I posted v1.
-
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index e8db6af741b5..231950d9d5c0 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -659,6 +659,7 @@ static inline unsigned int order_to_pindex(int migratetype, int order)
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	bool movable;
++	
+ 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
+ 		VM_BUG_ON(order != HPAGE_PMD_ORDER);
+ 
 -- 
-Cheers
+2.43.0
 
-David
 
