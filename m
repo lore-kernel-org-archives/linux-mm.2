@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4173D44C63
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 15:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58E30D44C63
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 15:21:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4363C6B00AB; Thu, 15 Jan 2026 10:20:57 -0500 (EST)
+	id 635926B00A8; Thu, 15 Jan 2026 10:20:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34DB36B00A8; Thu, 15 Jan 2026 10:20:57 -0500 (EST)
+	id 434716B009F; Thu, 15 Jan 2026 10:20:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B4C16B00AB; Thu, 15 Jan 2026 10:20:57 -0500 (EST)
+	id 2057B6B00AA; Thu, 15 Jan 2026 10:20:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E3DB16B00A9
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC5E06B00A8
 	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:20:56 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A2DE714037F
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9552613ABA7
 	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:20:56 +0000 (UTC)
-X-FDA: 84334560912.16.4FA46D3
+X-FDA: 84334560912.25.B779C73
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 006DFC000C
+	by imf05.hostedemail.com (Postfix) with ESMTP id D088510000C
 	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:20:54 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=auUbi4LZ;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKy7uMmA;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768490455; a=rsa-sha256;
+	cv=none;
+	b=WgPuPAwBn3t6O8DsM0ElJkO8db3xZDv2OIzmIA4NqujFvM87RVUIo3Rw11Em9yeaBJbL1v
+	YB1Buc/MdPAp7AWawQKDKYtUilOWfX2AtfgRwUJCVTGrVpExlY4TtvKC/Cc/QeEZJGNnsG
+	pJg4+F81xSBgXhW99BAmD6sqwPxa8ss=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKy7uMmA;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768490455;
@@ -34,57 +44,47 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kuq5nt9VTXk7HKsgY60Z6aB/tFXRifZBfVvOzsTu+3c=;
-	b=Sa7ZQTWP+sQqp3BrSeN70/Xuf3UmJUmfnLt326iwZznyvf588XFpKmAylf6Hy/hpNUsWBQ
-	o+U+YuvK7933JDMPOoXd9IaQULG6GvL4ks34JmDOPIKqTZiVTPLX/Mbe1j0w2SsU1ms3IF
-	OLclF+e81IRwjhwy9yMrK0Ael2AcPPA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=auUbi4LZ;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768490455; a=rsa-sha256;
-	cv=none;
-	b=EwuYv9dlIxBLmNiatG0RwtQzD7q0M4rOHtLk6YUrtTMFthy32IrWJNMc2jkqmrXriyJGGk
-	YGTmD2z+13xX9vAv283MeJU42icykpOs4lA7yrjMWmaI5006T9RzNPK9nF7khLsfdwbqfO
-	QMgIADRmYz9fW+usAwgUwGvX5QC1X+8=
+	bh=yaYfJ8OpZU2vvPHoY82eDPE3hzJwf/VJB3HMHxAQlMI=;
+	b=4ShkNq2j6PTtQXsfFQR6Sx6pPGTPR8u1PRzE2/k6RpHSUQkO8k9dQa3d+7NPr7jclRKw7O
+	0ZuLElrhK72p4qsowSPwy4gdjpdpKeRWKyCw5sBxjXdMd3nbSVeh9dZpFE+lhCoTO0MsR9
+	9txRpTpK1OPqMs48/x7PlxwBeBREvnw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C66324431D;
-	Thu, 15 Jan 2026 15:20:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DBCC16AAE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 055C9441E7;
+	Thu, 15 Jan 2026 15:20:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79B6C2BC86;
 	Thu, 15 Jan 2026 15:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1768490453;
-	bh=Ta8voQ7PwaIwWi/tca9PDpVSIdwL9VUNWSGlUVLCyN8=;
+	bh=4axDbWJSGHLGv1FOAfVefI2HSvmv3TegEZMiJ4E32WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auUbi4LZbcZY3XoZTmiuEBz9GFhg0i5IAadPhW3u5NPpvll+nU3nybYQhPjICRqrz
-	 vIEAcLAnh+2xP+WIYwOc9F9r9eWVTY0Q6hZiR7MCIk9KyFf0AAX5/BmP4OihheV/Ge
-	 JOWuHkr0tr8+AFb0hZYuKrBdyRiaSeR8HCrC9QJZQDDu7kK97Xe2cFgDe/bLc9AllJ
-	 eqsZvxCYVxF8yaeHoF9eWXr6JotDIzOVgpoZSJOZq1gQdX5SmSVgWBFgHAGYDTbGoB
-	 ksMlUXisqACVLlpzTEjbBMoZtFZIiTus8BEpVaCuBCeX1Qq6zyMkAkt+aJTovh2tXj
-	 vVywYGXmuu72w==
+	b=YKy7uMmA3zHE6AvGwvQKg+fZQLbN6YxmONtC5clgQYvmX+YpYURjV9YJ8yn70Qsvn
+	 C4U0oIRN6bH8Z5E5ELBDm0Wf1MMUhLvBY4sY57+trSwAG4XA+qEiG3t6sbfG2aN8zf
+	 eHAtB0p6oQI85gkRxcpaN5d0oUdnHkKTWEdrb1UqpD2nvVs82IKjGgHY5mZIDsjbnR
+	 rZCnn95qL2y7SgKiTfOKKQby67WdDFYTAZyd0JneyajyQuIG5/sOFsm60x5Eap9Ope
+	 kpA/cYVudWbfWJx/WNNi/SEL9WoXAVH1kh5iDH0NebE3DRs+zB19yJF3mkPgNw0Lgv
+	 SoJDgbdF3GTaA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 4/5] mm/damon/reclaim: use damon_kdamond_pid()
-Date: Thu, 15 Jan 2026 07:20:44 -0800
-Message-ID: <20260115152047.68415-5-sj@kernel.org>
+Subject: [PATCH 5/5] mm/damon: hide kdamond and kdamond_lock of damon_ctx
+Date: Thu, 15 Jan 2026 07:20:45 -0800
+Message-ID: <20260115152047.68415-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260115152047.68415-1-sj@kernel.org>
 References: <20260115152047.68415-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4pjeyffmwtp8acrmzcdmbokor1gxn51i
-X-Rspamd-Queue-Id: 006DFC000C
+X-Stat-Signature: r5mjr7kks84147aaeyjbbyyg1i7ss3ja
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D088510000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768490454-457364
-X-HE-Meta: U2FsdGVkX1859gBs1gGUpdtcPEQy5C+tZMOCxCVqdtz2fLVA4O6GbYQsIeitfLgZGP5RCDaefk63gZ4wzXfiF6ydZAQE2+VWSSbfUf5Eq51wq3ZTFkWloEMfxJ0TDKzw1e7jDEJIn3N6g6mravsVEB+WwXP4S+IoygZO7qrfkd566MicOaQWaAyHTxewZoSY9O3py55v6l/sBezHGn8PL5DVZwrH+53jvEq9QiPZ2b113D4w6sBntHWQhiSL+bEu/EliCZC2U5pLkSQ4aOeLnPPJxrDVd3Z7nK17ttKU2O7k3NEYdeKalp+ZQwbIoyqoyZtBVMpNKVl8mk7PaHIi+C9z/aeKZ0D7S/gxsiHZuWXVJBUJQyZQuIio5xWXDgu7znSxFbz7oJieP+79ns1CeGpscIeEW/eRc9kznbgVfAonUK0Gi5v7mmqVz3YaDQta6+gDprSYjDWqAAtItoiznIyXHmvPMxn/5Mjc+niqYCQx6tIxvKYL5CcET0XooZr1pq9gHh+M+hJZTDNy3Gmx71pTcuUNAQmUd90DjfwLBGmzZkQXMdwKcIWAuypuYM9nr1Eq3vUur6yNWYqdK28I3NyzT+Yvz5pAT8UNDE0oaVRZXiWM1JKOM9/S4oVowiGVz6E/i6bz1hpE7wq8ygVwuOtpjei0ehQRX6A5UpqAM5WoDmXNLfFuurQ9ZJZBnRBrcicKbzyX/db5D8ooKMChB9hpsigimY3eiFEs+H/LNe3CAbXvOrVVhahOqXLEkAFrPOgiMA4AqfYAT8kvpiWQVJYGHKdIPc8laWdNO++oZ9cRsbX5QMpPlJUAKZezdMW/YDAmfAUmJj3w5XFFELMCZgA0eaEcp8DdLlDuBCyQSPEajvJP91jZkUnYvMYvXBZx0iOEcLE4HTEcH7+TlaY9uaH7NexAnIt5DIXM6EbzRCgR7mKWnOEBM1OlkwQkN8g+eCfkSBKroiCXjw0HMA5
- myY7jX2/
- YdregJc0bbLVon/DW94rsgdI3TVyNGShmV7dlsvL1j2XEvSDJop6Dx3KhTZ9CEbNYaexGBnguF4foxLYcWOEVaHsI11Lp9F/rpaejsdAxeC5qlWaytd6BqOqOZsxFJG6dfMCJg5Fazyf9tQsQyd3mxAbk9hVsquS3sT1FQSanilJ1G+N4p/11yOqnNfslPtkkFaAwuZlKYmbDdfGGGhanlYjpKylVr29n9genGJCo49rWYXg=
+X-HE-Tag: 1768490454-727135
+X-HE-Meta: U2FsdGVkX18MlcNyx3CWGu8nORdSXAqdo+nBShSvE92su2ftaVCKY6KKLzcakOdREOOzkttrkyIBlmjocHuq0kHuKHpJEG0t8JJ0A93q8WsaH67Jsdnq2OK78MZOzRF6TtfpcehbvlNKwZpVr/Dz+jeqdcfU3C6OPououxXaOpbHVttyiKjBDZTIGUZvFd7k73ABc41C2cIDdTnbNrXK81ukVtAAS3XopEneRrK0mrb3xA/HjqLs9ZaF5uhppnE20PaVSP4NfTmoL0hZAOatI84Yx9OHl607ftCXB6kkB5PMV25NU4q7ju89uevMbbZCTe12xF7O77Wl7AFmtZk6wmPL4BsFcTJl+kllLSnQGh9yZqn/VuCoVx5VzeFKeSUu9qhRWZ+rFRd1el8W0k0jt7c1ls68mHfiKAg9BoZ9Hq9zXkx7cm1djh9ETFYoW9VXZcGTDcgKwOAsDPt1GKXje3gDLKEhqgZTJKEb2Z2IzIi4DxbfBcVVG1VvopbNqNoC82mPvzbD7FDo1QJ+zbpDQ0Li3K8RkCtJs1xrzDoAca35oJDLu5ApWJqtaFpyByN9NlWJeRpjNg0I21DaC8SYI/GNHLThc10qHYXdGJMmds92FyHZICLL+LMkv5v4MYzQoru6EZUcs6E86lCj8+gpU9R9CKSqLjZ+SmN2Pp/xzqeBDDNirvUW963h2Jez7rvOZfS+DPouRYJOgiBn6masDFFJkuD0qlYIBS3gVjTAQEcXrQO3ExCX4YBbieTjH3ti8diF1GfOpOCDjcZm2BvQlBN03/jvJyzmNW5dPYDf+qAVc+sVJ9CsfcEjCkDqBl4pL+95RWfiMnEpsWi5F/HH23Zo6Dqk1q/BXoldDhV4ID93JfxIN/2rVqcBONLTyK6tyl/gcOxSBDl4mhnyb8bU+qnFuOrXjUWALq0GAyhyPAJ5KBp5i/wlGNMMVwL0jQqvEsHbo+KLLrOh/WpJe60
+ AZ9VAIkz
+ 6PGR0vuIt4aKn4knIHSHazxYE3/Ka4C3cmQ9N0dCTDHwrtgmiSl0fIdn/nAtXUQvmYcDfwfo4txNSeXkweCfO/aihB5da5DFUpGMS/oczb9bF3VWCzgbJCY6atnugu00MTdxKmOYZNUixh/GKljncZ4YdzOgP93Y+UPl33jSAGa5RJIsgVL/eKdf9i01Qy2EXizWwcHsMHNUS1j2ndf5ntfOcv22WtNxDVNKueVtUjgFeg34piMsopq+hj8QIVQIM72P44yO+RMeW6oSsT60F4q6VKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,32 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_RECLAIM directly uses damon_ctx->kdamond field with manual
-synchronization using damon_ctx->kdamond_lock, to get the pid of the
-kdamond.  Use a new dedicated function for the purpose, namely
-damon_kdamond_pid(), since that doesn't require manual and error-prone
-synchronization.
+There is no DAMON API caller that directly access 'kdamond' and
+'kdamond_lock' fields of 'struct damon_ctx'.  Keeping those exposed
+could only encourage creative but error-prone usages.  Hide them from
+DAMON API callers by marking those as private fields.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/reclaim.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/damon.h | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 8463a5a5032f..55df43e241c5 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -307,7 +307,9 @@ static int damon_reclaim_turn(bool on)
- 	err = damon_start(&ctx, 1, true);
- 	if (err)
- 		return err;
--	kdamond_pid = ctx->kdamond->pid;
-+	kdamond_pid = damon_kdamond_pid(ctx);
-+	if (kdamond_pid < 0)
-+		return kdamond_pid;
- 	return damon_call(ctx, &call_control);
- }
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 5b7ea7082134..e6930d8574d3 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -759,23 +759,20 @@ struct damon_attrs {
+  * of the monitoring.
+  *
+  * @attrs:		Monitoring attributes for accuracy/overhead control.
+- * @kdamond:		Kernel thread who does the monitoring.
+- * @kdamond_lock:	Mutex for the synchronizations with @kdamond.
+  *
+- * For each monitoring context, one kernel thread for the monitoring is
+- * created.  The pointer to the thread is stored in @kdamond.
++ * For each monitoring context, one kernel thread for the monitoring, namely
++ * kdamond, is created.  The pid of kdamond can be retrieved using
++ * damon_kdamond_pid().
+  *
+- * Once started, the monitoring thread runs until explicitly required to be
+- * terminated or every monitoring target is invalid.  The validity of the
+- * targets is checked via the &damon_operations.target_valid of @ops.  The
+- * termination can also be explicitly requested by calling damon_stop().
+- * The thread sets @kdamond to NULL when it terminates. Therefore, users can
+- * know whether the monitoring is ongoing or terminated by reading @kdamond.
+- * Reads and writes to @kdamond from outside of the monitoring thread must
+- * be protected by @kdamond_lock.
++ * Once started, kdamond runs until explicitly required to be terminated or
++ * every monitoring target is invalid.  The validity of the targets is checked
++ * via the &damon_operations.target_valid of @ops.  The termination can also be
++ * explicitly requested by calling damon_stop().  To know if a kdamond is
++ * running, damon_is_running() can be used.
+  *
+- * Note that the monitoring thread protects only @kdamond via @kdamond_lock.
+- * Accesses to other fields must be protected by themselves.
++ * While the kdamond is running, all accesses to &struct damon_ctx from a
++ * thread other than the kdamond should be made using safe DAMON APIs,
++ * including damon_call() and damos_walk().
+  *
+  * @ops:	Set of monitoring operations for given use cases.
+  * @addr_unit:	Scale factor for core to ops address conversion.
+@@ -816,10 +813,12 @@ struct damon_ctx {
+ 	struct damos_walk_control *walk_control;
+ 	struct mutex walk_control_lock;
  
+-/* public: */
++	/* Working thread of the given DAMON context */
+ 	struct task_struct *kdamond;
++	/* Protects @kdamond field access */
+ 	struct mutex kdamond_lock;
+ 
++/* public: */
+ 	struct damon_operations ops;
+ 	unsigned long addr_unit;
+ 	unsigned long min_sz_region;
 -- 
 2.47.3
 
