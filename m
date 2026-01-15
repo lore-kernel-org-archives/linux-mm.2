@@ -4,137 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1173D46601
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39DA9D46600
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 17:21:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59B076B008A; Thu, 15 Jan 2026 12:11:19 -0500 (EST)
+	id 777A86B0088; Thu, 15 Jan 2026 12:21:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 585A66B008C; Thu, 15 Jan 2026 12:11:19 -0500 (EST)
+	id 725E46B0089; Thu, 15 Jan 2026 12:21:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4884A6B0092; Thu, 15 Jan 2026 12:11:19 -0500 (EST)
+	id 5DCEF6B008A; Thu, 15 Jan 2026 12:21:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0706B008A
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:11:19 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D773414035B
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:11:18 +0000 (UTC)
-X-FDA: 84334839036.29.5E1EE58
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B52E01C0009
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:11:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JK1WPdAe;
-	spf=pass (imf20.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768497076;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B33A6B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:21:34 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D1EB21403FB
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:21:33 +0000 (UTC)
+X-FDA: 84334864866.19.3B0BCBD
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 66A0020013
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 17:21:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ar9Eb2Ks;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="DUV/+18b";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ar9Eb2Ks;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="DUV/+18b";
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768497691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gtW1PN9Wh5au0plxSuq/Wu9X5ca7AqIGVUDcPfWsVL8=;
-	b=HpC6HzaStWStTsWHMw//qgupbFL2IFYGG9frNb0oDJa8hXP3oQEofpiLPcrXRzTMZAoHRo
-	Zy+oINrhGCUq9G7BBZ9Yh7luY8cBUqGBgGbFPB4au/fUM/MHkGrC7GkEN6Sy+tv6Id7uyd
-	5TJRAbHUCQMajiAj53EIYn5bw7GniaU=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JK1WPdAe;
-	spf=pass (imf20.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768497076; a=rsa-sha256;
-	cv=pass;
-	b=s0UMaMAy6wLjmLskthUSiuSY1zAErBpo/nydvNkuXT4CTOklRWpqd8RuaNWsmV4YfSIIVY
-	7kgwxXkVZgxGiapP0ChuiY0HCfxWqF1FWUkUl94AJ980b7FHYLkA5Mbtm/kVdahhfRnEa0
-	YJ/390Klt56GH7se4eib2U0uFLVyyBo=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47ee730612dso81855e9.0
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:11:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768497075; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Jw/1xpnaMOGI/nHhAiVk9VY1aD9NxNsIqsdDOnSn9jjxk1QpK6GEQRRNEpgdrIwBvq
-         bq0ERVodHn7LJkdXkwgPsI7zipKIBeEc3ayuzG5h0Ryhm90CSV53lhKt2UJA53L028lL
-         8rrT+UTklEQadUxDZB8qedr87m44lOBagD3iCA7asqwe3bQSnePaRVv9eED5tRGMC54u
-         zWW00mhZr+uZytbpt7GGoJKfCkU847w1KRPpDvsNgC3Z+a08NREAyxEEJfE21PmDL1YW
-         JCCb0j5or0JtkeMl43xjakRW4Y9Duf2i6yO44Nm2iux6HSKRHMtz6J4V5F4ivM5h9db3
-         z6GQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gtW1PN9Wh5au0plxSuq/Wu9X5ca7AqIGVUDcPfWsVL8=;
-        fh=VFR4q6hrdkN3KrT2zLJurAlbOUAlW+c4ydz6KGBasdk=;
-        b=JPM5rXg+EBi+9B9DD9Y2icTfgsJLDLUkXi+1a9PmDV6sPXBLEika2qer5CrNXrCzYZ
-         etnKm1WLTXYJ9Q4a68+Xd/bUrY6E8aKCFj7BBV1/eLeKgeSfMsYK+yzk78Wuo9/WWmSB
-         xTyDqlcV51cip3ZQBLNT9cX3pZU4cWLd6wnpABVSZSOlJ2ZLqSzeD9KJxrgfInlSspfk
-         xAqARoJZLGdrrnM/oZ1ayqgXalAPGyNEkjF9Jdpa6XrlOaXgUCt1hALUkbFTJQQ/gnQc
-         Tlx5EkL0tijmSGbR9XB9jqvNKxpUrgaMK1yqAGuxCnKX3i+izwIxzcik1tDx2GRFWsXB
-         Ysdw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768497075; x=1769101875; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gtW1PN9Wh5au0plxSuq/Wu9X5ca7AqIGVUDcPfWsVL8=;
-        b=JK1WPdAeOy5c2PqqIqcVl0Lr9kaVgJIqCRAQ9Hfk7wFczLLYjuln3ir3Ci5viV/I9H
-         7mYzrQJg3/tZAMW/yv5UZnqQUGZziS01E8vV06sEj0LJS/TmlwAfeP5jRMAzG/iDMVd3
-         Y8serhDF0MW/YpICuIXN1IilDEkF45RPw3YJkGhousRg9MmjNs2Vyvk2QNo8N/OINeEd
-         OMVnRfRObGpf7EMeNNWZAXPEyDXoFTohEcO+fdrXV+PjP61LJWSX/WfMY4UucWou469d
-         wn0heoQsU9UL6okl6dOKveR+PdMgpKCr09r6EWIAIyToxGUY20V9VJYjGJGMZBtzl9zO
-         G8bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768497075; x=1769101875;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gtW1PN9Wh5au0plxSuq/Wu9X5ca7AqIGVUDcPfWsVL8=;
-        b=wSX1zFtad7Jvg4euH1njr16jbL/ytetR79ryWPLP2fpg8dpB46QdvgQWYspUH8e/F5
-         8FH98s8tEPTCGvlhTzVULLYrXqyWB12Z/CA399o8kIWjaD0a4YyY8Uhvc950i21E7VPM
-         oKt4yt6LxaWnHxeMgvmVmot4P9I4h8ihXa8Gr/5zu+0baoAVPLKvHFygcf5SAWmZKMQA
-         2+DMhVsolgSTJwu8lS/jQuYR56QXFUl09VKWi0LnSvHT45MShpyxqx1UBVbAoqJ0U+SZ
-         nmlEJj3Y7Ik3d68X6G8qWwjmBaO3tsjPvfsrcLdV7aZbTGl2ajvFnlw00D94qkSJm05H
-         sEzw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmncMyv9oED0bUQWum7Phy9K+Kn3HHpX7UMwvOYBVejK9fvlGC0RUSYLUJ5NFsqs6VvbVd8MpQpw==@kvack.org
-X-Gm-Message-State: AOJu0YzE/quMoYbNFugx1wlgWrEY84fHCNsGLRx29qmtAYd4uwcCsfxK
-	PDgv9mdgJ3Tpm/0J9zKO2hPPDfzrskwDnsQKNK+GSZj/nOW6R/puV0HUqUrK2b2oA5uyT1TAzhM
-	grz/9549/SuEZsXvRuC/7FEpgVCRrvK2a/lU0BCQ3
-X-Gm-Gg: AY/fxX7vSdHxTxfXoN8+CExkDq5l3HBnfoOterMZjiznmws18m6Ltv29ffv+AyM4ail
-	OaG6hR/3PBZOYsVZ+pcW0Bqlub+Fv/kbNSfkY6TvkcViJkimEZEwiEITTxDmicCJD2BBH66Iwxj
-	JwOmaKiiSf7mdWsc3A6wboy3dXNUI87be5C9LbGavAQ1IkySvxwY3FEX+m9P+eTARm7AkoyJdYm
-	TnEM2mxX77UPov930FBVkQykBxIgh7rDhLV5e2C4WrxAnczfjEVHJDOEUOP1XWR5F5BjrdfXPt8
-	aJzFYia8NSXk+rXzciIbVZtUlZzE
-X-Received: by 2002:a05:600c:4215:b0:45f:2940:d194 with SMTP id
- 5b1f17b1804b1-47f7aa340e5mr625665e9.2.1768497074739; Thu, 15 Jan 2026
- 09:11:14 -0800 (PST)
+	bh=H7nbsdJegADMvNMzeEWBItdwlctZ/7S4Mk0Bv+Ze694=;
+	b=vU3ZyNeQbADcLoyxwLEql05wUgImEjXg8jLjIPl9bnvdv3jzZIEQUVRQxkKhzKAvw7J6JK
+	2arJw35db4Ai2T+vxYUw37Yltc9y0MeEnkiTcm2/MFkjno8w3RP7Xc6ujbIRRBSISnwxuJ
+	EwFINTg1oCB75T+C5Q/MVD6lqWBc2xk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ar9Eb2Ks;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="DUV/+18b";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ar9Eb2Ks;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="DUV/+18b";
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768497691; a=rsa-sha256;
+	cv=none;
+	b=tF3J8JCehsco/oz3TogvQl8px8sTt1ERSQKi+tcBnGzfQ3UPT8TxJE6D27GK0ClTSRIm9c
+	uV4gfS/L9N3E4nDk4UdnjPTSF7zrglQD0I2A88+GahxyA9Rkh/rggiR8/O7vNYSCM1cHuj
+	WsSN9dm8bb0zuVEadbdfSaCCy7QYRFY=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A90C35BD01;
+	Thu, 15 Jan 2026 17:21:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768497689; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=H7nbsdJegADMvNMzeEWBItdwlctZ/7S4Mk0Bv+Ze694=;
+	b=ar9Eb2KsNGFgc9+YKY3N0CvPegHkrWBEqD6Ba3Ygu+8/Yk9WYN96m+kK7OSCyaqF8nJT+6
+	Sp0iexD0M4TznIXzoK1KLeiDjyG/EB6lcdJUgI2xW2sIEGZUvRTQnMVCE3IQNFmhrO6lDT
+	3R3U39Ta+J0XHBPbhIcCYAQ3WeKV2ek=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768497689;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=H7nbsdJegADMvNMzeEWBItdwlctZ/7S4Mk0Bv+Ze694=;
+	b=DUV/+18brg0WwFScx8DChNDAeL7QZIcyVp9gDJkebxtK3EGye1CNC896wU78jsO9pJFJM6
+	vrikNBiXnCgV6fBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768497689; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=H7nbsdJegADMvNMzeEWBItdwlctZ/7S4Mk0Bv+Ze694=;
+	b=ar9Eb2KsNGFgc9+YKY3N0CvPegHkrWBEqD6Ba3Ygu+8/Yk9WYN96m+kK7OSCyaqF8nJT+6
+	Sp0iexD0M4TznIXzoK1KLeiDjyG/EB6lcdJUgI2xW2sIEGZUvRTQnMVCE3IQNFmhrO6lDT
+	3R3U39Ta+J0XHBPbhIcCYAQ3WeKV2ek=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768497689;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=H7nbsdJegADMvNMzeEWBItdwlctZ/7S4Mk0Bv+Ze694=;
+	b=DUV/+18brg0WwFScx8DChNDAeL7QZIcyVp9gDJkebxtK3EGye1CNC896wU78jsO9pJFJM6
+	vrikNBiXnCgV6fBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F16833EA63;
+	Thu, 15 Jan 2026 17:21:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /EqUOhgiaWlcDAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 15 Jan 2026 17:21:28 +0000
+Message-ID: <c1b309a0-7f2e-473d-940e-af05bc907b96@suse.cz>
+Date: Thu, 15 Jan 2026 18:21:28 +0100
 MIME-Version: 1.0
-References: <54CB622C-0BB0-4772-A939-162D63433A00@nvidia.com>
- <20260114144824.69960-1-boudewijn@delta-utec.com> <be8c25f3-8540-6c28-e2f1-8034118ef04a@huawei.com>
-In-Reply-To: <be8c25f3-8540-6c28-e2f1-8034118ef04a@huawei.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Thu, 15 Jan 2026 09:11:02 -0800
-X-Gm-Features: AZwV_QgDNJo7mv6VhsYMjgpuz4Vj2i4-OZ2NhtNuBS0jngxVVfcucRn_fLiWxzM
-Message-ID: <CACw3F52D8=s_uj_jRtw1J-GjAvt4c3HNMKb2sJGUjznvyAK80A@mail.gmail.com>
-Subject: Re: [PATCH] mm/page_alloc: Fix freeing of failed-split poisoned
- compound pages
-To: Miaohe Lin <linmiaohe@huawei.com>, ziy@nvidia.com, 
-	Boudewijn van der Heide <boudewijn@delta-utec.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
-	nao.horiguchi@gmail.com, osalvador@suse.de, surenb@google.com, vbabka@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: dxcpwt445orc8t1no1orzbg1658i97t1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm: Fix OOM killer inaccuracy on large many-core
+ systems
+Content-Language: en-US
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
+ David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
+ Shakeel Butt <shakeel.butt@linux.dev>, SeongJae Park <sj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <liam.howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Christian Brauner <brauner@kernel.org>, Wei Yang
+ <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>,
+ Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ linux-mm@kvack.org, stable@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik
+ <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Aboorva Devarajan <aboorvad@linux.ibm.com>
+References: <20260114143642.47333-1-mathieu.desnoyers@efficios.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260114143642.47333-1-mathieu.desnoyers@efficios.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 66A0020013
+X-Stat-Signature: ec59dbp79ggmbqtmnxy6889srmofh8pi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B52E01C0009
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768497076-912334
-X-HE-Meta: U2FsdGVkX19FmxuoHQaMOBe831fi/0oOIScDMwsry5kjfnHzggHjCsfZlGCQullJjW06eAsqkEdPrnqilhnCrcn8t6kdC653tSeoi94OsaO90cB0xSakypqHyzNlEL5xJexDXuUDx1wuZHYf4IpP7NmLo9HcgmBambWWyOVnUsrKvGZb1OoD+8xMOxi0goUuQSw2tL+IFrccZ95PytagM/EhBHhE8oi3wFK7tMpZ7Mf4vJx+1RyA7IBMQIoMae1+Vln3C6nKPtUXasrs1qoUxNI9+IQ6lnwC3MQYTmSpV85tJjW31kn9mn2MrubwflmWG+wGbk7xrgM96ysDSam1POyptsRLiM0f+M0LRqv1Qj/UqWxU5cRtfn6WgRuJ78toopV1bh3wQPSETOcVuI3WvEw941PB4Jvl1ew50J1FxnBcIBc0nnXf1WXmqeRksWhrjxoRU2nsji2XOQkj8EDhGcNhQ2dCGylfomsUz0GsEhfrPI8bXCjyBzjt/QecJ1iQwMDD559RWtlkpYUE1qLJ9sjxxvZ2n1YyGbnb4LJMfgO2ZjHzTq9105aNcATrOTZKBRAdv7LfFQT8W4CM1RzY21wJMNCLfn7TJpuH0u2wRd8hebKkdHwbgfwQr7luOv/PI1u8tsqKh34+SK26Ga0WI3NLXIwMve5YaRc8y9g4ZyNF2HEnBzYAIu2MNOHSOzd/+ilI916rOxSCqrdrqeNy9Ws9p8EGv1LYVcA9TEtCaFhBMNB0HHASHi0JZmhDzkwJrfIYWZ9aEZevgJDViFCKsPg5uWmQauJzTzPA3kVklCR5yguEqYEuw9kFiEt2RzG6eowoN5Ar7DqcMJJCK6T29qPVAWBWSgQVagqYV19rYuh3Ij99K4fFdNneUh/75e74n+aCJoY64mG2EsaPI0Ma5G26K5j1tf6vhiJbygTh0qkN16mQKv21LT51YFvLQ16zz+MQdhm1RP0OhbXWJvP
- Q9OhsKOj
- GTKvA30mkIL8bu5M0xkdtrTqmbuWEmySvmHNQo1HciuS4QJjJjWnPl7WdyUPS54pFHODTxFc+Pev2HpdbXmkVqdAS12aMKLSLMaM6lUTrSIzBZw2PGGSsHGnIhzr6329PRmvlO0j5KmDsIox/JPSN5u3veCsELkahcWn0rM5NCwt6o5PIr7+86vTyTLSldC8RvS6vCyvp0oppY5TG81+3qU1cGX3dcgphMI9hoGLqbJeGLIOK+oPIdomPFl8wgu1XLq/PrHnw9NAX71GWrzgL8WNZAe6ovYfEyLi3nhlmlDbH2fMumdQX0lYMBc6AyODixtnhi9VjEUOpsgk8O06VGssrIaJhAPiL6TAbmmQcLiX7SootL8JU/4p0yAdNk+XkiZXAatg05rGB4TIstQKedyd27a52VZ2ZJarIJb+soO4A5t0=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768497691-546239
+X-HE-Meta: U2FsdGVkX1/ayAEo55/DOc+P4HOP0IU7R6qiOu1G9xDHAzvxj9ACJ3rgCPCkcXir+kVoRbpjZ93WpJT5zgdiHZgGhFlMdgIogQV7SqtzUJcYuxuRnn6YBBCodK4wpXULMXJfObPVXpZv4a1frD54lhgMxBXsOj2gpEAB9CceJd0nagZ67O7p7ghd0SoaxkTWiy7huiwKY32UJFGc/txNnHu/A6904aBq5FRZHVObiw4WSFwY9Xbb40CZTh6MVJoUuTR8I/9Ctdn6zS5R/ORulCoPepLUwZ9OZy3omzvLZNkwFO5ka0RHLufPnFEnUX4IiuTaw1IJS3laVgO/LTkmpp2roeMdJNsuC9Qn8gtlb1mkfzn8HUHS+r5xtCFuUuhvNGRpKd/Bg9yoolov1oYj2zdKx+4aIXgSvtGlIqHvdRa/UNR4Cim+NwZeVpa3w09Bn1DgpRFXVJdUBS73tTZ24qmR7D9ZCl44ELqbwq9LbcYXoZwkZJwoEA/ViK/3tNkFA8jJs4Z822/rJk5klyfMT+LnpzZxEfrcQ/iDmR1gYmn7iFUeg01rHtp+H/FKeGOLCWk627lW7WAYmj1e7Zq6tVE5LCDp6QTTiCc50D7hX0DWy3IHk/Y5Nq4zwVPXg78NVXcBuLtCTX5dosFKNci6IPo5mklsUr0rhwec0yNkHMKyvg3m1orJra0DIwWhC3d4z5Q7ps55Fp2P+0H6/UxrWFjkFvgJTTS4TGphtuGjnXo7j2wqYJSi994DdodiV+Gg++i91QoUCcLCge8MXgJbpRpxCxqvqP31bNpaDJ0LcMfsqusDg43snIYD6/9f9VIUwautG1Cw4GVR4XMsHL79ol8pqsbHNGuZqWiyBTcgxDmlJKaCKCyZS0kxY0VJ2ta5bt2HvyGSm2yFrQmdaISScFVUv1viI9lmlENeXvFKXsLMTYvGCkEY2WXMeqPZdQqHZqsUyHcSH9fXdlLwVtn
+ imgYtTeK
+ VRstwt7LGYCEjndg1ajKvyOE9BsOsRg1UvJSaGY3pVWos78AK/A2TOEa3HFI6dm0/rYgA2bNnKYzMr0qKhzu0k2Q/dLiyCVdaurnokAyLJFbsfs/wqP9X45cyZDF5h5ZevOLTjgHOBqk7Ah7lO+XX1X41dcCFYE60a/tEgWjJxKgqeatp9qY+euyxhk06qRnAmTzIroJTyDQSzfVALIiogqC8Yrx7L9fDBhZy86moKGwTucA0qUAUMu3BW0ETFVZ3d4ZjPl8kYqjbmnF6TO7TKi8N1tGwE77ne7coFZyhyBCVL7iQ5ztst16ELS20Lse2Mr5MiwXsYHVUbMEkmfw2b74Jk+E1IOZA6ffybi7iFLKQG4vJorluTCXu2KEaE+fpuNa5dXJImLr+I2Ap1IRjskZMpMIKJarHP7PCo+CPacmc/qN4lxuudn9hCtBRXb3RsZUBzm/wofnigcOU11ikVuhlPEuKp2pd7QMXTIttCDnbGG4EZAz5l+2h2SzADAWbikIyNXnEQsPnT4Bdku8erS65o/GT7tc26vFGPvtyscd9WnK8E5/9UDAR5p+Wy/+IsKCPEJ92sp4v2TGPnctg9+971tCkAp28kMvICwr2JRrvrkb3tavEEaG/AHINWPVOxNWJU0iqA5m17W8DpGrt5GQcouDaeHvB64Q4o+6Wxm+NbDdX6+ePeSqskjcMalDWrEiu/F5Y70d+eAApatLXJ9YqoORDjJzfYv+Ud1UIaowREa0TlMQXtmD3nhxOhwRvZ5J0TbyHimDRQLxZ6pXpa94fFzcnb+/akHE63HxXLX9j07Aje0UDQlkHNgT8t7jszXzIwY00cWIYe+tKsXMQ1lnOR8moUUMp420CVPo2mupVndJMBGjEtvDslpfnPmTN1WXkGkpP3VyVzM41JX+5CF8Y8AO28eJRqFUAGD8umuHtorprqjyoMuqHXho8u6Xx9xgMXVhucNRrCrddgmoFGOKTlZJW
+ yq5oGeV1
+ GdAchPDcChRUWwbaDUu5vbeJaxxYcJqnT2VpIHNk4nqJYSvH+86zDZmzew/AUo77Qrl0myHS+gPjHES1TDgPWEbWz9c6kwl3tssejdefWXmF/wzhWBP1Fo/tyWcAqIQS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,81 +199,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 11:55=E2=80=AFPM Miaohe Lin <linmiaohe@huawei.com> =
-wrote:
->
-> On 2026/1/14 22:48, Boudewijn van der Heide wrote:
-> >>> free_pages_prepare() only handles poisoned order-0 pages.
-> >>> In memory_failure() (hard offline), pages
-> >>> are poisoned before attempting to split huge pages. If the split fail=
-s,
-> >>> the page remains a compound (order > 0) but is already poisoned. Howe=
-ver,
-> >>> Soft-offline pages are always poisoned as order-0 after migration, so
-> >>> they are unaffected.
-> >>>
-> >>> The '!order' check causes these poisoned compound pages to skip
-> >>> poison handling, leaving them in the buddy allocator.
-> >>>
-> >>> Worst case, a poisoned compound page could be reallocated,
-> >>> potentially leading to crashes, silent data corruption,
-> >>> or unwanted memory containment actions before the poison bit is detec=
-ted.
-> >>>
-> >>> This patch removes the '&& !order' restriction. Cleanup functions in =
-the
-> >>> poison-handling block correctly handle non-zero order pages, making
-> >>> this change safe.
-> >
-> >> This is not a fix. IIUC, for >0 order free pages, memory failure uses
-> >> take_page_off_buddy() in a different code path.
-> >>
-> >
-> > Thanks again for the quick response and clarification!
-> >>From my understanding,
-> > you correctly noted that take_page_off_buddy() handles already-free pag=
-es,
-> > removing them from the buddy lists and setting SetPageHWPoisonTakenOff(=
-).
-> > This prevents those pages from re-entering the buddy allocator.
->
-> Thanks both.
->
-> >
-> > My concern is about in-use THP-backed compound pages:
-> > 1. A compound page is in use.
-> > 2. memory_failure() marks it poisoned (TestSetPageHWPoison).
-> > 3. try_to_split_thp_page() fails.
-> > 4. The process using the THP may be killed;
-> >         the page remains compound and poisoned.
-> > 5. Later, when the page is finally freed, it reaches free_pages_prepare=
-();
-> >         'take_page_off_buddy()' is not invoked in this path.
+On 1/14/26 15:36, Mathieu Desnoyers wrote:
+> Use the precise, albeit slower, precise RSS counter sums for the OOM
+> killer task selection and console dumps. The approximated value is
+> too imprecise on large many-core systems.
+> 
+> The following rss tracking issues were noted by Sweet Tea Dorminy [1],
+> which lead to picking wrong tasks as OOM kill target:
+> 
+>   Recently, several internal services had an RSS usage regression as part of a
+>   kernel upgrade. Previously, they were on a pre-6.2 kernel and were able to
+>   read RSS statistics in a backup watchdog process to monitor and decide if
+>   they'd overrun their memory budget. Now, however, a representative service
+>   with five threads, expected to use about a hundred MB of memory, on a 250-cpu
+>   machine had memory usage tens of megabytes different from the expected amount
+>   -- this constituted a significant percentage of inaccuracy, causing the
+>   watchdog to act.
+> 
+>   This was a result of commit f1a7941243c1 ("mm: convert mm's rss stats
+>   into percpu_counter") [1].  Previously, the memory error was bounded by
+>   64*nr_threads pages, a very livable megabyte. Now, however, as a result of
+>   scheduler decisions moving the threads around the CPUs, the memory error could
+>   be as large as a gigabyte.
+> 
+>   This is a really tremendous inaccuracy for any few-threaded program on a
+>   large machine and impedes monitoring significantly. These stat counters are
+>   also used to make OOM killing decisions, so this additional inaccuracy could
+>   make a big difference in OOM situations -- either resulting in the wrong
+>   process being killed, or in less memory being returned from an OOM-kill than
+>   expected.
+> 
+> Here is a (possibly incomplete) list of the prior approaches that were
+> used or proposed, along with their downside:
+> 
+> 1) Per-thread rss tracking: large error on many-thread processes.
+> 
+> 2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
+>    increased system time in make test workloads [1]. Moreover, the
+>    inaccuracy increases with O(n^2) with the number of CPUs.
+> 
+> 3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
+>    error is high with systems that have lots of NUMA nodes (32 times
+>    the number of NUMA nodes).
+> 
+> commit 82241a83cd15 ("mm: fix the inaccurate memory statistics issue for
+> users") introduced get_mm_counter_sum() for precise proc memory status
+> queries for some proc files.
+> 
+> The simple fix proposed here is to do the precise per-cpu counters sum
+> every time a counter value needs to be read. This applies to the OOM
+> killer task selection, oom task console dumps (printk).
+> 
+> This change increases the latency introduced when the OOM killer
+> executes in favor of doing a more precise OOM target task selection.
+> Effectively, the OOM killer iterates on all tasks, for all relevant page
+> types, for which the precise sum iterates on all possible CPUs.
+> 
+> As a reference, here is the execution time of the OOM killer
+> before/after the change:
+> 
+> AMD EPYC 9654 96-Core (2 sockets)
+> Within a KVM, configured with 256 logical cpus.
+> 
+>                                   |  before  |  after   |
+> ----------------------------------|----------|----------|
+> nr_processes=40                   |  0.3 ms  |   0.5 ms |
+> nr_processes=10000                |  3.0 ms  |  80.0 ms |
+> 
+> Suggested-by: Michal Hocko <mhocko@suse.com>
+> Fixes: f1a7941243c1 ("mm: convert mm's rss stats into percpu_counter")
+> Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
+> Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-I agree that Boudewijn's concern is valid when try_to_split_thp_page() fail=
-s.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-However, I don't think the fix here really works. For a compound / THP
-page, memory-failure() sets PG_HWPoison flag on the exact subpage
-within the compound page. I believe the page in free_pages_prepare()
-is almost going to be (if no always) the head of the compound page. So
-removing "!order" won't really help unless the head of the THP page
-happens to be HWPoison.
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Paul E. McKenney" <paulmck@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Dennis Zhou <dennis@kernel.org>
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: Christoph Lameter <cl@linux.com>
+> Cc: Martin Liu <liumartin@google.com>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: christian.koenig@amd.com
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: SeongJae Park <sj@kernel.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Miaohe Lin <linmiaohe@huawei.com>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: linux-mm@kvack.org
+> Cc: stable@vger.kernel.org
+> Cc: linux-trace-kernel@vger.kernel.org
+> Cc: Yu Zhao <yuzhao@google.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Mateusz Guzik <mjguzik@gmail.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+> ---
+> This patch replaces v1. It's aimed at mm-new.
+> 
+> Changes since v1:
+> - Only change the oom killer RSS values from approximated to precise
+>   sums. Do not change other RSS values users.
+> ---
+>  include/linux/mm.h |  7 +++++++
+>  mm/oom_kill.c      | 22 +++++++++++-----------
+>  2 files changed, 18 insertions(+), 11 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6f959d8ca4b4..bfa1307264df 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2901,6 +2901,13 @@ static inline unsigned long get_mm_rss(struct mm_struct *mm)
+>  		get_mm_counter(mm, MM_SHMEMPAGES);
+>  }
+>  
+> +static inline unsigned long get_mm_rss_sum(struct mm_struct *mm)
+> +{
+> +	return get_mm_counter_sum(mm, MM_FILEPAGES) +
+> +		get_mm_counter_sum(mm, MM_ANONPAGES) +
+> +		get_mm_counter_sum(mm, MM_SHMEMPAGES);
+> +}
+> +
+>  static inline unsigned long get_mm_hiwater_rss(struct mm_struct *mm)
+>  {
+>  	return max(mm->hiwater_rss, get_mm_rss(mm));
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 5eb11fbba704..214cb8cb939b 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -228,7 +228,7 @@ long oom_badness(struct task_struct *p, unsigned long totalpages)
+>  	 * The baseline for the badness score is the proportion of RAM that each
+>  	 * task's rss, pagetable and swap space use.
+>  	 */
+> -	points = get_mm_rss(p->mm) + get_mm_counter(p->mm, MM_SWAPENTS) +
+> +	points = get_mm_rss_sum(p->mm) + get_mm_counter_sum(p->mm, MM_SWAPENTS) +
+>  		mm_pgtables_bytes(p->mm) / PAGE_SIZE;
+>  	task_unlock(p);
+>  
+> @@ -402,10 +402,10 @@ static int dump_task(struct task_struct *p, void *arg)
+>  
+>  	pr_info("[%7d] %5d %5d %8lu %8lu %8lu %8lu %9lu %8ld %8lu         %5hd %s\n",
+>  		task->pid, from_kuid(&init_user_ns, task_uid(task)),
+> -		task->tgid, task->mm->total_vm, get_mm_rss(task->mm),
+> -		get_mm_counter(task->mm, MM_ANONPAGES), get_mm_counter(task->mm, MM_FILEPAGES),
+> -		get_mm_counter(task->mm, MM_SHMEMPAGES), mm_pgtables_bytes(task->mm),
+> -		get_mm_counter(task->mm, MM_SWAPENTS),
+> +		task->tgid, task->mm->total_vm, get_mm_rss_sum(task->mm),
+> +		get_mm_counter_sum(task->mm, MM_ANONPAGES), get_mm_counter_sum(task->mm, MM_FILEPAGES),
+> +		get_mm_counter_sum(task->mm, MM_SHMEMPAGES), mm_pgtables_bytes(task->mm),
+> +		get_mm_counter_sum(task->mm, MM_SWAPENTS),
+>  		task->signal->oom_score_adj, task->comm);
+>  	task_unlock(task);
+>  
+> @@ -604,9 +604,9 @@ static bool oom_reap_task_mm(struct task_struct *tsk, struct mm_struct *mm)
+>  
+>  	pr_info("oom_reaper: reaped process %d (%s), now anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB\n",
+>  			task_pid_nr(tsk), tsk->comm,
+> -			K(get_mm_counter(mm, MM_ANONPAGES)),
+> -			K(get_mm_counter(mm, MM_FILEPAGES)),
+> -			K(get_mm_counter(mm, MM_SHMEMPAGES)));
+> +			K(get_mm_counter_sum(mm, MM_ANONPAGES)),
+> +			K(get_mm_counter_sum(mm, MM_FILEPAGES)),
+> +			K(get_mm_counter_sum(mm, MM_SHMEMPAGES)));
+>  out_finish:
+>  	trace_finish_task_reaping(tsk->pid);
+>  out_unlock:
+> @@ -960,9 +960,9 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+>  	mark_oom_victim(victim);
+>  	pr_err("%s: Killed process %d (%s) total-vm:%lukB, anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB, UID:%u pgtables:%lukB oom_score_adj:%hd\n",
+>  		message, task_pid_nr(victim), victim->comm, K(mm->total_vm),
+> -		K(get_mm_counter(mm, MM_ANONPAGES)),
+> -		K(get_mm_counter(mm, MM_FILEPAGES)),
+> -		K(get_mm_counter(mm, MM_SHMEMPAGES)),
+> +		K(get_mm_counter_sum(mm, MM_ANONPAGES)),
+> +		K(get_mm_counter_sum(mm, MM_FILEPAGES)),
+> +		K(get_mm_counter_sum(mm, MM_SHMEMPAGES)),
+>  		from_kuid(&init_user_ns, task_uid(victim)),
+>  		mm_pgtables_bytes(mm) >> 10, victim->signal->oom_score_adj);
+>  	task_unlock(victim);
 
->
-> Yes, this is also a problematic scenario for Hugetlb HugePage. And Jiaqi =
-works on
-> it now [1]. I think Jiaqi's patches might apply to THP scenario too. Add =
-@Jiaqi to
-> verify this.
-
-Yep, I think my work will also help solve the concern when
-try_to_split_thp_page() fails.
-
->
-> [1]: https://lore.kernel.org/all/20260112004923.888429-1-jiaqiyan@google.=
-com/
->
-> Thanks.
-> .
 
