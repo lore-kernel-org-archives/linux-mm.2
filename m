@@ -4,212 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1788D3CCB8
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 07:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08102D3CCBF
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 07:55:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51BEB6B0088; Thu, 15 Jan 2026 02:48:16 -0500 (EST)
+	id 405D06B0088; Thu, 15 Jan 2026 02:55:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C9956B0089; Thu, 15 Jan 2026 02:48:16 -0500 (EST)
+	id 3B3AD6B0089; Thu, 15 Jan 2026 02:55:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3564D6B008A; Thu, 15 Jan 2026 02:48:16 -0500 (EST)
+	id 2C04E6B008A; Thu, 15 Jan 2026 02:55:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 224876B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:48:16 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B917D8A059
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:48:15 +0000 (UTC)
-X-FDA: 84333420150.28.8106AA2
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010007.outbound.protection.outlook.com [52.101.56.7])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CD1414000C
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:48:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HtpuXbHK;
-	spf=pass (imf17.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.7 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768463292;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 181D86B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 02:55:38 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BE752160227
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:55:37 +0000 (UTC)
+X-FDA: 84333438714.05.3900D6E
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 643FE1C000E
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:55:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1aXwVL7S;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768463736; a=rsa-sha256;
+	cv=none;
+	b=eyshOWzo23u3UyrktnpZX/4ugEjq8FSiCNnycEk6e4Acyk4QPgOU9/zaxYNMgcU2MvioIx
+	VeUsgKF9mudMLpM17/EDs0m/ttlcQIXtk5WaZAC4Xd5hvoyQQ4tEvj3F51mGU1hEbjYGJC
+	yR7h12MUoY8JW2EL39w6T6yFWc8+i08=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1aXwVL7S;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768463736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8BKVxX+v5peitlWUIYqVXQ/4ljh5K2RlSSeFuXw8gh0=;
-	b=EVCz4TPRrtsE6MDAeLLbrppK6+0dl0sH5lU5jeaUk1TVqAg1BBnJ/3dBE68bw6FYG+Gl42
-	ZC7S2yqNGpx9Jh3yhdYLJPIl0YBNGlFb8lR4Jwn8cqNFw9hX4F3ezW1asAgAx048b69RIX
-	I1d6x4ZuXAEjfrxsqvytftvwTTsAeXc=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HtpuXbHK;
-	spf=pass (imf17.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.7 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768463292; a=rsa-sha256;
-	cv=pass;
-	b=iQocIGksRRIeA+QBmXDpQWq0ug765m2xdJ8Jt/Nc2WWqeJ5ZDlKgVoUP27FA/l1xKs8BWz
-	5q0ZmcLnj0bV5otzFfol35i2avE6Nr8e4gWoyE4L/ZV15PIEGyctLZ/3eWIwz5kYvOD6Wu
-	54q5c/AJjSp3/pKVw+y4c3JJYKu4TZY=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J5KOnDmc1X7ddQmMtFHb1s6Z65YR/UShmKu8IFVsDBb3nDdWrhM6D+K6RfpILp/HBk7nB9aGpXp/QhC5S4HSLJg2CzzFGbfQ5tfrnadorNTgql/oglH489/+Bg/0wZKmIvqQBsozd2Ghqg9U32NsilM01kEpFbeNiNhUPYkCeUizId0QrbcR7jIlGgNnQj6nJbCp3qyMhusIokS+UbWiv/FahUwzJnep8MuhbgVvfrJUS4uapleY5XbSkkVH6KDqm6k4Lz1g5tyP9XYYyKzBY2GxieXRLqLJ7ILXmgXhvHZ00YRdxalfAf4RurkhXUqNtKm6fLrkzrR4HwiVFZWZPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8BKVxX+v5peitlWUIYqVXQ/4ljh5K2RlSSeFuXw8gh0=;
- b=e9QqypDFXbLj2pDgHFtVBK3XhZcg6OAazF91wbEAWG0VqtaHKIAYzpwGFgPflcqJGF2qxgD6HYios3Lv5pXSGnbB5TZRZ+8vJ8YGuWfeYvV9+tmtl86bFNrtD29uw8lEYBraKMqaKekZMtsx/zx2nuxW7uV9Gi3AP/DJkz3S0arX9fgdi88nIRaPaKqJfhduRby5jVfptaHj4294IUtD2p2kHwP+dR6W6Qt5GqCMTwK0FEjeh1/qBDtbnBIInmvmwGKMHC9JFQwdBUSNG4Ah/emGeHpUD4PclyTA2hUar30KZwdqGI4IJYCwFNfRxeGPfCV4GGNvFu652wwG5h54tw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8BKVxX+v5peitlWUIYqVXQ/4ljh5K2RlSSeFuXw8gh0=;
- b=HtpuXbHKHEtvygivvhOOfRfHIa1vTkjjFgrp7+4eddlmBp7lmExSJis2rHiURDHVpydlqRO4YD+xLErOmiQlksZyGcyMjGUKE7tFBQAL24f2ckhp8nS4VqlBgufJYMvUrsurZyAhrJWoVRNXbYYQblntzR/WiQbLXlKfmV66z8mKSlRcis829zX9uDvHh3uY3D27elWvz19WAr22AuV6HMrcYaCqpYdJsFLgBfsEEyyQWJkX9i2wvCkupoTA+rvesnjR5epts9TgOwdhIJUSNrQkcK8oR+tBVurA4S+HQdhncqPfh+s8EfArFcGUhmuTL3wX9fKNB/fmUWaYmT4sVA==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by PH8PR12MB7422.namprd12.prod.outlook.com (2603:10b6:510:22a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
- 2026 07:48:09 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9499.005; Thu, 15 Jan 2026
- 07:48:08 +0000
-Message-ID: <1075ad94-3c8c-4e1f-be77-4bea9657d796@nvidia.com>
-Date: Thu, 15 Jan 2026 18:48:03 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] drm/pagemap: Correct cpages calculation for
- migrate_vma_setup
-To: Francois Dugast <francois.dugast@intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Zi Yan <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- linux-mm@kvack.org
-References: <20260114192111.1267147-1-francois.dugast@intel.com>
- <20260114192111.1267147-5-francois.dugast@intel.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260114192111.1267147-5-francois.dugast@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0122.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::7) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=3LCkFVnIN3e5GhO01onT+0WWHPAZo4gI38LP5FKzlZQ=;
+	b=kzaCdpEspvqQo3+Xc5mFyUc/xXploLR/u6LOQtdbvpu/UYPo0FXg+ZEKhWiWBncwG+XRGx
+	2TfQgJRXGQVS4uP+52WuOJ7pgFpDGdpVszWJvyXhIWXTj4+ejSpuP3sJF9lFwIu6z95KNa
+	L+q3SJ48BsG6WhYfbfcxRbU5XwaBymo=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=3LCkFVnIN3e5GhO01onT+0WWHPAZo4gI38LP5FKzlZQ=;
+	b=1aXwVL7S63gAymZoQFKJ1etYX4xbsWQGN/rs/tZolZWju0V3gBptFEY4UO32fvMe+Exn9Cv2k
+	4ZUhiGJBHOF9ytXG/wzoVA6BpJyWZTzDxYxZWd/3Qk0aaVujl1JcPvUr910PwZjcMCOUQnCjNEx
+	sK8e7k5vNsyaUGu22M5Vtuo=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dsFZN3hGtznTXb;
+	Thu, 15 Jan 2026 15:52:28 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3603A40539;
+	Thu, 15 Jan 2026 15:55:28 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 15 Jan 2026 15:55:27 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 15 Jan 2026 15:55:27 +0800
+Subject: Re: [PATCH] mm/page_alloc: Fix freeing of failed-split poisoned
+ compound pages
+To: Boudewijn van der Heide <boudewijn@delta-utec.com>, <ziy@nvidia.com>,
+	Jiaqi Yan <jiaqiyan@google.com>
+CC: <akpm@linux-foundation.org>, <hannes@cmpxchg.org>, <jackmanb@google.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <mhocko@suse.com>,
+	<nao.horiguchi@gmail.com>, <osalvador@suse.de>, <surenb@google.com>,
+	<vbabka@suse.cz>
+References: <54CB622C-0BB0-4772-A939-162D63433A00@nvidia.com>
+ <20260114144824.69960-1-boudewijn@delta-utec.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <be8c25f3-8540-6c28-e2f1-8034118ef04a@huawei.com>
+Date: Thu, 15 Jan 2026 15:55:26 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|PH8PR12MB7422:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48041259-082d-4b7e-382e-08de540a6cef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TG9MUDVoWXVyWkJyN3l2aE9BRit3NzBwSUd1dWlUb3RwVnNNMnZoREJqckJ0?=
- =?utf-8?B?K0xTODhiRzBHSlpKQXVPVzZhVUYxcExXNnNaa1c2TzdVeitCVTFOcjZDQWdm?=
- =?utf-8?B?UjNSaThCZktQTk9sa3pyb3duRXc1QXBHR3FDRk5GelFpVGFlc05YdDErQmtT?=
- =?utf-8?B?bkcwOXlpMlJxNUVVT2ttckg0Y095dk9nQkNwVlkzc1lwNEI0djBHbkZXOW0x?=
- =?utf-8?B?NStYdkZaRnJBNHZ2STVxL25ydkwyOEJ2V3V3UE5RMVpic3I4WUJoVGF0MXB5?=
- =?utf-8?B?ejBFamJscHZva25hUG8zWk0yN3E5eldsaGpZK3VHQlgxUWtqSjBsNjJBdnBT?=
- =?utf-8?B?QkFOUjMyTm1kVDdOOTcvdEwyRHg5MnlBSTZOVURrVGYwNXRGUjVad0lrN1k3?=
- =?utf-8?B?L3pxcU9HczhYclIzcWI2VjRWOXRzcEl2am9LS29EeWY1Z1U1czErbzNmVVVH?=
- =?utf-8?B?RUpWaHQ5dXNIVldiNDN6Tk9uOEVpU3p4OEIxK1MvZjMrVW5QUFBPalRqMWJE?=
- =?utf-8?B?Q3VPUjRZWnhKMHF1VGhOcG4vTHhBVGdmUXQ4MEtnbzNDYWN5b1l1MERaSXJI?=
- =?utf-8?B?UmI3K0JyaFBKcGJVbk1XT1AyMmRqZnFOMUVPemhMNnA2UmlZdjdjdzhWbFYy?=
- =?utf-8?B?SnhUNy9Ld05saDFnTFRyQ1BaQWNqQURodGZZNGliY2tIejgxL0RWeE5vc0JH?=
- =?utf-8?B?ckVuZGJ4T3VNZHlZWjdjbEZHWnZVWnpIQnE0VXUyNXBVZW9EVkROUGdKaEMv?=
- =?utf-8?B?VDhnMlNIclh6c0U0QjFqaUJ1a2lkVmdDaWZVOG1USUJ5bFB1TjVyQlZDSmo5?=
- =?utf-8?B?elRpa05FbTBMMUZPWklIUWhiVGVCQlBqZTVQeW5vaC9iOU0wT2pWQTFIUndG?=
- =?utf-8?B?RG4yU3VqK3V6Y3NLOXdvVmtSSGZDTHp2UFl5cmhXMENtbGZZVlduOEFHbWY1?=
- =?utf-8?B?dzhCNzdac0NnTEhjdmpqUndMM2twZm5ScjZUMFByT3Q5WE96aXdDSkJrNDF0?=
- =?utf-8?B?a1VySXlaeGptbXV2bnpWeWdicmNxN1pVWG5kZ0NNaDd0NnZOcm9YdStNbXFF?=
- =?utf-8?B?YTVRbXJLN3I4TG9NSUc0K2tVa0wzcWp3VlNicVhBRVRnZWlnNFNXQ2FZNXZ6?=
- =?utf-8?B?aHptT3RtVGhOVU0xMUdRN0kwZTZGTXBVWFNWWVFKcXBuR2N5clVwSFlQc2ps?=
- =?utf-8?B?aWZLMCt3WWdTSUxYYUwxemc5QW9PY1JOTWE4c1RIdk5GYk1yQjlsd3JkTmlu?=
- =?utf-8?B?ZHRCN2JXRE5EQ2FYcDhEaXpZejUyRzVXdXV5bUUxb1pqNDBEWk9tV1VEUGpw?=
- =?utf-8?B?T1dBdE5BeEtCTkFxcVRHRWx6Y2lkUXBQeE1PWWlOOHlHNTZ3SE14VnNNZmN4?=
- =?utf-8?B?V2d2Zk5COW9FV25MeWJXRU9OZWpkajRSdkRkTXd2Ky9ZREpXakZyaDhuWVgz?=
- =?utf-8?B?bS8wYll4TjA2c3pUaVRmWnNzZWlvb2F2d25NeWc5aFZoZ1FRRDd3SzBmM2Jz?=
- =?utf-8?B?cFZaRFpWS3BRUDd4T0huMU5XZXk4bVB6K2NBRE1sdWpUcHcyMmtnU3IrWHR0?=
- =?utf-8?B?L1JoUE1MS3d5TkhVVVg0TUVCREZmcUxiYS9YVUEzL0FCWVRIQTNmZFU1cXkz?=
- =?utf-8?B?VEJ0dlFjRlBNZFAvYldKU2lucVlaR2k5VG5UR2hOUXMzcDBZOWwreGgzL2d5?=
- =?utf-8?B?OElZQXlLdGlpZWY5SVYvbmtJamZxWjFIOFdSUXk2YlJWTTlBY2RnVHBBRWE2?=
- =?utf-8?B?aCtVZXRzNnpNWU9WTUxYamJ0VmtIRVU3VHUxZW9NL3dhL3JzcjVraGtoVTU1?=
- =?utf-8?B?MTFKcld0bGtPaU96L2VzUXlid2VIWEZtelMzRUo1OW9meVV3S2hFUVhQSUJQ?=
- =?utf-8?B?bDZCRHE2cEs1ak9EWHBiaXI4K3hOUU8vZ29weHBFZms5SGUrSlg4K0EyRHZ0?=
- =?utf-8?B?Vko5SmM3RWtnejhyNTM1NHJCUEFEdC9HUWpWWnhyUk9hUFp4NGIzam0xTUhu?=
- =?utf-8?B?T3Z0NzFBQkF0Z1pGMGRTUlVUWEZLMkkrNytaMzJ0VEtYNmJtbnBwUFdQVmJH?=
- =?utf-8?B?K3AwRVh1ays1U0IveFpDYW9SMGY4enJxZ2VrdmRrU21QbVcrdjZNWEZTRjBP?=
- =?utf-8?Q?/Hpw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MzhZN2NvMUcvZ1d4T0xlcVR6eWgwemJERkVKVjMzd096eXlwTlBzVi9HeVhD?=
- =?utf-8?B?MEJhUmVmYXhNZXF4c01TYXNITkZJdG9VYmxQWWt3R1AxUzhpZmk5TGhRNFdz?=
- =?utf-8?B?WU9ONzMvRytSSVl2VXFwc1ZpQllleUpTcWEwcU1GQVFiRE1sUnVkVWJaU1dM?=
- =?utf-8?B?YVltc1ZlQVRRbHVBM1lHc3NJTk9hR3M3bXdZZmZpNDdDM0lCU2tBQ3I4SnQx?=
- =?utf-8?B?TitkMEEyRk9yYzcwSkVHMVdKMWpjUkgweFBkQnZhZENEZGFSK3lpZnBmOGFk?=
- =?utf-8?B?MWFOaVN3dE1PZG1abFBkc0NoanpaL0hoN3hGeVF2M2JwS1JWSzdOd3c0cDla?=
- =?utf-8?B?eTFJeGlZdzF5ZDdGc1JUd2ZUSE1ObU5xL0lKNTJrUjQ2aUptMFAzeVZkMFI3?=
- =?utf-8?B?SmNuUWJyWVF6eVVOSkhCTk5ubFRWNkJYRjFvSUFhYjBWL3VWNlNxWFhmOVly?=
- =?utf-8?B?T21KWndmU0UvRUxqUjMzSE9KbVdOa09YK1pnRmNCY29ndEhxVkVUNnhoQVJ2?=
- =?utf-8?B?RzEwaFczVmtvSE5Nd0tMK3N5eGVsQ2JoNEw2YWhzZDJCS3dqc2lJa05mSnUw?=
- =?utf-8?B?dE1mOFp5Ylh1UkVPMEIvQ3FJck9pSG0rMnBmKytINElLdlAwckxTb2VTamw1?=
- =?utf-8?B?d1lkWXJLMDg5NHRJNlFNTStNNlVqVWdUQVZqQzZNK1d3aEZ4VTVEVW90NHVy?=
- =?utf-8?B?bGpVTEp0N0dWU0VNZ2dKUjFYbVhHZDJtRDBGTk5wL1F5WFF5L0ZvNjlVelB1?=
- =?utf-8?B?eDlINlJhY1p3Y1hPRW14U2c2RW82QWNRcENMRDIrTUNlaDhOaHhtN3oyUzc4?=
- =?utf-8?B?aVdWTGtIcEIwNFNTY2tjRFV4TmdESWxqSk9XT0xpVGp5dXROYU5mTUlDc2p4?=
- =?utf-8?B?Qk9uZk80ang5YXhBajBmM1c4UGxzTHZjcHVib0Y2c0p5WWhtVlpBYlpsbHNr?=
- =?utf-8?B?UWdJZ2IyZUtnU1lzaEpJSlpXeW8wMU9uM1owYTRxSWFBVjZueGx1ZnlEbXhC?=
- =?utf-8?B?N2ZCdHdVVVJoZkJQWmw4cy9RMEFIUFVCNmRqaDJOcFpqODRPRHJKOVBWais2?=
- =?utf-8?B?bmpaU29OaTZLVTBmVDNzamQ4S3lvMzRxS1pNRnlqTjJrV0lhRURkM2dSZVVl?=
- =?utf-8?B?eS9aTjBzK2pOM0FkVm5iVkE2TnlpMWs4c05ETVQ3SSs5TUtvNFJiOHRjcm90?=
- =?utf-8?B?bGtwd1ROQkt0ck5DUTVQOXgwRkRhbTRDUVNscW1BWSs0M2d0S0JxSlBtWkg3?=
- =?utf-8?B?VU1wU3oxM29GMUNKUWVNZWg2VlVmdWUwZTFoQWJnRzRoQnZjLzRjOU13OVJX?=
- =?utf-8?B?RFZVN0M1anBRSktNWVpTcWFFZUFmSldrVVZORG9zZElvYUpQckxLcHhnYkp4?=
- =?utf-8?B?Ky9CeXc4OVIyRE5ydytRNkpveGlxZnFPcmtTYVluTGdrVUI0Y0lSaTVYcE1x?=
- =?utf-8?B?dVZpdzI4aGRHTGVtM04zY2dTdko3ZUhNMHVFa3RLZ2grTk9MVDZiSHNjbzgz?=
- =?utf-8?B?OUVXSmc4ckcrUXpxREMrUFVYc3UxMElpZ3pzTEVnZWlzQmpQd2VvV2JoSHUx?=
- =?utf-8?B?ZkwxclFQblp4OFBoUW53VTBzeW9ETWl1OHFqVDZ3R0lXekRUQW5UcUtFMmE5?=
- =?utf-8?B?VmloZ095dW5MRUhNRXZ4WmREaGhVYVpJMEk3VzZxWldSWUtBdTBkNlJPOGpO?=
- =?utf-8?B?aUF4SEZUanpsTFF2QkJWakphQnUrK2dNbGFOWkQ1SWRtMmUzV1YyWWtQaWM3?=
- =?utf-8?B?TGNmbUVQVHFlT0VtZ0dYKzVIaVc4d3BzL1NYOVNVU1Q4bE9XQWJTM29xa240?=
- =?utf-8?B?OWNnNjJEVmNlQ0M0RURpMTlGVFV1dXBGcXo0TFplY3RwNEZtWTZIblozUi9P?=
- =?utf-8?B?amx6dHhFQ1pKTFJPUHlaVTZjcFpucVpxMjlIaDl6aUIreWtibEo0NjNtTDBH?=
- =?utf-8?B?WUwzV1V6ZzVRYWRkZm5tZGhqOTgyT3VmVEJSSzNvM1grcUF3d3RXL3RJOFow?=
- =?utf-8?B?ODJJY1FZZXUzNmYyQ0FxVFJYQzZqYjNMcDdHeisyeXRDOFJVcDVTQU5ZVVU3?=
- =?utf-8?B?bUFLSHZXWjh3dExFbHJNSXFtS0w5clpTS3B4WEpVOW5QM0dGTi9ONUppUnZX?=
- =?utf-8?B?VFgrbXN2RW5sckVhd1lEWUlYWVI5TU0xdUE1S1NsVjI0RmhMaFIycURyYzUr?=
- =?utf-8?B?NnQ5ODdCVnFpVUxieXRheHBUU0lrLzRJQTFBVWs0WFBrbFl6UDN5Y2xpcXcv?=
- =?utf-8?B?bWFGeTRSUXZOdDB4MldzVnlQUWR2NFJzR3liNzFCZnYzTjdndG53L0xJK0I4?=
- =?utf-8?B?aWE0MGZ6NFM0TlMra3pGQjZnMXh1bUprUzJZTTBFUFNteFpBS2ZwOUZXT0pj?=
- =?utf-8?Q?7ETMGSMqBqzuBRLp8u2JK3GSAgWgE0iYy0oSLOuyF2zIv?=
-X-MS-Exchange-AntiSpam-MessageData-1: 0gkRJ+P7ORWiJg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48041259-082d-4b7e-382e-08de540a6cef
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 07:48:08.8321
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OcJtayY82F/uHpMq7Qib6EtSEJoDlX4lW+wd/g9ZXfJPaB6qzncp5aWSDUGlHn0+0suBGK9ILgZt0OF95nH8tw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7422
+In-Reply-To: <20260114144824.69960-1-boudewijn@delta-utec.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CD1414000C
-X-Stat-Signature: wj3uzei3dsbar94tcrmce8ok8k7fw631
-X-HE-Tag: 1768463292-62846
-X-HE-Meta: U2FsdGVkX19mrLx2fCErYuVRcn3PMePDxXL8a4tginO+CZ9RemcBcnoHgSGN+2wvZ3zdt/Q9RrQIy8ot6785qhsN3xS1PKKsUarFofoUovCF+m2/m7d0P8hK332A5KeEbYv7t5+EA9Pe7+AiLaSpVp/p6xO38viJdzcFWFPHCTCdTC/KHKsWCBBkfUQHxuxv3MkTUruBA5HzcOfJMA4c7/QP4rHybTyqu3UB1GQSGGYZn4WG32UwSEZyt+WJcm4PTtFGwF+yUdskSm4rLGW3vU1i3gadM5meobt7kM1aozu8E1cJW5EaQgxOwVrOv+SzlBpTp/qjqDgZ2HKw3Lu1jmlvdOOY/T72IHVKbsSRjhWPlEw+RqNrR78xrqmEqBvjWiCn6QHbTfHpgB7cO+bL4aaW5xnWET6H+ffrFBJZIA43i3C+30dDSO7f/UKPPMhyUT4tNkC1Ht4GtKP/0hB0D3Ju/ANjowjG+lemXv7h+VlnVfrv4hdm00obYEOZeG5GFvB494Kf1KON1xepqDX5/Z6u6lqF8p85hTtJ+gyq6/ZLJGrDRnczP/nMCLfuaDLby/mUqHUv4+isdTZf+y0dUhtaWO7usfUdIS8qb/AXAKwDTDQUcxaXfLQo3+NJFQkqGwpJ8yq6TBZazBTZdTtM9OK77FhHwCXCHsQYslHlDK5ptU/rW3BDjLfVrBPcChv6igtNoBIWJGvPmf1Us2KMaF5iGL/0RnHDpsCsL7dVDwLhTP+UL71LJgdoXYLlTZNbFR+8gxRUVP/UyMLdQ1DNH5QLGMU8PoN3mC9jNBFZd93mJQJjm9dwKdGqM+7x0pv/cMYtE6PfV+unTzOmFprALMCrDNis1A960gjxsK3FCfnv+REqoM2SXmfOJdctHFi78Nlb0NDguiD5wvhNdoyt0bvnllkP77ZiTO/0rbjn2MdJlq0RZaKrjTWsBti4wLPBswi6wJg83i9KkuYV2in
- w2HqBSp6
- ixLO2rdMRX6+YLnKW+7OKRDJH9v/d6mkgYs+gMr1RugRu26to26jN6GOGD740jjIjjfkYGm8kgKrfFTrR3qUcwrpAqmyuJhTxp1lscU/mPxGSA0rwiRwaQeAmDJse6ufplpokqnJ2CfMswdSKIHkJ9h7c184sta4gRJ0lU/2R7hdButeBPy85CZHws49o1HTQxahA4PEEETyKf/XyNZqv4QKK60scRLgtvCEipYer5peanY9i1NM1nY/k0o58p9aqPOYQtj8a6lACNhjThIq9rUdIStkxWXWDXwGmjkOblTWec33x8oJrJdScuf+2Gzh75Xn4O848Ziq8ij8jA/AHvFmxYHNEi9cdv0XliO9IwL4FepnCWN7iQdxzHUiiF9aLiByt5bo1xn1VMA+WVWo1+/kKgec1k8suJXFw5xRCRvS+a5LYUI/CiJlj0oJTb2XmDkGI9hwAceC/o86uYMf6u99/pHSBWIbzSMbwcNqyFQy89NNqlwqsCBrui2+XAFeFjXqu8tYGCoXg5l6n2tqXCHpBXs8uJy29yb9ZYgW12MycW60rEbJKlQYsOiQzp3f+/76cq07q3F/+BeJO3S7AHa7S8pPz6mxe6W9sgG+thE8mPv3u1SQhthOvtP1V83GHBN0zZk0IVBKLHZpJBfJwNiwKT9K4UDAkZ1Xaz1AW+xYWD0V66Rn0ZIz8f2ShFlO27tV3CidcDN5VmhctZ6/I2gouZ0VFAf4ixS95Z+7SpxneguwgJtEu8qfm9s4Iav3PMCCh
+X-Stat-Signature: 3o7z6nmdr14mojzxn7twza66xbft1bi9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 643FE1C000E
+X-HE-Tag: 1768463734-208507
+X-HE-Meta: U2FsdGVkX1+hdP5tAdK4youph22zoytvA/EIzwoVMLJMBx3njcQlg3GyCgfNfMyOIU/OTJi9FmiwlA4UiA7jX3pMnUc71TnocTdVKJGHxn+dWwNTjAXqA4UsG/jcN1pXpUDTa0DcHRGWgCPEZETmnRf3u96kOJS39TYr17Ldr9zRLlevDpGYZsYwD91mnr8qNrhbeE8XzW71jX6PBPQ1gJymeLmrU5nCvEQk0tEAQAO4Qya75cofE/jlNa9NyTPxX2y45rAbvhWjtr0uyhzqHlDme2UN5t7Dto4sBMldby/cANZEwcVpt6ESkMgRWehzrjJtXtw9sJyPfMBVf4fA0b9OUAs166ynFoqtBon9vlcaxkvTa9J0UpoLvmw7KU71iqQGvxu5W4CmC9oqaTd6QYuvYfBgXsHm4/+2m+750WULJrGwLbHaCjRPriqyNJDItxS4UXcK1QRXnBOtHG6IN903eGW7rnbj5xtuaRyDLlt7iX1hi9fs4tW5/glfd/eZ1g9wDOcj+bm1mgA3XUDt6tivBHskpeWE0TTT8mCHu8uiDfxyJ3eYViiNOv/ICWKDoUci32SQ3hT+4GDAwQGkdQ/KklrV91GeMiBE5pYoqvIMGRUptlOFt75aMyXOjwOaaN8z547oOMxxtv6LnXIVIM1ulcEdRxIAJobKACLWki8Fuqa3nGJFmTrzJPKEj5YwyGfl6B1nN3IzPaT4Egns4+0RqPm8IHaKffGd4Ra5gkLm1yuB/nFz3n2UzNpHTFm67BTKzj4hixf1KO9VQ1kyOJufvJy9SgG4JPy/D4wOOu/sGgd75pin7u2X/CfU18365zSa8M1WtmVO1T2ahPin0PEKAQEQcLL87n5FdsBviUn+/UZByiezRCScofmWmwzgjratPYIVmrZB/lVbEmnC3V9103PGFSfqdwMUtcLOLaRiXTWmk4MOBPTjgkGMB9tEU0Eas4D1vqIM8PdCzFf
+ vxoJP5FM
+ uVtwhFFrNZLI2uqojV2enz/yFCW39o0WgOJC8QS3Sx5D8UunRAzUc7zfzniqc/gdaUENZW1BHgAgRZnw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -218,92 +109,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/15/26 06:19, Francois Dugast wrote:
-> From: Matthew Brost <matthew.brost@intel.com>
+On 2026/1/14 22:48, Boudewijn van der Heide wrote:
+>>> free_pages_prepare() only handles poisoned order-0 pages.
+>>> In memory_failure() (hard offline), pages
+>>> are poisoned before attempting to split huge pages. If the split fails,
+>>> the page remains a compound (order > 0) but is already poisoned. However,
+>>> Soft-offline pages are always poisoned as order-0 after migration, so
+>>> they are unaffected.
+>>>
+>>> The '!order' check causes these poisoned compound pages to skip
+>>> poison handling, leaving them in the buddy allocator.
+>>>
+>>> Worst case, a poisoned compound page could be reallocated,
+>>> potentially leading to crashes, silent data corruption,
+>>> or unwanted memory containment actions before the poison bit is detected.
+>>>
+>>> This patch removes the '&& !order' restriction. Cleanup functions in the
+>>> poison-handling block correctly handle non-zero order pages, making
+>>> this change safe.
 > 
-> cpages returned from migrate_vma_setup represents the total number of
-> individual pages found, not the number of 4K pages. The math in
-> drm_pagemap_migrate_to_devmem for npages is based on the number of 4K
-> pages, so cpages != npages can fail even if the entire memory range is
-> found in migrate_vma_setup (e.g., when a single 2M page is found).
-> Add drm_pagemap_cpages, which converts cpages to the number of 4K pages
-> found.
+>> This is not a fix. IIUC, for >0 order free pages, memory failure uses
+>> take_page_off_buddy() in a different code path.
+>>
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->  drivers/gpu/drm/drm_pagemap.c | 38 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 37 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-> index f613b4d48499..3fc466f04b13 100644
-> --- a/drivers/gpu/drm/drm_pagemap.c
-> +++ b/drivers/gpu/drm/drm_pagemap.c
-> @@ -452,6 +452,41 @@ static int drm_pagemap_migrate_range(struct drm_pagemap_devmem *devmem,
->  	return ret;
->  }
->  
-> +/**
-> + * drm_pagemap_cpages() - Count collected pages
-> + * @migrate_pfn: Array of migrate_pfn entries to account
-> + * @npages: Number of entries in @migrate_pfn
-> + *
-> + * Compute the total number of minimum-sized pages represented by the
-> + * collected entries in @migrate_pfn. The total is derived from the
-> + * order encoded in each entry.
-> + *
-> + * Return: Total number of minimum-sized pages.
-> + */
-> +static int drm_pagemap_cpages(unsigned long *migrate_pfn, unsigned long npages)
-> +{
-> +	unsigned long i, cpages = 0;
-> +
-> +	for (i = 0; i < npages;) {
-> +		struct page *page = migrate_pfn_to_page(migrate_pfn[i]);
-> +		struct folio *folio;
-> +		unsigned int order = 0;
-> +
-> +		if (page) {
-> +			folio = page_folio(page);
-> +			order = folio_order(folio);
-> +			cpages += NR_PAGES(order);
-> +		} else if (migrate_pfn[i] & MIGRATE_PFN_COMPOUND) {
-> +			order = HPAGE_PMD_ORDER;
-> +			cpages += NR_PAGES(order);
-> +		}
-> +
-> +		i += NR_PAGES(order);
-> +	}
-> +
-> +	return cpages;
-> +}
-> +
->  /**
->   * drm_pagemap_migrate_to_devmem() - Migrate a struct mm_struct range to device memory
->   * @devmem_allocation: The device memory allocation to migrate to.
-> @@ -564,7 +599,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
->  		goto err_free;
->  	}
->  
-> -	if (migrate.cpages != npages) {
-> +	if (migrate.cpages != npages &&
-> +	    drm_pagemap_cpages(migrate.src, npages) != npages) {
->  		/*
->  		 * Some pages to migrate. But we want to migrate all or
->  		 * nothing. Raced or unknown device pages.
+> Thanks again for the quick response and clarification! 
+>>From my understanding, 
+> you correctly noted that take_page_off_buddy() handles already-free pages, 
+> removing them from the buddy lists and setting SetPageHWPoisonTakenOff(). 
+> This prevents those pages from re-entering the buddy allocator.
 
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Thanks both.
+
+> 
+> My concern is about in-use THP-backed compound pages:
+> 1. A compound page is in use. 
+> 2. memory_failure() marks it poisoned (TestSetPageHWPoison).
+> 3. try_to_split_thp_page() fails.
+> 4. The process using the THP may be killed; 
+>         the page remains compound and poisoned.
+> 5. Later, when the page is finally freed, it reaches free_pages_prepare();
+>         'take_page_off_buddy()' is not invoked in this path.
+
+Yes, this is also a problematic scenario for Hugetlb HugePage. And Jiaqi works on
+it now [1]. I think Jiaqi's patches might apply to THP scenario too. Add @Jiaqi to
+verify this.
+
+[1]: https://lore.kernel.org/all/20260112004923.888429-1-jiaqiyan@google.com/
+
+Thanks.
+.
 
