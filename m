@@ -4,101 +4,252 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65FD4D4114F
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:47:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E5D0D41153
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 09:57:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA9666B0098; Thu, 15 Jan 2026 04:47:22 -0500 (EST)
+	id 9B1696B00AE; Thu, 15 Jan 2026 04:57:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8A926B009B; Thu, 15 Jan 2026 04:47:22 -0500 (EST)
+	id 9825F6B00B0; Thu, 15 Jan 2026 04:57:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC0E16B009D; Thu, 15 Jan 2026 04:47:22 -0500 (EST)
+	id 806186B00B1; Thu, 15 Jan 2026 04:57:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A90086B0098
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:47:22 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5973B57A86
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:47:22 +0000 (UTC)
-X-FDA: 84333720324.15.2214719
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 92553A0007
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:47:19 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NuOjLcxf;
-	spf=pass (imf25.hostedemail.com: domain of zhao1.liu@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=zhao1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768470440;
+	by kanga.kvack.org (Postfix) with ESMTP id 6A1A06B00AE
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 04:57:00 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1FC601AD3B6
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:57:00 +0000 (UTC)
+X-FDA: 84333744600.11.EA0F29D
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 90A7E80005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 09:56:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=QQVpZS7X;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VffAw9X4;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768471016; a=rsa-sha256;
+	cv=pass;
+	b=TadS+LPWDddBI80u+WqxQYPR8HNyXnEchBLDi3jkSRlr8hpXevrJhb6AzPLaqJUkRp2ym+
+	naJleoFBBjs/0jVNAgCtKtkF6fvncRnErfSG1XDzVb5Q+vXEj73dK594j6i6p2Wzw1MnPY
+	r7UWtl/p9HSncM41zWClquV9izCRdLs=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=QQVpZS7X;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VffAw9X4;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768471016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=78P1zlakmBOTRlf6nLy5vypSODn9Ltk+5BdYEaqz9qU=;
-	b=VvKhilaz3EarH5Jd6hEfTZL6wnlCzVZQ6n5844xxrIw230omO1jIQgH6JD40nXqgToL9Zh
-	e2mHh/RNP8Iie0p9PiMLczWcbGksY/S0PQD4rYtLOeGBpObwuUyQ1XIBWVw1dOC2aiQvbA
-	LbEO8JjSaCsbxj//wPz8U8a1QXRtMAY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NuOjLcxf;
-	spf=pass (imf25.hostedemail.com: domain of zhao1.liu@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=zhao1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768470440; a=rsa-sha256;
-	cv=none;
-	b=DBwal+s2BrkLmgBqZJTmLAF0rL2n5lg9tXsvEgni3OqfA2MOuWWmL76b4+XN1byVKoOmN/
-	rTxc2Z76xkGpYC9hgzbafZGpCerbzYBE74WDfTvQAR00Fg3xV40kDvpAwrhXsYchEUHKG9
-	rqDYxptSzReqR2SaQ8JYI0Cq1Ccjai0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768470440; x=1800006440;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pUsFh1TjrJbtT/5IeJ6TbQyrT3Lb6WLEFHN+eJRAy94=;
-  b=NuOjLcxfvMX/FHiFYY/z6lXT0++h9ThResOQ8UnBJOrthgMIxzZI1bV1
-   0prkQY8mr7FOMgYV9TaV2XyTGalOShDVjczqw2V7vd4L5+hLIZDhMI3ru
-   8q/BlYs9Ijaf+frUHTfUjJ4kODJcfELxGRf0KyjgDBNrfyE+Sx4i96a8l
-   PdwSuHB7uzzF/gn2jnWCpkBx4qZYCMr+YJnfFgdO/Hz9XSYHGlA/xfjaA
-   YtfesS39pT5Xuja/IUOE7ExmJs0BRSQWC7GDS2xRacH7Dc70z0retHfaC
-   IiY4CZKHXmALjMy09/K4a4AMAKew51mJgf8RXG1c9D7MVbqDdM8QNaOsE
-   Q==;
-X-CSE-ConnectionGUID: wlHS8wPVSpi00bAWM2/VLA==
-X-CSE-MsgGUID: Vr2xDyzgRqaRXNLuofNrlw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="73616694"
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="73616694"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 01:47:18 -0800
-X-CSE-ConnectionGUID: X5YuPrgiSxax2MegQAIbrw==
-X-CSE-MsgGUID: k1vqIDmQSDqWjFGuynXJTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="205421762"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa010.fm.intel.com with ESMTP; 15 Jan 2026 01:47:15 -0800
-Date: Thu, 15 Jan 2026 18:12:44 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Vlastimil Babka <vbabka@suse.cz>, Hao Li <haolee.swjtu@gmail.com>
-Cc: akpm@linux-foundation.org, harry.yoo@oracle.com, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, tim.c.chen@intel.com,
-	yu.c.chen@intel.com, zhao1.liu@intel.com
-Subject: Re: [PATCH v2] slub: keep empty main sheaf as spare in
- __pcs_replace_empty_main()
-Message-ID: <aWi9nAbIkTfYFoMM@intel.com>
-References: <20251210002629.34448-1-haoli.tcs@gmail.com>
- <a231264a-2da5-4468-a276-777fc0241246@suse.cz>
-MIME-Version: 1.0
+	bh=lUB1R4J8oGWwBz4a1P1g8iPS0dDYfPfJJ4sQrDBEuLg=;
+	b=Da46F95R/gUxh6BVWSrwGKzVB5QGfX9VPB5lYJyu+9ZHVTI47D4aUKKfiuZpz85n+Xr3Fe
+	Jo4k8VW8hiUaWPWA/xCkGscQxD/hDvp/XNgvTpZbc2QMQI4rFlM9Wpg4z8Krbc4q3MLOYx
+	JetaDX7GB7IHBRIzTAEP39kKYm1CYB4=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60F5mpAQ2753320;
+	Thu, 15 Jan 2026 09:56:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=lUB1R4J8oGWwBz4a1P
+	1g8iPS0dDYfPfJJ4sQrDBEuLg=; b=QQVpZS7XUyS3HCi5n3k5bi94TJusSxTodk
+	Pa3/skuhHueknrdy4/EwTFfX2RbURRReTuIx1wtuJnHU254acM+OHHN9RVvyK6/Y
+	lpo9vmos0K6sbZZew+/Gx4Al9v+dQikwqiW/DM/NQSfofT6QYeiCHpsip398T9IQ
+	7z3uopo7e+ODVFGyvMZCa0qwD/ZkwW2UYH+xpTdutB/lFLXsmfYTEs15Op/Ulkr2
+	voUT4xAW6F/vRjn/xunOLFcPNekhqAn4UtOP66nJoWhu3j+EpwpbJAO21+uihO0U
+	DF7R2lsGIg0LxS6s8NdY+y8Pcj5/yuFaIxz55dBXyoTcq6nmcpUw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkpwgq8hn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Jan 2026 09:56:38 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60F8jJSI005727;
+	Thu, 15 Jan 2026 09:56:37 GMT
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012046.outbound.protection.outlook.com [40.93.195.46])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7awkm6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Jan 2026 09:56:37 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rdGHi2xbgzYrzx5+NOkV/KUOWONFqOTrjhTss9bdv0AIpSS9yAzrbPqeWC9Hg24eZ6gp919VfRNkEkPWSeZEwuJfA7Munbma49R5NAufEPPFQ8XaU8h+96Gff5kd4k+sHiItukeafFyLcN8157KpUYTgW7Or5zK6VStGNpEkrEr/ifr0c4oVIdme1Rqx1LM7TcEjR9nJZcoWKpW0ETQweKqPP2rlwoDafydmpT9Uu2wplQgSZu6OI2IOkwxdfRp1dE8yjVICUQiWoZBHjNUnf96ArsF9GhVV30Rdm3AUX3R+IFjfdbhvsnoB6kAQUiJ5ZgMLCk55EDG9KXL4pC+0fA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lUB1R4J8oGWwBz4a1P1g8iPS0dDYfPfJJ4sQrDBEuLg=;
+ b=WvaMxJJSRXMP6yn9gIwgUeH6elCn6XUb41rgFpkjPnv44ZohNWM5LHafhOlg4qdMwUxOoY4Ilbj2UTgPVQhvr7HkPIi4TyF88pVH/bAJVMOsk2Pw1Y5lB8GxMbfs03+FqBg/YK5c3PrDu+M1ksLbEP0cpFbmHHpnsxYrwjq4Nc3E2JMAkEcX2Di+H3tQ9uo9Nt3NwYhaUUGiHbpKFwbOKW5XNyZ2uPd46c1Gp5TI5/tZzPSVqS6rRdfUTzdrh7wMiSQGTIa9m3SU+WvNHxnSM/FKLthTS5bf0zDHrVjazwayWkuV7PzwhbcBu11XFAFyurWxCbp1Hxaiy3zjHFJ72Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lUB1R4J8oGWwBz4a1P1g8iPS0dDYfPfJJ4sQrDBEuLg=;
+ b=VffAw9X4TA31IHXiNy/G74sG2bd1KYDq6te5xFMNTrJ8GSY0OhWnA5zI9xHDcogPeM9rBAeN6zPuirRNZszYn9T0M7CDUnFRcsKHkPfK4eohLf8GZKB3SDxNdwTZ10tDzBBgWN6u3XsExzC/q2t/XzYYxUR1xDxFxSWtMde5RG0=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CY8PR10MB6633.namprd10.prod.outlook.com (2603:10b6:930:57::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
+ 2026 09:56:35 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711%6]) with mapi id 15.20.9499.005; Thu, 15 Jan 2026
+ 09:56:35 +0000
+Date: Thu, 15 Jan 2026 09:56:35 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linuxppc-dev@lists.ozlabs.org,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+        Zi Yan <ziy@nvidia.com>, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH v2 01/23] vmw_balloon: adjust BALLOON_DEFLATE when
+ deflating while migrating
+Message-ID: <0b57537d-1720-40ef-90da-b981ac4cbb38@lucifer.local>
+References: <20260115092015.3928975-1-david@kernel.org>
+ <20260115092015.3928975-2-david@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a231264a-2da5-4468-a276-777fc0241246@suse.cz>
-X-Rspamd-Queue-Id: 92553A0007
-X-Stat-Signature: izux7sjz1x7tn1fkcnqku985rk3g4ic7
+In-Reply-To: <20260115092015.3928975-2-david@kernel.org>
+X-ClientProxiedBy: LO4P123CA0175.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18a::18) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CY8PR10MB6633:EE_
+X-MS-Office365-Filtering-Correlation-Id: a379764d-45ac-4844-79f2-08de541c5e15
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?yXFvY90CYsJxu3Jz68TR8yjYqgRKqGBh8X8NqIMXeElSmDKl9U+qd1hOMhHE?=
+ =?us-ascii?Q?eIJPEQs8D0wxLFb1fXbTXEIrG9vtB5fUuEV2CIdx5w+cGVf1d/Xw9P74aX2N?=
+ =?us-ascii?Q?xFFEsmoKypCRKt7E1aekhXupj4Wi7O/2/O0wUJbl1KJsuvt2axmT4mLcYl2R?=
+ =?us-ascii?Q?6batiZP5/PR1w7en5RTmWcJgttQ1giBu0KbxLMlw76uQbM9ozy6KkLpHoIp+?=
+ =?us-ascii?Q?qXLODPuaKSUSjVtX/yjURCJdBlurYPw4uSxC72hmECU+znirZT8inRgKzwWA?=
+ =?us-ascii?Q?zy1oD+VguDC3N+ptZe8iYHO64jEn5R2uyCI2MIGcLuA7visxc4YTaSWbyrWv?=
+ =?us-ascii?Q?X2Tcu2EKL30IN0TPrVhTESOcFjFc977zJ3dtOaWDJKtwggtEHLVQos1H8ciu?=
+ =?us-ascii?Q?HXDYysciZvgn1QhHIkLsZjsFhaFXfv0CQEDmaY6TaN88HLnK+mXmRuOT2FM3?=
+ =?us-ascii?Q?c22TEscijYOKAq9uRK3vzFbo5bnm6waCKbj3ocUd59qtNFLA+UVbXEmJL6ZZ?=
+ =?us-ascii?Q?6OSz1nHHrQ9qJdnKeY+QVz2mpwboiKuVEpKqCTJe1eGQ2UngVfwTTSQkKI9M?=
+ =?us-ascii?Q?aQHKzunfMY3RZXXWnUb/eqtpY2zvrhlpRPb3HWIHOjlKu7n1QFVolV1Bou4F?=
+ =?us-ascii?Q?W+2RsFCV+B82R5XDIiec3MCLlkfoT4oYoPfn+gFdYqMhqcOPWMgpwEbB6lyS?=
+ =?us-ascii?Q?roSRHYXK86qwaaWojJWBl9i9yh6EuNu6PUSxhhE/ZF9w6keINBoluuP+++PF?=
+ =?us-ascii?Q?/WX8dbZrfhWLki2noFzgU1HnHlXAUX49OGq9BF/g+AsBLU/n5sRAhMkrAWBd?=
+ =?us-ascii?Q?eeMx6zgTDvgmtizLABGh6Ip909sRDaecCWQkZ1E4FkEpbyUiMlxp/VIWk5yt?=
+ =?us-ascii?Q?qPf0TQYmxeDOXNq0IsUFmmUFkTzUKB3MySpuoGfheqqoYvTgLCUOx+VbgWa1?=
+ =?us-ascii?Q?8bvtbc7VnQXguZvNdjD/wZj06aVKDAu8l8W3KDfA9gzrvP1w0s33c3g7Vdcl?=
+ =?us-ascii?Q?5ft9dDOHfNQXgTOFQiaA+QWehA+tR7VCNblfMM5HHi2ubKXLinmtvS2xxJL2?=
+ =?us-ascii?Q?W5e8roPK5rR64b6dXJktdGqs2oF/6ECzMDArPctEpuhspC9xJgkzzv/y2Xac?=
+ =?us-ascii?Q?yM2dqkhQGnzGJqw67gVZTmBHjwLFBaJ/YopmnvTeDshK/3idJGbTgoRj+r1P?=
+ =?us-ascii?Q?wMpebqpOUEGcEB4D7MbDCqqljQiN0uXaddSUgzAst8eZAGjZ0AMvPTTsgWBz?=
+ =?us-ascii?Q?1ObtNyQSiUURoyeImv6/BmLz+2jMgqDj7W+JQDLqzvAb9xLbaQnkGAvoZkCK?=
+ =?us-ascii?Q?foxteg2wqPlWYeG9KLOXIcn2/xZsfaYOnHil+smiLipdMkJyk/Ej2Pm4JVq1?=
+ =?us-ascii?Q?36hdQABNLsacQjQTeVjmv9/qVRpUHlJWKMobb6U88AqDYD+9rEcAHnd62t+x?=
+ =?us-ascii?Q?QwlB6p3awRn4yrhA5V+RUWZNEhjZpxbbuP6NdFcwH4BeDt2G+GmTpgX+/rGw?=
+ =?us-ascii?Q?TRnS5oEn/lOJeoG7dbFD5UoaLaOGidCZp7cr8ZAkFzX+gZaScckL6PNEqvBZ?=
+ =?us-ascii?Q?KlyWi0ghQR8vU5q6kWA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?L8IdMevnXpFSy6cL6QDEIhxT+BreoOovsJ0EdnWJliD5Uj+LrPLg3138E1a3?=
+ =?us-ascii?Q?7WfdVDSfdWmIxS50rHI9NHLjF9YqQuBsrGf+SfMGir8Glm2aQSrpLW+ZCZ0g?=
+ =?us-ascii?Q?H1B9mU83bcTJZC1uJYhA4W4Kq8NcELLePGtUhIH0jqi34Wr3GuYTqcihAD9E?=
+ =?us-ascii?Q?LyuYS27rzPvfyOV4l7g7MDs/IN1z+MtyP0RDsbu3VTxKIOx+kYUtFQYgDZxj?=
+ =?us-ascii?Q?2K0Z7zuXNpVVKn3I0WxI5dlxPEFljoirN37aYAE3oj0h5M+Q7z116/G4we8I?=
+ =?us-ascii?Q?F8A/arMviMdIJwdz+QjcvNThl9kFi6a1rWVnwj1ILv4uM65Ffe+Wke9QI7UW?=
+ =?us-ascii?Q?hJkyvPRRXQdEB3SGPSaKOhuDlZCKNymNQL8G8DHpTFU5BfDFSpDCXzfSJhOz?=
+ =?us-ascii?Q?4Oe7YJrpem9TLRMbzNzSinz3jPsnX3JLhUVjbGe9MpUReUio3ZDnJBsCvyvc?=
+ =?us-ascii?Q?yfW7A38uIkyePTqCX9+VY03JqQ9YODxM9HMOFK3i/wQC5HjSi+C2B0lou8hH?=
+ =?us-ascii?Q?aHFrVM96W4eO1z4hUg6CV8eaz5WDQdEFJkA95cxEkbfa1BguaUDrRd8PYZzE?=
+ =?us-ascii?Q?D+tTPTmhYlE83FZ37HMd1XhvfzOLl4gwAfXYOlcRbT4iBof86fmj1/Ru3TaZ?=
+ =?us-ascii?Q?32e3QOcRNmC2RzxXF8eKyiXa8WjMPD1b0Wa2siv04ooxy+8Pzb9AlaR1y1VH?=
+ =?us-ascii?Q?p5+njR+lnPwa3CWLtkdaW7HevL/cZqkbc/ZlWPbErmEvrBR/9ykQhO/nX1f5?=
+ =?us-ascii?Q?aBmf3wCFMguwvjQe/W4BAVycpitvpSsOZLQz141/ruMmpP4uFjOyNPGdsn10?=
+ =?us-ascii?Q?tlv5RKOtBFmAVdP22dTeyfoDMnSGZK1KhTJf3lWNTwPPhqqLgNBmfw6UVp8U?=
+ =?us-ascii?Q?p+G8Sfok+qRFjOpbssS2cIq3vPN3BPv0yrMMJADRocT6R+ib+wpdOwd/hmc+?=
+ =?us-ascii?Q?fA0BrruJyNKWOCY8l5yVM0o2U6cYNs4qAbfWSqwLcuexNzTWtHX7qHF1uxmo?=
+ =?us-ascii?Q?YlmtTz2lDZ6Yy1jmCgAd91alVL6jyGDpQgZKwFISMlca+BAT/HHI4JopQNk+?=
+ =?us-ascii?Q?WEpC5fePU90X0pXGpfbLHpNSslNy2ypAfWjHbruvBpDmAz2pbmPFxldY62BI?=
+ =?us-ascii?Q?Of0YxL/lBlcT2Cu5R/SCkGPMQtMHFwXMTPnP0TmAxW/R0/ohU8VbfkhKMukp?=
+ =?us-ascii?Q?N/Y6RJCd06mpLrBF8t2WRgn5FKTRb1s+q000JHEqKL2x0qz711aKtteYaU7m?=
+ =?us-ascii?Q?IY4TABLAYwcrzqn+3CDcDIBzUA0eZ+a9njdkz1ZNMNbipycKFbbgLWrfMIei?=
+ =?us-ascii?Q?6OqxAdEcuIA3foRSib53ZwZLk0alnC6/Rg/ND8eZE06ZuCx3q5lulJRRTO0k?=
+ =?us-ascii?Q?8cP7UneA4UJn4CdZf4bbNMEomUJuxkWaWLa9iOwGs/9i+N4stw+3nUqxyCrd?=
+ =?us-ascii?Q?ngAzG7kitHHgCojznlgueOWkTumkjl6Vzao691Uq/KiXgXk5j/o0eY1649Cc?=
+ =?us-ascii?Q?mp811MsVFVsThKQMkBWP0oMyyganzlL/9tSxzNfk8MPn4rUJUNSieYFmlC2A?=
+ =?us-ascii?Q?T8JZkEJnsRiCphSvojtXzLH0oII34dLla6wchjxQKX2xqXqnDIBCP510H/bm?=
+ =?us-ascii?Q?aKp7x5ZWzMNaGBQw7P3rweNJBeEuZjcv0dbQrBuk0fnMLSNd2zl46mkX+WZr?=
+ =?us-ascii?Q?MkTtd/ysIgKmNHKDHOfjo7AVNv4meF8BBTZt6EEKWzqTNguh9he/ZpoTAQBU?=
+ =?us-ascii?Q?j2jwcwlMYVi2bGN5vDo7gSStYOPgnj4=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	nCsSfw2jGRY5Fm/5hwYFXzHjFLS2WKJsBcs3SQ1kZ9tsNLHfhsfelAcPOgpOf3czLP3fel3WLRddaN5f6gkyTxe4fC/AeIBc2ZrEyb6ZCabvkhmD+NPcYbvZ1aMuG/NAP/+eKpLBpsxKSdoqum/mE0yT+67/6Wk9/vmdbu4kEUy7LBpn2BqMPlwhZvh2tr7j40ypq2ZCS1JqIzf21lagjSGc1LOHwJbt+Gci1CSPGwqIXFNJrFc652tHCNuK3vv1l9cxo+UkAALDwhBs/HFZ/gqqIqjS/qolwAx2TRNHBHbv03A6/1BZ+92VoT/l9NGiIxyaTcFVBWM//XDCUX4RSCpqHwcSLuZw8rm2VJAt+l9v3JsAxyunY7wREAcEDwSMIoAMYRFQGiJApURn+/SR1gEBhrJt1A20CPVO9MSBoZVCUmPc0xHuiAa4PwKAZUJrltBHono8L4y4knt/nWY/T42jswfEr2snep4hD391tpcKqpwslvxSzQVVZ+B0J7aGBEvG7nYWeN3N5cPYKepja3huZezLnPjoEAeiYVnd4y+Xpng9Fdx/4J9Hp7+RKWoX6b/VKr81QBTqJauxKrSrIMT1hUI8QaBviMRlZRp0vp4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a379764d-45ac-4844-79f2-08de541c5e15
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 09:56:34.9414
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: T+eAQz+oQcY2PQ7fOJaIY9V0h2vSR8pntiLmOb3D7LzmZSq0aKBvoL/Z1cW8cWFtYXYvIF0llAYSb36vydypfbW1w8b9Z/Bu4otiLfK/sNI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6633
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-15_03,2026-01-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ mlxscore=0 adultscore=0 phishscore=0 malwarescore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2512120000 definitions=main-2601150070
+X-Proofpoint-GUID: tvF-ZkvMTOLC0qhc8Hb4vpxzUYH-Dn48
+X-Proofpoint-ORIG-GUID: tvF-ZkvMTOLC0qhc8Hb4vpxzUYH-Dn48
+X-Authority-Analysis: v=2.4 cv=ZtLg6t7G c=1 sm=1 tr=0 ts=6968b9d6 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=Bfv0NvBistDCrrCQ8UgA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDA3MSBTYWx0ZWRfX1ZaWNiyTocqg
+ WN92RU0F0fWLppt+s4Mfsv3tLKgdZjYS50Rg+b0ZDbBGPAcgKfgPHa3AYEnRPwnpUf+RW4+YudE
+ mIEovmLTrLwHiUqE66k3edY8b6WIMuhBeBAwylBTVMDmFR5kHkMjiFyWR03PZBqFEv4KcDKWVSr
+ RWfrEH19z13lPmkK5DyI3mtGDuRvZLEoA8gYO1Ssvtsdc72B0g+yZozEKMoPe/aNwV7QNIjB3oA
+ 9Z8yNUuz/XTzPrkb3x/I1IYzE0JwF/mInmoGMFW75OTiIXZTV7pvaT0w1oTorV12m/tPEz/BEKj
+ YPeXEJsxFuISz4wjj+4xCs9LwrBWrONkl5AEdL1YECrH12p6rHiq/+7XWBSwVnjpsz/vx4YzIw+
+ Vrkyb0SLTCkKKACNfRNCG1yNZQZfMeJldlaXwXMaGyGx+rYi2wmEaqc35WgCh9w3GgMcGMfDoEg
+ JirnT153LlqLqWQp+Cw==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 90A7E80005
+X-Stat-Signature: o9nagytgorwf9786oeoghcensaqbm3y9
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768470439-287383
-X-HE-Meta: U2FsdGVkX1+vGlBD8uUSWqjNRzZOWg2E8pZ3GJi/REWJDrUalXHlJk2oNalGQCcIPGm2tioAMYGRnhqhWRSwFyj70/1i/UjW7326j5pbX2NIXP3RP+MPMWrZLNNtR/nLIELJOfe0VO1715PNtwilBTYpN3EGUMt63A9wRKDCL4RPg5lCqLbaLdkJ22E35JsqILJQx0u+hyQxBu7sb3IVL9/7rnLT40gsv8ipKVq9cOI7/ZbQd9lXc9r8+TvV78Ao5Bv3NYEUL9lHLdywmRSyqHlk0rnBaZL+MXcvNCMLHC09R0XiH2DH7UTvFeyncdqkWjXvX+hTtT7WVQFv3dDI7dvEUQe+gAL6cc/XVPEuEoi//mhKRcAsJETd3oYqNsNlbcfZejIQ87zoaGl9M+T9NSjOkMCD9KhfeedUJ7FBbr8g3M09rmC3W1nE05xGyK2ce6LiP65oajCLoe1WwuZbzdZ2b1FXfPf1KGWcms235Fj0wFwWYdLPIeeZED4BM1DVl7xsg1bd4ER7dYW71hAPMxsFxywQaRIau4pQHT7AZAsWX5U+kWOKa7LahbDZAXpb1SpzGvgTsNttcJZ9dMMv4gpY6HO7y7HtFrJbA4SkkKR2w2DcwfpnPja/fmCHtDNW877cmDTinEBkBgwyYxCi+29JzrFPpo8R1xJ7A1jJFohrWCO6p3jo1bzZXsRQGzfMB3PaBv5ZoHQReUk1hU6L+l+OBu8V9Ee3IlNUiW0eOfeQvbiDf+quWBaIgfXGTzCWs4T9snGjro8NosBes+J3gCgGs1stIv67JPHFgGEHb25X9RYemN6IRfLTk3nF4QZb2A/HXz4zjG9nXhIhvFSKKznXYYkHRdVTW8l/gupJ+LVsnM1qOICiMRF9uCffeZ5EJ3pU88wfoppwcLNLYhrC7p2Pmg7OpS8sv4aPzPh5HdT4o/kkLdWEkGvuxV4e2cqydv20Z525qg59qyYhRzn
- wCkk0Cbp
- m5I2bm8jLIjzjjPTeY6N347JA4o/CpC+k6duAfdbcB4MxOw6EFmThoBdBvirwgqcy9fIrLvhZuN0L/lhmvN+qDgcLBfS3LGZ6kxIB1yGLPxv1claGINdJtqNF7mWQHvSOhPaGdJRF8LFZTIkxS6Bq7k2GrRFwfa1mGDsIO/ulUyQDCTNQh4/uYtqdXPJ96x3puDIb0Ya2jjx5C/hxzSxMk4uWrxl2w17Mrb1u7yCHF3zKrNhtCrmDDBdjZUm8ASq+exZtuAIv8Hugu30Z21sJznknethRqFT5XknDszWR7cI/tp1XrOn6jf6KRmRXi7ZNrPZyrnnvjDOVeRmi5FQ0fNqYlg==
+X-HE-Tag: 1768471016-147012
+X-HE-Meta: U2FsdGVkX1+bCQZRsbFfhooVJvBmLWXsRCH/4TEXF6xyYGgXjJ/pSb+U4Fj+ijVLIzViOV4LQ/HxSeA3+lzQUqaAyjC7WmvVbeUxBvZG+6r4EyPpYPuPt1VStpBkyAhZFQDNtAKI0onLwgt1lT0nkiyoOpVTyNme8EPSvvg3JdLMVX5hPk6CySWWN6zijTJRyR3qZV7fqlFOndXRWbtDBnuS4bDVV8XIbhbk6kBmpPlK/C5YvMw4jOMl6YFnISv6goebokRaDI6e/jXBvbLJxBueSgGdSzbKzs+08wSizfmFZ8kTXUgh5/TgIC2A24QmGcohpTQQOeDw8omDMDgnEDmX0KwBo0UA3313svkOiRitHKfU7lHhA63cRIBCZrC4fB7xHh9xc2fdnNYDkP+TGDl7gqKvOEhRBi71179rIhg1CGB3dUQZ3BgHnufKPcnFLt87qUMETKzSVqK65Fo5kQO4S2DbqCzKeKZdpx0NpP9WuwDwIY4Z3UpOK8L6Do5602rQbA5uhl9UEs3MIwUQc8AnhePEUWrmx5t5QITTkjidJR4Ew0Z7goj5sYYnTUBoXNArQRJ3BfBmXkrqgZsSBgTlCb/V5L5kuSt6ZvHi3oZw50lS/aNd/LCRoPIkKwHZ4Yt+0w3cAWSNr4KzCzUnu5JWaJf+rfEHoQ95yMYqQgMLDYF9rzTPmQyQLi5FC2DMUowk/xE0nR5IBalUr3wb8OQHCAm+pnyXjmVywuvymMMZ00LB1Xxi8NC5Ah1p7dvmuIjvmaZWSytH7OrQwjz9DNv1Idg1BZJ8VrwzpG/Tp373avzyGGUOvHsHRJcT9g7NBBjNDwomEkzLieXfi/fCt1Kxh+YnTS8pZ2DVSITsByC0jU72K7N9qMlRy2MtbfMAu/P/PQ75FNKxg1vsrxHow/lsPCv8BqhO8BW0I4YKO42Dna8NV0gX5MhsutCJOTzbPdWRpZML8xvpFD+yvcp
+ danG4dLO
+ ++wDQrBw5ZSWtWSjly9wJ5tc++TDM8bElbxR3hlXXXYnrv00zIL/clZUXHAzu+24AWIIyxLew4MocdSdxPu1eUPMQZcTDbHFEI4HyrEKSfp7ozfFzGfCMNirtJYHRgBoi/5l4i/8uiwBgz2r7TwRtqnery3BecsvVhSOhCElpaFWuIaKL6o6zYVeqnfU1KFlMIZ/4z13vdxf54gNFI+aWgjbADJv+EgYDcH8IxmA0fms0YWpEAvtlMQftlosnuMGq+jIcMeVwoeC8BeyFDvNaf599PQpEvWJJhwz/527YElLudQTqIPOAkZd9w/p6xuOSnCXmbPlXFU0pmN+mBd2V9R1X6vx5c26IQw9E+Om9ukDMa+o/r+b/nR5k8/jEBw4UUkJmq+Zewc8mF6Tqs+yydMgN/I9YLBMBMwzEc3FOFkTAM7LnDCcWoZf/icQKhmJOEe0FLGjCXA7DAFf0sf67Xw4RZLPbFwhD++cjNS2Xq9nyXfJNyU/noGruCMn+O9BRESuSITZTjZeS2aSbCm9W0qSd2abj2le0mAOHqZm8G/TjIvXuXwragSEJIHF83w2O4vlhE67sXlG2EYVRITUJ3/ooYXqc+T2YuBYb5/SSz3Ncl32Wsi8gf06buG1svHe0K8PuI78XfG4P6WVPUDgy6raqZT5L4lx0xMQJu8cXHLvbweoynHlOU9yG1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,207 +258,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Babka & Hao,
+On Thu, Jan 15, 2026 at 10:19:51AM +0100, David Hildenbrand (Red Hat) wrote:
+> When we're effectively deflating the balloon while migrating a page
+> because inflating the new page failed, we're not adjusting
+> BALLOON_DEFLATE.
+>
+> Let's do that. This is a preparation for factoring out this handling to
+> the core code, making it work in a similar way first.
+>
+> As this (deflating while migrating because of inflation error) is a
+> corner case that I don't really expect to happen in practice
+> and the stats are not that crucial, this likely doesn't classify as a fix.
+>
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-> Thanks, LGTM. We can make it smaller though. Adding to slab/for-next
-> adjusted like this:
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index f21b2f0c6f5a..ad71f01571f0 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5052,7 +5052,11 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
->          */
->  
->         if (pcs->main->size == 0) {
-> -               barn_put_empty_sheaf(barn, pcs->main);
-> +               if (!pcs->spare) {
-> +                       pcs->spare = pcs->main;
-> +               } else {
-> +                       barn_put_empty_sheaf(barn, pcs->main);
-> +               }
->                 pcs->main = full;
->                 return pcs;
->         }
+Seems reasonable to me, so:
 
-I noticed the previous lkp regression report and tested this fix:
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-* will-it-scale.per_process_ops
-
-Compared with v6.19-rc4(f0b9d8eb98df), with this fix, I have these
-results:
-
-nr_tasks   Delta
-1          + 3.593%
-8          + 3.094%
-64         +60.247%
-128        +49.344%
-192        +27.500%
-256        -12.077%
-
-For the cases (nr_tasks: 1-192), there're the improvements. I think
-this is expected since pre-cached spare sheaf reduces spinlock race:
-reduce barn_put_empty_sheaf() & barn_get_empty_sheaf().
-
-So (maybe too late),
-
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
-
-
-
-But I find there are two more questions that might need consideration?
-
-# Question 1: Regression for 256 tasks
-
-For the above test - the case with nr_tasks: 256, there's a "slight"
-regression. I did more testing:
-
-(This is a single-round test; the 256-tasks data has jitter.)
-
-nr_tasks   Delta
-244	     0.308%
-248	   - 0.805%
-252	    12.070%
-256	   -11.441%
-258	     2.070%
-260	     1.252%
-264	     2.369%
-268	   -11.479%
-272	     2.130%
-292	     8.714%
-296	    10.905%
-298	    17.196%
-300	    11.783%
-302	     6.620%
-304	     3.112%
-308	   - 5.924%
-
-It can be seen that most cases show improvement, though a few may
-experience slight regression.
-
-Based on the configuration of my machine:
-
-    GNR - 2 sockets with the following NUMA topology:
-
-    NUMA:
-      NUMA node(s):              4
-      NUMA node0 CPU(s):         0-42,172-214
-      NUMA node1 CPU(s):         43-85,215-257
-      NUMA node2 CPU(s):         86-128,258-300
-      NUMA node3 CPU(s):         129-171,301-343
-
-Since I set the CPU affinity on the core, 256 cases is roughly
-equivalent to the moment when Node 0 and Node 1 are filled.
-
-The following is the perf data comparing 2 tests w/o fix & with this fix:
-
-# Baseline  Delta Abs  Shared Object            Symbol
-# ........  .........  .......................  ....................................
-#
-    61.76%     +4.78%  [kernel.vmlinux]         [k] native_queued_spin_lock_slowpath
-     0.93%     -0.32%  [kernel.vmlinux]         [k] __slab_free
-     0.39%     -0.31%  [kernel.vmlinux]         [k] barn_get_empty_sheaf
-     1.35%     -0.30%  [kernel.vmlinux]         [k] mas_leaf_max_gap
-     3.22%     -0.30%  [kernel.vmlinux]         [k] __kmem_cache_alloc_bulk
-     1.73%     -0.20%  [kernel.vmlinux]         [k] __cond_resched
-     0.52%     -0.19%  [kernel.vmlinux]         [k] _raw_spin_lock_irqsave
-     0.92%     +0.18%  [kernel.vmlinux]         [k] _raw_spin_lock
-     1.91%     -0.15%  [kernel.vmlinux]         [k] zap_pmd_range.isra.0
-     1.37%     -0.13%  [kernel.vmlinux]         [k] mas_wr_node_store
-     1.29%     -0.12%  [kernel.vmlinux]         [k] free_pud_range
-     0.92%     -0.11%  [kernel.vmlinux]         [k] __mmap_region
-     0.12%     -0.11%  [kernel.vmlinux]         [k] barn_put_empty_sheaf
-     0.20%     -0.09%  [kernel.vmlinux]         [k] barn_replace_empty_sheaf
-     0.31%     +0.09%  [kernel.vmlinux]         [k] get_partial_node
-     0.29%     -0.07%  [kernel.vmlinux]         [k] __rcu_free_sheaf_prepare
-     0.12%     -0.07%  [kernel.vmlinux]         [k] intel_idle_xstate
-     0.21%     -0.07%  [kernel.vmlinux]         [k] __kfree_rcu_sheaf
-     0.26%     -0.07%  [kernel.vmlinux]         [k] down_write
-     0.53%     -0.06%  libc.so.6                [.] __mmap
-     0.66%     -0.06%  [kernel.vmlinux]         [k] mas_walk
-     0.48%     -0.06%  [kernel.vmlinux]         [k] mas_prev_slot
-     0.45%     -0.06%  [kernel.vmlinux]         [k] mas_find
-     0.38%     -0.06%  [kernel.vmlinux]         [k] mas_wr_store_type
-     0.23%     -0.06%  [kernel.vmlinux]         [k] do_vmi_align_munmap
-     0.21%     -0.05%  [kernel.vmlinux]         [k] perf_event_mmap_event
-     0.32%     -0.05%  [kernel.vmlinux]         [k] entry_SYSRETQ_unsafe_stack
-     0.19%     -0.05%  [kernel.vmlinux]         [k] downgrade_write
-     0.59%     -0.05%  [kernel.vmlinux]         [k] mas_next_slot
-     0.31%     -0.05%  [kernel.vmlinux]         [k] __mmap_new_vma
-     0.44%     -0.05%  [kernel.vmlinux]         [k] kmem_cache_alloc_noprof
-     0.28%     -0.05%  [kernel.vmlinux]         [k] __vma_enter_locked
-     0.41%     -0.05%  [kernel.vmlinux]         [k] memcpy
-     0.48%     -0.04%  [kernel.vmlinux]         [k] mas_store_gfp
-     0.14%     +0.04%  [kernel.vmlinux]         [k] __put_partials
-     0.19%     -0.04%  [kernel.vmlinux]         [k] mas_empty_area_rev
-     0.30%     -0.04%  [kernel.vmlinux]         [k] do_syscall_64
-     0.25%     -0.04%  [kernel.vmlinux]         [k] mas_preallocate
-     0.15%     -0.04%  [kernel.vmlinux]         [k] rcu_free_sheaf
-     0.22%     -0.04%  [kernel.vmlinux]         [k] entry_SYSCALL_64
-     0.49%     -0.04%  libc.so.6                [.] __munmap
-     0.91%     -0.04%  [kernel.vmlinux]         [k] rcu_all_qs
-     0.21%     -0.04%  [kernel.vmlinux]         [k] __vm_munmap
-     0.24%     -0.04%  [kernel.vmlinux]         [k] mas_store_prealloc
-     0.19%     -0.04%  [kernel.vmlinux]         [k] __kmalloc_cache_noprof
-     0.34%     -0.04%  [kernel.vmlinux]         [k] build_detached_freelist
-     0.19%     -0.03%  [kernel.vmlinux]         [k] vms_complete_munmap_vmas
-     0.36%     -0.03%  [kernel.vmlinux]         [k] mas_rev_awalk
-     0.05%     -0.03%  [kernel.vmlinux]         [k] shuffle_freelist
-     0.19%     -0.03%  [kernel.vmlinux]         [k] down_write_killable
-     0.19%     -0.03%  [kernel.vmlinux]         [k] kmem_cache_free
-     0.27%     -0.03%  [kernel.vmlinux]         [k] up_write
-     0.13%     -0.03%  [kernel.vmlinux]         [k] vm_area_alloc
-     0.18%     -0.03%  [kernel.vmlinux]         [k] arch_get_unmapped_area_topdown
-     0.08%     -0.03%  [kernel.vmlinux]         [k] userfaultfd_unmap_complete
-     0.10%     -0.03%  [kernel.vmlinux]         [k] tlb_gather_mmu
-     0.30%     -0.02%  [kernel.vmlinux]         [k] ___slab_alloc
-
-I think the insteresting item is "get_partial_node". It seems this fix
-makes "get_partial_node" slightly more frequent. HMM, however, I still
-can't figure out why this is happening. Do you have any thoughts on it?
-
-# Question 2: sheaf capacity
-
-Back the original commit which triggerred lkp regression. I did more
-testing to check if this fix could totally fill the regression gap.
-
-The base line is commit 3accabda4 ("mm, vma: use percpu sheaves for
-vm_area_struct cache") and its next commit 59faa4da7cd4 ("maple_tree:
-use percpu sheaves for maple_node_cache") has the regression.
-
-I compared v6.19-rc4(f0b9d8eb98df) w/o fix & with fix aginst the base
-line:
-
-nr_tasks	w/o fix         with fix
-1		- 3.643%	- 0.181%
-8		-12.523%	- 9.816%
-64		-50.378%	-20.482%
-128		-36.736%	- 5.518%
-192		-22.963%	- 1.777%
-256		-32.926%	- 41.026%
-
-It appears that under extreme conditions, regression remains significate.
-I remembered your suggestion about larger capacity and did the following
-testing:
-
-	59faa4da7cd4	59faa4da7cd4	59faa4da7cd4	59faa4da7cd4	59faa4da7cd4
-			(with this fix)	(cap: 32->64)	(cap: 32->128)	(cap: 32->256)
-1	-8.789%		-8.805%		-8.185%		-9.912%		-8.673%
-8	-12.256%	-9.219%		-10.460%	-10.070%	-8.819%
-64	-38.915%	-8.172%		-4.700%		4.571%		8.793%
-128	-8.032%		11.377%		23.232%		26.940%		30.573%
-192	-1.220%		9.758%		20.573%		22.645%		25.768%
-256	-6.570%		9.967%		21.663%		30.103%		33.876%
-
-Comparing with base line (3accabda4), larger capacity could
-significatly improve the Sheaf's scalability.
-
-So, I'd like to know if you think dynamically or adaptively adjusting
-capacity is a worthwhile idea.
-
-Thanks for your patience.
-
-Regards,
-Zhao
-
+> ---
+>  drivers/misc/vmw_balloon.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
+> index cc1d18b3df5ca..2cc34c4968fac 100644
+> --- a/drivers/misc/vmw_balloon.c
+> +++ b/drivers/misc/vmw_balloon.c
+> @@ -1818,6 +1818,8 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+>  	if (status == VMW_BALLOON_SUCCESS) {
+>  		balloon_page_insert(&b->b_dev_info, newpage);
+>  		__count_vm_event(BALLOON_MIGRATE);
+> +	} else {
+> +		__count_vm_event(BALLOON_DEFLATE);
+>  	}
+>
+>  	/*
+> --
+> 2.52.0
+>
 
