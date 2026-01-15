@@ -4,115 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC6F2D46617
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:11:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FAD9D46617
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 20:13:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CEE46B00ED; Thu, 15 Jan 2026 15:11:14 -0500 (EST)
+	id C3AEF6B00F8; Thu, 15 Jan 2026 15:13:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 572586B00F3; Thu, 15 Jan 2026 15:11:14 -0500 (EST)
+	id BBEFB6B00F9; Thu, 15 Jan 2026 15:13:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 474536B00F6; Thu, 15 Jan 2026 15:11:14 -0500 (EST)
+	id AEAD56B00FB; Thu, 15 Jan 2026 15:13:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3617E6B00ED
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:11:14 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D49BB58E52
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:11:13 +0000 (UTC)
-X-FDA: 84335292426.20.EC52968
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1650AC0003
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:11:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OoccVYjW;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E9BD6B00F8
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 15:13:15 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6CE521A0309
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:13:15 +0000 (UTC)
+X-FDA: 84335297550.30.BEF4107
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B2DE21A001B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:13:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iAy0eAk3;
+	spf=pass (imf19.hostedemail.com: domain of manish1588@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768507993; a=rsa-sha256;
+	cv=none;
+	b=5nmboE7i50PAewqU+kSdv1BN95vOZfk7Fbbbn4oH7FkGyPbFFFlLdNlNiafstJmNXWQF3F
+	AoxZGNXdFlntm9ZfLovo5nZW/9HVG5JEKGagc10uRahp7aZbMCrsvNoU+2Alarud+gydIB
+	J2Kn9uYY5wA79SO1U8SOgQW8vP3uIts=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iAy0eAk3;
+	spf=pass (imf19.hostedemail.com: domain of manish1588@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768507872;
+	s=arc-20220608; t=1768507993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+DJvmUAxFA7f3CQLgPdeGUDeqhnxQ4o2avS319E39OU=;
-	b=P1Hb5Fc5mg3o60MhzFy4OFP2nZpjA2cTqS8vnjQdbphqvPMy3E/MG3vlxYuypsnNZmCGk/
-	m1Ypm/FORNSraKHzXCTwwPQNwW9ZRwpOUFci3IvKaVhfvlW+jtD2dyP5uyCuItx+ZGWSlr
-	ZTZK1E/Oh81AmLyvcMjLAtNadVvVvfg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OoccVYjW;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768507872; a=rsa-sha256;
-	cv=none;
-	b=RKnO8bWQxvy3buj8G634tSdUYOodKQOtstqFOlgic+Ha/oybXa5RB+ClsgMCGMQ2XabwE4
-	6PvXkBgW/n+6nlnvx48mflJFvu2wyk6+3MiTeK5pqJk/rXMLloQeY/xe5xPV7oQofhbNOR
-	YRE+oBoz63Fb6GQP7MAK3rLONhxXmS0=
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7927261a3acso13925447b3.0
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:11:11 -0800 (PST)
+	 in-reply-to:references:dkim-signature;
+	bh=tlUsscsYUaJ1E2vcNvebVKuOn51GC41JpX9QJesXTnA=;
+	b=BwP+gUui1QrFOzf20jKiaDTvyBch1hkgYSsVvZRj1TYv0PgGDsk5qaDmLwMA8Cdvv8jbyw
+	c7I0WarHFcGebNSQjP6bqlHCzLPPrZrFgR/QMdnMAKHMv+MjBds+JVQl9E/5yRAMz8l/xX
+	ta36sdLphT5iWz4gS2fMBtJCAKNgK8A=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-81dbc0a99d2so682451b3a.1
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:13:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768507871; x=1769112671; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+DJvmUAxFA7f3CQLgPdeGUDeqhnxQ4o2avS319E39OU=;
-        b=OoccVYjWkYAiXbxJO8YJg2hpzMyNzzvesp2ZY7yy4HpBIj1xIUhRzMqXR03cd6cquz
-         uxUKlx1UWkMtm6lx2+fHIxoZdyYLzVqZ5rGjf0dUKE/JN3NGFCJUyymNrW5gqT7eulCL
-         w2vgWuUVMKya6/9O/KyIbgQGAdL82EMd8648N5D2DKAAEGVnd/oOKjz3uj2Kmz8Blsv+
-         HH0JD5vIDUYJwMNu2FnznY/zRWY/eOV+VcfsLOt8Hq/NwaAiEqY85qo59DAyKz+NiYk9
-         wWdGYWOih/rgaLyXHGDgaULhEmQ8dZ8m6GqeRrhD2/1tIDr6IDApAcdpjEK9waQ8s1z8
-         U2Bw==
+        d=gmail.com; s=20230601; t=1768507992; x=1769112792; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tlUsscsYUaJ1E2vcNvebVKuOn51GC41JpX9QJesXTnA=;
+        b=iAy0eAk3tiVLb8Y0axvwntlCzezZqiQ3XlaDaA2plgY2uY/HYA2gjWikwytcrbvijH
+         m1kBJul6LDA9fTHCXC8kLrx5rp+Wo1fn/auZRkyCptbReBKRReDOS9FAYuvGEiYH4jld
+         CdOw90LBpJEyuHY3OPv53ds+NlleXBLQZpjkcN259/YIZ7jPivkNAoI9ea6f71daj9lq
+         3pmidArhwGbg4O9/q4n0M9pei5tTHDoJfQkZeXq5A9VaOKRA35NLTr9QzQF7nnuFiNne
+         c+CIp/cpWjudTZ4dSH7x9TDVVZ6OyXyrbsilt03pLBXxzpLWD9t3F7JiwUgPcWcCIBRS
+         ssZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768507871; x=1769112671;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+DJvmUAxFA7f3CQLgPdeGUDeqhnxQ4o2avS319E39OU=;
-        b=UObE7aPNwYlVWVO+XoAo2qchY0n8k+hszMlMb3pXpjPL8zM1w7N3wo9JajldQEfS+k
-         GGgr+6y5j7T3+Oz3KhlYXyvfr+c3mpZeflyHIkL6YMNmfK7PzPwhyrRPmcNxVJCQFQUt
-         HLrlSupIf9icVkFhYX1XxrSgXjvS/N+SFFBL9XmNGLnnlWqJKOmm5u/2aYQNh+oc7gCe
-         yLNEmKbp9Zoh+BWRAgcuGoeA9JWoJR2UHSLbeAHR5Q4ionV9Hijw0Taw+odsFwc7mRa4
-         zq7wp70aWosNm0C2OEGn/IPpQaH20JzI9/qtYF/bdSOhqBfWoyr5VB/dEzaWs9bmEJKK
-         9WcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVi6AbKUn4kmN/DESem7qL4+nV1dElyrYO+0qHdVVCxeqDm+oLrT/KjxYQzJ5gQKJg4AMASoRQwbg==@kvack.org
-X-Gm-Message-State: AOJu0YzkcsRXZ4+UWI5fc7nWhEHDqBW6zoL0kTlpW4elUtxtVVqapZ6o
-	WtxltUnuFh0MixQI4ux8PO7GVD0g40uu8fIM/E5Mgh7nH1PQyqY5MN/b
-X-Gm-Gg: AY/fxX5pcz/5gA5bnHAP+kD/Jw0eGutp/O/MAEt75bLQ4WYYcKbn8MyzPJE/QlQVTkt
-	EnogzgNQKW6/WWbyEfRx+zxA4IgQl11miNdF8vkcmcUlsd0RQHsevEU1tYOrrSOzvvbqlULXZaG
-	lZO/cFywH2LayTEQPjBkaCxhEd/hFJz+rmJT0SZL6xfmW8pG7YlYdIWMvKpd+X9Bba0dCwg/w2q
-	VpWZaCumL3D6ZnyDpDPPLKhA9fPWvoiYFO7je3o4rhq7iUelZTbNClp/Iq0PEAuMzIkvKoquoyw
-	SjZqNQmdYRKONWwSBNeRdu6rPW35V9x6cSEk3ky/M/omPGeSfmfdiT6jQ1NaHB5UvBi4yN+a9Gd
-	sNPHq8GwB95o/Sv3boz16/aW97R3gFSWfm9xR8Rs+WtBNwg20JgVgKsZNGF5fyKiwcrGAc1lTnF
-	1+kArPKCUMKg==
-X-Received: by 2002:a05:690e:d46:b0:63f:ad6d:cbd5 with SMTP id 956f58d0204a3-64917750a39mr255389d50.60.1768507871038;
-        Thu, 15 Jan 2026 12:11:11 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:47::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-793c66f6f97sm1285097b3.16.2026.01.15.12.11.10
+        d=1e100.net; s=20230601; t=1768507992; x=1769112792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tlUsscsYUaJ1E2vcNvebVKuOn51GC41JpX9QJesXTnA=;
+        b=wf7aS06t2ksnRJ12MAhfMwOdlP+/1hguoPylK76k2SjvYjaCl2LZ6vNad4CzUMEJ+1
+         dQKsrpHIVpjv9XLqDiQLKARY83e1XTTgVCAoNzm8XmO4PaYV+qIZWZRHgupoamKHorgE
+         LJ9s8rA54btm4Rmu6aJMI4CsokebjKA6pPsWe/o6Q6trNqZAGophCOILnOPofrQoVvsF
+         d2RMYPRqlB6oMqRwPuswOLC5iSjz4+zrTP1J2h0KxecQEytEb11jjBCio1Eua6tx/C31
+         +EBlKa99VlKVVQl+38Dms6LwlpePYeE6dIDVnnp6qj0eobh4Wxuk+WFO9I3/09brQhyO
+         jEfg==
+X-Gm-Message-State: AOJu0YwCNeVCrnhd31+q0m+OGZOaLdodToJZ1yTEEpStoDUVYyjTtnVC
+	VnQeynoL7mllUb2+2q8snlwgr+6ZVwZgOi13wAvWGa56ehAE9KxTpH+IiCnWDg==
+X-Gm-Gg: AY/fxX7bfLge3U6FXT2LtmlKVqSmp04mNQ6vKVOBYVF31PC+IEEu24JaUQXzKFl9oLb
+	dxOpR35gW1+wwSkb66EyD5yf4DYBFQx2ttoGDKA7CRYmyCskbPAmaqi6dKj40OIdGjpOuTpKoU8
+	64+4dhvUPlL6JibhJamnkmJYcovjrLu/B+vYz/xF0m4fgIKLot4xidqUueY/e2OJmBs/rBUJ7vg
+	9zcEr2ZdpuU71EC66JUaawFd/fz6DI5ZKDmcu351A/L6v22cMafAU+LOJpfzt8fI1Z/vigX0HTv
+	WbLf8LWhav1OmamgsVUL5JjHt5E0ey0ZWBdGko/uSkmpeLdgEmV9ZYJUeRuLmfUp2q41czq4Fdn
+	Wg2SDW4u8h5TQn71ymKmyyDFRAgeGRVIlKv+XLKyE97UYARCZ2CKeHjUkN1PF+2wJGnjKHLiWbg
+	Yaehf/2rlbuJozFDWS+Q==
+X-Received: by 2002:a05:6a00:ad3:b0:81f:473e:e8d7 with SMTP id d2e1a72fcca58-81fa0385493mr736315b3a.54.1768507992388;
+        Thu, 15 Jan 2026 12:13:12 -0800 (PST)
+Received: from muxbit.. ([122.171.16.181])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa12784ffsm186714b3a.40.2026.01.15.12.13.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 12:11:10 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Manish Kumar <manish1588@gmail.com>,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: prefer 'unsigned int' over bare 'unsigned' in page_alloc.c
-Date: Thu, 15 Jan 2026 15:11:07 -0500
-Message-ID: <20260115201108.1028113-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260115200753.1002036-1-joshua.hahnjy@gmail.com>
-References: 
+        Thu, 15 Jan 2026 12:13:11 -0800 (PST)
+From: Manish Kumar <manish1588@gmail.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Manish Kumar <manish1588@gmail.com>
+Subject: [PATCH] mm: fix VM_WARN_ONCE indentation in page_alloc.c
+Date: Fri, 16 Jan 2026 01:43:05 +0530
+Message-ID: <20260115201305.119383-1-manish1588@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B2DE21A001B
+X-Stat-Signature: npryncw4a3f39rpop4y9cwspt13jms8b
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1650AC0003
-X-Stat-Signature: 9f6mnwjkega1w7otbiyw6xmm6s9954u7
-X-HE-Tag: 1768507871-801910
-X-HE-Meta: U2FsdGVkX19ft1nsZ3NmcvxX2qMBrX7jkbMIl3oAH3ojQtdyS3JfFukqal3Wr/Y7DAnmBBn1IJRvEglnlLAQzhppY4sg7/5HyaQbDbeYs5mhgICQf6EDyQJaUrVFz/TOgPmir5D/X3Bg/3/VxNJFIg+mh2HzqdHczRF6OZYaOZRveDDGf54LwQ5aqnWTw0e590glEj6366n6/TTV00nXmlBz7mXD3Mg5sijzvwfBggYsKYj5ktLxlNTMcMDacu0CasCfbVuiPrlhEFp90/qFQ+56ur5IYRaoMzxhlpzU2HiNGeJSWqJN5FX1txNFbEdxqTuIrUOXdbeP4lm4+YV5jQNWVjj48tFgE4hdp2sGh2nBLgccciyNP4bx62DsahCX8ifxuSgD3A4dvAVMwMJEvLjcX9r4gSy9ztK6Cd7WWOZXCvQpGeKxtORjYoSyeoKQq6wkL/NrJ13DTXfJFGhSKgAAekIjUlymYCY2TzVqklx55HDKgfmI8BWRI8NF8XoETTO0pPX7MkSXULfdEMzjJW7FYTpfG1E0ZZjx8V80UaJdqI3KbH6sYarXJYpHPnYYevOkFv9RtxhHGiB0B/YmVKeB73wd4hkiePYY4xsbmTSS2sQ/zPz+If6IKo4ZvCFekBcNW4xM3ZXkOWV3QjhZ9yX8cFevBjojQOcrKa5liKlv9lBHYCEN7LylrEkixVwhkOga4LuIgl9xUoufaiNNGG+/39LUfW4NN5vn0cb+xG69K8s0C0LobOebI32hPI7yiDgfqy6v7beq2ixwIG80ea5MxIdATJFnL5LVOAPAClQ1ur53xUk3pJvz5LB23rJkAl4sdH3t86buyEK95AjdWUiX4SKZMWyGKXpMYR6yDsPPfNKErUF6EgA2M5I0axeDhR5LNFadPGFfkoe/c74Sv0dtNk+0tmg3toE1x4/aiS3O9G8yIs8c1ws2MDg/bCzjTbpM9B3+XyJgKuC2FzO
- 4NVcAmQW
- 6SnDLCB3nGVtJr9SzqzRDPNSIDRTHDEMJpB2nnVdqTObPGDI1PKUNqw0CGx6ufK9TI633Ggk8J+ynWgmfl5T+vT+DKELAOHnNeu5iyvdKlqB0d6QoBvcIKqqNEZvE2IfpLtZnzVlBnwaoPsenguA40e1MtB5AWw+ggit1bkVdQCxxEdk+KPrenSeU/KaeIMX06lSDW+cluZ5LTUMzqJWdS40s0OvtW3b8ig9+vpAum/1WYev56JvtM7AAJwQfqz2PG2XRXvRfEDuZUK900WMWX2HUc4I9DIvsQ1CtZlX8yxS4Y4EeZ74s4VOCY9PDOeUkpslADiBCqFbY6GBaWVsD7GqSAiAL3yXTiJTSp+mqk13oxZ1ap3U1ar0i6fFvJjAtLZjiXNkWpxkME7tR2FTvre3JPb1tAwbDWDewgq4KpJjLlL1Q2wI7ugx5Ry8PM11tntcMJMy/VFBPOh1EmR5Ah/3HxSRgOlPEZilf+Vv/AhQD8SmK5l2ytWkwTEpCmEOcntXRHyU/MWjSKUq5v0vNewoNX+pCdrHZxAC9RA92g/eLMrt53xzkgyTT02mZczNDRZyA85B7ZM2ieZ9CEMGMJyT5facvb7NhgtA8sOJTd7C4p7eN/V7ewf5uOwoY56CmRRa1IaOgHio9HR0NL0TUOGHcLw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1768507993-914120
+X-HE-Meta: U2FsdGVkX19wneVa4Y/NhNSWKgM48jlWSc2cL7wFsw5UmXKU7LWocjzkS0/r36/PmMytj1l3X4j/XFR9k8vSMWq/F9HVRymTZctvg2E8MzsMt5T1AFh+FSuqASSmAaKTxc1Bdpl2NUJr+NuiCdIoAtXJ3FsagAjRQ98Q6IsiMcbwZwkMjfdZ+C/gx3BkMx+R+2al5G/a8QR4OvPMAWL1gaziKONL2XQ1nYGOI2gMOSwtrnVIIQsrc9iVqjs6ZuotQz5yI66eqzX3SralSIl5P+C2qSYYC227PLkMWtsutSDW9Ls3vdt154hHxO7ZIu1EugCJO11yWUqtKuQYHn3H9U7BSh90tkHet7OhlDiuDiXyUq41zvGe3odCWT4FPPtHbhbzkh4cjELwF6rT/uPUPuIgz67zgZvGK0tgcSPrDxDOGrfWlCxqzfiScAB66KE4+uAvOn1IUdhlbQDmAxBjEP4n0re1Nh+KwkvM2WBAWZnsLu7uL2oRR+D+gPWmkip2DDsrmM44QEOP3wRFpZqawbHxokA4ap4hneJiI3CLL/wMGso0IFXaZhBW7SGEpBTrx+C3JW59tRsBzQBjS2oXfa4dtPrkk+gvwaNoPUGRwlkk43l+gk6/6oAbhmlEGPD2u9kYBru5hmIRjvk07insx2N/P1tGZay4eS9VrjxUUpbbBX2YCsw/uRiZC9/JSDzvBHACpgKbKseyz6KoOShVCRSobieMlHZzQTcSBcLbAuLfzciabCRkXyXDhGWhU0GayBjdcYFcwK+yjo7JUObeo4masT9wXzlHmNQ70s7Whrbjyh5D5cN3jGDzFXUzTwPefwxDele1Jda8GA56k8n/DYXYAhOUatM3rg53CifOW6s2NbaBeNKcBOG9+xYW8jVaqf3qGYzH//lLudXbt8ZhX6NQ29rcjfHa6n9nodwQvbvmsWW/VUrEveFSq055hc5boMQbzsIUFdYpB2tuy+R
+ CTe0hWns
+ zastFiRxvukhoeUnEAXXVXcsaJhcblf1b5aIu0Gj8siQO+5A3o3KJzxYn6JicS3Wg0eZXOl7iPJ/D3/tuFGl9y+6LVeAjCDcnUr/itMadJ+RgVlZ4t+/HV/Cv0siecBmNf+o70yWUB8VLxA/5g47LHhF4hrHloaGia5vMkjlUzaHRTP9I9kCiZwaAC4WpDLz43NNvmY4FDR3pk0Y3vAV3HZwSXDxY7Wcj90yKj4+l2VEFrsHrnvQTofvtfIroxLI8TaKt9jVjwVOmCmwdorD3ClG6YG0Y6jCDo9u9JR0hrJLMUyja+uxhF6ByLs5JeBW9emIIL2vmtsFJ1oJMOo4nww2yERQurToB9nLGwSKdgm6VzRFNrX/sI1fCYKx2wYb0/JYYf2UslRfXGZFrNXu1bfhLwkGuJkxTtEUOeZlY04GC0YjPTm+gUlj+ckxfa9DQU1CQrQK63c6IbyA=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000042, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,35 +115,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 15:07:52 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+Signed-off-by: Manish Kumar <manish1588@gmail.com>
+---
+ mm/page_alloc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> On Fri, 16 Jan 2026 01:18:45 +0530 Manish Kumar <manish1588@gmail.com> wrote:
-> 
-> > Change the declaration of 'seq' from 'unsigned' to 'unsigned int'
-> > to follow kernel coding style. No functional change.
-> > 
-> > Signed-off-by: Manish Kumar <manish1588@gmail.com>
-> 
-> Hello Manish, I hope you're doing well!
-> 
-> The patch looks good to me. However, I just have a few comments about the
-> other patches that you've recently sent out as well.
-> 
-> I think it could be very helpful for reviewers, if you grouped related commits
-> together (in this case, mm/page_alloc.c cleanups) into a single patchset.
-> This lets the reviewers view all related commits together, in each others'
-> contexts.
-> 
-> It would also be super helpful to Cc some of the reviewers / maintainers who
-> are relevant to the change you are making! scripts/get_maintainer.pl will
-> give you a good idea of who might be people who are expereinced in the area
-> and are willing to review the patch.
-> 
-> Thank you for the patchset, have a great day!
-> 
-> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 5e132ead5ea0..5f52d8e71872 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -858,9 +858,9 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
+ {
+ 	int nr_pages = 1 << order;
+ 
+-        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
+-		     "page type is %d, passed migratetype is %d (nr=%d)\n",
+-		     get_pageblock_migratetype(page), migratetype, nr_pages);
++	VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
++			"page type is %d, passed migratetype is %d (nr=%d)\n",
++			get_pageblock_migratetype(page), migratetype, nr_pages);
+ 
+ 	/* clear reported state and update reported page count */
+ 	if (page_reported(page))
+-- 
+2.43.0
 
-Whoops, one more thing. The deletion of an empty tab is included in this patch,
-but it's not mentioned at all in the changelog. Before adding my reviewed-by,
-please elaborate on it in the changelog, or submit it in a separate patch.
 
