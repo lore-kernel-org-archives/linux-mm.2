@@ -4,113 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC682D46606
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 18:14:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103CDD4660A
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 18:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0303C6B00B7; Thu, 15 Jan 2026 13:14:44 -0500 (EST)
+	id 654A56B00BC; Thu, 15 Jan 2026 13:14:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1D246B00B9; Thu, 15 Jan 2026 13:14:43 -0500 (EST)
+	id 5CECE6B00B9; Thu, 15 Jan 2026 13:14:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E28906B00BA; Thu, 15 Jan 2026 13:14:43 -0500 (EST)
+	id 425C76B00B9; Thu, 15 Jan 2026 13:14:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D10C66B00B7
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:14:43 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84C161AE475
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:14:43 +0000 (UTC)
-X-FDA: 84334998846.05.597BF74
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BA2AE20011
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:14:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M6S0jg/o";
-	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 23F1F6B00B9
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 13:14:45 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA0C613AF6B
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:14:44 +0000 (UTC)
+X-FDA: 84334998888.12.5AA3743
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0168620004
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 18:14:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lVxa516Q;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768500881;
+	s=arc-20220608; t=1768500883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=uzE76a+k0/N5f+yjx3U0UCT4vdKzz5GXnAP053TdQe0=;
-	b=O2t4WPL8gsqtyJtaXeO42uIIAgrN2VPSVqOpxrzpZh9XcwuW/LNsMtKZWdV6mddX8F7l8f
-	b7pdqgxcllFUO+INSaxJWbXVhXOlWmzNqU0DqcsrWzfK6MCAwTJzlsu4i9jxIski2Ec9vi
-	MQjtpS5aAg8KWtWdyj44ZOX+gbhYIj8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=O45eLppLOCW6F7IMGZ1ULnrc2pXJxucNBG4tS3sUSSc=;
+	b=05t8BEIHLjaW0/S4e5KEnOwbtQEsfor8jf6xz3webREuEue64UX/RpoJSCchI5Z62T8C8d
+	BqMKE5N2iclZv0lF4AInYYLTPX6eXgSvDXi0kSV3QcbH3Kb0OCSGFLRuyR0RmiU4AwXfjn
+	4vHes4ZoPCcNtQDlwvntB/jtTHOmflg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M6S0jg/o";
-	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lVxa516Q;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768500881; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768500883; a=rsa-sha256;
 	cv=none;
-	b=Jv3JzImDET5n5/HdIkln+wQ/wWFSw/CQMIK6f3i4NIO/5ZloxrpLFev9qExuvJiRJ8xeCO
-	I7vsQCRs/vAT2x5zdwnHEQ/+zwrcBpKBcggnCfcxasjm3xnh0O2YMeICaps1TptCoRWzJs
-	RWPvRXlYgm8qzpFi719GegLQ6YUSUxs=
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-644798bb299so1108029d50.3
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:14:41 -0800 (PST)
+	b=v92KdwwSdA6zX6GlU6E4HVEQyGtjXn38Xcdf3ENy9uf4GaCeWr00OvCEfQApKgLKRIpPJQ
+	SL2Bc7Ee+aq8NuEh/kS/GxG3bw1HvtAWyp37mFBovhVBtKA2SF1dd8/g38UgrZ9C3PoCsz
+	HGhQDWiFt1M4Lw1xtcz2ld7wMIXQUFw=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6442e2dd8bbso813634d50.0
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 10:14:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768500881; x=1769105681; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uzE76a+k0/N5f+yjx3U0UCT4vdKzz5GXnAP053TdQe0=;
-        b=M6S0jg/omWCAOe4PWHLLQopx27qMza48CBgj+TYgn7X3b32UYaBzTQv9JodOGBjwkq
-         bR58gKazD1zcaKpbTeHEVjuCU8T4x/VuhmKzZYgQPPwvjznOd6tu8cfLmwiKCF/+7Fde
-         X7y/kBYqFEihPhvLyBxATGQmfdyUMfL/wxCbS8re2Bl8b+EW3DM4vZoBCbrm0PRHJX+l
-         Sy66ZpwQBEwqClBNxxItSFeUXInQctIvegAVFf3QZq9oYAu3mVHuqZ4e+oUGqVQ+5PRm
-         PA7vu0Dhy8aRCKNVydVKyzpBlqWvBiNH84h6kHcRVMAe1P6I+VfLK6prnItQdB2Qq9oo
-         Uz8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768500881; x=1769105681;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768500882; x=1769105682; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uzE76a+k0/N5f+yjx3U0UCT4vdKzz5GXnAP053TdQe0=;
-        b=YPVFyL60+Cu9oBjml5cMMHDILYWOOgOZTJBiHutEe8BVrm+E1B5Ms+PcjzA7/9+2jy
-         8pPNd0//mwG6Luejgp+0K4VIbQS3D13Fit+hbYkZDusEDAZ8Bwfair1VVQblGXFwGZP5
-         q9sIU0o6DUNP43YgqIQTtu+e8oiiUiBCAYl5hUDblA70z4hDrGMMPiUFJvlGHee/YbNK
-         gKnhB1wcny2YbofgY8vSZjwCz1NqOtXucohIFiZrgeNDluch4flEfMFHYN6Ozyp2brf1
-         9zgiLm4TRVIcg8iZt3X4x0CMqEpq5fsKkVRx0So13KJ8sKyHWBOG6DJqgT5UBbf24TQY
-         VJXg==
-X-Forwarded-Encrypted: i=1; AJvYcCU379mwycCSRLsfIiu73+eflYgO/knP77ac/FB3KzTFAPP6B8EG9w34YEc75DIy0J6x5PahXWzDsA==@kvack.org
-X-Gm-Message-State: AOJu0YxyywycIDU9E5OVGy6ZcWqEyh4bFhW/MMYKuGpNnxvxGxqZ9apH
-	+SFNkKAKdj6OtVLoxwCT1CmcDkUVkCwu3eLbSwBVl1dVoYN4vAjMsB1F
-X-Gm-Gg: AY/fxX6N0xBmAwp4EhMZWRKncfL/I02CZ/0lq3B+LVgYdSKjkk+o8pgZOI2xhE901ZC
-	ppF09SLjAH00DRgUNkhJj43XPezsywVygO1qNPBXbxCrtL6B7zVCB4qx3ThqJFH2egqKcGHZO57
-	1uviDBDo3CcRc37v3KaqYY1lagyHuxfHwZtGuNAc8Lboy+aq2mp3d0OB2o4Pe8veY6is92UDb7a
-	xbk7TuDPHbModBkCUA8UpwBzAEu/qGH/EMbBZC2JKgP1pEapKCroBzasI7TkxgopvFmypETVXRE
-	4k18jJrzzalHXRDSLhpSSZYXttKsgrJJNsp6NvUDj0uJrAJSafRiZybs52cFbztIYfpg49IFu8T
-	0t3JDEhxaAgbLJRGVk9F7ReB+XmWO5zyIYu1YUGkT7JptjPEr8+7a6YP+0sYI80fhz6e9SekiFl
-	Jtws5N9NPK
-X-Received: by 2002:a53:b3ce:0:b0:640:d255:2d75 with SMTP id 956f58d0204a3-649177114d1mr8404d50.48.1768500880744;
-        Thu, 15 Jan 2026 10:14:40 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:6::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64916f47c8fsm119480d50.0.2026.01.15.10.14.40
+        bh=O45eLppLOCW6F7IMGZ1ULnrc2pXJxucNBG4tS3sUSSc=;
+        b=lVxa516QHn69fvF06fjj2gfu29R4JbK4DWtdqn2buNOu/NQDvcHBL55NnGZOpAWJOm
+         jIaAWOm+rRFGeyt3u8A80fiq51aRVBPg7ZMzKVLejM3G5oeHesuqvbXzJ3zVP8JNoTuj
+         3WrvSyoTsTY18BL6qpp2DYIJcEn4cI2TomXiIw6RCgjYlehRlxj6AAQnxr+zOr3XwUSJ
+         51ZkYpwt25tnItQSVdwrgZnN3UDjVD9aFrPxl0OKRJAZb6Tk5P4WrqlhTeWhvwixv7IL
+         XXJSOYPQzKaILUeNXYJfGJ0F1kf2d7p+o4+/JvHdcFH3or17h4RzRAMb2f1lTW7HNea1
+         Xevg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768500882; x=1769105682;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O45eLppLOCW6F7IMGZ1ULnrc2pXJxucNBG4tS3sUSSc=;
+        b=VuszmUiBO8AfhfT0P7gytXKhyyCTW0V+Vr6uN14JT+fGHqRj3HtJmu6WzNtZGdAjuz
+         0rcmXioqgjexnG73FRA5r8bn0tfMFOtN9FO+LEKSrDxrkF7LmksjuU8DZzWhhhfTHNGi
+         peRAzinbiUQ/GXvTyGBxVopwpsqzXvxEINqrI6xDc6K85NzY/tEB2sWYQR276YfjoLbH
+         K/WyhODLFlIKNKnDnNRMmRRtxszBlQW+2/JRl3evxLGS2RiaC5QrcMIoJjLwkEAuERua
+         7RBey00QdIiH/tuOAcrC6bXAKx+ZjC6W6nQubSf9ZbahdYlhaZXOyDdT92CuaYp5XkiW
+         se/g==
+X-Forwarded-Encrypted: i=1; AJvYcCXSuDsWHgmE2fq2HC/Zo+NCh//8YQ1HTHLCW6F28tffW4AObObcSUroKsH6lq1SYdjSlvXVtMqMlQ==@kvack.org
+X-Gm-Message-State: AOJu0YyZnxuClc6q8kJHR007o2Ocaw3Ylrmk7EQy8O/awpSKromTKjii
+	Ld/uVNXyNnqf5EwbU1psWjrlR258MkI76bwLj1n0+SEpL4ioyYpF9DPV
+X-Gm-Gg: AY/fxX4lvARZn2dOMZwZvMnA1nEfXU/ry+49yt0fyvzpOsQD+/GB5uTxBqabgwLgFuy
+	xoBgdmfSqtCkwGTlkVPl8sWi7711IwK4L0Pht6vMZC72I+BhJ/7ZEe2eUma6Ajm1EK7UM0ba3S3
+	/+lTBlo3RpmvnVL9mIlzvb4wpAeq4zAnkd1/zsgpbg5glF71L7Iv++VGTM7hPOm7v5XgGPoiHhF
+	/78UZ3KZ64BN1Sf9uF7FmVX886zn3jFlQSH0HgPul9nYucQX/0h/M0BHkR/PX/psjvXAsEip7GP
+	RFFM+TZ5nkBUVJ3mhmZnKG32qrMOHWTlnATrehZBFIoNoB83+Lh38V1Oe7cdzROSL53xn6cFxGK
+	N6YSNtfipSL23RggIpJNjZ6W461OAmsPXkhr8NrVdV4xM6CiEbS/4eCyWXhp+i4otxbyxUjWnfK
+	PpMQ1JdUjQ/uOCvwqLEMUQ
+X-Received: by 2002:a05:690e:b46:b0:63f:b634:4224 with SMTP id 956f58d0204a3-64916484f7bmr462440d50.21.1768500881797;
+        Thu, 15 Jan 2026 10:14:41 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:44::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-793c68307b5sm98567b3.32.2026.01.15.10.14.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 10:14:40 -0800 (PST)
+        Thu, 15 Jan 2026 10:14:41 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
 	Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
+	Wupeng Ma <mawupeng1@huawei.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: [PATCH 0/3] mm/hugetlb: A fix and some cleanups
-Date: Thu, 15 Jan 2026 13:14:34 -0500
-Message-ID: <20260115181438.223620-1-joshua.hahnjy@gmail.com>
+	kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] mm/hugetlb: Restore failed global reservations to subpool
+Date: Thu, 15 Jan 2026 13:14:35 -0500
+Message-ID: <20260115181438.223620-2-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260115181438.223620-1-joshua.hahnjy@gmail.com>
+References: <20260115181438.223620-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ojzy56ea9u3b6w5oknwbmajkh7x4mjyr
-X-Rspamd-Queue-Id: BA2AE20011
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768500881-133324
-X-HE-Meta: U2FsdGVkX19y2H3M4KOq0sK2/jwcEAyJraNtXQkzPJ2XOGuXx/jiVJpr69xXIWofO7oHqt8IrJA+bl38Lr9vgE1tzFoHV6R7zWoGfLBxaQCR20Y9en0j30SzN/wlRyNN266d68Wworby/YkutjT33//KDhobsam5EkTRp5hp0le7VmHugyAb+aclp5H9MAlvZY2umveONDo4rUDIb0MmmRmeq7UVc5XQl348wEChFFHlfsFbf30y9spZB1K6t4B9gs4HiIE2NsTUKTAB4s2TISWz/crVHaKylhhb5K2saCND8e2bQHAvZyuVDUcK8vnG8e+w69TJqw9cwkdfpqTMSF9vCcDVU3g+jAGbqR6kKnZkPfo55L3f5qHB23S7vQMlk/0SZLYaijX4r5jZTKl37oaPunVwT2AsgKLDQBSYThXjo/8IvuInAuY3K36sPWK1wCVlLM3iQTbQ2ouelvGUMDlXPKUVuHSHp/hp+YD80hr7fTOqiOcSFmgS9TMH+C8qFEhdBr61Bmm/Z30pHdY63DflsayWexzoP4ESZmuk49JpstWkSnM8ZydmUI5gyxUwvl2/n9MYmPCIDUwTADo9YuVjCqoNFVNvnsqaH9vpNqqmFejHhMX65SmAm267HTJt9XI95qV+fAlX1TOoD3RdRRuAlnIZLTxkyaFL+T+YvzKku9MQRCnJ2i/Ogs0ZXlXcY8e3Wqo4nOHBmZb1QkNqcx4naHuS889AYwgma7cPzGDl/aCRrHvd7LKUhhmUD7piuNLfr9LSgOAFT7bbQ+mjaKwCzqSUpTrBZmCHViot6rgEjPtw94v9Cj33J7m8rrh0Tnv3FVoNMQ4peXyJKlZc18NSB8vkx6zr2iOC5B9nZD29LVYhZhGShcnkW/j8TuT2EM3zE8EC5LB32r8H3TBbBLfhEp8qxNB/PXmk3nWvxq/pm18H8a6cabqbsCDVcFFbPRsVlfQaIqT29E8PgCw
- nsP4nOBU
- F7I4Jwzs9uSD1+2wPUb0Lvviqk70H4TzZl5qQB7oy5t8difKKT/tqbIpbTqHeNhQuuU3OkzoVLsitCgNF/du/uDFykYi0EK1ovpkb6EChYv/67ItYzm4yarvOn7csnB/y4s+aVfXzEJYvjK8eMsEPZs134q1MUOLE4VA3RGrgu11r/3BTQ1LRo/4v8N27NPCwbyeOgexHljUC2FYTzEtw4p+87mac5693t1+iXG/Neaqxv/iJ2v2N0sMAUlSKqeMExBe4NdjNOjBNKaMBUcXAaZMGKuYHrtf31t+gwMwxHUArcQWFII+FByT6kqQnuTKbrkIXl1Fa1CNMDl+2u5BxFWPOMmmMq1yKMCsCK8G+jStaCSsaXcqWmsU2pGOwLqkU+cNkoiebDnDvyp3gg76jTwZ2waKvShXV8Qo1ANPpAr/QXozb6/MkIsiFgaTtuUkVjUwVjHuSkJbBIV2MhJggaXptoQ6VNzzSmM0qcNDNxoeRiqrPmrTF420a8wXpxpzbX+4HqdMy/XPZmrnacD/rJa+brQv/6Hh+r+tWLejwEOU/8GLGIDMIdbrumIEcVlFORNJM0uWGlAlBFGERi8BwO/IfSg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0168620004
+X-Stat-Signature: x1mc81a965r9o4erscx3pwuq9umwdfnn
+X-HE-Tag: 1768500882-403455
+X-HE-Meta: U2FsdGVkX1/5ZVOG2MIFghgs8+E6gH5KTCWm7uv4Kepoo6Y1HhSTwR8UJAYECUSuOGlLYW8g+UCyoW8/j7pGHKm2CKM+KS8lEX09rsTBnDz88WzNOnPCiVWFoicEjTdNnTLNMnu3P0uXo4wLzv9B7oE9bzH/tmCbg/LKqSKZ07zZoVwthCN8IT/OJLZ3BmDXMFFokjm+7F9Or+CRA/zeU+eE6txAHceCiIapbjN9gdp+ZeUtSlkORt/1ErIzHjMXovgpC7LvZOF58UAXTb6/zTCITskcwJOxSOcXwulrCXtHVKSLYQ6oSsGu0bmyxod9b9VfuB55lawyUF5SGruYKWND0Bzm2M5f+c756pzAwBGde74mBLJ4emKYyWCjHZ4drVQqpoQW+cFkHN/uA7DAnRU6svFs9w3h1oTN/0t7lNSq/5zLFU1XXt2ie/VSyUg7YwYIKWFfT5wXWfFtEWj7n088A42CxKejSM11R/zHp+a0gp4DBmqhcAGAv85Iyz/4rHQvrk173ykA3iBlg/ws6imaeeSqNCSmnBH5luSpwYNdbiY3FAcwjxNxn1ESrjdnf392vqVPOG0/gmdl2uPLpwkAbY8Q0QN4rMX4mVSn10TZKpFkdz9upSmCblE0mbHk5cOw6vYwwvo7WmlM/xbmpvC2RddCpzH8cy01NdHkg1vkYgYWyLDv1f8msVo8npF9mXZPpM5SCkn2t4U255JbADj/PeFAb0exXZHG0Ne34LtZhM6eHdC86sfft4gO4O858Z/epRfGXzhzSdZ4Zb98Vo5Qz91n+askzHPh/VTIRMFfoAL5km6YbcfEDhnJmKIEjIZHh21Aezf+/n9LsjkMPCqPAhIhW4b5FV98vr90w/xJQlJeQ2dqATWDRarginyKVmtuUe8oxD2QfwpHQl9tDpJZSQs/bR3LOF6IXuCwaYio0MAd4HKNw+7KJYcFDIVtYc9eIb8GeMDVUj+texx
+ 5Pf9csz2
+ a5AhrZU//9yPNl+yWj+vElDpccokJRLsMdyOgxxgkuP03RKpPWwXOaDjg+sJZ1BZ6gc0YR7LnXexYm92ju84xdtIiHN/5oLwW/+L3ZxRf/WhAQLOw6SFuZKssgBTWRb7tDaBtkhNnc6p6ZlGmmjeqySPmweP3zBecEbFAOa2ozFgiLzszaQQNmy2NbO8iVU3ld/QuuOBXWAiffXxs/jADwLwVqty78rhCRCx6dk3dd5Pd/yTErTNGi0GhKgAFOAmSFCub+0SChuDPKpaF0Jf20AJcpJHYnRtwXqCoEMI1czNX/8EQE9iRo1CayVoeLnj0eCH/euKKEeBPzbWMbuFvkjUywjb9lyXFK8+KUyz480G8ZZ1yCEVX9O92oBzzBBekc704h/VJWUsM5wRJBsR6/yD6LcjKdYjs5fc/Cf2V/3NchNCuz5CC/P1OJIOlKF/f1DJH1x/kCDrjkoSDWMET1Gbn19XG+OrcltPxJdGKzOHn9bFUbdyS274+NEB/8UHAmjjahfVAUnsBBik=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,29 +124,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As the subject suggests, a fix and some cleanup patches.
+Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+fixed an underflow error for hstate->resv_huge_pages caused by
+incorrectly attributing globally requested pages to the subpool's
+reservation.
 
-The first patch fixes a hugetlb accounting error that would leave
-hugetlb subpools with an elevated used_hpages count, if a reservation
-attempt passes the subpool limit check but fails to acquire pages from
-the global pool. It was introduced in a833a693a490: ("mm: hugetlb: fix
-incorrect fallback for subpool"), which itself was a fix for a hugetlb
-reservation accounting error.
+Unfortunately, this fix also introduced the opposite problem, which would
+leave spool->used_hpages elevated if the globally requested pages could
+not be acquired. This is because while a subpool's reserve pages only
+accounts for what is requested and allocated from the subpool, its
+"used" counter keeps track of what is consumed in total, both from the
+subpool and globally. Thus, we need to adjust spool->used_hpages in the
+other direction, and make sure that globally requested pages are
+uncharged from the subpool's used counter.
 
-The last two patches are some cleanup patches that I've been holding
-onto for a while that I didn't feel was big enough to send on their own.
-No functional changes intended for the last two.
+Each failed allocation attempt increments the used_hpages counter by
+how many pages were requested from the global pool. Ultimately, this
+renders the subpool unusable, as used_hpages approaches the max limit.
 
-Joshua Hahn (3):
-  mm/hugetlb: Restore failed global reservations to subpool
-  mm/hugetlb: Remove unnecessary if condition
-  mm/hugetlb: Enforce brace style
+The issue can be reproduced as follows:
+1. Allocate 4 hugetlb pages
+2. Create a hugetlb mount with max=4, min=2
+3. Consume 2 pages globally
+4. Request 3 pages from the subpool (2 from subpool + 1 from global)
+	4.1 hugepage_subpool_get_pages(spool, 3) succeeds.
+		used_hpages += 3
+	4.2 hugetlb_acct_memory(h, 1) fails: no global pages left
+		used_hpages -= 2
+5. Subpool now has used_hpages = 1, despite not being able to
+   successfully allocate any hugepages. It believes it can now only
+   allocate 3 more hugepages, not 4.
 
- mm/hugetlb.c | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+Repeating this process will ultimately render the subpool unable to
+allocate any hugepages, since it believes that it is using the maximum
+number of hugepages that the subpool has been allotted.
 
+The underflow issue that commit a833a693a490 fixes still remains fixed
+as well.
 
-base-commit: d70f9612414bd3ed6bb709ccbeb4206d1a1927a5
+Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ mm/hugetlb.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 2e296d30a8d7..88b9e997c9da 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6560,6 +6560,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	struct resv_map *resv_map;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+ 	long gbl_reserve, regions_needed = 0;
++	unsigned long flags;
+ 	int err;
+ 
+ 	/* This should never happen */
+@@ -6704,6 +6705,13 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		 */
+ 		hugetlb_acct_memory(h, -gbl_resv);
+ 	}
++	/* Restore used_hpages for pages that failed global reservation */
++	if (gbl_reserve && spool) {
++		spin_lock_irqsave(&spool->lock, flags);
++		if (spool->max_hpages != -1)
++			spool->used_hpages -= gbl_reserve;
++		unlock_or_release_subpool(spool, flags);
++	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
 -- 
 2.47.3
 
