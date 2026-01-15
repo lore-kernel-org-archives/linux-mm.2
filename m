@@ -4,239 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5F62D4117E
-	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 12:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEA82D44C42
+	for <linux-mm@archiver.kernel.org>; Thu, 15 Jan 2026 12:58:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 599B86B0088; Thu, 15 Jan 2026 07:41:09 -0500 (EST)
+	id 48CCA6B0088; Thu, 15 Jan 2026 07:58:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 570D56B008A; Thu, 15 Jan 2026 07:41:09 -0500 (EST)
+	id 43A726B0089; Thu, 15 Jan 2026 07:58:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 453136B0092; Thu, 15 Jan 2026 07:41:09 -0500 (EST)
+	id 312DF6B008A; Thu, 15 Jan 2026 07:58:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F82B6B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:41:09 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFB9858332
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:41:08 +0000 (UTC)
-X-FDA: 84334158216.04.F59C30A
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 60826180003
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:41:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=gmt913Yu;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ass352NQ;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768480865; a=rsa-sha256;
-	cv=pass;
-	b=DY785QJ0SYFV2wKeOY/8EgypUUzpctE0+KR68boY7r4iP3k1+Bb+FRrvhppDM7TPK69Ts6
-	7p8p53rWFBkBQe97E+HIFHZ9EKVG4nC4t5P1YnFt7tH9HGuEKIzGDpccqlU5ptgJfOFAyk
-	RIt/meGJEtmzU4KcuvGM07aiYp0WbKs=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=gmt913Yu;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ass352NQ;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768480865;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 20E156B0088
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 07:58:01 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AC06D1A01BF
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:58:00 +0000 (UTC)
+X-FDA: 84334200720.28.B2ED8C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B7CA5C0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 12:57:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PV5Oe7zK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768481878; a=rsa-sha256;
+	cv=none;
+	b=8gn20RZp6b1NJDb6TvvD/eEsmmo6AnUTPDRLmv3TAnZEnrdMAaOrK7OwrgG8x49uR/extV
+	3/fIxJ87Z/GH6Hb6OlpK6VelN5ROZttUjbAS9cVle8K7S9WnuV7vo0675H2PwWedWx4Bhd
+	CPdUQspcxAdZXeJB1dqLeRK3G8Ut1qg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PV5Oe7zK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768481878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pUd/kv2lcFFW2hHf48J3Lo4+hROUx93JtEH7K2pEXsY=;
-	b=frR/0dLWmpp+bgIXwtmrzcfxj5kSWp70AnDx1tV8k1aXZe2wdakx7qIJ4HNYdpNkRx4eBA
-	zlytXtbRv6mQHslTkivFhQMYBPFzPZwPAFhd8Hq0I+1qbg3DexeK1ovC00T0KdMJmi/25P
-	6QdmD+tLvmavfeonSJZR1hF7Aps0OkQ=
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60FBCqOn1360856;
-	Thu, 15 Jan 2026 12:40:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=pUd/kv2lcFFW2hHf48
-	J3Lo4+hROUx93JtEH7K2pEXsY=; b=gmt913YuXBsLeQ+p67Fi8rHZRwKqDwMcus
-	00oWPnCjxofVAF1cdOUQd2Xqw/U9cUqrzPuNOqV9MXuQUgmNGXV32Ar8GgcrehHq
-	C/qFRNHdbZF1T1gqfCBns3ywDe2P23F/HUaKxRurn5VZ3KNntRKhSLKiTtGkrd/t
-	w3VWrxZykLyaf3cB6JMo+DARJLrU6yHD2E/Z2FJ96dMED+lA2kAlsIL4qT0GFIOj
-	u43IutOmfouK4bO0PkDIccl7nagwLASS+8SJie4ersLchnACPaq7vFiHeyXVtbVQ
-	gtSvyXpjV7xKB5wCQN0brICQuJQ/i2uLClbKj20ylYB4mFLuw67w==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bp5vp2wyb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 12:40:38 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60FCSr46004204;
-	Thu, 15 Jan 2026 12:40:37 GMT
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011010.outbound.protection.outlook.com [52.101.52.10])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7n335p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 12:40:37 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UnO7avXc1KVZ/txHOYiQGu4joQ4R0uv9r4yK8BBD/1R3NsqCWzGZh3WQBAaFBcZLCt+5I3bANuxF4rMvaCMjZkYQyWRufu8+OF3GDoeQ18o51DXyJREhCExAI+IAQiWTyRjZCMxUUhQGzb2IP/9orT8CE2+ufDuiFp3niAhUvMKauAPtOSKbzcvub6uLzQZ/Wh3oHliPJZv/Oa1Ml+pc4cCjotO0JUOvcvdr7vIhSD6XXxAjSboCQhW6YaYTa9Rxj+6KNHVVJr3ZkcgzNS+i9anxSRBodw0plMlr2cPRtOb4OWtUuKBXOhBgSt49w/QU9JrLeX1EvQjsJxAIp4XliA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pUd/kv2lcFFW2hHf48J3Lo4+hROUx93JtEH7K2pEXsY=;
- b=lXd5NSZIcpgwmiaWq0ymxhIVNSyhkHZAjAEdz5qK3DtolU6p1QNfxh60rHiI7qtrqbCg2bI4XnrZrb5/HhilNstPN4GD7tXueTw8+fSabF0E7Y9XZnj87AiSdiowtJxizPJnOAPsbOlZd/etzaxmAWEf8KNN3KFH1bwK0LVJND/eEPgrsMhh4rtY2mHjwtqEcKNJoweFqa2z5Ul+RIkYqMLyZAau9dIVl538yfWZsCCQAJx06+p4VjaRhK+kKvw6s9KYLIzK1YXzKy/5mUALZsVcx9YVFVi0x11G3rZHkh97c8RtCgtlcj+Xk7jaIMjdIo2HFFLGnEAlRBgcEKmfbg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pUd/kv2lcFFW2hHf48J3Lo4+hROUx93JtEH7K2pEXsY=;
- b=ass352NQ8zO+0TMljrGTzs2p04vQ0GF9+EhrWt7E9dRsRZ+457UdtDC7ZwAEybYf4pCUmSAPUq0xJ+AaqzGaXHPzPIhoZ3b/H796xhcoc2Yx1ptcQpuh1g4s8AZk89WBJMAtQBIPIq18sTMKHeipFN8pBSJ/s43Vwx5rU1ATEdY=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by SA3PR10MB7072.namprd10.prod.outlook.com (2603:10b6:806:31d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
- 2026 12:40:12 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Thu, 15 Jan 2026
- 12:40:12 +0000
-Date: Thu, 15 Jan 2026 12:40:12 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
-        mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-        muchun.song@linux.dev, david@kernel.org, ziy@nvidia.com,
-        harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
-        kamalesh.babulal@oracle.com, axelrasmussen@google.com,
-        yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com,
-        mkoutny@suse.com, hamzamahfooz@linux.microsoft.com,
-        apais@linux.microsoft.com, lance.yang@linux.dev, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-        Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 00/30] Eliminate Dying Memory Cgroup
-Message-ID: <0a5af01f-2bb3-4dbe-8d16-f1b56f016dee@lucifer.local>
-References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
- <20260114095839.eabf8106e97bf3bcf0917341@linux-foundation.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114095839.eabf8106e97bf3bcf0917341@linux-foundation.org>
-X-ClientProxiedBy: LO2P265CA0416.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a0::20) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+	bh=Hi4SYjromf/cJqpS+mj48/FeRYAqtl7uam2EhyFi3WE=;
+	b=JvrCxkn8ksmXqplnRPtYXGuzqvOaG5vBhdpNqOq2sq0R0eol8Wsz5KBS2MqQsv7EWkLFMF
+	OBy/+99x8iPNqq93RuJvi84XVInI6GjE8jIQJBNfTCJ+vc8PiAxG/HOuz9ZnFy5aXksQ4e
+	aYEtBpDdc5igO1A6fbi2kNgjYlnT0p8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8AB6D43BDC;
+	Thu, 15 Jan 2026 12:57:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB70C116D0;
+	Thu, 15 Jan 2026 12:57:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768481877;
+	bh=QQQ5NrqGNbrA87NK6i9QuCICGXnVn9gpkg9MNoJKL0g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PV5Oe7zKD0UA+A8qh6TXg0N4EGR2AHpg/fqR1w+EZc4T+gwSUdpyz88M847BMl4QD
+	 dbRepGePEAnxC5SNW1WXY259VnC4pPnrZD6SVgL9Zxg5m4nxA9kVwQHmd/JAjnYBKr
+	 OHsfEazF4ddYZC1r1ieJvs2SKC/ndkiulwXnY1eCR0+6udzecSyveAdUECJGFIDAQe
+	 LsIYv/lOGevL6mrmp+nBhkAXCZ7okiMahs3NeV8W9gh2eBHBvkK3H1650Ow79RMx2E
+	 PoM57SzFndTkv2U7JaWHMd9WKbudswbbHONyG5PKGvAVIeXuIh6kg5HUcQledWYIjA
+	 JJuHNvV+TXZ6Q==
+Message-ID: <1539a8cb-4cd7-40dd-9949-a2c8f7e272b9@kernel.org>
+Date: Thu, 15 Jan 2026 13:57:49 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|SA3PR10MB7072:EE_
-X-MS-Office365-Filtering-Correlation-Id: c74eb249-2bef-44eb-0df5-08de543339d4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?D5sYt2EyyTAWEaqbxhVbZysoauCFgM68OQYDAAlRbD3UWPcxocu4m8BPPIik?=
- =?us-ascii?Q?G+TKmbBSHjimJHeMwRjcgXa3irk66A6hMiRJO/8s5SUxh2AFtBMnTv40Ch/R?=
- =?us-ascii?Q?BhqJQ754zd9FsU4GQgX8nnzomAylOsRUWW7SaWjXuTi0a+acBHaCCwkOPGNM?=
- =?us-ascii?Q?AGF9Ds8+6zJ8LBC/8FJZ+ori2MaQOqNW9YJ9PjoEykE1bPN0fC9H/csKooY1?=
- =?us-ascii?Q?cON2Vx8aNssE3z7ob12DYlYJHWdB0Qk6xSE8qWKwiexiFvF7p4A1tYpbx1tK?=
- =?us-ascii?Q?4WEb88MF+ddtum2IGk8Aha/LIn6CIuBdJ+QDIaa9fxM6TFZHkn3YrXAbwCr5?=
- =?us-ascii?Q?UULl+6SfCBKqjICD6i9K07o46BIzCS16JwEmFXjOwXRBrY5fQjiAtJZoBsme?=
- =?us-ascii?Q?30tdp6MbyXmuY/Bru8aLBtNdtkgVouGhWT+3K4spPbDq8FPFc1f4Lxa296TB?=
- =?us-ascii?Q?3XWyHGedVNnm4m7dIKOanZOIIHTVYHup0DB2muIAvHu1bgOSbcWzLU8UrRLU?=
- =?us-ascii?Q?XBN+jQpq56s+ajvvVi51uaeE+REu83X0j03iclC4JcjjSWTDZL9350R79Kt3?=
- =?us-ascii?Q?RH/xnXUvb3iP9uX54/+nQfVtMLvDIZNi2DiiFcV8z3WydQS7/gqe8Ou8S0Sm?=
- =?us-ascii?Q?iPUvnWnW+RTtvZE70d0awShoG6DtoAECbbYndIRb5m2rwRzdZB9e6MTYlCKt?=
- =?us-ascii?Q?K4+HVUR78tsyksBjfjwpfNs6vAab/j99weyNxJg48hj2irEX8vAshUN1pS3s?=
- =?us-ascii?Q?hShjoR133AjltlEDbPhpYR8eMUYCwtW/J/3UNYC8iA2DxzQVp0Z24q8aBavL?=
- =?us-ascii?Q?VRO21IkBHrpLoYbE5eMJF2dZC7zPakRyxhYOn7vPDuOXSArbQ4nB3Si7/a1X?=
- =?us-ascii?Q?seSuQ5gYxi41HRPM980/lryQLSclIw1enSLP9HDx5oRrrDvo3FkrQz4q1nC5?=
- =?us-ascii?Q?W2E/a0Ya51IUXva/VEFeSNTvFoeqGVrrcwjiU9SwfQNBOKJZNN+ArponOV/2?=
- =?us-ascii?Q?8nR68pgpG72kS84oWv9g8jUZY3cwFmd2KiQsHyAFUbxMjdBrJRWH1Icpgp/8?=
- =?us-ascii?Q?fVyB2o7oN63UyKgSxhqTZVTafKIwUCGKFI/jQ2vPXFnolacNZyL7zuiaq7Rh?=
- =?us-ascii?Q?Kd2+Mr66tBdjqOeCcW3FwNjK33fcq4AGGUuvlWJ3pkemLAJxkqcUzfv9KQLX?=
- =?us-ascii?Q?OWO6yUuOMq4EdhtHP9ugUsfJJ84S2iqt4tne6oMx5UzJnyYXEFN8voReOq44?=
- =?us-ascii?Q?/EORXb2NHbQAYdj6vhsCx+Or1zn+Aoxw/ssri7+ZFCDLNUXnQHDMiiXiJuXG?=
- =?us-ascii?Q?tmfZ9XkPgKmyc78tNG31aT0xY4BbazrKxIyMhHzqHZnJT2vwcZnOScVdIJMu?=
- =?us-ascii?Q?tz+DT++8P+jnLf5BZP6KPRx3kgBzQrlVSSf+hQN6I4ACZpIoxZnhm2zla+SX?=
- =?us-ascii?Q?9Cnk81Afxy3z6huhKcEkirFVLJ1otZI+31S57aFesY4pyFk+A9+TKQEHfCWM?=
- =?us-ascii?Q?H28+OvnAJvGo7nATT3kj1nw5/mKDKzQ5u2kkur8YIPN9u9tHeCQS8lQrBDoK?=
- =?us-ascii?Q?ZA48SO3KJu1zMybCThM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VFCAFNkJux8lSpBNgytwGVX+OTkXmc/D58pewfAEShRKATBt+I13Kk4tw6GV?=
- =?us-ascii?Q?CzW/ZaSIlKBwNaUhW7v2xnEkcA8oB4TQ3hkRxL5rqpTJYNJbnYOpWVdHEPAr?=
- =?us-ascii?Q?nW6K0Vtm20T4WNjdZbLS4uJkJY9ahfoL9nt2/P9EAayZpTBFVLdAWDlGad2Q?=
- =?us-ascii?Q?VBjqQUOid5MDlLi96Ko9jDeNh11tzsnGbEgqt5fO1cdmwOUGu1WybTvDk477?=
- =?us-ascii?Q?dLT5+cndFZfI0t/g1VGEU+7aOzJTDit+C12dMz3MJV6OuQ6jFeJYi9VZCTFk?=
- =?us-ascii?Q?veZSs/6gSfCOz+BX9kasV0CwBHpimH3+SjiweEXIGWo+qA5FKR9zeE/kr0Be?=
- =?us-ascii?Q?C+WBuNTGgAlN0sVljRgEgelaeDLkoEeU/w1bdlu8GMO9mWrS3uRnoa3sHC3C?=
- =?us-ascii?Q?/CwK0y0WymAI89HpuUhP2Lcn7fz1tj49sOqKNLS974sPj2WSRZK6+1T8Pr36?=
- =?us-ascii?Q?QghSA8NvcSlc90NnOnTiKruMVk5N2P6eeMUXTE5d6M0vfm8SuPfv620J2QcY?=
- =?us-ascii?Q?jb6ArCz0Yfap+8Rza1i5OghE+d9Jgn6WOew86edmy2jjYY94qwLsW7yjJIit?=
- =?us-ascii?Q?xSfqhoTiPyrrGVPYocSY/Sk4thx+YlFeCIDdo93McYZ4sOdnOzIVnSs744Ra?=
- =?us-ascii?Q?bH0GzL1LWH+48CtSZiBYCUR4NV93w44wVfbnRLVp46d+F4NalUOwGbkMN83m?=
- =?us-ascii?Q?4k4DigY3ss4U0Edq6TxIPQeUJqDAwvN0WaC1FqiMnOPXZxIYU/9m0+Wzr2SQ?=
- =?us-ascii?Q?yVVgpArFZpxmFwQCHg5OrmH49fjpZneyfkam2oRU6veRHnwJlmdnk7zZa0uT?=
- =?us-ascii?Q?iMHucGcsV8MKt2ZO5SgwjdaZ58t6uLqI7uYt71L/z00RGA/S4KFcUWbQPW43?=
- =?us-ascii?Q?l8IqMj6gLczrdZPyoOiBoM0H35v/7xZyWk4CezGfcAeDohFrzvBrd7IuTyFI?=
- =?us-ascii?Q?Itgw6RZHinhiXzfTwIld9wvM7JxUw+UatzvAxB8aAeoAlMSbT/B/vKDpAhrw?=
- =?us-ascii?Q?3t35X5DxWxDkFmaf7QYR/NpABxOOonBWIj1T6WVFYuGgX7rbOCVL9WA8VgCe?=
- =?us-ascii?Q?uyZWKXbbD+rHxZnl3yMrCZ/wk3irmFFDW0pPLKoco0F0uwICQ4MZUBe+W0UB?=
- =?us-ascii?Q?/FHTwZh/w0Iu6AIW4xgrtq/YvVLrfCOzW5HY9Z0aBe8IWvYLyzojAOADJhwl?=
- =?us-ascii?Q?RpVtCxkXDbrY79YBkDi1Uo5WEbkrNea7qvrhAUwVL9tg5430Ci63ZrcTcIX1?=
- =?us-ascii?Q?8VZhL+6ycwYGxcKlGYoN/CNSd96Zp+e0xwp7lGV74TpYqXc3PUIei6LIsYiA?=
- =?us-ascii?Q?CBPJzb4vZ56OzSeIP2Ggk03n+/nmxXRDD84hpm6N5H28qMSme9ZnBtv+dcIF?=
- =?us-ascii?Q?JX5re8KUwQGpxkV89eh5dRufheJfB3wq3vlgYPwbRCg78PDlvHKSbzCuKNRc?=
- =?us-ascii?Q?l791SVA8kR0UQFlulpVqiqdkBAv3CwFLLjq5kiuS6URxzYRwqcsYGVfdNBSb?=
- =?us-ascii?Q?1cB97D6YiyOVryLrffBlDwzKYGfs2UMlT+hnexOoBC96X6LvF56YrLdKdZ+q?=
- =?us-ascii?Q?v1/m1H/Gq+nS6pyzOqG5lY6EwpGSB4gG+exLP7OpwH1KvRYgJWWTh+V71H51?=
- =?us-ascii?Q?rYOVAeToyFss9gvETTybbKYv2v93ilq30+yjxPEmOlfjEC1YoLPW4SK7TcfU?=
- =?us-ascii?Q?BZVQUGFtdj6mSiYvAScZEHyxi8/DGJ8DEFA2wK1u/Z1+sjwvS1f2FAXDoDVL?=
- =?us-ascii?Q?pyxcQPCR6x/a7sPlDrgGq9kLUdGfmjQ=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Z2xd4yJmSNLaCg1pLVx+Ra5k0j8qqUTGrzWZQxsLW+Um3KLF25eYkd2CpNqgHtj7Sn+JEfOZR0zHmjgC0OjWVLWPN1Tj5qiHuAlDQrrniDWSa8+WO3a4Ui+RwMz4UUaCAvkhocBadlWEWX6wrRlBOkZO5TIImzjAI/OOvsppaNf6g4TJythzM32DwVy4U2Jc3PXWeZN0aqN2lqQUN6R14X7U1mV5VddN2cauCOqO6/H/eGHbQZBUGWquBycWk0UQohj6OXx6mK3ObXE+4kgeKvJNOQPFfHcYEXdbFTdPFO+m5J+afe8Yqduruidd6MoaCUcwpqXW47435u+bsuug0Fkggl4JhWgaJuyaetUT9XNm29AnjsZidlBBsPuyWYDxAikPN7i7DSLXGraAEISDfa5PVhlpNm8NfDZeRWNN57wCBRUfaMrNDeBMNvjkH1o1GS6t4z85mftb/DpXCzScxNuLsqaYBOZ8KEH6I1N9jC95qZ7XJ+w1DvBXiTfbzuIPITtAYVLv73C/i6WCUExWbdKY5MZf6nH1lQS04sSc7NhsnaBz1Eaxsn1aZXwPgB1uN9r7YW/rbwCVs8CbSi+XUWmuaqGhcLd2AIrmTJI/0cs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c74eb249-2bef-44eb-0df5-08de543339d4
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 12:40:12.4466
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3oGFgk0uv3UzluU00Lszip5JObIfkK9vnYyIEPhWlLbtnSrqqFl1GY9YEbgJXuQXfz/LFUozZTJXrv3ob5JT5YhramxtAdk+MvtfI6hHgHc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR10MB7072
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-15_04,2026-01-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=977 suspectscore=0
- malwarescore=0 spamscore=0 adultscore=0 mlxscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2512120000 definitions=main-2601150094
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDA5MyBTYWx0ZWRfX6heAYc3adYHA
- hIpjT0tD51NFrJWHqtovQaj/8nqAHtnhJ6RpluaDm+pUgx6cD9WrC/8XDtyn0+u/zUq7O0J8xeq
- lbWusn2i9Z9kPGITa1Of6uPOwSYfWn8bBdB16DOV7WgNJ39M24d36EsXZHLCrA4mYC5Asd0W3S4
- gyGGqyynzoC67RKpvtKtWzgbl15SdiVDP5+Clw8C8RO3/ufhlbCbbcipCF+7dYPrseHTeyJJvCP
- mCdNJ+E8qDh9QSJUzPveELAm8uO4GrFJ4ZFtIxWWyov2DAGoIhA+d5qI+T8cI0qeCQT9QLQZRlp
- jCSYHBMP8WE3PiuZkBSifrJHth2cSPxuS7sp6tMCoEDCYP3Cfxn5xcz5dhuLZ/oylydggRFhbcZ
- vzB56xVDGHnKvxlB/lNAlyeomJNbR1ZjMfMvU6Y1AvsmwCh9pO1Sw+pAezSdbzxSnLFyE2kTqll
- rS1fIbV6zT71D6lQ0orBlkUFj1j0u6wBfh0xunKc=
-X-Proofpoint-GUID: iI2qt7iYxPODI0ijr_STkYTRpZ2TRUVT
-X-Authority-Analysis: v=2.4 cv=aZtsXBot c=1 sm=1 tr=0 ts=6968e046 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7Etcu_kTKpxH_ZaVkjYA:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10 cc=ntf
- awl=host:12110
-X-Proofpoint-ORIG-GUID: iI2qt7iYxPODI0ijr_STkYTRpZ2TRUVT
-X-Rspamd-Queue-Id: 60826180003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/23] mm/balloon_compaction: centralize basic page
+ migration handling
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
+ virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
+ <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
+References: <20260115092015.3928975-1-david@kernel.org>
+ <20260115092015.3928975-5-david@kernel.org>
+ <821926db-2cbd-41a6-bc40-bdc80a0e2499@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <821926db-2cbd-41a6-bc40-bdc80a0e2499@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B7CA5C0005
 X-Rspamd-Server: rspam06
-X-Stat-Signature: hsxhahyjz3u5x7kchimoth1zhkjrpc4m
+X-Stat-Signature: mpj5b3nacmrmdtj4ezt5bzitqig49qk6
 X-Rspam-User: 
-X-HE-Tag: 1768480865-13321
-X-HE-Meta: U2FsdGVkX18fJTHYiRCgsxpPm4/946dP+BWpu64aVMIY5YXvuRLvPvULkhFFlJO450D+AjuSQrhDVSO8cvQMeY3iFHO276bH726rAsXsiB/3W9OCV3yTlrxZCeyh3302cIIlYly8cs+fz0BIqvj3n1dbzOSynWGSQSCyfdmU6z4WiO98RWi5mjBkkrDAi1F/NhgWuGre4KTg/DkbzWGZ3yef2mk/9XOLlXteUWsBI+0bX/xbwn7sYeH/GM/lCBSyAWSqb59GfrQznngqJ2WiF+2ftaKEFLZNVFyBTmVsM4vjWMuVDKtfungVB0uDb1Ki8Xoz4KSWv2sKVNsqXtmPrUGhECsqfqtvMOMUTL59woKUPdZ7z0rtEWcsmhNNWPXoLDVQRNaEdF4/zDVENm09K79vOuurREcCckZcN9Y1Z1ckBd5pyy7dE35zIA1YjM0MY/9iVsUQ0VBuZYaM75Zn0ZQLey1h4k0R8uySvdWg40OLlWSbSfCq04aXvbW6qIgInzSNvLLanaLe+Posc0lYjlHzdmjtCZnz8gH20J7jHu4TgJuyE0nTBdazULNG5XmEKsXV9SnzszHUXf3dssLTEXUl7hao1J3RR13Gz4MxYdsvCWbafzW34HKIpJ5A3mvynQzexAFzGRFu1dp3Zgvsih4TUAuOHYCQ+tZQZ1cu/NYgWZlzS57JrTB0TfzJOPOgs8pcsEKNN4aBRWNy2Bn6ql8nn2CZSH8x84MerZA36tK8Bhqtvt5+IjUE5QtmiwSqIDF8G+uIKnVTBzzt1C4LbvfBPlS0/7rUhz8X6Z2PrAfGJkMawtlNggG6iUyl6Cp3w0tXFul+KRF47Ixv3+Jg3SAv7MZincq9FMej/BpxCSIXgm+YTYX7gnu32OkHu1kQOT2hFeLOi7pd0meHaXFCrHgCCz6MCwdP0RdeP7ww8WRXXrNf12ka2JLFQA8f8zqTXpB88iZ2ybOrZVyiTxe
- 1piCbqMs
- KywN9keZGb5sn2ihLlgHkKaVcLR1SQXuPo47CUSGm5Rglikgvk40JjdWsE96p1vkijNAJdelN5lAL70Zi2AyawsGF0CuI4QAhf/ZkEPGj2Ago1nU7qXkBO6Qg6jhpwfOfDWwfeFDOifUlQ1DW5ikxyQkj30OZMwI+QfUYFni5ZBV4WKBo36ARFgNdJn9rn7reBx0iF0s1hdxke8XZpDwRHGfcbeboQ3Qbjjyf/BRSvkO4qm7G7VE/h6Yc+5MOvspQ26IpsiDerRxsxJWIBghAiCJ+3cn1Q8+UxEUfP7Mr1Uhowpm4fSmPCUVD5GCAsYl95bl8M33H7BrpeMDJKKr8T1HaQ5rrtGSzxLjZQHJ24iGNhMkL9NsglEu1COhSP2b1Z+cN31tfH0gZ4JuuS+DPvZX4qIt1oKstNyOuouNC0hRmM+djGUDwshfc37weAF7qCToG2HxjZhKGkJlOrb86+v4HqC7pTLjb+f4f3LDDIuZg/5uJV3FNMefIO5OQDicXNwFtjF+BISYJZscwGiOu+qmM/S8t1QdJF2r8yfLu3e8Zogrjgk5PfXEJCoY+qqChV4qI6wYwKXnC/ZDjRKVB1xKBYe6s8ruqsJxgGS56KJU9FSdX8ABVjNan/lmOzzXAgT6XhKwyRBzIhpo=
+X-HE-Tag: 1768481878-947290
+X-HE-Meta: U2FsdGVkX19nEpRMuc3sm/HqHUONKGrRLN6TzRmaNixlvEWFPKEhsL2YifAv4upgHIdu6kqDzuqpGhz6emKxWnikCAV9NdnbJi34JfyYdo5NXieCuKUZYRbMUCX/txqIjOLFIYZdrU8E+xaHk89PO2jN+M3msouFEUPGnZf770zr/RIT0ymVNuQpDqqEJ2i16floyYoGRcoaKaiRHVqDJFRXjYrnwEQ3kwVxrK/2oWKAvoMu1nDmo6XIRm8acJZSah8P3Dbk+uLeE6UED45pUkJPODhk+xO98rlnov5pysZdXkd7de/jC7Wl7eYbR4NuQymE8tS2s8tNoCN4z8+SshgXrMmgra44jy2FxKmBML6PRYfP22RFyvobJqWYmfho+mkJN5JzAWn5y9/Ra61mPk1BbLcEu+tjnnxEWBC6PxXeQbeAJ9sovpDNLBovQIZ9O1LvMFpSAn1t5dfFNSdQjwC5IOEynKYAlphD2M9zOzzBIPZa/5k6u5JrfBy+63wBkQDEpD7VmUeQSvsZBW6AqAYjyp+K43lHMA9J2/GtzqSCpkP63NGBzgEqGWSnQ23J4DldP1Obb/eig0ji2tDTwrytS1itpvwMaeQgFjDnYI26K4eLYeqtYtX8E2hJFEv6OGlEvuaSfOIYC+Fubzk7Q122l427janGDmYPEk00X9pdN7Nx2SUIignqDuZ8yVVrmeHbC/okXyfS/7wbX9LTbGBLUmYWelpJE3THteNxSXIIw1V8dAsPAWnBcI9JGwecf1/qQpGIaKKI4U9JpxmS9Py9b/PN3VGNtf2UmJRuZVw9ube/10lA7gG2dPGhh4SpDTB5scAIk8eUUTR2+oLpL1bqlILYT/xx5gQ+NBB/9vJLEItSK3mCM0ei+pWLoXAkPDS6etpS63DdGAXh+03q7nUtiR6X2PbgZBwQJZa7Q04ZapHkhb+c1irpoP1B4FhbUe4kp7kLFHaxPJVV3vD
+ JTmBul2t
+ NBA+iaeRqrw5sB2Heh3mlXLKpjHu5FcUDY9AR5aRuVSHoluuknKrKjRsXzzCF9snFvNOasaOyDmXioUVgX+s8ggArHKMeTf75TNcxPe3KmB6jT/45eqbrPu+kDD7vsZZGC1a8F7xuGYG1VClrgYHdsyYXylbx9XGKerHJZLlEUdV32sPRyAvezW8cpxE10d4JvvUIW7H1nFXG+FQPFOYk4uqoLkcbiytmip7s2GYaypExQ1H7AUM3ByxnXMCWLjnKWuMlJ6iXSQ1svH09DdljZ+PZVOnZ7vjn7BEKEOn2YH82xW9/rpKAb1n4CQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,25 +155,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 09:58:39AM -0800, Andrew Morton wrote:
-> On Wed, 14 Jan 2026 19:26:43 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
->
-> > This patchset is intended to transfer the LRU pages to the object cgroup
-> > without holding a reference to the original memory cgroup in order to
-> > address the issue of the dying memory cgroup.
->
-> Thanks.  I'll add this to mm.git for testing.  A patchset of this
-> magnitude at -rc5 is a little ambitious, but Linus is giving us an rc8
-> so let's see.
->
-> I'll suppress the usual added-to-mm email spray.
+>>   #endif /* CONFIG_BALLOON_COMPACTION */
+>> diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
+>> index 03c5dbabb1565..5444c61bb9e76 100644
+>> --- a/mm/balloon_compaction.c
+>> +++ b/mm/balloon_compaction.c
+>> @@ -232,20 +232,49 @@ static void balloon_page_putback(struct page *page)
+>>   	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+>>   }
+>>
+>> -/* move_to_new_page() counterpart for a ballooned page */
+>>   static int balloon_page_migrate(struct page *newpage, struct page *page,
+>>   		enum migrate_mode mode)
+> 
+> I honestly wonder if page should be 'oldpage', or rather we should just match
+> args to the struct movable_operations e.g. dst, src?
 
-Since this is so large and we are late on in the cycle can I in this case
-can I explicitly ask for at least 1 sub-M tag on each commit before
-queueing for Linus please?
+Yeah, likely it should be made consistent. But not as part of this patch 
+series :)
 
-We are seeing kernel bot reports here so let's obviously stabilise this for
-a while also.
+In particular, as we should be making all other things, like 
+balloon_dev_info's migratepage and the ones implementing it use the same 
+terminology in the same go.
 
-Thanks, Lorenzo
+On the TODO list.
+
+> 
+>>   {
+>> -	struct balloon_dev_info *balloon = balloon_page_device(page);
+>> +	struct balloon_dev_info *b_dev_info = balloon_page_device(page);
+>> +	unsigned long flags;
+>> +	int rc;
+>>
+>>   	VM_BUG_ON_PAGE(!PageLocked(page), page);
+>>   	VM_BUG_ON_PAGE(!PageLocked(newpage), newpage);
+>>
+>>   	/* Isolated balloon pages cannot get deflated. */
+> 
+> Hmm, I'm a bit confused by this comment, isn't 'page' isolated?
+> 
+> This comment reads like !b_dev_info implies page isolated and thus a
+> WARN_ON_ONCE() issue, but later you say 'Free the now-deflated page we isolated
+> in balloon_page_isolate().' in reference to page?
+
+The page is isolated, as documented for "struct movable_operations". And 
+as the comment states, isolated pages cannot deflate.
+
+So consequently, if we reach this point, we still have a balloon device, 
+because the balloon device could not have deflated the page.
+
+I don't really want to change the comment as part of this change here, 
+it logically does not belong into this patch.
+
+Maybe something for a cleanup patch:
+
+"When we isolated the page, the page was inflated in a balloon device. 
+As isolated balloon pages cannot get deflated, we still have a balloon 
+device here."
+
+> 
+> So both can't be true.
+> 
+>> -	if (WARN_ON_ONCE(!balloon))
+>> +	if (WARN_ON_ONCE(!b_dev_info))
+>>   		return -EAGAIN;
+>>
+>> -	return balloon->migratepage(balloon, newpage, page, mode);
+>> +	rc = b_dev_info->migratepage(b_dev_info, newpage, page, mode);
+>> +	switch (rc) {
+>> +	case 0:
+>> +		spin_lock_irqsave(&b_dev_info->pages_lock, flags);
+>> +
+>> +		/* Insert the new page into the balloon list. */
+> 
+> Slightly weird to put this comment next to the pageref update then a newline
+> hten the actual insertion bit.
+
+When a page is in the list we have to grab a reference. No strong 
+opinion about dropping the newline.
+
+> 
+>> +		get_page(newpage);
+>> +
+>> +		balloon_page_insert(b_dev_info, newpage);
+>> +		__count_vm_event(BALLOON_MIGRATE);
+>> +		break;
+>> +	case -ENOENT:
+>> +		spin_lock_irqsave(&b_dev_info->pages_lock, flags);
+>> +
+>> +		/* Old page was deflated but new page not inflated. */
+> 
+> Weird reference to old page and new page when old page is 'page', with dst, src
+> we could just say destination/source?
+
+I can strip the "Old" for now, but dst vs. src will be handled separately.
+
+> 
+>> +		__count_vm_event(BALLOON_DEFLATE);
+>> +		break;
+>> +	default:
+>> +		return rc;
+> 
+> Don't we need to change the isolate stats etc. if we simply fail here? Or does
+> the movable ops logic correctly handle this for us?
+
+A non-0 return value from balloon_page_migrate() means that migration 
+failed and that the (src) page stays isolated.
+
+For example, migration core can later retry migration without re-isolation.
+
+So the migration-core takes care of this.
+
+> 
+> Ah I guess baloon_page_putback() would be invoked :) Fun!
+
+Right, the isolated page has to be putback later.
+
+> 
+>> +	}
+> 
+> It's subjective and pedantic but I don't love this use of the switch here, it
+> really makes it seem like 'just another case' to do the _key_ action here of
+> migrating a balloon page. Also could compress things a bit, that's even more
+> subjective :)
+
+You summarized my thoughts well ;)
+
+I had exactly the thing you write below before I converted to switch. I 
+didn't particularly like the filtering for return codes. Let me think 
+about whether I want to go back.
+
+As you note, it's highly subjective.
+[...]
+
+> 
+>> +
+>> +	b_dev_info->isolated_pages--;
+>> +	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+>> +
+>> +	/* Free the now-deflated page we isolated in balloon_page_isolate(). */
+>> +	balloon_page_finalize(page);
+>> +	put_page(page);
+> 
+> OK so we get on migrate, but put the source page which would have got gotten
+> previously I guess?
+
+Right, the (old)/page source was deflated, so we prepare for handing it 
+back to the buddy.
+
+In the future, once these pages are frozen, migration-core will likely 
+take care of doing the freeing, instead of us doing the put_page() here.
+
+One goal of this patch set was to move the getting/putting of pages out 
+as far as possible, such that the return values from 
+isolate/migrate/putback later on indicate who now "owns" the reference 
+to the frozen page.
+
+Thanks for the review!
+
+-- 
+Cheers
+
+David
 
