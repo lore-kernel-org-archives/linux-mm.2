@@ -4,136 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEB97D4A5E4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 02:24:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73352D4A5E2
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 02:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C86B6B0005; Thu, 15 Jan 2026 21:24:13 -0500 (EST)
+	id C58676B0005; Thu, 15 Jan 2026 21:32:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1751C6B0088; Thu, 15 Jan 2026 21:24:13 -0500 (EST)
+	id C06866B0088; Thu, 15 Jan 2026 21:32:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 056BA6B0089; Thu, 15 Jan 2026 21:24:12 -0500 (EST)
+	id B12066B0089; Thu, 15 Jan 2026 21:32:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E8E5A6B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:24:12 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 898CCC1911
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:24:12 +0000 (UTC)
-X-FDA: 84336232344.26.E8FE2F5
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 999CAA0007
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:24:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=CKqH0dMh;
-	spf=pass (imf25.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768530251; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 9CE716B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:32:22 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 33DB158E44
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:32:22 +0000 (UTC)
+X-FDA: 84336252924.24.3DCDCF4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BA73940012
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:32:20 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xy+M5dZs;
+	spf=pass (imf04.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768530740; a=rsa-sha256;
 	cv=none;
-	b=U9rkfhEJ2wk26IN8NOsdQ9HY+NIyLCxoBTupfmNQIN8/7jXCUiDIivq3bfr8ahd2S9q21H
-	WzZFzcjcrskyc5JpsrU8VtMmQQiDJD9yZKfn5YxL9G9d0Yb3cVzn+ucJ5sj8HCWrs+MMir
-	5LSJAyW6YyE+J81qM06GxCOw17e8+yw=
+	b=vavm/CM3CsM6dQmPmAgFCFxrOHfRIciTuPHGFgBn8CYfXivf19V2U6uHe8AEewc7WanDQI
+	a+bgORulEr6sLNlM8ujfFjpuPnC7cSgSodO4PN5Ccdw9t+iuJZ0KR86kf2L+dIBEDSIpte
+	lAJfSqCg7+hJ5sD0zWWx/Hfrp1a1LGk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=mit.edu header.s=outgoing header.b=CKqH0dMh;
-	spf=pass (imf25.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
-	dmarc=pass (policy=none) header.from=mit.edu
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xy+M5dZs;
+	spf=pass (imf04.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768530251;
+	s=arc-20220608; t=1768530740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e7+ZkXTf+cEt8COK7ZiBm7FpEGCZkXwmsqQ2YKKQgYQ=;
-	b=Nhx1ycpdAiMsE0iZ2zYn+4Vaeo1wGOPIP60Pb8vJsrAjINpEwvFdOJ99qMRXBIRxIg2mrs
-	8BjmiLIgrVL8QXumUWNPqnY3LYq/5NXQfq5aiL8RstKUE83Tp8E0I3MOhbEmFpOytf/a6n
-	1lGy6lxQb3Re/rfyj3T3jY56OVa4i3I=
-Received: from macsyma.thunk.org ([37.140.223.154])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 60G2M4QF012987
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Jan 2026 21:22:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1768530137; bh=e7+ZkXTf+cEt8COK7ZiBm7FpEGCZkXwmsqQ2YKKQgYQ=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=CKqH0dMhvlhBzX4Ihkt/n9SLGrWfxX4mn8QeWQB6i/JMAynZ/PpZnz2J7QzS+Bs5J
-	 LHYjeS4eVH/+ftuv6ryVG1XbTNkEBDxBvsdirBrG5SJDvA92Anx4u3N3DTR/EiIhC5
-	 D7kuOYWuR+wEG+aT+6digJ4U2JgVCouMwzPvCca8UfAIhFjTH/mNpBMF8a1mqTO4TR
-	 J3Ca6tRIWBeIDKXxVFNRB7jtbFt4susYUTGwXkPso02XWNw91PlkdVzLKiVnspunHr
-	 roxMctbg4I/pbwnOXw13om2WtDRQ1218LHXRi7gxhCYQcXc4EIsE/wDw9NxL3LC14F
-	 SKf5FnkqXpe0Q==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id A12EE54D8E5B; Thu, 15 Jan 2026 17:22:03 -0900 (AKST)
-Date: Thu, 15 Jan 2026 17:22:03 -0900
-From: "Theodore Tso" <tytso@mit.edu>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
-        Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
-        Tom Talpey <tom@talpey.com>, Amir Goldstein <amir73il@gmail.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
-        Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-        Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Sandeep Dhavale <dhavale@google.com>,
-        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
-        Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
-        Alex Markuze <amarkuze@redhat.com>,
-        Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>,
-        David Sterba <dsterba@suse.com>,
-        Luis de Bethencourt <luisbg@kernel.org>,
-        Salah Triki <salah.triki@gmail.com>,
-        Phillip Lougher <phillip@squashfs.org.uk>,
-        Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
-        Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Bharath SM <bharathsm@microsoft.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
-        Dave Kleikamp <shaggy@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Christoph Hellwig <hch@infradead.org>, linux-nfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, linux-ext4@vger.kernel.org,
-        linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
-        ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        linux-unionfs@vger.kernel.org, devel@lists.orangefs.org,
-        ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev,
-        linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
-        linux-mtd@lists.infradead.org, gfs2@lists.linux.dev,
-        linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 03/29] ext4: add EXPORT_OP_STABLE_HANDLES flag to export
- operations
-Message-ID: <20260116022203.GE19200@macsyma.local>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <20260115-exportfs-nfsd-v1-3-8e80160e3c0c@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1J/sqBQMvvwKfGH1gikCATlYLSULx3+mykhMgq3a+tw=;
+	b=JS60+wJdfjHEArGktcZq4Vq7KIdvNpI/bdFqeba196c7z26KbE8o5RjF2Umoa3rqWyLN/p
+	Zz/3ADTXjRcUiUYUF5JIgojoofUJZGo/gmdyVljEVkNIvfhGRVb2TrhuCuK+z9m7yWeeDZ
+	L3Aqd3YFRREQ33FfL/Mz/ZcsWOE8Spk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8EA4F60160;
+	Fri, 16 Jan 2026 02:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF32C116D0;
+	Fri, 16 Jan 2026 02:32:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768530739;
+	bh=50lxjWm2xLHtsHn/f7Sy+PMwP7CKRZI/eYECykWLSwQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Xy+M5dZs4Q6by0Gp0XwqJ8DUZd014WGYO31wGuNYzFMQzoes089vGjHJw04OTMTET
+	 5IAe9TecsiUAqbd7OL/d7KqVHGPeJSeuRLxQANDDD8Z6CvXrmdizCWoPTAckEUs8M3
+	 aZQK0VcDj8J900jznU5wuX59qLqzK75GhTmlhWIGxRPOlJaOZ0mUjJCt62nsh9lNFC
+	 m1GoVL9u80DbPEyh+7AJ/N5xWU+fZVo+l6A6VN43Ad64gmrgy+4sKzMPDzw0U3RClz
+	 NT0ZAWYUxA4wxcWegVLLLklqaypHk9Dvh+x26Ekvn5JwfwDWBSzqc1jAKutEt6/bkW
+	 sHzy2GmaRo7Uw==
+From: Dennis Zhou <dennis@kernel.org>
+To: Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Mason <clm@meta.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Dennis Zhou <dennis@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH v2] percpu: add basic double free check
+Date: Thu, 15 Jan 2026 18:32:16 -0800
+Message-ID: <20260116023216.14515-1-dennis@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115-exportfs-nfsd-v1-3-8e80160e3c0c@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 999CAA0007
-X-Stat-Signature: ase64ooufr3ewnzwyn7dynjoq6bkthku
+X-Rspamd-Queue-Id: BA73940012
+X-Stat-Signature: fi4p7pmaryf5jpzfnew6aocp4a4x3jhh
 X-Rspam-User: 
-X-HE-Tag: 1768530250-645311
-X-HE-Meta: U2FsdGVkX18xkKEr8Q2QuJ99X/WYkU+sVdo6TlC4xJk6tegpxgh5DlbkipY1R/bOAlI72symVORGXiM9G9PjPeyLRNbs+HNTalq2iS7e3cdxEiznAbRxcMN1mniOykx8AEjAC6a0XtaMfF/7gEnwI3XSpyCK1fWIxXk76SlryVYmTRJMkFZrc0/ck6cqlZnvkJ4ZF7Ab+TO74lcAC5X7eEc1I0uWi4cePn220W7y+kKL/gps3fL4fX7ZNTgt7Hv7LuKzbhT/wUZp9cd+oKcw5XP6aN4QuPrkRlBA1Keatc+W6HBhnOCaEP0ZwYeWDm2awCbJ853QK1YN8XukV7kachy0C/jbeVfGCKJpdRgPvFDZkMPaQgitB7RReJ+Y7dvSd+mOrpGToLxyZxn7fKaS3xdjqKRcLKxljxuUIcpBLmFmDKYU+9NuzW6o7veZwjZqUCHgl2jcH8rXAQ1iu9cHnf8ZxhuJ1aVqiDD9eP0iBGLjsHN7fJIMIuU3xXCNECB3zK2eUykoyadsdzP2JJyxD36Dqn+Ahc1RTQcYIcEIMHg8mU6VSAfkz4jRYKHFgs672guvcxZEs1bIZiyr+wwmj2yrPh3fgBs1ouyQ4aM9T107RUbKTZ4qRbIIUb3Pgv/CVdmhelJBAXvqg6uzs2g7w+aMmpWTJXUfl0n3UYdbmzXkZdcTSoUsyeVI60J4lyxz1qgOgpaVvxyyTzIVH9XETnWjV1/q4uOtbUton0zNc/uzM+dHJSwvbTMMB4Px+dn6Oz3URrI1rJ6llMn+UOkzF3+tG7C+3pFiVY3YUS59H7NTmXtVwDxw2jaZ8DFMHGgiRd+9dkJrvLm5ur8FKeizEUOQN1QHpkmYm1K9+tfmihwIQDC4PmHbMObDQG1OMv1ifG4jCkN1VLFanH5FSfLFvkDcai3hvAO7p0jWol2PoatJmE+rLKdOTiennz9rCsQislcT9rk5mc6HPTknSqF
- p3pBNTfB
- IV1s0V2NH3CW2wBmXhOAE1en01nvwq9tUR+tpwlVhYzeoo6K0VgcZymftKI0VGR5iwV+6oVCI7258PUr38QfZWIpcHr8d7VlEHbjosY+0xInm1IMw/HE5y6WemC8eFp9qwIs0ilWn1DynVqWt8IBIAnQ49sSuZuVmY9vL2BT0cQtr8woCs2QSfx3pB5esi3mzdUuB4z1QYCqSqari1JhoUigCtIMR18KsZfMm0B0N/HSNIHz3XOcyFVEDOwEgTrHHIsnVrlLGZP01R2lky8mn/g+lU59St48F51+pM431ZolCLMUrtVKwheCSzc+KXcid/ysNE1P8L1UxW/2B5NmdRVedvTJZa8h54fA3QpnmGaCF/8e03uXZjEsu4MzXwf1H5DNUsGKcwSWimpwBQ/h/baMZQZge2eFen6H1y5e+ZYDnm7zGm1n5+87cxh5uiRm5pauoIGAjbiv5/X+S4hZEZVOGDg==
+X-HE-Tag: 1768530740-391688
+X-HE-Meta: U2FsdGVkX194dLbkLUHibBBHWAp8jS+9KbbH02PVB3BODYbL3+UimZyclZUW9wwFdVxZaeKkbxm7HA9gFELYt6YduEUoeWvEl4RsgIy2LowU3VrtNGLQRf9XuZdz+Dvw+bpme9IgAOr9e5+eTA8a6mEKkt4CuOFoF1CuiPGRhASL2wGJf251kF4T1T2ZzxN1UF7zBuCsosmlbeqlAgbF0oMH0MZYHxoc4aFq/xXuYWYBvnAnTq1BBc/4hVxFKNLegLywpHY0BOwGPD2DDamHgufFcXZ4fsZj7DQOf1qt2E55momfhXTzyy3NNtKea+7FUVB5PWFmLAKEcbsdEq5ECKclQoCIHcC1uaKMZi9TvVj9ImsfnGlmg951r8cFXWDAFmiuE0J+N5v+2lBxIMKFNjAJ9By6n4Phl/uG9mR46QPWi5ua6kP+3sY0D0bamDjYOWoIM/BSwLBdKSa1eYZv8CPMK/+CKwxsMAzh/8LvQvvmshdldy2zdRDWDVxOBgV8/2WslwZsUovErLeRq/9fGDFDdSV9Wx6xeyX21NebP4VopWiHNdhLKtxNOiRh1nuGMQfInQmu6FJGCeXjZ4yP8jhAeBCJI09wgYN37B/F/XFK9+CozD0dCYPOmrLI/gHGif/Me0xsJlCjb3bXpIu3CY97aqFl10xtsIr5NOGyrGN4A9JGVW+EBRvk80M0gpOAO4CZ35aVb93qT7Edj+rOVN/b1T3tijaYUC3n5/x4U/VHKLzJaGEABAjMY6ECw81V5MEWYeuPuGhZmacJ1Y8AYYn3QB1ub6XbbMhuCaLaM0xCP7lmr/mGSx+bmKBXviX80O7Q2RB4HhF4rNlGlDI8ak3iEFfNEQvsI7uG6uigQmETWw7tNty82HEsLb+4WEYHePdRoXHkLzOV1kOLgjNhm+anv/We2NhHlEZeBrf2R80dOnu1hH5A2+VNX7peFrNub+Swl/F2WcvAjdVNFIB
+ CCHF3Cfm
+ gDQvhXvMwwmD02IBUGNiJOGmV9tf2SfRjR+ryPCzSk0A6qvq3U5Hr5FZXwF6nyq8iDouAg7vMEBZRQ5ZTz4S1DJue2SGfDN+qrSSBMeHbjcZgsA9UoE0AatN0vKKNJcTNkjCm1fgTQWZMdFj3CYcW6Eh209Sv/CkZ0fBfbgVnPIpTnt+h8Mzg58BU2wuhReVSJOgKtHOiv7ECTufKHJYCvIEymkcnu+RDnYKD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,11 +94,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 12:47:34PM -0500, Jeff Layton wrote:
-> Add the EXPORT_OP_STABLE_HANDLES flag to ext4 export operations to indicate
-> that this filesystem can be exported via NFS.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+This adds a basic double free check by validating the first bit of the
+allocation in alloc_map and bound_map are set. If the alloc_map bit is
+not set, then this means the area is currently unallocated. If the
+bound_map bit is not set, then we are not freeing from the beginning of
+the allocation.
 
-Acked-by: Theodore Ts'o <tytso@mit.edu>
+This is a respin of [1] adding the requested changes from me and
+Christoph.
+
+[1] https://lore.kernel.org/linux-mm/20250904143514.Yk6Ap-jy@linutronix.de/
+
+Signed-off-by: Dennis Zhou <dennis@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+v2:
+- moved pcpu_stats_area_dealloc()
+- added additional check for bit_off out of bounds
+
+ mm/percpu.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 81462ce5866e..2f1ac2059a15 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -79,6 +79,7 @@
+ #include <linux/mutex.h>
+ #include <linux/percpu.h>
+ #include <linux/pfn.h>
++#include <linux/ratelimit.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/vmalloc.h>
+@@ -1276,18 +1277,24 @@ static int pcpu_alloc_area(struct pcpu_chunk *chunk, int alloc_bits,
+ static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
+ {
+ 	struct pcpu_block_md *chunk_md = &chunk->chunk_md;
++	int region_bits = pcpu_chunk_map_bits(chunk);
+ 	int bit_off, bits, end, oslot, freed;
+ 
+ 	lockdep_assert_held(&pcpu_lock);
+-	pcpu_stats_area_dealloc(chunk);
+ 
+ 	oslot = pcpu_chunk_slot(chunk);
+ 
+ 	bit_off = off / PCPU_MIN_ALLOC_SIZE;
++	if (unlikely(bit_off < 0 || bit_off >= region_bits))
++		return 0;
++
++	/* check double free */
++	if (!test_bit(bit_off, chunk->alloc_map) ||
++	    !test_bit(bit_off, chunk->bound_map))
++		return 0;
+ 
+ 	/* find end index */
+-	end = find_next_bit(chunk->bound_map, pcpu_chunk_map_bits(chunk),
+-			    bit_off + 1);
++	end = find_next_bit(chunk->bound_map, region_bits, bit_off + 1);
+ 	bits = end - bit_off;
+ 	bitmap_clear(chunk->alloc_map, bit_off, bits);
+ 
+@@ -1303,6 +1310,8 @@ static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
+ 
+ 	pcpu_chunk_relocate(chunk, oslot);
+ 
++	pcpu_stats_area_dealloc(chunk);
++
+ 	return freed;
+ }
+ 
+@@ -2225,6 +2234,7 @@ static void pcpu_balance_workfn(struct work_struct *work)
+  */
+ void free_percpu(void __percpu *ptr)
+ {
++	static DEFINE_RATELIMIT_STATE(_rs, 60 * HZ, DEFAULT_RATELIMIT_BURST);
+ 	void *addr;
+ 	struct pcpu_chunk *chunk;
+ 	unsigned long flags;
+@@ -2242,6 +2252,13 @@ void free_percpu(void __percpu *ptr)
+ 
+ 	spin_lock_irqsave(&pcpu_lock, flags);
+ 	size = pcpu_free_area(chunk, off);
++	if (size == 0) {
++		spin_unlock_irqrestore(&pcpu_lock, flags);
++
++		if (__ratelimit(&_rs))
++			WARN(1, "percpu double free or bad ptr\n");
++		return;
++	}
+ 
+ 	pcpu_alloc_tag_free_hook(chunk, off, size);
+ 
+-- 
+2.43.0
+
 
