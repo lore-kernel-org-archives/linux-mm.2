@@ -4,183 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 658E2D4A604
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 07:32:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2308DD4A607
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 07:45:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A17276B0088; Fri, 16 Jan 2026 02:32:08 -0500 (EST)
+	id 6E5136B0088; Fri, 16 Jan 2026 02:45:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99A1C6B0089; Fri, 16 Jan 2026 02:32:08 -0500 (EST)
+	id 692F56B0089; Fri, 16 Jan 2026 02:45:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8514D6B008A; Fri, 16 Jan 2026 02:32:08 -0500 (EST)
+	id 59F056B008A; Fri, 16 Jan 2026 02:45:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 72BB56B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:32:08 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2EA51ADD7A
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:32:07 +0000 (UTC)
-X-FDA: 84337008294.22.A94DAC9
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 06036180005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:32:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="hL/jJS0K";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VbiDfBAZ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pWRLH+sp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yYaTRxrR;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768548726; a=rsa-sha256;
-	cv=none;
-	b=eEPnmpykwipIcHOPiGqHlzQvoNODb3LjTjaHuTXh/2eBayQmklXetymqY5z8ukQ9fPvC8k
-	Vmf+14dL9Cawf5TF2dvEvxtw9n3kP+v1JLk0j2SM98A9EcP1UM6448gzoeM3/sVPmfWnPd
-	yjY2/GjBgLYtRJ2Bu6FNvfq7carzPcU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="hL/jJS0K";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VbiDfBAZ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pWRLH+sp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yYaTRxrR;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 46C346B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:45:54 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA4825944A
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:45:53 +0000 (UTC)
+X-FDA: 84337042986.15.C8A66B9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 126AC40003
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:45:50 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g0Wpmt47;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768548725;
+	s=arc-20220608; t=1768549552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J2wMFYYHoLIThQowW1m8IBwEmgJ9j6LTflF8fZXK/As=;
-	b=5Kjj9AaAPxBCAGXIHsTPGZK+m6qWq2ZQxpEKsDMmXsf5l4h+TkkdxUABXwAIvodVISXhJB
-	jTI9YakckKNaiYVCDsL4VHoMbVFUCBCalmjCVz3+ZNOJUmZdJkTGyYoucGwTIc3uFQoPTN
-	1yah7QCcDW6ZNIxisihVeF74KF3f6wM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9F9D23368D;
-	Fri, 16 Jan 2026 07:32:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768548722; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=J2wMFYYHoLIThQowW1m8IBwEmgJ9j6LTflF8fZXK/As=;
-	b=hL/jJS0KTC2jbJHdoBF//DpqTjKeB8QXjauyPkmUBdYycD18rietaH1qXesIeuj0pOGXpU
-	3gKFjCDN7+209wweEh2lwBfZXosK/72g3eqaEP1GJqgoazLFlcEBia4sy6I0NL5u41ivbT
-	BiLlFGi6KE8iLmswGYdSNA3244LghV0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768548722;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=J2wMFYYHoLIThQowW1m8IBwEmgJ9j6LTflF8fZXK/As=;
-	b=VbiDfBAZit/VibmjpApls2s/VKBpsq4qZV66Pe5cjvQpfFea9IK2vi9Gu2HOey/KyHHWIE
-	pNfzjyCdzdgyL/Ag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768548720; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=J2wMFYYHoLIThQowW1m8IBwEmgJ9j6LTflF8fZXK/As=;
-	b=pWRLH+spXqtExwaW6Va5t+kWsGQFZancyDdB1ooHaZyGXsTmq1f4ToFA6/rHxyehQnfpKd
-	oHQV71Pwj/mfetNBS5krPZqeC1pjwWFTkpO8qJGnXxhmcToDJQ929heAup+YslyoLQ6/eS
-	hKKmeAZgzxaSZ/yMIefQ7/+kCW9Iz+Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768548720;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=J2wMFYYHoLIThQowW1m8IBwEmgJ9j6LTflF8fZXK/As=;
-	b=yYaTRxrR3IzxX6QikSaiombwVAayWwW/4zyaAQLMXXw0jSwZPZXKWx7Tk36yzCJ98pl+gF
-	7h1SE9+poq0AfCAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 788233EA63;
-	Fri, 16 Jan 2026 07:32:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jQHIG3DpaWlfTAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 07:32:00 +0000
-Message-ID: <bb58c778-be6b-445e-a331-ddaf04f97f0e@suse.cz>
-Date: Fri, 16 Jan 2026 08:32:00 +0100
+	bh=aBvtGQtsc5yZmecgCknE10ho4JD/cXwUogpmH0GuUSw=;
+	b=XlSSMHNEbf67/xfDD+FM0fL3ARbNTtidPptg6Yr8moJODE94PIw188jmja1OOT2pxBTQyC
+	BHUxj6Xzh6OaMOWwBKwNChHmRH8VDOrOUxF2Z1ozbyisxEYlDCJIDGVPNW4VK/whTfMURs
+	upXuCI2Lu4+0un1+Vq/2hE5P+cur5Mc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g0Wpmt47;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768549552; a=rsa-sha256;
+	cv=none;
+	b=M8ZeSAmRB2hQnEzv9z8KYlLzYqIKsqwkNfB67ED6k6N4CXakvru0JBVpvWi1dDh7qPcdVd
+	tPp/G3U4W3u4VnMGVvAf9H8u/Jd7CVGyzDkIi2n9efHb56Hzt06JU7kcFe+TWCyg8MVyGN
+	EY8PxGyZEedBcoxlPsWmgL8REjV8KvE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768549551; x=1800085551;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=G0V6S9md6+nld2O30zY+hMSqsUc4Po2MsCahVSA79HY=;
+  b=g0Wpmt47C/AmqjETD36tUw7BsrWMaK7CpFkow+7vIm+YTLXxnaPoZ9UV
+   jnc69PJFRVlFj2d5PrlOkoN6jsMsNpahbfFJj5Oo7akUUsXr3mj5rjpiP
+   f3vI2vKvyDVEmsisxMqPTN9ezMWDyh0F9l9cKm1Tp+IsgoOtL3Ocet6sT
+   amX6vN4JKbTSykyWTIe/eRNjzjHe8vNW9a44w3NyOWXT+VphNNu96qzY2
+   tkTf41J6flFA8AsWDUXM4NybxsFsJWlyAjtk5K4LOixn877ohhpqcbqBK
+   CcWSogtXWMQ8Vj7IlTYrD5bdhGe5DtjxrYm2goUcK+wbQPF8H3Ok5DiPA
+   A==;
+X-CSE-ConnectionGUID: OAAalqSlQfKPMuOGY3YFjQ==
+X-CSE-MsgGUID: Ps2DSIQZTi2GKIRh010Pyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="69065583"
+X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
+   d="scan'208";a="69065583"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 23:45:49 -0800
+X-CSE-ConnectionGUID: ONnquVpZT+qEY5I8SvDUjg==
+X-CSE-MsgGUID: tDcssknwRjy3qULDu7oUIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
+   d="scan'208";a="242723017"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 15 Jan 2026 23:45:46 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vgeWd-00000000KXw-0hBC;
+	Fri, 16 Jan 2026 07:45:43 +0000
+Date: Fri, 16 Jan 2026 15:45:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	maple-tree@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Suren Baghdasaryan <surenb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Alice Ryhl <aliceryhl@google.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Kujau <lists@nerdbynature.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH 10/28] maple_tree: Introduce maple_copy node and use it
+ in mas_spanning_rebalance()
+Message-ID: <202601161501.NZ3GNDCG-lkp@intel.com>
+References: <20260115193647.1695937-11-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 08/20] slab: add optimized sheaf refill from
- partial list
-Content-Language: en-US
-To: Hao Li <hao.li@linux.dev>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
- <20260112-sheaves-for-all-v2-8-98225cfb50cf@suse.cz>
- <38de0039-e0ea-41c4-a293-400798390ea1@suse.cz>
- <kp7fvhxxjyyzk47n67m4xwzgm7gxoqmgglqdvzpkcxqb26sjc4@bu4lil75nc3c>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <kp7fvhxxjyyzk47n67m4xwzgm7gxoqmgglqdvzpkcxqb26sjc4@bu4lil75nc3c>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: w9ho9b8kd5fiw6hxwch49hxtxdt95796
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 06036180005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115193647.1695937-11-Liam.Howlett@oracle.com>
+X-Stat-Signature: s6txio4iota3kzp5e8474kqsh3bpyho1
+X-Rspamd-Queue-Id: 126AC40003
 X-Rspam-User: 
-X-HE-Tag: 1768548723-437008
-X-HE-Meta: U2FsdGVkX1/egLQzCIPBoyxKGv0JZ+m87QLkLXD/PQeQImL7zrTagIX45tMsPqX9EvfDir3M6xq0ye7tF+MgDai2Jjfq7DgjhlHokOYX0xEk/qqEYI1bMEVCYGqc52caLBKcl00UJSGp7Kf3uLp3iP6xkK4ni1cb5+XMutFS6MbF19rx+6ftTOLtsK0e84flxn6c78KLgkloz7aTen/nkIx/dNsY9wsULOtuM8l5TRV57ObR4My+t9XrUD4fLgRtYZ8puDcQ+LLijZUWxsKYydWKAVCNPkVRNjrQFCUgT8zi71tq1wTFujVl3ZkejFwB1JFMvnmVmfo9kT61jjW7zkcg5Ym8hZxprcntgEevuDaiGMc2SWYpOIRnr6g3DcQbm0U1JctRAMt0xsugX3vkuqRv+6duiYeN+0ZwC2J614oyJn7LdpDPsfyy1HmElIDA8E36/KtGAz78HmaFkcM1OOKoSS+BUAiwP3ThPKFF+6gP5H2pYIBWero58PlgFANoUf696qF74CeyWAEhpWh12RUYhfoEcSj/ypJTntCWAJXilxYAmO8j7r8IjKBmxLRNqfLjU8YOf2HzmO5x9HH86nFLvk0hl2wdDsPcn9UNHRjroGGWd27JLRU9SwGE2BlFAppgfEApkxF4uo2xdbsqT2Zt6yaq9M12iK/LenIViLWiwiEbc7mgL0Zx9r92yAbRMl8pgQrp8wjhyI9BkmmLf8xUbGlbIbc5SZyRFxZWG18cXhmUiXOOhS2iNwFed39fKXqleRh0VdvKvGALHe2jBPtX4lE/3nbOAbak9n5YE++4M1CyqU71zn2fwjQzhA4pEX5VlwJwkXwF+3Ut1ETkADmhslMgP5fkiiLAnt6Hs/Gs+ATe4KCmmLsLiJhKc9eN7DjSBCRF+dXx/DjyoUXSLIvxURP3Uh47/sjHfhlJqnHNa+GL+TcPOlVg/wL0Zda+ZASldO8Us3mlLRR0HMc
- 0oxHOssG
- fb/vlqiUIFFcLs4iRfA/NZexbbhDGUubFHQGV/urCPMtP6PDQQlCicNj7gyuCMg3vdBadKpdlR0ZT7aQOKiAJJ4k5PCcKdtGIucAxW4zuWpp8xnHjjC1fb8cYmlKsbZc68YGMAWjkcymh6opz9GH5btKehpA3XxJ36ikINYL6vF3ro/Y1rM9gQ2PdXplKz8IOUNYowVdP6y7h9fxKRNMEHE8XB6RH6oJ2HKq1YSorf5ED22fctwjRwLGWgV0+Fe7Lx2qWYpxyWFWSE1e9zFuT4NCvWogX3+o6L/gR
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768549550-783819
+X-HE-Meta: U2FsdGVkX18nS3V7UI27Rh58b3EUG4F2vBmKGC1w8uDP6e6OKZDLFtiLFA+rGFj/JBkVMCxIisEh2P2hkbFpnZN0sUk827gqow9rafPqKHNTtrIHcmb2k6W55/SEiOdjV+YDknpgdHSKHg8u30AhCPRLkyu5qiZGNbbdS7K64TMAYC/t/Ly6FNhdHgLDzESBw5SFXz4dNm0CbNgKfi3oxfzEdltBeTilqnTJaEsdJM7zm9ciGBe/95kmaPEKFO71ZOrDVQN0yi/ETddF9bo4sLVdrLAVlgWC82vXU5jPoMs+rbwnZJP7XSD6fx/W4yNjQCHkRAVWmzj+OlmMxxHvSfziQ7nRItnAWcPVHBxAhGLJvlsIMGFwRzcOKLWqr/r5iIWV9YiTni6KXPOJyrKF+dnT7YmG+dRdLbrhCI7hDV25eeMvH9YRW3x6Gz4SGQ3ATAah0DolqL0/+gTRGNrm2dhfKuAGxUGyEkpty5R5cmDIc7b6QBDYQ1SFSdo2oi6XzttjOS7fU9tKXZvKXzFtC9TG3VBm9VQ4H+bKBdQdG4qAavzvrRADuAtNhN5GKOT+V0iT0pluW13prKfPnv6rdGx+cjs5dns/jbIaHvvFQ/fVdLatzGdA7lq5FUFYBMrwUMMkAInCkb1W/8Uth1uOtjPpKNkOlV533PlH/SDxfpoGiAHvwGscnt5NKVY0bq1/lVcwctWQ3KfukS1aCaUNKchHgxNHnK7uIFa64Sj9xnAVDFTPD7cDB1SwpZ3sUbSodveNmyWGxyhjsdwvVvXkIgqPal/kB6osfdoSQaurehXUcIlsYE145hH5p1M5x0ZGz/zrAPXmSK975m/YBH5//CI7ql62E9Amw16QyzXm+jP5aAuEwwQS07rSNhop5sBFCvumcxjUIXEgCBLX5WKvZ986E+FTCR6C5ucvvSHuI5a0rUxAdEba12yJbCCdTRGN+W8YBTKrIcX4+jueTSn
+ 4p5ZMLHa
+ daBKTjPQULMa/JEjMD+Xkv9+4/Pl/fzt9zC4ENlOYyY7sHPRvy+wMPZ7d4L+6V5g/rBlmF8V92OWAg6JN6/bYQCQuGn/ELyGkzMX5U1en5+K0A1HKiJgaR9oRyS+HCsoJEDScTm2v9KzwfmdodzGvZUuKFdigHPYedVnBIqiBgqmaayU3qgzELPWlsO/Rob4eIzV1q1HTeZpHufZryeXsGhEjLKlxRvZgGyFPv/f9g3MMO6yEstqbgG9s3xnXxwjUnVwZHhtJZrgW61frKkwFZf2/GNCXAGzHXgeV3PW3NbleLrf3VuDcvcTgDcMTp9s3CDUQg2e9ddB7Gi5CkOPk9S3qn9alFyRrXCxXuDd09+jQdEKQZbgsx/Nf3HCMswCP1PTSuqPbv67ntanb/dSg5h+gLC2HVn1Jgm8ZtBas8nIutcI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,82 +119,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 07:27, Hao Li wrote:
-> On Thu, Jan 15, 2026 at 03:25:59PM +0100, Vlastimil Babka wrote:
->> On 1/12/26 16:17, Vlastimil Babka wrote:
->> > At this point we have sheaves enabled for all caches, but their refill
->> > is done via __kmem_cache_alloc_bulk() which relies on cpu (partial)
->> > slabs - now a redundant caching layer that we are about to remove.
->> > 
->> > The refill will thus be done from slabs on the node partial list.
->> > Introduce new functions that can do that in an optimized way as it's
->> > easier than modifying the __kmem_cache_alloc_bulk() call chain.
->> > 
->> > Extend struct partial_context so it can return a list of slabs from the
->> > partial list with the sum of free objects in them within the requested
->> > min and max.
->> > 
->> > Introduce get_partial_node_bulk() that removes the slabs from freelist
->> > and returns them in the list.
->> > 
->> > Introduce get_freelist_nofreeze() which grabs the freelist without
->> > freezing the slab.
->> > 
->> > Introduce alloc_from_new_slab() which can allocate multiple objects from
->> > a newly allocated slab where we don't need to synchronize with freeing.
->> > In some aspects it's similar to alloc_single_from_new_slab() but assumes
->> > the cache is a non-debug one so it can avoid some actions.
->> > 
->> > Introduce __refill_objects() that uses the functions above to fill an
->> > array of objects. It has to handle the possibility that the slabs will
->> > contain more objects that were requested, due to concurrent freeing of
->> > objects to those slabs. When no more slabs on partial lists are
->> > available, it will allocate new slabs. It is intended to be only used
->> > in context where spinning is allowed, so add a WARN_ON_ONCE check there.
->> > 
->> > Finally, switch refill_sheaf() to use __refill_objects(). Sheaves are
->> > only refilled from contexts that allow spinning, or even blocking.
->> > 
->> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> 
->> ...
->> 
->> > +static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
->> > +		void **p, unsigned int count, bool allow_spin)
->> > +{
->> > +	unsigned int allocated = 0;
->> > +	struct kmem_cache_node *n;
->> > +	unsigned long flags;
->> > +	void *object;
->> > +
->> > +	if (!allow_spin && (slab->objects - slab->inuse) > count) {
->> > +
->> > +		n = get_node(s, slab_nid(slab));
->> > +
->> > +		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
->> > +			/* Unlucky, discard newly allocated slab */
->> > +			defer_deactivate_slab(slab, NULL);
->> 
->> This actually does dec_slabs_node() only with slab->frozen which we don't set.
-> 
-> Hi, I think I follow the intent, but I got a little tripped up here: patch 08
-> (current patch) seems to assume "slab->frozen = 1" is already gone. That's true
-> after the whole series, but the removal only happens in patch 09.
-> 
-> Would it make sense to avoid relying on that assumption when looking at patch 08
-> in isolation?
+Hi Liam,
 
-Hm I did think it's fine. alloc_from_new_slab() introduced here is only used
-from __refill_objects() and that one doesn't set slab->frozen = 1 on the new
-slab?
+kernel test robot noticed the following build warnings:
 
-Then patch 09 switches ___slab_alloc() to alloc_from_new_slab() and at the
-same time also stops setting slab->frozen = 1 so it should be also fine.
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on next-20260115]
+[cannot apply to akpm-mm/mm-nonmm-unstable soc/for-next linus/master v6.19-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-And then 12/20 slab: remove defer_deactivate_slab() removes the frozen = 1
-treatment as nobody uses it anymore.
+url:    https://github.com/intel-lab-lkp/linux/commits/Liam-R-Howlett/maple_tree-Move-mas_spanning_rebalance-loop-to-function/20260116-034135
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260115193647.1695937-11-Liam.Howlett%40oracle.com
+patch subject: [PATCH 10/28] maple_tree: Introduce maple_copy node and use it in mas_spanning_rebalance()
+config: x86_64-randconfig-121-20260116 (https://download.01.org/0day-ci/archive/20260116/202601161501.NZ3GNDCG-lkp@intel.com/config)
+compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260116/202601161501.NZ3GNDCG-lkp@intel.com/reproduce)
 
-If there's some mistake in the above, please tell!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601161501.NZ3GNDCG-lkp@intel.com/
 
-Thanks.
+sparse warnings: (new ones prefixed by >>)
+>> lib/maple_tree.c:2621:29: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __rcu * @@     got void *content @@
+   lib/maple_tree.c:2621:29: sparse:     expected void [noderef] __rcu *
+   lib/maple_tree.c:2621:29: sparse:     got void *content
+>> lib/maple_tree.c:2624:23: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __rcu * @@     got void *entry @@
+   lib/maple_tree.c:2624:23: sparse:     expected void [noderef] __rcu *
+   lib/maple_tree.c:2624:23: sparse:     got void *entry
+   lib/maple_tree.c:2680:17: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __rcu **b_slots @@     got void [noderef] __rcu * @@
+   lib/maple_tree.c:2680:17: sparse:     expected void [noderef] __rcu **b_slots
+   lib/maple_tree.c:2680:17: sparse:     got void [noderef] __rcu *
+   lib/maple_tree.c:6412:30: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __rcu * @@     got struct maple_node * @@
+   lib/maple_tree.c:6412:30: sparse:     expected void [noderef] __rcu *
+   lib/maple_tree.c:6412:30: sparse:     got struct maple_node *
+   lib/maple_tree.c:6412:30: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __rcu * @@     got struct maple_node * @@
+   lib/maple_tree.c:6412:30: sparse:     expected void [noderef] __rcu *
+   lib/maple_tree.c:6412:30: sparse:     got struct maple_node *
+
+vim +2621 lib/maple_tree.c
+
+  2603	
+  2604	/*
+  2605	 * cp_leaf_init() - Initialize a maple_copy node for the leaf level of a
+  2606	 * spanning store
+  2607	 * @cp: The maple copy node
+  2608	 * @mas: The maple state
+  2609	 * @l_wr_mas: The left write state of the spanning store
+  2610	 * @r_wr_mas: The right write state of the spanning store
+  2611	 */
+  2612	static inline void cp_leaf_init(struct maple_copy *cp,
+  2613			struct ma_state *mas, struct ma_wr_state *l_wr_mas,
+  2614			struct ma_wr_state *r_wr_mas)
+  2615	{
+  2616		unsigned char end = 0;
+  2617	
+  2618		/* Create entries to insert including split entries to left and right */
+  2619		if (l_wr_mas->r_min < mas->index) {
+  2620			end++;
+> 2621			cp->slot[0] = l_wr_mas->content;
+  2622			cp->pivot[0] = mas->index - 1;
+  2623		}
+> 2624		cp->slot[end] = l_wr_mas->entry;
+  2625		cp->pivot[end] = mas->last;
+  2626	
+  2627		if (r_wr_mas->end_piv > mas->last) {
+  2628			end++;
+  2629			cp->slot[end] = r_wr_mas->slots[r_wr_mas->offset_end];
+  2630			cp->pivot[end] = r_wr_mas->end_piv;
+  2631		}
+  2632	
+  2633		cp->min = l_wr_mas->r_min;
+  2634		cp->max = cp->pivot[end];
+  2635		cp->end = end;
+  2636	}
+  2637	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
