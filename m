@@ -4,156 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23267C982D4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6482FC982D1
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:13:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 558FF6B0098; Fri, 16 Jan 2026 11:07:15 -0500 (EST)
+	id B3EB36B0005; Fri, 16 Jan 2026 11:13:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F3BC6B0099; Fri, 16 Jan 2026 11:07:15 -0500 (EST)
+	id AF6486B009B; Fri, 16 Jan 2026 11:13:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B3BF6B009D; Fri, 16 Jan 2026 11:07:15 -0500 (EST)
+	id A1F216B009D; Fri, 16 Jan 2026 11:13:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 284466B0098
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:07:15 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1CDEC0A65
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:07:14 +0000 (UTC)
-X-FDA: 84338306388.20.08959F7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 59A4E100018
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:07:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D43B6B0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:13:40 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 39E791401BD
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:13:40 +0000 (UTC)
+X-FDA: 84338322600.28.2CDC4FF
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 664A21C0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:13:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf21.hostedemail.com: domain of 3sWNqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3sWNqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768580018; a=rsa-sha256;
+	cv=none;
+	b=yoVRnpEv76ChQmhCZoZ/eyWN26EswTiiqusfQg831FXExaeygIpOQEewSWZEA8lGRdOPhM
+	E0mkdhQHx3ZYZzk+0D+7bGRzV3OtwA6PyTZzXgM4452FGgfdTsR5G8Qe5Ngw3U1JhKb4S6
+	DCm4A1Rh4k93ecJJGfsEhzp8x3bJP1M=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf21.hostedemail.com: domain of 3sWNqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3sWNqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768579632;
+	s=arc-20220608; t=1768580018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c7Vh2c/n2mDZGXXGDz0nxbDwSrlvvd34frJi0zzgXSw=;
-	b=XVSmIjJeuHJTKqhezKX9svEImY3i/pm//QWwV5gTDr9cJE1Ad5hoJUh7oih+BErOW17KNV
-	Np5UmW8EfXfDNPg9juIDRBK+LQLggGWBeWajkg8Eir/j7oMu2cZvpqDRv3VJN5z3Q+rjIZ
-	wJORD6czzwH8k180Q8rXisvvFWocHnw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768579632; a=rsa-sha256;
-	cv=none;
-	b=gb2/7HMsao3I35DbW1Af8D7ebampXCSLHRZQwVK0WIrRbeBzkQjQD1GrMrENL6djNuvuVJ
-	b8Rp8YDPOO6/P3/eOLQ2fFgBhNhmdFlT0Nr0ssklZ7Z2z7wUNXXowyynas64B4oO8oEqvg
-	im3wqv3LUNYDUd1PP43kH86i6bjfjL0=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B10535BE17;
-	Fri, 16 Jan 2026 16:07:10 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 53CDC3EA63;
-	Fri, 16 Jan 2026 16:07:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ympjEi5iamn6TgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 16:07:10 +0000
-Message-ID: <ed6ca250-67ee-4f7a-bc3b-66169494549a@suse.cz>
-Date: Fri, 16 Jan 2026 17:07:09 +0100
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=GW18BJd0jSvNLSBLK+5GeIvUMjj5PFq3we5kfaKyLBY=;
+	b=NozkAIIL8wP708iAgPOJ7ScrePq7MMQoWgY+oq69L/AHQRoNO36zGPPkm1jKvlBcWu4idD
+	HDnhhAJmgZ/xmtT0rdjBAP3ZtvtOEQgvplUu1lG7yl6gzBrevdIyMwP7WwA2S3xysciEqC
+	tX8gtBkrKj+k2bkoErYswmtojvczJLs=
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-65f6e15ad5bso5424359eaf.1
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:13:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768580017; x=1769184817;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GW18BJd0jSvNLSBLK+5GeIvUMjj5PFq3we5kfaKyLBY=;
+        b=LFIB1xRQ4AmrGc9pajmvRMf7viuKWVY0NGa/d37cV0X4J7hFIDY2LWv8p74iw4RpoA
+         veG8ZHBqRW1B/36y9l05xKNmQ8iso4wisjmQElLEZomh2PLHyD5YJ6kTfLN42CawMq63
+         eR80+8biGKXxBv0XwjmPysTnJMk5BvFG/Xyb7UcpP+eSAnPlytuG7bzOZ4wZeMJkiREc
+         0QJfv9ZWKlsOZmZoMKT4p2joVIHcESugYRB6BKHdxMPK9giNu0rvp8Aw01XjIo3pKmUK
+         /U/3uTNt8MCGWzShbkV23o6wSK5/gu/MQSIP1vdg6vpQA1B8qnlrkgQM1inN6Z3H7/hy
+         JXwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUL9B6uBOzE2A803shl3ApfAZlTyR0c2vbF3KGG5XiMDfuH/GCJZEmf29uhe/48/0SMIzoPxsz2RQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyrxzu1CEa0IdgH4Q3uUBoWhvkMTwccS9/9q9DaJCACM9igyxtl
+	ZykSUEiAfoZjTZQjzxHKATnxPrA6rshXcSOS4/9+6eUWLn1I81w0MtjIAPC3DT8WOzOOOJVU99d
+	DJulQfWSamS1RPI5jCwJdv3YcSaUNut4v18DLAQALqe5oPG1Jj7G9TusIIr4=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
- private folios
-Content-Language: en-US
-To: Francois Dugast <francois.dugast@intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Zi Yan <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin
- <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Felix Kuehling <Felix.Kuehling@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Balbir Singh <balbirs@nvidia.com>,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
-References: <20260116111325.1736137-1-francois.dugast@intel.com>
- <20260116111325.1736137-2-francois.dugast@intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260116111325.1736137-2-francois.dugast@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
+X-Received: by 2002:a05:6820:498e:b0:65b:2935:f935 with SMTP id
+ 006d021491bc7-661179c2396mr1433844eaf.44.1768580017428; Fri, 16 Jan 2026
+ 08:13:37 -0800 (PST)
+Date: Fri, 16 Jan 2026 08:13:37 -0800
+In-Reply-To: <20260116100818.7576-1-kundan.kumar@samsung.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <696a63b1.050a0220.58bed.006b.GAE@google.com>
+Subject: [syzbot ci] Re: AG aware parallel writeback for XFS
+From: syzbot ci <syzbot+ci4e530c88485a9c60@syzkaller.appspotmail.com>
+To: amir73il@gmail.com, anuj20.g@samsung.com, axboe@kernel.dk, 
+	brauner@kernel.org, cem@kernel.org, clm@meta.com, dave@stgolabs.net, 
+	david@fromorbit.com, djwong@kernel.org, gost.dev@samsung.com, hch@lst.de, 
+	jack@suse.cz, joshi.k@samsung.com, kundan.kumar@samsung.com, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org, 
+	mcgrof@kernel.org, ritesh.list@gmail.com, viro@zeniv.linux.org.uk, 
+	vishak.g@samsung.com, wangyufei@vivo.com, willy@infradead.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 664A21C0005
+X-Stat-Signature: 4zdbmmhr8reox7e7tr6hpsz15y3izu6c
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 59A4E100018
-X-Stat-Signature: wjyoc9fm6o8jfbn13rboug8ipujbk3yj
-X-HE-Tag: 1768579632-408432
-X-HE-Meta: U2FsdGVkX1/hxh6RMNhDC3x3UTTMwc41wHAK3wO0Asti29Pa+kr9iZzIQ2lVDdY5wPBPmESbiRtPRfr4QErJSRDRfXvAXhP+AF8tdKu1zKZ8xChVNthcDChR9T36+euTP8qvglB4NLh6dbLYfyPAufDSUiYbrixPQwDVN1cWdHD24O096byeczU7BZG7mEOaYk5viIN93IrlL7DwMPbseL3Bx5F9+KKTNiewbbh8K9emwnQiAZgAEwdWIdFVcfBbHI+09CT6XtCH8gnjOGq0hOFeek9WX51wGJuTxGr7+K95Ju8OAe8I3/ma4r4yVBoTAsr2g4J172MUVljCN/+S98jPI1l9X1pLkq1XxqInDFJu8TLqR3AjRlUJ3nx5U1F2SyQuZnhbLjULUYXdkGIE2cfpXPjjSvj1g5oOTZ7DdH3+iYm2xzJEs6zobq01ekhbaO8psU1oov9vV4Oqrqpx1oFr6AkgB+Eyp+Z2IfCQ0+tfRzWyWyYN7cG1CX9ojBLbS8stl0QimE8D03r7XwhuUUeHzjfljJNE7SVlMs/ePRbW5p6vYbOajkmnF9cnT2zVphvdhlfAJuxYDo+pcOBtKO+KUqs1UHRAJKp8vOO8jMP5ARLF3dTeC/yPeuLXRfpYoxLYJT1JnjmoyrPN5AI/xhd8scOl5iL5cC3ikzm1bC6mVXXjlcwsj3KX8j3ucQjzVhIpRkpWk/b/LGNiK37fAuD9dMlzvEMAP7wA+Ma9c2Ws5W0Y8Quo9RlwEfIEKKqXkMe0nm9cIUtaXbfCsLTBwINFBqX6ngN2wY9V6gseYs0qGkiMq4KZpcm7zd4pfqq9gj8H9WGtfUziGOXEfScS3S9nVLoZTip3eNXOu4nrVcPC8JRcC6VdSIsge9vpA4O0hNAngSsOFswXab/Px346NNKUy1S3398sZ5OGFtYvUbE3V8WPEP5BX3QGf9n4NiX7YQtlj7bj7JEa6bKp9bh
- BwOO5eFv
- ZfR/EhesijQ1kq/9JucLIwWYcTxJI/XM0hQN1nXRXQRho+vX9QD5ApAE2cTC+GYkqjaE9gOVsWOWldqSs1ez4MCFD9votI0ouIwn1hc/KOvZ7j0QdUvBxrED6Y4mRhQvOh+lh1GnPRguO8vkmKuS+eS38PpkymiodbcMLhKlsyI/r+md6KbJ1AfwkiSgIW+gy4RaU
+X-HE-Tag: 1768580018-917429
+X-HE-Meta: U2FsdGVkX189nxxQv/yQXaU+vWDz7X8kXAaHmQPLwR/BtD8zZidLLMezTtiSNOF3atVWy3HSoaa3AzKP7icTYqiQgc466ix3Dx23Tm+s4XILOH5aRPXNrFKgRcRctKe7xWf+Vav8P1YqdpC6QA7hlrgGImUj81fPSccESAVQzOf/6fdzh64VC67DLIXWx5j8pJBHW0nMyMSkOu8Uk3H8lwGXICqad19GwDFtgxufbnT6vBN7Hv9b7DCIAPtA6XD4q2h+B7KeHXbVgt4krRgDc+jC16SxuvnNIoQpXLLgRXgdn7hj57O+Q5kWnUgEH3esqqy0hJ2X9FSzpxsRKm5Za7ZPlEVpAaFc65whZxzYgsuL5kS/Olwg7kl20c1sxNUE9UUKfgyZQlMIOIwQs/aWMuR86KAplMwpSREGgvDU5vSdsfG9DrdGGsth+SUjtEaIQ2EXcFqn44psQJnI3BaIVb82SsB6Wfakevgp9QP96uUQ1VzHe/MilseueJc7DyVdG9fXZjuJLJkFOQu0ZDrnuMVw5M8INBv0P4zHe2d2imMwn7ZQWmPINIkBuIrycMNIIW9XEGW4VrMyNO9BFjDm7CWfIizGWUy8pLDhI949gYMAtN4NQEfq03NQC18ntBjW6oa+0DD7aQutg+cY5tEUhShaYlVXBdWgYFOvfG6yXue7GWYZfrEwbg3lFBCDlK5Ug0iBdJ6fjsxy++Pdlr7KpSQyUqfeDLyxd4HJTwL+mxIXHto1MTj3Eg1/qqh3s3UQxVOd7u+qkOmZFHB6/VW2cquEcqzqCQbpyEG2GqXJdKBl0CydaVLh2EUdNaTGc0/vJkVSYuWG4REY71oaLvsqyEzgAdRiLyHX2usvB0Z4WLyGK4qHxCdvn+ZKcm8DXx3dMScUOleg7jI50uRc8TuVvWB2YNz0AkJdS3uGKlA/iTO9uMmcNIGhGmf1lOw3SUQLOmYWSmG+rlFRwcU2bv5
+ mHyPK3SK
+ sUodXLhbJSgzUn7MlQZLknIr143XRRJXUmFSg/HJ9cBlStPhARHW1fm/yXZhWqE8T4z/C1Fpgi3JTCmId0yblgSFGws6X0KVpI7vZ1h1PiEn+39v7VXqPuSMJZE/v18KFQ71NG3p93J3Q+lEtXzHAOB3ZOcZFs/tuT/FROCtKz48pm0Exfenps5KxnNf+4UlcUhvJSjfMxIDxoKl3tQLF2L5dX70LaCN690nrSOa2SQCCygnBczchnNCMbN/wErvcJ89AoJtYfshr9UrrlLbgv0i+5d/7mC15w8ufvjIDNKd5mg4YTzyv/I4ZA8haxbzTYvV73aKajgxgZkmUM5LSgj/X7/gq3RvKkrO47X4O4XdAaPYQ13uYIvFOkl3zCGwj5lwHvROi9HPDoOjnNxkzz0x/woiMulYr5P+05qp4c5ykjKucEWAhWf6AsH52/tfmX01vO+scu8UwAUs4CYx6s3+Vwlsr+EX0uI58jojDlgRnpB8FbcYvVsTqiIIDps/8fig6ycUHIW3iIkFwbM4kB47ToXvqs5psczTSMM2DOozCLLbcYJ8qpxPC0C2dy7axv/RucCm4mgT9Q7225jwtfEZQ9ILpJgIpOgFBQD4KpEYhdaE9eUmCeBbyy8pdbSyMuIYzgjwhHDPoSvrWBLm6lcKA9ElblD7n8DbZXpk7XmjyMYsPybYv40Rmm3dkX5Uc/NiIfQLbUdTOxeg3OTvRw1f+sKILADl7b34pxfM5MmXbdVS1GUC6GiIRuiaAXsTyX3CQHCH1+cf56ZQAX5hvvftxLu4ORBcmI5S1X0b7KoImhFZnk3DyPA4GbyTDUowQ28CHlo3qsOkOsVaHpAJn1Nry7Umhp6oUptzmuNjfIveMHMO3fAjsI+DP7sNqrWCSjPF9VNTmMx5gsjJx03pTZ+v+ni7TJXLhTUqJ+SkogPKW+ZA/czV4yk/JazIAV4P1lzNiGOI/QuqVR0VlLgsd5osrlSoz
+ AxtnX6f2
+ G1chNqGB2kQAXcEOPl94k8mQSY0la8lBxRYGLG9foEvqi5iRrl+wI4VLrcOwufvjEuxO7AsBBzIHzbSMHILa0f/JEaGfq4jB/ePDKpX8bd8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,61 +103,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 12:10, Francois Dugast wrote:
-> From: Matthew Brost <matthew.brost@intel.com>
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 63c6ab4fdf08..ac7be07e3361 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -477,10 +477,43 @@ void free_zone_device_folio(struct folio *folio)
->  	}
->  }
->  
-> -void zone_device_page_init(struct page *page, unsigned int order)
-> +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
-> +			   unsigned int order)
->  {
-> +	struct page *new_page = page;
-> +	unsigned int i;
-> +
->  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
->  
-> +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
-> +		struct folio *new_folio = (struct folio *)new_page;
-> +
-> +		/*
-> +		 * new_page could have been part of previous higher order folio
-> +		 * which encodes the order, in page + 1, in the flags bits. We
-> +		 * blindly clear bits which could have set my order field here,
-> +		 * including page head.
-> +		 */
-> +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
-> +
-> +#ifdef NR_PAGES_IN_LARGE_FOLIO
-> +		/*
-> +		 * This pointer math looks odd, but new_page could have been
-> +		 * part of a previous higher order folio, which sets _nr_pages
-> +		 * in page + 1 (new_page). Therefore, we use pointer casting to
-> +		 * correctly locate the _nr_pages bits within new_page which
-> +		 * could have modified by previous higher order folio.
-> +		 */
-> +		((struct folio *)(new_page - 1))->_nr_pages = 0;
-> +#endif
-> +
-> +		new_folio->mapping = NULL;
-> +		new_folio->pgmap = pgmap;	/* Also clear compound head */
-> +		new_folio->share = 0;   /* fsdax only, unused for device private */
-> +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
-> +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
-> +	}
-> +
->  	/*
->  	 * Drivers shouldn't be allocating pages after calling
->  	 * memunmap_pages().
+syzbot ci has tested the following series
 
-Can't say I'm a fan of this. It probably works now (so I'm not nacking) but
-seems rather fragile. It seems likely to me somebody will try to change some
-implementation detail in the page allocator and not notice it breaks this,
-for example. I hope we can eventually get to something more robust.
+[v3] AG aware parallel writeback for XFS
+https://lore.kernel.org/all/20260116100818.7576-1-kundan.kumar@samsung.com
+* [PATCH v3 1/6] iomap: add write ops hook to attach metadata to folios
+* [PATCH v3 2/6] xfs: add helpers to pack AG prediction info for per-folio tracking
+* [PATCH v3 3/6] xfs: add per-inode AG prediction map and dirty-AG bitmap
+* [PATCH v3 4/6] xfs: tag folios with AG number during buffered write via iomap attach hook
+* [PATCH v3 5/6] xfs: add per-AG writeback workqueue infrastructure
+* [PATCH v3 6/6] xfs: offload writeback by AG using per-inode dirty bitmap and per-AG workers
 
+and found the following issue:
+WARNING in xfs_init_ag_writeback
+
+Full report is available here:
+https://ci.syzbot.org/series/0e34236b-3594-400f-b9cd-6f59b196014f
+
+***
+
+WARNING in xfs_init_ag_writeback
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      eeb33083cc4749bdb61582eaeb5c200702607703
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/f21aae46-4d21-4410-9132-190ad8ae3994/config
+C repro:   https://ci.syzbot.org/findings/24ec6312-5e15-4750-aa2a-08d381daca26/c_repro
+syz repro: https://ci.syzbot.org/findings/24ec6312-5e15-4750-aa2a-08d381daca26/syz_repro
+
+loop2: detected capacity change from 0 to 32768
+------------[ cut here ]------------
+kmem_cache of name 'xfs_ag_wb_task' already exists
+WARNING: mm/slab_common.c:110 at kmem_cache_sanity_check mm/slab_common.c:109 [inline], CPU#1: syz.2.19/6098
+WARNING: mm/slab_common.c:110 at __kmem_cache_create_args+0x99/0x310 mm/slab_common.c:310, CPU#1: syz.2.19/6098
+Modules linked in:
+CPU: 1 UID: 0 PID: 6098 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+RIP: 0010:__kmem_cache_create_args+0x9c/0x310 mm/slab_common.c:310
+Code: 43 8e 4d 8b 24 24 49 81 fc b8 78 43 8e 74 20 49 8b 7c 24 f8 48 89 de e8 f2 c0 67 09 85 c0 75 e2 48 8d 3d f7 ca bc 0d 48 89 de <67> 48 0f b9 3a 48 89 df be 20 00 00 00 e8 92 c2 67 09 48 85 c0 0f
+RSP: 0018:ffffc90003817a08 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffffff8bc734a0 RCX: 0000000000000007
+RDX: 000000008bc73406 RSI: ffffffff8bc734a0 RDI: ffffffff8fc6ee40
+RBP: 0000000000080000 R08: ffffffff8fc26e77 R09: 1ffffffff1f84dce
+R10: dffffc0000000000 R11: fffffbfff1f84dcf R12: ffff88810b7a7300
+R13: ffff888115440000 R14: ffffc90003817aa0 R15: 0000000000000190
+FS:  0000555567cf7500(0000) GS:ffff8882a9a05000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f049ffff000 CR3: 00000001b9726000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ __kmem_cache_create include/linux/slab.h:384 [inline]
+ xfs_init_ag_writeback+0x41b/0x570 fs/xfs/xfs_aops.c:890
+ xfs_fs_fill_super+0x7e3/0x1640 fs/xfs/xfs_super.c:1759
+ get_tree_bdev_flags+0x431/0x4f0 fs/super.c:1691
+ vfs_get_tree+0x92/0x2a0 fs/super.c:1751
+ fc_mount fs/namespace.c:1199 [inline]
+ do_new_mount_fc fs/namespace.c:3636 [inline]
+ do_new_mount+0x329/0xa50 fs/namespace.c:3712
+ do_mount fs/namespace.c:4035 [inline]
+ __do_sys_mount fs/namespace.c:4224 [inline]
+ __se_sys_mount+0x31d/0x420 fs/namespace.c:4201
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f32c139bf4a
+Code: 48 c7 c2 e8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd30494b68 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+RAX: ffffffffffffffda RBX: 00007ffd30494bf0 RCX: 00007f32c139bf4a
+RDX: 0000200000009740 RSI: 0000200000009780 RDI: 00007ffd30494bb0
+RBP: 0000200000009740 R08: 00007ffd30494bf0 R09: 0000000000004010
+R10: 0000000000004010 R11: 0000000000000246 R12: 0000200000009780
+R13: 00007ffd30494bb0 R14: 0000000000009768 R15: 0000200000000300
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	43 8e 4d 8b          	rex.XB mov -0x75(%r13),%cs
+   4:	24 24                	and    $0x24,%al
+   6:	49 81 fc b8 78 43 8e 	cmp    $0xffffffff8e4378b8,%r12
+   d:	74 20                	je     0x2f
+   f:	49 8b 7c 24 f8       	mov    -0x8(%r12),%rdi
+  14:	48 89 de             	mov    %rbx,%rsi
+  17:	e8 f2 c0 67 09       	call   0x967c10e
+  1c:	85 c0                	test   %eax,%eax
+  1e:	75 e2                	jne    0x2
+  20:	48 8d 3d f7 ca bc 0d 	lea    0xdbccaf7(%rip),%rdi        # 0xdbccb1e
+  27:	48 89 de             	mov    %rbx,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	48 89 df             	mov    %rbx,%rdi
+  32:	be 20 00 00 00       	mov    $0x20,%esi
+  37:	e8 92 c2 67 09       	call   0x967c2ce
+  3c:	48 85 c0             	test   %rax,%rax
+  3f:	0f                   	.byte 0xf
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
