@@ -4,89 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 157D6D4A603
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 06:27:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7E98D4A603
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 06:29:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F7A26B0089; Fri, 16 Jan 2026 01:27:47 -0500 (EST)
+	id 22FCE6B0089; Fri, 16 Jan 2026 01:29:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B5AF6B008A; Fri, 16 Jan 2026 01:27:47 -0500 (EST)
+	id 1B39E6B008A; Fri, 16 Jan 2026 01:29:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C4DC6B008C; Fri, 16 Jan 2026 01:27:47 -0500 (EST)
+	id 0BFB76B008C; Fri, 16 Jan 2026 01:29:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D8056B0089
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:27:47 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 24AAF1BDB3
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:27:47 +0000 (UTC)
-X-FDA: 84336846174.09.B88CE98
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8F424140004
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:27:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YTxvBXK0;
-	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id ED4B56B0089
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:29:48 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8411A1AE6C9
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:29:48 +0000 (UTC)
+X-FDA: 84336851256.30.64FA84D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C16B6A000D
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:29:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RIX+7UGS;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768544986; a=rsa-sha256;
+	cv=none;
+	b=EIxzBXkGbYPddJ6kl2l2uBqZoDBvkbDc8KyZnBrUaLPPXjGKL5qQiCJpfYXP9CdmNBWdel
+	0CUbEimMZY5NOBhq8uHXhUpU093cUruntImEPMN3g7vcWl7YzY/8BVjHr/lORct/q5gY4F
+	bTHrIagMVHe0NetNIP8pWqs8DKwSCKA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RIX+7UGS;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768544865;
+	s=arc-20220608; t=1768544986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZtRqq1YheiNBBvVmImDMizfzqDOKIgcriEPR9727W+A=;
-	b=YVrLBvSYYnHWORw3zIp5QM1jY5wrs2aRBi6MlcmGb5RZov4JIVd68sA60REMK86xU6RrFo
-	H3hbzs2OrEKP9++JqDnEBZzG0tVOkdGd81ZLnSHBZemCHpD0vRlY1J0TcgSl7Qg1nT8GCh
-	g4Khh+UiQ09zFitfe0tEzH61uHbQE8A=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YTxvBXK0;
-	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768544865; a=rsa-sha256;
-	cv=none;
-	b=XawjZg0PtRzuK2GKox4eoKRc3/sqM1LUMzW+Rv6aQFePJWgnErx41KRVgmTnd3Z3oY4/f7
-	dZdm7+4pIA+FXKk1ESzO5ig+sybdqfjJU0sRD8PmiuBgWLDQZ9EbDtKf6U3zyzjKhQFQlR
-	IudQq7lqfqLnWPbrlSY5szcrf/85478=
-Date: Fri, 16 Jan 2026 14:27:28 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768544859;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZtRqq1YheiNBBvVmImDMizfzqDOKIgcriEPR9727W+A=;
-	b=YTxvBXK0JBNk0RbWd3h8MJih88revancn1zLe8lx27VZO9joNgTadN2VzM/l6k1bIL5pap
-	czE0RgU8pSmFOxCnYRduit8IdxaQhwO+0ObsWermDa+LI1bEr82fMrAXrzsmmlZa4XhfDI
-	xw1CXap5a2b4p/rnYcg01tNYL6P88+U=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH RFC v2 08/20] slab: add optimized sheaf refill from
- partial list
-Message-ID: <kp7fvhxxjyyzk47n67m4xwzgm7gxoqmgglqdvzpkcxqb26sjc4@bu4lil75nc3c>
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
- <20260112-sheaves-for-all-v2-8-98225cfb50cf@suse.cz>
- <38de0039-e0ea-41c4-a293-400798390ea1@suse.cz>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4Io3LO0XDEFrIPZ1wVwD06rhILRh/5g3zrQ4rS6Enp8=;
+	b=3wq7QUScT5DRmw4woCDHUqbpLB1EvfqudfbhLxFWWbGjA0xHsds0k3GT86idR/L2OSiBBe
+	e+OXi8E67Z0PYIcrq5h2aZj7R5L48HMRxjlgWHVLpAgZFIm0Uo63/uJ1O+dfmroH5yWDvR
+	mAjIoF6SdcdEAsATJtCusmYDhNjquQ4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768544986; x=1800080986;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=203LEnegn6pgyEb+gr3UN6xlH03P3esILLrbrs6t1QA=;
+  b=RIX+7UGSYx1MEwde+ceMo856r4GEPgCBoo8dRKEZ1M3oiVQVF1KhhnA3
+   exNJctk0PTNC3CJes21qGJEhybmAk9ZBNuDKqUE+pz1NXnre06SZ0MT1c
+   /X8wy53Rml4YODbNjiwgCUAcdO0c3lvvALJgQl5nZMyr8npXpPJoOsMd+
+   bNQ8LJZKKfBrRXODY07Ep3fW6rZvtzvlgfc3JvGDtBJiTGBwQpX71Aw//
+   McmNjezGVG1l3fqvrVSor+Yl8a6wlIqPt4p3w7cKXWwgFDlYey6CFB8y4
+   rUHqgB3c6wcIWd5uYPWdwyM3JKp7e2KYUVD8fxq2onVIwdio877kI8mev
+   Q==;
+X-CSE-ConnectionGUID: s/mcPXKKR12mAaE0sn2Q8Q==
+X-CSE-MsgGUID: bz2lw6RSRs2zwbE+w/i2Tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="87276038"
+X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
+   d="scan'208";a="87276038"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 22:29:45 -0800
+X-CSE-ConnectionGUID: XDAfVPo2QI+gwHcQWbjEMw==
+X-CSE-MsgGUID: eS4cLMU1QCCDdiroYNztcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
+   d="scan'208";a="204955513"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 15 Jan 2026 22:29:42 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vgdL1-00000000KTq-1Vws;
+	Fri, 16 Jan 2026 06:29:39 +0000
+Date: Fri, 16 Jan 2026 14:29:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Byungchul Park <byungchul@sk.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Pavel Begunkov <asml.silence@gmail.com>,
+ "Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen"?= <toke@redhat.com>
+Subject: [akpm-mm:mm-unstable 101/288] net/core/netmem_priv.h:19:73:
+ sparse: sparse: incorrect type in argument 1 (different base types)
+Message-ID: <202601161420.8xY65Dyx-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <38de0039-e0ea-41c4-a293-400798390ea1@suse.cz>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 8F424140004
-X-Stat-Signature: 8pbw5jj6snm6sfz1bopnimzr9iwyqo4y
+X-Stat-Signature: dcjbfuhf11386f4so8wgknygs4hp9gc3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C16B6A000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768544863-906383
-X-HE-Meta: U2FsdGVkX1/Ei7GR6KcSSt8xHb/XT2mvaMCZtDQ85h/9AGAf+ek+mtRymYdJoy0ZEAb5HhreLejv/Zu8C5ss2jZuwLZwj8RIo+LkbIAMvVqOfr6yz7DNPE5NXHo7r04XHVWRaZnT/VQNF2McZwphJ5S5FCB7uvJ6irhf21phXbQEbc5GbU7jtBqF6gSsPpNVXhTF0BZ6ZA2w/pxdMXM8MfFZNzgD5bwkEvdNDx98CeAU8ArL2b/slCJfOjazbE1LPmgu4ZWXgOMEqw6ZfPfIMhaQO+MjCgjmcBQMDfaCyNuS0xzHdpo213obceS1/d6zEZaOZ5YeUvIdYQ8QZgExlsEbUl/rU+VHa7SX5tH4nAYdGAsym9WvgMwQv3+XYyUKe1pmipyNluZU9ELHRnpk/OmvpmjdmL3F/kagU0wVWoxBUSkGEhTyhqsC3H5msJw+LO63bGHOT8TCevauhrzk0lWr8qE+e1GVpUdAHYmVpZBvBYkGwMxwCQAmCpFp91Mhh5+3fj196xIQ/Jt+qvLdLONtN+HuFLTdRQgllBVu3uhLw4ZoOQ37s4eQtKLHBPr/zfb8lUIowiOrQc6ZtvE1MmmptyBDH4mWM/Ioo33F3CsWulMq8aTQll/gdoPs8hynjth2WoADP094g2CuvVfVjJITdD91Nige3llwuNCGDGs0X0ORzOpB90PkcuJzy55zNyA1fhQc/LWEGAGAV7hwGfv9QF2iTPNdeO2GoL0t5r6vMtC38L8TjRNFgQpAdOeY8AbcdhvKF+T/oOcnLACKKJvs5QD92zGNqrMO334VTqlCaAQxhg3p8axj36c/xf+GtD/LBz0r9vcqhyeJOrhcujAQn/f3sKZe0ndhPk/+TOpu2qNzy++URgXR7G0iBzXLLFQW6bngjfzGECmpw5HtX65bBJ8dQbOk3ebvD+ct3pJ3MQb4QjXzXkn9ABMAo2mYelDRQSYjW3/Fitk1TX+
- B8eTs59e
- DT6vs1q/7Kxf9aUin18trVNsQHEOjVrw6+RmP3F/4vAjOTRmN/GgEAj1LU7Rxq5xKIiicvJaiV2NJfS1zv2f3OoBQ/Zlx32Y71syFbUB8PpuxRgNpPtgE9XAiuuYs2punKqbrA9GahXlgWHPCt3aoX2Fo8S3MlWs2oXq7o0Ml5apQLB1J4zhf/ixxl+aEhbu+PKblbTjiZWXTWsnDiaHcGZIsmw==
+X-HE-Tag: 1768544985-698383
+X-HE-Meta: U2FsdGVkX1+cQbHBMM3PwEtx3kZb+f13WFW/HY+D+5/YcjiQAVE045+57QLVNR0Ti2lgaVuySue7UVKEB1yaUZmaZfka/SvpO67YeAJ7puuNFN2Z68YjLp3SI0P5xloyb3QTjoifvIkqadQxX5SWHePPciIwArtBQuO/mjEauZVGTAKUapWxhECUKMNXNeAUWHy8oF3t7NEr8uhZN76MKX9PghrvIjpf1I5oysrvkzH8/qkyyNNlWG9C5XAh8x8cVX5EfO2hXsrRY5fMvYvlMsl/p6r04SFKGXedv+0uesVMnTd5+Qcnkq+BWsQJL0vTTot9lKoS+ibCh/FbSBcZiLeel81TGlYTu26GZcczzfFVXMqt2HKDlV5z+kXuNfZyMul7P2f7I0iM1wrlsRyaEFNDh4gxMNTGw6vKZwK0Pyj/Zu5NPH6DNoA4vNWaFtWFausL7oOlC388RUtl7UdchkU/24PaY3a9Vuv9ndGr7CAWn737nUM6SYdnfp/Q2L44f3W4e4eUx3qgwo3YDKSNg0lFpZNN+WuwD1LhpebA3hCXqmpHiA2Nf6TRU1r2023uSbfwzFJNz/y+HP2ABy1gCLrsA4LHRYQxEr9rTGwgu0vbvBT7UtSo5Qa/Zu6NFB8N/74xqgjHXlQ/nzH827/0JtrBZjKsQu2Qkz70H8R3NZ1BhU4p8OxEJ5PXq0cog4/Tl7LWY6XgoxJHboljWSSUp03ZBqOaZY+3HoYUS1j/lJGCFBKFHBowWC/72HD2X/su5UCKsOMe+t5r4gPLlpwWDTjBJFgEHT+O1fMzxD1k4GO8N8890+Xgegffd75K9dKjgkTNcDPPPAjdbtqcPv1Qi6KkLtGtsZ2sLBJLOpvR3ddJiN2H3ly6eomJn/Kk3wczDrBzov+k+Wp7/Dd+kEh7XfFpdzq9eEKmUmth/i9O8sQo2J1dhC+L+YDbJqk3VPVQGZBi13ILr9fx+8DwBZR
+ B2cW21Ky
+ 49qIWUnfZOouemSExzWu62o6xJwF6grId1JHs51MzfVEGZ0UqnjCrfOVPCgBRhUYUsypZmh+DkhTFRyZlBm54W4WYYyZmrAWSAOuqZj4wMGWTnxJoPXTDL2ATueAPklYFDYBgdJ42rU4AMBtRR+oY5jYF2yK/OrK66KKeJlHT/PFHP9TvvL0B8FfaidVUUT855JLqsM33+MfbJkSsWdXaYno84CoZP2mcWZ6Ez8pI3nxHktAHhPvLL4B12/1+87cqYefy8fJ4+VpTMT3UuDO/2vV3t2ccaHzjiKa6DxW5shUHlY7swzPGcb1v3WYevmIkxRAjOmmsKSoJ7ZwKtjSE3a4EhXiqCDN7VBMrhr+kHFatWaafx7BNesA9h+d+/TUwHUGvVHct5GaZnDgms8v6EeyrmfgXMXduFBhK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,227 +107,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 03:25:59PM +0100, Vlastimil Babka wrote:
-> On 1/12/26 16:17, Vlastimil Babka wrote:
-> > At this point we have sheaves enabled for all caches, but their refill
-> > is done via __kmem_cache_alloc_bulk() which relies on cpu (partial)
-> > slabs - now a redundant caching layer that we are about to remove.
-> > 
-> > The refill will thus be done from slabs on the node partial list.
-> > Introduce new functions that can do that in an optimized way as it's
-> > easier than modifying the __kmem_cache_alloc_bulk() call chain.
-> > 
-> > Extend struct partial_context so it can return a list of slabs from the
-> > partial list with the sum of free objects in them within the requested
-> > min and max.
-> > 
-> > Introduce get_partial_node_bulk() that removes the slabs from freelist
-> > and returns them in the list.
-> > 
-> > Introduce get_freelist_nofreeze() which grabs the freelist without
-> > freezing the slab.
-> > 
-> > Introduce alloc_from_new_slab() which can allocate multiple objects from
-> > a newly allocated slab where we don't need to synchronize with freeing.
-> > In some aspects it's similar to alloc_single_from_new_slab() but assumes
-> > the cache is a non-debug one so it can avoid some actions.
-> > 
-> > Introduce __refill_objects() that uses the functions above to fill an
-> > array of objects. It has to handle the possibility that the slabs will
-> > contain more objects that were requested, due to concurrent freeing of
-> > objects to those slabs. When no more slabs on partial lists are
-> > available, it will allocate new slabs. It is intended to be only used
-> > in context where spinning is allowed, so add a WARN_ON_ONCE check there.
-> > 
-> > Finally, switch refill_sheaf() to use __refill_objects(). Sheaves are
-> > only refilled from contexts that allow spinning, or even blocking.
-> > 
-> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> 
-> ...
-> 
-> > +static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
-> > +		void **p, unsigned int count, bool allow_spin)
-> > +{
-> > +	unsigned int allocated = 0;
-> > +	struct kmem_cache_node *n;
-> > +	unsigned long flags;
-> > +	void *object;
-> > +
-> > +	if (!allow_spin && (slab->objects - slab->inuse) > count) {
-> > +
-> > +		n = get_node(s, slab_nid(slab));
-> > +
-> > +		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
-> > +			/* Unlucky, discard newly allocated slab */
-> > +			defer_deactivate_slab(slab, NULL);
-> 
-> This actually does dec_slabs_node() only with slab->frozen which we don't set.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   f8ed52ac0cfbddff992bb9600941bfe51e1e385a
+commit: 71b73571e052b94a2af7835373d4090afee5e1eb [101/288] mm: introduce a new page type for page pool in page type
+config: x86_64-randconfig-123-20260116 (https://download.01.org/0day-ci/archive/20260116/202601161420.8xY65Dyx-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260116/202601161420.8xY65Dyx-lkp@intel.com/reproduce)
 
-Hi, I think I follow the intent, but I got a little tripped up here: patch 08
-(current patch) seems to assume "slab->frozen = 1" is already gone. That's true
-after the whole series, but the removal only happens in patch 09.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601161420.8xY65Dyx-lkp@intel.com/
 
-Would it make sense to avoid relying on that assumption when looking at patch 08
-in isolation?
+sparse warnings: (new ones prefixed by >>)
+   net/core/skbuff.c: note: in included file:
+>> net/core/netmem_priv.h:19:73: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected restricted netmem_ref [usertype] netmem @@     got unsigned long @@
+   net/core/netmem_priv.h:19:73: sparse:     expected restricted netmem_ref [usertype] netmem
+   net/core/netmem_priv.h:19:73: sparse:     got unsigned long
+>> net/core/netmem_priv.h:19:73: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected restricted netmem_ref [usertype] netmem @@     got unsigned long @@
+   net/core/netmem_priv.h:19:73: sparse:     expected restricted netmem_ref [usertype] netmem
+   net/core/netmem_priv.h:19:73: sparse:     got unsigned long
+   net/core/skbuff.c: note: in included file (through include/linux/skbuff.h, include/net/net_namespace.h, include/linux/inet.h):
+   include/net/checksum.h:33:39: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __wsum [usertype] sum @@     got unsigned int @@
+   include/net/checksum.h:33:39: sparse:     expected restricted __wsum [usertype] sum
+   include/net/checksum.h:33:39: sparse:     got unsigned int
 
-> 
-> > +			return 0;
-> > +		}
-> > +	}
-> > +
-> > +	object = slab->freelist;
-> > +	while (object && allocated < count) {
-> > +		p[allocated] = object;
-> > +		object = get_freepointer(s, object);
-> > +		maybe_wipe_obj_freeptr(s, p[allocated]);
-> > +
-> > +		slab->inuse++;
-> > +		allocated++;
-> > +	}
-> > +	slab->freelist = object;
-> > +
-> > +	if (slab->freelist) {
-> > +
-> > +		if (allow_spin) {
-> > +			n = get_node(s, slab_nid(slab));
-> > +			spin_lock_irqsave(&n->list_lock, flags);
-> > +		}
-> > +		add_partial(n, slab, DEACTIVATE_TO_HEAD);
-> > +		spin_unlock_irqrestore(&n->list_lock, flags);
-> > +	}
-> 
-> So we should only do inc_slabs_node() here.
-> This also addresses the problem in 9/20 that Hao Li pointed out...
+vim +19 net/core/netmem_priv.h
 
-Yes, thanks,
-Looking at the patchset as a whole, I think this part - together with the later
-removal of inc_slabs_node() - does address the issue.
+    10	
+    11	static inline bool netmem_is_pp(netmem_ref netmem)
+    12	{
+    13		/* XXX: Now that the offset of page_type is shared between
+    14		 * struct page and net_iov, just cast the netmem to struct page
+    15		 * unconditionally by clearing NET_IOV if any, no matter whether
+    16		 * it comes from struct net_iov or struct page.  This should be
+    17		 * adjusted once the offset is no longer shared.
+    18		 */
+  > 19		return PageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
+    20	}
+    21	
 
-> 
-> > +	return allocated;
-> > +}
-> > +
-> 
-> ...
-> 
-> > +static unsigned int
-> > +__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-> > +		 unsigned int max)
-> > +{
-> > +	struct slab *slab, *slab2;
-> > +	struct partial_context pc;
-> > +	unsigned int refilled = 0;
-> > +	unsigned long flags;
-> > +	void *object;
-> > +	int node;
-> > +
-> > +	pc.flags = gfp;
-> > +	pc.min_objects = min;
-> > +	pc.max_objects = max;
-> > +
-> > +	node = numa_mem_id();
-> > +
-> > +	if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
-> > +		return 0;
-> > +
-> > +	/* TODO: consider also other nodes? */
-> > +	if (!get_partial_node_bulk(s, get_node(s, node), &pc))
-> > +		goto new_slab;
-> > +
-> > +	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
-> > +
-> > +		list_del(&slab->slab_list);
-> > +
-> > +		object = get_freelist_nofreeze(s, slab);
-> > +
-> > +		while (object && refilled < max) {
-> > +			p[refilled] = object;
-> > +			object = get_freepointer(s, object);
-> > +			maybe_wipe_obj_freeptr(s, p[refilled]);
-> > +
-> > +			refilled++;
-> > +		}
-> > +
-> > +		/*
-> > +		 * Freelist had more objects than we can accomodate, we need to
-> > +		 * free them back. We can treat it like a detached freelist, just
-> > +		 * need to find the tail object.
-> > +		 */
-> > +		if (unlikely(object)) {
-> > +			void *head = object;
-> > +			void *tail;
-> > +			int cnt = 0;
-> > +
-> > +			do {
-> > +				tail = object;
-> > +				cnt++;
-> > +				object = get_freepointer(s, object);
-> > +			} while (object);
-> > +			do_slab_free(s, slab, head, tail, cnt, _RET_IP_);
-> > +		}
-> > +
-> > +		if (refilled >= max)
-> > +			break;
-> > +	}
-> > +
-> > +	if (unlikely(!list_empty(&pc.slabs))) {
-> > +		struct kmem_cache_node *n = get_node(s, node);
-> > +
-> > +		spin_lock_irqsave(&n->list_lock, flags);
-> > +
-> > +		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
-> > +
-> > +			if (unlikely(!slab->inuse && n->nr_partial >= s->min_partial))
-> > +				continue;
-> > +
-> > +			list_del(&slab->slab_list);
-> > +			add_partial(n, slab, DEACTIVATE_TO_HEAD);
-> > +		}
-> > +
-> > +		spin_unlock_irqrestore(&n->list_lock, flags);
-> > +
-> > +		/* any slabs left are completely free and for discard */
-> > +		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
-> > +
-> > +			list_del(&slab->slab_list);
-> > +			discard_slab(s, slab);
-> > +		}
-> > +	}
-> > +
-> > +
-> > +	if (likely(refilled >= min))
-> > +		goto out;
-> > +
-> > +new_slab:
-> > +
-> > +	slab = new_slab(s, pc.flags, node);
-> > +	if (!slab)
-> > +		goto out;
-> > +
-> > +	stat(s, ALLOC_SLAB);
-> > +	inc_slabs_node(s, slab_nid(slab), slab->objects);
-> 
-> And remove it from here.
-> 
-> > +
-> > +	/*
-> > +	 * TODO: possible optimization - if we know we will consume the whole
-> > +	 * slab we might skip creating the freelist?
-> > +	 */
-> > +	refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
-> > +					/* allow_spin = */ true);
-> > +
-> > +	if (refilled < min)
-> > +		goto new_slab;
-> > +out:
-> > +
-> > +	return refilled;
-> > +}
-> > +
-> >  static inline
-> >  int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
-> >  			    void **p)
-> > 
-> 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
