@@ -4,139 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB2C7D47CAB
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 00:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23A86D47CA4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 00:19:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57F296B0005; Thu, 15 Jan 2026 19:06:32 -0500 (EST)
+	id 51B796B0089; Thu, 15 Jan 2026 19:19:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52CDE6B0095; Thu, 15 Jan 2026 19:06:32 -0500 (EST)
+	id 4C92D6B008A; Thu, 15 Jan 2026 19:19:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42F546B0098; Thu, 15 Jan 2026 19:06:32 -0500 (EST)
+	id 3F20D6B008C; Thu, 15 Jan 2026 19:19:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 31CCA6B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:06:32 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE9811A04C0
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 00:06:31 +0000 (UTC)
-X-FDA: 84335885382.29.C52B58B
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DF91140003
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 00:06:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ndmASu94;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768521990; a=rsa-sha256;
-	cv=pass;
-	b=Z3w0Q0zTggqCmFRe0Am5a3PfHYBrlpcrL4zLgKj++EJK6EnRPzZbfyjfywx7CdRblhJJKj
-	T27mfVhQlVk+E5kBiSY11GpptvzY8NKNFZb4EF2dUAw7Zz0GCgmDosho2WYi+K6UlfokNc
-	AB7oNsoAaar1L6feDX9InsyxreHptQo=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ndmASu94;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768521990;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D7806B0089
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:19:03 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 842B7B9D68
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 00:19:02 +0000 (UTC)
+X-FDA: 84335916924.10.321967F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C6D7F180004
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 00:19:00 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oTyrgtvf;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768522740; a=rsa-sha256;
+	cv=none;
+	b=vcRK9GcIpsUxwVjAt5u26Ihfk5bszHog3KOVOFqC6ww4RHoRI3bLMA1R1KTy6Zs/5896ez
+	37OJubroEJjAFK+XxmvSuj2X7B4aOMNWLvW1XteNxKK56xLgsZbecEY90hLLNBVVpKoHJs
+	TWNwl9YaEqlVVZsAjVSkYMvuWFSITd4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oTyrgtvf;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768522740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=026F9tB9C4DnFMNAbwjqTuZTqI/FPwSez2fEDi6wXsM=;
-	b=6Z35fnnvxKxe0zLZDqiJfVt8t21XyZ4ndWAv+uPWYVCAGaf8Ov8nId/FQU9nufW/nO79e/
-	Es8tr06YHlVFd/K0VMM+IHAT4O3ld/iVwW5melpAxPItoF/tE4VKqxnjTY2X6lMB4SxNL0
-	L2Y4pSC3cHsvcN9ykN8oE0HIyp2ptYQ=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64baa44df99so4127a12.0
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 16:06:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768521988; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jvM+t9BBc9i5q5NsO+VCZW+2OdAsxdX/XAHtPFDQtJI+AA40cm26OdbPXCUCRsxQNj
-         pOQFm1X2bKkgVbADAVcn777GYoHfYtCAXGzX7ct3/Ozx7eIlrYG4VEgUxDFomKE520om
-         18M9cqnE7/GEbeIfY1EDSPYs0wHsrUt/BY0uJDNt/L9ywFkeqr3Y0kdFXYxwrNlJGvLH
-         S/OOJZJ1P/DEj1D3h9hre1Cn24bCDXNrdYo+ay/hWmTegM+p8/z/oQknUYbvOdhASuKg
-         MOnwQzO/ebTpvdI6bkpTf+lMxRPmXhtyioWW+1PQuGXg+cTJ5kgFO8hoTQ9Zg6lXRJih
-         cEiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=026F9tB9C4DnFMNAbwjqTuZTqI/FPwSez2fEDi6wXsM=;
-        fh=5QVvR+GFGvqTSJc2sglPPFEQo8KrHo+bzq/pwaesz4Q=;
-        b=hwfn9ncGxuFdP9nFh6RHNdbsXEaZZoSJOU+RDUbwgeVR8wul6ed3VDwI0iFpsY/8or
-         ANVWpYHtATqoJPT5EKMJbm869BfhWWE45lZAkhC0diUtvM1WNHhvIb2kDu1etzy11qNF
-         ef5HoD1mdMGaD7o5KFDl02YE6fd4C6tXY9aXqW9svUdvuQjsd4Ydl9fOZjCirSTLttFC
-         WMzg93l4T3jbXl8uoq/P+kINztFl3DXKwTO1n5TulgyHv4YVzHOhhR+o5uvi6IXTn33l
-         ltOaIx4HTjs3YfGInlY81yVlwMXdoJeai9F5pMCehmXRtSq9vTZMcLDsK0AZvo98orHe
-         T/tw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768521988; x=1769126788; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=026F9tB9C4DnFMNAbwjqTuZTqI/FPwSez2fEDi6wXsM=;
-        b=ndmASu947whgw5aNqoKZXzzZV75VedsGNzWy5Lie7zIx0+5L46hTHRdFcjE7urHKqv
-         UUwaW9o+oNVBh1QPyUnW6ltCL4mTeON1RUVtEAuvxGRfydvPmbO4l0KoRY+NtZH0W3+9
-         vNZvcopDEvPTG2xB5DtBxipyXyb7ejJn/kScfyueqGhqVf07q+WR6JNnwL/RJXwkXY8E
-         oLFki9N6IafTjnrbXMn5WrQvttcPx89qJPEpwIRpYk5/Y36DOkZx4y8zO53737BbJ7+w
-         0JjiGAucTLBndy4U9Tbozt5eoJrWtgB1O3xbaa0Z48bEmx8Kiof2ro8iK1DlMT3BNq15
-         fMvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768521988; x=1769126788;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=026F9tB9C4DnFMNAbwjqTuZTqI/FPwSez2fEDi6wXsM=;
-        b=Haz5grbWPvb5iz84MQorADvalSFVnuXACScE9y5Pghxmxv5C2Z8s+ftmXzoTq+RPbV
-         xL7VjUIkQnVuOU41UGVqa0lrjAJjng4b2WFJR8J9oSVQCqV7sPLKpTykQa3u+I3ynhiO
-         rW5WnxxCsgOfA/xsevipZ33XZx+FX/fjPsLiRNh8/eFkxB/3pFiL0xje+hzL/oLryowN
-         5gplvNhIzO+NAGvNYKvAZdJe2O2XYUXJa2fuixjlb+O7k+djRs1Zd2GVbLE3XzSb6aeL
-         R4OrTAfT/FmJL2TilVhsyfdanh+hwqLCQi0JwbQD3onUKgZRvmkSLShk4fbc+4Y+5LJo
-         cAyw==
-X-Forwarded-Encrypted: i=1; AJvYcCWI8MZYgr1JlPLsq30bnJGmRZQBuLoO0Qw7rZjn21nQUjW0K+siiA7M6XVxJ3wHv9kz2FZQzowHIg==@kvack.org
-X-Gm-Message-State: AOJu0Yx9iX6UakYNGu/fzigbYd3Tk/OGWLyRwziGzIXfh+5vVkBrsQHw
-	Ko+HQdJrPCpSqh9tBJCKQR5UKzV9+yQgMetJtiR8z76F9LUwub7U3jT5r7njZu+L/afh0R2TygS
-	tOkplB0oHEyV3pZMBpCpHpJ32RIIplNNdUm4srHXz
-X-Gm-Gg: AY/fxX4U0m/BBwdteXekBJslA5moVDxlxmw0E3tJpKCWTn/y2FYpJXvMx9O1kPNLhws
-	XWHhoo9b+1/kArBbJ3qTz2TbhE2fes0msQKN9bs0767QzD7OaX3XQTg57DkVyLGJcV98wgUXZhm
-	0kxGvIb6IBf2004sDjTQ0dpD2CMGOwQQmnm/uIfArqTFC6Vdpgy6do5nn67+9/TYsgY06KSlAck
-	ooD4DJU8VcWD5QNw5bNabRBfNde00jdX/UfnTmKHMZtP+aiG2nAFdi7UtCSeVoVzExF67oVAd1a
-	HCErwkDHTyISoGE+x6p688w=
-X-Received: by 2002:a05:6402:564a:b0:645:21c1:28f9 with SMTP id
- 4fb4d7f45d1cf-655252e133fmr5226a12.17.1768521988035; Thu, 15 Jan 2026
- 16:06:28 -0800 (PST)
-MIME-Version: 1.0
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
- <20260112-sheaves-for-all-v2-2-98225cfb50cf@suse.cz> <aWXvAGA_GqQEJpB4@hyeyoo>
-In-Reply-To: <aWXvAGA_GqQEJpB4@hyeyoo>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 16 Jan 2026 00:06:15 +0000
-X-Gm-Features: AZwV_QiPFAF4oyordk9NHVKA3LxKDdMlmD4Vltq0PHkaKAiIFW6MRACIK30AxWk
-Message-ID: <CAJuCfpE7ctb+AYEsmmDbW-3+DU-kDb2ApYWYXRur5FDtPP6zng@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 02/20] mm/slab: move and refactor __kmem_cache_alias()
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DF91140003
-X-Stat-Signature: 3qfx4er6wwui6mi7ijrqrukd7rjxy3bu
+	bh=8dZ9oxt9FWn/F9+lO/IJZ9dkf3WC43EemNdOt09jeRI=;
+	b=qJV+0+Hka3n7nnJQW9+f3jEHzEyQ1Bmc5PVbWvt+yr1b1KN3ZX9xDJ/yIrHj3g/0nvmM3B
+	VJEWkF3TW1ZDjk/1hDlkGEVUu1Y+aNGni0/VgLDzXUMk1dQ9WOXikF+AP1U9ofOPYKkd8M
+	Byl1ffD7Z4A8wp5TCuxLqGLyZe/IwQU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7FD3D60160;
+	Fri, 16 Jan 2026 00:18:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBC0C116D0;
+	Fri, 16 Jan 2026 00:18:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768522739;
+	bh=xmezwQxgXFBOE+WsEI8kzMdBQ/Vtj0ziay1CjIV7d/0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oTyrgtvfzdS6SXwpo1a618aiclgOz0Sosdc70f8yw78SvJDgJcbGQ4l+n163A+84S
+	 GtOC/DHsdsuWPAUiEYgrvES4udeex059kh0yHGa7HIOVi7c0lI6djZDMrpXSzDE6TI
+	 6esn++KQCSZ991FCXwGinH0epC8qjUoqV4yZ1PiQ=
+Date: Thu, 15 Jan 2026 16:18:57 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Rohan McLure <rmclure@nvidia.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, x86@kernel.org, Nicholas Miehlbradt
+ <nicholas@linux.ibm.com>, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+ Andrew Donnellan <andrew+kernel@donnellan.id.au>, Srish Srinivasan
+ <ssrish@linux.ibm.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v18 00/12] Support page table check on PowerPC
+Message-Id: <20260115161857.ad9952cf1ebd1b37839aa652@linux-foundation.org>
+In-Reply-To: <cc97397d3c75d796ee71081cc842c867a62ce39a.camel@linux.ibm.com>
+References: <20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
+	<CA+CK2bBjoQmheEstv1MacGev_srdx=m5v=hwxdyfAKogbpG3FA@mail.gmail.com>
+	<bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com>
+	<b6c39059-faed-41a8-80b2-addaa229c143@kernel.org>
+	<cc97397d3c75d796ee71081cc842c867a62ce39a.camel@linux.ibm.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rkmzzo1eirwyg4zri14o1xpxxzhs48em
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C6D7F180004
 X-Rspam-User: 
-X-HE-Tag: 1768521989-354914
-X-HE-Meta: U2FsdGVkX1/QzXUZ9d8lH5qjBXu6+Zb23e5g6XU/2JaqJslxwIa3fNz/SvG3ZpdYl964btzINaNYmyolCkZzD/crCSpt9Uwrpgvmy6duSi/EnuaQtavjAKiyV7em69yXwpjfVbW/bPRwMLdyOZrT/h0dc0X6qh8c0hILPOHSzkCQlVtzfb3h4OmbTABqduKnuu+zqIuxrgh0PS+EfHs5ldbnO7dLYLRusB2kHVxJZL6ci6MImnQ+gNtFlPZft3E3/HTt5Q7neJR5cY0v2aNa+DJS6AKso7OvlpyTSRezGxiGsAj98tk55+XYTzunllukMvs67+XtWt6t9AmvPcoWfDzJqBMsz+/FECj9dexxydjumAEyoBkXDC+6tVoyAh7eQmbKk8Y6IZo/zAO+GnE33XIkCb8mMKsVZWToZfvYA/yAOC/Pwp0FVPoSD/pdBMEofYANExeDK+dyOVPYaInHSZ4E42oXev0DucN0Hm1AuoXYCUTS48HZQv4qlWxNMQfd6/2Lnls5zNgX/tg8uxY42+ghHwxZLhP/eFinNFjNMvJGCxrYJlVcNFrBrLidNg2lDa/qPCw5j+Fm32cqlPrEuUWTL6gz+WbY3FL2U6NqXez3cmyCXkCkf0RP3LRBg1lEDbc/n0fIiimLpYVOG8IVsY5AgGfl9Cflz0cZhCjLVCoMXE+6dJNvSBOxommozIaOtWxCo3zb+iwdBHbcj14xQvxmQhZA1Kjre3tM3+ocxC1kxyVCn7Cdn9FyLAfn7EVLstn3TmOctYcbwZSDsBWzIzIQM/3OF++Y8nyKAnODxeTYZUHF/dJsUw/miqzZxBlKnmz9KY/8q4HpzApvsufQyjhaPcLPh6+TlOc01rcc/UcQrrfZ6hNHNhqhwO/cxjiX+OaMFzrnpWmbPihTHlPDs1W2GUgaE8b4EC8JAhxoJqyJHAr0YBqTCk14Z0P7Nuj895dc6ZmJjcZAgJbJF0w
- bYf4tcfj
- vSV+zodRv0+XS0E4wiyN+Ct/MPuCEWHk7um68sMp+0lwE2JaUKwv0vJe3BNCQ4+e43Vuf/q9Ft0xjhqi51xaDxYpLKFDA90t4MutAmP+Wl/5f6y0Aq2qWLaO6vkkktRtRmVsHSs5IdzH9lI2CaP9VRTb/5XgtrwkpcznZ8AULyamtvyaijIs+CnPEPZE7e63hR96ghEhky0/mllGfNwI4v230zWoL0uYIrOhsDEqorOqqQacd/DszYC7PKFW1lrDrMZN0bsa4gXQeCK7QM0RVJG1l3/SKbvE/kJaQ+u29wO6lvtxTHkjEeIbfOah8RG6+HveqThQeY7tdpOVVT4hVMhHj7X6vVtq6nzozWJyFpKfuh7OrKetGMoYTca7Wl7nEeYk7p0jBK7EUsHX/R6TqOFC4EldV8TEWVodo
+X-HE-Tag: 1768522740-797780
+X-HE-Meta: U2FsdGVkX1+B6hYSaIgHTfwQtCSCVwOY3sRsv54VHyxR4b4HXUTX1ox3Rz5pOQ1oGBVhHODGbTForAHk2STG73ymAWd8F1a9D52kklszzDtQhDIu6PRTxAjINs6ZG7nz9k2c6c4a8uolQlzxzgO9HxLHMTNzIXcXcRLb44aWV1BJOLpfJbHvaDSzQKsusCpXZy2at9mWHL+4FoxZovyugO6KQYZJ1zxb66YCxjaPdkqQgFtA/9JbSQjFnbtonPST6IUv1bMIyigExbMCuwYEoX2tGymimbXHLX9k0+aYPv02AgyzRrr8XIbG/LJMLuqyzoPrZ0Q41slH25ybLtbh0hTHsd2UQU1zHoL6iiKdDzfgu0xlDi31QEpIGNvc2DVcIobEzRPwsTHegSmDC0A8PzDJoUcBsnJ2XuiHsmnn5q5yp+LLT406wJcSNzaioNc8UyuohDFryIy23oa9hbuygGBHx6Q4o321jexP+Xir/bBdLd6g6uVAxiVKipLkX1FZfsbYSUFESVB+w3Ba4w9lJ6RKCSOlZO4xG2KX9Xrykc7fnrQ9jQC8+M8NnWtcqWAfNLTCVJHTeDOnEFuUjjfjiU+5gJ+iIIATP4NduJOn+GzbQkrqE2V/u0D5zwQmUJ3QCHFD6240ABTvK4fO2ozkbaFTocyui18/whi1oMl7n749JfYGjbIUJflR7TSx1om8lzMQ+r87sHbP+PlEN3R23YK+m5TGP4cEj1crkvV6eWxGUDFtVBkePvJUmZwx6fDrz4oqy6V9xgs+D+E5TasrBcrFrT3MkaBr/cpC1hd7Q/QlnE26bKUrtQhsFQr4TQ+EZMLXqSYVOV67aj/pn3XA+EyGxgbxkuomL3lVSrZ+FFCeC7bUfvceUFplVCeVHZ1rOdSVfTWGOO/vochIwc/dMWyxlacb7CzynLc0DNqIM3eKBbbeIOYzavBAlbxrqH17e2jraxBFNSTSVxir2Pj
+ PNZo5DuK
+ ov/FG6t0CvfRQaiMdyh6PCwzY8CKKjKCMdCSAq0abT87Al5jMFR3U2fEVvNfMqGaXw2Ng7bea23si0P2e4HPTuqu+9Q3OEjKteeW6+48FQ/OK8yj4+QlG9yCD1vi5csvWE+yMEtEo8rg8qmoOglUCLrNmyFx427M1vQ3RTI/qN2cM0TOHZLY2wXE34qKmFRw3b2uQZBTXW8B678a5E/t/sxz5nTwXXmtccVE5DDqG4K/Zoh3XDuXo9KliOzOPmiswIr07l/aGeE6Zl+rxMnu2toQaSlK7Uow/bFZF5Ud2596QMhvsSW+ZC4GMkN9XyrThgcqfbBbpY/Iue0IWoXMC1qEqh73iHVZxkx4w
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,35 +101,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 13, 2026 at 7:06=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
-ote:
->
-> On Mon, Jan 12, 2026 at 04:16:56PM +0100, Vlastimil Babka wrote:
-> > Move __kmem_cache_alias() to slab_common.c since it's called by
-> > __kmem_cache_create_args() and calls find_mergeable() that both
-> > are in this file. We can remove two slab.h declarations and make
-> > them static. Instead declare sysfs_slab_alias() from slub.c so
-> > that __kmem_cache_alias() can keep caling it.
+On Thu, 15 Jan 2026 17:13:26 +1100 Andrew Donnellan <ajd@linux.ibm.com> wrote:
 
-nit: s/caling/calling
+> On Wed, 2026-01-14 at 10:34 +0100, Christophe Leroy (CS GROUP) wrote:
+> > What is the merge plan ? I see all powerpc commits are acked by Maddy, 
+> > will the series be merged by Andrew into the mm tree ?
+> 
+> This is what I was expecting - this revision is rebased on mm-new as it stood
+> around when I sent it.
 
-> >
-> > Add args parameter to __kmem_cache_alias() and find_mergeable() instead
-> > of align and ctor. With that we can also move the checks for usersize
-> > and sheaf_capacity there from __kmem_cache_create_args() and make the
-> > result more symmetric with slab_unmergeable().
-> >
-> > No functional changes intended.
-> >
-> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->
-> Looks good to me, so:
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Ouch, sorry, I did not understand this.  So we've lost 4 weeks testing :(
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+The core MM and ARM changes are trival, in the if-it-compiles-it-works
+category.  Is the mm tree really the best place for this?  It'll get
+more testing in the powerpc tree?
 
->
-> --
-> Cheers,
-> Harry / Hyeonggon
+But if you're OK with it, I'm OK with it.
+
+> By the way it doesn't apply on top of powerpc/merge branch:
+
+I guess we'll be hearing from Mark when this hits linux-next. 
+Hopefully the resolution isn't horrible.
+
+As I'm adding this to mm.git's mm-new branch, Mark won't actually be
+seeing it.  I'll aim to move this into mm-unstable (and hence
+linux-next) after just a single day.
+
 
