@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46137D47CCD
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:12:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFBFBD47CCD
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:13:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B3B16B008A; Fri, 16 Jan 2026 05:12:54 -0500 (EST)
+	id F2F326B0092; Fri, 16 Jan 2026 05:13:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90F8F6B0092; Fri, 16 Jan 2026 05:12:54 -0500 (EST)
+	id EE2CB6B0093; Fri, 16 Jan 2026 05:13:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C9F86B008A; Fri, 16 Jan 2026 05:12:54 -0500 (EST)
+	id E0CD16B0095; Fri, 16 Jan 2026 05:13:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 672666B008A
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:12:54 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2979AC22E1
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:12:54 +0000 (UTC)
-X-FDA: 84337413468.14.8970F06
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CC4146B0092
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:13:00 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 703548C114
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:13:00 +0000 (UTC)
+X-FDA: 84337413720.26.81984F0
 Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3A019100004
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:12:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=i40Vzp86;
-	spf=pass (imf05.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id AC4C81C0008
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:12:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="Wlu3/gpc";
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf18.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768558378; a=rsa-sha256;
+	cv=none;
+	b=OMmnbb9NiqVFWBYoIp7stP7aRtwWDL5ZDVdxcr+bcZUKr/RbIAJzy61MRyf0CjswyqZM4c
+	8sy4P25uUcYdgu9WyANht+U9R66cz6xkkA5CBrI7sYlBXZT63YHdO9PBriENsT5lYXX1ZR
+	tddhDLUQA0ntv5DjFPRTibb6S+Iv+Hg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="Wlu3/gpc";
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf18.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768558371;
+	s=arc-20220608; t=1768558378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BpzxFl3g/5TPELMzmGzvBSQN5CcPjGy3hoOD59YZp9U=;
-	b=Cx5nWbYCj+Sp/qzwj+W8IZMNUKP/FPtxrPI69mSw4BiQ4sd7HBSEI2L1GzRtZFzVXY4iBO
-	dyl9Ty2958E715Kzc2y8oBWe0aRv217rg3aCM86v+Z1YviHARnC98epb2TspZnPZ76ZVAL
-	FX4PqjFXB7botw6XwSegUypCt3wpjg4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=i40Vzp86;
-	spf=pass (imf05.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768558371; a=rsa-sha256;
-	cv=none;
-	b=a4fnSc8XCllreKNi0ZFexVRkjUh+4L/0EUi2RxvL4fWeZZSmLup/ny1lIMHB/Pp6jTx7mC
-	FsSDQaLY9IU594tuD2ToVyot0wj53NOmnaehKXxjGHI92+eRBsnDEEvLv123qsO0Q3YMgg
-	IJJiCV325bRTxuoRxHn2rKlqZCk4QFY=
+	bh=mYC8Dqvp92r/wg8xMSAO9zq0NNohCtpUQQiPpSCFoCs=;
+	b=h00rrgR4wNLc7qKLjrHVhupppDF3EotLkBF4z4ELEAOuIvQJrnNpsmA3hE/G/UA8KJ1hXj
+	5RWCzkAmBLK8fhDkn8eszrlRKCE8gi9qagv6c/VaN7XM12CtmJ8EB5JW/5pysc0ptkxj93
+	RXDt1HXfMgH1pfuNFnO0L+szezZOWic=
 Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260116101248epoutp0138257bb938bc772228a22577ea296559~LLncrFOkd1968519685epoutp01S
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:12:48 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260116101248epoutp0138257bb938bc772228a22577ea296559~LLncrFOkd1968519685epoutp01S
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260116101254epoutp0184a0815f7634c6360865f390cf73472f~LLni61sud1968519685epoutp01W
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:12:54 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260116101254epoutp0184a0815f7634c6360865f390cf73472f~LLni61sud1968519685epoutp01W
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1768558368;
-	bh=BpzxFl3g/5TPELMzmGzvBSQN5CcPjGy3hoOD59YZp9U=;
+	s=mail20170921; t=1768558374;
+	bh=mYC8Dqvp92r/wg8xMSAO9zq0NNohCtpUQQiPpSCFoCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i40Vzp86mK+KJk3FkTupWTSO+BkS3RzcIzoiU2Jc88AB2MaIbXgMPVmjoYw7eb8/3
-	 ENz3L5+08tou0+EIyr4NQ8vImMaquqCHoxKgdJ9tUIY4mopzNADJ5Gj0n1wyLVVvpW
-	 mNNr0U6WGHBgKKpZUH2GuhjqxVQLlcxXLRp3bZfo=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
-	20260116101247epcas5p44a05f2dc0b46ae9c4abe6b40e7f3a935~LLnbwhVO11433714337epcas5p4Q;
-	Fri, 16 Jan 2026 10:12:47 +0000 (GMT)
-Received: from epcas5p4.samsung.com (unknown [182.195.38.86]) by
-	epsnrtp01.localdomain (Postfix) with ESMTP id 4dswdp0SZCz6B9m4; Fri, 16 Jan
-	2026 10:12:46 +0000 (GMT)
+	b=Wlu3/gpcNdeMpzJ58CLEmcpMGyL+ZS1H9/EWZw+4uramp5o3kIwpEw22AoJv34UOt
+	 ypGVRVatUCBCp01tWedn9PDMMbWC+XipgGlQmXlQhU3lGy70AXe0EwuKjTgi1AEQPg
+	 72eayCEiwiFiv0zHtjo5HhzDEriJ3rplUAsP+K20=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
+	20260116101253epcas5p2ca0dc5ea707a8c9493821828dce93539~LLnh7hBVX0062300623epcas5p2Z;
+	Fri, 16 Jan 2026 10:12:53 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.94]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4dswdw4NxKz3hhT4; Fri, 16 Jan
+	2026 10:12:52 +0000 (GMT)
 Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20260116101245epcas5p30269c6aa35784db67e6d6ca800a683a7~LLnaQNlS10614306143epcas5p3b;
-	Fri, 16 Jan 2026 10:12:45 +0000 (GMT)
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260116101251epcas5p1cf5b48f2efb14fe4387be3053b3c3ebc~LLnfqYF-A1384113841epcas5p1R;
+	Fri, 16 Jan 2026 10:12:51 +0000 (GMT)
 Received: from localhost.localdomain (unknown [107.99.41.245]) by
 	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260116101241epsmtip26bf4fc723f2f52008806efa410901587~LLnW-7TWV0710307103epsmtip24;
-	Fri, 16 Jan 2026 10:12:41 +0000 (GMT)
+	20260116101246epsmtip2a665d2893c692e021ee430a0b49d0bc2~LLnaypkkV0722507225epsmtip2Q;
+	Fri, 16 Jan 2026 10:12:45 +0000 (GMT)
 From: Kundan Kumar <kundan.kumar@samsung.com>
 To: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
 	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
@@ -83,31 +83,31 @@ To: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
 Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
 	linux-xfs@vger.kernel.org, gost.dev@samsung.com, kundan.kumar@samsung.com,
 	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: [PATCH v3 2/6] xfs: add helpers to pack AG prediction info for
- per-folio tracking
-Date: Fri, 16 Jan 2026 15:38:14 +0530
-Message-Id: <20260116100818.7576-3-kundan.kumar@samsung.com>
+Subject: [PATCH v3 3/6] xfs: add per-inode AG prediction map and dirty-AG
+ bitmap
+Date: Fri, 16 Jan 2026 15:38:15 +0530
+Message-Id: <20260116100818.7576-4-kundan.kumar@samsung.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260116100818.7576-1-kundan.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260116101245epcas5p30269c6aa35784db67e6d6ca800a683a7
+X-CMS-MailID: 20260116101251epcas5p1cf5b48f2efb14fe4387be3053b3c3ebc
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 CMS-TYPE: 105P
 cpgsPolicy: CPGSC10-542,Y
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20260116101245epcas5p30269c6aa35784db67e6d6ca800a683a7
+X-CMS-RootMailID: 20260116101251epcas5p1cf5b48f2efb14fe4387be3053b3c3ebc
 References: <20260116100818.7576-1-kundan.kumar@samsung.com>
-	<CGME20260116101245epcas5p30269c6aa35784db67e6d6ca800a683a7@epcas5p3.samsung.com>
-X-Rspamd-Queue-Id: 3A019100004
-X-Stat-Signature: 33o9uo7wg79ieqyprnpb5zjtb9n81ywf
+	<CGME20260116101251epcas5p1cf5b48f2efb14fe4387be3053b3c3ebc@epcas5p1.samsung.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AC4C81C0008
+X-Stat-Signature: 1q1niwx3qhfog88p7zojzy8an4qnik8t
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768558370-705598
-X-HE-Meta: U2FsdGVkX1/1Q+7uDR9jkpCERhamc2AkpfcagayCVTy7fKZsrf6IqFLgz9BZkQnV7lo42DOlPL+GNckeFJoNsnxVaSWbOHABqJSFhQk49CvqJ3XpAiI4yVah7EaYGv7d6xy/TFOyUdofW4/jtpPhqdX1oeQV/I9+i6iW27rHce/yWwBa9O05Ial3Gi/An+sDE1WHrPg2X9WD1YKHV/FSKnmtJ8u2ZGANsNcjOZcI3JqQav1l+SHaxyFLKVFqjxUeY73TvGIpIuHv734jUlWK6NZlYw3G6gql5wEEIMFa2G+r5X7ua1cDqTaF61vTOGnkG2I5BPECCo1ZpQ3mfFOmDYgYTMd5XhOOclKBVXNxGpAGyueW1m9FkpsjGVoDAGkvtq6JYo1SYXAJqmf6ZYJAQhQzUrBR9fWurtNls4MJBbgbE+e/ixDtfW9pJ+wF6JJQScsxKllhvavWuNI7ec6iz7c+jokTT1MGbaJnYVSODLjuzoAM0HQgNNXH24bEWhfPYmyxkZPwo/cf8rYfUwTKcNZZ0Rdb7hlwhqkBpeZhx4CZNJIS0el0XEmAnLLNU1UeRKLJcBhVuYVMaD1erpOXTpw+0wDH8e7oVNGjAL0AwiPGNfRyHmcoKyE9MpmPGFbc0xVOA965G1d+C9/7tsC3Uo5Ql0Tv1b9u8IGTZ8QHnaDXufEt9X75zxchR90fzGnEPuwXCKmYsNpWUkW9uJX+uIlpsIbr377Truwmxoy1/G2k7PAuxkuVLvmXrr6XAb2q4jxHTFm8lTBsSVku3KxA4rvaKuVJsdNft6K7GzHdRr+RbA4EIHz/eSh6nm0KJv2dIkADUvffD02ZUTbA503XhI/4oLRjoQifbT9tLE8Kl98C8g492CeDQXhGs8qkDeMLoUaOuO5PEoyQWzgk0j07DNZVDS/bFd9QAxGbBUmCE9eawx4XPkKSuxaNr/ai7QOsEItvtDFqItyY2aqQ1Op
- lt0p7JkE
- oEzZlyB89qyExcD/zUjPRMViIWR7pApFAgdrmw/E176SC9B9r/qN3szpBKvlWhhkue/tAUFzboc7FQC+fNBiBM2oFqmh+7u4b6c/R+2HEHOV3DuEulfenag0e/2IxOcEeiUzJ0g6mEq+fy3ELeP2TjHdjnIvuoFZf782q
+X-HE-Tag: 1768558377-886917
+X-HE-Meta: U2FsdGVkX1+bLhg5anUyP9R++gan94AVQwDwBHeI5xx3Yj2xS6IcEMib2OLW3ygUExw3IWwnmcs0f9TqTtU9fjBGtjm7L3f9YXgzkGKCARMYkJIUcOxn0SBOg5+/xVAchwhQycYFM2xdXyLlFI0YA2jxGtteI3//+fv8fLKTtn00p4FIHFmxTiXvYDGx/8FqWLq1SSknnnk+XjSqN0gBqT/oadlW4G6BJYoJL3Wn894huat6tdbiyfNj27J0wqoFQzqgtZEa4fr0/d/wcrrIvA1JKLfUTFcZOCmczrQvOBy1GjxssnP3iljp0l1hlhc/X+D7kRZqz5NxYfTYBCDRlK8G65gZ/+RYZvPwYlROwr66RF7PCKlnrlhyzsIAv9ipI8eS+UH1Gi3zfk1K97HMWudElTHEBSqz2kQZv6agnkSrziEfPYdtqgYJzyguu5bweZlzmSXwT93MbQShXeakxi+8v9N5ZbBUeEV7HxlLqjIZoymSU3kM3Wr+iHlGbOT+JP9nJiEpSjoXufjdikCgYPE1AswBlReJL3yI+/x1ZdKhzKKLJvZP6omuyAr2BcF7t4DC/wHpTE8Vr49dzLOnCP3N0KSVptK4YbBqb4Nma/1kEXkXY3jeukh+bRQnGPg7pjEpg6kgFTDQcfrFuhelW8qWM0NJZDThdcmraqO4TormMitMFB/vXQGxP1yxLd2fslBQz6ld202zaaR3yVwCnFV1L5+yzQfvUhf4NfVmv7o53F8tjf8l447Dwseok1pigJ0gARAurpESphRDiazsvqcLbFt2wEK87leX5an+b++Rgmmg2Wju/6A2SyPx473awIRBuzEEU5e+uqC7V6EETshHzv+sYz7QV5uPS3MqJTBTsnqwFL421m4poc2L2eDmEImKldWGvch2kkO772jEh2FHhZotfpfc0TfqrPaN+FNzR1XUq+1GASr6btpHBCAJY/ECTxHPFmhHqFKUknW
+ nRmBADq0
+ o4q3fw7m4y2pufDRwJBn2Sy70oDadX5AgyB/u7V1cj/XXu3qYg9hLJUFkhVi1lcnf28Gdh0cqLf4VfiXfx2EtXX2xsIpHT7Ttf/AYii75DCf29QS97N6MhU5zcg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,63 +116,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce helper routines to pack and unpack AG prediction metadata
-for folios. This provides a compact and self-contained representation
-for AG tracking.
-
-The packed layout uses:
- - bit 31	: valid
- - bit 24-30	: iomap type
- - bit 0-23	: AG number
+Add per-inode structures to track predicted AGs of dirty folios using
+an xarray and bitmap. This enables efficient identification of AGs
+involved in writeback.
 
 Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
 Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
 ---
- fs/xfs/xfs_iomap.h | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ fs/xfs/xfs_icache.c | 27 +++++++++++++++++++++++++++
+ fs/xfs/xfs_inode.h  |  5 +++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/fs/xfs/xfs_iomap.h b/fs/xfs/xfs_iomap.h
-index ebcce7d49446..eaf4513f6759 100644
---- a/fs/xfs/xfs_iomap.h
-+++ b/fs/xfs/xfs_iomap.h
-@@ -12,6 +12,37 @@ struct xfs_inode;
- struct xfs_bmbt_irec;
- struct xfs_zone_alloc_ctx;
+diff --git a/fs/xfs/xfs_icache.c b/fs/xfs/xfs_icache.c
+index e44040206851..f97aa6d66271 100644
+--- a/fs/xfs/xfs_icache.c
++++ b/fs/xfs/xfs_icache.c
+@@ -80,6 +80,25 @@ static inline xa_mark_t ici_tag_to_mark(unsigned int tag)
+ 	return XFS_PERAG_BLOCKGC_MARK;
+ }
  
-+/* pack prediction in a u32 stored in xarray */
-+#define XFS_AGP_VALID_SHIFT 31
-+#define XFS_AGP_TYPE_SHIFT 24
-+#define XFS_AGP_TYPE_MASK 0x7fu
-+#define XFS_AGP_AGNO_MASK 0x00ffffffu
-+
-+static inline u32 xfs_agp_pack(u32 agno, u8 iomap_type, bool valid)
++static int xfs_inode_init_ag_bitmap(struct xfs_inode *ip)
 +{
-+	u32 v = agno & XFS_AGP_AGNO_MASK;
++	unsigned int bits = ip->i_mount->m_sb.sb_agcount;
++	unsigned int nlongs;
 +
-+	v |= ((u32)iomap_type & XFS_AGP_TYPE_MASK) << XFS_AGP_TYPE_SHIFT;
-+	if (valid)
-+		v |= (1u << XFS_AGP_VALID_SHIFT);
-+	return v;
++	xa_init_flags(&ip->i_ag_pmap, XA_FLAGS_LOCK_IRQ);
++	ip->i_ag_dirty_bitmap = NULL;
++	ip->i_ag_dirty_bits = bits;
++
++	if (!bits)
++		return 0;
++
++	nlongs = BITS_TO_LONGS(bits);
++	ip->i_ag_dirty_bitmap = kcalloc(nlongs, sizeof(unsigned long),
++					GFP_NOFS);
++
++	return ip->i_ag_dirty_bitmap ? 0 : -ENOMEM;
 +}
 +
-+static inline bool xfs_agp_valid(u32 v)
-+{
-+	return v >> XFS_AGP_VALID_SHIFT;
-+}
+ /*
+  * Allocate and initialise an xfs_inode.
+  */
+@@ -131,6 +150,8 @@ xfs_inode_alloc(
+ 	ip->i_next_unlinked = NULLAGINO;
+ 	ip->i_prev_unlinked = 0;
+ 
++	xfs_inode_init_ag_bitmap(ip);
 +
-+static inline u32 xfs_agp_agno(u32 v)
-+{
-+	return v & XFS_AGP_AGNO_MASK;
-+}
+ 	return ip;
+ }
+ 
+@@ -194,6 +215,12 @@ xfs_inode_free(
+ 	ip->i_ino = 0;
+ 	spin_unlock(&ip->i_flags_lock);
+ 
++	/* free xarray contents (values are immediate packed ints) */
++	xa_destroy(&ip->i_ag_pmap);
++	kfree(ip->i_ag_dirty_bitmap);
++	ip->i_ag_dirty_bitmap = NULL;
++	ip->i_ag_dirty_bits = 0;
 +
-+static inline u8 xfs_agp_type(u32 v)
-+{
-+	return (u8)((v >> XFS_AGP_TYPE_SHIFT) & XFS_AGP_TYPE_MASK);
-+}
+ 	__xfs_inode_free(ip);
+ }
+ 
+diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
+index bd6d33557194..dee449168605 100644
+--- a/fs/xfs/xfs_inode.h
++++ b/fs/xfs/xfs_inode.h
+@@ -99,6 +99,11 @@ typedef struct xfs_inode {
+ 	spinlock_t		i_ioend_lock;
+ 	struct work_struct	i_ioend_work;
+ 	struct list_head	i_ioend_list;
 +
- int xfs_iomap_write_direct(struct xfs_inode *ip, xfs_fileoff_t offset_fsb,
- 		xfs_fileoff_t count_fsb, unsigned int flags,
- 		struct xfs_bmbt_irec *imap, u64 *sequence);
++	/* AG prediction map: pgoff_t -> packed u32 */
++	struct xarray           i_ag_pmap;
++	unsigned long           *i_ag_dirty_bitmap;
++	unsigned int            i_ag_dirty_bits;
+ } xfs_inode_t;
+ 
+ static inline bool xfs_inode_on_unlinked_list(const struct xfs_inode *ip)
 -- 
 2.25.1
 
