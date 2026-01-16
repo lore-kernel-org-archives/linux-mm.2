@@ -4,97 +4,196 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6482FC982D1
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:13:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E3D8C982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:13:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3EB36B0005; Fri, 16 Jan 2026 11:13:40 -0500 (EST)
+	id 02FD56B008A; Fri, 16 Jan 2026 11:13:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF6486B009B; Fri, 16 Jan 2026 11:13:40 -0500 (EST)
+	id 011F96B008C; Fri, 16 Jan 2026 11:13:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1F216B009D; Fri, 16 Jan 2026 11:13:40 -0500 (EST)
+	id E0B206B0092; Fri, 16 Jan 2026 11:13:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D43B6B0005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:13:40 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 39E791401BD
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:13:40 +0000 (UTC)
-X-FDA: 84338322600.28.2CDC4FF
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 664A21C0005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:13:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf21.hostedemail.com: domain of 3sWNqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3sWNqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768580018; a=rsa-sha256;
-	cv=none;
-	b=yoVRnpEv76ChQmhCZoZ/eyWN26EswTiiqusfQg831FXExaeygIpOQEewSWZEA8lGRdOPhM
-	E0mkdhQHx3ZYZzk+0D+7bGRzV3OtwA6PyTZzXgM4452FGgfdTsR5G8Qe5Ngw3U1JhKb4S6
-	DCm4A1Rh4k93ecJJGfsEhzp8x3bJP1M=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf21.hostedemail.com: domain of 3sWNqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3sWNqaQkbAHQkqrcSddWjShhaV.YggYdWmkWjUgflWfl.Uge@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id CE4266B008A
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:13:55 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 901041A01A5
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:13:55 +0000 (UTC)
+X-FDA: 84338323230.17.8453FDD
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4892420008
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:13:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tp+SnuvD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7zohlGHJ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tp+SnuvD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7zohlGHJ;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768580018;
+	s=arc-20220608; t=1768580033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=GW18BJd0jSvNLSBLK+5GeIvUMjj5PFq3we5kfaKyLBY=;
-	b=NozkAIIL8wP708iAgPOJ7ScrePq7MMQoWgY+oq69L/AHQRoNO36zGPPkm1jKvlBcWu4idD
-	HDnhhAJmgZ/xmtT0rdjBAP3ZtvtOEQgvplUu1lG7yl6gzBrevdIyMwP7WwA2S3xysciEqC
-	tX8gtBkrKj+k2bkoErYswmtojvczJLs=
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-65f6e15ad5bso5424359eaf.1
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:13:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768580017; x=1769184817;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GW18BJd0jSvNLSBLK+5GeIvUMjj5PFq3we5kfaKyLBY=;
-        b=LFIB1xRQ4AmrGc9pajmvRMf7viuKWVY0NGa/d37cV0X4J7hFIDY2LWv8p74iw4RpoA
-         veG8ZHBqRW1B/36y9l05xKNmQ8iso4wisjmQElLEZomh2PLHyD5YJ6kTfLN42CawMq63
-         eR80+8biGKXxBv0XwjmPysTnJMk5BvFG/Xyb7UcpP+eSAnPlytuG7bzOZ4wZeMJkiREc
-         0QJfv9ZWKlsOZmZoMKT4p2joVIHcESugYRB6BKHdxMPK9giNu0rvp8Aw01XjIo3pKmUK
-         /U/3uTNt8MCGWzShbkV23o6wSK5/gu/MQSIP1vdg6vpQA1B8qnlrkgQM1inN6Z3H7/hy
-         JXwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUL9B6uBOzE2A803shl3ApfAZlTyR0c2vbF3KGG5XiMDfuH/GCJZEmf29uhe/48/0SMIzoPxsz2RQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyrxzu1CEa0IdgH4Q3uUBoWhvkMTwccS9/9q9DaJCACM9igyxtl
-	ZykSUEiAfoZjTZQjzxHKATnxPrA6rshXcSOS4/9+6eUWLn1I81w0MtjIAPC3DT8WOzOOOJVU99d
-	DJulQfWSamS1RPI5jCwJdv3YcSaUNut4v18DLAQALqe5oPG1Jj7G9TusIIr4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Eu7FGbt83JuqaI2GZ8CBZNSB/GJc1ePvSsMg2SYrNlU=;
+	b=XtoVDDwxl3NR14kEj4Cx5gvB+Euse9D3yOQMLnQZ4ky0yTFnmLILHo2/o8yze6ox9ZutPG
+	Abjw4Bc0AxvfRabVipWQNzsgSFPNSBfXFcxCbz0jHOp+E/XJaaJ5T961A4j1o+ixwuPght
+	1Jm+RWWOiTtHKPoPLgC4STMNhlvaGPw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tp+SnuvD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7zohlGHJ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Tp+SnuvD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7zohlGHJ;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768580033; a=rsa-sha256;
+	cv=none;
+	b=d/JDafgbixj+eowR6zm34mBjumXNLir1ra1OjcCnw7x5nRM1r6bMLadmYT6kQt11GsWJz5
+	8Pg/75N7AQfY9vRY0zgVitqKhWvgTz7VFxxzQiNNPJY/VOk/jzuMmZkNii5xHmOjnTpCuE
+	37qbk7uycrLw+cfSY6Sk6GUf72V/K9E=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7589633712;
+	Fri, 16 Jan 2026 16:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768580031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Eu7FGbt83JuqaI2GZ8CBZNSB/GJc1ePvSsMg2SYrNlU=;
+	b=Tp+SnuvD9xXh8oJXbqxfnya/oVrooIOCFcCbOfDYJVeO2lFxYHkfit5YzIRgLUJiYYIuQ2
+	VlW9z9ttkBCrHLgWERJfnL7g+485BZ2OA1t4qWsrZlojqRAnBIZeW/IxIY5ZeHkcM2/5Te
+	b0NIDdvCikKhU+llQucfIawjlv2HLXI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768580031;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Eu7FGbt83JuqaI2GZ8CBZNSB/GJc1ePvSsMg2SYrNlU=;
+	b=7zohlGHJReZ+IEVybf5dEbx4LSoFHdBs6KIlmdg5N2JsjT7zT2hYT6lrgCWZgW/Tctwu+x
+	PD1WGLY5hhxZodCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768580031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Eu7FGbt83JuqaI2GZ8CBZNSB/GJc1ePvSsMg2SYrNlU=;
+	b=Tp+SnuvD9xXh8oJXbqxfnya/oVrooIOCFcCbOfDYJVeO2lFxYHkfit5YzIRgLUJiYYIuQ2
+	VlW9z9ttkBCrHLgWERJfnL7g+485BZ2OA1t4qWsrZlojqRAnBIZeW/IxIY5ZeHkcM2/5Te
+	b0NIDdvCikKhU+llQucfIawjlv2HLXI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768580031;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Eu7FGbt83JuqaI2GZ8CBZNSB/GJc1ePvSsMg2SYrNlU=;
+	b=7zohlGHJReZ+IEVybf5dEbx4LSoFHdBs6KIlmdg5N2JsjT7zT2hYT6lrgCWZgW/Tctwu+x
+	PD1WGLY5hhxZodCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 352233EA63;
+	Fri, 16 Jan 2026 16:13:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id G+EfC79jammyVQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 16:13:51 +0000
+Message-ID: <c034a80b-1fb5-4e20-b9d8-6f079cdc1d09@suse.cz>
+Date: Fri, 16 Jan 2026 17:13:50 +0100
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:498e:b0:65b:2935:f935 with SMTP id
- 006d021491bc7-661179c2396mr1433844eaf.44.1768580017428; Fri, 16 Jan 2026
- 08:13:37 -0800 (PST)
-Date: Fri, 16 Jan 2026 08:13:37 -0800
-In-Reply-To: <20260116100818.7576-1-kundan.kumar@samsung.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <696a63b1.050a0220.58bed.006b.GAE@google.com>
-Subject: [syzbot ci] Re: AG aware parallel writeback for XFS
-From: syzbot ci <syzbot+ci4e530c88485a9c60@syzkaller.appspotmail.com>
-To: amir73il@gmail.com, anuj20.g@samsung.com, axboe@kernel.dk, 
-	brauner@kernel.org, cem@kernel.org, clm@meta.com, dave@stgolabs.net, 
-	david@fromorbit.com, djwong@kernel.org, gost.dev@samsung.com, hch@lst.de, 
-	jack@suse.cz, joshi.k@samsung.com, kundan.kumar@samsung.com, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org, 
-	mcgrof@kernel.org, ritesh.list@gmail.com, viro@zeniv.linux.org.uk, 
-	vishak.g@samsung.com, wangyufei@vivo.com, willy@infradead.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 664A21C0005
-X-Stat-Signature: 4zdbmmhr8reox7e7tr6hpsz15y3izu6c
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Content-Language: en-US
+To: Matthew Brost <matthew.brost@intel.com>,
+ Alistair Popple <apopple@nvidia.com>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ Zi Yan <ziy@nvidia.com>, adhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Balbir Singh <balbirs@nvidia.com>,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
+References: <20260114192111.1267147-1-francois.dugast@intel.com>
+ <20260114192111.1267147-2-francois.dugast@intel.com>
+ <6spceodgfobizdaziju4yvvfydwvvik2wjyoyfuglozq533rgl@vmkotau3m3kw>
+ <aWiBy3nZ4FrPYURF@lstrano-desk.jf.intel.com>
+ <aWiGtlKI3LOtjUl6@lstrano-desk.jf.intel.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <aWiGtlKI3LOtjUl6@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4892420008
+X-Stat-Signature: g9nt9z3ndg9qbj4dmxo3jc8zeutxta7z
 X-Rspam-User: 
-X-HE-Tag: 1768580018-917429
-X-HE-Meta: U2FsdGVkX189nxxQv/yQXaU+vWDz7X8kXAaHmQPLwR/BtD8zZidLLMezTtiSNOF3atVWy3HSoaa3AzKP7icTYqiQgc466ix3Dx23Tm+s4XILOH5aRPXNrFKgRcRctKe7xWf+Vav8P1YqdpC6QA7hlrgGImUj81fPSccESAVQzOf/6fdzh64VC67DLIXWx5j8pJBHW0nMyMSkOu8Uk3H8lwGXICqad19GwDFtgxufbnT6vBN7Hv9b7DCIAPtA6XD4q2h+B7KeHXbVgt4krRgDc+jC16SxuvnNIoQpXLLgRXgdn7hj57O+Q5kWnUgEH3esqqy0hJ2X9FSzpxsRKm5Za7ZPlEVpAaFc65whZxzYgsuL5kS/Olwg7kl20c1sxNUE9UUKfgyZQlMIOIwQs/aWMuR86KAplMwpSREGgvDU5vSdsfG9DrdGGsth+SUjtEaIQ2EXcFqn44psQJnI3BaIVb82SsB6Wfakevgp9QP96uUQ1VzHe/MilseueJc7DyVdG9fXZjuJLJkFOQu0ZDrnuMVw5M8INBv0P4zHe2d2imMwn7ZQWmPINIkBuIrycMNIIW9XEGW4VrMyNO9BFjDm7CWfIizGWUy8pLDhI949gYMAtN4NQEfq03NQC18ntBjW6oa+0DD7aQutg+cY5tEUhShaYlVXBdWgYFOvfG6yXue7GWYZfrEwbg3lFBCDlK5Ug0iBdJ6fjsxy++Pdlr7KpSQyUqfeDLyxd4HJTwL+mxIXHto1MTj3Eg1/qqh3s3UQxVOd7u+qkOmZFHB6/VW2cquEcqzqCQbpyEG2GqXJdKBl0CydaVLh2EUdNaTGc0/vJkVSYuWG4REY71oaLvsqyEzgAdRiLyHX2usvB0Z4WLyGK4qHxCdvn+ZKcm8DXx3dMScUOleg7jI50uRc8TuVvWB2YNz0AkJdS3uGKlA/iTO9uMmcNIGhGmf1lOw3SUQLOmYWSmG+rlFRwcU2bv5
- mHyPK3SK
- sUodXLhbJSgzUn7MlQZLknIr143XRRJXUmFSg/HJ9cBlStPhARHW1fm/yXZhWqE8T4z/C1Fpgi3JTCmId0yblgSFGws6X0KVpI7vZ1h1PiEn+39v7VXqPuSMJZE/v18KFQ71NG3p93J3Q+lEtXzHAOB3ZOcZFs/tuT/FROCtKz48pm0Exfenps5KxnNf+4UlcUhvJSjfMxIDxoKl3tQLF2L5dX70LaCN690nrSOa2SQCCygnBczchnNCMbN/wErvcJ89AoJtYfshr9UrrlLbgv0i+5d/7mC15w8ufvjIDNKd5mg4YTzyv/I4ZA8haxbzTYvV73aKajgxgZkmUM5LSgj/X7/gq3RvKkrO47X4O4XdAaPYQ13uYIvFOkl3zCGwj5lwHvROi9HPDoOjnNxkzz0x/woiMulYr5P+05qp4c5ykjKucEWAhWf6AsH52/tfmX01vO+scu8UwAUs4CYx6s3+Vwlsr+EX0uI58jojDlgRnpB8FbcYvVsTqiIIDps/8fig6ycUHIW3iIkFwbM4kB47ToXvqs5psczTSMM2DOozCLLbcYJ8qpxPC0C2dy7axv/RucCm4mgT9Q7225jwtfEZQ9ILpJgIpOgFBQD4KpEYhdaE9eUmCeBbyy8pdbSyMuIYzgjwhHDPoSvrWBLm6lcKA9ElblD7n8DbZXpk7XmjyMYsPybYv40Rmm3dkX5Uc/NiIfQLbUdTOxeg3OTvRw1f+sKILADl7b34pxfM5MmXbdVS1GUC6GiIRuiaAXsTyX3CQHCH1+cf56ZQAX5hvvftxLu4ORBcmI5S1X0b7KoImhFZnk3DyPA4GbyTDUowQ28CHlo3qsOkOsVaHpAJn1Nry7Umhp6oUptzmuNjfIveMHMO3fAjsI+DP7sNqrWCSjPF9VNTmMx5gsjJx03pTZ+v+ni7TJXLhTUqJ+SkogPKW+ZA/czV4yk/JazIAV4P1lzNiGOI/QuqVR0VlLgsd5osrlSoz
- AxtnX6f2
- G1chNqGB2kQAXcEOPl94k8mQSY0la8lBxRYGLG9foEvqi5iRrl+wI4VLrcOwufvjEuxO7AsBBzIHzbSMHILa0f/JEaGfq4jB/ePDKpX8bd8=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768580033-827656
+X-HE-Meta: U2FsdGVkX1+c9l8nnXc/osGTWesZDG0Fvp7n1+KBnBvQcFxuYcg5pNmPaYB3sLYdkjdR+RmDJt+L5Kn79RBZtie+2T21X5jtCx90qbTkJ4zwJAZlbr99Dvg+VHfpO6nmdYuAm5hARtpGgteHEXpbOIc2p8ycVhQd2Solr1yUz5Vwdpc2rEALh6Hktf6gUC+kej0cFkeFeK30kZnuRZNM+WtrPQoYBX4OqGv4/EfdOpimAFO+CcrS6eeeBt633HZ3H/boWVNeoB6c+AfhQiQhhg6wemrIs5EcMQNIOgW6B551F5lJ1lrf4SDJ5gjBw5WOvvEP+scM/EkygGsivrIpOkWt3xLnga+wvqH9Vu5JyENRY1o8rNDarXEkyIWccRdyMd0BqES5egDjF2wzKz2NZzGb+vFXiZYy1NOOH3kugo/OTYXEK7AupG4YW5ajV+pLqKT4NK/eaoj3lCWOUnwTdpbRnREC0/7+aiROVGhem57EAep8fSHsFO7tAYZsyz/Z4kcJHKd6LE5al2ZM6Xd3xOiNgZ1gPlIOc9vcD4/RWRurJYFOf+uaFqC793JsJIGsF7WUY83ZMKkdOmpte+doB9mZTohKkRv8x6mGw0/zKYBPkPcGi8kXjJj9fXUmq+wvNorlW8NDc9mnghqmJpjZioEKvLiDSkGvtFTV32yL+37kJErzr+FUbgT/il1F61q+hW7cz9S1NbeIwfzV3nGMgxDwrf5PZT/xrEKp8PsUTB/JjWNT3cSuVJpbNWMtkULLr/0KNe4WHdf5UsJc+jRBCHfYZruw/ZXKet0ZO0oJZ3Td8xVQnF8ANaMEgM7OTjKLHps5o/Vml9QsOu9swDshlr1CtIcrNDdbsxk74ym1YiYuPp7eGUXvUMs2vwD11kf9SfuiRX5q7WLqWI6gHXaWzwtV58sY/5e6H7vaBj7k+QkpqtB1jIXFgITXdZiSyfRIcu0Ruy0I6oeQoLaVlhr
+ Ec4ObvI9
+ npRn1hCiNfuqPYZw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,109 +202,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+On 1/15/26 07:18, Matthew Brost wrote:
+> On Wed, Jan 14, 2026 at 09:57:31PM -0800, Matthew Brost wrote:
+>> On Thu, Jan 15, 2026 at 04:27:26PM +1100, Alistair Popple wrote:
+>> > On 2026-01-15 at 06:19 +1100, Francois Dugast <francois.dugast@intel.com> wrote...
+>> > > From: Matthew Brost <matthew.brost@intel.com>
+>> > > 
+>> > > Reinitialize metadata for large zone device private folios in
+>> > > zone_device_page_init prior to creating a higher-order zone device
+>> > > private folio. This step is necessary when the folio’s order changes
+>> > > dynamically between zone_device_page_init calls to avoid building a
+>> > > corrupt folio. As part of the metadata reinitialization, the dev_pagemap
+>> > > must be passed in from the caller because the pgmap stored in the folio
+>> > > page may have been overwritten with a compound head.
+>> > 
+>> > Thanks for fixing, a couple of minor comments below.
+>> > 
+>> > > Cc: Zi Yan <ziy@nvidia.com>
+>> > > Cc: Alistair Popple <apopple@nvidia.com>
+>> > > Cc: adhavan Srinivasan <maddy@linux.ibm.com>
+>> > > Cc: Nicholas Piggin <npiggin@gmail.com>
+>> > > Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> > > Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+>> > > Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+>> > > Cc: Alex Deucher <alexander.deucher@amd.com>
+>> > > Cc: "Christian König" <christian.koenig@amd.com>
+>> > > Cc: David Airlie <airlied@gmail.com>
+>> > > Cc: Simona Vetter <simona@ffwll.ch>
+>> > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> > > Cc: Maxime Ripard <mripard@kernel.org>
+>> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> > > Cc: Lyude Paul <lyude@redhat.com>
+>> > > Cc: Danilo Krummrich <dakr@kernel.org>
+>> > > Cc: David Hildenbrand <david@kernel.org>
+>> > > Cc: Oscar Salvador <osalvador@suse.de>
+>> > > Cc: Andrew Morton <akpm@linux-foundation.org>
+>> > > Cc: Jason Gunthorpe <jgg@ziepe.ca>
+>> > > Cc: Leon Romanovsky <leon@kernel.org>
+>> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> > > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+>> > > Cc: Vlastimil Babka <vbabka@suse.cz>
+>> > > Cc: Mike Rapoport <rppt@kernel.org>
+>> > > Cc: Suren Baghdasaryan <surenb@google.com>
+>> > > Cc: Michal Hocko <mhocko@suse.com>
+>> > > Cc: Balbir Singh <balbirs@nvidia.com>
+>> > > Cc: linuxppc-dev@lists.ozlabs.org
+>> > > Cc: kvm@vger.kernel.org
+>> > > Cc: linux-kernel@vger.kernel.org
+>> > > Cc: amd-gfx@lists.freedesktop.org
+>> > > Cc: dri-devel@lists.freedesktop.org
+>> > > Cc: nouveau@lists.freedesktop.org
+>> > > Cc: linux-mm@kvack.org
+>> > > Cc: linux-cxl@vger.kernel.org
+>> > > Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+>> > > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>> > > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+>> > > ---
+>> > >  arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
+>> > >  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
+>> > >  drivers/gpu/drm/drm_pagemap.c            |  2 +-
+>> > >  drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
+>> > >  include/linux/memremap.h                 |  9 ++++++---
+>> > >  lib/test_hmm.c                           |  4 +++-
+>> > >  mm/memremap.c                            | 20 +++++++++++++++++++-
+>> > >  7 files changed, 32 insertions(+), 9 deletions(-)
+>> > > 
+>> > > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> > > index e5000bef90f2..7cf9310de0ec 100644
+>> > > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> > > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> > > @@ -723,7 +723,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
+>> > >  
+>> > >  	dpage = pfn_to_page(uvmem_pfn);
+>> > >  	dpage->zone_device_data = pvt;
+>> > > -	zone_device_page_init(dpage, 0);
+>> > > +	zone_device_page_init(dpage, &kvmppc_uvmem_pgmap, 0);
+>> > >  	return dpage;
+>> > >  out_clear:
+>> > >  	spin_lock(&kvmppc_uvmem_bitmap_lock);
+>> > > diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+>> > > index af53e796ea1b..6ada7b4af7c6 100644
+>> > > --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+>> > > +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+>> > > @@ -217,7 +217,7 @@ svm_migrate_get_vram_page(struct svm_range *prange, unsigned long pfn)
+>> > >  	page = pfn_to_page(pfn);
+>> > >  	svm_range_bo_ref(prange->svm_bo);
+>> > >  	page->zone_device_data = prange->svm_bo;
+>> > > -	zone_device_page_init(page, 0);
+>> > > +	zone_device_page_init(page, page_pgmap(page), 0);
+>> > >  }
+>> > >  
+>> > >  static void
+>> > > diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
+>> > > index 03ee39a761a4..c497726b0147 100644
+>> > > --- a/drivers/gpu/drm/drm_pagemap.c
+>> > > +++ b/drivers/gpu/drm/drm_pagemap.c
+>> > > @@ -201,7 +201,7 @@ static void drm_pagemap_get_devmem_page(struct page *page,
+>> > >  					struct drm_pagemap_zdd *zdd)
+>> > >  {
+>> > >  	page->zone_device_data = drm_pagemap_zdd_get(zdd);
+>> > > -	zone_device_page_init(page, 0);
+>> > > +	zone_device_page_init(page, zdd->dpagemap->pagemap, 0);
+>> > >  }
+>> > >  
+>> > >  /**
+>> > > diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+>> > > index 58071652679d..3d8031296eed 100644
+>> > > --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
+>> > > +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+>> > > @@ -425,7 +425,7 @@ nouveau_dmem_page_alloc_locked(struct nouveau_drm *drm, bool is_large)
+>> > >  			order = ilog2(DMEM_CHUNK_NPAGES);
+>> > >  	}
+>> > >  
+>> > > -	zone_device_folio_init(folio, order);
+>> > > +	zone_device_folio_init(folio, page_pgmap(folio_page(folio, 0)), order);
+>> > >  	return page;
+>> > >  }
+>> > >  
+>> > > diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+>> > > index 713ec0435b48..e3c2ccf872a8 100644
+>> > > --- a/include/linux/memremap.h
+>> > > +++ b/include/linux/memremap.h
+>> > > @@ -224,7 +224,8 @@ static inline bool is_fsdax_page(const struct page *page)
+>> > >  }
+>> > >  
+>> > >  #ifdef CONFIG_ZONE_DEVICE
+>> > > -void zone_device_page_init(struct page *page, unsigned int order);
+>> > > +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+>> > > +			   unsigned int order);
+>> > >  void *memremap_pages(struct dev_pagemap *pgmap, int nid);
+>> > >  void memunmap_pages(struct dev_pagemap *pgmap);
+>> > >  void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
+>> > > @@ -234,9 +235,11 @@ bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
+>> > >  
+>> > >  unsigned long memremap_compat_align(void);
+>> > >  
+>> > > -static inline void zone_device_folio_init(struct folio *folio, unsigned int order)
+>> > > +static inline void zone_device_folio_init(struct folio *folio,
+>> > > +					  struct dev_pagemap *pgmap,
+>> > > +					  unsigned int order)
+>> > >  {
+>> > > -	zone_device_page_init(&folio->page, order);
+>> > > +	zone_device_page_init(&folio->page, pgmap, order);
+>> > >  	if (order)
+>> > >  		folio_set_large_rmappable(folio);
+>> > >  }
+>> > > diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+>> > > index 8af169d3873a..455a6862ae50 100644
+>> > > --- a/lib/test_hmm.c
+>> > > +++ b/lib/test_hmm.c
+>> > > @@ -662,7 +662,9 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
+>> > >  			goto error;
+>> > >  	}
+>> > >  
+>> > > -	zone_device_folio_init(page_folio(dpage), order);
+>> > > +	zone_device_folio_init(page_folio(dpage),
+>> > > +			       page_pgmap(folio_page(page_folio(dpage), 0)),
+>> > > +			       order);
+>> > >  	dpage->zone_device_data = rpage;
+>> > >  	return dpage;
+>> > >  
+>> > > diff --git a/mm/memremap.c b/mm/memremap.c
+>> > > index 63c6ab4fdf08..6f46ab14662b 100644
+>> > > --- a/mm/memremap.c
+>> > > +++ b/mm/memremap.c
+>> > > @@ -477,10 +477,28 @@ void free_zone_device_folio(struct folio *folio)
+>> > >  	}
+>> > >  }
+>> > >  
+>> > > -void zone_device_page_init(struct page *page, unsigned int order)
+>> > > +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+>> > > +			   unsigned int order)
+>> > >  {
+>> > > +	struct page *new_page = page;
+>> > > +	unsigned int i;
+>> > > +
+>> > >  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+>> > >  
+>> > > +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
+>> > > +		struct folio *new_folio = (struct folio *)new_page;
+>> > > +
+>> > > +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
+>> > 
+>> > This seems odd to me, mainly due to the "magic" number. Why not just clear
+>> > the flags entirely? Or at least explicitly just clear the flags you care about
+>> > which would remove the need for the comment and  should let you use the proper
+>> > PageFlag functions.
+>> > 
+>> 
+>> I'm copying this from folio_reset_order [1]. My paranoia about touching
+>> anything related to struct page is high, so I did the same thing
+>> folio_reset_order does here.
+>> 
+>> [1] https://elixir.bootlin.com/linux/v6.18.5/source/include/linux/mm.h#L1075
+>> 
+> 
+> This immediately hangs my first SVM test...
+> 
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 6f46ab14662b..ef8c56876cf5 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -488,7 +488,7 @@ void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+>         for (i = 0; i < (1UL << order); ++i, ++new_page) {
+>                 struct folio *new_folio = (struct folio *)new_page;
+> 
+> -               new_page->flags.f &= ~0xffUL;   /* Clear possible order, page head */
+> +               new_page->flags.f = 0;
+>  #ifdef NR_PAGES_IN_LARGE_FOLIO
+>                 ((struct folio *)(new_page - 1))->_nr_pages = 0;
+>  #endif
 
-[v3] AG aware parallel writeback for XFS
-https://lore.kernel.org/all/20260116100818.7576-1-kundan.kumar@samsung.com
-* [PATCH v3 1/6] iomap: add write ops hook to attach metadata to folios
-* [PATCH v3 2/6] xfs: add helpers to pack AG prediction info for per-folio tracking
-* [PATCH v3 3/6] xfs: add per-inode AG prediction map and dirty-AG bitmap
-* [PATCH v3 4/6] xfs: tag folios with AG number during buffered write via iomap attach hook
-* [PATCH v3 5/6] xfs: add per-AG writeback workqueue infrastructure
-* [PATCH v3 6/6] xfs: offload writeback by AG using per-inode dirty bitmap and per-AG workers
+the flags field includes also zone and node id, so clearing that will break
+the pages's node+zone association, that's probably why...
 
-and found the following issue:
-WARNING in xfs_init_ag_writeback
-
-Full report is available here:
-https://ci.syzbot.org/series/0e34236b-3594-400f-b9cd-6f59b196014f
-
-***
-
-WARNING in xfs_init_ag_writeback
-
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      eeb33083cc4749bdb61582eaeb5c200702607703
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/f21aae46-4d21-4410-9132-190ad8ae3994/config
-C repro:   https://ci.syzbot.org/findings/24ec6312-5e15-4750-aa2a-08d381daca26/c_repro
-syz repro: https://ci.syzbot.org/findings/24ec6312-5e15-4750-aa2a-08d381daca26/syz_repro
-
-loop2: detected capacity change from 0 to 32768
-------------[ cut here ]------------
-kmem_cache of name 'xfs_ag_wb_task' already exists
-WARNING: mm/slab_common.c:110 at kmem_cache_sanity_check mm/slab_common.c:109 [inline], CPU#1: syz.2.19/6098
-WARNING: mm/slab_common.c:110 at __kmem_cache_create_args+0x99/0x310 mm/slab_common.c:310, CPU#1: syz.2.19/6098
-Modules linked in:
-CPU: 1 UID: 0 PID: 6098 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
-RIP: 0010:__kmem_cache_create_args+0x9c/0x310 mm/slab_common.c:310
-Code: 43 8e 4d 8b 24 24 49 81 fc b8 78 43 8e 74 20 49 8b 7c 24 f8 48 89 de e8 f2 c0 67 09 85 c0 75 e2 48 8d 3d f7 ca bc 0d 48 89 de <67> 48 0f b9 3a 48 89 df be 20 00 00 00 e8 92 c2 67 09 48 85 c0 0f
-RSP: 0018:ffffc90003817a08 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffffffff8bc734a0 RCX: 0000000000000007
-RDX: 000000008bc73406 RSI: ffffffff8bc734a0 RDI: ffffffff8fc6ee40
-RBP: 0000000000080000 R08: ffffffff8fc26e77 R09: 1ffffffff1f84dce
-R10: dffffc0000000000 R11: fffffbfff1f84dcf R12: ffff88810b7a7300
-R13: ffff888115440000 R14: ffffc90003817aa0 R15: 0000000000000190
-FS:  0000555567cf7500(0000) GS:ffff8882a9a05000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f049ffff000 CR3: 00000001b9726000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- __kmem_cache_create include/linux/slab.h:384 [inline]
- xfs_init_ag_writeback+0x41b/0x570 fs/xfs/xfs_aops.c:890
- xfs_fs_fill_super+0x7e3/0x1640 fs/xfs/xfs_super.c:1759
- get_tree_bdev_flags+0x431/0x4f0 fs/super.c:1691
- vfs_get_tree+0x92/0x2a0 fs/super.c:1751
- fc_mount fs/namespace.c:1199 [inline]
- do_new_mount_fc fs/namespace.c:3636 [inline]
- do_new_mount+0x329/0xa50 fs/namespace.c:3712
- do_mount fs/namespace.c:4035 [inline]
- __do_sys_mount fs/namespace.c:4224 [inline]
- __se_sys_mount+0x31d/0x420 fs/namespace.c:4201
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f32c139bf4a
-Code: 48 c7 c2 e8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd30494b68 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007ffd30494bf0 RCX: 00007f32c139bf4a
-RDX: 0000200000009740 RSI: 0000200000009780 RDI: 00007ffd30494bb0
-RBP: 0000200000009740 R08: 00007ffd30494bf0 R09: 0000000000004010
-R10: 0000000000004010 R11: 0000000000000246 R12: 0000200000009780
-R13: 00007ffd30494bb0 R14: 0000000000009768 R15: 0000200000000300
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	43 8e 4d 8b          	rex.XB mov -0x75(%r13),%cs
-   4:	24 24                	and    $0x24,%al
-   6:	49 81 fc b8 78 43 8e 	cmp    $0xffffffff8e4378b8,%r12
-   d:	74 20                	je     0x2f
-   f:	49 8b 7c 24 f8       	mov    -0x8(%r12),%rdi
-  14:	48 89 de             	mov    %rbx,%rsi
-  17:	e8 f2 c0 67 09       	call   0x967c10e
-  1c:	85 c0                	test   %eax,%eax
-  1e:	75 e2                	jne    0x2
-  20:	48 8d 3d f7 ca bc 0d 	lea    0xdbccaf7(%rip),%rdi        # 0xdbccb1e
-  27:	48 89 de             	mov    %rbx,%rsi
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	48 89 df             	mov    %rbx,%rdi
-  32:	be 20 00 00 00       	mov    $0x20,%esi
-  37:	e8 92 c2 67 09       	call   0x967c2ce
-  3c:	48 85 c0             	test   %rax,%rax
-  3f:	0f                   	.byte 0xf
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
