@@ -4,89 +4,245 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 825ADC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:21:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B640C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:21:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5BC36B009E; Fri, 16 Jan 2026 11:21:34 -0500 (EST)
+	id 7511E6B0005; Fri, 16 Jan 2026 11:21:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E09816B009F; Fri, 16 Jan 2026 11:21:34 -0500 (EST)
+	id 73CA46B0088; Fri, 16 Jan 2026 11:21:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEB746B00A0; Fri, 16 Jan 2026 11:21:34 -0500 (EST)
+	id 5FDF86B008A; Fri, 16 Jan 2026 11:21:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BD9DC6B009E
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:21:34 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A5881AD9B9
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:21:34 +0000 (UTC)
-X-FDA: 84338342508.20.7687517
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CF7104000E
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:21:32 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WEy73lKF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768580492; a=rsa-sha256;
-	cv=none;
-	b=2LOFdmnLbJt9jlZDKMmSa7VbUwkXk/CMfyCH81WNfJ8S6s4r68ne9hs8SHrle5tSWGikFe
-	cznqtA9jNMWKfN3w1yqlo+HQ1yvYObudLJkeVQqrBx0ycR8akt8fkO/EV3XeeAQc+ovtbL
-	Kc6qtrlpAihHdaiDA3OAUMuHNKdgkaU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WEy73lKF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768580492;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B5FD6B0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:21:49 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 054951601CA
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:21:49 +0000 (UTC)
+X-FDA: 84338343138.04.BF8E2F2
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 88BDA4000E
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:21:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=iZLbRzKw;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Q0OiOP9s;
+	spf=pass (imf07.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768580505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wU02D3AuSYoipfiyxtuKzwahfFEJ5U5cyLoFJwWUhds=;
-	b=tOgHOk+CHSCBfPWvna5AGfDLqJbkUz03FjM8scaWGXUr1eltDIde320X44auSh8ZK5lnAT
-	+dGIP9UWdYscmvK084gIDqqXzyPKdBC6BQ8ixA3CUTowYIiom4ctxg8LNaGYHlQIKeCniA
-	JG7cZoQHToN58ZyYEwPrCECdd2TU3tU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D1D90601B9;
-	Fri, 16 Jan 2026 16:21:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4FFC16AAE;
-	Fri, 16 Jan 2026 16:21:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768580491;
-	bh=NOCir8rPfAIQt6v7dI5do8gQE0TlAVf0w/j9ivkNyoA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WEy73lKFMrRCN73iQS4oWwJwJsqakNAtuXhvrkpcc8ARMH1h5I+ATLsEyQEzdCTan
-	 tTEVqI+x3UE8bHCwufI71/rkNYwqFHV0ZZlVlioySeReu0++Q7Ti1TZkm6hTTHqPVp
-	 B4N1RUuhoANDlLiyAep700/vHLW5I+bJoJIjpH8KxNNgOBhrDJ18LFBqTm+Kb0c7SN
-	 JXt8Pf3b4ngvIzVue+gl2659ZXMNCx1R1JDOHfJnsv9reyDWQoUPrKx2a5rZlUCJau
-	 dpLJMQ4fsbmiK9FiMUyxraobrEQsJFWGE+z9AebnL4PEBkcyn/vTuplbxi52IWAu19
-	 mAnBNn93aukvw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  akpm@linux-foundation.org,
-  rppt@kernel.org,  graf@amazon.com,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,  pratyush@kernel.org,
-  ricardo.neri-calderon@linux.intel.com,  kernel-team@meta.com
-Subject: Re: [PATCH v4] kho: validate preserved memory map during population
-In-Reply-To: <jixxiqeajngwox3nh2u3pwf2rivhmqxxmpyttqxu32pixshyde@4jdn5jvg5hvk>
-	(Breno Leitao's message of "Thu, 8 Jan 2026 10:03:14 -0800")
-References: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
-	<jixxiqeajngwox3nh2u3pwf2rivhmqxxmpyttqxu32pixshyde@4jdn5jvg5hvk>
-Date: Fri, 16 Jan 2026 16:21:28 +0000
-Message-ID: <2vxzo6mt7cl3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=2onjv5z+ppb4TSpHEQ84JNNJRw87w6BmX4Xf1VoDePE=;
+	b=wret6oc26QRpRANuTXLWGxGZcxZBmbGCeKIMMExFxGP8fSMDg7Z1qHE9bQvHjKJQTfjfN4
+	Y72vtbrlOdKw56V+74zBY7apIQt+mi5qABRtMZmWQYDFdogwjLtHtqMddYrvhPcJl+8O2g
+	AXZdtU4lyE141unQ8jmLd9ur2hyvKd0=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=iZLbRzKw;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Q0OiOP9s;
+	spf=pass (imf07.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768580505; a=rsa-sha256;
+	cv=pass;
+	b=cnIeKkukCx9hFZl8/gyyU3Lyw5yc997k69QtHPoXcf4T2pndDEMIffTsWjHQ3Pha/T5qrQ
+	egCKok3NDYzur72dbz7NUiQD/Blmu6pgqDw/jjpFBusdleu2T8kJDfwHcbYAORJDLLthua
+	eOnygOISQ6xuBYr6ZcLpIMbENicuXlE=
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60GEb3K21817896;
+	Fri, 16 Jan 2026 16:21:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=2onjv5z+ppb4TSpHEQ
+	84JNNJRw87w6BmX4Xf1VoDePE=; b=iZLbRzKwmDmNYjUmPwYxw/VeUEKnjt/shy
+	G2NPer2RrZtMThKg9Ti/Wxos1EYIPXMQmy7pGLOCqzxNceqGKQ2/PMe1HjptRV3U
+	gpPuq4zYAxx/6rdqmRQYQxWkCu+PGXhFgiaEGEOW5dCfu1zGH/ltowSm6qrxQnhd
+	HVK/rzN8xrfFk/FRTxm2c8TW4u01u+5jC9sg+PMnsIRbOWmzwEHsdYwS0J2MPbPS
+	7XU7wTDCbKozc/z+guv/jA8kDrwctb/d51ARmBU/UV6f8tKFOaGxmm+yjk1otTbR
+	g9UCZrGR4VArM1fDFnSJE4UfR363fNZ2VOsQ7eAwqTv+tMYNUS9Q==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bp5vp5d8x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Jan 2026 16:21:35 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60GFl3vA035247;
+	Fri, 16 Jan 2026 16:21:34 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013045.outbound.protection.outlook.com [40.107.201.45])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7d3d37-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Jan 2026 16:21:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aJ8SDS5foYF2sFpy1VpOCGQC/WG15q8GgbrqzAmYwbDjZjZyxPlHXMGnGGwkA97RLX9dCFU3ClC6CRxqSW3ZUeDjhW+TiCEFIQc8hbxCPC0sX24Fr4H+fWN8LN6QxDWWD12MCfmcvIDqduokBPQWBudmPHIKIeCL+KSk/ph5wRmV05Ot+1tQXhuxNU7zOreVxdVKjMYnwgQxT3kQVbV//ZItpD2c375+ShOhCOslGB4YgOBawDIHPUO6QZEgmBEXFBV3vEDibGq7hy5GA9zj4aC7CzUhgyPSa9YgzzyHjKT9Sc0uJQojEVyFgv6UOKUMNMEVEHmjOpR1mEdGDBAoqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2onjv5z+ppb4TSpHEQ84JNNJRw87w6BmX4Xf1VoDePE=;
+ b=nPy3Kx9ur0D/OM2cc3hj4rmCWwaJkcVKiKEfG8HyDbKqB4h0i5NC0e2RzXKKvrwYWIKh53Aeu2Aq4HRuiy7XvX2UhSxW/i7ZyC26PbSeTTISFPwpDdd89tvPmHScAhvAeQpeZ58Z/hZqkUeKmP/y4NFkpOVdVDyNK/lpT/1XAIoeG5bGBSO5vszRvPVfhUXBGiOKq3s54u9Bj4VdRVxVhMmGJ4UNEou/wVG4k+O5fLOEZs7sujzgdpNoVZey+U0TbCpJWimD/1rh3V2oiDmmTKxP3RWDsrbfZWYrYlhbp4EE1JHaljyr9gQ77KpY2OkldOhVqFD6pIDE0idADac/2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2onjv5z+ppb4TSpHEQ84JNNJRw87w6BmX4Xf1VoDePE=;
+ b=Q0OiOP9sX773IXc4/WjeOfq4W4kHGhMVn1z7A2A0u9ZEZ0sEwPa1OaqdflaFCWqH5TBiGAd3D+LLdpnSffdJClOnY4CpgKI9Rv1IuQtw+UPmlNhiZ+9zzwIo+03Xe01cKxPjAZkPuGajcukRMXDxP3E/dzua46QStOedlvb6akA=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by CYYPR10MB7674.namprd10.prod.outlook.com (2603:10b6:930:c7::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
+ 2026 16:21:29 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Fri, 16 Jan 2026
+ 16:21:29 +0000
+Date: Fri, 16 Jan 2026 16:21:29 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-rt-devel@lists.linux.dev, Ingo Molnar <mingo@redhat.com>,
+        Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+        Waiman Long <longman@redhat.com>,
+        Clark Williams <clrkwllms@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH RESEND 1/3] locking: add rwsem_is_write_locked(), update
+ non-lockdep asserts
+Message-ID: <5ca7b2a2-1e9d-4d90-8459-1aa35b30b49c@lucifer.local>
+References: <cover.1768569863.git.lorenzo.stoakes@oracle.com>
+ <8e343ccb9319433364f5949a69519f1bb521fc8a.1768569863.git.lorenzo.stoakes@oracle.com>
+ <20260116151215.GH831050@noisy.programming.kicks-ass.net>
+ <99818e30-9f88-4751-af82-0bed019156eb@lucifer.local>
+ <20260116155743.AuMKcTAO@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116155743.AuMKcTAO@linutronix.de>
+X-ClientProxiedBy: LO4P123CA0523.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c5::7) To BL4PR10MB8229.namprd10.prod.outlook.com
+ (2603:10b6:208:4e6::14)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CF7104000E
-X-Stat-Signature: 4wqrcu4cy59wcgabgncbxt8s9ft5ju91
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|CYYPR10MB7674:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba3c5c8b-9ca1-41eb-2a91-08de551b4db5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qEa8mxevyeA+hBH5ZMFeOeQ4MaOBsKsvyYBGhp5fhw6jfpvzrnpzfBRw9Z0N?=
+ =?us-ascii?Q?h02Jmk57rgnaJWHrJXbVLQHeu+gg2ae+lOuNjuwr9yv6n49EGajXTGRnsCvK?=
+ =?us-ascii?Q?zk93U64Hf2hUM58pkTl+5xG3nr+sgLF2r2SM8t+RbxuN5NHutFua2OE+NExG?=
+ =?us-ascii?Q?OVecCNb4iSa9di40FtAUj9dPBQPf5Zu66V6DYhVHdQgcnzDr7VBrtVVNxSQB?=
+ =?us-ascii?Q?F6ursnyRhcOCLt1R2YOyk8ib9pxhcaRZl00zbcOQjwvOzpYNMGW8nkj+Wt6r?=
+ =?us-ascii?Q?D/F5M3luOdwOCluNcjq1uJc71199kWjx4wgk7Er88KsxR7lsjqOxsurLkN8N?=
+ =?us-ascii?Q?23DrWMqe9pLc/yx1yWKdRpI90N3MeTuUB+G9AYSLnKM4FutDWkdECSbnjfbL?=
+ =?us-ascii?Q?uqOTUBGxea5OveT/hyCH0m1GFIJAgXNTC/tZVs/Yfx+cEteI9i8phShzoRnY?=
+ =?us-ascii?Q?Nv0OAe2Bx1AuBOnSeGIiVb1JWjE32ES4llyCzkmebbyMf5UBB0ESFKs4MqVD?=
+ =?us-ascii?Q?SF1lWYGM1MnwHKMTHgy5kKHM49iFcukDCVWfQe3Grk6yoWab13aU1l+qLpAS?=
+ =?us-ascii?Q?McFOXIn3VSl4zxfPfXqkiLrPY1ygYFoBCpzFwYuqTda/vOyFyS7+yLmv1Ed0?=
+ =?us-ascii?Q?TN20eTWAV2Olp7JiKNG0JK3snGEBLAWxZIOYxdAbqnjLsK25jPaHj2CphhsA?=
+ =?us-ascii?Q?RfWma/u4uE0Ql9+HJp8S9nf9Jv4K31bp3bhip6Zzdx0A9lt5Qs/RxdGcyHLi?=
+ =?us-ascii?Q?YNsCPOB+U7Uf7+GM833LV0VRd4DgswPGcvAAJp6dpAC8x+sqLUur7cblZp/T?=
+ =?us-ascii?Q?QG0M8Isng+jTkKk7SOw44WV4GT6xP+/weXBym9J2mFrXuNcvq0YA+BkIAW4O?=
+ =?us-ascii?Q?VsUDXms/HIvCieTDOORW+T5RTiXHMmc7A2E4VvRPJZ4+PcSiDhswJSkvf3iQ?=
+ =?us-ascii?Q?7WOT8wc+a9iu4g/qSHcpSk7N18IVbpHXL/Rumy6PO50YJ4KE41eEoYu2CrhI?=
+ =?us-ascii?Q?jWmiMQnxF+K+fhyMZ3Zc53ucemkCXHp2jPzNlykpMXsRce1fl5PEwgDsW0UA?=
+ =?us-ascii?Q?hrO5GqEXlKdia1UrVifReOxWaexcroX7G1z99krEJSCeTJHSAr6IvSqiyLjf?=
+ =?us-ascii?Q?xZ8dNsHaDoEx6d4BbGxTgmANj0eYh18R+q73UXW0NRsdl/2oJNmJdlZRF9tZ?=
+ =?us-ascii?Q?RI+6H9huChetMlmWM4boPbN+N7bgTX44rMnxYIUsyZJ9XbkU/oeNvxxhqPc/?=
+ =?us-ascii?Q?8z0Zrn2OaZGef25AhpKL7wFgFmujzqe+gZag4QQSyqcqT/Kj0cgw8Jk1iEeg?=
+ =?us-ascii?Q?uoxCraiRKrTwdh4fU5EKXwqD8KnAVb7SolQ+DAHodbnQGncZCgFt39VFy1+N?=
+ =?us-ascii?Q?9YDBlgkn0sdbBfk9Y4xU1h1T/an/kQEm7t3Mj/fdSffTuA8u5APGtb4gB0PC?=
+ =?us-ascii?Q?8feIdY/6jbFRdGwagNxegohZKk0cwPk8CuPuwL6xbnFsVfcmsvyNNg4ECM+0?=
+ =?us-ascii?Q?Ps9scImqMkD7ohwNwG8jjJMnzmvZNkOMGPoET84U9sIDxQn+BWIwZxxALZo4?=
+ =?us-ascii?Q?VWp+y1bM+LAKlYuw54E=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?oBm/8nlqK6iSiwjaYkr/1/+UBDJinbmKrq5eYE6lFUOL5E9hLFXuRVyBGfQw?=
+ =?us-ascii?Q?gU2uM4s+wktHunaIBcoXkpDRMY8b+np9hoQZHXJ6T18ipytsGtZh8QB7V1kS?=
+ =?us-ascii?Q?kXcoOAM6UiSZE5E+6WIUlexncpXX3BOMzkUVJGS22BnKlU/vHr2kFLBC1Mvt?=
+ =?us-ascii?Q?CPWiuHjCZnJW6AXYCOwBrdsDZ9tMCG2aPjGF9RGGlF4UVMFruGwAAhJCMo2/?=
+ =?us-ascii?Q?izMWYfCvRo8diFpHJBJXhL/fFwaeHqSAy2y9+dMK5SdMwvZAzKDWoe9RVgLn?=
+ =?us-ascii?Q?TRmB7SuJNwBVA6tjwLf2vOI5hgBKb4gS2YjVB+JZD2bTPWlNSw5n59gplNhH?=
+ =?us-ascii?Q?sBotyQLZMU9FOUlH/u4XbKXm5JxBQluo/EC6qXvVJ1A5D7KIVN1kD/yPan76?=
+ =?us-ascii?Q?ItNMqTUlum4JpTQFKC76DY0yKUjESKQ4YdJVFqlcjsj/Zmo4lCgzcxBdz+oH?=
+ =?us-ascii?Q?E+rAP3nbwkwRLaeVANQa+fSCOEN+Em+ant1N12HrCVmJRSEdRxItugPRgXRd?=
+ =?us-ascii?Q?mT0kAPttqkW/pq4USYPd2Z+DdGonTYkBQBw4w2PP1tzsuzpHEUcfVk6xIjeq?=
+ =?us-ascii?Q?JxFVy8yW8Z5800DAlZKzlsEpg6JFJqf60XXIrhCcvmIq9C4noxP2f11RfTx0?=
+ =?us-ascii?Q?vlZRseFK+Ol/oOCJO43gz1SBV2ZVsYLG9mGOIgyT4B2FiUTICewD/ietw+Oc?=
+ =?us-ascii?Q?uvVP4ZypPelHzQV43RxYJa0V68liLQETQsQRI3vNLYXzBEu/e5jpoRY0z3QB?=
+ =?us-ascii?Q?yaDb31TXVrTymc6I9q4F667iAMqkgodyg5fm94R0YpdjKrl3jqO2O9DV/9Vv?=
+ =?us-ascii?Q?1dxyqa4ofDH+x4yn7+q6o7Aqp3Uq6fBbrTvfiBWEfq0COa3JaBbpeyJb7oeK?=
+ =?us-ascii?Q?Wh/zFL9E9ejgpI+C9x4kntDKUy2Q3yCrmuv1jEfOiRHWtSVZB3F2TUMJekud?=
+ =?us-ascii?Q?GcWJ0O4jSjsAN+JNu3e7NA7XlhwKfxuHYGTrerr4PwAwsZmSY+RD08FBJBxM?=
+ =?us-ascii?Q?mOWx9nDQmleLtZ4JVm8Ek2Ye1F8+esYWzxRtDsqeJel4LeDa/k7KsLe8SGO3?=
+ =?us-ascii?Q?Nyi342+jLtOKxikFT3rtRtbgMSTWk5cBEd12Vr1NYm0L8mvW67lki9l1Rnyy?=
+ =?us-ascii?Q?WLY2RlcetgvTdoh+EkDGpQSAhGc1N8MgKIIut0qqZ76jI6eCBC9+2I9J4T4b?=
+ =?us-ascii?Q?bGWk5hDACx8Ozs+mm2b6+sMjmaA/F1qd7+F6yjOQEPb8s1AlXgghmVVbuyMt?=
+ =?us-ascii?Q?i6ihTIXEozXJmxifTxcPdO3wBDqLsYZjXT/HclC0H7lPIE5KSnSRRSlpnJkV?=
+ =?us-ascii?Q?XMq1+IGR3J67lB2mgxAxHsDiPa8EHj2mkh2bSVWoQVe+npIj/LWxv8b2iPA6?=
+ =?us-ascii?Q?FwqlqHkKtWLCfjfNAdjAhcJeqcSHMEFFF15etUX1rGAHvo+FjHsCaygXZqUv?=
+ =?us-ascii?Q?sFLmzLtI5L5IC36refQ2YuVcjdS/POY2ZPtUPx2s+5jMROagxVKNvApWUmuM?=
+ =?us-ascii?Q?NVO7JXm6Oqr+dZAzfs0b9znxRyeBDZA3HB1UhXAUo8cOq8tkqNvO5eSyjdBa?=
+ =?us-ascii?Q?EZnYLg8ANaY3D/NUfrTbgEleriaxQzJkj8p6CwK/Oa+xq8JobnVGh8Ld79wJ?=
+ =?us-ascii?Q?Uzt2BnTCtT0o1dIsVoDctrBRR91w3C/WPTDAbgfk/6kHHwcJE0PdHePvC24C?=
+ =?us-ascii?Q?pWuVCf+t7+hBRVILoeI7Z2x7kQbu4XDtNWoiGj8ZgmUJhEyThltKQTPzkKAD?=
+ =?us-ascii?Q?MXHlVQBmfM6YUxMrVVWWVIsWaY96bVs=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	DRQRr+6tHuPl/QCPJHVmTLRZEwO7sMpmcfeVr+8Yg0qrWi1sRhWsjB7fpOUbIS04X2CuRTBAxysD/Ed6EulX/94iPck/9ODRQarWLnqDKhoUoorCwjCeZRwlr1AshFnOjoy4Dg7auDiTqhdmbdKxUV4vbCHBz4Gkiu9sc1BhJYRL4kJaJ3qpMhH/33Sv2GlXnPyaDq2UQsuVIkTwQki08Zv4Vg//DtM/PsFF7WxOAL5+f7tJb9l+KIz4yi+0X0j8/Aq1kvsGrV21wWJbCqyxtG/KMrfC496VLsjR4nh1udjoQSxrmp2rPXp7Ow2FeLtDoBOCnGg6RJ6MOEOJg2HFT59KtAKeXe+lA/pWXZoI4/ahLYd2Lz228HAMpwQqYtLM8wHrbV48luAdH5L+OEe9w9hBbUSDz9zbbWdMHRRrSYZxrBrOcGTWDsZa7C0R/BNrytM5/iCc2JLh9KzgsDRFkzNfEBjMJT2jFr7uRaJgWhK0VqS+8tWuGQgfIMjQ0tg5WIvEmK3A/aABscPYVal/T2yP2aaPBvUW0hbsTxw0PpVI5x+RYXWlhZOecf+M9Y4rzNy2hlSygDtCGvA6Ol2x7lljcv0eqQafI7OcqSr3Y2Y=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba3c5c8b-9ca1-41eb-2a91-08de551b4db5
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 16:21:29.0457
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5a+q18tK9vpZwq+HPDqTB8AW2MtGqQVBRWZFd7Gq6zFbNZTFlTiTBNf0PDQ1d98jQJRKZtlDO1AipATdXB55Z/MHhRMNs5hMmQo5mSOGkJ0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR10MB7674
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-16_06,2026-01-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2601160118
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDExOCBTYWx0ZWRfX3FgJtdAxOu45
+ yL774fdhXZ+ZkeFKnuBpaTBV/BondazSJE5WS809PXGlEZGTnCEEkGJL7lUwX1U58dnQH5vKJmQ
+ i0h4UOQmOvWkqX1/QaobDC/y1d/17AHonnykMXUfJJQI0JU8Xs0w4vSgViaMaiXjbiHKysXHFTW
+ 1ojbhMS2makDElEBfICM7Mbj2uyhXd8Gs8n/MumPSIgL9nDYfqweRBgcBRzipxMHveVQdLz3Fu4
+ G+eY+hKqZ8RbrYs8WiUHCyq75iPnnrEmrE/XAZGTtHJcGF0CTNJI4uWCMq80aMra+IDej+maWmT
+ 6nvpq3dimScV1ChEzzGW1OCvMYZlgdey83BkdQ4GL3fhGoRaSx87z8zUMsbODk6llVYuGQl32L2
+ r+S3rbFh5DFq/u/7hLglOfotnu9PKu2iSgv2JW7lsK0CjENUKcLdfCUbllrXwO/Am09PlSMnMFB
+ CqtGlm6nAAkuBFpHjnA==
+X-Proofpoint-GUID: emMUQkpH_1aKTZbxGlri0dO3fRFJ-PXQ
+X-Authority-Analysis: v=2.4 cv=aZtsXBot c=1 sm=1 tr=0 ts=696a658f b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=sjHe5Sqy4sYmgIh6ds8A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: emMUQkpH_1aKTZbxGlri0dO3fRFJ-PXQ
+X-Stat-Signature: 7o7y93wzdjs1qqmokh7sooh5zeihk1gm
+X-Rspamd-Queue-Id: 88BDA4000E
 X-Rspam-User: 
-X-HE-Tag: 1768580492-249710
-X-HE-Meta: U2FsdGVkX1/D5pBYFIdw8hvylbP8qcsia5HIaJKxBQP43sgkTh0nvY2UqQksI+/RIR/Z7RT9Gwk8eU11IIjDRCv4o4p5ewphKp/BGAShddaMdprh2oKmBlab4PsMnxqZ35gkIacj+U/LV+G6NXU/rjjQOvS5NVapyNLwKd+TO/lVgLiMQby9oZ49Ji2UrnoARbaiBCMK5JPO4ZB4OGrh0SwVZ3Ch/FJJ5sFBWjVuWn/FmXPyQ2vWlF4PtacAGXMOmTJ803ElI6czK/wnIuiOSJYrY7/BTP8oCeD0pODSM2zLFddZEVsF6g/UgzV6NblhpbJJA5vxZKT0IGHrOrjSwvGXOjNkvwWOHm9dq5pEQCEegA+/HEUYUMoSEkfmxo/lL7RbJ+YADn2TsG2c7gnPM2ulriBFnpnCnblUSw/n/Pxrhstt3osCLfo2ZsVX9cxVs+a/T+DzftAsBm22feI/U5jV/NxEHdBDjKbKtvaCduR6XWps+hr/WQlZ2llmjOMmVuZaj8jTtfyN4J2eGqcre/z4KV7IdzdAd0QU7KkJjbQI0g5e2jAyiKSXS/Hs2WZ5RI7WUay9BoczBxJZT7p0gAcXQ2kFeuu0p3qHdVS39PTBD/MN8aOvaYBbuBs8jRUfqozAknrcA3+uKScvw57gP0q0bUvIqFbdP/Rb3vYFHThjVfLS3l94MWuC5i+2VZMCogTMZ3VcLfVmBbQjDtSkExwHE/RrXhiYNLkoLp3KmotHnJ33MPrcfJ7W0BcGV2bX3SQ4PPVr36oSNRWJOWZWEoE+IJ/j7/WQ7Z1JhNSZ5EYxM2Le/J/1eurHy93uEk+peXVJM7J/+CFZGsRKFWcjIU6SAUXqWB60rhGmKclxLiW9qXoT+s2U46BJoS+tU9fUvz0g64UkcJYEufM7X6x4yj9o3Wqlvf6vLsd2FT94pEmiW4O3EkEHiJUFEDEyAyn8VM+ALfIeYdrNXWvqfSG
- 0LmAddxy
- adJSXlNSVFFRNbybGoFpL7aeAy+ZHa5SQxq1zocUrFe7fbwhTT/46TRw8gLHOmr8eaEs74Q3M2sgjw9bCVJPuwjRGnZG9UGXbPr3X4kjChkHkP7FxJWDvDfNAVsngaK/aAIFTHzWTpIa+cIODrtxFevsnxN91paTmxib5SZOsZ0pzvB4U9BGE8X1WyuqSs6paeGz1mSFv/xJ4eMtfkOrjdufnUg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768580505-726209
+X-HE-Meta: U2FsdGVkX1/NlPeCI+A9ZAGHW44xoNqFYzn/nRKR35/yLE158gtuNJBYtB/POfxsP86TAxwmSCQV5ExoJG8r1uSJK6sll72PdomMrrbL+S03b8jgm9Eyq/kyscLRx11vVA/KAtBWeKD5y1KuR/IPuASY+5RN+mkzqTHHg3jOzQVBg/aNTNaaH89d3tdUXURwuCNUULOEbssH5YM1odtjRRO3c5SYv0mvBx+f+lPLTqxZ0MbpScCQsqmx+YpBgcfy/LvgNbM6HR5nC4tBiCxD+jXyywb6Y2cG67g/stxXx2LdTC4oByEIiVlgARK1V7abEyNtQMghQxQrKhHQ2EpAG947DqS7UiQGUkdthzm0kiHEu3jvp8g/HqFw15OdZIeKWfKrllwSPqOdFdcURNCKejDH98/VxXdP1uFWfZDZ74ageVAhBeloZrObe/dUFFnhG7L1ZrY3PJcFkhfZdvIRhZXIViiMpn3LiQjKm3rf5sovghUrJ2VrCBfgLeDAxxkKPCY0wLhiaFoDblLT5JFwaOFk6V3EdAYUMK8+96Y9IsOvJ7ZduCfpajSu5/8QyBdoeTu15RJXh0HlvfS8Eo5gIKq7zJxBjlSB2wNDE2/bmJrPgpaitB5uvytfIZxBGTG1eo1Jy9DeB8N1v5V0vWSLYAl1VtVqcyGQUwYOx4IRvnhnciJRU/FlH8rLjKKnttVgxuG8ENR3NyLkOAOj7My702BBLkC9RdgTMYxnLR9OdzajY0Jo/BsEJwgh3yhSrRgR+m2EhtGsX0HNSpApa9iLh0658pNO7r5/UeKDDih9kQIa0NFFk9PWYoIrVUkYzv3mzq89VduBWoW2U7Nf1o2v//vtmmXe0SGbfT+x8//Sf3wLYa5OEIz94ZcseIb7kch/M5paPMZzo9QLg1qEd5u79fG82HKjRoktvmMbOm657u/c1m1AhcOe2ZbP6iq6I8rRrD9stfmMpFelJXoUKUQ
+ 4avL2oui
+ FDQT38CVbpL3LnwaQMcQilP56H55uFgvVCuJ90v+31JDLYVgf5p71Zft4WtPYmXtOqTrH5ePppGgxBLh35EVHTGYQBzSMXOtzUvGoURp7izqSZ+8vQK0c2Evl1xdGIxJHzvAAkAO/pcCFM/+Cksctg5z68gf49gkp2reckQNQ/vaPoVIbPQYd3K3XDqf9cBXAa3g0pOuFl70o/llTGsV6X6awZBIIp/U3/EcWn6Ixes9AO6NEBbrFXJD2s5PMfc6kU+k941pk4IESLLyvAtCdrTFr5TAggT/QkbKD3YNMTP2hLhEvgbtuZtOBAMDhhT+hMeuZfwwuePP5gBOAxCd15i8F9J3DG3g3LhoFltncMRADRM/cuS+0BCoYOKL6TH6ryUgLiKhf/msvyYVExAcQGrPTy971XT28LufH4PDeuZkgYSLLKJ//f2rBrscK2RoKOhwQiOpm54p+jEIUSVICdw3jq4OdS5Q7dlbGxYpXpq1l7UTF2uSpWWbMakQtKWKj/kh8VXjLK9p2uKoDiqSujtHri1q6XS5zK8tRDJ8AQ6mhzDBXu015fiWqRE6yxpFLeLH7NcIbiYmy2KiS7JXrLDYwOocPszIpaLekH+b3MwyxhOB9FqKShgvfi9ccqpcDf/LvChXdZMrF5J6iMxMBzcRz1kIsmPS2HyxRvUSagiiyThuP+j3ZDPjvxOT6tGnAVvAzjKfmmZz892xfwszvXXPWgLzOWRKsQ885Oa/pH3CaEh0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,175 +251,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Breno,
-
-On Thu, Jan 08 2026, Breno Leitao wrote:
-
-> Hello Pasha,
+On Fri, Jan 16, 2026 at 04:57:43PM +0100, Sebastian Andrzej Siewior wrote:
+> On 2026-01-16 15:50:24 [+0000], Lorenzo Stoakes wrote:
+> > No, but we need to be able to assert that one of two locks are held and we
+> > don't want the failure of one being held to cause an assert when the other
+> > isn't.
 >
-> On Tue, Dec 23, 2025 at 09:01:40AM -0500, Pasha Tatashin wrote:
->> If the previous kernel enabled KHO but did not call kho_finalize()
->> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
->> the 'preserved-memory-map' property in the FDT remains empty/zero.
->> 
->> Previously, kho_populate() would succeed regardless of the memory map's
->> state, reserving the incoming scratch regions in memblock. However,
->> kho_memory_init() would later fail to deserialize the empty map. By that
->> time, the scratch regions were already registered, leading to partial
->> initialization and subsequent list corruption (freeing scratch area
->> twice) during kho_init().
+> But why don't you use the lockdep based check? That assert only ensures
+
+Not sure what you mean, the checks I'm adding don't exist yet.
+
+> that it is locked at the time you did the check. This does not mean you
+> are owner - it could be owned by another task which is unrelated to your
+> cause.
+
+Yup I'm aware that lockdep tests more than a simple assert.
+
+I wasn't aware this was possible with the lockdep primitives, mea culpa.
+
+Also this came out of a previous discussion where I added a similar
+predicate vma_is_detached() and Suren suggested similar for the locks.
+
+Anyway, I went and looked and yes I see there's lockdep_is_held() for
+instance.
+
+However, I'd STILL need to do what I'm doing here to account for
+CONFIG_DEBUG_VM && !CONFIG_LOCKDEP configurations right?
+
+So I'll respin later with if (IS_ENABLED(CONFIG_LOCKDEP)) ...
+And sprinkle with some lockdep_is_held() and see how that works.
+
+I mean rwsem_is_locked() is already specified, so naming is going to be a
+thing now but I guess:
+
+static inline bool rwsem_is_locked_nolockdep(const struct rw_semaphore *sem)
+{
+	return rw_base_is_locked(&sem->rwbase);
+}
+
+static inline bool rwsem_is_locked(const struct rw_semaphore *sem)
+{
+	if (IS_ENABLED(CONFIG_LOCKDEP))
+		return lockdep_is_held(sem);
+
+	return rwsem_is_locked_nolockdep(sem);
+}
+
+And obviously equivalent for the write case is what's necessary now right?
+
+Or am I misunderstanding you?
+
 >
-> While trying my new patchset [0] on top of this patch, I got the
-> following issue:
->
-> 	[    0.000000] KHO: disabling KHO revival: -2
->
-> Trying to solve it, I come up with a change in kho_get_mem_map_phys() to
-> distinguish no memory and error, see the patch attached later.
->
-> This is what I used to test [0] on top of linux-next. Is this useful?
->
-> Link: https://lore.kernel.org/all/20260108-kho-v3-1-b1d6b7a89342@debian.org/ [0]
->
-> thanks
-> --breno
->
-> commit 5d7855fede8110d74942e1b67056ba589a1cb54a
-> Author: Breno Leitao <leitao@debian.org>
-> Date:   Thu Jan 8 07:44:08 2026 -0800
->
->     kho: allow KHO to work when no memory is preserved
->     
->     Fix KHO initialization failing when no memory pages were preserved by
->     the previous kernel.
->     
->     Commit eda79a683a0a ("kho: validate preserved memory map during
->     population") introduced kho_get_mem_map_phys() which returns the physical
->     address of the preserved memory map directly as its return value. The
->     caller then validates it with:
->     
->         mem_map_phys = kho_get_mem_map_phys(fdt);
->         if (!mem_map_phys) {
->             err = -ENOENT;
->             goto out;
->         }
->     
->     This creates an ambiguity: physical address 0 is used both as an error
->     indicator (property missing/malformed) and as a valid value (property
->     exists with value 0, meaning no memory was preserved).
->     
->     "No memory preserved" is a legitimate state. KHO provides features beyond
->     memory page preservation, such as previous kernel version tracking and
->     kexec count tracking. When the previous kernel enables KHO but doesn't
->     preserve any memory pages, it sets 'preserved-memory-map' to 0. This is
->     semantically different from "KHO not initialized" - it means "KHO is
->     active, there's just nothing in the memory map."
+> Sebastian
 
-This isn't true. If you hand over _any_ state, you will at least need
-the KHO FDT. And the KHO FDT is preserved memory (see the
-kho_alloc_preserve() call in kho_init()). So I don't see how you can
-ever have valid KHO with no memory.
-
-mem_map_phys _can_ be 0, but only when KHO was enabled but not used. And
-that is of course also a valid use case.
-
-We want to treat mem_map_phys == 0 the same as the error path, just
-without the error print. This lets us discard all previous scratch areas
-since they don't have anything useful anyway, and have a fresh start.
-
-So while you are seeing this error message, I don't think it should
-break anything and KHO should still be working fine. You can
-double-check this by inspecting /sys/kernel/debug/kho/out.
-
-So I think the patch is certainly a useful fix, it just needs some
-re-wording and fixups.
-
-Some comments on the code below.
-
->     
->     Before eda79a683a0a, the code handled this gracefully in
->     kho_mem_deserialize():
->     
->         chunk = mem ? phys_to_virt(mem) : NULL;
->         if (!chunk)
->             return false;  // No pages, but KHO could still work
->     
->     After eda79a683a0a, the early validation conflated "no property" with
->     "property value is 0", causing KHO to be completely disabled in both
->     cases.
->     
->     Fix this by changing kho_get_mem_map_phys() to return an error code and
->     pass the physical address via pointer. This allows distinguishing between:
->      - Property missing/malformed: return -ENOENT (KHO fails)
->      - Property exists with value 0: return 0 (KHO succeeds, no memory to
->        restore)
->     
->     Fixes: eda79a683a0a ("kho: validate preserved memory map during population")
->     Signed-off-by: Breno Leitao <leitao@debian.org>
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 271d90198a08..3cf2dc6840c9 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -471,8 +471,8 @@ static void __init deserialize_bitmap(unsigned int order,
->  	}
->  }
->  
-> -/* Returns physical address of the preserved memory map from FDT */
-> -static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
-> +/* Returns 0 on success and stores physical address in *phys_out */
-> +static int __init kho_get_mem_map_phys(const void *fdt, phys_addr_t *phys_out)
->  {
->  	const void *mem_ptr;
->  	int len;
-> @@ -480,10 +480,11 @@ static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
->  	mem_ptr = fdt_getprop(fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, &len);
->  	if (!mem_ptr || len != sizeof(u64)) {
->  		pr_err("failed to get preserved memory bitmaps\n");
-> -		return 0;
-> +		return -ENOENT;
->  	}
->  
-> -	return get_unaligned((const u64 *)mem_ptr);
-> +	*phys_out = get_unaligned((const u64 *)mem_ptr);
-> +	return 0;
->  }
->  
->  static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
-> @@ -1439,7 +1440,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  			 phys_addr_t scratch_phys, u64 scratch_len)
->  {
->  	struct kho_scratch *scratch = NULL;
-> -	phys_addr_t mem_map_phys;
-> +	phys_addr_t mem_map_phys = 0;
->  	void *fdt = NULL;
->  	int err = 0;
->  	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
-> @@ -1466,11 +1467,9 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  		goto out;
->  	}
->  
-> -	mem_map_phys = kho_get_mem_map_phys(fdt);
-> -	if (!mem_map_phys) {
-> -		err = -ENOENT;
-> +	err = kho_get_mem_map_phys(fdt, &mem_map_phys);
-> +	if (err)
-
-This will break when mem_map_phys == 0. As I explained earlier, when
-that happens we want to discard all previous scratch info and start with
-a clean slate.
-
-Making this if (err || !mem_map_phys) should do the trick. The if (err)
-check before the print should make sure the error message is not printed
-when we have a valid property but its value is 0.
-
->  		goto out;
-> -	}
->  
->  	scratch = early_memremap(scratch_phys, scratch_len);
->  	if (!scratch) {
-
--- 
-Regards,
-Pratyush Yadav
+Thanks, Lorenzo
 
