@@ -4,82 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665AFD47CD5
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:51:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36143D47CD5
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:52:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC0C56B0095; Fri, 16 Jan 2026 05:51:27 -0500 (EST)
+	id 9F45D6B0089; Fri, 16 Jan 2026 05:52:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6ECC6B0096; Fri, 16 Jan 2026 05:51:27 -0500 (EST)
+	id 9745E6B0096; Fri, 16 Jan 2026 05:52:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B712C6B0098; Fri, 16 Jan 2026 05:51:27 -0500 (EST)
+	id 84C5B6B0098; Fri, 16 Jan 2026 05:52:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A324B6B0095
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:51:27 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 80F781A05D2
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:51:27 +0000 (UTC)
-X-FDA: 84337510614.27.54369F3
+	by kanga.kvack.org (Postfix) with ESMTP id 75B716B0089
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:52:32 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2110F1AE831
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:52:32 +0000 (UTC)
+X-FDA: 84337513344.17.FE4197B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D383140008
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:51:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D7lZljhE;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5F75D120008
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:52:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RTSTCoOu;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768560685;
+	s=arc-20220608; t=1768560750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WYokbY/hdLg2PcyrQsDfn3Xm7OMEKd+eCsy1gfrsArk=;
-	b=e/XFhnisWy8YfWtwn9+Fmxt7WZDHxxtmNfI70eekLNTOW+/wBR0VNIN/yyKVBufYlwvpdQ
-	yq+AUw3GfzOGnDd5K4E4fHyX56dyQNGDGtFvOp7joLjMTo7u6ammYNtVnRf1+M7dRNu5zm
-	cgi4v/eMTesV88v4+6w6Lu3bdCya5WA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768560685; a=rsa-sha256;
-	cv=none;
-	b=44QVGgAsbJdz1MU1uYw3pGBSY1fyRp64nQINE++us52rib8G78U/4G5/qcNv0ktCAl4HkH
-	IonmKH/RL64fhJs0Ep47JJcxNo11u0IDFqCCTT6FB8GLVXgGRALOIMxrPFMWnMiSxMJkZg
-	K6EKeSvjLXIvCtlghI9oc2UKep+VsFM=
+	bh=RTCekCAuKETvEuN9jTbDLB1P7rv4peQ92+oXwOTcp18=;
+	b=3D4WPrn1Bw8OzUopIkVScaA9Au01QhhVzzoWiqadymwV3yx8lYNaSF5kQYwyDODWQ5UhIe
+	LrJygHHtAF7SyWYwEEO8n9JxabZvAyTCj64liSQ+scPHwLe5QvrZw+yZgebSsFlKpI0WK8
+	y71HABygivp1fg37uduOUEM741Oul6I=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D7lZljhE;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RTSTCoOu;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768560750; a=rsa-sha256;
+	cv=none;
+	b=KJwo0ISz/RrL7nhra4Nft2QvZVtmcR+Mnr++N1xnrGus/m6faFeX31dtK/Zd28dsodPDcs
+	fIJj6/czIVoVAhPsncJ+9W1yxIw1agqieCc5I1XTTLaFYP4V0mKhdFbeuZkReKATefRFT9
+	cMngD6uynIxLFl980VjimxDZDz05wxs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 16E5660160;
-	Fri, 16 Jan 2026 10:51:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A495C19421;
-	Fri, 16 Jan 2026 10:51:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 979CF60193;
+	Fri, 16 Jan 2026 10:52:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFBEC116C6;
+	Fri, 16 Jan 2026 10:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768560684;
-	bh=rFY9xlBxTcO5q7oAPkLGToaIjHoIexlwDVGdEZseowE=;
+	s=k20201202; t=1768560749;
+	bh=QTTXskRSykOzdUCUBOI186z2skQFb/mpgixxD4CQn7A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=D7lZljhEaM8EZsQZkib/DBBz4E2jIkdHSOXRdXaT3UyzCaw1B043eK/BUrQfGXKQD
-	 WYufWQmpgBxWLs0vBWa4it1La8XZaoby0CPydcmctlompiEpR35FLxgovt7jQ1KSSj
-	 n+RnWxxw2P8Zm79JddxnB1y/hGjRdlDQw/m3IsA/2Pw3dPLD2tBbPoZZbyNf/yWPmY
-	 //WZsrdDMZFsTlpsy+WcjjThVDXHRLKlKyvZu2Mu69L9WPxbXtu4QEvLlKoQ9r9YpQ
-	 L6k6X0pf/YkbeKRyPt6zA1FZGrmvCr27y/d3+vszoGnqUH/2OV6GwOq2DJcHEUiMMX
-	 m9+3TDLV3emvQ==
-Message-ID: <5af933d1-8c64-4d3c-b835-d90c8e9f771a@kernel.org>
-Date: Fri, 16 Jan 2026 11:51:17 +0100
+	b=RTSTCoOu1dePW9H4OkH93WMmKcmffIRyCILb72Voshdu1/HG1XMdiNqq59tuMyzRQ
+	 IlNlaiHsclaJtcSFl/uFfNGQhfgO2MUfsW50Mm42OZLFQB7/4LnEF/IAPnknF0wggf
+	 yFEvaP2Ec05ad4spLh6+EKgkqbYaPe+qncz/cJSD4rmOrnp5of/WLm21Ng6muXrRjN
+	 yIl27I2S9SQHkI1dFZJ2KxdZP8nmJXZb/pSLq4i2hcDoAI6wvvZVHepRc5BFfOY0bq
+	 kB4b2VAGwIU8l002tGAtNcs9eqvr88ckplfOLsVF5pFhjCq/COhEgcFlP6vNn+ASzZ
+	 QfkQ1oDtMVv4Q==
+Message-ID: <3595c849-6b43-440e-8e15-f51d5de0cad6@kernel.org>
+Date: Fri, 16 Jan 2026 11:52:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable] mm: Fix uffd-wp bit loss when batching file
- folio unmapping
-To: Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org
-Cc: axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+Subject: Re: [PATCH v5 0/5] support batch checking of references and unmapping
+ for large folios
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, will@kernel.org
+Cc: lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
  Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
- ryan.roberts@arm.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260116082721.275178-1-dev.jain@arm.com>
- <343f8462-44fd-4190-9fe2-8120b5403269@lucifer.local>
- <4b784eef-e874-45a6-828a-4fc2acab6fb7@arm.com>
+ willy@infradead.org, baohua@kernel.org, dev.jain@arm.com,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <4b784eef-e874-45a6-828a-4fc2acab6fb7@arm.com>
+In-Reply-To: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D383140008
+X-Rspamd-Queue-Id: 5F75D120008
+X-Stat-Signature: 614geoujrkpipyxm676akbh6xq8d5cxw
 X-Rspam-User: 
-X-Stat-Signature: hjyt4mpr5jkp3hrj9bkmj633gdfda6as
-X-HE-Tag: 1768560685-912397
-X-HE-Meta: U2FsdGVkX1+dN7PPmCiyMBD9NdjrJFc+Izk6aVlhaxXyo0PshkP9KC9dbTUM4iZ8GL1xz8yfsITcAu/sp7ZDVUDLSXL2Ah+erkxu5JhJDcv1nVGVsV1lUSYReqyN9BD/lOp0xybwbKUBMzOdAJvv0mZPryV5H1MtmJlnFLnHnDqCSEbwZ7i044A5SoIuyN9fX8LgLZ8KTb9mM7mbqtzvMSBi5KFZf2TdwDnWCkw0xCiM1bPzx12jTGCkqHJuReHrT0qTcnhqHFq+HYp4H0VvScNn+oudpsC6nwSzVkZhl6EB7VC+w263/sGf6ykbr2oBKNyRWxTfbJ4bUV9Ev8wBsSdo5FFg9IT74ay7TIdKuRR0V3BOCDVIupoYr8yj04rgnxIizywd4qfHU1vn+gpC2z4knD2BxPBbDPwU5fkaITMQi49PpGO65FhxxOeYXvauczR6j+BWDCigx8M6gcXdve5VJf3N5iXfai1xVhvy3bkTW2gerCLULsJb3z2C1hd1wpj5pVVngZcN1e+EFl2O19FRA7LLuSh98e9rTpUxhdl5Cv7J+KFQ7CLAdCFq4NI8W6U6v4HJEXUiztUZs7JjywawZluQQsfz/fV9S7w4b4aYbW1et8IwIf0Q82wuXmYY5EgohTM2ATbLUa9IwgB7SjvT7YX6hr59d81r4QrpyLZznZo9oScW0MSbK2+wuaRJOtIO91DkLjDdCqP1ZeTv2EnF4CNR8DMRM22ZEURYuSNj2baZ8gEPvw/nkZluSU7oUm6o6h8cCfp69KoLD+NQdPesadqPyMM+z0XuNDOgEbtqUKo1kbZ4qyTr8C/22lxiulbEumyjSX/eHSbMwIkiCFVC1m4g1cpUlXH7OTFcxUDft2sKFAIa2UC3iM5NEO7VyTVpGpdHZ7e3oz7vhDXdeuNeKThyv3mEZBPQSkMoDRvmM1ovxUIB2F/aQWbSphKNS/Q68WI9N5JfyCTATax
- i+D73nd4
- oUDwQv+eEhxSdrFWDf9+T5TviErKKpKmONNzkVxVKvFaQXu3A9AjIeSWTXpZqdYKRIy6op4a7tHx6Ju4RNrqEPCCxw+/ywwXaSd+RVn01yte3tYoOMq95/9r1VPZMfF3use5QWKs8Oza+pPyYjgo6i3upa+1zgJS1Df/aP5gKb9v+3hSrD5lEbhdOibANkmMCQjPuIiXU56VrP14KaFALxpOZYI/QzWloOsOa5ctUXAmHkIQnK7q+a4ex0cxERvtcfHpB
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768560750-731513
+X-HE-Meta: U2FsdGVkX19KX6r+tF6ladMETNHD/K2V5h62nvPwqSzIDxcbSCJ0IyKdxy7PnXO5AgeAd9dgH2HCRRw9bMSaqMas81atE8Mlm3n+e3jgm9RGvH82XTfJKkCKoNx8ZNpxyDpsVAHntthbubBAOdUndnRLGWh4X4pzKIafB+Gt488Zr+8tBuEkTe4Vc9xEJrrrLYGMSB53por90COLiC6m4J3L7whbSEL5K8Vylej0l8kgDoJyfHplYFrwwwKUX4kvGJZCR6TfFupckdEv74TkYEfeUlT5P3Ocvbg3W6+wK78+ZQyv0Mm0RqM5948nD8dLCcOGnU742ZngZuN+1XKE++3T0UcQtBrC4DF7clGq6GPdB9xY8Hj3PD+Uk39y06hyqj3qB8hlKMmN5lu+j9+/ZMC/NWOOE6PYzsA9B53zpgTIwrGNkRvgTqHw/gjC0Wyi/40U2JEYkAWPhXZ/2fudCnjfpN08ddcIa3Vu3GYlUZTUI0HAOjv/gII8v2hbqDXY93qdY3O71Mob4HSpvLz5aVpYFLPwdVbPGrWo7+L4CdgPSt069fonX1fUG9Khxe/8H6E0XEvRsF1VcpgMb6MvLoc79BQtrG22aVkxLUQx9/xuivLuev+Hbhu+p2Bx1PmSUVUqusdpd7w5NkHxxSJ4n80enZ0sc1A64Mqa2slicWkXWI/YQ2Ya6A46txaWISx8vKHvME+FDNC/4GMIln9epintmkOAHFSlfFdKnJPXuk3umQIrEgDVuRw0xnZThlTQqzQlPkVTodF1jf4eVl0GRLSOIu/574Xev4kNG4qWzOdT/VSLkio9/uE5ReNo+0mcyEefwVtCdicKnW7raYv82IIjEvDaywNb4/lcACdSAmZZTHNz+CE8J+Q0lqSI2J9fBBX87ZiE9JcX2IlEwjS1/+mEPUwieAQzX257HVfv16afyqL13ZM4Fn77lbgTKS/CJhLp+5FgAVhaTjFTZBe
+ Bv7xGhNN
+ NIrFa1E6a2ECJxel3phu5k/O33sMA2H/i1S41qIatNA7ybLmE4bONdZe1OaUVohFstCD7ezv5SLdPvSFtO4N/Ggr7NbhHp7ag1mu/KtKk93trv5JM6jM1B4SPbo4i8KLHebTL8kHYS6h/WXDyAdRb4I8GqaxmAVxDMET870gYIrgr/vyKrqXYoRdZ/MnBMLOfNFJBwKRSuB9vSlKZCalBSsTdDoQUUxjvGCF/otk/SGfEg+q8PoU5DhoywC8IovF4M2hd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,44 +143,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 10:40, Dev Jain wrote:
+On 12/26/25 07:07, Baolin Wang wrote:
+> Currently, folio_referenced_one() always checks the young flag for each PTE
+> sequentially, which is inefficient for large folios. This inefficiency is
+> especially noticeable when reclaiming clean file-backed large folios, where
+> folio_referenced() is observed as a significant performance hotspot.
 > 
-> On 16/01/26 2:09 pm, Lorenzo Stoakes wrote:
->> On Fri, Jan 16, 2026 at 01:57:21PM +0530, Dev Jain wrote:
->>> The recently added file folio unmap batching support forgets to update
->>> pte_install_uffd_wp_if_needed(), which still updates a single pte.
->>> We end up jumping to the end of the folio in page_vma_mapped_walk(), thus
->>> setting the uffd-wp marker only on a single pte in the batch. Fix this by
->>> passing nr_pages into the function, and set the uffd-wp marker on all ptes.
->>>
->>> Note that, since the nr_pages passed to this function is always derived by
->>> some sort of batching, it is guaranteed that the set of old ptevals of the
->>> batch have uffd-wp bit on all ptes or no ptes, therefore it is safe to derive
->>> the value of the local variable "arm_uffd_pte" from only the particular
->>> pteval passed to this function, but apply the result on all ptes of the batch.
->>>
->>> Use set_pte_at() in a loop to set the markers - we cannot use set_ptes()
->>> as that will increment the PFN, but we don't have any PFN to update here.
->>>
->>> The userspace visible effect of the bug is inaccuracy observed by workloads
->>> relying on uffd-wp regions to install their own pages.
->>>
->>> Fixes: 8798e255b5ec ("mm: rmap: support batched unmapping for file large folios")
->> Hmm this patch isn't upstream yet, so wouldn't this patch be better as a comment
->> replying to the series so it can be respun?
->>
->> You only do a fixes tag for either upstream things that obviously have to stay
->> in place or perhaps things in mm-stable immediately prior to merge window that
->> can't be adjusted.
+> Moreover, on Arm architecture, which supports contiguous PTEs, there is already
+> an optimization to clear the young flags for PTEs within a contiguous range.
+> However, this is not sufficient. We can extend this to perform batched operations
+> for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
 > 
-> I saw that the last comment on that series was more than a week back, so best
-> thought to just do a folded fix on top of it - and I had formed the impression
-> (from the conversations on list) that akpm prefers fixes over respins : )
+> Similar to folio_referenced_one(), we can also apply batched unmapping for large
+> file folios to optimize the performance of file folio reclamation. By supporting
+> batched checking of the young flags, flushing TLB entries, and unmapping, I can
+> observed a significant performance improvements in my performance tests for file
+> folios reclamation. Please check the performance data in the commit message of
+> each patch.
+> 
+> Run stress-ng and mm selftests, no issues were found.
 
-That series is still on my TODO list and I hope Andrew will keep it out 
-of stable until I get to it.
 
-Hope is all I got ;)
+Baolin, I'm intending to review this, but it might still take me a bit 
+until I get to it. (PTO/vacation and other fun)
 
 -- 
 Cheers
