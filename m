@@ -4,138 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1024BC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFB04C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:52:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70EE96B00A0; Fri, 16 Jan 2026 10:51:25 -0500 (EST)
+	id 207936B00A1; Fri, 16 Jan 2026 10:52:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E2E16B00A1; Fri, 16 Jan 2026 10:51:25 -0500 (EST)
+	id 1DBF16B00A3; Fri, 16 Jan 2026 10:52:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E5BF6B00A2; Fri, 16 Jan 2026 10:51:25 -0500 (EST)
+	id 115FE6B00A4; Fri, 16 Jan 2026 10:52:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E4146B00A0
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:51:25 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A438139519
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:51:25 +0000 (UTC)
-X-FDA: 84338266530.09.9D585B4
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F13E5140007
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:51:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=gEQzjbvW;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F27326B00A1
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:52:11 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F0741401C1
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:52:11 +0000 (UTC)
+X-FDA: 84338268462.26.65F9203
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9D1A380006
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:52:09 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pmc1Imf4;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768578683;
+	s=arc-20220608; t=1768578729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yxikc1y77Ls9+KOGiahB2sX17dgvn1C4IYfzeZk12RM=;
-	b=XpeBzZ1gZsuIViUai+mLEhYsQ1f8QAPEZEJ8I4R1MHCW3RbKDQkU1P0PfnsAPVMzgM6luH
-	Xi9dbGuAZQzqowyyEj6SrK8R5i+vTFnqH1KSI15tD+R+nsOPQp0IR5k1sUe3k/OqH3Y735
-	JZW5XdJdEjzq4vLumYkp5hVUWlHmCWI=
+	bh=DAXTH9K/9J54fVibpRzTXyiXBRatZjJKQ5vFQrc3G3M=;
+	b=L8bgtaaEzFP7Id4vdREyCglbU3RPKB7o56pGgsxF+MKQOSDrZsvPUK4oftm2LI+ZD+6Hke
+	7dVUtK0iY6/eJRfiwAxe5NgUxIt9+/H+xSzOur6yffRHG6tvVUorPcgK7hmIYSsSLbhD8p
+	4Q5yl6XdIh9nAGHGmKUc5xMfRk342Dg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=gEQzjbvW;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768578683; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pmc1Imf4;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768578729; a=rsa-sha256;
 	cv=none;
-	b=uSA12NrHnd9maQtC+t4lXNm2FdRhid7NhnEoAxjxi8DXtVKqOG/XDWXPfZsI79AlgrYsAl
-	3yUIgVJeqauxs5CaKtao8XyuAhWOea2wgxbHLY2RCzvI+jFEHsJrZdtIdw/WhnKDsfma9r
-	dJ/rEFkjabB7cu3N+tAb7BT9H9aFXcE=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4801c314c84so11577675e9.0
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:51:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768578681; x=1769183481; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yxikc1y77Ls9+KOGiahB2sX17dgvn1C4IYfzeZk12RM=;
-        b=gEQzjbvWxy8TXjsoblMtxaB1f+V93ll6YG2jox1JhiZYAQCnrVY5iTJWp2q/dp6bsJ
-         +8HkRsZmLMPko3uu+erxoGH93ydj3SvFx+/ibq0LTJSLLtgOVx1Ablokjza19mqgWh5j
-         IHq2zg4+vT17a7P5p8P953jUdfEpDVYxQQ5wV8ZPR7lVR0DTfslqGYas3+fhEoFRehwn
-         aupHaUpJC6XCw3XY+vMGCBc8xTq/NQhWgznlDjeguPxkKv0asrD1XjrZXySqNlwB/yV1
-         Wcg0V8QQyVIJh/U/VTXE8qQTGjJdsy6+OWpv+UV3Z5k8g2lqwPIVbUD2WTIGiVKeEAw0
-         vAFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768578681; x=1769183481;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yxikc1y77Ls9+KOGiahB2sX17dgvn1C4IYfzeZk12RM=;
-        b=RLcaR1g10vYRisOK/HvvJHdx/IoEjavUzgQFQN+wFY6bv3Uxymlhi3vk9+0j0mLtSV
-         XGYwPEqu0PGAnFukHSX2lev1YKKTgOOSlyF/FECvxjJVeAhlYL7mJo8ThfPwEt0ZKAEr
-         7GVUPUWR4i930zUT15nITMpZPlYO4i8K84834seuEUxttotJSEfq9CHssRhoZ7McPpFe
-         FbrP3bBai6jgkSB6hg+9Tsmm36ctsbLsOADd26YByzXW7dMT7wsA4Xsx3sqDGYTrt1eY
-         cOuBokLHKMzuAJ1UqEkLgTfpzAv/Pa/spRYwuoHyUzkeqlcx2FNGIrxw6/RxOc19/gVz
-         0P1w==
-X-Forwarded-Encrypted: i=1; AJvYcCVteq8XTrCb26fz8R1SotAALptXO5e4A7/KCKaGpKtvvExoxEY5KsRZy7jnuXonZieXzNnjQF+EIQ==@kvack.org
-X-Gm-Message-State: AOJu0YxXUigQIWGTkrXHPiN6FQ8OIpl7ZjKiJYM3ZMlNukT7w1J/n/2/
-	3JtZaWnfYBVWJj8b+/aWdXm8YWim31nXDbi718SjCNhS8iEXR44dT/Co21uUV2YjPMQ=
-X-Gm-Gg: AY/fxX6X3Di64J3HXQr1scXdTVKPmpslkwQxs0gyyRgaQraKneJRpLEem5IllFD5m6X
-	e5RSOS97a9kyevV7s1h8oCXf9gHEfp/gjIYh71K1u3l5adMy+3YViqxcVvT9+7MW1ZDLyKUUxNv
-	c5WZJ3afsHZGxa/svOMoblZCCfC8QL+uAu1qGqat/sbC/O3+jp9a8kBerls+eCwb1960CVoyjO9
-	mikDXb2Ri6GIgoab8rwJEoylaOfjakKRRw/muDwxlequPYuCa+7UtPh5OTY54IsaAzIQ8Kz1Hbj
-	35I6fLC9oKenQ4QwHffIiNOK6bwmLblCZSJfZHz3Q+vhiK4Qw+eoN5Jn6/guHaC07MdxrnytCWC
-	wbjhBtXTWUrH/01/aXMotoMTCUMCwaQ74wUdV0M7AboUBVLUGhbB/FwnpHUgXuu7JtiiTXBgR3A
-	852vFZva44WMH2pEQXW6H/emxH
-X-Received: by 2002:a05:600c:3b9e:b0:477:9a28:b09a with SMTP id 5b1f17b1804b1-4801e2a5861mr49417745e9.0.1768578681507;
-        Fri, 16 Jan 2026 07:51:21 -0800 (PST)
-Received: from localhost (109-81-19-111.rct.o2.cz. [109.81.19.111])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801fe65883sm18036695e9.15.2026.01.16.07.51.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 07:51:20 -0800 (PST)
-Date: Fri, 16 Jan 2026 16:51:19 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v16 1/3] lib: Introduce hierarchical per-cpu counters
-Message-ID: <aWped4MIi5i0Y7-R@tiehlicka>
-References: <20260114145915.49926-1-mathieu.desnoyers@efficios.com>
- <20260114145915.49926-2-mathieu.desnoyers@efficios.com>
- <aWfHTLDA8-Fja_gD@tiehlicka>
- <67bdfd38-1acf-4b90-9e34-ce752632ddb1@efficios.com>
+	b=WN0hAQOH0RzTslHdNNQNn418H4Rfu7ewLJKc83ejtIuxxmF51o9O56WGOFOWGeThqbyDP+
+	ydBhj0tAhhczdlt/9H0fFL3Ni0jMIAZ2z5VN7HFUzzyODJYrZZcVco7BX+a93LehJHBUZ6
+	Mnjm/WDTKqbHlwGwIXvfp+XTcVSn90E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF619601B4;
+	Fri, 16 Jan 2026 15:52:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B93C116C6;
+	Fri, 16 Jan 2026 15:52:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768578728;
+	bh=eCzWYaGZTUP+beL+9UPZ9ITMhEfxovlcFAIKTTrSvZ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pmc1Imf4gORlu96JpBp6zNbihTHFSqK7nquXUULOcnBi+H3oSuXZqDIf3EsJk4hyL
+	 kOFpLoL6gUi4aHMp4VLnv2zAxpYUGZqYaimnHf/1erVDCd2GxmyRmfCjcvCa4EMuYZ
+	 fcoEMRqn8xmDVuYcWKqfQH9qsCNd1BWS+4aG5Zd5n/znFnTdgFw9+VMngHWb29MwLT
+	 pRTELNA2C6yRXJLZt82Rm7FWCueuRkuCRW9TffkR8Uj3AwjpH+a3edVMZStEvMraYt
+	 PapD2N5KDNcl/9HFrDmQA2fVJPlxf6NATUNFQQUyGxgrGe4hD6tZdtUQDhQezOnHDj
+	 169915KiQrTdw==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4D3BCF4006A;
+	Fri, 16 Jan 2026 10:52:07 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Fri, 16 Jan 2026 10:52:07 -0500
+X-ME-Sender: <xms:p15qaYZ6tvRD3Pfui3Ky--bjoitvSOcIGky0pUw3ZhwJyHzu3EPhtQ>
+    <xme:p15qaeytjWmVMUj8Qe-ArKb7jDI_O8UMrP1KgCSTWQeYok4isam0hRYQxJqpVTNq8
+    saAcxudwFMSKdv7DI1NYivLj5YqS0fbwsFXfUHhbgfMIcF2t-bugMMY>
+X-ME-Received: <xmr:p15qacUb1mXWq7b-vGdq7OksmrrxUdHq0FtAtTTvto5arJJ-9u1UYBBTAyip_w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdelfeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnheptdetfeelteefteekfefggfffteelvedulefgveduvdeljeejjedtfeegfedvkeeg
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehmuhgthhhunhdrshhonhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepuggrvh
+    hiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurd
+    horhhgpdhrtghpthhtohepuhhsrghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrg
+    guohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
+X-ME-Proxy: <xmx:p15qaaYYJJyRdPZU62RC-HDsWBgPudLkz1GCFCcdQbE7rUjNt0kgmQ>
+    <xmx:p15qafONNJxOPFbr6xfWLJDLqO2KJpF-wy3sY2b45eYc9DXuhEK9uw>
+    <xmx:p15qaWvsUe49MsUTq7CRnHmOketxvTSDNOoWx-bLzP8hgRNABo9_lQ>
+    <xmx:p15qad2VD5hVFV_XwQ2E2lmWnCEhB590c3re0hKwJg_iONlxlDvw0Q>
+    <xmx:p15qacW3Z2CMVXDDByGjRzPdsGxPU--NWxnLfDw4Vj46pIrUoXr12QZS>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 16 Jan 2026 10:52:06 -0500 (EST)
+Date: Fri, 16 Jan 2026 15:52:05 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>, 
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCHv3 10/15] mm/hugetlb: Remove fake head pages
+Message-ID: <aWpTopypeRTOIVGR@thinkstation>
+References: <20260115144604.822702-1-kas@kernel.org>
+ <20260115144604.822702-11-kas@kernel.org>
+ <30ae1623-63f9-4729-9c19-9b0a9a0ae9f1@kernel.org>
+ <aWkhbWR-3fWjeTaE@thinkstation>
+ <53980726-C7F0-4648-99E9-89E10645F2E7@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67bdfd38-1acf-4b90-9e34-ce752632ddb1@efficios.com>
-X-Stat-Signature: ed8d3b97ggtiiaar8oytqpcbu3roejrn
-X-Rspamd-Queue-Id: F13E5140007
+In-Reply-To: <53980726-C7F0-4648-99E9-89E10645F2E7@linux.dev>
+X-Stat-Signature: t8t6p9ntsdf8wxth6prds9dxedkwizjd
+X-Rspamd-Queue-Id: 9D1A380006
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1768578682-568636
-X-HE-Meta: U2FsdGVkX1+5Cjvk18kIgu672+RSi0maW/6fTZEp2Q/Gw+2S2BOP4A3Jja+4D9bbSRj1XoZ3IjEndqHkAyA7FEi8DPGEAOxQLMYxo0FPmm17cQ0P2z+rqqcVPQn0fYuO5+3yXfY9kut4HkCxZoSECZkWXWzQymhIW/AmRWewdsnbKaScef+Xu5rz4dgrYNJE2UGpugjvMUm/vA1qqYFURU1X6liAHQpHiUVUu8zhFYNBGjBwKznUGj8nVo+agFg7n705DNlO64f1OryrWyv3IbTOB94f2H5I7V7fSseVEnwnfxae58ar/ajBKcIE33oKqcoAkBUAfd4K10eKkf8m3c0rPT6pXQVrwMAhwK+VUkn7btr8nVeOHk8u0/87/KYj11pZoUNAIYhf18tVabHbgfwwKwCzbarDh4+BSg7ib32EHwYEKDPRlIfHYU2TiyFyoV7uEYvCBjMYR6luScTK/jfcOLFkuvv9kBouVv/Z34bn/bKWg1Y2nLpKtSlQsuyGtuysQThNyh+wF9czFotx3zjyIDFoPai7EgaGWsWix4z3ioFbJuamfBEkFFV9e0Ei33pvzTZu6tluodg/X/FLKzSnm4eV+CoIQBmjSkyvz9/23KHdNtR7EyBzJLjUdwvM+m+0sC3qN1WcG1A0zfI25KVJTbqJ1G6F4+HvrJmnj9r+ABXxq/RBIvR6zmRQszTUTZSL374Y5O3/jd2nWcZYS4uVQb3XNXqc75XeQQGDaV4FOXP5DLVs5XAKQKykf34s5Wz+7YTEyfHi375aCQwi9y67PcCIhkvxKuNJNg+jLzuZZk2eIolleKIKOkL+11ZbV2wMKR2V5tOcrmv7dedlPmip6Q5ta8S3HLrfqD9PZqlXKMOwKpThsyfEKksdjZqdRK+LWa1XOqGm4DdqEZyfnJ3i593FG58R75NUuoQh6Y+e1RposcRyfgI2hUsyf75zBnM6bG5WTtihzbAWEYm
- sD+nnn9K
- U88Z9V6WzuYVVioXfmSxeXts+Pv8j6venMWVx5WaNk4N1BO6CTeqRtd9abVdNdzROn3BRzb1j5S2LyPlb3q/dAqddEg2vWkmtxymHEO4WJn13Q+T+ZsrLRKzjHrKbPzBX+MYlibBJzCm7XDsJrL4qDUe4zXarY11AG/4hLbq5u2nw0FMO+vUPAHoc9On7UK4y0US5KPk2H3EXiJiqoc04eHexUoIEaZ8Xi7A2W+FBgz5YUeKR1ZZ0+KUm8uTn7sIKWHD9MVXHmrmDczQGDEIbEmlLL65Nc4Bi4GiNYAJ2mUg+Hr9F0/bdKhPEHWTdHjkPBMfztePrLs5sf8f+fLjFqlHos5rbw7hpVJYpjVsNs7hykyxL+vSdvYGs8VA8WQTfkVtTL9bTXMARsVkl/+zkIkQnuDtewIy9+0LQiBdrZhMzkhM=
+X-HE-Tag: 1768578729-291068
+X-HE-Meta: U2FsdGVkX1+xA5ehs1RXMUJOAXrNXSVrLPJnwQzV1u96+sK728dJ+xstDRHCJwXHs1r2Zrd51sK8sW9C9rvGSvZOCTlBidtBMn+V27FKIUh023wha5336UMj+tUuisTG606Z55zHBwB5+JO14r8gESWhTOwpgCzYmGmOuzVA32OfbEgS0QsC1aWgIAUEzeAQ+kqsR3Qc1K1iJxL1WBvFOc9z53JPl43NxwJYW/HGe9F5LzVlJ9d4EZ8407j1UsszdFoPYjs2hxf7C49NguyfREA50E6S9cPLuhNoTAW0L7CMqOYEarZXEadLtlTHYlkdBNJeevwpot4e5035GcP+Ihmkez6/C70UQjXph3bzzDSFsqCtCvLZCUCHDInpZDTZFIsw7sjtxGSrTpN8D+ZlWcS/I2hQJf7TyG9vbLaFp7v8N2vY++Vnb24uPpPoIrXLVoFWddI7Jh6YNwObRYDATrBawI21pa8ZFS8q3sCaQQic4vPihFOp6Lks4mQws2Wes5lkLKRa7JiNetEuZQUuFtO6g5pQfI5noyrj379iKVNfNc9m+aSxNSkEXDMS8Qml9fS1OfeOzkahlWh6QPEp7HYVg8uurcSLqLl18pokisLCgVdmYZkeZlMHrTXiH5CXBGxmEbad/N6cfPMisEFsrltNroATraVIAFE+74WsI9mlTdQ3XSRdfqabGy/E+MlVki/PSLcG4bxHuavsAgSiAjLURX5BJTA4vdrWS3fb2Z9Msl7fMNG1PJCT+syrgJdjHx/VRadtIou//qT3Cdf+BbokDn5kmvwTQAvK5XbgC79+UVul7wp8VRftMWvFgNHttsMtknM5TfFuoqzFtA6+Wwize6uV03yOPxR6ENN1YOplhbrQcSYTEOEliR+2qIxZv/5P/MeoGwd1PcOXJFQBOKBLU3FBFa+loPBc/sAb+Uqu0xmvIHnMochST8ly1F9xxjrVHITq2lTs8ZQ8ui5
+ 6Fa79yVv
+ DGxM7yTvSHmXpT3cbazt6yY4iwNhCfDwWXS2YGi18eCpaXl8pz+Hi/6wtbv5QO6Ch+NMkDR8aRX/hRu4sgHcSjCDA9RofFGUwsIvPeE7y6D7FjFUx37EQyoSY578KVFdoskzL7WCW1BUkszIHYqWDbf8x2c4Rv0l7nJg+EnuT7R9eLsReBCtc41M+3cncgFJI3qKbLLqLUKJDcpdyVc6UJHfgbhtycYPXp8EFDiJOauEpR7HybRX2fvOgcChatvFELr4LbG7t0j+LcSgekDIHvMse1wdMd+IHAbgZg9sPl3QRJmo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,81 +135,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 14-01-26 14:19:38, Mathieu Desnoyers wrote:
-> On 2026-01-14 11:41, Michal Hocko wrote:
+On Fri, Jan 16, 2026 at 10:38:02AM +0800, Muchun Song wrote:
+> 
+> 
+> > On Jan 16, 2026, at 01:23, Kiryl Shutsemau <kas@kernel.org> wrote:
 > > 
-> > One thing you should probably mention here is the memory consumption of
-> > the structure.
-> Good point.
+> > On Thu, Jan 15, 2026 at 05:49:43PM +0100, David Hildenbrand (Red Hat) wrote:
+> >> On 1/15/26 15:45, Kiryl Shutsemau wrote:
+> >>> HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
+> >>> vmemmap pages for huge pages and remapping the freed range to a single
+> >>> page containing the struct page metadata.
+> >>> 
+> >>> With the new mask-based compound_info encoding (for power-of-2 struct
+> >>> page sizes), all tail pages of the same order are now identical
+> >>> regardless of which compound page they belong to. This means the tail
+> >>> pages can be truly shared without fake heads.
+> >>> 
+> >>> Allocate a single page of initialized tail struct pages per NUMA node
+> >>> per order in the vmemmap_tails[] array in pglist_data. All huge pages
+> >>> of that order on the node share this tail page, mapped read-only into
+> >>> their vmemmap. The head page remains unique per huge page.
+> >>> 
+> >>> This eliminates fake heads while maintaining the same memory savings,
+> >>> and simplifies compound_head() by removing fake head detection.
+> >>> 
+> >>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> >>> ---
+> >>>  include/linux/mmzone.h | 16 ++++++++++++++-
+> >>>  mm/hugetlb_vmemmap.c   | 44 ++++++++++++++++++++++++++++++++++++++++--
+> >>>  mm/sparse-vmemmap.c    | 44 ++++++++++++++++++++++++++++++++++--------
+> >>>  3 files changed, 93 insertions(+), 11 deletions(-)
+> >>> 
+> >>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> >>> index 322ed4c42cfc..2ee3eb610291 100644
+> >>> --- a/include/linux/mmzone.h
+> >>> +++ b/include/linux/mmzone.h
+> >>> @@ -82,7 +82,11 @@
+> >>>   * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+> >>>   * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+> >>>   */
+> >>> -#define MAX_FOLIO_ORDER get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
+> >>> +#ifdef CONFIG_64BIT
+> >>> +#define MAX_FOLIO_ORDER (34 - PAGE_SHIFT)
+> >>> +#else
+> >>> +#define MAX_FOLIO_ORDER (30 - PAGE_SHIFT)
+> >>> +#endif
+> >> 
+> >> Where do these magic values stem from, and how do they related to the
+> >> comment above that clearly spells out 16G vs. 1G ?
+> > 
+> > This doesn't change the resulting value: 1UL << 34 is 16GiB, 1UL << 30
+> > is 1G. Subtract PAGE_SHIFT to get the order.
+> > 
+> > The change allows the value to be used to define NR_VMEMMAP_TAILS which
+> > is used specify size of vmemmap_tails array.
 > 
-> The most important parts are the per-cpu counters and the tree items
-> which propagate the carry.
-> 
-> In the proposed implementation, the per-cpu counters are allocated
-> within per-cpu data structures, so they end up using:
-> 
->   nr_possible_cpus * sizeof(unsigned long)
-> 
-> In addition, the tree items are appended at the end of the mm_struct.
-> The size of those items is defined by the per_nr_cpu_order_config
-> table "nr_items" field.
-> 
-> Each item is aligned on cacheline size (typically 64 bytes) to minimize
-> false sharing.
-> 
-> Here is the footprint for a few nr_cpus on a 64-bit arch:
-> 
-> nr_cpus     percpu counters (bytes)     nr_items       items size (bytes)     total (bytes)
->   2                 16                     1                 64                    80
->   4                 32                     3                192                   224
->   8                 64                     7                448                   512
->  64                 512                   21               1344                  1856
-> 128                1024                   21               1344                  2368
-> 256                2048                   37               2368                  4416
-> 512                4096                   73               4672                  8768
+> How about allocate ->vmemmap_tails array dynamically? If sizeof of struct
+> page is not power of two, then we could optimize away this array. Besides,
+> the original MAX_FOLIO_ORDER could work as well.
 
-I assume this is nr_possible_cpus not NR_CPUS, right?
+This is tricky.
 
-> There are of course various trade offs we can make here. We can:
-> 
-> * Increase the n-arity of the intermediate items to shrink the nr_items
->   required for a given nr_cpus. This will increase contention of carry
->   propagation across more cores.
-> 
-> * Remove cacheline alignment of intermediate tree items. This will
->   shrink the memory needed for tree items, but will increase false
->   sharing.
-> 
-> * Represent intermediate tree items on a byte rather than long.
->   This further reduces the memory required for intermediate tree
->   items, but further increases false sharing.
-> 
-> * Represent per-cpu counters on bytes rather than long. This makes
->   the "sum" operation trickier, because it needs to iterate on the
->   intermediate carry propagation nodes as well and synchronize with
->   ongoing "tree add" operations. It further reduces memory use.
-> 
-> * Implement a custom strided allocator for intermediate items carry
->   propagation bytes. This shares cachelines across different tree
->   instances, keeping good locality. This ensures that all accesses
->   from a given location in the machine topology touch the same
->   cacheline for the various tree instances. This adds complexity,
->   but provides compactness as well as minimal false-sharing.
-> 
-> Compared to this, the upstream percpu counters use a 32-bit integer per-cpu
-> (4 bytes), and accumulate within a 64-bit global value.
-> 
-> So yes, there is an extra memory footprint added by the current hpcc
-> implementation, but if it's an issue we have various options to consider
-> to reduce its footprint.
-> 
-> Is it OK if I add this discussion to the commit message, or should it
-> be also added into the high level design doc within
-> Documentation/core-api/percpu-counter-tree.rst ?
+We need vmemmap_tails array to be around early, in
+hugetlb_vmemmap_init_early(). By the time, we don't have slab
+functional yet.
 
-I would mention them in both changelog and the documentation.
+I think getting the array compile-time is the best shot.
 
 -- 
-Michal Hocko
-SUSE Labs
+  Kiryl Shutsemau / Kirill A. Shutemov
 
