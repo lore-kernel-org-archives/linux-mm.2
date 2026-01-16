@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 057DFC982C7
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:41:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD596C982C7
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:41:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AD576B00B5; Fri, 16 Jan 2026 09:41:35 -0500 (EST)
+	id 3DB406B00B6; Fri, 16 Jan 2026 09:41:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67BFD6B00B6; Fri, 16 Jan 2026 09:41:35 -0500 (EST)
+	id 389AC6B00B8; Fri, 16 Jan 2026 09:41:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 554E06B00B7; Fri, 16 Jan 2026 09:41:35 -0500 (EST)
+	id 2B7A56B00B9; Fri, 16 Jan 2026 09:41:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 439466B00B5
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:41:35 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD125138F2D
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:41:34 +0000 (UTC)
-X-FDA: 84338090508.10.B41D072
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 18EE46B00B6
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:41:41 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B89CF1A0159
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:41:40 +0000 (UTC)
+X-FDA: 84338090760.19.C041F10
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6FF99100014
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:41:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=k9V8NlvM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KtR4ezr7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=k9V8NlvM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KtR4ezr7;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 72F4D140002
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:41:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Umj/qy2M";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MJUYj2s8;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Umj/qy2M";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MJUYj2s8;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768574492;
+	s=arc-20220608; t=1768574498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MkNKfm5uHwOYSqEkkRpaI5Z97WwBojUZ970Bd/6ZMy4=;
-	b=Ijx+6HhmwezZYDV+knDO97ZJb44n/wzKkOxAXxTgVwmAVZIW40uO6lIW9Kk46A51iH+1vO
-	BS708QM7b5Q08djg0liVRzT5Mvm85juoS6CQlmApWGWXhzRqZ2btT+woiDhvl/sKK3sG9B
-	IYtuVxiIRFIQ5EC776B+wPUbAB4xm7o=
+	bh=QYPFN/yW/JKvudjCCeDF8Mzn+JOB4FaaxcACY1SSQAU=;
+	b=v1zwT1ILb6GaMM9NDgBhhDpBwEN0qgFHUYWakodp5p4QKMGasuC661niAMfVdalPZCHKQe
+	Hc6ezJOwP3F3QCQ+Duia/tXBr8euiYf4lPaNlrUdXH1Gxp0UJw26o7uKF7huGeLAtu554o
+	+mCSM77R3EAkm3VM0F80topae44rI34=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=k9V8NlvM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KtR4ezr7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=k9V8NlvM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KtR4ezr7;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Umj/qy2M";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MJUYj2s8;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Umj/qy2M";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MJUYj2s8;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768574492; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768574498; a=rsa-sha256;
 	cv=none;
-	b=0x5FnqLOeVjbUPnSn0fwER9EXFD2tEQ33IdekgZsGfihqqVhSWi+uTS3NV4o40bdHtu4pR
-	3goBXLUsJU6rmUvYsVJvf85V/JiczAru87ZOYKNdfXBiGgctkN0EtaaXF1jQJGZwiqoPpb
-	x9Pxf+Pt+VRmeUymHI65SN+s89Ss2VQ=
+	b=Ecmpv/NGeIsS1SELNKOJEE2kzs256QU31N7hKrlpm/BZw2JRVpYf55OSsMB++mbhGh/djG
+	9G+CLexTPMz+Vpzqe0Elp6NV57Twrt7c0ds57pFOoov/moHUCyv5YNgyfou4rRTDrlpTkK
+	lFcWplu5Hnf0/88hiNQECnt8ROZZ2YM=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6908E337D0;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 822D6337D7;
 	Fri, 16 Jan 2026 14:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1768574438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MkNKfm5uHwOYSqEkkRpaI5Z97WwBojUZ970Bd/6ZMy4=;
-	b=k9V8NlvMwmkOKtd99HUQtxJnd1GfExIKg2jpJ3UIf3KlOqkLIh6lyGhYiRrfwbrxhKWlOt
-	Zi6tb5WJoMbx4Pe7Xwx4ddFuS8+UKiUdzhvCZw4EPhiVi2+UfvRHGzCoeTy4kUT6nHJEsy
-	vquAdE5YysNJEG7ilTl3YmfwRGJ92r8=
+	bh=QYPFN/yW/JKvudjCCeDF8Mzn+JOB4FaaxcACY1SSQAU=;
+	b=Umj/qy2MtjJqJS5BFPaleWC/Vag7s20UXJBVp0xP2nbaR/cJXU1fhw8cG7NpztaSObd3nd
+	vLa9WafVlZNBmG+XKu/iPnlRY94mxK/J89LQvzV7juxZrE7pbZ8dn0StDtfjiGeljo0I2V
+	1g6rFa2I2P5bWxyYFssckucwK6dnJj0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1768574438;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MkNKfm5uHwOYSqEkkRpaI5Z97WwBojUZ970Bd/6ZMy4=;
-	b=KtR4ezr7PlgdoC95hBhP/wvIOkgBrL5saiTWjeveq/fK8DVDye6Cr3lwH/fpzXyJ9cqWyZ
-	YDDtB1NIiW4oZqCA==
+	bh=QYPFN/yW/JKvudjCCeDF8Mzn+JOB4FaaxcACY1SSQAU=;
+	b=MJUYj2s82y1Z/ZXm7D/b+gwMsPyZV2aZmisTd7uY3TLeP/VOPRqk2S3fJG92/Fl6I7CtIb
+	5PpeMWqHPVlaScDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1768574438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MkNKfm5uHwOYSqEkkRpaI5Z97WwBojUZ970Bd/6ZMy4=;
-	b=k9V8NlvMwmkOKtd99HUQtxJnd1GfExIKg2jpJ3UIf3KlOqkLIh6lyGhYiRrfwbrxhKWlOt
-	Zi6tb5WJoMbx4Pe7Xwx4ddFuS8+UKiUdzhvCZw4EPhiVi2+UfvRHGzCoeTy4kUT6nHJEsy
-	vquAdE5YysNJEG7ilTl3YmfwRGJ92r8=
+	bh=QYPFN/yW/JKvudjCCeDF8Mzn+JOB4FaaxcACY1SSQAU=;
+	b=Umj/qy2MtjJqJS5BFPaleWC/Vag7s20UXJBVp0xP2nbaR/cJXU1fhw8cG7NpztaSObd3nd
+	vLa9WafVlZNBmG+XKu/iPnlRY94mxK/J89LQvzV7juxZrE7pbZ8dn0StDtfjiGeljo0I2V
+	1g6rFa2I2P5bWxyYFssckucwK6dnJj0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1768574438;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MkNKfm5uHwOYSqEkkRpaI5Z97WwBojUZ970Bd/6ZMy4=;
-	b=KtR4ezr7PlgdoC95hBhP/wvIOkgBrL5saiTWjeveq/fK8DVDye6Cr3lwH/fpzXyJ9cqWyZ
-	YDDtB1NIiW4oZqCA==
+	bh=QYPFN/yW/JKvudjCCeDF8Mzn+JOB4FaaxcACY1SSQAU=;
+	b=MJUYj2s82y1Z/ZXm7D/b+gwMsPyZV2aZmisTd7uY3TLeP/VOPRqk2S3fJG92/Fl6I7CtIb
+	5PpeMWqHPVlaScDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4DE2F3EA63;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 66D243EA65;
 	Fri, 16 Jan 2026 14:40:38 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oFrAEuZNamnydgAAD6G6ig
+	id WHXYGOZNamnydgAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:38 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 16 Jan 2026 15:40:36 +0100
-Subject: [PATCH v3 16/21] slab: remove unused PREEMPT_RT specific macros
+Date: Fri, 16 Jan 2026 15:40:37 +0100
+Subject: [PATCH v3 17/21] slab: refill sheaves from all nodes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-sheaves-for-all-v3-16-5595cb000772@suse.cz>
+Message-Id: <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
 References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
 In-Reply-To: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
@@ -132,12 +132,12 @@ X-Mailer: b4 0.14.3
 X-Rspamd-Action: no action
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6FF99100014
-X-Stat-Signature: 7xekirrqrhzx4fnm8wdhe5ken34s1k8q
-X-HE-Tag: 1768574492-91690
-X-HE-Meta: U2FsdGVkX1/eQcHow4ah/nurww7RJm01IjvrsDYqSyGFD7Bp4dhbW63PiWx4r8wsUFn3XcKJR+pE+jdUdiyBkCvLMK7QBOTz/Tmw/iGsc1iOIpPEyi5NCqowohTMcQ+LjzVM47UxFtzQF+SZ4J/jPKfMSlXZkrpL2CgJn6esHpoSq3odS7x8X2oCF3SvmebmcO4iwpdG9FFaSVU77L95ThNj777es1NOB59a6UrGGgUhisbgKhEwpri/pG73T3Cxk1GFAvB1oGZicStI7bRTkEMlWi4Vp2UBezoJ3DlYg8x3RdkjXWo/o/xFpb8lBbcrRruwxOEPejMAPMqKy9xF/9cIXr3qxQL360CCIZyWHuNTdzLPiOlimtQ0E2iPRWZ5B5NDp3F6etF8ikzJqurpsi2twz+ZGZZYDX3PptCX93433cfKTjO2PrzkqC34deDZWxZfIrgCJv65Nh1GeaupXdKAMdowkhNPgJnu18x6L9LTtmztEZ5AD/zbLDFj8rVRw5+VJx5lTQMFp5V+8gQvH/yuDzvaynYBY9Bgf6LfoJLVBd3/c477zFAZDBhqmq1P5qa09vupEb297wu8k4x8vTg9sHb1m8nY/4gVZyd082E6UjWDEl4WzCDSctpwIHKXvjElOghsBm5vffIVuQ/5Ec9zRcAisAS5uDsuTmmXEDGetgpq3OOGwjN8m0Od5FgCIeK+utZP1YpqmSXpv8VLdEjrvJ822QC4r70jGfbqJpdcJptA7oMB3ASXC7f+73o8QtrmmHFFJU2GlgT9Ugw6tEWx89S1ViU2xVqTOCDjnsE1VhRGFXXDjqQfAUGWu4vni72gbDSkAE2+dvU5mL71y9fXnvUkCPgv9kAybELMl+B7nwn1o41F3X8LuPyWZHud9rmlD2Vh0y+02LEJBsfEuFrN7bNJZboTm0RErMbpmzya+xz9gxlNHVCwqURenZTE+M7opw6ABksZEkiiA7C
- Ud9MZxNv
- /pWVN2tkKxsR7xER3SKnjtx/Hq/PuTHXAr44rZKiO5kshbVViHz6D7QudoQk65zX8tTLy0SBTX6EN/Xhe8BU/HNzOGIwY8m+zlmxDQ+NFVQmyPFhd1a407GC5jGPJti3d9Kn7kf/lpl4lHJ356RrcsFho8o0sDnVNKXnucmtnlSG4T0JaZ0otFe4r3HZsdPx9w+OTJv8vaTr9kqBu6EgFv+T7bZ11JtzjztPC3P55iiPVsJ18Jo2Yu4pIWX56mq9LVzRW2BQ7UlUeIC50OhKM3FmKkQ==
+X-Rspamd-Queue-Id: 72F4D140002
+X-Stat-Signature: 4n9omephgtcbf91m4r7wzgmkjjwsahjw
+X-HE-Tag: 1768574498-520997
+X-HE-Meta: U2FsdGVkX1/K92dc5g6W3xh4nQj/tVoN6b5CPE4WvK0/ZL3B5XEN2b6Uir3C1t08PUAkl+uOa6xLAC3juKEnItqiaPU+plSWS73eFdIe8PENwcezGnMql3W21Oz6wk+HH2Wu761BNda6MKvvZ5MA+hVNhVFbBKgGT9dY+WAQcQL1OXeWsjo5KrgUCYyjsBfLZE/+HT4oGX+Wd46elQhFRilfnPRrX05JNSR31fOlr53pQwkWKHFqmIq47yT/dK1+AFrqyTeiJUPRkiasvmkWfqWbhII8tJdng/iKDe5r+GHTB1Sh06TSecsBLhPwiZ3+pd2I/9b3k9TjcLEDmG9rg0OWQQ0ZFaQ9Dzwdhmj/l2Qjrq9X6i91f0C8aRu66QrTXEuHMxxq65uzyUhpBetvvHgCclqmPJ00E5rmmEJ0ck0kYS+rIA9qPZBHo58VOjfh8Cba+QSz8ZY/sh1cI6QPWSHCWDZKI0JBm9OldroCuO7rCDBqST6IKLZSSyD09Nxl1xGhoSV9YWn6ZQkjzl72K/Zwd+FFaQomLxuCbS/Uq9UWLcAwS2GECGsDM9R0XIoXTwO6K5Mq9e8PCMZjWpHddRSZQkHIB+L2NuX0pWA3NZML4zJUnxqxGMbmvVVFbgNj9+P1wNiAtEGihF7VhzkqpvV0iwsz467XxT/+eK2HMo7jiqC9WGkf7QytMXwtNlQFM9HpAxFCS7YiRgxoN0UZrax41AM6E9XuTfefvZBRBpB8CE0JOO371REJWkd6kq6sjjl7rM6HY9iAfMsaM3FLL/BwcetAR2jKO4YG1RuzYQBVanaaDdAlK0Zx6z2bYZcETGz+211+PDfN6+KN4iBLLaX4H/cMAIPfZqRIRKJS13CuDl767Nn2+C68U/RySB2xNcGArG5ZZyJ8JRdmOI1IDPRfWP0HZRMTWZBNer4Ddb0gZoWjz4i2tAgRnAbkFIKrt5qGOg2JwR6kFB7r7xb
+ XBZHKwug
+ L4muPYvqIIs74VizkjZ07RpR46laNX2O8O+xowx8d74u7LJNoyBs5ghcFyJzp2cCkMVwf37hziG+w0rmqcz7TfFErW6JhbgXeOop+afH08Iavc36iJmSbx1UXuJ6EhSLnErXkbvftFW/WW1bGmKjJ8mVeITP7vgOQuKpbtnQCF+QtwWrE/ymGNmc0CsO6jMD/siHzLHHFSYYmARZwBRWNE93ddBjzMvNybuKvPZCLuUZcD0ubmEEy668s7oEtZDJRtUCx1adhT8cYy6gQGasoUbSlBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,60 +146,251 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The macros slub_get_cpu_ptr()/slub_put_cpu_ptr() are now unused, remove
-them. USE_LOCKLESS_FAST_PATH() has lost its true meaning with the code
-being removed. The only remaining usage is in fact testing whether we
-can assert irqs disabled, because spin_lock_irqsave() only does that on
-!RT. Test for CONFIG_PREEMPT_RT instead.
+__refill_objects() currently only attempts to get partial slabs from the
+local node and then allocates new slab(s). Expand it to trying also
+other nodes while observing the remote node defrag ratio, similarly to
+get_any_partial().
+
+This will prevent allocating new slabs on a node while other nodes have
+many free slabs. It does mean sheaves will contain non-local objects in
+that case. Allocations that care about specific node will still be
+served appropriately, but might get a slowpath allocation.
+
+Like get_any_partial() we do observe cpuset_zone_allowed(), although we
+might be refilling a sheaf that will be then used from a different
+allocation context.
+
+We can also use the resulting refill_objects() in
+__kmem_cache_alloc_bulk() for non-debug caches. This means
+kmem_cache_alloc_bulk() will get better performance when sheaves are
+exhausted. kmem_cache_alloc_bulk() cannot indicate a preferred node so
+it's compatible with sheaves refill in preferring the local node.
+Its users also have gfp flags that allow spinning, so document that
+as a requirement.
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 24 +-----------------------
- 1 file changed, 1 insertion(+), 23 deletions(-)
+ mm/slub.c | 137 ++++++++++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 106 insertions(+), 31 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index bb72cfa2d7ec..d52de6e3c2d5 100644
+index d52de6e3c2d5..2c522d2bf547 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -201,28 +201,6 @@ enum slab_flags {
- 	SL_pfmemalloc = PG_active,	/* Historical reasons for this bit */
- };
+@@ -2518,8 +2518,8 @@ static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
+ }
  
--/*
-- * We could simply use migrate_disable()/enable() but as long as it's a
-- * function call even on !PREEMPT_RT, use inline preempt_disable() there.
-- */
--#ifndef CONFIG_PREEMPT_RT
--#define slub_get_cpu_ptr(var)		get_cpu_ptr(var)
--#define slub_put_cpu_ptr(var)		put_cpu_ptr(var)
--#define USE_LOCKLESS_FAST_PATH()	(true)
--#else
--#define slub_get_cpu_ptr(var)		\
--({					\
--	migrate_disable();		\
--	this_cpu_ptr(var);		\
--})
--#define slub_put_cpu_ptr(var)		\
--do {					\
--	(void)(var);			\
--	migrate_enable();		\
--} while (0)
--#define USE_LOCKLESS_FAST_PATH()	(false)
--#endif
--
- #ifndef CONFIG_SLUB_TINY
- #define __fastpath_inline __always_inline
- #else
-@@ -719,7 +697,7 @@ static inline bool __slab_update_freelist(struct kmem_cache *s, struct slab *sla
+ static unsigned int
+-__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+-		 unsigned int max);
++refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++	       unsigned int max);
+ 
+ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+ 			 gfp_t gfp)
+@@ -2530,8 +2530,8 @@ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+ 	if (!to_fill)
+ 		return 0;
+ 
+-	filled = __refill_objects(s, &sheaf->objects[sheaf->size], gfp,
+-			to_fill, to_fill);
++	filled = refill_objects(s, &sheaf->objects[sheaf->size], gfp, to_fill,
++				to_fill);
+ 
+ 	sheaf->size += filled;
+ 
+@@ -6522,29 +6522,22 @@ void kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
+ EXPORT_SYMBOL(kmem_cache_free_bulk);
+ 
+ static unsigned int
+-__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+-		 unsigned int max)
++__refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++		      unsigned int max, struct kmem_cache_node *n)
  {
- 	bool ret;
+ 	struct slab *slab, *slab2;
+ 	struct partial_context pc;
+ 	unsigned int refilled = 0;
+ 	unsigned long flags;
+ 	void *object;
+-	int node;
  
--	if (USE_LOCKLESS_FAST_PATH())
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
- 		lockdep_assert_irqs_disabled();
+ 	pc.flags = gfp;
+ 	pc.min_objects = min;
+ 	pc.max_objects = max;
  
- 	if (s->flags & __CMPXCHG_DOUBLE)
+-	node = numa_mem_id();
+-
+-	if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
++	if (!get_partial_node_bulk(s, n, &pc))
+ 		return 0;
+ 
+-	/* TODO: consider also other nodes? */
+-	if (!get_partial_node_bulk(s, get_node(s, node), &pc))
+-		goto new_slab;
+-
+ 	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+ 
+ 		list_del(&slab->slab_list);
+@@ -6582,8 +6575,6 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+ 	}
+ 
+ 	if (unlikely(!list_empty(&pc.slabs))) {
+-		struct kmem_cache_node *n = get_node(s, node);
+-
+ 		spin_lock_irqsave(&n->list_lock, flags);
+ 
+ 		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+@@ -6605,13 +6596,92 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+ 		}
+ 	}
+ 
++	return refilled;
++}
+ 
+-	if (likely(refilled >= min))
+-		goto out;
++#ifdef CONFIG_NUMA
++static unsigned int
++__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++		     unsigned int max, int local_node)
++{
++	struct zonelist *zonelist;
++	struct zoneref *z;
++	struct zone *zone;
++	enum zone_type highest_zoneidx = gfp_zone(gfp);
++	unsigned int cpuset_mems_cookie;
++	unsigned int refilled = 0;
++
++	/* see get_any_partial() for the defrag ratio description */
++	if (!s->remote_node_defrag_ratio ||
++			get_cycles() % 1024 > s->remote_node_defrag_ratio)
++		return 0;
++
++	do {
++		cpuset_mems_cookie = read_mems_allowed_begin();
++		zonelist = node_zonelist(mempolicy_slab_node(), gfp);
++		for_each_zone_zonelist(zone, z, zonelist, highest_zoneidx) {
++			struct kmem_cache_node *n;
++			unsigned int r;
++
++			n = get_node(s, zone_to_nid(zone));
++
++			if (!n || !cpuset_zone_allowed(zone, gfp) ||
++					n->nr_partial <= s->min_partial)
++				continue;
++
++			r = __refill_objects_node(s, p, gfp, min, max, n);
++			refilled += r;
++
++			if (r >= min) {
++				/*
++				 * Don't check read_mems_allowed_retry() here -
++				 * if mems_allowed was updated in parallel, that
++				 * was a harmless race between allocation and
++				 * the cpuset update
++				 */
++				return refilled;
++			}
++			p += r;
++			min -= r;
++			max -= r;
++		}
++	} while (read_mems_allowed_retry(cpuset_mems_cookie));
++
++	return refilled;
++}
++#else
++static inline unsigned int
++__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++		     unsigned int max, int local_node)
++{
++	return 0;
++}
++#endif
++
++static unsigned int
++refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++	       unsigned int max)
++{
++	int local_node = numa_mem_id();
++	unsigned int refilled;
++	struct slab *slab;
++
++	if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
++		return 0;
++
++	refilled = __refill_objects_node(s, p, gfp, min, max,
++					 get_node(s, local_node));
++	if (refilled >= min)
++		return refilled;
++
++	refilled += __refill_objects_any(s, p + refilled, gfp, min - refilled,
++					 max - refilled, local_node);
++	if (refilled >= min)
++		return refilled;
+ 
+ new_slab:
+ 
+-	slab = new_slab(s, pc.flags, node);
++	slab = new_slab(s, gfp, local_node);
+ 	if (!slab)
+ 		goto out;
+ 
+@@ -6626,8 +6696,8 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+ 
+ 	if (refilled < min)
+ 		goto new_slab;
+-out:
+ 
++out:
+ 	return refilled;
+ }
+ 
+@@ -6637,18 +6707,20 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
+ {
+ 	int i;
+ 
+-	/*
+-	 * TODO: this might be more efficient (if necessary) by reusing
+-	 * __refill_objects()
+-	 */
+-	for (i = 0; i < size; i++) {
++	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
++		for (i = 0; i < size; i++) {
+ 
+-		p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
+-				     s->object_size);
+-		if (unlikely(!p[i]))
+-			goto error;
++			p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
++					     s->object_size);
++			if (unlikely(!p[i]))
++				goto error;
+ 
+-		maybe_wipe_obj_freeptr(s, p[i]);
++			maybe_wipe_obj_freeptr(s, p[i]);
++		}
++	} else {
++		i = refill_objects(s, p, flags, size, size);
++		if (i < size)
++			goto error;
+ 	}
+ 
+ 	return i;
+@@ -6659,7 +6731,10 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
+ 
+ }
+ 
+-/* Note that interrupts must be enabled when calling this function. */
++/*
++ * Note that interrupts must be enabled when calling this function and gfp
++ * flags must allow spinning.
++ */
+ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
+ 				 void **p)
+ {
 
 -- 
 2.52.0
