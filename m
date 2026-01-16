@@ -4,159 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F15C7C79FBD
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4295C982C4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:00:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6378B6B00B3; Fri, 16 Jan 2026 09:57:16 -0500 (EST)
+	id D83596B00A3; Fri, 16 Jan 2026 10:00:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B7F26B00B4; Fri, 16 Jan 2026 09:57:16 -0500 (EST)
+	id D30766B00A5; Fri, 16 Jan 2026 10:00:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BF16B00B5; Fri, 16 Jan 2026 09:57:16 -0500 (EST)
+	id C33206B00A8; Fri, 16 Jan 2026 10:00:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F8E96B00B3
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:57:16 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D8A8D1A016E
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:57:15 +0000 (UTC)
-X-FDA: 84338130030.03.7CA9B9D
-Received: from fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.199.210.3])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3FDAC180008
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:57:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nCsEs94D;
-	spf=pass (imf16.hostedemail.com: domain of "prvs=469074ca4=kalyazin@amazon.co.uk" designates 18.199.210.3 as permitted sender) smtp.mailfrom="prvs=469074ca4=kalyazin@amazon.co.uk";
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B15AA6B00A3
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:00:57 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 667F31AB20
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:00:57 +0000 (UTC)
+X-FDA: 84338139354.30.E5FDCDA
+Received: from fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.158.153.154])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E40BE40007
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:00:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MScVtAYR;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=469074ca4=kalyazin@amazon.co.uk" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=469074ca4=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768575433;
+	s=arc-20220608; t=1768575655;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MR+rnXxwxn/7x1Gj4j0jxSdDeJDLel3jNY29213m130=;
-	b=QAKChOmiGgYruiVLoyZlXH0xnCXGQrMWLwuDiwloHNMe6rnyfYJ6b/0XswSXuE00RlvxFy
-	4sROQu6PzMt/sgqD2ZIfkBNzWryG1T3hjZcoLHJZ56gecGWVTWOQojvsHISLS88roZlqjq
-	O1QkYVpncqUMdfzplVK8CG70lVDEo98=
+	bh=ESFkuLZPGT8fbXcE99iW3+H6+Z58GdtIZgdRAPcl1wM=;
+	b=cihTYeN8cXgWMlc1HCCSruIGmF33iqW9MAwKR3+fGiPTl4R52mABVYaZdooRtkUyYGWziO
+	FrrJkWspHPmXtSCpf/7ZIshaqqy5z8EbEahP71Gvl5O91RvOfHLgGjYAnWZOBGxCvgcOw4
+	hsaIElheil/9AAmVCrM24dCcdEE/CPk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nCsEs94D;
-	spf=pass (imf16.hostedemail.com: domain of "prvs=469074ca4=kalyazin@amazon.co.uk" designates 18.199.210.3 as permitted sender) smtp.mailfrom="prvs=469074ca4=kalyazin@amazon.co.uk";
+	imf12.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MScVtAYR;
+	spf=pass (imf12.hostedemail.com: domain of "prvs=469074ca4=kalyazin@amazon.co.uk" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=469074ca4=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768575433; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768575655; a=rsa-sha256;
 	cv=none;
-	b=YP8gTMajmo0lmUtaC90DdG7ggPvsh4BU4miIdjddhGt2O2JAna/uJyx+juuyGNSf/VVhRG
-	2BZdYj3K0qY87FV1teWUlIcDtrzzbc2z0OFOROxt0TVbz/MkgaWtk97Zd+jeDPS9vwtQaP
-	t+++M1ADmJpgUrNutkF8SA3QNW1Xhpc=
+	b=u8C/p/iyDTVzIRrA/rA8TVhzix5d99z0juHGZav94dzf+lYoYTA3mCE63/JbNIugLLkYRD
+	pPefhCk+1bZxMkp+mnegaa7IWOwTDo1kRfhMN856ItDgAYxli/6c78s43+Y3gbYUZHlxfZ
+	aqds50/ZNZeZysZ1dpc+3Of5Vakgi04=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1768575433; x=1800111433;
+  t=1768575655; x=1800111655;
   h=message-id:date:mime-version:reply-to:subject:to:cc:
    references:from:in-reply-to:content-transfer-encoding;
-  bh=MR+rnXxwxn/7x1Gj4j0jxSdDeJDLel3jNY29213m130=;
-  b=nCsEs94DLPznHWjoKndleW/ic/DvzzNKdcjbhVKG6+85il3a2if+PZeS
-   wXahkQpLZfYS0tc/VL3rKnZnMJMEVwLBtloJbaOZefXI9ynaunXPJtX6S
-   mp7/IqSRIsgKiQGZORQZuq12ODSq9TwVU+PCMVBnCCGndvrAdqbxQUdFL
-   izI74GO99GQkxwxq88ZtoIVz5XjajAtqQEA2+JUKV/mWYl0hn7N3lm8n5
-   etQ0VFqGbaX6eEi/vEACbGeqH9Z3JQ4eUo5YmDgdB21HS7ESItFp+fk1H
-   k5mX6KmMQlNp0ce2wFKR0BDvSNgAR8Y8DPN/RGWKFuM6a7qbfiETcrtHD
-   w==;
-X-CSE-ConnectionGUID: vQMfjCS2RPe/+ynLfnaVwA==
-X-CSE-MsgGUID: CK/cr+tHSwmdmlTSKnHeWA==
+  bh=ESFkuLZPGT8fbXcE99iW3+H6+Z58GdtIZgdRAPcl1wM=;
+  b=MScVtAYRZQy6jgfplK20tVbMgmqSg72YJSpTRV/lBlnl4rgopT4cpgI4
+   oxc4KNbGaxHf+eQFhE8yGCVpdbFv8zantwBjJ8gtZx6Uham7vL0ZqQyK/
+   Bw3CAo6+FMX7vt/XKilthvVnBC39LmppZwo1buUu/dWALjotyOnJjSLLR
+   Z7MbSFNj2BJPJJrRgOQCMGbGpZD1G0PLaKvHpi/mc0ACELQ3U6W3qSWc6
+   I3JDrwe01H6N/A0w6Wlh1kfEwNwFE7JA1fp4gUyJmFk1BSkdhgjCB6iYg
+   uRbca2FweXWMK/laz1DGWrApM69bznIRRVddqKWTwNqBG2dUY8YFKdlx3
+   g==;
+X-CSE-ConnectionGUID: gk1Li/PmQKCcG3NIHCLDrw==
+X-CSE-MsgGUID: 3iwqWVkQSaGSUUqmLqKkqA==
 X-IronPort-AV: E=Sophos;i="6.21,231,1763424000"; 
-   d="scan'208";a="7920258"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 14:56:55 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:20480]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.28.56:2525] with esmtp (Farcaster)
- id fa6b071b-8258-4488-b17f-3ae252f37550; Fri, 16 Jan 2026 14:56:55 +0000 (UTC)
-X-Farcaster-Flow-ID: fa6b071b-8258-4488-b17f-3ae252f37550
+   d="scan'208";a="7898391"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:00:37 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:10054]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.8.163:2525] with esmtp (Farcaster)
+ id c5194cd9-a815-4ca7-beb1-df7b75e8b434; Fri, 16 Jan 2026 15:00:37 +0000 (UTC)
+X-Farcaster-Flow-ID: c5194cd9-a815-4ca7-beb1-df7b75e8b434
 Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
+ EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Fri, 16 Jan 2026 14:56:52 +0000
+ Fri, 16 Jan 2026 15:00:31 +0000
 Received: from [192.168.12.13] (10.106.82.9) by EX19D005EUB003.ant.amazon.com
  (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35; Fri, 16 Jan 2026
- 14:56:48 +0000
-Message-ID: <a2b79af7-e5d1-4668-bff3-606f57d32dfc@amazon.com>
-Date: Fri, 16 Jan 2026 14:56:46 +0000
+ 15:00:27 +0000
+Message-ID: <294bca75-2f3e-46db-bb24-7c471a779cc1@amazon.com>
+Date: Fri, 16 Jan 2026 15:00:26 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: <kalyazin@amazon.com>
 Subject: Re: [PATCH v9 07/13] KVM: guest_memfd: Add flag to remove from direct
  map
-To: Ackerley Tng <ackerleytng@google.com>, "Kalyazin, Nikita"
-	<kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"kalyazin@amazon.co.uk" <kalyazin@amazon.co.uk>, "kernel@xen0n.name"
+	<kernel@xen0n.name>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
-	<linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
-	<loongarch@lists.linux.dev>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
-	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
-	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
-	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
-	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org"
-	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
-	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
-	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org"
-	<ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
-	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
-	<martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
-	"song@kernel.org" <song@kernel.org>, "yonghong.song@linux.dev"
-	<yonghong.song@linux.dev>, "john.fastabend@gmail.com"
-	<john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>,
-	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
-	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
-	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
-	<peterx@redhat.com>, "jannh@google.com" <jannh@google.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "shuah@kernel.org" <shuah@kernel.org>,
-	"riel@surriel.com" <riel@surriel.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>,
-	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org"
-	<kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
-	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, "maobibo@loongson.cn"
-	<maobibo@loongson.cn>, "prsampat@amd.com" <prsampat@amd.com>,
-	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com"
-	<jmattson@google.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "alex@ghiti.fr"
-	<alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
-	"chenhuacai@kernel.org" <chenhuacai@kernel.org>, "dev.jain@arm.com"
+	<linux-arm-kernel@lists.infradead.org>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>
+CC: "david@kernel.org" <david@kernel.org>, "palmer@dabbelt.com"
+	<palmer@dabbelt.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"svens@linux.ibm.com" <svens@linux.ibm.com>, "jgross@suse.com"
+	<jgross@suse.com>, "surenb@google.com" <surenb@google.com>,
+	"riel@surriel.com" <riel@surriel.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
+	"peterx@redhat.com" <peterx@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
+	"rppt@kernel.org" <rppt@kernel.org>, "thuth@redhat.com" <thuth@redhat.com>,
+	"maz@kernel.org" <maz@kernel.org>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "ast@kernel.org" <ast@kernel.org>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "Annapurve, Vishal"
+	<vannapurve@google.com>, "borntraeger@linux.ibm.com"
+	<borntraeger@linux.ibm.com>, "alex@ghiti.fr" <alex@ghiti.fr>,
+	"pjw@kernel.org" <pjw@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"willy@infradead.org" <willy@infradead.org>, "hca@linux.ibm.com"
+	<hca@linux.ibm.com>, "wyihan@google.com" <wyihan@google.com>,
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jolsa@kernel.org"
+	<jolsa@kernel.org>, "yang@os.amperecomputing.com"
+	<yang@os.amperecomputing.com>, "jmattson@google.com" <jmattson@google.com>,
+	"luto@kernel.org" <luto@kernel.org>, "aneesh.kumar@kernel.org"
+	<aneesh.kumar@kernel.org>, "haoluo@google.com" <haoluo@google.com>,
+	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "coxu@redhat.com" <coxu@redhat.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "mlevitsk@redhat.com"
+	<mlevitsk@redhat.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "hpa@zytor.com"
+	<hpa@zytor.com>, "song@kernel.org" <song@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "lorenzo.stoakes@oracle.com"
+	<lorenzo.stoakes@oracle.com>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"martin.lau@linux.dev" <martin.lau@linux.dev>, "jhubbard@nvidia.com"
+	<jhubbard@nvidia.com>, "Yu, Yu-cheng" <yu-cheng.yu@intel.com>,
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "yonghong.song@linux.dev"
+	<yonghong.song@linux.dev>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
+	"shuah@kernel.org" <shuah@kernel.org>, "prsampat@amd.com" <prsampat@amd.com>,
+	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "itazur@amazon.co.uk"
+	<itazur@amazon.co.uk>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "dev.jain@arm.com"
 	<dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>,
-	"hca@linux.ibm.com" <hca@linux.ibm.com>, "Jonathan.Cameron@huawei.com"
-	<Jonathan.Cameron@huawei.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
-	"pjw@kernel.org" <pjw@kernel.org>, "shijie@os.amperecomputing.com"
-	<shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>,
-	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com"
-	<wyihan@google.com>, "yang@os.amperecomputing.com"
-	<yang@os.amperecomputing.com>, "vannapurve@google.com"
-	<vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>,
-	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "patrick.roy@linux.dev"
-	<patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri,
- Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>,
-	"Cali, Marco" <xmarcalx@amazon.co.uk>
+	"jackabt@amazon.co.uk" <jackabt@amazon.co.uk>, "daniel@iogearbox.net"
+	<daniel@iogearbox.net>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
+	"andrii@kernel.org" <andrii@kernel.org>, "mingo@redhat.com"
+	<mingo@redhat.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "derekmn@amazon.com"
+	<derekmn@amazon.com>, "xmarcalx@amazon.co.uk" <xmarcalx@amazon.co.uk>,
+	"kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
+	<sdf@fomichev.me>, "jackmanb@google.com" <jackmanb@google.com>,
+	"bp@alien8.de" <bp@alien8.de>, "corbet@lwn.net" <corbet@lwn.net>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "jannh@google.com"
+	<jannh@google.com>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+	"kas@kernel.org" <kas@kernel.org>, "will@kernel.org" <will@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>
 References: <20260114134510.1835-1-kalyazin@amazon.com>
  <20260114134510.1835-8-kalyazin@amazon.com>
- <CAEvNRgEzVhEzr-3GWTsE7GSBsPdvVLq7WFEeLHzcmMe=R9S51w@mail.gmail.com>
+ <e619ded526a2f9a4cec4f74383cef31519624935.camel@intel.com>
 Content-Language: en-US
 From: Nikita Kalyazin <kalyazin@amazon.com>
 Autocrypt: addr=kalyazin@amazon.com; keydata=
@@ -168,22 +169,22 @@ Autocrypt: addr=kalyazin@amazon.com; keydata=
  ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
  ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
  i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <CAEvNRgEzVhEzr-3GWTsE7GSBsPdvVLq7WFEeLHzcmMe=R9S51w@mail.gmail.com>
+In-Reply-To: <e619ded526a2f9a4cec4f74383cef31519624935.camel@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.106.82.9]
-X-ClientProxiedBy: EX19D008EUC003.ant.amazon.com (10.252.51.205) To
+X-ClientProxiedBy: EX19D002EUC004.ant.amazon.com (10.252.51.230) To
  EX19D005EUB003.ant.amazon.com (10.252.51.31)
 X-Rspam-User: 
-X-Stat-Signature: s7h15i5wgzabuz7t6nttxxrz9n3cgsqa
-X-Rspamd-Queue-Id: 3FDAC180008
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768575433-486504
-X-HE-Meta: U2FsdGVkX1/VxhXEbZhfTQ7BzZqdOiiouzGUQB+UBVUpzeVM6A146Y1KsgQNZlESUB79aO97ojyQ+PYBKd8Y4k+z98YMm9ANhtZAQ8IihtSdixpN0P62PvMzugiqwXP6cctzgagj3Jg6pL6JU7SzAZl8uRHgzQU1fdB3z4ZcWRn/NO5VA1r3Aa+4cMNKdQAoiabX0rYHdHaauXcit8+J/FtVbeznuUQj//XqR/W/Uy9FFJvR6eWNut5jgsoiLAB+JdhJge+cWkQf5r/drK0pS0SwzA9WLW7ln+W9GCHyYLyCY5yx9ukUUnOXcEgwxjUzwutg/KfVV+yF51bCMLXmCvUvwJ8l0SUb8vMteAhLDjaJ4+05eIuZ5ToHMUcAEiU7ULBSsGLAe21hn/qxKz1K+IFgR60ChvlX7wUKtIX8sIwc6a0YqK7CtbeyRc3fCYogZMa+Hh0vNElxftIDzNF+wrUvbDPBupahDuEzR+avSIu8rv9sQcRBfc7Mtxn7go5fqxl2uRFaZFQgiDe36Y1TOBgsTtL/dyVdXZql/suwzmrnkJy24+U2y0kcIpgYsttD9gmCImKT8Vo1Mn+faP1z8LTjVMhq2Qsf3TW5/L2kEEoUOK9Eilneu19WKpf5XSJIOZBDJNqIK1S9VqYEtwBFcgcIXmlFqDeldENluyyEvbqwKEA5fFVqeqLsj7EWQGpAvGciyYuwDWjyXg8NnMw+36vTuYXhaLpzq3tjHWXIs3dq5SITH4YvP3rP2TcLmrilupZq9vCdi8YnwugYuiPdSny8aQLOlL53O6e72T+ZmTnI2it5Ndj/wzo3EPH07ehxaeYAaDlFecjpqXvehr3pKWupK7igFcfyXpVzsidRjS3GT1/jRF9+28J2+kyL+V0Q/UD7O++yUTKrpin62F9FqgiD62InZf2IGzb+d3w8HPPxJvgFTGskNVQAqK9TMAR1sFOX4gUZqRDjkEbS6kO
- uj7GL76b
- g+JO3y42HTJx9S+v6ouimFhm4arvHWuNyrtU+79GG8ncrklBAcsHPFp1lO7QR0pV2uA1eocrLHKGiAK/lTioOLK1rR4FuFfO/TOcJn+GOA5aXEyDbq7fEQD8hZN3f6K2U3IDEECay8Ynt0BSIMZi8la0jIi+dM8buINjMJ40WkBHrAkeyFymeMuEjGLl8CoJrKbALBiXbKMi2Zj9Ui5SXOr+nNCLQhJMPNyquOZqkb+GlsMA3yIswCoe6v0Fy3tgAfhF0BTDaVaS8ayzn8qBMxYfA6jiiO2h1y825f5U1YXhXDNoGycdIHlA4Azm/XMlxJ6cB1e/WJafbl+784q+l4wxPPd7c9SgAw7l2R8y9vxSSnbtx6NptMPeMRHGyn4b2xxfZPhfRX1fvNf8y5WdXEahbWVJ/jK69NypR+sr8ce4tUInpIPYrXRyHg7rQi4rlfQmivCMTmm+xd87u2D6u2rnh/HZjCM8Jdz5PTlerzyouwhBvsLkwoVo4nAPXQrxvnSDjifIdlLZ2fjVWR1OXYARb8XpFmUfG/7NhrffPYB8tztvWrL0TsUEZQgwEmLlxDBatd2LLrtz4SPh8G+/+oyfOcGSZoHdMKzrvWB1Y7Mf+uEwOlF1tRN7weq4oC+zLDUx4Ct/PTF6Q4+u3LRKdvnfjR6pqOsLLbuT27zQjOQSQNBW5EsaZ/EfJREfcN2dh714vD+LjV1wKeVEob79Ma3wsRfZaGirC82vCkKg4ZD5M2te24ktpC3GkeQ567VmgxpScvYovDP6lcnLoE83/X5gODOnnRooqDzuDoSJLlM7e1rVn6Hljb3OOQnsVA2VZhqfuVZ+lZTWNLUHY7KbvG4V3Po5tlB9XHnET69/OUMPvnZT1rGqg9WaNnt7bwCw54rNtjdF4HfyWD9uB1hmIJlg+zvfw3ZhELvgkidYLnyawlV6vS4U3Ud3tCXaqQWp+WT+oznB4cPo9VnF7ipC47IigsV3d
- ijXsd0H2
- 8DFXKT3mwYHnBiqpE+9pciJ+3bWfKIgigTuRTQZQz2LFgomf+Wk05L22I84aag1vA5yD+Rv7qAI472ECpF5qWA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E40BE40007
+X-Stat-Signature: spx5muakseape8ekq4zixdei9axrtsux
+X-HE-Tag: 1768575654-175440
+X-HE-Meta: U2FsdGVkX19PypnX62fkiaDL7oGDCaFLl7vlaYmevmW7EBIwLCq80BwfS0tieYSQ/HcnUPIc+rzij9gwurO3WE7GQgpFF9LIQc9HH7KeyhspmBmEzrmowLfGwFjGfawcm5mgQhn8qqNgjOCURYUsMbuw33FmnmgFRRbM9NDJzrxDVM6WzS2QHEypj8HIiyTztgufgx5WkGAfW/kfSSDY1Z0sbgJYuM7SBbg9xzrD7DFx9c/Gw+dhQ6vuoipnfxE17H2EW/5tYlG8WI7SB5TRi3znGG/iSomwYfJX3wYBMXWOOY/7NgL102rDMcRYP4ALa7tyemJ0dkbrvzNkIr2O/6xM9PgskECZdN+q1+sc7EUHy+eDP+OobJWN3JBO1ZbPTTga78SKSiO5VounobplxHAskc5iJPgqjLRf65e/k8FJ+lbvBNcf6r9fZZivnHCz3uofOEz6bhdvhNwGW+E0GOa25uPEvfFlZkQGjdloyK8L2FGiG9HejwpkXcguoMvUgfUFyg+hTr2XC0Al/HikTAhs9R2U5bGy+944c2EK0hLMUVCGSmWV/C+GN2P8ZfXxg05aTArwXbJu4NYrR+Wvk2FUjDJrKfFpaC3Put/UbNp5ycP0N3M/pbKd3pJ98s+oCk8OdfuLd/FmM7w2wiZWzlz7PavaWQLYnJQRwn9cRngN+dJz/+Z2iNJef4P1Nl4Z8BaMt3JN6bR6/itJBfK3eQWG5IbMHpLNPD9KJAyWxDgrXnboBDeXSf/QGbvO5brAyW2xwiBpMvgmXsunKtPdLXFJHRGQ9vLqps7yQ802oWymMw37WWtAY9sgp92dQHDs44w02FpUnGKRSgLR+MWmUxmBSitJUOoOC4ipWlkbh4RMNAR3T4/1GOpHKbo9K3nZA2CmN+ZopVW3ZYc0GktF1GLMWjVS42m7u2AOGkAzGzwd7jK8C2oPN+rhDFR77Yk2z0poEpI1PKxtSwKHThN
+ fY53o4xS
+ OTIPFPuoTyuY4Q+BXW/K5rgvr02knQSP2swAtxRXco/eK/fVU+GieoeMnt2LAIgln5derFeVao+3HvktUVcIzg0DEOoMYxw0u5m+7zWXEaAojRtsT8DxrKEH9wy0b752+3s6B0Vy11pQl65cr6HxD7vVMDONp/Y4MZeyyXUBZt/QzYuWoOGxxDWiCNUEf4KNCLiXAR1v2OiFe/cre9LZRa1xzDOeafJJY/6N8gdNphZr8zuYL7Fit+VboNoHeWuyIefxeshCLheq7vou+C+p/4in8+wlAj8qZZQxeSBG2ZYcjvRJ6UTuYD8kWtjP1Ux7ca91zbWRk209sRXnj6Wc1PIk+7uXPHbbgOOLpOJczadj8D/UTU/Du3NPjvbRM4JY5BfIbg8xML1aBqqbZcNueUhkgYnGbp0AKUEG0Q5GZqnuK/k8B+vvd43Ijs48D4v6L3Nlw2OqotH7XX0gI9HYh4O8HyoRmg1x6dNMvCnl50MU1aoQFgmfdD3fC+g4rkn/ZXjRxAq04XYAcjRCBREKA71kEJTaz8I7K7jRLI57gXzuSvtpD8CCAHf3h7K3gQoe2tCYmVgnc3lnOEXQ+I3MGN0Oa9pxDMS3MJRXIflRfeLpq0xckk1mXAEh9wGpvacl8vG8ZUPMwprrhJ+cFOcZJOcqQrm7jVUA/+8ZTyl6xXLznIG5IGMJT7cps7qwVGS4OfSiYkKeRy2SSgTOPUNAt8Xm6LHt52ZLdjCoG984PNintZX7pAOwkJJB2pAENdiCoohrXbFyH3hYVntN5AMMh4AbLpf6D3zwzT1FUSy7YktGufFM2mwwBpDzw2SfDHlHpZ1MxnxcHs8IEcNwQ4T6htg+GJa+p/S0Pu2S65qWtzQtR6PR/d91OIcaaZE/D2k2ScjMSOTUCE+Ah0aHnIC/kZxxkRflsMyow76quQTONkN8YyZRwUIz14xgq+dMByxw8UeKR+vujaMsuL3Y4z7O6morHAbnI
+ Ag+XX/4j
+ xk0NUowgbphwwoOdLEKjffcurbIJu0s4yjlK6PnnaUA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,181 +195,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 15/01/2026 20:00, Ackerley Tng wrote:
-> "Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
-> 
->> From: Patrick Roy <patrick.roy@linux.dev>
->>
->> Add GUEST_MEMFD_FLAG_NO_DIRECT_MAP flag for KVM_CREATE_GUEST_MEMFD()
->> ioctl. When set, guest_memfd folios will be removed from the direct map
->> after preparation, with direct map entries only restored when the folios
->> are freed.
->>
->> To ensure these folios do not end up in places where the kernel cannot
->> deal with them, set AS_NO_DIRECT_MAP on the guest_memfd's struct
->> address_space if GUEST_MEMFD_FLAG_NO_DIRECT_MAP is requested.
->>
->> Note that this flag causes removal of direct map entries for all
->> guest_memfd folios independent of whether they are "shared" or "private"
->> (although current guest_memfd only supports either all folios in the
->> "shared" state, or all folios in the "private" state if
->> GUEST_MEMFD_FLAG_MMAP is not set). The usecase for removing direct map
->> entries of also the shared parts of guest_memfd are a special type of
->> non-CoCo VM where, host userspace is trusted to have access to all of
->> guest memory, but where Spectre-style transient execution attacks
->> through the host kernel's direct map should still be mitigated.  In this
->> setup, KVM retains access to guest memory via userspace mappings of
->> guest_memfd, which are reflected back into KVM's memslots via
->> userspace_addr. This is needed for things like MMIO emulation on x86_64
->> to work.
->>
->> Direct map entries are zapped right before guest or userspace mappings
->> of gmem folios are set up, e.g. in kvm_gmem_fault_user_mapping() or
->> kvm_gmem_get_pfn() [called from the KVM MMU code]. The only place where
->> a gmem folio can be allocated without being mapped anywhere is
->> kvm_gmem_populate(), where handling potential failures of direct map
->> removal is not possible (by the time direct map removal is attempted,
->> the folio is already marked as prepared, meaning attempting to re-try
->> kvm_gmem_populate() would just result in -EEXIST without fixing up the
->> direct map state). These folios are then removed form the direct map
->> upon kvm_gmem_get_pfn(), e.g. when they are mapped into the guest later.
->>
->> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
->> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
->> ---
->>   Documentation/virt/kvm/api.rst | 22 ++++++++------
->>   include/linux/kvm_host.h       | 12 ++++++++
->>   include/uapi/linux/kvm.h       |  1 +
->>   virt/kvm/guest_memfd.c         | 54 ++++++++++++++++++++++++++++++++++
->>   4 files changed, 80 insertions(+), 9 deletions(-)
->>
->> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
->> index 01a3abef8abb..c5f54f1370c8 100644
->> --- a/Documentation/virt/kvm/api.rst
->> +++ b/Documentation/virt/kvm/api.rst
->> @@ -6440,15 +6440,19 @@ a single guest_memfd file, but the bound ranges must not overlap).
->>   The capability KVM_CAP_GUEST_MEMFD_FLAGS enumerates the `flags` that can be
->>   specified via KVM_CREATE_GUEST_MEMFD.  Currently defined flags:
->>
->> -  ============================ ================================================
->> -  GUEST_MEMFD_FLAG_MMAP        Enable using mmap() on the guest_memfd file
->> -                               descriptor.
->> -  GUEST_MEMFD_FLAG_INIT_SHARED Make all memory in the file shared during
->> -                               KVM_CREATE_GUEST_MEMFD (memory files created
->> -                               without INIT_SHARED will be marked private).
->> -                               Shared memory can be faulted into host userspace
->> -                               page tables. Private memory cannot.
->> -  ============================ ================================================
->> +  ============================== ================================================
->> +  GUEST_MEMFD_FLAG_MMAP          Enable using mmap() on the guest_memfd file
->> +                                 descriptor.
->> +  GUEST_MEMFD_FLAG_INIT_SHARED   Make all memory in the file shared during
->> +                                 KVM_CREATE_GUEST_MEMFD (memory files created
->> +                                 without INIT_SHARED will be marked private).
->> +                                 Shared memory can be faulted into host userspace
->> +                                 page tables. Private memory cannot.
->> +  GUEST_MEMFD_FLAG_NO_DIRECT_MAP The guest_memfd instance will behave similarly
->> +                                 to memfd_secret, and unmaps the memory backing
-> 
-> Perhaps the reference to memfd_secret can be dropped to avoid anyone
-> assuming further similarities between guest_memfd and memfd_secret. This
-> could just say that "The guest_memfd instance will unmap the memory
-> backing it from the kernel's address space...".
-
-Agree, it may lead to a confusion down the line, thanks.
-
-> 
->> +                                 it from the kernel's address space before
->> +                                 being passed off to userspace or the guest.
->> +  ============================== ================================================
->>
->>   When the KVM MMU performs a PFN lookup to service a guest fault and the backing
->>   guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
->> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
->> index 27796a09d29b..d4d5306075bf 100644
->> --- a/include/linux/kvm_host.h
->> +++ b/include/linux/kvm_host.h
->> @@ -738,10 +738,22 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
->>        if (!kvm || kvm_arch_supports_gmem_init_shared(kvm))
->>                flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
->>
->> +     if (kvm_arch_gmem_supports_no_direct_map())
->> +             flags |= GUEST_MEMFD_FLAG_NO_DIRECT_MAP;
->> +
->>        return flags;
->>   }
->>   #endif
->>
->> +#ifdef CONFIG_KVM_GUEST_MEMFD
->> +#ifndef kvm_arch_gmem_supports_no_direct_map
->> +static inline bool kvm_arch_gmem_supports_no_direct_map(void)
->> +{
->> +     return false;
->> +}
->> +#endif
->> +#endif /* CONFIG_KVM_GUEST_MEMFD */
->> +
->>   #ifndef kvm_arch_has_readonly_mem
->>   static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)
->>   {
->> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
->> index dddb781b0507..60341e1ba1be 100644
->> --- a/include/uapi/linux/kvm.h
->> +++ b/include/uapi/linux/kvm.h
->> @@ -1612,6 +1612,7 @@ struct kvm_memory_attributes {
->>   #define KVM_CREATE_GUEST_MEMFD       _IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
->>   #define GUEST_MEMFD_FLAG_MMAP                (1ULL << 0)
->>   #define GUEST_MEMFD_FLAG_INIT_SHARED (1ULL << 1)
->> +#define GUEST_MEMFD_FLAG_NO_DIRECT_MAP       (1ULL << 2)
->>
->>   struct kvm_create_guest_memfd {
->>        __u64 size;
->> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->> index 92e7f8c1f303..43f64c11467a 100644
->> --- a/virt/kvm/guest_memfd.c
->> +++ b/virt/kvm/guest_memfd.c
->> @@ -7,6 +7,9 @@
->>   #include <linux/mempolicy.h>
->>   #include <linux/pseudo_fs.h>
->>   #include <linux/pagemap.h>
->> +#include <linux/set_memory.h>
->> +
->> +#include <asm/tlbflush.h>
->>
->>   #include "kvm_mm.h"
->>
->> @@ -76,6 +79,43 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
->>        return 0;
->>   }
->>
->> +#define KVM_GMEM_FOLIO_NO_DIRECT_MAP BIT(0)
->> +
->> +static bool kvm_gmem_folio_no_direct_map(struct folio *folio)
->> +{
->> +     return ((u64) folio->private) & KVM_GMEM_FOLIO_NO_DIRECT_MAP;
-> 
-> Nit: I think there shouldn't be a space between (u64) and what's being casted.
-
-True, will remove.
-
-> 
->> +}
->> +
->> +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
->> +{
->> +     u64 gmem_flags = GMEM_I(folio_inode(folio))->flags;
->> +     int r = 0;
->> +
->> +     if (kvm_gmem_folio_no_direct_map(folio) || !(gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP))
->> +             goto out;
->> +
->> +     folio->private = (void *)((u64)folio->private | KVM_GMEM_FOLIO_NO_DIRECT_MAP);
->> +     r = folio_zap_direct_map(folio);
->> +
->> +out:
->> +     return r;
->> +}
->> +
+On 16/01/2026 00:00, Edgecombe, Rick P wrote:
+> On Wed, 2026-01-14 at 13:46 +0000, Kalyazin, Nikita wrote:
 >> +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
 >> +{
 >> +     /*
@@ -378,125 +206,19 @@ True, will remove.
 >> +      * happened in folio_zap_direct_map() in kvm_gmem_folio_zap_direct_map().
 >> +      * Thus folio_restore_direct_map() here only updates prot bits.
 >> +      */
-> 
-> Thanks for this comment :)
-
-Thanks to Patrick :)
-
-> 
 >> +     if (kvm_gmem_folio_no_direct_map(folio)) {
 >> +             WARN_ON_ONCE(folio_restore_direct_map(folio));
 >> +             folio->private = (void *)((u64)folio->private & ~KVM_GMEM_FOLIO_NO_DIRECT_MAP);
 >> +     }
 >> +}
 >> +
->>   static inline void kvm_gmem_mark_prepared(struct folio *folio)
->>   {
->>        folio_mark_uptodate(folio);
->> @@ -398,6 +438,7 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
->>        struct inode *inode = file_inode(vmf->vma->vm_file);
->>        struct folio *folio;
->>        vm_fault_t ret = VM_FAULT_LOCKED;
->> +     int err;
->>
->>        if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
->>                return VM_FAULT_SIGBUS;
->> @@ -423,6 +464,12 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
->>                kvm_gmem_mark_prepared(folio);
->>        }
->>
->> +     err = kvm_gmem_folio_zap_direct_map(folio);
 > 
-> Perhaps the check for gmem_flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP should
-> be done here before making the call to kvm_gmem_folio_zap_direct_map()
-> to make it more obvious that zapping is conditional.
+> Does this assume the folio would not have been split after it was zapped? As in,
+> if it was zapped at 2MB granularity (no 4KB direct map split required) but then
+> restored at 4KB (split required)? Or it gets merged somehow before this?
 
-Makes sense to me.
-
-> 
-> Perhaps also add a check for kvm_arch_gmem_supports_no_direct_map() so
-> this call can be completely removed by the compiler if it wasn't
-> compiled in.
-
-But if it is compiled in, we will be paying the cost of the call on 
-every page fault?  Eg on arm64, it will call the following:
-
-bool can_set_direct_map(void)
-{
-
-...
-
-	return rodata_full || debug_pagealloc_enabled() ||
-		arm64_kfence_can_set_direct_map() || is_realm_world();
-}
-
-> 
-> The kvm_gmem_folio_no_direct_map() check should probably remain in
-> kvm_gmem_folio_zap_direct_map() since that's a "if already zapped, don't
-> zap again" check.
-> 
->> +     if (err) {
->> +             ret = vmf_error(err);
->> +             goto out_folio;
->> +     }
->> +
->>        vmf->page = folio_file_page(folio, vmf->pgoff);
->>
->>   out_folio:
->> @@ -533,6 +580,8 @@ static void kvm_gmem_free_folio(struct folio *folio)
->>        kvm_pfn_t pfn = page_to_pfn(page);
->>        int order = folio_order(folio);
->>
->> +     kvm_gmem_folio_restore_direct_map(folio);
->> +
-> 
-> I can't decide if the kvm_gmem_folio_no_direct_map(folio) should be in
-> the caller or within kvm_gmem_folio_restore_direct_map(), since this
-> time it's a folio-specific property being checked.
-
-I'm tempted to keep it similar to the kvm_gmem_folio_zap_direct_map() 
-case.  How does the fact it's a folio-speicific property change your 
-reasoning?
-
-> 
-> Perhaps also add a check for kvm_arch_gmem_supports_no_direct_map() so
-> this call can be completely removed by the compiler if it wasn't
-> compiled in. IIUC whether the check is added in the caller or within
-> kvm_gmem_folio_restore_direct_map() the call can still be elided.
-
-Same concern as the above about kvm_gmem_folio_zap_direct_map(), ie the 
-performance of the case where kvm_arch_gmem_supports_no_direct_map() exists.
-
-> 
->>        kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
->>   }
->>
->> @@ -596,6 +645,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->>        /* Unmovable mappings are supposed to be marked unevictable as well. */
->>        WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
->>
->> +     if (flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)
->> +             mapping_set_no_direct_map(inode->i_mapping);
->> +
->>        GMEM_I(inode)->flags = flags;
->>
->>        file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
->> @@ -807,6 +859,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>        if (!is_prepared)
->>                r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
->>
->> +     kvm_gmem_folio_zap_direct_map(folio);
->> +
-> 
-> Is there a reason why errors are not handled when faulting private memory?
-
-No, I can't see a reason.  Will add a check, thanks.
-
-> 
->>        folio_unlock(folio);
->>
->>        if (!r)
->> --
->> 2.50.1
+AFAIK it can't be zapped at 2MB granularity as the zapping code will 
+inevitably cause splitting because guest_memfd faults occur at the base 
+page granularity as of now.
 
 
