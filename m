@@ -4,139 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE99CC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:55:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C107C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:57:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30ADE6B009E; Fri, 16 Jan 2026 10:55:31 -0500 (EST)
+	id C0E006B009B; Fri, 16 Jan 2026 10:57:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B2D16B00A0; Fri, 16 Jan 2026 10:55:31 -0500 (EST)
+	id BB8266B00A0; Fri, 16 Jan 2026 10:57:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 169396B00A2; Fri, 16 Jan 2026 10:55:31 -0500 (EST)
+	id ABA9F6B00A1; Fri, 16 Jan 2026 10:57:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 02E9D6B009E
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:55:31 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C4BD716015E
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:55:30 +0000 (UTC)
-X-FDA: 84338276820.11.E7C58B2
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D605D40011
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:55:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=M6rgvyOo;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 965F36B009B
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:57:50 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48C59160197
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:57:50 +0000 (UTC)
+X-FDA: 84338282700.14.5421599
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 71C632000E
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:57:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="vR/nqsXE";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=gEt4DiTq;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768579068; a=rsa-sha256;
+	cv=none;
+	b=MteHt+cImKKzZpGbIox50GpMkIIyu/FGYOnhmVxrDM8CtPnt7rSnpbHNR2ZRSlyBMQygaI
+	e/nwAi6l70auyoiSEF1G/Ca1jfU/7EiEu0d/+qISEcu4k4GnbBAUIFL1eUvT5c6yf6stPA
+	duD+88D0wEos7Oaw2ONVZMifisc1DCs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="vR/nqsXE";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=gEt4DiTq;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768578929;
+	s=arc-20220608; t=1768579068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nC1t8XaX/bq14ENSBQ5Fda7IB2vEXwzrtJEP49kE9AQ=;
-	b=nWWMFaEE5oKCe/kbe2VBeFwOW47l6U3znFXFdYGq5OwA9v/R2o3Jyd1zQ5J9GoRQ0mVWly
-	O5pPSPjt7SZJ5g0aD6VZYD9KsVGF5hfJ3JIO7W9X7Xg2Oifq1T/EY+8AN4rUH8B8pcXJRj
-	iu+CYsP8YOvBZ95jAMdmuseH21D1D50=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=M6rgvyOo;
-	spf=pass (imf27.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768578929; a=rsa-sha256;
-	cv=none;
-	b=bPFpxYt/yR0jvZpiGQJ9eWj6AO3kGUOeopfHH/e4JEnCBAPzr4xGVbqX6kQCbsRHzyciF4
-	F2yrQ4haQOTiU7hXAxpEIV66GZABCBda1PxVxGqa3xGYWRNa4gGQNAPouMUtzd170L/uye
-	77mDgl4+YDbUBSAl91ZIXcK4F2Vt/lI=
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-4801c314c84so11610065e9.0
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:55:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768578927; x=1769183727; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nC1t8XaX/bq14ENSBQ5Fda7IB2vEXwzrtJEP49kE9AQ=;
-        b=M6rgvyOo7r+lGlnlkWalhJ8ma3IEt76N/veWk2kYm1z/Tnos21wUao0SzlyVorcu16
-         qVP3zaTCE3q64ZWFEeXXh5hoqAKdShX4kj8fHnwhL2vw+gJL4pOYxPe6ODaV/63lLGnw
-         ViiXhb7nCyovV1YP2lO6TQqwvAyIazDKDG32mDvcZkIgT1AYIXceGB9OKD/jDl2PYAzs
-         Guwh68bWSs0Y0Uwv/VyuQQ9O7dI4ug89iQNip7UBmZIXlCmfKGa9T9NjsSCp8HcGyIBU
-         mxlB/GZe6Oc/TopVeL1z9yF6GGDch7twltD+DAapvHe049Y6kY8kyrgc9UAzNZr/X+NI
-         nbNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768578927; x=1769183727;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nC1t8XaX/bq14ENSBQ5Fda7IB2vEXwzrtJEP49kE9AQ=;
-        b=V0GCSwKpVhG6WGthWWQOzRuFnBBZokmKrN/U9xB13+1463MrHV2D4wvLIzDBgpFGWl
-         MEKAASit/dBR+fxqiHi9MvoG6W9ds3MFlyYADEegneLB/RwXkm4qzj6/IrXgsJm8cPbV
-         8PUHBv1t5cDcIxmp2o2gRJ45oMgl1TDMznL0KOvcjhFuvBQb2H2eNZA5Dfho5/rfGoUu
-         btPFuDLPdM5WuWWOo8bo25d2iFeTaf+L6zbTSFcImqsNeWo4Kmhjmxplwxnfvgo7V7GW
-         LZnOWzC7JR8Z/4bQM3YMpqi2FRjcLMqvSbQidz43JRWYK3HoTTN3V8R9W5pNQ6h6vB0J
-         uxZw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5BrV7zlHT+xpX9CVJhWF7z9dUzJXmG/QegjvBxqa9QnWpoiQNpC74DxcU2xzW1ONbyyRpnneimQ==@kvack.org
-X-Gm-Message-State: AOJu0YwFStvdh387NPaiGy9tgjQFjgtTKoDYS1fBguFkjaRzlRG7VdGB
-	+gf9FsikqiUcsSTyYdvB1/j7kJZ7PzM66t2rmehg5JuvQu3v0yYASqc2PbAezhAsfaQ=
-X-Gm-Gg: AY/fxX4tniUC8q/vVlf7yTGWtZtbppJGFje5ErA86QOJgETQVNciynIHlK0XMQGiX1F
-	smhPmnZaXY1Vwh3KaIqWg4dlhrMBqphif61x0lmHHtBURtJrsegaQKEji+Bvyg7JB60FzFIvkTK
-	1Tq4JMcNWxGW4fXwAhAtOtKlk+hdTeo+E2k6wEChixIzlxD8DnXKdGW3NQ6rGwmcK6vbwI1yPfr
-	uQwKnY3CcPcJoSPsK4SazPFN1gIZBQplDo/hG1UV1OPlq8M+eyo5izHBZ47XwwCdhiwt9qdUa3O
-	YrYDEe1bQQN0vf3t+CUVPmjf8/aM3feez10ewu/XOtr8eGkJ8WaCV3QC1ts4Etbc3khVIEdAEOW
-	jZyF88LSCIjSKSV6+BnL/zOdmg0ge8YEfYf+Y02vcNrEAdafzjjfJOccBm0bNJE11dj7ahvo+99
-	NjJZPP9eembEcpF1ULxFNRG+tlbvyOocOXkoA=
-X-Received: by 2002:a05:600c:1f12:b0:47e:e9c9:23bc with SMTP id 5b1f17b1804b1-4801e34ce8emr40733615e9.30.1768578927236;
-        Fri, 16 Jan 2026 07:55:27 -0800 (PST)
-Received: from localhost (109-81-19-111.rct.o2.cz. [109.81.19.111])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801fdefed9sm19855285e9.3.2026.01.16.07.55.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 07:55:26 -0800 (PST)
-Date: Fri, 16 Jan 2026 16:55:25 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
+	bh=n9etu3sCjCjTSqJooigB4P2AvUUWV708r9U+I1MOI/Y=;
+	b=k8aRVInr6mfcMcarGMQcctonApziQyCO/kTlWi0kXavIJ/93bL3u2lQKn0OUp20mkGgRCx
+	R3mpAviVHh40HbaQeDT9KlY3RRWP8Kaa5ErGbs7HwrOnNTFTbG+hcZvL+uVatMT5WTqkRx
+	7am1HpSUX7fy2myfMfyd3s2Xnh9L70E=
+Date: Fri, 16 Jan 2026 16:57:43 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768579064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n9etu3sCjCjTSqJooigB4P2AvUUWV708r9U+I1MOI/Y=;
+	b=vR/nqsXEkrmj920u4bSRlsg8D3RS5CLxH6+3Y3x4mGfnNhgVONyOrOCuM5Vwi6Nf+MOwvW
+	hbzgjfqAfJfMQpEnXb/aoJCtEfA4H3dy4czCbD1dR4AG2dMpcygEITq80PBX9lGmLeK87u
+	CXk9oyHMgXWQkzZb7t/1OYdOFV0d6+19Fd5gKygD/xly8P3t07enM6sMkn21vpF8tURjCn
+	vw1eoPKrScIxMy8PV/NiqNQK694r61tw1HG5gmmrFWYf+xP4NbvZuJMWSO4VBg0hDeTjC+
+	83zcWJ/4FQZAjTpPGfMG5bVz3myy4MclmipJBnLWwVj6xKFdwZoXAGM2MqelYQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768579064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n9etu3sCjCjTSqJooigB4P2AvUUWV708r9U+I1MOI/Y=;
+	b=gEt4DiTqASRp7Z/aRq58bV9igLDbT8eP3Ad+TbHeuHcOcmClxTSb4LPcO0wCm9loMmeqGl
+	M4ZTRH8MP0SZRwBA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v16 3/3] mm: Reduce latency of OOM killer task selection
- with 2-pass algorithm
-Message-ID: <aWpfbSJe5vREzzyd@tiehlicka>
-References: <20260114145915.49926-1-mathieu.desnoyers@efficios.com>
- <20260114145915.49926-4-mathieu.desnoyers@efficios.com>
- <aWfNMKCoEp2LuA2v@tiehlicka>
- <a46b298b-baa3-4998-8715-0568b5b186e6@efficios.com>
+	Michal Hocko <mhocko@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Waiman Long <longman@redhat.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH RESEND 1/3] locking: add rwsem_is_write_locked(), update
+ non-lockdep asserts
+Message-ID: <20260116155743.AuMKcTAO@linutronix.de>
+References: <cover.1768569863.git.lorenzo.stoakes@oracle.com>
+ <8e343ccb9319433364f5949a69519f1bb521fc8a.1768569863.git.lorenzo.stoakes@oracle.com>
+ <20260116151215.GH831050@noisy.programming.kicks-ass.net>
+ <99818e30-9f88-4751-af82-0bed019156eb@lucifer.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <a46b298b-baa3-4998-8715-0568b5b186e6@efficios.com>
-X-Rspamd-Queue-Id: D605D40011
-X-Stat-Signature: hwxjci4fhwahd5bkhiq8wy1s8stejy3u
+In-Reply-To: <99818e30-9f88-4751-af82-0bed019156eb@lucifer.local>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768578928-759793
-X-HE-Meta: U2FsdGVkX1+P1zkT38WPlQaP+dVEXLbojTgz9xokKDYr7cLIh573c1epSGBAXWFuo33k+uSIrqKQQoxn3MRTrT4V9R2dn2mSD0ycMtmngG96d9sKuNZeTIzkchyjWwKAmdWK6yk38iX204kwG2UWkCY84xT0HPrI6YWkrv/ZtqzTRPNzSfvdPp2w5tHf1ztMw6AUUg5XtWnSmHQcHktutXFKnJ0CYj14BS0DK2x8Y4wuAp9ld1gKg0iFd47clTo9prD5b3sFZa5k5KjAwJVynUjuEbLQLuWBb/dyK2LZeMF9VdNMvOGeX79BD+k73M0nN6DdKwUDDY3MHUbaqwfPwOsUWL1ox+oLFfB8NG0a9bcALzXMpXPWHGVEjqkJ9WOuisbM8wgobU5boWO3Wb0U/Iuw8YyuRZLG6fw+zjtH9gZiYJzg0lWDjbZOXvs709AoIhsJmU45jjJnxQZ5sapsQnKeE8JXi1s/2l4cBWYeFgrG5uU2KxBBnvFDlN0UbJYkfyBIMD2WnJXNRXDMvfNdrpW1BbmtWHDG1WfEexGIrQUQhXgK+T2kP6NStFEV/XHVnGAfPWDUW4BaegyMO4YHn5gG/RyN0VcI1LChbc+U/ZJSIR7Ayh5U/uaV8SITfGqwg2Yx+IfiwJkaI8/VRjuQWv/6g3V5Xynj3qHTM2Lv9qyRrIQ0gxaXWyX7OUOJOLDVJNkHdB5tauTz3V/hoTLsAGiIJZikbqxVfIhvuKIPbn25HAS9IlM0ezRhNFmY829C4Rtk/xrWQHgfkSXA0quaYd2plzYMJubedPbcMg6Jy8Dds1lgFEyXIlk5t0AVRO8RUmIQvWztnYMOD+b1nEmwx8mNhNCYHgqLgbJQmkOG3aUlTYFr2HLpmEvmdxTmOFj0QS6PYum0fAn8d8NbXGd5XAZECoujqOw7Gci6ynYi65zjSnJadPAiVecrUIjwat/w5gb0cFzlI9c27YlA4c2
- TdtxM3mV
- DkQCGkY77n+D8q2GG01MU9x+qNu8xk5NvEmXxEiQBHexVQs7NNt0dgrmn2qZAHs1TTUzwHrI++kyKZFAanudaND6ZpbZl+CN7nSQ6+CZWCt27PdopZB/Sctl9SQX6no6n6mxIdda8RsmU/qts5BWNgqJjaBsittoyHddtz+i2xsZGJ7dMrx54rWAiWk6JJZsrMVD5Vn8UbEY1GLZ48+HYHUth7+KbbEK/anqwjF0EgrTyxQicI2aPULKyQPXedENwzNldXm9dJe/eiakN047INkicJyImD1gXKwurAbvHe+7tY2IeJMiT+1x1ddcQJ/fN5wE2LAQhY0j6hGQWyR4GOcQU6fgB6D0dkik2pO6rnqdF7lB/EHcd2O0XPV2qa9NG5xJ/RUmve9IpC4cU7JI9wPZoxS6UX5fvrWs5Dqt7yfI2ascNEJr4loDQ3O+yLeKOdyTTVYu/t0DLQ/45kOSOFKNfPGmRh3syHOKqF/od/cIUkMRd27lzXAZz8lu2K6i1d64T2afBOdJnhRI=
+X-Stat-Signature: 97cbumnx46frzqr81eia7j8ok9oniuub
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 71C632000E
+X-HE-Tag: 1768579068-18563
+X-HE-Meta: U2FsdGVkX1+9YOfRT/xfM8MP8EWw85xKZ6MPgbuImN+HqAqZxln3GX8y56Kn7FnCQZHdSYvJgRsfEOdCuvHvFIIyfvhprGDewHt9yw30k/Y+hzPtMaTVO2KCab1bZKqS+T3mNTdJVLuOvMgyFWy+iKC7Y7mhlGftSso/JCN+1+g0saCpz6/OWW8ZC85Cf/d8q6MGqpTHTkH9VR376shHNYcwyBTI3RZK8QbEYvESQcG365VnqEP+/+B2my0r4BS5f1ivw8H7OkG43kOTFTsHfc1F+P43ttXu99WrplvRhjcMYG8yPW1LmSocydk+Xe44baPlK+ckQKi5QtnCIuObBx+E1JA4tzogrF8OfxHvHf8RsYezhvoIVb39Pxk7F9QePnIvJccpaucDLqZIX66Ynhrmn7ZavW7QnuaY5ZwmpmhiW54588W7uiYZaw5a4XyD8yzx+6N4ZuZhMXSG1c+D5AJbHT9Fq+Y75uliutnlhxSNdlFS3GqI3Dw/3q+vq++L8kgkRQAPEnOnPNgwfg29cVucE2DPLYx+6ugvCa8j3H7fV7wU06MfWyPcj6/QjwYmz0gfhG0DrxolQRCISJKbWxSUAtdKH1zsxiZmFnj6634GFtVKQqraITLAHj6DYElHym7ORoK98sCefqodlmKxrefN54X2tCZ+X4fdnl2ncbaQ/sHgrz0azD7DIEIJDVeR7pH/uhyP//MHSLzpHj3T7QxaBsQTtZzIoy/0JKvTc3h5ATmaeIGvu4tb0k2w36X4wo2169np2Pqsa0rjeXIEecicfNO0rK9phpT59SVqazuTJs4Fpp2gv9VqNt3omrKKPCh0yNbTJxhwELmzdeuGZj6nYnSRU30JuVSzDG6FphhODV267Yc02C8U8QBboOeRIW88UJaUe6O/n9U2cmZ/56q0HWIEtbqZDZs1h+C+zDVqQIc7BoTZEli6WGIGUxJ7KTjp9EtsdSuP/zGl60f
+ 3zuDrK6N
+ HmJnj1wvkV7kPixWZvj4J87D+Q79rMGXIJLrp+sN9qybJae1Bfn2YRKUHaKBg6y6jfdaLTt0tE2ZBE8SJCeLEHNAJJppJxZddZeaJ8Fn9moTwC7j79dEzPSLeZItrdn2w9npbWV/kOTKZoxMoZF7iMR7cb6AKpM2Y6BntKPwH9gpJjiq/hojG65etEwQbh8JSqOBnXl3bP9NTTLjZF8ztR7KCPeJSksYAi0Dz/Ty6B5GRHnNWsvEznn+mPzwU1RXdclsVusYGKrs7SyZTroR5ynZs8dizT6kNtihK0F4tqblPuNxtKd1baz8mqS2RCw7eunjo0eNeLMnPs8czDcrb60Ckgg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,41 +113,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 14-01-26 14:36:44, Mathieu Desnoyers wrote:
-> On 2026-01-14 12:06, Michal Hocko wrote:
-> > On Wed 14-01-26 09:59:15, Mathieu Desnoyers wrote:
-[...]
-Thanks to those clarifications
- 
-> > My overall impression is that the implementation is really involved and
-> > at this moment I do not really see a big benefit of all the complexity.
-> 
-> Note that we can get the proc ABI RSS accuracy improvements with the
-> previous 2 patches without this 2-pass algo. Do you see more value in
-> the RSS accuracy improvements than in the oom killer latency reduction ?
+On 2026-01-16 15:50:24 [+0000], Lorenzo Stoakes wrote:
+> No, but we need to be able to assert that one of two locks are held and we
+> don't want the failure of one being held to cause an assert when the other
+> isn't.
 
-Yes, TBH I do not see oom latency as a big problem. As already mention
-this is a slow path and we are not talking about a huge latency anyway.
-proc numbers are much more sensitive to latency as they are regularly
-read by user space tools and accuracy for those matters as well (being
-off by 100s MB or GBs is simply making those numbers completely bogus).
- 
-> > It would help to explicitly mention what is the the overall imprecision
-> > of the oom victim selection with the new data structure (maybe this is
-> > good enough[*]). What if we go with exact precision with the new data
-> > structure comparing to the original pcp counters.
-> 
-> Do you mean comparing using approximate sums with the new data
-> structure (which has a bounded accuracy of O(nr_cpus*log(nr_cpus)))
-> compared to the old data structure which had an inaccuracy of
-> O(nr_cpus^2) ? So if the inaccuracy provided by the new data structure
-> is good enough for OOM task selection, we could go from precise sum
-> back to an approximation and just use that with the new data
-> structure.
+But why don't you use the lockdep based check? That assert only ensures
+that it is locked at the time you did the check. This does not mean you
+are owner - it could be owned by another task which is unrelated to your
+cause.
 
-Exactly!
-
--- 
-Michal Hocko
-SUSE Labs
+Sebastian
 
