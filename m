@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38CC8D4A5F6
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 04:49:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C339D4A5F6
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 05:08:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6844F6B0088; Thu, 15 Jan 2026 23:49:08 -0500 (EST)
+	id 518666B0088; Fri, 16 Jan 2026 00:08:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 632606B0089; Thu, 15 Jan 2026 23:49:08 -0500 (EST)
+	id 49BFE6B0089; Fri, 16 Jan 2026 00:08:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53E086B008A; Thu, 15 Jan 2026 23:49:08 -0500 (EST)
+	id 3A8076B008A; Fri, 16 Jan 2026 00:08:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 44A196B0088
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 23:49:08 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB0F113B2C0
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 04:49:07 +0000 (UTC)
-X-FDA: 84336597534.20.A8EFEA4
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E355C40005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 04:49:05 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="PVjW/rl4";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf11.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768538946; a=rsa-sha256;
-	cv=none;
-	b=EWGAVR2jN/SZ694Wko/WgLN8nWUhmGt9G47q/CoBUVzomsUFKLDWQsLpjL8s+OkXqq/CvO
-	mkS1JmNOoaAM5GD8ZwAyDQlsYoGjLvcsu7pDMXo3nd772fr862J4DAr7AAu2Ab0/d/V/wY
-	5OQbRvMS/J6pYzBmdmVzhJHDvR3C+tM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="PVjW/rl4";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf11.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 29ACB6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 00:08:01 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6B77160572
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:08:00 +0000 (UTC)
+X-FDA: 84336645120.01.BCAA8F6
+Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com [209.85.215.193])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F14F8100003
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:07:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kxGpD9gy;
+	spf=pass (imf14.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.215.193 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768538946;
+	s=arc-20220608; t=1768540079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=xzwKGJFEXzcfmx1MjYg5YriTA/MrKdzyh60azwxmvPA=;
-	b=jybAXdl6cm6b6bZDtMiCmIq4dxtmHOvEmLhVuKJR2JEeDyk3kj6I5cnyaBhDrPV/y2fEBh
-	4Ko9EPk2hz3C5/8mjDP5tJU1gmTNWgoEf6142JRGVEd1QUWVBEw1pec0l+x8wEUnkeHz60
-	LF5PbiDucGfm5R9XOv62jzh4P7+ECZU=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-81f39438187so888554b3a.2
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:49:05 -0800 (PST)
+	bh=LE6O+8bJNWV1Ml1X2gUOFjzkYDBsJiSiNmPWn00M8ME=;
+	b=YECDvDdmsdSPy/4Q5cbaAZ6Vek8N2arLcGfX17AUJAq80KSIscf0gL6m7wbEqWD5vu7EZt
+	OSjpcqX/5oW4QmaceACPGtNdj6FEUqb+HwgVK+3ggBHhQtxcuYBlHXGncpzVsOW9gWVHaM
+	GtWIgtQsc/pGbJePPdzw58qL+kvRxtM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kxGpD9gy;
+	spf=pass (imf14.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.215.193 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768540079; a=rsa-sha256;
+	cv=none;
+	b=mD6HgGdQK61mAKPVXmhE/9PuTFd+0xez0U9nU+P3/mQZx9YiNMCMhAu9wyHpZKEtkBEenk
+	m+oAQRL2RXUxbimeZsWlin+y7xkun4nyADBjobA7pzbWmBF65JOZq+5lqp40sTqQ1VnJ/h
+	YC48njQEylCcbnv3ng2k3fWjYO6Jm1Q=
+Received: by mail-pg1-f193.google.com with SMTP id 41be03b00d2f7-c03e8ac1da3so626969a12.2
+        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:07:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1768538945; x=1769143745; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1768540078; x=1769144878; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xzwKGJFEXzcfmx1MjYg5YriTA/MrKdzyh60azwxmvPA=;
-        b=PVjW/rl46Ge0p7GEsgddHb1C6J1/PccwSKgbs4+Z3h/KDUcNdUHHQ7OLiTmuLeasEs
-         GKkZnfA1jZzomGcXLUY/JLqrOo4crKDtplMg5eLLiUzYGApr2Ukfnovr9Ltv61Vt4QG6
-         1zzq3z9vGRYDAD/scaWTUCdsEegGngmkmgOsk=
+        bh=LE6O+8bJNWV1Ml1X2gUOFjzkYDBsJiSiNmPWn00M8ME=;
+        b=kxGpD9gy25/DKGyUyXUqVdWgxDUt6F36F5aBtJ9HuRJffTSp8XQeERpGvd05hNGUA2
+         ANXoYPUWl3QinbNVNJsARdWWYEr5/51qVbjIy+UC3W/tvCjzxZNbueHETP3CQyiPnahW
+         tF+APElIiEDfBDGl83gR2kHcygxhw4RdF0yVbK9K49QpZXWBXEIwshVaQyaZNli6Y50n
+         WBMZEsBYMx2cmquX+h/M4O/qeHTdBJHcTZ7kG4wRO5OUzpr8k5ukxYWqHKWOc91UHuDv
+         pRQN17Hh5pSAwdwjLWtf+9H+xokTjVHh5fe1EsWI8RoAONIEmUyO+duEGTFWtCn/tNMN
+         4dyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768538945; x=1769143745;
+        d=1e100.net; s=20230601; t=1768540078; x=1769144878;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xzwKGJFEXzcfmx1MjYg5YriTA/MrKdzyh60azwxmvPA=;
-        b=DCrqs6rguL/chr5d48FSsjFSpJeLRUCnCLZs2Erf7HnDp4Ggb2ePeFpiGHweR5uShq
-         TaWWKhdXfaHTmbcLJabfhvwC8gbwzoZJqU5CgNj1CYTaD7La9ua2ptsD+cf/A8Z05D0O
-         LOBqBpySiDqE8GYoy2+IVFWkfbvnMqCEuIIYprfcNaeOqefQv1Nbyslwnhc9L+W30Z8k
-         MxYeld/Gx+0o3c3d0/UW+oC44K6PELZlCdty7w+877V5jjzuRYeRCABftinZn5Dp04gS
-         vtxxyQDkUoUWxuVp1Qn2Ic5YpdagSW7Z9U5BribciIbP6dWbefq1EWb8/KTB5IMRST0N
-         Ti8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWkVkz9WDrnbG2uD0/bLuMREI88dPwch80Tyc+R0OslGtROo5CeT0Bi/pfcH+jWj5PErbKsjf1paA==@kvack.org
-X-Gm-Message-State: AOJu0YzJ+6i4UzeGZBHQgjJw/ndoTf3ICIPwj6Um7fkAyOp5Z+X3KNT0
-	sCmFENBcfqAoMGXm3EaqNNgK/MX+j3CXJ6YqxARkTZdZ6tpfuvObqj8E6VDsavlXaA==
-X-Gm-Gg: AY/fxX7921z9yPht5V5c4e8E7XfnjbEAj1/pfgSWZD0Q6G04zMAEHL+S4sKHnDpu0BF
-	o7Rx/rE0RlV7QKrw+ximKuDNye0vXgRzWdKIYMHL6jbPEpqnXA1A12jWGwz35fdqN/wmFeq01s3
-	EarSLAadXVWXPJGZlkPDJ/b2ki/6hIzC7gAEcltslcL/iP1T6oFtBgBuEfFr31BfSfYhChHzTCA
-	9BK5lZZijfYWEYraOuVBIDfxyVDvwKaeorLfwBNIr/PyxMdOMGZ7C/zZWuMXOSEDJ67jx7Q4jCn
-	Gz+JDcSdd2a4XUjXkL0gqATo2GvOmQ8sez3PnDTziL6PuwsCCknJD/2oYjmj39OUYsc+UHgmIgI
-	mvqZ0KtOQj3QlRH6J3xEuSvemoHp6K3JfAa+STNG0fDvK3FUBMyW16xRgpjR11a8AoyiCc6PHUy
-	pj+JZUuJD585azabEuYLa4cwo4dPaHXRGKqa2wluasPT7k13+LvW7DaxbfsQfKqjbyzpmPxkw=
-X-Received: by 2002:a05:6a00:1a8e:b0:81f:4884:4fed with SMTP id d2e1a72fcca58-81f9f7e4789mr1785267b3a.7.1768538944715;
-        Thu, 15 Jan 2026 20:49:04 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:ba7a:360:116f:dac])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa1291135sm820852b3a.47.2026.01.15.20.49.02
+        bh=LE6O+8bJNWV1Ml1X2gUOFjzkYDBsJiSiNmPWn00M8ME=;
+        b=iUrgtFKpZ/kEngYA3lGKzOJBF6asHJDk6GNzvPfPquEHHiyYgCYRZQj54gefh/A0ut
+         F1PX03d36nfcnDCG2U5dj4Ws7w9u+c36HKJb92uCN8nHrU7hy0//m2CSFGYzEuJO7oQt
+         SE5Cr6FTjXWZrnOkoDVXYYA2p+RnZXhpNXy5LOSrgKmoFsZR4Y4fMQYWSVVX6PBx0NwN
+         PzuV2/4q3WL8lainaxGnZhbBbgWLIT+GHEwwVsH6ogdy7l20DbAwdO1Wh/6LDvA2TZE5
+         9NTyTVcEUurSSyIGYSU1hOmGV+XkatehHYo3nuh02dIKY/eZTuG7+7p7ner31b7MwkDY
+         s4rw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRqL/qjwOSgpfbPJsXvMfj0JDLVOIKUT2b+hqQDAG/eLWW69wXEsDguhjkmgasTn7PhBXUi+llRA==@kvack.org
+X-Gm-Message-State: AOJu0YxraFHayy37txyuWVxNnJD5xlT8QiaMEQkOwINgpjs8+weOy/PC
+	5aMHSACiYp5/G3zZwGAtI/2iBn6S50w76fqN0RibvvqgIXumJVCwAiLI
+X-Gm-Gg: AY/fxX762gfDnIyO0imZ5lgkSJREnnLVuFHhqLbrephN5bNmibk1VMZTrMdQVfl1amP
+	qeDIt8KU/5RUXKB97R6gZpqyzQ3EaMKa8tvayv4X478yrUZ6PBjRlRxNd6xZebs5PYgn4DntHkm
+	rRBE5TwbLg99VMcZBntU7ElhRmoknK10mLQvRGcUhYx7aV8BRDUUSF80jCooDq2Dni2qx1KyqvF
+	zMCCoAA339jYvqyZo+6x/4Kv16DaO3Kl7Ih6iA1ZDVHgGnWu4SSzJvYYJzmcQALYNt+HLzbRIBh
+	to6LTdviuauHCsidYO8xCtLYNkRcP2kwQ9rZVJKQ6EDnKM/dwhABtVCsRmSOuw0BDT5d+NwKiBH
+	95onHUHgY3T68SOyoCK26ouR2VAub9RgFOkHvnMfdIugUF5mmYxe09U5i6MdTX9wYszv+Ip5WMI
+	JpAGUlUn4z/J6g
+X-Received: by 2002:a17:902:d488:b0:295:7b89:cb8f with SMTP id d9443c01a7336-2a717413b94mr15503975ad.0.1768540077749;
+        Thu, 15 Jan 2026 21:07:57 -0800 (PST)
+Received: from HP-Note-Host.. ([222.234.91.137])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a7193dd523sm8544085ad.62.2026.01.15.21.07.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 20:49:04 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brian Geffon <bgeffon@google.com>,
-	linux-kernel@vger.kernel.org,
+        Thu, 15 Jan 2026 21:07:57 -0800 (PST)
+From: JaeJoon Jung <rgbi3307@gmail.com>
+To: sj@kernel.org
+Cc: JaeJoon Jung <rgbi3307@gmail.com>,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [RFC PATCH] zsmalloc: make common caches global
-Date: Fri, 16 Jan 2026 13:48:41 +0900
-Message-ID: <20260116044841.334821-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+	linux-kernel@vger.kernel.org,
+	rgbi3307@nate.com
+Subject: [PATCH] mm/damon/core: reinitialize when passed_sample_intervals occurred overflow
+Date: Fri, 16 Jan 2026 14:07:35 +0900
+Message-ID: <20260116050737.21407-1-rgbi3307@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E355C40005
-X-Stat-Signature: s9mdgx6thqrznpgk6mzz3xhmtenwmsdu
+X-Stat-Signature: tjk4rgkscyx85dafrhbnhq5wrnd6417y
 X-Rspam-User: 
-X-HE-Tag: 1768538945-248169
-X-HE-Meta: U2FsdGVkX19NpAxxOjddiTLKorjv1yXdq1GhjnlIT0z77jll7ku9b4qNTu0KKcI9GERjaNNtEqjSY1U0eP+GPVeIt1nJQNfzN/1eCudTeEmFcG85tVot9hZEC+gjDy19ac+AJql7VVYa5gfRblV5e8f/85efMq7jgUoPrhD+k1iloYIJFAzqTAnZ1wSQrXu/+IHUtcgxw/EPE5XQROGDopR/c2vCnAvQ1uq9e80xFmzsEH3sjCO9U/fU5m/jTfqOiSRgckuSmMcYY2c9yKb1duPk5+r4s+9Hlx3cfDE57iDdEHjgV8mfkHK+AreI8EfNtnc4/+8Q7xlif25xQ0g/O/D0Hzanp2LRnuo1W+jAzxhOM9EVf34aRdjT0tTtb8Yn6QOC8btxzRZhOWUemezegS3nyPY/S4CiX5LfX2uNmtDAycJmkF3r7QbGmHN/Ws+rvbe1nwzI5XHChD+Hg0EGwiQ3hkDNLQrYVJfp8S9pP04/ThV25Wr/ZKfa6NG+/gbGQYDNjfS4F9DNeUHQkaiTkjNiobKQIcGF3sDkZGwo0RvJqQwpuIlxwjVyqRBUGJIFb8pOOv/kZK6/T7rz59o8JcXleoRirzpgbWCHMct9xpaj/p0oeWU0bwU8by/TpMuzKyYpMe/hIaLOigK0oQF/BVQAjfNoN4sbVisLHEFA+UxtCuEos31LZCEuI0A5Z1RW80Xfb6KznLjRwO9MyfDWBHeZjmFIz0k0nbzjb9t3J+eyg+Fx+Ctj8OzZ1A22r8HPD+3RpEEfY0FxvouDtj06RmziMA2hupmeh3X7wg3nQYVWyHrb8M+xh1w6L/iklarMJQ8xd3jmUKtrt8ED56noBb4bzCUQJDHEdc+o82mf28faZytDqtvtrrk3G7U9eNQwfBC2gkq/2UFuLs546f08mgD9OWSBmkIo2ujYe2mVZ0eLxgny45zODDu718jO5RZgFwE0x/IP4GITzL9npgE
- LIpz7OIB
- NNlTNaBdXxbaT5h5u/cXC5WBCT732YgTwLp+1eWQnrRDUoBtlDl0IjCfvNYhfLmQdcO6QPPtLr1n9mRMOjMR8oVQ4oFawqdnGgj4IvMQ8DuZ69GRYeh3QRZKY49CFdEV+d6VwJudRFWHJUzPWFxFAsAnjvmKodzoNgHkIanINHlOOv+G2LWWYk+yqLIsWvqfYkiPCPslE2gWOJuEy1BUekixetI4TcXvmIj7/jtqdwEfjUyfRjI3v+Cw4EPnA386mTgi4q0zqgL5S+3nPKS7EslIwprnFGQBC2ccJnn9raaO+OUrMOax7Ty7Rug==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: F14F8100003
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768540078-853444
+X-HE-Meta: U2FsdGVkX1/Hi0OLbh2sRUMK8V7YfthiGF3dOxs55GjWN+AvBEW+nL07ODEsl1MDoLiTdxseUB0CFmAyvF96JipoWqIZzIxIpyJFBRgB6KxgYcXVxQCA0aa7Fd5fDjLN/wcM/CRSumeQVOwmmk8YYrbSDC/r5dkXalgZFiiXK/121fmXnMRcvzm/V35psw8vMCew3wmBkT2oWZEbNie1ZeSnWFL473X3xLyrhogtvddovPasDxgmX6j6PwsQJb16AEFDSGrEb5E1i7V/A8bxt1rg3+1xju0foD1vhrB9tsyQJ1rRxuFpOc6haqFUF1+iAvip6c6XIoIOcFeicdvvevVgId5p8qfzvpoJriondc6WcRfS6oasD2zvq6G/ppTdvSRE99nw0iiuGLFthP0U4DwtMsslyCNXdNFQebtfFwlRz47zusnZe3dYANHOMS+RsQgDiPej/7UwXo5w6IAOg+PDBzsLrPdK+jpyjsgoGVCedHUKoPHL2Wyb1z9I66dQKBVrw9hzavrI3hZQauyNP6hUGk3TVOpaa7fwEaFej9pSOo+JJvK4YjLjN21EHyzXZF6wAceAzDDeigEeSfeSZw7OO0AQKbDratCLi8JF6y1zCcyq4Da1gvewZKnl7xm3Rl898LdLeBx+vIVSqLhawfKwu2yXkHHDs7SLBXLDjEoyFn+L6suUyLJjKYPr4JxfzAK2yFyAqGVIH7RL2VygEWhn8D8fM+MJolT5+tTX26cjzPa9xw9TPq07x7rH1meiHpve4VTXYgn/nyAGogc4JNNFWZkI3LwhMotLUnF9ock7WQl6Tpsh81l8FcMFnPikNYoY2HTLrp6u/h4JPMBcBkqHpSdFybF5Yp/p1bQ7cdd6pg5wOaHk1Vq/vzqWVb3WkNPxshIF0Fbn6Fk60g0Dtu2YRkXOz0CdRwGHo/+af4TAfZYDjlp3/y6SEKbFcBMcr27B23qOERaW4yFmAuv
+ eMlIlRvn
+ UQfm2zfpfsIXrerNknFDNtDPBj8IJYQanh5oypSrXGbOWRhi2VU+5bfPwQ2QlFHOxg7QmhooQGvysF9aL+Ul6ZYLp4w8ZyGR5IvtQd6uLPSp4642dmKKFkTgjxROnU95UXxinuadG6rbwpNDC9yuNgAfpA2knAbpWrY9XprlFfIixc+1b48aYJOG72lMqLjLTX65BuFCoZhUyUioh5TggoFbx4OD/V6gsRbH7lMVUPwFlacUnr0JcaEBpNKJRduyRnUIS05QA2PzsZKSkfQ+dw5LmkYak7K4co4GEYcTPkY/XE00b7ESjzmsdL+yRl6r+EVneXD1QdLJ9ejvYzhjV3sWg/uM7e/dt6GYTjvNHZ5zNxGo1SI7S1EwrTzCapoWHFJr13w44gnUnmSUw502u0I8x2G35RwM+yrFMZGF8lN+QQol6fpWjqDeKcNTBk1JIV9NaoiDuPkieD5AqLPFzfDfGzHNrTtQL5LWFnNzt01NNdqfMmtHBTWLdeKRNcCrEbMmai2Rj0BOOyxl3x99M6Is+0zWSv+FIaCCW
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.421421, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,222 +118,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, zsmalloc creates kmem_cache of handles and zspages
-for each pool, which may be suboptimal from the memory usage
-point of view (extra internal fragmentation per pool).  Systems
-that create multiple zsmalloc pools may benefit from shared
-common zsmalloc caches.
+To concisely explain the variables that calculate the time flow in
+kdamond_fn(), we write them as follows:
 
-Make handles and zspages kmem caches global.
+unsigned long ctx->passed_sample_intervals: c.psi
+unsigned long ctx->next_ops_update_sis: c.nui
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Normal:
+[-----------------+---------------+-------------------+----------]
+                c.psi           c.nui
+                  --------------->              next c.nui
+                        if (c.psi >= c.nui) ---------->
+
+Overflow(OF):
+[-----------------+---------------+-------------------+----------]
+                                c.psi               c.nui
+                                  -------------------->
+                                            if (c.psi >= c.nui) ---> OF
+[-----+-----------
+    next c.nui
+
+Overflow(OF) occurred if (c.psi >= next c.nui):
+Overflow may occur as shown above. In this case, re-run kdamond_init_ctx()
+to reinitialize the relevant variables.
+
+Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
 ---
- mm/zsmalloc.c | 95 ++++++++++++++++++++++-----------------------------
- 1 file changed, 40 insertions(+), 55 deletions(-)
+ mm/damon/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 5abb8bc0956a..05ed3539aa1e 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -198,12 +198,13 @@ struct link_free {
- 	};
- };
- 
-+static struct kmem_cache *handle_cachep;
-+static struct kmem_cache *zspage_cachep;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index f9fc0375890a..c4b2831cff89 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2740,6 +2740,11 @@ static int kdamond_fn(void *data)
+ 			if (ctx->ops.update)
+ 				ctx->ops.update(ctx);
+ 			sz_limit = damon_region_sz_limit(ctx);
 +
- struct zs_pool {
- 	const char *name;
- 
- 	struct size_class *size_class[ZS_SIZE_CLASSES];
--	struct kmem_cache *handle_cachep;
--	struct kmem_cache *zspage_cachep;
- 
- 	atomic_long_t pages_allocated;
- 
-@@ -376,60 +377,28 @@ static void init_deferred_free(struct zs_pool *pool) {}
- static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage) {}
- #endif
- 
--static int create_cache(struct zs_pool *pool)
-+static unsigned long cache_alloc_handle(gfp_t gfp)
- {
--	char *name;
--
--	name = kasprintf(GFP_KERNEL, "zs_handle-%s", pool->name);
--	if (!name)
--		return -ENOMEM;
--	pool->handle_cachep = kmem_cache_create(name, ZS_HANDLE_SIZE,
--						0, 0, NULL);
--	kfree(name);
--	if (!pool->handle_cachep)
--		return -EINVAL;
--
--	name = kasprintf(GFP_KERNEL, "zspage-%s", pool->name);
--	if (!name)
--		return -ENOMEM;
--	pool->zspage_cachep = kmem_cache_create(name, sizeof(struct zspage),
--						0, 0, NULL);
--	kfree(name);
--	if (!pool->zspage_cachep) {
--		kmem_cache_destroy(pool->handle_cachep);
--		pool->handle_cachep = NULL;
--		return -EINVAL;
--	}
--
--	return 0;
--}
-+	gfp = gfp & ~(__GFP_HIGHMEM | __GFP_MOVABLE);
- 
--static void destroy_cache(struct zs_pool *pool)
--{
--	kmem_cache_destroy(pool->handle_cachep);
--	kmem_cache_destroy(pool->zspage_cachep);
-+	return (unsigned long)kmem_cache_alloc(handle_cachep, gfp);
- }
- 
--static unsigned long cache_alloc_handle(struct zs_pool *pool, gfp_t gfp)
-+static void cache_free_handle(unsigned long handle)
- {
--	return (unsigned long)kmem_cache_alloc(pool->handle_cachep,
--			gfp & ~(__GFP_HIGHMEM|__GFP_MOVABLE));
-+	kmem_cache_free(handle_cachep, (void *)handle);
- }
- 
--static void cache_free_handle(struct zs_pool *pool, unsigned long handle)
-+static struct zspage *cache_alloc_zspage(gfp_t gfp)
- {
--	kmem_cache_free(pool->handle_cachep, (void *)handle);
--}
-+	gfp = gfp & ~(__GFP_HIGHMEM | __GFP_MOVABLE);
- 
--static struct zspage *cache_alloc_zspage(struct zs_pool *pool, gfp_t flags)
--{
--	return kmem_cache_zalloc(pool->zspage_cachep,
--			flags & ~(__GFP_HIGHMEM|__GFP_MOVABLE));
-+	return kmem_cache_zalloc(zspage_cachep, gfp);
- }
- 
--static void cache_free_zspage(struct zs_pool *pool, struct zspage *zspage)
-+static void cache_free_zspage(struct zspage *zspage)
- {
--	kmem_cache_free(pool->zspage_cachep, zspage);
-+	kmem_cache_free(zspage_cachep, zspage);
- }
- 
- /* class->lock(which owns the handle) synchronizes races */
-@@ -858,7 +827,7 @@ static void __free_zspage(struct zs_pool *pool, struct size_class *class,
- 		zpdesc = next;
- 	} while (zpdesc != NULL);
- 
--	cache_free_zspage(pool, zspage);
-+	cache_free_zspage(zspage);
- 
- 	class_stat_sub(class, ZS_OBJS_ALLOCATED, class->objs_per_zspage);
- 	atomic_long_sub(class->pages_per_zspage, &pool->pages_allocated);
-@@ -971,7 +940,7 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
- {
- 	int i;
- 	struct zpdesc *zpdescs[ZS_MAX_PAGES_PER_ZSPAGE];
--	struct zspage *zspage = cache_alloc_zspage(pool, gfp);
-+	struct zspage *zspage = cache_alloc_zspage(gfp);
- 
- 	if (!zspage)
- 		return NULL;
-@@ -993,7 +962,7 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
- 				zpdesc_dec_zone_page_state(zpdescs[i]);
- 				free_zpdesc(zpdescs[i]);
- 			}
--			cache_free_zspage(pool, zspage);
-+			cache_free_zspage(zspage);
- 			return NULL;
++			/* reinitialize when overflow occurs */
++			if (ctx->passed_sample_intervals >=
++					ctx->next_ops_update_sis)
++				kdamond_init_ctx(ctx);
  		}
- 		__zpdesc_set_zsmalloc(zpdesc);
-@@ -1346,7 +1315,7 @@ unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp,
- 	if (unlikely(size > ZS_MAX_ALLOC_SIZE))
- 		return (unsigned long)ERR_PTR(-ENOSPC);
- 
--	handle = cache_alloc_handle(pool, gfp);
-+	handle = cache_alloc_handle(gfp);
- 	if (!handle)
- 		return (unsigned long)ERR_PTR(-ENOMEM);
- 
-@@ -1370,7 +1339,7 @@ unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp,
- 
- 	zspage = alloc_zspage(pool, class, gfp, nid);
- 	if (!zspage) {
--		cache_free_handle(pool, handle);
-+		cache_free_handle(handle);
- 		return (unsigned long)ERR_PTR(-ENOMEM);
  	}
- 
-@@ -1450,7 +1419,7 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
- 		free_zspage(pool, class, zspage);
- 
- 	spin_unlock(&class->lock);
--	cache_free_handle(pool, handle);
-+	cache_free_handle(handle);
- }
- EXPORT_SYMBOL_GPL(zs_free);
- 
-@@ -2112,9 +2081,6 @@ struct zs_pool *zs_create_pool(const char *name)
- 	if (!pool->name)
- 		goto err;
- 
--	if (create_cache(pool))
--		goto err;
--
- 	/*
- 	 * Iterate reversely, because, size of size_class that we want to use
- 	 * for merging should be larger or equal to current size.
-@@ -2236,7 +2202,6 @@ void zs_destroy_pool(struct zs_pool *pool)
- 		kfree(class);
- 	}
- 
--	destroy_cache(pool);
- 	kfree(pool->name);
- 	kfree(pool);
- }
-@@ -2246,10 +2211,28 @@ static int __init zs_init(void)
- {
- 	int rc __maybe_unused;
- 
-+	handle_cachep = kmem_cache_create("zs_handle", ZS_HANDLE_SIZE, 0, 0,
-+					  NULL);
-+	if (!handle_cachep)
-+		return -ENOMEM;
-+
-+	zspage_cachep = kmem_cache_create("zspage", sizeof(struct zspage), 0,
-+					  0, NULL);
-+	if (!zspage_cachep) {
-+		kmem_cache_destroy(handle_cachep);
-+		handle_cachep = NULL;
-+		return -ENOMEM;
-+	}
-+
- #ifdef CONFIG_COMPACTION
- 	rc = set_movable_ops(&zsmalloc_mops, PGTY_zsmalloc);
--	if (rc)
-+	if (rc) {
-+		kmem_cache_destroy(zspage_cachep);
-+		kmem_cache_destroy(handle_cachep);
-+		zspage_cachep = NULL;
-+		handle_cachep = NULL;
- 		return rc;
-+	}
- #endif
- 	zs_stat_init();
- 	return 0;
-@@ -2261,6 +2244,8 @@ static void __exit zs_exit(void)
- 	set_movable_ops(NULL, PGTY_zsmalloc);
- #endif
- 	zs_stat_exit();
-+	kmem_cache_destroy(zspage_cachep);
-+	kmem_cache_destroy(handle_cachep);
- }
- 
- module_init(zs_init);
--- 
-2.52.0.457.g6b5491de43-goog
+ done:
+--
+2.43.0
 
 
