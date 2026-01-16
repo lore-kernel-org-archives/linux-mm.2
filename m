@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9AAD4A5E6
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 01:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07043D4A5E4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 01:54:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 117CB6B0005; Thu, 15 Jan 2026 20:39:51 -0500 (EST)
+	id 5FD4A6B0005; Thu, 15 Jan 2026 20:54:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C5C66B0088; Thu, 15 Jan 2026 20:39:51 -0500 (EST)
+	id 5AA9A6B0088; Thu, 15 Jan 2026 20:54:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F14396B0089; Thu, 15 Jan 2026 20:39:50 -0500 (EST)
+	id 4B6AB6B0089; Thu, 15 Jan 2026 20:54:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD63B6B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:39:50 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6484813B210
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:39:50 +0000 (UTC)
-X-FDA: 84336120540.26.F4328E1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 387586B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:54:26 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8D3B13B212
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:54:25 +0000 (UTC)
+X-FDA: 84336157290.03.0395B28
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AD10B40007
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:39:48 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IO46qOxp;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768527588; a=rsa-sha256;
-	cv=none;
-	b=pWirR+63jZVkracIqftR5ePr50KYY3rU97xWFHZ1HYci9ewK4vmdNqpqPbp19GvWRTBKIN
-	Nr3BjpAgsRZZcwQxH07wKgRdrutIGZs/mdRPx1My+5pNBp3w9eebVqs0NT6B2xUMtd7W8T
-	xOjGLyaQz0LgGoaDtsz76WVX42VxurU=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IO46qOxp;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 36F6540009
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:54:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kkaArhLT;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768527588;
+	s=arc-20220608; t=1768528464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wagRFh8zMEEOySKPXbn/pSsjsMIjnEMxAV9//1mvHBM=;
-	b=ASMp4TBOFgp1DZbEg/ZKGj7L0FLNW9lQHx1Opu3Luip0bdSAmmJKUm71u97gpCQvkbb/Ok
-	lBzAvX6C1ZUTRaTwQvxfx9TwgK2zHlW7spnNlkffw3u09nc5L/GsqO/9OS328BvECd2IuC
-	QIxnkO10B3sxqZI8UopXW/Ux4fkylAY=
+	bh=yzZHisbnFyhpjYl5GAKOtWBxY+PeUf3CDlz1zEe70EM=;
+	b=uZBsSRpq/+RIKbR64Um+/SVSrS8aaqQmEdpY6Oq7oR0bkF/Ww6fD8aGkEhEyUmMq5vThZL
+	jEENgNmpASb+6FJmz0ccT+bg4FhNmZAvCQZItJfFoSQIKiGPs5RiTlPNGQMW2mYoA1E0jc
+	WM0mM5CzrfnhNLP20iqsBlISGOnVxs8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kkaArhLT;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768528464; a=rsa-sha256;
+	cv=none;
+	b=iIXhy8N0s4vPlITenSW3B8zzNX+C+QRH76xIUqNqaWZLjJCswd6H6Ne4T52jHeH60s+2uh
+	zjJpvgcCCPMO/NXlQcKDCSLSYXiA1CEjry+8wwXhXDoEU3eUh8Kxy6Fk3gzKr/9eVrgPF+
+	c8YB3Z2HWD47NTvn72Mchgp/Tt7hrjo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8AF14440EA;
-	Fri, 16 Jan 2026 01:39:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EDFC116D0;
-	Fri, 16 Jan 2026 01:39:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 404B040919;
+	Fri, 16 Jan 2026 01:54:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE36C116D0;
+	Fri, 16 Jan 2026 01:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768527587;
-	bh=82eNo2ktX6tFblTMXptqgcZVGgL/M43Bb4N1IqpG96U=;
+	s=k20201202; t=1768528463;
+	bh=E3VHf3jps9JywfKsABhLUkLhWni3+c+9qdgoykGsHz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IO46qOxpPTKW3OjU/Ekhv9YjvIsBitQhXx3/seRIzjz1YcrjQ8AiCpO6gXhXcV5X2
-	 q+DLVYchsL69T4G9dAknQ5KfYuIgMr8oUXPuxkm9kU5ADKf1bU8gXkVNovkkcSq0uT
-	 sjoW8ZTnlMJIn6VS4RZ5BeHkIkpAgdpxuzi96Zx+pKOc0+EVuFpZeS47a+9RGivKiL
-	 Oa8DwmgPl4+tXehH6K1RzkHLchxlsI34Nr5BAKiJgC/q2NkB0wS8beYuGXRULqvSZm
-	 d3X3tBbDtRJUofSPCxtwkd0LMk9YmKAPXQJqtuj9nz2Pjt3hUScIQJQgLOui2qNx99
-	 n25Pr77VJbNJA==
+	b=kkaArhLTj4B2/MOE8w/J3+qf/M+KLOQRfQskHWPwtN+LgB/6eGNx986/0paN180VE
+	 9hGa+Jjmqn+3v061l6QAXsL5wqZWfQy9NJ1/XXwHNrXROaCOwBa2xM0Xmb9YPoV6Yt
+	 VSYAjMG/r3wNWMMn8eRx1r3X965QPNyqRTzE0TNp5XOotlXzDO7JN2MPi+T+YkU5qS
+	 SR2KsFhq1+1Ysoa/6RqoIzA85M6GmRYdqmgmK6bMBTZAloLL77YHzE4PtAdigYyZeN
+	 uun/yYwdZM3DF/AMCz0mPvrteQRON4EJT9eIDwowkLKPo78qBhvYVpsurUVSL9+IU4
+	 ovw/uHagOtbGw==
 From: SeongJae Park <sj@kernel.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Cc: SeongJae Park <sj@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
 	Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] mm/hugetlb: Remove unnecessary if condition
-Date: Thu, 15 Jan 2026 17:39:39 -0800
-Message-ID: <20260116013940.71199-1-sj@kernel.org>
+Subject: Re: [PATCH 3/3] mm/hugetlb: Enforce brace style
+Date: Thu, 15 Jan 2026 17:54:14 -0800
+Message-ID: <20260116015415.71492-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260115181438.223620-3-joshua.hahnjy@gmail.com>
+In-Reply-To: <63201bd0-4375-48d3-8955-5925221ae241@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rc9gac9wwbzari6359j7yfptc8ew1thc
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AD10B40007
+X-Rspamd-Queue-Id: 36F6540009
+X-Stat-Signature: 6m78fo4jxsqi8fkkwsoj75jgywiosmsi
 X-Rspam-User: 
-X-HE-Tag: 1768527588-442057
-X-HE-Meta: U2FsdGVkX18UH7US0gQ1VHIx1eAEdd4fzMChLmW7137DGPrLpINs7lp6RJQgm8ZkmSoFUJgYgKydzp8ahIYBWg9Nfwe40XdyK/pdAdMAtfpysOaNT0vZjg1gUkQSADjlYdk7hxTKNOBzYig+WrV4XaYrs+dVWhBanvoT0eYn/nXPH4oT+dSkoVZNV98S59GBo3JQ28kd4aHW+Z+oyUDVaPfV4dYKINQUETQ7tx7zoJnNyJeLnstC+p4ZX80Nqc74SBWBjOzgAl+m8j89/Tn/ojEbJTBILxBGu5lv2NPAZC14I8z5oZpl2y3gvAC/wL8FhXP/ioyzGKr65mUpApmEkkagoI+rfaNtSiVMmw1eu0IwKflVB/xvzYAoAIbENVJ7yAo5m19XeRxupzO+ncsQW9RBiZVtD26CeeWVusF2q82t96n6qoStmczwJdqHyBRYOAEUy/ifiW5/thEJwPRzYJeeqNf2MtH8a9xZcVtO5mo7kUnWAwuORFlnalvcV3bWXN8rwG3e2BbgoOOCKvJO1CA+1PcCApMmKjUba9cMeSESwe6GWLUVJeOcDm0rVf82Uz4Kt1Hi4454Z56+9FZh55ymJprS4j0OLDc/CkwWo9UIVCCOspq1wM0CqNm/n2ev50a7OThk2MvlhqZu6OJatuFu7+b+VL1cqx+ybYM2E48oLVNyB99p+0nOxLn5TWDjuyNtPyknwx2+cmEN2iNxPGHPZhpdaWOTQi1/NKOjBuQ5bEsNsENInayx3VVO+9l7hFxkDmk2fxJSjHq1uAqf6GMVb6bQYVX8mkuMmbPhKYxpwoozwFprTHGA5sQdL0MS4avQm5oCIuY0VNwhDVywm2k9g8EM263ILum8SMIMiK3MbQZfTTWihbOvkr3GV8x1adk8BM4CjqiTsZm5gYyUnnYNJ4NNYsDQbfvTw3RRQp/pe74kNZfhgfLaeWgq6yeu0mjYtz/oFgTmRb4P/Pj
- qztR4ym1
- DklA8+BZaQpTlkPFUcmslhLjK2IUDodwCBI1zxuONPu3sZf00ggw9yDTCc9r1IkFnqODGxldNR065pWhKlZJS1UTO6JzWJrzT6KfQDRDzs25F9lBT5CCC+7oT3NQDkzpmYTheiBfNxwVmeqWTT5GEy2YmgYK7A+EsdelVnclns1i605kaVR6TRQdZ7nDqkSmepQfuJOurbgcRaftRebH4j1RrOI3pZJ4lPU6Q6jyY4OmDwbgSWK1amlAhjHLIky6AGzXklGhmEcNXfrCieRjHqRNMjMU71HcbaTVDWzsotaqFjHTPq0Wr6v98MgSch6yyLXXrMWJe5SL6qVg=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768528464-216435
+X-HE-Meta: U2FsdGVkX1/AQXd8A0yhZztkOIlMIsy8Avs6eMRVDks43/+L/buKHJTB5zIeTIhlnmGSZ6Tgs52RVONvIU6leniPtr8qctJAzszzMsX3wBk4D1tbsz6tD67cBPsSq3G+cW6BtVM18e0BYNbw4PO7muR6Fqh1PXIy9GTcZYu0aEKfQujUYh3fnwWu9Atsv0OtAVpeCEuxTXLxterQwu6SKowT5ZfRSGniZQMTE/ktDVihI7Tiq8NYuyEPUWRHO+URvD34Dg1k5amijras3tzLOe2U1R4MNOrGnXtzdEzT0Y4tPiGpPiPO/f4sPcxIBXI/pGsfVu81ZkLjDHVpvfv+olpCDTi8GSTRdqE2BtDywz40iyP+rbfOLSjEVVKzLLGTU0ff6sydCBnemh9xyzJKNaq0dkvBWRHwNOkHADUal5fK5bJaF28UoHrM/vUdk/dQN8sqhhxln9//NMMw4PEvFxxu3wactkXK8sn/u3Vjz1/x4vtubZgSXFas8jy6kaD/0e/h6llXAtNLWrLlxgJVNhwCyR3sdIPLdOqbm1L25BXtBuc6evKb9zjZS5cqIv0ZXm9iTwpxdfe0BplDvKXKK3Mz+xA7U7kC18IVWOO166Lh5Oi70ZgL0yd/1/A4SFrZ0gdQisPfxBN61aGtYwNmU1WQy8kQoM9QFLXuzV2+RkjslQiDGHmpqyPCCgTVj5AePgL0fW9RcIdiYSpUFY1yJiZvKCSSzEqyj9LsKGy587hNqQquhbSHh8xOJKT+ghj4riz8WIgN3vPz0jn6voC1+cJIJkEiTygWjgKhRIgvP/LbCXDXGU2qtA3KANAXn1qeeQomNzaSUYjFtd37R0SqCiw+gYcUhTO3TxbOfQT1Leg6keK5RjyJPXVlfsQSHKlx5PX3IPZeSi3aF8T1swPC4ScC9UcFn1JsnA2pFvYbs8pm9C4LWgJYp8ZcJooTTmEPQpJBZzF5uz5C8wWcbwC
+ K22Wn/VN
+ ApJ+g6/woubOX5TE+IO7weF7EnEAlmQtuYGFpxKyTXIxHp2Ic2cb0kIrp1fXFmuv3uoZjCKjv16y14T0Ff6XgB4CQTvkD5814SKV3IYC1pX8TVxLTzM14gZ1Dze4GIRxsBXBB6z/RBvbjJOZRjlRO39g0249b3lzEETWPdYKY9SKYkjiEDWYbvjnf6eIl2pLkvAlaFNACEhwtwOUQAruqJl0VH++zxfUFoakTmH4BYCKfmfuk5NqpD3wFLsxpjkuZtkF8mWnL+UvnS3pcW2huECi6u7K8srEFSFwft1OBBYFeDsTSR+HiW+7vBABc9/rM2CDLFU/fg+lHP2s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,59 +96,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 13:14:36 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Thu, 15 Jan 2026 22:16:12 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
 
-> if (map_chg) is always true, since it is nested in another if statement
-> which checks for it already. Remove the check and un-indent for readability.
-> 
-> if (unlikely(map_chg == MAP_CHG_NEEDED && retval == 0)) {
-> 	...
-> 
-> 	if (map_chg) {
-> 		...
-> 	}
-> }
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> On 1/15/26 22:14, Joshua Hahn wrote:
+> > On Thu, 15 Jan 2026 21:10:41 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+> > 
+> >> On 1/15/26 19:14, Joshua Hahn wrote:
+> >>> Documentation/process/coding-style.rst explicitly notes that if only one
+> >>> branch of a conditional statement is a single statement, braces should
+> >>> be used in both branches. Enforce this in mm/hugetlb.c.
+> >>>
+> >>> No functional change intended.
+> >>>
+> >>> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> >>> ---
+> >>
+> >> [...]
+> >>
+> >>>    		update_and_free_hugetlb_folio(h, folio, false);
+> >>>    		return rc;
+> >>> @@ -2672,11 +2675,13 @@ void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
+> >>>    				 * be consumed on a subsequent allocation.
+> >>>    				 */
+> >>>    				folio_set_hugetlb_restore_reserve(folio);
+> >>> -		} else
+> >>> +		} else {
+> >>>    			/*
+> >>>    			 * No reservation present, do nothing
+> >>>    			 */
+> >>>    			 vma_end_reservation(h, vma, address);
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+                                ^ The space here seems unnecessary?
 
-> ---
->  mm/hugetlb.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
+> >>> +
+> >>
+> >> But why the empty line? :)
+> > 
+> > Hello David,
+> > 
+> > Whoops, I totally forgot to run checkpatch on this one. I think Andrew
+> > also noticed this, he sent a fixlet for it. Sorry for this! I'll fix it up
+> > in v2.
 > 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 88b9e997c9da..432a5054ca1d 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3019,13 +3019,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->  
->  			rsv_adjust = hugepage_subpool_put_pages(spool, 1);
->  			hugetlb_acct_memory(h, -rsv_adjust);
-> -			if (map_chg) {
-> -				spin_lock_irq(&hugetlb_lock);
-> -				hugetlb_cgroup_uncharge_folio_rsvd(
-> -				    hstate_index(h), pages_per_huge_page(h),
-> -				    folio);
-> -				spin_unlock_irq(&hugetlb_lock);
-> -			}
-> +			spin_lock_irq(&hugetlb_lock);
-> +			hugetlb_cgroup_uncharge_folio_rsvd(
-> +			    hstate_index(h), pages_per_huge_page(h),
-> +			    folio);
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> 
+> with that ;)
 
-Nit.  Good chance to reduce one more line by putting 'folio' on the upper line?
+Regardless of my finding, but assuming you will fix David's finding ;) please
+feel free to add below to the v2.
 
-> +			spin_unlock_irq(&hugetlb_lock);
->  		}
->  	}
->  
-> -- 
-> 2.47.3
+Reviewed-by: SeongJae PArk <sj@kernel.org>
 
 
 Thanks,
 SJ
+
+[...]
 
