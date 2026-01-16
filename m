@@ -4,120 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48AC7C982D4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23267C982D4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:07:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B18D16B0093; Fri, 16 Jan 2026 10:58:22 -0500 (EST)
+	id 558FF6B0098; Fri, 16 Jan 2026 11:07:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF60D6B0098; Fri, 16 Jan 2026 10:58:22 -0500 (EST)
+	id 4F3BC6B0099; Fri, 16 Jan 2026 11:07:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0F8F6B0099; Fri, 16 Jan 2026 10:58:22 -0500 (EST)
+	id 3B3BF6B009D; Fri, 16 Jan 2026 11:07:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 89FAF6B0093
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:58:22 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1E525140184
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:58:22 +0000 (UTC)
-X-FDA: 84338284044.03.3113FFB
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3548B140011
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:58:20 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	spf=pass (imf23.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768579100; a=rsa-sha256;
-	cv=none;
-	b=HnfARmXM0PqVGbIex6jTeff9LvgNauaym9ThfG9e9P2stmOG2OwYWRTp+pHoEuLjrYvM+K
-	QUbDxtDd9wYcdfYwk2RdefhsEi9oaefJ0naT3xjcNN1X64bJS1A25ILC/BmjqB/9okAGtC
-	PiNA0mnaBue+M7xWRVLPAUP4JMZw5u0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 284466B0098
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:07:15 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1CDEC0A65
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:07:14 +0000 (UTC)
+X-FDA: 84338306388.20.08959F7
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 59A4E100018
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:07:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768579100;
+	s=arc-20220608; t=1768579632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=pvIuhV9+sNv3iCssx0o0Pe32iUx/gKwQFY7jwtHcvQU=;
-	b=5UuDsEpmppZcq+igXQJD/iCbp0BFyqy7pvlvRVydvRJGmoMhNXMdUxeDpawy0a3P8RRvi1
-	U1ieDhzIhHk/QNwuxJRzVeZWC3NgL9N2bwD2r76DhDj+/5iIyzTunO43L4ukMQyqQDrwEm
-	EVr6G09eEtNAUnkwk4aBADLoe0Kh1js=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8908f5ed4aeso22141216d6.3
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:58:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768579099; x=1769183899;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pvIuhV9+sNv3iCssx0o0Pe32iUx/gKwQFY7jwtHcvQU=;
-        b=B7pUzwY4/rOJYGwDtGuJleYuzZ/4nldjHdEYzVajnyOjQJ+xcjLE1pQQngDULXvAms
-         3ugILULus4hLseYhjORXjrdbUOoSNtMTmGQYzAzBF2fLZCXPWSZSWvRSkytPmWA+vmzc
-         H+sIi6tMoDLLgF9GEs+VH/4Fpf6axWDLz3Zxy8ODLtcLJQ4RYPiuwIifwG50x4Ll0sDr
-         0YgJcT7hAmdqKA/+p207bZzof6DB94JFmssp0rJEXNTPbigYBXTFEOWkLforkp4GdqLJ
-         F3VhfoaOHZQbFd8biW2aIdVOZwDXG+xu5VXG+Ppo9LnVoi6qn9KqsyBjqBLWHpqfF37h
-         5DRg==
-X-Forwarded-Encrypted: i=1; AJvYcCXwoJ/uL42Ihm9+PnVctAgYkhpJKBv0bKypD8B1fp9B4RpMpO1YneH3eZnmlpGWNupzsMT015+BTQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy7dJNcNyj0L7gSIjKd7ccmc213ibbORt1abguNQf5cLcmNmQBl
-	eq0ua6RLP0LWloN0883EVh1M+ie4VD2EM2IqGzIjqTOklNCVWMpV8sqjma2Mdw==
-X-Gm-Gg: AY/fxX6Y5q1kQzJaRTGEC38Xm4cdNSk8hGxN4+vLGirAHRC9fQ5jLSTsYO6TvgDICO+
-	b86RT9Pk+JEm9oyq3wj+Qk3RYSxX9s9qyQaHceiXY/z8uHDOPiFkA4wUjQ6YLuaRT9PTuwgU8B3
-	ZcDJIvPbhwMlbeDjJ1ROO2UuP5GXioDafJcIgRAAEs8gBUWk6zZOP97ct3SBWN+Vc9dTwm4UTjT
-	TLQ41UN7azLj20RCcCBO97PCbE93xsq68BWr5SL86Et1y9U0n9BXRvlKIaMofQyTNguFBOOowvs
-	ypU9X/m9lohE86x/DqNNya+ITMEEqziLkgPs/M+31Jo/vop8beYKF85wSBvdFJQInwRRHakxiPk
-	7mitAQ1nFzVSuk/epbcCtaddfpXoPiHLlwSKByg9hiMT9WlvdqItQDdzdDqGMOsjfEPs2j0dqkl
-	/6yQ==
-X-Received: by 2002:a4a:bb17:0:b0:661:1cbc:45c2 with SMTP id 006d021491bc7-6611cbc4928mr409451eaf.16.1768572623144;
-        Fri, 16 Jan 2026 06:10:23 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:57::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-661186dc702sm1263388eaf.6.2026.01.16.06.10.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 06:10:22 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 16 Jan 2026 06:10:11 -0800
-Subject: [PATCH] mm/kfence: fix potential deadlock in reboot notifier
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c7Vh2c/n2mDZGXXGDz0nxbDwSrlvvd34frJi0zzgXSw=;
+	b=XVSmIjJeuHJTKqhezKX9svEImY3i/pm//QWwV5gTDr9cJE1Ad5hoJUh7oih+BErOW17KNV
+	Np5UmW8EfXfDNPg9juIDRBK+LQLggGWBeWajkg8Eir/j7oMu2cZvpqDRv3VJN5z3Q+rjIZ
+	wJORD6czzwH8k180Q8rXisvvFWocHnw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768579632; a=rsa-sha256;
+	cv=none;
+	b=gb2/7HMsao3I35DbW1Af8D7ebampXCSLHRZQwVK0WIrRbeBzkQjQD1GrMrENL6djNuvuVJ
+	b8Rp8YDPOO6/P3/eOLQ2fFgBhNhmdFlT0Nr0ssklZ7Z2z7wUNXXowyynas64B4oO8oEqvg
+	im3wqv3LUNYDUd1PP43kH86i6bjfjL0=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B10535BE17;
+	Fri, 16 Jan 2026 16:07:10 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 53CDC3EA63;
+	Fri, 16 Jan 2026 16:07:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ympjEi5iamn6TgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 16:07:10 +0000
+Message-ID: <ed6ca250-67ee-4f7a-bc3b-66169494549a@suse.cz>
+Date: Fri, 16 Jan 2026 17:07:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Content-Language: en-US
+To: Francois Dugast <francois.dugast@intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
+ Zi Yan <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin
+ <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Balbir Singh <balbirs@nvidia.com>,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
+References: <20260116111325.1736137-1-francois.dugast@intel.com>
+ <20260116111325.1736137-2-francois.dugast@intel.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260116111325.1736137-2-francois.dugast@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-kfence_fix-v1-1-4165a055933f@debian.org>
-X-B4-Tracking: v=1; b=H4sIAMNGamkC/yXMQQqDMBAF0KsMf20gCa3UXEWk1OmkHYUoiS2Ce
- PeiXb7N21AkqxQE2pDlq0WnhECuIvD7kV5i9IlA8NbX1rnajFESyz3qaprGXnt/u0THjIowZ4m
- 6nlnb/V0+/SC8HAP2/QeVxSfzbgAAAA==
-X-Change-ID: 20260116-kfence_fix-9905b284f1cc
-To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
- Dmitry Vyukov <dvyukov@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, clm@meta.com, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3280; i=leitao@debian.org;
- h=from:subject:message-id; bh=6c0reEst+EIZA2PaSJbeOygkyAUIcKW0sGGQ6IOzV48=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpakbN6YhptWCcXUtZJrdJi0Sq9v6y2NypuVlhA
- yll/P7R01+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaWpGzQAKCRA1o5Of/Hh3
- bbf8D/4oIWJVhIsaxEVusMGtLueC27JQrU8Qczg0pBer7m8PD7bV1s+HYYH5xxfhf8jnL+fwFX/
- Y5UKCbWen/HKE7lnSDIjQRFp/XpFIWYk9cMBu1/yItTsV0deSxajEFTHSHlBvGREXJ2gfntDAVN
- pJ3sXJrRxGeKsW0ElHzjSOFrwKeYpDHPMb4s0aXMOThEUZYboel+XK+nB1ulTaP+FkFlBiyMcM2
- hQG6b7KGmqi7hMUdiHUDm4k9nfdNECUObvqOdVyiJ8NOLs5GwyiIFMWvEjxMzHUTTB7a3IyeIce
- oK6u/BNhCT5AMpJf+QHz7DTQO2WfSJOb9rXCqe+7B5x+WiOQDWH1AyNVpLDVm8jo+LYFma+XwKN
- xCOUE9yJlAItKA3dOqNKhYhmgRJlJdRgNlEj2gU4sD3R1IsB4rBx6HLaVWgYYKe8ZAxGPNVE+3q
- KlF6sEG3hSFkc6foQrKPjVbFGqfcwh5yvRjUJ/k2CzRAA5vWGwRXkDcOSiAgFXbi+BW9WeNJMGO
- R+ntiHljO8OBuvxiDFIbPQPYiAPZaOLsgkxsMZl3ySAaavBcVryqykSbLsbyVGVsonEY83pEhoh
- mX9DqV2Q/qGcKbYsBMsGNxYlhe5beqgS7pyFd8rsBc62nZ/tf8S/piARqgtqyC6Mioj3jg3I9rx
- phWuOGd9v3zpcWw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3548B140011
-X-Stat-Signature: yzp6wzurnipe7fan8hkc6dkuuxxwx59d
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1768579100-12964
-X-HE-Meta: U2FsdGVkX1+6WYdH17It5PDCC5NVvYImAY+Xny7UlvbXOSmBGTnopTOIRvn1H/LU4bFbhYoK7HpWjk0phu1gcssd7Gp2sWUJeg2ncwh1DEYGtOR6vOBg9mO42Q2LDLiBbb6BCE+dAaOPl5m+xt8mkl1EhQoWpLC2njgAAkTxjSZLovPiVq+FRpKmbRz4fcYGs4Ta++LFtXmehrt+1ultxdMFmd5QQL6RsoqWWs3tJpMGqn0ayNGeoC0KdD1MIesKx8JiQb59prAdEpqvlprgRVFzGVO2rXJynmUuH7w14pyZ8eezPLFQldkJbgFqDTf4iAUmcvnggUbgvJ+rB2y9MV6y2j0CLGXh6sjpVnLGDk5/koxyluDyojbNELQaiV64mlyxhXiNzLAkga3lpbZXTNHakyvcnZnGhm3LncmwzQ+yG7TqsVkGwUgR1ZAMEX+mdnr/nnnHborK9P2xNCpAiy67km4mxlvQoNxnQwb1/WCOrKCiq+ZRh5RO/Wf90V3WgW9DcvRWKAxO+QYKgArpND3+tL84U0nXcSF2ZAlx2OKYMRXVtUiE+Tmkz2313hSzNQT19YxPszqn2oTmCXSWZNN7mmX6AUoBiBTDBJXiq4XP5mI0zFJBRJypLgTUewd2mc59oBM+kmMG2Tyn1PXe/lzY1+Hq8GEAbFFAEH7v0V8Cjn4bP/pWU+WB4LhH53R9HSA56USiSIP6A93IuqRZrECKz0lortXmQq3WFX+OV1Dfu5qV+4b82/Yv0PRjqTphuOcIEkm3EqIyc4CB5zvpO08/vgoO1E5UNxfm0ol2AH9KW39bqxrQX0xzlBZHF0Az3LXku7xf1OsDqmMnxwVHU4tf61MjiBi8VHreq8lfBiONh7TWFp4WF4Rw0HQ8ts93p5F4axRY3dbKZ7/3w889lW/MEJkjPVe9RCtTpV+k+ZleKqruOdvEpZlV7CvlcSvnUwNZ+I7CnaOSBalW0fh
- 0vAtp03r
- 2hCm/gdH8SS+mAtUp8n0uHt08+YDDSqvU/tFJhKdnmrDsSfnZCwl2/nVg+c2JNY4epKfvnxL5teMcez8PG+WTFJHiU/dk1OWpqcuPxIKXVqDkM6OukgCWGOBcNi8NRSY0Ri8OeB1xdIzRbDU+AIkyLEqPH3SH4+QrA2N0yK1EHQjERb6JlH9v79nDcMjeKuqEelOkpKvOgpf7aUvyLP4fO/IKcIqO6SMVhluXtq+tHpBe6tytAfKsYRoxYSJrQpGR1QEkMAW/Y9k48kLr+yi+sJ9MTQScmVVSs0Chlz1ey+sYBMUeFdwG049k4SYpLV1Zbb36Eylqs5jKaXDvkLP72tCyjO8c8AFWGAXdV5H+8HgfLU+KjDJ/yvAjshtnZFN8EmBNTzUkxNzKp+wN22x9El9DObqCNSJNVKJDyy1HfrscMiMtKg0TSzI/EmRyANrewTp+99wtnnmQXTjVkqiUoGLX+wg/st7bVnQVD5uED9nranFPBrX4J67Jrw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 59A4E100018
+X-Stat-Signature: wjyoc9fm6o8jfbn13rboug8ipujbk3yj
+X-HE-Tag: 1768579632-408432
+X-HE-Meta: U2FsdGVkX1/hxh6RMNhDC3x3UTTMwc41wHAK3wO0Asti29Pa+kr9iZzIQ2lVDdY5wPBPmESbiRtPRfr4QErJSRDRfXvAXhP+AF8tdKu1zKZ8xChVNthcDChR9T36+euTP8qvglB4NLh6dbLYfyPAufDSUiYbrixPQwDVN1cWdHD24O096byeczU7BZG7mEOaYk5viIN93IrlL7DwMPbseL3Bx5F9+KKTNiewbbh8K9emwnQiAZgAEwdWIdFVcfBbHI+09CT6XtCH8gnjOGq0hOFeek9WX51wGJuTxGr7+K95Ju8OAe8I3/ma4r4yVBoTAsr2g4J172MUVljCN/+S98jPI1l9X1pLkq1XxqInDFJu8TLqR3AjRlUJ3nx5U1F2SyQuZnhbLjULUYXdkGIE2cfpXPjjSvj1g5oOTZ7DdH3+iYm2xzJEs6zobq01ekhbaO8psU1oov9vV4Oqrqpx1oFr6AkgB+Eyp+Z2IfCQ0+tfRzWyWyYN7cG1CX9ojBLbS8stl0QimE8D03r7XwhuUUeHzjfljJNE7SVlMs/ePRbW5p6vYbOajkmnF9cnT2zVphvdhlfAJuxYDo+pcOBtKO+KUqs1UHRAJKp8vOO8jMP5ARLF3dTeC/yPeuLXRfpYoxLYJT1JnjmoyrPN5AI/xhd8scOl5iL5cC3ikzm1bC6mVXXjlcwsj3KX8j3ucQjzVhIpRkpWk/b/LGNiK37fAuD9dMlzvEMAP7wA+Ma9c2Ws5W0Y8Quo9RlwEfIEKKqXkMe0nm9cIUtaXbfCsLTBwINFBqX6ngN2wY9V6gseYs0qGkiMq4KZpcm7zd4pfqq9gj8H9WGtfUziGOXEfScS3S9nVLoZTip3eNXOu4nrVcPC8JRcC6VdSIsge9vpA4O0hNAngSsOFswXab/Px346NNKUy1S3398sZ5OGFtYvUbE3V8WPEP5BX3QGf9n4NiX7YQtlj7bj7JEa6bKp9bh
+ BwOO5eFv
+ ZfR/EhesijQ1kq/9JucLIwWYcTxJI/XM0hQN1nXRXQRho+vX9QD5ApAE2cTC+GYkqjaE9gOVsWOWldqSs1ez4MCFD9votI0ouIwn1hc/KOvZ7j0QdUvBxrED6Y4mRhQvOh+lh1GnPRguO8vkmKuS+eS38PpkymiodbcMLhKlsyI/r+md6KbJ1AfwkiSgIW+gy4RaU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,91 +162,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The reboot notifier callback can deadlock when calling
-cancel_delayed_work_sync() if toggle_allocation_gate() is blocked
-in wait_event_idle() waiting for allocations, that might not happen on
-shutdown path.
+On 1/16/26 12:10, Francois Dugast wrote:
+> From: Matthew Brost <matthew.brost@intel.com>
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 63c6ab4fdf08..ac7be07e3361 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -477,10 +477,43 @@ void free_zone_device_folio(struct folio *folio)
+>  	}
+>  }
+>  
+> -void zone_device_page_init(struct page *page, unsigned int order)
+> +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> +			   unsigned int order)
+>  {
+> +	struct page *new_page = page;
+> +	unsigned int i;
+> +
+>  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+>  
+> +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
+> +		struct folio *new_folio = (struct folio *)new_page;
+> +
+> +		/*
+> +		 * new_page could have been part of previous higher order folio
+> +		 * which encodes the order, in page + 1, in the flags bits. We
+> +		 * blindly clear bits which could have set my order field here,
+> +		 * including page head.
+> +		 */
+> +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
+> +
+> +#ifdef NR_PAGES_IN_LARGE_FOLIO
+> +		/*
+> +		 * This pointer math looks odd, but new_page could have been
+> +		 * part of a previous higher order folio, which sets _nr_pages
+> +		 * in page + 1 (new_page). Therefore, we use pointer casting to
+> +		 * correctly locate the _nr_pages bits within new_page which
+> +		 * could have modified by previous higher order folio.
+> +		 */
+> +		((struct folio *)(new_page - 1))->_nr_pages = 0;
+> +#endif
+> +
+> +		new_folio->mapping = NULL;
+> +		new_folio->pgmap = pgmap;	/* Also clear compound head */
+> +		new_folio->share = 0;   /* fsdax only, unused for device private */
+> +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
+> +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
+> +	}
+> +
+>  	/*
+>  	 * Drivers shouldn't be allocating pages after calling
+>  	 * memunmap_pages().
 
-The issue is that cancel_delayed_work_sync() waits for the work to
-complete, but the work is waiting for kfence_allocation_gate > 0
-which requires allocations to happen (each allocation is increated by 1)
-- allocations that may have stopped during shutdown.
-
-Fix this by:
-1. Using cancel_delayed_work() (non-sync) to avoid blocking. Now the
-   callback succeeds and return.
-2. Adding wake_up() to unblock any waiting toggle_allocation_gate()
-3. Adding !kfence_enabled to the wait condition so the wake succeeds
-
-The static_branch_disable() IPI will still execute after the wake,
-but at this early point in shutdown (reboot notifier runs with
-INT_MAX priority), the system is still functional and CPUs can
-respond to IPIs.
-
-Reported-by: Chris Mason <clm@meta.com>
-Closes: https://lore.kernel.org/all/20260113140234.677117-1-clm@meta.com/
-Fixes: ce2bba89566b ("mm/kfence: add reboot notifier to disable KFENCE on shutdown")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- mm/kfence/core.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 577a1699c553..da0f5b6f5744 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -823,6 +823,9 @@ static struct notifier_block kfence_check_canary_notifier = {
- static struct delayed_work kfence_timer;
- 
- #ifdef CONFIG_KFENCE_STATIC_KEYS
-+/* Wait queue to wake up allocation-gate timer task. */
-+static DECLARE_WAIT_QUEUE_HEAD(allocation_wait);
-+
- static int kfence_reboot_callback(struct notifier_block *nb,
- 				  unsigned long action, void *data)
- {
-@@ -832,7 +835,12 @@ static int kfence_reboot_callback(struct notifier_block *nb,
- 	 */
- 	WRITE_ONCE(kfence_enabled, false);
- 	/* Cancel any pending timer work */
--	cancel_delayed_work_sync(&kfence_timer);
-+	cancel_delayed_work(&kfence_timer);
-+	/*
-+	 * Wake up any blocked toggle_allocation_gate() so it can complete
-+	 * early while the system is still able to handle IPIs.
-+	 */
-+	wake_up(&allocation_wait);
- 
- 	return NOTIFY_OK;
- }
-@@ -842,9 +850,6 @@ static struct notifier_block kfence_reboot_notifier = {
- 	.priority = INT_MAX, /* Run early to stop timers ASAP */
- };
- 
--/* Wait queue to wake up allocation-gate timer task. */
--static DECLARE_WAIT_QUEUE_HEAD(allocation_wait);
--
- static void wake_up_kfence_timer(struct irq_work *work)
- {
- 	wake_up(&allocation_wait);
-@@ -873,7 +878,9 @@ static void toggle_allocation_gate(struct work_struct *work)
- 	/* Enable static key, and await allocation to happen. */
- 	static_branch_enable(&kfence_allocation_key);
- 
--	wait_event_idle(allocation_wait, atomic_read(&kfence_allocation_gate) > 0);
-+	wait_event_idle(allocation_wait,
-+			atomic_read(&kfence_allocation_gate) > 0 ||
-+			!READ_ONCE(kfence_enabled));
- 
- 	/* Disable static key and reset timer. */
- 	static_branch_disable(&kfence_allocation_key);
-
----
-base-commit: 983d014aafb14ee5e4915465bf8948e8f3a723b5
-change-id: 20260116-kfence_fix-9905b284f1cc
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+Can't say I'm a fan of this. It probably works now (so I'm not nacking) but
+seems rather fragile. It seems likely to me somebody will try to change some
+implementation detail in the page allocator and not notice it breaks this,
+for example. I hope we can eventually get to something more robust.
 
 
