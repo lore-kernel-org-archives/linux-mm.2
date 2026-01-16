@@ -4,80 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33EA0D47CDD
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D6D2D47CDA
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:58:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CFE16B0089; Fri, 16 Jan 2026 05:57:56 -0500 (EST)
+	id D91F66B008C; Fri, 16 Jan 2026 05:58:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 990C46B008A; Fri, 16 Jan 2026 05:57:56 -0500 (EST)
+	id D463F6B0092; Fri, 16 Jan 2026 05:58:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BA226B008C; Fri, 16 Jan 2026 05:57:56 -0500 (EST)
+	id C6C286B0093; Fri, 16 Jan 2026 05:58:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C36B6B0089
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:57:56 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33A371BF5F
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:57:56 +0000 (UTC)
-X-FDA: 84337526952.17.36E3862
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 593BF40005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:57:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uIWEV7lo;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B57546B008C
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:58:53 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DB771BF64
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:58:53 +0000 (UTC)
+X-FDA: 84337529346.03.0CF37A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A8C194000C
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:58:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Oc+g5iS0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768561131; a=rsa-sha256;
+	cv=none;
+	b=ZC9a3YGakgHbN1cVeXGHZKdiJ56FGXAuax01Zhk88SkPnAGI8H5kqFxU9MISuGPRcqjJcN
+	JKlzm6MP+9xSp5Rh6fDe6xk6qX31I16UBkwhFb0AGmfZ4VzJ2Kbn5PfAAaVUxGrmSfAPwT
+	zqG1tjQ0fDYw5E2dmVyx2PKFlSJNOj8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Oc+g5iS0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768561074;
+	s=arc-20220608; t=1768561131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+oNd72p9SBuXMGquVdQhqvPXMYtRJrLP+uAXNlpV7zQ=;
-	b=AORUbssIppZ98kM3ixSU+7IgMCZnt5PB4uAPl5GotEXPBT/PVtWFcjQUekEAn0cfIL23io
-	QxQbzI2a3eEklHjlYsOHVyCKzpbDcfLZv4yGSpDDmGNpUoWzZUaJ4fW48kIqA6mWS2PWS6
-	SfrQ/fXfyOqA2SPXLrXIZF0L9OUq7hg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768561074; a=rsa-sha256;
-	cv=none;
-	b=StYS4EGR37xr0vqffmA5KCTsw5A/LbPTT0E+Ajw4GbunT7emItv+OPFmxSBHNcmH37zgva
-	esZHnVcYVfqr4WnScmjmAM8sgRODnGgvs9qvqGmJK5ZJe5SdCorKUP/DfWrDxG912gDdeG
-	4+X8OZDSdhNNwPWnvewolIjjIecSpv8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uIWEV7lo;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=24jVIuQKZJMKSu5ggCFBPpzP2obf+0gblKxiwrgQID0=;
+	b=jfB8s/k0OPDD5m+XQtQ07lrPjuyk12NWVvmaeSyHf3UmgeTG258o3iwh3fAm58YjPAjKA0
+	68czHDkqJwTXXEI4qyVCf6Ekykf6lfT8xSThM9W4TXQa0xX3fUTyQfrEBVVt7ersalKg4L
+	+ADoa14+5B1pllpKguRi3TASYwFSzz4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1EC974028D;
-	Fri, 16 Jan 2026 10:57:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391BEC116C6;
-	Fri, 16 Jan 2026 10:57:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E53160160;
+	Fri, 16 Jan 2026 10:58:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96405C116C6;
+	Fri, 16 Jan 2026 10:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768561073;
-	bh=6DjcMkXc9f1BwMlBm8c7Btnf66eaPXQBDuFx+FT+D9E=;
+	s=k20201202; t=1768561130;
+	bh=dkGMnUjZbPERXe2UzCZdTDEfsSR+wJN4pvnWwDNOOY8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uIWEV7lo3E1/A00cvkDA5WmRA7zqH+4P8sIaHCV0L+jv0h2Y2fw/z345lI5B+/jc0
-	 D0mbEEej9otO9LxmuW9ufGeE1rhcuDc/6tVZnlejK3ZGW319jXeRCvzefmmHLbY4zt
-	 oWSlgBeEcp+l/lax/2y4wOK1PXKE4mezV9SOuF7CP0gcCikuq2dddPX6IluU5Zaq4W
-	 t7IzcXSSPT7OX32RSBkuLqCQGPm+7tlFpNaPu00yG0vKhxkZsj2sZPcYik6PNIPZOE
-	 9LKAaR2dcGsjpCmbMPyRO0dHXVv4IYq9EkRIS9B/NHZFGQt5VAcTAcT1wfxKBoalVM
-	 0IsdbCKbPj5gg==
-Message-ID: <9edeeef1-5553-406b-8e56-30b11809eec5@kernel.org>
-Date: Fri, 16 Jan 2026 11:57:46 +0100
+	b=Oc+g5iS08BauBBDTqNA6YL7U+mPwbB6i646TPD0vACL0CvFaPzyPiPQ2Yu44ReKMA
+	 rla58KElVtFO61BpBrkBWDmU9wWjZFg+0Dn6weN9uCXC/Toz/c3fpq4KUqspweianL
+	 aLY9iSKrhUpq1B0mOXbZQGu+qqyV8RmNedkRs1dBUfI83GDbX+y1iQNjaiJ6H5Iux7
+	 Xkc3qxW7lQP73zsWFi+uEWKD4PzRRl65qabODcowiF9vgDX5PRRLuPRbJK7iDrt7PD
+	 lQrncXDIHTeAZtD2SFgP0k/LpM4SR4I0v5xz41qBozNZ/suoopHJDKhNszzNkXX1rs
+	 G/qMQSG2FFx8Q==
+Message-ID: <70d46998-a6c6-4c18-b8d7-f813582d3143@kernel.org>
+Date: Fri, 16 Jan 2026 11:58:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable] mm: Fix uffd-wp bit loss when batching file
- folio unmapping
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org
-Cc: axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, ryan.roberts@arm.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260116082721.275178-1-dev.jain@arm.com>
+Subject: Re: [PATCH v3] mm/mempolicy: fix mpol_rebind_nodemask() for
+ MPOL_F_NUMA_BALANCING
+To: Jinjiang Tu <tujinjiang@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: akpm@linuxfoundation.org, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ mgorman@suse.de, linux-mm@kvack.org, wangkefeng.wang@huawei.com
+References: <20251223110523.1161421-1-tujinjiang@huawei.com>
+ <04b92008-f843-4879-b4a3-608cc5e1de4c@kernel.org>
+ <20260115101252.2e0cbe0559e62b988e5f7151@linux-foundation.org>
+ <1ad31dbd-6743-473d-9f66-a603b91d1e54@huawei.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260116082721.275178-1-dev.jain@arm.com>
+In-Reply-To: <1ad31dbd-6743-473d-9f66-a603b91d1e54@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 593BF40005
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 451wtu3fex7sf73xqd31m47446xwqcdp
-X-HE-Tag: 1768561074-312194
-X-HE-Meta: U2FsdGVkX18IrYqILhg5+bIBNk+PG+UBHk96rPfbgW23yfDGwd9VjeB7JrE1m5J59T7CD1uRiNY5j4mdfqfHeg7HuCNM3hgJGswzQUH6AGq4DyxRwRuSVzjHxnUXlvLhN9lhFdBZybYsC31IDYjKbub5oJpdoToyakVb/yw60/ZLGdX2CucjA35Sq4UcNW5JuwZ2hpi/swaWyih9tSmC0jEGoodFkZdc2CSCemPLzzJ5tZrfvicgaUdH3KMenhiOn8TQFZsUm1AODUFSuJn4RkqplL7XZJNFPLTFj0f59HmcE2Ztl/xSk7JOFUrRnZS6tsB2GiO8n08TMcDvsRjcM6T8oysXBYq2S+s3P97m1Dk0INrvp3uydtGEa7lJPr6hIG0WNVpq3Mtrlt0NRoUB/ipIRe8QOBrafOu8Fffuxdw8BajETWOrY54jbvlC/xaDEQomp3b6KDQYA4entCWL6207chcfP3vpcNPwVfVJrftRb66N1d3TfyCaIaty9bwS5PdaaA3QXW4RHSJoxq/qHwv156mcwZz4rP4JQK6ZkzV+6r+yVzJ0QGwyxAhYUYlH1ZODdiU/qhb9y4jIKCXGfu/Wa07+Is3RlYaP0fl2jK0U7H/tFYrv5Vjgp3iJSH93+7c8KTK87CfCgPVBIgjw3BZQMOmSt/niqoJ3C/cBwguu6+0fD2GzcOLCNnl0ctJnVJ3Bftan1ypaIaIhfbKn9G83ZtiU4RkpuZ24S/EnKnpqwCJQqM4VAY2plmDvc/WgSlxggswfCOB+986gx3pz9PPSLylnyuJSPiA22z0NpkTbNMesynp4Nh1AaACzFLcOlgzwoy3iXzDxCq7QenA+a4RG8yzvxJXLXzLivdFa4D0vdda6JoJwwWYefyoKtOYVg6C24ghirwXHfwY2HBYIrpprT7/dgObWxhBnKqUPEUIaiwe+R6xmIDynziNYW26elKi6jdbZkKaL2wfkedI
- PHkwz36T
- nlNSP2Y79Qcy8ybdd88bP3YP+QR2AkCpJ3zBOBk6F7myMbzEkTmwIY4zDAN8U7/S/75suLyD+M37bmS3mz1IH27n2rcoEYXLiXrxZkjQbW8wmA1aDwRaGNTdBZ1x/KSHdXEuQ+4mEpZ3JeuoKxdsnF6e4+01RCeeOvYV8OO67YV55T3KCETbuKKnAzuW+uyJ5Rvi9GmxHh8x+/2CbtGPBu8Y1xPz7udr9Ap4CGVdOC5cFCZX5fq9wcvgKbdXQfOaZcVraKpdUyKI3ykldTt0z2BApvVY2dJKiTBOUEyrssVgVDtoZS4gwS3jjDnLDoD+m0HjU
+X-Stat-Signature: o5qsdj7gukp9ocn4jqh3uqem9d3zo4iq
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A8C194000C
+X-HE-Tag: 1768561131-155907
+X-HE-Meta: U2FsdGVkX18RZbBgUBKaZJIM9KcUdC8zCWTm0EsuzWMtEzlIiqZA+JpWrr99ewelLyumZWF4whaAvMDI6iM3trqe4I6BN67meQk1Ab1Ec/ps6/khEgx/I3K9lNMMUa7va7ZoL2B1EQEQwjyV0OoaAxpuFwx/NLZB5AM0Z1qJ/AjPKy/VzNYRpbTKD/gajTzYtZonrpGqswcc8wq47rXg19gmKmFuqhUZAcDFClqmfN9CuFpRIwwv5A7ZnWDc+9jpQrp0MpWwAjI6cfqbaQ0wuKoLvvlTC48rW8XnVpkMh7yyo4V3EZ1Ex7keISs8uvsacsSotSr1f4FpS8yuLq2Rl1gj7I7P1a9UcNR53uRf6Tty8ZoGYoWeHevFkjjl61W+VdUTJX7GCZiD9bu/jQwc12riYlnH0DSjB1voDNPVpWU5VGE404UeHdwjCGYrMA+BoplBiNG012duPzy5tJi2zWGd9o0ti+eUuQlBNcIRYpdsvGz++etSNPf6s9JNqaSvrlSqXLwe+1pdazjo0FztkcTef8TKlOTA1u9UBlizX5gQ5sgc0SlPOdoJgmnNSBOiHYmT+x/WM/bTyuLJ1Kg+nz298UAAVwLkZw0GiT9qfB00NYN1viveNM7lctUDJFZgSI/Lf6h2s4DrGhKdH07NnQ+9Fp4iAGwkrQuw9kzVdMF5s9nmJTyt10JmLG0mNT43VKOiJB8FZc4iia96gHMWjvf0clwiLQ2Eg7roP8aZqzl5amhkF4MrTR8kg0vpL9nxpGkkGYEc/drbwJUHGgRmQj67ATZzETGRgbAEwdadTs+kNNj1y9U5HEdgv/VSVB/tTnYFBL46qZ9XcFKHRWWf7Gt8YfkxXynKbrw5mNPZ1HEDJ7k/OjubnJ3LT0fkqjhgQXtFaT4b502qB1qA+kiQ/RIoDgLRFhlVeYoUUHDZZtuyrhFBd47F4gGY2hBW7oJzipzWa807soSYTEdOvm0
+ 4TLnDr7s
+ FfoK3EEjJTCbhmcDOxT9vxtqsmSKOHWRFnIGrIXjnTtXCZOLYRfv0SfESM+qOMoBgyt0z7jLZpd+3U0GOMt/Pdjyn59AOP155N13Cj7IfFnrR4S4NHdQLMpkww8Ez2xbWloxAoV54mW2h+vAy4EfyvYDSuIqzzsZCUWe9zl10DrHdhCqM8TUx+ClGxmCLcjSwfzinfMLVkAb4EChSU766ZCiGsXV7SX/Tvo7ZiBsxyIcFxNCIHHPOCmenaC5pG4AyaPYkCKhpIynDxo3x/ivW9zFSuMxN8SlY69EunSt6j5qlXFNRjgIk0q1W62UjnX+QKsEAPM0V2z4S1wdOj1skM1NSdVi9WeiqUy1bmGaT2n75eowiOoL3Quua6STkeISoGI2Heh2Hia4tdxZIb3h5IFnon1KAWJ1DI0ZB0XQ3gY9UeZo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,106 +144,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 09:27, Dev Jain wrote:
-> The recently added file folio unmap batching support forgets to update
-> pte_install_uffd_wp_if_needed(), which still updates a single pte.
-> We end up jumping to the end of the folio in page_vma_mapped_walk(), thus
-> setting the uffd-wp marker only on a single pte in the batch. Fix this by
-> passing nr_pages into the function, and set the uffd-wp marker on all ptes.
+On 1/16/26 07:43, Jinjiang Tu wrote:
 > 
-> Note that, since the nr_pages passed to this function is always derived by
-> some sort of batching, it is guaranteed that the set of old ptevals of the
-> batch have uffd-wp bit on all ptes or no ptes, therefore it is safe to derive
-> the value of the local variable "arm_uffd_pte" from only the particular
-> pteval passed to this function, but apply the result on all ptes of the batch.
+> 在 2026/1/16 2:12, Andrew Morton 写道:
+>> On Thu, 15 Jan 2026 18:10:51 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+>>
+>>> On 12/23/25 12:05, Jinjiang Tu wrote:
+>>>> commit bda420b98505 ("numa balancing: migrate on fault among multiple
+>>>> bound nodes") adds new flag MPOL_F_NUMA_BALANCING to enable NUMA balancing
+>>>> for MPOL_BIND memory policy.
+>>>>
+>>>> When the cpuset of tasks changes, the mempolicy of the task is rebound by
+>>>> mpol_rebind_nodemask(). When MPOL_F_STATIC_NODES and MPOL_F_RELATIVE_NODES
+>>>> are both not set, the behaviour of rebinding should be same whenever
+>>>> MPOL_F_NUMA_BALANCING is set or not. So, when an application calls
+>>>> set_mempolicy() with MPOL_F_NUMA_BALANCING set but both MPOL_F_STATIC_NODES
+>>>> and MPOL_F_RELATIVE_NODES cleared, mempolicy.w.cpuset_mems_allowed should
+>>>> be set to cpuset_current_mems_allowed nodemask. However, in current
+>>>> implementation, mpol_store_user_nodemask() wrongly returns true, causing
+>>>> mempolicy->w.user_nodemask to be incorrectly set to the user-specified
+>>>> nodemask. Later, when the cpuset of the application changes,
+>>>> mpol_rebind_nodemask() ends up rebinding based on the user-specified
+>>>> nodemask rather than the cpuset_mems_allowed nodemask as intended.
+>>>>
+>>>> To fix this, only set mempolicy->w.user_nodemask to the user-specified
+>>>> nodemask if MPOL_F_STATIC_NODES or MPOL_F_RELATIVE_NODES is present.
+>>>>
+>>> ...
+>>>
+>>> I glimpsed over it and I think this is the right fix, thanks!
+>>>
+>>> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> Cool.  I decided this was "not for backporting", but the description of
+>> the userspace-visible runtime effects isn't very clear.  Jinjiang, can
+>> you please advise?
 > 
-> Use set_pte_at() in a loop to set the markers - we cannot use set_ptes()
-> as that will increment the PFN, but we don't have any PFN to update here.
+> I agree don't backport this patch. Users can only see tasks binding to
+> wrong NUMA after it's cpuset changes.
 > 
-> The userspace visible effect of the bug is inaccuracy observed by workloads
-> relying on uffd-wp regions to install their own pages.
-> 
-> Fixes: 8798e255b5ec ("mm: rmap: support batched unmapping for file large folios")
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
-> Patch applies on mm-unstable, commit f8ed52ac0cfb.
-> 
-> I observed this bug during code inspection, but it turns out that the uffd-wp-mremap
-> selftest will skip some tests with a bogus complain that "MADV_PAGEOUT didn't work,
-> is swap enabled?" even when swap is enabled. It first sets the region uffd-wp,
-> then swaps it out, then checks through pagemap whether it got swapped out. For
-> file folios, this check makes no sense since the ptes are simply cleared, but in
-> this particular case, because of uffd-wp preservation, we need to store PTE_MARKER_UFFD_WP,
-> which is stored as a swap entry, that is why the test works out on a non-buggy kernel.
-> 
->   include/linux/mm_inline.h |  7 ++++---
->   mm/memory.c               | 14 +-------------
->   mm/rmap.c                 |  2 +-
->   3 files changed, 6 insertions(+), 17 deletions(-)
-> 
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index fa2d6ba811b5..adec1dcb8793 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -568,7 +568,7 @@ static inline pte_marker copy_pte_marker(
->    */
->   static inline bool
->   pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
-> -			      pte_t *pte, pte_t pteval)
-> +			      pte_t *pte, pte_t pteval, unsigned int nr_pages)
->   {
->   	bool arm_uffd_pte = false;
->   
-> @@ -599,8 +599,9 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
->   		arm_uffd_pte = true;
->   
->   	if (unlikely(arm_uffd_pte)) {
-> -		set_pte_at(vma->vm_mm, addr, pte,
-> -			   make_pte_marker(PTE_MARKER_UFFD_WP));
-> +		for (int i = 0; i < nr_pages; ++i, ++pte, addr += PAGE_SIZE)
-> +			set_pte_at(vma->vm_mm, addr, pte,
-> +				make_pte_marker(PTE_MARKER_UFFD_WP));
->   		return true;
->   	}
->   
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 6b22dd72ebc8..35ac86d29e77 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1588,8 +1588,6 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
->   			      unsigned long addr, pte_t *pte, int nr,
->   			      struct zap_details *details, pte_t pteval)
->   {
-> -	bool was_installed = false;
-> -
->   	if (!uffd_supports_wp_marker())
->   		return false;
->   
-> @@ -1600,17 +1598,7 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
->   	if (zap_drop_markers(details))
->   		return false;
->   
-> -	for (;;) {
-> -		/* the PFN in the PTE is irrelevant. */
-> -		if (pte_install_uffd_wp_if_needed(vma, addr, pte, pteval))
-> -			was_installed = true;
-> -		if (--nr == 0)
-> -			break;
-> -		pte++;
-> -		addr += PAGE_SIZE;
-> -	}
-> -
-> -	return was_installed;
-> +	return pte_install_uffd_wp_if_needed(vma, addr, pte, pteval, nr);
->
+> Assuming there are 4 NUMA. task is binding to NUMA1 and it is in root cpuset.
+> Move the task to a cpuset whose cpuset.mems.effective is 0-1. The task should
+> still be binded to NUMA1, but is binded to NUMA0 wrongly.
 
-That should likely be factored out in an independent patch.
-
-And while we do that, we should likely rename the function to indicate 
-that we consume ptes.
-
-That patch should also describe why the change is ok; it's not just 
-simple code movement. :)
+Do you think it's easy to write a reproducer to be run in a simple QEMU 
+VM with 4 nodes?
 
 -- 
 Cheers
