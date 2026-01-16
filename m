@@ -4,121 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62245D4899E
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 13:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50787D4899D
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 13:33:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C82896B0088; Fri, 16 Jan 2026 08:29:54 -0500 (EST)
+	id B4B576B0088; Fri, 16 Jan 2026 08:33:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C30036B0089; Fri, 16 Jan 2026 08:29:54 -0500 (EST)
+	id AF91A6B0089; Fri, 16 Jan 2026 08:33:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B319F6B008A; Fri, 16 Jan 2026 08:29:54 -0500 (EST)
+	id 9DA6C6B008A; Fri, 16 Jan 2026 08:33:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F6A76B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:29:54 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31F6EC01A2
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:29:54 +0000 (UTC)
-X-FDA: 84337909908.06.6C0CFBF
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 32A9B1C0009
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:29:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UUAyqfGf;
-	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1BD6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:33:40 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A1381A014D
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:33:40 +0000 (UTC)
+X-FDA: 84337919400.20.9D6D667
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4922516000E
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:33:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ARGWf0uS;
+	spf=pass (imf08.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768570192;
+	s=arc-20220608; t=1768570418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V1EOYdbPMccS+aeufmTW2gbnPDhaXxuCCgvNnc3/C2U=;
-	b=w3qU3ijk9oKQuzNFwC9l+YUlSpP0ZiM3zu9pMl1fYFGfyflbnuyRkK7D7cLW0oVeAT139Q
-	HG1RozgzyJ+RMEdgkdvIQ3DQ2MzAFCNcbbhjNFYWIaOWq7gGYsJ8LrMS94ELRK3mJXiQQ9
-	6BaFi96hdklqSP36/zq6G10oTiZYp/Q=
+	bh=uJ0Kd+SlEJxKbaePbsW3EtzVjRrjQZdOLYvse/lYkyc=;
+	b=IIjpXtNolqd7LLIUlJ8RKm3WAQW06oueo4bHNYMMLRjkV0E+xGXvGskaXxIn5MG54uDuYD
+	Eg/I7I84Bpc8HBG2dRtWxZumpCHFFzx9VvhkeZZDgv5KwN8fEr2sBOorjZGf3gs4VB+Qgt
+	DqehH4jVKoE1lpwbZM34r1mr005KICI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UUAyqfGf;
-	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.43 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ARGWf0uS;
+	spf=pass (imf08.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768570192; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768570418; a=rsa-sha256;
 	cv=none;
-	b=NQEN+RAJga7F0mtkioSjAk/x8XwA+MaSgJ8FOudIeELnUf3aJYQ77vCZemNUQ7ndckH8+2
-	sdGv+zOq3tCGqmq6HBZGpT90WxkujGxlzuw6Q04quis2Njqj9yS8Zq3ond5UNojMA3EzlX
-	ONDiBu2qNiuUZWhaSEaPvuTa+AcsMyU=
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59b6d59340aso178191e87.2
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:29:51 -0800 (PST)
+	b=DQzYOsOnaXre72Mwj2R1f6kDM1tqBl2Ilcx0BaaReGRHLk9u/M6+5V5ZnGAWLXiEfyi4Lb
+	XoBSPJeAiOJY+uqLzEroPlFQ0/o1HBQvm4bn5MuxvKHf8GjvuDZl412N9rJsq9ql/rPCJX
+	1ljJNsA1TWlyctJTfxoGzIEaZqMJkNY=
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59b6babd619so100585e87.1
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:33:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768570190; x=1769174990; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V1EOYdbPMccS+aeufmTW2gbnPDhaXxuCCgvNnc3/C2U=;
-        b=UUAyqfGfXreQeGhrWdQrwIxOdkKrn1U9fweGwPyTz6EqeHYV5EKGwl4KvY/rsJSOcu
-         P9QMqEVxFJKCplwEgsv3VNAVJ4hafj3MRf4Cl6XQNXTGSAjqBq63FZ9JUMucFrBcv60V
-         bFrYZX1ACdNpr9xO2onUVgp5QyJL1UsXXy/fpeT2PCX5HLt1xHdETDYTdOVD1WB6t7B8
-         ilAVpZB+3lGE4DEF0lmWq+05Y5eaoD3k7GhbMTS4scoz36QoDuMAkJlZ/n3ooFgAPNLT
-         upoSdcmeFOyi9l8+mr9DBgGDxbWyMtT+UdNXsaSNBGtIO+3vB6nL6EwndZ6SCEWv9qwo
-         U3NA==
+        d=gmail.com; s=20230601; t=1768570416; x=1769175216; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uJ0Kd+SlEJxKbaePbsW3EtzVjRrjQZdOLYvse/lYkyc=;
+        b=ARGWf0uS7NIdEIOO3bUFOJV3snrzUuFezAu/PmYBO6H9OnifZlP68NFZXxZIdnTCU2
+         NaS3l8doHwlZ7U/+UUrak2D85NjSo80HrNRxom7n/rAlroH6Sn/4mwW9GV2THOQLfSrH
+         6D0SCNJgjpNZ3KBqfZyxMuuyOQ39+LDsUnulr1gYbPfeebJ53XnEI6GteeNQ6yQDOM6F
+         xx8c+hU9IVKxMyZGMsgSC0RXQb1dsA/CsJWSsuWhIXMr9tXFPv4D55XyJRKBAKAlPVQS
+         KBat5NYFRqdONNWq8WU0eMwyrsLa0GHOT7tYOSuBQljOrVV4VJUC91vtfRSGKmzqAqGx
+         GS7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768570190; x=1769174990;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=V1EOYdbPMccS+aeufmTW2gbnPDhaXxuCCgvNnc3/C2U=;
-        b=oEyERpLgRNOA+bgLmrcENXomHOToviUY7/0w7OiRmkxKB0y6kJaM6erTesJEiHmowd
-         6sB+8a//yctHwgQXqB3aYBDZO0miqf+7yBUAf3+EwpJFB9MfVVLt+IKh6aW0aEsMSBmN
-         6o6inxHS9045Jc3t5WFjFthYNkDE3/LcJnhRKMcRa0VVqWAC0KBGDo5qhHgPqfM2qb0E
-         kULcBA1Cg/sD+PzzsOtZl5GO4ex6mNbjvFAZiRMTHtxBPYeml9GMamZcex4c8/hYeivJ
-         fkr3oRL6NnQFtddXjRvcPBgJKybzXr2pfGtGBkuvv6jetFGrAGNwbkBHHCjLHxDD4oqH
-         qMnA==
-X-Forwarded-Encrypted: i=1; AJvYcCURKDBW8/4JHwPA7WjEuDGaNVQvvQnMwWFH+OfIzc3fSdtCcFOmTTF0/2p7nF2LVvyaSORubi0Psw==@kvack.org
-X-Gm-Message-State: AOJu0YwKgGFa8xLKFOOz65+N2WYuQ05asS91WIGSgTUuO46oIKyUKNxG
-	oQ2rdyMy1gXiDFPkRrJPgsmEOq+2t5RxCoRmCZqDZF7T/FyLydXT147K
-X-Gm-Gg: AY/fxX7qxWvyKFe8nVy1nVpEG1birYJC90mvgoT+WtJ6Gv7NfOwuQoZT4z82FI5GN4L
-	bcmLFkZxALSFVjSV/SNLvE3xlm9X7T+Io4vwSwd43zt2CPXFM54RYp4sCU7QnX8/K63fZvRbe/F
-	wUQl5TrI5yRalJ4lefg2ngEd1+UoIRkGOPulQvHQLNFfxASia51kt2wor2HiS7QP9ip97OwWopu
-	87C6TYXz7VCecth28fbdNL/ASALglzFJMBs6e7yG/8BI+i6KzCvG7Re/oKALZ+1LTfYqF8h178X
-	M8wtbdIFjDTzO8jLWxY9a1googtFTNtfGj0Kig1ZcQSLIg1WfwSecm9w/6XqdfnVpmtQhgW1YdX
-	RRZ+Gao21LOmtnHkW4Sou7yD2+C4ze8SdbbX9YTbj3iK3nAAKiGq0iQbWfjP/jxoFQPUyg64MG0
-	YtCy5fyz9ezYoHhc5z9oPsE2NjaXqdzbAjHw==
-X-Received: by 2002:a05:6512:6182:b0:59b:729e:680c with SMTP id 2adb3069b0e04-59baef04d3cmr537410e87.5.1768570190107;
-        Fri, 16 Jan 2026 05:29:50 -0800 (PST)
-Received: from dellarbn.yandex.net ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf3a2aafsm785875e87.98.2026.01.16.05.29.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 05:29:49 -0800 (PST)
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	kasan-dev@googlegroups.com,
-	Uladzislau Rezki <urezki@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Subject: [PATCH] mm-kasan-kunit-extend-vmalloc-oob-tests-to-cover-vrealloc-fix
-Date: Fri, 16 Jan 2026 14:28:22 +0100
-Message-ID: <20260116132822.22227-1-ryabinin.a.a@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <CA+fCnZeHdUiQ-k=Cy4bY-DKa7pFow6GfkTsCa2rsYTJNSXYGhw@mail.gmail.com>
-References: <CA+fCnZeHdUiQ-k=Cy4bY-DKa7pFow6GfkTsCa2rsYTJNSXYGhw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1768570416; x=1769175216;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uJ0Kd+SlEJxKbaePbsW3EtzVjRrjQZdOLYvse/lYkyc=;
+        b=H5HQavuz7UV9fc1lUEG5I9dmyI5HFm6mGtUsYkCMbrtkYVaNq48t/ABbdGK9IvltjX
+         Y1sKyy9+rL0JX8v+vMPOkwz2AAr80KvXcMBdzu7aHBZ6nHlp1qboLyqFCpFp1H8VYbZe
+         Ava708rsLw4ACQVtUfTsmhxwFuSrQFjpzNbT48Y1VfK1O/HpCusoWndnAZYs0C6IV4pl
+         1ToBObK2eSL1RGI7HZ3mCvcmfXo5HTjUPTdLZsqbhoAbHBUCGowzyjdwNWob+eB2F9vt
+         9h0kMk/ez4WYOZ9uPzz7IKsGLegSfiFDmK4HuXWUuSllP72Q5biL5QRVHMYWEN8fN5xx
+         wX9g==
+X-Forwarded-Encrypted: i=1; AJvYcCW1pPsTeevSoEf4xjbyWcaMEpNYWY2ZQR+umcPXlimpf9pKOJhJt4zB1n8VOa2YOZeEiVcNit4/1g==@kvack.org
+X-Gm-Message-State: AOJu0YyypPVTfr3OmxINHQ5DbXtb8dBx9lQwTNixWPgVpvCkYQQfJo0T
+	WYLSnOLUn/zWAi8Aj8+XV1c5P/fsWvgI/GdKQ+PufSVIVebpsuFYN6m+
+X-Gm-Gg: AY/fxX6uAjT1Iucz1JaVBtMQ5+1i81h2TLgfI8ajTpMLrF3ghY2AHf7Ka/k0zhOUUKg
+	l7HJeDI4Tzp+NSh+i+5hfifVrCp7zQuf2CFkRLKSsyk5D7ih9FXFM5pPm+G5NyPv3qV6TrQEj0c
+	LXl8EwUyC+p7O1a7lBFJ4UK6zBn6bN4e1u+5LN4hfg4bpEKY17+ujuGnkbI3Whf2iK4rAjYH8E+
+	8RHrUwSVuOqvg8k+DR/Hew/Pl6aiKmVF2LfKX7EiME2PLEC9k0mEqXG0RX8L9ckrb2SUeR+614d
+	05XR/6A2lmsu3YJQtSKuYegCM2DuXKdP/GX1h1rxxYH66MhySDzdirvEThfFaI1ZFDU2JeFALZj
+	m23DUHc+8sRdT1L9ydbizv4Hhemm/z8qJ4Jnmojg7os4bqIDlWHujdwig2QMglcu4WP9nFKQ/pU
+	LrfeoVNeUldW1Ecj4+6g==
+X-Received: by 2002:a05:6512:6184:b0:59b:9fc6:f66 with SMTP id 2adb3069b0e04-59baeeffec8mr547766e87.4.1768570416127;
+        Fri, 16 Jan 2026 05:33:36 -0800 (PST)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf34d572sm763752e87.24.2026.01.16.05.33.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jan 2026 05:33:35 -0800 (PST)
+Message-ID: <c9841bb2-b82a-4daf-99fa-17aec157e2c2@gmail.com>
+Date: Fri, 16 Jan 2026 14:32:49 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 02/14] kasan: arm64: x86: Make special tags arch
+ specific
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: Samuel Holland <samuel.holland@sifive.com>,
+ Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+References: <cover.1768233085.git.m.wieczorretman@pm.me>
+ <be136bf8d1a6ae9ef98686c3ba0b6a4e2ea2e780.1768233085.git.m.wieczorretman@pm.me>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <be136bf8d1a6ae9ef98686c3ba0b6a4e2ea2e780.1768233085.git.m.wieczorretman@pm.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ng1haxp8sf6e743x18exzb61jjjampj1
+X-Rspamd-Queue-Id: 4922516000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 32A9B1C0009
-X-Stat-Signature: ezs4t5zt83xmfyhq6mrzg3i1yh8mqzzb
-X-HE-Tag: 1768570191-675901
-X-HE-Meta: U2FsdGVkX19Wzay6qgf8/A5F+xv7P5KjrKgpe2QeCo3fAe1X+gUzQIAwJ56szUKRwySjjeVWljZLsJ/k/GQVCe0UvWQtL1qtuXCq1KrMdcwoEuimqmSmEG9FlEDakaw2YMjEGUyiAwEIvpAkjQje6q8HBiO0ff9H58pJ46ilW9sQzDCoqVAtvueZmMVYECjV2ETXHHJRJk6Gf2OuEZmzgGKd1sormaFQTLqZUIC2ZjwdrnnJB3O7w/IhZa4HzCZgXY1yFNJvMUVdfikQcPJDUfW9Gru/mRZDwoYxPTrWg46BNYqddRhQWMXyh5shqHG6ca+cAaf/Qlq/AvElSXLHGamgUQtXn+sIoOidCIA4tvGSiWOPfgfH215+J5lHNmNaZGspkcWkv54cJKLU10I6xJ2p/DQwZg5VTLkEZ5kuKUFVP6lAUkubrY9W5mvqutCzZxipcnm1TkEW5H37Tx/Qsg/Yx5aoJ/oKDngTqgef+dl5X4Ld8JWFmid7GL3D1RH0iP3vn1lF4k/L1Bjdcu8rLx+xES4f//kSFYzeNQwB86JilWeFtSvbC48RU+O8G3Hd53lM1TzqGVzX1i1m0cklMoZkD0Pt3Tqv2fo0n2U4HBvdDm8Ad/Csp7fMrT/zrJ7LDXeN+hXTXt2IbUz6gPTV8z+jmUSYeLQPTwtVeDM+OSqgoqETRgCcyNCntPFpN2G1Jo6wOYAEaxXYX4j8Cu9gKIxzdjQFfijMkCYh/1g/SMvBbiyN5ZmZVb1P7x2pTE60RG4nB8TPq78xkRugOQhE7m3o3PHaI5O1biiDrfqCeMoO+KzTTyBkiiqwbB9oK7Kou5pRrhoj74TlXeUu4XQQyjSXkmCsXmPGNpxRR0cpGdgSXMhukF9gekptfTuV/8vBQfMcETXyhcdmkvG3sVHVS/wN7qov3O/INLOAEojg4FXUzCuAuIH76+44pJNRe5vGQVlCo0wYQJgbFiNbhQ9
- o8E1/5Mg
- Vzm8y8Y+0EOXL7CsTDdsCUTfqhwQ0Y1Jh2EvXbj1+B/h5Q0jbgwvMylgzFN7gC/Qgju1W/GkG0F6cPd7f1DLOFJ6LqDThf62ZsXpuapcwuVcBTZXjPcVOS2yjl0zkkbuy5uB9IIIZ13rSlt/e1o60Uo/A80A/15vyyx3v5nuSiHTl2CUGgDHZJi/FDiTT9L/K5lK1hVodFNzgzyRl2p3KctWkIZISv9gAhoZoQzH8GTOqcUV+9m1r/9SkP2x7+ZmwnzlsXFHcwr7jViROUDcqZ0AHlQ0dsci9qU+1AMtzUy5IZRJBO/GVLh1VzgsITtrOV0LUBVN8PEFajB5mQ7xTtWYzHP85avae311ULpdl2tmiVYBMbEhVSCgC2B0aQq3jNzDTUSa3YMsXOBUsSFfhxLOVgMEZyFcpvGvvJeILn/Uqco/shzbbOmpw9nS1Ttt7UXKpmuAI8J/Jr31HyN1nox4D5CGwQVQHRBXFFdxMnbV+rItz+Ras9gFy7xzRM5KPKN4Vtaq8tvlu/dtXjebOe6kyOMOGBiWSWQZs
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768570418-812620
+X-HE-Meta: U2FsdGVkX19Uhkk9nMglYMOySVz2+sfV3lQafBb+IhdpPdPjGRxgW6g2Dc5+SUd9gWPdeS7Mpl4Pj54MbxoG6yxipdl1HK0Ei/CJmGvW6I3Ubwv12mouE4A3xSuweh0xFhdjC2s5Vre0lZN+wG94GJREgbhM+8IRsa7BzL24hO9+kezO3adhsAFIARxdlr6pc/APlgXpECSD4xaguMwJW1g+8bGb+rapsUWFt5A3yhLGevE3lDS1KsoZpQQecdgsxWwUIbqmPz5sh9E7hpu38WA2gv1L4o2QT7FblkquUd3CNi5QyXOLcDSWi6t/txrSqNQkqcZHJ8NYEGyxgKKHiLdN+IYpyEzQqHpoj7yOuwzRLyv32I5CwFiAyatMP0/H7rXNjI2hugvpf+aCRxaUwa85jaXA2ChrhRA3afGIXA20oJO5sfZ8deW4dKKVopj4iamqw/62mTAuBCsjE7w7RvWEA9KdtwGcxUFbbldfldIJbzeiZ5fDuq6qRg7sHdb6sGmqgOYJ1XDsHkguQyna3y2j6vHgOsMJkDknRN8ufzZOGlxnrcwpnaNOnqajD40QMjglg9wBiY1ucG/ajkftAC4u9J4MAIYW2YovjIqO2HDj9wXh/xvwjriEzRyMylsQpKBsXxErk46FEjvqM829HcPYOFoQmpFP2LYxY610qHOewBG1vdbY/RnKixfdN6UNtwWH5nAbtt70HRhrspYmpBO/j31fG5IBhkor6+1E9/F27EEjTAoJhzFkToCL3djDtwWIViiSqmEE69euHv8lclvkwcVEP90+8k4zRGUzEgHL+rOyZA5Abc9eijmz9R2CIGsrwdo9WnX7Ev7yxIyw6f42bq+nVUonBNNlgHic+z3BCMWlKiZCuijisFmlOWLddSmzul6WbJhE4ot966cvPq1TR2Rb6dUVhXvefNX6PmKH/KwUDTnJEOV52eiO/Y9YF/AG48ipcGtk9zd0UMm
+ CiI9k/pa
+ 87QgDE5535nm/X9UrLw52q71BfN9E5IiVVoQXXA5avrsXE0wihND//PFEn/gYYmNo2d89yml1V6CGvnnhY263gUmy5e5IUVFwSUSrKltfHgi0vtJBLMtMWm5TVJfL8VZmvBRb5lRkZ0t5HfWAcyVjN+CH8xQDiAkL0AH03q/IrQONqspX06vosFuBZRjy7+KtooviSpOtUWL7m5vgJE/OnP+J95wBCyNTHKAUS2DVMcnoAAm5NOElLzTPyzsPddMo6FnyrkkjX1t5g2CqNQ1+AkoFfyxdRE+4+AJ4pf8m8/x9RSW6JTW793QXcLxwjHLXaKGAJ8kxd8+inR3Pt7lCCgF9AqmLHyGPBhTGe5LBaL5Fl4jZVCqBCUa5krQw+GFqZn0m4EErtKAeIHgUfs2ufhdiG86Dx3+ae7xrU44bV9kR8uAgyBYhLhHFtvzC3q+wjHIyhRyowjyUq7xgzEYaRxDthiRodLOBdYxHrcykHVrDJUwS9SajUJhSLAPl+JgegX9DWw1SGQvYu/ITzeVd3SeEvAKGIhF5AagnD8olYKxQB4iN5gzYnHeJ2kixEc3/oExUIeHu4GxXOgCw7vbBBRTbmR2o6Ls/ET3X59S7B87jqmAN+JSHPkoZxLw32ZqpIF5YOIN06QWPhrE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,38 +139,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Adjust vrealloc() size to verify full-granule poisoning/unpoisoning
-in tag-based modes.
+On 1/12/26 6:27 PM, Maciej Wieczor-Retman wrote:
+> From: Samuel Holland <samuel.holland@sifive.com>
+> 
+> KASAN's tag-based mode defines multiple special tag values. They're
+> reserved for:
+> - Native kernel value. On arm64 it's 0xFF and it causes an early return
+>   in the tag checking function.
+> - Invalid value. 0xFE marks an area as freed / unallocated. It's also
+>   the value that is used to initialize regions of shadow memory.
+> - Min and max values. 0xFD is the highest value that can be randomly
+>   generated for a new tag. 0 is the minimal value with the exception of
+>   arm64's hardware mode where it is equal to 0xF0.
+> 
+> Metadata macro is also defined:
+> - Tag width equal to 8.
+> 
+> Tag-based mode on x86 is going to use 4 bit wide tags so all the above
+> values need to be changed accordingly.
+> 
+> Make tag width and native kernel tag arch specific for x86 and arm64.
+> 
+> Base the invalid tag value and the max value on the native kernel tag
+> since they follow the same pattern on both mentioned architectures.
+> 
+> Also generalize KASAN_SHADOW_INIT and 0xff used in various
+> page_kasan_tag* helpers.
+> 
+> Give KASAN_TAG_MIN the default value of zero, and move the special value
+> for hw_tags arm64 to its arch specific kasan-tags.h.
+> 
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> Co-developed-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> Acked-by: Will Deacon <will@kernel.org> (for the arm part)
+> ---
 
-Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
----
- mm/kasan/kasan_test_c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index cc8fc479e13a..b4d157962121 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -1881,7 +1881,7 @@ static void vmalloc_oob(struct kunit *test)
- 
- 	vmalloc_oob_helper(test, v_ptr, size);
- 
--	size--;
-+	size -= KASAN_GRANULE_SIZE + 1;
- 	v_ptr = vrealloc(v_ptr, size, GFP_KERNEL);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, v_ptr);
- 
-@@ -1889,7 +1889,7 @@ static void vmalloc_oob(struct kunit *test)
- 
- 	vmalloc_oob_helper(test, v_ptr, size);
- 
--	size += 2;
-+	size += 2 * KASAN_GRANULE_SIZE + 2;
- 	v_ptr = vrealloc(v_ptr, size, GFP_KERNEL);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, v_ptr);
- 
--- 
-2.52.0
-
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
