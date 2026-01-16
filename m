@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E744C982FB
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 19:27:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCAA7C982F3
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 19:27:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8CA76B0005; Fri, 16 Jan 2026 14:27:21 -0500 (EST)
+	id 221D66B0088; Fri, 16 Jan 2026 14:27:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D39E96B0088; Fri, 16 Jan 2026 14:27:21 -0500 (EST)
+	id 1E0DC6B0089; Fri, 16 Jan 2026 14:27:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1C3D6B0089; Fri, 16 Jan 2026 14:27:21 -0500 (EST)
+	id 0CDFB6B008A; Fri, 16 Jan 2026 14:27:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B06176B0005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:27:21 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 583A7C10AB
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 19:27:21 +0000 (UTC)
-X-FDA: 84338810682.01.A9EE361
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 87E0320004
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 19:27:19 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cw01Huco;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768591639; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F34566B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:27:22 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 86014139E18
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 19:27:22 +0000 (UTC)
+X-FDA: 84338810724.17.60F640F
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B8AEAC0006
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 19:27:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=grdbVDfo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768591640; a=rsa-sha256;
 	cv=none;
-	b=7GsgKav3McEGlypTLzly+xro4ItSx0EcWFtf5nBsgAPMNrVIpWTSw4U+r2Y+ddSd3XikHN
-	4TGWrxHM+IdsxAHTz6wtvAgjRAY9ud9ZNOUc7ITbAXwhoIauTfIKHmGsuDPE7l/pUmjfpn
-	0s2Qo+/hzjLZvG4P/X6GYdj3NqqterU=
+	b=ho+orFyVs6LQhW4tUSCL3iGNkAKonzfHJGZblUti63di1BFOfL+y9yHX1I0Of/6PqZy+uP
+	9zeER80iggKCaEvqroOZ/gwL9iJJ0d911dFfjlPLu4L0SDGYC/2Gn8ZmNKoqzApWwu7mkZ
+	DhXWYtXl2a1Dj4QoT7w6NLn7st7OzVI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cw01Huco;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=grdbVDfo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768591639;
+	s=arc-20220608; t=1768591640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=uTMBfChikiIcOHf6FYYpeyBEYYwNF4nP+fKI7jaBDyU=;
-	b=zpjdl/paeppm9xjXpIKCWEINyduvly0pJeGJuHEUWhDFCIJLc+2vmAKfvUHgskfBMDXF1f
-	ENq6IqhA3hGaWf2eqs5C4VFG746/7gJEpJW15aIa2dcbcX9rxfs26EUL5SwNYYb5U+7Sks
-	urOFBxk48RjooDyFWUuk0qExXF8GSEo=
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-79088484065so23816387b3.1
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:27:19 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bOlQeIx1ss450mypUxbZbc6V89e6K7jSrfpMzB6xtko=;
+	b=huk0ZE5/6a5WVpiPxaUA9pz9/8fQMgClN0zCU3DPQaSVz6fVTBb7ewG+5YXkB75/iSeJH8
+	rbZNcITcX+3om0Twa6hVfovmfqRrbQBRzjRVBT6zTfvnnw7lw5UWD4vgxWpcXYsnyyFqQa
+	xWpX7wZqccUSlfR/hFAxiRrtMeIl7gs=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-78fba1a1b1eso38714337b3.1
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:27:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768591638; x=1769196438; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uTMBfChikiIcOHf6FYYpeyBEYYwNF4nP+fKI7jaBDyU=;
-        b=cw01Huco06wFLUuhc2Tk9YIWsD0Q5v6aavFwS+g5ubhWHaxRVXyMVXZZgWK7WC5JIm
-         H/k2MfhxKFEaaHmiac2KjqZmL/Np9BXu7sr4yeV0U83EuUwsguJtvbozpk3tz50OKQsb
-         nNcsqKLjEFJcjrz52Dodj/nbozBDQP5SQVETjHct9/sJMIMf2Kmzm+3wNLtfF+aYyejq
-         4Yp0s5KaMpN5l+lTs1B1l0EgW17WsDhQ1Db41dvrhILMmE2+XQuP+LgftPwd9p1JuNit
-         38PgJuUiU1BbU60V7opZj7JQ5toXy/1ZfsZWq/5FTiedZJ+j6lZrDeHHQ15Ef38XhNxk
-         DLuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768591638; x=1769196438;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768591640; x=1769196440; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uTMBfChikiIcOHf6FYYpeyBEYYwNF4nP+fKI7jaBDyU=;
-        b=mWjy3EXXZTQSsu0/JeVTVFYdX+6PgdxCG1UsOExBBbVYMeURkEbbN2qGxXjIPrVOo8
-         u3pGgf/EaErjq1QQuOTzaA6vPvnjkpG0LGuML5QjbyIP9RquovCZgjwHapvfKSlbPNCX
-         3i3i0dANqRPBpM8BMT3s2DfmlyGcvizW7uAd+CaLT2AjyXafC6bZIrXn7hLTUa4pjhQ6
-         e4AeYxLe3HlnP47jlNmrrdniqOFCotvrCl1GWjoHinbFI5U6YWP0XkRs5ekzedxfGosj
-         58wa+q+JA8jmaR9ASG4dLwilSydRkKgVoBvKs2MA7eCtj5taSxygVdlWw4tDDbGWnWAo
-         1SDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUup2adiho2nhOedpzfhYiBltLP8ep7F0qHzqqDY6QH1OcnOhKuN4m6wNvI/xJ2YFyJFhwEV3gFxg==@kvack.org
-X-Gm-Message-State: AOJu0YyH97CFCFNqM7sRFMaMjTsH5bSmyNz3XwA8ukom6XND0C+lYKne
-	CeURDEebhRgE8CWDGHn5J69ac4iphJitJJJNtZ9keE3Moh2EIET34Uei
-X-Gm-Gg: AY/fxX4b0Tu9Od7kZlG20nkImXNwpNDoqICtrj0/jhTX+BaKzuTTJRMAv1Si3vWDe/f
-	4syxg08z5YgBQl0jnZuMyjMuVO70f27xNSFhwVx+zMahTr1Orsl/AYS2pAN+oAAHjwPiKCtPeKO
-	iLNITYzN+5AJbxwADqFfiMv3GRIXacpYnhDRKyIzRb56MpY5xZ6OyGH3BtUADOrzeAu7i4ISeqH
-	aRSgQjcd1yjgpBd1Gp6+LwqYVpa+SVl0JQxJcE3wxBzEMPkQBvAoKB2SPoxtNlcfX/HltHs4U44
-	w0w0J8PL1rdKOUtdQIMX6tixi5IqPWP9WaKfd7JXLzUiFf+8r/cH3yoavxvtTpaYRbXvcVgXYyG
-	1EzxSXi2HYouEOi2pw/3xQXRYDTZZsJ+4cNMYvdQnjUIrp/yfe1tszXb0jGFXhxWmwftZf943y6
-	RRs1kdNROa
-X-Received: by 2002:a05:690c:398:b0:792:7745:730b with SMTP id 00721157ae682-793c53851b5mr78967317b3.43.1768591638464;
-        Fri, 16 Jan 2026 11:27:18 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:5::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-793c68312adsm12088897b3.33.2026.01.16.11.27.17
+        bh=bOlQeIx1ss450mypUxbZbc6V89e6K7jSrfpMzB6xtko=;
+        b=grdbVDfop5RLxcbFEKoGH0CsR+YHMxQWlp3viuF363rsw7mrPTbWBAbNi+uJewYJKM
+         ldGja0IUA7GDDQWYP0cMetToAg4N4WcLhnLxPHAhNyq98rAa4wNNw4QDXjboDGewTGhw
+         PFrdwZUNywWfEXUb2oxjLeHU/A/P515jYfI1CrCEC5u++f3DG4l00xGNfLxX76hCsycp
+         OUDH5SsF3bDcbRhJBrAJ6rMVN9HI72mud6JL4iHiSBIe8D3Z45zcn4E65+gDu5h4wvIs
+         dUzKfLaw+2DZVtxA7713RYcHjBrdmzoREMxeqKwdAGDz/MjWGpAcUQWbO1jKKnm4kNZy
+         iVLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768591640; x=1769196440;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bOlQeIx1ss450mypUxbZbc6V89e6K7jSrfpMzB6xtko=;
+        b=DhXTDoqpoYlGv+uwgqMhAX3wh4Ur3KL2RpbPbtVBaQUJIt5NEEz4i+xR5kafZ/sPaT
+         CWbNfTLRmedufUHuCCpenEruAOg49hjUvJuu7zbDtVksrpEOfCSxVr5nkcwD78z/hcHv
+         9iYWX2IBYjBPTsOrh4/v+/KOQD0hQ43g46HDlMYmGhR0JAWYhrMzxmMmWt9dYSTKX3UV
+         7F1365JnKq4wgirJ0+o5sGI0KaeUbtfSg1WIVjGNunRUQ9xfusG66U4+EQqiD1ptJgdg
+         3z4/BLhRRnsJN9v1rDyVPU1ax8M/anygZqMtNJaRH2+rfXpMsLhJ+agtaVU6vY5xBbOr
+         Jl4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUTjfxKBeS7YWqXPOIZxGAd3xZrL7N6B6oRtNW70FmQsaI+OYuQNU7KjZy1/tndTMj6CtysMPQpTw==@kvack.org
+X-Gm-Message-State: AOJu0YwaFAb8e/dDURrmo6OgpiGEB3JM8MgRi39bPoQ7WTbrs+5tio4v
+	S31/m5r+IZCBWf1F6VGqporn54lOx1VyvBVFjT8diRl55IPfPXMrow2Y
+X-Gm-Gg: AY/fxX5rO/GVQ0eOdJrBQ64VR1Z6yvJjtBT1zKBgMNyRjoNmaTxjiFM5xbCaZGcNI2n
+	fEfRysUKysNUhZ745OOXWGQJq/ksAtyiIrenr5ftCdWyO0339umQ5xs8LbML7z0lzRRYzja4pHJ
+	ctnCIgsPS8xm9w+Li9uCZY/ITtkYnl3610zR0IE9GqnAbsRFVTEief0vOIqQuoeRBsGblNqjVmi
+	AoyfJNiCl8HMAUWZh0+nWjhbfOun2aoKbhu4nndN74Y1y2HBARWYq1nDj4aU++Tz7ronWL/2W0f
+	rrdlAI8O/i5k/nufiLU0D4FVGGnsrQ8ePxcLLKA1YPRAkG9mhx1WLJ/lvsZeb+FicePSpO0miy1
+	ooNPUMG0rn/S7WV1ZRTjzBVmn30sevBRkByTupM1Gt+TmRCD5mFWWHuSgE1mRiZQxBy1OQtB8Lm
+	GNh8Dx0TI8WzV1bh436LIk
+X-Received: by 2002:a05:690c:620e:b0:792:8604:f0ea with SMTP id 00721157ae682-793c58b231cmr31290047b3.18.1768591639714;
+        Fri, 16 Jan 2026 11:27:19 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:43::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-793c66f66cbsm12374977b3.13.2026.01.16.11.27.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 11:27:18 -0800 (PST)
+        Fri, 16 Jan 2026 11:27:19 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -97,20 +98,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [PATCH v2 1/2] mm/hugetlb: Remove unnecessary if condition
-Date: Fri, 16 Jan 2026 14:27:15 -0500
-Message-ID: <20260116192717.1600049-1-joshua.hahnjy@gmail.com>
+Subject: [PATCH v2 2/2] mm/hugetlb: Enforce brace style
+Date: Fri, 16 Jan 2026 14:27:16 -0500
+Message-ID: <20260116192717.1600049-2-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260116192717.1600049-1-joshua.hahnjy@gmail.com>
+References: <20260116192717.1600049-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cbqg8i5ditcgxegtgzp3eky91goose3j
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 87E0320004
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B8AEAC0006
+X-Stat-Signature: a54crkmjotw14dmrw74zucxnsa6giea4
 X-Rspam-User: 
-X-HE-Tag: 1768591639-427669
-X-HE-Meta: U2FsdGVkX1/h20TXCoW1bdfuxzXWngKQ2nALh1a13Tdpk70spGb+nmvjZROOQJa1aZQHEXFzp32R1tjSbo5mNDWvWnaWCwL++PLgrJhxRdG/kI40/vQfwW32rj3WcCnR/4B5PDLmSFkKl/6yhbdHEF15nqs4KaQl1pkkNZjnrK8m2MVxKT6831W2OhpNcKIRnR638Ex8WdCS0Pp9qybrxcah80RH3ySW3UdfDdsL0kwbb8EUAtQDjQaLV1/ct2sRi7krY/5oD6UcPPUEjFmDrr3qO3WAxIDt2E9bA9EvvZLh7RCIAA8cyLCxywhJ6YRKf+81nK9IyXDsPC94QCfmypTFAt0R+6C39rO5flYgtTZPf4tpw+avLTuU0L235XZiLlQFP9+kgO3TeaR4+QLQSXAeHBuo2hM2SNsAvm+7KBTfCzZEk4/1AT6MEKmaw7k5L+km1NJPj+Nl3O2ZlSYRKev8FPnuoDAoO6TX3GlYzi+tSrjMtkc6qNj4SHvIVer2qeijc14dbaCgSUGheUtoieMPdO5xkIZF32WYvwC+ZMuKXx6BCZrfRkdoa0ivV0pJbg9sZ5xdcMcm+tkY49jyAX3LEcOoHRu7xw4y15nIGhQtdKnoGj8b1fgS9b03LBmFSBYPtMExoQI4t8VLsFAnSk+TXZDj2cZ5qKZd54aG2DAI0wjemlM8+ACqYhTZN5tnDVVPVZwfiNCp9qGWOqLLOehkBWgu6TfbshDNWHQ0ZgLhTAsyug0bxEB7m0eBmWLJ35owQNMlHi8RRqeb51TzWLoj/9edYxcrU7hC7GajA2VZfs7pRHYIl9szzPg2aWAFWPvMr/DwZbBPgIAWsXDeMM5KGAYsk/dJ6kCnDF2St1jKnnpuJFulbYFpgUdIlfdpquA+fq8raVnfXxc53Fx0sxgjsLyA1wV+JC6lIkVBbKgdoOagpujpCzu2lr+eOm5o6pWO/JsltAczHCpI19i
- 1jbTnyCO
- TFrFdGDh96cuRfjujXt1W1VRbrIz6TwybcjsvIF3lSJ5fVnh02BVty+61r7p0O3T9ahH6mhVoDPH3S9hUXKFHOlUUvDgTT4xdkT0o/5PqKiE200H8a04TcafIlrPc7K/Qt+rFPPaEqfC8k2WqGyUbobsFUJI8Uky6k6Ny7VEFkv6bxUuxhAGnGaBXvRDhGBRGxHPEmcV+YiQ2w095RKSpTHZxnEDxZKDomLmqWjcdQniTJXxJkVs9sEnMSYmuZiorYj5bWE7w55dNUkUm3YkSPAz5+nMc+VRUN2uIG8PVUz/1i/nSwTroVpQjMEmNluXvKRZSJRKVaVRd6zViK1zz4h2BaITlaHb/sBXWg0yCM6ctzaGs+yy4ztI9pD8V+JAY/wxFwZPOGEn2aCXR/mfk+wl53Dec9BE+uob5NWOkZxtBpAoV+BgL6jVR4SEYN5khA5oxNa4m/jRNrR6xDJunoOVj5bh89RQq/nAjwD3aukDqOpJm1kI2++8KU4jCv+ebhhNJUZ4iu0AirMk=
+X-HE-Tag: 1768591640-870863
+X-HE-Meta: U2FsdGVkX1+vsR5u0fGyvxTS6OXqz6lzT+zJf1cyZzSxhcfMfcHYtm5nDg1/dgBjeLoTVfbw2ueJQecGQ2gUY5Xoo0RjM8HCvLSlwkYvoBhO6kV2GVqkWCo/R4vqNvBaMEhIt0VqoDu/dpL4ZL1K1OI9WnDykdCXu7Ucmb/yJKvFJf9Cn2lYbRmysXqtGcGqVQLgnfLmao4KSeCuq/OUGD4eSw6nGI7/jC0ZDySHo1lJ6GRuVINPoFyguQWHsqYVOBzArOji3FTllfTgbAY+QGXaquOtebXGo/hxaxvJsHyTflu9RkmGhBDGX+b7AdQa3tDa9w5aZZsf5lifiSTFrd1ho/hEfvg4s1GeZByK6r91HlMvc9CHy0Hc0h8nQvoBwuOHI5lIQdv31sF0sugiBnZZ9ZNI45YTsNRI2JNrjra/ixxX9j3I4cdpSMovzqqFru8lk5WHYwDESpgpmvei71FxdX4oZ25v5hMKI0hpwAt2A0OMdWl4RbZcXPrj525gUSXJA2BW2tsKhWx4NqDf9x2erb3PbETdAZDEW3KgF5rLzA2JZpf4DudJ5baO98gcoPWq/EvrDOf3qWwza0Ew0bDtd8fKiY4FtmToW0YqNNxk4otdLoxcuUtDkBSmMbKmDDifrRfi+sxo2XYLcPv9hZl6vuOwhMFNM11k0QUclDFjkFT/Igq5M9uMHoHR+Mo3ycmwYClTItlfVRkfbWyzBVlRAYYJAJ3f7L87eA3U3dNi7rbggdqyB2neAQzBaZbl5oSD58Q/APY3NxeUo4UqdeoaAMK50O83o5sLLQOZiS6XlyIZ3XWLieubbBGBSXJnyg6JJAgGtoJ1gASs1Jmkr18a3ngXs33fTnhOR0pKRzrvivUdnlzCw7p94hXndcfPFg9LD9Xgw/+8irU4fUk3Ecu/n2JyLtE8murYvrwskdtwao8wd9JZEnpleJVq+EEZVJffmnN469dZ37DAOC1
+ MFlzgB4B
+ bp88QcBnHv5+y1Lew00p/CSOq363v6NEsZFjdc5pT0tcKxhr+EbhRjY94Uqaz27Hbnyegi/NK/3JePtRHMC824HGbHJ13geCc5SPBYrvLAHhBv1R0/lvqQwrTzeKeSMx9V7MwHfSqJmc3ysVX1gBqvpbcFAKEHnIjHJtVN0mOJnSwdt8UiTaASm+JFcBTCpkYugz6J72phbY+vXU1vMflqmKtvm1jRiSjxPZIT55Hh3XiBrfVjntIhJvYe+4BSewLv4f1MkgnXOuYvOyaE2pRYUj8o910uef8nhwdUUGn8WSJGilxoImtAIw4j/GPKlulN/jwoHvMnU/bZGL3meQSGcKN3HWW4cR7qDPzsjeiuOjKm2C+puq9oHQnVYhMhDtRMn/hywrn6NShazKMsJBo+38/POd3rcUqPI7N8pmg09gs0OZjGkynBtIb0HO0SfzoTFFrmCgAKtkTXh+upmCBei2nK+L3+rfCRjRM5TrKnD2CMBsf3pRMy2u7WdPGxPWzdmAfC+9nR25e5iI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,19 +122,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-if (map_chg) is always true, since it is nested in another if statement
-which checks for map_chg == MAP_CHG_NEEDED, which is equal to 1.
+Documentation/process/coding-style.rst explicitly notes that if only one
+branch of a conditional statement is a single statement, braces should
+be used in both branches. Enforce this in mm/hugetlb.c.
 
-if (unlikely(map_chg == MAP_CHG_NEEDED && retval == 0)) {
-	...
-
-	if (map_chg) {
-		...
-	}
-}
-
-Remove the check, un-indent, and collapse the function call for
-readability.
+While add it, fix the indentation for vma_end_reservation.
 
 No functional change intended.
 
@@ -140,35 +135,79 @@ Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
 v1 --> v2:
-- Collapse the "folio" argument into the line above, as suggested by Andrew
-  and SeongJae.
-- Explicitly note that MAP_CHG_NEEDED == 1, as suggested by David.
-- Collect signatures.
+- Remove accidental newline, noted by Andrew and David.
+- Fix vma_end_reservation's indentation while at it, as suggested by
+  SeongJae.
 
- mm/hugetlb.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ mm/hugetlb.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 5a147026633f..2e5592c5cbb2 100644
+index 2e5592c5cbb2..120ebd448b42 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -3028,13 +3028,10 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+@@ -578,8 +578,9 @@ hugetlb_resv_map_add(struct resv_map *map, struct list_head *rg, long from,
+ 		record_hugetlb_cgroup_uncharge_info(cg, h, map, nrg);
+ 		list_add(&nrg->link, rg);
+ 		coalesce_file_region(map, nrg);
+-	} else
++	} else {
+ 		*regions_needed += 1;
++	}
  
- 			rsv_adjust = hugepage_subpool_put_pages(spool, 1);
- 			hugetlb_acct_memory(h, -rsv_adjust);
--			if (map_chg) {
--				spin_lock_irq(&hugetlb_lock);
--				hugetlb_cgroup_uncharge_folio_rsvd(
--				    hstate_index(h), pages_per_huge_page(h),
--				    folio);
--				spin_unlock_irq(&hugetlb_lock);
--			}
-+			spin_lock_irq(&hugetlb_lock);
-+			hugetlb_cgroup_uncharge_folio_rsvd(
-+			    hstate_index(h), pages_per_huge_page(h), folio);
-+			spin_unlock_irq(&hugetlb_lock);
- 		}
+ 	return to - from;
+ }
+@@ -1247,8 +1248,9 @@ void hugetlb_dup_vma_private(struct vm_area_struct *vma)
+ 
+ 		if (vma_lock && vma_lock->vma != vma)
+ 			vma->vm_private_data = NULL;
+-	} else
++	} else {
+ 		vma->vm_private_data = NULL;
++	}
+ }
+ 
+ /*
+@@ -2076,8 +2078,9 @@ int dissolve_free_hugetlb_folio(struct folio *folio)
+ 				h->max_huge_pages++;
+ 				goto out;
+ 			}
+-		} else
++		} else {
+ 			rc = 0;
++		}
+ 
+ 		update_and_free_hugetlb_folio(h, folio, false);
+ 		return rc;
+@@ -2672,11 +2675,12 @@ void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
+ 				 * be consumed on a subsequent allocation.
+ 				 */
+ 				folio_set_hugetlb_restore_reserve(folio);
+-		} else
++		} else {
+ 			/*
+ 			 * No reservation present, do nothing
+ 			 */
+-			 vma_end_reservation(h, vma, address);
++			vma_end_reservation(h, vma, address);
++		}
  	}
+ }
+ 
+@@ -4711,10 +4715,12 @@ static void hugetlb_vm_op_open(struct vm_area_struct *vma)
+ 			if (vma_lock->vma != vma) {
+ 				vma->vm_private_data = NULL;
+ 				hugetlb_vma_lock_alloc(vma);
+-			} else
++			} else {
+ 				pr_warn("HugeTLB: vma_lock already exists in %s.\n", __func__);
+-		} else
++			}
++		} else {
+ 			hugetlb_vma_lock_alloc(vma);
++		}
+ 	}
+ }
  
 -- 
 2.47.3
