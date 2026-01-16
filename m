@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 862AFC982C7
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:40:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AACEC982C4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:41:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D660C6B0093; Fri, 16 Jan 2026 09:40:53 -0500 (EST)
+	id 91FFC6B0095; Fri, 16 Jan 2026 09:40:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC9E06B0095; Fri, 16 Jan 2026 09:40:53 -0500 (EST)
+	id 8B74A6B0096; Fri, 16 Jan 2026 09:40:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB9A66B0096; Fri, 16 Jan 2026 09:40:53 -0500 (EST)
+	id 778016B0098; Fri, 16 Jan 2026 09:40:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 952886B0093
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:40:53 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5872F138F33
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:40:53 +0000 (UTC)
-X-FDA: 84338088786.18.6CE8229
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1496D140007
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:40:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eZQyPLN9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JS727WAF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eZQyPLN9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JS727WAF;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 620B86B0095
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:40:59 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 265581AB20
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:40:59 +0000 (UTC)
+X-FDA: 84338089038.19.013CBDD
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C938340004
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:40:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IjRAZpDJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qqLsDMNQ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bHTXKLTC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9axPLR58;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768574457; a=rsa-sha256;
+	cv=none;
+	b=6f3PzdjIPUIETHpJg99GL2QjWUPLlkdF3DJmqOrVHXBGtZJHrLubqqiIQi4yESZBa9VSDm
+	HrGatHlZljz0BmcGNohC/STV8E/qUnSRfOTKsnsyn90hUe+Rpte+hp//5nUzENPHbX/BPN
+	6t3RSPbvmsRyBTqLA4PDD+bY+ZM0Kh4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IjRAZpDJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qqLsDMNQ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bHTXKLTC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9axPLR58;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768574451;
+	s=arc-20220608; t=1768574457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/upRfJ3PHSpDAJJ/Lor3pwgQGBiD4JB0EJmftl/mO6A=;
-	b=DG3U3xbJJpm3tryy9bUkAU+T2z1R9ANYdP8zR1YO21VkwGeWl+6zQwLkoaiUaZRpOa4N/v
-	0Mg0PtMHG6iE/ZvoWg+yF/4BzngKNgR4NotR28VZWm/xdxO6w6rBZoi3fbmn7JHfXdKrXm
-	tA2gjDiPkS3VYKaCzz7NVfhYAUFMNl8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768574451; a=rsa-sha256;
-	cv=none;
-	b=lDnXQPcyBEK8OMGwFIq97WjoPpYY3v44rY9f7Q8lHXhLrbaUiDaBGgWCSKdjmFaOd5lOmO
-	F8AnVQR1RavkIbmgQzWoCqYu8zf9kZWTLhJtNIM/xtPf7DsomiuEUUI497Bi0xooOq1uBX
-	Q6MOs1Ez8h15yjGXfmYAjzbTFw1h1jA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eZQyPLN9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JS727WAF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eZQyPLN9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JS727WAF;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	bh=8NQimX2qnHyu3iifkMxRzCZm5f98wg6UoDIBK4sRJ+Q=;
+	b=vpr+cn3RZ/f85arkVUch3U9dT7pNwjC9dRTP3ZVPyYPSudyXtEuQinLucHvTb4ug4qIrLw
+	cO8mSKXtw1E3N086zva1UZGj3uotNFk+X7Q3+Fv6eyUkIbdLvtA5GSySJQeirx+yLghVIc
+	M6CQcXipvxp6j+pzdIvckivgAPmAQsk=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 460AA5BE85;
-	Fri, 16 Jan 2026 14:40:37 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E79D3337F7;
+	Fri, 16 Jan 2026 14:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1768574437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/upRfJ3PHSpDAJJ/Lor3pwgQGBiD4JB0EJmftl/mO6A=;
-	b=eZQyPLN9DJMcCaE2uxOwagAotWKBSVJboVVCUKS+aR2tp2qaGnF2WMG8/r0qjet7ZkZyHu
-	rRKltn6v/KzG9DoYnXOOg8MPNciFeEEtseWtH+97WkVmIIOB+v0ViasUWqZyG2GEZRCiDe
-	dD+JxE02TSMHvJIOBWQSQHoHMOIBqUo=
+	bh=8NQimX2qnHyu3iifkMxRzCZm5f98wg6UoDIBK4sRJ+Q=;
+	b=IjRAZpDJbvGkZ4PRHVRMajXUaylUKsG2mFfcgvO/CHqSHN2cJ8yClC0ETic9AFyX2fQK6y
+	8yF6iEBZZf6rixxCayVusw0ognFkGoKkkB++gVL19t5zGyAzd1grPKGWiQGIfnoxC1YLjH
+	7jZdt7MQMtW0oQnIqIXHOFiPgebfa5E=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1768574437;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/upRfJ3PHSpDAJJ/Lor3pwgQGBiD4JB0EJmftl/mO6A=;
-	b=JS727WAFeDyGguz7UNeWsDT9YbFz4mhTxOowAOC5XhsXk3Lm/9DWnjramaz1fYa8uIjKc4
-	cNVSE1CiWnsvTwDA==
+	bh=8NQimX2qnHyu3iifkMxRzCZm5f98wg6UoDIBK4sRJ+Q=;
+	b=qqLsDMNQEMi6oQ6kdtboFIM7Vl7xlGejWKY6vneFK8/3wYjx7lqIVGyZhMRdD5DgKu/bBy
+	1SgGxa62xjciYwDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768574437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1768574436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/upRfJ3PHSpDAJJ/Lor3pwgQGBiD4JB0EJmftl/mO6A=;
-	b=eZQyPLN9DJMcCaE2uxOwagAotWKBSVJboVVCUKS+aR2tp2qaGnF2WMG8/r0qjet7ZkZyHu
-	rRKltn6v/KzG9DoYnXOOg8MPNciFeEEtseWtH+97WkVmIIOB+v0ViasUWqZyG2GEZRCiDe
-	dD+JxE02TSMHvJIOBWQSQHoHMOIBqUo=
+	bh=8NQimX2qnHyu3iifkMxRzCZm5f98wg6UoDIBK4sRJ+Q=;
+	b=bHTXKLTCNaMmnRR8mday6p5+H8tMJLbOk/PFtk+8rHeqahiIL/IEnHVlMu6Be/QQ7ebuuB
+	eENPdKKsDHwm3EjnXW7hqfdSOcx2z3I+M+CK35A2Pkw1HeasgV/h1rVQOOxNzkaiUjtAxD
+	9VR2K7fsdnFTQEj3oPWIv6ewrVJzW44=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768574437;
+	s=susede2_ed25519; t=1768574436;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/upRfJ3PHSpDAJJ/Lor3pwgQGBiD4JB0EJmftl/mO6A=;
-	b=JS727WAFeDyGguz7UNeWsDT9YbFz4mhTxOowAOC5XhsXk3Lm/9DWnjramaz1fYa8uIjKc4
-	cNVSE1CiWnsvTwDA==
+	bh=8NQimX2qnHyu3iifkMxRzCZm5f98wg6UoDIBK4sRJ+Q=;
+	b=9axPLR58O7D5zJ0fVfsle5q3EiPj0vyaTRz/qy585O/0mapFnq4eXTGymbxfuwAOIspUUs
+	rKfoa/KpWMmGzHDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 27AF03EA66;
-	Fri, 16 Jan 2026 14:40:37 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C5E313EA67;
+	Fri, 16 Jan 2026 14:40:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cDlrCeVNamnydgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:37 +0000
+	id ECUEMORNamnydgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:36 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 16 Jan 2026 15:40:26 +0100
-Subject: [PATCH v3 06/21] slab: introduce percpu sheaves bootstrap
+Date: Fri, 16 Jan 2026 15:40:23 +0100
+Subject: [PATCH v3 03/21] mm/slab: move and refactor __kmem_cache_alias()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-sheaves-for-all-v3-6-5595cb000772@suse.cz>
+Message-Id: <20260116-sheaves-for-all-v3-3-5595cb000772@suse.cz>
 References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
 In-Reply-To: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
@@ -130,14 +130,14 @@ Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
  Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1496D140007
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C938340004
+X-Stat-Signature: 9ainybjwk9dcgjgndg66baa4quf1m1tn
 X-Rspam-User: 
-X-Stat-Signature: aadnscdr6mt9s4dy36i6ze8qxhhwepo1
-X-HE-Tag: 1768574450-395716
-X-HE-Meta: U2FsdGVkX19Ark3JawTO9dZnMSqkvNYXF0oBg+ju28ct4mVNU6sQUo7NuCY4FZqXbX6gRPLedoE3O6hwBBpmoPNLJv83/c4GLn/rGNrOfUJjubsLuluW+NwXm5qMNdGg5Xlrfqyg+t1AcOKJ5cwRlTs9mVedBw+LfDt4nVSG8YYTqlbTl409fN+fRdcOf2nYCNw+DOE3J4a9E5mjsz2KkCOaWW6050eibFA6+HIa54OP5CNC7jOHKRm5b6S5e46V6OS1ihQpQuvLI3qrY10FBdzT/XnVAAdcS4jVnMAcea4HQINzsOGeXZEOcge13Ns5HYx2HdAFw29UVasiQWKedhJFGHmKbh+hSzHUP+aGPEKjJZB57uQiy73gE+On/XLi0UdkL63y+/AtAJOPAUrmE5+8rPx/bHvXM/ljvfcmvLvVTqTj6zarFNF/CBkW7Pobv+OmlLP4gjklk7LEp1EfIIIRoQp93VNtZM/ykdw1Hs9FGoXiQqMOBi6e0wJNzs/lXfKXi2q3LhK60rOsmKuYWBCv13Lo/RWiHnyK+b224bmykC+LWRFRgWCfXcxR5lChTr5XycWFheiDqqVXlYN++UYvFZ1FZpDKVlCG5QDi1OM8uAGvplK2SjvB50H69+DX2eeRhnTcjBg96IRrPl6cQuSTx2HEHISteW/7fCNicqFBM8yq5CouRjQ37qnQIGMTA0F/5/Iw+kQIBQYdix5QLaaM1TcBtpolHo7dgegu6L+LDjx1mBz+oOSfZifOtwaUzNHucs1by3Pa5WhGE+2bY6+Alxpilxmh4vEYmUcUSyUc0adPFnt8xLiAqlevjqyQwW85Sx+sm4EX6nQw19YDcyiG9JI+6yvXlnCbQv3XnpIKoxu6QKLiuHeMsMR1dUeYkY/pwcCAIEma4AOJ60TVMBiRZ+hCXUxmZR+nRbQG7oNDoGRSfGhKLG0qrx2KB/R8q1RCV+Yo4Xqi1cArtuz
- VZNGnJAr
- ri4kVyT7JJsD8v0iK4dp6N3XgBHKvUg+ltHfsMkXes0ba8B6QFH1o1fclfYD3i+dWlaJSIkIXIkEr0fo53hTmZGumQjYBUOux3J6/8iPHrxCjgvy27vNatYKdfStcaCanFBJMuWA72rsvbqW4fU1LmgGxnBJCXLecEhYnSTy9gb1klEsrDozusoeb+lUHKV5gIWW8lkay9B6mZsGrewML7wtSR8Uv7zqLHOFjU+KfPoFPgk87W52GaoXtuA==
+X-HE-Tag: 1768574456-716662
+X-HE-Meta: U2FsdGVkX1+ctO97zNYNO3Sciu5dfkGtM6ylbzzaROZofDfTH1aVG+k4xO9VjaXhLRCbmyKj+GfK57viXVH5ZW4cTm8kMjYRoKj1+TBMbULmESPesuRhK002VhD5CxEhlvpy+3vikzKRMK/9Ac0cfU+YChDzDJlAeR9UZwJ9TPpGAoIrEfe1UfhngOmLo6TbGbbXA3YeHgPsJc4GNhDtjlrfXkajwT2AoVN2nOpJ1M+VmL3+9JS6c9BzDytwj93KebAFh9axeuLx6EmtTMQZAwGvTWYKl4mRlbD5/ndfeJHL4Vgyy2C2NwQh0a/qOZKeRYsb1zwZSn67bWvg4Ur8BrhTthCK9Zy5/xfHYtT3J/mHluWVxIUhKFq7+UiZ88AvAdPSQ+17qWjqH22FcFGrO7E2YpQbxU3sZbKEu5peMIaHOzOV/m7Ue+nMhZ763Y1u0/ULyXlT9RsAFR2KX9h9oh+12xSFUbW7KS7EU+05GeydwrYvdd64B/2dhHBK+b/WJq6or1yq3lkAiLGlDRrTEWjfNpfCWiDz7wkTT9ye+qFZbZUYEZTv7R40CeplA7uTMwZlvXN2oL4/X5QWAJZ2D9nhwnXSjgXFWGhUvWBdO/sioWCay/ccypvhmzV5Pi2VeBnepqH5IFN80+bn6xdhWK0dHTJJ9WlgzeD3DQgKBpK8NhFPBuOrhM1qki70G+OjEqhDmg/0wOuhqviRoiA8zfFmgLMMEVX5WGaxa9QnnhqGECyVtkqptI3lY552d3JgLR8a9LPGxLfUel57W+gHXAGQ34woGwr9VE59hAegLpy0YOs9pKCv+CXaPRrgGqUIpLKxp3fJ/sflMzg8XJxtWdTltWewf9IoiqX6ZRCoq2aIz2yV646OmvSUjcqcWQr/v7gaRnPKXngqCJwnR2qYOKdx1TBrYr2UB2O7khOIaqb5jcaLV4IwfHQwm61Co5S+Mf7Vvup36glf4KQDV6s
+ WRTa+Gss
+ Gal2S7AEm/zw8ReX05JtyPf7COtpyFphJid+KpEoqhkC61nN+A/s2aUxbKR8I5wgLEZalhi4bgOLDwnRYRV/1vPktfbvSyN3IdrrZXD6ZsqmGcQInajSk/UJKV3pF0QZEbcBNCSp1dJ/t5i0oK5LhXidJoQ7TAgCFBR6jaFEhx9j7p6uH16sClt42EjSluhIr+Hqg+cZYmbeJcyiJ0rOBh2PiVhCipKTd97ZCewJPZ/KA46ZaW/vjFf3/+SlpbUJp3BVzo3W9jnp/UpH8v0Dzf83JGZJKVLdBPZ9hCMX6G+5x9L0cAer3yGDo+kDL22mYdtSBKuTHg+GPYOKOjE5pYKkwnoZq7T1tp36U
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,308 +146,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Until now, kmem_cache->cpu_sheaves was !NULL only for caches with
-sheaves enabled. Since we want to enable them for almost all caches,
-it's suboptimal to test the pointer in the fast paths, so instead
-allocate it for all caches in do_kmem_cache_create(). Instead of testing
-the cpu_sheaves pointer to recognize caches (yet) without sheaves, test
-kmem_cache->sheaf_capacity for being 0, where needed, using a new
-cache_has_sheaves() helper.
+Move __kmem_cache_alias() to slab_common.c since it's called by
+__kmem_cache_create_args() and calls find_mergeable() that both
+are in this file. We can remove two slab.h declarations and make
+them static. Instead declare sysfs_slab_alias() from slub.c so
+that __kmem_cache_alias() can keep calling it.
 
-However, for the fast paths sake we also assume that the main sheaf
-always exists (pcs->main is !NULL), and during bootstrap we cannot
-allocate sheaves yet.
+Add args parameter to __kmem_cache_alias() and find_mergeable() instead
+of align and ctor. With that we can also move the checks for usersize
+and sheaf_capacity there from __kmem_cache_create_args() and make the
+result more symmetric with slab_unmergeable().
 
-Solve this by introducing a single static bootstrap_sheaf that's
-assigned as pcs->main during bootstrap. It has a size of 0, so during
-allocations, the fast path will find it's empty. Since the size of 0
-matches sheaf_capacity of 0, the freeing fast paths will find it's
-"full". In the slow path handlers, we use cache_has_sheaves() to
-recognize that the cache doesn't (yet) have real sheaves, and fall back.
-Thus sharing the single bootstrap sheaf like this for multiple caches
-and cpus is safe.
+No functional changes intended.
 
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 119 ++++++++++++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 81 insertions(+), 38 deletions(-)
+ mm/slab.h        |  8 +++-----
+ mm/slab_common.c | 44 +++++++++++++++++++++++++++++++++++++-------
+ mm/slub.c        | 30 +-----------------------------
+ 3 files changed, 41 insertions(+), 41 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index edf341c87e20..706cb6398f05 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -501,6 +501,18 @@ struct kmem_cache_node {
- 	struct node_barn *barn;
- };
+diff --git a/mm/slab.h b/mm/slab.h
+index e767aa7e91b0..cb48ce5014ba 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -281,9 +281,12 @@ struct kmem_cache {
+ #define SLAB_SUPPORTS_SYSFS 1
+ void sysfs_slab_unlink(struct kmem_cache *s);
+ void sysfs_slab_release(struct kmem_cache *s);
++int sysfs_slab_alias(struct kmem_cache *, const char *);
+ #else
+ static inline void sysfs_slab_unlink(struct kmem_cache *s) { }
+ static inline void sysfs_slab_release(struct kmem_cache *s) { }
++static inline int sysfs_slab_alias(struct kmem_cache *s, const char *p)
++							{ return 0; }
+ #endif
  
-+/*
-+ * Every cache has !NULL s->cpu_sheaves but they may point to the
-+ * bootstrap_sheaf temporarily during init, or permanently for the boot caches
-+ * and caches with debugging enabled, or all caches with CONFIG_SLUB_TINY. This
-+ * helper distinguishes whether cache has real non-bootstrap sheaves.
-+ */
-+static inline bool cache_has_sheaves(struct kmem_cache *s)
+ void *fixup_red_left(struct kmem_cache *s, void *p);
+@@ -400,11 +403,6 @@ extern void create_boot_cache(struct kmem_cache *, const char *name,
+ 			unsigned int useroffset, unsigned int usersize);
+ 
+ int slab_unmergeable(struct kmem_cache *s);
+-struct kmem_cache *find_mergeable(unsigned size, unsigned align,
+-		slab_flags_t flags, const char *name, void (*ctor)(void *));
+-struct kmem_cache *
+-__kmem_cache_alias(const char *name, unsigned int size, unsigned int align,
+-		   slab_flags_t flags, void (*ctor)(void *));
+ 
+ slab_flags_t kmem_cache_flags(slab_flags_t flags, const char *name);
+ 
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index e691ede0e6a8..ee245a880603 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -174,15 +174,22 @@ int slab_unmergeable(struct kmem_cache *s)
+ 	return 0;
+ }
+ 
+-struct kmem_cache *find_mergeable(unsigned int size, unsigned int align,
+-		slab_flags_t flags, const char *name, void (*ctor)(void *))
++static struct kmem_cache *find_mergeable(unsigned int size, slab_flags_t flags,
++		const char *name, struct kmem_cache_args *args)
+ {
+ 	struct kmem_cache *s;
++	unsigned int align;
+ 
+ 	if (slab_nomerge)
+ 		return NULL;
+ 
+-	if (ctor)
++	if (args->ctor)
++		return NULL;
++
++	if (IS_ENABLED(CONFIG_HARDENED_USERCOPY) && args->usersize)
++		return NULL;
++
++	if (args->sheaf_capacity)
+ 		return NULL;
+ 
+ 	flags = kmem_cache_flags(flags, name);
+@@ -191,7 +198,7 @@ struct kmem_cache *find_mergeable(unsigned int size, unsigned int align,
+ 		return NULL;
+ 
+ 	size = ALIGN(size, sizeof(void *));
+-	align = calculate_alignment(flags, align, size);
++	align = calculate_alignment(flags, args->align, size);
+ 	size = ALIGN(size, align);
+ 
+ 	list_for_each_entry_reverse(s, &slab_caches, list) {
+@@ -252,6 +259,31 @@ static struct kmem_cache *create_cache(const char *name,
+ 	return ERR_PTR(err);
+ }
+ 
++static struct kmem_cache *
++__kmem_cache_alias(const char *name, unsigned int size, slab_flags_t flags,
++		   struct kmem_cache_args *args)
 +{
-+	/* Test CONFIG_SLUB_TINY for code elimination purposes */
-+	return !IS_ENABLED(CONFIG_SLUB_TINY) && s->sheaf_capacity;
++	struct kmem_cache *s;
++
++	s = find_mergeable(size, flags, name, args);
++	if (s) {
++		if (sysfs_slab_alias(s, name))
++			pr_err("SLUB: Unable to add cache alias %s to sysfs\n",
++			       name);
++
++		s->refcount++;
++
++		/*
++		 * Adjust the object sizes so that we clear
++		 * the complete object on kzalloc.
++		 */
++		s->object_size = max(s->object_size, size);
++		s->inuse = max(s->inuse, ALIGN(size, sizeof(void *)));
++	}
++
++	return s;
 +}
 +
- static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int node)
- {
- 	return s->node[node];
-@@ -2855,6 +2867,10 @@ static void pcs_destroy(struct kmem_cache *s)
- 		if (!pcs->main)
- 			continue;
+ /**
+  * __kmem_cache_create_args - Create a kmem cache.
+  * @name: A string which is used in /proc/slabinfo to identify this cache.
+@@ -323,9 +355,7 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+ 		    object_size - args->usersize < args->useroffset))
+ 		args->usersize = args->useroffset = 0;
  
-+		/* bootstrap or debug caches, it's the bootstrap_sheaf */
-+		if (!pcs->main->cache)
-+			continue;
-+
- 		/*
- 		 * We have already passed __kmem_cache_shutdown() so everything
- 		 * was flushed and there should be no objects allocated from
-@@ -4030,7 +4046,7 @@ static bool has_pcs_used(int cpu, struct kmem_cache *s)
- {
- 	struct slub_percpu_sheaves *pcs;
+-	if (!args->usersize && !args->sheaf_capacity)
+-		s = __kmem_cache_alias(name, object_size, args->align, flags,
+-				       args->ctor);
++	s = __kmem_cache_alias(name, object_size, flags, args);
+ 	if (s)
+ 		goto out_unlock;
  
--	if (!s->cpu_sheaves)
-+	if (!cache_has_sheaves(s))
- 		return false;
+diff --git a/mm/slub.c b/mm/slub.c
+index df71c156d13c..2dda2fc57ced 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -350,11 +350,8 @@ enum track_item { TRACK_ALLOC, TRACK_FREE };
  
- 	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
-@@ -4052,7 +4068,7 @@ static void flush_cpu_slab(struct work_struct *w)
+ #ifdef SLAB_SUPPORTS_SYSFS
+ static int sysfs_slab_add(struct kmem_cache *);
+-static int sysfs_slab_alias(struct kmem_cache *, const char *);
+ #else
+ static inline int sysfs_slab_add(struct kmem_cache *s) { return 0; }
+-static inline int sysfs_slab_alias(struct kmem_cache *s, const char *p)
+-							{ return 0; }
+ #endif
  
- 	s = sfw->s;
+ #if defined(CONFIG_DEBUG_FS) && defined(CONFIG_SLUB_DEBUG)
+@@ -8553,31 +8550,6 @@ void __init kmem_cache_init_late(void)
+ 	WARN_ON(!flushwq);
+ }
  
--	if (s->cpu_sheaves)
-+	if (cache_has_sheaves(s))
- 		pcs_flush_all(s);
- 
- 	flush_this_cpu_slab(s);
-@@ -4157,7 +4173,7 @@ void flush_all_rcu_sheaves(void)
- 	mutex_lock(&slab_mutex);
- 
- 	list_for_each_entry(s, &slab_caches, list) {
--		if (!s->cpu_sheaves)
-+		if (!cache_has_sheaves(s))
- 			continue;
- 		flush_rcu_sheaves_on_cache(s);
- 	}
-@@ -4179,7 +4195,7 @@ static int slub_cpu_dead(unsigned int cpu)
- 	mutex_lock(&slab_mutex);
- 	list_for_each_entry(s, &slab_caches, list) {
- 		__flush_cpu_slab(s, cpu);
--		if (s->cpu_sheaves)
-+		if (cache_has_sheaves(s))
- 			__pcs_flush_all_cpu(s, cpu);
- 	}
- 	mutex_unlock(&slab_mutex);
-@@ -4979,6 +4995,12 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 
- 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
- 
-+	/* Bootstrap or debug cache, back off */
-+	if (unlikely(!cache_has_sheaves(s))) {
-+		local_unlock(&s->cpu_sheaves->lock);
-+		return NULL;
-+	}
-+
- 	if (pcs->spare && pcs->spare->size > 0) {
- 		swap(pcs->main, pcs->spare);
- 		return pcs;
-@@ -5165,6 +5187,11 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		struct slab_sheaf *full;
- 		struct node_barn *barn;
- 
-+		if (unlikely(!cache_has_sheaves(s))) {
-+			local_unlock(&s->cpu_sheaves->lock);
-+			return allocated;
-+		}
-+
- 		if (pcs->spare && pcs->spare->size > 0) {
- 			swap(pcs->main, pcs->spare);
- 			goto do_alloc;
-@@ -5244,8 +5271,7 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
- 	if (unlikely(object))
- 		goto out;
- 
--	if (s->cpu_sheaves)
--		object = alloc_from_pcs(s, gfpflags, node);
-+	object = alloc_from_pcs(s, gfpflags, node);
- 
- 	if (!object)
- 		object = __slab_alloc_node(s, gfpflags, node, addr, orig_size);
-@@ -5355,17 +5381,6 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
- 
- 	if (unlikely(size > s->sheaf_capacity)) {
- 
--		/*
--		 * slab_debug disables cpu sheaves intentionally so all
--		 * prefilled sheaves become "oversize" and we give up on
--		 * performance for the debugging. Same with SLUB_TINY.
--		 * Creating a cache without sheaves and then requesting a
--		 * prefilled sheaf is however not expected, so warn.
--		 */
--		WARN_ON_ONCE(s->sheaf_capacity == 0 &&
--			     !IS_ENABLED(CONFIG_SLUB_TINY) &&
--			     !(s->flags & SLAB_DEBUG_FLAGS));
+-struct kmem_cache *
+-__kmem_cache_alias(const char *name, unsigned int size, unsigned int align,
+-		   slab_flags_t flags, void (*ctor)(void *))
+-{
+-	struct kmem_cache *s;
 -
- 		sheaf = kzalloc(struct_size(sheaf, objects, size), gfp);
- 		if (!sheaf)
- 			return NULL;
-@@ -6082,6 +6097,12 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
- restart:
- 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
- 
-+	/* Bootstrap or debug cache, back off */
-+	if (unlikely(!cache_has_sheaves(s))) {
-+		local_unlock(&s->cpu_sheaves->lock);
-+		return NULL;
-+	}
-+
- 	barn = get_barn(s);
- 	if (!barn) {
- 		local_unlock(&s->cpu_sheaves->lock);
-@@ -6280,6 +6301,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
- 		struct slab_sheaf *empty;
- 		struct node_barn *barn;
- 
-+		/* Bootstrap or debug cache, fall back */
-+		if (unlikely(!cache_has_sheaves(s))) {
-+			local_unlock(&s->cpu_sheaves->lock);
-+			goto fail;
-+		}
-+
- 		if (pcs->spare && pcs->spare->size == 0) {
- 			pcs->rcu_free = pcs->spare;
- 			pcs->spare = NULL;
-@@ -6674,9 +6701,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
- 	if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s), false)))
- 		return;
- 
--	if (s->cpu_sheaves && likely(!IS_ENABLED(CONFIG_NUMA) ||
--				     slab_nid(slab) == numa_mem_id())
--			   && likely(!slab_test_pfmemalloc(slab))) {
-+	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())
-+	    && likely(!slab_test_pfmemalloc(slab))) {
- 		if (likely(free_to_pcs(s, object)))
- 			return;
- 	}
-@@ -7379,7 +7405,7 @@ void kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
- 	 * freeing to sheaves is so incompatible with the detached freelist so
- 	 * once we go that way, we have to do everything differently
- 	 */
--	if (s && s->cpu_sheaves) {
-+	if (s && cache_has_sheaves(s)) {
- 		free_to_pcs_bulk(s, size, p);
- 		return;
- 	}
-@@ -7490,8 +7516,7 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
- 		size--;
- 	}
- 
--	if (s->cpu_sheaves)
--		i = alloc_from_pcs_bulk(s, size, p);
-+	i = alloc_from_pcs_bulk(s, size, p);
- 
- 	if (i < size) {
- 		/*
-@@ -7702,6 +7727,7 @@ static inline int alloc_kmem_cache_cpus(struct kmem_cache *s)
- 
- static int init_percpu_sheaves(struct kmem_cache *s)
- {
-+	static struct slab_sheaf bootstrap_sheaf = {};
- 	int cpu;
- 
- 	for_each_possible_cpu(cpu) {
-@@ -7711,7 +7737,28 @@ static int init_percpu_sheaves(struct kmem_cache *s)
- 
- 		local_trylock_init(&pcs->lock);
- 
--		pcs->main = alloc_empty_sheaf(s, GFP_KERNEL);
-+		/*
-+		 * Bootstrap sheaf has zero size so fast-path allocation fails.
-+		 * It has also size == s->sheaf_capacity, so fast-path free
-+		 * fails. In the slow paths we recognize the situation by
-+		 * checking s->sheaf_capacity. This allows fast paths to assume
-+		 * s->cpu_sheaves and pcs->main always exists and is valid.
-+		 * It's also safe to share the single static bootstrap_sheaf
-+		 * with zero-sized objects array as it's never modified.
-+		 *
-+		 * bootstrap_sheaf also has NULL pointer to kmem_cache so we
-+		 * recognize it and not attempt to free it when destroying the
-+		 * cache
-+		 *
-+		 * We keep bootstrap_sheaf for kmem_cache and kmem_cache_node,
-+		 * caches with debug enabled, and all caches with SLUB_TINY.
-+		 * For kmalloc caches it's used temporarily during the initial
-+		 * bootstrap.
-+		 */
-+		if (!s->sheaf_capacity)
-+			pcs->main = &bootstrap_sheaf;
-+		else
-+			pcs->main = alloc_empty_sheaf(s, GFP_KERNEL);
- 
- 		if (!pcs->main)
- 			return -ENOMEM;
-@@ -7809,7 +7856,7 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
- 			continue;
- 		}
- 
--		if (s->cpu_sheaves) {
-+		if (cache_has_sheaves(s)) {
- 			barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, node);
- 
- 			if (!barn)
-@@ -8127,7 +8174,7 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
- 	flush_all_cpus_locked(s);
- 
- 	/* we might have rcu sheaves in flight */
--	if (s->cpu_sheaves)
-+	if (cache_has_sheaves(s))
- 		rcu_barrier();
- 
- 	/* Attempt to free all objects */
-@@ -8439,7 +8486,7 @@ static int slab_mem_going_online_callback(int nid)
- 		if (get_node(s, nid))
- 			continue;
- 
--		if (s->cpu_sheaves) {
-+		if (cache_has_sheaves(s)) {
- 			barn = kmalloc_node(sizeof(*barn), GFP_KERNEL, nid);
- 
- 			if (!barn) {
-@@ -8647,12 +8694,10 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
- 
- 	set_cpu_partial(s);
- 
--	if (s->sheaf_capacity) {
--		s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
--		if (!s->cpu_sheaves) {
--			err = -ENOMEM;
--			goto out;
--		}
-+	s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
-+	if (!s->cpu_sheaves) {
-+		err = -ENOMEM;
-+		goto out;
- 	}
- 
- #ifdef CONFIG_NUMA
-@@ -8671,11 +8716,9 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
- 	if (!alloc_kmem_cache_cpus(s))
- 		goto out;
- 
--	if (s->cpu_sheaves) {
--		err = init_percpu_sheaves(s);
--		if (err)
--			goto out;
+-	s = find_mergeable(size, align, flags, name, ctor);
+-	if (s) {
+-		if (sysfs_slab_alias(s, name))
+-			pr_err("SLUB: Unable to add cache alias %s to sysfs\n",
+-			       name);
+-
+-		s->refcount++;
+-
+-		/*
+-		 * Adjust the object sizes so that we clear
+-		 * the complete object on kzalloc.
+-		 */
+-		s->object_size = max(s->object_size, size);
+-		s->inuse = max(s->inuse, ALIGN(size, sizeof(void *)));
 -	}
-+	err = init_percpu_sheaves(s);
-+	if (err)
-+		goto out;
+-
+-	return s;
+-}
+-
+ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+ 			 unsigned int size, struct kmem_cache_args *args,
+ 			 slab_flags_t flags)
+@@ -9810,7 +9782,7 @@ struct saved_alias {
  
- 	err = 0;
+ static struct saved_alias *alias_list;
+ 
+-static int sysfs_slab_alias(struct kmem_cache *s, const char *name)
++int sysfs_slab_alias(struct kmem_cache *s, const char *name)
+ {
+ 	struct saved_alias *al;
  
 
 -- 
