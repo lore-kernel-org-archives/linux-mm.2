@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B472D4A613
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 08:50:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8722ED4A609
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 08:54:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E3756B0092; Fri, 16 Jan 2026 03:50:42 -0500 (EST)
+	id AA3A76B0089; Fri, 16 Jan 2026 03:54:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 691BC6B0095; Fri, 16 Jan 2026 03:50:42 -0500 (EST)
+	id A7B4A6B008C; Fri, 16 Jan 2026 03:54:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59DA26B0096; Fri, 16 Jan 2026 03:50:42 -0500 (EST)
+	id 9870E6B0092; Fri, 16 Jan 2026 03:54:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 436C36B0092
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 03:50:42 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC8611A05A1
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:50:41 +0000 (UTC)
-X-FDA: 84337206282.06.E90946F
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C276314000B
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:50:39 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ijhMraSk;
-	spf=pass (imf09.hostedemail.com: domain of zhao1.liu@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=zhao1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 889D26B0089
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 03:54:02 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2A9C08C0D7
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:54:02 +0000 (UTC)
+X-FDA: 84337214724.28.772F2AB
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 341EAC000F
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:53:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=fMzegftB;
+	spf=pass (imf28.hostedemail.com: domain of jackzxcui1989@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768553440;
+	s=arc-20220608; t=1768553640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7x/bK4DOGdlxgjjbUtNSp/6xcgnalFIPscEM8p+Q0y8=;
-	b=nfJlKiNZGBYlJnrfJM4Pb86D6dXpVkAf2f0q252gW9vCoFSLkqElJmpeNSpyKFxWnLnXws
-	piTpAfzN583dOyZVGz0uZIMCD7EM41guJKF74HONMdvhszQ9WLpD6EroVRNiD2sMAYA25R
-	rUh9GXhOqNZgyD/aoiMO1629zVY4j6g=
+	bh=33Q2PhF2WYxmq/ogA5PjyvsxiVXdLLFmrPqiyNG06ZA=;
+	b=1eMVIxRTSOluFQ/i5GtkO+q5Ssz07QzA269ZasBYnLYAXfhRE3S/MB3+q/ltVmMqQ8x5kp
+	5rpaF+dW3avg6dHs/WaLOkQSRxqjc4+i9tGy6UHoW5uJGKkN/1Hay6AIyy3oX3z1wtqKK7
+	5B/Jqwo474V557jK6a9N8xbb/x2OpE0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ijhMraSk;
-	spf=pass (imf09.hostedemail.com: domain of zhao1.liu@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=zhao1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768553440; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=fMzegftB;
+	spf=pass (imf28.hostedemail.com: domain of jackzxcui1989@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768553640; a=rsa-sha256;
 	cv=none;
-	b=lkDOypSQObjQsKs0jI7EQ9W8zCsi3sg7eyoYO9rte2HV/FFlIKmC+Gl3zkNCxRDwsetsRg
-	8wNFqxHSvqT5rzJMTBx8FP5601NVAg2IO3Rz6XA6/bvWOAT36+OarCkLlgyncEM2tzovYd
-	D+9JgLWy5SP8SqAjaeCcI8wOKk9uE7c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768553440; x=1800089440;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EtJIRZ5kQM1AmV3qKOu/PRnKgcwSV4sCMrjqXb0Xq4s=;
-  b=ijhMraSkU7SnbNwgxgrirxDR4j13SbpUeA2Qzce+1IKcHqxYXs0bstYj
-   2X2U7dkT5gWIateRYT4qqQcBfwmVL4cVS4h7AlXRRW8005M1KOKzuR3o7
-   kX4sU/kGGdfq1kcPLsOXkoV+Dy/4XuTEqB4kSBtYAqrIQVtuGtRiut+6N
-   SsvemIOdzM2TC+lQS/ZfjVxI7IiXYJQhgFuVbZZ6znmyJEoRrGOEBk973
-   NoIbl/4Htbo+TFk197rqkYK6uTHMqKZzYTgrUuDQYvelwd5Sage080PeQ
-   eYeG6qwga7axzMtjeCs9d/QH7R5hFtw2ESga6qJ8q2jXw15HQBTcrd+KI
-   Q==;
-X-CSE-ConnectionGUID: qsHhLQ3wRQWUjFHNzWRtww==
-X-CSE-MsgGUID: QO5mMHIhRxW81Aq2EdokZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="80982147"
-X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
-   d="scan'208";a="80982147"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 00:50:39 -0800
-X-CSE-ConnectionGUID: USy2ZwdtTxuAED8Xk6nV2A==
-X-CSE-MsgGUID: BgdxI1+TTcCzp1xlNG4FLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
-   d="scan'208";a="242741334"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by orviesa001.jf.intel.com with ESMTP; 16 Jan 2026 00:50:33 -0800
-Date: Fri, 16 Jan 2026 17:16:03 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Hao Li <hao.li@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Hao Li <haolee.swjtu@gmail.com>,
-	akpm@linux-foundation.org, harry.yoo@oracle.com, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, tim.c.chen@intel.com,
-	yu.c.chen@intel.com, zhao1.liu@intel.com
-Subject: Re: [PATCH v2] slub: keep empty main sheaf as spare in
- __pcs_replace_empty_main()
-Message-ID: <aWoB0/RxDZeK6LU0@intel.com>
-References: <20251210002629.34448-1-haoli.tcs@gmail.com>
- <a231264a-2da5-4468-a276-777fc0241246@suse.cz>
- <aWi9nAbIkTfYFoMM@intel.com>
- <3foece42fc3wj3wgcnibi7cn2be73ancyjgrzdqfjeqvjtwkhj@lzqd572wfpvz>
+	b=gJtKLc8CNN9eGMyWhEIe1+CA/arik8+NTPKEn3sAaXzn1Oww1QNxxe2yhdvwx10YYaTk2B
+	IpVrL/3zpQSRolWjmFQnIjEV4pe/cln3ueYGdHL5dpemVlGMkI04CV/2j9+GnNiooK7dyV
+	kc2h4y5A2qTIwhUMuBd2cqLtGNs5EJs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=33
+	Q2PhF2WYxmq/ogA5PjyvsxiVXdLLFmrPqiyNG06ZA=; b=fMzegftBUnCngDNnH+
+	agGi/V2u+xvTvI5+0nxdk1Gh6sXIDg9IMHuHcZDbVRk5oHR+Ey/74O6UnnuBIC3I
+	+iUX4dkULe0kM8MGeaA5HsL5dmjmzeXUUbalCM660lkwEhpKhTK97HuA6RJxAQzh
+	vkL/qBq+GBAKzurox0+0GuEDw=
+Received: from zhaoxin-MS-7E12.. (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3A6R9_Glp7FkOGA--.61S2;
+	Fri, 16 Jan 2026 16:53:19 +0800 (CST)
+From: Xin Zhao <jackzxcui1989@163.com>
+To: lorenzo.stoakes@oracle.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	harry.yoo@oracle.com,
+	jackzxcui1989@163.com,
+	jannh@google.com,
+	kuba@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	mhocko@kernel.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	vbabka@suse.cz,
+	weixugc@google.com,
+	willy@infradead.org,
+	yuanchu@google.com,
+	zhengqi.arch@bytedance.com
+Subject: Re: [PATCH] mm: vmscan: add skipexec mode not to reclaim pages with VM_EXEC vma flag
+Date: Fri, 16 Jan 2026 16:53:16 +0800
+Message-Id: <20260116085317.3945633-1-jackzxcui1989@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <14110b70-19e7-474d-b0dd-ba80e8bed9b0@lucifer.local>
+References: <14110b70-19e7-474d-b0dd-ba80e8bed9b0@lucifer.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3foece42fc3wj3wgcnibi7cn2be73ancyjgrzdqfjeqvjtwkhj@lzqd572wfpvz>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3A6R9_Glp7FkOGA--.61S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jw47tF4Dur1UArWxGryUZFb_yoW3ArWxpF
+	Z3Gryjkr4kXF1xJws2yw4DWw1rA395GF45Jr9xC34xC345Wr129rs2kryjyFyxCrnrGr1a
+	qr429rykZa15AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_jg4JUUUUU=
+X-Originating-IP: [124.77.188.51]
+X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/xtbC6B8THWlp-H80CwAA3F
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C276314000B
-X-Stat-Signature: 54u94wer5bgsgz8os96fac5bgq7wh7pm
-X-HE-Tag: 1768553439-482505
-X-HE-Meta: U2FsdGVkX1+lq/pzDVk5LLnHT53wX9q+d0Nl/feP2o3xeiQby1AIUw9Djp8o7ne8GxMgoNyU8EkKG94ALBZJ1QDRJHBsaEcZdkUToQy5j8OLB2iAMwkZKHDRk4wLzglesK9w8oehFFzlu5f/zr8kjhxL3nLVTrZ/EtiaimpjgbuAEMnbasbz0xve8hfjhDNdh619IocUC0YGvrU9fRF70TRCF7J303E3jFp3DZJVZhWI3lGGkOGi/EhrlyapgORuKqN8BK3hqShc4nLf2C79GIZeLUO3WAWlExh3GR9ymd9d/8ra16Zo9FIRtKBLIcALvdGt9WjyqTVVDYVuqbnLOblHqp70aL32KKqwqpCihvFoFnHocfGuyU9L4lsWNPWLiE8sB5Z8aCqXIFFuTJ17ogdMq1oDQT1SvX+dFSDzXkgh2K0MAQGoO3ne9gzsb4eYlWva25zjg8xqG06QeTE/cJ8pTZk9F+nePIpYCd5Ze4ftAsrovnk6BYqiZkx1a0JRqPShP0HN3euz60t3kh+GO0aalFlvtVTmEgWKAT4AStwSJIasxSYYp9bvGZKMiDZlBhfBsZ0LKT9qGBKb0KSKpxgmQq4vyzesfvu1Pr3Wrf1sS+X3gwInXMRWAAGHj6RX0kQwo/m05i9W/9pOWJMHWZY7/pGxWLshFcWHMW51oXm91bWj/4f+xt3tMadPlKvDVYtklZ1pahEmdsZBLyLIdvOX2/EylQEmIVBlALbXucYolw7fOlbrpcZ9mN3YBC7Vil8ucfjKOqTOOWCZPhZeEj3+YYCCmCw3b26LjBh1MPfKLNMLv+NAr1ZDcHb9w6X8DJDPPBBMKEDXKDtBkbdg6qmapYQwhdpde5vqYFsonPZ3Mizob9bJJ5MsdJJpdG+EXh/3G6o5liwZSd1uykQ81ANlqjSTb01rNwyOf316uoiLES0/m//48Q6KeEBYjxB/PXt6E8oBq/P3GvKybw0
- YvTvc1yr
- Bn4iJ5Nj9Qj4OzByGLmaEGBDbw+1ls05+62kAJCgWHGqoswhbUifQN+TpyApJtUwOKlHZqzRvAIaTj1ZNrLbwg9EJxAzYNHJ3eLT6mPhRcYW2oFJBXsLQOtASE9Sxb5NueziglxDhPQPWAURy2YbiF1d2NT7eBihJkBojncmjpjveNExD3iRz95/SJy9+8fiSVSAn4w9CmyJqpZZeoe6TaELCwVrVpGUn2is5Y22s68aB+15fBkJSjMOQ7pLvCgLbkjoEu/psfEJcvMuJqqbH7cKnSSC/lAf+zIpGJwTponToPDyD4u0HMLiU+qsa81dMBunrydGUeURb+G3JnwqmvcYYyBuAyuPcQ0nMdDy06Zor3idXz+KomPxAvbw1q5AL6bFZbid6eJKUv3vChbuSxY9hU9TK8GmIwS3FDC5oP8iSXZDZ0xDIcTwLRw==
+X-Rspamd-Queue-Id: 341EAC000F
+X-Stat-Signature: a5e6d134wfuhw7d9fzcrzb4dxr6bkn5h
+X-HE-Tag: 1768553638-719344
+X-HE-Meta: U2FsdGVkX19yEDb11KwKtGFzI1xq+y5uXb8Ss0SeQDR0ZMwb1TIVPSU62VmbIAaWp0uMcSsk/rn1dCxef/LaHYCOII4U9rLY/9FtQtcY5U2aa1eVi/ObYQhT45zE1wzjr8HiZdJanQH5WTEUD+6VS2u7HWlli81RYBmMNXS0U4kxq9RAklt8TuRXVN9YjouUS+rceU+RabAdzgb4+6SrNe121JpYb1sc8oBfnxWr2MA5/c9DmpTDo+q8L7Ox+1xkP2pxX3sbBinItnLpdd8sjyMzlNornDw/pVpGsxDOxh+KuJRZ7SiYO3Jg6UyLKM8G8VmgMhn0emyAcKxzvLDhc7oVEK6qyibWMsKAk4y/4AtYm2sZ4M/hASMpKGFgYpjxlTIcUy9eCJbXDS/yK5j5WcsL3nYZOj0UHYxddMa0i23ECYmnMPi3PTf4qia7W0dw/UPZFsaMBHxkyi+0UxHjjHyKp0QEXxWQV9Hj41f2RT+lFFdQD/eJzU9Md+u2Bl2UVoo3AaXyti8fptnoFrvznTak2gksixPpT79Hv8bxFlYWkKMYRevusrOq77tbmoIRoRDgljkJXzcnrobwJtZGrni7u62jVK4tJe/XXX083y8YrvTsu5bPPfiv2V2iGq6Sz1w+7+qcqgk/wFrIblW3zZ0a0lM46Qgl+jubVPVArLX3Coi5cmg2e69dmahM6OPM/7Hf4juV1ehhclOP7bWE8Sak6nMMHwVQ5qO2jLrLQc1d3ZnWFv0Z4gtx6erojay+Drnm+FyVK7/yqT6Ts+chJFJ7We8vJMA4C7Pr64OS6GCT3pnxW5sUera0/epgt6RRGePQySsRfyRndbFNcQi2dnGWaUjYzjKCPbJQ6lWDVGvtFOFVhZqiNoW5Gew5KCepNArup5cabp3A1cNJGFyaNqN5MPt7U1dsoB/h4/oxVozdBdITCYUvn/ifm1G0fvcclTGbQTqdJCUPu85ZjNk
+ ghdvoPPq
+ kzsQyBEDUjg9PkQBLEhllDwUqPIwlImgowz4eVNhufx0lUWYVUN3IaQUt/CzUZf3qpB8G4sQvhVl+N2sAurwhIr1DOnkif5ZZmmjQ8ysaX2Jw7bsXocnKvsS3HKdkayxZUIv9USSv6/dZoUJiUtV/yhqNp1dMEipxfRT2EdKyyJpourxzrVO7G2HCWTwpbNllTc2E9BOFVH63APOUYYSbhNmhy7vNtShAwUUb6USgCuZgettBtCB7yXJ7bF3YyuUZVQn7WegKJv+0e/HAUJciqGDfnkNi8OZxxRWYAVcRhjUpiyUZ0zPX8/P9Jv5tSizgbvlmogivHOQ6baAkyYu31eFkfiAvy7qi8KOtE29cOnIDVnhSobRBkGM83TPTaO6+UlgTca0NeYpzs6+zU5gCY0lGQL38mqzSRT3IoPWFEpBE+mHvoGKD2Em3Rg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,30 +110,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> I'd like to dig a bit deeper to confirm whether the "256 tasks" result is truly
-> a regression.
+On Fri, 16 Jan 2026 08:20:08 +0000, Lorenzo wrote:
 
-The "256" seems align closely with the NUMA topology on my machine, so
-I'm unsure how it will perform on other machines.
+> We already absolutely deprioritise reclaim of VM_EXEC regions, so you must
+> surely be under some heavy memory pressure?
+> 
+> > The iowait problem becomes even more severe due to the following reasons:
+> >
+> > 1. The reclaimed code segments are often those that handle exceptional
+> > scenarios, which are not frequently executed. When memory pressure
+> > increases, the entire system can become sluggish, leading to execution of
+> > these seldom-used exception-handling code segments. Since these segments
+> > are more likely to be reclaimed from memory, this exacerbates system
+> > sluggishness.
+> >
+> > 2. The reclaimed code segments used for exception handling are often
+> > shared by multiple tasks, causing these tasks to wait on the folio's
+> > PG_locked bit, further increasing I/O wait.
+> >
+> > 3. Under memory pressure, the reclamation of code segments is often
+> > scattered and randomly distributed, slowing down the efficiency of block
+> > device reads and further exacerbating I/O wait.
+> >
+> > While this issue could be addressed by preloading a library mlock all
+> > executable segments, it would lead to many code segments that are never
+> > used being locked, resulting in memory waste.
+> >
+> > In systems where code execution is relatively fixed, preventing currently
+> > in-use code segments from being reclaimed makes sense. This acts as a
+> > self-adaptive way for the system to lock the necessary portions, which
+> > saves memory compared to locking all code segments with mlock.
+> 
+> This seems like you're trying to solve an issue with reclaim not working
+> correctly, that is causing some kind of thrashing scenario to occur.
+> 
+> There's also nothing 'self-adaptive' about a user having to specify a
+> sysctl like this.
+> 
+> The fix should be part of the reclaim code, not a sysctl.
+> 
+> >
+> > Introduce /proc/sys/vm/skipexec_enabled that can be set to 1 to enable
+> 
+> No thinks, we emphatically do _not_ want a new sysctl.
+> 
+> sysctl's in general should be the last resort - users very often have
+> absolutely no idea how to use them, and it in effect defers decisions that
+> the kernel should make to userland.
+> 
+> > this feature. When this feature is enabled, during memory reclamation
+> > logic, a flag TTU_SKIP_EXEC will be passed to try_to_unmap, allowing
+> > try_to_unmap_one to check if the vma has the VM_EXEC attribute when flag
+> > TTU_SKIP_EXEC is present. If the VM_EXEC attribute is set, it will skip
+> > the unmap operation.
+> 
+> Hm I really don't like the idea that was pass around a flag to essentially
+> say 'hey that thing that has been scheduled for reclaim? Just don't'.
+> 
+> >
+> > In the same scenario of locking a large file with vmtouch -l, our tests
+> > showed that without enabling the skipexec_enabled feature, the number of
+> > occurrences where iowait exceeded 20ms was 47,457, the longest iowait is
+> > 3 seconds. After enabling the skipexec_enabled feature, the number of
+> > occurrences dropped to only 34, the longest iowait is only 44ms, and none
+> > of these 34 instances were due to page cache file pages causing I/O wait.
+> >
+> > Signed-off-by: Xin Zhao <jackzxcui1989@163.com>
+> 
+> So yeah I'm not happy with this patch at all and I think you're doing this
+> entirely wrong.
+> 
+> You really need to dig into the reclaim algorithm and figure out why it is
+> not correctly protecting VM_EXEC mappings.
+> 
+> Consider:
+> 
+> 		/*
+> 		 * Activate file-backed executable folios after first usage.
+> 		 */
+> 		if ((vm_flags & VM_EXEC) && folio_is_file_lru(folio))
+> 			return FOLIOREF_ACTIVATE;
+> 
+> In folio_check_references() and:
+> 
+> 		/* Referenced or rmap lock contention: rotate */
+> 		if (folio_referenced(folio, 0, sc->target_mem_cgroup,
+> 				     &vm_flags) != 0) {
+> 			/*
+> 			 * Identify referenced, file-backed active folios and
+> 			 * give them one more trip around the active list. So
+> 			 * that executable code get better chances to stay in
+> 			 * memory under moderate memory pressure.  Anon folios
+> 			 * are not likely to be evicted by use-once streaming
+> 			 * IO, plus JVM can create lots of anon VM_EXEC folios,
+> 			 * so we ignore them here.
+> 			 */
+> 			if ((vm_flags & VM_EXEC) && folio_is_file_lru(folio)) {
+> 				nr_rotated += folio_nr_pages(folio);
+> 				list_add(&folio->lru, &l_active);
+> 				continue;
+> 			}
+> 		}
+> 
+> In shrink_active_list().
+> 
+> We _already_ take into account VM_EXEC regions, but for some reason your
+> use case either encounters such extreme memory pressure that VM_EXEC
+> regions end up being the least recently used.
+> 
+> It may be your workloads are doing something crazy here or you would end up
+> thrashing anyway, or you simply need to mlock() them?
+> 
+> In any case this needs deeper analysis on your side and any proposed patch
+> should be in the reclaim mechanism, not to provide a 'ignore reclaim'
+> sysctl.
 
-> Could you please share the original full report, or let me know
-> which test case under will-it-scale/ you used?
+Thank you for your reply. Your response has been very helpful to me. I will go
+back and investigate the reasons why the algorithm is not correctly protecting
+VM_EXEC mappings during reclamation. In our project, we indeed encountered
+situations with a lot of I/O wait exceeding 200ms, which led to significant
+latency spikes affecting many tasks. During this time, we did not enable any
+extra mechanisms for pagecache shrink.
 
-I mainly followed Suneeth's steps [*]:
+Earlier, in our x86 project, we developed some customized features to limit
+pagecache and set a theoretical threshold. We also encountered significant I/O
+wait issues, and I suspect it may be related to the priority settings in the
+logic below. You are right to point this out; I should take a look at this
+reclamation logic to see if it can be optimized and whether I can reproduce the
+earlier I/O wait problem. Perhaps there are incorrect priority values set in
+the following algorithm:
 
-1) git clone https://github.com/antonblanchard/will-it-scale.git
-2) git clone https://github.com/intel/lkp-tests.git
-3) cd will-it-scale && git apply 
-lkp-tests/programs/will-it-scale/pkg/will-it-scale.patch
-4) make
-5) python3 runtest.py mmap2 25 process 0 0 1 8 64 128 192 256
+void __memcg_pagecache_shrink(struct mem_cgroup *memcg,
+			      bool may_unmap, gfp_t gfp_mask)
+{
+	unsigned long nr_should_reclaim;
+	bool need_requeue = 0;
+	struct scan_control sc = {
+		.gfp_mask = (current_gfp_context(gfp_mask) & GFP_RECLAIM_MASK) |
+				(GFP_HIGHUSER_MOVABLE & ~GFP_RECLAIM_MASK),
+		.reclaim_idx = ZONE_MOVABLE,
+		.may_swap = 0,
+		.may_unmap = may_unmap,
+		.may_writepage = 0,
+		.priority = DEF_PRIORITY,
+		.target_mem_cgroup  = memcg,
+	};
 
-[*]: https://lore.kernel.org/all/262c742f-dc0c-4adc-b23c-047cd3298a5e@amd.com/
+	/*
+	 * We recheck here mainly in case the pagecache is already satisfied,
+	 * especially in asynchronous scenarios.
+	 */
+	nr_should_reclaim = memcg_get_pgcache_overflow_size(memcg);
+	if (!nr_should_reclaim)
+		return;
 
-Sine the raw perf.data files are too big to be blocked, if you need to
-see any specific part of the content, I can paste the info for you.
+	sc.nr_to_reclaim = max(nr_should_reclaim, SWAP_CLUSTER_MAX);
+	sc.nr_to_reclaim = min(sc.nr_to_reclaim, memcg->pgcache_once_reclaim);
+	if (sc.nr_to_reclaim == memcg->pgcache_once_reclaim)
+		need_requeue = 1;
+	do {
+		if (!is_memcg_pgcache_limit_enabled(memcg))
+			break;
 
-Regards,
-Zhao
+		if (sc.nr_reclaimed >= sc.nr_to_reclaim)
+			break;
+		/*
+		 * In case there are not enough pagecache to be reclaimed during
+		 * direct reclaim, we only enable mapped pages to be reclaimed
+		 * when priority value is smaller than DEF_PRIORITY - 4.
+		 */
+		if (memcg->pgcache_limit_sync &&
+		    (sc.priority < DEF_PRIORITY - 4))
+			sc.may_unmap = 1;
+
+		/*
+		 * We only enable dirty pages to be reclaimed when priority
+		 * value is smaller than DEF_PRIORITY - 2, and the reclaim
+		 * must be in an asynchronous scenario, in order to minimize the
+		 * performance jitter when dirty pages are reclaimed.
+		 */
+		if (current_is_kswapd() && !memcg->pgcache_limit_sync &&
+		    (sc.priority < DEF_PRIORITY - 2))
+			sc.may_writepage = 1;
+
+		if (__pagecache_shrink(memcg, &sc) < 0) {
+			need_requeue = 1;
+			break;
+		}
+
+		/* Avoid hogging CPU in preempt voluntary */
+		cond_resched();
+	} while (--sc.priority >= 0);
+
+	if (need_requeue) {
+		/* Update memory static stats, avoid over-reclaim */
+		mem_cgroup_flush_stats();
+		queue_delayed_work_on(memcg->pgcache_limit_core, memcg_pgcache_limit_wq,
+								&memcg->pgcache_limit_work,
+								msecs_to_jiffies(READ_ONCE(memcg->pgcache_limit_interval)));
+	}
+}
 
 
