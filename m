@@ -4,110 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 440E6D4A601
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 05:53:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0504D4A608
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 06:26:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41AC46B0088; Fri, 16 Jan 2026 00:53:03 -0500 (EST)
+	id B4C1F6B0088; Fri, 16 Jan 2026 01:26:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8306B0089; Fri, 16 Jan 2026 00:53:03 -0500 (EST)
+	id ACF436B0089; Fri, 16 Jan 2026 01:26:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AA0E6B008A; Fri, 16 Jan 2026 00:53:03 -0500 (EST)
+	id 9D20B6B008A; Fri, 16 Jan 2026 01:26:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AB026B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 00:53:03 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5BCB1BD9D
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:53:02 +0000 (UTC)
-X-FDA: 84336758604.29.A2E140D
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BFC72C000F
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:53:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="OvVHg/OZ";
-	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8B73B6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:26:20 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 27FE61BD37
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:26:20 +0000 (UTC)
+X-FDA: 84336842520.05.F725623
+Received: from mailgw01.mediatek.com (mailgw01.mediatek.com [216.200.240.184])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 455EC1C0002
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:26:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=mediatek.com header.s=dk header.b=i5OppwCC;
+	dmarc=pass (policy=quarantine) header.from=mediatek.com;
+	spf=pass (imf21.hostedemail.com: domain of robin.kuo@mediatek.com designates 216.200.240.184 as permitted sender) smtp.mailfrom=robin.kuo@mediatek.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768544778; a=rsa-sha256;
+	cv=none;
+	b=iPUPFxM+pMsVx+bdDymoKfJqLrRzBGJR8FeISVONz818MxmFtwvUo1aa4DG8Hj697QcOYj
+	PJpqeW6F3iiPgyiL/zdhTimcmyz+mw+tRMEtpeiokstYZ8LAnaUyN9YTKodGD0e3qbUTsq
+	qMvB+Hi9M8vrRAzjQjWLGY+R2zKrK/Y=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=mediatek.com header.s=dk header.b=i5OppwCC;
+	dmarc=pass (policy=quarantine) header.from=mediatek.com;
+	spf=pass (imf21.hostedemail.com: domain of robin.kuo@mediatek.com designates 216.200.240.184 as permitted sender) smtp.mailfrom=robin.kuo@mediatek.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768542780;
+	s=arc-20220608; t=1768544778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ug224Qb3vKSCQofyknZA/E8Q4LTRJDPS+QLswzBuzyo=;
-	b=OEUVCukNKh3211rngvH727ZWLneSOoKcpLHlQEiru2QjJE0VJo1KF52AEWMz3awRwql7b8
-	DJjJ7c3Bkvj1wQQ8erY5DPth1LtKHsx/O2/oa2pqI98PSXhV2yjoD3rcTaiRHo1j0VlzCH
-	MDB5mgmPcOH2CEwFmhJ0QA/ssaxZcss=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="OvVHg/OZ";
-	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768542780; a=rsa-sha256;
-	cv=none;
-	b=fbC2rx9hyzAkHD3QdQ0HuaLryF+U9SpbcAqwJ++D9g+UN8BSOJNSFRR4+Wsn6aazUvomKj
-	1rNZoSk8JaE1xpe7DG2TP2zHqSZxdimkBokS+liI77dES6tWiUueHetTLvR0bCS2/UqbOb
-	n9rP/o/BZPWxxdxqg/VuOEvxK3xeup0=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0d52768ccso10589035ad.1
-        for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:53:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1768542779; x=1769147579; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ug224Qb3vKSCQofyknZA/E8Q4LTRJDPS+QLswzBuzyo=;
-        b=OvVHg/OZYJtuymB2YQ3zCL0ddPWBaEeUvvFDUJVmyVpCr+ikcgLWiHHKH+PcB/2MFQ
-         9/58W6CXir5tj7d2L5ZoytsoBRTcGVjQZ0u3z4vb1xeA2NJOp0cU0WKhGV6GzXw9Ky3E
-         7AimPInp0KmOoCGVD0gPNMhglxVk9tdgeMETg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768542779; x=1769147579;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ug224Qb3vKSCQofyknZA/E8Q4LTRJDPS+QLswzBuzyo=;
-        b=tohvf8MsRz3qGQ/kGXdtuvN/eQRtJ31QYBnjYu9ekTFLjxh2FBiZbLB334pPEbJ69s
-         0flxM9epP4lK6jHe2rvkmp9npnjche3ggIgcoftMBCd6bH2B5eay6GHuOHICx9PYgBLk
-         j4GKboBEsNNtBEnyyZMS93aZgSgXDFYkLsoW3ttdGwHlRH2poxWIlstgQQ8LHtIR2PZ6
-         i0RhCPw7vySBxM9F57sy1ewnC5jXRzW0D8TbI+CWNokioZEKIf7cUza4KBACPz6luiWP
-         kBYqaf5E6saZDuTxHkAHykCBgp143fnEMMDURvjmGuLMhWZzl8c8A5chiA8iDs+DVXAI
-         vQvA==
-X-Forwarded-Encrypted: i=1; AJvYcCXK8YsaqFGQmbZNrMR60Ipy+0l5pzwr4r9VzEK80iw9LeGa7nDswV8Y967UaY/cE3qT6kYkslMVyw==@kvack.org
-X-Gm-Message-State: AOJu0YwNQ18xznkfnWMFuqX80Kv6zsIBz3fAdSHTDvRPWAf0Fx1xcJOP
-	Q3DA3GqmYJMLuMl2HKhiXeg3zfrCsjYwil3cL3qtXOaM3JbnkMv+RS2upW6t43o1Jg==
-X-Gm-Gg: AY/fxX4R5Qhx/Yv7nQFw6RMcy7m5NP5vFZYJDZ2iKbOQGgLvTAqgZPDJqayaOlmQ+Qu
-	cKcbnwgDGjD8iHki5gPCMASg8rX8i5YkgEJFtDyKY8JTxCVh0opjwriz6RpE1FhyVokBFMt4MVX
-	eVru+ZYX90MgA+Ok083QbvVJGjiAR9gDbgQDMJZr5HTwmj/mjcmb175jSVUqJl7W+613PIGmW5O
-	XowsU8Afoq7r1Xm0DYgK5LDfWVBCbHDQHgXf2SCC68xTnVfGQsagTxrjOmtlb48vySsPw+do74X
-	kYztu+aL1I9SUN/IM8AOxiJ52xKE0VdwBNgKzJfV38whcbGs2MyVaVNzhjACzPcAl6EmaHqLuk6
-	JYMTjCIGN/GjphkwyRJZt4/8vN0rOYY+7rSD7tYBi6PTnhkhYClcivJ1kSCIPF7DfcXqCB6bTnQ
-	MDCk4c7NQn28c8QsQTSy869VQXLkCYkSDu/6/G1WsZCZssXjZBntBsACwTcnY=
-X-Received: by 2002:a17:902:e551:b0:2a0:f0e5:9468 with SMTP id d9443c01a7336-2a7175c1dd7mr15411895ad.32.1768542779592;
-        Thu, 15 Jan 2026 21:52:59 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:ba7a:360:116f:dac])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9e85sm9784395ad.26.2026.01.15.21.52.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 21:52:58 -0800 (PST)
-Date: Fri, 16 Jan 2026 14:52:54 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Minchan Kim <minchan@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] zsmalloc: make common caches global
-Message-ID: <zfmvd2oogwtx6mbavyjgwxralsvrd576ye6jnscfwvqy4u4ayp@q7qpxnyaxb6f>
-References: <20260116044841.334821-1-senozhatsky@chromium.org>
+	bh=89kM6DqaNI0SVDHAhqFeo0gmvjmHcOVivNaMRoE3IB8=;
+	b=cgh3Vutr8be6HCCdobs/VgKDEiAxZlj1gi5vY4xjL2/qCymjfOkaDPuayIs+58Z5AUpclO
+	EUP7X44I2YWxZ0P2+q8uw1dUwskOBR1Rtxx8+8oTJRD14B7GDA8QzNcUCH7x/QtaPJ15Xd
+	QO16gxb97W9quxUZ1Lh/nWlicHqn0J4=
+X-UUID: 3fc7d058f2a411f09f706fa2197c6ceb-20260115
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=89kM6DqaNI0SVDHAhqFeo0gmvjmHcOVivNaMRoE3IB8=;
+	b=i5OppwCCpw8PFG1ly/ec7lDbQ9u2hFI36lndZ1hg5wkbMZjJpLAgZ9LKMoyCCMAxCPue5Hxp41X7RH7mh7eDyXtpzB0qOcY+4+3hzU5AB+1ytbbJpY/ZGOUVVRXxR5hPzZZXKIG+JoLLHgz/l14ljMJci+2962MH2ysq3sQiG4g=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.9,REQID:39710277-9d49-4516-aaf8-b09c85e2cd58,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:5047765,CLOUDID:4b8c94e8-ef90-4382-9c6f-55f2a0689a6b,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|123|836|888|898,TC:-5,Cont
+	ent:0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:
+	0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 3fc7d058f2a411f09f706fa2197c6ceb-20260115
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+	(envelope-from <robin.kuo@mediatek.com>)
+	(musrelay.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1546757166; Thu, 15 Jan 2026 23:26:10 -0700
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 16 Jan 2026 14:26:07 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Fri, 16 Jan 2026 14:26:07 +0800
+From: <robin.kuo@mediatek.com>
+To: <robin.kuo@mediatek.com>, <akpm@linux-foundation.org>, <ryncsn@gmail.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+	<shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+	<bhe@redhat.com>, Barry Song <baohua@kernel.org>, Matthias Brugger
+	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>
+CC: <wsd_upstream@mediatek.com>, <casper.li@mediatek.com>,
+	<chinwen.chang@mediatek.com>, <Andrew.Yang@mediatek.com>,
+	<Qun-wei.Lin@mediatek.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2 1/1] mm, swap: Restore swap_space attr aviod krn panic
+Date: Fri, 16 Jan 2026 14:25:00 +0800
+Message-ID: <20260116062535.306453-2-robin.kuo@mediatek.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260116062535.306453-1-robin.kuo@mediatek.com>
+References: <CAMgjq7Db38sNdsGe121oBFshiJz+vUrKWf5BjB3djAYUr40LLA@mail.gmail.com>
+ <20260116062535.306453-1-robin.kuo@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116044841.334821-1-senozhatsky@chromium.org>
-X-Stat-Signature: sd7f6s8ibrm19y1rcc65ims8dgfsm169
-X-Rspamd-Queue-Id: BFC72C000F
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 455EC1C0002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: w7bt5aehken9muwqz9zddxwumgrwppnn
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768542780-837707
-X-HE-Meta: U2FsdGVkX1/jYSO4b6Atawb0MS8chhVK9c31cU/E2CH4cvjrIN4zX3i3ngpaHd+cpov8R4R/NW3Dgd9lgF/3TMJ5qjtj1cthLLa336D8gksWdiNJDjUY+G3xa/diWLgTzKelhAlzfnS78ItJFFjzeZ3f4lSSQhgLZ6ymxfdRHTUKFl0ufP9/wgl4Xqq4o3lz50AnGMlJCxCPEiqvowNO3ZJuTKgJdSSzrNhJ1BX95d5xrmcD2MxzCcr8meJd+cS7iMSHz65rCpjrry3V533a8BP8BzxxEYj/S0lxxVNJdGrChCo0LdozbueqMwddUeCnUzjz+igXf/yaKIcPlROah/1p195I5gVcmeJmLcnefSCnkoMJSPZAGde4BctC1tsQMHSYLjAJOkaHE2V8brFNqF4EFcoPhG7QNri0fyOylHXflUFWPE6a/bugiDxabUMiuVMV9Qq3fQjA2xU0FcBOdZfz7yI1LnX7K3csQQV3hcbJph8yrSV0kiCnKrbTQ4wW1la5l7WKrZpduv3P3Yu8eEOoS8ODMXfCY6NAUjBWpLAQquoWWS3A80GKvaqaHrtEIzNbzoqZ/KD/VYWh/kCUkMjBh5gDP2qOZ994sF07tTCgs3N7aLug0KG5col/V0iP+g7avl0QRn40uOYGRGtiPLp/Qg1T76Xf9uN+MyAT81J6SwYsCTvWn21opZCjocgSV9sHMmO975OsyH0v18T/mQtm0Y6Sk6ClaRUM5a9cWrSMZPriQ/ZtXJtV1qIa8kXKV0GHWjk8FSCnfEW8IfSs0LsEkr2vFM1mNeJUxkq6/g9QB0meKBsg1NXHpdS0SDrsv2s56nXeIyT1seu8+9g9P7UoOOiAMRXrGouocmwCD/aNRn8trGEjMYYyPiZHvNQw6iCkfGsOMvnyqNGjFmld7BmMsyZQgR3pR0Gpu+9MEW16rIizriqgwCk8uTig1UqxS6OwyinA8P7RYdVVFZf
- /ePRhuuC
- oG0Lwtjd/mHmpy1hgGuxyj4IqHdHPVzeqgSZ2McMvbndC9GL9Ho/OEgvqDO//8SITy8xW0+ynZ0uV3eCcZhbE3aZOXHR/MzuJmBEdY0zEF6WvlCjGz52PFUW2GG61r58ImMKDIZYTIxJR5hO8T6GcztZZu+demMX+nr6nhoNSXDf4qtnW6H0/f7lrUSV1rXj9rWzwXB8ThorpZqlUa0HzazN+Cusfu7XU3akMpowLUqk+FNp2OeK2GyvTJ/JhQbltFRL/UQdhgG5QS4B1NFH2cnPGMTITGTmg6HdCWxsvw8aOLKqBLlSzFItVCrWpYoSTZJUnRO4w9AIlk1rU1N8N4j3xwcGMWnn/zzvosHRhyTtP4IQ=
+X-HE-Tag: 1768544777-88356
+X-HE-Meta: U2FsdGVkX18ek4uN/EmvV6SKHGOVnEviHY6146uGLkuEcn0xXAWSWBL7QBgae/dObbT3y1NIF7r36XQJYUc3wO/OK//Dyed/rC2wQRyse7UGcdlLsUO91doWh0qpHSQN4+vhg1ffQRvtUA++ezR9HX8MyjKQm3y76JjWZr7/XH3sRUINWacvw2yMOFkZLlNtEiwA1YQ97N+e75+L/BxnpOIkzJmZ1qWOzXLsXOKUlrA7PuK/tEYUp7UIhGQGf43+o/RmHLIjWIbY7Xoqf8PKlkaXvi6VkgsMgxPseni1fqEl+KiWYnAccXSVXRNDHVZXxEHn1XXPlzTEnLx6tBi7dKJaO7otkQJGx/bHHV5jkbURMXv3YE+2DYxbqfHIfqJuOE36skxvsmNvFRwpysG5ZtKS5GaZG0jTEy+cGIH7YoDAebKURRyzQn/F1aM4P7GBtKovSCi00P/LvasEOEPTHZRal0zNeqx9dvYqk6eO7BER0rBWfrpNHsKTNB/1jT5la8opbun3NBx3IGtbDRQLbucIIw+/pLOdQSAtDGQnRcNFASwNu/llsRwpiBTY8WUp3WOpbRNdxlDGV79j1sSBCNOvn1Um4n3rXYGi3nIg/Z8BdUQcYUYeOL+cF6qj+djcOzW8o2YhLkhWKK1TQdlN83P69dZG2yRlsPuWDoxEX6DdOuJUMOhf176w9wx/1Zw9wu6ocQZg3KmxncML8lZor+luW1BCS3mW1PFxJoXFDvYoSZBQuPMa59If6Ef+8Aft1j3Dsjzdece5vp+ZglUPZ+Vp7D0UxIwoD4Ic2pksJbj7KLpJUNUpa+p0ogtPVEfgfoFPuaDVSW9ChdGbgJvx8eCf/52IymgGyD4VibOJY0FQ5K64GGZJ0evDPQyBKRSsO5797xomWmxWB7Y1OUKFbHdewT8Yo/Utew9JL4jJ5yOF8fcyWNG/ZVaBERLMbiOGD6sUYbwZber+z7hx5DY
+ z9dfILtV
+ /3XJjnnEDWrZCqgV/1QbTcpGEzP4+LZ4WFJ0r7Zi3MgMdPAIFEW17RQHDVNsWaYKceOkIrzDO+9O2jge2O/jxtBausfKR+ZUjcsgo2ZwWD1WCtp9MaoWh6DLgjCc/hCmuHIJS8BGyg4WagHdS2E6P/x9FEEVjK+64exKU9DZLmiPmXx5ZXheEzRcpYDn7GgwPDb7AIAj3PG93rxf7Ds8UIeAa3rZsOFjUH3HDADAQfu7DZWWcCAlQ76xeZn+tOv662729eCzDVAXgnYaNeYlPYv/ElXQEZmF1N1KXI1YZusmLCED4HgRIQMmjgjTY7U+SmXh4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,16 +115,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/16 13:48), Sergey Senozhatsky wrote:
-> Currently, zsmalloc creates kmem_cache of handles and zspages
-> for each pool, which may be suboptimal from the memory usage
-> point of view (extra internal fragmentation per pool).  Systems
-> that create multiple zsmalloc pools may benefit from shared
-> common zsmalloc caches.
+From: "robin.kuo" <robin.kuo@mediatek.com>
 
-This is step 1.
+commit 8b47299a411a ("mm, swap: mark swap address space ro and add
+context debug check") made the swap address space read-only.
+It may lead to kernel panic if arch_prepare_to_swap returns a failure
+under heavy memory pressure as follows,
 
-Step 2 is to look into possibility of sharing zsmalloc pools.
-E.g. if there are N zram devices in the system, do we really need
-N zsmalloc pools?  Can we just share a single pool between them?
+el1_abort+0x40/0x64
+el1h_64_sync_handler+0x48/0xcc
+el1h_64_sync+0x84/0x88
+errseq_set+0x4c/0xb8 (P)
+__filemap_set_wb_err+0x20/0xd0
+shrink_folio_list+0xc20/0x11cc
+evict_folios+0x1520/0x1be4
+try_to_shrink_lruvec+0x27c/0x3dc
+shrink_one+0x9c/0x228
+shrink_node+0xb3c/0xeac
+do_try_to_free_pages+0x170/0x4f0
+try_to_free_pages+0x334/0x534
+__alloc_pages_direct_reclaim+0x90/0x158
+__alloc_pages_slowpath+0x334/0x588
+__alloc_frozen_pages_noprof+0x224/0x2fc
+__folio_alloc_noprof+0x14/0x64
+vma_alloc_zeroed_movable_folio+0x34/0x44
+do_pte_missing+0xad4/0x1040
+handle_mm_fault+0x4a4/0x790
+do_page_fault+0x288/0x5f8
+do_translation_fault+0x38/0x54
+do_mem_abort+0x54/0xa8
+
+Restore swap address space as not ro to avoid the panic.
+
+Signed-off-by: robin.kuo <robin.kuo@mediatek.com>
+---
+ mm/swap.h       | 2 +-
+ mm/swap_state.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mm/swap.h b/mm/swap.h
+index d034c13d8dd2..1bd466da3039 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -198,7 +198,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
+ void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
+ 
+ /* linux/mm/swap_state.c */
+-extern struct address_space swap_space __ro_after_init;
++extern struct address_space swap_space __read_mostly;
+ static inline struct address_space *swap_address_space(swp_entry_t entry)
+ {
+ 	return &swap_space;
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 5f97c6ae70a2..44d228982521 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -37,8 +37,7 @@ static const struct address_space_operations swap_aops = {
+ #endif
+ };
+ 
+-/* Set swap_space as read only as swap cache is handled by swap table */
+-struct address_space swap_space __ro_after_init = {
++struct address_space swap_space __read_mostly = {
+ 	.a_ops = &swap_aops,
+ };
+ 
+-- 
+2.45.2
+
 
