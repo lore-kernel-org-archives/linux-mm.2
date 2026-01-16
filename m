@@ -4,94 +4,238 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10B0BD489A4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 13:51:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8691DC79FBC
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:03:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C69A6B0088; Fri, 16 Jan 2026 08:51:04 -0500 (EST)
+	id BF5466B0088; Fri, 16 Jan 2026 09:03:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374716B0089; Fri, 16 Jan 2026 08:51:04 -0500 (EST)
+	id BA9226B0089; Fri, 16 Jan 2026 09:03:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 273636B008A; Fri, 16 Jan 2026 08:51:04 -0500 (EST)
+	id A5A636B008A; Fri, 16 Jan 2026 09:03:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 119F56B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:51:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B73551AA81
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:51:03 +0000 (UTC)
-X-FDA: 84337963206.17.C90E959
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0E4D7140006
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:51:01 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EEB36B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:03:19 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30FAE5632E
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:03:19 +0000 (UTC)
+X-FDA: 84337994118.12.A4609FA
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AE4F1140009
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:03:15 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of 3RUJqaQkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3RUJqaQkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768571462;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JU1pJwXb;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=FRO6yuv2;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768572195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=Y4JgLRVrbzPt97b/QHVeuTdomTm+YW2wBi/KzvmtIZM=;
-	b=Tw6BX5DdDEEUnOTN1VDZ/cfnVYujJYgW1j1OXATceNDCARsmJVqCSwyLWtSf44KTGex/PS
-	0BTi7lzxL8OY3TGnkXp4U5PtOeXV67yRS2L3vWP9rig5VOPh96THdyCCOwGPFOWQR+xcoX
-	Ihd+csjTuV9wYeXfA7D/pFLuHlWoeSg=
-ARC-Authentication-Results: i=1;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4HLCYUq3muhBpF3dzRlot2Por7hx1y8j/9rUjjulP1U=;
+	b=aIasCKzgF1HIh9i1AyVgrrnjMFRYqDWntlbPphdt/X2hXE4cfBenGT/Pb95JJARR9wghHp
+	eDm+Y/U/82Z2ySDMaM7bmaCW5DE4VM3RTVwbjeRBEBmDpEK9jclwmvwqWjctLjQB4exNPB
+	XGxeEFWpidbzTC/sr+7uclI/RjTA1LQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768572195; a=rsa-sha256;
+	cv=pass;
+	b=Al8uM8OafL18Ev6waKR/kkNQIU3jwDFXljy79EYZj6vBL59N6cizGy77BdZv/gBzBCwwoj
+	jykPeiBXMt7Az8U60M0GYuUqSmdNgrk+Wn+T3DwM6MRDSYfYuv3QtlsR5EWkAtiH8vfCiq
+	zq6bnbdhjNTe+6f6rAwB5h1HhzxDMpc=
+ARC-Authentication-Results: i=2;
 	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of 3RUJqaQkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3RUJqaQkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768571462; a=rsa-sha256;
-	cv=none;
-	b=PU96Mgv84vY9GQemagA8R8mSzp4h7R6Enr3v0Wg/Zx8pStnlofdSE8OCvVf9D1j+krHD14
-	BYT20+3lPs4Ka1EMNeZNCU3fPS1uQl/QWcRlh3ARHzr1CQW3D0Kh9l8oGbWPA3jTYh2xxX
-	mOWsa/+AX1uBz0v7lrV4DZN9aVG4nhk=
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-661042be97cso5649266eaf.0
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:51:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768571461; x=1769176261;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y4JgLRVrbzPt97b/QHVeuTdomTm+YW2wBi/KzvmtIZM=;
-        b=Yya19L/6+8wnsoCzQ0Vus+hNo1Hd+/zEsTU+DmFnPjoCl+IRDEbNFQVBWlN0A9c37H
-         JgDAVh8A0iU49rQffCo775BxEGygPKpaho28eQUTvZw1fow6EG71vprbb+sYsoR3MleL
-         x7WZhvlyBH7SM5i/6ZnZIv7RBUqr2Wvd3R0lss0BMDS6B3Fz8m24cvcP0y0ZNyxRrIlu
-         P3SUjYYrb9Mv8v7eNppT91HTG5Izf6KmbosIYxdh2UaYhwzy/PQczWVXOOG5DXwpqNPC
-         73AfBWQCbmCGnFcKdvfYzWmsl8SgW+o86aqiCPphEfyWXzdXoLLc2lDuv8XIwzzPjGFB
-         W/Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCVyQhCdoX1fnA1+NY5JBe8wuOHxmzd5DyhKDRKDrw7ckas8PVHDKjoYfnDamhxGQZ7DLakCvfTkWw==@kvack.org
-X-Gm-Message-State: AOJu0Yxwn6Rbm28vKuQc+BkaRX5//GIW4bEbigehzqqb4qev//aNAw4j
-	/zRb9nGYRqg84RlT+jxV0pE8RAjI7niYaqx3RzNv7RPnN9so3hF7Vcv1m8KYY0zXdvxc0Dr+8pm
-	DRa+n2bT1i0adV/4hqpCGqq+U88rgtYaTinFl0degwnkwnZf/M6CxUzdJnJU=
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JU1pJwXb;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=FRO6yuv2;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60GDsMCv2455524;
+	Fri, 16 Jan 2026 14:03:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=4HLCYUq3muhBpF3dzR
+	lot2Por7hx1y8j/9rUjjulP1U=; b=JU1pJwXbqFafVGdjxworgQDoEVUsFbSjDS
+	ACtE3er3/qrLjpJ1eqS3LKnWAhZP5BtUdMU6ZpKnZhX3joEB1WgwqTzzgdjutNqL
+	FcSQv6493GkhScejpwpKJBAmUXWHK+dJurqEFabTGQE2Q4CiRILMKE2/O5MhnUsf
+	nOUPD8IeZqHmxXmm0ioNiuBm0GGg/7kKAHzWsKx5qKGMe7yTi4sgGRe1u+tcidO5
+	MKLXn/xaIko6Nsr9D1IDTWSINCe2S6dh54Wqgt++FYwyCdYrgn6cijnnsZxzzoQM
+	ulC1iA1siyDu0VfZIWr9mNjDL05ToA+vbzlmUoeWia83ALPrcwog==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bp5p3dbk4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Jan 2026 14:03:06 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60GDt8nn032683;
+	Fri, 16 Jan 2026 14:03:05 GMT
+Received: from ph7pr06cu001.outbound.protection.outlook.com (mail-westus3azon11010069.outbound.protection.outlook.com [52.101.201.69])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7cxfch-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Jan 2026 14:03:05 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cYxoowyL5L2Op4KJM5O+GeKHccu+T3GFWX0HWp2ZnjjZk2jWOSTXDSDJtMqzepnfE7L5/bZQdt0SrMvL+jQOkQutulXph54YhHg3CsCqC6wrG7e3ZbDgRa31Trp5909Mphc260j4db76SqBEOfaO8dj88RMZF3WHF8egoh2L+VtXx+YUhpS74/P8TzHFJTFU8lacdf2zkWSreJkUjq+Wiqj+knqN7sJqIbvGTVs8ZvaNuG7xjIH/zJxgwu5zn179Mkag6MC6jfOlYbUcLnj3CXWtRfvC7oT2J4OujKbhvQoSrmhFQpbUxzB3CwrKJ3ugqyk/DoZ/nXj0PTExiySB6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4HLCYUq3muhBpF3dzRlot2Por7hx1y8j/9rUjjulP1U=;
+ b=kV+KUBbWIZnjS2/ZeIn0EvjTvycVZxKPxIEkm8+5A2427imFgxZCzncgm/txKx4t/Y9mulSt+n17jMevD79Kk3XvVIImbQBrk3iRrRHvdNgxm55F6BsJMFDKBnZ6KaV90KZY5dL5ul44UXMSjU4lPlOi2IuwqTJ7Xz6Ai6l/LnakgoqkzI3awTQdDERe2lSAOwn+FfGt0XaNmyW2Wb2n13BetFphh6ppMEy3AoF7u3/I8vWk+GTF8REAoO+eiQ8WoAqhBCSKX3MCtiIdHSrJ60rIuDVZQHAXD/ZH31DTuEMxyRGMaU/1RNj8PG9782ld+Pi6ayy9APEYgT0260hT9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4HLCYUq3muhBpF3dzRlot2Por7hx1y8j/9rUjjulP1U=;
+ b=FRO6yuv2pRGbVxuW4LYwVHBwEYm0WulMIgiGC/9+l0rSwzJW/YuQYPSO+S+0bFmTBHMaIipeW3Hp6bqRChly+IlWjTwPadcYSGAwI2lCfPJOUZupU6RuB1U5/Vrk6Z2/lQ8yGndLWP515I/FYsI9S9Mm4FogyG+f0YM9rsdSAW8=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by CY5PR10MB5985.namprd10.prod.outlook.com (2603:10b6:930:2b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Fri, 16 Jan
+ 2026 14:03:01 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Fri, 16 Jan 2026
+ 14:03:01 +0000
+Date: Fri, 16 Jan 2026 14:03:04 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: syzbot ci <syzbot+ci80398e89ae0989e0@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, jannh@google.com,
+        liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, mhocko@suse.com, rppt@kernel.org,
+        shakeel.butt@linux.dev, surenb@google.com, vbabka@suse.cz,
+        syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot ci] Re: add and use vma_assert_stabilised() helper
+Message-ID: <1dd32f21-4bdc-49e6-ad21-5d27c08ab255@lucifer.local>
+References: <cover.1768558900.git.lorenzo.stoakes@oracle.com>
+ <696a4245.050a0220.58bed.004e.GAE@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <696a4245.050a0220.58bed.004e.GAE@google.com>
+X-ClientProxiedBy: LO4P265CA0058.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2af::8) To BL4PR10MB8229.namprd10.prod.outlook.com
+ (2603:10b6:208:4e6::14)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:22a6:b0:65c:fdbc:666c with SMTP id
- 006d021491bc7-661179d826cmr1308628eaf.42.1768571461092; Fri, 16 Jan 2026
- 05:51:01 -0800 (PST)
-Date: Fri, 16 Jan 2026 05:51:01 -0800
-In-Reply-To: <cover.1768558900.git.lorenzo.stoakes@oracle.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <696a4245.050a0220.58bed.004e.GAE@google.com>
-Subject: [syzbot ci] Re: add and use vma_assert_stabilised() helper
-From: syzbot ci <syzbot+ci80398e89ae0989e0@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@kernel.org, jannh@google.com, 
-	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lorenzo.stoakes@oracle.com, mhocko@suse.com, rppt@kernel.org, 
-	shakeel.butt@linux.dev, surenb@google.com, vbabka@suse.cz
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|CY5PR10MB5985:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20f9dc12-3ca0-4c67-eb3c-08de5507f5f7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7142099003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9lvP0LusFJvDeAzWKrvZK2EMXOHMMEB+nUaqGUwJjkbjIdiNab9M0fuB42Fp?=
+ =?us-ascii?Q?0BkD9Vziumq03vt6OUNNL4XHi67xFT0kM0mbSFnhs23rWaBCaXMnJFAlrTbJ?=
+ =?us-ascii?Q?ozpnYoMqWhtOaJ2qw8BCPOdQ8Od0zEjvVrwJiOF1fOghwlTmLHaZIsuDDKYV?=
+ =?us-ascii?Q?y4Z5NzGhYylhgXo0eIKAz8cZOS9JigkUyeYL2GqApPj+fwAsQ/D0HrvEBPlB?=
+ =?us-ascii?Q?kzS+CmV91p1YTT4bcV6+kZKcYUm0rkXNe7daCZA6bCrEpyWV5ttZWkrGqa6M?=
+ =?us-ascii?Q?u1oYi784Kf+EPsFtvdypqbgDLHIF9P0Gph0GBSkKvAVRMc7VJVkM/sn7xxGm?=
+ =?us-ascii?Q?Nob0KPjcmJMnnn8ZblNnqduqTi4xtrcyd9vL9KyePVOUZDqlhDi4Or4uoQbr?=
+ =?us-ascii?Q?ckGktcP1k/wXEgk0+OnAKz7Kz7baWhTePwBjl3a2RbM9RfyjwO5EmfbjIE+y?=
+ =?us-ascii?Q?IgEUfZbxfHF9O+z6JAZ+RJYaa0CEOug6fa8NGIyHsz12eyJcSX7v98xfGKzg?=
+ =?us-ascii?Q?YCjiLp0ex/87JTNsW+J1Eq0vWfU3XGBmiVKXv94ON758Bc9DHpbVUuphXjcH?=
+ =?us-ascii?Q?qIaCxvvMcgIELn7ixhs/lbEZTupO/5peo2VESdlWXc0fnXAC3kRJi+SskhxV?=
+ =?us-ascii?Q?92zFVz6d6oeq8+78qJnEPdjSYHWdpDfQh0WLZoqb9EkFQB8j24hunZAquLCA?=
+ =?us-ascii?Q?R5ftbrmJRNyVJJY9w2/NEkNIvSNfsmW9Hqkoa74st79mfFdfVoVw7vpiGQng?=
+ =?us-ascii?Q?DszimltJaNm7Tzp/iAfoiyfxujZmevg7Fn6kg7ZXAcg3DIAuCS8T4nwhGRwT?=
+ =?us-ascii?Q?h+PemiYtf6JKl3rWC10iizXdn2lZnP74JZ0KPirnjoPNrGi2WL8QmH7VBgNE?=
+ =?us-ascii?Q?Kk4EIZvMjAe2ufOUokAgPt45AO5LDp94OBk0x20o7+Lt0RW/qYTAGr+mS8aI?=
+ =?us-ascii?Q?QaqJPvmAhqxzLDiLUIq/InjUQ6uXOuKucGQuQUtzre0EdWWYaSgVham1IsHN?=
+ =?us-ascii?Q?eGbz+ns6hgNkFJj16AtzKN/dUHLMbRXGsaAnnWkUJ/Y9EHUDrb1lyumt6hbJ?=
+ =?us-ascii?Q?ibTzvCtIdyNJcMVH0jvgnc6DllHnrZnqIWWSgLJYckUQ1pBO7pj3D6r9s86r?=
+ =?us-ascii?Q?Hul/nVV857l2QROFZVMN2tafyNU2PXF5unokk/VQCuLms9lLI5riLb+zeamD?=
+ =?us-ascii?Q?0fceW/ABuIFJqABD/Xc1xI/Qs+zMhuWerx5g2/n6qNCzkA1C6OJHgqdHGW9f?=
+ =?us-ascii?Q?Kq76qXVAMeaajtbvrUB7WBTqpZEPbV84VJue2fhTP1QS5OquZxANPaC9DiMu?=
+ =?us-ascii?Q?9Mx6OD0mfnwbrcySosSU5JQUIqDxUFdxpZNGNPHw1QcklHNbebcpJiPHXwkT?=
+ =?us-ascii?Q?dFcIFeRy8mpvbcCRbP1zuZJMhuLmq+/0c8vU1s0PB3g8SBwirCnxPkhelh0d?=
+ =?us-ascii?Q?3Lji0bXnAEMH9RlPDbAammZOBuMQg9tPgDWzfKSIFkzNzC2HBfiUBg0hpc11?=
+ =?us-ascii?Q?R/fDz9Pq1FDjT9J5kXmP6ueTmG+gqwdihV2D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7142099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ggjz13sVSZethCaih+ZjUzIKlo5KlZM1IXX57MxOGed1JyIMa44OL38CUU7/?=
+ =?us-ascii?Q?ZKAeNtSpignhY5P4apbJunf1UzZp2Ayf7Jh1W7pNYgJX6LetUUHbXtar2KJS?=
+ =?us-ascii?Q?8wSu/IWByAfxMOem0ZJnLfYOzRbVLj/cY455Ru84ciYy+WFhjtFjDEMGUvBn?=
+ =?us-ascii?Q?grdkLhp8rvqWnD/BGKh6P/68/CrHMHFZcPhDrVuV1/yAVTTc6gs7cv0BF7MB?=
+ =?us-ascii?Q?ftFqLRtH1x13OjrAzhDFIVgABVbaH9SYNcRuo+9kh/eUGwkAIuHSa5tLEh1b?=
+ =?us-ascii?Q?+phCMDfW+o1wBynmbJ3OsbYT4lgS+wH8Qn9YtH/mEPmj7y9toF0MJthsSemQ?=
+ =?us-ascii?Q?VVP20RPCNAUBGr61/hbnNVXdRvvYZzBHL3cm5SEVN8KTz1iQ5/1BLHNF2pQ+?=
+ =?us-ascii?Q?Re3URMt0qCAY0/GXs3gJIqr8jqQ5YaqXvBurw7B0ZsPqXq0XpcT4X28txAtw?=
+ =?us-ascii?Q?ECGphcPWrnobRwJr3Y1tBRUnUI9drSxd8AncfmZ/UDAlu91h8PdKxpUVfrkX?=
+ =?us-ascii?Q?4NveZPGHWHJgs6L44Tb91sZ889b9T85ZDMFt6MxTifULL2FNRWdSpo26Ljdd?=
+ =?us-ascii?Q?QIHDtjNo+lOmJHBRnXECU5N9PJQfCXMuw8Z4zMkVroYkIFubKS5hEWy6b0ou?=
+ =?us-ascii?Q?wK/1OO+FkTNqM2cD9ptZHKLLWCg4UUgYbbdCH858pEuoEsnO4R+h3C3Ti/pI?=
+ =?us-ascii?Q?6Lw4aVqSmYyC8MeKArBH0GZ+MTbxSBFKs+x0dXMFvtg9x5Z8CUEqJlMEf4kL?=
+ =?us-ascii?Q?3H8ijDzFU9Cqawv81bYjddCybxRnfR4tfyKP+RJ6WbRB7uYUmvTvFPiBFeoP?=
+ =?us-ascii?Q?NhgXrDA2Va2yRMCN1YoJYZvXjRqb2cEqEXb72fNP70riH4nsKTqoOYQgHt3U?=
+ =?us-ascii?Q?2I+t2ItaiSL5ceFqNdFsDs+vTIjjUsX91TPS8PKY4AWy/vhUuZ2O4MXyHbPd?=
+ =?us-ascii?Q?OcmnUa7rBDVYxlYprS5PDWhzhIsKOlMpXw3SsRZrXz4obkv0dhyIT4xxWFKS?=
+ =?us-ascii?Q?8swbrL1s+B2Q5hr7eMb1DyuXWwkgcnKDHggxxUCv8tSDPL1aZmiO8C/WOGG3?=
+ =?us-ascii?Q?IejOwP05BeFGhrsUg4pWemRLkVBeYhh4+vC2E7wczDAOgh3Lslo13eh9MP8R?=
+ =?us-ascii?Q?59DrhAQOlvtP2ehFye8PpCGxQJja7Va9zib/EW3apVA0yst0bFU4QyVHAGip?=
+ =?us-ascii?Q?ivWPj9xYxrdnjlPetXwmTSqy4612OKEx/FUy70ALm4bg7NdQWrSreU1DVnbo?=
+ =?us-ascii?Q?EqDH4EKy2j1cDSKL5oWOuVj6zUZR5td5gMEM8gzZUMVDQZl+J0DWhvpuixTy?=
+ =?us-ascii?Q?CwkVHk3c55d0iFAV4k3phVVVA+am2E1c8yhIIl5OVR+KpvfxGBb3nfDXZKGE?=
+ =?us-ascii?Q?y/hL2pHthbOMKJ4OZmh3p0qzR18/N+KCrvuwTAwTOUXURli3HsurTFnPMbOj?=
+ =?us-ascii?Q?jMM7vqVrPyE2zwJsYGWQ6MeMik9FCtRixZ25p4VJgjvz3NM6IeX3BvWnxa2S?=
+ =?us-ascii?Q?LqWqQVyhqqVbkoeJ2Def5e/XjInauXMwaEO1ozYeJM2S8hiULxEcfqoMFYBo?=
+ =?us-ascii?Q?AumS9wVIqnG4yUTp9TeR2UopejqssJq9GOoCdyXq4OK5se77ygMiTXynzu44?=
+ =?us-ascii?Q?KPdtxS2l5epx/JdGu216jMmRdQ6CWwYY8ONo9x5VB7+p1C03PRcjALmDjX1g?=
+ =?us-ascii?Q?uVCQzXi5el8pMlWWq4c7fCMEdtNNce4zmKC9tgHpDSrNOuAT12NM4xYVwmR2?=
+ =?us-ascii?Q?9JK5LllhDpq5VB70JwZDXD6prHViQYA=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	AvS6b0LpwrB0p5naNzsWYjkXgpZpyyTIm0YaD0RggSd2b1cPanJ5a4a/JZ0VilgO/1xiYmWFHDupysjmlzANsWSC9ohyLum4WTwwSTf2ORsdnb4azqaO+oxH1Cz2c/IYhX1uED/T+2SsIyUFCGGnFByQ9lfa0vUoUQel9Uii3OMEIr3Q+tJecB08EZzJJ7zgyJJ2pXENeXprMw61lZFRIpoelk+JknLPdjD0tscuZ/iUFPSWPE1UoR59jOo9DLav6wSUSTY4jAXuDiEcf6mzHKzh4ytNfIcFSw2r1hhnpqiQYSUHho1y83jtZjDH56Z1dVAsFxS3TtcIvl9nuirbH6ZbOGVo4XJupIsADEyqu62lLueBy7VvPGXItTSds2bRgFj9lR1dsqSUt1EHNGvTNJPg7lPw1LazIop471V+cZw1PkE/yEcP+0YS+ocq3lTgcAXij8TreAw9RiShs+Gla6LGLOpP0jDYmEBF2iEHKhXK0db/R9TNJaK2vgo1b4uUujGaeKarLLNJCs8SAoWuUkPXVfaUVMlw7aJPuCZ4HmMFHx180Q4jLtH0gWNPLLOz1MmOBotWa/rTBjgTsnqu8DVtjplSvOrvQOuOSqvw/s8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20f9dc12-3ca0-4c67-eb3c-08de5507f5f7
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 14:03:01.4750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BbM6bjveooVFov/dMM9Mj2rIAeH7h+RaoV1Lup5Ak3odSelSrbF0PsWG5LDf1BF30kxMBLifibjXnyufe5VNQW/604m8Y6cT+xevf4VC+kc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB5985
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-16_05,2026-01-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2601160098
+X-Authority-Analysis: v=2.4 cv=OJUqHCaB c=1 sm=1 tr=0 ts=696a451a b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=-ibLmwfWAAAA:8 a=Oh2cFVv5AAAA:8
+ a=hSkVLCK3AAAA:8 a=4RBUngkUAAAA:8 a=ZO2UzhHidKYDF09PdiMA:9 a=CjuIK1q_8ugA:10
+ a=A6MkUVyZPcTV1i89ro0M:22 a=7KeoIwV6GZqOttXkcoxL:22 a=cQPPKAXgyycSBL8etih5:22
+ a=_sbA2Q-Kp09kWB8D3iXc:22
+X-Proofpoint-ORIG-GUID: wexcxG7-iACWUGb6TghL097OMGAcZlWa
+X-Proofpoint-GUID: wexcxG7-iACWUGb6TghL097OMGAcZlWa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDA5OCBTYWx0ZWRfXx2YuAsAM9WNy
+ Tui9qIKkpxlguDf/Loh3+CSNPDgS5QVAqoLxJlQ32VCpKSy+2+7ah4/Vxab9Kc6/wsWUoXHUIKQ
+ AUpxvVkoKF0U4CORepU9DLCqtW7P5MAdcFGWWmF+Ueiz9FXhq1AQLE1IHvVl8Aq1S6w80K6H7hd
+ jV4e5eHMkOsnq1YVyCYAFSwir3EWci+iC9Vk58nb9QzHQ9nPmN0jYpM4ieBzGrAM34KOG2l1xTv
+ afNOGBAs4Ut3IY4R/Pxt7kAAMbnJebQUqXwlJeg+7WkRxvyHdZiabWItcG2LPmiMGTEfLIYgCdJ
+ LXQjfrsECdHhkFh+s923wEoA5Y/tsUhWajtk2tvOzvaSFFqfZPGuEuChvW0qvc+Q6dZIvLY7MYO
+ lchmi6vDlZL2uMYwQmDYTaUu2APft+6qLTS//Ck4WE53Exx5ERSbDvirRyctTMs8GpdJvaC74VS
+ 4+LmU5hGE9rCSHWDuKQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AE4F1140009
 X-Rspam-User: 
-X-Stat-Signature: hksnfh7d788pxrsi8fz4m1nwfog1s9rf
-X-Rspamd-Queue-Id: 0E4D7140006
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768571461-838353
-X-HE-Meta: U2FsdGVkX18UQ1c1bJCfjfF67rINYvBcclQF2HrpmywypR9aEE8e2aPldjT+bxp7fYF7pLkP3to4rReLFY1JZ4St6wYQ0kyhdyjHar4+6KPpkmyj2FZ37B6o5JZ5+LCwncCcHTigCAOCE68GxexDaUveiaX1wNqTPAM3DXh3fPiThaQ7WNlBnp4j0XUNl4iXitVRdsrygmlsXDiW+ghWgenbJ60hV1lcJWPrQrBIyybVjxlDDuZhJmF4nkdnDWUpwTIPOLExUep09GQB+0l1Howut8XMLpJUPgRs74T00og0NeSnwsv4qnhaRbmUKow5xKtLcHFJdbA8Z1i4Ih4koxFJAiu2+0swMkAB6oCeySc36rwJdQqEz3NUk8Ea8J4f+9snuALSsdCu+YilH4V+WJSseC20PrnpWLwsNYaRNxohlTxOkOS6v7k7DOCnuUYw6pb/SC+EmrwleMwyTPyoqvOq6v0R75PMHARj8l5eJCV1XvHSHtnaQ6PJSkPGS82bFmF0qe6/SlzxaQ/XdLYFD+qSpix0j1KpoFAzqwHZdKZVWqwrkqgpt8HxP5TZFgpOjDpCweBFqcNTKEJqVU3g40nEplbW1jtAxJS1quRD98H9EKNceQpMdXHMcDzkbEPxzmSqx8US8mqybLG6Z7q601VvatZ3Ss6QKsf7jBaAibuSD0kAY2e5WN+W6qS6DUn0DyMtyAIbr0c9Uh+7o0n4kMD7GwYi7Je/gvf1AB8Xxye9dt+1SiKrIRqcVD+wbh3OkszMI4C943pkYf7SN+t9cC2ISxL95qIr4YsCEipilucX3zMyxg3Lh90MBzoCh8pclUYGHZP+ZICHHGa7P7B7SK3BaZ3vSOE6KSVA3g5ZBAWLI+ic629ES6IIVQ8Z8qjnPETlULC4EzMrAxDQEXV+hBpowMEiFlCnF84KKx6zSk2IFuj+K2QBCkuj3GTaqqwP48RjX0wr6M2VYG5JuED
- gJKDVQBy
- 17KvLaqIcnqjhj3IBeMPwmcpVTddWnoIApeFcTDlmbZ1FMi4BJjhlY+8GXQ2ox7sFrAwrTVTjGqIMBi2I6NY9gROsFth8jraRTHf9NmDDkAACHZ6R2STINx0Hc3NUiOQxRiG5GyeD/mAhKxHSkBEZ9BeMwZG7eGeB+vEmlWgbuTCI7AuYYnZHOuUUA0TCXR7sOv34jbDZJbjzx7c2oHLKPh88jeLHUea2MTJ6pHQ67oyjlskDyqBjNrfZm8FhLZtWPnQ3KfoV/vc5baAYc4fqh73MZ+05HhAzU/xQXmicCJPU4EKgOjky6L7VIyOZ1Ruz7NRI28Pn/cdMLd9SOHZvslFULtyhlEemWQNy8Ymmycy75SX4lZASYzcrPuB1YpVCQJKkxosbVQesMzYM3YVSGhtxmAf8a9Mu9h0IHo6ZhRHvrpuoF2RcFhAHsjlK9KpnAe48mVYYe82OKrrBVLNHGIEzGALMXjF1M+jWGHzebxamc84r6w7S+qbHGacU4izNQT+xdpy5sIsozHGbI5gn3kHJK3TJEiIa51WJ6iXEgVA4AzrZtTrioZH548lmoayVO91RM+Zkc0V7Oi7BBfFPVIQYnagvmd3pzl+5WkfokEkqoH680Kyc8rhAU5ZMRoLYHzwt9bcATTUrFf16GYkm98qLB58+qd9sjsmjgVO7rKfJvsHphIMApkeE+kHEG8Gkcntlklf1anHAA8k7BwgnU4ngtcdxV0NUG3O7cLytERPIZskZVvADxZgE58JqfQ7yR2xTxSYOUqFwNCktx7PK0I+syh+Y3MXCag/DSwGJQNceNxUb7llrStYD+M49xr/GxArKGmVIAmqlT+glDgE7OH+C30Izl9c7W7PfkrrFDsFoM/bLGudwUQ41RnUk9pBhDGcYvW+jqN7i5Qtb75tszsoCLtoRzMpAUji5Q0TJcvmDuM2SecwNFQTG1aZySopkn1ACEBofmxAB0HYKxBqIfPh7+zaF
- Uv/nrleJ
- sxX0OMMi01ez26ZrRYHCW0HxWsJRJI+hiyh9SEauMHDtb2Sj+1PQryLKOfltnx30qEz/rWaPVoI=
+X-Stat-Signature: 1ghtirkhsxjj99tiqzpncaq9mbqyxz1h
+X-HE-Tag: 1768572195-6357
+X-HE-Meta: U2FsdGVkX19UGGjaVj+FWpXOHDG3u9Hncl2nbo/jfz6NqavPpglv6Jy29+C3kd3oDf4QQbvJ6d5JpusFEYdwX4w9vTVnIgfROZ9IpKh9by+ojTrMoJAI1pFO9V3RlA3b1ojpOsixpkxhrU21IBZwsXISwLQl4SvrDCyLBG6kIkOBaP1HlyqZIxZLcpEyQ2YJ+IP3Du9iqB/J8m0z9/a/V6GZxMlIk7KMvCZ3BRXQJ8C2yG1/KOY/zvN4IeKnlr3LXw0mdwYJKTi5hQTiXDi7Krt+AUuMa8CTIA1M5/9R8SbDB/f96tUKybokfSjzEIvn55cKGX97QqhiI3DT5c+w8HunXR7Cpr4GWTLc9FbItQFNsmvJrcXELdOBjCbYKIjQhkPZC2ArzbdEwZL33al2FUOchfytPj4DcdaZKYrwGMODfejxKZXKmk7Dw9zI+KBQ8W67D3zB6Bu3We0cIF2Ph9wNIXYVmLONFM9a1BAe87FRnfV0vtbTKhkRY8DPKGKMJUKOg6B+UPfgDfRHTY9s0dEwnZPv2uy7LiraYZiUSvDFR8FjnLNjQKQtGhKfAOUftAImQl7UBYRZn/PGoHIlX/+/x8PklsoXQe1TaOl4Boc10YWN6Bc/GJTDIpXaLo4jUEES5CW+BrtNKERAJbv3OraVVksMo4bqZbCFP2riP4AKJxphHp2pS4q8KbKT2lVnDanRx//HJEa4bLPTFMdZGVK04cDsOgGVM5VK+oXQleAAQzmT598LIOQu5QKSaF69EO1L/8snI+x8r7xEdWdIf+5fiw+YNEiXcXW1MPb7+DTfcxYRwATHATPlUoO9CUt4KhGhRdBH655ZnBbqIdizYM9dUtyv4sg1Uq989lBCG2Bpm/yz0k8FKn9eR0TWyCDL46WcmTu/nEq8rfazLJl3Yhtjkh3kE8EPzGcyxfPBbAgNn/U05o0W1ErUeRT39aSvR7z/bgM4eeOfWCNoQ8q
+ nrVMV7nA
+ 9MgKuFR5gS/zcidz65+TIzRng4XbQ83tYSzBvJCPx/51lto9EAQ3smVbE1VdPw1KArSpMPenH7CJZZowvnjIA7RrCJGT6ez/1mzn6RglKqqn+5mavFrfE2oLF3XMH+efwyAe4PPHlBILp7TFS74sa+BPZfRQgmZtQp7w/Dsoc7tgpRgMQdfMLUPADMrbKkFPBKPctMy+JHe8tAJj2kpki8AFbsYmfNiBA9NfCEP+ywBlAvvtR5q45H2SBSMSRoES3V5D/MZSzEaHrasCvCg7uAsHCpL55dUYmbIVFn+sp1hopaix+slG7cZ2a88bGFVC+nKOKpmhp+OeMKc7KVxOzo209dHz/hTNP9bBC92LDDWO70Z0uDoOXfWxzP0IOB9xBe1ix7yq7ZfIOwaiff8cEmwqOYZXEftlLUHxfKhi2P5Cz9jYR4+5HE2wTjmSkq8Mbjy621Ewu1v7NiW3jlEp8SsxZveV1txyJvdjZ9NcF2UBw8ZNCl5sHpdDYkKMDWgrBfv24AbVOvDV0qn0V1tMICa2yNSHUAWgwj65PRt11BVHirTONeKqAH7NX6Tbme7wJ9xFqVZvHI+LhL4DwFnT62IueGhMXZpHEXy9IOnx2IfM7YdvCl5jqfn5r8SECD0qsciLEn/hK4L7U6uW4dIj1b7Or8Ze+9OKw0QqHak6tMmVezJCwUIEFoS5/LOJx6wNwlM08ZRswHxVX7ykn4Bjz2bJila79HeiMHH8tisAesKArOFhkAZrZLmG8GZCjvSmTIHEoW8h9ngol4o+Xq+jcT8vGHW44VAiP21gku1h8sin5FC876z+fJvwu7qrQeK/WECsPwKfQfnU4y+QkeEZUzK0/cPDiT4shIZ2bQhuli//l8oxD+gBxc5R+TcUVDzObKE2lfvogBpEyGvgRIuBvzJvqj9gpx3S6AqDDeWgyjGf5NGXrInioYcXIbOgSVeZzNj/PvGHgRqLZVe2jnVF+QvfkXp0h
+ 2zlFimq/
+ ilo8DjIWJHjiK5bXH6Nyrb9GUWl37sjf9oAx4zbthp66vX2wycV3pwRdyF0Ouizo9DtccFH+N6I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,130 +244,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+Please ignore, this whole series has been resent at [0].
 
-[v1] add and use vma_assert_stabilised() helper
-https://lore.kernel.org/all/cover.1768558900.git.lorenzo.stoakes@oracle.com
-* [PATCH 1/2] mm/vma: add vma_is_*_locked() helpers
-* [PATCH 2/2] mm: add + use vma_is_stabilised(), vma_assert_stabilised() helpers
+Cheers, Lorenzo
 
-and found the following issue:
-kernel BUG in anon_vma_name
+[0]: https://lore.kernel.org/linux-mm/cover.1768569863.git.lorenzo.stoakes@oracle.com/
 
-Full report is available here:
-https://ci.syzbot.org/series/a3867085-bae4-4416-9704-3b23ef9c6006
-
-***
-
-kernel BUG in anon_vma_name
-
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      eeb33083cc4749bdb61582eaeb5c200702607703
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/2e5b4d7e-a1a9-48c8-ae3b-654d3ac32e5c/config
-
-Loaded X.509 cert 'Build time autogenerated kernel key: 65176d093d4baf94ab1e788ee9f46804766f83ba'
-ima: Allocated hash algorithm: sha256
-ima: No architecture policies found
-evm: Initialising EVM extended attributes:
-evm: security.selinux (disabled)
-evm: security.SMACK64 (disabled)
-evm: security.SMACK64EXEC (disabled)
-evm: security.SMACK64TRANSMUTE (disabled)
-evm: security.SMACK64MMAP (disabled)
-evm: security.apparmor
-evm: security.ima
-evm: security.capability
-evm: HMAC attrs: 0x1
-PM:   Magic number: 10:472:582
-tty ptyc0: hash matches
-netconsole: network logging started
-gtp: GTP module loaded (pdp ctx size 128 bytes)
-rdma_rxe: loaded
-cfg80211: Loading compiled-in X.509 certificates for regulatory database
-Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-Loaded X.509 cert 'wens: 61c038651aabdcf94bd0ac7ff06c7248db18c600'
-clk: Disabling unused clocks
-ALSA device list:
-  #0: Dummy 1
-  #1: Loopback 1
-  #2: Virtual MIDI Card 1
-check access for rdinit=/init failed: -2, ignoring
-md: Waiting for all devices to be available before autodetect
-md: If you don't use raid, use raid=noautodetect
-md: Autodetecting RAID arrays.
-md: autorun ...
-md: ... autorun DONE.
-EXT4-fs (sda1): mounted filesystem b4773fba-1738-4da0-8a90-0fe043d0a496 ro with ordered data mode. Quota mode: none.
-VFS: Mounted root (ext4 filesystem) readonly on device 8:1.
-devtmpfs: mounted
-Freeing unused kernel image (initmem) memory: 26044K
-Write protecting the kernel read-only data: 212992k
-Freeing unused kernel image (text/rodata gap) memory: 388K
-Freeing unused kernel image (rodata/data gap) memory: 1776K
-x86/mm: Checked W+X mappings: passed, no W+X pages found.
-x86/mm: Checking user space page tables
-x86/mm: Checked W+X mappings: passed, no W+X pages found.
-Failed to set sysctl parameter 'max_rcu_stall_to_panic=1': parameter not found
-Run /sbin/init as init process
-vma ffff888175272d80 start 00007fffffffe000 end 00007ffffffff000 mm ffff888100079880
-prot 8000000000000025 anon_vma ffff888110bf8000 vm_ops 0000000000000000
-pgoff 7fffffffe file 0000000000000000 private_data 0000000000000000
-refcnt 1
-flags: 0x8118173(read|write|mayread|maywrite|mayexec|growsdown|seqread|randread|account|softdirty)
-------------[ cut here ]------------
-kernel BUG at ./include/linux/mmap_lock.h:476!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 1 Comm: init Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:anon_vma_name+0x253/0x260
-Code: ff 4c 89 ff e8 8e 7d 0a 00 e9 e9 fe ff ff e8 34 db a2 ff eb 0c e8 2d db a2 ff eb 05 e8 26 db a2 ff 48 89 df e8 6e 77 08 ff 90 <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90
-RSP: 0000:ffffc90000067550 EFLAGS: 00010286
-RAX: 000000000000014c RBX: ffff888175272d80 RCX: 37717524f4bb9000
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: 0000000000000003 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffffbfff1c3ae40 R12: dffffc0000000000
-R13: dffffc0000000000 R14: 0000000000000001 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff88818e405000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff88823ffff000 CR3: 0000000110c5a000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- vma_modify_flags+0x203/0x330
- mprotect_fixup+0x46a/0xa50
- setup_arg_pages+0x565/0xae0
- load_elf_binary+0xc5e/0x2980
- bprm_execve+0x93d/0x1410
- kernel_execve+0x8ef/0x9e0
- try_to_run_init_process+0x13/0x60
- kernel_init+0xad/0x1d0
- ret_from_fork+0x51b/0xa40
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:anon_vma_name+0x253/0x260
-Code: ff 4c 89 ff e8 8e 7d 0a 00 e9 e9 fe ff ff e8 34 db a2 ff eb 0c e8 2d db a2 ff eb 05 e8 26 db a2 ff 48 89 df e8 6e 77 08 ff 90 <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90
-RSP: 0000:ffffc90000067550 EFLAGS: 00010286
-RAX: 000000000000014c RBX: ffff888175272d80 RCX: 37717524f4bb9000
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: 0000000000000003 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffffbfff1c3ae40 R12: dffffc0000000000
-R13: dffffc0000000000 R14: 0000000000000001 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff88818e405000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff88823ffff000 CR3: 0000000110c5a000 CR4: 00000000000006f0
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+On Fri, Jan 16, 2026 at 05:51:01AM -0800, syzbot ci wrote:
+> syzbot ci has tested the following series
+>
+> [v1] add and use vma_assert_stabilised() helper
+> https://lore.kernel.org/all/cover.1768558900.git.lorenzo.stoakes@oracle.com
+> * [PATCH 1/2] mm/vma: add vma_is_*_locked() helpers
+> * [PATCH 2/2] mm: add + use vma_is_stabilised(), vma_assert_stabilised() helpers
+>
+> and found the following issue:
+> kernel BUG in anon_vma_name
+>
+> Full report is available here:
+> https://ci.syzbot.org/series/a3867085-bae4-4416-9704-3b23ef9c6006
+>
+> ***
+>
+> kernel BUG in anon_vma_name
+>
+> tree:      mm-new
+> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+> base:      eeb33083cc4749bdb61582eaeb5c200702607703
+> arch:      amd64
+> compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> config:    https://ci.syzbot.org/builds/2e5b4d7e-a1a9-48c8-ae3b-654d3ac32e5c/config
+>
+> Loaded X.509 cert 'Build time autogenerated kernel key: 65176d093d4baf94ab1e788ee9f46804766f83ba'
+> ima: Allocated hash algorithm: sha256
+> ima: No architecture policies found
+> evm: Initialising EVM extended attributes:
+> evm: security.selinux (disabled)
+> evm: security.SMACK64 (disabled)
+> evm: security.SMACK64EXEC (disabled)
+> evm: security.SMACK64TRANSMUTE (disabled)
+> evm: security.SMACK64MMAP (disabled)
+> evm: security.apparmor
+> evm: security.ima
+> evm: security.capability
+> evm: HMAC attrs: 0x1
+> PM:   Magic number: 10:472:582
+> tty ptyc0: hash matches
+> netconsole: network logging started
+> gtp: GTP module loaded (pdp ctx size 128 bytes)
+> rdma_rxe: loaded
+> cfg80211: Loading compiled-in X.509 certificates for regulatory database
+> Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+> Loaded X.509 cert 'wens: 61c038651aabdcf94bd0ac7ff06c7248db18c600'
+> clk: Disabling unused clocks
+> ALSA device list:
+>   #0: Dummy 1
+>   #1: Loopback 1
+>   #2: Virtual MIDI Card 1
+> check access for rdinit=/init failed: -2, ignoring
+> md: Waiting for all devices to be available before autodetect
+> md: If you don't use raid, use raid=noautodetect
+> md: Autodetecting RAID arrays.
+> md: autorun ...
+> md: ... autorun DONE.
+> EXT4-fs (sda1): mounted filesystem b4773fba-1738-4da0-8a90-0fe043d0a496 ro with ordered data mode. Quota mode: none.
+> VFS: Mounted root (ext4 filesystem) readonly on device 8:1.
+> devtmpfs: mounted
+> Freeing unused kernel image (initmem) memory: 26044K
+> Write protecting the kernel read-only data: 212992k
+> Freeing unused kernel image (text/rodata gap) memory: 388K
+> Freeing unused kernel image (rodata/data gap) memory: 1776K
+> x86/mm: Checked W+X mappings: passed, no W+X pages found.
+> x86/mm: Checking user space page tables
+> x86/mm: Checked W+X mappings: passed, no W+X pages found.
+> Failed to set sysctl parameter 'max_rcu_stall_to_panic=1': parameter not found
+> Run /sbin/init as init process
+> vma ffff888175272d80 start 00007fffffffe000 end 00007ffffffff000 mm ffff888100079880
+> prot 8000000000000025 anon_vma ffff888110bf8000 vm_ops 0000000000000000
+> pgoff 7fffffffe file 0000000000000000 private_data 0000000000000000
+> refcnt 1
+> flags: 0x8118173(read|write|mayread|maywrite|mayexec|growsdown|seqread|randread|account|softdirty)
+> ------------[ cut here ]------------
+> kernel BUG at ./include/linux/mmap_lock.h:476!
+> Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+> CPU: 0 UID: 0 PID: 1 Comm: init Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+> RIP: 0010:anon_vma_name+0x253/0x260
+> Code: ff 4c 89 ff e8 8e 7d 0a 00 e9 e9 fe ff ff e8 34 db a2 ff eb 0c e8 2d db a2 ff eb 05 e8 26 db a2 ff 48 89 df e8 6e 77 08 ff 90 <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90
+> RSP: 0000:ffffc90000067550 EFLAGS: 00010286
+> RAX: 000000000000014c RBX: ffff888175272d80 RCX: 37717524f4bb9000
+> RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+> RBP: 0000000000000003 R08: 0000000000000003 R09: 0000000000000004
+> R10: dffffc0000000000 R11: fffffbfff1c3ae40 R12: dffffc0000000000
+> R13: dffffc0000000000 R14: 0000000000000001 R15: 0000000000000001
+> FS:  0000000000000000(0000) GS:ffff88818e405000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: ffff88823ffff000 CR3: 0000000110c5a000 CR4: 00000000000006f0
+> Call Trace:
+>  <TASK>
+>  vma_modify_flags+0x203/0x330
+>  mprotect_fixup+0x46a/0xa50
+>  setup_arg_pages+0x565/0xae0
+>  load_elf_binary+0xc5e/0x2980
+>  bprm_execve+0x93d/0x1410
+>  kernel_execve+0x8ef/0x9e0
+>  try_to_run_init_process+0x13/0x60
+>  kernel_init+0xad/0x1d0
+>  ret_from_fork+0x51b/0xa40
+>  ret_from_fork_asm+0x1a/0x30
+>  </TASK>
+> Modules linked in:
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:anon_vma_name+0x253/0x260
+> Code: ff 4c 89 ff e8 8e 7d 0a 00 e9 e9 fe ff ff e8 34 db a2 ff eb 0c e8 2d db a2 ff eb 05 e8 26 db a2 ff 48 89 df e8 6e 77 08 ff 90 <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90
+> RSP: 0000:ffffc90000067550 EFLAGS: 00010286
+> RAX: 000000000000014c RBX: ffff888175272d80 RCX: 37717524f4bb9000
+> RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+> RBP: 0000000000000003 R08: 0000000000000003 R09: 0000000000000004
+> R10: dffffc0000000000 R11: fffffbfff1c3ae40 R12: dffffc0000000000
+> R13: dffffc0000000000 R14: 0000000000000001 R15: 0000000000000001
+> FS:  0000000000000000(0000) GS:ffff88818e405000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: ffff88823ffff000 CR3: 0000000110c5a000 CR4: 00000000000006f0
+>
+>
+> ***
+>
+> If these findings have caused you to resend the series or submit a
+> separate fix, please add the following tag to your commit message:
+>   Tested-by: syzbot@syzkaller.appspotmail.com
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
