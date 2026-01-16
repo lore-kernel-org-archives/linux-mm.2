@@ -4,138 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D6D2D47CDA
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391BED47CDA
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 11:01:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D91F66B008C; Fri, 16 Jan 2026 05:58:53 -0500 (EST)
+	id 9F4EE6B0089; Fri, 16 Jan 2026 06:01:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D463F6B0092; Fri, 16 Jan 2026 05:58:53 -0500 (EST)
+	id 9CCC56B008A; Fri, 16 Jan 2026 06:01:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6C286B0093; Fri, 16 Jan 2026 05:58:53 -0500 (EST)
+	id 8AADF6B0092; Fri, 16 Jan 2026 06:01:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B57546B008C
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:58:53 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DB771BF64
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:58:53 +0000 (UTC)
-X-FDA: 84337529346.03.0CF37A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A8C194000C
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:58:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Oc+g5iS0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768561131; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5356B0089
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:01:29 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DCC921A05EE
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:01:28 +0000 (UTC)
+X-FDA: 84337535856.15.7C2F88B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6EBC84001A
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:01:26 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=a9O3Gu2E;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=meirtaGP;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zCnkCSC+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AsD/sTNq";
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768561286; a=rsa-sha256;
 	cv=none;
-	b=ZC9a3YGakgHbN1cVeXGHZKdiJ56FGXAuax01Zhk88SkPnAGI8H5kqFxU9MISuGPRcqjJcN
-	JKlzm6MP+9xSp5Rh6fDe6xk6qX31I16UBkwhFb0AGmfZ4VzJ2Kbn5PfAAaVUxGrmSfAPwT
-	zqG1tjQ0fDYw5E2dmVyx2PKFlSJNOj8=
+	b=rl9wAyzzTXZXfF4PQramFBxfO7rNSJd7eRqq25RTGMQvSj89mcjl39BqFqGLl1f4k0zmTk
+	4/gDsUefUvrzKKfL6516H33F/38MpPr1IspsiERPcyaxeL8+DW75+DRxKsWR5i54IwYm5z
+	GzUsQw1oQ1QAUY/jcTG5DVvWpuwMx1E=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Oc+g5iS0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=a9O3Gu2E;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=meirtaGP;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zCnkCSC+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AsD/sTNq";
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768561131;
+	s=arc-20220608; t=1768561286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=24jVIuQKZJMKSu5ggCFBPpzP2obf+0gblKxiwrgQID0=;
-	b=jfB8s/k0OPDD5m+XQtQ07lrPjuyk12NWVvmaeSyHf3UmgeTG258o3iwh3fAm58YjPAjKA0
-	68czHDkqJwTXXEI4qyVCf6Ekykf6lfT8xSThM9W4TXQa0xX3fUTyQfrEBVVt7ersalKg4L
-	+ADoa14+5B1pllpKguRi3TASYwFSzz4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E53160160;
-	Fri, 16 Jan 2026 10:58:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96405C116C6;
-	Fri, 16 Jan 2026 10:58:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768561130;
-	bh=dkGMnUjZbPERXe2UzCZdTDEfsSR+wJN4pvnWwDNOOY8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Oc+g5iS08BauBBDTqNA6YL7U+mPwbB6i646TPD0vACL0CvFaPzyPiPQ2Yu44ReKMA
-	 rla58KElVtFO61BpBrkBWDmU9wWjZFg+0Dn6weN9uCXC/Toz/c3fpq4KUqspweianL
-	 aLY9iSKrhUpq1B0mOXbZQGu+qqyV8RmNedkRs1dBUfI83GDbX+y1iQNjaiJ6H5Iux7
-	 Xkc3qxW7lQP73zsWFi+uEWKD4PzRRl65qabODcowiF9vgDX5PRRLuPRbJK7iDrt7PD
-	 lQrncXDIHTeAZtD2SFgP0k/LpM4SR4I0v5xz41qBozNZ/suoopHJDKhNszzNkXX1rs
-	 G/qMQSG2FFx8Q==
-Message-ID: <70d46998-a6c6-4c18-b8d7-f813582d3143@kernel.org>
-Date: Fri, 16 Jan 2026 11:58:44 +0100
+	bh=Ku1XPwrP1SS53/mL1tvFmnSiaEKNhp384TKnyEmC8D4=;
+	b=bUemMZX8TtEeHM8pm+iP/VfmZl9k8F+hHWPhssAZgzLSYsY5thbfBlfyZFEvql2+ZDS2+V
+	MlRwTFWeWxcWrkhIqGje8eYi61eoiCo8BQZKmcjyhR4S6PNwy9hpz25E8AvI6B1zx4AdTf
+	QDHdy38DAVBjLStod7Sp+MAo41Vqxno=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B84C33369C;
+	Fri, 16 Jan 2026 11:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768561284; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Ku1XPwrP1SS53/mL1tvFmnSiaEKNhp384TKnyEmC8D4=;
+	b=a9O3Gu2E44ymusWN6VfFQ9yQAVEG0wGx0IiD+6wPUZWoUYi2Vry1bSuL382dk3TZeip2Vw
+	vKxCTA4NQFMxcL0FR0whpluaYMtgx/LTH3NUvWQ/9sEB9cc0+yHASJCtGoanCEf6Xc53PB
+	7xR7TlFpvSBGngcVNwXJXXZ7UjiigHQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768561284;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Ku1XPwrP1SS53/mL1tvFmnSiaEKNhp384TKnyEmC8D4=;
+	b=meirtaGP8WYSd6wXi6Q3AePnF0ALT5tlVM8cpmL2+y5Fa6THOtxWGQJPt1+hcE4Trz3QWu
+	xdgiJJbTZaw0AVCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768561283; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Ku1XPwrP1SS53/mL1tvFmnSiaEKNhp384TKnyEmC8D4=;
+	b=zCnkCSC+G4Hy2vlz71nczfSbtfdwB4nWmOAn4bCvdsOGt4N9/Xh1Od8leUWi6kW2kVanbc
+	HvPccaxl03Qz9HUfx1diKuYVSIs0eLzKIelTTOoan0lrKE6weihLnaeyLzwVScW2UbdZf5
+	ty/Bvi4MDZOVvcDCgRTGGZf5qfZJ+Ac=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768561283;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Ku1XPwrP1SS53/mL1tvFmnSiaEKNhp384TKnyEmC8D4=;
+	b=AsD/sTNqrler6kelsmwC/Bqg0Uru4O6WF8Csnveq6dhat4zHyqwV+Xd1rdZitiIbOLTQaG
+	mMvx76vaVRnXTvCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E2843EA63;
+	Fri, 16 Jan 2026 11:01:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id EV4uIYMaamnwGQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 11:01:23 +0000
+Message-ID: <bcfe8618-b547-49fb-97e8-e57c2fb4b7dd@suse.cz>
+Date: Fri, 16 Jan 2026 12:01:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/mempolicy: fix mpol_rebind_nodemask() for
- MPOL_F_NUMA_BALANCING
-To: Jinjiang Tu <tujinjiang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: akpm@linuxfoundation.org, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- mgorman@suse.de, linux-mm@kvack.org, wangkefeng.wang@huawei.com
-References: <20251223110523.1161421-1-tujinjiang@huawei.com>
- <04b92008-f843-4879-b4a3-608cc5e1de4c@kernel.org>
- <20260115101252.2e0cbe0559e62b988e5f7151@linux-foundation.org>
- <1ad31dbd-6743-473d-9f66-a603b91d1e54@huawei.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH RFC v2 03/20] mm/slab: make caches with sheaves mergeable
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <1ad31dbd-6743-473d-9f66-a603b91d1e54@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
+ <20260112-sheaves-for-all-v2-3-98225cfb50cf@suse.cz>
+ <CAJuCfpHowLbqn7ex1COBTZBchhWFy=C3sgD0Uo=J-nKX+NYBvA@mail.gmail.com>
+ <4e73da60-b58d-40bd-86ed-a0243967017b@suse.cz> <aWn67WZlfnqcWX46@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aWn67WZlfnqcWX46@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6EBC84001A
+X-Stat-Signature: h1zu4zf57xh543ysicps6dj3dk1rzg9e
 X-Rspam-User: 
-X-Stat-Signature: o5qsdj7gukp9ocn4jqh3uqem9d3zo4iq
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A8C194000C
-X-HE-Tag: 1768561131-155907
-X-HE-Meta: U2FsdGVkX18RZbBgUBKaZJIM9KcUdC8zCWTm0EsuzWMtEzlIiqZA+JpWrr99ewelLyumZWF4whaAvMDI6iM3trqe4I6BN67meQk1Ab1Ec/ps6/khEgx/I3K9lNMMUa7va7ZoL2B1EQEQwjyV0OoaAxpuFwx/NLZB5AM0Z1qJ/AjPKy/VzNYRpbTKD/gajTzYtZonrpGqswcc8wq47rXg19gmKmFuqhUZAcDFClqmfN9CuFpRIwwv5A7ZnWDc+9jpQrp0MpWwAjI6cfqbaQ0wuKoLvvlTC48rW8XnVpkMh7yyo4V3EZ1Ex7keISs8uvsacsSotSr1f4FpS8yuLq2Rl1gj7I7P1a9UcNR53uRf6Tty8ZoGYoWeHevFkjjl61W+VdUTJX7GCZiD9bu/jQwc12riYlnH0DSjB1voDNPVpWU5VGE404UeHdwjCGYrMA+BoplBiNG012duPzy5tJi2zWGd9o0ti+eUuQlBNcIRYpdsvGz++etSNPf6s9JNqaSvrlSqXLwe+1pdazjo0FztkcTef8TKlOTA1u9UBlizX5gQ5sgc0SlPOdoJgmnNSBOiHYmT+x/WM/bTyuLJ1Kg+nz298UAAVwLkZw0GiT9qfB00NYN1viveNM7lctUDJFZgSI/Lf6h2s4DrGhKdH07NnQ+9Fp4iAGwkrQuw9kzVdMF5s9nmJTyt10JmLG0mNT43VKOiJB8FZc4iia96gHMWjvf0clwiLQ2Eg7roP8aZqzl5amhkF4MrTR8kg0vpL9nxpGkkGYEc/drbwJUHGgRmQj67ATZzETGRgbAEwdadTs+kNNj1y9U5HEdgv/VSVB/tTnYFBL46qZ9XcFKHRWWf7Gt8YfkxXynKbrw5mNPZ1HEDJ7k/OjubnJ3LT0fkqjhgQXtFaT4b502qB1qA+kiQ/RIoDgLRFhlVeYoUUHDZZtuyrhFBd47F4gGY2hBW7oJzipzWa807soSYTEdOvm0
- 4TLnDr7s
- FfoK3EEjJTCbhmcDOxT9vxtqsmSKOHWRFnIGrIXjnTtXCZOLYRfv0SfESM+qOMoBgyt0z7jLZpd+3U0GOMt/Pdjyn59AOP155N13Cj7IfFnrR4S4NHdQLMpkww8Ez2xbWloxAoV54mW2h+vAy4EfyvYDSuIqzzsZCUWe9zl10DrHdhCqM8TUx+ClGxmCLcjSwfzinfMLVkAb4EChSU766ZCiGsXV7SX/Tvo7ZiBsxyIcFxNCIHHPOCmenaC5pG4AyaPYkCKhpIynDxo3x/ivW9zFSuMxN8SlY69EunSt6j5qlXFNRjgIk0q1W62UjnX+QKsEAPM0V2z4S1wdOj1skM1NSdVi9WeiqUy1bmGaT2n75eowiOoL3Quua6STkeISoGI2Heh2Hia4tdxZIb3h5IFnon1KAWJ1DI0ZB0XQ3gY9UeZo=
+X-HE-Tag: 1768561286-884212
+X-HE-Meta: U2FsdGVkX185kcRHshfJda+4Gy1GXF3VJ5k0Z5KFW1zyLOLsxwqhjpjhpx8p5GLhc8/qR4KjlYZZLPLHqpcni47Zs5bXO2sh+yEgiamOXPMwuPZHhvJVSh2B2ns+eZ2gJ2saVv62Lef0lBDisJX0MQ+TWtywpkdZEJtPwI5UJAtGb809BuEtN8IEydvpGYDY1AC4QKtG+iXc04vbVUCM5EvyFXecAU16xr53dPhDN8P6q7hrWW8sfEuAduNKPkTVBkFAclCourvTq7/PkFVeMTatZ31CCV0s9Rncwz4HxMfD0d8iZf4LWq5Hnceo+Moo5QSSRR4LOO3IHG4pbi5G/PgMJFQT7PRqswP+rqavDgTRimykE3yYvq1SE5mFzdw69QJFBQ6AojE0MiBCPLXwors6uTHeFBPpZQD/wIKXmw3KrAwMq18vuahHyE2BJKF7rzvpRW61QrglyAjwAQVZuwScBpg/i6MpEyuRonwJIn2KmlyCtKdwwIanrqOX66GeOeGlptU6MZlHOpBILGVHDxytgR3WMWhSsMTiVZ/DbyevBNSnzTRIgp1cbzNE1o9B1UYLtV0WiFAGvF65Cl4AilQcU+UyKkd4oO9fVyuQ7EIoAnzcaqBVlzctR8hdq6HUM6uoDKchZ5usfXMCnulSOQ2a5Sq4tf1ifrii5LXXEA7wPdceQxbQwRnKprLMLHFPyti02wA55VYmJeNJcaF05gsj651Sx/RRqX7q2+nLYo9366yMPwTxGc4GS1bXettq3YMo1uqiJp0ETEccmV78pnKsT0vDA9JDhSpZDqhSWCj7eFvUuxW5KqeT1TpupIA3lroTHuw0nMEknUTcN5UHDiv40u9q2XF+LJcOjpSefi/vuQ8Mt5elJRX7dFLlZyXYO8iBn+H66hy5Uw2KR34iUcSAtkB68EETOp7/BitLoiVPNVBU+hnIBz+LqT78pdOhTzIkv6pKY+ywFfvE7EW
+ wfaflkkv
+ reaL7HGuWrKnF2KTJ+ygI5K6MkQuxJmu0VvcB44r058SZR6lUP1btLmZqeg/pT5ZKL1G5FLTqtw7oVU06xyX7oPRc9owB0WPl0CVAY71kYUHPYRbzqGvjymvhqAYuNpCiqrNceBHt0ip0XQcgjIEHar6YmMj5PeBug5uCZ3FwgiZn94X7QKRT4bEhErzkE0iGtomvJjHnJy3I+FrAIm/nh8PXUPMd/E0YRS/zOrAdJsXd6mWx33Xrm2DxKTuhllXIjxeb+lUbMAFAqVI2pLNk10m7Q4klFqIseCjRCTy/v6fYIXScJH8MRBJNUw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,53 +187,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 07:43, Jinjiang Tu wrote:
+On 1/16/26 09:46, Harry Yoo wrote:
+> On Fri, Jan 16, 2026 at 08:24:02AM +0100, Vlastimil Babka wrote:
+>> On 1/16/26 01:22, Suren Baghdasaryan wrote:
+>> > On Mon, Jan 12, 2026 at 3:17 PM Vlastimil Babka <vbabka@suse.cz> wrote:
+>> >> @@ -337,6 +331,13 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+>> >>         flags &= ~SLAB_DEBUG_FLAGS;
+>> >>  #endif
+>> >>
+>> >> +       /*
+>> >> +        * Caches with specific capacity are special enough. It's simpler to
+>> >> +        * make them unmergeable.
+>> >> +        */
+>> >> +       if (args->sheaf_capacity)
+>> >> +               flags |= SLAB_NO_MERGE;
+>> > 
+>> > So, this is very subtle and maybe not that important but the comment
+>> > for kmem_cache_args.sheaf_capacity claims "When slub_debug is enabled
+>> > for the cache, the sheaf_capacity argument is ignored.". With this
+>> > change this argument is not completely ignored anymore... It sets
+>> > SLAB_NO_MERGE even if slub_debug is enabled, doesn't it?
+>> 
+>> True, but the various debug flags set by slub_debug also prevent merging so
+>> it doesn't change the outcome.
 > 
-> 在 2026/1/16 2:12, Andrew Morton 写道:
->> On Thu, 15 Jan 2026 18:10:51 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
->>
->>> On 12/23/25 12:05, Jinjiang Tu wrote:
->>>> commit bda420b98505 ("numa balancing: migrate on fault among multiple
->>>> bound nodes") adds new flag MPOL_F_NUMA_BALANCING to enable NUMA balancing
->>>> for MPOL_BIND memory policy.
->>>>
->>>> When the cpuset of tasks changes, the mempolicy of the task is rebound by
->>>> mpol_rebind_nodemask(). When MPOL_F_STATIC_NODES and MPOL_F_RELATIVE_NODES
->>>> are both not set, the behaviour of rebinding should be same whenever
->>>> MPOL_F_NUMA_BALANCING is set or not. So, when an application calls
->>>> set_mempolicy() with MPOL_F_NUMA_BALANCING set but both MPOL_F_STATIC_NODES
->>>> and MPOL_F_RELATIVE_NODES cleared, mempolicy.w.cpuset_mems_allowed should
->>>> be set to cpuset_current_mems_allowed nodemask. However, in current
->>>> implementation, mpol_store_user_nodemask() wrongly returns true, causing
->>>> mempolicy->w.user_nodemask to be incorrectly set to the user-specified
->>>> nodemask. Later, when the cpuset of the application changes,
->>>> mpol_rebind_nodemask() ends up rebinding based on the user-specified
->>>> nodemask rather than the cpuset_mems_allowed nodemask as intended.
->>>>
->>>> To fix this, only set mempolicy->w.user_nodemask to the user-specified
->>>> nodemask if MPOL_F_STATIC_NODES or MPOL_F_RELATIVE_NODES is present.
->>>>
->>> ...
->>>
->>> I glimpsed over it and I think this is the right fix, thanks!
->>>
->>> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> Cool.  I decided this was "not for backporting", but the description of
->> the userspace-visible runtime effects isn't very clear.  Jinjiang, can
->> you please advise?
-> 
-> I agree don't backport this patch. Users can only see tasks binding to
-> wrong NUMA after it's cpuset changes.
-> 
-> Assuming there are 4 NUMA. task is binding to NUMA1 and it is in root cpuset.
-> Move the task to a cpuset whose cpuset.mems.effective is 0-1. The task should
-> still be binded to NUMA1, but is binded to NUMA0 wrongly.
+> nit: except for slub_debug=F (SLAB_CONSISTENCY_CHECKS), since it doesn't
+> prevent merging (it's in SLAB_DEBUG_FLAGS but not in SLAB_NEVER_MERGE).
 
-Do you think it's easy to write a reproducer to be run in a simple QEMU 
-VM with 4 nodes?
-
--- 
-Cheers
-
-David
+Hm right. But I think that's wrong then and it should be there.
+SLAB_CONSISTENCY_CHECKS is enough to stop using the fastpaths (both
+before/after sheaves) so it should be a reason not to merge.
 
