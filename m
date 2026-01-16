@@ -4,96 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DD97D47CD6
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 11:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FACCD47CD0
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 11:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 116536B00A0; Fri, 16 Jan 2026 06:26:21 -0500 (EST)
+	id 04F916B0093; Fri, 16 Jan 2026 06:28:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B9D96B00A1; Fri, 16 Jan 2026 06:26:21 -0500 (EST)
+	id 027D46B0095; Fri, 16 Jan 2026 06:28:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F32996B00A2; Fri, 16 Jan 2026 06:26:20 -0500 (EST)
+	id E92C36B009F; Fri, 16 Jan 2026 06:28:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E53C96B00A0
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:26:20 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AFDA916064B
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:26:20 +0000 (UTC)
-X-FDA: 84337598520.24.6E8A8C0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1696C140007
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:26:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qatyKed+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768562779; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D2AA46B0093
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:28:00 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 799C416061E
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:28:00 +0000 (UTC)
+X-FDA: 84337602720.01.9C7076D
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4F425C0003
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:27:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b="Y/AeMyhN";
+	spf=pass (imf10.hostedemail.com: domain of "prvs=46959d345=epetron@amazon.de" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=46959d345=epetron@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768562878; a=rsa-sha256;
 	cv=none;
-	b=uxn7xSITmCRhIWYaj+2XIblmhWoAsyEdut999mVW4VHJXkc7MZVmkRXuXYrTfz1yWbAXa/
-	Ku2OMHzDtvMyhUF+oydkBkcpHhKQiZtlxKKt2/w6YMavEoGa6yreHl87EkFgsv0p7umhaL
-	Nq9mLgMAiG0YVszoqejI5gg+84ozA3c=
+	b=I/QImdSCwES959y26ejt+ukTCHeaYC8TQplCcKxNjBjOeX3AtGE8EYvq2Sxk7QV7859j9k
+	LplwER6vna/m590GyRzYkDjVN/Ie7nwL3GSSZH94Tnro6sSshQBG1bvvUoPUJb6XgExOYu
+	R2Wce3ogSq3U5/kh6vovVzttce0Bjs8=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qatyKed+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b="Y/AeMyhN";
+	spf=pass (imf10.hostedemail.com: domain of "prvs=46959d345=epetron@amazon.de" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=46959d345=epetron@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768562779;
+	s=arc-20220608; t=1768562878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M8l8yQ1a1bc/fwaoSp2e3qvRZNmODQV9wC8HwAyH/4w=;
-	b=lJV1Z3/GSy8qpwnfGdepjCaVl6aYllbAkKJ0sy4h0vL45KuNAcJXIHJMfIAYysnH/YX0jl
-	G0hfrsNnsAN1yDkcqYMFctaVzxvhNzY/eI5VvX99kAP7Qlax5vLsSqgaOdC4i1ni4ni07Q
-	ZD/lBdLCNAoWO+/a+5FdyEehFCuCvbM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F51360160;
-	Fri, 16 Jan 2026 11:26:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D04C116C6;
-	Fri, 16 Jan 2026 11:26:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768562778;
-	bh=M8l8yQ1a1bc/fwaoSp2e3qvRZNmODQV9wC8HwAyH/4w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qatyKed+jzn2XWTT5PwsqhL5qmW8FWQKcnDchvZoJz7PXwHpzwxDI1r2qqb0phTxf
-	 gzHhpCEQ7v6u9hS5bGYTABUudcGFp2T75kCUOXyNHjwfd5JVQkHJLZwAbUbiDB9fra
-	 EiOJoB1KL8EojWhqu5AIwMOCqPLPWKWG8CReGbDoTs0YlzKEL6MhprXN7nGPnjexD7
-	 ZSzI92fK/fccpZgDAUkzbIhc7niKmjyS9qm0GxLPGDehJpU957IXDN6CoMgKoVYB1v
-	 yss4uYImD05mEaKDMLMOlEPrAR3pRuFHLOCHaqcQMboojNxzWAn2p9AKjipW8N1L2k
-	 E9kKEhJlTnH3g==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  ranxiaokai627@163.com,
-  graf@amazon.com,  rppt@kernel.org,  pasha.tatashin@soleen.com,
-  akpm@linux-foundation.org,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v2] kho: init alloc tags when restoring pages from
- reserved memory
-In-Reply-To: <CAJuCfpE3ffje9qXdwB3QZsyE+rD-unChSNXPfrijSkk5Nrt5CQ@mail.gmail.com>
-	(Suren Baghdasaryan's message of "Wed, 14 Jan 2026 14:03:30 -0800")
-References: <20260113033403.161869-1-ranxiaokai627@163.com>
-	<2vxztswoi16k.fsf@kernel.org>
-	<CAJuCfpEwa=_fubhf5wBnFKrKpOgjyXRy94f2BDx38x_NALE_OQ@mail.gmail.com>
-	<2vxzpl7chw8d.fsf@kernel.org>
-	<CAJuCfpE3ffje9qXdwB3QZsyE+rD-unChSNXPfrijSkk5Nrt5CQ@mail.gmail.com>
-Date: Fri, 16 Jan 2026 11:26:14 +0000
-Message-ID: <2vxzwm1h7q95.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qG4MzEbXGT3z4AyiZSiGB/Kf0T7fme7tElgC/AQRTv4=;
+	b=e4/F3TsdVIzbukhWBKpmvXqHv1vDMrbTlURrcyIJmDEpV37FgrIQS1e6nXOrDKJlXbJ68H
+	YI9sWeopIwGTP7nQs63NmBRDFRNuSRUPLlWRHjZdkVl2Hysf+lk2lwXFVCX6/BEm9kATCE
+	duiFWGTwYdyUbwTDsBSG3jKg1tsxGPQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1768562878; x=1800098878;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qG4MzEbXGT3z4AyiZSiGB/Kf0T7fme7tElgC/AQRTv4=;
+  b=Y/AeMyhNBwN1WyAnmihqtg3exphu870gfF4dESKthFbYC/qQKt8lVWHX
+   L+Qhp2DJW5zuRasRs3fJhhC4y5I6bQzQle8Vpp1pR+ZEswHbeL9llSsPL
+   Hvnbk1KAg9Craawl+N271ZM0AJSkh0gaI+ANoKvu0q2zb24cKNsH+xGJF
+   AJziPhMyI5ioxpVPp/dlY0mSiqFXR/FQSo84HhRzZd7F1w+udA5xVD60k
+   HORigfMnH9eOqvoKA2P60zccoxSYqZfPI6vCmx4mqrlz7mDMp+TU2/Fi8
+   a8NzN8CNG5ll1MDeBeiTH43o5NrdEJVoYUviz95ph0P43zHxsSmLjrgIL
+   g==;
+X-CSE-ConnectionGUID: kYRm3ihZSdOkaD7jQUuX3A==
+X-CSE-MsgGUID: CLKyTbR+QlGW1oobF33dUw==
+X-IronPort-AV: E=Sophos;i="6.21,230,1763424000"; 
+   d="scan'208";a="10862801"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 11:27:55 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:5994]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.60.191:2525] with esmtp (Farcaster)
+ id a6631774-5337-46bf-80a0-011e601a8a40; Fri, 16 Jan 2026 11:27:54 +0000 (UTC)
+X-Farcaster-Flow-ID: a6631774-5337-46bf-80a0-011e601a8a40
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
+ Fri, 16 Jan 2026 11:27:54 +0000
+Received: from dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com
+ (10.253.109.105) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35; Fri, 16 Jan 2026
+ 11:27:52 +0000
+From: Evangelos Petrongonas <epetron@amazon.de>
+To: Mike Rapoport <rppt@kernel.org>
+CC: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin
+	<pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, "Alexander
+ Graf" <graf@amazon.com>, Jason Miu <jasonmiu@google.com>,
+	<linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
+	<linux-mm@kvack.org>, <nh-open-source@amazon.com>
+Subject: [PATCH] kho: skip memoryless NUMA nodes when reserving scratch areas
+Date: Fri, 16 Jan 2026 11:26:35 +0000
+Message-ID: <20260116112640.64900-1-epetron@amazon.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.253.109.105]
+X-ClientProxiedBy: EX19D043UWC002.ant.amazon.com (10.13.139.222) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4F425C0003
+X-Stat-Signature: s5s9c88e1hp9dfqan696ewrngynr41p7
 X-Rspam-User: 
-X-Stat-Signature: yzffocdfk9tk3wzh99n13wfxjze5rudn
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1696C140007
-X-HE-Tag: 1768562778-958345
-X-HE-Meta: U2FsdGVkX196Q3uKRDqLb3C/jfkV1LjgB+CyK/LrgQIKrbkU3YAiVYfpHfkuUM3s/2kkb7k8vlgsMvSP6Fn0pf29Or7RnpgaTuPnqLPxtlYVgpLNIXUZ2+4WlZ/OwzTY7arLT9U9Plw8sg8zkYgq1QYPqPs51hgXe4L+ZmajjRsOpGs+07u3Nra5edh0qQwV4hZIqb/zADfHtKdwiDpRMf1YsQBwjza+cBnZ0GWLEM+NPuv4o655WYLH9ksI/M4e3d7rnpJfzvV8OHjq+7ssQPMCzRpaBZm1CQ6cfzvYcD+QdLTAKJ9XFjubaPPzNQVFglTGsJATVzeRJdxRCxATgEAp5Xs5eIXtCW536rUoy7nBa3rB9NlFNqqz+SpK6G9jgYLUvT3C3WjIVtpToWS3IS+UT1hmvqtHdCziaWvjcYzScQmDRmtqrX8jaKZJqsrESHg218kbDpiV1rjzqJ05xlIQfBYRsCwo61L18Kbi9xaNhEwXkNPdBCZJWQbz25oVtYsX+NSIB1do8pbxduQDjwPXT6zfuxDip6vABf1bP4GVWIqXJo0zeCWds3GF0kdXiWnXc5NaL3jAocFqibD/XwtEg7S82hQb/usXA/ACEt4WxvpVNDt0xMXZlwTB2Woq6OK6uX4tqZjwZHEgVuyaRbnIjoGJzkJdMd67iRjTAzIdzo7ivk1UvQhBBrcGr2q2Qv5d+28bY9urd4IKXckVClM14Phm1c5bVlhMVLiLGMsqAZJJQtRYOktJ0OZniiavs4a8k8LFApm9ULvQjqhKzJ12JN+8pM6x1ZZwqeD2h0Twcp5MzrLM5pZgYMAozETdqMfVI8LPeW3K5yxz2O5v3uODLx/MosCjO4EkSUXGbBMoEr09aMwnVFyUimnim/gNyM/vcTOtXb/PT0wk8Ki/spyZJk0AxvW2OL0p3ckdLwUiraW5QR8Ta8557a8BVSodS3yYBLPjB2tCZZF0WhV
- +ebrt3im
- 4xB7H3mTbqchjDJHd86z81efYWfXAb3+t2PZuCQa8I/Dp270tcaXMauqTVLXCiJwoijl1yaN/VDxE2VFWZPEfOIbeNbDZw0ZJWjab1evITu/4nyNoijy5byUgDEeGw+CvUC4vxOzfDflt7owrngJ1QIY6SvOU+IHdZqDKrbESYSc4TDv/s1eBmRxllfD5o7MmAJVdeYD/2DLa0vJErWVnTmiRUXssSBByzk4ZzS9jYVW87pDpwXU7GZQdiA==
+X-HE-Tag: 1768562878-29600
+X-HE-Meta: U2FsdGVkX1/RjYjBq4S5YLsQ7qEIr7L8dnQjTpf12ejnJ2cECaE2Zi7Rsylxm3NCwnKRHFXsk2TASQjmhrGVzT7wTdNpeszeA69QgvzvjH9jDRFGqV0rQLORgYtut6TvF1LgDw/sfjlYss6wOKAg58yojrI3Oo+sdNNTenO8Jsz6t2kWsn+iFsJ3ShLgeiJuNHs+NvkPI8bLmtpLv5yqI8AfGTZBjDGyjC7I/ipe/ymuQHUZqbfqMNG7SNFQOX96zr0nkBmMo0ZMoBo+fF6SPhwz+fg3TP0MRQUiW74J/AnDpVnpZRv5ywEn1Mbe9WbyHx0XRJYmqW5V1D7dsN/Ar17rsL428kyqO+SOCrfbSaGNS2FpBQlvRXNqz6zagU+LmLC2sGzEPa5eFAQdomK+rP7X1jRGLrIUzcQvcbGT2+1dKLnvd/M+9/VjcbwdN069Y2rLBOzZXSyh8+eBzfiYqde8Sdq4kdR1ofCQZLDy21qQiC//2WtXOMdBdj/tkRJTvhgFuRPA8UT0PuxLYHK/nL5GUfI8DEJoiTGmMsL169b3xQQEyTW/igLtOW5y3ofzmlL1iXYUhXbvV7CAZrD/HiOyMRddLrMDRsS0tBCpts69wAb9wRbKt2dJbs4ev3PPOL+ntLOEsllWZO4u6caITWqsAfH29NgSWZE8bm+NBuWPB+QZIpSOsoPw8klZNW5AIrYP+WzkX4/Rfc6FrpOa2pnVSOiYIW02S5tKJ9al8VhsyApNjudfbXSM9CuNLCzFDg+xqJz6cu86rp5nn8EiqIm8EwZvEBaH/lWgScx3lW8K128lkMIPRw28wyl58gPnFa9lk5xYX4B90m08gU1e9/xlO6kfMoNjqYMgzIlWJyRBqDP5ThsnmwtaRTILXx7r156ivD9oLYpQ7M3Ci1MfbGNf7o5wEw/5h4SXxbNbN6gvR6o8tLsI307NBT23zn1VsPLeLsRL16OYfscbCgw
+ jph9cxTV
+ nN0Ha759FUSCL0GJYaGFMBIqVAweIL2anqfjxJTHdXhkOOeHCXUxuyNG++bHuxYQ8jwA630uHXDlGJgqRM69x3FXFHWFvOJqBYwmOJd8felS0GBZyoemmz+2jPMYAPsCTRaJsL6Kzz3lCh6JmF9TTA9AI1AfFh1sa/ICCy6kj15VccR7zTA1mX99DFznnMw44FScrNNco9dSyWjeDQJ3dZbWm/UBBHVp7Dw0b4wBB6SXTHWogPSQJX/4BirXn9+VbWVdAa9YoDTRM5pPxPQohlZa+piTTxqBIYGZzZwYF05JFpcNmxrM0C30DMVCgxELi/Yf2o8TxttskltC0zkxQMbmLj+Tfe8igPL8VcD5HY9Ou7c+4+SaX3f0K9Pd5Z3CQM5YZ+YMzq9kllOBOtuzurX4D70n28NNXc6YRUMmHIfGrJfH+Dv5G1w4G0XmQIDTOyZV+qWKQs2qE1Lc4E7SPlRBy7+VWk3683P40R7cgO8p+UXhshqPK9a+R81OdJZ/CUOFTjdHV1kb2PR7YMl8F0SHI2oFbDxvTg27M
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,37 +113,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14 2026, Suren Baghdasaryan wrote:
+kho_reserve_scratch() iterates over all online NUMA nodes to allocate
+per-node scratch memory. On systems with memoryless NUMA nodes (nodes
+that have CPUs but no memory), memblock_alloc_range_nid() fails because
+there is no memory available on that node. This causes KHO initialization
+to fail and kho_enable to be set to false.
 
-> On Wed, Jan 14, 2026 at 10:42=E2=80=AFAM Pratyush Yadav <pratyush@kernel.=
-org> wrote:
->>
->> On Wed, Jan 14 2026, Suren Baghdasaryan wrote:
-[...]
->> So I think you do need to initialize the tags for kho_restore_pages().
->>
->> I sent a patch [0] simplifying the page init logic a bit. I need to do a
->> v2 but it is a very simple change so I can get that done tomorrow. I
->> think it would be good to base your series on that since that would make
->> it easier for you to modify only the kho_restore_pages() path and the
->> end result would be cleaner.
->>
->> [0] https://lore.kernel.org/linux-mm/20251223104448.195589-1-pratyush@ke=
-rnel.org/
->
-> Ok, let's wait for your patch to see the final result. Please CC us
-> when you send it.
+Some ARM64 systems have NUMA topologies where certain nodes contain only
+CPUs without any associated memory. These configurations are valid and
+should not prevent KHO from functioning.
 
-I sent it out just now:
-https://lore.kernel.org/linux-mm/20260116112217.915803-1-pratyush@kernel.or=
-g/T/#u
+Fix this by introducing kho_mem_nodes_count() which counts only nodes
+that have memory (N_MEMORY state), and skip memoryless nodes in the
+per-node scratch allocation loop.
 
-Feel free to use it as the base. Once Andrew picks it up, it should show
-up in mm-nonmm-unstable too.
+Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+---
+ kernel/liveupdate/kexec_handover.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-[...]
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 9dc51fab604f..c970ed08b477 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -623,6 +623,23 @@ static phys_addr_t __init scratch_size_node(int nid)
+ 	return round_up(size, CMA_MIN_ALIGNMENT_BYTES);
+ }
+ 
++/*
++ * Count online NUMA nodes that have memory. Memoryless nodes cannot have
++ * scratch memory and should be excluded.
++ */
++static unsigned int __init kho_mem_nodes_count(void)
++{
++	unsigned int cnt = 0;
++	int nid;
++
++	for_each_online_node(nid) {
++		if (node_state(nid, N_MEMORY))
++			cnt++;
++	}
++
++	return cnt;
++}
++
+ /**
+  * kho_reserve_scratch - Reserve a contiguous chunk of memory for kexec
+  *
+@@ -643,7 +660,7 @@ static void __init kho_reserve_scratch(void)
+ 	scratch_size_update();
+ 
+ 	/* FIXME: deal with node hot-plug/remove */
+-	kho_scratch_cnt = num_online_nodes() + 2;
++	kho_scratch_cnt = kho_mem_nodes_count() + 2;
+ 	size = kho_scratch_cnt * sizeof(*kho_scratch);
+ 	kho_scratch = memblock_alloc(size, PAGE_SIZE);
+ 	if (!kho_scratch)
+@@ -674,6 +691,10 @@ static void __init kho_reserve_scratch(void)
+ 	i++;
+ 
+ 	for_each_online_node(nid) {
++		/* Skip memoryless nodes - we cannot allocate scratch memory there */
++		if (!node_state(nid, N_MEMORY))
++			continue;
++
+ 		size = scratch_size_node(nid);
+ 		addr = memblock_alloc_range_nid(size, CMA_MIN_ALIGNMENT_BYTES,
+ 						0, MEMBLOCK_ALLOC_ACCESSIBLE,
+-- 
+2.43.0
 
---=20
-Regards,
-Pratyush Yadav
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
