@@ -4,160 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4295C982C4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D55F8C982CA
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:01:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D83596B00A3; Fri, 16 Jan 2026 10:00:57 -0500 (EST)
+	id 494416B00AB; Fri, 16 Jan 2026 10:01:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D30766B00A5; Fri, 16 Jan 2026 10:00:57 -0500 (EST)
+	id 4414E6B00AC; Fri, 16 Jan 2026 10:01:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C33206B00A8; Fri, 16 Jan 2026 10:00:57 -0500 (EST)
+	id 30EEC6B00AD; Fri, 16 Jan 2026 10:01:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B15AA6B00A3
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:00:57 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 667F31AB20
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:00:57 +0000 (UTC)
-X-FDA: 84338139354.30.E5FDCDA
-Received: from fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.158.153.154])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E40BE40007
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:00:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MScVtAYR;
-	spf=pass (imf12.hostedemail.com: domain of "prvs=469074ca4=kalyazin@amazon.co.uk" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=469074ca4=kalyazin@amazon.co.uk";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FA986B00AB
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:01:20 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E75AE1A0189
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:01:19 +0000 (UTC)
+X-FDA: 84338140278.29.D1065D9
+Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 39FB840010
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:01:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=BNjYuW99;
+	spf=pass (imf01.hostedemail.com: domain of "prvs=469074ca4=kalyazin@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=469074ca4=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768575655;
+	s=arc-20220608; t=1768575677;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESFkuLZPGT8fbXcE99iW3+H6+Z58GdtIZgdRAPcl1wM=;
-	b=cihTYeN8cXgWMlc1HCCSruIGmF33iqW9MAwKR3+fGiPTl4R52mABVYaZdooRtkUyYGWziO
-	FrrJkWspHPmXtSCpf/7ZIshaqqy5z8EbEahP71Gvl5O91RvOfHLgGjYAnWZOBGxCvgcOw4
-	hsaIElheil/9AAmVCrM24dCcdEE/CPk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MScVtAYR;
-	spf=pass (imf12.hostedemail.com: domain of "prvs=469074ca4=kalyazin@amazon.co.uk" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=469074ca4=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768575655; a=rsa-sha256;
+	bh=aTijkiEgAEgLfBD3f1GYfjv2OO1D0EQ13p+mBFzBwWI=;
+	b=lB6URnNfhC82wKCBK6TtakT1PH412vBs3Gn3mi9L+fJX71EYW2ziamGFGzC7wk8F+ci1ja
+	Y36xqDCDuSgxBwumbS7qz/tdjVKicJDQn+kj45W242hGJFnthiGiTtZKW8rV7GA04JfuV4
+	qcjJq0/SN6Gr8q061ja4nNODIcpAe3I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768575677; a=rsa-sha256;
 	cv=none;
-	b=u8C/p/iyDTVzIRrA/rA8TVhzix5d99z0juHGZav94dzf+lYoYTA3mCE63/JbNIugLLkYRD
-	pPefhCk+1bZxMkp+mnegaa7IWOwTDo1kRfhMN856ItDgAYxli/6c78s43+Y3gbYUZHlxfZ
-	aqds50/ZNZeZysZ1dpc+3Of5Vakgi04=
+	b=X5WZIVIdh0G3J+2Tw/44URUdWsrBS9Tbsc1t/bc1sA30S/PD/FhVKN9gryb9yUHye7Qz3h
+	M0PITrxJ/HhA0bG5CvwxeYBnlWLfJdoQuN3Rd1H/7iBEmqT+Pqyivxt7YqyQhU+CkUOHTz
+	J3W6Qtd+jLz8oC2ghWQuLCVL43Fy5BA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=BNjYuW99;
+	spf=pass (imf01.hostedemail.com: domain of "prvs=469074ca4=kalyazin@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=469074ca4=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1768575655; x=1800111655;
+  t=1768575677; x=1800111677;
   h=message-id:date:mime-version:reply-to:subject:to:cc:
    references:from:in-reply-to:content-transfer-encoding;
-  bh=ESFkuLZPGT8fbXcE99iW3+H6+Z58GdtIZgdRAPcl1wM=;
-  b=MScVtAYRZQy6jgfplK20tVbMgmqSg72YJSpTRV/lBlnl4rgopT4cpgI4
-   oxc4KNbGaxHf+eQFhE8yGCVpdbFv8zantwBjJ8gtZx6Uham7vL0ZqQyK/
-   Bw3CAo6+FMX7vt/XKilthvVnBC39LmppZwo1buUu/dWALjotyOnJjSLLR
-   Z7MbSFNj2BJPJJrRgOQCMGbGpZD1G0PLaKvHpi/mc0ACELQ3U6W3qSWc6
-   I3JDrwe01H6N/A0w6Wlh1kfEwNwFE7JA1fp4gUyJmFk1BSkdhgjCB6iYg
-   uRbca2FweXWMK/laz1DGWrApM69bznIRRVddqKWTwNqBG2dUY8YFKdlx3
-   g==;
-X-CSE-ConnectionGUID: gk1Li/PmQKCcG3NIHCLDrw==
-X-CSE-MsgGUID: 3iwqWVkQSaGSUUqmLqKkqA==
+  bh=aTijkiEgAEgLfBD3f1GYfjv2OO1D0EQ13p+mBFzBwWI=;
+  b=BNjYuW99z02amYsP/jN2C4o0IneXHQq8TR7/G2HAqJ4vFiLUU90bEITP
+   nTwltO/GD//S0DJLmRZ8y8nilG/00dwt5HkKDp6u8dhqkwwM5Tk4ncEXv
+   ZzQwTCLXCpVyU+DgiLvy0G393SO4zly9U5vTvskUGU9v+cMhYmZ0Xf3Tx
+   E1/t6+lfzPqYGV5RO4PnlxBPyUlEhxVAtv8DZoKBplzQJRTdOQuUkCOsM
+   pKpWRJAtm6/DngTTMlLsaB+9OzQJ4CgZZ5HeDh4Uh2bLQP60ln0oCOJR2
+   004UEZjSGrtEsHn25F/Sbzz9721c4WWlWUUQZ7HA9n16XcUEpxX0c3mDM
+   A==;
+X-CSE-ConnectionGUID: Lgi63RilSou9/V8Gr9JAeg==
+X-CSE-MsgGUID: ZoyC9RCmSGGaLDhTiRhoog==
 X-IronPort-AV: E=Sophos;i="6.21,231,1763424000"; 
-   d="scan'208";a="7898391"
+   d="scan'208";a="8022697"
 Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:00:37 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:10054]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.8.163:2525] with esmtp (Farcaster)
- id c5194cd9-a815-4ca7-beb1-df7b75e8b434; Fri, 16 Jan 2026 15:00:37 +0000 (UTC)
-X-Farcaster-Flow-ID: c5194cd9-a815-4ca7-beb1-df7b75e8b434
+  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:01:00 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:5028]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.30.60:2525] with esmtp (Farcaster)
+ id d65bbded-3f2b-45ea-90e0-dd1ca16777be; Fri, 16 Jan 2026 15:00:59 +0000 (UTC)
+X-Farcaster-Flow-ID: d65bbded-3f2b-45ea-90e0-dd1ca16777be
 Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Fri, 16 Jan 2026 15:00:31 +0000
+ Fri, 16 Jan 2026 15:00:58 +0000
 Received: from [192.168.12.13] (10.106.82.9) by EX19D005EUB003.ant.amazon.com
  (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35; Fri, 16 Jan 2026
- 15:00:27 +0000
-Message-ID: <294bca75-2f3e-46db-bb24-7c471a779cc1@amazon.com>
-Date: Fri, 16 Jan 2026 15:00:26 +0000
+ 15:00:54 +0000
+Message-ID: <04173297-518d-460a-be9f-502d32cbe509@amazon.com>
+Date: Fri, 16 Jan 2026 15:00:53 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH v9 07/13] KVM: guest_memfd: Add flag to remove from direct
- map
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"kalyazin@amazon.co.uk" <kalyazin@amazon.co.uk>, "kernel@xen0n.name"
-	<kernel@xen0n.name>, "linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+Subject: Re: [PATCH v9 09/13] KVM: selftests: set KVM_MEM_GUEST_MEMFD in
+ vm_mem_add() if guest_memfd != -1
+To: Ackerley Tng <ackerleytng@google.com>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>
-CC: "david@kernel.org" <david@kernel.org>, "palmer@dabbelt.com"
-	<palmer@dabbelt.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"svens@linux.ibm.com" <svens@linux.ibm.com>, "jgross@suse.com"
-	<jgross@suse.com>, "surenb@google.com" <surenb@google.com>,
-	"riel@surriel.com" <riel@surriel.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
-	"peterx@redhat.com" <peterx@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>, "thuth@redhat.com" <thuth@redhat.com>,
-	"maz@kernel.org" <maz@kernel.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "ast@kernel.org" <ast@kernel.org>,
-	"vbabka@suse.cz" <vbabka@suse.cz>, "Annapurve, Vishal"
-	<vannapurve@google.com>, "borntraeger@linux.ibm.com"
-	<borntraeger@linux.ibm.com>, "alex@ghiti.fr" <alex@ghiti.fr>,
-	"pjw@kernel.org" <pjw@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
-	"willy@infradead.org" <willy@infradead.org>, "hca@linux.ibm.com"
-	<hca@linux.ibm.com>, "wyihan@google.com" <wyihan@google.com>,
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jolsa@kernel.org"
-	<jolsa@kernel.org>, "yang@os.amperecomputing.com"
-	<yang@os.amperecomputing.com>, "jmattson@google.com" <jmattson@google.com>,
-	"luto@kernel.org" <luto@kernel.org>, "aneesh.kumar@kernel.org"
-	<aneesh.kumar@kernel.org>, "haoluo@google.com" <haoluo@google.com>,
-	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "coxu@redhat.com" <coxu@redhat.com>,
-	"mhocko@suse.com" <mhocko@suse.com>, "mlevitsk@redhat.com"
-	<mlevitsk@redhat.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "hpa@zytor.com"
-	<hpa@zytor.com>, "song@kernel.org" <song@kernel.org>, "oupton@kernel.org"
-	<oupton@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
-	"maobibo@loongson.cn" <maobibo@loongson.cn>, "lorenzo.stoakes@oracle.com"
-	<lorenzo.stoakes@oracle.com>, "Liam.Howlett@oracle.com"
-	<Liam.Howlett@oracle.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>, "jhubbard@nvidia.com"
-	<jhubbard@nvidia.com>, "Yu, Yu-cheng" <yu-cheng.yu@intel.com>,
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-	"eddyz87@gmail.com" <eddyz87@gmail.com>, "yonghong.song@linux.dev"
-	<yonghong.song@linux.dev>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
-	"shuah@kernel.org" <shuah@kernel.org>, "prsampat@amd.com" <prsampat@amd.com>,
-	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
-	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "itazur@amazon.co.uk"
-	<itazur@amazon.co.uk>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "dev.jain@arm.com"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
+	<linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
+	<linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
+	<loongarch@lists.linux.dev>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org"
+	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
+	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org"
+	<ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
+	<martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"song@kernel.org" <song@kernel.org>, "yonghong.song@linux.dev"
+	<yonghong.song@linux.dev>, "john.fastabend@gmail.com"
+	<john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>,
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
+	<peterx@redhat.com>, "jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "shuah@kernel.org" <shuah@kernel.org>,
+	"riel@surriel.com" <riel@surriel.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>,
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
+	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, "maobibo@loongson.cn"
+	<maobibo@loongson.cn>, "prsampat@amd.com" <prsampat@amd.com>,
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com"
+	<jmattson@google.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "alex@ghiti.fr"
+	<alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
+	"chenhuacai@kernel.org" <chenhuacai@kernel.org>, "dev.jain@arm.com"
 	<dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>,
-	"jackabt@amazon.co.uk" <jackabt@amazon.co.uk>, "daniel@iogearbox.net"
-	<daniel@iogearbox.net>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
-	"andrii@kernel.org" <andrii@kernel.org>, "mingo@redhat.com"
-	<mingo@redhat.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-	"joey.gouly@arm.com" <joey.gouly@arm.com>, "derekmn@amazon.com"
-	<derekmn@amazon.com>, "xmarcalx@amazon.co.uk" <xmarcalx@amazon.co.uk>,
-	"kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
-	<sdf@fomichev.me>, "jackmanb@google.com" <jackmanb@google.com>,
-	"bp@alien8.de" <bp@alien8.de>, "corbet@lwn.net" <corbet@lwn.net>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "jannh@google.com"
-	<jannh@google.com>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-	"kas@kernel.org" <kas@kernel.org>, "will@kernel.org" <will@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, "Jonathan.Cameron@huawei.com"
+	<Jonathan.Cameron@huawei.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
+	"pjw@kernel.org" <pjw@kernel.org>, "shijie@os.amperecomputing.com"
+	<shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>,
+	"thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com"
+	<wyihan@google.com>, "yang@os.amperecomputing.com"
+	<yang@os.amperecomputing.com>, "vannapurve@google.com"
+	<vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>,
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "patrick.roy@linux.dev"
+	<patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri,
+ Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>
 References: <20260114134510.1835-1-kalyazin@amazon.com>
- <20260114134510.1835-8-kalyazin@amazon.com>
- <e619ded526a2f9a4cec4f74383cef31519624935.camel@intel.com>
+ <20260114134510.1835-10-kalyazin@amazon.com>
+ <CAEvNRgGz2gRu2i+OSxasuyZudqsRGXijbDES8uXVe_hH6QCK4g@mail.gmail.com>
 Content-Language: en-US
 From: Nikita Kalyazin <kalyazin@amazon.com>
 Autocrypt: addr=kalyazin@amazon.com; keydata=
@@ -169,22 +168,22 @@ Autocrypt: addr=kalyazin@amazon.com; keydata=
  ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
  ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
  i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <e619ded526a2f9a4cec4f74383cef31519624935.camel@intel.com>
+In-Reply-To: <CAEvNRgGz2gRu2i+OSxasuyZudqsRGXijbDES8uXVe_hH6QCK4g@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.106.82.9]
-X-ClientProxiedBy: EX19D002EUC004.ant.amazon.com (10.252.51.230) To
+X-ClientProxiedBy: EX19D010EUA004.ant.amazon.com (10.252.50.94) To
  EX19D005EUB003.ant.amazon.com (10.252.51.31)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 39FB840010
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E40BE40007
-X-Stat-Signature: spx5muakseape8ekq4zixdei9axrtsux
-X-HE-Tag: 1768575654-175440
-X-HE-Meta: U2FsdGVkX19PypnX62fkiaDL7oGDCaFLl7vlaYmevmW7EBIwLCq80BwfS0tieYSQ/HcnUPIc+rzij9gwurO3WE7GQgpFF9LIQc9HH7KeyhspmBmEzrmowLfGwFjGfawcm5mgQhn8qqNgjOCURYUsMbuw33FmnmgFRRbM9NDJzrxDVM6WzS2QHEypj8HIiyTztgufgx5WkGAfW/kfSSDY1Z0sbgJYuM7SBbg9xzrD7DFx9c/Gw+dhQ6vuoipnfxE17H2EW/5tYlG8WI7SB5TRi3znGG/iSomwYfJX3wYBMXWOOY/7NgL102rDMcRYP4ALa7tyemJ0dkbrvzNkIr2O/6xM9PgskECZdN+q1+sc7EUHy+eDP+OobJWN3JBO1ZbPTTga78SKSiO5VounobplxHAskc5iJPgqjLRf65e/k8FJ+lbvBNcf6r9fZZivnHCz3uofOEz6bhdvhNwGW+E0GOa25uPEvfFlZkQGjdloyK8L2FGiG9HejwpkXcguoMvUgfUFyg+hTr2XC0Al/HikTAhs9R2U5bGy+944c2EK0hLMUVCGSmWV/C+GN2P8ZfXxg05aTArwXbJu4NYrR+Wvk2FUjDJrKfFpaC3Put/UbNp5ycP0N3M/pbKd3pJ98s+oCk8OdfuLd/FmM7w2wiZWzlz7PavaWQLYnJQRwn9cRngN+dJz/+Z2iNJef4P1Nl4Z8BaMt3JN6bR6/itJBfK3eQWG5IbMHpLNPD9KJAyWxDgrXnboBDeXSf/QGbvO5brAyW2xwiBpMvgmXsunKtPdLXFJHRGQ9vLqps7yQ802oWymMw37WWtAY9sgp92dQHDs44w02FpUnGKRSgLR+MWmUxmBSitJUOoOC4ipWlkbh4RMNAR3T4/1GOpHKbo9K3nZA2CmN+ZopVW3ZYc0GktF1GLMWjVS42m7u2AOGkAzGzwd7jK8C2oPN+rhDFR77Yk2z0poEpI1PKxtSwKHThN
- fY53o4xS
- OTIPFPuoTyuY4Q+BXW/K5rgvr02knQSP2swAtxRXco/eK/fVU+GieoeMnt2LAIgln5derFeVao+3HvktUVcIzg0DEOoMYxw0u5m+7zWXEaAojRtsT8DxrKEH9wy0b752+3s6B0Vy11pQl65cr6HxD7vVMDONp/Y4MZeyyXUBZt/QzYuWoOGxxDWiCNUEf4KNCLiXAR1v2OiFe/cre9LZRa1xzDOeafJJY/6N8gdNphZr8zuYL7Fit+VboNoHeWuyIefxeshCLheq7vou+C+p/4in8+wlAj8qZZQxeSBG2ZYcjvRJ6UTuYD8kWtjP1Ux7ca91zbWRk209sRXnj6Wc1PIk+7uXPHbbgOOLpOJczadj8D/UTU/Du3NPjvbRM4JY5BfIbg8xML1aBqqbZcNueUhkgYnGbp0AKUEG0Q5GZqnuK/k8B+vvd43Ijs48D4v6L3Nlw2OqotH7XX0gI9HYh4O8HyoRmg1x6dNMvCnl50MU1aoQFgmfdD3fC+g4rkn/ZXjRxAq04XYAcjRCBREKA71kEJTaz8I7K7jRLI57gXzuSvtpD8CCAHf3h7K3gQoe2tCYmVgnc3lnOEXQ+I3MGN0Oa9pxDMS3MJRXIflRfeLpq0xckk1mXAEh9wGpvacl8vG8ZUPMwprrhJ+cFOcZJOcqQrm7jVUA/+8ZTyl6xXLznIG5IGMJT7cps7qwVGS4OfSiYkKeRy2SSgTOPUNAt8Xm6LHt52ZLdjCoG984PNintZX7pAOwkJJB2pAENdiCoohrXbFyH3hYVntN5AMMh4AbLpf6D3zwzT1FUSy7YktGufFM2mwwBpDzw2SfDHlHpZ1MxnxcHs8IEcNwQ4T6htg+GJa+p/S0Pu2S65qWtzQtR6PR/d91OIcaaZE/D2k2ScjMSOTUCE+Ah0aHnIC/kZxxkRflsMyow76quQTONkN8YyZRwUIz14xgq+dMByxw8UeKR+vujaMsuL3Y4z7O6morHAbnI
- Ag+XX/4j
- xk0NUowgbphwwoOdLEKjffcurbIJu0s4yjlK6PnnaUA=
+X-Stat-Signature: dzpy116dmjttq97mq313dzz4dsq7dduk
+X-HE-Tag: 1768575676-375651
+X-HE-Meta: U2FsdGVkX19O9gM0tQ/jTvInVHb2bH2R4Eee3ceGw5PDheK1zukZNvJdqaPeCwwXCKFyBcv71xJPAYCarcsYDr0ecbRVAi3x3dXT4Ao4znTFtsewyNatQ0lclUQU+VC4m0eQB/dg343Sk4EhJwdRV2J5n6Gn33TYAnSfjslJWnneNavxizjkCtoAhJ+RXSNiT1T+Afp4QAlHDrUO7+2HkkeleNX2gkHi1lCtCH0bBKhkLIZOQDAdUqbRyEy29YhvPegesFAXlxaunFQVFcCm7OvDp6OyOlkR9qWJ+L8Ni3t6p+3f6DpHkDvg+YR42oBQ6lFC7HJXJriPfaQtluxf1twOKr0Fp3bHwB+ytmM4lKZJ4rcNwsK/wpPd9kiBUXW+bLn7/qRUuYGQse7yBKWUXjQQJA5sMJJfVFh0uuL241JJjmcvtWqGD4/rNhvOiv0uNsnWtWqgikAPqLTkUwmS2xauhaAo58QajH4jnF6OaBHPu5cs+Qa0AP9Kx/VxhMFs3rFCAD8/rEBjcGvquyaFA5zHkn1NW2h2v4n6YCC9DhFpt8ZptegJAVwfWgYuOFTr2sZm1L3cFy239a32WgQufIxfXD7yGI0mZ8ak3lm5WwRDoZoJg+Lr5l3pZ49EhUravkDPf60ZQ+5j4FVDJFXi8YuGXRZpajR8vp+p04wZ2H4PDqXgqZ9rrsf2aneeMi13QrkZs4v7LLKhgptG3SNyQd0lNLTtqAAMDwP9/TKh75qhw4Xmyrj655iDBV9uw4kXua7LGRHwGjYVrNkqw8tGviUFpYwi4sD6Oq7WdXa9/l8d+53GhuSCKVcW6y+teYbBVKFqxwDnBQEwgN6vFKEsjFq3BWinn2Iuw7S1MTA84L0ZvLs7PF1J1Q0ticcDffvfX4SdPrLeYhtfsdu0NZ+J4z8KRF9w9lN67kQYQYocd59bQ6b8ks51YZNkqzCc0SElNUAS59KJNT6QViLgXaB
+ C7VSawDF
+ CSsZ7VZ8WRAVnUinUhLyCHZcUZlPgH8h8Emr+8fUKG6j/A99Ce/Eek/PKcl8hPRHUoK2d1+Scvnz56WeMnJM88QUx1Si9mdbm2YkFqloAblW+sbHq09Axz/qxsQU9khn9ypsu08KbW9OJPyA0uPe1EeYpYK1zJKmrAJs1hMlvG0DTo8NW0OmRN2azeLo8rkeq3a0pRwVePYvyn0Klg/SwTBQchMXgZ+LNeOpCfxMRLJ23IctqruA/rkQTCEIsPtpB35uhkr75hd7pbB8FfzdkbFb3zHaOOqVwg5ez97PAtYZAXVyyzajplJjyxi/eeqIhw8SMoyVqn9uetyaj1xaMwErhVV4VWdR/BKFMCUEbrlredDfxZGy1iXMdBWgqN1kaaS8+DVbPfbvg4hGHnAMSO2tBkQkrnwjnWDXA0zHK+5bEy9gSsFfU6TQGUY10XhZjSh96ZCWoQVQoyLQ33Aum7wUWj8W0w+m4QUML+TfAcguyP748ORTqEz9O25PaUYQuYDkE5HqfiUNCJp87GH9X9jiJOg3z68+F8w0F/+d7JquIk/VOgQRu4orIR77siRCMCVH6JjtfCk4g+QPbPROAotze8upobdnFAijOkvVM74G2XfomtylF/ujTOuUS9PdW/BEj++BOz+9mABXjU3lJUJXbqebUBUB10SP5iVp17r+qBLP7DrM2NnnUERbPl3Rwimfv0F93GSyvqZZRvsCAAw4W7eaxMFKleJcWL6FWI4Smz1qDbnsGMhGCoOJWZ7EgIOSoy92ONycHpSuBWvJ6COuhvp1s0I5mNNaldTh36EGRYyGX+yTS0K0sY4ly3l0HF0TQhPjFKmWCu49bWkziqcvDWwQ4DJ7+7u2X4PMR2uAxLm98hTSXTb7zH6TMyqKuO6eyHlQm6miVihQRI0NYeM/iTc3PeFwDQ+gxLzqjsVE0oM5JrvDnQ7fPIH3DNU0YBQ3GMLxchzkKo7Qr550N50J/HtFk
+ V+EKYnjN
+ Wq2282o9+9kqwTr5fwGlEcPWi70KkgSCf+Y8ANdaJ9wVvHBanKFGU0WkULxZbG35ef4uEk6NZVgzgoOR0MTKNhZm5ielnj1y54ou3P6ygpQteTVCXlUtP6xcaSRVUz16
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -195,30 +194,89 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 16/01/2026 00:00, Edgecombe, Rick P wrote:
-> On Wed, 2026-01-14 at 13:46 +0000, Kalyazin, Nikita wrote:
->> +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
->> +{
->> +     /*
->> +      * Direct map restoration cannot fail, as the only error condition
->> +      * for direct map manipulation is failure to allocate page tables
->> +      * when splitting huge pages, but this split would have already
->> +      * happened in folio_zap_direct_map() in kvm_gmem_folio_zap_direct_map().
->> +      * Thus folio_restore_direct_map() here only updates prot bits.
->> +      */
->> +     if (kvm_gmem_folio_no_direct_map(folio)) {
->> +             WARN_ON_ONCE(folio_restore_direct_map(folio));
->> +             folio->private = (void *)((u64)folio->private & ~KVM_GMEM_FOLIO_NO_DIRECT_MAP);
->> +     }
->> +}
->> +
+On 15/01/2026 19:39, Ackerley Tng wrote:
+> "Kalyazin, Nikita" <kalyazin@amazon.co.uk> writes:
 > 
-> Does this assume the folio would not have been split after it was zapped? As in,
-> if it was zapped at 2MB granularity (no 4KB direct map split required) but then
-> restored at 4KB (split required)? Or it gets merged somehow before this?
+>> From: Patrick Roy <patrick.roy@linux.dev>
+>>
+>> Have vm_mem_add() always set KVM_MEM_GUEST_MEMFD in the memslot flags if
+>> a guest_memfd is passed in as an argument. This eliminates the
+>> possibility where a guest_memfd instance is passed to vm_mem_add(), but
+>> it ends up being ignored because the flags argument does not specify
+>> KVM_MEM_GUEST_MEMFD at the same time.
+>>
+>> This makes it easy to support more scenarios in which no vm_mem_add() is
+>> not passed a guest_memfd instance, but is expected to allocate one.
+>> Currently, this only happens if guest_memfd == -1 but flags &
+>> KVM_MEM_GUEST_MEMFD != 0, but later vm_mem_add() will gain support for
+>> loading the test code itself into guest_memfd (via
+>> GUEST_MEMFD_FLAG_MMAP) if requested via a special
+>> vm_mem_backing_src_type, at which point having to make sure the src_type
+>> and flags are in-sync becomes cumbersome.
+>>
+>> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+>> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+>> ---
+>>   tools/testing/selftests/kvm/lib/kvm_util.c | 24 +++++++++++++---------
+>>   1 file changed, 14 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+>> index 8279b6ced8d2..56ddbca91850 100644
+>> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+>> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+>> @@ -1057,21 +1057,25 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+>>
+>>        region->backing_src_type = src_type;
+>>
+>> -     if (flags & KVM_MEM_GUEST_MEMFD) {
+>> -             if (guest_memfd < 0) {
+>> +     if (guest_memfd < 0) {
+>> +             if (flags & KVM_MEM_GUEST_MEMFD) {
+>>                        uint32_t guest_memfd_flags = 0;
+>>                        TEST_ASSERT(!guest_memfd_offset,
+>>                                    "Offset must be zero when creating new guest_memfd");
+>>                        guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
+>> -             } else {
+>> -                     /*
+>> -                      * Install a unique fd for each memslot so that the fd
+>> -                      * can be closed when the region is deleted without
+>> -                      * needing to track if the fd is owned by the framework
+>> -                      * or by the caller.
+>> -                      */
+>> -                     guest_memfd = kvm_dup(guest_memfd);
+>>                }
+>> +     } else {
+>> +             /*
+>> +              * Install a unique fd for each memslot so that the fd
+>> +              * can be closed when the region is deleted without
+>> +              * needing to track if the fd is owned by the framework
+>> +              * or by the caller.
+>> +              */
+>> +             guest_memfd = kvm_dup(guest_memfd);
+>> +     }
+>> +
+>> +     if (guest_memfd > 0) {
+> 
+> Might 0 turn out to be a valid return from dup() for a guest_memfd?
 
-AFAIK it can't be zapped at 2MB granularity as the zapping code will 
-inevitably cause splitting because guest_memfd faults occur at the base 
-page granularity as of now.
+Yes, you're right, it isn't impossible.  Thanks!
+
+> 
+>> +             flags |= KVM_MEM_GUEST_MEMFD;
+>>
+>>                region->region.guest_memfd = guest_memfd;
+>>                region->region.guest_memfd_offset = guest_memfd_offset;
+> 
+> Refactoring vm_mem_add() (/* FIXME: This thing needs to be ripped apart
+> and rewritten. */) should probably be a separate patch series, but I'd
+> like to take this opportunity to ask: Sean, what do you have in mind for
+> the rewritten version?
+> 
+> Would it be something like struct vm_shape, where there are default
+> mem_shapes, and the shapes get validated and then passed to
+> vm_mem_add()?
+> 
+>> --
+>> 2.50.1
 
 
