@@ -4,136 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2CEFC982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 825ADC982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:21:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F2446B0095; Fri, 16 Jan 2026 11:19:04 -0500 (EST)
+	id E5BC36B009E; Fri, 16 Jan 2026 11:21:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39FE66B0096; Fri, 16 Jan 2026 11:19:04 -0500 (EST)
+	id E09816B009F; Fri, 16 Jan 2026 11:21:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 256E36B009B; Fri, 16 Jan 2026 11:19:04 -0500 (EST)
+	id CEB746B00A0; Fri, 16 Jan 2026 11:21:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 11C106B0095
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:19:04 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7600556AE0
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:19:03 +0000 (UTC)
-X-FDA: 84338336166.21.8E7A2C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5E0C81C0005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:19:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pSWU+QUd;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BD9DC6B009E
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:21:34 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A5881AD9B9
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:21:34 +0000 (UTC)
+X-FDA: 84338342508.20.7687517
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CF7104000E
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:21:32 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WEy73lKF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768580492; a=rsa-sha256;
+	cv=none;
+	b=2LOFdmnLbJt9jlZDKMmSa7VbUwkXk/CMfyCH81WNfJ8S6s4r68ne9hs8SHrle5tSWGikFe
+	cznqtA9jNMWKfN3w1yqlo+HQ1yvYObudLJkeVQqrBx0ycR8akt8fkO/EV3XeeAQc+ovtbL
+	Kc6qtrlpAihHdaiDA3OAUMuHNKdgkaU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WEy73lKF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768580341;
+	s=arc-20220608; t=1768580492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=trbxxJj7IpT6f8ezUn4wgkV/6irZfek+bO70Yjr55Xo=;
-	b=6yYgO0lbkaVSZMf1Nf4TnOJew7LJ/jgkDT7yIrU6EkMsMI5Qsg8E7L8MBWrXWJ81xsFSy8
-	3J1Ibqxih4MaLW6JR9RNGvBjH2lKACniYsgnupU0G8tuJgzSRWfaPBb5ZI7u29kShmKuv5
-	yE4BitNJcJjHAIfgZtUUf262p400jZg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pSWU+QUd;
-	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768580341; a=rsa-sha256;
-	cv=none;
-	b=xvTZZDs2uWi/td9uqQvH8JG57mWr4GhG9BOnGNa8d4qiGqoGbpyIML9Qcgf+RrSaE6Up3n
-	uYxBKCiamPFWJD8IHLiXm3EGbQJsd9ZzB4dZTWyb++eikfD/j4AEcS/SNDaf89BIERv6PK
-	/RvDTDHE69vGE3OIDJNxDdpURw2iwfs=
+	bh=wU02D3AuSYoipfiyxtuKzwahfFEJ5U5cyLoFJwWUhds=;
+	b=tOgHOk+CHSCBfPWvna5AGfDLqJbkUz03FjM8scaWGXUr1eltDIde320X44auSh8ZK5lnAT
+	+dGIP9UWdYscmvK084gIDqqXzyPKdBC6BQ8ixA3CUTowYIiom4ctxg8LNaGYHlQIKeCniA
+	JG7cZoQHToN58ZyYEwPrCECdd2TU3tU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0F1E8443F2;
-	Fri, 16 Jan 2026 16:19:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F9AC19425;
-	Fri, 16 Jan 2026 16:18:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D1D90601B9;
+	Fri, 16 Jan 2026 16:21:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4FFC16AAE;
+	Fri, 16 Jan 2026 16:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768580339;
-	bh=/Mp8bdLF/AfKTaNOMoq3MpNYakYvz35npSkmqiiDFVQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSWU+QUdLEZVWfxZEr6S6sckSDMzAQP4ynowWsBJff95lj5PdNvb4u/5S7l0Di5Ms
-	 o/vXoM6oqhKqeRhET2Vqd9LXEt07dCShAeFJPIbHfmyslXTXDkA5umftGDHUSnXLSh
-	 xR7eWOjVqm5gU9RfWmAmZk7M8TQIHaLq5xc6bOAInPY6zU/FeosdWhAJoAOj7wLymY
-	 NkTjIBSNWO5ljcggQA/ztCDP7qRqubZDcrioQG06NOuPhKBBO7IzeL7DXDOeWM09C9
-	 UCe5PKJFjPVCBR0Kxh8kgNyZq62rgFNmGmwvCm/s21SE+6fj3VJd9l4efFv0HAfn3W
-	 uNUtXpw1C/SAQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 547B4F40087;
-	Fri, 16 Jan 2026 11:18:58 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 16 Jan 2026 11:18:58 -0500
-X-ME-Sender: <xms:8mRqabv8Ft1x0lbuCbWr7rE0AwXZeP0w0g5rpaYEIGRB0ENrItdVlw>
-    <xme:8mRqabvV8xRNxCiqNg_zfGQj9MBvYu35XjHW0c-WQ61oU658LgJKn7uw85il6k6VE
-    vhT2I_o3XTcjpwk4laAtDDPCWvGp_BrG2PzxyD9O7xg55igoN4DaDcL>
-X-ME-Received: <xmr:8mRqaRn3mkqm_kYMglTEhVZQZWByrhgc0vU5Kp9GGFVomV-bJ8abh4JAd_HqOQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdelgedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucgoteeftdduqddtudculdduhedmnecujfgurhephffvve
-    fufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgv
-    mhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnhephfdufe
-    ejhefhkedtuedvfeevjeffvdfhvedtudfgudffjeefieekleehvdetvdevnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvg
-    hsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeeg
-    jedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnh
-    gspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehkrghs
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
-    grthhiohhnrdhorhhgpdhrtghpthhtohepsghhvgesrhgvughhrghtrdgtohhmpdhrtghp
-    thhtoheptghorhgsvghtsehlfihnrdhnvghtpdhrtghpthhtohepuggrvhhiugeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphht
-    thhopehhrghnnhgvshestghmphigtghhghdrohhrghdprhgtphhtthhopehkvghrnhgvlh
-    dqthgvrghmsehmvghtrgdrtghomhdprhgtphhtthhopehlihhnuhigqdguohgtsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:8mRqaRuD2fOUfJyL-ilunjIbkDM11U5BCD7G3JNoHJy_NW6x3N6bAQ>
-    <xmx:8mRqaQNdl7mMH-A_cjvKJD4-n89JA2T3c2YZCtvTjFjYQ86sKEES0Q>
-    <xmx:8mRqaS2byjdCEjpcq77vkESiVp2MfPwJubd9yLzg5A6E0g0vZZRzNA>
-    <xmx:8mRqaSxnPuWtQWUehjJJ7jGoGBaOcKR3VaijEKbaWf-3kTNRyYnCcw>
-    <xmx:8mRqacpfRkQGky2EDJ3ZdEq9M2tG_rSswLMxcoIcR0e-S_CnyXjLwNWw>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 16 Jan 2026 11:18:56 -0500 (EST)
-From: Kiryl Shutsemau <kas@kernel.org>
-To: kas@kernel.org
-Cc: akpm@linux-foundation.org,
-	bhe@redhat.com,
-	corbet@lwn.net,
-	david@kernel.org,
-	fvdl@google.com,
-	hannes@cmpxchg.org,
-	kernel-team@meta.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	rppt@kernel.org,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	willy@infradead.org,
-	ziy@nvidia.com
-Subject: [PATCHv3.1 10/15] mm/hugetlb: Remove fake head pages
-Date: Fri, 16 Jan 2026 16:18:46 +0000
-Message-ID: <20260116161846.1799643-1-kas@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260115144604.822702-11-kas@kernel.org>
-References: <20260115144604.822702-11-kas@kernel.org>
+	s=k20201202; t=1768580491;
+	bh=NOCir8rPfAIQt6v7dI5do8gQE0TlAVf0w/j9ivkNyoA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=WEy73lKFMrRCN73iQS4oWwJwJsqakNAtuXhvrkpcc8ARMH1h5I+ATLsEyQEzdCTan
+	 tTEVqI+x3UE8bHCwufI71/rkNYwqFHV0ZZlVlioySeReu0++Q7Ti1TZkm6hTTHqPVp
+	 B4N1RUuhoANDlLiyAep700/vHLW5I+bJoJIjpH8KxNNgOBhrDJ18LFBqTm+Kb0c7SN
+	 JXt8Pf3b4ngvIzVue+gl2659ZXMNCx1R1JDOHfJnsv9reyDWQoUPrKx2a5rZlUCJau
+	 dpLJMQ4fsbmiK9FiMUyxraobrEQsJFWGE+z9AebnL4PEBkcyn/vTuplbxi52IWAu19
+	 mAnBNn93aukvw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  akpm@linux-foundation.org,
+  rppt@kernel.org,  graf@amazon.com,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,  pratyush@kernel.org,
+  ricardo.neri-calderon@linux.intel.com,  kernel-team@meta.com
+Subject: Re: [PATCH v4] kho: validate preserved memory map during population
+In-Reply-To: <jixxiqeajngwox3nh2u3pwf2rivhmqxxmpyttqxu32pixshyde@4jdn5jvg5hvk>
+	(Breno Leitao's message of "Thu, 8 Jan 2026 10:03:14 -0800")
+References: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
+	<jixxiqeajngwox3nh2u3pwf2rivhmqxxmpyttqxu32pixshyde@4jdn5jvg5hvk>
+Date: Fri, 16 Jan 2026 16:21:28 +0000
+Message-ID: <2vxzo6mt7cl3.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CF7104000E
+X-Stat-Signature: 4wqrcu4cy59wcgabgncbxt8s9ft5ju91
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5E0C81C0005
-X-Stat-Signature: 64h5f9pwz9dcg1es5117bzdk65mx68fm
-X-HE-Tag: 1768580341-726970
-X-HE-Meta: U2FsdGVkX19cHTBT6fX4Q8K8/QLswuKazBjdl88KpBxrfosOnYBRHJyxXGMK+DsPi95KUfeVOfgWxuX7oQwY2Qn0/fbT72XS8jUDoUoOL/IPGNgP6FiLN8lLZYJe5MtEZ53vR0KhKNqHLVeIeuaPs5TiVyBfsGV/ojH/Jz3O6UmiSPsFTXe1Ikn4ZOFc/7VSn0CXfyso4Mw4RAsqR0XlI8gn8hVsROQ2goZx3u2WGdiUXOQFomvFiirvkbS5yiu+/9cAWvO2MKAo/4wKYZJDi0EZMCiLW/L6COB5+iW4eal0oxWyLkpbypGVaeX+cxgH1V0ym4LC2ApK2HXIUL+ZqkROhyOaZQo2BmGMkDZrqWTEv+4QLM4HnQhltbNiI8jlidYCQAJ53+w5O5N0Q523HS4IA9PJ/p+p69J7WqeAPu4D2MCHw0hu+IDkbZkC/gLEhpHqLeOfvP+gzhJ02MK+qWNQps6cPTFbkXyiJHSfeqXJg1JUd78m+s9rLTlvFmO/znfKMGFAfdm/VdLR4wiXwr5K9UBSODT54DukmG+itUDS4dH5zKTUpflPG2qoCexqXxmE6Vn/dNoW5wwsOzQjkKlwrNqLchylzlhTAtGig6S04t8NtrhH06K1PCM8vKXZIy11p22KZipeHc3S5qGMmtBjyap6OCxXxFavZrJE23b66FHGTMvlCIHSO8eTMeBGJ415TlaN+EHIxJvRLCq46wTubgx54pXHKJGS5hswBx3M/6AcVMjDJ8Kzr5NXjBTRMN+XMmijxTNOrq1bFNLU06RBaVM/F1IuwRM365nrSdpg8FdWxOc/W39LneFy11zRsvEpExIOPAcg+CxHFiQVFeiUXS3iSTQ/J0kiVi2roWu2xbObFxWUCOz8dMBUaU7jZ6NS21Pj0JjnM0lv15DHaiVJK7cn1sfloCbHRbLY9NlOCYTZuMnIbjKz5MuYcT0v4W6dtKqBbQ7CA0uqLzm
- T1ujfUvD
- ovaHj5HlYj4Ij8yaqCwqlku68ctWdCGFmflH9vmaE+QERnBvnbbNB34CClvl5eMopLPIcAYdWOuKN/YEpVxRNQXDTEpkup4RVQheJ6UfwRvxdeuwtNq+I3AOg4deUJ7Ny4ain0D4AKF57LNV1d5OM1wX98WmCbUW45x9Xxuo/n/sItZ9rhPM90KZaHAGfDkO6QPF/o1X2aY0sX8K8BFG2teYPCVB+XY9aEOgSE9kOlewNAMgN+/owM2x5NQ5GJJ1tqxTC
+X-HE-Tag: 1768580492-249710
+X-HE-Meta: U2FsdGVkX1/D5pBYFIdw8hvylbP8qcsia5HIaJKxBQP43sgkTh0nvY2UqQksI+/RIR/Z7RT9Gwk8eU11IIjDRCv4o4p5ewphKp/BGAShddaMdprh2oKmBlab4PsMnxqZ35gkIacj+U/LV+G6NXU/rjjQOvS5NVapyNLwKd+TO/lVgLiMQby9oZ49Ji2UrnoARbaiBCMK5JPO4ZB4OGrh0SwVZ3Ch/FJJ5sFBWjVuWn/FmXPyQ2vWlF4PtacAGXMOmTJ803ElI6czK/wnIuiOSJYrY7/BTP8oCeD0pODSM2zLFddZEVsF6g/UgzV6NblhpbJJA5vxZKT0IGHrOrjSwvGXOjNkvwWOHm9dq5pEQCEegA+/HEUYUMoSEkfmxo/lL7RbJ+YADn2TsG2c7gnPM2ulriBFnpnCnblUSw/n/Pxrhstt3osCLfo2ZsVX9cxVs+a/T+DzftAsBm22feI/U5jV/NxEHdBDjKbKtvaCduR6XWps+hr/WQlZ2llmjOMmVuZaj8jTtfyN4J2eGqcre/z4KV7IdzdAd0QU7KkJjbQI0g5e2jAyiKSXS/Hs2WZ5RI7WUay9BoczBxJZT7p0gAcXQ2kFeuu0p3qHdVS39PTBD/MN8aOvaYBbuBs8jRUfqozAknrcA3+uKScvw57gP0q0bUvIqFbdP/Rb3vYFHThjVfLS3l94MWuC5i+2VZMCogTMZ3VcLfVmBbQjDtSkExwHE/RrXhiYNLkoLp3KmotHnJ33MPrcfJ7W0BcGV2bX3SQ4PPVr36oSNRWJOWZWEoE+IJ/j7/WQ7Z1JhNSZ5EYxM2Le/J/1eurHy93uEk+peXVJM7J/+CFZGsRKFWcjIU6SAUXqWB60rhGmKclxLiW9qXoT+s2U46BJoS+tU9fUvz0g64UkcJYEufM7X6x4yj9o3Wqlvf6vLsd2FT94pEmiW4O3EkEHiJUFEDEyAyn8VM+ALfIeYdrNXWvqfSG
+ 0LmAddxy
+ adJSXlNSVFFRNbybGoFpL7aeAy+ZHa5SQxq1zocUrFe7fbwhTT/46TRw8gLHOmr8eaEs74Q3M2sgjw9bCVJPuwjRGnZG9UGXbPr3X4kjChkHkP7FxJWDvDfNAVsngaK/aAIFTHzWTpIa+cIODrtxFevsnxN91paTmxib5SZOsZ0pzvB4U9BGE8X1WyuqSs6paeGz1mSFv/xJ4eMtfkOrjdufnUg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,232 +95,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
-vmemmap pages for huge pages and remapping the freed range to a single
-page containing the struct page metadata.
+Hi Breno,
 
-With the new mask-based compound_info encoding (for power-of-2 struct
-page sizes), all tail pages of the same order are now identical
-regardless of which compound page they belong to. This means the tail
-pages can be truly shared without fake heads.
+On Thu, Jan 08 2026, Breno Leitao wrote:
 
-Allocate a single page of initialized tail struct pages per NUMA node
-per order in the vmemmap_tails[] array in pglist_data. All huge pages of
-that order on the node share this tail page, mapped read-only into their
-vmemmap. The head page remains unique per huge page.
+> Hello Pasha,
+>
+> On Tue, Dec 23, 2025 at 09:01:40AM -0500, Pasha Tatashin wrote:
+>> If the previous kernel enabled KHO but did not call kho_finalize()
+>> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
+>> the 'preserved-memory-map' property in the FDT remains empty/zero.
+>> 
+>> Previously, kho_populate() would succeed regardless of the memory map's
+>> state, reserving the incoming scratch regions in memblock. However,
+>> kho_memory_init() would later fail to deserialize the empty map. By that
+>> time, the scratch regions were already registered, leading to partial
+>> initialization and subsequent list corruption (freeing scratch area
+>> twice) during kho_init().
+>
+> While trying my new patchset [0] on top of this patch, I got the
+> following issue:
+>
+> 	[    0.000000] KHO: disabling KHO revival: -2
+>
+> Trying to solve it, I come up with a change in kho_get_mem_map_phys() to
+> distinguish no memory and error, see the patch attached later.
+>
+> This is what I used to test [0] on top of linux-next. Is this useful?
+>
+> Link: https://lore.kernel.org/all/20260108-kho-v3-1-b1d6b7a89342@debian.org/ [0]
+>
+> thanks
+> --breno
+>
+> commit 5d7855fede8110d74942e1b67056ba589a1cb54a
+> Author: Breno Leitao <leitao@debian.org>
+> Date:   Thu Jan 8 07:44:08 2026 -0800
+>
+>     kho: allow KHO to work when no memory is preserved
+>     
+>     Fix KHO initialization failing when no memory pages were preserved by
+>     the previous kernel.
+>     
+>     Commit eda79a683a0a ("kho: validate preserved memory map during
+>     population") introduced kho_get_mem_map_phys() which returns the physical
+>     address of the preserved memory map directly as its return value. The
+>     caller then validates it with:
+>     
+>         mem_map_phys = kho_get_mem_map_phys(fdt);
+>         if (!mem_map_phys) {
+>             err = -ENOENT;
+>             goto out;
+>         }
+>     
+>     This creates an ambiguity: physical address 0 is used both as an error
+>     indicator (property missing/malformed) and as a valid value (property
+>     exists with value 0, meaning no memory was preserved).
+>     
+>     "No memory preserved" is a legitimate state. KHO provides features beyond
+>     memory page preservation, such as previous kernel version tracking and
+>     kexec count tracking. When the previous kernel enables KHO but doesn't
+>     preserve any memory pages, it sets 'preserved-memory-map' to 0. This is
+>     semantically different from "KHO not initialized" - it means "KHO is
+>     active, there's just nothing in the memory map."
 
-Redefine MAX_FOLIO_ORDER using ilog2(). The define has to produce a
-compile-constant as it is used to specify vmemmap_tail array size.
-For some reason, compiler is not able to solve get_order() at
-compile-time, but ilog2() works.
+This isn't true. If you hand over _any_ state, you will at least need
+the KHO FDT. And the KHO FDT is preserved memory (see the
+kho_alloc_preserve() call in kho_init()). So I don't see how you can
+ever have valid KHO with no memory.
 
-This eliminates fake heads while maintaining the same memory savings,
-and simplifies compound_head() by removing fake head detection.
+mem_map_phys _can_ be 0, but only when KHO was enabled but not used. And
+that is of course also a valid use case.
 
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
----
+We want to treat mem_map_phys == 0 the same as the error path, just
+without the error print. This lets us discard all previous scratch areas
+since they don't have anything useful anyway, and have a fresh start.
 
-v3.1:
- - Define MAX_FOLIO_ORDER using ilog2();
- - Update commit message;
+So while you are seeing this error message, I don't think it should
+break anything and KHO should still be working fine. You can
+double-check this by inspecting /sys/kernel/debug/kho/out.
 
----
- include/linux/mmzone.h | 16 ++++++++++++++-
- mm/hugetlb_vmemmap.c   | 44 ++++++++++++++++++++++++++++++++++++++++--
- mm/sparse-vmemmap.c    | 44 ++++++++++++++++++++++++++++++++++--------
- 3 files changed, 93 insertions(+), 11 deletions(-)
+So I think the patch is certainly a useful fix, it just needs some
+re-wording and fixups.
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 322ed4c42cfc..bc333546c2d3 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -82,7 +82,11 @@
-  * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
-  * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
-  */
--#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
-+#ifdef CONFIG_64BIT
-+#define MAX_FOLIO_ORDER		(ilog2(SZ_16G) - PAGE_SHIFT)
-+#else
-+#define MAX_FOLIO_ORDER		(ilog2(SZ_1G) - PAGE_SHIFT)
-+#endif
- #else
- /*
-  * Without hugetlb, gigantic folios that are bigger than a single PUD are
-@@ -1408,6 +1412,13 @@ struct memory_failure_stats {
- };
- #endif
- 
-+/*
-+ * vmemmap optimization (like HVO) is only possible for page orders that fill
-+ * two or more pages with struct pages.
-+ */
-+#define VMEMMAP_TAIL_MIN_ORDER (ilog2(2 * PAGE_SIZE / sizeof(struct page)))
-+#define NR_VMEMMAP_TAILS (MAX_FOLIO_ORDER - VMEMMAP_TAIL_MIN_ORDER + 1)
-+
- /*
-  * On NUMA machines, each NUMA node would have a pg_data_t to describe
-  * it's memory layout. On UMA machines there is a single pglist_data which
-@@ -1556,6 +1567,9 @@ typedef struct pglist_data {
- #ifdef CONFIG_MEMORY_FAILURE
- 	struct memory_failure_stats mf_stats;
- #endif
-+#ifdef CONFIG_SPARSEMEM_VMEMMAP
-+	unsigned long vmemmap_tails[NR_VMEMMAP_TAILS];
-+#endif
- } pg_data_t;
- 
- #define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 2b19c2205091..cbdca4684db1 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -18,6 +18,7 @@
- #include <asm/pgalloc.h>
- #include <asm/tlbflush.h>
- #include "hugetlb_vmemmap.h"
-+#include "internal.h"
- 
- /**
-  * struct vmemmap_remap_walk - walk vmemmap page table
-@@ -517,6 +518,41 @@ static bool vmemmap_should_optimize_folio(const struct hstate *h, struct folio *
- 	return true;
- }
- 
-+static struct page *vmemmap_get_tail(unsigned int order, int node)
-+{
-+	unsigned long pfn;
-+	unsigned int idx;
-+	struct page *tail, *p;
-+
-+	idx = order - VMEMMAP_TAIL_MIN_ORDER;
-+	pfn =  NODE_DATA(node)->vmemmap_tails[idx];
-+	if (pfn)
-+		return pfn_to_page(pfn);
-+
-+	tail = alloc_pages_node(node, GFP_KERNEL, 0);
-+	if (!tail)
-+		return NULL;
-+
-+	p = page_to_virt(tail);
-+	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
-+		prep_compound_tail(p + i, NULL, order);
-+
-+	spin_lock(&hugetlb_lock);
-+	if (!NODE_DATA(node)->vmemmap_tails[idx]) {
-+		pfn = PHYS_PFN(virt_to_phys(p));
-+		NODE_DATA(node)->vmemmap_tails[idx] = pfn;
-+		tail = NULL;
-+	} else {
-+		pfn = NODE_DATA(node)->vmemmap_tails[idx];
-+	}
-+	spin_unlock(&hugetlb_lock);
-+
-+	if (tail)
-+		__free_page(tail);
-+
-+	return pfn_to_page(pfn);
-+}
-+
- static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
- 					    struct folio *folio,
- 					    struct list_head *vmemmap_pages,
-@@ -532,6 +568,12 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
- 	if (!vmemmap_should_optimize_folio(h, folio))
- 		return ret;
- 
-+	nid = folio_nid(folio);
-+
-+	vmemmap_tail = vmemmap_get_tail(h->order, nid);
-+	if (!vmemmap_tail)
-+		return -ENOMEM;
-+
- 	static_branch_inc(&hugetlb_optimize_vmemmap_key);
- 
- 	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
-@@ -549,7 +591,6 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
- 	 */
- 	folio_set_hugetlb_vmemmap_optimized(folio);
- 
--	nid = folio_nid(folio);
- 	vmemmap_head = alloc_pages_node(nid, GFP_KERNEL, 0);
- 
- 	if (!vmemmap_head) {
-@@ -561,7 +602,6 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
- 	list_add(&vmemmap_head->lru, vmemmap_pages);
- 	memmap_pages_add(1);
- 
--	vmemmap_tail	= vmemmap_head;
- 	vmemmap_start	= (unsigned long)folio;
- 	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
- 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index dbd8daccade2..94b4e90fa00f 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -378,16 +378,45 @@ void vmemmap_wrprotect_hvo(unsigned long addr, unsigned long end,
- 	}
- }
- 
--/*
-- * Populate vmemmap pages HVO-style. The first page contains the head
-- * page and needed tail pages, the other ones are mirrors of the first
-- * page.
-- */
-+static __meminit unsigned long vmemmap_get_tail(unsigned int order, int node)
-+{
-+	unsigned long pfn;
-+	unsigned int idx;
-+	struct page *p;
-+
-+	BUG_ON(order < VMEMMAP_TAIL_MIN_ORDER);
-+	BUG_ON(order > MAX_FOLIO_ORDER);
-+
-+	idx = order - VMEMMAP_TAIL_MIN_ORDER;
-+	pfn =  NODE_DATA(node)->vmemmap_tails[idx];
-+	if (pfn)
-+		return pfn;
-+
-+	p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
-+	if (!p)
-+		return 0;
-+
-+	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
-+		prep_compound_tail(p + i, NULL, order);
-+
-+	pfn = PHYS_PFN(virt_to_phys(p));
-+	NODE_DATA(node)->vmemmap_tails[idx] = pfn;
-+
-+	return pfn;
-+}
-+
- int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
- 				       int node, unsigned long headsize)
- {
-+	unsigned long maddr, len, tail_pfn;
-+	unsigned int order;
- 	pte_t *pte;
--	unsigned long maddr;
-+
-+	len = end - addr;
-+	order = ilog2(len * sizeof(struct page) / PAGE_SIZE);
-+	tail_pfn = vmemmap_get_tail(order, node);
-+	if (!tail_pfn)
-+		return -ENOMEM;
- 
- 	for (maddr = addr; maddr < addr + headsize; maddr += PAGE_SIZE) {
- 		pte = vmemmap_populate_address(maddr, node, NULL, -1, 0);
-@@ -398,8 +427,7 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
- 	/*
- 	 * Reuse the last page struct page mapped above for the rest.
- 	 */
--	return vmemmap_populate_range(maddr, end, node, NULL,
--					pte_pfn(ptep_get(pte)), 0);
-+	return vmemmap_populate_range(maddr, end, node, NULL, tail_pfn, 0);
- }
- 
- void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+Some comments on the code below.
+
+>     
+>     Before eda79a683a0a, the code handled this gracefully in
+>     kho_mem_deserialize():
+>     
+>         chunk = mem ? phys_to_virt(mem) : NULL;
+>         if (!chunk)
+>             return false;  // No pages, but KHO could still work
+>     
+>     After eda79a683a0a, the early validation conflated "no property" with
+>     "property value is 0", causing KHO to be completely disabled in both
+>     cases.
+>     
+>     Fix this by changing kho_get_mem_map_phys() to return an error code and
+>     pass the physical address via pointer. This allows distinguishing between:
+>      - Property missing/malformed: return -ENOENT (KHO fails)
+>      - Property exists with value 0: return 0 (KHO succeeds, no memory to
+>        restore)
+>     
+>     Fixes: eda79a683a0a ("kho: validate preserved memory map during population")
+>     Signed-off-by: Breno Leitao <leitao@debian.org>
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 271d90198a08..3cf2dc6840c9 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -471,8 +471,8 @@ static void __init deserialize_bitmap(unsigned int order,
+>  	}
+>  }
+>  
+> -/* Returns physical address of the preserved memory map from FDT */
+> -static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
+> +/* Returns 0 on success and stores physical address in *phys_out */
+> +static int __init kho_get_mem_map_phys(const void *fdt, phys_addr_t *phys_out)
+>  {
+>  	const void *mem_ptr;
+>  	int len;
+> @@ -480,10 +480,11 @@ static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
+>  	mem_ptr = fdt_getprop(fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, &len);
+>  	if (!mem_ptr || len != sizeof(u64)) {
+>  		pr_err("failed to get preserved memory bitmaps\n");
+> -		return 0;
+> +		return -ENOENT;
+>  	}
+>  
+> -	return get_unaligned((const u64 *)mem_ptr);
+> +	*phys_out = get_unaligned((const u64 *)mem_ptr);
+> +	return 0;
+>  }
+>  
+>  static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
+> @@ -1439,7 +1440,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>  			 phys_addr_t scratch_phys, u64 scratch_len)
+>  {
+>  	struct kho_scratch *scratch = NULL;
+> -	phys_addr_t mem_map_phys;
+> +	phys_addr_t mem_map_phys = 0;
+>  	void *fdt = NULL;
+>  	int err = 0;
+>  	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
+> @@ -1466,11 +1467,9 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>  		goto out;
+>  	}
+>  
+> -	mem_map_phys = kho_get_mem_map_phys(fdt);
+> -	if (!mem_map_phys) {
+> -		err = -ENOENT;
+> +	err = kho_get_mem_map_phys(fdt, &mem_map_phys);
+> +	if (err)
+
+This will break when mem_map_phys == 0. As I explained earlier, when
+that happens we want to discard all previous scratch info and start with
+a clean slate.
+
+Making this if (err || !mem_map_phys) should do the trick. The if (err)
+check before the print should make sure the error message is not printed
+when we have a valid property but its value is 0.
+
+>  		goto out;
+> -	}
+>  
+>  	scratch = early_memremap(scratch_phys, scratch_len);
+>  	if (!scratch) {
+
 -- 
-2.51.2
-
+Regards,
+Pratyush Yadav
 
