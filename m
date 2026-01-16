@@ -4,116 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99FA7C982C9
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:40:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B428C982C7
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:40:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9378F6B0089; Fri, 16 Jan 2026 09:40:41 -0500 (EST)
+	id D6CC96B008A; Fri, 16 Jan 2026 09:40:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AF776B0092; Fri, 16 Jan 2026 09:40:41 -0500 (EST)
+	id D3AF86B008C; Fri, 16 Jan 2026 09:40:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BA366B008A; Fri, 16 Jan 2026 09:40:41 -0500 (EST)
+	id BEEB76B0092; Fri, 16 Jan 2026 09:40:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C0106B0089
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:40:41 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6E03C01FD
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:40:40 +0000 (UTC)
-X-FDA: 84338088240.17.FF1FBF0
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 754261C0011
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:40:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W2cXZQcE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQqovt8b;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W2cXZQcE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQqovt8b;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id AD8AD6B008A
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:40:46 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6F635138162
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:40:46 +0000 (UTC)
+X-FDA: 84338088492.08.5F5A909
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3F81E180002
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:40:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aRo74MpM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hEzddLx6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aRo74MpM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hEzddLx6;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768574444; a=rsa-sha256;
+	cv=none;
+	b=ceHWAH4gqWS0RApdJxYRrExrEcj62wptGXRqQmASBlLjeDvIaVE96LJ6kqZPU5oysbcNLM
+	3Y8YtDoQmQsGiZ4klTjxXEGwFL4SKDL3unkbwN4f9eVyy3XN4GqfQxV1Ysu+ohpK2gMWvb
+	WDaxS+48A6oDYeLE8Ta9Xz8yZxCWjPU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aRo74MpM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hEzddLx6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aRo74MpM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hEzddLx6;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768574438;
+	s=arc-20220608; t=1768574444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
-	b=0h0rzJmdRwCMdk+OHysInh5xu/OTNCojzkOL1E/jsqfiimTuL7RHX65VgQQ2K9pIWm3n+K
-	fnTW+D6sL+s9XHL/ScVRE/UKAAi4X7i56fFr6jetqQ3TM14fgdOai2uUsXos0ei7s8HRDB
-	YAhMQJVQerEJP73dUGoHqMxHD7awOh0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W2cXZQcE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQqovt8b;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W2cXZQcE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQqovt8b;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768574438; a=rsa-sha256;
-	cv=none;
-	b=v/MY5KPUkikSa4b6uLL+rMGLxilXxziSLZhtcMQRlqYqbiq61FcydaLAawPr+M2PR/6HVM
-	BjVY4iioB30rViSadvi4zlhH0FmBXO7GiW2CsyrWys6xqAABpIvvgPJNptIPaGDedB96kK
-	Nt+TE7fUtPSfNoB1nwhT/Hex3+Hz44s=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8dPdlHB0y/PWoX5RbcXdAl7xKUlthHXOgepwL2HcwIA=;
+	b=fWulkcy6paIcGDaHrC6Qby3kyj1IhEkVxKPJsCbMyE4ijMJNsKXeMx5/k9MSFMpEkOL7A/
+	pLu6kgd6SbBhFi8DyTB6MPCWpwz6mJsek7AYJaB9nDGFCJp9RmSVHndJNe85IxfqJ6hduM
+	g1HXt2niFs8sy00EP/aKb7GeuchUhKI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C65233789;
-	Fri, 16 Jan 2026 14:40:36 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 297EC5BE82;
+	Fri, 16 Jan 2026 14:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768574436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1768574437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
-	b=W2cXZQcEu58tSojqQz9KrhUQuTTHIf2SZB58nYl5bifW0498hXY2R8FUkgVcUCV3D4aHSc
-	7Vp96ID2AwEdP+Oq8p6TTHOsU6eNo2KQ9+IKdfqboaDiIF+T37UWYQvfa+Fw7ZGNPduSSj
-	wppsJ6GqSXVZEsXbtfGkwnbrK81hX34=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8dPdlHB0y/PWoX5RbcXdAl7xKUlthHXOgepwL2HcwIA=;
+	b=aRo74MpMfcd9aLH4cVykKbIVhBByECipJIR57z5EmBYurFGsHRFcktRHuMSQ3dgtNIVC9K
+	Wy69u7+Aai4yc4b52wmyQEJqcKrkhSo0Nl7attGNKnhPyJSmJRnc7ddgCB5gMGQb6+y85l
+	6ILK8lmX4wJCs+7kh6SPikMBrAu8csc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768574436;
+	s=susede2_ed25519; t=1768574437;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
-	b=mQqovt8blj77FthhSHtvbjI5Mo4ea5I324sOFniBk/DkDhDDHK0u7NoVURt7NmD9/e1Ur1
-	KiJ38IwZcc3cRBDA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8dPdlHB0y/PWoX5RbcXdAl7xKUlthHXOgepwL2HcwIA=;
+	b=hEzddLx6Iruq7VnDtxgNjizw8bnMeT2JSrbXUEdxaSzMUx42QdhM2mJK23gnXml/ThNk3B
+	XVwGzrVo8ckoJdCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768574436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1768574437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
-	b=W2cXZQcEu58tSojqQz9KrhUQuTTHIf2SZB58nYl5bifW0498hXY2R8FUkgVcUCV3D4aHSc
-	7Vp96ID2AwEdP+Oq8p6TTHOsU6eNo2KQ9+IKdfqboaDiIF+T37UWYQvfa+Fw7ZGNPduSSj
-	wppsJ6GqSXVZEsXbtfGkwnbrK81hX34=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8dPdlHB0y/PWoX5RbcXdAl7xKUlthHXOgepwL2HcwIA=;
+	b=aRo74MpMfcd9aLH4cVykKbIVhBByECipJIR57z5EmBYurFGsHRFcktRHuMSQ3dgtNIVC9K
+	Wy69u7+Aai4yc4b52wmyQEJqcKrkhSo0Nl7attGNKnhPyJSmJRnc7ddgCB5gMGQb6+y85l
+	6ILK8lmX4wJCs+7kh6SPikMBrAu8csc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768574436;
+	s=susede2_ed25519; t=1768574437;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
-	b=mQqovt8blj77FthhSHtvbjI5Mo4ea5I324sOFniBk/DkDhDDHK0u7NoVURt7NmD9/e1Ur1
-	KiJ38IwZcc3cRBDA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8dPdlHB0y/PWoX5RbcXdAl7xKUlthHXOgepwL2HcwIA=;
+	b=hEzddLx6Iruq7VnDtxgNjizw8bnMeT2JSrbXUEdxaSzMUx42QdhM2mJK23gnXml/ThNk3B
+	XVwGzrVo8ckoJdCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 46A2D3EA63;
-	Fri, 16 Jan 2026 14:40:36 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B5F43EA65;
+	Fri, 16 Jan 2026 14:40:37 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sj7VEORNamnydgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:36 +0000
+	id OOSBAuVNamnydgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:37 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH v3 00/21] slab: replace cpu (partial) slabs with sheaves
-Date: Fri, 16 Jan 2026 15:40:20 +0100
-Message-Id: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+Date: Fri, 16 Jan 2026 15:40:25 +0100
+Subject: [PATCH v3 05/21] slab: add sheaves to most caches
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANVNamkC/2WOQQ6CMBBFr0K6tqYdKIIr72Fc1GEqTQiQjjYq4
- e4WonHB8k3y3p9JMAVPLI7ZJAJFz37oE+S7TGBr+xtJ3yQWoMBopUBySzYSSzcEabtOVqVFnTd
- YHKwRyRoDOf9ci+dL4tbzfQivdSDq5fptQb5pRS2VLJ2zgHVdaFQnfjDt8S2WUoSfXSqtt59ES
- HZdARh0V6PQ/e15nj//IYhq6gAAAA==
-X-Change-ID: 20251002-sheaves-for-all-86ac13dc47a5
+Message-Id: <20260116-sheaves-for-all-v3-5-5595cb000772@suse.cz>
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+In-Reply-To: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
  Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
  Roman Gushchin <roman.gushchin@linux.dev>
@@ -125,18 +127,16 @@ Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
  Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
  bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
- Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
- stable@vger.kernel.org
+ Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 754261C0011
-X-Stat-Signature: tywyg1rj96gacb1n7deorj8msmnc4rhw
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768574438-534190
-X-HE-Meta: U2FsdGVkX19mbDh+xLX8MJ3+mv/C2MiJB92XLahKprCzJFujbAHaliCH5d9rjAfNYyzEIKVnEzdOdp5tZ+Gg3rPFQLKgydpmycU5l3hycIdC2gtngM9Cjt/KVRzBStvM8lZLtrD4NTVI2Is287qcVFKcRZNtoK1ghkB+EbPESOYdjRnroF9hy0yOWrc1088SmZxoR6rdQGO5DTj/whjJEagx8lxvUSL5BV0FxoYIVKOeTYN+E66seLarvE9SQJbzeslZXd8Glwya5YXJ437nMowyNdHeLOsoDbM8J3I+d5wbYHLM28Fd/XSOCTNiONmJyZ8l/ZcdAemoLIRJNTqtfly+TLXRUPP1QxGE9EUhPLxvNdf7/IMEvQ0hKrZYh6S+23y3fhBlh0sJzXUyz/N9dhxnJx2xfB+GiEJVTu4UWPPHEpTJIM5WY3VHFunMbunlxe8i5bFxzmhk2HUUhpg9OmP+Mm3+g+vmzsxYJgtfML9tWGP1GsrPAdClfO12XJD+vFJP/KUu88V3ZlCd2fJoQDT28Jm/m3fpOEGXwZ0iaF0jE9DUKGlxrDWjkRQL/e7/mL1o/gg0GON4N60fxvXllkG3YRp9vHB/IxwYDrtINe2ui/cGZl07ZOtgJ7Y5skqasfiF47p79p+ztkph5jyNhALeq0OCGrdQkdfUfHn+/T1VBII2mXaCjuTgrBKrQMkGfvxhMIAf0se4GDKRk7rpbHbz9cRnmrKgFDVOEs9dW/27+cuM8arMlX0XcSzP764Jm9YZ5iukLJDLZBPnwAPuG+4xLYJvEevRVmw01Tm5YCzL/4ZaoQmfpyqmtOysIOCdLtsc4o+Bym7vWtVu8gGk6LOKqwHqA5V2c0f6Y6KdPLmK8j4/gmXg2c8ugKQAwt/0H9StcmjuXxX3ZVEZDDBFJFZALnGoRkVHIHdV7nKoUBCCeFThKkVNT9diWhczRer3MEJYRZYNScOZeyLDbkG
- hRJkVX2C
- luluCLd4ucgx5/40wF1L4smxBGwzosfGbyqvH+CVX3Hv6O19GPU6bE1UDekC4Oz75YbQibHnrY8dbJlZ10iUFD+alIfmfS1CQjE+YeHJoBfBRQLwzDEyUC3qs5OLT72sRkGy2GWiFCNLduVnz9D3NxCcXaAYRyd0Y3XGxJRi4l6OxPDbTULGqUGtSkqFdzw2mUAggyZ4Kcx7aZD3FxAuKUG979lxbrqbiq96QqoMhKmufZDNNUM5CNi90H+SaggSxMrkzj9Izv2Ef2auZNH2kdOGP0BkVA/68uUrwdAHHjcX2ZGs0cLaL+L0lUbzq6EbYs2g6uAvaMiMNkKNcjqJ3bjySDXLERoLOniM7ps0mZ1vrk5FiU1/82VK8DZfUYVuUGlo/oyoXN2wZYaNArTVbxR/AHzvH/2L2M446ZSCZFK/E/ZJ9fm1UwxxNEw==
+X-Stat-Signature: tfrk363y9y8zex9dez3mr9mfzn4yn3s5
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3F81E180002
+X-HE-Tag: 1768574444-747074
+X-HE-Meta: U2FsdGVkX1+Fr1iYZoEHYpHZl0h/2zd+Q+oKd/vpfDbDn7irw+egrKnlVi6adUjDYBR/hpgWM3qMWw5YDjMXAfyZsTtPaqccrtAPid6pXNAypFpDf7cS/a+QBr+o0sHlQ1+5W9dIh2ykPKsKm1EAIocE8wzgOGEazN8PoFYB9t7HcXqx8rHefn7OwaB8MsrmE68FAN04SVA/GMoE1WrWnKya3nfMsREiXHACE6AfILUoNHuxBo9AzuWodlglocFyIDcqFblzg8kzpItC5pFRtZw5GZ663wGsg8kVajIOLKucaqiRrLrF1pVd39G9wEe+dRw1ADhpV+TR8Tr1JiDjYQ25xjFprepX7R7f/MUtameIzNijQlUBb7ERy4kuWmQPPRiue7d1Vhj29Fh1nPbhkSbCAc/lJ663WMQRamlV8hQwrl2IC2LsjwXC07YE1wUoVPOLkuhj1RwSH/r3tF64LsrEspQjVsyLB2Y7Rr74LcRLlSl/zRA3fKxR54c8cKYD3RqRrmUTteGnbGRPrVKchFrBfiAuv2mxoxEBkq64WdZDjkIoAtXNX/1piOLHuY9QMxJDi2WHo7d60TEXklS9e/u1TlfXHpuKwbegFrCQ7dSIa5f68AVmQVmmguERL7g1C0+J41ojSwv2PoqTmvft+ttsoGQl4QBHUn9uHNfPDzgW+1p49wgqI48jGBIOnt3V8xPTMKOBPMGJxMaKI0Blp6jV3fIitHARtPjHRAZIrkuEA3P78kX2PQl7BCU689G1kmKHuwGCS8XUJjuLZrFAvRzxUEG0pWAlBvQEFOaolZhZ91Z4qZi115XmySXVgqVi9+nbV5wlNz4TrgWfLf31jTFyYoj5qUdBuaf0UMOHUxW7iLkHmtWkK7e34fFjhOEKjTHkS9CowfCUwxN7WfAp0FeqeFW8eOTYI4nUNDGCZ49xhLFFmEpmkz3nIqvVRXWPFKiU7tlgLOUQpGSy2M2
+ zxhMFlTH
+ E+lpi/ld6DlUxeD3VLuF/WHjxM2fpUe5nb1FhCZAMKtjNXN6FmNfK8EKzztwjecVpMjQlq/wu324QPdyg/MgLeNRetE9azU3zCzKb3pbH6ktmkJEwR6+fpbgKqOCo00kQJ8GpK0lpWU/XGGPnmNIXYquQWqeJdTJgPK14LmdsvrruPs8QC0FQgre4uCR/qVhKu6qRr4EdSLxMKldyLNKnkVhTEOcBB3FIsTVXp0wbOY7UYgGXfJ3I7VmVTgXQUyTZ4RaY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,133 +145,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Percpu sheaves caching was introduced as opt-in but the goal was to
-eventually move all caches to them. This is the next step, enabling
-sheaves for all caches (except the two bootstrap ones) and then removing
-the per cpu (partial) slabs and lots of associated code.
+In the first step to replace cpu (partial) slabs with sheaves, enable
+sheaves for almost all caches. Treat args->sheaf_capacity as a minimum,
+and calculate sheaf capacity with a formula that roughly follows the
+formula for number of objects in cpu partial slabs in set_cpu_partial().
 
-Besides (hopefully) improved performance, this removes the rather
-complicated code related to the lockless fastpaths (using
-this_cpu_try_cmpxchg128/64) and its complications with PREEMPT_RT or
-kmalloc_nolock().
+This should achieve roughly similar contention on the barn spin lock as
+there's currently for node list_lock without sheaves, to make
+benchmarking results comparable. It can be further tuned later.
 
-The lockless slab freelist+counters update operation using
-try_cmpxchg128/64 remains and is crucial for freeing remote NUMA objects
-without repeating the "alien" array flushing of SLUB, and to allow
-flushing objects from sheaves to slabs mostly without the node
-list_lock.
+Don't enable sheaves for bootstrap caches as that wouldn't work. In
+order to recognize them by SLAB_NO_OBJ_EXT, make sure the flag exists
+even for !CONFIG_SLAB_OBJ_EXT.
 
-This v3 is the first non-RFC (for real). I plan to expose the series to
-linux-next at this point. Because of the ongoing troubles with
-kmalloc_nolock() that are solved with sheaves, I think it's worth aiming
-for 7.0 if it passes linux-next testing.
+This limitation will be lifted for kmalloc caches after the necessary
+bootstrapping changes.
 
-Git branch for the v3
-  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=sheaves-for-all-v3
-
-Which is a snapshot of:
-  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/sheaves-for-all
-
-Based on:
-  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/log/?h=slab/for-7.0/sheaves
-  - includes a sheaves optimization that seemed minor but there was lkp
-    test robot result with significant improvements:
-    https://lore.kernel.org/all/202512291555.56ce2e53-lkp@intel.com/
-    (could be an uncommon corner case workload though)
-  - includes the kmalloc_nolock() fix commit a4ae75d1b6a2 that is undone
-    as part of this series
-
-Significant (but not critical) remaining TODOs:
-- Integration of rcu sheaves handling with kfree_rcu batching.
-  - Currently the kfree_rcu batching is almost completely bypassed. I'm
-    thinking it could be adjusted to handle rcu sheaves in addition to
-    individual objects, to get the best of both.
-- Performance evaluation. Petr Tesarik has been doing that on the RFC
-  with some promising results (thanks!) and also found a memory leak.
-
-Note that as many things, this caching scheme change is a tradeoff, as
-summarized by Christoph:
-
-  https://lore.kernel.org/all/f7c33974-e520-387e-9e2f-1e523bfe1545@gentwo.org/
-
-- Objects allocated from sheaves should have better temporal locality
-  (likely recently freed, thus cache hot) but worse spatial locality
-  (likely from many different slabs, increasing memory usage and
-  possibly TLB pressure on kernel's direct map).
-
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
-Changes in v3:
-- Rebase to current slab/for-7.0/sheaves which itself is rebased to
-  slab/for-next-fixes to include commit a4ae75d1b6a2 ("slab: fix
-  kmalloc_nolock() context check for PREEMPT_RT")
-- Revert a4ae75d1b6a2 as part of "slab: simplify kmalloc_nolock()" as
-  it's no longer necessary.
-- Add cache_has_sheaves() helper to test for s->sheaf_capacity, use it
-  in more places instead of s->cpu_sheaves tests that were missed
-  (Hao Li)
-- Fix a bug where kmalloc_nolock() could end up trying to allocate empty
-  sheaf (not compatible with !allow_spin) in __pcs_replace_full_main()
-  (Hao Li)
-- Fix missing inc_slabs_node() in ___slab_alloc() ->
-  alloc_from_new_slab() path. (Hao Li)
-  - Also a bug where refill_objects() -> alloc_from_new_slab ->
-    free_new_slab_nolock() (previously defer_deactivate_slab()) would
-    do inc_slabs_node() without matching dec_slabs_node()
-- Make __free_slab call free_frozen_pages_nolock() when !allow_spin.
-  This was correct in the first RFC. (Hao Li)
-- Add patch to make SLAB_CONSISTENCY_CHECKS prevent merging.
-- Add tags from sveral people (thanks!)
-- Fix checkpatch warnings.
-- Link to v2: https://patch.msgid.link/20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz
+ include/linux/slab.h |  6 ------
+ mm/slub.c            | 51 +++++++++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 47 insertions(+), 10 deletions(-)
 
-Changes in v2:
-- Rebased to v6.19-rc1+slab.git slab/for-7.0/sheaves
-  - Some of the preliminary patches from the RFC went in there.
-- Incorporate feedback/reports from many people (thanks!), including:
-  - Make caches with sheaves mergeable.
-  - Fix a major memory leak.
-- Cleanup of stat items.
-- Link to v1: https://patch.msgid.link/20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 2482992248dc..2682ee57ec90 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -57,9 +57,7 @@ enum _slab_flag_bits {
+ #endif
+ 	_SLAB_OBJECT_POISON,
+ 	_SLAB_CMPXCHG_DOUBLE,
+-#ifdef CONFIG_SLAB_OBJ_EXT
+ 	_SLAB_NO_OBJ_EXT,
+-#endif
+ 	_SLAB_FLAGS_LAST_BIT
+ };
+ 
+@@ -238,11 +236,7 @@ enum _slab_flag_bits {
+ #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
+ 
+ /* Slab created using create_boot_cache */
+-#ifdef CONFIG_SLAB_OBJ_EXT
+ #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+-#else
+-#define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+-#endif
+ 
+ /*
+  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+diff --git a/mm/slub.c b/mm/slub.c
+index 2dda2fc57ced..edf341c87e20 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -7863,6 +7863,48 @@ static void set_cpu_partial(struct kmem_cache *s)
+ #endif
+ }
+ 
++static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
++					     struct kmem_cache_args *args)
++
++{
++	unsigned int capacity;
++	size_t size;
++
++
++	if (IS_ENABLED(CONFIG_SLUB_TINY) || s->flags & SLAB_DEBUG_FLAGS)
++		return 0;
++
++	/* bootstrap caches can't have sheaves for now */
++	if (s->flags & SLAB_NO_OBJ_EXT)
++		return 0;
++
++	/*
++	 * For now we use roughly similar formula (divided by two as there are
++	 * two percpu sheaves) as what was used for percpu partial slabs, which
++	 * should result in similar lock contention (barn or list_lock)
++	 */
++	if (s->size >= PAGE_SIZE)
++		capacity = 4;
++	else if (s->size >= 1024)
++		capacity = 12;
++	else if (s->size >= 256)
++		capacity = 26;
++	else
++		capacity = 60;
++
++	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
++	size = struct_size_t(struct slab_sheaf, objects, capacity);
++	size = kmalloc_size_roundup(size);
++	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
++
++	/*
++	 * Respect an explicit request for capacity that's typically motivated by
++	 * expected maximum size of kmem_cache_prefill_sheaf() to not end up
++	 * using low-performance oversize sheaves
++	 */
++	return max(capacity, args->sheaf_capacity);
++}
++
+ /*
+  * calculate_sizes() determines the order and the distribution of data within
+  * a slab object.
+@@ -7997,6 +8039,10 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 	if (s->flags & SLAB_RECLAIM_ACCOUNT)
+ 		s->allocflags |= __GFP_RECLAIMABLE;
+ 
++	/* kmalloc caches need extra care to support sheaves */
++	if (!is_kmalloc_cache(s))
++		s->sheaf_capacity = calculate_sheaf_capacity(s, args);
++
+ 	/*
+ 	 * Determine the number of objects per slab
+ 	 */
+@@ -8601,15 +8647,12 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+ 
+ 	set_cpu_partial(s);
+ 
+-	if (args->sheaf_capacity && !IS_ENABLED(CONFIG_SLUB_TINY)
+-					&& !(s->flags & SLAB_DEBUG_FLAGS)) {
++	if (s->sheaf_capacity) {
+ 		s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
+ 		if (!s->cpu_sheaves) {
+ 			err = -ENOMEM;
+ 			goto out;
+ 		}
+-		// TODO: increase capacity to grow slab_sheaf up to next kmalloc size?
+-		s->sheaf_capacity = args->sheaf_capacity;
+ 	}
+ 
+ #ifdef CONFIG_NUMA
 
----
-Vlastimil Babka (21):
-      mm/slab: add rcu_barrier() to kvfree_rcu_barrier_on_cache()
-      slab: add SLAB_CONSISTENCY_CHECKS to SLAB_NEVER_MERGE
-      mm/slab: move and refactor __kmem_cache_alias()
-      mm/slab: make caches with sheaves mergeable
-      slab: add sheaves to most caches
-      slab: introduce percpu sheaves bootstrap
-      slab: make percpu sheaves compatible with kmalloc_nolock()/kfree_nolock()
-      slab: handle kmalloc sheaves bootstrap
-      slab: add optimized sheaf refill from partial list
-      slab: remove cpu (partial) slabs usage from allocation paths
-      slab: remove SLUB_CPU_PARTIAL
-      slab: remove the do_slab_free() fastpath
-      slab: remove defer_deactivate_slab()
-      slab: simplify kmalloc_nolock()
-      slab: remove struct kmem_cache_cpu
-      slab: remove unused PREEMPT_RT specific macros
-      slab: refill sheaves from all nodes
-      slab: update overview comments
-      slab: remove frozen slab checks from __slab_free()
-      mm/slub: remove DEACTIVATE_TO_* stat items
-      mm/slub: cleanup and repurpose some stat items
-
- include/linux/slab.h |    6 -
- mm/Kconfig           |   11 -
- mm/internal.h        |    1 +
- mm/page_alloc.c      |    5 +
- mm/slab.h            |   53 +-
- mm/slab_common.c     |   61 +-
- mm/slub.c            | 2631 +++++++++++++++++---------------------------------
- 7 files changed, 972 insertions(+), 1796 deletions(-)
----
-base-commit: aa2ab7f1e8dc9d27b9130054e48b0c6accddfcba
-change-id: 20251002-sheaves-for-all-86ac13dc47a5
-
-Best regards,
 -- 
-Vlastimil Babka <vbabka@suse.cz>
+2.52.0
 
 
