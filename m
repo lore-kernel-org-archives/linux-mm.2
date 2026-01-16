@@ -4,99 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11FD1D47CA3
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 00:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A70DED47CA4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 01:03:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CBCB6B0005; Thu, 15 Jan 2026 19:59:01 -0500 (EST)
+	id 05BB16B0005; Thu, 15 Jan 2026 20:03:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37A4D6B0088; Thu, 15 Jan 2026 19:59:01 -0500 (EST)
+	id 00A0A6B0088; Thu, 15 Jan 2026 20:03:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25B1B6B0089; Thu, 15 Jan 2026 19:59:01 -0500 (EST)
+	id E247C6B0089; Thu, 15 Jan 2026 20:03:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 165156B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 19:59:01 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AFDE81AE65A
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 00:59:00 +0000 (UTC)
-X-FDA: 84336017640.11.29C03FB
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4B59440007
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 00:58:56 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id CFC286B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 20:03:43 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC4761AE65A
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:03:43 +0000 (UTC)
+X-FDA: 84336029526.06.6D49212
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3B20340015
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:03:39 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=3eJkz42Y;
-	spf=pass (imf12.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CbGdHJjA;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768525138;
+	s=arc-20220608; t=1768525422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OX6+5iR9Ja/KZhCm1yrNNQ6iTqrRjS3opVxY4WCyYuU=;
-	b=XDTPRCyIpsMI3JjgORwbX2ke14uWoFODMHLDs8E26A4JP3vDjbohrF4tB86ZgSTCSM8Lxm
-	aIdfEaSSvJ0NDWyEizTW/F8dp8z+5gBeiT2ROAd6P5dqsR6TY6X22J77Z6YDoKdEKZe4Pr
-	n2I7FNlA8C58hazmbvhHm5jWOSZDAD0=
+	bh=0bKL4mnAg97J1S0u6/QixAAbKrjY7AjKN002xrKUlnM=;
+	b=ZgHdPZ1jSRKWBKqp6U27RKYFlAq84xYoiH+ct1aiU66TxS4II3w4t5D6l8pMEvvZkwT0JR
+	gSI+FfJz0Rm/t3JCaCINuWnofq1W5UpMF51Fc3No7MZ7CfKBYtCAj0dZFXUC1rVCLSNAqs
+	Q9g6br/82Z5/wxuSNkk28FAO7EuDDHw=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=3eJkz42Y;
-	spf=pass (imf12.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768525138; a=rsa-sha256;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CbGdHJjA;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768525422; a=rsa-sha256;
 	cv=none;
-	b=oh/90ATNSrK/kwy3dvE6W1xMfrlU2GZQ8w/i2sX777EJbFpW5b9XoGndX92qHb+OvDdknR
-	UY6kFz6/hZqhUVoklD5A+OHgztd7kvhTsJDCYD3Q/Yawg/VnYd3YBGbJaykpiPC+1Lqo69
-	D/ugg6SahT8e0b8KSJ8knbxf3IiZPBQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=OX6+5iR9Ja/KZhCm1yrNNQ6iTqrRjS3opVxY4WCyYuU=;
-	b=3eJkz42YgfDarheQVCNN7L6m0/IEb6aWm2MOEcfktiqXvI0+61mYQt5Rbp/w+Hf2pf/WMhm5y
-	rtbiAUPHH8aEnWtSVa/otdoNyyG1zlxcVlVmQmspsKiZiqhJHMs4lVtKze/H0WQwWXvbCEn3CF0
-	Qxrs6jOd8tWRS43IOnzIPng=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4dshGW3bY8zpStc;
-	Fri, 16 Jan 2026 08:55:15 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id ECD6D201E9;
-	Fri, 16 Jan 2026 08:58:51 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 16 Jan 2026 08:58:50 +0800
-Message-ID: <da4d80b5-339a-400b-8e1c-c758ef56c460@huawei.com>
-Date: Fri, 16 Jan 2026 08:58:50 +0800
+	b=znz/FBKNG/UNA8eDA0ILzd4IIcyfFNZLO5LAqKYASZYTp+4B6X3FxPiw3DOWrZNDpk6+y2
+	95mo8hy6IjuvbfEpsXOs2DfZrjp02KTP81G0p2LhTZJpKIqFSiN4tZ/nachrsQgJ9KLl1Q
+	jtIPAh0bji7UhJKE/KjVeo/NA+tQQ98=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768525416; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=0bKL4mnAg97J1S0u6/QixAAbKrjY7AjKN002xrKUlnM=;
+	b=CbGdHJjAR6ynSJJc+LGxrKKGyxXC2BXq2FHVIlYWAahObCImY7tJdxGU2J2xUTCIOHu3NNVJEPSnJHtLgbQMjrs5owZGCNUpUPcPkRvDVg3dt6PMo8DgFbad2Zi/RgMfe7kLuwXLChbYay4OvHiRyU9jyJOZ6kLWmoDmRNkL2EY=
+Received: from 30.251.17.19(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wx8.qXO_1768525413 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 16 Jan 2026 09:03:35 +0800
+Message-ID: <26cb8bfa-67a7-43d8-b431-a3307df3e559@linux.alibaba.com>
+Date: Fri, 16 Jan 2026 09:03:33 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] mm: hugetlb: optimize
- replace_free_hugepage_folios()
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-	Muchun Song <muchun.song@linux.dev>, <linux-mm@kvack.org>,
-	<sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan <ziy@nvidia.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>
-References: <20260112150954.1802953-4-wangkefeng.wang@huawei.com>
- <20260114135512.2159799-1-wangkefeng.wang@huawei.com>
- <20260115144228.4b103d0b37b0f3fd017a4d9c@linux-foundation.org>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20260115144228.4b103d0b37b0f3fd017a4d9c@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: 9ffgcyn3sxh1s94898ko4t88ca7upg7z
+Subject: Re: [PATCH v1 1/1] mm/khugepaged: move tlb_remove_table_sync_one out
+ from under PTL
+To: Lance Yang <lance.yang@linux.dev>
+Cc: ioworker0@gmail.com, lorenzo.stoakes@oracle.com, david@kernel.org,
+ akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ "hughd@google.com" <hughd@google.com>
+References: <20260115071651.42626-1-lance.yang@linux.dev>
+ <0bc3807e-2c1b-43af-9aab-665ce30d49d4@linux.alibaba.com>
+ <8754b56d-b9a8-4b94-b5bc-982384234527@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <8754b56d-b9a8-4b94-b5bc-982384234527@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3B20340015
+X-Stat-Signature: cj57n5k8wtdi7i6d199p1ooa4qnh5mi1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4B59440007
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768525136-464182
-X-HE-Meta: U2FsdGVkX19RyYvk+0QZg7BoiLFrwhcA3+5BBt+Y+yx6LRNY2aC7rTFpvaga7EzZOWsWQNeruTY7Q673RmDqDGP7ePWHUslg+WgvimfKZiRSNgjw2p1CEC+apMiunowlGg0JgdHSL2OXm1hrIC8zX/pPHhSfNwEOef5jFZ8g4PuKNQoTQVoMboF85Ernjy++dniqhaO0aab12ig+QKZiWLrKfVeGjo4ex8isKLw2/RzcL9JX7oPxvk18iQn9L24c82R3R5BZGIrR/b7pFjrOhhaoaEIPmkKCy08AM1gxbGAa5hjUErByl8zK4lclCS5maFEPtbMqyEfiJAP4PgLtAHqTh0OvevQF+k1lznM5twn779hgdbQO534nhmGeEReXP093R9/ZrGPJoGQUL58KvMz9hyLSgjIwhadhJdKjtgiDfb6v/loFVPhOG3OZm3DBnSh8iaKfyqQh88dn6IjU7f8VBUUojVC6rut48ZzbUM73aJzM5XLo1vqC4Kjc/wU5DD0/9a9C5ZhVEP0TwzDK8C8g859GLCdgLKfFIIEQZnd3j2ivT6WlpxjcCzZ7YBRoSx/pmV299V+R2yohJOrbJ6ZkTciaFNLFHXKo44O7Nk4kpWLldT30pcLsmP/xwmA03C3oyPojd4VoX/22XXWOxhO9QbzoCGnW+YnT4QBSsaUbt9kf9m640BCL9Xp4mHLzuvKqpF1+KrKSEtir9bLwBEtIzyNvt3pa9EVk0VWPiIlAVT3mvDCX0CJEwg3iEDwyuw7TDwPkvZRozJ9Hs9y9zCDvKpTDaAnjDIFNZBAlxB745YpFBO8TTWW0Qe9nzDS8j5IkpxVkMbmVqRyKY0bb4Zk1NGryrGw+yeKmVAOZmDVxiz4Tpw/4xrSW0uEw74J7Pk6qj+rCQMegP8Jre4snvoHq8A0ApTJ3H+xX3NskPPMttHhRmr+m7WE7qPiMXF1KFiJPoh7iQTQwTHr4mc9
- SCCkQRhG
- 4iYbxG6e+U2oWdECkDsDE2tMt0AeAt8CtBQ/euafDKH3Mq6r63HMYFf+Ip4jMtfbTKk+ejI4MIbaBdJwAijpMwTDjbUnmlBkd+ZQIkMD1nmlAX6t2dE3jwg8ngLXZo7Vz+cdOpizMuc3WRzr2aEDgY5m7hz4dTmgKbum3cNFAf5UrX7qO2DAWBCvilWgdfjZXa1v8ZBmXgcFnpaWeYp1ccooBl8HZMmAufK0zgnbtKUKAeW2qzCSVEkvVQ5Cwgf5ix7VFztpYgZi07n1RLIKhIJBLYEh/3MZhBTkHrduMIXuaof11xUkIIOyDacgGK8SVoGEJvJgnfcS18V6whDcR3u+Qfx0eLc8NvGuLeqjKrYC7MhrqZZ0IdT1/m8g2CnDq81tOPyc+u+DoByMLarziXyq8m3skipp6xu6mEH/8acKrzZrNr/1wgySOGsaZ3wrINjGblM2oZmD2en3ZMvrCrpJEWavmcKWjJ98WBIm+tnundZWK7439g+gORkmApaogQNa2y0jgejynkY9+jeESI0xNbj9L3jd2orls19k3m/xzdqd8+kzPYxdvMWLfwxWBFeUoi0MKaB15EqMDY1BFvkjXwPIxQvOGzB9s5Ka4PETVxSLuHWOeOOyGs3yqnIvRQCdFepk9YhS0dILnPENPIOmMRw==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768525419-889134
+X-HE-Meta: U2FsdGVkX1/HFicJU5M+P7Yhgv48cqSG4GUwuJ+/EvSrNgzfaKBbAxueVLbBWrXLs5Fe23Ch9px/jhc3rHH7BD6yRnm7yq1ema+8uvD5No+aEbwNyBAQCGu/Nh0UCXdoh7Mjl5xKp58YSfmtCeJxeCZayKvEU4th1fWw/HbgsTW7Ls95AWxzLL6x8rc/P2xzURn2lR/qB98S73J5TS5lbv/VjiL45uXIysH/7Zhy+0xcmUuZgJbj9VtIysTVICXaFhHwfCGm5BEKLCgtTu2K/GIaXZoXODRdQ3JJsvMsyMp4oi56+B7JosOiu+tbU5C5G0JRiQ4MQIx2T3pHIfzHGr422DwU4Cu3rJDSe8tjhWha/WwaP4kDGNNH7V3FjyJISsNqRnJsiWXeoFsFrPXTYnjlTArnSggO3/BtFZQyXeK/+ofSNIxhV6F2U8APn/lof+nvWcXsoU6WKmb73Q2BXb8E3EXoZWrcYK8i05QhUI5xBBCA40OPe8akTBiJfunLiO+Gz1nfNYDGV1CIDg1SZUAcWUFFwr3z32gMlrHeNxUstgKox84/c1Mf5bWBH9OQzzEQJlIHJclGYi+C4/ACSMms+qlfyOe3ymYrnpbd3BL8zew36HjqF1J13EPyxbATeDaFLy81cCsadVj/O7JWKmGlTavXeLi+FKlMziZGw9dGUi5LWPkJdMSw8lnwRKq9YC5l4en/lvOhE0z3nmc/ZKtk1AKqFtVYcQlxtx2FWVbKtnhSRZnEejQjZ2MpWd+0w0VqhLkTYnYuWAu6GVcks7HTUTA63hkT4nC4m4pPak0LJcFaC7U6W2KtYkH6H47/dPvB0+IjlZqRy19QbZnbnn080ETIYXO1xsrHBgec+rMb52iIGeet+g5tkK7aEniSH6GBjgdBb4epu91dSeKjwrtb13Iy4iIVi/wsVoWr+WGHFOxC85kAKYq6bx6ry1Bz/j2mIHXEA5/N1wXSw+n
+ nk1gKBtH
+ S8W1Q8wpg8CZ1pKWCgo1AgTMuGf2nf5TF+3Zg5/bkiNyhvSE7gNtfmHHr1T8TSYy+lLoLOt06Lc1t3uicuAwAxI/0AE2llrRQN1Xh9vChjU9civaLN8nrJIeDr0wjhmKGLhiOL5TtFifoEC4O1Ysi2NZ7tHp2ramUbs2LGCfh9dURYISuyw1tep4by/V7R7KZEnjLtkDLjMOxiiwr2uwmRIA1W28EwxZJyP8fMuj6tPuumEBUg3yI2uzxqrjojp/hHqVuaPPtRw9FahZWjAA+k7ysYvC0BVCgCnTS1wkrWLq/athnvrN/mFAWCDgmj1zQo77CQpRNTTwdw3ViG2tUUVWIoCQO9ats7X+QWw/w0BrOQz4Q10mCspzIioWFxjo4V9cHm7706+gG0rE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,168 +95,110 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/1/16 6:42, Andrew Morton wrote:
-> On Wed, 14 Jan 2026 21:55:12 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+On 1/15/26 8:28 PM, Lance Yang wrote:
 > 
->> If no free hugepage folios are available, there is no need to perform
->> any replacement operations. Additionally, gigantic folios should not
->> be replaced under any circumstances. Therefore, we only check for the
->> presence of non-gigantic folios, also adding the gigantic folio check
->> to avoid accidental replacement.
+> 
+> On 2026/1/15 18:00, Baolin Wang wrote:
+>> Hi Lance,
 >>
->> To optimize performance, we skip unnecessary iterations over pfn
->> for compound pages and high-order buddy pages to save processing time.
+>> On 1/15/26 3:16 PM, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
+>>>
+>>> tlb_remove_table_sync_one() sends IPIs to all CPUs and waits for them,
+>>> which we really don't want to do while holding PTL.
 >>
->> A simple test on machine with 114G free memory, allocate 120 * 1G
->> HugeTLB folios(104 successfully returned),
->>
->>    time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
->>
->> Before: 0m0.602s
->> After:  0m0.431s
->>
+>> Could you add more comments to explain why this is safe for the PAE case?
 > 
-> Thanks, I'll queue this as a -fix, below.
+> Yep, IIUC, it is safe because we've already done pmdp_collapse_flush()
+> which ensures the PMD change is visible.
 > 
-> nit: the function has become rather a jumble of bailout styles:
+> pmdp_get_lockless_sync() (which calls tlb_remove_table_sync_one() on PAE)
+> is just to ensure any ongoing lockless pmd readers (e.g., GUP-fast) 
+> complete
+> before we proceed. It sends IPIs to all CPUs and waits for responses - a 
+> CPU
+> can only respond when it's not between local_irq_save() and 
+> local_irq_restore().
 > 
-> :				if (order_is_gigantic(folio_order(folio)))
-> : 					return -ENOMEM;
-> 
-> This could have done ret=-ENOMEM;break;
-> 
-> :
-> : 				ret = alloc_and_dissolve_hugetlb_folio(folio, &list);
-> : 				if (ret)
-> : 					break;
-> 
-> While this could have done `return ret;'!
-> 
-> Single-return-point is preferred style, I think.  Mainly to help avoid
-> leakage of resources and locks as the code evolves.
-> 
-> How does this look on top?
+> Moving it out from under PTL doesn't change the synchronization semantics,
+> since lockless readers don't depend on PTL anyway.
 
-Hi Andrew, I'm fine with it, thanks your for the update.
+Cc Hugh who introduced the pmdp_get_lockless_sync(), to double check.
 
+Sounds reasonable to me, please add these comments into the commit 
+message. Thanks.
+
+>> For the non-PAE case, you added a new tlb_remove_table_sync_one(), why 
+>> we need this (to solve what problem)? Please also add more comments to 
+>> explain.
 > 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: mm-hugetlb-optimize-replace_free_hugepage_folios-v2-fix
-> Date: Thu Jan 15 02:34:07 PM PST 2026
+> Oops, you're right, the original macro was a no-op for non-PAE.
 > 
-> use single-return-point style, tweak comment
-> 
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Brendan Jackman <jackmanb@google.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jane Chu <jane.chu@oracle.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> 
->   mm/hugetlb.c |   11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> --- a/mm/hugetlb.c~mm-hugetlb-optimize-replace_free_hugepage_folios-v2-fix
-> +++ a/mm/hugetlb.c
-> @@ -2834,10 +2834,15 @@ int replace_free_hugepage_folios(unsigne
->   
->   			nr = folio_nr_pages(folio) - folio_page_idx(folio, page);
->   
-> -			/* Not to disrupt normal path by vainly holding hugetlb_lock */
-> +			/*
-> +			 * Don't disrupt normal path by vainly holding
-> +			 * hugetlb_lock
-> +			 */
->   			if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
-> -				if (order_is_gigantic(folio_order(folio)))
-> -					return -ENOMEM;
-> +				if (order_is_gigantic(folio_order(folio))) {
-> +					ret = -ENOMEM;
-> +					break;
-> +				}
->   
->   				ret = alloc_and_dissolve_hugetlb_folio(folio, &list);
->   				if (ret)
-> _
-> 
-> 
-> 
-> 
-> 
-> 
-> From: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Subject: mm: hugetlb: optimize replace_free_hugepage_folios()
-> Date: Wed, 14 Jan 2026 21:55:12 +0800
-> 
-> Turn back to use alloc_and_dissolve_hugetlb_folio() since Oscar pointed
-> out that the return value is different.  Then adding gigantic folio check
-> independently, also update changelog.
-> 
-> Link: https://lkml.kernel.org/r/20260114135512.2159799-1-wangkefeng.wang@huawei.com
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Brendan Jackman <jackmanb@google.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jane Chu <jane.chu@oracle.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> 
->   mm/hugetlb.c |   10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> --- a/mm/hugetlb.c~mm-hugetlb-optimize-replace_free_hugepage_folios-v2
-> +++ a/mm/hugetlb.c
-> @@ -2810,6 +2810,7 @@ int replace_free_hugepage_folios(unsigne
->   	struct page *page;
->   	struct hstate *h;
->   	LIST_HEAD(list);
-> +	int ret = 0;
->   
->   	/* Avoid pfn iterations if no free non-gigantic huge pages */
->   	for_each_hstate(h) {
-> @@ -2835,9 +2836,13 @@ int replace_free_hugepage_folios(unsigne
->   
->   			/* Not to disrupt normal path by vainly holding hugetlb_lock */
->   			if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
-> -				if (isolate_or_dissolve_huge_folio(folio, &list))
-> +				if (order_is_gigantic(folio_order(folio)))
->   					return -ENOMEM;
->   
-> +				ret = alloc_and_dissolve_hugetlb_folio(folio, &list);
-> +				if (ret)
-> +					break;
-> +
->   				putback_movable_pages(&list);
->   			}
->   		} else if (PageBuddy(page)) {
-> @@ -2851,11 +2856,10 @@ int replace_free_hugepage_folios(unsigne
->   			if (order <= MAX_PAGE_ORDER)
->   				nr = 1UL << order;
->   		}
-> -
->   		start_pfn += nr;
->   	}
->   
-> -	return 0;
-> +	return ret;
->   }
->   
->   void wait_for_freed_hugetlb_folios(void)
-> _
-> 
-> 
+> I should just move the macro call out from under PTL, rather than
+> replacing it with direct tlb_remove_table_sync_one() calls.
+
+OK.
+
+>>> Just move the call to after we release PTL, and drop the macro wrapper
+>>> while we're at it.
+>>>
+>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>> ---
+>>>   include/linux/pgtable.h | 4 ----
+>>>   mm/khugepaged.c         | 5 +++--
+>>>   2 files changed, 3 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>>> index eb8aacba3698..fb04ed22052c 100644
+>>> --- a/include/linux/pgtable.h
+>>> +++ b/include/linux/pgtable.h
+>>> @@ -755,7 +755,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+>>>       return pmd;
+>>>   }
+>>>   #define pmdp_get_lockless pmdp_get_lockless
+>>> -#define pmdp_get_lockless_sync() tlb_remove_table_sync_one()
+>>>   #endif /* CONFIG_PGTABLE_LEVELS > 2 */
+>>>   #endif /* CONFIG_GUP_GET_PXX_LOW_HIGH */
+>>> @@ -774,9 +773,6 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+>>>   {
+>>>       return pmdp_get(pmdp);
+>>>   }
+>>> -static inline void pmdp_get_lockless_sync(void)
+>>> -{
+>>> -}
+>>>   #endif
+>>>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 9f790ec34400..0a6cebf880e0 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -1664,10 +1664,10 @@ static enum scan_result 
+>>> try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+>>>           }
+>>>       }
+>>>       pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
+>>> -    pmdp_get_lockless_sync();
+>>>       pte_unmap_unlock(start_pte, ptl);
+>>>       if (ptl != pml)
+>>>           spin_unlock(pml);
+>>> +    tlb_remove_table_sync_one();
+>>>       mmu_notifier_invalidate_range_end(&range);
+>>> @@ -1818,7 +1818,6 @@ static void retract_page_tables(struct 
+>>> address_space *mapping, pgoff_t pgoff)
+>>>            */
+>>>           if (likely(file_backed_vma_is_retractable(vma))) {
+>>>               pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
+>>> -            pmdp_get_lockless_sync();
+>>>               success = true;
+>>>           }
+>>> @@ -1826,6 +1825,8 @@ static void retract_page_tables(struct 
+>>> address_space *mapping, pgoff_t pgoff)
+>>>               spin_unlock(ptl);
+>>>   drop_pml:
+>>>           spin_unlock(pml);
+>>> +        if (success)
+>>> +            tlb_remove_table_sync_one();
+>>>           mmu_notifier_invalidate_range_end(&range);
+>>
 
 
