@@ -4,123 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64E8EC79FBF
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:12:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055D2C79FBF
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:28:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BF566B0088; Fri, 16 Jan 2026 09:12:12 -0500 (EST)
+	id 3124E6B0088; Fri, 16 Jan 2026 09:28:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86C406B0089; Fri, 16 Jan 2026 09:12:12 -0500 (EST)
+	id 2F3796B0089; Fri, 16 Jan 2026 09:28:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76E1A6B008A; Fri, 16 Jan 2026 09:12:12 -0500 (EST)
+	id 1EBC46B008A; Fri, 16 Jan 2026 09:28:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 683C66B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:12:12 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 127C0560FC
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:12:12 +0000 (UTC)
-X-FDA: 84338016504.07.0300A34
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 05EC118000A
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:12:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=Iskus2kJ
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768572730; a=rsa-sha256;
-	cv=none;
-	b=BEx8CLwVKsvqUHCezHdwiqt/FoVO/xvQU3FnqH0t+kf7q0z6Im65Z5XEOrrcptnqJcoEdt
-	0yM077QX7WPZuozTnkNccdroPQ113J/JXSVBzNz/iMtMuihxmMGqvkAERxpuoOVuXCbwo5
-	lnau9Zk737yPQeiMfE5mP8/259eMSG4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=delta-utec-com.20230601.gappssmtp.com header.s=20230601 header.b=Iskus2kJ;
-	dmarc=none;
-	spf=none (imf06.hostedemail.com: domain of boudewijn@delta-utec.com has no SPF policy when checking 209.85.218.47) smtp.mailfrom=boudewijn@delta-utec.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CF166B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:28:50 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 61BAF138EEC
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:28:49 +0000 (UTC)
+X-FDA: 84338058378.30.CAD60DF
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B843EA000B
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:28:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XhTHhPJe;
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768572730;
+	s=arc-20220608; t=1768573727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ftGOR3HCczg9PRGjML2ssDls53360eFYMzlALTxJm8=;
-	b=6pqVwkhzbmpkSMACwLF+AWAWBmTTjQXEtRa/IMldgW/VSqnV96k+ga9RvqN+JxqdkUmEPL
-	dPqtmCrYcnGii0TyTfa2J7oVZvp50glhU03VDTigi0Hu2DgxVst/OKuIxMfaF5G6uO1u6C
-	QmYdCn7roIkwPF333gm9mTZd5ItrWA0=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b872de50c91so323300166b.2
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:12:09 -0800 (PST)
+	bh=oZMszV4Fo8yrNUR2DejJTxC4DKTXaJ4HLASWl15bV4E=;
+	b=aXAjLE9qR96TI0aGa6Ahh/FRlSqo8FDzC5ZBCrGq8VUCLTpZnIOK9i9F38b6wdK2hBZexQ
+	5YQmh7v9ZvXNO4lDS3CN9/93PSC1p9TJ6XrVmtdfO/xMHrLPMC2916j3EOzj+QAonNmpUA
+	isMzqd5vZETS0Gs38tXxSn20fiKjoRY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XhTHhPJe;
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768573727; a=rsa-sha256;
+	cv=none;
+	b=XaUK1o2n+StiCuIQWz2EAhPpTuymQPLsWq1K9GkugZbz8voFbTFKinH61cVjtxGsp3InhV
+	TnuBcYtIlB06AfV38xgcfD3Ds5IHmnqoHaA1Z/uI+Uo2M0kXNL2uUZI7Xd7eAMUN4FsD8I
+	a4wdn9NnrQrpeiQE3QV1XF7v1uKxeJE=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-502a407dabaso6448131cf.0
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:28:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=delta-utec-com.20230601.gappssmtp.com; s=20230601; t=1768572728; x=1769177528; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768573727; x=1769178527; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2ftGOR3HCczg9PRGjML2ssDls53360eFYMzlALTxJm8=;
-        b=Iskus2kJZhnpq0NptiaWfcrD7nHofI282+n/Vi4Ka3I1wwOw0/NcxRZTaojP3XISkm
-         ZoxRdNTXOznGzuR477wa+HAoMuDqyMpQdjMFKLfXeVlbM+2+zX3y6EqsFZ2+NC0BKrdc
-         DONI9n4MxqGdNpC55Tq2xqBjSJeG+ihNl23v7X4WKGj8z2dfwt0JvnXoc/DkMPxEl4lh
-         uVsNokz1p28QbuWefQOfZ+b+dHNTsuI0ripLllFIWWc/5l1Q5YvZfqEU/ChTIgi+Uaji
-         zhKy8D7Be5oEUSbOxKvQcpGNapzZ5lVPnSbKnsihMbJPCJhfbjQA+rdTXxYg2uyKn+ri
-         q0Mw==
+        bh=oZMszV4Fo8yrNUR2DejJTxC4DKTXaJ4HLASWl15bV4E=;
+        b=XhTHhPJeLlwdWFVAZf/vxcf/gzasb7cfNyzYifZ016GKspH1EAyh2lPwcPJEAHNYDG
+         CJ87z6/d/N+svOKo1VgZcm+U1hz1h2VKa3Ue7bTgUuZqepeKLRDRrXsMwNWBVfAZ2zbg
+         UaglbNzCuYz3sP9vneY/gffZ5u0O944vzR/RV7Kb5jb1KA8W/SKks862g08AvcaX0uZL
+         0+9HYHRkB+HMsrKhRuEyhMkSVCNfl6PL1XcJOHKVUbOMkeI+uEck9yAdYsxbmYrGhcJP
+         gWEA+CQ6CRYoqYL1ym6yRa00nlndstZBnwKMZ+52cmlDLM0zlXHktH/KsVUzNfh0YNEK
+         UHmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768572728; x=1769177528;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1768573727; x=1769178527;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=2ftGOR3HCczg9PRGjML2ssDls53360eFYMzlALTxJm8=;
-        b=k6vWIeJvW/TotULjrD0BqYIpIXy0A4qKGlghp26AG1pUb8+tr2XkIVfx5kpM79aeCg
-         G1CmyW4k7rB4MYJivd+wwB4CNDxrb6wyRwT+V0Dlt3xr3lIKGd3C9/+ekoL2Uno7I/OS
-         LHTowI1oNchiO2F2Kq2X+TWSEbmRPUxIxAPXB84qRMkeHOQ5EmYaOAMJF/LjKZDhNs6s
-         xNfJraY3PcBBuPSUG0vJt1zJbqZa0C2/c92GBHmANv4ljMImpMXbbd64ixs/r0csTU05
-         oZv9veX8Vgc6dRCD8lroyx1gKMYetGiTB/3J+KVW3b9CC8MBJjUd0xjYF6Oce2HyJXfc
-         XIHA==
-X-Forwarded-Encrypted: i=1; AJvYcCW31dX3VzqHXRwlqp7ulFQqOmojwVmEWI7lI+UJFJR2xkkJzC4zIQr/sOQMxA2qtO10zW6JwPq7lQ==@kvack.org
-X-Gm-Message-State: AOJu0YxNT+7YXXYclKpeaidHoiIwQN7MlJq6HVkrdyfY+tNHC0EQoWee
-	dZk02ukNFZa+ancHG8v1JvFhUoYrkaosHfs/ojDANAmUyRDSF+Pem68lD2m1hcM2LQ==
-X-Gm-Gg: AY/fxX7+GKALOY5N2tVrd2Mp30lBYpw/r3n7dsv06xcFHNPySb3W2drQUNfNYt9o8Od
-	+6qvsRz2ZcQ43rO2z/ieGEpKXABkKs+QClCuywpGyUubt4g6VMvTxx30Gu6u3rKofURph2YQIzM
-	X9GHAzDCgLGzHM6aozYPz6p652orLbGCfHUjz7qdsalAU2lK+rQf8fqyVXxg+gQEpKdwavzisF0
-	ET6GWtmHitjyiBSwHbJoUfNVZlQE9gHwN0VA3kNZX9SRrEx+VyHBbh1lCDHtaDkl2KIxj3g2UFA
-	/aSNqje87WrErtNvTjLSQRHD+N90ASGL2vLLYAmwohEoUvFdEgOh8fvmFu2U3PHkYicSPe2ESbQ
-	pl1G7bolyayBiiTr3eBUAS8PVsxka0+4Y64VfMD1LRReZj4L6dKtTWe2c0HTWtZ4vgdvA0u4kkw
-	YdEZAO+KlGZoVohi4re6X6LZatDlUPHqPl6kixVxCk5ChIB0ages2x1BfruUbKpNhfVZIaMKDBQ
-	wdiTNNeGpRE12eruRGdrhjEy5v+/QiGiBpsCa8=
-X-Received: by 2002:a17:907:845:b0:b87:778b:89ba with SMTP id a640c23a62f3a-b879300d987mr287076666b.39.1768572728262;
-        Fri, 16 Jan 2026 06:12:08 -0800 (PST)
-Received: from localhost.localdomain (2001-1c00-3405-d100-b173-9aa6-05c2-3fe1.cable.dynamic.v6.ziggo.nl. [2001:1c00:3405:d100:b173:9aa6:5c2:3fe1])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-654535c49dbsm2583543a12.32.2026.01.16.06.12.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 06:12:07 -0800 (PST)
-From: Boudewijn van der Heide <boudewijn@delta-utec.com>
-To: jiaqiyan@google.com
-Cc: akpm@linux-foundation.org,
-	boudewijn@delta-utec.com,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
-	linmiaohe@huawei.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mhocko@suse.com,
-	nao.horiguchi@gmail.com,
-	osalvador@suse.de,
-	surenb@google.com,
-	vbabka@suse.cz,
-	ziy@nvidia.com
-Subject: Re: [PATCH] mm/page_alloc: Fix freeing of failed-split poisoned compound pages
-Date: Fri, 16 Jan 2026 15:11:57 +0100
-Message-ID: <20260116141157.29578-1-boudewijn@delta-utec.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CACw3F52D8=s_uj_jRtw1J-GjAvt4c3HNMKb2sJGUjznvyAK80A@mail.gmail.com>
-References: <CACw3F52D8=s_uj_jRtw1J-GjAvt4c3HNMKb2sJGUjznvyAK80A@mail.gmail.com>
+        bh=oZMszV4Fo8yrNUR2DejJTxC4DKTXaJ4HLASWl15bV4E=;
+        b=TFWZ3Y1DrZwbSecEsb4bW73KC7u1ATd7s1qs+lg3baZxTL1ZkldlZX69JTojacGtvB
+         PeBOGtUTNfiRBemn7yLztUBG6bKf1hkYd86cbIGecRrNu98U0iniu1h3GHxK6flOlrkx
+         NmlYEubAhsHHbSjINYeZDoTyiMwXYC7jeHI05ny9OnlTVo/wRUdZSWs847Ei3bNti9Lf
+         P2MyXNGoOfMBuZe2FWquMtjI3zfGMmeEMX4b2x0syqW50pT2XwJT/UuHStcYyBgQChIP
+         PD5D8Nd4cTgoxC5CyxsmAcVVfqKEJCm84Hjd8o+ugvFDSjo7Ue94znj6NZ4d+/xv38uo
+         S/pg==
+X-Forwarded-Encrypted: i=1; AJvYcCUhmtoPfyZjHPrdXILd0uFS2x9D8zSumi6AevN/PJfiQTz/j5ilCilGkoTXwdZsFXXSir8WFfxLMA==@kvack.org
+X-Gm-Message-State: AOJu0YzBWQszwPPPqTNXIn3P2DWKGtIRGdlVP1nPt3IsouQs2dYg39VK
+	aZcIC+icfsPc9jhpYnmNVkubBohmAvQxP0WBxGDkP9BH3kClIBUHT7AIqDumZz1jC5yZB2uqAoQ
+	a9e37Yexrc3g4agiVRBzFMU6wT7Bqd10=
+X-Gm-Gg: AY/fxX6c7LutFZLVHF3BgQD4QAE0yKSorT2UV8SetT+YlhyE3gzHiY3GX6OG6nlMIFA
+	DurLRnqziUw10H1V08Y7B2s/FXE2J3nKW0bprlYVpuXWrrceaANwWatI3/TbPErGrr+Qf2DPxpW
+	0qEG9PovPP3o+tknGZPRIOrC/e3sDxnl1AN9LFFjaXCb957EmbjK1mFcFiTY5rBUDn1S2NEnd7t
+	Fz2YrwLY8EGJQbinVybFZXtWRhEl8YGI/ux56WQsW8koJtJsdAJHpRLRgUzwcX3ADySYznO9w==
+X-Received: by 2002:a05:622a:1a8d:b0:501:4ca3:7420 with SMTP id
+ d75a77b69052e-502a163bfcamr48413821cf.36.1768573726346; Fri, 16 Jan 2026
+ 06:28:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 05EC118000A
-X-Stat-Signature: nst5e9cm77fk3pr1z9wq5kwtkpgitbry
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+ <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
+ <20260106132203.kdxfvootlkxzex2l@master> <CAGsJ_4yKRtyADU2ZxUMgvqdrhAEL4SpZxCMRt28gNJfUf--5zQ@mail.gmail.com>
+ <20260107014601.dxvq6b7ljgxwg7iu@master> <db4d0a19-598b-48ff-accc-f5940a481035@arm.com>
+In-Reply-To: <db4d0a19-598b-48ff-accc-f5940a481035@arm.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 16 Jan 2026 22:28:35 +0800
+X-Gm-Features: AZwV_QhAYlc9A1PxMbnzWgj5BABlaY8S87UmSa5kP3_oO1pH5nag-DoPjw1j2qU
+Message-ID: <CAGsJ_4yo-EE__1VzHqxE8ehDOFQuxqP9GXcskkeZ-WTTyz12_A@mail.gmail.com>
+Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large folios
+To: Dev Jain <dev.jain@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com, 
+	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com, 
+	willy@infradead.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B843EA000B
+X-Stat-Signature: dkk5gcg63d3c1ujhzqqufcybh5uzaas1
 X-Rspam-User: 
-X-HE-Tag: 1768572729-764874
-X-HE-Meta: U2FsdGVkX1+FKy9u6EUIESdgH9eYSMbWHjGFjr1LoZwIIU2zKjc+1/+RgYpxZ3ajvANFm3sykKzukqrj+g9Lodqo2si+2m+KrA9SjLSU90EJEnjVp3DsJ2nLeh7oqxW0YlS7TMXCrwtm/03d/vpAR8QO78C4ug0ln3DPDT0En1EulZE251nq28Pn6EQ7hWPrNjA62jIXeoGgSDfecB6B0QXh1TYRoLhc2VBV5NTVgPuwzamRR7BiShozAFRxFdgouHvQ3ZWxg0vKkJ1rsM8+O2tEq2A+r78Imh/GDqlaV7EmVTJTVKnQmpcQ2zk0xDPtdWvJbs+CJr30GVbwivWzadWSOMk1N+kttDvqKFZke95rYXyjwmTaw56MjNmE2vRNe3HrPsUmkKdWIgEHX59lbM6Zzl+NF6I1e2hqEymeMAUpCdHiO6Jothgh78daELf4E3FMTMGu8OXKkCX4KQgYjOX6NQqQ1Dyt06JHTxuq1BRJ5oB9TJbykRocwMJ/Vyzu6dQtqoUvCKx+BWa+wSHRA0uYMNYWsh8NaWYwXrzbPdH3aBZXVO6yXwW6RFFSIYrCKqZ0hZysvbKub+6iFRjUJRwSlCnGeRMorvelrkgZPJp9U/ArS9E8NaPHUmRF2APcdL0cYj4KdgFycHzBy+r3OOaa1b4eBnarPapXxiXp/AhnnmAa6x4LTXy41fS5rU7vJ5cox6WLN9ItUY3cQ4jK63Up4vlbPOOvfuCDBtCta87tuhXsTfV+9h4urXUS7mEvjFL9jpHXsCny+F4Ggjw7iugc+8R9zyuMEAYSUUtOyo56YDyv4tdooslYmy4mJhL+ckFTUZsAf1d8DJa/h/ZUDGQ8A+0YMS7OXSl2znmawP4N5HzEPyukkfASpo53B1blC40yor+fFWSTOsHlJwJ4BjwbCtlljeV/+uRsAbhM5NXn82KmFQp8hnM91H95bqskmtAuS58se1mWKMJSVH3
- Y7qspykQ
- aQHdL/7Gh0VSjt3WjJCEE+qbq7w/aol5oy76ABn+0xwGH5nI9cv/MgudNzE1dajiYOi6OJHLO7CIIXi6+jWcw9GyMBHBUBaGW24UMFQ06OlGGfmsKJY1ClJcjkNk9+Go9BkwovXUqkf8/yef6ms+MVZz1Tnrj6P47UzvER7oBeVR+3saZ+3zEje71dDeBgK8q8u+aAx2x2uTx6VB8FQ5Jpy6KX1cRCkQHol58BKacKVIrIcGERrN3MANcpbvapNbG1Ix4uGue3yX0d/BMpzoMvrdsHBwlGyTEmNS0OSkVWAQ5rwzKVgfaKBJYdqaxS0PDEcSwkiHikOrXicsGW4sdGAJD6WGxo/LAb0HeFdaw8nGCTQ5yjgccSrP9VuOMyFlP++vxOgnB0BZlAJQZyKYHwHKLTj2/WcyRwLkaSB96mupSfbGWEaYoL6KlT+MGn+GwZh0Syaw2GTcGAFCu9HrQxyQeeGcrsEY0dL4Ial9PpQium0nd8gy/oelSkajOdke7GYh6X3UHKjAgyTKHaiRLdycbqrP1pRNhArTjvVaz7Y1AT3GEp4hXS6p6UlB8aZMkGrKB9AE//0Th87pTJGpC9ajxS/2fviKknjzltb+yBGNn3w0++kQq9iaQIQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000813, version=1.2.4
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768573727-20352
+X-HE-Meta: U2FsdGVkX1/FhZ4232FVgQt/d/mUu9/r85vtQ9mEDegoyVzeLvdwOXr58FdRvD0fGNJEeijxc38nq641IeIxMYI2VTarnljPUnYkIFBt+i3BlYESONPrg6h7Hrf8y6T0mxklJAMY2/or1uSr/4GA+pI0SnOWAyFpcDCy8c16+G9ehezlSCK5BAs/4gNkcvDLRvBPFM2bfd0mflxEQG+MbEIMYhl7OeCiDvjbWqsVj8qy+wR/SjPrRy7GbzUGJhY9YN+J6XVwCSIPmlPqWCiz5HrGsJEjE2EdHYzmaVcYPzNBLc33YzcGr/HiWmm/f2ihOa/lxgb03kg1kmyRGuluR0PdtB1a+q6i4OBTOhn25yS30DRJcoYniArOk9fs/mxpf1jh5QhPuSEHtW1OotIM7jUtKHYXYfxNkDwc+zZraEGdiPSf+2rg5IdIvj/7YddGrbDZ4ntWphq3x/QAL72WeteCpB1eQJH3jJVAWiYR14nALA/9PuZESo9JGjiZcdVYkb/0vO3+olU4qUdEKziOvo51ITKikvGU70d9O0/h4j1s0TAPOv5KicZES2Z9UzmEBSaLdIVsEbBRUjFfEK0EQeg8t+dnxwr5ffA4eC/Gxg1lf3Ls6C1ZV/RwRaAv3vcopephTxxy1XBBKl4a6SBr1R5Rrrz3+9j1ynVrukNaRNAJi1qJmSVBeMjhCrDI2sB2TutITq4WiqpLAEOcLYNeadoYEFqApD8E44I4AQHBp0Nh/J4tK2BblwDvTv62qRM41ui6N1U/NFcnmf9ykRRbKq5R/Wvl/cLRlQKhXgyF6PHavLeaC12Iqk6UiZQRy8gU+oNSZ/CqIVXPFJsIyP6Tdfc9stluV5xSctWvqcGf4C9gG992nhslK7ScFbSWqLRMuQrIJTdivj5eD5SZgTP+f+jjhNJYIftBZUpnAC/HB4rUlr8ycSmpq2w+U72xRwjNmWplw/UJbypGpBTIPTO
+ rt7kH8bj
+ NVZFAApqsO5/z678as3kALTD66zUlkVPLl5TCQ6v6Ws+PsoSKgYIZ+LdnnXzs40k6a4UtZ33BriTLnOzEasoSuZWjgw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,41 +123,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks Jiaqi for the feedback, that is very helpful.
-(and thanks Miaohe for connecting the issues.)
-
-After going through the memory_failure(),
-I can see it indeed puts the PG_HWPoison flag on the specific subpage pointer,
-and therefore my fix won't work as-is.
-
+On Fri, Jan 16, 2026 at 5:53=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+>
+> On 07/01/26 7:16 am, Wei Yang wrote:
+> > On Wed, Jan 07, 2026 at 10:29:25AM +1300, Barry Song wrote:
+> >> On Wed, Jan 7, 2026 at 2:22=E2=80=AFAM Wei Yang <richard.weiyang@gmail=
+.com> wrote:
+> >>> On Fri, Dec 26, 2025 at 02:07:59PM +0800, Baolin Wang wrote:
+> >>>> Similar to folio_referenced_one(), we can apply batched unmapping fo=
+r file
+> >>>> large folios to optimize the performance of file folios reclamation.
+> >>>>
+> >>>> Barry previously implemented batched unmapping for lazyfree anonymou=
+s large
+> >>>> folios[1] and did not further optimize anonymous large folios or fil=
+e-backed
+> >>>> large folios at that stage. As for file-backed large folios, the bat=
+ched
+> >>>> unmapping support is relatively straightforward, as we only need to =
+clear
+> >>>> the consecutive (present) PTE entries for file-backed large folios.
+> >>>>
+> >>>> Performance testing:
+> >>>> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, =
+and try to
+> >>>> reclaim 8G file-backed folios via the memory.reclaim interface. I ca=
+n observe
+> >>>> 75% performance improvement on my Arm64 32-core server (and 50%+ imp=
+rovement
+> >>>> on my X86 machine) with this patch.
+> >>>>
+> >>>> W/o patch:
+> >>>> real    0m1.018s
+> >>>> user    0m0.000s
+> >>>> sys     0m1.018s
+> >>>>
+> >>>> W/ patch:
+> >>>> real   0m0.249s
+> >>>> user   0m0.000s
+> >>>> sys    0m0.249s
+> >>>>
+> >>>> [1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail=
+.com/T/#u
+> >>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+> >>>> Acked-by: Barry Song <baohua@kernel.org>
+> >>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >>>> ---
+> >>>> mm/rmap.c | 7 ++++---
+> >>>> 1 file changed, 4 insertions(+), 3 deletions(-)
+> >>>>
+> >>>> diff --git a/mm/rmap.c b/mm/rmap.c
+> >>>> index 985ab0b085ba..e1d16003c514 100644
+> >>>> --- a/mm/rmap.c
+> >>>> +++ b/mm/rmap.c
+> >>>> @@ -1863,9 +1863,10 @@ static inline unsigned int folio_unmap_pte_ba=
+tch(struct folio *folio,
+> >>>>       end_addr =3D pmd_addr_end(addr, vma->vm_end);
+> >>>>       max_nr =3D (end_addr - addr) >> PAGE_SHIFT;
+> >>>>
+> >>>> -      /* We only support lazyfree batching for now ... */
+> >>>> -      if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+> >>>> +      /* We only support lazyfree or file folios batching for now .=
+.. */
+> >>>> +      if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+> >>>>               return 1;
+> >>>> +
+> >>>>       if (pte_unused(pte))
+> >>>>               return 1;
+> >>>>
+> >>>> @@ -2231,7 +2232,7 @@ static bool try_to_unmap_one(struct folio *fol=
+io, struct vm_area_struct *vma,
+> >>>>                        *
+> >>>>                        * See Documentation/mm/mmu_notifier.rst
+> >>>>                        */
+> >>>> -                      dec_mm_counter(mm, mm_counter_file(folio));
+> >>>> +                      add_mm_counter(mm, mm_counter_file(folio), -n=
+r_pages);
+> >>>>               }
+> >>>> discard:
+> >>>>               if (unlikely(folio_test_hugetlb(folio))) {
+> >>>> --
+> >>>> 2.47.3
+> >>>>
+> >>> Hi, Baolin
+> >>>
+> >>> When reading your patch, I come up one small question.
+> >>>
+> >>> Current try_to_unmap_one() has following structure:
+> >>>
+> >>>     try_to_unmap_one()
+> >>>         while (page_vma_mapped_walk(&pvmw)) {
+> >>>             nr_pages =3D folio_unmap_pte_batch()
+> >>>
+> >>>             if (nr_pages =3D folio_nr_pages(folio))
+> >>>                 goto walk_done;
+> >>>         }
+> >>>
+> >>> I am thinking what if nr_pages > 1 but nr_pages !=3D folio_nr_pages()=
+.
+> >>>
+> >>> If my understanding is correct, page_vma_mapped_walk() would start fr=
+om
+> >>> (pvmw->address + PAGE_SIZE) in next iteration, but we have already cl=
+eared to
+> >>> (pvmw->address + nr_pages * PAGE_SIZE), right?
+> >>>
+> >>> Not sure my understanding is correct, if so do we have some reason no=
+t to
+> >>> skip the cleared range?
+> >> I don=E2=80=99t quite understand your question. For nr_pages > 1 but n=
+ot equal
+> >> to nr_pages, page_vma_mapped_walk will skip the nr_pages - 1 PTEs insi=
+de.
+> >>
+> >> take a look:
+> >>
+> >> next_pte:
+> >>                do {
+> >>                        pvmw->address +=3D PAGE_SIZE;
+> >>                        if (pvmw->address >=3D end)
+> >>                                return not_found(pvmw);
+> >>                        /* Did we cross page table boundary? */
+> >>                        if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) =
+=3D=3D 0) {
+> >>                                if (pvmw->ptl) {
+> >>                                        spin_unlock(pvmw->ptl);
+> >>                                        pvmw->ptl =3D NULL;
+> >>                                }
+> >>                                pte_unmap(pvmw->pte);
+> >>                                pvmw->pte =3D NULL;
+> >>                                pvmw->flags |=3D PVMW_PGTABLE_CROSSED;
+> >>                                goto restart;
+> >>                        }
+> >>                        pvmw->pte++;
+> >>                } while (pte_none(ptep_get(pvmw->pte)));
+> >>
+> > Yes, we do it in page_vma_mapped_walk() now. Since they are pte_none(),=
+ they
+> > will be skipped.
 > >
-> > Yes, this is also a problematic scenario for Hugetlb HugePage. And Jiaqi works on
-> > it now [1]. I think Jiaqi's patches might apply to THP scenario too. Add @Jiaqi to
-> > verify this.
-> 
-> Yep, I think my work will also help solve the concern when
-> try_to_split_thp_page() fails.
-
-Your fix makes a lot of sense for hugetlb,
-as it linearly scans through all the pages.
-From my understanding, 
-your fix also provides the perfect architecture for also checking THP,
-though it doesn't yet cover the in-use THP case outlined.
-
-For THP I would need to trace the failed-split paths more carefully,
-to check where the equivalent path for THP would be. 
-
-If there is work needed for THP, I'm happy to help.
-Would you prefer I work on THP support as a separate follow-up patch,
-after yours is merged,
-or do you prefer to integrate it in your patch series?
-
+> > I mean maybe we can skip it in try_to_unmap_one(), for example:
 > >
-> > [1]: https://lore.kernel.org/all/20260112004923.888429-1-jiaqiyan@google.com/
-> >
-> > Thanks.
-> > .
+> > diff --git a/mm/rmap.c b/mm/rmap.c
+> > index 9e5bd4834481..ea1afec7c802 100644
+> > --- a/mm/rmap.c
+> > +++ b/mm/rmap.c
+> > @@ -2250,6 +2250,10 @@ static bool try_to_unmap_one(struct folio *folio=
+, struct vm_area_struct *vma,
+> >                */
+> >               if (nr_pages =3D=3D folio_nr_pages(folio))
+> >                       goto walk_done;
+> > +             else {
+> > +                     pvmw.address +=3D PAGE_SIZE * (nr_pages - 1);
+> > +                     pvmw.pte +=3D nr_pages - 1;
+> > +             }
+> >               continue;
+> >  walk_abort:
+> >               ret =3D false;
+>
+> I am of the opinion that we should do something like this. In the interna=
+l pvmw code,
 
-Thanks,
-Boudewijn
+I am still not convinced that skipping PTEs in try_to_unmap_one()
+is the right place. If we really want to skip certain PTEs early,
+should we instead hint page_vma_mapped_walk()? That said, I don't
+see much value in doing so, since in most cases nr is either 1 or
+folio_nr_pages(folio).
+
+> we keep skipping ptes till the ptes are none. With my proposed uffd-fix [=
+1], if the old
+> ptes were uffd-wp armed, pte_install_uffd_wp_if_needed will convert all p=
+tes from none
+> to not none, and we will lose the batching effect. I also plan to extend =
+support to
+> anonymous folios (therefore generalizing for all types of memory) which w=
+ill set a
+> batch of ptes as swap, and the internal pvmw code won't be able to skip t=
+hrough the
+> batch.
+
+Thanks for catching this, Dev. I already filter out some of the more
+complex cases, for example:
+if (pte_unused(pte))
+        return 1;
+
+Since the userfaultfd write-protection case is also a corner case,
+could we filter it out as well?
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index c86f1135222b..6bb8ba6f046e 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1870,6 +1870,9 @@ static inline unsigned int
+folio_unmap_pte_batch(struct folio *folio,
+        if (pte_unused(pte))
+                return 1;
+
++       if (userfaultfd_wp(vma))
++               return 1;
++
+        return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+}
+
+Just offering a second option =E2=80=94 yours is probably better.
+
+Thanks
+Barry
 
