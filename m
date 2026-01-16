@@ -4,158 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 127BDD4660C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:48:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665AFD47CD5
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:51:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 793836B0099; Fri, 16 Jan 2026 05:48:12 -0500 (EST)
+	id CC0C56B0095; Fri, 16 Jan 2026 05:51:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75ACE6B009D; Fri, 16 Jan 2026 05:48:12 -0500 (EST)
+	id C6ECC6B0096; Fri, 16 Jan 2026 05:51:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 653086B009E; Fri, 16 Jan 2026 05:48:12 -0500 (EST)
+	id B712C6B0098; Fri, 16 Jan 2026 05:51:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51D056B0099
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:48:12 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A324B6B0095
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:51:27 -0500 (EST)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 102D31405E7
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:48:12 +0000 (UTC)
-X-FDA: 84337502424.27.96E4CE7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D04AB40016
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:48:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PbmhajUM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=daVLxafa;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PbmhajUM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=daVLxafa;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768560490; a=rsa-sha256;
-	cv=none;
-	b=Lqs9rFXgTfHujoC5vta3moa9ouswmExCBfru7ZUQqgxucxW1SXFWomoWcuRQllItMTdH+t
-	0tGscaScFx/B4rSwsGneWt5DiTMEKdH/n53gk/FGr2+VyPCYbnBGuFIuIEbPMYPrGqsb4p
-	WWkPe1nRUZL56ZaI2i/DrtsvvJLeRtI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PbmhajUM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=daVLxafa;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PbmhajUM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=daVLxafa;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 80F781A05D2
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:51:27 +0000 (UTC)
+X-FDA: 84337510614.27.54369F3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D383140008
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:51:25 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D7lZljhE;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768560490;
+	s=arc-20220608; t=1768560685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F1fxP8WDQyzhf1npSWxiq5MSReyQYyy5v76FcnijHMA=;
-	b=1b4RGeGR6VG2MnuYxioZY4cPneYSIstjKFb2H54JzOWtRuQY8Cw8TEHKYImY3eo3pPGfcD
-	qtHAip4Wz0gexMBNsSXUNjnPddAcFpdvDZy7hhJiCeyToQqI5NL+UfqDX8nPFiwBCXodzs
-	wrCL3E9GvQQSjURdGXxY/ari4GK1Nms=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7BDE25BCC9;
-	Fri, 16 Jan 2026 10:48:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768560488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F1fxP8WDQyzhf1npSWxiq5MSReyQYyy5v76FcnijHMA=;
-	b=PbmhajUMmbJ8yRqKOVcww99WPrHziWw7DJMQxlzN0jGmHXvolDfWqMrMe7DmnKsFo8MwIx
-	YI1GJP6PN1rQu3cv+ABZlCU4JBshwzNdZywyZzYB1HQeePrkqHz7Tg+xZ/Ry58tIaNT7Tc
-	xATB6hj4wejZpWh6InyHFn4HPINO8r8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768560488;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F1fxP8WDQyzhf1npSWxiq5MSReyQYyy5v76FcnijHMA=;
-	b=daVLxafaELeJjfY/n1Wb6KYXPmr+VqfyON78bEDOVjmCPDiAImJK5TAGZlvPs0fY4icrbC
-	yyouaeQgwAqIPRBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768560488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F1fxP8WDQyzhf1npSWxiq5MSReyQYyy5v76FcnijHMA=;
-	b=PbmhajUMmbJ8yRqKOVcww99WPrHziWw7DJMQxlzN0jGmHXvolDfWqMrMe7DmnKsFo8MwIx
-	YI1GJP6PN1rQu3cv+ABZlCU4JBshwzNdZywyZzYB1HQeePrkqHz7Tg+xZ/Ry58tIaNT7Tc
-	xATB6hj4wejZpWh6InyHFn4HPINO8r8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768560488;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F1fxP8WDQyzhf1npSWxiq5MSReyQYyy5v76FcnijHMA=;
-	b=daVLxafaELeJjfY/n1Wb6KYXPmr+VqfyON78bEDOVjmCPDiAImJK5TAGZlvPs0fY4icrbC
-	yyouaeQgwAqIPRBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6C53C3EA65;
-	Fri, 16 Jan 2026 10:48:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gWtkGmgXamnWDAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 16 Jan 2026 10:48:08 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2EA03A091D; Fri, 16 Jan 2026 11:48:08 +0100 (CET)
-Date: Fri, 16 Jan 2026 11:48:08 +0100
-From: Jan Kara <jack@suse.cz>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Chuck Lever <chuck.lever@oracle.com>, 
-	NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Amir Goldstein <amir73il@gmail.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Gao Xiang <xiang@kernel.org>, 
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
-	Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>, 
-	David Sterba <dsterba@suse.com>, Luis de Bethencourt <luisbg@kernel.org>, 
-	Salah Triki <salah.triki@gmail.com>, Phillip Lougher <phillip@squashfs.org.uk>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Bharath SM <bharathsm@microsoft.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, Christoph Hellwig <hch@infradead.org>, linux-nfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-ext4@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org, linux-unionfs@vger.kernel.org, devel@lists.orangefs.org, 
-	ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, 
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 24/29] isofs: add EXPORT_OP_STABLE_HANDLES flag to export
- operations
-Message-ID: <o7p2kfxnhexpjpdwuqexjepysef5xghk7pnft323zyzvligstd@mdauljykdl5i>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <20260115-exportfs-nfsd-v1-24-8e80160e3c0c@kernel.org>
+	bh=WYokbY/hdLg2PcyrQsDfn3Xm7OMEKd+eCsy1gfrsArk=;
+	b=e/XFhnisWy8YfWtwn9+Fmxt7WZDHxxtmNfI70eekLNTOW+/wBR0VNIN/yyKVBufYlwvpdQ
+	yq+AUw3GfzOGnDd5K4E4fHyX56dyQNGDGtFvOp7joLjMTo7u6ammYNtVnRf1+M7dRNu5zm
+	cgi4v/eMTesV88v4+6w6Lu3bdCya5WA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768560685; a=rsa-sha256;
+	cv=none;
+	b=44QVGgAsbJdz1MU1uYw3pGBSY1fyRp64nQINE++us52rib8G78U/4G5/qcNv0ktCAl4HkH
+	IonmKH/RL64fhJs0Ep47JJcxNo11u0IDFqCCTT6FB8GLVXgGRALOIMxrPFMWnMiSxMJkZg
+	K6EKeSvjLXIvCtlghI9oc2UKep+VsFM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D7lZljhE;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 16E5660160;
+	Fri, 16 Jan 2026 10:51:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A495C19421;
+	Fri, 16 Jan 2026 10:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768560684;
+	bh=rFY9xlBxTcO5q7oAPkLGToaIjHoIexlwDVGdEZseowE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=D7lZljhEaM8EZsQZkib/DBBz4E2jIkdHSOXRdXaT3UyzCaw1B043eK/BUrQfGXKQD
+	 WYufWQmpgBxWLs0vBWa4it1La8XZaoby0CPydcmctlompiEpR35FLxgovt7jQ1KSSj
+	 n+RnWxxw2P8Zm79JddxnB1y/hGjRdlDQw/m3IsA/2Pw3dPLD2tBbPoZZbyNf/yWPmY
+	 //WZsrdDMZFsTlpsy+WcjjThVDXHRLKlKyvZu2Mu69L9WPxbXtu4QEvLlKoQ9r9YpQ
+	 L6k6X0pf/YkbeKRyPt6zA1FZGrmvCr27y/d3+vszoGnqUH/2OV6GwOq2DJcHEUiMMX
+	 m9+3TDLV3emvQ==
+Message-ID: <5af933d1-8c64-4d3c-b835-d90c8e9f771a@kernel.org>
+Date: Fri, 16 Jan 2026 11:51:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115-exportfs-nfsd-v1-24-8e80160e3c0c@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D04AB40016
-X-Stat-Signature: 391r7k8uu3uors67onby6go8n9txwmw5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable] mm: Fix uffd-wp bit loss when batching file
+ folio unmapping
+To: Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org
+Cc: axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ ryan.roberts@arm.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260116082721.275178-1-dev.jain@arm.com>
+ <343f8462-44fd-4190-9fe2-8120b5403269@lucifer.local>
+ <4b784eef-e874-45a6-828a-4fc2acab6fb7@arm.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <4b784eef-e874-45a6-828a-4fc2acab6fb7@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D383140008
 X-Rspam-User: 
-X-HE-Tag: 1768560489-463733
-X-HE-Meta: U2FsdGVkX1+lsiXpOZu0kSu6SBC9XugHiJKhHAVfUqvs28nVnSDvqVD2stMuMC4dQ2RIo6YIT28j3LURZhVtheGxJrjqx+a2/STs1J6NivFqnt2dtRBDJHStPVF+GOyNUOvE4Hc0Jkzfpn09vqmtikCrG5AVxzgiI9FUOsfFYHSJmcknO4n9pupL2HtztwMu4HVN0tay5lhBrkqbOJr7PUZQO41M4KjH8mL23GKcaWctLxmTXwEfCCgq51B1J9SyOwVXEzkbdRl5drbKZOWKgnBWwbDCmoS6eYyNTSi5NASn9jF98xqkSjyVFAAjPp0pboMdC2fIu6UnaD9N5XVcI9YIvHH6mLodSPODAzIHU3hDDfZa7c3eTbNUsEpzQlEjRdcEdki1SCvUaeYgkpRX3E4tO3Aiei176WDyn3afvR4/LtMT07KCfiHRg/I/ILqg1MOC1OzAlxVr6HwGbzkjSxxALBxMe3DbLqpYAsifDufEV+Ev8J/rCp9B1Ki4qKQFNtChsNNU9qO1HBvh8hLyH2BJinI+1RoCP724jBvzxOqVkUdOcDfUyzxnp2sEUPMTnsK1AL526/ZMHo63+ZagVqGUjRJjPyxj28VsXmnnhCsbTd+XOxHYA5qEIDZitn2txV3WUEy5w6w918tsGCdKSoxLOxtsOvcrnRpyfH+UJvV9/pXv7w2gLdj6gcSbOKvzvS9z4hflmGt4UKJjEG59bofGN02OyrYo0W6BIuxXV/h5P6XxK0zEkKGsmt47E6x6lNZ/JeHt8oW3bKOVzGcS23/k/TtcxfvJkGDBLps34Et59Ee8ZP8dWRf1j3ivVTxDc/m3LtoDbRWrf7cw5u0p5pa0LEq1s9LQzRxLW1e9IZH968Ldl4H6wwom3sTjHMc3ur9wlIWBfC2FkmVWq8D+7LhWRj3nIbs9VR8T5OTnnUbfYwf0KZ1wMYTdQsFXp2tJbjN928lGmsmlNTojkTW
- F28DW8MX
- ixyswtXQMQ0mvOSZb9K1UcCJNnw0uShocU1CdAF4gobxQ2bnS544D8hNl94kIGFUYkRArKaTuA5sWsz20hJ4tAODF5RswJBqwZ4llavoDRsZUJEVcVcP9KLMq0LbATtxzRmwhLzFSFzxVfwvqwI6oHXw+szgcjSwlmmo5pQhZ8FE+tIfLmqWQx+IHN1RU7dExMEMuDbnBd4T/DTqYtZjFp6V2qPpSzBBmqiqaVj4JLFdilMb5AjvEyHZwVytnNKRynlWKH1AkwOfkflqdVaQ87X9hitWYAz11MZAUAIi+gwYjxzdrbjSQ0dCaN5y6COU0uKWySGtfkrk/CbBnDOx1zmgEDPgk6BTjv+LOb4RXSseXc2Z0rPL3QxP8KE9H2BMm15RlWeYFBqQJXwHFFtwQo3nPHoFCODyc8A9DiOjUZwud2SMKIsQidRkdJ2LsGkBYM1DTRpzWnG45dOLD4aF4HO/So5E3VSr++jiD8l/Le+fw8edtbCyU0N/FsXj4FZu8K33ukSc/pGWyUg9MhQ3KmBcFusd8p1zIwt+cgSVG+YFoKwFmLlf+aDczrsJYoH7PoQrzRLGQqCXq5IRV7hucmrXnBbIqSfDOGUuI
+X-Stat-Signature: hjyt4mpr5jkp3hrj9bkmj633gdfda6as
+X-HE-Tag: 1768560685-912397
+X-HE-Meta: U2FsdGVkX1+dN7PPmCiyMBD9NdjrJFc+Izk6aVlhaxXyo0PshkP9KC9dbTUM4iZ8GL1xz8yfsITcAu/sp7ZDVUDLSXL2Ah+erkxu5JhJDcv1nVGVsV1lUSYReqyN9BD/lOp0xybwbKUBMzOdAJvv0mZPryV5H1MtmJlnFLnHnDqCSEbwZ7i044A5SoIuyN9fX8LgLZ8KTb9mM7mbqtzvMSBi5KFZf2TdwDnWCkw0xCiM1bPzx12jTGCkqHJuReHrT0qTcnhqHFq+HYp4H0VvScNn+oudpsC6nwSzVkZhl6EB7VC+w263/sGf6ykbr2oBKNyRWxTfbJ4bUV9Ev8wBsSdo5FFg9IT74ay7TIdKuRR0V3BOCDVIupoYr8yj04rgnxIizywd4qfHU1vn+gpC2z4knD2BxPBbDPwU5fkaITMQi49PpGO65FhxxOeYXvauczR6j+BWDCigx8M6gcXdve5VJf3N5iXfai1xVhvy3bkTW2gerCLULsJb3z2C1hd1wpj5pVVngZcN1e+EFl2O19FRA7LLuSh98e9rTpUxhdl5Cv7J+KFQ7CLAdCFq4NI8W6U6v4HJEXUiztUZs7JjywawZluQQsfz/fV9S7w4b4aYbW1et8IwIf0Q82wuXmYY5EgohTM2ATbLUa9IwgB7SjvT7YX6hr59d81r4QrpyLZznZo9oScW0MSbK2+wuaRJOtIO91DkLjDdCqP1ZeTv2EnF4CNR8DMRM22ZEURYuSNj2baZ8gEPvw/nkZluSU7oUm6o6h8cCfp69KoLD+NQdPesadqPyMM+z0XuNDOgEbtqUKo1kbZ4qyTr8C/22lxiulbEumyjSX/eHSbMwIkiCFVC1m4g1cpUlXH7OTFcxUDft2sKFAIa2UC3iM5NEO7VyTVpGpdHZ7e3oz7vhDXdeuNeKThyv3mEZBPQSkMoDRvmM1ovxUIB2F/aQWbSphKNS/Q68WI9N5JfyCTATax
+ i+D73nd4
+ oUDwQv+eEhxSdrFWDf9+T5TviErKKpKmONNzkVxVKvFaQXu3A9AjIeSWTXpZqdYKRIy6op4a7tHx6Ju4RNrqEPCCxw+/ywwXaSd+RVn01yte3tYoOMq95/9r1VPZMfF3use5QWKs8Oza+pPyYjgo6i3upa+1zgJS1Df/aP5gKb9v+3hSrD5lEbhdOibANkmMCQjPuIiXU56VrP14KaFALxpOZYI/QzWloOsOa5ctUXAmHkIQnK7q+a4ex0cxERvtcfHpB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,37 +144,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 15-01-26 12:47:55, Jeff Layton wrote:
-> Add the EXPORT_OP_STABLE_HANDLES flag to isofs export operations to indicate
-> that this filesystem can be exported via NFS.
+On 1/16/26 10:40, Dev Jain wrote:
 > 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/isofs/export.c | 1 +
->  1 file changed, 1 insertion(+)
+> On 16/01/26 2:09 pm, Lorenzo Stoakes wrote:
+>> On Fri, Jan 16, 2026 at 01:57:21PM +0530, Dev Jain wrote:
+>>> The recently added file folio unmap batching support forgets to update
+>>> pte_install_uffd_wp_if_needed(), which still updates a single pte.
+>>> We end up jumping to the end of the folio in page_vma_mapped_walk(), thus
+>>> setting the uffd-wp marker only on a single pte in the batch. Fix this by
+>>> passing nr_pages into the function, and set the uffd-wp marker on all ptes.
+>>>
+>>> Note that, since the nr_pages passed to this function is always derived by
+>>> some sort of batching, it is guaranteed that the set of old ptevals of the
+>>> batch have uffd-wp bit on all ptes or no ptes, therefore it is safe to derive
+>>> the value of the local variable "arm_uffd_pte" from only the particular
+>>> pteval passed to this function, but apply the result on all ptes of the batch.
+>>>
+>>> Use set_pte_at() in a loop to set the markers - we cannot use set_ptes()
+>>> as that will increment the PFN, but we don't have any PFN to update here.
+>>>
+>>> The userspace visible effect of the bug is inaccuracy observed by workloads
+>>> relying on uffd-wp regions to install their own pages.
+>>>
+>>> Fixes: 8798e255b5ec ("mm: rmap: support batched unmapping for file large folios")
+>> Hmm this patch isn't upstream yet, so wouldn't this patch be better as a comment
+>> replying to the series so it can be respun?
+>>
+>> You only do a fixes tag for either upstream things that obviously have to stay
+>> in place or perhaps things in mm-stable immediately prior to merge window that
+>> can't be adjusted.
 > 
-> diff --git a/fs/isofs/export.c b/fs/isofs/export.c
-> index 421d247fae52301b778f0589b27fcf48f2372832..7c17eb4e030813d1d22456ccbfb005c6b6934500 100644
-> --- a/fs/isofs/export.c
-> +++ b/fs/isofs/export.c
-> @@ -190,4 +190,5 @@ const struct export_operations isofs_export_ops = {
->  	.fh_to_dentry	= isofs_fh_to_dentry,
->  	.fh_to_parent	= isofs_fh_to_parent,
->  	.get_parent     = isofs_export_get_parent,
-> +	.flags		= EXPORT_OP_STABLE_HANDLES,
->  };
-> 
-> -- 
-> 2.52.0
-> 
+> I saw that the last comment on that series was more than a week back, so best
+> thought to just do a folded fix on top of it - and I had formed the impression
+> (from the conversations on list) that akpm prefers fixes over respins : )
+
+That series is still on my TODO list and I hope Andrew will keep it out 
+of stable until I get to it.
+
+Hope is all I got ;)
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers
+
+David
 
