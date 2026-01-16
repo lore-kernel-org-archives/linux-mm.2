@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 372D1C982C4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5EEAC982C4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 14:41:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCF196B00AD; Fri, 16 Jan 2026 09:41:22 -0500 (EST)
+	id C7D016B00AE; Fri, 16 Jan 2026 09:41:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C11EA6B00AE; Fri, 16 Jan 2026 09:41:22 -0500 (EST)
+	id BF6796B00B0; Fri, 16 Jan 2026 09:41:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEF256B00AF; Fri, 16 Jan 2026 09:41:22 -0500 (EST)
+	id A01516B00B1; Fri, 16 Jan 2026 09:41:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C1E26B00AD
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:41:22 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 69D781A0178
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B8D46B00AE
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:41:24 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 59A2A140177
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:41:24 +0000 (UTC)
+X-FDA: 84338090088.27.94100C3
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4254D180003
 	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:41:22 +0000 (UTC)
-X-FDA: 84338090004.14.085AD46
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2AAFF180006
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 14:41:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JbNQlxsV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iH7aI8ZG;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JbNQlxsV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iH7aI8ZG;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FLuX480n;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ZJ/JWdnM";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FLuX480n;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ZJ/JWdnM";
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768574480;
+	s=arc-20220608; t=1768574482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x//ubRuVrxiZHDkZo7cacxsgeijKPvlM+1IHTFUCb9Y=;
-	b=tQhSvM5VYaxtW4A1QcG8g/6v7Q9gg/uM0QuE3k//HWMZAunKEQJMHtB5CKp4cx0Z0oghDX
-	wCpMhgVgwoVfAzdRK3WT0E3RLtCjA0rdIPwG/MwWkztasITHUjSE+yQPy5tCf1rJq1QSYy
-	yLD67wIBHnYWBZ0gIRE/AUKCDg5sHRE=
+	bh=/x3VSl+z38DX55xEQiDw1zpCdC7JNkQuXeiqMr2GloI=;
+	b=q51Fuyee2eEsHyXm/SKrXyUQtCJebQd0ns0APVrRcuOi08Ms+jrXXm2MWkfSOrjsf8kvKt
+	vCKuSB28rPDBgBVa4w0jDW3G6BWX44bEhEiB+zcQXqXP+KHm7A3tFT8Pn67uBWo58rKsiX
+	g8Fba8F0X4felrZLRM83aX5J6SCU6vY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JbNQlxsV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iH7aI8ZG;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JbNQlxsV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iH7aI8ZG;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FLuX480n;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ZJ/JWdnM";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FLuX480n;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ZJ/JWdnM";
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768574480; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768574482; a=rsa-sha256;
 	cv=none;
-	b=rnpAXRNgEvrhmIEOfFYoMWbq1HPbg1hgtxcxHDDW6HOC5qlPN2jGNQRPXMpbPQq6yOzwfs
-	Q13+VWkOEWyCm+E7aU/8ELC8iqVjE9AkYiXnRAKbPvJXQgn6vb+Rw6/zpGUuynPmgUeYEN
-	CUuuZGvtlw5KqS+E1vO3sec7ssMQzKs=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=Wxa1mq5iihe+JEHU7c9mTRoaEMSkfvBmlCn6F1YBzChrz7ROlc9W6Tdq29nm10aYRFP9Kk
+	HQftPtk4LShdu5O2fetUdHTakdkWp+vDH2CZf7x3gOp2MjDno6CbsG0Ac1RVKwyDlfDwNv
+	KeZ0MeCfREQTCQ/Rd1atZ4IfF9JD6ok=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1AB9D3373A;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9B8815BE95;
 	Fri, 16 Jan 2026 14:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1768574438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x//ubRuVrxiZHDkZo7cacxsgeijKPvlM+1IHTFUCb9Y=;
-	b=JbNQlxsVhA2n1R6NuVy1eBjv+9EQlLdJSJkHNdOQJp0cRTrbuWlcbBXeMGWSUT1j41h/dJ
-	CQtse5FbF1trF1wBUhVCMKA/RQki884cc3wJbIGBVOIfSSuFkRKNbQbntGHmk0ZRCoya/r
-	YO/h95Ut+g2hX+SaxOVYTiTdPNXJ5Go=
+	bh=/x3VSl+z38DX55xEQiDw1zpCdC7JNkQuXeiqMr2GloI=;
+	b=FLuX480nnxr2LCrWzGHmf9yMjIJp+7pc0EZ/9aFuMwCmQlGvmnSsq9vKrquCQTg1QTGu1s
+	sYollNtHUNJrYR6V1ybengYbGfp1O3jGD3Z7278eWf//9Tj0vBkyrb2aCAuRH8u6AqDnTd
+	H0Y7R05XSFVxPYuS3pEibGSWYdj4IgQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1768574438;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x//ubRuVrxiZHDkZo7cacxsgeijKPvlM+1IHTFUCb9Y=;
-	b=iH7aI8ZGtC2Q4Bii2XHEOxukYi0tA8acNEhUzxicmloLiGDlUQpTidDvt12UB4u02O60NC
-	gFSW7benzyLTmUCw==
+	bh=/x3VSl+z38DX55xEQiDw1zpCdC7JNkQuXeiqMr2GloI=;
+	b=ZJ/JWdnMIUYuzJE/R75O0PN8fcbxjb2kKwKGZoruoAD76vtcG8/431leNkJCKQlNPC99GJ
+	Oi8gjzF9Ffvc9YCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1768574438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x//ubRuVrxiZHDkZo7cacxsgeijKPvlM+1IHTFUCb9Y=;
-	b=JbNQlxsVhA2n1R6NuVy1eBjv+9EQlLdJSJkHNdOQJp0cRTrbuWlcbBXeMGWSUT1j41h/dJ
-	CQtse5FbF1trF1wBUhVCMKA/RQki884cc3wJbIGBVOIfSSuFkRKNbQbntGHmk0ZRCoya/r
-	YO/h95Ut+g2hX+SaxOVYTiTdPNXJ5Go=
+	bh=/x3VSl+z38DX55xEQiDw1zpCdC7JNkQuXeiqMr2GloI=;
+	b=FLuX480nnxr2LCrWzGHmf9yMjIJp+7pc0EZ/9aFuMwCmQlGvmnSsq9vKrquCQTg1QTGu1s
+	sYollNtHUNJrYR6V1ybengYbGfp1O3jGD3Z7278eWf//9Tj0vBkyrb2aCAuRH8u6AqDnTd
+	H0Y7R05XSFVxPYuS3pEibGSWYdj4IgQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1768574438;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x//ubRuVrxiZHDkZo7cacxsgeijKPvlM+1IHTFUCb9Y=;
-	b=iH7aI8ZGtC2Q4Bii2XHEOxukYi0tA8acNEhUzxicmloLiGDlUQpTidDvt12UB4u02O60NC
-	gFSW7benzyLTmUCw==
+	bh=/x3VSl+z38DX55xEQiDw1zpCdC7JNkQuXeiqMr2GloI=;
+	b=ZJ/JWdnMIUYuzJE/R75O0PN8fcbxjb2kKwKGZoruoAD76vtcG8/431leNkJCKQlNPC99GJ
+	Oi8gjzF9Ffvc9YCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EFFE43EA63;
-	Fri, 16 Jan 2026 14:40:37 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7FFFC3EA66;
+	Fri, 16 Jan 2026 14:40:38 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cEpROuVNamnydgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:37 +0000
+	id KFb5HuZNamnydgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:38 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 16 Jan 2026 15:40:33 +0100
-Subject: [PATCH v3 13/21] slab: remove defer_deactivate_slab()
+Date: Fri, 16 Jan 2026 15:40:38 +0100
+Subject: [PATCH v3 18/21] slab: update overview comments
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-sheaves-for-all-v3-13-5595cb000772@suse.cz>
+Message-Id: <20260116-sheaves-for-all-v3-18-5595cb000772@suse.cz>
 References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
 In-Reply-To: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
@@ -129,14 +129,13 @@ Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
  Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Rspamd-Queue-Id: 2AAFF180006
-X-Stat-Signature: jya7f394idr8gq51d9559dqfaoy18u5g
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768574479-625167
-X-HE-Meta: U2FsdGVkX18yvLMTPll3EVcZZ6Eb2EcukUayZLlKpqq3YNLJiPiYfRQRKDfmZeaxim3666+Kb1acugD7zKb0CTtCDHTrPq6xs/oEuZSd977rnk21r0JJHtVXmzDlRYOdc3s9+UaQZzqfTA+NmXt6p9G5IsM793hFzYgbtjHEwotNV+kpEj2/80yGxyXT3J5DdQeYgGmvxOvLynQFSoNr0fe9MQyIKuqAxGh8RD+Fya/w0gJsZQXpCSN//HxcYRN8fTNB4XWIRVV9YcGV7D06UmRhpYKZllyZmgGV4uEH+kDXuo2nR/OYgyONilUoWCeJC2nQ1SYRp6/RnrpZz0jFwwyPheAFQXlLSvPeIkvgd8OAzsZksxUIrBCNgbhRjL3tGpcW3R7LNmOEUF8nfapIMin1zqRFrugCq8TcQJBxmv9kXuDZS88k4JIH5QjR/HyW888E4K/0a0OVLdrMe1DFvCZ9bAjDFok4lI39zZNAeskbRW3ptaP9qvth+QmEla2OvW82VWVaDBClX7Un32sh1l5OyIqQlnaNXncx9BjyRH91F4b7Cj1Sz8s5F6s5l93DSPyiaYVR6lTThM60QaOHNdh84CfEel7veJuEd6jInWIiWctA6yA3q4pFXQrhXzzNfptWvAmWWXergtFvPZeylVPH8s/1+T2ExW7pPJQx+gYU4kLd143aw/+9AAm7bWQaJlOnjid+Rb0HCf/IXRZLFew82/4BxlvXQBO7OA9tia2RhCJp10qzvM1UK9RavZY67zFcbQgLrj7inO6dQ3Xd9nSa80fhZKijYJGer/fx2eLdBmbt7tUAfMN4ALtXN0HFEoEN2hYhLkvuaQn2FlZbmID7sGY6VvkQMWd2w7jB2aMy+21t/+CyAy3c7gomAt231/8EHX81WTLQHiT5LYruM3Smt8hVTDwha7rBtFJs4moWrPefJxfVeg684ybxzkKFV8Yf9nCZB4vYhSUbs7M
- deHtTBMq
- fX39aKvsys15vZvCIsD+pbU+IYXc2k4YOBj8Hbq4e42Cr/FqY7xv/950H9946F5WLzW8M/vb8GEoeeXQpxgSpAPwQlkjwgXWsrFcD8aa/Of0nFLHiGlQ3lQRaC4cFvubNavJgFotjH1E3Pws1FKixul1W0vQFOOV27Ok24R56UD2O+1jmGdGNNdpD6HOfokSGiEp8ZPUvr18Ucttwx79Zkhn6zg+ds8hd6k4ImKru/XorHdaZHmh6bqD7rjDJyag0h8Na
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4254D180003
+X-Stat-Signature: cx6hg19rzwno6mip5tmkpmt8mkah8mw3
+X-HE-Tag: 1768574482-723710
+X-HE-Meta: U2FsdGVkX1/uz587XDLuJ7LGML6QunNeX65I93W9oZAcs/376MQpdtc9VHGu5salT2rvyZvD496WZA0R39xj+UXDJwqXzMPlgaeXuevp+wY/XDJ1prNxJNkoL7A9hkzcRlp5RKVn85sXRtpK0UgFnxJ9iHgxX4imz7CALjJpwVLw0MHeStm4VAUI7fEdnMun7ZPRNSaNFgwiJLCiPBobyE9ItBUcUU3T1gq5og6dk5KAY1/FqDDCFeS+bXK/WVjDCKDz067IYIS8ChZmb/HBo0VPwVcXJ9IvY+eLCkusLmxO2vfpEY8eJ45IuAXAkrfDgm7uiJdWk6s7ZwEUFWVgMBzKJ6Jbi/lPHLtmmX1ze5Jgo/HjHUhSkwg77dL+GZTDTQI6+xJufbCnj7LFFoKyz5XKX4CW1nbiVwiVgTLRWzmfDZUcQuGjS6Rls+R3zvgwi7DHLzvqT68LAw5wlZUx6WAKuUAPSGMKCbdWDr6lR5oIcq63B+fc2NuAJbF4hQRmXyH2esYLwWW3ZZQsOOWrwzwE+hK/FYailvkHmx/P6zOhBLt2YAwhe44/ehvFCBG3NnY/aGeyntjlvYqs2CPWC/BMxMRJa8feG1OkFxNOi5lotN5Uxy7fkdipD4G625RIIYe7lK49KdvGz8ImeSWsysvXVdtU9lQUIbjK6FHVCiIj2tqCKLNGzvE01gkx1Ot0fZHlFIKJoff+1oQ8GugJH33DCEbkqEFuWgDsKjer9uTrFW+Ls3IgmeZW6l9/SV4lx/pqPvPeZ/wX9SqXHsGlu6jnoHYu6zHHMjDskQqNKmeQLTmT/rbtmq79DuTJGssW8eYDLqPZ0vkvVdfPRDkoCWxikf5pQlDkJjyTwogIUQIVwkXCzBo7CS6VjNf5CGA5bzi93PnsQGTRmvZ3uJeYLw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,217 +144,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are no more cpu slabs so we don't need their deferred
-deactivation. The function is now only used from places where we
-allocate a new slab but then can't spin on node list_lock to put it on
-the partial list. Instead of the deferred action we can free it directly
-via __free_slab(), we just need to tell it to use _nolock() freeing of
-the underlying pages and take care of the accounting.
+The changes related to sheaves made the description of locking and other
+details outdated. Update it to reflect current state.
 
-Since free_frozen_pages_nolock() variant does not yet exist for code
-outside of the page allocator, create it as a trivial wrapper for
-__free_frozen_pages(..., FPI_TRYLOCK).
+Also add a new copyright line due to major changes.
 
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/internal.h   |  1 +
- mm/page_alloc.c |  5 +++++
- mm/slab.h       |  8 +-------
- mm/slub.c       | 56 ++++++++++++++++++++------------------------------------
- 4 files changed, 27 insertions(+), 43 deletions(-)
+ mm/slub.c | 141 +++++++++++++++++++++++++++++---------------------------------
+ 1 file changed, 67 insertions(+), 74 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index e430da900430..1f44ccb4badf 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -846,6 +846,7 @@ static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int ord
- struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int order);
- #define alloc_frozen_pages_nolock(...) \
- 	alloc_hooks(alloc_frozen_pages_nolock_noprof(__VA_ARGS__))
-+void free_frozen_pages_nolock(struct page *page, unsigned int order);
- 
- extern void zone_pcp_reset(struct zone *zone);
- extern void zone_pcp_disable(struct zone *zone);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c380f063e8b7..0127e9d661ad 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2981,6 +2981,11 @@ void free_frozen_pages(struct page *page, unsigned int order)
- 	__free_frozen_pages(page, order, FPI_NONE);
- }
- 
-+void free_frozen_pages_nolock(struct page *page, unsigned int order)
-+{
-+	__free_frozen_pages(page, order, FPI_TRYLOCK);
-+}
-+
- /*
-  * Free a batch of folios
-  */
-diff --git a/mm/slab.h b/mm/slab.h
-index e77260720994..4efec41b6445 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -71,13 +71,7 @@ struct slab {
- 	struct kmem_cache *slab_cache;
- 	union {
- 		struct {
--			union {
--				struct list_head slab_list;
--				struct { /* For deferred deactivate_slab() */
--					struct llist_node llnode;
--					void *flush_freelist;
--				};
--			};
-+			struct list_head slab_list;
- 			/* Double-word boundary */
- 			struct freelist_counters;
- 		};
 diff --git a/mm/slub.c b/mm/slub.c
-index b08e775dc4cb..33f218c0e8d6 100644
+index 2c522d2bf547..476a279f1a94 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -3260,7 +3260,7 @@ static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
- 		flags & (GFP_RECLAIM_MASK | GFP_CONSTRAINT_MASK), node);
- }
- 
--static void __free_slab(struct kmem_cache *s, struct slab *slab)
-+static void __free_slab(struct kmem_cache *s, struct slab *slab, bool allow_spin)
- {
- 	struct page *page = slab_page(slab);
- 	int order = compound_order(page);
-@@ -3271,14 +3271,26 @@ static void __free_slab(struct kmem_cache *s, struct slab *slab)
- 	__ClearPageSlab(page);
- 	mm_account_reclaimed_pages(pages);
- 	unaccount_slab(slab, order, s);
--	free_frozen_pages(page, order);
-+	if (allow_spin)
-+		free_frozen_pages(page, order);
-+	else
-+		free_frozen_pages_nolock(page, order);
-+}
-+
-+static void free_new_slab_nolock(struct kmem_cache *s, struct slab *slab)
-+{
-+	/*
-+	 * Since it was just allocated, we can skip the actions in
-+	 * discard_slab() and free_slab().
-+	 */
-+	__free_slab(s, slab, false);
- }
- 
- static void rcu_free_slab(struct rcu_head *h)
- {
- 	struct slab *slab = container_of(h, struct slab, rcu_head);
- 
--	__free_slab(slab->slab_cache, slab);
-+	__free_slab(slab->slab_cache, slab, true);
- }
- 
- static void free_slab(struct kmem_cache *s, struct slab *slab)
-@@ -3294,7 +3306,7 @@ static void free_slab(struct kmem_cache *s, struct slab *slab)
- 	if (unlikely(s->flags & SLAB_TYPESAFE_BY_RCU))
- 		call_rcu(&slab->rcu_head, rcu_free_slab);
- 	else
--		__free_slab(s, slab);
-+		__free_slab(s, slab, true);
- }
- 
- static void discard_slab(struct kmem_cache *s, struct slab *slab)
-@@ -3387,8 +3399,6 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
- 	return object;
- }
- 
--static void defer_deactivate_slab(struct slab *slab, void *flush_freelist);
--
+@@ -1,13 +1,15 @@
+ // SPDX-License-Identifier: GPL-2.0
  /*
-  * Called only for kmem_cache_debug() caches to allocate from a freshly
-  * allocated slab. Allocate a single object instead of whole freelist
-@@ -3404,8 +3414,8 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
- 	void *object;
+- * SLUB: A slab allocator that limits cache line use instead of queuing
+- * objects in per cpu and per node lists.
++ * SLUB: A slab allocator with low overhead percpu array caches and mostly
++ * lockless freeing of objects to slabs in the slowpath.
+  *
+- * The allocator synchronizes using per slab locks or atomic operations
+- * and only uses a centralized lock to manage a pool of partial slabs.
++ * The allocator synchronizes using spin_trylock for percpu arrays in the
++ * fastpath, and cmpxchg_double (or bit spinlock) for slowpath freeing.
++ * Uses a centralized lock to manage a pool of partial slabs.
+  *
+  * (C) 2007 SGI, Christoph Lameter
+  * (C) 2011 Linux Foundation, Christoph Lameter
++ * (C) 2025 SUSE, Vlastimil Babka
+  */
  
- 	if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
--		/* Unlucky, discard newly allocated slab */
--		defer_deactivate_slab(slab, NULL);
-+		/* Unlucky, discard newly allocated slab. */
-+		free_new_slab_nolock(s, slab);
- 		return NULL;
- 	}
+ #include <linux/mm.h>
+@@ -53,11 +55,13 @@
  
-@@ -4276,7 +4286,7 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
- 
- 		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
- 			/* Unlucky, discard newly allocated slab */
--			defer_deactivate_slab(slab, NULL);
-+			free_new_slab_nolock(s, slab);
- 			return 0;
- 		}
- 	}
-@@ -6033,7 +6043,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 
- struct defer_free {
- 	struct llist_head objects;
--	struct llist_head slabs;
- 	struct irq_work work;
- };
- 
-@@ -6041,7 +6050,6 @@ static void free_deferred_objects(struct irq_work *work);
- 
- static DEFINE_PER_CPU(struct defer_free, defer_free_objects) = {
- 	.objects = LLIST_HEAD_INIT(objects),
--	.slabs = LLIST_HEAD_INIT(slabs),
- 	.work = IRQ_WORK_INIT(free_deferred_objects),
- };
- 
-@@ -6054,10 +6062,9 @@ static void free_deferred_objects(struct irq_work *work)
- {
- 	struct defer_free *df = container_of(work, struct defer_free, work);
- 	struct llist_head *objs = &df->objects;
--	struct llist_head *slabs = &df->slabs;
- 	struct llist_node *llnode, *pos, *t;
- 
--	if (llist_empty(objs) && llist_empty(slabs))
-+	if (llist_empty(objs))
- 		return;
- 
- 	llnode = llist_del_all(objs);
-@@ -6081,16 +6088,6 @@ static void free_deferred_objects(struct irq_work *work)
- 
- 		__slab_free(s, slab, x, x, 1, _THIS_IP_);
- 	}
--
--	llnode = llist_del_all(slabs);
--	llist_for_each_safe(pos, t, llnode) {
--		struct slab *slab = container_of(pos, struct slab, llnode);
--
--		if (slab->frozen)
--			deactivate_slab(slab->slab_cache, slab, slab->flush_freelist);
--		else
--			free_slab(slab->slab_cache, slab);
--	}
- }
- 
- static void defer_free(struct kmem_cache *s, void *head)
-@@ -6106,19 +6103,6 @@ static void defer_free(struct kmem_cache *s, void *head)
- 		irq_work_queue(&df->work);
- }
- 
--static void defer_deactivate_slab(struct slab *slab, void *flush_freelist)
--{
--	struct defer_free *df;
--
--	slab->flush_freelist = flush_freelist;
--
--	guard(preempt)();
--
--	df = this_cpu_ptr(&defer_free_objects);
--	if (llist_add(&slab->llnode, &df->slabs))
--		irq_work_queue(&df->work);
--}
--
- void defer_free_barrier(void)
- {
- 	int cpu;
+ /*
+  * Lock order:
+- *   1. slab_mutex (Global Mutex)
+- *   2. node->list_lock (Spinlock)
+- *   3. kmem_cache->cpu_slab->lock (Local lock)
+- *   4. slab_lock(slab) (Only on some arches)
+- *   5. object_map_lock (Only for debugging)
++ *   0.  cpu_hotplug_lock
++ *   1.  slab_mutex (Global Mutex)
++ *   2a. kmem_cache->cpu_sheaves->lock (Local trylock)
++ *   2b. node->barn->lock (Spinlock)
++ *   2c. node->list_lock (Spinlock)
++ *   3.  slab_lock(slab) (Only on some arches)
++ *   4.  object_map_lock (Only for debugging)
+  *
+  *   slab_mutex
+  *
+@@ -78,31 +82,38 @@
+  *	C. slab->objects	-> Number of objects in slab
+  *	D. slab->frozen		-> frozen state
+  *
+- *   Frozen slabs
++ *   SL_partial slabs
++ *
++ *   Slabs on node partial list have at least one free object. A limited number
++ *   of slabs on the list can be fully free (slab->inuse == 0), until we start
++ *   discarding them. These slabs are marked with SL_partial, and the flag is
++ *   cleared while removing them, usually to grab their freelist afterwards.
++ *   This clearing also exempts them from list management. Please see
++ *   __slab_free() for more details.
+  *
+- *   If a slab is frozen then it is exempt from list management. It is
+- *   the cpu slab which is actively allocated from by the processor that
+- *   froze it and it is not on any list. The processor that froze the
+- *   slab is the one who can perform list operations on the slab. Other
+- *   processors may put objects onto the freelist but the processor that
+- *   froze the slab is the only one that can retrieve the objects from the
+- *   slab's freelist.
++ *   Full slabs
+  *
+- *   CPU partial slabs
++ *   For caches without debugging enabled, full slabs (slab->inuse ==
++ *   slab->objects and slab->freelist == NULL) are not placed on any list.
++ *   The __slab_free() freeing the first object from such a slab will place
++ *   it on the partial list. Caches with debugging enabled place such slab
++ *   on the full list and use different allocation and freeing paths.
++ *
++ *   Frozen slabs
+  *
+- *   The partially empty slabs cached on the CPU partial list are used
+- *   for performance reasons, which speeds up the allocation process.
+- *   These slabs are not frozen, but are also exempt from list management,
+- *   by clearing the SL_partial flag when moving out of the node
+- *   partial list. Please see __slab_free() for more details.
++ *   If a slab is frozen then it is exempt from list management. It is used to
++ *   indicate a slab that has failed consistency checks and thus cannot be
++ *   allocated from anymore - it is also marked as full. Any previously
++ *   allocated objects will be simply leaked upon freeing instead of attempting
++ *   to modify the potentially corrupted freelist and metadata.
+  *
+  *   To sum up, the current scheme is:
+- *   - node partial slab: SL_partial && !frozen
+- *   - cpu partial slab: !SL_partial && !frozen
+- *   - cpu slab: !SL_partial && frozen
+- *   - full slab: !SL_partial && !frozen
++ *   - node partial slab:            SL_partial && !full && !frozen
++ *   - taken off partial list:      !SL_partial && !full && !frozen
++ *   - full slab, not on any list:  !SL_partial &&  full && !frozen
++ *   - frozen due to inconsistency: !SL_partial &&  full &&  frozen
+  *
+- *   list_lock
++ *   node->list_lock (spinlock)
+  *
+  *   The list_lock protects the partial and full list on each node and
+  *   the partial slab counter. If taken then no new slabs may be added or
+@@ -112,47 +123,46 @@
+  *
+  *   The list_lock is a centralized lock and thus we avoid taking it as
+  *   much as possible. As long as SLUB does not have to handle partial
+- *   slabs, operations can continue without any centralized lock. F.e.
+- *   allocating a long series of objects that fill up slabs does not require
+- *   the list lock.
++ *   slabs, operations can continue without any centralized lock.
+  *
+  *   For debug caches, all allocations are forced to go through a list_lock
+  *   protected region to serialize against concurrent validation.
+  *
+- *   cpu_slab->lock local lock
++ *   cpu_sheaves->lock (local_trylock)
+  *
+- *   This locks protect slowpath manipulation of all kmem_cache_cpu fields
+- *   except the stat counters. This is a percpu structure manipulated only by
+- *   the local cpu, so the lock protects against being preempted or interrupted
+- *   by an irq. Fast path operations rely on lockless operations instead.
++ *   This lock protects fastpath operations on the percpu sheaves. On !RT it
++ *   only disables preemption and does no atomic operations. As long as the main
++ *   or spare sheaf can handle the allocation or free, there is no other
++ *   overhead.
+  *
+- *   On PREEMPT_RT, the local lock neither disables interrupts nor preemption
+- *   which means the lockless fastpath cannot be used as it might interfere with
+- *   an in-progress slow path operations. In this case the local lock is always
+- *   taken but it still utilizes the freelist for the common operations.
++ *   node->barn->lock (spinlock)
+  *
+- *   lockless fastpaths
++ *   This lock protects the operations on per-NUMA-node barn. It can quickly
++ *   serve an empty or full sheaf if available, and avoid more expensive refill
++ *   or flush operation.
+  *
+- *   The fast path allocation (slab_alloc_node()) and freeing (do_slab_free())
+- *   are fully lockless when satisfied from the percpu slab (and when
+- *   cmpxchg_double is possible to use, otherwise slab_lock is taken).
+- *   They also don't disable preemption or migration or irqs. They rely on
+- *   the transaction id (tid) field to detect being preempted or moved to
+- *   another cpu.
++ *   Lockless freeing
++ *
++ *   Objects may have to be freed to their slabs when they are from a remote
++ *   node (where we want to avoid filling local sheaves with remote objects)
++ *   or when there are too many full sheaves. On architectures supporting
++ *   cmpxchg_double this is done by a lockless update of slab's freelist and
++ *   counters, otherwise slab_lock is taken. This only needs to take the
++ *   list_lock if it's a first free to a full slab, or when there are too many
++ *   fully free slabs and some need to be discarded.
+  *
+  *   irq, preemption, migration considerations
+  *
+- *   Interrupts are disabled as part of list_lock or local_lock operations, or
++ *   Interrupts are disabled as part of list_lock or barn lock operations, or
+  *   around the slab_lock operation, in order to make the slab allocator safe
+  *   to use in the context of an irq.
++ *   Preemption is disabled as part of local_trylock operations.
++ *   kmalloc_nolock() and kfree_nolock() are safe in NMI context but see
++ *   their limitations.
+  *
+- *   In addition, preemption (or migration on PREEMPT_RT) is disabled in the
+- *   allocation slowpath, bulk allocation, and put_cpu_partial(), so that the
+- *   local cpu doesn't change in the process and e.g. the kmem_cache_cpu pointer
+- *   doesn't have to be revalidated in each section protected by the local lock.
+- *
+- * SLUB assigns one slab for allocation to each processor.
+- * Allocations only occur from these slabs called cpu slabs.
++ * SLUB assigns two object arrays called sheaves for caching allocation and
++ * frees on each cpu, with a NUMA node shared barn for balancing between cpus.
++ * Allocations and frees are primarily served from these sheaves.
+  *
+  * Slabs with free elements are kept on a partial list and during regular
+  * operations no list for full slabs is used. If an object in a full slab is
+@@ -160,25 +170,8 @@
+  * We track full slabs for debugging purposes though because otherwise we
+  * cannot scan all objects.
+  *
+- * Slabs are freed when they become empty. Teardown and setup is
+- * minimal so we rely on the page allocators per cpu caches for
+- * fast frees and allocs.
+- *
+- * slab->frozen		The slab is frozen and exempt from list processing.
+- * 			This means that the slab is dedicated to a purpose
+- * 			such as satisfying allocations for a specific
+- * 			processor. Objects may be freed in the slab while
+- * 			it is frozen but slab_free will then skip the usual
+- * 			list operations. It is up to the processor holding
+- * 			the slab to integrate the slab into the slab lists
+- * 			when the slab is no longer needed.
+- *
+- * 			One use of this flag is to mark slabs that are
+- * 			used for allocations. Then such a slab becomes a cpu
+- * 			slab. The cpu slab may be equipped with an additional
+- * 			freelist that allows lockless access to
+- * 			free objects in addition to the regular freelist
+- * 			that requires the slab lock.
++ * Slabs are freed when they become empty. Teardown and setup is minimal so we
++ * rely on the page allocators per cpu caches for fast frees and allocs.
+  *
+  * SLAB_DEBUG_FLAGS	Slab requires special handling due to debug
+  * 			options set. This moves	slab handling out of
 
 -- 
 2.52.0
