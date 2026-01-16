@@ -4,212 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D604DD48984
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 11:37:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFCCDD4898C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 11:57:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4269B6B0099; Fri, 16 Jan 2026 06:37:27 -0500 (EST)
+	id AFA476B008A; Fri, 16 Jan 2026 06:57:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 417876B009B; Fri, 16 Jan 2026 06:37:27 -0500 (EST)
+	id AA8496B008C; Fri, 16 Jan 2026 06:57:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F9346B009F; Fri, 16 Jan 2026 06:37:27 -0500 (EST)
+	id 9AA5C6B0092; Fri, 16 Jan 2026 06:57:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EFDA6B0099
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:37:27 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5F64C2476
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:37:26 +0000 (UTC)
-X-FDA: 84337626492.13.489A82A
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011053.outbound.protection.outlook.com [40.107.208.53])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0AA7B40003
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:37:23 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=fMd4w77D;
-	spf=pass (imf04.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.208.53 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768563444;
+	by kanga.kvack.org (Postfix) with ESMTP id 886936B008A
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:57:20 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2AC188C22C
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:57:20 +0000 (UTC)
+X-FDA: 84337676640.30.70EA15F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BA09E100003
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:57:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hOcOOVnb;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768564638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eEyDPhMpkPGhLzC51UVjTvEhnbbulELjYrc9OKCAfsc=;
-	b=0oOvtcwsPLw7XIMEFWZUZle3Qmmrklcd1EPsv9SbFBgV5QoH1X00ONS2lfc+RjrsazPtEN
-	LbwNCXRFOT7jL0stiWVyJqFK4FRqQ+6bh3n+uZPSYzCRwhEw1mpCq6wgLfHRTLdmHBMywV
-	gKcB9i7ucv7wCKzoV5zCdhfwjqRV2zM=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=fMd4w77D;
-	spf=pass (imf04.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.208.53 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768563444; a=rsa-sha256;
-	cv=pass;
-	b=ga//79IlnLYu/DN8vWgCqwZjPglg17vBSXACIG36hNY1OH93U0f5K9Zpm28sRuJ06O9Ezl
-	o1uS2GppyLOpj2gLUFlJnVqHv1wUCibyzq7v9as+UdFtk+IfzrjDbQWhpi6XhXO7mZJbyk
-	mVmBVbTe976TQU/srF7cLvSf4MzaXC8=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=csK9Oe3FT1/80XOR8Wz2HowRfF/X17hZM6opDm2UN2cC8ilMOlj4hdVIGR+2RZs+3lZgwDJB2+sVr8g8F6FNPNik1EK/0ZLFhuw1u79SIbY9Fddbd9ry1B8npHqszN75xkJZi3UCPvolR3D2ouTRUthlgXAf0so4ARuFAu/lNolMjLj0O4F8zD+TmAbTAAHFUSeDsERudlLy9mXjhPafXCRqlYq/eZaAn3BPePL5F4QxfT6XgqN8j6r+LhG6nEwvHdiWxqHYsr0VOTmaC03SFMmFCCSh91KLjjxyrQnMCb7z2XxcABBGkYM5qJi+EI1wzPAoVUcKayAJ0PJX+jRcFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eEyDPhMpkPGhLzC51UVjTvEhnbbulELjYrc9OKCAfsc=;
- b=CqXh7s3f5rz7R4TMRHzXUYI8IM9MB2r5pJr3eXYngtRvwymAwgi4ExhPd5ZpyM+i8gPFNoTYvN0mLVHCrdjZMqBqF2zxArm/lsq+jczem4bdZ6wPUK/PsS4UABr3qOGcNrnAv32ASaJuWzPFQXXoGllDQM82kLlRsqeZniioBu1MndzFd5AJ5I5w+g+k4jVnYQLcPP4fESS+1GtUhdUzmzY/Wl3TpQ1/RFUDbUwVASSoEhIggwypH8apwqEwlFtWVrMBG/Mn28T4IJYKBTxz4yUSmPmwIGfFJ+VZ+QbLB7zZ2xbTESJZlNHzw608Ao9kFxRjFE960Pk3IWkfBwHeJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eEyDPhMpkPGhLzC51UVjTvEhnbbulELjYrc9OKCAfsc=;
- b=fMd4w77DsoHGMIGV5O0GqZzMGt3lVeCVOOyaCCUIvxKGlKCiN6rXtlMNvCA/C/00e0rXVR+gu7tBAJeiQwYQHDHc/PVbfbdjSCVqOsL6+Eks0ME5yN+JSefRnhFOWMUfEDYav6IxiypqJNWppxjrc0M5hVFhWV187rUuiT1Vgq5EU/Dvf+5yfq9UIyFF+VUhF16bEIQ4+6Co8aba5CYfYXZttO0+Hne6SH3jVTHPWjK3A0vJvks1jzy7vQAMCzKT/Cfoq4k6lHtfoi3qu4qMJdtmNNuQwLdo5yXPHSQSIj4jgY0fsm/kDNvIKlRyupBs76pwCDSBuvI4K/Z+NqA3oA==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by SJ0PR12MB7008.namprd12.prod.outlook.com (2603:10b6:a03:486::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Fri, 16 Jan
- 2026 11:37:20 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9499.005; Fri, 16 Jan 2026
- 11:37:20 +0000
-Message-ID: <32ad0dee-0604-411b-b99a-b1bfd8ba89ed@nvidia.com>
-Date: Fri, 16 Jan 2026 22:37:15 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] drm/pagemap: Correct cpages calculation for
- migrate_vma_setup
-To: Francois Dugast <francois.dugast@intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Zi Yan <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- linux-mm@kvack.org
-References: <20260116111325.1736137-1-francois.dugast@intel.com>
- <20260116111325.1736137-5-francois.dugast@intel.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260116111325.1736137-5-francois.dugast@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR06CA0003.namprd06.prod.outlook.com
- (2603:10b6:a03:d4::16) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=ZlOIbNUCEgilbaY1KGaFBHB7qA7SGL79lCxCJaeM+TE=;
+	b=BlbBwdPBNYwXgARX9pBmQYVQijnynNNyIYLCo5RmdcD1LGqS4rBUY90C8xQbV7tNGo9NiO
+	6yCWlsbhhj9E3r8VrzPmtcEKbKhHGxipHo5MYdkmUEF1u0XgDh1ICc7qbCE8a4ld8sEkKh
+	y8+FV3a5JeQy38JX4UvE0Z+LNfYFOMg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hOcOOVnb;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768564638; a=rsa-sha256;
+	cv=none;
+	b=qZSTAajYusJYJiCWnmclwzU3YbtHk+Xw++gtymi6zRvG6DT3Ywv0sxRzeBrtwl7QpgdpaR
+	K74tsJgyzBnvZicqOWkWlhC/4etLEwtA+CEWsQhsjWIrOdhXgKYgbayNeEKgufjxQ1X4Dt
+	naEP7zSuFhnRK4diW1KQG2W51Ut3brI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0F32D601B2;
+	Fri, 16 Jan 2026 11:57:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1146CC19423;
+	Fri, 16 Jan 2026 11:57:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768564637;
+	bh=6SDIwhdUvWr8ewpLO9jVWgrS1866uQekJSM327jVKA0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=hOcOOVnbFJZHY+6yr3s6ggGs2USLu/6pg8AM9s1qhAq8dxpyxu2RQCfeWUItuRHIs
+	 jt7/yWca2D2fWNieB8Kz8ZrRGE81TvhXbv/ebxDCRHIg373WcldjDR0aRTFwWdWNlq
+	 m25R3zKYRoJ0peAIUvrkdciinHFKOZZpNMTlZEX7wqoZ5/pvj6WJmzYZ4sfi6OqWDQ
+	 qLbm64nXLy2tfNhp0vIsCU/8ohNsEQyRdoTySUPjkHTSjyqZOSQYfpacLSWzSwNuC6
+	 UsyefUb9VlmycNTcU1Wp3Sg5JOw+Yijv7QuVGPmlu010D5zSy/SaA/Z2M0duqyAzBv
+	 PBdlJSELC0Frw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Evangelos Petrongonas <epetron@amazon.de>
+Cc: Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
+  "Alexander Graf" <graf@amazon.com>,  Jason Miu <jasonmiu@google.com>,
+  <linux-kernel@vger.kernel.org>,  <kexec@lists.infradead.org>,
+  <linux-mm@kvack.org>,  <nh-open-source@amazon.com>
+Subject: Re: [PATCH] kho: skip memoryless NUMA nodes when reserving scratch
+ areas
+In-Reply-To: <20260116112640.64900-1-epetron@amazon.de> (Evangelos
+	Petrongonas's message of "Fri, 16 Jan 2026 11:26:35 +0000")
+References: <20260116112640.64900-1-epetron@amazon.de>
+Date: Fri, 16 Jan 2026 11:57:14 +0000
+Message-ID: <2vxzsec57oth.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|SJ0PR12MB7008:EE_
-X-MS-Office365-Filtering-Correlation-Id: 942e9eda-ea44-49e9-feaf-08de54f39bea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|10070799003|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TGMvZWJ4R0h5MEJ1bUhkbDVoN3hBUlpnZE1MZk4yVWFUVVJLYXNpa3c4ZUxl?=
- =?utf-8?B?MmVFc0REQVlPbldzYXNlbHBGYU1uYlhkUjUxWWl5ME9yQU0wMlFBTnZGSEpY?=
- =?utf-8?B?NVoxalhqMnNkMC95VWFmeWFGOUJtMDA2VjdFcm1MeWphTXpjcDZvbHUrT3pZ?=
- =?utf-8?B?TzNHRS9ZVGpDcE9JcWNyenBodnN1eXhtanl3NTlOdllva1VFcjVOTXlVRnM5?=
- =?utf-8?B?SHFhUGptYlNGa25MUnlTZkpYQ3MxczZwVmJDSHhzZ253Mzkvd2l0bGdVMlZC?=
- =?utf-8?B?eUYxaGhjY2NpeGtTTGYrd25nUkxvaUI1Zk1hWGFrSUV0TkFGbDBScTBzSFVl?=
- =?utf-8?B?Q3dzckVKeDhBZGsrdjFJV1FqRFVadWhCdjI2RTZxTWpZUzkzVy9mSXJuVFhL?=
- =?utf-8?B?TllEUlQ1Y2xwZEQ0bGo3TFFPUXA0VXpvOXByd2JCQzlxK1h3WFRxY3pNUFpy?=
- =?utf-8?B?Z0RmUWJaU3d4eTFjc0g0dVBtbUdOYk95czFaMm40MjNYcFFJeVRsd2RXa0pt?=
- =?utf-8?B?VjA3QjZ2MHdMemtjT3FrN2JOamhYamJkcVJXZ2FXRUNOLzFYU2M3VHIwMTdV?=
- =?utf-8?B?dTE5STNiYlRPWmhnWmdST0FCRFhsdUFMd3RHMHVaa05od2xPQjFhOFNHWm5h?=
- =?utf-8?B?Qk1XRy95MTJYTHh4aGs3ZW9XTFNJVjRPUmR0UVEzS1JmejRpUDFvblRlMmhR?=
- =?utf-8?B?UTQ4cEN1R3FjZ25STlMyZmp3WFVuS2Q0VVg3OEJJanAvOWJHUkNNU3FuYmZo?=
- =?utf-8?B?SU5CMjV3NmwwWHJuc1NtYVBSZ0JxTnc1QURzRExyZy85ZHRkTmM1a3RJa2hM?=
- =?utf-8?B?c01EMUwybG5kYzIybjF1eUJiYlNHcVpwcStIWFlxWjd2NEdDdmZRbnh4Tllu?=
- =?utf-8?B?VzI1WTZLcWFxTkpFUGdhUVZrRGpiYnRFdlpETHdGTE53VWtWNDN1NWpsemRM?=
- =?utf-8?B?RlNZa2oxMmNMWTR1ak5yVnMvdllTWFUzRXNEU1ZOam43WTlENXBORmFZeC9z?=
- =?utf-8?B?ZEJqZUFadVRLeitXSWt4MStHSUhUTUdPOHMxOEJZellKOXpYMkllQ0RsZFJW?=
- =?utf-8?B?VVo1ZG5LeGFUdkNxd1JoeFpGMm1SdjZnc0dIbUQ0R3UyRTIrZDNFRDYzdFhn?=
- =?utf-8?B?b3RMZkM3R0dST3NXYTVTUFFnR2JqelBCRUoyY093b1dBcVhsN2htT1JTN25L?=
- =?utf-8?B?RU5SbENpVFdIVU5nMGQwcXpXNFdOUDlWRWlPRVhZYlFFWENhZFNDNlBqQWVl?=
- =?utf-8?B?NlNLbDlWeXhtTkhwMjVWNDZ0QVcxMzA5V3MvNDIvUTZ0ZVM5elFLN1d6amtp?=
- =?utf-8?B?S210SHNKUHplMkNwWnVOMGp1eXpwcjV3UVQ3OHFSQnlxdXpYSzBsWUQ1V2N1?=
- =?utf-8?B?M1RWcXR2bzRTSmFoVUpqdnRPMG9kc05kVTBEekJWRmw0dE4rTmM2QTBKaTdF?=
- =?utf-8?B?Z2ttUzk5b29ObHl0Y2Z6N0lvK041M0E2YlJLZ0hISzA3SFBZNGVLbnlaMlFQ?=
- =?utf-8?B?Z3M4U01tRHhTQjlESWxrNmM5MWwzUTJ3WHF2cWFPRHhwOVExdml4YTV0OHNN?=
- =?utf-8?B?YlQ1eEVXdGtFMURraEFaWG5sUXVSWnZ3R0I5R1BtcThNM0lDaEQ2SmcvVzl6?=
- =?utf-8?B?ejdibkZKZEhNTFQyN0J3VmFNQ3pZZzl6cXlmUnJ6eEpTdWVJaXpabGpKRitw?=
- =?utf-8?B?MDRBN3ZEWk1ROFNLZU1LY1BqOTZ0ZXJkSnArRE9PQ0prVGgzcjNKdjFLcFNr?=
- =?utf-8?B?am14TWVKSzU1bGFDd2luRyswdzZzUVFSZHJVa0dXckpRWjVxblRxczNGTzBL?=
- =?utf-8?B?MUkyY1k4OXQvL3FVZThnaXgreXduTG1xOTVoK3EvUXpEeXZ6ZzlUYnJycGkr?=
- =?utf-8?B?Ni9Zb2FaZDJEa3ZlVG5ON2xza0pLbUFYY1g2T3o4TkpiUVgya3hLYklVSURC?=
- =?utf-8?B?NFM0eS96RExqL2dPT2ZvWTYzeVZKejB3TmJhQUFrSG4ybVhCek5ZMHBiZkJS?=
- =?utf-8?B?NTdWTTZ4YkNkL0NxbHFxNStkQlhEWG5GRnU4L2lZdHJwcE5YY2UzSnFycEg1?=
- =?utf-8?B?YWxCK01qWEs3a1RTTFJ6UFJoLzZKTnBmVmlVd0p5aVdhMWdCdEliR09pUlQ0?=
- =?utf-8?Q?C3/o=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aHZxalllcm1YVTNOdmJScnYzVEJjdThlYkhlMy91cWdlcmcyb3d1dklhYlhP?=
- =?utf-8?B?dkh0TmE1dkNjV0dsc3gxeG1XbENJdU9YVEN4a21JNXR2dWY3YWJkVWRLa3ZE?=
- =?utf-8?B?Y2FueHB6akJUem9iTmpueHZTMmRNSkRIQ0hJQVVOVVNYb0hyRmpqU0tWMVh4?=
- =?utf-8?B?MGFKank4dmVNdVhXbXlTTW0rcEVsbW5FVUdzMFptYkM1Mk1xanh3eHpLQXJR?=
- =?utf-8?B?R1lOMTlMQVRhKzl0M3ZpUVF0TjdxQUI4amxPeGhrM3M0WkVQYzRxZzFqcThp?=
- =?utf-8?B?WWNkcDJsQ2djM2tXMnRvejErNVBGT2UwYkErL044WUVWYXlHM2hQRFVGV2tP?=
- =?utf-8?B?ZWJaSm5tSmRpR0ZhS2VrOS9Fd1VtNDdEOVVyWG91eHVnaXhhRUx4T2w2Ukla?=
- =?utf-8?B?OUZ0bFFkY3B2QndoRW5RclRKbUorTTZYVDNkUXdFMEhkRGl2WjdxRlp5OWdu?=
- =?utf-8?B?bkRSTjAwbWdIc1VSUm9KV25SeE9QbE1OZGhxOGl0cnhPZ3k1ODVVb1ZlbFVM?=
- =?utf-8?B?eGtudExHODhibU9ha3d1N3JuUXN6TVJIKzRSWXBkNjNJcUJNQ05MVThPdHYv?=
- =?utf-8?B?WlVyN2ZodkVjc0FJbEpoOGlKbUFIOW5ZbllqUnE1UDVxcTlWYU5CVnMvNlB1?=
- =?utf-8?B?ZTBTRWVFSVpSY0t4eTNoc2pjRXQ4UmR4MUlySjZ1MytDd0lKQXk4N3VGTng4?=
- =?utf-8?B?Ni96WERFUENndExHcm5oZWxreTV3UkZYNi9HbXY3TnF0NjloWXhFaVlmMDI0?=
- =?utf-8?B?allwc3J6TEZxb2tpVm1SOFJySFdVZEI5TTdxVTdFK053eDQzTE5IcldFams1?=
- =?utf-8?B?OXU2MHh0UHp1dHFoODhTcDlTaHRleFJVNmV0c2ZjYkhZVUFrbVN1YTRJMnly?=
- =?utf-8?B?WXJOdHhEVTdxY2NFbG1raFFsMVZXeWVZSzZha3packxxbE5XUnNQUXJ3b2xh?=
- =?utf-8?B?cldPcGJwV2xFOUROSGJxSzhpa3VvTVI3L25VRnpaZEpxYXNMc1kyOHVFNXZi?=
- =?utf-8?B?NHJoWmZhZGVGZHQzYlBVR2RuaDM0KzJMNWNDS1hMRjBxVDZEaUFXU3JJeXhT?=
- =?utf-8?B?MFhhbDdsVWZsc0F6RUZGbVVoV2pRc3JUdXRBanNrWENJT25vM1diSnFtSmxn?=
- =?utf-8?B?T0VqcFdUd0QrZHpidlRnekxlVEFUQUtYMnFxSUhNTit1WmdZK1QwRmhuUDV6?=
- =?utf-8?B?YUtPbmtaTnJiQ2dzYTl5UjYwYnNFYWx1MXFVVGVCd29maXhsb3g0VUlBOFpW?=
- =?utf-8?B?NWJCMFBTT2M2Vk1aYjN0QzNxdURFUk5QY1pSM1pmaFJvUnZ3V0pnKzNpUitU?=
- =?utf-8?B?MGlvbHZQZFNic1VldkREdEFzZjN0TGhERzI1ZnJRYnk5Ym1lVWFoOWNQVDcw?=
- =?utf-8?B?bXp5VFd5V1I2emJQRGZpWWFBN3RTOWFGYkRxc2d0N1lTb0p1anhrQ1ZqUkM1?=
- =?utf-8?B?QlFUODhvakEzZGd5M1hrUFpMUlVuQi9Kd2ttcm0yU2ZpbmpEZWVDNXU3Mzhp?=
- =?utf-8?B?S2VjdWdaWmpFMi9rbEhJWHRQUCsxZStnaWY0L1RLaEZ0dU5SQmJzUVRVWUNC?=
- =?utf-8?B?M0lXZXZIK2o5UW1XcjNBVG8wOUc5SnFWT0ZnN09JMkdiU0JVMW55eksyc09N?=
- =?utf-8?B?ci9vdENUN05OKzh5a3E5YUFUR1pGZnhyNEM0ZU9acmVFZGZ4cC91R3RDUVRj?=
- =?utf-8?B?YlVwWjQxdEpIUnhtWVhBemYrU0NCNWp0cWVGMEM3aFlhRHgreXlrSEN6QU91?=
- =?utf-8?B?b3RleDk3b2hBM2lwTHVJYjBqSXFuNTBlQ2NSRFloSUY1anJrZTVZVS9ONVlQ?=
- =?utf-8?B?NzI3ZUpVZjRQRmJoY2hsN25qSHlPZUVQczhuT2JLL3VrZHMrSEpuTTBhNGZv?=
- =?utf-8?B?aElTT2t3S1BYYlVBbFkzVmdxbkdjeGR5Z1NFdzI2SkZUYjZ4QUp4c09yNjdE?=
- =?utf-8?B?ZUQ2dUZkTGRLTkYvWTRtTU1OWG5VZkY3ejB0ZUNXRTUyWG1KelNLYTl3TnRI?=
- =?utf-8?B?ZjhMYTN2V1c1TnpFUEI4bjFWSm9ySGlXbUpSWW1rdWlTZUI3VzdpN25FUVcy?=
- =?utf-8?B?bDhqdHV5LzlWT0lueXdTRlZrTGZEdDhCU09uN293cVUxWnJFZk56TVRnTFYz?=
- =?utf-8?B?b1k1NDgyY2xuRk1DVDNMQ2hXY2pXdGdjajdzWnFGZmNrUE16cTZJbG9jZWtF?=
- =?utf-8?B?dFhNSVkzMThaNzF3QmowTGJOcnc1SUp2bk95d0QxVDZWWFhQMUZ4TXdsUkZw?=
- =?utf-8?B?MnhwWTdZUUxOV0p2WlpuL3g5WmVmd2Nma3I3aFhQVDQ2RUVVTDFHY0oybktV?=
- =?utf-8?B?TDM2UURUZkViMUVFak9TeHFDU3VOWVFJSndIcHBZMUhNWkgxWVArOThkYjRh?=
- =?utf-8?Q?FBvhIL8ZQ94Vl2xm85X8w9vQXaD6TKz4j+WnoLvKFCxbc?=
-X-MS-Exchange-AntiSpam-MessageData-1: XH40XQXVwh0RCA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 942e9eda-ea44-49e9-feaf-08de54f39bea
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 11:37:20.4439
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: R7ta1i4HHDlf6pFiKmIBMtArkMAyEGCgahrPkMqZINqPyeRNzRdHblJuNEra6x5ywmQNk6/WOdapy+ArRFesQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7008
-X-Stat-Signature: cbqtkcxmgnuun1a8gxu6jgfcwzxf5sdn
-X-Rspamd-Queue-Id: 0AA7B40003
+Content-Type: text/plain
+X-Stat-Signature: oafay8p1m45ook39cjh3sgqghs8suzxp
+X-Rspamd-Queue-Id: BA09E100003
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1768563443-364433
-X-HE-Meta: U2FsdGVkX1+btREyBV25SYmJapBpXcpPQrCUwWCpG3M38tYOJWd5xpKiTM/yxA5Oh50jA4yBiIsgxsu+mR8AYBZs3KaX5q8+fdR8hdfT8BLDDhiw9zPSvrPe6b7C2XOgyn4pCmeZ4F7ZU3dpEl4L/2mXZTK3BmbYIEUivDn1ht8/PRV60x1LmKNgxTxNm9eSlzFYTjSDJDU/RVJ14FZXl7ZTYkJt0cXQmydx8Xtbjiinyj8ae22VjTnoG0W0NfckBM31NlxLlb5cNMlogSIeSgW3IdigzP5A4lkJj+ZyyATZGnUisZczttL9aXbWCYosTuBDVPw600odSMyMesDmhkHU7p/LUwt+LJYa3C5Sobkl2ROokR1mTMXH9aAHpqJie8feMo5B5NV803EB9JMz2TUs4M8X7NfAiHxuicUbnMjNvQ4xYNsJyV7fpO6tr0qd4geGROZG8UnmslebEnDr+uRZZj5Qh6yr07fCjzbZjYeV03Kjxtg+ZOM8H2g9M+BZ3UPlVZFkZakT708p8EIphiTG2wsU6nIja/ol8fpucn80rkYBCo8gQrGIY8afxzrIkNH9DlUcAwowpZ0PJ8nGmMuThWZxEGXKqnUKQv5Owa5vbB7FyTQqQqAJAQXL8hHcDiXpOInzAB7mbnSZswcoAPFc2ieekfQWs+HW/ABKRH4v7NvEVi8GZmJd6vtNBVvZ6mbnzksnfWQXIjrcLY3XUqSsdtAqdfK+5GIAI6sfrd0Z5c/UJ3zVth+OT0VCW2ipxUGZN4bK9mpYkXlMy0KQXkexLSyJC2l2ev79a5Xu5M1cMbtJk26Y00AFReZzKPQ0UfY+bNMP494lOGHCtMB8zVCcku2JZq6VRt7qmi4Ib09O2vKd1vl2R2S7xgoohrG+MlBeMHbo4LsYgP/knoPZFdPI4mpSB6tkyTnflmnJN8BcqCYnYrADx/7VsZLRFm6GceWxefndWz4ylBz4iCc
- gD+MIVXT
- 1+dHrSm3FNIMmbDI=
+X-HE-Tag: 1768564638-26511
+X-HE-Meta: U2FsdGVkX1+tkrpp77GYAHquN8zExmS+4XHJs5l6JtwE2v+W92N0IIf/+PuLkP2Rg7KIgbCK77PGBYb8Lva88sZIzVbg3c8vOGhi5R+0HhsNTwxgaVJernGsViQdliRRzeO3yUhzzqHEXFIEvq8BhdCJShR/Ushl6vCeXZod+6qo0Z3iSkgWKhVMUgMuWUTlu5r3uZHR1l86EFEROXS4TMLbQMi0vjQdD1N6/MOQdkYoKG8pwI4fIzkp03CCZsRv+oI/9Ydz2ENkQMAIFOOiAHAdB4eDY59jAkQvDNZ/ka9ADTiJKo6SjxZdB23OpzPwsCLud5R2SYo8f2O4UTmPUjD5660RHDekBng5lgY2CvanDVxHFsvPn7aGR43OfbKhlpx7Amfhg1iZsGU5LshAFioHv0MvFsYMwwBVbTvJlCarpycLrgCRACKhWNSTLaaovbrzjfQULJFwXyML6pPJWMA34LW1aQ1NKhcpQUwcLA3GiX1zzV2z6LlC8oRFUc5jq5OMtbOmQX3HDUvuE6vVgdT0RnZAh/jBsjeqZK5OajdmwwbeoW6GkUEpfOn1abW2DQo/Y/82zuSTUq7xkt2T04/mmRjrXZX5rqRh6HP374pe1pyRn8ffYIS7HJCe5hNN/yaj3+9GWpyK62k75+tzV8+/VLzPI9Lnr4EcGrf9taihjR8DmH0drDcd4AmPU6DpzVOxlRpFggKjhVvxeY3Ae2bi/SlyGSxq4BGkafNYzQ7Uy/x4HULeXY8Okiv0KPevqOkaDmT1OxC7s2Vp0Y/lR8mENsTz3fvn7XImoZFcvKlajs5ISgS5+PJuTv6zlFQOGHA4Zac5DdV2AWl/f8732+QVuu+wvMHOnhxqnZtZMruZjySxiRe3+/UJhS8YOQB4gwFuhyihAG8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -218,94 +94,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 22:10, Francois Dugast wrote:
-> From: Matthew Brost <matthew.brost@intel.com>
-> 
-> cpages returned from migrate_vma_setup represents the total number of
-> individual pages found, not the number of 4K pages. The math in
-> drm_pagemap_migrate_to_devmem for npages is based on the number of 4K
-> pages, so cpages != npages can fail even if the entire memory range is
-> found in migrate_vma_setup (e.g., when a single 2M page is found).
-> Add drm_pagemap_cpages, which converts cpages to the number of 4K pages
-> found.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+Hi Evangelos,
+
+On Fri, Jan 16 2026, Evangelos Petrongonas wrote:
+
+> kho_reserve_scratch() iterates over all online NUMA nodes to allocate
+> per-node scratch memory. On systems with memoryless NUMA nodes (nodes
+> that have CPUs but no memory), memblock_alloc_range_nid() fails because
+> there is no memory available on that node. This causes KHO initialization
+> to fail and kho_enable to be set to false.
+>
+> Some ARM64 systems have NUMA topologies where certain nodes contain only
+> CPUs without any associated memory. These configurations are valid and
+> should not prevent KHO from functioning.
+>
+> Fix this by introducing kho_mem_nodes_count() which counts only nodes
+> that have memory (N_MEMORY state), and skip memoryless nodes in the
+> per-node scratch allocation loop.
+>
+> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
 > ---
->  drivers/gpu/drm/drm_pagemap.c | 38 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 37 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-> index 61c6ca59df81..801da343f0a6 100644
-> --- a/drivers/gpu/drm/drm_pagemap.c
-> +++ b/drivers/gpu/drm/drm_pagemap.c
-> @@ -452,6 +452,41 @@ static int drm_pagemap_migrate_range(struct drm_pagemap_devmem *devmem,
->  	return ret;
+>  kernel/liveupdate/kexec_handover.c | 23 ++++++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 9dc51fab604f..c970ed08b477 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -623,6 +623,23 @@ static phys_addr_t __init scratch_size_node(int nid)
+>  	return round_up(size, CMA_MIN_ALIGNMENT_BYTES);
 >  }
 >  
-> +/**
-> + * drm_pagemap_cpages() - Count collected pages
-> + * @migrate_pfn: Array of migrate_pfn entries to account
-> + * @npages: Number of entries in @migrate_pfn
-> + *
-> + * Compute the total number of minimum-sized pages represented by the
-> + * collected entries in @migrate_pfn. The total is derived from the
-> + * order encoded in each entry.
-> + *
-> + * Return: Total number of minimum-sized pages.
+> +/*
+> + * Count online NUMA nodes that have memory. Memoryless nodes cannot have
+> + * scratch memory and should be excluded.
 > + */
-> +static int drm_pagemap_cpages(unsigned long *migrate_pfn, unsigned long npages)
+> +static unsigned int __init kho_mem_nodes_count(void)
 > +{
-> +	unsigned long i, cpages = 0;
+> +	unsigned int cnt = 0;
+> +	int nid;
 > +
-> +	for (i = 0; i < npages;) {
-> +		struct page *page = migrate_pfn_to_page(migrate_pfn[i]);
-> +		struct folio *folio;
-> +		unsigned int order = 0;
-> +
-> +		if (page) {
-> +			folio = page_folio(page);
-> +			order = folio_order(folio);
-> +			cpages += NR_PAGES(order);
-> +		} else if (migrate_pfn[i] & MIGRATE_PFN_COMPOUND) {
-> +			order = HPAGE_PMD_ORDER;
-> +			cpages += NR_PAGES(order);
-> +		}
-> +
-> +		i += NR_PAGES(order);
+> +	for_each_online_node(nid) {
+> +		if (node_state(nid, N_MEMORY))
+> +			cnt++;
 > +	}
 > +
-> +	return cpages;
+> +	return cnt;
 > +}
 > +
+
+You don't need this. You can use nodes_weight(nodes_state[N_MEMORY])
+directly. Other than this, LGTM.
+
 >  /**
->   * drm_pagemap_migrate_to_devmem() - Migrate a struct mm_struct range to device memory
->   * @devmem_allocation: The device memory allocation to migrate to.
-> @@ -564,7 +599,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
->  		goto err_free;
->  	}
+>   * kho_reserve_scratch - Reserve a contiguous chunk of memory for kexec
+>   *
+> @@ -643,7 +660,7 @@ static void __init kho_reserve_scratch(void)
+>  	scratch_size_update();
 >  
-> -	if (migrate.cpages != npages) {
-> +	if (migrate.cpages != npages &&
-> +	    drm_pagemap_cpages(migrate.src, npages) != npages) {
->  		/*
->  		 * Some pages to migrate. But we want to migrate all or
->  		 * nothing. Raced or unknown device pages.
+>  	/* FIXME: deal with node hot-plug/remove */
+> -	kho_scratch_cnt = num_online_nodes() + 2;
+> +	kho_scratch_cnt = kho_mem_nodes_count() + 2;
+>  	size = kho_scratch_cnt * sizeof(*kho_scratch);
+>  	kho_scratch = memblock_alloc(size, PAGE_SIZE);
+>  	if (!kho_scratch)
+> @@ -674,6 +691,10 @@ static void __init kho_reserve_scratch(void)
+>  	i++;
+>  
+>  	for_each_online_node(nid) {
+> +		/* Skip memoryless nodes - we cannot allocate scratch memory there */
+> +		if (!node_state(nid, N_MEMORY))
+> +			continue;
+> +
+>  		size = scratch_size_node(nid);
+>  		addr = memblock_alloc_range_nid(size, CMA_MIN_ALIGNMENT_BYTES,
+>  						0, MEMBLOCK_ALLOC_ACCESSIBLE,
 
-I thought I did for the previous revision, but
-
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+-- 
+Regards,
+Pratyush Yadav
 
