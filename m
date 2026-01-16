@@ -4,232 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD32FD4899E
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 13:21:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF0BFD4899E
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 13:26:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FBFA6B0088; Fri, 16 Jan 2026 08:21:05 -0500 (EST)
+	id 575706B0088; Fri, 16 Jan 2026 08:26:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3A76B0089; Fri, 16 Jan 2026 08:21:05 -0500 (EST)
+	id 521F56B0089; Fri, 16 Jan 2026 08:26:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E96E66B008A; Fri, 16 Jan 2026 08:21:04 -0500 (EST)
+	id 402A76B008A; Fri, 16 Jan 2026 08:26:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D567E6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:21:04 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 797E1B4D26
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:21:04 +0000 (UTC)
-X-FDA: 84337887648.08.8765FEC
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 389CF1A000A
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:21:01 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=qaixT4vx;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NlTfEVFQ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768569661;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E0E06B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:26:57 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C4A4986D11
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:26:56 +0000 (UTC)
+X-FDA: 84337902432.26.74AC887
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BCD661C0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:26:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CxbCWC6j;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768570014; a=rsa-sha256;
+	cv=none;
+	b=1X3lCe5CTONEvhqW9SX7RXl999MC1ZryBJ1LIv/fnbdnVNk8gbHsjS+b0C4LjwCDATm6yp
+	9H281dLX2xBcKEwUTGzl7/yEiM+WxeH5QSQecD+i476bg5ZzQpLrmFM78XxTBM2ncpo3LI
+	sYIRDhVPDSpWF4LgcEmp/BFcoHt2uwc=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CxbCWC6j;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768570014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8mfg1VZq3dLbAy0a124JTpnXsc92vCNQ3l9Ukeyieqs=;
-	b=uqYIs9diIFiXnWcG5qTRR0BxjQFzBDvd7oJV8Mn9PAwfuVhHUjp11XbkFGzy57mQWFGktT
-	cgWRPJDmjiLACid9pl0uzmPn6r+axLu4ySSTrgSneNC/igiO5E/r0t6m2+16aVWTJzaM1n
-	eHgAYoFXd8bpIwhE+pSRpYZBKAiGJ/o=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=qaixT4vx;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NlTfEVFQ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768569661; a=rsa-sha256;
-	cv=pass;
-	b=ca4jWasiZIv+bf3SWkJ/K8JGnioIGe6Zdx1K7mnC1v/+QgXRLlx2eaODu4UZCAXemDdN96
-	7cH8k85HJWgUx81nAsbc8Pmpq35s7YREs2KPuU24n67dsXB5q0DAMw22fI7BD0zjVzCcfk
-	Sltwovi2AegLqWO4McMfYxv6agi8lOE=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60FNNdnk2456646;
-	Fri, 16 Jan 2026 13:20:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=8mfg1VZq3dLbAy0a
-	124JTpnXsc92vCNQ3l9Ukeyieqs=; b=qaixT4vxZNQff5uwPvvSkIM8g3lv7sGY
-	flmw2AmJc/U1HTVHWOPBQKrGi7tSee6nyr8PIF1/nD4GU21kzNTxjS1DJHS9qiQV
-	vpolLmjV71mD0T0zh+YounWnjal7xvbdfzJQXAMA8T+HbT9oH0hC5pGgSXnXuzjB
-	DGHjP0CDvRJv8PtvzQRXjUdU0umPn+47N3YciLDIEi6PAOxUoncrN6U5s/jYM8c0
-	hvZMOaWw4WhmYtH81emU5lRBHLnYAD4pQ0uZ+szITnCysQgKwA6eF1R0usI1Uai1
-	h8InMmaaZcVak62VAEY6u/A01Om68o5xuiabblehiDoglJEw0qbqWA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bp5p3d9vx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 13:20:56 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60GCu5p3040453;
-	Fri, 16 Jan 2026 13:20:55 GMT
-Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011013.outbound.protection.outlook.com [40.93.194.13])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7gp64e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 13:20:55 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ggK9lrRuQ4EEP1DVtq8mYIw+5LX6ahJldK+NOxF5hFfY0bH6Q8+fd5pnpaC4AaFWw93NVz2P0adgFguV50AQNIWSGmw14HagPMbrqfiYEdEN40KbWuGl5yPVYqo2k4vKvla3j2csHAuFIwfxgkJNaay3d6RdefMe2hjYTYhFAOXmWkkppYF8hlfDYLUDDrEBi+vrqD6wPkxeJwuHhXGEIGFtL1cu0EKtK78Q92zDh4c/kPvrDdiVfSfyeccYNK/i7FkCSbwJzxooDhbeHK0fkE7apfGqVChmEcvIltA6QKsECih1ePXoAvzBbeqmfXENVz0fg/jP5uq7UMDuNeeV6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8mfg1VZq3dLbAy0a124JTpnXsc92vCNQ3l9Ukeyieqs=;
- b=eAgra/7C24FtTo5S7+ShgwbzANmpSwgMYvQ5X+eKkSWFYN9x/kQ/xIKoS92Brxn1FysOqotn72tHHt+dvVLXsVZZu1MbcDlHhvMJww/6mFaXl2eGOr9cXVj+UsoeFE3xRUzcFco1XABuNLkjflk+QJHo0fYYdU8EnWB01X4PAEoOrn3+GSWpYekPCSkqBj7ilPsm6b/zRXu0eH53Ap/x5L1HwFXxFLwUUM5N6p5CMTYNQ3ddAF+DtbqNBB2kjkVZw5GF+8RTnnEvkfrCZkiImcKUl5TRL4LmFOzSj1bI/nPdOEVxsv4NYnuo9fRKs/n/63oQK+zm4vNQ0Jjw7pq0yg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=v0eA49DHdlAf9Bft0pCk6JLi/3Gfwpf8alD37YhIJQ0=;
+	b=iONyBKnUnBUg1cYSTE2j2Zm8um6C1qDrQG8IODuR9bHWk/Grb2hK2EdI/npqGnH7W1Pa5T
+	/HjKCBBn9/RcwO7/7f6ZbCcmJdmXKx11qpgHfz/8ruqJUGD84pDGtcUrDAE230govHIw2Q
+	ywCHFX+Jukx49gyLkKXZXkPiEJGxdEU=
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59b77ff32feso270196e87.0
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:26:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8mfg1VZq3dLbAy0a124JTpnXsc92vCNQ3l9Ukeyieqs=;
- b=NlTfEVFQddGuS1xOa94rD/Q8/KoochTzndFCq/p+TYMM9xrWbisiiMttaELdzq2ZjpYtG3wfSj8ghD8sjkrSn4i21Q8qOd+9UaRnT58EgKI2E8YIRERIiNKBLn6+bQ2Q6lhmQwhSanMPhs3K8qOzL+t6/GDt4gjoD3VXG9YHDT4=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by BN0PR10MB4870.namprd10.prod.outlook.com (2603:10b6:408:12a::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Fri, 16 Jan
- 2026 13:20:53 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Fri, 16 Jan 2026
- 13:20:53 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [PATCH] selftests/mm: remove virtual_address_range test
-Date: Fri, 16 Jan 2026 13:20:53 +0000
-Message-ID: <20260116132053.857887-1-lorenzo.stoakes@oracle.com>
-X-Mailer: git-send-email 2.52.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P265CA0173.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:312::18) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+        d=gmail.com; s=20230601; t=1768570013; x=1769174813; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v0eA49DHdlAf9Bft0pCk6JLi/3Gfwpf8alD37YhIJQ0=;
+        b=CxbCWC6jhztXZ7WmMcjGoCwOWbUg/wRE2i/ReaoldaYCvhvm//s5ldGhaxffSQylkj
+         GImAu6ydhDBrLni6yVz0rsqv8bIpTnI/iszQP6QgBpEgBvqcXJybe6UA0wv3J+ggCVXP
+         GXTHp+teGrnajsBjKcZsnQVN34TFSxIWroBRy0+rIl0Gjz57OD40mDm+6Xug4xN47etQ
+         5ScpJ+QThKb+oOahalSJUQtTeHb5orHX8nugb5lvlI+CNI+oepHP0nSSerdlsiBs/W1a
+         YCjh6KhFf4sJ3sC9na8lkKWg7YM8GfEElFc7LnzIVAk77UCusknDKI3gSguPiJ63NcUZ
+         B4nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768570013; x=1769174813;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v0eA49DHdlAf9Bft0pCk6JLi/3Gfwpf8alD37YhIJQ0=;
+        b=TYvC8O1Asn6aMuc2+CFK2yOhlv9DoC9VHx5QxTZCRlIwIYgI76IUxZ3U6ZbaZjKoTT
+         ZHyNNo6zc0zdWJbuhzaSqTZSsgHPgKv/BH51WwdQhHebvZKfZvL6TtpI6ODVRROiQ7E/
+         BMLIYqFuM2L28nS6prqEqjLMGWDeCR/3W+vBKfLTsfw1NREtTXPpuSONnJzJ1DVPWwLk
+         gwfoluNTVSeLo41mCP22ZL14eHgpThjknKooFRXkFdzbnsnSnJk48rjO3TWNJTLYQaLe
+         eNCM7FZ2k6+2cIB22QLQwnTGOU1t+ENt61rXFm4oKiQOksfFRHF0eBsMy3zdpY4no7Ft
+         T1Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCUNkUspa5hCte5G2e3zn/PvO4i6QvkH0KFX9VaJF3/rGepHirHfp786BE5+J7N/RXOslyDNj2oXog==@kvack.org
+X-Gm-Message-State: AOJu0YzIb8twc0NBtS7kkBXZOAxrL0fRotOaxYWopG6m2jgVODbC6dr9
+	vDdJKNXZc89Hqb1Vx8vwr+UFUZetIKxVZxlsMTupF3mBVgo8oHtFdRNZ
+X-Gm-Gg: AY/fxX5kYXGYsCVMP0sVZSvhexEChmR6iy9hz8gFNUjoXy619pDdfOHHO5e1Sm1a2Yp
+	aFMnEofrUbrzjzeWcGL+8x1vplgOqHW5udU0y7Zv2RRoprQ24Ri5cUTFmFt+GAzl2WkLMqD6kmE
+	VbBRVoCJ8aYjRKxB1fOugfiaydOag868u3I7W5E+5sfXkY3WHZtkDlio9Dzs079CJo1DWNgGvxX
+	2f473BunsyK6WHugax9Z1k3zZYD/uOb8Pk7ljVtdo1J5+6pXQh6kU/eY5Sbpkmt2I/IU5yxokFA
+	dOAZvR84K4mMP/ytjsDM8wLrg4Nbi8D6Vd2eQGGkibTA99p1i8GZ20tcM8dmcOX23WMM5OlX884
+	pBe0g96bbawsluF2UI0QsAzfk11An5As+eaxgJOWqoF/UMIIX42ZeraY57rnhQLWVuLbDey7F/c
+	XmWiHTbt92TBcKtOZ4Hw==
+X-Received: by 2002:a05:6512:63d1:20b0:59b:7be4:8c40 with SMTP id 2adb3069b0e04-59baef130e4mr407353e87.8.1768570012429;
+        Fri, 16 Jan 2026 05:26:52 -0800 (PST)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf35273dsm782709e87.39.2026.01.16.05.26.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jan 2026 05:26:51 -0800 (PST)
+Message-ID: <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
+Date: Fri, 16 Jan 2026 14:26:06 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|BN0PR10MB4870:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7aec3526-6375-4fd6-d6ac-08de550212d8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WSqsFnMaG/gqXUCOr3TM5KXrHqkBmxsEHT6uo6O98MgDwYlbJP698dzWgjWC?=
- =?us-ascii?Q?xV+OPt/tOiPxnDpfJNbqtak0h9rGleX6RYVC2vRgrNna6/BLrF1HWFm05Y13?=
- =?us-ascii?Q?Ys7B0tJo1b5g0sxAbX3sfDF2LB4e7Ybjv8HadBtDX2VzKYHyyBLcfH5MWJjJ?=
- =?us-ascii?Q?7xlspBwGnYVgcULh/RUD/6HdJfc0iJT4RqeIedfhM7x/ZPAmXi6u6YEEWUvm?=
- =?us-ascii?Q?GbU4Z150eCkrSIMuLJ5RzsKekwOd+sATak8YveHpM+i7NzcvhpJlqr/Bcr0z?=
- =?us-ascii?Q?fIbpYTADVybDcRloTuCq+qYVTLPZBIZFyiGYgPYI8ePZkfDW0cdGUkonADtX?=
- =?us-ascii?Q?ebBDNlvYxK7GqfXCBaxg5HsHxVJ0CkjcOMSv0rdFsUj4fZAsUf/JJginZH0i?=
- =?us-ascii?Q?Y3BYov3epvxrgxpBNY1wyp+3xcraB7Zu5uqqiU8QalOeApPR1+jhZcZ8w/vo?=
- =?us-ascii?Q?dhYh7bLOyKQslr4Yhum3e9EC5MNyyHzq73VKowpgckxxAoJArg7NXyYJ0gFD?=
- =?us-ascii?Q?+YICxhJ6j5f8Y7V2p8a4gRjSXHWENQdlgp9JTQKcjADvHZXJ28RJS1ethLo5?=
- =?us-ascii?Q?Hp38dg8C2Am85nH/8DV7kSryahemy7ASjLb1hX5qjXsrSNMx5obwWMKNiqy8?=
- =?us-ascii?Q?n8o0YBLNiEk7sKAmsCO4RWF5uxMddj6kIhyOhOxUJmE7+Kvr4KUNjECTzWFQ?=
- =?us-ascii?Q?q9oVhoey3L9nsYETyP8htEXEaffGbKZsWIHqOQ2ATmDsVulG3pK+EiEnce7s?=
- =?us-ascii?Q?/Cl9+1IcPS1OXk56GfKnYEjHv2uQdkLkoh9Yj+CxP5LSQRh3vYDjffjsBE30?=
- =?us-ascii?Q?MZbQeMP6NJiyl0HQ1UyI9L5hTGH99si+SFbdUGDVGFGM62R6ZlLcnQhRoOeB?=
- =?us-ascii?Q?pHEHxMAZZ1oYueB5B9A4N1iEL/I7kwi1Pmeizncv/Kb9RGRJBv5kwww742Xw?=
- =?us-ascii?Q?+Z+PGujUPLha0cgnCa1V2i8TYTyNKeRCkwesHmC8tOiCwHGQ53OYvZIUc7Rn?=
- =?us-ascii?Q?G+FfX9G+Frry6c98EfT7F9oUZarniKeB99pKdGQL3Uzq0qOX/yWoZ/AvMQrp?=
- =?us-ascii?Q?pzm6Q9+0MsKccO1eX1fg///FY5YDkMlN6RcuViSkB2GXkMHG3RBbMiI+whAH?=
- =?us-ascii?Q?37/6gPhsAANDGCb8OrIhoYBnZmtkQymp8Mu42gWPzUzLsMIZsXThnHzXCQhb?=
- =?us-ascii?Q?k8Bxok/nA6TEs9qfd9SrcAxdrOBVKca2wbqIDg+AS4qffSN6rZkRNAQJHEvH?=
- =?us-ascii?Q?QHq3F7qGwGERwVkP7l81WFGZXdxB+sPLww1VJrDJCZ0z10VpN6WbF5b24dxi?=
- =?us-ascii?Q?4D2PtTjHpgK4VO7k4MeELdXdHPK4daC0SzDCmbgSSf7ZVWHToaRIY9EJXJJT?=
- =?us-ascii?Q?Qy/5jdY44Tiw+z9EhaS3MnTp5n12NLDdyLCREvrsOYQgW1KVaEHBgyZVfoC3?=
- =?us-ascii?Q?7fW7MWPswMxhZGt4MxdJaYVCKy7P0V22kCRIIluTVt3N4iWYiCf5zzqLf8Ea?=
- =?us-ascii?Q?YPNrQsH/XgSjSgXECOaI6tJNnAc47Fd+08TGWnVAws23RWGC7/yB6ZaukzD6?=
- =?us-ascii?Q?ReAGRAhCnl7QAwIyFgE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kI7mFdKasD+sRzA5Xqv3/Z93a69h8OvDkzWitr30oQSUlR5Qw8XA4wLdHUUB?=
- =?us-ascii?Q?SMVKD+/68ob/TNOGccMFVcsgs2Cp2lTzv+yZllTCl9wwRmI4z2ciJ+siTKrK?=
- =?us-ascii?Q?JjiC7rwrzagQwvqrJk17o8rDxqzKWVUmLPBYNvWhkXi22PGOwO9h92oumgkY?=
- =?us-ascii?Q?4Xmn0xU/DAaEdiq/95bjPqb8cgF7xG0Vldv7L4c4nnfA4IsBsxC44TCGAQaP?=
- =?us-ascii?Q?n2voTpxjybPN/eeinRjaZETeGzhheZShDuPRrUgTrFXwXwux9ExLpQusR9I5?=
- =?us-ascii?Q?DjSS1zgilQoM8xXG8Xl8iyIYpfvVpc/iNw7QLL2bv+sw6pDzzfAR3B8T9Ve9?=
- =?us-ascii?Q?HlA4t35YQ0hSkYwl3eSf+/C+pr1Olt4X9UBg/T6aT+xGJd3zyJwszHVSuedP?=
- =?us-ascii?Q?QVZjfwM5fWweSFyr0chjsJ3GEbeESeHFa88BnscV1sXXsrJlR5jFoCTIQ42r?=
- =?us-ascii?Q?NUhyUM4D+q6DXACHkpioz3LUlhQ4FFE8anNWIcI+HIWPfVYv59IadGr8ZJ6x?=
- =?us-ascii?Q?hm5GEfzNsKprQphSCqwnXnpXN69txti/MAkiNTp7oIsBVINwWojxxuPLuccO?=
- =?us-ascii?Q?NFKPpDJLuvpuEkatiPtu/8y/3x8FiZ2wDBtbOJ2I9IQpIEZhw2V+3Y7KarXa?=
- =?us-ascii?Q?tKApimVLMRwkoHaKg+d/gdnfJtOtLS2L4xzxtzyTlkAcT1S7jbOUQvKA5kbF?=
- =?us-ascii?Q?SABXVnFWVsvvPQbUyhGRFyBkk+ricZnTmI7EREpRuvhQ9vcVnUjQCidxQuDp?=
- =?us-ascii?Q?oOQAKZyWarB2LsDx/AF34FKCvf19i+o3MEJ3bA4pgPhdnO+UhxqbD6cmFjol?=
- =?us-ascii?Q?uZGU6wHY34601Xtcl5QQ+ct27QmImjeVPswwrc6o9YbdJGJr6VfhvqpwQ3Rw?=
- =?us-ascii?Q?GCR4a6+i//NF7tnWy9dscSzfFvK1ju1TRNydr1jFQ/L3kUq2RBSM3+hEh1i5?=
- =?us-ascii?Q?91QhLB05TZ1ZsZvD3QZq78QRqU+tj3F8DyjBPmh4WnlvM6jK9/24APrgET4O?=
- =?us-ascii?Q?luF//W0Vv/StCMqGKGgQRu5RKutqnPs6VwDVMTu37Ya7dZCnVm9Iw7krC1n1?=
- =?us-ascii?Q?cKMY9ZTs5UqLcmmftT1Cj3V73H2tKpF7dYsG2xEfBkfnTuL6d2129nMXJYO4?=
- =?us-ascii?Q?ljmcS71l+DCmIs9aCWSPiCO35yZcwnS/s99Z2YnbboV0jDH6CH/KMgmnTjoh?=
- =?us-ascii?Q?y2f1GbD+dopnu1KPkgM6ADeXZGItSvkcWElcAlFifIKGoZP9DkIu38IvgYur?=
- =?us-ascii?Q?cMLskIk5gapYuIUfrhwQ9C9pkQnrpUUwFYXF8atQ9zDmp4UcqaiYOlfljQTn?=
- =?us-ascii?Q?XsBqs6vVmdqWoDHbrfNhRRFvZMgXsrD5BdmKPSYfm/nQVn9xgUZIm99iq+K4?=
- =?us-ascii?Q?bIpEPMda37soA9Ks553nCxjzIOGek/d36FlH589IDfpcrFpO909CO9qYBDQW?=
- =?us-ascii?Q?Nev88KWaQB+cnw5HNzDimRoLxT9DMgPhOO3aXaRVok1D+0TF7WvIFZLqu86u?=
- =?us-ascii?Q?y0muUE0Nb0AV7frXx9wXb0poLJjaqmB4JUQ9QB51vGJ9fKvd5WSvyH70eOo2?=
- =?us-ascii?Q?fsRLpI9QOXmLkgJVYUTY8YH3D+DVAyCVQQ8+Xa86OdAv1KXX4a+PcFhK70/f?=
- =?us-ascii?Q?rkjvf8hU/+uTsdId6g9HmvXU9/9dNEYq/hviatk4xmlovfvOs3YIyEcaE6yh?=
- =?us-ascii?Q?SNpp4N4glny8RE6GIxEowLcnvu27LKUFl3hKf0RSg/2MEnsymJKLmMujPMxW?=
- =?us-ascii?Q?dFPUPqBER/mA5URJUij0PmLubj120Hs=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	nT9ZS9NPngYmRZ8LDm9UOk8msFGdX3Rx4jekpel2r4N83LsuI6jh/vChVu5BnYBMvuCMD0RiElqD5X9mxg/t6eaE00138jd/T5vOrqK7X/6kW/9+CW/mRzco+Euyjj5xePRc0hvc+1m0u4zaFEsAInNLedgSyg2VdWitrI9i4h3egHZDTs+Drf+vfeGufhzJYrz9AYPU2mLOy1wLT9oNLYVpHxfhEefcI9RVjBrwNNlR6bpW7bH/Eu6XSVCj2jfLmzRtj+HUxuIYXhZWIjIfrLggZz391v7WDjZmcXloXlxg6jseGcuwanQCJL1W4QY8bYOkZ/JisQFxXHcpGjGRbHAynWreh6tC7BW4C9nyETWuJch1MOG1PM8MG8n2rMauvCIKbwVrxCeR7EMNPRBhVdRDSeMckKnB3O7E/utWtGn/hoLUiOSK3eY/hHCporziDRXqdSLEy6XbGJ38H6yxKr4ErVh4O3PmykeeQ7sS0bxgc2IkV7rkeJYd0Sqp9SeZc25Ptd6CapohAoDQOaFI3d8rNM7Tj9a4WWNWqhWEeCzYLh6j/itmhyAxDRSD+awnpepU4+PdwwSIGr3zRP7OMyUHyfH0mmJrUlokY2/IdX0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7aec3526-6375-4fd6-d6ac-08de550212d8
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 13:20:52.9897
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jXdVd/609HZNaA3seGs/4b0nFd0VygCrVrmwFSyHVsKeQlXWcSoyOVQFP62jnhvYSNRdoaOC8tH0vLWQawcINURrbeaKLm/YWXYHIcWggwo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB4870
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-16_05,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 bulkscore=0
- suspectscore=0 spamscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2601160093
-X-Authority-Analysis: v=2.4 cv=OJUqHCaB c=1 sm=1 tr=0 ts=696a3b38 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=vUbySO9Y5rIA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
- a=dfovEp1khH1dwBqV30YA:9 cc=ntf awl=host:13654
-X-Proofpoint-ORIG-GUID: pIy-gwmSOpgzvQDxOxkBBu4aLhPt35Gm
-X-Proofpoint-GUID: pIy-gwmSOpgzvQDxOxkBBu4aLhPt35Gm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDA5NCBTYWx0ZWRfX/RbQ9Vp0Q+m4
- ato1tiik9IFLup8A0fv+dOrZ2GBAMNokVMfTrArbV2kNWrCeOfXkjbPb7A0S9sMTiHFU1UckbxT
- 2kkt7w7NYjIZjJhKZwPu56PdTFCVYFKEt+OXOL2XxfuliBznSmmzgAQ5liUyx+VudB2aoZfo1lP
- DsM/maDCqd8E43EEWur3myBe0xCrad6YYnlsccVAT3kCSEPobjzYOplI0rnSRwkcNWO1tpzpD3C
- 5ub/WL8rPjYkwiVw+VQcpyCkbC8JPqbPvlvbqwdHHNW2wXuSGbLxxJQm3Imtvlt9Kt47F+ce8+7
- FJIst0A9n7J7XPam0TWLkwRAM+NzUB74Ckyuw9GzgJYLUV3/0FWav8zmKluuCNjHxQeVz6Y99Sp
- hf+4j5Zzl0tocC2PA/TqzSF20Sr09Uc1WZga/qSkoG3wFHbfV2IFr3hpDdZP/n9+uRz/QNw60+g
- eQs5tIeeXvV8LavGEZqx5PEpV0/tFAdP9O9vXxTA=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
+ Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
+ Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
+ Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, joonki.min@samsung-slsi.corp-partner.google.com,
+ stable@vger.kernel.org
+References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
+ <20260113191516.31015-1-ryabinin.a.a@gmail.com>
+ <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BCD661C0005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: zsma1qn4qu1pjphmx7qu74m1dqyjgwtp
 X-Rspam-User: 
-X-Stat-Signature: iuyawn6sbazbiftfusiaarqt1ihqixwt
-X-Rspamd-Queue-Id: 389CF1A000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768569661-207510
-X-HE-Meta: U2FsdGVkX19sdx/03zafLkq/G6ilIxk/Dzh58QBwjpk4pQHHK64kyWRP4R+p6YplDLdy/EzUcaMB/7LnCCIa+5kiE1/WqixuhcJJyEAzJYL3keEjHyiAZ36B/wAE5SK3r9dFtj4W3YJ+H2gu1AHbQkfy6V/LuyxPCxr5uUTq+cGmzsEm2Xiqe4vOaDKSHlVmBFzV+JfSF9XW2vcFBeE7KTi23V5mBmJcYQGsblPyskLSsjG/cToXR/JPDhhfDPnGZEjP2/UNtuAMpgO0uJtYd16T0oUBpqDvXJ9hCp97/wu/O6E0r8UXKaOAKtvtRFUPya+Y9Nlyl1Skid2eCx1OsZdGqeeChz/obFRdc6DPDImX7IC63bxWYeVLcRZxdg067bTioh1tfT0GwQbqT7jpTeG+Yk4IH0UawsYaiDhSUVQmCvPUknxcJ/wBbsXHIpQsT76ezE+c+s/VGLcSV3iujIT8xZpSWOf/L518nbk4TvLozV9qOV184T+AcIVAoDezSPVgbe6lsPZNhi25tJ6DTQ3BLS3Xuf0EE4FY1JNb7yLTwNjUyAT9FAiloU3hyXNESFQ42CcDu1MpE1KhOQhophA21RJgc54YJC2FTAyt9ECxzAvXM3kR7m4Hji7xwSEvsNkSN3mD1PpyJFpdq6XoyeYyVi9r1BrAPbyZZGHRAccUeaKdKuP7kRm0gAS5Vqot5efUQ/gPapd2KXRxh7u4anJXvRsITB0ZvcS3XyeZCXvUixgtJ6hDaZIV9pO2Ics5eTRl8SCDFpmBtP5T4PJGF+NqlY5+E8fciHFWmIe85y5xc2hLjEatAnxqNhajNr9ih8d/jTdz/YfFkGqr7sWhAa0H4uks8AEFQ3874gDl98/mmqasqLCcI3mP7+zsEIfOEW2VZgwpbiAJ5bgsKh6Xt4bl6B4VMRqq6CnNIWUfaNNre1JLhtLN/EtfhSmWAj4Grr9MNFO0CV5YqcBMzqJ
- nK04jdpu
- /RJAJCCjWmdCu/lOsHE3AEXz3OJ9RyUq9HyDtLZIYe5t+/JcDBbFUKQBTgFfGN2RQ9HbIbPmkz1kJytkslxQerDUFYKIw0YXzIFh13Z7r+gGjl6Xu0+SdyWF0C6IaIxBM3tzbsbBt5ev4G5syTLR+EyH2wljL11HjK1pt/T++cxAfyQnL2MR1F+nVsgnimwCV5cxt38nU0ZVZcXedjUPuSzP4cfunozvkArmbG4Xb2Oy4F5t2jFoQVk9aaGPGUrvoLvFWZHh0HNSFlFLnf3MRgZ/yekN90RZfLWftNwOMyofU5iYZ0XFgdVx8CWDi9dWaAXPGRnt5mI2fFG/wCa1NFBXBywU6SEw3s+OM0hoiX8BwTXeJKgTmrJYNr9tmj3z1ebbOmbk//CWvBGiPa4tlT+A+7Gud0UGcrwiNTKJFSv3IHbzDPTHsjQ4q/EmekmwHc4R9XhxOtzHpwrCSBI72ghbRShQSxUxZTJx22vBnbUGgljj1FIzG4LElMmPPZXxByKBN9ThdLeWC2mRp9r6UPsMs/UeiAA9ywKERBuKxWvn+OK3AIGTgp+nBq9GDBtSarCYW2lEBHIAJLbfSkHK8JZ2Yv7FWaZPoLJf8WuVxZoqYE4QUEZ44SDIyF5RnYgcAFvibGmFpWjmlME47Ynp45WbQoEjca7UdQLyME7VnbY5Mvf2ubI0AHUd5oPQXhCPzBkZI
+X-HE-Tag: 1768570014-185326
+X-HE-Meta: U2FsdGVkX1/B4VFxK1Ty03O7e7tOQ16Ot2eEXsFJ5BRmPgnSDJXfA9t7nF+I1YaAYaPNP8Loixsm+c7laFAfrCU3lSycleDdJ6yA48gsTqzeXJx3cH6ZSMhMCuXSaTRGL5OVCNRKnkLKoye8RdxKrOtFD8tdHgoNZuqaTzl+MsnrfPPiurew+AaspaICnLljprFzEElcKnpa38sYmWDPRVqMXSB/esT8o416PgW8ao9qxmbirgEiHIJDECubqoFYLt7Gp9mBtexblRL01VyS/LBHiYuLetkuaAkoD9nuoAwhTqxZyeVl6ftSeWcVsxYHyekBdR48NFOll+ttfJsXbAO3dEQ9ISQPJsky9dp4o5e/d8bmwYH3jjERSXKxrv7NrFut9k2dI/QSIE6sCynjlHQp7I9/LsEA7lGvD1Z+S8W8HOX+l73QGzujMc81DgwMUpFuBhSFfonc7bB3AYVqVGcZAP9/Rex9xQtUkBHkmCHDjvVhrYwGsFVzepP48TJur0q3pbdAqQVcwb1yGVaAN+Hourui29P2mYmBRZSzVrCTyQQvWISNun385Fg/bQnDp0ZH7TOjGS/vWSV5BDtXjMPc8kI+w9Z5qrWRfcj2bJHWK42Z9ahdG7JHjJnk0Lw89AuI5JuFwafIPYCrZ4UYQL2iUHHefvYISjpzqlHl4s3qDSdObIqMNCD8oJLW5Y9GAMmKf+FV5i2SLzFByDFjbTCq36D0NXSQnesp1Bu5wMXYqVcB6UnDCe5a/ufmiumiBcz1+lPAYdIEb4cEamLHKeS0zZ+x5AXpGARnVjWUoUSF1ObNjP9reox9O44stzBYTRX/5eh1wo0E/QL/XMCMySKcfx6f68vzJR9v5v5taJPwsxy67VFHHpOXHLhRenQC2jZ9PyJVZVZjj2VDTlarOHI8VG9TmjL/reLCSVMzU3tImrhGBGc7V0Kqq+kUrNX3MqAL0NfTWKWEEsu9OSg
+ gDEwDbdV
+ /5CpkS1ZuUN6EShj3CwaJTZeiZbovwRI8TDPt8dgqqddvLyKnNPnjq/WD1W7ITD09kdvIOH0ZgimRCHwOjhKWg6VhJT8AfMtyJXNckGjXHNYTq7AU1yYYWpBzSyIhOKBAj4MAej2G/z/9Mfz+9NbUQBz2WdmA1tkr9AyB3CeYPumBLGqJtsQDMr4QrUubEQIDwZVpnZsF5/tBF71Bty2Jt6CqoTZXB/C5/hP3sf84wOBfHTY2e7F89kcRaWAtQxs64MBE4UOr8d8JzZQ8uMwwyDEHcg/q2AibwectpTZ9TB+PLc58JgPIv0IxDiClcqCKI28t/Y/kdrDPmVBUfyuU38tL4a1M26ZenAuhnYnA9craAeXRAVRC7XdcFGoqjBUHEKzSftShF/tJ0yQOPuJnThBszs0mOjyrl6QBewdoWxDblkar7Vf+nkDshZtE8UocogJCI2gGmJb2CeG4CAe3VJI2ZSRahcj0txb2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -238,373 +130,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This self test is asserting internal implementation details and is highly
-vulnerable to internal kernel changes as a result.
+On 1/15/26 4:56 AM, Andrey Konovalov wrote:
+> On Tue, Jan 13, 2026 at 8:16 PM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
 
-It is currently failing locally from at least v6.17, and it seems that it
-may have been failing for longer in many configurations/hardware as it
-skips if e.g. CONFIG_ANON_VMA_NAME is not specified.
+>> ---
+>>  include/linux/kasan.h |  6 ++++++
+>>  mm/kasan/shadow.c     | 24 ++++++++++++++++++++++++
+>>  mm/vmalloc.c          |  7 ++-----
+>>  3 files changed, 32 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+>> index 9c6ac4b62eb9..ff27712dd3c8 100644
+>> --- a/include/linux/kasan.h
+>> +++ b/include/linux/kasan.h
+>> @@ -641,6 +641,9 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+>>                 __kasan_unpoison_vmap_areas(vms, nr_vms, flags);
+>>  }
+>>
+>> +void kasan_vrealloc(const void *start, unsigned long old_size,
+>> +               unsigned long new_size);
+>> +
+>>  #else /* CONFIG_KASAN_VMALLOC */
+>>
+>>  static inline void kasan_populate_early_vm_area_shadow(void *start,
+>> @@ -670,6 +673,9 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+>>                           kasan_vmalloc_flags_t flags)
+>>  { }
+>>
+>> +static inline void kasan_vrealloc(const void *start, unsigned long old_size,
+>> +                               unsigned long new_size) { }
+>> +
+>>  #endif /* CONFIG_KASAN_VMALLOC */
+>>
+>>  #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+>> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+>> index 32fbdf759ea2..e9b6b2d8e651 100644
+>> --- a/mm/kasan/shadow.c
+>> +++ b/mm/kasan/shadow.c
+>> @@ -651,6 +651,30 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
+>>         kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+>>  }
+>>
+>> +void kasan_vrealloc(const void *addr, unsigned long old_size,
+>> +               unsigned long new_size)
+>> +{
+>> +       if (!kasan_enabled())
+>> +               return;
+> 
+> Please move this check to include/linux/kasan.h and add
+> __kasan_vrealloc, similar to other hooks.
+> 
+> Otherwise, these kasan_enabled() checks eventually start creeping into
+> lower-level KASAN functions, and this makes the logic hard to follow.
+> We recently cleaned up most of these checks.
+> 
 
-With these skips and the fact that run_vmtests.sh won't run the tests in
-certain configurations it is likely we have simply missed this test being
-broken in CI for a long while.
+So something like bellow I guess.
+I think this would actually have the opposite effect and make the code harder to follow.
+Introducing an extra wrapper adds another layer of indirection and more boilerplate, which
+makes the control flow less obvious and the code harder to navigate and grep.
 
-I have tried multiple versions of these tests and am unable to find a
-working bisect as previous versions of the test fail also.
+And what's the benefit here? I don't clearly see it.
 
-The tests are essentially mmap()'ing a series of mappings with no hint and
-asserting what the get_unmapped_area*() functions will come up with, with
-seemingly few checks for what other mappings may already be in place.
-
-It then appears to be mmap()'ing with a hint, and making a series of
-similar assertions about the internal implementation details of the hinting
-logic.
-
-Commit 0ef3783d7558 ("selftests/mm: add support to test 4PB VA on PPC64"),
-commit 3bd6137220bb ("selftests/mm: virtual_address_range: avoid reading
-from VM_IO mappings"), and especially commit a005145b9c96 ("selftests/mm:
-virtual_address_range: mmap() without PROT_WRITE") are good examples of the
-whack-a-mole nature of maintaining this test.
-
-The last commit there being particularly pertinent as it was accounting for
-an internal implementation detail change that really should have no bearing
-on self-tests, that is commit e93d2521b27f ("x86/vdso: Split virtual clock
-pages into dedicated mapping").
-
-The purpose of the mm self-tests are to assert attributes about the API
-exposed to users, and to ensure that expectations are met.
-
-This test is emphatically not doing this, rather making a series of
-assumptions about internal implementation details and asserting them.
-
-It therefore, sadly, seems that the best course is to remove this test
-altogether.
-
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 ---
- tools/testing/selftests/mm/.gitignore         |   1 -
- tools/testing/selftests/mm/Makefile           |   3 -
- tools/testing/selftests/mm/run_vmtests.sh     |  12 -
- .../selftests/mm/virtual_address_range.c      | 260 ------------------
- 4 files changed, 276 deletions(-)
- delete mode 100644 tools/testing/selftests/mm/virtual_address_range.c
+ include/linux/kasan.h | 10 +++++++++-
+ mm/kasan/shadow.c     |  5 +----
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-index c2a8586e51a1..702e5723c35d 100644
---- a/tools/testing/selftests/mm/.gitignore
-+++ b/tools/testing/selftests/mm/.gitignore
-@@ -32,7 +32,6 @@ uffd-unit-tests
- uffd-wp-mremap
- mlock-intersect-test
- mlock-random-test
--virtual_address_range
- gup_test
- va_128TBswitch
- map_fixed_noreplace
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index de4afc34e3b1..2fdb05e5a56a 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -136,9 +136,6 @@ endif
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index ff27712dd3c8..338a1921a50a 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -641,9 +641,17 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+ 		__kasan_unpoison_vmap_areas(vms, nr_vms, flags);
+ }
  
- ifneq (,$(filter $(ARCH),arm64 mips64 parisc64 powerpc riscv64 s390x sparc64 x86_64 s390))
- TEST_GEN_FILES += va_high_addr_switch
--ifneq ($(ARCH),riscv64)
--TEST_GEN_FILES += virtual_address_range
--endif
- TEST_GEN_FILES += write_to_hugetlbfs
- endif
+-void kasan_vrealloc(const void *start, unsigned long old_size,
++void __kasan_vrealloc(const void *start, unsigned long old_size,
+ 		unsigned long new_size);
  
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 2dadbfc6e535..452875db532c 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -399,18 +399,6 @@ CATEGORY="hugetlb" run_test ./hugetlb-read-hwpoison
- fi
++static __always_inline void kasan_vrealloc(const void *start,
++					unsigned long old_size,
++					unsigned long new_size)
++{
++	if (kasan_enabled())
++		__kasan_vrealloc(start, old_size, new_size);
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
  
- if [ $VADDR64 -ne 0 ]; then
--
--	# set overcommit_policy as OVERCOMMIT_ALWAYS so that kernel
--	# allows high virtual address allocation requests independent
--	# of platform's physical memory.
--
--	if [ -x ./virtual_address_range ]; then
--		prev_policy=$(cat /proc/sys/vm/overcommit_memory)
--		echo 1 > /proc/sys/vm/overcommit_memory
--		CATEGORY="hugevm" run_test ./virtual_address_range
--		echo $prev_policy > /proc/sys/vm/overcommit_memory
--	fi
--
- 	# va high address boundary switch test
- 	CATEGORY="hugevm" run_test bash ./va_high_addr_switch.sh
- fi # VADDR64
-diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
-deleted file mode 100644
-index 4f0923825ed7..000000000000
---- a/tools/testing/selftests/mm/virtual_address_range.c
-+++ /dev/null
-@@ -1,260 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright 2017, Anshuman Khandual, IBM Corp.
-- *
-- * Works on architectures which support 128TB virtual
-- * address range and beyond.
-- */
--#include <stdio.h>
--#include <stdlib.h>
--#include <string.h>
--#include <unistd.h>
--#include <errno.h>
--#include <sys/prctl.h>
--#include <sys/mman.h>
--#include <sys/time.h>
--#include <fcntl.h>
--
--#include "vm_util.h"
--#include "kselftest.h"
--
--/*
-- * Maximum address range mapped with a single mmap()
-- * call is little bit more than 1GB. Hence 1GB is
-- * chosen as the single chunk size for address space
-- * mapping.
-- */
--
--#define SZ_1GB	(1024 * 1024 * 1024UL)
--#define SZ_1TB	(1024 * 1024 * 1024 * 1024UL)
--
--#define MAP_CHUNK_SIZE	SZ_1GB
--
--/*
-- * Address space till 128TB is mapped without any hint
-- * and is enabled by default. Address space beyond 128TB
-- * till 512TB is obtained by passing hint address as the
-- * first argument into mmap() system call.
-- *
-- * The process heap address space is divided into two
-- * different areas one below 128TB and one above 128TB
-- * till it reaches 512TB. One with size 128TB and the
-- * other being 384TB.
-- *
-- * On Arm64 the address space is 256TB and support for
-- * high mappings up to 4PB virtual address space has
-- * been added.
-- *
-- * On PowerPC64, the address space up to 128TB can be
-- * mapped without a hint. Addresses beyond 128TB, up to
-- * 4PB, can be mapped with a hint.
-- *
-- */
--
--#define NR_CHUNKS_128TB   ((128 * SZ_1TB) / MAP_CHUNK_SIZE) /* Number of chunks for 128TB */
--#define NR_CHUNKS_256TB   (NR_CHUNKS_128TB * 2UL)
--#define NR_CHUNKS_384TB   (NR_CHUNKS_128TB * 3UL)
--#define NR_CHUNKS_3840TB  (NR_CHUNKS_128TB * 30UL)
--#define NR_CHUNKS_3968TB  (NR_CHUNKS_128TB * 31UL)
--
--#define ADDR_MARK_128TB  (1UL << 47) /* First address beyond 128TB */
--#define ADDR_MARK_256TB  (1UL << 48) /* First address beyond 256TB */
--
--#ifdef __aarch64__
--#define HIGH_ADDR_MARK  ADDR_MARK_256TB
--#define HIGH_ADDR_SHIFT 49
--#define NR_CHUNKS_LOW   NR_CHUNKS_256TB
--#define NR_CHUNKS_HIGH  NR_CHUNKS_3840TB
--#elif defined(__PPC64__)
--#define HIGH_ADDR_MARK  ADDR_MARK_128TB
--#define HIGH_ADDR_SHIFT 48
--#define NR_CHUNKS_LOW   NR_CHUNKS_128TB
--#define NR_CHUNKS_HIGH  NR_CHUNKS_3968TB
--#else
--#define HIGH_ADDR_MARK  ADDR_MARK_128TB
--#define HIGH_ADDR_SHIFT 48
--#define NR_CHUNKS_LOW   NR_CHUNKS_128TB
--#define NR_CHUNKS_HIGH  NR_CHUNKS_384TB
--#endif
--
--static char *hint_addr(void)
--{
--	int bits = HIGH_ADDR_SHIFT + rand() % (63 - HIGH_ADDR_SHIFT);
--
--	return (char *) (1UL << bits);
--}
--
--static void validate_addr(char *ptr, int high_addr)
--{
--	unsigned long addr = (unsigned long) ptr;
--
--	if (high_addr) {
--		if (addr < HIGH_ADDR_MARK)
--			ksft_exit_fail_msg("Bad address %lx\n", addr);
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index e9b6b2d8e651..29b0d0d38b40 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -651,12 +651,9 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
+ 	kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+ }
+ 
+-void kasan_vrealloc(const void *addr, unsigned long old_size,
++void __kasan_vrealloc(const void *addr, unsigned long old_size,
+ 		unsigned long new_size)
+ {
+-	if (!kasan_enabled())
 -		return;
--	}
 -
--	if (addr > HIGH_ADDR_MARK)
--		ksft_exit_fail_msg("Bad address %lx\n", addr);
--}
--
--static void mark_range(char *ptr, size_t size)
--{
--	if (prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, ptr, size, "virtual_address_range") == -1) {
--		if (errno == EINVAL) {
--			/* Depends on CONFIG_ANON_VMA_NAME */
--			ksft_test_result_skip("prctl(PR_SET_VMA_ANON_NAME) not supported\n");
--			ksft_finished();
--		} else {
--			ksft_exit_fail_perror("prctl(PR_SET_VMA_ANON_NAME) failed\n");
--		}
--	}
--}
--
--static int is_marked_vma(const char *vma_name)
--{
--	return vma_name && !strcmp(vma_name, "[anon:virtual_address_range]\n");
--}
--
--static int validate_lower_address_hint(void)
--{
--	char *ptr;
--
--	ptr = mmap((void *) (1UL << 45), MAP_CHUNK_SIZE, PROT_READ |
--		   PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
--
--	if (ptr == MAP_FAILED)
--		return 0;
--
--	return 1;
--}
--
--static int validate_complete_va_space(void)
--{
--	unsigned long start_addr, end_addr, prev_end_addr;
--	char line[400];
--	char prot[6];
--	FILE *file;
--	int fd;
--
--	fd = open("va_dump", O_CREAT | O_WRONLY, 0600);
--	unlink("va_dump");
--	if (fd < 0) {
--		ksft_test_result_skip("cannot create or open dump file\n");
--		ksft_finished();
--	}
--
--	file = fopen("/proc/self/maps", "r");
--	if (file == NULL)
--		ksft_exit_fail_msg("cannot open /proc/self/maps\n");
--
--	prev_end_addr = 0;
--	while (fgets(line, sizeof(line), file)) {
--		const char *vma_name = NULL;
--		int vma_name_start = 0;
--		unsigned long hop;
--
--		if (sscanf(line, "%lx-%lx %4s %*s %*s %*s %n",
--			   &start_addr, &end_addr, prot, &vma_name_start) != 3)
--			ksft_exit_fail_msg("cannot parse /proc/self/maps\n");
--
--		if (vma_name_start)
--			vma_name = line + vma_name_start;
--
--		/* end of userspace mappings; ignore vsyscall mapping */
--		if (start_addr & (1UL << 63))
--			return 0;
--
--		/* /proc/self/maps must have gaps less than MAP_CHUNK_SIZE */
--		if (start_addr - prev_end_addr >= MAP_CHUNK_SIZE)
--			return 1;
--
--		prev_end_addr = end_addr;
--
--		if (prot[0] != 'r')
--			continue;
--
--		if (check_vmflag_io((void *)start_addr))
--			continue;
--
--		/*
--		 * Confirm whether MAP_CHUNK_SIZE chunk can be found or not.
--		 * If write succeeds, no need to check MAP_CHUNK_SIZE - 1
--		 * addresses after that. If the address was not held by this
--		 * process, write would fail with errno set to EFAULT.
--		 * Anyways, if write returns anything apart from 1, exit the
--		 * program since that would mean a bug in /proc/self/maps.
--		 */
--		hop = 0;
--		while (start_addr + hop < end_addr) {
--			if (write(fd, (void *)(start_addr + hop), 1) != 1)
--				return 1;
--			lseek(fd, 0, SEEK_SET);
--
--			if (is_marked_vma(vma_name))
--				munmap((char *)(start_addr + hop), MAP_CHUNK_SIZE);
--
--			hop += MAP_CHUNK_SIZE;
--		}
--	}
--	return 0;
--}
--
--int main(int argc, char *argv[])
--{
--	char *ptr[NR_CHUNKS_LOW];
--	char **hptr;
--	char *hint;
--	unsigned long i, lchunks, hchunks;
--
--	ksft_print_header();
--	ksft_set_plan(1);
--
--	for (i = 0; i < NR_CHUNKS_LOW; i++) {
--		ptr[i] = mmap(NULL, MAP_CHUNK_SIZE, PROT_READ,
--			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
--
--		if (ptr[i] == MAP_FAILED) {
--			if (validate_lower_address_hint())
--				ksft_exit_fail_msg("mmap unexpectedly succeeded with hint\n");
--			break;
--		}
--
--		mark_range(ptr[i], MAP_CHUNK_SIZE);
--		validate_addr(ptr[i], 0);
--	}
--	lchunks = i;
--	hptr = (char **) calloc(NR_CHUNKS_HIGH, sizeof(char *));
--	if (hptr == NULL) {
--		ksft_test_result_skip("Memory constraint not fulfilled\n");
--		ksft_finished();
--	}
--
--	for (i = 0; i < NR_CHUNKS_HIGH; i++) {
--		hint = hint_addr();
--		hptr[i] = mmap(hint, MAP_CHUNK_SIZE, PROT_READ,
--			       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
--
--		if (hptr[i] == MAP_FAILED)
--			break;
--
--		mark_range(hptr[i], MAP_CHUNK_SIZE);
--		validate_addr(hptr[i], 1);
--	}
--	hchunks = i;
--	if (validate_complete_va_space()) {
--		ksft_test_result_fail("BUG in mmap() or /proc/self/maps\n");
--		ksft_finished();
--	}
--
--	for (i = 0; i < lchunks; i++)
--		munmap(ptr[i], MAP_CHUNK_SIZE);
--
--	for (i = 0; i < hchunks; i++)
--		munmap(hptr[i], MAP_CHUNK_SIZE);
--
--	free(hptr);
--
--	ksft_test_result_pass("Test\n");
--	ksft_finished();
--}
+ 	if (new_size < old_size) {
+ 		kasan_poison_last_granule(addr, new_size);
+ 
 -- 
 2.52.0
+
 
 
