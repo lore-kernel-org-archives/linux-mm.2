@@ -4,98 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EADDBC982CA
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 255E4C982CD
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:23:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 436BE6B00A6; Fri, 16 Jan 2026 10:14:16 -0500 (EST)
+	id 403D76B0088; Fri, 16 Jan 2026 10:23:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E4626B00A8; Fri, 16 Jan 2026 10:14:16 -0500 (EST)
+	id 3DB976B0089; Fri, 16 Jan 2026 10:23:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3114A6B00A9; Fri, 16 Jan 2026 10:14:16 -0500 (EST)
+	id 3082F6B008A; Fri, 16 Jan 2026 10:23:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E3C76B00A6
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:14:16 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFB4C1AD796
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:14:15 +0000 (UTC)
-X-FDA: 84338172870.05.114B794
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 01016100014
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:14:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OcridL5n;
-	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768576454; a=rsa-sha256;
-	cv=none;
-	b=VzBLPnFrxrpDMOmobbxVukVxA/RM0OV8d2taGk6dwEAvOy8XlN+9o1WWX+UBbeiDQ7NORh
-	h3Gsfxc3HMf16+Hb0LjmKl3BdhOVKNaVj0I+kOWvwrnFam4k7O/9BwIZlWiwmUAZG+Mg4M
-	jkI/4JWI7ndcma+EsXFiMB9iwiUqtj4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OcridL5n;
-	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D0796B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:23:24 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AFBB5C04E6
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:23:23 +0000 (UTC)
+X-FDA: 84338195886.18.944B98E
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DB2808000D
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:23:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AzovIFYT;
+	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768576454;
+	s=arc-20220608; t=1768577001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NO9avectM4oqIErpCHYan5QDEY3yIsqWHROY9nL0nfY=;
-	b=Gu7X6zFbwgS0ZqqEMS/Fd09ZiBz0z9pyoiA3XnKUIcpTtA1hUVElpCRwDKolX2DFNwrG4H
-	E86ik7PBz3xPtygDObImGTBOWmxvAMoTQNAp9o5Po28QODRz39F3A1LEjmV2RCp5idcKjV
-	qi4+8ESTis1hUPBcp/CLiFdr14dXmAM=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-88a3d2f3299so21215536d6.2
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:14:13 -0800 (PST)
+	bh=6ruow4/wZjKfb8JMQTU1Zv1qutfh8KJ4DdZLyiqz0aA=;
+	b=boeyW2U53lKuT+s3JwxGvdQaNzm5WpVLNjV52dTEayQB+36SkQ1Cb97KtFXOvVm4NK12yE
+	FbjT+kPRXGf8/DhP5xeEjowqCU3IgcP1NqrAvjj0Ajpj/wE/6rdmEluxCV7jzc5U++q/gD
+	WIzxxyYPS9C2WNjmzsUbYcoLWxBrVw4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AzovIFYT;
+	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768577001; a=rsa-sha256;
+	cv=none;
+	b=lhrOWIBzsA+oxW8SVbu9gP9I95y6Cg2UOg7xhyC8O4+QqqN+Zxo2pHRgPox2xTpIVLjgl/
+	GgsNofqkWyssACPzxWXLVioZJ1DbGcWfskpHoOU07JuVZf8ZHJ3R7Gd8WFE3eeqCgKIHE7
+	j8OY1zGZVPhMEWaleD66mLC6vWC4OnQ=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5013c912f9fso25660231cf.2
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:23:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768576453; x=1769181253; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1768577001; x=1769181801; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NO9avectM4oqIErpCHYan5QDEY3yIsqWHROY9nL0nfY=;
-        b=OcridL5nVOjKghpa568c8FGduk6Ag3M9SS1LIrhjnRjCNazeXi8KtMePYFtuiFkBxY
-         EyNaWIlHkUPG00fnJUMtUP496vC9DmOUyTRV/1MuVc3Lx6UA/72RGwI3ZAwvO41Rs4/N
-         jpEjrWBEgHYcSfDxwFzvyuYVtWIlb1D+4DhaxhErOyHJ723viHeIjayoz6J2iopUuZ3a
-         Bj/ZmKU/0yUYnyd6sKxTvoK47plIvDdBZeVDTKmKFoyH15bmXkTjLSjnFYNFL45zpZTi
-         g21Fr/1uWd9uViA7n5tpPNRcakZK4sBoL/cNzCKQ3oum6JBbpUOHgRjw8rlsgKWvgbo6
-         MNsA==
+        bh=6ruow4/wZjKfb8JMQTU1Zv1qutfh8KJ4DdZLyiqz0aA=;
+        b=AzovIFYTOg/H2rN+wkWaCEzHRM/E8IENLoYZ/nHQlZSh8GjXeA9AVyq1a5ka8MESUm
+         j+uWZnU1cdLIE+rJwC0gV6KPd/a1GZgX8tLriw3doKocwQdwgA3G+Cqq0+ZoqkG607MG
+         JJUnTHXlxejIdIDDDcWRdjtluoaGhhf0fsEJ6QdfVMB7ev+oQHiwhgYRVN6R0jsmVzqQ
+         YX23ngH7VuRpxQnszr6nnzFOK880z3Icz6lZkOY9Lg+BSmAKsR8H81RBPNlUvfbSJ8hu
+         YTol54+tt9SEWrX4E7QJ5IP3hAIJA0XY9krwhwBoeD1CzLE7kulhLcJQ7IGe7hi/azhm
+         mohg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768576453; x=1769181253;
+        d=1e100.net; s=20230601; t=1768577001; x=1769181801;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NO9avectM4oqIErpCHYan5QDEY3yIsqWHROY9nL0nfY=;
-        b=BtvOnftk5YAf/u0sIvHQSoaaE/nzeHKC/foH6ZnSN2WRm90kaYFOEp0w9/SvfVLLFJ
-         yFnNQLSSvNymiG24IDpH8ji47Jlk3t2vYOpzblJUpGsHeJB1/lD5L5u1UOxrBJZk3lAk
-         lOvomSrY3a72HPrWNeZpZHxq5nYpdqk/j2Rc4SFQv8JTzu0GCEdR+/ejv4Nag+AgwnGd
-         Gb/YSFn1xpLWE+D7ffSwDWGxMm6hHducjrPZ5m8uTxNKWgyVCZwsYATEvCBdRH78jbZV
-         4R94KfzyRrcrpgAZM9166FgLpjIaXk2e6Od7qTxtpwlIm78F687OiV5rp2I0tLWh3la1
-         qVvA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCA/M4gaxeJqPzl9OapyQXczog1nc7L8yqgnHJjG0Qj1fQgsy6lZhFUndqY8w0UqqJsPqVo5zdWg==@kvack.org
-X-Gm-Message-State: AOJu0Yyo+0CMZEFiKHKawwsOuXo48CD0kDw+aY2Qut9FDS32rWrW5OMl
-	x5BG70eFbzgn92//Dy+7YK+iq5XFAoSQUr/ki54rjSe7mfm3/agAY6oLijzajVJ8dCcDnkfQM/V
-	N3nZP5REqF55sbUJ6okagCaqKdgUHFlA=
-X-Gm-Gg: AY/fxX4aIoSgqlfMuaJFfwzwV62J+/xTpfEhhU/9kOSJeS1GXY7cl5Mp0H3D8uOj+XX
-	CM+R3dcs59aUN44T5OxEbEUvdpp4R+AuDsX9SG6PEiz2fM+EaqcQoMolZ162J2qs2WMjBaHI2fw
-	cxdyjaC5o9jrGkdivWYZcJdbTZHyEam54Qqmf9b48AACzqRPMrb1994Spn+MAR3spxQtkKbBuny
-	NRqOdUQJ5CP/P+9fnE0/J8SJuMm++iSKmiRRX28SvUMMJXLewpkrVaVo3l/ZgbLOrPp9FVU1A==
-X-Received: by 2002:a05:6214:1c8e:b0:88f:ce04:3261 with SMTP id
- 6a1803df08f44-8942dbed93amr49871526d6.6.1768576452689; Fri, 16 Jan 2026
- 07:14:12 -0800 (PST)
+        bh=6ruow4/wZjKfb8JMQTU1Zv1qutfh8KJ4DdZLyiqz0aA=;
+        b=XW9/WXnDpYUNM7vKZzKZiHLczpObJ9YWLDafj95g3WSuqu9jjyEALFUBcn7j6Ck0lc
+         ke82lMVGaMwtOV1kZe1p7/I9eNcDqdgnPGTIVNfvMrypyi40eUjZU3WM9i1EtzD/7BP4
+         4rSySahG3tIFfYmK0tFb+CEAwAXVi18sx3sU0hz0aKRzKj2cIrwtIlsR0l4obsYETsjg
+         Jupn5UyHHYkgPWj4wvtAEHHBkD8sscP4NJhm7NZAkT05cawjdwgHzNEwjsdvRC2QA60v
+         FcTP4YAJLMwF1WZG+EN1e2tnJ8yPhKnk9gYwA0CmNDxhpa5qQGUuoTZqxmhSm/mCwgJO
+         lhFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTdlVWMu/gzttCu/5aTHQv12Tb4EQhQYjrRrGZj+yK/8iLq1K3zHwFyCkEQoMW7pINDopZmfNUtA==@kvack.org
+X-Gm-Message-State: AOJu0YxK/qd4Y6eJhlbgBQYls+8B3Gy/hPRY4TUKx8f3pOXf62Dq74Nm
+	GcJ7NhPxBf6eKXwMzl+KB5s5ZNJ91PazR/YDol3RMZECf8CxKyC5GF6WfEJ99FDJ2iNUV5HXJet
+	YPqIXX7UIcKbVZ62vUxrjIANvAKzPg2g=
+X-Gm-Gg: AY/fxX7x7Pyzmv+1scl19xfRuSPsxxV4mPv1Bvo8gERcmh8gP+80Heam5ZrCaIrHHoD
+	ClHPJsXKu4IyGHn+4UnbGSReIA32n12syOnvPMfVg+KOZzk5yePPEw9nKl1Vq0AjO9QpoGy560G
+	3B5PTuPk8cWLTj9ukBoUP/zMAyxHff6OCG0/C/OuL/sSH1j6N6AvEzjQ40xcPIUDaDnqXGnTnoL
+	5dmtykZYgNtWil047dXW2KY5L83LpBOQiW1EbexH9WhBhGy7EFgfOB4BFX3C2LonO4IMBopbg==
+X-Received: by 2002:ac8:5ac2:0:b0:4ee:1301:ebb3 with SMTP id
+ d75a77b69052e-502a1f22059mr42688281cf.54.1768577000668; Fri, 16 Jan 2026
+ 07:23:20 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
  <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
  <20260106132203.kdxfvootlkxzex2l@master> <CAGsJ_4yKRtyADU2ZxUMgvqdrhAEL4SpZxCMRt28gNJfUf--5zQ@mail.gmail.com>
  <20260107014601.dxvq6b7ljgxwg7iu@master> <db4d0a19-598b-48ff-accc-f5940a481035@arm.com>
-In-Reply-To: <db4d0a19-598b-48ff-accc-f5940a481035@arm.com>
+ <CAGsJ_4yo-EE__1VzHqxE8ehDOFQuxqP9GXcskkeZ-WTTyz12_A@mail.gmail.com>
+In-Reply-To: <CAGsJ_4yo-EE__1VzHqxE8ehDOFQuxqP9GXcskkeZ-WTTyz12_A@mail.gmail.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Fri, 16 Jan 2026 23:14:01 +0800
-X-Gm-Features: AZwV_Qhh25guirGdCd3FvYx-1o2HRDCiexeYBr732qjmPh2DKC6RTtL0fDbc61E
-Message-ID: <CAGsJ_4zAxhSDqvN5tzSeHR-kifaxm_GbPhHCeSkYsRJk=uHN-Q@mail.gmail.com>
+Date: Fri, 16 Jan 2026 23:23:09 +0800
+X-Gm-Features: AZwV_QjhIL27HqGh-V6xqXTmePQwUXe1I8tfl9ShdQFMbp6lIAEloV1CW3BxTnU
+Message-ID: <CAGsJ_4yACo0YVmQG4i1cr_w2unEt+SnpbFPg=O79g-2Asho1dA@mail.gmail.com>
 Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large folios
 To: Dev Jain <dev.jain@arm.com>
 Cc: Wei Yang <richard.weiyang@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
@@ -107,14 +108,14 @@ Cc: Wei Yang <richard.weiyang@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: m4u9p35ggrrkyworgdafrau39sd54dt3
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 01016100014
+X-Stat-Signature: hq73dw1pg8bbge1kgoiad3o7jno9qco3
 X-Rspam-User: 
-X-HE-Tag: 1768576453-249071
-X-HE-Meta: U2FsdGVkX18eAPE8MvLzedOQCxie2hyUSyklCgMfLUK0daiBOfsdUh+xnl5efqKhdwgrQlhrHK65ykxoCRkJkk+q7V1/OkNDKbLpK5AtgdGWzds+fsTttDitOCn36RPIbqjvK20eiFAn9hIPuudqp/jI9E7u0RYydP76twl5pJbps26I6EVm9jOBRck0MNYa9PdleF/T2W9CXU6o2z8WWhDRfzNf3zwrwBFc4EtrAv0PgmS/KG+de2Yy5wuyvkQoME3PFeckN+cGZsK7h/62gKD+CFfLCshiROxsbjNPbjmV8LMTUXnJa7zVY0jrzQH+/ksc2H/ITk/7MiuY1daFDECLC3EeDPN41yyYRhesiUjfmNOIKUZC5DT5tBkPKlt+8T5VxJBwCQiO2Ya/QEbZYw/YVNF+RG/vRoCc1DbDUPmnG3lVyOmno1Wbni6qGr5KkDkYuyPVeGvZRc4a+PAzcStOA7KZQYVrJHDWpefUg7ADMKx/CBKmwfdeEV8ip+BWh/OU7cxg7j96bjNBfi471EZ2HJYmmmaRbpLWhE1s8m99IbNnuGiHSNHEbpIAi1NzdQwzTkhB3lLc103+EKxVPzoCxCQ9nDwJe/190dGm+WnLNfkyFZfbMnkE3Gnvo9Ik1KTpFqpyZwaOBD5suA6tGF5Bz4hFfpROhxcuT9DKIuDzdJnueODnF61C7AiB7KJeI/jVEheSpFRC+k85d6x5seVAgTCSfFcSnVn1TCwA0++eSe07Jwn4/sRapve8NDbS/iRxmExa0/sLoN7+TbGJmgUZpVz6LHIy2h6AG8l1d+DRO11hQwWIi9w6aXzj/WuwRt6WLrUvAHsX16haAO5ldsjdPyAkPn7H5XI+1AhZSWmF+9u/s2Lqng70zykGmaSDehAUn2PJ50V9dynWZcv8V3peOrLDE9nzYM1/1qqYEAP+f1OxSL2dsmZQGZRHmlikWCmM+1/PU54/4J7RfsS
- kwYZNZ9C
- dCsWiwQF3s9gvYRu3lEQ6qpyzZqs8MxMXiLkT/kbZQZ5iaSQEwpYoQIG+6+wVAmcr0+byjVy5gbkYFtlI9oKs/w0XN5DLg30hfM1/PINRKa5iD0H/le/w6ircWIBnqvT96mzJX3qIiwQ/KwhhMDSSqBkqCZNNApuD7GAxIPhFcXAtkmWnwZmf6CzAJCCoUdSOFmodmUIP1wud0hELg2CDocYzIRJANDMF5jYMZdF3jIWnFKBKG7l1odhNxXO6LivV/+AIxqxnvrozjPfY6aWiNKiUV4oT+r4sReS+y0gHOxQXXTG00uska2u1f5zlLiqbqYB1JCVSToL8qhuxVG0egoEPN7xKuOqZ6I25/CkkPDXqDqiHeTSouo+XWcCDUEodUdLbuVJZBPbAU/vVtIyrzah2r45+ran0KOlddlE6PWZ3CuoDdMSOQDObMDBacFwyb4aakqZ5PHuypTdQr84VqHQnT+9wYl8epeHd
+X-Rspamd-Queue-Id: DB2808000D
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768577001-120540
+X-HE-Meta: U2FsdGVkX197awJluin3rYyyzhhJRP12Q4SYoYujul7stut4125ymcO2mQD6tzDaQ9p2jCtnpwGnASEc5X38XG2pVXPwMMoyDwTn76Fys4J46XsJKw3elC3/YccSNsxuxj0QhFQtZ+XGbfNg0x0VKgWp1h6HxmYyKQtdjcv8qK12QJ9ENqcGfF2lgzruSkPvq41XaKlmPHcIxJdq6BFdvEs/+4GzLFqPVeEFtQG9U361ZzjiiMrzjiOkNuduU2WHZPXqDnfCHfnX9t6mp6tJwk3HJwisfwc7tpvKczZ3bJl62V+pDy7GA1oe/N+mEpyxwx3T2KvWD2aqbj2s7Ntqj13MYNX0zhCLa78ajQUKF8+iy/sVsTEgF1fSDyDDXz3Ow4+IbusoKAfmUKF4O5DSZZC1mzE8sc5iYGMw+jZPKi/lhmYBeJ9L+h0seDOXVeOIfCUYR7DqBSl+G/yDrX/BoIX5f24ACZX4h9TcjgoRAFIJRh4JKAWreL89Yz07FJDKTJcN/qo+5jljbE3931RZCpoTltDbQvBSmHgA1qYhyQqmuWJTjI2UikEJCthp3Hm4bfhdTn7CdIHaDrr263IwkCgKPinbwBceHx+WlS6hzG3uv+Wg3J0SwS1/JNmkFXjxTrz0+NNrFeQNb2S27sP4NMeeyYXHplGQ8sUtu7mD6D/jbc50MljKZpN+47u5muhHwcMyHozZbklCFgfnlCDJnTfad2cU7lLtys/V+vudb69/H8KJtturt9H076J2kzbakEmo5NoLP9rqXh0O1MMf9QfvCtmyws8FCb9BPVshaI3ytHxXFM5zKHwbVyUocPcRMkcJ0yA1PximODZVdPakJlRrLXagsfGTcORacVqo33sCUJmtnF2SvcH2+Qg9icYa5OPkGzpNVDQ+Edc8XLl9Pi+HhCg7t0pV7bisy8bvIhapm9zAz01p4p/Y0ym91350T0LYMBZ9Wbp2inftvFb
+ HElH1mmp
+ Rb5v03hxi60Cx3UO2522KL8ZiKpfoELDMH5Kjj4KB+hgMaGyxrhRyizsbeiV0djVlAlR4YzZZme+gPZ/NSMOtOPbT2RRDzwoCL9wD3pCpIHZzmv23jaUa+8eGn/cUQXE/zDJxgJC+T+jgmMpSEzArebn2gHGYm4bCZtLShYKv0P/aGVznNNWHsyS5dYLqTMMi5VPjd7ciVKE1YwCZxXOhGP6hNxK4vjaigQ+12eZSVDiODODXxs1awxn362ahlY02AvRh7ukJnCkOsbmBn7g3dmoKZ3WI8SKDw3b1bVsEzFbaB64DT4fs7wWiXiexgTo6oUyetMfWZWyj8Td1R2BLK+BjKzgekX9rN8auPE6TcTeTATRDXxA8lXVKM4o+FQTw4rH7V07meGzR4pa6/5YtmCdtdyqUQSSQNTarR/V0/fsh8EwX03UA1zxrnq+yl6fTrAx+CRqJuUbXxWHmvW/shcWaWpIFI6KfdH4xzzyhoaI/YztS75zwcDahnXkhDomRN02o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,53 +124,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >
-> > I mean maybe we can skip it in try_to_unmap_one(), for example:
-> >
-> > diff --git a/mm/rmap.c b/mm/rmap.c
-> > index 9e5bd4834481..ea1afec7c802 100644
-> > --- a/mm/rmap.c
-> > +++ b/mm/rmap.c
-> > @@ -2250,6 +2250,10 @@ static bool try_to_unmap_one(struct folio *folio=
-, struct vm_area_struct *vma,
-> >                */
-> >               if (nr_pages =3D=3D folio_nr_pages(folio))
-> >                       goto walk_done;
-> > +             else {
-> > +                     pvmw.address +=3D PAGE_SIZE * (nr_pages - 1);
-> > +                     pvmw.pte +=3D nr_pages - 1;
-> > +             }
-> >               continue;
-> >  walk_abort:
-> >               ret =3D false;
 >
-> I am of the opinion that we should do something like this. In the interna=
-l pvmw code,
-> we keep skipping ptes till the ptes are none. With my proposed uffd-fix [=
-1], if the old
-> ptes were uffd-wp armed, pte_install_uffd_wp_if_needed will convert all p=
-tes from none
-> to not none, and we will lose the batching effect. I also plan to extend =
-support to
-> anonymous folios (therefore generalizing for all types of memory) which w=
-ill set a
+> Thanks for catching this, Dev. I already filter out some of the more
+> complex cases, for example:
+> if (pte_unused(pte))
+>         return 1;
+>
+> Since the userfaultfd write-protection case is also a corner case,
+> could we filter it out as well?
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index c86f1135222b..6bb8ba6f046e 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1870,6 +1870,9 @@ static inline unsigned int
+> folio_unmap_pte_batch(struct folio *folio,
+>         if (pte_unused(pte))
+>                 return 1;
+>
+> +       if (userfaultfd_wp(vma))
+> +               return 1;
+> +
+>         return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+> }
+>
+> Just offering a second option =E2=80=94 yours is probably better.
 
-I posted an RFC on anon folios quite some time ago [1].
-It=E2=80=99s great to hear that you=E2=80=99re interested in taking this ov=
-er.
+Sorry for replying in the wrong place. The above reply was actually meant
+for your fix-patch below[1]:
 
-[1] https://lore.kernel.org/all/20250513084620.58231-1-21cnbao@gmail.com/
+"mm: Fix uffd-wp bit loss when batching file folio unmapping"
 
-> batch of ptes as swap, and the internal pvmw code won't be able to skip t=
-hrough the
-> batch.
-
-Interesting =E2=80=94 I didn=E2=80=99t catch this issue in the RFC earlier.=
- Back then,
-we only supported nr =3D=3D 1 and nr =3D=3D folio_nr_pages(folio). When
-nr =3D=3D nr_pages, page_vma_mapped_walk() would break entirely. With
-Lance=E2=80=99s commit ddd05742b45b08, arbitrary nr in [1, nr_pages] is now
-supported, which means we have to handle all the complexity. :-)
+[1] https://lore.kernel.org/linux-mm/20260116082721.275178-1-dev.jain@arm.c=
+om/
 
 Thanks
 Barry
