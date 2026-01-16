@@ -4,127 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E7BC982CD
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:46:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB88EC982CD
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:49:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14CA46B008A; Fri, 16 Jan 2026 10:46:54 -0500 (EST)
+	id 3DEDD6B0088; Fri, 16 Jan 2026 10:49:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D7276B008C; Fri, 16 Jan 2026 10:46:53 -0500 (EST)
+	id 3A8E26B009B; Fri, 16 Jan 2026 10:49:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA8FA6B0092; Fri, 16 Jan 2026 10:46:53 -0500 (EST)
+	id 2AEED6B009E; Fri, 16 Jan 2026 10:49:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C5C736B008A
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:46:53 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8732F1A83D
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:46:53 +0000 (UTC)
-X-FDA: 84338255106.15.ECC9A57
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 83C6E20016
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:46:51 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=St8Dl0L+;
-	spf=pass (imf03.hostedemail.com: domain of 3aV1qaQkKCCA6HE8ANUDHCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3aV1qaQkKCCA6HE8ANUDHCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AE466B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:49:22 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D428EC0946
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:49:21 +0000 (UTC)
+X-FDA: 84338261322.14.32DD677
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 30BF51C0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:49:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=u9OafwcF;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768578560; a=rsa-sha256;
+	cv=none;
+	b=LflF6VDCvpOsTq6fm7qi5x1qbAAzSgwCOu/pcMi7SJ509bvV0K+7gtT259hLVqeI1QNRp3
+	nY9kTDYoL1RXQU9e76tkYbHf2qrATsDHusqlndGrtWJ7BOSJKkYqQdMjOriBiSqrazmK2K
+	P5iwgeb9J/lgZHyKGgSaemlJrS8iI8g=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=u9OafwcF;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768578411;
+	s=arc-20220608; t=1768578560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8XGtH7eRIWG3NpNTBCWRXdsIlOUMi+HesazDDnaKxAg=;
-	b=7n1dvaCpNhqnTdiVDa9KvMXjdu9lBv+2vUI2iAU/l3sNOvOs0H3Ub6g2R8VpXW4Gf+7+Z9
-	3fvUORzC0AbCULDtIg3zMYQU0DLy0mvke4FzZNl+D/kbuvO2BoHb0axsPYSBIw47MLP4O2
-	H8nenM08vZ28cDXuu5Om9DMxzzxfQAI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=St8Dl0L+;
-	spf=pass (imf03.hostedemail.com: domain of 3aV1qaQkKCCA6HE8ANUDHCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3aV1qaQkKCCA6HE8ANUDHCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768578411; a=rsa-sha256;
-	cv=none;
-	b=7GUmmHOw52bdmlIGHN8nZvQtO7iVM7EaJif5hbhqlGHrK1BvtllINGgbwJxcs926VRub0M
-	MYzCOzixU9verp2wsnQEyYRqy6fwcs9Z0TztITiONEZTMkTilTaBpObffuE160yp9s+Hln
-	9/J7R8lpS3a0/ZlvgJaiuL6AGVHYZQ4=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47ee1fe7b24so15688725e9.1
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:46:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768578410; x=1769183210; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8XGtH7eRIWG3NpNTBCWRXdsIlOUMi+HesazDDnaKxAg=;
-        b=St8Dl0L+XLLPrJlPy/iFcr/4qaUpR/3bK2NMH0KTtTuWP8EVi/mEjYpvmXx8jwp+PP
-         C2L8oYW65KdfBnoVAGi2FEjVGICZwW02GWY2MpRR5QTMOqxhAhwAEAdNtHzgXrctxilh
-         6++sxLWAOL+jMis9CEukW8qwcaZD88CCMKs1NySPRn3JimWbdYl0m8pyOs9xLmtkGO51
-         PZBBVPqe5Syz7M+IdRbq5KUB/1c96X+IBdMnm9alnVmoQH1PNNRk+186g+CnDUyCI/S/
-         FVdKpqgpyVFg/yStbOPt0UbJlcXV77AsWCb0xYnhFfJD8v0wL0SKLPteMEpnqI12iQkX
-         HuNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768578410; x=1769183210;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8XGtH7eRIWG3NpNTBCWRXdsIlOUMi+HesazDDnaKxAg=;
-        b=vsXHxlsfSBtZM2k4o9/5v5QT59NVWYoZErdHBQfAbBDF6x0cJzxOdbFrWvWTaYDHnx
-         cCvhUlZwnStzR5XFzOmliIImoUBvbS6Hpg6/au7prYFCtZ3gnOcUJ+Z27VVJj140zEbY
-         iubjUJUDo+X5Osh16L4gjN94+Sten8G78EmMSzQqoF/Z10X9GBdC70nL9SDe4ENKjbEt
-         x4mzctQbQHjUUoSJgqKCduO4MYzLfG1mT6NUrkGK6FKpUaJrRXpx7LrAmphEJUt8vRBx
-         zWnrHYGmcNlorRicYnJpEfwtjHqFmSdkPOFGjtMiISV0eYDuvTHBvCGtcvTxnelVYciS
-         T5Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ0Ynjoby8KcanTw063yEANm9e/lI19Do/1mjkGMnRem/rtO+Vwp8LjAZQoA7jiDwsHlKzSCYPLg==@kvack.org
-X-Gm-Message-State: AOJu0YzB/W1J9+OnHHRDmcZNDmv1cYrrRDqJJ5z/pKhAcL3VA7DK4SF8
-	tMRAzOBaGKvu8g4l/tQ27Cn50k+VvD8+R+vGn5Em+zWf5zNK0YvJGIq8HO0gP84tReybQTKAgGJ
-	z9Qhsm66I4aGT153Isw==
-X-Received: from wmlz25.prod.google.com ([2002:a05:600c:2219:b0:47e:e02a:29f9])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6099:b0:477:7b16:5fb1 with SMTP id 5b1f17b1804b1-48024c96d6fmr18214815e9.7.1768578409946;
- Fri, 16 Jan 2026 07:46:49 -0800 (PST)
-Date: Fri, 16 Jan 2026 15:46:37 +0000
-In-Reply-To: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
-Mime-Version: 1.0
-References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2699; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=k6qM4owknwmZ0WB40LW8lN6xxPZevEl5Zk/TWP4cnbg=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpal1mlwNdQHuRPBnDEkbjpMyIXbDK8SMRSGlpp
- bXnMzHOe7KJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaWpdZgAKCRAEWL7uWMY5
- RmVgD/4mrfBYDwKDTh846tUygrVVBpPGrwR+pu3KEcaHS9S78rcPTu0xCPHY9Ylnb36FvqkeRQc
- i0plU0JogkIjXeS2MZOwaSS9qf9UJ9TQ6QbLm8tDYn60m+RsMzhSQBwxGV3NQJCs7BREt/RUeCC
- vXZPgmd+AidlxjiKE3/JinBtZvRX1ueXFTu0Jcb0l2dy34EWKNI5w67IdP9WwrvwuCDv64M6oQZ
- 2CiBVwM4kg6OMDm1eW6JGRKJAorC/MTCo4ZvA5WI7xD01o27uQQNEjVz8hJYpY7aC4kWhWPv/SY
- h0JJ8QFnK/4PGvCJYY8b262ZCD+cp7Vie74YvFq+g99oNsvk+mtbVRIMETJjmuMpbUvs2v4ocz1
- 8pQcNFUp9MfPINoTOZHt7Pn2R/VTIDqng5id7dpFmwJasygE46pPliliNf57woIYHmhDQkLH6Hc
- ZqmBVClr7yQoFjtP7sbkK8sFNIeZhVSHGkN7rkxH4TmOCp3MUumlf6qZH8npTt9SYmV/IzhmzaN
- jQLPNRHRxbxx7HMj7eb/V0AhQVQK98Nw5FB0JhhySTtJqU/36B0oWZYiisLbvb9pe4e9rjHZWWj
- aTdpPHe6XJhq80yU50gMk72HkHc/sDA+xke8/t3BEpQ/9Et1c0C1OQ27f1Q4I89sIDYzSJgTYU4 7v8e4h7qDx1dlyw==
-X-Mailer: b4 0.14.2
-Message-ID: <20260116-rcu-box-v1-2-38ebfbcd53f0@google.com>
-Subject: [PATCH RFC 2/2] rust: maple_tree: add load_rcu()
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Paul E. McKenney" <paulmck@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
-	Andrew Ballance <andrewjballance@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+	bh=hHMLXqA9TxG65qWXMMsOEMcFl3LZezM4qnFGZY051ss=;
+	b=5xRnzBowyZ5SPGDkTBRGU9YgXoTSqKG/s/hm31wvNoez9eTLykU70tpgg8osP6YNrGar3j
+	aaEY3fQb+Rmu5sLZeSOHrvE2ZowHNzKTWo41JfDxzXD/jEiF4wRwDGe6GgfE78IY3byfp7
+	oX8NITbyjQhORZuCyklfYTEQehAPTdA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768578555; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=hHMLXqA9TxG65qWXMMsOEMcFl3LZezM4qnFGZY051ss=;
+	b=u9OafwcFmwfCeqjCrjDNiOOx09dMPFnDSDYMvh5cgqF0MRidfYOQHsQcnmLRy1KTKFVhTlf4foS8zMLaVRoSKGdOBQRHqPhMtS0wKqngi83/YhPBk8CuOJeVY3qpAHHONUJkQQf5C+AxPo8cVzr1SPRhCyxBZaozJ6d3w6LQFaI=
+Received: from 30.100.3.200(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WxAeMbS_1768578550 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 16 Jan 2026 23:49:13 +0800
+Message-ID: <84214d4c-2898-462c-ad27-fee39502128a@linux.alibaba.com>
+Date: Fri, 16 Jan 2026 23:49:08 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large
+ folios
+To: Barry Song <21cnbao@gmail.com>, Dev Jain <dev.jain@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+ <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
+ <20260106132203.kdxfvootlkxzex2l@master>
+ <CAGsJ_4yKRtyADU2ZxUMgvqdrhAEL4SpZxCMRt28gNJfUf--5zQ@mail.gmail.com>
+ <20260107014601.dxvq6b7ljgxwg7iu@master>
+ <db4d0a19-598b-48ff-accc-f5940a481035@arm.com>
+ <CAGsJ_4yo-EE__1VzHqxE8ehDOFQuxqP9GXcskkeZ-WTTyz12_A@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAGsJ_4yo-EE__1VzHqxE8ehDOFQuxqP9GXcskkeZ-WTTyz12_A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 30BF51C0005
+X-Stat-Signature: d476mfjsregq1ue46xddbfa5jzfaaeqr
 X-Rspam-User: 
-X-Stat-Signature: szw9imprh9o6bi3ot98s37eyy6w5ku9e
-X-Rspamd-Queue-Id: 83C6E20016
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768578411-53133
-X-HE-Meta: U2FsdGVkX19EB6XyadnF5FOWAGCuSK6SelZNtsjEyqtNcxGbinLbytgcVUnc+kpu+CNAAW00xeMTiVDW/ePVkh3D3calNhxpO0uiB04ZlOuIa4fqmXHsj3IkVKaq0fp2ZcuwzEFFSIIcSwjP1c78MDFA/PdZWyeooXXrb5Me46Ayj6OAycoJyOyOKLhnYbGzlf5PyXGNFQFXUfJHBMQ8XPzPn2BWHPRBj0UZQoOD+84Te1+kxpkZ9mSZQUS1ZbB1C5S/UEJrpaF/AI381hnBXGwH/HaUZK1K4Wtx22A7LggQxPsqn8zcdLxkDUw9Y08XFuklplLWV2Z3CqrNJVyXOSQMbEMcimCPaPwBSYM5TvNhaJlNds80LJdK5KIFqrYtw4ULti8dPpbplypsvid54cQwO9HHyYRKWdeoA/yfW1+uBKNs2fcMJzBz6PR+wnXz/U8959VPTT4kdpF4djjIENp5RokMnwMVF2mwDVWc+pIdSTz7yqe6yukvF1oxueMNiA3kvquvynwflVYSMGRspXgwB7zxLlc5Qa/+qWU/ejchEE9Mrd0IKs3S9Ub6Ri/z/P1rVjXby55r03u3Rr41JHi1OdZpyxejXpLAlBkhxvfCuONC9VADp0nBLeSfAXrx/itduoYVzZV+jEu4bNKhPBLNyKF0xPPV+uVU2aBNH+Ux13GNUP9qZnrmKCIRv1IwrJTJ5eobOkgDcLHs97OyZbKg3a84LPvlu/h2kCEzbQwmwt8h1Vv4wKpqPW6SdNyGYAvXLWNGtas0JhltxFPm38s7LeiccB4uoYLYrcUDKms/9czrPTv8jD7zneC3EFVLmZZ4xiz1UEL4RIrDiyBK79KccOGebxstJMISMCUxHv6keusJDAc6Lv9IANchbmfKUPKR20Ej/qMDwRBz1QKZN3yrRo7dn6TbQkNHz6p8dx5uleHZj3JlTy/eVJZ0I+2j7PlxbFck0YElEC/j0ig
- 0O1FQ72d
- jFpDTxuQD5UmNNLlgkFF+XqK/fODzLWBR59R7GLLWZ/QsgxD6GDZgQmbCM2/KBB0QN2XNFmcOjA4lLC9pXhQDhUPGYrjt9U5na29HhyD4BBnixuSyN9sDoqglmBbosJcHlau1eZI1r7LGZdspbbYjGWTpiJ/XhIngd4dGnxrudxlkU+ai2U2t2FFLjXCkhmKp8aggaRUEYpRYkETi5yWUuEVaKRRPcT2BY6DIz7FBYQI4F5ToeFa6JJEkhupiXX8G/e/JVA62S3K4xY3UlkNyVZ1tRRRIaKQALhv5HYvnKYLqDDe2cWVzi3VGqU6gt6XK+PFRSnqfCj18qOrwNXEsFJuieXI+WlOmhgmjVY6Ph9QM4s0QctekpPwKknXnTDZ6DLOFY+UxzWPW3q6+b0LbxHgY6MyhLeoefHBVNTP68Bc+qg3cA+4t2N8d35jI9Ftxkk6jDdXC5hy5n3Jl1UhcGQu+j17KfG51f44b0wHS9vJa5UgY3JYUyigYiOYU4zfgEURTO/hC851qQ4g4nTVfGNQSYpoBHPVJA2nUL3BXQCnSBAR5qjY8l6lkb7BYXsgcKrKC8uYiGOcRUGngFub1MrkuImsmtQ4iznWW7iN5gctS3kmzUUtoyQuZ7uHQpd2oUWYBrJ1sj1zthTUSKlfUTor2Ij88e3YfsjtPfz7YDjM3QpWP2EP2OoQXvw==
+X-HE-Tag: 1768578557-251951
+X-HE-Meta: U2FsdGVkX1/xE06RF8JxEKacGfaq2iRd6DP1kbZnARCITH/q3DcpjN/Jc8jHnrsWBL7+LNvA34Bj62iNtG+KxgX0ZW+8qIFu90eTF/jmKHwmFbpOxy3RdtQ+VA8Cf9xo8Vub6F6GO2efyKxP+48lcBssANmexyziQljw0b1hLkg7xy06ElRMGEumU/Ft3/qsZSa6kBk3yEZi6cZwdolfQbxROxv2EqAsmkIBKbpQ2BV+iyFfm5gS9+yMWxk09ckgUBvBnnXjIz3CUdJKG6MjYR+vrigMtKng5+nrHas7gr9/OUWW6of4YBXh+Q+KP8TAfieA7Xfm3lrWYOIalLUG4WRni70IXAfByrIbS//pxTAJZvSxPunNMZqlvf8SEsL+ZtS052oDO+9UEdOGYiYBTdGvEXzmWpxsMrWqGuUgISr32WrGoOCGW1jO/cGfguxF7w/Jr8R5+TdpT0hr8pQ+WYwrW3tHzbP8dqz3Kb4WcjR2Ho+CHxd5dsINO3XxpovIRDmajEhPbuxcD7SMvYrk7fSvaVMw+6mHByZh+xFrCuDHmcjCBFq301wYiZe8oBjdAQzhpLRnbig+J/Pk9AvXtQthEGigfbyMAIzc7ioAkQKuhw6/eIs0R8IqZDcu6txwzh26M/WCOUObmFulEklF85dRLWrbErjzTWuEToX2y3eWVKkmFBNzLqqGw8gYqgZ5YSEhWX5Osc5iE47i4VuquZQ36SLF20AmAfHLrulidKzMzxAPaVmTSUHSCgs3Uc5jr5tFrgNjs9UN3+tU6jiksXaMn3CPE5aXBrebQCU7+9UNsNgWSU3DSMgd3xhi2nC+YfvOw1jK6gAmODwvtXHfHqsPhPq5qxjLfMwku0x74y0rbm28EgTz/wXKiT9d8BBqfBEGz7os55j+b6G5/3OTv9z+Vmjar0uIGYFiBbM0U+1eFkfD0+pigUfAnN/stuLV3kJc1XdyMfJL24QELw3
+ vfnbZrYk
+ mUectnqlOxohZiqJFsC/3bms5yFmwZDUTpVxgeU9E8Lz3zHqaUaQn4lsiiV7lH9Zq0IViVy9vTZwsGcvm3Y9Z9uCFIGuOewwUMjlC9aZpq0dgRTUZEhRFblhJGRla4EOlaXqbbbnjYyvM6nOOgzKp1/7632n+CqzX8D47mk2m2NWYrzvWBBVTZ6e7NLY5TxtiGNqRSc07OXjWky8IBhK3PkCSGOLf+odjo0erwteywxCrWNsdN/fyxg6BzLpBfHmNJM+jFgwomfbC2BCMhsyFd7XZPkx5LpKrsg6eWtB/4HhtmTNYusgWEs1PzzRKvGL3zMQLNWG97WvmHvSk5I59GlVgR2x1FtpDed5z5woKY/LjCHzLqD63DynbC2J831hhFX3aIJn0S+cXWXDwWJQu882AgFiqRLW4xvTb58Fdx4AeznzTLcNvi3hOM4GUB+LU7SVVCJTpgcT8iOT3HpeT1KktK6pgPXL0Yc/gzhLQ3IHW9weBwSQy7X0sVA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,86 +98,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that we have a concept of rcu-safe containers, we may add a
-load_rcu() method to MapleTree that does not take the spinlock.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/maple_tree.rs | 52 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
 
-diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-index e72eec56bf5772ada09239f47748cd649212d8b0..c466a9fe0a9a059ad5cff131085d610b76050420 100644
---- a/rust/kernel/maple_tree.rs
-+++ b/rust/kernel/maple_tree.rs
-@@ -16,6 +16,10 @@
-     alloc::Flags,
-     error::to_result,
-     prelude::*,
-+    sync::rcu::{
-+        self,
-+        ForeignOwnableRcu, //
-+    },
-     types::{ForeignOwnable, Opaque},
- };
- 
-@@ -233,6 +237,54 @@ pub fn erase(&self, index: usize) -> Option<T> {
-         unsafe { T::try_from_foreign(ret) }
-     }
- 
-+    /// Load the value at the given index with rcu.
-+    ///
-+    /// # Examples
-+    ///
-+    /// Read the value under an rcu read lock. Even if the value is removed, it remains accessible
-+    /// for one rcu grace period.
-+    ///
-+    /// ```ignore
-+    /// use kernel::{
-+    ///     maple_tree::MapleTree,
-+    ///     sync::rcu::{self, RcuBox},
-+    /// };
-+    ///
-+    /// let tree = KBox::pin_init(MapleTree::<RcuBox<i32>>::new(), GFP_KERNEL)?;
-+    ///
-+    /// let ten = RcuBox::new(10, GFP_KERNEL)?;
-+    /// tree.insert(100, ten, GFP_KERNEL)?;
-+    ///
-+    /// let rcu_read_lock = rcu::Guard::new();
-+    /// let ten = tree.load_rcu(100, &rcu_read_lock);
-+    /// assert_eq!(ten, Some(&10));
-+    ///
-+    /// // Even if the value gets removed, we may continue to access it for one rcu grace period.
-+    /// tree.erase(100);
-+    /// assert_eq!(ten, Some(&10));
-+    /// # Ok::<_, Error>(())
-+    /// ```
-+    #[inline]
-+    pub fn load_rcu<'rcu>(
-+        &self,
-+        index: usize,
-+        _rcu: &'rcu rcu::Guard,
-+    ) -> Option<T::RcuBorrowed<'rcu>>
-+    where
-+        T: ForeignOwnableRcu,
-+    {
-+        // SAFETY: `self.tree` contains a valid maple tree.
-+        let ret = unsafe { bindings::mtree_load(self.tree.get(), index) };
-+        if ret.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: If the pointer is not null, then it references a valid instance of `T`. It is
-+        // safe to borrow the instance for 'rcu because the signature of this function enforces that
-+        // the borrow does not outlive an rcu grace period.
-+        Some(unsafe { T::rcu_borrow(ret) })
-+    }
-+
-     /// Lock the internal spinlock.
-     #[inline]
-     pub fn lock(&self) -> MapleGuard<'_, T> {
+On 1/16/26 10:28 PM, Barry Song wrote:
+> On Fri, Jan 16, 2026 at 5:53 PM Dev Jain <dev.jain@arm.com> wrote:
+>>
+>>
+>> On 07/01/26 7:16 am, Wei Yang wrote:
+>>> On Wed, Jan 07, 2026 at 10:29:25AM +1300, Barry Song wrote:
+>>>> On Wed, Jan 7, 2026 at 2:22 AM Wei Yang <richard.weiyang@gmail.com> wrote:
+>>>>> On Fri, Dec 26, 2025 at 02:07:59PM +0800, Baolin Wang wrote:
+>>>>>> Similar to folio_referenced_one(), we can apply batched unmapping for file
+>>>>>> large folios to optimize the performance of file folios reclamation.
+>>>>>>
+>>>>>> Barry previously implemented batched unmapping for lazyfree anonymous large
+>>>>>> folios[1] and did not further optimize anonymous large folios or file-backed
+>>>>>> large folios at that stage. As for file-backed large folios, the batched
+>>>>>> unmapping support is relatively straightforward, as we only need to clear
+>>>>>> the consecutive (present) PTE entries for file-backed large folios.
+>>>>>>
+>>>>>> Performance testing:
+>>>>>> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
+>>>>>> reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
+>>>>>> 75% performance improvement on my Arm64 32-core server (and 50%+ improvement
+>>>>>> on my X86 machine) with this patch.
+>>>>>>
+>>>>>> W/o patch:
+>>>>>> real    0m1.018s
+>>>>>> user    0m0.000s
+>>>>>> sys     0m1.018s
+>>>>>>
+>>>>>> W/ patch:
+>>>>>> real   0m0.249s
+>>>>>> user   0m0.000s
+>>>>>> sys    0m0.249s
+>>>>>>
+>>>>>> [1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
+>>>>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>> Acked-by: Barry Song <baohua@kernel.org>
+>>>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>> ---
+>>>>>> mm/rmap.c | 7 ++++---
+>>>>>> 1 file changed, 4 insertions(+), 3 deletions(-)
+>>>>>>
+>>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>>> index 985ab0b085ba..e1d16003c514 100644
+>>>>>> --- a/mm/rmap.c
+>>>>>> +++ b/mm/rmap.c
+>>>>>> @@ -1863,9 +1863,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>>>>>        end_addr = pmd_addr_end(addr, vma->vm_end);
+>>>>>>        max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>>>>>>
+>>>>>> -      /* We only support lazyfree batching for now ... */
+>>>>>> -      if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+>>>>>> +      /* We only support lazyfree or file folios batching for now ... */
+>>>>>> +      if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>>>>>>                return 1;
+>>>>>> +
+>>>>>>        if (pte_unused(pte))
+>>>>>>                return 1;
+>>>>>>
+>>>>>> @@ -2231,7 +2232,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>>>                         *
+>>>>>>                         * See Documentation/mm/mmu_notifier.rst
+>>>>>>                         */
+>>>>>> -                      dec_mm_counter(mm, mm_counter_file(folio));
+>>>>>> +                      add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
+>>>>>>                }
+>>>>>> discard:
+>>>>>>                if (unlikely(folio_test_hugetlb(folio))) {
+>>>>>> --
+>>>>>> 2.47.3
+>>>>>>
+>>>>> Hi, Baolin
+>>>>>
+>>>>> When reading your patch, I come up one small question.
+>>>>>
+>>>>> Current try_to_unmap_one() has following structure:
+>>>>>
+>>>>>      try_to_unmap_one()
+>>>>>          while (page_vma_mapped_walk(&pvmw)) {
+>>>>>              nr_pages = folio_unmap_pte_batch()
+>>>>>
+>>>>>              if (nr_pages = folio_nr_pages(folio))
+>>>>>                  goto walk_done;
+>>>>>          }
+>>>>>
+>>>>> I am thinking what if nr_pages > 1 but nr_pages != folio_nr_pages().
+>>>>>
+>>>>> If my understanding is correct, page_vma_mapped_walk() would start from
+>>>>> (pvmw->address + PAGE_SIZE) in next iteration, but we have already cleared to
+>>>>> (pvmw->address + nr_pages * PAGE_SIZE), right?
+>>>>>
+>>>>> Not sure my understanding is correct, if so do we have some reason not to
+>>>>> skip the cleared range?
+>>>> I don’t quite understand your question. For nr_pages > 1 but not equal
+>>>> to nr_pages, page_vma_mapped_walk will skip the nr_pages - 1 PTEs inside.
+>>>>
+>>>> take a look:
+>>>>
+>>>> next_pte:
+>>>>                 do {
+>>>>                         pvmw->address += PAGE_SIZE;
+>>>>                         if (pvmw->address >= end)
+>>>>                                 return not_found(pvmw);
+>>>>                         /* Did we cross page table boundary? */
+>>>>                         if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) == 0) {
+>>>>                                 if (pvmw->ptl) {
+>>>>                                         spin_unlock(pvmw->ptl);
+>>>>                                         pvmw->ptl = NULL;
+>>>>                                 }
+>>>>                                 pte_unmap(pvmw->pte);
+>>>>                                 pvmw->pte = NULL;
+>>>>                                 pvmw->flags |= PVMW_PGTABLE_CROSSED;
+>>>>                                 goto restart;
+>>>>                         }
+>>>>                         pvmw->pte++;
+>>>>                 } while (pte_none(ptep_get(pvmw->pte)));
+>>>>
+>>> Yes, we do it in page_vma_mapped_walk() now. Since they are pte_none(), they
+>>> will be skipped.
+>>>
+>>> I mean maybe we can skip it in try_to_unmap_one(), for example:
+>>>
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index 9e5bd4834481..ea1afec7c802 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -2250,6 +2250,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>                 */
+>>>                if (nr_pages == folio_nr_pages(folio))
+>>>                        goto walk_done;
+>>> +             else {
+>>> +                     pvmw.address += PAGE_SIZE * (nr_pages - 1);
+>>> +                     pvmw.pte += nr_pages - 1;
+>>> +             }
+>>>                continue;
+>>>   walk_abort:
+>>>                ret = false;
+>>
+>> I am of the opinion that we should do something like this. In the internal pvmw code,
+> 
+> I am still not convinced that skipping PTEs in try_to_unmap_one()
+> is the right place. If we really want to skip certain PTEs early,
+> should we instead hint page_vma_mapped_walk()? That said, I don't
+> see much value in doing so, since in most cases nr is either 1 or
+> folio_nr_pages(folio).
+> 
+>> we keep skipping ptes till the ptes are none. With my proposed uffd-fix [1], if the old
+>> ptes were uffd-wp armed, pte_install_uffd_wp_if_needed will convert all ptes from none
+>> to not none, and we will lose the batching effect. I also plan to extend support to
+>> anonymous folios (therefore generalizing for all types of memory) which will set a
+>> batch of ptes as swap, and the internal pvmw code won't be able to skip through the
+>> batch.
+> 
+> Thanks for catching this, Dev. I already filter out some of the more
+> complex cases, for example:
+> if (pte_unused(pte))
+>          return 1;
 
--- 
-2.52.0.457.g6b5491de43-goog
+Hi Dev, thanks for the report[1], and you also explained why mm-selftets 
+can pass.
 
+[1] 
+https://lore.kernel.org/linux-mm/20260116082721.275178-1-dev.jain@arm.com/
+
+
+> Since the userfaultfd write-protection case is also a corner case,
+> could we filter it out as well?
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index c86f1135222b..6bb8ba6f046e 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1870,6 +1870,9 @@ static inline unsigned int
+> folio_unmap_pte_batch(struct folio *folio,
+>          if (pte_unused(pte))
+>                  return 1;
+> 
+> +       if (userfaultfd_wp(vma))
+> +               return 1;
+> +
+>          return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+> }
+
+That small fix makes sense to me. I think Dev can continue to support 
+the UFFD batch optimization, and we need more review and testing for the 
+UFFD batched operations, as David suggested[2].
+
+[2] 
+https://lore.kernel.org/all/9edeeef1-5553-406b-8e56-30b11809eec5@kernel.org/
 
