@@ -4,227 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F03E5D489A8
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 13:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0900D489A3
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 13:11:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2629D6B0088; Fri, 16 Jan 2026 08:11:10 -0500 (EST)
+	id 1DE936B0089; Fri, 16 Jan 2026 08:11:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 211136B0089; Fri, 16 Jan 2026 08:11:10 -0500 (EST)
+	id 188A36B008A; Fri, 16 Jan 2026 08:11:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C7B86B008A; Fri, 16 Jan 2026 08:11:10 -0500 (EST)
+	id 0B56D6B008C; Fri, 16 Jan 2026 08:11:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA5F96B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:11:09 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6FF5652CF8
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:11:09 +0000 (UTC)
-X-FDA: 84337862658.28.329536E
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010059.outbound.protection.outlook.com [52.101.85.59])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 527EC140004
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:11:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EiZZBl15;
-	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.85.59 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768569066;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F07ED6B0089
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 08:11:42 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 98D1B52CF8
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:11:42 +0000 (UTC)
+X-FDA: 84337864044.21.C89843F
+Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5EAC34000E
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 13:11:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=NsW4vNWI;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf12.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.100 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768569100; a=rsa-sha256;
+	cv=none;
+	b=tTagZnKlcK+uhjlw7yVsKViNOQDhYoFOyTtJYQR/8+1tNb3WzxVcM3UwB72gEjs5TTQMYr
+	5LIqRBDBexG3go9hiT36Kje3WPuHdo6gy81ctFf5/pcSsa96WMXFX1XzNubmQFIpHS0G7N
+	3VoRU8LjBper1AxCrN65KcJg1hirFIY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=NsW4vNWI;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf12.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.100 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768569100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o1Iju7T7/UF+4QUVeYpAPtTbl7Nq0wZsW1U7vDjFgNw=;
-	b=RM/ydnWgU4zE3M/kEoIKIXm796tY+1+ZP2Aw2tB0HJ6I+FAiD7WzOapI/gc8ac40QQy7Cy
-	uqQCBK+EiKRnyiMjq4x9AKC6Xo4UlBn8XRR4KCV4+JK8HsQYHY25MGR43QAWRRYBnOf0ZC
-	bAQuOKkt8lL1zfSVs13PvVVETJp0RRE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EiZZBl15;
-	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.85.59 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768569066; a=rsa-sha256;
-	cv=pass;
-	b=DVGHftIFDhvusuncW+f41JG4g7edw8U5bJ18prKB1eB83I2kqYIgcOCtC4B/SPGwlOhf8M
-	ofPyTj0YlJOqIcCZccQC5UaA+HB7yi1nEatX7IZl/IdR5m7ltr+gptGLMUsHGc6uFYju3L
-	wNPLiUjg16+0l3dFJT1DzhNgIaWwCkQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nKf3R0tglJvXG8+uvEWgS5t2+MV5eqFq7s5gjuVT7mXesn8VHxz5Zb2U9ZFlUXbvWiAkG+doJQRR1oerkwQhn5wjGWFdI7M2b7UaaAhgLIgptCPVu4RWF+Sn1wBxbedxzNc4mJHG/SfQ2ptCDbDcEk9yL+I3ItwsuG2XHXfNA+8BgixjN9HtnWEv8Ea8Ln8hXGuo+Rtjt+3/zgisTvcocLfAiAlOaueoOzJODR/bO52d9NTgDDUF5NauDlncc4vlslb4uprEe4QI7SC2yBM/EjERQuyHNJ+MKjV5V5C1QZrwyPBrgnNCKexfzWBidYR78cH8dI80HqaeZ1WfKQ12cg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o1Iju7T7/UF+4QUVeYpAPtTbl7Nq0wZsW1U7vDjFgNw=;
- b=M7wIUxlymNMeHAxZ9Einv+Tcou8uf+C845Su0fPNc6NeMGfKufyC2PgnAYZG5lArbLIkDtCFakwVEiOPUl7y+g/8X09hL2RrS27dWqAj1nSLq0t1cAJoQLqpB9p8xxmBK7A/TATIZLyliQ934WOVMKBEcEiNvHQOrysrpnNL6Xlv4sycfFO+F55eB5k4i1n99fUUNRNZWtoOh3VfLMMqVdE/5zu3yFI20eWc8br/fV560/O67p/LzPLiJ5K/jRn7PBDm8MYZbd3HUmAIOLJOCscYHBmMGe4d4haeWw107L7POlki+vKiq7WRG3a7RXSpmX8JFoSOMNhsC7LBLPleTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o1Iju7T7/UF+4QUVeYpAPtTbl7Nq0wZsW1U7vDjFgNw=;
- b=EiZZBl15idnfltWDm16cbBUz5t5Mc8IDr/ejDwszP4paY6KSxxHhouvn6xv3ck3u/0tYzN3dwwCgdVLdwkKvzJfuEf5g6A6pciL/YMHUEUXPobd8DEpZFPoVZkm3W4PeDIeUpWbezKlmzRWvh6cc1a0alxyJJId5Yo1O6ojiiYCsMY25/8vHjq7NgfTyR7kwNOsNcLw27niBVOuJwUAt/fHNFpzY7ykleqlGZuPjHuEAfaSwQBZWfL7MKZ+dYREvVzlb0ihzUPDGiitaUT+apmEcfcYbrc3nnpw/ZnbtTrEIL+oWTxVxrfXYDecEWxnaWtr3ATEsb+YW9yLDaB5UeA==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by DS5PPF016FC81DF.namprd12.prod.outlook.com (2603:10b6:f:fc00::644) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Fri, 16 Jan
- 2026 13:11:01 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9499.005; Fri, 16 Jan 2026
- 13:11:00 +0000
-Message-ID: <e500fbb1-f480-445b-b36d-1a02a384c3af@nvidia.com>
-Date: Sat, 17 Jan 2026 00:10:51 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
- private folios
-To: Francois Dugast <francois.dugast@intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Zi Yan <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin
- <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Felix Kuehling <Felix.Kuehling@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
-References: <20260116111325.1736137-1-francois.dugast@intel.com>
- <20260116111325.1736137-2-francois.dugast@intel.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260116111325.1736137-2-francois.dugast@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0086.namprd05.prod.outlook.com
- (2603:10b6:a03:332::31) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=VUy6Z0nl3UN06uLRlgqbdTzfRq3/0KilXmceKHyT+FA=;
+	b=OM7EGPlOscHvgqFWgVag1teTREacHuGgv8CTcl9ZpyNyGssn1nZEjjLraHwX6s0xcD7T2B
+	TZlmAD+WObKvu9y908CrNjkfjqTFSM5Rx1m0nx+w6sf9ddVQO5T8iCenbXfzEqG2liyWsk
+	PjW6sHlGBwZJR5FxVVNRIwHpTsId2fg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1768569098; x=1768828298;
+	bh=VUy6Z0nl3UN06uLRlgqbdTzfRq3/0KilXmceKHyT+FA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=NsW4vNWI+sy+jtCwGEepBnQnhkRgbVqOJ8bQNyN7XOu/Bmiv5eUFHRTgDUqIkkZCL
+	 3+CCEPXQsQCOIr68mCMChffW/v/xa4NXARE65ARAC1tUdbbVCR0YM/VVD87fT5Hnf4
+	 g7uTiInwCUmOnfHiNaRH18bYdqK3XZUA8thcmHVBaNFZ6vrtQYXmnYyJGmjtUTL/eI
+	 FeJuldGwl9Kv2xapCx8JUTWPf6JHyDRUjGnR9+bb0IaoSyvCU0fdqXQw8ZvrndtD8c
+	 iztvGbaWNit1drtUSc0hgFnX7xkOB7r9nmg0mEFIctA/zk1M/dLih3b+MPcDkmHT6E
+	 fi3T+X+l0xZ7Q==
+Date: Fri, 16 Jan 2026 13:11:32 +0000
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Samuel Holland <samuel.holland@sifive.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v8 01/14] kasan: sw_tags: Use arithmetic shift for shadow computation
+Message-ID: <aWo31aytvelldfiE@wieczorr-mobl1.localdomain>
+In-Reply-To: <2592f303-05f5-4646-b59f-38cb7549834e@gmail.com>
+References: <cover.1768233085.git.m.wieczorretman@pm.me> <4f31939d55d886f21c91272398fe43a32ea36b3f.1768233085.git.m.wieczorretman@pm.me> <2592f303-05f5-4646-b59f-38cb7549834e@gmail.com>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 3ed341666d06b561ea7c217cda5b5d4311dd5d20
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|DS5PPF016FC81DF:EE_
-X-MS-Office365-Filtering-Correlation-Id: d96e2ca8-8ef2-4b04-723a-08de5500b1e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NForeVI1UWNCemhHcTYzZ2tTYW9JTUpseW00YnZrUm5SL2cxNHp0aFJZbjdz?=
- =?utf-8?B?YXl2bmtnMGRydDhSTWxHY1FEUTY3bnZJQWQ0TXh5MkJjaTZSYTdJKzBaMTF6?=
- =?utf-8?B?QnhyTjQ3NnNocDBiUkJKMmpyL1JOODhzMWhuSWo2SEt4MElYWTJ0S0FkSmlk?=
- =?utf-8?B?UmpBS0ZSQTZHQzdXdnBIVWtLRmt5VG5OQ0Q3SmJXdEhUeW1VSk8yUnFGaHlz?=
- =?utf-8?B?L0luZFo0ZGdkVzJDQkpDU1ZuR01LRzFwajJ2ZVJYYlE4WnF2VGJBaTRnVGxn?=
- =?utf-8?B?citIbUVyekpMczYzZ1I3TjhQa0VkTjVDOXJTL2k5Z3NlOFVURjg3YThIT3Nl?=
- =?utf-8?B?L213aVZvKzFGbC9KTm5tU0I2b0ptYVBrUmNyYmpsbjFWalpNbi9zK2dNT080?=
- =?utf-8?B?ODFWOXNURXdjRUFOQ3RlWGtlZHNlVTRqbHBWb2RqNWFScklQRkFudTRhWDZk?=
- =?utf-8?B?OGlHWWtBWGpsUURVQ1oxNWZTMzEzOFA4OTZselBVLzJNTUxSMEl4ODZUNmJY?=
- =?utf-8?B?aHczVEc2OVFhRjQzM0ZnTitUSEplY1haSGdCMi95Tkc3bStpRmdFdXY3VXdl?=
- =?utf-8?B?QU9pTmplQ1hIYXgvb3ZtS2Nmbk1peERDUmExSHM2NDlRWFp5T3R5RnF6cXd4?=
- =?utf-8?B?cTgyM3Yyb1dNV1RLckhZRzFsSG1Ja0hkTnQxWFMzcVFFR0xWbE9TTUdxT2d3?=
- =?utf-8?B?VkIzdDllRi9PMlJXeWxlSTg4RTI3VytQeHRZUXJ3V1lpR0R5RDVnRHFOai9X?=
- =?utf-8?B?Ri9PdW1WSFpPMStDMXZwYVVWVEVXVUNNVExadlc0ZFNqdXhwVDhLSS81d0dK?=
- =?utf-8?B?UktMS0FqZ3d4QTNnSWNBQ0k4K0MyWTR3b0UwbGRpdE1uS2dza3NqMWVBYzFM?=
- =?utf-8?B?TGJmVG8vU1pmdFlRRE8ycldabjNoeDRzV3JJL3JyZkx4UVZRKytDL2w0NVVC?=
- =?utf-8?B?Q0J1SDh4M01qN25nUnBaVEV1VDZDRTZvdXpnekU1SHhpY043bm1OYlZ3bERx?=
- =?utf-8?B?NE5IcE1vNVk4R2wraE1SVkNJOE9JbWtuSWJ0MXQzQksyY2NDeDBheWg0bHds?=
- =?utf-8?B?Zkhhb2pnQ0M2USsvS1ExRHhNRkl1aUhaeEZXamhFVk82Rm15aFhsczNCVmdt?=
- =?utf-8?B?T0VrY0J1MDlEU3krNjRtbkJudEdERllTSmJ4VndkcHFXZ1puSzA1ZllTMlFL?=
- =?utf-8?B?VThVZVJ6Ym11MFdCQmljV2R4QU1jQVBISVpGa0llSFB3cGxYViswc2dKN1dM?=
- =?utf-8?B?NlRXU3psNU40cCs4YWRhT2NVZnpVOEU1WnRwbk5UQ2tQdVVGemRFVjlwUERY?=
- =?utf-8?B?Y0N0akNxamdDODh3Zm5BQ1pMQXRnL1BmYUw3OVc2QTVrR2ZiSkFNSmFyeFRM?=
- =?utf-8?B?TTI5b2toemZpVk5kbmRYSlIxR3lZZ0Y0N0E3WlF4cFg1aFlvL25sK0tRN1kr?=
- =?utf-8?B?SG11c2djL3RaMDZGd2tTWUZDS2lkSGZXTGlZS05LZGhua3c4K2RLVGRxbVY2?=
- =?utf-8?B?bjlqMzU1Z0h6SnBpUEo4MkJiVlBocGF1aE1YTzdRSW5wNDcyL0RWcGFDL3BU?=
- =?utf-8?B?LzBUQk1Wd1ByUXoxUnltSWUvclN2QmkxeDJLY0FUSkVtQjl1STZ1YnhldXFk?=
- =?utf-8?B?SCtPbWtGZWFtRDdvak5hekh2MTdlT3NtUGhwa3pPSWt3dE5RVTFHNFpTM1dv?=
- =?utf-8?B?K2RDOHBKYVlqUWJmY2o0bmNLYVRnaTNNRTJ5NTVrSUw0dnNWME5XeDNtdmpm?=
- =?utf-8?B?SzBqVzUyWFhzYUZPQ2hCaG9paW0xSWxLZ2wwRlVXN21KaEEwV1hLV0UzRC9w?=
- =?utf-8?B?Q0xOTlZ4ejNtWmNPMUJFMXRRUVRxZXhJVGxXcWNOU0JwNmQwTzA5TzZHV0k1?=
- =?utf-8?B?Q2lROE53aDU1dXkrRXBJL0FSSEQ3c0ZXQm4xeDR2bTI0M2xZTHVHRWFGSnpZ?=
- =?utf-8?B?UmFaVmdCZnowUTlsY0NwRDByYTN4bFpiOVZpYmpkL0tVY2RXWXpCRVM4V1ZL?=
- =?utf-8?B?dVV0eVFqczdWWk0vWVp3VVFwbU9qVUNBcVZSR3lIMU44RzJ3RVFXWVFIdnpz?=
- =?utf-8?B?MTAwVzMvYlR5TS9XR01pa3VHK0VuMSswTmJCWU9rcTFwSUEvVUxFVlpoN2Ev?=
- =?utf-8?Q?Oh1o=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MFI2TGlsSkRHTU9QNDdQK2VUdVVTSUtwanl1VEtDZmJKQnVCZ3N3S2tlMU93?=
- =?utf-8?B?LzNTcFJWNXFrNzRWc3hRcUNxQTJtdEdnWXpmTXg4YlU2OHFmVGwraDhPNDM1?=
- =?utf-8?B?QW83UEJTcG5yU2xxVUp1R1Q3R0VaYTZaZ0pPa2ZmZkptZnczQTkwVEluTGRv?=
- =?utf-8?B?WGY5NWRMOXA1YTQ2SmJxV00yU3N4cGJMMEJ3R2ZTTVlSdlpBazBWNGJNbXpY?=
- =?utf-8?B?Nk5aUFgwa1RMNzBXM210SXVhLzUycStFVnVXRlhPaWs0Rnh2bU9nbjZZbXZW?=
- =?utf-8?B?bGNHVjd0UlpLSU8yYnBPSHZPK2ozUkdpRVZzMm5VU0pNOEl2cUE1VjFJNUt2?=
- =?utf-8?B?YmFNRmhtVHdzVXVSMFBKaGVOYlVYeTQ3ZnZMVTQxbUhzSDFIS3ZnMnFUVFlI?=
- =?utf-8?B?dmhvVU1ackFGVXozNmI3OUN0ZFZNdmVydDhBT05KMm41SWlnVWlNeFV5U1E4?=
- =?utf-8?B?NFNmM0VBSmlJWjZwRXd6blVMYkZWcDZTWU4xU3hPTDNmVlhDMkIvMTJ1Mytw?=
- =?utf-8?B?Ykw1RnZ6SVJVR2NleTBBVEY3em12MnFzT0w5WHcrR0FGUmZJa3pKRGM5bUVt?=
- =?utf-8?B?M0l5Tm1oZlR6aXpHdC9yaHhZbEk2RkZnRnNMWC8xZFIyK25Vd0xBaUx0NTA4?=
- =?utf-8?B?QUI1bmk1d0tIVUhUQUdLNVJYeExCVnVEODRyVUhrQ3AyOE9PVFZqRUhYVzhT?=
- =?utf-8?B?SnRXYWovWFJlb0xlVmkvQ1p4VC9RUlFjYWttcjA3Q1J5N0FsUjl0L240bE91?=
- =?utf-8?B?eGVrZTV0eVRQS2lvWGcrVUtOZ0Zxaytqb1M1QWxqY3E2dDBTdUpMZzFiMEtF?=
- =?utf-8?B?a2NvNksyR2lNelNPMGJ6VDZvOWtqOGFFTTRxQVdlZjVXQlVqRnh6OHNaOGNY?=
- =?utf-8?B?TzV1QjZpRjZjWVU5dXhuV24yVFp6TEtHb1RTamdENUNSd25zZ3JuODcwbUVC?=
- =?utf-8?B?bzl6UGhSU2x4VzQ4RWxQdXE5WlZFcEZoMzQrT0NMMGdGN2ZxT21aWm5UbGh0?=
- =?utf-8?B?RE1Uam1BNXNBYnJpR2x4MEsyWTZnVmRsZkE1K3djNFNZWXNQVnVKRFl5SWFR?=
- =?utf-8?B?TjRkOU8rQVhYT0NPMU9WYXlvd0xzUmtDdHJ3RnNpbWc1S01VZWNuZ3hkTXdP?=
- =?utf-8?B?NEVQTE5kTUVidk9RZ1Q5djRmV2RvdTVvTVhUZVFLcmJNZW4xUzB1d1cyemVS?=
- =?utf-8?B?MEtXRWFNUVY2MkcwbnRoS0szOHJ5RGM2VFRURXAycVdIbEVYSnNaVkN3VEth?=
- =?utf-8?B?aVNOWkxOeUViSUxSdGFhN0hWRUs2d0pRV3ZRNUpZR3NtWDF1aDZ2RjlNOWZp?=
- =?utf-8?B?MWpoU3BiUms4amZGd3laaGFpOXQzYVViYU1QN2FlN2RDS29odjBtaVlQdUxn?=
- =?utf-8?B?TGxuRGxML01VVnFFSnYyVXpzREdDaEV1STBKSHlIS1lWenZOSHdieVlzS2hO?=
- =?utf-8?B?ZVdCVFRWSkZNMDViSEJSMVNYRityS0U1YlorT2ZxdTRlNEE0bnd6WWNZb1hV?=
- =?utf-8?B?aUh5VjYyWS8vTFlrcVM5bFJaMUZNMG5NUFRpWkd1WEphK0lCa2ZSS2JHWCtC?=
- =?utf-8?B?MHhrK3RkS1RncDhJSDNJVXY4Tk1NZUpTc1VxWFIxaG82bHFRMzhDK0ZCczUz?=
- =?utf-8?B?Tk1oVzI5K3VTN3dFcGU3bExrZ1FwYitVTW5xNEtHYThqc1NxL1lmRzhONDFG?=
- =?utf-8?B?NkMwQjhqNTBuUmVWNURVK3BIVU1PSWFxUS9VVUFjWlFLU1BTYmJJaHJ4d3Zi?=
- =?utf-8?B?dkhNMnR2QU9samhUcjNheExRVmZQQzlHMGh2WmZjTGx4YzQ3d1J2eFV6cXVP?=
- =?utf-8?B?amx0T01kR2pFRnI0NS9KMzJrUk4zYXlsc1dIdUlXeVlxZEZsUjFFR1dOQTBF?=
- =?utf-8?B?K0RsUmExb2llTFloNDNBT1NLVW5HRU5xdUlSZERHSHdCWjdFcFd6bStsN1Jh?=
- =?utf-8?B?VWcrTVg5eHVucjFkazVvNnByQ0J0Vi92aVZQT2lIbm1ub1FqeFljdjM2M0VW?=
- =?utf-8?B?MTZlTThCU1RPeVZ4TUxIbjVGdjBRSVJ3cE92Yk9EeUxZS3FwYXYwZllRTkJl?=
- =?utf-8?B?eEtBZFRqOXNVTEVJalU5TW1mVnFSa05RL3cyZG00VVJJK3ZvaG8xc3VYNkNx?=
- =?utf-8?B?aFNuTFNLMVBzN2FKaFdMZWt3UnhodjllbkFvTEpUeHJZbGp3bk5yUnRYTktw?=
- =?utf-8?B?UTJ3V0s3ajRVRE5wMUJpRDd6L3ZyejhVcHZycGVBNXVDMnVOZjZRV0c3T3Zl?=
- =?utf-8?B?dEllVW5zeWZsZlpaOGdtWGxCYUZvWE5ZSWtlc2g1NnZlSXdzOFVBY3NSOXl3?=
- =?utf-8?B?QXcxVXgwTU9QaDJCYnlQVExBQzRBS2ZWSTlaMEc4MitySkx2TWlhVFpiUGN5?=
- =?utf-8?Q?JB1j4jEcLie8nkh5tgjJWLjicv47BYHjH6AhMswZjpaoS?=
-X-MS-Exchange-AntiSpam-MessageData-1: jiSa1eRsHjCg2A==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d96e2ca8-8ef2-4b04-723a-08de5500b1e5
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 13:11:00.7896
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 96P5HSEY/bD3snaTsI9qkfXntQED8NJyhQrNe9CVwSC8/5I78JnOht4WlEUmFlpkEKiTIDk2EtiwrCsRp8ZZoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF016FC81DF
-X-Rspamd-Queue-Id: 527EC140004
-X-Stat-Signature: oi6otsa5coxn39q4dyq4akyz18imykdg
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5EAC34000E
+X-Stat-Signature: jzht39iyc331uahjng4gdbf9aqhk1kb8
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768569066-633857
-X-HE-Meta: U2FsdGVkX1/BPSQsXFqg8AQThAH1+DlgdFV6QWoLe2ZcV8K9K0HDDSH0HQNbCXhvlzpusckANhomeiC4XoytWJ6RThl8J0p8fyNGetSPdeNVrdsHRszV3NSNwF8dhWSQdCyCWyNnvHFP2LB9o7qoAZA2Ta9IGnj3QqPhJgUVm7dopLdJRqetLWrtlD7NK63LCoDyQE+4ARR+xvKh7WjyL6P+qtAYVfnZyubqFKU3Wyt3Mna0vLAB/cCXUlptvnqjBR/dKxVOcMDGzswLkB5dr0XDHKnCzUvQAGSOjav//rtfLANqb3lihoDmE1RpSRBiJgEEPDTNyZ/27bXIbNntzBJo85IJRGO6SAezGuSfNhzAkeBCOfIEwkT3L17Idem/iRHH0tOaXmAARLArJ0+DSfEnN4If6Vwza8DPonFzw9rvk3265uHc66Wfb92pminUduFNt6LuN+TzvYvYWPsr2SpMbC2UT2NPKxd+FV66kM1bAq7jn1En0Bp9JAczuWbMphxLof5m+CwS5yCs3j9kEejZ6sPSAB4D7Yc6yT7IG8fXBu31SE8MGBfTTh5UOYqzf37W2giQciOJ34XexxyOuQTfPb4GIANPoHmWgDir7P+Qc2MOKMIgguWlXPcYqgQ0k80a9XBMRy7WRP4gvApmitFuBSfgoxq8H2yVVy48QN3QcFengXmHNnz6bgNae8IxvRyy3ZaPcY6kDBIgUfHu7yqKdDneTz48UAh+VdtYlNW0syNwhcjo2w1gEbVXiqGSsBFunlyh5LZjZKX4o/+DCxdzVCxLZgjYhRrt/O5mo1ujAnLGa3+3M3xs0JjcIlcqvdQRJxmePvGys1xZ1omC86zeQvQmyN83vRMGegALfpjPOJKRj3eWW+Bs2v/UHoXWPRO+8yTZ5jkGvbcvdDXUOmbF4L5+D3DV5a9v5k02xIrn3R4UOlLqgKmKAD54lCya46p5746cdmRm48kwT9w
- pvR9uHYe
- LvvZJWF+Hxx4AOPKpxH0ePXsB9DGCPCqqfw3hOuquyGU9+QrNshlO4U3nGTqlhSdOkqF38nEoPR8QW+i1gegMTzHzUTvkT2KqPWGAA/ynz9dyNZ9q2ThJD8eRAs94vNXfpxBUFBeE+6tCyVYXpSWrv4LBfWVYY6CiTSIGYfyn8E9wBiLO/lFGRJ5r69jyIsFzATpS99FpxK+THuaKE/W7PHh+Q3oSl2MQw8ATYe9PR1LS4hI6GgN7UnmcNGwg25jSTHWsyD2lx3NOkSdv13hQXIcuswQ6u/JpJ3ohvN2mTH1Jcae/GjdnSzCeMRbhv3VqaOZ5VC4r4g2YzeDhYhLo7FrJEdQ07r2hgkpedmh5bsEhAVoKc7Bk6i6QvnPSGfnez7KO2DkiD8gtrv7Q2Qd++3u9vgiwfEaORS8gvcBJi4Z1DcJv7/FMDyVaIrYpFObdPXVf8yhBb2RsR2E/3o3K7aXbx8r+uiPE3pVgC1uJf+iQqmuZRcBm7uvr0BjVq6uvMmRvqe+cUdnGDiZ6Pa9ayBvB+isgAn41+Ky2ckI7dnYtyFVngwctnmOOT0IvIO8iVK+9yaYARXmsjNgjobErHtTBXTDpFMIAhA9vFDqlx9StymusqID2HUoOy9vvlKeYqjcxW83Pepu9RyHv1EcXqISProPULnmCl+ISkpp+rrpaX8RueZvy98gmSS00+WwMgiS36sSjIPFQHMv4g72vrbOJv2G2nL8rgQOW8m3dvFpmlZBKDytnMPq3Ca9vQA/1WZ2mEJ/oK+E4uTCskEeHmvsvZYkRMyDE/rnnMs+5QOJ8Xef9Afd9fhVcENtbcHPbNAgCUlW8L2dkL4ey9oZp0RdYWUx38EWede3RW50NTjPfTK+4ullOBCFojdx10oZU3SngGGFGY05xDPPFGstJp5uwGczEM5XVrF2Na0DGyfg3gJnq6sa8/hiRzHOITSIB2uQr+VU8fdVednziicZYa9skJVe0
- auTGa068
- WlSe/hAA23jNBtmUrzb+i7SBVQEqQOh4SshLp9baZxjFNXNAfVvzNM6Xlx3txBpsRQ0+sLgBSrg=
+X-HE-Tag: 1768569100-941144
+X-HE-Meta: U2FsdGVkX1/WpFOHMX4Zf+vmRZY31EXZ/DOEixRlomrN6PqiUXlNLOhUZnlN79scBr/Sbo4tMv+Eq/KXagvon0FJ9LsN/uavdLIG3oH1M6o4KnfnyOWvIxcSIX+NrSVKAgsIA4Rives8tf04ZHE0NadsSgBL3FIkUl3tiT1AKApAzsmtUNK8t8aeuuSflaxwPAKYqfZ52zQh50D8M0PEVW5WgMUkZy+RKS5V8O5A/lkvH9y9S4A/1JHCaqq9BvjR4r33rQVO2kk9WlRateSv6/fW1Tf0a1qHMu8J6n7BV/TcTu4cmqBvU05mYN5CbtKkXGpo561Ql+m5UOGxOntNPk2DYBL5fiXrsG+Y9FVMJnZDTQiJ/EEpYTOz0vfddHy47xkWRdGwDRLYNw2Jqk9jrXqWtaAco0kcQ1FSXDDYQC9k4gx/Nq1tAA/YVjCo5081CKUcFBfSHbWC18mVFMDpogfP/QlSkMY/YaSPBZKfmasJ6jGLon91v0R+mEgHz9V5inE4GS99nYSiiB+6PFfwdQC3mluAG/U7H0haVF8aSm8OIL61VNLy5GnYgmU47JN/0V+8fMhXBuVm3wkbaOoLSmyIbxwCJS9LQUo7axmN7DixkvVLaK9O8UMcjuoWdiJnoFln2PfqAs2fAGfu2Xi3SVdC0ilmh6oE170N00TMCFhNLxA/0gBefJ1xl6/IFIBMxNvgX+onxLBErFTDVJ+SqM99gkAtjMb+ScNuiCzQJKorOHKY6ymU1PmWCJg/4lOmjuK5DXR7bDOnFYEaz+6WvGlLwzXsT60CmFuOFJeqliA07RmLt2hI/2CWl9TCToqxKeNTl/V0j0oRF2Jg6Q92E24yOowsfWwiUWqfJRqUJZDdex4SFWzPWIQZOVxqLqHkdsP9vsjfIVX3I30lxf7gc+lMT/BNT0mFVo0Og311bLHLsOAeKuR44aDkLJb3G+JZaccOF9tNwAy0sYy+gRW
+ RBrhZcJ6
+ d06ikicCJ3RjlkeYtSYBzpifgIk7DCGeqQIFHVsxNcw38pVc40jySRb2+urBXV6wqzU9vocL4JLR4G6KGPd0GcP6GpEEZmnZ+9/C+WS1o43Ey/+tJlsav6jLEkCZMoxYiDmwmnzesDGa0tZDatej6LyBsRzFAJqwKwavyZc/51bE4tMz/Il/LvfQoS6qdXAB/u6i44hkCO7uVvjdrPQli7hgdN2sPBrKNrEsg5XdzQYH8mEN8Rzm6zffmkgcjzac6fpcfGx3iJdbLmmovTvsRshr/u0vfcEiQ5Flr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -233,234 +90,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 22:10, Francois Dugast wrote:
-> From: Matthew Brost <matthew.brost@intel.com>
-> 
-> Reinitialize metadata for large zone device private folios in
-> zone_device_page_init prior to creating a higher-order zone device
-> private folio. This step is necessary when the folio’s order changes
-> dynamically between zone_device_page_init calls to avoid building a
-> corrupt folio. As part of the metadata reinitialization, the dev_pagemap
-> must be passed in from the caller because the pgmap stored in the folio
-> page may have been overwritten with a compound head.
-> 
-> Without this fix, individual pages could have invalid pgmap fields and
-> flags (with PG_locked being notably problematic) due to prior different
-> order allocations, which can, and will, result in kernel crashes.
-> 
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: adhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-> Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: "Christian König" <christian.koenig@amd.com>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Leon Romanovsky <leon@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: kvm@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: amd-gfx@lists.freedesktop.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: nouveau@lists.freedesktop.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-cxl@vger.kernel.org
-> Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> 
-> ---
-> 
-> The latest revision updates the commit message to explain what is broken
-> prior to this patch and also restructures the patch so it applies, and
-> works, on both the 6.19 branches and drm-tip, the latter in which includes
-> patches for the next kernel release PR. Intel CI passes on both the 6.19
-> branches and drm-tip at point of the first patch in this series and the
-> last (drm-tip only given subsequent patches in the series require in
-> patches drm-tip but not present 6.19).
-> ---
->  arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
->  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
->  drivers/gpu/drm/drm_pagemap.c            |  2 +-
->  drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
->  include/linux/memremap.h                 |  9 ++++--
->  lib/test_hmm.c                           |  4 ++-
->  mm/memremap.c                            | 35 +++++++++++++++++++++++-
->  7 files changed, 47 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index e5000bef90f2..7cf9310de0ec 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -723,7 +723,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
->  
->  	dpage = pfn_to_page(uvmem_pfn);
->  	dpage->zone_device_data = pvt;
-> -	zone_device_page_init(dpage, 0);
-> +	zone_device_page_init(dpage, &kvmppc_uvmem_pgmap, 0);
->  	return dpage;
->  out_clear:
->  	spin_lock(&kvmppc_uvmem_bitmap_lock);
-> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-> index af53e796ea1b..6ada7b4af7c6 100644
-> --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-> @@ -217,7 +217,7 @@ svm_migrate_get_vram_page(struct svm_range *prange, unsigned long pfn)
->  	page = pfn_to_page(pfn);
->  	svm_range_bo_ref(prange->svm_bo);
->  	page->zone_device_data = prange->svm_bo;
-> -	zone_device_page_init(page, 0);
-> +	zone_device_page_init(page, page_pgmap(page), 0);
->  }
->  
->  static void
-> diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-> index 03ee39a761a4..38eca94f01a1 100644
-> --- a/drivers/gpu/drm/drm_pagemap.c
-> +++ b/drivers/gpu/drm/drm_pagemap.c
-> @@ -201,7 +201,7 @@ static void drm_pagemap_get_devmem_page(struct page *page,
->  					struct drm_pagemap_zdd *zdd)
->  {
->  	page->zone_device_data = drm_pagemap_zdd_get(zdd);
-> -	zone_device_page_init(page, 0);
-> +	zone_device_page_init(page, page_pgmap(page), 0);
->  }
->  
->  /**
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-> index 58071652679d..3d8031296eed 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-> @@ -425,7 +425,7 @@ nouveau_dmem_page_alloc_locked(struct nouveau_drm *drm, bool is_large)
->  			order = ilog2(DMEM_CHUNK_NPAGES);
->  	}
->  
-> -	zone_device_folio_init(folio, order);
-> +	zone_device_folio_init(folio, page_pgmap(folio_page(folio, 0)), order);
->  	return page;
->  }
->  
-> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-> index 713ec0435b48..e3c2ccf872a8 100644
-> --- a/include/linux/memremap.h
-> +++ b/include/linux/memremap.h
-> @@ -224,7 +224,8 @@ static inline bool is_fsdax_page(const struct page *page)
->  }
->  
->  #ifdef CONFIG_ZONE_DEVICE
-> -void zone_device_page_init(struct page *page, unsigned int order);
-> +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
-> +			   unsigned int order);
->  void *memremap_pages(struct dev_pagemap *pgmap, int nid);
->  void memunmap_pages(struct dev_pagemap *pgmap);
->  void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
-> @@ -234,9 +235,11 @@ bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
->  
->  unsigned long memremap_compat_align(void);
->  
-> -static inline void zone_device_folio_init(struct folio *folio, unsigned int order)
-> +static inline void zone_device_folio_init(struct folio *folio,
-> +					  struct dev_pagemap *pgmap,
-> +					  unsigned int order)
->  {
-> -	zone_device_page_init(&folio->page, order);
-> +	zone_device_page_init(&folio->page, pgmap, order);
->  	if (order)
->  		folio_set_large_rmappable(folio);
->  }
-> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-> index 8af169d3873a..455a6862ae50 100644
-> --- a/lib/test_hmm.c
-> +++ b/lib/test_hmm.c
-> @@ -662,7 +662,9 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
->  			goto error;
->  	}
->  
-> -	zone_device_folio_init(page_folio(dpage), order);
-> +	zone_device_folio_init(page_folio(dpage),
-> +			       page_pgmap(folio_page(page_folio(dpage), 0)),
-> +			       order);
->  	dpage->zone_device_data = rpage;
->  	return dpage;
->  
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 63c6ab4fdf08..ac7be07e3361 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -477,10 +477,43 @@ void free_zone_device_folio(struct folio *folio)
->  	}
->  }
->  
-> -void zone_device_page_init(struct page *page, unsigned int order)
-> +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
-> +			   unsigned int order)
->  {
-> +	struct page *new_page = page;
-> +	unsigned int i;
-> +
->  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
->  
-> +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
-> +		struct folio *new_folio = (struct folio *)new_page;
-> +
-> +		/*
-> +		 * new_page could have been part of previous higher order folio
-> +		 * which encodes the order, in page + 1, in the flags bits. We
-> +		 * blindly clear bits which could have set my order field here,
-> +		 * including page head.
-> +		 */
-> +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
-> +
-> +#ifdef NR_PAGES_IN_LARGE_FOLIO
-> +		/*
-> +		 * This pointer math looks odd, but new_page could have been
-> +		 * part of a previous higher order folio, which sets _nr_pages
-> +		 * in page + 1 (new_page). Therefore, we use pointer casting to
-> +		 * correctly locate the _nr_pages bits within new_page which
-> +		 * could have modified by previous higher order folio.
-> +		 */
-> +		((struct folio *)(new_page - 1))->_nr_pages = 0;
-> +#endif
-> +
-> +		new_folio->mapping = NULL;
-> +		new_folio->pgmap = pgmap;	/* Also clear compound head */
-> +		new_folio->share = 0;   /* fsdax only, unused for device private */
+Thanks for looking at the patches :)
 
-It could use a
+On 2026-01-15 at 23:42:02 +0100, Andrey Ryabinin wrote:
+>
+>
+>On 1/12/26 6:27 PM, Maciej Wieczor-Retman wrote:
+> =20
+>> diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+>> index 62c01b4527eb..b5beb1b10bd2 100644
+>> --- a/mm/kasan/report.c
+>> +++ b/mm/kasan/report.c
+>> @@ -642,11 +642,39 @@ void kasan_non_canonical_hook(unsigned long addr)
+>>  =09const char *bug_type;
+>> =20
+>>  =09/*
+>> -=09 * All addresses that came as a result of the memory-to-shadow mappi=
+ng
+>> -=09 * (even for bogus pointers) must be >=3D KASAN_SHADOW_OFFSET.
+>> +=09 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right s=
+hift
+>> +=09 * and never overflows with the chosen KASAN_SHADOW_OFFSET values (o=
+n
+>> +=09 * both x86 and arm64). Thus, the possible shadow addresses (even fo=
+r
+>> +=09 * bogus pointers) belong to a single contiguous region that is the
+>> +=09 * result of kasan_mem_to_shadow() applied to the whole address spac=
+e.
+>>  =09 */
+>> -=09if (addr < KASAN_SHADOW_OFFSET)
+>> -=09=09return;
+>> +=09if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
+>> +=09=09if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
+>> +=09=09    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
+>> +=09=09=09return;
+>> +=09}
+>> +
+>> +=09/*
+>> +=09 * For Software Tag-Based KASAN, kasan_mem_to_shadow() uses the
+>> +=09 * arithmetic shift. Normally, this would make checking for a possib=
+le
+>> +=09 * shadow address complicated, as the shadow address computation
+>> +=09 * operation would overflow only for some memory addresses. However,=
+ due
+>> +=09 * to the chosen KASAN_SHADOW_OFFSET values and the fact the
+>> +=09 * kasan_mem_to_shadow() only operates on pointers with the tag rese=
+t,
+>> +=09 * the overflow always happens.
+>> +=09 *
+>> +=09 * For arm64, the top byte of the pointer gets reset to 0xFF. Thus, =
+the
+>> +=09 * possible shadow addresses belong to a region that is the result o=
+f
+>> +=09 * kasan_mem_to_shadow() applied to the memory range
+>> +=09 * [0xFF000000000000, 0xFFFFFFFFFFFFFFFF]. Despite the overflow, the
+>                  ^ Missing couple 00 here
+>
+>> +=09 * resulting possible shadow region is contiguous, as the overflow
+>> +=09 * happens for both 0xFF000000000000 and 0xFFFFFFFFFFFFFFFF.
+>                                  ^ same as above
 
-BUILD_BUG_ON(offsetof(struct folio, pgmap) > sizeof(struct page));
-BUILD_BUG_ON(offsetof(struct folio, share) > sizeof(struct page));
+Hah, right, thank you!
 
-> +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
-> +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
-> +	}
-> +
->  	/*
->  	 * Drivers shouldn't be allocating pages after calling
->  	 * memunmap_pages().
+>
+>> +=09 */
+>> +=09if (IS_ENABLED(CONFIG_KASAN_SW_TAGS) && IS_ENABLED(CONFIG_ARM64)) {
+>> +=09=09if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0xFFULL <<=
+ 56)) ||
+>
+>This will not work for inline mode because compiler uses logical shift.
+>Consider NULL-ptr derefernce. Compiler will calculate shadow address for 0=
+ as:
+>      (((0x0 | 0xffULL) << 56) >> 4)+0xffff800000000000ULL =3D 0x0fef8000.=
+...0
+>Which is less than ((0xFF00...00LL) >> 4) +  0xffff800000000000ULL =3D 0xf=
+fff800...0
+>So we will bail out here.
+>Perhaps we could do addr |=3D 0xFFLL to fix this
 
+I suppose it should work; tried it in a python script by shoving various
+addresses into this check. Pushing addresses through a logical shift
+memory_to_shadow normally would return early as you noticed, and after 'add=
+r |=3D
+0xFFLL' it seems to work as expected. And I didn't really catch any incorre=
+ct
+address slipping by this scheme either. Thanks, I'll correct it.
 
-Very subtle, I wonder if from a new page perspective if memset of new_page to 0
-is cleaner, but I guess it does touch more bytes.
+>
+>> +=09=09    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
+>> +=09=09=09return;
+>> +=09}
+>> =20
+>>  =09orig_addr =3D (unsigned long)kasan_shadow_to_mem((void *)addr);
+>> =20
 
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+--=20
+Kind regards
+Maciej Wiecz=C3=B3r-Retman
+
 
