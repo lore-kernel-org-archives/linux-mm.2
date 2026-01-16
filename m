@@ -4,89 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1211ED4A5EE
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 02:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F100CD4A5F1
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 03:14:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59ED56B0005; Thu, 15 Jan 2026 21:56:58 -0500 (EST)
+	id 2B0716B0005; Thu, 15 Jan 2026 22:14:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 523196B0088; Thu, 15 Jan 2026 21:56:58 -0500 (EST)
+	id 234376B0088; Thu, 15 Jan 2026 22:14:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42EB46B0089; Thu, 15 Jan 2026 21:56:58 -0500 (EST)
+	id 108FB6B0089; Thu, 15 Jan 2026 22:14:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D7146B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:56:58 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7CBB13B222
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:56:57 +0000 (UTC)
-X-FDA: 84336314874.16.44961C6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3BFF8180002
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:56:56 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RRlZmBcW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768532216; a=rsa-sha256;
-	cv=none;
-	b=MuNs9KP7G/bD1zbZhzxNeQop+7Kko1+Y92tZC25KT4V+vjNTOMKmmpVRHgLz9kTS6ZBfJj
-	K7PEJoIzjUrH7t9miyZAo0beP3J3rsagTfxkxSgaVhDPEGSeg62mb6p/jSb3+b/1oE5uUJ
-	v26BckbOF0Ke45VWFlM7rtDcSOXRA40=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RRlZmBcW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EFC786B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 22:14:00 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 986DC592CB
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 03:14:00 +0000 (UTC)
+X-FDA: 84336357840.13.D715AE9
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 38020A0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 03:13:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=NYygGJ9J;
+	spf=pass (imf25.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768532216;
+	s=arc-20220608; t=1768533238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFtB7VTRFz+CPEMjLUO7EcLRviyrG8Dw2qQFqHnBBRU=;
-	b=7rg2fyoFEPOUMKPAhFw5sRQ2/QN4utdQV9tJ95IOUaWuAzMVT4kk65J2+P31wDAXMgIzge
-	Cc5W6Q+jmwboIRUh8g0cBmDDXl6e968jtkiWpwagD/onlYF0XrwxvoiFPwrWbHWrG1UZAH
-	1TnRL4wv2oTxa6AMtsYbXEqP6X2AJQI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 856B86016B;
-	Fri, 16 Jan 2026 02:56:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BEEC116D0;
-	Fri, 16 Jan 2026 02:56:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768532215;
-	bh=XIQ/LMAxOLSbCnga9pI2EipPL632Vn+o0hlH5sLUIVA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RRlZmBcWP2NQcxLwAQ6897cyN9K3nOvz89Z+Zqt4rxkX/5ByQELlnxqe43/A+W+Vk
-	 zoX7uqyVUXDU3gj1/xXvN1fxro+n8qP7+sdme5AruuBgJlkOIuk9qyt3iyDAoxiIu/
-	 pxTeJH1gZniYaYTQagl+8IuatfqHLN31OnkmMvsM9OvB+LXMTjgDqouQ6fjTVTLWBI
-	 yk6t98iFvBhquneN1hHWKowSxLJUn/JYeljYJa94UUbGZMqZ27PQ6u42f5HO8OpSQd
-	 BkdiaLdRWZtYtcS+3crUUtoFj4dHdgo6NTJEKRMg8KZqfjun6lGYRmxmtELlgE+gGB
-	 qQweIH1MikUpQ==
-Date: Thu, 15 Jan 2026 18:56:53 -0800
-From: Dennis Zhou <dennis@kernel.org>
+	bh=fW9DCoyeRwgZraySQWN8vHpYbvVPEVqIauwbJyIM5A0=;
+	b=RWrqc1wy7nvRAS8Y91KvzilFbojJOrG2RIVxyjzT/wsZl3E6IxA+dYBj3URab65rT33+Pz
+	mOQrC9jlMY0VVTxSKGmW4BDHOLemXtJnp+FDULTeFjiptsJUYzKy9DL0bCmCqSSRdWyw0v
+	WbpOCllELeNpCjaLg4hF8i/PWp3Nu2w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768533238; a=rsa-sha256;
+	cv=none;
+	b=8ZBA0cW+wHJcU8ZEUXNIHjhBvab8tupfQE9NA1Erh8uk4+xpN1GYnnVMPpsroAFPKTcZ1w
+	sVMJvihUJkvflQ4ptJ2r8Q1lvppjom/ACyXo+4yqc1TP4pHip/8MevB5u9PZgmNoE6lLfH
+	5L8nuo71sNFXD+DCh96djHmpEzLPBIw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=NYygGJ9J;
+	spf=pass (imf25.hostedemail.com: domain of ajd@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ajd@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60FNIHeB029136;
+	Fri, 16 Jan 2026 03:13:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=fW9DCo
+	yeRwgZraySQWN8vHpYbvVPEVqIauwbJyIM5A0=; b=NYygGJ9J3OYSrN2x4e9z6X
+	NYJJ7RxBn3MNL1AVw7mshGtX9hPULZCWlATJxyuqbZdUQNguUfdOxrarn4j5Ydg1
+	AGxQ+d5Zgz6XZzKjE2TXf58qyp1fSESB+YjMrh9aoxPdurBGbMmC22goMcZuNX/z
+	f9zzUdAKK6dBmJVMrUhMz+afmJX2H72x6505h4wAImixn8Ym3Uw54J2ocq8sNd24
+	Tnbr6UBUIEDOOI/BkljqDwrEkqyz7B/CNXwLzBbk12VTJjv2QrIFNMGmWZWDEcyy
+	x/HlZF3eMB4ZeJMeBQ6mXmns4eec10jUcxphWK90EAjjjDG36OrRJ2dqbKDWG3tQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bq9st8k9v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Jan 2026 03:13:51 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60G3DoSk002919;
+	Fri, 16 Jan 2026 03:13:51 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bq9st8k9t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Jan 2026 03:13:50 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60FNYKXh014274;
+	Fri, 16 Jan 2026 03:13:50 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm1fykxcp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Jan 2026 03:13:50 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60G3DnoW25101006
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Jan 2026 03:13:49 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F2BE25805C;
+	Fri, 16 Jan 2026 03:13:48 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A470458051;
+	Fri, 16 Jan 2026 03:13:43 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (unknown [9.90.171.232])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 16 Jan 2026 03:13:43 +0000 (GMT)
+Message-ID: <ba35672820c2fbad2611a0a89b3cb60125776f9b.camel@linux.ibm.com>
+Subject: Re: [PATCH v18 00/12] Support page table check on PowerPC
+From: Andrew Donnellan <ajd@linux.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Mason <clm@meta.com>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH] percpu: add basic double free check
-Message-ID: <aWmo9elLCfyb96VR@snowbird>
-References: <20251220002737.84100-1-dennis@kernel.org>
- <20260114122209.1075584-1-clm@meta.com>
- <20260115151328.38cc7cf0d0b8bf97ee5b3791@linux-foundation.org>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Pasha Tatashin	
+ <pasha.tatashin@soleen.com>, linux-mm@kvack.org,
+        linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan	 <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Rohan McLure	 <rmclure@nvidia.com>, Alexandre Ghiti <alex@ghiti.fr>,
+        x86@kernel.org, Nicholas Miehlbradt
+ <nicholas@linux.ibm.com>,
+        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+        Andrew Donnellan	 <andrew+kernel@donnellan.id.au>,
+        Srish Srinivasan
+ <ssrish@linux.ibm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org
+Date: Fri, 16 Jan 2026 14:13:42 +1100
+In-Reply-To: <20260115161857.ad9952cf1ebd1b37839aa652@linux-foundation.org>
+References: 
+	<20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
+		<CA+CK2bBjoQmheEstv1MacGev_srdx=m5v=hwxdyfAKogbpG3FA@mail.gmail.com>
+		<bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com>
+		<b6c39059-faed-41a8-80b2-addaa229c143@kernel.org>
+		<cc97397d3c75d796ee71081cc842c867a62ce39a.camel@linux.ibm.com>
+	 <20260115161857.ad9952cf1ebd1b37839aa652@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115151328.38cc7cf0d0b8bf97ee5b3791@linux-foundation.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3BFF8180002
-X-Stat-Signature: jmfb6nz5sq3c59o4h4raktzzn7bdwef6
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=KNRXzVFo c=1 sm=1 tr=0 ts=6969acef cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=Y5EJBO6SgJiHs8anXDIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 55htG9PDokbxJx8uQ6srL93nebqrpK1p
+X-Proofpoint-GUID: YOi29F4SNz54m1WROzu-sRkP6zlVhnnc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDAyMiBTYWx0ZWRfX+AFfHh/cyIIs
+ bJQv6kvsfmeTtynUjb6q5acSz5NV99GlwAWc2Cdw+aIY773Sk1Jx0AU8AGPqrkiFsh5DIgsWZab
+ l4KzZtSHmo4HZ6zzXOr8C5VRJI8wJtmrLRHxvQhtRdWyhdOlJTWYsr11jTchKxv8aEGc7AQSEH4
+ PewoYzY2OxNY+PBDkh/xfq7ECz3wsnqg4Ot0ixK+uM67WU1GFayhSS1Xv2R94C2p1Aleg6ympam
+ PBuyjS4HCHvSNa/blb2ORlmIncCBmSTSBjvXh3yuRJ8/x9kPI30vigZ97XQ+5gUduWdvjeZOz64
+ 5yUKs1skk9SpC5UfQMTteYAjlJmk9mR3kPFfFR76igDW6b1BTU7Z4deWPfgEJ2SzlNbgWL6xkdN
+ 1KEbXNv7crX3PHM3ZLXRK+2ftCyNFptvnp/hpTMzaDxvNeGOnIODTok8V2WUhnRn2GL6xdQHsCl
+ /G87cYrP3vwn/veSdtA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-16_01,2026-01-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 spamscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 adultscore=0 phishscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2601160022
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 38020A0005
 X-Rspam-User: 
-X-HE-Tag: 1768532216-4900
-X-HE-Meta: U2FsdGVkX1+9vy+VODQV6UcnVDiFgX9+R5Ba9dlVBbCvq/ellP9RrSPPhyENCjA62mFefAoKGGzsNwCOAlPD+lhCobMPujFoM1GqeLz2keNAyp2P9WQLeydxFmaPRXF+LDCXVKVmTivKB/3o6zuwjXjVIjA/HiThAUu3COGX4lOsfUizDrWBPINSeVOLl3p6CNWFP9LnnIE34+eWhgSA027Kp4eEJM8INm+Str285wDZYkpWhyCUvpiglXxIACNrdtAUDVlOAKVS0dKqHkO1W89wU/+1Ish1Z/hy/QnjQJT07XY3KNoS7pR1D25PCIeO5G9GWqL2TJt8prM5Jur7gR5cCYAINIkRo47vGATDIKD6tLoRPkv0nFn/y7x+9sWfN38YYthN+kQILv6Q4RGN3CaitOTaltDnao22ojf/3+cGl3wuMVADQ5g9eJABKwTxonnNQQSWoQPghRNmHSV/ljI8CG+0SDsfi5KpQT0xUXP1gNtaXtVJpw/sioX14h8uE6/7hXtEfzX9uMeuSgtcMAhkREZywrjkHBe1IU1/nyIphTgC16eVzp9OHnxub0enF6SH6TjrNOLhwPCXtf9Vlj6NCMcqQJ3x9ejQ675RFIEis2Bp2idTz/KXgG7xORNHpDxUmyaNm2m3tz2g06yY3b6n1u7KQ1bf01n6GzKpqz7cb8R1k9loLLzNZKEOdgC4x37MVVMbfc3zU/rnKJV+aKKZGs67d2NXi7L3WrnlKsyKaW/dm29D+hY+4WZ6GZ5VVY8KciGEGSqGuaNLiMElwmY+PBAjMBHUN26xj9/cEfYwp7a7I4dFyC4N8GUuTEyhg8IoACOdY/zmWBaXV8hOm4XK64xoq6R37S4PY3d9G9p3kCAhsnqV+Y0pBnGlA/HNkLL7lgWdpcELx3dkvEQJ03otYfJiQgbs5naMdThwTgpZp6FnMPqC4XruQwWUSZqVVH2t90dxr15Ph/X7ema
- cXDFuOv3
- 7iyJFtUhDaXm14sD7biG9BNZdtgvpgMjHHT3M9sNgRkaWxkEkkUe0vAL1WGWsycS+vDkANsnOirLqyn/lKqdEiz4kwawW1+81mBVMns/77F2zCq9FQ3XeOFRgBs2HtOLXXQt2ATabWZ1d72TxU0054w2RD/hVcgitVfeMp6SSOD1OvHByrBljPLBvrEqTgGP6G9nYUalmdSdfTp8g9F/lUU8j7MfiLt1X6yGJBxA9KqwpuM639z1huWfGYxPRs5JOkYKru2gwIi/TowMdIbL5ErCHZ3b3aXIVnr8q8eh66NEFNZrzqt7nL2zmjX2WIv9rniwy7zh96dBLOIg=
+X-Stat-Signature: ukciszz89fmkek3b1xiozqehcp56b4sm
+X-HE-Tag: 1768533238-346147
+X-HE-Meta: U2FsdGVkX19o3lHWmV/Ye7M5BYKnm01/9p++lRk4n/wnnVzQ1bL7ctZ2BUuuQ3aT4/Qu6Rhux4Up8DURFJgJ906t0IV5/q52GRmBVEaRyKgnVERL1gXgLWNC8piFSKofs4DrEL5AiPQCQ3nN+ugVOG2cvKzHlu6KWlm2x+9nGTey22dML9B9M+5Xifi6r6YyfDaVp7CkLwyo4XhClRToOpPVe1X6PIBwwmR7FzxLbHl9QnyTQMulHj48r7eP/xzgiCx1ovYs3rA3e1i9402a4xjhI6pQKiZyAi1PdglbUxgQI1PA8jDHyetmlhufP8Ptt4fOeM8K5FFx/zazX67gkwVgfZbniY/JOfTPu8gMoD5dsF3ezjL1XVUFwMM42TdTHv2yg2zvqz1Fx2c7969fdLSpqllZ23ro79K7FJBakF4Gsn895Bz8HRAnkykQFp2COVGa05u/XEiGb75vPw3NmglPVyA2+1RfZgsUITnYF183HhtJrY37RKVNJOEGYAslibeXzSuY6Fncr+KRX/a5SCGdc53jTkDTYYpmngZqeLbii2ZCThP9LJqkVbbgEABdmtNczMxY7w+KR5GaeSZg+UU+hG9Ch1x83Mai7NfpTPFi20WsE6a636QV/tB9eAvLC2bjRXk6UCXRE5MUQNP8U8G+z+VX+2tyPH8Oq1Z76cTl5NJTfUziUvvjoe0QhCevF8eWfHH454ptkdXTRDf9kR6XW9ClIVVtzTDoZlQ+h7MQ/BJ2qh35e2JEMgVbTkcYatSfFGdpqmAF088Qb0h6R5aQ91F8HGA6N71EYQB/HdqL4+mpotqAieHEAwfYqAmT1EWIuPNTSSxlo/hokGKSzWIweN+7pRgSqDs4wRtBvu9rUkTFddzycufE85t+z/KCBuGaMhF+Kw8KwW4OXgUpZ4lriZ216tJf4PExzSTlDPYVbkkwdzrfPKK7jLfciCjf1dxQrZdxNpvpgiDfRMF
+ Ipv4vlQj
+ ivsjVEo6/aCfX4erLQQo61ZTIW1YB9a2KcdiYqwJ8XTB58CPrHI/9HY45Uk59gUrsZ/3YgSvctUdD+T2ICgYpjx5ZvWLAEIQAJvlrkB660qOsugfLNdwkmbBRxFnJF3iRdBwsjmjBxmVI/TBn3na3YcTVs3CikXoRCIWn3OD940zLgOXwWLKmY3ekkMkJ4fw0CgTwFqHhKxgq658eS7BdMn7D6A2gP8OieLwachfMQC/7dBKwRRZDuQhZFpjsExT+McY15z7BNyi9YClof0LgekDhoMfWzdgDNms6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,44 +165,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+On Thu, 2026-01-15 at 16:18 -0800, Andrew Morton wrote:
+> On Thu, 15 Jan 2026 17:13:26 +1100 Andrew Donnellan <ajd@linux.ibm.com> w=
+rote:
+>=20
+> > On Wed, 2026-01-14 at 10:34 +0100, Christophe Leroy (CS GROUP) wrote:
+> > > What is the merge plan ? I see all powerpc commits are acked by Maddy=
+,=20
+> > > will the series be merged by Andrew into the mm tree ?
+> >=20
+> > This is what I was expecting - this revision is rebased on mm-new as it
+> > stood
+> > around when I sent it.
+>=20
+> Ouch, sorry, I did not understand this.=C2=A0 So we've lost 4 weeks testi=
+ng :(
+>=20
+> The core MM and ARM changes are trival, in the if-it-compiles-it-works
+> category.=C2=A0 Is the mm tree really the best place for this?=C2=A0 It'l=
+l get
+> more testing in the powerpc tree?
+>=20
+> But if you're OK with it, I'm OK with it.
+>=20
+> > By the way it doesn't apply on top of powerpc/merge branch:
+>=20
+> I guess we'll be hearing from Mark when this hits linux-next.=20
+> Hopefully the resolution isn't horrible.
+>=20
+> As I'm adding this to mm.git's mm-new branch, Mark won't actually be
+> seeing it.=C2=A0 I'll aim to move this into mm-unstable (and hence
+> linux-next) after just a single day.
 
-On Thu, Jan 15, 2026 at 03:13:28PM -0800, Andrew Morton wrote:
-> On Wed, 14 Jan 2026 04:22:00 -0800 Chris Mason <clm@meta.com> wrote:
-> 
-> > On Fri, 19 Dec 2025 16:27:37 -0800 Dennis Zhou <dennis@kernel.org> wrote:
-> > 
-> > > This adds a basic double free check by validating the first bit of the
-> > > allocation in alloc_map and bound_map are set. If the alloc_map bit is
-> > > not set, then this means the area is currently unallocated. If the
-> > > bound_map bit is not set, then we are not freeing from the beginning of
-> > > the allocation.
-> > 
-> > Hi Dennis,
-> > 
-> > I ran mm-new through the AI review prompts, and this one was flagged:
-> 
-> So good.
-> 
-> > If nr_alloc is underreported due to this bug, the buffer may be undersized
-> > for the actual number of allocations tracked in alloc_map, which
-> > chunk_map_stats() iterates based on the actual bitmap contents.
-> 
-> That's pretty serious, although unlikely to occur.  I'll drop this
-> version of the patch, thanks.
-> 
-
-It's a good catch by AI, I fixed it in v2 [1].
-
-My thoughts are this is really to serve developers. It's not really a
-recoverable error because if the pointer is re-allocated before the
-double free, then you'll only find out in the future when the new owner
-tries to free memory that it doesn't own. An even more contrived case is
-the pages get freed out from under it and then the new owner seg faults.
-
-Thanks,
-Dennis
+Thanks, sorry for the confusion! *Hopefully* 18th time's the charm...
 
 
-[1] https://lore.kernel.org/lkml/20260116023216.14515-1-dennis@kernel.org/
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
