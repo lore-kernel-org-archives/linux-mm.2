@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41524D4660C
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59567D4660C
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:46:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC0596B0088; Fri, 16 Jan 2026 05:46:34 -0500 (EST)
+	id C36EA6B008A; Fri, 16 Jan 2026 05:46:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A739A6B008A; Fri, 16 Jan 2026 05:46:34 -0500 (EST)
+	id BFE2E6B008C; Fri, 16 Jan 2026 05:46:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96C3B6B008C; Fri, 16 Jan 2026 05:46:34 -0500 (EST)
+	id B0A666B0092; Fri, 16 Jan 2026 05:46:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8864B6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:46:34 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 33E7C59AB8
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:46:34 +0000 (UTC)
-X-FDA: 84337498308.05.008B314
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FC7D6B008A
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:46:47 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4DA941A05C4
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:46:47 +0000 (UTC)
+X-FDA: 84337498854.09.E8A9240
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D98241C0007
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:46:31 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0mRq6Rxl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kCQ2Vfii;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0mRq6Rxl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kCQ2Vfii;
-	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1B296180004
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:46:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Dh7SnjiR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JngxdL8w;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Dh7SnjiR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JngxdL8w;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768560392;
+	s=arc-20220608; t=1768560405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uP1q9Ovfy/E+Cb02Q5R0pXn9SOKljKsu1y7iUqVaCJg=;
-	b=czM8Pdzi3qT3CKe5TVwojwaYuUv17U71hdi6Bq/I2HPbGXBGhEZnMIWSgKbUFhoAhaBVKD
-	vdpJvL+ffbKu8L224CNCG6c3RHBbiDNdsS3qwu3aHRl1CphOScMBiynBqxuLL2ruSIMEeb
-	ZmYO+OYwhHXs7KX97ekzDV38/7uEAzo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0mRq6Rxl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kCQ2Vfii;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0mRq6Rxl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kCQ2Vfii;
-	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768560392; a=rsa-sha256;
+	bh=LLf4/tCwvZINw0T/0iWsFlAQXM25KnpgNkic4lwBVt0=;
+	b=qlkn25plFFJOpHR8pXblnUkzibrG0jvRIw3VKEFlPPwgYgiGHnbYT0YS6QMkitKUtVfMWP
+	yxZ5GjnFL46wOiy+F5MKiHmop7ojAkpT3JFOP5gKtpgTC4csQCZAXvYX+OSIuT6tZqAuFt
+	oI9Y9ivnIuen5zJJSVgkt3v0EfV6UJM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768560405; a=rsa-sha256;
 	cv=none;
-	b=LnknKZf7JYb7Jum12mo42Y0t4hTuQumeJlE3NXOwqeYZjID/pFhZ/NbZe6STlDMRcwz9QS
-	pyz4tHj9hdl2IGoMMRTNkEa/RMtvfkwAi8O46vatmlZ/8ZUzSzXWSCt9Jgdi4Usx+cSgDb
-	H+TwhMKJEPoJLSQat57vWwx2GGHtjkQ=
+	b=aDMb3mtlK8CkWpReRGGA77rWC4WbCU+dVHdHTYYSIyc4lFQVngbMlcJDsn/tCOdCcY+vdW
+	4v58EzJT7GZ9es0wIYcBSEX+evEd1OUhugnDVv9r8Cm+XLVdoltE1WmqEUMFleZjZZ6W1s
+	IP/hcHJzirw9vjcCY0MBOgColXddz8k=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Dh7SnjiR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JngxdL8w;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Dh7SnjiR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JngxdL8w;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2ECD3336B1;
-	Fri, 16 Jan 2026 10:46:30 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B34A0336AC;
+	Fri, 16 Jan 2026 10:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768560390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1768560403; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uP1q9Ovfy/E+Cb02Q5R0pXn9SOKljKsu1y7iUqVaCJg=;
-	b=0mRq6RxlS041cU28r/V0rH2liCE+HXIRHLEQk7V6v25qkNoSrSb95EvqfcEYtA70/qpPXn
-	XqE5rgqfKQ9BlV11BMkJemRBF9ahXFNjYlxtCMXyREmBTv+S0pi2hgcekcP8ARBR3Wz5CS
-	rWCkiSDOxS+pn7MUFzee2xtcJiv43Rw=
+	bh=LLf4/tCwvZINw0T/0iWsFlAQXM25KnpgNkic4lwBVt0=;
+	b=Dh7SnjiRKN5ZLxwaQCzKaRU4hPs2cUr4T6RT3yMyC9NwOzAfIhq51nLWqMWJa1JBUaKN6M
+	VyIWPJc7bMZX5Sw0Weqh8k3Kge/MNpGLws//mDvbdBmoz17A42nnyKhEvQSuywB0LaMp3l
+	psvOUcIpdE69J4CVl6sU5Yrml+5UbFM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768560390;
+	s=susede2_ed25519; t=1768560403;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uP1q9Ovfy/E+Cb02Q5R0pXn9SOKljKsu1y7iUqVaCJg=;
-	b=kCQ2VfiicHiIqbHfnNCsi7dmRDgCLtDQumWsVhBj1o/P/fPEg/QLxVCwJPbocJYikftmzf
-	MNjNjJFwZUJp0iDw==
+	bh=LLf4/tCwvZINw0T/0iWsFlAQXM25KnpgNkic4lwBVt0=;
+	b=JngxdL8wTQw9LQCJAoX4/DLQZN2ID6p1vylYUhDFUqAfI0+VyVendKJD69hNTBnMkReZnH
+	Dc5JXbiKnr5/HvCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768560390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1768560403; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uP1q9Ovfy/E+Cb02Q5R0pXn9SOKljKsu1y7iUqVaCJg=;
-	b=0mRq6RxlS041cU28r/V0rH2liCE+HXIRHLEQk7V6v25qkNoSrSb95EvqfcEYtA70/qpPXn
-	XqE5rgqfKQ9BlV11BMkJemRBF9ahXFNjYlxtCMXyREmBTv+S0pi2hgcekcP8ARBR3Wz5CS
-	rWCkiSDOxS+pn7MUFzee2xtcJiv43Rw=
+	bh=LLf4/tCwvZINw0T/0iWsFlAQXM25KnpgNkic4lwBVt0=;
+	b=Dh7SnjiRKN5ZLxwaQCzKaRU4hPs2cUr4T6RT3yMyC9NwOzAfIhq51nLWqMWJa1JBUaKN6M
+	VyIWPJc7bMZX5Sw0Weqh8k3Kge/MNpGLws//mDvbdBmoz17A42nnyKhEvQSuywB0LaMp3l
+	psvOUcIpdE69J4CVl6sU5Yrml+5UbFM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768560390;
+	s=susede2_ed25519; t=1768560403;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uP1q9Ovfy/E+Cb02Q5R0pXn9SOKljKsu1y7iUqVaCJg=;
-	b=kCQ2VfiicHiIqbHfnNCsi7dmRDgCLtDQumWsVhBj1o/P/fPEg/QLxVCwJPbocJYikftmzf
-	MNjNjJFwZUJp0iDw==
+	bh=LLf4/tCwvZINw0T/0iWsFlAQXM25KnpgNkic4lwBVt0=;
+	b=JngxdL8wTQw9LQCJAoX4/DLQZN2ID6p1vylYUhDFUqAfI0+VyVendKJD69hNTBnMkReZnH
+	Dc5JXbiKnr5/HvCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1D33F3EA63;
-	Fri, 16 Jan 2026 10:46:30 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A27463EA63;
+	Fri, 16 Jan 2026 10:46:43 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id //MZBwYXamk+CwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 16 Jan 2026 10:46:30 +0000
+	id RQqnJxMXamnVCwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 16 Jan 2026 10:46:43 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id D9E10A091D; Fri, 16 Jan 2026 11:46:29 +0100 (CET)
-Date: Fri, 16 Jan 2026 11:46:29 +0100
+	id 593C0A091D; Fri, 16 Jan 2026 11:46:43 +0100 (CET)
+Date: Fri, 16 Jan 2026 11:46:43 +0100
 From: Jan Kara <jack@suse.cz>
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Christian Brauner <brauner@kernel.org>, 
@@ -139,23 +139,23 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org, 
 	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, 
 	linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 04/29] ext2: add EXPORT_OP_STABLE_HANDLES flag to export
+Subject: Re: [PATCH 03/29] ext4: add EXPORT_OP_STABLE_HANDLES flag to export
  operations
-Message-ID: <bvcnfrf4kg3md6b3kvklrisa4tuwlszr6fjakfmudtiwq4uy2d@5rfpe3unm5tm>
+Message-ID: <yaflh5yuvprahi53xjx7k745lxsixxzqea5g63sxge2fqrwe6c@q7w7lvxs4xb6>
 References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <20260115-exportfs-nfsd-v1-4-8e80160e3c0c@kernel.org>
+ <20260115-exportfs-nfsd-v1-3-8e80160e3c0c@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260115-exportfs-nfsd-v1-4-8e80160e3c0c@kernel.org>
-X-Rspamd-Queue-Id: D98241C0007
-X-Stat-Signature: 9iz67htspzikaczx3oykbzxumeqap8h1
+In-Reply-To: <20260115-exportfs-nfsd-v1-3-8e80160e3c0c@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1B296180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768560391-987786
-X-HE-Meta: U2FsdGVkX1+d41pJQknncYKx64lBTxJtNYMZgC/34iTG3uapvDWo1domgiEo5aPe5bwq+ej0+TXBhUFgxfSEQS9FNByF44efqv099i22gdWLT/Ya4dhRaWd/+CwArIcLZxNut42zxYWL6U9ManypcXb62Mu86VY2htahkaLv3YY6KTvNzST/RRJDHCg9J0fYraM58uXm8uvepBROkZA635c1i54dmr9Rtt247bu6C795ox2nVMztLifD4UXBvIWmmYiuq6WlZ3XcEjNsTkrX3MuDSaUTylXYDY5uX+SBqfwkf3sao2VXcS8dEh8vlxUWXJPjTzNUQIURhDnK0tuScSSYUc/w8g7ZAAbYJ0K85DLuf3w6PIpCPBnRqsJBxRfGWIp2q19TMQS8G+6mDdAZ5FgV8IfwfWOHjPCTPoHY1eQYzJ44EsDZHHNKxo2+lqg7cYFY9qBLW+B07QT8ps8VuLLUhv91SBy0faxtPJvzVFU72btK1hVEorGm0vyasJ7sPikAf21j5OwA31y1fbgCNb5nvOIwD6KQu0APexA4ZBqYP6J0bSaFLtFrS9DExwDAgB1tQuM7cJfzI9vCZxPkTXhPiU6/9G4uqsPIt7IaTFwQFg0Uv9P5WOGbffJoL8aqhRFcEloUnesTYZ9M0tB8D2V6jbnyEzl1SOyuwJjgN79zX52KVisR8v5iCVOQ+Fsjh4z5yuyt465xRWdGV4Tgn6JHeEjXsU2OeyG6+goDwHLqoKbKg5jeGue7L0ama6ebj4J2EPaAq0LhUL1yTH85AIJi4rINmjNgz+TNjC/y9EOfQiu2R3klSuVyPEKY5PaARt87Ykze2aidMAHzZn+9YyQTCYx36KrPJuPiRTEKfvmDJq8GJnPRP4wNqbAdWcD6Pz+S4v+NmCPQHqRqaeK1A8jWN41U2L0+aIleqgKwGfxvxg7eMHtc6YL90D4tC83dw10WoVj/17FWaoM8bEe
- +HFUSmDV
- Pkx4WfytM3PL1YB+dv17u6d5CXjKyton7fXRvdAVZUg3hCIhtZr1uCahhGdITgLVdZuKE7LJ/+7RH0dxLtlU3haXbn1dcINUqhvDhn6Ht2GzbFU3hd5ixhY926QmtuT0SRYtrmSlVUK11aaxRrPOvwzfRdM6Ol+1WOp+NiGg0PoFESziUkTuNdi5Dw58ezlMqIAqjNqcuomz+tgNe75m4vPQ+TWpZxPa65hQ17UHTOz3clDL9pctEtrwd5NMDqq9NPYUadubol7tlI5/rei/uOouvMZOhYKE2WQftILDkYa7OJPHh1vcgKbfSmOfBWCnhtu1HdZ4yJPba1AHvUiU4VpjakX8bpvPDIYjOFEFDId9RjarJ6AsdKju889qnvw1HbuLlJgz6JCVW+y8UhqOwqWn2LlcgRwAKUz4LwnIrW1omirCAFC/zJb5gG63Nw3V3k1XG
+X-Stat-Signature: bzxntsdzupf8z6et5jyi9r5t6ape5t65
+X-HE-Tag: 1768560404-933969
+X-HE-Meta: U2FsdGVkX18ejtofitlmy4Bmxv5hP+cBbs5WKfYppCD9CiSQr1XC1oyBc/3W6mhDhc65HsPt43Gbv45PURlrJYHeDE3mwFNETKYxR2NoPfrmfGhPAbFhmFQbGzruZp7A0y0oQMS3BRMetoA/P82c7EJbuuxl1uK7vweRNSc9TmNntzRBNUl9DsmGYDbMQB86/tt5rBuXBxqUXAFf9daain2UQyHVn47EsRp/dFXNV1vyf6hRgK3H5mKcmxw4d6CG4uYCY9HjqN4ExdT3KKoHmd1Zsx/MQ9kdOzUSAaUkJ2ckHRQkZktLy6lpZwYt56AHHTu5lsdyDSDdxHE0W84ErJZmr963L2PZMumhtDaEEDTHVS4+RHXercUMCDHGSTAc39520yn4hQK2u9jGRZ5vg/xw/Mr5eFmBjcwdXEYB0kvEyDz6Mbd4qpixjEvN4OB+7tL87J3qvk123tedVLQuHom/QQHbk1sqaCs5oKC5ceqLNIL1qjcAvg3+FNwjR9tLMjdVQYkkHiVfBJx0tNs9no6Hrm0B3jG4CK5+7VL6pSNAqWTysLcEoFs3hiB2jfKKJJc1Taz/PmCErwjp0qe0YZevgpVDyMvMb8i8O/eNjNw9EDLfhEEAnBqyG5b9xcFb/2N5oIlDHlHNHbT81GgmlB2L/eP6rzgYB5dS8NtSRsr3aX0CSkWrGKbIMSLXwPCcAbBYLobRvfA9WfEViDlCV7D4ik/dplcSCoresm1aXl/KAiR5+tHLUaUJqsF834pt452u+eSZNp9y+7g5m6PtfvFjCGUhD/tyk97TjN+xpP8kSTjNXYPS0tqQaHzkpihdPOGtBkeASmwxdsZ28J+q/wTVInEV1EglF534XDgyHr0ZC/2jE4WRQF4R31CwjVo5wRw6IRpA4rsSpZPrCSADEtxEYneYjFyS9SGEM2qwU15uPf8FKNB5hpvGTrreg/cXze7Hq8feaDEMZBPvekw
+ ErltwWCz
+ tmdnLnIP70dlhbeXom74qfqP/QJPihx28KbzsKwJG0mahPqSM9yPMJhND0ElisoBRBwZ+askS/+vGBhYjGf+DlBcV6I4NPFHjINTBIxO6E7KnVzP0iRU5G/RLYZEVkVmfVy1UOaSa8uF8G+5wf7X5OyhCkLbOSpvKKPTAnxchJsuPaTmjfrT8FYcj9oPNVzz8qsjZv5ZAuOdWnYwB+pX+cgdXZ8S4e7kNrgbm5+OHyOrmseAyb7ICiz/r7J13wUjAZfOZF9rnmfXyq2qqnYeyb2ZHWycI4sinRwxIXwXHKSI9vp2N/Ooo9RgEKb/sYs/6IEyvIvPR6vl/HEXKbhNXvNNXm1wJZJuJaCRzkOc+L3RQOtKcHt9HSSio+CqIxJiimbMS+/qUzNTHweGgW8Yp+69AwAqqzF5gmWQU7BqylBDKGhqc3IWU47MNa+qX9oI7EEuU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,8 +164,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 15-01-26 12:47:35, Jeff Layton wrote:
-> Add the EXPORT_OP_STABLE_HANDLES flag to ext2 export operations to indicate
+On Thu 15-01-26 12:47:34, Jeff Layton wrote:
+> Add the EXPORT_OP_STABLE_HANDLES flag to ext4 export operations to indicate
 > that this filesystem can be exported via NFS.
 > 
 > Signed-off-by: Jeff Layton <jlayton@kernel.org>
@@ -177,17 +177,17 @@ Reviewed-by: Jan Kara <jack@suse.cz>
 								Honza
 
 > ---
->  fs/ext2/super.c | 1 +
+>  fs/ext4/super.c | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/fs/ext2/super.c b/fs/ext2/super.c
-> index 121e634c792ab625d7a07251e572e5844242fc2a..936675f06806d268ded5a3ba5306575c437ca9ce 100644
-> --- a/fs/ext2/super.c
-> +++ b/fs/ext2/super.c
-> @@ -426,6 +426,7 @@ static const struct export_operations ext2_export_ops = {
->  	.fh_to_dentry = ext2_fh_to_dentry,
->  	.fh_to_parent = ext2_fh_to_parent,
->  	.get_parent = ext2_get_parent,
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 87205660c5d026c3a73a64788757c288a03eaa5f..09b4c4bb8e559da087ec957de3115e4f7d450923 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -1651,6 +1651,7 @@ static const struct export_operations ext4_export_ops = {
+>  	.fh_to_parent = ext4_fh_to_parent,
+>  	.get_parent = ext4_get_parent,
+>  	.commit_metadata = ext4_nfs_commit_metadata,
 > +	.flags = EXPORT_OP_STABLE_HANDLES,
 >  };
 >  
