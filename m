@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AA7BC982D4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:46:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E7BC982CD
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 15:46:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B3466B0089; Fri, 16 Jan 2026 10:46:52 -0500 (EST)
+	id 14CA46B008A; Fri, 16 Jan 2026 10:46:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 480526B008A; Fri, 16 Jan 2026 10:46:52 -0500 (EST)
+	id 0D7276B008C; Fri, 16 Jan 2026 10:46:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39FEF6B008C; Fri, 16 Jan 2026 10:46:52 -0500 (EST)
+	id DA8FA6B0092; Fri, 16 Jan 2026 10:46:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 29BC06B0089
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:46:52 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFD2816016F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C5C736B008A
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:46:53 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8732F1A83D
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:46:53 +0000 (UTC)
+X-FDA: 84338255106.15.ECC9A57
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 83C6E20016
 	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:46:51 +0000 (UTC)
-X-FDA: 84338255022.20.E247FEE
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf20.hostedemail.com (Postfix) with ESMTP id ED91A1C0002
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 15:46:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u9HsKiT7;
-	spf=pass (imf20.hostedemail.com: domain of 3aF1qaQkKCB85GD79MTCGBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3aF1qaQkKCB85GD79MTCGBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--aliceryhl.bounces.google.com;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=St8Dl0L+;
+	spf=pass (imf03.hostedemail.com: domain of 3aV1qaQkKCCA6HE8ANUDHCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3aV1qaQkKCCA6HE8ANUDHCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768578410;
+	s=arc-20220608; t=1768578411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vIlza/EGnIT3hgfaEJFw0khZWhczs5SOkfu9nbXLDHk=;
-	b=2gKXBM51VShlVCyn3JadJXLw5CF+IJLXXjqDhPk+25IFqMYPldnKFgnTND890nGtswN2Ob
-	agoQqYrGzeX4fk+ovJhyC7YtknMp5kCuFQqQrcVyyLo1to6W8o4h2mqHwSy7J6RIF8sbb1
-	E9fRtepzmv+oyq6C6PB4dm5oI3CRhOQ=
+	bh=8XGtH7eRIWG3NpNTBCWRXdsIlOUMi+HesazDDnaKxAg=;
+	b=7n1dvaCpNhqnTdiVDa9KvMXjdu9lBv+2vUI2iAU/l3sNOvOs0H3Ub6g2R8VpXW4Gf+7+Z9
+	3fvUORzC0AbCULDtIg3zMYQU0DLy0mvke4FzZNl+D/kbuvO2BoHb0axsPYSBIw47MLP4O2
+	H8nenM08vZ28cDXuu5Om9DMxzzxfQAI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u9HsKiT7;
-	spf=pass (imf20.hostedemail.com: domain of 3aF1qaQkKCB85GD79MTCGBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3aF1qaQkKCB85GD79MTCGBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--aliceryhl.bounces.google.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=St8Dl0L+;
+	spf=pass (imf03.hostedemail.com: domain of 3aV1qaQkKCCA6HE8ANUDHCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3aV1qaQkKCCA6HE8ANUDHCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768578410; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768578411; a=rsa-sha256;
 	cv=none;
-	b=peXYzImeOfKRaLgGfnYbiJDwtd7oHxMN+M3+ohGEHgKUqg6X5ZxURNNWt2tKRAQXC0wlfS
-	sXtyCU3yWyt32NyoBfZ8HBOolTIYC0PNGzJ9OlMMFhQ24McfWD1T5nlplRzMBLDaa2HaYe
-	LnvC5rOiK69H6n2B875jbe3igoZHJFw=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47edc79ff28so14741925e9.2
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:46:49 -0800 (PST)
+	b=7GUmmHOw52bdmlIGHN8nZvQtO7iVM7EaJif5hbhqlGHrK1BvtllINGgbwJxcs926VRub0M
+	MYzCOzixU9verp2wsnQEyYRqy6fwcs9Z0TztITiONEZTMkTilTaBpObffuE160yp9s+Hln
+	9/J7R8lpS3a0/ZlvgJaiuL6AGVHYZQ4=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47ee1fe7b24so15688725e9.1
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 07:46:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768578408; x=1769183208; darn=kvack.org;
+        d=google.com; s=20230601; t=1768578410; x=1769183210; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vIlza/EGnIT3hgfaEJFw0khZWhczs5SOkfu9nbXLDHk=;
-        b=u9HsKiT7XDkNyPIzEim+Ya4IzphroMgIz2mjE/8M1S9wP49bu4yZUmKGfphxZqNBEA
-         ZvztD6lrkEe+wnBGpKpv6MZlqYNMbAAGL2ZiipgQkNTc0hUZNqacCaQNfbSQhDcNdbge
-         IhXmG4ZGIqW46vqDN4z5Z4eJjCMNy9DTBzt0NuAeXlboIQ0Y6b2qKsk4iB2+LCAO3lfj
-         FFBcjBvU+no1vFHXZRnyveeJhBA9kaDc7prAh01l0C86Q80CxIdkoGQx1rJMLOO/GlU2
-         pwiCFFX+UtiZF8jevVHuHdQVVKjx3DfYUcHxEBO4tBHxej7IGEZvoAkhuGhIW+gQn+6r
-         b97w==
+        bh=8XGtH7eRIWG3NpNTBCWRXdsIlOUMi+HesazDDnaKxAg=;
+        b=St8Dl0L+XLLPrJlPy/iFcr/4qaUpR/3bK2NMH0KTtTuWP8EVi/mEjYpvmXx8jwp+PP
+         C2L8oYW65KdfBnoVAGi2FEjVGICZwW02GWY2MpRR5QTMOqxhAhwAEAdNtHzgXrctxilh
+         6++sxLWAOL+jMis9CEukW8qwcaZD88CCMKs1NySPRn3JimWbdYl0m8pyOs9xLmtkGO51
+         PZBBVPqe5Syz7M+IdRbq5KUB/1c96X+IBdMnm9alnVmoQH1PNNRk+186g+CnDUyCI/S/
+         FVdKpqgpyVFg/yStbOPt0UbJlcXV77AsWCb0xYnhFfJD8v0wL0SKLPteMEpnqI12iQkX
+         HuNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768578408; x=1769183208;
+        d=1e100.net; s=20230601; t=1768578410; x=1769183210;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vIlza/EGnIT3hgfaEJFw0khZWhczs5SOkfu9nbXLDHk=;
-        b=FZp8uiqsR/mHDupDDDxhUBYngasXZqo5B+X90dz/tnzwsmOMZrcIESaj0QXnOxjX62
-         yfAgEFQR0PST4bI0utdJbGX08nNxMpk9iQqkLzgJvdezrzXIEVAsSuCCo/dq1zrHnRNY
-         hM6vIydHL1NZzUjNxUOevK+rBOLkLzeOJg1cZx33zQDQOBBIduPC8kYv4FeDVacDQ97b
-         Zo/hAI3wMRnOxfWidXewNskP+3Kjg3SibUir1huNid/ZmmaQyWSqZO0LL0k3QCwXvWCz
-         4peCNUiwivHd8ijfFvIEsHha0EafQofuRU6/FXpgH1TXxlDPh5vfFryZjT9U/SGeNQMb
-         G4dA==
-X-Forwarded-Encrypted: i=1; AJvYcCUenB3hVk6xUIbfNQ/O3pEPvq6w0IEBWR6ElahFcziSpkxoayE58tAfMX4YpA/YJ4HKYtp3NjM4gg==@kvack.org
-X-Gm-Message-State: AOJu0YxKFAeNQVoDnAYtILI12xZ2xb/1suWV1y7XBwW8zwsVWZQCqJJs
-	KO/1WPpksTsO8TxohJQcg/49+UhYn8eqWhjed3xXj7iKlQ6xXe7Gy0zjzldxsUvDYiphYu/Fuq9
-	Y1hBToljeA18yCFA5VA==
-X-Received: from wmpy3.prod.google.com ([2002:a05:600c:3403:b0:475:d804:bfd2])
+        bh=8XGtH7eRIWG3NpNTBCWRXdsIlOUMi+HesazDDnaKxAg=;
+        b=vsXHxlsfSBtZM2k4o9/5v5QT59NVWYoZErdHBQfAbBDF6x0cJzxOdbFrWvWTaYDHnx
+         cCvhUlZwnStzR5XFzOmliIImoUBvbS6Hpg6/au7prYFCtZ3gnOcUJ+Z27VVJj140zEbY
+         iubjUJUDo+X5Osh16L4gjN94+Sten8G78EmMSzQqoF/Z10X9GBdC70nL9SDe4ENKjbEt
+         x4mzctQbQHjUUoSJgqKCduO4MYzLfG1mT6NUrkGK6FKpUaJrRXpx7LrAmphEJUt8vRBx
+         zWnrHYGmcNlorRicYnJpEfwtjHqFmSdkPOFGjtMiISV0eYDuvTHBvCGtcvTxnelVYciS
+         T5Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ0Ynjoby8KcanTw063yEANm9e/lI19Do/1mjkGMnRem/rtO+Vwp8LjAZQoA7jiDwsHlKzSCYPLg==@kvack.org
+X-Gm-Message-State: AOJu0YzB/W1J9+OnHHRDmcZNDmv1cYrrRDqJJ5z/pKhAcL3VA7DK4SF8
+	tMRAzOBaGKvu8g4l/tQ27Cn50k+VvD8+R+vGn5Em+zWf5zNK0YvJGIq8HO0gP84tReybQTKAgGJ
+	z9Qhsm66I4aGT153Isw==
+X-Received: from wmlz25.prod.google.com ([2002:a05:600c:2219:b0:47e:e02a:29f9])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b56:b0:477:79f8:daa8 with SMTP id 5b1f17b1804b1-4801e34307emr47609855e9.17.1768578408586;
- Fri, 16 Jan 2026 07:46:48 -0800 (PST)
-Date: Fri, 16 Jan 2026 15:46:36 +0000
+ 2002:a05:600c:6099:b0:477:7b16:5fb1 with SMTP id 5b1f17b1804b1-48024c96d6fmr18214815e9.7.1768578409946;
+ Fri, 16 Jan 2026 07:46:49 -0800 (PST)
+Date: Fri, 16 Jan 2026 15:46:37 +0000
 In-Reply-To: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
 Mime-Version: 1.0
 References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8262; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=qrwQQ5xsRj1H/N0Lbw6W36heDLQuKhlXvlReIJHGg14=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpal1mDrDeKeyvaU29qIbnCvyLx3rDZRhNGy+hR
- OG3G3eqsleJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaWpdZgAKCRAEWL7uWMY5
- Rm8+D/9n64VsnGt3hO31FzuNqa+W36tkyfYCTyC6MMFPCvX+o5hhbogdCWENrBQnnikEDar72kY
- BMtRrpL6uZZl9vBs1IKaoZZHlST/s4YZ/8V7G69kMwpC8+t2jel+1DbyxM72TQtHzbU1RKfBJzm
- WLtAbM90kXzh2Znzx0FUTbpJmiBPEHT42eG1waXGomyXKzLHv+BmiHZ8oJi/+PBtZgtUSWuZXEu
- s6rB0zy6e856mNjXaxtZyrt/P73f5gTTv2bf7Amh6W1DimBQUCf64rlD7pNSnQVFxu6MDTOeRYB
- HZjXZMeESXjfHN5Xi0Fb7ZSL7PIfGfbuYxDe90xome9wKcVmFtQxBbJUeh3JU+8jc+GPK1VSRqP
- EWQJkAZkePabVCxmu9YQ2VdgzkQHPHhc7NL/gS/H65CPow+piI7sL4u6nBD07A517WJmP+RZ28I
- qryZA/ge8Kfmr4w4EzrvLQsYvWezu9C8yWROxA1khFfolzpI4U3LZFUPKyGsINOU6dUC6NdsNYH
- ceCn6b1HN7Omu9q9k/QV3kmCBNsba35VPBLcrOzgdS3zDx+nv7fBbvQXt5vbsbt42XigNR4HlkK
- //MALI3yvqVBJ9y3oy4UUHgToasWCPUQvdsaw63w1pUo3uk11/y3tubvt9Lcl+5gdMt8EFUFMKD HQFt5FCcA2hhXXg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2699; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=k6qM4owknwmZ0WB40LW8lN6xxPZevEl5Zk/TWP4cnbg=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpal1mlwNdQHuRPBnDEkbjpMyIXbDK8SMRSGlpp
+ bXnMzHOe7KJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaWpdZgAKCRAEWL7uWMY5
+ RmVgD/4mrfBYDwKDTh846tUygrVVBpPGrwR+pu3KEcaHS9S78rcPTu0xCPHY9Ylnb36FvqkeRQc
+ i0plU0JogkIjXeS2MZOwaSS9qf9UJ9TQ6QbLm8tDYn60m+RsMzhSQBwxGV3NQJCs7BREt/RUeCC
+ vXZPgmd+AidlxjiKE3/JinBtZvRX1ueXFTu0Jcb0l2dy34EWKNI5w67IdP9WwrvwuCDv64M6oQZ
+ 2CiBVwM4kg6OMDm1eW6JGRKJAorC/MTCo4ZvA5WI7xD01o27uQQNEjVz8hJYpY7aC4kWhWPv/SY
+ h0JJ8QFnK/4PGvCJYY8b262ZCD+cp7Vie74YvFq+g99oNsvk+mtbVRIMETJjmuMpbUvs2v4ocz1
+ 8pQcNFUp9MfPINoTOZHt7Pn2R/VTIDqng5id7dpFmwJasygE46pPliliNf57woIYHmhDQkLH6Hc
+ ZqmBVClr7yQoFjtP7sbkK8sFNIeZhVSHGkN7rkxH4TmOCp3MUumlf6qZH8npTt9SYmV/IzhmzaN
+ jQLPNRHRxbxx7HMj7eb/V0AhQVQK98Nw5FB0JhhySTtJqU/36B0oWZYiisLbvb9pe4e9rjHZWWj
+ aTdpPHe6XJhq80yU50gMk72HkHc/sDA+xke8/t3BEpQ/9Et1c0C1OQ27f1Q4I89sIDYzSJgTYU4 7v8e4h7qDx1dlyw==
 X-Mailer: b4 0.14.2
-Message-ID: <20260116-rcu-box-v1-1-38ebfbcd53f0@google.com>
-Subject: [PATCH RFC 1/2] rust: rcu: add RcuBox type
+Message-ID: <20260116-rcu-box-v1-2-38ebfbcd53f0@google.com>
+Subject: [PATCH RFC 2/2] rust: maple_tree: add load_rcu()
 From: Alice Ryhl <aliceryhl@google.com>
 To: "Paul E. McKenney" <paulmck@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>
@@ -118,13 +118,13 @@ Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Stat-Signature: q4tw67kq9jodh99ick5fp8tfa5ry8ykz
-X-Rspamd-Queue-Id: ED91A1C0002
+X-Stat-Signature: szw9imprh9o6bi3ot98s37eyy6w5ku9e
+X-Rspamd-Queue-Id: 83C6E20016
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1768578409-473110
-X-HE-Meta: U2FsdGVkX19sT3S7UDf2jSunoW7x47ylS1t+NgjQgmzPR29wh2fNnm3MGRvQi+wPOzd4V0h+RH7qVWCEpleBg5gWZR4VW8InceG4fv2x/WyseoWy4PtXINmMszqgd3qtj7rKg8fm5/KxYG54boE2PZcGixiBTmL2X/EYOZunVce0oZpdW5p2yOummvCOnwCVfHdxSIMDsE0EZU3efRvYPh0SdgmpqdQIZd1oKW+S7mcp55TCyKQE+gUcKpp0Lch1Wr60vOufGr+/gaMSt7jR+NoOioyfepkxGl8I8zcIMEvVhD/UCTTReZPMRNxf9rlqSJI1lhmQHrTgUqrYvcptIBLZ/wup9965lhs3Dd9znB2j1AtaS2FDDtnZvdQsyGMobPHyGwTeKa9RO21OtI2pokh2Q096XNhYIZBeijl340CL6mkyrfxe1tGyTIsOiGqL2oU1bXKJb6mzs0wk6vk+R/15kWtOWLs7oXz3VopVvBTNOO/ibnb2ypd9vqFQtbPJBusSHoLL3mWZFsWH8Ouy0IVpfXWGV6UX0FS/RFLXibFKsT3A6s+gbQ7hf5Csi4Qz8jdHOaLhdOKHpg7s6+Fq5Jkd9tgfIxmleK6fLlWEtL5iRv/ZSwHe6Z9g8VKeJ3OYARyFcVJ2S4p63eh0LUb45wg3BGWB11EXzkEqd4+82uLFQ19Vxj1TMHFsIf3wBLWyTKv94olQP7NEW47HJdvX4HFZAEn0k+d9b99VLi/dtEo38OilzNgn9VqDuxZzeNFZodB33ivl8kgOSZoQsYfCGrg71mhzgx7e4WX+Thf2f1a8+sg6yQbrKl0IrjCWiES61o5nohQtQhICXkShIPKez8zSgcb43mGqXDsyjp2iil4XMtMVbfyfxhytzp7q25oBXyS6T8Vgj5T81RVG2jxiE9CZjKWG4gdoqpHfbKrAjNX/F89AjBXrcQ+5WfsSWlqnicdJHlr57u74J5iGrpg
- 9PCegOBB
- H7Zr68l5/f13o65oNfJQ48Cg5nfDx6YYavZGJjGDeUJUB2cW30t8DmIa4PbcgoYueFsDXMOwXqEti33Mv6ZwDMC+EZJaUxiF3XUqKw4c9GDPYLSOzyVAPfyFQNto0muQJnlOwkBZAWFUwvw2kwIAOpwsdINIi0UCdd2FvxQviZLFQsXrnK8TJ+pYhq3oDRazPxSf4g6r4Ttvl90RTli1lA0KJsJtJv6pd560h3yf160hOhzrfs1xg+2t+RM/oKOM25d+70vMNOtYNrmEdh9r/D+Cmy+nJfrtS3M2YA1+7OwqtBtechusmRF36OpnfPbsQ1rSs1PHbKGsN41Az5O/qabb6eWVVnBdmqy5ff5Av/O+ehJ4iBukuQFdoVqWITuuO45Ofy76XSfEV+UtU/avw9ii3V5w88xiAXrtWep0amoSRzzgbDW65KBgNGq928k/z2NUfA9SZl9JdFEaMYJbB/xmGG6zuFmzigLZL5Rffk8uzzeOn2UP3MuYM7y2Jw04vAVpbERZEMiI7zESC+LFkvc+zo4AtbHqTihrDETKzo9UMiiz2BWCM/J6YwtCLItzhpGW4z+xr5qTFzahvhcsBzG3jenG3pM5Vg9NmRwukYEHHdwnsKxSjkDFDpIeuNJ1camCmC5Al01IUnyc=
+X-HE-Tag: 1768578411-53133
+X-HE-Meta: U2FsdGVkX19EB6XyadnF5FOWAGCuSK6SelZNtsjEyqtNcxGbinLbytgcVUnc+kpu+CNAAW00xeMTiVDW/ePVkh3D3calNhxpO0uiB04ZlOuIa4fqmXHsj3IkVKaq0fp2ZcuwzEFFSIIcSwjP1c78MDFA/PdZWyeooXXrb5Me46Ayj6OAycoJyOyOKLhnYbGzlf5PyXGNFQFXUfJHBMQ8XPzPn2BWHPRBj0UZQoOD+84Te1+kxpkZ9mSZQUS1ZbB1C5S/UEJrpaF/AI381hnBXGwH/HaUZK1K4Wtx22A7LggQxPsqn8zcdLxkDUw9Y08XFuklplLWV2Z3CqrNJVyXOSQMbEMcimCPaPwBSYM5TvNhaJlNds80LJdK5KIFqrYtw4ULti8dPpbplypsvid54cQwO9HHyYRKWdeoA/yfW1+uBKNs2fcMJzBz6PR+wnXz/U8959VPTT4kdpF4djjIENp5RokMnwMVF2mwDVWc+pIdSTz7yqe6yukvF1oxueMNiA3kvquvynwflVYSMGRspXgwB7zxLlc5Qa/+qWU/ejchEE9Mrd0IKs3S9Ub6Ri/z/P1rVjXby55r03u3Rr41JHi1OdZpyxejXpLAlBkhxvfCuONC9VADp0nBLeSfAXrx/itduoYVzZV+jEu4bNKhPBLNyKF0xPPV+uVU2aBNH+Ux13GNUP9qZnrmKCIRv1IwrJTJ5eobOkgDcLHs97OyZbKg3a84LPvlu/h2kCEzbQwmwt8h1Vv4wKpqPW6SdNyGYAvXLWNGtas0JhltxFPm38s7LeiccB4uoYLYrcUDKms/9czrPTv8jD7zneC3EFVLmZZ4xiz1UEL4RIrDiyBK79KccOGebxstJMISMCUxHv6keusJDAc6Lv9IANchbmfKUPKR20Ej/qMDwRBz1QKZN3yrRo7dn6TbQkNHz6p8dx5uleHZj3JlTy/eVJZ0I+2j7PlxbFck0YElEC/j0ig
+ 0O1FQ72d
+ jFpDTxuQD5UmNNLlgkFF+XqK/fODzLWBR59R7GLLWZ/QsgxD6GDZgQmbCM2/KBB0QN2XNFmcOjA4lLC9pXhQDhUPGYrjt9U5na29HhyD4BBnixuSyN9sDoqglmBbosJcHlau1eZI1r7LGZdspbbYjGWTpiJ/XhIngd4dGnxrudxlkU+ai2U2t2FFLjXCkhmKp8aggaRUEYpRYkETi5yWUuEVaKRRPcT2BY6DIz7FBYQI4F5ToeFa6JJEkhupiXX8G/e/JVA62S3K4xY3UlkNyVZ1tRRRIaKQALhv5HYvnKYLqDDe2cWVzi3VGqU6gt6XK+PFRSnqfCj18qOrwNXEsFJuieXI+WlOmhgmjVY6Ph9QM4s0QctekpPwKknXnTDZ6DLOFY+UxzWPW3q6+b0LbxHgY6MyhLeoefHBVNTP68Bc+qg3cA+4t2N8d35jI9Ftxkk6jDdXC5hy5n3Jl1UhcGQu+j17KfG51f44b0wHS9vJa5UgY3JYUyigYiOYU4zfgEURTO/hC851qQ4g4nTVfGNQSYpoBHPVJA2nUL3BXQCnSBAR5qjY8l6lkb7BYXsgcKrKC8uYiGOcRUGngFub1MrkuImsmtQ4iznWW7iN5gctS3kmzUUtoyQuZ7uHQpd2oUWYBrJ1sj1zthTUSKlfUTor2Ij88e3YfsjtPfz7YDjM3QpWP2EP2OoQXvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,228 +133,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This adds an RcuBox container, which is like KBox except that the value
-is freed with kfree_rcu.
-
-To allow containers to rely on the rcu properties of RcuBox, an
-extension of ForeignOwnable is added.
+Now that we have a concept of rcu-safe containers, we may add a
+load_rcu() method to MapleTree that does not take the spinlock.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/sync/rcu.rs         |  31 ++++++++-
- rust/kernel/sync/rcu/rcu_box.rs | 145 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 176 insertions(+), 1 deletion(-)
+ rust/kernel/maple_tree.rs | 52 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index a067038b4b422b4256f4a2b75fe644d47e6e82c8..8d4b90383cd8d8ca7692586d13189b71c6dbab3e 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -75,6 +75,7 @@
- #include <linux/property.h>
- #include <linux/pwm.h>
- #include <linux/random.h>
-+#include <linux/rcupdate.h>
- #include <linux/refcount.h>
- #include <linux/regulator/consumer.h>
- #include <linux/sched.h>
-diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-index a32bef6e490b0eebdb93f2636cf10e177036a6a9..7234fe3e79ee920172c5094d2b0e46147e1d8313 100644
---- a/rust/kernel/sync/rcu.rs
-+++ b/rust/kernel/sync/rcu.rs
-@@ -4,7 +4,16 @@
- //!
- //! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdate.h)
+diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+index e72eec56bf5772ada09239f47748cd649212d8b0..c466a9fe0a9a059ad5cff131085d610b76050420 100644
+--- a/rust/kernel/maple_tree.rs
++++ b/rust/kernel/maple_tree.rs
+@@ -16,6 +16,10 @@
+     alloc::Flags,
+     error::to_result,
+     prelude::*,
++    sync::rcu::{
++        self,
++        ForeignOwnableRcu, //
++    },
+     types::{ForeignOwnable, Opaque},
+ };
  
--use crate::{bindings, types::NotThreadSafe};
-+use crate::{
-+    bindings,
-+    types::{
-+        ForeignOwnable,
-+        NotThreadSafe, //
-+    }, //
-+};
-+
-+mod rcu_box;
-+pub use self::rcu_box::RcuBox;
+@@ -233,6 +237,54 @@ pub fn erase(&self, index: usize) -> Option<T> {
+         unsafe { T::try_from_foreign(ret) }
+     }
  
- /// Evidence that the RCU read side lock is held on the current thread/CPU.
- ///
-@@ -50,3 +59,23 @@ fn drop(&mut self) {
- pub fn read_lock() -> Guard {
-     Guard::new()
- }
-+
-+/// Declares that a pointer type is rcu safe.
-+pub trait ForeignOwnableRcu: ForeignOwnable {
-+    /// Type used to immutably borrow an rcu-safe value that is currently foreign-owned.
-+    type RcuBorrowed<'a>;
-+
-+    /// Borrows a foreign-owned object immutably for an rcu grace period.
++    /// Load the value at the given index with rcu.
 +    ///
-+    /// This method provides a way to access a foreign-owned rcu-safe value from Rust immutably.
++    /// # Examples
 +    ///
-+    /// # Safety
++    /// Read the value under an rcu read lock. Even if the value is removed, it remains accessible
++    /// for one rcu grace period.
 +    ///
-+    /// * The provided pointer must have been returned by a previous call to [`into_foreign`].
-+    /// * If [`from_foreign`] is called, then `'a` must not end after the call to `from_foreign`
-+    ///   plus one rcu grace period.
++    /// ```ignore
++    /// use kernel::{
++    ///     maple_tree::MapleTree,
++    ///     sync::rcu::{self, RcuBox},
++    /// };
 +    ///
-+    /// [`into_foreign`]: ForeignOwnable::into_foreign
-+    /// [`from_foreign`]: ForeignOwnable::from_foreign
-+    unsafe fn rcu_borrow<'a>(ptr: *mut ffi::c_void) -> Self::RcuBorrowed<'a>;
-+}
-diff --git a/rust/kernel/sync/rcu/rcu_box.rs b/rust/kernel/sync/rcu/rcu_box.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..2508fdb609ecc12a85a1830a84f58ddaf962d1ec
---- /dev/null
-+++ b/rust/kernel/sync/rcu/rcu_box.rs
-@@ -0,0 +1,145 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2026 Google LLC.
-+
-+//! Provides the `RcuBox` type for Rust allocations that live for a grace period.
-+
-+use core::{ops::Deref, ptr::NonNull};
-+
-+use kernel::{
-+    alloc::{self, AllocError},
-+    bindings,
-+    ffi::c_void,
-+    prelude::*,
-+    sync::rcu::{ForeignOwnableRcu, Guard},
-+    types::ForeignOwnable,
-+};
-+
-+/// A box that is freed with rcu.
-+///
-+/// The value must be `Send`, as rcu may drop it on another thread.
-+///
-+/// # Invariants
-+///
-+/// * The pointer is valid and references a pinned `RcuBoxInner<T>` allocated with `kmalloc`.
-+/// * This `RcuBox` holds exclusive permissions to rcu free the allocation.
-+pub struct RcuBox<T: Send>(NonNull<RcuBoxInner<T>>);
-+
-+struct RcuBoxInner<T> {
-+    value: T,
-+    rcu_head: bindings::callback_head,
-+}
-+
-+// Note that `T: Sync` is required since when moving an `RcuBox<T>`, the previous owner may still
-+// access `&T` for one grace period.
-+//
-+// SAFETY: Ownership of the `RcuBox<T>` allows for `&T` and dropping the `T`, so `T: Send + Sync`
-+// implies `RcuBox<T>: Send`.
-+unsafe impl<T: Send + Sync> Send for RcuBox<T> {}
-+
-+// SAFETY: `&RcuBox<T>` allows for no operations other than those permitted by `&T`, so `T: Sync`
-+// implies `RcuBox<T>: Sync`.
-+unsafe impl<T: Send + Sync> Sync for RcuBox<T> {}
-+
-+impl<T: Send> RcuBox<T> {
-+    /// Create a new `RcuBox`.
-+    pub fn new(x: T, flags: alloc::Flags) -> Result<Self, AllocError> {
-+        let b = KBox::new(
-+            RcuBoxInner {
-+                value: x,
-+                rcu_head: Default::default(),
-+            },
-+            flags,
-+        )?;
-+
-+        // INVARIANT:
-+        // * The pointer contains a valid `RcuBoxInner` allocated with `kmalloc`.
-+        // * We just allocated it, so we own free permissions.
-+        Ok(RcuBox(NonNull::from(KBox::leak(b))))
-+    }
-+
-+    /// Access the value for a grace period.
-+    pub fn with_rcu<'rcu>(&self, _read_guard: &'rcu Guard) -> &'rcu T {
-+        // SAFETY: The `RcuBox` has not been dropped yet, so the value is valid for at least one
-+        // grace period.
-+        unsafe { &(*self.0.as_ptr()).value }
-+    }
-+}
-+
-+impl<T: Send> Deref for RcuBox<T> {
-+    type Target = T;
-+    fn deref(&self) -> &T {
-+        // SAFETY: While the `RcuBox<T>` exists, the value remains valid.
-+        unsafe { &(*self.0.as_ptr()).value }
-+    }
-+}
-+
-+// SAFETY:
-+// * The `RcuBoxInner<T>` was allocated with `kmalloc`.
-+// * `NonNull::as_ptr` returns a non-null pointer.
-+unsafe impl<T: Send + 'static> ForeignOwnable for RcuBox<T> {
-+    const FOREIGN_ALIGN: usize = <KBox<RcuBoxInner<T>> as ForeignOwnable>::FOREIGN_ALIGN;
-+
-+    type Borrowed<'a> = &'a T;
-+    type BorrowedMut<'a> = &'a T;
-+
-+    fn into_foreign(self) -> *mut c_void {
-+        self.0.as_ptr().cast()
-+    }
-+
-+    unsafe fn from_foreign(ptr: *mut c_void) -> Self {
-+        // INVARIANT: Pointer returned by `into_foreign` carries same invariants as `RcuBox<T>`.
-+        // SAFETY: `into_foreign` never returns a null pointer.
-+        Self(unsafe { NonNull::new_unchecked(ptr.cast()) })
-+    }
-+
-+    unsafe fn borrow<'a>(ptr: *mut c_void) -> &'a T {
-+        // SAFETY: Caller ensures that `'a` is short enough.
-+        unsafe { &(*ptr.cast::<RcuBoxInner<T>>()).value }
-+    }
-+
-+    unsafe fn borrow_mut<'a>(ptr: *mut c_void) -> &'a T {
-+        // SAFETY: `borrow_mut` has strictly stronger preconditions than `borrow`.
-+        unsafe { Self::borrow(ptr) }
-+    }
-+}
-+
-+impl<T: Send + 'static> ForeignOwnableRcu for RcuBox<T> {
-+    type RcuBorrowed<'a> = &'a T;
-+
-+    unsafe fn rcu_borrow<'a>(ptr: *mut c_void) -> &'a T {
-+        // SAFETY: `RcuBox::drop` can only run after `from_foreign` is called, and the value is
-+        // valid until `RcuBox::drop` plus one grace period.
-+        unsafe { &(*ptr.cast::<RcuBoxInner<T>>()).value }
-+    }
-+}
-+
-+impl<T: Send> Drop for RcuBox<T> {
-+    fn drop(&mut self) {
-+        // SAFETY: The `rcu_head` field is in-bounds of a valid allocation.
-+        let rcu_head = unsafe { &raw mut (*self.0.as_ptr()).rcu_head };
-+        if core::mem::needs_drop::<T>() {
-+            // SAFETY: `rcu_head` is the `rcu_head` field of `RcuBoxInner<T>`. All users will be
-+            // gone in an rcu grace period. This is the destructor, so we may pass ownership of the
-+            // allocation.
-+            unsafe { bindings::call_rcu(rcu_head, Some(drop_rcu_box::<T>)) };
-+        } else {
-+            // SAFETY: All users will be gone in an rcu grace period.
-+            unsafe { bindings::kvfree_call_rcu(rcu_head, self.0.as_ptr().cast()) };
++    /// let tree = KBox::pin_init(MapleTree::<RcuBox<i32>>::new(), GFP_KERNEL)?;
++    ///
++    /// let ten = RcuBox::new(10, GFP_KERNEL)?;
++    /// tree.insert(100, ten, GFP_KERNEL)?;
++    ///
++    /// let rcu_read_lock = rcu::Guard::new();
++    /// let ten = tree.load_rcu(100, &rcu_read_lock);
++    /// assert_eq!(ten, Some(&10));
++    ///
++    /// // Even if the value gets removed, we may continue to access it for one rcu grace period.
++    /// tree.erase(100);
++    /// assert_eq!(ten, Some(&10));
++    /// # Ok::<_, Error>(())
++    /// ```
++    #[inline]
++    pub fn load_rcu<'rcu>(
++        &self,
++        index: usize,
++        _rcu: &'rcu rcu::Guard,
++    ) -> Option<T::RcuBorrowed<'rcu>>
++    where
++        T: ForeignOwnableRcu,
++    {
++        // SAFETY: `self.tree` contains a valid maple tree.
++        let ret = unsafe { bindings::mtree_load(self.tree.get(), index) };
++        if ret.is_null() {
++            return None;
 +        }
++
++        // SAFETY: If the pointer is not null, then it references a valid instance of `T`. It is
++        // safe to borrow the instance for 'rcu because the signature of this function enforces that
++        // the borrow does not outlive an rcu grace period.
++        Some(unsafe { T::rcu_borrow(ret) })
 +    }
-+}
 +
-+/// Free this `RcuBoxInner<T>`.
-+///
-+/// # Safety
-+///
-+/// `head` references the `rcu_head` field of an `RcuBoxInner<T>` that has no references to it.
-+/// Ownership of the `KBox<RcuBoxInner<T>>` must be passed.
-+unsafe extern "C" fn drop_rcu_box<T>(head: *mut bindings::callback_head) {
-+    // SAFETY: Caller provides a pointer to the `rcu_head` field of a `RcuBoxInner<T>`.
-+    let box_inner = unsafe { crate::container_of!(head, RcuBoxInner<T>, rcu_head) };
-+
-+    // SAFETY: Caller ensures exclusive access and passed ownership.
-+    drop(unsafe { KBox::from_raw(box_inner) });
-+}
+     /// Lock the internal spinlock.
+     #[inline]
+     pub fn lock(&self) -> MapleGuard<'_, T> {
 
 -- 
 2.52.0.457.g6b5491de43-goog
