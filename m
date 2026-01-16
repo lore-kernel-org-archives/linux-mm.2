@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88E60D4898A
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 11:14:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B76EBD47CD0
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 11:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF7AB6B008A; Fri, 16 Jan 2026 06:14:13 -0500 (EST)
+	id 2927B6B008C; Fri, 16 Jan 2026 06:14:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDF3B6B008C; Fri, 16 Jan 2026 06:14:13 -0500 (EST)
+	id 25A8B6B0092; Fri, 16 Jan 2026 06:14:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF9496B0092; Fri, 16 Jan 2026 06:14:13 -0500 (EST)
+	id 1866C6B0093; Fri, 16 Jan 2026 06:14:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D22836B008A
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:14:13 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 98B0F8C0EC
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:14:13 +0000 (UTC)
-X-FDA: 84337567986.02.B566EF0
+	by kanga.kvack.org (Postfix) with ESMTP id 05D136B008C
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 06:14:18 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6F11C22DB
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:14:17 +0000 (UTC)
+X-FDA: 84337568154.28.437B394
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 984AE160004
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:14:11 +0000 (UTC)
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8E12B160005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:14:15 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="D7zaK5/n";
+	dkim=pass header.d=intel.com header.s=Intel header.b=Yb0vyGR4;
 	spf=pass (imf08.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768562051;
+	s=arc-20220608; t=1768562055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g0TmbaAH5e7FsNHJuYWRRTqG0y3iHCPX31T+nmFz/SM=;
-	b=UfBcAAT/hk7m9bbTx0iuestG1U8y0lmaF7GBwkyTEdziRkx520ThJcPcGyNEPlFr/r4rnU
-	31kNOo483DZKhmjP7CEx2twfDh2ZU6kbtM+RoSCH6UOL4d4zQzks5YcEb3laaU/XbqExcY
-	gtrGDYLSmE+hGK1mo3O5lkxj4RtFFUg=
+	bh=ay5t/wfC50cbWZ6o9tYkWvjAyTZ9Cjpk2YYswrTglT0=;
+	b=vqx3RcdQpSWcFhL+Fe8noH2J7NPN2GaJhBe1GqJRpMiRt8MNWd0Lb7T6szwpU+BbylSl2w
+	Fqmze03v8ZHxj8fqXycl1pYFLfgyAN0EIQYo1YjRXBjsu+JQcyEYj5hqQrLpqFShxC/Rst
+	XLcUxw3YRNPtTya20Sm2rGWohIA7Mgs=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="D7zaK5/n";
+	dkim=pass header.d=intel.com header.s=Intel header.b=Yb0vyGR4;
 	spf=pass (imf08.hostedemail.com: domain of francois.dugast@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768562051; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768562055; a=rsa-sha256;
 	cv=none;
-	b=EnwM10REmYDJi/6cYmrgQ9idVW+e5LhKHJu706D3hewq42qvWNIJsoUNKk0H5MfHVpz3g/
-	MA2SC3+q6QCxNedtcIYqkUCd1rxMNLD7XfHfcMsjm5ahCXJ0yYYsHfJn8nLyncDPRQsL/v
-	d71xRTBOCFxECzEdszEzCZKJLlcPIpI=
+	b=58EOD+sw3MmptYVMsAYis1Gb6CdNFag4MCkoS7ZTOwrevwQ7orXL2uW1i+7qLBP6AsUdui
+	a3uxs5lh7xNvrAeAoAhwNrKvhbPbCkWyhZCbgadnGOIE061VLP1cG/ShHJX5W8zLMt0+qT
+	MCOD9WYczdD3i/kRtm1ciGC2u3mHe1c=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768562052; x=1800098052;
+  t=1768562056; x=1800098056;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ocrp/eylFW5UQLpU9JLpH8QHEGjvevQsJMehADaKSBQ=;
-  b=D7zaK5/ncafpzBRa6ESgeXPwbweI8njTMdvCjMJFfakzjwIzaJ10uYIC
-   Gopw2RCsGVLcIq9pwzng2A+0R9nS+mKqQhQxDbHePxPMFrz1sa/4K2A+z
-   bx4wa1Dd1fd2K2B8YI+NtQJrNWvKJJFe1GE3omD7KKWIP61VDYHcP/J4c
-   cB4BntUVXzmjwvZgN1cr1jdbABts+iG4ah6n5bdL0QI6qkRjb+7EpDh8d
-   FY8FFXUcMCmYaeYD59qOCfzHg4497IoX2rLwoPmjva+yfGikw1vE3tMPb
-   HlB7GxUKmUodKoNsTySfjFUYNmLOlRNJ5VigYLZvThrBsx4bxbJF/aZof
-   A==;
-X-CSE-ConnectionGUID: S5+fROytRbKOTvWk15ob2Q==
-X-CSE-MsgGUID: ghKS7uFlQYypLfOGpBJy3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="69930664"
+  bh=0bXpiyD5D1p0BHaDpVOZ3vCIiWJnAz1jNbixl6MsiwI=;
+  b=Yb0vyGR4wSnlvVW9M3HKEeBP42/kljrlCREkXDndsvTXhPvLpCH87d32
+   SFHu8ibagIamoKWuKnYUHrAC1QKsx8Ok023sk6ULtxLw6ajiT5T7L/CHm
+   S4IiSfjPYwL4RRDu0Jg4Fd58uM2tfqg+7a9I4PXMWVt+qV8sQlq1AOvdr
+   5nCBt1FiTHknYDdKJr82HGW9+/A7IWLMoxkUb4PvHOt5XDo+CVcoXKXoB
+   dKCjYlHKQz7p3HpesB9njYWwV55/Vd+g/u+JNRlEi1Waq9wkiapITd1Jv
+   hf+IK5KErigGL5ovMquEEY7CphTuZ14NQWDK6byJ8te3OoD+xdcwfzdl/
+   w==;
+X-CSE-ConnectionGUID: Ryc+uHvJSzOaTEaMbf9t1g==
+X-CSE-MsgGUID: MLTy0odTRU6jqF9yZGGI2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="69930676"
 X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
-   d="scan'208";a="69930664"
+   d="scan'208";a="69930676"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 03:14:12 -0800
-X-CSE-ConnectionGUID: BW0V33PURSeOncgvxmVpDw==
-X-CSE-MsgGUID: DpQ/PilxQ/aDw4Nqd70PrQ==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 03:14:16 -0800
+X-CSE-ConnectionGUID: kdoUG+RKTnydb50m5cMYlg==
+X-CSE-MsgGUID: wZs93xzgRiaqMSgQu8kekA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
-   d="scan'208";a="209713445"
+   d="scan'208";a="209713464"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO fdugast-desk.home) ([10.245.245.100])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 03:14:08 -0800
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 03:14:12 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: intel-xe@lists.freedesktop.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -92,22 +92,22 @@ Cc: dri-devel@lists.freedesktop.org,
 	Balbir Singh <balbirs@nvidia.com>,
 	linux-mm@kvack.org,
 	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH v6 2/5] drm/pagemap: Unlock and put folios when possible
-Date: Fri, 16 Jan 2026 12:10:17 +0100
-Message-ID: <20260116111325.1736137-3-francois.dugast@intel.com>
+Subject: [PATCH v6 3/5] drm/pagemap: Add helper to access zone_device_data
+Date: Fri, 16 Jan 2026 12:10:18 +0100
+Message-ID: <20260116111325.1736137-4-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260116111325.1736137-1-francois.dugast@intel.com>
 References: <20260116111325.1736137-1-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: t7at5h5787bxpri8d16pxbw7aa9da678
+X-Stat-Signature: ww1mt968e7om76thfs5j5euryy8fr4q1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 984AE160004
+X-Rspamd-Queue-Id: 8E12B160005
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1768562051-587212
-X-HE-Meta: U2FsdGVkX1/qKKn/pBWBwFMnk9E9rc8ITeLg2na5FHBZNHNRMZ6Juv34/Ib3us0p9Ac2jtHWkiJkwY6f15hXT6s7bOUakUJW65pCBvjr+A2lMU8bIP1SU0Vwl7SoCbB/Fd1/A+76+G8MVcfqdoWmM3xT7IMS80zB2qxTFJk14vUABUvXCcxyCfh127F5quIdnb3r4925uwOLTzqzR/2V7E5rvC0u+AzN4L0Bbhu+Jn+e8t8T8M80rmD2RVFdqZIzgyqG4Gj68N3lrV6VHawDn7MsIFSfZzlfaKg79zViRH4yTWw49Q3gV4WMhPMe0SVxEhqt5t5egAYUhqPJpjmD24IQMPpLkD2H4XWzbHHEOIJLp3B4A+N0DekAtarKuddYTzHVRnXZxDthaTcDHrK7sWU2weOeRn6e6k3nKieWapJOxLzP5hJ/mcw8sYTGuDrxYMXvHJFKtI6brQK5JA1GWMlw+QyDhO216YK2+gRVtBQdwApPdWU7MT1vauAg6/GZbmGdwWT0mhrZa+Tm1i6jQKc2ZfnD9dChnvMox2hB+jD3rGlE7nrC9G7ZhW69Pg4DCVhkR43so8Tzwc7aemPzyqYQ+uVGKTl4MLtyb9Cjrxg8fVfFzoELw884jjAuDotMYj/TxbCN+1nf+SUUVO/yGKVtFPMFb1O3nm1OypL5p/AMIs9Boy4DfiHGPk6n/UHKUTje1D9LZ9sd6j925uVc99m87lgDdK/Q1r/K2t/9i5RG2UkNnFvNECaJGE5y3T6MDBrVXlE8kiYPHSBxeDIoC+5/gjGz1ZoKqqrB5B8hX+EzoqEZV4FIwFJQHanCT4Q5EElJLhJGOabn5f1D723NvU9rUOedWGYnA4+A4Ods8jDyfPP54L0VFET8uBVSmm4Jq3jDt0O0Aj4SZ51JYPVdFucvNqrjF1ptrI46VvWunARqvSHe49RQJZ1Osc+1NG07Z2YpvZhi0E3x2OamdAy
- 4zT0kyVl
- ZAzfonqA25wwcccxYjPZB6V97gd8YBCFi/+wX4RfynPDZJY2bpxeKx9etdVyKAjjRDAUePlsXivLDszs65/H6C+rEZEOKqcF+QVwurf/su+AWHNnTzA0nTwMMzDWsCeBlHMs+DPcVxSU/TYw2oqhgsqVpr7OwuFSPdaGQ9eVI6TzIICx0Vw8EolALgAGInf6ukZB/7ktQ/cllaAnCQt8TCDRkctshhmkereGWwVan6RRDlE1vvf/n0aW6ryZmJPe7iHuTzrErCdzgrcLwdtwByqUro0qqkbRTtn8GHu5grKSSwp7ijCIfdOjxkR1yxazPAnok3S28TiFKYqzzXB2STAIprt+zEatNtSibVti7RK9rgsHx0qocAz0XG+QTGFVgQg56esTua8iNYraSyY8NjM+5L9EwkFyEyJxZjHiZZvth9tNDX/L8m4dRT2HLKp7RDOouMabdfU4lPLU=
+X-HE-Tag: 1768562055-750676
+X-HE-Meta: U2FsdGVkX197mPwv7A3FS52jOkUidfpHudmwAwG7rncPsdJCcXkTmpiVniTNjTfqxp1Uf5i88ddf0EDR+SFnsgyZKn4aQwYk1VLdHNWAzmAz+AYAz3vUk7AsbGP2+hlhwFIc/kNdrgFn6+/CyJdyUT5HgL2XY+pf90SDyhoqoWjnlAmehaTdnGZM8XDwxnQIgqtvAAZVIM/N0n/P7ZdPneqfF3t5sMj/HnxnXGDR/Rpzw1/6JKxSfxAxkEWnTQgFmAbfDLKNKioqx4vauWHLdse+wxYhbeCpQOERHw3TbzHJVXkVA1qPExNgsQDNgV/d4hyVOaV9ASAs+/nBnH2ezs24Sp2OS7JUSXsQbij1s3TnBcpIw0RtiJSmGXcBZ1Rba4OvZSs6rnxxd8J/ijwqKRMj/YCdASiEVJmIYq3UxYnpDebtpI4yKpdvl2ywSFz5jTeHAYE+j6QjyUykOwwCfvMb1s39MtaekLU4G8b8syCfoy+Xh9rnYzRfq12qdLffeCNgt9LpjKuYh9aFobcEGeg0KHVO52a+phf0peg1QktFbvUTVREPqskaBV/2L0LTPxYCatcKDSyjzu2e8D+8T/Kut2UEiujCfIJfTLGpaq2s8LEZw0LjmWBfbvVPyNgHVtyQctipwJm7ykEZ6rxfkw0rtMmHoH2FE21TPl04PepyEkLCaAoJulaM5QpayQ/lCOrLpigaqS/+NzCfSnUGw2OlVm/kXGAtn6IwXw4vRWhRplt+9kltYT+JBkZrr6XVIsqDVL0RftxkyCB65SNEBrB0nS2Wm3lsAXHuJYRw1du1mE282hwKJ8E/0OLs93OemtH6o1u83GMsAc1XeXpYEihEqoq2eImo80OwkKUgfh+T7KtYIwT2dtGY1yhPHy4mrr8643UEL3RTFPvVbXVU13qDIkodGXKj5cHSbdX6B8Zdl5OK3QXi96wtFlTamVZi3DdFEleDfb363vQDxPU
+ mmfYUR9r
+ Ufwj8QmK6xEVsJW8SUMgI0TwlHdfbROw48SQkoaKRnANYAcakWBXmcFP2VbPgq8TARCgp4pcYTNfgqSMlhnPTD7bSGzZ8gp/wQS9ulQndoqJnqc0Z29kHUoAOrtd8U9IV5cSso69TVTbOwfpogJHVtn3eZjNk8gJ+XPrpnNa86+A3VXstExSY2jiK/4QIBbHQHcDy1V47WQxXFf3sdxjaOwyPGZvGfk1X9j9DfBaL370KkvCg8FbZjqyulnj3ji3CMn/f8Hcc/6uEfpoEv3tuNylsGVRCDvwlqkvKN7wlb1KjN8xsy00cq8/S6fqdQh0TzG6li1UMpDo36nM1c7B9s9FXYxvIazhRQ0uhRbFGZHFQWNjTnwXwQPupBvH93aTiiOrwJHowxonQ3VCIcomRchB/BrWF1XV1Q/7h/Ws3fr0KK+brDWmmvkgwWowgv0XiOQ+pSl4FJmDwzeoEEHbspgIkNz+Qn7zHszi7jv2+Lb9t8bMv36YnTRNGEw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,9 +116,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If the page is part of a folio, unlock and put the whole folio at once
-instead of individual pages one after the other. This will reduce the
-amount of operations once device THP are in use.
+This new helper helps ensure all accesses to zone_device_data use the
+correct API whether the page is part of a folio or not.
+
+v2:
+- Move to drm_pagemap.h, stick to folio_zone_device_data (Matthew Brost)
+- Return struct drm_pagemap_zdd * (Matthew Brost)
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>
@@ -135,64 +138,146 @@ Cc: linux-mm@kvack.org
 Suggested-by: Matthew Brost <matthew.brost@intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
 ---
- drivers/gpu/drm/drm_pagemap.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/drm_gpusvm.c  |  7 +++++--
+ drivers/gpu/drm/drm_pagemap.c | 21 ++++++++++++---------
+ include/drm/drm_pagemap.h     | 15 +++++++++++++++
+ 3 files changed, 32 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
+index aa9a0b60e727..585d913d3d19 100644
+--- a/drivers/gpu/drm/drm_gpusvm.c
++++ b/drivers/gpu/drm/drm_gpusvm.c
+@@ -1488,12 +1488,15 @@ int drm_gpusvm_get_pages(struct drm_gpusvm *gpusvm,
+ 		order = drm_gpusvm_hmm_pfn_to_order(pfns[i], i, npages);
+ 		if (is_device_private_page(page) ||
+ 		    is_device_coherent_page(page)) {
++			struct drm_pagemap_zdd *__zdd =
++				drm_pagemap_page_zone_device_data(page);
++
+ 			if (!ctx->allow_mixed &&
+-			    zdd != page->zone_device_data && i > 0) {
++			    zdd != __zdd && i > 0) {
+ 				err = -EOPNOTSUPP;
+ 				goto err_unmap;
+ 			}
+-			zdd = page->zone_device_data;
++			zdd = __zdd;
+ 			if (pagemap != page_pgmap(page)) {
+ 				if (i > 0) {
+ 					err = -EOPNOTSUPP;
 diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-index 38eca94f01a1..8e24a2c24729 100644
+index 8e24a2c24729..61c6ca59df81 100644
 --- a/drivers/gpu/drm/drm_pagemap.c
 +++ b/drivers/gpu/drm/drm_pagemap.c
-@@ -154,15 +154,15 @@ static void drm_pagemap_zdd_put(struct drm_pagemap_zdd *zdd)
- }
+@@ -252,7 +252,7 @@ static int drm_pagemap_migrate_map_pages(struct device *dev,
+ 		order = folio_order(folio);
  
- /**
-- * drm_pagemap_migration_unlock_put_page() - Put a migration page
-- * @page: Pointer to the page to put
-+ * drm_pagemap_migration_unlock_put_folio() - Put a migration folio
-+ * @folio: Pointer to the folio to put
-  *
-- * This function unlocks and puts a page.
-+ * This function unlocks and puts a folio.
+ 		if (is_device_private_page(page)) {
+-			struct drm_pagemap_zdd *zdd = page->zone_device_data;
++			struct drm_pagemap_zdd *zdd = drm_pagemap_page_zone_device_data(page);
+ 			struct drm_pagemap *dpagemap = zdd->dpagemap;
+ 			struct drm_pagemap_addr addr;
+ 
+@@ -323,7 +323,7 @@ static void drm_pagemap_migrate_unmap_pages(struct device *dev,
+ 			goto next;
+ 
+ 		if (is_zone_device_page(page)) {
+-			struct drm_pagemap_zdd *zdd = page->zone_device_data;
++			struct drm_pagemap_zdd *zdd = drm_pagemap_page_zone_device_data(page);
+ 			struct drm_pagemap *dpagemap = zdd->dpagemap;
+ 
+ 			dpagemap->ops->device_unmap(dpagemap, dev, pagemap_addr[i]);
+@@ -611,7 +611,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 
+ 		pages[i] = NULL;
+ 		if (src_page && is_device_private_page(src_page)) {
+-			struct drm_pagemap_zdd *src_zdd = src_page->zone_device_data;
++			struct drm_pagemap_zdd *src_zdd =
++				drm_pagemap_page_zone_device_data(src_page);
+ 
+ 			if (page_pgmap(src_page) == pagemap &&
+ 			    !mdetails->can_migrate_same_pagemap) {
+@@ -733,8 +734,8 @@ static int drm_pagemap_migrate_populate_ram_pfn(struct vm_area_struct *vas,
+ 			goto next;
+ 
+ 		if (fault_page) {
+-			if (src_page->zone_device_data !=
+-			    fault_page->zone_device_data)
++			if (drm_pagemap_page_zone_device_data(src_page) !=
++			    drm_pagemap_page_zone_device_data(fault_page))
+ 				goto next;
+ 		}
+ 
+@@ -1075,7 +1076,7 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
+ 	void *buf;
+ 	int i, err = 0;
+ 
+-	zdd = page->zone_device_data;
++	zdd = drm_pagemap_page_zone_device_data(page);
+ 	if (time_before64(get_jiffies_64(), zdd->devmem_allocation->timeslice_expiration))
+ 		return 0;
+ 
+@@ -1158,7 +1159,9 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
   */
--static void drm_pagemap_migration_unlock_put_page(struct page *page)
-+static void drm_pagemap_migration_unlock_put_folio(struct folio *folio)
+ static void drm_pagemap_folio_free(struct folio *folio)
  {
--	unlock_page(page);
--	put_page(page);
-+	folio_unlock(folio);
-+	folio_put(folio);
+-	drm_pagemap_zdd_put(folio->page.zone_device_data);
++	struct page *page = folio_page(folio, 0);
++
++	drm_pagemap_zdd_put(drm_pagemap_page_zone_device_data(page));
  }
  
  /**
-@@ -177,15 +177,23 @@ static void drm_pagemap_migration_unlock_put_pages(unsigned long npages,
+@@ -1174,7 +1177,7 @@ static void drm_pagemap_folio_free(struct folio *folio)
+  */
+ static vm_fault_t drm_pagemap_migrate_to_ram(struct vm_fault *vmf)
  {
- 	unsigned long i;
+-	struct drm_pagemap_zdd *zdd = vmf->page->zone_device_data;
++	struct drm_pagemap_zdd *zdd = drm_pagemap_page_zone_device_data(vmf->page);
+ 	int err;
  
--	for (i = 0; i < npages; ++i) {
-+	for (i = 0; i < npages;) {
- 		struct page *page;
-+		struct folio *folio;
-+		unsigned int order = 0;
+ 	err = __drm_pagemap_migrate_to_ram(vmf->vma,
+@@ -1240,7 +1243,7 @@ EXPORT_SYMBOL_GPL(drm_pagemap_devmem_init);
+  */
+ struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page)
+ {
+-	struct drm_pagemap_zdd *zdd = page->zone_device_data;
++	struct drm_pagemap_zdd *zdd = drm_pagemap_page_zone_device_data(page);
  
- 		if (!migrate_pfn[i])
--			continue;
-+			goto next;
- 
- 		page = migrate_pfn_to_page(migrate_pfn[i]);
--		drm_pagemap_migration_unlock_put_page(page);
-+		folio = page_folio(page);
-+		order = folio_order(folio);
-+
-+		drm_pagemap_migration_unlock_put_folio(folio);
- 		migrate_pfn[i] = 0;
-+
-+next:
-+		i += NR_PAGES(order);
- 	}
+ 	return zdd->devmem_allocation->dpagemap;
  }
+diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
+index 46e9c58f09e0..736fb6cb7b33 100644
+--- a/include/drm/drm_pagemap.h
++++ b/include/drm/drm_pagemap.h
+@@ -4,6 +4,7 @@
  
+ #include <linux/dma-direction.h>
+ #include <linux/hmm.h>
++#include <linux/memremap.h>
+ #include <linux/types.h>
+ 
+ #define NR_PAGES(order) (1U << (order))
+@@ -359,4 +360,18 @@ int drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+ void drm_pagemap_destroy(struct drm_pagemap *dpagemap, bool is_atomic_or_reclaim);
+ 
+ int drm_pagemap_reinit(struct drm_pagemap *dpagemap);
++
++/**
++ * drm_pagemap_page_zone_device_data() - Page to zone_device_data
++ * @page: Pointer to the page
++ *
++ * Return: Page's zone_device_data
++ */
++static inline struct drm_pagemap_zdd *drm_pagemap_page_zone_device_data(struct page *page)
++{
++	struct folio *folio = page_folio(page);
++
++	return folio_zone_device_data(folio);
++}
++
+ #endif
 -- 
 2.43.0
 
