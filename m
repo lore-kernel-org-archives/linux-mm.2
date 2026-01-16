@@ -4,244 +4,266 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A012EC982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:29:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79E74C982DE
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 16:39:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12D126B0088; Fri, 16 Jan 2026 11:29:42 -0500 (EST)
+	id 8B6806B0096; Fri, 16 Jan 2026 11:39:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DBEC6B008A; Fri, 16 Jan 2026 11:29:42 -0500 (EST)
+	id 839096B0098; Fri, 16 Jan 2026 11:39:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF51E6B0092; Fri, 16 Jan 2026 11:29:41 -0500 (EST)
+	id 665506B009B; Fri, 16 Jan 2026 11:39:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA3256B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:29:41 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E6BE1ADA07
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:29:41 +0000 (UTC)
-X-FDA: 84338362962.15.53626A5
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1B8424000D
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:29:37 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=UQYR0YWQ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=mR7SZOQq;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768580978; a=rsa-sha256;
-	cv=pass;
-	b=0T+VDzsw9Rz7ILhp3gwEO/wK+NbZiOhBTJ8uLWi9kbqCcxjgRMO1/2zQHIMzEPXYC9NCQQ
-	rEBy82vIdoJi6ygzcWT6gqlC5njogi/VNbe9HswGDY9i0eFOqIsbfKjE8pJwTaQbK56Fce
-	WbFENTEcbEn+f088Ajn0oPR88siX+Zo=
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E9136B0096
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 11:39:46 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DFAC01401CA
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:39:45 +0000 (UTC)
+X-FDA: 84338388330.30.189180C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1396440010
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 16:39:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RFwIm2Pj;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf17.hostedemail.com: domain of rodrigo.vivi@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=rodrigo.vivi@intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768581582; a=rsa-sha256;
+	cv=fail;
+	b=aVZIJIy9yQDr6adH1Zti7LsvaKeg5Zne7Uog5fOsZa9nnYmpSDqG3MUIXB7u1dwoVu/455
+	hDL/GpJgBwCEihbEGM1vHh4PBS8/hQexkX8+YNL7O2OapO/fx75QbYJ0dvrG8Js2vhFe3k
+	EyIFrUi88SFOphcafi1XoX0zJNfUKaU=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=UQYR0YWQ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=mR7SZOQq;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RFwIm2Pj;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf17.hostedemail.com: domain of rodrigo.vivi@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=rodrigo.vivi@intel.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768580978;
+	s=arc-20220608; t=1768581582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wr31TpgpMpGL7AgPEOglhSL8DupVbujpqyj/H9rp0G0=;
-	b=dFuk9p4HYvNTm1hVnYoq4IqpOtLWBEqptxwVeZun6z/kbAvHmN6VRtzAyysVoPXycjGW8q
-	qq+Z7rDuVHAslqONEeuVxHxSJXDhueDSYkrhY3XYszNBKN2nOvIiFOpqMI+jNZAZadEV5a
-	O36wgWA1aB7zZ0D6D5AN8wRnkmrUObY=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60GEbEHx1432554;
-	Fri, 16 Jan 2026 16:29:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=wr31TpgpMpGL7AgPEO
-	glhSL8DupVbujpqyj/H9rp0G0=; b=UQYR0YWQeouIAygHdxIdeEWX2n1Dszfo/h
-	3N9S3rXBypi4DxqDdey6XTP1ZcdO7vGz6EIzD3iF/NOFxPjpFNTIe+5RstLkCFTm
-	wol9eato/Slgrnk27AsJspY/8Yc8hhdkHbYGccjCBFzyWqTsNNw06YuRKRIRg0Gz
-	rCH9MzQBgt0agD09pjnCLldrrao9hcNnHrJV3ISKEoqgOZ9qsd+4pCguTcpiSnvf
-	5MMR29b0QqtRqPL6FUtvsFWRBizBKDjlcZLe3FEyWd9PujodnJJPClkrAGHPoriT
-	ePE+StCaT3j7HCwl/qJQcZNVpxuQoZkPu5igf2CYmIgx/kDxTFVA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkqq5a771-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 16:29:26 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60GEiQg2029164;
-	Fri, 16 Jan 2026 16:29:25 GMT
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010008.outbound.protection.outlook.com [52.101.46.8])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7pvc1m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 16:29:25 +0000
+	bh=RXRdpMugAREP/SUOV315Ldq9v5w2KGH44Gb455boAWg=;
+	b=wIrXGaXQGDczpC9V1nKTnHqalVemXf7h0B2VROzaRyhKlL193U+MShHLPlRlTYTJn9z6Ow
+	hguKMSPZZFaLXmMDUGCQUcbsKDGHQ0vZi91ffVxHlNZsonRDYNbKs+Zuf2vA4kBX0oCs3b
+	sVmsxMbbnMtBVurJFVGoDbcLRrg4eSw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768581581; x=1800117581;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=17a6IqgXLpWuRukLOtQc2eh+64giN8ve6TAW80Z1H8Q=;
+  b=RFwIm2PjZMR08vG32spR6U9hAlZDZ+yaDIHgffisviM82lJwI9Nv5t75
+   /Fo8YgyW2DyQY/oLRUoUPiUchQYOyTj1+hoNPJRYeetwhbTssc7QqBg5C
+   LbP9XdfqqlY/XCEhevBuOh8CPxwUPh1l2hV3Z+GxHOb9bDYaET8XudufB
+   DuMv6E2pg79LIrkfcB7cMhZUWFgMpA4bQZxnvvUMXGcbxIVzfUbwGkeLy
+   zELxxF5DtvMWBjuhOjkI/BMH++xZ1XCm8JKOHgrv7uh3K2ieS/Ib45GgP
+   ub4R0pf2SIEkajhoqKhAGzLYIYrY0/9mxbwQHyex1zBjj3zdEcqddXNJM
+   g==;
+X-CSE-ConnectionGUID: zROOYjcKR4OjZAn0FKh5nQ==
+X-CSE-MsgGUID: 9RfAOhA7TMmHY763PfLYjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="69630750"
+X-IronPort-AV: E=Sophos;i="6.21,231,1763452800"; 
+   d="scan'208";a="69630750"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 08:39:39 -0800
+X-CSE-ConnectionGUID: 22MPCfbQT1G+5I+ODZ7a6A==
+X-CSE-MsgGUID: Wta4XjIoQGGuzTQKNR8OAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,231,1763452800"; 
+   d="scan'208";a="210145543"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 08:39:38 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 16 Jan 2026 08:39:37 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Fri, 16 Jan 2026 08:39:37 -0800
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.64) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 16 Jan 2026 08:39:34 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JY9h+Q+tpaZCTc51IO+2OzIwzrwoEGqFdjt8EH1E1U0cU73NbicchSIxmTZlbuxaRVrDkOxnRydN+TVYQKpaLEnRuT6M/mi1po7J/2+ms6nRkuisGBa+wRNvszPbyftNXs07QPsDqMnp5WGTc8pwSoP7wANpmljID/n1StZq3dXImj16QmD7c8kv8M/If55DUHzgV80B57ImiTyefTvMLsjtyNLwyefTjp3xU4ifFDT4OtKJrrN1MWdkRVvGeDOY55lTQ16DEF6b41/eayjY+6F5rKvKzTWErYJYFszCS3E1ExNt4BPBB7Zt14CTNYaV5yDti0Th8RS/6eFuZzBkJQ==
+ b=PwPf1F0BxEMkG5Cp0Mx+sMNSiib96q9/cwYml+LuQ78i2Mkvf4ghb/hnziyUbge8Y4VhBtHewm1PP0lbdIYvxuNGJmeHLwWGGFbiTogufs3aogksK4EdlJqJyA5THshbywRH5pPl+9h8ftMQCV+5dLbZ3wp8bgPqAjM26o5EA/GhqQN8ZWBGtgRwVjbIrcdx/HlVIqwLvSUcThzl27zqO38LY1RzVHQCqd2MZYmqy2+AstfzOcUI7VuOh47reeooJ/D20cHFVACBmQx+73QwbBN+x4kEfSOJ3Eh9ETClbU3PYjTzvXD/SSPY9wcWjFEreL5S3X1FDUf1Gps0teM6jw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wr31TpgpMpGL7AgPEOglhSL8DupVbujpqyj/H9rp0G0=;
- b=xxM1xFaHY68aXva1HBgy/u1zfuDAssUkoLkF/K9RU61X47qpTkdglicjefVtd0U8zCAb0uO4iXM45XAys9cM/OfxlMwObCz87mb3vYUgrYuG+iRfOxX+79kp21iPiy6hLETmB0M8E08aaMi8+oKJnjV4wMCq2OaRTCckF+FtP/438X7iX1fqrDKKfO6LXZ09vmFYwccZefdKGs2H75gbQxQH9yia5abExddBAbB9mMGqC8w0AhSTBe4sxpN4tmam3d2desTkoC9EofnEruUN6fKhKbD4tzkDG/EvkV7l+/LWNUJ8DGFD3NehjmEXTfJ4uRmSjhClXEkl06DlpU+ygw==
+ bh=RXRdpMugAREP/SUOV315Ldq9v5w2KGH44Gb455boAWg=;
+ b=yqdnSi5i0AF3DLCw//jRePqkEzyW2ZipjXZSdljaHwsE2gDTBPqF+FImTwMMHFv+MdnE09H92EmJsslEPSLo5Kt8zq58wN1xeEXbjvAquw0/v61G3swjmYECQdB9Zv29U/2VBYbxT2jBn8NPugFSh1EnNsR6uI/bRaDQgtoTzPU2BPb6idkiFRvbG+vmJCiq1BCMhiMxlbF0hR+5xJqBX+EnAMwdmmXyHDZElCQici9uU4qdFc3V4EIUPCIMIVSvOP4u5POv1fBqTvRxYIGf5LLquMjEOFvPpwHGmYishlyjg8/j7v5Z9QsmVC5oYluDJQEYi1od2whqdHkAqlqtqg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wr31TpgpMpGL7AgPEOglhSL8DupVbujpqyj/H9rp0G0=;
- b=mR7SZOQqmylsOkIbB4AXPbJ8sH2Gwt3BWlEyw6o0Cp7puyKdWGnDbxKm7bx6pGcKxX5AloINGJMI0uhIFt80bshgLYCw8TM7bRAzimagikWk4TcvAq0OavkNc885jFwLtdE2pAlKu3Lm2l4tJD9CEhyMSsVoe+54Sb7aHgirj04=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by SN7PR10MB6571.namprd10.prod.outlook.com (2603:10b6:806:2aa::15) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CYYPR11MB8430.namprd11.prod.outlook.com (2603:10b6:930:c6::19)
+ by SA1PR11MB8319.namprd11.prod.outlook.com (2603:10b6:806:38c::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Fri, 16 Jan
- 2026 16:29:22 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Fri, 16 Jan 2026
- 16:29:22 +0000
-Date: Fri, 16 Jan 2026 16:29:25 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-rt-devel@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Boqun Feng <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Clark Williams <clrkwllms@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH RESEND 1/3] locking: add rwsem_is_write_locked(), update
- non-lockdep asserts
-Message-ID: <c9f8bed8-c0d9-4fc2-ac9d-4e7b78418438@lucifer.local>
-References: <cover.1768569863.git.lorenzo.stoakes@oracle.com>
- <8e343ccb9319433364f5949a69519f1bb521fc8a.1768569863.git.lorenzo.stoakes@oracle.com>
- <84A469CA-3497-42A3-A3BB-42B7CB1195DC@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
+ 2026 16:39:31 +0000
+Received: from CYYPR11MB8430.namprd11.prod.outlook.com
+ ([fe80::1d86:a34:519a:3b0d]) by CYYPR11MB8430.namprd11.prod.outlook.com
+ ([fe80::1d86:a34:519a:3b0d%5]) with mapi id 15.20.9520.005; Fri, 16 Jan 2026
+ 16:39:31 +0000
+Date: Fri, 16 Jan 2026 11:39:17 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Matthew Brost <matthew.brost@intel.com>, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman
+	<mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, David Hildenbrand <david@kernel.org>, "Oscar
+ Salvador" <osalvador@suse.de>, <linux-mm@kvack.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
+	<leon@kernel.org>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
+	<tzimmermann@suse.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Dave Airlie <airlied@gmail.com>, Simona Vetter <simona.vetter@ffwll.ch>
+CC: Alistair Popple <apopple@nvidia.com>, Francois Dugast
+	<francois.dugast@intel.com>, <intel-xe@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, Zi Yan <ziy@nvidia.com>, "adhavan
+ Srinivasan" <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
+	<chleroy@kernel.org>, Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher
+	<alexander.deucher@amd.com>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+	<simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, "Andrew
+ Morton" <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Leon
+ Romanovsky" <leon@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+	<vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+	<surenb@google.com>, Michal Hocko <mhocko@suse.com>, Balbir Singh
+	<balbirs@nvidia.com>, <linuxppc-dev@lists.ozlabs.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+	<nouveau@lists.freedesktop.org>, <linux-mm@kvack.org>,
+	<linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Message-ID: <aWpptcor29vqLqiJ@intel.com>
+References: <20260114192111.1267147-1-francois.dugast@intel.com>
+ <20260114192111.1267147-2-francois.dugast@intel.com>
+ <6spceodgfobizdaziju4yvvfydwvvik2wjyoyfuglozq533rgl@vmkotau3m3kw>
+ <aWiBy3nZ4FrPYURF@lstrano-desk.jf.intel.com>
+ <aWiGtlKI3LOtjUl6@lstrano-desk.jf.intel.com>
+ <pgz2mhy4si2tu4iwusabjxxi4nctz3lamnpbg7773a2mp7srph@bz3ovwxuyakq>
+ <aWiall34yq5Eupkf@lstrano-desk.jf.intel.com>
+ <nvhjddzmdf34cbjnxmka6ir6smkokn7dlp2aa36ymvofmbo3qh@lugxvx5xlvud>
+ <aWncTBPaYuQ0nAAm@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <84A469CA-3497-42A3-A3BB-42B7CB1195DC@nvidia.com>
-X-ClientProxiedBy: LO2P265CA0153.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:9::21) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aWncTBPaYuQ0nAAm@lstrano-desk.jf.intel.com>
+X-ClientProxiedBy: BYAPR02CA0060.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::37) To CYYPR11MB8430.namprd11.prod.outlook.com
+ (2603:10b6:930:c6::19)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|SN7PR10MB6571:EE_
-X-MS-Office365-Filtering-Correlation-Id: def5c6ab-de35-4812-82d0-08de551c67ae
+X-MS-TrafficTypeDiagnostic: CYYPR11MB8430:EE_|SA1PR11MB8319:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25066a7f-9568-489c-bee2-08de551dd2e0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rP52iBbztZynxx4iuvkxW7UC2ypLLHOcxRXFfSW0d7pAP6zqGRnr9ES/LSV0?=
- =?us-ascii?Q?t2y6BqMPmywKwne+G3GEK5QmU7lGxVlW8+Hp2Q7rZ92Wep+APUHidKkvjiyP?=
- =?us-ascii?Q?cICyJyIOlwpIxELMP7KaUXRBxquRid4UYa5vPlX5Eyy2RupnjpJEQZFn/oFC?=
- =?us-ascii?Q?FiZ1gFKFi5iFLcUhLknbS1SsV2t6Anho9/X9NDSgocSQrqg5ZDhi8i2qRZAG?=
- =?us-ascii?Q?BWgd26pUMbK9/XPePE6eQrhCpktxkyRlSMQo0HAToyn2bU5+iKr+RkzTfZRn?=
- =?us-ascii?Q?XnrH1+2VcZu946FPFMN45I4cK+Bf4ff0m3uwAdFuea0co9W85mHz0TGpdeN1?=
- =?us-ascii?Q?Zlq1JqESEJm8PhufAgHL6fw6ZcxpOLNhhc2PdrVqS2ZJk7AH3LsiTTJ6Q9LV?=
- =?us-ascii?Q?qv5NFRXkZHxA+N8uAKANHPEI03WgnhWt3aQViRSPvBiX1nAU/x6SzAQeUQVp?=
- =?us-ascii?Q?MLSX8EqxlnpOAAGANPUzbv1yGpBgMs0Ys5B6crvAOhoZqdutaA3jMRh6MIpt?=
- =?us-ascii?Q?teXAg8b+ym155+gmR4nzaAG1onnYDI0K9y5gLQ6CPbps9HbR48ZkBrfxH7dm?=
- =?us-ascii?Q?jITZ2WfXAjzDuMb1azUpO41sxqPDAFIdAAEl6Szh45O/Gv9O1nDPP70THtjc?=
- =?us-ascii?Q?6HU7s0ggXAK4LgPdUehdoP/Bra204EZcEW+rZUcbu1Zlwvr0ziBlozUt+t1e?=
- =?us-ascii?Q?hZS/Tp4RfYa1ElS5rHHlBJ33q6GIZowjdJpSM4iqv/RHVjgM6x9eKNloupjr?=
- =?us-ascii?Q?csd57bctYQpN6jMtxP20Btp5kB29ZlZJrdB0krPoRVb78yvyhOW+qfpAuJeI?=
- =?us-ascii?Q?Qg3xU1CySwbFohreu79qfFOYdGboC4GSz6Hn6vSBveav32bbm2DLEPUeRW5A?=
- =?us-ascii?Q?due6EK22uHpfmNTUnbY6ADHZMUxB8qqheOSwrZq1UMZKluQJwjrCTHuXGmSY?=
- =?us-ascii?Q?ydAlwCHHbBYRNL4LJNUNiyC850BIy4GVbMjnIA/+pu5dCBQKJcek/9k2YFOK?=
- =?us-ascii?Q?n5R0ZKtvPys3Xl4Q1FXSobxb/oVWFlRAsabbUUKSwGekQMkSPUWdZZLMqRP0?=
- =?us-ascii?Q?/cCbkkUveCVc4ETVOcktnLMFXykjSahXB7AbMVqoXiS+mJD/qxAJo0XDAoSF?=
- =?us-ascii?Q?YppPFtaJV70CwCZYTuziR1Kt3r3dw67qvGDESXLMH09eDWt2c3neyIL35Jod?=
- =?us-ascii?Q?rFWd4AnhWuy2gZpYsLNw3VVWdu1tbc0oZf6A8hL4mG5Yv3iRIHa7HBI8vacJ?=
- =?us-ascii?Q?0N7hSCMB8M1Ss6xulT2qrB+vRxs5CBypCnEbEWmar5qWOKhRYJDsMZdggA+5?=
- =?us-ascii?Q?zzu0DEq+H5+OGPz1yLsaSQNs+BNmyIC2mIgsFPCk0YHFWPHC4SN7A6D5vph0?=
- =?us-ascii?Q?zuKM6ax7r7WSIt/kWysla9ob6KNxWhb8mWGyIYCo5HZG+GoehqKXL0/9H2FD?=
- =?us-ascii?Q?CVjoB9atJNeDlfuDE+ZEXYY2TTJASqku6szMLg8yTiaYwuCv2uNGNs/FJ4CJ?=
- =?us-ascii?Q?XtYs0HUIlHA7rkgJIYH4BAlm+s05/9apH50OWBeRuNv8bIfVMtYw+BIqxKg2?=
- =?us-ascii?Q?KwVaGPO+ZYsjlOWhbn4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007|921020;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SEtSQURlbmZGRmhSTG96OG1nR0RmVVp5SDFneGJBWlQzY0JOd2Y4Rm1uT3Nl?=
+ =?utf-8?B?WDZtZHR6Um9DanhlRjFqcmRER04vWGJkUUZYMEZLbzVTeEJWSzhsOGM2V1VY?=
+ =?utf-8?B?enZweWxuRnF4U3FEbDY3OGRORXNxTTIxRnZiYytUSWxSMTVPd1orNjdHaFFz?=
+ =?utf-8?B?RVZzSGFRSGpwRWg3ZFlWT2c2VDFva2M3LzNMYVlSUFpHS1dnSXU3TzUxZjdN?=
+ =?utf-8?B?bGN0YktkU25lVW5qNWNta3MyQjhqUklnM0w0Z0owMU9yRDFGU1N6Z0ZYbFVl?=
+ =?utf-8?B?Ly81QnNiVWdNc2F3V2dwVENrT1NaWlE4c3NPMzNGZURWVHNHOWNSQjdpRnFo?=
+ =?utf-8?B?Skg0emNCdVVJTDlqSFBWMUd3UjR1Z016NUp0SlJzM3FFSXA3UmpRcHdicTNK?=
+ =?utf-8?B?NDFlRkQ4S1IySHFZSVhSYmI0eUlaRENyQXpsYy9LV2d4eVdIeDJ1Wllnb1l1?=
+ =?utf-8?B?eVZpcXZwQkRWejM5ekNURVNPVDJrUG9VL0poNW9uSDBub1l0dG9QOHdBRmp5?=
+ =?utf-8?B?aFMxWXFzbGVPT1BCRXB4Tyt6OVJFZlRiMGwrbFU3WExVVUpaSnAvSUNxT2NX?=
+ =?utf-8?B?S084Z1JoRENzNFBxN01sK0Z6R21CdTlUd0NRUGtIOGZpTm1MRU5vOTVtZ05m?=
+ =?utf-8?B?dlVOL2hHZWtOOEpQZytXaU9QRDBWWnhrZVBmK1ZONWswd0dUdEV4TEU5VG54?=
+ =?utf-8?B?S1ZncG5CVkYxd0o0TW1kbmc5YkhPTXRHaCtaNGczNldMc21IelpjR1BLSnRn?=
+ =?utf-8?B?dWhoMzlUREZPaFRoSEtMVUYzZnF4R1c0dFNobVZRWHgwdHZRS0R4SGFMckdp?=
+ =?utf-8?B?RUlCc2lBR3JLRWkrWWNyVWM5TUVjR21XREl1OHB4WDIvZ0xxcHhOWENrNG80?=
+ =?utf-8?B?OHdrNWNuY2RQZWtlU05IKzZOUDJoWTZmMGhCTDFRR0VqUnZ4Y1lPTUpFNjdu?=
+ =?utf-8?B?U09XK3J0OG5EZDBnQ1pjWDdXbG1sVjl6Y3BCQ0kvTEw0bmxzbkwrbzdNV3kv?=
+ =?utf-8?B?dElEdGNJbDdObWVCRlJFVzZwQWhrSjFISEtiM0xvZUthM1gyNGZVY2hSdTl0?=
+ =?utf-8?B?TXdGSzM0c2M2Z3VTMC9hdXJaamlxc2h3aDNvTDNkZTFxdXNhbGxhNmxsd0lO?=
+ =?utf-8?B?ZzFZZnZoNHlzd2E3VnYyWE1kUHhTcUVZN1QwWlhDanBaRlN4VGZ0WWZ6NWYz?=
+ =?utf-8?B?T29OaElkZEZLRm5wdmVmQUVSQUFmbVQ2SURaK1RHUW5QRWZtYXJRTVQwY2Q3?=
+ =?utf-8?B?VDhubnRQaG5nM1J6WklSQldDVUVxSGhJWStvLzdVbjFHOURmTW9vREpRM1pN?=
+ =?utf-8?B?bmZLNm03RklPZHlxdDBoU0FzbWF1UTFNUXRMWWtYSU5wRy91MzFNb2ptSzJY?=
+ =?utf-8?B?cUwvM3FsNnBkSHBGdllodkYwMitpZ3k5b0YwK0NWeUtzcFRIbDNzVTgvUTJp?=
+ =?utf-8?B?MTlhWitWcTYvbkNaTDR2bGVqTVZwSWViUUpqYnh4akhkZ2luTzd5UnZsR2xy?=
+ =?utf-8?B?ZWI3OVlBRUpRb2VIWU13QnZKS0EyTDF3VzcrdlZUQnpJMGVjck5UZ2JvZlZK?=
+ =?utf-8?B?RE8zZGxOajhSdWs1cmE1cDBzS1doT0NvWVFkM1ZNRXFuOGx3MHVCUVpteUkv?=
+ =?utf-8?B?UlBOOGtiNU5xZmNKQXlrWnhaYlFVdG1FSEFpbzhtUkdtcmFUM0Jnc25wb1Ji?=
+ =?utf-8?B?eDNwempoV0xEK2t0Vk1CUXhmV1hNRkd1bysxVVJCQ2V6K1BUZ2txcUNWc3NW?=
+ =?utf-8?B?NTZQbHJhbDhaVVNJenhNVTFxdlZ1THRYV1lma3NVbHRjS1l4WWRUK3k0R2Y2?=
+ =?utf-8?B?L0M4RUpQbHhrNzJNSFVoT2R6cGk0OStYbzZaTy8vSEg3WU84KzM0bHZ3em15?=
+ =?utf-8?B?a1FEVFhDLzVGSWpUUEE5NGZqN2JZWXA1RDYzL3FQWXdPTHZObktwQUd6Snc4?=
+ =?utf-8?B?NUlPb3h0emtVWGFxV1poZTh0WUZXaVZLRVYwRVBqeHhYdWZnRk05ZEw3YVcx?=
+ =?utf-8?B?bDV5L0YrQ2Y2ek80UTQyMjFMNFVoTldkbWJsL3BEcVJzMlRBM3FIamdsV0Vv?=
+ =?utf-8?B?dzN1Z20xTFpiVCtBRGtLZ3ZabWdqUkxBRzVqR2c2dXpuWm54QS9oNjFVd1Rx?=
+ =?utf-8?Q?4vjw=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR11MB8430.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7957oR4F1TpdKj6ggsYw3CNXPVzNntrd3+OXW3f6a3gQO3dFxpsfjQMLZh1q?=
- =?us-ascii?Q?ujxW7AuZNl31f1aYIPFfeoQqBdR+pTaC1BiBxB7al3tck1dc+i47xXlUFMqc?=
- =?us-ascii?Q?8W+HHkoXELkKszJNQOPhbY2y68NOAbnPb75uL/u19negz9danBFEQzkQjNXQ?=
- =?us-ascii?Q?aOhtzzbweZpEpjup/S9+ys1W3WLt+khgMKfgt/w3oOYWLcVSP6cl/orlhvkb?=
- =?us-ascii?Q?mTkYqvQRH5B2STtfEQWqjv8l6VSQnOL8Xj3iLpWChxuI8MbzmlC1rZAATyb3?=
- =?us-ascii?Q?++faOYGwnlbG2tHtNhrz6x+K23Q1kCskpDqXdzyWCvrTgbj2sfrFjPv4eFRP?=
- =?us-ascii?Q?U/ar2GAOHj0B3fgyi0JnRlURvzsqnebMw6opGF+8P1XqZctGloW1+Z3Dm+o3?=
- =?us-ascii?Q?sOVD53HazTMV8t2zDsMrlAScTjJKejbufJr1i+AlzbYna3FUYnek8YiAqz93?=
- =?us-ascii?Q?E2mq7anmKjY+ppLPc1Ydlpg8jiRyHafdXbHAOxN+T66Uqg9RSEIgXVcLWndO?=
- =?us-ascii?Q?hElYI/YUZQeOX3GZElcncTCu8SDMJ2NsCTsHYwZsO4DEK3IHWiTHfD+rnksX?=
- =?us-ascii?Q?Yef4BohfHkUXIwI5gNdu1QrBP6Atm/hgi95r/YtPiJFkDsWv+hRzQavFfGgV?=
- =?us-ascii?Q?Vh9D/M45ORPtmoICbNl3vbEeYcg+2tE68+o6A432QRXrwe3+1l9H6pbHXv8W?=
- =?us-ascii?Q?P2JfCkDm2i86wUdGK2GGHlRqyMz2Ril9KKYk4u8O1nkiPXk0siPfIUy98Mwk?=
- =?us-ascii?Q?ne2cT6P2Ei5izOfnAcTdGccd0jH8nzp2hHZQJqnbiUsbjwhzCrmCERkroQ3M?=
- =?us-ascii?Q?V1f3XrMOImpuGSnThxtfKHcD4ySEQEwZqHHOY2NRGSTU46rY8Zkn3c+T1GOZ?=
- =?us-ascii?Q?uFeIzDpQEfwGaufVppWA4D/E9pA1vLluzwqgdpp8FQ0NUekhuK4Zf8bT+B8B?=
- =?us-ascii?Q?Ccm6L06Ck22gvLt/Y9KiHvjYUSKI7pdR7C3oIK8J1zMfK5FiDujQQ0ty59p1?=
- =?us-ascii?Q?8tSaNN1130bXBKLWNcYkJLPs9e/joY+AlBY78C7o41Ln5VgF2FZoKZFs5KK9?=
- =?us-ascii?Q?1N9om007JS0MBf2/xQXiZfK1AQ1/bdfWMsO5vVl6lAklFpuAVZWavl+/+U++?=
- =?us-ascii?Q?dWCu4e/NbYJ0A4K121TjP1GJl5qSqhAJV1T5W9rO+MTMdvHvuKQKq/PyvNR4?=
- =?us-ascii?Q?w8g1wCau/Pb+WFJxgDY8nS8QGSDkjQn4QjcOkfLktJuKpuANzGFr7hqGOvqd?=
- =?us-ascii?Q?c8Rbz64HD98gr81sfsPmH2bq42wszxmEFffp/2PlMqVhgsrg90ksybgY2DQx?=
- =?us-ascii?Q?dIY72++M3WAMUuSRvTxV6tZhRZS4yM+oStjmodiFrUNz2Oxuh15PJ4XxEzHP?=
- =?us-ascii?Q?+vaEXsTAlxYvGkS041vTZQw5l7rxsrjYe9raUJ8Ho5r2AqcZ+Ie7bXVRtg0H?=
- =?us-ascii?Q?r0G113OiC92YjVW4w4nInhIF86sHJZ61+2GyGwkaeB4KPFDfYY+taBTGRbbE?=
- =?us-ascii?Q?+3VeUEzh+zZkm4lb6kx/9e1RETacY2mYcsl0Ufy5SG6AHd0VUZGP0mlBO5Sf?=
- =?us-ascii?Q?1V9jFC4F+1sCDMvIyHb46b9w+UYyujCWrrhmoAdE0u+4H7IgJVN0/BWQUUgy?=
- =?us-ascii?Q?XDVwp6c+hPe/+Z0LBdxUKKJz0LnKpwc7QhfKFdpIV/Pu+2dDcGHAGLD7uSTw?=
- =?us-ascii?Q?GRC9WCFBQYnCXuen1ThimK043yoFReHGpPaQ1tz0SWbT14d5Uy6ImkN6T9ZY?=
- =?us-ascii?Q?GpJ2Ad9J9P80SqpxVSX8rgQ8O7VDHi4=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	rQKBxAN5mQ/tFha5nkbd5DxCCfFaaaGg0XZm7hfKa30uCRhbft1KyRBXf946Py11eqiMGJbdW2uZZ6yUD4t3GwWOWjBKZtQVJmtFgC9unStWBveM/qHuMKiEalkyflNUl5q427xeWlwSItE72MD783jNTlcncEaKPT58LId8SEcYGHorpDOLiRhGvblXim+Ls4TRDCmV50TviHM3UqPPW3KKjwPKniwxdOLL2pmorrEDFZpprQ9wWzJdSGFqA9WxOjP6ePTLWBOWirKBg1zN+PufyOGy0dO6U2sDxCK25Z5Jh7/vDk82Ofcf3KuhnX1AWxxJYzkAt1RrDvOsMlrGCHG/ki5a47nezuawruJI+iqmZI6MZvPwCcGxwFHnQ8nBpOC20C3DE6oDBulFZJIPXhw2u0f9SP9QhuLHDlkc7iquCVeZXJ3U2nrawDFVjqBN+OaN4BFI8cRsi6p5L94e7iz8zXz8M/s5ibBeB9697Z7ede9T2aedjLPsfBmLUGqCj9ezHxR7OxuvkpieYlVoSSjxPhLvmWcDgowubtAmwDz4bnUB8zRJudtd8i5k1nMHW0WMTUvC9WBpWrk4fFt04vEXJvTAdnl8TSJu3UTLBLQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: def5c6ab-de35-4812-82d0-08de551c67ae
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ampLM2E2blNibldzUS85eUdQbmJpdzlYZFpaaGwzTkg5V3NnRmhRajNISHZM?=
+ =?utf-8?B?S2RzMHZpc2puL2lFaHZFRmViVmN6c2dUeXVDUTBkcHJDcnp0ODdTbzlkNkdB?=
+ =?utf-8?B?UEhJYnhkbHFUenRrR0w0SEZaS203MWcrOHU5VjdXTGh5cjZFaVJwaWk2Wjdu?=
+ =?utf-8?B?blNVZlh4dnhWb2VZSFc5dElObWhCTHRtQmZJT1ZLQjRxdk4zRTk0UjdlNmdU?=
+ =?utf-8?B?UVJRcHE1bUxRaTB1Q09kNEo0VjVkb0VFT21lbm1ncFNaN3llODN0cjF4dWdl?=
+ =?utf-8?B?anJvY09FVzB0ejFVVEw4OGFHUEU3SkpkMmd3RnN2anYvUUJBT01PZmdGOFMr?=
+ =?utf-8?B?SGJWczQ3T1JjdnZIS2dWd3BoSGxjeHJWdnBPMCtaNTZxR0tqZDQ2TEo2Nk1q?=
+ =?utf-8?B?MXJ0clZQSm5Ick83SXRtKzNRYmkwMVBZRGljcm9ZZzFLNmJYUEVPV2Q1TDhF?=
+ =?utf-8?B?RUN4K1RNWTZtb2NnclJmL1YxTzhRNnNteWpuS3paaUlzU1ppUFlUZ25wNkNn?=
+ =?utf-8?B?T1NLZW4vSTVYaWI3VUVQVnYydUV1aWZsdTFYeTRmTHlvK1RvaSt2cVZBZ0Fk?=
+ =?utf-8?B?NjFjdWRIL2N1ek5ubWhZenpSMEF2eWtRUnB2eE5hRmNrVjV5SGV6eGhCeFR5?=
+ =?utf-8?B?ZlphUHhkTEh6MVFucmUzL2tRVHdFUkhiZFd6ZDg1b1BzWkQxRGc5NlJrZEMz?=
+ =?utf-8?B?dkFHY1RhckZXVVBEVXdha1UrREVCQWp3RUgvNmg4eUJpcnlNbjNMVDlkTUlB?=
+ =?utf-8?B?U3lHQTlhWUNreks5bUZHcFd3ZHRBWVdRbmFTWnhWQjJ4bElKUXR1dDZlQkhU?=
+ =?utf-8?B?dUZOWGFONGxZVkhOQU92clg4dnIyU0V1a3J1OWZiVGNRZklZNUdmUStNVldh?=
+ =?utf-8?B?MFNWSmhreXM0RmptQTA5QUVIL2NxQStXVFlrV0t4TnV6cVV6VC96SGlaU1B2?=
+ =?utf-8?B?RzE1dVJoeUdyTDNJb1FTSUIwZWJ2NWlaandCTExqSjlZWDl0S3JJNU14Umdr?=
+ =?utf-8?B?QVFxME8zSDBJM3JtbFVyQlhqbWpOY2NUM2xnOEptekhNb2o4czh0b1VLYVVr?=
+ =?utf-8?B?dDR4VTIvQTFvS0gwbVNkbzQwZDRTNFpSeGJNQXpIcmhGdzM5cEhiaVg2NkpG?=
+ =?utf-8?B?TCtVRmVmc09VcXZqQ0NGRlE5NWlrMC85SlJoV2R1ejAweGRRTUluWTBKZU83?=
+ =?utf-8?B?US83ZWpZdkErcDcvMmJOL0RwT2g2eDl4UEY5N213WlZUWUx2bWQzb2FvWmFq?=
+ =?utf-8?B?M2xwbVYyN0Z4VlkwanVZWU4zMm5taTRWanVKaDdwdzkxaWVCZ0N4MzRsSWRK?=
+ =?utf-8?B?VG80bWxyMTdtZGdsaUpqR3pNSEd4UHFwK3h5Njkvb3B5TWczZjdLbTdYR2hv?=
+ =?utf-8?B?WXVicnVYQTdFQWNBTkU0L0ZWQ2UrTCtLU05XbjBvRzNLK3F6TXduRjFKbmlq?=
+ =?utf-8?B?NVJEaEZJc2NyblJGOG8yUnpweDF3bGZzZFJBYWcxaXFMUklYb1BCYWFNa0lr?=
+ =?utf-8?B?eEpFYkZGaUZnOFYwY1d2dGN4cXNTSjdzS1VMZitaQ0c5RmZ5dllkaGJaM0or?=
+ =?utf-8?B?ZnhQL2Q1aEJHaUs0YTEzU3QyM0ppQi9SeklmdXRtcjRBS0VZL1V0YUdzeU5n?=
+ =?utf-8?B?UGxiWDlrRjE1ZTBmRlBuUXlXOCtEOXZGVHY2ZEFjaUV6VVdTZzJUL0xoVmJj?=
+ =?utf-8?B?Z0RtankxK2U1dzQ4aXhoc3h6SGxvbklIL1dCZm5Yc0VVekdiVjY2TVdzK0xq?=
+ =?utf-8?B?clZCVXJiZGRQSHljU1hrUVliUkNwNFJOMmU5dE9hRGhueHphaC93aWVLd2to?=
+ =?utf-8?B?T04rU2V2eSs1UlBxd05BYjhlQndRbTZHOTg3ZmlnY0R5WkVPblVzZ0o2RWZp?=
+ =?utf-8?B?M2M5MEhJTlB3T3VhQ2gzbTh5L1RuL0VzTDF0K0JNUmxmY01ndEtFLzVVVWRy?=
+ =?utf-8?B?akE1TkdsNlg1b2tBMmJSQ0hlcGthdnZieURFSEZuNmtxcjJ5Zk4rVy9ZRTBY?=
+ =?utf-8?B?SjR3OEpoOHpWcGVid0N1U0RETjkyaU1QcGI1NWxBbGwvK0t2dCt4azZBbWdu?=
+ =?utf-8?B?VndnQXcyalkvVnhKb2tVTnFLSzFtbko2RmNmZjlCc1F2WVdjdE5SNmF2WkRo?=
+ =?utf-8?B?VDh1TEdMdWhtZDhlcXczMko5aG9iUy9MMXEva2RNQjhsRlZtbkJiY1pxMVcw?=
+ =?utf-8?B?ZlM3cGlHaEpmbHJZSFBwMkgycmtPUzZVZ3FVVjMrbndpajVlTVAxVmdhSjNa?=
+ =?utf-8?B?QjNMdXZ4aVFNYjdlT1ZKVngvd3NwRmVZVE9uYnc0T3JrV2xJZmNmb3lTNlhz?=
+ =?utf-8?B?bk1jY0FkTFRJVDFNTlF1YVIzdDg2U3o1K3g0SlBNV1IzMTFlMnB3QT09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25066a7f-9568-489c-bee2-08de551dd2e0
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR11MB8430.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 16:29:22.0964
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 16:39:31.6379
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cWLcv9DgXlTqlsBlAHnAD4VvrJMEw3LK366nzYMm6+cTgON5z4enV6Trr3REzHotFyrIHnov4ULh4PvkPa3g/v5dVUbOl3Zj3GrWUfz1dKM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB6571
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-16_06,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
- mlxlogscore=999 suspectscore=0 mlxscore=0 phishscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2512120000 definitions=main-2601160119
-X-Proofpoint-ORIG-GUID: puM5bry2U18JeCZm-x38gNgAEqxwv6gq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDExOSBTYWx0ZWRfXx/b2x0dURmzt
- okP5o7cG885eA4YevNI5lpNlDyzZOnLtObT422hVWzpB6xtuprjvKC70yeoTmUa8v6Lyyv3YJoM
- yzjLA76R9F4+phTRJZtu7c2fK8rsz50TZzU0i2HzshKHpcWLNSLk7FihlX+TecS7f1OCVZ0J9/M
- UywQ8fEtcWtMQanokmImlRrJvTudQsTv6yHIwFm0wXYm89W5TMfQ8oxzg8UaMeplB+m2bgB5kYL
- NTR6dqH7b1ThXv0a6NNH0uuS1d/SAKkYJY+ABEW8LFS5fpSx/74JGmNJkPAkd9uPG+NKFnyF9r/
- ZlhGEvoP9wNXGAlwDAXcxS+qQJPcXXF99PHeYwC7KhhtGged1B4qS7xFJt26DYMMXg8Jnpbap+0
- VA7FSJAHb1Eh/5rTwtKxO+Mq1BNIj0gSoFz5dY5OMaFfBkrA034oyOEhTjxQTYP1bFDZYfoQkHw
- jjZHGfuKZFEnebLQAH6BoovIjXaUaJe+wWSlOibM=
-X-Authority-Analysis: v=2.4 cv=J9KnLQnS c=1 sm=1 tr=0 ts=696a6767 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=Ikd4Dj_1AAAA:8 a=oRdqwO-spBd1wXWhiFwA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12109
-X-Proofpoint-GUID: puM5bry2U18JeCZm-x38gNgAEqxwv6gq
+X-MS-Exchange-CrossTenant-UserPrincipalName: p9xOQ+lygfJVW3GSK2p/8ppsHXrdO3WBJen9kNincqkONsQBN8f7qtuSYERu3CeY9M3ZWW0fEQMmyb2atxPssw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8319
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-Stat-Signature: dpddaapkpa6819n7xg641jbrjdwm5jca
+X-Stat-Signature: q3ix1wh6tm5d3j5sd84nb9ggndc1af8a
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1B8424000D
-X-HE-Tag: 1768580977-188854
-X-HE-Meta: U2FsdGVkX19p32D+IypK3GbXo5YvZ7+T9NRiOenOI2vrYRNPVeF8ZptGJolQuOCmiDPDTprru2NJPveL7g1bovRL2Dy1bXcCaLb0rjmIPyxL1D0a0NCb0P18a0Uf2mHfP26DN3anDdDC0TEaiePumzy053zG8kZBQ0Mg9NcM/zfkVQix+GNiZjQSrDSB6C5EYXjPeafvQcK6PeK5iyNmOi9kMY+uAFbAGQgbK4pj0/ADofbAxsSk52BD0mINEhM+2EixPPEMu2ePzndDn3S1c84M4HRV9bkWYraniqCzHhZrWYDPyF2HGFabBFR0YhsjpdmGlAD/Mjndmzh2YFkTASlPx05Xug+SSTjTSanL4B6ZsooOU0jQ8TuhDa/HfaSeRSjw8ZDTabSoZvD3fDTbhyRF5RjPp8ZLbP2wHQlsQvcE6QMuPP/Wjzbq4CxmTOCZTtdgKJFE9wwZAGWdrCWueqxNuYwHChT3vVQXcNYMrWEJ8q2BHYR+Utq+8lks5arpzJDoybgAF/OF9DxmXU0VTF3HXefGkWmz9Vqrlvvw76ytO25Mktt1XOU1s9vBffe+zjMvIpgj1DaahC8K6W8Q3+re8bwDgBgsuLiIKnfpirzjuRFJQpgGu7PGlAySPAFhZRpaxF4ez2PU24p9lfJ0ds1tyRMzK3dMBX988/T/BLmrNr5vrcD2ecucrchKCmranUbsp6wPQGX+f9kWsHK5PWbVBJ8+Gh1PiGDzIQNqspT1F9vVO46pqhIuvIg6hAUlU5l9svukVj6Ie1HuYLLEpX8QecuC7wPyhWhjp5I8C9t8/ze+3r623tR+EW8wocL4Nt9ra2WZdrLibiZa/UY/nN4jA9JCZFDqZeM1YtFVARncqBX9vqe4CL8bpOMh7lYTPBN1fZ1z3qOGTLWDS63sQBL0ZtxlxA4wgsLzk7bDfwfPCj8JlrthERaI/gbaLH2k2zGEn1mq3D86XxX/weL
- mCGVxXsy
- AeRfoG9ZOFSDQF84auWr6BaEGoHnYRcwx0Uzw/YJ1zq/1HCCAom8Ihsi6xVUFZcZ4lys7nLoiONcCs2cOpsuAbVhhwYhRrSiWtosobo21s3nF2rB66RlkLW8TxSQ2wwyd/TMJJMLmXVEkODNGG+KgNSzVe9Hb5bBSOvc9MylwoUPf4nsQMGr3lhGCaldXcJJDVntWjPe+euKX2qVQatnHekRxU2621KO1AvH04ObAz3L9f+p5di8jShnM6gPc34zIDAYnZ5rr2QWHYYZvm+WvmUhaGJpOHcLeRwbhSJYmjBNDNQeVDNGjvLscmCr4w6kuSEY5ew+tdwOruGwU9u5AFApGiqx7Iju6xb7e2Sz4U5BwhAafomm+YWIb49lDKN1yf30VQEyhdgOygBl1r39tHuhywzqp8Y4tAlTwezvC1Nndz6CfMKM0rKT9Rh8AOIuXN+DLR3XuhUuBp4eTmSrAUfc4E3PNlVCF93gWRxs+8zutgT26kW0P1OczRRPPKxMTa/d2NXJLpQCFuNBqU/zcbXxQzSX2Y+iJBDsIG2Miaf9GwbhkcvhSyZ4pEahyHxIHqzeP4F3r1ue4T84usUgKFkfiV1JM6M7iwfaywVj+iMlloF/lyzIGJadmsCG0QpAQKt5YikCQZt5lDTHe18Q8PVEab5fsqPgBxkCfJNA06bJDntFmYkPjgWs6UkZ3tURJbUFS15YiefiQDnmM0GgEZfMXJ9ncnActr80uWtSUeWK9Hfmk3bq0kg0B+NO2NPewHJjH7+reWxyF+DGcFEOvqUQWex6GVcEBVARq
+X-Rspamd-Queue-Id: 1396440010
+X-HE-Tag: 1768581580-525543
+X-HE-Meta: U2FsdGVkX19JUl3m4OWsnaEtLCHBi5SiUflsee74xn/mXTFW71qc3LT/XkC94rvqi0Ojt+ishTyYlUSbhW6hJurh1stCXk0QE0BOMJuaO+C1NggZKcIwsFIMAb0/DPEv3CReeRS+zwb84hqQd63RTJbM1anYsnO0oDaRIpEFMqKGDMmYb0Qp0F1G+TUaHNV/npiGrOt9SCqk9ng3BTKGZ6Dr+lAc80ePDbDZfx9JBoS8pxHRr6yVwHAmuKqdx29epjP/KQoTAvBNbRhsZkYo9+luB4ec4LZbcxnEKEoS+vIUIxPcthS5VinbNQMf++7CwukEnKhoMrXoBYTiPIs4EUNa0xiwHO5KY5vh7fYx5EnDjrVJ7A+3wCUU9lo9KTn8O1hNd7fkUjPcHPhTksr7wvGNS7Qy/R2FsSrwNVsjr7imbwyoP60JZejZs7CpttpMUakYcjPMBTaaEz8ppwBinqkIuZ+ZIcl9QxFg2ck8CymOYlz3XdF105DOwXTxhVkywcq2eUb941u0Zi92swJPFO3s/YAojREnQPsZRZDMD5YjCBet3qJ10HfsO0IHgZPmCTGm/daKVuP24D+amiAk8EsQnTz8kpi7zJBKwvwnsnnebYhgo5+97qQm61wmiIPTfdbGqT6ovgf9xf1q3l6G0Onfpqx49NjoCOt0GowXu1LSc/BJPIXEXjgpU1arfgpW0MExFatOgQztUAgmk2sq7jkFPrT2cUbGeDHZm4o926Xz4ykClHZDjTFn+1NfgpolpBx6kpODtwOPatmMtl/pRDa+dZWMM8iZdEhZX8Kkd1Ue8puP8y+AHAvmygDfVrosYBeqyODHXx+yLHY/TzNCRmqMhMou9+iESpmhO0Eo9oxYNfEo75yKhH/ai/e7P0y70fX33cSSurSY7Gro1gcD/2/nh7DKQcSspw1/JwB0FPaLZEU1iKZu8FboFBg1oW2uZjidQ1Mr4BsOz2hcnhq
+ +dQbBxga
+ f9e+MychStZwHe2vlfyEBCKh+ltPzV9i1lfsz0jKJ5QsUGx9swh6YseLAcj49lfThTx3MS4o+E4am1V4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -250,103 +272,508 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 10:08:00AM -0500, Zi Yan wrote:
-> On 16 Jan 2026, at 8:36, Lorenzo Stoakes wrote:
->
-> > As part of adding some additional lock asserts in mm, we wish to be able to
-> > determine if a read/write semaphore is write-locked, so add
-> > rwsem_is_write_locked() to do the write-lock equivalent of
-> > rwsem_is_locked().
+On Thu, Jan 15, 2026 at 10:35:56PM -0800, Matthew Brost wrote:
+> On Thu, Jan 15, 2026 at 10:05:00PM +1100, Alistair Popple wrote:
+> > On 2026-01-15 at 18:43 +1100, Matthew Brost <matthew.brost@intel.com> wrote...
+> > > On Thu, Jan 15, 2026 at 06:07:08PM +1100, Alistair Popple wrote:
+> > > > On 2026-01-15 at 17:18 +1100, Matthew Brost <matthew.brost@intel.com> wrote...
+> > > > > On Wed, Jan 14, 2026 at 09:57:31PM -0800, Matthew Brost wrote:
+> > > > > > On Thu, Jan 15, 2026 at 04:27:26PM +1100, Alistair Popple wrote:
+> > > > > > > On 2026-01-15 at 06:19 +1100, Francois Dugast <francois.dugast@intel.com> wrote...
+> > > > > > > > From: Matthew Brost <matthew.brost@intel.com>
+> > > > > > > > 
+> > > > > > > > Reinitialize metadata for large zone device private folios in
+> > > > > > > > zone_device_page_init prior to creating a higher-order zone device
+> > > > > > > > private folio. This step is necessary when the folio’s order changes
+> > > > > > > > dynamically between zone_device_page_init calls to avoid building a
+> > > > > > > > corrupt folio. As part of the metadata reinitialization, the dev_pagemap
+> > > > > > > > must be passed in from the caller because the pgmap stored in the folio
+> > > > > > > > page may have been overwritten with a compound head.
+> > > > > > > 
+> > > > > > > Thanks for fixing, a couple of minor comments below.
+> > > > > > > 
+> > > > > > > > Cc: Zi Yan <ziy@nvidia.com>
+> > > > > > > > Cc: Alistair Popple <apopple@nvidia.com>
+> > > > > > > > Cc: adhavan Srinivasan <maddy@linux.ibm.com>
+> > > > > > > > Cc: Nicholas Piggin <npiggin@gmail.com>
+> > > > > > > > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > > > > > > > Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+> > > > > > > > Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+> > > > > > > > Cc: Alex Deucher <alexander.deucher@amd.com>
+> > > > > > > > Cc: "Christian König" <christian.koenig@amd.com>
+> > > > > > > > Cc: David Airlie <airlied@gmail.com>
+> > > > > > > > Cc: Simona Vetter <simona@ffwll.ch>
+> > > > > > > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > > > > > > > Cc: Maxime Ripard <mripard@kernel.org>
+> > > > > > > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > > > > > > > Cc: Lyude Paul <lyude@redhat.com>
+> > > > > > > > Cc: Danilo Krummrich <dakr@kernel.org>
+> > > > > > > > Cc: David Hildenbrand <david@kernel.org>
+> > > > > > > > Cc: Oscar Salvador <osalvador@suse.de>
+> > > > > > > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > > > > > > Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> > > > > > > > Cc: Leon Romanovsky <leon@kernel.org>
+> > > > > > > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > > > > > > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > > > > > > > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > > > > > > > Cc: Mike Rapoport <rppt@kernel.org>
+> > > > > > > > Cc: Suren Baghdasaryan <surenb@google.com>
+> > > > > > > > Cc: Michal Hocko <mhocko@suse.com>
+> > > > > > > > Cc: Balbir Singh <balbirs@nvidia.com>
+> > > > > > > > Cc: linuxppc-dev@lists.ozlabs.org
+> > > > > > > > Cc: kvm@vger.kernel.org
+> > > > > > > > Cc: linux-kernel@vger.kernel.org
+> > > > > > > > Cc: amd-gfx@lists.freedesktop.org
+> > > > > > > > Cc: dri-devel@lists.freedesktop.org
+> > > > > > > > Cc: nouveau@lists.freedesktop.org
+> > > > > > > > Cc: linux-mm@kvack.org
+> > > > > > > > Cc: linux-cxl@vger.kernel.org
+> > > > > > > > Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+> > > > > > > > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> > > > > > > > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> > > > > > > > ---
+> > > > > > > >  arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
+> > > > > > > >  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
+> > > > > > > >  drivers/gpu/drm/drm_pagemap.c            |  2 +-
+> > > > > > > >  drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
+> > > > > > > >  include/linux/memremap.h                 |  9 ++++++---
+> > > > > > > >  lib/test_hmm.c                           |  4 +++-
+> > > > > > > >  mm/memremap.c                            | 20 +++++++++++++++++++-
+> > > > > > > >  7 files changed, 32 insertions(+), 9 deletions(-)
+> > > > > > > > 
+> > > > > > > > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > > > > > > index e5000bef90f2..7cf9310de0ec 100644
+> > > > > > > > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > > > > > > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > > > > > > @@ -723,7 +723,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
+> > > > > > > >  
+> > > > > > > >  	dpage = pfn_to_page(uvmem_pfn);
+> > > > > > > >  	dpage->zone_device_data = pvt;
+> > > > > > > > -	zone_device_page_init(dpage, 0);
+> > > > > > > > +	zone_device_page_init(dpage, &kvmppc_uvmem_pgmap, 0);
+> > > > > > > >  	return dpage;
+> > > > > > > >  out_clear:
+> > > > > > > >  	spin_lock(&kvmppc_uvmem_bitmap_lock);
+> > > > > > > > diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > > > > > > > index af53e796ea1b..6ada7b4af7c6 100644
+> > > > > > > > --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > > > > > > > +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > > > > > > > @@ -217,7 +217,7 @@ svm_migrate_get_vram_page(struct svm_range *prange, unsigned long pfn)
+> > > > > > > >  	page = pfn_to_page(pfn);
+> > > > > > > >  	svm_range_bo_ref(prange->svm_bo);
+> > > > > > > >  	page->zone_device_data = prange->svm_bo;
+> > > > > > > > -	zone_device_page_init(page, 0);
+> > > > > > > > +	zone_device_page_init(page, page_pgmap(page), 0);
+> > > > > > > >  }
+> > > > > > > >  
+> > > > > > > >  static void
+> > > > > > > > diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
+> > > > > > > > index 03ee39a761a4..c497726b0147 100644
+> > > > > > > > --- a/drivers/gpu/drm/drm_pagemap.c
+> > > > > > > > +++ b/drivers/gpu/drm/drm_pagemap.c
+> > > > > > > > @@ -201,7 +201,7 @@ static void drm_pagemap_get_devmem_page(struct page *page,
+> > > > > > > >  					struct drm_pagemap_zdd *zdd)
+> > > > > > > >  {
+> > > > > > > >  	page->zone_device_data = drm_pagemap_zdd_get(zdd);
+> > > > > > > > -	zone_device_page_init(page, 0);
+> > > > > > > > +	zone_device_page_init(page, zdd->dpagemap->pagemap, 0);
+> > > > > > > >  }
+> > > > > > > >  
+> > > > > > > >  /**
+> > > > > > > > diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > > > > > > > index 58071652679d..3d8031296eed 100644
+> > > > > > > > --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > > > > > > > +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > > > > > > > @@ -425,7 +425,7 @@ nouveau_dmem_page_alloc_locked(struct nouveau_drm *drm, bool is_large)
+> > > > > > > >  			order = ilog2(DMEM_CHUNK_NPAGES);
+> > > > > > > >  	}
+> > > > > > > >  
+> > > > > > > > -	zone_device_folio_init(folio, order);
+> > > > > > > > +	zone_device_folio_init(folio, page_pgmap(folio_page(folio, 0)), order);
+> > > > > > > >  	return page;
+> > > > > > > >  }
+> > > > > > > >  
+> > > > > > > > diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+> > > > > > > > index 713ec0435b48..e3c2ccf872a8 100644
+> > > > > > > > --- a/include/linux/memremap.h
+> > > > > > > > +++ b/include/linux/memremap.h
+> > > > > > > > @@ -224,7 +224,8 @@ static inline bool is_fsdax_page(const struct page *page)
+> > > > > > > >  }
+> > > > > > > >  
+> > > > > > > >  #ifdef CONFIG_ZONE_DEVICE
+> > > > > > > > -void zone_device_page_init(struct page *page, unsigned int order);
+> > > > > > > > +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> > > > > > > > +			   unsigned int order);
+> > > > > > > >  void *memremap_pages(struct dev_pagemap *pgmap, int nid);
+> > > > > > > >  void memunmap_pages(struct dev_pagemap *pgmap);
+> > > > > > > >  void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
+> > > > > > > > @@ -234,9 +235,11 @@ bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
+> > > > > > > >  
+> > > > > > > >  unsigned long memremap_compat_align(void);
+> > > > > > > >  
+> > > > > > > > -static inline void zone_device_folio_init(struct folio *folio, unsigned int order)
+> > > > > > > > +static inline void zone_device_folio_init(struct folio *folio,
+> > > > > > > > +					  struct dev_pagemap *pgmap,
+> > > > > > > > +					  unsigned int order)
+> > > > > > > >  {
+> > > > > > > > -	zone_device_page_init(&folio->page, order);
+> > > > > > > > +	zone_device_page_init(&folio->page, pgmap, order);
+> > > > > > > >  	if (order)
+> > > > > > > >  		folio_set_large_rmappable(folio);
+> > > > > > > >  }
+> > > > > > > > diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> > > > > > > > index 8af169d3873a..455a6862ae50 100644
+> > > > > > > > --- a/lib/test_hmm.c
+> > > > > > > > +++ b/lib/test_hmm.c
+> > > > > > > > @@ -662,7 +662,9 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
+> > > > > > > >  			goto error;
+> > > > > > > >  	}
+> > > > > > > >  
+> > > > > > > > -	zone_device_folio_init(page_folio(dpage), order);
+> > > > > > > > +	zone_device_folio_init(page_folio(dpage),
+> > > > > > > > +			       page_pgmap(folio_page(page_folio(dpage), 0)),
+> > > > > > > > +			       order);
+> > > > > > > >  	dpage->zone_device_data = rpage;
+> > > > > > > >  	return dpage;
+> > > > > > > >  
+> > > > > > > > diff --git a/mm/memremap.c b/mm/memremap.c
+> > > > > > > > index 63c6ab4fdf08..6f46ab14662b 100644
+> > > > > > > > --- a/mm/memremap.c
+> > > > > > > > +++ b/mm/memremap.c
+> > > > > > > > @@ -477,10 +477,28 @@ void free_zone_device_folio(struct folio *folio)
+> > > > > > > >  	}
+> > > > > > > >  }
+> > > > > > > >  
+> > > > > > > > -void zone_device_page_init(struct page *page, unsigned int order)
+> > > > > > > > +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> > > > > > > > +			   unsigned int order)
+> > > > > > > >  {
+> > > > > > > > +	struct page *new_page = page;
+> > > > > > > > +	unsigned int i;
+> > > > > > > > +
+> > > > > > > >  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+> > > > > > > >  
+> > > > > > > > +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
+> > > > > > > > +		struct folio *new_folio = (struct folio *)new_page;
+> > > > > > > > +
+> > > > > > > > +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
+> > > > > > > 
+> > > > > > > This seems odd to me, mainly due to the "magic" number. Why not just clear
+> > > > > > > the flags entirely? Or at least explicitly just clear the flags you care about
+> > > > > > > which would remove the need for the comment and  should let you use the proper
+> > > > > > > PageFlag functions.
+> > > > > > > 
+> > > > > > 
+> > > > > > I'm copying this from folio_reset_order [1]. My paranoia about touching
+> > > > > > anything related to struct page is high, so I did the same thing
+> > > > > > folio_reset_order does here.
+> > > > 
+> > > > So why not just use folio_reset_order() below?
+> > > > 
+> > > > > > 
+> > > > > > [1] https://elixir.bootlin.com/linux/v6.18.5/source/include/linux/mm.h#L1075
+> > > > > > 
+> > > > > 
+> > > > > This immediately hangs my first SVM test...
+> > > > > 
+> > > > > diff --git a/mm/memremap.c b/mm/memremap.c
+> > > > > index 6f46ab14662b..ef8c56876cf5 100644
+> > > > > --- a/mm/memremap.c
+> > > > > +++ b/mm/memremap.c
+> > > > > @@ -488,7 +488,7 @@ void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> > > > >         for (i = 0; i < (1UL << order); ++i, ++new_page) {
+> > > > >                 struct folio *new_folio = (struct folio *)new_page;
+> > > > > 
+> > > > > -               new_page->flags.f &= ~0xffUL;   /* Clear possible order, page head */
+> > > > > +               new_page->flags.f = 0;
+> > > > >  #ifdef NR_PAGES_IN_LARGE_FOLIO
+> > > > >                 ((struct folio *)(new_page - 1))->_nr_pages = 0;
+> > > > 
+> > > > This seems wrong to me - I saw your reply to Balbir but for an order-0 page
+> > > > isn't this going to access a completely different, possibly already allocated,
+> > > > page?
+> > > > 
+> > > 
+> > > No — it accesses itself (new_page). It just uses some odd memory tricks
+> > > for this, which I agree isn’t the best thing I’ve ever written, but it
+> > > was the least-worst idea I had. I didn’t design the folio/page field
+> > > aliasing; I understand why it exists, but it still makes my head hurt.
+> > 
+> > And obviously mine, because I (was) still not getting it and had typed up a
+> > whole response and code walk through to show what was wrong, in the hope it
+> > would help settle the misunderstanding. Which it did, because I discovered
+> > where I was getting things wrong. But I've left the analysis below because it's
+> > probably useful for others following along:
+> > 
+> > Walking through the code we have:
+> > 
+> > void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+> > 			   unsigned int order)
+> > {
+> > 
+> > The first argument, page, is the first in a set of 1 << order contiguous
+> > struct page. In the simplest case order == 0, meaning this function should only
+> > initialise (ie. touch) a single struct page pointer which is passed as the first
+> > argument to the function.
+> 
+> Yes.
+> 
+> > 
+> > 	struct page *new_page = page;
+> > 
+> > So now *new_page points to the single struct page we should touch.
+> > 	
+> > 	unsigned int i;
+> > 
+> > 	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+> > 
+> > 	for (i = 0; i < (1UL << order); ++i, ++new_page) {
+> > 
+> > order == 0, so this loop will only execute once.
+> > 
+> 
+> Yes.
+> 
+> > 		struct folio *new_folio = (struct folio *)new_page;
+> > 
+> > new_page still points to the single page we're initialising, and new_folio
+> > points to the same page. Ie: &new_folio->page == new_page. There is a hazard
+> > here because new_folio->__page_1, __page_2, etc. all point to pages we shouldn't
+> > touch.
+> > 
+> 
+> Yes.
+> 
+> > 		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
+> > 
+> > Clears the flags, makes sense.
+> > 
+> 
+> +1
+> 
+> > #ifdef NR_PAGES_IN_LARGE_FOLIO
+> > 		((struct folio *)(new_page - 1))->_nr_pages = 0;
+> > 
+> > If we break this down we have:
+> > 
+> > struct page *tmp_new_page = new_page - 1;
+> > 
+> > Which is the page before the one we're initialising and shouldn't be touched.
+> > Then we cast to a folio:
+> > 
+> > struct folio *tmp_new_folio = (struct folio *) tmp_new_page;
+> > 
+> > And reset _nr_pages:
+> > 
+> > tmp_new_folio->_nr_pages = 0
+> > 
+> > And now I can see where I was confused - &tmp_new_folio->_nr_pages == &tmp_new_folio->__page_1->memcg_data == &new_page->memcg_data
+> > 
+> 
+> Not 100% right, as _nr_pages is 4 bytes and memcg_data is 8, but the
+> pointer base address is the same.
+> 
+> > So after both Balbir, probably yourself, and definitely myself scratching our
+> > heads for way too long over this change I think we can conclude that the code as
+> > is is way too confusing to merge without a lot more comments :-)
+> > 
+> 
+> I think more comments is the way to go. More below.
+> 
+> > However why go through all this magic in the first place? Why not just treat
+> > everything here as a page and just do
+> > 
+> > 	new_page->memcg_data = 0
+> > 
+> 
+> Well, memcg_data is 8 bytes and _nr_pages is 4. They also have different
+> #ifdef conditions around each field, etc.
+> 
+> I’ve also seen failures in our testing, and so has François, with the
+> memcg_data change. I wish I had a stack trace to share or explain, but
+> the times I hit the error I didn’t capture the dmesg, and I’ve been
+> having issues with my dev machine today. If I catch the error again,
+> I’ll reply with a stack trace and analysis.
+> 
+> > directly? That seems like the more straight forward approach. In fact given
+> > all the confusion I wonder if it wouldn't be better to just do
+> > memset(new_page, 0, sizeof(*new_page)) and reinitialise everything from
+> > scratch.
+> 
+> I had considered this option too, but I’d be a little concerned about
+> the performance. Reinitializing a zone page/folio is a hot path, as this
+> is typically done in a GPU fault handler. I think adding verbose
+> comments explaining why this works, plus some follow-up helpers, might
+> be the better option.
+> 
+> > 
+> > > folio->_nr_pages is page + 1 for reference (new_page after this math).
+> > > Again, if I touched this memory directly in new_page, it’s most likely
+> > > memcg_data, but that is hidden behind a Kconfig.
+> > > 
+> > > This just blindly implementing part of folio_reset_order which clears
+> > > _nr_pages.
+> > 
+> > Yeah, I get it now. But I think just clearing memcg_data would be the easiest to
+> > understand approach, especially if it had a comment explaining that it may have
+> > previously been used for _nr_pages.
+> > 
+> 
+> See above — the different sizes, the failure I’m seeing, and the
+> conflicting #ifdefs are why this is not my preferred option.
+> 
+> > > > >  #endif
+> > > > > 
+> > > > > I can walk through exactly which flags need to be cleared, but my
+> > > > > feeling is that likely any flag that the order field overloads and can
+> > > > > possibly encode should be cleared—so bits 0–7 based on the existing
+> > > > > code.
+> > > > > 
+> > > > > How about in a follow-up we normalize setting / clearing the order flag
+> > > > > field with a #define and an inline helper?
+> > > > 
+> > > > Ie: Would something like the following work:
+> > > > 
+> > > > 		ClearPageHead(new_page);
+> > > 
+> > > Any of these bit could possibly be set the order field in a folio, which
+> > > modifies page + 1 flags field.
+> > > 
+> > > 	PG_locked,		/* Page is locked. Don't touch. */
+> > > 	PG_writeback,		/* Page is under writeback */
+> > > 	PG_referenced,
+> > > 	PG_uptodate,
+> > > 	PG_dirty,
+> > > 	PG_lru,
+> > > 	PG_head,		/* Must be in bit 6 */
+> > > 	PG_waiters,		/* Page has waiters, check its waitqueue. Must be bit #7 and in the same byte as "PG_locked" */
+> > > 
+> > > So a common order-9 (2MB) folio would have PG_locked | PG_uptodate set.
+> > > Now we get stuck on the next page lock because PG_locked is set.
+> > > Offhand, I don’t know if different orders—which set different bits—cause
+> > > any nasty issues either. So I figured the safest thing was clear any
+> > > bits which folio order can set within subsequent page's memory flags
+> > > like folio_reset_order does.
+> > 
+> > Oh, I get the above. I was thinking folio_reset_order() below would clear the
+> > flags, but I see the folly there - that resets the flags for the next page.
+> > 
+> 
+> Correct.
+> 
+> > > 
+> > > > 		clear_compound_head(new_page);
+> > > > 		folio_reset_order(new_folio);
+> > > > 
+> > > > Which would also deal with setting _nr_pages.
+> > > >
+> > > 
+> > > folio_reset_order(new_folio) would set _nr_pages in the memory that is
+> > > new_page + 1. So let's say that page has a ref count + memcg_data, now
+> > > that memory is corrupted and will crash the kernel.
+> > 
+> > Yep, I just noticed that. Thanks for pointing that out.
+> > 
+> > > All of the above is why is took me multiple hours to write 6 lines of
+> > > code :).
+> > 
+> > And to review :) Good thing we don't get paid per SLOC of code right?
 > >
-> > While we're here, update rwsem_assert_[write_]held_nolockdep() to utilise
-> > the rwsem_is_[write_]locked() helpers directly to reduce code duplication,
-> > and also update rwsem_is_locked() to take a const rwsem and return a
-> > boolean.
-> >
-> > This patch also updates the CONFIG_PREEMPT_RT helpers to do the same thing
-> > there.
-> >
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > ---
-> >  include/linux/rwsem.h | 20 +++++++++++++++-----
-> >  1 file changed, 15 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
-> > index f1aaf676a874..b25b7944ad99 100644
-> > --- a/include/linux/rwsem.h
-> > +++ b/include/linux/rwsem.h
-> > @@ -70,19 +70,24 @@ struct rw_semaphore {
-> >  #define RWSEM_WRITER_LOCKED		(1UL << 0)
-> >  #define __RWSEM_COUNT_INIT(name)	.count = ATOMIC_LONG_INIT(RWSEM_UNLOCKED_VALUE)
-> >
-> > -static inline int rwsem_is_locked(struct rw_semaphore *sem)
-> > +static inline bool rwsem_is_locked(const struct rw_semaphore *sem)
-> >  {
-> >  	return atomic_long_read(&sem->count) != RWSEM_UNLOCKED_VALUE;
-> >  }
-> >
-> > +static inline bool rwsem_is_write_locked(const struct rw_semaphore *sem)
-> > +{
-> > +	return atomic_long_read(&sem->count) & RWSEM_WRITER_LOCKED;
-> > +}
-> > +
-> >  static inline void rwsem_assert_held_nolockdep(const struct rw_semaphore *sem)
-> >  {
-> > -	WARN_ON(atomic_long_read(&sem->count) == RWSEM_UNLOCKED_VALUE);
-> > +	WARN_ON(!rwsem_is_locked(sem));
-> >  }
-> >
-> >  static inline void rwsem_assert_held_write_nolockdep(const struct rw_semaphore *sem)
-> >  {
-> > -	WARN_ON(!(atomic_long_read(&sem->count) & RWSEM_WRITER_LOCKED));
-> > +	WARN_ON(!rwsem_is_write_locked(sem));
-> >  }
-> >
-> >  /* Common initializer macros and functions */
-> > @@ -174,11 +179,16 @@ do {								\
-> >  	__init_rwsem((sem), #sem, &__key);			\
-> >  } while (0)
-> >
-> > -static __always_inline int rwsem_is_locked(const struct rw_semaphore *sem)
-> > +static __always_inline bool rwsem_is_locked(const struct rw_semaphore *sem)
-> >  {
-> >  	return rw_base_is_locked(&sem->rwbase);
-> >  }
-> >
-> > +static __always_inline bool rwsem_is_write_locked(const struct rw_semaphore *sem)
-> > +{
-> > +	return rw_base_is_write_locked(&sem->rwbase);
-> > +}
-> > +
-> >  static __always_inline void rwsem_assert_held_nolockdep(const struct rw_semaphore *sem)
-> >  {
-> >  	WARN_ON(!rwsem_is_locked(sem));
-> > @@ -186,7 +196,7 @@ static __always_inline void rwsem_assert_held_nolockdep(const struct rw_semaphor
-> >
-> >  static __always_inline void rwsem_assert_held_write_nolockdep(const struct rw_semaphore *sem)
-> >  {
-> > -	WARN_ON(!rw_base_is_write_locked(&sem->rwbase));
-> > +	WARN_ON(!rwsem_is_write_locked(sem));
->
-> I thought it was wrong since rwsem_is_write_locked() at the top reads ->count
-> instead of ->rwbase until I see there is another rwsem_is_write_locked() above.
+> 
+> I don’t think anyone would touch core MM if pay were based on SLOC — it
+> would be a terrible career choice. :)
+> 
+> All joking aside, I think the next revision should use this version,
+> plus more comments and helpers/defines in a follow-up—which I’ll commit
+> to—along with fixing the branch mismatch Andrew pointed out between
+> drm-tip (which this series is based on) and 6.19 (where this patch needs
+> to apply).
 
-:)
+I believe the best branch for this series would be drm-misc-next indeed.
 
->
->
-> >  }
-> >
-> >  static __always_inline int rwsem_is_contended(struct rw_semaphore *sem)
-> > --
->
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+But this patch in particular needs multiple acks to get through drm trees.
+At least one from each block:
 
-Thanks!
+## arch/powerpc/kvm/book3s_hv_uvmem.c
+Madhavan Srinivasan <maddy@linux.ibm.com> (maintainer:KERNEL VIRTUAL MACHINE FOR POWERPC (KVM/powerpc))
+Nicholas Piggin <npiggin@gmail.com> (reviewer:KERNEL VIRTUAL MACHINE FOR POWERPC (KVM/powerpc))
+Michael Ellerman <mpe@ellerman.id.au> (maintainer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
+"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> (reviewer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
 
->
->
-> --
-> Best Regards,
-> Yan, Zi
+## include/linux/memremap.h
+David Hildenbrand <david@kernel.org> (maintainer:MEMORY HOT(UN)PLUG)
+Oscar Salvador <osalvador@suse.de> (maintainer:MEMORY HOT(UN)PLUG)
+
+## lib/test_hmm.c
+Andrew Morton <akpm@linux-foundation.org> (maintainer:LIBRARY CODE)
+Jason Gunthorpe <jgg@ziepe.ca> (maintainer:HMM - Heterogeneous Memory Management)
+Leon Romanovsky <leon@kernel.org> (maintainer:HMM - Heterogeneous Memory Management)
+
+## mm/memremap.c
+David Hildenbrand <david@kernel.org> (maintainer:MEMORY HOT(UN)PLUG)
+Oscar Salvador <osalvador@suse.de> (maintainer:MEMORY HOT(UN)PLUG)
+Andrew Morton <akpm@linux-foundation.org> (maintainer:MEMORY MANAGEMENT)
+
+
+On the other hand we would also need Max to do one extra last pull-request
+towards 7.0 after we get this merged. Because our window in drm closed
+earlier.
+
+Or this patch goes to any regular mm tree, and we hold the drm ones
+after we backmerge 7.0-rc1
+
+> 
+> Matt
+> 
+> >  - Alistair
+> > 
+> > > > > Matt
+> > > > > 
+> > > > > > > > +#ifdef NR_PAGES_IN_LARGE_FOLIO
+> > > > > > > > +		((struct folio *)(new_page - 1))->_nr_pages = 0;
+> > > > > > > > +#endif
+> > > > > > > > +		new_folio->mapping = NULL;
+> > > > > > > > +		new_folio->pgmap = pgmap;	/* Also clear compound head */
+> > > > > > > > +		new_folio->share = 0;   /* fsdax only, unused for device private */
+> > > > > > > 
+> > > > > > > It would be nice if the FS DAX code actually used this as well. Is there a
+> > > > > > > reason that change was dropped from the series?
+> > > > > > > 
+> > > > > > 
+> > > > > > I don't have a test platform for FS DAX. In prior revisions, I was just
+> > > > > > moving existing FS DAX code to a helper, which I felt confident about.
+> > > > > > 
+> > > > > > This revision is slightly different, and I don't feel comfortable
+> > > > > > modifying FS DAX code without a test platform. I agree we should update
+> > > > > > FS DAX, but that should be done in a follow-up with coordinated testing.
+> > > > 
+> > > > Fair enough, I figured something like this might be your answer :-) You
+> > > > could update it and ask people with access to such a system to test it though
+> > > > (unfortunately my setup has bit-rotted beyond repair).
+> > > > 
+> > > > But I'm ok leaving to for a future change.
+> > > >
+> > > 
+> > > I did a quick grep in fs/dax.c and don’t see zone_device_page_init
+> > > called there. It probably could be used if it’s creating compound pages
+> > > and drop the open-coded reinit when shared == 0, but yeah, that’s not
+> > > something I can blindly code without testing.
+> > > 
+> > > I can try to put something together for people to test soonish.
+> > > 
+> > > Matt
+> > > 
+> > > > > > 
+> > > > > > Matt 
+> > > > > > 
+> > > > > > > > +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
+> > > > > > > > +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
+> > > > > > > > +	}
+> > > > > > > > +
+> > > > > > > >  	/*
+> > > > > > > >  	 * Drivers shouldn't be allocating pages after calling
+> > > > > > > >  	 * memunmap_pages().
+> > > > > > > > -- 
+> > > > > > > > 2.43.0
+> > > > > > > > 
 
