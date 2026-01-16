@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 394F3D47CCD
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:13:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18B54D47CC3
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 10:13:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DB4E6B0095; Fri, 16 Jan 2026 05:13:04 -0500 (EST)
+	id 7F2036B0096; Fri, 16 Jan 2026 05:13:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 964A86B0096; Fri, 16 Jan 2026 05:13:04 -0500 (EST)
+	id 7B2BE6B0098; Fri, 16 Jan 2026 05:13:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8640E6B0098; Fri, 16 Jan 2026 05:13:04 -0500 (EST)
+	id 6E9E56B0099; Fri, 16 Jan 2026 05:13:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 750096B0095
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:13:04 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 339381A05E3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E0FC6B0096
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 05:13:08 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 30F611A05CB
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:13:08 +0000 (UTC)
+X-FDA: 84337414056.11.34DD747
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 49A4B40009
 	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:13:04 +0000 (UTC)
-X-FDA: 84337413888.29.14DE2BA
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 687DC8000A
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:13:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="GSl/06MQ";
-	spf=pass (imf30.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=BrclL0mt;
+	spf=pass (imf17.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
 	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768558382;
+	s=arc-20220608; t=1768558385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BgNe2KClDQ4hSoLFcOrhtcJFQXeFNHMsjPEUh+pkpmQ=;
-	b=A8i1g5y3OdOLDYBPT7K3Pjg2O+jYMZu6TrjW6bINwABbuwC88wbzd7kKEpZYSK8GHPXtag
-	87whdqtWxoiT0lc3Lv8Aq51HFoQNkAMYTlNxATH3W5mbQp+daqtY4dqr3Y+e2QfbseZrBZ
-	EApr7EkLyc8DARDntkd37BlahcorCVw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="GSl/06MQ";
-	spf=pass (imf30.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768558382; a=rsa-sha256;
+	bh=LEudv48FbYI3jxGKm1EoFln+VzTAerZ867l6GxD+u1Q=;
+	b=Ke6YFeOHqeFufOyts8qfn6/IGWni6Z7nea+CxutZ6T/dvTSGH+H3sLMEpNlZKWisL/5OxJ
+	g28k9vavoIYWES3dDWAp7K5v5VmitZF9ASljuGqTKpYIJzAx5TVtgwBU7QEluMe3Q14JSj
+	/TOalvLqtkhnDRMMCc9kObtXxW76HRM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768558385; a=rsa-sha256;
 	cv=none;
-	b=4R1CkD0MN8DbhIEP6IbkIxHeWMSUkiDNfUOiHBgAgjdmv4vMhzUbtcxHPbxfmpqUFi+1N0
-	l4wEip3D1+XtJqkupoDZHtfZPySIOR585KrcVnhenm7IKFk8rzvnZzm8i1MvCqdQrUd4M4
-	md9DGNIV1G6nTcKd8QByPSU+w7El8X4=
+	b=H8ksdeDyBtFQyDODtWW3bwmbvM2qZVDsm/wyNIDE9/hcPW/tausWXhZ/3FqyYn114OyuND
+	X6AfgFS0Gu1vdO/r2K5HfqvXwggExNYuAYV6v4xMFtT1bcgwSTmfP7TlT/23mWsfKRO8Gw
+	faAK0ANgyQfRbXPRy0oGWQN7wLMw7mg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=BrclL0mt;
+	spf=pass (imf17.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20260116101258epoutp02e28650582d78b2adc597d3a6bfcabcff~LLnmkbr200443004430epoutp02w
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:12:58 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20260116101258epoutp02e28650582d78b2adc597d3a6bfcabcff~LLnmkbr200443004430epoutp02w
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20260116101302epoutp0470e5b095616dca22c70987f115709641~LLnpwoDw_1540615406epoutp04h
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 10:13:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20260116101302epoutp0470e5b095616dca22c70987f115709641~LLnpwoDw_1540615406epoutp04h
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1768558378;
-	bh=BgNe2KClDQ4hSoLFcOrhtcJFQXeFNHMsjPEUh+pkpmQ=;
+	s=mail20170921; t=1768558382;
+	bh=LEudv48FbYI3jxGKm1EoFln+VzTAerZ867l6GxD+u1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSl/06MQCTcn6yrKwH56OSOZt3PIWhZ3MeaiPZOxTEyi+iQwUZK8UtF6Gocg2GEji
-	 rry/kMmLDkUaeNK1Mw3lK/DFjP2wn3ckcjEB0x1+pt+5MNPUx+6PfNPSWoXYolRUUa
-	 IZ1CfLw0VhzP6lKb4M0TblSibEiHPO5ML5Ljr1Gs=
-Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
-	20260116101257epcas5p22e003553205af204b04e5d3beb95bd3e~LLnl18QVR0070600706epcas5p2i;
-	Fri, 16 Jan 2026 10:12:57 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.95]) by
-	epsnrtp04.localdomain (Postfix) with ESMTP id 4dswf06Z0Fz6B9m5; Fri, 16 Jan
-	2026 10:12:56 +0000 (GMT)
+	b=BrclL0mtcL/9mebcncNQJLEd+K9SZWXqC4LSYx5RokpaDy4Ij9PDzjIzfnsgoJMB9
+	 Yxg6ypw4X6pyA3eL9hyR6XVlEpebQcZy/GEF/hJFzLfaVY6JB3qTeZiqGzjM9UjkK7
+	 cYADjPTlHIZJ6VuVu/2wyvYbMZz0DFC57Bw7D5Ew=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260116101301epcas5p1dabcbcbc983d060bfd774a6b49d2621e~LLnpNvqxI1616916169epcas5p1i;
+	Fri, 16 Jan 2026 10:13:01 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.89]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4dswf42lMvz2SSKd; Fri, 16 Jan
+	2026 10:13:00 +0000 (GMT)
 Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79~LLnkb0WwQ0497304973epcas5p2I;
-	Fri, 16 Jan 2026 10:12:56 +0000 (GMT)
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260116101259epcas5p1cfa6ab02e5a01f7c46cc78df95c57ce0~LLnnsIu7V0902909029epcas5p1_;
+	Fri, 16 Jan 2026 10:12:59 +0000 (GMT)
 Received: from localhost.localdomain (unknown [107.99.41.245]) by
 	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260116101251epsmtip28e575dac3f1710c8d7adf508a92e75e0~LLngPxtb10634506345epsmtip2K;
-	Fri, 16 Jan 2026 10:12:51 +0000 (GMT)
+	20260116101256epsmtip2c5338bdbb107259573618ff7a08310b7~LLnkrm3ds0821508215epsmtip2J;
+	Fri, 16 Jan 2026 10:12:56 +0000 (GMT)
 From: Kundan Kumar <kundan.kumar@samsung.com>
 To: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
 	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
@@ -83,31 +83,30 @@ To: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
 Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
 	linux-xfs@vger.kernel.org, gost.dev@samsung.com, kundan.kumar@samsung.com,
 	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: [PATCH v3 4/6] xfs: tag folios with AG number during buffered write
- via iomap attach hook
-Date: Fri, 16 Jan 2026 15:38:16 +0530
-Message-Id: <20260116100818.7576-5-kundan.kumar@samsung.com>
+Subject: [PATCH v3 5/6] xfs: add per-AG writeback workqueue infrastructure
+Date: Fri, 16 Jan 2026 15:38:17 +0530
+Message-Id: <20260116100818.7576-6-kundan.kumar@samsung.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260116100818.7576-1-kundan.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79
+X-CMS-MailID: 20260116101259epcas5p1cfa6ab02e5a01f7c46cc78df95c57ce0
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 CMS-TYPE: 105P
 cpgsPolicy: CPGSC10-542,Y
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79
+X-CMS-RootMailID: 20260116101259epcas5p1cfa6ab02e5a01f7c46cc78df95c57ce0
 References: <20260116100818.7576-1-kundan.kumar@samsung.com>
-	<CGME20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79@epcas5p2.samsung.com>
-X-Stat-Signature: rzw7xq8oarwuj6bna9iaq6kn41377yp7
+	<CGME20260116101259epcas5p1cfa6ab02e5a01f7c46cc78df95c57ce0@epcas5p1.samsung.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 49A4B40009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 687DC8000A
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768558381-833336
-X-HE-Meta: U2FsdGVkX1/aXXJNXY+r+BsXsIydL4P/mEo9amWd7WO8KkdRXhoBsZumMZyX503kyBnzTDC2pUT30Jdwb8JvbK8n8v+q5MsSeHxD+H8zVClQGd6mAQXxua265kOHXnH+D1pOo+JA9jUl4mKlJm2y0BnjyfD+63LP4hFxw2mq97kyO9zYA1iSXeEIm+Zaaxi/RVfEdtg2UD9ntRqTKU3KUjHCsFnFYftctmbHaa7UQ9GjN2ARc14Tfq6ul6nira6OlcDXMzTSPnYYFZl7wv1WKXGuZTZR70slgN7LEqZ5XF0wAZU6KSRGBiJqzs96CE1lKVvgvd2NMCYeXomOy43dwOgeGv8y1Mdit5ABe73zT08HHeJ7mItJX4aRGYHz9eNAlkuA9fuRT7iJcWeFJd4E7Q2+99VxZ50ZHpxo6OTbtwBzm4A2SkbRLDEYLOKauXh/1w5sIhTO1Nti9XXjECiZBoAq+uN80PlPa733FV1eqza0yKPL56PqnzJlHt5vWAGdMAG/1pofMVrTNO0aVlP+AHssTsPST+Eu/ntmfKnqPw7ffeuQrkE9MAjO7N6X9xgs3XgavN9jpQD4fT6xJccFMB+IUbKfeUL68goUquw+u6QcONLh8AgaVGAcQ5WDduGjdXAup6o2UHaPIRANRvt+R8nY9l42yV3plta4W77RIUpaiv/hZfY6OZ79OFALlziNZ5+KlG7WFqY7UXu0drfSCt8vepgVby2c9XuqbdT4T3ZM/EW/435wzJmSU24wYI0hE3AJljaqClRwCoOxUcG0/+mEoCg8svMXbCm/diqANOr5yOIGeekc0O0V+SX+TYTZ1XjfxCpnTvVn9F682ZEUfBoEkC9/J/SVQm76czeLzUaKNOve9xUUvA4oVBgoqYGVHJTJdivWnKYzVeufSy2cnoy0TCu3/Tpzbq8PGLK5GFyHoCHmIuid9D1G0PfUyzkIpRV+bHcodKMwF8Y5o+F
- 4WRv2lP/
- f2uFn8uwCrYhSegbNdT7rghw8LnFDVrU5oQwXPj40osdR4MC7NV18ZsDhtUpE7PAJ0r2SbtNpzRCNgAV7z1xyTBWgaV+Ahivig0j00u+RieFWZXUbej1uQrBnbXMWy2NppANX89F/TH160NgtpcDUliTvI+CBIwiqLtop
+X-Stat-Signature: eqofbcwr179b6p5icu16y4t71yj9kxqw
+X-HE-Tag: 1768558384-722982
+X-HE-Meta: U2FsdGVkX1/qyBGJ4mS6ZQBZz6RnmyjnJ5znKj54xhbdpYcPRcnZlmNr23czQ3uHkoNxtUoPiajHZ73kQXGH+kngMstNsmgMlI6YzzDvkUesqginN8VTs3osud5/oY/rsKa4NqLtNYPtLI7GbgPsU27PWvMAqCadR5SFo5n7LS5txKwqRiAYM46wg4vP1GDcfUb6E48hTdrxZTogAIcf2j2ouowQBUYHpD6D0/AMl/149Jlozo/+XJTr8m2YZZr07T7R574c1bRH/kfCHdVEpRcoFQQ+2LMhh3IqYhPjjge+T847I4+URrbhgVzo633Djbvd0WOZfzLRPVy48M/GH4iT8PRFS/VMJpKfLVA72fhs3B+hPmaPB3waiGFuBCXgrOYE51v2gR/RXQ/fIyoUkaUkBEcQ57KwFHMlhWJCxeLdTcSHFjRSzR+J+baFAvI4iYq3lzU9xUT85vKigqETJM1NC6S/Uo7ouAHF6jZaaZUo9r5rCBOonmBKHOyrMVcuXzZCNdxiOjudlEXf1MpSyQpkINH3KnHOhvJDJ8bUpfDlrE4xOMrbP+5nqlfehCcQmLYUojNyJZ63qcVIREovZME5ZR4zJXhsPE/HfzN0iU9iEjRV8F7sAObh5A7TFRtb7N3wnoeob34fvTQlnIyGfu8OYsf55QIanaVqfGFStzYA4bolP2XRRFIY4XxaaR/fN8esxxSvsggQ/THKzviArBR3v0QSqxUoKhA7nC/KWKBrq52soxEWv0flb6k60goWg+sZnfG4JpZ7sHQFJEORkjF/E8H6pimpco9BFOKK2wWOJ++7T6ZTJGuJ6NLJi71xxw90iyK/0WpadidZqPxs9BXmXw4ppTfJQqH2K1T12c7Qad9dsMgQUGUPazfBSYRDVog0FgbBfy9vH212nOD2XLzSEoB6DkGEB1q0hDo1XPm+HaG0KjGvkQO+aYmsFjmef+7nNSaXPItQ6x4Zr9Q
+ nPfUg/zX
+ 1dqvi0Y/9qq+4HRnzcCd6+xlme4GVhDaoFA7xCQrXkL+jW3nt/nUvez5pSWu3hdh50aEwc3oJpp3tcvsuVGlyj48sabBtWJF40WeDxUCJqRIEACr2Kj18QWCBa5Pkpg0PonvfwMOfauI/MkwortK8Q6+ShMkc4ynki3ib
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,150 +115,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the iomap attach hook to tag folios with their predicted
-allocation group at write time. Mapped extents derive AG directly;
-delalloc and hole cases use a lightweight predictor.
+Introduce per-AG writeback worker infrastructure at mount time.
+This patch adds initialization and teardown only, without changing
+writeback behavior.
 
 Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
 Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
 ---
- fs/xfs/xfs_iomap.c | 114 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 114 insertions(+)
+ fs/xfs/xfs_aops.c  | 79 ++++++++++++++++++++++++++++++++++++++++++++++
+ fs/xfs/xfs_aops.h  |  3 ++
+ fs/xfs/xfs_mount.c |  2 ++
+ fs/xfs/xfs_mount.h | 10 ++++++
+ fs/xfs/xfs_super.c |  2 ++
+ 5 files changed, 96 insertions(+)
 
-diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
-index 490e12cb99be..3c927ce118fe 100644
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -12,6 +12,9 @@
- #include "xfs_trans_resv.h"
- #include "xfs_mount.h"
- #include "xfs_inode.h"
-+#include "xfs_alloc.h"
-+#include "xfs_ag.h"
-+#include "xfs_ag_resv.h"
- #include "xfs_btree.h"
- #include "xfs_bmap_btree.h"
- #include "xfs_bmap.h"
-@@ -92,8 +95,119 @@ xfs_iomap_valid(
- 	return true;
- }
+diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
+index a26f79815533..9d5b65922cd2 100644
+--- a/fs/xfs/xfs_aops.c
++++ b/fs/xfs/xfs_aops.c
+@@ -23,6 +23,23 @@
+ #include "xfs_zone_alloc.h"
+ #include "xfs_rtgroup.h"
  
-+static xfs_agnumber_t
-+xfs_predict_delalloc_agno(const struct xfs_inode *ip, loff_t pos, loff_t len)
-+{
-+	struct xfs_mount *mp = ip->i_mount;
-+	xfs_agnumber_t start_agno, agno, best_agno;
-+	struct xfs_perag *pag;
++#define XFS_AG_TASK_POOL_MIN 1024
 +
-+	xfs_extlen_t free, resv, avail;
-+	xfs_extlen_t need_fsbs, min_free_fsbs;
-+	xfs_extlen_t best_free = 0;
-+	xfs_agnumber_t agcount = mp->m_sb.sb_agcount;
-+
-+	/* RT inodes allocate from the realtime volume */
-+	if (XFS_IS_REALTIME_INODE(ip))
-+		return XFS_INO_TO_AGNO(mp, ip->i_ino);
-+
-+	start_agno =  XFS_INO_TO_AGNO(mp, ip->i_ino);
-+
-+	/*
-+	 * size-based minimum free requirement.
-+	 * Convert bytes to fsbs and require some slack.
-+	 */
-+	need_fsbs = XFS_B_TO_FSB(mp, (xfs_fsize_t)len);
-+	min_free_fsbs = need_fsbs + max_t(xfs_extlen_t, need_fsbs >> 2, 128);
-+
-+	/*
-+	 * scan AGs starting at start_agno and wrapping.
-+	 * Pick the first AG that meets min_free_fsbs after reservations.
-+	 * Keep a "best" fallback = maximum (free - resv).
-+	 */
-+	best_agno = start_agno;
-+
-+	for (xfs_agnumber_t i = 0; i < agcount; i++) {
-+		agno = (start_agno + i) % agcount;
-+		pag = xfs_perag_get(mp, agno);
-+
-+		if (!xfs_perag_initialised_agf(pag))
-+			goto next;
-+
-+		free = READ_ONCE(pag->pagf_freeblks);
-+		resv = xfs_ag_resv_needed(pag, XFS_AG_RESV_NONE);
-+
-+		if (free <= resv)
-+			goto next;
-+
-+		avail = free - resv;
-+
-+		if (avail >= min_free_fsbs) {
-+			xfs_perag_put(pag);
-+			return agno;
-+		}
-+
-+		if (avail > best_free) {
-+			best_free = avail;
-+			best_agno = agno;
-+		}
-+next:
-+		xfs_perag_put(pag);
-+	}
-+
-+	return best_agno;
-+}
-+
-+static inline xfs_agnumber_t xfs_ag_from_iomap(const struct xfs_mount *mp,
-+		const struct iomap *iomap,
-+		const struct xfs_inode *ip, loff_t pos, size_t len)
-+{
-+	if (iomap->type == IOMAP_MAPPED || iomap->type == IOMAP_UNWRITTEN) {
-+		/* iomap->addr is byte address on device for buffered I/O */
-+		xfs_fsblock_t fsb = XFS_BB_TO_FSBT(mp, BTOBB(iomap->addr));
-+
-+		return XFS_FSB_TO_AGNO(mp, fsb);
-+	} else if (iomap->type == IOMAP_HOLE || iomap->type == IOMAP_DELALLOC) {
-+		return xfs_predict_delalloc_agno(ip, pos, len);
-+	}
-+
-+	return XFS_INO_TO_AGNO(mp, ip->i_ino);
-+}
-+
-+static void xfs_agp_set(struct xfs_inode *ip, pgoff_t index,
-+			xfs_agnumber_t agno, u8 type)
-+{
-+	u32 packed = xfs_agp_pack((u32)agno, type, true);
-+
-+	/* store as immediate value */
-+	xa_store(&ip->i_ag_pmap, index, xa_mk_value(packed), GFP_NOFS);
-+
-+	/* Mark this AG as having potential dirty work */
-+	if (ip->i_ag_dirty_bitmap && (u32)agno < ip->i_ag_dirty_bits)
-+		set_bit((u32)agno, ip->i_ag_dirty_bitmap);
-+}
-+
-+static void
-+xfs_iomap_tag_folio(const struct iomap *iomap, struct folio *folio,
-+		loff_t pos, size_t len)
-+{
-+	struct inode *inode;
++struct xfs_ag_wb_task {
++	struct list_head list;
 +	struct xfs_inode *ip;
-+	struct xfs_mount *mp;
++	struct writeback_control wbc;
 +	xfs_agnumber_t agno;
++};
 +
-+	inode = folio_mapping(folio)->host;
-+	ip = XFS_I(inode);
-+	mp = ip->i_mount;
++struct xfs_ag_wb {
++	struct delayed_work ag_work;
++	spinlock_t lock;
++	struct list_head task_list;
++	xfs_agnumber_t agno;
++	struct xfs_mount *mp;
++};
 +
-+	agno = xfs_ag_from_iomap(mp, iomap, ip, pos, len);
-+
-+	xfs_agp_set(ip, folio->index, agno, (u8)iomap->type);
-+}
-+
- const struct iomap_write_ops xfs_iomap_write_ops = {
- 	.iomap_valid		= xfs_iomap_valid,
-+	.tag_folio		= xfs_iomap_tag_folio,
+ struct xfs_writepage_ctx {
+ 	struct iomap_writepage_ctx ctx;
+ 	unsigned int		data_seq;
+@@ -666,6 +683,68 @@ static const struct iomap_writeback_ops xfs_zoned_writeback_ops = {
+ 	.writeback_submit	= xfs_zoned_writeback_submit,
  };
  
- int
++void
++xfs_init_ag_writeback(struct xfs_mount *mp)
++{
++	xfs_agnumber_t agno;
++
++	mp->m_ag_wq = alloc_workqueue("xfs-ag-wb", WQ_UNBOUND | WQ_MEM_RECLAIM,
++				      0);
++	if (!mp->m_ag_wq)
++		return;
++
++	mp->m_ag_wb = kcalloc(mp->m_sb.sb_agcount,
++				sizeof(struct xfs_ag_wb),
++				GFP_KERNEL);
++
++	if (!mp->m_ag_wb) {
++		destroy_workqueue(mp->m_ag_wq);
++		mp->m_ag_wq = NULL;
++		return;
++	}
++
++	for (agno = 0; agno < mp->m_sb.sb_agcount; agno++) {
++		struct xfs_ag_wb *awb = &mp->m_ag_wb[agno];
++
++		spin_lock_init(&awb->lock);
++		INIT_LIST_HEAD(&awb->task_list);
++		awb->agno = agno;
++		awb->mp = mp;
++	}
++
++	mp->m_ag_task_cachep = kmem_cache_create("xfs_ag_wb_task",
++						sizeof(struct xfs_ag_wb_task),
++						0,
++						SLAB_RECLAIM_ACCOUNT,
++						NULL);
++
++	mp->m_ag_task_pool = mempool_create_slab_pool(XFS_AG_TASK_POOL_MIN,
++	mp->m_ag_task_cachep);
++
++	if (!mp->m_ag_task_pool) {
++		kmem_cache_destroy(mp->m_ag_task_cachep);
++		mp->m_ag_task_cachep = NULL;
++	}
++}
++
++void
++xfs_destroy_ag_writeback(struct xfs_mount *mp)
++{
++	if (mp->m_ag_wq) {
++		flush_workqueue(mp->m_ag_wq);
++		destroy_workqueue(mp->m_ag_wq);
++		mp->m_ag_wq = NULL;
++	}
++	kfree(mp->m_ag_wb);
++	mp->m_ag_wb = NULL;
++
++	mempool_destroy(mp->m_ag_task_pool);
++	mp->m_ag_task_pool = NULL;
++
++	kmem_cache_destroy(mp->m_ag_task_cachep);
++	mp->m_ag_task_cachep = NULL;
++}
++
+ STATIC int
+ xfs_vm_writepages(
+ 	struct address_space	*mapping,
+diff --git a/fs/xfs/xfs_aops.h b/fs/xfs/xfs_aops.h
+index 5a7a0f1a0b49..e84acb7e8ca8 100644
+--- a/fs/xfs/xfs_aops.h
++++ b/fs/xfs/xfs_aops.h
+@@ -12,4 +12,7 @@ extern const struct address_space_operations xfs_dax_aops;
+ int xfs_setfilesize(struct xfs_inode *ip, xfs_off_t offset, size_t size);
+ void xfs_end_bio(struct bio *bio);
+ 
++void xfs_init_ag_writeback(struct xfs_mount *mp);
++void xfs_destroy_ag_writeback(struct xfs_mount *mp);
++
+ #endif /* __XFS_AOPS_H__ */
+diff --git a/fs/xfs/xfs_mount.c b/fs/xfs/xfs_mount.c
+index 0953f6ae94ab..26224503c4bf 100644
+--- a/fs/xfs/xfs_mount.c
++++ b/fs/xfs/xfs_mount.c
+@@ -1323,6 +1323,8 @@ xfs_unmountfs(
+ 
+ 	xfs_qm_unmount(mp);
+ 
++	xfs_destroy_ag_writeback(mp);
++
+ 	/*
+ 	 * Unreserve any blocks we have so that when we unmount we don't account
+ 	 * the reserved free space as used. This is really only necessary for
+diff --git a/fs/xfs/xfs_mount.h b/fs/xfs/xfs_mount.h
+index b871dfde372b..c44155de2883 100644
+--- a/fs/xfs/xfs_mount.h
++++ b/fs/xfs/xfs_mount.h
+@@ -342,6 +342,16 @@ typedef struct xfs_mount {
+ 
+ 	/* Hook to feed dirent updates to an active online repair. */
+ 	struct xfs_hooks	m_dir_update_hooks;
++
++
++	/* global XFS AG writeback wq */
++	struct workqueue_struct *m_ag_wq;
++	/* array of [sb_agcount] */
++	struct xfs_ag_wb        *m_ag_wb;
++
++	/* task cache and pool */
++	struct kmem_cache *m_ag_task_cachep;
++	mempool_t *m_ag_task_pool;
+ } xfs_mount_t;
+ 
+ #define M_IGEO(mp)		(&(mp)->m_ino_geo)
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index bc71aa9dcee8..73f8d2942df4 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1765,6 +1765,8 @@ xfs_fs_fill_super(
+ 	if (error)
+ 		goto out_free_sb;
+ 
++	xfs_init_ag_writeback(mp);
++
+ 	/*
+ 	 * V4 support is undergoing deprecation.
+ 	 *
 -- 
 2.25.1
 
