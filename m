@@ -4,96 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E228D4A5E4
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 02:18:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEB97D4A5E4
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 02:24:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC47C6B0005; Thu, 15 Jan 2026 21:18:46 -0500 (EST)
+	id 1C86B6B0005; Thu, 15 Jan 2026 21:24:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A67846B0088; Thu, 15 Jan 2026 21:18:46 -0500 (EST)
+	id 1751C6B0088; Thu, 15 Jan 2026 21:24:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9534B6B0089; Thu, 15 Jan 2026 21:18:46 -0500 (EST)
+	id 056BA6B0089; Thu, 15 Jan 2026 21:24:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 846996B0005
-	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:18:46 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6C86591BA
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:18:45 +0000 (UTC)
-X-FDA: 84336218610.07.E38D1C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 392CAA0009
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:18:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fPTDAJ13;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768529924; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E8E5A6B0005
+	for <linux-mm@kvack.org>; Thu, 15 Jan 2026 21:24:12 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 898CCC1911
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:24:12 +0000 (UTC)
+X-FDA: 84336232344.26.E8FE2F5
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 999CAA0007
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 02:24:10 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=CKqH0dMh;
+	spf=pass (imf25.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768530251; a=rsa-sha256;
 	cv=none;
-	b=pGprx0C1eCP/nQTMhbmG6h7oabgcu1YcH8XlqwvcgzS9KTNQ0/1+Q8autbJ/iUl9x1Gf/3
-	3bq3Ak9i5LXZZosO/uNjKfWIfjucRN3xJNyz9YgFP2tdbRG+mXhvn/2sgXm9B3H07tQyMK
-	z0DyPRCZJY/V8B9+EKNb5dB810MgILc=
+	b=U9rkfhEJ2wk26IN8NOsdQ9HY+NIyLCxoBTupfmNQIN8/7jXCUiDIivq3bfr8ahd2S9q21H
+	WzZFzcjcrskyc5JpsrU8VtMmQQiDJD9yZKfn5YxL9G9d0Yb3cVzn+ucJ5sj8HCWrs+MMir
+	5LSJAyW6YyE+J81qM06GxCOw17e8+yw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fPTDAJ13;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=CKqH0dMh;
+	spf=pass (imf25.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768529924;
+	s=arc-20220608; t=1768530251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FrYeB6FwP88E1cVSomuA8fJM7drO5+NvPdMEgmwLbTs=;
-	b=XzxyvD/7Htynw0ZHmYAhcUsvXtbEL4QjmIpko+6hGFrygW/GE4JZyV6Q1EhMQVoiSAzvox
-	hsI79yNbtNT5T/pfoQVwgvG4pa3RhVGYWUS7UvwK0udDdz/vNffFwg051WaE1IbG3iqgrv
-	5EvxEh3mKW2BvUsSjIHTVdDUlqOLLUg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 372AA43FAC;
-	Fri, 16 Jan 2026 02:18:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61F3C116D0;
-	Fri, 16 Jan 2026 02:18:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768529923;
-	bh=xGlwY78YgnNbg3yS+LVBBKRA+TOB2qhqnJXMmBJVQWg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPTDAJ13Mve+x1u8jgmEeoGS4WDvjrP7KrYW3HxmWZTXqVCi2dJc/rOgv7H8ds82O
-	 1R8PeGdcoXBmm2psxQlZpWlh2m49WiwjtZLwMTsNT0EHfgvAI0AwHdC6g42Kd5Yewx
-	 SoHzScXpKaMLMaZfklq2B7rFUv5qXKYYnKSa/wKDVQbDVtfZs5Ao//PgCMJDSFY8N9
-	 jCHeKQdjx8pRw15XfLbtf7Qu10HI4vKTbL9pYNjGwtHfF+ermolFnR2P//PwHyq3AL
-	 vTBVyrwR4v1cbFm1S782F5numkyOC1890a1zxTgvh1lSOI2BL41urUp5qaFuU9MaAx
-	 jVUzMSdqDs2Lw==
-From: SeongJae Park <sj@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	akpm@linux-foundation.org,
-	kent.overstreet@linux.dev,
-	corbet@lwn.net,
-	ranxiaokai627@163.com,
-	ran.xiaokai@zte.com.cn,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] Docs/mm/allocation-profiling: describe sysctrl limitations in debug mode
-Date: Thu, 15 Jan 2026 18:18:34 -0800
-Message-ID: <20260116021835.71770-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAJuCfpEQZMVCz0WUQ9SOP6TBKxaT3ajpHi24Aqdd73RCsmi8rg@mail.gmail.com>
-References: 
+	bh=e7+ZkXTf+cEt8COK7ZiBm7FpEGCZkXwmsqQ2YKKQgYQ=;
+	b=Nhx1ycpdAiMsE0iZ2zYn+4Vaeo1wGOPIP60Pb8vJsrAjINpEwvFdOJ99qMRXBIRxIg2mrs
+	8BjmiLIgrVL8QXumUWNPqnY3LYq/5NXQfq5aiL8RstKUE83Tp8E0I3MOhbEmFpOytf/a6n
+	1lGy6lxQb3Re/rfyj3T3jY56OVa4i3I=
+Received: from macsyma.thunk.org ([37.140.223.154])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 60G2M4QF012987
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Jan 2026 21:22:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1768530137; bh=e7+ZkXTf+cEt8COK7ZiBm7FpEGCZkXwmsqQ2YKKQgYQ=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=CKqH0dMhvlhBzX4Ihkt/n9SLGrWfxX4mn8QeWQB6i/JMAynZ/PpZnz2J7QzS+Bs5J
+	 LHYjeS4eVH/+ftuv6ryVG1XbTNkEBDxBvsdirBrG5SJDvA92Anx4u3N3DTR/EiIhC5
+	 D7kuOYWuR+wEG+aT+6digJ4U2JgVCouMwzPvCca8UfAIhFjTH/mNpBMF8a1mqTO4TR
+	 J3Ca6tRIWBeIDKXxVFNRB7jtbFt4susYUTGwXkPso02XWNw91PlkdVzLKiVnspunHr
+	 roxMctbg4I/pbwnOXw13om2WtDRQ1218LHXRi7gxhCYQcXc4EIsE/wDw9NxL3LC14F
+	 SKf5FnkqXpe0Q==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id A12EE54D8E5B; Thu, 15 Jan 2026 17:22:03 -0900 (AKST)
+Date: Thu, 15 Jan 2026 17:22:03 -0900
+From: "Theodore Tso" <tytso@mit.edu>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
+        Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
+        Tom Talpey <tom@talpey.com>, Amir Goldstein <amir73il@gmail.com>,
+        Hugh Dickins <hughd@google.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
+        Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+        Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+        Sandeep Dhavale <dhavale@google.com>,
+        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
+        Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
+        Alex Markuze <amarkuze@redhat.com>,
+        Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>,
+        David Sterba <dsterba@suse.com>,
+        Luis de Bethencourt <luisbg@kernel.org>,
+        Salah Triki <salah.triki@gmail.com>,
+        Phillip Lougher <phillip@squashfs.org.uk>,
+        Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
+        Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+        Shyam Prasad N <sprasad@microsoft.com>,
+        Bharath SM <bharathsm@microsoft.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Mike Marshall <hubcap@omnibond.com>,
+        Martin Brandenburg <martin@omnibond.com>,
+        Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+        Dave Kleikamp <shaggy@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>, linux-nfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+        linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+        ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        linux-unionfs@vger.kernel.org, devel@lists.orangefs.org,
+        ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev,
+        linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, gfs2@lists.linux.dev,
+        linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH 03/29] ext4: add EXPORT_OP_STABLE_HANDLES flag to export
+ operations
+Message-ID: <20260116022203.GE19200@macsyma.local>
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
+ <20260115-exportfs-nfsd-v1-3-8e80160e3c0c@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115-exportfs-nfsd-v1-3-8e80160e3c0c@kernel.org>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 392CAA0009
-X-Stat-Signature: z68gjhehkauittsmf9n1buz6fo98zodz
+X-Rspamd-Queue-Id: 999CAA0007
+X-Stat-Signature: ase64ooufr3ewnzwyn7dynjoq6bkthku
 X-Rspam-User: 
-X-HE-Tag: 1768529924-415472
-X-HE-Meta: U2FsdGVkX1/yppLoQNdNDzOquoZQAaPpmJ9sWRvjBjFEzXELoFAPNepjp7wfQw9fPiVncJKkwQXNuKreWA3GEs5VX2Wsr8Hfne28Zy0MPVkh8rQYD6Lw8VSOXIymA/Vrg/Z/BcoQwceSc7sBoHxtcksw94M3qO/xmM2SwM2QEpnsohSwuvwrhwaPMVls4ry3mCQJSIOx7LcheMGDc9zEmwPTbjsWOE41cU1FTHsuyM1/aR22H0G/rVUdMP1xZYMOyZ8u+KpZ+vU648FZX9OuIvPjQ63RDDx88SdKw6xOwnq3G5kHiaHPthydKBu6KUN0b2P18lsH36vqY5x2Z0yoF8EdbLxOdc1QmBLAQhrrJcFt2QrmKz0xd3Qi94q70mVF+iV0aOQwXAeptI2Y5q0veh/V2eCGcxGOgOppk5MHtRpFkh+rHbZnBhSs7azt29c8QPeK8hpZRNubi3T2D/zrKlgIRA4bQjLoYaRe4CkwcGCMUfj4rUk/TWbFmX3kKmoT6eXpMuPXxwN4dn8jjuVoPDQTXG1B1/xXQbJiLuhjJS9VnI5sL0aNLpc8KOwqnwEZPgRlnq6tEmNiPbRsSMU9qv87FGz8g6jtAkkvc8t3u539JTXofiZrGYCnplTQj0MWvtDwIf6nOz8jL4sgcwnOOtT3sbit2QQFN45s+33r+HWdzyc1lfAvAMa4dkyqm5YZVrj3lBPK/e4p+hpTE8095kU2wSrbxZeTkvL95cEmVtQ+TbAD6mmuNUh3+afCQGPIkuXY6pt9pHrKGCz4akgGN3efUYsTDSTIpwbZw213j3zBflXu9B0x5ujEpaoGOSCA38Yvq9J0elK+e/+WsUQADGlysCiXuyhLgxU1jj2LQ4d/UovVp3a5dJJWX6Zq39RX/dQUTpSFbxlstWwm2zSTBA3Iv5p9QxcSd/n71nKAQwfSas4RkuO0BjZ7JI7rFfHSEj6ML6X5Iq84G9SeQFk
- 5vDJ65yF
- JzHHDd1GG2cEShtj1vfx0oPwn+1OX6PpFPI6W/JZ+UokpsVqpcE6g2CSVIckwZmUBvb3wsBWJBqyl0DcNOKWWLNNKYx10VvZzK3HtBj7Xcx1Nt2bKlCFVI/M3JWaRJCowEklu681gAVzvH8KC7VDrE7XDtc9wqIS05duP0sRv3DDRWmiwZBBUpvwiGUB5Qkcak0tvxIe2yd1r+RNHtO4hPdap4m/JjPhCEJC/5UZANRxREqCxs0UMtYFDHH71dfu77Zdicy81nSh9wiNen1R7fDN/qxp5Gun1XfzaKH+AfaEEAOywG7jtKXj6JxnhP3EDNUUm9oGybyj0sLTXgDv8o3imbmUy8/45+uzN
+X-HE-Tag: 1768530250-645311
+X-HE-Meta: U2FsdGVkX18xkKEr8Q2QuJ99X/WYkU+sVdo6TlC4xJk6tegpxgh5DlbkipY1R/bOAlI72symVORGXiM9G9PjPeyLRNbs+HNTalq2iS7e3cdxEiznAbRxcMN1mniOykx8AEjAC6a0XtaMfF/7gEnwI3XSpyCK1fWIxXk76SlryVYmTRJMkFZrc0/ck6cqlZnvkJ4ZF7Ab+TO74lcAC5X7eEc1I0uWi4cePn220W7y+kKL/gps3fL4fX7ZNTgt7Hv7LuKzbhT/wUZp9cd+oKcw5XP6aN4QuPrkRlBA1Keatc+W6HBhnOCaEP0ZwYeWDm2awCbJ853QK1YN8XukV7kachy0C/jbeVfGCKJpdRgPvFDZkMPaQgitB7RReJ+Y7dvSd+mOrpGToLxyZxn7fKaS3xdjqKRcLKxljxuUIcpBLmFmDKYU+9NuzW6o7veZwjZqUCHgl2jcH8rXAQ1iu9cHnf8ZxhuJ1aVqiDD9eP0iBGLjsHN7fJIMIuU3xXCNECB3zK2eUykoyadsdzP2JJyxD36Dqn+Ahc1RTQcYIcEIMHg8mU6VSAfkz4jRYKHFgs672guvcxZEs1bIZiyr+wwmj2yrPh3fgBs1ouyQ4aM9T107RUbKTZ4qRbIIUb3Pgv/CVdmhelJBAXvqg6uzs2g7w+aMmpWTJXUfl0n3UYdbmzXkZdcTSoUsyeVI60J4lyxz1qgOgpaVvxyyTzIVH9XETnWjV1/q4uOtbUton0zNc/uzM+dHJSwvbTMMB4Px+dn6Oz3URrI1rJ6llMn+UOkzF3+tG7C+3pFiVY3YUS59H7NTmXtVwDxw2jaZ8DFMHGgiRd+9dkJrvLm5ur8FKeizEUOQN1QHpkmYm1K9+tfmihwIQDC4PmHbMObDQG1OMv1ifG4jCkN1VLFanH5FSfLFvkDcai3hvAO7p0jWol2PoatJmE+rLKdOTiennz9rCsQislcT9rk5mc6HPTknSqF
+ p3pBNTfB
+ IV1s0V2NH3CW2wBmXhOAE1en01nvwq9tUR+tpwlVhYzeoo6K0VgcZymftKI0VGR5iwV+6oVCI7258PUr38QfZWIpcHr8d7VlEHbjosY+0xInm1IMw/HE5y6WemC8eFp9qwIs0ilWn1DynVqWt8IBIAnQ49sSuZuVmY9vL2BT0cQtr8woCs2QSfx3pB5esi3mzdUuB4z1QYCqSqari1JhoUigCtIMR18KsZfMm0B0N/HSNIHz3XOcyFVEDOwEgTrHHIsnVrlLGZP01R2lky8mn/g+lU59St48F51+pM431ZolCLMUrtVKwheCSzc+KXcid/ysNE1P8L1UxW/2B5NmdRVedvTJZa8h54fA3QpnmGaCF/8e03uXZjEsu4MzXwf1H5DNUsGKcwSWimpwBQ/h/baMZQZge2eFen6H1y5e+ZYDnm7zGm1n5+87cxh5uiRm5pauoIGAjbiv5/X+S4hZEZVOGDg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,30 +142,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 09:05:25 -0800 Suren Baghdasaryan <surenb@google.com> wrote:
-
-> On Wed, Jan 14, 2026 at 9:57 PM Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Wed, Jan 14, 2026 at 09:45:57PM -0800, Suren Baghdasaryan wrote:
-> > > +  warnings produces by allocations made while profiling is disabled and freed
-> >
-> > "produced"
+On Thu, Jan 15, 2026 at 12:47:34PM -0500, Jeff Layton wrote:
+> Add the EXPORT_OP_STABLE_HANDLES flag to ext4 export operations to indicate
+> that this filesystem can be exported via NFS.
 > 
-> Thanks! I'll wait for a day and if there are no other objections, I
-> will post a fixed version.
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-Assuming Matthiew's good finding will be fixed,
-
-Acked-by: SeongJae Park <sj@kernel.org>
-
-Fwiw, the typo is also on the .../sysctl/vm.rst part.  And from the finding, I
-was wondering if it is better to put the description only one of two documents
-rather than having the duplication, and further if the 'Usage:' part of
-allocation-profiling.rst is better to be moved to
-'Documentation/admin-guide/mm/'.  But I ended up thinking those are too trivial
-and small things.
-
-
-Thanks,
-SJ
+Acked-by: Theodore Ts'o <tytso@mit.edu>
 
