@@ -4,137 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 326B6D4A615
-	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 09:08:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E19D4D4A609
+	for <linux-mm@archiver.kernel.org>; Fri, 16 Jan 2026 09:10:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 983856B0088; Fri, 16 Jan 2026 04:08:58 -0500 (EST)
+	id 5712F6B0088; Fri, 16 Jan 2026 04:10:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9068E6B0089; Fri, 16 Jan 2026 04:08:58 -0500 (EST)
+	id 51B2B6B0089; Fri, 16 Jan 2026 04:10:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DE8C6B008A; Fri, 16 Jan 2026 04:08:58 -0500 (EST)
+	id 455DB6B008A; Fri, 16 Jan 2026 04:10:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A4A86B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 04:08:58 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB31213B473
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:08:57 +0000 (UTC)
-X-FDA: 84337252314.08.3EC9AF6
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 099B940008
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:08:55 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=bgMF0Xyk;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf12.hostedemail.com: domain of smostafa@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768554536; a=rsa-sha256;
-	cv=pass;
-	b=gIQ/bmfzIbspVzYmhXEseBcDAtDJEcGDD/H95N76VQBdBc9jH5wsfXwiwn3GHQDoUZ3CQk
-	SRzUt8tKdzhZUWpS5IZagUE5E3+IkQDDfkk6xu8ksvqlxLzSeNe4S0EazUwws3Ocke870e
-	eXu+BpjogUauhWn0icK67Zh3rN67Y8k=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=bgMF0Xyk;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf12.hostedemail.com: domain of smostafa@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768554536;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 363D96B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 04:10:02 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCE971AE4FC
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:10:01 +0000 (UTC)
+X-FDA: 84337255002.17.F1E53BE
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DE79F180004
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 09:09:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=F8GUpDCW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768554600; a=rsa-sha256;
+	cv=none;
+	b=hi+IJmskAYBehamCPlYW6hN5ixMHiMS17ylPADHot2uJkQV2lbHPBjIue+RSfCXt5AJn0T
+	CVHxF7/UaT4I1QCeK6dYCQd1lA99c9vkyAN4eEKsuM5b9ioFiuLqYrhUY574VvhB5OpxdG
+	Td0X6i2TjYiq2rj0ACZSzHwugakov7U=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=F8GUpDCW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768554600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RcimFNxoQuk1GUtLKJNj8zegx2jcra7sXFZBTJ6wuhQ=;
-	b=20MNes+sBUq+ioZzCkCibMevUtkx6tRUNA2CmTcwF+Df4xIVlgcipcic60Jb7KgrKasZN4
-	1z8+aQqctEDjewDf85/dm6c4wa2kouuKV2NwSa8WwUkIRVT8liqTaPodEgTVEFhuIqerje
-	3UsSK3j0G2QCN4KP8rScRJKn+w/aCVU=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5014b5d8551so327811cf.0
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 01:08:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768554535; cv=none;
-        d=google.com; s=arc-20240605;
-        b=A2vk8+VROHh30mAbni6aHYQyHIcJ04+ks8ODYRwza/QBqp6adksK9j5O0HNFuI5D4U
-         QNK3JUnceI96lAGP6GpM1EaEsD01BVzETUsbalHUDs/Ufa93GbJb3BbXGAcZK2BLUlaH
-         rRm1h7G7kyof0Mk2oidVOr0Z9/6ZLUiXPyeo9QKcFPlHNkFA9qwBWvGF7zFVU/TfUUwC
-         vJbmRsZ2n2WoGyPSyu4gEqRMG66X3Li44+6H7HBM5qszyJEEKqfK3GMSy4u243o3vi74
-         wJOgBgXsg+YMCQ9NbBe/TRPDxYFGe7ywuW8tAV39PDshGbjUg+m83/Cv6LsaPSB0nlAM
-         X9bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RcimFNxoQuk1GUtLKJNj8zegx2jcra7sXFZBTJ6wuhQ=;
-        fh=p4j2kzS1EdXIq2Ml70yX5WC5oz6ta1lhPSKxZoFDECs=;
-        b=LAPcw2psVhXduZsl4lWNGMSGdb4lvgAfCmWUDCsA+EP7KS0egHsgYw/t/S/pAnBr+G
-         LaaygVYJUzT/amcR7mjQdrma9bLtimJByRyRhft9d+eg00HXEZRsBSYHAOS8I2ljxK6a
-         KpmlStYxt7zzKefGXEEKSlTC/S10823YnF7Qi4vxi/rXvaH3jGtmriHiEY3u+28mSe5g
-         xd0G7/b4p6EOvCs7K4/IbY41TmhoijSuBwQO67SYpeMkNpc12ssGYZDnVJEQwpXHKyYA
-         W4bwMldF8jJyHZ4IGzOzOBLP4p4NrQiGYGlrx6AqaB47dHekU55W6KnKj1PSA9vlEkPZ
-         AXDw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768554535; x=1769159335; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RcimFNxoQuk1GUtLKJNj8zegx2jcra7sXFZBTJ6wuhQ=;
-        b=bgMF0XykKNKZpoV/cFEl13JYTZpLbJ5NnDgRUJ0+fd8ZwG93si6pRMl7+PL2cnv/Ah
-         u1SNhS5ail6Pn8SbFToKb/GTBhk2wXtm6XB1uPTk4svUc3oUT3KHN3KrNKFbTLZ3S2ZA
-         UsMUfZHP0OPgfENkBsb0gNCJOpinr7jIkoEYvEoOu8STGrlkwujZeGFL5+WHGQDDMH8w
-         eHUNQAb29G/je4Zhni1Vw4mqID5LFr/vZjh7le0pjA2r0U4TIJtDJ0oBj7Q/tzOZvHGQ
-         mzmx+j3NX3aO2T8ZWfBHa7H/QJMpoPCTe+qmcL+StZlPJRUISA/dCZpiKAsxWPJjHO7G
-         uQyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768554535; x=1769159335;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RcimFNxoQuk1GUtLKJNj8zegx2jcra7sXFZBTJ6wuhQ=;
-        b=YGNsdjko1X1yi5YatAMNgt0AWpjJcgB75wIwW1QKjUvA5EDvNQ/TZdfEQBZ7Fi8/ez
-         MTquc7Z5UzvdWfj20RT21uddkzY8XvkZbqqrbYbfbzXrizxG8sZ9JHw8QtlejI3Lyhzh
-         I+lcuHqXbL+2dckdALZB5iS3Ql32MZZKWrDe9iAoWooGf0dmDTTAKEubQv3aKeF3osD7
-         GrxpJLQE4K6IJY+nasvBsWfqUSD57THNlR8njK33B5qviYIlAkcd9/+Ar4DKkbjYyrAK
-         YZAXkAmqc37ANMle8S6lX5autVguXBwTINNOaePNNqzTwShGoQchRFmK1TMuzrEoK3id
-         bKIQ==
-X-Gm-Message-State: AOJu0YzumLmI+MHvfY1NSMfFpeK1t2vBxeDOwhtOaG8BTiB3dOtU0pAM
-	eY3h8jh8d+wN3pGnzvYmMJR1uaUYGLUauKE+PVX4KEj/oCliQCVv9vudg9r5sGx8KOEAz8s7rF8
-	raK+vNiRa6WrABZathio8XyVXHpGpSRXn8YyW5buJ
-X-Gm-Gg: AY/fxX4PRudZxGrc/spLmig/CckmCM9JJGnIjeAYyR9zKGpjHwrSuzy14ompyZbPTha
-	3DC7gEHySfarQrG2gE9/8vyvTWUrYbQjYzr0zqqjiuYYtKFGZe0B16H2UPiBszXr6Byo7cF2QBR
-	ptLIoPQZrz+b9JO7tI/DY5VqQp5flpzo844CYLGMUax5MrFpKkNfSeBotIpAvpgv/H8Qv3oba/B
-	1vWjUHbHLecFxF//wlQ7cnCudyx2H/FMXgMlUD0+9SKmaQDzpjU49vFAep4XfIm7vSM4Hg=
-X-Received: by 2002:a05:622a:1aa0:b0:501:3b94:bcae with SMTP id
- d75a77b69052e-502a2386e05mr553561cf.8.1768554534866; Fri, 16 Jan 2026
- 01:08:54 -0800 (PST)
+	bh=tOxbiUxMN3dg7qxjpVPifAiw8BUqf62Vd3kADlML2Vk=;
+	b=3mUcBLlCW0CjnqOBTYSJT5l8JFGQiEFi0cO93yqFtQQ2vrBvRKkx/e+zxfbKITmWJUZnPn
+	ApJJYZ3mwYdpW4lPH0DWgQ9wX1FrmVtoXtOHxRwwPknRRXkOmxmpS9Z/X1zRJOX/+0c9lI
+	i4vNmc5EFZEYqo0PWcSqWCB+jAs9FfM=
+Date: Fri, 16 Jan 2026 17:09:31 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768554597;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tOxbiUxMN3dg7qxjpVPifAiw8BUqf62Vd3kADlML2Vk=;
+	b=F8GUpDCWN3+dQTwaOYHZ77yjO9ZKCiyJ5apZEmOuQ6UOZnuPK5hHURLb54dnXVx1w6XGMD
+	RV33ZYE6kC99idOp/CXnk8OATtbj6RfeYFuiKjjC/JV59S3BXwxoPqeVEgc9+vCytklxMR
+	fV/2ZdAD8FjCLVmar4eP6yjiQYBhRv0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Hao Li <haolee.swjtu@gmail.com>, 
+	akpm@linux-foundation.org, harry.yoo@oracle.com, cl@gentwo.org, rientjes@google.com, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	tim.c.chen@intel.com, yu.c.chen@intel.com
+Subject: Re: [PATCH v2] slub: keep empty main sheaf as spare in
+ __pcs_replace_empty_main()
+Message-ID: <n3xsvtgidf65f62x3mwgcoxnglflzozxpxjhtvawmvoljo3t6o@kahjwxud5aqf>
+References: <20251210002629.34448-1-haoli.tcs@gmail.com>
+ <a231264a-2da5-4468-a276-777fc0241246@suse.cz>
+ <aWi9nAbIkTfYFoMM@intel.com>
+ <3foece42fc3wj3wgcnibi7cn2be73ancyjgrzdqfjeqvjtwkhj@lzqd572wfpvz>
+ <aWoB0/RxDZeK6LU0@intel.com>
 MIME-Version: 1.0
-References: <20260114164322.787125-1-smostafa@google.com> <f3ab0156-3d7c-470d-9c1e-922195ea27af@linux.intel.com>
-In-Reply-To: <f3ab0156-3d7c-470d-9c1e-922195ea27af@linux.intel.com>
-From: Mostafa Saleh <smostafa@google.com>
-Date: Fri, 16 Jan 2026 09:08:42 +0000
-X-Gm-Features: AZwV_QiM8_AWnP4if6nM9uRrMx7z-1pq157-8TMrLaAscPdc1UVyRJ2GSwTSnA8
-Message-ID: <CAFgf54rVPaUgbouXWQkczCyFQvXkrei_x6FYY6n1X5NkSSwYfA@mail.gmail.com>
-Subject: Re: [PATCH v7 0/5] iommu: Add page_ext for IOMMU_DEBUG_PAGEALLOC
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org, will@kernel.org, 
-	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz, 
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com, 
-	rdunlap@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 099B940008
-X-Stat-Signature: c7rqjkstoa9mpa8xa34efht4c48ixy3g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWoB0/RxDZeK6LU0@intel.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DE79F180004
+X-Stat-Signature: sk1cbw1x9owemfmre7rih9odhrxxi361
 X-Rspam-User: 
-X-HE-Tag: 1768554535-458901
-X-HE-Meta: U2FsdGVkX1/9jFEaSSZDgji2KkhN7ruX1dUVjkWQ0LL14IPsTZav2iaEP47R4ruDF+xd4SREtwtAWpJoFkqGn4QMSLW+kLZQq7l5nKRYowXYYGk3OEsFay2ZN9CE4usBF+cUAbXqJGwY6OkeOwKcoAwOXzQ3SmRtqDBQ90kshnNePbe70DI9GBaULVpc7XMQLe56IgdpG1RNCgzJ6KfR03NUUNMwLFfRKni95BjI/gKOpjHkKPThCwxWeFgPITo0ozG0BTDu/P+uuHkJc6EgvumQ4Z++oNEO9VxSHuFtjMdxBlwmTRz328g7mlqxpaV0HGjVNQrNPBgF0Z9PjymbmDRLkN7yStFr1jB1wMRDsgi89kMN8zdiVx+jtv6QuPqZxJtiaPgmwOz1zLEDvWe3SLyAhCEwSftKXifBYJOMZUgt13cUP90CYs2nfq2AOW2aVRhQucFbfPCNyj9JxURwLSlww9FUZEYLEiVttYwBzRvVr4/FAIClKIs/cgBWRkmVVh5udptthj41clfgiqCIeKsQwkwNM8nuGN9CuWjOw9mXv8xQuonQbK0ypMClhhzJ5A/lUEWdih4IByolIkSp+IoHEtdKSPrJ8kCFgaTURfSaOyM/TY2xtCZ1NTq4q/42EDh8VodnbYVSc59g7WaAfxSeSDXtuoFF1/KRe8sdLJqeuY6FCPmN4J82udzCMBgIIM7fQDPTGhYPohUiAuj7dvrtuIfr7sEwZGBnrXNBk3mgjE5LBZuougBhYfsxmvHnR2RSsCVvcZ4JQV1GrflG8Czs6zLWjJCm+6A3u4YTE3Ljk233NrFWkznjq0ORz3sgu77P7Q9+fj+UWB1qiKhwlqkB3I5G3l9/Ra+oFoMOe8OgxJ3yVIiqyQ0I+BXJgn+e7lNlxT+VUGPZ3JFISm35QO1Bkr/DH2N0M9GA4EXejZ8jWAeqhCEh/0Fw6mm9saYvKgjIhiHBv0HDUwy7qWg
- p8R3tMRA
- jGEIkiZjUbNgF3+LQFPhLPF+HRXeXxqQ6LZ7yr7V0BUggTnvmLa/Z16hjd2d0JfGD/g1mZy4Ph3LIlOfXhRYeI0bV9fYXIW9she/FV65O1OcX7gjJSWpRb8PCGvyND1iDckJvpoIWbU2zWa5NiuDOsAS+N9ftyvj5ggrR22MoDrLqFyRvm1LIJYbeUdVCIgcW/TT38+XfpwURiDYZtDAeC33+96oeHAJAO7+n+a7QZZ0+uDBgyq9tAHfk0Zl97XaNQxMjMr4kL0HkVVSw9FbD40eVl/pAQHZ/58viTweJOnVrDraQzN7qIH0RypuU1V3/lxvZUarBD+3ye99KQA0fBH7CSzqolWxxME75
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000034, version=1.2.4
+X-HE-Tag: 1768554599-851900
+X-HE-Meta: U2FsdGVkX18UYSHwxALQLJ4IGOyJDw4gGAZxwm8vPM+Kej3UPMFg8CJGtoZPKMTan37qIFDetUBoGkDs4XPUaj7Xm/n90qGwieIlu7S1tuMF8WeSepHCnuBb6EZa5hgB0Bn5m4gN0TAv3dyZjuoI8Obz+e9gTEyy2/TmPzTQcrJEIFBFtPRl1lBmRbawceAKRfb8pUiSb8rlk8+Ybj2koQoCEvQ8jZE4GNUwzx3B4BLqLGH9SenGCXh5RYSsVrUWfoQDW6vZOHHhphFUesNVNl4GNbtWBkau1f9XJ/Rf13u2lphGo23a1H/O2iAnxw0EZt10eOK4Gc2g95Q21AbNH4k99zqN9p+PPX7mbIYqTMlSr48947gaefL0RjWC8jnqieh79TGN7oGGQQhdYCQQ4FpRTlJUapKBWnArppnkrDwapqXI0XmqKdDXIm30afo0+n/8F3DD0QBIX+YmwRoicycenwB1tYsN9ugSvYr0bPn0ot5/l+sr4ZHXB/UGzwN/k6wXY6jOUTp3piSoIhBcVU6tkOMcO+JNrKgHN427zUEEHW4WfI21ZFBHYWrHAjXOM758zG6DxaxAdt8eLWhlQFnQ0dUdarnxT2RcJsMJqZUZaUNte5Ag1Qs6D4jmip1BdjVgFrTFklLQp76WCxFIVg9ReOGUPfoMtNAPp7AH95mdNOR4AfG/Py0g7jS11gP4+mMWFaSahxsHuSDr71UKA02yeGb1ia6z0ASr4kuRIe5z9ASNlb7xYWOp1+dulsLYGSJaqymewRw1dEki5o9jOkrWl14Xbsjg1EluFz4WVHg4tcBSuhjjv7WiW0VOsg9kdOd+mU1HHEH1CmNH+bb5Ps1Mf0OnF5J+HGvdcLjWtZ+ZzIUH6SCIO03K7anQf8r4VF841mu/FL3LA9QiWiBN5euM7le9R8HdMcdlGPN/tUaWwiZyQFR60NbxHvYdbho9FvsPUEDr9MLktCFgIwj
+ cN6pSVPt
+ AW/fOC/F2UUcrkLV2Dw/Sq3W/trFJCXApE2Lmk1r9P60BYpFOoUc460ViUhUaATeRfv+xanbdsFJfd8N1WI5Rmd+lE+vcae4vkjPcj3mEJSW2BZpVT79ztFwAGl2eHf9aV/52orRxKYFFwNtaU8GSOzAwobV38y1KS7fe+AYyfM3iyei6eEeIPT0pZDbkU7o4slqB7qrdMlIMEuIMW/+S1qMNqCO/SclC88HTei5maUGjIq1ydTNyno2zHayq3XUDggNBGUlVq0TAf3KYyk7dBjJA2NWTsnt3fyjntfLJ+wRG2u5AkuvueA8QiqDQ6L/V/LawSUIGURGyoYQNYYEgksXgryO3wQuubMZQpDVWDYbUr3VBh1Q/Nj/h6ghmNUsTH3BeWX1at3FBVeY=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,29 +94,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry I was travelling all day yesterday. I see Jorg hasn't done the
-pull request yet, so I was hoping we can still change it.
-But I can send the fix separately also.
+On Fri, Jan 16, 2026 at 05:16:03PM +0800, Zhao Liu wrote:
+> > I'd like to dig a bit deeper to confirm whether the "256 tasks" result is truly
+> > a regression.
+> 
+> The "256" seems align closely with the NUMA topology on my machine, so
+> I'm unsure how it will perform on other machines.
 
-Thanks,
-Mostafa
+Got it. Thanks, in any case, I'll try to reproduce it first.
+> 
+> > Could you please share the original full report, or let me know
+> > which test case under will-it-scale/ you used?
+> 
+> I mainly followed Suneeth's steps [*]:
+> 
+> 1) git clone https://github.com/antonblanchard/will-it-scale.git
+> 2) git clone https://github.com/intel/lkp-tests.git
+> 3) cd will-it-scale && git apply 
+> lkp-tests/programs/will-it-scale/pkg/will-it-scale.patch
+> 4) make
+> 5) python3 runtest.py mmap2 25 process 0 0 1 8 64 128 192 256
+> 
+> [*]: https://lore.kernel.org/all/262c742f-dc0c-4adc-b23c-047cd3298a5e@amd.com/
 
+Thanks!
 
-
-On Thu, Jan 15, 2026 at 6:15=E2=80=AFAM Baolu Lu <baolu.lu@linux.intel.com>=
- wrote:
->
-> On 1/15/26 00:43, Mostafa Saleh wrote:
-> > Changes in v7:
-> > v6:https://lore.kernel.org/linux-iommu/20260109171805.901995-1-
-> > smostafa@google.com/
-> > - Add a new function page_ext_get_phys() and use it instead of
-> >    pfn_valid() + phys_to_page().
-> > - Drop R-bs on patch 4.
->
-> This series has been applied. If you have any further fixups, it's
-> better to submit them as follow-up patches.
->
-> Thanks,
-> baolu
+> 
+> Sine the raw perf.data files are too big to be blocked, if you need to
+> see any specific part of the content, I can paste the info for you.
+> 
+> Regards,
+> Zhao
+> 
 
