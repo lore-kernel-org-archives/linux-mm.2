@@ -4,91 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6127EC98315
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 17:46:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16220C98315
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 17:53:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4536F6B0005; Sat, 17 Jan 2026 12:46:43 -0500 (EST)
+	id 780626B008A; Sat, 17 Jan 2026 12:53:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 400A86B0089; Sat, 17 Jan 2026 12:46:43 -0500 (EST)
+	id 72DBF6B008C; Sat, 17 Jan 2026 12:53:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E2506B008A; Sat, 17 Jan 2026 12:46:43 -0500 (EST)
+	id 62FAE6B0092; Sat, 17 Jan 2026 12:53:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D3946B0005
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 12:46:43 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63BD9C08AD
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 17:46:42 +0000 (UTC)
-X-FDA: 84342185844.23.3E5D3DE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C1830160005
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 17:46:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kNfalDzk;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 5040E6B008A
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 12:53:07 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F32EB8BA12
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 17:53:06 +0000 (UTC)
+X-FDA: 84342201972.26.35A62E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 78D2FC0008
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 17:53:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MgIAAu1w;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768672001;
+	s=arc-20220608; t=1768672385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0CahbkNJhnRKa+WQ65LnUzRjG8c006DOyWRh+CoTY5s=;
-	b=wS100zink7r2moxVO9GyCR+VsM1tRFHDzJNd6ki3GHHd5uqNR2mti2VntE4vU1hI/KhJQC
-	vXOHyjPhlj4MvsWkPE8r8kTeYsJ+09TdNYtBhZI72Rn3P8c/bMv4mm2AW72HBbtF1CKqSe
-	xUA3NB/oNyugaW5c2eES9lTjAuJxB7k=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=goFLKuCU9qfnmZ5A0+BQsN0J6NO4WPCgxUWbVzafo2A=;
+	b=od9T5+MOkJI8POqB3MKfgFkXNx8uAIzxIpT2/y1prPOeh5pji6CYn7hRShjsZel71Py+dD
+	J4UAtEMbTs9W+Jnp8iZtyA4q/n4l/9nG0Tr4cY/9o5Vqe+Z+E6ZkmYfJu3eKI3oNYHnnNB
+	+Hg1dIa1wLrU2B2Tt3Y9Si3XMG0VX2w=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kNfalDzk;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768672001; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MgIAAu1w;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768672385; a=rsa-sha256;
 	cv=none;
-	b=NNIvPeq/5mk6n86XPnFSw0Pp5H9yvL36Sz1T9nlStbFUf+Afx49FhbMJ0q8ArZ0SnfSaye
-	1M3B90C63KbmI4Ykh+bZ2wPNUtyArVsH/97/NiZtZEeMAx4TM5dRHeoidBTCZrny0L5m5R
-	cgWJ+0iUvnyUEsWQmqO512MSalu3Foo=
+	b=Dac5ZdND+CVQ72SZBOq/2kASAEyAszwsEFCknrWTtrL0WOlJa2yNhE9RnxQdAGbGYA8pVk
+	X1ibulKYaUOJYiM4ZkesCG3x7ZLHdxTz2u+W4MoPnxw0Ozfw+65nDzyGUW17HlxWGVUpUp
+	ggloaqqRt6lggQKNxhsQ4UqG/mq0mYU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 89BAA41AE9;
-	Sat, 17 Jan 2026 17:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA647C4CEF7;
-	Sat, 17 Jan 2026 17:46:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768671999;
-	bh=Yf9fuX/LpocU3iC7fEnAmijlZODHBllQLyN7/P7+mHY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kNfalDzkGXY0eL+rMGMaqu+qfHrwgvKsHzPG+FMokeleuDrY7l3Osae/CLgcpBDKo
-	 YKEVP4aVRyfW1EbzNH0y6dq0MT6R9ZYu30B/Qg67zXRfNtzcrraaNaavT6txKhqTfa
-	 FOK3WrNVP1lekv0ft7c8CdRJ2YfdLsPjjpWh66cg=
-Date: Sat, 17 Jan 2026 09:46:38 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, ryan.roberts@arm.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-unstable] mm: Fix uffd-wp bit loss when batching file
- folio unmapping
-Message-Id: <20260117094638.c570cfffb999f0952ca7ab36@linux-foundation.org>
-In-Reply-To: <5af933d1-8c64-4d3c-b835-d90c8e9f771a@kernel.org>
-References: <20260116082721.275178-1-dev.jain@arm.com>
-	<343f8462-44fd-4190-9fe2-8120b5403269@lucifer.local>
-	<4b784eef-e874-45a6-828a-4fc2acab6fb7@arm.com>
-	<5af933d1-8c64-4d3c-b835-d90c8e9f771a@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id DF3AB60127;
+	Sat, 17 Jan 2026 17:53:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EB5C4CEF7;
+	Sat, 17 Jan 2026 17:53:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768672384;
+	bh=BrhbCrEirTOhCYFjA97mSPQaKUy3EH5FD2Gu/gQI3T8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MgIAAu1w4/CWCZJiuLLu5kFcobQQr2kktaP5aJUyrLFsARW4KF8/g4i8gcsk3uKhs
+	 k6WnlweJvSFt+ha6mHfoQGQODYc3RcD417fU43BA4ZexjId0zXOjaMPdG47jQaVtrd
+	 EWHBiGxUyDwmK0x1tNJEtdrcMNpP7lizmH2IzdMyrJsgh0tKPh0g7y30QUjAxqVIgJ
+	 1TvEKiCT4Ql/HfUqEDWyLUcBoMNl/7TcXnt/nYhUpnJW0MUDtzJnFwfp6kJxDMobOz
+	 QgNfqsXExC0kvwgmtW/ku93cGdA5zi5598Q+mpUomS/xR22gSoPRWCvNJ1byoELGy8
+	 Qebwzn6y9/K1Q==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/8] mm/damon: cleanup kdamond, damon_call(), damos filter and DAMON_MIN_REGION
+Date: Sat, 17 Jan 2026 09:52:47 -0800
+Message-ID: <20260117175256.82826-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6ye3ekq943htb7moef7c115y8c9995ox
+X-Rspamd-Queue-Id: 78D2FC0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C1830160005
-X-Stat-Signature: bbrdd4uz8ssxaxqmr1jbru88xr3da5n1
-X-HE-Tag: 1768672000-959569
-X-HE-Meta: U2FsdGVkX1/VuMrlQKCiLIuxBgEpYsWbx4BFKc26I90Mp4wI4mbquVc4aYCd0Mu8WNKKS6bZ1vJzxz9uJZKu37HAAvjU9KSZoMT/QPkQYuDIUTPIFeE3uJACspJSxsmDhqwmJmlyZ52EISuIf0DQ+/HGjsNZCuLic1inSQdBHqdT2B3CMAkUgA71vSv8OVt9JnqP2kZ59F4h7TquCPpN2nqZyrwMTalf8/PSL04VhbXFFFAIvj7Kj1mUHj/KoRzxSZLR8+J8ck9L3MgHgxzmFz9878mmuNuxtQ0zOqnoyh3p3HDG76S+gYQE21aOmYBSv4Y8GffhND8eFwYq4w/8RCyPF1rYhtM2h4YNNz0n0EDy4tmkzx2BS5N2vnfX/dCVpPZ6+HAIJI5KMOtSqkSLxCXzutb8Vt+V2ljtNSOao8lZng3aSywZYPlCzwOivQH0UoLSS7pX5o1ht4GmXzj6vTDJwZhSfNRMNpD4+msE4s5MtxW5SwgVGNaEr4UH86FJG7lPdR3uSTMRRZMlHmBe+zuFvyLh/OslX9VtH9gX8Ry6y60qzmGnCDtVrafoncF+GcpKoMzJ7iITk7iTmL7EqZaNjDTkMQWbwOaYPmQM28mAKy5YGAvfIMVQ4rJTEUvn4KN1IWBD9oqQmu2F1l7+G2pWeEh03V/Dx7yiB9F8u/euRdqPMdSadZZI39IV7Q332nTwu0QEh0E1IKOllC0oLvDg1ngrxbQhqD3DLVH8UO59BI0KpNfcpC28IV8WcszQA7xCYqE4pt0U00L1hZjrbR4uxgQXFJUyMPZQwaEgPec/ZXLTpfBihxCcd+BkSOfFThHyb6ck4X2p4OwrRCRbUQmo/pT4UrahcrDIGGi3cuEu+eZUq3TDU/pa25gpeCC0BF8sCLU1HDnKQV5ODnQnxrZMrBXgbFWrixalN21Melc=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768672385-497703
+X-HE-Meta: U2FsdGVkX1+2VJGQEbkG5tLpifPp17cQpiO6rXvjjMDU/k44h3ZAtNFqCs+uVK5x1ezZzn2wN7kvBQhPRx/rcyP0WXoEA4DpFn5TO64rWjtyERuIvvKd1vKnkf28sJ8axpteOH7bRSGM/DK+XZELw7TEGZiNX0HUwGZapqzEZaVCehk6bUDeWH/i5a5JUSbI5UpTt72cmp+eSD6SIBjWbmVsUfIZkuDacLZJsxOLgRYL/ar8z8366/HSIat006XtpxJOTqerhpI+VycU90kkByJdtyDbHW0pmfQWn9M/epxs/eXL2aOwnGw0UG/87bxyJ8lo2fKqjPu9o14Kub/HUftVwWhAiEp4JuVtIXc6D+qquaJom4FemeF9dC8d68fuiro3NQX8sihVhv1H3xtKEHyHlTwqVfIw4N+cIURwc4lEAGz91ZBIPqhlcO+xJ9mEQn+9Iy6mudh4WHjCONWl1aNKsdHLpyKIKOy9VQT2WVM0ZvniBUsoeN2IQiBn/jW0GZD2wdAQ7YDOFGrre+g/tnWegeHQcwyc94kPUOEzg46mPy9Js/XvL59fL+4hx1EdvsllA1KS+s3MhyKT8+6AeNSt6CPUV/S8dJJ9ahNGxcHi7T1naa32vG+OlI0t6usGMWyHSURqc3ry2St/ZHCgDPBWyH2T2oymvLoY/4JSL3li1vi3R+EgKbsInbfSOpc7MjcFKv4dHEpeVfAbnL5EVW4FzNSfnGFR6g5pK4MbyYO5GCqbQy7cR6z90bisVXz5M2zAWb5B1YngdWj4ULKi5Rq9ZzH+FaHJx8Di/J35OJhpumGniIyU8bLqeGjn2JiCGhiVqWaRaP+mjVRyHplvyBG97Z+3e/g3ujpidEgJdQijxDjWlfbXjS9NF9only3qg+1zSEKhSae2W74EW3wH7Uy45uWRlcL373+cDp3WQDc+qLVelVkUmRLyweaYbG/RYBTenKi0pthFJiaGgel
+ Nv9nKCdv
+ kF2oGohI0tGeXG9SaEzB9gPeWolngniLJmuUDgthUCquTyPpCo2Q6GNU3+TBI1KA/ZX+rHkAojyaQoRBFnOUoVdg/upQpPQqKBo+7y8bg8tnlSbWoe2nd9FaebVb06XH5TTotSjXYSTKkdNGPJGnMHIXIdZtmx/b8e8G95QAc8hIn92VqC9QSXI4oNLgr2WjhKzZKn2LwHUuyCbeP/5gD8os1tXl6Cl41p1IJsVeTQonymGeff8Ghy5BBDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,30 +91,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Jan 2026 11:51:17 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+Do miscellaneous code cleanups for improving readability.  First three
+patches cleanup kdamond termination process, by removing unused
+operation set cleanup callback (patch 1) and moving damon_ctx specific
+resource cleanups on kdamond termination to synchronization-easy place
+(patches 2 and 3).  Next two patches touch damon_call() infrastructure,
+by refactoring kdamond_call() function to do less and simpler locking
+operations (patch 4), and documenting when dealloc_on_free does work
+(patch 5).  Final three patches rename things for clear uses of those.
+Those rename damos_filter_out() to be more explicit about the fact that
+it is only for core-handled filters (patch 6), DAMON_MIN_REGION macro to
+be more explicit it is not about number of regions but size of each
+region (patch 7), and damon_ctx->min_sz_region to be different from
+damos_access_patern->min_sz_region (patch 8), so that those are not
+confusing and easy to grep.
 
-> > I saw that the last comment on that series was more than a week back, so best
-> > thought to just do a folded fix on top of it - and I had formed the impression
-> > (from the conversations on list) that akpm prefers fixes over respins : )
-> 
-> That series is still on my TODO list and I hope Andrew will keep it out 
-> of stable until I get to it.
+SeongJae Park (8):
+  mm/damon: remove damon_operations->cleanup()
+  mm/damon/core: cleanup targets and regions at once on kdamond
+    termination
+  mm/damon/core: cancel damos_walk() before damon_ctx->kdamond reset
+  mm/damon/core: process damon_call_control requests on a local list
+  mm/damon: document damon_call_control->dealloc_on_cancel repeat
+    behavior
+  mm/damon/core: rename damos_filter_out() to damos_core_filter_out()
+  mm/damon: rename DAMON_MIN_REGION to DAMON_MIN_REGION_SZ
+  mm/damon: rename min_sz_region of damon_ctx to min_region_sz
 
-No probs, I added a note against this series.
+ include/linux/damon.h        |  15 ++--
+ mm/damon/core.c              | 143 +++++++++++++++--------------------
+ mm/damon/lru_sort.c          |   4 +-
+ mm/damon/paddr.c             |   1 -
+ mm/damon/reclaim.c           |   4 +-
+ mm/damon/stat.c              |   2 +-
+ mm/damon/sysfs.c             |  11 +--
+ mm/damon/tests/vaddr-kunit.h |   2 +-
+ mm/damon/vaddr.c             |  25 +++---
+ 9 files changed, 89 insertions(+), 118 deletions(-)
 
-> Hope is all I got ;)
 
-There's also "tell Andrew stuff".  It's very helpful!
-
-In the ordinary course of things I expect I'd have judged this series
-to be adequately tested and sufficiently well reviewed by sufficiently
-familiar names so I'd have moved it into mm-stable.
-
-But after learning of your concerns I've added a note and I moved the
-series to tail of mm-unstable where it will be easier to drop or defer
-should the need arise.
-
-If drop-or-defer is to be the decision then please let's make that as
-early as possible - we don't want non-merge-window material in there
-perturbing testing or causing integration issues.
+base-commit: 886ef5515d08f05191b61a347fc18f371627bdd4
+-- 
+2.47.3
 
