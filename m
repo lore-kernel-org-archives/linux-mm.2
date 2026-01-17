@@ -4,87 +4,257 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F3C0C982C5
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 05:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69F71C9830D
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 05:27:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D2CF6B0005; Sat, 17 Jan 2026 00:15:39 -0500 (EST)
+	id A1BC76B0005; Sat, 17 Jan 2026 00:27:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 181516B0088; Sat, 17 Jan 2026 00:15:39 -0500 (EST)
+	id 9C9B96B0088; Sat, 17 Jan 2026 00:27:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07F856B0089; Sat, 17 Jan 2026 00:15:39 -0500 (EST)
+	id 822016B0089; Sat, 17 Jan 2026 00:27:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E6D2A6B0005
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 00:15:38 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 762951AE6C6
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 05:15:38 +0000 (UTC)
-X-FDA: 84340293156.15.B711815
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D5D50180003
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 05:15:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N7tKF2Qj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768626936; a=rsa-sha256;
-	cv=none;
-	b=oL5PUO5YW4nt8OGdExqyi1VvwHkmT4dGblrU47dvP5FDQPioH99g8R6Zeeu0APZxHJJKi5
-	uNz28D3LMqyd4bzLF0tg3JZ+mrlfAC9Rbwxu4mWfVNTmIF3ahtW+54ACJkiTLHHO7yAAFh
-	iulgqRHqRiL0GYxkP1fg2ECriH79j4U=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N7tKF2Qj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768626936;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DC0F6B0005
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 00:27:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0940E1AE343
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 05:27:46 +0000 (UTC)
+X-FDA: 84340323732.05.56ADA8E
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B2EAF1C0005
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 05:27:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vr95AbPz;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf18.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768627662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ir9anzKv8qQc3gHnDdk8ILbpfgh1FViIzPmjLfL7fSA=;
-	b=3cYWkdlswhbO0sRs2f8oQiqCRyzv0Fyoaf4d1MoB7pBmb+93Z4D7IoPhVGGQTqqPBZUC2z
-	NObmss5LlZbil3nn00VnHnHp1I0lAz2Yt5zwJyEyQ7qIQ1w5H4ERFPPhgq+WWMRTYSiOxz
-	Py0eSdwAS/Thv5i3YrSCk9H5jVIclrg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DC61E60127;
-	Sat, 17 Jan 2026 05:15:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BB1C4CEF7;
-	Sat, 17 Jan 2026 05:15:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768626935;
-	bh=4bV5pAL0giHA+Gy/u2o8V868GCBLsEXgHcdyuoQKbUE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N7tKF2QjP7gr3hKplsr6CSaa+ZujiPEOnH2ktpCrtbXdF8b0Ar55N52hFtMiQITY7
-	 B2UyJa4QdDaeS/ZCwJgf5ZA8Q+aDnQFoo/kjXJO4IqNPM+k0XPycQHkMHcMyZhGYau
-	 thV6aWaikJhDBRm28dKN1UqZ47V42RwHZYKpts1uFr94+A8qKjk6kwHZAz1gz2VUd9
-	 1vMwbdq7e2kE9kh/UF7e7aLgrMXOag3zY/cZPl5t8LyYFAtEJsfxW2YjNGmebmBgOn
-	 0trm9QkVA2rig73ZAO0r99Lms+LDh7lUUxkOG3BOwzEzjjJS5uHba9dSj8Eb7aJKii
-	 Ctwd/T6pCC23A==
-Date: Fri, 16 Jan 2026 21:15:33 -0800
-From: Dennis Zhou <dennis@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH v2] percpu: add basic double free check
-Message-ID: <aWsa9SdO9kLJTfz4@snowbird>
-References: <20260116023216.14515-1-dennis@kernel.org>
- <20260116191548.7df814c2a9eea1a9fa3c4cb5@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=tAp9IivUAff1PGBcGTGRA+y67Z1HLPFVlP9rHij12HQ=;
+	b=ex6X+/c6QmAOWZoeTnU4RYTDyx9kKPslnwItuhjRLNaImKM8BXlrE55qnX5Y13y9t8sGQL
+	s8eHDi193UrYXehqFHqPdOpL5l5TL2/sdjVLEuANK2d0VPGwmlUEQrpeNyADrkTo/o9ysE
+	qIgjrh6lSVXbOTuxeT10pd82/5b2RwI=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vr95AbPz;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf18.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768627662; a=rsa-sha256;
+	cv=fail;
+	b=DjbOL8cV2iDesQ+dux4YO/POSCjkUu7iX2Vo5oCuuM0lNAwPZxs6YyclcAxPMtvNe1bQXY
+	sTG5yNCHo/Cd6Rpsfd1hPcUtgNVCgcd872yu30sXdPtp7X7YrAFc5pq6fRRufcqmOOtNWn
+	vYjCJdYf1XJF4zzIrz/+hKVSdbE75yw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768627662; x=1800163662;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=wY2zJgjNis7aty7bmKzsCTkgtavG9RsMmfRYXkP1/P8=;
+  b=Vr95AbPz0GGaJv3/scuEl6q+HDu7W7wn1uxenN/BQI2m4/r0szWI1plV
+   CafD03KxUDL8mddWl+ayyms1LfuBjf6FT6w7W+/eT7Mj67h8EkjkfbQVK
+   dwv4pu3gE8MEtCMr0iXJa2bfNGhjLL3j0baTfd1rLDUAjxUPWbzOyQmgi
+   W3AK7aw6Mf89YVPNeFPE20A0o3WSR2Exm7LVMW0Ea2dtjeGKKXx23BtvX
+   qI62xf3k82xg6awGy8o1ttquJQ9zN86WogcZn9NP649AXFdWkxPTATeQA
+   XJ6EGvkNXNFsznfLBxxvN8fp4AwVkhCUjjp7i32pmN3cARUPb9Mo/kl1Z
+   Q==;
+X-CSE-ConnectionGUID: ZzFGy4yfQZ+HsRxWcvaxBw==
+X-CSE-MsgGUID: XlHJ34GRR0GDvPrq0VxWwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="72523691"
+X-IronPort-AV: E=Sophos;i="6.21,233,1763452800"; 
+   d="scan'208";a="72523691"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 21:27:40 -0800
+X-CSE-ConnectionGUID: ub+/TZwITfWQHrqtrSTsuA==
+X-CSE-MsgGUID: z/XgN/NPSxqshZbPRvNavQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,233,1763452800"; 
+   d="scan'208";a="204650111"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 21:27:40 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 16 Jan 2026 21:27:39 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Fri, 16 Jan 2026 21:27:39 -0800
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.3) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 16 Jan 2026 21:27:39 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pUnpljZ9tMJubehw0uItvBIxabTW7ZpLNGKJKd1H5QNCrK9wkpioOfQHVgVpLBzz0UVRXd/Az3r0PNGfY6R2MObkrG7XcQyV2KQBuEBDmopKEH+zrzarTjCdRxJ3Jf9BbaSolItplgs+8NcGjY3khSSGCM5WOHECSkeZW8i0Mh/oINqkAFGwSXZp2MUaDeXsjEvNzteYkRUM1QH0A5r+0V2XsNrUK040e3gW4kMC1qnJ75yPvs9tKDBhNL5yG+GLt8/v7ID5ixo5SLkQs/43ckRg1bECBiVkzhZcbqyJg3Cbo6P0+ekbJjt/0kLLp2TYjwyOvCAxjHIGBl3moGljug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tAp9IivUAff1PGBcGTGRA+y67Z1HLPFVlP9rHij12HQ=;
+ b=wAvEgOUuVvHdMxh7CoJnjTewX/MZiNglCpfvGf+Ldwpk+4tgC6+wHOlt+QGfP8DciulKqbakf93NN3YgqtCOMh7ivTIVerCfhLVKVtKOiUV3jbRMjcuUDo04cIJwBN8De9KqdiTaUqv+mi0vqrg3hghDZSGc5jiZdGAr57mLjQFbLSKC1xQO3PIjuMpxVUlIEw4IrvfpW/frdcIsyS2XQZA04waewtZKpQSKoVBDGIF9WSbl6wb1avQib5UoREnk4JF2wSY0anEo4S32N5Ka+AMsl+WaGtspilLXdckHE/nx4VeK93fMDedFcZ7gk1fkXJnDOn0KkTqNF3TxAxE+BQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by PH8PR11MB6609.namprd11.prod.outlook.com (2603:10b6:510:1cc::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Sat, 17 Jan
+ 2026 05:27:30 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Sat, 17 Jan 2026
+ 05:27:30 +0000
+Date: Fri, 16 Jan 2026 21:27:27 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Balbir Singh <balbirs@nvidia.com>
+CC: Jason Gunthorpe <jgg@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Francois Dugast <francois.dugast@intel.com>,
+	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, Zi Yan
+	<ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>, adhavan Srinivasan
+	<maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman
+	<mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher
+	<alexander.deucher@amd.com>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+	<simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, "Andrew
+ Morton" <akpm@linux-foundation.org>, Leon Romanovsky <leon@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett"
+	<Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+	<linuxppc-dev@lists.ozlabs.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+	<nouveau@lists.freedesktop.org>, <linux-mm@kvack.org>,
+	<linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Message-ID: <aWsdv6dX2RgqajFQ@lstrano-desk.jf.intel.com>
+References: <20260116111325.1736137-1-francois.dugast@intel.com>
+ <20260116111325.1736137-2-francois.dugast@intel.com>
+ <20260116174947.GA1134434@nvidia.com>
+ <8006ea5f-8845-436a-a2d7-125399428762@suse.cz>
+ <aWqgHTZ5hjlRvlKU@lstrano-desk.jf.intel.com>
+ <20260117005114.GC1134360@nvidia.com>
+ <aWsIT8A2dLciFvhj@lstrano-desk.jf.intel.com>
+ <eb94d115-18a6-455b-b020-f18f372e283a@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20260116191548.7df814c2a9eea1a9fa3c4cb5@linux-foundation.org>
-X-Rspamd-Queue-Id: D5D50180003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: hdjqwfzgwaqgxyy1q6hbdhxdemcininm
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <eb94d115-18a6-455b-b020-f18f372e283a@nvidia.com>
+X-ClientProxiedBy: BYAPR21CA0004.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::14) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|PH8PR11MB6609:EE_
+X-MS-Office365-Filtering-Correlation-Id: c60c5741-db25-4258-ea4e-08de55891c45
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bWEyd081ZmxBQVp0QVVnKzlsTU5QeXpySjdpdXBMRlp3T0ZaV0xwdjdKSWs0?=
+ =?utf-8?B?Z2QyZXM1bHJnRk9RVDJmNjc3S0doWlc3L3RWbnIzd3FWWndweFJPcUZleFd4?=
+ =?utf-8?B?akk1ZUFWSVYyVmU1OERaeG1EZitqaTAvM01Qa0d4N00rbTE1eUYrUENvYS84?=
+ =?utf-8?B?UDdrTWN4MWZhRnl0cUx3LzdVSEVHSG44OTYvT3JPUzlDeno0cGs0SmF0ZnZy?=
+ =?utf-8?B?SUdyeUZucnU4cm1SdFZjRHZyb28vdk5RWE52UlU2MmZxM29SN0RDTC9KVXVG?=
+ =?utf-8?B?THROTWNsSGI2UFNUbHZqWWdxTjU1dVVyenVUWFEzbjluN1BvZ2JYdTRLMlFj?=
+ =?utf-8?B?MFdJOE5XWnNYNm9YbVFrenNyckdCSVNxQ0svNmtZbDQ3R1BEbjBEZE5wS0dV?=
+ =?utf-8?B?RlVJaGlmb1NieFBGUVZNS2NBNURGUitpMjBESXhPSDExWnRvTDRKd0tGVjRr?=
+ =?utf-8?B?WW9HdjdzZGo1VWUyZFozcTc2d3Zaam1jVzl1aVdxV1BUa2dnMTlKUmh5WS94?=
+ =?utf-8?B?MW84SDdUQlJaakRKZ2o2VTlkcmFmVGh5SGdMWk5pd1QxOC9pNlpvMHd3TVVq?=
+ =?utf-8?B?L2JrSC9WNHMrdEVwOFd1czNLc202RnRnZ29ObGhRSUZOQUxTMnNYZmlPWFZy?=
+ =?utf-8?B?UE83bWtJdzZ6Uk1PZ1AxY2ZURzRXUFpyWGZ0WnR2SXBVQWE1NjZkMU5IOHZN?=
+ =?utf-8?B?bG83d3lRN1lYL2lRaitrNlJMNjRFRmRNeXE5K2U5a0RTR2p5N3NkZ01xR0Zl?=
+ =?utf-8?B?S1AyYVR5UHdYUmJZNW9NMUt1SlJCcEtRYXFjUVZOdmkvZXlOZ1VySDdlWHcv?=
+ =?utf-8?B?WGF5c0VTdmZPOTJZVUpQYisraTI5WVc0clpPTW5VazMyVk1CQXdsdi8rdENm?=
+ =?utf-8?B?T1cxc2VvV3NSZDdhK25mZVpBSGZjTkFPcXJiYUVPb05hT284WndjcEl6M2t2?=
+ =?utf-8?B?Lzl2N21EYWJrUFMvTlROczNUTzRRRi9BOW0vMGx3ZWliRmdyTVF2dWQxU29B?=
+ =?utf-8?B?Yzc0RlRYenFvTkxicTkyWGhxYWVHQ0dvRTN4VllmR1p1cm8yVzJCSW1Nci85?=
+ =?utf-8?B?cWVzNFhuTDVmY1dPTHozWDdwTGdXazhoT3dQSjFsOFNvRGdVbzBJZVF4UEw3?=
+ =?utf-8?B?bFZvdHEvQVUvTWUzaFRhdHA4bGZtei9ldDZpTEQ2Uy9DeFNMMHBrYVcyaTZ6?=
+ =?utf-8?B?R0pzSS9obytYMWgxcHBNcGFYdS82ZWh6VENJaFUxNUl5VlFFZHZNTno3TENh?=
+ =?utf-8?B?TXlYd0NJQThzVWU2WUhlcmNOZDkzaVFBQWhmM3RmVGxmZEdoZVh1SlpXaVYw?=
+ =?utf-8?B?YmtERWhYS1pmbHVpditSZVZIa2t1bGlrL09TMms2Q09JMjAxYjVQRllIOUoz?=
+ =?utf-8?B?N2VzdnByNE1rc09vY0VEWnkzTnZBeGtWcjR6QWFQM2hlNFZRajIzR01SWjRm?=
+ =?utf-8?B?NWtFdXRZRE81ZWZ3ZlJZU1dOcEFlcUVsMDgzRWo0S3dtTWtjL3RKRWFha2E3?=
+ =?utf-8?B?ZGloRC94SUZXTnJTbml3MnZFNEtzcncwSTdNeGYyYXVwUFZLb3lmcStmT3Jx?=
+ =?utf-8?B?S1FidXRLNzdNb3hpTHZrVllxOEdvSGJicmk2RitsWDkwb2g5UUdFaXh1SUND?=
+ =?utf-8?B?ZDQvNmdITUJ0T05QYmwwN1MxUTFEK2JYUFZlbUhFUTVPcGNJbjFxY09CTUla?=
+ =?utf-8?B?eDFqOXFmREVMb2EyekUyWnVZbnFncURnVWM0cytieGpZTUhlQlZCdDJaV1Fo?=
+ =?utf-8?B?SFExK2tWZ3RsTmRoRm8yQ2g4VTd3Z3hkRWJBbEV3L0N6VUt0MVAvc2tzUEt0?=
+ =?utf-8?B?M1gzeHNHdFJVb3hGRTlVL0QrT3pyZ3N5dTBxVkJJVjRFV1JIMGoxOGgwaWZK?=
+ =?utf-8?B?RDdtVWxzcnlKdDJtZjlvUmd0OTBsanlBV0FCRWVRMll3RHlYRWVXMVpDdTB2?=
+ =?utf-8?B?M2FFb0xYcGZCTDBGYXJJbWE4N2JBMFRJUEprbm1FSnRhbTVPdjJORzdPb05R?=
+ =?utf-8?B?Umx0clRza2FNQWlaSTRBMXE4Wjdza3NkaGdTdEhXeFhOaWFsQmorRDI0Y3k3?=
+ =?utf-8?B?em5kKzZsVU0xdERvMHF1TW0zUXloZW9tbVRqSnBTRkI1VWxERzF4L2luaVds?=
+ =?utf-8?Q?QaBE=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M3FvUHNOWXhtOFY5SWY5THd0UDBpbmxJNktLem5YSDF0SlM5bVBJWkZCdnUw?=
+ =?utf-8?B?a05yTXg2Mkw1VVNiR1ZoS0hPcmtWVUltQzJsekhJZEhNdGl0azQ4b2cwMytK?=
+ =?utf-8?B?bWd6SEZBaEF0cWFSVzFwWGU1TVdQekRoa1ZPek9Dcit3dVNFK2UrQTJOWWw2?=
+ =?utf-8?B?eGE4SGIvaTJERmNEN2xBWk85L1RvczRGUlNXOTdXKzBOemdnUVFvelRma2dY?=
+ =?utf-8?B?aHA5VmVaRHFkdytmYnJuc0YxRGZ0V3U4VStPVHA5dy8vSmVuMFVqc01kQ2ZX?=
+ =?utf-8?B?QVpnNklXZUVrUy9DMDhGMk9LM3Jza0I4Tnk4M2VjL3RuQVNhaXJSVjZPU2Fa?=
+ =?utf-8?B?VXdCbUFjSzZ1S3cxT1ZuTnNQb0lreXJmejNwelVpWmNCMG10cW5ZRnNsaWZB?=
+ =?utf-8?B?M3RuK1d1eWMrRW9WcGN2TlZVZXZoc2ltcGhUTlhxTktwdGNqVDZEbUYvcXlh?=
+ =?utf-8?B?Rzl2RktiNTBJTXRVcnRPSjNwUjVXSzZaNFlFK1FuN0xrSFM0N0pNTGM5U2JM?=
+ =?utf-8?B?UktxcEdDdUJjWi9zR1ZPS2ZqMXp1Nk9XVkRSZkpsdlRSTEZRV0Z1VWdoNzhw?=
+ =?utf-8?B?VVArUEkvbzZ0YTlmR0p4K2U4RHZLMDhRNFJHTEZPeDk3cmIxUnRCaUFmNTIy?=
+ =?utf-8?B?YVV2NEJJSFJtU1FxcGprbkliNEFyWUVmRGNqTHZiWFZZbmYxNmdlZU9EbjNV?=
+ =?utf-8?B?cG1hV0dEMnNCdkw1QjhFYjVybGcrbHhld1ZYNnFoMDZPTS9oMWVON2FSL3ht?=
+ =?utf-8?B?L1ZNa0pWc0hwYmhNcDdNbSsyWVVqQ2p0QlhVSVQvVFRialBJMXUxcmRraDVu?=
+ =?utf-8?B?NjBuRkY3RmpUTmFFVFhaMGprMWZoS2dueFVLQk5jNENrVnY4NmpDb0FJY1hB?=
+ =?utf-8?B?SUZML2FoVjRDbzRSRnIrQVJGbU1KSUZXVy9HN0pwZWM3K1VMeitRNDlMaHJH?=
+ =?utf-8?B?cVp0ODRsWWxmbnpWNjVOcjZqNHVEVlhqT1p2TjlNWWtDcnFjYkRXcnVHZUx5?=
+ =?utf-8?B?d2NTRkdhZjBPQzVIcDVoVEo0TmMrc0hESWt5NmZYZ21TVHRhUHB0aERqVTNM?=
+ =?utf-8?B?MnNNT2IwbWNlRFI1Y1cxYVJ1WmZYSitia1FBUDdyQ3BHS1QvT2h3ME5WeTlZ?=
+ =?utf-8?B?MjJBZHZYYk03M2Q3N0Z1bWQ2RHZnSHFYdW14RkxsRi9lK2JMZlc3WS9WRVA4?=
+ =?utf-8?B?SlUyOGNpNHZrMnpMRm1LT29qWVdmcm4ycGRwaDREQnFrNmNIZmdXeGtWNlhk?=
+ =?utf-8?B?T1R3cUMrQzZMWmFRZFIzU0h4NjRBU3FzMlRtampQVTdqTW1xaGlDdXVnYVhD?=
+ =?utf-8?B?RWNTRGpYWi9LVUM2NldUaGMxTGxmZWRHSVJ4Q2o3UzluSzkrTlVKQVRETk8z?=
+ =?utf-8?B?cmNDeDlnMmxMWWJaYm1EczRpNkhkMHFZOWJNWTdBNlNLd0p0bWJLU3BQbkZ2?=
+ =?utf-8?B?dlVzUlRpVXFiSGFaUG9VVFdqT09RTDlIUkpnRE1pVmZRNDVjdXF5WHNMYjN2?=
+ =?utf-8?B?dGN1Zkx6RlVqUUE1N2g5LzhKaVdNS1o0clZFVEppVDlocGNIYTJnWC9BeHdk?=
+ =?utf-8?B?bGZXUUJwWitxb0Vud3ROb2lrSmhETG5SZjVERE5EYjJoY3M1UEpQUVh4Y2V2?=
+ =?utf-8?B?amxMalhBTFBENExjQnBZSDFkSkhYM2xOUS9KRkJIMGp0NjRBVGZQY3k0VHBt?=
+ =?utf-8?B?ZnF5OGRzeTJoUkdSc2tlSzdkQjF1M0l2QWxjQnREcjdOa005R2ZVbTRXMlpN?=
+ =?utf-8?B?MWFESmVhbjNQQkNSTndDaUxXUjV6cFlDMGc1ZTE2ZENPS1kxUEdFMnpBR25l?=
+ =?utf-8?B?U05wcmd5UCt6UnVKQktOMHU0OHRMUVg3ODJBOHZ6M3VkMVhYZ1ZXSUtGQnpy?=
+ =?utf-8?B?SzVrQTZZa3ZLaWxsVGs5Mi9BcmE0MkNLOGNxRjM5dzhLZU9sSUIzWEtVbGgr?=
+ =?utf-8?B?bW9lUS9xSGRudmhVVzBjTURnaldIaVBKWWowY00yc1RzT09vWTlKWnh6MWpV?=
+ =?utf-8?B?TzVNWDlNTXNmNDNkWCsrRGZEb01Va1R4a3dGQU9TOHVRYWtnNE40MjM3aW1S?=
+ =?utf-8?B?NEp6VGl4QU04cUxFaU9MZ2JvcnlTZnBZWG5VMEdUOGNsU3A4clNIRFYwYkMy?=
+ =?utf-8?B?VkVMejNLV0d6WnNsT1JBNTNxWEZvbGdYTkpYWExpTm95a2Z4SGJlcUY3a0Nw?=
+ =?utf-8?B?TXFQc0UxbzdETGt3ZTA5bys0aStleUlhUmY4TURVYXR4Sko1SFdyLzRJY2NJ?=
+ =?utf-8?B?SEVhcnhQLy9CTFl5Tlc1UVk4Tm5mM1IrNSt1MzZ6UzU5azFldHArNDgrclFW?=
+ =?utf-8?B?UHlKbUdkblFidlZWSUMxLzExaEN4K0xHd0JRTmhaOHZwdFd6NmpLTVJaVjht?=
+ =?utf-8?Q?Zd7j+7oF5V0bze0k=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c60c5741-db25-4258-ea4e-08de55891c45
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2026 05:27:30.7736
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SbjMoX8sbUexK9+i4dDrSTLbdtkbc4VztoX2c2jffMTlEccbVUThCOHzTkasmVfWHSKayqC55ug1HrhqhlbXaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6609
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-HE-Tag: 1768626936-24232
-X-HE-Meta: U2FsdGVkX18PFjjmzQdxigOsVabYGkk42sb5Ttj5NWhml/pWldf/e3IY6lrm23N+Ck6/tEaJ3GPGzLXE7jyk8DyeFYJZSpQ0dGmy1csfu1FNOKI8ZxBJWVWt8xYP372oLgqOdm/JLIZDIepBJ5MXWoA+krU1POrHe5fHXEh7JsxNi8wtWAoivqyktejQ62VDAwLSvLt0cm1CcSqxCHUo+fvj5PkJhN4usUNjmPbhegOQekEHo37EAGUk4it8T02zDc2s5as7iKflnXJOdQXX/W4ngmYPDAA6V4OwsUG/LEDfBgDoTiIijlOHBnuwn5MY8h2Hnt2Q5hTNB0Ebk+w91wbYKfIQ7yBOU7OiqgEnbKN2AcFSp0vdVu9CK1EVB1hNG6r9Hqa+OzSk12MBN/X4JkxD/W/9C1byysMRC4HgBWfh3yBHiYMRS1qJJZSLxs2i6r2c+UFdBonL/nq4fjMla2YGgOtYFlqY2dGbKb2iVyf7CR2SnYqXsHE1vjHOv+FC3jyPg1I0YcvKnVGIKZ5K5ilrrBGptNNrBToM2ZecoQN+WUFWXs8rFh671xDt431aqO9txph7Wl3Aw7hrukZi+oNjFgOU1C7I5GjhCpuanDrsr8YYHi+LnzUOZo68zAThAYTInraUJb93Sa6s5/cRpLR2qaj9rBSAAu2ImANiHHZvDUpo3dAHR2TvpTnAOT47ID1DY+gEtgAD1rrtJhyKgXf8zCSppTV+5tdU9Z+KC+Qu6uaqQeQrmggcibAVAfW1n9mClW/Rwfcv4u6wl16RB3smtshXGwX8STbPZZm+qdJtsA4OgnSjF3pHd9KW1tOWEVhkB5+mFSVOn7d568P/AZi+TVTwoQZ7kQCNqOtuEJx6GLF2ylrLOs5Ys8yBw2knhdmUajQgoMvzVnKpUWcTGdlUIiqSOgePHgJQjwz66UMM0YPo+Wx+yPNgcTVvrCjzt83LCCwtB/FRbdpyGpD
- Q+RJ/itr
- BeAXCQAen5ia98prv/+mCe3Jq+S5tBePQeuIXTBfpQ3aP4TKIF0hqZK6jZy+HZ95ov8SI+UGwHOA94JQwaHJWVEz6r/RHrdufHey1ebU5AswuGhhmarS86TzhAMQL4yxv0qZHYDZCa0UZKEMDtOfal3K8hEjmQgPfXbjJV13T24HG6xkX1jTQuxnXV18kLuOGgSwvkvlffkagr8/SMB7pjaozHWp7YzNh2ZvZb0wpRPBKP3g4sfUZfHlFrT7/MXozanuiozpMBo3pJDY=
+X-Stat-Signature: 1gbutw9rg9trxm7ex59tu9cj3ik5yq1i
+X-Rspamd-Queue-Id: B2EAF1C0005
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768627661-261491
+X-HE-Meta: U2FsdGVkX1+bP1EDV368dG/mombfP6QP8pKAI59t/s0HzeuVSHLSVAB1adKpCHUc9Y4p9V1IWM7wDlguynGLcIho2j9VYQkfKZDrXAZ18qJ8T+sTsQusio8RO96VAVT8bo/1eyNgcY6+G7UhDRjXtxsVklsGLExvs5X5ytwycC71YNsgwT2WMAu8nGB826zwiQaBqIUn9gsYxAy6MjtUUvgaOU0oppPWpCTQD+UMVVYrogale6/zcuaDsf0RusP4CGZAILtbha9wvBh8YNOYlUhGidhfNjrzPtybyw0dy74q3LeMjePtLHJmJYrh8qKFEfvn2Y1AlDzPHC10sjlnK7BiApk3V/hc8WCE7UqJaam/LvIcIaqwvNhG5plRxB/LHlswHoyqrzQ8DS1qAs/5WW/3oWVGUtl6L+IA43eFqvIXJ3tIfqu39BAmn4nBb5RNC9exfhH9nBvwAhLuyBE7/KN+w79oZLP29gRkUQL58OPL/XNDq0KgBWdcBpxZZGM0ifjm2izDSWanNtmMXwSEX2SBXV292KFZOQu/erMeo/EgtTmMIol7Tq3RB6Y+VYWr5HtAo0oceUUk4SsD5MwVUEu37lTaFaquw4HCXhahkrC8Hu+BJ4hUhDBxCEaAyZvBbKUE0wHVsu2OrFXhLJYupDJyxvYEB80AwzvrxAJJDiiRR4YNBDLOdHNAU96Ip+uQwJPpBXrJCIZXb0T0rvpc59LFVEDe3B0aOcF37UxKBsbk0j4agL3zBvJQv4rZfSidZ/zis5qIW65g+9tLXaMi3zEDl7+AGi8MNEP66eHob5kPsQTJ9mdcFqPS6Oq3x0p14HShYuoc7ST3hIWCMRyuVUk+gyFAC+l7blpIL4ZckGtOVlHQofkh0IpG+k9yjbVL20zmRWmClrRgDiwASY9BGAgd/fNZyx9L423s2omGfArAcEFDkXAfodX4fN4mc+zlkFnJZmc5Vo+OQyfouYv
+ JXC+0ixe
+ KFWuccztVdWkvaDdAiF17tj/v0jUuuGrrOIlURXPon5lZ2gNi0+siv5PRhT3NTpmy2gYhAepkzyGPS0cBcu/1b3FnVtLjx6W2+24K9INlQjKs/Qa+i48Z6LtXSNuFhvsHHi9qmWcOSNdCL1eUPuGXTpMl8tCt5hDjb1Qh5AAAlSKBw01TDTt9VdK4UMUDMnamq1XWIUje/m0aI7yrmWxOBr4AlA2EWt/S4GKDyZTX39cayLRE+kupTB9w0AyBujH+EOihI8ZjXkv2b0P8PLzX7rLaX7zRofp4FQC+mW8Rd2gefRvk4oUJOvxEGNKIRCvqnT+p6na0Vxh2UXO7NKO914RGsFMnmiVQe7E3s3ifO4L8tPd9npZI19/5ED18HSev5iLOOz2fe9yLXXq4kcWMGhzbcbhZ4IjXGYmZnCdLMiCddq84rES8Ygnbwm+6oZRglnCMSmAKvsfVSYW6xnDAOpAUobus2p+/AR98L5y5xUVg+USF0B6p9XCbdS6ciq9H9yEBeJyvXhUEDK5Y0SZX0t4gJd4qCOCpcwneUVQmbOm9u30=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,83 +263,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 07:15:48PM -0800, Andrew Morton wrote:
-> On Thu, 15 Jan 2026 18:32:16 -0800 Dennis Zhou <dennis@kernel.org> wrote:
-> 
-> > This adds a basic double free check by validating the first bit of the
-> > allocation in alloc_map and bound_map are set. If the alloc_map bit is
-> > not set, then this means the area is currently unallocated. If the
-> > bound_map bit is not set, then we are not freeing from the beginning of
-> > the allocation.
+On Sat, Jan 17, 2026 at 03:42:16PM +1100, Balbir Singh wrote:
+> On 1/17/26 14:55, Matthew Brost wrote:
+> > On Fri, Jan 16, 2026 at 08:51:14PM -0400, Jason Gunthorpe wrote:
+> >> On Fri, Jan 16, 2026 at 12:31:25PM -0800, Matthew Brost wrote:
+> >>>> I suppose we could be getting say an order-9 folio that was previously used
+> >>>> as two order-8 folios? And each of them had their _nr_pages in their head
+> >>>
+> >>> Yes, this is a good example. At this point we have idea what previous
+> >>> allocation(s) order(s) were - we could have multiple places in the loop
+> >>> where _nr_pages is populated, thus we have to clear this everywhere. 
+> >>
+> >> Why? The fact you have to use such a crazy expression to even access
+> >> _nr_pages strongly says nothing will read it as _nr_pages.
+> >>
+> >> Explain each thing:
+> >>
+> >> 		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
+> >>
+> >> OK, the tail page flags need to be set right, and prep_compound_page()
+> >> called later depends on them being zero.
+> >>
+> >> 		((struct folio *)(new_page - 1))->_nr_pages = 0;
+> >>
+> >> Can't see a reason, nothing reads _nr_pages from a random tail
+> >> page. _nr_pages is the last 8 bytes of struct page so it overlaps
+> >> memcg_data, which is also not supposed to be read from a tail page?
+> >>
+> >> 		new_folio->mapping = NULL;
+> >>
+> >> Pointless, prep_compound_page() -> prep_compound_tail() -> p->mapping = TAIL_MAPPING;
+> >>
+> >> 		new_folio->pgmap = pgmap;	/* Also clear compound head */
+> >>
+> >> Pointless, compound_head is set in prep_compound_tail(): set_compound_head(p, head);
+> >>
+> >> 		new_folio->share = 0;   /* fsdax only, unused for device private */
+> >>
+> >> Not sure, certainly share isn't read from a tail page..
+> >>
+> >>>>> Why can't this use the normal helpers, like memmap_init_compound()?
+> >>>>>
+> >>>>>  struct folio *new_folio = page
+> >>>>>
+> >>>>>  /* First 4 tail pages are part of struct folio */
+> >>>>>  for (i = 4; i < (1UL << order); i++) {
+> >>>>>      prep_compound_tail(..)
+> >>>>>  }
+> >>>>>
+> >>>>>  prep_comound_head(page, order)
+> >>>>>  new_folio->_nr_pages = 0
+> >>>>>
+> >>>>> ??
+> >>>
+> >>> I've beat this to death with Alistair, normal helpers do not work here.
+> >>
+> >> What do you mean? It already calls prep_compound_page()! The issue
+> >> seems to be that prep_compound_page() makes assumptions about what
+> >> values are in flags already?
+> >>
+> >> So how about move that page flags mask logic into
+> >> prep_compound_tail()? I think that would help Vlastimil's
+> >> concern. That function is already touching most of the cache line so
+> >> an extra word shouldn't make a performance difference.
+> >>
+> >>> An order zero allocation could have _nr_pages set in its page,
+> >>> new_folio->_nr_pages is page + 1 memory.
+> >>
+> >> An order zero allocation does not have _nr_pages because it is in page
+> >> +1 memory that doesn't exist.
+> >>
+> >> An order zero allocation might have memcg_data in the same slot, does
+> >> it need zeroing? If so why not add that to prep_compound_head() ?
+> >>
+> >> Also, prep_compound_head() handles order 0 too:
+> >>
+> >> 	if (IS_ENABLED(CONFIG_64BIT) || order > 1) {
+> >> 		atomic_set(&folio->_pincount, 0);
+> >> 		atomic_set(&folio->_entire_mapcount, -1);
+> >> 	}
+> >> 	if (order > 1)
+> >> 		INIT_LIST_HEAD(&folio->_deferred_list);
+> >>
+> >> So some of the problem here looks to be not calling it:
+> >>
+> >> 	if (order)
+> >> 		prep_compound_page(page, order);
+> >>
+> >> So, remove that if ? Also shouldn't it be moved above the
+> >> set_page_count/lock_page ?
+> >>
 > > 
-> > This is a respin of [1] adding the requested changes from me and
-> > Christoph.
+> > I'm not addressing each comment, some might be valid, others are not.
 > > 
-> > ...
-> >
-> > @@ -1276,18 +1277,24 @@ static int pcpu_alloc_area(struct pcpu_chunk *chunk, int alloc_bits,
-> >  static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
-> >  {
-> >  	struct pcpu_block_md *chunk_md = &chunk->chunk_md;
-> > +	int region_bits = pcpu_chunk_map_bits(chunk);
-> >  	int bit_off, bits, end, oslot, freed;
-> >  
-> >  	lockdep_assert_held(&pcpu_lock);
-> > -	pcpu_stats_area_dealloc(chunk);
-> >  
-> >  	oslot = pcpu_chunk_slot(chunk);
-> >  
-> >  	bit_off = off / PCPU_MIN_ALLOC_SIZE;
-> > +	if (unlikely(bit_off < 0 || bit_off >= region_bits))
-> > +		return 0;
+> > Ok, can I rework this in a follow-up - I will commit to that? Anything
+> > we touch here is extremely sensitive to failures - Intel is the primary
+> > test vector for any modification to device pages for what I can tell.
+> > 
+> > The fact is that large device pages do not really work without this
+> > patch, or prior revs. I’ve spent a lot of time getting large device
+> > pages stable — both here and in the initial series, commiting to help in
+> > follow on series touch SVM related things.
+> > 
 > 
-> This (which looks sensible) wasn't changelogged?
+> Matthew, I feel your frustration and appreciate your help.
+> For the current state of 6.19, your changes work for me, I added a
+> Reviewed-by to the patch. It affects a small number of drivers and makes
+> them work for zone device folios. I am happy to maintain the changes
+> sent out as a part of zone_device_page_init()
 > 
 
-Sorry that's my fault. I can respin and add it if you'd like.
++1
 
-> > @@ -2242,6 +2252,13 @@ void free_percpu(void __percpu *ptr)
-> >  
-> >  	spin_lock_irqsave(&pcpu_lock, flags);
-> >  	size = pcpu_free_area(chunk, off);
-> > +	if (size == 0) {
-> > +		spin_unlock_irqrestore(&pcpu_lock, flags);
-> > +
-> > +		if (__ratelimit(&_rs))
-> > +			WARN(1, "percpu double free or bad ptr\n");
-> 
-> Is ratelimiting really needed?  A WARN_ON_ONCE is enough to tell people
-> that this kernel is wrecked?
+> We can rework the details in a follow up series, there are many ideas
+> and ways of doing this (Jason, Alistair, Zi have good ideas as well).
 > 
 
-I can see running multiple tests that might give me additional debug /
-signal to how badly I screwed up. In production a WARN_ON_ONCE is
-definitely more than enough, but might as well offer the chance to try
-and trigger it more than once.
+I agree we can rework this in a follow-up — the core MM is hard, and for
+valid reasons, but we can all work together on cleaning it up.
 
-> > +		return;
-> > +	}
+Matt
+
+> > I’m going to miss my merge window with this (RB’d) patch blocked for
+> > large device pages. Expect my commitment to helping other vendors to
+> > drop if this happens. I’ll maybe just say: that doesn’t work in my CI,
+> > try again.
+> > 
+> > Or perhaps we just revert large device pages in 6.19 if we can't get a
+> > consensus here as we shouldn't ship a non-functional kernel.
+> > 
+> > Matt
+> > 
+> >> Jason
 > 
-> The patch does appear to do that which it set out to do.  But do we
-> want to do it?  Is there a history of callers double-freeing percpu
-> memory?  Was there some bug which would have been more rapidly and
-> easily solved had this change been in place?
-> 
-
-Originally, Sebastian posted he ran into the issue where he double freed
-in [1] (linked in patch). Maybe he can elaborate how that bug was
-introduced.
-
-Wrt do we want to do it - I think it doesn't hurt and makes it more
-explicit that something very wrong occurred. Percpu memory really 
-expects users to be good samaritans. If you do happen to accidentally
-double free without the warning, in a contrived case you could
-experience unexplained behavior for some time before crashing in a spot
-that would leave your head scratching. If anything I think there could
-be an argument to fail louder.
-
-[1] https://lore.kernel.org/linux-mm/20250904143514.Yk6Ap-jy@linutronix.de/
-
-Thanks,
-Dennis
 
