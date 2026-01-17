@@ -4,95 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0094C9830E
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 01:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6BD1C9830C
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 01:46:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 150B36B0088; Fri, 16 Jan 2026 20:21:57 -0500 (EST)
+	id 12EEB6B0005; Fri, 16 Jan 2026 20:46:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131E76B0089; Fri, 16 Jan 2026 20:21:57 -0500 (EST)
+	id 0DCE06B0088; Fri, 16 Jan 2026 20:46:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 033E56B008A; Fri, 16 Jan 2026 20:21:56 -0500 (EST)
+	id EF43D6B0089; Fri, 16 Jan 2026 20:46:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E88ED6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 20:21:56 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7EFA81AE50B
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 01:21:56 +0000 (UTC)
-X-FDA: 84339704232.19.5E8FEB6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E705E80006
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 01:21:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AypgwY6x;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768612914;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D9C6C6B0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 20:46:42 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66AF4C17A5
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 01:46:42 +0000 (UTC)
+X-FDA: 84339766644.27.4FE7A8D
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5C37D120006
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 01:46:40 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BD3XIi4v;
+	spf=pass (imf29.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768614400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ijMe9IoCGALr0uEmQFimYVQgdAjGEEnEDAeuPSmEq00=;
-	b=Q/5/g5ZrIT0Uh/Ln/VBEJsCo2uMeCzgw6mkaYa6X39DHcJjKrq/Bi+Su1DNWGv00sb1Kdo
-	ITWjN2Tdf7WRd3hsMRE020mmxi7kgJjZf2KgqfJJlYTUsFg5w/+I1sNg2pxKfH4NkbeAp0
-	ZIgi1oZEdNsuh6MNj0guTMs46UnhodE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AypgwY6x;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768612914; a=rsa-sha256;
-	cv=none;
-	b=OKYgs+/h7CJSvFYn7h1Q1pRwhV8gQDfgLKWMLqg2sJWeZFRuqbBI/UJzUNsmz5bFvAkNat
-	v9WHEUEMlQXN39rJ19JIzeB+7hWkmFoczg+YT4dsA3A+QaFpel0peY3F69GQtJm2YJK63y
-	RA3p4LqA0eeYK/tcLgapDPLIS3BdFYU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5364560156;
-	Sat, 17 Jan 2026 01:21:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0333C116C6;
-	Sat, 17 Jan 2026 01:21:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768612914;
-	bh=6xxMF1nF4gFfiAabY8bBSiHZyIKO9vi3p2MzOkcN4lY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AypgwY6xtKtraBu85pjM4BHwPQHL1gZRO1U25ZRbUGgvO9BBiA5OR6Idyypbuhc9y
-	 oqgTVz4aQ/D/ncN41RYp0VPZgyI75z5bdONyF7epuUSv7WPh/bUNVpdwHp/UqCfUJS
-	 x9DZOpbk8yf7WbREHWtT1bf0mVQyI2BrL4s9UkMj/zfIcNZWFh+G01NfjduIKsfY3d
-	 An6X9zQWlfzHM6lOC8LFc40Nwye1wMMx3Qe2Gs3pwdzKWSjq/eqFKILAtGiGYkPWz1
-	 C/licmDrm6cziIvMeOdlxmB8srXbY4SRMzMw9koB34jimYHMES+56JWu71ADMrIJvN
-	 r5wHsNzS3PHnA==
-From: SeongJae Park <sj@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] selftests/mm: remove virtual_address_range test
-Date: Fri, 16 Jan 2026 17:21:40 -0800
-Message-ID: <20260117012141.224053-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260116132053.857887-1-lorenzo.stoakes@oracle.com>
-References: 
+	bh=QawnIC/rKqzEiT5sLO4diiV4bNp94xP9Rmr2Cmn3G2E=;
+	b=T+e4ZPG/3GwDyRJgi4US2OwJRYjUE+AeHC1ODfb144SgRUcWOrkU32iVmHBVy9R2t/iU4O
+	WEbcdcfm7rugvvdOUEFV346nVcGHtw1Bb1mM3l2Xb/hVDEm2Gy6oMevo2RmqmeycKiL9P1
+	cxdiXSG9/1QFkKRAkd/lghcUU+64bfk=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BD3XIi4v;
+	spf=pass (imf29.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768614400; a=rsa-sha256;
+	cv=pass;
+	b=GXdrDEJOyu1ZKcmoNwk+lULh2RL53POv8nUWeTKLk/TVwD8I9e6y1dhWbNQ3NekD9i+WaU
+	aiF0RamLxrLaezLdJ+04MY96caeNQipN91Q8Di2i2obuk+7w9WiSLuIbIFLQtzIuv5kF2e
+	0X26OwTKhDql4UY5WJpTS+eDO2dM3lg=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4801cf7c2c7so10935e9.1
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 17:46:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768614399; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BUp1M3WkX+syhu5sgaUnPzlXqwa5DlTaovguDmIyXjag34WN0YY0mnWz1SxFAJtQ+K
+         3IOw0pDkEZpkT9rswYFvy8ZqmB6eaKXhHHmr/wPteGYA8E0M5zjwpq5HApBQULut9DkS
+         vywIUyS8f2LRVzTHdyWXhR5OaxlExju9hUxMKPprQSdjv3CmG1SSqi9GDfjjL1QxVgxw
+         V+t8MgypniPuaZukZbGxg3OkTFL/rLySEC6HJhDnWCtcb2sxCVhS+VzcihZ+dfahRtgM
+         xQQ3dbVKt1lKhmNm/E9OQCToLGy/FranNa9h4Z/0/v6CKF5aAdVk7TIu9bFSdUYMn7rZ
+         3dkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QawnIC/rKqzEiT5sLO4diiV4bNp94xP9Rmr2Cmn3G2E=;
+        fh=Z2HVBDPTkdz/lfP16IS9dnol4sMD+FEdPiu7qSmxO6Y=;
+        b=g8X1ORSX0AQ7TnQiePMPoO4xIpuUw7bbdt3afvhio56uxs66Aw8s9mK6gZL+0DhSLw
+         DQiSWm0YBEGqjxB4hsoWT4ESWUJKGL0H+mXPbco4V1U8X6WySPhpzfIPHUkgBUEHpG7k
+         9RQ3irCT7rG28eQmQlzDOR9ioCyPCrAKcXjDW2KQhtDLmxV1w6t4YfLWvNGIgbKr80KY
+         0s5lFwuHhw8BwLelZdVjd1S4WmWAxvoD9PcE4XWB/tCzm55K78VbtLF6V7o/iC908ke1
+         Aqe7CNhV2dPn+3ds7/baUv02r/C1FBaNaNBmbD7TtmSjDCIdg2+HezcTrJg8v8OYltHS
+         Qxfg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768614399; x=1769219199; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QawnIC/rKqzEiT5sLO4diiV4bNp94xP9Rmr2Cmn3G2E=;
+        b=BD3XIi4vr9lN/8sW2P4VmmLW4B2mkdToIszv3QQQY3LkGy8x7T+tX0AmKOZx7GiSN5
+         IIzjF4T6xuf5o+LGyewZ/SI6YQ0VH//vxmbhi1bL1evxoUy8htBrVB31iiUOTz3b70Re
+         Nr9qMuBT3NTR34UTBgR2rHgR/XumzTlxmGlSjL2z40ZpaRyUzxbw61ysHLtLOXVf0Pgm
+         TAAqpxj6qqtfmF+RYEjTjnscop9je0QQcFtBKwf/brPltmMW7sGFLUZcFvgsfj8Lqir+
+         zaJTU2yShugbE0z1CeNCC/85/vsNlMNZaRSttuAz2QlaxS+wA3hOlUn3GT3y6I64lY7o
+         4KRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768614399; x=1769219199;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QawnIC/rKqzEiT5sLO4diiV4bNp94xP9Rmr2Cmn3G2E=;
+        b=vbc0hi8qLujZtIqtzByxESSND+W1aagB5kUl+UhRWx/cb1EaKrP4/ppSPgJYLs4s8f
+         A9csbFAg4KDDVhhqSfgXsYzHz2YgiPUYy1XYbaFkz7yAHyRaCeU+pAaiJUnFiK31gOjt
+         tBUVwG0n2xNdEWbArmSkJp8JLRULeLhy5pVfTypo87MYkx6mNH3KaGAPsfkYa1+CQFZC
+         jfZ33VzFkT2X139xZwf/JynCZ3bymGWhA46izo9vP6bhPhuzQKJ2cGqUQMOA3ajDYXGs
+         GSymBxoLVDl/nwcJ2JyJ7gIKp3fwdQ7YYwY6ZxczvQq8fpm/nY/VVHbXqIlHH3Nbb1eX
+         EnPg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUGP3fPyMFZGnR274G7Ip+x3RjSUmC2twKRL31JyMASe1ssQW1aAahc+84IU14skvNY+8XhXS7UA==@kvack.org
+X-Gm-Message-State: AOJu0YyQaBpWUeHyYe2e6U2PFrSu1LU+r39dH7tp9SdM0cj6jsZegG15
+	KdPY6PYQIpv+3N+we9xqmL648C77LBerF8nZGcIJN5JlJM24xJVQkja/D8AKrlkhd7c63HRpuer
+	sfDF5q7cj/NC67QLyLGQy/qYJdA3YnWEJX2EFhHEH
+X-Gm-Gg: AY/fxX5pNXslfPUfklviPFnh6mBWVJwRc95q1tWyaGiZYQrLCLHEFY/K8B4SbGz27dk
+	gWAOqFcxUgkv5VEAHQ2sPXVVZkoYos2vccBQAgvKI0zpivkbDMr0yl9uoSZyq3yL+xYmJMOj3SK
+	o9lybQoSH11C8OGO046FUClZlMMk3PdJu9FezaAskI82yXixa57atK8O5QBPRz6D7AtN9tbDETh
+	hhdNG0xgC7rofu2NuQH+xV/wdgAwJ9/XYPj2ONYWd9M7MOboAptKUmJISMIgzDNcMAq+iY/rrt5
+	RblXpnKr8P7KFydaPOOQb7xEeg==
+X-Received: by 2002:a05:600c:2159:b0:47d:7428:d00c with SMTP id
+ 5b1f17b1804b1-4802831ff1bmr125265e9.17.1768614398594; Fri, 16 Jan 2026
+ 17:46:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E705E80006
-X-Stat-Signature: grktuqw4i6woeerh65b69gmn6r65iade
+References: <20251102184434.2406-1-ankita@nvidia.com>
+In-Reply-To: <20251102184434.2406-1-ankita@nvidia.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Fri, 16 Jan 2026 17:46:27 -0800
+X-Gm-Features: AZwV_QgWqDDKvf2998qT7WGKusfsVNwwlVxtPgQtBBUSk5Pxl571jMObyaPcU9E
+Message-ID: <CACw3F51k=sFtXB1JE3HCcXP6EA0Tt4Yf44VUi3JLz0bgW-aArQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] mm: Implement ECC handling for pfn with no struct page
+To: ankita@nvidia.com
+Cc: aniketa@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com, mochs@nvidia.com, 
+	skolothumtho@nvidia.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
+	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, tony.luck@intel.com, bp@alien8.de, rafael@kernel.org, 
+	guohanjun@huawei.com, mchehab@kernel.org, lenb@kernel.org, 
+	kevin.tian@intel.com, alex@shazbot.org, cjia@nvidia.com, kwankhede@nvidia.com, 
+	targupta@nvidia.com, zhiw@nvidia.com, dnigam@nvidia.com, kjaju@nvidia.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-edac@vger.kernel.org, 
+	Jonathan.Cameron@huawei.com, ira.weiny@intel.com, 
+	Smita.KoralahalliChannabasappa@amd.com, u.kleine-koenig@baylibre.com, 
+	peterz@infradead.org, linux-acpi@vger.kernel.org, kvm@vger.kernel.org, 
+	Axel Rasmussen <axelrasmussen@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: eewsgcfky9yxwjx5zypygeipmp5mqp93
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768612914-569927
-X-HE-Meta: U2FsdGVkX19pgB6Twd2q81+S9rLU+iiwvZkXAjgrzSkUibTcnCCAHbL+Gy1VQSWGJyQwW0t0UzxTKs6ndUnOzuBW/jZ1GKXaAMyU7CPK7Jxdd1+2gK5l0CmGa1gsCRbrP7bhL3XvFUoOXY8t3AC/J+Ur1Mrdnc+aXSMpQl81l3aZ8QsDMhojsmKHqY+hrsJ3MwYku9xvMOIUh33CtLyT20H41jy9yA7Jy0OidXbvRQjeSav/ZwNCY77BoV9hY7FnQi0H99zd2n2N2QCIvO7/q883RzaLjnDJ3vadHr1h5rYcMwK0fICsGaLi9lrHrPht9oAYsjRVxkSHeIohiG4IUTYPrBPaYfaP7syOZrp3lXQ7f1iUPUJc3YXuZYhMX+2ZXsdl+z21VGYtaHe2wEcgLbeb4X7Ayu1gBVp2s9cGKRelqQUEi1jPpKdqcSV4c5D2StelNIflAQRekZyZJDpBrkXGwMDgwRo6xXW2WZV1qcR4EAv1Q/CgdJTTxXd0+CSDspvWguGcUnO3YMHOpkSd6AiURTPLiLIEQQels6vptM9pc4Tk7d4E9gB/DVMWX6WbqKXWBbf332zxZX7vt/7lfq53JjA3GRHh0RB5FRmOStDM1ivMD6rDNBE3jXgXasT2HTQU251JAVRdUiAq13Rl2NlawftsZJlXtP2v38giz/iAO0Sn2hZ6kmNaZ3Jbyncl3nXgfGSFz4BdnEL6lU8TPNRB4HsNw4/gQKdxMywrzD9Z/O0QPyPPmKJy2AMhxne3O8ok3i3mFVCnznIC0AwgE5dRDGiYBDPmn1Q15oc6w7SyvoSmsYSwrVkoUkXa9TPRssfUz360Ut3Ab/ET1ZG9WzXqX7Uhf4MZuixT86+s4O/TIEk235oxzmHbo96EPSOBz/FRCxRgKaBl51u0A4OfK9r4hgtdSPXqUobJaAiMoMqdGebx85rXFUnWh+ajDjgjbq2ScOOuE9v+6et2sgZ
- RIqGbml+
- 2U3E8+7ZxJCwh5mo9NxM4i+ifbylLH9V2iVzYttWvv1zsgiIQudoW6caWY4dPkc6acMMHPKw37VzGrQjAJ+3jMQOhYPzRWf9FNb6r9fXgkbOO4yS2awPwseaUl6h9vKzIbb8naRktyYBermKG7OfBQZCpFWs/bGokqVg+VfLYSy0mjctdcKyMMTH7aDfbvopbzNzKwA3VRF/2pOy75shtqEl+DUyf/IR+ohXVCJU3wqwExeMArHyBHQ30qWZyfEN9ZHqgSM+WFVZyWqoG/mFQsA3+CJ7M24Vttoq1F1cv2NmjsdGAdV6dUGhEMg==
+X-Rspamd-Queue-Id: 5C37D120006
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768614400-145367
+X-HE-Meta: U2FsdGVkX1+okzlp0Pe1SIjQOJj01bp8slTcPFelkBDW7pMZ/PXOpeppr0M3wJ4/zmhgu5Q8/8pyXCeLeC6/rMm8dLN3TAIK49kAQWNeGBUStvbqV9NlEkVk+SLMKgKpJyzDJfODu83v9+XEuEr8UbbstArwlCEXgG31EjLRfD0/d3duF9MMM8q9Z/fOGkt9owddtvTSYvEzUbFY8I9DCxPerATXNqgpoSU9/Jj4/E+LdGGlpSJu3tk9BmTBeHMzv4B140lTYX3988+xYDNKmaZLlL7Tb80cKzantTafTPKHjKSbB8FKFJk1gV94ZHEAuiSW5JBuwOdA6Yj13BDSZLwZCWT/2WL8MY4xfzqHQMjhwfWRi77LWSscc73OBQic/Vjjge3vf0P/Foa3v25vLyhxp4S0oZuYksCWWBA3UA5FMvU16emSIcJf1i1yMr/Au5YptyJi7hnTF1geem8ivkXy3YzTVNABml1H82M8CaA5UGmRVKv9ILjILxEGKH+7X1/9N32Q/MXAw6GfJrLa0dLcTR0XilTnmx9s1v7ymeh+2OejRwgTQRTqDwgeC26KY4dPgbcabld1vpm/mQEFHSAkb/ZsDHLTZ7VFozGXlXTdM774MslFPfwwGeTWUdT3LCvclGy4xKc8REsglnu3ZV56nsZbk3hyMTdeMnwV30DDjrZvn0mFSrsRMDUSbtH2E7l1+fjg3MzGGXRUqasygNpwFpBNn+QAe2levu6FLEydVEBHkt/e+al3zPEwoqyQrNO4/aKngi0bPc5REpLmosZYSiCsspm5LYFgZPS/kWjQmHRt8HGOTJmcQRqQwxQvsXSgxk+1D2PWaqRwhq566i0ttPqooFDl2KU88TmvrLvOWEcKweDsfQteZFb3mHl4eBSqi92utGsQaKsJsniqGX02iwLfDouTADF0SogKXTQ+cZ58pjacEoGnkPKv+W5fkbTwKgRavqA0s/NOxy1
+ lsvw78pv
+ wCMrxx7/njmHB+AbbVmjrge01ENoAoXFNcj8hzbF6vTyn+pKBIYk3exic7sOURClYqap+0+kfcPX4CiEbzsEuWqtGYd9e6Gecjp/ak3Iv7IlsWcyTJDEDuVdI10yIFNhBSdcrl83M2kdUp0VZ+GJ28Gjgjb7z3r5ps4GsE3QxqbjpxD8T9J80h0BQjyzlOxtvAordbEhtp/MLO3j3UPloNmxtNiqmyVryZ+W9V5wmUf8m2guuG3HRGielsC6rR07FUrHBkDzYOCDNWCerEjGB9wlSQBlIit/7v1yMv1VAy5nMGSQguGIGoF7NjR0FrTE0bTXBUAjhl71XyNhQQIv6seYCLv8L+LQwdTDKOKck1Ziw/sCssoclBEI70w7OefsEWOes
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,19 +150,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Jan 2026 13:20:53 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Sun, Nov 2, 2025 at 10:45=E2=80=AFAM <ankita@nvidia.com> wrote:
+>
+> From: Ankit Agrawal <ankita@nvidia.com>
+>
+> Poison (or ECC) errors can be very common on a large size cluster.
+> The kernel MM currently handles ECC errors / poison only on memory page
+> backed by struct page. The handling is currently missing for the PFNMAP
+> memory that does not have struct pages. The series adds such support.
+>
+> Implement a new ECC handling for memory without struct pages. Kernel MM
+> expose registration APIs to allow modules that are managing the device
+> to register its device memory region. MM then tracks such regions using
+> interval tree.
+>
+> The mechanism is largely similar to that of ECC on pfn with struct pages.
+> If there is an ECC error on a pfn, all the mapping to it are identified
+> and a SIGBUS is sent to the user space processes owning those mappings.
+> Note that there is one primary difference versus the handling of the
+> poison on struct pages, which is to skip unmapping to the faulty PFN.
+> This is done to handle the huge PFNMAP support added recently [1] that
+> enables VM_PFNMAP vmas to map at PMD or PUD level. A poison to a PFN
+> mapped in such as way would need breaking the PMD/PUD mapping into PTEs
+> that will get mirrored into the S2. This can greatly increase the cost
+> of table walks and have a major performance impact.
+>
+> nvgrace-gpu-vfio-pci module maps the device memory to user VA (Qemu) usin=
+g
+> remap_pfn_range without being added to the kernel [2]. These device memor=
+y
+> PFNs are not backed by struct page. So make nvgrace-gpu-vfio-pci module
+> make use of the mechanism to get poison handling support on the device
+> memory.
+>
+> Patch rebased to v6.17-rc7.
+>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>
+> Link: https://lore.kernel.org/all/20251026141919.2261-1-ankita@nvidia.com=
+/ [v4]
+>
+> v4 -> v5
+> - Removed pfn_space NULL checks. Instead a wrong parameter would cause
+> a panic. (Thanks Andrew Morton for suggestion)
+> - Log message to mention kmalloc allocation error and the failure to
+> kill a process. (Thanks Andrew Morton)
+> - Comments with 80 chars.
+>
+> v3 -> v4
+> - Added guards in memory_failure_pfn, register, unregister function to
+> simplify code. (Thanks Ira Weiny for suggestion).
+> - Collected reviewed-by from Shuai Xue (Thanks!) on the mm GHES patch. Al=
+so
+> moved it to the front of the series.
+> - Added check for interval_tree_iter_first before removing the device
+> memory region. (Thanks Jiaqi Yan for suggestion)
+> - If pfn doesn't belong to any address space mapping, returning
+> MF_IGNORED (Thanks Miaohe Lin for suggestion).
+> - Updated patch commit to add more details on the perf impact on
+> HUGE PFNMAP (Thanks Jason Gunthorpe, Tony Luck for suggestion).
+>
+> v2 -> v3
+> - Rebased to v6.17-rc7.
+> - Skipped the unmapping of PFNMAP during reception of poison. Suggested b=
+y
+> Jason Gunthorpe, Jiaqi Yan, Vikram Sethi (Thanks!)
+> - Updated the check to prevent multiple registration to the same PFN
+> range using interval_tree_iter_first. Thanks Shameer Kolothum for the
+> suggestion.
+> - Removed the callback function in the nvgrace-gpu requiring tracking of
+> poisoned PFN as it isn't required anymore.
 
-[...]
-> It therefore, sadly, seems that the best course is to remove this test
-> altogether.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Hi Ankit,
 
-Acked-by: SeongJae Park <sj@kernel.org>
+I get that for nvgrace-gpu driver, you removed pfn_address_space_ops
+because there is no need to unmap poisoned HBM page.
 
+What about the nvgrace-egm driver? Now that you removed the
+pfn_address_space_ops callback from pfn_address_space in [1], how can
+nvgrace-egm driver know the poisoned EGM pages at runtime?
 
-Thanks,
-SJ
+I expect the functionality to return retired pages should also include
+runtime poisoned pages, which are not in the list queried from
+egm-retired-pages-data-base during initialization. Or maybe my
+expection is wrong/obsolete?
 
-[...]
+[1] https://lore.kernel.org/linux-mm/20230920140210.12663-2-ankita@nvidia.c=
+om
+[2] https://lore.kernel.org/kvm/20250904040828.319452-12-ankita@nvidia.com
+
+> - Introduced seperate collect_procs_pfn function to collect the list of
+> processes mapping to the poisoned PFN.
+>
+> v1 -> v2
+> - Change poisoned page tracking from bitmap to hashtable.
+> - Addressed miscellaneous comments in v1.
+>
+> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.=
+com/ [1]
+> Link: https://lore.kernel.org/all/20240220115055.23546-1-ankita@nvidia.co=
+m/ [2]
+>
+> Ankit Agrawal (3):
+>   mm: Change ghes code to allow poison of non-struct pfn
+>   mm: handle poisoning of pfn without struct pages
+>   vfio/nvgrace-gpu: register device memory for poison handling
+>
+>  MAINTAINERS                         |   1 +
+>  drivers/acpi/apei/ghes.c            |   6 --
+>  drivers/vfio/pci/nvgrace-gpu/main.c |  45 ++++++++-
+>  include/linux/memory-failure.h      |  17 ++++
+>  include/linux/mm.h                  |   1 +
+>  include/ras/ras_event.h             |   1 +
+>  mm/Kconfig                          |   1 +
+>  mm/memory-failure.c                 | 145 +++++++++++++++++++++++++++-
+>  8 files changed, 209 insertions(+), 8 deletions(-)
+>  create mode 100644 include/linux/memory-failure.h
+>
+> --
+> 2.34.1
+>
+>
 
