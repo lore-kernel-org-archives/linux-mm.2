@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA98C98328
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 13:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B603C98321
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 13:29:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 219636B0088; Sat, 17 Jan 2026 08:12:14 -0500 (EST)
+	id DA18F6B0005; Sat, 17 Jan 2026 08:29:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E7B56B0089; Sat, 17 Jan 2026 08:12:14 -0500 (EST)
+	id D791E6B0088; Sat, 17 Jan 2026 08:29:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E9C36B008A; Sat, 17 Jan 2026 08:12:14 -0500 (EST)
+	id C7BA66B0089; Sat, 17 Jan 2026 08:29:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F3BA06B0088
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 08:12:13 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78420139BE5
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 13:12:13 +0000 (UTC)
-X-FDA: 84341494146.08.4813652
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B989B40007
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 13:12:11 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zVzRD7EM;
-	spf=pass (imf07.hostedemail.com: domain of 3qYpraQkKCL4epmgiv2lpksskpi.gsqpmry1-qqozego.svk@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3qYpraQkKCL4epmgiv2lpksskpi.gsqpmry1-qqozego.svk@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BBD336B0005
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 08:29:30 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5DE40C1821
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 13:29:30 +0000 (UTC)
+X-FDA: 84341537700.29.0964C07
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9BF4E1C0003
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 13:29:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IZIjxBMf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of 3t45raQkKCNQ0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3t45raQkKCNQ0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768656568; a=rsa-sha256;
+	cv=none;
+	b=ZWNlBMX9y522ZdA4YIw740DBuojuR7KraM1NcRKeBQsf+ZpWdUyktwg+9Whp/OLBFAnyX9
+	DaLs00uRJ3ecmB8kSLXvYpAjJ6VeSRFUOuBbUIlxRadHgMzZNztSvi9F3wzrGds02zxwfI
+	ojBnAy+1etGu+LogtzqAIFGEzXgBRcs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IZIjxBMf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of 3t45raQkKCNQ0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3t45raQkKCNQ0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768655531;
+	s=arc-20220608; t=1768656568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O/Q6sSsKEIGtbP7mr4JWHCQZmo/e0ttTsHB6ivhULNU=;
-	b=XRm8P3TDwWHwyTZZM8CAqBllFfxtOATJRhSZoKW4ghG/7JZX2VyOZi8Y5wk0BXM0Qel6yG
-	0Yw8UdVQHtBWnqT5hhhZ0OBhl1gJJb8cFKdjCBfTeWgIG77js88s5IRhloLoq2s2yewz8G
-	MOuPlA5n74xggGBNq/flxOIdgYzI5kM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768655531; a=rsa-sha256;
-	cv=none;
-	b=ULwptlamYYe+FpdQ51+0jFIAhpQO0XaVlZtM61pfPu4HKI5UjiwOWUpjo0OfRXts8c7I7h
-	uT/Dj4QwXs8zXOS0oYzGST13YaA0w7zSSVar+RKxdseR5NxWoKUc2WaKAaxAfNcpQRavbA
-	mj5orQXhw/G+FcDqSFVt8GTsq/weurs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zVzRD7EM;
-	spf=pass (imf07.hostedemail.com: domain of 3qYpraQkKCL4epmgiv2lpksskpi.gsqpmry1-qqozego.svk@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3qYpraQkKCL4epmgiv2lpksskpi.gsqpmry1-qqozego.svk@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477c49f273fso28186975e9.3
-        for <linux-mm@kvack.org>; Sat, 17 Jan 2026 05:12:11 -0800 (PST)
+	bh=yGX0/BmN4QSqMec6LsJaLEgukSwhg32D3RH18NXGaE8=;
+	b=6tIzC0EvBAFw5MOgN7eXb+YXrRz48BeQT7Gv/1PKuZg9gG1301vYUnaG+5DsE55AQ80XpF
+	Fyvk6Ymo8Rqg+0rqrnVt0o8diWH0pAdYo+k1PmfdY2chYkK3IKtGbAlPAMyvAujXXv1WSB
+	Jpy7qsuaIjyA3fu7sfLeupu9i0wDOLE=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47d3c9b8c56so43560575e9.0
+        for <linux-mm@kvack.org>; Sat, 17 Jan 2026 05:29:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768655530; x=1769260330; darn=kvack.org;
+        d=google.com; s=20230601; t=1768656567; x=1769261367; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O/Q6sSsKEIGtbP7mr4JWHCQZmo/e0ttTsHB6ivhULNU=;
-        b=zVzRD7EMJk+Lf2RI2azYR4AfZROThqQYx+m2D2y1y6r6MUnU7l+efT7lrYQ9CDlsEh
-         guSJJZMczK6SrFAeF5MFehL1+MrvEwjWCprv07N5X14x8j+pQhbe5Wj+VLt97aceKHiu
-         rh8uIxARLG1mgbt9BNNAKk0+260dkEnj/jfL5cKHntC8+XUqJ+JYm4Q2uEh0gYgXKSz/
-         m5YF4Bu9BmAtvORTBbkRQBUA6G0jMYI+ZF3UTIWJtuJ2SZHVicJ2BX22vrASfX8Iw3aa
-         tJx0Nvai6Y3uKB62GMwH+Fhr1UMjZbto2MlYxxVAEuh2pCuiBUggjpF8jjZLuTRwiFiM
-         ZTIw==
+        bh=yGX0/BmN4QSqMec6LsJaLEgukSwhg32D3RH18NXGaE8=;
+        b=IZIjxBMfHU6N1/u470+f85AqSqOoXU3VjFzWpoN96I25tLb/U/as6wfuuQNHmmBpzn
+         lYUA1FK8+rsb2xbm7mh1Q8wRMk+ZA7/DPiia7QOpOQJKGW5jvtG0Dk23OGVUZd1ttfip
+         mn9fGFX8tvhrYOaBOBW1xfVrSWOtJeVv3cfLP6fhBy/PJMZZ0c0Nu+0WxPljNlZCY+/I
+         HR/Rh1IP16G2vk30P4ARWELLQCoWZRDmTECWs0P0YpJ8d/zxNXIGkxMb8v3eK8GF+xCq
+         UGF2A5z/SRaf87ohZVk5AwmEQL9idhSnZ8DDAwp280lFyiX/ZjPRmXwq5/evCnYfxg4g
+         ODYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768655530; x=1769260330;
+        d=1e100.net; s=20230601; t=1768656567; x=1769261367;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O/Q6sSsKEIGtbP7mr4JWHCQZmo/e0ttTsHB6ivhULNU=;
-        b=SO78aXCh3ubuAOK5QUZrJEUcJLfGdCOIQMQGb/xkXrFtsqUv6UT5qCetfQGX2GmWXl
-         yuSCxqZpLXlty/Bf2akqp/pWXzWpugZGGDNYW5bP1ECuBF5y0jR2QCLseijtD6o+rMzz
-         OjPSeKB3D5VApg0SAp+cWMLrEAkyRuazWoadsU/AQb+Q1ZhAPBPpNn5x/XbrJpe2APGi
-         AByCXwRnEkVkX1xI5LX2A25f6Z8xX85/SZ44u9ArwovZNuOE7mu9+bmj7EnywVeqX0Bb
-         jxUVJK8aGqHO6P6iOUcgSRVf32xWuTTagJLHAz4hxIx5S3o6jjvHOAyDqfIRBzeFw3YV
-         MHGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ2uuN5rO9z6jJQfp8bEGsqNIIk/7RB/uF/bxkgugZxfAkKU/vH4rwEH4JKCPTwn8ZIvtqPaB90g==@kvack.org
-X-Gm-Message-State: AOJu0Yw+1d7nkdqMW1/bkOtDsCzjmxGYBe7N54q2VBW13/rvYF9yE58Q
-	j2DSR9MVd9rodSooZ+CRoDbiD4UnKfvY9J7xEByd8kxY1Px7hr6lzyjXaeV2DRE+Qe49vwqv/dE
-	0AXzKc2GTru/SUNc2+Q==
-X-Received: from wmdv17.prod.google.com ([2002:a05:600c:12d1:b0:47e:db37:5b61])
+        bh=yGX0/BmN4QSqMec6LsJaLEgukSwhg32D3RH18NXGaE8=;
+        b=S12PiMLorY1WH5FaqnlSxZNvjCArLSmXQeyGYB7kb/b4+aILQbFE2f6KlYgCNVaO0V
+         cPlCezzmqmL2Eys4KvwK1K52+OtgL7yxx1cHRSs4NQCpu4Ne7L2YPsFfMt1DUu+2lurd
+         biRQbO74rukhf/CivZM9kos1G0CpT+Cij+iKxvWAoIlZHSqxMLm3kEskA7S6lab+r1Sy
+         EN5w09ERnAYxZ1XpoMC/SLJS0GCmLbBdupaQRC60M5JNZafm9dnpz7MUjhF8KHqzIPYa
+         wjwIXeanNH1PkJN4LjkhuY3/T0ofsCtFC5O4ChotO3zo6COHmbJqNxcbJJEdkA2zs46F
+         LtVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWm3E9aaikIVO683UW9MeEx0S15/I+7qLrkku1Vr0wKAF+vhps/f/OpkgO6q8rPn12xJ8ncVHmoNA==@kvack.org
+X-Gm-Message-State: AOJu0Yz5Bz5oKeoMcGyTZ7d2F9qpolg2th4C3dIToCVFiU9QTyWpWYqA
+	Sx22S+6CpL31a2u02fBVVkR8ks/3XxjwxXOE59st4WvlcP4MdNDBXTZuCM28li4VRlZpQLcmq0M
+	xlsE8NLxRgkTx8meLAw==
+X-Received: from wmby1.prod.google.com ([2002:a05:600c:c041:b0:47e:ddf0:fd00])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4586:b0:477:9ce2:a0d8 with SMTP id 5b1f17b1804b1-4801e29edc9mr73321505e9.0.1768655529859;
- Sat, 17 Jan 2026 05:12:09 -0800 (PST)
-Date: Sat, 17 Jan 2026 13:12:08 +0000
-In-Reply-To: <aWt8Ze-otTkexNIe@tardis-2.local>
+ 2002:a05:600c:35d2:b0:477:b734:8c53 with SMTP id 5b1f17b1804b1-4801eabf1c9mr75158475e9.12.1768656567159;
+ Sat, 17 Jan 2026 05:29:27 -0800 (PST)
+Date: Sat, 17 Jan 2026 13:29:25 +0000
+In-Reply-To: <aWuKlR4a-VJhBeWj@tardis-2.local>
 Mime-Version: 1.0
 References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
- <aWrSkAPFkdH_tvtN@tardis-2.local> <aWt4muGXbe7lBmXt@google.com> <aWt8Ze-otTkexNIe@tardis-2.local>
-Message-ID: <aWuKqLERqpNz9qtz@google.com>
+ <aWrSkAPFkdH_tvtN@tardis-2.local> <aWt4muGXbe7lBmXt@google.com>
+ <aWt8Ze-otTkexNIe@tardis-2.local> <aWuKlR4a-VJhBeWj@tardis-2.local>
+Message-ID: <aWuOtUa0mPDrnbke@google.com>
 Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
 From: Alice Ryhl <aliceryhl@google.com>
 To: Boqun Feng <boqun.feng@gmail.com>
@@ -102,14 +103,14 @@ Cc: "Paul E. McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <Liam.Howlett@ora
 	rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
 	maple-tree@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B989B40007
 X-Rspam-User: 
-X-Stat-Signature: anungz5m77dsum5wrmwgrtcxxe4u7uoz
-X-HE-Tag: 1768655531-512846
-X-HE-Meta: U2FsdGVkX18uT/qB3ej/6KB1GWcXazwqiqllKtGZz8w+wZdFclxlNYv/BCUUqw/++ES6BpQB8imRepqKRVulXEii6nipn6KlEvMCFW3mClZrBKwrhRYoibNQxNoLYXnRL785BuQfr/IJd0t8S63ZqVLlflQOZxFyBZpoCt1GpCgwgMNJhCNcFdX6Lm9MUksAQbRBgZwujdHG4NRhdkOK/Snk9GGAMhj4qof28NMRV5EbMASuW7HJC4MACLC8Ss8IWN9+B5xyh2iPsQsUzfIhmrB0C2O117Vbqr0XTq4V7fi1mueQf5PJpOAhyBzedXtx7qTjJDbhhAymUi+4KK28br09N2yIVG9JecgY5/8sUQU7ELgpchuSFgQ0qc8tnXJiNkuUdy0jNirPfjHetxnBNqMde4sHRMJhbQsr8NRUFF2cZfhlVy8qq0NjWMu7kEpIzSAJZkEcGYhnPGGJvW8IN+/D8q7vEBKqWW7zZl7p8sVtpZWt+4eCFTQkpGOTbCW1wF1H8GCqfap/Ub5UC2aGWODNwShEYFuOVsXXtTvnopZSnxs7PGiKji3Ypz3UDnsv4ks8zBEbR+nt0vyOnFSR4HHn36MFniGsAGCa/44BLUZZii4Pwh8Wys92BlybDGLSgLucijgyE/84wEXv9T8B9LC2clJkaP3SjLE1qCVr16Pqb0gHD31RVvZJqNAW0rYWrhvbyubxnvkv8QzreUOQ0cOiUwEIV077gasJjQU4FR3inKgxb6u8chBnVB/N8UQoIvNxQFNNMUp/DTVbPYVLWwVJ+aSnGGKk+lx5vSH5yMsVWt5XDROuTe35qXAVINBGHxkroUWPgAVb43hJabk97uyx3UBqdI2pWuUnqB/5zxhYAHqSjJhlGjWpjq06a2MZ4mP9xWy2daVN1l5QkxkRh547g8FNZbQjtcwhwDdW9OuBu5m/q1o2TGHbbyQhwLSAJeiL2XJo2McugQR/bnD
- aj6szsYG
- JBziU0TqYzM4tNgH4xJkgQ9dvGinMnOId08QgIP3MYfQ7P+mfhDU81vBoWCy3W97sZFXMFGh+XQ17twJ85IKTzbcJuhvi0isgNIy0BQAemcEOD5YQ38qsvj9Dzw4COm5IRiBGhakQbVkYehRYg1q+C4jkQ3fGfoM+uuxJzPveYf3NnIH9fgsyc9m5P2tRTTCaqEP9/eGLACtDJR/JKi3mxsjTswrTwpkDBa1oxWUbp/G6F0x1KWe4koplBspKyTpigcWnnezTbdHRiB8OPeI7tGRj9fYJNGxqCwfyP4TBEjonBvKF7JRaLYX2ocFQB2GjTZGa76AdXpp3z4HSwZ2VbKMF9YEmCQz7bFO3jWBsXincE1G1mncGsADfxmPXJnWU+0aWIEgujYhpemh38DDI7FcgC/Cwyg4ZHvWy17Dgrmwl7ZphD3IvD2qjdC9X3OrGGlMjsXSNQkLU086RlVmzWVToLcg7RSq6qut67MRH5lpoVqvBSVUsShPYN/4mbNO3/5C8TZ/8AHBqGFOa5q3lgHcaJa03Mr+IsAkbfrW+g2IRZgGk97terYmVauCooG/RF8vmmAR75cjmzo1hZBjqpw81uxlNH3d+UCRKCV94aHwVTMvORwW5dntNdzq8qYYrSvodbQTR4m13X8faJlGTnwf4kukDiAa8W8n1zGsQg0OTbMD7TTkqyyeKjTJh5PcWr7SpY56XZ4Tb7z9BJA7aj4tGLUJBcgCzxxft
+X-Stat-Signature: dzkcukuye8awku16xjcfdpoqprzabx6p
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9BF4E1C0003
+X-HE-Tag: 1768656568-175786
+X-HE-Meta: U2FsdGVkX18cWLPdGJOfdvR+fnBqmZ3XbG0UFHHmNhAtHoG8ORPlI050NEvPXzr2Jr5qwQk1LJyU/2FOWMr6Tw17ZWWYWn28zLRQZKOOmimtsfK6NTbhUjSTa166+6vKcruumHTkrOu3lWfFpL+RrMdp8m5BNUIMXCXXAuu7mvVKsx7rE+MbzXILO3wuC0XW9Fe99vZhj4bfcNSObwjNfQhz3+w93+caj4aJ/Telm1HM57Dh5jWLTRCjJa6SawWrVTdgZnxfTv4zq3CSb6xmUzB3C24MxyuiazjxWB+Fk6gV9kHaNkdb/q1ONI4P6E6R0dGiACooQtgIuE4O3sZWlUYWpPCUlSYHZ/36FQ9OugzXt2M0RM2wL1/8Ue4urFaz47XHXgZMh6ysWet+5Sj9ahqqRlm8oZ3OEXIVJnxnGPL0mAU/s8JRb9dH31kF3ywVMUbYv+y5Nyhaz6MzRaybkNby2Y/MJWrbQA/ZpCsl9xY4+vQd8EERuDuXl/WeI+3yOeAboCHD1uooQyiq+TDWoPc09eX0CeXwaGNsw9VNsI9pgCs4yzItG71kKEPzi7f4HLOSE2dyf+XGEqWbDSd+QW92OopA+mKSUxF1yZVLkZEzvyj2K2tsAUUu7WQVE6SFSZMV1jufZgNfzF1nWwlIR4u416AYPWZSmKLS0AOJwHyxaCW2yivQk3L+HS1XWOOQWkyRcHZkD7Z4SVoqMqO/68Ubn+AUxCxjoPBtJH+6+laiy3/il10qcsKbqV7SgJz5RS/x0dTQ7xxFLgARkWOwAOAwl3gPRuReIRl4UD9QwLTYGYYFq5wz6jkBqRs0+VnqFejNp3/Baprj6HmuvA8sSYi1dg7nvwRYQz/kE9pSKW/O/0OPOz4kzPY8qFZjaeDktlNUjYk8xsL5yKx/eeqDZTZImyrDU4b5FVwqXO53u/33vCfpIin2MM8/B6UJ3MFv+H7aMe5GwXS0s7MnUMW
+ uwhNrFwf
+ t0SvWvlQzRbIjBYlvFVseu/uoiCrTyyjB4imUmYoTpTfmgRzy6W7ELB6uhwruD8drEF4QfGxAFtfoF9MJ38knlrfckWaY70IPJM+AJFf6iZQJ4sOI2W8pFBuJrDyUP7lpuSoR1j5xnEZIkqdYp50g13E5AhwgAZgVAfj6u9MkzY+HgPoGn/cCq2IQXk0W5QVEXoAzoHqK79AsHTvlXfwaziDa5OpE3GZVUuRI4wsdilGElCpUXv3UUEfseUvMhNXnu58rbU1zt9Y2Jrp960OSNjC2YGdfbFa1lVxdK5hX7omvOcV0Ms6Dq9OoiKUxu7suBq8L+PA1Ta+Fte3g9f4A5SpUMBWj4JrHcMO47WZytv49VNd8NL5Yq3v/W4CbUy0sDh6gDgyhDzLbwS8LYq4Zq6jsGVgGh7GOSBGxsGBTcMQELu/0/+dsFI05Us0wwhGIBkM98lQyl42+OeGry0a3QSZZMsGuBIf54GZHUkdke4Fk3KHi8J35c3JgNprOY3WkKEbhaZer8n14Jqr+CDpR3DICQIjQasjSwbe4L01WtHnhFdGd4UcWOKeJWhxRPhDZS8RmLH+VIA4Lrj5hWYbivnfhxz29ze52Ekor7w/ICj0cT4+ha8C0eMl8/fYj4ECQdZuKwa41XGOouB9Of6xFr4pOSC3k9CM49WDAuscZaRe/L0sHZP8Ef4g4gnZgqyNhGuo9FaT3iEOKbWRbnN9jbOO8pFpi+EsIRpMq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,83 +119,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 17, 2026 at 08:11:17PM +0800, Boqun Feng wrote:
-> On Sat, Jan 17, 2026 at 11:55:06AM +0000, Alice Ryhl wrote:
-> > On Sat, Jan 17, 2026 at 08:06:40AM +0800, Boqun Feng wrote:
-> > > On Fri, Jan 16, 2026 at 03:46:35PM +0000, Alice Ryhl wrote:
-> > > > I'm sending this RFC to share an experiment I'm looking at. This may let
-> > > > us replace the range allocator in Rust Binder with a maple tree.
-> > > > 
-> > > 
-> > > Thank you, Alice.
-> > > 
-> > > > An RcuBox is like a Box except that it lets you obtain a &T that
-> > > > outlives the box by a grace period. It does not allow mutable access to
-> > > 
-> > > I think the `RcuBox` can be folded into the more generic RCU pointer api
-> > > [1], e.g. Rcu<Box<RcuBoxInner<T>>> where RcuBoxInner<T>: HasRcuHead. The
-> > > benefits are at least 1) we use relaxed atomic read for RCU readers
-> > > which guarantees address dependency that RCU needs under LKMM (while in
-> > > the RcuBox here, we just use plain reads), 2) we also support mutable
-> > > access as well.
-> > 
-> > 1) But mtree_load() does use rcu_dereference() to obtain the pointer?
-> > 1) "relaxed atomic" does not sound like something that provides an
-> >    address dependency to me.
-> 
-> If you look at rcu_dereference(), it's a READ_ONCE(), which is the same
-> as a relaxed atomic load, and yes in LKMM, relaxed atomic load provides
-> address dependency (Please see the DEPENDENCY part in
-> tools/memory-model/Documentation/explanation.txt).
+On Sat, Jan 17, 2026 at 09:11:49PM +0800, Boqun Feng wrote:
+> In Rcu + RcuOld design, RcuBox is just a Box
+> because these two pointer types handle reclaim + accesses.
 
-You argued that we should rename READ_ONCE() to atomic load on that
-other patch series because "atomic load" naming is better than what LKMM
-normally uses. Fine, but relaxed atomic load is a much worse name than
-READ_ONCE() if what you want to convey is "has address dependency".
-That's not what "relaxed" means!
-
-I suppose you can argue that the word "relaxed" means different things
-in LKMM than it does elsewhere, but I looked over the doc you mentioned,
-and there the LKMM calls said operation READ_ONCE(). The word "relaxed"
-does not appear even once. If we're going to change terminology / use
-new terminology, let's at least pick terminology that's not
-contradictory with the rest of the world.
-
-> > 2) How do you intend to provide mutable access? By waiting a grace
-> >    period?
-> 
-> Please see the {read_}copy_update() in the RCU patches that I linked.
-> In short, you don't wait a grace for mutable access, since in RCU,
-> readers don't block updaters, but instead updater will copy the object,
-> atomically update the pointer and then get an `RcuOld`,
-> which you can either synchronize_rcu() or {call,kfree}_rcu().
-
-Hm, ok. I don't really need that. What I want rcu for is the internal
-maple tree data structure, so mtree_load() doesn't need to block on the
-maple tree internal spinlock. The contents of the box would be protected
-by a separate lock (probably via LockedBy).
-
-> > > As for the progress of that effort, the Rcu atomic pointer is almost
-> > > ready [2], I will likely send it early next week. For the `HasRcuHead`
-> > > part, as you may be aware, I'm working on a generic `HasField` approach
-> > > to avoid duplication of `Has*` trait and macros [3], that requires some
-> > > syn adjustments from Gary and Benno, but they should be available next
-> > > cycle. I will probably send the patches for reviews before that. Once we
-> > > have that `HasRcuHead` should be easily to add.
-> > > 
-> > > Given the WIP code I have, I *think* we are not that far from providing
-> > > what you need for binder.
-> > 
-> > Hmm, so I looked over [2], and I think my RcuBox is an RcuOld<_> rather
-> > than an Rcu<_> under this model. Though I can't afford to pay
-> 
-> I don't think so, `RcuOld` represents an unpublished object while `Rcu`
-> represents a published object, you can update an `Rcu` pointer to
-> another object, which is normally how you update with RCU. But maybe
-> it's easy to discuss this with updater side code in picture.
-
-When the RcuBox<_> is an owned value in Rust code, it's unpublished.
-It's only published while it's foreign-owned by the maple tree.
+How would that work? Dropping my RcuBox<_> must use kfree_rcu() or
+synchronize_rcu() or it is unsound. So it can't just be a Box.
 
 Alice
 
