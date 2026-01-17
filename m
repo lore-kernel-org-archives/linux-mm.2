@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16220C98315
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 17:53:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F90CC9832F
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 17:53:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 780626B008A; Sat, 17 Jan 2026 12:53:07 -0500 (EST)
+	id 5F4736B0093; Sat, 17 Jan 2026 12:53:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72DBF6B008C; Sat, 17 Jan 2026 12:53:07 -0500 (EST)
+	id 48FAD6B008C; Sat, 17 Jan 2026 12:53:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62FAE6B0092; Sat, 17 Jan 2026 12:53:07 -0500 (EST)
+	id 29D2C6B0095; Sat, 17 Jan 2026 12:53:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5040E6B008A
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 12:53:07 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F32EB8BA12
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 17:53:06 +0000 (UTC)
-X-FDA: 84342201972.26.35A62E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 78D2FC0008
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 160696B008C
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 12:53:08 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC02C1A02FF
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 17:53:07 +0000 (UTC)
+X-FDA: 84342202014.12.481FDCD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 183E11C0004
 	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 17:53:05 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MgIAAu1w;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJTU5Bsm;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768672385;
+	s=arc-20220608; t=1768672386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=goFLKuCU9qfnmZ5A0+BQsN0J6NO4WPCgxUWbVzafo2A=;
-	b=od9T5+MOkJI8POqB3MKfgFkXNx8uAIzxIpT2/y1prPOeh5pji6CYn7hRShjsZel71Py+dD
-	J4UAtEMbTs9W+Jnp8iZtyA4q/n4l/9nG0Tr4cY/9o5Vqe+Z+E6ZkmYfJu3eKI3oNYHnnNB
-	+Hg1dIa1wLrU2B2Tt3Y9Si3XMG0VX2w=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KkREkgbaZdi6dH8X6KjYuNUssFMGO9jdYf+WGLfyQ9k=;
+	b=FGK+60xlR2xPV+NPYaPbVtaYzeTbVmAzEofw2+dJ5gM6HdG2/cRXXpFUrXS4wj97f/KlFj
+	YLFzsXAehOTfbJooX9/C5UTmZKXKwNpnYxdf2G8OyLSeGLszSjpIfASeoaMrU64QUkeD9m
+	3Y6LioxOxJoPf5PIQQzFVBd1oWA5Rys=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MgIAAu1w;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJTU5Bsm;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768672385; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768672386; a=rsa-sha256;
 	cv=none;
-	b=Dac5ZdND+CVQ72SZBOq/2kASAEyAszwsEFCknrWTtrL0WOlJa2yNhE9RnxQdAGbGYA8pVk
-	X1ibulKYaUOJYiM4ZkesCG3x7ZLHdxTz2u+W4MoPnxw0Ozfw+65nDzyGUW17HlxWGVUpUp
-	ggloaqqRt6lggQKNxhsQ4UqG/mq0mYU=
+	b=LbsTmzsBjANX4XSbt8D2kJmchSFQqHmonxjRzdtRjZ3YZIHsgzHZdic/uSkXdb6jQYpTSE
+	tPZfJA9ya+YoYexnnnFeMN1OHXXOOwsVKwPiDS8YRhZdHw2zhUNTIpRf23VBnq8XHuFWDh
+	J3b8s5DDMKOv37Xg+YNJb+mRXUsJGcY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF3AB60127;
-	Sat, 17 Jan 2026 17:53:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EB5C4CEF7;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3097744469;
+	Sat, 17 Jan 2026 17:53:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFEBC2BC86;
 	Sat, 17 Jan 2026 17:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768672384;
-	bh=BrhbCrEirTOhCYFjA97mSPQaKUy3EH5FD2Gu/gQI3T8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MgIAAu1w4/CWCZJiuLLu5kFcobQQr2kktaP5aJUyrLFsARW4KF8/g4i8gcsk3uKhs
-	 k6WnlweJvSFt+ha6mHfoQGQODYc3RcD417fU43BA4ZexjId0zXOjaMPdG47jQaVtrd
-	 EWHBiGxUyDwmK0x1tNJEtdrcMNpP7lizmH2IzdMyrJsgh0tKPh0g7y30QUjAxqVIgJ
-	 1TvEKiCT4Ql/HfUqEDWyLUcBoMNl/7TcXnt/nYhUpnJW0MUDtzJnFwfp6kJxDMobOz
-	 QgNfqsXExC0kvwgmtW/ku93cGdA5zi5598Q+mpUomS/xR22gSoPRWCvNJ1byoELGy8
-	 Qebwzn6y9/K1Q==
+	s=k20201202; t=1768672385;
+	bh=KFdeOU1Cqynn16FGkaHhjOKt5M+h0bd+XluHiDK/WQQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mJTU5BsmjgSpWiQ4aBcyH4NoTiDDamTXPlbz+OYyNaiO4LtArWbnSEFsp9LSoj9t2
+	 BFhSaVj/s2oJEvv8OPmFUxC+wN2SnMf55tmnkKQg+NxGOKLdWqXr2Lh88pYSqWF6k9
+	 MiryKagHnXH6+9+K+F+TQDJdgV2D0HI3SAjXJvdCEYAbjNys02TkwQN6U7ss4osRbF
+	 xdFzz3AHs4KVIIbeEbXgUaEauGh/KAUhlWUVwOew5jn6H/ULP+KltyueEh62pkxjZX
+	 cv/iQGwQn3Fax2eoIVtcafhXSdeU2edAkWbOtuu/PDuBF5p4dvpoTuTb7cQ5sRXrKl
+	 qzMeg+eode2jA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/8] mm/damon: cleanup kdamond, damon_call(), damos filter and DAMON_MIN_REGION
-Date: Sat, 17 Jan 2026 09:52:47 -0800
-Message-ID: <20260117175256.82826-1-sj@kernel.org>
+Subject: [PATCH 2/8] mm/damon/core: cleanup targets and regions at once on kdamond termination
+Date: Sat, 17 Jan 2026 09:52:49 -0800
+Message-ID: <20260117175256.82826-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260117175256.82826-1-sj@kernel.org>
+References: <20260117175256.82826-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6ye3ekq943htb7moef7c115y8c9995ox
-X-Rspamd-Queue-Id: 78D2FC0008
+X-Stat-Signature: jmat883iqb9rogqjc54f4j7j7g8bxd19
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768672385-497703
-X-HE-Meta: U2FsdGVkX1+2VJGQEbkG5tLpifPp17cQpiO6rXvjjMDU/k44h3ZAtNFqCs+uVK5x1ezZzn2wN7kvBQhPRx/rcyP0WXoEA4DpFn5TO64rWjtyERuIvvKd1vKnkf28sJ8axpteOH7bRSGM/DK+XZELw7TEGZiNX0HUwGZapqzEZaVCehk6bUDeWH/i5a5JUSbI5UpTt72cmp+eSD6SIBjWbmVsUfIZkuDacLZJsxOLgRYL/ar8z8366/HSIat006XtpxJOTqerhpI+VycU90kkByJdtyDbHW0pmfQWn9M/epxs/eXL2aOwnGw0UG/87bxyJ8lo2fKqjPu9o14Kub/HUftVwWhAiEp4JuVtIXc6D+qquaJom4FemeF9dC8d68fuiro3NQX8sihVhv1H3xtKEHyHlTwqVfIw4N+cIURwc4lEAGz91ZBIPqhlcO+xJ9mEQn+9Iy6mudh4WHjCONWl1aNKsdHLpyKIKOy9VQT2WVM0ZvniBUsoeN2IQiBn/jW0GZD2wdAQ7YDOFGrre+g/tnWegeHQcwyc94kPUOEzg46mPy9Js/XvL59fL+4hx1EdvsllA1KS+s3MhyKT8+6AeNSt6CPUV/S8dJJ9ahNGxcHi7T1naa32vG+OlI0t6usGMWyHSURqc3ry2St/ZHCgDPBWyH2T2oymvLoY/4JSL3li1vi3R+EgKbsInbfSOpc7MjcFKv4dHEpeVfAbnL5EVW4FzNSfnGFR6g5pK4MbyYO5GCqbQy7cR6z90bisVXz5M2zAWb5B1YngdWj4ULKi5Rq9ZzH+FaHJx8Di/J35OJhpumGniIyU8bLqeGjn2JiCGhiVqWaRaP+mjVRyHplvyBG97Z+3e/g3ujpidEgJdQijxDjWlfbXjS9NF9only3qg+1zSEKhSae2W74EW3wH7Uy45uWRlcL373+cDp3WQDc+qLVelVkUmRLyweaYbG/RYBTenKi0pthFJiaGgel
- Nv9nKCdv
- kF2oGohI0tGeXG9SaEzB9gPeWolngniLJmuUDgthUCquTyPpCo2Q6GNU3+TBI1KA/ZX+rHkAojyaQoRBFnOUoVdg/upQpPQqKBo+7y8bg8tnlSbWoe2nd9FaebVb06XH5TTotSjXYSTKkdNGPJGnMHIXIdZtmx/b8e8G95QAc8hIn92VqC9QSXI4oNLgr2WjhKzZKn2LwHUuyCbeP/5gD8os1tXl6Cl41p1IJsVeTQonymGeff8Ghy5BBDA==
+X-Rspamd-Queue-Id: 183E11C0004
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768672385-685503
+X-HE-Meta: U2FsdGVkX1+aPReXjThgM02HXYhEqy6UTuKYzK29K/pFHjtuAYXDFn516HwECR2QKFVBGOdu/qkk8/yel7TgdwrpQaHodGCh1rn4bsKpIFIWYp9NaHCjtSfyp8KFPiKz1B6Nm1At5939TRY1+a92szrShv/uhV16OZ/Ctq7kcJO4tmBpBL8QKdUIUwdL1l4IjiD28xlKVhsL1QJXY96R0EbFy2GFmNGOHyKgda4uronFuLTjMA+D5NuufKz/HW0ekTRNQfmwMLbOLm+TbCmmdLNEL30PK47S/9KXtGI4otU9wIQzjD68mTj4hnjSYBLL5mEobEJ33PsOn5pCoZ4MuaMsHmBqKg3TiYnCRx3YjiGhmlTcZ8Z5PE/o1gutalHDdMJXwGb56D6nl/XAfXDoLQjHSIpQT3Qt8BzToPIgmVEiyh/KjLlaBl/lIkUcKzQndfVl3U9UboQT/nht2EZtjtIlDaN5THWMyPxOylOrQezyHA0iz2XL5C+nIRjHMJ9GhpVRljTIIZZ/AO5AAyGzMmGkU7EoPzJIjZQjIiJNSUsno8PSg8X40YaqQj9GC7AqjuvRZO0t0mNv7+WBVDIvivt8LgnsuSrNmQhpovhic2go2bYjozzJREPkahvswby4bY/4Ll13FcaHozm45wQEUkKwcVP60xRyf6SJcQWQbHhXjAVsjW+fU+pYrq6WINuZ+LNN1Kgv8FUce8jxwj3gX8ErAKPtmfE+Z200m0CC05KdFRW7n2I87KSDLqpArvpnB1FfdSKfs15jJsg50GVkyLEuKoJx/gA7CsQArCz8sm0cjzCuMdqTFheXPGxE4FpAy/9/CuAq+4qkIQBUVT1xBhc+gAYzkl8bKlWGG8o0gmlC1hpDugARdWdwVpgij/geVrEuwfMxm2IEPmJfqlbEk3d1qjFd6HUgLWFR2k6GXkQnFo6n2IhE/vuUtQsMG4GfrEuaypkuWxZRM1bc/3X
+ HBVu8s0a
+ AxgjJHYN4QASgWyU4PZv1ugT05BbbxZC4BHf9H9ERLzgFpJfTr+F8fNsH8Gcs2zHIunMKOh6nnjP+iPsZRJGpZFUD6WJfALxGgIWBqz/k0/uTcP7gD2GlhysOKuwLo1rXu2+yFnKA/7UGcwoC87zOMyHmLv+G+o9am4EpWj9DRh6jRKOtrVZ7ECrxfydVhFs+3iwj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,46 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Do miscellaneous code cleanups for improving readability.  First three
-patches cleanup kdamond termination process, by removing unused
-operation set cleanup callback (patch 1) and moving damon_ctx specific
-resource cleanups on kdamond termination to synchronization-easy place
-(patches 2 and 3).  Next two patches touch damon_call() infrastructure,
-by refactoring kdamond_call() function to do less and simpler locking
-operations (patch 4), and documenting when dealloc_on_free does work
-(patch 5).  Final three patches rename things for clear uses of those.
-Those rename damos_filter_out() to be more explicit about the fact that
-it is only for core-handled filters (patch 6), DAMON_MIN_REGION macro to
-be more explicit it is not about number of regions but size of each
-region (patch 7), and damon_ctx->min_sz_region to be different from
-damos_access_patern->min_sz_region (patch 8), so that those are not
-confusing and easy to grep.
+When kdamond terminates, it destroys the regions of the context first,
+and the targets of the context just before the kdamond main function
+returns.  Because regions are linked inside targets, doing them
+separately is only inefficient and looks weird.  A more serious problem
+is that the cleanup of the targets is done after damon_ctx->kdamond
+reset, which is the event that lets DAMON API callers know the kdamond
+is no longer actively running.  That is, some DAMON targets could still
+exist while kdamond is not running.  There are no real problems from
+this, but this implicit fact could cause subtle racy issues in future.
+Destroy targets and regions at one.
 
-SeongJae Park (8):
-  mm/damon: remove damon_operations->cleanup()
-  mm/damon/core: cleanup targets and regions at once on kdamond
-    termination
-  mm/damon/core: cancel damos_walk() before damon_ctx->kdamond reset
-  mm/damon/core: process damon_call_control requests on a local list
-  mm/damon: document damon_call_control->dealloc_on_cancel repeat
-    behavior
-  mm/damon/core: rename damos_filter_out() to damos_core_filter_out()
-  mm/damon: rename DAMON_MIN_REGION to DAMON_MIN_REGION_SZ
-  mm/damon: rename min_sz_region of damon_ctx to min_region_sz
+Adding contexts on how the code has evolved in the way.  Doing only
+regions destruction was because putting pids of the targets were done on
+DAMON API callers.  Commit 7114bc5e01cf ("mm/damon/core: add
+cleanup_target() ops callback") moved the role to be done via operations
+set on each target destruction.  Hence it removed the reason to do only
+regions cleanup.  Commit 3a69f1635769 ("mm/damon/core: destroy targets
+when kdamond_fn() finish") therefore further destructed targets on
+kdamond termination time.  It was still separated from regions
+destruction because damon_operations->cleanup() may do additional
+targets cleanup.  Placing the targets destruction after
+damon_ctx->kdamond reset was just an unnecessary decision of the commit.
+The previous commit removed damon_operations->cleanup(), so there is no
+more reason to do destructions of regions and targets separately.
 
- include/linux/damon.h        |  15 ++--
- mm/damon/core.c              | 143 +++++++++++++++--------------------
- mm/damon/lru_sort.c          |   4 +-
- mm/damon/paddr.c             |   1 -
- mm/damon/reclaim.c           |   4 +-
- mm/damon/stat.c              |   2 +-
- mm/damon/sysfs.c             |  11 +--
- mm/damon/tests/vaddr-kunit.h |   2 +-
- mm/damon/vaddr.c             |  25 +++---
- 9 files changed, 89 insertions(+), 118 deletions(-)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-
-base-commit: 886ef5515d08f05191b61a347fc18f371627bdd4
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 53514cb712cf..0c8ac11a49f9 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2748,8 +2748,6 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
+ static int kdamond_fn(void *data)
+ {
+ 	struct damon_ctx *ctx = data;
+-	struct damon_target *t;
+-	struct damon_region *r, *next;
+ 	unsigned int max_nr_accesses = 0;
+ 	unsigned long sz_limit = 0;
+ 
+@@ -2854,10 +2852,7 @@ static int kdamond_fn(void *data)
+ 		}
+ 	}
+ done:
+-	damon_for_each_target(t, ctx) {
+-		damon_for_each_region_safe(r, next, t)
+-			damon_destroy_region(r, t);
+-	}
++	damon_destroy_targets(ctx);
+ 
+ 	kfree(ctx->regions_score_histogram);
+ 	kdamond_call(ctx, true);
+@@ -2875,7 +2870,6 @@ static int kdamond_fn(void *data)
+ 		running_exclusive_ctxs = false;
+ 	mutex_unlock(&damon_lock);
+ 
+-	damon_destroy_targets(ctx);
+ 	return 0;
+ }
+ 
 -- 
 2.47.3
 
