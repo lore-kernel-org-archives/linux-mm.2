@@ -4,111 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1016BC98303
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 02:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5E4CC9830C
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 02:40:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B9B06B0005; Fri, 16 Jan 2026 21:40:02 -0500 (EST)
+	id 444866B0088; Fri, 16 Jan 2026 21:40:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 467996B0088; Fri, 16 Jan 2026 21:40:02 -0500 (EST)
+	id 3EF626B0089; Fri, 16 Jan 2026 21:40:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 349386B0089; Fri, 16 Jan 2026 21:40:02 -0500 (EST)
+	id 2FE9F6B008A; Fri, 16 Jan 2026 21:40:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 22B396B0005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 21:40:02 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E083B7F9C
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:40:01 +0000 (UTC)
-X-FDA: 84339901002.05.32A2EF3
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B261C40003
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:39:59 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=CvSPXQaM;
-	spf=pass (imf11.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 20FDD6B0088
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 21:40:11 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B719F13A772
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:40:10 +0000 (UTC)
+X-FDA: 84339901380.30.EFA572F
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9415E8000D
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:40:08 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xp9iGWhD;
+	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768617599;
+	s=arc-20220608; t=1768617609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xiwGrsxjbifbnJtJ/0cc2n6hqCX2ehd2olkJ6gGBbRw=;
-	b=ssbQM8dYoHzvXhtZg3E/wl4Km0CDwP+qhr3YWdqLIteHZgD8QCcUGDcM2PzLATB8JdKV6m
-	h+0FUlVoBxJxY0UTvd9wy47Yb1rSFNNmJJ5bn+f+lQQLD8/s59r1FUYBI8vgPozCK+Li3k
-	J3cAddB7Rhs/9q+wvy5W4N2C0nSk3HU=
+	bh=DRAUHQ48YUycgqnfPxdOpy3lIq4LIKBXjAPLlYalbN8=;
+	b=ShY2pW0oQoZ2Dx1DOsDbRHoLUXfHUIDUGsYcV6nRuUG58nftzi+aYn+1LyTfFniElptIqH
+	fVnUYtGp6kf3sCsbuX1EUYmgyi8wqQBpbwPUtzOmk3kUAVEFvwx8ZlKFR0IxzsOwx8Ykni
+	wrCtv0C+hASuFqTk/8orsmTSe1WLdic=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=CvSPXQaM;
-	spf=pass (imf11.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768617599; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xp9iGWhD;
+	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768617609; a=rsa-sha256;
 	cv=none;
-	b=M76bR4kpzFwvIelTIziwgSFNUZYGRdDF3WuIRYZcESwV82rU293Ow1pEpHFFv7/GF+/ca9
-	zbVBNhn5uu7+fbcawDP+Pz/RBMXbGoU6BM5dZxWGVxRygl92yHTNTf8qYoRAZJN/MlHBya
-	sjXiKPgX+1CGBuajEHap6VKDVBw1NTk=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0bb2f093aso16400325ad.3
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 18:39:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1768617598; x=1769222398; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xiwGrsxjbifbnJtJ/0cc2n6hqCX2ehd2olkJ6gGBbRw=;
-        b=CvSPXQaMCGA3VBltHvSmtZBhQ0JjE12WdP/rvHqrG69DShnOZq3Q+nMTpnxM5lnHKl
-         bbqGduCiTMcAbR496C3cYbuwD18Vd3cZj3qQZGTvdJx+9TIT4XZMyvmxRKzFbGedKqCu
-         04eS8qe4mm0PX1fuA9zuJSqei1syH9wWZsB3o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768617598; x=1769222398;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xiwGrsxjbifbnJtJ/0cc2n6hqCX2ehd2olkJ6gGBbRw=;
-        b=wTJ2nvPYDw59UKzyKtHnhZHuhpu3R9qJi3dnALXXiCLsgQQdmX/ODsJ2oesiqHkctx
-         pUZW0ZwGmJ+mZN5zZnrfmpTx2rymKTJtq4OQelAQL0nq89GpnQUPJE112MC6MRCBcvyH
-         Gx70RFxJvtFRRZNVkXbA8SBNqtiiSMbyaYlQuOEh0whB9C2dsNzsvmaYVIzKqLBSFwiI
-         Ha+L6Ah0LjJ/2YZlhOTSDiVk+hacMGpXFTgUOhV2Kdpg5cs2en2Saywn7HvtZfZrernN
-         U+km3gQ45Ejg2kk+ADoz6hCd7vuOd+wCFRns/ou2w4+4KbVEYJ/FUh80+M+jTvw5WQX+
-         viPA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRLQD3wVr6Zq1JqlSHdeuyDtMRqSuIZKuDbCaAdPlYnBjrF07pISN2KJ23A+6jPCGdnhnGe+m9Xw==@kvack.org
-X-Gm-Message-State: AOJu0YzWooNo5xiSh35P86lGxjPPuK0k571ar+xKWQ6dTu5dkjMdsXiK
-	guFmYjwHL7pa20wurYekL1KQXTYtXXF2akljBjVeHdQhWhFNi25xVWVUoKIizFqUkw==
-X-Gm-Gg: AY/fxX4/0t5y47jIy9wG6oc05hx7P/jHwzKXgv0TdLnCaUObfmKR29mmcWyHEmzKVkv
-	q1jlAhsV1ajWy39ktgvGoZIIhonRWYsCXeruvOoQ60g4wr0QndkVd3/lw8nPwvaIq+bmxi8eLuz
-	LbM32vMpsq0JDVpQDLpLeEZb3tcYAX3rsBXuyDHIkYpAlE8kmsD205Pbxy4Hh3EowrESxbuk/9W
-	5nTEnN4VWZfszOKvOv9VEvGX2SOk0uQz02ogkoZ7xaYlZJHbhZyB5LY64Sn1N7fRGVS+t1gcBAL
-	g0HGjVE2DjOQNkRGb7FIj+3XleIJPHSwuYItNf33Kj5KnnEo/JDKHI6X4IC4hUIuPTG9acVnY2B
-	lcGwrTZRumB0Y3GVwQfDTWtJZCrn8IA6Q6x+yQo4FHscYhaw07nl2CMWS/QtEjQTpx3wiSVdTJw
-	haHukTyp/yJy0M+j0I5pbjb8+UGbu1AKT5INeu/i0kL5Av6yvQ1nU=
-X-Received: by 2002:a17:902:e949:b0:299:e031:173 with SMTP id d9443c01a7336-2a7175a639amr46914495ad.35.1768617598537;
-        Fri, 16 Jan 2026 18:39:58 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:fb0f:ccef:d815:5581])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190c9bdesm32266705ad.24.2026.01.16.18.39.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 18:39:57 -0800 (PST)
-Date: Sat, 17 Jan 2026 11:39:52 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH] zsmalloc: introduce SG-list based object read API
-Message-ID: <nj73lvrjul6h7p7qx2t2pqt3zmcrn3zwdvb7ri7rgzfntjzv3t@nghi7tgq5zvn>
-References: <20260113034645.2729998-1-senozhatsky@chromium.org>
- <wb2shm35vigisxnokcp3pw3yzu32kezo3ox2v3xu2u5lnxo45n@ktccxxzg2vsc>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wb2shm35vigisxnokcp3pw3yzu32kezo3ox2v3xu2u5lnxo45n@ktccxxzg2vsc>
-X-Stat-Signature: rxgdpaofc63bz56jgdrk68f1q8i8n5jr
-X-Rspamd-Queue-Id: B261C40003
+	b=MLA1NNcIlGDjOXXhTsMZ/s2JBHWVCVmkmTnSvmZiYO62HoEzBQa3vWBO9t925coOfFlHFz
+	6I39YWX7gjdSRANdkb7j+fIT55RhTN3DIZpPIU15FS+LaNWgJxRLaK5whiYlODJyH/uW1N
+	i/tYQKv52JsEspk9fG5XKQYomvd2STg=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768617603;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DRAUHQ48YUycgqnfPxdOpy3lIq4LIKBXjAPLlYalbN8=;
+	b=xp9iGWhDcwt8mumGizWnyqjk+/ogh4k68oKpm1+E/iynSSYg1xwrWXba/vqeKNVNRBLryK
+	VyKizZ7ifbQnWKD05zPhDyOxZqQIB4a1DeDyfS02iI8QFUW0G6aPnHq58rSvgFgYuxBLx6
+	v5Xw4HdSkgdo5VqDVNQZR2AVyB7Qt+0=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCHv3 10/15] mm/hugetlb: Remove fake head pages
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <aWpTopypeRTOIVGR@thinkstation>
+Date: Sat, 17 Jan 2026 10:38:48 +0800
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0F1C93F3-9A1A-4929-9157-589CF8C0588D@linux.dev>
+References: <20260115144604.822702-1-kas@kernel.org>
+ <20260115144604.822702-11-kas@kernel.org>
+ <30ae1623-63f9-4729-9c19-9b0a9a0ae9f1@kernel.org>
+ <aWkhbWR-3fWjeTaE@thinkstation>
+ <53980726-C7F0-4648-99E9-89E10645F2E7@linux.dev>
+ <aWpTopypeRTOIVGR@thinkstation>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: fg9dj3mxnzpyw9xdof1tz4qrp4twaw5r
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768617599-222978
-X-HE-Meta: U2FsdGVkX1/VsEWo/tZI7b7p8CBJkpFXvjrgHs5VY8oOrzPFeZGUIhBioN9FGSCNoJI25YtYd0glusqgMZauoD+joQNFunfk/3B9zUTuWvr2Z6nZEHaqJfi0SaxKC+asNqgig9ZdRpgsegBuNdBZ/IhpcbBOyEAQm9Fa5UJeg2W980AaMCcO3eZaW9rNxWrGtexC+p8BjimYS8iWcS/8qt5sBiS7qb7ojQjkT6OYKIwIk8fSHlkBVOyDugBfpL/ObtrHlu43CYH9R40ap470gJRrYbLbBNXgkpoFsrhIFEra7Dq5IrzMekSKL/HvVvuW79rJYCsJOssAe4M+EyBLQYePMUMMl1NJ2P957ZTLsx+5NAcwnnjGIgo81MBhMyr1/x//lnFzL82j4bYXTHRCSN+xiC5vlTgaUEFUfD5E63c/UZnT0AAcMEBok37zrpPIkeZKRYEIW9yLzhN6F/rjtCZ0NVFKDK0r2Q+tbk+GO44xEOB7f+OFefPk8Hv7BwRcve84u0jhZ0znrt+WIpgpTc9ybQ5yq+kRuGHy0Eg46lSoEIDGADxjf/dOUXr5QFBGZL1OeGGSotU4gYwYYjJSvkcCksDvxfBjuzvk/Tg3UvLSy9fMibmKqrDebm9lZEELhXy5bBHsPL33GqxRAuqEDky+5iKaFfcVcQk+WWFb303f+QJqj11vp7ashgDTtUUZOdjy4J2XMNxxV0i7O3hUd/X1GfJLhI6hIItRRe5WyyR/yOcC7orRKhp6P8eUijZNmBgSrEicW9+S0tssvUp0M5fOYa+kL1R2BRcPwq6EkW9Ho3JAR1u9ziBbdTO0I5uM+c7gJu0FRfQaQrzu5NUxoMERinPnc/kfRmdA/eJ1EEeXAH++QOTRjZqptObPNrAuaYyMkC8hR1U25jEMRkURy4o+QaKLJF/uGVIwc2r+VzjbNT89Enf+MSZPE4PRewbL1agMGsWXM/nVC3CoF1t
- eAjABHmw
- kRnO8Sbmo3t/XkLrwL43e3AYHn0YIM0f3jyWJEqaM8riUVZUxBVXTA0mQyuwk54MGX6qsPgjWUbMwvFKSXsPrHvdzLOwuVRcV8h0Bf0xN3KTlULZznmnBTJk0SMym05SyPOxSjDRm07/uWxsiIO1tbDOGg8O0xLrx9tHEpuAJitMbQ+nCyAIBAZkhmH56/JGdSrZMzwVwYVtP+Bt22ZGJe31cC8b12gdH7+tG+Z2J4MRXgktsVhuEls7MtFIwn0MxyYCIF3SpM1+W3SeIoo+h2e+aKXt76Dgfz5U2gwUVX456FRhPQ5b+YUvd6GHSrh9lgawCWdFJd/tNtC7t+X/xX+3QVzgj9B8y6vI1Wzg9K9sHzkzWCFy1F94+F0SiyO5JdUY6WQmu4aCO+xPFmkyfeg0eMXxzo+yIcYq/D2oH5qWeVn4ekBYLEay0nC8KA8I4w1Ox
+X-Rspamd-Queue-Id: 9415E8000D
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768617608-333291
+X-HE-Meta: U2FsdGVkX18Ll8/5Ec0AG+okDmHB0PC50mP+Cwnxe6d1yi6JTmw7erXMonCNlqtqBUcavOcf/fYpjr31AuTylYodZzqltksvqoa1YNezufbkrbYvZuMcn82fM/HQ+3gaYxso1THizDIoqi9O6Mn9ex/5t8O3YHB4tYCtyMSVIzQjEFzKm1gp2yx+jtXQyDOCY096TXVyYPHCgLzjHMeEwSizIxsLOmYsOB0CWtxmmaPAgsZTH90uLRnSrZ4PxmNGPb/sHfQU1MPCmE/i5QqTAfMajGjZnZ84nSrXq5Lz39Z8/ZdYTeMpa5zOdPKxEW2ihL3eNH5V2nU/1hQ+u8SLsOKJKpDEm7LAEMnipc8r16Pyv7xuukfxYXsQjVmuiLoxjBn25bwqvWtV15829ri+hYTgutQJyTxzaNhuMk8trE947pfndTpHFA/nPqA5kGP2MbO2JBxExcDfBaW/DiZQNGCu99TTrXi69OqkuTZ3mFKNKH5CMha4pqKsvsCsfaisfG1Y6ZWRXXvSqEe3KyYyMFjoCKxKvCW2OMFMgMa7CSfcLh1N1pafkc2A52GhLuZH4xs2ibd+sFBqQ1m1OUHS+1rjPeblAg/AT6EzjSaHcN5wxoF8wzHhOKkgSYdICC3xYSyUvWJ9n7LJPzLURmlFi+9prSKFKKT2NbPYxJChEtC2OPJce6m3Utl7uRVyMm4OxXI7p8oqLHeQHdt/P9DQL0aEuNHHBV0GqenTIJGhAopkGpDv6Cxwvq0xDG1tK1pAHG1HJ1eR9Qi3YGwfjN5LAT0qInEp6pYiy/kQhvdaBL5dAS1Szja4uzD5c2VtmiK6H/5EPSQcatPBj9PZyTxJsRBDZ8lHdqeUE8w5VngnNFrvwTnxeSvXB9nrvRvG4jqQ9nvpdxijuKN3kPjvRVMG/tawVWa0msj+m/Wxgw2ZazIIl46ObLvLj2ZRLVDXhE278oee4dQmqwT40KMHyb6
+ r1T7P/5X
+ N3YSXL4j5+SiNM4EElsiQYOtDbkACPGm2w7Wj10G/maoUInGEqp44+7sPBkWB42eahxrQ0H3pojiLU+q0Adgup3E/XSwp+JVsy9aVAodlGwSdOEyEcyOBVNdmO3bJ4o9NSJ0qvqJ4BeEPE+oQGHe8cnIUQyaoVU+XUsP7f5AP9DRs/oNTswij7tIPie8XwrunfvtQGTlm3ffty1BseF33hBJciaZeNaD2s0saI/kmhpfwT3iaqgppPveXvg438JsOavHM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,40 +111,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/16 19:53), Yosry Ahmed wrote:
-[..]
-> >  struct zs_pool *zs_create_pool(const char *name);
-> >  void zs_destroy_pool(struct zs_pool *pool);
-> > @@ -43,6 +44,9 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsigned long handle,
-> >  			size_t mem_len, void *local_copy);
-> >  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
-> >  		     size_t mem_len, void *handle_mem);
-> > +int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
-> 
-> void? The return value is always 0.
 
-I thought about returning sg_nents().  Probably can be just void after all.
 
-> There is a lot of duplication between this and zs_obj_read_begin(). I
-> wanted to create a common helper for them both that returns the zpdesc
-> and offset, but we cannot do the same on the read end side as the unlock
-> needs to happen after kunmap() in zs_obj_read_end().
-> 
-> Putting parts of this code in helpers makes it a bit obscure due to the
-> locking rules :/
-> 
-> I wonder if we can drop zs_obj_read_*() and move the spanning logic into
-> zram. Looking at zram code, seems like read_from_zspool_raw() and
-> read_incompressible_page() just copy the return address, so I think they
-> can trivially move to using the SG list helpers and
-> memcpy_from_sglist().
-> 
-> The only non-trivial caller is read_compressed_page(), because it passes
-> the compressed object to zcomp. So I think we only need to handle the
-> linearization there, something like this (completely untested):
+> On Jan 16, 2026, at 23:52, Kiryl Shutsemau <kas@kernel.org> wrote:
+>=20
+> On Fri, Jan 16, 2026 at 10:38:02AM +0800, Muchun Song wrote:
+>>=20
+>>=20
+>>> On Jan 16, 2026, at 01:23, Kiryl Shutsemau <kas@kernel.org> wrote:
+>>>=20
+>>> On Thu, Jan 15, 2026 at 05:49:43PM +0100, David Hildenbrand (Red =
+Hat) wrote:
+>>>> On 1/15/26 15:45, Kiryl Shutsemau wrote:
+>>>>> HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing =
+most
+>>>>> vmemmap pages for huge pages and remapping the freed range to a =
+single
+>>>>> page containing the struct page metadata.
+>>>>>=20
+>>>>> With the new mask-based compound_info encoding (for power-of-2 =
+struct
+>>>>> page sizes), all tail pages of the same order are now identical
+>>>>> regardless of which compound page they belong to. This means the =
+tail
+>>>>> pages can be truly shared without fake heads.
+>>>>>=20
+>>>>> Allocate a single page of initialized tail struct pages per NUMA =
+node
+>>>>> per order in the vmemmap_tails[] array in pglist_data. All huge =
+pages
+>>>>> of that order on the node share this tail page, mapped read-only =
+into
+>>>>> their vmemmap. The head page remains unique per huge page.
+>>>>>=20
+>>>>> This eliminates fake heads while maintaining the same memory =
+savings,
+>>>>> and simplifies compound_head() by removing fake head detection.
+>>>>>=20
+>>>>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+>>>>> ---
+>>>>> include/linux/mmzone.h | 16 ++++++++++++++-
+>>>>> mm/hugetlb_vmemmap.c   | 44 =
+++++++++++++++++++++++++++++++++++++++++--
+>>>>> mm/sparse-vmemmap.c    | 44 =
+++++++++++++++++++++++++++++++++++--------
+>>>>> 3 files changed, 93 insertions(+), 11 deletions(-)
+>>>>>=20
+>>>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>>>>> index 322ed4c42cfc..2ee3eb610291 100644
+>>>>> --- a/include/linux/mmzone.h
+>>>>> +++ b/include/linux/mmzone.h
+>>>>> @@ -82,7 +82,11 @@
+>>>>>  * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with =
+hugetlb, we expect
+>>>>>  * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+>>>>>  */
+>>>>> -#define MAX_FOLIO_ORDER get_order(IS_ENABLED(CONFIG_64BIT) ? =
+SZ_16G : SZ_1G)
+>>>>> +#ifdef CONFIG_64BIT
+>>>>> +#define MAX_FOLIO_ORDER (34 - PAGE_SHIFT)
+>>>>> +#else
+>>>>> +#define MAX_FOLIO_ORDER (30 - PAGE_SHIFT)
+>>>>> +#endif
+>>>>=20
+>>>> Where do these magic values stem from, and how do they related to =
+the
+>>>> comment above that clearly spells out 16G vs. 1G ?
+>>>=20
+>>> This doesn't change the resulting value: 1UL << 34 is 16GiB, 1UL << =
+30
+>>> is 1G. Subtract PAGE_SHIFT to get the order.
+>>>=20
+>>> The change allows the value to be used to define NR_VMEMMAP_TAILS =
+which
+>>> is used specify size of vmemmap_tails array.
+>>=20
+>> How about allocate ->vmemmap_tails array dynamically? If sizeof of =
+struct
+>> page is not power of two, then we could optimize away this array. =
+Besides,
+>> the original MAX_FOLIO_ORDER could work as well.
+>=20
+> This is tricky.
+>=20
+> We need vmemmap_tails array to be around early, in
+> hugetlb_vmemmap_init_early(). By the time, we don't have slab
+> functional yet.
 
-So I was thinking about leaving things as they currently are for this
-dev cycle, because both zram and zsmalloc have enough of new code queued
-up.  If you don't mind let's remove memcpy() API and convert zram during
-next cycle (after the upcoming merge window).
+I mean zero-size array at the end of pg_data_t, no slab is needed.
+
+>=20
+> I think getting the array compile-time is the best shot.
+>=20
+> --=20
+>  Kiryl Shutsemau / Kirill A. Shutemov
+
+
 
