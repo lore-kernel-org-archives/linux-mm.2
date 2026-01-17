@@ -4,139 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89430C9830C
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 02:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9381AC9830D
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 02:14:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0DAC6B0005; Fri, 16 Jan 2026 21:11:16 -0500 (EST)
+	id 02EC36B0098; Fri, 16 Jan 2026 21:14:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBAF96B0088; Fri, 16 Jan 2026 21:11:16 -0500 (EST)
+	id F323A6B0099; Fri, 16 Jan 2026 21:14:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C732B6B0093; Fri, 16 Jan 2026 21:11:16 -0500 (EST)
+	id E1D216B009B; Fri, 16 Jan 2026 21:14:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B35A66B0005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 21:11:16 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C9D8583A8
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:11:16 +0000 (UTC)
-X-FDA: 84339828552.11.EADFB5A
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 70567C0005
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:11:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pEsgPBxI;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768615874; a=rsa-sha256;
-	cv=pass;
-	b=nu/QeTCnHmtNdvxQ1V5LVaR/kiR1Kk1aieyy4x0cqkQmenOi9VeVIbGFHrs0KQSnXc/Yh6
-	JQLvWllyqr02Brun+n7nZ/Vqz36ioyP88vOiCayDQ8NSSXajJu1A6nJaJ9ZL8M0WASpVI3
-	mAgt23ln9Mp8/rBlirev4VE2SHuvhKM=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pEsgPBxI;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768615874;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CDD8D6B0098
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 21:14:40 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 86C7C13A678
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:14:39 +0000 (UTC)
+X-FDA: 84339837078.03.F4B1177
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0EA8CC0005
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:14:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=f8PJmVR1;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768616077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z8XfzdTcYbKXbttOZYCkhexZVaSChWM1LNoqV+hh1gE=;
-	b=7ggxtTUtkhMCfMDjVfcVsYjrDZEaVN+030Yq7UZY3Scufu5pMiTqUeEKFm57YsLMqlvK+k
-	Be4pecCHP7+Ym/qbJd1DD80RfhQXJENLqBqgsz+w3QKSLfitFjfjJc4F1nPsLnrQT/iKhF
-	EADUzdRTiACR3Yr9007aXfNn4kBggTw=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50299648ae9so112381cf.1
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 18:11:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768615873; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LMmblAmfOFHs1Y3WxYaOwW+QtA3maTg5dj5EIU9cuYRf+TOoVXPmlpoZld5Sn4paXt
-         EYI03xEqnsUt1gxkTDO772jqqBGdGhBQ1zybhGbWRst+NWOqazHeISNjFEGV11rwwYz0
-         60nUeK0jJ/mCFi4Pw8fjFPYSweyFY8VcsldHoKiYqC+Oo+4E4qtIEeEwTF4lwIO94UKt
-         X5dU5EBrSw/Wqi4+oY98bopbtGxRY2YjNBad2ihcGv4R9F9e5JOX/y3FGwNlZ89w1kbd
-         LtJVeOFjG6wvBfg9g8kP1wEbxSIYYVuSs1fXdWHpgfricbTFOYoGrrogQC5NQxtWVbvl
-         YKUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Z8XfzdTcYbKXbttOZYCkhexZVaSChWM1LNoqV+hh1gE=;
-        fh=a4Dm5tViZt2SkUWyNcMV2EBByyfvG/B8vsjz6qSviaE=;
-        b=FQtWQ/mqbhawBDdBnMsd6lqtl9NXPnfeKK+9za8vdvkz/i5mTKYuj2tC/SvAaPr3xv
-         CELxCPYO+zU8pVmVXxJv5HT2fTk/J+NemLlqJpxlcaomaIL0n8ZWbZP37JmAF4j7rXin
-         YY2KXqTxLscGqxTPasSIhAwq5VVZvjfvITBZLodWUAp8IWdRs6+nk05Q1aPi0jAtbFg6
-         hjhJZc89RisS7hdFV9STNM6BqI2lV3vFMteX8F2P/PQGZWs/SxROmPTqrwBGmAa2kX3F
-         cGHGTPhbRuCcVKGGLcn1nEEcmVDi/hjyG1YzqdfWPaKvy8Is/WVNvqK3bCKugpoRc3by
-         h0lQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768615873; x=1769220673; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z8XfzdTcYbKXbttOZYCkhexZVaSChWM1LNoqV+hh1gE=;
-        b=pEsgPBxI6FndKRTGc7YwJTlVP2w/gH9fVeUi0JlITu70MfGKyo7qLDGrE6hsTsZ9ei
-         dxC6DSk5JQM2kTQLI05fN11OKdVHKdaHQIs1I963Df5tTNomPXFcjPYpcy1I0zOqlwgD
-         mvNM3ht9mcpHDkRj/mfVhzOINoDt6BbJaTjPmz5+Z0uZUWRJ07nXc/8klBoK2N1M3soc
-         g6Wnp/NI3AtmSFkV31jO5VyZAGd8vSGoq80M2ZCgBcdR8/x1Mda2uw3lrMSUniwiArWD
-         SxcrtNbpRelAsOPUK4jmiCI3fs7pbwK7GahRLgRvkZ5h1Ykg6jfWUlwV98KRpt/PxQxX
-         Grbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768615873; x=1769220673;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Z8XfzdTcYbKXbttOZYCkhexZVaSChWM1LNoqV+hh1gE=;
-        b=ocdzJXlMny704wiDz0c9Hom2q7Xc5JC9N74CqUOPPTHDxsxDmXZnOaGG6Xl+r99Igc
-         CYZJITZENoLltG7bEmFbryDVYFTvq8rBpkNtCgAU0dQ2XDv2gFESFTazh19tLXo2qdGc
-         9YsowOeDtz8k7jSFkjhp9KsXPMhRHs85eKBsLNriRlI0y9KlEiJC54cPOreQ1FdQhNhH
-         r2tgqvLHCeG19alKt3tnyDjCkhlT8egVh+HrbJMkt/InPCNdZwopcGSCNli6VuzOuVNF
-         0+K5i2UwKIGnSI0FT6r8VW+lfwPx5Al4sFOMWGzpuNTBFlpPe5laQac/10uCZm1GzXgo
-         QzMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWrKQXckfKJOtG8e1a/ikosiqZSBA5g8iu3wDS8E7LAkFFi0ULVPaz7tnLf3mfez5FJjaAy5Rfw4Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy6fUr+IGaAbpTf5w9TszJkAwWBLn3aFoTnCyHz+zGC+T+kqzxh
-	kM3IL0EBD4bJ8Ud9KBHJ+My9JmfvSjzd4R5fNhiQ3q0srYp1xyq2HYaUdDDSqu0ur9I3lzikvpq
-	AamCkLoXwB7MSlKQYt5NqfR596efn5BvmMLHylpQu
-X-Gm-Gg: AY/fxX4cvDUfxaZaZaCDZJj2Ku4bZNIOqEcjPBiy33zMmCceC5aeesdot37QfIyehOo
-	KXa3lcMNUoPiPjBQEqUqHXjIz51iZwp65TPDlOzAhAQmXKLZ+Lo9MyYslQ4F48GU7Z3GesAqbgj
-	7zFmufwn8ghcAj2jeuRaa8lKhEmz36mW8QitjT3HLQGAzON3LOtgTW69wEjO8RJPv83Pt8iRGJZ
-	y18Yk3UAF1zSxUBzh3do83pIOViHvTarDPOV3Go/uqeBENCRkCjdgLAda0H0TKlHfMyq42HkQa6
-	8AS1TE/Fj9i/uE7qJV5wL0OE1jz/+lae4A==
-X-Received: by 2002:a05:622a:607:b0:4ff:cb25:998b with SMTP id
- d75a77b69052e-502afa038cbmr4649721cf.12.1768615873084; Fri, 16 Jan 2026
- 18:11:13 -0800 (PST)
-MIME-Version: 1.0
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz> <20260116-sheaves-for-all-v3-6-5595cb000772@suse.cz>
-In-Reply-To: <20260116-sheaves-for-all-v3-6-5595cb000772@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 17 Jan 2026 02:11:02 +0000
-X-Gm-Features: AZwV_QgrFpJPgQWV97FWxIc0ZsJ8CltGCxNFZv_PPGY8cU_AH1jVOdq1pMTHKpM
-Message-ID: <CAJuCfpERcCzBysPVh63g7d0FpUBNQeq9nCL+ycem1iR08gDmaQ@mail.gmail.com>
-Subject: Re: [PATCH v3 06/21] slab: introduce percpu sheaves bootstrap
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
-	kasan-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 70567C0005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3bq9tj94zjw9jg7fp38q499mdno6sadn
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=+amUerLtkqKke6Iu+Zs8zTWINa6mjZCxrsgvkX2J9Gg=;
+	b=q4g1PWyotXxnmw1cybCcYDhq6QanVTCvWmWzbWeDJJZDKMEPOyTsNRKrno9LLF9g1gxUi5
+	+YaED5KoYgtNqvJaiKUNZEnvfm/xtZPk6dP1/ABfnuTdF6bdy7aazzPicm3pGeyh80VD+M
+	BXAlM6HA8TuWGwUObpNQyj/hI/ML1Ak=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=f8PJmVR1;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768616077; a=rsa-sha256;
+	cv=none;
+	b=yeaWIN0FW8YfNoHpYC5VY9asC+1a5+VPHBjx7/bToAd/KIZ5y/FeNjGJggjsmJGxsofSWM
+	1uMma2e4s77UyTxsKJfoPl7zHYOcudtmWccF7dV2SoNMxLczdQGcA/CXC0QYDaRgqkNl7p
+	PWXniRKxRmP7dVfYZPPsyv8hCrTDptY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768616077; x=1800152077;
+  h=date:from:to:cc:subject:message-id;
+  bh=md10WZl4rOGq6pJnkAdU37pxLtFmLiCO2RgdGH2hDFU=;
+  b=f8PJmVR17+vuWtwW3cZdp/jOll6Jb+YREH88x6qNKIX3LUhGV6fp/KXj
+   WqZkj+/N1RQ0m1AKf7nbheRDhF1jmC79WZesYEyNdBTRpFj88yZ21rpWG
+   E//JUMxFy2GgHPAolVkR4NIe6Z1cQfCV7pTuHGNF04+JjGMMAUUyR2qVD
+   uqTDvGmjPG4WI5LVCOtuoUdyYt7UAR79a+OJQ+S3LNQ/q0z09SXVf7Td1
+   05aE38dxeeoKJwwqiEgKgZSm25mHeTxhzNFNI5jPshdGj83R+CSNB7+Qp
+   r+A2hLRn2w3IydUMdg6Gu6WT9NH9KYYgbIN8qxJgqA7+QwY2BTYt3XaMO
+   Q==;
+X-CSE-ConnectionGUID: x/L6R9XiST+FPOwAvYpw9g==
+X-CSE-MsgGUID: O/ppACxYSB23HKdtC3dxEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="80651574"
+X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; 
+   d="scan'208";a="80651574"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 18:14:35 -0800
+X-CSE-ConnectionGUID: yztDGD1rRjisLYakawBOoA==
+X-CSE-MsgGUID: ycpi2jrxSn6xwiIBt/Wwtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; 
+   d="scan'208";a="209875348"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 16 Jan 2026 18:14:34 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vgvpf-00000000LSi-0ago;
+	Sat, 17 Jan 2026 02:14:31 +0000
+Date: Sat, 17 Jan 2026 10:13:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD SUCCESS WITH UNVERIFIED WARNING
+ 46fe65a2c28ecf5df1a7475aba1f08ccf4c0ac1b
+Message-ID: <202601171046.GDSUT79c-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: 0EA8CC0005
+X-Stat-Signature: ohzwo7tnxqekt118sa5ajesj15stw7u9
 X-Rspam-User: 
-X-HE-Tag: 1768615874-22477
-X-HE-Meta: U2FsdGVkX1/Zyl6VGGReqaw5FNKcZylQ+FhnLhFOLQaBCOigfyATqhy/njmaQ+CiTtHzWHDkVMM4AVZwqUPuOCkaeSFZNimEDCWBb4KXAhQTbRmFkO9yPJptMGQFzozTBjc2KkxpnZu23AVtwS11iLk5R16xd3twVGEvBg2/Yvs762eg3SBqR0j+Hcx4dxBwnQTfATrvqAArahGHbDv0++02Lr43vSDRUbBS2PG55NvhjHNIEIdc6sZL37Rzc9fxq6BPvqhkEQaYwU3S3k8BZ1MT3IyTC7G5xEevNQzhurgdPDt7y0ETsITV4mRARkim2ZCHyQuj3oQvAd6miFc4LRVJk+7Q1Xw22IliGfOw97bmRRBpnkVvmYvfTev3smqCBPqvJWPp6xtF05EqEgp2kk8hBFMe53n59U5jS8FWY7nYG7wO/Z6mpiKx0s3CzfyJMPe1jwf/ZH660HKwinEnCAb214N4Q1o4o/WmZcoo5SmzYfoJ72KeTybf/5rgn8BEHXgz4ZVi9b22iqO5loBVkJtw91vN67WErrTEquIS+rx/PTErGaaXqCKCM6kvPb3hjmgJbXU3HL/nGS+hiJ4mfEjzfCJJ9bEovCvTJhbJkPha4xwLArxn2eOEFGhxsGELgOKSbNtzv3pMGqEhW9yseguyPX7EZHevUrkRpneMgP2n2UDdw39XcdW6vzATX8NLPL7TBWtSb57P4rEWKoWGPFuwB1CEXbQ7roJcroFtD5+Nk4SqMh53MaGeOQLtJ6MrRrP64/xnPCL5QnGFMszuJxaAEIv6TVQFB4CwotO4S/WZ49BmZgnTyBV3ZgXV6N6kH0llYOrkDTqPfMARHY33HQBY25e/qeTcx4UqnU8JifjXChV8nU10xxIO+B99T1TnTTs8jHAFg9leYSje3g4KxpAzHzUN2KzAyVR0GQTsLOA1JwnwPDzVjzvmSMWisBoQMoiF/5FhGgtIoCPQHMW
- HpHi6JWl
- BIfQ2NEk16F4JOdS1h0JoA/i6wGkV9rl/vPPo5lroaYCcMe/MngyCtsdAKx8SqZqs7Wx876psnDD1bUrLoVkTEnCTLxhEL4IkdbLVqsJXrmujcceLvi5ethqrE0GNHia7nsti+GHRi6gxi4JHSyc90Qbp8eU6mveYOHLjIrE4DuNMFcKtAmPZ4t+yGV6Ad11KdT61qRJWLBjxDGXaYCjiAw19pSUew1vIAiWCAAP/8uXKn/Q=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768616076-567603
+X-HE-Meta: U2FsdGVkX1/Qi3mEadI2YOsBRhG6YF9Texj48phnOvjIFoN18yVDkD5haAjfoEYzkatiWvdur9VB+oKSBLdmSQZ5zgXUyECjfPevnwOlnZecHanJ0fsoS3EsxQVnUZBnGXgUEYk/07qmIdUht3GFyRmovUsVwI/NtU3oZRZt+KaAz8HvZLRLyH5WoQOSoZMzGSSgM3fyr8C/1LKL0dyM2O0pEWhAfWYx2i676e5eV2d+G6T6r+Oq6OaCFMx3vUGFhKt1fD3vJh7/qInxOTJufV26Qy1cYMwkNFopiowsc1Q9C+pngmfUS3Raw/Tnr//8DOJ/cMoREjeBOyuoHHed3jNRU/PJYfxbCEUYW1HLGJQFr9a8ceSDH+grlIwVLaEB9EbNLe6BgntNX8AvFyoSc0Ka8iFZv/IqjN/j/Mdf/5zaMEhA2lEqqJn0FGSo4InATRpH2t6U0Fhxi99eyID/Hdb2aHGJtqJsjqe8Vzob5hR+FLUrX4QmezI83958TQV7MFmdZ+zjuhxnCNxAeNSLiHOiaa/7EdusFVPL9QvgGUqN+N9NaOJ6vaEWxh3qPaAeyE7BbefuTWb4oG6KB3ARHFHZhA5aOEh8j5B87o6So/rw9B27bo/aLbz6zlupFFv2sqVcXZ4sBkoR7PmDeFfv80TWKtLbPNnqZO4nMSCGHYwoYVs5Qt++dqTJfM1AkDNW/9CiMQxvGE7EScWFd6xEwepGgIsOZ10cUjri6Dafv7jTHvN4cckgtiUzl0kipClXSjbt3RWKs5Jo50ptcQxOjsLAXO91IklKucyAZwlqmC3k1qRwrKn0Bo0kSmI9xwIGZ+ioVGOoXmFCvKKv/600VGfZPS6MPr6PfYELNICZoSERXyhcf2d0tKjE0TT3zQlj/6DVG1UOqa/zlWblDBaxObWCka8/6j7R3vLtLtDNx+vBBaoks84OLNlfuzLit0y2PKXo5rZgtGMT65qwWm1
+ LnnU1B+K
+ X+LSf7nJeRqjwbWyuYOm/9Kwia060baU8JZsFo5bRFxOrB8kKc5Cm5H2KAlCvVvEMv5OqBJbT3iO+wIB/toWrwJzWXmOX1DNdF8ngDtzjmnrp5PZUnBVUAykJwzKYKogOpRRrIETg+NlrNycOwPb/q35aLMDFBONAzXqo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,392 +102,297 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 2:40=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> Until now, kmem_cache->cpu_sheaves was !NULL only for caches with
-> sheaves enabled. Since we want to enable them for almost all caches,
-> it's suboptimal to test the pointer in the fast paths, so instead
-> allocate it for all caches in do_kmem_cache_create(). Instead of testing
-> the cpu_sheaves pointer to recognize caches (yet) without sheaves, test
-> kmem_cache->sheaf_capacity for being 0, where needed, using a new
-> cache_has_sheaves() helper.
->
-> However, for the fast paths sake we also assume that the main sheaf
-> always exists (pcs->main is !NULL), and during bootstrap we cannot
-> allocate sheaves yet.
->
-> Solve this by introducing a single static bootstrap_sheaf that's
-> assigned as pcs->main during bootstrap. It has a size of 0, so during
-> allocations, the fast path will find it's empty. Since the size of 0
-> matches sheaf_capacity of 0, the freeing fast paths will find it's
-> "full". In the slow path handlers, we use cache_has_sheaves() to
-> recognize that the cache doesn't (yet) have real sheaves, and fall back.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 46fe65a2c28ecf5df1a7475aba1f08ccf4c0ac1b  Add linux-next specific files for 20260116
 
-I don't think kmem_cache_prefill_sheaf() handles this case, does it?
-Or do you rely on the caller to never try prefilling a bootstrapped
-sheaf?
-kmem_cache_refill_sheaf() and kmem_cache_return_sheaf() operate on a
-sheaf obtained by calling kmem_cache_prefill_sheaf(), so if
-kmem_cache_prefill_sheaf() never returns a bootstrapped sheaf we don't
-need special handling there.
+Unverified Warning (likely false positive, kindly check if interested):
 
-> Thus sharing the single bootstrap sheaf like this for multiple caches
-> and cpus is safe.
->
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/slub.c | 119 ++++++++++++++++++++++++++++++++++++++++++--------------=
-------
->  1 file changed, 81 insertions(+), 38 deletions(-)
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index edf341c87e20..706cb6398f05 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -501,6 +501,18 @@ struct kmem_cache_node {
->         struct node_barn *barn;
->  };
->
-> +/*
-> + * Every cache has !NULL s->cpu_sheaves but they may point to the
-> + * bootstrap_sheaf temporarily during init, or permanently for the boot =
-caches
-> + * and caches with debugging enabled, or all caches with CONFIG_SLUB_TIN=
-Y. This
-> + * helper distinguishes whether cache has real non-bootstrap sheaves.
-> + */
-> +static inline bool cache_has_sheaves(struct kmem_cache *s)
-> +{
-> +       /* Test CONFIG_SLUB_TINY for code elimination purposes */
-> +       return !IS_ENABLED(CONFIG_SLUB_TINY) && s->sheaf_capacity;
-> +}
-> +
->  static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int=
- node)
->  {
->         return s->node[node];
-> @@ -2855,6 +2867,10 @@ static void pcs_destroy(struct kmem_cache *s)
->                 if (!pcs->main)
->                         continue;
->
-> +               /* bootstrap or debug caches, it's the bootstrap_sheaf */
-> +               if (!pcs->main->cache)
-> +                       continue;
+    drivers/gpio/gpio-bd72720.c:279:1: sparse: sparse: bad integer constant expression
+    drivers/interconnect/mediatek/mt8196.c:381:1: sparse: sparse: bad integer constant expression
+    drivers/misc/lkdtm/bugs.c:564 lkdtm_PTR_BOUNDS() warn: potentially one past the end of array 'inst->extra[inst->nr_extra]'
 
-I wonder why we can't simply check cache_has_sheaves(s) at the
-beginning and skip the loop altogether.
-I realize that __kmem_cache_release()->pcs_destroy() is called in the
-failure path of do_kmem_cache_create() and s->cpu_sheaves might be
-partially initialized if alloc_empty_sheaf() fails somewhere in the
-middle of the loop inside init_percpu_sheaves(). But for that,
-s->sheaf_capacity should still be non-zero, so checking
-cache_has_sheaves() at the beginning of pcs_destroy() should still
-work, no?
+Warning ids grouped by kconfigs:
 
-BTW, I see one last check for s->cpu_sheaves that you didn't replace
-with cache_has_sheaves() inside __kmem_cache_release(). I think that's
-because it's also in the failure path of do_kmem_cache_create() and
-it's possible that s->sheaf_capacity > 0 while s->cpu_sheaves =3D=3D NULL
-(if alloc_percpu(struct slub_percpu_sheaves) fails). It might be
-helpful to add a comment inside __kmem_cache_release() to explain why
-cache_has_sheaves() can't be used there.
+recent_errors
+|-- arm64-randconfig-r113-20260115
+|   `-- drivers-interconnect-mediatek-mt8196.c:sparse:sparse:bad-integer-constant-expression
+|-- csky-randconfig-r131-20260116
+|   `-- drivers-gpio-gpio-bd72720.c:sparse:sparse:bad-integer-constant-expression
+|-- i386-randconfig-141-20260117
+|   `-- drivers-misc-lkdtm-bugs.c-lkdtm_PTR_BOUNDS()-warn:potentially-one-past-the-end-of-array-inst-extra-inst-nr_extra
+`-- x86_64-randconfig-161-20260117
+    `-- drivers-misc-lkdtm-bugs.c-lkdtm_PTR_BOUNDS()-warn:potentially-one-past-the-end-of-array-inst-extra-inst-nr_extra
 
-> +
->                 /*
->                  * We have already passed __kmem_cache_shutdown() so ever=
-ything
->                  * was flushed and there should be no objects allocated f=
-rom
-> @@ -4030,7 +4046,7 @@ static bool has_pcs_used(int cpu, struct kmem_cache=
- *s)
->  {
->         struct slub_percpu_sheaves *pcs;
->
-> -       if (!s->cpu_sheaves)
-> +       if (!cache_has_sheaves(s))
->                 return false;
->
->         pcs =3D per_cpu_ptr(s->cpu_sheaves, cpu);
-> @@ -4052,7 +4068,7 @@ static void flush_cpu_slab(struct work_struct *w)
->
->         s =3D sfw->s;
->
-> -       if (s->cpu_sheaves)
-> +       if (cache_has_sheaves(s))
->                 pcs_flush_all(s);
->
->         flush_this_cpu_slab(s);
-> @@ -4157,7 +4173,7 @@ void flush_all_rcu_sheaves(void)
->         mutex_lock(&slab_mutex);
->
->         list_for_each_entry(s, &slab_caches, list) {
-> -               if (!s->cpu_sheaves)
-> +               if (!cache_has_sheaves(s))
->                         continue;
->                 flush_rcu_sheaves_on_cache(s);
->         }
-> @@ -4179,7 +4195,7 @@ static int slub_cpu_dead(unsigned int cpu)
->         mutex_lock(&slab_mutex);
->         list_for_each_entry(s, &slab_caches, list) {
->                 __flush_cpu_slab(s, cpu);
-> -               if (s->cpu_sheaves)
-> +               if (cache_has_sheaves(s))
->                         __pcs_flush_all_cpu(s, cpu);
->         }
->         mutex_unlock(&slab_mutex);
-> @@ -4979,6 +4995,12 @@ __pcs_replace_empty_main(struct kmem_cache *s, str=
-uct slub_percpu_sheaves *pcs,
->
->         lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
->
-> +       /* Bootstrap or debug cache, back off */
-> +       if (unlikely(!cache_has_sheaves(s))) {
-> +               local_unlock(&s->cpu_sheaves->lock);
-> +               return NULL;
-> +       }
-> +
->         if (pcs->spare && pcs->spare->size > 0) {
->                 swap(pcs->main, pcs->spare);
->                 return pcs;
-> @@ -5165,6 +5187,11 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache=
- *s, size_t size, void **p)
->                 struct slab_sheaf *full;
->                 struct node_barn *barn;
->
-> +               if (unlikely(!cache_has_sheaves(s))) {
-> +                       local_unlock(&s->cpu_sheaves->lock);
-> +                       return allocated;
-> +               }
-> +
->                 if (pcs->spare && pcs->spare->size > 0) {
->                         swap(pcs->main, pcs->spare);
->                         goto do_alloc;
-> @@ -5244,8 +5271,7 @@ static __fastpath_inline void *slab_alloc_node(stru=
-ct kmem_cache *s, struct list
->         if (unlikely(object))
->                 goto out;
->
-> -       if (s->cpu_sheaves)
-> -               object =3D alloc_from_pcs(s, gfpflags, node);
-> +       object =3D alloc_from_pcs(s, gfpflags, node);
->
->         if (!object)
->                 object =3D __slab_alloc_node(s, gfpflags, node, addr, ori=
-g_size);
-> @@ -5355,17 +5381,6 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp=
-_t gfp, unsigned int size)
->
->         if (unlikely(size > s->sheaf_capacity)) {
->
-> -               /*
-> -                * slab_debug disables cpu sheaves intentionally so all
-> -                * prefilled sheaves become "oversize" and we give up on
-> -                * performance for the debugging. Same with SLUB_TINY.
-> -                * Creating a cache without sheaves and then requesting a
-> -                * prefilled sheaf is however not expected, so warn.
-> -                */
-> -               WARN_ON_ONCE(s->sheaf_capacity =3D=3D 0 &&
-> -                            !IS_ENABLED(CONFIG_SLUB_TINY) &&
-> -                            !(s->flags & SLAB_DEBUG_FLAGS));
-> -
->                 sheaf =3D kzalloc(struct_size(sheaf, objects, size), gfp)=
-;
->                 if (!sheaf)
->                         return NULL;
-> @@ -6082,6 +6097,12 @@ __pcs_replace_full_main(struct kmem_cache *s, stru=
-ct slub_percpu_sheaves *pcs)
->  restart:
->         lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
->
-> +       /* Bootstrap or debug cache, back off */
-> +       if (unlikely(!cache_has_sheaves(s))) {
-> +               local_unlock(&s->cpu_sheaves->lock);
-> +               return NULL;
-> +       }
-> +
->         barn =3D get_barn(s);
->         if (!barn) {
->                 local_unlock(&s->cpu_sheaves->lock);
-> @@ -6280,6 +6301,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void =
-*obj)
->                 struct slab_sheaf *empty;
->                 struct node_barn *barn;
->
-> +               /* Bootstrap or debug cache, fall back */
-> +               if (unlikely(!cache_has_sheaves(s))) {
-> +                       local_unlock(&s->cpu_sheaves->lock);
-> +                       goto fail;
-> +               }
-> +
->                 if (pcs->spare && pcs->spare->size =3D=3D 0) {
->                         pcs->rcu_free =3D pcs->spare;
->                         pcs->spare =3D NULL;
-> @@ -6674,9 +6701,8 @@ void slab_free(struct kmem_cache *s, struct slab *s=
-lab, void *object,
->         if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s)=
-, false)))
->                 return;
->
-> -       if (s->cpu_sheaves && likely(!IS_ENABLED(CONFIG_NUMA) ||
-> -                                    slab_nid(slab) =3D=3D numa_mem_id())
-> -                          && likely(!slab_test_pfmemalloc(slab))) {
-> +       if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) =3D=3D numa=
-_mem_id())
-> +           && likely(!slab_test_pfmemalloc(slab))) {
->                 if (likely(free_to_pcs(s, object)))
->                         return;
->         }
-> @@ -7379,7 +7405,7 @@ void kmem_cache_free_bulk(struct kmem_cache *s, siz=
-e_t size, void **p)
->          * freeing to sheaves is so incompatible with the detached freeli=
-st so
->          * once we go that way, we have to do everything differently
->          */
-> -       if (s && s->cpu_sheaves) {
-> +       if (s && cache_has_sheaves(s)) {
->                 free_to_pcs_bulk(s, size, p);
->                 return;
->         }
-> @@ -7490,8 +7516,7 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache =
-*s, gfp_t flags, size_t size,
->                 size--;
->         }
->
-> -       if (s->cpu_sheaves)
-> -               i =3D alloc_from_pcs_bulk(s, size, p);
-> +       i =3D alloc_from_pcs_bulk(s, size, p);
+elapsed time: 730m
 
-Doesn't the above change make this fastpath a bit longer? IIUC,
-instead of bailing out right here we call alloc_from_pcs_bulk() and
-bail out from there because pcs->main->size is 0.
+configs tested: 262
+configs skipped: 3
 
->
->         if (i < size) {
->                 /*
-> @@ -7702,6 +7727,7 @@ static inline int alloc_kmem_cache_cpus(struct kmem=
-_cache *s)
->
->  static int init_percpu_sheaves(struct kmem_cache *s)
->  {
-> +       static struct slab_sheaf bootstrap_sheaf =3D {};
->         int cpu;
->
->         for_each_possible_cpu(cpu) {
-> @@ -7711,7 +7737,28 @@ static int init_percpu_sheaves(struct kmem_cache *=
-s)
->
->                 local_trylock_init(&pcs->lock);
->
-> -               pcs->main =3D alloc_empty_sheaf(s, GFP_KERNEL);
-> +               /*
-> +                * Bootstrap sheaf has zero size so fast-path allocation =
-fails.
-> +                * It has also size =3D=3D s->sheaf_capacity, so fast-pat=
-h free
-> +                * fails. In the slow paths we recognize the situation by
-> +                * checking s->sheaf_capacity. This allows fast paths to =
-assume
-> +                * s->cpu_sheaves and pcs->main always exists and is vali=
-d.
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    clang-16
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    clang-22
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                         haps_hs_defconfig    gcc-15.2.0
+arc                   randconfig-001-20260116    gcc-13.4.0
+arc                   randconfig-002-20260116    gcc-9.5.0
+arm                              alldefconfig    gcc-15.2.0
+arm                               allnoconfig    clang-22
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    clang-16
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-22
+arm                                 defconfig    gcc-15.2.0
+arm                          pxa3xx_defconfig    clang-22
+arm                   randconfig-001-20260116    gcc-15.2.0
+arm                   randconfig-002-20260116    gcc-8.5.0
+arm                   randconfig-003-20260116    clang-22
+arm                   randconfig-004-20260116    gcc-8.5.0
+arm                        spear3xx_defconfig    gcc-15.2.0
+arm                           stm32_defconfig    gcc-15.2.0
+arm64                            allmodconfig    clang-19
+arm64                            allmodconfig    clang-22
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260116    clang-22
+arm64                 randconfig-002-20260116    clang-22
+arm64                 randconfig-003-20260116    clang-17
+arm64                 randconfig-004-20260116    clang-22
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260116    gcc-15.2.0
+csky                  randconfig-002-20260116    gcc-15.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    clang-22
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    clang-22
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260116    clang-20
+hexagon               randconfig-001-20260117    clang-22
+hexagon               randconfig-002-20260116    clang-19
+hexagon               randconfig-002-20260117    clang-22
+i386                             allmodconfig    clang-20
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260116    gcc-14
+i386        buildonly-randconfig-002-20260116    clang-20
+i386        buildonly-randconfig-003-20260116    gcc-12
+i386        buildonly-randconfig-004-20260116    clang-20
+i386        buildonly-randconfig-005-20260116    clang-20
+i386        buildonly-randconfig-006-20260116    gcc-14
+i386                                defconfig    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260116    gcc-14
+i386                  randconfig-002-20260116    clang-20
+i386                  randconfig-003-20260116    clang-20
+i386                  randconfig-004-20260116    gcc-14
+i386                  randconfig-005-20260116    gcc-14
+i386                  randconfig-006-20260116    clang-20
+i386                  randconfig-007-20260116    gcc-14
+i386                  randconfig-011-20260116    gcc-14
+i386                  randconfig-011-20260117    gcc-14
+i386                  randconfig-012-20260116    clang-20
+i386                  randconfig-012-20260117    gcc-14
+i386                  randconfig-013-20260116    clang-20
+i386                  randconfig-013-20260117    gcc-14
+i386                  randconfig-014-20260116    clang-20
+i386                  randconfig-014-20260117    gcc-14
+i386                  randconfig-015-20260116    clang-20
+i386                  randconfig-015-20260117    gcc-14
+i386                  randconfig-016-20260116    gcc-14
+i386                  randconfig-016-20260117    gcc-14
+i386                  randconfig-017-20260116    clang-20
+i386                  randconfig-017-20260117    gcc-14
+loongarch                        allmodconfig    clang-22
+loongarch                         allnoconfig    clang-22
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260116    gcc-15.2.0
+loongarch             randconfig-001-20260117    clang-22
+loongarch             randconfig-002-20260116    gcc-15.2.0
+loongarch             randconfig-002-20260117    clang-22
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    clang-16
+m68k                             allyesconfig    gcc-15.2.0
+m68k                         amcore_defconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                        bcm47xx_defconfig    clang-18
+mips                           ip30_defconfig    gcc-15.2.0
+mips                      loongson3_defconfig    gcc-15.2.0
+nios2                            allmodconfig    clang-22
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260116    gcc-11.5.0
+nios2                 randconfig-001-20260117    clang-22
+nios2                 randconfig-002-20260116    gcc-11.5.0
+nios2                 randconfig-002-20260117    clang-22
+openrisc                         allmodconfig    clang-22
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-22
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-22
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    clang-19
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260117    gcc-12.5.0
+parisc                randconfig-002-20260117    gcc-15.2.0
+parisc64                            defconfig    clang-19
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-22
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                    ge_imp3a_defconfig    gcc-15.2.0
+powerpc                   motionpro_defconfig    clang-22
+powerpc               randconfig-001-20260117    gcc-8.5.0
+powerpc               randconfig-002-20260117    clang-22
+powerpc                     tqm5200_defconfig    gcc-15.2.0
+powerpc                     tqm8540_defconfig    gcc-15.2.0
+powerpc                     tqm8548_defconfig    clang-22
+powerpc64             randconfig-001-20260117    clang-22
+powerpc64             randconfig-002-20260117    gcc-8.5.0
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    clang-22
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260116    clang-22
+riscv                 randconfig-001-20260117    gcc-10.5.0
+riscv                 randconfig-002-20260116    clang-22
+riscv                 randconfig-002-20260117    gcc-10.5.0
+s390                             allmodconfig    clang-18
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-22
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260116    clang-22
+s390                  randconfig-001-20260117    gcc-10.5.0
+s390                  randconfig-002-20260116    gcc-8.5.0
+s390                  randconfig-002-20260117    gcc-10.5.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-22
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    clang-19
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.2.0
+sh                    randconfig-001-20260116    gcc-15.2.0
+sh                    randconfig-001-20260117    gcc-10.5.0
+sh                    randconfig-002-20260116    gcc-14.3.0
+sh                    randconfig-002-20260117    gcc-10.5.0
+sh                           se7751_defconfig    gcc-15.2.0
+sparc                             allnoconfig    clang-22
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260116    gcc-15.2.0
+sparc                 randconfig-001-20260117    gcc-14.3.0
+sparc                 randconfig-002-20260116    gcc-13.4.0
+sparc                 randconfig-002-20260117    gcc-14.3.0
+sparc64                          allmodconfig    clang-22
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260116    gcc-10.5.0
+sparc64               randconfig-001-20260117    gcc-14.3.0
+sparc64               randconfig-002-20260116    gcc-8.5.0
+sparc64               randconfig-002-20260117    gcc-14.3.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    clang-22
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260116    gcc-14
+um                    randconfig-001-20260117    gcc-14.3.0
+um                    randconfig-002-20260116    gcc-14
+um                    randconfig-002-20260117    gcc-14.3.0
+um                           x86_64_defconfig    clang-22
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-22
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260116    gcc-14
+x86_64      buildonly-randconfig-001-20260117    clang-20
+x86_64      buildonly-randconfig-002-20260116    clang-20
+x86_64      buildonly-randconfig-002-20260117    clang-20
+x86_64      buildonly-randconfig-003-20260116    clang-20
+x86_64      buildonly-randconfig-003-20260117    clang-20
+x86_64      buildonly-randconfig-004-20260116    clang-20
+x86_64      buildonly-randconfig-004-20260117    clang-20
+x86_64      buildonly-randconfig-005-20260116    clang-20
+x86_64      buildonly-randconfig-005-20260117    clang-20
+x86_64      buildonly-randconfig-006-20260116    gcc-14
+x86_64      buildonly-randconfig-006-20260117    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260116    clang-20
+x86_64                randconfig-001-20260117    clang-20
+x86_64                randconfig-002-20260116    gcc-14
+x86_64                randconfig-002-20260117    clang-20
+x86_64                randconfig-003-20260116    clang-20
+x86_64                randconfig-003-20260117    clang-20
+x86_64                randconfig-004-20260116    clang-20
+x86_64                randconfig-004-20260117    clang-20
+x86_64                randconfig-005-20260116    gcc-14
+x86_64                randconfig-005-20260117    clang-20
+x86_64                randconfig-006-20260116    clang-20
+x86_64                randconfig-006-20260117    clang-20
+x86_64                randconfig-011-20260116    clang-20
+x86_64                randconfig-012-20260116    clang-20
+x86_64                randconfig-013-20260116    clang-20
+x86_64                randconfig-014-20260116    clang-20
+x86_64                randconfig-015-20260116    gcc-12
+x86_64                randconfig-016-20260116    clang-20
+x86_64                randconfig-071-20260116    gcc-14
+x86_64                randconfig-072-20260116    clang-20
+x86_64                randconfig-073-20260116    gcc-14
+x86_64                randconfig-074-20260116    clang-20
+x86_64                randconfig-075-20260116    clang-20
+x86_64                randconfig-076-20260116    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-22
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    clang-22
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260116    gcc-11.5.0
+xtensa                randconfig-001-20260117    gcc-14.3.0
+xtensa                randconfig-002-20260116    gcc-15.2.0
+xtensa                randconfig-002-20260117    gcc-14.3.0
 
-s/is/are
-
-> +                * It's also safe to share the single static bootstrap_sh=
-eaf
-> +                * with zero-sized objects array as it's never modified.
-> +                *
-> +                * bootstrap_sheaf also has NULL pointer to kmem_cache so=
- we
-> +                * recognize it and not attempt to free it when destroyin=
-g the
-> +                * cache
-
-missing a period at the end of the above sentence.
-
-> +                *
-> +                * We keep bootstrap_sheaf for kmem_cache and kmem_cache_=
-node,
-> +                * caches with debug enabled, and all caches with SLUB_TI=
-NY.
-> +                * For kmalloc caches it's used temporarily during the in=
-itial
-> +                * bootstrap.
-> +                */
-> +               if (!s->sheaf_capacity)
-> +                       pcs->main =3D &bootstrap_sheaf;
-> +               else
-> +                       pcs->main =3D alloc_empty_sheaf(s, GFP_KERNEL);
->
->                 if (!pcs->main)
->                         return -ENOMEM;
-> @@ -7809,7 +7856,7 @@ static int init_kmem_cache_nodes(struct kmem_cache =
-*s)
->                         continue;
->                 }
->
-> -               if (s->cpu_sheaves) {
-> +               if (cache_has_sheaves(s)) {
->                         barn =3D kmalloc_node(sizeof(*barn), GFP_KERNEL, =
-node);
->
->                         if (!barn)
-> @@ -8127,7 +8174,7 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
->         flush_all_cpus_locked(s);
->
->         /* we might have rcu sheaves in flight */
-> -       if (s->cpu_sheaves)
-> +       if (cache_has_sheaves(s))
->                 rcu_barrier();
->
->         /* Attempt to free all objects */
-> @@ -8439,7 +8486,7 @@ static int slab_mem_going_online_callback(int nid)
->                 if (get_node(s, nid))
->                         continue;
->
-> -               if (s->cpu_sheaves) {
-> +               if (cache_has_sheaves(s)) {
->                         barn =3D kmalloc_node(sizeof(*barn), GFP_KERNEL, =
-nid);
->
->                         if (!barn) {
-> @@ -8647,12 +8694,10 @@ int do_kmem_cache_create(struct kmem_cache *s, co=
-nst char *name,
->
->         set_cpu_partial(s);
->
-> -       if (s->sheaf_capacity) {
-> -               s->cpu_sheaves =3D alloc_percpu(struct slub_percpu_sheave=
-s);
-> -               if (!s->cpu_sheaves) {
-> -                       err =3D -ENOMEM;
-> -                       goto out;
-> -               }
-> +       s->cpu_sheaves =3D alloc_percpu(struct slub_percpu_sheaves);
-> +       if (!s->cpu_sheaves) {
-> +               err =3D -ENOMEM;
-> +               goto out;
->         }
->
->  #ifdef CONFIG_NUMA
-> @@ -8671,11 +8716,9 @@ int do_kmem_cache_create(struct kmem_cache *s, con=
-st char *name,
->         if (!alloc_kmem_cache_cpus(s))
->                 goto out;
->
-> -       if (s->cpu_sheaves) {
-> -               err =3D init_percpu_sheaves(s);
-> -               if (err)
-> -                       goto out;
-> -       }
-> +       err =3D init_percpu_sheaves(s);
-> +       if (err)
-> +               goto out;
->
->         err =3D 0;
->
->
-> --
-> 2.52.0
->
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
