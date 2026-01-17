@@ -4,111 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77F9BC9830D
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 02:24:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB2B1C98303
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 02:30:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6FCF6B0088; Fri, 16 Jan 2026 21:24:11 -0500 (EST)
+	id 178BD6B0089; Fri, 16 Jan 2026 21:30:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1DA46B0089; Fri, 16 Jan 2026 21:24:11 -0500 (EST)
+	id 127426B008A; Fri, 16 Jan 2026 21:30:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2A816B008A; Fri, 16 Jan 2026 21:24:11 -0500 (EST)
+	id 0085C6B008C; Fri, 16 Jan 2026 21:30:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A087D6B0088
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 21:24:11 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 317C5D1A97
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:24:11 +0000 (UTC)
-X-FDA: 84339861102.29.9733001
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4F3DD1A000B
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:24:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=FoIsjaX7;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E28F86B0089
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 21:30:13 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AFE113A752
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:30:13 +0000 (UTC)
+X-FDA: 84339876306.07.19D20EB
+Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com [209.85.219.68])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5881E4000E
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 02:30:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iWz3HhCY;
+	spf=pass (imf04.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.219.68 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768617011; a=rsa-sha256;
+	cv=none;
+	b=rylTIqoUJhk1Du0V5e4gSPUimZrSvCmTLy1gSJT9h9dLKJjnUR9M7NJbqjDAfXqSk9GT95
+	gyrZYgihnwFpfyzj6AwWeliOB8DJxWIDov1rhfSJQ5rhPG6VndwRDy8pPjLU/3RzBhka8r
+	ceJdXfoywrZeU3gdsuQ4I7JRdo0sfSU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iWz3HhCY;
+	spf=pass (imf04.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.219.68 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768616649;
+	s=arc-20220608; t=1768617011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RG9JTep8SZzMFEcooUHKo6wqW44FeI2fh0jmVquhjHo=;
-	b=yK6p3WXNbjfyR0DpAR1lYKcE94VIMoNWvWbhQRpvRzLUPi8f8bQthiMdWJGVMfpNbK7Rrl
-	T+RCJJ3IueI8QwXJpH6GDpcmCbWnj8zdTpwPboI0N4pLz8AXzV/xHK60rzI2qb9/wdNlxA
-	IEoJXv+iTWXwsRC8N5pOybnZPDGgEto=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768616649; a=rsa-sha256;
-	cv=none;
-	b=U+jvVwqJJTWBFmfdoHyUbEsClKEAR56B2MLfJl3Op2UWp9iBCbvQaELPptcfzU4DvoB39w
-	gMyzFqcRISSQt4a4UnYQHBM8Y9UQJ5ZgsEq3+NsB0qUHe4lPUUmHi4GKLS9FBBWj5RQN92
-	Jrhtvgsvf8SPOEJjboaqsQrPgccf8zk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=FoIsjaX7;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a12ed4d205so16161115ad.0
-        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 18:24:08 -0800 (PST)
+	bh=e7v6jVLBvVKWoS0dmG0nNndXtomcaAtap7nM7qINq/8=;
+	b=0Jwgk3XJOw1ERfEzZcScmielfQn/30C+2P0vdIj6VmsLpf3RNtM5RgngJzG+cUB5xdfaNh
+	5aYf9tvz+HwqfPq5oYxVtWHKnBgIP39Pu3gkhbDIBiemRwzYjeZlmVPofEMQ1hEmpU0WJF
+	6c/7wVd5kZyItFCG4ITvowvOnaxDaZo=
+Received: by mail-qv1-f68.google.com with SMTP id 6a1803df08f44-8887f43b224so50115506d6.1
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 18:30:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1768616648; x=1769221448; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1768617010; x=1769221810; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RG9JTep8SZzMFEcooUHKo6wqW44FeI2fh0jmVquhjHo=;
-        b=FoIsjaX7twfsS5mVOvs1jzZxQktSrtbSgV84Ah1GszZK2pl6oGMU2I21mOFKPu4ze/
-         yXRh5DforJWLOs3JdvEbtt0SVLuBV80M8U4ow1rGnD3A5WzbZaxoswpu3KG3JuJRLh7u
-         5pMtF1iSKwQf7Q9CdggWFv8G4Gun5YPxMkm7c=
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e7v6jVLBvVKWoS0dmG0nNndXtomcaAtap7nM7qINq/8=;
+        b=iWz3HhCYUaQJs1PUaNxBro0qUS58KEWJeupeWoAshHHexE70kAKYKn/r4rABJWjcEW
+         oszdaoiSugp4YIunFTOrjPB3LXZeWgoGKZTZAT/VHvFWXMzQkOSu/gVwFFtQ4hkQ1aRv
+         ur73Dhv/1WTEPGN0+0t5Jl1j7YRN3QKNSnlGoe3TPvC4bIB1v4yFptrs/5x4kC1I3cUk
+         x55Cyq1PoFbSxW2R7e3bD1za9NThzU4gacDIOEUU7IuFJyP8I+tkSg6SMvUrfdbk0M5D
+         rWZ04+5reiuJQZn8gHALPijqxJhx1DO/R01L9gf+y1tKhkV4ipwwzdnIFGi9uWkUpBJy
+         rnBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768616648; x=1769221448;
+        d=1e100.net; s=20230601; t=1768617010; x=1769221810;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RG9JTep8SZzMFEcooUHKo6wqW44FeI2fh0jmVquhjHo=;
-        b=W0LRQzW1x74ydz64bzKreuwiOULsi5gjGGOljSyehT/vDd5Dp6W2kUOpqEOVvYylwL
-         9Y5JsdhOILSLXirFkC1qZm2YCRaFakm0A8VL9JCDoBze6hQoXGMyXHgb1sfCrcdNgxvx
-         VjnES5v/HcRyWViIfqnEhQJNvnhyeRlPOh2C6zj8i+hki8woArDPMoEdBSfwg0UrBtTZ
-         +1JNuuoOIV4NAfJuiKmAyw/cSJF0bvKBnFedQBp++NQK3DigH0YJfvp1O8LQYQAtGvIQ
-         N57tkoFUcrHdcUn/lf5Zfwo3xc1enhLrZjA1ro62OoombYzepxaVtzKHWEf8Qt8McPsw
-         stOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnejt0Vl2r9DlZpToJfury+ptvrTs4wLtx1B2FV0DJBxPH1yfFBXmAPOYCIkApv9/4q+muZcGmtw==@kvack.org
-X-Gm-Message-State: AOJu0Yxx9WyPDKplwgoNhaXhTOQF9z8/hDlJlZTqhpYoWsE7tS3nsQKl
-	VgkkUntC2htYAD5XOjmyIrAB2pPvG6dC6rT3DQe3aKPdjtLENdT0ePpia9EJjoeN3w==
-X-Gm-Gg: AY/fxX6xozF9LHxMKzAkoOLpr8XUIIDj2LDqueCJAOP7QSkIAyNFAlfSztYDGeXBdKa
-	dU/Q1hrlz/i8bBmy172c9AcBwkmvmZipyS7sdrCniT3cNRLMXIaBmrigdwwvdZCMT8k1UVy6c0v
-	0hn1cc2de11dvbXQVHIQ9a0BBrYTTPWArxkHu+A75s2An7uLshISv1Iv9M86/LGPSd/antsCGHB
-	YRCYxZwECqJpb0uFr3Si+Je/ANfmuTxGXWTsLywaLb1xIm1Kt6VA81VmZ+hMPDZz5nLl5hA+xkU
-	yvmkXOJrsqn1XOjguruTUfK6nScUsPyo/CjcnxPx8AMUasuAcHJtIQ+FzQKBOqSJgVA3dC/pkhG
-	y5nOlQnOrX58nqKhtYrTocvm4YtS4FFV5kaCmBcoaUpANpEijA7O9Vrvi4VmWTh4WgeQ5bNnfvW
-	ub9zPrcOne77XXlEfzvyqH+Mf/i8o4a6kmexZBfuzFDOBWeOI6Gu4=
-X-Received: by 2002:a17:902:ea06:b0:297:dabf:9900 with SMTP id d9443c01a7336-2a71865c7a8mr44334845ad.0.1768616647960;
-        Fri, 16 Jan 2026 18:24:07 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:fb0f:ccef:d815:5581])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193dd523sm32661535ad.62.2026.01.16.18.24.04
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=e7v6jVLBvVKWoS0dmG0nNndXtomcaAtap7nM7qINq/8=;
+        b=oqATva/KSYGDxJLNg5bNpQpy/NmtQEneObaAHbpRUCaUqX/9N334q5rpgYN0yyErIn
+         aqxg+yV/JSTFEkPuqznJpQHZloDLF0oXUiDICTlyJxJjGco1NY/GxR/d4/UkyeLHPimS
+         ZHA0FXD/4jz88Xs5cUeCwsQDxnvpVW7vCmA9qkeIthkuRl8GZx26pvXnJ+2UkMXeldYK
+         qpSiFEDoVMQeUKUZyXcgLXjsJhShTqgCtHW0OYAGYdhgKDrKuM/lLYsourXqKTiZ+j8+
+         9PbKweQeP6qh/lcFo1Ihf9u5+ipXwN0OqPfMuMkbR54mLgEPG07SppvaKSbHCpcZoJ5E
+         OclA==
+X-Forwarded-Encrypted: i=1; AJvYcCUXp3FjXa+ukUnK7ta7nipuNfI7XyyELx+iK/WtG+jjqP0tQbJJSpb9J3Whpp0/g5jh7KNcRB/obg==@kvack.org
+X-Gm-Message-State: AOJu0Ywipk5BjZU7I+mCEBOmrqBdLeLJGk6LP1mXh9bZEFZKsMkHxb8N
+	jEYl1zO9qYT47hrROobexhskkCtOsnVYH7j+SlLSUC3UGZSahcM9GaSn
+X-Gm-Gg: AY/fxX5SwipJBk2m/urWNvWYPe/SQfQdlZ+eEgO+s+Vn24Xhts3IsEC4QTSvpgaOXDt
+	fZ0/4xN/j1ItDf/oll8NWTxC4XMwU/zYGxFL2t1FezZimIspvARmB8ygj3ywC6xs156XT+bKBLY
+	q3hPu9Td/c0EMzryLnNOv94CDsLS+ytdT7PiiYFLGqj6TWRpGQQyhxsLRp+Tc77xDB8j/l+WZmh
+	3hDJDumynAASIxC8aPxY/pGjD/rj0CZLe2iuZAhcgoc48B9sIKHJR3KJuYmOFFEB7QzMhYWK3MN
+	8qTG2Ptkk6JolNa0goFb81Y6ILnIpGm5gb8L/Wh7tukxN7EklOVEKPIzNwRGGp1g7I2lA8oSRuQ
+	pQbATNbGFogkNri4RDaQkROVQotT5OUcZ3kW4uj4ZSiNfCDYTWIA0EkMV14UBEO7vOJ3/MOw5ia
+	iWIERnUUjCzxmt8H5LKG7cIQ+K3aqI2IkKki9weov5n9VBt/BRjPO2oZMw9nB4/3OjVulO5HkHt
+	TmSGzJZmp80bR8oq48uoJ81+g==
+X-Received: by 2002:a05:6214:2261:b0:880:5193:10fb with SMTP id 6a1803df08f44-8942e4b8ff5mr68519416d6.54.1768617010378;
+        Fri, 16 Jan 2026 18:30:10 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6d87b1sm35532246d6.53.2026.01.16.18.30.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 18:24:07 -0800 (PST)
-Date: Sat, 17 Jan 2026 11:24:01 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] zsmalloc: make common caches global
-Message-ID: <a5jkb4d2xolobcddbac6enh2vjdbi3u6wtwfavo2h4ps2iietq@63nnefjw622b>
-References: <20260116044841.334821-1-senozhatsky@chromium.org>
- <z52lw2spqxmvgn6zo7b77nvxyjtxez5nxd6gsn6s3mwqnkvynq@gtd7kpedbtfr>
+        Fri, 16 Jan 2026 18:30:09 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 156CCF40068;
+	Fri, 16 Jan 2026 21:30:09 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 16 Jan 2026 21:30:09 -0500
+X-ME-Sender: <xms:MfRqaRL--ju4zV_ISOu5lD9zKuBBxccbOly9O2AkT6D2dCeGlk9QQQ>
+    <xme:MfRqabhDLTJhkDbvlKH3L7AcPMtqfCzOXh9dPHvXbgVVSuhNRITNqr-8h81dso5rJ
+    MUkWoMxPEL5SyMbc08xe6WVYEKeg9a8B5cqy4Mffy6onkcJq9PL>
+X-ME-Received: <xmr:MfRqaVveKIEYp7Ot9BEkqJqaTy8gceQxw3BraIMpzTKdynrvoBoI5YOP>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufedtieduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomhdprhgtph
+    htthhopegsihhgvggrshihsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepphgv
+    thgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuh
+    igqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtoh
+    hmpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhrtghpthhtoheprhhpphht
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtoh
+    hm
+X-ME-Proxy: <xmx:MfRqaVgFbFySiTaExKnRETsMtBEpjHwVJZum39nKdmXH3mwjMdxINQ>
+    <xmx:MfRqaQd4ta15fGVKMttu2rRyHfxXOQ2EusHp3BkjbeK-VdvOWxkUzQ>
+    <xmx:MfRqaSkZnYLLPvBasqV9b2RbiHU68ypVtKCh4KlMsdVxIGxHtjzCwg>
+    <xmx:MfRqaSqaBACFyXVbEeiBXGBGH8TB6yKzTlb5HdIb8bYn_RZ3aar-nQ>
+    <xmx:MfRqaR8RAU3Sdk6J2divnS1AK2TGSw8HBVJLUVxBMzEr3KFrLlG9dGSa>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 16 Jan 2026 21:30:08 -0500 (EST)
+Date: Sat, 17 Jan 2026 10:30:06 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH RESEND 1/3] locking: add rwsem_is_write_locked(), update
+ non-lockdep asserts
+Message-ID: <aWr0LtTf1rU7iae8@tardis-2.local>
+References: <cover.1768569863.git.lorenzo.stoakes@oracle.com>
+ <8e343ccb9319433364f5949a69519f1bb521fc8a.1768569863.git.lorenzo.stoakes@oracle.com>
+ <20260116151215.GH831050@noisy.programming.kicks-ass.net>
+ <99818e30-9f88-4751-af82-0bed019156eb@lucifer.local>
+ <20260116155743.AuMKcTAO@linutronix.de>
+ <5ca7b2a2-1e9d-4d90-8459-1aa35b30b49c@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <z52lw2spqxmvgn6zo7b77nvxyjtxez5nxd6gsn6s3mwqnkvynq@gtd7kpedbtfr>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4F3DD1A000B
+In-Reply-To: <5ca7b2a2-1e9d-4d90-8459-1aa35b30b49c@lucifer.local>
+X-Stat-Signature: pep93jasu7wwx9pzuihhf83hx7rdtcaj
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5881E4000E
 X-Rspam-User: 
-X-Stat-Signature: yubzoni4889p9zqxrdd75xofccrm6791
-X-HE-Tag: 1768616649-147655
-X-HE-Meta: U2FsdGVkX19V+9XKozzvRuGajHWXeX6SIost/PH91H6U99rygPKSwrjopxjC9OguD0qfzqUz4ZntGT39xZ3v5iJn4swuSsyuuzieViG555NRHeVVSVvu0/6HbWR6y1qSvQu+chiJmjZp/SyJyN8KIN/NbRvVCmqBOVKAPNeM/Dlr57/vSXzOqLjKwCWNr/BsEDiOonhwqvfEuEeok5OhyObAKV0gArakXWXALUGUrxRMzQxDND+3pLcpsMp4AXnCBgoraQNDZz7J5hE5aIr4sFhnL2L+gqtIJqAlM7hOadOfaMDcJIHf7ly99sCgW8V75gfCfaigXaQBUod4dTf/35P1kP7xO0Oy4s0qmaIM3XSj7Ze8oGA1Q2mrDbvmGWBOBr8ROnO1htWKON1uDQl549uTcBBbPL1QhGGuOB9gIi3wXPX00ZuXtfhzUyIJoRWqYfEvW33aAbzeleCF4xG9lFkI8CkcQlbnEnlERCZsaD4OoDmpFq95cPYiGCZDD/23qxG1gnHm5XagRMEJ9MuDRjzhqw9C5UnhhdXSNzwXf92dTdw4Dvh+63iuaAdyvlMoa795veeRdD1LzLsN+xpAHJYEMMm9PGDCkTFWBn1fYqK/GqO3lT808OBRsH7nqU4w1e2O/aidrexaj0TAQB5CkMg+6UgNlhnGtScYb4hi2fNeP7USb1t1MCTtwqRXTY6/7JlMfXBAQ1Atz1tlFEGNsA0Wk0vhdZHjga45wiqC56JVymykz7rti2bPTNKV1p/wxBYrcAwoxV6EwhuwI7u13QijPfnHuHpJjwLzbyg02lEN5ctW0bwZcNvqCrRRKP4bc8B6/LYyOtqRjQQiAe6XIqvJnVQgbYv2h1po10xJNH2fDQcYIvUhkaczpicDzyNCwqyCINzYN/IIg5qgPuWJNuGT2ZhC6VDaWrLTHqbk2zlBCFA5RgnzHxov8QDNw9FM7d3cwch3wa/ALWnC42M
- myPHyPnK
- 64YlJuGsXN3OQ9lAVTKQljNgcuQR2zkR8MmEWSu++K8mgilWY9h8mCf6XLxvhTTiaNozBAlk01v7v3pIfFsHKrD1uLVTQr+vKXK1Yte8PvtrWRodBicweiF8vKKQCk/2iOFPmQKMGGGEWvM6SGUAvErEcj2Qk/k/RvvI3EuGtUX2N93G5kj6TGyIoaG9qE9wsoTnkluxVkOOJgKzOVemeqkjzaPd+TKtqAIgsAvQxlpbuCJ58l7TamAbY05/6ZZ+84ZvQuPqEtHo/MC75vyxeXdBzIlorHlxRVD/F8T97Diopk+mkHrCWXtjmcSHQg0arP3ZCuH+M51syM6374yWqIT4BFMs40AdJgugc4qQtuchV9wjWrbypmf0JOLF3A3wFZvjb2rrS8fzrOPb8kwk5LoHukrcWcpZ0nRIFE2LuGc1OaoH32bmF/nOFEZwEbZB6jzD1h4LTSgRMjg9tGV/NRGcFOigGXjqHSAlM
+X-HE-Tag: 1768617011-197823
+X-HE-Meta: U2FsdGVkX18wBCIQ/PrrfnRzXfYWIYyFjxw0qt6nPBRHn//YM8K9ecSkB5FtL7z1i7210NIA2om8Miiwy2pYUhhWT9aimqH9LGiPFN2CXYOaJPMlxYSbHZWPwLmMJxwQnU2DWmysopbNMttVb7SsAkqDZEeR24vwjRaQVQ6K4jfbuFqFkC5nzxQ38DEqKD9aPLytI2QxS4HztjQf/bnyUMjSsklPFyv4ig9H2MgZPjH2/13YDXZkU7NwuVWywSGHqiWL9OwZBJWmvaKvBi2Vy8MviMB+0Z8JCZz4+JJTaaDVKNl9Jy2NsySJueH2c38073eGh1wz9zxOYE9lgsut3QlLxJ55AH6yLfbl9Bd3l9OixaRK42XVt1MvmOkUPTVfLVD0ZOl68VwRVk22BvuMOAPC7uYpBqRVnm/1TTgZ5bTJMZQLMwaq1rqnKngYVvgJDAfS9JvvLSdu02PoPbLMCazVpKZg8dAvMjoUe//Zo9c8iSE6WJ+kn3s2kS9/5gscNWvdaclj7l8c9PTV1lmgCQgJDeLgscOFE09Jgh3EMm9ZP5b6pUOezn0tKh32pB0gF77wzUKzamFTXfzwiiITneMbg5fMo+YxR++r9Z6Fqxms1t+YKRvZlZQdPhbYpyKciaoKLpvv6F3Jr9G4vywhnW+1WQrVwQBb/8crQRHqDYfmT00sgs7YvTRhbpD3USQ7BZs07dbReiDhvdL5IuI434uF2pHhUhq49mv15WQM7XvD7YUDdPQtun1e6SujBLjW7580a3QRme7xVl2u7E8N3fQXAvmpPNN9U1nMrowc1CvAuPI+r6WqzOm1V+YfgO2ay+YcQT21KyQbXNHezPxGp/8xT26n8PP+fBDesutUThGk8bfHF7iBg6xsRejBgZ925MQKXLG7t/knNGlgqK5StmjIZW16w9v9P3CcfsafnyaXuxTL0sQsyO6Cyxyza6eciSo+Rsc2XVkBEwEZtT4
+ F1SFjOwS
+ F1ER8Jcpjr9GoMIs6PJBJ1aiiIJXR3lqwMG9UhluDfYaJl8jLi+yUA7os2vB+kIvqI6gL2brUk/JIp38+Y5qi7RsHpRjF/0f6VB9jFXJMRkFRwsYGkPhh7/v0iOzjEEZKpuw4vWdtR7+BK2+HizBVHdmCyGLM8rwS73ngWLDC3LdXnzNDdxZiUIwb29WHFB7TrCHSncQt7qAhX4j3yZQyyXh3vh1lXXVxNM3HFvrlAZgjefk3Ol0Wy1+DrpJ20wlrj5AXinz3/O5mP2O7z2EVhCCOmKwQIrlOjNH1GD0LdbdtyQRZALvv8CjQ1aggMM+Preu5VQS0UuMJ0afPoIu3p0TZsUmPXcxbiIHe8nLHh8VFCTbigt+L/vVw2g/blajzvufCSOqAoJqfCk2SlNt+N4OtJnoNam87ROrcHT8GKnjk1AZV9lZZIt0+7vqUNQX5d8qXDWeF8pSlI/FkaFW9iKs8IEC0sxy/sZGCf/LAI+mStV92AM0Bi/r4i/WpMTv3uLu8w00ihru4OQGWy3CUDC3TA7udSpUyvJ1sCwU33LdbHhKKY0kxAcoYtQkREK2FbUsaPG/6DCjebQHC+XU+c8nvCg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,29 +172,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/16 20:49), Yosry Ahmed wrote:
-> On Fri, Jan 16, 2026 at 01:48:41PM +0900, Sergey Senozhatsky wrote:
-> > Currently, zsmalloc creates kmem_cache of handles and zspages
-> > for each pool, which may be suboptimal from the memory usage
-> > point of view (extra internal fragmentation per pool).  Systems
-> > that create multiple zsmalloc pools may benefit from shared
-> > common zsmalloc caches.
+On Fri, Jan 16, 2026 at 04:21:29PM +0000, Lorenzo Stoakes wrote:
+> On Fri, Jan 16, 2026 at 04:57:43PM +0100, Sebastian Andrzej Siewior wrote:
+> > On 2026-01-16 15:50:24 [+0000], Lorenzo Stoakes wrote:
+> > > No, but we need to be able to assert that one of two locks are held and we
+> > > don't want the failure of one being held to cause an assert when the other
+> > > isn't.
+> >
+> > But why don't you use the lockdep based check? That assert only ensures
 > 
-> I had a similar patch internally when we had 32 zsmalloc pools with
-> zswap.
+> Not sure what you mean, the checks I'm adding don't exist yet.
+> 
+> > that it is locked at the time you did the check. This does not mean you
+> > are owner - it could be owned by another task which is unrelated to your
+> > cause.
+> 
+> Yup I'm aware that lockdep tests more than a simple assert.
+> 
+> I wasn't aware this was possible with the lockdep primitives, mea culpa.
+> 
+> Also this came out of a previous discussion where I added a similar
+> predicate vma_is_detached() and Suren suggested similar for the locks.
+> 
+> Anyway, I went and looked and yes I see there's lockdep_is_held() for
+> instance.
+> 
+> However, I'd STILL need to do what I'm doing here to account for
+> CONFIG_DEBUG_VM && !CONFIG_LOCKDEP configurations right?
+> 
 
-Oh, nice.
+There is an idea about a light weight lockdep where we only remain
+tracking the held locks in a per-task stack and skip the whole
+dependency checking, that would provide lock holding
+information without the full cost of LOCKDEP, but that requires some
+work and I'm not sure whether it fulfills what you need for DEBUG_VM
+tests (each task_struct would have some extra space and lock/unlock
+would do extra book-keeping).
 
-> You can calculate the savings by using /proc/slabinfo. The unused memory
-> is (num_objs-active_objs)*objsize. You can sum this across all caches
-> when you have multiple pools, and compare it to the unused memory with a
-> single cache.
+> So I'll respin later with if (IS_ENABLED(CONFIG_LOCKDEP)) ...
+> And sprinkle with some lockdep_is_held() and see how that works.
+> 
 
-Right.  Just curious, do you recall any numbers?
+Yeah, for LOCKDEP=y cases, please do use lockdep_is_held() or
+lockdep_is_held_type(), those would provide the accurate information.
 
-[..]
-> Hmm instead of the repeated kmem_cache_destroy() calls, can we do sth
-> like this:
+> I mean rwsem_is_locked() is already specified, so naming is going to be a
+> thing now but I guess:
+> 
+> static inline bool rwsem_is_locked_nolockdep(const struct rw_semaphore *sem)
+> {
+> 	return rw_base_is_locked(&sem->rwbase);
+> }
+> 
+> static inline bool rwsem_is_locked(const struct rw_semaphore *sem)
+> {
+> 	if (IS_ENABLED(CONFIG_LOCKDEP))
+> 		return lockdep_is_held(sem);
+> 
+> 	return rwsem_is_locked_nolockdep(sem);
+> }
+> 
+> And obviously equivalent for the write case is what's necessary now right?
+> 
 
-Sure.
+Assuming we want CONFIG_LOCKDEP=n cases to work without extra
+book-keeping, I think we could use rwsem_owner() for write cases, and
+name the function as rwsem_is_write_held(), which tells you whether
+the current thread is the owner of the write lock (we are lucky here
+because rwsem is one of those locks remember their owners ;-)). This
+would cover the use case of MM without introducing another is_locked()
+function. Peter & Sebastian, how do you like (or not hate ;-)) that
+idea?
+
+Regards,
+Boqun
+
+> Or am I misunderstanding you?
+> 
+> >
+> > Sebastian
+> 
+> Thanks, Lorenzo
 
