@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02B92C9830C
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 03:15:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57242D4A5F5
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 03:23:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D68C86B0005; Fri, 16 Jan 2026 22:15:52 -0500 (EST)
+	id B81556B0005; Fri, 16 Jan 2026 22:23:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D163E6B0088; Fri, 16 Jan 2026 22:15:52 -0500 (EST)
+	id B2ECB6B0088; Fri, 16 Jan 2026 22:23:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C225F6B0089; Fri, 16 Jan 2026 22:15:52 -0500 (EST)
+	id A6B386B0089; Fri, 16 Jan 2026 22:23:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AAE116B0005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 22:15:52 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1AC1F58436
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 03:15:52 +0000 (UTC)
-X-FDA: 84339991344.05.F0071E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5ECBB1C0002
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 03:15:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BVfXgtUB;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 924D46B0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 22:23:33 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 578ED58436
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 03:23:33 +0000 (UTC)
+X-FDA: 84340010706.10.9831241
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B3D1940015
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 03:23:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GxbLQWF7;
+	spf=pass (imf04.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768620211; a=rsa-sha256;
+	cv=none;
+	b=r+EZQnio4bItNr3jSyuZewqz+JiFuPctPG4zDJ3W9pIZCW6SoFfBpXrIUfeJ40hlrZcDJz
+	hJniekEj9vSvwEVwTo8S4wSlcE73OODDdpaat9Fi5N1z/gKhDVUkS26nh1DwmBdls8u8aR
+	TRL0s2mq9UOs23mYuNsv314ypq0hpwo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GxbLQWF7;
+	spf=pass (imf04.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768619750;
+	s=arc-20220608; t=1768620211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z8muqpblyb9wBHPxtgUcyGu6MsHvGVYNBs28LVydPIU=;
-	b=tbgAVRbpdgQo9yZjF/+5ivwml6fYMPcLrUuf3RxRotWGYjDNTsOWamjFDqpzfjo1M10/5O
-	VX1EKrwwB06Y8ph8A9STq3kGcxQ/C9jtOS91ljtTWawdf5982JpXCNdpJrb0gvF+Zs1g9u
-	PFQ7MMka8bS29Ddte23XUA2u0TqBc38=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BVfXgtUB;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768619750; a=rsa-sha256;
-	cv=none;
-	b=Yqy6PnVQrTdpyoKBetwJUjQheCjAaaKV/UX5xx4RpL6QyUp4RfHXbQA2mMAax6z8RBOnXp
-	Wnxqv8X/LkdRXwf5xEmw/8EHVzx/e3S8L8lSR1yORU7+gqp9iPCHEOAwgVOqpgVJIkLFs3
-	jIfDwk54tCiF7qC0xRahzNIt7A3FkIs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09CD4418B0;
-	Sat, 17 Jan 2026 03:15:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8721C4CEF7;
-	Sat, 17 Jan 2026 03:15:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768619748;
-	bh=AEuJsBZga2sgQ+YUwrhip4kmR5jp2K/1ez8pEZNQrrk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BVfXgtUB5tysAneIN4Zzd6wIPIyNQu4pnN56U+tajD4nhDBBMhmTbCliACzR62xm4
-	 E6JmCg7a84DEOdSiQRrqlDSz1ucw2pMDCtY3XxE+9eFQi06BMEXGjmUAadgUQ2qgQs
-	 fFF8p8rm0iTtJCxOg29SKShvO6myIcGfCRmWY7Kw=
-Date: Fri, 16 Jan 2026 19:15:48 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, Chris Mason
- <clm@meta.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH v2] percpu: add basic double free check
-Message-Id: <20260116191548.7df814c2a9eea1a9fa3c4cb5@linux-foundation.org>
-In-Reply-To: <20260116023216.14515-1-dennis@kernel.org>
-References: <20260116023216.14515-1-dennis@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6s91xdp4i3zmn4yrr4qmxgcrx6s8zbf6
+	bh=hQuEhl8zHrQZCagraBktkM4tCNhuhThzyRBFv9qmF9M=;
+	b=4YI6KKMLmd1vtU31ZUlN4712KvIPJ43wi7la594WLRNEvpipFGYe+vTIWRqMpphv4CBrse
+	EJaSNy818wXdEgdRSWf531aMCpHFqE7nVM+aIKDP6HAzyaYG7gxo43WZZPPxsbL/gl9ibS
+	I+MnPZNStjsGh6e5cONIWnd/2nK7YEI=
+MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768620209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hQuEhl8zHrQZCagraBktkM4tCNhuhThzyRBFv9qmF9M=;
+	b=GxbLQWF7/wKOkO85QVUmYAus/Jai2RXrC4MUcTfctHah/9Z82GSaYvH0RQ+oiUBQzfrYi/
+	qaKBX1EkLO8SSIvjyszEQfRo0+0CJ5Wui4qeLNZD/8M1H9hsEUCLF/y2aAynbZFJH7ad1O
+	kduO05075Ev8wM6P8qTxmabGDl2Oqlg=
+Date: Sat, 17 Jan 2026 03:23:26 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Yosry Ahmed" <yosry.ahmed@linux.dev>
+Message-ID: <f24061e372edefd7b70490effd18b646c72ff9fa@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] zsmalloc: introduce SG-list based object read API
+To: "Sergey Senozhatsky" <senozhatsky@chromium.org>
+Cc: "Sergey Senozhatsky" <senozhatsky@chromium.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Minchan Kim" <minchan@kernel.org>, "Nhat
+ Pham" <nphamcs@gmail.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Brian
+ Geffon" <bgeffon@google.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, "Herbert Xu" <herbert@gondor.apana.org.au>
+In-Reply-To: <nj73lvrjul6h7p7qx2t2pqt3zmcrn3zwdvb7ri7rgzfntjzv3t@nghi7tgq5zvn>
+References: <20260113034645.2729998-1-senozhatsky@chromium.org>
+ <wb2shm35vigisxnokcp3pw3yzu32kezo3ox2v3xu2u5lnxo45n@ktccxxzg2vsc>
+ <nj73lvrjul6h7p7qx2t2pqt3zmcrn3zwdvb7ri7rgzfntjzv3t@nghi7tgq5zvn>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: uxk1x7jqj46zf3c817uqbpskkder8yy3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B3D1940015
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5ECBB1C0002
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768619750-961339
-X-HE-Meta: U2FsdGVkX1/GCt+9O1G9kgC6payFXc5Z+7OqK0wtAbhk6y73h4WX7Qm2vnrty1GAANzSqMSNmM9w3zRDEIrfu+mjwATA8KkJxe38Cj+pZw49sc6O/LpjRWGy8a2lnMDX0tSHxI8m9aXH/S2Lp5P4xJ5sHLU0weyo59BvbT8FUTOGajdNhZWe2RqjWbRuLkd2NKHrD5ta+dRug7Oi3/7bn4/0q7khykx6+Jdx0PYIG72bKF2UTVsSqb2cnodKGhlAKXI0/GaJo/Y4oGHvDqeD17gg4FE/nj+YmLzrBXPWzyomaT6TNtD46plOQaaPLF3IGwmFuK+5YycPG/uTqU9G/g5825dhYxvQEQmA3Cknz5LX0PNBCLxQ/hP2Jmr5SbEIbgxA8Awb1FdbyzgGUL+ChT72r69DoSJ93b3mvR831d2OsfQpz24AT0QzSfGvK8KKQJIVxxp7vQUqKjNe1kjoKbJ58EJ5qoPhnL0d1WbzynmtO4+K2iDyhufXFe4z/vwu8bE6SSuAzZQ9WoVMLd6ZmgzhDf6BgVkKUUNasHRw584iPdFlo9SrIQixldGoB3QyqGyOf6X/E7kfQzlkgvMceRg/4rw9Ed9wbBxlPnxjx4QVi9EoNCaMxPnzMZaSXmMzgmT+GWSx1zJtIL+ITlGZhf5YskfrKIlT2BPY+cZiNhGmKMYa/0bJLBK2kavRW8NjRlOmjRZjGB5nsWyTk262GK1FR23LFdvzV9L+fTwOCIXb2vBBF7RoAX0e04V4NJKBmo8ZGLIncGscNf4eTC3b5Yjk5054KMxQXAX+WtqOmwUGGEMltbajUyEKRpB7FZraCCHPjz/dhCnawIaKatYa3wxXe8EgH2kRpMAZkoeyts+2mizw7cla0GoXy5UKJf/T5zcezkOIE7/dsu8Ur9KK9PdCXVNfkYOoRgWfk86UVcvZv501YPQv+05HPCv/O2WTpUVv0QnIewhzq5pHIiI
- B611hpkH
- nwGLtpw0an1eaTTXmsICZxaxBTcOPNq97KkorFjt09TSrG6aJSgDsPhFQCzXGK6OMrlZrNxuZLbp0HpST/A75dnqbjdRICQkAxiNHCIduB4K6JWf0QEuoloyelCM06GHE5ic7kkP8ljpwqb23HAmvYQur0+uh2JpTPKZSvhzOjWQG8lK46rk8gu+9BelSh9KHKT7BuHBdKnumboZqEOXe7SQoTLQjA0C8s+w63RPzBA9d2YUt9Zc421O6O5UxzqW+HEf42Rpj7czqDJP3YikPdX6Zmg==
+X-HE-Tag: 1768620211-413417
+X-HE-Meta: U2FsdGVkX18DE0fxgAmrq1XZbHT/5HDQGa8cxYTUTK3CTE1QAgx0iAGuLVYjq2KsA2LbiEaK387/dHNucDP9+Escf2I2g6EDDXoQdWuEXGeqLL9lB/Y5Xy4BM5Xk2YY/yEVovDum2aZ1YBzIvP5FExkeDKOqFDmtjfeldPO1O9glq4odzIIhTA0kkXhEdbfMhmbW56QiOws1QAk1NIgVmIZcOANAJyCb/vmL/PoqprNjDBzheyfsyglyHlG/XZBT+hqt7xZ+b9uZFORinTC9vO8JirtH3sx2pPopx5cwVHwW86+vAHqeRvV65aX84CoDjJAzh23FBZEML80I+dL4A7nNDiTXamqPNukCYk9Y1gWRvhaDKFLyaaFPE+6drO6shcS+UInl0MYIwc5f0MKm0gIHCOJkymt0ffxV4mToI2Pie/7/MZIwSvDdScO4pcsqxokictANjTCZ8yYSIAli2bxbqhOi0fDvlJcJGK0aa7jwR9ab0QpcHbATcrAtKucLkoS8D2gAURu6cU78in6SfdpcX58hNFjkYqdC59ioB9FRFEhsNTWp36V6gyMP5iWz/2yiW+r7fL5wC+zieYnEHTgggH6SHfTYJ5g3H/x3OFMlUs5ycAsa9IIdEQgIjcGugQzkg71WJ9XhoyU7a8Rz10N0qm6l/kk30Sto1Q4SrqosffCipM8jrrweJtM2WbzxqQ9gk9XWZtr8qT38DyApXot9Ln4FHzTRdGtY+uCU8dH9vKcWaG82bGOTqorvYZq0yHsfFnfgKFGVCKhkB+R5r+CeO2YXss0mHRIsgeL7gOcul5eRhdaAe7QIWo4LoOpbiSFo10ucEwoNtXeBNdzrYpLjzGIoKR7EUEAwQWpGKyX5px2FdgUKkw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,56 +93,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 18:32:16 -0800 Dennis Zhou <dennis@kernel.org> wrote:
+January 16, 2026 at 6:39 PM, "Sergey Senozhatsky" <senozhatsky@chromium.o=
+rg> wrote:
 
-> This adds a basic double free check by validating the first bit of the
-> allocation in alloc_map and bound_map are set. If the alloc_map bit is
-> not set, then this means the area is currently unallocated. If the
-> bound_map bit is not set, then we are not freeing from the beginning of
-> the allocation.
-> 
-> This is a respin of [1] adding the requested changes from me and
-> Christoph.
-> 
-> ...
->
-> @@ -1276,18 +1277,24 @@ static int pcpu_alloc_area(struct pcpu_chunk *chunk, int alloc_bits,
->  static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
->  {
->  	struct pcpu_block_md *chunk_md = &chunk->chunk_md;
-> +	int region_bits = pcpu_chunk_map_bits(chunk);
->  	int bit_off, bits, end, oslot, freed;
->  
->  	lockdep_assert_held(&pcpu_lock);
-> -	pcpu_stats_area_dealloc(chunk);
->  
->  	oslot = pcpu_chunk_slot(chunk);
->  
->  	bit_off = off / PCPU_MIN_ALLOC_SIZE;
-> +	if (unlikely(bit_off < 0 || bit_off >= region_bits))
-> +		return 0;
 
-This (which looks sensible) wasn't changelogged?
+>=20
+>=20On (26/01/16 19:53), Yosry Ahmed wrote:
+> [..]
+>=20
+>=20>=20
+>=20> struct zs_pool *zs_create_pool(const char *name);
+> >  void zs_destroy_pool(struct zs_pool *pool);
+> >  @@ -43,6 +44,9 @@ void *zs_obj_read_begin(struct zs_pool *pool, unsi=
+gned long handle,
+> >  size_t mem_len, void *local_copy);
+> >  void zs_obj_read_end(struct zs_pool *pool, unsigned long handle,
+> >  size_t mem_len, void *handle_mem);
+> >  +int zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle=
+,
+> >=20=20
+>=20>  void? The return value is always 0.
+> >=20
+>=20I thought about returning sg_nents(). Probably can be just void after=
+ all.
 
-> @@ -2242,6 +2252,13 @@ void free_percpu(void __percpu *ptr)
->  
->  	spin_lock_irqsave(&pcpu_lock, flags);
->  	size = pcpu_free_area(chunk, off);
-> +	if (size == 0) {
-> +		spin_unlock_irqrestore(&pcpu_lock, flags);
-> +
-> +		if (__ratelimit(&_rs))
-> +			WARN(1, "percpu double free or bad ptr\n");
+We don't need it for zswap but it could be useful for zram.
 
-Is ratelimiting really needed?  A WARN_ON_ONCE is enough to tell people
-that this kernel is wrecked?
+>=20
+>=20>=20
+>=20> There is a lot of duplication between this and zs_obj_read_begin().=
+ I
+> >  wanted to create a common helper for them both that returns the zpde=
+sc
+> >  and offset, but we cannot do the same on the read end side as the un=
+lock
+> >  needs to happen after kunmap() in zs_obj_read_end().
+> >=20=20
+>=20>  Putting parts of this code in helpers makes it a bit obscure due t=
+o the
+> >  locking rules :/
+> >=20=20
+>=20>  I wonder if we can drop zs_obj_read_*() and move the spanning logi=
+c into
+> >  zram. Looking at zram code, seems like read_from_zspool_raw() and
+> >  read_incompressible_page() just copy the return address, so I think =
+they
+> >  can trivially move to using the SG list helpers and
+> >  memcpy_from_sglist().
+> >=20=20
+>=20>  The only non-trivial caller is read_compressed_page(), because it =
+passes
+> >  the compressed object to zcomp. So I think we only need to handle th=
+e
+> >  linearization there, something like this (completely untested):
+> >=20
+>=20So I was thinking about leaving things as they currently are for this
+> dev cycle, because both zram and zsmalloc have enough of new code queue=
+d
+> up. If you don't mind let's remove memcpy() API and convert zram during
+> next cycle (after the upcoming merge window).
 
-> +		return;
-> +	}
-
-The patch does appear to do that which it set out to do.  But do we
-want to do it?  Is there a history of callers double-freeing percpu
-memory?  Was there some bug which would have been more rapidly and
-easily solved had this change been in place?
-
+Sure. I think we can do all of it in a single series for the next cycle. =
+Add SG interfaces, convert zswap and zram, and remove the old interfaces.
 
