@@ -4,103 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1DD5C9830E
-	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 01:07:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E8CFC9830E
+	for <linux-mm@archiver.kernel.org>; Sat, 17 Jan 2026 01:16:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38AE36B0005; Fri, 16 Jan 2026 20:07:15 -0500 (EST)
+	id 7047C6B0005; Fri, 16 Jan 2026 20:16:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 338E76B0088; Fri, 16 Jan 2026 20:07:15 -0500 (EST)
+	id 6B2176B0088; Fri, 16 Jan 2026 20:16:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 237C36B0089; Fri, 16 Jan 2026 20:07:15 -0500 (EST)
+	id 593BA6B0089; Fri, 16 Jan 2026 20:16:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10BD76B0005
-	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 20:07:15 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 91FD3B7C08
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 01:07:14 +0000 (UTC)
-X-FDA: 84339667188.13.ABE3D68
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 146A2120009
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 01:07:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sXJ14kh+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768612033; a=rsa-sha256;
-	cv=none;
-	b=dAOlFqIsMPCT8vE4Wqm7IDbAI24n9/kyM1ykHh3X7mGijipmH4cJZgs/7ILVU2ys9g/2KA
-	W6eqkZ5zGskc2vlI7PULofMereIzwVBAbbrUkXu3ne5G22rdjjxTYqkwDvoAl1LkLqyXHj
-	vt/t2+mEm63TKW3cpaNqy5JK42yMZ4Y=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sXJ14kh+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A3676B0005
+	for <linux-mm@kvack.org>; Fri, 16 Jan 2026 20:16:26 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF29D8B05C
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 01:16:25 +0000 (UTC)
+X-FDA: 84339690330.10.8E2C1EA
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 06C22C0010
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 01:16:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nLYzN0YH;
+	spf=pass (imf28.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768612033;
+	s=arc-20220608; t=1768612583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JTzsMW0uWZWElBoe6I6mi7ljNA7eSaPWdC16tQrqxHE=;
-	b=wS6jPqbt/Mw67Vy1q5+AevZIBiJ4tMZxFErpWaOij55/uIKZk2/8QB5GSokJEKGqQyaIoD
-	fW3Our63pAZHVG3pjCk2pZnFmsBnxn3U0DvUGZ3098J8WHfDkoeIFDXuttcZZJOj5ePbgb
-	41eiMZZbRp5d0FqF7Xouc9rVsGPQv/Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3FFC560127;
-	Sat, 17 Jan 2026 01:07:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80632C116C6;
-	Sat, 17 Jan 2026 01:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768612031;
-	bh=Yb4v3IajHaFF5TUgV9j7J4S6o9nlOQUjjSjdutEwvZg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sXJ14kh+megJR7ZOJymB4hVjgWQBTshQgWAykPvbODTIMgJBlTSk/DaQoHenmk21y
-	 21PeMOXoVGnOPPx4zOtNaGYWrt1L6gGQqBA3oxqRPlxnL++iZ6oC9Anz/sIElqByzm
-	 yuEpQXXvsdb+p3y/4auAV++rBvZgKfaPome271UnCHY6jxXZmpwdmDRh52xpP0Yj88
-	 a7jbSPDLSyD0Vr375udWQlgyjbCK11jkGP6DlFvzo6sYAwDLAW+czzdqCGkKpm34Ij
-	 G8Rbg4FKg54onWj2NLup2HUjqV2q91UBle7ge9YfaohoZBQ1SQvPVu5brs/HXa78fO
-	 HpZUnfUJmCCtw==
-From: SeongJae Park <sj@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	kernel test robot <lkp@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Jann Horn <jannh@google.com>,
-	shikemeng@huaweicloud.com,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	chrisl@kernel.org,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v2 08/10] mm/vma: Use unmap_desc in exit_mmap() and vms_clear_ptes()
-Date: Fri, 16 Jan 2026 17:07:06 -0800
-Message-ID: <20260117010707.202128-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <vcxnsoihqohhmgurdkbx2hvybuhaql7yruv45k63jwevlpkdod@4eugq6xubcug>
-References: 
+	bh=8jacRTGEGX5vlMnwDO2iTbDAhG4zdHGWsi458RG2c5M=;
+	b=jK40Pl+zbD10ojYGgVYsqKbF3T9q4gy6P34DSr3ugogSzp3pRxWIUqTZ3QUibxF/8zN+Sf
+	fBlAMwwlJ+C1i+g3R86KeBhJ3v2N6urXo5uCBdatJ3yCXIOFZ0g+E92jlR+t+1d1NR9hZ5
+	k7h1uvsGjBkTUAhbJSid73+L4V5Kzqw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nLYzN0YH;
+	spf=pass (imf28.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768612583; a=rsa-sha256;
+	cv=none;
+	b=sAz3jjZa6m0qx6yVTCqjOj+2srzmqtLy9YXsdtfWoGBsQrv9YoEjJmRQkXnjP1lVMxvEWT
+	019IlRW0nrNGJEOlTsE+nO3aHujFR9a6MAIDziqUpcxFeb66N8t5C/lO2kOeYy4mP0cwnN
+	8JrvdFBQOYa4XuOtHTggBt/qU28hEDw=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47ee807a4c5so19253315e9.2
+        for <linux-mm@kvack.org>; Fri, 16 Jan 2026 17:16:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768612581; x=1769217381; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8jacRTGEGX5vlMnwDO2iTbDAhG4zdHGWsi458RG2c5M=;
+        b=nLYzN0YHMMft+j5ABL2VGoSZRL00m25bX7hz5DmFrMXG0BA9s7vCYCtyDA8r5XCIhL
+         Pwfpi/j1mYPBuo5ZNFkJ24NZ56rDCk12zG5Xkta1FGZDmIo2gJt9BTL/MJrBZZczO7Qz
+         yJs8MbiajpaWovFvbntsI6YmQXwZ9aeiFdws3uo2gE13MxOGn1XjlWm1lzVM+IGPTyCg
+         NIGYLer9APsfgAV64NH3l/1yyM7Yg309xfqJW+QkUCK0GOihH1LnB9UM6eovuyAC0cgK
+         GcIHYHvcCPzRyc0Ai7Z1QM/yjhi3UKeyk+hn1efWRclWvi4p39EjhVhzha2iAcA1Qo+W
+         aS+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768612581; x=1769217381;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8jacRTGEGX5vlMnwDO2iTbDAhG4zdHGWsi458RG2c5M=;
+        b=hMXJat7K29ccyZMP9TNY5EpQQorOgGArAh+hVLbmbvGv49SyxwzNHb4LC6ntMGXAHq
+         cw3DukrL0QfNQ0u+AfJBco8E625BfJzTo0b6rCHS2Q1QqYkqXwhuNKmwEB4hFYIE5Rim
+         H4FhQk7gBiYI0w9Y9WwLwTEhowfuUrX4jg/YyNxxorkNKTrmDeT1qvwV04qYlDC9DTze
+         jK8sIetRIRXb+IO9+bUmkdTHBYAF1S6wHVSD1j7Kx8/bB1zzHQU/jIFVpjxd2u+z7WPZ
+         QCo+Ywfd8/XpVdkEsspIHL8AJKa+FejvtNrT8O8Mp5TKk7fs/80shB0LGBK76o1FSLTm
+         DkKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVgl+DH7yN+3wKWYptkSIIhfsETAHcoih3wppvSFpJjON2ULDHYhGdSOnrLwrHnF6HLypalvSD9sA==@kvack.org
+X-Gm-Message-State: AOJu0YwONOGlGGRx0c8Ko0RiwAT4xk4QtqcHypu0cVefJBfYgOTEJ3Q6
+	m/QDNmwO2b9dWHcEug/zZLUXkXu4Z8x/hi5j/fKdvCsoGvBfIF14ZMSuzXZYkVPA1HSoRG6gsGc
+	/xI8DPAfW/4InzcAC3hTh42vR97qXix8=
+X-Gm-Gg: AY/fxX7O4baYjSSHWxu9uh6C4o1fNdDgBElgGzoRVGVjIP2ypvZqtpJchevkqNQ4Hm+
+	8DOs3bqbX8FT4EVrKdIWjlGtJzFvroEbTY7TchQUFVT6lwgg4nAgJ05swLXtALbmWcSuWId54Yo
+	4cXdWXAdzBiVbQoKann5fKf/qoaQ2Z1jJCfMUBUEd/QNG9GpU73sLVPeB7RIzDQps4bL4uHTP1e
+	mPfkaChnVLzz3enI72k83tzCJpFz0xjrrb5ZJFEzxZ5X5x3wYSpxsz3Fb6OaeihQgSpxEvXZT5m
+	3I71sIVIp8Qqkf/k2DW08T0MV42V
+X-Received: by 2002:a05:600c:45d1:b0:480:1d16:2538 with SMTP id
+ 5b1f17b1804b1-4801eb03358mr43804885e9.23.1768612581229; Fri, 16 Jan 2026
+ 17:16:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 146A2120009
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5ed96q458enbdhyh1stq5t65qjjtsjij
+References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
+ <20260113191516.31015-1-ryabinin.a.a@gmail.com> <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
+ <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
+In-Reply-To: <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Sat, 17 Jan 2026 02:16:10 +0100
+X-Gm-Features: AZwV_Qgw2efsxw5nCGxgrSSMx3DQz0LNWwfRwrPgK6uICIY1gvifMYqiZzjGO_4
+Message-ID: <CA+fCnZeDaNG+hXq1kP2uEX1V4ZY=PNg_M8Ljfwoi9i+4qGSm6A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
+	Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev@googlegroups.com, Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, joonki.min@samsung-slsi.corp-partner.google.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1768612032-76024
-X-HE-Meta: U2FsdGVkX18GbPXlH0UO4JreHaplMId99qzY/7kFViraRBDh5IlC5FOoHyogZi2Op38uzJTZNkLjWg+8wGlGVI3UhY2fmsiQDSyXKBqt/POWsm6HCwxfpMmnYAV9L04V1es4ByeanlwcO7Iz35ycPPeqlOukEOvUysizkTq6ZzgWw2uSp7ykdwjFCNYEnOsic7CBmBPpO4xeaRPI7Fx5RWTRHkRrh16kQuZ90sSHmEmGw/GIuRxETDvuqJk1JUw/3L9iwM+hZQ9xRBRBx203H0TulSPxdSmN0bfQzxjsjAFao8Do+wJ6prRIC43wXOFNWg2udx5G+ov2BUfd2kQ8WYgZldJmGJfviAglZsnDByjCfB60jotVKP5w+mqC3DeZkH7hhLoJXp6il+re3+8JGEB00hf4xsa3csFdKOLTdqdGBYM2ine72FfEhXEA6/Ttu98IijEUebimD8euPcNOg0DpmaX4VkLSAy0Z8qBo9Ka6GdI/VBz2vZH+cZxQ3zSP63SHshzidJqp1ECet3V0aOsRW+Lu1d0OVE4UK7yeaMkIu4wiyd6yh4atKuuiqTG5mxfNUcF1KTOCqe7Cq1h54ek8uQ57TWQUtwxqlHmsprQFrsiPFT41Totukt386a+Vx2cLZNT9pqAMHyB5Ixzmbs4MClGmnuSIwv196Y0U7MfYCXozK3IABF6Xl4l/PEmgZci+ZKUhKOtOEat0Ix3SeRXbjwP425C8IE6TzFLQJS2KAf92RphGQ9ZfvJJGEa7LVHs5yF0/xWWlcas4hiH0vC8QG0kdLoAsQdlk8nxRw47bl3btft6FzBMSlhvX3BgR6yy4Vw26yg312DYn3pjvYNne8ftLmIFdZSDa6Fkzg2qXY6v0SlY/KiMm3IhXgLjOfRsZT77uWKU0vDswdNSetsu1sIS9sXBQKlL4PaR2GMSFp9aeExOr9zhm/86VJOH8W09F5M9yOknrz5U+RYs
- yJ5uH6N8
- r8SIq9V9jHo6HL8Pa1ZQGJCtSnqSJ/iL/KDuW03+hFavH5pzT4xVn6YP+ipuUi4Qu1OBNDNFP7vQazXDW2huk3Ywe87e9WOfeIMGgBQGe6VduCAlcXzL8d+2b/Z8nyEaEE7TqHzC+QrgmrUUUcyVhlOQOyc88IwNTNGhrl5U0JM6Ub5JJ0mcvsrTgJjhCyYA6cyaQUk/XaRIXkG4HNRXCQEJaOJXIpPBuTcNNYxE9uolAAjK87zjMf8U54gS17PJ+bLOVjceSkqFrrhFRHLtoKaxnbY/1UwHyzA0E8tCUFMoPA0PzOhuoSOvlyYNEAFkkKj0czSn62kf/ZUvBCH2XLbwi42ji0rD/9//D3bVDm4znoo0PVIXKn5ILuQfrSUoXqg34UFz412IZbqfowTcsc79jmzIuOhJ8N/iZcK0yROch0XN4AenuNrz3SQ==
+X-Stat-Signature: ri8hzzdht4n1tmd9ate8bbzhbichafqc
+X-Rspamd-Queue-Id: 06C22C0010
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768612582-840438
+X-HE-Meta: U2FsdGVkX1/J+LGB1ZSHYLXEePFOOVMBuHICQrS5IOqV41rbmEI9QGPlEfJO/P7DuixrkCzuH8K7eVW2kKjwDgEM5507uPFd0gZa30wjZTw8mWe0P5nXxes46LN6JYwdZQixSttCOEVtHU5msSvxw+3fVW3Zogg2wApDZQUSQ5XmPuF6xYFfWyoMu4qDADd87JGGbEXjqRvABGFas7mnJlWVZ4E5y1lG0X/mA7gZmYKzg64Yq3tDY3Tortk2DZ6rXNSPiNm2RPkR1DoeFm2XprhfRMmlsjinbJZPqPu0b7RyCbS9vb3kXWWKjPfrtRX2EfHks3nctbtKArqQub0zDwlAUqd8koIP+k+9ODkTTQVNJHnVA48U4l2XadeFFKs3OH9NIUL8gny9327gP5VfLx6fuW8qxM7jgQuaCpJDm6yl6OEggUdrrFVpkBmk7ycRRTR3hVBx5iE2ouCf3c8MVrV/EmDNg/UeUBG8q+bSM7aomPcMLK29jojK+PQV/Q1pIJjuts8fMVkknvzVAW9zKG0NG/ckvIoHPFIJhyMAQSKnjeQ8MOoCNFNmvHg8dTlnT8MpoUIB8likyoA/HDb7J8OFRuUIOUzIbnL7MlD2A5YY690zN7KHVM8rxcBb3vKVFo6upnNbeDzXOv2hjfwqiLaDi7krb0R8drwNXgmuGo5QSY3Wk09+Q66QX8RA09oTVC2e++5IhZyNsqT9aoSViUVA0PF1TpfO+RpZAdg+n5yjS3spX6a+51mIEd5mrcWFz0OJzgXWAC+Edu8jemybI+3gKDcAoMwzZWAe6SFB++fMmYcBCoGXcXzANgI5LytTsR8EZBA6kmtlws68cnqvdbcGLYNSk8gV5MyyewawYuveULg1wvWIc2V9jINVwaFncSrq6atVidzc4D5+ZfnCfJWCw9mdjuW4EBVWY1dQxAo5Gi125FXNSitmId5WMbQih36DIGevLGeUMkXNPY6
+ 1UE9bK4s
+ thta1c8yLyy89C3myG2AyUAa9JgdYhMWNT9YEVNV4WBMqGbFzQUTITLFHipzYVxFXhDAFYHlhtXY/b5Pn1gMJYGiWEDRCdK7R4Im7iG/9Jg8CVvD/CiVOJL5GXy8s+K5C/i+kX9fZfQZNXoGqVGP+f6lXLHyrSFRN/m9tpXfxh25JCChuHolDv8o6g7AU8RrT7K9SQz6p7cGWPAkF0+Fyz8Cw/g42f3z+g2TroFdhnAq7LUzpm4VF3jFkk0KoH48vRJ3Ef5rjkWdKfI51EnfK0jbhs7Z9vEJ8RfjJyXZqv0tVD2NV1FuHqSNofV16YESGBwZIfISYlc4qJJXb9+Bj6jfrXdh9wHI1Fywh36o/NBQHUBw57G+GDErBIH8JRdHF4jJTw3Ko0rDoOamgKzW0EcjU6SbpKyYqJMbTmdfeWv9ZNfNghPHI3ObNtTrx2hDPq06Rc7LCl2fR/TIZyKLO6RNd+S9nfDOih4mwgNULE76ldpG8W4BpNLhgur7IM0cxBrK1UG69SEtO9C5OPvz041kQS4bs5AcRh4/v
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,162 +122,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Jan 2026 11:15:43 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
+On Fri, Jan 16, 2026 at 2:26=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmail=
+.com> wrote:
+>
+> So something like bellow I guess.
 
-> * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [260116 03:27]:
-> > On Fri, Jan 16, 2026 at 10:04:27AM +0800, kernel test robot wrote:
-> > > Hi Liam,
-> > >
-> > > kernel test robot noticed the following build errors:
-> > >
-> > > [auto build test ERROR on akpm-mm/mm-everything]
-> > > [also build test ERROR on linus/master v6.19-rc5 next-20260115]
-> > > [If your patch is applied to the wrong git tree, kindly drop us a note.
-> > > And when submitting patch, we suggest to use '--base' as documented in
-> > > https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> > >
-> > > url:    https://github.com/intel-lab-lkp/linux/commits/Liam-R-Howlett/mm-mmap-Move-exit_mmap-trace-point/20260116-023126
-> > > base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-> > > patch link:    https://lore.kernel.org/r/20260115182720.1691130-9-Liam.Howlett%40oracle.com
-> > > patch subject: [PATCH v2 08/10] mm/vma: Use unmap_desc in exit_mmap() and vms_clear_ptes()
-> > > config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20260116/202601160925.VR8a2hUw-lkp@intel.com/config)
-> > > compiler: m68k-linux-gcc (GCC) 15.2.0
-> > > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260116/202601160925.VR8a2hUw-lkp@intel.com/reproduce)
-> > >
-> > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > > the same patch/commit), kindly add following tags
-> > > | Reported-by: kernel test robot <lkp@intel.com>
-> > > | Closes: https://lore.kernel.org/oe-kbuild-all/202601160925.VR8a2hUw-lkp@intel.com/
-> > >
-> > > All errors (new ones prefixed by >>):
-> > >
-> > >    In file included from mm/internal.h:23,
-> > >                     from mm/filemap.c:54:
-> > >    mm/vma.h: In function 'unmap_all_init':
-> > > >> mm/vma.h:175:27: error: 'FIRST_USER_ADDRESS' undeclared (first use in this function)
-> > >      175 |         unmap->pg_start = FIRST_USER_ADDRESS;
-> > >          |                           ^~~~~~~~~~~~~~~~~~
-> > >    mm/vma.h:175:27: note: each undeclared identifier is reported only once for each function it appears in
-> > > >> mm/vma.h:176:25: error: 'USER_PGTABLES_CEILING' undeclared (first use in this function)
-> > >      176 |         unmap->pg_end = USER_PGTABLES_CEILING;
-> > >          |                         ^~~~~~~~~~~~~~~~~~~~~
-> > >
-> > 
-> > Suspect you need to add:
-> > 
-> > #include <linux/pgtable.h>
-> > 
-> > to mm/vma_internal.h.
-> > 
-> > Some arches don't define it and that header has:
-> > 
-> > #ifndef USER_PGTABLES_CEILING
-> > #define USER_PGTABLES_CEILING	0UL
-> > #endif
-> > 
-> > ...
-> > 
-> > #ifndef FIRST_USER_ADDRESS
-> > #define FIRST_USER_ADDRESS	0UL
-> > #endif
+Yeah, looks good.
 
-But the macro definitions are enclosed by '#ifdef CONFIG_MMU'.  I have
-!CONFIG_MMU build test, which shows similar errors, even after Lorenzo's
-suggestion is applied.  Should we move the definitions out of the '#ifdef
-CONFIG_MMU', or implement another unmap_all_init() for !CONFIG_MMU case?
+> I think this would actually have the opposite effect and make the code ha=
+rder to follow.
+> Introducing an extra wrapper adds another layer of indirection and more b=
+oilerplate, which
+> makes the control flow less obvious and the code harder to navigate and g=
+rep.
+>
+> And what's the benefit here? I don't clearly see it.
 
-I confirmed a simple version of the first option (moving definitions out of
-CONFIG_MMU, in addition to including pgtable.h) like below works at least for
-my !CONFIG_MMU test.
+One functional benefit is when HW_TAGS mode enabled in .config but
+disabled via command-line, we avoid a function call into KASAN
+runtime.
+
+From the readability perspective, what we had before the recent
+clean-up was an assortment of kasan_enabled/kasan_arch_ready checks in
+lower-level KASAN functions, which made it hard to figure out what
+actually happens when KASAN is not enabled. And these high-level
+checks make it more clear. At least in my opinion.
 
 
-Thanks,
-SJ
-
-[...]
-=== >8 ===
-From d5b441af2f31164a46240ce4179db8e0d2fff372 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Fri, 16 Jan 2026 17:01:27 -0800
-Subject: [PATCH] mm/vma: temporal build fix
-
-Link: https://lkml.kernel.org/r/20260115182720.1691130-9-Liam.Howlett@oracle.com
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- include/linux/pgtable.h | 38 +++++++++++++++++++-------------------
- mm/vma_internal.h       |  1 +
- 2 files changed, 20 insertions(+), 19 deletions(-)
-
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index ce2dbebade4c..4f063438a4fc 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -22,25 +22,6 @@
- #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
- #endif
- 
--/*
-- * On almost all architectures and configurations, 0 can be used as the
-- * upper ceiling to free_pgtables(): on many architectures it has the same
-- * effect as using TASK_SIZE.  However, there is one configuration which
-- * must impose a more careful limit, to avoid freeing kernel pgtables.
-- */
--#ifndef USER_PGTABLES_CEILING
--#define USER_PGTABLES_CEILING	0UL
--#endif
--
--/*
-- * This defines the first usable user address. Platforms
-- * can override its value with custom FIRST_USER_ADDRESS
-- * defined in their respective <asm/pgtable.h>.
-- */
--#ifndef FIRST_USER_ADDRESS
--#define FIRST_USER_ADDRESS	0UL
--#endif
--
- /*
-  * This defines the generic helper for accessing PMD page
-  * table page. Although platforms can still override this
-@@ -1660,6 +1641,25 @@ void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
- 
- #endif /* CONFIG_MMU */
- 
-+/*
-+ * On almost all architectures and configurations, 0 can be used as the
-+ * upper ceiling to free_pgtables(): on many architectures it has the same
-+ * effect as using TASK_SIZE.  However, there is one configuration which
-+ * must impose a more careful limit, to avoid freeing kernel pgtables.
-+ */
-+#ifndef USER_PGTABLES_CEILING
-+#define USER_PGTABLES_CEILING	0UL
-+#endif
-+
-+/*
-+ * This defines the first usable user address. Platforms
-+ * can override its value with custom FIRST_USER_ADDRESS
-+ * defined in their respective <asm/pgtable.h>.
-+ */
-+#ifndef FIRST_USER_ADDRESS
-+#define FIRST_USER_ADDRESS	0UL
-+#endif
-+
- /*
-  * No-op macros that just return the current protection value. Defined here
-  * because these macros can be used even if CONFIG_MMU is not defined.
-diff --git a/mm/vma_internal.h b/mm/vma_internal.h
-index 2f05735ff190..2da6d224c1a8 100644
---- a/mm/vma_internal.h
-+++ b/mm/vma_internal.h
-@@ -46,6 +46,7 @@
- #include <linux/swap.h>
- #include <linux/uprobes.h>
- #include <linux/userfaultfd_k.h>
-+#include <linux/pgtable.h>
- 
- #include <asm/current.h>
- #include <asm/tlb.h>
--- 
-2.47.3
-
-
+>
+> ---
+>  include/linux/kasan.h | 10 +++++++++-
+>  mm/kasan/shadow.c     |  5 +----
+>  2 files changed, 10 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> index ff27712dd3c8..338a1921a50a 100644
+> --- a/include/linux/kasan.h
+> +++ b/include/linux/kasan.h
+> @@ -641,9 +641,17 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, in=
+t nr_vms,
+>                 __kasan_unpoison_vmap_areas(vms, nr_vms, flags);
+>  }
+>
+> -void kasan_vrealloc(const void *start, unsigned long old_size,
+> +void __kasan_vrealloc(const void *start, unsigned long old_size,
+>                 unsigned long new_size);
+>
+> +static __always_inline void kasan_vrealloc(const void *start,
+> +                                       unsigned long old_size,
+> +                                       unsigned long new_size)
+> +{
+> +       if (kasan_enabled())
+> +               __kasan_vrealloc(start, old_size, new_size);
+> +}
+> +
+>  #else /* CONFIG_KASAN_VMALLOC */
+>
+>  static inline void kasan_populate_early_vm_area_shadow(void *start,
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index e9b6b2d8e651..29b0d0d38b40 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -651,12 +651,9 @@ void __kasan_poison_vmalloc(const void *start, unsig=
+ned long size)
+>         kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+>  }
+>
+> -void kasan_vrealloc(const void *addr, unsigned long old_size,
+> +void __kasan_vrealloc(const void *addr, unsigned long old_size,
+>                 unsigned long new_size)
+>  {
+> -       if (!kasan_enabled())
+> -               return;
+> -
+>         if (new_size < old_size) {
+>                 kasan_poison_last_granule(addr, new_size);
+>
+> --
+> 2.52.0
+>
+>
 
