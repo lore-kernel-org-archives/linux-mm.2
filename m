@@ -4,140 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83FDAC9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 18:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73DDCC9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 19:17:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC7956B00B0; Sun, 18 Jan 2026 13:45:20 -0500 (EST)
+	id 3130F6B00B2; Sun, 18 Jan 2026 14:17:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9F1F6B00B1; Sun, 18 Jan 2026 13:45:20 -0500 (EST)
+	id 2EA3B6B00B3; Sun, 18 Jan 2026 14:17:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A1A26B00B2; Sun, 18 Jan 2026 13:45:20 -0500 (EST)
+	id 1E9796B00B4; Sun, 18 Jan 2026 14:17:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 865496B00B0
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 13:45:20 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BE9B13B42F
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:45:20 +0000 (UTC)
-X-FDA: 84345962400.22.F72F447
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6B42518000B
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:45:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oBD2Hdoa;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768761918;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B01F6B00B2
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 14:17:19 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 57B405971D
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 19:17:18 +0000 (UTC)
+X-FDA: 84346042956.30.DB23697
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012061.outbound.protection.outlook.com [52.101.48.61])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E56B180007
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 19:17:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=HX52BKQw;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf30.hostedemail.com: domain of shivankg@amd.com designates 52.101.48.61 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768763835; a=rsa-sha256;
+	cv=pass;
+	b=Kv7mqUd/VN0UdWWSi6Pjgjy4p+U0PaOfPJYgbA8LVFkyBZOmZQ9P2FHf+QAcHkxXMesqPZ
+	gtNCrPzvYDLIvp9an2aTnSw1dj+IbcO4wIElwGSfhlOPd0f/rcYHQs5CIYCqpSEAzSgVVT
+	/yiQ/gxoFLuNBH75lTYO2vnV/GJPEqc=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=HX52BKQw;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf30.hostedemail.com: domain of shivankg@amd.com designates 52.101.48.61 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768763835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pG6ervDkKSUosqbRxekCZ3ojHiqNHhu6aA10dnFK378=;
-	b=6bFU6lHrTgISQ7rjftXFOSeAxAXKjpFOAkEJpOb5pC3/gZQOAZdcVHmEGPSgANzfqEU2B7
-	DAfplEZfGoFP/lLNgVsaZpNTQ7YxCYIsPc8WKBpSxllFqju2pun0fuNy6UhXlmtx9r60tG
-	D42g5ZbQ/q3mOhwMsJUmlPcioojdx38=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oBD2Hdoa;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768761918; a=rsa-sha256;
-	cv=none;
-	b=YwWkSqQAKu5xHLkNQBE8yIJfZJ2L3gv9lzIZT9Foy+movoO+epIavhcSiG+5BYnJeYDS46
-	8zTNGMygBw+if7sLttSniGK0/DSlaCov+7HjzzBhYg6GrRM20lhBxQ1nLRn1VkQEISPT7D
-	3MMgoirywn7txLgVjMlMQhA2XYqU89Q=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD23260010;
-	Sun, 18 Jan 2026 18:45:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367D3C116D0;
-	Sun, 18 Jan 2026 18:45:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768761917;
-	bh=oH2bBMDerezU+CcBaheSnDr6LjKVh2X/AC6IH0/BIgw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oBD2HdoalYSok5N4pY6kBCNdvjRU8dXJkrEkHVtHj0jBamypQY51munrUhhHGFuDD
-	 RA88QQCAyMV1zKjY47JZ31ieLBmm9a7WTQbMzjlW7CLaPP+M9HkY+fGpZiZW9awpu+
-	 Mdlu/aJQ+QtjO9Rok7qlmqOw9rAqo3XO0T7R05P3R5hBdXjW7JWA0LPBT46HUn8+Px
-	 61sqh4puubjmd0A/gA2JB2/lvvHNIWdHhUBZOn56IfVKPdqr0YMvtPcSVOlKYum7+L
-	 8L2juZWZCPKId1o/AXgpM7nNZ8sFW2BeVGkpS+gALclZ7tmOkDPHn8HEcs5cdqK8dg
-	 bCC6fvyiQ8KAg==
-Message-ID: <87e0523c-1fc6-42aa-8159-150fd94d5b62@kernel.org>
-Date: Sun, 18 Jan 2026 19:45:11 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=7UFEs0I6TT7LB1ebYKv1vwH+cPwBdP8GtI27w0PDSwA=;
+	b=sXw7+bNb9KEXZNI6aHMg6TZZtZcy8qLxjHJB1ISaEy+K5xrdeiDe/NJ3ifJhUBkGahhl5T
+	Gsn8TWh/nBUgTMv0ON5itDzup0y1sRrC8sLWKNp6SGfcNlsCPBjmQHhp6Bpt9DN2c9chv+
+	d99bx2Ss34s5v4KGZdXaAEvdRMBKRpc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=optHCQ+MvsuNBRDSCaSfk5nftPudeGr5mag71s7zmHShU+tXr0uOh3gX87yNc66S6WNiP09iRizS1ttpnQysfdUxFov1glKpjKNyrGIPe01eGNknCmsWTmVXtZWuCCj7GwLiP1MX4K0+iiXCFm2QsRpnZaN8FgXVlg6NRPhaCg3bUt5XQ+WO4+YJICQ+/gvXXelyTrVH1TlJoz+iiB/LR9PiG2i+2OAiN1IBE4pIM3ajyG/9WXtQJJoCrLqc9s9i1bGobe8gjHIIN9f/4y7AzcRBeI3veZio4q+409koHxsvi8kPmn4oM4u4f42X+4tMna7S+jFfIRDK7ledBR8F/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7UFEs0I6TT7LB1ebYKv1vwH+cPwBdP8GtI27w0PDSwA=;
+ b=iqmja8dGLHMx8R6xEGKkFrlzhZN5Whdg0S7qUeNg/p/5xSkrTeJmQQqxAZMWyc11MgCr++s6EWbb0KfOXtM5Y0LN+XesPfBW2X3RcFaoQz+Bll/ONCI8x6XBZL3RjwLkF6pI3WQRVk70p07Il2GRcsk2AsvSCO4l7vDzoZdU7kzyt1hSlXofw8bxVpB8z9E2hR3i2llb16c4NKAMCUQ+6t7fAOW7qgrN5k5XTHG0D6r8b9Cjesum73e8WeKTXR/Mt1cogsnDieKWm7KaZz6pOhDaGs9zM9/hg0ifVKmlkzL5555ykAbY28FiGvsDjUZgbwxrmM6Acu1lr577ZNmuJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7UFEs0I6TT7LB1ebYKv1vwH+cPwBdP8GtI27w0PDSwA=;
+ b=HX52BKQwsxICNLEGoq7llVJWRkc6CJfh56M2sPXqYJbornoU49FGMtYTM+ys9Dm4+TsCzABrhb0Wv4WqCs4ChueZoXXrEn16OSyR4Ps84gqSyuqxUdcfvPE02SFRri2bN9FBvMnHvVcvL21Tte5Ul9tU49jJeIUkmvss3rGZ4h4=
+Received: from BYAPR08CA0069.namprd08.prod.outlook.com (2603:10b6:a03:117::46)
+ by DS7PR12MB5936.namprd12.prod.outlook.com (2603:10b6:8:7f::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9520.11; Sun, 18 Jan 2026 19:17:06 +0000
+Received: from SJ5PEPF000001CC.namprd05.prod.outlook.com
+ (2603:10b6:a03:117:cafe::6a) by BYAPR08CA0069.outlook.office365.com
+ (2603:10b6:a03:117::46) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.10 via Frontend Transport; Sun,
+ 18 Jan 2026 19:17:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001CC.mail.protection.outlook.com (10.167.242.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Sun, 18 Jan 2026 19:17:06 +0000
+Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 18 Jan
+ 2026 13:17:00 -0600
+From: Shivank Garg <shivankg@amd.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	<linux-trace-kernel@vger.kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Zach O'Keefe <zokeefe@google.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Stephen Rothwell
+	<sfr@canb.auug.org.au>, <shivankg@amd.com>
+Subject: [PATCH V5 0/2] mm/khugepaged: fix dirty page handling for MADV_COLLAPSE
+Date: Sun, 18 Jan 2026 19:09:38 +0000
+Message-ID: <20260118190939.8986-2-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/mempolicy: fix mpol_rebind_nodemask() for
- MPOL_F_NUMA_BALANCING
-To: Jinjiang Tu <tujinjiang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: akpm@linuxfoundation.org, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- mgorman@suse.de, linux-mm@kvack.org, wangkefeng.wang@huawei.com
-References: <20251223110523.1161421-1-tujinjiang@huawei.com>
- <04b92008-f843-4879-b4a3-608cc5e1de4c@kernel.org>
- <20260115101252.2e0cbe0559e62b988e5f7151@linux-foundation.org>
- <1ad31dbd-6743-473d-9f66-a603b91d1e54@huawei.com>
- <70d46998-a6c6-4c18-b8d7-f813582d3143@kernel.org>
- <7471b637-537c-40db-ade0-ad373d7085f7@huawei.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <7471b637-537c-40db-ade0-ad373d7085f7@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CC:EE_|DS7PR12MB5936:EE_
+X-MS-Office365-Filtering-Correlation-Id: af0aaa41-e70a-447f-d978-08de56c62b5a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?j/10hL66il40T65eBftoWtyMWxnXeTYX5XMD1vzqPDR1yTbCdToY6j7M0yog?=
+ =?us-ascii?Q?qpPOLRiSwJ4SboKMRew5q4xpIkfRS4cDx7SvK5HntKO62ahDvPiS7R/t91NA?=
+ =?us-ascii?Q?tounyGXiKv4D74EX4AfACRgxjLM076TzulNF79m3com1FOIN6ON27855X+Wy?=
+ =?us-ascii?Q?5D8hd2s728ypu2bCy64KDffladdx2Of+tyOQkRuXiQdNf2At1XuoA7YdXT/3?=
+ =?us-ascii?Q?XrYjA/oyNsN9HHf8fnZOhmORos2HFeBxPjvA0elCn8VoK9JL2F+2QGxmQfzx?=
+ =?us-ascii?Q?U3H6qcXRb9NB2TB5BU9kaZ0mDH9HsaveWUzzMJ1izxNbj5/QN1TWAUqaYT8U?=
+ =?us-ascii?Q?5BFUc4qndRI/6d59yrRyzSWh/Vr5W8jWPuyQfA76VVxmcXA7Hm97mnkOz/YO?=
+ =?us-ascii?Q?zJ3ixuSeTgOjvQd4MW/usZEuvgIos8twuWLbKhsDAzpyBkCyIrTrlzl68qh+?=
+ =?us-ascii?Q?bH1gIb8ZLqrboqUkx1+Mn+Y1PXW48AHvdq42z+rDEGGftqEQhPByn12m8WrL?=
+ =?us-ascii?Q?e3v3WoRrgnbFJ/CA6UllNky6yN4iXL02TRhpeJ2I+814DNIPMVr5CkH7gi9w?=
+ =?us-ascii?Q?zZKek5V7DkG3bRefBc6gOHIT/lT6AH/vrAqJkAKvx38pIpt9BoUzRL9rnNHt?=
+ =?us-ascii?Q?LYGP92yjGPZqpTnbMhUNNczQfTsqOc7+KYwo0vMPIDg343PZWu4V/GXvXE1z?=
+ =?us-ascii?Q?AGy9AL+YW7d52G/6lTsD/n9GVmoOgqmkeLaB/up+qEW1u7k2/FKTzDwcy8Fw?=
+ =?us-ascii?Q?rCNOynGl0kH75ou8LF3isVwj464JekINXbgvxAmn7S21y0pxAlGe7+lflzrU?=
+ =?us-ascii?Q?koDbS1X4Hq0zBfFK599deRePuH2c8eyMiiRzsULDo76dxxm+xxucTM48XbOr?=
+ =?us-ascii?Q?MqguZvvhcdunnTG+8h8Jf4hHjtzq3f5xzJ8i1YJ4k7/ko+f879pf9vyCTz0+?=
+ =?us-ascii?Q?mqpBfDjYsotM5VVJnD36NkZoVDLsZyxr1u85ijjwvd+OTyD2i8Emg0YBBHd6?=
+ =?us-ascii?Q?KeXA4Gv/1RzgIRXEzeKtUbjTM2qXVeHn4n6AdUU1ecaaTt7tvkg1GOYlz02N?=
+ =?us-ascii?Q?sfYuzmnuenywA7qd91ut2hWnE6o6neBTv+PjFYasBRjOvpFMjB5ym8a8FL2W?=
+ =?us-ascii?Q?cuALbhPjlzJ0ra8fzcedFOUPsDUHMk7VMqugD8VlMGh3SRSk0tXia1FiaxD9?=
+ =?us-ascii?Q?pE9wgACptdNl76U2SzPqJqkIy6na4lZyVJE+H6e5fWQslLrADHAtmvll6sQu?=
+ =?us-ascii?Q?qnYw0aw7GokLNQdBn1JymEUJL8nNSVYgpb1jVSVOdhba24ltiJVGMJKNY9J7?=
+ =?us-ascii?Q?mhGVHDGVmNVPEt+f14HEgEytH9kggIme2GGBab/26qPngmbYReCtcf/fGyeu?=
+ =?us-ascii?Q?Zef3TZt/FhZ3XaYL04FhqmqRCY0qOyxCWd4kG+dCxG+ak24xPxm6CHeDQZJ0?=
+ =?us-ascii?Q?yr6TXdWtHVv2Wjy3/IzuDuV8i3DEPyz6lHonwxuBbncuf3HJRs5uq1maX+bg?=
+ =?us-ascii?Q?b8cHyV8d/XICRBVBkSSSh4fRKTc4/4UE414cVDTPw2rlaRuY4jS9Fjsi4kTM?=
+ =?us-ascii?Q?xaHxS/V/MT5yNzeZtM4CrKKifhpmNEdKGUbGf48/adE/za3qvR2GtyDBU8Nt?=
+ =?us-ascii?Q?76k/c/fMp+Tn7b8sUrUcfxOBzMv19FgUrkn3CvsP0AzbtS7ACirVCYr0j5R8?=
+ =?us-ascii?Q?dC4sb9yTmg01rI2V63KbTPaO8V0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2026 19:17:06.2729
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: af0aaa41-e70a-447f-d978-08de56c62b5a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001CC.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5936
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E56B180007
+X-Stat-Signature: nw8xnrsqjkhe7f1tj6nx7opgmpx3pypm
 X-Rspam-User: 
-X-Stat-Signature: 49wxdjmanixq1f4bq6mns8zjkdg6zba8
-X-Rspamd-Queue-Id: 6B42518000B
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768761918-199300
-X-HE-Meta: U2FsdGVkX18oeJtcbR9T5uUWbeewsR8nqneDti5Cma2TWdnc5NQywdBk3qx1S+90ihnNa5WNMobewqwEl4t8vhRzJDaut80dqjyjQqPqZm58dlcYiwJU8uHbnJD9xNtanXlpOJJeesbhVEPobjXoxDCwYYIzjtylFd3NotSgzJEdHYJtrFPZym9oh6xRAm3nZD1dtV1r9TkeRKKBcXT7UONdGc0v9iUxJvpQqWUiyW61XWkDQeQTbYPzcw1vZ7X4QGIk7mFugURUCfPCtvS/86jkq1CnQiZysd1tZuHT4Zz6sLa1AfwGuTqtbaVu8QOPcu//ZbIqTGfYFrL5zDQ0bF8xAiV+8O7uCdpgC2/COKZgmnF745Y/6GIE24dQjWEs9lZSgBNtC47+fqBT1yM25GNWALwkzuZ4+iwVMNviBF3qbtelomXiiOa08IGSn8/k0MbsVMeMtzQbDBtFVMmgkdT857WTSawmFqL6N8obUFqWoUMXsPCD7GS3UnjM0EcZWLocY2AqFBMSXtMS8nJhAozIyyG3N0jDCDG764++xv6XgJzSO8qEx5gY6Tq9MG+3o7FsemeX3ReuEgE7IK3xm6lmEJCFibz6C443cGy/OJHslI/Pl95hXEh5PPEXYGR5jMvyS8SWIUjmGggHrPP7etqAwOWOAXxRHECl4Oz/JrEqoz6c40HX681zmPhWH7pLQ1iWUeTABFoq0VcoQ9BjYGHk+Kfl/6KidrgiQ2L8ZMtTnjgCoXZ9hz0n225Pbiv/fjcPf6yVPaXSMbtxTWLHESqgvESlOWUMYMViiySkJciUMsD9cO+4dL86h6dRkSjXjp2D+rKwOHSYub5hmuLvl27nba0zit5QvXu2wtbvaN7sHHEXgFAxJrO6ftSkEUlPZvHd1YvOObr8XvyqWFYvitb+xxEdDKl5uSbweNX2SJum0k14QHQi23kLBTATTV7SVxvGD3tEiJsuC5bxMEI
- FCCiQhua
- pZg12DO2vt7v5ZFXQQch0ZRBKuxjUukHmMXprfgJE99mZNvdSCM4gizU0QWqZPjmYn72JarGcfNpV/t0JpOk1djUFcF+rsxLRLjMaqs0+9756eNJNf20R/Ncct2Sm6DPE/xD1PFlgm4aeiBZQ+JM9RzQbXPabd35/bZBfZR3K/1AGL27AteclEfltnRHZRYFGX4qSZUCTKyAcyTCAUlBcaAtU1MMC2YdJAFqX85pAoWb5jbBIg4XLWN0NJ6wnUaU+HsT+SHlQLfczPSnwf7ECTvMWlWQYMK0zvtsstmt1QWAmHK3o5V/bqdCCc3fBjdamYWoPgumeexIZBR1A1jjK6auLF4N8/ej8+PmkuWc695I2nx7CHqu6vxggvt0j+geAR1dmqpNdIrHqImjdx66LEp40ujfDMLIIlXzbK9IdiMUEVzQ=
+X-HE-Tag: 1768763834-822695
+X-HE-Meta: U2FsdGVkX1992KMbWfXpXPM1IzEf2GNvCIrXoTVRz5WhFSrN7URsUva0upHnCH5NHq3x87MgGstGUP9h/YDfYK2fNZv0F2GNFYUpgqZQ55l7Iu5UzJRZ45FVvD3vvRBbZlL+Va4uMO/c7lG83/gQxYwCB2G8dv4c6hlFZszuT9vrf8G0g1ZiaQVOgf0fk+4w21J+8mZueWA08jSbqz6xrC4Yeyy1hrlgMVtNycqf49ChdEWyZ/LMY2W62SLQl4gXXJb4g0sZbY45sAiSxKCpi0Jz/tKQT/k2MAKr7K9FbioXXXMkZxDefXxBfskrzhenyr7SYcUQXfimFe/3m0qW2a2m5N27KCZvoMuM5TwRFHNo62sNpjk4Hrx+vOlyOlAux1Y4XMGL9w963bPi+W3LQn0xojWy+3QV8OEygzJQN7whY2CFRPZ8wDi+TjNAc17yEgqwAiozKv3sAiwCmxS7CZMSirlaY2C0+YDFf7YpUloOWsrzJ46cNPpd9B/HyUqX7faOOpq0iPLSqxgLjHvn+eejSyJo8CiQ1+iiEMt31/CWA8h/fwCmQOz0yXB6599eakNbhZVW5Z0i85EymooybgAK/2GbJvNzpmaJkmzbiKfvdx1g3l4EI4gBDDwd9oOq3K8mp6ILqYodwqK/LbkbmrKzTx5riC6ssADdD1JtVU1WJKvV9XKXYYCRG9s6ItPffmg8wBICcltLgVx4cdx07DAlkARE8O/QBggHeG5pVV7tFq0MOvU+aTZXDWhqFn71TSeedUM18Ibiv6xodQs+qwpe15x9JnK3nAoZ7VhOCsZ+o45tbLEWF1MG5YZRlDsoGJ4fatK+ZCkBsCWQS+bhpVcCtfUWYjqh0T1mPcfdukdPi1rYGImFKGen3RJKMtnj794TvUFblToEKaK+TmyGtFEZoTiWB3br+Akml/JVN76EIgDXKVmzs9+N2p6A0H42tyYLaqiPPIji8/6HcTw
+ K8PiaChA
+ fpQMsFLl24+qYxmPWLrwXnoE8MOJos/5WdOwogOUSoASRQuVC+tWDYt9w5VQI6Nb4qxXGTDUN+pH3gSO63PN4ZfBrpR6nnEya1PTn+/UGMQxZ5fLm01X3bv85MG0Xw40BW8nC9aDi/HG5Ms7pYPJCsIT6VQaIs16icUzyF6XAmE+Wco4B0FlXknqWMZIG/qukcphOscolid1tE/dLBKgTXt/J4r9pslAOBaLs8qpnIMOuV4xjvfPQiCplwMPgE0W3xAxtmZXkR6hJOjhVt2VjRw9BKTmobuWyjkb//Kxlcu1YN1Sv0+bIoyImhv14dyg5JIokiqoedqXZZqw43+nj2MQ2CtBLVdafGDixggd5cgzxbouXs+ztkpz7dsl+WDs2v2Aft9AqkXykwCs2q4md8mkNhhKC/Iqc+EhpBx8jfa2uh4gaXTQcQoOLNxL/d4Kz3xCENS4AsmhqTG76FGOKpX4CZn7rHwqvRTPM8x2aejGsHHbMU0YX/ysNo1oXsBrFZF19niP+PCI4cZE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,110 +177,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/17/26 02:00, Jinjiang Tu wrote:
-> 
-> 在 2026/1/16 18:58, David Hildenbrand (Red Hat) 写道:
->> On 1/16/26 07:43, Jinjiang Tu wrote:
->>>
->>> 在 2026/1/16 2:12, Andrew Morton 写道:
->>>> On Thu, 15 Jan 2026 18:10:51 +0100 "David Hildenbrand (Red Hat)"
->>>> <david@kernel.org> wrote:
->>>>
->>>>> On 12/23/25 12:05, Jinjiang Tu wrote:
->>>>>> commit bda420b98505 ("numa balancing: migrate on fault among multiple
->>>>>> bound nodes") adds new flag MPOL_F_NUMA_BALANCING to enable NUMA
->>>>>> balancing
->>>>>> for MPOL_BIND memory policy.
->>>>>>
->>>>>> When the cpuset of tasks changes, the mempolicy of the task is
->>>>>> rebound by
->>>>>> mpol_rebind_nodemask(). When MPOL_F_STATIC_NODES and
->>>>>> MPOL_F_RELATIVE_NODES
->>>>>> are both not set, the behaviour of rebinding should be same whenever
->>>>>> MPOL_F_NUMA_BALANCING is set or not. So, when an application calls
->>>>>> set_mempolicy() with MPOL_F_NUMA_BALANCING set but both
->>>>>> MPOL_F_STATIC_NODES
->>>>>> and MPOL_F_RELATIVE_NODES cleared, mempolicy.w.cpuset_mems_allowed
->>>>>> should
->>>>>> be set to cpuset_current_mems_allowed nodemask. However, in current
->>>>>> implementation, mpol_store_user_nodemask() wrongly returns true,
->>>>>> causing
->>>>>> mempolicy->w.user_nodemask to be incorrectly set to the
->>>>>> user-specified
->>>>>> nodemask. Later, when the cpuset of the application changes,
->>>>>> mpol_rebind_nodemask() ends up rebinding based on the user-specified
->>>>>> nodemask rather than the cpuset_mems_allowed nodemask as intended.
->>>>>>
->>>>>> To fix this, only set mempolicy->w.user_nodemask to the
->>>>>> user-specified
->>>>>> nodemask if MPOL_F_STATIC_NODES or MPOL_F_RELATIVE_NODES is present.
->>>>>>
->>>>> ...
->>>>>
->>>>> I glimpsed over it and I think this is the right fix, thanks!
->>>>>
->>>>> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
->>>> Cool.  I decided this was "not for backporting", but the description of
->>>> the userspace-visible runtime effects isn't very clear. Jinjiang, can
->>>> you please advise?
->>>
->>> I agree don't backport this patch. Users can only see tasks binding to
->>> wrong NUMA after it's cpuset changes.
->>>
->>> Assuming there are 4 NUMA. task is binding to NUMA1 and it is in root
->>> cpuset.
->>> Move the task to a cpuset whose cpuset.mems.effective is 0-1. The
->>> task should
->>> still be binded to NUMA1, but is binded to NUMA0 wrongly.
->>
->> Do you think it's easy to write a reproducer to be run in a simple
->> QEMU VM with 4 nodes?
-> 
-> I can reproduce with the following steps:
-> 
-> 1. echo '+cpuset' > /sys/fs/cgroup/cgroup.subtree_control
-> 2. mkdir /sys/fs/cgroup/test
-> 3. ./reproducer &
-> 4. cat /proc/$pid/numa_maps, the task is bound to NUMA 1
-> 5. echo $pid > /sys/fs/cgroup/test/cgroup.procs
-> 6. cat /proc/$pid/numa_maps, the task is bound to NUMA 0 now.
-> 
-> The reproducer code:
-> 
-> int main()
-> {
->           struct bitmask *bmp;
->           int ret;
-> 
->           bmp = numa_parse_nodestring("1");
->           ret = set_mempolicy(MPOL_BIND | MPOL_F_NUMA_BALANCING, bmp->maskp, bmp->size + 1);
->           if (ret < 0) {
->                   perror("Failed to call set_mempolicy");
->                   exit(-1);
->           }
-> 
->           while (1);
->           return 0;
-> }
-> 
-> If I call set_mempolicy() without MPOL_F_NUMA_BALANCING. After step 5, the task is still bound to NUMA 1.
-> 
+MADV_COLLAPSE on file-backed mappings fails with -EINVAL when TEXT pages
+are dirty. This affects scenarios like package/container updates or
+executing binaries immediately after writing them, etc.
 
-Great, can you incorporate that into an updated patch description?
+The issue is that collapse_file() triggers async writeback and returns
+SCAN_FAIL (maps to -EINVAL), expecting khugepaged to revisit later. But
+MADV_COLLAPSE is synchronous and userspace expects immediate success or
+a clear retry signal.
 
-And it might make sense to point at commit bda420b98505 ("numa 
-balancing: migrate on fault among multiple bound nodes") where we document
+Reproduction:
+ - Compile or copy 2MB-aligned executable to XFS/ext4 FS
+ - Call MADV_COLLAPSE on .text section
+ - First call fails with -EINVAL (text pages dirty from copy)
+ - Second call succeeds (async writeback completed)
 
-"
-  we add MPOL_F_NUMA_BALANCING mode flag to
-  set_mempolicy() when mode is MPOL_BIND.  With the flag specified, NUMA
-  balancing will be enabled within the thread to optimize the page
-  placement within the constrains of the specified memory binding policy. "
+Issue Report:
+https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
 
-The "within the constrains" is the crucial bit here.
+
+Hi Andrew,
+
+This V5 series incorporates David's feedback for simplifying the retry
+logic. To apply on mm-new, please drop:
+- 20251215084615.5283-3-shivankg@amd.com:
+  [PATCH V4 0/2] mm/khugepaged: fix dirty page handling for MADV_COLLAPSE
+- 20251224111351.41042-4-shivankg@amd.com:
+  [PATCH V2 0/5] mm/khugepaged: cleanups and scan limit fix
+  (merge conflicts with this series; V3 with review fixes posting soon)
+
+Thank you :)
+
+
+Changelog:
+V5:
+- In patch 2/2, Simplify dirty writeback retry logic (David)
+
+V4:
+- https://lore.kernel.org/all/20251215084615.5283-3-shivankg@amd.com
+- Rebase on mm-new
+- Fix spurious blank line (Lance)
+
+V3:
+- https://lore.kernel.org/all/20251201185604.210634-6-shivankg@amd.com
+- Reordered patches: Enum definition comes first as the retry logic depends on it
+- Renamed SCAN_PAGE_NOT_CLEAN to SCAN_PAGE_DIRTY_OR_WRITEBACK (Dev, Lance, David)
+- Changed writeback logic: Only trigger synchronous writeback and retry if the
+  initial collapse attempt failed specifically due to dirty/writeback pages,
+  rather than blindly flushing all file-backed VMAs (David)
+- Added proper file reference counting (get_file/fput) around the unlock window
+  to prevent UAF (Lance)
+
+V2:
+- https://lore.kernel.org/all/20251120065043.41738-6-shivankg@amd.com
+- Move writeback to madvise_collapse() (better abstraction, proper
+  mmap_lock handling and does VMA revalidation after I/O) (Lorenzo)
+- Rename to SCAN_PAGE_DIRTY to SCAN_PAGE_NOT_CLEAN and extend its use
+  for all dirty/writeback folio cases that previously returned incorrect
+  results (Dev) 
+
+V1: https://lore.kernel.org/all/20251110113254.77822-1-shivankg@amd.com
+
+Thanks,
+
+Shivank Garg (2):
+  mm/khugepaged: map dirty/writeback pages failures to EAGAIN
+  mm/khugepaged: retry with sync writeback for MADV_COLLAPSE
+
+ include/trace/events/huge_memory.h |  3 ++-
+ mm/khugepaged.c                    | 23 ++++++++++++++++++++---
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
 -- 
-Cheers
+2.43.0
 
-David
 
