@@ -4,91 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E479CD4A5F4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 06:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E15DC9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 07:02:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E539D6B0005; Sun, 18 Jan 2026 01:12:03 -0500 (EST)
+	id 782476B0005; Sun, 18 Jan 2026 02:01:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD7B56B0089; Sun, 18 Jan 2026 01:12:03 -0500 (EST)
+	id 7295B6B0089; Sun, 18 Jan 2026 02:01:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE2F26B008A; Sun, 18 Jan 2026 01:12:03 -0500 (EST)
+	id 601E76B008A; Sun, 18 Jan 2026 02:01:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD1B76B0005
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 01:12:03 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21813D1E6C
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 06:12:03 +0000 (UTC)
-X-FDA: 84344064126.21.5269CE4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8718B140002
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 06:12:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XX41RY4R;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CF996B0005
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 02:01:59 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA0EFC1D76
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 07:01:58 +0000 (UTC)
+X-FDA: 84344189916.16.3B8DEC0
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1F2B1C000C
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 07:01:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IdJBNdYR;
+	spf=pass (imf22.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768719717; a=rsa-sha256;
+	cv=none;
+	b=rpneHmgKdn9wq79S0NtH22pFx//VpKmVZUtdAm0QunPQUZxQS3uI+XyKxexJmsyKNoULWn
+	iUO4DnzosOv+VPv8Nz+7w39Dqo4LmW4heH8FUys9oiF/ldCA4iWlXNZ8SBAEW2Q5MqfQ13
+	xzrob0Ko9PRbLQNjUqdezWJ6VDI2+mM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IdJBNdYR;
+	spf=pass (imf22.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768716721;
+	s=arc-20220608; t=1768719717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sWl5QjqvWJPA+2RtM9E5Vgtjj6RUa3Da5X+vwMAaGdY=;
-	b=oVWgzjT22V+W22I859ZWmxO2NYApAxg3tRlaEpRrq0Y1+B5RyRCmPAjAvfQ9PQrr+vT+RP
-	KR1MQ3si+k1CEa5djSxztDDdmYsLBpyTmAt8Qcd8UejK7uakB8h9iUsY6x4OWLL7ZUL9eR
-	SID6CflLOOeqRvTfaSLrNURvEs7hC+w=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XX41RY4R;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768716721; a=rsa-sha256;
-	cv=none;
-	b=BBVLNrcMrgXfKPDvyaYxcXJx2XM2xRJyMJSfnN1bkM8Kh8x9T+WFLaQ9OpqilI2PReHWEJ
-	akbn6wqKR0+xVJsRs8hGwALc52vE87+HzuHcODBJvvtvuJqBtwCUTN/ZjKauKVkbzjfXp5
-	2pEJIRm7HOTqSJgiblqlyEXaGQk6IJA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 872356000A;
-	Sun, 18 Jan 2026 06:12:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C92C116D0;
-	Sun, 18 Jan 2026 06:11:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768716720;
-	bh=XQZz9Nu+u7TdwrpS5yQTxTW/ej0dkCDpS+WPtv5Iudo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XX41RY4RMG0ZGtak6oOJ8ro7GjFQKoOTEGax7hbBjl5C/AdiAvlmAyQWb2RhVkmXL
-	 whCApzlt6RghCmL2BW7E4KC8L2C+ANNlMiddN6jW+afgjxv2oQa6WQTZq9WpfJbiu/
-	 SE1IVwdtIMLB4i9RnrD5nCTuUODRXiXw9C/2+s1+ty4rWJJExgOzZjkM3c1aFBRbkP
-	 oXGmkvAqB/1+Eor9pzWjrBDHh1DbT1DVnxKgkRPyFqRyWrg8WxK2AIi1HN+CgU+LAt
-	 vZWZ3NM7ey7xCLr6yTX7dOtSGIO/xW1VENnaUVRoDjmXacnBYfZjk5QLFeLFLtaaMJ
-	 NvFQLWabs2iUw==
-Date: Sun, 18 Jan 2026 08:11:52 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	akpm@linux-foundation.org, graf@amazon.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, ricardo.neri-calderon@linux.intel.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4] kho: validate preserved memory map during population
-Message-ID: <aWx5qHHYEXJXNuXm@kernel.org>
-References: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
- <jixxiqeajngwox3nh2u3pwf2rivhmqxxmpyttqxu32pixshyde@4jdn5jvg5hvk>
- <2vxzo6mt7cl3.fsf@kernel.org>
+	bh=3YnzSPUz1aoS143yFXVx72ftiBt4iAZjMmiuC9ed7P8=;
+	b=rIYacGGdCRM9ZlZAMmcjO/uq2gIdqjBhJmd8b6oGFjDqUuACUUs1qxj3IkV2+orsm0MV9N
+	ebSC7EaI8dzf4prCdwtJ3FWjjh6M2Ry27JDLQzMAxUsWcHTMei5ZE2qA4MTIgcYWE1ONs6
+	m9/aju9rqO79iUnLbdOexHZ891Vtvu8=
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-646d9eb45afso2739347d50.2
+        for <linux-mm@kvack.org>; Sat, 17 Jan 2026 23:01:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768719716; x=1769324516; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3YnzSPUz1aoS143yFXVx72ftiBt4iAZjMmiuC9ed7P8=;
+        b=IdJBNdYRvhLyEERjREYmQKJHtqLiFCAmgsqgri9vhc+a5vADnV2zCQMYBQ48qw6P51
+         Id3390nJK0BDpByt8tuYfvYfgiK/5azNG+5Cfu8FOamUVlGHJOFaO3nOozm9bKkTW882
+         w5qc/6wvcq+pJ97uiJTelF1cv9AKPv0v1tKc5UEd8WeB6NrvmJ7oALlys4fz/4GsTs8K
+         xImK/K2GJOnHvRQpLtd4YUTLl7/wlpTsYbKPtSAMJvZLagqSTCGNUfwZa+jrEA1nTusK
+         6Ie4+m4MHPaLaaHtQb5taS7/qi4yBcStxqf7Ce6m5QtVaBWi7AwWqFg+UT7MHY/WwjG0
+         ShkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768719716; x=1769324516;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3YnzSPUz1aoS143yFXVx72ftiBt4iAZjMmiuC9ed7P8=;
+        b=HMQuSbdRm4s9j7ZUc3+nac/LiybeGc+ZvfVqNfLRiIFIFFh+1qsvao+7XonpbMl7Pt
+         p2ghpF86m88GfCy0lD5TpyBHl2YS0wMVuh5QV2AfNQf9cOJigLT3OH80AOvd4w+spqW4
+         wpIUwxaRaZID8DaEFG/oFAZGdGXgvaZsx4+KPenjex289ad4Gp0QNYY1bB1IlV77ATpS
+         aBfqpkDw0de9CowNTILakVrVTrFb7Dpb2lJcjAK1z8ooluNIxT/IcV85ym8UFlsVW4cO
+         X3OxJPnklMNlOJMwBdpS+UGbwOv4xOs+5tv6LbfRnigJKN7XCgqTwRwmvFQv2lTorde+
+         arnw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIF4EczKn2LKl62rmSEn04H8BaY8jkqhV/cqJeFd3cRyeZWIYQ1wl9Ma/ypUWL8bSB46UgRY1aHg==@kvack.org
+X-Gm-Message-State: AOJu0YyShiDgbdiNFu/go+1Qhspw6I3ZRQPKGJcWBlC55/OD3U3WIntE
+	1yBpYz41TxouCu8XM9An9zJgHxg1FxUilnTJANBk/8pwGdMmC9zm7ZQTIbfbOqOI3wnZYo6Fnid
+	wIMDneEo3z0BkunBrB+E5RMaW99nK6Eo=
+X-Gm-Gg: AY/fxX42vUwrv0zI+q7v89Q8yNnjYEBUAHJTjN4MI+UvVXOMtJxQeu1GtV3i5HsgUF9
+	jegh0GeaCQPb0xdo8V3oYwV6m4mHwoXQBoBNuaSwzUwcjUfBUpeW2ZO6mgL09PP0Z8WXrOzDVnx
+	gu51Eo0XR8Y8cAo+As7lSSww8Pg9Dzdv+htN04+i0anovyJC8sbflfotv8X6NemaMhK03Gc1XrK
+	lT8kDpidTq3gf5nQAQZzxWdLG2eG3zJ5YT4z81FmxSxgrEkdO46z7/FEGVWd6S+BoVd/n1BGzwX
+	XHyZnR60ZzHf9itBRjCD3P3ndBG4WkhSe0odFwG4NQDoZx6KQaKpJ22xk0cYdVk4+HEJ3+0=
+X-Received: by 2002:a05:690e:1651:b0:644:2e5b:4124 with SMTP id
+ 956f58d0204a3-6491649f516mr5984846d50.25.1768719716078; Sat, 17 Jan 2026
+ 23:01:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzo6mt7cl3.fsf@kernel.org>
-X-Rspamd-Queue-Id: 8718B140002
-X-Stat-Signature: e4zhcakumgwmcf1ry9ygiu1st3f9mww5
+References: <696b56b1.050a0220.3390f1.0007.GAE@google.com> <20260117165722.6dc25d72fd58254cb89e711b@linux-foundation.org>
+ <CADhLXY6ACKeyLrjARTTdfWyrvUdLbtD-wXiQvsvhsbGjwmUqDA@mail.gmail.com>
+In-Reply-To: <CADhLXY6ACKeyLrjARTTdfWyrvUdLbtD-wXiQvsvhsbGjwmUqDA@mail.gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Sun, 18 Jan 2026 12:31:43 +0530
+X-Gm-Features: AZwV_Qg0s-Fmk0LdSiYD_syYS5grst0M2xrOlSOhhy_fgxLE0lSLFhW8_tjzxJs
+Message-ID: <CADhLXY7FJqRLjX7X2yJfa0=iDbUAMwhS35cOEExW+qBJWAnt+A@mail.gmail.com>
+Subject: Re: [syzbot] [cgroups?] [mm?] WARNING in memcg1_swapout
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com>, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	syzkaller-bugs@googlegroups.com, Johannes Weiner <hannes@cmpxchg.org>, 
+	Muchun Song <muchun.song@linux.dev>, Minchan Kim <minchan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1F2B1C000C
+X-Stat-Signature: pijef3m1fy6jgtm93bua8umttpdbz9ik
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768716721-741907
-X-HE-Meta: U2FsdGVkX19VJE4iB4fHAoQIqKCf7oqmUnBLtf3zcuTaBqcvC45OKJWjp4vzFxOpg+AMOBK9VQnMLH+LEBAj56IdRy0e1UrRw6eJJT223vWs3qnAoLx/aw/fUyQDM/xjq0BQvLEdl0FMeb/8mmcI/Z2Nn0Drr9ZEvfcEMaG/kzMYLOn/QI2Nxs+j2/i7HL4aQShwy/ACXaE/eafG7Uv/RkxwLfek+E6C53cU0js/ex4Ge0wdgPNtAOv7kQrfOS+TIoth0Jh2K7zT2h40ukB47Fl/gZnwSt+pcw3FzDPGbe4cXzD0TVx7gzpvJjES1mjZnPhhpU7Ng9mJJwWPDyfyPRWDP3kMrknyjNIkuyVYZLXYcj0IpROtGnuAi0FsokB6R8prIBVRmV/FnubQpznuGBKm15YZUyTotxB+JzE4JPr7mNNOPRfnWDk0QvTUX92z915mSD/KW69EYBVYir3nJGl475i9PCx3TbaCyI9LuLHBWb/BytHm1KOQtgtJWzlPHLPU29mp5FUUwbtbPZCHR0fyrxtSEf/YZ4g5IsH7jlsKY//UFxNg96a6wYhcz3cC0Dl6l9EuWX2RnyY7oojzGZRjrSs5VqQMqR7LDEcl9z9g8URvf1s/FtimMLwel9tvyKk8G1vMciEuhhj83fu45C+bOJlhCSRywo4P8YxpkeGZag/JKCzxc6kq3Gnt9NpFOV0liAWScFxsvoPDsWryZ/9roGmsC3hPhHtFqFIx1VpaaTS3ZgIhMk3UbRvkc7vZm0gcsZBtlZI9Fxd6/lI+ffKqsYHjiUrMMGKla8nx+wOgykVBivAgJFivOKEH2hKbkgkrA8Z7awWek/H5Rg8qbIaShZAfRNT+W9gBSymkR42awPEdyQbnhECiQs2gZP1zHFiTVcE8N0IdFWrowoYIG5rlDQ4RkbHRNS/UKoPEJ3ubQRnm8xV6/ihwJkG2Kny4oZS0st8KPbycUGdzF8a
- 2rjs1KIe
- moTj1absb+yxyqGRswOyll9gANW+1rZjh0/T8t4BgfwXSshd/OouLDzF5X0/Bh7EC17dlgCAYkalIWyHcTYShAyDKn5OKeC3V2EDviE8mi0Dx3/Hr1jIgZxOddZi0UrtdjOHwKvFaCXUF+x5CLRXs8537VTT4NcDxE98mV5OXlvd5Fyn/LRbzVe6DF0+Jm8fZ5rbLDaLMkdWfSjILVJDvl745GzIoCbj4sAi3/nX01b7/2mnQ+Qq2Q/hzY8muE4iatDstu6VTXHgTSx9QNH+rvKlP9CQqAtegcwKYrWP2uA2htmA=
+X-HE-Tag: 1768719716-976601
+X-HE-Meta: U2FsdGVkX1/suJ6U1R9a26XYFTwZgsCwebZZHAbWgJ2q5RlO8O0VODMdUko6UUpHXJV0mfkYTpXdcwx5jeu3KCI2zCeBlPYT3Y4RLckDwTFMdPwVSjsCXSUOwZatWBUDXigkU4+6rMXSQtSuAy1LEBFsLBw/Zarf7TFuX4qk2N0MD6hAUMFrzk/Oh4rytBtHMWbwG0fERFUuF+HXC+7GvDNSQnVpTUEJ+NbGLyJRnDY+si8DnPqSsU9bD8/4wpkWJHg+dCKqJCYcI/xQkH683v5J6kGC+HvUVCalzepz1Ad3i06ayltJ1jkeyHj6fYGvEVllKUBkJmnUUj1R2JGy5hSHF3qQQKapjYOfNouNqIpvzRcBjy1hg3FPnbLXwDc36GdaBraI0uvg1JLIvt204kOLvWkeuLtr34HGdfmq8vJdK1ie4IlShnQiq1f899oi92guiynjwZSvBpRyd8LleyPons8H0BSNOdwZgGSayf8UV4FJOg0b5SCmD/r7LLkBbXWPC+w1hAqsJhqo8AHU4VwQgTE8FtrJErV37+49II0la5ZWshF5oi70K+9wUowoULrNnp+sRgyAgdZ+eh5W9YYOe6RyJ5D+9SM6hrf5mNUcJ0AmHGrSENjZQzOR6sjLRZID/cYiq+c+U19PgxcTBFPPqAqOqS/pEPrV8AedzPKHvAM9cjlqZ9vz0jXryIMVkAj6ngUxkYamIlui2QnWzsVMEHd3Zbmcy/In0rEpMAXEJAYZJCC/9Oj0AnxdJRPUfSLcCDgBidKTy1MvABoXUM+g0LsNARWjVCij0JTs/1Ncy4Fw7i+PspAyZBvEUG0D9jjhkObobHzh60k9J5X/pZIfrQMw1Vv8Pmzl4dRwtJOyRpc5Kc6onl2E3XDhfBhm2fFgQdQOHKx8sRG0b4rWMrsDzKNPx6ZzuzWoHClMO3HpPbDy8IMelstXjcMeUK4kVO27cHPROP9uh4dltMo
+ /13sTPjw
+ QyLBxIraEpb4fgSB2jIiTMYC65LN7BF+BSA2ahH8tZYRxYn952fSUdHJwyh4rAMY7tWvvLGIEL5HDtWwGwDEhLsiUad7vF3QL3fXZZ80/wMGsSlBQT7hNKt6SVPQJUtcKR8o/6VZ/sUtg3tKNpzSA9LU1UqeubR9s2hwqc6cvBAenv9lqf4rNAx//63qtr0mFjIB9i37szuX+yCeroVYJVAIfd7whzwnPUyEnjiOo6w2qhsj3w8NC11aZDB+DJsC8LUmgUJ18JpJl3ErJSY/s7L8FVtMZfCptKQonqTUyuoyfPL4KmpPn4Q7Z/ldf24ieqQprB7elNJ9EuIAHj37AhRRe6tPdue1WnquCz7f6TcAHG6RreTjEnMl/fyvalfgNW5w/IzTycZ3OTT/Yz4PGkwnpdSkZa88YG6UO825jkHn6vUmx5yqmQkFBc2mt9GEusFv8XpkMqbq7N33jldy84io7psMgs21+5ONFN+RvBd0LsLkFcbttQjKZMTMzg03Li9K4l1nmiDD8xIRUfR3nIOoISK11j3sIRIN1NbLgXl3zONJmX9trV/wuLlmo7boQhKnsWcr37cjoxwS4Uv9AoaKfdu19jb5J9PoPc+f8CCxTzklVbeYzjtHvl1/2c4qWX68LWaD5fBCPjHs05i6tMchg16SitL7yijHZTcahYts3KQE03SmQbsa/fXDZm9PbePYbPoWYt870oMDTD2LsP0zg4rzYBsPhhTNpkCZl8dfhB4DWZs9rH9/dFM1/qQ9HmFRs7n5+ur/RYBKUFviaSxChpJGAkNqSWNu50FsgdIiDQn1bNMd8e6iNfLmBlcf4jv0JpQdUccqAn9ZES1Dbvmrl2YNJMbnxeCslVPDcuFXTemRj/nwmqKmHZ1IdbKcUt6NDVN8Q552gfQZwoFJbYsGijj0J1IXhEovEyg5xs+xuptyL72kALJnmhFtQ4KUqJ76h67icFS7VZa71Mr5dinNtwaTU
+ IYHRtmQc
+ XRzasgyHV84iV91KxjUhCgGGflFNkCvTsFl6CTChGeDRUMhIQSvSfGmNDRQX05xE3vdk5gZBlwJcXNXye0gblTJWhxiSZDVgsLgfd0YrXfEgWIY5xvZGC/XWdg0zohyALVKaz+gM/Ac=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,265 +122,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 04:21:28PM +0000, Pratyush Yadav wrote:
-> Hi Breno,
-> 
-> On Thu, Jan 08 2026, Breno Leitao wrote:
-> 
-> > Hello Pasha,
+On Sun, Jan 18, 2026 at 9:51=E2=80=AFAM Deepanshu Kartikey
+<kartikey406@gmail.com> wrote:
+>
+> On Sun, Jan 18, 2026 at 6:27=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
+ion.org> wrote:
 > >
-> > On Tue, Dec 23, 2025 at 09:01:40AM -0500, Pasha Tatashin wrote:
-> >> If the previous kernel enabled KHO but did not call kho_finalize()
-> >> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
-> >> the 'preserved-memory-map' property in the FDT remains empty/zero.
-> >> 
-> >> Previously, kho_populate() would succeed regardless of the memory map's
-> >> state, reserving the incoming scratch regions in memblock. However,
-> >> kho_memory_init() would later fail to deserialize the empty map. By that
-> >> time, the scratch regions were already registered, leading to partial
-> >> initialization and subsequent list corruption (freeing scratch area
-> >> twice) during kho_init().
+> > On Sat, 17 Jan 2026 01:30:25 -0800 syzbot <syzbot+079a3b213add54dd18a7@=
+syzkaller.appspotmail.com> wrote:
 > >
-> > While trying my new patchset [0] on top of this patch, I got the
-> > following issue:
+> > > Hello,
+> > >
+> > > syzbot found the following issue on:
+> > >
+> > > HEAD commit:    0f853ca2a798 Add linux-next specific files for 202601=
+13
+> > > git tree:       linux-next
+> > > console output: https://syzkaller.appspot.com/x/log.txt?x=3D14f7259a5=
+80000
+> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D8d6e5303d=
+96e21b5
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=3D079a3b213ad=
+d54dd18a7
+> > > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909=
+b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D167ef92=
+2580000
+> > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D16d295fa5=
+80000
+> > >
+> > > Downloadable assets:
+> > > disk image: https://storage.googleapis.com/syzbot-assets/480cd223f3f6=
+/disk-0f853ca2.raw.xz
+> > > vmlinux: https://storage.googleapis.com/syzbot-assets/1ca2f0dbb7cc/vm=
+linux-0f853ca2.xz
+> > > kernel image: https://storage.googleapis.com/syzbot-assets/60a0fef580=
+5b/bzImage-0f853ca2.xz
+> > >
+> > > IMPORTANT: if you fix the issue, please add the following tag to the =
+commit:
+> > > Reported-by: syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com
 > >
-> > 	[    0.000000] KHO: disabling KHO revival: -2
+> > Thanks.
 > >
-> > Trying to solve it, I come up with a change in kho_get_mem_map_phys() to
-> > distinguish no memory and error, see the patch attached later.
+> > > ------------[ cut here ]------------
+> > > WARNING: mm/memcontrol-v1.c:642 at memcg1_swapout+0x6c2/0x8d0 mm/memc=
+ontrol-v1.c:642, CPU#0: syz.4.233/6746
 > >
-> > This is what I used to test [0] on top of linux-next. Is this useful?
+> > That's
 > >
-> > Link: https://lore.kernel.org/all/20260108-kho-v3-1-b1d6b7a89342@debian.org/ [0]
+> >         VM_WARN_ON_ONCE(oldid !=3D 0);
 > >
-> > thanks
-> > --breno
+> > which was added by Deepanshu's "mm/swap_cgroup: fix kernel BUG in
+> > swap_cgroup_record".
 > >
-> > commit 5d7855fede8110d74942e1b67056ba589a1cb54a
-> > Author: Breno Leitao <leitao@debian.org>
-> > Date:   Thu Jan 8 07:44:08 2026 -0800
+> > This patch has Fixes: 1a4e58cce84e ("mm: introduce MADV_PAGEOUT"),
+> > which is six years old.  For some reason it has no cc:stable.
 > >
-> >     kho: allow KHO to work when no memory is preserved
-> >     
-> >     Fix KHO initialization failing when no memory pages were preserved by
-> >     the previous kernel.
-> >     
-> >     Commit eda79a683a0a ("kho: validate preserved memory map during
-> >     population") introduced kho_get_mem_map_phys() which returns the physical
-> >     address of the preserved memory map directly as its return value. The
-> >     caller then validates it with:
-> >     
-> >         mem_map_phys = kho_get_mem_map_phys(fdt);
-> >         if (!mem_map_phys) {
-> >             err = -ENOENT;
-> >             goto out;
-> >         }
-> >     
-> >     This creates an ambiguity: physical address 0 is used both as an error
-> >     indicator (property missing/malformed) and as a valid value (property
-> >     exists with value 0, meaning no memory was preserved).
-> >     
-> >     "No memory preserved" is a legitimate state. KHO provides features beyond
-> >     memory page preservation, such as previous kernel version tracking and
-> >     kexec count tracking. When the previous kernel enables KHO but doesn't
-> >     preserve any memory pages, it sets 'preserved-memory-map' to 0. This is
-> >     semantically different from "KHO not initialized" - it means "KHO is
-> >     active, there's just nothing in the memory map."
-> 
-> This isn't true. If you hand over _any_ state, you will at least need
-> the KHO FDT. And the KHO FDT is preserved memory (see the
-> kho_alloc_preserve() call in kho_init()). So I don't see how you can
-> ever have valid KHO with no memory.
-> 
-> mem_map_phys _can_ be 0, but only when KHO was enabled but not used. And
-> that is of course also a valid use case.
-> 
-> We want to treat mem_map_phys == 0 the same as the error path, just
-> without the error print. This lets us discard all previous scratch areas
-> since they don't have anything useful anyway, and have a fresh start.
-> 
-> So while you are seeing this error message, I don't think it should
-> break anything and KHO should still be working fine. You can
-> double-check this by inspecting /sys/kernel/debug/kho/out.
-> 
-> So I think the patch is certainly a useful fix, it just needs some
-> re-wording and fixups.
-> 
-> Some comments on the code below.
-> 
-> >     
-> >     Before eda79a683a0a, the code handled this gracefully in
-> >     kho_mem_deserialize():
-> >     
-> >         chunk = mem ? phys_to_virt(mem) : NULL;
-> >         if (!chunk)
-> >             return false;  // No pages, but KHO could still work
-> >     
-> >     After eda79a683a0a, the early validation conflated "no property" with
-> >     "property value is 0", causing KHO to be completely disabled in both
-> >     cases.
-> >     
-> >     Fix this by changing kho_get_mem_map_phys() to return an error code and
-> >     pass the physical address via pointer. This allows distinguishing between:
-> >      - Property missing/malformed: return -ENOENT (KHO fails)
-> >      - Property exists with value 0: return 0 (KHO succeeds, no memory to
-> >        restore)
-> >     
-> >     Fixes: eda79a683a0a ("kho: validate preserved memory map during population")
-> >     Signed-off-by: Breno Leitao <leitao@debian.org>
+> > Deepanshu's patch has no reviews.
 > >
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> > index 271d90198a08..3cf2dc6840c9 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -471,8 +471,8 @@ static void __init deserialize_bitmap(unsigned int order,
-> >  	}
-> >  }
-> >  
-> > -/* Returns physical address of the preserved memory map from FDT */
-> > -static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
-> > +/* Returns 0 on success and stores physical address in *phys_out */
-> > +static int __init kho_get_mem_map_phys(const void *fdt, phys_addr_t *phys_out)
-> >  {
-> >  	const void *mem_ptr;
-> >  	int len;
-> > @@ -480,10 +480,11 @@ static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
-> >  	mem_ptr = fdt_getprop(fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, &len);
-> >  	if (!mem_ptr || len != sizeof(u64)) {
-> >  		pr_err("failed to get preserved memory bitmaps\n");
-> > -		return 0;
-> > +		return -ENOENT;
-> >  	}
-> >  
-> > -	return get_unaligned((const u64 *)mem_ptr);
-> > +	*phys_out = get_unaligned((const u64 *)mem_ptr);
-> > +	return 0;
-> >  }
-> >  
-> >  static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
-> > @@ -1439,7 +1440,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
-> >  			 phys_addr_t scratch_phys, u64 scratch_len)
-> >  {
-> >  	struct kho_scratch *scratch = NULL;
-> > -	phys_addr_t mem_map_phys;
-> > +	phys_addr_t mem_map_phys = 0;
-> >  	void *fdt = NULL;
-> >  	int err = 0;
-> >  	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
-> > @@ -1466,11 +1467,9 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
-> >  		goto out;
-> >  	}
-> >  
-> > -	mem_map_phys = kho_get_mem_map_phys(fdt);
-> > -	if (!mem_map_phys) {
-> > -		err = -ENOENT;
-> > +	err = kho_get_mem_map_phys(fdt, &mem_map_phys);
-> > +	if (err)
-> 
-> This will break when mem_map_phys == 0. As I explained earlier, when
-> that happens we want to discard all previous scratch info and start with
-> a clean slate.
-> 
-> Making this if (err || !mem_map_phys) should do the trick. The if (err)
-> check before the print should make sure the error message is not printed
-> when we have a valid property but its value is 0.
+> > So can I please do the memcg maintainer summoning dance here?  We have =
+a
+> > repeatable BUG happening in mainline Linux.
+> >
+>
+> Hi Andrew,
+>
+> I checked the git blame output for commit 0f853ca2a798:
+>
+> Line 763: memcg1_swapout(folio, swap);
+> Line 764: __swap_cache_del_folio(ci, folio, swap, shadow);
+>                     (d7a7b2f91f36b - Kairui Song, 2026-01-13 02:33:36 +08=
+00)
+>
+> Kairui's reordering patch appears to have been merged on Jan 13.
+> The syzbot report is also from Jan 13, likely from earlier in the
+> day before the reordering patch was merged.
+>
+> So this report is from before the fix. The warning should not appear
+> in linux-next builds after Jan 13.
+>
+> Thanks,
+>
+> Deepanshu
 
-While we are on it, I'd suggest to change kho_populate() error handling to
-use goto, (i.e like below)
-Then a simple if (err) will do and that's much clearer.
+Hi Andrew,
 
-Another thing I noticed it that assigning err to -EFAULT or -EINVAL after
-printks is completely redundant, since we anyway report what went wrong, so
-printing the error value in the end just not needed.
+I tested with the latest linux-next in sysbot. It is working fine
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index feffeafa51b7..2bba111149c4 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1453,27 +1453,27 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 	if (!fdt) {
- 		pr_warn("setup: failed to memremap FDT (0x%llx)\n", fdt_phys);
- 		err = -EFAULT;
--		goto out;
-+		goto err_report;
- 	}
- 	err = fdt_check_header(fdt);
- 	if (err) {
- 		pr_warn("setup: handover FDT (0x%llx) is invalid: %d\n",
- 			fdt_phys, err);
- 		err = -EINVAL;
--		goto out;
-+		goto err_unmap_fdt;
- 	}
- 	err = fdt_node_check_compatible(fdt, 0, KHO_FDT_COMPATIBLE);
- 	if (err) {
- 		pr_warn("setup: handover FDT (0x%llx) is incompatible with '%s': %d\n",
- 			fdt_phys, KHO_FDT_COMPATIBLE, err);
- 		err = -EINVAL;
--		goto out;
-+		goto err_unmap_fdt;
- 	}
- 
- 	mem_map_phys = kho_get_mem_map_phys(fdt);
- 	if (!mem_map_phys) {
- 		err = -ENOENT;
--		goto out;
-+		goto err_unmap_fdt;
- 	}
- 
- 	scratch = early_memremap(scratch_phys, scratch_len);
-@@ -1481,7 +1481,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 		pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
- 			scratch_phys, scratch_len);
- 		err = -EFAULT;
--		goto out;
-+		goto err_unmap_scratch;
- 	}
- 
- 	/*
-@@ -1498,7 +1498,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 		if (WARN_ON(err)) {
- 			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %pe",
- 				&area->addr, &size, ERR_PTR(err));
--			goto out;
-+			goto err_unmap_scratch;
- 		}
- 		pr_debug("Marked 0x%pa+0x%pa as scratch", &area->addr, &size);
- 	}
-@@ -1520,13 +1520,14 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 	kho_scratch_cnt = scratch_cnt;
- 	pr_info("found kexec handover data.\n");
- 
--out:
--	if (fdt)
--		early_memunmap(fdt, fdt_len);
--	if (scratch)
--		early_memunmap(scratch, scratch_len);
--	if (err)
--		pr_warn("disabling KHO revival: %d\n", err);
-+	return;
-+
-+err_unmap_scratch:
-+	early_memunmap(scratch, scratch_len);
-+err_unmap_fdt:
-+	early_memunmap(fdt, fdt_len);
-+err_report:
-+	pr_warn("disabling KHO revival: %d\n", err);
- }
- 
- /* Helper functions for kexec_file_load */
- 
-> >  		goto out;
-> > -	}
-> >  
-> >  	scratch = early_memremap(scratch_phys, scratch_len);
-> >  	if (!scratch) {
-> 
-> -- 
-> Regards,
-> Pratyush Yadav
+Thanks
 
--- 
-Sincerely yours,
-Mike.
+Deepanshu
 
