@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61984CA5FE4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 18:03:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8145EC9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 18:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE5BC6B00A3; Sun, 18 Jan 2026 13:03:15 -0500 (EST)
+	id F326C6B009F; Sun, 18 Jan 2026 13:03:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3A706B00A1; Sun, 18 Jan 2026 13:03:15 -0500 (EST)
+	id EB0C46B00A1; Sun, 18 Jan 2026 13:03:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9276C6B00A2; Sun, 18 Jan 2026 13:03:15 -0500 (EST)
+	id BE39D6B00A0; Sun, 18 Jan 2026 13:03:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FAD46B00A0
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A6AAE6B009F
 	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 13:03:15 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 30CD416058D
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 75EEF59800
 	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:03:15 +0000 (UTC)
-X-FDA: 84345856350.08.4F80205
+X-FDA: 84345856350.01.D6BBCF9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 85BC320005
+	by imf01.hostedemail.com (Postfix) with ESMTP id D797540008
 	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:03:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fF4nwr89;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SSD+bNz3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768759393; a=rsa-sha256;
 	cv=none;
-	b=YOB7p9BGAg8LKezmm7P23jE0HffD1C3mrX5fB2gYZ6drRRa9b/ffYkIbHtZG86cdXX53mQ
-	AIzxMsISzYunxeMVH+L4K3rU4q60WsTY/rMYo7Cf0vQzMF872Y+qHm9VcVfzALM1Sa4aWy
-	LShrtTK0SGwHFz67ICQW7ufeiznLvSw=
+	b=e6sIq+59yH4rkoOZp2WITOsinfnB/dxUVvZs3NBRKpHarO7QLRn6L4eg9q6v2d+X8TqbN5
+	jpTd2ZeLb//hd5NeaRetEi0W3V0KaML1KSIaWIadCj6LSK2bycSjBNYAZYejcO+jJsIqIm
+	C4GVyieC1swooWCUMtFSk2NKAKsBly0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fF4nwr89;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SSD+bNz3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768759393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sfy84ZEI+Ha1oIjHWB9YKUy2EoyFEgj0tVBfyTE1Wgg=;
-	b=1dVTC1ujkgXF6l0wEh7SXk+JGe3IY99PwAFkCeh0P36ih5Zhbo30Tmymxp6d7t4IZMoeP3
-	EupW9UvWxeXllEevLvdnZOUGTtMxAzGMpEICbWO/cugitnH40t8eCV/4Dza2jaACu6eEB1
-	Xw0WRMou5rJlYYfPOU6264nA0PEjYBk=
+	bh=nH6GrLUMNmKO1HzD7WA4oSJ3aA9HupMPxG4s3dSYsXU=;
+	b=j3NZgPk6BhVW7reqisAf3WaIn0Me0Svb8vkwkDZclC6NW9/uIkCsItvdihCbhr7KceZPIX
+	IDWi+W8Qb9IJbS5A3ggrcd0hKGFHuBaNRcPjAWaMr9r3l0AEZfYb9hSHMXGF9E3qKok4f9
+	JuuJjBh2/u+yTXJwx3l3xyV3shFvv5g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0553460055;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5AC7A60130;
 	Sun, 18 Jan 2026 18:03:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F710C19425;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABEBC2BC86;
 	Sun, 18 Jan 2026 18:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768759392;
-	bh=xYh/MGaprulPNWNckX8ng3qqlquYOGwnkkCr2j/CcxI=;
+	s=k20201202; t=1768759393;
+	bh=kKivkzBbiXhusYPA4CZvWuiT6LLGAcIHoC107wxKjT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fF4nwr89OKAuUIN3mG1fkkDWDB5TKShvMFkqun5REmQjGP9UF46WnzFMcFDo6PlzG
-	 UNTds1GHE2O+QypTxIbRTb8DC8D2RAb1tk/W3BnGyZuCC8JKVLYQx4sXfgYVyxYkeu
-	 SEhkr+G16cNxUTT6eW/NfCye+8yZdGTEhUuQrjvvt3eQ6UQrJ/AH243W1Ebd3HYXwH
-	 ly9seughSUdCihmUS0J+8xsTBbpf57CbSg1xl3ay3OpgIfPzWLZAWavdeAidWlngLi
-	 WK5IIZ/RaCtKOnNod0QlDFm1TFHYO47JOqvB4xfz5oAvogUQYtnwg9kU9h5i+FweWH
-	 hYMCfaIghU+YA==
+	b=SSD+bNz3uMdp1Ai4DC9qcx7XGfCRHvF82aWlIkI8LkbzdKtGwhY8eZY8ddphTbF1I
+	 rH24XGtcKrBvYKQi4hEkUxShF6e3jwwIGd4eAlXqknADMhGvvjw6JY4TJc5caMaQx1
+	 k2HnWCWrqbVWc13mN4KaHojAi0dKqUJqvCqDKYhhDRQlgOVbxpO3bSnSAUQd01+3a7
+	 9YgtVGy8LU+0GF3APRr0AelWTAPPASpqzm40cbA49FXhyVDYg1dVNlrJct9FGbY90g
+	 /qPiMgm8xW8liWWCHJT/uLFQKj/1Dw/KRxo0B8edbcpQqSxWKV3PaJkfwtvTf+M3Hj
+	 uOgKAkgG/Hq1Q==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -78,22 +78,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 3/8] Docs/mm/damon/design: document DAMON sample modules
-Date: Sun, 18 Jan 2026 10:02:54 -0800
-Message-ID: <20260118180305.70023-4-sj@kernel.org>
+Subject: [PATCH 4/8] Docs/mm/damon/design: add reference to DAMON_STAT usage
+Date: Sun, 18 Jan 2026 10:02:55 -0800
+Message-ID: <20260118180305.70023-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260118180305.70023-1-sj@kernel.org>
 References: <20260118180305.70023-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: adu4wr7976euj45rnbk1tfugbiefgjzu
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 85BC320005
 X-Rspam-User: 
-X-HE-Tag: 1768759393-789369
-X-HE-Meta: U2FsdGVkX1+CcQI9I5SGr3hZUStX3CuYXfJ4m84FYfjHjOlJYa1Uj35RER38471Ea1DPLcgwUzA/HUZAjNkMr3sTj1V5pnQMuk3qXoaVA82BXHeVndw9e4MMX010YPZ20IEXw/9a+5i5meidO+rWD1Q24pVB5lmU7ledcK/XJJ5zROgZWvWiVYKXPSFvY8HcuK0q2QK6/97kue8XniTIgm4gxipaOwhQSjbrrKdQljlSWhtqQTzxT6/myRRU/buPgxMiK19Zesv8B6mIB7aTLj28olCjGzlcqxQF7CQ6mHAT0BoJEcR5c2BKrYn2mvGxTbP/HZKSjL3N1PT4Fqih2Pi+V4ofoQSlOXWlfoemyDltctabJA3pEELuercg0A5WKpDwlYmfPLQOA9AtWglP71P1MJ5OuYQcgcIWitUBiGbTCr+wdBybbUkCvFQcarULyfSa0NXQHhu8IaCchppN/awSJ1JdiZAYKBosZ0gbn6W+fH3otZCUkmB3f4emXgAFJ65vWm6Q4u/5JnQxQ8T7R6jVlFZE35ujcB9K0azydgYQHi9ovc6CzyeR+YSCajsW4KjcwpuwTu/cxe+kfcbNMlkA9Q8L/VdfXoH4uaqIx7OCncJCJaia1QdA81HJ9/P1mYb+I67AYMyPI3CPCnxsIUEr8R1U8UOhvM25cRpzmy7ByI/orqVgU/6PxPdX599p6c0WeTDB2MqL/0fdKLxYgfbz09fZBDZ6bAMjBXsxz1jRP//SHJUYOYsRmw7aeC+lc1E6dDfPNvynmQ8tBEpBdxZSQeDOPgFf+BX2K7p/OkLNhcr8qJoEhZ3uEpClB3ugu2xn6jdR/la7U3GIcQWQ/iLRTJFI+UFlQVgcjWSDf8SZmopVqK5rCsewppAxIHdMzVxbp6+LY3wWkOajLUDmIuuskHChLvKC1fY/2MrXv1y0xMwxz+I41L8fq4nmmoIrGWwjhZd4JTkzb5fleRN
- GTzb2pAr
- BO+eCyvuAkd1T4A6AMfj6SimNdzo4J8ekZ61KT+uPHG728ZTb8roF/2wdKyPjr5guf4LSALxnqB8AjqIR4Z38LOJQEifNga5VwZ8G0BVE7krr6qbME3wBNu5/in9VE266my6P5UPRMrfMiSyObOwW1855uoKBfS7GWBmu2W1mfVIvpLhaROqcTS/AHodhCvW0oiEeJNimvBBk8JHQjYe8h9NVH6RRXX9VuV2+eIEOfWTPf9s=
+X-Stat-Signature: wrikcecfq7h5fagndqs8mfys3p48dfxe
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D797540008
+X-HE-Tag: 1768759393-454734
+X-HE-Meta: U2FsdGVkX1/w/T1bodNWQQ8A9aXD+8UdUN2PvaMzkZEJUzIT+mM6dnUlnnd1I8OEkETDHw6sz0YI9CxW/zNdxIk84jbjMnoM5+9lGLYGnJ8TBQjmfw5J1HDrBRLaOsup11zvzdY+el0E1p9kkVInUnebspVUymrtrENZoC5imF6+fiYSeHczUG/cvssHEq8y6TkxE0qdVhyGdZ24qRbrEm7JFpRMASo5UbJFXIElFaWujwGKQeot8eQHZpoBjqnPy8POCjtvKZD83d6k5C/IziJcY2fKCf5xm62Y//YfmzKdHUqE7n4qcwRRyNOcnYr4SZ4kdAj0iYK1L0GrWb/DYg/pMrnBhRINrbwYneXnHR2g5+BfXndnixynEnxmkN9wd60w1A/jCEG/He7CvM3Roq+IbSj5B5hgKhWQ//XipKcpByI3tiQl9DURyKjc8MoNhhDEhe8Tcsb7TLUzx5xlMjl8Sbh1/gHpt+QNIKZ5ZTDXSF5/2sud7Yp88XYg7sOBp0yKf04ZM69AJDejCU5KhZhnQFqVb1daGACEyXaPOTAVQbGJC6xlJVf3hwlZV6C97mOi+cvplyUdnIsnvVmmoWonV0U3Jyh/qISkLNbxmlA/bw5Hmtj7plQiCPL7x21u9Vx8IoyOCSpsf7x7qVKTD+7lf/P0UWX1OqpAbqbXxSBz7r/wQhj47AnnOnxuC7N+hCJkv9bzkNAUGHbnp4sb76v53thLYGfZ8S5kngYWTA9c3jqLWHkGFtIshBcEhyBqdD7Se7u2LZ6YTVvW/h9GHFZK5JHsyRWlZJyaXvgk9rA/hvF7cVDfB9YQPCAhZAk285jZeKEdbVm/3O6+m7wAJkf+Dng7kLWSuPUHYyjIKvI5UdPU/IAFWrcQew+fUCJLG+sHGZiMmchIslAlbJZGTHbpdSkkqM29eB8XfjpLMz+03jXZKNi4xZFeH/RqSqXImCgPEgYE+mNSA6YNsHv
+ S8HK7Pub
+ c3xUnHtsXomBjZeiCUMxlTQ/lVNYCaloufyHoZQpmaoH9b/OT0fFFLlj70xHe7rgcHCOL0dIgZDzluJrtIHLMloldoerzzEB3IzlhuijLwnuWx8eB6dZA3Hzhg7sGPcY2JY3HmrFmjL+GukaxNHSpZD6JDxIIvBQoZtDUfm7nqGU8IzoZV2GdL07otqyzja/MyuNAgRQz6DW/BBJpINcXgXCqersJFJwJIDKtQLP3xESQBqj2V2FSNy8VGemtQR78GP+ATG6ZnV/TpSXbtF8ro02AtQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,36 +102,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-People sometimes get confused about the purposes of DAMON
-special-purpose modules and sample modules.  Clarify those on the design
-document by adding a section describing their existence and purposes.
+Design document's special-purpose DAMON modules section is providing the
+list of links to the usage documents of existing DAMON modules.  It is
+missing the link for DAMON_STAT, though.  Add the missed link.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/mm/damon/design.rst | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ Documentation/mm/damon/design.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index f3db943d7efc..da0bc40c2261 100644
+index da0bc40c2261..c10a3dea3aa8 100644
 --- a/Documentation/mm/damon/design.rst
 +++ b/Documentation/mm/damon/design.rst
-@@ -836,3 +836,16 @@ modules for proactive reclamation and LRU lists manipulation are provided.  For
+@@ -834,7 +834,7 @@ To support such cases, yet more DAMON API user kernel modules that provide more
+ simple and optimized user space interfaces are available.  Currently, two
+ modules for proactive reclamation and LRU lists manipulation are provided.  For
  more detail, please read the usage documents for those
- (:doc:`/admin-guide/mm/damon/reclaim` and
+-(:doc:`/admin-guide/mm/damon/reclaim` and
++(:doc:`/admin-guide/mm/damon/stat`, :doc:`/admin-guide/mm/damon/reclaim` and
  :doc:`/admin-guide/mm/damon/lru_sort`).
-+
-+
-+Sample DAMON Modules
-+--------------------
-+
-+DAMON modules that provides example DAMON kernel API usages.
-+
-+kernel programmers can build their own special or general purpose DAMON modules
-+using DAMON kernel API.  To help them easily understand how DAMON kernel API
-+can be used, a few sample modules are provided under ``samples/damon/`` of the
-+linux source tree.  Please note that these modules are not developed for being
-+used on real products, but only for showing how DAMON kernel API can be used in
-+simple ways.
+ 
+ 
 -- 
 2.47.3
 
