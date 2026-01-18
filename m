@@ -4,183 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B577EC9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 10:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6812CD4A5F4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 10:58:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AFB26B0005; Sun, 18 Jan 2026 05:51:25 -0500 (EST)
+	id A76596B0005; Sun, 18 Jan 2026 05:58:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85D286B0089; Sun, 18 Jan 2026 05:51:25 -0500 (EST)
+	id A2DB86B0089; Sun, 18 Jan 2026 05:58:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 714D16B008A; Sun, 18 Jan 2026 05:51:25 -0500 (EST)
+	id 9307C6B008A; Sun, 18 Jan 2026 05:58:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 602AF6B0005
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 05:51:25 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C22E71A050F
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 10:51:24 +0000 (UTC)
-X-FDA: 84344768088.28.803EABD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E75B740006
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 10:51:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Lh/W0wSu";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8080E6B0005
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 05:58:29 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18F231604CF
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 10:58:29 +0000 (UTC)
+X-FDA: 84344785938.30.C9F6829
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6AAF41C0006
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 10:58:27 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zx4s0ZJ7;
+	spf=pass (imf20.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768733483;
+	s=arc-20220608; t=1768733907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/C00al6g6oPolPDWSn93FdlakxVTOB2fb9Nh4JRQcOA=;
-	b=uUKRC78BFK591HzfZ0YjQ3yEMhSBkBgZQvKcRrMQQZkUzF/JnVxI0yop43Al630fJTqXvS
-	e8aA8RclFpP7cEmLvPk0vSvaCpFst/72WCSwKfmVWcvazklddSSP2UqSdJUqwjGag2AnP2
-	fQVQjAWRTBOuejPbnyVOhNoGSyhpeWE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=efB5jJg9txWaP3Srv2/3fTGgn87O8iEs9FizbGyzl88=;
+	b=Eukgs+hFOQKlRII3yNDTXS0vhUw9bwY2HftnWpfIorfSo7eUmQc2u9i129V7VibXx2tIIY
+	od7pMlH6IMUVa+WMXs9fnnf/v+4WdCGHSEXHUTTaWc9jLg1m/QS/+NZfN5LfFVPGTeUXX4
+	gqrJx64Dupg62SLUbz4Gf7nrHEBFsrQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Lh/W0wSu";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768733483; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zx4s0ZJ7;
+	spf=pass (imf20.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768733907; a=rsa-sha256;
 	cv=none;
-	b=0kzlny2OdYAPe1exjLn5pzRIJqfScMb6cKnA8a9YviwX8U6zUEyBtziJs0AcS8E88xslXH
-	KmyDRSMOq86BkJIPG6XCHNscp10qEb+mDG/L+ykFg5YTN/COnm2wB+KY26dZHeWWPzvKkY
-	XaK/kBt6JTVPkbsK4wN9DbK2Hm37YB4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D15343FA8;
-	Sun, 18 Jan 2026 10:51:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB210C116D0;
-	Sun, 18 Jan 2026 10:51:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768733481;
-	bh=cRUnDqszYzqdtiCqFz8ReeBCDwhfi0apCW2AsbShb5k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Lh/W0wSuyD/3XxpnQZN74YCKsYSsPpd3jS1Q3r7AHgEO5xu2v3rSWtugLiHErSsAq
-	 4JpQxtNVF9al8cfXSw1DYrONPT7G8UsoJ77XHe6svoCRp/tW9Qfeji6jiFE7aHzsQH
-	 z/ZTnDUiA0wsPpzzE1vwt/IAY1BJ9VFLFNZv4BDnIfxxiIS8VdnNIqdVBYH/LrQFV3
-	 BWHp2W2iaokAL9JuD6rqhdXARUNaLG8q6Jb2XgJ0LlQ2ZObaymRkAkyImoQKx7BD6U
-	 AHBp/YjdIu4qjc7tm+BL9TbDFIM5qTw8uAjNTwjdQ0kHzePglSKWDfWKJkUR6zjvse
-	 qd7x6SKnbJnSw==
-Message-ID: <4fd1610b-acc5-4c17-a227-4d63272d3718@kernel.org>
-Date: Sun, 18 Jan 2026 11:51:01 +0100
+	b=Z9eZkBpYciSBvXfZy6wi5OHlZTz5SHLOfabIwa3a7REk01cHOQ5Sc4t3xqIRmHuXwPoI1o
+	g9Hl/75ChDN4Bh3m6u9iSCunC9iMq+rth8Hnm7qwx1mAMtBtOLHVA7DAL1p9vQ7xXrHJid
+	eq2JEWrDGx8RfgeIfKODYcXrK85MtTA=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a0c09bb78cso25649585ad.0
+        for <linux-mm@kvack.org>; Sun, 18 Jan 2026 02:58:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768733906; x=1769338706; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=efB5jJg9txWaP3Srv2/3fTGgn87O8iEs9FizbGyzl88=;
+        b=Zx4s0ZJ748EWDFk8KTkQXJd5FmTzGGGE5P85eliho3nV0RZqBxyt6BPtW21aNvtX95
+         2bNK/Atc6kKoA/fGxavw9PV4TckmZx+KDNaY0Iw2DrzluSZpCCUgYIADhfYmQXrRDd+t
+         Mx7xTwayGxFKeNVHnsGCsOn6+Bj/VW7pntXqwW3JHuYmsZ5X1TvzH8YD2zyoAT7jmJ7m
+         KaJcEX3L79RzekkpMsBwhp1xZMvMP0rwAgtNMGQWrnnADf1LkX/ZmxizsZcmoZWtzLCK
+         fcNuVZK/nQlO/nRsvqI1FqIT8KV3Bzmu9krvufYIWAVf53hccwtMuQ70cTZ/6/j4wLCf
+         5gYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768733906; x=1769338706;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=efB5jJg9txWaP3Srv2/3fTGgn87O8iEs9FizbGyzl88=;
+        b=ZYSdsiedWe6MEOG7PfpPqNpc60CWoKPZAd4b46R9T9PkZX6AlLGASNMZfShpiYRD5i
+         rBL0O3/0KaW7bgN3LEiA116SKQn5LsYDADvQNyeXK7BwhIN0lELNGhX7t4wGsJgl6wos
+         QA+WKUG4BJklgrDtSNx85/Ux1jgkC+7Vt59b02lFnGcRBDMFy+0PULIZ7GJHglHUxhV1
+         fZHRZsYq/WuPThMUkMilHKvpD1N32f0rPHbKw8+/yXIkWe1qy12VQfqCRjeuuWKLCFf+
+         IUMgoSxEC7Eom0nPdlxncxBmyHvRvL7OKc64AIkuIqxHkd13cfaXzUvo1uYhSE3bpzis
+         tbkw==
+X-Gm-Message-State: AOJu0Yzv6trTfbq5/tBHbzRvSxGszi1SnGCJCvgiRS5sjMrmaf8rsI2c
+	PpMALNd5Ip+pR1AYkRl2BaK3oZSVCD3Cnw3bkU82G1/cENEHMxdhNvdo
+X-Gm-Gg: AY/fxX4eHaOEBa5Bc1O3Q4QBTxSep4wI1g/XGhZMHUs8S4cdvw0UDrlgFyE1/RR8Wfx
+	lYCRLNEFAEWR/XXgDKH/07FaWok3YNdmD23ydgbrKQFGAG1I1BRClSW4m1KzbZCVEJSpEcE9jWA
+	J1wRMmy/0Z9YBPR2STyFqAb+l7uaO9FFF2U2/LD+sJa91YVnHOi1UXqczj9QnUoEXes9iW1bQ72
+	PsJ1Aq2JRlRtRSWmZ56sxEw6LZwKpzUCVlLxLmMmMYA1kmC7lBwPWOyh+z1RxQ+JXpITpN56yyn
+	VJhraFarnGtUopuxcMq9yFi3L+IB1Ill71DsrFvfF7Trm1cDkxKEJJFnaP9K4zo9BfGL6ivoP0K
+	5Ij0MoQO9J0X12IObcRrzqtlluqWjTGsAbt5zFm2YQJBR/6AqqFXg0I3viO4IHyDi7pwjLsPQdN
+	kVjklFk1Tpx+qy1+f7iSt2y9g3Rq/U+ybvrtXrH/NMFl54q6q5VOSj3SnqE5XkmMqRWwA=
+X-Received: by 2002:a17:902:f686:b0:2a0:e5c3:d149 with SMTP id d9443c01a7336-2a71780a3e3mr69817635ad.23.1768733906219;
+        Sun, 18 Jan 2026 02:58:26 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:68d0:4222:6b49:f651])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193fb239sm65708265ad.70.2026.01.18.02.58.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 02:58:25 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	jannh@google.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+c27fa543e10a45d4e149@syzkaller.appspotmail.com
+Subject: [PATCH] mm/rmap: fix unlink_anon_vmas() handling of error case from anon_vma_fork
+Date: Sun, 18 Jan 2026 16:28:17 +0530
+Message-ID: <20260118105817.1270617-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/pgtable: convert pgtable_t to ptdesc pointer
-To: Alex Shi <seakeel@gmail.com>, Matthew Wilcox <willy@infradead.org>
-Cc: Mike Rapoport <rppt@kernel.org>, alexs@kernel.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
- Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Yoshinori Sato
- <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
- "open list:MMU GATHER AND TLB INVALIDATION" <linux-arch@vger.kernel.org>,
- "open list:MMU GATHER AND TLB INVALIDATION" <linux-mm@kvack.org>,
- "open list:C-SKY ARCHITECTURE" <linux-csky@vger.kernel.org>,
- "open list:QUALCOMM HEXAGON ARCHITECTURE" <linux-hexagon@vger.kernel.org>,
- "open list:LOONGARCH" <loongarch@lists.linux.dev>,
- "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "open list:OPENRISC ARCHITECTURE" <linux-openrisc@vger.kernel.org>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
- "open list:SUPERH" <linux-sh@vger.kernel.org>,
- "open list:USER-MODE LINUX (UML)" <linux-um@lists.infradead.org>
-References: <20260107064642.15771-1-alexs@kernel.org>
- <aV4h5vQUNXn5cpMY@kernel.org>
- <080e493a-e4f1-4c97-a3e1-f76f126b5213@gmail.com>
- <aV5yIuGi9Ni5YP5E@casper.infradead.org>
- <1d110134-89ab-474b-bca6-cfbfd4b5057f@gmail.com>
- <85a0be43-3598-435d-a50e-9403b7e963f7@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <85a0be43-3598-435d-a50e-9403b7e963f7@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ix8oxfsnyyy3chpbmin7wzbr51c8h4ip
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E75B740006
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768733482-50952
-X-HE-Meta: U2FsdGVkX18k0TiIEkocAKspWNRc7dXkNfa2anKdfmQyhAZAHDDlbb3g+PwZai4vl/ujWtJ3I7fWhqIe8V/wJmqEqMCwnChb905B0uayfc7F6FzBQXjwzYtu4XAuiBv+2CVuCsrOyDx9Uo6+or6SVppwwEwL5LGgEqb/tk6980x7shNuPse3RlQtA/4mVPneGjwrwsaj3LwjVLq+zN07aWUIPmyxcK+iT0Ns9TLHk6LyZoiI048mguIuk/2smz6Je18MZljOkTbT9mekAgN5qdkQsotxZp1VlpoglCPeTjVetmQO2LgOALTVRdJeyguchsglvPDV5g0gWb3KKgG2W+gvwfMTUtkI1WwWwzZ/cuY+H3zrQ+IpbvvXmj7H8AHRagh3KOv3eAh7AdYllLTiuz9EI+XMXYNESuKYO6MU6KDFmVDNfHy1FlWITNSOszf99T9uzT6gkbPFX/ooJ/xLQOL5Gy6zAdehAwt8qADhEDDBSrvQ2eK1dLsgwIkyyvoNQPuvF8gOGTW/hLP6u8wKjZWFs0WFVilyrO3Jdn+JLsHoRzkPAF9KG41reb2048c4W9dlZIRLgdpAj3BbA/eCYpCL5yh+HxqDkmmBLGzri8Jy90M9m2PLHvkuen4riEhpJAxPBONs7Yny5PIQRT92i3jq+ipbfufueQ+pLwdKGxkRoMF1aykhKpCZruKFpe5NVboew5mKgV5Q2y863AhA9Tk7oeHSUsyLVXiEOsVxVpCLPE5XnnECOn54RR5OdjhUgWDgs1cMPNGdxcLM0FRaVYlELopSTUqzvhJaIraIo875yKM8YRAQcKg0FRxxCIqL8HACnBNg1vdkRh+WDwoz3jeSD9ORrI6uk/lbWpvvmcgoVllrfe3d5Alwqg8FWoMgK8ywP2s8T+6SlNt67tLX3F5QAR2GIaaSiKciS88LTBUkTFpeGXANvRkWfmOvdZXHtqRyFS+sRoqgS69PJfi
- p+T5oyPc
- Gb2VjkOpuArnv1xOQVx+uBs4xZ1jfJDF+0jlu9pvWTfMAntf49UYz0GzQeTB8yXCOOmINfHcbnXxLNeuIe8g8qIJeH1klze8frtQwoZmxvWmgTc545+KFYgCGvFHyEumtDBAozrN8Jm6ndQcMjNBosPYfjri7a8PBxnjfU4TzGWR9NSoDwXraK9ZoNKzmMFl+YsPX+7uxhLWB/VtUIzLnMmW3FD4OhEdtoWmT/4C804KFUg+QLrH6H8uwVyut4uGdWuIDNC8mzy0aHtZpndybX5TS2SxN65M6Br+QOY/zQF4/CPi3/o2kI194XvPrCJe0fZAiMu/AmTbJjTY=
+X-Stat-Signature: 4pnndbtgwzgez73qtee5dtjgxdz61u4b
+X-Rspamd-Queue-Id: 6AAF41C0006
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768733907-43750
+X-HE-Meta: U2FsdGVkX18Q9EhnVqHqgNSMeiLE7VN9hnQ6a4HZq835/kVsDbYKxTz910XM2jkTPxLOMeulqKpIRhqzd45r9+9Y72E4oR/EUXLd81KQGB6UWRYdn31EdGK6bO1zVFl1qDhSEu+fIGiHlS/iqWg+afdxq9PVzPzJQnV9KuuMBUuCspCaFF8zsfap0rYJAcNkd6iXXb2WAvRwDH46tO5XZ8oIJqKOEqGQh8wY+zvtkYYBLqdS3eGYOB2cvruw6WW91dJxe1Zr0saqeRVjneT3e1fsUiy3sJq/gid9F36jCnKnzp3FEKTr9XVK0kfCeNcVyt46w4Is8JbeVOPgmR4RaS5/JrJss76/JNQaKctbUkgVSUZdCNP1rv22IrpKYDlxbooMJKdeqq7gQzaNuxPoO/UN58GabsFZuFKan9RJGb5O2ByqLXn86EbYqpDKuEKcBT8eOu11oGwQaZh28PHCes6FaS/Is1jW3+KshsI6UXhvzmKjTd9doFJFWwPCo59POnFzC17FZ0TD9xunD4w8gWAbpAS1sO18T3GTmZY02GeWY3O2wak8U01e6CwcwH4OEn8LB4gIQCHydear/D6AWr+r1OWGmdQbclDPBJ5swGXVZeSORC1Kam4IOnjdnVr23Rngzxm/UsmpgGvrwhWabxqQo4z0zTzKHhu0S8Py+yyWS0E6uurN6cJJY0YZPys44u3FnSWoEqoC4QTlxjCIbhVrr6hh1ryjhcUbLQ8fEkhpccRuJSgyZzhMJy+HJSyCkwlxAUNlcvBmog7SBMlsNRvmINvrIJfJg/R/ICXqgZc/OfnWYmAX7dP1LvcGT6MksmVrmu0SpjSHjrLXINnGx5Cqq5xhMiJupngiri50TKXzJ6uUv/5EWdHUPNjfrFp+JfO216JBxWZqC55zP/jxmr9w9kt60YlHzqiV6OVlM0pDkva/xoy97y5OcleZVw4Rd0y/qyCN6kk9JJTUoMi
+ jq8ugrtT
+ bz1AUrvQDHl4VyJ3QDGnl1qyDR5iGYKmSxUqre40cddiWfVdCCQhZOBzrHQto1+grVaPpcrj6s43uGDDFs5vl/22LsmxiU6ItLzvth85f4Yx9kWLzTrxmDVbqF9nRiPTYz9CFws8CuRKwoUoVYQAwfnq3x8vl9ASaT03Kdqvuk02E6cPxKKKVnkyysXBRQbaBiSqn+3/fLR0/N+1VmYhAxXSBtHQeSJlpephpFurMbEhp0xsJaHWyxspQO2cNbxVV06xzSA77t+ynrEfMqTFNupKPIhDQhihPgzw7ep+CxMuodnPBZ9fypS4O0mQAHyrITCKqPW7OcMnDN19JqNYAMNa0qI6daDRymkiUinaP4SRsElwFN2Q/6Ygjhu9WS9lU5AVB5ICOvuc27BPiHsRRpZB7iI2WQBddeA6dpmEI2IN7IydXGPsFrrVohrf2toMFM4lE7Ks0Ci1Go/9TW69SaCtg2eh0MwMUyL/UWemyJhn+CHL0EvwUwGa6antLTALysrXEWWnUgBVA9HNxm7JRldJv9YDRq2ESHtt2IwJbgKoBiiziUXrYChgOO9e+9Cq6enJBHa3i6hVer4ZJRDi6o1kyEPJvNQeT2ng53DySSIdoaiVejhHWzDewtXmjqBDdHLXhMCqdnSemx3sSuzk2fdAMs6mwNRtj3dDEp3UJD0iMb8479KHsg3kv9fQX8CISjoUGXwUfkgoUgQc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,40 +123,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/18/26 09:13, Alex Shi wrote:
-> 
-> 
-> On 2026/1/8 10:23, Alex Shi wrote:
->>
->>
->> On 2026/1/7 22:48, Matthew Wilcox wrote:
->>> On Wed, Jan 07, 2026 at 05:28:36PM +0800, Alex Shi wrote:
->>>> Right, I will fix this. and sent the 2nd version.
->>> No, the patch is stupid and wrong.  Don't send a v2.  You seem to have a
->>> hairtrigger resend, so I'm trying to prevent a v2 being sent instead of
->>> sending a patient reply.
->>
->> Hi Matthew,
->>
->> I hear you—no v2 will be sent.
->> but sorry for a bit confusing, what's your expected fix? is the too
->> quick resenting? or the direction to alignment pgtable_t with ptdesc is
->> wrong?
-> 
-> Hi Willy, Do you mind to share the detailed concern for this patch?
+When anon_vma_fork() encounters a memory allocation failure after
+anon_vma_clone() has succeeded, unlink_anon_vmas() is called with
+vma->anon_vma being NULL but the anon_vma_chain populated with entries
+that are present in the anon_vma interval trees.
 
-I think we recently had a discussion that we should much rather rework 
-core code to consistently make pgtable_t a pointer to the start of the 
-page table or something like that.
+This happens in the following sequence:
+1. anon_vma_clone() succeeds, populating vma->anon_vma_chain and
+   inserting entries into interval trees
+2. maybe_reuse_anon_vma() does not set vma->anon_vma because reuse
+   conditions are not met (common case for active processes)
+3. anon_vma_alloc() or anon_vma_chain_alloc() fails due to memory
+   pressure
+4. Error path invokes unlink_anon_vmas() with vma->anon_vma == NULL
 
-Because the way you change the code just means that we will not be able 
-to handle code that fits multiple pages tables into a single page 
-(s390x, ppc) consistently.
+The existing code triggered VM_WARN_ON_ONCE and returned without
+performing cleanup, leaving entries in interval trees and causing
+memory leaks.
 
-	arch/s390/include/asm/page.h:typedef pte_t *pgtable_t;
+Fix this by detecting the condition and properly cleaning up:
+- Iterate through the populated chain
+- Lock each anon_vma
+- Remove entries from interval trees
+- Unlock and free chain entries
 
+This prevents both the warning and the resource leaks.
+
+Reported-by: syzbot+c27fa543e10a45d4e149@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c27fa543e10a45d4e149
+Tested-by: syzbot+c27fa543e10a45d4e149@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+ mm/rmap.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index f13480cb9f2e..acc8df6ad4a7 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -477,7 +477,31 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
+ 
+ 	/* Unfaulted is a no-op. */
+ 	if (!active_anon_vma) {
+-		VM_WARN_ON_ONCE(!list_empty(&vma->anon_vma_chain));
++		/*
++		 * Handle anon_vma_fork() error path where anon_vma_clone()
++		 * succeeded and populated the chain (with entries in interval
++		 * trees), but maybe_reuse_anon_vma() didn't set vma->anon_vma
++		 * because reuse conditions weren't met, and a later allocation
++		 * failed before we could allocate and assign a new anon_vma.
++		 *
++		 * We must properly remove entries from interval trees before
++		 * freeing to avoid leaving dangling pointers.
++		 */
++		if (!list_empty(&vma->anon_vma_chain)) {
++			struct anon_vma_chain *avc, *next;
++
++			list_for_each_entry_safe(avc, next, &vma->anon_vma_chain,
++						same_vma) {
++				struct anon_vma *anon_vma = avc->anon_vma;
++
++				anon_vma_lock_write(anon_vma);
++				anon_vma_interval_tree_remove(avc, &anon_vma->rb_root);
++				anon_vma_unlock_write(anon_vma);
++				list_del(&avc->same_vma);
++				anon_vma_chain_free(avc);
++			}
++		}
++
+ 		return;
+ 	}
+ 
 -- 
-Cheers
+2.43.0
 
-David
 
