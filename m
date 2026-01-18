@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EE8ACA5FE9
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 00:46:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2C69CA5FE9
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 00:57:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A09BC6B0089; Sat, 17 Jan 2026 19:46:15 -0500 (EST)
+	id 43EFB6B0005; Sat, 17 Jan 2026 19:57:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1196B008A; Sat, 17 Jan 2026 19:46:15 -0500 (EST)
+	id 3EC7F6B0089; Sat, 17 Jan 2026 19:57:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ED726B008C; Sat, 17 Jan 2026 19:46:15 -0500 (EST)
+	id 2EECC6B008A; Sat, 17 Jan 2026 19:57:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C0EF6B0089
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 19:46:15 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20E67D1D89
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 00:46:15 +0000 (UTC)
-X-FDA: 84343243110.04.0E8D69C
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 646F480004
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 00:46:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sdCeKnJJ;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C2966B0005
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 19:57:27 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A88BF590CF
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 00:57:26 +0000 (UTC)
+X-FDA: 84343271292.26.542C82A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D726440004
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 00:57:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n8OmmJFe;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768697173;
+	s=arc-20220608; t=1768697845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l47ZvY/hwfvNnl4jWoQ7pv1llIdAqhn4iZv/kumEeH8=;
-	b=bzpQrPqfagXGhLmVcHsNRoooEfqZwQjFYkqfHZ1OLAmBjMnU90HPju5b3SnaY8x8cB91Ds
-	s4Ygoj7BjsIRRa+0cXLpRlPjcvEY5qZ0kPqduX0CIXY/n7zKJVtnnJFqolNfaYhjtP5QvN
-	zGyCkaYDiZRj5HXcW9KsvkqOGRUCSPA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768697173; a=rsa-sha256;
-	cv=none;
-	b=aSya7AiGOnIGaHvqzhOUe6pP13bD4gMsYBl1jlKni44ZDDcJf4wcAwirdHJU//MQFzWMOg
-	678fmrGEH10xyd7yKkGjI3BipUw/ZP736BxibHfJML2ya1839C2BHZb2CZKdtfUvB5WkT5
-	nK00GKj2fpITxGSrtTOcAGwYTOnIR8o=
+	bh=9ZISGmpg9Alqh0mGCDBxFAobtAbGrkKE2QeSfFQVzM4=;
+	b=N4CdiB9n9vxI8hqaBBF8f8l8KmYZvvcADtw+Rt6OO4+Ddd9IHXB5PB0KKu3/V/R6l60tUn
+	VcNRUluV/2bPHKxH4z37z5OunOgpKiXSWU4cZEpNZYpFyiBpPUV0C09fIlzgGsDEwvsPx3
+	aVLShkic5NPZYVnmF7pZtStyv+7a3UY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sdCeKnJJ;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Sat, 17 Jan 2026 16:46:04 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768697171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l47ZvY/hwfvNnl4jWoQ7pv1llIdAqhn4iZv/kumEeH8=;
-	b=sdCeKnJJvkgZFYFRMSdpNBNmk71Maj3t2PEoh9kra/jMVAbvFmJrYTWCL//s/aS35q+Fli
-	YztFVArxSxj4F/GEh/tIuAJcxqsJvH1Ka5aC+kPn2CpyF8B/nWBduZoFPErZMybYizwyGa
-	eGUKlzcKVc0qKohqoudSvIMpHhkA3iY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
-	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 24/30] mm: memcontrol: prepare for reparenting LRU
- pages for lruvec lock
-Message-ID: <y2ffln6h57xb6rx6nf56wbd7uafhdswlvivjzuydzckplg3s4z@lyoihmhamwb5>
-References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
- <0252f9acc29d4b1e9b8252dc003aff065c8ac1f6.1768389889.git.zhengqi.arch@bytedance.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0252f9acc29d4b1e9b8252dc003aff065c8ac1f6.1768389889.git.zhengqi.arch@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 646F480004
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n8OmmJFe;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768697845; a=rsa-sha256;
+	cv=none;
+	b=a2kAWTG7xEEwXfrWzuBAUnfSz3ceXJU2cM0dDa0TKgIN1yA4lmFEWtJg9jfWQCYj7t0ibr
+	RgoXpZqCcZud+EQ1L2S+0RroS9hNSMgtHOSHq3vPLl4lsDupdKu+k4avz/eOPqRKlgwUkl
+	0Qd/A1LaiOwSjVgd8RnGEpHaio+b2z0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A5F1B40911;
+	Sun, 18 Jan 2026 00:57:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17332C4CEF7;
+	Sun, 18 Jan 2026 00:57:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768697843;
+	bh=+qlEcociOsXhFIAAdcAIVtM1BeAAOHRNXsXknKhk1Ls=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=n8OmmJFeegpmjTXfCuPr2nsg2Ue6kyfKGMGToVw4/bRZTybt/tEyM8TIi4ilXkN/o
+	 qTY7n2OxXZpNLddYJZCg32+yFIOXNJXnUtSjF6bL8Bpn/PQ9MNGJoAcI45Wt01Sbrp
+	 EGUMyYxytM7ELn4tlZqNLM9//8orztSXrFJ9YIGQ=
+Date: Sat, 17 Jan 2026 16:57:22 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com>
+Cc: cgroups@vger.kernel.org, hannes@cmpxchg.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org,
+ muchun.song@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ syzkaller-bugs@googlegroups.com, Johannes Weiner <hannes@cmpxchg.org>,
+ Muchun Song <muchun.song@linux.dev>, Deepanshu Kartikey
+ <kartikey406@gmail.com>, Minchan Kim <minchan@kernel.org>
+Subject: Re: [syzbot] [cgroups?] [mm?] WARNING in memcg1_swapout
+Message-Id: <20260117165722.6dc25d72fd58254cb89e711b@linux-foundation.org>
+In-Reply-To: <696b56b1.050a0220.3390f1.0007.GAE@google.com>
+References: <696b56b1.050a0220.3390f1.0007.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D726440004
+X-Stat-Signature: q1ox6bjwt8q3kw8cm4rfgswj8s4za5mk
 X-Rspam-User: 
-X-Stat-Signature: 7ojtjrprot65itm6g6jzue51wdhrk35w
-X-HE-Tag: 1768697173-914449
-X-HE-Meta: U2FsdGVkX1+37wT3lozH72IGcDizO91JabpQPAL3aiv4SPGJ7H4Y2BSbdabuVIGQysMOE7imztvV8g6dEpQ3JWZpScJHYVKKEykVYdv0jR2UzVwQ+KRV6R8wX20LVshFManHEbDUczAqOZXl3rfvC+zZHl6awbML/YpHEnoOxy0G9HJWfo8Zis9rLVwh2xQIWQ8B/J4WT7Efap2UQrZXWC7rmdnB5zzYad69PMr/wn63lALaiUG/FEMDZkA1D33J5gZHdyUWk1kN4yybmKWLj0X87X4d/+xuGV85Mrlo+ZqebZWvSn3YxwVgpV8kPNVLEZBkG/3Z8nHCKLMfLZXdLdVrXzNjnhoJuDWHYb1zb49QtEBJsKeVezwh/uZMF0RF//VCC0skeqTw677SBvO7tQMeEEoBVBSTkQIkPyiSs2tXPbRuzeLYaFfEPRmrcSuvRqz0UG6ee9NdR3i+a/NuxGTAo2dDTrnkIGc/6olaZlISeaxocmVe0zbkf5bAIcv6AY/uK/Arvq+ogAWiLtFXGq3qoup0sg12wTADeOhmYWf5ZRiD36jiFYuIDsUB1bHVjHtCsMzZJlmoKQyn7jhTzTvU5rwHLYJrzMKfwl4qyDPKCa7CNcVL5fXqF5j+rqCsbnXAQi60s8OKQhWmmZhSFOjqxzM8vvLMIcuvyg+wOakaQYTisUEnTsuIo8rc+I/FKnABtZjKcRW5HgRTLuThin4kni58hMKHlpY+xhG5hJfJmcpRIPwlMnPOM7y87sMRPkFaI4As5S4RpXi2V3p5by39ma4b3LrOKSnv51LJw4h3dzUcwBJP6/vvBpB0yoRE2D9EnQbrM1Uuh/1gU4GJhctbU7Bcn4v3773H1rEAbziGl0j0dWTKbLc1skifdtyN6fH0XYws2TlvhW3wAzSywkofFzFtYQWT22IGnSDQ2Z/wa5yI1jNZnd2NWZQ0uPQucthQJ3L1HkLnOEHeqmR
- pp2imkwu
- CGatttNJfDUmFnIIzF4kD4N3fd1STJ15l7dn2u3EuLuCBA/r6jtIruWP27NioiC++c7RbBc6fUU8uKLTUUm1TIXlukWEypLjun2r10qMnYS+RtmHV8C9uAoDdkyP+W1f5eIwxYqcJVleihXyxhW52vRI14vETe4i4s2Syy1uRKwTiOC293jx9YSaNm7aj7rBE9Ghd24TqzjJ2qzMV6+fdAT+XUndQcNBG8z3rofYrntIngTZUw4MGuloZC8e20m7ERCbGtZt8Q26g/Z91n4Ld/79gD5U8dgOToguX
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768697844-155069
+X-HE-Meta: U2FsdGVkX1+L1lDrvKikqMSQ12/0J+nJNVcWj3VM2WF1uZfyVQiWpahqhZc+TF7nTDkux3zPYggOnIJfoaJNWH+ySLX8kWqUU7jJ4v+SkGSZog7UYomxBXce4jqgahpzsOgyFCsLzQMUCySiPXXbWrZcwy8S97OVtEaxgK+A4BNFNkP9QgS9mi33j2Ho0+EA53li1v4/rRXMLCfrh6GwHB+7BWL8/a/N8IsObGMq70l1t81vhHTcBugqxGIHxhpzSM9huPPHZbYVvf/s73NLZHcMAMzuQ+ym43iBAn1clxd30jwT+PbMSx/cqOzThE4nhHUSi3iacvqAYJCuZuAkuXezJurUdZ2G8IQPk61AOOkAchicp33PS3uB/iiTHyGhLxP1QHFrpQ48YpjEwVofqlvBSHDR4Gpl+8rPl0770745CGNGiQ5IQDRSGLRPXLpE6WF5rumhNuSSUir/TESK3LCLbRsr7iFPOn++5smT7ajPuqYphTayzldD9rPnSWOLny7WqcuxCp/vL81DYS6k3w4f/F+klT0rttd2xrP350PRVeqWzeK3HkhsiOCD0wqP5x1vHFPoiWbx992W/yTPw2XvGUXlItiREl9+vi5HpNzvvaBGvmsEkRZD3cIcJbtWq1Xe7mpiIkjokOfCIFkhxcGXHgeOdN30UqV2QMpnIMXM5dbffJ1wRjEOUOqVC7LolLvc7xovb/VtMzErlFuHvaZFQvbHD4RN0Tvtm/l3oL/IXvo1vxenuWEq+QOfUOqxlvAjRo5SPMO4a7wX/nFuJIKjUBrhx8j0RfOxr9dbZpSz9v/Jl9cwPN8X94wWUK7IKztLBoxpy7N86hd6CCVfuLwYq+HRajmbWM4WXW//E+o10WulFaF5JH10MCm2WiMAYkqXcb3CiQC01uTDdz6WmSDk6Sow/LhirOb22dp2AK17TGOuMeoqJAn9wvGhQmcx70XFC5Rv8KtzU3QC5af
+ Z/MyWg/1
+ ansomehO3EgSxRsAAh7wL0ZCFFNe2O5pSRU9nbhQMFEFfKbmYaZ7WsjrOriEAG4NOF1pJM10s3zz67bx4Hs2Sp7ZhkuYniNffc/+dyGyuId1S5UXgpCqg/J6UYrQeJrO40pj2Xiln0sk1RhKuFUbj0t4LHOcpMSojUWECBM9vRiCfKgsy7oWl0HdYxvOR3mHsYUg/6kJbNGyJpA7l8zY0uLlnHXDPDynIM3qRiGpJgVDLC9ycWQDGKOIULAQVQKJ5D4oZ1mUnvEenT526ft74xFIVNt7H8jxMSfc/o4fLFufcE1qvEWrpEw7MQkWMMeULl9mXjR4yjTTFPI5qxEoIEgNt8m5u7pEkuyd42XkbRLILZe3nUjpbh4+cIXTXgC3X7IphC/BtFHyes2YR9YxOro6KWleTlOHeVGZukgIjRLwCd4uix7wfYLp+6Bls9hrKm45k7sz+7/PyVR1QBtilq7wScn/SPQ7hcMEN1ISmnF7PZT6QbuctPMacXqBBa2nS8e7djN71bxtT2JDU4iqoKborLNUvo2d9D3BdTbr5Nfz2U4w4gWGjI0oLf3pBSoyFyeKod064ZfF3nx8U4TVsR26iFpCvo5gK+qIpc6fTxNh/3IIh+3CvNbTWbaEmrf9zB2Xh4k7BNtcPH4qOQ65GcHF37dHhYEgpphDZhjxQE3apc4sgcrQnZmKn4zzg4ot4NGPrIRXqDMmPhfcBDho/PJImS0oRnOxIENq48vwDMSTHuOBUwtCgOCmGgxoLqHdpppLb08t405A3/WZUiJewbOGnbCS4zpkcEjl3N4NwJgPF4vpYGlBGBK+zmlEl5aafg4moQnJDShykOnFS7EG7TtT32AruluKzausYr8RdOSMT+TLvxefx2UjAcCMBaNLx3wpw9SIOVqexeuxmwuTjWiUxhwfK5AHOf4TkVr/UdUL8ftJ59G+OkVeGrO1Z7bH1NxCW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,57 +94,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 07:32:51PM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> The following diagram illustrates how to ensure the safety of the folio
-> lruvec lock when LRU folios undergo reparenting.
-> 
-> In the folio_lruvec_lock(folio) function:
-> ```
->     rcu_read_lock();
-> retry:
->     lruvec = folio_lruvec(folio);
->     /* There is a possibility of folio reparenting at this point. */
->     spin_lock(&lruvec->lru_lock);
->     if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
->         /*
->          * The wrong lruvec lock was acquired, and a retry is required.
->          * This is because the folio resides on the parent memcg lruvec
->          * list.
->          */
->         spin_unlock(&lruvec->lru_lock);
->         goto retry;
->     }
-> 
->     /* Reaching here indicates that folio_memcg() is stable. */
-> ```
-> 
-> In the memcg_reparent_objcgs(memcg) function:
-> ```
->     spin_lock(&lruvec->lru_lock);
->     spin_lock(&lruvec_parent->lru_lock);
->     /* Transfer folios from the lruvec list to the parent's. */
->     spin_unlock(&lruvec_parent->lru_lock);
->     spin_unlock(&lruvec->lru_lock);
-> ```
-> 
-> After acquiring the lruvec lock, it is necessary to verify whether
-> the folio has been reparented. If reparenting has occurred, the new
-> lruvec lock must be reacquired. During the LRU folio reparenting
-> process, the lruvec lock will also be acquired (this will be
-> implemented in a subsequent patch). Therefore, folio_memcg() remains
-> unchanged while the lruvec lock is held.
-> 
-> Given that lruvec_memcg(lruvec) is always equal to folio_memcg(folio)
-> after the lruvec lock is acquired, the lruvec_memcg_debug() check is
-> redundant. Hence, it is removed.
-> 
-> This patch serves as a preparation for the reparenting of LRU folios.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+On Sat, 17 Jan 2026 01:30:25 -0800 syzbot <syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com> wrote:
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    0f853ca2a798 Add linux-next specific files for 20260113
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=14f7259a580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=8d6e5303d96e21b5
+> dashboard link: https://syzkaller.appspot.com/bug?extid=079a3b213add54dd18a7
+> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=167ef922580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16d295fa580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/480cd223f3f6/disk-0f853ca2.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/1ca2f0dbb7cc/vmlinux-0f853ca2.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/60a0fef5805b/bzImage-0f853ca2.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com
+
+Thanks.
+
+> ------------[ cut here ]------------
+> WARNING: mm/memcontrol-v1.c:642 at memcg1_swapout+0x6c2/0x8d0 mm/memcontrol-v1.c:642, CPU#0: syz.4.233/6746
+
+That's
+
+	VM_WARN_ON_ONCE(oldid != 0);
+
+which was added by Deepanshu's "mm/swap_cgroup: fix kernel BUG in
+swap_cgroup_record".
+
+This patch has Fixes: 1a4e58cce84e ("mm: introduce MADV_PAGEOUT"),
+which is six years old.  For some reason it has no cc:stable.
+
+Deepanshu's patch has no reviews.
+
+So can I please do the memcg maintainer summoning dance here?  We have a
+repeatable BUG happening in mainline Linux.
+
 
