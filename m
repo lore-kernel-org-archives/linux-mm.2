@@ -4,107 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3845D4A5F4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 18:37:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83FDAC9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 18:45:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C3626B00AE; Sun, 18 Jan 2026 13:37:12 -0500 (EST)
+	id AC7956B00B0; Sun, 18 Jan 2026 13:45:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19B0B6B00AF; Sun, 18 Jan 2026 13:37:12 -0500 (EST)
+	id A9F1F6B00B1; Sun, 18 Jan 2026 13:45:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A4B66B00B0; Sun, 18 Jan 2026 13:37:12 -0500 (EST)
+	id 9A1A26B00B2; Sun, 18 Jan 2026 13:45:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF2ED6B00AE
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 13:37:11 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B29261A05B6
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:37:11 +0000 (UTC)
-X-FDA: 84345941862.26.DADF24D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DC66D1C0009
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:37:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RAC8mm1x;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768761429; a=rsa-sha256;
-	cv=none;
-	b=ySQCHWUUT54JpoLt5+x9onxoWjRWH9KtkZQ3dAFUPNwylTVtD6V3WKi1dyhZOuJObyMQCj
-	Ob682dalgy/Hein1+FcPF3znSFJp0Re3i74osVM9eUhN9yczytOqzS0ZRAufMyrk/W7fuJ
-	kbVGxeeMLOoqi2e+q+R7v4/uu5Bm2yI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RAC8mm1x;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 865496B00B0
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 13:45:20 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BE9B13B42F
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:45:20 +0000 (UTC)
+X-FDA: 84345962400.22.F72F447
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6B42518000B
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:45:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oBD2Hdoa;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768761429;
+	s=arc-20220608; t=1768761918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XCFN5GOdeoINMlQiEsJ6PanwSfmeQ6abGMUDhciel6U=;
-	b=p5yBdrmnB1CuHGdGRFdkXyFo04Noz5oi/XTtmF8CyLmSZIwfcUbx3Vx2V/Gbv0i5FlgywY
-	61Onw8IXtUQ4fjeHntrWeGveaW9AN1mMeJMEisz21GHbpKiwqE3ZP142l+tSQvzW6pImZs
-	1TGOH47kbKxUbFX/yYswvcZJwWlEpAI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768761429; x=1800297429;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8O/5joRe3cFbEUfBDmw9o/JAu/DiyxFA8DnJE5KGfag=;
-  b=RAC8mm1xxPxsYxj4wBam+6sti3gLCxFJRjKBZp4NU4YKK0nCPk4KH/yM
-   5DZswMlWySMs8a/OlN7h6x4YfE8BFF4QJrAtKpExC852JPTatLNKDaq+I
-   eNYrkZZaK1nLyVxy4oPGSSWkHmDXaQscM2FZY5d4KalS5uxCef6j9H2oO
-   a2y70HSJbjt/I7HNQhQvCHkz8B6qMX8TmZM04g4GqmHswCibfQyo0DbB4
-   9T2FjT01GfkL/6ZtNYLa3gCzH1Wh9M0pKtxkuiciHcp+yD3KEOCTKYhjb
-   6dfnT1iqNw7Ge0ih9tM01Eh/KxRKisnLdxuux0H3Ifc1iH4gVFWIiR+3Z
-   Q==;
-X-CSE-ConnectionGUID: mU1FJ9TFQFOZxHFfel+QzQ==
-X-CSE-MsgGUID: fe0MTgT+RliEccQ7thYBug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="73835475"
-X-IronPort-AV: E=Sophos;i="6.21,236,1763452800"; 
-   d="scan'208";a="73835475"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 10:37:07 -0800
-X-CSE-ConnectionGUID: hm2VYymoQTiQVnvTIOnENw==
-X-CSE-MsgGUID: Z31XybFiRhilpkSXiTJoTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,236,1763452800"; 
-   d="scan'208";a="210543106"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 18 Jan 2026 10:37:05 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vhXe2-00000000N9g-2MNB;
-	Sun, 18 Jan 2026 18:37:02 +0000
-Date: Mon, 19 Jan 2026 02:36:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Eric Dumazet <edumazet@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <eric.dumazet@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nicolas Pitre <npitre@baylibre.com>
-Subject: Re: [PATCH] compiler_types: Introduce inline_for_performance
-Message-ID: <202601190247.dDAvbbMH-lkp@intel.com>
-References: <20260118152448.2560414-1-edumazet@google.com>
+	bh=pG6ervDkKSUosqbRxekCZ3ojHiqNHhu6aA10dnFK378=;
+	b=6bFU6lHrTgISQ7rjftXFOSeAxAXKjpFOAkEJpOb5pC3/gZQOAZdcVHmEGPSgANzfqEU2B7
+	DAfplEZfGoFP/lLNgVsaZpNTQ7YxCYIsPc8WKBpSxllFqju2pun0fuNy6UhXlmtx9r60tG
+	D42g5ZbQ/q3mOhwMsJUmlPcioojdx38=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oBD2Hdoa;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768761918; a=rsa-sha256;
+	cv=none;
+	b=YwWkSqQAKu5xHLkNQBE8yIJfZJ2L3gv9lzIZT9Foy+movoO+epIavhcSiG+5BYnJeYDS46
+	8zTNGMygBw+if7sLttSniGK0/DSlaCov+7HjzzBhYg6GrRM20lhBxQ1nLRn1VkQEISPT7D
+	3MMgoirywn7txLgVjMlMQhA2XYqU89Q=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BD23260010;
+	Sun, 18 Jan 2026 18:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367D3C116D0;
+	Sun, 18 Jan 2026 18:45:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768761917;
+	bh=oH2bBMDerezU+CcBaheSnDr6LjKVh2X/AC6IH0/BIgw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oBD2HdoalYSok5N4pY6kBCNdvjRU8dXJkrEkHVtHj0jBamypQY51munrUhhHGFuDD
+	 RA88QQCAyMV1zKjY47JZ31ieLBmm9a7WTQbMzjlW7CLaPP+M9HkY+fGpZiZW9awpu+
+	 Mdlu/aJQ+QtjO9Rok7qlmqOw9rAqo3XO0T7R05P3R5hBdXjW7JWA0LPBT46HUn8+Px
+	 61sqh4puubjmd0A/gA2JB2/lvvHNIWdHhUBZOn56IfVKPdqr0YMvtPcSVOlKYum7+L
+	 8L2juZWZCPKId1o/AXgpM7nNZ8sFW2BeVGkpS+gALclZ7tmOkDPHn8HEcs5cdqK8dg
+	 bCC6fvyiQ8KAg==
+Message-ID: <87e0523c-1fc6-42aa-8159-150fd94d5b62@kernel.org>
+Date: Sun, 18 Jan 2026 19:45:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260118152448.2560414-1-edumazet@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/mempolicy: fix mpol_rebind_nodemask() for
+ MPOL_F_NUMA_BALANCING
+To: Jinjiang Tu <tujinjiang@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: akpm@linuxfoundation.org, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ mgorman@suse.de, linux-mm@kvack.org, wangkefeng.wang@huawei.com
+References: <20251223110523.1161421-1-tujinjiang@huawei.com>
+ <04b92008-f843-4879-b4a3-608cc5e1de4c@kernel.org>
+ <20260115101252.2e0cbe0559e62b988e5f7151@linux-foundation.org>
+ <1ad31dbd-6743-473d-9f66-a603b91d1e54@huawei.com>
+ <70d46998-a6c6-4c18-b8d7-f813582d3143@kernel.org>
+ <7471b637-537c-40db-ade0-ad373d7085f7@huawei.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <7471b637-537c-40db-ade0-ad373d7085f7@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: ra7idyekqgfqscm5qra8nwkrq4681tk4
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DC66D1C0009
-X-HE-Tag: 1768761428-541338
-X-HE-Meta: U2FsdGVkX18EJ9LlY/yRlZdWa3dpjEGpL9ftJjbR8QSat0OPznN0cXAU4qdz4zb0wlOf8Krtwnw0l3VMoPqa207lxvh/oimycA1tqU2ABA0sevXwsdHk+x2gQ/ECVYO3EvADikZGI3T2HO+UgkmMMK1s2Hh4cu0FsewG6oP0LGJoM1fmBm/hJZaxMDwXqBpQMA3vJr1vY44+ZueNvy3LeogLzDru9TKIeh8va2BW+u/cOeoYFuDeYRS3eZyU4ZHCRFXfYD0Bj/skRVrieVUl6BE0q9dY9+PCZ956gbhNsfEgEPazRMIB2TX/cnUxHUL8kPo1EuTdOWuAAchOQazOTJ6zfOyEBZtH6noCiATt0fGIzLEyZHUIlbzDsSmFeLFGDI2SuMHJ2ooToeiVrLSd+XCQlnyk21kokcQ5DhYQaqhDWqAOyE40rQCmLHij4KAERUe5oG7z45A5yywqMbWUEcidzyFoWdXVaJfjTPLLLzdV/wytSc0Hj2DpjGt5BeNQmrgnU1WJXFNTFmOc6YVl9Ya5+4hjze+YF+tElOhmgTNe6gLiR4NanO8jKvEZu2ibeG61+rNZ1lIKVQmdSvTlmbHsEbPuc65Mr/+KIpgVbLKpn7+yWwNV1Iw+wPGREqC4xiINQ5ZXSbRZIYINEHC6fALQebAIkPyXts8EffUwqdKPKxHL9TvRLJD+Do2gSRQZfSCn4PtvslG5g+ot8nZp0vPeQsnTHHAu6aEBSz4WWq3FQD+Twu9yyZMw59oPA2SpfTLh7i8+PS66V1eOHPYgq0sMSyWVUQWz/iSvkGvu+8YvqDLERr9yXVlFQDulAI1k3VxqNzB3Ol1Ta1M0x4QMhmT7CcaaFKoWLzeZzV9XrP3aHwzNWIAmFnGFJkahr6VvV3OXjXx11f4JhhnhapdGtoa3poL2RxR288Q5G5jWtPj9zLF7IUZzN4gNWaFx3aGWvu652wMBr2LtGYdnULA
- uwK/PAd8
- tq1kt8boUPFfJ/8cDw+33l1en7hC8KJrnq9C+TP7zQ+akdBqKuwha7U2JqbOtiR/z7/r0DXLrI6K9WC6Jh2PZ3kEDOJoIBEdLtT6wwrf55aHnjlAT6iPMMxekhGJwS9q1uiuxn7BDVyWdnloMbzAHJEtzokEYKM1przhz+JgfUUTr1U6wWXkQs3Sdc3qdJ051qMxhUv7kPe3xuoksKGicFwwGHvCrh7pSVBxcvlSXbwJ5Cqns8tEGbCjthzWNheiU+aNAnGjfKgIlHWEM28ugP+XUujUX1mSReddQJsYMXsOSKeKjMr64TTM4ltWxb/g2WtL9TV8KrtjEGZfdQRxKHhnpI2GgqruPJ+pQbmcJQOra4cOmij+kNOvvtAXQWxR17+SDOKaxZk4vuaX8qtVmO9yQxlbI+uLei2yrqvxeZBt+dSDIbxtEPzDXLQv/+7EdydlhfVZoHXa6zqDYIE/F8aRDjw==
+X-Stat-Signature: 49wxdjmanixq1f4bq6mns8zjkdg6zba8
+X-Rspamd-Queue-Id: 6B42518000B
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768761918-199300
+X-HE-Meta: U2FsdGVkX18oeJtcbR9T5uUWbeewsR8nqneDti5Cma2TWdnc5NQywdBk3qx1S+90ihnNa5WNMobewqwEl4t8vhRzJDaut80dqjyjQqPqZm58dlcYiwJU8uHbnJD9xNtanXlpOJJeesbhVEPobjXoxDCwYYIzjtylFd3NotSgzJEdHYJtrFPZym9oh6xRAm3nZD1dtV1r9TkeRKKBcXT7UONdGc0v9iUxJvpQqWUiyW61XWkDQeQTbYPzcw1vZ7X4QGIk7mFugURUCfPCtvS/86jkq1CnQiZysd1tZuHT4Zz6sLa1AfwGuTqtbaVu8QOPcu//ZbIqTGfYFrL5zDQ0bF8xAiV+8O7uCdpgC2/COKZgmnF745Y/6GIE24dQjWEs9lZSgBNtC47+fqBT1yM25GNWALwkzuZ4+iwVMNviBF3qbtelomXiiOa08IGSn8/k0MbsVMeMtzQbDBtFVMmgkdT857WTSawmFqL6N8obUFqWoUMXsPCD7GS3UnjM0EcZWLocY2AqFBMSXtMS8nJhAozIyyG3N0jDCDG764++xv6XgJzSO8qEx5gY6Tq9MG+3o7FsemeX3ReuEgE7IK3xm6lmEJCFibz6C443cGy/OJHslI/Pl95hXEh5PPEXYGR5jMvyS8SWIUjmGggHrPP7etqAwOWOAXxRHECl4Oz/JrEqoz6c40HX681zmPhWH7pLQ1iWUeTABFoq0VcoQ9BjYGHk+Kfl/6KidrgiQ2L8ZMtTnjgCoXZ9hz0n225Pbiv/fjcPf6yVPaXSMbtxTWLHESqgvESlOWUMYMViiySkJciUMsD9cO+4dL86h6dRkSjXjp2D+rKwOHSYub5hmuLvl27nba0zit5QvXu2wtbvaN7sHHEXgFAxJrO6ftSkEUlPZvHd1YvOObr8XvyqWFYvitb+xxEdDKl5uSbweNX2SJum0k14QHQi23kLBTATTV7SVxvGD3tEiJsuC5bxMEI
+ FCCiQhua
+ pZg12DO2vt7v5ZFXQQch0ZRBKuxjUukHmMXprfgJE99mZNvdSCM4gizU0QWqZPjmYn72JarGcfNpV/t0JpOk1djUFcF+rsxLRLjMaqs0+9756eNJNf20R/Ncct2Sm6DPE/xD1PFlgm4aeiBZQ+JM9RzQbXPabd35/bZBfZR3K/1AGL27AteclEfltnRHZRYFGX4qSZUCTKyAcyTCAUlBcaAtU1MMC2YdJAFqX85pAoWb5jbBIg4XLWN0NJ6wnUaU+HsT+SHlQLfczPSnwf7ECTvMWlWQYMK0zvtsstmt1QWAmHK3o5V/bqdCCc3fBjdamYWoPgumeexIZBR1A1jjK6auLF4N8/ej8+PmkuWc695I2nx7CHqu6vxggvt0j+geAR1dmqpNdIrHqImjdx66LEp40ujfDMLIIlXzbK9IdiMUEVzQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,84 +146,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Eric,
+On 1/17/26 02:00, Jinjiang Tu wrote:
+> 
+> 在 2026/1/16 18:58, David Hildenbrand (Red Hat) 写道:
+>> On 1/16/26 07:43, Jinjiang Tu wrote:
+>>>
+>>> 在 2026/1/16 2:12, Andrew Morton 写道:
+>>>> On Thu, 15 Jan 2026 18:10:51 +0100 "David Hildenbrand (Red Hat)"
+>>>> <david@kernel.org> wrote:
+>>>>
+>>>>> On 12/23/25 12:05, Jinjiang Tu wrote:
+>>>>>> commit bda420b98505 ("numa balancing: migrate on fault among multiple
+>>>>>> bound nodes") adds new flag MPOL_F_NUMA_BALANCING to enable NUMA
+>>>>>> balancing
+>>>>>> for MPOL_BIND memory policy.
+>>>>>>
+>>>>>> When the cpuset of tasks changes, the mempolicy of the task is
+>>>>>> rebound by
+>>>>>> mpol_rebind_nodemask(). When MPOL_F_STATIC_NODES and
+>>>>>> MPOL_F_RELATIVE_NODES
+>>>>>> are both not set, the behaviour of rebinding should be same whenever
+>>>>>> MPOL_F_NUMA_BALANCING is set or not. So, when an application calls
+>>>>>> set_mempolicy() with MPOL_F_NUMA_BALANCING set but both
+>>>>>> MPOL_F_STATIC_NODES
+>>>>>> and MPOL_F_RELATIVE_NODES cleared, mempolicy.w.cpuset_mems_allowed
+>>>>>> should
+>>>>>> be set to cpuset_current_mems_allowed nodemask. However, in current
+>>>>>> implementation, mpol_store_user_nodemask() wrongly returns true,
+>>>>>> causing
+>>>>>> mempolicy->w.user_nodemask to be incorrectly set to the
+>>>>>> user-specified
+>>>>>> nodemask. Later, when the cpuset of the application changes,
+>>>>>> mpol_rebind_nodemask() ends up rebinding based on the user-specified
+>>>>>> nodemask rather than the cpuset_mems_allowed nodemask as intended.
+>>>>>>
+>>>>>> To fix this, only set mempolicy->w.user_nodemask to the
+>>>>>> user-specified
+>>>>>> nodemask if MPOL_F_STATIC_NODES or MPOL_F_RELATIVE_NODES is present.
+>>>>>>
+>>>>> ...
+>>>>>
+>>>>> I glimpsed over it and I think this is the right fix, thanks!
+>>>>>
+>>>>> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>>>> Cool.  I decided this was "not for backporting", but the description of
+>>>> the userspace-visible runtime effects isn't very clear. Jinjiang, can
+>>>> you please advise?
+>>>
+>>> I agree don't backport this patch. Users can only see tasks binding to
+>>> wrong NUMA after it's cpuset changes.
+>>>
+>>> Assuming there are 4 NUMA. task is binding to NUMA1 and it is in root
+>>> cpuset.
+>>> Move the task to a cpuset whose cpuset.mems.effective is 0-1. The
+>>> task should
+>>> still be binded to NUMA1, but is binded to NUMA0 wrongly.
+>>
+>> Do you think it's easy to write a reproducer to be run in a simple
+>> QEMU VM with 4 nodes?
+> 
+> I can reproduce with the following steps:
+> 
+> 1. echo '+cpuset' > /sys/fs/cgroup/cgroup.subtree_control
+> 2. mkdir /sys/fs/cgroup/test
+> 3. ./reproducer &
+> 4. cat /proc/$pid/numa_maps, the task is bound to NUMA 1
+> 5. echo $pid > /sys/fs/cgroup/test/cgroup.procs
+> 6. cat /proc/$pid/numa_maps, the task is bound to NUMA 0 now.
+> 
+> The reproducer code:
+> 
+> int main()
+> {
+>           struct bitmask *bmp;
+>           int ret;
+> 
+>           bmp = numa_parse_nodestring("1");
+>           ret = set_mempolicy(MPOL_BIND | MPOL_F_NUMA_BALANCING, bmp->maskp, bmp->size + 1);
+>           if (ret < 0) {
+>                   perror("Failed to call set_mempolicy");
+>                   exit(-1);
+>           }
+> 
+>           while (1);
+>           return 0;
+> }
+> 
+> If I call set_mempolicy() without MPOL_F_NUMA_BALANCING. After step 5, the task is still bound to NUMA 1.
+> 
 
-kernel test robot noticed the following build warnings:
+Great, can you incorporate that into an updated patch description?
 
-[auto build test WARNING on e84d960149e71e8d5e4db69775ce31305898ed0c]
+And it might make sense to point at commit bda420b98505 ("numa 
+balancing: migrate on fault among multiple bound nodes") where we document
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Eric-Dumazet/compiler_types-Introduce-inline_for_performance/20260118-232653
-base:   e84d960149e71e8d5e4db69775ce31305898ed0c
-patch link:    https://lore.kernel.org/r/20260118152448.2560414-1-edumazet%40google.com
-patch subject: [PATCH] compiler_types: Introduce inline_for_performance
-config: m68k-amcore_defconfig (https://download.01.org/0day-ci/archive/20260119/202601190247.dDAvbbMH-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260119/202601190247.dDAvbbMH-lkp@intel.com/reproduce)
+"
+  we add MPOL_F_NUMA_BALANCING mode flag to
+  set_mempolicy() when mode is MPOL_BIND.  With the flag specified, NUMA
+  balancing will be enabled within the thread to optimize the page
+  placement within the constrains of the specified memory binding policy. "
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601190247.dDAvbbMH-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from arch/m68k/include/asm/div64.h:6,
-                    from include/linux/math.h:6,
-                    from include/linux/kernel.h:27,
-                    from arch/m68k/coldfire/cache.c:12:
->> include/asm-generic/div64.h:138:10: warning: '__arch_xprod_64' defined but not used [-Wunused-function]
-     138 | uint64_t __arch_xprod_64(const uint64_t m, uint64_t n, bool bias)
-         |          ^~~~~~~~~~~~~~~
-
-
-vim +/__arch_xprod_64 +138 include/asm-generic/div64.h
-
-461a5e51060c93 Nicolas Pitre 2015-10-30  125  
-f682b27c57aec2 Nicolas Pitre 2015-10-30  126  #ifndef __arch_xprod_64
-f682b27c57aec2 Nicolas Pitre 2015-10-30  127  /*
-f682b27c57aec2 Nicolas Pitre 2015-10-30  128   * Default C implementation for __arch_xprod_64()
-f682b27c57aec2 Nicolas Pitre 2015-10-30  129   *
-f682b27c57aec2 Nicolas Pitre 2015-10-30  130   * Prototype: uint64_t __arch_xprod_64(const uint64_t m, uint64_t n, bool bias)
-f682b27c57aec2 Nicolas Pitre 2015-10-30  131   * Semantic:  retval = ((bias ? m : 0) + m * n) >> 64
-f682b27c57aec2 Nicolas Pitre 2015-10-30  132   *
-f682b27c57aec2 Nicolas Pitre 2015-10-30  133   * The product is a 128-bit value, scaled down to 64 bits.
-00a31dd3acea0f Nicolas Pitre 2024-10-03  134   * Hoping for compile-time optimization of  conditional code.
-f682b27c57aec2 Nicolas Pitre 2015-10-30  135   * Architectures may provide their own optimized assembly implementation.
-f682b27c57aec2 Nicolas Pitre 2015-10-30  136   */
-5f712d70e20a46 Eric Dumazet  2026-01-18  137  static inline_for_performance
-d533cb2d2af400 Nicolas Pitre 2024-10-03 @138  uint64_t __arch_xprod_64(const uint64_t m, uint64_t n, bool bias)
-f682b27c57aec2 Nicolas Pitre 2015-10-30  139  {
-f682b27c57aec2 Nicolas Pitre 2015-10-30  140  	uint32_t m_lo = m;
-f682b27c57aec2 Nicolas Pitre 2015-10-30  141  	uint32_t m_hi = m >> 32;
-f682b27c57aec2 Nicolas Pitre 2015-10-30  142  	uint32_t n_lo = n;
-f682b27c57aec2 Nicolas Pitre 2015-10-30  143  	uint32_t n_hi = n >> 32;
-00a31dd3acea0f Nicolas Pitre 2024-10-03  144  	uint64_t x, y;
-f682b27c57aec2 Nicolas Pitre 2015-10-30  145  
-00a31dd3acea0f Nicolas Pitre 2024-10-03  146  	/* Determine if overflow handling can be dispensed with. */
-00a31dd3acea0f Nicolas Pitre 2024-10-03  147  	bool no_ovf = __builtin_constant_p(m) &&
-00a31dd3acea0f Nicolas Pitre 2024-10-03  148  		      ((m >> 32) + (m & 0xffffffff) < 0x100000000);
-f682b27c57aec2 Nicolas Pitre 2015-10-30  149  
-00a31dd3acea0f Nicolas Pitre 2024-10-03  150  	if (no_ovf) {
-00a31dd3acea0f Nicolas Pitre 2024-10-03  151  		x = (uint64_t)m_lo * n_lo + (bias ? m : 0);
-00a31dd3acea0f Nicolas Pitre 2024-10-03  152  		x >>= 32;
-00a31dd3acea0f Nicolas Pitre 2024-10-03  153  		x += (uint64_t)m_lo * n_hi;
-00a31dd3acea0f Nicolas Pitre 2024-10-03  154  		x += (uint64_t)m_hi * n_lo;
-00a31dd3acea0f Nicolas Pitre 2024-10-03  155  		x >>= 32;
-00a31dd3acea0f Nicolas Pitre 2024-10-03  156  		x += (uint64_t)m_hi * n_hi;
-f682b27c57aec2 Nicolas Pitre 2015-10-30  157  	} else {
-00a31dd3acea0f Nicolas Pitre 2024-10-03  158  		x = (uint64_t)m_lo * n_lo + (bias ? m_lo : 0);
-00a31dd3acea0f Nicolas Pitre 2024-10-03  159  		y = (uint64_t)m_lo * n_hi + (uint32_t)(x >> 32) + (bias ? m_hi : 0);
-00a31dd3acea0f Nicolas Pitre 2024-10-03  160  		x = (uint64_t)m_hi * n_hi + (uint32_t)(y >> 32);
-00a31dd3acea0f Nicolas Pitre 2024-10-03  161  		y = (uint64_t)m_hi * n_lo + (uint32_t)y;
-00a31dd3acea0f Nicolas Pitre 2024-10-03  162  		x += (uint32_t)(y >> 32);
-f682b27c57aec2 Nicolas Pitre 2015-10-30  163  	}
-f682b27c57aec2 Nicolas Pitre 2015-10-30  164  
-00a31dd3acea0f Nicolas Pitre 2024-10-03  165  	return x;
-f682b27c57aec2 Nicolas Pitre 2015-10-30  166  }
-f682b27c57aec2 Nicolas Pitre 2015-10-30  167  #endif
-f682b27c57aec2 Nicolas Pitre 2015-10-30  168  
+The "within the constrains" is the crucial bit here.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers
+
+David
 
