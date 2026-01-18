@@ -4,84 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31865D4A5F4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 07:55:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD07AD4A5F4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 08:14:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BAED6B0005; Sun, 18 Jan 2026 02:55:36 -0500 (EST)
+	id F3D4D6B0005; Sun, 18 Jan 2026 03:14:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49CBF6B0089; Sun, 18 Jan 2026 02:55:36 -0500 (EST)
+	id EEA9C6B0089; Sun, 18 Jan 2026 03:14:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B7336B008A; Sun, 18 Jan 2026 02:55:36 -0500 (EST)
+	id DA2B56B008A; Sun, 18 Jan 2026 03:14:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AAB56B0005
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 02:55:36 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B04768BDD6
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 07:55:35 +0000 (UTC)
-X-FDA: 84344325030.02.1AD5FF6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 93F4F20004
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 07:55:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C5DD26B0005
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 03:14:15 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 59FA18BE9D
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 08:14:15 +0000 (UTC)
+X-FDA: 84344372070.01.B66C7AD
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 62252A0003
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 08:14:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ciVlFyaK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of seakeel@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=seakeel@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768724053; a=rsa-sha256;
+	cv=none;
+	b=sUnPl27T5gKwlB0tQiPLDopMo6Wzt+EqlH4SiKlSVcISEuYuGjl/t2zl/puM1BUBwruFLp
+	6ZHhqqUDkjbHkLf8s1QYdIiXfNce0inTSP1ZDldzH9KQqMXph5A+xvkn3WsFV6zcij4GDu
+	dJaWkpPilZcL3pCktmC1KaPzcMHwwjk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ciVlFyaK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of seakeel@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=seakeel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768722934;
+	s=arc-20220608; t=1768724053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gAIZFPe1uai1a03fR3WAtOKjfrL1J1ZiWeo9lXhOgbY=;
-	b=ZafMG7uPQCOiXVb3Nn2JWmUk7RcFNl9RSp17Jmt6Le5Zh5BRZL3GSlDwVmvkwnjpgk+Feq
-	A4wvVzO3KUo/t8y6OE0OcgllChwX06ImYt2pO7awzsJPIUxPlPtcF4sxjV5PRwhSfh26n4
-	fsbc8ziU87OLMyxPehUWM0qadiW+MA0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768722934; a=rsa-sha256;
-	cv=none;
-	b=D3KBCS+/V3UC095FiS6FkJWpBj6TOGuPQO/MXsSmUuC8C6K8djNl0hsqcsopgo409fgJ62
-	XsMrPctsHKTg5Z7F6fAp3sUuu41pFQG7xuXQTUSF9PQpPo2vfEb4fqfhJa38AEi8PM6vvc
-	eLSwUXq2Wafxi9L+ZYuX6vieEQSL8O8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C639E1517;
-	Sat, 17 Jan 2026 23:55:25 -0800 (PST)
-Received: from [10.164.10.251] (unknown [10.164.10.251])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D068E3F694;
-	Sat, 17 Jan 2026 23:55:28 -0800 (PST)
-Message-ID: <5957ae48-87b8-4981-a6f7-8113141e7b6b@arm.com>
-Date: Sun, 18 Jan 2026 13:25:25 +0530
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=X+fhLmMt6EbvGWzllqZJVhmHGvaT37bdUz8irugZaMU=;
+	b=STT8ey6DyXsmCKBnq91IvZTqOj77799sAEE22jReqZmX8G4ujh7MBOxGjT7y5RCaV9prIL
+	Q4gEPdpYEGoTe4DxaNWs60tMbZjTFME3nW9voiTgdmVz1MslswRQ/aqHyXgJtlLhX3QU+e
+	dXaL+Kt5RhRo3vR4raSMMV515vfh0f0=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a0d52768ccso21781805ad.1
+        for <linux-mm@kvack.org>; Sun, 18 Jan 2026 00:14:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768724052; x=1769328852; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=X+fhLmMt6EbvGWzllqZJVhmHGvaT37bdUz8irugZaMU=;
+        b=ciVlFyaKQfirykFNLOkSwj/xovppx4U6/Wg+gKaYvpOPrcJq7ErPZWn2DaiTdlyVWz
+         bRx8JQAvZ7Bnhj663zNCRd/mK8mfKzTX3wV8jWZsm++U6XxszWVoIzYIYc8nj1zp8OSM
+         gU5vcF5w5usyVERjvAriobeSTY9nnN+6rJBxVAv41wZNJVR6fuP9t/xRYYRj1HfnXgVh
+         YvOCfvSvWOGdIy7gH+URmo0bV/CLhyc6J/MhV/3g3ZmXu+dsxOfD/mcmpasfm+TR01et
+         FskkC9ZhoYnY5VcPAcRQjq6yaiIRyX9k6Yv6V3pxHwVsngr1P6jaw2GqxM95vH725tfE
+         quMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768724052; x=1769328852;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X+fhLmMt6EbvGWzllqZJVhmHGvaT37bdUz8irugZaMU=;
+        b=D0O8lH2iAEEMkQmw56aU3TQmMTptLWHz78u/JgGjbzcCBjCV5peRVjJx518WEBA/hY
+         6HhYRBZm6Gds8p0fqYI9JSBh2tPuP9+CdsmcOLiR9WacD0wfVwMiBwS7n2upiH+brQoS
+         5disxKagh7cW6lr1Kk5sbGkWsrqHhO5U+iNOgQNM1ft96QU2GfbCW0VqZSEWZHb/XFlv
+         VpoLS6vhGHi/VNmObF3HEp0Y2tovD16sSrpFap8mEKELiqnYSB1dyPaIteMxF/f7R54I
+         /0970Cq3CCK0LChOsena4LEj73YN9KOorbBOQaRZLoxc2BBlg0zj8N+mKc7BfpZYw7Yd
+         hhMA==
+X-Forwarded-Encrypted: i=1; AJvYcCXL4/CtqPD550vMsy05fYK84eRDbdU+pPXS/Jl6+dD/O4OxjqBbBI3rVLzkO/dFnQnI9P6e12V4lw==@kvack.org
+X-Gm-Message-State: AOJu0Yz13hZUqqTAk2AgfNeUv1xUMAo6S9FhQT1adG9K79XKq+0n9umX
+	NnMsKrFx0vv9CH5o+Ii/Aj9qGK86LIYua2RlhRsYVhp97ScA8NhxX+Ah
+X-Gm-Gg: AY/fxX5abKwoiTJjglvXelDOvTsPZZdbQ/4QzJ85gpZ/TIpHUhh2tPvEaESRj+pwmws
+	sEQo5Li3WOKArWosZjiBBz21IWDg6ZwQHxOgc0tTKuINiyXVoTpYFNtoLXFuWhNn70XufzwWRDZ
+	wvVPoIbmErLacFMpQ2BtIoZWxmFPKj4DtLbXCyyap+/p3PzgdFZPa76Jt562FJXSAtTnsTYqhK3
+	xiZJJekR488aBpzM2WjOH95UvJXzFcITX6d39Ev+KVGNT1WZhHLcngal8DdTp+QZkDyFr8FSj29
+	xqQ0hrsZUHUuYCgyqtqTsIWZEiNqQyYccYRbqRTMPMhQI8S2OxSPM1Wl9gPePjgQkojC4Doq5hn
+	Yp6XJoBLirQWbUXL0rqiUq/8b/IkWNx8I3eOeS3ZoPOuJ31Y7jhNemGvGnUXsrQYNml0DjJWePf
+	Cs05rS89kq
+X-Received: by 2002:a17:903:40c5:b0:2a7:3dae:de9b with SMTP id d9443c01a7336-2a73daedf5fmr2287485ad.44.1768724051933;
+        Sun, 18 Jan 2026 00:14:11 -0800 (PST)
+Received: from [192.168.2.226] ([114.92.45.6])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190abcf0sm63240195ad.12.2026.01.18.00.13.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Jan 2026 00:14:11 -0800 (PST)
+Message-ID: <85a0be43-3598-435d-a50e-9403b7e963f7@gmail.com>
+Date: Sun, 18 Jan 2026 16:13:47 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: remove virtual_address_range test
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>
-References: <20260116132053.857887-1-lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH] mm/pgtable: convert pgtable_t to ptdesc pointer
+From: Alex Shi <seakeel@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>, alexs@kernel.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
+ Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+ Arnd Bergmann <arnd@arndb.de>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+ "open list:MMU GATHER AND TLB INVALIDATION" <linux-arch@vger.kernel.org>,
+ "open list:MMU GATHER AND TLB INVALIDATION" <linux-mm@kvack.org>,
+ "open list:C-SKY ARCHITECTURE" <linux-csky@vger.kernel.org>,
+ "open list:QUALCOMM HEXAGON ARCHITECTURE" <linux-hexagon@vger.kernel.org>,
+ "open list:LOONGARCH" <loongarch@lists.linux.dev>,
+ "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ "open list:OPENRISC ARCHITECTURE" <linux-openrisc@vger.kernel.org>,
+ "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+ "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+ "open list:SUPERH" <linux-sh@vger.kernel.org>,
+ "open list:USER-MODE LINUX (UML)" <linux-um@lists.infradead.org>
+References: <20260107064642.15771-1-alexs@kernel.org>
+ <aV4h5vQUNXn5cpMY@kernel.org>
+ <080e493a-e4f1-4c97-a3e1-f76f126b5213@gmail.com>
+ <aV5yIuGi9Ni5YP5E@casper.infradead.org>
+ <1d110134-89ab-474b-bca6-cfbfd4b5057f@gmail.com>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260116132053.857887-1-lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <1d110134-89ab-474b-bca6-cfbfd4b5057f@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: ky81nkbzjp8fpr6x4jkaeao64f4rkstj
-X-Rspamd-Queue-Id: 93F4F20004
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768722933-847813
-X-HE-Meta: U2FsdGVkX18DN++L9UOU7hzmOE299JTMj8Pi4lHIAHMFWfCyAs3XehRVKPfuzvFD/dFh6qPy7DUS6jjaFtYhQJVl8u7eVhKZrJyaGS9S/g56DhZvi8BpNwSyksONnOXfuW/9kFwUS0/bV82RsBzP5Vuiqu4ttMRsdkoXYshP3H4lQOT+IKQv/bEBB9r/Uo86aHA3oUTz39IKXCNWeJ60tileBOVP6/wv9EDb/Lg1ev8xJYa3Eh3FvFgLWAk4VjuHJeMiOml0dGkbbnf3Uoosde4NhhK4sXmBhsjFJxa7WkznhNOyuDip7nDuMvT1numAOjLE/cgMrJllktfwdQNtNl8IrzAKVTUoSjIPUthw2HQtpIYRDQ3YiHrKYomn8rF3FUR5XNWhmo7cOkmHA0lgJhUe3HGtPk/yaMiSXUIIeye4hf1Se/h4B6FPG0aVkCXQZ22bvYaYvW3KqQK8J39KYxxbfTrJP0/XTkSLMSt4SbLwsKZ5+67YPtYMjfkklI6eBVoju/JlF81bEbp/vKbsCsDTCnjGwpUOev7Ptx6ywjedr+Met9DHvX7pTqIpt0UEpFpIWDy+Kd2qks7+uPjunfMCgRZk7dd0+0vLivqk7dWxGVm1z4DAkn+MoLdjtsQywXY5UnO924IwLzxWheW1hPayX8C7pogXehSID4pCDO3oHuxXP/OXJNmlTnJ/5FpFj7tOIKXhKLcZFWU+ePmd5Ik6tUltp/R7/bB+HhJ2qk7R78yez4Fn2UqRWMzRzFzefh0svP1lGBYRNDxYz9VR59iZmiQU4PUF5+8t2JWP7YIGy+i8QYa9dfB3NyDcL/JMgpi12U8Ry5ibSWDHNpLOPDJtYWdCwD+JMAk/6jcOleoxqSstNg5XD69KO8CPoL9fkdnJnZ5jEp93Y2Wte/dTT7gzyMmOeC/ms8Bvzxa+ujzeV+eMfHR7QGRWUFeflTvYZcYu6I4/cO2sjIUn6aP
- 9G5H5Jr4
- Zwi4xnZ/vTDrKwHs0EBhxZXl5XD+QJ5/JAkZnJixJYQjGf+PTyNC3wi7JnmiXK5QgvgcbV4gH4icYODqv56o03h64DPCNXgW8KQT8iIwBdJmF2IpyM+rx71W9NdvdsPt3q/lFAMBpJuC8wCJGmSVOlTE5LAEu0T2s6J0pN7iRdBhsmjC7CY6RjZosYeTAcveqPCvWsVBOsot6Cc3j8aIyLhCy+mjhOBR7Hic79HQU7sfuPYjfV/tu8IcMLLfjZkFJMbX6Bi0iX9FGIw0qqS9aSq9u8ishR7jUEZ9BNEttjrJh/+U=
+X-Stat-Signature: oiu4azegtne3p9dk5keh1yjh3uqtcce9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 62252A0003
+X-HE-Tag: 1768724053-337987
+X-HE-Meta: U2FsdGVkX1+ilw5Ifk++dsguvzihv4PTr57Ba+cPbtoBYt1puXTRe0W7EBi1VZZEwNVwaeUdTRzh7X07a76QINIqpxzVVn2YgJbVRs0302QPzMt0ExHZBrdrHB2HLwxnVou/CBiW3YUg3m0H6tKU1adhGEQ/+MuOBd+I9NQNB2oq6JjONU1Y3jYpcm+jA9tVUn4Pi0nuZ2l3uf4odd+/9289aRPFzRCgSA7UOa8zBCJ/Qgk8p7A9dcP0KEF22xkDkKCNxO6y19RyA5zOP911zXdCE8TE6vU/qK/a3uB/iPWIUMurAh7Tq/Jx55goWzSPzXr68a9B86hUyD3K33ciAfIgeoZlwFsHMsKiuMho/3m9smISO63hXfsyTNt9WOp9iip0AAeCGPkwUzGMReOkzTFMjn87nmiM5WyGgte/TrQKzbIhV6YIWq4nWqOzWPXLAh09KF00DsGsSYHT73Oy2OJsOEoVDgJPPvT3t2eY1fU43MNNe2SccPy/9Xky4Fk4ihJIlWSiZw9icN2gNBBW8E6OtmuuZHpSdpoTbYEIBTNUG4TVsXpkfbp/nzVzcwl40eL9H0hUfaeWITTKZRRpB9GsVr84kGP4yzjQzZgC8mEjMTy3kriJAbWBImA3cf8ZfLQ6u0ZPDMQL1ElHJnp/GRClOr4tPlH+E6yueOLO2K1eL/caAKs5a7B/Y59yVPRfKe4nayOSExCTgxlCBFCm2gub4s28U6QWN1NKzOjecmhhgRM/QRPmunopr/jA+QStzkvQpf9CTA2I/QMtaXyAi0MjnH8UJ1+JrIIJZ0hOoXh0nqDJVSpN/YhhDxhvLWQtpqJVbT4rAd+/q+VqrNdNUN5YVe34nAY0T1Qg7QQ66sHcrAOMrfSWiCGEYsZogtQQ8U0NwBWZzgNvYcdr90z4u0UUI1/AFAWpS6xCuDWss4E7HVGZmnStQ30uvGhPoXU0sQid4h28/thagQJGiGR
+ qCtd6Csi
+ tAyKQf0opxr8EAoTyJo6+vkXKF9UNtBZoYn5T/WBL8fiF5k/Sp+4w0MHzrfr1mVAIhI3yKYVlzPrqbNhf7pEGKyy870ijFox4HLlQRjNFZe4Zr11me+kQV/HK0W5Gr46gbJ/Ce5EUt/J63kY9zQQ7g2vy0Uxk5JToGl50uuZi286FOBdcHEDVI/1OdJKMGlXm8RVv6p6dvtp3qFQZDsowJx6VLwlPIaNrXnBYNA35/kIRP9vkz+l/g+CPpDd5HmvcVqprZ3k4Zst1o7ZMLf/jAyIO9MGn6QVLCsZQ5wMG5vmaRZvluvwcN9GbKG2HHMqDGZbVJAcV9aeiqd5dUbpdlV5FpePc1MTNYmBdNV3bk52Fprk+ng3Mo9Egqf3QBwXYIo6OwGpH9IqSIfZ9uMVQjnxBHfByam2TSIjfQXIS7ClMGw62X1qjQ7pSDZ5njaK0IHfes2iAdM0XeVNG+EAkUlQWfTCeDnazlZ1gQgho6Wo5D6UcvDfRyN8v2sVcjDeGNKbn0yIFXBIEUjdSS4h0RQ3aVUgJPwlkBEyoY9Y+wfygNCqBtWk9dfhbc/UoGBTo4Ifj9WTIuuaXa+rsB4KL/a8sbBIdIfdWy0AC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,397 +174,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 16/01/26 6:50 pm, Lorenzo Stoakes wrote:
-> This self test is asserting internal implementation details and is highly
-> vulnerable to internal kernel changes as a result.
->
-> It is currently failing locally from at least v6.17, and it seems that it
-> may have been failing for longer in many configurations/hardware as it
-> skips if e.g. CONFIG_ANON_VMA_NAME is not specified.
 
-True, the test gets skipped for me since the mark_range function was added.
+On 2026/1/8 10:23, Alex Shi wrote:
+> 
+> 
+> On 2026/1/7 22:48, Matthew Wilcox wrote:
+>> On Wed, Jan 07, 2026 at 05:28:36PM +0800, Alex Shi wrote:
+>>> Right, I will fix this. and sent the 2nd version.
+>> No, the patch is stupid and wrong.  Don't send a v2.  You seem to have a
+>> hairtrigger resend, so I'm trying to prevent a v2 being sent instead of
+>> sending a patient reply.
+> 
+> Hi Matthew,
+> 
+> I hear you—no v2 will be sent.
+> but sorry for a bit confusing, what's your expected fix? is the too 
+> quick resenting? or the direction to alignment pgtable_t with ptdesc is 
+> wrong?
 
->
-> With these skips and the fact that run_vmtests.sh won't run the tests in
-> certain configurations it is likely we have simply missed this test being
-> broken in CI for a long while.
->
-> I have tried multiple versions of these tests and am unable to find a
-> working bisect as previous versions of the test fail also.
+Hi Willy, Do you mind to share the detailed concern for this patch?
 
-Does the test fail for you even for commit 13e860961fd4 ("selftests/mm: virtual_address_range: Switch to ksft_exit_fail_msg").
-I have never observed failure at this.
+Thanks
 
+> 
+> If it's the first. the new change for review address Mike's concern.
+> diff --git a/arch/arm/include/asm/pgalloc.h b/arch/arm/include/asm/ 
+> pgalloc.h
+> index a17f01235c29..a204c3ac800a 100644
+> --- a/arch/arm/include/asm/pgalloc.h
+> +++ b/arch/arm/include/asm/pgalloc.h
+> @@ -94,13 +94,13 @@ pte_alloc_one_kernel(struct mm_struct *mm)
+>   static inline pgtable_t
+>   pte_alloc_one(struct mm_struct *mm)
+>   {
+> -       struct page *pte;
+> +       struct ptdesc *pte;
+> 
+>          pte = __pte_alloc_one(mm, GFP_PGTABLE_USER | PGTABLE_HIGHMEM);
+>          if (!pte)
+>                  return NULL;
+> -       if (!PageHighMem(pte))
+> -               clean_pte_table(page_address(pte));
+> +       if (!PageHighMem(ptdesc_page(pte)))
+> +               clean_pte_table(ptdesc_address(pte));
+>          return pte;
+>   }
+> 
+> @@ -141,7 +141,7 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, 
+> pgtable_t ptep)
+>          else
+>                  prot = _PAGE_USER_TABLE;
+> 
+> -       __pmd_populate(pmdp, page_to_phys(ptep), prot);
+> +       __pmd_populate(pmdp, page_to_phys(ptdesc_page(ptep)), prot);
+>   }
+> 
+>   #endif /* CONFIG_MMU */
 
->
-> The tests are essentially mmap()'ing a series of mappings with no hint and
-> asserting what the get_unmapped_area*() functions will come up with, with
-> seemingly few checks for what other mappings may already be in place.
->
-> It then appears to be mmap()'ing with a hint, and making a series of
-> similar assertions about the internal implementation details of the hinting
-> logic.
-
-The revelation of internal detail starts at 010409649885 ("selftests/mm: confirm VA exhaustion without reliance on correctness of mmap()").
-All that does is to check whether mmap failure actually means exhaustion. This can reveal bugs in maple tree,
-if it cannot find a 1G chunk in it, even when the gap is present. This is an internal detail which is not
-expected to change - no one reports any breakage (AFAIK, please correct if I am wrong) until after 10 months, at
-commit a005145b9c96 ("selftests/mm: virtual_address_range: mmap() without PROT_WRITE"), that too not at the
-gap assertion code - the breakage happens at the while (start_addr + hop < end_addr) chunk of code. In retrospect I should
-not have added this chunk - the purpose was to check whether the VMAs being advertised in procfs are actually usable, testing
-something which, in case breaks, is extremely easy to figure out and fix, without putting this functionality in the test. And, I
-had no knowledge at the time that this will cause pagetable allocation and will touch physical memory. So commits
-b2a79f62133a and 3bd6137220bb could have simply been avoided by removing the bit of code I mentioned.
-
->
-> Commit 0ef3783d7558 ("selftests/mm: add support to test 4PB VA on PPC64"),
-> commit 3bd6137220bb ("selftests/mm: virtual_address_range: avoid reading
-> from VM_IO mappings"), and especially commit a005145b9c96 ("selftests/mm:
-> virtual_address_range: mmap() without PROT_WRITE") are good examples of the
-> whack-a-mole nature of maintaining this test.
->
-> The last commit there being particularly pertinent as it was accounting for
-> an internal implementation detail change that really should have no bearing
-> on self-tests, that is commit e93d2521b27f ("x86/vdso: Split virtual clock
-> pages into dedicated mapping").
->
-> The purpose of the mm self-tests are to assert attributes about the API
-> exposed to users, and to ensure that expectations are met.
->
-> This test is emphatically not doing this, rather making a series of
-> assumptions about internal implementation details and asserting them.
->
-> It therefore, sadly, seems that the best course is to remove this test
-> altogether.
-
-The objective of the test is to exhaust VA space and find out bugs in mmap(). It has
-been useful in discovering a bug at [1].
-
-[1] https://lore.kernel.org/all/20240123171420.3970220-1-ryan.roberts@arm.com/
-
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  tools/testing/selftests/mm/.gitignore         |   1 -
->  tools/testing/selftests/mm/Makefile           |   3 -
->  tools/testing/selftests/mm/run_vmtests.sh     |  12 -
->  .../selftests/mm/virtual_address_range.c      | 260 ------------------
->  4 files changed, 276 deletions(-)
->  delete mode 100644 tools/testing/selftests/mm/virtual_address_range.c
->
-> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-> index c2a8586e51a1..702e5723c35d 100644
-> --- a/tools/testing/selftests/mm/.gitignore
-> +++ b/tools/testing/selftests/mm/.gitignore
-> @@ -32,7 +32,6 @@ uffd-unit-tests
->  uffd-wp-mremap
->  mlock-intersect-test
->  mlock-random-test
-> -virtual_address_range
->  gup_test
->  va_128TBswitch
->  map_fixed_noreplace
-> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-> index de4afc34e3b1..2fdb05e5a56a 100644
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -136,9 +136,6 @@ endif
->  
->  ifneq (,$(filter $(ARCH),arm64 mips64 parisc64 powerpc riscv64 s390x sparc64 x86_64 s390))
->  TEST_GEN_FILES += va_high_addr_switch
-> -ifneq ($(ARCH),riscv64)
-> -TEST_GEN_FILES += virtual_address_range
-> -endif
->  TEST_GEN_FILES += write_to_hugetlbfs
->  endif
->  
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index 2dadbfc6e535..452875db532c 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -399,18 +399,6 @@ CATEGORY="hugetlb" run_test ./hugetlb-read-hwpoison
->  fi
->  
->  if [ $VADDR64 -ne 0 ]; then
-> -
-> -	# set overcommit_policy as OVERCOMMIT_ALWAYS so that kernel
-> -	# allows high virtual address allocation requests independent
-> -	# of platform's physical memory.
-> -
-> -	if [ -x ./virtual_address_range ]; then
-> -		prev_policy=$(cat /proc/sys/vm/overcommit_memory)
-> -		echo 1 > /proc/sys/vm/overcommit_memory
-> -		CATEGORY="hugevm" run_test ./virtual_address_range
-> -		echo $prev_policy > /proc/sys/vm/overcommit_memory
-> -	fi
-> -
->  	# va high address boundary switch test
->  	CATEGORY="hugevm" run_test bash ./va_high_addr_switch.sh
->  fi # VADDR64
-> diff --git a/tools/testing/selftests/mm/virtual_address_range.c b/tools/testing/selftests/mm/virtual_address_range.c
-> deleted file mode 100644
-> index 4f0923825ed7..000000000000
-> --- a/tools/testing/selftests/mm/virtual_address_range.c
-> +++ /dev/null
-> @@ -1,260 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0-only
-> -/*
-> - * Copyright 2017, Anshuman Khandual, IBM Corp.
-> - *
-> - * Works on architectures which support 128TB virtual
-> - * address range and beyond.
-> - */
-> -#include <stdio.h>
-> -#include <stdlib.h>
-> -#include <string.h>
-> -#include <unistd.h>
-> -#include <errno.h>
-> -#include <sys/prctl.h>
-> -#include <sys/mman.h>
-> -#include <sys/time.h>
-> -#include <fcntl.h>
-> -
-> -#include "vm_util.h"
-> -#include "kselftest.h"
-> -
-> -/*
-> - * Maximum address range mapped with a single mmap()
-> - * call is little bit more than 1GB. Hence 1GB is
-> - * chosen as the single chunk size for address space
-> - * mapping.
-> - */
-> -
-> -#define SZ_1GB	(1024 * 1024 * 1024UL)
-> -#define SZ_1TB	(1024 * 1024 * 1024 * 1024UL)
-> -
-> -#define MAP_CHUNK_SIZE	SZ_1GB
-> -
-> -/*
-> - * Address space till 128TB is mapped without any hint
-> - * and is enabled by default. Address space beyond 128TB
-> - * till 512TB is obtained by passing hint address as the
-> - * first argument into mmap() system call.
-> - *
-> - * The process heap address space is divided into two
-> - * different areas one below 128TB and one above 128TB
-> - * till it reaches 512TB. One with size 128TB and the
-> - * other being 384TB.
-> - *
-> - * On Arm64 the address space is 256TB and support for
-> - * high mappings up to 4PB virtual address space has
-> - * been added.
-> - *
-> - * On PowerPC64, the address space up to 128TB can be
-> - * mapped without a hint. Addresses beyond 128TB, up to
-> - * 4PB, can be mapped with a hint.
-> - *
-> - */
-> -
-> -#define NR_CHUNKS_128TB   ((128 * SZ_1TB) / MAP_CHUNK_SIZE) /* Number of chunks for 128TB */
-> -#define NR_CHUNKS_256TB   (NR_CHUNKS_128TB * 2UL)
-> -#define NR_CHUNKS_384TB   (NR_CHUNKS_128TB * 3UL)
-> -#define NR_CHUNKS_3840TB  (NR_CHUNKS_128TB * 30UL)
-> -#define NR_CHUNKS_3968TB  (NR_CHUNKS_128TB * 31UL)
-> -
-> -#define ADDR_MARK_128TB  (1UL << 47) /* First address beyond 128TB */
-> -#define ADDR_MARK_256TB  (1UL << 48) /* First address beyond 256TB */
-> -
-> -#ifdef __aarch64__
-> -#define HIGH_ADDR_MARK  ADDR_MARK_256TB
-> -#define HIGH_ADDR_SHIFT 49
-> -#define NR_CHUNKS_LOW   NR_CHUNKS_256TB
-> -#define NR_CHUNKS_HIGH  NR_CHUNKS_3840TB
-> -#elif defined(__PPC64__)
-> -#define HIGH_ADDR_MARK  ADDR_MARK_128TB
-> -#define HIGH_ADDR_SHIFT 48
-> -#define NR_CHUNKS_LOW   NR_CHUNKS_128TB
-> -#define NR_CHUNKS_HIGH  NR_CHUNKS_3968TB
-> -#else
-> -#define HIGH_ADDR_MARK  ADDR_MARK_128TB
-> -#define HIGH_ADDR_SHIFT 48
-> -#define NR_CHUNKS_LOW   NR_CHUNKS_128TB
-> -#define NR_CHUNKS_HIGH  NR_CHUNKS_384TB
-> -#endif
-> -
-> -static char *hint_addr(void)
-> -{
-> -	int bits = HIGH_ADDR_SHIFT + rand() % (63 - HIGH_ADDR_SHIFT);
-> -
-> -	return (char *) (1UL << bits);
-> -}
-> -
-> -static void validate_addr(char *ptr, int high_addr)
-> -{
-> -	unsigned long addr = (unsigned long) ptr;
-> -
-> -	if (high_addr) {
-> -		if (addr < HIGH_ADDR_MARK)
-> -			ksft_exit_fail_msg("Bad address %lx\n", addr);
-> -		return;
-> -	}
-> -
-> -	if (addr > HIGH_ADDR_MARK)
-> -		ksft_exit_fail_msg("Bad address %lx\n", addr);
-> -}
-> -
-> -static void mark_range(char *ptr, size_t size)
-> -{
-> -	if (prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, ptr, size, "virtual_address_range") == -1) {
-> -		if (errno == EINVAL) {
-> -			/* Depends on CONFIG_ANON_VMA_NAME */
-> -			ksft_test_result_skip("prctl(PR_SET_VMA_ANON_NAME) not supported\n");
-> -			ksft_finished();
-> -		} else {
-> -			ksft_exit_fail_perror("prctl(PR_SET_VMA_ANON_NAME) failed\n");
-> -		}
-> -	}
-> -}
-> -
-> -static int is_marked_vma(const char *vma_name)
-> -{
-> -	return vma_name && !strcmp(vma_name, "[anon:virtual_address_range]\n");
-> -}
-> -
-> -static int validate_lower_address_hint(void)
-> -{
-> -	char *ptr;
-> -
-> -	ptr = mmap((void *) (1UL << 45), MAP_CHUNK_SIZE, PROT_READ |
-> -		   PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> -
-> -	if (ptr == MAP_FAILED)
-> -		return 0;
-> -
-> -	return 1;
-> -}
-> -
-> -static int validate_complete_va_space(void)
-> -{
-> -	unsigned long start_addr, end_addr, prev_end_addr;
-> -	char line[400];
-> -	char prot[6];
-> -	FILE *file;
-> -	int fd;
-> -
-> -	fd = open("va_dump", O_CREAT | O_WRONLY, 0600);
-> -	unlink("va_dump");
-> -	if (fd < 0) {
-> -		ksft_test_result_skip("cannot create or open dump file\n");
-> -		ksft_finished();
-> -	}
-> -
-> -	file = fopen("/proc/self/maps", "r");
-> -	if (file == NULL)
-> -		ksft_exit_fail_msg("cannot open /proc/self/maps\n");
-> -
-> -	prev_end_addr = 0;
-> -	while (fgets(line, sizeof(line), file)) {
-> -		const char *vma_name = NULL;
-> -		int vma_name_start = 0;
-> -		unsigned long hop;
-> -
-> -		if (sscanf(line, "%lx-%lx %4s %*s %*s %*s %n",
-> -			   &start_addr, &end_addr, prot, &vma_name_start) != 3)
-> -			ksft_exit_fail_msg("cannot parse /proc/self/maps\n");
-> -
-> -		if (vma_name_start)
-> -			vma_name = line + vma_name_start;
-> -
-> -		/* end of userspace mappings; ignore vsyscall mapping */
-> -		if (start_addr & (1UL << 63))
-> -			return 0;
-> -
-> -		/* /proc/self/maps must have gaps less than MAP_CHUNK_SIZE */
-> -		if (start_addr - prev_end_addr >= MAP_CHUNK_SIZE)
-> -			return 1;
-> -
-> -		prev_end_addr = end_addr;
-> -
-> -		if (prot[0] != 'r')
-> -			continue;
-> -
-> -		if (check_vmflag_io((void *)start_addr))
-> -			continue;
-> -
-> -		/*
-> -		 * Confirm whether MAP_CHUNK_SIZE chunk can be found or not.
-> -		 * If write succeeds, no need to check MAP_CHUNK_SIZE - 1
-> -		 * addresses after that. If the address was not held by this
-> -		 * process, write would fail with errno set to EFAULT.
-> -		 * Anyways, if write returns anything apart from 1, exit the
-> -		 * program since that would mean a bug in /proc/self/maps.
-> -		 */
-> -		hop = 0;
-> -		while (start_addr + hop < end_addr) {
-> -			if (write(fd, (void *)(start_addr + hop), 1) != 1)
-> -				return 1;
-> -			lseek(fd, 0, SEEK_SET);
-> -
-> -			if (is_marked_vma(vma_name))
-> -				munmap((char *)(start_addr + hop), MAP_CHUNK_SIZE);
-> -
-> -			hop += MAP_CHUNK_SIZE;
-> -		}
-> -	}
-> -	return 0;
-> -}
-> -
-> -int main(int argc, char *argv[])
-> -{
-> -	char *ptr[NR_CHUNKS_LOW];
-> -	char **hptr;
-> -	char *hint;
-> -	unsigned long i, lchunks, hchunks;
-> -
-> -	ksft_print_header();
-> -	ksft_set_plan(1);
-> -
-> -	for (i = 0; i < NR_CHUNKS_LOW; i++) {
-> -		ptr[i] = mmap(NULL, MAP_CHUNK_SIZE, PROT_READ,
-> -			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> -
-> -		if (ptr[i] == MAP_FAILED) {
-> -			if (validate_lower_address_hint())
-> -				ksft_exit_fail_msg("mmap unexpectedly succeeded with hint\n");
-> -			break;
-> -		}
-> -
-> -		mark_range(ptr[i], MAP_CHUNK_SIZE);
-> -		validate_addr(ptr[i], 0);
-> -	}
-> -	lchunks = i;
-> -	hptr = (char **) calloc(NR_CHUNKS_HIGH, sizeof(char *));
-> -	if (hptr == NULL) {
-> -		ksft_test_result_skip("Memory constraint not fulfilled\n");
-> -		ksft_finished();
-> -	}
-> -
-> -	for (i = 0; i < NR_CHUNKS_HIGH; i++) {
-> -		hint = hint_addr();
-> -		hptr[i] = mmap(hint, MAP_CHUNK_SIZE, PROT_READ,
-> -			       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> -
-> -		if (hptr[i] == MAP_FAILED)
-> -			break;
-> -
-> -		mark_range(hptr[i], MAP_CHUNK_SIZE);
-> -		validate_addr(hptr[i], 1);
-> -	}
-> -	hchunks = i;
-> -	if (validate_complete_va_space()) {
-> -		ksft_test_result_fail("BUG in mmap() or /proc/self/maps\n");
-> -		ksft_finished();
-> -	}
-> -
-> -	for (i = 0; i < lchunks; i++)
-> -		munmap(ptr[i], MAP_CHUNK_SIZE);
-> -
-> -	for (i = 0; i < hchunks; i++)
-> -		munmap(hptr[i], MAP_CHUNK_SIZE);
-> -
-> -	free(hptr);
-> -
-> -	ksft_test_result_pass("Test\n");
-> -	ksft_finished();
-> -}
 
