@@ -4,119 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50432C98315
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 22:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E674C9830C
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 23:23:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E979D6B00D8; Sun, 18 Jan 2026 17:33:24 -0500 (EST)
+	id 73BD56B00DA; Sun, 18 Jan 2026 18:23:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3B656B00D9; Sun, 18 Jan 2026 17:33:24 -0500 (EST)
+	id 713456B00DB; Sun, 18 Jan 2026 18:23:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D474B6B00DA; Sun, 18 Jan 2026 17:33:24 -0500 (EST)
+	id 612926B00DC; Sun, 18 Jan 2026 18:23:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C0E1F6B00D8
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 17:33:24 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 38B74D2124
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:33:24 +0000 (UTC)
-X-FDA: 84346537128.11.1B1E7F9
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4F6BF80006
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:33:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cg2I5tWn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768775602; a=rsa-sha256;
-	cv=none;
-	b=OmSyh14VFd3OgtoBR8/2J21fcbIGMYH+hkP92me3RLapOqxeNRfFk8MJAPH/5vHuBwbuAH
-	yybwbA9sWyr4p8y09SgGWGxxfM4EqcnwM//BfHQ8oJALcgNZ/DeMqRyQZDar7waa60gptA
-	OE/UHgyldiRj6Vyjp+nITCWvq3Xadxs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cg2I5tWn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 504E56B00DA
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:23:40 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BD1EFBA2E3
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 23:23:39 +0000 (UTC)
+X-FDA: 84346663758.05.F190203
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B439B4000B
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 23:23:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b=Dmw+pxT+;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="I GTmerX";
+	spf=pass (imf17.hostedemail.com: domain of neilb@ownmail.net designates 103.168.172.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768775602;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768778617;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cx9QpyQrvnFrvxngyHgURZOAcKI8WngXTJ0q+cPiikY=;
-	b=VGlK/OTjQGjc8kkm8IxcurodbdVQwWcRiC/JkDFT2iWhNmKvZpcbrNrtEamF1K+cfwK15b
-	rJdG/ztXlq6G0vAa1Lm/aB7MqqD4ybq4QQjL3r5pa8ZIRZZHJ0rz7Yxrx0jkUdrk8ODgdz
-	KO/OfEn7oITDEPGtUW/Rf1bRbv3KK9c=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4801bc328easo28403405e9.3
-        for <linux-mm@kvack.org>; Sun, 18 Jan 2026 14:33:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768775601; x=1769380401; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cx9QpyQrvnFrvxngyHgURZOAcKI8WngXTJ0q+cPiikY=;
-        b=cg2I5tWnusyn+8ThH6sEaraJrkuaYX05pQwHrWjWM0mMz2BB5YjGmeGiKFzijFB/Jc
-         nThnggN8Ni9ARxDq2ytqEbBLcRK1aPrmYmI0d/ZsgYs/3Eklkbk0ENpDPpKe6ejqC1ZJ
-         YqKs12vx0Akh8MnIcJEOB6SFcgYU2JMCQh1nHJIR5JZH8fevwHRFsHf6k/DiBnznjcVN
-         tSauTLXwJOSVWQKaJfjv1o6JLUv9UJ9sNAJF+i1jALJ+FPRfmWFgSLNQURnmF3IQnJgW
-         gwVwm9IStZ6TrcZBBaSOyrDsSdILhaI4/CHwGuBBuPv7abYQOVMu9doXwa0VEmizqPGi
-         i3Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768775601; x=1769380401;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Cx9QpyQrvnFrvxngyHgURZOAcKI8WngXTJ0q+cPiikY=;
-        b=A3nuIeL7MqCOAeDlNyyL728afimCuyjbIA/bfUE0RqGbugRDTaqLGkWW8Yv6zrHRbw
-         lmJew8YxDW90j/LPFTAZtLrfZJWeMm03dnlk6XhnsY5gD6YLwDnyjZ/MmQL/Jz//TjjF
-         sRToM5hL1iRApSxDAlAoVRl1+OA1JVaqMug5NwVlEYgx3DO2kAyBoAxvRhXVDxW3lIy4
-         vmoLfieK0ovFpV4vzg4yvS+MXRnnZn9e2nnNdSxPqllDDZD+E7dPGfVK3Zhke22TjSoh
-         zvkVxLA+oQIkE4NOIJ/xsl5z1jnZ+fwNdfyQf+B6OHbTUlpoVCxIKYYtRPiowNX8RvH2
-         98Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbZtPBYjPMw25hQ9cp4+iWJdoff5iWmJ/E9hX1uME2tniNTWjwG9ORStadC4ZNu2MlxGvQE80CTw==@kvack.org
-X-Gm-Message-State: AOJu0YzYVtDTDQxzsvFvQ5Oapl7aU6TtH2j6oITJVQ1HsVFNEnr/VU8R
-	1efR9AMVirnSVSA41Un5CGb5wqPe4XCyIzXVMqefBsjegwIhVU/Ohq/v
-X-Gm-Gg: AY/fxX4cANc+fBppPboWypejqzL7Jd/ujdmC/cVN31Jo752/2DVwyLsqU4lZ4twkags
-	gCw2g4IykYH36cZ+vJiT3VfDx1EfSmc4HGYLGIHzlRPtkZ8WPnWYkFNyqFD0nrT6qWqLTeFLWxs
-	6RAIlJMHFTVoRWgFbwKGj7LuSzCBhFgSwIjGhEqSNpfmVqAbyX72My13t6oHE3veFlyAqqCVv19
-	Wvs+VLER7RNFDLpC9LBbXNMxXB1fm5HsTJXDlqU8qgIxF2uDwByiLQypEx0ZlZfdoL5zqGM/Vte
-	rYvSg5TtJ61SBQl2FFQroUS0AKgN0GA1WNz0/tuPmLrXbIILGcknknoOzrhIxPp7nHVKmnVspuN
-	Y8Vsqbo0iqpC4kn15Cmm5pwhJGZBhOEB9B7uWynUFyqbbCHJeZPOAAy6hUyccUgSPFvTEwHa4IN
-	2n7oTN+nsHgseijUe+eYy0JqTMKP6JG5aGJ8vLM4PcFIUcOUKmrBWaUvTTjq7n5RU=
-X-Received: by 2002:a05:600c:474a:b0:477:9b4a:a82 with SMTP id 5b1f17b1804b1-4801eb14b36mr116131045e9.35.1768775600441;
-        Sun, 18 Jan 2026 14:33:20 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47f4b2672d6sm218823515e9.14.2026.01.18.14.33.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 14:33:20 -0800 (PST)
-Date: Sun, 18 Jan 2026 22:33:18 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Eric Dumazet <edumazet@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, oe-kbuild-all@lists.linux.dev, Linux Memory
- Management List <linux-mm@kvack.org>, linux-kernel
- <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org, Jakub Kicinski
- <kuba@kernel.org>, Eric Dumazet <eric.dumazet@gmail.com>, Paolo Abeni
- <pabeni@redhat.com>, Nicolas Pitre <npitre@baylibre.com>
-Subject: Re: [PATCH] compiler_types: Introduce inline_for_performance
-Message-ID: <20260118223318.7a3e3837@pumpkin>
-In-Reply-To: <202601190247.dDAvbbMH-lkp@intel.com>
-References: <20260118152448.2560414-1-edumazet@google.com>
-	<202601190247.dDAvbbMH-lkp@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	bh=cLWfoPH86LevLJ5dEarcfR/PsriG4IfSU/3wyLJz+qM=;
+	b=FEVumVfo4oy+Pet0nACgIDd1csv6LnIOQh58QHxktF6lTnNGVGNbDcHaXH1l2MRBq7EoLy
+	shpz+CqerEiDtnKBJVjXyolRxGBDK7iaHZYxMV5tofH3sM2iTiAGmb03AHv/u4/ab5+s9B
+	hT+Z0+jxyOsJQuV5G62WXztws8mPyHU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768778617; a=rsa-sha256;
+	cv=none;
+	b=EvRz0ek+WsxtxhFgt0LBs3sPTB5uZdSX20BWVRuyPigO0WkU/ZxR0C/5dVaXmkdc8HzAwm
+	AyUcn5YH+IsLyaAaFuiMIb2lD1F5e+aOopOY2vlBUVv+3nroZtluNonHGLYRb5zFUeg2j/
+	kvooJqLbb532/ngMPKEVddj5dO369Wo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b=Dmw+pxT+;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="I GTmerX";
+	spf=pass (imf17.hostedemail.com: domain of neilb@ownmail.net designates 103.168.172.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.phl.internal (Postfix) with ESMTP id 044C21380091;
+	Sun, 18 Jan 2026 18:23:37 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Sun, 18 Jan 2026 18:23:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
+	1768778616; x=1768785816; bh=cLWfoPH86LevLJ5dEarcfR/PsriG4IfSU/3
+	wyLJz+qM=; b=Dmw+pxT+mC6s44HDc9ViDXhGQeEmMpmNYRhtbA86QNG09PG/Ljt
+	hV85ad3/pbmWWoao3arxAaxDpjTC5inzso+nDbFp9L/ocC8FvAlBD0K6BSqaNtKf
+	C3km6dpzlK9Qvfbi4RlAOZVQRcgXUx6BbC4NNZXExiSaEBKuKkrscbvke30TKEj0
+	X3c26YUO2IvjIKJetsMrJSw+w98guonRsqk3c5wy7tRYCBiBKWCThYgKRu77I56g
+	W/jQbAZlq9qtSmpdQFd+C0/rLGEaY2+/6NIHoLbGsxK4GkDCFlahWHWTEoSSJrS/
+	k5ZW9JDwUgtzyYMplQwMaStWlBzRHOxECQQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768778616; x=
+	1768785816; bh=cLWfoPH86LevLJ5dEarcfR/PsriG4IfSU/3wyLJz+qM=; b=I
+	GTmerXNj37QbHVnwq2oYiiWRj3dNMRiwAfGv/vxfYmuPEFFfJjUyW8ruiPn+ZUTw
+	y96Ysjc5jkE+PfgCaUfHrNzF77vJ+CHZGj8ZZyFQniCqqNBHAWqccBt7S/bU1BV3
+	Xnstc4VvhfH6RZxhRpoHiUxWSmJT21A47932/vgOnE5bxUOTfBJmpqxFnE86OITm
+	uIg7MLSy3DGOcBFTzEd5fbzcCQYBFRkQDDO9qGFEXh5IfaJ//ctGtwtYx+/A3prw
+	KJ8U8PGheh+G3smkjCFKvnDL2ddcVu2iicAyBab5Q6myVEkn0CxZuzyjCejBBwJF
+	S/bm6s4tkRpP23BkNvcHg==
+X-ME-Sender: <xms:dGttaT6YTMF6Fa6OlzcaAnM6fKqB4-4u0PRgZNSqPeyFmRns3uNnWw>
+    <xme:dGttaZPm2B1Iaa5cFSjo7JQ9nDmVsbYtDSTRFdNHBicQ-lkECLbL66rkbZK2MZehf
+    _rCs8HRq47ygqgxsOGTs2CMA0vWt7_AzG555MqfdnDHw6XZXQ>
+X-ME-Received: <xmr:dGttaV5f0odFoTqo9Cm-3bXwUWdDQe8OS_nESoDmZC33EUUTmsf8jTlPE6SJiNhWOG4bTHrmA205RC8BAhr3cbUxrYEQhQL_108cgTPUPoLg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeeitddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epvdeuteelkeejkeevteetvedtkeegleduieeftdeftefgtddtleejgfelgfevffeinecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
+    rhgtphhtthhopeejfedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhirhhose
+    iivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehguhhotghhuhhnhhgr
+    ihesvhhivhhordgtohhmpdhrtghpthhtoheplhhinhhugidqgihfshesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhunhhiohhnfhhssehvghgvrhdr
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqnhhilhhfshesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghr
+    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgvgihtgeesvhhgvghrrd
+    hkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:dGttaek4FCMZRAxWF6ejfvNQASS42yuMJmNL6Qr_VSzT2alP2kiMEQ>
+    <xmx:dGttacMnrF3MIVkqtagaBM_OFbr4viUT9Quj4YPA_rDrR6FZMQe15g>
+    <xmx:dGttaRUgcJhZGcX_B2l09umj3yAF-qAbVHXccqpyubd6rn2m6D7nYA>
+    <xmx:dGttaVutjkDk_cSqIw9p5HdrWWt8-J_WTU_-yJ8LgZsJLx3q9gD8ew>
+    <xmx:eGttab3JlD-dDEAYvGFUDpoqKXPgn7EN1IPurNldS43-2K0UKJSizYjm>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 18 Jan 2026 18:23:15 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4F6BF80006
-X-Stat-Signature: ees79x5whya1r1f7ahcjg4iyki9jxj55
+From: NeilBrown <neilb@ownmail.net>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Amir Goldstein" <amir73il@gmail.com>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Chuck Lever" <chuck.lever@oracle.com>,
+ "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Theodore Ts'o" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>, "Jan Kara" <jack@suse.com>,
+ "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
+ "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
+ "Sandeep Dhavale" <dhavale@google.com>,
+ "Hongbo Li" <lihongbo22@huawei.com>, "Chunhai Guo" <guochunhai@vivo.com>,
+ "Carlos Maiolino" <cem@kernel.org>, "Ilya Dryomov" <idryomov@gmail.com>,
+ "Alex Markuze" <amarkuze@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>, "Chris Mason" <clm@fb.com>,
+ "David Sterba" <dsterba@suse.com>,
+ "Luis de Bethencourt" <luisbg@kernel.org>,
+ "Salah Triki" <salah.triki@gmail.com>,
+ "Phillip Lougher" <phillip@squashfs.org.uk>,
+ "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Dave Kleikamp" <shaggy@kernel.org>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>, "Jan Kara" <jack@suse.cz>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>,
+ "Christoph Hellwig" <hch@infradead.org>, linux-nfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+ linux-unionfs@vger.kernel.org, devel@lists.orangefs.org,
+ ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev,
+ linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+ linux-mtd@lists.infradead.org, gfs2@lists.linux.dev,
+ linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
+ nfsd export support
+In-reply-to: <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>,
+ <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>,
+ <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
+Date: Mon, 19 Jan 2026 10:23:13 +1100
+Message-id: <176877859306.16766.15009835437490907207@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B439B4000B
 X-Rspam-User: 
-X-HE-Tag: 1768775602-101765
-X-HE-Meta: U2FsdGVkX18ztGNVuWFPYt7LcWt0DyBtlKgGDo/t4DD8dNA/gZrPSaBFrY5PoZjvmd0i9Y9g1kZC9lp8HY17aQy0KBsLyR+A4KzjJg3FHAUrEh7piEVYWGdJ6C6dBaE/yx+GilEy94HMdTwa+InlNgxExmRw9+r4hi3jfjxabJn8uSJBwQzbmDro7e8igc0ENuB21s16iRBfgi6f8imR9hE/F8MQNdqEweUAXMdtbltd5ijmZ2BiyR4blVAaguY410HkmGW3Ee8+r7a5AVT7fzlOu2vGJCRHSNNA6keBbszUipWszui6zWQvrUFHXxsTNXW+QesWpVBzPc9eNTgVdDZpP+/kTg/ot/wtuH74KD7+cGUPoNbzGXkZ4JIB1RHvbxLpdakNDbGyCym1eTogPL2ifuv/P1d4byke1BjlR2BwCKd3VFIwJIb0scxyGBcMFTaSOyuS1AH9jVq2jK35P4isiXVoA5dQS4eOCSzmojO62KUZbCsPWyIgth8iGVv5eR9iZKsVTigNsVDn7TjsEkCwH9/cvq+Wy8uRWOFHA+wiv4jRpRf1TdAXYD8niWL/HbZ1313G2O+AbrfatsLyoRaVUOL1mlWFpFiNGjwMAiudjfe2zhfbMljBThTHf8PrDBLFHF5aF1mjVHLZdNr/UtsSfeMeUPmd3WDKY78vIgjyWDO6SD5oZE1u90CfohZFITODp0g/tvM2a/cDJgvBc4vVv46GFiTTUm4zICeY/Bm8TXgOSfLSzYBtdxKibgjDu1Un7nm9TQ8eKOdx+evneubSGttF3gmaeU2zd9uH4/5r7MUB9AX88Bzyl0oLiRE0UyaATf/xabl7fm8RPGX5twt2aJNjn8l0eTVx97HLVfBPtTxa2h2KEQjSdjU5g4h4GGcbyGLMk3ko2SyBYY1HkM1VKyxR/QvJ8G2hCGgmutf+hYP6gLEh9FrC5uLAjr/TUm6IaROMKZlBBloQtZD
- VLr6SetM
- QMj9gH0GphKo/meTNMAsLrDkkO3fvkyvU5Mt4iBMPfni13iJ1TqGyk+yyUhay0sscIbyegwfgVJliyly+Gvxpl5ifmcZ0By/qovsSNzH7JfsfFxZ7PHJwexNdKZitrWeXn/fIM05aEF9j4HoaMaTPsP4HasJc4bAUjke3xtEP56Tm9Q5XDs27YFwSNTuyZNIZ0duvfKIjm/mONcD+hb9ZiRp2sHTGItau1XNgu7DkOxMz8l7neFjVU+DSOmnK6Edg6KpBQgBC/UArkllaELAFSMG79G4WTBfrKoR3UrDnKE98eLQSMqzquuuHws3BiTrzxI8Tb6rIDWXeqOEkkZpbqWCPBO7e9LsDflShzQe5HifeVS9AMYmUL89s3muvmFrI6vkd7h6jSsRBNz4qImx7/psKE854Ai8k1K71HaRHcfy1D3uSymPdqE8IPeRe/tREWbp6/QmTlJyla+Ivj1wf9++P+hST9+ibqyPUlohseX6dKp0R/gYNd0HHd/74aOvOle9WZxp9Kfp+oyCLC/eVYSylxko3FiFnBAgtH1BDnJc43qINBOS3O8ThC99NgJ/PIPBmPtKkvp0IBZXb3IVoo+iIGCcfb2DE42zB
+X-Stat-Signature: 7skyojca4jeatksr9f35i7g56gyxtu8e
+X-HE-Tag: 1768778617-769161
+X-HE-Meta: U2FsdGVkX18fxRWA2k/yfK8DSnlIJ/1c6P7WPFBowSsHaDS8NqU3w9fuJOgjnh4RoWf5RHKKoFHwxaNHLc7ZHQncsdK9edDZKat/IysVZhQPftdJ4bNtujLCyCCvNmq3J/O+j2E6Svtd0Klyh4dOpvTFV81QlX+8ftjhzSCKs6X2FM6A+AW0pQna6USSbw6IMxki4nZGNuDf+2rfNTSFKY1vsitNcZWEdmvCI+zs9xeyOLFYBWnrU9VlJ63n67QqK+yXBOtfO6VUt5GbH1BpDlOoHyDf1x+U1f399ZKfN6uSdGWkaCqHnejJmK/jZV+tsEtZtKo6TvdA1uFZ3eUZBOGv6enFNBmWPPrUvuYt4H0a+V7BzVcdmzD7k7x8KUYBn+YrKoMaUpVjaSNEMFhj+34TaNNrjwupH0diLlZA/X73BJMcGJgvoHNRePc0Dt/esJpZ6tdZfCUvQ955F6Els6tIgzETz1HOKc4gdNOPq+sqYRMST8g7/Ik2ImJTEfhckP2BVFrEmcK/qYe14PQ1eGcIdA9yqZmmPuHpSMQx2xw8c7P8v5sikdzbRAFZplKo91kJbuloLuc3mE0oCSL3dJWEIC28dmBq0RmzlOMIVwOTAMyHg/btl+xeEy8jdUgbMEZA2Reklq/mijs4KoLkUoAsQgcRVTxG3E+9L1LcuR9/gWeXOn0zDISipHdJZIPc8VoclNkEis4iaUlKS0e8/B+l/StEF2TpjDAAOxvBoT6myT7RwJp03IyBfrOcwtqCUuCQNaiql2RYyLrlYWBYCHU6gdpTm9X4Ciz62Km2/LPX5Y26h8C0FhFnfgrZ8YGmjLZL0izn7NCRBHoBTgmr8cnIOLf3RcsEJyJVGacsB5kdOURta4JWNj9aP76ThSnP9fEJmUqeEEFDv8x3q4tWYzvTbLUqRaHdIHZqA6RkE66oBwXmovfF8TdatXhLPn47rxpInryA5n9yNEkz3GA
+ Pkw2Stjq
+ WzpS/agyM25XA9vGyycQsijjSdPtfrBIFkhj8ooilr2qjFx91f9vadFqEv6QZzQMLoLBYSt579ElNfm6WXyvZ8NCki/CpjW/Xzrvptm7di/J3aQss71pKo/wNTKaosg6ZtrFGxF80GMOqeRRGic5Zfn3G/rD7gXhZF8UbicK8umR3NNKXCHPivIqtPJEnwg0jmeYe1hSxMyNsP9DTzU/aMVSN1BgGudC8cz6Y4bVcBGXZUfcuMQ6zztwouXiriKaL6x65zsUQ0zpAe/1f3wpIu3zzfHUKLAImBsRVV1dI7PvBrXmBil5AuBYZw9FU6pV6vrd4ZihLG/e+K8vJaFQLZZ6dqQjzPzQMCjPXX+mnJ5UZ1OzZrvZaKfkx/5Pfizk7GiaCjrxfcBlf2Wuw/0g5j6CqsL10+aYUODEDYKO0R/adZgWd/K92Qr8yIuHianUMxsIoCe9rUmBtF14OKAbNBvNibvcmvJsWL08UDwgOVtrb56FQ45PICXNOFi46/ECRzk0Ugbs/ge1neSspEyHtOZH45h2+3Vx/yMw0/ICIV/+M9Tb90knt+352midjOpQlau806/hKsRXMLyLxpOmTpe+hBFIIClMiHWIT7QEjKZsY2C9vw97k01p069fWlf9F2kNEcfVAHnIlUC6gyeZBntGet/5Z+TnFQn5zI/VXs+O3FUjSy84cc6JUvdLtIYKIA8uPR5E3r+74Npl9LFbStGkvqw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,46 +191,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 19 Jan 2026 02:36:18 +0800
-kernel test robot <lkp@intel.com> wrote:
+On Fri, 16 Jan 2026, Jeff Layton wrote:
+> On Thu, 2026-01-15 at 19:17 +0100, Amir Goldstein wrote:
+> > On Thu, Jan 15, 2026 at 6:48=E2=80=AFPM Jeff Layton <jlayton@kernel.org> =
+wrote:
+> > >=20
+> > > In recent years, a number of filesystems that can't present stable
+> > > filehandles have grown struct export_operations. They've mostly done
+> > > this for local use-cases (enabling open_by_handle_at() and the like).
+> > > Unfortunately, having export_operations is generally sufficient to make
+> > > a filesystem be considered exportable via nfsd, but that requires that
+> > > the server present stable filehandles.
+> >=20
+> > Where does the term "stable file handles" come from? and what does it mea=
+n?
+> > Why not "persistent handles", which is described in NFS and SMB specs?
+> >=20
+> > Not to mention that EXPORT_OP_PERSISTENT_HANDLES was Acked
+> > by both Christoph and Christian:
+> >=20
+> > https://lore.kernel.org/linux-fsdevel/20260115-rundgang-leihgabe-12018e93=
+c00c@brauner/
+> >=20
+> > Am I missing anything?
+> >=20
+>=20
+> This was Chuck's suggested name. His point was that STABLE means that
+> the FH's don't change during the lifetime of the file.
+>=20
+> I don't much care about the flag name, so if everyone likes PERSISTENT
+> better I'll roll with that.
 
-> Hi Eric,
-...
-> vim +/__arch_xprod_64 +138 include/asm-generic/div64.h
-> 
-> 461a5e51060c93 Nicolas Pitre 2015-10-30  125  
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  126  #ifndef __arch_xprod_64
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  127  /*
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  128   * Default C implementation for __arch_xprod_64()
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  129   *
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  130   * Prototype: uint64_t __arch_xprod_64(const uint64_t m, uint64_t n, bool bias)
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  131   * Semantic:  retval = ((bias ? m : 0) + m * n) >> 64
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  132   *
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  133   * The product is a 128-bit value, scaled down to 64 bits.
-> 00a31dd3acea0f Nicolas Pitre 2024-10-03  134   * Hoping for compile-time optimization of  conditional code.
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  135   * Architectures may provide their own optimized assembly implementation.
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  136   */
-> 5f712d70e20a46 Eric Dumazet  2026-01-18  137  static inline_for_performance
-> d533cb2d2af400 Nicolas Pitre 2024-10-03 @138  uint64_t __arch_xprod_64(const uint64_t m, uint64_t n, bool bias)
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  139  {
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  140  	uint32_t m_lo = m;
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  141  	uint32_t m_hi = m >> 32;
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  142  	uint32_t n_lo = n;
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  143  	uint32_t n_hi = n >> 32;
-> 00a31dd3acea0f Nicolas Pitre 2024-10-03  144  	uint64_t x, y;
-> f682b27c57aec2 Nicolas Pitre 2015-10-30  145  
-> 00a31dd3acea0f Nicolas Pitre 2024-10-03  146  	/* Determine if overflow handling can be dispensed with. */
-> 00a31dd3acea0f Nicolas Pitre 2024-10-03  147  	bool no_ovf = __builtin_constant_p(m) &&
-> 00a31dd3acea0f Nicolas Pitre 2024-10-03  148  		      ((m >> 32) + (m & 0xffffffff) < 0x100000000);
+I don't like PERSISTENT.
+I'd rather call a spade a spade.
 
-Can that ever have got compiled?
-Won't the compiler complain about 0x100000000 being out of range?
-Lots of alternatives...
+  EXPORT_OP_SUPPORTS_NFS_EXPORT
+or
+  EXPORT_OP_NOT_NFS_COMPATIBLE
 
-If u128 exists this should probably just be:
-	return ((u128)m * n + (bias ? m : 0)) >> 64;
+The issue here is NFS export and indirection doesn't bring any benefits.
 
-Which is probably the only alternative an architecture might provide (none do AFAICT).
+NeilBrown
 
-	David
+
+>=20
+> Also, on the ovl patch: will fix...
+>=20
+> Thanks for the review!
+> --=20
+> Jeff Layton <jlayton@kernel.org>
+>=20
+
 
