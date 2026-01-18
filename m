@@ -4,115 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FEBFD4A5F4
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 04:21:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF0FCC9830C
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 05:04:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 467746B0005; Sat, 17 Jan 2026 23:21:30 -0500 (EST)
+	id B30D16B0005; Sun, 18 Jan 2026 00:04:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4159E6B0089; Sat, 17 Jan 2026 23:21:30 -0500 (EST)
+	id AF16B6B0089; Sun, 18 Jan 2026 00:04:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F74F6B008A; Sat, 17 Jan 2026 23:21:30 -0500 (EST)
+	id 9F38D6B008A; Sun, 18 Jan 2026 00:04:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E2566B0005
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 23:21:30 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3E21D1D5F
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 04:21:29 +0000 (UTC)
-X-FDA: 84343785498.30.1DF157B
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CBAF7C0006
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 04:21:27 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GkwTnlVk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768710087; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C27D6B0005
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 00:04:55 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E28CCD1E92
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 05:04:54 +0000 (UTC)
+X-FDA: 84343894908.17.8B186EF
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 18C77180002
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 05:04:52 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YjB8ndGY;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768712693; a=rsa-sha256;
 	cv=none;
-	b=aaq0hkJeRcSBDonBGQU58VaE4U8+sqRoLlYG2zC4ln/a3xGeLsMz/ZCTnw51lwOP+RMvOD
-	FfRiezP/2EjUNS9dk6f/vGJxiABDVEuxI2RYG1hpMqseQH4kfooJ+kOLjOkNG1cT30TONt
-	BhlQ6cNSmM3FwdnfquC8+jlIhvsI9yE=
+	b=aCVU5QOh92EPf5QTO49At3G75iU6kNL7nX8MbCJsfBI9uOvbH+xHhKCmClwrkl6rco9p8Y
+	+NhdukWjRBIWxOIpoe0hjco8yGzcXxNfHNO3He29HJAgvUMe3Oh3m9wIi/lZzolB+btZpk
+	cBV+A5361UO2b4Ryb0AiC1hI8Wz6MNw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GkwTnlVk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YjB8ndGY;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768710087;
+	s=arc-20220608; t=1768712693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jvMq2ABTBLrDp9blsAOvXWpoeYwpBXEHUIYBa0P2DU0=;
-	b=APf+0UXWbmpcxpxrOrWpGbd/AlHziyAIgWqw3055htxxUJndhiMAB2mJ0MRPPtbOFw9lx/
-	IAWMNcdllTlZ9A8fXXfEkbKwHIMu6/J4PfSrrZYoT11xVD3sHvdHAo+F22/OCuEx21W3KN
-	2AAQqrvfQGmiJ1d8I+Ub2OSOPJGMYi4=
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6442e2dd8bbso2449494d50.0
-        for <linux-mm@kvack.org>; Sat, 17 Jan 2026 20:21:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768710087; x=1769314887; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jvMq2ABTBLrDp9blsAOvXWpoeYwpBXEHUIYBa0P2DU0=;
-        b=GkwTnlVkx0MXUlnHjlDN96HdY+b4BqJK9KPZ9eynt4uzrwFPfami6ODhO7a9MjyaEA
-         /qmQtfaYdFddFGRjlueavA73xZVThHiwGe+Auo7TIcHtkrS1WgmQXQgRoEHRVBJ+ffjH
-         oAwY3KvT3WsYJvNsQmgSmpIPiWf/RaFSRTfkDlM7noRdE/Wqid1gox5QUdaXt0WsOb3C
-         95EFUPJA7dSybpIs8uKkSV+KSm5J4jOPXOTkeVqcrQOJRaKZwa5QgCXy3Fjsc1xFVYKy
-         lfyUgnh5MGQAmOB9e4zibbivri5PXz4f2j5DZXZninNqkfnGxqpTY29l48SRT6FPKvmy
-         Jv9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768710087; x=1769314887;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jvMq2ABTBLrDp9blsAOvXWpoeYwpBXEHUIYBa0P2DU0=;
-        b=ftEgGXsQxGO+iw+/8eWqCojYLLg34nQ2XHCXUwIf2cD4AMnLRW/IE502BEkzgHV8sj
-         8zIUO83gSo5vf5/9Ckuh7HJAYjXOAdLaAVpbi9ckBXAj5kWDuO6Mlp4A0g8KaPIKSL/F
-         FuTg1P3LQn3eqmjUnp4xbtYJAQRCgKKIK/PdnDCOYBEdzPkvqCFeBVG0X5ssfIpI+a+m
-         M9cHl9CSmIKpYu5bAv8LWO2Dlo6sVrxw6yejsCGx4JevLLGibIeXUahdlJho6gH1hl9K
-         P4GZ2pdPQbamqgS3HGMjycG2o4ZMn17OY4DLhzfMzGcYXP+bbt+MjngpH2XtrszG98v3
-         KzLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgxph3sokHzVdWeRKW+GGJ69YAvuLXFYMij7J7lR3O36W5l/FaMi4UuBSjQxFP227r+GTE6VWGiQ==@kvack.org
-X-Gm-Message-State: AOJu0YzmdDi55V/wpidGKxNijcRpoyZUwUOF4y8GiYhGlyAoI4e0x9oN
-	yoVsoEeHV+sxsHkIglBp0XtD7w3WQtmGNIpIRo/idDgNcNhYctviuwXJCqV+TlVXiMEHKxT2uTN
-	j3HShpEnZdd/FxKT6Je0NbJtxLHcy58I=
-X-Gm-Gg: AY/fxX6vi5g+nCig2bcq0sSmry4LKPZ21TpSxn/V5aB3gLojSvF8plyP3BOzcWjPHRM
-	imfAnR7s5qfKwgN52ZeUiBImL5bTlrU3cHWJ8CTgcdoWFvrHbq2WSbsBE5yuGxpVhsKIsmSKYoZ
-	JM3BnRNFXWK6tWICG1y5tb5r+63Ci+j5buxmj6wtnJ7EiEtezFV6laDY776sSCZSfJmoDCJ3h2z
-	3uuXa7H8EBz7qgrqSMCIJ43KNjX1sDlxRJbvoOKX0rVCAAmWVWCE82FW73cshIlxobc2LlWF7IL
-	TmR3Htd9m6CzUNoGaDeGtzuTQ0wf9PBpBNAL7Ja3h4Ssl51NwR747O+erwE=
-X-Received: by 2002:a05:690e:1302:b0:63f:9a63:46e5 with SMTP id
- 956f58d0204a3-64916485743mr6337211d50.28.1768710086767; Sat, 17 Jan 2026
- 20:21:26 -0800 (PST)
+	bh=2ilj6/dtjZjTchAVyTXVluY1eXFhY21oaAp6+lqrc9g=;
+	b=hUji3MUToiSlFmu4LUOGARt1BmWdu8pL4o5rsZu35O/Ij48psnXkzcUWAtiA0Q1bf36xZo
+	KbyVbZ8hRJfgVrVYkqVVF038vh2sFu0RDPPZYIZULM5lU4FWjfF8GVa/l33yE11Qs4V0/w
+	lpIaqALOBNFf+0QTveyRn/VaxAX5iy4=
+Date: Sat, 17 Jan 2026 21:04:44 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768712690;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2ilj6/dtjZjTchAVyTXVluY1eXFhY21oaAp6+lqrc9g=;
+	b=YjB8ndGYK5rdvz8Mvf8c4GHNQMj5zqOZHoWFeP84IUyTs7MKnhS3pxBoha7BuYTFrltE7g
+	tPKkzRj/cW8fYHyoHVMukDaYs8pYXwCMQQW+5lUNcksI+5XagrKUJNGqZPPsVW3TOg198H
+	VfgI5Qvj6xX5iD83saMZHDzjNEdKrs4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] mm/vmscan: mitigate spurious kswapd_failures
+ reset from direct reclaim
+Message-ID: <55m7lphwqp3nywapjutkdzajehvhhulig5v4zsu2lafsxqmwkf@qmwqjgk6z3ke>
+References: <20260114074049.229935-1-jiayuan.chen@linux.dev>
+ <20260114074049.229935-2-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-References: <696b56b1.050a0220.3390f1.0007.GAE@google.com> <20260117165722.6dc25d72fd58254cb89e711b@linux-foundation.org>
-In-Reply-To: <20260117165722.6dc25d72fd58254cb89e711b@linux-foundation.org>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Sun, 18 Jan 2026 09:51:15 +0530
-X-Gm-Features: AZwV_QixRjSHf6Sj2BD4t0Ssbbsgw1OyPwSQbE8CQ4kPIPXAspb8klvrwkVJpOY
-Message-ID: <CADhLXY6ACKeyLrjARTTdfWyrvUdLbtD-wXiQvsvhsbGjwmUqDA@mail.gmail.com>
-Subject: Re: [syzbot] [cgroups?] [mm?] WARNING in memcg1_swapout
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: syzbot <syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com>, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	syzkaller-bugs@googlegroups.com, Johannes Weiner <hannes@cmpxchg.org>, 
-	Muchun Song <muchun.song@linux.dev>, Minchan Kim <minchan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CBAF7C0006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: saipb4edzney6go6715founc45zt1gwe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260114074049.229935-2-jiayuan.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: jcxxfxsi94aoat8exq5tp95b5xsmu1sd
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 18C77180002
 X-Rspam-User: 
-X-HE-Tag: 1768710087-474148
-X-HE-Meta: U2FsdGVkX1851VXanbUJYzfwnxZUWSoqLvezi0+4F6eTCb/idKxqyFw7VYxy1HhpNKkEYW/lCdUMGjt7LiNBu7mcvoE6YjgXiuJ1iZm7Xd26Tehhzpoe8LnmwxOLDp5gThN+9kzq/Z8sme5JrhseI72NnsbvSYKeGBcv+sCIUMDRPNkXNxJc6ZtLpniDL2cgfCpkYb5rScYLF5NUXImiWrVnC5ZeNP6j+Kp4kvRET0qO7wwqDtY8bdT7Zm1z/YMg3DYhmirxwdpJQFHg6G3X9Ym6+/E6FFLTa9avEgLxz7XJYelJobsFjjpRdJjUzGMHzLefoINQtZ/SJ1w0BRbJqTZ1QPs8EDsNBTr8dVt2dUoySsqaCaTtSnxHElvt4OBN5jwb73wv9IVgSwSBdIHw4PESWFJ62eVhVFPOROwLlBjwG+FAuauPF2PK6kEmzAPem5sqLxPy2jkKdLxnLuxVioAFISSQdco1DdmiAQwOed/3+WIBkT2RRqR6ZVEb6JUfJOyn4SiaIyEa7mxOFUxfY9FxnwIBnFeLnqVwKJv/9KEgkyT2g0elrGlC6cBUP7P+YYxKApMELEUHgM5tc46LjVGdsGKFOywp9ozI4iTDOdl8CV/X2s7sCpSn3dqJPERU2eU4kxm+XcwT1QI9Y1SgvTv6Nrn28oMK3YyuGEPhn201xX4YbVYaUoP86sNd5xfU5ycjt9gSd4gCQB+9uskDynEVjFd02kZrA9Dr+9OcpAn18dBZLbifZD43YcOPPKFU/QcIkEkU202y6Zc7yA/9ykK1y1oZof8P5hXRKjEIp1L0IaMDhgFGyV9RoxZhypQUzP1vUcWPECa3/Zk1s/ddA0/WtwqjRzKG5HNGHMh16Hr5ZaLlGclP/tichbSliheAFJtZbv+hGpGOYPMhRwXiBqFk5wIA0NVkzXoBSE41Q4U45BvPyG0GZEwaZG9Fk+mobOmtE7QCsNaPwu377kq
- B+eAqVbM
- 8IhoR5pgFBU0jezsvxRmlLM4tQXSmLGbbnVyk1U1GxmgnxadWfpuZHHgF9f8J4yI8GqfjGEkLEhp3cW/Y01FbLSeYOiYLjqVcejiA4P+TDZHHsYc9jWxNA5fvcnZFe08/IdK/8AONjSvCyj+eizvNeI/ZgUwyyLXc8IgbZG+QqbuctUGn5g2aZ0TB9RF2uk7a5i0rqDKLrYFJxo2pQevVqnsvH7n4pJ+gPWtfXp+GxiNHHlIzcoEUiCb9JCtllQc9n5yKnMB9zSLGWzGu2xbETY24NkE5+lMapLuuuBPugC1vZjj1E4Co7WykfJCH4ROlD8jLwC6wcOBYeThR7qLnBkFvBdIxg2rQHDS5rIUbavXlTe8JiXtK6+zjBw6kFZ3GR4KES8FoVBj1NEWquxBoGVInMD52AbiBDzZg0SqLITMyEGfrwMmmMF3isLeAh1E6ay805FYMOsj9m0D9DugbYw7SySm7jwcER3kuRMc2kuT8H/IihWwmbOTBP/Wa4fM7A9fGH1AbtoRB5HJcOSy3Tt29+M6blXy1Fuzt2Kuops3xM7cxsCTSQ0bQdZY09Jn8f8I2IPgXH39GKpisezHtxNGbluDczZaMRjPdW7Xcru5RzLGfcRVr+drRO6ehLKqN1WscTB6u1danbbQJfU2HwyJR7ixQlr3LIY/R5JWzZI5pJkSme3dtvQyMXzZrAV6gcfSEDKVjnw0uhuCaju6FmXUZvj1uJP4tlPknAscjylwCPsog1w1x/kZVOiiVSoW5QT5sWperjUZm3nX6ex/OlkA2Z64Mq4qvtqeFHxzfxO/r08IV9GDBj5NtanE4JcZ8+7Lp6TzF+5O311bEGjnTFB281NyuHG0CR7xg5ptQi1vbflkFxmE1CqzzC3ERVr676JRkLtn9gol6d44cDWQtwGmb2oqFYFlVHmjLFkXg+0/LH6Z0bS6lm6rfoPPMxNDZ/4IRaOgfviC86InJ6GC3Vr5jxR7n
- xBDd+AXA
- K7P3QTwHNc3sx9G/qcMAJcLnsK+HeZ6s43wS2WFJrkjeS/9ZnYnvU4Xh+Ye+Xp04eRQLwTFTworKADSOjKhSQJRKY/IS5yxG3sCwKPJRMKP7iQ08vnIQtA==
+X-HE-Tag: 1768712692-877860
+X-HE-Meta: U2FsdGVkX1/+WCV05mssMaOA+b7fDsfA8htzZyYJJf8CBafUNSJskkCC0Opwkfi0Dq5ibjOlctbV9B2pjMlXoerQGUgDk8f1nQkoDloh3CQFnt0CU6/eAAK9EbizFfN9nLzO7MBGU6dkQbj0+hUDe73MzpchFKnlmNCpbnKL4kLoEfOkwAe5SwY7PBfOukSo61Am5QXQIkssr78vAjKIkIqK6E1vyKvmdP/Iz49aMYPR3Jy3VupBHzqK1kDRscLzGn5/41cEKzVA2qKUb95qVXZQV3qTnnFglphXY2qFIXCvL+em7I6lrou0Olhj4qxM4ZWjndAo/1I5YJafYS7IOoRfX0JTDDcRv8dQaGHnPdI58084nLqNJk7mkXdmV94m23yVDWOOmIRnkJvZLYXQnrJlZ3L4J7E00x6YVI6wx4rxMI8QBxj3/NVKpHQQ+TwadBCdJjAyU+B9QAcLDdAmirBUJ82P7lEKkgO3ZgDY7iHTsX3MWKXrNSRAxvkhlBmHYffyYY+7PDGFTpw91zHqdWk9lAHDI3yQwWMHzcp0Kxy8AAefGbvbmxNsUHsTgoAf2uIQt4myaz2z0BOiRzWktC2YWChTnAmaDrWInYvKlow1h59kTTXVTbK+t8AK6p6XvcvxQ7ttPnzxlFSWvxa0kEYDDPk1Xfn5Fmvz2KSQO6BzpCaSp2XOlZL8Udg73oggYQFpaCa/MSVggD8evAUSAKcLK+30wEoaxFfXw5l+5hyF9QTFsM4BsITvDPF4dbfxKlrN5HLosIIzyVptzpE6cC6Y2DZGGXeh1hZN90uEgXZCS+z5rqsvPhiYDF2ruOCutZfLG66G5n8+l/TkZSwh+4isq72uw9lrZuGnwpgwK20HePcaIV66jwFjSZmW2lYdvJGKH6cHbqW+HU8GvRMUnUVEPK0/BZ3M/xkx8AvhNwSlF21mnf9hNmQldAEN8qDsNJNKMF2xmoQsrJtMrPX
+ 9f4nfyBE
+ pnIbBDWvh0JjM+gg2WWwyClG7YDXsD14x2dbJK95jwyqpCnI9PHUcFgEPzSPIO6E3FggCWqzygjUj8dY8OBwA9C31P4GWdPTLQTfgqOPcXLTvAYkc/QVd6cl8qMW1GBCI6I/sre+lCHTM/ZbW/TtF7OszlEDkW64sDOKG+FHx8bKNeGRKhr2SF+sjYfMZLHY/B4+JYMIoJUKr7ciK9yDsKMaw+qhlL79bgRGCy4qFYCIgPIP4KAEL4yZHHJBUx0msB4mCy8Bl2NY9AvICYX8TDLl1K1JiRQdVbOvavkLc6rYyYsGtoMMsyNl/lxgTnarLgsUj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,82 +97,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 18, 2026 at 6:27=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Sat, 17 Jan 2026 01:30:25 -0800 syzbot <syzbot+079a3b213add54dd18a7@sy=
-zkaller.appspotmail.com> wrote:
->
-> > Hello,
-> >
-> > syzbot found the following issue on:
-> >
-> > HEAD commit:    0f853ca2a798 Add linux-next specific files for 20260113
-> > git tree:       linux-next
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D14f7259a580=
-000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D8d6e5303d96=
-e21b5
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=3D079a3b213add5=
-4dd18a7
-> > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7=
-976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D167ef9225=
-80000
-> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D16d295fa580=
-000
-> >
-> > Downloadable assets:
-> > disk image: https://storage.googleapis.com/syzbot-assets/480cd223f3f6/d=
-isk-0f853ca2.raw.xz
-> > vmlinux: https://storage.googleapis.com/syzbot-assets/1ca2f0dbb7cc/vmli=
-nux-0f853ca2.xz
-> > kernel image: https://storage.googleapis.com/syzbot-assets/60a0fef5805b=
-/bzImage-0f853ca2.xz
-> >
-> > IMPORTANT: if you fix the issue, please add the following tag to the co=
-mmit:
-> > Reported-by: syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com
->
-> Thanks.
->
-> > ------------[ cut here ]------------
-> > WARNING: mm/memcontrol-v1.c:642 at memcg1_swapout+0x6c2/0x8d0 mm/memcon=
-trol-v1.c:642, CPU#0: syz.4.233/6746
->
-> That's
->
->         VM_WARN_ON_ONCE(oldid !=3D 0);
->
-> which was added by Deepanshu's "mm/swap_cgroup: fix kernel BUG in
-> swap_cgroup_record".
->
-> This patch has Fixes: 1a4e58cce84e ("mm: introduce MADV_PAGEOUT"),
-> which is six years old.  For some reason it has no cc:stable.
->
-> Deepanshu's patch has no reviews.
->
-> So can I please do the memcg maintainer summoning dance here?  We have a
-> repeatable BUG happening in mainline Linux.
->
+On Wed, Jan 14, 2026 at 03:40:35PM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> When kswapd fails to reclaim memory, kswapd_failures is incremented.
+> Once it reaches MAX_RECLAIM_RETRIES, kswapd stops running to avoid
+> futile reclaim attempts. However, any successful direct reclaim
+> unconditionally resets kswapd_failures to 0, which can cause problems.
+> 
+> We observed an issue in production on a multi-NUMA system where a
+> process allocated large amounts of anonymous pages on a single NUMA
+> node, causing its watermark to drop below high and evicting most file
+> pages:
+> 
+> $ numastat -m
+> Per-node system memory usage (in MBs):
+>                           Node 0          Node 1           Total
+>                  --------------- --------------- ---------------
+> MemTotal               128222.19       127983.91       256206.11
+> MemFree                  1414.48         1432.80         2847.29
+> MemUsed                126807.71       126551.11       252358.82
+> SwapCached                  0.00            0.00            0.00
+> Active                  29017.91        25554.57        54572.48
+> Inactive                92749.06        95377.00       188126.06
+> Active(anon)            28998.96        23356.47        52355.43
+> Inactive(anon)          92685.27        87466.11       180151.39
+> Active(file)               18.95         2198.10         2217.05
+> Inactive(file)             63.79         7910.89         7974.68
+> 
+> With swap disabled, only file pages can be reclaimed. When kswapd is
+> woken (e.g., via wake_all_kswapds()), it runs continuously but cannot
+> raise free memory above the high watermark since reclaimable file pages
+> are insufficient. Normally, kswapd would eventually stop after
+> kswapd_failures reaches MAX_RECLAIM_RETRIES.
+> 
+> However, containers on this machine have memory.high set in their
+> cgroup. Business processes continuously trigger the high limit, causing
+> frequent direct reclaim that keeps resetting kswapd_failures to 0. This
+> prevents kswapd from ever stopping.
+> 
+> The key insight is that direct reclaim triggered by cgroup memory.high
+> performs aggressive scanning to throttle the allocating process. With
+> sufficiently aggressive scanning, even hot pages will eventually be
+> reclaimed, making direct reclaim "successful" at freeing some memory.
+> However, this success does not mean the node has reached a balanced
+> state - the freed memory may still be insufficient to bring free pages
+> above the high watermark. Unconditionally resetting kswapd_failures in
+> this case keeps kswapd alive indefinitely.
+> 
+> The result is that kswapd runs endlessly. Unlike direct reclaim which
+> only reclaims from the allocating cgroup, kswapd scans the entire node's
+> memory. This causes hot file pages from all workloads on the node to be
+> evicted, not just those from the cgroup triggering memory.high. These
+> pages constantly refault, generating sustained heavy IO READ pressure
+> across the entire system.
+> 
+> Fix this by only resetting kswapd_failures when the node is actually
+> balanced. This allows both kswapd and direct reclaim to clear
+> kswapd_failures upon successful reclaim, but only when the reclaim
+> actually resolves the memory pressure (i.e., the node becomes balanced).
+> 
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-Hi Andrew,
+After incorporating suggestions from Johannes, you can add:
 
-I checked the git blame output for commit 0f853ca2a798:
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Line 763: memcg1_swapout(folio, swap);
-Line 764: __swap_cache_del_folio(ci, folio, swap, shadow);
-                    (d7a7b2f91f36b - Kairui Song, 2026-01-13 02:33:36 +0800=
-)
-
-Kairui's reordering patch appears to have been merged on Jan 13.
-The syzbot report is also from Jan 13, likely from earlier in the
-day before the reordering patch was merged.
-
-So this report is from before the fix. The warning should not appear
-in linux-next builds after Jan 13.
-
-Thanks,
-
-Deepanshu
 
