@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC261C9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 18:03:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDDDD4A5F4
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 18:03:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E21076B00A5; Sun, 18 Jan 2026 13:03:16 -0500 (EST)
+	id 19EFF6B00A2; Sun, 18 Jan 2026 13:03:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBC896B00A7; Sun, 18 Jan 2026 13:03:16 -0500 (EST)
+	id 14A6B6B00A6; Sun, 18 Jan 2026 13:03:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA9616B00A6; Sun, 18 Jan 2026 13:03:16 -0500 (EST)
+	id E1DC16B00A4; Sun, 18 Jan 2026 13:03:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A092F6B00A4
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AE4796B00A5
 	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 13:03:16 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D18C1A02E0
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6DF385984C
 	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:03:16 +0000 (UTC)
-X-FDA: 84345856392.17.D9D4A85
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B507D140007
+X-FDA: 84345856392.18.481E5C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DED93180005
 	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 18:03:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sdCnazW/";
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768759394; a=rsa-sha256;
-	cv=none;
-	b=tthYdwNdoHh20oD5L7vIz+rzLuZOZmcGnFwACbz2/P50r58OF4ghCtkfDPPF1YjfjnX8ag
-	hRoV4iuwxhDCOI8xvRYpq+d0v2UiNaH3kMMaT9ouP1Zjr4otR4HP5lnm74fd4aJXbQCKTQ
-	5ysVaYbR67bdQECDvP4hw6NkJeelfTc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sdCnazW/";
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ewvwYXCI;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1768759394;
@@ -44,25 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/T/g3JY0yUo+PZfT0O1gONja6dtxb3pTCK/Hq8cZb0k=;
-	b=c1JLhKcJ5TE/qDD3RCcTwuwsjnExYTBPoEVMKiNsSP2y16rn0m/4eQDUjZjaa6PpzEJj6T
-	rN3V1+X2qMqgUeghdwByrYhApapZaWQidmxP1vwFcFLyMRWlQYHBPrFB++uVAwWwv4NMoI
-	oAazFj965YFdtGedyCdomx0YfSeErBg=
+	bh=tdVqpnz/AN5ug5Xq7s+6w5HjEMxm3S+NX/t4w9e4GZY=;
+	b=H7GK0OFW0lgK6i06k7Rm97JACbFB8UpqwYjWShjV+h+A6a7dpnZBFOII/vR02Dta1xWGKc
+	zzPADvtLetG+XSbDTYzFTW0geo+4iQ4PCxw0qB7UwGLl3N5tW6vimycg+tQqNmebItDKqV
+	cmvRnFFiOOQpXrF91ls3/V1P5SVq2jE=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ewvwYXCI;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768759394; a=rsa-sha256;
+	cv=none;
+	b=5dD5WFoW4CcldX8Et0dPwcuuK5fcyvW2f0NydkMfaahHOYN7o3YCKT0OxHAL1dn3hjZdxh
+	TWiDXJSiopi8hvvYrjZaWpQUqrAFd8FzGR4absWzWDgZBBtstBAjPcvUbRumI4D6ETWGUG
+	yqkd7kYQX+B9zYgFFuti93N3FLZa/IU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E3615442FE;
-	Sun, 18 Jan 2026 18:03:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E93C2BC86;
+	by tor.source.kernel.org (Postfix) with ESMTP id 72AB160134;
+	Sun, 18 Jan 2026 18:03:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E206DC116D0;
 	Sun, 18 Jan 2026 18:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768759393;
-	bh=LR2wVWJnzRZMCJ1oBYDVY/vPM/T4H4yu0kot6/rnmTs=;
+	s=k20201202; t=1768759394;
+	bh=1GRiXmsO65OYbfT1UpFoUJRXTsmQCXqwNCyc2P2HEi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdCnazW/iIGK36SFyGPzvBHD29cEX9ttdnrNaE+GY7XHtI6UxTm3t2YCzci4GXHU3
-	 vzCudRiBsmKfqUwW5Ub4hXwIua5SZa/mjLQ1NjR/Q87CCqXqcPWE4e4ZFj6+NrG8es
-	 0aogOxs3l2lkit5tFm53tRQ5kPu/PYEhvPLRKyFR1GWYKiJI/Kt4N9AD9V8/5djkd5
-	 +T0RcfIKXCj5TVZOCqD5scmxvhmqCHe8IiTwHpZJZPEkaPYmZz/itsDH/UKvOEyMrn
-	 P3PXh3buPg2Yx3zJxQkincSsN7OrG2fnnrGgJGfSXdofiqKMVzjRebCB8cMKBTqPCI
-	 sncP347ZYAnOw==
+	b=ewvwYXCI0UNZ/JjJAkjbGBLsGZjO414jRL6prWYBB8Pa9s8HysdJrNQwhL73sx3m+
+	 ysed0jEyD+/qkThI/MhqbaYOJlR28ZO0SD7VRrSvI4GFwnmAeG3rpYRlC3pvkcwX3h
+	 F9KY8x5EhL8yyGCX7ijt3lrQGQI0w/PwVN7E0Cvm2iYuKwejd2T7S+g3WAcyb7jpom
+	 ZgLvgKbkLXd2T6QMNUJqbQL1sHS29cpaVjhMZA/dIfLn4l5D2eiwlh3CIdOc9hEv/0
+	 n77vsWspqZaYxIl1CslTUChb6B4H7iAtHjF+oAbb7fMIU3L+smo2M7GMC8K4sCU1vj
+	 d89MLT1AsQE8g==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -78,22 +78,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6/8] Docs/admin-guide/mm/damon/usage: update stats update process for refresh_ms
-Date: Sun, 18 Jan 2026 10:02:57 -0800
-Message-ID: <20260118180305.70023-7-sj@kernel.org>
+Subject: [PATCH 7/8] Docs/mm/damon/maintainer-profile: fix wrong MAITNAINERS section name
+Date: Sun, 18 Jan 2026 10:02:58 -0800
+Message-ID: <20260118180305.70023-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260118180305.70023-1-sj@kernel.org>
 References: <20260118180305.70023-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: s1pwzyj73cy4ibjq3xhekpaspewxu93j
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B507D140007
 X-Rspam-User: 
-X-HE-Tag: 1768759394-602722
-X-HE-Meta: U2FsdGVkX1/Iqq89mxQeHuJKDbOIyJ1ZXfEuYeGdCZUakXcEiKsEicgBFLaJ2iMEPA/dmvaBtj6RztJPVrUfSDDiV7ATWSfbcVDbVLaK+z+hLbYKcSh6pKmT3XPZdaarkKTMG7qWngzTowapAYAQCUZkxLEVwIFLD1U+738L8O4ZIBpfHAZyxkDCTgDzhtVY+iOniHJsIoxm+16o1lka4VN9Ow2jxACn5I74b+P2PKfxrByE0BGOPqWStGh9KbQzzSwpPPBwJAE/CVFP6vjJUHKZJwPTWJU0LCCzLOT2/1nwpQyHr2gdKyZon37iYRs+oK5+u/NhmvN4J9SBc/4UMeYYSsqF647ahBKdxNS/7c2SnRrH7U4VWA2DZbclDoiv4Y8PWz5HF3Di1MzD6wNPDzBgCVsKSTkh83AxWnl4dnefCE7oJT5b8jTk2N9uEG5TIKDNo1TAttjPvbkUyqJXJ+pRXKYJx/SuXmdvipDL8oJfF0V4e2402za53rRPXLDDa8/M9AJ4iuZUEBHsetwBNQQwt2jFEm7lSigzSBnd6hLG5I8vzWqyVqKu++lCkOpXAVbczDXbyqXL2D6DlS72jXqa0s0OCCePx+rwntIYonYdX6Ujv9zW3drAju0g6W2vL/JtRsultwOrZ2jQ4c5mYG6XrhrWYRSLDRdkTjq4RkzVSNRWzU9WVvF9sTdif4XJ37Kbc8lXhVCfks2t7gyShkA8DTvK/QyhULsH6UHimJlm1uEPIVRMuMQgng5AUbcz0fHVNZ7Ug/8BEslvJpj5qh5l7kQzr1PUaHzDXCC/Ms2Ky/TXSBX6aIcYp0fTdAdlPnUC35pCOIKP0qh7SvtFZwV/QI3aDT3vR/rPunC1IrmgeZQojyK07pDAixZ9zFZs2BB1lwjzJfVa74KWaI+hhBxRW0KIbth7ajwrJRrRHXgByCxusa2QFqlfSa5JeMSUSFimg/9WlsQ1uX/y9ha
- 7Z539ipl
- CGsz/cFBU4UTEITLu8f68PQVyyKNZ0w46epfo6r3ze/gTpMTRditNSfsOxTQggxAK1PEJUzXYybUzVRHRI212j/G266b1O4jbg52RWQ8hR9viyWITC9aSHYxKZUN5M1yg/6varaOWvYli0wABOFb5o6dP6Vhx5cc+/vVCZfd7qkkKaKPq+t3iP+4H7mr8ngmWSc/uVxNc6jzFFlGEy4vjh8dKHPCazBwsLywZ16++Tdcotf1XrB7gTrHWuTHtUnqDe6/+gaKteGAQ41zG2szsdHPWFHy2iVDowJnG
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DED93180005
+X-Stat-Signature: qwokc6d7kbrbyh6rcardjbebujjc4tdo
+X-HE-Tag: 1768759394-103065
+X-HE-Meta: U2FsdGVkX19NZCVbYzi+EuVgHW04ncKHtoFm6W4R5WY/js++MZOTsJcoZp6yBojdJuo/Q46FbWsywtZ6w+1s9fNDO0M9B539c5IjlF6Sv2juYVDvOx3/f14jyw5k4W/MnVDTvypPTolpqrjqwfwyLQhegGSPCjXpPslDDmIY+IFQvT+oUsEslpIyGH7ur4RnsXlQuflTGGdvmi95d7d8i8dNeMv8zqp++PaeKq0bIcN7ruifPzi1DQIQO9VBqGqPncvFBs2BOODGC9lPyLUqXhaukcBzN0MLAK9ApRVhk+h78QznLFL826Unn4hI0h5g2231Q/eBCJ0+L2rrwHERfUdh11hAM0iVve9R3r356HCVA24ZFCFzVSNujdY+yAh50OstSO0mrcXOTEjkiaiItzTjXp83bODzlOIE/7BoAMeUvo6pkhbzfTGv0BHC5FAXm74U09HM5onhTROeysn1Vt3+jvLACgFa8EVyIXIP8qzRbzDIdZT47jpaY9yc5xuVidzqT7MrodyWPHcVJoasTzz/qsLD1p7RFpWcTY17aalWvRxRKjUb7/N8N+L/Jmz7fnzNTrN6Lw1SJNvGiSyt+ySzOovX16MN371Wy572NjRnGW7QtBttEcBcJrejo2vgh0wpavq1tkYwqFoar3UZHKdWx0n2JVXyEmgMIjoTp2Mvt7lumT5af2G5R+hcrbAT2NrqEo1O16GAVxxk3qnfs+9aW/PdWybBBVlzCKXO8IFdP2LyR50HM6K5okOWT4NEjLw0F+/4ByTCI4bRnBAVtOzo2BGErSfhlSKVtD1tBWu5scRISD17Mur4eEz741CVAMwrFW+Uu1Srq0+vVihu8QCY2xylq5hITz9psbsxIric3M4h9PIbslpi4U8VXwcnsylucNk3Pugqc1wwM1KJKvwdo3csu7qR+ICb6h+tlyAeJIs0F+5e6KZSUL6dUIerIvHLVrIcHu5qyydF/DQ
+ XM98/ubV
+ leaPB8Kxv0BcoE1Yr1ANL3GfHMiaIwWN4dLZ3pr1u8XN2yZ517Jp7NQdGbwiqZYaXPLV9EfS2Znxp4POGpkny6mrEraTeQjm58g/R2LXD9tCrJ9z8JhlhqYRl8zuc9LYKee9MC3WyZJ0miqQ9ubLHqRdrPWtmWfKiFzANOFhGYVobkpcFcsVDbqS1hkPFAf9SO3SEL00s5x68NKZhhQRepJTVb+a3ROw7E4ug5JpesQto6KiL9MpqF8rTO5WnZwY51g0g4ge5Fo3NgrG4Lqp4yqJO99vioTtUyfJr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,38 +102,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS stats on sysfs was only manually updated.  Recent addition of
-'refresh_ms' knob enabled periodic and automated updates of the stats.
-The document for stats update process is not updated for the change,
-however.  Update.
+Commit 9044cbe50a70 ("MAINTAINERS: rename DAMON section") renamed the
+section for DAMON from "DATA ACCESS MONITOR" to "DAMON".  But the commit
+forgot updating the name on the maintainer-profile document.  Update.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ Documentation/mm/damon/maintainer-profile.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index bfaee977c37c..b0f3969b6b3b 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -549,10 +549,13 @@ online analysis or tuning of the schemes.  Refer to :ref:`design doc
- The statistics can be retrieved by reading the files under ``stats`` directory
- (``nr_tried``, ``sz_tried``, ``nr_applied``, ``sz_applied``,
- ``sz_ops_filter_passed``, ``qt_exceeds``, ``nr_snapshots`` and
--``max_nr_snapshots``), respectively.  The files are not updated in real time,
--so you should ask DAMON sysfs interface to update the content of the files for
--the stats by writing a special keyword, ``update_schemes_stats`` to the
--relevant ``kdamonds/<N>/state`` file.
-+``max_nr_snapshots``), respectively.
-+
-+The files are not updated in real time by default.  Users should ask DAMON
-+sysfs interface to periodically update those using ``refresh_ms``, or do a one
-+time update by writing a special keyword, ``update_schemes_stats`` to the
-+relevant ``kdamonds/<N>/state`` file.  Refer to :ref:`kdamond directory
-+<sysfs_kdamond>` for more details.
+diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
+index e761edada1e9..4fa06b21ec30 100644
+--- a/Documentation/mm/damon/maintainer-profile.rst
++++ b/Documentation/mm/damon/maintainer-profile.rst
+@@ -3,8 +3,8 @@
+ DAMON Maintainer Entry Profile
+ ==============================
  
- .. _sysfs_schemes_tried_regions:
+-The DAMON subsystem covers the files that are listed in 'DATA ACCESS MONITOR'
+-section of 'MAINTAINERS' file.
++The DAMON subsystem covers the files that are listed in 'DAMON' section of
++'MAINTAINERS' file.
  
+ The mailing lists for the subsystem are damon@lists.linux.dev and
+ linux-mm@kvack.org.  Patches should be made against the `mm-new tree
 -- 
 2.47.3
 
