@@ -4,90 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C28C5C98315
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 20:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B71C9830C
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 21:05:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFF056B00AD; Sun, 18 Jan 2026 15:53:15 -0500 (EST)
+	id 6D77D6B00D4; Sun, 18 Jan 2026 16:05:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAC3D6B00D2; Sun, 18 Jan 2026 15:53:15 -0500 (EST)
+	id 6851C6B00D5; Sun, 18 Jan 2026 16:05:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD5056B00D3; Sun, 18 Jan 2026 15:53:15 -0500 (EST)
+	id 5ADE56B00D6; Sun, 18 Jan 2026 16:05:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CB1C06B00AD
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 15:53:15 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B9248C0F7
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 20:53:15 +0000 (UTC)
-X-FDA: 84346284750.03.D8C5478
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 86F5F20006
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 20:53:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wAwy4dum;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768769593; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4743E6B00D4
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 16:05:29 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF7908C0FA
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 21:05:28 +0000 (UTC)
+X-FDA: 84346315536.06.443D3EF
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1F2F8140006
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 21:05:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=L1kGlcJg;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768770326; a=rsa-sha256;
 	cv=none;
-	b=qTHrcrU7H8N4q2CPd3/iZAqihU3H0L/xSuWz78y2/1VRjYGo2+XrIcpCyu9KE/iG3i5Kyl
-	h+dmYxUp8y5I88SYA3ttjDe9Rxtj4WkSRsEijnP8Kdm11zkuCSmQk089Dp5YGAq5VjNDJ7
-	N3NgbQjliWGSi+QlWQNVocmOBBNS4MM=
+	b=Ol7RXNgtCNKLdozmiJquFj6H9mDjbWZmknyz48kAeDyp4sIEhVQ4XUQRYDpB9Onh/CIUBJ
+	ngW5ULwU2TJqT8sg8iAJGl4pdXKRyXuure9EvTF7IkBaTaDFcSOO6EKTR9hNWBOiLKbcvG
+	SbdVTmvHj9V+x1KlscqWyVxcfGnY22I=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wAwy4dum;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=L1kGlcJg;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768769593;
+	s=arc-20220608; t=1768770326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sx3aFJkziETw8stWouNQefvAV73ohh3TUIZ2jQJe7Os=;
-	b=QSjZ3QF74V837ceWVIIGoNehhxt/NUYhG3SYtpFfbHso84Ts9/06Y7jDXkAPJyWZXidkzM
-	II3lwMgxuKzuupsAdlGDUIHhjRqKgyxZGIzzsw06yTWtIrR62eZpE9xdqo/C8K/24HzNM+
-	7djazynQPwgwYaYTCprq3k1O8+/0R54=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F68A40223;
-	Sun, 18 Jan 2026 20:53:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5E4C116D0;
-	Sun, 18 Jan 2026 20:53:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768769592;
-	bh=fK9ac9RPhRZgFPiQNcPRY83rlzyBRy0paqxUcXHrxlY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=wAwy4dumj3QkHo2j4/DFpsskq0L2LT+YaKl/VWlDSldxxke7hgauSAAaCEQdxQ/rM
-	 35l6yp40Je1qZG1ZgTWzwr0eHET0Wp4AjTK9It/U+kfCFKjZTw/tDbw++Y2TB/bEuQ
-	 p4KTqMMB/Rkp7GfG3dmQt7Tca4Ph5/U6dNUvAAqY=
-Date: Sun, 18 Jan 2026 12:53:11 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: syzbot <syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com>,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- syzkaller-bugs@googlegroups.com, Johannes Weiner <hannes@cmpxchg.org>,
- Muchun Song <muchun.song@linux.dev>, Minchan Kim <minchan@kernel.org>
-Subject: Re: [syzbot] [cgroups?] [mm?] WARNING in memcg1_swapout
-Message-Id: <20260118125311.e1894f598e2a8ef626f47f25@linux-foundation.org>
-In-Reply-To: <CADhLXY7FJqRLjX7X2yJfa0=iDbUAMwhS35cOEExW+qBJWAnt+A@mail.gmail.com>
-References: <696b56b1.050a0220.3390f1.0007.GAE@google.com>
-	<20260117165722.6dc25d72fd58254cb89e711b@linux-foundation.org>
-	<CADhLXY6ACKeyLrjARTTdfWyrvUdLbtD-wXiQvsvhsbGjwmUqDA@mail.gmail.com>
-	<CADhLXY7FJqRLjX7X2yJfa0=iDbUAMwhS35cOEExW+qBJWAnt+A@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 86F5F20006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: g9u1sqeofjc5ck4i5r6jtj8kfz57sr8p
+	bh=E+Gh5dGpj/bDc5jPev6JZe5dYnpGnV2Gem7G5YUBd2A=;
+	b=pZy52byAzm3Dn+PwzMapPWSUMh96G1l8vHv6JtVHknmqTlLK7U++8Jh2youn3TLqI6tBe/
+	wpK2k1Gr0X02W0Po4bq0hPXAAJm68boSPujuCV8b9vNAI9N/BJ7+tFGZeLejcB0vn2m3pb
+	i79B8VuEVAYaPUXayDVA72Cg6qB76m8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768770326; x=1800306326;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OE1AoHB1Y79/Fx3YUFsM512vLtvo5xjas7jk/6O9aqg=;
+  b=L1kGlcJgq6dicwMy0iNXsAyFueO/aQxq2D9s8GCpE5ddlXdY0EzbfRaF
+   fSLiuoJQhrAKJm6dUOuGd0JDtSVK42X69fcomrvQGZ7Uqa15pu2+sJE73
+   eDbU1avVCGv8mXU1PAA+x9fMVwscGIawuvx+VH+n06f0+Y4md+R0WHDI4
+   Tg5hJcsElUHijFbn//abZuAj688bn7KKIRaWOROMZ+aR732Uu4AYoUeah
+   6pU1LFV/yJZLDY/bF+qhnhnFNOpzEX6g3IGIEj9kuhQmHtp7pFGo3eUri
+   MML8en4PKpqIX5ApU1zeOYRha9u+CVhrZx+IQShK47KghIwZBFYFK6xZT
+   w==;
+X-CSE-ConnectionGUID: t3kb+K7ATvSFwR7PS/3F1w==
+X-CSE-MsgGUID: VTpridkYS1uUel1NDR5s+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="73620379"
+X-IronPort-AV: E=Sophos;i="6.21,236,1763452800"; 
+   d="scan'208";a="73620379"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 13:05:24 -0800
+X-CSE-ConnectionGUID: ma6M8gC5TueFYLQs1mg2Rw==
+X-CSE-MsgGUID: 2d+5Z5+6QeuDEfRp4e4DxQ==
+X-ExtLoop1: 1
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 18 Jan 2026 13:05:22 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vhZxX-00000000NDp-3IGw;
+	Sun, 18 Jan 2026 21:05:19 +0000
+Date: Mon, 19 Jan 2026 05:04:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Eric Dumazet <edumazet@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <eric.dumazet@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nicolas Pitre <npitre@baylibre.com>
+Subject: Re: [PATCH] compiler_types: Introduce inline_for_performance
+Message-ID: <202601190420.RlBoZSGm-lkp@intel.com>
+References: <20260118152448.2560414-1-edumazet@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260118152448.2560414-1-edumazet@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1768769593-324532
-X-HE-Meta: U2FsdGVkX18tcC0u3hrsl5KFbQ+wpYo08fhRVLS49BLnjrEyqDfSmD3oXtgPYyEHdybMAMQUR9JJd9/rKmF4ilFtd+6r8vLYiHsgT9VThjLwjXc6ohOkvTbMI1KYIzBujTRnTtgNuflbOzV2KUCAh9QtqZtBovlndM4SVZbwJZByhmZMXUcXRPQXOGrAiX9XEo5ecCEit/vY0AqvpsSMgJNBxZRo0uI2OHOpggQ7T7Exst2glmeTORq8YgSZGQKWDKfNgZ+CiOQsm0kEQianw9O6y9YpWqbXZOuYFd8B1TY1yCdRsqViCvP/OvCtaFlDUtyqq0p15HJOrUXnGgXeEc57OnHF+nP/46WArQPE3TtJUuWf+AlaQAEB01X6dpHSEjEjrLCdDJiFxoWHRYnjwVHNw0OslyrBZkZszudVbFG2hgu0x3T5iT4krhW2g4B1i4A58VfwDYCAxYuYB83MhzZkhUQCxbP2+J8+kQlvTAPecrX9G/1QbJaIHBOh4OroVVTuqPdMqkN4jUqSRaQ0g99BIeQMvuWf8c0Q9U+aOwVH0sLF1DQQx782HHBNoMsW36B91Hp+vwHwNDFeYUSTlDWjnVu5jWrL2TNCAsnsgyXhHDz9FpwF+5piRuTIPLZCel6CpJIar7E9NSl9uNLqrCnTuyNyRF6/cOhcXfJiLzTlHfWYlzd4tYCTabN/nETJjZ49p7UPFAX1WoY8Xw6Yp2sht63M/9WMySkJ5Q39qCNNx2+L9m4m8nsRwnR8ab00ojRQR7pRBtSuaxfRzPLGJHpyv2qLozgfZ8glMn/OsVKFMMwLipadXDc5Tu/LTh/a/ttV+LXl6USP4EkcdoLbo/kuJHBbbxslSxNCmJaQlO5E641orVfG9OUlZaOGTn78fNY0PkJ31Ynkv2tgykQdXFDwbA5XOSsSP64QUBTYOavuAxDJGruRkC+4rAunRAfr3LsTTfDldXCJduw3+3s
- sN/GLMIs
- PU9rzSaF8soQ+4POsPRdpf63diymJPaVulbGf8+Znwhr1GKtJFN5SnSswkw+3UCkuAXCJhStNsm2y9yRVcUXchidkMuJ1gj5HUGvZx5qY1X0FWOKyB4NsJF/ZoBMSyVNX7U7BvK1zC+vM4CTD1hjC01QTUU+2E3/1dGn8iluS4YngVL08p7aGDwflc89iZvjs/7AeR7YAdVQx31fbOuJMNwL7ZuQiccAM4cJQ8MqLV9ytUfYoU08Dr+aMv6tT5xUjmx5hqEiiQibeneV4fQBEfYkRktsO0L6vsvNWmg+/6pQ3IywZ1owftWf4YHx+yfccLch66ZiYyp1mWoT2Z28eDYXJAtIneFoDEP8CsirQmMadUmgJdS/LGd7/EMr9fTJA0//bBgaIuZV1U0OFc6eZuZ07k6twkHeCu3WMvRpOSf95gKWQ9ubsL54C0YAp3GHmrQiBNSGa6MZP39gydoJBHlbQNSmmCrdbw3bG48RR4mfD62UxY49jJ8VaB4jlsELb6AkLOa67p9jxt7cMqF2bAmHLGw5gsW4r6fKIMwBuirdU03hP32Lydjg+Nz054djiS8Z4qq2N86UhQVxCn+F9ZlUnj/DV4D1oaXAspDYy4FaZlPlgJnn2yp2HiCyMH5zlByEXN61STbxo5jvUOnX1DUS4ZfQP5LjiEywJ1yg9nA5r6Fp6wXYZkHpt+L/iAvdUAG4esBxzXBwHFlc/aF/B35xRhA==
+X-Stat-Signature: tpf7bm5axcsu6ywhkynm4u954a1za76s
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1F2F8140006
+X-HE-Tag: 1768770325-474868
+X-HE-Meta: U2FsdGVkX190TBVMVAYwm2AaJ2Ap/EBmBarMqe1vvJ6XJSB9lVigG4YlLq8XaQzS6g9wfcgfGUd2jVNalvlBz0WuwXxcr8uzHtLndA+H9ZOL/yZazPq6C+4j5I7A/O/dYJBmICGY6TfVmPGIm2M/ojntXqb50MSF8tMJzqAzyuwUnrdHReyyVV2BbYyDKp9wrov/mrLaZmjLauVHsWXejfiSZ1qTAhiJWrSFsOvdtU66Zzr6WlxFIv5FSZhBLs6rkxS5cyytxS0/02jzRVnRmfhAOmAFRj6LvtqKzOqJg7vxN97Mr2MyPJm1vb+EYGHzd+HyFkx/tFdOJv1fAw/hed+SZbU2pQ24rbnSXU++3/MKX1dosREMN4MfTiAGXCtSr/SwmSxsGdICNdMLP3g0xRGl07QwDmxWbuKGXF/CM2AE71IgMsLmIDiof45BLA3uIpIgmN544f05CiIU93N4nXa3u6+rc5YwNN3aqm/tPx0fZrawxq80wEmfYxgSSwvJZFIxEWAiD8FtmqGHr129brWPEoYv21JsEFjqECxVT+P2Na/nzHbz+eYWFgnZKV25b/vn/cpAd2Z6FvaYOWsILRujVd1w1r9BikCLvV8PWFMW2ds5zwbUkbTD988WKAdKHxQ6ckMSbbNPhfjbSsZ3sVDaQHP6UL8gPYmqYron4H+eB+8Myzb4550bjmOneu3WDiBBVDOlB7nWP3m9Xd2CJqUm0AC/TJ5l7Lfj0G1wjqN/4Iw5RzpHxCStgmsMLkj7jIp/hFrrNJaekMmwJ72epyGeqLM3R1KetDMQFkd1MD4GXmOfCq2jKYw7wup70RrqrizFzCkqClbZQLGCbsLWPTColkNimsqH0QoDTrSjB53x6BJy+5MILPMMUpW8RQoF6Tfa9VsFWmsqMvVubNz8sjmCcb9aqFipxZPTyATpOfDwMkT6SzMGnHSmDuk13z/188c/U5gcWJ/BjGUrA1T
+ WUSQks80
+ fmYWvF4/bhZllCFHZR7k52Zz4SkA5L9AcKp54NErPRl9DJmDzrL1YFIPDZjboXyUh4iE2xn7aK7/BJea01Puv0vWb6vOLS3BiWYNcDfdLHP5NGCDTMDOTv75ktGkYWGSAKrueW6SqZhgSjDh988FLDJLhLhnvf996KEyVNThrmS4S3ZhREAcRPIOTiMjOD07RLUOsfH7sxYbK5nE3Hy7Ep5NUYYE8/bPvjXYTyyMKL9D8BmmC9VmqYAm+2w2ue5hxBrLrIa5/k1vNSOvW92EN1Y0Zwdt93IJPuLbl62ORouOUrEoc23WAwHQrjDikO48j2C3AClkEsIgezgT4XInlf7HDHgwA7FDsKz+mLSG+y4S2H113Kdro/mNDYZONKebZBWgPGqDeQnHWEh+KJRwY4DR0eILTUsGxamRubVc2NDQ5b8xZy3W1oWasyeEgCmqtIsQH1h0y9sSlKqViXnFLRUeADA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,149 +111,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 18 Jan 2026 12:31:43 +0530 Deepanshu Kartikey <kartikey406@gmail.com> wrote:
+Hi Eric,
 
-> > >
-> > > That's
-> > >
-> > >         VM_WARN_ON_ONCE(oldid != 0);
-> > >
-> > > which was added by Deepanshu's "mm/swap_cgroup: fix kernel BUG in
-> > > swap_cgroup_record".
-> > >
-> > > This patch has Fixes: 1a4e58cce84e ("mm: introduce MADV_PAGEOUT"),
-> > > which is six years old.  For some reason it has no cc:stable.
-> > >
-> > > Deepanshu's patch has no reviews.
-> > >
-> > > So can I please do the memcg maintainer summoning dance here?  We have a
-> > > repeatable BUG happening in mainline Linux.
-> > >
-> >
-> > Hi Andrew,
-> >
-> > I checked the git blame output for commit 0f853ca2a798:
-> >
-> > Line 763: memcg1_swapout(folio, swap);
-> > Line 764: __swap_cache_del_folio(ci, folio, swap, shadow);
-> >                     (d7a7b2f91f36b - Kairui Song, 2026-01-13 02:33:36 +0800)
-> >
-> > Kairui's reordering patch appears to have been merged on Jan 13.
+kernel test robot noticed the following build warnings:
 
-Eek, there are many patches, it helps to identify them carefully.
+[auto build test WARNING on e84d960149e71e8d5e4db69775ce31305898ed0c]
 
-I think you're referring to
-https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-use-swap-cache-as-the-swap-in-synchronize-layer-fix.patch
+url:    https://github.com/intel-lab-lkp/linux/commits/Eric-Dumazet/compiler_types-Introduce-inline_for_performance/20260118-232653
+base:   e84d960149e71e8d5e4db69775ce31305898ed0c
+patch link:    https://lore.kernel.org/r/20260118152448.2560414-1-edumazet%40google.com
+patch subject: [PATCH] compiler_types: Introduce inline_for_performance
+config: arm-randconfig-004-20260119 (https://download.01.org/0day-ci/archive/20260119/202601190420.RlBoZSGm-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 14.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260119/202601190420.RlBoZSGm-lkp@intel.com/reproduce)
 
-> > The syzbot report is also from Jan 13, likely from earlier in the
-> > day before the reordering patch was merged.
-> >
-> > So this report is from before the fix. The warning should not appear
-> > in linux-next builds after Jan 13.
-> >
-> > Thanks,
-> >
-> > Deepanshu
-> 
-> Hi Andrew,
-> 
-> I tested with the latest linux-next in sysbot. It is working fine
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601190420.RlBoZSGm-lkp@intel.com/
 
-Great, thanks.  But we still don't have review for this one.
+All warnings (new ones prefixed by >>):
 
-For some reason I don't have cc:stable on this - could people
-make a recommendation?
+   In file included from include/linux/math.h:6,
+                    from include/linux/kernel.h:27,
+                    from include/linux/random.h:7,
+                    from include/linux/nodemask.h:94,
+                    from include/linux/numa.h:6,
+                    from include/linux/cpumask.h:15,
+                    from include/linux/smp.h:13,
+                    from include/linux/lockdep.h:14,
+                    from include/linux/spinlock.h:63,
+                    from lib/dec_and_lock.c:3:
+>> arch/arm/include/asm/div64.h:56:10: warning: '__arch_xprod_64' defined but not used [-Wunused-function]
+      56 | uint64_t __arch_xprod_64(uint64_t m, uint64_t n, bool bias)
+         |          ^~~~~~~~~~~~~~~
 
 
+vim +/__arch_xprod_64 +56 arch/arm/include/asm/div64.h
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: mm/swap_cgroup: fix kernel BUG in swap_cgroup_record
-Date: Sat, 10 Jan 2026 12:16:13 +0530
+fa4adc614922c2 include/asm-arm/div64.h      Nicolas Pitre 2006-12-06   54  
+5f712d70e20a46 arch/arm/include/asm/div64.h Eric Dumazet  2026-01-18   55  static inline_for_performance
+d533cb2d2af400 arch/arm/include/asm/div64.h Nicolas Pitre 2024-10-03  @56  uint64_t __arch_xprod_64(uint64_t m, uint64_t n, bool bias)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   57  {
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   58  	unsigned long long res;
+73e592f3bc2cdc arch/arm/include/asm/div64.h Nicolas Pitre 2016-01-27   59  	register unsigned int tmp asm("ip") = 0;
+06508533d51a1d arch/arm/include/asm/div64.h Nicolas Pitre 2024-10-03   60  	bool no_ovf = __builtin_constant_p(m) &&
+06508533d51a1d arch/arm/include/asm/div64.h Nicolas Pitre 2024-10-03   61  		      ((m >> 32) + (m & 0xffffffff) < 0x100000000);
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   62  
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   63  	if (!bias) {
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   64  		asm (	"umull	%Q0, %R0, %Q1, %Q2\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   65  			"mov	%Q0, #0"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   66  			: "=&r" (res)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   67  			: "r" (m), "r" (n)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   68  			: "cc");
+06508533d51a1d arch/arm/include/asm/div64.h Nicolas Pitre 2024-10-03   69  	} else if (no_ovf) {
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   70  		res = m;
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   71  		asm (	"umlal	%Q0, %R0, %Q1, %Q2\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   72  			"mov	%Q0, #0"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   73  			: "+&r" (res)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   74  			: "r" (m), "r" (n)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   75  			: "cc");
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   76  	} else {
+73e592f3bc2cdc arch/arm/include/asm/div64.h Nicolas Pitre 2016-01-27   77  		asm (	"umull	%Q0, %R0, %Q2, %Q3\n\t"
+73e592f3bc2cdc arch/arm/include/asm/div64.h Nicolas Pitre 2016-01-27   78  			"cmn	%Q0, %Q2\n\t"
+73e592f3bc2cdc arch/arm/include/asm/div64.h Nicolas Pitre 2016-01-27   79  			"adcs	%R0, %R0, %R2\n\t"
+73e592f3bc2cdc arch/arm/include/asm/div64.h Nicolas Pitre 2016-01-27   80  			"adc	%Q0, %1, #0"
+73e592f3bc2cdc arch/arm/include/asm/div64.h Nicolas Pitre 2016-01-27   81  			: "=&r" (res), "+&r" (tmp)
+73e592f3bc2cdc arch/arm/include/asm/div64.h Nicolas Pitre 2016-01-27   82  			: "r" (m), "r" (n)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   83  			: "cc");
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   84  	}
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   85  
+06508533d51a1d arch/arm/include/asm/div64.h Nicolas Pitre 2024-10-03   86  	if (no_ovf) {
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   87  		asm (	"umlal	%R0, %Q0, %R1, %Q2\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   88  			"umlal	%R0, %Q0, %Q1, %R2\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   89  			"mov	%R0, #0\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   90  			"umlal	%Q0, %R0, %R1, %R2"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   91  			: "+&r" (res)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   92  			: "r" (m), "r" (n)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   93  			: "cc");
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   94  	} else {
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   95  		asm (	"umlal	%R0, %Q0, %R2, %Q3\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   96  			"umlal	%R0, %1, %Q2, %R3\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   97  			"mov	%R0, #0\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   98  			"adds	%Q0, %1, %Q0\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02   99  			"adc	%R0, %R0, #0\n\t"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  100  			"umlal	%Q0, %R0, %R2, %R3"
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  101  			: "+&r" (res), "+&r" (tmp)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  102  			: "r" (m), "r" (n)
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  103  			: "cc");
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  104  	}
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  105  
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  106  	return res;
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  107  }
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  108  #define __arch_xprod_64 __arch_xprod_64
+040b323b5012b5 arch/arm/include/asm/div64.h Nicolas Pitre 2015-11-02  109  
 
-When using MADV_PAGEOUT, pages can remain in swapcache with their swap
-entries assigned.  If MADV_PAGEOUT is called again on these pages, they
-reuse the same swap entries, causing memcg1_swapout() to call
-swap_cgroup_record() with an already-recorded entry.
-
-The existing code assumes swap entries are always being recorded for the
-first time (oldid == 0), triggering VM_BUG_ON when it encounters an
-already-recorded entry:
-
-  ------------[ cut here ]------------
-  kernel BUG at mm/swap_cgroup.c:78!
-  Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-  CPU: 0 UID: 0 PID: 6176 Comm: syz.0.30 Not tainted
-  RIP: 0010:swap_cgroup_record+0x19c/0x1c0 mm/swap_cgroup.c:78
-  Call Trace:
-   memcg1_swapout+0x2fa/0x830 mm/memcontrol-v1.c:623
-   __remove_mapping+0xac5/0xe30 mm/vmscan.c:773
-   shrink_folio_list+0x2786/0x4f40 mm/vmscan.c:1528
-   reclaim_folio_list+0xeb/0x4e0 mm/vmscan.c:2208
-   reclaim_pages+0x454/0x520 mm/vmscan.c:2245
-   madvise_cold_or_pageout_pte_range+0x19a0/0x1ce0 mm/madvise.c:563
-   ...
-   do_madvise+0x1bc/0x270 mm/madvise.c:2030
-   __do_sys_madvise mm/madvise.c:2039
-
-This bug occurs because pages in swapcache can be targeted by MADV_PAGEOUT
-multiple times without being swapped in between.  Each time, the same swap
-entry is reused, but swap_cgroup_record() expects to only record new,
-unused entries.
-
-Fix this by checking if the swap entry already has the correct cgroup ID
-recorded before attempting to record it.  Use the existing
-lookup_swap_cgroup_id() to read the current cgroup ID, and return early
-from memcg1_swapout() if the entry is already correctly recorded.  Only
-call swap_cgroup_record() when the entry needs to be set or updated.
-
-This approach avoids unnecessary atomic operations, reference count
-manipulations, and statistics updates when the entry is already correct.
-
-Link: https://syzkaller.appspot.com/bug?extid=d97580a8cceb9b03c13e
-Link: https://lkml.kernel.org/r/20260110064613.606532-1-kartikey406@gmail.com
-Fixes: 1a4e58cce84e ("mm: introduce MADV_PAGEOUT")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d97580a8cceb9b03c13e
-Tested-by: syzbot+d97580a8cceb9b03c13e@syzkaller.appspotmail.com
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memcontrol-v1.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
-
---- a/mm/memcontrol-v1.c~mm-swap_cgroup-fix-kernel-bug-in-swap_cgroup_record
-+++ a/mm/memcontrol-v1.c
-@@ -592,6 +592,7 @@ void memcg1_swapout(struct folio *folio,
- {
- 	struct mem_cgroup *memcg, *swap_memcg;
- 	unsigned int nr_entries;
-+	unsigned short oldid;
- 
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
- 	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
-@@ -609,6 +610,16 @@ void memcg1_swapout(struct folio *folio,
- 		return;
- 
- 	/*
-+	 * Check if this swap entry is already recorded. This can happen
-+	 * when MADV_PAGEOUT is called multiple times on pages that remain
-+	 * in swapcache, reusing the same swap entries.
-+	 */
-+	oldid = lookup_swap_cgroup_id(entry);
-+	if (oldid == mem_cgroup_id(memcg))
-+		return;
-+	VM_WARN_ON_ONCE(oldid != 0);
-+
-+	/*
- 	 * In case the memcg owning these pages has been offlined and doesn't
- 	 * have an ID allocated to it anymore, charge the closest online
- 	 * ancestor for the swap instead and transfer the memory+swap charge.
-_
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
