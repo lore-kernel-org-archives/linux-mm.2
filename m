@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FEF1CA5FE1
-	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 01:09:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 045BACA5FE1
+	for <linux-mm@archiver.kernel.org>; Sun, 18 Jan 2026 01:11:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38AEB6B0005; Sat, 17 Jan 2026 20:09:28 -0500 (EST)
+	id 63D4C6B0089; Sat, 17 Jan 2026 20:11:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30E286B0089; Sat, 17 Jan 2026 20:09:28 -0500 (EST)
+	id 5EB686B008A; Sat, 17 Jan 2026 20:11:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 210B66B008A; Sat, 17 Jan 2026 20:09:28 -0500 (EST)
+	id 4F7236B008C; Sat, 17 Jan 2026 20:11:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1178F6B0005
-	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 20:09:28 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9555CB98A2
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 01:09:27 +0000 (UTC)
-X-FDA: 84343301574.05.F979C00
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CF2EA80006
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 01:09:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZfJMiAml;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BB846B0089
+	for <linux-mm@kvack.org>; Sat, 17 Jan 2026 20:11:34 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBD4BC16C9
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 01:11:33 +0000 (UTC)
+X-FDA: 84343306866.03.C73DC39
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EAB6F20006
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 01:11:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T6nSKZRg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768698692; a=rsa-sha256;
+	cv=none;
+	b=8L47LbkRrx3znqsAPu1d9QmdEigmuVhc1VFIxHVrfntmtQM5/CxmyGI5IxhA94BEdMukk6
+	QaO5XEnk6bcUMH2iIzmxzEuT/wh7n/xdRah6i18Cp8hKhcsj4be6ipUsj9z1Go/clzK28r
+	hW4z1aMMs540zi3J56o3jiSRMQT+dsU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T6nSKZRg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768698566;
+	s=arc-20220608; t=1768698692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yxdhKraFFT7/QmqpZx802f+6Kex6Qh+Q/ATGgC7qhbw=;
-	b=yRZBRUyn95mziqWr2boGH0mjcmw9AaBfy/bePGr7ujhL2MtErJ6lra5f419o+/IPaFFxt1
-	iSQkhtYV9ZNq0L2W24zAVJbDjLOaMI4IHSUfRyj1+iQONngSjv7PMXRJrcUTeenZdFNtI6
-	uBEPqclhMBiZsxRfscCL+yxcfDAosEQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZfJMiAml;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768698566; a=rsa-sha256;
-	cv=none;
-	b=wuhRKmZuluqdsjE9hQytSzyj9Yyl1PdVYvPtmDxZ03NmpiDu0cxGG7q/TNvf98VL3jncHm
-	N7f03QytdDo83UVIARK6K5TYlplqLRTPpBk4Jz1Tt/KYt3SVSRFsUg4p9v8hD6B5WYnY52
-	o8L6ZT8AxVNMtR7yhxNpz3i3CpmUdNU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D4267434BB;
-	Sun, 18 Jan 2026 01:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7588AC4CEF7;
-	Sun, 18 Jan 2026 01:09:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768698564;
-	bh=TTkhei+cPeMgKIMcltIoko3GtbvF9Mp6tYUNOAa15ms=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZfJMiAmlDGllLVBJIBviMsDm7OBsxRoPAs2LV1hY2IfIOc4eb1DiIVufmycGG6+0E
-	 Q4BZfbhB4e2gzuk7gjB2DxFs+zVWTIabOXqUtRYEHD/XxewYtEo03XLRGFyOiwJ1OG
-	 HaDQdLlRTGlhYO+HOasOau8rHN45FcgZmvljfWSg=
-Date: Sat, 17 Jan 2026 17:09:23 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>
-Subject: Re: [PATCH v2] percpu: add basic double free check
-Message-Id: <20260117170923.71d856cdc65505e1ea841ef2@linux-foundation.org>
-In-Reply-To: <aWsa9SdO9kLJTfz4@snowbird>
-References: <20260116023216.14515-1-dennis@kernel.org>
-	<20260116191548.7df814c2a9eea1a9fa3c4cb5@linux-foundation.org>
-	<aWsa9SdO9kLJTfz4@snowbird>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=0ATfR8YVfkNshr8Vx8DFRMyrKCT4h6769biGe+QbhD4=;
+	b=Xr6WdCXoJ01NzLxDgS8cW4k7Zl7SDUQgE9EsRXGoC2hgKUQv4/01BA1vPKhaFW/hwMDbmc
+	BxujsMcBAIaObBp6OL4tP0/m6x/PA58zDdmT/OgLlP1dBHdPWR8qYMRKFnwRPZQzO8UN/D
+	OuHpJ6hyXQ3Ve+mnZxCg3QkmVFGrhTI=
+Date: Sat, 17 Jan 2026 17:11:16 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768698689;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0ATfR8YVfkNshr8Vx8DFRMyrKCT4h6769biGe+QbhD4=;
+	b=T6nSKZRgsQPtxFgBqXC5bItj4lyNJ6HaG8OAWffciX4Ho1toEGdb4pGd8lQ9qIAc18nVHY
+	ki68L61BtU6+eidPp48tqIMZWerfeArj4OlgCw2swLxkcPE+EHexrF8DSg2dB9WoPnL2D0
+	z7Jwu0CtzQ8wvuewBLyo0zl5htN14bY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v3 25/30] mm: vmscan: prepare for reparenting traditional
+ LRU folios
+Message-ID: <6hlbucao3tfp2bxyaekcrvhqclji4hyhq4wen4sccc2qcdr6x2@rtmqrfwfsy4s>
+References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+ <3adb367000706f9ef681b34d0a2b0eb34c494c84.1768389889.git.zhengqi.arch@bytedance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3adb367000706f9ef681b34d0a2b0eb34c494c84.1768389889.git.zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EAB6F20006
+X-Stat-Signature: 9inq1ie8iaacibji5eixx7667swgmz83
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CF2EA80006
-X-Stat-Signature: 7w9jj3ksuyxbu1b51zujxd6zuj3xkhwt
-X-HE-Tag: 1768698565-51128
-X-HE-Meta: U2FsdGVkX18ThFof3nVT4DEORJhUUyPyuMxk+WOtnEOzJl+EoRf2CvchXbV1EoCAj/kg4rs+1bqzufXKFaG5+nkC26q6/t1M4P30eC8jYtUUqDZqkffIMFfA0Ffx8qtaAt2eY5HX7dAPYz7FX4+EQfS7nZ5wBddQcDt+Z27TjiyZEIlY1oLy8nWolA8t3tu9rZYxy3Q73HgQngA3mLpMjRQEoBuVPViw4fA6ZNaTs78QTPVuXxG9qccu1LC2TCbKkEwM7d/1M/RWl8o34YK68xRcJtRzGma2EIMokJ4Jqxuj8QL9rK7iRz6Ys1iOmnKeZxsoJa8Pith6IthUXndFwCPsTTYsYuFqvwkp3/AymaER/xNjWnRv5lZQl8a/Gy3urNJy77xhussFg+uY31o+KIo0KZr+DPYZ+t5LHnOrwcCl+gMkG1So3NDfUUpWri1ngErYKxeU7akJ3abLh4IJ4u0VR7GYK7YmhzsqRx456L6QpfVMWhGBrrzCCvbqkFQgRRPniRAg9jz5rV3CFeyHJwRY6WEbA36f+MH+EHxFtUWq4BSM5tzWuNDwo5lC6wHR8Hh4JZ+bErF36CSsTO5Q+rjrXjujkXOkWAO+DhHFc7qzfae1fDqV0dyHdMYokeisC18X/g99sUOf81WzqarYvqDVUe6CRQeR7ddZvLKnK97k03N9P6bfMZ13CLz8GRzPfC/5EOTZmMA8rsA/ITwO4PjBNoU4Y8gTYER4qMdoDX49vvTfJJ6Qh/Ry4sMADUyCb1ZGBn+NWboVLiuKeXs95TBFIBtrmhhIHEnqA1W9jCaaSJm0AXixQ8GCz7ZOYj/4xtLiJbBJop0BXC6osN2OG4bIsFKm0Saa7HzfdMMyNid8ENTMGjL9hhgnp0+zsN6wscsogAbA00tEJXQJAhCas/AvV/A1QB/g2rLpoqgZq29XIlHs6KFDiiTm3+ahPHEE3jI5K+dGt+Rg0nj4CjK
- 2ixdUiMi
- B6oUsshqg6M6wr8JjtqpqdbLMpWrALyiplaA/rscDND396ACC1y4TLXwBPzLLDL38Uz3LCiZnwqDE4yZ7elOFTQQgdYVPlDBnDpSnUpdYE+TUWr0Gr1nKT4GDi6kk2ONVmbG0YuAsNN2ibV8/wEtkII1d3InLzBVfvwkImMn67/Aa1k97Da+z3iimtSIx4IJ0Lx9EFGynEOwzFzUXXce79mrht5LM1UU0l6K9i+W/Ox+K4mv+D+LbIuTc32iz+pLC6IvuoXS1ibmc9Qk=
+X-HE-Tag: 1768698691-917228
+X-HE-Meta: U2FsdGVkX18xkIPJizeBkD2uMGkXKEBY3+htOqsrFO/orFFFpevOnemdyi5n5PF6J8HU9RZmNcKJYqMAXaaJO6PTdiivPWkfhin+cBres+L8kCEB+SB2dIcok+IJ7GYkqfaE/cpsEu7Y0OQLU40DevSovfNfcAp6g6y7JoQMgA5sRpYXBO5bJGiVLrL6Gc1I5iLod+BI2AClhz/Rq/0s7RTOwqXU4RP7TgjN/PDK7l87d+qVS8ooq7QxlYiDGd/rBgJgb7tjGfjm/1YeemE/q/uH0vIHvIaK1ZFng/6IyuuAdftppFSnLKBzMbaQs5aEk48VXXmJoLVn8h2TITEhMXe8cLib4aBG7KaXRoYkKJUsoezRtHv7YUutbluKYZSCJX5iH1CBlSTvZLCJ9glML+SSh991dbuBJqP65/IcSDgrzkk77PSu4ApoO1Vz9FNjwLO4+gxY4DwF4yThlEujJaEe7V3gVnut0pIKaWCDyGEzVlUV+yoP7Po3KLXBqsIdh2bQCjdXTIIRGEzIgJwf4/K8aYtgT4LmTdCXtxBqdqNoYDg7vCMOvMKjLJdXzVUH2W7cmlL4rLY48N+TJRX8Vp2YeR9UK/OI8IPTLp0cm5RlriIydQeQfAVEBgf5pr6AoQhpCtKvqp0o+fFigsZ3WVZ5At2rG3/jkFnDn++IFraHjnAEKVutv9M33Fwbp8FEUPcmcA5UhMF9NIB8SyK+sNFsckQZstFkrNMLvviVFQCsYL0bCj+i/o67KO8IKga8YVqvoCIzxeIs7/tS3vLblvftoFMja1QQblJZJ6t67xbSGqghWiUQcqqgiimsyMY/SSJ1mV9kIbURvs0H5vHz1NiWHeKxQUQmFZr8fISdf68u4QSEBhydatGdwbda5TDmIZcLAiyb5uqk4pXSoV9jVLKjZDw7Q0PuAQqlq4Mq7HGs6rLVVf6QJOebZm/RDmEVXpfE03wxCRXuD7YXZvI
+ 2hYGd+MV
+ /NUTNsQU/O020HjVEavgbvqe2TX0DjnxvszUp5uWtA5WDVttBGGyueXgF2jy5gx464W820+7moGcf8I8+L686UqHKDX23yyJlhRVbZNsuXJsLv1pHs33OKXJuVfOVSz8f9uLp2K9ZVLwudEp/ihDCHpDC42t6gynnRFAUZPRfD9UWi7vNj3+/AWE2jooB3O7H0JypYMaxMtnNMrwveFAkVqs9G8CugrpLIrDH5TzwjAmAVtI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,95 +95,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Jan 2026 21:15:33 -0800 Dennis Zhou <dennis@kernel.org> wrote:
-
-> On Fri, Jan 16, 2026 at 07:15:48PM -0800, Andrew Morton wrote:
-> > On Thu, 15 Jan 2026 18:32:16 -0800 Dennis Zhou <dennis@kernel.org> wrote:
-> > 
-> > > This adds a basic double free check by validating the first bit of the
-> > > allocation in alloc_map and bound_map are set. If the alloc_map bit is
-> > > not set, then this means the area is currently unallocated. If the
-> > > bound_map bit is not set, then we are not freeing from the beginning of
-> > > the allocation.
-> > > 
-> > > This is a respin of [1] adding the requested changes from me and
-> > > Christoph.
-> > > 
-> > > ...
-> > >
-> > > @@ -1276,18 +1277,24 @@ static int pcpu_alloc_area(struct pcpu_chunk *chunk, int alloc_bits,
-> > >  static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
-> > >  {
-> > >  	struct pcpu_block_md *chunk_md = &chunk->chunk_md;
-> > > +	int region_bits = pcpu_chunk_map_bits(chunk);
-> > >  	int bit_off, bits, end, oslot, freed;
-> > >  
-> > >  	lockdep_assert_held(&pcpu_lock);
-> > > -	pcpu_stats_area_dealloc(chunk);
-> > >  
-> > >  	oslot = pcpu_chunk_slot(chunk);
-> > >  
-> > >  	bit_off = off / PCPU_MIN_ALLOC_SIZE;
-> > > +	if (unlikely(bit_off < 0 || bit_off >= region_bits))
-> > > +		return 0;
-> > 
-> > This (which looks sensible) wasn't changelogged?
-> > 
+On Wed, Jan 14, 2026 at 07:32:52PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Sorry that's my fault. I can respin and add it if you'd like.
+[...]
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -1090,6 +1090,43 @@ void folio_batch_remove_exceptionals(struct folio_batch *fbatch)
+>  	fbatch->nr = j;
+>  }
+>  
 
-Yes please, I'm thinking a respin is needed anyway....
+Why not define the following two functions in memcontrol.c?
 
-> > > @@ -2242,6 +2252,13 @@ void free_percpu(void __percpu *ptr)
-> > >  
-> > >  	spin_lock_irqsave(&pcpu_lock, flags);
-> > >  	size = pcpu_free_area(chunk, off);
-> > > +	if (size == 0) {
-> > > +		spin_unlock_irqrestore(&pcpu_lock, flags);
-> > > +
-> > > +		if (__ratelimit(&_rs))
-> > > +			WARN(1, "percpu double free or bad ptr\n");
-> > 
-> > Is ratelimiting really needed?  A WARN_ON_ONCE is enough to tell people
-> > that this kernel is wrecked?
-> > 
-> 
-> I can see running multiple tests that might give me additional debug /
-> signal to how badly I screwed up. In production a WARN_ON_ONCE is
-> definitely more than enough, but might as well offer the chance to try
-> and trigger it more than once.
+> +#ifdef CONFIG_MEMCG
+> +static void lruvec_reparent_lru(struct lruvec *child_lruvec,
+> +				struct lruvec *parent_lruvec,
+> +				enum lru_list lru, int nid)
+> +{
+> +	int zid;
+> +	struct zone *zone;
+> +
+> +	if (lru != LRU_UNEVICTABLE)
+> +		list_splice_tail_init(&child_lruvec->lists[lru], &parent_lruvec->lists[lru]);
+> +
+> +	for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1) {
+> +		unsigned long size = mem_cgroup_get_zone_lru_size(child_lruvec, lru, zid);
+> +
+> +		mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
+> +	}
+> +}
+> +
+> +void lru_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+> +{
+> +	int nid;
+> +
+> +	for_each_node(nid) {
+> +		enum lru_list lru;
+> +		struct lruvec *child_lruvec, *parent_lruvec;
+> +
+> +		child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+> +		parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
+> +		parent_lruvec->anon_cost += child_lruvec->anon_cost;
+> +		parent_lruvec->file_cost += child_lruvec->file_cost;
+> +
+> +		for_each_lru(lru)
+> +			lruvec_reparent_lru(child_lruvec, parent_lruvec, lru, nid);
+> +	}
+> +}
+> +#endif
+> +
 
-If this is happening at development-time then developer can turn that
-into WARN_ON() or whatever.
-
-I dunno, I do feel that WARN_ON_ONCE is sufficient but no strong
-feelings.
-
-> > > +		return;
-> > > +	}
-> > 
-> > The patch does appear to do that which it set out to do.  But do we
-> > want to do it?  Is there a history of callers double-freeing percpu
-> > memory?  Was there some bug which would have been more rapidly and
-> > easily solved had this change been in place?
-> > 
-> 
-> Originally, Sebastian posted he ran into the issue where he double freed
-> in [1] (linked in patch). Maybe he can elaborate how that bug was
-> introduced.
-> 
-> Wrt do we want to do it - I think it doesn't hurt and makes it more
-> explicit that something very wrong occurred. Percpu memory really 
-> expects users to be good samaritans. If you do happen to accidentally
-> double free without the warning, in a contrived case you could
-> experience unexplained behavior for some time before crashing in a spot
-> that would leave your head scratching. If anything I think there could
-> be an argument to fail louder.
-> 
-> [1] https://lore.kernel.org/linux-mm/20250904143514.Yk6Ap-jy@linutronix.de/
-
-Could you please get this justification into the changelog?  It's
-pretty important - explain to the world why we feel that Linux needs
-alteration and what benefit we're providing.
 
 
