@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4104D4A5EB
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 03:44:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 548FDD4A5EB
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 03:45:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 246146B00FB; Sun, 18 Jan 2026 22:44:23 -0500 (EST)
+	id ACCBA6B00FD; Sun, 18 Jan 2026 22:45:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F3766B00FD; Sun, 18 Jan 2026 22:44:23 -0500 (EST)
+	id AA4CD6B00FF; Sun, 18 Jan 2026 22:45:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 120B26B00FE; Sun, 18 Jan 2026 22:44:23 -0500 (EST)
+	id 9A7016B0100; Sun, 18 Jan 2026 22:45:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F177B6B00FB
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:44:22 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0FB813B619
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:44:22 +0000 (UTC)
-X-FDA: 84347320764.03.6443332
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 07E8720004
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:44:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bPRAAvqx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768794261; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 86C896B00FD
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:45:10 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25401140637
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:45:10 +0000 (UTC)
+X-FDA: 84347322780.02.E302941
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 555C416000A
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:45:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gwgkDOqH;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768794308; a=rsa-sha256;
 	cv=none;
-	b=RbfGgSRPrj11e/niBAyKQ5dJrkTne0vhv8lAzJT9bS69KAJo/YWNGK4W1+DqUfs7Tyc5Ai
-	rhZNvGWbx/TTfKMT75N+kBp3sWmwMK6jn5TXfvOdYEuBar29/yjoZaIkZt40JDPNyyd+iU
-	pzZBmjuGiuG1bdh1waivTfnOz5K4RdY=
+	b=1Omol8UnSIMtA+GIM9I3bgGltFNLSfWht10IO8u5BkU7Ttbvmx0fCKok0WcdhCQgdGJDwZ
+	mwp5UWr8/VHpXN3+RSUYMf3ohF5nnk6BhztE0iFxtVtl6MokuygDO6ZyOAdvnTAKiv9v8I
+	kCPomVHkgADM9JLY+/fqdVZkKjlFJEY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bPRAAvqx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gwgkDOqH;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768794261;
+	s=arc-20220608; t=1768794308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qtD5snQPe94FOhhDUrGLnGyiUlaHl47qH8GQDuJHsl8=;
-	b=2M79/hb7K//ZVQMLPBd8s1OnrcvEwk5n6Clmwk7Jm6ewKSfxWB9sDCFnb9DVHHraFFveL4
-	g4LRhSLNXTecIIcGhYITpqKaclKBpEG+M579pqciXu0dIpD7j9TgqOys2E3k03pKYmCDL7
-	njfbb2gInSZWHi6TSWZBiIYmB5jplRw=
-Message-ID: <dd288f1a-e7b0-48ae-9b11-d882f42bab36@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768794258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qtD5snQPe94FOhhDUrGLnGyiUlaHl47qH8GQDuJHsl8=;
-	b=bPRAAvqxtDPjzYKbswHc3HmHGQ9wVvkHc9z+Xmo2VCUXmapU3nrDOgxJFPzlAg7PDRtIcF
-	zOP5PEP0dszlYOCUXzIXdRN2r5bnRILRWnJd6Tm7FjHYoAvti5eXRNMcf08nCHqwaP1jHH
-	p+XMtJcBfwZz/Qjl6AeDMpqbzGVi8Zk=
-Date: Mon, 19 Jan 2026 11:44:09 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v3 24/30] mm: memcontrol: prepare for reparenting LRU
- pages for lruvec lock
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Muchun Song <songmuchun@bytedance.com>, hannes@cmpxchg.org,
- hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
- akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
- apais@linux.microsoft.com, lance.yang@linux.dev
-References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
- <0252f9acc29d4b1e9b8252dc003aff065c8ac1f6.1768389889.git.zhengqi.arch@bytedance.com>
- <4a1b69d2-df29-4204-91fd-bb00b52350db@linux.dev>
- <e7aa1221-040e-4806-a259-56718844897f@linux.dev>
- <ncg4ibcrecdutsizzwdu4buw2fvqc57yji4rx3hsdwv4mgobkz@krdjtokzz4xg>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <ncg4ibcrecdutsizzwdu4buw2fvqc57yji4rx3hsdwv4mgobkz@krdjtokzz4xg>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	bh=vE9XSbYM4xPEN9ennPSo5PpDeYGx4uEzQnSoEdoa/Yk=;
+	b=qRyW2L12DSql12yLkCyg6Sa9Pxt34hMWCAg13hVecYigV2vGnUnxO41e+AaPRLRw/Uy7dX
+	SOX9u/HgAG53NhXr1Dd88UKOgktqtturdetPYzGZSoAaJCd5Ar4FupGr/rUg4IVaK9V7g6
+	YUgoqM6S9tpoUcJipTP42eGnLmkULOE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2333F43AA0;
+	Mon, 19 Jan 2026 03:45:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E982C116C6;
+	Mon, 19 Jan 2026 03:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768794307;
+	bh=vJUyFP5PKvIHSLwRcVsSPUqjd7DJy7WczghqOwUYZXk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gwgkDOqHKc7lGnCLYfkUbrhvqX1dmb1qTe4dTwu3+MM8KPgCAaNPunJSCWE/JoOLQ
+	 fDMlV6P43pUzQvTyMTN1TnfboXvvZ61u+W6uouCw9AZkESYyONRxo+wtK6aSXuum0+
+	 shA/jtt+8T3P2gwFXGm+nyGOFcpziPJjoyorKQqs=
+Date: Sun, 18 Jan 2026 19:45:05 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>, Baoquan He
+ <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/shmem, swap: fix race of truncate and swap entry
+ split
+Message-Id: <20260118194505.e798b3ff59d7ee521dc2d58f@linux-foundation.org>
+In-Reply-To: <CAMgjq7AA1LoLopoFrmRBh5KiL75VtBORfTaR2Lafq3OttD5cDQ@mail.gmail.com>
+References: <20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com>
+	<20260118113315.b102a7728769f05c5aeec57c@linux-foundation.org>
+	<CAMgjq7AA1LoLopoFrmRBh5KiL75VtBORfTaR2Lafq3OttD5cDQ@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 555C416000A
+X-Stat-Signature: qh7icpomjqg1aegtmtt6cyni7gqwkbj6
 X-Rspam-User: 
-X-Stat-Signature: fa3499tcfza1d4q8r45t415mturpzi69
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 07E8720004
-X-HE-Tag: 1768794260-305795
-X-HE-Meta: U2FsdGVkX19v9Zu9z4aNGtHe9PR6Q/ERmTa+xjbzKXUXBMs7eSqqXH68UL9TYuVNunx6f8oV5gIl7OwwtHIBZxbEnn3tR2Flaqoc1jKLrNC9ZAS02smHpO9bneZ6mn5ezuDW9O1zGhpxySYERsOmxXb/7VMzr1wEW82BOGq8Trecmvf9SB1J8hQgqB6qTaLo9EpXIn5J6T58iETBDFZag6QxASPgVJJbYz2r4xVPpMr5FHfAFsCPmsYIkIqhnq/xNQtiGh72+IV21SF7PZc4b76Nna2IWZ5zsuII8OxgOUY+fMVZDmoVuK8wMxA4zQz5nm1+Yn6mMR8Gh5uQFqITncGRC/v7shLxDedJUuNeoq1Yv32x4fd4Hr3bcpqunrqQFyremJjIXgjnFHfW8P5qI9TNFs5V4OZrSm2F5ta7b/JpT5Gt/JVKPCJWhdV/8kZcsKpnfR4HrevTXSaE4xSou0K990oKIi/qs1czGUP9SAsfO65PnIQ/dSV3Iw63E+C9E/GVNwr7qjcu1a9PEyzILJe8G0irYDxfuCfXe/dZPB7GBWdLR7Lh9XDyOGFP6/hN5nHuOPg2r2bMvoKu3eX7mDiGEVi1e2xbmVrAUzTdY5dV3uFPnVirGk76k+Xkv2TMBGUeAzi0yNUZTOd/h1h24mVOcuCpyYZ4U00vM9EBEjP2/q9Udl9+VaJsUjqnGBxIRM0Lba4T5f/slyK6HwINuD7vlvbTHxVxzLic0wAZtVS9OYGYAdOI1sxG8aVM4Q8JL8uAGP3I62Z0UiSEBOjz2fanzfwW0k8ZKeNdIc/Wp0xCZqgQRcNE2Pe2GoEbGythhTefz+GIscebtG7Wyze4E/QpONzZMFaXAnYFVX9UCaMw7rsgvo2J6g==
+X-HE-Tag: 1768794308-606289
+X-HE-Meta: U2FsdGVkX1+ZT2hKVeFn+02+SeD2uwuu7VtVu98+GknZNaBdf/BVuxLQFA6BM4SrCfU9WbJUsmh5//87YLXOegH76dsUE8Wg4V+iJNSxNDiYlLy1MYpRQYSnXO5Ihs65UYhUyoPgH2LOqV9N9/1WfTt/qdxaHi4P35Iu0s+w+zPSyRUO4RsDkwta5hRXGhsCIStxUE461d2S1marP27cWOz7zZLlC60nJtZxGB5LuTFdCVLXmKptXBj4GH1jf2SZCZ6JcMopc/MXCuKxb0738Ki8Gx8sqdQHTA+p+qCYnNpUWwtWj4I6HrBeQaUc1Lcc8hVpXzyD3OODQaHrmqqIvnc8rFBkgeeyhU9cz3vGp9w5zTOcbJ2qgARRsB4AbeMhsXVq83Pzpj3NGnn7ripAU8B8rFeR/+R/e0UvfpbAXsdXBArt10L1aiZHpNC8DxIlB4hlaaoFNDLUkJ/w75IvA+IdTkEBJQQgj5jHK1Fh6WlIGmqzurYC2/6eYT9vAtq2LimRB4sI3Xg5CwQIbDsSfwDiinhmxbDE75qKG63vwn0k9kubYgauLB3KIlPywDcLMhGWr/tplhOW+p+A/4AEZAiYI6fGDvMRBOjdbDNHW5pfDzorplo44bjF+h0hfq5EEqE34B+g6ffwdHO5E2gMAMoXfSgw/QAHPgCPhSWNDDo7DsIImaVErNQG0wxk8c5UKZCd6jTwpRn0H8ljWCKZRbUshRVvxXvuLpIrJLKykEjgjFRy7Fy9uEn/DnIJGeFZCGE2bGbaIWHydrYnY2UiKznwnolxwwMpk6dc4sqMRCfvSg7EV81cmaSgxNg8Wq1IDQtaRxLQe8iLEtSJCtpT2L3a7iYSPxhG/QoZ/9wNtitpnFPuop/BC/UEZFBH040esNsDaDb+uIVpjuQclXv/juvvwKEVliHT17U1GQRtDLv/HElkrfcdFLFBxqKcnRFITwah6upDlhxEo0wm27c
+ uwC9U8l3
+ Mz2Mmr7mwaX016inbr2R22rW5MitNxFLsX3C8uXFerNlBauTAsDGvTSA93T5FY9od6oiXMXD1a3SbrXAV9WYq7y0bJBmq7eRABvJe3y5XWX1NIsNkVUZ5lWPuYNvZ2CdcBnOSRm7fsgE3ehaWB4CBdhLodAW2+JsSivHy9Ine0TVm+gxODv7keKwRu/bVsoluavlpiOdyVdCWsrDVzo8tbF6QA/qgUa1Ffhi6HwdoXhPxYY9ALzCdiWgwzckaFLy0IujFn/06klgZJMSDGvtOkjLgTXU/LvPtRZOzOsFHN1rAEhk3EEcyRLM0wH27WNpLFs8K
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,95 +96,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 19 Jan 2026 10:17:50 +0800 Kairui Song <ryncsn@gmail.com> wrote:
 
-
-On 1/18/26 8:44 AM, Shakeel Butt wrote:
-> On Fri, Jan 16, 2026 at 05:50:22PM +0800, Qi Zheng wrote:
->>
->>
->> On 1/16/26 5:43 PM, Muchun Song wrote:
->>>
->>>
->>> On 2026/1/14 19:32, Qi Zheng wrote:
->>>> From: Muchun Song <songmuchun@bytedance.com>
->>>>
-
-[...]
-
->>>
->>> It seems that functions marked as `inline` cannot be decorated with
->>> `__acquires`? We’ve had to move these little helpers into `memcontrol.c`
->>> and declare them as extern, but they’re so short that it hardly feels
->>
->> Right, I received a compilation error reported LKP:
->>
->> All errors (new ones prefixed by >>):
->>
->>     In file included from crypto/ahash.c:26:
->>     In file included from include/net/netlink.h:6:
->>     In file included from include/linux/netlink.h:9:
->>     In file included from include/net/scm.h:9:
->>     In file included from include/linux/security.h:35:
->>     In file included from include/linux/bpf.h:32:
->>>> include/linux/memcontrol.h:772:14: error: use of undeclared identifier
->> 'lruvec'
->>       772 |         __acquires(&lruvec->lru_lock)
->>           |                     ^~~~~~
->>     include/linux/memcontrol.h:773:13: error: use of undeclared identifier
->> 'rcu'
->>       773 |         __acquires(rcu)
->>           |                    ^~~
->>     include/linux/memcontrol.h:775:14: error: use of undeclared identifier
->> 'lruvec'
->>       775 |         __acquires(&lruvec->lru_lock)
->>           |                     ^~~~~~
->>     include/linux/memcontrol.h:776:13: error: use of undeclared identifier
->> 'rcu'
->>       776 |         __acquires(rcu)
->>           |                    ^~~
->>     include/linux/memcontrol.h:779:14: error: use of undeclared identifier
->> 'lruvec'
->>       779 |         __acquires(&lruvec->lru_lock)
->>           |                     ^~~~~~
->>     include/linux/memcontrol.h:780:13: error: use of undeclared identifier
->> 'rcu'
->>       780 |         __acquires(rcu)
->>           |                    ^~~
->>     include/linux/memcontrol.h:1507:13: error: use of undeclared identifier
->> 'rcu'
->>      1507 |         __acquires(rcu)
->>           |                    ^~~
->>     include/linux/memcontrol.h:1515:13: error: use of undeclared identifier
->> 'rcu'
->>      1515 |         __releases(rcu)
->>           |                    ^~~
->>     include/linux/memcontrol.h:1523:13: error: use of undeclared identifier
->> 'rcu'
->>      1523 |         __releases(rcu)
->>           |                    ^~~
->>     include/linux/memcontrol.h:1532:13: error: use of undeclared identifier
->> 'rcu'
->>      1532 |         __releases(rcu)
->>
->> And I reproduced this error with the following configuration:
->>
->> 1. enable CONFIG_WARN_CONTEXT_ANALYSIS_ALL
->> 2. make CC=clang bzImage (clang version >= 22)
->>
->>> worth the trouble. My own inclination is to drop the `__acquires`
->>> annotations—mainly for performance reasons.
->>
->> If no one else objects, I will drop __acquires/__releases in the next
->> version.
->>
+> >
+> > What tree was this prepared against?
+> >
+> > Both Linus mainline and mm.git have
+> >
+> > : static long shmem_free_swap(struct address_space *mapping,
+> > :                           pgoff_t index, void *radswap)
+> > : {
+> > :       int order = xa_get_order(&mapping->i_pages, index);
+> > :       void *old;
+> > :
+> > :       old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
+> > :       if (old != radswap)
+> > :               return 0;
+> > :       free_swap_and_cache_nr(radix_to_swp_entry(radswap), 1 << order);
+> > :
+> > :       return 1 << order;
+> > : }
+> >
+> > but that free_swap_and_cache_nr() call is absent from your tree.
 > 
-> If you drop these annotations from header file and keep in the C file,
-> do you still get the compilation error?
-
-I did test it this way, and it does fix the compilation error, but
-Muchun thinks these functions are very simple and there's no need to put
-them in a C file.
-
+> Oh, I tested and sent this patch based on mm-unstable, because the bug
+> was found while I was testing swap table series. This is a 2 year old
+> existing bug though. Swapoff during high system pressure is not a very
+> common thing, and maybe mTHP for shmem is currently not very commonly
+> used either? So maybe that's why no one found this issue.
 > 
+> free_swap_and_cache_nr is renamed to swap_put_entries_direct in
+> mm-unstable, it's irrelevant to this fix or bug. The rename change was
+> made here:
+> https://lore.kernel.org/linux-mm/20251220-swap-table-p2-v5-14-8862a265a033@tencent.com/
+> 
+> Should I resend this patch base on the mainline and rebase that
+> series? Or should we merge this in mm-unstable first then I can
+> send seperate fixes for stable?
+
+I think a clean fix against Linus mainline, please.  Then let's take a
+look at what's needed to repair any later problems.
 
 
