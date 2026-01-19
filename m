@@ -4,120 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB5ABCCF2D1
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 09:27:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B761CCF2D1
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 09:29:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 494B36B0149; Mon, 19 Jan 2026 04:27:31 -0500 (EST)
+	id DC2916B014B; Mon, 19 Jan 2026 04:29:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 441986B014B; Mon, 19 Jan 2026 04:27:31 -0500 (EST)
+	id D6F856B014D; Mon, 19 Jan 2026 04:29:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 344596B014C; Mon, 19 Jan 2026 04:27:31 -0500 (EST)
+	id C6E7E6B014E; Mon, 19 Jan 2026 04:29:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 225B16B0149
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:27:31 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C05D0140675
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:27:30 +0000 (UTC)
-X-FDA: 84348185460.25.D749477
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 396D240006
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:27:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mu2QXGlU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768814849; a=rsa-sha256;
-	cv=none;
-	b=a1nyMBECkIxmy3wqJyOB8A5n5zQI4ydNoj35LVDSCW3GQKlhHit5YWZuwUsY24/HFIFEIM
-	A0IHfq4MTuQ2aF32n5RxKNU1414pN/F78kBxDR71qMtBpnHI+yCEa3+syJEzI4+6tQWIXe
-	MUNE+kqYPfOxCRTYENpki+OMOK4XCU0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mu2QXGlU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B45EE6B014B
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:29:56 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7CDEB8C359
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:29:56 +0000 (UTC)
+X-FDA: 84348191592.02.964ED68
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8E5061C0002
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:29:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=8bytes.org header.s=default header.b=XBB3+nws;
+	spf=pass (imf20.hostedemail.com: domain of joro@8bytes.org designates 85.214.250.239 as permitted sender) smtp.mailfrom=joro@8bytes.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768814849;
+	s=arc-20220608; t=1768814995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=48N7Q6quaXG2VUerPh0mhwn+AwJxdPQoMhUkebk+erI=;
-	b=R6KlKGDmp7MGKl6l0Eo0BpqJU6Iviy3rx5+bYlqCoHnF5/HLx/Dg9egqaLcyInXXm6aqyt
-	ghCURyHJciKPN/6yZ9xeX/XtrAdeVQtke+Pa+mq4H0/43UHiHmTPF52yyjHO1C5zJ/pKiO
-	JZSLmeSaOnlnTiXpOo2edG2XhuCGhh4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 393BA60151;
-	Mon, 19 Jan 2026 09:27:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB482C116C6;
-	Mon, 19 Jan 2026 09:27:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768814847;
-	bh=Zn6TWVYgqMMEo3G81dyTmE6wcI+Sd3bTAPgjzlTxSPs=;
+	bh=b5+xJdnzeFDynxJTC4L1Uu78jo9995a+Z8+tujOeLKc=;
+	b=ZDMrp43Mfb/dum57hfJ6XBx6+71srQiTFK1qlHM+lY6PUnW6R11xo2aA57TMxov1UIcu8N
+	nFwYJMhBKUoz2hyKZJtbP6OnZa58QLNuspU6fPx1KCJyfiekFclePw+2nCf05fzcI2td1R
+	YoMOPUBK6GY5kIwnFSZhkTsb5SWJfCo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=8bytes.org header.s=default header.b=XBB3+nws;
+	spf=pass (imf20.hostedemail.com: domain of joro@8bytes.org designates 85.214.250.239 as permitted sender) smtp.mailfrom=joro@8bytes.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768814995; a=rsa-sha256;
+	cv=none;
+	b=DYkF+qi77TGFMfrE4PQ5bNofSvMTBxAjGrFevaVUb7oXMOVV7P3a14Mou3qHZud7i2KFVh
+	AUxNhYL4Yzhf441AK6jlA+ZqDA+v7/jTX8pH+VqOVpA2ka6gEwLRidltZkNw9OAprYnFot
+	1Dayrx4eGhdlcFZhg8diteRY3LDJ7C4=
+Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id D3A475F66E;
+	Mon, 19 Jan 2026 10:29:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1768814993;
+	bh=OmaA48PF+aapLbo0XX9BQ2SwdV9QU57r0NNgj482gLQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mu2QXGlUo4aerUV1P+3KG6SEVjE4I5PwhJE94jSGcKGFEsi89NRvYzLMGsZyQmRMx
-	 AFrdo2vU9n6IMbv1w/EO9SLvuETafk1mFU5xlxvhkxtXkEJNYxoKBYE396mdxVzJZb
-	 W5ZtaIJuQRCJeroGKA0KDWsJMPfBkIPP+baoniV9KyAuTgFx19+cYmtPt33Z2z6QMh
-	 W/hxfZCWesZN7MEjTCRbAXitVDu+eK0Xl7sEvoG3LmudoMrRbWd+So2BZh0JGzK2g9
-	 bPKHftczmsMNxhRS3WkfraWatirsn1eEv2j+V31oLZsNC4UpAnMV0UccclyHU9DeQT
-	 92D5SL9b9rhFA==
-Date: Mon, 19 Jan 2026 10:27:11 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: NeilBrown <neil@brown.name>
-Cc: Christoph Hellwig <hch@infradead.org>, 
-	Jeff Layton <jlayton@kernel.org>, Amir Goldstein <amir73il@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Chuck Lever <chuck.lever@oracle.com>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Gao Xiang <xiang@kernel.org>, 
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
-	Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>, 
-	David Sterba <dsterba@suse.com>, Luis de Bethencourt <luisbg@kernel.org>, 
-	Salah Triki <salah.triki@gmail.com>, Phillip Lougher <phillip@squashfs.org.uk>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Bharath SM <bharathsm@microsoft.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-ext4@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, 
-	linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
- nfsd export support
-Message-ID: <20260119-kanufahren-meerjungfrau-775048806544@brauner>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
- <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
- <176877859306.16766.15009835437490907207@noble.neil.brown.name>
- <aW3SAKIr_QsnEE5Q@infradead.org>
- <176880736225.16766.4203157325432990313@noble.neil.brown.name>
+	b=XBB3+nwslOlxvH2r0ONrj19bvLyQ6WtMJ+Mc99P308UvnrrcI7U1RHRqEkVobDC6M
+	 6W4PpLU1BERoC/Zcmv8ZZo+1+dY6wd+md6a92BEeTXQnC+t9AFzNewOYizMvzna3ox
+	 Xv91ZZ5UROezfB+gv5pwicqQpAfmEKa7fHP7k6/UecPtB59ao0DJlgRPOx+uyQJkvB
+	 VknC8ZkDb7sA1H8CJFSCtnCs7vyvT4ZMJjnp2UjZfi4b8G4hWxjbF1DMzPtF6t0ZV3
+	 k1f9fMH9UVWbcCid+NC2asTt1tqgSmk6luOKXngq5u0g7HJd2KmZH+nX9Tj0fhNT8W
+	 Udf5vnVbIYJRg==
+Date: Mon, 19 Jan 2026 10:29:51 +0100
+From: Joerg Roedel <joro@8bytes.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Asahi Lina <lina+kernel@asahilina.net>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-mm@kvack.org, Deborah Brouwer <deborah.brouwer@collabora.com>
+Subject: Re: [PATCH v6] rust: iommu: add io_pgtable abstraction
+Message-ID: <l7ww4wkdplczyuiqqrjn7nx5jf7fn6ffl4hwfn2pyls3wy74uf@gmmufe6ncy3j>
+References: <20260118-io-pgtable-v6-1-423846996883@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <176880736225.16766.4203157325432990313@noble.neil.brown.name>
+In-Reply-To: <20260118-io-pgtable-v6-1-423846996883@google.com>
+X-Rspamd-Queue-Id: 8E5061C0002
+X-Stat-Signature: 536ufhjxfg49e4wtnsuhkqcmn3d8hdje
 X-Rspam-User: 
-X-Stat-Signature: 5hpmorenz7pet7icxojus5n6f9mz4u5x
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 396D240006
-X-HE-Tag: 1768814849-228556
-X-HE-Meta: U2FsdGVkX19v/Jqu260RMWbTJDVS48Bw4HdvjL5jxOARF726rvoZd46XVaneuCt7P+kPZIFMLME1wbAQDxZpHj7PcWm504ESVwBKaGlwcEFxym7hh+SXev+JCId1f6SADifJBOc/Wkw4SLOdRQlDWEyxX7eSs0x+p7OsZUXY4Ot8yK8N2361v0MxPYwk94hZK9R7L26+jQg+hhQUodj23+t2k/odyeepCvC/sMiQm8NO52yK+wBcMQnCCr66NixgN4hvykcBw90JHllqfrMLifdg9C7OHyXi5YYGdbv/vAoIJkDhqEofg3pDBodSVRGco3ezFJfdNwaL6SQxnfjwvJCMFj/kWP5YohqrXghk+2JRgqzNB+zr0gULdg/PNOVZunz1vRqex+NKNc+6kXkwxfE4V6qlttuYSF3aWlu3LHfXNjVmvEn2akv6oDHP3rWO/7AD51iIty7cbMgGHd7lzVEwpxC2XHak/lCV0uXxAn4Cbef681AHS7uo/gR+6ZevZZLjNBuU7ohhdbQzbDpuxW0LuuFFpSG49G1DwD/hyG5bm1k0mi1fz9nSKoRYXU3kICt2+N7lbFog5Jat1uiMXRtSrGEahBwB13v66cJ2tyAHdMm5BScXQK9S4j3Xxs9uskK7AtZEiZT+wFF2RXuIvarVg4G3AsPYOLB7Xhe2ZVDKb997E/cRR85tmLTeAsKQfRDfHc2uxySw1ux/sO6r9MJbGA+IkaQDw6iPW7UznQ1ZVGTMw1uYkBa3CxrIJ9YEDqAja924DGxk2eRmEhzSuCEjDPjH1rf2GfJ0Si8Qp8JWAdM3xcabSZ0XcMKbpcwT6cAODntdZFZ2aRmKWU6soco9EANEUbMghfPIkr54AZqk3Dj++LosnUVzcKIMha97z/cw9n7eoY8D1BVLqSvycea7DvHAcugjedLAKiOLh/zvQNnyDCFIV0yEgqdEKhR+nFLzC36K5j9IQVYgTXm
- T8mIpv7i
- 79aK/Qb9MFF0QVrwCNJ7HUf7WIsIlatjvR5iNklyZyW3aF6on1uQZvwricfSEeT8RD3lfWcMqFeDQS1KuBdPyrAADEQOJHYOt3b1yzDtsZNj4033Ld1BsJ/snFHvdJusbTtvNldtsqROU7qQo0Bo+msRP4k7qILfGvqU+IqV9PHXdkV1Ztm2iJjk1aT0nCmEIsBcMAZCeJbISeLyQW+J+QzrLwQK+A/d7FzhFu1X/8j5N/JgGUfYcVxPVqhBitBO7FNLeykP+t8/e2a1EVRaflmkNHbFSVCKLOlHMZCAVuwnHAtlgkKEUOZBQTuwaEjSLV0zWq7ZQRFd3dzgZX/5j/8L40kTIv/WVEKZ1l4vyqLnkQvncoMyO0CR50g==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768814994-911451
+X-HE-Meta: U2FsdGVkX18C1PKxgnpCc1ul1B4EeubQFRO0m/tmZdoDLhoue+L28mm+K6AV7U5tGHj36HREl8No77k1bGxILP7dYONBwm1q139QXRqDJC5nrhfXCZI/IfA6ynyYZkYnm2nGrDwYxp6fc9E7mhjpNNtm0iBrj+0/uHzndWfW7ZzJbvkJlypUzRXWQhv1tF9rj8oaMi+NqqAJ9JnKFr5A2yilh+iPE0Oc6mONmP2tbp77twi0PWx+vJCpcRdaOKPuIj02VeeEKMGAjKUxMDTWw8gcgGHBeA0XVJFPMxPByIN0wHlsFnMiF+3gzVPfRbxRRS62zUjq04pBsGYB+WpuimBaASKt/0QUFtziqCnT6iiXqQOYhRfvU/WPyHRMUX/qYh0aUzJ7TP7FsOfTJ7jSHfAmqWrOdkYfXUFHTn+sqgdLA6SXffqrjgSYVp/Tu/p6xhGFTJU+afaI1CHwVOz6EOOzZ/N2IfXgqqL1t/hHIe0gZv88QKHQmR7sAiItVejOdJ+SXS82bbjpko7T+fPpAJuSAElChwmH2dOmW8ZjS+VJpdvHDQcuqen/FPCRbtfXeLi9YvMpqdorad/kwc1X8jpQEGsovPap/iMPK9cJTPfmmBy/UkLYajpmAXtHYLc+g9K8wg9n8KI5hRuAPJo3buPgVOFuOn1MBrSKYZnk/sGo3VTaqWMuJ7rmkVrfAyy8zi8ofvRiduQtHkn1G8/3ZQiYBBDflHXMtrZUTInrbRAU3VCwhujkmDKU3R+oTyJ9P0QIlAXcN+NqZmincaQ8FzLuioP/7YAhQlY211wr9J/4bAB+LwSZ645hwVQR5cELw2C3/kbGnUj1bRS2CQt795BVeFaSjwBDMYPPUR+dknTjm7SfhLsnE0fOoMpdtrBFyCOoE1/aLLfpSpLtjb2ljKVEns4ihh2d+M4slf5hVsSmsATwoZkGrQlPXJHoq5Dpj6NAFsAlufnkPO7au1A
+ I2zKNZeL
+ /6Sd7GXz4dDbLnptpp0Yvg3RAU2xn5OkiwcvXOoAzwVhokW1QMzFybuta9ZGpRXNn3M21GsnNDUTCDWk8/hsCTbfBLk1KSdQ6lq/wFP6hbv/ZTliox/G/92Bg1Qs3NC86IkNXpjrm0iCDQ83CgwsWiTKaxxgFeKqLhfKwGHMri8MRdToCNuiVrH0hQFeFHQqYxDy/ZccUpuEs+OtvAh5eAP0QB2x7tDTDO30iAmc4pkJL6v8LtwEz4/cPrmQeyJVLISmmQUPUIVIld/xBQTWTSZO/g5Qsn7nUUvQw//pO5IFtNCpFD2GXBR6fQ3HTiz/ozy/XqRzKXaY01kdQu/rEFVj8xln3rXH7B7ITdduwfU8r4yU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,64 +100,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 19, 2026 at 06:22:42PM +1100, NeilBrown wrote:
-> On Mon, 19 Jan 2026, Christoph Hellwig wrote:
-> > On Mon, Jan 19, 2026 at 10:23:13AM +1100, NeilBrown wrote:
-> > > > This was Chuck's suggested name. His point was that STABLE means that
-> > > > the FH's don't change during the lifetime of the file.
-> > > > 
-> > > > I don't much care about the flag name, so if everyone likes PERSISTENT
-> > > > better I'll roll with that.
-> > > 
-> > > I don't like PERSISTENT.
-> > > I'd rather call a spade a spade.
-> > > 
-> > >   EXPORT_OP_SUPPORTS_NFS_EXPORT
-> > > or
-> > >   EXPORT_OP_NOT_NFS_COMPATIBLE
-> > > 
-> > > The issue here is NFS export and indirection doesn't bring any benefits.
-> > 
-> > No, it absolutely is not.  And the whole concept of calling something
-> > after the initial or main use is a recipe for a mess.
-> 
-> We are calling it for it's only use.  If there was ever another use, we
-> could change the name if that made sense.  It is not a public name, it
-> is easy to change.
-> 
-> > 
-> > Pick a name that conveys what the flag is about, and document those
-> > semantics well.  This flag is about the fact that for a given file,
-> > as long as that file exists in the file system the handle is stable.
-> > Both stable and persistent are suitable for that, nfs is everything
-> > but.
-> 
-> My understanding is that kernfs would not get the flag.
-> kernfs filehandles do not change as long as the file exist.
-> But this is not sufficient for the files to be usefully exported.
-> 
-> I suspect kernfs does re-use filehandles relatively soon after the
-> file/object has been destroyed.  Maybe that is the real problem here:
-> filehandle reuse, not filehandle stability.
-> 
-> Jeff: could you please give details (and preserve them in future cover
-> letters) of which filesystems are known to have problems and what
-> exactly those problems are?
-> 
-> > 
-> > Remember nfs also support volatile file handles, and other applications
-> > might rely on this (I know of quite a few user space applications that
-> > do, but they are kinda hardwired to xfs anyway).
-> 
-> The NFS protocol supports volatile file handles.  knfsd does not.
-> So maybe
->   EXPORT_OP_NOT_NFSD_COMPATIBLE
-> might be better.  or EXPORT_OP_NOT_LINUX_NFSD_COMPATIBLE.
-> (I prefer opt-out rather than opt-in because nfsd export was the
-> original purpose of export_operations, but it isn't something
-> I would fight for)
+On Sun, Jan 18, 2026 at 10:08:08AM +0000, Alice Ryhl wrote:
+>  MAINTAINERS                     |   1 +
+>  rust/bindings/bindings_helper.h |   3 +-
+>  rust/kernel/iommu/mod.rs        |   5 +
+>  rust/kernel/iommu/pgtable.rs    | 276 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  5 files changed, 285 insertions(+), 1 deletion(-)
 
-I prefer one of the variants you proposed here but I don't particularly
-care. It's not a hill worth dying on. So if Christoph insists on the
-other name then I say let's just go with it.
+Applied with Danilo's suggested fixup, thanks.
 
