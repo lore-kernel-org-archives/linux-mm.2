@@ -4,91 +4,242 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39BBAD4A5EB
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 03:51:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48BFAC98315
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 04:31:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 863156B0100; Sun, 18 Jan 2026 22:51:01 -0500 (EST)
+	id 5A8526B0102; Sun, 18 Jan 2026 23:31:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83A376B0101; Sun, 18 Jan 2026 22:51:01 -0500 (EST)
+	id 580766B0103; Sun, 18 Jan 2026 23:31:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 739076B0102; Sun, 18 Jan 2026 22:51:01 -0500 (EST)
+	id 4586A6B0104; Sun, 18 Jan 2026 23:31:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FE4D6B0100
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:51:01 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 07FF88C1EA
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:51:01 +0000 (UTC)
-X-FDA: 84347337522.20.FCC54DA
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2AB10100003
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:50:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hbybdNAt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768794659; a=rsa-sha256;
-	cv=none;
-	b=Q4PpjjRZ7cN7f3BosFtKA9hto7pfAC4/hqKnrFXolHAkeMtPH8rrxzfovzhnQUgvrETyfl
-	xuSwbf9DGXmUXffelaQ4OFsVb3v4SHJPR6I/Naf1Vg8QWsrhNGoDsdAJPMeIyBhut5w5F9
-	jo+QTZrcENTsVTGzGotvedNJjbBYa34=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hbybdNAt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768794659;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 32D2D6B0102
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 23:31:48 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF5FF8B746
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:31:47 +0000 (UTC)
+X-FDA: 84347440254.02.64B0E95
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 45A1740005
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:31:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BPpzRAPt;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=lr71RseJ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf11.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768797104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OndFxxnVxJHEWV1Ai4YOkM1DVjpvrsGTOMshAUDXrrs=;
-	b=oqH/4bjZ2pkrS/xBUHQbLjFed5dcpY9VDhGMUJmtoF4KvMuhOZdxpcNhG5+MvO4em9db1R
-	VOfNw/OslMFwvF3RRO4XOOnx6iXIKiv7k9qMbdeN4J9KXyQs8AbZKuSfE3eExnFIDK5DDE
-	SnYEit6sGODQcHZ9NHuxzSnSlPRVgAw=
-Message-ID: <24837e0e-db86-4c64-8387-243d94293b48@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768794657;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OndFxxnVxJHEWV1Ai4YOkM1DVjpvrsGTOMshAUDXrrs=;
-	b=hbybdNAt06yK3Ue9qz5tUkDDtYUIVbamganh0hpEQCf75muj99rryT85wDoTAZTEInAmI5
-	CHKqFtiG0pmhZ4aoDnrB9Eu3Rco9srP+y1Jcl1/m2NZZcWV/LkYhvfkXb6L7LloimZT5zp
-	byPLsUVK3GIoTWY1pccENgzenQny59E=
-Date: Mon, 19 Jan 2026 11:50:41 +0800
+	bh=0uClx6JzrXV3kBJxbOk9VAjb43kVsE69AVGuAdTul6E=;
+	b=XjjV8K7DZDdl+SVAZOiZBeO6/6ZgEOw1FbdoYGhjryAJQov0lci4E0fYiEKPxJ5bP8NmzL
+	rf3h/DqqqBMuzDd4V1TW8g5fYF/OYlFiWMnqZve5vAUPg8UhfGVFPgWViovdwArTRaQUDY
+	XNEL0WBANFfscSFGrI30rPqFNCRL62E=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BPpzRAPt;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=lr71RseJ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf11.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768797104; a=rsa-sha256;
+	cv=pass;
+	b=Pz0eJgg8n/jqx47SU/vb5XBzqlBvAaw7agAaoFM258t++NjumB3kixjWUGE3j5rntofGx/
+	Hv+iI1HwLI84ZgXXs0JcLKh0jwZTKnI2yD/rW97J56SHUzb+/wgWlxOlxvcHNzeyEibula
+	/nqKi8CmTynsEG6rz0OflzAfUYsAlG4=
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60J20wBB148825;
+	Mon, 19 Jan 2026 04:31:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=0uClx6JzrXV3kBJxbO
+	k9VAjb43kVsE69AVGuAdTul6E=; b=BPpzRAPtqm4vaby0dyu5nh7Fl+zG+nx7pL
+	T9TG1UZ/A7CwmJQX7WAPTG6/nXv/7FvLe8+vQg18SPkgbhLZE8NHnhcrFLLyrkzA
+	lLt9XCEy3vt21hi76bSh8umqTlz607OulsNuRcNnPW2tGqFRiQgSzO5c7hGOm767
+	T68QGvO5sbSuB6nwoPLImePFMgrJGegxmGxakrqQdTYgyWqvxsNaUtM1ZFNqiUO+
+	Iz3V0M0dV4IJBGs1VT/bTd/oLuwUSdmyiyBaEObptZlxTXUkVsV4/b/79u/wNVUP
+	GRLAQU1jH1mzn8dcNoFkSpf7QB3J6brfDEU2wndFS2C0Gv/BvdKg==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br10vsppy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Jan 2026 04:31:36 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60J1PRtO021910;
+	Mon, 19 Jan 2026 04:31:35 GMT
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010014.outbound.protection.outlook.com [52.101.193.14])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4br0vbn4yx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Jan 2026 04:31:35 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nzXYcJFouyMdhoj7HOZM21oijGCQGwOB8FVJNMwoXZvRFssYb0Sx5zTVkHnh6q+U+vVVvmaybxQfddoIaplGxeHSrOfB7A1wdqZw1NlQ/25GWjFDZiU0ETR5LgV9PlwzMi6tBiErw3CsnPvxrVIFEgRs7WCc8TabSpf2PHfAFMWKPdY2F5j1Bc8nc5YvLPIT07NqzpOrkHbgoK/lEf2JJD3ibv/igWgtMEm3hQegwQi//MXidobWB9xU86SuOHE2m6OgTISDdu6rRGWiuvzsB1tlCvpsSZi/Iz4i3+Hmz6szun5qJLkzKGFMRL77aN+zOukAVO6cREkcChRmcKKxeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0uClx6JzrXV3kBJxbOk9VAjb43kVsE69AVGuAdTul6E=;
+ b=GXIBwwh5H3vxdq9Av+oL3sZOYsnXwGvW8BUpWjSiEmpmUfYvREDOfaLhurloQcQ3VRm3MQiP+K4U3ukjvJh/QJ3nLHVc0BGr0VrDsmcwurL4uy68/0df8NrmFNSUv0pOnYkqn+MAeLwFkPFG4F7LmWGE+3IvAiZTUko8ka2L8E2cFOHtQYn1E+2Y76pjWsXgTep22CI9+eXqW8dwaXjZWdglQZso2OVIfe0wUfD53IbKyvH2HgFw+r6/riTUZz+I7Y1ELYzykoJQBdCowg1a44guNjr+hLomNOs7I+2IuHPHcLFjsvG9sHaWNdVaITOu6ZRgmti2CzpQqaNo9uh0iA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0uClx6JzrXV3kBJxbOk9VAjb43kVsE69AVGuAdTul6E=;
+ b=lr71RseJf21xXBoCauiQAA8oE8DIPwDRfbgTGp9SJrke1WHJvcUSLDnxrH9eZZtUNKUc+NxOQtcdfmF9RnOLpfXI4TdUEf/Z5icxWUVpD4Xtig8p4yrfSkI4b5NrRLsOZb5y50+ueSNQwVGPH0LCWbD8EciLPU69ItVI4k4GyNE=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by IA3PR10MB8348.namprd10.prod.outlook.com (2603:10b6:208:581::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.11; Mon, 19 Jan
+ 2026 04:31:31 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9520.010; Mon, 19 Jan 2026
+ 04:31:31 +0000
+Date: Mon, 19 Jan 2026 13:31:21 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+        David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+        bpf@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v3 07/21] slab: make percpu sheaves compatible with
+ kmalloc_nolock()/kfree_nolock()
+Message-ID: <aW2zmf4dXL5C_Iu2@hyeyoo>
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-7-5595cb000772@suse.cz>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116-sheaves-for-all-v3-7-5595cb000772@suse.cz>
+X-ClientProxiedBy: SE2P216CA0165.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2cb::14) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
- dev.jain@arm.com, akpm@linux-foundation.org, ioworker0@gmail.com,
- linmag7@gmail.com
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
- <bef9fc2c-c982-4b46-b16a-8ecbc9584d62@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <bef9fc2c-c982-4b46-b16a-8ecbc9584d62@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2AB10100003
-X-Stat-Signature: s86q1jr5cgttzsxqgjcn4ymja4ikq54c
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|IA3PR10MB8348:EE_
+X-MS-Office365-Filtering-Correlation-Id: 09d91e98-9d0f-435f-b7bf-08de57139edf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?IYShfeIHf4n+3Cu0oyBscxxRUlhpeZpmjkuyN6OVeiWWMuDCupwIPq4LbNuT?=
+ =?us-ascii?Q?UTG7x3dg/4epnnMQXxtJzrX8TUVnLe2ugFl1YZVP9vLCrGlInzXRk0ojudim?=
+ =?us-ascii?Q?IkpnrbluJv6TDcGA62zXykoVOWgriCapVRxWZK2n0s3V+Ii+5fPOjlFwtR1p?=
+ =?us-ascii?Q?ymG9H/zWUwefzBo011zMRHnbjcbMfCnOfapAqrM5ls4Tht1LT+7806YNZsjY?=
+ =?us-ascii?Q?pXBwXFH6QqR7yvedP3sqN7URBFif+UxVvqqEnIsXsnUIEyi1dkqXm742ZpUI?=
+ =?us-ascii?Q?6ikjatme0f+F7zHvoTwv7kBsUQxSJgDTfZFJbuLWd+ogs5Lb33hxHcsLVorL?=
+ =?us-ascii?Q?BAui59xuGs3ZSWCEB8HRANNbH5W8kQf5OTkmnWRDLUpd65jQwBpk7CDz2Xf5?=
+ =?us-ascii?Q?NSHwzEhuAy76ELBOK056tPxplHDg7mhyHJlmUISvJRrLuCeikOT5fz2CdI9t?=
+ =?us-ascii?Q?oEB4GTJ3ObQbXbP7ELLa8o7ygoHBHyXDz3XKtys46NBwYmTt71cBoM1KO9n+?=
+ =?us-ascii?Q?lgcE6GSeRsvGzOiVVzF0ZUbTlf8zi1Dzs5sDZEAT6jHJAaDHQTNKg5rymQQl?=
+ =?us-ascii?Q?bTl0WWno/c1KTyJxL9NN6v5oyMnbJR/uwq3V6ZkAjkYjcoZMBM5JDwqNdeNY?=
+ =?us-ascii?Q?Tmm9AnONPbokdClB78njD+N5cQXKAbzknXkU6fcEofWHb1ZRhfK8x0WZMyCB?=
+ =?us-ascii?Q?u40mjFLKXuhvqrrfhPQGct1jN39SR9WSuwqFZrWKl7RgTyEJc6n5CunAIGhh?=
+ =?us-ascii?Q?5zZ/DuIUbJ2iO6bcOy4nddeLXHe3yJ5BQ2304mnYVKUJ5rKoplDqOuJ9mbat?=
+ =?us-ascii?Q?RfzjfngDydoNB1dGN9Hog+CsLe2u9L73YjvlAe8AWMTXCiG2IB6CUFrFkcI2?=
+ =?us-ascii?Q?vC0haU82YRK+Tv4k3CNq4hE2e4VJy/2WiUayshACi+rYrJHEvNoSt01YzrIa?=
+ =?us-ascii?Q?0pl/8Dah/q1aIhl6WAEXkr7WBJ5pEN4qiPM+ed8hz7anwCrbXgAMgQWhGszq?=
+ =?us-ascii?Q?Yp/ysRJe4wFRgWglZ8LnQeUOrmqA7Qv36QxfyFITREA2PbSBJZfMZmqnnAua?=
+ =?us-ascii?Q?GOi+UvzkzcTESXJ5hMQxvWD6fHsCu6zjjFBmjEAvm+FDAjjWXRjQObodOH2Y?=
+ =?us-ascii?Q?DQ3GIB9iN+Trknmm2xYPMZhElKdSEwoihtOWlyCKMZUM5GONZnwvZKh4yc7O?=
+ =?us-ascii?Q?XRNodJevVL7oVLVdBzypHqbwVedyzZCxq9M2yXqIDmkkUqQPJXn1TPOpdu8f?=
+ =?us-ascii?Q?v0CNVZhBrHaLM9fVanXtJxWLXDmYPhcZBSUmOTDPGo7uMC1ivJPtxI+ADLP3?=
+ =?us-ascii?Q?iLSvUe6Vv4PPCjm8s4ukU4CyTffxGY5FRLl+ZyP9egdeQZXIJtAv+3Sx6pBk?=
+ =?us-ascii?Q?3qX5k3CpsuPjHNHPNI57Ps/97Z093ml4UZwN8l0FhgUPgCTmYWAp9/ZEs4TT?=
+ =?us-ascii?Q?ie9JjF2rsCCgwPV7Y9tl3KlfNYISq/haxpzgv5308N0CSWP+ysgmTph6eXvR?=
+ =?us-ascii?Q?9jNd8SK2W8YZSa4FlZV2C0eJxKa5C/5k1MN78JJJ2zgHDcFOJ1SxiPyyyyJU?=
+ =?us-ascii?Q?/5jdXg9uZpJBBAkCQT4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?W3ChPyPCQBm7UtmhYA07yuaMuhq4NY8wwFBjzA9ULQlCP848XbKR23NBBF1C?=
+ =?us-ascii?Q?2GO80fcqncWSumsw4DRt02qPzjeKBXPjJA3TVVvrvvJxQOGjDrOoLB282lwA?=
+ =?us-ascii?Q?QiwTFB+s9XCvKJ7SfWUs36fwEXjjDkZQw0CU+Nc57gz+njuKExrEDRyoOhmL?=
+ =?us-ascii?Q?MQbQBwTFgnQcSrSj65haW4nSMKZrPS5/frCM9+dT2DkA6Jo62e4zLrOgTgf+?=
+ =?us-ascii?Q?zMPxEOwE162zVimSScy0Cv67bkHN76JN/9EL0yl/VmHFsCiIbMNeaXQOi2+i?=
+ =?us-ascii?Q?8EUxL7VCjqTaPooRBVmRNBTW18wFtS1eiefpXp+nw31aKWFUuCrJR6ZZNztD?=
+ =?us-ascii?Q?F7YJtTGac6OV+LBW2AE9XqEZtAYU9YDqq8pCR1mYXPQ0+dkIpjWhBoQFatYc?=
+ =?us-ascii?Q?//C9IYcJo5EGWnvUBxnRs52iPyChMHHeNj/fschUNnOIqSJM+EWplfOAv0H5?=
+ =?us-ascii?Q?O3lAXnP04Xh/I2HCxJJSWvnFtKMBpp/aMeZSv/qoxWoxHlESCZqFomAJpcxI?=
+ =?us-ascii?Q?kGXnxNSdoWOg6sgxyQDCJqoRU4Vhf9L2HfuWZd/RHW8Fmw1slJ5I1OzIWPSe?=
+ =?us-ascii?Q?da16fTWvQ0TM6F0KnVvGciYvhg53E9A8TS6awXnORCATfg3vZ72V4D/NhvT6?=
+ =?us-ascii?Q?tPpMULVvd3DYB0otCnpIlfBfLgB7GFf+rTEAubSPhe+meT2alvqJbgHKdYcd?=
+ =?us-ascii?Q?eqSzbE9/Fpq70VFb3tiXLEWYs77AuRdryuIF/ywSekyta5vieM5XTv0+YcHF?=
+ =?us-ascii?Q?rZd/lDB8BIStouMAtpQqJMKISmvxaNd466Mhj+zQFF/pXAmtrdKt0+vhnfaw?=
+ =?us-ascii?Q?Wp9+ehIxK/F8ecSXtHKt8btSpPM9by0rPKOzYtTu1bM3xmNJ/NA3GnT5Ab0R?=
+ =?us-ascii?Q?HG+ZAmVrgLoJAICY0deov91djl8Zyz+Vi8TPjkEYeI2kPR4RIC22fEsCiAB/?=
+ =?us-ascii?Q?v+OOqLizM5hjd+9iAgt+gz0RZx1QATZA4B4vU9qyjnkrdCJ/LbEcySrHnZ8B?=
+ =?us-ascii?Q?/qS0gORkA9uX1y7PiPLJFQhxNDSVHtKDoiON8ydkPBdpJvMdK0thYLGa6Ko/?=
+ =?us-ascii?Q?psMgBUWGpTEskVki8v29kl1E0JeFlYj+kKpcms6jMyjc/WHRMKkwIpQsJLVm?=
+ =?us-ascii?Q?UTPex769skEM2GOqdhVQ4/KtW0Wy2xNbYO8YhRvQh+MrvS0IwTS3cFexVkdj?=
+ =?us-ascii?Q?FAQ5fOX3JeJU1ZMpGanoyzTT1TcYifFGZQiT9xY1a6ObmGzMj8njFJy2ajUB?=
+ =?us-ascii?Q?vbfThoJ8aFKBDqGTTaYVBjC/IqGYPO0Ok30EoCt3VWzyOD2mLhl9a9WqH6jw?=
+ =?us-ascii?Q?rugZprAufizEhJm//hhiYvwkTcxy3dtDHUGwLJdj21HV3k2LeJuKBzY6sZr3?=
+ =?us-ascii?Q?eI/24NYF/rWxNTqety9PZ0cHwkewHylwARoDOIi8JcEnXaKWOHZ9N5xDCume?=
+ =?us-ascii?Q?zqeN07mTJv8NatihmSkly09bT0cirawPhduM3VHiR7+F+VPU6poiKLh9He8m?=
+ =?us-ascii?Q?fJj0TJeu1XssmQUrHuaj+TwU65JjJ0aD9+nJwoOo82kkywVCg5NUypDZhpWp?=
+ =?us-ascii?Q?xlGkUH4cECujo0fJLJwiepxVGFa1eV0/3tdXryFclML6CAYLPLy5+qXKxafe?=
+ =?us-ascii?Q?bNW1pYd6ixYjCUsLqYp7Dqb2B0H1hZ8dp/l7WfmhPA/tUsJ1L2Jh40CQLh0G?=
+ =?us-ascii?Q?/o2DV48/BMYqjGXWQ8U6weKOpEslkPrHbqjYoNfIJYb4SdSvAN7VZ4f4uB9b?=
+ =?us-ascii?Q?dmwwCVe+BA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	G5LaMUn+hiMwa99KVPWnRbeDmi8RdO1Jlw694ahvGmLl2bxMVWc1I8+ha7Pecm40WgRXqBgEj5j9a/zuiExXUUt86ACeh/M9fjR9RWVauvl9DUhXZ2YZmpV30YwCXmRnC3Gz7VW5ssocyxom+1rCo2yHVo2f9gK25CCu/U4leQzIqP85HQFnMlNU9A8UjlVLJGmfefGZsBoBeEVIPL6Fu9nYHgETdjzXrU2Us/rzZJf8ibOdIGJJd7A9ch7HFK9bvWzpN3/IcfwJtUcu98M7q/ebf0eAC6A86mcjvitUim5BIC+OaqyEA8ZOD3bm0mCgYi0scB+2LOqPC4GnNi8jjii+LP3ktjliYfSF29rFJvxTzLKRFlDOv/KYIFH4HWQtrWGheJRf9+g8UBepIi1IjGb4ONSHFxXjqpTxHxCphLmAq2Y92iFj6ry9S1AsOh6qtQkKm4fEAQrsc3DecWcnQrArwNUbsUSCmRohpU58sPfHmfBZu3ABpSQqimldhQUk0PLjYb/uvphmXCWELDhbtdveGLBqHLF95QpRD24USsc1BGaj2L0OZAsviawlrmbLHQoisC7w8un7np1jNf1/SwQT/KS8n+r6/4lHDeA9xAQ=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 09d91e98-9d0f-435f-b7bf-08de57139edf
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 04:31:31.7133
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1doQKURQkzAptJ1cnMUortydehsWXZzuM/cEAkqOx/SGuei220PV3wyKjeqC2tNQPDomiRBL3XA1Cz1PRijPoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8348
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-17_03,2026-01-18_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 bulkscore=0
+ phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2601190034
+X-Authority-Analysis: v=2.4 cv=H4nWAuYi c=1 sm=1 tr=0 ts=696db3a8 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=yPCof4ZbAAAA:8 a=okt8U8eJDhC6h_ZcaKcA:9 a=CjuIK1q_8ugA:10 cc=ntf
+ awl=host:12109
+X-Proofpoint-GUID: _fbIus-m9KxC4kP19uxdwhspLofg_9iq
+X-Proofpoint-ORIG-GUID: _fbIus-m9KxC4kP19uxdwhspLofg_9iq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDAzNSBTYWx0ZWRfX10zX+MiK6c49
+ UGSrVIcCkjnLqX24U81r9OGmhzXjOWyaTZArGKamMVd3rATiCFwMRnDh26j3qur3pj4y1ksAbcV
+ w6qy9b5AR2agxIXDLPC4VD5vwJZ9DE4TQ8H03dqT6bs5B+O/ok6Y9cLK55Qwp0qvrOfDcbNEuDa
+ qVVU0Z5JJW1UKNLDG9ui1y+nZ4BST5fcvizia1vvje+yDqGjgcaHY6P1kkzku3qElXrc8NSI7vB
+ bZ/dz5ABZzh0ZPISjjgYtzbItBykbuz9qh7RK+ZXZe+a3bnDXmZjlaiUo9w11UzYKw7nfbveyai
+ cnqycMd675RVbBYVpcw+O7h48Aih3bH7/DMz73hsTN33DJRyCr80fjYjo1HRmGCpdlLjatQXT2J
+ 7lVIfsBwsCRwjKYwkXG7wLslamQ3aRzUItjXrb6jtwi6cBvDlDtPi7/If5zzEu1XqiKKbzIO09q
+ DzHphhQlYSUL8uxK38swJ+jm3XZWwBD1TlN75Kcs=
 X-Rspam-User: 
-X-HE-Tag: 1768794658-174269
-X-HE-Meta: U2FsdGVkX1/8PWEshrwqYqZuyGievsTg9zrEXnSFHnPln80SJLZlZbx7qCuwdCKK/PxyFB7fkvr6HtGJgrrcYIBz5Rkf6hs2jAv1H1u6JtKAMJIUC5yjS1qg8qWJGf4bQUXpvFtYjPJ+Cz4Z5twBButTzjco6ilfPcLuyHuS1GMGEQQlZleNUAl3xxe9t957GMmzmQzIoWMjWDjXfi+qxwSv1N6nMalCjfXY+vsq2eY5cf+wIv1PmnrjCTU8g9J3f0R5f3gzx4l7IFkPso76OfkF0llVh7i1UBp3nAifIMFhMEIAKNGFcxA3ykhLBIpbiHtWzRHl7gRRnfW5IUyByQukaJDV14yn/ZZ3HZ5c3uy7ZOSTzeEm/GkrnJJrIZONDVbJgxhAKmCTnMvNrwGu8x6XrYNqMMeByy54aFBmHhw+Q4O6ZHiWFIrur9y+U7z9Er8bPHf08eeMDa8yozDx5gSUtX06CNK5juEowVHsSOF6Ib1Wr3yOFRzcAjHZCv14rKwhb6iNAEVPoPYkEgyctFLzfyv21ucO/bw+Xrqv3ktkuuTBD7oh/1gi74ndwoOPPcAU59L7jVow9It5kABRSncHCOxdISr6ka8saL2SWpTTFJOmCvtA9ZhvGgkwrcoSkr+qgcZ+lLaVl73kcIOC6+B4RQnIyx1RbJeBe7p06R6MFhbamTKuHU+Gy1FDckQv7sKIvsKx1SnuoOtkQ266ErzT2Znfpyu95h1L4f42d6E3MeToWfIHWEHa/PhorhxUzSw+ByI6UttQ6Ou6PFQdmFYT9pLgckYpRg7S7tP2KeTeo/UAMA6YsEH+QmUY10ex4rhkJF/AFwjwSGu3x3Hk6C6A+xUktY+gkaA/b4AFn/WrsgGeHaFSPbX2pL1u+YB3YA3+0D4wzKJdPfBiarMNyYM1BndpHIJd10YNPK+fBE2DaMjZKRTyix3ESO9puAoU0VXqBGzihhJSGDT+B8/
- 5NelP7Qa
- JVijr/cqxYnbfvT2iaiMyN7A+WDfqgerFxKiLFnVTMB1dndzYyTDukTIkfB6OknyqsIkdDqaV5lRRTtSqTNUuGJh+J0IdgqQapdiCVQg/jQ92UQNpkvU9Ht0RS+qTdRRkiLqNU5l99AO9nIraV1wnxLN3HoVxCZeBO9CuwDL4itimFtXUKUERojk4h2nrORt5OByR3gOH47OjpCI+wVw/dj2x8wGFj3fyTloPMgRmThgRvWiSQSSajqn1TEuXiSUvWFsNzU/3sEqQ7oRnOKJnTEWC7Cpa9LVRgD3IMv6z4B0ZWsC+uAzNGaVvQzkf4gHDcfPl4PRnZxtU62Rf8Q7EaIJAfDtxTmuZV72IOJ1PurfeBt6Ol+om1pIJm1GCLIqqtRGQVfq+TTA2D1cEUVbBt7O9W9AFZ8F91D3f
+X-Stat-Signature: 1isfgaedfmhdk67euki3rqeshai959em
+X-Rspamd-Queue-Id: 45A1740005
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768797104-974309
+X-HE-Meta: U2FsdGVkX1/2cowMSonK5HHDfd7ocYt2mBNsLz1zzrC+jAIgNqrFtIpMNDVICuAb5RoXLsuyA2f324T8pAgl74E+b+VJFdCagRwDLRJ/vCOHhh3SXWRHnjE4Czm62RBUt91Wzml3nls38qrSPQNPJ2ip6ypbnVm6nmnRiGobsUA7C6Wkg9QZCfF8gIgNIp/dW4YEf29EIfVIFhM6xuyLsggO70F4CkGWyOiUDwzMhOanSacYaBWJkBVROPjkPplakQ6Z8pG3UdaKZ/Sy3fFcbIUZpA5X+ixYkJPHdCGhyYlRmSl6x/lkNYm7554X6/uVVPcdIshknd/tOQijO5gvCSiJ04+G5Y3EsHw103pj4fy2kQzm0EvMmCfOUJunadmxmsBrrx3F6rHvjUK/GM+gVWiLpFRbwbBZHbrXeYQj2wcGSadIeQxe7jHt3PSrIU91Im1waJZwgeoSCUVP1PjU+WwBlbPGyilMEhng1YS7+pI3F2f7shKzkkD1vCtd0Z8P0oxRvi9rX+OmKcd8GU6qc0+AUGjMGOB4P030Pbl/Au+gA/05R4Hi+wRQumU2lJt3vrO19MIUkcfxAiGANvbPLvqasO/V2c71saTyndSTg+ghF5MNsrmoyY2PEJUWKv5eeaoWAEIpqF4g1OfobeoKuw3LeYKMWwu7+pL+CBUR55hN3MSRqiAt+TF1BdTbXAZej8U9Udag1fCJCJR/uhRBWAxUp2fBiLAa0wy48Szd4/OMUwWsr63yibix97GXY275jVx+kNMudGJlLuvhPkTgQHioUY3dqrLzzB+DrpS9Phl3l0GQgjfOdnjvEUN9hY6hAxHm9hvYK0aa48LJkKhPLwHCUmVlliXex/bbf4mJnOkGptSeaCVX6oQbcip+fwZY6Q0tdHF4kPkF017QQqmTU1al5rgCeIRXWZrrWzuePeqwhcTtuIHBQjkre9wjb/1vJ/Un8YBJz1KSRdf0Oez
+ rSLFiFkp
+ 1bk1gJ3rKarfPWyHnPGoqk64LCs4ph4/IKQwD7ql2AYmx8+paLGj5457EVxC8obFM6Z/31195OCZ1zNQslH8qTnZ5cIVzZa6Tm08b2O9O+KW0XrEey0zbuStzDjZ0i0f5SYKNoRczJkGx9IYsfGYHEee2wTOs8jFUDqwtt/2RN5C7i9NjPpX34X+KjMWdWsCP4bD5cFbR/S/ChBEPe7OkC+3aeiTS1+YBAOyMh+GtlkJxD/kUxgia1doWg2QAjorcCUKJGdXvs91X5lm1gPF9h0unxzhjjClMrCte62xI94cwP3/GOZUcVv8BM3nPqbQ2uEZFZ+WCyu5Tngtp2wun2sWJgy2ul6SEvUpWZHnVNKFA1JIrEZIX9HzNTxaskjNuzl+3932IOc6LBfolb8vtR46qfh+1sfktqvhz5mZ8wZ8sTRT9yuIFPeIS3Pqw3eBbdwoT/OXvmYTtG+XWakVCR+6n+Oal0kHGBwH4E6Gmi8h+AKYurEPLc8VVQCNcj9DCqB3lydBOVg+3/7ua/BW4fxdLmC50xVEtyLnjeNtjFL6wtoY0DGLTdQsVxduKbQ44pVGX6bft8FwWpWZfjesJoJYJ5Ws2hvD2T1X85MqV1LPK13WtpznNZ5S9/gMTiO5hsX91q/cfjAg3ighMld92UfqHCfqRkBMt/lLHvxs1yTYpzj+j4eBA65OlHSCc10k1SrSxIJWfeSIMoKLx9Jms98XCgRvYxmpYmx+b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,356 +248,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 1/18/26 7:23 PM, David Hildenbrand (Red Hat) wrote:
-> On 12/17/25 10:45, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> The PT_RECLAIM can work on all architectures that support
->> MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
->> MMU_GATHER_RCU_TABLE_FREE.
->>
->> BTW, change PT_RECLAIM to be enabled by default, since nobody should want
->> to turn it off.
->>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   arch/x86/Kconfig | 1 -
->>   mm/Kconfig       | 9 ++-------
->>   2 files changed, 2 insertions(+), 8 deletions(-)
->>
->> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->> index 80527299f859a..0d22da56a71b0 100644
->> --- a/arch/x86/Kconfig
->> +++ b/arch/x86/Kconfig
->> @@ -331,7 +331,6 @@ config X86
->>       select FUNCTION_ALIGNMENT_4B
->>       imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>       select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->> -    select ARCH_SUPPORTS_PT_RECLAIM        if X86_64
->>       select ARCH_SUPPORTS_SCHED_SMT        if SMP
->>       select SCHED_SMT            if SMP
->>       select ARCH_SUPPORTS_SCHED_CLUSTER    if SMP
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index bd0ea5454af82..fc00b429b7129 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
->>         The architecture has hardware support for userspace shadow call
->>             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->> -config ARCH_SUPPORTS_PT_RECLAIM
->> -    def_bool n
->> -
->>   config PT_RECLAIM
->> -    bool "reclaim empty user page table pages"
->> -    default y
->> -    depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->> -    select MMU_GATHER_RCU_TABLE_FREE
->> +    def_bool y
->> +    depends on MMU_GATHER_RCU_TABLE_FREE
->>       help
->>         Try to reclaim empty user page table pages in paths other than 
->> munmap
->>         and exit_mmap path.
+On Fri, Jan 16, 2026 at 03:40:27PM +0100, Vlastimil Babka wrote:
+> Before we enable percpu sheaves for kmalloc caches, we need to make sure
+> kmalloc_nolock() and kfree_nolock() will continue working properly and
+> not spin when not allowed to.
 > 
-> This patch seems to make s390x compilations sometimes unhappy:
+> Percpu sheaves themselves use local_trylock() so they are already
+> compatible. We just need to be careful with the barn->lock spin_lock.
+> Pass a new allow_spin parameter where necessary to use
+> spin_trylock_irqsave().
 > 
-> Unverified Warning (likely false positive, kindly check if interested):
-
-I believe it is a false positive.
-
+> In kmalloc_nolock_noprof() we can now attempt alloc_from_pcs() safely,
+> for now it will always fail until we enable sheaves for kmalloc caches
+> next. Similarly in kfree_nolock() we can attempt free_to_pcs().
 > 
->      mm/memory.c:1911 zap_pte_range() error: uninitialized symbol 'pmdval'.
-> 
-> Warning ids grouped by kconfigs:
-> 
-> recent_errors
-> `-- s390-randconfig-r072-20260117
->      `-- mm-memory.c-zap_pte_range()-error:uninitialized-symbol-pmdval-.
-> 
-> I assume the compiler is not able to figure out that only when
-> try_get_and_clear_pmd() returns false that pmdval could be uninitialized.
-> 
-> Maybe it has to do with LTO?
-> 
-> 
-> After all, that function resides in a different compilation unit.
-> 
-> Which makes me wonder whether we want to just move try_get_and_clear_pmd()
-> and reclaim_pt_is_enabled() to internal.h or even just memory.c?
-> 
-> But then, maybe we could remove pt_reclaim.c completely and just have
-> try_to_free_pte() in memory.c as well?
-> 
-> 
-> I would just do the following cleanup:
-> 
->  From cfe97092f71fcc88f729f07ee0bc6816e3e398f0 Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> Date: Sun, 18 Jan 2026 12:20:55 +0100
-> Subject: [PATCH] mm: move pte table reclaim code to memory.c
-> 
-> Let's move the code and clean it up a bit along the way.
-> 
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > ---
->   MAINTAINERS     |  1 -
->   mm/internal.h   | 18 -------------
->   mm/memory.c     | 70 ++++++++++++++++++++++++++++++++++++++++++-----
->   mm/pt_reclaim.c | 72 -------------------------------------------------
->   4 files changed, 64 insertions(+), 97 deletions(-)
->   delete mode 100644 mm/pt_reclaim.c
 
-Make sense, and LGTM. The reason it was placed in mm/pt_reclaim.c before
-was because there would be other paths calling these functions in the
-future. However, it can be separated out or put into a header file when
-there are actually such callers.
+Looks good to me,
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 
-would you be willing to send out an official patch?
+with a nit below.
 
-Thanks,
-Qi
+>  mm/slub.c | 79 ++++++++++++++++++++++++++++++++++++++++++++-------------------
+>  1 file changed, 56 insertions(+), 23 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 706cb6398f05..b385247c219f 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6703,7 +6735,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+>  
+>  	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())
+>  	    && likely(!slab_test_pfmemalloc(slab))) {
+> -		if (likely(free_to_pcs(s, object)))
+> +		if (likely(free_to_pcs(s, object, true)))
+>  			return;
+>  	}
+>  
+> @@ -6964,7 +6996,8 @@ void kfree_nolock(const void *object)
+>  	 * since kasan quarantine takes locks and not supported from NMI.
+>  	 */
+>  	kasan_slab_free(s, x, false, false, /* skip quarantine */true);
+> -	do_slab_free(s, slab, x, x, 0, _RET_IP_);
+> +	if (!free_to_pcs(s, x, false))
+> +		do_slab_free(s, slab, x, x, 0, _RET_IP_);
+>  }
 
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 11720728d92f2..28e8e28bca3e5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16692,7 +16692,6 @@ R:    Shakeel Butt <shakeel.butt@linux.dev>
->   R:    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->   L:    linux-mm@kvack.org
->   S:    Maintained
-> -F:    mm/pt_reclaim.c
->   F:    mm/vmscan.c
->   F:    mm/workingset.c
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 9508dbaf47cd4..ef71a1d9991f2 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1745,24 +1745,6 @@ int walk_page_range_debug(struct mm_struct *mm, 
-> unsigned long start,
->                 unsigned long end, const struct mm_walk_ops *ops,
->                 pgd_t *pgd, void *private);
-> 
-> -/* pt_reclaim.c */
-> -bool try_get_and_clear_pmd(struct mm_struct *mm, pmd_t *pmd, pmd_t 
-> *pmdval);
-> -void free_pte(struct mm_struct *mm, unsigned long addr, struct 
-> mmu_gather *tlb,
-> -          pmd_t pmdval);
-> -void try_to_free_pte(struct mm_struct *mm, pmd_t *pmd, unsigned long addr,
-> -             struct mmu_gather *tlb);
-> -
-> -#ifdef CONFIG_PT_RECLAIM
-> -bool reclaim_pt_is_enabled(unsigned long start, unsigned long end,
-> -               struct zap_details *details);
-> -#else
-> -static inline bool reclaim_pt_is_enabled(unsigned long start, unsigned 
-> long end,
-> -                     struct zap_details *details)
-> -{
-> -    return false;
-> -}
-> -#endif /* CONFIG_PT_RECLAIM */
-> -
->   void dup_mm_exe_file(struct mm_struct *mm, struct mm_struct *oldmm);
->   int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm);
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index f2e9e05388743..a09226761a07f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1824,11 +1824,68 @@ static inline int do_zap_pte_range(struct 
-> mmu_gather *tlb,
->       return nr;
->   }
-> 
-> +static bool pte_table_reclaim_enabled(unsigned long start, unsigned 
-> long end,
-> +        struct zap_details *details)
-> +{
-> +    if (!IS_ENABLED(CONFIG_PT_RECLAIM))
-> +        return false;
-> +    return details && details->reclaim_pt && (end - start >= PMD_SIZE);
-> +}
-> +
-> +static bool zap_empty_pte_table(struct mm_struct *mm, pmd_t *pmd, pmd_t 
-> *pmdval)
-> +{
-> +    spinlock_t *pml = pmd_lockptr(mm, pmd);
-> +
-> +    if (!spin_trylock(pml))
-> +        return false;
-> +
-> +    *pmdval = pmdp_get_lockless(pmd);
-> +    pmd_clear(pmd);
-> +    spin_unlock(pml);
-> +
-> +    return true;
-> +}
-> +
-> +static bool zap_pte_table_if_empty(struct mm_struct *mm, pmd_t *pmd,
-> +        unsigned long addr, pmd_t *pmdval)
-> +{
-> +    spinlock_t *pml, *ptl = NULL;
-> +    pte_t *start_pte, *pte;
-> +    int i;
-> +
-> +    pml = pmd_lock(mm, pmd);
-> +    start_pte = pte_offset_map_rw_nolock(mm, pmd, addr, pmdval, &ptl);
-> +    if (!start_pte)
-> +        goto out_ptl;
-> +    if (ptl != pml)
-> +        spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
-> +
-> +    for (i = 0, pte = start_pte; i < PTRS_PER_PTE; i++, pte++) {
-> +        if (!pte_none(ptep_get(pte)))
-> +            goto out_ptl;
-> +    }
-> +    pte_unmap(start_pte);
-> +
-> +    pmd_clear(pmd);
-> +
-> +    if (ptl != pml)
-> +        spin_unlock(ptl);
-> +    spin_unlock(pml);
-> +    return true;
-> +out_ptl:
-> +    if (start_pte)
-> +        pte_unmap_unlock(start_pte, ptl);
-> +    if (ptl != pml)
-> +        spin_unlock(pml);
-> +    return false;
-> +}
-> +
->   static unsigned long zap_pte_range(struct mmu_gather *tlb,
->                   struct vm_area_struct *vma, pmd_t *pmd,
->                   unsigned long addr, unsigned long end,
->                   struct zap_details *details)
->   {
-> +    bool can_reclaim_pt = pte_table_reclaim_enabled(addr, end, details);
->       bool force_flush = false, force_break = false;
->       struct mm_struct *mm = tlb->mm;
->       int rss[NR_MM_COUNTERS];
-> @@ -1837,7 +1894,6 @@ static unsigned long zap_pte_range(struct 
-> mmu_gather *tlb,
->       pte_t *pte;
->       pmd_t pmdval;
->       unsigned long start = addr;
-> -    bool can_reclaim_pt = reclaim_pt_is_enabled(start, end, details);
->       bool direct_reclaim = true;
->       int nr;
-> 
-> @@ -1878,7 +1934,7 @@ static unsigned long zap_pte_range(struct 
-> mmu_gather *tlb,
->        * from being repopulated by another thread.
->        */
->       if (can_reclaim_pt && direct_reclaim && addr == end)
-> -        direct_reclaim = try_get_and_clear_pmd(mm, pmd, &pmdval);
-> +        direct_reclaim = zap_empty_pte_table(mm, pmd, &pmdval);
-> 
->       add_mm_rss_vec(mm, rss);
->       lazy_mmu_mode_disable();
-> @@ -1907,10 +1963,12 @@ static unsigned long zap_pte_range(struct 
-> mmu_gather *tlb,
->       }
-> 
->       if (can_reclaim_pt) {
-> -        if (direct_reclaim)
-> -            free_pte(mm, start, tlb, pmdval);
-> -        else
-> -            try_to_free_pte(mm, pmd, start, tlb);
-> +        if (!direct_reclaim)
-> +            direct_reclaim = zap_pte_table_if_empty(mm, pmd, start, 
-> &pmdval);
-> +        if (direct_reclaim) {
-> +            pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
-> +            mm_dec_nr_ptes(mm);
-> +        }
->       }
-> 
->       return addr;
-> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
-> deleted file mode 100644
-> index 46771cfff8239..0000000000000
-> --- a/mm/pt_reclaim.c
-> +++ /dev/null
-> @@ -1,72 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -#include <linux/hugetlb.h>
-> -#include <linux/pgalloc.h>
-> -
-> -#include <asm/tlb.h>
-> -
-> -#include "internal.h"
-> -
-> -bool reclaim_pt_is_enabled(unsigned long start, unsigned long end,
-> -               struct zap_details *details)
-> -{
-> -    return details && details->reclaim_pt && (end - start >= PMD_SIZE);
-> -}
-> -
-> -bool try_get_and_clear_pmd(struct mm_struct *mm, pmd_t *pmd, pmd_t 
-> *pmdval)
-> -{
-> -    spinlock_t *pml = pmd_lockptr(mm, pmd);
-> -
-> -    if (!spin_trylock(pml))
-> -        return false;
-> -
-> -    *pmdval = pmdp_get_lockless(pmd);
-> -    pmd_clear(pmd);
-> -    spin_unlock(pml);
-> -
-> -    return true;
-> -}
-> -
-> -void free_pte(struct mm_struct *mm, unsigned long addr, struct 
-> mmu_gather *tlb,
-> -          pmd_t pmdval)
-> -{
-> -    pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
-> -    mm_dec_nr_ptes(mm);
-> -}
-> -
-> -void try_to_free_pte(struct mm_struct *mm, pmd_t *pmd, unsigned long addr,
-> -             struct mmu_gather *tlb)
-> -{
-> -    pmd_t pmdval;
-> -    spinlock_t *pml, *ptl = NULL;
-> -    pte_t *start_pte, *pte;
-> -    int i;
-> -
-> -    pml = pmd_lock(mm, pmd);
-> -    start_pte = pte_offset_map_rw_nolock(mm, pmd, addr, &pmdval, &ptl);
-> -    if (!start_pte)
-> -        goto out_ptl;
-> -    if (ptl != pml)
-> -        spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
-> -
-> -    /* Check if it is empty PTE page */
-> -    for (i = 0, pte = start_pte; i < PTRS_PER_PTE; i++, pte++) {
-> -        if (!pte_none(ptep_get(pte)))
-> -            goto out_ptl;
-> -    }
-> -    pte_unmap(start_pte);
-> -
-> -    pmd_clear(pmd);
-> -
-> -    if (ptl != pml)
-> -        spin_unlock(ptl);
-> -    spin_unlock(pml);
-> -
-> -    free_pte(mm, addr, tlb, pmdval);
-> -
-> -    return;
-> -out_ptl:
-> -    if (start_pte)
-> -        pte_unmap_unlock(start_pte, ptl);
-> -    if (ptl != pml)
-> -        spin_unlock(pml);
-> -}
+nit: Maybe it's not that common but should we bypass sheaves if
+it's from remote NUMA node just like slab_free()?
 
+>  EXPORT_SYMBOL_GPL(kfree_nolock);
+>  
+> @@ -7516,7 +7549,7 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
+>  		size--;
+>  	}
+>  
+> -	i = alloc_from_pcs_bulk(s, size, p);
+> +	i = alloc_from_pcs_bulk(s, flags, size, p);
+>  
+>  	if (i < size) { >  		/*
+> 
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
