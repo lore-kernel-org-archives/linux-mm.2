@@ -4,137 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93B2BD29C30
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 14:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95624D29C33
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 14:44:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE55F6B01FA; Mon, 19 Jan 2026 09:32:10 -0500 (EST)
+	id E76F56B01FC; Mon, 19 Jan 2026 09:44:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC7B76B01FB; Mon, 19 Jan 2026 09:32:10 -0500 (EST)
+	id E215F6B01FE; Mon, 19 Jan 2026 09:44:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9626B01FC; Mon, 19 Jan 2026 09:32:10 -0500 (EST)
+	id D30D86B01FF; Mon, 19 Jan 2026 09:44:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AAC606B01FA
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:32:10 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F6A9D1927
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:32:10 +0000 (UTC)
-X-FDA: 84348953220.28.5932B0B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 85547A0012
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:32:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SGy0RovL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768833128; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C196C6B01FC
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:44:03 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78BD6137501
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:44:03 +0000 (UTC)
+X-FDA: 84348983166.09.ECC6170
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6DAE0140008
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:44:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ivSSP6B8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768833841; a=rsa-sha256;
 	cv=none;
-	b=7A6lBfNezP7Rpdkwo11Jy25/9oj6AKIGW785uKQyo2BJ7vFedwu6RgzfhjFi/Qqvn4M9BI
-	UJ08+QN3fkj996cRNUYL1ajVlpuatcZG8K9g4Zc+ab0J3K2bE8KsE5N0dKjN2kgtdNTfrJ
-	XNI2RgoKUbMJVwoBbtZUU7ERCqf7Zx8=
+	b=4eRFj8vofJTNlcN7H1Bm5YpMG9dTevuwx1uC2c0ClGTB8zr1lyskzDAQoSVIyOA3Zok2+u
+	6yCwgRC9yTVS6avUhVL2Gxrc6yGCnEPXlDQgE+YbcO4k6SEWkB+Zrhf0MvWwYZYchMWGm9
+	KiZj5yng+f4/5S6GnWSOikdyorf6J7g=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SGy0RovL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ivSSP6B8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768833128;
+	s=arc-20220608; t=1768833841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gs97hczV+1/81h2p6MpE9wyGF7JNdxdjs8rjAc+LNmU=;
-	b=tgKyjLso8EztBXd+4NjmQGNyz+zSnWZ9wlPGn2cuHT0Gtz2MIQ0OEkd6juue7qXfQcBWtd
-	lQkHGA71Z2Y4aNJrQMwnDcTlOX30DNRLknrvFPw0yJAgfG/2AFPy1kYGWe7TfBwwU1ToyJ
-	K8vjRBx20ZEso55tG+PPMuE55A+0Wr8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C352D60054;
-	Mon, 19 Jan 2026 14:32:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7B6C116C6;
-	Mon, 19 Jan 2026 14:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768833127;
-	bh=Hs96R0v+LlI8+ufCHnrjOfcRFqlmPYepVc9ZlwijYkQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SGy0RovLRZvaYLdD3aLt2XozWXFHZ2SPjh0XzkFNl2IpZCqNfKbpohPSjP+CkYA5W
-	 aEDIBTUxdcWBbYnU3KtrfMHe5TsAKXEGECs6N51jAJPUhu88PNtp8Azp6+MW43kK/Z
-	 uEfkEN8/a0zOKDDuwCPPNeVm92Y4gfyRy18AgTsT52vNzujpnxil8MQSQmybO+WYgF
-	 PNkszLtFenchgwT4grC2xyOkZ4N1nQy7ehh5ey+mweQFxs7zP8eysRJJFfAyuXB5LE
-	 vMcRUJBOcDeCos62taDKTW6Ysim+u5nzgxm9Fe1bWw9i7xCtcmiHjSiIuE8oYx9jUC
-	 2DlB0POinPT5g==
-Message-ID: <42b9825a-adef-4e80-bbf3-bf01b9fb0054@kernel.org>
-Date: Mon, 19 Jan 2026 15:32:03 +0100
+	bh=Hw8g4FncQCT0qG+FJkoHCdORpG7mMrMlB+H9ZegPebQ=;
+	b=wXvv8LO4bKRa02g07y6fNB2SPlYHZifXJc662WWcwQ1JN1Pr2fD11YxAXdaCOvlW0ePEaS
+	vwfO0aldq22eztV3QNw09C/zIjU8P2+/5AOFJvhNIlF0c4nPx+TOwXNl3OsxUzr9fNKZOc
+	3ZuPyQ+BmIQk85EYsvMy9AcLT93Jrps=
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59b77ff32feso479789e87.0
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:44:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768833839; x=1769438639; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Hw8g4FncQCT0qG+FJkoHCdORpG7mMrMlB+H9ZegPebQ=;
+        b=ivSSP6B8oeRpL42T9NAXUPglj+f6OlN18sKVHwldR+jxb6/bukRbtwlqciX+sJzWDs
+         6AOtSsgGUWRMRXJbZNNVFbxTdprf2TdNYf4UO7ll6I3KHCqH5L8FUIndUsJtxxVQxzEG
+         bdh6TFCiXIF2rNf/PwSDivoM6J8hYfuP9COCeaoTGeYPVu3XymWj9jJmvxgFrk098Tff
+         e2gGuS8XUMKOICm4zLDBIhHDUl0DQOVlNRVkewB88XVs9NLah5dMxxBTXGFouScKVcAc
+         C9Nf5bVCbWi/qaFH1yNjoSntCwAfsEUbf7PXF/w78Fuxmk2y+tZvMok9eYi+k46eaDtN
+         SMgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768833839; x=1769438639;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Hw8g4FncQCT0qG+FJkoHCdORpG7mMrMlB+H9ZegPebQ=;
+        b=sSUc7n37hiY9DRvt1968vb581u2U16bx7pxoJI2jLyQ1WFenQgw9wVWHJfht6BZ3b+
+         YK95S5U9kuebKBuXab2d/B0YMjGwX/M2V3vhAitaSngGAfu6tcmquyO8KSzbopJyAwD3
+         iPRxmuPoGm4SVCp6VToMGTAEgcUEwtEyWRPwyXphuwnyVCA1+jQnfrOGjggg6NoxbEDn
+         W1KhkMrFJEb7w35b3AfZZuajUhbx0DzvFzuyQpTn3U5MPua+4QDv1hy8zdmVkWEVq+6D
+         T41tSyq+HoiWyOiQ8kiErxBtaHD8T/8nUc8pzP8ZLqrdvU3aDi0i/xv0imv91RYauFSc
+         dPAw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4hMo6GxBZ/aoaAXkBY0s+qee3Sv/+VVaPO5Tx684jsLFfXyzRs/i6LNDIxSf1mPePLuZH6dDwsA==@kvack.org
+X-Gm-Message-State: AOJu0YxqVGWRy6Y9osNPSciuDpSG6FAOgToXMv1NNBKZEl8xKFrl2llu
+	LyLlGz2QljmlCZyWRSsFSlZIa/FJtkgzVFToA+AjqJzc9hOo+Blz0eTZ
+X-Gm-Gg: AY/fxX63SIqSMZzcgA1tVsxlbiqUgsHC6ifc49bLO5l0RwH3V3NUw8Krwl7QJ16OSK0
+	0UZnLNXbOUqmOKIiDg2lS0fh3HEIm4EA+j1F9C+6vD1x+IY3x24EOnhs8DzXtiSDOLTL4VmziPd
+	nQZm5VFMgYe0EgtBHhrfgpZqVvm2VE1Dl575j5RqZCBBYBaDebJiaw/+P3V2YFhzuW8qGdfS2Eo
+	6mQSg910TWzIL5KdFdvXIRMW4svWmh25jA+//g7Iv9qDtGYKbtoUY8ciK8QGXx5o2h7oMwb3qES
+	f/2Zpa2PhGnpqQK9E9imbP0OKgTay463PCj/jOOrlmXr2E1J1J6bEJ4pGsKJlcBESNS2kseyflE
+	XB1i4tPvIqGWj1n+07mVR2N3AQbt56pEtiYfV1EA19GfAMmhESyRWFVb7VetjDtQpo6b+bM325F
+	2ccTE0fbNzGxzcEoHq5lrC84x7omFI
+X-Received: by 2002:ac2:4f14:0:b0:597:d7a1:aa9c with SMTP id 2adb3069b0e04-59baeefe804mr2049768e87.3.1768833839215;
+        Mon, 19 Jan 2026 06:43:59 -0800 (PST)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf3a1746sm3435146e87.91.2026.01.19.06.43.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jan 2026 06:43:58 -0800 (PST)
+Message-ID: <38bcbe9c-5bc6-4bfa-b4ed-e187e048d600@gmail.com>
+Date: Mon, 19 Jan 2026 15:43:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/8] selftests/mm: report SKIP in pfnmap if a check
- fails
-To: Ryan Roberts <ryan.roberts@arm.com>, Kevin Brodsky
- <kevin.brodsky@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark Brown
- <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>
-References: <20260107164842.3289559-1-kevin.brodsky@arm.com>
- <20260107164842.3289559-9-kevin.brodsky@arm.com>
- <09c214df-c3aa-48e4-9587-c54c667c6ce9@kernel.org>
- <46e50e9d-0e4a-4f81-8b43-61b897ad9c34@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Andrey Konovalov <andreyknvl@gmail.com>
+Cc: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
+ Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
+ Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
+ Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, joonki.min@samsung-slsi.corp-partner.google.com,
+ stable@vger.kernel.org
+References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
+ <20260113191516.31015-1-ryabinin.a.a@gmail.com>
+ <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
+ <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
+ <CA+fCnZeDaNG+hXq1kP2uEX1V4ZY=PNg_M8Ljfwoi9i+4qGSm6A@mail.gmail.com>
+ <CA+fCnZcFcpbME+a34L49pk2Z-WLbT_L25bSzZFixUiNFevJXzA@mail.gmail.com>
+ <20260118164812.411f8f4f76e3a8aeec5d4704@linux-foundation.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <46e50e9d-0e4a-4f81-8b43-61b897ad9c34@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <20260118164812.411f8f4f76e3a8aeec5d4704@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 85547A0012
-X-Rspamd-Server: rspam06
-X-Stat-Signature: wsnd8r47jzps4wys98e8rtmggg1kg4ip
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6DAE0140008
+X-Stat-Signature: i1kjixd33k9s7jfoaqgjdhfsr4pxbski
 X-Rspam-User: 
-X-HE-Tag: 1768833128-750201
-X-HE-Meta: U2FsdGVkX19YdpbPtXKtlFHs/WuzSnYw3kz0CuM/E8PQjXxIcgUUxbmI/XCBDXq3uFjZOGNBGRJmAYAGqeH35nzF0eE4StASmWpKYn/WUFGyIcWb14SVu6fy3Tof22yepLAFL/LDAk4fudcsNGGWx4QiCXHyvwVWgdPddrNBO1DID6MK3dDMavUS9r4VrwJhYPoQe0guChvLAMr/+YXyBI9HbxTD2traRWjf/PIQ7z332IghRpobXww08qQAIrMDjcwY7AuhZtYYJ+XLWQA/o0NYjoVSqk1gx289ToYAvQsjrG8EbrUYFEe1Jp8r7vjX2/wGOESA3fll7e+1+wTDULx6yUXzURbfONG8GTcAk/Mqm0aLelTkauKPP5IvairWztKQuR2naT2RdxpyClwyZUaW4LMRBTbs9sGF20tB/s0odYSZo2uzpIlz6TCJMB0Mm8Q0wsaLiGZ0H1gCHSNMPcB3TY3iJnc+v/ZBxjRxr9R3CyHB1WsDSx1mvDImDeEBW4IT7h1AaKmVuOpASsw/kvsa7+z+lgPvtr2zp8xjQowldE9EFdMiB5wl7W7Uf9Eaxk6bgYtgV3iEZRDGBjf8vvpoEUqr4mAEMGwE8DVD2QSFcvcoYK3MWq6a6DBx9ARfkjyCpuhX2EYKgMHT4zQGEpQ0g7Vb7s0mNGHoXeECnERcallWI4T8IyjM7AgJZTMQzx8PEgMLcSH1KnSUhlXCCR01c+BwWJVSiOnW7p7irObCtjlLk4N+7LEgbov76wb1WcpUZ2BVQM3pnUFov4kD5yAv7/7ALsv3Ei3iP0TfLIZPSYTrEVf7hxqSWQC8KDkghHzA1EAQIqChsG4FeE74TSFqj00/IHHohA+SquSH8WZCqaHWSETc1ImHIiA4siBXKVl0rsDm8nfwgxuJKyKjpG7c4O+sMvVPEnvfUq+2wBjYUUuWonKZric+NiEbSCHE3Gmteu0pGtxlyoTSYKl
- FAnBSugV
- za/zziu8eK5QoWw+ZsMMQGDeqOHoQ37iagMrQjgBvNl2D8iEdEwb373Wlqo645nKJvjbbH9OQQTvp+Bsi3ftohwioNvC+vQhR10As+pZXh7rXE+A9vkrjRzPSJZI2uDlYBPzxCdsrkzqLzskT6V61iEtdps7yRqIFENUPP30qCOdx9PfSb1Kt0/FaRAxsIO7PXBtOnj5K7BIV7pBzvn8Pp6LCDxqveLsavK21WHfZZhnS/RqWH5dh2OpZQMbJtGA9gRFuKRBRV0ycrZo2N5hpGLtXRCcNZwzIG/+/nSSyT3xAPTjbF8jdfw2r8p4xGFCT8hTvCgBRMopXCK3YwbyaQccReA==
+X-HE-Tag: 1768833841-758017
+X-HE-Meta: U2FsdGVkX1+zmbBpths2ebDWEw+w9N50atNkQPdeiGwQgqV9ewdJxzBHloGlanAhIyaadsYBEAM1L4Xu/knXOn1WvpjfWRmcbbevS6LyZQjesAACTBuXkawmNMs0Jl7JD6UjVmG9s13FFF8DCxaEp32iTt38xfw8fleA8uTxO50b6rZaF1eHJ4BVbP3FzZq8XZY/n0omQEzYVHpRhs+ondgW1zhWJc/gUc1MQR9Mc+v4cVQsoDVT8nWz45AYSnDcbjtpIFzDqXSuQcTtxKaia4mbQ74HqipCrHtPebQNxJlXs8rAkd2DtGuQjqOOrgNU0jhpnckTSSD71NQ0Hvd+y2qDr4qdSEny8/Bh8Lt32VWEpVG+aTCrB2RqDl7U7plwYwDhELt6BSQPACtQ1WiTFReKBf0XjTjWgH6WG9oppWD010EWRzf659oQ9FisWl1wtVg7tEGOrOSWLlYbGnxiGEmnWwhWc5zj4XBnj+/LatpSnF6w9O7rli7SNGbF3Dh2INO3F9AqTAAItaHbyrmETxibrmjmbg3y3eUB3wo5p5tF7Yg2Kc3jdPVxTnWbeRyHFBp5IIJlwbhG+WTsNNho4mA8YJjfgxEmrBMOB9jDaD/7KznVkjtyDdLVUhw/CMlJRufTz9tIRFQIJcDIGxFWCs+aQnBUs8X2NKKP2tPHDcVYCWciXprmfXAgT/Z46pKgwYnZkzv+Xm3tuApx9syMh5yguNxEfVgNNKrPTmlG2Mc9ReSwdearUzkdmmTCOn1ahYfECq8c55GznurKJUnItiZOoGQA8q+/IdqO11xUskrtBLD2un3cZzTUv8wlHivtMXh8XKd3eY6iBEIuJrILa8fSdDJccJL/oZqBw6tApPd0wEmHD5aVLH/SP6upa66SXBQgsMkPrmd/JLfdeJnwp/IEZTdvK6hvXM6qy3FzWiXUxeWoUKJkzasOv0LaDH7xCX9PMvuDcZqbk8j4YmA
+ eBNTDKND
+ EBJuIo2neHqACM/sIGo/8F7nOVI9vqTNL5/7ifLCqMsITMU3vtAlT0l8HOK1BZLsTkvPf+XLC6P396i3lXcdkf78bF4IS3837/6kYoym0+d2hS8akE29+hNE9Ns5tbDHo8r/IjmyBrWe5RzUnogt6A7wo0AsOCJg669Tz/Eqzu/HAE1Joddsp6nSdo8hmOyfzKcwem4S9tWOf1quyicaX6vV8scGlzl6IWj2WQqtf8OFADFkO4guUfiWwmiG7sQ6vuDYDUA9GzL6si4OAzeLRyl6u7vSdg/Ho8dMQes131W5zVq+ZsZKPWi41lyHrBpIH45Lg2bTV7RtcZl0XX5b8V4v/DD/7ES5Y5awsnFUuHJjz0ObmmZralV6I+iFE+4aRVg5bGo5XWnIUPB0jtjvNysWpLDRhIn2JxHm6GNoYoE01hL/5wHl1IUJ92dIYr26fliOjhZ2D7+PVIx/6ijTMqshfnET4kPTDJJ0+lnKp/rJsaR9vurwfDaKzc072YLpgq3zzmrKE1t/FGpg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,122 +134,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/19/26 15:26, Ryan Roberts wrote:
-> On 19/01/2026 11:16, David Hildenbrand (Red Hat) wrote:
->> On 1/7/26 17:48, Kevin Brodsky wrote:
->>> pfnmap currently checks the target file in FIXTURE_SETUP(pfnmap),
->>> meaning once for every test, and skips the test if any check fails.
->>>
->>> The target file is the same for every test so this is a little
->>> overkill. More importantly, this approach means that the whole suite
->>> will report PASS even if all the tests are skipped because kernel
->>> configuration (e.g. CONFIG_STRICT_DEVMEM=y) prevented /dev/mem from
->>> being mapped, for instance.
->>>
->>> Let's ensure that KSFT_SKIP is returned as exit code if any check
->>> fails by performing the checks in pfnmap_init(), run once. That
->>> function also takes care of finding the offset of the pages to be
->>> mapped and saves it in a global. The file is still mapped/unmapped
->>> for every test, as some of them modify the mapping.
->>>
->>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->>> ---
->>>    tools/testing/selftests/mm/pfnmap.c | 81 ++++++++++++++++++++---------
->>>    1 file changed, 55 insertions(+), 26 deletions(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/
->>> pfnmap.c
->>> index 35b0e3ed54cd..e41d5464130b 100644
->>> --- a/tools/testing/selftests/mm/pfnmap.c
->>> +++ b/tools/testing/selftests/mm/pfnmap.c
->>> @@ -25,8 +25,11 @@
->>>    #include "kselftest_harness.h"
->>>    #include "vm_util.h"
->>>    +#define DEV_MEM_NPAGES    2
->>> +
->>>    static sigjmp_buf sigjmp_buf_env;
->>>    static char *file = "/dev/mem";
->>> +static off_t file_offset;
->>>      static void signal_handler(int sig)
->>>    {
->>> @@ -88,7 +91,7 @@ static int find_ram_target(off_t *offset,
->>>                break;
->>>              /* We need two pages. */
->>> -        if (end > start + 2 * pagesize) {
->>> +        if (end > start + DEV_MEM_NPAGES * pagesize) {
->>>                fclose(file);
->>>                *offset = start;
->>>                return 0;
->>> @@ -97,9 +100,49 @@ static int find_ram_target(off_t *offset,
->>>        return -ENOENT;
->>>    }
->>>    +static void pfnmap_init(void)
->>> +{
->>> +    size_t pagesize = getpagesize();
->>> +    size_t size = DEV_MEM_NPAGES * pagesize;
->>> +    int fd;
->>> +    void *addr;
->>> +
->>> +    if (strncmp(file, "/dev/mem", strlen("/dev/mem")) == 0) {
->>> +        int err = find_ram_target(&file_offset, pagesize);
->>> +
->>> +        if (err)
->>> +            ksft_exit_skip("Cannot find ram target in '/proc/iomem': %s\n",
->>> +                       strerror(-err));
->>> +    } else {
->>> +        file_offset = 0;
->>> +    }
->>> +
->>> +    /*
->>> +     * Make sure we can open and map the file, and perform some basic
->>> +     * checks; skip the whole suite if anything goes wrong.
->>> +     * A fresh mapping is then created for every test case by
->>> +     * FIXTURE_SETUP(pfnmap).
->>> +     */
->>> +    fd = open(file, O_RDONLY);
->>> +    if (fd < 0)
->>> +        ksft_exit_skip("Cannot open '%s': %s\n", file, strerror(errno));
->>> +
->>> +    addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, file_offset);
->>> +    if (addr == MAP_FAILED)
->>> +        ksft_exit_skip("Cannot mmap '%s': %s\n", file, strerror(errno));
->>> +
->>> +    if (!check_vmflag_pfnmap(addr))
->>> +        ksft_exit_skip("Invalid file: '%s'. Not pfnmap'ed\n", file);
->>> +
->>> +    if (test_read_access(addr, size))
->>> +        ksft_exit_skip("Cannot read-access mmap'ed '%s'\n", file);
->>> +
->>> +    munmap(addr, size);
->>
->> Why not keep the fd open then and supply that to all tests without the need for
->> them to open/close?
->>
->> Then, also the file cannot change etc.
+
+
+On 1/19/26 1:48 AM, Andrew Morton wrote:
+> On Sat, 17 Jan 2026 18:08:36 +0100 Andrey Konovalov <andreyknvl@gmail.com> wrote:
 > 
-> I had a private conversation with Kevin about this before he posted; my very
-> minor, theorectical concern about that was that it's possible to pass in a
-> custom file to be pfnmapped and I wondered if such a file could map a device
-> region that has read side effects? In that case I think you'd want to open it
-> fresh for each test to ensure consistent starting state?
-
-Are we aware of devices where we would actually require a new open, and 
-not just a new mmap()?
-
-The reason we added support for other files was "other pfnmap'ed memory 
-like NVIDIA's EGM". I'd assume that people rather should not pass in 
-something that has any side-effects.
-
+>> On Sat, Jan 17, 2026 at 2:16 AM Andrey Konovalov <andreyknvl@gmail.com> wrote:
+>>>
+>>> On Fri, Jan 16, 2026 at 2:26 PM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
+>>>>
+>>>> So something like bellow I guess.
+>>>
+>>> Yeah, looks good.
+>>>
+>>>> I think this would actually have the opposite effect and make the code harder to follow.
+>>>> Introducing an extra wrapper adds another layer of indirection and more boilerplate, which
+>>>> makes the control flow less obvious and the code harder to navigate and grep.
+>>>>
+>>>> And what's the benefit here? I don't clearly see it.
+>>>
+>>> One functional benefit is when HW_TAGS mode enabled in .config but
+>>> disabled via command-line, we avoid a function call into KASAN
+>>> runtime.
+>>
+>> Ah, and I just realized than kasan_vrealloc should go into common.c -
+>> we also need it for HW_TAGS.
 > 
-> But if you think that concern is unfounded, certainly just opening it once and
-> reusing will simplify.
+> I think I'll send this cc:stable bugfix upstream as-is.
+> 
 
-I would just keep it simple here, yes. If this ever becomes a real 
-problem, my intuition would tell me that probably the caller is doing 
-something unsupported that we just cannot easily identify+reject.
-
--- 
-Cheers
-
-David
+Please, include follow-up fix before sending. We have to move kasan_vrealloc()
+to common.c as shadow.c is not compiled for CONFIG_KASAN_HW_TAGS=y.
+So without the fixup, CONFIG_KASAN_HW_TAGS=y will become broken.
 
