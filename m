@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 431B8D29C46
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:29:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB66BD29C41
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A797E6B028A; Mon, 19 Jan 2026 11:29:10 -0500 (EST)
+	id 482AD6B028C; Mon, 19 Jan 2026 11:29:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A57646B028C; Mon, 19 Jan 2026 11:29:10 -0500 (EST)
+	id 44A786B028E; Mon, 19 Jan 2026 11:29:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 966A56B028D; Mon, 19 Jan 2026 11:29:10 -0500 (EST)
+	id 336596B028F; Mon, 19 Jan 2026 11:29:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 84AE76B028A
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:29:10 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4299688C0F
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:29:10 +0000 (UTC)
-X-FDA: 84349248060.23.1F966BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 461461C0004
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:29:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JRT/TJNW";
-	spf=pass (imf18.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2318A6B028C
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:29:17 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9EB1B3FB5
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:29:16 +0000 (UTC)
+X-FDA: 84349248312.05.1592358
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 32E91A0009
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:29:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lqyE8RmG;
+	spf=pass (imf15.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768840148; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768840155; a=rsa-sha256;
 	cv=none;
-	b=L6PoyRliIZnpfcmiVkuOq3pDGEUpSOYaErSLWJ125pH6Zh2WN7Go0ai6ky9x1HE9gsBe4Y
-	YRlrAj0PF6Wamo58stYCnYujz3/v8QEiTaS8PHUIDkh1NO8VhwMOFC0UVyybLvjmdw/khu
-	ptTroLo0LuvsxthZR2jJudOr4Na1sgY=
+	b=LCWH3AYYRToXrvHwV1sHfdAn2QtFvAwKyJqtmNkeU08XJNS9/fKSp4qpzS7cIUGfkHH6ZF
+	S3//n7/kPZSNNfwqr4a2qBmF/vXmNBfrBK6po3kaHMQJaddWtr69PmrOLXMG8UEt9NSnTa
+	KCsLveIsIJmPSh/mXIzqsdI84XJvydI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JRT/TJNW";
-	spf=pass (imf18.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lqyE8RmG;
+	spf=pass (imf15.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768840148;
+	s=arc-20220608; t=1768840155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Re6nnZH5SOOtweYNC6i0xBdtjjagVEySFsoYsbDZ7kY=;
-	b=LE2sbQNp4t5+ggmOdmeoWwmn5A8S9SbYlHIijuyxJHXezNZUabq3f/+xpV5opIOqzPl9ky
-	N36y91G2z2qXVqQiS12QMh0s6klEzb1iXLw7Av9daM+Sim03cRt6Z4IX4MFuCkG6myDoHT
-	WvDcFWfWYy7jHZElqHtTigoQoRtihdg=
+	bh=oC4BTWD+QzrKIv8nq0vThrIzQzjJAT/zHr+hpiXxSAo=;
+	b=yMfrk8RP+strudRD7pwnLwrq96r9wgt2W4H58B4y/wHbKGlFyuRqnzk+Z+m/HLHeH0nkvK
+	N8PcQyJKIY6OT3rq05Yed2PPb1JzGExek7bFRdUo30FaYHodoZKJ4oHkJrQfMAOoTAK2TT
+	6SDqIK1A3mZruc99ieQCucZ7KQdWV6M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D1C74450B;
+	by tor.source.kernel.org (Postfix) with ESMTP id A16B26014E;
+	Mon, 19 Jan 2026 16:29:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4ACC116C6;
 	Mon, 19 Jan 2026 16:29:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A54BC2BC87;
-	Mon, 19 Jan 2026 16:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768840147;
-	bh=AZAjr5blB9svvv4iy5pFFBzbvOqXSLNmipoZVSEtwIs=;
+	s=k20201202; t=1768840154;
+	bh=o5Frh9Jas0eQsKFwc6fvb8GEIHx/ysO3v6fDYVnQinY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=JRT/TJNWCbMyt7yIyaTJly6FUhnDZuUxeZSzJVjN/nYS1ps9R0rsJvuhvNTrEk+la
-	 1UOENFRaQ+Za0kHHt9AfFI6lZT3tyk/oWRcUSErofVbPjhO/YFqxhdt8WsPnnCiwPM
-	 ItMD9tD5V3IaN6AvbQDQ94y0gWWnR60KsH+Y4szRkrmWQvAvN3aoV3uO1I2xGnFTjV
-	 bb/zy/OjfmmKh+KLGE1ZQLzascQk+/6G4j0/cFuJri28/kIMIdJDY9BFUEXUnxNhAi
-	 KKnnokIJ6qWsyghLwik29BZabKbpjfWWO9IBNOAfp2xo25sBNbzpzF0uEGAuTYvmFn
-	 ruklEykJbu/FQ==
+	b=lqyE8RmGZSejzsOQU0MO1ISUcONtsmxikVAGnuUP3SkfDMQ3Du8mM81jZl+aYhVuB
+	 Ahn33iMXaUsrrtOpeVjyWwYyKouJkXrEAahILxno3ID9CMj64h5u/UalJZy5oqVgyZ
+	 8qWHLcfOhFmYBRu6IYevN+88h7qyQw529L1Juby+udKOlj8WypkXar2wrvwFoOVhnA
+	 K7H7Vre4b+VLlU0bHBrNO1jGA6nmVF/nOA8lUtw2Xqq5NotuPvNB/yoj6y2uj88HJC
+	 ELMxRaczdd3rzjuNa2h8KNXBV5hP6Fe5ZlTEdVEBaKpIZgflUX0lW18A7v898UgNl8
+	 UgMZBpoYTa0FQ==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 19 Jan 2026 11:26:32 -0500
-Subject: [PATCH v2 15/31] squashfs: add EXPORT_OP_STABLE_HANDLES flag to
+Date: Mon, 19 Jan 2026 11:26:33 -0500
+Subject: [PATCH v2 16/31] smb/client: add EXPORT_OP_STABLE_HANDLES flag to
  export operations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-exportfs-nfsd-v2-15-d93368f903bd@kernel.org>
+Message-Id: <20260119-exportfs-nfsd-v2-16-d93368f903bd@kernel.org>
 References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
 In-Reply-To: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
 To: Christian Brauner <brauner@kernel.org>, 
@@ -121,30 +121,30 @@ Cc: David Laight <david.laight.linux@gmail.com>,
  gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net, 
  linux-doc@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=811; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=AZAjr5blB9svvv4iy5pFFBzbvOqXSLNmipoZVSEtwIs=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpbltcugWXdJNtlW+RKXOXYTtYGJsG/ZI/Kgn62
- QwygZmbY12JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaW5bXAAKCRAADmhBGVaC
- Fa7bEADGBiSWRROuSs8J/91dJopWVmzh98rAZDg+3UJE7SHjCQVSwc1En6E7AttfsLanh4BPsdh
- Ey7dJYDTjb3KJReJoWtnBzgjramNeksgxA+e4U65O6gESkPKGSPLVEuByheDKvRtZxmYTtiqgzQ
- Mq2wEtjCZaCAWDVrRQDMllcwjxwnnBpyGy2HIUVdgPO33orBwlEUy5KumpmMk2e+P8fDAdOdqmW
- McggNOU1g1zZKrHp5rGDw/zrD58y7ffoAo0LgxBIwRV/PXjnMWNB/qD9ShCqpQ4BTly2NhUdW9h
- vle0WG/ufE0iU82wXme1sD/eCdiyuDlzLr0gcz/A6spq6D3CzkOznL6gAdqAk2wy39TD8KxPkYs
- Z9/zAlzaWQamQps1uwnyUrZYX7AkWLLLxdX0RYn4XKio+Uv3rfn0hTkvaETy6U2dpjRknebcsJR
- IIRnE5cqH7Z6CylksCFnlCxHsDjnnrBGr2HOdEyX7vZAv4lawkMEFUbd4NnnJC99Y90W1T4O9sM
- lz0DCW67haD9hC9Htrx6MMplYEzK08RQaRhpP0rgNkN7e9hP4YyIFLMikzCI3X34Rdbegi4sDxv
- BV1chOMAWIlFLNKsUt1oXQPpErFamRzH7s+wD9wS+rtnGDO2C95CtPLHJywk32fbpo7UxFjaRsT
- NPjT8Wxn0TBT9Gg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=823; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=o5Frh9Jas0eQsKFwc6fvb8GEIHx/ysO3v6fDYVnQinY=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpbltdaF1cThL9y/0XwYSNisksrkVKsW/AB2P05
+ 5IbY1gx72iJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaW5bXQAKCRAADmhBGVaC
+ FZXcD/97dgCRFTvF92HsNCtcdMvHBW9NPsmSKBBjqVDufX8MGZ4/VSQkMX3HxFlI1V8Z0AmjBGz
+ lepo+/QvxuI983RYiCoBo5QKyaqD5/LhYdLwVB6zL2YcgcVUabFRo/0cPkUTEfYkqb8V/vkFI6Q
+ BGpYkOdXPXNbCnjqJRHdjPS6VtBDFXHqdYnLZq1U6/+qNniAioZHs5rk/ceAoybjzHeSqa2bWy9
+ yW7UK/oLbatR1sXkXVW4s7a6exqOIK8LxdhjYq6ANlZWAtrum1SWW4nEeByKZQNRAH10bdF3xoK
+ kP+kkah34mombElyQofkbwoeLokO09lPBuz/i8S7AlbPqTLSEduAbi5+usEtscs8lcqf/5GeqkF
+ 3cNT3AVl/M4F5ZSRnPJ3HE3vnIRcLE8WVCQ/iVgjQ/d/Jbrg/iuzYvdTdPxAUaIX9hU7+44HaXx
+ Pl9JVlefKdZ4EYPVs+13QPDPsW6+rGzkr06LyGnGx10hzaBWxV8NGBGExK17p7P92SiS42s9/Wx
+ qZBUU6XIMmZf8uHh4znogNDhhcm33486WnkQWR5sLhrUEPwQTtno+8U/psXvsmQmBMyNP/ud70/
+ Y5W9N5xJcynuMTUHAhIG6VqPezcQlvq/glcZk1dYpz9wOHUP7ThX4OUQyTlCDU9q44iBIV+KYKB
+ 2PU4LQy2kgFCM1Q==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 461461C0004
-X-Stat-Signature: a37bxif4na9ncscy1b1s3dho98853u6z
+X-Rspamd-Queue-Id: 32E91A0009
+X-Stat-Signature: d5w17tkouw6mrkqp6gqg1d4uqb7uuu3z
 X-Rspam-User: 
-X-HE-Tag: 1768840148-854124
-X-HE-Meta: U2FsdGVkX18yVgtU1jD7E5bE0rwcMS1+hk0IuXzvuxxQzRwVfVLYJ5RT66c9BJYBHulybLknGQIWYnQlDBV0yV8sTNKpMAZaQUwGi50RDMj0ONMs4O+zeDWnbxh7cMe0ON4Uq2qauz/gtDnPM7xHW87Xx9o+oihfy8QgWGFYJXow7EyS71NL2Qioy3W7RqvjUZx8fK9hZOWHH2u18wZIQk+RnH9RhBlWQO2ASnlrrFDiEICXc7TInxRtw3JHmTcR2g+C0SnuwST+MXHLzD0l+yji2ZTcG/wOz0gjJCq+xsXcywdzHfUpenI2u5PpCIw8bl6eC9uw6YfPlXyXl+iz58rMtS4H1vpMq2WfK8FZKI2+RYPBzHKyc36ft+3tcJYtPo5LnnFOI9REs4o913gLYEjiFTcQDM8xePc04BgWEjx42frZPsgYOcsDLLxLrCVWBWfLBTbos8VDCui7Jzcmtcoppx3Ym12Ob9Gub4gb9sMRS9XiHx4MjExGC2dlY0qbK/hqFJXelLrSkLlz3FiI+W0M+NWLEsh0NdxWbHHNE2ZwjnRSsOe/oOPHFmMDq6nBJBr1BfY9q1z8j5pp7zhgPuS14gNKdspmo2yEsW/56hmlTCuXqd/pkufTXH9ffKl6KvY4Wb5k2mSi1oLSxt6PAJd4q70C1TW8/rlyJpNiPzoVj4STi4ud74L1Iaxacj2vyJfwsXxbjb5Jren+TkVrY7rBSnMT2FajZ12gcb2EqiVmRuI3299Yib/wXnaihu3BU0EOrCBcFGvNDgREIjAIJE6VfhyHxfj1FnPx8unHZWPp+JKDMEDn2rb68eQMnLdVCHknNEzPwLWQBrjJ+cDIQAwgy6a7v5GLfROeQT7InD906n/s8nXOtay7hul+vXOBD0T5jHwKFw5d5bhWZZCbkGHHxyg0WpqCS/wiATNHd9wwRMhUqCmY4KyQABknT8QDfL49lHDpVHZf7GfvNDo
- qfNhJf+9
- CZutfdQY/2aFslsz8z1YyyrtwvNZa5ZRhu5KtBn8hqVCgeSwVYYPn/BsAdfrpNIr5TnGOdSm7Ehx/+fBZC4qinyeT7pvt8K0QoeAonljNzugmm+AN1LjshQzhlqNsjxkD2qJ/9qcXRTD3u+69ueYf9VIO3xZdCaxY694Ogb3+NjG6OWNw48df+TbiHXBmZEGNJqFgkp+34id99JvXDJPkQdfJykTLph3VG+c5s6shKuu/uegRRTPkd2/e3w4G9rc2gIuKtRlIjJK8TC4YJwGPf6AGyJlcAG9Q42czMN4nLtcaIbBjJU6KuxsR53bIZd8NFdqv4ia/q8GatsHdDH4le4om/jFJCH2hf7jJZoRWIiLQNOKa/GgzMXIofeUrXIoTcOuFvqyKMBJ1zjByq/RiNJl6HDlOI9vdAnaiTghgSUYwRhrBUwWmlNSALnztc9kucRi0
+X-HE-Tag: 1768840155-784711
+X-HE-Meta: U2FsdGVkX1+BF4gC/XTeetjCMNADF3ei4GMCdUUUSTQJqjRIpQf+476dtXFplqznzu0dZqjlvQ8i3cJX4/aYYelsI18tck/FvPD+Xv5/cMIsR/rDZYRNqlbeiGyYpxf/P9wtjYMvArs83kB2YSMvb3v2jTV0cO517hpvlALNtFBalWCKPWBBUFPfU1tksIcDBpwma3NaSz4Nxx5WIs7KuwGwHamHVWTD90QfhFxA4dBj3R+/0CnWfwq3xx9jTzx/GV0X6CLZrB1UFnaZeMbmJWnd8spMiHe6nmEsKmF8buqHWW4obsQmpkSBx8Wencr0c5mdMVBSe3kTpW4EZOYlCA3C5kbBTRInjhAV9L0mbdo7xlOQxCxbmveGVCe7tZ8dRP0qV9JljbA8BNRTx0TaQcQMRabnPB/9H9iWlVefEfEkJCBgqgu7N6hlqFUcisckrfmHblPz7e7A8C8hg27Zzd22x426O1MLEsSJXwT8MAtzw8MzDC0sBUuTjxbpY5Xi416qJRENsweW8bDaib/A6WCvX0g7s1XHjeNpKtgkXnkbAHn2142zSs+3MP/ExFGObTaX2j6nox3VLGsFYiMvMAdFwoYAWIGQXgHV3o+NKnqAVSP2zloniELjll6dVBfaI8KgZhj9zhgitmuJyL7OfKxjR4yg5Tievp+wTh1hmFOQOblIcXwS13FK4suM5k8+X1HyRPBsRgsE+aIjuz3ta91/JfjXfeikqfoNa8kExhruBPkXNIDxiP+ygY6KM53d97IQ6ebO06hdBVW5GbjtQz+V7tTgiT6LWaDcsCgLBX/LAtmNjUhGKgS92Cru/slqtGQpAkvZY/pE2ngerOJcUtbhj4V0WXtXXr4LLvdKGbWWlkKj93puOqswnVKcNpQ4OrVo9VrDgLx5bT1ocJ59d8g2DrSUNLUkJ+WKkf27we4OFbUqhjfIp5toxhO5IVqAyQqp83VaV7h3ONUDoz5
+ o+7T/6SF
+ i0krLBlgPW0zB3ydwbPz53mEKqIoycyqRb2TPSp4uzeyPP7n800BpdIfZ+7oBA3awp1LQc/pAINhziu/lQmnv+vVs5eG3orPDpzEAG2HpiXQGHEYR7AMUt1/6P84AuFUJxf9znk/xEC/0cFHCHm0tU9R/MWJgD13Gf3XDpV9gobJkf2wKgp+FF72uPrDODDx6P30M4U1nu7SLCK/1brv6rxLp+GrKz/1Hf8kMWcn8fueLK87vmpXelkxXygviAzbX9r2oUjYQPTjTBMcSHzEsUZ0343mDGVXZ8PdfUDTKiQS2fTniFtcIvnD5sqC79vhuG9rW2QOnHcPrOAn5NrOrOas48mPabnJhYjmWbXczpTzmfDM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,26 +153,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the EXPORT_OP_STABLE_HANDLES flag to squashfs export operations to
-indicate that this filesystem can be exported via NFS.
+Add the EXPORT_OP_STABLE_HANDLES flag to cifs export operations to indicate
+that this filesystem can be exported via NFS.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/squashfs/export.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/export.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/squashfs/export.c b/fs/squashfs/export.c
-index 62972f0ff8681c798f0b11e17d501373b2145bd9..c6c4d8f1f115c65b6dac29582bb5b447b823d3b8 100644
---- a/fs/squashfs/export.c
-+++ b/fs/squashfs/export.c
-@@ -176,5 +176,6 @@ const struct export_operations squashfs_export_ops = {
+diff --git a/fs/smb/client/export.c b/fs/smb/client/export.c
+index d606e8cbcb7db2b4026675bd9cbc264834687807..6dfdba9fcade9e4d7ae01fd107e84956f2f9b82a 100644
+--- a/fs/smb/client/export.c
++++ b/fs/smb/client/export.c
+@@ -43,6 +43,7 @@ static struct dentry *cifs_get_parent(struct dentry *dentry)
+ const struct export_operations cifs_export_ops = {
  	.encode_fh = generic_encode_ino32_fh,
- 	.fh_to_dentry = squashfs_fh_to_dentry,
- 	.fh_to_parent = squashfs_fh_to_parent,
--	.get_parent = squashfs_get_parent
-+	.get_parent = squashfs_get_parent,
+ 	.get_parent = cifs_get_parent,
 +	.flags = EXPORT_OP_STABLE_HANDLES,
- };
+ /*
+  * Following export operations are mandatory for NFS export support:
+  *	.fh_to_dentry =
 
 -- 
 2.52.0
