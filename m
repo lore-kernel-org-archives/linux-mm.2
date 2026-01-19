@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0DF3D29C46
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:27:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54194D29C43
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:27:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F1E46B0276; Mon, 19 Jan 2026 11:27:38 -0500 (EST)
+	id B90B16B0278; Mon, 19 Jan 2026 11:27:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C5B56B0278; Mon, 19 Jan 2026 11:27:38 -0500 (EST)
+	id B515C6B027A; Mon, 19 Jan 2026 11:27:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C7D96B0279; Mon, 19 Jan 2026 11:27:38 -0500 (EST)
+	id A29BE6B027B; Mon, 19 Jan 2026 11:27:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 054836B0276
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:27:38 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6E5F1AE34F
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:27:37 +0000 (UTC)
-X-FDA: 84349244154.22.71DDEF0
+	by kanga.kvack.org (Postfix) with ESMTP id 912236B0278
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:27:44 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5E787B3FB5
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:27:44 +0000 (UTC)
+X-FDA: 84349244448.19.F01CBA1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BB9CA40004
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:27:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fFGw0Nlb;
-	spf=pass (imf17.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id B23C0140013
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:27:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fhdBn2dB;
+	spf=pass (imf26.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768840055;
+	s=arc-20220608; t=1768840062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5LBMqF0fnkOKDDiKj1UARiPJl+jkJNUF0Z0wVc1Tm3U=;
-	b=BI8PDTm0EAcHcsZMcLytOyVd7fAVWdZNzhNEp2Zx1jyfei7sYXD+391UYryK2ZOxZwHT/7
-	mN1Ks2UoRk8IV+pjfrpajyuIruOhJGD5DtglnoDYnvJ9n/4gPeR5S0Beq0yt6id0BgfC2X
-	lYsbZfLVZQaKMdIU/g5mw5nw2xZvSUU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fFGw0Nlb;
-	spf=pass (imf17.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768840055; a=rsa-sha256;
+	bh=2uKyHe9bvtS4rRqV9g+HwXpIhfVuwz+cxuTdSbT39m0=;
+	b=u813WeZgO9CG5nM9vaTzTdx2D49PUmBkNDSX7DJVJ+m7scnWWu2dh2tDvc3mu0oEOQrmfQ
+	tQ9i+84i1vYsYrT/u9eXE+XOADPi6jbdYcDSG44CMaDim02ung7tNmNAaFJPM50//VXy4k
+	VBZq2mdLloAJrDut/NtezjIp+nWDxiY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768840062; a=rsa-sha256;
 	cv=none;
-	b=M+hWTVGi0MdSsqZVBVhaK8mkKIuQZvaN9Gp5ch+b+qIoauZP3IzEb3+/6ap/BCqI7tRra0
-	ljnG9A9zn2Be6ZcV34Xaxou6erCqsjiDKkDMyaRHPHXsmEJpCdX1daJYtux8m4VU0xAqtf
-	4cIcY5IsxRyKYyMxEYXSvvs2LOiZWvc=
+	b=m47m9DLhoGZhIw/UE5kikEOtCHQrFAqxU1UslbfSYtFMEjuIjlfUlRhW9x5bGvJPyEO7jQ
+	97PE+xZcoN2gI7Z7HBO6gRERoY7uYr57bQCZzC2xFEq7libh56nO/xrKs0WGddTo7Ru9GS
+	xWWSDKchdw6sOS18j58+N6XJWBtJer0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fhdBn2dB;
+	spf=pass (imf26.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA21544515;
+	by sea.source.kernel.org (Postfix) with ESMTP id D3F3D444E6;
+	Mon, 19 Jan 2026 16:27:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DEDC116C6;
 	Mon, 19 Jan 2026 16:27:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F16C2BC86;
-	Mon, 19 Jan 2026 16:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768840054;
-	bh=WOmtIr1IsB2xi2+MQpnozeMDf4MRJ512rkEzgmzicq0=;
+	s=k20201202; t=1768840061;
+	bh=0HPdHuxiDqTtA0YywSuVWS43ZS3BgDMq+Pvu7w00t7Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fFGw0NlbN5TsRC2ZjlZjZn9IX/42PhPSQnnYH/4v7sgwhqTBMY/MxwIMIlKkHQgff
-	 IsnuLQGgFH8eWVaaGOR+eMsdGER+dvGyTUfbMzLqADvcxjbHTL48XRw/G/ojzS6ubF
-	 gxWUU+M9COq59S0/XzQ0Rg2QVwbbyQSi2S57Ixy4HGcUaYn0kCzvwW32x4YptCcCne
-	 TC5kQgRykkBR+Q/5D8riOm2605W/IKWQgExzxr/JW0sdu9dkxBbhSvoXfvEW1caiEP
-	 Jtfr/b52H65goyMqJXxHvpQS5ggVa0+AKp5u4wRq/MKYBMwp0R6Slbqb969DTxzRNV
-	 Kdv1LlGm6aQKg==
+	b=fhdBn2dBdU8qsd9fov0W3cRwBs6xrhJwrMmju42vZTu0LzeOcag5Mdd3r7MGvyvhc
+	 YG1QDMIXTVtBeBMOaWEDZkVVxwZu+EAfat7NXseb7Li2I0zzhNkCQy7u7LTQqy4eQ0
+	 yFx3dacO6OxpJ+t20CfGLKs+fb+h+fjlnywsgqy1yVtebczKM3mdOFE/4kZavk2Q+r
+	 UnXmGW0DAKOqCQ10ZePYNiGtJT1Pxx1s5rOAc4Z7h8dPo4CkiHrhax+111awiCI+n2
+	 vSLb86fZMTxXENHYCelmDQ1/Gd/cB5QhTtutKl6phJthJ67CysXayb7i1Qe9n7+pWC
+	 oI/oX14JZ9AWg==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 19 Jan 2026 11:26:19 -0500
-Subject: [PATCH v2 02/31] exportfs: add new EXPORT_OP_STABLE_HANDLES flag
+Date: Mon, 19 Jan 2026 11:26:20 -0500
+Subject: [PATCH v2 03/31] tmpfs: add EXPORT_OP_STABLE_HANDLES flag to
+ export operations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-exportfs-nfsd-v2-2-d93368f903bd@kernel.org>
+Message-Id: <20260119-exportfs-nfsd-v2-3-d93368f903bd@kernel.org>
 References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
 In-Reply-To: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
 To: Christian Brauner <brauner@kernel.org>, 
@@ -120,30 +121,30 @@ Cc: David Laight <david.laight.linux@gmail.com>,
  gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net, 
  linux-doc@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3825; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=WOmtIr1IsB2xi2+MQpnozeMDf4MRJ512rkEzgmzicq0=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpbltZJJ4Erxc99mz4JD4fpPhibGNL6s9qiEaxZ
- +ast/XYA8KJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaW5bWQAKCRAADmhBGVaC
- FRr2EACvlm3De5JtqwIRiAJ+yR+TrnRM6zVnaaBcPqW7NWtaotgXHbjPmhHalzQ2ehLlMs4pBwW
- CJdzL/0SuDHd+1ninl8HscU8YeUjTL2yuS1baFgceqGQ56wAeo1gFcMtbsngMt0UiC5VhNd5lzQ
- hisUbwG+ATmkxRNQlt1jg5Knn2k28x7ZuUBDbB9vNczmKJ2P3gR4vHlU6toocVh4tp1XLS8YnS4
- /Th6ZoeqlrAyCsLW2EjmEjXRmVT3n9bN3rhj5BRL01f5sWIKM6YimBAXNaGgfT6UVTHVYycMqid
- z8zjumO5an17putv+hHHquqigVwMPoFkl/R//xJ/wD3NuR6WXPWj/YfRuSTQ6HrgP3/xw6XGitp
- THrn0RYY6owKt+oRWUEoL3eIf6yNlcLh6Z+A7iaacop4/RyPQcauGbboHVG+zQrFpRA0TYU2QWr
- OJuePE5rbnQL9s8mlCeoPUUbX0I0E2jges1C26w/uthmL5Jmlg1eyzXFafUNmt45LVS97O17yyA
- A2BOWaDmYRmleIMtYuRGy98LCY2KV91GcRPRO/n424NqA6H2dC2jvKwMZAfZLHNYZBLKEgJ+x1O
- GEgCl6Q0UBJ87Io0WzdKw7SlTPxZyLbVNRNcBAm3/kG8WoQXajMQfr4a1wQ/fclJWtptjFdnzZD
- anI/Pt3rN8rtBBA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=725; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=0HPdHuxiDqTtA0YywSuVWS43ZS3BgDMq+Pvu7w00t7Y=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpbltZJI9z4X2wT98SLfDh2LLMCfOso9BJWBaSl
+ 4V78G5vaYuJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaW5bWQAKCRAADmhBGVaC
+ FacVEACaj9MFO0nJvhnrbzJlVoaITK++8XVR/P/SlqYInzb6OApdrLCDaYj4o7clJSxoyY2+YXy
+ nufOx/AFKfqW2S6FzC3wk0Amea2TLDHxNelOCx/2SIff9t15wvQiA4ZLxpYQVPPFLVxQK2GRK1Y
+ GYWpk4R5NQjW8pI6fmnlB1C0Up+pudUOErMNmSgrXnGknVVaCMzqt2Wmc0wQ/KnpYYRDjqWzc9Z
+ 4aPzlAGV0DjDnRr7i1ILM6O7+x9H1+oqvDf5uPli/I699nETR/nnfhRR9ydxu2O/Y0BcZIQi4L8
+ DWiDejEGM1IDAXwNfYeM2L24B9rzknRun4ykATk1QAYlBA8sjY2hW5RA1rtsopmXraY0wgLM+v/
+ GF/ZzduMVkxw2L7+3SfIwl9IF4v8+vk8svrrLK2aDrvbA35RDe0QC55Z5Tp+7RGh0S9AL5Tpgz5
+ RFL3t9hL/j+ejpsxX+/cYTzdyMe+uIzqVubH4KhniotJHOe3U+wPHnwZXvvfOu0QOutCllL4o4C
+ pl735gbPZcgpGxib1cuKMRukAgWC60c2w+jfYn3Vb+VyhwXLbEh8Vg9K7yMsSHYubjYw3a+MP8B
+ 2PdQ1JkgTqMvc6gHLGaQrzIftI9HQBd8a3otzqg3wULPebh48F1QRniiGaGou9fA4+pe0fcaGK7
+ 9dnB8OyYRbW/VrA==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Queue-Id: BB9CA40004
-X-Stat-Signature: krac6rfdjcxfay3g4rqtinnadcwq77x9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B23C0140013
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768840055-766348
-X-HE-Meta: U2FsdGVkX19H6lfECbiR5E/gkvlUNXqY8wPoZMMukQEI3VjQno3xzd7N2AU7v3lP8uGk+I9ak4h1o5Ai8Oo3TTubogmSrzvn1HVToHZ1lO7/ZQES1vY5EID6JifdzRQgxevqjv8aldSimMRyHLjRZkKEe3WqrSkL71W/wUeFuZ4LfUEz+CD//ED/+tl/i2OVvlHwkfPdKdyShpYrJtlUcUXIb8x9DmYxKEWkqOVd/MeLlWA49WdU5xD8sMOTlbsHogiJAa7jZYG60f7jEI64aPzJlMymiu6nqTVUW6zroLF2ez5qB+xW7OOuPum55uJv0PFM375EPXOVkHkcrxJ0vi2KhVq0Idu+8/eoQQkjTSaukb6nB8B7DDId8rJZrCxc0vjdRqLezub3etIycRYZ2MzkUyHN8DS35GqQDLv6Qgslp/RmZr8bQ8w3ndurP8RwtaSbbGeCVO9k08YdgHB17RNnL4ZNtTkKrNeEkAc3gpWESOL/hUHKBsw4vBv3pn1o7Fnm6ty7Ns6YhXfodVTNgjPZQlRxUInImUGOJDvn5urfSgD2fNQw6JIZ4hQar4sHGoJ4J0bv7/Rw0Zws4TFJp8uYWZfa6+Gubfhi1H0s1TfAgmmo9c3AeLqoR5RDXiRGQH1sA49gUiiBV7IbXZr9yFE3NEP9Kirf/PEcuXi9GoqAjHxwHfCwCDftUzZ8RfkZe01ggfp/c+hJtoE7f/5qQUfQkaR9bDxFfCfx/iCkuXB23PrZNRjMJnXy9W6Ent67Kz0Q6htc8EwlO4wvypuv2UaPEz8FvraPt4Kr3Mjy0Vy9KpVHntomtS1Q0fn9LFinCuX8zRe5gtD0f8tQd6s8mlpCVqlgnmRtww5MX8w/XB4os7ny9bQ3zCdNW6nNV90SpAYt6G4xYIrBp9WDATrpegdSRYCDYnK4BGAw29tvjlcs/zJtEOVs5RNT6rm4h9o2i9HWzR1piYJ6K6LY0Tx
- LLFjPqYC
- Tred0OAKXL+SVuPTDf/D+2kKK23tSiv0liTCiZtj6vs+DG9dcK+4Kw028NEOIlNTWkPBCa5t7fvYT5X7c47/GTiZ3yPBfK+cJlJBcaFbGnpqe7PX2DJ/gp8q48+vt0Lvjwhk924NR68qIW6YuC8WL96swYk2h5QMXeSkuzZAr/HbQXy+/HbWLD6+Iyx6IZNVRQHc31N033/oXz/wwLn0KoetHioMFZdepvMs+B8HGPXDFJjp/2BWeEyQn33lsbl9NTRuRnMGy4nmVfs5d7XAMP8weTMz/JBRS0mbrQTtAJ69MxOTQMm12CW1ouv8Rl9kMYH+3QO3rrwXTkpDqmGCQEk2XtI47bIZxo1148FjH57RoEs8=
+X-Stat-Signature: 9tuj3zs7tc5ugtacs3s8ezwqndqsbsmi
+X-HE-Tag: 1768840062-172784
+X-HE-Meta: U2FsdGVkX1+IvZjWJEUgn+JzHCj0Q6dT8dPrIMUrtFD9u3aC+JamfPgZZDylQldtlfIl4KBkhdTII2t5l3ZzmfHg8+6T8Fw44vrTeR+BlR3/OkoLRJyR+gtNiAueZX6tr5duiwHqMlKbA6OsMCcVImVE/z2XPEdYy1BC+HnQ0rwSB1fauo9QLxsQG1z3XBBTK/amtyegAbdejsfbndYf16cGsZhbZootA03kglJQblc5ZTvVRFWJJf9N87T4ND3EpopvWlTCxFA3ETmep3CWVlMDUEnYiNR9Jsu7M474JtWVKn0bP9411UC9XmyYfDunplhtWYD5OcU1gREMo9z3Z1HzmfNmqefNU/QwOYS+NB0GIhA2WZgjvt2hz7cHBIhci5jgnBW6rUUhNNSbIpCm9ehY2W+zgPzFtdbATL2shxoOVCfPjSD7qX0x9y9PsG9yR6sqWN9qERqpaGqyKRqF2E7/w4FhtBgBz9poVcZR+S9eTgpfvUefgK9qUxBfa1UQqT0zjQa0ejwahNgHVkgwSpgk3QblkT0quOB8cZHbGxSVBOFVdIIWwM/8qHTp1QEdP8eXaDbPgMYYJL2XFhdgvAgved2pzVgfyug/jnAHkTMBOL5uhxqXCaBGBW+olA+QBfWq0OSpnmaWc+wzh8PN5O+r5U2sme4doDuTJ2Uvkyy8SJDnzgxLVTd5Lp3lN5Qf4/jRcv3QlLZQUQ1w8PftuDyOj+wuC1NDCxqEXGl/gwR/cM43X5aPQygY88CRFbGjYprywdH4aHs0FY9M9a/yxnYNM7uPES2P+ATN1KdUIWyGjY04tlWe+nMDe7Xsol/VMKhPlok/LhBy/tpb6/TXgDDn+N6ygCLVeq6v/JOCVtCAUbe1uY4xLlL5R/qYksTp60168knFqFjYIAL6910PupJz72JzhJ7yP47fknUrKOopUdDZeg/LuD2GSMx/X2DYABdxfsP0e7djHLlzK8n
+ i1kgLuaH
+ AhKGvk5gTg/x0IaeNdU5zbv3BSeq4odsqRDZgk1LY0KD9ToLGnr36Jx/Tr0lzxuJ3xfx3EFGSaZhEmtbcR8gdaR59r3T1PjmEVPvxj8Pj+52kInfTcxcBLMkyDnstCl7z40CFL6129nfGjmoThUPLlw7dCpqMtK3pQLRM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,80 +153,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-At one time, nfsd could take the presence of struct export_operations to
-be an indicator that a filesystem was exportable via NFS. Since then, a
-lot of filesystems have grown export operations in order to provide
-filehandle support. Some of those (e.g. kernfs, pidfs, and nsfs) are not
-suitable for export via NFS since they lack filehandles that are
-stable across reboot.
-
-Add a new EXPORT_OP_STABLE_HANDLES flag that indicates that the
-filesystem supports perisistent filehandles, a requirement for nfs
-export. While in there, switch to the BIT() macro for defining these
-flags.
-
-For now, the flag is not checked anywhere. That will come later after
-we've added it to the existing filesystems that need to remain
-exportable.
+Add the EXPORT_OP_STABLE_HANDLES flag to tmpfs export operations to
+indicate that this filesystem can be exported via NFS.
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- Documentation/filesystems/nfs/exporting.rst |  7 +++++++
- include/linux/exportfs.h                    | 16 +++++++++-------
- 2 files changed, 16 insertions(+), 7 deletions(-)
+ mm/shmem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/filesystems/nfs/exporting.rst b/Documentation/filesystems/nfs/exporting.rst
-index 0583a0516b1e3a3e6a10af95ff88506cf02f7df4..0c29ee44e3484cef84d2d3d47819acf172d275a3 100644
---- a/Documentation/filesystems/nfs/exporting.rst
-+++ b/Documentation/filesystems/nfs/exporting.rst
-@@ -244,3 +244,10 @@ following flags are defined:
-     nfsd. A case in point is reexport of NFS itself, which can't be done
-     safely without coordinating the grace period handling. Other clustered
-     and networked filesystems can be problematic here as well.
-+
-+  EXPORT_OP_STABLE_HANDLES - This filesystem provides filehandles that are
-+    stable across the lifetime of a file. This is a hard requirement for export
-+    via nfsd. Any filesystem that is eligible to be exported via nfsd must
-+    indicate this guarantee by setting this flag. Most disk-based filesystems
-+    can do this naturally. Pseudofilesystems that are for local reporting and
-+    control (e.g. kernfs, pidfs, nsfs) usually can't support this.
-diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
-index f0cf2714ec52dd942b8f1c455a25702bd7e412b3..c4e0f083290e7e341342cf0b45b58fddda3af65e 100644
---- a/include/linux/exportfs.h
-+++ b/include/linux/exportfs.h
-@@ -3,6 +3,7 @@
- #define LINUX_EXPORTFS_H 1
- 
- #include <linux/types.h>
-+#include <linux/bits.h>
- #include <linux/path.h>
- 
- struct dentry;
-@@ -277,15 +278,16 @@ struct export_operations {
- 			     int nr_iomaps, struct iattr *iattr);
- 	int (*permission)(struct handle_to_path_ctx *ctx, unsigned int oflags);
- 	struct file * (*open)(const struct path *path, unsigned int oflags);
--#define	EXPORT_OP_NOWCC			(0x1) /* don't collect v3 wcc data */
--#define	EXPORT_OP_NOSUBTREECHK		(0x2) /* no subtree checking */
--#define	EXPORT_OP_CLOSE_BEFORE_UNLINK	(0x4) /* close files before unlink */
--#define EXPORT_OP_REMOTE_FS		(0x8) /* Filesystem is remote */
--#define EXPORT_OP_NOATOMIC_ATTR		(0x10) /* Filesystem cannot supply
-+#define EXPORT_OP_NOWCC			BIT(0) /* don't collect v3 wcc data */
-+#define EXPORT_OP_NOSUBTREECHK		BIT(1) /* no subtree checking */
-+#define EXPORT_OP_CLOSE_BEFORE_UNLINK	BIT(2) /* close files before unlink */
-+#define EXPORT_OP_REMOTE_FS		BIT(3) /* Filesystem is remote */
-+#define EXPORT_OP_NOATOMIC_ATTR		BIT(4) /* Filesystem cannot supply
- 						  atomic attribute updates
- 						*/
--#define EXPORT_OP_FLUSH_ON_CLOSE	(0x20) /* fs flushes file data on close */
--#define EXPORT_OP_NOLOCKS		(0x40) /* no file locking support */
-+#define EXPORT_OP_FLUSH_ON_CLOSE	BIT(5) /* fs flushes file data on close */
-+#define EXPORT_OP_NOLOCKS		BIT(6) /* no file locking support */
-+#define EXPORT_OP_STABLE_HANDLES	BIT(7) /* fhs are stable across reboot */
- 	unsigned long	flags;
+diff --git a/mm/shmem.c b/mm/shmem.c
+index ec6c01378e9d2bd47db9d7506e4d6a565e092185..c64c4410b4fd9961599a5ea768b469d8184e713e 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -4477,6 +4477,7 @@ static const struct export_operations shmem_export_ops = {
+ 	.get_parent     = shmem_get_parent,
+ 	.encode_fh      = shmem_encode_fh,
+ 	.fh_to_dentry	= shmem_fh_to_dentry,
++	.flags		= EXPORT_OP_STABLE_HANDLES,
  };
  
+ enum shmem_param {
 
 -- 
 2.52.0
