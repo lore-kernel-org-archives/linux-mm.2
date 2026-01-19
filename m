@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A195D29C41
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74543D29C45
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:30:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C8FC6B02AC; Mon, 19 Jan 2026 11:30:51 -0500 (EST)
+	id DB86C6B02AE; Mon, 19 Jan 2026 11:30:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 880BE6B02AE; Mon, 19 Jan 2026 11:30:51 -0500 (EST)
+	id D79BC6B02B0; Mon, 19 Jan 2026 11:30:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A05A6B02AF; Mon, 19 Jan 2026 11:30:51 -0500 (EST)
+	id C454D6B02B1; Mon, 19 Jan 2026 11:30:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 694986B02AC
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:30:51 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 243B45687F
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:30:51 +0000 (UTC)
-X-FDA: 84349252302.17.01C8F94
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B0CA46B02AE
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:30:58 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 79F3A14017C
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:30:58 +0000 (UTC)
+X-FDA: 84349252596.11.10A9484
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 35FEFA0010
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:30:49 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kzFgWc06;
-	spf=pass (imf25.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768840249; a=rsa-sha256;
-	cv=none;
-	b=Gadyu+BVVYgcHIujEfVlhDnSQaAAjl5Nu+h/mSxGLzK1nVU/HdR5YZdhwCzvTi0Ncs0qJa
-	fo2Euz+BkFGKw0vUv6skLCPYI4zIv+92cFmRPALx0QMhpPOIiMTaZ6tfNf+C+tO98v/YA5
-	yi3XJ7UMWvoU1LbXPLUjUMfXWVFi1Ho=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kzFgWc06;
-	spf=pass (imf25.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 75163140010
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:30:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aRe9D5Sa;
+	spf=pass (imf23.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768840249;
+	s=arc-20220608; t=1768840256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sQr/NA267cZ3g24Kg8aAk7oc7aW4N/K+I8syFSJ/ypY=;
-	b=o5dup5LsbywYkN32Y2hUxXBWV0H8FD286zplgghdw2IKmy4+q1iQo+NiIsrNYG4cLpZ3n2
-	9+rAod8oxhEjsBjxS5ncfWxP8u4Vnd1G+pXncJwy0tJ11pQd7SsWByvHqm8La8wentx0l0
-	OgqqXMvmxFhfC+axiVJGcGXFaAf3VGU=
+	bh=BVMoZ6aYYtL9nmNsreNI0oxHDB7/XuvSnZNUNgsLjo8=;
+	b=Q2N+d5wBETO1ZIYJ5uem33XPlIuq5p4mIx+msKQvcC/NyX6dbmHq7AtGzmv5MficC1jQdo
+	thiv+7vI0kOdBZDG9XXpZ/U4WzNZsJxwlGtX4IomX7P7zrpN0WVsFPNGJRQfFN2Jd+UdRw
+	ZnygCKHAQZCzW9p2Aae8z69HwomJ1nc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aRe9D5Sa;
+	spf=pass (imf23.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768840256; a=rsa-sha256;
+	cv=none;
+	b=cgGrR8o+iTW/JV5L1vOxGMupBUk/7TzCTlNCItDN+d17IJ48Ov0kwj1m4fGlK4gK9bX1cG
+	GCvqPDmIZ/qH21OUNbeR+7ViTzZu9A9l72TV0Tl1UmqQNKgih4BhRngpUEcWqKA7Qonjfk
+	lDj1zm8AoGFvTMRpuBA+ZuRvwU55Zng=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 510FE443FC;
+	by sea.source.kernel.org (Postfix) with ESMTP id A92AD44507;
+	Mon, 19 Jan 2026 16:30:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71889C116C6;
 	Mon, 19 Jan 2026 16:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578B6C116C6;
-	Mon, 19 Jan 2026 16:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768840248;
-	bh=htvmJ8h5f0pVu8ImvWNw/JEkkap4HdmaXUH9XULOP2k=;
+	s=k20201202; t=1768840255;
+	bh=XGt/aZzfGK9zJQOZBzNGqpMmieKmh9kJIK51xGoE3lw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=kzFgWc06aZFuLVxuUIaJbuzx1Q6DRqgjKSqHMG+3rx0WNtTnTeHoViYVYtsdlbnl3
-	 lqrIDTwTxIDk6Wv7YDKzD4dGNaMQiGo21SK1N9WTrUnWHqeN1AwccSLrFYhdJKpX08
-	 ycTFaGLIqIyp+7Skq1JJqCGRfXe78rqioX1Z8udYIhDTSyBzicw+7Sa93XN89py+wv
-	 /X/U3zk+Ly9IpVN15GnuxYN6Jp73g9gDPVq1nFKVgNeYYcrr/bLecAeSadlP3TRH1h
-	 98jce/UvFQXzJKk/dBpgJh8cajRnepjcNRKEZtyncNjOfqqNcDV/9L3tiYjSoQZLKY
-	 O8avH5/3cPZJQ==
+	b=aRe9D5Sa7gMB/Ryp1GcMwBIJ0XwKuZ6UClP6Ug45QHAha8tYj9mJ1V510E+A9msBF
+	 uIhFQ4ERVA2/a/89lazW/TqRbLmJXCbnATean6EIJEuIz/669usXdDh3OAv3cCVNyN
+	 153NxFJ5bXU00TkkzzXLWoUrW/pQLk9vKivAvy3EIK99PwQxTlxQfnsqWQCzOs4xkV
+	 djsQKErslPGQtEcNguvZIqh3BSoWwOetopyqoeBHApuQa2uwYZV8JERw+NxlC0nR0n
+	 fOEHc48tTPF5j3kPLorwmV32bUWcgE0EFzjrgIlJjLHAtcT1r/8PEQ677OthtO1AHK
+	 xGnYGFr1AXgiA==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 19 Jan 2026 11:26:46 -0500
-Subject: [PATCH v2 29/31] f2fs: add EXPORT_OP_STABLE_HANDLES flag to export
- operations
+Date: Mon, 19 Jan 2026 11:26:47 -0500
+Subject: [PATCH v2 30/31] nfsd: only allow filesystems that set
+ EXPORT_OP_STABLE_HANDLES
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-exportfs-nfsd-v2-29-d93368f903bd@kernel.org>
+Message-Id: <20260119-exportfs-nfsd-v2-30-d93368f903bd@kernel.org>
 References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
 In-Reply-To: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
 To: Christian Brauner <brauner@kernel.org>, 
@@ -121,30 +121,30 @@ Cc: David Laight <david.laight.linux@gmail.com>,
  gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net, 
  linux-doc@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=728; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=htvmJ8h5f0pVu8ImvWNw/JEkkap4HdmaXUH9XULOP2k=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpbltgtBAQfQ5kS+MExK3FeETc+0guPdOqIeqKN
- mx8EKEmLxaJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaW5bYAAKCRAADmhBGVaC
- FeM9D/9txHa6W+i5xp+BRxUlC+XVX0On794rY5aGRkCAYEj9G8FgVMxYOjtDjcbiMsVdxqZ3WaU
- 8QHVYA+iGrifPnLe1QX5jrXsBmrJOvPE8aiYvQEJ7Kn84fkr501BGqfPYbivwHHqSTW4rWD7Lkv
- CXuWb1ylgYgiLxDtB6YOyjO+VM2ELqQMvKtnKAX8jvpCLPMTNo4h9Egmvceuy+jmkFCZ5S1/RzI
- h8G4P4yUVcSRQCgJBt016ZJS3dhf5ZqlmgJCLYo1Cda1nZN/4jCJwUSpVU0ndR0+wkkzxqwgZX1
- FKc4yHuYOxRorNJe24Lf3LMrClmYnfwuKEtIWQV2PBbjQUnBu28z2anYNz3decQi4GuG8viuV8a
- gOAJXMC3qfw1dABMQg+Hiyw3inAbSxviSpXAdbzB3ZpdheY+I38kS8ZGknXqhYJDMGcKBwLR0G2
- e5NM2E22TFKSYCnu0C2ApdVfQT03Xyd0gWln+3M1Nhh5tE7pk3DmbfhO5r1IhB2eUmAUTbJriOf
- cuIqSl01a9VaIzNVTTXtFLeLIgvWHCIXtobkyWBHyRb4tELIU29i1q5x1NmGttPKaZizPWjN5XU
- y7yhWnW8gdZvuhuuRR3TZCCPT88HqdkSSsjxjE7hzPD7kZmL2+zhn+pRrGWIF682VKp+NBgQsbT
- Hzi+D+FGfINt2mw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2174; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=XGt/aZzfGK9zJQOZBzNGqpMmieKmh9kJIK51xGoE3lw=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpbltg313cW2t8STVH2Q3f6eFFX8webaAfx8DOM
+ GA1WXTggo+JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaW5bYAAKCRAADmhBGVaC
+ Fd/6D/9j/oMVrJxeP2Mfuffs6X+mbihS90psuLoEJKbrjqZA7FdFGxRNUgHxspeg1JxUtDbEv7a
+ uU4kSCajVCH2iOyDZQHDvyYwkkXW1+PdbM5uKZ/7DFLmaIxhriGPZjNE6IzpuJN48O73ngtU1bb
+ P2CJLYNkWnxIJsMzVQaL4bwkbCVO8za/peoBtCgsO+8VOphfgjUEt0WDcgBxDOZdExrFOuNZlkA
+ yVOd7lxKLAhNKynWzgdAd5sKikhudMp/54M1K2PccQWIGPdcv4xFGVS3GiU/csV9NzJSKjvCtjJ
+ /K1MhVCHGVNaobSkaid3Tly/fXK4uha201p7DIspoVEewSSSXnhx5x0x3aBwwrld/gCO/BQlsYK
+ 5rZ2YOFFh/4TRhu7Gv3uRLHaXPpBIvj1iq70FX22A77FNzSrDm4qhCKISIaOPMyLDSI+t5ru9TZ
+ j58AKvcl13B3sxdRak3OQWP4MHJncRuHJGlvXrEQaBf/aD6jxo0U6J/EdF0tJYPIILxRvkYndIB
+ QsuTvSgf109v+B3Im9IKplrYJZ1er53jnSi8MzCOscRy3zHvch/igrvKIj0Mqnwjj/FRsnpuadV
+ MVNdABzxnuvzbDIRfClDT3ehoVXweeSMvlteptmwg0EHO/sEA5XJWFSZvKdtodlu7Pj5Cn4Pepu
+ OBCy4/+aVtv9EqQ==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 35FEFA0010
-X-Stat-Signature: kp7ransbarr5ye5e6b11n7wgtnjcpmoc
+X-Rspamd-Queue-Id: 75163140010
+X-Stat-Signature: njy9c95uizw533dzefdgbf5smta8kabe
 X-Rspam-User: 
-X-HE-Tag: 1768840249-789845
-X-HE-Meta: U2FsdGVkX1/xD5M+bN5V6LxyRFipz+oWC10TkJs2AeohP3mHxQY+ryuzpVWuXYWeZEYhRajTLb6LKf/ek1eVKMP5i8xkJFb34vZeX66wsw/sxjIbguT4iC1KbO562V5WqT13FGWRz4q8F4jgab57wWAAZ3dqbfyjsYILcnuSEWVH1nxS9QWmlMA8sn2Mk0MtwFP8n3PA1qd0JFXQ69druInaqzZkmBSg8gxHUKPWwz/EnHFkVJZO1ADPMiSEEiw8TB8e8zM6bZ2Xys1sDjTbkZyL8R7bfxhrQ0KB9VLaXmJkGYolyDg9Mbsqmn2uoQFLa39FZ0ME8g5muoMutKUyiRZRYaw903nLCG9+FeQu0nsulKjNVu7nAc7DfcFLHjiFZXQG5DLUEvRu4qEVZ/+jdzMZkzwxJreVmBrOrKne4PKCWkRFvDlGtGwUGlttCrJOCNEQ2+j+NrQ8Opm/Zy4/L31DQVUpmr7HkoA0MfZ4NGDnUu4hLrhr+5071m2oPa9e2Wx0jVz7Ldc8THMh6r1dC35Y9Jb5gPHVe1yFUL7gTNgvqHMzf5mdtwMGbiVJC2/AFeBkEJM6jZf6wOUrcBoYiIk5ol1lUWLWZq7wDzIDgbhtyhXqW0BMYT1kOK7liqIz4coVaBmIwEnIKLKJOWLfE5h1wro/N8KmXFuBal4fq2uaHXRyz4i6OrTT9T2yC9HKIeJ1vl8txogLe+R1Mj3gwLwHhc/det581I8Vz5rVwbAiF89nbKhxgkMEoyHlaEH7ChOkB+dzr/+d2oTTmJSFVVhqecN6Zchp47a1hZ8vsww8qa4cBdKt6uSESKPSOO5rEEykYKO/n60yifm6O1CDMDI1NMXQnA0ssQAXdSSHoARJCpO5m0sDxBenLP2zqEtkcOVGjFD2LjWZlsfkHSBnZ/mURGL5JIMypgddw0Tz/dQGZiw85R2Nqg+x3Ego0hmC5eJJCANqM6CFFTtVN2r
- PT9AXrzI
- OFQbQAK2RVN5KrPU8J2czRht1AbR1zrpwXrugHppmCODw9TT3LA8TEocnufr9OHZC9hiCEEe1boSSLUSP+ihVaAd5RohgxHZzH9oFQjTpOk3vtBtJzVuBkZ1ikTlFvVBREj3EIgOhkKWlogDv+YtTAUPKNqt4FZY64Oi2vXRkiD9B6BmTdcmYt0bpAUTMtfVsxtlld5KqpggpS72/zro3aGdcAE8gtpgc1HNNBOPObOcDUNvub9t2DfXTMv3FvNhHonQplZcZZdreOThm/KZpez6ZCMKY1oBKaUfbWMaTfuosn+MbYe98YUuVJqtPCRJlrO8n5uM8O9BvdYiMhcGke2dZtdeRWwFU0SrjGvaHA4woFOuI/A9EEjB+LFxSntAeaHk2wbRw1/cDoDXWFexFrFAJEcP0ANchxFa73awfQnK1cbw6pHPuyZ8aHvk4kMrgg/s9C9jH1Joky/KwLvwx2gunCZIAgER9j5Lwk3iTqPEUTIsslaCOPzQacqkIPSxZNfDpTq3Hk2bPSNY=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768840256-912481
+X-HE-Meta: U2FsdGVkX1/m2TOPSLpZLkQozNZ5MbKfc/F/nWAV805JQcdXktWcRfIe08malpoC2Pqa/Ru/7H21XsKfd2/+6ZSWG1pwMfH1McZckgORh6upJz0of+CMf9hF8VBxh0vNUAyl21MtzmMr2lxgHqoPdw3O2tA92e85evpOr4VIFX3CLuTUVthfx4ick+Av7wkwqVvfUq0tJYSnJU99fZnWpbLe37QqthchTBxVqVFWLdOUSUiaAxiDv64kP+EDMOgM/bxyk/xHtlZMiVf85Vj5UWkG650XqcmkZir9UnDE1uAwlTHTbhqvpbTNDUlbQigNbtBd7LDbgIIl0x1Zf9XMlomQw3Bgv+o7wIiqU8vTf7/5mtUuamNQ/pSmlwPebVFMN1oJ231B0irKu+gBWRahyTGQ1pASgIH/k662A9udLbeKC6MHMFSf+k5E+YN3IK+Uy12aTG62v6aab0hB3GkEdK9/7qIhNjjHKtUkvaOO9MYs9uXjkX3qaOLQv9+/1yjf70tiWA4LVoBpKKEcgi1ZwVRw9UgqYicpdU56pF7rBhWB2VppLP04BDBjYz1qmHcWfFpshiTw/0rxQc+9zDPJLBiF/SAFt4MMUnJltVlhFL5FkpE1a/7sjdXBkyiQKiKOQXnvPDetabSwOg7WDCnjLPeFNJV7KWzfB8BeiMvpB4Xck9Qi/B8zht/UKNKwpw8j5f8RyQTZ1cLzTj+DuFeh0KMGNA3VgDB9KaGQ5cPk4hsy+28YW3ars0XgvnRv7jud6D0JYdZNG9rK4wFKx8q7A/jtKGBLv4KMaOJHjIRvSWSbmYgPaiKSOXSgvPpHTXnYyAkEr/48hunGG/U7y7l8AZILANKh786dM6ttAdwP4QJWtlIRZz2EMAqfkrMLaZDeTtNwCXljUZU8JTMScmB2dtSOdjJJDklfu/iS499tBdiPlVg+Mm4UxPOuyq2qagUyVyiFDm2Ci1JQsesHMLx
+ jlwKq+QS
+ /BetGt0pbqGG0um/W87tAj9FPfpHVw+sDFJBKEo72MYpY9a5HONUct+V981pIFbSsYghA0HEiZuq+GbOu2zXC230zqTdD22YFsC74f7N9JNDbQUbXMuCXvMJ54rWRAnubILKoyZujbxtEcuruW9UaEzvc3UZCyp9e5WUT42jIxMxYH+cgNisLBJ9m1pCUb7hkETXsZqpPoLzdQAoQ6j4nQD3ue8j5ACMy9j4uZcYtOk3wPONsq0NI0iWPcFKAGC/npQaKnpzYiDeuKgb7jH8rAKD32ponafbYua2/GQSHXKHXL/xbqUa0utRjyHfm1yijkL9QQ4v8zbKACvBjGJjXzvNxTl4qkvnd4sWeEjLdDIB/rso=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,26 +153,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the EXPORT_OP_STABLE_HANDLES flag to f2fs export operations to indicate
-that this filesystem can be exported via NFS.
+Some filesystems have grown export operations in order to provide
+filehandles for local usage. Some of these filesystems are unsuitable
+for use with nfsd, since their filehandles are not stable across
+reboots.
+
+In check_export(), check whether EXPORT_OP_STABLE_HANDLES is set
+and return -EINVAL if it isn't.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/f2fs/super.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/export.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index c4c225e09dc4701f009dec4338f2eaba1820ea7d..260c26771c431bbb36e99be8daff6cde40662751 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -3750,6 +3750,7 @@ static const struct export_operations f2fs_export_ops = {
- 	.fh_to_dentry = f2fs_fh_to_dentry,
- 	.fh_to_parent = f2fs_fh_to_parent,
- 	.get_parent = f2fs_get_parent,
-+	.flags = EXPORT_OP_STABLE_HANDLES,
- };
+diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
+index 2a1499f2ad196a6033787260881e451146283bdc..bc703cf58bfa210c7c57d49f22f15bc10d7cfc91 100644
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -422,13 +422,15 @@ static int check_export(const struct path *path, int *flags, unsigned char *uuid
+ 	if (*flags & NFSEXP_V4ROOT)
+ 		*flags |= NFSEXP_READONLY;
  
- loff_t max_file_blocks(struct inode *inode)
+-	/* There are two requirements on a filesystem to be exportable.
+-	 * 1:  We must be able to identify the filesystem from a number.
++	/* There are four requirements on a filesystem to be exportable:
++	 * 1: We must be able to identify the filesystem from a number.
+ 	 *       either a device number (so FS_REQUIRES_DEV needed)
+ 	 *       or an FSID number (so NFSEXP_FSID or ->uuid is needed).
+-	 * 2:  We must be able to find an inode from a filehandle.
++	 * 2: We must be able to find an inode from a filehandle.
+ 	 *       This means that s_export_op must be set.
+-	 * 3: We must not currently be on an idmapped mount.
++	 * 3: It must provide stable filehandles.
++	 *       This means that EXPORT_OP_STABLE_HANDLES is set
++	 * 4: We must not currently be on an idmapped mount.
+ 	 */
+ 	if (!(inode->i_sb->s_type->fs_flags & FS_REQUIRES_DEV) &&
+ 	    !(*flags & NFSEXP_FSID) &&
+@@ -442,6 +444,11 @@ static int check_export(const struct path *path, int *flags, unsigned char *uuid
+ 		return -EINVAL;
+ 	}
+ 
++	if (!(inode->i_sb->s_export_op->flags & EXPORT_OP_STABLE_HANDLES)) {
++		dprintk("%s: fs does not provide stable filehandles!\n", __func__);
++		return -EINVAL;
++	}
++
+ 	if (is_idmapped_mnt(path->mnt)) {
+ 		dprintk("exp_export: export of idmapped mounts not yet supported.\n");
+ 		return -EINVAL;
 
 -- 
 2.52.0
