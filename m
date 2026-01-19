@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B996CCF2D4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 09:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BBE1CCF2D4
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 09:47:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 024EF6B0153; Mon, 19 Jan 2026 04:47:50 -0500 (EST)
+	id 926126B0156; Mon, 19 Jan 2026 04:47:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F27A76B0155; Mon, 19 Jan 2026 04:47:49 -0500 (EST)
+	id 8DD036B0158; Mon, 19 Jan 2026 04:47:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2AEA6B0156; Mon, 19 Jan 2026 04:47:49 -0500 (EST)
+	id 7CB9A6B0159; Mon, 19 Jan 2026 04:47:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEC316B0153
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:47:49 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8FB011406C1
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:47:49 +0000 (UTC)
-X-FDA: 84348236658.16.484300F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 66B476B0156
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:47:55 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 076D9D2219
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:47:55 +0000 (UTC)
+X-FDA: 84348236910.22.15CA681
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7ECEB1C0007
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:47:47 +0000 (UTC)
+	by imf20.hostedemail.com (Postfix) with ESMTP id C215B1C0004
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:47:52 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IABjzrfW;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hVR1qlsM;
 	dmarc=pass (policy=none) header.from=intel.com;
 	spf=pass (imf20.hostedemail.com: domain of zhiguo.zhou@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=zhiguo.zhou@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768816067; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768816073; a=rsa-sha256;
 	cv=none;
-	b=sg3DeR9a8WQVtNvcf4F/yV3gpjos1ty/sZ7+Nr+TpYOuKgX7E5OKq98NCx79Iq8akXepAC
-	llsEdks4qA7H0W5Mjmi4B3KicHdE5yL9zJ2fnr4VcODNzHi3ri+PLB8GR/l+RIDfaSoNUh
-	/oLhc71qORfTpGCQz1BwWf+eDPHYxR0=
+	b=NvKmZ+Gt+JJhA7Eoi2eVjtmcMuEBHh9fZCZSLYGZX8gDpqO6ZlzcxyEbGtTucGqdKzOFsm
+	zgmG6tpYvXFik7HGuoBrr2G6v3N7PpuYGlJtNLelgQCmPq6cDMMqeT15TRsv13yNbuqY5j
+	O4TWb9NL0rdN4JUoqvpEXWIMR+wOpCk=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IABjzrfW;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hVR1qlsM;
 	dmarc=pass (policy=none) header.from=intel.com;
 	spf=pass (imf20.hostedemail.com: domain of zhiguo.zhou@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=zhiguo.zhou@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768816067;
+	s=arc-20220608; t=1768816073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UN1rg494mI45c6kQQcj9UleLakcWwMl6yCXelDwaAdU=;
-	b=Deed2YlU+e/XP/jSpbawtFvstqdkEprUpoi14o8uiYfpRzwx+4c1Bx48g6HJTf9xyKbpuo
-	236lzkp3Pt+ReUDZpAbnNmqJVyJP/XlgDYv5Xf8SGjDDCTfpqMw80CrYgwVPr36DknshbY
-	N+orDNBNZcDr+cOGuqHqmOGYj6VDgOI=
+	bh=Bn9MgIzVMcRdd2+usqCf00V1IH4szaxcWKeVmYy2zsw=;
+	b=TBwfgSBae7o1aenr6EnafXNQ4Zd2pVsqfQpxRnNl13wRn8mOHyiP11kxJwpnkVN7puti0i
+	F5nJnIL6ufO8hCsVyRkGJdLioKJIqn8r8Pxx4WRSknBZl/kMs1vZap+R+NufeAoZJkS4Rm
+	Q4kRuxz5/lbtVEt7ZrcVBMdo7BhIiXY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768816067; x=1800352067;
+  t=1768816073; x=1800352073;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=a0Al5CERHesex5OnDU/mFgjB0imIpfWAbjXXoirBqMA=;
-  b=IABjzrfW6kvYg6ku1IJB03G+1sHCoRZGa3ts8uocA1WGEazCO0j5Gf3H
-   PMbgUSeuObu6ITuWwjBytDaNqwpnKNBeQRM0JvnVkon8CSZSaN/uy64iW
-   EMZ+htHQorws2h+wjX3ubxIrbEPjallteT3Y+a/7ejW36/h35pBYonWMG
-   YP61WUbaKSEawsbKp6vJJzq2JeIKQLS5NMWsREmXLEKAm7ePatEc3ibc9
-   W+5020108PvTfZ8dbRZxgLpWZ9XCpu0v+7bCcPP6CHBo2jTZ3ZCo4c/GO
-   W99c7LvIRpvDAK4F4T3W8wQQKlLhX7HUAfytKyoliPax5ZktPO/26Ejp8
-   Q==;
-X-CSE-ConnectionGUID: lWYNbFC8Sxa00ZjJa3PB2g==
-X-CSE-MsgGUID: 32RmfQbVSW6Hg/4xl6uVuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="70072781"
+  bh=b3r/id//jk8ltKEIWz6hSP24Dq486+R2QT2UaseG5TI=;
+  b=hVR1qlsMQ65woAO48kyjmcWp0rUNhUGTM31G8ckM1Px2eaaA5Ogs4dq3
+   HLwyrjZtVm0JFulFXMZGcTlW2WIl/eO6ZpwQpntE9jNUZH9ExyAHvJiTg
+   Ho6hn8f5bOKLgefkhUk0+GF0mdPTCugyrwJ4tsGTnoY31OUn6+Gq+2RfE
+   iTRrlW6V2pHRkOJE0RIHv/qXq182VQvK3S5F6FWaf4AG0SA5kKbBRJbuN
+   P93tsUrZ37Uq22rCl2hbbw/x1K7IEXI2QV1tewoqB6+3VgH1BSGz0bF98
+   2ws6d2jtWQnCPiFT30KEHAUq2bPsbon1PQVCUzCeKOolE8FFrzvi9ymes
+   A==;
+X-CSE-ConnectionGUID: XVSfDpwBSk6oxtKwkENZYA==
+X-CSE-MsgGUID: HWvyLie9SRCcCH+rOuBk8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="70072796"
 X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
-   d="scan'208";a="70072781"
+   d="scan'208";a="70072796"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 01:47:46 -0800
-X-CSE-ConnectionGUID: 6aXQEcGhRmy+JbFXrx8nhw==
-X-CSE-MsgGUID: nymuz5LfRnqIFB/O46hTdg==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 01:47:52 -0800
+X-CSE-ConnectionGUID: 9zqhHE0HQEu1mtMfdLQmLg==
+X-CSE-MsgGUID: wcPA6tfrTFuS08VmgJBTug==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
-   d="scan'208";a="204971983"
+   d="scan'208";a="204971995"
 Received: from linux-pnp-server-15.sh.intel.com ([10.239.177.153])
-  by orviesa006.jf.intel.com with ESMTP; 19 Jan 2026 01:47:42 -0800
+  by orviesa006.jf.intel.com with ESMTP; 19 Jan 2026 01:47:49 -0800
 From: Zhiguo Zhou <zhiguo.zhou@intel.com>
 To: zhiguo.zhou@intel.com
 Cc: Liam.Howlett@oracle.com,
@@ -94,9 +94,9 @@ Cc: Liam.Howlett@oracle.com,
 	tim.c.chen@linux.intel.com,
 	vbabka@suse.cz,
 	willy@infradead.org
-Subject: [PATCH v2 1/2] mm/filemap: refactor __filemap_add_folio to separate critical section
-Date: Mon, 19 Jan 2026 18:02:58 +0800
-Message-ID: <20260119100301.922922-2-zhiguo.zhou@intel.com>
+Subject: [PATCH v2 2/2] mm/readahead: batch folio insertion to improve performance
+Date: Mon, 19 Jan 2026 18:02:59 +0800
+Message-ID: <20260119100301.922922-3-zhiguo.zhou@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260119100301.922922-1-zhiguo.zhou@intel.com>
 References: <20260119065027.918085-1-zhiguo.zhou@intel.com>
@@ -104,13 +104,13 @@ References: <20260119065027.918085-1-zhiguo.zhou@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: it1hesg1h4dqbrsryufkx8jf4aqtyw3s
+X-Stat-Signature: dpinc9dozhs98pxxtj68189yoixiesyp
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7ECEB1C0007
-X-HE-Tag: 1768816067-303490
-X-HE-Meta: U2FsdGVkX19QF0eY8kpKNI9mxi4JB7+oi3OtOL2CBFpgK0wZz4U5D44bPD1y+Pyq1igg24isTUXLSxMtMjcx6BCMZXgqVjltk26y1mbcdcrtHUAggzO3rN1wi7VkIzE+Od/O7TuS53nwVs2hFx/Iams8HDua/NUJWGShj7RUQ5Jby6TnqynbRFr8cQdaO0xwJLPh0URQm8c1EtjyRforT89NCjP16Vy/tDVbQwnFawMKp0rB721+Bk9F4xvcJYV6zTH4ISnP6FQYJifbFppqO2AMFypRlWCXOPhksSwGN3o5kcR1NT8uHyzy+oUOJeKX+O6Stdk3ORPAVcyXJtjFRecqbQApnEyE3c/qasFpfwfZGaU+EbEuwqgVtE/t7qqL7uw8cgjksu6a29SYAzx+oKZKiYXUy/EuvJq/iccYKYgV5T3qlXdVM3Wnvkg2hC/YCVg28m01R2vWC1Udf9S2oCNsFlI/XtR/PNd7G7A0dHEMA1y772tJWRZiVY13EVUus0zQLMVu5mbDgHHDaxnsd1ubAGnvdGdsgsugwcwE7kBsDMDLH05bJj0iQTM+F76QYAIIWT/zvknGXfpUF/WMVMF74M1KmsJzA/NPA+smstbEwnSBsnvWavPLhSd2bH7bG33vp3Utm4KzDXCjkl5xAnPWhP0Uq5K+B4hV/BuTleUz8NjD0lVVHDcW6kkqylGTG7MDQaAXUb3dLpL+pwB6c7Dref54BIkAapDDcwq9lauiTuR6pafAhG7ZacYxu9MMmpw3gEDbKBpFfuIvwB/wjLc46ldMSnS+s0EbU7QFp9xqEXsJ0OhSVPHa4fj4QE1PXIKFrvg9fl1eOjSPJMrSTZfaWgBmC5iI2O1QwsXcIV8ttpvmoa3VlB+JGr9KYJEqbuDCEJzI8O08SfZd6J7JnLTZR8fa0wXJw0PZhgBkLnEv7NSRpXcwDgi07LoyZZGLWc83Z99HsgzQq1qmxbK
- w9EiYg1y
- N/q6HH3MKvCKAvxva2Ybxcwmjd1lR+8N4lV27UiAL7voFvHNWyzQGu0vv2YRPDOp7gbXbUpuYXTH/Glq/PVdoc0VoFN2KR9DGDpUB/7bNrMM6UOJ6T1W/iG+7rrnONWz/fiRghOvWSs6Npnt+SLuOkUY4M5E9VB1fYjIaQa2iz3scP4Qcy8YxPQuDr3HGseFyPe6cFwTwJEnUJ6hP0wgMRJ/s6lAfhqwacFWt
+X-Rspamd-Queue-Id: C215B1C0004
+X-HE-Tag: 1768816072-832155
+X-HE-Meta: U2FsdGVkX18r4B6dhfxtmAwSBPlwj8AxxTT+PWe/PgxtX9duz79rYzPtF3PR/KFUotlbGCWZmSYsEwRoqjQIiLsRUAyZIXIvvrK6GfcfEQ9n8gtp5Mw7+tQJDLPc7kLJ+CBYuPeo0TzBfDzYA5jyD/8tZauwvrtGnmsihGWWbF9LjhItGtUJ7O8CDlchxBTVA7hf7sjmtjFFIquOWXbFymosN/AXVDdTYuTJQl1ChtUrQkWfQUxMUJPcSDUAZ+KhEM/jCXk81Q1IXfAt0FR6nRZjyaI8rsazC1OZQcFO9BBRfEiKKxDjjv2IvWyL9E0nYyTdYkFFpwzBWr5IJD+I0z29NaV8Q+xHSnkDwxIIrusHQjv0dJoLKKU10G+4GrQCtdd2tMIQ+vK8uiCbXcdkoaEIHfngKDTRmorsXW0g5jDwgV1T3nkzyCNEr7Ps5ScgCu0iMC4r9oXX1obtGsM+odn/A2FifTtmm59VNOFSYCJ+V4OzYdtMe5IGtXUHnsf1xUWWaRCC3Pawiy/gzFm/UhKfSb/WRtxZF5PVXBNd9KrzwXgU3GKE4uODzPj4V0RmosmdRNw75sohrwOvAZqpxIW1V/ce6pS3Z+ae4EVESsmugSl/KEg77JeLgzaW53FpC49PknpRMFQ4JmblO9Wk1+bbp9hDu05P9Cw+M/3KEhbqo6qjxII6+dT93X2ZIKI27+Lk4wbc6DDwtZeBfsr0Sl9MEfZ/Evz3rlltQHhG4PlHLYuLomziuT89LYkPiFTcGVIS+oJBEjXYbF2adZgzWS7LwijeT/gtubyiGPkyX0j63qOaLbvTV2rneWkY0tBGXonHFTg7kA3mEGKRRjUIFP7cZIhvQvIGXKn6e64b3/8XALEnPwYoizqZrkvh9/zAq8Ax5MZL50gOCUuhJtimB4JbpvUZwl0003OHSwm/Ma7OxbkHdIk4GHSfcge8gI0xFdmDyPGUI4QMOhZD8mB
+ 4v8PMHIz
+ ghGCkiamx9cYT0Q/Jz+H0JrUsIk3xg3653/NMTQRU9uCmwkdAPbgM7bysnlFoPf/pwpiGuA+1VyOUhZIbjpJoQt+fIaRNWrYIbjqB40rtbYFtkUzLwv78C6uSuSoZpNCdsZ209PAa6Q8oJCyTG5g6cpENM+TeK0vRimIwyPYF3mTExV98F2V9VE+/oQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,303 +119,369 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch refactors __filemap_add_folio() to extract its core
-critical section logic into a new helper function,
-__filemap_add_folio_xa_locked(). The refactoring maintains the
-existing functionality while enabling finer control over locking
-granularity for callers.
+When `readahead` syscall is invocated, `page_cache_ra_unbounded` would
+insert folios into the page cache (`xarray`) individually. The `xa_lock`
+protected critical section could be scheduled across different cores,
+the cost of cacheline transfer together with lock contention may
+contribute significant part of execution time.
 
-Key changes:
-- Move the xarray insertion logic from __filemap_add_folio() into
-  __filemap_add_folio_xa_locked()
-- Modify __filemap_add_folio() to accept a pre-initialized xa_state
-  and a 'xa_locked' parameter
-- Update the function signature in the header file accordingly
-- Adjust existing callers (filemap_add_folio() and
-  hugetlb_add_to_page_cache()) to use the new interface
+To optimize the performance of `readahead`, the folio insertions are
+batched into a single critical section. This patch introduces
+`filemap_add_folio_range()`, which allows inserting an array of folios
+into a contiguous range of `xarray` while holding the lock only once.
+`page_cache_ra_unbounded` is updated to pre-allocate folios
+and use this new batching interface while keeping the original approach
+when memory is under pressure.
 
-The refactoring is functionally equivalent to the previous code:
-- When 'xa_locked' is false, __filemap_add_folio() acquires the xarray
-  lock internally (existing behavior)
-- When 'xa_locked' is true, the caller is responsible for holding the
-  xarray lock, and __filemap_add_folio() only executes the critical
-  section
+The performance of RocksDB's `db_bench` for the `readseq` subcase [1]
+was tested on a 32-vCPU instance [2], and the results show:
+- Profiling shows the IPC of `page_cache_ra_unbounded` (excluding
+  `raw_spin_lock_irq` overhead) improved by 2.18x.
+- Throughput (ops/sec) improved by 1.51x.
+- Latency reduced significantly: P50 by 63.9%, P75 by 42.1%, P99 by
+31.4%.
 
-This separation prepares for the subsequent patch that introduces
-batch folio insertion, where multiple folios can be added to the
-page cache within a single lock hold.
++------------+------------------+-----------------+-----------+
+| Percentile | Latency (before) | Latency (after) | Reduction |
++------------+------------------+-----------------+-----------+
+| P50        | 6.15 usec        | 2.22 usec       | 63.92%    |
+| P75        | 13.38 usec       | 7.75 usec       | 42.09%    |
+| P99        | 507.95 usec      | 348.54 usec     | 31.38%    |
++------------+------------------+-----------------+-----------+
 
-No performance changes are expected from this patch alone, as it
-only reorganizes code without altering the execution flow.
+[1] Command to launch the test
+./db_bench --benchmarks=readseq,stats --use_existing_db=1
+--num_multi_db=32 --threads=32 --num=1600000 --value_size=8192
+--cache_size=16GB
+
+[2] Hardware: Intel Ice Lake server
+    Kernel  : v6.19-rc5
+    Memory  : 256GB
 
 Reported-by: Gang Deng <gang.deng@intel.com>
 Reviewed-by: Tianyou Li <tianyou.li@intel.com>
 Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
 Signed-off-by: Zhiguo Zhou <zhiguo.zhou@intel.com>
 ---
- include/linux/pagemap.h |   2 +-
- mm/filemap.c            | 173 +++++++++++++++++++++++-----------------
- mm/hugetlb.c            |   3 +-
- 3 files changed, 103 insertions(+), 75 deletions(-)
+ include/linux/pagemap.h |   2 +
+ mm/filemap.c            |  65 +++++++++++++
+ mm/readahead.c          | 196 +++++++++++++++++++++++++++++++---------
+ 3 files changed, 222 insertions(+), 41 deletions(-)
 
 diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 31a848485ad9..59cbf57fb55b 100644
+index 59cbf57fb55b..62cb90471372 100644
 --- a/include/linux/pagemap.h
 +++ b/include/linux/pagemap.h
-@@ -1297,7 +1297,7 @@ loff_t mapping_seek_hole_data(struct address_space *, loff_t start, loff_t end,
- 
- /* Must be non-static for BPF error injection */
- int __filemap_add_folio(struct address_space *mapping, struct folio *folio,
--		pgoff_t index, gfp_t gfp, void **shadowp);
-+		struct xa_state *xas, gfp_t gfp, void **shadowp, bool xa_locked);
- 
- bool filemap_range_has_writeback(struct address_space *mapping,
- 				 loff_t start_byte, loff_t end_byte);
+@@ -1286,6 +1286,8 @@ int add_to_page_cache_lru(struct page *page, struct address_space *mapping,
+ 		pgoff_t index, gfp_t gfp);
+ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
+ 		pgoff_t index, gfp_t gfp);
++long filemap_add_folio_range(struct address_space *mapping, struct folio **folios,
++		pgoff_t start, pgoff_t end, gfp_t gfp);
+ void filemap_remove_folio(struct folio *folio);
+ void __filemap_remove_folio(struct folio *folio, void *shadow);
+ void replace_page_cache_folio(struct folio *old, struct folio *new);
 diff --git a/mm/filemap.c b/mm/filemap.c
-index ebd75684cb0a..c4c6cd428b8d 100644
+index c4c6cd428b8d..f8893c31dba1 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -845,95 +845,114 @@ void replace_page_cache_folio(struct folio *old, struct folio *new)
+@@ -1016,6 +1016,71 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
  }
- EXPORT_SYMBOL_GPL(replace_page_cache_folio);
- 
--noinline int __filemap_add_folio(struct address_space *mapping,
--		struct folio *folio, pgoff_t index, gfp_t gfp, void **shadowp)
-+/*
-+ * The critical section for storing a folio in an XArray.
-+ * Context: Expects xas->xa->xa_lock to be held.
-+ */
-+static void __filemap_add_folio_xa_locked(struct xa_state *xas,
-+		struct address_space *mapping, struct folio *folio, void **shadowp)
- {
--	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
- 	bool huge;
- 	long nr;
- 	unsigned int forder = folio_order(folio);
-+	int order = -1;
-+	void *entry, *old = NULL;
- 
--	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
--	VM_BUG_ON_FOLIO(folio_test_swapbacked(folio), folio);
--	VM_BUG_ON_FOLIO(folio_order(folio) < mapping_min_folio_order(mapping),
--			folio);
--	mapping_set_update(&xas, mapping);
-+	lockdep_assert_held(&xas->xa->xa_lock);
- 
--	VM_BUG_ON_FOLIO(index & (folio_nr_pages(folio) - 1), folio);
- 	huge = folio_test_hugetlb(folio);
- 	nr = folio_nr_pages(folio);
- 
--	gfp &= GFP_RECLAIM_MASK;
--	folio_ref_add(folio, nr);
--	folio->mapping = mapping;
--	folio->index = xas.xa_index;
--
--	for (;;) {
--		int order = -1;
--		void *entry, *old = NULL;
--
--		xas_lock_irq(&xas);
--		xas_for_each_conflict(&xas, entry) {
--			old = entry;
--			if (!xa_is_value(entry)) {
--				xas_set_err(&xas, -EEXIST);
--				goto unlock;
--			}
--			/*
--			 * If a larger entry exists,
--			 * it will be the first and only entry iterated.
--			 */
--			if (order == -1)
--				order = xas_get_order(&xas);
-+	xas_for_each_conflict(xas, entry) {
-+		old = entry;
-+		if (!xa_is_value(entry)) {
-+			xas_set_err(xas, -EEXIST);
-+			return;
- 		}
-+		/*
-+		 * If a larger entry exists,
-+		 * it will be the first and only entry iterated.
-+		 */
-+		if (order == -1)
-+			order = xas_get_order(xas);
-+	}
- 
--		if (old) {
--			if (order > 0 && order > forder) {
--				unsigned int split_order = max(forder,
--						xas_try_split_min_order(order));
--
--				/* How to handle large swap entries? */
--				BUG_ON(shmem_mapping(mapping));
--
--				while (order > forder) {
--					xas_set_order(&xas, index, split_order);
--					xas_try_split(&xas, old, order);
--					if (xas_error(&xas))
--						goto unlock;
--					order = split_order;
--					split_order =
--						max(xas_try_split_min_order(
--							    split_order),
--						    forder);
--				}
--				xas_reset(&xas);
-+	if (old) {
-+		if (order > 0 && order > forder) {
-+			unsigned int split_order = max(forder,
-+					xas_try_split_min_order(order));
-+
-+			/* How to handle large swap entries? */
-+			BUG_ON(shmem_mapping(mapping));
-+
-+			while (order > forder) {
-+				xas_set_order(xas, xas->xa_index, split_order);
-+				xas_try_split(xas, old, order);
-+				if (xas_error(xas))
-+					return;
-+				order = split_order;
-+				split_order =
-+					max(xas_try_split_min_order(
-+						    split_order),
-+					    forder);
- 			}
--			if (shadowp)
--				*shadowp = old;
-+			xas_reset(xas);
- 		}
-+		if (shadowp)
-+			*shadowp = old;
-+	}
- 
--		xas_store(&xas, folio);
--		if (xas_error(&xas))
--			goto unlock;
-+	xas_store(xas, folio);
-+	if (xas_error(xas))
-+		return;
- 
--		mapping->nrpages += nr;
-+	mapping->nrpages += nr;
- 
--		/* hugetlb pages do not participate in page cache accounting */
--		if (!huge) {
--			lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
--			if (folio_test_pmd_mappable(folio))
--				lruvec_stat_mod_folio(folio,
--						NR_FILE_THPS, nr);
--		}
-+	/* hugetlb pages do not participate in page cache accounting */
-+	if (!huge) {
-+		lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
-+		if (folio_test_pmd_mappable(folio))
-+			lruvec_stat_mod_folio(folio,
-+					NR_FILE_THPS, nr);
-+	}
-+}
- 
--unlock:
--		xas_unlock_irq(&xas);
-+noinline int __filemap_add_folio(struct address_space *mapping,
-+				 struct folio *folio, struct xa_state *xas,
-+				 gfp_t gfp, void **shadowp, bool xa_locked)
-+{
-+	long nr;
- 
--		if (!xas_nomem(&xas, gfp))
--			break;
-+	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-+	VM_BUG_ON_FOLIO(folio_test_swapbacked(folio), folio);
-+	VM_BUG_ON_FOLIO(folio_order(folio) < mapping_min_folio_order(mapping),
-+			folio);
-+	mapping_set_update(xas, mapping);
-+
-+	VM_BUG_ON_FOLIO(xas->xa_index & (folio_nr_pages(folio) - 1), folio);
-+	nr = folio_nr_pages(folio);
-+
-+	gfp &= GFP_RECLAIM_MASK;
-+	folio_ref_add(folio, nr);
-+	folio->mapping = mapping;
-+	folio->index = xas->xa_index;
-+
-+	if (xa_locked) {
-+		lockdep_assert_held(&xas->xa->xa_lock);
-+		__filemap_add_folio_xa_locked(xas, mapping, folio, shadowp);
-+	} else {
-+		lockdep_assert_not_held(&xas->xa->xa_lock);
-+		for (;;) {
-+			xas_lock_irq(xas);
-+			__filemap_add_folio_xa_locked(xas, mapping, folio, shadowp);
-+			xas_unlock_irq(xas);
-+
-+			if (!xas_nomem(xas, gfp))
-+				break;
-+		}
- 	}
- 
--	if (xas_error(&xas))
-+	if (xas_error(xas))
- 		goto error;
- 
- 	trace_mm_filemap_add_to_page_cache(folio);
-@@ -942,12 +961,12 @@ noinline int __filemap_add_folio(struct address_space *mapping,
- 	folio->mapping = NULL;
- 	/* Leave folio->index set: truncation relies upon it */
- 	folio_put_refs(folio, nr);
--	return xas_error(&xas);
-+	return xas_error(xas);
- }
- ALLOW_ERROR_INJECTION(__filemap_add_folio, ERRNO);
- 
--int filemap_add_folio(struct address_space *mapping, struct folio *folio,
--				pgoff_t index, gfp_t gfp)
-+static int _filemap_add_folio(struct address_space *mapping, struct folio *folio,
-+				struct xa_state *xas, gfp_t gfp, bool xa_locked)
- {
- 	void *shadow = NULL;
- 	int ret;
-@@ -963,7 +982,7 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
- 		return ret;
- 
- 	__folio_set_locked(folio);
--	ret = __filemap_add_folio(mapping, folio, index, gfp, &shadow);
-+	ret = __filemap_add_folio(mapping, folio, xas, gfp, &shadow, xa_locked);
- 	if (unlikely(ret)) {
- 		mem_cgroup_uncharge(folio);
- 		__folio_clear_locked(folio);
-@@ -987,6 +1006,14 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
- 	}
- 	return ret;
- }
-+
-+int filemap_add_folio(struct address_space *mapping, struct folio *folio,
-+				pgoff_t index, gfp_t gfp)
-+{
-+	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
-+
-+	return _filemap_add_folio(mapping, folio, &xas, gfp, false);
-+}
  EXPORT_SYMBOL_GPL(filemap_add_folio);
  
++/**
++ * filemap_add_folio_range - add folios to the page range [start, end) of filemap.
++ * @mapping:	The address space structure to add folios to.
++ * @folios:	The array of folios to add to page cache.
++ * @start:	The starting page cache index.
++ * @end:	The ending page cache index (exclusive).
++ * @gfp:	The memory allocator flags to use.
++ *
++ * This function adds folios to mapping->i_pages with contiguous indices.
++ *
++ * If an entry for an index in the range [start, end) already exists, a folio is
++ * invalid, or _filemap_add_folio fails, this function aborts. All folios up
++ * to the point of failure will have been inserted, the rest are left uninserted.
++ *
++ * Return: If the pages are partially or fully added to the page cache, the number
++ * of pages (instead of folios) is returned. Elsewise, if no pages are inserted,
++ * the error number is returned.
++ */
++long filemap_add_folio_range(struct address_space *mapping, struct folio **folios,
++			     pgoff_t start, pgoff_t end, gfp_t gfp)
++{
++	int ret;
++	XA_STATE_ORDER(xas, &mapping->i_pages, start, mapping_min_folio_order(mapping));
++	unsigned long min_nrpages = mapping_min_folio_nrpages(mapping);
++
++	do {
++		xas_lock_irq(&xas);
++
++		while (xas.xa_index < end) {
++			unsigned long index = (xas.xa_index - start) / min_nrpages;
++			struct folio *folio;
++
++			folio = xas_load(&xas);
++			if (folio && !xa_is_value(folio)) {
++				ret = -EEXIST;
++				break;
++			}
++
++			folio = folios[index];
++			if (!folio) {
++				ret = -EINVAL;
++				break;
++			}
++
++			ret = _filemap_add_folio(mapping, folio, &xas, gfp, true);
++
++			if (unlikely(ret))
++				break;
++
++			/*
++			 * On successful insertion, the folio's array entry is set to NULL.
++			 * The caller is responsible for reclaiming any uninserted folios.
++			 */
++			folios[index] = NULL;
++			for (unsigned int i = 0; i < min_nrpages; i++)
++				xas_next(&xas);
++		}
++
++		xas_unlock_irq(&xas);
++	} while (xas_nomem(&xas, gfp & GFP_RECLAIM_MASK));
++
++	return xas.xa_index > start ? (long) xas.xa_index - start : ret;
++}
++EXPORT_SYMBOL_GPL(filemap_add_folio_range);
++
  #ifdef CONFIG_NUMA
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 51273baec9e5..5c6c6b9e463f 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5657,10 +5657,11 @@ int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping
- 	struct inode *inode = mapping->host;
- 	struct hstate *h = hstate_inode(inode);
- 	int err;
-+	XA_STATE_ORDER(xas, &mapping->i_pages, idx, folio_order(folio));
+ struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
+ 		struct mempolicy *policy)
+diff --git a/mm/readahead.c b/mm/readahead.c
+index b415c9969176..4fe87b467d61 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -193,6 +193,149 @@ static struct folio *ractl_alloc_folio(struct readahead_control *ractl,
+ 	return folio;
+ }
  
- 	idx <<= huge_page_order(h);
- 	__folio_set_locked(folio);
--	err = __filemap_add_folio(mapping, folio, idx, GFP_KERNEL, NULL);
-+	err = __filemap_add_folio(mapping, folio, &xas, GFP_KERNEL, NULL, false);
++static void ractl_free_folios(struct folio **folios, unsigned long folio_count)
++{
++	unsigned long i;
++
++	if (!folios)
++		return;
++
++	for (i = 0; i < folio_count; ++i) {
++		if (folios[i])
++			folio_put(folios[i]);
++	}
++	kvfree(folios);
++}
++
++static struct folio **ractl_alloc_folios(struct readahead_control *ractl,
++					 gfp_t gfp_mask, unsigned int order,
++					 unsigned long folio_count)
++{
++	struct folio **folios;
++	unsigned long i;
++
++	folios = kvcalloc(folio_count, sizeof(struct folio *), GFP_KERNEL);
++
++	if (!folios)
++		return NULL;
++
++	for (i = 0; i < folio_count; ++i) {
++		struct folio *folio = ractl_alloc_folio(ractl, gfp_mask, order);
++
++		if (!folio)
++			break;
++		folios[i] = folio;
++	}
++
++	if (i != folio_count) {
++		ractl_free_folios(folios, i);
++		i = 0;
++		folios = NULL;
++	}
++
++	return folios;
++}
++
++static void ra_fill_folios_batched(struct readahead_control *ractl,
++				   struct folio **folios, unsigned long nr_to_read,
++				   unsigned long start_index, unsigned long mark,
++				   gfp_t gfp_mask)
++{
++	struct address_space *mapping = ractl->mapping;
++	unsigned int min_nrpages = mapping_min_folio_nrpages(mapping);
++	unsigned long added_folios = 0;
++	unsigned long i = 0;
++
++	while (i < nr_to_read) {
++		long ret;
++		unsigned long added_nrpages;
++
++		ret = filemap_add_folio_range(mapping, folios + added_folios,
++					      start_index + i,
++					      start_index + nr_to_read,
++					      gfp_mask);
++
++		if (unlikely(ret < 0)) {
++			if (ret == -ENOMEM)
++				break;
++			read_pages(ractl);
++			ractl->_index += min_nrpages;
++			i = ractl->_index + ractl->_nr_pages - start_index;
++			continue;
++		}
++
++		if (unlikely(ret == 0))
++			break;
++
++		added_nrpages = ret;
++		/*
++		 * `added_nrpages` is multiple of min_nrpages.
++		 */
++		added_folios += added_nrpages / min_nrpages;
++
++		if (i <= mark && mark < i + added_nrpages)
++			folio_set_readahead(xa_load(&mapping->i_pages,
++						    start_index + mark));
++		for (unsigned long j = i; j < i + added_nrpages; j += min_nrpages)
++			ractl->_workingset |= folio_test_workingset(xa_load(&mapping->i_pages,
++									    start_index + j));
++		ractl->_nr_pages += added_nrpages;
++
++		i += added_nrpages;
++	}
++}
++
++static void ra_fill_folios_single(struct readahead_control *ractl,
++				  unsigned long nr_to_read,
++				  unsigned long start_index, unsigned long mark,
++				  gfp_t gfp_mask)
++{
++	struct address_space *mapping = ractl->mapping;
++	unsigned int min_nrpages = mapping_min_folio_nrpages(mapping);
++	unsigned long i = 0;
++
++	while (i < nr_to_read) {
++		struct folio *folio = xa_load(&mapping->i_pages, start_index + i);
++		int ret;
++
++		if (folio && !xa_is_value(folio)) {
++			/*
++			 * Page already present?  Kick off the current batch
++			 * of contiguous pages before continuing with the
++			 * next batch.  This page may be the one we would
++			 * have intended to mark as Readahead, but we don't
++			 * have a stable reference to this page, and it's
++			 * not worth getting one just for that.
++			 */
++			read_pages(ractl);
++			ractl->_index += min_nrpages;
++			i = ractl->_index + ractl->_nr_pages - start_index;
++			continue;
++		}
++
++		folio = ractl_alloc_folio(ractl, gfp_mask,
++					  mapping_min_folio_order(mapping));
++		if (!folio)
++			break;
++
++		ret = filemap_add_folio(mapping, folio, start_index + i, gfp_mask);
++		if (ret < 0) {
++			folio_put(folio);
++			if (ret == -ENOMEM)
++				break;
++			read_pages(ractl);
++			ractl->_index += min_nrpages;
++			i = ractl->_index + ractl->_nr_pages - start_index;
++			continue;
++		}
++		if (i == mark)
++			folio_set_readahead(folio);
++		ractl->_workingset |= folio_test_workingset(folio);
++		ractl->_nr_pages += min_nrpages;
++		i += min_nrpages;
++	}
++}
++
+ /**
+  * page_cache_ra_unbounded - Start unchecked readahead.
+  * @ractl: Readahead control.
+@@ -213,8 +356,10 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 	struct address_space *mapping = ractl->mapping;
+ 	unsigned long index = readahead_index(ractl);
+ 	gfp_t gfp_mask = readahead_gfp_mask(mapping);
+-	unsigned long mark = ULONG_MAX, i = 0;
++	unsigned long mark = ULONG_MAX;
+ 	unsigned int min_nrpages = mapping_min_folio_nrpages(mapping);
++	struct folio **folios = NULL;
++	unsigned long alloc_folios = 0;
  
- 	if (unlikely(err)) {
- 		__folio_clear_locked(folio);
+ 	/*
+ 	 * Partway through the readahead operation, we will have added
+@@ -249,49 +394,18 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 	}
+ 	nr_to_read += readahead_index(ractl) - index;
+ 	ractl->_index = index;
+-
++	alloc_folios = DIV_ROUND_UP(nr_to_read, min_nrpages);
+ 	/*
+ 	 * Preallocate as many pages as we will need.
+ 	 */
+-	while (i < nr_to_read) {
+-		struct folio *folio = xa_load(&mapping->i_pages, index + i);
+-		int ret;
+-
+-		if (folio && !xa_is_value(folio)) {
+-			/*
+-			 * Page already present?  Kick off the current batch
+-			 * of contiguous pages before continuing with the
+-			 * next batch.  This page may be the one we would
+-			 * have intended to mark as Readahead, but we don't
+-			 * have a stable reference to this page, and it's
+-			 * not worth getting one just for that.
+-			 */
+-			read_pages(ractl);
+-			ractl->_index += min_nrpages;
+-			i = ractl->_index + ractl->_nr_pages - index;
+-			continue;
+-		}
+-
+-		folio = ractl_alloc_folio(ractl, gfp_mask,
+-					mapping_min_folio_order(mapping));
+-		if (!folio)
+-			break;
+-
+-		ret = filemap_add_folio(mapping, folio, index + i, gfp_mask);
+-		if (ret < 0) {
+-			folio_put(folio);
+-			if (ret == -ENOMEM)
+-				break;
+-			read_pages(ractl);
+-			ractl->_index += min_nrpages;
+-			i = ractl->_index + ractl->_nr_pages - index;
+-			continue;
+-		}
+-		if (i == mark)
+-			folio_set_readahead(folio);
+-		ractl->_workingset |= folio_test_workingset(folio);
+-		ractl->_nr_pages += min_nrpages;
+-		i += min_nrpages;
++	folios = ractl_alloc_folios(ractl, gfp_mask,
++				    mapping_min_folio_order(mapping),
++				    alloc_folios);
++	if (folios) {
++		ra_fill_folios_batched(ractl, folios, nr_to_read, index, mark, gfp_mask);
++		ractl_free_folios(folios, alloc_folios);
++	} else {
++		ra_fill_folios_single(ractl, nr_to_read, index, mark, gfp_mask);
+ 	}
+ 
+ 	/*
 -- 
 2.43.0
 
