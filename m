@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 957F5D2ECF6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 23:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD29ED2ECF6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 23:02:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9BA46B030C; Mon, 19 Jan 2026 18:01:58 -0500 (EST)
+	id 2F4AA6B030E; Mon, 19 Jan 2026 18:02:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3FDF6B030E; Mon, 19 Jan 2026 18:01:58 -0500 (EST)
+	id 2C22C6B0310; Mon, 19 Jan 2026 18:02:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4B9E6B030F; Mon, 19 Jan 2026 18:01:58 -0500 (EST)
+	id 1CE946B0311; Mon, 19 Jan 2026 18:02:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B23326B030C
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 18:01:58 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7FA60C175F
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:01:58 +0000 (UTC)
-X-FDA: 84350237916.12.31AB95B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DF5471C0015
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:01:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=it6JXTLD;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768863716; a=rsa-sha256;
-	cv=none;
-	b=i4n76GpwJLN6oVFkTyoUKSpSoP49wB5f3hcaOdIW2BPkv+MuRukvwydiRr6itD19cFeAsG
-	bj9vWZhHYrrmn/D3H8HI0bQc2Hp5sY6GogqtSs+Ag/JFLSDgU16UcyvQ68T0z0z+ZE5H8K
-	DXmtgkiGvf8S2A6k/NthQaWQXtkHaEg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=it6JXTLD;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A0776B030E
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 18:02:06 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 950A21602F1
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:02:05 +0000 (UTC)
+X-FDA: 84350238210.15.4104BB1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D93C320007
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:02:03 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcsvvCSb;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768863716;
+	s=arc-20220608; t=1768863724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J1Xj1RX/NA4HAZv7tAdB9l6TMArwAx2JjRBIpQCaQPk=;
-	b=fUfqWApNYFQz4Beoz+FIZYger+IjfHjnb6UNOLIC5uJ3Bt2h2tkr0zf9CrSc8gOW8DajV8
-	OTWAjTSLCCIK2hu9l1cYQy6qjx7v8Dkg6/4qZh+UiICO64sQJux1hWK6lZl/fNKnmp6sMC
-	quFRqBxaj8BLyuaZc7Snw0+zcAilhNU=
+	bh=qkAMfu14ban9fbdKWJY9K317QICByqTTdI8XjZIo7V4=;
+	b=fqlnXYdq+a5zE9B9/g0s9nuJhAc1n3idpZUd2eeTSzjjVEglLQUL6W0rFuqB3zJliNZHtA
+	AM1oXSWyC0k+3E7MuL9neZkh0NhN0DL4Bf0XumUFTynNVbbisxMkjmOTNE0P+94brYZWGU
+	sNMfGn9Wjq12+i/gGIdKV5Qo0RwR+zA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcsvvCSb;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768863724; a=rsa-sha256;
+	cv=none;
+	b=ULJNcR2gg4ixKEWibn/4bymrfO0NdQAPZoUztaOAUl00UjAIbGjjlsH6XBT/wNfTl1n/wF
+	PcyPAI1lOomVMke8QZIhBqr2Vm9mM0opjXZuMCKe8YHP6/CW15wlpPFnsfvSrsAp+K7eFu
+	aACWs8uz2ljIABoRAz4wySSZKRmm7l0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4829860151;
+	by sea.source.kernel.org (Postfix) with ESMTP id 008F6442D3;
+	Mon, 19 Jan 2026 23:02:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE18C19424;
 	Mon, 19 Jan 2026 23:01:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A858AC19424;
-	Mon, 19 Jan 2026 23:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768863716;
-	bh=zu0MlNB3uojZ+XY2eNxlLUaMnPt4RrYT1MRY12QCzSY=;
+	s=k20201202; t=1768863722;
+	bh=U9h/5fXRDF7W7U0nEHjVvjxN0NehshCtdso7ivmglXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=it6JXTLDKt1WuNFXQ9Ce1X7YpHetBL19JtOQyj2tZ93grW6ScBDmXXEOP5WPBzLwR
-	 xQ4EvMwIVRU3DGciBAEfChSWKPMiG3WcY6iGQxfhEv6ldblsZoy3hkwEtm1zhAY//i
-	 zzS5ZbisMo5WLMJuUzvfKOr0asy6qJZoYH9hIniyfin1T+JY18S+HTHiU1p51xcLPJ
-	 HhvLlwhAEQ0vWvQMhMNmumzc8AyZhR+8sWHtcZ1t38HBXWFLct4D9EdXXm0KrLuR9J
-	 w9qfUy0JmLPcO48+ptAY7t/Yvn8CpMKvaSayoObgChDoH6uXNGimWjcswTRPrSslUV
-	 x58d/Nlt99UJQ==
+	b=KcsvvCSbK+FAI50L4LUCy7S8qMDHa7BZczOG8V34OArhg9CDqc2V99o7JHKrpTQjV
+	 zNbzikPTwWbtWAipBQP/qpedmcfzVJZniN847kfNIHb0ueiGuxV02dEsCdufUu0Mgm
+	 7pYwd3/ivc1I1KVKmPt9HnVuL7asbQd50TAani06TICtRE0Kpxx/9Cd6D394B3sHIl
+	 +XEoM4GL1jrLJTrKt3yYImBndcgY+WEVGXogMP3gOlor6Nbs8cICwyWE/en7a+Be30
+	 FhUclUMPBHmYBJcwElvhXgr6nfEQnR6KQS1JuRWMg6JPVtw4oGhiy/LoIeUJSN5crc
+	 vqAXwFaQSWUKQ==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -92,22 +92,22 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v3 02/24] vmw_balloon: remove vmballoon_compaction_init()
-Date: Tue, 20 Jan 2026 00:01:10 +0100
-Message-ID: <20260119230133.3551867-3-david@kernel.org>
+Subject: [PATCH v3 03/24] powerpc/pseries/cmm: remove cmm_balloon_compaction_init()
+Date: Tue, 20 Jan 2026 00:01:11 +0100
+Message-ID: <20260119230133.3551867-4-david@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119230133.3551867-1-david@kernel.org>
 References: <20260119230133.3551867-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DF5471C0015
-X-Stat-Signature: gjqk79xy3ne68hm4d3b9my1wsipo7ffc
+X-Stat-Signature: iyr88ibydrrn46wadgb57f316un6cr3i
+X-Rspamd-Queue-Id: D93C320007
 X-Rspam-User: 
-X-HE-Tag: 1768863716-656063
-X-HE-Meta: U2FsdGVkX19By32XFcIdikuNz8RPsNypRfLK+estPuOe+05O0ADOYDg9nFpbYGRc41ZRhKlV8Ora5Xzccp4GiBNw5mUEsK0VB/bDUN7Yh/nnLKFXmnR8mkVDsZasvlcFny7Hr8r/zNFHs9nKJA+n1hEC6j5CoYCScs5ZNZEk40mV42mu69yBN/YG9hQM7omivTBzSwJ8gQSNZrVLIMvLQsUP8iv7K1DzXKSQMsfruo+qoEIkC6GP3+0rI0phnlcxR45gsm8xsoAsXg6sqsYQ26URUWBRXeLtSIwYJZU7sKmkr+ctkbMUqpkrfg0+apsf1RvOSnMii2g0pexNfBavu2ar7HvTqrzNenrpO1W2HbBvRqNvMxkWVg8nFL9i+e7Wh3tdqFU1C8lihM8/ZoUYoQITBYED2/RThIdUBAq+8cEYMfWsl2GUjwcH/p9eceq3zjWKLEcsSkuy+ThXHrmbzZEYF3WUS3z75bej/hXspOfzvWOz97ErCd9zPRx1nJTo9M5iFQ4MrKdZyyL/wIEiwtsMb2nrTjSvu2rm3IPJIOeDQ65YYCkaaumhgm8F0lAZrAWOl9xr3PYkIAntulXnY9EKkLgWik5kQRSN+Gs9etJn4dr/fXVVFLVfCBcpMRwVklZ0i8hNXiJDtBU7/sJ4T3/4UVdaFopuAio/dMx7BVwSjI4ONsesZ+ARRlzbAyRjY3whtwNnAu1JC+f+53QwOk3uOnl3603/JfL/fhU82ItdQNYKRWbAbUeVBMGoch80Tq6a0DaSnVpoOVbpL2FIiwpKvqdnnyWnpbWxRQ2y9uaLY3AQ6G6Iy71SuGzytUpYoDeuZXkxXa9sk7RbwF6Nyq2cHpQalm8T/Jl7k3K7fVPC6XqglHBbvcb1lslcm+QKU0BxV1CZw+2F8UyH0wWfNysrRVXlQQW93KVAQzyI8XeMewZpdHXI2rPb1B6MXe772qWGFvHOiN79W+9LkxX
- LIOZfj7I
- 0z2GobLXMwGz6zWKybUmijcUstv/kUYjK1/hYQGsqyV863jXwHtN92LGTMBed9BTp75DsAmaFOoN32w/2VpG19ApPM1IITmn9OztiE6T+Z8cQCS6w6vpQvd2M89Bnq1YYNxRBTF3ZfeN+5gM3mMY72dTPdlqO1qvmfjrgiRMvnh5+MgXZkaDW+hnjaoJ4E/82y2GQxOsHcdKKmnl2gIojsG2f+UDp91sxHPqUY+HvvuzPyYy1ayUhdUilxZHIFEukp3tIJlxWQnYQyx2ZbJMCidUEVkzg3RS6gwPpq7NJr12EmElymYbQmHAQySTn/qOCZRGEhuJrYUz4ljU=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768863723-914942
+X-HE-Meta: U2FsdGVkX1/naw2J7XC+zIKSpoJXuxwmN5ltX9aFnyf885fpNK/Km2UI0xbpqCHqiBQDgB1UKgbcx7Q3mygvAVE+b73i2Pc28Tn+nRBKRpIzEOkJ0PQeNucMC4lhLL4uRTDi1xY2kb+B1bODkmfw2cb8ovehhKn3SIOFQGv9ELHhw9ltil8slrxLYuLCpbzwzAh7fAb18Du5O04fST5eDWywdBKY4ZJisOm2EQ/o0RcVp8SchBUW9BMEY8830we1dyfFZ1ox9fxqnTFna402/rtNJhEqLSt/oyf515Tghom7j3EFhoDj1Z/ciH7wfvZ+DD5FDliAI27cgGIXIZaWR7zc/Qja8ZNTfr7bxOaTPk3Z9xZ8yFT5P40iRrv6s2K2DtpaofsnMv1DAXvfXwxu/yPUjKSWEVIgnaAIGLwOpu9kElSDwIZvE3dpdWLLgtpuiz+rOzsDqKJYhLlkvz3u65t2uyypWsPT8illXSnht7pK6ksuQ21/VS3voIhJp/2zgmzEjHQvtewfXqlVhIcs5MJnoRsdukwJ4x8HgUmcvIN8ENngXFLhCkBLGfjt35xXYen8oazSu+8XoWvYnlKI7JddjofSMQWTCxMrZ37t4fDZc66jVtazGG78hG4P1NUZEME4QpAKMUNtujjjyHMVbrFLft6rWZa5Kq9fjDyoV6Gh29n5l1Fcr3NjPa3qUmn3z6Sh8wfCo7tCcip5+67m12DwpOVf1L3gJXxHc5Lv/YlwLBmzlJzzCQN5TZKQsfu/WnC/JOA9ykCrS+SKMK5fMFH1Nqxpb8ZDAf6dwPQGqkDLoj1y5KSn1XS4kL/32+5xd4SdTyPndDHlg80zseWMwXRPHciu/HwvRXHCrkeLgGG1KZ0+7Y4SpJ8ZHzarnTXedwyBTRfaajl88XxmB6iAsrIkfIIME5pSBWl7FI7yfxeW/eWD+PH8ydu3rtEImcTRXUiXRRi1+JvFKBWKjoE
+ lfcP+ks0
+ VNfNF4xdQk4R0kUg8edB/fzjaOElSKVFOIzXTzcvmhSHwGl8Pe1JdQjVX39RsN3oDhed/V2XTD3waHcYY1U/2B7/S7sReX0UYtfqiWsWC7AccIQnNbtZ356BwzU1h6oXLmQ3eYR+mlk8VpYrctF5TdAbVP6Is07BkJO1kyxpawhoYplagDX1ZM3s5phFUp4szGmku8I2PPy4795T+UanRb6cwBNrFtWS599G2OgJyhc4yGNytYrcKqy/Hy7BT9sHCetvueZ3ExVFjfy9Htz1KNTygxpdZqjaKoFGjtrO19XcexeN8zHANa0U9gA5RahgEl0bdFV4QTqhAIMM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,69 +117,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Now that there is not a lot of logic left, let's just inline setting up
-the migration function and drop all these excessive comments that are
-not really required (or true) anymore.
+the migration function.
 
 To avoid #ifdef in the caller we can instead use IS_ENABLED() and make
 the compiler happy by only providing the function declaration.
+
+Now that the function is gone, drop the "out_balloon_compaction" label.
+Note that before commit 68f2736a8583 ("mm: Convert all PageMovable users
+to movable_operations") we actually had to undo something, now not anymore.
 
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- drivers/misc/vmw_balloon.c | 30 +++++-------------------------
- 1 file changed, 5 insertions(+), 25 deletions(-)
+ arch/powerpc/platforms/pseries/cmm.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-index 2cc34c4968fac..07e60a4b846aa 100644
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -1833,27 +1833,10 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
- 	up_read(&b->conf_sem);
- 	return ret;
+diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+index 4cbbe2ee58aba..9a6efbc80d2ad 100644
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -548,15 +548,9 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
+ 
+ 	return 0;
  }
 -
--/**
-- * vmballoon_compaction_init() - initialized compaction for the balloon.
-- *
-- * @b: pointer to the balloon.
-- *
-- * If during the initialization a failure occurred, this function does not
-- * perform cleanup. The caller must call vmballoon_compaction_deinit() in this
-- * case.
-- *
-- * Return: zero on success or error code on failure.
-- */
--static __init void vmballoon_compaction_init(struct vmballoon *b)
+-static void cmm_balloon_compaction_init(void)
 -{
--	b->b_dev_info.migratepage = vmballoon_migratepage;
+-	b_dev_info.migratepage = cmm_migratepage;
 -}
--
  #else /* CONFIG_BALLOON_COMPACTION */
--static inline void vmballoon_compaction_init(struct vmballoon *b)
+-static void cmm_balloon_compaction_init(void)
 -{
 -}
-+int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
-+			  struct page *newpage, struct page *page,
-+			  enum migrate_mode mode);
++int cmm_migratepage(struct balloon_dev_info *b_dev_info, struct page *newpage,
++		    struct page *page, enum migrate_mode mode);
  #endif /* CONFIG_BALLOON_COMPACTION */
  
- static int __init vmballoon_init(void)
-@@ -1873,12 +1856,9 @@ static int __init vmballoon_init(void)
- 	if (error)
- 		return error;
+ /**
+@@ -573,11 +567,12 @@ static int cmm_init(void)
+ 		return -EOPNOTSUPP;
  
--	/*
--	 * Initialization of compaction must be done after the call to
--	 * balloon_devinfo_init() .
--	 */
- 	balloon_devinfo_init(&balloon.b_dev_info);
--	vmballoon_compaction_init(&balloon);
+ 	balloon_devinfo_init(&b_dev_info);
+-	cmm_balloon_compaction_init();
 +	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-+		balloon.b_dev_info.migratepage = vmballoon_migratepage;
++		b_dev_info.migratepage = cmm_migratepage;
  
- 	INIT_LIST_HEAD(&balloon.huge_pages);
- 	spin_lock_init(&balloon.comm_lock);
+ 	rc = register_oom_notifier(&cmm_oom_nb);
+ 	if (rc < 0)
+-		goto out_balloon_compaction;
++		return rc;
+ 
+ 	if ((rc = register_reboot_notifier(&cmm_reboot_nb)))
+ 		goto out_oom_notifier;
+@@ -606,7 +601,6 @@ static int cmm_init(void)
+ 	unregister_reboot_notifier(&cmm_reboot_nb);
+ out_oom_notifier:
+ 	unregister_oom_notifier(&cmm_oom_nb);
+-out_balloon_compaction:
+ 	return rc;
+ }
+ 
 -- 
 2.52.0
 
