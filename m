@@ -4,243 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0C0D4A5F4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 08:03:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC3F1CA6007
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 08:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D251D6B0131; Mon, 19 Jan 2026 03:03:29 -0500 (EST)
+	id 19DCA6B0134; Mon, 19 Jan 2026 03:18:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEF976B0133; Mon, 19 Jan 2026 03:03:29 -0500 (EST)
+	id 121296B0135; Mon, 19 Jan 2026 03:18:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5F0A6B0134; Mon, 19 Jan 2026 03:03:29 -0500 (EST)
+	id 020226B0136; Mon, 19 Jan 2026 03:18:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CCEA6B0131
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:03:29 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D0441406A7
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:03:29 +0000 (UTC)
-X-FDA: 84347973738.25.16EDFF3
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A65461C0005
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:03:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PLsdbfsS;
-	spf=pass (imf18.hostedemail.com: domain of yan.y.zhao@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=yan.y.zhao@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768809805;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sB4LxW1Chlm2kIHtKsmG5jzdQpZRxHKZaNYdn6kr+2g=;
-	b=FHpcntwFMcSPOqXnyfecMjsbhGbehbCbFP1TbzJfrpDpjsfeeclpi+0EAOaX7qVttHpUjs
-	f06PYtRWbRa+HpjKq6mzrdfUtPcFDQGs5HHDLELNE8EF8U9WTXu1D1uTwkpFgUU25aXeJB
-	oFAoupKe5rYQ7MdShKf1CjRmbz2gjok=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PLsdbfsS;
-	spf=pass (imf18.hostedemail.com: domain of yan.y.zhao@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=yan.y.zhao@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768809805; a=rsa-sha256;
-	cv=fail;
-	b=JUl1gjkpypHoqd1TGPrSgpMukPKUvFPjv2E+nHsisk0C4D5RAOz+ySwO5OzKyNHOo94tVm
-	xFW+8wnuhCbUjZOOcIazW8fo3fPFHrnSQjoRkajFMrMzwRI3Jqj6/34nzJ5hKVMBpK08O+
-	3ItCgmMC5GMPmDD2df4GGp3F+Wc0a4s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768809805; x=1800345805;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=MA7GmuZDOnxNSGB3qYApMpomRrmq2/xMchfrqr2BUmQ=;
-  b=PLsdbfsSCTIiqY3PsmgtRW1uUFy1eXJHOEKQ1+PeJB4CUYxKJij3cvq3
-   dtXOi2qTHIw+J08GlZ4nv0sDrkBJZCchGoR/5xsE4ZTf1ltbz7ACZuzzE
-   s72FeOaHyQ4BRokEUrRyh+meJSbgXkN4fPfes0Y3sxmtldZJf495E8Cel
-   GzWz8MvK6q8FI4oHhgi0kLlqc9n63jeR3rhtndk+pB6cqUfyuucZeZm9g
-   BEhuV4Lu2QcAWE1iBuuYqQAMgN9sxfHnP0jnGWyW+3GpCvKpLrzh47Rm2
-   tIH0vvhQ5X0l33VqdyJB48Sl3+ce76junVDV5fdRbS6rQbLRhZ+dW79/u
-   g==;
-X-CSE-ConnectionGUID: dsW7epU3RAGxwQojAPW19Q==
-X-CSE-MsgGUID: a+cbok4oTKaSryPNBo+/dA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69919922"
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
-   d="scan'208";a="69919922"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 00:03:20 -0800
-X-CSE-ConnectionGUID: 3Qk5rQz/RXK3Ti7JZc8tvQ==
-X-CSE-MsgGUID: Y6I75pqsTlG34pD6cE++Uw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
-   d="scan'208";a="205419650"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 00:03:20 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 19 Jan 2026 00:03:08 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 19 Jan 2026 00:03:08 -0800
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.4) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 19 Jan 2026 00:02:30 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C2OiRn7AV4hjTW8BRvnoiSojiDeP/SlAqXcT9hziAXsRlx3R+OeMufbp/DMfL3Fvr+SXzH8dRzOy0TfXkkigCstk5ifZ4C1xyTtsXgOF5XheW7w8w032FbXhXY+HYvvGWUt8G0/8TmTn9VpYGyBDLRmaw7+eLh0rCgvWiFFaQOKgmR5qJUwHU91IdFpEcT2gT0wMW/GxDH7zA9O0kPaTmPcTgtHrRgW9D/gbzuYSYB1WZVBg2VxmjV1L7CTmcbnFYU9EPMox46LY4ZG2UbM6u9bhnehf7/IzV3pBsENBot2gll0r23RbPzna+8ACXCE4TFsOn2+QX+X/05iLi1GezA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sB4LxW1Chlm2kIHtKsmG5jzdQpZRxHKZaNYdn6kr+2g=;
- b=t3lWn66Q3hz6nH/LDXbx45BhwNaAsskvk36vhTwiiIvksAgKdGWjpxBy2z6dh/fkY4IQSduZ/uRxremRB2mVKOa+PSCkxzNcknOJGuxWLgPjj/H/ircxP4Y8Ajnbqup/xg9wwkRO+6jzK5l6oGxt1HcF7WKIsCe+1vxymk97MFWhr2vDLt842GIoUnY7sYIa5iByDJyWmmiaRCRubofl9EmMS5X8AK47UjCvL8Bc1au1Mb6/9aYtb4t8QsynTevyBZ9+EhPeoUugPlcq2S1EE2zE4UZkdR12p4gOdRJ0q/g93cqscXmz45WgjYWQIUWwhA2xw3BIvoB9WSjFRMFYDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- IA1PR11MB7318.namprd11.prod.outlook.com (2603:10b6:208:426::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.11; Mon, 19 Jan 2026 08:01:56 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::413f:aab:68fa:b1b2]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::413f:aab:68fa:b1b2%4]) with mapi id 15.20.9520.010; Mon, 19 Jan 2026
- 08:01:56 +0000
-Date: Mon, 19 Jan 2026 15:58:50 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: <cgroups@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-trace-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<akpm@linux-foundation.org>, <binbin.wu@linux.intel.com>, <bp@alien8.de>,
-	<brauner@kernel.org>, <chao.p.peng@intel.com>, <chenhuacai@kernel.org>,
-	<corbet@lwn.net>, <dave.hansen@intel.com>, <dave.hansen@linux.intel.com>,
-	<david@redhat.com>, <dmatlack@google.com>, <erdemaktas@google.com>,
-	<fan.du@intel.com>, <fvdl@google.com>, <haibo1.xu@intel.com>,
-	<hannes@cmpxchg.org>, <hch@infradead.org>, <hpa@zytor.com>,
-	<hughd@google.com>, <ira.weiny@intel.com>, <isaku.yamahata@intel.com>,
-	<jack@suse.cz>, <james.morse@arm.com>, <jarkko@kernel.org>, <jgg@ziepe.ca>,
-	<jgowans@amazon.com>, <jhubbard@nvidia.com>, <jroedel@suse.de>,
-	<jthoughton@google.com>, <jun.miao@intel.com>, <kai.huang@intel.com>,
-	<keirf@google.com>, <kent.overstreet@linux.dev>, <liam.merwick@oracle.com>,
-	<maciej.wieczor-retman@intel.com>, <mail@maciej.szmigiero.name>,
-	<maobibo@loongson.cn>, <mathieu.desnoyers@efficios.com>, <maz@kernel.org>,
-	<mhiramat@kernel.org>, <mhocko@kernel.org>, <mic@digikod.net>,
-	<michael.roth@amd.com>, <mingo@redhat.com>, <mlevitsk@redhat.com>,
-	<mpe@ellerman.id.au>, <muchun.song@linux.dev>, <nikunj@amd.com>,
-	<nsaenz@amazon.es>, <oliver.upton@linux.dev>, <palmer@dabbelt.com>,
-	<pankaj.gupta@amd.com>, <paul.walmsley@sifive.com>, <pbonzini@redhat.com>,
-	<peterx@redhat.com>, <pgonda@google.com>, <prsampat@amd.com>,
-	<pvorel@suse.cz>, <qperret@google.com>, <richard.weiyang@gmail.com>,
-	<rick.p.edgecombe@intel.com>, <rientjes@google.com>, <rostedt@goodmis.org>,
-	<roypat@amazon.co.uk>, <rppt@kernel.org>, <seanjc@google.com>,
-	<shakeel.butt@linux.dev>, <shuah@kernel.org>, <steven.price@arm.com>,
-	<steven.sistare@oracle.com>, <suzuki.poulose@arm.com>, <tabba@google.com>,
-	<tglx@linutronix.de>, <thomas.lendacky@amd.com>, <vannapurve@google.com>,
-	<vbabka@suse.cz>, <viro@zeniv.linux.org.uk>, <vkuznets@redhat.com>,
-	<wei.w.wang@intel.com>, <will@kernel.org>, <willy@infradead.org>,
-	<wyihan@google.com>, <xiaoyao.li@intel.com>, <yilun.xu@intel.com>,
-	<yuzenghui@huawei.com>, <zhiquan1.li@intel.com>
-Subject: Re: [RFC PATCH v1 01/37] KVM: guest_memfd: Introduce per-gmem
- attributes, use to guard user mappings
-Message-ID: <aW3kOgKL7TjpW4AT@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <cover.1760731772.git.ackerleytng@google.com>
- <638600e19c6e23959bad60cf61582f387dff6445.1760731772.git.ackerleytng@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <638600e19c6e23959bad60cf61582f387dff6445.1760731772.git.ackerleytng@google.com>
-X-ClientProxiedBy: KU2P306CA0018.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:3b::9) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E294B6B0134
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:18:27 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9FBAA1AEF12
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:18:27 +0000 (UTC)
+X-FDA: 84348011454.15.3733A82
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0D0F5140006
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:18:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf09.hostedemail.com: domain of 30ehtaQkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=30ehtaQkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768810706; a=rsa-sha256;
+	cv=none;
+	b=SP7/+u0sLn23se5X9RG481MfMyFlWqDD7TiIf6yRYmUmhlTsuuXhnTBAHcBArYleU31oD8
+	wvHm8C8NBNs/OIHHoS62q4WW9WV7s/LWOd9wqKRCjhq4SijqbWUN8w0NGrCxp8jxj9KK0B
+	MdoyB1gMs1fIicRxhd64sjDI06vSJn0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf09.hostedemail.com: domain of 30ehtaQkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=30ehtaQkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768810706;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=NhnL8MEP/pRB0FCsQpW7MYNVHkKIhPy+pDAgLhSbeq8=;
+	b=oPZbXIVzk411+b0u/5JTVfPmPFVN6L+XGpq02k4KGOsdD5EzwYX9uo6yAISJcXemThgik9
+	G4hKZ3+dX4nl5ykFiVmsJBLHRICwhAF+eQ0r1f5ZA3MwHh3hjmBDET7Z6Zn1EEhBbrACYH
+	GjtBCqYBXn1kiw4QJamXRXO6REEKF7w=
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-65f453d9603so10707124eaf.3
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 00:18:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768810705; x=1769415505;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NhnL8MEP/pRB0FCsQpW7MYNVHkKIhPy+pDAgLhSbeq8=;
+        b=A581DYBW2mhvZMFZ23b7YVYyaRRv9T0hNjse3cHqJdg25miA9pb9YCGwCppFiHTaAZ
+         OFshupIzACoQfGoHtgnLuu8THiIHf7lzib1gfixCvwi13X4cq1ARQTeluH6Lj3f56ZeP
+         dHWL+OW4ssWD/9psxVChETICc8VtfkfYDxKLolfpHQ/uQG5GtraLYXvYZTdHJSo2R2fd
+         lCP5rjBk7kdYLbcQTDFurNREzbFb+mL7HMySj4QpgobXSB9aQPSTpPOXzjqlmKvhJs6R
+         8bby/21gcgmjlbko66GQ9B3FA3Vtkv/fb/1P9ebwuN/6nOEELIG4g4Ug5UwJ4Bcc2oHc
+         D4EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhqSvv/7XEYulKfocYCnDMcooSvn+EYWNrqabboEBJL7tGoVDY6gfTcKxy5oP37bjXIdULdf9VvQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw5pHkoZNpv0g7RQiMtVKi6aT6gac66u0nNXv0t0RmGgdLvUj2x
+	W6fRYLdDyRc9Wc9XhEhNnhUZG7qQg/ujaSHFXJrb6Tdrjzgnxv1IqBnHbkL+jq/4WHnXmQqZz4V
+	A5fa+Ob+P/Z8u4/vpKy0AMkZ6s3ScmuqpTM+Ey7UQ9XCD1CDgw8iQK1tnVTA=
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|IA1PR11MB7318:EE_
-X-MS-Office365-Filtering-Correlation-Id: e9aebaa6-1ff9-49af-6eb7-08de573103fc
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?vVYEliQ/LonOBolkZv2Q5oe0XBFj7QD5zoZgYtLDBQrbJEe+/DPYNSxfIYKF?=
- =?us-ascii?Q?fiN5lI62/uDxnWspOXPAsFeLK+a/nRCGimACzWpoJFUESaIluabZzkbtM0cb?=
- =?us-ascii?Q?ZY52UDr9w6IV5x44wjhCsqGeiwpThJrYy1JuIet8QVQGmTH3ZI43gnlR3F7m?=
- =?us-ascii?Q?0PWWIqTuCZNuhyZ1Szre/GMsMuDzx8o1q12Hj8xOXwdE77NalZjdQgCAxKOy?=
- =?us-ascii?Q?vMhiUZAeo//FEOQ/FNrW9dUMJDyCYlyqXqI9L0fvkGcqL5+atJW1FoIpwkmL?=
- =?us-ascii?Q?iTjk18jrBYwHiub3vUHp5z/f0j3Q45Aisw2ZyjFxincfD4z+Sx3kNGKv3Xwr?=
- =?us-ascii?Q?HOm60QWUmEYe7MRAR4yiEZ71ABZvzYBDvZuO+/2P+x1dbtKoy7wOu15G0ZVD?=
- =?us-ascii?Q?btZNo40AuP6WjBUkQMarp3YmOy7kXBpYu+S2zpXD3hszA/M7M9ByuNgEAQUe?=
- =?us-ascii?Q?DR0X9p+NAdV9floxiAhahbCb0NXy+uQ+9lC6GA/Rz4o1d+VX0MfSMmEbdZS9?=
- =?us-ascii?Q?4FqJXFlWEAYMt30+6qrB/Ma5sdjf7/39uSn9B0pEWJFJWeafotVaWR8MRmB0?=
- =?us-ascii?Q?D4sIsg48WnF8ZJeTJhHLQGFxoVMYCaUP0FEo7Vqe4AfCwI0kkte3Oi6Seuxz?=
- =?us-ascii?Q?aNKWyA+fq5f6Rjmj412/8wXR+CMS7wcozINuKGJOF0AE+wyw+2nK1Th/k5MT?=
- =?us-ascii?Q?Wwih5dA+BScPFvxU1Qi7FCVSeEkGYHwzovwoUf9oDU6gUjCjQpd/NqphPCe9?=
- =?us-ascii?Q?TlH8exxvSCsa4GTJ0l4noPSERZyD43fe0qQJ0dpatntyXQKalQeUC17qTI1r?=
- =?us-ascii?Q?B+WBK2L3gMmbKoLKOM/pJGc4p3JdBVWxrhRLgJrQwsihguMjkZX1jifbnQm5?=
- =?us-ascii?Q?D9u5Vqcc4uUuq9gfNEKeRQ8C9WzXzGP6PO2mNK1ATH+67Kk7B3yGUgvSR1bJ?=
- =?us-ascii?Q?weOFCUDFJVAkQf4mZrnN24uP0vPYDbljZwvkPulduQAzz+jfHBNOhWkhH9Rz?=
- =?us-ascii?Q?TpjzOAOXs9sQo3eIvcjJJ2jrdbb9gj69X4XJPVFKQckwwWZz+5dEm1xyd2wh?=
- =?us-ascii?Q?tJeiOw76HZYqjXaKl+vAn9j0kk4L2lmQSeKTDtIbMm82C0nhCem4T0QsxffQ?=
- =?us-ascii?Q?W9VHhQ8zJXu0+Yg0UOiuIKCyoYSYYjRKSCLQyj+wtKGyyxX9bDr9fQwpTMPO?=
- =?us-ascii?Q?kPxbAFPXvCoe61UEyHQAQBx0l4m1nT6GZ1Gospnn5X518sFmgnFmuVibVgBk?=
- =?us-ascii?Q?izVGEWKdVnQ5Su+iUaMAN/6VRayPQQcwLNrYBXCR3X/MPve8bsTk+DgSp0tW?=
- =?us-ascii?Q?6u+cAna+Psi9o+uDnHqN4Km2OnHtUgzaLGno33C7hAP2ZTCJ3NFNrRypsvZv?=
- =?us-ascii?Q?XvS/Zc0Wj+C2gWcc2yXX8KTgU3CQcKxF2XHubP01sel487mpPBKpEQxzs+Tk?=
- =?us-ascii?Q?4mUwfMcjc+wcjb+qRPrc9Xd68fKC07+zMCJTTkSwP8LRD6rvz4EDR8DL2t6j?=
- =?us-ascii?Q?HWtd8ac258VF+WQIF82s5YL/BJsSmAqkISqsY75Us1k9Aw/n0vpwl3YVfu/0?=
- =?us-ascii?Q?wyy8JpibX4Z15EhI6HE=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Mk+II8GlOPbxLsfdzqvDDcoV6reG4Amx9JC1FVOlmFhyt7Rb18i0MsaqxHBg?=
- =?us-ascii?Q?khVDv0Gi+TTvUaPeS/aLetiwUynXBN2IlGXIwHeNywag4lVvDKbG5eCCzlmY?=
- =?us-ascii?Q?barwTCrQJu2lQIbN2Ny0LbL6gBzP2sqbyjXuIUqt+GRnyPJZcHxTTzMdSThO?=
- =?us-ascii?Q?Tt0jTKHTfdkcMPe1mxm11zJtEnBgTyUcLpkmtt9mruJZzcOuxOVybslScD16?=
- =?us-ascii?Q?nFWeCT/ttKObZuYPCf4BXvWH6xL8bM+19xSPzMsI+M4HmcT26fvjpgccAOZq?=
- =?us-ascii?Q?x+2unrHKpWsa8czQV6iWTnuQMy0ob0zu4EW8LfX9tf2t9V4VAxYWJAox1fjQ?=
- =?us-ascii?Q?120FZBtQv2fNHFkpmYfrW6e/oCphlODPFZJeu31UWJBAqN4No6P96A/Vzfab?=
- =?us-ascii?Q?ve0WA7nC4TGi+wvQDfrbkr7CDbA793UIUQb3cgoFMS0s5nCPYixzlv7Yq1Pl?=
- =?us-ascii?Q?wlCCkzv6YgEMa8NWX3P8UE9cL58puwmaPFp2InX0SMA3MSbV8sP8I8n6e0sG?=
- =?us-ascii?Q?mTgwS0hdpor41QNHXcLoNgUYiukcJem6EnyOOpWk/DoC91SVjRf6PjT26Thn?=
- =?us-ascii?Q?0pNKQBZ0crY0uBYvpO7aPh7h8m/sNPEgdyAJeFG9EUJo1z2v2esFfaKB17+/?=
- =?us-ascii?Q?3Jkr8+R3+/VD3I8sd8hohpjJtsTcDvM1K2Jo2pzSidEk6Dtl6u98k9yEPHoe?=
- =?us-ascii?Q?02O+h3WGFJEiRwCCtgGk6u+zzyDsOa2jA5Mox3Vm1CTaOln4sxTvMlmKK3T5?=
- =?us-ascii?Q?XCa9Gi5cImeR87NKWL2V64e19Af/Bp15U7UtQeGbz5ws6req5o017NBPDjf3?=
- =?us-ascii?Q?wOjavsr/KZWUOvK8fIufW3uazRBRqMIjuqiSSydKwP89NJSiKgdjNTgUX3mI?=
- =?us-ascii?Q?QAOGaO35kJJOj6pLuZSgEzpg6/35OiL89ae3WWt+YFPmHDz8T0SHbxTyf2bi?=
- =?us-ascii?Q?XOtRgYnL/Ji2PBK15gtdRqKR4bxCK7/4QB+6H9vGD48J1G0ebB+x+QfiNXRr?=
- =?us-ascii?Q?9FKOsWTs9DQK5/HvL/Y8vcZvesHWyGTYdOeoxDTvb6ZIM2YzJNbGvjJJm33E?=
- =?us-ascii?Q?G11g0FKR+IZdGKKnzob0l5wlmlYVq4Fw0RtdJI+rsI0HqUpyW/v4v5pUglex?=
- =?us-ascii?Q?DAbjfCCeawNFhyBtEWO0JYbxI1p5dLEPYpQ1S1ghHba+UWBa5lBeuo99YVZu?=
- =?us-ascii?Q?OqimYnhF/HoFp/UD0qLZjqt0IrmsIZUdAnq7pY1eVns7uYnR79IeTlJgESK4?=
- =?us-ascii?Q?HWmy1rpGmdSD1zP3BRp44scJ4jk6W7wRjJCjwWe+Fa/8+p8VLHifgZvZgmX7?=
- =?us-ascii?Q?xbAAnf6waE3O1YjPzR6647L3p6wyWLgVrP68xz+QNWc7dLW5LVIiCrj6stcx?=
- =?us-ascii?Q?/pWVeVcYwa+fC4/6N7oQ5FcROgezJqWqa5gcFAe9dlSzjt1Yud2qxOl79acQ?=
- =?us-ascii?Q?oMsmg/bBwCYikikdg72i4Wq1LXMwzgoVzol1P1cal85IJaGrkr3PcYmfMkLF?=
- =?us-ascii?Q?1vfXwZPDJkg3/5ujNtjYbAC474gNEdvEo8eECfhznZdycKs6tWcwzCKZScW4?=
- =?us-ascii?Q?i/Q0iAN0f9qv7i8jp5fkVt5uq9piuuykx60lA9x+odtneoXU2aGSFpjuvQUx?=
- =?us-ascii?Q?x3l5PGEf0kEPNm4daE8l29rsz0ADNcsQFBcsHB1VcU7yd/EzCA53yjrvZUEI?=
- =?us-ascii?Q?8Le8dJWbRMFqbBx4PWgEcBc6wzsdhxJLAxpNgY4QQS0cOfUJjPK4EC4c0jXx?=
- =?us-ascii?Q?k5zb7FkoTg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9aebaa6-1ff9-49af-6eb7-08de573103fc
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 08:01:56.7488
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /I/VKXl71tByz1N0PLdAnEVN+FEV7A4CewPoV/LHNxHibidz/KYicbmjeYFYPrtC9GUF+30eQCGZF5FryDQdjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7318
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: A65461C0005
-X-Stat-Signature: 9xj6onughczhfx7zsbbz4rp5hz865gsm
+X-Received: by 2002:a05:6820:4def:b0:65b:2a82:d700 with SMTP id
+ 006d021491bc7-661179b64e5mr4665102eaf.44.1768810705169; Mon, 19 Jan 2026
+ 00:18:25 -0800 (PST)
+Date: Mon, 19 Jan 2026 00:18:25 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <696de8d1.050a0220.3390f1.003e.GAE@google.com>
+Subject: [syzbot] Monthly mm report (Jan 2026)
+From: syzbot <syzbot+list6611482a904f20264dd5@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 0D0F5140006
+X-Rspamd-Server: rspam06
+X-Stat-Signature: yhsy5hjkd9jrrh4d9w1abesmu7onudi3
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768809804-708974
-X-HE-Meta: U2FsdGVkX19Qim/EKlGv4MrHdwPgBvQONEYIyf2UpDVjjFcg51db0W3mwsxnEy3s3/oV+7acKRBrVt6TjyKibq5IxqPKvCRo5OWtorjv0MzwwtThg7WrSjb956S+ftnhgSSvvG6VuxDSwukX3+DUol7rTbYk1LZ6HJdDiVv6NM9CODiJtmYcTuhDfOLA8Vyiaob0V9FxOWjbRrUD/wVBUlDS16qBrB54TcsRy+p/+s8AFW4/xwzU7/07mH7X6T6Dk3OEhAv11H9WlWJq5Qa0q7CdDYAADLwu+VapWAV+8F+U+9PstROtgzIEDYvvVLQmIMLLwUBfDJQtChyj7XHF+a5SK6TdqE9lGNISRUuPsv4V7m/CcKm3MepD61gPqI7O1ntQ8HliU/IM1fqkiFXE4ALsapJYllPcIMQPEf9WlVcuILe5hy7pprImae6ZoVMtjVSbDIEE+dD+Yaix+qmRmcj+e7PziTWmYa8JVQxXVFYsqyagSbde4u0+0a6CpKUcitkd1X62crUWDR4h/RRTZPpzHse8OGPequ3cLeNF5xEeRITQzT6yZRj1VWfwpOXLQ6uHLABoqup53L70OwukzAhvcJFKMZa8rOmbDSkhV38l330AJ7u0h7345r+OIEcW/9rCRoJY9JWr8MAD1QkYebJ/mOJM4p0uBHb2vAHjI0+jVU2IxeC0iriywt7rND18FnxhiRbArKHJBklVAz5ynj0nDleZySkc0fp3iMkYkGPWp0U2otoW7TqEKT/iyTEDyFe0jzN5oam/MCzrcw+Q6/6iYqLmSA+nOvndhASQ0m586+VMwDjzwRHo3WukwA5WfoHNuPyp7kOv/gNUbKG005YIYyGfC8LsdjCZNOFMa8c9dZr3SmTYTqffzXpi8fInqcMFxf32n/aRv2chBpuMldbJEPFLARbpDyqWu84IzCXqQYS7yPglvt+pCAgHOwVJzeb+3XEbZubCS7Y8mV6
- +4+s62LU
- VGI6a+qanfvwIVdqs0p41Bo0/LQqKg69ex9ErWbFaJWx4WHtW+d74MDM5KaQF1vPmIUYQ9jiBwgMZ81nmVxWVy+XMaKOEYllBKc+2gBBjVPR7YF0KRw0VZVrxtNMXaBJE+Y3HM4nm96Z656p+Pa7bG1n5nApLYcJR85v9o7Vee0qs0LVizEDKLEfMC9x8iUQUlzcEASiZB6tiJfora42Wckd3DKWmoRMhRcpsjkOtC6W9Mzf2ti037j2HsvLcHzwPuFNJ3NMerqzt5cqtmhsPpr+wZOH5qs6uB04M5c5OOUXMh/cTtv6dDjDViEDD8ZfFPqUyR9bdIdpUi2aXbKMNOpnJAaK5lGSV1RYkBCFFPTVeSjMclFee7leF9N132EwvHZF6b6TrPxM26X9mHzUgCnH0M96L3kpAvXFwB/XwuL+v4fxBmRifVi6dNalVoR+QT+Vo5eI4lJfxo/WJEeM7vqeqNdigAee8hQ93zcQSfs05+4YEyR1XjsWe7EsMdHxsgwnJdg5rRzA16EBL+7ZndTfauanwjj0UOLUdAjwfMm3nmX9t7Lpup2MvjsKLwQTUdZIVOzYU74vbScKk2ocsceLhBsnE1MnvsHBOnJ+46hDPv1VgktPSY/lniV26KbKA4Eqhl9tF3oEVSbrp345ZKtcBpJgEbuWF6t4kWTMxptfWMWGC0vzew2IXtIu+i98ioiubueZoxdY4abaDkbpndNngJXgFYjQ7KyOvRVJ7qRcoJeU=
+X-HE-Tag: 1768810705-81936
+X-HE-Meta: U2FsdGVkX1+L26EBjUaY63ZxpbAlb/CA8rdlTXVUp5ZNKpD/3sd/S8y0CJATvtxCHGsvza5hKH0XKH6S4JIhOa8pr1uufa+b55Yox1770rXq/FZUeIhCY3N39IRZ9BP74l+CyK8P/2OK0Ztj9V6+HAY13pPqWqkNCzs3UKV5H4IT2FpQNWZOWocx1C8ub89GBYwbKIwsZKKWnqdfa8pNdeNpz29rZViT4RoxdYGBtCwJapNyD3+yPfGeVGA9kYuDrru1MsdgX5+vAyN1AezvWUljyuQvNdnefmZ43GxP6YNPjxqcUJxNv1GcDam4S97FnGM+8reBVhnltwW7M0dO6YdNaTN8UmcUxJm9D+bWup4Oxtqr1Ps2AXl4N6oin74/umyfXr6JHAVLBEW238NDZfnghZctmDd2f5n3JCJbhLJTAtIxGfZlIL5C29H6K1abrN8kbbCAL52lga0+3d+nRFupQDuJrMxiTtq6tpg2xrJ3qbpvbWC74vcOCwcJTt51k+WhVowQyAPBG1NaHAJfk8579TRtxs3bTBSmsEZR4N7jWFnefG+qOq4cwch6LLFjjTvtnQ5Pm8Kv0++7ef2vzrNzmT4r/BEIRcThl8DyOXhC+EURUl97VQvJk8W0LRu7/0GkDTI2B+RWxU1sWEhqGfExU4pvLmUYWBuVb1KGv96H1dUJQxNXHXlyrok6VGcUB0EXuRjGxTWWZMruVyKubC1RSUscfouFpRGVg/53aq1lIK+DSFMlAoxrhW1hKqh988WTdfjotS4H5y1wJBryBS/VX7SStgawCkdOuxknr4zXVK2Tz9Omko18cF9830dsuoUZukLC0gnk6ANhnEGDx6t4RkNGO7s6vb6C4NlVMJK2izQugQ3ovzVyo1M2fOaOrZ9t4+cEKXJ5h2JliOz4qmTvErrJEioN1bYp5voyMozclFnt2MaKG16nK88unwdLPqoNympvcvjyVL1Zhxp
+ 6tbSjG/T
+ OArPCnieituAWXcnMpiTMBijTCVX2wkVbZFzsMcMF/jdjvINaNivTOkg6Bl0NBErwYi+JVfGQ0a6weoe4zbkNt1WDc+//ze8nEbmYsJAPQZZEHS3G0pcxnCFwN0AU9IdayAW82GbMRmgMbyY9dqitBAmBXi5uc19Klotok6rfLDC0oxkKN1J/jSrEB3h+bYrYwZv4LUtXX6VOzEgT+yPThNwNI6fmZ/ncee7iQ44A2w6XMTj8tErlTzc9yh6MsbgNAg117eZ67McTqbqdu5C9gvRlKdKhkhiDAr0uXkGiEW5QKCM6+3SMlm+hX0icikYf3gfsFMN8HghxatbZPIVOthqelyZioH8NJbuiLEGpz3dLqNjBzYQLOMvZ/2azKRTsp7vgYamkNH5IQyEgDd062rS8dNlE5zLiIK6sxxiGHkdOvEpkAL4jQi4mR6zcAUN5nUI2XTOIoAC2pzcKY7DKjBEi9wFsjTvcEk/gNf8QGMylLc/WdUa7/6VaIwl2JXmF2Hfklg60s5PWAp4OMO/9I6KeSMuD97sDe3WtEOY2Nkr/M+7c7I+PA5wpM2X9wCIWUqmOzCSydssSJJxpz+2c3ooi8ejuP4GCTas5t7kZUESEW90oeU+tFsTJvo6w99QMRQykWr8C/iMwO+3oEwcoEjO+jCbAo3kfcPeUegrtf1mTjODoy+0xuQy01fiA92dDsrrmVPGEU9thKzTERmGKpyP35n7kbqWic0aX6+sOXuyiSfqkaClJEPPWEXZuysJZXAgev06gW/Nzi+ckzixpPkZai3v42Sgz8WtHdZW9FJ/eDLcDgbDZVQby36N7oWo/Tn1h4t/48+0YxKL3Qe+wH/JADHQUQPeg13TI2p9is82LmRqeNKVlfxzeiY4ogzNQyDdCbsRYGcgJSdxZpKBxdlLr2iPy8l7q/8mqG48n1n3TrnHt6fhGwimYX5Ra5Qm9/qfz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -249,93 +93,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 17, 2025 at 01:11:42PM -0700, Ackerley Tng wrote:
-> Use the filemap invalidation lock to protect the maple tree, as taking the
-> lock for read when faulting in memory (for userspace or the guest) isn't
-> expected to result in meaningful contention, and using a separate lock
-> would add significant complexity (avoid deadlock is quite difficult).
-... 
-> +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
-> +{
-> +	void *entry = mtree_load(&GMEM_I(inode)->attributes, index);
-> +
-> +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
-> +}
-It looks like kvm_gmem_get_attributes() is possible to be invoked outside the
-protection of inode->i_mapping->invalidate_lock.
+Hello mm maintainers/developers,
 
-kvm_tdp_mmu_page_fault
-    kvm_mmu_faultin_pfn(vcpu, fault, ACC_ALL)
-        kvm_mem_is_private(kvm, fault->gfn)
-            kvm_get_memory_attributes
-	        kvm_gmem_get_memory_attributes
-		    kvm_gmem_get_attributes
+This is a 31-day syzbot report for the mm subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/mm
 
-> +static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
-> +{
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +	MA_STATE(mas, &gi->attributes, 0, (size >> PAGE_SHIFT) - 1);
-> +	u64 attrs;
-> +	int r;
-> +
-> +	inode->i_op = &kvm_gmem_iops;
-> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
-> +	inode->i_mode |= S_IFREG;
-> +	inode->i_size = size;
-> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> +	mapping_set_inaccessible(inode->i_mapping);
-> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
-> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> +
-> +	gi->flags = flags;
-> +
-> +	mt_set_external_lock(&gi->attributes,
-> +			     &inode->i_mapping->invalidate_lock);
-> +
-But here, it's declared that mtree is protected by the invalidate_lock.
+During the period, 4 new issues were detected and 0 were fixed.
+In total, 117 issues are still open and 355 have already been fixed.
 
-> +	/*
-> +	 * Store default attributes for the entire gmem instance. Ensuring every
-> +	 * index is represented in the maple tree at all times simplifies the
-> +	 * conversion and merging logic.
-> +	 */
-> +	attrs = gi->flags & GUEST_MEMFD_FLAG_INIT_SHARED ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +
-> +	/*
-> +	 * Acquire the invalidation lock purely to make lockdep happy. There
-> +	 * should be no races at this time since the inode hasn't yet been fully
-> +	 * created.
-> +	 */
-> +	filemap_invalidate_lock(inode->i_mapping);
-> +	r = mas_store_gfp(&mas, xa_mk_value(attrs), GFP_KERNEL);
-> +	filemap_invalidate_unlock(inode->i_mapping);
-> +
-> +	return r;
-> +}
-> +
+Some of the still happening issues:
 
-> @@ -925,13 +986,39 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
-> 
->  	mpol_shared_policy_init(&gi->policy, NULL);
-> 
-> +	/*
-> +	 * Memory attributes are protected the filemap invalidation lock, but
-> +	 * the lock structure isn't available at this time.  Immediately mark
-> +	 * maple tree as using external locking so that accessing the tree
-> +	 * before its fully initialized results in NULL pointer dereferences
-> +	 * and not more subtle bugs.
-> +	 */
-> +	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN);
-And here.
->  	gi->flags = 0;
->  	return &gi->vfs_inode;
->  }
+Ref  Crashes Repro Title
+<1>  13965   Yes   WARNING in path_noexec (2)
+                   https://syzkaller.appspot.com/bug?extid=a9391462075ffb9f77c6
+<2>  7446    Yes   WARNING in ext4_dirty_folio
+                   https://syzkaller.appspot.com/bug?extid=ecab51a4a5b9f26eeaa1
+<3>  3650    Yes   INFO: task hung in page_cache_ra_unbounded (2)
+                   https://syzkaller.appspot.com/bug?extid=265e1cae90f8fa08f14d
+<4>  3012    Yes   possible deadlock in filemap_fault
+                   https://syzkaller.appspot.com/bug?extid=7736960b837908f3a81d
+<5>  2188    Yes   WARNING in trace_suspend_resume
+                   https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
+<6>  1539    Yes   kernel BUG in __filemap_add_folio
+                   https://syzkaller.appspot.com/bug?extid=4d3cc33ef7a77041efa6
+<7>  864     No    KCSAN: data-race in __filemap_remove_folio / folio_mapping (2)
+                   https://syzkaller.appspot.com/bug?extid=606f94dfeaaa45124c90
+<8>  673     Yes   INFO: task hung in _vm_unmap_aliases (3)
+                   https://syzkaller.appspot.com/bug?extid=fe8f8efd070d727de971
+<9>  646     Yes   INFO: rcu detected stall in addrconf_rs_timer (6)
+                   https://syzkaller.appspot.com/bug?extid=fecf8bd19c1f78edb255
+<10> 526     Yes   INFO: rcu detected stall in sys_openat (3)
+                   https://syzkaller.appspot.com/bug?extid=23d96fb466ad56cbb5e5
 
-So, it's possible for kvm_mem_is_private() to access invalid mtree data and hit
-the WARN_ON_ONCE() in kvm_gmem_get_attributes().
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-I reported a similar error in [*].
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-[*] https://lore.kernel.org/all/aIwD5kGbMibV7ksk@yzhao56-desk.sh.intel.com
- 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
 
