@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F6C1D29C40
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:43:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF06D29C46
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:43:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DE866B02B5; Mon, 19 Jan 2026 11:43:11 -0500 (EST)
+	id 6D1F86B02B6; Mon, 19 Jan 2026 11:43:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AC5B6B02B6; Mon, 19 Jan 2026 11:43:11 -0500 (EST)
+	id 69EDD6B02B8; Mon, 19 Jan 2026 11:43:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AECB6B02B7; Mon, 19 Jan 2026 11:43:11 -0500 (EST)
+	id 5A8E56B02B9; Mon, 19 Jan 2026 11:43:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C6EF6B02B5
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:43:11 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 156141401BD
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:43:11 +0000 (UTC)
-X-FDA: 84349283382.12.033A323
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 28FE814000A
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:43:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hdmmh3id;
-	spf=pass (imf23.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46AB96B02B6
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:43:35 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E5D1088E97
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:43:34 +0000 (UTC)
+X-FDA: 84349284348.28.58F0711
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1722640006
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:43:32 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JufBHdER;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=amir73il@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768841013; a=rsa-sha256;
+	cv=none;
+	b=tF9/siwGbpKJKS+f9RtCMgAINESYeu31L6QcVexJZG93b7Dw8A2oMOO7BJsqAlLRFcuEMp
+	Sq5PQTy3gpZ+KDVfE5dR6RG/1IlWbrjeGbrWe43uuzMjJnW4srEl9nieWcrMeHATZed91h
+	zM/PQAtg9r00dcGhBtPV0ppbxAMtpYE=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JufBHdER;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=amir73il@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768840989;
+	s=arc-20220608; t=1768841013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OP488vxzDs37SDvqB3SvtrET0fHZKVUQCP8+UqFkiUw=;
-	b=eeg8OLw5Op45msA2M6Qr6MtK2/Yg+9rLD0XhyeM1L+EMSgVVKBum8C/4irRXaB31Lhkae9
-	x9rc/JdpopKJn62hcblbkRJTAX3V1/m3SijBiCO6pHcbLFfk9y+pFBnQsWAT5+eyAONZVc
-	JboTBCS+qbfJhqnxFn9F/8TaUddzTpc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hdmmh3id;
-	spf=pass (imf23.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768840989; a=rsa-sha256;
-	cv=none;
-	b=Q7ww7Fx81dAPG3Ng0D5H8JBjFcZIx8+vHgmtuomK+Rf6VspzhbMBkuSKb6QpTe6NRfGBMO
-	a0YelJd7MjnqGRJ+IWfjWf6W2VHKLi/rshPRiniXZ7ZGjzuqttBOjHE51NzxJ2dr0U65ZW
-	WbtFQ3FcjUmRjcQpdoA+sjgDsKrDEXk=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-652fdd043f9so8366846a12.1
-        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:43:08 -0800 (PST)
+	bh=t7xapJC59KqqTTsHRvPEloTsuOjJhUfycEcUpCAL4U8=;
+	b=ArlBd2RBr1wAt1JSt4OxOMIgc5kWux4fKhfUmqh/RQC+OYUx9VpBYObatbBWJJNgv97urh
+	XsE4ZdVOXZ+BULYU654EFLs+7GIHtXiqcTq0eD+FNnDKbHsWxOCnPZG7ARNGKnSAGoH+P4
+	L71GoPdEqgAj6QeHCY/JaKb2tsCCl4s=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64b921d9e67so7600356a12.3
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:43:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768840987; x=1769445787; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1768841011; x=1769445811; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OP488vxzDs37SDvqB3SvtrET0fHZKVUQCP8+UqFkiUw=;
-        b=hdmmh3idMDrsKIHwtgleJxTR2HL4JleQhI6UTJlvQsFR1UlzD8iaZzPKA6kV7iP4Kt
-         nZX3U2H7XNemC4dNYidSbJ4ZE/k2B77xJuDnoJUapdZa+zNUNtwvMF+BUBv8sxnE1rRH
-         YcuHzqwOx7wHw+sxn7XsIBSafIF4tF3GrG5ZcAkVDWC6wl0g1lBK/0BZCxNjb59Zljms
-         Ax1Oky62gINOCZvt1Lfu3PnaOM4JYla1m4DLPNGSdR0UlEVKb7MQizy2HNoKtJOs4y9o
-         yRX82+8rKejO2lpK1IdyghKdafgtBk+JwC7uofDJcGUGGVLqp8coWyFtNEMwDrYxZ2I7
-         LVVw==
+        bh=t7xapJC59KqqTTsHRvPEloTsuOjJhUfycEcUpCAL4U8=;
+        b=JufBHdERZEfR8jPxABtYD0eBGsIe3Ac8JdTi1Fl5nOcP4LbOIWmDjL5zLLzBN8mpdN
+         BBF95ZQjh0SZwoaVKpZKZmOwQZtfImwvhqnIWUx6jrNtz/rSXt0SSUF4Tv8JbxQEXdlt
+         x+gm1L8YQyJcvxYbdwMmUTH5sX0AnbosZUHH7lRVlbL2ZcuIOCRCWVF0iGLzKUAAJhxx
+         ph2cMO2UUbVMH14Cpwj4rxCSfKPCsXixRuEyFand1rY2EP6fL3erBYcUUK5PmW8fxM5G
+         C+BAm4pcwSvoPNiCjSkbPIwMOKfPedHtANYe8CWayYxL4bGS7j02sRZDMxdIOmMz1fib
+         FbJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768840987; x=1769445787;
+        d=1e100.net; s=20230601; t=1768841011; x=1769445811;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=OP488vxzDs37SDvqB3SvtrET0fHZKVUQCP8+UqFkiUw=;
-        b=UMHPtTvSyNEBl8KTibzXoWNXDmpx9InztGqeLvuWbN1w3Ev8MQ6rMDFaIYPKRs2roq
-         bEfVuNV7QW7vrY3qW9fnjQQ4xAnjv8HVdg7h1dLOjTWA00yI+xHhr2QsnauDeyQ3S7zp
-         v6ji7efD+XwzGIw69g2IpazIfpTVGiXfpDm6PGlHAzkBynUSqUN/HvQM3JuTDR3MPd6y
-         Ncyw4zTspH6ZygddfXyi4vm/eYW2LhCpyzKphrM3pdaGSOgmefK1ii6MXAEUKGv8Yzut
-         yeeYtRrmmrFRP67rtqyA0vO51z01ku/8rhfon5M7QSKs4O/PgPy884UYPUsS1SYMmVaa
-         076g==
-X-Forwarded-Encrypted: i=1; AJvYcCW17WfnXQgL9z3yIVbnCcBrtdjcSeeGKAp9jRmfwZO5FPVOdDI2xuguIwRgMOVx9PKzAAoNyL7dAQ==@kvack.org
-X-Gm-Message-State: AOJu0YzkCOGMQ27mreDyZh2ziMVX+aV4d3X03uh5fLorvhVE/IHpqK8a
-	aaiKBYYFs0l2ABYs87yick52uteiyEC4gzNneSsO1+RJczMeph2VQlfyQH1IFcH/1cpyfXDJlpN
-	57SqqRYiiaeZJxeQwSu1wIHpLCmnS354=
-X-Gm-Gg: AZuq6aK849F1jI2OcKCppVNAUGQqC12ul/Nrm474eB2uwsP/rZfJ1Yhljx42/Tt2n/J
-	AMJ1GAS3daNj3ae0Ns/ihoaTeHNH4vj9nxhOAlaDD+uta0F1aN8yLlNMmljZF2sZNUaZssNzpv2
-	4oh8nlqUsnuW50lHeOcA6t5yvIXGVKyOz4zBTza4Yk0/Ar+8svGmKcxtAX4lVBrC2S2oBC3v8NY
-	DPIdmmq5oxJBEiD2ODZWHetGVist6MjUiZMFg8Ttd4jEoOZlLbZMFJA07CXCMWJ0QrlzbiCNQyD
-	9PVyBKY6Hg4E35CkqeJ7mxptQCz5jg==
-X-Received: by 2002:a05:6402:4304:b0:649:b200:afe9 with SMTP id
- 4fb4d7f45d1cf-65452cca909mr8384256a12.27.1768840987066; Mon, 19 Jan 2026
- 08:43:07 -0800 (PST)
+        bh=t7xapJC59KqqTTsHRvPEloTsuOjJhUfycEcUpCAL4U8=;
+        b=hyRqpL/rKJ+GUBTE7+M8BN+C8D+lC9SrOJx555VLAqJM6/w0XsbHCqIfjrrIJM0Zjy
+         dbTTRYPkyKn4/DJjZ6kKS2w+cit2Mg0nEK59U4zGBBfidNIV62DxoEKUCxu18xCYc6tj
+         NFA0Vhtxmh+wn5WJXrXVwXVHLKfkBEWCIqnz9iL6g6uCTJFv56sK8QRftU+P89jDHuvV
+         nGztHlofQuBYfgTLiCdJKve/YiuaTXCI4TuVqdf58Pw1y9YnRNX9yYXf7tYQrPEKLNFV
+         q02IjfT8VjCGXwLmmwzyf6mw1A573Bs6TF/FNhl6N1MboKrcyjyYogmNYIBeW5y/eFwg
+         pslw==
+X-Forwarded-Encrypted: i=1; AJvYcCWLlhDhJaNWCIcBh3FgnBmAfjCuSn2ifUKxCmqjH96BYUrc3tvnnv513TeQkOw5TB/+5lsnrmOV2w==@kvack.org
+X-Gm-Message-State: AOJu0Yw9zlfRDjxHz4VZbT7j8ss2gkPv4EAWXeIcCcLLjScSbOhtI/bI
+	0eBMfn1RDYGkOHUP4DO7sssIhqfWvWijxmBlbTzVNK7gURcJDc0MeMP9qjvMm9lfCHN7YfzIkwB
+	qGjEesZdQ0XRcUgoRWl5lya4O8wAv/20=
+X-Gm-Gg: AZuq6aJBcYxatNzAYbImCTuh0SKZUXsRx2E8wYp84fjdYSu7ChsCX49I56osy1qg7WW
+	JdkYra3f3nIHvIIwMw68+hFKFcq03Ot4YHZCCVKuaIPuFzw2VT2HhdD+exhaXj4rnuwN4cRlxWa
+	ixjf+bN/0keo7pEAEuAE4fehAlZ/RwtAtIweKFIgYFPMGGkWG+ZnBZP9jY8PPfcMRT37oNrNdRO
+	4L4h0QFphAuKoWhu9dR9mLHB7tED7BceUGOBh4EwUr1uSYPyFp9IMDME0ZSJrTlvE5DmVo1O10F
+	PYLbvL5omoAX7dAbm/TTmcuiYsSmYCE+dfGzKyJV
+X-Received: by 2002:a05:6402:5106:b0:64c:584c:556c with SMTP id
+ 4fb4d7f45d1cf-654bb6192admr8530585a12.30.1768841011353; Mon, 19 Jan 2026
+ 08:43:31 -0800 (PST)
 MIME-Version: 1.0
-References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org> <20260119-exportfs-nfsd-v2-17-d93368f903bd@kernel.org>
-In-Reply-To: <20260119-exportfs-nfsd-v2-17-d93368f903bd@kernel.org>
+References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org> <20260119-exportfs-nfsd-v2-27-d93368f903bd@kernel.org>
+In-Reply-To: <20260119-exportfs-nfsd-v2-27-d93368f903bd@kernel.org>
 From: Amir Goldstein <amir73il@gmail.com>
-Date: Mon, 19 Jan 2026 17:42:54 +0100
-X-Gm-Features: AZwV_QiQ9eetgKyRnXUMiKJDXK2vIOYhTLzpDlKP7IN3cG_hSRVA59Z6sNZRsnw
-Message-ID: <CAOQ4uxgXovX-rPuAE55D8x4jbNOQdAKJH3O5gpHJDMsT7kNGgw@mail.gmail.com>
-Subject: Re: [PATCH v2 17/31] ovl: add EXPORT_OP_STABLE_HANDLES flag to export operations
+Date: Mon, 19 Jan 2026 17:43:19 +0100
+X-Gm-Features: AZwV_QgQ6YFmczFqASwqjyOa509PoCTPsOB-sET1G173IBHOd4X5kFjH9N6z5MI
+Message-ID: <CAOQ4uxjyTdf21G1Y=_5Eox58drVPA0gAMeSQZxh=T36_yzssNw@mail.gmail.com>
+Subject: Re: [PATCH v2 27/31] fuse: add EXPORT_OP_STABLE_HANDLES flag to
+ export operations
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
 	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
@@ -133,14 +134,14 @@ Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org
 	linux-f2fs-devel@lists.sourceforge.net, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 1722640006
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ihe3m1619coxn9y63hnzoq57mkkte6gi
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 28FE814000A
-X-Stat-Signature: 6o9y4q6f8ti9qtp5u1zimcyxchhmwxfo
-X-HE-Tag: 1768840988-514973
-X-HE-Meta: U2FsdGVkX18rzwklGkIj3kJ0QKIwscP2Ws+F1qcYDlk22kLUF/2KTRkLk+nlXrVgqEzQL139S34UL91z6O6vXaX9M5wxE5mMZFqAra6cL72K1M+SM5E7p+ST6QWkBW8vUh/E1dfTnEL1BNhZQ/mu+1s200M0BFWm5L2+9dLsSIWG22rWVp41JvX7VxpphoQTRSQoB0rhopBIQE9+FUFL5A7KkGxZO8Wo719d5zC5hHpeI4SZNqVP12d2++xqGtWHVRdqEHmgbepU0Ox7QAfBZwemsJVJGNjMA5u8B4kMHury9Pob0hhqiulm4CuBHalkcA2ERAkFM1duaFJWNcfwSr78hy7Mhxch3Vd4K9pmQb6Yjp6ik6yiARqdMKAMUcpvTPCajnQFxavHkXBWnQH+psNQxihdL0i5fsRTPv0jmklFOd3UzBSjsjMGd/tO16ZoYDv65x61AxZk2P3XcMGVXO/+RE39jvNSYBIts8yrwHIH+IFHfVZ+TQQHL3ih0q2JC8SarpxV+CRnv4iRwdPE62EoE55BToBqHP98Hx7EYGp89YAUlZiJjjnBAfiMQXGfVowQfOw2qmkfVXkBELXNU+nWn1oICd6y/O9dUKbinpxVUfI/a8FIR/kVt6Z+tuECEAV0vMlRSfrMohrWkea4j1ZHSa0YcFiFX8BnHOvLWcodS/nANOokuvYnRFa3Vf2I3GCDhS9sz0GPhW3EdKzFSeZ4W+OuuexHqM/BsqI5ZlHEfXat+MGQF1kYN3EYbcJzFBOiJVpIELDR9EBpKdhW1pROKC6CuM+QsqnSN2jTeMdt6hhybwlTp8/tu9HOND2JynJzRbo+g/ANGrjSB+YuVjJ0koKkW1PkTqysRn1davLpJSnzulJ1TDQjnHwVDfL9vpXdB2XUJFtE0fhDsraRNaK7z5eOzVuSq1DVgOnOEImIlSfpO+pwRMkqvl6lyruYUSmmnMVem2LYn8K+6cq
- cu3NOClK
- KM944ThjdLxkXYIpdWjqkOluq4xpOEC1pYoU0azrd779czfo8bXkvO6CvSGNpUPCTAHJ7fVxOlCR8XIZqY4fB0kYANXVvRIfpWdX2yt7BX5braG58OOWU8HNxpzkuf7d4yoF4NrtmepLy2+H97SgFYhPYVZAFCdLbqF/m5OExoyygqy9/WQ3xK0jJVH3Vk9kgQQu9Ga2jiKs4QwCV6G8Fg193nJIwoANCeYrZX4+2OIlYdRMY7sjJ+WsSeSb9vf2l/AObJZ7n+upfPZY4iiASUje8NjDSv1z5FVegBYCvVxOir5YzYEF4yuP5rv361X3PkhkJ7fH/zUY8/Ad1B4hYjMQeFOWP6uPGzBoLHRzUa5AGmkMmRhEUwj0ed6jUt5bfbGk9KbDuGwpclgZZtpkFbvb9eI8pwIBxFg5mmDBZYEQlDoPsTXTWIxqJl66WihOZZHVG/lGNwilxm5G5gElAtlRnaQPfqxwO4sOUbV/OdtlK/6kbraIdCtkkrkUbn+Xz+7+m+VLDHWM4bPtHKpDN71/uZuBCLGs9Rcf01NutgmAFhIKT+Aa3i1ZwkawxzapDcEAI+laqNVgb70RL+LDhoz4k/cSDp/SfPNesAFaZnTNy1po=
+X-HE-Tag: 1768841012-232352
+X-HE-Meta: U2FsdGVkX19Wm8IaFCc6E9wEIHJnmlrQU38o7DzW54Os526wX2eThkm7/7P2mEQqOqw+Fn/O6CH4a/BHNClaZIt/HJQHbKb4Dz9u/5go+lj/8hf0RDBw8PesHIH1MG9GSn1P17nhpDtDhgYAF065H+lUwgcQnQFxE6koNJkRcWHWYdTt8rBZ7FvxNbgX82ZcEOxwxqchWFts1ReiCQA2jJrwM+64kriNWjr9Y9l9k/NRpko9TZ0OoZqrjSm3sS5hCVPDYHcL4U6oyCEcn+Obm5FYQ/hj1JLUgO9idNxXyT+fF71cVYMd7eYRrlsjPDHyHcfgLCKUcnInzKRj6s8T83ZABA9hMdKHTxAQ6MiFwvARtpbXj3TaS9Y1+Queh7R7pVejWvybB64roIOujMEZJfArZAftVLkFZPH/S62rX/ZgBpGekuhTPg3rKAKP02lGD+QZe50GX61TS+6XqXqWep++xWUyTVXFZZoNnbqr/ivKXJRXcxwYtFl7VR6k2VGjv6WCJUOy0D1Umuzu15X5a4t2FqBc+yrXHHGB+Fji7MM5pSvon6c3f+ErhswsFGLEkomsOwBJH3TBnRihhTsg2HeUHatGtoezAvB9CVtSRaMusI6ntE0elJRKnUcz4gFfzMOo3Cf1isGk5UQ9tk4inNIMNd19bb/+2N3R3mNyJUCLNVMdvll6ST7COMYIJCbhtjmkWGomFGTiUbYoeSiGVhsbvQG702Y9SXkaCbR9zwDKk5ZksjDmvlXIUfwy4oX5U1pnZTb1ALXm8R61/c4kcW6LNFTxYjzkgmTZWvAnzJmDtnShtWmyDD11oVK/gpWVpB+AgbuC1R81rp8jlNspjnXZ2iIOa9ChSDgH4J9S87zKquW8yaRNphCtiG/NdY9MSHiMuTy3FEeLRF+3cWLXr/0e6BdWmgtpXWp4KVl7sGtT5TqUQAgY97g6TfF/TSTeOTYUs8INIGSA2mZHcDO
+ 4IEzfYWQ
+ xUzFvMfElrg/P3ZXBuxfV9hn4ycqzGT015i8Ezwp0FqN0nSoCNzqqmprwC0+uhmlL4R3/l6tC7iq/7glODW4aDhgIornvZprb4x/Utt9R/nFG1PbmgahuO+HnYvktMag9tpw3/qh8OpmfiOiz7wkCpk8UPSaC6xHsIDvpAwYF+2YhndSN4o6XsTMjn7kNXBXh2nbizF5e2ITFrEhQIzxkmSPx+4mqwHZ8Wgo7oW7JYa2sJpoLC6WhPJdGNqEMmfzYWBhDex8Nqm/pVvVWCK+/WN81FYQsOlna4MlhMp/M1LbTU0qVny5wi2/D5QInHjmbn+oMqZTs7x1bg54giuYDyw84Tqx1tKwhKLvYP9aSSq5f5gMCXtt9G/aCsTXV9jH0chbshz4jm97t8x0V2iH3vVAflt9KoOa3TJzbqCjYdMJ28cqZGHF9WNuRaNXTS+Q5ALVoqkbwNyL0i0ZK44vtSQBizvt/CbXgPoh7nXGof0J3bu4DIhgAJbldtdYLHkOiq41X4NgZgPlLZ2kn5uGhxWgzxsCCc4XKWN6aAzxHjlFh25P13/MS9Sb3wFCUbxhq4Rf7sUW/nDjZwSiIO2DvdZB+YEOTmcvShs0CRHX1o9hV2RM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,34 +150,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 19, 2026 at 5:29=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wr=
+On Mon, Jan 19, 2026 at 5:30=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wr=
 ote:
 >
-> Add the EXPORT_OP_STABLE_HANDLES flag to overlayfs export operations to
-> indicate that this filesystem can be exported via NFS.
+> Add the EXPORT_OP_STABLE_HANDLES flag to fuse export operations to indica=
+te
+> that this filesystem can be exported via NFS.
 >
 > Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 
 > ---
->  fs/overlayfs/export.c | 1 +
+>  fs/fuse/inode.c | 1 +
 >  1 file changed, 1 insertion(+)
 >
-> diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-> index 83f80fdb156749e65a4ea0ab708cbff338dacdad..18c6aee9dd23bb450dadbe8ee=
-f9360ea268241ff 100644
-> --- a/fs/overlayfs/export.c
-> +++ b/fs/overlayfs/export.c
-> @@ -865,6 +865,7 @@ const struct export_operations ovl_export_operations =
-=3D {
->         .fh_to_parent   =3D ovl_fh_to_parent,
->         .get_name       =3D ovl_get_name,
->         .get_parent     =3D ovl_get_parent,
+> diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+> index 819e50d666224a6201cfc7f450e0bd37bfe32810..df92414e903b200fedb9dc777=
+b913dae1e2d0741 100644
+> --- a/fs/fuse/inode.c
+> +++ b/fs/fuse/inode.c
+> @@ -1215,6 +1215,7 @@ static const struct export_operations fuse_export_o=
+perations =3D {
+>         .fh_to_parent   =3D fuse_fh_to_parent,
+>         .encode_fh      =3D fuse_encode_fh,
+>         .get_parent     =3D fuse_get_parent,
 > +       .flags          =3D EXPORT_OP_STABLE_HANDLES,
 >  };
 >
->  /* encode_fh() encodes non-decodable file handles with nfs_export=3Doff =
-*/
+>  static const struct super_operations fuse_super_operations =3D {
 >
 > --
 > 2.52.0
