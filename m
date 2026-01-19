@@ -4,85 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD50C9830C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 03:04:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9665AC98315
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 03:04:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A62D6B00E8; Sun, 18 Jan 2026 22:04:13 -0500 (EST)
+	id EB4686B00E9; Sun, 18 Jan 2026 22:04:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87D416B00E9; Sun, 18 Jan 2026 22:04:13 -0500 (EST)
+	id E8BB76B00EB; Sun, 18 Jan 2026 22:04:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D4A46B00EA; Sun, 18 Jan 2026 22:04:13 -0500 (EST)
+	id DAF466B00EC; Sun, 18 Jan 2026 22:04:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B37F6B00E8
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:04:13 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9DEF1A064E
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:04:12 +0000 (UTC)
-X-FDA: 84347219544.06.0A34BFC
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 767AD1C000A
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:04:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="mixYw56/";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768791850; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C92996B00E9
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:04:24 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E8CA1AEE46
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:04:24 +0000 (UTC)
+X-FDA: 84347220048.28.676683D
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 67C9D40006
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:04:22 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="rq/ykZcg";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768791862; a=rsa-sha256;
 	cv=none;
-	b=zGlsZSc6XzPZPpaHhqdDlta2WkdkkoPypXTVR/YgdJFL6RlBZBshElEgdO2ffe/rmfxHtG
-	m1xZcSYFU0R8IHrBw3jk6/jgPJr0wuUQ7EFO96VoiRiXGRkfr8lNzRNPY7uhKwyGJ2M8tF
-	eSBeVaqy4RHnQGaSqzNTaCgU/jmfxJU=
+	b=2GbHdE89PqqHCVifVmv9EfXc9bxnmPN4MCjou3AmmId+xq//OrJnn6vyMX2DYfZwj2c5Mz
+	hWe5jvYvQyDyuO7b+XmAJKON9kD0AA7x2x5DeW94tBzHhp6V+bE+WGm0gA6Kk59JklCz5t
+	oLpSCFekKaucACbTCcRljT0lNMAlUL8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="mixYw56/";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="rq/ykZcg";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768791850;
+	s=arc-20220608; t=1768791862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n0eI/5dwYg2GHXyg1BMxV5hVYdSwwVqxTeMdN4bZK0Q=;
-	b=F6L8a5nGjqjWETqBKuJBzpQudx22yn8Jy+te6x+Jlzlf7lU8uQ4mInmF/UKm+zQKOSooeJ
-	0AwYTfzyXIyxWmkc2YHSIDYbzJee4pDadC8g4P7DyARlMTMzKC7U93w52T6Cc/YES2wwCV
-	1dafqBk6ruoP7lxwF5ivxI6vK015a8c=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1768791845; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=n0eI/5dwYg2GHXyg1BMxV5hVYdSwwVqxTeMdN4bZK0Q=;
-	b=mixYw56/gzFDarIdQCcAG0I6g5H7tgKfKTTIsXhiDNIXYP9yZlgF3JmlQzKtNES1eMHXk49jRysKaNk6asPa26qzuJc2C8Ab+ztaL/RFVf7tpFnscwlyH0yhItNQZPv8dLfMoX0sCQZ5WzJaMeoijf/cSMb9SEkjeYY7gIjlrCI=
-Received: from 30.74.144.151(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WxHY2Rb_1768791843 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 19 Jan 2026 11:04:03 +0800
-Message-ID: <74fd3fd1-97d0-46a3-b76e-435808efff02@linux.alibaba.com>
-Date: Mon, 19 Jan 2026 11:04:02 +0800
+	bh=nD9B2kYFWIUGWewoKq7H29ys6yJUvy9QvdM6wh6FK64=;
+	b=e3LaTUoK++iRNlw98G1Rq64EnemIR2/PuqLZKccTcHmUGMqj6UKGvlT0fxXs2b0ldFkQxo
+	mkNSnB6xcZJz2ocMDqX+49dfOVla3J0jCbvwNd5eUqGOMB4ht5hiu+a+/b+2U6TctPPFaF
+	nutDhQZ1p7/igLxLbBS8DItxynxApaI=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/shmem, swap: fix race of truncate and swap entry
- split
-To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
- stable@vger.kernel.org
-References: <20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 767AD1C000A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: imukoqibq6rqtk6digooh7tx51jm1gmr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768791860;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nD9B2kYFWIUGWewoKq7H29ys6yJUvy9QvdM6wh6FK64=;
+	b=rq/ykZcgTNXXpeCZNRhMD97B1NzxYWBX7+pY5JhDMpfhrm7H/C/BL/Rpf6ZhczarhbX+HL
+	2ja55dd2CLPC3GtqFevZ2gSfKbMNzj7HNIR0+tMRjGoCEqcjk4lF3Q2hMEO7OB/Tq+zoS+
+	0yy1L6URaPr39QXYqBSrhjXA8bRL6TE=
+Date: Mon, 19 Jan 2026 03:04:16 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <562a3b0db8bed7a1f13c3e1b8ccc846181226b5b@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v3 1/2] mm/vmscan: mitigate spurious kswapd_failures
+ reset from direct reclaim
+To: "Johannes Weiner" <hannes@cmpxchg.org>
+Cc: linux-mm@kvack.org, shakeel.butt@linux.dev, "Jiayuan Chen"
+ <jiayuan.chen@shopee.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "David Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Axel Rasmussen"
+ <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
+ <weixugc@google.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, "Mathieu Desnoyers"
+ <mathieu.desnoyers@efficios.com>, "Brendan Jackman"
+ <jackmanb@google.com>, "Zi Yan" <ziy@nvidia.com>, "Qi Zheng"
+ <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+In-Reply-To: <aWpukFnKRoeSrcEZ@cmpxchg.org>
+References: <20260114074049.229935-1-jiayuan.chen@linux.dev>
+ <20260114074049.229935-2-jiayuan.chen@linux.dev>
+ <aWpukFnKRoeSrcEZ@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1768791849-641458
-X-HE-Meta: U2FsdGVkX19yybKHWEsKdNesplanOU7utu9tMmYUyM4YTB3OotVZbkLa2+TdnwY6+SR3CHcn6urEAiiLQmxvfq+HXp+8FYh7T3tebrg+sF3Xkrx26axS0KMmYPiUUk+7a9Yit+4hXn1WFDC93290IfsrhkudTCFCiejC7EPL4ig4DoWEbURqV/vz2bBtvDCZVol4Y8/6bKLoNZcnvZ3giLdWmEUylDRbIDOkBYnN1M4d8Mqp0AIdz4Ra8TLo/6dznv/5dkyqWOX57wSSYZW3BKbYXCFDtsfmHuuXO9sO+7Mq5SqB7AZfBZoA2EKYPdabFQxVQPdfsg13UEdExQxcw41AjdUEfI+6Zpo03reFQwnl7IavW31xtLL/lN7mqlPHDJDGcGIMgL7sCNDhvtO0DXylv0eoZYCK/ehvgqXhgRvNQxTL5ZXo3Ut0+e9y8MA4DhS4y4olZUiwwQ5gC4b8bIoBe76v8F5IHgSafV4fw9nvfukRm3JzI5TIZGAsp7f7v7Zm1ut4VBePlFsrYWF1uTI/H+4JDWhZAM60dUrpDdTiNBCl/xEBPGEfYbGpoqEtKS2tOmpD8ulO1G1WsarnOyKd96n7v1np8l/nTzusRBR2TqscMywxczx2w/ADa7AfRLcPg4vdEO4KfK+nzE5jqD1RZ79e2siEmVTZH8+UJqli5Q0008owg2FzmVobWhcRB5GTTCgDKSLFPayIroA/4+Va+9kqZALtf/I3JfvECnpVpNbNB5awM3BJpytssJIKb3mG82G8M3CrqybdxEF3ZFLQJUyxyRGeB+vzeP8UY63X97N7UtAJw5EWOIibHOa3cP9QZDXuDgD1Ngfc05qKKvhs5YUPU57BJCnXKizRB1Xvyf3EeaBcwPgM+Coo4Hbx0YJH0MhYlDWiGtzPwgyKoY5OC1amK6ZMvq7WTUj8uQblrpM7Dw2ndcglHrUgkjIBla1NpjdIrgNl0W4N1HX
- L+6YgZEZ
- OAadNgVgVUQ5taZYzsqnF8ToJmgfIhZ3uRmNbIVekY46Vbus3/DydEFxcKB6Hix/WGquoyoiOuIbCW5lV2V47jngi95Jy+hi4uvgHmjgtLd3ApApUkXkgre9vNdrlEdub+G1mmy89NuxvQramx5BuhqTQt1IxJ1TYGWgSdIJm+mHTQQph+4zWMXARRjpo/kMZzI0NojE70pVGp6zxy9PsHA7NyAAc3MzjYlKZWQddymJs9m9kMJqvS2IKK4Z+eDkedZ0fFoaFfGqlvw1MF6dDl107JkerpD4/5375nxsxgiVsYTQ6bDjmYGQrkQ3PtjZWzbevZUnHY1kWcq81TkMlbhz9Ai6Ny6L0Tztoz5BJkUggCWQ=
+X-Stat-Signature: 6wcg66w5tfw133rykbbhtg45cd8eicsa
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 67C9D40006
+X-HE-Tag: 1768791862-721953
+X-HE-Meta: U2FsdGVkX19z9MHwreJNxIHySi++b12FmEPtvdDefUfllE2GL6GKO6yJfCUY+/YtrcsHz9gEn221Ljdp/IJ18H2YfCeahK18Aty4d1ohM75xgpyT7X6kp7f65hxQq+6tj5GlaEtL0iCCefJJIOnWJx/jYoN1BqshniD/N230YLFiKZQDhoX0N//l/10NrkxEbQIkr1XpqOXU/AklelPlLeKqMcWI6kdhSNIKHVHwhbB8mRngiJaGM3EzGc3MhUDol8RceJ2xZnDagWPXGBXtyGQ/K4UZUbySozUO75kuYUiwQcElDaOSQIL31+pUhGcLcAw52mIGo1GzVnx/ruXeQgBGZX14ebFIXmwA8zJLbfarSWvX8J7ZSl3hFowKi+iYuTN9qP9UNAQbEQIfP2leuo/Vl4GvwOvw/ztQhc6rXaW4cZ2x9G1TwAQlun9+OKNHlmAI01roO6un74BtNOpqfehmJsB7hzOj6UwL7kYltqLVNEaPE4zCuwzg4fLYltiPdzPfbDzfjplwSOcjJ/ohseb8gs6vUFoiagkAdC+ovH8Yb5FYUfJiefQSBfk5viskqpxaF06ocInhopbQ2AUyFeKxdJ1btxwMWtO/BTHHes7sfZQpmVMwfEw64pxII1V/ONEcztvVg9qop+9/075izQXSpJA+WqOu9vpY0tpwq/5jb2uoUfp0NPzYj1CWJKImzXFaSvr6A81Yl4cLOZafo7pzk/Z+gg6ZLKHQpDFVq4qHVvPdKSughTMQEjxUH4kjGwwFzsjTSQtRvSYaPGbfkLSauExIbjPvBkdU8A4C4AQ0LXpa3ojMoxQb3WujD7rbJ5S1dds/QM4eG1D0wDFYZidAd7qFcWcLub5VbkCO88pVNwzp60lCeD4aK/6xZ0QxIBKDp2RdjyjfPV+ZwOZVAQT2a6FlK1EZ46Wlu7mTXTu5xuejqfgnYLROSpxVxkDOyQtYOfxqrgIhJTBwCL4
+ gXNAxrpE
+ fXukzqyIGETCZndLeZm6HHZ2Yb2sRldWi0S/O1q1AzKKmEGVV+FxJ+VUM8JcoOiNry2zpFDx3ZZc9AAxyG7FiYAMHQ5ESS1xSNaJ8i2jTPt2IBbdacBUKb+jBNWR2p4bcvDGabG40n9PQ4U/nfrEVo8WFjsHe9qyMednf4vx/Syoa6zBQ4ITppbM4FviyfFecKGdmFaucxVaL+/jesmn/EKg0MeUVxtp/2ZiaxZ24xzeZYZGe64X+ukrZktOvRKC0khugGknXGvQmclvZd6TzW6oq3xYIvlr3aaXPJX3vzI4lj9W0+fQE97us0U5wMbxW2v+J+bvQVsxHOElT0Zi+DKjqbiAi+TUgj5sj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,128 +105,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+2026/1/17 01:00, "Johannes Weiner" <hannes@cmpxchg.org mailto:hannes@cmpx=
+chg.org?to=3D%22Johannes%20Weiner%22%20%3Channes%40cmpxchg.org%3E > wrote=
+:
 
+[...]
+> >=20
+>=20Great analysis, and I agree with both the fix and adding tracepoints.
+>=20
+>=20Two minor nits:
+>=20
+>=20>=20
+>=20> @@ -2650,6 +2650,25 @@ static bool can_age_anon_pages(struct lruvec=
+ *lruvec,
+> >  lruvec_memcg(lruvec));
+> >  }
+> >=20=20
+>=20>  +static void pgdat_reset_kswapd_failures(pg_data_t *pgdat)
+> >  +{
+> >  + atomic_set(&pgdat->kswapd_failures, 0);
+> >  +/*
+> >  + * Reset kswapd_failures only when the node is balanced. Without th=
+is
+> >  + * check, successful direct reclaim (e.g., from cgroup memory.high
+> >  + * throttling) can keep resetting kswapd_failures even when the nod=
+e
+> >  + * cannot be balanced, causing kswapd to run endlessly.
+> >  + */
+> >  +static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest=
+_zoneidx);
+> >  +static inline void pgdat_try_reset_kswapd_failures(struct pglist_da=
+ta *pgdat,
+> >=20
+>=20Please remove the inline, the compiler will figure it out.
+>=20
+>=20>=20
+>=20> + struct scan_control *sc)
+> >  +{
+> >  + if (pgdat_balanced(pgdat, sc->order, sc->reclaim_idx))
+> >  + pgdat_reset_kswapd_failures(pgdat);
+> >  +}
+> >=20
+>=20As this is kswapd API, please move these down to after wakeup_kswapd(=
+).
+>=20
+>=20I think we can streamline the names a bit. We already use "hopeless"
+> for that state in the comments; can you please rename the functions
+> kswapd_clear_hopeless() and kswapd_try_clear_hopeless()?
+>=20
+>=20We should then also replace the open-coded kswapd_failure checks with
+> kswapd_test_hopeless(). But I can send a follow-up patch if you don't
+> want to, just let me know.
+>
 
-On 1/19/26 12:55 AM, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> The helper for shmem swap freeing is not handling the order of swap
-> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry, but
-> it gets the entry order before that using xa_get_order without lock
-> protection, and it may get an outdated order value if the entry is split
-> or changed in other ways after the xa_get_order and before the
-> xa_cmpxchg_irq.
-> 
-> And besides, the order could grow and be larger than expected, and cause
-> truncation to erase data beyond the end border. For example, if the
-> target entry and following entries are swapped in or freed, then a large
-> folio was added in place and swapped out, using the same entry, the
-> xa_cmpxchg_irq will still succeed, it's very unlikely to happen though.
-> 
-> To fix that, open code the Xarray cmpxchg and put the order retrieval
-> and value checking in the same critical section. Also, ensure the order
-> won't exceed the end border, skip it if the entry goes across the
-> border.
-> 
-> Skipping large swap entries crosses the end border is safe here.
-> Shmem truncate iterates the range twice, in the first iteration,
-> find_lock_entries already filtered such entries, and shmem will
-> swapin the entries that cross the end border and partially truncate the
-> folio (split the folio or at least zero part of it). So in the second
-> loop here, if we see a swap entry that crosses the end order, it must
-> at least have its content erased already.
-> 
-> I observed random swapoff hangs and kernel panics when stress testing
-> ZSWAP with shmem. After applying this patch, all problems are gone.
-> 
-> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
-> Changes in v2:
-> - Fix a potential retry loop issue and improvement to code style thanks
->    to Baoling Wang. I didn't split the change into two patches because a
->    separate patch doesn't stand well as a fix.
-> - Link to v1: https://lore.kernel.org/r/20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com
-> ---
->   mm/shmem.c | 45 ++++++++++++++++++++++++++++++++++-----------
->   1 file changed, 34 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 0b4c8c70d017..fadd5dd33d8b 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -962,17 +962,29 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
->    * being freed).
->    */
->   static long shmem_free_swap(struct address_space *mapping,
-> -			    pgoff_t index, void *radswap)
-> +			    pgoff_t index, pgoff_t end, void *radswap)
->   {
-> -	int order = xa_get_order(&mapping->i_pages, index);
-> -	void *old;
-> +	XA_STATE(xas, &mapping->i_pages, index);
-> +	unsigned int nr_pages = 0;
-> +	pgoff_t base;
-> +	void *entry;
->   
-> -	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
-> -	if (old != radswap)
-> -		return 0;
-> -	swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
-> +	xas_lock_irq(&xas);
-> +	entry = xas_load(&xas);
-> +	if (entry == radswap) {
-> +		nr_pages = 1 << xas_get_order(&xas);
-> +		base = round_down(xas.xa_index, nr_pages);
-> +		if (base < index || base + nr_pages - 1 > end)
-> +			nr_pages = 0;
-> +		else
-> +			xas_store(&xas, NULL);
-> +	}
-> +	xas_unlock_irq(&xas);
-> +
-> +	if (nr_pages)
-> +		swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
->   
-> -	return 1 << order;
-> +	return nr_pages;
->   }
->   
->   /*
-> @@ -1124,8 +1136,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->   			if (xa_is_value(folio)) {
->   				if (unfalloc)
->   					continue;
-> -				nr_swaps_freed += shmem_free_swap(mapping,
-> -							indices[i], folio);
-> +				nr_swaps_freed += shmem_free_swap(mapping, indices[i],
-> +								  end - 1, folio);
->   				continue;
->   			}
->   
-> @@ -1191,12 +1203,23 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->   			folio = fbatch.folios[i];
->   
->   			if (xa_is_value(folio)) {
-> +				int order;
->   				long swaps_freed;
->   
->   				if (unfalloc)
->   					continue;
-> -				swaps_freed = shmem_free_swap(mapping, indices[i], folio);
-> +				swaps_freed = shmem_free_swap(mapping, indices[i],
-> +							      end - 1, folio);
->   				if (!swaps_freed) {
-> +					/*
-> +					 * If found a large swap entry cross the end border,
-> +					 * skip it as the truncate_inode_partial_folio above
-> +					 * should have at least zerod its content once.
-> +					 */
-> +					order = shmem_confirm_swap(mapping, indices[i],
-> +								   radix_to_swp_entry(folio));
-> +					if (order > 0 && indices[i] + order > end)
-> +						continue;
-
-The latter check shoud be 'indices[i] + 1 << order > end', right?
+Thanks, Johannes and Shakeel. I'll send an updated version with these fix=
+es.
 
