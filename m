@@ -4,198 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4DC0C98315
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 05:41:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46CCED4A5EB
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 05:51:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DC5E6B0108; Mon, 19 Jan 2026 00:41:58 -0500 (EST)
+	id 8554C6B010A; Mon, 19 Jan 2026 00:51:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 927C26B0109; Mon, 19 Jan 2026 00:41:58 -0500 (EST)
+	id 7D8D76B010B; Mon, 19 Jan 2026 00:51:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6075F6B010A; Mon, 19 Jan 2026 00:41:58 -0500 (EST)
+	id 7054E6B010C; Mon, 19 Jan 2026 00:51:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A5E86B0108
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 00:41:58 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CCCF259EE2
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:41:57 +0000 (UTC)
-X-FDA: 84347617074.24.6F2A391
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011070.outbound.protection.outlook.com [52.101.52.70])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 07CF24000C
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:41:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jUbGVqYx;
-	spf=pass (imf17.hostedemail.com: domain of apopple@nvidia.com designates 52.101.52.70 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768801315;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DE9A6B010A
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 00:51:00 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D21B9140667
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:50:59 +0000 (UTC)
+X-FDA: 84347639838.14.497C586
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A3A6240009
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:50:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Hba8xhsA;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768801858; a=rsa-sha256;
+	cv=none;
+	b=C/K4IgA6QrCxzbAYl40me/xcbJGrJE4B97BaqjzHJQDLLvH1TZBkWnXaKTchMCUWMJgtUr
+	OE3jjIE1yXckuFAhn9CLBm26fWuVSxpOcO39aSShuWxqCZCjqwZQ5XmIrXLb7LRS9agrGX
+	lWmf2Ciom79qjMPpFGWubzw7Ekhs0+4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Hba8xhsA;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768801858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qK3XiTS+uSs4Wa2VPlJvbJxUnlZWwPdIxsUpN6pCDjQ=;
-	b=HKJzVwfaGytCS6/hlf7I7E0LmEVYJ8E+TwBVLIb/wrlQPoF6dE2kIovPi+Mid2qwgoJ9xv
-	EICZk13fjbiSKCUuoVBQEHFX2Ag3OB9W/VMtkae2ct1TFv8rdWPAjxJ5eWiuBU/GhpvFVL
-	7m+o3qEWBplRYaSLbOo92kY6WODPklQ=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jUbGVqYx;
-	spf=pass (imf17.hostedemail.com: domain of apopple@nvidia.com designates 52.101.52.70 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768801315; a=rsa-sha256;
-	cv=pass;
-	b=tCsDA+8+xKVb/f2uY0048wYyIydbEw49ksRz3u5FbgmqWPyyUvFJcJa5LdopRqck/8zXHV
-	v8Bnj9ddVLeFXxmSJupR1jJdAGq2PF+Jzi6qH85eOTV8bXhaC4JbBdQCG6hKEa8OGO2cGS
-	80JufTXA2+leA0cxbHS/mQKDZcByCGk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wE5Bv7/ig79+QnmvXPZjggD2v0pYM6wzLfOtwd4qE2UOK6BBRdT7q+F66Fjlg4BEGTTKWtk6xoOgODXMNGBYsb9OUN5qF/iUIKdzmO3a9Bb/MX2084+ihWLJjianpFD2TzBgqMGPEnwv2yvQZ0xLNwU9GHt/4Tq67oJTGMgzo7Mso4CUB96g4u+zHAYlD7wKC7ppvnzDCCVzAI7mRTTQ6HDT5d7VwzQ3iO2R2XZdPs+l4f+2AuVlGfXEokKlwn9Ci4xowZaUGSixODceQzRPD20WDCPeLUvm0EB9OJkkITnz6N8LlUVPYw8ykx6rXsvDOKikoNsaWKuWchg9WXtQ0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qK3XiTS+uSs4Wa2VPlJvbJxUnlZWwPdIxsUpN6pCDjQ=;
- b=Z6ujz6TEXuRC6rHeXDkfu8+R/xHy7Wqx1K8c8gVGWQu+HsfxiwiHtl5pAPZS9c+fYoUY7eL0FgVemlKeI56wZAVxdcVSQaA3eXA1+ro+UCpBoPOhTc3O0D99sXVo+gegwLReylkHdb3FJCcH2zVc6cdPSA53lytqNFLOGu3umQQJEPJP5mlBkvTvbl8fQaTWifEpleagfuG8leQTGOV02RWqkCXsGbZ9Vy/gkbNsXdOe66loGomuZHdK6jP10kKMSBnBY5fB6iV4Jn0ZlqNptDMwvEyS50o2fXHyBdlbaKeGg8hT+slEX9bSF/SpdPe96V5MNRHSb6cc3Ai1BQVURw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qK3XiTS+uSs4Wa2VPlJvbJxUnlZWwPdIxsUpN6pCDjQ=;
- b=jUbGVqYxt9lDNuZjrmpaFO3l7m3FLYsgnvoyzQl/L+fXIPAeUlJ9LQ5NxtRSuzacEqxcsWYUbZYEqsERW8zhIM5iAc5r9o3r8knahxS+80+aq85JedpPoPtkLcLEDDnPz6QKPA682Ts4Uw7WJxODYcbxW/ZgpxsfcRlk1TqUVlyKDzIvpg9TWbbb96rH4ixzUB0Xjpuh+5WygBnE7rqQCx4qPmhANymI/7Tpt95V490e0jz6MlkpqSwlmZVCZfuD3XZgIPq+JK4c88TQhT6F8AbHULJdv3ES5lAhzN7KI4YYJA8bSD70KS70goUbNqEMQt8rMlWt5d6UZh5cpfUB9A==
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- PH7PR12MB9256.namprd12.prod.outlook.com (2603:10b6:510:2fe::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
- 2026 05:41:49 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
- 05:41:49 +0000
-Date: Mon, 19 Jan 2026 16:41:42 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, 
-	Francois Dugast <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>, 
-	adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Leon Romanovsky <leon@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Balbir Singh <balbirs@nvidia.com>, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
- private folios
-Message-ID: <y7dm2sqf5t5txirxkbu7hlmsfsnlbtdirgn4ts2l4st3z4kawo@qpa56ysy5v3t>
-References: <20260116111325.1736137-1-francois.dugast@intel.com>
- <20260116111325.1736137-2-francois.dugast@intel.com>
- <20260116174947.GA1134434@nvidia.com>
- <8006ea5f-8845-436a-a2d7-125399428762@suse.cz>
- <20260117001921.GB1134360@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260117001921.GB1134360@nvidia.com>
-X-ClientProxiedBy: SY5P282CA0028.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:202::14) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	bh=y8PdWrFDBIYyEs7h2YW96ncFY4ig9Q0IvOWU6B+OmJQ=;
+	b=CNMXoTGtTTooSgRbWzN8759rddrLSj4LtjH2z3I+4uKuP+KFVeylrTLYEW97Ls+4WHvd5D
+	GBbqtNnpw3o1zv5W1HX3RzFy0GEQTY+ghEDaY37fORaTwIGBuZpKNvEDDzSfusMODEXaUI
+	+Iv7eYb34/RyRTZlp5pveWN5HzM9/sE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768801852; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=y8PdWrFDBIYyEs7h2YW96ncFY4ig9Q0IvOWU6B+OmJQ=;
+	b=Hba8xhsAXUf2LnaPG5zf2+C1vqRmxLI1IWTSGnwuYnV7WZp3ZAboAoTj8r53DDA67X1EfQvkbgXzHGBUQeABZ3zQ3Sg08YO5KcEdRhhSjyGEw2XcAU6YNG8BMYilk5c1e39zCywVZmVPlzBN1CA+8ni8AFAtBDoY1lWdOtO6r68=
+Received: from 30.74.144.151(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WxIhExM_1768801849 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 19 Jan 2026 13:50:49 +0800
+Message-ID: <29634bee-18c6-42c2-ac7f-703d4dfed867@linux.alibaba.com>
+Date: Mon, 19 Jan 2026 13:50:47 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|PH7PR12MB9256:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2437e481-3942-431b-7785-08de571d70bc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?DF7cAHISt2s3lbua59Aks1H4DGe9dQkCJ4vR+Rq1U5NULpWQysaxM0tTIAf1?=
- =?us-ascii?Q?DC6OIcmszD3q/VnDHezCAcFYCiR3SvA6yyRjsDg8lQKaj1iHhtRrhDIn2T/m?=
- =?us-ascii?Q?EnZAiLxrxtNLQNonzw3Q8bARNlTcdakNUAWx/l9LJTawXJd6abH1kWz75win?=
- =?us-ascii?Q?3c8eWpslO/i+liuTL5ENG53nHHNdPQX1QYICNE33JfDDZygSwtyh3/7aLTW4?=
- =?us-ascii?Q?Rq8lE2YaF40AxZol/BvkahB//rZrcMQW5jfuHjnTX0BDYzfzTVkOVyreCgea?=
- =?us-ascii?Q?h9B4gd5ECkY3dwDMFFplwTKfWc2M4tTwdS0JQyIycc6j0yYEqSXnS+X77HQU?=
- =?us-ascii?Q?uk3yxc9LRvFVDrOQMY9VaWUHT5nbENbrXD47GgKtxLYf4Ka9o/AzIVjUFs4Q?=
- =?us-ascii?Q?x4egJykK5HEq2AozipbVQSObRkskZQT1O8QJw7/AxoZNiI0j89hNiaXBVVn3?=
- =?us-ascii?Q?9rENectb670Y+U9uDkPK1D7m/M/7neVJt9imI/oTG+wSKIShp9IQUUXpiN6T?=
- =?us-ascii?Q?FCXQRQqLIc7kj6Cgvfo7YrsN4ua8fbI+/4FVuFyoUU6QxtMScl2h4xPS0ni2?=
- =?us-ascii?Q?XtwKEhBmPD7quf4deUluRPfrXyINBGAUWSy315HxGHjNpcJm9MN4ljvzXFVx?=
- =?us-ascii?Q?oxaf0ek3tTZRs6ZUjCm4kOyWIoba6d7Lbtx1D0fGwR5RBR3Lt0QOlOXxBwSP?=
- =?us-ascii?Q?kEzT7K9B+xn3y2Zeb1l3ilUehKGDO+JnW1JjesB6M4BYrsZW0VqWmEDekbBg?=
- =?us-ascii?Q?VW1201rsErESVQDBLJqEh6L3iGQM4y9Nq6Wk3m6a2otIMBbmKfEQBnshWsnL?=
- =?us-ascii?Q?optR6YaNee0tPOGOhF1iu3aLEVoj/yT/0c1bMv/HRXsXRlehqLCazpGJ4FCG?=
- =?us-ascii?Q?aMWx7sv89ML6JzdI6S3e4pCXInj4F6kPaLi9yfbtVCj1hFgKiT5qeNYMT7nD?=
- =?us-ascii?Q?AGhlBXheFOmACsBQpxP5tfHcHDKppiPKkSodgfXQ5O6c/JDZOIqkOIFfDEi4?=
- =?us-ascii?Q?tz2412nOKKKE1RtLecHpWA1b1u9MYeP/3M9FCk/5/bya7myHz6Ys7uW7wFEz?=
- =?us-ascii?Q?gA3/NQLduf+B84rywz01FIuq+pDfmiz0+3AuY65m79sRqMgTOJI5SlHEbLPc?=
- =?us-ascii?Q?Vla9U4jcC+THc8EDRObouMqlemVcPC6i4GWQ4/dvvnOUzCNRGhin6GU4LiUD?=
- =?us-ascii?Q?1XH7RWYWdyIA6vwgNccNlVHz8T3X2yvzyMSaCtElZFFQUE7dlxY0UCJ/MBK0?=
- =?us-ascii?Q?rfkcAP0xF3eR+jXIh3gBJOyFu5881IdXOzbAEZvOmWXpWKISoa8VCdTYQJNU?=
- =?us-ascii?Q?oDGAuZe6h1AXAKh6BRYmDlH7z8eCR6Z9Cf4m+MgPm1nxu6wGMCg2s59kgdXu?=
- =?us-ascii?Q?6EKFfuyqc7F2YoVoYLACh1Bp7ora4efJgdeqjiCd3/Pcsc0ePv3qBxWFpX/d?=
- =?us-ascii?Q?WqqhzklK1I2DBDQ51vmftCZHf2xZNbIGbMx+Z1ATRU5YVZIZQFqrVbjNTQIs?=
- =?us-ascii?Q?R4g6n7uPBvAMkhA1CgfsgNgG+EW7uwPHq+PxDwVzCcMnq2Hm7F26nPlgdV4M?=
- =?us-ascii?Q?Kyn16ShYTrSvMmt5ZIE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?UL6vDGw3053/l9bc+92xDLkK1xVCNND8u/eOQjpJCMCAWDI5fCcBeR8P9itV?=
- =?us-ascii?Q?RPNzyXJmeiUgUPJbyqY1m5X0bFILQprcOMgncC4u8eAfgbOVa5ylXWE0vtFP?=
- =?us-ascii?Q?foYHTGAEEm0hQBg2laEBfOH0x4IaJhNE9rFBKga0E9Mh0ZJ9z7tAW9ZfdjII?=
- =?us-ascii?Q?rVU9BoZDrrecGyqkZ8TTBgd9CJWU55KwEgr06jtIHPsgHtQ3xP/zBBEZkpCa?=
- =?us-ascii?Q?HCRW0oW+nYvOx8QU6k5CUhpoxrUu5u2474moBgDrnATE3ooavjB3p3dBqgVu?=
- =?us-ascii?Q?K0NtKdmchmeAOVkFliaw48qoREI8COb/6IHmJ5OoPafiGOmL3NWrO67KeG5g?=
- =?us-ascii?Q?Gvo+MYqugnJTtpCGxzMSjMOuygsUvQSjVz46NXRtBQW70u2on488e8kPCmsk?=
- =?us-ascii?Q?tox4EBlTrcxmpMUa1YOx6Z+IsbK/LWLjoPApSiJR50HnrG1LIWq4e79PQHy9?=
- =?us-ascii?Q?j74Y08q+UNv5IqKmvrQMPDdiVAY5I7r/D8b8+ZU8Z86Hz50vvb1fgGPkspPD?=
- =?us-ascii?Q?MxwZtBrpdO1o/yRwDW5CTqehAKSBt92Vis2HZc9qJYsSCb9hJZ5hKVO9/L6Z?=
- =?us-ascii?Q?ZjpqiWA/GfuF9kEO88Gr5duydHBG09vTv/IsCSyNXOkRcCMrqWVmSOsZnXyQ?=
- =?us-ascii?Q?Q2aEA7smF9I1M6ajwkWVUAT7zhNDtK8N5wyC0NOtdZ0cDTRpnBqMi/80NhLm?=
- =?us-ascii?Q?g0eEIuYB3U/Kt/aCaUSqFt/DicRwY1MO4P2ggsYukDc+xF+lfv6QrL2JIafF?=
- =?us-ascii?Q?gFSCpCm8X19J0ryfmU+Usj8IWQvQod6Gd2y/1IhbFkr/50muBvw5gM+cJmz6?=
- =?us-ascii?Q?pIWaGryM57tAUyqsoaAZUrUt9FI+fhOqYJF7GyPkJ3I+DjQjhphtARWjBTJw?=
- =?us-ascii?Q?J5QjffNuZ/odntLsFJujY13t5cMiScvszGK5+JqpVw1nXZ834/1r9zCWaj01?=
- =?us-ascii?Q?V7slNsPE4Mytro4Ylf142faZLtOoCY554ddE1riwJ003FAeigduBOkV7uNYj?=
- =?us-ascii?Q?CJ82E1KtkULcDzFs7vdvbPpIye4fluIAC+1NZtEPvbEtO3fjKjPf2TsYq0C+?=
- =?us-ascii?Q?WOfQ2yiCWvr+EqL5dPfmu5Ao5u2+wN2DR94URRkQm5oBmHlPnzMZgluXZ6c2?=
- =?us-ascii?Q?epYf+65mXnGfL06zZeNDSGqF5nrERxyOiLQG/Aq34RGU0fIIx4EIRERfetXu?=
- =?us-ascii?Q?VNsAUsRuUCyBHbv4fF2gcLmid4G9NWuKPWMTN47CDjtsf1z2sMuFw8zHLabX?=
- =?us-ascii?Q?KYMGeO3ZgIwqk9/RcdEbmh+nAGA4h1oDcuLMC7m696gSTE20fXPzBud0tnO5?=
- =?us-ascii?Q?WwqjeV3Wg4WV1ywQptwSyMaTsFzOq3qVfZbvZLu+yvCFJZLvppYhN+cC7Mci?=
- =?us-ascii?Q?xM3jlMZl9tu0O3xOmpBGGiZeCanS4aGuMqBCGBw+A3AdghyoSXbW2X+FUy14?=
- =?us-ascii?Q?AS1MDBOG/SsPFQ5jB5ST8hFIpzkvrf/CvrWZ5liB0n8G7Y42nFYAepVwl599?=
- =?us-ascii?Q?95uICIksg8pznNIJrcbi7eIv7pF5U20SiDr21mGmnjNmQfErzXH+hdBpsJ8l?=
- =?us-ascii?Q?y4AvCaZiDjGz/7Lon6zii7cIv8NlUgoVoZYwhlGl8rIdvJT9kn9G3sFZQ8Ii?=
- =?us-ascii?Q?YwdsqpDHWbRh8acWlU3WWkdySnsXo8PtTxSde70jNCVxJa3ZJf03dyJ/ezMt?=
- =?us-ascii?Q?DSj5xnLU31uQ0uoSCGZM3KXFa4dcCSd6OHNW42UgOVkL8WT7lnoX1Pun6m1C?=
- =?us-ascii?Q?vZaCncgRUQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2437e481-3942-431b-7785-08de571d70bc
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 05:41:49.4159
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ki3Svp+xizI3bno4NIrSroQ46uIc+M8KbCin65A8XaIduLWGlvcvX8U6tiiVPqgbjRiIOcZK1Gfm0A8/vONK8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9256
-X-Stat-Signature: a7d9j4w3ycdjnfh8whs4pg7oywmuwm4w
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large
+ folios
+To: Dev Jain <dev.jain@arm.com>, Barry Song <21cnbao@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+ <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
+ <20260106132203.kdxfvootlkxzex2l@master>
+ <CAGsJ_4yKRtyADU2ZxUMgvqdrhAEL4SpZxCMRt28gNJfUf--5zQ@mail.gmail.com>
+ <20260107014601.dxvq6b7ljgxwg7iu@master>
+ <db4d0a19-598b-48ff-accc-f5940a481035@arm.com>
+ <CAGsJ_4yo-EE__1VzHqxE8ehDOFQuxqP9GXcskkeZ-WTTyz12_A@mail.gmail.com>
+ <ccce0551-489a-4612-ab5d-2dd8a5cae66c@arm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ccce0551-489a-4612-ab5d-2dd8a5cae66c@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 07CF24000C
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768801314-695587
-X-HE-Meta: U2FsdGVkX190LStmytuWtFJdtg3bCeqJYxexubAy6pycKESbIHiiJTq1bWuxhNpBw73gkaxq/86QlOXaudpMgrBtBg0GrBvwtoNEYwFJkR5hSc62iBhxDGr3bs78zMaPILZWdM5hBqzYgLc4caImTu9QuI7pUV3byOegFw+5FS3A9rUJ8vHUiWfjped0eKzHcZWmzqBzs8ZYkteHcotUPr0B6sLQu65pqadKe72ZWbFv9X8lS/56dEhquNlfe0d/iqyIuD5RYJP7gS3+Y44tAj/GUE9pRq0Hb9TCEmKWk14xDRUTJj0eBdZIctCDCeBdRW3EluRavu7zXfj+gff15wCvGZXYMP33yQrKSBwUSm+ZTKT/Y1MXxf0JS/tERF5sA4iU2IKLkMbEcQwYr4DdraCQ0fQQLiO9UxKkHNi52cnhGhlyxwc0WlSMjsn586tDkLFq83wygdWdHa4we+TEO/aTFkHEhPyblY4uf59TFkfXSia7vGwojAbn8PAJCxwMvLG8cq7TxevVNwZV0kzeTENTr3rTV5WdOd5DXzJT101ow9rldYY05te47vlwckDO/W01LUFsQy/zAHr59I6FdXKNNM8hYJq5t9h05ypoD09GhfwDUVr1nAbqrcKBviCMOPYJKSQOgTMWP99DdW3p/s20pdJpQ1KIcCtK+S8ea5AgFdbVD/WOGLA8TEaD1hwXRpEiJPZGrWA6zdSduW0L37r6UPxKsmbPK4+sAjBoDxHd9f3JbKnu18vmsWcNd3eQknZZt7cPJmKD7RAqP7a2xR90Me58by7RIk5SIJp6a3fRawpE87JyKN4Quvi5FiGwYpa1OYhqbIWT7k/iepGhQIUpJ+u1MIG1rAzEnOAWDgZ589FSTnnFmv/QAkFwQe/acUxWqS6OKaUTE+jWrh4Vk5nT3a1PRUfeS/Iyzt2OwR2zbX5KXFNEOgQnVUghPXZJrjiK8H+O9FUpiViO8/B
- R3i96Qvh
- I9u0Lkd/6ozG+eXQAj6C/FqZ7gSMeWb7FMVhATtsfmND/KJ5BSp8dlwOJ/GogzvbzGVYLvJeHF/eGxv23ICIB+KIfxl3wXDpBfoEj8U40lvvSJzndcVo3Phj+w8q70m7sQh9yDrnfnT7+ADiwKKVcYnRBan8ouSZcUiTz/cxgL2hBcxc1ZBGJViXfxsGhf8qDvnTSsZy2GsVXJQs1Szo1ccCOysop8fzAk+YkuJ7tmPjFHyqGKGZ92VHGjzmoi/j0gqQ/J8QX/m4v3oJRBKCT1OLjlKK/Xhv2rvQJ++6wo+EszV/b4cPtlPSa+4P84QsZ7vYeXFZGC9Aqe/0q9p89raKPpEOxWmT+CCQ5Q7Km8f/0WxYvtqfU8yzNU49DxZW+SXJNd9atEYj0Jzycq77IjxK/UueniOXwDZKCxyAEpYHN+XTwxPT2Xa2wDT8JlSn4nQW2g54USDovFwHjSpipGHmLjOTgHe8zDn/D
+X-Stat-Signature: 4czd9nx8p51fyw5cj5yjaqfacqz8fzut
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A3A6240009
+X-HE-Tag: 1768801856-991459
+X-HE-Meta: U2FsdGVkX189wZ3iY4RzCkMfoS8nvgO1GxAR/9EIXSGGgGaDmmrEjQUnC8MoYW8Z89bDox7D8cT9WDcquLnZjysq3gEbl/BJQfpH4usIk9Acslg3SeLs65A73PiVny7V/He+ProUMDmH/8vDBtVwHFkKKPFBz6NASiIIrwhLrftwyXtUqddhslGmZWIizQsyC926m4l5aOEL5OuaQcHauW7Cmb21ocs9yoAb0kzHd8ltXDvtQ+fw07q7JtnMv/tvDl++2DqZ5qh68gkrv1OAEq4lK5ei3KI7jl0HZWix4jvJk9ooQxLLQyS0MK9dOvgkZS+dlzLkBHlBN8X0N0D7Y6Y0dT+F4v45Xv+0w2IpjsqqQm40DC72iTXhm2hz/dfzFetnAD3/s4CPj23BIyJmBwiNSsrdAls03Z2nMB1KzwhbzFRbx7Gm3aUvV02486Dl09PZGKHukMU3gPF6ptEr0JK/YyWpQ3/sa5FNV/ocayBdNggMHbWJTvirBBNCljHiDJdv+0RwmFLPw3A+zlRoIZc7FM26XUSBiYmJYdlJ1gIf89ekVEHTe2W45aJH8y6r8NTPkeY24YpXd9SK6sGOnNOl9QKIpzIfOHcTylBP4M9v3/ijFP7S3pg+iKG4+QbgkmzCXrKji1tcavu8U0yMs8GkbJ4UMdUUZrqH/tC4KlCLds6M/sYCqP0GMLFfR9UnzQ8aSLQ1snrbRkh4hLybTerD8LKLfMGleHW2b5Xv2M/VctXtyl2SqRxaAeNawa+hldAral7co7mcz0ggCnWCScHIAMrewob4Vdg367vHQqbyK0znJViNwVnMElLfHwRkp/84d62ELkHAEkNye1WQ/jWuambPYO5nePl7TGV4VOK/Qnr/zMuz88v71xHUYzAU2jJVKEFzhOKbW0TjLxJS31OCMQRhmb6AdMCbkXGoL/fU8BYqBtWtYYpLmB5Twj55R5oU2l3zTv9lpcQq/JS
+ 8Dc3jc4C
+ PYD3dHFiW3S9DAFe42FPyhu6aSZgtve3YazD4sR2/liTohMSAtEy1LSjJaC6SlV47E4WC7LbyhdDuw3iJlUIYZz0xmD4Xu1oM7tFlLYr9/zDACvJjBH4rp/IlahUTIp2ZBAfbTYvhgShu6WKW9K9KOJw6RZ4fZNpla3qQ3EZdYy3RLZmi1+4KN5zD6Sq0at0BWlNeh7q59xD50tu+APQ9QgwSQWTK61QhEVvd7NqPJfHm8IetMtfR+bqvHAfMRuCklBB2DbPlwKK9sA1RJm89EkcgohRRZkaXgYKrJmNsWU1gwA3TnMs3Nc8W8ZWVR3gEYGASK3lJPcI4DEOtbg7r5o4bEGWKJeHDwStvqGyfLZlu3oOUjA80pOo/44JkIWy5DcjdmRnlrQOq1bVpwxx+FfWK8TAvVUcVuW+bHWeEVK7itqXWhjWNuduMxmRzNao0N+3o6kJWLW72n/YKWKw8yjvVnpKuumne6W0dxw5yX1NpH8BAd57dKxi7Mw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -204,79 +99,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-01-17 at 11:19 +1100, Jason Gunthorpe <jgg@nvidia.com> wrote...
-> On Fri, Jan 16, 2026 at 08:17:22PM +0100, Vlastimil Babka wrote:
-> > >> +#ifdef NR_PAGES_IN_LARGE_FOLIO
-> > >> +		/*
-> > >> +		 * This pointer math looks odd, but new_page could have been
-> > >> +		 * part of a previous higher order folio, which sets _nr_pages
-> > >> +		 * in page + 1 (new_page). Therefore, we use pointer casting to
-> > >> +		 * correctly locate the _nr_pages bits within new_page which
-> > >> +		 * could have modified by previous higher order folio.
-> > >> +		 */
-> > >> +		((struct folio *)(new_page - 1))->_nr_pages = 0;
-> > >> +#endif
-> > > 
-> > > This seems too weird, why is it in the loop?  There is only one
-> > > _nr_pages per folio.
 
-Yeah, I don't really know what the motivation is for going via the folio
-field which needs the odd pointer math versus just setting page->memcg_data
-= 0 directly which would work equally well and would have avoided a lot of
-confusion.
 
-> > I suppose we could be getting say an order-9 folio that was previously used
-> > as two order-8 folios? And each of them had their _nr_pages in their head
-> > and we can't know that at this point so we have to reset everything?
+On 1/18/26 1:46 PM, Dev Jain wrote:
 > 
-> Er, did I miss something - who reads _nr_pages from a random tail
-> page? Doesn't everything working with random tail pages read order,
-> compute the head page, cast to folio and then access _nr_pages?
+> On 16/01/26 7:58 pm, Barry Song wrote:
+>> On Fri, Jan 16, 2026 at 5:53 PM Dev Jain <dev.jain@arm.com> wrote:
+>>>
+>>> On 07/01/26 7:16 am, Wei Yang wrote:
+>>>> On Wed, Jan 07, 2026 at 10:29:25AM +1300, Barry Song wrote:
+>>>>> On Wed, Jan 7, 2026 at 2:22 AM Wei Yang <richard.weiyang@gmail.com> wrote:
+>>>>>> On Fri, Dec 26, 2025 at 02:07:59PM +0800, Baolin Wang wrote:
+>>>>>>> Similar to folio_referenced_one(), we can apply batched unmapping for file
+>>>>>>> large folios to optimize the performance of file folios reclamation.
+>>>>>>>
+>>>>>>> Barry previously implemented batched unmapping for lazyfree anonymous large
+>>>>>>> folios[1] and did not further optimize anonymous large folios or file-backed
+>>>>>>> large folios at that stage. As for file-backed large folios, the batched
+>>>>>>> unmapping support is relatively straightforward, as we only need to clear
+>>>>>>> the consecutive (present) PTE entries for file-backed large folios.
+>>>>>>>
+>>>>>>> Performance testing:
+>>>>>>> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
+>>>>>>> reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
+>>>>>>> 75% performance improvement on my Arm64 32-core server (and 50%+ improvement
+>>>>>>> on my X86 machine) with this patch.
+>>>>>>>
+>>>>>>> W/o patch:
+>>>>>>> real    0m1.018s
+>>>>>>> user    0m0.000s
+>>>>>>> sys     0m1.018s
+>>>>>>>
+>>>>>>> W/ patch:
+>>>>>>> real   0m0.249s
+>>>>>>> user   0m0.000s
+>>>>>>> sys    0m0.249s
+>>>>>>>
+>>>>>>> [1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
+>>>>>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>> Acked-by: Barry Song <baohua@kernel.org>
+>>>>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>> ---
+>>>>>>> mm/rmap.c | 7 ++++---
+>>>>>>> 1 file changed, 4 insertions(+), 3 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>>>> index 985ab0b085ba..e1d16003c514 100644
+>>>>>>> --- a/mm/rmap.c
+>>>>>>> +++ b/mm/rmap.c
+>>>>>>> @@ -1863,9 +1863,10 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>>>>>>        end_addr = pmd_addr_end(addr, vma->vm_end);
+>>>>>>>        max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>>>>>>>
+>>>>>>> -      /* We only support lazyfree batching for now ... */
+>>>>>>> -      if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+>>>>>>> +      /* We only support lazyfree or file folios batching for now ... */
+>>>>>>> +      if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>>>>>>>                return 1;
+>>>>>>> +
+>>>>>>>        if (pte_unused(pte))
+>>>>>>>                return 1;
+>>>>>>>
+>>>>>>> @@ -2231,7 +2232,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>>>>                         *
+>>>>>>>                         * See Documentation/mm/mmu_notifier.rst
+>>>>>>>                         */
+>>>>>>> -                      dec_mm_counter(mm, mm_counter_file(folio));
+>>>>>>> +                      add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
+>>>>>>>                }
+>>>>>>> discard:
+>>>>>>>                if (unlikely(folio_test_hugetlb(folio))) {
+>>>>>>> --
+>>>>>>> 2.47.3
+>>>>>>>
+>>>>>> Hi, Baolin
+>>>>>>
+>>>>>> When reading your patch, I come up one small question.
+>>>>>>
+>>>>>> Current try_to_unmap_one() has following structure:
+>>>>>>
+>>>>>>      try_to_unmap_one()
+>>>>>>          while (page_vma_mapped_walk(&pvmw)) {
+>>>>>>              nr_pages = folio_unmap_pte_batch()
+>>>>>>
+>>>>>>              if (nr_pages = folio_nr_pages(folio))
+>>>>>>                  goto walk_done;
+>>>>>>          }
+>>>>>>
+>>>>>> I am thinking what if nr_pages > 1 but nr_pages != folio_nr_pages().
+>>>>>>
+>>>>>> If my understanding is correct, page_vma_mapped_walk() would start from
+>>>>>> (pvmw->address + PAGE_SIZE) in next iteration, but we have already cleared to
+>>>>>> (pvmw->address + nr_pages * PAGE_SIZE), right?
+>>>>>>
+>>>>>> Not sure my understanding is correct, if so do we have some reason not to
+>>>>>> skip the cleared range?
+>>>>> I don’t quite understand your question. For nr_pages > 1 but not equal
+>>>>> to nr_pages, page_vma_mapped_walk will skip the nr_pages - 1 PTEs inside.
+>>>>>
+>>>>> take a look:
+>>>>>
+>>>>> next_pte:
+>>>>>                 do {
+>>>>>                         pvmw->address += PAGE_SIZE;
+>>>>>                         if (pvmw->address >= end)
+>>>>>                                 return not_found(pvmw);
+>>>>>                         /* Did we cross page table boundary? */
+>>>>>                         if ((pvmw->address & (PMD_SIZE - PAGE_SIZE)) == 0) {
+>>>>>                                 if (pvmw->ptl) {
+>>>>>                                         spin_unlock(pvmw->ptl);
+>>>>>                                         pvmw->ptl = NULL;
+>>>>>                                 }
+>>>>>                                 pte_unmap(pvmw->pte);
+>>>>>                                 pvmw->pte = NULL;
+>>>>>                                 pvmw->flags |= PVMW_PGTABLE_CROSSED;
+>>>>>                                 goto restart;
+>>>>>                         }
+>>>>>                         pvmw->pte++;
+>>>>>                 } while (pte_none(ptep_get(pvmw->pte)));
+>>>>>
+>>>> Yes, we do it in page_vma_mapped_walk() now. Since they are pte_none(), they
+>>>> will be skipped.
+>>>>
+>>>> I mean maybe we can skip it in try_to_unmap_one(), for example:
+>>>>
+>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>> index 9e5bd4834481..ea1afec7c802 100644
+>>>> --- a/mm/rmap.c
+>>>> +++ b/mm/rmap.c
+>>>> @@ -2250,6 +2250,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>                 */
+>>>>                if (nr_pages == folio_nr_pages(folio))
+>>>>                        goto walk_done;
+>>>> +             else {
+>>>> +                     pvmw.address += PAGE_SIZE * (nr_pages - 1);
+>>>> +                     pvmw.pte += nr_pages - 1;
+>>>> +             }
+>>>>                continue;
+>>>>   walk_abort:
+>>>>                ret = false;
+>>> I am of the opinion that we should do something like this. In the internal pvmw code,
+>> I am still not convinced that skipping PTEs in try_to_unmap_one()
+>> is the right place. If we really want to skip certain PTEs early,
+>> should we instead hint page_vma_mapped_walk()? That said, I don't
+>> see much value in doing so, since in most cases nr is either 1 or
+>> folio_nr_pages(folio).
+>>
+>>> we keep skipping ptes till the ptes are none. With my proposed uffd-fix [1], if the old
+>>> ptes were uffd-wp armed, pte_install_uffd_wp_if_needed will convert all ptes from none
+>>> to not none, and we will lose the batching effect. I also plan to extend support to
+>>> anonymous folios (therefore generalizing for all types of memory) which will set a
+>>> batch of ptes as swap, and the internal pvmw code won't be able to skip through the
+>>> batch.
+>> Thanks for catching this, Dev. I already filter out some of the more
+>> complex cases, for example:
+>> if (pte_unused(pte))
+>>          return 1;
+>>
+>> Since the userfaultfd write-protection case is also a corner case,
+>> could we filter it out as well?
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index c86f1135222b..6bb8ba6f046e 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -1870,6 +1870,9 @@ static inline unsigned int
+>> folio_unmap_pte_batch(struct folio *folio,
+>>          if (pte_unused(pte))
+>>                  return 1;
+>>
+>> +       if (userfaultfd_wp(vma))
+>> +               return 1;
+>> +
+>>          return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+>> }
+>>
+>> Just offering a second option — yours is probably better.
 > 
-> > Or maybe you mean that stray _nr_pages in some tail page from previous
-> > lifetimes can't affect the current lifetime in a wrong way for something
-> > looking at said page? I don't know immediately.
-> 
-> Yes, exactly.
-> 
-> Basically, what bytes exactly need to be set to what in tail pages for
-> the system to work? Those should be set.
-> 
-> And if we want to have things set on free that's fine too, but there
-> should be reasons for doing stuff, and this weird thing above makes
-> zero sense.
+> No. This is not an edge case. This is a case which gets exposed by your work, and
+> I believe that if you intend to get the file folio batching thingy in, then you
+> need to fix the uffd stuff too.
 
-You can't think of these as tail pages or head pages. They are just random
-struct pages, possibly order-0 or PageHead or PageTail, with fields in a
-"random" state based on what they were last used for.
+Barry’s point isn’t that this is an edge case. I think he means that 
+uffd is not a common performance-sensitive scenario in production. Also, 
+we typically fall back to per-page handling for uffd cases (see 
+finish_fault() and alloc_anon_folio()). So I perfer to follow Barry’s 
+suggestion and filter out the uffd cases until we have test case to show 
+performance improvement.
 
-All this function should be trying to do is initialising this random state to
-something sane as defined by the core-mm for it to consume. Yes, some might
-later end up being tail (or head) pages if order > 0 and prep_compound_page()
-is called. But the point of this function and the loop is to initialise the
-struct page as an order-0 page with "sane" fields to pass to core-mm or call
-prep_compound_page() on.
+I also think you can continue iterating your patch[1] to support batched 
+unmapping for uffd VMAs, and provide data to evaluate its value.
 
-This could for example just use memset(new_page, 0, sizeof(struct page)) and
-then refill all the fields correctly (although Vlastimil pointed out some page
-flags need preservation). But a big part of the problem is there is no single
-definition (AFAIK) of what state a struct page should be in before handing it to
-the core-mm via either vm_insert_page()/pages()/etc. or migrate_vma_*() nor what
-state the kernel leaves it in once freed.
-
-I would like to see this addressed because it leads to all sorts of weirdness -
-for example vm_insert_page() and migrate_vma_*() both require the page refcount
-to be 1 for no good reason (drivers usually have to drop it immediately after
-the call and they implicitly own the ZONE_DEVICE page lifetimes anyway so why make them
-hold a reference just to map the page). Yet only migrate_vma_*() requires the
-page to be locked (so other ZONE_DEVICE users just have to immediately unlock).
-
-And I presume page->memcg_data must be set to zero, or Matthew wouldn't have
-run into problems prompting him to reinit it. But I don't really know what other
-requirements there are for setting page fields, they all sort of come implicitly
-from the vm_insert_page/migrate_vma APIs.
-
- - Alistair
-
-> Jason
+[1] 
+https://lore.kernel.org/linux-mm/20260116082721.275178-1-dev.jain@arm.com/
 
