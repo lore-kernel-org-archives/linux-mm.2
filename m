@@ -4,138 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E00F3CCF2D2
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 10:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10780CCF2DB
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 10:38:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51EA46B016C; Mon, 19 Jan 2026 05:24:35 -0500 (EST)
+	id 0A91B6B016F; Mon, 19 Jan 2026 05:38:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D2A96B016E; Mon, 19 Jan 2026 05:24:35 -0500 (EST)
+	id 0573A6B0170; Mon, 19 Jan 2026 05:38:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DED06B016F; Mon, 19 Jan 2026 05:24:35 -0500 (EST)
+	id E7AB36B0171; Mon, 19 Jan 2026 05:38:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C8D06B016C
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:24:35 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D42A91406C0
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:24:34 +0000 (UTC)
-X-FDA: 84348329268.17.46B4B7A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F2C6214000B
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:24:32 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D78436B016F
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:38:49 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 811861606BB
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:38:49 +0000 (UTC)
+X-FDA: 84348365178.16.C49BCA9
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C37FF140002
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:38:46 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u4nln+Na;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=ggTC86J0;
+	spf=pass (imf26.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768818273;
+	s=arc-20220608; t=1768819127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s0/jgUo8tmW9BjuAbFG4ailzIKb6ntZqkiYQLo+zz+k=;
-	b=5Uy/F8/ykxaZ7LWV1S6+idLqp+Yvh3dOQ4pL2xxogDk0RceWEVeaAuzFpbK07sST7T1JL4
-	K0urD3J4/yhaQReGzLPL962tQO3jH60HCFMQPY1tr+hc9hhQASNR66bCm/rXUskDs3DEvP
-	aqUIsIM15kPYfQAIzyWVCE/ltYN7JEU=
+	bh=h6T1OAseONU5xESAp7DldoRF/tx4f3Urlb72aBL0shY=;
+	b=r5pNYLYhnisdquxywy4M5Qby/AVjhxkBD8H5cCKyxzYeWmYEv1W/eJ/PYr1epV/LUv2rxe
+	+f49exELWlX4VAztX0s11v9TEGXPHRkkdU0y4kgLPO17ViF509E6cAwvAbDC+FrahCWJgi
+	qKbx8NeWf4SVQR09ovmKOIfolvdiGdQ=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u4nln+Na;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768818273; a=rsa-sha256;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=ggTC86J0;
+	spf=pass (imf26.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768819127; a=rsa-sha256;
 	cv=none;
-	b=5AgQSz4O6KX6GJ8akvQ/QTxhAsGulOc75JWsbDRojBWzgDE6EyVWmWU7WYePahtR6i2lZ6
-	hQo5WgYbBSw7gl9U84sXwYfIqg5lVbOxxD9nGnF6uV1/9EWTS3G6ifQS4X50RTn8Ykibnh
-	H4+na+wHi/M1ui1sFLilZATjCbbiLms=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 015AA43870;
-	Mon, 19 Jan 2026 10:24:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B14C116C6;
-	Mon, 19 Jan 2026 10:24:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768818271;
-	bh=mvbJNpYvsETd1mG8DraHNTHLW5xgdBsDlbvoAF/9yQI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=u4nln+NavliRlvW+V5LE8N6xgqj02GoxWhuVIDrYUfjsFNEISVOdnWqf0O7JTZIXl
-	 2mBy9mEHTsN1x8znrjSpB7ibrCtysIxNg3IMGPp+0Nu12OF7okcg/H9Ci5NKlNtrTB
-	 dQ0CeU7o8tCDELpgw4YdyS15mnK0CXO2tXs85zasypH5tC4UInYLeQDr2S/ps3A2O5
-	 5mkOIDEDm3FXztOwxugvMkABZh1ucrM/RggYTZFcMiScUCYPmeTgm9FmSaM2Dr2jnM
-	 erG7PwCB2+DembD5GWvHRzW/q267AZZcZtj+QZsKscSBCxLpATRsIkagSA4En0v/0f
-	 dhpLErbmKBeeg==
-Message-ID: <ca6d1d7e-825b-4e6c-bfd5-3f36c6a1d10e@kernel.org>
-Date: Mon, 19 Jan 2026 11:24:26 +0100
+	b=MR2UBOxqxm8NsLcUfuUcqpiSm9lNg42TH+aZaJtFA4/or8U91YVAkc722Nd+bK7T1bgTqv
+	AS3zwe4Op1nlbHR7YPXXIUOYPlNIfoSLxUHRX0BkRawegOBV3QSRdhxCds6k04cc9UpxjZ
+	ZLJTo26WNOfbX+pnnyAjfpN4PS/EZU0=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260119103844euoutp020f33af9916496f7ff79a31d0e55a0f24~MG58_5X7B3199231992euoutp02w
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:38:44 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260119103844euoutp020f33af9916496f7ff79a31d0e55a0f24~MG58_5X7B3199231992euoutp02w
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1768819124;
+	bh=h6T1OAseONU5xESAp7DldoRF/tx4f3Urlb72aBL0shY=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=ggTC86J0tuNir92HdO3ZuqKiwG+33RBa5m/KJMQHzp307IUNPZHcXARfyLutyZBlp
+	 BwxzhDEaWMHOPDuafLcV+9LuXVZvuDCF3v0WlY7wPgYq29mYKCMJ8ETrC0HiNebEnF
+	 3D/nLvqBlON+m5EAOKDFvMK3U0BDf71e8IrdgQZk=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260119103843eucas1p13969f70041187467385971a512493b86~MG58fQVze1992819928eucas1p1p;
+	Mon, 19 Jan 2026 10:38:43 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260119103842eusmtip18efa3015d962d36d6aae889482359cc9~MG57VTnAg2814528145eusmtip1K;
+	Mon, 19 Jan 2026 10:38:42 +0000 (GMT)
+Message-ID: <89f8895f-436d-4a73-a2c8-d61a2f4ee41a@samsung.com>
+Date: Mon, 19 Jan 2026 11:38:42 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 4/5] mm/khugepaged: use enum scan_result for result
- variables and return types
-To: Shivank Garg <shivankg@amd.com>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260118192253.9263-4-shivankg@amd.com>
- <20260118192253.9263-12-shivankg@amd.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] of: reserved_mem: Allow reserved_mem framework detect
+ "cma=" kernel param
+To: Rob Herring <robh@kernel.org>
+Cc: Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
+	ye.li@oss.nxp.com, kernel@oss.qualcomm.com, saravanak@google.com,
+	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, robin.murphy@arm.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, iommu@lists.linux.dev,
+	quic_c_gdjako@quicinc.com
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260118192253.9263-12-shivankg@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F2C6214000B
-X-Stat-Signature: tufny33jym3asuwb4yf4kcfjecxt9r39
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <CAL_JsqK5QEZfyRTDY4z88mX_eYENibea1ZM8H_bEfCCsOOwY4A@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260119103843eucas1p13969f70041187467385971a512493b86
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395
+X-EPHeader: CA
+X-CMS-RootMailID: 20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395
+References: <CGME20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395@eucas1p1.samsung.com>
+	<20251210002027.1171519-1-oreoluwa.babatunde@oss.qualcomm.com>
+	<X-TH#1.CAL_JsqL6VVQ7K_ZAbHJ8Gb7ei_jusLx6wRn=AdOVgV50dX0ejQ@mail.gmail.com>
+	<99dc91c9-59fd-47c5-b1d9-157bda86ad59@samsung.com>
+	<CAL_JsqK5QEZfyRTDY4z88mX_eYENibea1ZM8H_bEfCCsOOwY4A@mail.gmail.com>
+X-Stat-Signature: d1kmsup83fp1ofx1dgzeh98scnuieuei
+X-Rspamd-Queue-Id: C37FF140002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768818272-339548
-X-HE-Meta: U2FsdGVkX1+BR2e0ii9Mgs1mwssW7K4hErj3caZqIDdujG1u3/T14uvXyfVelWApDgJKTYaibz3KA6uK5L55oncHNZCPqKkmBl9ab5EFwnemIRoPAoANMjCk1hpx7qegD4NZ7QCrSFCxlk+CvVADMyzCVtr0kPOY2PhjqI6sPZbxY6JeOerM32jjygoJ4ZZ1xflqMu+J7+rbNc0+08g/spvCqaUcfrdWeodZl6tuoID48S1zQY+Ij5ep9OIH1oUnw3TrFMOlxBu/s9TH3/M2zynR+K9A7paKR3Ul3VXDb56UhW8h/Y12DgiKZ5vRPVDMghheN7T1ygSBzWhf3wnrB6e2WQiaiqs9klHVYp22Vl91ugQkgw4zjcEYuY4XjUdluGPc8aEcxYB3es44hs5wnr5PNEdpRalC24iD4tCKPeowoVBU49qkpnojQvrSkg7z+aNtLFnUfVNCsvfzvvauOSEsGASZeLKElesyTNGP58wdJ4uDVKVElNaY3fAUmmmXyi/TTWe/VBkFS7lN8aM1lJo8roETuduHnSGYb1cM9t8tag4ZAb5pfTh/kWprhS39A79nrx0MSFZvJ/bA/BNN8xqQcWQ/NpPO2ub5ifNfhsDrdCCTcHczcA4/nUCKjUHmEXO+jKeuRVRfqEtr/GGx4N0Eggbp+zrUYOOq6rM6Ee6wmIw4fhMcBoVOgL7WlnuJgX/cLPuhXeeLQRdCepBuIicmGkAlWBQQbfbsUdHRbDuEZMToc/YSQ3AqV2dp3qdQeMYg2XDXAWiWqj4tJPgepvmSkonABuVg9afxNj2tOVoTkFn9Gg77h4Can2pNuPNHgYZOetBDMh1uqONk3tKQJWv9i8lt+LhAXJJFFdw6gFnrvBmE2+KXZ4UKeU8ulaxZAQYyeCDyaSbdWBQenSqikDWk7Z8GU2dFBRpJ+GpcjP9XVbKHma1pIzD4as1yGL1TjTzLd9FyGBXcvarRn0C
- 5me+Ycuj
- +Ul07Xh270ys+HHq1mJDnwpkVYdF6QGMlukSOBogHLVERH9dzz24ZgQ2WbJzQm9OG31XRCx6Z8ggb4PviEIGYLBOt7l9apFTipxtvUFWKai8EqRRJ3OE30YVNvmZrUGyRZ2BJ6XnToX/Tstdv/SCUjINRPdnyDAN4lr/H2sRW0Hb3nVkL0SciBMlb7ptwzBwlu2wxt09Xyxx62qDQRMgPomfaq8fNb3fgYG2i5mdYjAoEsleMPh0aXwLZbAiBuUBeiopELfh+JcaxnjwB1J8Xu3SQQ37I5IHMFX1I3bl6+KMlmSrHbmjenrwTO5+k2TQqk3iaSAee33FiYx+EMCSt9PUIU2IlDP/+VewovHhIek9mnGO+z+L6/nPMmICzNrS7Gtj0
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768819126-416937
+X-HE-Meta: U2FsdGVkX1+QtyuU2z9elUgeanVIzLJ2en82DouFLmFu2Mk/gSHxAJpk3w61S0P1k8sKkIas3m/aEIOyv/wwm76pNgkLksdyxQHuShmXbqCZ0jmUzlWkN15t7Rq4SWFj3I+Vp5PuSUbxELRFlCByeEEkeRvpZIoFBJwyvTkYvZYK2nQPFm4NLdkEFegohpb3qQwOj0BGoMOTXRDpOLhiYIJkZ5KxGFqzxtQnS45f0mwGuNtZNtX4SCPQOLtXkXT8lELD3rszgfadzw8G19nFG3iD2v6fusJFYQPB60bjdtPdoFZkA3G06WDOe9AKcBlQFS/gHPEQmLLsKjq9pNcDBuuRCiKS94MrVLPgwDZ4J1Zuzo99vbzHwsmO2tL2ampZZYuq3E4wIuH3XndiCnZbIZZmhVEc+PDpmROeyh1SjMo26qiuoc04EmK+PtgYjE1+Qcvzeq7Vd1HIQmQaHC65ljzlE8PlJO51Z2G8v8ipF8K5crckM7XaDqUep+yNFOno9X//O357zfRwxaYbxqCqlxWg/rDOdt1J7Q1KyGMd4d6KcvBmg0ctkRQBzWn4wfTEGJMz4I8xgqz04ubZxI0bMeqdjs1LUEV1qoWqfTdnAc5m8gtBkvsa1TKcoDmU439UnZ78vyHiJ6WayEtYLdV7KWMV73/kztnZDY1xhrZ/up5VEoud8az9fBelv1OiWExA+HmXBw1kgSk5sVLDSKrZhfKXfau76nYW3HfIqt4GrctDCIa5tg3ChdxvX359ubSB4tmaY2t7QqZDEOLaqv/5MGS4jlANx7DjzJ9V9VGuVZ29IOmEmHOjtmbkFORh6OCLbuUSiuDHFyhwunxTZDGmcELqOzgMqgud/shZEqH6OmZoAOCXllbOOx65kyN1zBS3kHU8ojfgV62jwexPMgdrZgU0vLP7iPmeVLEsx9TMa/Mr820m2YWJRgaG1c3fCi7h/XuWZt/ISKUAhGhU19p
+ /D8AkuXE
+ vnsPWgyE0hGFb9AUohjfYFe1F4BMX4MDgAkSZ6xqLKNojdS4U23a4GtzbXxes4p4Py6DHKUW2ELxJWZVyl9r09bo4HK0e6TuN6uRbLDH0gKNGs3FMvhMLUs4u7W31TbjSbE/wwJR4ythH1szPDQOTJnu/q5tOXfyrUK06H5f2E5Zv6OgYUrgQSgQPcw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,21 +113,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/18/26 20:22, Shivank Garg wrote:
-> Convert result variables and return types from int to enum scan_result
-> throughout khugepaged code. This improves type safety and code clarity
-> by making the intent explicit.
-> 
-> No functional change.
-> 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
+On 18.12.2025 15:42, Rob Herring wrote:
+> On Thu, Dec 18, 2025 at 3:55 AM Marek Szyprowski
+> <m.szyprowski@samsung.com> wrote:
+>> On 10.12.2025 15:07, Rob Herring wrote:
+>>> On Tue, Dec 9, 2025 at 6:20 PM Oreoluwa Babatunde
+>>> <oreoluwa.babatunde@oss.qualcomm.com> wrote:
+>>>> When initializing the default cma region, the "cma=" kernel parameter
+>>>> takes priority over a DT defined linux,cma-default region. Hence, give
+>>>> the reserved_mem framework the ability to detect this so that the DT
+>>>> defined cma region can skip initialization accordingly.
+>>> Please explain here why this is a new problem. Presumably the
+>>> RESERVEDMEM_OF_DECLARE hook after commit xxxx gets called before the
+>>> early_param hook. And why is it now earlier?
+>>>
+>>> I don't really like the state/ordering having to be worried about in 2 places.
+>> I also don't like this spaghetti, but it originates from
+>> commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved
+>> memory regions are processed") and the first fixup for it: 2c223f7239f3
+>> ("of: reserved_mem: Restructure call site for
+>> dma_contiguous_early_fixup()").
+> Honestly, this code wasn't great before. Every time it is touched it
+> breaks someone.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Indeed it got a bit complicated and needs some improvement, but first I 
+want to fix the the reported regression. This patch does this and it 
+looks that there are no ideas how to fix this in a different way. Rob, 
+could I apply it via dma-mapping-fixes?
 
+>> It looks that it is really hard to make reserved memory
+>> initialization fully dynamic assuming that the cma related fixups have
+>> to be known before populating kernel memory pages tables. I also advised
+>> in
+>> https://lore.kernel.org/all/be70bdc4-bddd-4afe-8574-7e0889fd381c@samsung.com/
+>> to simply increase the size of the static table to make it large enough for the sane use cases, but
+>> it turned out that this approach was already discussed and rejected:
+>> https://lore.kernel.org/all/1650488954-26662-1-git-send-email-quic_pdaly@quicinc.com/
+> I guess the question is what's a sane limit? After 128, are we going
+> to accept 256? I really suspect we are just enabling some further
+> abuse of /reserved-memory downstream. For example, I could imagine
+> there's micromanaging the location of media/graphics buffers so they
+> end up in specific DRAM banks to optimize accesses. No one ever wants
+> to detail why they want/need more regions.
+>
+>> Maybe it would make sense to revert the mentioned changes and get back
+>> to such simple approach - to make the size of the static table
+>> configurable in the Kconfig?
+> I'd rather not resort to a kconfig option.
+>
+> We could go back to processing all the regions at the beginning
+> (growing the static size), and then just shrinking allocation. Or
+> maybe it could just be freed entirely. I don't think we really need to
+> keep the state around forever.
+
+I will check if this can be refactored somehow.
+
+Best regards
 -- 
-Cheers
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-David
 
