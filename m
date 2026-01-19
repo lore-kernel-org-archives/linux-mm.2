@@ -4,133 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD0C6D2ECF3
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 21:44:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C00D2ECF4
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 22:07:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFA046B02F8; Mon, 19 Jan 2026 16:44:49 -0500 (EST)
+	id B97576B02EC; Mon, 19 Jan 2026 17:07:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA7776B02FA; Mon, 19 Jan 2026 16:44:49 -0500 (EST)
+	id B6F666B02EE; Mon, 19 Jan 2026 17:07:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA9CA6B02FB; Mon, 19 Jan 2026 16:44:49 -0500 (EST)
+	id A7AE66B02F0; Mon, 19 Jan 2026 17:07:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BA0F56B02F8
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:44:49 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 69BACD1D9D
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 21:44:49 +0000 (UTC)
-X-FDA: 84350043498.05.7998E17
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 57820180003
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 21:44:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WNLMVWdG;
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768859087;
+	by kanga.kvack.org (Postfix) with ESMTP id 982026B02EC
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 17:07:16 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BF851602B5
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 22:07:16 +0000 (UTC)
+X-FDA: 84350100072.16.CACFC0D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B224D40003
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 22:07:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GOhwtFAV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768860434; a=rsa-sha256;
+	cv=none;
+	b=K1dYuQ1lktP7Lyn4DZaYe8OHV6SzZRepCmrdw4tokqkf6NICveh0TuOJHt+UC9CbOqHhk3
+	IpBXu6Jm/C18O9wIuYM441+s272UDB8IJnaCnLPFKTpcfBS0Q9o9kSa3PpmDeBwtqG93ja
+	j7V/i75IJW/K2j/Mk/qciwZPW3v+WSk=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GOhwtFAV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768860434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RA92Uz6yzMgzgAdJgeWwZijf7ELO6H9pNz/yFpB3p8A=;
-	b=j2oB7G0x08J1EZ0EdZ0hFGc1tPkBfw+YfnZtoJXPu0QHtIp16+sBAFyTFkgxIz9QD7a7fl
-	3zUY2ausTCLyMkRYOsYGKzj6eXv24D+FaZvg1sKLq+HD5MaByTgTw/gIe5lOt3vYBZ0tmm
-	mr20eA+yOudQBZ6bXXrWvWuAHJumywo=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WNLMVWdG;
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768859087; a=rsa-sha256;
-	cv=pass;
-	b=rbQkMbpLA6zZ3EhPYNkTVecQDhuLqJVU01iUMsdXWynn0lAnnBM6MNAZ/64ffoWIBbsUlw
-	lvx8SlRA/0T1UQjzolVJnBb9uIbZwOR7GnSVT7LlqGvSuPTyycmrOHM2kTH9UZWW885qG0
-	y7h5EZ369qu1jX7x6Bz4Q4izG/I1qhQ=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47d59da3d81so26967815e9.0
-        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 13:44:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768859086; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kE84fo/qEaJZaZw3aUG6GPYmkTi6hUKaX4PI96H8LVPm2OXXbSpNn+C2M8ews1NsWB
-         jE5ad5v5QYoyIydVXQq1YpRZIYq6zDbZlzW/uylu+9pepoVPL9Btqsfxb7fh9mUyKttb
-         Dk0ZaEG5VkEBqTiSMy2o4NshJCIsoEo0X8FcmL5QLn0Rgyq59kpJBrK32glNs0Ltd3a+
-         +J4AJvRSyMWTZ5pXAYE2/h5a+0wHY3LN9ib6gZTVUjfvN7sQuEQ6DN92ekuaxCwF6xi+
-         dvpCOArMSayIyq5xZHN3EKir+R9F9sbs6004sbROzc38ds8YoNTec3i/uFTwtmxm+bME
-         OWLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RA92Uz6yzMgzgAdJgeWwZijf7ELO6H9pNz/yFpB3p8A=;
-        fh=0cwNCSRLUbsP3VBXPU6OwkgezeTjz5lQ7Hp5YQ9vM6Y=;
-        b=Ku7Nzs2eisuTOwE5jEVBd39pLyi0ycNki/P44hv+Dw7JCMbprRsJXiIxB9b5AmFW0c
-         NxJlidpym6dXXWmxoI7E0QEK1CR67c8ORuB0ev7CsA1vVriYS4UolVcYzojgjDTQ0O+P
-         UAjM/64A9y5qHaPofhx+zFHFiW9H0oQrVveDzkthbggyFTVDc7oyJ2q33Sr9owAxCxMO
-         FI+unM+sEnhMae7YS2mHhzM50KkXXH/SYzmLRIhAe97AyRVcZDkOiQLCCTdch6s3Cx76
-         UEc2t42pYMqwunsMuE75sV4TPD+aQjnWrPfjnJg2ch2FVw6vr0Lq1aBE4QhdkTxtA9Td
-         217w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768859086; x=1769463886; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RA92Uz6yzMgzgAdJgeWwZijf7ELO6H9pNz/yFpB3p8A=;
-        b=WNLMVWdGROJ0/tHo9TdGYNjdlI1VeL4i5YtLTp3PZhSS8xVgmuwnh81cj3bk5pN1hH
-         xYXeJ697ujlPUjo5Epmvy1WDLm+qglMM6vUEb06vCD8Nf/H6mViahYxvRLXfNUy9369o
-         6QZmuxJDuW8eQl7XSVZcwq2A7UZJYGyA7ptnS8eygAN98PSgNd16eBgnhd8LP5yt449s
-         BtG8h3ivpk0VF4UA2I3Hihm2vpk+0OIgAGIVTeURnCKF60nLiZ+fNmC3J5pwmbuZQ8BE
-         AIkNF7gOzqRff15mQjp0xHhHf7AFXZMsFG6gwywJaC89Xm0DHkK/p8XZ1CNmMqY7J5Jk
-         Zmew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768859086; x=1769463886;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RA92Uz6yzMgzgAdJgeWwZijf7ELO6H9pNz/yFpB3p8A=;
-        b=kMqkrkj1/MdDrJwDO+9u0xeMK/aygheYXPIw3mR4vC/ErgUN8oVQRp6kC1wKv8kwuq
-         MEO872KWq+3NOCLsbq2sL6g8KrxayeoxkktRkL4BnPYfVMxn+oqFUqs6YOf0s4TVH4nT
-         bcjjZOF2z9/2VF6aXj4aAStXXBs4zGNWxgofr2VdV24pTayl9kAAEt+Mr/mP94NyLnv2
-         izph/3n7RMbt5yLHZJVmTsQI0Pp/MmwfrUIg7d9WH4CENBgBC4Kvxp5P0mTlIbx9mewg
-         bKL2Jk+V7rmlXqNlqgx+Zkz1qX6JYADOeX5RKMmkoJ29kcHyN5o1M8JK4l0lAibQhN0h
-         JRWw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHlTj75AaVsOHhS+9ipbWE4rPBK5lKJK3Qzd37hZVqkLorMqQ9kk6CJmUjSCac2IeGgi9DOCI7Uw==@kvack.org
-X-Gm-Message-State: AOJu0Yx4ggeWQnSPYpPaPG2YEEVK6Y7RjiWN4bp1k8G82C63dW6VWr+T
-	+L4MVzyFZcXW7Z4XNjZnatR44tSnSK8prOPDYFg4W/6AdpqSuRHa/mgmmeJ5eB+34pGbV8JTIjz
-	MSu29rxKcrE5PyhCHAtxYF0iUP7r5rhg=
-X-Gm-Gg: AZuq6aJ/kEE9T70EFuNhxKC4I6WgiwGkvEO1Gyai0tuUZQK7J183flgrxAcPG4f7OZF
-	iemLiyFGOcj4tENx3yW/CVKSUVb71fln6UXApQEm/FO2Zkv4QyL0+cb7xSSR3VGka6hPPyd8YdO
-	siQ954FMj8/p2So3dfOTBXfaO2bfu9j6zGqe49Z2pKQqvrI8FLqS/U7QtwBWnwPhgdFZuLScfRV
-	IgnY+5wl4AGjHVbBKanG5hT3PbIrwHXbTXN/I9ZTwd1PT/msgO5M7sR0qzHtmUFQE8pX4U=
-X-Received: by 2002:a05:6000:4023:b0:430:f2ee:b21f with SMTP id
- ffacd0b85a97d-43569565238mr17218779f8f.22.1768859085572; Mon, 19 Jan 2026
- 13:44:45 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ufBhmdN5EXr/F7HFeVmA+925c4ZDH+xqv0jcUl2qSI4=;
+	b=sxM/aTv6QLt0P08oeew+ve3+2v6CV/NtoA0rJLiMSzFwZdtQxwKt9AmIRukKtJalwpDspB
+	GzNFHhxT5MSh6QY+eUYQb+ymNfKVzRD5dZ4FvOdA0cv2ySI9HjqycbR5gDLhw/6XVFBrmR
+	CTEWs0OaAP4iPqcR3Tco8pafhTcC/Lc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8AE6242DE0;
+	Mon, 19 Jan 2026 22:07:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD485C116C6;
+	Mon, 19 Jan 2026 22:07:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768860433;
+	bh=ffwUQ2dX0j1vnxo5x3DL7cxif+25Tjw6PTCwljgcdm8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GOhwtFAVEByAuyqu4Ph6mSogb5CgpRDYq970xpH7qzM/gCFJiJkDcSe/P94Kn1N+2
+	 8JrAunOHx7lFx7U5tOlDYGK2kreaAZmm00mHhb/aIk7FCIhBPIxMK4d7QoUIsQNYgm
+	 yIVfDVlnZArecwu7MlGsXhSbespkyQSsID7MUSnuF6DR93D2du6glQNpxCuPdnSIMj
+	 qEAxK1WNCcVWFkMIexp+nXwo3bmfyKSRhVGDOghuCnB9rhBW9ahU9TMLlOusMVz2uC
+	 Ce482pBKQzbAExqvK+nwfNFswtmYVzI2DW/Q+8Zlx6sAGhnudF2GNY4beucubiSPls
+	 2uHWOVDJEPQ+Q==
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Qi Zheng <qi.zheng@linux.dev>
+Subject: [PATCH v1 0/2] mm: move pte table reclaim code to memory.c
+Date: Mon, 19 Jan 2026 23:07:06 +0100
+Message-ID: <20260119220708.3438514-1-david@kernel.org>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-References: <20260116044841.334821-1-senozhatsky@chromium.org> <zfmvd2oogwtx6mbavyjgwxralsvrd576ye6jnscfwvqy4u4ayp@q7qpxnyaxb6f>
-In-Reply-To: <zfmvd2oogwtx6mbavyjgwxralsvrd576ye6jnscfwvqy4u4ayp@q7qpxnyaxb6f>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 19 Jan 2026 13:44:34 -0800
-X-Gm-Features: AZwV_Qg1CrMrgazcbkOBRSxdLw2cz0PEeFMtHTdtPdmwwmjo1Zkn76XdooFf2cE
-Message-ID: <CAKEwX=OJBc38i6ZhObNsvsNGJ16ZuNXkV18f-j=JRd-2xecJQg@mail.gmail.com>
-Subject: Re: [RFC PATCH] zsmalloc: make common caches global
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Minchan Kim <minchan@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: zmj3rzgg6m8q4cubfb6nbusq6ffermkt
-X-Rspamd-Queue-Id: 57820180003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768859087-791338
-X-HE-Meta: U2FsdGVkX18fpsgouG56/2pdYDt7ulGZfvrBhcL34jcP3yRbwboygMaz4xt1CXnrLd+XgGPC2ldSxj1XWCrlhzT5z02LIhwH1MRioz5mONBY0Z5taJHtmYAoVJeR7uRirSsy8sIPKpdWM4Oob56Bov4R/3bRNWhdYr5X7ndI9YGqhs38UJ/xiIbQuHV6NvMYmsttyVCP15XoZGnGeaklT/Dfck5tUW2D19F7esbvaugYnsPbnNXhVX4epo4faYYGn0GWDPkmzPZGU2aQRyi56IdrPE44rP/Jaoxen9/uN4Q9IGJ6ZOujzxeKt2QtKIFnErwmJ39jjLhK4ltGf/KfY2FKbN7zUxblQcXtZTU4IlaE02xXaxELbmMA9MMMuyrVwhmMDHrKO2cu9j048kFQFRCTsT8wwTlfCY3+AzCer3u6OqzYQF5bJmuBtZ+N1uHT9dlf0gMLS60ceO8bo7JgP+fJ5DlpXn9qA43DlN58urPmNvz6z1uYgB8qtQGJhTkeEAtFOj6a4dI3bIsCdNB6VaUmSLJx4hraD+/q9qwmDFxNICdrv+4mUtsE0ctL3puuAPwst9V8IhenN/Q90jasXGpJyxSi8ntPEobFt4TzuJU/43PJlrTVqUgiWPniLA49DFpBTtfp9OfwjM9BuSF4bZYOGdkDaJDx3q00lDh1/HP6bCMpWtg0jinKB1AstroUA3agegUwnjDq64wpONLbye1T9RVTHKkcycbmYwVDdt6ObU3nWRRR2yoYqRa8jEYkSa2aqDWYfa49FtGbRFsB05rZbXLm11elLDiqSeTioQgiWXJxHexq1HmT3OWgdQ5liljoBPrk5w+NukYCTUgui4Ws8q3ZlFQnepg6xu6/5vCk10VsvOGdXtopNelG/lKpVhCmGgComK6KLifcDuEv2E+xDs6L/8MqVs7XY/x6yDduGrG3Nm+4YDfuAULRG86mJDaWNe51bGdVF0aG/VF
- ceQdYSHu
- Ql9qKOvhyrmVZ04XBTPTbE8O6qkm793iF6QowTlFqdescfdqfQ3VK9a4snAA9PDsT2r4JWrZwB6jZhU2+Y4+FgqmnTCdGt6Wtf1cCvS+6b9YJAyvkrQv9LVwGEtofXvZ6181TK9kqQ+whxNkZ+gX5i07rtk5rdYocG4aDODrmeALlzOClbcYZ0+n6j1eRnCBlPq3ZZvF5b1F0Y2jn9WcOA7V3FlgHMjBCW0g21uTdbjoo9Br5kpTYsagTzjLez3iymdGMKEfGWPi5eYpQxohrF4yBBQ8LdmNjygis5WBcq7p2Fypw0+EqEazv8qM6d8/TmlA8zoRjZIC8ZCcFVDFTSl63TkrCZEYwL04enNBx6yoai9ldKnkqSxH6chyw7G7fomrm9yGwJIk7DnUm1ykK1OXMoFFUkHj79zCJt9FyM2bN4kU=
+X-Stat-Signature: xcr6979gm69ae9msbh4bdg4yyyq9ggfx
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B224D40003
+X-HE-Tag: 1768860434-748098
+X-HE-Meta: U2FsdGVkX1/aAwqRxkUuH2aTVQD29/+QKGP0qthsyIgv0FZIHV9FcLwb2UkjN7h5GCLUNM2uWkkFwzEO2NxUK5XoOF8UEoCisNNPA/tOP2ycjLwy8S5EahemzSgrGDTAuByItofQZRODUdOuggEZDbqWKkdP8C3PMg+qq/FQ9LgKHeIk9XuOcTPx6nP/z86tLo9xdor2G6BaTeYj+ArWvXUCLRiHH6Kr3k2XPueG0fL78wTKVNtVSlpWcsOpaWIMlYGWgMUOY+WUZgn7iXUA7KS8aaJN1nBOALtvgEL49k7C3BogMMpuU3yzrNnGOSdd/trdigBimcxU+q4+ht9AYvsWWaDJHOQO9SZB86Ivh/LhG2BUyCI9H53uBvdtlQs5SNbGi/KIYBf6LmyBWRPMEjqPxmcJLPB9B/jY0w9GN+yIntrSGkQAxeRUqUISDnczvVnDif9OpIsCdi/zgL+HW/3CXug9zd8DtXTzgGDxmYbF+VEEP3VOY2Fcyhcxwa6cTSlcgXowKXQY6JXEBdJ3ZrB3lfuVMkybOdK/fXpcN4qMNrtbKErbLCweSXr/n+MTcvX5DszNzoXaC7frIrFZ9Hv6aBYYDLG2KmQHh6vQI/OBnI0AdoKfOn2aTsMryeO5mUBm2nHXCHQU50uTvj2VcD5g77F6fl5nj47HcLZOI9wcv6RLviAphkWZYQ/8nCPZo9kOCeStpEx7Lruw5wPY2p6IiXryy/B0AMZRZnvDD2eSIZma1l/+MLjzbZdGg2o2jCcckGD1R2tEDSxcB0gHhFqeljjZhwwIWxYkaUE8xCDbbeuy0FLg61xSFVQ3CjlVY5ETnoXwKHMgCkzmdotW8VUpSxrAOALUKXH0duk4gvqJU019585NICcYlrpJ28h4QzBM1v4PLUosfTbQ4DDgpa2ATeQP4AfblsOAnfVOe7/rEXKyCWEJXMr2zcjIhjvRUF3BUPDjvav0qDyKYau
+ Ulp5F89g
+ 1qwxoKOKjHhDOHf7/urwC0wGxD/N7qQ0gGQgzMRkRveGIEPNpZ0U0bh719mzGPqQyTDfziBa3VsgV83XaPid4ssIYkvfeL7BIiyotXZYs5qEz+oa9QS597PyxFq+CyunptMiSn9t6VnZbmUD7A8wB816Sf5KeAAYxhWXkc44dSG3KCVaRGzKS4bDCaKfEUGx6fx+EpJ7mnrD5thqSK022uJjWlYeudqSHvYMnekLhXVrWCpVCGrFFQ7OzzZO+e2e9GIxksNMhsI7Z58S0wwDURNuvil86JX/AAnk9IZUxjL1s6MiwDMfVpGBkS6i3ATblnqleoJG/1IVVzkC8uS1yvAeek38+G7dRYF8NH6ItbXX3iXU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,22 +97,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 9:53=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> On (26/01/16 13:48), Sergey Senozhatsky wrote:
-> > Currently, zsmalloc creates kmem_cache of handles and zspages
-> > for each pool, which may be suboptimal from the memory usage
-> > point of view (extra internal fragmentation per pool).  Systems
-> > that create multiple zsmalloc pools may benefit from shared
-> > common zsmalloc caches.
->
-> This is step 1.
->
-> Step 2 is to look into possibility of sharing zsmalloc pools.
-> E.g. if there are N zram devices in the system, do we really need
-> N zsmalloc pools?  Can we just share a single pool between them?
+Some cleanups for PT table reclaim code, triggered by a false-positive
+warning we might start to see soon after we unlocked pt-reclaim on
+architectures besides x86-64.
 
-Ditto for zswap (although here, we almost always only have a single zswap p=
-ool).
+Cross compiled on plenty of architectures, tested on x86-64 with
+a simple test case that allocates plenty of page tables in a sparse
+memory area to see if they will get reclaimed.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>
+
+David Hildenbrand (Red Hat) (2):
+  mm: move pte table reclaim code to memory.c
+  mm/memory: handle non-split locks correctly in zap_empty_pte_table()
+
+ MAINTAINERS     |  1 -
+ mm/Makefile     |  1 -
+ mm/internal.h   | 18 -------------
+ mm/memory.c     | 70 ++++++++++++++++++++++++++++++++++++++++++-----
+ mm/pt_reclaim.c | 72 -------------------------------------------------
+ 5 files changed, 64 insertions(+), 98 deletions(-)
+ delete mode 100644 mm/pt_reclaim.c
+
+
+base-commit: ac1303686c1e823c9c88b20c5f8587629ad94a11
+-- 
+2.52.0
+
 
