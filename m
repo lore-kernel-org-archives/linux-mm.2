@@ -4,138 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33E7ED29C3C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 15:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C34BDD29C40
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:11:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C9E96B024B; Mon, 19 Jan 2026 10:55:56 -0500 (EST)
+	id 0F3486B0259; Mon, 19 Jan 2026 11:11:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 777436B0253; Mon, 19 Jan 2026 10:55:56 -0500 (EST)
+	id 0481A6B025D; Mon, 19 Jan 2026 11:11:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 679856B0255; Mon, 19 Jan 2026 10:55:56 -0500 (EST)
+	id DB9236B025F; Mon, 19 Jan 2026 11:11:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 573476B024B
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:55:56 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 149C0B61ED
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:55:56 +0000 (UTC)
-X-FDA: 84349164312.27.D8CB3C5
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2DDA2C0007
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:55:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=schGeZFV;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf22.hostedemail.com: domain of smostafa@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768838154; a=rsa-sha256;
-	cv=pass;
-	b=a5UqyO4OD50fdsshJxdu01wnMisIizo8gm1gDm/Ukmlu2f+3sgpddrJP5U1Y5wMpSMEZPD
-	QEn5aEIAxxye8l97QUvjA93nsoSY0UKzuuosW49XrlXoFVVDaRVsVjxIwy868T0UrA1nVk
-	f2O97F3SgSoXYBVxAD9lDM+2YZHydR8=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=schGeZFV;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf22.hostedemail.com: domain of smostafa@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=smostafa@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768838154;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AC8206B0259
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:11:32 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57F10D1A2D
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:11:32 +0000 (UTC)
+X-FDA: 84349203624.25.CD987C0
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5E0BB2000B
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:11:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dBP8yrCh;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768839090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+CVQOz4f4pv4FZJxEWXVriYAxqFNoe7HY/c+6oYXd4=;
-	b=xQdIFNl8Es2JLeS3BLkzWWxO1b/U4nh2X63zuAGn/YF3F8wi6kdCbQJkCv4V3xxG1NgrAv
-	GMmb5VBqA2I/aixxspWaR5RZ2KSEYJmIqaLpAUqCEOmyjtI4gCDE9oZO1vSsO7YHPL8mjQ
-	CcMgmmll7sJkKj/pnHoSNpJq54krjBc=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5014acad6f2so19431cf.1
-        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 07:55:53 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768838153; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AQLxJxmFaMWeZduwcOBYrReHR2hWaNUS0sKnqs+S6dQ2MCYvcFAhyOoIIgh3Kn05mH
-         C6Vxe+ZBd2b+KXYifO9Bm4UecQotY03p/37kPt/4XkBorxnQvfN/LKOOnKj53QAvtItX
-         GbFI6A9ctixVKtlXDOjrbaTQwkhg6YRXUqRcQdREI6B7R25lfn3GuQW3zFo8GvHtTwCR
-         lExS/p1+le0f+NmouH7GlTqLLV3Tc4GGezWPwOtgdUxYnOgLf1rQwa0sRpsduYtnFfLI
-         cYOwM+tj5NZmcu1+/PEST4VpXVbo3n/G9tm3BB0xem8KYFsICzcDbmKSgkJo0vcR+Sc6
-         NVEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t+CVQOz4f4pv4FZJxEWXVriYAxqFNoe7HY/c+6oYXd4=;
-        fh=kvsWvEa3cRdWT7ZeJAtmxeosrcrlX+BojyDImiQCiTQ=;
-        b=FwzpftHzgrCePhKohGx4QYybufiv6/EzWoQKDJG+Kr8Z/EMt1pK1wEEkN8JgUr+whQ
-         SI9SOFQn2zstLLLzGCsSfXbtMfcshKZsLSPhNBWE8MQmzl6v2FGwoDbnFEK7GFGDe++/
-         +Bs9MsSJDp2+WAmXLKJOYMIevl0lW9WAUXwyBflWTqKBSdCFZSM2UM1HZxTOE3Wknj+V
-         pty/nTB4JFJM7mh1drXSOO0ZqLEzU8ArCqDm44gYOjJP4uuLkSWyi4B4ySTqOxWbDX6y
-         hwuXFLFUuHgAZThC94SOGEK30UU3OrVZ9V86XrGwly0yUwBEFgSYTEVXdB1zh/jZAfhe
-         O6VQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=WjJfvLBGT103l6zGUDrj7QF6QyCPGm8jtIUaKkXRKrc=;
+	b=AzrOrKP3Kp1Rcf6FLefy+bqXxHiXERTrolIdGBspV9Y04h3AV0ESbECMtcT8dueMSQ3plX
+	WkqZLmHc9sx2hf/gOs7kfuFqQZfpqxdzQ9YuvHF80V+ywZzr4CjnxE2JZKT1CxtNRUIbry
+	SbGkhL35PTruatAnJw01QVaQEHqpl8g=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dBP8yrCh;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768839090; a=rsa-sha256;
+	cv=none;
+	b=hPS4RpAcaS7MF6PP/oXa5+YuwrG4vZ+sKX77KSMUFWG0FxG7RQc33+Seth3yrhWvBa63jM
+	DcAMTPsfQ9twZchOl6/9QdIK/draGdyvX2DRz+c8KQp2UWGyPB1DEo7+EBa+vEnO4zgPWV
+	yCZE5bYQu78xyQug5htuD3fAJo9pbq8=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8c2c36c10dbso515485285a.2
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:11:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768838153; x=1769442953; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t+CVQOz4f4pv4FZJxEWXVriYAxqFNoe7HY/c+6oYXd4=;
-        b=schGeZFVuA7jltAee0gT9mB51g49bhD0ml+kcfmcVxqDoFy1Yvd3RjXUmb/tgsNt/a
-         dbk0yD5f0OQ/fZ/A2Uy+8VZoGzWDK83eh8zHQ6b/u7RMMwkY8GoF2C0X4Jj+gv1GJRC9
-         OwKPAqmBi3OCDjcoVfmEmcXlyFpG5/X0l+C3LpzH4CvDcHsHJap0J2gjmWlG5t5aujhR
-         FLCCjHZoBkLksmYOJpNvEBWnNfGx16ipaekec8Jh+9EiuptIacnCsEeYeApO75KKRr1b
-         Vt5efpZMFVlrr4qXbNSTq6supoC7R6AHSfrkf/ev4dWlRbVU2Ka8s3YfEp6VNjSaATlD
-         DAng==
+        d=gmail.com; s=20230601; t=1768839089; x=1769443889; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WjJfvLBGT103l6zGUDrj7QF6QyCPGm8jtIUaKkXRKrc=;
+        b=dBP8yrChazOzEpmPD7h8y6Y3CYwCwkEvCBeRlauQqWH0DYej+/TXfbGLWeONNsfen6
+         0Sv8DTe3upJOlONd6fNz5bAXdjXoCtPaBaAnYv1cS8nStg+JFI3382XUg6btKYS5jvvP
+         IGyCQ1InzmFg1SZC83nC47eiOr2J30ulQeGPCAP6gEng7iWYIeFOCFB7XLhvIr4Wj01W
+         3XjYBbuy/qXuSH4Bvv2jGWPKTAraqc7vyK4LwfSO0fV213vuHuo1FXEF61IeordIxfxi
+         Giukg6qUvgG46ieVOU6OpRWmqR2QlTXFuitTL4pDpuJT2DimoZdQGdNNIrPMgb6/0rrV
+         rkSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768838153; x=1769442953;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t+CVQOz4f4pv4FZJxEWXVriYAxqFNoe7HY/c+6oYXd4=;
-        b=aJUXzlInVVb9+rAF5in186xgscwcbQjMnJ2RJd+SAqckOdCZ7eDXexgwIYkstZa54k
-         D6wZdRGMAGKPh/KmjoCfR2cXuRE+KZfrSchM5KIgAbxZj1TFxLEZjevWWcQVWNaWx8d4
-         y2m9uk0wVjqrQIUNGyc2qyGw3vWXlftstQw4CDFZnaR2f50YaJPGLulDXK7GChHI2B24
-         FaTDv+tI/UN+8KvFtZOw7Umrwg+b+qmpcC5Hhj0I4/Dv+BjmMLe89sXzoawGNzQrAUIU
-         L1YwjU7CaAKydu3OFOhVZRifV4vV/Yh6Vg7MDzP+mReZpzCaJ2R4m+tv8wEH4rBuG4Zx
-         CW+g==
-X-Gm-Message-State: AOJu0YyoSQKj7yltnYKwG2XcwZIKco5E6ODe+RGpos31G3lYK6+cj5K1
-	3WoltaBRcATPNB4Bzenl/traCdQpZJfZC6K8OEqdl6tDrZRKwcLJoS9S/6zSvNn1ZYoBtHA9Ni4
-	1IwU13f6geQXr026lzrfEUgcDh/LzSxvzraKV31BeI48U/VCKGIfWtGc/XOA=
-X-Gm-Gg: AY/fxX7IxtBsID3S/q2wx1OpuQyjC1Q+zbMOG6lIcITs6YSD4bBXbLDwnhIkFwLBIQk
-	ONUBxB4g9wATRy3QnlDp1K7gZuzK+lH5HC2ivVrSb9cHaZRw+uYboWA0lFQDEICyYTkQumFa8ru
-	BypjprmUBrhwIgJn+xEevCDTJg0cIKe/q4xDCvMkv6vHRP18wQnGwMe7MLx4zA0GzYy7nc8oJTi
-	ebxsYlzZ8UBbdAWeuaL6hjvVKL9LNnrBIwdH85Ll3DXWmHsXdzRx3YSRRenaxYBZAjYCp4=
-X-Received: by 2002:ac8:57cc:0:b0:4f3:5475:6b10 with SMTP id
- d75a77b69052e-502afaa0b9emr21378741cf.8.1768838152806; Mon, 19 Jan 2026
- 07:55:52 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768839089; x=1769443889;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WjJfvLBGT103l6zGUDrj7QF6QyCPGm8jtIUaKkXRKrc=;
+        b=LeX/JgTDDx+ghvGf/tCkEUGmozt+LjJ1KCSLLN/6IQJptm9867EL7dggx3Y4LvXywq
+         VvT+b1HVj9asz8oIdJ9bjL1pcMMCmP5lLm00Rl8dImzPMyxas4t5paUnEsB0WmNKXo6U
+         zG3ah2qnmTnvQEU1x5xQq1zPjp+Ypo+epghMmvYOWVTUTXHtPd454pS4AuqG0h/Am3gg
+         igsdqzuypSfZwW62a+1e5jc5jc/NyAghg6Q5Cgwnf+6GKO0XlAwsEV3BsDunC+P3CavN
+         GVvyhPd7pPo+1c04/dvZ+PSm1thiGqx/NIDqMsTU9Dl7f1ilIe+3k5PYX/cD80pand70
+         TgyQ==
+X-Gm-Message-State: AOJu0YxBMPAV0jE1C2MSQHXNPEmomRL4Oa5d6Fqr52L9obTUwwxoErWS
+	smZ+Wg7qKCkXgVyyKQqxMBK0CvTCLWPkU2idjNMajtI5hJmZt/TEQSJR
+X-Gm-Gg: AY/fxX6NMA9agCi19CWZI75+kiOe82jVoWF0x6VZqBOJ+9Heig2SsDhL3AELgvX6q5j
+	OjHvdca5BhZJxpHhiPxZbg0RCTSC1cQQpU9t6YWLv+A6bcFl1qrlkwJwK5AZZmSjfb5JbjP+vR5
+	TPVkhNMOMStBYBF84yDG5Oqki2YPccAKPSrBvC5Jo8lbqNp1/ckuCqKx6eNUJ+pxtLqjCi2d66Z
+	tbsxqL1ydFHuZepfIxiQHVHvIy/SuFMqLYKD51X7LGncmk4CD6h9qfMMlhkiqcTUOmW00fheVn3
+	DjbaSX7nUPKJSb0IuoVlQnFi7YnbIaiEqdEjycK4DRv7far3xpsNYj7FrZzvivS+AnfR4SKum6f
+	4fXq05ZKI1+yqtc9Tq3ogUfKLtUF+k/yANFDQMMGVlluBqfbwi+7y9qbg1Vjsi6CIq/2cA69hk0
+	kaNbzOz86VD1WY8qr73V2EERr+F/ZvbIQ7BnDPp2Njw9lWHcCV
+X-Received: by 2002:a05:620a:284b:b0:8b2:dfb3:dc2a with SMTP id af79cd13be357-8c6a67a2256mr1560628385a.75.1768839089399;
+        Mon, 19 Jan 2026 08:11:29 -0800 (PST)
+Received: from [127.0.0.1] ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a72985a8sm815336085a.54.2026.01.19.08.11.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 08:11:28 -0800 (PST)
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 20 Jan 2026 00:11:21 +0800
+Subject: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry
+ split
 MIME-Version: 1.0
-References: <20260119142246.3821052-1-smostafa@google.com> <20260119142246.3821052-2-smostafa@google.com>
- <qu5oksvcaytolppeeale6rwf4bzvckvfdg3iw77kowrg4fn24a@p4hmieukkttu>
-In-Reply-To: <qu5oksvcaytolppeeale6rwf4bzvckvfdg3iw77kowrg4fn24a@p4hmieukkttu>
-From: Mostafa Saleh <smostafa@google.com>
-Date: Mon, 19 Jan 2026 15:55:41 +0000
-X-Gm-Features: AZwV_Qiw2HdJaRcL1F81HFaiwCNZCPdmUTScO3KLcBRCPXV-fWTgDvtVV_i5AzY
-Message-ID: <CAFgf54pFzyAj5MKBx8xcuME-BGGWS1ZZLkw5vSgN8sGPftq88A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/page_ext: Add page_ext_get_phys()
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, corbet@lwn.net, will@kernel.org, 
-	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz, 
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, rppt@kernel.org, xiaqinxin@huawei.com, 
-	baolu.lu@linux.intel.com, rdunlap@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2DDA2C0007
-X-Stat-Signature: 7gt43id95xuqngsqza1ycpm3bfrk4oki
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XMSw7CIBSF4a0Yxl7DBVrFkfswDipcLIPSBhrUN
+ N27tImJj+F/kvNNLFH0lNhxM7FI2SffhxJyu2GmbcKNwNvSTHBRc0SE1HbUQbo3Azj/gIPlJHi
+ D6lpZVk5DpDKv4PlSuvVp7ONz9TMu65sSv1RGQOBOqr1TrtaVOI0UDIVxZ/qOLVgWn4D+A8QCS
+ GW0qp2VWn4D8zy/AKtrZZzvAAAA
+X-Change-ID: 20260111-shmem-swap-fix-8d0e20a14b5d
+To: linux-mm@kvack.org
+Cc: Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+ Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, 
+ Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768839084; l=4919;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=ysQSLUoYhwKPncamfXxkacphx1e+w1AheyJG0ahsEz8=;
+ b=dpOk1lOYoQzKSE19Lc0fcCL6U4W81gszY7m55ZxxOMel9fsuqr7+PYmLX5KDsSrL9y1B9a+Wp
+ osakKrgfLb1B/t56TuAvbwlAv2kxar3ZXjv9QbkK5p9baeoQUoDoXWA
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Rspam-User: 
-X-HE-Tag: 1768838154-266835
-X-HE-Meta: U2FsdGVkX1/F8hYRCqZ9ftA49WC9U6nc/XmnodNeh5+DDQBYHhoArTm3a25GDd02xU/K7hvkuVeOpblJAkdw0QTD2JkUt/BipHiTj7qKQ+xJl3ztkITxiqib9v4dRujHXzDRfISCCX2VvmtAgVI0+R33ZwlWfrmEQhnQv7bGdyhEtXqoMzI0YqnIZBu9BHjSXdU0Dh4HklOIgVZYqJXJr+9bLAKBshq9vptQFvL0bEcrEFSec0PCSUxxKEDJcAmFHE02Lphg7r2AL40HoDE3HjbOxBNUy/OzMT/uO6AkiHhlgzvv3D9xHzFhwJ8ocEd9qIl2zqyUXxrU7BPyC+Xf010EoINH9mc6EuwTYZdCDGbV+msvdXoByXtyHmxa3kxvhHJPuWaNK3G2TFphfE5xqpdx3UBQtTaUpLWMalS8w/iZ4cyXshOlVsA9Qh/QyjIEnkRPBUllvmUmdpMIZU6XV7jztMSvO/hzfs+rxWIt8yCs0LN3ZDvX7mEGp3FpuOME9rkzpVwRN+2I3hPC6j/RlvThG0WZlZAUsGbQU8pYLq0It6qduRH5XGRPKAPfNocDVRyobIlOxaURxsvT5bPE5krLcZ/a72/GaQBI+cdK8xF0dWVWOjNS1C/zpO9sFKExIAXKA8mX8+qp6rGyRdfU9RUKqSbh3czDofhS+/MNY4ncuuwAv66N0U9vcn1tBTf80RDAsna5dhXxy28uq7uSHALZK1XGh5FfWW5WP3eTFFXIbknMN5YHv8XyRIDWppJksEzk7yXnMOJ12kZfz/WIwlqDpcEkdT+P1X0QFjbkEoZp6vzU9IZMxJLQ83G7f+jDhWHhG2fjSicA0sIIRHP2d4A+8N5FueO/Nd5PtegbVBp1GHdlCgNA5gvaPpeLGSkHJhl4YqVMasdST3/r8ZFHqJy5n1yY2sKZJCtnjr8U9XXp5VWU6q/UcKYnKtc9ADHYZlNzwGxsz8vSd5AEFCU
- UimuIlYO
- mWEwluksLF2Dx4SXws3pb7UIOnZcrm5zN2PoswxYjE6gRDS3nsPiMhT8uxlm0GjoHZQsLVpbM/iJkQp6sliycuErFoKI8sn79YfF13yUCq6gjAbQTJLKMELKHK6qaKm7NgliqIDTMkbe7GZshOpNMuqnuc1CQB7EzDhkFksTRVaDMPXRLYaGBjvLC/qMVC1LEDii6ZHQZs5AQufK+q6ISpJjrgBiTozMI9A5kVPvapDh1knwYhDsbEjsc3em02t8Yj2MoSOIsAepKmoPg/dRwUlPbpAElTaKMGXpfb57sgPOO7/8I/A42+bC6DjdyT/szSB2SvOjVVGjdNqJqX4ynr/kchg==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.001008, version=1.2.4
+X-Stat-Signature: u16fhygujtwb5i67o4gfkyudjyzkhz8t
+X-Rspamd-Queue-Id: 5E0BB2000B
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768839090-701858
+X-HE-Meta: U2FsdGVkX1+UtToxkWAPVKF+edgiiRjbdDDYKP1n6n6+EE9WX2b+kvs3QacDRAoY5bUHGgCSlf77syT5n7rbr5nSvq22jNrqO9JYwnT9HkqL5g0IhoE4m5smRJfHOdOSDmEfmiWZDnj9QYux/bBeU2odMtC2ZcKvH0vlN9XvyWTRW/Mnc9o/zF2tBysFud6mfKbM8uCYqI1VP/B2VDQ1S2bsXhHNayegwUYj5Kf5QqdKgh2PByswS8lSCd2dj5Vubp7YfmdsnmqVTiIYDGHmImV9wZ5yFZBudT4p0MTCPzyw3yWl1SVknkYWhd6b2HeNT8yZgW2bZRLnWUL7MsN7v6qSuxU1zg2lYINhed4i3cy1k86rc7kPUU+2ju8wyH5scKTAG/pIHcPS9uAzGOiyQz5DCfO5H2SGfYZ9zuqMy1aLkrTdzgX5nDHRCPgwsfYvuPAPUlBe2EGYmKznNykxWH8pLNaOXhF8pFVj6WVFLe80cBNWMKPtTtVfXuZRHsn3+6nCuUh5boIoZjhRPlbOctr07IW1MpG4a02+IR96elISdD/I1MDvf7DRf8Px9IpkUv1S69T8DKnSSoSS74k/dnanKEFALlwA7YApGSCNyczyOM1csQShbeW7kMilU/X2VFEXKb1Qa2F+bIlf7xkDOvQPP7uwc6SgKyRFz3PwWo86cCJ7BxhhKt+mglvCSwiqTnH+eCbQSdkYyzcbnZvoz54Mm2kWnT8eYO6WcOAHX2//vgMl1wpO3HtSMum5UyubqxHJOCp2Mlx5NeVPFYgwaxGXbmQthtC/dvcTLe1p6fepIuJfBL/74vy8+NXlwK4iVCzfgS1x25/IEyeZv/6bVH0BtFgFmKzx+C1fcsdjtoXo3QjFHU8mCOU6frP3tNyw5ooO3gdh9KqbObDwvzw044ghx98RVuY8G5Ej24s3rifa3Fn2jUTjvHPzAwl1vXBDJWw9aylk1ftcv6xZ28+
+ XM68pxh0
+ qfwsy+VpPOG/lUUVpnul6lHs+ps6ZIPF8nlYm+aSyWDzDyHU0tI8i/HOrAx0oLKUU23OhLm/ySOkyZWpP8+xC5n6Ci4s8WDdJpR/1hakjCKkd/expmS3yuATt8c2Q/U8XzGLNToktkmtQQ4qclpjQdselesNBvEm8YQ0RRHyzuVKsXaICeiQYD0ywJmhCduyJAOtwH94Wfmylwzrao+tSQ+wLVmBDgBE798hmAEQ8iZDdq6yIfkR/9u8rX0v5b52H8KPV7nDtDToraQVK+KQVqxVPpPp8vgdXU3m3GB67MkeToCuGu9XvMPybXZKmZlrx2PiAazz1ESzaxziLoa9s7X+IHu9LTOKb6XCCI2mFPmaCiUNRk4mF6cqAtW/NUvzPBbQ9OYb2D2cS86z7Rsw4ywKzZYZKUufooyNLglenjiu6FbHPL/WATJUwLgckRGJSDa/nawxvhPm6cw20it5pGsMvnrdP1RVB8Phf8rPQPDj1lCAz+DgM+H7+tg==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,55 +134,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 19, 2026 at 3:49=E2=80=AFPM J=C3=B6rg R=C3=B6del <joro@8bytes.o=
-rg> wrote:
->
-> On Mon, Jan 19, 2026 at 02:22:45PM +0000, Mostafa Saleh wrote:
-> > +static inline struct page_ext *page_ext_get_phys(phys_addr_t phys)
->
-> The name is misleading as it indicates that the function returns a physic=
-al
-> address. Maybe name it page_ext_from_phys()?
+From: Kairui Song <kasong@tencent.com>
 
-I will update it.
+The helper for shmem swap freeing is not handling the order of swap
+entries correctly. It uses xa_cmpxchg_irq to erase the swap entry, but
+it gets the entry order before that using xa_get_order without lock
+protection, and it may get an outdated order value if the entry is split
+or changed in other ways after the xa_get_order and before the
+xa_cmpxchg_irq.
 
->
-> > +{
-> > +     return NULL;
-> > +}
-> > +
-> >  static inline void page_ext_put(struct page_ext *page_ext)
-> >  {
-> >  }
-> > diff --git a/mm/page_ext.c b/mm/page_ext.c
-> > index 297e4cd8ce90..5fe65a0ac4f3 100644
-> > --- a/mm/page_ext.c
-> > +++ b/mm/page_ext.c
-> > @@ -538,6 +538,29 @@ struct page_ext *page_ext_get(const struct page *p=
-age)
-> >       return page_ext;
-> >  }
-> >
-> > +/**
-> > + * page_ext_get_phys() - Get the page_ext structure for a physical add=
-ress.
-> > + * @phys: The physical address to query.
-> > + *
-> > + * This function safely gets the `struct page_ext` associated with a g=
-iven
-> > + * physical address. It performs validation to ensure the address corr=
-esponds
-> > + * to a valid, online struct page before attempting to access it.
-> > + * It should return NULL for (MMIO, ZONE_DEVICE, holes, offline memory=
-)
->
-> It should?
->
+And besides, the order could grow and be larger than expected, and cause
+truncation to erase data beyond the end border. For example, if the
+target entry and following entries are swapped in or freed, then a large
+folio was added in place and swapped out, using the same entry, the
+xa_cmpxchg_irq will still succeed, it's very unlikely to happen though.
 
-Yes, I can make it more definitive as "it returns"
+To fix that, open code the Xarray cmpxchg and put the order retrieval
+and value checking in the same critical section. Also, ensure the order
+won't exceed the end border, skip it if the entry goes across the
+border.
 
-Thanks,
-Mostafa
+Skipping large swap entries crosses the end border is safe here.
+Shmem truncate iterates the range twice, in the first iteration,
+find_lock_entries already filtered such entries, and shmem will
+swapin the entries that cross the end border and partially truncate the
+folio (split the folio or at least zero part of it). So in the second
+loop here, if we see a swap entry that crosses the end order, it must
+at least have its content erased already.
 
-> -Joerg
+I observed random swapoff hangs and kernel panics when stress testing
+ZSWAP with shmem. After applying this patch, all problems are gone.
+
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Changes in v3:
+- Rebased on top of mainline.
+- Fix nr_pages calculation [ Baolin Wang ]
+- Link to v2: https://lore.kernel.org/r/20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com
+
+Changes in v2:
+- Fix a potential retry loop issue and improvement to code style thanks
+  to Baoling Wang. I didn't split the change into two patches because a
+  separate patch doesn't stand well as a fix.
+- Link to v1: https://lore.kernel.org/r/20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com
+---
+ mm/shmem.c | 45 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 34 insertions(+), 11 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index ec6c01378e9d..6c3485d24d66 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -962,17 +962,29 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
+  * being freed).
+  */
+ static long shmem_free_swap(struct address_space *mapping,
+-			    pgoff_t index, void *radswap)
++			    pgoff_t index, pgoff_t end, void *radswap)
+ {
+-	int order = xa_get_order(&mapping->i_pages, index);
+-	void *old;
++	XA_STATE(xas, &mapping->i_pages, index);
++	unsigned int nr_pages = 0;
++	pgoff_t base;
++	void *entry;
+ 
+-	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
+-	if (old != radswap)
+-		return 0;
+-	free_swap_and_cache_nr(radix_to_swp_entry(radswap), 1 << order);
++	xas_lock_irq(&xas);
++	entry = xas_load(&xas);
++	if (entry == radswap) {
++		nr_pages = 1 << xas_get_order(&xas);
++		base = round_down(xas.xa_index, nr_pages);
++		if (base < index || base + nr_pages - 1 > end)
++			nr_pages = 0;
++		else
++			xas_store(&xas, NULL);
++	}
++	xas_unlock_irq(&xas);
++
++	if (nr_pages)
++		free_swap_and_cache_nr(radix_to_swp_entry(radswap), nr_pages);
+ 
+-	return 1 << order;
++	return nr_pages;
+ }
+ 
+ /*
+@@ -1124,8 +1136,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 			if (xa_is_value(folio)) {
+ 				if (unfalloc)
+ 					continue;
+-				nr_swaps_freed += shmem_free_swap(mapping,
+-							indices[i], folio);
++				nr_swaps_freed += shmem_free_swap(mapping, indices[i],
++								  end - 1, folio);
+ 				continue;
+ 			}
+ 
+@@ -1191,12 +1203,23 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 			folio = fbatch.folios[i];
+ 
+ 			if (xa_is_value(folio)) {
++				int order;
+ 				long swaps_freed;
+ 
+ 				if (unfalloc)
+ 					continue;
+-				swaps_freed = shmem_free_swap(mapping, indices[i], folio);
++				swaps_freed = shmem_free_swap(mapping, indices[i],
++							      end - 1, folio);
+ 				if (!swaps_freed) {
++					/*
++					 * If found a large swap entry cross the end border,
++					 * skip it as the truncate_inode_partial_folio above
++					 * should have at least zerod its content once.
++					 */
++					order = shmem_confirm_swap(mapping, indices[i],
++								   radix_to_swp_entry(folio));
++					if (order > 0 && indices[i] + (1 << order) > end)
++						continue;
+ 					/* Swap was replaced by page: retry */
+ 					index = indices[i];
+ 					break;
+
+---
+base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
+change-id: 20260111-shmem-swap-fix-8d0e20a14b5d
+
+Best regards,
+-- 
+Kairui Song <kasong@tencent.com>
+
 
