@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C471BD2ECEF
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 23:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55CABD2ECF6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 23:04:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36C836B0330; Mon, 19 Jan 2026 18:04:18 -0500 (EST)
+	id 04B206B02CB; Mon, 19 Jan 2026 18:04:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 353D76B0332; Mon, 19 Jan 2026 18:04:18 -0500 (EST)
+	id EB8066B0335; Mon, 19 Jan 2026 18:04:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2601E6B0333; Mon, 19 Jan 2026 18:04:18 -0500 (EST)
+	id BB5EC6B0336; Mon, 19 Jan 2026 18:04:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1254C6B0330
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 18:04:18 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD25FC177C
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:04:17 +0000 (UTC)
-X-FDA: 84350243754.30.61CE059
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0BC71100009
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:04:15 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oYhem+Ry;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 897E96B0334
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 18:04:24 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2725113A8A6
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:04:24 +0000 (UTC)
+X-FDA: 84350244048.23.6926D12
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 899F840005
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:04:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gur98Nh0;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768863856;
+	s=arc-20220608; t=1768863862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OgbObs8HDdumlKaDxCQZI2KxkSHb7dglw2VWFF79KHc=;
-	b=7RqgoiILrevjisjL9idNKwcropuFh/GjpVFS1iQelttbeq1kN9iTNhje5HdSe5LAtZ5viE
-	glT2f9DtarUy9nrzxmpdxEjCyWMum2gqvqHbIt038BUbQ8aNaJNGFlrFiErXtwhfefsWhF
-	MnRApwqdKX8GwctojkTOzAacAUlHXyw=
+	bh=YL5Yp3bmPDaN/o5VCxRQgT5jiyEB0sYSiNPeEfZnNLs=;
+	b=y/mXR2eQliZk8zHI0BaluDwNGYT2MzlEwlHudncMyBxf8qsaKbpsR7ss3WO3Roj23grr8/
+	xwa2VuHmHkHjF2jSnTpPnr0UL9uBeSY4NPnjDFSU+M9Ps0A9B+GgeQb503Tr+zgNzD+NTs
+	cA+HpZWN5y06Itd3bQFleZo0JhwAolg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oYhem+Ry;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gur98Nh0;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768863856; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768863862; a=rsa-sha256;
 	cv=none;
-	b=f5YhRFHvwHBdC4uLouwAHL03NCPWCzYekvS9eWj6rwTOY2Pnj3jTLdkGPUJmo6wKMAXhjI
-	vZTYlci7s6nb7jj3wdc41kvtgr7FJvvboDeco9+H5+2TsiPAe1Keevod9DthFcUA1lU2kG
-	x5lDSn4YYnzN26dxb8gH5jmsvf80T4M=
+	b=EikyXmAG8sB3cfB3NE9TOlJz1+LMpbV1SgTGm7bhL6LU27DSqRlqVVfQpsXAksjHGPSTkI
+	5ZiX8+9ovUdtoTEaYNUBz+7EENNQmUiqe8rJNkhwJ2RaqJ4GXGetnat7jg2vPrLz5gUbKM
+	wmitjSQB+3EH+XCzV22NaM7cOUthzfY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 16E8440210;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1B3DC600CB;
+	Mon, 19 Jan 2026 23:04:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C54FC116C6;
 	Mon, 19 Jan 2026 23:04:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D026BC116C6;
-	Mon, 19 Jan 2026 23:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768863854;
-	bh=rfLKWCy9vJo0cdwgW26hFt2Hmw6jpwEGhVTR8rbPNG0=;
+	s=k20201202; t=1768863861;
+	bh=bBab6NBDRM1JzpiE2e7pM9KwdFDytuAM5t2vCrPDoaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oYhem+RyIfPYbRq/FfuQqbLgtWgy8BpIVjnZIFIo2pyBjNu0tkitvJixH2VAC5iwL
-	 0udZb3Nwm9Nm9mnEfvtHLW9oTj17v3gePhwKqKsuwG2spWtGT7wrjMglu7Jk7xwwVL
-	 qgc0gO5oasN5SIWAvQ+fmSdW5X/8qWWN/6b89nNhT8qBhxDZLcl0dhrwWMDIQKhrbL
-	 4k0sEibe6agRVrTRCbUTDZod92Sk3LXFSBCuK4MfajLCooB3qJFV8miYoiSDHNq1rg
-	 rRJf65xLWtvgrRdbaPTINUhuOO9OWGtADn303tSQQFRZaQP/O2FnwV9COpZS1oFNGo
-	 4HRrRgQ99HmKA==
+	b=Gur98Nh0ZRVpYfJcb6gHUUpn6bxCBetvsDOZtfvPoVcwEo8KJ5clVB54eAiPH/Iai
+	 heYJBC6atNIA0y1z7PIzaecoSG2s3xEJzDZhMXVrPIqwRl9NKhfXGO5qyek6NOd4uG
+	 DUN0ewf2L0U6Rl3E9Nsx1uLhmL6eMgG5sNvexfLMmHYNMM8aV4XigKa1MpIyPfbGLI
+	 GlnWYx+NZnQXcxFVmFUqx5dXbO37NlrV5zRYL3FQ2HVuEwNv+jR5y1Dy3TcE7HF1vu
+	 MznI38e3Yz0CTVvnDhPa0UHMuVJr+pjhB8XC+kBMS2/qDZKl290mgjcKyNJCzh5URn
+	 RSFOLhHJE/ssw==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -92,22 +92,22 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v3 22/24] mm: rename CONFIG_BALLOON_COMPACTION to CONFIG_BALLOON_MIGRATION
-Date: Tue, 20 Jan 2026 00:01:30 +0100
-Message-ID: <20260119230133.3551867-23-david@kernel.org>
+Subject: [PATCH v3 23/24] mm: rename CONFIG_MEMORY_BALLOON -> CONFIG_BALLOON
+Date: Tue, 20 Jan 2026 00:01:31 +0100
+Message-ID: <20260119230133.3551867-24-david@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119230133.3551867-1-david@kernel.org>
 References: <20260119230133.3551867-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ac8itizj3qrrfinfpxd7fynxxukracrg
+X-Rspamd-Queue-Id: 899F840005
+X-Stat-Signature: 157bbhkxd49fak1ewr5rti9u1u1rfsso
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0BC71100009
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768863855-151863
-X-HE-Meta: U2FsdGVkX18VKhXTiVjxzAwPzOXyc4CLvOPFaYb48QE1Up4B8Sb/iX33cLvGO5DXpDJ/nL351Ubu+TZd9h8yMd8cQfr+n7ZJh6xl0AE7tQJDcm/1bMcm/liYhddptHid9HsO0gxF4Rc4KNv2s5xgbGDAmcogL7vdL1JFa56UXZ3QbKEGw3V5huPm/F/warBtVFL6Jao2OAjFhnthA+E0jEmM7T/29oVLqFCHSdHGDDqt8T7djKUBavvW6gxdeecltuB4UsRc8C2ndAaqt5Ka3Q21qKtMLYxeSe4vKbEgSQ8sD1u6nkETD5J8/SIbQqZqnK6iWD+7gqQNIYT0XTDoWmjkcTEMMuyqKeKaDhCmyGXe8XliGXWoyWFPJrUX550y8mAa4deC1Wd9h0urHoNxrGtQKEjKFTDa9WZdrdUVifugOiJF1wP556Z7dik87GEKl77pUgOlF7F5fqLEubRdgUoruyakb2r9MDVbnyZ+Q73/DwSAQZqciFi1x1yeir4nnhxcdzjK8Tsx1wAxNOpHg2G12mChpfAxDaZzgLvK55Sar/232hr1kCDs0VtNR1bL4NlTYzVFwBmZtr5QspqCLaKzCXthZrt9OxtYx3t0OzFI7PHd1PLDmWkIaTfwpr9YDMjgzwSW1cUJp+CsMzkot27ucNPMJqun10iKin2m2CSo8glAEGarbJ1Nxu8qZCI+oK4PLTjSahpbJjttkItQO3qQxcUumKMPx3M58Qn0pFuyQwHfbINg87qBrhBTGmC4zRTRauQubH1Uz34lE+W/VPiN2SPH1CIW+RBtW+FkqIZygo/g7XVJoJvVNVAGHtbC22ESFuF3MTWKNTqWB49v9HJ2JjK6P8v4YKAV7DpSVNGExmQxBuV+n7akZSBUkSbcaN4F8rzWOvPaZ19jiiy1F8qHqJ1RrcKmwXlOQgYXIyhwxnOjOlvUen3LoMGDsWJUfoBMp7MGkzjRW/qfSHK
- +36gei0X
- RNh5cm23pOPIGeXkRCyNd/pKA5k0RY5V24khYInMkLDu8l2c7Uv0BP3D/u5UfhOUy7yzF61IFkq+mgBPhBdmVa0Fto1m+/yLW79BEso7SEzRjwAP1Ujy0ns/dkxLdBcA71xCsa6KPiOZyZvynXcnyQ/8eH9N+C5Ap0XRcG/wtTgMw15Lt1G8cFHXL+ZJFUGvMnJHN46to2fPeN4/T9p7IsHcPXlHdaJ/QASOBx0acTib3Ykr3A5fy6T8CnI3sLDBoXGF3qimNZbFPssKtOrQ9vBKKu5UB9XeFbM0dmQTZLEE7f8LCraRz+UKCDeGq/Pusudd3ycfVYpP2JOk=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768863862-125248
+X-HE-Meta: U2FsdGVkX1/0DC2HvzcPfFD3twqTOErMDnFGFxhn4McTjfzEgCiEM1djqsT9JDAQGei2Mp6ffsSlknEhCfx7nM5A0aRIQvLD4INRktBARiDU2nB3l79vBIoei9cVCm0SX2XV1bMj19lQcbvIfkn/Gui7WpugEDXu4YlCN24k0Rot/jA1rh8eIOduDuMaNKz2E28d6qmmLDUnNhF9aVd/Tl+3KVoZcUpnE0Ad/KPt6gOR+hP8gkot8G8iMZBfdF3pV4u19v/5ijSHfNFQwWBCsJ2OAd0nYi8WMewoh0+wr2Se1RlFdV935+WFHx6NYh6J1dDJE4zXgrFi5EtxCoWIViJL6Zo8wpYsk3kL8xb+ikI1fxJ4/tPCpTMjuu/D2xF5et/qnYh/KVHmER8SEGE13H6RlKBCzREgHk8e4cTMUEp73TEyTCOv9exh/X6BS5ofHYwnkPGgH1bGFAG5Oo4QutKnAQF1X904fokKI8idZOXQQ1CfG9IBhPYaycsToeZcr5AZ8v2MjC6BGakwWJKwHL+6JTRL3I8lifJPWq0wFaGAwbMl8fR8YgtdeoAMc+yrBzPl4d3jlIN3nD5qXLbSTdXXSY1u2zMbufuokUVaNhswoK68lXZ91FrxNJX1p7Yr8NtL/iFcSAh7cj0/WMfjF+RNoWICz61eqmWhED/178btcCnFWCnIx8u+G4z0zyGv1fpxlgclNDKhgVZzrWwl+JJEzLKKrmw7vRHwvQlnSwY/ONkRhCyNlvDn3REsi/3olo0I1JfGUyTE4vsWGAYidffpZzZEmq8x/xfOS1uuci/BCN+PdIPQF8f9ZPyLas8uiM9p0i06parh5Pz+wVhzunlCNM6rT6w59kP5uE/wc6oP0I09Fzh9ryvK4htnygaYB/a4T7Y8BB5OUN4bLjIzQAuhrq4SCxzFEomXk4WTBt2udomY3qZ84NiYFBAhIU5EJkreBjmNih4ynUvnEb1
+ vycc1v7Y
+ +WYFW9DFxllIDkLtn7kPWSQblAJYsoaTv8d6g67n5e3QxQV+8c+jukr0McBn3zOAu9a47Q1IPru47wQQZeXfys3UnkvYwkzR3uyyafq6mmQrUN0RNZ063oU3ttqhfJBDm5T3inwwmCAbcu8BR9uH9ilw2yzE+AA40+w0qHO9P7GIT3N3ZiKuJi1aIoaGAiwpIpUhx/CDvwQJqa4ZxpY1aSXKI+7Yvzm/ZJKlenVj/V46AKwQUnIK2smtNEJ3JZbJV9btI03P6LdA9kY/mRMGbitk00t9M9Zgr0Anxf3WU79EH/1c9E73rPFNmWOo+cDAU5j0TvDtstE3D09Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,306 +116,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While compaction depends on migration, the other direction is not the
-case. So let's make it clearer that this is all about migration of
-balloon pages.
+Let's make it consistent with the naming of the files but also with the
+naming of CONFIG_BALLOON_MIGRATION.
 
-Adjust all comments/docs in the core to talk about "migration" instead
-of "compaction".
-
-While at it add some "/* CONFIG_BALLOON_MIGRATION */".
+While at it, add a "/* CONFIG_BALLOON */".
 
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- Documentation/admin-guide/mm/memory-hotplug.rst |  8 ++++----
- arch/powerpc/platforms/pseries/cmm.c            |  8 ++++----
- drivers/misc/vmw_balloon.c                      |  8 ++++----
- drivers/virtio/virtio_balloon.c                 |  6 +++---
- include/linux/balloon.h                         | 12 ++++++------
- include/linux/vm_event_item.h                   |  4 ++--
- mm/Kconfig                                      |  4 ++--
- mm/balloon.c                                    | 10 +++++-----
- mm/memory_hotplug.c                             |  4 ++--
- mm/migrate.c                                    |  2 +-
- mm/vmstat.c                                     |  4 ++--
- 11 files changed, 35 insertions(+), 35 deletions(-)
+ arch/powerpc/platforms/pseries/Kconfig | 2 +-
+ drivers/misc/Kconfig                   | 2 +-
+ drivers/virtio/Kconfig                 | 2 +-
+ include/linux/vm_event_item.h          | 4 ++--
+ mm/Kconfig                             | 4 ++--
+ mm/Makefile                            | 2 +-
+ mm/vmstat.c                            | 4 ++--
+ 7 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
-index 6581558fd0d7a..0207f87251421 100644
---- a/Documentation/admin-guide/mm/memory-hotplug.rst
-+++ b/Documentation/admin-guide/mm/memory-hotplug.rst
-@@ -603,11 +603,11 @@ ZONE_MOVABLE, especially when fine-tuning zone ratios:
-   memory for metadata and page tables in the direct map; having a lot of offline
-   memory blocks is not a typical case, though.
- 
--- Memory ballooning without balloon compaction is incompatible with
--  ZONE_MOVABLE. Only some implementations, such as virtio-balloon and
--  pseries CMM, fully support balloon compaction.
-+- Memory ballooning without support for balloon memory migration is incompatible
-+  with ZONE_MOVABLE. Only some implementations, such as virtio-balloon and
-+  pseries CMM, fully support balloon memory migration.
- 
--  Further, the CONFIG_BALLOON_COMPACTION kernel configuration option might be
-+  Further, the CONFIG_BALLOON_MIGRATION kernel configuration option might be
-   disabled. In that case, balloon inflation will only perform unmovable
-   allocations and silently create a zone imbalance, usually triggered by
-   inflation requests from the hypervisor.
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-index 7a3c4922685ab..8d83df12430f2 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -494,7 +494,7 @@ static struct notifier_block cmm_mem_nb = {
- 	.priority = CMM_MEM_HOTPLUG_PRI
- };
- 
--#ifdef CONFIG_BALLOON_COMPACTION
-+#ifdef CONFIG_BALLOON_MIGRATION
- static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
- 			   struct page *newpage, struct page *page,
- 			   enum migrate_mode mode)
-@@ -520,10 +520,10 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
- 	plpar_page_set_active(page);
- 	return 0;
- }
--#else /* CONFIG_BALLOON_COMPACTION */
-+#else /* CONFIG_BALLOON_MIGRATION */
- int cmm_migratepage(struct balloon_dev_info *b_dev_info, struct page *newpage,
- 		    struct page *page, enum migrate_mode mode);
--#endif /* CONFIG_BALLOON_COMPACTION */
-+#endif /* CONFIG_BALLOON_MIGRATION */
- 
- /**
-  * cmm_init - Module initialization
-@@ -540,7 +540,7 @@ static int cmm_init(void)
- 
- 	balloon_devinfo_init(&b_dev_info);
- 	b_dev_info.adjust_managed_page_count = true;
--	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-+	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
- 		b_dev_info.migratepage = cmm_migratepage;
- 
- 	rc = register_oom_notifier(&cmm_oom_nb);
-diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-index 7fd3f709108c2..216a163959684 100644
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -1719,7 +1719,7 @@ static inline void vmballoon_debugfs_exit(struct vmballoon *b)
- #endif	/* CONFIG_DEBUG_FS */
- 
- 
--#ifdef CONFIG_BALLOON_COMPACTION
-+#ifdef CONFIG_BALLOON_MIGRATION
- /**
-  * vmballoon_migratepage() - migrates a balloon page.
-  * @b_dev_info: balloon device information descriptor.
-@@ -1803,11 +1803,11 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
- 	up_read(&b->conf_sem);
- 	return ret;
- }
--#else /* CONFIG_BALLOON_COMPACTION */
-+#else /* CONFIG_BALLOON_MIGRATION */
- int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
- 			  struct page *newpage, struct page *page,
- 			  enum migrate_mode mode);
--#endif /* CONFIG_BALLOON_COMPACTION */
-+#endif /* CONFIG_BALLOON_MIGRATION */
- 
- static int __init vmballoon_init(void)
- {
-@@ -1827,7 +1827,7 @@ static int __init vmballoon_init(void)
- 		return error;
- 
- 	balloon_devinfo_init(&balloon.b_dev_info);
--	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-+	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
- 		balloon.b_dev_info.migratepage = vmballoon_migratepage;
- 
- 	INIT_LIST_HEAD(&balloon.huge_pages);
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index de8041c3285a1..4e549abe59ff1 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -802,7 +802,7 @@ static void report_free_page_func(struct work_struct *work)
- 	}
- }
- 
--#ifdef CONFIG_BALLOON_COMPACTION
-+#ifdef CONFIG_BALLOON_MIGRATION
- /*
-  * virtballoon_migratepage - perform the balloon page migration on behalf of
-  *			     a compaction thread.     (called under page lock)
-@@ -851,7 +851,7 @@ static int virtballoon_migratepage(struct balloon_dev_info *vb_dev_info,
- 	mutex_unlock(&vb->balloon_lock);
- 	return 0;
- }
--#endif /* CONFIG_BALLOON_COMPACTION */
-+#endif /* CONFIG_BALLOON_MIGRATION */
- 
- static unsigned long shrink_free_pages(struct virtio_balloon *vb,
- 				       unsigned long pages_to_free)
-@@ -948,7 +948,7 @@ static int virtballoon_probe(struct virtio_device *vdev)
- 
- 	if (!virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_DEFLATE_ON_OOM))
- 		vb->vb_dev_info.adjust_managed_page_count = true;
--#ifdef CONFIG_BALLOON_COMPACTION
-+#ifdef CONFIG_BALLOON_MIGRATION
- 	vb->vb_dev_info.migratepage = virtballoon_migratepage;
- #endif
- 	if (virtio_has_feature(vdev, VIRTIO_BALLOON_F_FREE_PAGE_HINT)) {
-diff --git a/include/linux/balloon.h b/include/linux/balloon.h
-index 82585542300d6..ca5b15150f425 100644
---- a/include/linux/balloon.h
-+++ b/include/linux/balloon.h
-@@ -22,9 +22,9 @@
-  *
-  * As the page isolation scanning step a compaction thread does is a lockless
-  * procedure (from a page standpoint), it might bring some racy situations while
-- * performing balloon page compaction. In order to sort out these racy scenarios
-- * and safely perform balloon's page compaction and migration we must, always,
-- * ensure following these simple rules:
-+ * performing balloon page migration. In order to sort out these racy scenarios
-+ * and safely perform balloon's page migration we must, always, ensure following
-+ * these simple rules:
-  *
-  *   i. Inflation/deflation must set/clear page->private under the
-  *      balloon_pages_lock
-@@ -45,10 +45,10 @@
- 
- /*
-  * Balloon device information descriptor.
-- * This struct is used to allow the common balloon compaction interface
-+ * This struct is used to allow the common balloon page migration interface
-  * procedures to find the proper balloon device holding memory pages they'll
-- * have to cope for page compaction / migration, as well as it serves the
-- * balloon driver as a page book-keeper for its registered balloon devices.
-+ * have to cope for page migration, as well as it serves the balloon driver as
-+ * a page book-keeper for its registered balloon devices.
-  */
- struct balloon_dev_info {
- 	unsigned long isolated_pages;	/* # of isolated pages for migration */
+diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+index 3e042218d6cd8..f7052b131a4c5 100644
+--- a/arch/powerpc/platforms/pseries/Kconfig
++++ b/arch/powerpc/platforms/pseries/Kconfig
+@@ -120,7 +120,7 @@ config PPC_SMLPAR
+ config CMM
+ 	tristate "Collaborative memory management"
+ 	depends on PPC_SMLPAR
+-	select MEMORY_BALLOON
++	select BALLOON
+ 	default y
+ 	help
+ 	  Select this option, if you want to enable the kernel interface
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index d7d41b054b982..5cc79d1517af5 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -410,7 +410,7 @@ config DS1682
+ config VMWARE_BALLOON
+ 	tristate "VMware Balloon Driver"
+ 	depends on VMWARE_VMCI && X86 && HYPERVISOR_GUEST
+-	select MEMORY_BALLOON
++	select BALLOON
+ 	help
+ 	  This is VMware physical memory management driver which acts
+ 	  like a "balloon" that can be inflated to reclaim physical pages
+diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
+index 6db5235a7693d..ce5bc0d9ea287 100644
+--- a/drivers/virtio/Kconfig
++++ b/drivers/virtio/Kconfig
+@@ -112,7 +112,7 @@ config VIRTIO_PMEM
+ config VIRTIO_BALLOON
+ 	tristate "Virtio balloon driver"
+ 	depends on VIRTIO
+-	select MEMORY_BALLOON
++	select BALLOON
+ 	select PAGE_REPORTING
+ 	help
+ 	 This driver supports increasing and decreasing the amount
 diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 92f80b4d69a6d..fca34d3473b6b 100644
+index fca34d3473b6b..22a139f82d75f 100644
 --- a/include/linux/vm_event_item.h
 +++ b/include/linux/vm_event_item.h
-@@ -125,9 +125,9 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- #ifdef CONFIG_MEMORY_BALLOON
+@@ -122,13 +122,13 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ 		THP_SWPOUT,
+ 		THP_SWPOUT_FALLBACK,
+ #endif
+-#ifdef CONFIG_MEMORY_BALLOON
++#ifdef CONFIG_BALLOON
  		BALLOON_INFLATE,
  		BALLOON_DEFLATE,
--#ifdef CONFIG_BALLOON_COMPACTION
-+#ifdef CONFIG_BALLOON_MIGRATION
+ #ifdef CONFIG_BALLOON_MIGRATION
  		BALLOON_MIGRATE,
+ #endif /* CONFIG_BALLOON_MIGRATION */
 -#endif
-+#endif /* CONFIG_BALLOON_MIGRATION */
- #endif
++#endif /* CONFIG_BALLOON */
  #ifdef CONFIG_DEBUG_TLBFLUSH
  		NR_TLB_REMOTE_FLUSH,	/* cpu tried to flush others' tlbs */
+ 		NR_TLB_REMOTE_FLUSH_RECEIVED,/* cpu received ipi for flush */
 diff --git a/mm/Kconfig b/mm/Kconfig
-index 0d13c1b36e1c1..460a148d5b71a 100644
+index 460a148d5b71a..8e23af521605e 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -597,8 +597,8 @@ config MEMORY_BALLOON
+@@ -593,7 +593,7 @@ config SPLIT_PMD_PTLOCKS
+ 
+ #
+ # support for memory balloon
+-config MEMORY_BALLOON
++config BALLOON
  	bool
  
  #
--# support for memory balloon compaction
--config BALLOON_COMPACTION
-+# support for memory balloon page migration
-+config BALLOON_MIGRATION
+@@ -601,7 +601,7 @@ config MEMORY_BALLOON
+ config BALLOON_MIGRATION
  	bool "Allow for balloon memory migration"
  	default y
- 	depends on MIGRATION && MEMORY_BALLOON
-diff --git a/mm/balloon.c b/mm/balloon.c
-index 25e2a1e71eba9..834f86c3c116d 100644
---- a/mm/balloon.c
-+++ b/mm/balloon.c
-@@ -34,7 +34,7 @@ static void balloon_page_insert(struct balloon_dev_info *balloon,
- {
- 	lockdep_assert_held(&balloon_pages_lock);
- 	__SetPageOffline(page);
--	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
-+	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION)) {
- 		SetPageMovableOps(page);
- 		set_page_private(page, (unsigned long)balloon);
- 	}
-@@ -51,7 +51,7 @@ static void balloon_page_insert(struct balloon_dev_info *balloon,
- static void balloon_page_finalize(struct page *page)
- {
- 	lockdep_assert_held(&balloon_pages_lock);
--	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-+	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
- 		set_page_private(page, 0);
- 	/* PageOffline is sticky until the page is freed to the buddy. */
- }
-@@ -153,7 +153,7 @@ struct page *balloon_page_alloc(void)
- {
- 	gfp_t gfp_flags = __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
- 
--	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-+	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
- 		gfp_flags |= GFP_HIGHUSER_MOVABLE;
- 	else
- 		gfp_flags |= GFP_HIGHUSER;
-@@ -232,7 +232,7 @@ struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info)
- }
- EXPORT_SYMBOL_GPL(balloon_page_dequeue);
- 
--#ifdef CONFIG_BALLOON_COMPACTION
-+#ifdef CONFIG_BALLOON_MIGRATION
- 
- static bool balloon_page_isolate(struct page *page, isolate_mode_t mode)
- 
-@@ -342,4 +342,4 @@ static int __init balloon_init(void)
- }
- core_initcall(balloon_init);
- 
--#endif /* CONFIG_BALLOON_COMPACTION */
-+#endif /* CONFIG_BALLOON_MIGRATION */
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 389989a28abe0..bc805029da517 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -946,8 +946,8 @@ static struct zone *default_kernel_zone_for_pfn(int nid, unsigned long start_pfn
-  * We rely on "present pages" instead of "managed pages", as the latter is
-  * highly unreliable and dynamic in virtualized environments, and does not
-  * consider boot time allocations. For example, memory ballooning adjusts the
-- * managed pages when inflating/deflating the balloon, and balloon compaction
-- * can even migrate inflated pages between zones.
-+ * managed pages when inflating/deflating the balloon, and balloon page
-+ * migration can even migrate inflated pages between zones.
-  *
-  * Using "present pages" is better but some things to keep in mind are:
-  *
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 4750a2ba15fef..1bf2cf8c44dd4 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -88,7 +88,7 @@ static const struct movable_operations *page_movable_ops(struct page *page)
- 	 * back to the buddy.
- 	 */
- 	if (PageOffline(page))
--		/* Only balloon compaction sets PageOffline pages movable. */
-+		/* Only balloon page migration sets PageOffline pages movable. */
- 		return offline_movable_ops;
- 	if (PageZsmalloc(page))
- 		return zsmalloc_movable_ops;
+-	depends on MIGRATION && MEMORY_BALLOON
++	depends on MIGRATION && BALLOON
+ 	help
+ 	  Allow for migration of pages inflated in a memory balloon such that
+ 	  they can be allocated from memory areas only available for movable
+diff --git a/mm/Makefile b/mm/Makefile
+index 1e31e0a528dc1..0d85b10dbdde4 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -122,7 +122,7 @@ obj-$(CONFIG_CMA)	+= cma.o
+ obj-$(CONFIG_NUMA) += numa.o
+ obj-$(CONFIG_NUMA_MEMBLKS) += numa_memblks.o
+ obj-$(CONFIG_NUMA_EMU) += numa_emulation.o
+-obj-$(CONFIG_MEMORY_BALLOON) += balloon.o
++obj-$(CONFIG_BALLOON) += balloon.o
+ obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
+ obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
+ obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
 diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 6ae8891c9693e..e96a344ab5974 100644
+index e96a344ab5974..0f64c898f79f8 100644
 --- a/mm/vmstat.c
 +++ b/mm/vmstat.c
-@@ -1422,9 +1422,9 @@ const char * const vmstat_text[] = {
- #ifdef CONFIG_MEMORY_BALLOON
+@@ -1419,13 +1419,13 @@ const char * const vmstat_text[] = {
+ 	[I(THP_SWPOUT)]				= "thp_swpout",
+ 	[I(THP_SWPOUT_FALLBACK)]		= "thp_swpout_fallback",
+ #endif
+-#ifdef CONFIG_MEMORY_BALLOON
++#ifdef CONFIG_BALLOON
  	[I(BALLOON_INFLATE)]			= "balloon_inflate",
  	[I(BALLOON_DEFLATE)]			= "balloon_deflate",
--#ifdef CONFIG_BALLOON_COMPACTION
-+#ifdef CONFIG_BALLOON_MIGRATION
+ #ifdef CONFIG_BALLOON_MIGRATION
  	[I(BALLOON_MIGRATE)]			= "balloon_migrate",
--#endif
-+#endif /* CONFIG_BALLOON_MIGRATION */
- #endif /* CONFIG_MEMORY_BALLOON */
+ #endif /* CONFIG_BALLOON_MIGRATION */
+-#endif /* CONFIG_MEMORY_BALLOON */
++#endif /* CONFIG_BALLOON */
  #ifdef CONFIG_DEBUG_TLBFLUSH
  	[I(NR_TLB_REMOTE_FLUSH)]		= "nr_tlb_remote_flush",
+ 	[I(NR_TLB_REMOTE_FLUSH_RECEIVED)]	= "nr_tlb_remote_flush_received",
 -- 
 2.52.0
 
