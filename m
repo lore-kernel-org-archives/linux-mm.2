@@ -4,181 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E356BCCF2D2
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 09:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DBFECCF2D4
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 09:44:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 488206B014D; Mon, 19 Jan 2026 04:34:13 -0500 (EST)
+	id 8AD2E6B0150; Mon, 19 Jan 2026 04:44:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 456186B014F; Mon, 19 Jan 2026 04:34:13 -0500 (EST)
+	id 881596B0151; Mon, 19 Jan 2026 04:44:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 337C36B0150; Mon, 19 Jan 2026 04:34:13 -0500 (EST)
+	id 78D146B0152; Mon, 19 Jan 2026 04:44:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2223B6B014D
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:34:13 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B15C91406DF
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:34:12 +0000 (UTC)
-X-FDA: 84348202344.27.6272CAC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 23C40180004
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:34:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YV3pO5JV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wKszw5nA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YV3pO5JV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wKszw5nA;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768815250; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 66BC26B0150
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:44:17 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAF0A1606AD
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:44:16 +0000 (UTC)
+X-FDA: 84348227712.04.D395CDF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F23F9120002
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:44:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c42FYPnO;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768815855; a=rsa-sha256;
 	cv=none;
-	b=GWVFR/mdwaX8m+tgH4Os4q0HAX/iap3YqYEaWA7m+752CIu2OYM6wpdYd8Hn4/aQRrmVgH
-	/WtrKGDFgKY3MunKFEM5Av/FSJqYMSvp7uAZUv987567VWLuXluhjDVsWqX4JyiuMc0oPF
-	P4rDsLtvw3eM9k5wTkU+biLTXlXn6d0=
+	b=6CTfZ6ZlGsQj9If+rpnFLtCIB0M5MdSw4w6EB6/+WaZqSSqmGNHncmBIns/sOq8otVXdVO
+	xc6KnnGtGtyQUca94hn+IfM+pm2Nq0ds1b5JrXTf06roTxJu0YSyZMxsWRAIZTQSS+C6Ld
+	PY2DtmLPJeBgWdQI4NbDn/SgDKzI/58=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YV3pO5JV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wKszw5nA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YV3pO5JV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wKszw5nA;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c42FYPnO;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768815250;
+	s=arc-20220608; t=1768815855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ikLK1Mgji5k5g6jyOPReFRltrTEuDlSX80eK5Jr1uK4=;
-	b=sLXBGzQCcSfAlhk1TcA3871NadhYh1dAAgnfvQCblzQ2RkMMMWA7KRSIc7MpIFt0jHN0o0
-	+ks0lVpWft26u002PhJ0xyqurql/9Jf9WT2X3a39YDk7xU6w6idd8AJ5OMgFGGKCtMXs8A
-	iJ3XsXQTeudxlnawwXAbXwuojwsJrsk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4CA145BD44;
-	Mon, 19 Jan 2026 09:34:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768815248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ikLK1Mgji5k5g6jyOPReFRltrTEuDlSX80eK5Jr1uK4=;
-	b=YV3pO5JVs8tDCn2O+3X6BUTQW3U0ouPlo7goLSDSkyDXIP4iSVccogJ4/KzR4YGddJJXMu
-	9q4auK2Z/0Ose/Y9XPpcwV2AqXI1lOixpZY6hNHwgEdpXqjZahn8psPFZK0Epmi0MPw6zS
-	HuWkje/2RsjmVKFhfVnM4arp1Cyelbo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768815248;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ikLK1Mgji5k5g6jyOPReFRltrTEuDlSX80eK5Jr1uK4=;
-	b=wKszw5nAQu/uhKci0sbkUFQPyyKLfp1ADEz2oKYEn6PsIFmUJcOltygGTf36ztv3TIRxWR
-	3b5QzNODRwBSevBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768815248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ikLK1Mgji5k5g6jyOPReFRltrTEuDlSX80eK5Jr1uK4=;
-	b=YV3pO5JVs8tDCn2O+3X6BUTQW3U0ouPlo7goLSDSkyDXIP4iSVccogJ4/KzR4YGddJJXMu
-	9q4auK2Z/0Ose/Y9XPpcwV2AqXI1lOixpZY6hNHwgEdpXqjZahn8psPFZK0Epmi0MPw6zS
-	HuWkje/2RsjmVKFhfVnM4arp1Cyelbo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768815248;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ikLK1Mgji5k5g6jyOPReFRltrTEuDlSX80eK5Jr1uK4=;
-	b=wKszw5nAQu/uhKci0sbkUFQPyyKLfp1ADEz2oKYEn6PsIFmUJcOltygGTf36ztv3TIRxWR
-	3b5QzNODRwBSevBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1EFFC3EA63;
-	Mon, 19 Jan 2026 09:34:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QpVoBpD6bWn1WAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 19 Jan 2026 09:34:08 +0000
-Message-ID: <4f60e230-c76e-4ab3-a0f0-7598dcb15d1a@suse.cz>
-Date: Mon, 19 Jan 2026 10:34:07 +0100
+	bh=uNiQRuU19aPI/1q+KM89OLs3MZm4rzZrU1KQwNr0GCA=;
+	b=PnfLynjT6CItumcXQkYhOpQaVWy9d26oY9KIHMUOnXNibUZpfTXH05c3rHDCdozNFfbujx
+	JUMwGDYzGMZ2uRBaiiR3kT2ojl/uId/jT8gPm0TTs0B4F8NyYHdRSeIvnmYoghM2TU70y1
+	K+xnTOUKPHBYQEm9VMHiL2m+9X8HDKo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BAEDE43925;
+	Mon, 19 Jan 2026 09:44:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614B4C116C6;
+	Mon, 19 Jan 2026 09:44:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768815853;
+	bh=bY2K7YbaDGhdDEwxbSPSrK9Bho/NX+G/IaXsX/yc9gI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c42FYPnOn66T+MvVDZwzUa2uGFNSY3ixID2WNxvELuDe0qV7V34R3EvM7W5bMGkx+
+	 F1KmCeVW+XFTlx5vWimNanbMg4ytF0kykZLrFCzceTykdIR7iV3I8PNyZCeEdX8kyx
+	 HTdb5TmS3NP+Jkgi309jWE88kL2kmptAhOdtZdurNGE38b5S+aM86/d6/KjksfZIH9
+	 wTMZ59EQ/VMbjvZq6+Ktx5pvax3rITnTIk95qAQ+f9cIl9apuBwYgw6z97iOlLninf
+	 BZEE1NJqlspZX0l8P3kvMck3LPk+VXmCsVwJjjWwemXwr/AkxJyQcol9ylfHgN6hw/
+	 qoFABtElBleKA==
+Message-ID: <7b21ef98-e9f3-4e09-97ab-cf1ee9def41f@kernel.org>
+Date: Mon, 19 Jan 2026 10:44:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/21] slab: introduce percpu sheaves bootstrap
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>,
+ Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
+ athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+ <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+ <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
+ <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+ <238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
+ <CAJfpegvUP5MK-xB2=djmGo4iYzmsn9LLWV3ZJXFbyyft_LsA_Q@mail.gmail.com>
+ <c39232ea-8cf0-45e6-9a5a-e2abae60134c@kernel.org>
+ <CAJfpegt0Bp5qNFPS0KsAZeU62vw4CqHv+1d53CmEOV45r-Rj0Q@mail.gmail.com>
+ <01ebe0c6-6135-4937-a758-93a5fc78d7fe@kernel.org>
+ <20260118164051.521de8ad2758376c3e1d2d81@linux-foundation.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-6-5595cb000772@suse.cz>
- <CAJuCfpERcCzBysPVh63g7d0FpUBNQeq9nCL+ycem1iR08gDmaQ@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAJuCfpERcCzBysPVh63g7d0FpUBNQeq9nCL+ycem1iR08gDmaQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260118164051.521de8ad2758376c3e1d2d81@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 23C40180004
-X-Stat-Signature: dmo4mpdhppnjw6xbr8tsboqhzs44q9r4
+X-Rspamd-Queue-Id: F23F9120002
+X-Stat-Signature: 6mmdc1nfx5m9ktd7ksr5ibwmxqw8cwbt
 X-Rspam-User: 
-X-HE-Tag: 1768815249-903409
-X-HE-Meta: U2FsdGVkX18HswPNyVhnXzYuyd+brwT/qUnhGaWSYzKkanhFokKg/SbsbONVP8iE4/nUVrHCq62UwY11rHdNxKTHRk1lONprZPplPu0aLSORuhpO1Dfp8tSHaClZYAXV0UVjkE4b9vAGT/ku8lwVFsqeDudwJolopWKdUUyZWt/sT4kHPh3iwTr4kV+4DzMyW2vq5uoE2cAFrq1C/9zsmcXDISc5OKDvj3s6GFqHhIKsvCt0NlNAkyZB/PCmm9v/vp+gHFP0cQfLbRMj37To+SK43IN3H1mmP/oVHyi/KwKhenQ8953x3scqMVFv9F1xK2mM7eVG2LPNEytNlil7zRxghTbDlzA9K/SBejfXVL3Q9+IWAVo+3LpHDaFGVHsq56j819Wb2AdlqW1Oggkdhz9MttJFz7sY2m1FHqv4okDPfo130zUSd6DiE7PXdzJmYMvreT3DsKGq0qtNMerNDdW88vGzX0Vmeqq2TTj+lKzy/9V2opnRCH7q+D6W83ZXOH/rZSy/bYKa3OLg/ELP4dap6evsHBbcjxLaoH/SR+H1CGABzega9nIm43Wvrifs813QMuhRfzjwaLBchEBBKPG1cbkHQyE9kcH2CD56sLg9j37FT4uUAMv7RjciruGt0EnrSjAM4fJT7F0O98QEK3ffHuBPW0gWpsGbxqbuWgs9xt5/JfouoVXMP0Zynvfy46QnyCHoCnBM7A2FffC+Iez4YSYQEW4AS92r9PwnrZd//5ieNu28fJQ0NnOL1wHp6/hajsE3XVdqwSunhrY/f7FeaOejx6CtEFIaeOQMOMBE34XwWiijX22+LI22qqU6JI/GXNWw9O0ZHJaQbUcN9G3XuvX8eqhHxGRtC55UoTo8gn1Z/QFc3yXClnlBgcDLvOj3FC1kkxj/+Xu3pbItNIMnMTwYxBKOhmHL90T+jmd+lVym9KIXWMcoAfPsbrxyrMsKNlmsvnJ5N0fRFkW
- tHt8vmzV
- UH5AMFtCOxg1+s84GN7RkVkNSnk+/bhq9RMi3rstx420WESRjiLTZSdWgPXO/rqbjGGQ1gK+ZJXLMvNqeoKqG4HL6W+iQVeAbeBTkH8DdrCkXwolA+qOSofFi8kWacVGKBGpV+OS4bZoTjYZ7JPfDzVW5B4VeCauFBVU+6tQSLvpLIKv6tpbjnm3w2HiEbh+4XddG0CDImszT86Fpl3I7NgP24JFP6Wuh8elW1c0wwaZVII3WnMxfP4icyNQTQbory4PDR+qaCcgZiV3lk7F5kwDKiT1l/awht2u0KZlDo54XPsUlIrT1Br0EpQ==
+X-HE-Tag: 1768815854-238009
+X-HE-Meta: U2FsdGVkX189UxXAJntuesB0n4KaHovsLaykMB54C2tjysQH800sqJEG4JXW7AAtpERlj9QzC4u7gYtcBMsydZCi42gLvsKiPkBWHrgW9vaQsAcx8pb7ZMZXjIYEfLLZyzgbpy4nM2CnDB6g4i1HPfafwB3hGjuBOQIncQ5DBmh2kys9j9AjC0IJhzoSmZBhn6b+Nr9xhFloAGEcbauBjf6Ff0qjVnPa7uAFikrOmRksrzGcdEDDwoNc5U6kgsuqST6hGIKLCygESO1Xk34XWNZqYB5+XGf+L8o3OfrY8Bm5SEFZVtvJ27bkJBM/a92eINEDuGe4pZQSCzNTMB2gMWKIJ/PC//piBKX0FlQ4UPuZqRs3C5wSRLRu9o2y5rUnxgkJ+FHc+blaaBXyKHxEShHIKz/x9eXHrw5r1ftruthBT4BoNx19QFC7/pEnGFrxhNCLcuQyrUaDi+s5qPpBGtNNS6EtjExUtgY/0WljBRBJOKzeeqFuN7GXWNES7tFGKG2yMlcqF2GaYpV3JRhMGMUa6LutWsBZ9bzCI117O4hHp/OqGMLWKjYVe+pzNyoIz2KSVCttTqz5LVtwUeD6UM85fanZdHlByCWQuPA1Dt2nHp/kboKy0mDnlrFNJAbrxTAJEWaBdeq4sLdpbe5LB0YFYh4dXppOShuD41YgtdDPs0sxnzYaVCxxospa7jjswEU4Hc60VVs9zUXbovNITi3UAHDkrgzxwEyxh5SV1vrnoixLo+etWy9mu5fnI0nf8tbIbm6w/nEjP/r3Ziv7MY8pAwuhiPhLe7gQIDZE09W9gWtzAZIFuyzSLhkSq+sKZ+oq55pjjAM8+Srs5Qadcx4KkvXXDu9gBBBxQVCZ/inKgQHA3sFHtMgs0gxebAG3SUqfB+iIDRaU9e9HnVQ7DqDoagMrPQKluYxwWJ1PnaEvcy45DSHyA31bxxkNCtSutSKajVHBHUcQdnVCykm
+ s/pvb8UN
+ 6bwTZEv16yHbodocjTjqUEfu0HzG/FUKvBpguAVA7J6HjPfdV+L+yarvYXA89j7UekqIbHjukHqjEQs3ikRb9n1Xc9Mqx6BfzJSKakI/Zlw9HwQ8u2h39oouCa0Otc5X/YCdxQrnEGKawmL7xiNIAT/xy8oCjCLSK5J+AnaXpC1qvUq9Dbd4mR5bQZEnrPqoPDd4pQ78YiT3ENL7JkLvjL96LQHg9ebA2fLSfgoDwGVAFYanpb08kr6eaAYtYKskmWCXD7+i7SQQYyTCArJ6SBnF6nWQdlXq0+PY/dB7VfoviV7fPLqyASVaV4S2ZYFY6CJcQmRN8Z/Z6Isk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,133 +150,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/17/26 03:11, Suren Baghdasaryan wrote:
-> On Fri, Jan 16, 2026 at 2:40 PM Vlastimil Babka <vbabka@suse.cz> wrote:
->> Thus sharing the single bootstrap sheaf like this for multiple caches
->> and cpus is safe.
->>
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
->>  mm/slub.c | 119 ++++++++++++++++++++++++++++++++++++++++++--------------------
->>  1 file changed, 81 insertions(+), 38 deletions(-)
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index edf341c87e20..706cb6398f05 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -501,6 +501,18 @@ struct kmem_cache_node {
->>         struct node_barn *barn;
->>  };
->>
->> +/*
->> + * Every cache has !NULL s->cpu_sheaves but they may point to the
->> + * bootstrap_sheaf temporarily during init, or permanently for the boot caches
->> + * and caches with debugging enabled, or all caches with CONFIG_SLUB_TINY. This
->> + * helper distinguishes whether cache has real non-bootstrap sheaves.
->> + */
->> +static inline bool cache_has_sheaves(struct kmem_cache *s)
->> +{
->> +       /* Test CONFIG_SLUB_TINY for code elimination purposes */
->> +       return !IS_ENABLED(CONFIG_SLUB_TINY) && s->sheaf_capacity;
->> +}
->> +
->>  static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int node)
->>  {
->>         return s->node[node];
->> @@ -2855,6 +2867,10 @@ static void pcs_destroy(struct kmem_cache *s)
->>                 if (!pcs->main)
->>                         continue;
->>
->> +               /* bootstrap or debug caches, it's the bootstrap_sheaf */
->> +               if (!pcs->main->cache)
->> +                       continue;
+On 1/19/26 01:40, Andrew Morton wrote:
+> On Tue, 6 Jan 2026 18:54:47 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
 > 
-> I wonder why we can't simply check cache_has_sheaves(s) at the
-> beginning and skip the loop altogether.
-> I realize that __kmem_cache_release()->pcs_destroy() is called in the
-> failure path of do_kmem_cache_create() and s->cpu_sheaves might be
-> partially initialized if alloc_empty_sheaf() fails somewhere in the
-> middle of the loop inside init_percpu_sheaves(). But for that,
-> s->sheaf_capacity should still be non-zero, so checking
-> cache_has_sheaves() at the beginning of pcs_destroy() should still
-> work, no?
+>> On 1/6/26 17:05, Miklos Szeredi wrote:
+>>> On Tue, 6 Jan 2026 at 16:41, David Hildenbrand (Red Hat)
+>>> <david@kernel.org> wrote:
+>>>
+>>>> I assume the usual suspects, including mm/memory-failure.c.
+>>>>
+>>>> memory_failure() not only contains a folio_wait_writeback() but also a
+>>>> folio_lock(), so twice the fun :)
+>>>
+>>> As long as it's run from a workqueue it shouldn't affect the rest of
+>>> the system, right?  The wq thread will consume a nontrivial amount of
+>>> resources, I suppose, so it would be better to implement those waits
+>>> asynchronously.
+>>
+>> Good question. I know that memory_failure() can be triggered out of
+>> various context, but I never traced it back to its origin.
+> 
+> I'm seeing unhappy okays from David and Jan, so I'll upstream this
+> patch later in the week, unless someone stops me.
 
-I think it should, will do.
+Just to clarify, I'm happy with this patch as is. The semantics make 
+perfect sense.
 
-> BTW, I see one last check for s->cpu_sheaves that you didn't replace
-> with cache_has_sheaves() inside __kmem_cache_release(). I think that's
-> because it's also in the failure path of do_kmem_cache_create() and
-> it's possible that s->sheaf_capacity > 0 while s->cpu_sheaves == NULL
-> (if alloc_percpu(struct slub_percpu_sheaves) fails). It might be
-> helpful to add a comment inside __kmem_cache_release() to explain why
-> cache_has_sheaves() can't be used there.
+-- 
+Cheers
 
-The reason is rather what Harry said. I'll move the check to pcs_destroy()
-and add comment there.
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 706cb6398f05..6b19aa518a1a 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2858,19 +2858,26 @@ static void pcs_destroy(struct kmem_cache *s)
- {
- 	int cpu;
- 
-+	/*
-+	 * We may be unwinding cache creation that failed before or during the
-+	 * allocation of this.
-+	 */
-+	if (!s->cpu_sheaves)
-+		return;
-+
-+	/* pcs->main can only point to the bootstrap sheaf, nothing to free */
-+	if (!cache_has_sheaves(s))
-+		goto free_pcs;
-+
- 	for_each_possible_cpu(cpu) {
- 		struct slub_percpu_sheaves *pcs;
- 
- 		pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
--		/* can happen when unwinding failed create */
-+		/* This can happen when unwinding failed cache creation. */
- 		if (!pcs->main)
- 			continue;
- 
--		/* bootstrap or debug caches, it's the bootstrap_sheaf */
--		if (!pcs->main->cache)
--			continue;
--
- 		/*
- 		 * We have already passed __kmem_cache_shutdown() so everything
- 		 * was flushed and there should be no objects allocated from
-@@ -2889,6 +2896,7 @@ static void pcs_destroy(struct kmem_cache *s)
- 		}
- 	}
- 
-+free_pcs:
- 	free_percpu(s->cpu_sheaves);
- 	s->cpu_sheaves = NULL;
- }
-@@ -5379,6 +5387,9 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
- 	struct slab_sheaf *sheaf = NULL;
- 	struct node_barn *barn;
- 
-+	if (unlikely(!size))
-+		return NULL;
-+
- 	if (unlikely(size > s->sheaf_capacity)) {
- 
- 		sheaf = kzalloc(struct_size(sheaf, objects, size), gfp);
-@@ -7833,8 +7844,7 @@ static void free_kmem_cache_nodes(struct kmem_cache *s)
- void __kmem_cache_release(struct kmem_cache *s)
- {
- 	cache_random_seq_destroy(s);
--	if (s->cpu_sheaves)
--		pcs_destroy(s);
-+	pcs_destroy(s);
- #ifdef CONFIG_PREEMPT_RT
- 	if (s->cpu_slab)
- 		lockdep_unregister_key(&s->lock_key);
-
+David
 
