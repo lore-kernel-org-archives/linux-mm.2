@@ -4,142 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC220CA5FFF
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 07:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75661CA5FFB
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 08:00:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 002946B012C; Mon, 19 Jan 2026 02:56:56 -0500 (EST)
+	id D811C6B012E; Mon, 19 Jan 2026 03:00:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF1D96B012D; Mon, 19 Jan 2026 02:56:55 -0500 (EST)
+	id D55D16B012F; Mon, 19 Jan 2026 03:00:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC5E76B012E; Mon, 19 Jan 2026 02:56:55 -0500 (EST)
+	id C62386B0130; Mon, 19 Jan 2026 03:00:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C94EF6B012C
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 02:56:55 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E949140692
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 07:56:55 +0000 (UTC)
-X-FDA: 84347957190.10.3FDF02D
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6D5EA1C0003
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 07:56:53 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dSF1IFL+;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf20.hostedemail.com: domain of BATV+f4f5ba1b7319529cbc9c+8184+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f4f5ba1b7319529cbc9c+8184+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768809413; a=rsa-sha256;
-	cv=none;
-	b=uTnaOpFcY87SAcxaI5SEM7PK1fy9O0aHT8LZFbt5NqeeuiRynE49ja9Mejta8FfeyDfLrA
-	qPE/trh7i/us9QnqQ/NdkPl23a18eK+ekkcDJClHGeixJJ5j1jiuq1W2bvX2OrbAlVkyYb
-	2R9aERnFUP5kTMEm5j4SDWi1z+z1+3g=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dSF1IFL+;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf20.hostedemail.com: domain of BATV+f4f5ba1b7319529cbc9c+8184+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f4f5ba1b7319529cbc9c+8184+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B10526B012E
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:00:08 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C565D210F
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:00:08 +0000 (UTC)
+X-FDA: 84347965296.01.8FD4038
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2026BC0006
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:00:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=QpedhKQB;
+	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768809413;
+	s=arc-20220608; t=1768809606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dkq9dFVnQ02ADyLqi7RRrcu9zIfz19y2EpNLAEqzuhU=;
-	b=qK6wt9EMHfveNhtaOmgbl6IgPMAsqw2vlS55TihxipOA3UbC0+M/FmwZGAfsWDsMDgVrXd
-	BQ+FQd54ygZo3dA+CXvEzWjUC2NWUkg1sBFuPVqUozgUTsLl9R4lfWqYcRqI4XyQGyo6H8
-	0mlCC6tb/Y9Iw3YJyPSQHNz4V+PI5EQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Dkq9dFVnQ02ADyLqi7RRrcu9zIfz19y2EpNLAEqzuhU=; b=dSF1IFL+VEbufi9323VoWF6NEa
-	USB2BXBiaW7TjezbApRts+YAG9RNRYfhPamD4lev/bOGd62WvFVIL6sSe70b84ri0HQwV2wQR3fie
-	NHQfWzjRaVOmQbjja6GffvX4ybd0IoBxLkxlZm0WDdh5PD1BKJEEZN2XmKjJt0U9yUpYOoLXyNoKl
-	otc3GgIv/kotdkVdSchAlA4Bqh/5N1QYuwvhjeDy3jpLtEfduOvglzvDFa82EF8VLL3CFeM6qtHx/
-	hFOG9hVRMecn6BOFZagcxLAIBWCAy/KYZmHunHQQXYX+w/fhRGaYWCtIXaohApqoDtQ5t9IT0ZpBl
-	498p8SdQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhk7V-00000001Wju-0c1a;
-	Mon, 19 Jan 2026 07:56:17 +0000
-Date: Sun, 18 Jan 2026 23:56:17 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Dave Chinner <david@fromorbit.com>
-Cc: Chuck Lever <cel@kernel.org>, Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Theodore Tso <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Carlos Maiolino <cem@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>, linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-ext4@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-	linux-unionfs@vger.kernel.org, devel@lists.orangefs.org,
-	ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev,
-	linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
-	linux-mtd@lists.infradead.org, gfs2@lists.linux.dev,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
- nfsd export support
-Message-ID: <aW3joQQvz2t6xkzh@infradead.org>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
- <d486fdb8-686c-4426-9fac-49b7dbc28765@app.fastmail.com>
- <CAOQ4uxhnoTC6KBmRVx2xhvTXYg1hRkCJWrq2eoBQGHKC3sv3Hw@mail.gmail.com>
- <4d9967cc-a454-46cf-909b-b8ab2d18358d@kernel.org>
- <aWlXfBImnC_jhTw4@dread.disaster.area>
+	bh=jye8WAd/vE4qqlECAOAdbFTMAIss/HS1MRQD2Sijk8A=;
+	b=OgekIpAxvlUoAr/ma2ss77PLxbN0VTduXqDwlwOGWc4s82m6Hga7+vcV+nGY5mBKZOMraH
+	zebgG3qjPQctxS6FogFdUh1ue0uBRyb+Ul2lKJvS5qvjCOdf/C5H27U0WLgKdAwKkNlcpu
+	9602TivAhkMmc0BR56inEUqjAgeZHgI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=QpedhKQB;
+	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768809606; a=rsa-sha256;
+	cv=none;
+	b=GOu/2LkcmjrRZhnGySiETPz51k6/ROwnWxTWy2+cc/AIlPGJZBLVCX05JwXC2RkuBqI9L6
+	lPbbglcutXwr3+CYMiWIbNVJM0+UlC0bWW/jQtYzivY3+shXwV78sbSfORUVxoY34jPUw/
+	qZFhOnc4J5upL2uXt5cAE4MX2WDDn9Q=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47d63594f7eso26602455e9.0
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 00:00:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768809604; x=1769414404; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jye8WAd/vE4qqlECAOAdbFTMAIss/HS1MRQD2Sijk8A=;
+        b=QpedhKQBRfCuH7XgPJg7OAu9i/6oXt47shUpJ1RLzyjeCBknOUILqCP/njnU+MdYOV
+         zYJSt1HEdHWmreybYf26BMVnjSYJT4ytrZhJuBGVm/16hzxxlSlEVED/0oK4BBh1dJHy
+         TtHhovXU83aWzEb4/dA6uhpL8rXh1Ty5/ymhgfCwAc39RU6gE1g6WE0xu6EXlNWemlEi
+         /VMVrmI2TZSOx2OlRn/GK5hyMPi76GVXMJKJ3JAw7HtAJxNt9L4ie4JXDcivP2Z+ewgL
+         NywjTnWtYahZQ0+yJxNmHyLYAM9K4wCVgMM3mjdG+nB+yRazGlt+Ko1/SmylTuh26Ans
+         a5fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768809604; x=1769414404;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jye8WAd/vE4qqlECAOAdbFTMAIss/HS1MRQD2Sijk8A=;
+        b=hVXJ3G2BO7CBBTwXy53/a3vDvtUhCnWRXs85A24mM+We8wHzxMCaWtPgShO1P03vsr
+         O+Nicx49aqhdb8NDZqP/sg995MBGfd8gCQ/1XB2/KkTdmsIvkO1C+TuZDyof0vh3vh/0
+         hS0lM7PHMgU+MDC3eNGgpUAJIeovBGyCIeXpq/qTCrjtoNWPJUt0oK4qlschw6sr7rzk
+         0Q8iD3qVsvyx/XOebvp5U/fkI/pS1YVPmIkhyK4GW70UDxu8mPjlAjqO4US7LDEqKt1v
+         K+A3op6/h71+aSJ/sb1RvgnpkPh2bI80K+RPynVrRlNdVs7bZ1vI33kwtPl9uT+kurqo
+         cnug==
+X-Forwarded-Encrypted: i=1; AJvYcCV3sqopplKpPLjvIt3KFcnS6KQY3yx1rcfA+rFbwxf7NEgfiK+sCHASLazC72X7y5kocxgJV4+iOQ==@kvack.org
+X-Gm-Message-State: AOJu0YwBi4E+OpaQ6G7xyFdXGtHmEE27zGxkMvi5cEwznQ4HVFJV+7C2
+	UDIEQrhLIHF+fai/fhsrw1DgH1zyu4UFLuUMw15dZiKDd9605h5Qbk3b1I3lCs6S/3A=
+X-Gm-Gg: AY/fxX4CpudrhMkNiY+MqPu9dN0qj/296Nl8CjHO16uArCzFxfjEOvesRUOUnedwVT7
+	goyGQ9ilj3Y6AvnaccmA2emWNe1fSGMUgwqCPMWguoBbCYI3bPem/riHBeTG/6NyZft87cr0jZQ
+	afVEG1ZLJfPO7RVfdJKvBuO9GnGW/Y4ueNlp2vet5pMV2TK3N/+8ZQ8vnaEq0NZCAHzNXu4/6yW
+	hL5qMNuGaWjF7KLvS3ZOGqpHzYdsp3t/4itXbY0hX7Fn1nPmUenHjcYWWvEknuL0oJJ6ntpVqRc
+	HSA9xCxqtwn3LqaZC3MD5H/XY+x52mNZ4kbqrWYukwKfPq6Dau7v3G/YTFfTGz0RNMFkeyEZizo
+	KzkrAixPHsqQhKcvwl61KGdF7UXq8Nbt9yhNBe9CVlefDxbTyByFydsjLBWYHyh4micvEDqxFmS
+	fSZA6eJ1838PZOYS7FwfMzLg7+
+X-Received: by 2002:a05:600c:3b90:b0:477:9392:8557 with SMTP id 5b1f17b1804b1-4801e33a93amr121328725e9.18.1768809604358;
+        Mon, 19 Jan 2026 00:00:04 -0800 (PST)
+Received: from localhost (109-81-91-169.rct.o2.cz. [109.81.91.169])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997eb2asm21670271f8f.37.2026.01.19.00.00.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 00:00:03 -0800 (PST)
+Date: Mon, 19 Jan 2026 09:00:02 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Davidlohr Bueso <dave@stgolabs.net>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: Restore per-memcg proactive reclaim with !CONFIG_NUMA
+Message-ID: <aW3kgrVhWQEyGM-G@tiehlicka>
+References: <20260116205247.928004-1-yosry.ahmed@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aWlXfBImnC_jhTw4@dread.disaster.area>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6D5EA1C0003
-X-Stat-Signature: nf775foyuqs3e7md8uif3rgw6sirywx6
+In-Reply-To: <20260116205247.928004-1-yosry.ahmed@linux.dev>
+X-Rspamd-Queue-Id: 2026BC0006
+X-Stat-Signature: ufhxd6kwnk9ro6bo8boyscbfczz8you6
 X-Rspam-User: 
-X-HE-Tag: 1768809413-946337
-X-HE-Meta: U2FsdGVkX19ryiFsCfnzqOPfTV4qx5fNCftSUW9dhhrEeI3TYHmrsv+fTKdSHEM2v0WbRbAi7gt086GTgsDj3UYmu2ZKHRoFp5U4LvrgHcOwAbCbHJ4tHfBY9HunuFTm1VJhv6oOTSQ4nk+B5O6gVInx+MolocAQ9mHXSt2xAasY6e+CoMLi/3uMhbOgliWkWp87DM3L5R90r5nVlJS+uQ+TvNrqYuHPdIqqoJigFMmzX/vyscUDAgmxtqs891migIC5YWgyYnS29/XHTcYJJiSmVqbjgumifbPKvP6BvIm7OGeHRiXkUcsFq9J+Qlb5jOn+I8JtEZ+aDqWI82Q7dXeeFaGm5+NAOTALWfZsxxJ8EB0vzV8OnWk4nakkt5+WMELCo5eoKCwqWF8TH51S7+Y+9T3bg5Km6Im8o8IpvQ0/c9qMNy6e0N/bGxmSHJt5tO/PtVtlMMNrf3nWdN2Y9MVunsRHC8AOG9Z3Inp/8W8h3Bu5cbvmiK8sIPplxnBXFUVQPksuqO7l8QzgHiQqQv9FTj7Im5+1j+PKD5wdldFCR9sUpRv6221vTD0qlwA7LgBNAx4nzPFy8wJTp2DaQrBa+LrptHtudVPd+qhgtAXEi6zOsUF9bfCxgOyph2IUW5WmqvFJJdWBgoiEnZZ3yqXRrfVmw8TdUcLhfr5XOMiqTwgYXuHVGT+CGRmlYYfncSOoGCuP0U6Pcvni/CHkfQhcaMDEkBH1Zc8vBBw9aPFqmqwtOTaQ81+Yl4sbugRfG2Z4wolLKf11BWJHiVern2vSFc9FR9SfH+sOIf/3/6vwO9axGb7vj5i2hN5CZj4wDTwNsIGoJ9++tcJAXWR/ePdsdHuj0nuk+QM4j7k/2RJFJndXeWmO1bRu1PTANalQk2ElCF9oTLTBI3vlOz7lQDvt7HrM7rM9arJwC423IL/Fe4x5THqg2vSX+PdbzxpxCDQPEOpfbBdlTPoiTD2
- owr749wU
- 3Q0Z5/r3SHXTxZl/yWhdPlALrXBN85+5YpLrFV/JM269S81kdlbBYEQS3sTKIaofsMcAJxEJr53Wh386Nhz9bZCCGt7UHMcMKTR+h/A+aEDQgD3Eymel6hASsdsTURfIOr2euDoRd7BzY9c0l9R42M2ifBUu2F23/B8bYIOEt7V2mONk5xRYe6o0gc5eppH2L8SX3ucoCi+SAqFC5cDBFRnRkLo8ktyOPixkfMfOG2iiqhhlczmDOwAMLo/y9N3vb/Y+m6/dC2dBT7Ko1dB7r1axnAK+ycO/ueaIb47YTN82Q3nM/tatUzg5hzOpm/9rj0EjWy1avptEmVyembfz8BQfkybvRxNL3jkq4duJ3b2ZPPO9MbHAKWnlW0OA0I/Q8BkGhhPTFfmGjtULO5+gxivwvglXaLrLmPfIl98CIWu2QsnOkxyDJ+I+5Ezbuiq/KF/ozCPZ2PkP4cf26YYF28RqUJZq/mVe4iY6yJ1MNUXAI5MthpXbyw0k9ssPNZseZ8IfWsREBRDpRsHHOTs3m9tyftHSx2s7f6BlsExgbBHzQVHPkHPjVIF6LTFwTp9XqnQz+
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768809605-571481
+X-HE-Meta: U2FsdGVkX1+Cha8jSHANVodQHihBHsupeT4XDfeUgQWIyqzukQf7TsmEQzHfGyo/CNyvmKZ/WIqzu3N7xQJxQvdDI3BBGKxlDcJuuxT+ZO1gOW7MgdkxiRDT0+HXdr9hSn8qQFeMcOeZ+4TB4L1ZFox/YbNsk58YsA8NUPcrnlneY0pwHfikYJDTDTuZZ+d+yNMLaYkTutlad47FuUB1I2FomE5d/0z5+IYeLqwjvE2n3tlnXINoGiwhSiRnRXSYdrMPKNvIlMEjzHV4UZjidvQThz5t5wZhmqwsIgPN0CtYQ+jQThFeOnZUgHdJ4vWuYGPe66alIKkfhgF/FTo/wyen0h8kLFDQ5B/NsF1JkvqIq+3xAEC4Tu8DoZIGI9nSYfiZEgrQnvErCY32BBpEXp5ZGxNgpFNjTKh5E+PmZ2w8gWYre0rIO8OB8b7RO8ob9WoBO80OAVnB4U4lRfavWTV2x8CrCTpEgB2QiGJ2pgoaTZbBGMXpFqkqDOQD65O5IKVilwmZN2TryACKK/W+GKC6uSUrTS0KCxB7f6WaOVOzKFA6JWZQdCrpn+FP6RgSNKJodQcvY0VGsYbYPOYGRpGAsoFNwsPh5PbTyxghY/VWAwXY3KsDnwycteI49mRZJQ/CgHlZg9roeyCjfN1BCjxqoAazTne60/Lf+zncTyFpte3zwgxpCtx/CpTkdCEgobhPOvOfVt8x8TzEpkftIxuRr8ikSkUD9AU30TtH9xYoF4/pIRIffIDTcbuUSYZqutY0R55zAu/FRTU4Kc4JzEOjIMYzBBMlbTc92JPWC7Jg39jCc3vU58pU2fXanhsxAnu6Y3aY7roFK2PWcP2LVq/CrKXNuUC7RVx9W5XB1+2FN43grczfUjgzPQd4nWfIWYhuwhLJ6mB97IpzcEHIIvxj9c1WnlVYP3QtDZsih0GrdLG0lhhFNu7/yzYCu76dYYBVaoQVwCHeKzw3lyB
+ rz+Kp/wr
+ DgG2ipy0lIXG6e7OY6p7u4woeguHqw3wJOxQ70tB2LsrYdh2q4YOW3jNF5M1puA4RAfzR0D3jFoeTUbPTsBWCX2pW3r1kiki8T6NpMgRlfdht5pXjTb0yyV9JGwfz6tAKHEJonjzVMZg+bPHAf2L1J97aV14R3ogLFPhv2HvEeDf2sFMT0VatIiO+52OijFURieECbukRvWrpvCNMxcliazfOg2j4lf1wt7FdjAPteeMFT//3qEFHeukT19V8q9+dZPy8XjETbFDsHxkPu4lF/IQvlX7Urd9oSynon0MZr5jJ49W0Nqozx8plFwnhEIVxq0aQx/o1JBKbgnrTKd8LLmWhq6ylbux2Zhk/ZqZK0ti6hRsz8D/Pli+yLtNkJeH0/rAr1tTER0hUsrKcjLCLxn8KOeVDC9saHW1MRMQBY9eEXzHeQSCW/S0qpG1qHNP2a8ogzr+wCOo61wzwOxCQKzs2LlgpqMnXbEtznBhmKGRhhr2IVbmC+zk4budWtJvEWRzr+8ZWgo6grkdJsdMMgimn4Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,36 +126,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 08:09:16AM +1100, Dave Chinner wrote:
-> > I think we can be a lot more precise about the guarantee: The file
-> > handle does not change for the life of the inode it represents. It
+On Fri 16-01-26 20:52:47, Yosry Ahmed wrote:
+> Commit 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
+> moved proactive reclaim logic from memory.reclaim handler to a generic
+> user_proactive_reclaim() helper to be used for per-node proactive
+> reclaim.
 > 
-> <pedantic mode engaged>
+> However, user_proactive_reclaim() was only defined under CONFIG_NUMA,
+> with a stub always returning 0 otherwise. This broke memory.reclaim on
+> !CONFIG_NUMA configs, causing it to report success without actually
+> attempting reclaim.
 > 
-> File handles most definitely change over the life of a /physical/
-> inode. Unlinking a file does not require ending the life of the
-> physical object that provides the persistent data store for the
-> file.
-
-> i.e. a free inode is still an -allocated, indexed inode- in the
-> filesystem, and until we physically remove it from the filesystem
-> the inode life cycle has not ended.
-
-For other file systems like ext4 that have statically allocated
-inodes that is even more so the case.
-
-> IOWs, the physical (persistent) inode lifetime can span the lifetime
-> of -many- files. However, the filesystem guarantees that the handle
-> generated for that inode is different for each file it represents
-> over the whole inode life time.
+> Move the definition of user_proactive_reclaim() outside CONFIG_NUMA, and
+> instead define a stub for __node_reclaim() in the !CONFIG_NUMA case.
+> __node_reclaim() is only called from user_proactive_reclaim() when a
+> write is made to sys/devices/system/node/nodeX/reclaim, which is only
+> defined with CONFIG_NUMA.
 > 
-> Hence I think that file handle stability/persistence needs to be
-> defined in terms of -file lifetimes-, not the lifetimes of the
-> filesystem objects implement the file's persistent data store.
+> Fixes: 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-Agreed, although I bet that is what most folks think of for the
-inode - not a physical place on disk, but an object that gets
-invalidated on the last close after unlink.  Either way, that rules
-do need to be written down clearly.
+Ouch.
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks for catching that up.
 
+> ---
+>  mm/internal.h |  8 --------
+>  mm/vmscan.c   | 13 +++++++++++--
+>  2 files changed, 11 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 33eb0224f461..9508dbaf47cd 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -615,16 +615,8 @@ extern unsigned long highest_memmap_pfn;
+>  bool folio_isolate_lru(struct folio *folio);
+>  void folio_putback_lru(struct folio *folio);
+>  extern void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason);
+> -#ifdef CONFIG_NUMA
+>  int user_proactive_reclaim(char *buf,
+>  			   struct mem_cgroup *memcg, pg_data_t *pgdat);
+> -#else
+> -static inline int user_proactive_reclaim(char *buf,
+> -			   struct mem_cgroup *memcg, pg_data_t *pgdat)
+> -{
+> -	return 0;
+> -}
+> -#endif
+>  
+>  /*
+>   * in mm/rmap.c:
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 7b28018ac995..d9918f24dea0 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -7849,6 +7849,17 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
+>  	return ret;
+>  }
+>  
+> +#else
+> +
+> +static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
+> +				    unsigned long nr_pages,
+> +				    struct scan_control *sc)
+> +{
+> +	return 0;
+> +}
+> +
+> +#endif
+> +
+>  enum {
+>  	MEMORY_RECLAIM_SWAPPINESS = 0,
+>  	MEMORY_RECLAIM_SWAPPINESS_MAX,
+> @@ -7956,8 +7967,6 @@ int user_proactive_reclaim(char *buf,
+>  	return 0;
+>  }
+>  
+> -#endif
+> -
+>  /**
+>   * check_move_unevictable_folios - Move evictable folios to appropriate zone
+>   * lru list
+> -- 
+> 2.52.0.457.g6b5491de43-goog
+
+-- 
+Michal Hocko
+SUSE Labs
 
