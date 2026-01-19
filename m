@@ -4,87 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC3F1CA6007
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 08:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85891CA5FFF
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 08:24:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19DCA6B0134; Mon, 19 Jan 2026 03:18:28 -0500 (EST)
+	id BE9DE6B0135; Mon, 19 Jan 2026 03:24:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 121296B0135; Mon, 19 Jan 2026 03:18:28 -0500 (EST)
+	id B97316B0137; Mon, 19 Jan 2026 03:24:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 020226B0136; Mon, 19 Jan 2026 03:18:27 -0500 (EST)
+	id A96206B0138; Mon, 19 Jan 2026 03:24:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E294B6B0134
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:18:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9FBAA1AEF12
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:18:27 +0000 (UTC)
-X-FDA: 84348011454.15.3733A82
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0D0F5140006
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:18:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 30ehtaQkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=30ehtaQkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768810706; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 942966B0135
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:24:29 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3224F1AEE75
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:24:29 +0000 (UTC)
+X-FDA: 84348026658.25.0E7BA0A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 70BC1C000C
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:24:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BfX8HSCR;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768811067; a=rsa-sha256;
 	cv=none;
-	b=SP7/+u0sLn23se5X9RG481MfMyFlWqDD7TiIf6yRYmUmhlTsuuXhnTBAHcBArYleU31oD8
-	wvHm8C8NBNs/OIHHoS62q4WW9WV7s/LWOd9wqKRCjhq4SijqbWUN8w0NGrCxp8jxj9KK0B
-	MdoyB1gMs1fIicRxhd64sjDI06vSJn0=
+	b=so8HEuSnTeAh1vlv+SpLJWK307bexseHvUeG+vlwfNnflGTnxRm2wPI7v/A22wOAOjtsyl
+	uBDwDTqz2MdofDyD2D5736LqQEOR1IdWjW+4WvgBbWd8jJEggHiVL1TSD1hXzzWyWsh23C
+	5hmh+YRLF2HK0T3cUaQfhaKGPwnZs6k=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 30ehtaQkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=30ehtaQkbAKweklWMXXQdMbbUP.SaaSXQgeQdOaZfQZf.OaY@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BfX8HSCR;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768810706;
+	s=arc-20220608; t=1768811067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=NhnL8MEP/pRB0FCsQpW7MYNVHkKIhPy+pDAgLhSbeq8=;
-	b=oPZbXIVzk411+b0u/5JTVfPmPFVN6L+XGpq02k4KGOsdD5EzwYX9uo6yAISJcXemThgik9
-	G4hKZ3+dX4nl5ykFiVmsJBLHRICwhAF+eQ0r1f5ZA3MwHh3hjmBDET7Z6Zn1EEhBbrACYH
-	GjtBCqYBXn1kiw4QJamXRXO6REEKF7w=
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-65f453d9603so10707124eaf.3
-        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 00:18:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768810705; x=1769415505;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NhnL8MEP/pRB0FCsQpW7MYNVHkKIhPy+pDAgLhSbeq8=;
-        b=A581DYBW2mhvZMFZ23b7YVYyaRRv9T0hNjse3cHqJdg25miA9pb9YCGwCppFiHTaAZ
-         OFshupIzACoQfGoHtgnLuu8THiIHf7lzib1gfixCvwi13X4cq1ARQTeluH6Lj3f56ZeP
-         dHWL+OW4ssWD/9psxVChETICc8VtfkfYDxKLolfpHQ/uQG5GtraLYXvYZTdHJSo2R2fd
-         lCP5rjBk7kdYLbcQTDFurNREzbFb+mL7HMySj4QpgobXSB9aQPSTpPOXzjqlmKvhJs6R
-         8bby/21gcgmjlbko66GQ9B3FA3Vtkv/fb/1P9ebwuN/6nOEELIG4g4Ug5UwJ4Bcc2oHc
-         D4EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhqSvv/7XEYulKfocYCnDMcooSvn+EYWNrqabboEBJL7tGoVDY6gfTcKxy5oP37bjXIdULdf9VvQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw5pHkoZNpv0g7RQiMtVKi6aT6gac66u0nNXv0t0RmGgdLvUj2x
-	W6fRYLdDyRc9Wc9XhEhNnhUZG7qQg/ujaSHFXJrb6Tdrjzgnxv1IqBnHbkL+jq/4WHnXmQqZz4V
-	A5fa+Ob+P/Z8u4/vpKy0AMkZ6s3ScmuqpTM+Ey7UQ9XCD1CDgw8iQK1tnVTA=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bKJijYo++8zcbEKhMHwvqGK3GQboq6DGUl0Qp8eOuZ4=;
+	b=ZOWXAQqm67eThG4+TNoYSLS8MhfG04GppMBWgL1oJwGjwyTuu8FTJqoGQE/HE71nLpxt2n
+	juPdPpww4tm+kKHudmpurzK9+n/IF65hfkqNKakupjOpK0H7+vLxh20EpqaE9pv6jv/dCA
+	J68WWo+iX7vfr4STKOv60XWLExu6fOU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768811067; x=1800347067;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3UoClJcJDW2uoWng1yw1//FZOmo69ZVnggpsjcysDfk=;
+  b=BfX8HSCRui6VC29oaPLJmIHaOcVPjQuPHPFtnVMnzVcFKxPwzMeuGlGN
+   XbYuKIXpl17sZkyGCmFoMQbmOnddm3y+qgCKITPwOLE3zNf/a7vKxL14G
+   EhPaWy4vIJA4KitBhg9U/RMzBFiJ7kBCNBXFe2jHiDoO5v/JfwmKhETE/
+   jLZ/BAc7ss6KGUnz2zEWkCoonAx8aMD2akxp+nx1JSdEsS3+WdqO7WxfY
+   hC9+6qjyLGfZ/4Yk0MY0W1LmXhA3dIbbDofbqTHtutT3ojxjVZBqn5kIO
+   yArcHB8fuZV4e2fcAjfsvpGKlVhO5hVvMHBH/XZniVTq9wIwCJUpvEa13
+   A==;
+X-CSE-ConnectionGUID: o/FTuDq9TLSWUYTBXhoubQ==
+X-CSE-MsgGUID: mBAPc7u2RgSI3nqxaN47tQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69217486"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="69217486"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 00:24:25 -0800
+X-CSE-ConnectionGUID: 6JrKYD8FQiOuYUMvH+ySjQ==
+X-CSE-MsgGUID: qEu6BI5JSmWE3xRAdt9Yxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="228742759"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 19 Jan 2026 00:24:18 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vhkYa-00000000Naz-080r;
+	Mon, 19 Jan 2026 08:24:16 +0000
+Date: Mon, 19 Jan 2026 16:23:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pingfan Liu <piliu@redhat.com>, linux-arm-kernel@lists.infradead.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Pingfan Liu <piliu@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Simon Horman <horms@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Philipp Rudo <prudo@redhat.com>, Viktor Malik <vmalik@redhat.com>,
+	Jan Hendrik Farr <kernel@jfarr.cc>, Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	kexec@lists.infradead.org, bpf@vger.kernel.org,
+	systemd-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv6 11/13] arm64/kexec: Select KEXEC_BPF to support
+ UEFI-style kernel image
+Message-ID: <202601191626.CUD61tIS-lkp@intel.com>
+References: <20260119032424.10781-12-piliu@redhat.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4def:b0:65b:2a82:d700 with SMTP id
- 006d021491bc7-661179b64e5mr4665102eaf.44.1768810705169; Mon, 19 Jan 2026
- 00:18:25 -0800 (PST)
-Date: Mon, 19 Jan 2026 00:18:25 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <696de8d1.050a0220.3390f1.003e.GAE@google.com>
-Subject: [syzbot] Monthly mm report (Jan 2026)
-From: syzbot <syzbot+list6611482a904f20264dd5@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 0D0F5140006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: yhsy5hjkd9jrrh4d9w1abesmu7onudi3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260119032424.10781-12-piliu@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1768810705-81936
-X-HE-Meta: U2FsdGVkX1+L26EBjUaY63ZxpbAlb/CA8rdlTXVUp5ZNKpD/3sd/S8y0CJATvtxCHGsvza5hKH0XKH6S4JIhOa8pr1uufa+b55Yox1770rXq/FZUeIhCY3N39IRZ9BP74l+CyK8P/2OK0Ztj9V6+HAY13pPqWqkNCzs3UKV5H4IT2FpQNWZOWocx1C8ub89GBYwbKIwsZKKWnqdfa8pNdeNpz29rZViT4RoxdYGBtCwJapNyD3+yPfGeVGA9kYuDrru1MsdgX5+vAyN1AezvWUljyuQvNdnefmZ43GxP6YNPjxqcUJxNv1GcDam4S97FnGM+8reBVhnltwW7M0dO6YdNaTN8UmcUxJm9D+bWup4Oxtqr1Ps2AXl4N6oin74/umyfXr6JHAVLBEW238NDZfnghZctmDd2f5n3JCJbhLJTAtIxGfZlIL5C29H6K1abrN8kbbCAL52lga0+3d+nRFupQDuJrMxiTtq6tpg2xrJ3qbpvbWC74vcOCwcJTt51k+WhVowQyAPBG1NaHAJfk8579TRtxs3bTBSmsEZR4N7jWFnefG+qOq4cwch6LLFjjTvtnQ5Pm8Kv0++7ef2vzrNzmT4r/BEIRcThl8DyOXhC+EURUl97VQvJk8W0LRu7/0GkDTI2B+RWxU1sWEhqGfExU4pvLmUYWBuVb1KGv96H1dUJQxNXHXlyrok6VGcUB0EXuRjGxTWWZMruVyKubC1RSUscfouFpRGVg/53aq1lIK+DSFMlAoxrhW1hKqh988WTdfjotS4H5y1wJBryBS/VX7SStgawCkdOuxknr4zXVK2Tz9Omko18cF9830dsuoUZukLC0gnk6ANhnEGDx6t4RkNGO7s6vb6C4NlVMJK2izQugQ3ovzVyo1M2fOaOrZ9t4+cEKXJ5h2JliOz4qmTvErrJEioN1bYp5voyMozclFnt2MaKG16nK88unwdLPqoNympvcvjyVL1Zhxp
- 6tbSjG/T
- OArPCnieituAWXcnMpiTMBijTCVX2wkVbZFzsMcMF/jdjvINaNivTOkg6Bl0NBErwYi+JVfGQ0a6weoe4zbkNt1WDc+//ze8nEbmYsJAPQZZEHS3G0pcxnCFwN0AU9IdayAW82GbMRmgMbyY9dqitBAmBXi5uc19Klotok6rfLDC0oxkKN1J/jSrEB3h+bYrYwZv4LUtXX6VOzEgT+yPThNwNI6fmZ/ncee7iQ44A2w6XMTj8tErlTzc9yh6MsbgNAg117eZ67McTqbqdu5C9gvRlKdKhkhiDAr0uXkGiEW5QKCM6+3SMlm+hX0icikYf3gfsFMN8HghxatbZPIVOthqelyZioH8NJbuiLEGpz3dLqNjBzYQLOMvZ/2azKRTsp7vgYamkNH5IQyEgDd062rS8dNlE5zLiIK6sxxiGHkdOvEpkAL4jQi4mR6zcAUN5nUI2XTOIoAC2pzcKY7DKjBEi9wFsjTvcEk/gNf8QGMylLc/WdUa7/6VaIwl2JXmF2Hfklg60s5PWAp4OMO/9I6KeSMuD97sDe3WtEOY2Nkr/M+7c7I+PA5wpM2X9wCIWUqmOzCSydssSJJxpz+2c3ooi8ejuP4GCTas5t7kZUESEW90oeU+tFsTJvo6w99QMRQykWr8C/iMwO+3oEwcoEjO+jCbAo3kfcPeUegrtf1mTjODoy+0xuQy01fiA92dDsrrmVPGEU9thKzTERmGKpyP35n7kbqWic0aX6+sOXuyiSfqkaClJEPPWEXZuysJZXAgev06gW/Nzi+ckzixpPkZai3v42Sgz8WtHdZW9FJ/eDLcDgbDZVQby36N7oWo/Tn1h4t/48+0YxKL3Qe+wH/JADHQUQPeg13TI2p9is82LmRqeNKVlfxzeiY4ogzNQyDdCbsRYGcgJSdxZpKBxdlLr2iPy8l7q/8mqG48n1n3TrnHt6fhGwimYX5Ra5Qm9/qfz
+X-Stat-Signature: nh56widx4nwqcj88fk15xicgetywoq33
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 70BC1C000C
+X-HE-Tag: 1768811066-907969
+X-HE-Meta: U2FsdGVkX19jIZTpVauaFpg5P4b8y1dXnDaMgx75KMNhTJ+KyveHgtQ30tNA38Ki/WFL25jeNpO/Fdd8aBF0k9QMoN6bCq19IDyhD1M9uyyeLsU2w/UpGeptlaI6xSLYFYQe2WiMOB9fwndbzc7ta9Bo0PHOAcZHBxw5bLrh+AZG3wOqfv9wCnD9BeL1tf0lWwDAPCHG0VH1S1zdZsQ584J7zoUHByT1jcaOm/cSVtOK1yHwKdmrZI3iSM8mZbkW4EvyhItCYjswp/4tBwqdo6nlYLsAOX/iqotHqZIzcCFHtncEB5EfrA+c/B8zh3gVdC8qL1upFSTJ5EebXYCrBOYKSSobbiPBP5uVKN+2chpJeXD3dztiz32pTJz9kOFuaI7Kq0e0ZsqhjVC1Q0xIONBzHstq8ciw9mjRjsHQi/43UdA9tCcm6NY4sC5lVm8ow8fzs41MF6LfVnLoxo25BI7mT0i7kS/F3sxkciAQY8NQdJ90Lz8FdU3jwdqi//9RrW9NSTbKJiApkaOlnd12yimpbEoGenLa7R7Rj8kUQks+yLalclufDCRHHOpNzNoJYkOAc6oR3ZkcHlOtEeCsevY4O9w6vJ1VsKqu4wK4QUktATYyQJ+RRkW3HQjM5ETylPa/5gWHdAfrsQwTn7934iTXbIUjFLApI5r8bJ5rBne7CcAY1leXnNVeH1B2M0RnFmtSjyTKIT34U+XUzn63wBolOlvCGxcka3JE1w228rLW1wp4ZnFhS2HVmKMowHRKsb6gztE7KCz9oOgCJU68rlRxbjt96q5J5PB4KdsUa+lZej1WbgE/IQTik/qFOVv9qe7jjg4zWy0dt5MJFGir2te4cZPBDZvAhhkkfXwF775s0oeSoWcx2Kh1nWxsF/109i4XFC/4zQVVc2dVhpIxSzxpvwvRGx7zcx9uXXChUN7zVd48MrJbRSLSjVgII8tOJ2HEQuVB3wum0ASKLTO
+ dxDs7Soy
+ 5wwyAyGSOeuNrtH50FhmGjU21nwgmrSoNG5jYBwZPUhXCRoncJeLQjOIPitXHZg5uDVQLKMx1YXNF1eICTiKOJAWsg9HQHblkXMizLsLK5bGXtEiqQNWUgJ42rHUY5yuzXghB6tYf4SABIBMqv3O2ViW06V3nO4pdyT+eu1n+t4mzSRTZyDYVhRLLR3EW1VmOAmcHWT+Hb54KQNIhUfSUDZdSbJVOJtnoYJJlQSbUnCbWrK/l8LtBsweeiZ7SEa/l9xgjJJ598z3nmR+jYsm7w6mC3M4t3iYOVrFYCYIiolCRZ/us091yiW7tscsIMpCjSaEQtUfJsth9jOUVisGc/ytf5B0494JiG2LkHw1qwPFwgGXSojhkXz3RNe6mBcXaIzByjsfR906JPzg+fY0W7mkAJYYGalVU2s1U6+h1wXXBznDOYM8zMH6watZL/19kM7tcjiAO2kUEu5W0ULFXZG0ySo8FJNHB6XUzosGXmZRIfaSTtkt5RVCqFQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,49 +126,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello mm maintainers/developers,
+Hi Pingfan,
 
-This is a 31-day syzbot report for the mm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/mm
+kernel test robot noticed the following build warnings:
 
-During the period, 4 new issues were detected and 0 were fixed.
-In total, 117 issues are still open and 355 have already been fixed.
+[auto build test WARNING on bpf-next/net]
+[also build test WARNING on bpf-next/master bpf/master akpm-mm/mm-nonmm-unstable linus/master v6.19-rc6 next-20260116]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Some of the still happening issues:
+url:    https://github.com/intel-lab-lkp/linux/commits/Pingfan-Liu/bpf-Introduce-kfuncs-to-parser-buffer-content/20260119-112939
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git net
+patch link:    https://lore.kernel.org/r/20260119032424.10781-12-piliu%40redhat.com
+patch subject: [PATCHv6 11/13] arm64/kexec: Select KEXEC_BPF to support UEFI-style kernel image
+config: arm64-randconfig-004-20260119 (https://download.01.org/0day-ci/archive/20260119/202601191626.CUD61tIS-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260119/202601191626.CUD61tIS-lkp@intel.com/reproduce)
 
-Ref  Crashes Repro Title
-<1>  13965   Yes   WARNING in path_noexec (2)
-                   https://syzkaller.appspot.com/bug?extid=a9391462075ffb9f77c6
-<2>  7446    Yes   WARNING in ext4_dirty_folio
-                   https://syzkaller.appspot.com/bug?extid=ecab51a4a5b9f26eeaa1
-<3>  3650    Yes   INFO: task hung in page_cache_ra_unbounded (2)
-                   https://syzkaller.appspot.com/bug?extid=265e1cae90f8fa08f14d
-<4>  3012    Yes   possible deadlock in filemap_fault
-                   https://syzkaller.appspot.com/bug?extid=7736960b837908f3a81d
-<5>  2188    Yes   WARNING in trace_suspend_resume
-                   https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
-<6>  1539    Yes   kernel BUG in __filemap_add_folio
-                   https://syzkaller.appspot.com/bug?extid=4d3cc33ef7a77041efa6
-<7>  864     No    KCSAN: data-race in __filemap_remove_folio / folio_mapping (2)
-                   https://syzkaller.appspot.com/bug?extid=606f94dfeaaa45124c90
-<8>  673     Yes   INFO: task hung in _vm_unmap_aliases (3)
-                   https://syzkaller.appspot.com/bug?extid=fe8f8efd070d727de971
-<9>  646     Yes   INFO: rcu detected stall in addrconf_rs_timer (6)
-                   https://syzkaller.appspot.com/bug?extid=fecf8bd19c1f78edb255
-<10> 526     Yes   INFO: rcu detected stall in sys_openat (3)
-                   https://syzkaller.appspot.com/bug?extid=23d96fb466ad56cbb5e5
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601191626.CUD61tIS-lkp@intel.com/
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+All warnings (new ones prefixed by >>):
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+>> kernel/kexec_bpf_loader.c:103:22: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+     103 | __attribute__((used, optimize("O0"))) void kexec_image_parser_anchor(
+         |                      ^~~~~~~~~~~~~~
+   1 warning generated.
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for KEXEC_BPF
+   Depends on [n]: KEXEC_FILE [=y] && DEBUG_INFO_BTF [=y] && BPF_SYSCALL [=y] && KEEP_DECOMPRESSOR [=n]
+   Selected by [y]:
+   - ARCH_SELECTS_KEXEC_FILE [=y] && KEXEC_FILE [=y] && DEBUG_INFO_BTF [=y] && BPF_SYSCALL [=y]
 
-You may send multiple commands in a single email message.
+
+vim +/optimize +103 kernel/kexec_bpf_loader.c
+
+e683ae405ea0458 Pingfan Liu 2026-01-19   93  
+e683ae405ea0458 Pingfan Liu 2026-01-19   94  void kexec_image_parser_anchor(struct kexec_context *context,
+e683ae405ea0458 Pingfan Liu 2026-01-19   95  		unsigned long parser_id);
+e683ae405ea0458 Pingfan Liu 2026-01-19   96  
+e683ae405ea0458 Pingfan Liu 2026-01-19   97  /*
+e683ae405ea0458 Pingfan Liu 2026-01-19   98   * optimize("O0") prevents inline, compiler constant propagation
+e683ae405ea0458 Pingfan Liu 2026-01-19   99   *
+e683ae405ea0458 Pingfan Liu 2026-01-19  100   * Let bpf be the program context pointer so that it will not be spilled into
+e683ae405ea0458 Pingfan Liu 2026-01-19  101   * stack.
+e683ae405ea0458 Pingfan Liu 2026-01-19  102   */
+e683ae405ea0458 Pingfan Liu 2026-01-19 @103  __attribute__((used, optimize("O0"))) void kexec_image_parser_anchor(
+e683ae405ea0458 Pingfan Liu 2026-01-19  104  		struct kexec_context *context,
+e683ae405ea0458 Pingfan Liu 2026-01-19  105  		unsigned long parser_id)
+e683ae405ea0458 Pingfan Liu 2026-01-19  106  {
+e683ae405ea0458 Pingfan Liu 2026-01-19  107  	/*
+e683ae405ea0458 Pingfan Liu 2026-01-19  108  	 * To prevent linker from Identical Code Folding (ICF) with kexec_image_parser_anchor,
+e683ae405ea0458 Pingfan Liu 2026-01-19  109  	 * making them have different code.
+e683ae405ea0458 Pingfan Liu 2026-01-19  110  	 */
+e683ae405ea0458 Pingfan Liu 2026-01-19  111  	volatile int dummy = 0;
+e683ae405ea0458 Pingfan Liu 2026-01-19  112  
+e683ae405ea0458 Pingfan Liu 2026-01-19  113  	dummy += 1;
+e683ae405ea0458 Pingfan Liu 2026-01-19  114  }
+e683ae405ea0458 Pingfan Liu 2026-01-19  115  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
