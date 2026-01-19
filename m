@@ -4,136 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5015CCF2E4
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 10:50:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7595CCF2DF
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 10:54:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF0BA6B0173; Mon, 19 Jan 2026 05:50:23 -0500 (EST)
+	id 263FF6B0175; Mon, 19 Jan 2026 05:54:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E74AC6B0174; Mon, 19 Jan 2026 05:50:23 -0500 (EST)
+	id 231D46B0176; Mon, 19 Jan 2026 05:54:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D56D36B0175; Mon, 19 Jan 2026 05:50:23 -0500 (EST)
+	id 04A7A6B0177; Mon, 19 Jan 2026 05:54:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF23E6B0173
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:50:23 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48C1B13B97F
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:50:23 +0000 (UTC)
-X-FDA: 84348394326.07.CE69D2D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 65CA0160004
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:50:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mb3l4B93;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768819821; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id E52C06B0175
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:54:23 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A651DD20C1
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:54:23 +0000 (UTC)
+X-FDA: 84348404406.18.CF01A24
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 28DEB40007
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:54:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="i+G/wKzO";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mTUWSoZ8;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="i+G/wKzO";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mTUWSoZ8;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768820061; a=rsa-sha256;
 	cv=none;
-	b=kMB7Fs3+kYaqK0Y7y+2OAuJglWVrowKluSD7UMQaUzJk3RYHpDYhXZMIasq70zRZmdGtLU
-	xd80qoAOkoLEmGjQSXDDXpo6yrkB6+oWvLJmY7QkjaRvZsduKNt8I095a9dyNEiRj3zY3V
-	aQo0yqlseFbYeJBjX71a2L7l/JVvljw=
+	b=nv8w7s/O5XD+WBJawCVbGa7pn9kf6+ZMC24KX2V0dS5tEth4yFZtSUpMa9nqB851gu4VQO
+	DUXzivmczKq12bIZ9zfpXIjD/SojWeHYu1fFnG/U8BzZ+uEZzsSoOypWxSZg+bdIOPTf8x
+	ymuW5jGCrVuiq1sKLY/+FZmju7RRcaA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mb3l4B93;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="i+G/wKzO";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mTUWSoZ8;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="i+G/wKzO";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mTUWSoZ8;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768819821;
+	s=arc-20220608; t=1768820061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aby0MtNCaV1hH//B931TX6QnYXPXepNQv05Rr7TXu/8=;
-	b=bs2/Z9Rh/PUHrm10KoOnuZqbvjk2puFSv7eeV88EAZWSPzZaTUuoZ5gZXLg2tsAKZh1hD3
-	Ck4erX6cx0SF9JqKgyzaHJVJGynXbeP67uyeZYuPETl69sEwwdw/L4D6Z6PupyXhy21UGe
-	dVCel2Y5JTQHPTGNipdrPDWe63vg9xI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 478A24384D;
-	Mon, 19 Jan 2026 10:50:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE8BC116C6;
-	Mon, 19 Jan 2026 10:50:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768819820;
-	bh=ZxzOJ4oQEra0siX2nuGmp1Odh2MhJ5xZ8jMUn/Ah4gk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Mb3l4B93W7KHvJqwCHsHAebr5jOOyiZlGqBl9zbbC4g/ii3pn0ZDDm7Ohwcy8iKkR
-	 gTGS3vWHE2icNR7vhXXMBH55mWFZVY2oYmaHSuBpUMugiX3mSQSOYZ3UDMyUfhDXi2
-	 SFAbC6/OrsSAglWp32PITL/43LEBiO/H+MFhd2je0bCAYTtb9J3mCcHsaCFFp+bWH1
-	 0KTTuF873zuO5A/mK7hDCJz5KtfnB5x9JPeePjkce7Yi8WkMCJx3vea8n9udJ4+3V1
-	 SpsMmoCCpJmsyYXoy0+F4Mnjj2vXMgbo6rSvG1RVCt3cHsMsPUi48hhxYMlqX0Sps/
-	 dywkRtRlSS3Bg==
-Message-ID: <e2d76567-44f3-4372-9490-5cae91619125@kernel.org>
-Date: Mon, 19 Jan 2026 11:50:15 +0100
+	bh=ey0pNkWH40RKae/z7UghicYKnJcQmjtLJWpIQMJLIMw=;
+	b=UJaCkE9JIqzdAe0GcbupPNPmaP5+oS2sDB9l+B5/Fk1lA7Huc+4l7+zB7sqgrd/O+9TX1o
+	XqD83t7JEfqfX7OmEzTh7Mbm9Wynvua45GfR7vzEf2cKd5U9WlKHswzIyU0aYmeIUZkt5y
+	tnq7Egb2D2GfaCbjI9RxyuFOxkm7/Sk=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 136C55BD6E;
+	Mon, 19 Jan 2026 10:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768820059; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ey0pNkWH40RKae/z7UghicYKnJcQmjtLJWpIQMJLIMw=;
+	b=i+G/wKzOdqJTLtu23kB8UjAeRrBrBGBXCydzkMm2uMsF93aqNNgJYL9q7zsf8sURdk3bYp
+	ryZ52RYS7CUiS81Q1qTzXMQyMOe+V8S6oJVJXesnDYBvSDu091/KkHnw/xM3eRnZk52Phe
+	dquwy3it9zHbuRMMTKH5H6vdEF3J4NY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768820059;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ey0pNkWH40RKae/z7UghicYKnJcQmjtLJWpIQMJLIMw=;
+	b=mTUWSoZ82Wh5tC2EkSwCa4mX8N+MeAezhTHKT2OKP4C1aCVapf2nz8rdQhkddrr/AsAA0Y
+	V9HrkDZ52NmewWDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768820059; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ey0pNkWH40RKae/z7UghicYKnJcQmjtLJWpIQMJLIMw=;
+	b=i+G/wKzOdqJTLtu23kB8UjAeRrBrBGBXCydzkMm2uMsF93aqNNgJYL9q7zsf8sURdk3bYp
+	ryZ52RYS7CUiS81Q1qTzXMQyMOe+V8S6oJVJXesnDYBvSDu091/KkHnw/xM3eRnZk52Phe
+	dquwy3it9zHbuRMMTKH5H6vdEF3J4NY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768820059;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ey0pNkWH40RKae/z7UghicYKnJcQmjtLJWpIQMJLIMw=;
+	b=mTUWSoZ82Wh5tC2EkSwCa4mX8N+MeAezhTHKT2OKP4C1aCVapf2nz8rdQhkddrr/AsAA0Y
+	V9HrkDZ52NmewWDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DB6473EA63;
+	Mon, 19 Jan 2026 10:54:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 1ZyyM1oNbmkGKQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 19 Jan 2026 10:54:18 +0000
+Message-ID: <e106a4d5-32f7-4314-b8c1-19ebc6da6d7a@suse.cz>
+Date: Mon, 19 Jan 2026 11:54:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/8] selftests/mm: fix usage of FORCE_READ() in cow
- tests
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark Brown
- <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>
-References: <20260107164842.3289559-1-kevin.brodsky@arm.com>
- <20260107164842.3289559-5-kevin.brodsky@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH v3 09/21] slab: add optimized sheaf refill from partial
+ list
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260107164842.3289559-5-kevin.brodsky@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-9-5595cb000772@suse.cz>
+ <aW3SJBR1BcDor-ya@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aW3SJBR1BcDor-ya@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 65CA0160004
-X-Stat-Signature: keaf5fbio4nyszxj8gxcga7qwknmc6xe
+X-Rspamd-Queue-Id: 28DEB40007
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 77fhxqgfk9gu9kesnj5mmmi7me95uq93
 X-Rspam-User: 
-X-HE-Tag: 1768819821-114148
-X-HE-Meta: U2FsdGVkX19L23mlKjyj6Sj0dubIRGyHclIYM/1oZbuyV5h/WDvPJ3oZJRTwFNyXI4YdxafiZi1OY6B8XR8qECCJ8aRygckdgGbM6DDk0HSQrnDxVd2mELQO/oN5GXv0sfHz0DITxZpHVKDdm80qdhH3buONa/CTdldK4dpty7PPRvolKZ9vleJPQCVy2tvRCU31TYCBeM/YhVd/0wC7bNXGQMRGoREr0qjnivsJVuaxASfxW0/0pXEf3hcf7PpmmCKBQdA5ZDi/dx9w1L74cv9oFbt36FZwNOfujeGCQsxMlryP0COEdZCqNfZvy00rflyx0Fk0XgDDJ/Twdln0RmQRWCUgAxOc7AXKTegF9yiFiATNLkz/+NuV16FCWjbBHvrkQhRGKTfjufZehknUKvFQBfZdpO4SHJzGZ2zUkZmV5WpLRp8LT3ZVX1ilzDaOnWVdk4ypoLsjAvYYtGCPjyaN/MFLI19plshv+sbe14qaPjydPcLZeGOEWtJHLzmUxq1XtMNiSXril4a9rdUJuDWmgT7Z/sLNHb0d7MSgCVtLi+gjYY+LZQHOvZ5Ao3atssaqn1mRMicsnrPV/LLickSlaNjLygsUX3tnfQcCj95Xs1RJCmL7gkQe95/RpTwJaH4Jz/jDDfzJ9PXKD2gr/BzIl/yvewNATIAXMxz/uPz+jtspm0Yswhm8isop8crDDoHpc6yN9MygSZJKbkjAwGgCEBtwgVIrw4puYsnfntZz5+/rBxDk8+7ds4nkxGRj4/yDSgkr9alicgCjgj9nFfh0h+1YNElKkUMvCK2iHTVV1KjKiMFFMcFb9kKtJ7aTdTcYpML0P065MOv2h0HUhoKwwL2ZVCkzW52FPgsNNgQDwR8ID4vlzEOu9GYuNFA2TmTWPRwMkLD5+aObzgpjS5cm7zREbqyz+/B3BKQPedaegIXdKEF8goHB1q7clacEp4VesJFrETZeakKE8Ng
- slLUbhbH
- 3H7x6gnyqKyRl4NN06yOCiDKQN63+eku0OC11tA4DQOROPfzU5Wrqzt7x5x+0xYzzEfmXxHOLWSTMd90ujziD+kJtUkdPTosxf0qoMfNS7WKPpsEmE3wJEm+hXPKzUM0Zt2V4HX+EBH9jwOkf7yW6vTKjT9wjj2OwNYpYwCp3Y/TPz8UrXik5JOIkvtPADP+BmDroGDv8NGTyLfhfV82rL0BIXePiQUftrTNOWYCe6oxDTIge8vioBvmWXEjrLn0X6DQOhVAs1n0v+XQt0Y3ZO6ypVsANgkAOOvICDAUkuB152mF5g4CMHGxbcFmYfRkiq1flGnhHjzN/T+0=
+X-HE-Tag: 1768820060-631570
+X-HE-Meta: U2FsdGVkX1/VEEyiDjpG5GLjVNnKEpotRNVfsW36S8w6uBhLxv2o2EgcHo2hhz/Tvmv9FBiv3hAJ02nQ6a/dXqcsLK1k6zRXJ+xuvAsHVCYopMc019FTxh8zQjHLVlay4SSVVJ7wLI6R+9yFnwo4U9oDLdWHb5Q4VgK6Ks/gsTNBjDbhrejhS7h9ArlRfY0XZp6kIgm6vxavnsWiOBG9WZG0tdXg9HRCYGdVgpuQ2ginlylq1Lkcc0oroF8JEm0pguQJkMyniF/z5M0gcH9tKM9NfLXb1dHFv744ZEz5kJOrXPL3Y+UKBUtf9Bph1tZOU0MDsNZLxHWjSNmuPUox48ZzQ2MbQ1c1stPfIbcnUa/Fr+siwEoamSfoyyRSl8H5/st7qBlFe61Dba5z6efX+EbiNUPc8qfL5oihn4Zcy9w6YFkVf7WHSo9lvowNWQlxO3FrGfwo+g5iTVFz/tB6yyQJx0lvo84K8vd6UBm80rURN2yxhitWC17WwEaKnOdBY+YDtZdWJeB7mfYveJCjt9UN3ryGv3D79gO3ekcZIwhIMSjVuMekUMXfK7Z8fqfZn2bt5ePvkvuZxKPPq1GHQQ34qHrIVY0q5YG/zVj0ypNpzt5tVpcRkie5zE/5d/fh4muBOZ/SgoBrdq8syf1vFHGTfNt/gi24C7EfiHLfGVXVbaGA4GftxBkrjb+CCm7ys6xgglh6Mh+M9+6h7p4XP0wMSz6ibw8jKk3+n4Wp21vd5kO924FZSVVPWAqLtPv5VDyvvh6faslw3QsEAunlG8NP6GSxEWhc1zjAR+T7XUuVE0sDuvm1lJdCFkYbhh74sqYxaWii+xTYf7OZ7aBSf7gugDWbFoMg4+lZZ2m4J9MhP3i80v3DRLYYkZ3BixmuRQ2O3PIcYhSd4XsbtqekN9yXgn0/DyFGR3mKvyV1Tcg8Rcxwh6HX46x8oML8k9VwjkR8Nqoot7eLQ+L1mmd
+ gB+clHxp
+ hipt71QNPSxLnimX89TAzmBYd8VWZngJGrAMYzBKV/uclEt04A0YUrlYfN1cTQ8A0jVzTVH8DA6HUJI4VORC5tkIRdluMYo9dFZsY3XfQl5e9hKyv6mqRmCJOoZa/P9yHLZZJILEPy9/fltZ1IVUAkDuEF5xXimvN3ruQBXOlzjwI0PoCm6idtQbC39L6YhPtAYVshYSSAlIgdV0kQwsV4yctDgDEk7HXFYwPw7c3rKuusJVPZ/nXBDpIBSmmbYNgZ35F/YHh105Db8bSx3dk/7tRS/Pudwk6yhpw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,28 +188,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/7/26 17:48, Kevin Brodsky wrote:
-> Commit 5bbc2b785e63 ("selftests/mm: fix FORCE_READ to read input
-> value correctly") modified FORCE_READ() to take a value instead of a
-> pointer. It also changed most of the call sites accordingly, but
-> missed many of them in cow.c. In those cases, we ended up with the
-> pointer itself being read, not the memory it points to.
+On 1/19/26 07:41, Harry Yoo wrote:
+> On Fri, Jan 16, 2026 at 03:40:29PM +0100, Vlastimil Babka wrote:
+>> At this point we have sheaves enabled for all caches, but their refill
+>> is done via __kmem_cache_alloc_bulk() which relies on cpu (partial)
+>> slabs - now a redundant caching layer that we are about to remove.
+>> 
+>> The refill will thus be done from slabs on the node partial list.
+>> Introduce new functions that can do that in an optimized way as it's
+>> easier than modifying the __kmem_cache_alloc_bulk() call chain.
+>> 
+>> Extend struct partial_context so it can return a list of slabs from the
+>> partial list with the sum of free objects in them within the requested
+>> min and max.
+>> 
+>> Introduce get_partial_node_bulk() that removes the slabs from freelist
+>> and returns them in the list.
+>> 
+>> Introduce get_freelist_nofreeze() which grabs the freelist without
+>> freezing the slab.
+>> 
+>> Introduce alloc_from_new_slab() which can allocate multiple objects from
+>> a newly allocated slab where we don't need to synchronize with freeing.
+>> In some aspects it's similar to alloc_single_from_new_slab() but assumes
+>> the cache is a non-debug one so it can avoid some actions.
+>> 
+>> Introduce __refill_objects() that uses the functions above to fill an
+>> array of objects. It has to handle the possibility that the slabs will
+>> contain more objects that were requested, due to concurrent freeing of
+>> objects to those slabs. When no more slabs on partial lists are
+>> available, it will allocate new slabs. It is intended to be only used
+>> in context where spinning is allowed, so add a WARN_ON_ONCE check there.
+>> 
+>> Finally, switch refill_sheaf() to use __refill_objects(). Sheaves are
+>> only refilled from contexts that allow spinning, or even blocking.
+>> 
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>> ---
+>>  mm/slub.c | 284 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+>>  1 file changed, 264 insertions(+), 20 deletions(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 9bea8a65e510..dce80463f92c 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -3522,6 +3525,63 @@ static inline void put_cpu_partial(struct kmem_cache *s, struct slab *slab,
+>>  #endif
+>>  static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags);
+>>  
+>> +static bool get_partial_node_bulk(struct kmem_cache *s,
+>> +				  struct kmem_cache_node *n,
+>> +				  struct partial_context *pc)
+>> +{
+>> +	struct slab *slab, *slab2;
+>> +	unsigned int total_free = 0;
+>> +	unsigned long flags;
+>> +
+>> +	/* Racy check to avoid taking the lock unnecessarily. */
+>> +	if (!n || data_race(!n->nr_partial))
+>> +		return false;
+>> +
+>> +	INIT_LIST_HEAD(&pc->slabs);
+>> +
+>> +	spin_lock_irqsave(&n->list_lock, flags);
+>> +
+>> +	list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
+>> +		struct freelist_counters flc;
+>> +		unsigned int slab_free;
+>> +
+>> +		if (!pfmemalloc_match(slab, pc->flags))
+>> +			continue;
+>> +		/*
+>> +		 * determine the number of free objects in the slab racily
+>> +		 *
+>> +		 * due to atomic updates done by a racing free we should not
+>> +		 * read an inconsistent value here, but do a sanity check anyway
+>> +		 *
+>> +		 * slab_free is a lower bound due to subsequent concurrent
+>> +		 * freeing, the caller might get more objects than requested and
+>> +		 * must deal with it
+>> +		 */
+>> +		flc.counters = data_race(READ_ONCE(slab->counters));
+>> +		slab_free = flc.objects - flc.inuse;
+>> +
+>> +		if (unlikely(slab_free > oo_objects(s->oo)))
+>> +			continue;
 > 
-> No failure occurred as a result, so it looks like the tests work
-> just fine without faulting in. However, the huge_zeropage tests
-> explicitly check that pages are populated, so those became skipped.
+> When is this condition supposed to be true?
+> 
+> I guess it's when __update_freelist_slow() doesn't update
+> slab->counters atomically?
 
-Right, that's nasty! Thanks!
+Yeah. Probably could be solvable with WRITE_ONCE() there, as this is only
+about hypothetical read/write tearing, not seeing stale values. Or not? Just
+wanted to be careful.
 
-For all cases, we could probably just fail if the memory is not 
-populated after FORCE_READ().
+>> +
+>> +		/* we have already min and this would get us over the max */
+>> +		if (total_free >= pc->min_objects
+>> +		    && total_free + slab_free > pc->max_objects)
+>> +			break;
+>> +
+>> +		remove_partial(n, slab);
+>> +
+>> +		list_add(&slab->slab_list, &pc->slabs);
+>> +
+>> +		total_free += slab_free;
+>> +		if (total_free >= pc->max_objects)
+>> +			break;
+>> +	}
+>> +
+>> +	spin_unlock_irqrestore(&n->list_lock, flags);
+>> +	return total_free > 0;
+>> +}
+>> +
+>>  /*
+>>   * Try to allocate a partial slab from a specific node.
+>>   */
+>> +static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
+>> +		void **p, unsigned int count, bool allow_spin)
+>> +{
+>> +	unsigned int allocated = 0;
+>> +	struct kmem_cache_node *n;
+>> +	unsigned long flags;
+>> +	void *object;
+>> +
+>> +	if (!allow_spin && (slab->objects - slab->inuse) > count) {
+>> +
+>> +		n = get_node(s, slab_nid(slab));
+>> +
+>> +		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+>> +			/* Unlucky, discard newly allocated slab */
+>> +			defer_deactivate_slab(slab, NULL);
+>> +			return 0;
+>> +		}
+>> +	}
+>> +
+>> +	object = slab->freelist;
+>> +	while (object && allocated < count) {
+>> +		p[allocated] = object;
+>> +		object = get_freepointer(s, object);
+>> +		maybe_wipe_obj_freeptr(s, p[allocated]);
+>> +
+>> +		slab->inuse++;
+>> +		allocated++;
+>> +	}
+>> +	slab->freelist = object;
+>> +
+>> +	if (slab->freelist) {
+>> +
+>> +		if (allow_spin) {
+>> +			n = get_node(s, slab_nid(slab));
+>> +			spin_lock_irqsave(&n->list_lock, flags);
+>> +		}
+>> +		add_partial(n, slab, DEACTIVATE_TO_HEAD);
+>> +		spin_unlock_irqrestore(&n->list_lock, flags);
+>> +	}
+>> +
+>> +	inc_slabs_node(s, slab_nid(slab), slab->objects);
+> 
+> Maybe add a comment explaining why inc_slabs_node() doesn't need to be
+> called under n->list_lock?
 
-Would you have time to prepare a patch for that?
+Hm, we might not even be holding it. The old code also did the inc with no
+comment. If anything could use one, it would be in
+alloc_single_from_new_slab()? But that's outside the scope here.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> +	return allocated;
+>> +}
+>> +
+>>  /*
+>>   * Slow path. The lockless freelist is empty or we need to perform
+>>   * debugging duties.
 
--- 
-Cheers
+>> +new_slab:
+>> +
+>> +	slab = new_slab(s, pc.flags, node);
+>> +	if (!slab)
+>> +		goto out;
+>> +
+>> +	stat(s, ALLOC_SLAB);
+>> +
+>> +	/*
+>> +	 * TODO: possible optimization - if we know we will consume the whole
+>> +	 * slab we might skip creating the freelist?
+>> +	 */
+>> +	refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
+>> +					/* allow_spin = */ true);
+>> +
+>> +	if (refilled < min)
+>> +		goto new_slab;
+> 
+> It should jump to out: label when alloc_from_new_slab() returns zero
+> (trylock failed).
+> 
+> ...Oh wait, no. I was confused.
+> 
+> Why does alloc_from_new_slab() handle !allow_spin case when it cannot be
+> called if allow_spin is false?
 
-David
+The next patch will use it so it seemed easier to add it already. I'll note
+in the commit log.
+
+>> +out:
+>> +
+>> +	return refilled;
+>> +}
+> 
+
 
