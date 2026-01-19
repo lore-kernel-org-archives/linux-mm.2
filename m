@@ -4,101 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B27CCF2D2
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 10:20:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D1BCCF2D9
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 10:20:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CC966B0164; Mon, 19 Jan 2026 05:20:17 -0500 (EST)
+	id 4C40B6B0166; Mon, 19 Jan 2026 05:20:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78D4C6B0166; Mon, 19 Jan 2026 05:20:17 -0500 (EST)
+	id 484826B0168; Mon, 19 Jan 2026 05:20:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BA886B0167; Mon, 19 Jan 2026 05:20:17 -0500 (EST)
+	id 390BA6B0169; Mon, 19 Jan 2026 05:20:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 55BF16B0164
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:20:17 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F4197C24E4
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:20:16 +0000 (UTC)
-X-FDA: 84348318432.14.366E7EF
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 27A294000D
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:20:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768818015; a=rsa-sha256;
-	cv=none;
-	b=q+6FFLP4dhKft3Qymu2OL2UJBrIzmIQ0MJ/inalPm8JFELLNGOPLgL3Kk66J0QHVFxZKG+
-	PoLCs5YCZDZUIiJ51g1F6iMjibXhuBB4Fz38nr96eSEgXR/aSBJBQ6AlFdsmrz2LrvYcbH
-	5h6tB9BICgnp49+W1rJzHk+wm8jIPQI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 21FDC6B0166
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:20:54 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9279BAB23
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:20:53 +0000 (UTC)
+X-FDA: 84348319986.28.7782A83
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 121BA40008
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:20:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UGJywINq;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768818015;
+	s=arc-20220608; t=1768818052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uufwEcA26X2L64ykZaFMsbyH8luZYH3uk+bytmn50hk=;
-	b=UtM0APJtOv/pnW062gkUG3lxtUN5cccVRm3mDxXdy/K4s2QteWrK3jJvBRIOOgzetkloB3
-	KtwTps05BIoLKHUks/++Sp1u+2Z2r1GGlAi65On5+PY8ioGblUzXQSc/OtAYrs6Vkal6vp
-	lh1w/KV+uqte9FMhDzpqjOPc0h36JUQ=
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-65f65538a90so3065714eaf.1
-        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 02:20:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768818014; x=1769422814;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uufwEcA26X2L64ykZaFMsbyH8luZYH3uk+bytmn50hk=;
-        b=lMlWOX6+NZLGkUAKo+wqgDKxrd9wsXFsWJrw9S1Zbv4atdIMcQNd+k0YPCk3vqcB8x
-         9sZdzQx//mc4RXjeoJgbxM1kAf6A839JvK5Q3igNcEo0addXnKqKV40gHv6DgrKqnFsb
-         1yCHF/7vccg6omJnDoxLTFmlG14wzj7du0RwnTQ4rgh94dsU78KhhLfXiTA0HpQnKlVV
-         SOpgwH02DmUdWDA+Y3cFwLv8s/NPSRjxfssjkA4vQVjXygaOuMBV5tnnwgVUBZSp1Rln
-         ls425XUbvIqLPaU5/K40Qt5AzH7XlQQgS6yeFH9X9A6sI8o8CJnOOy5I/3852Q+H3RRn
-         uyGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqJrmavMmpki9WGg3g1xpg5Jpl3mMo4wRwI2WQpf9WTCl7W7pRUxYj+MlIUzKdlKKx1RJa9m2zSg==@kvack.org
-X-Gm-Message-State: AOJu0YwMp8NrpeUjTvCI54BQEkX1mc/A/jD+w+oBtbbapLEgqFpSCz6C
-	Er/5Sa+v9LrmkX8AJd8jhuEETiom2Ey9eMT35k+JskKzv67/QOLwhX+8
-X-Gm-Gg: AY/fxX6gJoZrkiPro5blc69yiXzzN3vOhyLYzDsz5GyH2Y3190mmKlprlkgsF/AkKhg
-	ioG7J0sMYk6c/GOUcdw62Jv8gtEOOhwUZTr1La5oubObXOc31D3thnXAYeujDoh0RcvUEk3nRSX
-	PF7qqRMa6ZwWVuElSHqj0YTP/T6uKIMsy2NeVI2ub0qwumXhvxK6xq/HNg3SCTFtaCWI+wOHVpe
-	t9BnXPBci3VHW3VrIiw0P+IneKkB+evtJE68w0rtYQbbTUAPeCJNcUXL0JeZHIpkDPHrflVYitA
-	HCQ7wrrdd7SQ6z8peFID2wZb8DmTYkQ8ZklCTs/gEvUmmy2rwRjq+iAm4qcBhxQe1do9w9GLfPV
-	c8cNcH2fOw3vCvHEW8og39/KOZWYcEnlEw9lRFZQMuRFJHVlUEOEMgeLVYFPWDIYoO6R/AcBxDf
-	cMUw==
-X-Received: by 2002:a05:6820:4613:b0:661:154a:c289 with SMTP id 006d021491bc7-6611812574amr4202939eaf.31.1768818014192;
-        Mon, 19 Jan 2026 02:20:14 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:41::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66289e3af7dsm3342356eaf.14.2026.01.19.02.20.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 02:20:13 -0800 (PST)
-Date: Mon, 19 Jan 2026 02:20:11 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Marco Elver <elver@google.com>, akpm@linux-foundation.org
-Cc: Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, clm@meta.com, 
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/kfence: fix potential deadlock in reboot notifier
-Message-ID: <i2slhi24qpy4u4mtb7edm3sqqcazjfiw52xnz44i4o3vrhvoqe@d2qy423tdjly>
-References: <20260116-kfence_fix-v1-1-4165a055933f@debian.org>
- <CANpmjNP5R3ALvtuMyLVhHGZpyZ2MoR7hq07jJFcSAN62Cnig2g@mail.gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hQ9min3qWVodOa87w4DKEX0UUM0vB531hXuHy0gMwsE=;
+	b=X2ROBU5ZcuwdVLKqXfLfJbUrNiS8muvmfjP5adGhJ4bmKN3RZ/hiUWGxUYWiV5IESoPy3Z
+	BAa+ticzHC2FEUEwqk5jLuUcKQ/CRpj2junDGi8YN+vsH+J6ctBiDNDYcYEkBzJC5w9Ndt
+	EBsaA4qi0XtiMbf4TIsTDSmuofmgYMo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UGJywINq;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768818052; a=rsa-sha256;
+	cv=none;
+	b=mlIT6awU0PJw0DlwJGoH4gCnva6DMuz01VlV9RJGFl3PCAQavIUAviNEDUHGk3c4ju82xv
+	JNOs+RAfdPePGqsQVw/Okp3555o3FN9ABwKuQnUBGDoXlK+HYVwjgxTiGBspI7jZbIGT3+
+	D3f1frP86bTFM+p5QnWT1PM7SxTV7HY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 18B7560140;
+	Mon, 19 Jan 2026 10:20:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C777C116C6;
+	Mon, 19 Jan 2026 10:20:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768818050;
+	bh=O3CZH8Niuk4d+2faxjZDZylA2Qy1X04DLYp5vprOyBE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UGJywINqQlP26oRRuhAQ30+JcvUZC+z/ghQV8udAX6B0OfOCG6e8Ee3Icuh7OauiH
+	 brY18ro3p1vlEEGM50AhTaFe1ByWTrAJrlkI+Vc38HMnwRyHBXLkBfwCUD7MKp+y1J
+	 wgkXJeBumJzByhtc7X5Nj8HKhbkG5+AfLAmweLY/u06veL1F8Lwy+yUwK+YFJp3deh
+	 eklC+rPkPsTDk+n5Ndj2/qMIzz7E5YVB0PVzHle+JUwuGqUOGr+SYadyycXj6/6TRQ
+	 gYM1iEnTf1YtwkHa+FFOYCTMh0B0qwRDcQgCJavPQE53rxebxOlIU+X92AH9h5z39s
+	 ingEnw2wBQ8eQ==
+Message-ID: <8e164e8b-1748-4570-822c-b973770e8fb7@kernel.org>
+Date: Mon, 19 Jan 2026 11:20:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNP5R3ALvtuMyLVhHGZpyZ2MoR7hq07jJFcSAN62Cnig2g@mail.gmail.com>
-X-Stat-Signature: 94t4fg698buuw71fzqhq8rzsgbxyqk38
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 27A294000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
+ MMU_GATHER_RCU_TABLE_FREE
+To: Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
+ akpm@linux-foundation.org, ioworker0@gmail.com, linmag7@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
+ <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: erytsh3mixedgk7r5re76px3zawqrckj
+X-Rspamd-Queue-Id: 121BA40008
 X-Rspam-User: 
-X-HE-Tag: 1768818014-891984
-X-HE-Meta: U2FsdGVkX1/8IrVXz96E2nBLy3rHBHE9+C+Yos/GzemdEpt8FxzRVn6xMA6rG5AfB4W2PH99MIU7sdry2Y1ItoiPbB2QiDrbKEGgm4Odhh0/7gOnKZi5ONXoc2irbD4m1yvOvKeZjlZ9QZ4kVOO/2yU8FJXhkvg2YT6pOHqg8dYpzhw4CqxHjh9o6lLUoRzjB09uQimXC7NK6PtUGFYEK4DlFvaHAcGzehQEJpDX8nKU/UWQj6Ck5ZvkGBHgKnPFBSyG5QmpUcwbwD8rZMnnf4qYevfZkpdQBr2t12rCIXji0rKRR0tdNR/2zn217i2IJf8wLWewqHi49a+FiWt6bM5+mVELNW4YDWHb/4+ZB+8FhFdl5vO92rm8J37QsGUAKModLjbzogdEQA2sTd9AHqOnUNQJXqCoeCkyyM9ecVKD7GUTRcKk2EQD+MHfTQVWkpGH98hmUSh3w/VQv77lr3fLzVKN0vDkdBMg+lycnThXCuzvPcSVS8R3CAzuvssOLwNVAYJtszbtqgTQ38H8AxaTZuRBvFOvgjq6iJaCeJeV4M8DrNnOInqRj5n2esHXDBX7xjp4HWc8LZ0XHlhbTomh3mwrXO76nnZAAP0qU5/ef4vI6Nhj5YUfCiB+AOjF7wTn8FxxJAvGrnV8wbi7zSyiLnrLUs90MVzKNqU4PQesM8b4xrenKBd6EgmqU8iCxNqwEh9EO3dxx/u0pRsKiHjKMSRTWYwlJSWT5Jx3p05PhL+eBLP3j78S2qjq11Rv2cjWYs/FolqXAhW3EvHp421/Z4+nMrK7eoQtfZ0v89t/KfvrxqCFspip7+BMn1fhHT0CkWd+DxllkLXk+eFlnhdE9Ez7f/OIKWKPPrij6XVAtPLqr5AilJ+C5Gi92oRFiJ9feLycdz8rCb7phQmVJdVMfBhW45gaEfCmxcXlr2gL0imShiOBoXrteTm4LZURlm8oMjDSzILEPziN0r1
- FDsffXe7
- d/HFg5K8ZUaWwdY7acrUVybkSX2gJghQNyMPOEuYLvcnN4Iei6gaq7zrB4plLBsLfkVZDy/ObMxjfTpnTj2fDpSVZQ/Ap0Noa+7TgGKcZjSCaAG6cblsd4Nv+VYfN8cnLoCek8E/40XINMvSqt+q8jDYQUMySkhCtwEOytd7tcAW+bvu6E2Ptwy60U7sZdIoVOCpp3MAXz2o8u4m5VfdKxXfyexIts10fMoG+Y3kBCfEuDWvOhcBK5uLVImsEF9FD1KJcw9+EEvVrs+D5RI5ZLuZDNWR/x8QLZMri7sTLJ/kwACN71hCqCUMSaRCtuj8KA85hfP17OBNH8s6L/l+OibcA7jmjcvjB5uw4BIS2wyaNYTkTKgZF1umgvv4VeLrBAt/jS6HmGSnFkErpdW+WUYu77aZQZuQRAXKZ
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768818051-681070
+X-HE-Meta: U2FsdGVkX1+fUBjA1h3auxrYT0tMhqeZ3Ebr823yW6xT1AXXlfvr0D3sSFbf5C3Av7+PzQ0Q0da8QoZocaERzl2plR/s/hWpSlvZsASnAnPrVv52Dw/raIYr/E1CnZenDZHw+4HmZcmh6yTbE+WvQFSzk0AiZ891ZViG0eLt8IpJPy3CH7Aau7Rsn9rtMfdEzgSOxObkzYmUQD8tknFhwLca7RUa2dAWQUTSuWPjhcQYYqbFAcJqTlF1CH4Em60rhuEGCgTOUUGmtA0JvhsqNr21GiSJG7N+wvHx3yQDbrIplf58qZ37tIGAwBrh3+/nIzYKSOnTABcgzzxg0zu6lkUD7Z+KOCBPBBr+yxJ5hGvtCye7wYcHY82Fm1dvPr5mcgjYTj0sV+KgudggRRfFzPkbW3AkFG5L6Bk3AybI7vsn6DnHIImMMlv4f4ooQx9VWNDL/sDEQI5LOS8LkJjSFAtioLoUsc7gcUCifG+ngNVnXdREIKV8YHDUr651ywsfsEQh8PbJyRjribhhVnPdqXJUabBSufBgFiXVHjRfyIW+Fw5bdwWohQC6qG+xREAun+PxyvZlMQjw/1Cvnu6mAuIkP3R2fTn7HYKTqyyVTUdti1EClrnHizFc2UFh5MmmnWP1gq+P7cHPJSFA5IXBcrv7rVB6IvZun3+48W0ipG4he7NRDmlRcQk7+57h1uMwdYuqm9hb4xNzyYLgYbRQPSbQpvwLtbK4UVbsB1f8VZEyV8VV9GoOuoItp57xks0Fa1lwsQVOoPR52bIOseEB7nF4PKmiCf/fcaHmuKvZJkdRLx79Wc8lNQbYqzM4r/Q11SldK0JnJDobQ0SCS6aMGxb+OyVI7CLoG539mTvtGEiqnyEs1rK7qT0VkRk/cjBI+RXAVJkDGbaDEsKcWZW9RAeO/L4doqDcZP9w7eCSQc1M/2jJr6zmku1enIVNDslLnSOsY6oqu2TbyU4XIB9
+ WLfo4sX0
+ nSqPyHJ7urwEksOU/XVoAyB0dupn/tesVrf8pcABON6/war1GhTiOX9tU/8IiwDsIjbXCyRJCP/tS6XltBu9NhzTsw2Gz9ov35eKRmhNggs7xrOM5vYH7XR8ezC/qRcEqOR94yYwIs9Od9s7kK6vg7Q6/hCvOgnbeObE5mEB69JohBWwtojvT9mdYdirvBDEtqDX84/ZTDg6zAt+ZJlc+8RIahiGzkxTs+qrsfmMDRH2LBWvsZi76F7BAwVdp21KNUWHQVYqlCWa9aPxHsu08c86m9pPbw3Avd48bF+/iNyZwoFmZ4ND0t1NcekukKx3/h72/+eUw8zC+KsxJ2I4TwKROrCVsmRFPyRQ6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,28 +143,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Marco, Andrew,
-
-On Mon, Jan 19, 2026 at 08:00:00AM +0100, Marco Elver wrote:
-> On Fri, 16 Jan 2026 at 16:49, Breno Leitao <leitao@debian.org> wrote:
->
-> > The issue is that cancel_delayed_work_sync() waits for the work to
-> > complete, but the work is waiting for kfence_allocation_gate > 0
-> > which requires allocations to happen (each allocation is increated by 1)
+On 12/17/25 10:45, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> increated -> increased
+> The PT_RECLAIM can work on all architectures that support
+> MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
+> MMU_GATHER_RCU_TABLE_FREE.
+> 
+> BTW, change PT_RECLAIM to be enabled by default, since nobody should want
+> to turn it off.
 
-[...]
+Right, and if there is ever a need to, I wonder whether that should be a 
+boottime/runtime toggle instead.
 
-> Reviewed-by: Marco Elver <elver@google.com>
+So far we haven't heard of any relevant runtime overheads that causes 
+problems.
 
-Thanks for reviewing this patch.
+> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+>   arch/x86/Kconfig | 1 -
+>   mm/Kconfig       | 9 ++-------
+>   2 files changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 80527299f859a..0d22da56a71b0 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -331,7 +331,6 @@ config X86
+>   	select FUNCTION_ALIGNMENT_4B
+>   	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+>   	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
+> -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
+>   	select ARCH_SUPPORTS_SCHED_SMT		if SMP
+>   	select SCHED_SMT			if SMP
+>   	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index bd0ea5454af82..fc00b429b7129 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
+>   	  The architecture has hardware support for userspace shadow call
+>             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+>   
+> -config ARCH_SUPPORTS_PT_RECLAIM
+> -	def_bool n
+> -
+>   config PT_RECLAIM
+> -	bool "reclaim empty user page table pages"
+> -	default y
+> -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
+> -	select MMU_GATHER_RCU_TABLE_FREE
+> +	def_bool y
+> +	depends on MMU_GATHER_RCU_TABLE_FREE
+>   	help
+>   	  Try to reclaim empty user page table pages in paths other than munmap
+>   	  and exit_mmap path.
 
-Andrew,
 
-Please let me know if you want to send me a v2 with the typo above
-fixed, or, if you can fix it in your own tree.
+Nothing jumped at me. Hopefully we're not missing something important :)
 
-Thanks
---breno
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+
+-- 
+Cheers
+
+David
 
