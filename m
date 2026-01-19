@@ -4,245 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C72B5D2ECEF
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 23:14:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B46AAD2ECF6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 23:27:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 186F16B0341; Mon, 19 Jan 2026 18:14:52 -0500 (EST)
+	id E26396B033A; Mon, 19 Jan 2026 18:27:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11D816B0343; Mon, 19 Jan 2026 18:14:52 -0500 (EST)
+	id DD43D6B033D; Mon, 19 Jan 2026 18:27:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15B46B0341; Mon, 19 Jan 2026 18:14:51 -0500 (EST)
+	id CE09E6B033E; Mon, 19 Jan 2026 18:27:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DEF116B033E
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 18:14:51 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8537B7FB7
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:14:51 +0000 (UTC)
-X-FDA: 84350270382.30.C1C56B1
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010036.outbound.protection.outlook.com [52.101.85.36])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4E246A000D;
-	Mon, 19 Jan 2026 23:14:48 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TtjvlLGm;
-	spf=pass (imf25.hostedemail.com: domain of jgg@nvidia.com designates 52.101.85.36 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768864488;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BAC9D6B033A
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 18:27:13 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 516A258514
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:27:13 +0000 (UTC)
+X-FDA: 84350301546.23.CAA6BF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7E4741C0006
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:27:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xrBGHQue;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768865231; a=rsa-sha256;
+	cv=none;
+	b=OtrZO2Cqpvvgl/1Od75HRQa4G00UpU29pyjacF3rnLfQ67/U3RkRSEFuoYZ39S4Ty9MbCF
+	W4D2klWvIQa7ujKwCQH4lUdl/BK9eiiTwWPXKTAT6ATxrdPiqa+NVny9oA5c6Z7yW4urJA
+	ILiGcvtOIF62aAiVgFTk4TCgMgAwrtE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xrBGHQue;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768865231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0S8O1hiHlQ4m25SuE6tEjrKZ/RCiI+pmncwMyOxQetM=;
-	b=f6Av1A1tep/s/NmijzBy3CbVoroQqVhBn+4MeFrb73k0TOGymjxHze9qMR+N6/3wdcIdga
-	QT49hnRAOu1olbYCa+yYpSo+0IwoHmUYDp8tQRNMnFWwhWBiTXXpacTuBMBuJTlrwbdE7L
-	Mj1J5knZDGHcHjNJcft7ROIGrlk2oQA=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TtjvlLGm;
-	spf=pass (imf25.hostedemail.com: domain of jgg@nvidia.com designates 52.101.85.36 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768864488; a=rsa-sha256;
-	cv=pass;
-	b=5O1kJTypJeVx8HDLMKUXZWsZ+M06m7+sPZYB/wvKwjTHQq90YjhbV9y1/JxNqVCkVD0ZN1
-	fz6ia6lhYJEvO4h9TNUez3kOAOxZw7bMj7HQJ2WXCCZABMjg8hxX2E6jsSIEBUMQ7vxCod
-	WNpU10pjBX/yyqyhOfJaU5OCj9Bggtc=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f0eZfFMM1jrMWSW9YoVhpzCjLDQ/o95Kui+dfY+7ZNHKKZlZQF9wdTSAfJ6jVrZkf1FXswKG8hTS4XrJygDBJgM4vQtWX4gaNIfPnKs2khu+LGYc4xFzIbKXrQqPK3cJdd1A5V8jkUQEzu/0WVp2q6RMKSIU+8dRR/2lQc3UecOKL+yW5VHJclJbhTVZbes0mjsDr+/ESkDteZGGz0vHYMt3Obciig1nI7RPXu00fA7rO1zKCIiX7ryIqxocIe56d71FGyT3Kc+L57OH09xbZ+N6EhyvGPscM5WNGUud5GEPOT2tefKyRHfk+1hUjJvoglpvZs0mtSq35lBBlKml6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0S8O1hiHlQ4m25SuE6tEjrKZ/RCiI+pmncwMyOxQetM=;
- b=SeO5ZCLGvdbCPNb/A7JVPvAoKBQR+MEje5VM5WGnZlBcLOy8EZRGooDI//0P4mBljz4QR3ECCKPvN3deC8k1FGVEXwQLu6V5CjAKOfm5fFWkwonzYzL8vnfYz20awDIlhE6BJ58wvnWF2VN1rK/qi1gcuH81BMg3qGmVddBfnBB0HPpQ8XpZvH5+T4gAt/mL7+0kpvVdVTPeFHbMewpjrzL3HyOr1H4fSATGnqdkoXOduyDVb6pIopHNswr6yCTORdS1UTgEsjjbU6UYtnT0V3qQCcMsXZMqBLVjDg6SiuTnMfBroLFyFR/wzfl092s8UW8bVPRt22uJSMTSwc8bew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0S8O1hiHlQ4m25SuE6tEjrKZ/RCiI+pmncwMyOxQetM=;
- b=TtjvlLGmpy3u+yC2gCrf1KMi2b4Bh6HfgOso6ZcaGaJ9ymKuhIfG8OZE2dWBkpFbgED68rejYWbigauF+fO3BT5jh8oEzbfnWIi4k/NJogvbTysgV2F36HOzHDliNIZGEQuG+lJrjrFXY6S9M8RnJXkbMn92URU/si6cxGfRXzgEcl35AXDl2GyLv9Ci2E/lSKnq7dcsJPM69ajPdJstLdDmeggLkdaNgxGjye54d2vNRn/TkgVyHbs9BL1Hk5hfNLCZOehCjcZ9sIV4ySLz4E2AVw+WLCB/Fn6oqM9RwVfVTg0LEzJ3pL00uNNZsjw9T/jlj9/orOZwu77LIpJJ4g==
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by PH7PR12MB7116.namprd12.prod.outlook.com (2603:10b6:510:1ef::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
- 2026 23:14:44 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c%3]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
- 23:14:44 +0000
-Date: Mon, 19 Jan 2026 19:14:43 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
-	Carlos Maiolino <cem@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E . Hallyn" <serge@hallyn.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-mm@kvack.org, ntfs3@lists.linux.dev, devel@lists.orangefs.org,
-	linux-xfs@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH RESEND 00/12] mm: add bitmap VMA flag helpers and convert
- all mmap_prepare to use them
-Message-ID: <20260119231443.GT1134360@nvidia.com>
-References: <cover.1768857200.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1768857200.git.lorenzo.stoakes@oracle.com>
-X-ClientProxiedBy: MN2PR17CA0008.namprd17.prod.outlook.com
- (2603:10b6:208:15e::21) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH7PR12MB7116:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6456cf91-f409-460b-1fec-08de57b08802
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tSplX4pOJ8CmO18rSXCqTCkufV0sadsiAhorP8Vb+UsIHmWt8lzctSzYV0CG?=
- =?us-ascii?Q?5UYsfYrg8BvFUCKC3tfnAwdtsS3hveUfnhmAZQ3rqwzAaEXV1Hd/bGBjKxQ0?=
- =?us-ascii?Q?3UPmDHFyQ8gj3/QtCK/5UNz5SBHZhcowyNGnx5cWbyS5A2NvfM/2ILanzMu8?=
- =?us-ascii?Q?6Ey5Zv7GtNYM1z9k7Racn9Njt8bJ8RXAvaP9R6mZmEbNeTEffLZ+da7zAHTr?=
- =?us-ascii?Q?4u0Z+nO67rG4ec8wZh/DvfUPZU7tWuimLC0N3f0/noJdIfoUHUV9QvIr3xW9?=
- =?us-ascii?Q?oiwuENwtN3DPXBtX4O1Ta9/me/5sFubn8L8KTOZv+HoTtVd/KcYH+fPtLc/F?=
- =?us-ascii?Q?4yTU2UncOhSE7AGon97RQMQctIAOaehtRP7k//9zsRJFZOXHqGionhP4TMmE?=
- =?us-ascii?Q?pXZ5f+f78xSu2YOo3tTaLDiPjy2C+ik36c+c9Fd91hcWES9GubrIAVMJnzos?=
- =?us-ascii?Q?kbBVtF6WJQm2raa19BaVS9W2faObyQUyXmy9RLyoMd4DeRgiArBpN/7aOubS?=
- =?us-ascii?Q?cO3AJR6QsyaPLbE1xPR/tiF5lLPP8jvJ8WP6Q2wOeMtdUEktwtg9yCNm+eIO?=
- =?us-ascii?Q?ljCZCdpXBxryqz1gENxKo1K+mGEBgUwaSt+2p/C2c21wJuNE1B+76hFS2Lrv?=
- =?us-ascii?Q?SAdYvoTVARzUCDYgwuMoWIq6FyxdGHZza88w7LLpY7P4uJurgSMFa4LvFiLr?=
- =?us-ascii?Q?3vHkABBbnhELGPg591UF5o3NsXa6cW+OeDpVVQ4QmkrO2oq40UCwQfHY7ihZ?=
- =?us-ascii?Q?yhBliPB2raNgUlTtbp45N8Fp3cf8lJOlYWreyUFfp/GDIfm9ywFhvUCgd6Vd?=
- =?us-ascii?Q?kuL/lgQFwoZj7YSFiXQ4PL+muSmdZWVnhv5Yz3gmxfqNiCvn8pEEn+L6Mt19?=
- =?us-ascii?Q?3mGaDTsgLexaL/79LgiJkiG/lEu31mpdvjQuWwMI6VObMzPNlS2RqHdHh37y?=
- =?us-ascii?Q?YHDYYWOodqFWN5ttfkWsp94RnPivtB9zeXzuVy3w2ctDlG+ihb8R18Cdd14p?=
- =?us-ascii?Q?f+8o+t/wkVmpuiBmOT/m+kNmemNwakvDV2qYwTAfq39f2LGwxVqAvR6OKGtg?=
- =?us-ascii?Q?zxTsT5huRTBsziV6NMBz587f1m4RMqSdKjSF4CiFr3geCtAhZ2zpGTsq4Xe3?=
- =?us-ascii?Q?suEcCXU/l2oFoNg+ROti2gmgcHiYa5obqhDCx6dFbhy6WCZqaS+WKDoXKK6T?=
- =?us-ascii?Q?2qeiU6UHDz857E33ibG0jkktJwTU74F5iKOEPbDqkjy3rDmgwpunr8IL8gkM?=
- =?us-ascii?Q?z67Cic0qHCvJgbju2/JBM2tiC/OP2SKJUnkz1gIPOkZSCMjIdShCfmus8x+j?=
- =?us-ascii?Q?QoPNm4nmBv3HTdfXcx535QFvgXfGvnlKiMO6O9QyZP51rRmnKN8Vpwidneb+?=
- =?us-ascii?Q?fIRWJsHS4ed3wjCmgIMcVpBdNpNyWbiC2AiBF1PWzUOTYMcOB3iZpsyQpoWH?=
- =?us-ascii?Q?pMJpxXWXwI+cV4rtuB7G32ueEK3GPG0zrdq/N9lf9XMAWAVpSMTY5/DeYHrf?=
- =?us-ascii?Q?oTgok96huMQ8CEQOCyJFduDUFGimhw0dA89xQhIQCUjBOmvqbCzCJ69PCNsY?=
- =?us-ascii?Q?8366SGuvwSO6A5j5v0Q=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TOHMVlVDrrTvXiIYN2+I5cimEGsEGbRgC3X1N2FgfdirFY2nZ1xkoy7pZdky?=
- =?us-ascii?Q?dgooqNqG9nGppKOMCMZ9jP66PTVGXzJQHbIeouRni72LjDAvPpLy2qDzL3wo?=
- =?us-ascii?Q?uMYXcqKzGntioMUdEmJnfb7KtYk/FLrep6rlV5yZlYdsfXrLZcZsrYJhN0SV?=
- =?us-ascii?Q?EoRluN08AQvBZxbknVPI/o8TK69yFl62QDx0xuHqEK+xr2jkFaoAx4vJXhg0?=
- =?us-ascii?Q?IvCUeTFMYK4PWSr841C5MJh+KLRgBNl5s8qyKrnP3OveODG+RfyKUZVsfqLV?=
- =?us-ascii?Q?s3cneyyctZGObC56r0iUdXCdoJu+oAybeBjjQ1Xn9TVGX+ZilJF8MIV4ZIEF?=
- =?us-ascii?Q?z6MsOAUdMUdEKnA8tki4nqJAw4BOUPuDhTUy8rDr8LeyKCUYJGTpg2XLSn85?=
- =?us-ascii?Q?deX3bBN1z5kjpU4ullUZWHNoN+T3TxPJ2wumVCG/s6JbGvZDfGBTRtJfsMda?=
- =?us-ascii?Q?Scxj0qpyrAjPx0X/iZoUM9XeQLEZCAHvH6CXwAXNtBzVNalhUQMUWtCPhH+1?=
- =?us-ascii?Q?DNl5xaPZSTHE0zNS2/cXwO2T7nDtT3WnG1zzXACP5jcZX8ktMh+lK7zGwAjn?=
- =?us-ascii?Q?MHB2k5H8p6UMTaD3F0jj5DAmlzPqUARKoI4DZhvWRHJWmgGiGRNy+Ehr6JSB?=
- =?us-ascii?Q?T1489eEMKK5kDN/vPjPT3zBGXPSinXJMH18m7Fq5HL18RGLtY43atzuPvAyO?=
- =?us-ascii?Q?/b0MSgloMQY8UtigHEguklCjmbb4Elx81uRQVQcy5/r8XSB8yOWRs8dbm9KL?=
- =?us-ascii?Q?znm+T2lqmWd/Nfv49uGTIo+ieeDCPb+JGXtdtYCGZZsBf5X4hBsxElH/LW5G?=
- =?us-ascii?Q?RI9+uLVYl3d+jKYGRNiZlMthDXkkn5QTmR/6g5MWfAODcQ9dPJ0MLnn5P7J1?=
- =?us-ascii?Q?PUPNXmt9z5GyERkpwSWo4Nc9Kq/znamNgz7epXh4irtZC2JoPZIn+YoCE30N?=
- =?us-ascii?Q?zt/Z8gEdKd1sslOPI/MJOCzLlut9H/b+R7MQrhUZWCwGR5lThNsWCfTKhXz8?=
- =?us-ascii?Q?28YGzY9m9qy3oS/D9NMQ+g9n3PSvxaDXy8lnULlNwqAsv+P96ta3QTb9yPcO?=
- =?us-ascii?Q?EdjCUqd8l5fnhtdmA0wNtch2CGls0pbQBFVjp6NWRfxxXFeZXEtK+3AtACbn?=
- =?us-ascii?Q?25HtRXz7M6f3IP1NvCF5riQV8oCPyBodRMC+zQpfQA7MEiL+Pg1OmcSPUJNk?=
- =?us-ascii?Q?L74SUweakrZf3f33iDeuJUtDGlmWmirlMn6x0baexD2H5FpiUW9w2BhlbyDP?=
- =?us-ascii?Q?PdEJnh8imD/embnx57mCSRQMPdsJjxTJ7eCiwEen086N5XVIKvT/W5wctDxY?=
- =?us-ascii?Q?OlPtWP9yvkH8WGjxiShvzCZa76sByLU6cbh9PQj81Z+ShE4TLFdIigbG/hIH?=
- =?us-ascii?Q?T/GBVAUXm8pXlSfMLS77eJgVzvago8ouxS7n0XMazZhHNiBmJ1kazydjQNPi?=
- =?us-ascii?Q?4BXHNl3T5CatY/zvw+MW66Ice6flpYgysgrTQGT2kHUfmdAUYbALEFI/9YsV?=
- =?us-ascii?Q?Ba+ZL/+VWPBopQNFOcRMlNlAc7tdBa2M+bauVYwuEifm4z0+zp+bhKYU5lNn?=
- =?us-ascii?Q?yHpY2cIdt1jv6E7umHvNBT+Y4zbMu7T3aGifRjMuCq1yPLYNiktnrEtcOKm4?=
- =?us-ascii?Q?sIQCfxi+VPUYv+IYdSbJ12iuQJU5YKI5CfkAh40nB/CAoG5ezJ4qp7VFg03S?=
- =?us-ascii?Q?NcEWjqrEnjlo4gkcecT/YSGgYnLHocknvsDCvcGBs+MeXfYKONwcCbve7Irm?=
- =?us-ascii?Q?lfoEg+cBsQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6456cf91-f409-460b-1fec-08de57b08802
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 23:14:44.2173
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zwk2joAm/V7SnpJ0UEnUaOsAV6uczrKchITot2iVGb92xsSkJWrPBZ2oVYFKsVZ8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7116
+	bh=zSAlxfaOZZaZpPTPZXflnDLTIJcp6DGSu13bwZSbl6w=;
+	b=H3sois8LjPLDB4lGhFr6NezqUN4+abTMHmNP895wFB22fRDqFcblaSOeNQqp2jL4CRdsK7
+	yMlA6NJSLHf9JI4NzSO1PS4fthgOoCIxMA6Fr5+mCBPSETYahYpRBxKrn4DCmO1vXED+R3
+	baXZWWmVpsLW48iwgVCHqqAmgRqxzGQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E17C40DE8;
+	Mon, 19 Jan 2026 23:27:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261DFC116C6;
+	Mon, 19 Jan 2026 23:27:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768865230;
+	bh=qA/8S2QM28lHfe8iWXS+dSTad4XAM1EUKu8s/MTOUFo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=xrBGHQueZoDFvdTmOQPzEhyTnBkDlHnjYIq2aJDzDK8Pwpb4kNvE6OulLNIT2p6DQ
+	 efJvqzcCQRWhmE4Pi9gqIp5GZ8/xrPAz4jvQUkI4vNLAmrXXEROBM1Ju2tCcPEk+CD
+	 wf3hkXxUOTH0q5QPOaNvHpPmaNgx4zQZpaLafCIo=
+Date: Mon, 19 Jan 2026 15:27:08 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
+ virtualization@lists.linux.dev, Oscar Salvador <osalvador@suse.de>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jerrin Shaji George
+ <jerrin.shaji-george@broadcom.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ Eugenio =?ISO-8859-1?Q?P=E9rez?= <eperezma@redhat.com>, Zi Yan
+ <ziy@nvidia.com>
+Subject: Re: [PATCH v3 00/24] mm: balloon infrastructure cleanups
+Message-Id: <20260119152708.0737b211a2167054cf6eb18c@linux-foundation.org>
+In-Reply-To: <20260119230133.3551867-1-david@kernel.org>
+References: <20260119230133.3551867-1-david@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7E4741C0006
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hbh38p89sbt5xpygydnu8hae94ue1n69
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4E246A000D
-X-Stat-Signature: 44bb54ug5ch6emo5gj9qag8gdfbj4i1d
-X-HE-Tag: 1768864488-33719
-X-HE-Meta: U2FsdGVkX1/5Cg4Tca4spQpdwLmKRpXIvv9EA2lJ3GVsIATuihEunwEHGe86xF7yqWYiP0h8UOLHr2vQ/3dJgcuXSBW5451cEYVzUkKBBSOnjER3HHcV4wLNK2ZgoEZxdlf1YcUdw6z55OpO1dqHKdFwFQd+KFtYVJC1A6InS2hrujgqh9eJf6e6Bpm/PJ622B3k6gF6ZCF+0GtTM7Xn24n/j2aLt0W5YFhUSTvETNO12KYwiVRD1HvK53nghM6FP1uYfCL8KuBMZBBzPMB5qiPkG4R+ZmokDmVpTWd16foapLXN6SPtJAH9IEeLU9BrK+VpVgmhrj9I8MCJCRiTHyPLB/EkY+GkECqM5Ad3cca//DysgY1ZYM39jxX3R5+rjRzR/GobKkfr9Fp9aLM6Y+/orxzmPbsp4uvsG+OWAs9KGhxf6wr5hdwhPOm5u9m3n1myfCWiK+V9IOEqEDDPCP8y9AVJz1hZ48xs9nZWENYXNeedMTHN0G3gOHAsqX0waQjtiAnGa2nz69CRMgmarc5E+it2JVjCHOGzC4AMBfn8z2Ue0sdoBUeVbH7hl0otKa/yYlGhkI7+e/BkWZgLi7U2er4MS7UvQApRFHYTO6WtRw8Veh36Bp2OiEnvnaK5LXGIafQ0wuk1K4gINCQIqhCzic5HEAVUmQBRABkNfkAzF1jr1jYy8ypFtAxdlwNBAoJNxLiZ1i4saEKvaUJPlHKCF/q5tdcYPwLQ+tE9r6k0g9IWYW5Uk2oKWSNnCRUpSovQgwg+TqCPAiSDlaaKPQeR6D1sshtuhEpV/0XC7pFa8QYKLNH3YicHA6x/nOu+scDWJ3bEoyzSBw9Gc4tTJgWYbWk6C6JdC7/3nghEyyXPGuTqJASG5CAEVVfDC5tdFrK9xVO4HIfKOpl2sPXaXD5MI2CJcfG5UEEXf9Ds1v1CYhG5p/M5N+ybHeKO16H/a+UST7KmG1uuiehDYby
- lP1tEpBn
- A0uuyHCZ1fpKi+dIE6JTvqGmzD2xfCBdKBQDmTeaUxA6cvRW+fPUoOtUJKsUCfM+N88BI/RVGZn3NcGYW/kdAM8mMp30Hu9nWgLphwactT2iXlzBWYUjhBjz7GH5Tn1nVI2mD9y3yCKtt0wgOow5TbH8otKicFHvbL3z/FCFPLP78JWHcWocnsLzHcftqniMvXuX+/IT5Gp5B8rnfCKSoa4XcSwnPWrnMjn2lwv+g2+V1J0lz1EKfjZaW8bFpuW7ifjTVGoCJ07l0koaW820ksWuq8wNXBLrWLjK6esqy2Sxrjtgzx+gXah/0InC71OxPXQBsLDN/LhWNYcSfTgC/BQ/o9bPv8sy8e/ovmQhcFMmqmgS7jpKGH+I4u6ulkDhZn/E2BXeWxGLZyQLk1gOhyLRZ/tuAWP+dBMs38Zu52VhYBxU7KPpt/yCo5534bD3XrFKwezN8SnKrd9Rx86rXo35ihR+Igw/BZVGtMTSU/QdeY1Np20Cr+RdVPM1f9dPaj7Nhp90dOT/bCos=
+X-HE-Tag: 1768865231-72914
+X-HE-Meta: U2FsdGVkX18OAJOGBtxNa1HQWuhuqT63sg7WMLvz0DJvhZ67EjC35w82/9ms/H5OuQtNG3qDcB3x0yBn/ASJ7BmimrPJGY6ylJQ99ftnBhIVOPeghiBxNjRceetzXT6HuWV2NgA1eziBxgHcp4Ni1zf0fBrQNup/yk0mo705ke9Qx5kGoeYRYRWjrawhGsglATBs5waO0XJEH3Ahy7lbC0Vc3HTYIYQwqJ4hbVjJRuOB0hzMmBqxghAu/ogulYZd5CTYfEcOXKQ/fys6+gO0/L4Mkyt/6CHg2k9J0gYf88KK3Xfmib8g/lw+FaaQ/ZecOWw8qA7N8p045xN3s0STgMMhB5REO/NHxk5dOEYMEaHiyduNaqRbVPs3q1ngoVLyMjORtXZaiwLKYCJ9hiL5O+i8cJ3UyuQiNFVWRw6COhvRmvdyaqE5394cSgL+X1Gk+6cJICh78eHT/+jxNN0MrHChj9F0o/ZzLlOIqiOGyr9WmiaMa8sXinpIWWB1FNwTGlCcPDR/Bu0QceF+NdsrxGYSwD3P0YvhFdEIII+RZ/nmg1R1SQXcj8LGRst7Tn+9Z2vGX/dSR4xWadU+MamVK1OsQyKX+gMtyKDNgGtseSMltPXCIXd/XociZdktFFMnJVo+E7DOUIzzQDVwMDC6iF9U1sCen8qo1nw6pe0axDuPjdxJ7rkLKvNiDzuxnhI/LyMqoP/uy30iwHWRGx44QmcqVg7QrDrwbkAp5RPw8SmoyQCGOy1VyUGIwawV7LYv+aRLSRcAJZdamzRMeDWLBEKUZbLdlShFxdr8lj3eItiscNspMowCtorJGQGzy1uns5rEED4TrZ92XFHWKP1iEKMWvMWbpVuVanpyPXbJWwcMb1rYabUDlO95VLTNykWdxfM714zmyaE+5/mT/erwy2OqhsADUauvenLJZ7dwjkhpAjK0C6rC+pNKWoiEpuhU7DbXNDXsEI1FviTTRdS
+ NF4ERKf4
+ ius26z4EVJESW4kyHwNaUsbQDG0CF6Yi8oOxsm7LdMe0iasRj3Qp1T8PiRYGZJ4gpPC6jubBd6vkQToXFMFK1alkM/7VgBkZyszd3ShJe4Hr6gsqLTxBLz+rmTUsXPTwqlRIrRGXAM7oIINtKCDgM6ucmz/NlLpyeHHE7F69Ujh+gP0WaLF0TcDNa8aW7WfeWetvouK5TciGLzVDEijSgamzTonTLnLwQ7G0U3mjI/KJIDE8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -251,30 +104,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 19, 2026 at 09:19:02PM +0000, Lorenzo Stoakes wrote:
-> We introduced the bitmap VMA type vma_flags_t in the aptly named commit
-> 9ea35a25d51b ("mm: introduce VMA flags bitmap type") in order to permit
-> future growth in VMA flags and to prevent the asinine requirement that VMA
-> flags be available to 64-bit kernels only if they happened to use a bit
-> number about 32-bits.
-> 
-> This is a long-term project as there are very many users of VMA flags
-> within the kernel that need to be updated in order to utilise this new
-> type.
-> 
-> In order to further this aim, this series adds a number of helper functions
-> to enable ordinary interactions with VMA flags - that is testing, setting
-> and clearing them.
-> 
-> In order to make working with VMA bit numbers less cumbersome this series
-> introduces the mk_vma_flags() helper macro which generates a vma_flags_t
-> from a variadic parameter list, e.g.:
-> 
-> 	vma_flags_t flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-> 					 VMA_EXEC_BIT);
+On Tue, 20 Jan 2026 00:01:08 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
 
-I didn't try to check every conversion, but the whole approach looks
-nice to me and I think this design is ergonomic!
+> I started with wanting to remove the dependency of the balloon
+> infrastructure on the page lock, but ended up performing various other
+> cleanups, some of which I had on my todo list for years.
+> 
+> This series heavily cleans up and simplifies our balloon infrastructure,
+> including our balloon page migration functionality.
 
-Jason
+Updated, thanks.
+
+fwiw, below is how v3 altered mm.git:
+
+--- a/include/linux/balloon.h~b
++++ a/include/linux/balloon.h
+@@ -22,9 +22,9 @@
+  *
+  * As the page isolation scanning step a compaction thread does is a lockless
+  * procedure (from a page standpoint), it might bring some racy situations while
+- * performing balloon page compaction. In order to sort out these racy scenarios
+- * and safely perform balloon's page compaction and migration we must, always,
+- * ensure following these simple rules:
++ * performing balloon page migration. In order to sort out these racy scenarios
++ * and safely perform balloon's page migration we must, always, ensure following
++ * these simple rules:
+  *
+  *   i. Inflation/deflation must set/clear page->private under the
+  *      balloon_pages_lock
+@@ -47,8 +47,8 @@
+  * Balloon device information descriptor.
+  * This struct is used to allow the common balloon page migration interface
+  * procedures to find the proper balloon device holding memory pages they'll
+- * have to cope for page compaction / migration, as well as it serves the
+- * balloon driver as a page book-keeper for its registered balloon devices.
++ * have to cope for page migration, as well as it serves the balloon driver as
++ * a page book-keeper for its registered balloon devices.
+  */
+ struct balloon_dev_info {
+ 	unsigned long isolated_pages;	/* # of isolated pages for migration */
+--- a/mm/balloon.c~b
++++ a/mm/balloon.c
+@@ -16,7 +16,7 @@
+  */
+ static DEFINE_SPINLOCK(balloon_pages_lock);
+ 
+-static inline struct balloon_dev_info *balloon_page_device(struct page *page)
++static struct balloon_dev_info *balloon_page_device(struct page *page)
+ {
+ 	return (struct balloon_dev_info *)page_private(page);
+ }
+@@ -29,7 +29,7 @@ static inline struct balloon_dev_info *b
+  *
+  * Caller must ensure the balloon_pages_lock is held.
+  */
+-static inline void balloon_page_insert(struct balloon_dev_info *balloon,
++static void balloon_page_insert(struct balloon_dev_info *balloon,
+ 				       struct page *page)
+ {
+ 	lockdep_assert_held(&balloon_pages_lock);
+@@ -48,7 +48,7 @@ static inline void balloon_page_insert(s
+  *
+  * Caller must ensure the balloon_pages_lock is held.
+  */
+-static inline void balloon_page_finalize(struct page *page)
++static void balloon_page_finalize(struct page *page)
+ {
+ 	lockdep_assert_held(&balloon_pages_lock);
+ 	if (IS_ENABLED(CONFIG_BALLOON_MIGRATION))
+@@ -262,7 +262,11 @@ static void balloon_page_putback(struct
+ 	struct balloon_dev_info *b_dev_info = balloon_page_device(page);
+ 	unsigned long flags;
+ 
+-	/* Isolated balloon pages cannot get deflated. */
++	/*
++	 * When we isolated the page, the page was still inflated in a balloon
++	 * device. As isolated balloon pages cannot get deflated, we still have
++	 * a balloon device here.
++	 */
+ 	if (WARN_ON_ONCE(!b_dev_info))
+ 		return;
+ 
+@@ -279,18 +283,22 @@ static int balloon_page_migrate(struct p
+ 	unsigned long flags;
+ 	int rc;
+ 
+-	/* Isolated balloon pages cannot get deflated. */
++	/*
++	 * When we isolated the page, the page was still inflated in a balloon
++	 * device. As isolated balloon pages cannot get deflated, we still have
++	 * a balloon device here.
++	 */
+ 	if (WARN_ON_ONCE(!b_dev_info))
+ 		return -EAGAIN;
+ 
+ 	rc = b_dev_info->migratepage(b_dev_info, newpage, page, mode);
+-	switch (rc) {
+-	case 0:
+-		spin_lock_irqsave(&balloon_pages_lock, flags);
++	if (rc < 0 && rc != -ENOENT)
++		return rc;
+ 
++	spin_lock_irqsave(&balloon_pages_lock, flags);
++	if (!rc) {
+ 		/* Insert the new page into the balloon list. */
+ 		get_page(newpage);
+-
+ 		balloon_page_insert(b_dev_info, newpage);
+ 		__count_vm_event(BALLOON_MIGRATE);
+ 
+@@ -303,18 +311,12 @@ static int balloon_page_migrate(struct p
+ 			adjust_managed_page_count(page, 1);
+ 			adjust_managed_page_count(newpage, -1);
+ 		}
+-		break;
+-	case -ENOENT:
+-		spin_lock_irqsave(&balloon_pages_lock, flags);
+-
++	} else {
+ 		/* Old page was deflated but new page not inflated. */
+ 		__count_vm_event(BALLOON_DEFLATE);
+ 
+ 		if (b_dev_info->adjust_managed_page_count)
+ 			adjust_managed_page_count(page, 1);
+-		break;
+-	default:
+-		return rc;
+ 	}
+ 
+ 	b_dev_info->isolated_pages--;
+_
+
 
