@@ -4,133 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4067ED2ECE6
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 20:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E884D2ECEB
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 20:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72B3F6B02C4; Mon, 19 Jan 2026 15:39:47 -0500 (EST)
+	id 7D7376B02C7; Mon, 19 Jan 2026 15:46:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 702836B02C6; Mon, 19 Jan 2026 15:39:47 -0500 (EST)
+	id 7AF0F6B02C8; Mon, 19 Jan 2026 15:46:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 406C46B02C7; Mon, 19 Jan 2026 15:39:47 -0500 (EST)
+	id 6593C6B02C9; Mon, 19 Jan 2026 15:46:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 182696B02C4
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:39:47 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C566CD1B80
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:39:46 +0000 (UTC)
-X-FDA: 84349879572.07.6ADA764
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8EE17160004
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:39:44 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm1 header.b=Cd1jzcLw;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="K b0Ld9o";
-	spf=pass (imf08.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.145 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4973E6B02C7
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:46:05 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6043160269
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:46:04 +0000 (UTC)
+X-FDA: 84349895448.14.2B1608A
+Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B81654000D
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:46:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b=Lc0EYW6i;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="e xt14fY";
+	spf=pass (imf27.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.138 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768855184;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768855563;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UBFgguEuXiAHVZI06QHGYrq2GluVufoWEpXqZX/5BGw=;
-	b=3t1AOj6/8iXPXqD57yYn18c1dbWPJGqGP6DdmzyUGfYs3DV+XjSEGLxNXaM3KbhwpPnbSg
-	cd/ktyC+MnasoP+IMG3WlKfe3y8QbpRr0fnhknKF69MauJhBXzwAoGKX5kse08amnqxhKW
-	KjLp3FdHl3FtdMfAWgdhxE854Q+gfuo=
+	bh=v4LtkcerTNcKdHBuxb989VhIuXJUmGOFYwT3m9zCWpQ=;
+	b=a4t2v6Yktd0AoeEugJMz7DUKwQUoU131s0S+PMBJY2YPU5h1D8uVl1bBa/JEDwrGJquisx
+	XVkcOoq6QZ+HLgC2wgtxOozSosRfAO0Gou0Ye3/Rd9+Uh/haVkN3dyFKl+tO6JtjKr0Oo6
+	+3mMKxt9byP3gnacFPUHmXCa5/iUJgs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm1 header.b=Cd1jzcLw;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="K b0Ld9o";
-	spf=pass (imf08.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.145 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768855184; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b=Lc0EYW6i;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="e xt14fY";
+	spf=pass (imf27.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.138 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768855563; a=rsa-sha256;
 	cv=none;
-	b=vJEh+qe99sm48KORusGvV8gPbk+9HHg01cg8jkHeiwsXQk+K2hsYtAS5ppHh9GZu2ndoMV
-	k43QmtIhT5vrz9Tk38PYMGNzFvTRkPXs7HxtEfnMuqTuTIJ9RVbAWf/TEFqPmp6mkr8WgI
-	Uez+vW/aADOnwFJbihaDaB+boBWc3nw=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id BBC81EC00D2;
-	Mon, 19 Jan 2026 15:39:43 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 19 Jan 2026 15:39:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	b=X7ZV80F+PAsq6Z2HkKNLfMbvgAhqX0uSnivXyUK9RtHVgmEHzC7pKU3BccpWL1InKisPsd
+	QblSZXKWlhKkYjdcM8wQ6E4UN4qDdfxgHnujIBetknUsUPfbASqSwxaHSIJi3Fj+zyq3oe
+	Kb9fl5DKygBSGpYSDIijtpJGvjZoxao=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id C9DA613010D8;
+	Mon, 19 Jan 2026 15:45:59 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 19 Jan 2026 15:46:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1768855183;
-	 x=1768941583; bh=UBFgguEuXiAHVZI06QHGYrq2GluVufoWEpXqZX/5BGw=; b=
-	Cd1jzcLwauvaWODb3MNLsIt3bGPpRu8WF0tEav7iVgnDSxJerMHdrhZi1N6LTDhA
-	MsmBGNi9cpjP6EafG6D5/gnKadl3tjiRaPmw6gZVTv7ar4erOOVbGr2EEcT7clNS
-	rvY5/TLOp7cdbac1S9eW52Djsw7MD5cdx1YgTRLQ+2FB6KvKCZKMORC02PP8ygf5
-	T+Gm1NZxKBoW1i+cJCvYk+GBeHZRpj6SYK+sX3fZlociK9SVNXrOZCXnLdHACjIG
-	WeST+8hDEWRVd1b9KJ5kqriJVmVPaAY6lab/hrFp5+AV5R13FIZzeFamfcG3CLz1
-	5vpV6689riyT+51FHhv18Q==
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
+	1768855559; x=1768862759; bh=v4LtkcerTNcKdHBuxb989VhIuXJUmGOFYwT
+	3m9zCWpQ=; b=Lc0EYW6ibUUqVQJUKzaim23Euwd0BGgFRXe5DALzfEojg7VN6rT
+	B6DiPIhAD3IC7M+5XEsbPahQ32cVgcxSRShqrzfxc+w2dQttIp0GWIrdUpX55qw0
+	1YJfvLNEex4MDg629sJRt0DIagYZ7O2YgHGEWRwCbzJK6pewaTBy/LwbN/3UuIrH
+	D1X+l3ArslIHe9m6/MxEM+BHkwyONj/QBcgvUoddEjQn2rtqiXm8XIlcaUBBGYcG
+	L51CiT0gWDAG38s7mrfim3JvqvUewVVj4jdamfv/vGEC6XVs37En7pvh86V+RKx9
+	u1Btsigj5UNDPW1ltBPZUH8SSA1nKU+SOjA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768855183; x=
-	1768941583; bh=UBFgguEuXiAHVZI06QHGYrq2GluVufoWEpXqZX/5BGw=; b=K
-	b0Ld9oV9fmzNNJMwWM4Q1L8cTWI1esUrKqF8PAMOgSjIfHGOHhweIlZiR2FPI1Q9
-	MCN/FvYo9Ry+u8N9qg3sQgHQgMvrqH4JVPKrcE+YuRWF7Vr3M7j0TM+3EE21DgEE
-	/QuAa2jdLLERIEA0uj3Ug9RfnOI5x9CJ5QeemBEwvbB2jrC+VXXdyQTxO9YwI/TF
-	JenGVZjiBNXsh35hNOAD7fyoltPoJsTKhj47QwRceFV7cZwo4yvPRlfT6G/HWnCJ
-	0nnXq4TE0m5wqUr3hjfxuA7viH983cVAEOo2nJ16dE1IWYAgyD4ud1z7NLgRSaZR
-	kHjeE3/tzzNxzTAdamDEg==
-X-ME-Sender: <xms:j5ZuaXYJUNrcG1rQtT-PfoFgRKp-j_yvHK1mNRL9vvAdsskJVI-D_Q>
-    <xme:j5Zuad_a7T9c7zWxhvAxMjvjp5HUotOzXFKJKBIaSQ7ih4tIb1NwxVSbt8yLQqow-
-    4EdwvDD0FdeDnwfgNwcSoB4PwvXd_lN8NOk-35KR5llVEsBGhx7WA>
-X-ME-Received: <xmr:j5ZuaZmVKS2NeRw48sYVE4sFqNxgIp5nTcHE2zgqvxQQ2ig1f9v2-_Kfp_c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeekheegucetufdoteggodetrf
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768855559; x=
+	1768862759; bh=v4LtkcerTNcKdHBuxb989VhIuXJUmGOFYwT3m9zCWpQ=; b=e
+	xt14fYhTflITcl6YnaiRNNIPiieIuY3T2ekw4mgpmY/v/o1D6Rm9og97ySUxlRr7
+	FuBeLtlEdjDnDlXWSfPcQ5AbZapLP6oLiXJHFrRkIH0gKfaYLMLYjIQO36N4L42d
+	r+sxyuyT+2Dw0f4nF6Lb5U2/7dD8/gO1shUXevXTcOuhLj1lVMOynN4dkejCogfQ
+	7OuzydzQDyp0GPeNwjKBxultpJ+adDUHRpRjZpvqCu+f30BBcE9P8TFFL51mFFSd
+	5nqf/ngi6HPQpjIzif8UMR8pgDgY3x6Ww4kDrS1yWA5BVy+Nd5cITHqHPkkjbEzT
+	FALc3wWKIrn/NhNHGyWNw==
+X-ME-Sender: <xms:BJhuaSbEzFcWy9Pk6146wE82fhYm_CxjTiFHqGZKgwA0vYGamqcSmg>
+    <xme:BJhuaSwoBnyfk0eKn4-Aohsxi2pWCriN6dRenPPaxnkZL7_MsdqbsQlFS_j1eycjJ
+    snQClQFRDDxmckQGHACK4fSLzS3RfNjJQu9JuQvNfYNBDMQpQ>
+X-ME-Received: <xmr:BJhuaSJdRJMi7-ZpoAEIl9nJ6TzUD9unJMV7r6q_QrUGstq03Bv3pQ2jFX3ElyETlEyXOOSz_dMOZCxbyCO3448TMs1hLaDXJLozABR1b4SI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeekheehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
-    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
-    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepkeehjeeitefffeeuieetjedtje
-    ffvdelledvuedvffdvfeetgefhveekuedvfedvnecuffhomhgrihhnpehkvghrnhgvlhdr
-    ohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudeipdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtg
-    hpthhtohepvhhsvghthhhisehnvhhiughirgdrtghomhdprhgtphhtthhopehjghhgsehn
-    vhhiughirgdrtghomhdprhgtphhtthhopehmohgthhhssehnvhhiughirgdrtghomhdprh
-    gtphhtthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehskhholhhothhhuhhm
-    thhhohesnhhvihguihgrrdgtohhmpdhrtghpthhtoheplhhinhhmihgrohhhvgeshhhurg
-    ifvghirdgtohhmpdhrtghpthhtohepnhgrohdrhhhorhhighhutghhihesghhmrghilhdr
-    tghomhdprhgtphhtthhopegtjhhirgesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:j5ZuaaaH2-EYtGccQOU5pCexBS3btzV5-lo1KS4RXPOXb4adVCUI4g>
-    <xmx:j5ZuaZNtsXvaGJFPVMMee9RjL5jrvF_RRvNyAGjwc20ITC9RhYFsnQ>
-    <xmx:j5Zuaaf3B3COk8iQhvdI7qxgIu3hjTNaS4yD7PcXnezl7rI44g0sxw>
-    <xmx:j5ZuafGX1HESnLYPUSKpweccZugsneCmqoGGdpCEd9KwzbqK3dPYEA>
-    <xmx:j5ZuaYFTv_0-XeoJCgj-mm3XuFt9-A1a2at6kUn8uaSyckgHFdt8EjPf>
-Feedback-ID: i03f14258:Fastmail
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epleejtdefgeeukeeiteduveehudevfeffvedutefgteduhfegvdfgtdeigeeuudejnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepjedvpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
+    hrtghpthhtohepghhuohgthhhunhhhrghisehvihhvohdrtghomhdprhgtphhtthhopehl
+    ihhnuhigqdigfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidquhhnihhonhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhnihhlfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
+    hnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:BJhuaSBO9clKpBY1c8tqtIkxX8-Yutqel2bbB8TbvrqddamOXX7Ykg>
+    <xmx:BJhuaRhuOPQDyCA_KFYnfcdaAOzKUXr3io07nJfde0jw7wudsjV9Bg>
+    <xmx:BJhuade95jkbwLWPmv5m35H6i7zd7TYoRjmUJ2fQMpOWq-IJ6QyQ1w>
+    <xmx:BJhuaelSBffgMjviuHAjgSaIv0cuzLl42YuUELeDiPJYohFPRx_JkA>
+    <xmx:B5huacYgAtwv-dw4ucg_ORya8hJwBFrWvyIGFRHLnxavffYq8g3321NH>
+Feedback-ID: iab3e480c:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Jan 2026 15:39:42 -0500 (EST)
-Date: Mon, 19 Jan 2026 13:38:05 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: <ankita@nvidia.com>
-Cc: <vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
- <jgg@ziepe.ca>, <skolothumtho@nvidia.com>, <linmiaohe@huawei.com>,
- <nao.horiguchi@gmail.com>, <cjia@nvidia.com>, <zhiw@nvidia.com>,
- <kjaju@nvidia.com>, <yishaih@nvidia.com>, <kevin.tian@intel.com>,
- <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 0/2] Register device memory for poison handling
-Message-ID: <20260119133805.49fa7b8d@shazbot.org>
-In-Reply-To: <20260115202849.2921-1-ankita@nvidia.com>
-References: <20260115202849.2921-1-ankita@nvidia.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+ 19 Jan 2026 15:45:39 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8EE17160004
-X-Stat-Signature: srjzb9mokeczugkrm5xp3gcb4fdm3r3g
+From: NeilBrown <neilb@ownmail.net>
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Christoph Hellwig" <hch@infradead.org>,
+ "Jeff Layton" <jlayton@kernel.org>,
+ "Amir Goldstein" <amir73il@gmail.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Chuck Lever" <chuck.lever@oracle.com>,
+ "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Theodore Ts'o" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>, "Jan Kara" <jack@suse.com>,
+ "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
+ "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
+ "Sandeep Dhavale" <dhavale@google.com>,
+ "Hongbo Li" <lihongbo22@huawei.com>, "Chunhai Guo" <guochunhai@vivo.com>,
+ "Carlos Maiolino" <cem@kernel.org>, "Ilya Dryomov" <idryomov@gmail.com>,
+ "Alex Markuze" <amarkuze@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>, "Chris Mason" <clm@fb.com>,
+ "David Sterba" <dsterba@suse.com>,
+ "Luis de Bethencourt" <luisbg@kernel.org>,
+ "Salah Triki" <salah.triki@gmail.com>,
+ "Phillip Lougher" <phillip@squashfs.org.uk>,
+ "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Dave Kleikamp" <shaggy@kernel.org>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>, "Jan Kara" <jack@suse.cz>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+ devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
+ ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org,
+ jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org,
+ gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
+ nfsd export support
+In-reply-to: <20260119-kanufahren-meerjungfrau-775048806544@brauner>
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>,
+ <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>,
+ <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>,
+ <176877859306.16766.15009835437490907207@noble.neil.brown.name>,
+ <aW3SAKIr_QsnEE5Q@infradead.org>,
+ <176880736225.16766.4203157325432990313@noble.neil.brown.name>,
+ <20260119-kanufahren-meerjungfrau-775048806544@brauner>
+Date: Tue, 20 Jan 2026 07:45:35 +1100
+Message-id: <176885553525.16766.291581709413217562@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Rspamd-Queue-Id: B81654000D
+X-Stat-Signature: eomukjpud7mds4wfo7guhagd83sn8wns
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768855184-799936
-X-HE-Meta: U2FsdGVkX1+ngn0AOlOworl8XauuSSS5nzSAgr8ScO3gDS2wvzJvFFsW73sVBb9Zglxbos4WXIdN9sy1FqiqpsxgkGCrGv2y7TNBjesMIrTWWnxfkAqQWm2hcoZ3cH9+FUWntQ15FqEIJ9YNqANcC6KAbY3s6ME1QJ7vVUPJe49ORgrxkI21/g2mbiN31UNKOJzgoJhK26823JazkAH11fg76sMEXxkSDgsRZMQjnPRJL4Wrys9e/1OdLv0VXx1zZeKarLp33UNNX4Vr5sL7wisKo0wYOunPJFhw0EqTssSTh7Labnql5F9r88XIprbQ53hL1s1PgMZhqfiv+X5ndLMfoZlN2kwuoT58eIXBLd3BKTS3tQTfVRjtfpp0gwVIOs6ReZZe2aloJqlb47T5RjZdg48r8KMLTRT0yAUDPDSUhrIgt8BLThiTa1zsf7Vnr6bL1dDt4eQQfiunm5sCjE653+MnP8YtIZdVxwCLIKgjiZgoMXqZYvbEPiLOw+tLJTGCwURTqhYAZCrz9vwO14U2JxwpET5VqkA3Wbv5Uvdv627I/RDiEZyq2/lAqqeBXp8RfcV6VvYSExkyyKyJpKLwOOP4R8dig8bp8RyNqBzJwaBRdaSE9Wn9cDfXagsO3fB5mRnLxQniOABFiSAVI+NHamFqQnmnXC3+weB/hlJp/BAwnuNJvlOllhTydUIwNemJ6nC2f9X0wLXH1PdxUdxoMWJW/ax6MaYUUojV6Idn0VXF0UoWfA9gRYRLgwibq/4a/XAsXQHcty70T4n0hbtRlqP72iVy+C+n8Uz8x7YGRRZQiO7IS/oSyOzM6cport73751/slpTgPU+O0lBsROKKOY/LarNx/9hjgmuQtWMnTOyocjjeMxAocT87VjkyQwjoZPv7kR0ftRiOTSOjCQKXfSfyKxX3TL8OCUR8sm252q/9e8LZ6+b6Q2LhTgxZueF739aAap99sFWh04
- 3u+c1Sh+
- k/C43CwNhwg0gC34B2+IuT1gzOhLa+hM5a905GfRCg84URkYstJODxj2NUWyl0yREEYvzWNT9FoErN1fhfGDecI4fK1oIQR5MR53D2wb6bggDDYODB5FS0dC39tUIXPoKVwPt85SfQzXDaOOX/TTUZp0S0bal+xJdAHLQtNbPmJgSYVDNB9N7bVnvniN1E9qsRgQdbmVPYwfIWMwGXtfjmbrGmCArRBYsQAwnGxxPqxBIIcDE4fLQmoQcREsPKvoMVuasryTZnWrfqlGheQ72kMM6ixGm2foUuKc/mz4B5YLUkNQVr1XyHejCwFcFhfLVKvUJeh7CwTECZTrxT3pXu+ZBx5F232Xluml4R08nxgaMlQEljw+PvVBKjZ+s/lzxINxIvQXWwM7y9Zr/7IHoqnSteHW+Zi0wg2jQXlPfpimg46U8hEXi0W66mBKLW0LHNc5ktgpio0mSGDEwUQiEzNCiGJlfjvjShBbei7awJlBIobmOCuC3re+WOAZby+3xsW1J
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768855562-995271
+X-HE-Meta: U2FsdGVkX1+8DxEEEd2eQvpsypMRB97aosMmSwYyoCp450AJQ1K2tPEwJvnmjwRfaqHslS+bdGUnoRc3k76jZ0KMqliFdikLQCElvMjlR8hP18ifLJGf4zqs4mdlwmVIigpw/dl5jtOVk3ld/+mTK28sKPgg1oUjgg0Gs6399Y7wQG2n6yNN1ZtUO9ITYJcG1QS7nd1S7YwrGgm9siRN+SRtNQMIOcFmvvpRMmhDgq7HQGMH7YlEdw8nUNPmhRgD/PogOXlR6ty443lDDLDOQ8JPiBQKQ1Y2Xlx3ofueEkM+l145KWQCQKUgKQ0s54KslvVbA6/OX0cFhEF58V01QHPTOphL0Hs0p3H1E/F4/u13aXvtCH/hjf9D3l81LDdisBmo3DcXvD8YieXkCQeI8DE6KF0y9p0sNgcvf2ObOWBqoCKr6M6EnfMoc4s1YsV3PErFOdS9ij4/rdZ7Pek5QLYumZo6WlrNLlMyDx5Rr5veI0myXhvr0QPZx4PPAtX8OxJucdCRht17gTbQG6duCvB4WwWDrjnTwedT2AZE49NhxjOSdEfedzyy0VdIIrHSR1mNQiE2AIjFsXqBbWzhtpr4jDXly7p6PgRejDPK6M/Kp+qP00JvyfWL1wdsoMZ+EeYdU8KXGRquL7Xd9Cc5HVGBTameTw0p2vPvx6sOjaJnOumCO592+Q0s8jS5NAJCoZN8PGibGanFr9EoQPJXqc6J93tM2Rn+fE00SCaSHbb53GD4PInccQPmA4bPXtC+oL8kaNuvOxc5tignYMDfOYp/o9YF7H7vX1f4H6+bMfhCsmojodaWlRlH/7Y0T+7b/GBnBCKTt7a/o11XI3njuHDaLzzPzP8+GebiLzNDV8XU6kuKBMCBwfvNYDaB258n6t9UgcCJ2tPoqvPI1zFPfYbV7muBf/kv1LbvQ+olRSp01J4Hwfd2ME/hG2BNzHrvAfvyNqB6nHrJxl3LqeX
+ SvcxJQsQ
+ MBLpfaYUeRQC2KogpWGrWp9BqkBiQM4GJHuhsMilazJlRl0/4w1x3y+awR6YEn5QnJCUQAwXYMovDkJyIFZD9v3wAa+Fy5kViqzNz3NwYl2KxKDeNrgKCbTYOIplPWxMGcX9Zmz1ve9ojUXvrqoFR5U9ni/Dsgi3r/bWMWN2pGC8nmOmKaz4Wl5KWnTzzdjJBQkBR/S2y9T6bHvhB5TcBzex66o0PrmceDe8l7FG9CexJNM+gQWvGGe3+yUfz6tp8CpXobtnlFWU+rB1P1h0R7lV8tBviXK9cW1XO2IXnmtDI/+xV694uDyVI3uXSeG9PBlNtDHIEBfpr093A8EbYsIPHykjBBTIlebrRlhrB37IyVBXjNSA+5qo65PPOzJskV+hzUB5wxAp0FwappMqxqMLqJCGc37hQQS7VIebBmNQUHesliQUruw17j8mjSTlIkA2GawLAo9m8By495iGLNM7iLobyDaiyHaOdcy4cSLCexUnw9flEt7AQbSXpTGghucGOIDMyYVqqvV+KozuVehy1Du8u5xTRyBSxp6AYh8jcOaUm6DgtYvsVVE7wD0/J0APBC+Orf1UuUHZo2LMcOH4Wa2wDwYXityw0txdKtbEFSsm/4ZVep5564fb4CDSBPGH/k5ECDNN21SXwsjMPkKdk2IfEWQ79JS171h+Ju3MaQRB7H6A+pgF2aE1O4I9LicA1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,50 +193,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 15 Jan 2026 20:28:47 +0000
-<ankita@nvidia.com> wrote:
+On Mon, 19 Jan 2026, Christian Brauner wrote:
+> On Mon, Jan 19, 2026 at 06:22:42PM +1100, NeilBrown wrote:
+> > On Mon, 19 Jan 2026, Christoph Hellwig wrote:
+> > > On Mon, Jan 19, 2026 at 10:23:13AM +1100, NeilBrown wrote:
+> > > > > This was Chuck's suggested name. His point was that STABLE means th=
+at
+> > > > > the FH's don't change during the lifetime of the file.
+> > > > >=20
+> > > > > I don't much care about the flag name, so if everyone likes PERSIST=
+ENT
+> > > > > better I'll roll with that.
+> > > >=20
+> > > > I don't like PERSISTENT.
+> > > > I'd rather call a spade a spade.
+> > > >=20
+> > > >   EXPORT_OP_SUPPORTS_NFS_EXPORT
+> > > > or
+> > > >   EXPORT_OP_NOT_NFS_COMPATIBLE
+> > > >=20
+> > > > The issue here is NFS export and indirection doesn't bring any benefi=
+ts.
+> > >=20
+> > > No, it absolutely is not.  And the whole concept of calling something
+> > > after the initial or main use is a recipe for a mess.
+> >=20
+> > We are calling it for it's only use.  If there was ever another use, we
+> > could change the name if that made sense.  It is not a public name, it
+> > is easy to change.
+> >=20
+> > >=20
+> > > Pick a name that conveys what the flag is about, and document those
+> > > semantics well.  This flag is about the fact that for a given file,
+> > > as long as that file exists in the file system the handle is stable.
+> > > Both stable and persistent are suitable for that, nfs is everything
+> > > but.
+> >=20
+> > My understanding is that kernfs would not get the flag.
+> > kernfs filehandles do not change as long as the file exist.
+> > But this is not sufficient for the files to be usefully exported.
+> >=20
+> > I suspect kernfs does re-use filehandles relatively soon after the
+> > file/object has been destroyed.  Maybe that is the real problem here:
+> > filehandle reuse, not filehandle stability.
+> >=20
+> > Jeff: could you please give details (and preserve them in future cover
+> > letters) of which filesystems are known to have problems and what
+> > exactly those problems are?
+> >=20
+> > >=20
+> > > Remember nfs also support volatile file handles, and other applications
+> > > might rely on this (I know of quite a few user space applications that
+> > > do, but they are kinda hardwired to xfs anyway).
+> >=20
+> > The NFS protocol supports volatile file handles.  knfsd does not.
+> > So maybe
+> >   EXPORT_OP_NOT_NFSD_COMPATIBLE
+> > might be better.  or EXPORT_OP_NOT_LINUX_NFSD_COMPATIBLE.
+> > (I prefer opt-out rather than opt-in because nfsd export was the
+> > original purpose of export_operations, but it isn't something
+> > I would fight for)
+>=20
+> I prefer one of the variants you proposed here but I don't particularly
+> care. It's not a hill worth dying on. So if Christoph insists on the
+> other name then I say let's just go with it.
+>=20
 
-> From: Ankit Agrawal <ankita@nvidia.com>
-> 
-> Linux MM provides interfaces to allow a driver to [un]register device
-> memory not backed by struct page for poison handling through
-> memory_failure.
-> 
-> The device memory on NVIDIA Grace based systems are not added to the
-> kernel and are not backed by struct pages. So nvgrace-gpu module
-> which manages the device memory can make use of these interfaces to
-> get the benefit of poison handling. Make nvgrace-gpu register the device
-> memory with the MM on open.
-> 
-> Moreover, the stubs are added to accommodate for CONFIG_MEMORY_FAILURE
-> being disabled.
-> 
-> Patch 1/2 introduces stubs for CONFIG_MEMORY_FAILURE disabled.
-> Patch 2/2 registers the device memory at the time of open instead of mmap.
-> 
-> Note that this is a reposting of an earlier series [1] which is partly
-> (patch 1/3) merged to v6.19-rc4. This one addresses the leftover patching.
-> Many thanks to Jason Gunthorpe (jgg@nvidia.com) and Alex Williamson
-> (alex@shazbot.org) for valuable suggestions.
-> 
-> Link: https://lore.kernel.org/all/20251213044708.3610-1-ankita@nvidia.com/ [1]
-> 
-> Changelog:
-> v2:
-> - Fixed nit to cleanup nvgrace_gpu_vfio_pci_register_pfn_range
->   (Thanks Jiaqi Yan)
-> Link: https://lore.kernel.org/all/20260108153548.7386-1-ankita@nvidia.com/ [v1]
-> 
-> Ankit Agrawal (2):
->   mm: add stubs for PFNMAP memory failure registration functions
->   vfio/nvgrace-gpu: register device memory for poison handling
-> 
->  drivers/vfio/pci/nvgrace-gpu/main.c | 113 +++++++++++++++++++++++++++-
->  include/linux/memory-failure.h      |  13 +++-
->  2 files changed, 120 insertions(+), 6 deletions(-)
-> 
+This sounds like you are recommending that we give in to bullying.
+I would rather the decision be made based on the facts of the case, not
+the opinions that are stated most bluntly.
 
-Applied to vfio next branch for v6.20/7.0.  Thanks,
+I actually think that what Christoph wants is actually quite different
+from what Jeff wants, and maybe two flags are needed.  But I don't yet
+have a clear understanding of what Christoph wants, so I cannot be sure.
 
-Alex
+NeilBrown
+
 
