@@ -4,82 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFEAFCA5FF5
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 07:05:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F175CA5FFB
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 07:22:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20D0A6B0122; Mon, 19 Jan 2026 02:05:24 -0500 (EST)
+	id 0947E6B0124; Mon, 19 Jan 2026 02:22:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E1FB6B0123; Mon, 19 Jan 2026 02:05:24 -0500 (EST)
+	id 0756A6B0125; Mon, 19 Jan 2026 02:22:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10F236B0124; Mon, 19 Jan 2026 02:05:24 -0500 (EST)
+	id EE4146B0126; Mon, 19 Jan 2026 02:22:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F3C206B0122
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 02:05:23 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id DC9006B0124
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 02:22:37 -0500 (EST)
 Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C97801A0695
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 07:05:23 +0000 (UTC)
-X-FDA: 84347827326.11.C5541C6
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F3CDAA0003
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 07:05:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EvclKCuZ;
-	spf=pass (imf25.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768806322; a=rsa-sha256;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D48216064E
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 07:22:37 +0000 (UTC)
+X-FDA: 84347870754.11.D990A75
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6C017C0008
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 07:22:34 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lJgG6z57;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768807355; a=rsa-sha256;
 	cv=none;
-	b=EbSW75vCI8JSpYATXg7FiV97Xk8BtrpWAMwB4aTgIABuidrU40ujIbWf/HvcNiXXLpj98s
-	FpF5WIgTwimi48iCStKbVQpdbIs99hP38rB0TWEG777HrregFmvFYIJUskbqPP4sbghN1N
-	g+047+XI8xUMHClQjFXyD54a6n/Uihg=
+	b=A0vyODVnVlJTRwE1d9QbiM/cf7hwuN5kIaKyTheStMqfRFBAolY5pgHjiarztl6hDtbXFE
+	1QNBVSDSdkAPA2b2UqcfeY0JSmapGBUxCbfYB59WVUzIxHo3ck8yG5dbWw7GsS29KonFWN
+	cxm83nXfDmfTL8Vze1LxrZJIx7Flc18=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EvclKCuZ;
-	spf=pass (imf25.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lJgG6z57;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768806322;
+	s=arc-20220608; t=1768807355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bb3xkMpeNpnybd9Na8Isc5XENxO7ZKbU0IXQYY84igE=;
-	b=lJlweFUd6FVU5tdMMIYre1D+pgewUlQVgBhAkzX/H11tQ92OZke9pE9eEAx7wpqI9XXi42
-	uEcxTyN1IgsQFX31weGaswg/ztVxyaUC4H+9pT/53I/xR3kki+YGmypFwDNNka3j81bs7U
-	+mv2fFrEzb8arGodJKsdfRYhaMiqrDE=
-Message-ID: <4f7e180d-f7bb-4a21-ae2b-f42cc969401d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768806319;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bb3xkMpeNpnybd9Na8Isc5XENxO7ZKbU0IXQYY84igE=;
-	b=EvclKCuZlg7ifGbmHKL+RgT9befhs9UroGPdqC0TP0IrHcmdjq9+EpZElp1YHgXCPiJOqW
-	7jzdt7ISwzQe3wrIIT70lxeL53lrGIAO9uNztt6xjt+fBF5mtZcojqTM+XY+8uVo3JYubs
-	fUY1C5COy2sskFonjvKYshEUIVRZ1NA=
-Date: Sun, 18 Jan 2026 23:04:58 -0800
+	bh=JXPU57WcR75YcJ/pW45lwH9A6f/k0LxYXK/jf1YSvq8=;
+	b=sPZkTue5Nm73Zpo/RKoLcr6vSGWzpccXIhSD4KVPb4zpfhQ4wizP/1J32Hynqf2ViauWxD
+	9Mz5Z+afE8GRH/DLHCiUBAsniA7MjQ1EjdOhbn0ZRMsaSgXmquslUfsqvxUehczNEV+Ena
+	3X9EKL+Q68xoXG1K2q/qb2I+SO5WF7Q=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768807349; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=JXPU57WcR75YcJ/pW45lwH9A6f/k0LxYXK/jf1YSvq8=;
+	b=lJgG6z577W3VL5HScOUSqqxAgWagWnaIXVSZQYsqmBarf87NjNuO4i9fHuWO9kgagAg9BS54OTVzVt49rmL+i/B7R54J4guLAjnk89QmZwJ9HLwGfKAY7ilX2X6PeiiY3AyHzUl0gOt68+sjNo+ZfRam0hWRUxfp6cTvyd8prp8=
+Received: from 30.74.144.151(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WxJbKuv_1768807346 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 19 Jan 2026 15:22:27 +0800
+Message-ID: <3bddd08d-ab25-4aea-a863-353cf143798e@linux.alibaba.com>
+Date: Mon, 19 Jan 2026 15:22:25 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v4] kho: validate preserved memory map during population
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
- rppt@kernel.org, graf@amazon.com, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, linux-mm@kvack.org, pratyush@kernel.org,
- ricardo.neri-calderon@linux.intel.com
-References: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large
+ folios
+To: Dev Jain <dev.jain@arm.com>, Barry Song <21cnbao@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+ <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
+ <20260106132203.kdxfvootlkxzex2l@master>
+ <CAGsJ_4yKRtyADU2ZxUMgvqdrhAEL4SpZxCMRt28gNJfUf--5zQ@mail.gmail.com>
+ <20260107014601.dxvq6b7ljgxwg7iu@master>
+ <db4d0a19-598b-48ff-accc-f5940a481035@arm.com>
+ <CAGsJ_4yo-EE__1VzHqxE8ehDOFQuxqP9GXcskkeZ-WTTyz12_A@mail.gmail.com>
+ <ccce0551-489a-4612-ab5d-2dd8a5cae66c@arm.com>
+ <29634bee-18c6-42c2-ac7f-703d4dfed867@linux.alibaba.com>
+ <6ed22a34-ce8a-4531-9776-b28e1a942450@arm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <6ed22a34-ce8a-4531-9776-b28e1a942450@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F3CDAA0003
-X-Stat-Signature: qcxrf4hhy5rhzbuexxutj8dhnyqu4mj3
+X-Stat-Signature: osakgd9exqr7q3au46if3fmdbk7xhrm4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6C017C0008
 X-Rspam-User: 
-X-HE-Tag: 1768806321-452219
-X-HE-Meta: U2FsdGVkX1/znbMGKpFKaXzF/3qfSzzXZ86A4jz6ZTGRqlQgQslLY3QFLR5oSR48rYEvqNoOhx8IA1onBNmJG2Cpw84qgOjdbgA1aOHZutdeXMv+ZyA3tXz/jyqOiahtNw4sKBj8uinJCWeh0Z7IiO12KNwWLUvKBk1C2UyNb79DW32tzj3mS/sVXSs46e8EY2s3y0fvNkocflLs6WCo4hagCExSrTmtFlcj/nMd2pGLR4aaYILGjWfXoP7/LGWsnAWQ4Q/5VhYfJX+270kWbnhDKcKuYMQ2MPqm6wcNk/R0qgdUDfgWEyLg3dyjq2lNjDJNrWSnqepcORhceaIuj5Fx9WHsaJ+CgHb1RrNSM+jnu3smiXooeq8dcP1DHn9Hx8jepfEvuTtZ5UORdqUPkcbmlDoKEFQcbddCi9VqGQhNsZkxflQk4uLkfOxFZCuc/xV5pMjz5tjfxrliCxehpsQKYfpUmYr/zq6DDUmDahbvMGYwRXMoOrAbmR1uyAi4u02CaFIVy32OyCzEaP23A0emIffgIYqVlwbZBYCFlwplrS/kUJdqXRsNtydA3aV8jKL+Vr1FwB31gaH69MUlrnZNKNRwE9wcXO7ScrJj1p9/M9ZpVWP3lK8SDzqg4toPHQeic0qYtYfQ5fK/2547eQKQlJD2l2y+voxJHniCgLe5PG5Gu3mD63kCkxlkPZf2+PgB9roBbEQpbydjd3zA3pDBYF18UebsitRK09+llrnseOzpEMw59EcugRoCR+r7N6v2rCoXIKj2aV8tOhc9pbOAneqw3TqjvmHF3ji6jeuQG3RtW3Os841S/Zxt5Js0EFWBjnHSqaMhWeppkzQxGcyNHSXoybuEz1kHJyt2qUP0yPDei4djHQ==
+X-HE-Tag: 1768807354-593479
+X-HE-Meta: U2FsdGVkX1+/98cKQRsPYlcOPVfUmJXSXJxGHUWF+tLpG+NraquQxk8TTknfl96bKWWQNWnLoy3RM13L2By2W1oorxHzY2obJY/BJPZRBCqsBoA31AMB8AKg7g6/Pw/Xexv2BMxUzAdUMsrRH7qGirI6Qxf/D2gzOq73Gpy7ZWpd+FTmEKH3GoIDwpx/5Gziapr3vBngax0MpMQ3Np1Pd8rD1bWNqXm5JguNHeQG9uM5vMtZ4VaugykEfqyrnZbnaT0cpRmksq69sV5SqrcKbGA1EQN+Ksr9GrH4Niu2Y/AuEQ2z2KjjVwe8d4hlAioh9Wv4YDg2nvOiQXSoCEi/wLAHerjxlwBDcxl1QT/07CjlL9fCHS2NeRLpRNtckge/TVJROuFU9/yJ2gNMY6mpXyY/Q60W7SPwfd4MGy3CLW6BvXc74mxGOn2NaAmvq497Mrrpmo5RE+8e6a7slpEhFKJx68w7pT3kFyCXYFHG7U3WTYXyeAVA1K7VZUQehHKbJ7ahqQmsUJxnhXj57dugQtKNPaxKDPjh0DvrObqKKNDh7/dJndUJ/i2jdbAfXCVmmQ6DQ92ZqG/F7136zw4klml8Hg5e+p0xceDfKIYMOMHLPgWdSy+L4ruk5nyBQMe3GMAMgWaHa3WVE1ftibJFdEleU15PcYy0JssbNmqn81AYBBTZYGHEFZIKVYfbeKJU/h3IEMA2P+Di2tC2pMHMIuG0z2vGHVM46b/YzwNWWFE0F436P4Bq0iuPDDu7jvu+6NAPZPLxDrvFjVIdVzGeDLzYGWkdc2qeuncY3WKVMRUlgSooQ9o5o1mXotGWmJ4I0gvCPmSRSTPqgTsMPM33rx1bTLcnoT8j0WZsLXYY+VGCsqnm+UJWgJ70DgSV6pboesSNCb3NZ67p7U+FWQjZTXj+al8xrRC7aTulBVjrY9t7IdtjoQU0E0HY+nJHEovYXdnDV42xHYsm0I+rgSy
+ HOFfOqs6
+ Bl6W3gfwEo8Q4UlY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,160 +101,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2025/12/23 6:01, Pasha Tatashin 写道:
-> If the previous kernel enabled KHO but did not call kho_finalize()
-> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
-> the 'preserved-memory-map' property in the FDT remains empty/zero.
-> 
-> Previously, kho_populate() would succeed regardless of the memory map's
-> state, reserving the incoming scratch regions in memblock. However,
-> kho_memory_init() would later fail to deserialize the empty map. By that
-> time, the scratch regions were already registered, leading to partial
-> initialization and subsequent list corruption (freeing scratch area
-> twice) during kho_init().
-> 
-> Move the validation of the preserved memory map earlier into
-> kho_populate(). If the memory map is empty/NULL:
-> 1. Abort kho_populate() immediately with -ENOENT.
-> 2. Do not register or reserve the incoming scratch memory, allowing the new
->     kernel to reclaim those pages as standard free memory.
-> 3. Leave the global 'kho_in' state uninitialized.
-> 
-> Consequently, kho_memory_init() sees no active KHO context
-> (kho_in.mem_chunks_phys is 0) and falls back to kho_reserve_scratch(),
-> allocating fresh scratch memory as if it were a standard cold boot.
-> 
-> Fixes: de51999e687c ("kho: allow memory preservation state updates after finalization")
-> Reported-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> Closes: https://lore.kernel.org/all/20251218215613.GA17304@ranerica-svr.sc.intel.com
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> ---
-> Changes v4:
-> - Addressed Tested-by
-> - Addressed review comments from Pratyush.
-> 
->   kernel/liveupdate/kexec_handover.c | 37 +++++++++++++++---------------
->   1 file changed, 19 insertions(+), 18 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 9dc51fab604f..d4482b6e3cae 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -460,27 +460,23 @@ static void __init deserialize_bitmap(unsigned int order,
->   	}
->   }
->   
-> -/* Return true if memory was deserizlied */
-> -static bool __init kho_mem_deserialize(const void *fdt)
-> +/* Returns physical address of the preserved memory map from FDT */
-> +static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
->   {
-> -	struct khoser_mem_chunk *chunk;
->   	const void *mem_ptr;
-> -	u64 mem;
->   	int len;
->   
->   	mem_ptr = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
->   	if (!mem_ptr || len != sizeof(u64)) {
->   		pr_err("failed to get preserved memory bitmaps\n");
-> -		return false;
-> +		return 0;
->   	}
->   
-> -	mem = get_unaligned((const u64 *)mem_ptr);
-> -	chunk = mem ? phys_to_virt(mem) : NULL;
-> -
-> -	/* No preserved physical pages were passed, no deserialization */
-> -	if (!chunk)
-> -		return false;
-> +	return get_unaligned((const u64 *)mem_ptr);
-> +}
->   
-> +static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
-> +{
->   	while (chunk) {
->   		unsigned int i;
->   
-> @@ -489,8 +485,6 @@ static bool __init kho_mem_deserialize(const void *fdt)
->   					   &chunk->bitmaps[i]);
->   		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
->   	}
-> -
-> -	return true;
->   }
->   
->   /*
-> @@ -1253,6 +1247,7 @@ bool kho_finalized(void)
->   struct kho_in {
->   	phys_addr_t fdt_phys;
->   	phys_addr_t scratch_phys;
-> +	phys_addr_t mem_map_phys;
->   	struct kho_debugfs dbg;
->   };
->   
-> @@ -1434,12 +1429,10 @@ static void __init kho_release_scratch(void)
->   
->   void __init kho_memory_init(void)
->   {
-> -	if (kho_in.scratch_phys) {
-> +	if (kho_in.mem_map_phys) {
->   		kho_scratch = phys_to_virt(kho_in.scratch_phys);
->   		kho_release_scratch();
-> -
-> -		if (!kho_mem_deserialize(kho_get_fdt()))
-> -			kho_in.fdt_phys = 0;
-> +		kho_mem_deserialize(phys_to_virt(kho_in.mem_map_phys));
->   	} else {
->   		kho_reserve_scratch();
->   	}
-> @@ -1448,8 +1441,9 @@ void __init kho_memory_init(void)
->   void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->   			 phys_addr_t scratch_phys, u64 scratch_len)
->   {
-> -	void *fdt = NULL;
->   	struct kho_scratch *scratch = NULL;
-> +	phys_addr_t mem_map_phys;
-> +	void *fdt = NULL;
->   	int err = 0;
->   	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
->   
-> @@ -1475,6 +1469,12 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->   		goto out;
->   	}
->   
-> +	mem_map_phys = kho_get_mem_map_phys(fdt);
-> +	if (!mem_map_phys) {
-> +		err = -ENOENT;
-> +		goto out;
-> +	}
-> +
->   	scratch = early_memremap(scratch_phys, scratch_len);
->   	if (!scratch) {
->   		pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
-> @@ -1515,6 +1515,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->   
->   	kho_in.fdt_phys = fdt_phys;
->   	kho_in.scratch_phys = scratch_phys;
-> +	kho_in.mem_map_phys = mem_map_phys;
->   	kho_scratch_cnt = scratch_cnt;
->   	pr_info("found kexec handover data.\n");
->   
-> 
-> base-commit: cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
-The base-commit is
 
-commit cc3aa43b44bdb43dfbac0fcb51c56594a11338a8 (HEAD -> 
-upstream/master, tag: next-20251219)
-Author: Stephen Rothwell <sfr@canb.auug.org.au>
-Date:   Fri Dec 19 14:12:19 2025 +1100
 
-     Add linux-next specific files for 20251219
+On 1/19/26 2:36 PM, Dev Jain wrote:
+> 
+> On 19/01/26 11:20 am, Baolin Wang wrote:
+>>
+>>
+>> On 1/18/26 1:46 PM, Dev Jain wrote:
+>>>
+>>> On 16/01/26 7:58 pm, Barry Song wrote:
+>>>> On Fri, Jan 16, 2026 at 5:53 PM Dev Jain <dev.jain@arm.com> wrote:
+>>>>>
+>>>>> On 07/01/26 7:16 am, Wei Yang wrote:
+>>>>>> On Wed, Jan 07, 2026 at 10:29:25AM +1300, Barry Song wrote:
+>>>>>>> On Wed, Jan 7, 2026 at 2:22 AM Wei Yang <richard.weiyang@gmail.com>
+>>>>>>> wrote:
+>>>>>>>> On Fri, Dec 26, 2025 at 02:07:59PM +0800, Baolin Wang wrote:
+>>>>>>>>> Similar to folio_referenced_one(), we can apply batched unmapping
+>>>>>>>>> for file
+>>>>>>>>> large folios to optimize the performance of file folios reclamation.
+>>>>>>>>>
+>>>>>>>>> Barry previously implemented batched unmapping for lazyfree
+>>>>>>>>> anonymous large
+>>>>>>>>> folios[1] and did not further optimize anonymous large folios or
+>>>>>>>>> file-backed
+>>>>>>>>> large folios at that stage. As for file-backed large folios, the
+>>>>>>>>> batched
+>>>>>>>>> unmapping support is relatively straightforward, as we only need
+>>>>>>>>> to clear
+>>>>>>>>> the consecutive (present) PTE entries for file-backed large folios.
+>>>>>>>>>
+>>>>>>>>> Performance testing:
+>>>>>>>>> Allocate 10G clean file-backed folios by mmap() in a memory
+>>>>>>>>> cgroup, and try to
+>>>>>>>>> reclaim 8G file-backed folios via the memory.reclaim interface. I
+>>>>>>>>> can observe
+>>>>>>>>> 75% performance improvement on my Arm64 32-core server (and 50%+
+>>>>>>>>> improvement
+>>>>>>>>> on my X86 machine) with this patch.
+>>>>>>>>>
+>>>>>>>>> W/o patch:
+>>>>>>>>> real    0m1.018s
+>>>>>>>>> user    0m0.000s
+>>>>>>>>> sys     0m1.018s
+>>>>>>>>>
+>>>>>>>>> W/ patch:
+>>>>>>>>> real   0m0.249s
+>>>>>>>>> user   0m0.000s
+>>>>>>>>> sys    0m0.249s
+>>>>>>>>>
+>>>>>>>>> [1]
+>>>>>>>>> https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
+>>>>>>>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>>>> Acked-by: Barry Song <baohua@kernel.org>
+>>>>>>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>>>> ---
+>>>>>>>>> mm/rmap.c | 7 ++++---
+>>>>>>>>> 1 file changed, 4 insertions(+), 3 deletions(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>>>>>> index 985ab0b085ba..e1d16003c514 100644
+>>>>>>>>> --- a/mm/rmap.c
+>>>>>>>>> +++ b/mm/rmap.c
+>>>>>>>>> @@ -1863,9 +1863,10 @@ static inline unsigned int
+>>>>>>>>> folio_unmap_pte_batch(struct folio *folio,
+>>>>>>>>>         end_addr = pmd_addr_end(addr, vma->vm_end);
+>>>>>>>>>         max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>>>>>>>>>
+>>>>>>>>> -      /* We only support lazyfree batching for now ... */
+>>>>>>>>> -      if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+>>>>>>>>> +      /* We only support lazyfree or file folios batching for now
+>>>>>>>>> ... */
+>>>>>>>>> +      if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>>>>>>>>>                 return 1;
+>>>>>>>>> +
+>>>>>>>>>         if (pte_unused(pte))
+>>>>>>>>>                 return 1;
+>>>>>>>>>
+>>>>>>>>> @@ -2231,7 +2232,7 @@ static bool try_to_unmap_one(struct folio
+>>>>>>>>> *folio, struct vm_area_struct *vma,
+>>>>>>>>>                          *
+>>>>>>>>>                          * See Documentation/mm/mmu_notifier.rst
+>>>>>>>>>                          */
+>>>>>>>>> -                      dec_mm_counter(mm, mm_counter_file(folio));
+>>>>>>>>> +                      add_mm_counter(mm, mm_counter_file(folio),
+>>>>>>>>> -nr_pages);
+>>>>>>>>>                 }
+>>>>>>>>> discard:
+>>>>>>>>>                 if (unlikely(folio_test_hugetlb(folio))) {
+>>>>>>>>> -- 
+>>>>>>>>> 2.47.3
+>>>>>>>>>
+>>>>>>>> Hi, Baolin
+>>>>>>>>
+>>>>>>>> When reading your patch, I come up one small question.
+>>>>>>>>
+>>>>>>>> Current try_to_unmap_one() has following structure:
+>>>>>>>>
+>>>>>>>>       try_to_unmap_one()
+>>>>>>>>           while (page_vma_mapped_walk(&pvmw)) {
+>>>>>>>>               nr_pages = folio_unmap_pte_batch()
+>>>>>>>>
+>>>>>>>>               if (nr_pages = folio_nr_pages(folio))
+>>>>>>>>                   goto walk_done;
+>>>>>>>>           }
+>>>>>>>>
+>>>>>>>> I am thinking what if nr_pages > 1 but nr_pages != folio_nr_pages().
+>>>>>>>>
+>>>>>>>> If my understanding is correct, page_vma_mapped_walk() would start
+>>>>>>>> from
+>>>>>>>> (pvmw->address + PAGE_SIZE) in next iteration, but we have already
+>>>>>>>> cleared to
+>>>>>>>> (pvmw->address + nr_pages * PAGE_SIZE), right?
+>>>>>>>>
+>>>>>>>> Not sure my understanding is correct, if so do we have some reason
+>>>>>>>> not to
+>>>>>>>> skip the cleared range?
+>>>>>>> I don’t quite understand your question. For nr_pages > 1 but not equal
+>>>>>>> to nr_pages, page_vma_mapped_walk will skip the nr_pages - 1 PTEs
+>>>>>>> inside.
+>>>>>>>
+>>>>>>> take a look:
+>>>>>>>
+>>>>>>> next_pte:
+>>>>>>>                  do {
+>>>>>>>                          pvmw->address += PAGE_SIZE;
+>>>>>>>                          if (pvmw->address >= end)
+>>>>>>>                                  return not_found(pvmw);
+>>>>>>>                          /* Did we cross page table boundary? */
+>>>>>>>                          if ((pvmw->address & (PMD_SIZE - PAGE_SIZE))
+>>>>>>> == 0) {
+>>>>>>>                                  if (pvmw->ptl) {
+>>>>>>>                                          spin_unlock(pvmw->ptl);
+>>>>>>>                                          pvmw->ptl = NULL;
+>>>>>>>                                  }
+>>>>>>>                                  pte_unmap(pvmw->pte);
+>>>>>>>                                  pvmw->pte = NULL;
+>>>>>>>                                  pvmw->flags |= PVMW_PGTABLE_CROSSED;
+>>>>>>>                                  goto restart;
+>>>>>>>                          }
+>>>>>>>                          pvmw->pte++;
+>>>>>>>                  } while (pte_none(ptep_get(pvmw->pte)));
+>>>>>>>
+>>>>>> Yes, we do it in page_vma_mapped_walk() now. Since they are
+>>>>>> pte_none(), they
+>>>>>> will be skipped.
+>>>>>>
+>>>>>> I mean maybe we can skip it in try_to_unmap_one(), for example:
+>>>>>>
+>>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>>> index 9e5bd4834481..ea1afec7c802 100644
+>>>>>> --- a/mm/rmap.c
+>>>>>> +++ b/mm/rmap.c
+>>>>>> @@ -2250,6 +2250,10 @@ static bool try_to_unmap_one(struct folio
+>>>>>> *folio, struct vm_area_struct *vma,
+>>>>>>                  */
+>>>>>>                 if (nr_pages == folio_nr_pages(folio))
+>>>>>>                         goto walk_done;
+>>>>>> +             else {
+>>>>>> +                     pvmw.address += PAGE_SIZE * (nr_pages - 1);
+>>>>>> +                     pvmw.pte += nr_pages - 1;
+>>>>>> +             }
+>>>>>>                 continue;
+>>>>>>    walk_abort:
+>>>>>>                 ret = false;
+>>>>> I am of the opinion that we should do something like this. In the
+>>>>> internal pvmw code,
+>>>> I am still not convinced that skipping PTEs in try_to_unmap_one()
+>>>> is the right place. If we really want to skip certain PTEs early,
+>>>> should we instead hint page_vma_mapped_walk()? That said, I don't
+>>>> see much value in doing so, since in most cases nr is either 1 or
+>>>> folio_nr_pages(folio).
+>>>>
+>>>>> we keep skipping ptes till the ptes are none. With my proposed
+>>>>> uffd-fix [1], if the old
+>>>>> ptes were uffd-wp armed, pte_install_uffd_wp_if_needed will convert
+>>>>> all ptes from none
+>>>>> to not none, and we will lose the batching effect. I also plan to
+>>>>> extend support to
+>>>>> anonymous folios (therefore generalizing for all types of memory)
+>>>>> which will set a
+>>>>> batch of ptes as swap, and the internal pvmw code won't be able to
+>>>>> skip through the
+>>>>> batch.
+>>>> Thanks for catching this, Dev. I already filter out some of the more
+>>>> complex cases, for example:
+>>>> if (pte_unused(pte))
+>>>>           return 1;
+>>>>
+>>>> Since the userfaultfd write-protection case is also a corner case,
+>>>> could we filter it out as well?
+>>>>
+>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>> index c86f1135222b..6bb8ba6f046e 100644
+>>>> --- a/mm/rmap.c
+>>>> +++ b/mm/rmap.c
+>>>> @@ -1870,6 +1870,9 @@ static inline unsigned int
+>>>> folio_unmap_pte_batch(struct folio *folio,
+>>>>           if (pte_unused(pte))
+>>>>                   return 1;
+>>>>
+>>>> +       if (userfaultfd_wp(vma))
+>>>> +               return 1;
+>>>> +
+>>>>           return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+>>>> }
+>>>>
+>>>> Just offering a second option — yours is probably better.
+>>>
+>>> No. This is not an edge case. This is a case which gets exposed by your
+>>> work, and
+>>> I believe that if you intend to get the file folio batching thingy in,
+>>> then you
+>>> need to fix the uffd stuff too.
+>>
+>> Barry’s point isn’t that this is an edge case. I think he means that uffd
+>> is not a common performance-sensitive scenario in production. Also, we
+>> typically fall back to per-page handling for uffd cases (see
+>> finish_fault() and alloc_anon_folio()). So I perfer to follow Barry’s
+>> suggestion and filter out the uffd cases until we have test case to show
+>> performance improvement.
+> 
+> I am of the opinion that you are making the wrong analogy here. The
+> per-page fault fidelity is *required* for uffd.
+> 
+> When you say you want to support file folio batched unmapping, I think it's
+> inappropriate to say "let us refuse to
+> 
+> batch if the pte mapping the file folio is smeared with a particular bit
+> and consider it a totally different case". Instead
+> 
+> of getting in folio (all memory types) batched unmapping in, we have
+> already broken this to "lazyfree folio", then
+> 
+> "file folio", the remaining being "anon folio". Now you intend to break
+> "file folio" to "file folio non uffd" and "file folio uffd".
 
-     Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+At least for me, I think this is a reasonable approach: break a complex 
+problem into smaller features and address them step by step (possibly by 
+different contributors in the community). This makes it easier for 
+reviewers to focus and discuss. You can see that batched unmapping for 
+anonymous folios still has ongoing discussion.
 
-Now this commit can not be applied to the 6.19-rc5.
+As I mentioned, since uffd is not a common performance-sensitive 
+scenario in production, we need to continue discussing whether we 
+actually need to support batched unmapping for uffd, and support the 
+decision with technical feedback and performance data. So I’d prefer to 
+discuss it in a separate patch.
 
-Zhu Yanjun
+David and Lorenzo, what do you think?
 
