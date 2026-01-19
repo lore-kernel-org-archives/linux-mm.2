@@ -4,131 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0638FD29C2E
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 15:15:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CB26D29C33
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 15:16:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62F9C6B0260; Mon, 19 Jan 2026 10:15:34 -0500 (EST)
+	id C56B06B0261; Mon, 19 Jan 2026 10:16:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DCC46B0261; Mon, 19 Jan 2026 10:15:34 -0500 (EST)
+	id C2EBA6B026B; Mon, 19 Jan 2026 10:16:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E8EF6B0266; Mon, 19 Jan 2026 10:15:34 -0500 (EST)
+	id B31916B026D; Mon, 19 Jan 2026 10:16:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C3F36B0260
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:15:34 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA1D3140145
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:15:33 +0000 (UTC)
-X-FDA: 84349062546.27.ECE227D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E2850C0015
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:15:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxI4WxL2;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F8E46B0261
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:16:45 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C64614018E
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:16:45 +0000 (UTC)
+X-FDA: 84349065570.11.BA465C2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 34DC8C0013
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:16:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JtnM6QFC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768835731; a=rsa-sha256;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768835803; a=rsa-sha256;
 	cv=none;
-	b=sQrVZ4VoSAOx+hieQK0jz6/v5adl1a74YHaJymNqDgs1sal2zSLXtXrxTyBRrlPcobbl7D
-	7ADrDBJ4FrvAzkmBFoB26mMj0EhCQZVZHa4M7M1Xv7g1nprSJJxhXeTaRzgA8dOp3ce1a5
-	o8A3ZJaePhZ6IhH54/wbEPhxyL2Z88E=
+	b=Z9CqxA0+WDGq8LBhTUAGOVdP7efT5LedLiU9eQhOTjOvJ16sd/Pjj/KLtVGgCnA7e0BLkS
+	eqdG10m3zeSK0PnzCA0JnGgZI1Ep4FlTLb4JyaBraTSSHnoBg4Gi2fNFX3t2vMw+u9dW3w
+	5wmJQt+EGuV9mhzQOld+YGbo4QBcuDc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxI4WxL2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JtnM6QFC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768835731;
+	s=arc-20220608; t=1768835803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l9Ftm9K3/CrHaz7f4/GeRVwkDMKWl0p/J5d7jFRWMso=;
-	b=Qvh19RNTAAlmPmLn6886Lz0qOOvqHg9tVfaGL8x2bfVeuYxOATN4jvz8joCbInLzGC53wb
-	1BLRlu9ZFERS/LvgLb51jhxZ1IjlZirQ0Ac2IpyJxul0eKqFP45NeMfwwFtejuqSetpo4C
-	ASMCYPFPd+XgxHQcF0hjh6mDnb+UyVI=
+	bh=1o2BfOXWWQ2jUZEX+6sCyAuMz+rmWD/4v2s1mubND+w=;
+	b=AmE3laVoYt/HxUPICRfAxLQHq8V4DWEfW2e7ICmJYluJOGd5xn5Me60Aiqc/kVLyXAmDIP
+	TAuK4eU/zeaBmKP4o3ueqBvReikGHNsa/lzxJNZP4C+4aGEYM+cDdaw8NKx/Ryt3mCo5PR
+	zOU7dLxWaLDgyi8R7GQj77dTlnHlHyU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5441160131;
-	Mon, 19 Jan 2026 15:15:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69928C19425;
-	Mon, 19 Jan 2026 15:15:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3AEC343BDB;
+	Mon, 19 Jan 2026 15:16:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2035C19423;
+	Mon, 19 Jan 2026 15:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768835731;
-	bh=ERVCOL+UrRNglZlm0SAA4pm43qoW2KUHl1G7b7RQrY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gxI4WxL2KeCTrT1loBHKBH3ovIoJwmhprmU+FOkz/6UyJBRwPCNr91rYtPs6PacDe
-	 evX53ZMWitptOXs+a3Ou7dX4Xl7PmJINTpXNimVuMmPELldGgGgKwE2orlnX9vEBbA
-	 S9zf8vJdjTnTTiLxvnFe2ubuKaYj64JwQjSin/DwAW3DE/lzdxLVrNDK3MlujZxjT+
-	 auNDVo7pJ+mHRuSAIW33BPcxSTaUZq4xYlOFTkSYXUX7H4tbKhvuq5FRWoiNUs2Ic3
-	 6jFzSqIiw323NAlGa63b3YOUyaHnNdp0Pp40lygpqNqT+dC/94X03xDChegrMtacb8
-	 sg4uCUhJ1nfMg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8CFD9F4006A;
-	Mon, 19 Jan 2026 10:15:29 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 19 Jan 2026 10:15:29 -0500
-X-ME-Sender: <xms:kUpuadZdQgQcT-hJnAcxqwQrRPWBaTZjjZ6sEmDykyxNPXKPPr6BAg>
-    <xme:kUpuafxWF6RhjiGh0ZhMwjKoYzkIaY-9rVryNen3QkT2jWGMQRb_RBHCNXgjUUTYI
-    iQQZKt-MbbhJpCw8FR-vV9DofZVC5ydYQG004hiA9NA71GB8v17i4s>
-X-ME-Received: <xmr:kUpuaZV3F7vtVH6jOmDpG767nABDfS7nrvyfbyLEdZfOSa3-0kzC6GGfpsd8vg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeejkeelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehmuhgthhhunhdrshhonhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepuggrvh
-    hiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhu
-    nhgurghtihhonhdrohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurd
-    horhhgpdhrtghpthhtohepuhhsrghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrg
-    guohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
-X-ME-Proxy: <xmx:kUpuaTYQNaUhzdNBpaYFc1P_rbbk59geGHZ0hl22WoKGrCcyyaqVmg>
-    <xmx:kUpuaUNWmc-LybbWiCZGW4vtfkyMTsoMNExVXE3u9jJhf_W7ocF73Q>
-    <xmx:kUpuaXsW82VIWNabQV2XLV1pbDgDsJmzYu-Uw5RdcERSSnjuO55nWw>
-    <xmx:kUpuaa3eOPoICmiQDysPOIx1LxU0w755ZSyaZuzAFyTuFHVwwgHMug>
-    <xmx:kUpuaVWYJsNLs_16nkft-ftjAmGrP2kreJwGpoYPpku3zr3CnEXalXSB>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Jan 2026 10:15:27 -0500 (EST)
-Date: Mon, 19 Jan 2026 15:15:22 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>, 
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv3 10/15] mm/hugetlb: Remove fake head pages
-Message-ID: <aW5JqibNe4CVBa07@thinkstation>
-References: <20260115144604.822702-1-kas@kernel.org>
- <20260115144604.822702-11-kas@kernel.org>
- <30ae1623-63f9-4729-9c19-9b0a9a0ae9f1@kernel.org>
- <aWkhbWR-3fWjeTaE@thinkstation>
- <53980726-C7F0-4648-99E9-89E10645F2E7@linux.dev>
- <aWpTopypeRTOIVGR@thinkstation>
- <0F1C93F3-9A1A-4929-9157-589CF8C0588D@linux.dev>
+	s=k20201202; t=1768835802;
+	bh=hckTS3gmFRkxNWBtsceb6zn11jss+f3BKrZwJeC3S+4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JtnM6QFCOqRvP3fhKJwZe8ubr+qygGq2F6rMhmTS3c+/vs08+wVAKLX9K5sFj5j1Z
+	 AuVgg5mIUtvWDPTYM7e01lAWUUsreZe9z2wYkwPqx9s6osoYtpUaYkOtQalRvwKttx
+	 hjixW67WN9K8S55vfmvlhrk+sp2DmaDDGTC6vY4JwT62eufHPQPU3pA6Be5f4fDx6r
+	 0pfW1waxsTgYV+OuoG1PKGeLft8fREvhN6RqW0DTO9kOR6wrwQoLWL4Ec+aplCTd/f
+	 cz16IZHWD6singoUagzOV+gCSfbkCj1ZMv1o39T1dP0UrUHQDArSEBfMXq49QZXrVm
+	 vkvzt5zm/KyzA==
+Message-ID: <af260a0b-ee84-42d5-85e7-ea2b4789f31f@kernel.org>
+Date: Mon, 19 Jan 2026 16:16:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0F1C93F3-9A1A-4929-9157-589CF8C0588D@linux.dev>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E2850C0015
-X-Stat-Signature: ehtko1935anxgmhrmue9naqfmroszkf3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] iommu: debug-pagealloc: Remove pfn_valid() usage
+To: Mostafa Saleh <smostafa@google.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org, will@kernel.org,
+ robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, xiaqinxin@huawei.com, baolu.lu@linux.intel.com,
+ rdunlap@infradead.org
+References: <20260119142246.3821052-1-smostafa@google.com>
+ <bca59694-6b09-4839-8577-c8ac4420eb56@kernel.org>
+ <CAFgf54paL1O22-crK-RufOzwYBqQ-CU4BD6=h30WOOfdA2__Vg@mail.gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <CAFgf54paL1O22-crK-RufOzwYBqQ-CU4BD6=h30WOOfdA2__Vg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1768835731-267831
-X-HE-Meta: U2FsdGVkX1+a7YhXimJkDZbvSo0bZWjsRbOpzr9768B0pCyT6ufyy9rAFDsNYXOl0v8AKEc/Oi1BIZrSq1pJm5W3rupgtintHHZIm5tXmees7VK0gzBjdXkmcWv/wqD9U35YIYUQ0ethgwloSZSYBcsFUnljDoAIAi4K6Il/xk4veeppihqPIfihh0c1+T4KZu9TYBNR6zYUAhuAFwZyaGD29IiduhNL7JoAZHU9EglSiT8tzC+Dx6A+lcZf1RKLRvahEiybLcWjbm6SSSS+95+loeTXpZCxNksM97+ZuO0qd5saLeWvHYM6rR3+9lTgrOgxh0GTZmRWee1dqnw535RkJJQQXBE7ax7bTa7FvmujHfkeJXqstn99w8LmlZmAheYhOAOth71d2lpwe6Ldb/9CsZl9OxqV1MM4ncXf1O/8Ej4xVYL0SC0Ywufv2g7Q41stMXU3DapZIbpjvuAhY/m5zPW2Gudtbrne8hpx5Gm9m38R7Ig5Gs2/mOTv57uOpvypkMe3lYkAu/4fzMRA5pfeajLiKNKASyROFa4VhXk6H5HOwbFRZofiQv9TYyzvun6fFr/jb11PRvUj7P1FYYCCg/usuTl2nVuhU0G6DaKf09BojfQpmRYJB7oUM5orlpTtsk8PzxeAzHoWvuMZBdboCzqAM739Ssb65zawnGI81muEj+nf9bhLIUuXG1CweVvOmvbO4bX5m9lT4+/Jh6PQGFJm6+qEbaFBVbyTIFOJ0qa7pTYvIO2iuK1MNbxBglP32RYw/JeaQvDu5ajWmIaEVV9RbsrkjKzm5IIAMcxCCe/txcWGWk2xT08pqufgVXgv3cxL+2HFNROVJ6TcMgJdJZlRA60bUQMVaI0fPqOjysyTpdbCWHHCuEwsEs1QkFio/FZyap7uvnSY8mK3qM4B6cFXr1bXSMSBJP6mM33vHrb36RAacoGh4fwRaqfoebDEoHjE/0OVQTWwxjj
- XLZ2Udwz
- B0z7X9Oyz95d6S9mu4TdREM1CXz574nwyaJsKsNM5nW9vYAmKo6ue6OAbBPi0yaOiRECo4F3X6GPiwDCZCF38XEIJRtomLgZdL46BjZAEhnx9HKj6XgEj12zKZyolrjufqpMepi51TJojozBeyWJY/YL897IwsGdb75rghAmWAWkxp6GF0FSkkweTtp15bZ/N9B+V3IEkImzj5FHjUbYvUiB3n9PTnibIMkirolxsQCiNxcMkUj7SzSHB9d/1zxjTOPmeNd/E8lPdMy8eR15NZbyUhNphXR6JQ4fAbHQLdxmLbtM=
+X-Stat-Signature: pxto8jrcregwkxhzs8agnutycugfpeq1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 34DC8C0013
+X-HE-Tag: 1768835803-404074
+X-HE-Meta: U2FsdGVkX18NB91UfFUFMxDLgEVllIRhDFRYJgAoz8zcNAWkCg8bep7v7sF9s/GRyRDJKdpAdm/08fhWjhk5KN66f4A5jJXl/M4GLjtO5MsC9lyyj5EFw/GX9XgbJZKjkpI2eMHRYn24ER3fbNFSkZ+mmNoZv7K1zfwjoweWO24eGl1j1hu79PnV8I5cQAQ7KTRNmw2MPKquMDu5RP1UfWyUfzQLb8dngxVgAU8ciXCnJ4OTWpp3DE9XL+yulGCMD3x8eqRIXY9mgsmdex0JakVo6RL4sV3g7jiva7vZSxxHfb8h/DC/sMnGIX2AyZ07Tdi+Q7O/uKrJRIIK+r3uBfbMZVCcAJPj/PAn/70DdpFpH1l2uwq8CNCt9a+b/d2ojHq0FgG1i2btuxFCJXAN6drGmfTdxEBWCTF77L7izSty86CVWIavkPKLLrbn+FVsbi4ISIS/dNjTGwlrLfGJ88h4efjn1eIjUv0zKU5vZQcI8cJGS9FjtHeuPxd4TIgpl/iao8D4TQocRxaNzoUeHT/IvGmPk71AtVFp49vwZ9qzyycKEnJB2EWTSpqKB0cJF/dQB3fG8YcMMZW/trHu184w0Qw8RU6780RVjZlyZl1AtrFTpIYOP+4s+hL1IASKpglrexXBN2LJtozH5m5RhNt2PCZr529QyAc2Vdl/Sa/hcrUoLvY37eGbQ4fKOC5O8n7kBqv2/8f9wQcRJnDzW8V91+l/cuGSdFCGVzzl1Rprsy1No8pjcESEmBOJq2WmSqULC38wQtNjTPZNnpmuycsRvlPaDSFUXZsmBupCkoM/E5KWrzdWg7nmxrE3Sv0WVt5IlSnp3/mvbdSQX+58IkbwaU4X36PtsqsqaFFkCPpDHGGeR0wGR/dn2bScXHiHJojjIWX0Y9uiL26We9jHecls6A1JBBFopJuKqsP8uWaE58q8ECRGI4JxkZ4m8a9KhIpnKBdiTNPzXhMZZNr
+ qKK+WTGF
+ vOkjbKhmRP+LhIPQBnaynFaBTya8aycOCQNKK5tNPF0vuAT9ZvZrUIqeoVWUN73L/ttSXiNuTAdYhyzfxmNuJrrm9stRgY+NHv8PzbSrdHjQPd8jUMIH7cF+ot2RAno3mDTvPV8IJcb2UgYDW1GaDGITDVdrCnVo2ZvBUtTZqxKU5erS2WVMn34lCG9UmeYU8+GiL/R3sxAM5JN/1waJiJpcy5n0pYB9NiFHwDm2HlihxY/J/UujZt0Nod6b0rY6f+TGniRY6d0GhNG0c58yqxJnRwVPh479dOpgkTCjAsSeRJfzvES1GjM+0p7uJGjLHCbCpW+TGjNf0wIjMVGPmCFimTvPsVbO+aTrJAV8a0FVGPkgbLLDraZFjbFBgrGZhZW1qy4BwpYuRLoEdY9KE3dszhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,82 +144,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 17, 2026 at 10:38:48AM +0800, Muchun Song wrote:
+On 1/19/26 16:09, Mostafa Saleh wrote:
+> On Mon, Jan 19, 2026 at 2:27 PM David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
+>>
+>> On 1/19/26 15:22, Mostafa Saleh wrote:
+>>> This is a small fix for the new config IOMMU_DEBUG_PAGEALLOC based
+>>> on the discussion:
+>>> https://lore.kernel.org/linux-iommu/CAFgf54pBAUm3ao-UJksiuGKtvv4wzRyFq_uKwLe0H1ettO4DLQ@mail.gmail.com/
+>>>
+>>> Where it was concluded that pfn_valid() is not enough to validate
+>>> physical addresses before access to page_ext.
+>>>
+>>> The first patch introduces a new function in page_ext that takes a
+>>> physical address as an argument, and the second patch uses it instead
+>>> of calling pfn_valid() and phys_to_page()
+>>>
+>>> Benchmarks with the new implementation can be found in:
+>>> https://lore.kernel.org/linux-iommu/20260114164322.787125-1-smostafa@google.com/
+>>>
+>>> This series applies to iommu/core tree.
+>>
+>> This is part of v7 [1], right? Can't we just apply v7 instead or are the
+>> commit IDs already stable?
+>>
 > 
-> 
-> > On Jan 16, 2026, at 23:52, Kiryl Shutsemau <kas@kernel.org> wrote:
-> > 
-> > On Fri, Jan 16, 2026 at 10:38:02AM +0800, Muchun Song wrote:
-> >> 
-> >> 
-> >>> On Jan 16, 2026, at 01:23, Kiryl Shutsemau <kas@kernel.org> wrote:
-> >>> 
-> >>> On Thu, Jan 15, 2026 at 05:49:43PM +0100, David Hildenbrand (Red Hat) wrote:
-> >>>> On 1/15/26 15:45, Kiryl Shutsemau wrote:
-> >>>>> HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
-> >>>>> vmemmap pages for huge pages and remapping the freed range to a single
-> >>>>> page containing the struct page metadata.
-> >>>>> 
-> >>>>> With the new mask-based compound_info encoding (for power-of-2 struct
-> >>>>> page sizes), all tail pages of the same order are now identical
-> >>>>> regardless of which compound page they belong to. This means the tail
-> >>>>> pages can be truly shared without fake heads.
-> >>>>> 
-> >>>>> Allocate a single page of initialized tail struct pages per NUMA node
-> >>>>> per order in the vmemmap_tails[] array in pglist_data. All huge pages
-> >>>>> of that order on the node share this tail page, mapped read-only into
-> >>>>> their vmemmap. The head page remains unique per huge page.
-> >>>>> 
-> >>>>> This eliminates fake heads while maintaining the same memory savings,
-> >>>>> and simplifies compound_head() by removing fake head detection.
-> >>>>> 
-> >>>>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> >>>>> ---
-> >>>>> include/linux/mmzone.h | 16 ++++++++++++++-
-> >>>>> mm/hugetlb_vmemmap.c   | 44 ++++++++++++++++++++++++++++++++++++++++--
-> >>>>> mm/sparse-vmemmap.c    | 44 ++++++++++++++++++++++++++++++++++--------
-> >>>>> 3 files changed, 93 insertions(+), 11 deletions(-)
-> >>>>> 
-> >>>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> >>>>> index 322ed4c42cfc..2ee3eb610291 100644
-> >>>>> --- a/include/linux/mmzone.h
-> >>>>> +++ b/include/linux/mmzone.h
-> >>>>> @@ -82,7 +82,11 @@
-> >>>>>  * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
-> >>>>>  * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
-> >>>>>  */
-> >>>>> -#define MAX_FOLIO_ORDER get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
-> >>>>> +#ifdef CONFIG_64BIT
-> >>>>> +#define MAX_FOLIO_ORDER (34 - PAGE_SHIFT)
-> >>>>> +#else
-> >>>>> +#define MAX_FOLIO_ORDER (30 - PAGE_SHIFT)
-> >>>>> +#endif
-> >>>> 
-> >>>> Where do these magic values stem from, and how do they related to the
-> >>>> comment above that clearly spells out 16G vs. 1G ?
-> >>> 
-> >>> This doesn't change the resulting value: 1UL << 34 is 16GiB, 1UL << 30
-> >>> is 1G. Subtract PAGE_SHIFT to get the order.
-> >>> 
-> >>> The change allows the value to be used to define NR_VMEMMAP_TAILS which
-> >>> is used specify size of vmemmap_tails array.
-> >> 
-> >> How about allocate ->vmemmap_tails array dynamically? If sizeof of struct
-> >> page is not power of two, then we could optimize away this array. Besides,
-> >> the original MAX_FOLIO_ORDER could work as well.
-> > 
-> > This is tricky.
-> > 
-> > We need vmemmap_tails array to be around early, in
-> > hugetlb_vmemmap_init_early(). By the time, we don't have slab
-> > functional yet.
-> 
-> I mean zero-size array at the end of pg_data_t, no slab is needed.
+> It should be stable according to Will:
+> https://lore.kernel.org/linux-iommu/20260114164322.787125-1-smostafa@google.com/T/#m59d0b455e3f2160cb6f9980a0ae65bc481c53898
 
-For !NUMA, the struct is in BSS. See contig_page_data.
-
-Dynamic array won't fly there.
+Shame, probably applied a bit too fast ...
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers
+
+David
 
