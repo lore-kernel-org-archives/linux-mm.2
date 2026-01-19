@@ -4,294 +4,309 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 144A3D29C40
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:44:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58E09D29C43
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 16:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 746276B02BD; Mon, 19 Jan 2026 11:44:28 -0500 (EST)
+	id A6DA06B02BC; Mon, 19 Jan 2026 11:47:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E84C6B02BB; Mon, 19 Jan 2026 11:44:28 -0500 (EST)
+	id 9F09B6B02BE; Mon, 19 Jan 2026 11:47:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51D846B02BD; Mon, 19 Jan 2026 11:44:28 -0500 (EST)
+	id 87DC96B02BF; Mon, 19 Jan 2026 11:47:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 33EC46B02BA
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:44:28 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF36A1401C8
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:44:27 +0000 (UTC)
-X-FDA: 84349286574.02.31F6AA2
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 04B528000A;
-	Mon, 19 Jan 2026 16:44:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Wkbkf9Gx;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="P/32Zrty";
+	by kanga.kvack.org (Postfix) with ESMTP id 70D966B02BC
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:47:53 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44FE71601D4
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:47:53 +0000 (UTC)
+X-FDA: 84349295226.12.4A0CBAA
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B5952140010
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 16:47:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=dHqiK5Ue;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=CfeU7CP4;
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768841064; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of chuck.lever@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=chuck.lever@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768841269; a=rsa-sha256;
 	cv=pass;
-	b=w/zhU6BWaZb2HIjML2Za5BiAPCNcAoiQDrvuWXqXH2c6qq4U96FG4UiLLAt4pjWMoGDH9O
-	rh5fB36i2V2CCqyrdWKwE2NVoJXIbEt4+qu+5zyNMnSJeByWlJ7Lnycu1ehuSyr7AEuz0L
-	iRKYIDwOpzzq9KZrAd0g9Bli1fSMqFk=
+	b=UUt1/wmqQyb235dyy5ZBa6WZMzoi2iN7hTYwATKSbhtx2Hyty9U4ZsV76CpTaqUxWBwqtF
+	UwE+QOII1cQV9cLlJjD/x4RKWtEZLlSIv9xEIZ33SDJ+tN6ZPtIIHY/1z5ljbpAvwkhV8v
+	m92SuTgKfVswonMv0G8n5gW3E8l7Tm4=
 ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Wkbkf9Gx;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="P/32Zrty";
+	imf09.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=dHqiK5Ue;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=CfeU7CP4;
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+	spf=pass (imf09.hostedemail.com: domain of chuck.lever@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=chuck.lever@oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768841064;
+	s=arc-20220608; t=1768841269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uZlJ2vOZ4Kca+80xJLjSPYGW9rGYCuiQxXgKD5mUcss=;
-	b=xHV/GHOpF5ogwb+wWCXZtm8Ga3SZn7/BS9NTJz3hxWRwQfakhfWrdNnXg3QPwgkVC3A3QD
-	6YfcN70R1V/ZuuQQt1c23gsV3pYgen2rj57UUIWDtyhCavOA/d4a/fd02stzN6W3TJEdOn
-	ospHpmpkUJo7VvMtWXwFMy5+aIGA2zA=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60JBDNIJ1034530;
-	Mon, 19 Jan 2026 14:52:04 GMT
+	bh=vXLKn2QFYeNw5rDJ/fN6nlg9sjQD3fUxDd/yIMS3gsk=;
+	b=d6QmfygE2+yiQG/SIWL6Tk65AOp4Lzs4/GpX1NUucmI9q15SfBiWC7TQCLuZdFpF/lXik9
+	nDMX/yEnTZjob+dwDps65/4CSjE+zqu6DXftepYEc+uJzRmns/xMtzgi5Rw+73SMHstuMY
+	zetHGh6ujIEWF8hPHzAoAFSccU2eUyk=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60JBDQsx1341821;
+	Mon, 19 Jan 2026 16:47:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=uZlJ2vOZ4Kca+80xJLjSPYGW9rGYCuiQxXgKD5mUcss=; b=
-	Wkbkf9GxpKeDdQ8NdZ6UmsmOCSoF2IbyOORaY1hzyoe3IzXb2dZXaokZDT+Fcr/2
-	jNz304/IaZ4sQJUIL8ukxi/Wb+IsdG9wCAR5/ymJbm3V+WM8kmP1jBUdDZX0nfYm
-	yUZ/je2JCwX1vqsMh/TYdO0ypNSwunNDitW1ge+w7I5x79Ix5QdrYT+gkRNxXfjS
-	39AoFOCieGhoNXC1tXsOIsRG9XlVEQN4yPO0+WNrh7vWmtaZiuPNJk2VR4MNtRLh
-	YelivOOb44YXoR+uUowUjJrs5laqMWMHUhRsR2JyZr+GRkGPaazzFC/lugR+I3h6
-	0Pv8alQ1aiOgWoBT9FFF3w==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br10vtcr3-1
+	corp-2025-04-25; bh=vXLKn2QFYeNw5rDJ/fN6nlg9sjQD3fUxDd/yIMS3gsk=; b=
+	dHqiK5UenYc84Z7THRny96SfXeBKNBDVSpAI2UINat33trZhuKjlEgHbYaKa6G31
+	aPTfD79Nozntdda1LgKfrk0PbzzcDCS8DHlyDmnoUTt/ZNjouVQr9pDLgVRfJRBn
+	25bnt51PyPEZ7AysS3XENB4f1XaT+L1ND1tYLYm+FXS/eYfUu8bscG4/gx4ywwiO
+	M38isUj4CKi+45PAjd1BgRj9VAyUkm7rjbr9B9p3gzfdWM0OZK5o7NjxbNulT920
+	IlhJhPHbiJWiiaMV0QOzmcyqLT4zcHCHWxEdc/VmGllF48IvwKQvXMkh6ugjy6/t
+	M4CioaiZwbHozmB4EiRUyw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br170ajnh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Jan 2026 14:52:03 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60JEmkLQ000633;
-	Mon, 19 Jan 2026 14:52:02 GMT
-Received: from ph7pr06cu001.outbound.protection.outlook.com (mail-westus3azon11010034.outbound.protection.outlook.com [52.101.201.34])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4br0vc8584-1
+	Mon, 19 Jan 2026 16:47:27 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60JFFcSs022445;
+	Mon, 19 Jan 2026 16:47:26 GMT
+Received: from cy7pr03cu001.outbound.protection.outlook.com (mail-westcentralusazon11010025.outbound.protection.outlook.com [40.93.198.25])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4br0vcb66t-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Jan 2026 14:52:02 +0000
+	Mon, 19 Jan 2026 16:47:26 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s93TRjHf8/hzPUHgWZX4e2Vf9S+vryDULIqHIANS54PPmKuzwbOEDvblNIPfsGCS3mlkafpduFvEdQ4XPKD9Fw7UnKfii1wLvlIFdnnGt83Z6tu6p8f5s+zMDS6TxOcwPRedaK9C13sAnOcvp9BjC/5M5reY08lg/Aham3fg50BUM9F6FsqDTmce2OftDsOrERDdXd172/2dmC5sR5vneQP3BJJD5RrJKgdk/cA6mi2XUQr+RwZxmLXD9iyPlT2UObwuCsUlUWhmqL0V8rsPxpCAd3O+vQmWi3ULgGp3q/kxvpFeuTokwIx5wtvv2O0XVrpqRP5o3K/fyimKE2wOeg==
+ b=woKIcshSmJ+jOVE05ggrXf+7wD6rlvI6MFKx6ujiXJwqLjLlp97yWv2+8CQcyWyzm39IizC6X+WKHaRKxeVpgmCEGlj74qftZI4BYU0O2fokPgcmUezdeA0gg67o8BLDlNZEB8efkuUzhK0qeqPs53HLrg3nvfiLU0fofew3CHFxbZqlCNMG5xyZ38I+zTVTcEyja88dugspo8o+qAN783jBZFE3xVlH5NxH9kTdlCqMQKD/AMPPAFzeIJGj2y39wwDQA4LOzy7DDqP0rMqNts/fTewcN7fzTN1PWer4DLy3ViCZDzbFs09rO5CHiOLm520B1O6e3LiRuscxyD2Rbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uZlJ2vOZ4Kca+80xJLjSPYGW9rGYCuiQxXgKD5mUcss=;
- b=LbUzwXqoqRL5YVJofqiSSSB6aC43YCk4UzPcvJOmx+rdcgbE3i5jVPODYpC6iixtu0DGWpoRYGP+eFZ1joKcxbcmu3rfqft92iRXjiE6DEoMY1rCDPIVFPsVInQ5Xy7Qu0ucrIb1ilO4MdNZdVR9MRndxlgjMH5hw1pOzMscAeTCgB6OEbpJ5er1LRgSBa3sED80FmMchPZNHHbhBiO4SfT6OdCt/uLntbh8SUfLGAIOrz9z+/YRk+aF1AKBog4TGLAQ7SYdEBCWCRX08CWA5ts8SyNigzb8kSCv3fiFBj2WdVJ463LSsWagTGVfJxxjnDtr5+NK/zRu4+DlvE15Hg==
+ bh=vXLKn2QFYeNw5rDJ/fN6nlg9sjQD3fUxDd/yIMS3gsk=;
+ b=UaJq8caCQHxVvQ+xXL7OqLw2/7m8/xwk7unKsHvC5xwCLyni9K7nmrw2VxYdzO6iFY+Mgspk/IqLBHBRdSIdNVq6jxMCEtv/vOOSGpa2MrsG54Fq1mrm13ajt3xFko732vIG0dIz7WznkvLJjUW/KoIOJd8jCgT2KcsZow2Txt5v5XqmOwmSwWbPIZM6059uzliKrZ/hQ4H7dulzgGZyLGaag6AAvMihjiC3TUbigCPg34cHhoUBRxMwb9swOFtNqE9Joj4904G8vrdayGrl5HdkTeucGwk1iFPVffLoQAHGdiw0S3xqqo1eyooKoO7UfbWtk8M55B+AfowWhTfGPQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uZlJ2vOZ4Kca+80xJLjSPYGW9rGYCuiQxXgKD5mUcss=;
- b=P/32Zrtywo3TPS6C/nnpriU7Gh41N6riNZmfJnOXOZ1wwaAyWDlFTKmagbOirqiwrm/bHZ9qQyJNbD4ErzZKr4u+lvaCIa9QuKOB0k7DUJVOoHZlh5+Lrt7XEFs5tX5Wf2P5U5lpuU0KjxoABWhH3SyCu1rtxlqmlfkmOIiEsLI=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by CH0PR10MB7483.namprd10.prod.outlook.com (2603:10b6:610:18e::16) with
+ bh=vXLKn2QFYeNw5rDJ/fN6nlg9sjQD3fUxDd/yIMS3gsk=;
+ b=CfeU7CP4xc90BtfXFKrKhwTb4YfDOyRlAmlUT2GJ22piCyb1O2/f4Bp05mVm8SuU/wujXfGZsrLm2j1Vn9nAPbXcrkhWGCnAawhsAEjWi6qXmhgLCZmgjhS3MiTNVaAMm0IzNAko1sSF1v1p3kw+nvQWf0O3/49vqEXEZT8jT0g=
+Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
+ by CO6PR10MB5618.namprd10.prod.outlook.com (2603:10b6:303:149::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
- 2026 14:51:56 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Mon, 19 Jan 2026
- 14:51:56 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-        Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Sandeep Dhavale <dhavale@google.com>,
-        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Babu Moger <babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ 2026 16:47:21 +0000
+Received: from BN0PR10MB5128.namprd10.prod.outlook.com
+ ([fe80::4083:91ab:47a4:f244]) by BN0PR10MB5128.namprd10.prod.outlook.com
+ ([fe80::4083:91ab:47a4:f244%4]) with mapi id 15.20.9520.010; Mon, 19 Jan 2026
+ 16:47:20 +0000
+Message-ID: <8808c9f0-a998-448c-a4b6-b88fabb2ca23@oracle.com>
+Date: Mon, 19 Jan 2026 11:47:01 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 31/31] nfsd: convert dprintks in check_export() to
+ tracepoints
+To: Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, NeilBrown <neil@brown.name>,
+        Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
+        Tom Talpey <tom@talpey.com>, Amir Goldstein <amir73il@gmail.com>,
         Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-sgx@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, linux-erofs@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
-        devel@lists.orangefs.org, linux-xfs@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 10/12] tools/testing/vma: separate VMA userland tests into separate files
-Date: Mon, 19 Jan 2026 14:49:01 +0000
-Message-ID: <9da12ccede29034c28a0004ab812f484b62428d7.1768834061.git.lorenzo.stoakes@oracle.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1768834061.git.lorenzo.stoakes@oracle.com>
-References: <cover.1768834061.git.lorenzo.stoakes@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0574.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:276::12) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+        Baolin Wang
+ <baolin.wang@linux.alibaba.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
+        Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+        Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+        Sandeep Dhavale
+ <dhavale@google.com>,
+        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
+        Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
+        Alex Markuze <amarkuze@redhat.com>,
+        Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>,
+        David Sterba <dsterba@suse.com>,
+        Luis de Bethencourt <luisbg@kernel.org>,
+        Salah Triki <salah.triki@gmail.com>,
+        Phillip Lougher <phillip@squashfs.org.uk>,
+        Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
+        Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+        Shyam Prasad N <sprasad@microsoft.com>,
+        Bharath SM
+ <bharathsm@microsoft.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Mike Marshall <hubcap@omnibond.com>,
+        Martin Brandenburg
+ <martin@omnibond.com>,
+        Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+        Dave Kleikamp <shaggy@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: David Laight <david.laight.linux@gmail.com>,
+        Dave Chinner <david@fromorbit.com>,
+        Christoph Hellwig <hch@infradead.org>, linux-nfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+        linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+        ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        linux-unionfs@vger.kernel.org, devel@lists.orangefs.org,
+        ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev,
+        linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+        linux-mtd@lists.infradead.org, gfs2@lists.linux.dev,
+        linux-f2fs-devel@lists.sourceforge.net, linux-doc@vger.kernel.org
+References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
+ <20260119-exportfs-nfsd-v2-31-d93368f903bd@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
+Content-Language: en-US
+In-Reply-To: <20260119-exportfs-nfsd-v2-31-d93368f903bd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR14CA0055.namprd14.prod.outlook.com
+ (2603:10b6:610:56::35) To BN0PR10MB5128.namprd10.prod.outlook.com
+ (2603:10b6:408:117::24)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|CH0PR10MB7483:EE_
-X-MS-Office365-Filtering-Correlation-Id: a33c35d3-63b4-41b3-fb73-08de576a4a0e
+X-MS-TrafficTypeDiagnostic: BN0PR10MB5128:EE_|CO6PR10MB5618:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85b5ecef-b5d4-42e8-2652-08de577a69bb
+X-LD-Processed: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hBJ1ucYM84gUCQ2JLCgF41H7frmjE2FVtC2HVsD9sVkhxTD0AKd/0MTDyAFO?=
- =?us-ascii?Q?NJpqahX2r7326q07jGO6gP1k5ZXJzxtbClciIzmN6ZIp5IRuqC0+afpoVEc7?=
- =?us-ascii?Q?L9sey+hP8/Ui6YD3v9j39I+jlFJB3q6/3wCIlT34rTnP/PN3wmBa5Gb441cQ?=
- =?us-ascii?Q?jPiq0gSDcvM1S4ugQHkfpo2mh4mkDiY3XkJ5aNIYr3493u40rs0muinXEWs5?=
- =?us-ascii?Q?dsqUcIP0mg0zoVqRitcCL6IdGJjxWEyDp9KeoOVAPJWpTuetFv9jGwJp/gLZ?=
- =?us-ascii?Q?CHlhcxq1/DziMbEzhS4SgWPqjokiq9fnPyqC9xNurvWBLFZXCe4zyW6HTSEb?=
- =?us-ascii?Q?i4sOqLkPoNZzdc14sUTyb9PwVfAnMYdeaxbsfxN/pVUTQ49cOWZF86FEOS+/?=
- =?us-ascii?Q?JnjZGIhQG/8nrjfM2gWs10862fKLEHJ6YoZsPev2XB012DSXJK060XanylGM?=
- =?us-ascii?Q?AzZBr82uS13ZXWHT32wiAo2dNTb/xHJl3mjXN/Dk6UxAEIcPhRuun7MlnP2I?=
- =?us-ascii?Q?bgwHJh0W2grhsl4ZjDTnBFxCHokpqwL9JwZfjwhNTv6hKNdmBE94ZeVp1TK4?=
- =?us-ascii?Q?vvQCD/i20/uU6A09qbxfpUr+2+E6PKP3K04FRo6JaFNt1fhCrgc7xEjW2nhQ?=
- =?us-ascii?Q?yFs8ohtqD4b28qkYarqXpEyphAfr4UA/LP7Py825NFo+S3YjWBWCs2csWKBl?=
- =?us-ascii?Q?SRw3scLQvGqXINjc1OGjIcBPDLWsD60MndRzFD1kOZmMylfxlpqNreDGWf6W?=
- =?us-ascii?Q?1I242wL/K+U5Q6do858bvKfjc1Jq5Kwo1zFXXXlGnlzLrwRucG2kBx75wvKh?=
- =?us-ascii?Q?yh2nD03k3TR6FmAqSUKE1ZOsNr2VqtkqvWWdNhD0u09i/RFn7X3J8kaOvjZC?=
- =?us-ascii?Q?NFWp6vA0hp/118WJ1wErn3C7bUS5NbaARymRUZdyG2vjpN1w+8FlyFsmKexT?=
- =?us-ascii?Q?T2RmMubfodNVZdZCEv5EmSZ+oVi1MfAoErjjrB4Tgj8NLZmGTzAhHIo4Sbme?=
- =?us-ascii?Q?1Wy2icqor/Jd5KwfRL9jGFLHio5CZPxhEtMTfxy3/Q6GyBppl+F0PP0nlxq7?=
- =?us-ascii?Q?9WD5/Ee3rjx76hwdnwwISmkTEje/P4LuyZDpYmmoMY4rNvwuJ7kWauvrP2Y8?=
- =?us-ascii?Q?/IPf0jlcf1udsIDfSuj7WP1d6494ENNOQyLzTAlpBKvMwdFp+ZD3okVqpacv?=
- =?us-ascii?Q?B10bpFkyzxYgd9n/Y/aP9jbrSWI6yojWJQ8LZ8Ud0FDefwbUiUuLjYoxLEW+?=
- =?us-ascii?Q?zTUO2cDc77ir29F+Nt1dO9aN5ZBmbIgRzNkcCMMC190od4q6sWnRhuMiikau?=
- =?us-ascii?Q?3/J+dDpIAythZSUfW/0jVcq1Q8Mcq4fLAHGUnLYkrIgJ40Vs3tI0O/tL8uhY?=
- =?us-ascii?Q?CW5Xfo1C4pqj0e7kz2oqW1FkCbi08txeKIZueQsF5BLpRm5t3TWfHYlp5+29?=
- =?us-ascii?Q?148VT4+EechAK004xJovo3I5ORCL0+2gocnY5fpyeLm5DmE6eIWJOVRBBLxz?=
- =?us-ascii?Q?4RNRuh7vr03pdLYlFlOSgSPYRUJoYGXPfsIZ1LHEsxnWaMDNHzEkFLAGuFrQ?=
- =?us-ascii?Q?MnnaVMiBfxCAVfz7nOI=3D?=
+ =?utf-8?B?TU1sWVNlN0h1ckVBcVFmM0dPb0ErVjVhbkZHbkZjUUdRMDdQMk8xL245TnBR?=
+ =?utf-8?B?Z3hwWlg5ZndIeW5ZbVphY0lQWjh4bERiQVZXdTFiOGRiSlNudjRoUnNUWGRk?=
+ =?utf-8?B?TDM3OUdDSmEvNmM1MGVMSnVZVnpBOTBlL3k0VkVNb0V6ZXVlbzcxMW5oWUhz?=
+ =?utf-8?B?cktCNHo1dm9BZG1PTHFRbXdkZTZtOHZhbFJDYVVwK0tacDhlYURzYWhPdmI0?=
+ =?utf-8?B?ODg2WGRkUjZsYldXK2VLSnZ6Q0tTMS9BMzRFZ3pZNVoxVGFjTGNjdWdiVmF1?=
+ =?utf-8?B?WG5kZDFuclo4cHdIL0Q1d1BVem01dnpuaURqbmpaN3lrMURvVjJNczNIbWRt?=
+ =?utf-8?B?Yyt5QktSQUFYWjBZbzlFZzVaOUpDY3JTN0ljVHgxMDRuUFczckJ2REdRVWZ1?=
+ =?utf-8?B?bXRFYUZYYkdqT0E3TXR2bHFTYWdvaHpHQWFveGhkUDE1eGphMkg0eW41YjlO?=
+ =?utf-8?B?LytRNW44VlQ4bFRORFVWVW1oNlFPSEdiQk9kS2hkekorWUpkMzlGQWRKMTBm?=
+ =?utf-8?B?djhXcS9ybDIrdW9IM0x0ZmRQMWhhYTBWZkZacGdWM1gyNXhZcWxmQk80M1VB?=
+ =?utf-8?B?bFFBSGZjaytiSEtia1hwS2oxcldjc1NCTzUza0dGNENGV05zRzRGUzA5TmJa?=
+ =?utf-8?B?eUdwbnIxQmdYTGZLNElhT0RzMmFLcUM4ZitVb1pTeEdmOGdya0hqM0FkbERk?=
+ =?utf-8?B?cGl2UkdUdkxCYm4yQktlenNNL0tTNHp4QTBPSis5eFhFZ1JJQkRncWFkWSt5?=
+ =?utf-8?B?cFgyaGFKYWJ1QndDdmpYS2F4d1RnSncwcFY1emVxemxWcVNFUlRhV05VRUNz?=
+ =?utf-8?B?YnE3SUc5a3JycEc4YWRkRGxvb1RPZFI0bEtxYWVpWHp5SHQzeCtSMkRUSnUx?=
+ =?utf-8?B?bkg1NGs1eE84Z0ZueERDbUNDRnM1NDg4ZVNUai92UVFoTHdqT1l3dC9mQWcy?=
+ =?utf-8?B?QVFUV0syQ0pudGw1bHhsSHRQazdpQXltQ09iZDhEcnZJd3JtQTdGNUwybElY?=
+ =?utf-8?B?Z3BkanlQbENUL1prY01nZmxFRHhtQ0pGMm5QcndCODlPVlBpVU5TUDAzTzI5?=
+ =?utf-8?B?RUJ4NWZCcHJ2ZkxiMXJNRmY1WVJ2ZVRJVnJxbWh3dEhDSnhadm40OTBEZ2hq?=
+ =?utf-8?B?VHBiY2VtME1KZFlIV3dESnZYQ3lRYzc4ek13a1VoWkFkYm81SGozNWo2NWtR?=
+ =?utf-8?B?NGVHMGlBdmFlUTNuUlBna012akNFWTdmSDAxeEREZUYvVFFQaVpVd2tnak85?=
+ =?utf-8?B?RG5lenJERjhSR05HZFoyRmpneDlRalJaZHFpbWtwODhsK1RMS3BFZFJiZURX?=
+ =?utf-8?B?cTFxTWl4SXFZcG1Gd2FPcVYxcnZZNm96ZzFxbVZBbVhaOTUrTUdYcDl2dkZD?=
+ =?utf-8?B?VkNid1JEb2x5a2FuQ3lFbmgxRlZhUXkreEFVQ1Q2VWxVTGE1Q1RCM0lVTHBq?=
+ =?utf-8?B?WHhqMTJlNnJxY0w5Z21QV3QzMEZUNUVTUnRERkdGcENaS2trR042R1JvQzFC?=
+ =?utf-8?B?V2d6cno3M2tpRGlISWordXpETjJiSjJlL29RUTEzMFpKQ2xSRWNiZnZROWhW?=
+ =?utf-8?B?aFBTWmQxSDY2bjl0WXBHeitkZ1JCSXdpYnV5NnhBZGx0RFA2UUZZcTMzajJO?=
+ =?utf-8?B?QmV5VkFPYUxQOFFGUDdPc1l1eUl1UUltZ0RWN2ZyaVNTdmZ6SWlTYWZEaWw0?=
+ =?utf-8?B?MDF2L2JuZ3RFSGdnSmd1bVF1WG8xQUV0YjNUQVVHbUVHWDFKdWdjS216Q1JG?=
+ =?utf-8?B?UzRqVk5LWWRDK0tnbUJ1Mm42blhMSk9USWUvOXF0eDVoOUU0ZlZNY0VFSnBB?=
+ =?utf-8?B?TGdjNnhzckRKeFd0Q3pTUnVHNzNoUGlDWjMybTMwbGo1dFJjMUtWai9Yck42?=
+ =?utf-8?B?R2RtQVBqdGlJM0p4S1pORWZ2MWFXRUpzMjJVTjVHelpNTlJqS004Kzg3L2JB?=
+ =?utf-8?B?cnlmVVErK2RxWUh6QWdEU1VaVG9QcnpLZEpGQ2NEQUFkNVRMbm4yM2pSY1Rk?=
+ =?utf-8?B?R1o3Mlk0d1gvL2laQjJRUTVSTGFSYmpBc0xlMW9OdVlrbEdnUVlKMnVSYWpM?=
+ =?utf-8?B?S0tHdGVjTWo4TGJ6ditOa1NlbXlWc3IxU3RDcXFkUkxDaE95Q3dJbVhBTDhO?=
+ =?utf-8?B?dG5RMUQ5VVdubWpBZ1BYeUcrUGQ5am5KbGZFQlhQUVF1RjVTUHI2TTRwVGs0?=
+ =?utf-8?B?OVE9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Jaraw3q0jw6tSfyVvTIlhGbWI4xAZR0VgW9gUI6DgbcMdlej2s17HZzc8urt?=
- =?us-ascii?Q?9sHJkQXwdImsyMfxbNS0VeBmU/wMwIeWBu5jJWNq0UACprsbiPR7JBQOmC/f?=
- =?us-ascii?Q?OC3G4UnlIXJSzn8wF7BvdUUu1ZwtpcKCE3DMxCzfMo8kiDLQIxrk2Gdipa1z?=
- =?us-ascii?Q?FgFJTfk13HSw9QSAUUSyR3oXY6HrTwtCd/lHFL11hMf5CdQ5Lp8aG7FvND9f?=
- =?us-ascii?Q?5PCsLTq6JN4fZ7E17XcxNbuYRjEz/R16sDcF+zFtD5BVnMEDVp/N9pwtt6t/?=
- =?us-ascii?Q?M71Urz8apE1vuB653Ge0XSNrhPw/qiP+li2DQBihJvMl0XTlE3N7Dt/9C3ZV?=
- =?us-ascii?Q?qnWkWe0P8uEJwLlSA6Ptc7N+BYl5RokmMud3NzxUsyXH9Hv1lYacOCq5j9jD?=
- =?us-ascii?Q?5QfjfR00Y1KpF4gqsYC40EoKY4HLLe8aCnc6lYZeafiKz8jcFJt7kA8I1YYZ?=
- =?us-ascii?Q?M//rf9uOmw719GW6S35TP3OyWGLvNR/gjiCQGe1F/wcjJwVXJEtbkYuVXz/2?=
- =?us-ascii?Q?xjTuoSsDFUFkquvQoxnvF3czm9iCS4FDqsMYLjlv+dHn/FCg7fK8E2j8n5wQ?=
- =?us-ascii?Q?C/7ChG2JwVsThYefYET82rLG9z4ulgmhsXtes0aZxSgVJt/aup1peHfHFEAU?=
- =?us-ascii?Q?GhLWAyHrjXfYb9hwbIkdkI1gGGTyGc8AwFD0CEbgQ2gwEM1P+ku9QA23DEIR?=
- =?us-ascii?Q?+7byBzszNsGIhqk0QUUSuPfgBrNLXTmKejG4n2Biq9X9Nt32yDEqWRRVAqTO?=
- =?us-ascii?Q?u5oW7z2WkBJkGbBpKMbQHjGVmGa3aUHrO+Dpi/1aS2ge1FvZOJ3WTT0sDnMb?=
- =?us-ascii?Q?58HuvveBcno4qsrd2gpTpJaFxQigdhd3QpRvAMrQk5p4LwNkpCnAbJ+MdYh1?=
- =?us-ascii?Q?QsqLp0rVLePZ6qbuRto6eaGvakhJvIe/D0QUV9uqcaf13iR03NlSFRp79DxQ?=
- =?us-ascii?Q?rQrC6ma12I4zS23+cG7hnB3o5hSd4UQOQpri8niDQx+t9FISJ+mkW9rR890C?=
- =?us-ascii?Q?/PTsDhrIQAPmgEEilCSuzZpJIK9B36NAuSfveFakmE5/FuBypiTGpwLGYxdA?=
- =?us-ascii?Q?L1d91YlPffkyKdtE1rw6J7moydIUd6zH6Y7wKwmKIv37La4BPltj8Q4x6c2D?=
- =?us-ascii?Q?T6rjkgVVqLT7e7UzEOgYf6G/3SCY3rvPPkw+EyQGlV5aKFL4MiXDJ3fT3LgG?=
- =?us-ascii?Q?5FExVAhjOaJ4oKlgS/SlTikFoE8vC49X0vH91DG2DpIVGMemVTlpBH8BwczR?=
- =?us-ascii?Q?C333D0g1sTUN9+r5a/dvr3pO75nax1TEH8L5mGIk0RB65ytH8uZn9qG3VheT?=
- =?us-ascii?Q?sfByfiU+0WWlI940sOYJw/M2oppJ1qRe0uEWRo7A5yrJP2p/vItW/A/Mpqm1?=
- =?us-ascii?Q?ISGpzxuqsZ8FOHnwHiNX+OtIpH211g9endozY2zSkxVMHjQMo/aLPGC2924g?=
- =?us-ascii?Q?FlJepPpA/aHu1ucSVlfhVbr5U+tPBKk9/0NTP2fXX1EMy0kwpFPXFX8npoQV?=
- =?us-ascii?Q?sHrqu0LUmvimdlSSzpvQ/0jGTuHMJX7TJyKgwuLa8rsHabzTNsfEd45ylWLz?=
- =?us-ascii?Q?dvYKe3iewbjzXJLhhjwT54dA1D/aaq7KPpUHRBnv5h+63t0hPbWZSDXFzTLv?=
- =?us-ascii?Q?ikNb65yK+ZmAVdeAWq1S4lRfmTxKEK61FOMcl4UbEfHx0hkyavOqMJGoGUIt?=
- =?us-ascii?Q?CuhEccDUo5os5iCK7y9y2GwpKlnhtYJrn7x7qQHnWrWJaoHvqcgsTBbf9qxr?=
- =?us-ascii?Q?VMGUyB9+LwshNzYEVORuz4A4s52SrKo=3D?=
+ =?utf-8?B?T0wxSlJLc3psdFNIVkRpUnBOMFkrWURDWE5vYllzVGF1SWZLU092UzZYZlhV?=
+ =?utf-8?B?MXIyR011SEExU2o4RkhBYU9RUXhvajBGSlRxRFJzTzU3Sm9oaDc2bzBoVGcx?=
+ =?utf-8?B?UWhoOHpsc1I3R2VSayt1K3NqcWcyZTJpeFZXNFEySjZ0Undqc2ZlNHZneW9s?=
+ =?utf-8?B?REVOVzRLaXFuL2xFRkQ1eWtlSEZUZzF5d0p1Q2s1endoQ0hZQ3puYUJxTS9j?=
+ =?utf-8?B?QUtUQ3VvVFJuQ09XMkw1dXVrWU0yVGR6dHV4MWVGeDBTOGZ2REhSd1ZzUFFT?=
+ =?utf-8?B?NmJjYzlPeUdkMzNaRnJOZUFCdnBkTkJpYzdZMTlEM0t3YW9rSnQxL202a21B?=
+ =?utf-8?B?TE80MjJibVJWZ010UWE4S1p6REdDZzYvWjdqMVhzbXIvbHBJN3BHL1p2YWtE?=
+ =?utf-8?B?WDZQNExPVENXRGk5WmRrOVFIbWZ4NnJiUUUzYU1HNmtNWXl6ZGZhNHJKdDF4?=
+ =?utf-8?B?elNUMGxJMXhEVWx3TW5uZGN1YTJLNmFzeXhvNEp4MWQvMHVpNUNXWGpDVlhV?=
+ =?utf-8?B?VVp4V1UrWVlFRnFLellHSHBLTjlXbFBQSmN6ckFpbTlzMkI1TFhUb2I3OGdi?=
+ =?utf-8?B?OFdHclZWTjluRVo0WHJ2WWN6cTdCaE4zT0pSYzN0UjBkZmp6RHovbXZTM2NF?=
+ =?utf-8?B?dUMwSG9oY3NGYVkyWm03YWRjbmk2UEI1QXFOejh3bkwvTFdiZDR0WkM5T25a?=
+ =?utf-8?B?RUVlWkQ4bGxuSzBkaCtrZm5QSmRkSEcyOCt5dERVdE0xZk5ISHN5MHBodTNi?=
+ =?utf-8?B?OHBsWFR0WnI0dGlUTUc0dWRtZFMya2Z3ZlBWS3dVeEQvVUZNeWd4b09CcDRk?=
+ =?utf-8?B?YXgvQXBheGRlVThXUndLM1ZXSzJDbDd0MkU1WUVkbk1ScENWeW81NWl3WUlx?=
+ =?utf-8?B?ZkpVcGJ5MGJHTFpoRHJiamRzeUtqdFhiZFYzc3gwd09JVk9yRUF0WmNyUE5H?=
+ =?utf-8?B?Sk5HVlFtc1RMVk5ZVVNOT25kK0hBNTR6Nk1pMkFzeVpycnpsbmNpaUhYS2xj?=
+ =?utf-8?B?ZnJ3Zk1JdC9lWDBuN2dnVDV4S2FGbmxIWHJnVWUxTFl1TVJOMEY3VjNwVVZ6?=
+ =?utf-8?B?QTdMZFZqREcreDlYYWJPcy8rNXVDdm9yVUJ0VzBRZWk0V0N4NlY4MDNHWmxX?=
+ =?utf-8?B?WVpDZDRlMjZ5c0sydys4RXloU0thOERDMzJ4NEl2U3g0MytxbUs5UUhZMlc1?=
+ =?utf-8?B?VnNSVE96cmwvNk03WWdvWVpSVjVSb2dnVmRNWG9pdEdHOE5XV0ZkblNIc0lz?=
+ =?utf-8?B?NVEwbUpnWnV1Z0lDSFhMdEFaTkQ3Ky9Td255NlRod2x6MW1MWGlPQU5wL0NG?=
+ =?utf-8?B?MnRUYm8xbThUc1ZtcUR5a1FFRUl6UjBsWWJRVUxkdTRmWFdQNktxSDYrUksv?=
+ =?utf-8?B?UXdySzZEQ0dXZmlIMm9NSzJaSXFmU1Mzdm5rMkpmWlJBbDh0SmpaRWFwOERE?=
+ =?utf-8?B?RnY5aHNsbzlveSs5S25IbWNOM1FDcXdrV1A3dFdLU3orK0FKemFVTjNHZGl5?=
+ =?utf-8?B?TzJ2UmU5OUQ1L2pDczh0aUd3NS9qb09hT1RlWWpZZ0dOUDFZOEx1ZFgyeVJO?=
+ =?utf-8?B?cTROQnlzNWJFVUNPUVA5VWptbWRyRUVaZXJJSk1CQ1VoNVdRaVpXSUFQdnU4?=
+ =?utf-8?B?WGQ4dlZaV0lRUTBaTmlLNkRvZktCcVlYbFU4THY0ZHg4MzNBK1BibmpzK1J3?=
+ =?utf-8?B?ZE1kNHo3UkloMlo5cDN5YXFPcGJISHE1ZGxtZVJabm1hN1NUdFBYeStUd3Qz?=
+ =?utf-8?B?K3dJVDJDTmlkanlKSlRLcnJkTENXR1o4RDdwWHVyK3hBemRwZkgxdkpjOTZS?=
+ =?utf-8?B?alp3cnRTYVczajdjNGJWeVpLaXFZWVQ4VmR2SW5Ra3BtL2wxeXFTNmhBcmxn?=
+ =?utf-8?B?aGVzZUx5S2x4dWhtaHp4R3g3dEdpNVFaaHBybGRGSktvWVVVYmVIbmdJU0Yv?=
+ =?utf-8?B?NlJLWnFIMnlMQWpkdFExbHFjQmhPSngyT0VTN3Q0ZkNScGFQbUxPcjZ3OW9v?=
+ =?utf-8?B?SXVHUjJreUxtRHk0TDFhYnY3SGlHbm84NHAxcVR4SnQxdVhGVHVlc0V4S0hV?=
+ =?utf-8?B?c0twcmgvYnlySkxxc1FheWRNTlpYdmVVM2pSVzJLWnRwa0JaUVVya2Jwcm9P?=
+ =?utf-8?B?ak10cys3OXVJVWZOVnhjekV6YjlUTjY3ek5sek9OcVA2TnpZNVB5L3RQdjZC?=
+ =?utf-8?B?NFcyd1AxUnZXMjV6NnNLVnpRT1RzdEp6QWQ1MCtUT3QvUFV0bVpxbStmM01h?=
+ =?utf-8?B?eFhVQkpCWjYvOWFybEo3Y1Y5ZThMRFhiUjFUQ0N2M2VjUzNXV1J6OFI1MENh?=
+ =?utf-8?B?M2dtM3JOYkpPMVNTaG4xQ294WnZYVHBzbk9xd0IrRUFxbVVsdVpMQT09?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	o3pgL5ceobjdwT0vjOi8V2BY7uo1rmRWMfe5xo7Bb3YTWEfvki8ldE86AGuzf9Ru7mz5otw9ZF5kpZbaU+K7v8Xp+X4lWLE02lTPOv6smo2vHwVs+/7X54ATVAPzaPEOX7eyQ8/sbP94B9xgUona4N0dRPWC9y+qSmaleW+QFKRsgGZ8lDZubCoUfNgz/OIw166OSxAM5WOnHACxeIwn2cGLITAIBqDacjUre2W5rrOpv/mRj5JnGwF8xGCKrwcbwz6sQtlTOcgbOIv1LUyKfqFjstmusAMXmOXIoIGhqD9I1hQE8FI/9VhT9Atax96ux6vqzTevGMW4TvobW6x2ARgYF1+FuRPMg14MLBpjRi8Yfk/aTZlXf66AL9nR4CCjba8gxy0YineMp06SIsPvNIFh2R1C9P+I3uk/vmtNVWGuJH4W6JKPYABHaA5aCgYPvcuSQViZBnt9X/QHTyqqEomd4ENUrM1QmqylRstMEZJ3mqodbLkqXA/PgHCS8EdaMoc4kTY/rawZZq8MBwcJfxAT8hRlQ3OC9oLFl4pA3Th9xfuk6sTzu72Ex6hXb67jFNo1MhTXlXxrpPDunlqXE/yQaS7PABesv7jCSADkadg=
+	iR97J67qB6booMUzGvhEMb1FCzeocFAm0jUyv7uPMk9/rE6IwTi9mkTGM2/UvL/0ViAyPPybh0IzP933wjhPnNNXR1lcXQ85jzHjjmo3RS77QalmH/dZmrbpHW09zMLGrFIa8i7XnjXubgjeABbGkrTc9zfKvYTUpggoMFKD8OT+k/jWq+1nnmK7K+BhwYTXUv8nEufsgVHdcISuKp0P2Mj1kyEwlWBWI2USfzZxImX4TquOu6I7Th3GJZfBQGrS0pKUaxi6CdteclYRjJ9hMz0N57iu2XZqaImRrks6RN6QwUHXvJbLwoVfkKU1MQFkdZOer2qIToFc9eXk0SGxCsbmZHCqZztQbMKDMfI0Ivz9sGzbO6A5wcChZI8QiWsjXfd9XkJfH/FdBZvDHD/8Zt5fpASp4xURC9GcMtrM4EqrLJe5BgjLWBhdqlLzoPgtgHYjM2eYpbH+OVnmVvSGOlEBhT0W2LyEw68WsyfMoTtsZehafhN7Nou3O++XU//r9qzsMRiJ/24WMjj39m3auJLU58hiU2zS9WI876YLdxWtjL+WPyiEG1qe8cpCIe/IStvNucOYSha65YsngRhg7gWLJYhHndSzBk+AWfsGIfo=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a33c35d3-63b4-41b3-fb73-08de576a4a0e
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85b5ecef-b5d4-42e8-2652-08de577a69bb
+X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 14:51:55.9845
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 16:47:20.5999
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M+noQ2gFTs5w6+kn/v4GAcPGAF0BRgmCjVnR+jbkPPZ3PO4VT/dlP6vo78CBFGxeCH3nc78bIQXHeZ9SxuZRs4t1I2PXvJhDl9PYwDaBeNQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB7483
+X-MS-Exchange-CrossTenant-UserPrincipalName: TeY+n8+5fr2bzPzvRD/k/mpF3pw6X3JHNxBVMtnE56CQqwnIpGhGQvWyxMQNYsuKUtyc4qtqL86u96PZ3qpQQQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR10MB5618
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-19_03,2026-01-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 phishscore=0
- mlxscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 spamscore=0
+ definitions=2026-01-19_04,2026-01-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 bulkscore=0
+ phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601190124
-X-Authority-Analysis: v=2.4 cv=H4nWAuYi c=1 sm=1 tr=0 ts=696e4513 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ definitions=main-2601190139
+X-Proofpoint-ORIG-GUID: _grNjMp_nmGqlNOUEL0x6HiCgp9EGkRx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDE0MCBTYWx0ZWRfX3sIuVRc/unYI
+ c4yIHfj3kx6N+HgyTH7w9KuXv0rdb82Pm3G150Ba24FPRqxMzHP+Onm9o2IQgxPKRKdicaVPB3n
+ OlYryC4X8UXV2Ohk4jIYlX8p8wYwSsPirefAinQzOjurCpg/TYztB8gRCmAOxKrTCPr3vbrfzTo
+ qtYCvqfhXHHsXEWOWYuHN7JjBvpv7xiQnnxYZM/10SaNQn2zJhV//9k8Z2tjwDpHB0unEoQh6Bw
+ csr7HTCRB5FihC0G5wuhOL7Ijo9LQTlaTYdZQX6PEp3oScZjN5Ibu1WcZk31JRc4Jepd0OL9e/y
+ KZvBkg4NNlcf86Zpgj77f/EcRCa6/uopiaNWUfcAfmEqf13RkumMXXnDyscgC///TKt+JXWdrga
+ rrutaT0HOXMTGSBgNncGTVMhdHlZLDuubmeFYNxtnz+xg+eu+glhwWMZditWeBRRzMa5fXGt+q+
+ aEkFOwCvulmv9sbAJXsns1YGcQ3jB1xHGa/kskG4=
+X-Proofpoint-GUID: _grNjMp_nmGqlNOUEL0x6HiCgp9EGkRx
+X-Authority-Analysis: v=2.4 cv=FvoIPmrq c=1 sm=1 tr=0 ts=696e601f b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=vUbySO9Y5rIA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
- a=5uttRRLgS_GaOMRt2q4A:9 cc=ntf awl=host:12110
-X-Proofpoint-GUID: lUlToLHitfXB0rwaSMRBNy4jpfUxKMn6
-X-Proofpoint-ORIG-GUID: lUlToLHitfXB0rwaSMRBNy4jpfUxKMn6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDEyNCBTYWx0ZWRfX13T4SbImqPa0
- Dei5DtO8SIusSnH3HvfH+V0xY99Nv+rwmlDF9pxgPKcAKB5WN+IBoPFk+HksOdn4NEXQEckbSkW
- OE1eAK4jXi2tmF+bk/rJDpPqP5LEU73eNIZwBP7prGrQifJQt+nSLavpZ2pkHRpgj3eaBzDWYl7
- Nxi/go5XicNAi+MkmrTIsXn1RK6gReqpWzmIURmptyHTEm3vGDBTk6+pyEgYSZmcD/ZTqmX9tFe
- fjGiran4WpB5d8yuU2whXwv1KvyOKwS5JLL1UjfCWaerYBsm2N/8qK8BV2yJpLU38PZC30Euw7N
- xBP2oXuhAcmsDU2a2jqeik5NOIl6jzYO0077ILv4/nHGjS60kW82s6ceOlH1nWPm6Kwsq+M/N6T
- YVYP23BiVDEW/9V0dgpLXhXJZFPA9qo2MqmjyD8qKVdZcSFZ7yIrWIXhx/8mqimNX6rIf1a5c8m
- c2vdn0GxwtwyO5mlzEV8qwkpeR/cWj1NyQjP6+h8=
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 04B528000A
-X-Stat-Signature: kxdsifdbuoheubm5izabtycbgkz6jkbi
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=rQbvMX7ZmuU9TDQPiW0A:9 a=QEXdDO2ut3YA:10
+ cc=ntf awl=host:12109
+X-Rspamd-Queue-Id: B5952140010
+X-Rspamd-Server: rspam06
+X-Stat-Signature: e7mpxe98o4w3usbaf5hgmkqdtiyy9dca
 X-Rspam-User: 
-X-HE-Tag: 1768841063-559171
-X-HE-Meta: U2FsdGVkX1+Th+o9dJr9nIt/jsliwuEonxqEalkDRWpu8NBavfLbQnnn+iuyFdxTmnVsKb4PK8orxeAR9rhV0bavJlzM/AGwlgv1kRlgWWgzk+YzXnqvvAJ+kfW3I0wxGmsMbZm/oe7FWWlsvmksd0qeQcW2qnJb47Wjt7tV4AxGmCILPOQ3rE0uZNNQO3FNSgBBkd5xEF9hKq7r/KSH3WEJgQ4SS1zXtmDO5ioZurZxauv6MYT4ezKnPEYmG1WSwMqNX/fq5Bp3s92Cuqdy0/7vl+CbJOt5HamEhREaQKOtjIoENDLLSS+wRJ8bw5lkTbZKWy8iFT2MmtG271OSuvt+Yd4Nei7DXMvy1fWj2nXiMQeoH+UeT6pE19P7geszPnY73RPBuPTMA2p/eZV61rPpJiIAYU9Ob8pzgJ/Vb5qtlNIueP5ieS4Tb4IH152yuyoT3IBV1HQ6W+fONTqZJLABpoq+2PbFHsiSjIsF1jBUPnX6qFKJ/3cu+TInla/TmroAJKJr3okf8XdD8ECK4Eb91mMNi+NdvYHW19Egjf+vuqeq0qPIlvECj/8GbTqHDUUOK6oXk5CorABxyZmp27lWIMLRIw9N/vZlHaBpdHJ2OCKmjiTdSXJg4FwB39gARFhfnm9dusWV7Ram4ZGcc+NSL2Sx0xXQ+tpsmz45WaaCfNXUldSEptREfN0OPiUS5dgEfONMFb5HSy97dtBN841R96wU4lGgtxCKpYNJXHEL9mCLFcc0VGtVMHA8mioFvx+tzVGBpaeVgaLdfwc+6v++4b2xw69N9ZkRw7mBjRwdQHuDYtLbJywpLCLwwoCxLQUGF9ayEtycc8p70ti6ulSwCElNDn4W8dNdN3OZPRu2ZOVDdnGTYx4Se4YNqgOpc6/o6pIkY55ExpI9w/WczLC0rEr2bxMzYXjPvIEdKEd3lkwl8u9k1jbIEkUMGPKKnPcKb8Dbtk7vyT95I1C
- 7Vr1axRZ
- 8es+bVCxjjKBmXKRgh08NiqRK8eOkw4rbTaWO+ZCkU/CmuC/1qlCWMmH1KvsevOaxnSWSMXGu0fQiabyyj9AiakLRhDoq7yAYzGguP8yb4fAD3J5lonKqdRsn2AgZE2hnHg1fV7ioSIxybL+gCKY8jd++jNG2e3zS+Vo5Ql0CWenXIE8hxcvADFcXoOdvF9vlbMxUkkpxMk4EEYmlYabPleb2oZZ4vxz4sKjgRAHW7Y7uLHgLirSiKWIZ4pDooQe5HYQTjsOmRzqgSpBRpm/9i1DXRheigB0C8xO3Sj9geLMYP9B0VI4QUmIJq82rG05PguW+lSwdEnFDAjYN1eXGnbgGtfs66q6cnPUHCoh2YXCgpW7JdICpdS2l5QE+F2e+19tJzbiQPImSZSL7M8V3bwCDsb/fTUqSiVvuSPB+dIMJF4S7x1K8PrbNhXF4SotIO0Qov1xsBOlLuXN40jPEpjvPvxvsig5nB63fuoX1eQLCqIzhj7fh7fEdDwf6lnk3kkrbcTB7I4TtPpp1boqA9ksPNxkFBi4I/xzbzggafXhoyMankQEUKRpKBlDUPKtvgDtJdKgx57um7G6GY5dlIhA2mpNg78VsoGA8Hi0l/86AYdkPhvv4isUm2SgsOIIfglLV2tuSXj1Z9kZLQKeJh1xWZlaZBPUuyvcMeG4zyL6S4MeHT5n27TK63Sc86p4Ez+wMckgsglfaaE7dI8rFP1NrLdauEaC0vWBaebIam7o5lor8NbqKP9lRD7sCcv0X8CxkpwOvK1VhyWAb42jhUrJntoz3gL7pfEMr4gMIvl3MccauIjSLH8u0onAa2FKzEoI1HqyT1elSqvLkfzFgzyJniA==
+X-HE-Tag: 1768841269-671878
+X-HE-Meta: U2FsdGVkX1+tpr76kPp7QxbkKOW6+srpj7aauAn7S1XcaBzWE9IDMZSUcUW43VIf6X9qPu2XdtGRbJCmhVWJb7/FmOSQM6VH7mA57ITAyt6Dr9d99s5Aw6Hsvf/kYELmuiQ9QIYcqfmkYzz1t5sGVkt4WBlDWf54rJ6okcgCmqWiuxVsmuajz6gRe2YM0lzq7M4c2dNe5zIx2g42M1zf9LhsXu60j6Sah76TBQ8VEX7wFEMNBc/fd31HXgP7M3i0LXhML2sogEm7kBus9ooJR9yzicj0PIbzIEHcJlPNINyMCgiTlVj49b7csxECszl99LvsDw9YVByRL6BPSA6/GWvCmI/9vitOkh5ai6CUN+k3all8ZhN3reLDT31jGDHuA0cGJw/nFIWYa0NaeLrO9TM5DaVo2ExUo2UI+0192oAPSdZ6iUtCj7IdVQ5NkoS4Yz044dV/EcMsEovgg7qbfwpCXMYkO+qrQNQf6k+2868voP2Gs7N2JQqrGclHl4+h/SzGkBMeixBy2QxP5QRA2qSzY3zmW26XPh9ASYAaeXeCsUU8xU52fH9o4LUijIFakXrhZLDdEkezWhkFcCAIEdAVT/0NxcO+63UqTjzrhD9AzRmRJ+gzNOPWpT7OEk0sVZY4AxpZ9maokwe/OZLxJJh+UJao2pF2FPjQ93NP+UpMeEWlYqvcHEm3yUIqq9VXIyMS7Gy1D+nUSRyV8zdtnxzsA/2buDxNT1O2ZE90v7vvZ9GzaC5fZgN9b2Uh/MdvANY7luldlmHqK0etlc2A3Pxhcs5DqsUCqfxUHRw7B0jl7XLUUF5YCwjeiYXI2m9sXAjNs+brQ6Z37ITvI1fylc8S98NVxBNuLI2lsDHMRcZqGGzY7GsvNrjfpoBj3Hv498DXr9eNLO75TV5TkUXAmRfzuLx4zDAtbmqd2+1s8CDYVR9sSPYcuYFUzMC2xxA6RPG5R3AmtLsAFCBAGRM
+ 9ATfFRxG
+ qFK0LHkJPGp/LfHUCLJRi56ELdAJFegr9LKeKmfRqqe2qru11t3MkHwJoIO6NQBXVxwQnfVvjghbWYIV3OiW99733fh4RyHzFz2hXqGLA+a93pIhO8rF8azAU7Hhwqo2MWQoa2lNEehQqx/MrKMtQxShxtfaQSGij02fATD+3T/zWJ5mVJ/UHQxHl7cDVNbEbGgdUpYLnqL4FNYjbvjWAA9cG2xUcMXy1sp/MJ69ixVOL6dpqHyxA8ngN6wRN7grui0oeKAK3dQlMkT7FrsE/RpfdF72u9zngFaEV8Nj3MpDa/1umlTc7EmvE6kTbs5Vs+xV0sglGPLt5uN+jVOsi8PvioGZOP4ZW0lA4YBFFgZqzGWWTS1UOQQ5pBt7aGrz9ovewHKKeDJ9aZX+N8gsrXKGPxPdWGXZvmVT0Tc6HEqofOtILjgUy6W4bxDYq1QwHEFPQ1CRyv+oG6mvLUKOkcTZ+sRd6BEnksYDYvLP5/sST4zL17x2LNEO7Wdbn6t03bkm2kiKsWCeB4B+sWFLuf8LSLluaBCiXmqSDH8O8H6tGiOcRit8wDZ50rHHPOwJQqOxCGOtbv/4MgnBZ1Ca4Q1h2atM7qDPDZI9QUG19k1c5Nc2LXo3yOduoSlwrpaV8k095tX3mhyQEUBduB46acJmWDiKAHI68edjalA/HWIDqh18A2G1FIdaEFFMHT1EkXj/GCv3UsfSCAeUdLANcXqBKrxW3eRUAsqugNyD/wy0QgeweIPB8AIvQlSXFeFHx4cD7TImbXgyigGe25ehMUZIlL5kHF01WRB9Fm1jj85Xbfw8/2Ie2w6qA0e4r/TdHWKgeXek18GWb0QY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -300,906 +315,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-So far the userland VMA tests have been established as a rough expression
-of what's been possible.
+On 1/19/26 11:26 AM, Jeff Layton wrote:
+> Get rid of the dprintk messages in check_export(). Instead add new
+> tracepoints that show the terminal inode and the flags.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+>  fs/nfsd/export.c | 11 ++++++-----
+>  fs/nfsd/trace.h  | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 58 insertions(+), 5 deletions(-)
+> 
+> diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
+> index bc703cf58bfa210c7c57d49f22f15bc10d7cfc91..3cc336b953b38573966c43000f31cd341380837b 100644
+> --- a/fs/nfsd/export.c
+> +++ b/fs/nfsd/export.c
+> @@ -435,31 +435,32 @@ static int check_export(const struct path *path, int *flags, unsigned char *uuid
+>  	if (!(inode->i_sb->s_type->fs_flags & FS_REQUIRES_DEV) &&
+>  	    !(*flags & NFSEXP_FSID) &&
+>  	    uuid == NULL) {
+> -		dprintk("exp_export: export of non-dev fs without fsid\n");
+> +		trace_nfsd_check_export_need_fsid(inode, *flags);
+>  		return -EINVAL;
+>  	}
+>  
+>  	if (!exportfs_can_decode_fh(inode->i_sb->s_export_op)) {
+> -		dprintk("exp_export: export of invalid fs type.\n");
+> +		trace_nfsd_check_export_invalid_fstype(inode, *flags);
+>  		return -EINVAL;
+>  	}
+>  
+>  	if (!(inode->i_sb->s_export_op->flags & EXPORT_OP_STABLE_HANDLES)) {
+> -		dprintk("%s: fs does not provide stable filehandles!\n", __func__);
+> +		trace_nfsd_check_export_no_stable_fh(inode, *flags);
+>  		return -EINVAL;
+>  	}
+>  
+>  	if (is_idmapped_mnt(path->mnt)) {
+>  		dprintk("exp_export: export of idmapped mounts not yet supported.\n");
+> +		trace_nfsd_check_export_idmapped(inode, *flags);
+>  		return -EINVAL;
+>  	}
+>  
+>  	if (inode->i_sb->s_export_op->flags & EXPORT_OP_NOSUBTREECHK &&
+>  	    !(*flags & NFSEXP_NOSUBTREECHECK)) {
+> -		dprintk("%s: %s does not support subtree checking!\n",
+> -			__func__, inode->i_sb->s_type->name);
+> +		trace_nfsd_check_export_subtree(inode, *flags);
+>  		return -EINVAL;
+>  	}
+> +	trace_nfsd_check_export_success(inode, *flags);
+>  	return 0;
+>  }
+>  
+> diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+> index 5ae2a611e57f4b4e51a4d9eb6e0fccb66ad8d288..e3f5fe1181b605b34cb70d53f32739c3ef9b82f6 100644
+> --- a/fs/nfsd/trace.h
+> +++ b/fs/nfsd/trace.h
+> @@ -339,6 +339,58 @@ DEFINE_EVENT_CONDITION(nfsd_fh_err_class, nfsd_##name,	\
+>  DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badexport);
+>  DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badhandle);
+>  
+> +#define show_export_flags(val)						\
 
-qAdapt it into a more usable form by separating out tests and shared helper
-functions.
+Whacky. I thought we had one of these already, but I can't find one.
 
-Since we test functions that are declared statically in mm/vma.c, we make
-use of the trick of #include'ing kernel C files directly.
 
-In order for the tests to continue to function, we must therefore also
-this way into the tests/ directory.
+> +	__print_flags(val, "|",						\
+> +		{ NFSEXP_READONLY,		"READONLY" },		\
+> +		{ NFSEXP_INSECURE_PORT,		"INSECURE" },		\
+> +		{ NFSEXP_ROOTSQUASH,		"ROOTSQUASH" },		\
+> +		{ NFSEXP_ALLSQUASH,		"ALLSQUASH" },		\
+> +		{ NFSEXP_ASYNC,			"ASYNC" },		\
+> +		{ NFSEXP_GATHERED_WRITES,	"GATHERED_WRITES" },	\
+> +		{ NFSEXP_NOREADDIRPLUS,		"NOREADDIRPLUS" },	\
+> +		{ NFSEXP_SECURITY_LABEL,	"SECURITY_LABEL" },	\
+> +		{ NFSEXP_NOHIDE,		"NOHIDE" },		\
+> +		{ NFSEXP_NOSUBTREECHECK,	"NOSUBTREECHECK" },	\
+> +		{ NFSEXP_NOAUTHNLM,		"NOAUTHNLM" },		\
+> +		{ NFSEXP_MSNFS,			"MSNFS" },		\
+> +		{ NFSEXP_FSID,			"FSID" },		\
+> +		{ NFSEXP_CROSSMOUNT,		"CROSSMOUNT" },		\
+> +		{ NFSEXP_NOACL,			"NOACL" },		\
+> +		{ NFSEXP_V4ROOT,		"V4ROOT" },		\
+> +		{ NFSEXP_PNFS,			"PNFS" })
+> +
+> +DECLARE_EVENT_CLASS(nfsd_check_export_class,
+> +	TP_PROTO(const struct inode *inode,
+> +		 int flags),
+> +	TP_ARGS(inode, flags),
+> +	TP_STRUCT__entry(
+> +		__field(dev_t, dev)
+> +		__field(ino_t, ino)
+> +		__field(int, flags)
+> +	),
+> +	TP_fast_assign(
+> +		__entry->dev = inode->i_sb->s_dev;
+> +		__entry->ino = inode->i_ino;
+> +		__entry->flags = flags;
+> +	),
+> +	TP_printk("dev=%u:%u:%lu flags=%s",
+> +		  MAJOR(__entry->dev), MINOR(__entry->dev),
+> +		  __entry->ino, show_export_flags(__entry->flags))
+> +)
+> +
+> +#define DEFINE_NFSD_CHECK_EXPORT_EVENT(name)			\
+> +DEFINE_EVENT(nfsd_check_export_class, nfsd_check_export_##name,	\
+> +	TP_PROTO(const struct inode *inode,			\
+> +		 int flags),					\
+> +	TP_ARGS(inode, flags))
+> +
+> +DEFINE_NFSD_CHECK_EXPORT_EVENT(need_fsid);
+> +DEFINE_NFSD_CHECK_EXPORT_EVENT(invalid_fstype);
+> +DEFINE_NFSD_CHECK_EXPORT_EVENT(no_stable_fh);
+> +DEFINE_NFSD_CHECK_EXPORT_EVENT(idmapped);
+> +DEFINE_NFSD_CHECK_EXPORT_EVENT(subtree);
+> +DEFINE_NFSD_CHECK_EXPORT_EVENT(success);
+> +
+>  TRACE_EVENT(nfsd_exp_find_key,
+>  	TP_PROTO(const struct svc_expkey *key,
+>  		 int status),
+> 
 
-We try to keep as much shared logic actually modularised into a separate
-compilation unit in shared.c, however the merge_existing() and attach_vma()
-helpers rely on statically declared mm/vma.c functions so these must be
-declared in main.c.
+'Twould be nice to report the namespace or client address that
+was making the failing request, but maybe that information is
+not available in check_export.
 
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
----
- tools/testing/vma/Makefile                 |   4 +-
- tools/testing/vma/main.c                   |  55 ++++
- tools/testing/vma/shared.c                 | 131 ++++++++
- tools/testing/vma/shared.h                 | 114 +++++++
- tools/testing/vma/{vma.c => tests/merge.c} | 332 +--------------------
- tools/testing/vma/tests/mmap.c             |  57 ++++
- tools/testing/vma/tests/vma.c              |  39 +++
- tools/testing/vma/vma_internal.h           |   9 -
- 8 files changed, 406 insertions(+), 335 deletions(-)
- create mode 100644 tools/testing/vma/main.c
- create mode 100644 tools/testing/vma/shared.c
- create mode 100644 tools/testing/vma/shared.h
- rename tools/testing/vma/{vma.c => tests/merge.c} (82%)
- create mode 100644 tools/testing/vma/tests/mmap.c
- create mode 100644 tools/testing/vma/tests/vma.c
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
 
-diff --git a/tools/testing/vma/Makefile b/tools/testing/vma/Makefile
-index 66f3831a668f..94133d9d3955 100644
---- a/tools/testing/vma/Makefile
-+++ b/tools/testing/vma/Makefile
-@@ -6,10 +6,10 @@ default: vma
- 
- include ../shared/shared.mk
- 
--OFILES = $(SHARED_OFILES) vma.o maple-shim.o
-+OFILES = $(SHARED_OFILES) main.o shared.o maple-shim.o
- TARGETS = vma
- 
--vma.o: vma.c vma_internal.h ../../../mm/vma.c ../../../mm/vma_init.c ../../../mm/vma_exec.c ../../../mm/vma.h
-+main.o: main.c shared.c shared.h vma_internal.h tests/merge.c tests/mmap.c tests/vma.c ../../../mm/vma.c ../../../mm/vma_init.c ../../../mm/vma_exec.c ../../../mm/vma.h
- 
- vma:	$(OFILES)
- 	$(CC) $(CFLAGS) -o $@ $(OFILES) $(LDLIBS)
-diff --git a/tools/testing/vma/main.c b/tools/testing/vma/main.c
-new file mode 100644
-index 000000000000..49b09e97a51f
---- /dev/null
-+++ b/tools/testing/vma/main.c
-@@ -0,0 +1,55 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include "shared.h"
-+/*
-+ * Directly import the VMA implementation here. Our vma_internal.h wrapper
-+ * provides userland-equivalent functionality for everything vma.c uses.
-+ */
-+#include "../../../mm/vma_init.c"
-+#include "../../../mm/vma_exec.c"
-+#include "../../../mm/vma.c"
-+
-+/* Tests are included directly so they can test static functions in mm/vma.c. */
-+#include "tests/merge.c"
-+#include "tests/mmap.c"
-+#include "tests/vma.c"
-+
-+/* Helper functions which utilise static kernel functions. */
-+
-+struct vm_area_struct *merge_existing(struct vma_merge_struct *vmg)
-+{
-+	struct vm_area_struct *vma;
-+
-+	vma = vma_merge_existing_range(vmg);
-+	if (vma)
-+		vma_assert_attached(vma);
-+	return vma;
-+}
-+
-+int attach_vma(struct mm_struct *mm, struct vm_area_struct *vma)
-+{
-+	int res;
-+
-+	res = vma_link(mm, vma);
-+	if (!res)
-+		vma_assert_attached(vma);
-+	return res;
-+}
-+
-+/* Main test running which invokes tests/ *.c runners. */
-+int main(void)
-+{
-+	int num_tests = 0, num_fail = 0;
-+
-+	maple_tree_init();
-+	vma_state_init();
-+
-+	run_merge_tests(&num_tests, &num_fail);
-+	run_mmap_tests(&num_tests, &num_fail);
-+	run_vma_tests(&num_tests, &num_fail);
-+
-+	printf("%d tests run, %d passed, %d failed.\n",
-+	       num_tests, num_tests - num_fail, num_fail);
-+
-+	return num_fail == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
-+}
-diff --git a/tools/testing/vma/shared.c b/tools/testing/vma/shared.c
-new file mode 100644
-index 000000000000..bda578cc3304
---- /dev/null
-+++ b/tools/testing/vma/shared.c
-@@ -0,0 +1,131 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include "shared.h"
-+
-+
-+bool fail_prealloc;
-+unsigned long mmap_min_addr = CONFIG_DEFAULT_MMAP_MIN_ADDR;
-+unsigned long dac_mmap_min_addr = CONFIG_DEFAULT_MMAP_MIN_ADDR;
-+unsigned long stack_guard_gap = 256UL<<PAGE_SHIFT;
-+
-+const struct vm_operations_struct vma_dummy_vm_ops;
-+struct anon_vma dummy_anon_vma;
-+struct task_struct __current;
-+
-+struct vm_area_struct *alloc_vma(struct mm_struct *mm,
-+		unsigned long start, unsigned long end,
-+		pgoff_t pgoff, vm_flags_t vm_flags)
-+{
-+	struct vm_area_struct *vma = vm_area_alloc(mm);
-+
-+	if (vma == NULL)
-+		return NULL;
-+
-+	vma->vm_start = start;
-+	vma->vm_end = end;
-+	vma->vm_pgoff = pgoff;
-+	vm_flags_reset(vma, vm_flags);
-+	vma_assert_detached(vma);
-+
-+	return vma;
-+}
-+
-+void detach_free_vma(struct vm_area_struct *vma)
-+{
-+	vma_mark_detached(vma);
-+	vm_area_free(vma);
-+}
-+
-+struct vm_area_struct *alloc_and_link_vma(struct mm_struct *mm,
-+		unsigned long start, unsigned long end,
-+		pgoff_t pgoff, vm_flags_t vm_flags)
-+{
-+	struct vm_area_struct *vma = alloc_vma(mm, start, end, pgoff, vm_flags);
-+
-+	if (vma == NULL)
-+		return NULL;
-+
-+	if (attach_vma(mm, vma)) {
-+		detach_free_vma(vma);
-+		return NULL;
-+	}
-+
-+	/*
-+	 * Reset this counter which we use to track whether writes have
-+	 * begun. Linking to the tree will have caused this to be incremented,
-+	 * which means we will get a false positive otherwise.
-+	 */
-+	vma->vm_lock_seq = UINT_MAX;
-+
-+	return vma;
-+}
-+
-+void reset_dummy_anon_vma(void)
-+{
-+	dummy_anon_vma.was_cloned = false;
-+	dummy_anon_vma.was_unlinked = false;
-+}
-+
-+int cleanup_mm(struct mm_struct *mm, struct vma_iterator *vmi)
-+{
-+	struct vm_area_struct *vma;
-+	int count = 0;
-+
-+	fail_prealloc = false;
-+	reset_dummy_anon_vma();
-+
-+	vma_iter_set(vmi, 0);
-+	for_each_vma(*vmi, vma) {
-+		detach_free_vma(vma);
-+		count++;
-+	}
-+
-+	mtree_destroy(&mm->mm_mt);
-+	mm->map_count = 0;
-+	return count;
-+}
-+
-+bool vma_write_started(struct vm_area_struct *vma)
-+{
-+	int seq = vma->vm_lock_seq;
-+
-+	/* We reset after each check. */
-+	vma->vm_lock_seq = UINT_MAX;
-+
-+	/* The vma_start_write() stub simply increments this value. */
-+	return seq > -1;
-+}
-+
-+void __vma_set_dummy_anon_vma(struct vm_area_struct *vma,
-+		struct anon_vma_chain *avc, struct anon_vma *anon_vma)
-+{
-+	vma->anon_vma = anon_vma;
-+	INIT_LIST_HEAD(&vma->anon_vma_chain);
-+	list_add(&avc->same_vma, &vma->anon_vma_chain);
-+	avc->anon_vma = vma->anon_vma;
-+}
-+
-+void vma_set_dummy_anon_vma(struct vm_area_struct *vma,
-+		struct anon_vma_chain *avc)
-+{
-+	__vma_set_dummy_anon_vma(vma, avc, &dummy_anon_vma);
-+}
-+
-+struct task_struct *get_current(void)
-+{
-+	return &__current;
-+}
-+
-+unsigned long rlimit(unsigned int limit)
-+{
-+	return (unsigned long)-1;
-+}
-+
-+void vma_set_range(struct vm_area_struct *vma,
-+		   unsigned long start, unsigned long end,
-+		   pgoff_t pgoff)
-+{
-+	vma->vm_start = start;
-+	vma->vm_end = end;
-+	vma->vm_pgoff = pgoff;
-+}
-diff --git a/tools/testing/vma/shared.h b/tools/testing/vma/shared.h
-new file mode 100644
-index 000000000000..6c64211cfa22
---- /dev/null
-+++ b/tools/testing/vma/shared.h
-@@ -0,0 +1,114 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#pragma once
-+
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+#include "generated/bit-length.h"
-+#include "maple-shared.h"
-+#include "vma_internal.h"
-+#include "../../../mm/vma.h"
-+
-+/* Simple test runner. Assumes local num_[fail, tests] counters. */
-+#define TEST(name)							\
-+	do {								\
-+		(*num_tests)++;						\
-+		if (!test_##name()) {					\
-+			(*num_fail)++;					\
-+			fprintf(stderr, "Test " #name " FAILED\n");	\
-+		}							\
-+	} while (0)
-+
-+#define ASSERT_TRUE(_expr)						\
-+	do {								\
-+		if (!(_expr)) {						\
-+			fprintf(stderr,					\
-+				"Assert FAILED at %s:%d:%s(): %s is FALSE.\n", \
-+				__FILE__, __LINE__, __FUNCTION__, #_expr); \
-+			return false;					\
-+		}							\
-+	} while (0)
-+
-+#define ASSERT_FALSE(_expr) ASSERT_TRUE(!(_expr))
-+#define ASSERT_EQ(_val1, _val2) ASSERT_TRUE((_val1) == (_val2))
-+#define ASSERT_NE(_val1, _val2) ASSERT_TRUE((_val1) != (_val2))
-+
-+#define IS_SET(_val, _flags) ((_val & _flags) == _flags)
-+
-+extern bool fail_prealloc;
-+
-+/* Override vma_iter_prealloc() so we can choose to fail it. */
-+#define vma_iter_prealloc(vmi, vma)					\
-+	(fail_prealloc ? -ENOMEM : mas_preallocate(&(vmi)->mas, (vma), GFP_KERNEL))
-+
-+#define CONFIG_DEFAULT_MMAP_MIN_ADDR 65536
-+
-+extern unsigned long mmap_min_addr;
-+extern unsigned long dac_mmap_min_addr;
-+extern unsigned long stack_guard_gap;
-+
-+extern const struct vm_operations_struct vma_dummy_vm_ops;
-+extern struct anon_vma dummy_anon_vma;
-+extern struct task_struct __current;
-+
-+/*
-+ * Helper function which provides a wrapper around a merge existing VMA
-+ * operation.
-+ *
-+ * Declared in main.c as uses static VMA function.
-+ */
-+struct vm_area_struct *merge_existing(struct vma_merge_struct *vmg);
-+
-+/*
-+ * Helper function to allocate a VMA and link it to the tree.
-+ *
-+ * Declared in main.c as uses static VMA function.
-+ */
-+int attach_vma(struct mm_struct *mm, struct vm_area_struct *vma);
-+
-+/* Helper function providing a dummy vm_ops->close() method.*/
-+static inline void dummy_close(struct vm_area_struct *)
-+{
-+}
-+
-+/* Helper function to simply allocate a VMA. */
-+struct vm_area_struct *alloc_vma(struct mm_struct *mm,
-+		unsigned long start, unsigned long end,
-+		pgoff_t pgoff, vm_flags_t vm_flags);
-+
-+/* Helper function to detach and free a VMA. */
-+void detach_free_vma(struct vm_area_struct *vma);
-+
-+/* Helper function to allocate a VMA and link it to the tree. */
-+struct vm_area_struct *alloc_and_link_vma(struct mm_struct *mm,
-+		unsigned long start, unsigned long end,
-+		pgoff_t pgoff, vm_flags_t vm_flags);
-+
-+/*
-+ * Helper function to reset the dummy anon_vma to indicate it has not been
-+ * duplicated.
-+ */
-+void reset_dummy_anon_vma(void);
-+
-+/*
-+ * Helper function to remove all VMAs and destroy the maple tree associated with
-+ * a virtual address space. Returns a count of VMAs in the tree.
-+ */
-+int cleanup_mm(struct mm_struct *mm, struct vma_iterator *vmi);
-+
-+/* Helper function to determine if VMA has had vma_start_write() performed. */
-+bool vma_write_started(struct vm_area_struct *vma);
-+
-+void __vma_set_dummy_anon_vma(struct vm_area_struct *vma,
-+		struct anon_vma_chain *avc, struct anon_vma *anon_vma);
-+
-+/* Provide a simple dummy VMA/anon_vma dummy setup for testing. */
-+void vma_set_dummy_anon_vma(struct vm_area_struct *vma,
-+			    struct anon_vma_chain *avc);
-+
-+/* Helper function to specify a VMA's range. */
-+void vma_set_range(struct vm_area_struct *vma,
-+		   unsigned long start, unsigned long end,
-+		   pgoff_t pgoff);
-diff --git a/tools/testing/vma/vma.c b/tools/testing/vma/tests/merge.c
-similarity index 82%
-rename from tools/testing/vma/vma.c
-rename to tools/testing/vma/tests/merge.c
-index 93d21bc7e112..3708dc6945b0 100644
---- a/tools/testing/vma/vma.c
-+++ b/tools/testing/vma/tests/merge.c
-@@ -1,132 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
--#include <stdbool.h>
--#include <stdio.h>
--#include <stdlib.h>
--
--#include "generated/bit-length.h"
--
--#include "maple-shared.h"
--#include "vma_internal.h"
--
--/* Include so header guard set. */
--#include "../../../mm/vma.h"
--
--static bool fail_prealloc;
--
--/* Then override vma_iter_prealloc() so we can choose to fail it. */
--#define vma_iter_prealloc(vmi, vma)					\
--	(fail_prealloc ? -ENOMEM : mas_preallocate(&(vmi)->mas, (vma), GFP_KERNEL))
--
--#define CONFIG_DEFAULT_MMAP_MIN_ADDR 65536
--
--unsigned long mmap_min_addr = CONFIG_DEFAULT_MMAP_MIN_ADDR;
--unsigned long dac_mmap_min_addr = CONFIG_DEFAULT_MMAP_MIN_ADDR;
--unsigned long stack_guard_gap = 256UL<<PAGE_SHIFT;
--
--/*
-- * Directly import the VMA implementation here. Our vma_internal.h wrapper
-- * provides userland-equivalent functionality for everything vma.c uses.
-- */
--#include "../../../mm/vma_init.c"
--#include "../../../mm/vma_exec.c"
--#include "../../../mm/vma.c"
--
--const struct vm_operations_struct vma_dummy_vm_ops;
--static struct anon_vma dummy_anon_vma;
--
--#define ASSERT_TRUE(_expr)						\
--	do {								\
--		if (!(_expr)) {						\
--			fprintf(stderr,					\
--				"Assert FAILED at %s:%d:%s(): %s is FALSE.\n", \
--				__FILE__, __LINE__, __FUNCTION__, #_expr); \
--			return false;					\
--		}							\
--	} while (0)
--#define ASSERT_FALSE(_expr) ASSERT_TRUE(!(_expr))
--#define ASSERT_EQ(_val1, _val2) ASSERT_TRUE((_val1) == (_val2))
--#define ASSERT_NE(_val1, _val2) ASSERT_TRUE((_val1) != (_val2))
--
--#define IS_SET(_val, _flags) ((_val & _flags) == _flags)
--
--static struct task_struct __current;
--
--struct task_struct *get_current(void)
--{
--	return &__current;
--}
--
--unsigned long rlimit(unsigned int limit)
--{
--	return (unsigned long)-1;
--}
--
--/* Helper function to simply allocate a VMA. */
--static struct vm_area_struct *alloc_vma(struct mm_struct *mm,
--					unsigned long start,
--					unsigned long end,
--					pgoff_t pgoff,
--					vm_flags_t vm_flags)
--{
--	struct vm_area_struct *vma = vm_area_alloc(mm);
--
--	if (vma == NULL)
--		return NULL;
--
--	vma->vm_start = start;
--	vma->vm_end = end;
--	vma->vm_pgoff = pgoff;
--	vm_flags_reset(vma, vm_flags);
--	vma_assert_detached(vma);
--
--	return vma;
--}
--
--/* Helper function to allocate a VMA and link it to the tree. */
--static int attach_vma(struct mm_struct *mm, struct vm_area_struct *vma)
--{
--	int res;
--
--	res = vma_link(mm, vma);
--	if (!res)
--		vma_assert_attached(vma);
--	return res;
--}
--
--static void detach_free_vma(struct vm_area_struct *vma)
--{
--	vma_mark_detached(vma);
--	vm_area_free(vma);
--}
--
--/* Helper function to allocate a VMA and link it to the tree. */
--static struct vm_area_struct *alloc_and_link_vma(struct mm_struct *mm,
--						 unsigned long start,
--						 unsigned long end,
--						 pgoff_t pgoff,
--						 vm_flags_t vm_flags)
--{
--	struct vm_area_struct *vma = alloc_vma(mm, start, end, pgoff, vm_flags);
--
--	if (vma == NULL)
--		return NULL;
--
--	if (attach_vma(mm, vma)) {
--		detach_free_vma(vma);
--		return NULL;
--	}
--
--	/*
--	 * Reset this counter which we use to track whether writes have
--	 * begun. Linking to the tree will have caused this to be incremented,
--	 * which means we will get a false positive otherwise.
--	 */
--	vma->vm_lock_seq = UINT_MAX;
--
--	return vma;
--}
--
- /* Helper function which provides a wrapper around a merge new VMA operation. */
- static struct vm_area_struct *merge_new(struct vma_merge_struct *vmg)
- {
-@@ -146,20 +19,6 @@ static struct vm_area_struct *merge_new(struct vma_merge_struct *vmg)
- 	return vma;
- }
- 
--/*
-- * Helper function which provides a wrapper around a merge existing VMA
-- * operation.
-- */
--static struct vm_area_struct *merge_existing(struct vma_merge_struct *vmg)
--{
--	struct vm_area_struct *vma;
--
--	vma = vma_merge_existing_range(vmg);
--	if (vma)
--		vma_assert_attached(vma);
--	return vma;
--}
--
- /*
-  * Helper function which provides a wrapper around the expansion of an existing
-  * VMA.
-@@ -173,8 +32,8 @@ static int expand_existing(struct vma_merge_struct *vmg)
-  * Helper function to reset merge state the associated VMA iterator to a
-  * specified new range.
-  */
--static void vmg_set_range(struct vma_merge_struct *vmg, unsigned long start,
--			  unsigned long end, pgoff_t pgoff, vm_flags_t vm_flags)
-+void vmg_set_range(struct vma_merge_struct *vmg, unsigned long start,
-+		   unsigned long end, pgoff_t pgoff, vm_flags_t vm_flags)
- {
- 	vma_iter_set(vmg->vmi, start);
- 
-@@ -197,8 +56,8 @@ static void vmg_set_range(struct vma_merge_struct *vmg, unsigned long start,
- 
- /* Helper function to set both the VMG range and its anon_vma. */
- static void vmg_set_range_anon_vma(struct vma_merge_struct *vmg, unsigned long start,
--				   unsigned long end, pgoff_t pgoff, vm_flags_t vm_flags,
--				   struct anon_vma *anon_vma)
-+		unsigned long end, pgoff_t pgoff, vm_flags_t vm_flags,
-+		struct anon_vma *anon_vma)
- {
- 	vmg_set_range(vmg, start, end, pgoff, vm_flags);
- 	vmg->anon_vma = anon_vma;
-@@ -211,10 +70,9 @@ static void vmg_set_range_anon_vma(struct vma_merge_struct *vmg, unsigned long s
-  * VMA, link it to the maple tree and return it.
-  */
- static struct vm_area_struct *try_merge_new_vma(struct mm_struct *mm,
--						struct vma_merge_struct *vmg,
--						unsigned long start, unsigned long end,
--						pgoff_t pgoff, vm_flags_t vm_flags,
--						bool *was_merged)
-+		struct vma_merge_struct *vmg, unsigned long start,
-+		unsigned long end, pgoff_t pgoff, vm_flags_t vm_flags,
-+		bool *was_merged)
- {
- 	struct vm_area_struct *merged;
- 
-@@ -234,72 +92,6 @@ static struct vm_area_struct *try_merge_new_vma(struct mm_struct *mm,
- 	return alloc_and_link_vma(mm, start, end, pgoff, vm_flags);
- }
- 
--/*
-- * Helper function to reset the dummy anon_vma to indicate it has not been
-- * duplicated.
-- */
--static void reset_dummy_anon_vma(void)
--{
--	dummy_anon_vma.was_cloned = false;
--	dummy_anon_vma.was_unlinked = false;
--}
--
--/*
-- * Helper function to remove all VMAs and destroy the maple tree associated with
-- * a virtual address space. Returns a count of VMAs in the tree.
-- */
--static int cleanup_mm(struct mm_struct *mm, struct vma_iterator *vmi)
--{
--	struct vm_area_struct *vma;
--	int count = 0;
--
--	fail_prealloc = false;
--	reset_dummy_anon_vma();
--
--	vma_iter_set(vmi, 0);
--	for_each_vma(*vmi, vma) {
--		detach_free_vma(vma);
--		count++;
--	}
--
--	mtree_destroy(&mm->mm_mt);
--	mm->map_count = 0;
--	return count;
--}
--
--/* Helper function to determine if VMA has had vma_start_write() performed. */
--static bool vma_write_started(struct vm_area_struct *vma)
--{
--	int seq = vma->vm_lock_seq;
--
--	/* We reset after each check. */
--	vma->vm_lock_seq = UINT_MAX;
--
--	/* The vma_start_write() stub simply increments this value. */
--	return seq > -1;
--}
--
--/* Helper function providing a dummy vm_ops->close() method.*/
--static void dummy_close(struct vm_area_struct *)
--{
--}
--
--static void __vma_set_dummy_anon_vma(struct vm_area_struct *vma,
--				     struct anon_vma_chain *avc,
--				     struct anon_vma *anon_vma)
--{
--	vma->anon_vma = anon_vma;
--	INIT_LIST_HEAD(&vma->anon_vma_chain);
--	list_add(&avc->same_vma, &vma->anon_vma_chain);
--	avc->anon_vma = vma->anon_vma;
--}
--
--static void vma_set_dummy_anon_vma(struct vm_area_struct *vma,
--				   struct anon_vma_chain *avc)
--{
--	__vma_set_dummy_anon_vma(vma, avc, &dummy_anon_vma);
--}
--
- static bool test_simple_merge(void)
- {
- 	struct vm_area_struct *vma;
-@@ -1616,39 +1408,6 @@ static bool test_merge_extend(void)
- 	return true;
- }
- 
--static bool test_copy_vma(void)
--{
--	vm_flags_t vm_flags = VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE;
--	struct mm_struct mm = {};
--	bool need_locks = false;
--	VMA_ITERATOR(vmi, &mm, 0);
--	struct vm_area_struct *vma, *vma_new, *vma_next;
--
--	/* Move backwards and do not merge. */
--
--	vma = alloc_and_link_vma(&mm, 0x3000, 0x5000, 3, vm_flags);
--	vma_new = copy_vma(&vma, 0, 0x2000, 0, &need_locks);
--	ASSERT_NE(vma_new, vma);
--	ASSERT_EQ(vma_new->vm_start, 0);
--	ASSERT_EQ(vma_new->vm_end, 0x2000);
--	ASSERT_EQ(vma_new->vm_pgoff, 0);
--	vma_assert_attached(vma_new);
--
--	cleanup_mm(&mm, &vmi);
--
--	/* Move a VMA into position next to another and merge the two. */
--
--	vma = alloc_and_link_vma(&mm, 0, 0x2000, 0, vm_flags);
--	vma_next = alloc_and_link_vma(&mm, 0x6000, 0x8000, 6, vm_flags);
--	vma_new = copy_vma(&vma, 0x4000, 0x2000, 4, &need_locks);
--	vma_assert_attached(vma_new);
--
--	ASSERT_EQ(vma_new, vma_next);
--
--	cleanup_mm(&mm, &vmi);
--	return true;
--}
--
- static bool test_expand_only_mode(void)
- {
- 	vm_flags_t vm_flags = VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE;
-@@ -1689,73 +1448,8 @@ static bool test_expand_only_mode(void)
- 	return true;
- }
- 
--static bool test_mmap_region_basic(void)
--{
--	struct mm_struct mm = {};
--	unsigned long addr;
--	struct vm_area_struct *vma;
--	VMA_ITERATOR(vmi, &mm, 0);
--
--	current->mm = &mm;
--
--	/* Map at 0x300000, length 0x3000. */
--	addr = __mmap_region(NULL, 0x300000, 0x3000,
--			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
--			     0x300, NULL);
--	ASSERT_EQ(addr, 0x300000);
--
--	/* Map at 0x250000, length 0x3000. */
--	addr = __mmap_region(NULL, 0x250000, 0x3000,
--			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
--			     0x250, NULL);
--	ASSERT_EQ(addr, 0x250000);
--
--	/* Map at 0x303000, merging to 0x300000 of length 0x6000. */
--	addr = __mmap_region(NULL, 0x303000, 0x3000,
--			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
--			     0x303, NULL);
--	ASSERT_EQ(addr, 0x303000);
--
--	/* Map at 0x24d000, merging to 0x250000 of length 0x6000. */
--	addr = __mmap_region(NULL, 0x24d000, 0x3000,
--			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
--			     0x24d, NULL);
--	ASSERT_EQ(addr, 0x24d000);
--
--	ASSERT_EQ(mm.map_count, 2);
--
--	for_each_vma(vmi, vma) {
--		if (vma->vm_start == 0x300000) {
--			ASSERT_EQ(vma->vm_end, 0x306000);
--			ASSERT_EQ(vma->vm_pgoff, 0x300);
--		} else if (vma->vm_start == 0x24d000) {
--			ASSERT_EQ(vma->vm_end, 0x253000);
--			ASSERT_EQ(vma->vm_pgoff, 0x24d);
--		} else {
--			ASSERT_FALSE(true);
--		}
--	}
--
--	cleanup_mm(&mm, &vmi);
--	return true;
--}
--
--int main(void)
-+static void run_merge_tests(int *num_tests, int *num_fail)
- {
--	int num_tests = 0, num_fail = 0;
--
--	maple_tree_init();
--	vma_state_init();
--
--#define TEST(name)							\
--	do {								\
--		num_tests++;						\
--		if (!test_##name()) {					\
--			num_fail++;					\
--			fprintf(stderr, "Test " #name " FAILED\n");	\
--		}							\
--	} while (0)
--
- 	/* Very simple tests to kick the tyres. */
- 	TEST(simple_merge);
- 	TEST(simple_modify);
-@@ -1771,15 +1465,5 @@ int main(void)
- 	TEST(dup_anon_vma);
- 	TEST(vmi_prealloc_fail);
- 	TEST(merge_extend);
--	TEST(copy_vma);
- 	TEST(expand_only_mode);
--
--	TEST(mmap_region_basic);
--
--#undef TEST
--
--	printf("%d tests run, %d passed, %d failed.\n",
--	       num_tests, num_tests - num_fail, num_fail);
--
--	return num_fail == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
- }
-diff --git a/tools/testing/vma/tests/mmap.c b/tools/testing/vma/tests/mmap.c
-new file mode 100644
-index 000000000000..bded4ecbe5db
---- /dev/null
-+++ b/tools/testing/vma/tests/mmap.c
-@@ -0,0 +1,57 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+static bool test_mmap_region_basic(void)
-+{
-+	struct mm_struct mm = {};
-+	unsigned long addr;
-+	struct vm_area_struct *vma;
-+	VMA_ITERATOR(vmi, &mm, 0);
-+
-+	current->mm = &mm;
-+
-+	/* Map at 0x300000, length 0x3000. */
-+	addr = __mmap_region(NULL, 0x300000, 0x3000,
-+			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
-+			     0x300, NULL);
-+	ASSERT_EQ(addr, 0x300000);
-+
-+	/* Map at 0x250000, length 0x3000. */
-+	addr = __mmap_region(NULL, 0x250000, 0x3000,
-+			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
-+			     0x250, NULL);
-+	ASSERT_EQ(addr, 0x250000);
-+
-+	/* Map at 0x303000, merging to 0x300000 of length 0x6000. */
-+	addr = __mmap_region(NULL, 0x303000, 0x3000,
-+			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
-+			     0x303, NULL);
-+	ASSERT_EQ(addr, 0x303000);
-+
-+	/* Map at 0x24d000, merging to 0x250000 of length 0x6000. */
-+	addr = __mmap_region(NULL, 0x24d000, 0x3000,
-+			     VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE,
-+			     0x24d, NULL);
-+	ASSERT_EQ(addr, 0x24d000);
-+
-+	ASSERT_EQ(mm.map_count, 2);
-+
-+	for_each_vma(vmi, vma) {
-+		if (vma->vm_start == 0x300000) {
-+			ASSERT_EQ(vma->vm_end, 0x306000);
-+			ASSERT_EQ(vma->vm_pgoff, 0x300);
-+		} else if (vma->vm_start == 0x24d000) {
-+			ASSERT_EQ(vma->vm_end, 0x253000);
-+			ASSERT_EQ(vma->vm_pgoff, 0x24d);
-+		} else {
-+			ASSERT_FALSE(true);
-+		}
-+	}
-+
-+	cleanup_mm(&mm, &vmi);
-+	return true;
-+}
-+
-+static void run_mmap_tests(int *num_tests, int *num_fail)
-+{
-+	TEST(mmap_region_basic);
-+}
-diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
-new file mode 100644
-index 000000000000..6d9775aee243
---- /dev/null
-+++ b/tools/testing/vma/tests/vma.c
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+static bool test_copy_vma(void)
-+{
-+	vm_flags_t vm_flags = VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE;
-+	struct mm_struct mm = {};
-+	bool need_locks = false;
-+	VMA_ITERATOR(vmi, &mm, 0);
-+	struct vm_area_struct *vma, *vma_new, *vma_next;
-+
-+	/* Move backwards and do not merge. */
-+
-+	vma = alloc_and_link_vma(&mm, 0x3000, 0x5000, 3, vm_flags);
-+	vma_new = copy_vma(&vma, 0, 0x2000, 0, &need_locks);
-+	ASSERT_NE(vma_new, vma);
-+	ASSERT_EQ(vma_new->vm_start, 0);
-+	ASSERT_EQ(vma_new->vm_end, 0x2000);
-+	ASSERT_EQ(vma_new->vm_pgoff, 0);
-+	vma_assert_attached(vma_new);
-+
-+	cleanup_mm(&mm, &vmi);
-+
-+	/* Move a VMA into position next to another and merge the two. */
-+
-+	vma = alloc_and_link_vma(&mm, 0, 0x2000, 0, vm_flags);
-+	vma_next = alloc_and_link_vma(&mm, 0x6000, 0x8000, 6, vm_flags);
-+	vma_new = copy_vma(&vma, 0x4000, 0x2000, 4, &need_locks);
-+	vma_assert_attached(vma_new);
-+
-+	ASSERT_EQ(vma_new, vma_next);
-+
-+	cleanup_mm(&mm, &vmi);
-+	return true;
-+}
-+
-+static void run_vma_tests(int *num_tests, int *num_fail)
-+{
-+	TEST(copy_vma);
-+}
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index b217cd152e07..bdb941722998 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -1127,15 +1127,6 @@ static inline void mapping_allow_writable(struct address_space *mapping)
- 	atomic_inc(&mapping->i_mmap_writable);
- }
- 
--static inline void vma_set_range(struct vm_area_struct *vma,
--				 unsigned long start, unsigned long end,
--				 pgoff_t pgoff)
--{
--	vma->vm_start = start;
--	vma->vm_end = end;
--	vma->vm_pgoff = pgoff;
--}
--
- static inline
- struct vm_area_struct *vma_find(struct vma_iterator *vmi, unsigned long max)
- {
+
 -- 
-2.52.0
-
+Chuck Lever
 
