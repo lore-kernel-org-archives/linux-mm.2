@@ -4,135 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F8B8C9830C
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 03:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF634D4A5EB
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 03:20:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EF746B00EC; Sun, 18 Jan 2026 22:17:55 -0500 (EST)
+	id 31E006B00ED; Sun, 18 Jan 2026 22:20:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C71F6B00ED; Sun, 18 Jan 2026 22:17:55 -0500 (EST)
+	id 2F5A76B00EF; Sun, 18 Jan 2026 22:20:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D31E6B00EE; Sun, 18 Jan 2026 22:17:55 -0500 (EST)
+	id 1F8086B00F0; Sun, 18 Jan 2026 22:20:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6967C6B00EC
-	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:17:55 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F2EE13B614
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:17:55 +0000 (UTC)
-X-FDA: 84347254110.26.48A78B4
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1796D120006
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:17:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bm4Us7YM;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768792673; a=rsa-sha256;
-	cv=pass;
-	b=XMaF+eixTBpSvo1B3jUTVSILdJtsL6TUZ90tHiXSuu75+5nwHrAZTBTMLECvKQs++xvnYb
-	mdnWKQ/PKqd3Y3i35wN+t92Yd4PX8DJzOaZ2sPLkn04xOld7JvKduu9QYKxWwRhmpIG2Hn
-	k0YrW+rpk92/8/L+RVHxen977l0Q7Tc=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bm4Us7YM;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768792673;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DA2A6B00ED
+	for <linux-mm@kvack.org>; Sun, 18 Jan 2026 22:20:41 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 88FDFC22CB
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:20:40 +0000 (UTC)
+X-FDA: 84347261040.15.00E9519
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 903C3C0008
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:20:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hdfhqaVd;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768792839; a=rsa-sha256;
+	cv=none;
+	b=babP9EljtsoS8b4Ot8zLfVFCOeOnfi/Kc1OcBAEfCHQJ0bXqH6qPgPdjr5Y6MZUb8420Pb
+	8OPxmPbTWOO1NZ6FsQgaQuuIXwFqIsuN+oY1i9ZzcfXndAXbtWn1HCTdLGrnDZzUtasOMl
+	Sgt464MXTLSpakz0DQTZkj4IBGkj7DE=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hdfhqaVd;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768792839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HnEMERETZXpYSLDDchr/WHVXPVN1Akoe4lLaRnfg5HI=;
-	b=pEMfgc6KQI2uPpiltQUcoH3R+JIOpW+NJPnVDNDgl2sgLXYWqy6PgdU77UD5hGnPFbT68c
-	VfF2puUnZ0QplRhuQ8ZULdyC4fB/9s/pwQQn9m4x5rlmXFq0j/NZtcIqNr8pGM4ItjcYww
-	qqgAVd2Ws3Yml1frmHxj33jyCI0YRvE=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c3e921afad1so1544736a12.1
-        for <linux-mm@kvack.org>; Sun, 18 Jan 2026 19:17:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768792672; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QypyiLtsH05Psot/4xtrzDtZMOufSoiFZSnkWtUidUMR00Lr807EEuEutEDXo7Ys0D
-         yXe156cUnHY+ubkIrMIm6M20rDlgclGXsRtRKN9ctl2m6WiDi4+VSSjnfQB/iE2fJ2lP
-         oS2b8Myf15zh+vt4KVCY0igteuf49Lt3prLqK/vjaJigHLHKEygc2oRhyBQjEDNdchRM
-         zL2sLuyFfmPgrz4MwtC/Iwrn0LcBxwYuY/UxIjKqhON9c1A3pJmBmruhMry7YInXmb8p
-         BK0xVzgYSp3kFf731I7d4c3HvK6GeO1Gq8cE9cWt+U9iwC37NZICGvmBoBcQs7rX/8m1
-         YwWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HnEMERETZXpYSLDDchr/WHVXPVN1Akoe4lLaRnfg5HI=;
-        fh=VAUNHol+phgHkz29m8OmMAkSsgxAKljQdOa7P9Zgj20=;
-        b=F4JwDbmATiFQfo00kIcacvFqNs/buFMQpZwmy2ZwA/Hslc8xMpUnGr5IIhOOjIN1mS
-         V4fF7ZluxZ0U4k7aS7mu2SKxzyn/JnlMjUgpNKne6pik2s0a4QslMFaxe1///JqBDPbt
-         d+1PLnUDp8iq7vPYfMwoPg+gpnd2DXHvRDcTkVbSJ3c8zrFP60aJAJeSWF7lwEfB/xH/
-         iPcqLkqoQoUor/4QvoCwv2sDE7S+oKxOZ1tJyMQw2SRfQLYLmHqWNBCq9fcp/QsmP1uG
-         TOxVMBYBPgsung+nMwGawJwpN5jeHRr3LWKo8WHFfZwlJz7BnMayM+veED9fRPoG/lq4
-         pt8Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768792672; x=1769397472; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HnEMERETZXpYSLDDchr/WHVXPVN1Akoe4lLaRnfg5HI=;
-        b=bm4Us7YM+AouVSlRJ0k8BsdcPV4jytKke3cCo+WnBYpFhTf7v6apOXzd1krrZmkLCg
-         ReNF5iVrV0rPOnoiKf4HU6U7MZgVrjkf2yx6wONFyBjX3nEhj4GFyqow5TTOUmDygEqO
-         WK48nthm9GdcR/0Ofoo/XMND2feMHDRnPKCMcNGeG4cwSvbVa9LQmWos7slFsc2w0p7l
-         boAwZoSZMGEFvyfB4kiNnnrEqxiygsVCaGpBGCe9+MGSEh9fJaWGQ8jjzY6UA2Lplxme
-         zrEGXKjgw/E4StJYDfLfY9gBQ2Etv/EvV4kEZWeEjS9D8UWMfL6cJO7F+Jdn9F4CQvyR
-         nWDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768792672; x=1769397472;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HnEMERETZXpYSLDDchr/WHVXPVN1Akoe4lLaRnfg5HI=;
-        b=R4pt/1Hp6eBp1WPYZkMChGbA4W7uNZuKV4XieD+gRQ40aPOQ4jUJnFYgQQzWn8ZJBY
-         2949SkBjbtYv3FaGrmUgDQWNlWHDjycQlCheKBAvO7TFs1OOhrJWE50vJVOpuyX36Hgp
-         jPk/1Bai+ju/OAP5faXEBcMd1Isbned4ckv25XC/1FB41urMvM9DYuWn1lEFCUceSWdi
-         QSQjPXdrp5ZlaBZXrBhf0qkmQAaiyaCXXMZB2JZ1sVdTNBIhNu+P7IG1Nbw8ZjJcSEqN
-         gnn6gyEAj3v7N69yPmsN5UjYarvhMTZxhrFlrgjv3nDFxSvyok7yc6lpaYhvtxtz+0XD
-         VkUw==
-X-Gm-Message-State: AOJu0YxxRjLm1y58ZWC+9bOCWPMAQc7YtQ7H8SveE1a6ApF4Ea+XAVOz
-	i9cG+wm6bRtBhmJnR3JJ0Xkm6DDPj5KAbWcd54viW6HNzk539MUMfNxZLLxZxK33utgRLLsgRnu
-	EauCw3GJgDP+ZUXPfxn7MyiERzhw3SWA=
-X-Gm-Gg: AY/fxX6+Dh3jyBFegkwdNzCpBzTXPm9v8YQQuIZw2kmRctPEq8SdjqBPcXmPsyVgzWo
-	qYAvMof8Si+kekZbEp7/12QzcR8fvY4vYKomL7QF+7yeah/zAYIWcbHfPpoi1WXhJ6NYjzQBI62
-	K0+V/UvDx3YRhQD10nt81tLwE8kyNEtqDNxHnOJA9b2rGKCC7SSdCYUeQpPNQ0aFOEwn6d6KQU3
-	qlnNuvkt4e8jPj6mB0ejDrRrrALyBsR8mtm5xJ7+NCnMgiz59hAXqbjXs0WzXPOjXOE/aoFE1Fn
-	bh/47clB0utQGowZWDx6rmM/hBg=
-X-Received: by 2002:a05:6a21:68a:b0:38d:f2db:ea50 with SMTP id
- adf61e73a8af0-38dfe7e53e2mr9426676637.73.1768792671736; Sun, 18 Jan 2026
- 19:17:51 -0800 (PST)
+	bh=pd6kZGNbyNYE8tPLcAsqL3zBFM4wIaBCbTnO8h62LzA=;
+	b=aeREciNYLVKFhdQZoYxe4WIgepgZU/sQQOn2fhkj207w43gGgLSCoXeebGUm/Sz0CyGExm
+	iW6W0yyvUKFf8OdWRU3xKQ1wu5Y6U7LX368YHOUEikGIyzrPh+nvI7AlvmKqkrh8vkJa1C
+	5V9fkfcmG1h7zjYRhuQxLFfv5cRvf0k=
+Message-ID: <f2b2d0e6-0690-41e5-9718-ef4a1985e50c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768792834;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pd6kZGNbyNYE8tPLcAsqL3zBFM4wIaBCbTnO8h62LzA=;
+	b=hdfhqaVdUy2hJ5povwHWvJH4g07Wa6Kmf/JVODLiU5Fp9De+Ho7k9WyFuc+U4pD1cqVdLB
+	oeu4dSx2lKbMq72W34qHqDZEz/ZdAlRuDR0vJuFNUQR3WpiyyCsiD/7+7Rt73FiwhGNGvI
+	yIRlAM+lX63AEX1QPjs39nfRRXxNHvY=
+Date: Mon, 19 Jan 2026 11:20:11 +0800
 MIME-Version: 1.0
-References: <20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com> <74fd3fd1-97d0-46a3-b76e-435808efff02@linux.alibaba.com>
-In-Reply-To: <74fd3fd1-97d0-46a3-b76e-435808efff02@linux.alibaba.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 19 Jan 2026 11:17:12 +0800
-X-Gm-Features: AZwV_QginFqBQArXq2rn6NQNo6CY6DV85PfDMsi4G0hCBNm7nTXd3hYpAKKCKlg
-Message-ID: <CAMgjq7Bw9Ascd5FdTg=wf8dHtQN2n=cJPqREsatBJPoDLJVG=Q@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/shmem, swap: fix race of truncate and swap entry split
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: zt5fodbx1jwhtbxjf4phxcrfekhinynj
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1796D120006
+Subject: Re: [PATCH v3 08/30] mm: memcontrol: prevent memory cgroup release in
+ get_mem_cgroup_from_folio()
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+ yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+ <c5c8eba771ab90d03f4c024c2384b8342ec41452.1768389889.git.zhengqi.arch@bytedance.com>
+ <qdfq2vxdma4qnt7pyfvuiyiib6ffuv46jyqsfgab643ihzttb6@h4hodwsqkmom>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <qdfq2vxdma4qnt7pyfvuiyiib6ffuv46jyqsfgab643ihzttb6@h4hodwsqkmom>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 903C3C0008
+X-Stat-Signature: aq7yczfoft5tb3af7ji4cycunz1n18yn
 X-Rspam-User: 
-X-HE-Tag: 1768792672-860065
-X-HE-Meta: U2FsdGVkX1/gNnAx/FQ79dCpEiheIkgcHYd667aFnEeSOvc0yAsBoCtJMjOLJqeymcOEQvMEh/P/mdJu8fdCiD/XsU00nLLkNKQjSoiUeUK6dI5GdTB5HWhkhg61emnjfTJ4C2l29+3n2VJXZtjJmKBX3Z6j+/SKy3Au5rATqXtOr5z9KYbniy4OwHBJuTTBFwdSTN4x4Gn5+afkfz+7SvujCe8xivjXuPAIk/Z9snMwRmLAIASHFRWNt24tKcC5LkrMlih9CX4iOOS57I+VVjJkXgPm7MpKpUGHAt8ZLL8HI7uZadgdKqyOWpPBKtrv+a/fAJskWOgqscOCobqTirKXXIS+CVU958Hv9wZ1qJJwtdBDA0ZRZDlbNkM2NR6IaWEQtQVWrFKZVxaRhfNqlGBUrwbZ3gJHeYoCqnpWcoSBLU+O0SRQ0F91+hHKpeoo/fkWkOZKHTQyGuGW4AVxbXMUcePgqAVkZItV6smTt/FUJSj1A5jsg7hfPfXGhfnjCofScu1XRQPISct5WR0w/lOaKyzTlT3KZj6bLQykfICdRo3kUcm+S27+csL7ISoe4+3NggOlvbV5uNQnz9h/MV+/P91QITd7bNputk7EsN5LaFb9pOJjma/nV/1P7ebjZUOujeQTuCVqf1gWQDsYdc/VNdZAu5ZMZsOgkxfHbwukSLfAFyYMKqbErjo6XBUVYq+Yu6MWGVyKeLFo9WRbgdrEnXhXLTY2PVB9y07jlSO8N/E3kpXi7QvTcjfqc73jWYqNs7XLfzdddixXmdxU+LAo/0YnmsZSn/VrYAlXcZdXN9RSDSpT5w/cHKdjc/JfajDB0RrQLnpqeQXGU1oG/MOTH4gzYqr8cxVrXrk2Vx12mpOYw1xjE+j9ckh8l1N39M/16u5aqe6s/3RI/mxyDMXI2Htl4xChDbGo6mL0tGDrnt9rYUUSLCRH2cxA513mIFZ992C1tW24HBA6UsW
- 0aehrc3V
- 4R+RdN1OR2R1vwHlOfk74A6wUAJbS4EtlSx512XsIuCGB9/3lFbDQ737O7tx23Ikds+82I+PGqDisJM3mGCY1znIM5AFiMJpAWPRHe1oVSP2lsfh16qksFdWwRO3szKkcGoA4KxAdp5DgyS792UzRiIYhpQmFCcDnrz1ShiGEsvqot/Wwv8nLp4svy79NXe8JMjKS73itbHjXM4T8Nrc4kvYvZGVRybKKXV36JpTDoiSyR5ammMPWTJTlVGhZ4nttjer2tJm2i8CN1AMJxEbBSF8td0UJ1Wb79PDLxHQdwpX+MrmXx3FaquInbxGmqUkrOp55WmZu/VXKlLLvvfbnjAUM3vhTUAI1zDO2/uHjNj0Zj39KFhkrZp5SqL+LNaX8FHIkLXMOs6E9Xn74Tj5tzvQzCG30aBhWCqyvUeiRx4afahYM35UF23f20rAwNA0/rClR
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.007932, version=1.2.4
+X-HE-Tag: 1768792838-966295
+X-HE-Meta: U2FsdGVkX18rc/b1BD/XIBdtGHD55Pnb+hPCMbLhRzRQQND/Vh4dcgwt+AgzG6jrzdfEkuT+GPubJe+cZ0CtBm5HWUVmRkiBlZ3kZyLqldedGFP67P9G6kBOzuRUXSacoWKlcyIS90Wx7ePd7VJwYi6eIZ+Np4Fh1vHMtRtJX/XumgCBklPSDGlPqhvWBFWBVV5BDBSztksYCOuOEWItFISSbAZwqbnNBcSD0B4kQZtkuwnswQLJlEzdDfa3yDK8sz8HFtLsgB47YcSvwQSHAOFIu2tKL3TNcx5TbKgkH6nfVrzPg9evlO3BbDAEfVIBwu2eIm31ANcOtbTR1u65zLMjqu0NeGhkJQ0cOfdrGooy1YVCQC5cmDRineORLKkURWEN+OMA5in7rrLTLrpBWOHUCdLAvc3VOJMoxAeFYOgYYCu54fpE5VaNnjbAuxpLeVR5hg47YcevvzF8wljJjrUfZ9VgbfI6ortWpsbxMvCljlAPc0bzVapI2ZEAVOYtJuXREc4cAZDyYsJ7ey+KMy5ifTXbtLpetR3n5HJBDziMLDnpElSPD9WnPiorWtdhYQPRCyUd6ZDTzvlecvc1o8lQYl4NVUdJ3EwpK7lRExY8kwbHAL92UtT4NfiQpDaUkxpNGPiQGEEDvIbiPY9nPPCAYpcziZEIgkI0G9eFkyCuSfhmFde0ltQ9AwCLT9SaVAfumwsdFQrjEKAtzp3uQjgoHoL8EgSCByL7ZvVg4ojBDL7tXpN0HOtNYiANW/G5I+w49N1AKzNgaUqLrqv08GsGCUY/wrsKumgoKfZ8i4uj0qembNfA2WeubM7JEun8P+iDacgrjkuUngqM9Z6+2HUe6iSP4DbCRGHdew5QPjuftoS11ENGagzeaL8nEMzAPURfomkA4rCfwRRiM5StkHc2fpTLOUbHCAh6hkZBiRbPYPKTP2rlLkNiPNuxrX+aoAapqQm0qkj8Veat9Yh
+ kF9DeEVI
+ yMS1mFX6JtoYizzvk0gKRQ22an7bBahq4zmTyWZomo0tGRgvBXSRM8g6yvMrAdPmOqPZnzlj56y3s8zPJ0YNRPByZ3NJQfTnoneHMLPi4ui8eYUKqh6pvvFIupTNPWCDCTef8G6DTJTRAeadtmTAK/uL1KPC5wMHv1C79CE6cn1yYmpJpy0DvYiPJBeCh6qIm0g7P+VCdptpjHsjUisX1CZDiGmAcWQyPxkECFjNYO7Grvb4z4N+CUWsmH9gsmTZhpZtSMbTn2ZURA9/Z3vN4Y9D8cH50c39YWaeL+GEVcwQaf1hcV2lzWP1EMxCvEfjPDL5s58BeMof78MJG9EzDedH40u3oJZpwcpO4bsexrXJDSPI0DXxR6aDYHTS1zkl6rO9/
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,29 +100,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 19, 2026 at 11:04=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
-> On 1/19/26 12:55 AM, Kairui Song wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> >                               if (!swaps_freed) {
-> > +                                     /*
-> > +                                      * If found a large swap entry cr=
-oss the end border,
-> > +                                      * skip it as the truncate_inode_=
-partial_folio above
-> > +                                      * should have at least zerod its=
- content once.
-> > +                                      */
-> > +                                     order =3D shmem_confirm_swap(mapp=
-ing, indices[i],
-> > +                                                                radix_=
-to_swp_entry(folio));
-> > +                                     if (order > 0 && indices[i] + ord=
-er > end)
-> > +                                             continue;
->
-> The latter check shoud be 'indices[i] + 1 << order > end', right?
 
-Yes, you are right, it should be 1 << order, thanks!
+
+On 1/18/26 8:31 AM, Shakeel Butt wrote:
+> On Wed, Jan 14, 2026 at 07:32:35PM +0800, Qi Zheng wrote:
+>> From: Muchun Song <songmuchun@bytedance.com>
+>>
+>> In the near future, a folio will no longer pin its corresponding
+>> memory cgroup. To ensure safety, it will only be appropriate to
+>> hold the rcu read lock or acquire a reference to the memory cgroup
+>> returned by folio_memcg(), thereby preventing it from being released.
+>>
+>> In the current patch, the rcu read lock is employed to safeguard
+>> against the release of the memory cgroup in get_mem_cgroup_from_folio().
+>>
+>> This serves as a preparatory measure for the reparenting of the
+>> LRU pages.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+>> ---
+>>   mm/memcontrol.c | 10 +++++++---
+>>   1 file changed, 7 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 982c9f5cf72cb..0458fc2e810ff 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -991,14 +991,18 @@ struct mem_cgroup *get_mem_cgroup_from_current(void)
+>>    */
+>>   struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
+>>   {
+>> -	struct mem_cgroup *memcg = folio_memcg(folio);
+>> +	struct mem_cgroup *memcg;
+>>   
+>>   	if (mem_cgroup_disabled())
+>>   		return NULL;
+>>   
+>> +	if (!folio_memcg_charged(folio))
+>> +		return root_mem_cgroup;
+>> +
+>>   	rcu_read_lock();
+>> -	if (!memcg || WARN_ON_ONCE(!css_tryget(&memcg->css)))
+>> -		memcg = root_mem_cgroup;
+>> +	do {
+>> +		memcg = folio_memcg(folio);
+>> +	} while (unlikely(!css_tryget(&memcg->css)));
+> 
+> I went back to [1] where AI raised the following concern which I want to
+> address:
+> 
+>> If css_tryget() fails (e.g. refcount is 0), this loop spins indefinitely
+>> with the RCU read lock held. Is it guaranteed that folio_memcg() will
+>> return a different, alive memcg in subsequent iterations?
+> 
+> Will css_tryget() ever fail for the memcg returned by folio_memcg()?
+> Let's suppose memcg of a given folio is being offlined. The objcg
+> reparenting happens in memcg_reparent_objcgs() which is called in
+> offline_css() chain and we know that the offline context holds a
+> reference on the css being offlined (see css_killed_work_fn()).
+> 
+> Also let's suppose the offline process has the last reference on the
+> memcg's css. Now we have following two scenarios:
+> 
+> Scenario 1:
+> 
+> get_mem_cgroup_from_folio()		css_killed_work_fn()
+>    memcg = folio_memcg(folio)		  offline_css(css)
+>    					    memcg_reparent_objcgs()
+>    css_tryget(memcg)
+>    					  css_put(css)
+> 
+> In the above case css_tryget() will not fail.
+> 
+> 
+> Scenario 2:
+> 
+> get_mem_cgroup_from_folio()		css_killed_work_fn()
+>    memcg = folio_memcg(folio)		  offline_css(css)
+>    					    memcg_reparent_objcgs()
+>    					  css_put(css) // last reference
+>    css_tryget(memcg)
+>    // retry on failure
+> 
+> In the above case the context in get_mem_cgroup_from_folio() will retry
+> and will get different memcg during reparenting happening before the
+> last css_put(css).
+> 
+> So, I think we are good and AI is mistaken.
+> 
+> Folks, please check if I missed something.
+
+LGTM, thank you for such a detailed analysis!
+
+> 
+>>
+>> If the folio is isolated (e.g. via migrate_misplaced_folio()), it might be
+>> missed by reparenting logic that iterates LRU lists.
+> 
+> LRU isolation will not impact reparenting logic, so we can discount this
+> as well.
+> 
+>> In that case, the
+>> folio would continue pointing to the dying memcg, leading to a hard lockup.
+>>
+>> Also, folio_memcg() calls __folio_memcg(), which reads folio->memcg_data
+>> without READ_ONCE().
+> 
+> Oh I think I know why AI is confused. It is because it is looking at
+> folio->memcg i.e. state with this patch only and not the state after the
+> series. In the current state the folio holds the reference on memcg, so
+> css_tryget() will never fail.
+> 
+>> Since this loop waits for memcg_data to be updated
+>> by another CPU (reparenting), could the compiler hoist the load out of
+>> the loop, preventing the update from being seen?
+>>
+>> Finally, the previous code fell back to root_mem_cgroup on failure. Is it
+>> safe to remove that fallback? If css_tryget() fails unexpectedly, hanging
+>> seems more severe than the previous behavior of warning and falling back.
+> 
+> [1] https://lore.kernel.org/all/7ia4ldikrbsj.fsf@castle.c.googlers.com/
+> 
+> 
+
 
