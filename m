@@ -4,112 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91D7DCCF2E5
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 11:17:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4DD2CCF2E7
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 11:27:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0F266B0188; Mon, 19 Jan 2026 06:17:57 -0500 (EST)
+	id 338616B018B; Mon, 19 Jan 2026 06:27:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBC496B018A; Mon, 19 Jan 2026 06:17:57 -0500 (EST)
+	id 30FF86B018C; Mon, 19 Jan 2026 06:27:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB1A86B018B; Mon, 19 Jan 2026 06:17:57 -0500 (EST)
+	id 211E46B018D; Mon, 19 Jan 2026 06:27:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CB2A06B0188
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:17:57 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 799FF8C398
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:17:57 +0000 (UTC)
-X-FDA: 84348463794.15.A62A208
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E32A2140007
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:17:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=UI6BANsZ;
-	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768821475; a=rsa-sha256;
-	cv=none;
-	b=pBVsBkfTk5WM3ONHxa/Ujwped3UD25YSmj9+ZX49auHSEMfacexRdMbq7uP90DNf6f09nV
-	h3StOiVt7gEHvN4uHTZU/rnPhV77RNoOVRO81O2aJFDrAcMFTzyRm3sfQmB7vRNQoNw3zg
-	noTAjbPgCx++Gxusqz/RCRKUl7IGYl4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=UI6BANsZ;
-	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E7F86B018B
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:27:59 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A27011AEDB0
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:27:58 +0000 (UTC)
+X-FDA: 84348489036.09.2750545
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id EF69D12000B
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 11:27:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ftDxZ5sH;
+	spf=pass (imf29.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768821475;
+	s=arc-20220608; t=1768822076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TAX0hP36wyQvHEnz9i/MFLh0hu4HHRH7RkC1l5jU0s4=;
-	b=gZO1gjXrjsDsoL9rk7I3bNc6CNRZMWZe6K434PlZlpU+QG4UnJIQpbQ9xtL99S04hMpJUD
-	EAN/um4W1PtKLApE63x5iyxNftk5/c/mo/23Gjm/WWEoFyfQYtADYQulfJQNDd8AEhsJDY
-	cjwy99j0iNMeQoHp+QIf2OLO/U/lWUA=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B103240E019B;
-	Mon, 19 Jan 2026 11:17:50 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id hzHadV7cM7xx; Mon, 19 Jan 2026 11:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1768821466; bh=TAX0hP36wyQvHEnz9i/MFLh0hu4HHRH7RkC1l5jU0s4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UI6BANsZJms/cMsQyx9NI0WajdfSiKOsXcvVS8AdbyQxwHurE1TnCzdtYtPha8Q1J
-	 NMiIZdUfX7gmnPpCM30UwyL1kGlYxq5AgSjTA+dIeJGflAkuFOOPw37cfMUD5aH2a/
-	 zSMKMnJOTSOcWUEfwCiO/F6iB5P5khgSCCaYrt+dpnZCR9CZnlBA3W2fBzu2zHf9h7
-	 EIwhJxC2/vPPeJOYqeiAOHFJP93C2Xr0Dsvp6iASvtQ/kt3uOqxwmK7ne60A/ViqYR
-	 mktEibnHEE7OefjMLILpo26O4abbErxLwKKY6yk/Nj4d1zf2N/Ut7PlGyNl/aVO1Y2
-	 CgctK4pHRdvWvxcO1v2TvUYtgU2urGxJDbTavLgCsEd7GnGS9ecZ7jC86UyXrD0Kia
-	 19VFNH3KoGE7Am3YFoPwvAkEECKYIorWwDH4FsxFpBIBwBm+rAGyZ0aa6UAeDGP6vi
-	 pUuKljxcPVvMaq0Ao0w32gKjwElLwRblDhgPQ8InU3Kw6Gj/zrUh1t5iHLBlrL1y9K
-	 kaIpTS6RwNDv5tdeHLmayCMJGbpQ9oYlqA1j8qACBBzdYceFOsAMo4g9XfU5YU9N85
-	 JzbKFz0bVZNsYlwctUpoWE5/RgYZvEWkIwQsfwBSUDcrOc5FzMCBi9o47ZGa/jsSGo
-	 bol7Lf4Gh4l1k2KL44R7ScSI=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B933C40E0028;
-	Mon, 19 Jan 2026 11:17:08 +0000 (UTC)
-Date: Mon, 19 Jan 2026 12:17:01 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: shiju.jose@huawei.com
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	rdunlap@infradead.org, jonathan.cameron@huawei.com,
-	linuxarm@huawei.com, rientjes@google.com, jiaqiyan@google.com,
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
-	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
-Subject: Re: [PATCH v15 1/2] ACPI:RAS2: Add driver for the ACPI RAS2 feature
- table
-Message-ID: <20260119111701.GBaW4Sres045xnfkpz@fat_crate.local>
-References: <20260115143101.876-1-shiju.jose@huawei.com>
- <20260115143101.876-2-shiju.jose@huawei.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=pP6KPkEm66wfX7plJqqUtylJcknJM7pwcp7nxWzHOCA=;
+	b=hwoQ5+tZATmOAPUdewOnZs1thFo3z1+VMqeZxy74LfkPlQL4i1mcReQzrl4jqwZIjp5a0S
+	565bb4l5Gg3uM2EPBz6kQCRPt9HzIRpuRbUPghk9EToqyACJgcSueR965a6TkHh/PjgHLo
+	3cTZFIZju9KBtNQRWP3YGns3JjRDw8c=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ftDxZ5sH;
+	spf=pass (imf29.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768822076; a=rsa-sha256;
+	cv=none;
+	b=61VjcMom8t8gijWO3m0Rjvcu1WXqVueiaVYfNhMjVFvfCT27nHdlMGXzPQ62197C0BItL6
+	i/C0IGn6HeaOmLMtXKrw2tpe/vDDRL8LaevgIqrCrT1xMnfbYJA++Jlo0VJVEGqDRKsWLK
+	Ln15QFAF4k5gb9y5S9zCk3CCfCYoFgw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768822074;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pP6KPkEm66wfX7plJqqUtylJcknJM7pwcp7nxWzHOCA=;
+	b=ftDxZ5sHXurctM8gzOCF0c2IWFtHaLqQ17ttYAGfPv8BEVBuDn9UQA8irk98N8XvrooW6R
+	v3Sf5Rw4Buxqgm97qpik/0sDPmh4f4NpEu9ncy78BBZzx+qNuYr6IFu7B86vjsXN95HaU4
+	kdz9+ZMBUWl4OJpVjLliNvZIZC0Oyxc=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-562-hZ9UXX86MCKry63XgnU0Bw-1; Mon, 19 Jan 2026 06:27:52 -0500
+X-MC-Unique: hZ9UXX86MCKry63XgnU0Bw-1
+X-Mimecast-MFC-AGG-ID: hZ9UXX86MCKry63XgnU0Bw_1768822071
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-59b6d0fd157so2840372e87.0
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 03:27:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768822071; x=1769426871;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pP6KPkEm66wfX7plJqqUtylJcknJM7pwcp7nxWzHOCA=;
+        b=cWyaHLnex6XEbm49mHyBfkDZpjJLkz43G8UbpN9lpE8mlkmPYBli8CcyZLrUq9dcYG
+         YBPPs/+r9L8iDzb7LHxNPlnVqeqc7COwNx4y9sVz+2ZKhDa8XnnPNOAEJnSbYEMdkW1N
+         Sd5OIG4Ddiop1MfTqrI77uWl8OLdXH12mEpO1C0fwrEVdm3olW8/3sTj2bdBQwUsQQYU
+         CFKHZhC2FexPk1udeU1A7zcKGjgSgXGT/tV5WTVoyOo8Isua7uA6CEg13vWwwiqiMuKr
+         QiU/8v2nmo2VqslHianOFOpZ0KTCaEApTfCjgcC0HSx8OE/5HvPweWomUHuoUmPIoJzl
+         F4ww==
+X-Gm-Message-State: AOJu0YylqjPqwt5KtOG84XiwaAqLBIX8By9Jin4AhU4NQWNMRzK5XzsT
+	UOHGTLVwmKUTb4q88iXhoQJgpJKTq8o1XLoTP0GKQKV7lxyYMEfJNKJUcl0pH3/QdApJbTuIHgb
+	AyRHgzgRs0ZsLWwOAPkw6tsgjurDpzSPkG4+W8KByyINbmORqbI4uZkhCP6639WJZBaLtv+BWwa
+	NgYNvNpbHjFrcbQtIYmEWzPpqS+gngjYpYCu0=
+X-Gm-Gg: AY/fxX6TP5HrLfHcly1M3PK13sl67fKx2oc6/dmjrLAecKo+fhl2qU0g8qQAdUcKiWO
+	TA2TVgSB7l616yXOxFwXheOlTYMEB2nI6AylEXIeSbEPcDjRxS9hUAYbvpPjF+2Y6oIL0p1N83y
+	kC25IbXJm78V3OrX1ZpOsF/qVNgxRwkI7REbGdkl4AVYzWoqyCY+lw3CbpNgVLEgugX+H1k0hH+
+	sc57vnRYivcnzN1jMyJGYmQWtJi3wh77f1BzHe1w9kNQT7agZWcjalsI6fnIk2bX9tHj0eF/TrA
+	zaeEf1u0GiPe/xDkjG/x0APeVv2yD/ySVFwhwTK+Iuv/DpSdY74rSjSk2hhs8Ck6GAXBpLHxgw2
+	iHNHaFuGu00solK3AK4PRu0ah
+X-Received: by 2002:ac2:4f14:0:b0:59b:6f38:9083 with SMTP id 2adb3069b0e04-59baeebad8amr3861492e87.3.1768822070776;
+        Mon, 19 Jan 2026 03:27:50 -0800 (PST)
+X-Received: by 2002:ac2:4f14:0:b0:59b:6f38:9083 with SMTP id 2adb3069b0e04-59baeebad8amr3861472e87.3.1768822070247;
+        Mon, 19 Jan 2026 03:27:50 -0800 (PST)
+Received: from fedora (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38384f8a1efsm31226411fa.39.2026.01.19.03.27.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 03:27:49 -0800 (PST)
+From: mpenttil@redhat.com
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH v2 0/3] Migrate on fault for device pages
+Date: Mon, 19 Jan 2026 13:24:59 +0200
+Message-ID: <20260119112502.645059-1-mpenttil@redhat.com>
+X-Mailer: git-send-email 2.50.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260115143101.876-2-shiju.jose@huawei.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E32A2140007
-X-Stat-Signature: ijd8i8gj6ha6njonxw1fc9h7kgttqyog
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: HcZcT4p0JIokbngb86Dnq77dvlZDkQ0Y260YG8NcPiI_1768822071
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EF69D12000B
+X-Stat-Signature: 7zqocsjhu1ziykt6c4kztdjpt4g8g1kn
 X-Rspam-User: 
-X-HE-Tag: 1768821474-97944
-X-HE-Meta: U2FsdGVkX1+1DgKAxUStFvCifSshYt7LGeliSIctyZ4+hLWpagY90I0juoCABX8FFyavX8YL+IDYMsIMkLE5y0Ge7WtWOZuzeM1jWxnjmaBX6R7ZT/9zwBOK6pZbGRJGJWzuf20sx3AN2IdmR3rGloxdW7NcFUSITtruiUnfsjXptLY4s97z60wISVETJDqO7ZI5argCsRRYKEaOW77QAG17zCUW6SwCTZ4J8fmJh/nCWMmQLSBUdelfSlSwO30WjiZUDYkzGzwiPGbU3NwrhzXgMN1ofTidU1s4/YlcABOid12YpUsxg/iBjUDYpv5v4uE1e+JhoQaCp+tUCbbuFBl+Vml7F0T6Y9eE8g9nmBkFnjWu6Zo4+teD+riuTDnmAVBjNPxokG6uvkxXwd6bpHgT3GtgWMKtM7W0edp9GblfNUzDArn0PLdqSb9uNKuqiPRre8szbYBI5k2QedaerLWrkDeM884/X6wh1YWuatTRizoM/DH8U9ep+CBdDRAOd5QjRJck2rdG7qoRz/HG3ztMSJxCK8LGeaekk0Oebj51SWgN+UbZquakwHBReVPGMmqiFd1wdIYSZ4hBuyyLLVZNbJ8CDts8N4w19Dn29xZ3BhhnB+ageiVHT4ntlDNVC6PxT15d74XorNV1YnY25SM48T7416zT4/aUwFsP38eDGNMK5+6mbL6IUix8nZBANVp/2IFu3zdcfjllb4m9+2FIdZcTtVKwt8Z/I71UNKuMsV9Nh9lT21v2Txbv6PoWBMoKevxVTMwzifjbhUrWvUEwT1uCCuPx0FCd9yIutxNGmTmcz7iT8zcq4NvmKSOBmCKIQG2UHo352DJo+/3He0NBS06Os6M08P8fw0TOF/g8plddGU6SH5i/gPcx3Sz+fy698iJAA8C4E+psJg6JB0TcvImAK3GIZ0Zbeo82zLUou1SvnW4uYUpQQlfCdY1N77ZhSg8O1CC7STsYrX9
- Bvu/WfO1
- Ax91cT//LiJFouookQD4xNONZ1YMyJ0aKcEAcYFPpdoWbGhQYt6rJuiQVNUNZxNKua01xantAKwJv8LdamQG9ujgWsfvshrtXPIGzwqCaRxZ67IWcSKP+RARfFYgk2mG++c/fWCrwPqcH8XprcNmybfJra3OBLY+hMWPQjmh45SeOFYjhxssnNEh9Mp1t9/h+GzL6oTiTzgRUEo9InVfsXdTmQ6wAzjViqp8rMaRFpr1UjS9DLgnxjb3sECd6VIUsBzh1l/ewqC9sQVl994yPkIbD/+Q6sumGNlSQI3ktDMfTCPfZtEi7I6s8HuIGPatvqrAuAo3j7jW8wQyWJx9BNolgNpy+9KUImAVM4aIfMAOqSRQ/B4ERUgOzuzoIkY7REvdHppHa7UnagT/098s1y+dDUg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768822074-192698
+X-HE-Meta: U2FsdGVkX19Ek08wWOp5AqgruydGFkX+WyBHEw5u3+DgvcAkids6L21zcxS8y2Bp4tP8terbfv1YBFW8JsuVFzNtNqzmUb+MqqE+1S+qYPdTCpnOxxODGa1xO0ZtmIhOB9evsC3g+Q7JThiggKd5siq6vov9hwvj5amSt4BTFw7QgGvRPyiVQdDG4E5K4vRLbX+vhuwwTp2hMLPzJfgxEFNkE0atni++HEIuo7qmvH08pRt2S3N/+tEu+pr8nMy9gls3QQR4EaUtFG4NNwRLrNzIi0D4Ik5xYm8HLVtcoegoJdmtiSZONQd2Ko4fP/L3/q4gAF4Dwd+w21AHO/qba+uIB/iDwdmJmYLx61v26r1OU0VAk7dpu/pP3K8h+7Un4berXfNOnU9FsBIepKfKRwmd6p5xtDb2f10HPnFI7tyAYKoVJY7KFq5WJsSQWfZjPcV+9rvOZE8798gaMVMMv3O1ZnjAB+bpX3kepmTgIIQkxt1u14icK5lQxy5Rbu7Aj4e3hcm8/clDQGu41gwEpnt7so/Tovc1KmNdBCgIq9CwVCAwKu77sS+kCkLHGN3sp0zeOVRlqj56beMuUz4KyTFZiMaxmd6MKmo/sBaQgASyyOxb6k/mwtVkelpOT1SOB5k8gSC6EJjBPfD/wLJzUA7yER4Ee4q7K6wtOLtkBchRtYbHsU8iHTt3SwNvX5WfVT/8884lOmfm/IGY52M3tdeurXkL7nzTmBcHkWklSDgkYUzNdqLUwg8jvpyyJvpPvyAI7rMgtcxTIxtkjhXMd/fpr4MbVPBtwCqIKAmUAVKaNGi3Toq0D5AbNZtScSsXldXBwDzqnUPlrB3WGslr105prrsbuB6nkFAbV2mE9pHuycWphT5DKYdnb+0hKU51FxS7WOtOOusrjQ3OAApFQEJrJiA2gW3g9gJizJaU9nITtjNceNO28dszwC9JbId9ow3b9MnhgwxTeEmUSBM
+ YZhRPuTF
+ IID6PO+c/rgCN3aWKDdEOfh6YKwsDFC2GZTzkHp8BkV+rfGqP4+kWZgngkPRgl4oig+IHo3RzpLzasYDCat6qoXj1mffFd6nizjORN4R2r2GwvZPoqIYP168El0YLYhXChmM0cNweFBjIEmVfUiOvgAJIYP8edr2FUfUebAKZq+dJDCmP2vByYb7GipwKKhwMkxh4BcWNfXbl3hNcerK1jiwY+G1VzaG0aUxX8PjGpgVGFz/30EIweL3XhYcX+Lc07BUHNgY7owYaxBmiNuWDr3xrgOWE27Fs3MT7ekWfxjnpEGLolLa09wXQAOZv46RloXHmihxK6kwUXl1xzGujay5XzfIqYbKuU08uAhEfRYbC1Fj2bR/7sl2I2hZzjEVyAsVPegfp5FCOkiWCB7A1IOZDykw/9s2SLadS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,207 +132,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 15, 2026 at 02:30:58PM +0000, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS2).
-> Driver adds support for RAS2 feature table, which provides interfaces for
-> platform RAS features, e.g., for HW-based memory scrubbing, and logical to
-> PA translation service. RAS2 uses PCC channel subspace for communicating
-> with the ACPI compliant HW platform.
-> 
-> Co-developed-by: A Somasundaram <somasundaram.a@hpe.com>
-> Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  drivers/acpi/Kconfig  |  10 +
->  drivers/acpi/Makefile |   1 +
->  drivers/acpi/bus.c    |   3 +
->  drivers/acpi/ras2.c   | 414 ++++++++++++++++++++++++++++++++++++++++++
->  include/acpi/ras2.h   |  57 ++++++
->  5 files changed, 485 insertions(+)
->  create mode 100644 drivers/acpi/ras2.c
->  create mode 100644 include/acpi/ras2.h
-> 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index ca00a5dbcf75..7f846c22fc30 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -293,6 +293,16 @@ config ACPI_CPPC_LIB
->  	  If your platform does not support CPPC in firmware,
->  	  leave this option disabled.
->  
-> +config ACPI_RAS2
-> +	bool "ACPI RAS2 driver"
-> +	select AUXILIARY_BUS
-> +	depends on MAILBOX
-> +	depends on PCC
-> +	help
-> +	  This driver adds support for RAS2 feature table provides interfaces
-> +	  for platform RAS features, e.g., for HW-based memory scrubbing.
-> +	  Say 'y/n' to enable/disable ACPI RAS2 support.
-> +
->  config ACPI_PROCESSOR
->  	tristate "Processor"
->  	depends on X86 || ARM64 || LOONGARCH || RISCV
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index d1b0affb844f..abfec6745724 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -105,6 +105,7 @@ obj-$(CONFIG_ACPI_EC_DEBUGFS)	+= ec_sys.o
->  obj-$(CONFIG_ACPI_BGRT)		+= bgrt.o
->  obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc_acpi.o
->  obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
-> +obj-$(CONFIG_ACPI_RAS2)		+= ras2.o
->  obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
->  obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
->  obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index a984ccd4a2a0..b02ceb2837c6 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -31,6 +31,7 @@
->  #include <acpi/apei.h>
->  #include <linux/suspend.h>
->  #include <linux/prmt.h>
-> +#include <acpi/ras2.h>
->  
->  #include "internal.h"
->  
-> @@ -1474,6 +1475,8 @@ static int __init acpi_init(void)
->  	acpi_debugger_init();
->  	acpi_setup_sb_notify_handler();
->  	acpi_viot_init();
-> +	acpi_ras2_init();
-> +
->  	return 0;
->  }
->  
-> diff --git a/drivers/acpi/ras2.c b/drivers/acpi/ras2.c
-> new file mode 100644
-> index 000000000000..f27676e61a9c
-> --- /dev/null
-> +++ b/drivers/acpi/ras2.c
-> @@ -0,0 +1,414 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ACPI RAS2 feature table driver.
-> + *
-> + * Copyright (c) 2024-2025 HiSilicon Limited.
-> + *
-> + * Support for RAS2 table - ACPI 6.5 Specification, section 5.2.21, which
-> + * provides interfaces for platform RAS features, e.g., for HW-based memory
-> + * scrubbing, and logical to PA translation service. RAS2 uses PCC channel
-> + * subspace for communicating with the ACPI compliant HW platform.
-> + */
-> +
-> +#define pr_fmt(fmt) "ACPI RAS2: " fmt
-> +
-> +#include <linux/delay.h>
-> +#include <linux/export.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/ktime.h>
-> +#include <acpi/pcc.h>
-> +#include <acpi/ras2.h>
-> +
-> +/**
-> + * struct ras2_sspcc - Data structure for PCC communication
-> + * @mbox_client:	struct mbox_client object
-> + * @pcc_chan:		Pointer to struct pcc_mbox_chan
-> + * @comm_addr:		Pointer to RAS2 PCC shared memory region
-> + * @pcc_lock:		PCC lock to provide mutually exclusive access
-> + *			to PCC channel subspace
-> + * @deadline_us:	Poll PCC status register timeout in micro secs
-> + *			for PCC command complete
-> + * @pcc_mpar:		Maximum Periodic Access Rate (MPAR) for PCC channel
-> + * @pcc_mrtt:		Minimum Request Turnaround Time (MRTT) in micro secs
-> + *			OS must wait after completion of a PCC command before
-> + *			issue next command
-> + * @last_cmd_cmpl_time:	completion time of last PCC command
-> + * @last_mpar_reset:	Time of last MPAR count reset
-> + * @mpar_count:		MPAR count
-> + * @pcc_id:		Identifier of the RAS2 platform communication channel
-> + * @last_cmd:		Last PCC command
-> + * @pcc_chnl_acq:	Status of PCC channel acquired
-> + */
-> +struct ras2_sspcc {
-> +	struct mbox_client		mbox_client;
-> +	struct pcc_mbox_chan		*pcc_chan;
-> +	struct acpi_ras2_shmem __iomem	*comm_addr;
-> +	struct mutex			pcc_lock;
-> +	unsigned int			deadline_us;
-> +	unsigned int			pcc_mpar;
-> +	unsigned int			pcc_mrtt;
-> +	ktime_t				last_cmd_cmpl_time;
-> +	ktime_t				last_mpar_reset;
-> +	int				mpar_count;
-> +	int				pcc_id;
-> +	u16				last_cmd;
-> +	bool				pcc_chnl_acq;
-> +};
-> +
-> +/*
-> + * Arbitrary retries for PCC commands because the remote processor
-> + * could be much slower to reply. Keeping it high enough to cover
-> + * emulators where the processors run painfully slow.
-> + */
-> +#define PCC_NUM_RETRIES 600ULL
-> +
-> +#define RAS2_MAX_NUM_PCC_DESCS 100
-> +#define RAS2_FEAT_TYPE_MEMORY 0x00
-> +
-> +static int decode_cap_error(u32 cap_status)
-> +{
-> +	switch (cap_status) {
-> +	case ACPI_RAS2_NOT_VALID:
-> +	case ACPI_RAS2_NOT_SUPPORTED:
-> +		return -EPERM;
-> +	case ACPI_RAS2_BUSY:
-> +		return -EBUSY;
-> +	case ACPI_RAS2_FAILED:
-> +	case ACPI_RAS2_ABORTED:
-> +	case ACPI_RAS2_INVALID_DATA:
-> +		return -EINVAL;
-> +	default:
-> +		return 0;
-> +	}
-> +}
-> +
-> +static int check_pcc_chan(struct ras2_sspcc *sspcc)
-> +{
-> +	struct acpi_ras2_shmem __iomem *gen_comm_base = sspcc->comm_addr;
-> +	u16 status;
-> +	int rc;
-> +
-> +	/*
-> +	 * As per ACPI spec, the PCC space will be initialized by
-> +	 * platform and should have set the command completion bit when
-> +	 * PCC can be used by OSPM.
-> +	 *
-> +	 * Poll PCC status register every 3us for maximum of 600ULL * PCC
-> +	 * channel latency until PCC command complete bit is set.
-> +	 */
-> +	rc = readw_relaxed_poll_timeout(&gen_comm_base->status, status,
-> +					status & PCC_STATUS_CMD_COMPLETE, 3,
-> +					sspcc->deadline_us);
-> +	if (rc) {
-> +		pr_warn("PCC check channel timeout for pcc_id=%d rc=%d\n",
-> +			sspcc->pcc_id, rc);
+From: Mika Penttilä <mpenttil@redhat.com>
 
-I'll stop here. This version still doesn't address comments from here:
+Currently, the way device page faulting and migration works
+is not optimal, if you want to do both fault handling and
+migration at once.
 
-https://lore.kernel.org/r/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local
+Being able to migrate not present pages (or pages mapped with incorrect
+permissions, eg. COW) to the GPU requires doing either of the
+following sequences:
 
-so I'll wait for a new one which has everything addressed.
+1. hmm_range_fault() - fault in non-present pages with correct permissions, etc.
+2. migrate_vma_*() - migrate the pages
 
-Thx.
+Or:
 
+1. migrate_vma_*() - migrate present pages
+2. If non-present pages detected by migrate_vma_*():
+   a) call hmm_range_fault() to fault pages in
+   b) call migrate_vma_*() again to migrate now present pages
+
+The problem with the first sequence is that you always have to do two
+page walks even when most of the time the pages are present or zero page
+mappings so the common case takes a performance hit.
+
+The second sequence is better for the common case, but far worse if
+pages aren't present because now you have to walk the page tables three
+times (once to find the page is not present, once so hmm_range_fault()
+can find a non-present page to fault in and once again to setup the
+migration). It is also tricky to code correctly. One page table walk
+could costs over 1000 cpu cycles on X86-64, which is a significant hit.
+
+We should be able to walk the page table once, faulting
+pages in as required and replacing them with migration entries if
+requested.
+
+Add a new flag to HMM APIs, HMM_PFN_REQ_MIGRATE,
+which tells to prepare for migration also during fault handling.
+Also, for the migrate_vma_setup() call paths, a flag, MIGRATE_VMA_FAULT,
+is added to tell to add fault handling to migrate.
+
+One extra benefit of migrating with hmm_range_fault() path
+is the migrate_vma.vma gets populated, so no need to
+retrieve that separataly.
+
+Tested in X86-64 VM with HMM test device, passing the selftests.
+Tested also rebased on the
+"Remove device private pages from physical address space" series:
+https://lore.kernel.org/linux-mm/20260107091823.68974-1-jniethe@nvidia.com/
+plus a small patch to adjust with no problems.
+
+Changes v1-v2:
+  - rebase on 6.19-rc6
+  - fixed issues found by kernel test robot
+  - fixed locking (pmd/ptl) to cover handle_ and prepare_ regions
+    parts if migrating
+  - other issues discovered by Matthew, thanks!
+
+Changes RFC-v1:
+  - rebase on 6.19-rc5
+  - adjust for the device THP
+  - changes from feedback
+
+Revisions:
+  - RFC https://lore.kernel.org/linux-mm/20250814072045.3637192-1-mpenttil@redhat.com/
+  - v1: https://lore.kernel.org/all/20260114091923.3950465-1-mpenttil@redhat.com/
+  
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leonro@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
+
+Mika Penttilä (3):
+  mm: unified hmm fault and migrate device pagewalk paths
+  mm: add new testcase for the migrate on fault case
+  mm:/migrate_device.c: remove migrate_vma_collect_*() functions
+
+ include/linux/hmm.h                    |  19 +-
+ include/linux/migrate.h                |  27 +-
+ lib/test_hmm.c                         | 100 +++-
+ lib/test_hmm_uapi.h                    |  19 +-
+ mm/hmm.c                               | 770 +++++++++++++++++++++++--
+ mm/migrate_device.c                    | 594 +++----------------
+ tools/testing/selftests/mm/hmm-tests.c |  54 ++
+ 7 files changed, 1002 insertions(+), 581 deletions(-)
+
+
+base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
 -- 
-Regards/Gruss,
-    Boris.
+2.50.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
