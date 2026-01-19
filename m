@@ -4,102 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 098D3D2ECE1
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 20:38:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4067ED2ECE6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 20:39:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CDF26B02C2; Mon, 19 Jan 2026 15:38:49 -0500 (EST)
+	id 72B3F6B02C4; Mon, 19 Jan 2026 15:39:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A4E46B02C4; Mon, 19 Jan 2026 15:38:49 -0500 (EST)
+	id 702836B02C6; Mon, 19 Jan 2026 15:39:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DB436B02C5; Mon, 19 Jan 2026 15:38:49 -0500 (EST)
+	id 406C46B02C7; Mon, 19 Jan 2026 15:39:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 494B56B02C2
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:38:49 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED6A3C1076
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:38:48 +0000 (UTC)
-X-FDA: 84349877136.18.0A8F919
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1A5B540003
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:38:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768855127; a=rsa-sha256;
-	cv=none;
-	b=E7wEMBEaQ7kg1P8V2xE3RU0hDc6J3VbUgGwsyMXjDocQZhShUk1cQihXykwR/WbexDffhI
-	Xt5Uf2RZkSvoDLLMdScC9ro1PxOLUqBGOFrrn8aaSgHzIH8OU335fYADordPy2xxgWTlJg
-	uS0o5mTqWhr/c4d5dPdgKr+lAj8e9Ak=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 182696B02C4
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 15:39:47 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C566CD1B80
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:39:46 +0000 (UTC)
+X-FDA: 84349879572.07.6ADA764
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8EE17160004
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:39:44 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm1 header.b=Cd1jzcLw;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="K b0Ld9o";
+	spf=pass (imf08.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.145 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768855127;
+	s=arc-20220608; t=1768855184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OqAdMoCLDfxesWeXSjFPeXninStgY+7qdqGzoS26PCI=;
-	b=fqDnf4KMD1MQ1vkh730ooRxiBky2mM+xyuD4eMGhLrwIoZHS0LEpF0r/i98Xfg0F595GCy
-	+O+m6TMWJJBMgfVwwgjeo7qYhOEaK71fL8rm5oCilFOmzOIc4np13shAXESLEFuCOe9GLs
-	Kvmhap4FkHp48MxzTHn9d53jP/V6mpg=
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8887ac841e2so36445646d6.2
-        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 12:38:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768855126; x=1769459926;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OqAdMoCLDfxesWeXSjFPeXninStgY+7qdqGzoS26PCI=;
-        b=kWFvI0ZhH2hH57BxgdEUHE0yYiZYk08KRyWNmCpYrXVB4FL+yveP7+Qh/b5Nc3YJR9
-         lzBwitqE8R5Jevzg4w+MUrf2Za9wRam0A9MHBEeSJ9Tfct9Jnhb1Oz/iMhR75Rxsj5Fz
-         0S6zp/Q/bf7xJrJQj6WObPvA931Mvh10TcZUULALAo6X+b7mMpfI9fuxOTvV9GAz56j6
-         FVGeJWuob6tpmdX154eRmURoaqJPEoJJR+C+S2enYQ1WgRr4xWKCb4c7QVPUMT8lu5W0
-         K8dQGs5VLUFmst8qvpFG8k3f4Tf7bDjZ0lTmVLEr7/Ttu99wbxy/OyjrbZDJD8Ud1ApP
-         X5Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvqoR77z/3S/hfbpoJeZYgqqF26pHVbFoVeU47vcjg2eJfNUNREV7LJs9eO6Qy4Yx17Bb3Avp6NA==@kvack.org
-X-Gm-Message-State: AOJu0YwK/zYJJ/VLvuuOA48PW9aX7lXCWnD078tU2oVJSiPMvw8n3JB9
-	N/AZ/byQMxOsocAjzzzBIQyEIKIlcVjtPgbQKWmObQbfdNo2LfNI/oxgpgFboQ==
-X-Gm-Gg: AZuq6aJZUOqj/VuvZY6IfuB0VJaALBz0dFGDS2m2RYgKGBluYXJR2AeILQUOQfsn1eJ
-	TZ2bYtUvLyqoEY7cMCQ61ty16qg9qGh3/XflpV0LYEq7RDnqQ5LBQnMYJR0sz35WLqsGXMsirq+
-	yvU+Upjg6vjd5AMLUHLwfR24ICYY3Bwh8yAt73LUva2YtvQ4K2VLWYmpqj/0MyNdf1hIJU2OWaK
-	DpE8n0jj1gUgAlB3XpNdy1MFW6hDb24sW2kG0cQ/y2ftvUMO1yUlGoBuL209GaEzD82fa/BgtTH
-	YCYcMMLyuxmM4vqG6cAuIY+V+rXcdO2R4fmVqEpIGaj9KQtB0EU96bem4p1X9NkrQMQK23nDtFY
-	Ciqdu0E3CcgvgwKqzDv2TWbtmZFIBKgYbbRL7jbA9r+tU468Yfv5hNubaFEWHgKsPEZlNdKJC7e
-	THaA==
-X-Received: by 2002:a05:6830:6d0d:b0:7c7:568d:cba with SMTP id 46e09a7af769-7cfdebc991cmr6635773a34.0.1768848852118;
-        Mon, 19 Jan 2026 10:54:12 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:40::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cfdf000b80sm7154662a34.0.2026.01.19.10.54.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 10:54:11 -0800 (PST)
-Date: Mon, 19 Jan 2026 10:54:09 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org, 
-	rppt@kernel.org, graf@amazon.com, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, ricardo.neri-calderon@linux.intel.com, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v4] kho: validate preserved memory map during population
-Message-ID: <z2lraqiivexvfvokff4gmqyvbpswmfwhbkhv4u7lo3nnnyz346@mibnt7dkrvey>
-References: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
- <jixxiqeajngwox3nh2u3pwf2rivhmqxxmpyttqxu32pixshyde@4jdn5jvg5hvk>
- <2vxzo6mt7cl3.fsf@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UBFgguEuXiAHVZI06QHGYrq2GluVufoWEpXqZX/5BGw=;
+	b=3t1AOj6/8iXPXqD57yYn18c1dbWPJGqGP6DdmzyUGfYs3DV+XjSEGLxNXaM3KbhwpPnbSg
+	cd/ktyC+MnasoP+IMG3WlKfe3y8QbpRr0fnhknKF69MauJhBXzwAoGKX5kse08amnqxhKW
+	KjLp3FdHl3FtdMfAWgdhxE854Q+gfuo=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm1 header.b=Cd1jzcLw;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="K b0Ld9o";
+	spf=pass (imf08.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.145 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768855184; a=rsa-sha256;
+	cv=none;
+	b=vJEh+qe99sm48KORusGvV8gPbk+9HHg01cg8jkHeiwsXQk+K2hsYtAS5ppHh9GZu2ndoMV
+	k43QmtIhT5vrz9Tk38PYMGNzFvTRkPXs7HxtEfnMuqTuTIJ9RVbAWf/TEFqPmp6mkr8WgI
+	Uez+vW/aADOnwFJbihaDaB+boBWc3nw=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id BBC81EC00D2;
+	Mon, 19 Jan 2026 15:39:43 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 19 Jan 2026 15:39:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1768855183;
+	 x=1768941583; bh=UBFgguEuXiAHVZI06QHGYrq2GluVufoWEpXqZX/5BGw=; b=
+	Cd1jzcLwauvaWODb3MNLsIt3bGPpRu8WF0tEav7iVgnDSxJerMHdrhZi1N6LTDhA
+	MsmBGNi9cpjP6EafG6D5/gnKadl3tjiRaPmw6gZVTv7ar4erOOVbGr2EEcT7clNS
+	rvY5/TLOp7cdbac1S9eW52Djsw7MD5cdx1YgTRLQ+2FB6KvKCZKMORC02PP8ygf5
+	T+Gm1NZxKBoW1i+cJCvYk+GBeHZRpj6SYK+sX3fZlociK9SVNXrOZCXnLdHACjIG
+	WeST+8hDEWRVd1b9KJ5kqriJVmVPaAY6lab/hrFp5+AV5R13FIZzeFamfcG3CLz1
+	5vpV6689riyT+51FHhv18Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768855183; x=
+	1768941583; bh=UBFgguEuXiAHVZI06QHGYrq2GluVufoWEpXqZX/5BGw=; b=K
+	b0Ld9oV9fmzNNJMwWM4Q1L8cTWI1esUrKqF8PAMOgSjIfHGOHhweIlZiR2FPI1Q9
+	MCN/FvYo9Ry+u8N9qg3sQgHQgMvrqH4JVPKrcE+YuRWF7Vr3M7j0TM+3EE21DgEE
+	/QuAa2jdLLERIEA0uj3Ug9RfnOI5x9CJ5QeemBEwvbB2jrC+VXXdyQTxO9YwI/TF
+	JenGVZjiBNXsh35hNOAD7fyoltPoJsTKhj47QwRceFV7cZwo4yvPRlfT6G/HWnCJ
+	0nnXq4TE0m5wqUr3hjfxuA7viH983cVAEOo2nJ16dE1IWYAgyD4ud1z7NLgRSaZR
+	kHjeE3/tzzNxzTAdamDEg==
+X-ME-Sender: <xms:j5ZuaXYJUNrcG1rQtT-PfoFgRKp-j_yvHK1mNRL9vvAdsskJVI-D_Q>
+    <xme:j5Zuad_a7T9c7zWxhvAxMjvjp5HUotOzXFKJKBIaSQ7ih4tIb1NwxVSbt8yLQqow-
+    4EdwvDD0FdeDnwfgNwcSoB4PwvXd_lN8NOk-35KR5llVEsBGhx7WA>
+X-ME-Received: <xmr:j5ZuaZmVKS2NeRw48sYVE4sFqNxgIp5nTcHE2zgqvxQQ2ig1f9v2-_Kfp_c>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeekheegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
+    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
+    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepkeehjeeitefffeeuieetjedtje
+    ffvdelledvuedvffdvfeetgefhveekuedvfedvnecuffhomhgrihhnpehkvghrnhgvlhdr
+    ohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudeipdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtg
+    hpthhtohepvhhsvghthhhisehnvhhiughirgdrtghomhdprhgtphhtthhopehjghhgsehn
+    vhhiughirgdrtghomhdprhgtphhtthhopehmohgthhhssehnvhhiughirgdrtghomhdprh
+    gtphhtthhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopehskhholhhothhhuhhm
+    thhhohesnhhvihguihgrrdgtohhmpdhrtghpthhtoheplhhinhhmihgrohhhvgeshhhurg
+    ifvghirdgtohhmpdhrtghpthhtohepnhgrohdrhhhorhhighhutghhihesghhmrghilhdr
+    tghomhdprhgtphhtthhopegtjhhirgesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:j5ZuaaaH2-EYtGccQOU5pCexBS3btzV5-lo1KS4RXPOXb4adVCUI4g>
+    <xmx:j5ZuaZNtsXvaGJFPVMMee9RjL5jrvF_RRvNyAGjwc20ITC9RhYFsnQ>
+    <xmx:j5Zuaaf3B3COk8iQhvdI7qxgIu3hjTNaS4yD7PcXnezl7rI44g0sxw>
+    <xmx:j5ZuafGX1HESnLYPUSKpweccZugsneCmqoGGdpCEd9KwzbqK3dPYEA>
+    <xmx:j5ZuaYFTv_0-XeoJCgj-mm3XuFt9-A1a2at6kUn8uaSyckgHFdt8EjPf>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 19 Jan 2026 15:39:42 -0500 (EST)
+Date: Mon, 19 Jan 2026 13:38:05 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: <ankita@nvidia.com>
+Cc: <vsethi@nvidia.com>, <jgg@nvidia.com>, <mochs@nvidia.com>,
+ <jgg@ziepe.ca>, <skolothumtho@nvidia.com>, <linmiaohe@huawei.com>,
+ <nao.horiguchi@gmail.com>, <cjia@nvidia.com>, <zhiw@nvidia.com>,
+ <kjaju@nvidia.com>, <yishaih@nvidia.com>, <kevin.tian@intel.com>,
+ <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 0/2] Register device memory for poison handling
+Message-ID: <20260119133805.49fa7b8d@shazbot.org>
+In-Reply-To: <20260115202849.2921-1-ankita@nvidia.com>
+References: <20260115202849.2921-1-ankita@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzo6mt7cl3.fsf@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8EE17160004
+X-Stat-Signature: srjzb9mokeczugkrm5xp3gcb4fdm3r3g
 X-Rspam-User: 
-X-Stat-Signature: s1drxafhrf469bwmsxy393c3oyytcuot
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1A5B540003
-X-HE-Tag: 1768855126-902146
-X-HE-Meta: U2FsdGVkX1+wg5unRuw6wo/n/JfFMgP2l/Rhl80jUL4OvUYv78GizzvN4oxWPbRW0P6eDwE6b+PYXWClkOSD1XXnEvWo88Pvs54Unf+4mJZ4vljyQ1MMPHeuI/aq/aky4ZUzQhxvPlzfC/Mijbk8Qx6RweFXhj86MnX2pOhsItcuvFqJOxLpH3zKdmaBKjOuYXm2zRQYt6j5NYYwy0RKLnk9KfhUebdwL5H7K0BZBunGQDQkAdTct0MYSj11CWK+dGBvtpFdWFhcuMjhohucfQDJb8E7XqXqkGcCS2oVpBozd7yv120feUXT/hfiU/zTq9yRG00lN52UUG4HKgShuFBsNvMdKPy+3bWG5cKoCL7m7K+itqSfSSjG2MahCP+/SwOduwYNhet2Nb1qloPLHibrYmhSj+VxtwE1uKCUSpidbC42kqr7HmEq7l9ujzTVD1S+Ec6G4N/HyQkmhbQF+7geMOrZpn5cBY3/t2VTa/c3S7R+Kf3f5m6ShIX+3RWi7/u/H1mER6yUyEY3cS8TzQgilE6QwxyZ4p+uhPA6WuRV6glBCUHAhBCLKG2ODy+WYnfXExukm2XrJ6KUtyOeEt54R4208+7/9MajBGdqpBMy2kp9RchuO3NmnYv45qT56bqMxlwnDKJI5pL4sdO2YlJihuizjb72HoaRCeKMXImElsnjagHiNIcEOiLQufn+jM+MEXA4eQcULDOzyH+cBujOLnzvkwxFEQoDtThEnr0ORfuMJ2yO7SDY0IVzOY6+KD8+gEfrg81scxe7nCZ5ZjnolZfKQSfizHkw4+SdqfeqH+LNqeX2lSoVt9D14INUVZ22wux0yIEaQiOjDa63/xDKlhodh4mNkKXmrwXeidDiiA4SaUq0hcI+fnEwKSmVz36tZjcOE7osuD8zAhaQv1mDizyAefFUTv41ROlxZnnbxw6KK8bM8D05pRyedbch+1Qp8oHRS74Ae1McwOP
- CYj4yKEL
- eqtg0Qx/avtck8e6ofzfXafLxgSvaBLIVDMNmpU1Q8WzZq+Iiao/X8pkZzoCV58EmZRKDv8dKHaOP031nh/NpzGKNtJxjYPOYQkM6SeO3M2NfyauQi97qWkNyeB9WuB2TmYpITHRoLTiE8rDv9UjF33L3vL+sfWxxb/tt7xB1NoUFOSEi8F/DsrR4GqpSNEGP+FR7pxRgpkt2edWu68s4BuI6i/MVg+MNN4cNYZo6+hbprP1oTlIAod1RKfp2shYFDPWylsOWKW1TrE49wqK32NKLIhCQ14qlSyldHsjEMG8VXimf9ehgC3EOwgL7mDisRG75u1ZHb8rSISoCUC2siHMXbygerZpduY6HzZnC8t1ikhmTjho9r7pv8MoTwHxusyRcBzhiDBQS5efF4o4DBS4lTm7hfHmsCVhX
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768855184-799936
+X-HE-Meta: U2FsdGVkX1+ngn0AOlOworl8XauuSSS5nzSAgr8ScO3gDS2wvzJvFFsW73sVBb9Zglxbos4WXIdN9sy1FqiqpsxgkGCrGv2y7TNBjesMIrTWWnxfkAqQWm2hcoZ3cH9+FUWntQ15FqEIJ9YNqANcC6KAbY3s6ME1QJ7vVUPJe49ORgrxkI21/g2mbiN31UNKOJzgoJhK26823JazkAH11fg76sMEXxkSDgsRZMQjnPRJL4Wrys9e/1OdLv0VXx1zZeKarLp33UNNX4Vr5sL7wisKo0wYOunPJFhw0EqTssSTh7Labnql5F9r88XIprbQ53hL1s1PgMZhqfiv+X5ndLMfoZlN2kwuoT58eIXBLd3BKTS3tQTfVRjtfpp0gwVIOs6ReZZe2aloJqlb47T5RjZdg48r8KMLTRT0yAUDPDSUhrIgt8BLThiTa1zsf7Vnr6bL1dDt4eQQfiunm5sCjE653+MnP8YtIZdVxwCLIKgjiZgoMXqZYvbEPiLOw+tLJTGCwURTqhYAZCrz9vwO14U2JxwpET5VqkA3Wbv5Uvdv627I/RDiEZyq2/lAqqeBXp8RfcV6VvYSExkyyKyJpKLwOOP4R8dig8bp8RyNqBzJwaBRdaSE9Wn9cDfXagsO3fB5mRnLxQniOABFiSAVI+NHamFqQnmnXC3+weB/hlJp/BAwnuNJvlOllhTydUIwNemJ6nC2f9X0wLXH1PdxUdxoMWJW/ax6MaYUUojV6Idn0VXF0UoWfA9gRYRLgwibq/4a/XAsXQHcty70T4n0hbtRlqP72iVy+C+n8Uz8x7YGRRZQiO7IS/oSyOzM6cport73751/slpTgPU+O0lBsROKKOY/LarNx/9hjgmuQtWMnTOyocjjeMxAocT87VjkyQwjoZPv7kR0ftRiOTSOjCQKXfSfyKxX3TL8OCUR8sm252q/9e8LZ6+b6Q2LhTgxZueF739aAap99sFWh04
+ 3u+c1Sh+
+ k/C43CwNhwg0gC34B2+IuT1gzOhLa+hM5a905GfRCg84URkYstJODxj2NUWyl0yREEYvzWNT9FoErN1fhfGDecI4fK1oIQR5MR53D2wb6bggDDYODB5FS0dC39tUIXPoKVwPt85SfQzXDaOOX/TTUZp0S0bal+xJdAHLQtNbPmJgSYVDNB9N7bVnvniN1E9qsRgQdbmVPYwfIWMwGXtfjmbrGmCArRBYsQAwnGxxPqxBIIcDE4fLQmoQcREsPKvoMVuasryTZnWrfqlGheQ72kMM6ixGm2foUuKc/mz4B5YLUkNQVr1XyHejCwFcFhfLVKvUJeh7CwTECZTrxT3pXu+ZBx5F232Xluml4R08nxgaMlQEljw+PvVBKjZ+s/lzxINxIvQXWwM7y9Zr/7IHoqnSteHW+Zi0wg2jQXlPfpimg46U8hEXi0W66mBKLW0LHNc5ktgpio0mSGDEwUQiEzNCiGJlfjvjShBbei7awJlBIobmOCuC3re+WOAZby+3xsW1J
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,79 +139,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 04:21:28PM +0000, Pratyush Yadav wrote:
-> > On Tue, Dec 23, 2025 at 09:01:40AM -0500, Pasha Tatashin wrote:
-> >> If the previous kernel enabled KHO but did not call kho_finalize()
-> >> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
-> >> the 'preserved-memory-map' property in the FDT remains empty/zero.
-> >> 
-> >> Previously, kho_populate() would succeed regardless of the memory map's
-> >> state, reserving the incoming scratch regions in memblock. However,
-> >> kho_memory_init() would later fail to deserialize the empty map. By that
-> >> time, the scratch regions were already registered, leading to partial
-> >> initialization and subsequent list corruption (freeing scratch area
-> >> twice) during kho_init().
-> >
-> > While trying my new patchset [0] on top of this patch, I got the
-> > following issue:
-> >
-> > 	[    0.000000] KHO: disabling KHO revival: -2
-> >
-> > Trying to solve it, I come up with a change in kho_get_mem_map_phys() to
-> > distinguish no memory and error, see the patch attached later.
-> >
-> > This is what I used to test [0] on top of linux-next. Is this useful?
-> >
-> > Link: https://lore.kernel.org/all/20260108-kho-v3-1-b1d6b7a89342@debian.org/ [0]
-> >
-> > thanks
-> > --breno
-> >
-> > commit 5d7855fede8110d74942e1b67056ba589a1cb54a
-> > Author: Breno Leitao <leitao@debian.org>
-> > Date:   Thu Jan 8 07:44:08 2026 -0800
-> >
-> >     kho: allow KHO to work when no memory is preserved
-> >     
-> >     Fix KHO initialization failing when no memory pages were preserved by
-> >     the previous kernel.
-> >     
-> >     Commit eda79a683a0a ("kho: validate preserved memory map during
-> >     population") introduced kho_get_mem_map_phys() which returns the physical
-> >     address of the preserved memory map directly as its return value. The
-> >     caller then validates it with:
-> >     
-> >         mem_map_phys = kho_get_mem_map_phys(fdt);
-> >         if (!mem_map_phys) {
-> >             err = -ENOENT;
-> >             goto out;
-> >         }
-> >     
-> >     This creates an ambiguity: physical address 0 is used both as an error
-> >     indicator (property missing/malformed) and as a valid value (property
-> >     exists with value 0, meaning no memory was preserved).
-> >     
-> >     "No memory preserved" is a legitimate state. KHO provides features beyond
-> >     memory page preservation, such as previous kernel version tracking and
-> >     kexec count tracking. When the previous kernel enables KHO but doesn't
-> >     preserve any memory pages, it sets 'preserved-memory-map' to 0. This is
-> >     semantically different from "KHO not initialized" - it means "KHO is
-> >     active, there's just nothing in the memory map."
-> 
-> This isn't true. If you hand over _any_ state, you will at least need
-> the KHO FDT. And the KHO FDT is preserved memory (see the
-> kho_alloc_preserve() call in kho_init()). So I don't see how you can
-> ever have valid KHO with no memory.
-> 
-> mem_map_phys _can_ be 0, but only when KHO was enabled but not used. And
-> that is of course also a valid use case.
+On Thu, 15 Jan 2026 20:28:47 +0000
+<ankita@nvidia.com> wrote:
 
-Oh, I was not finalizing KHO, and in commit e1c3bfd091f363c1
-("kho: validate preserved memory map during population") started to fail this
-on purpose.
+> From: Ankit Agrawal <ankita@nvidia.com>
+> 
+> Linux MM provides interfaces to allow a driver to [un]register device
+> memory not backed by struct page for poison handling through
+> memory_failure.
+> 
+> The device memory on NVIDIA Grace based systems are not added to the
+> kernel and are not backed by struct pages. So nvgrace-gpu module
+> which manages the device memory can make use of these interfaces to
+> get the benefit of poison handling. Make nvgrace-gpu register the device
+> memory with the MM on open.
+> 
+> Moreover, the stubs are added to accommodate for CONFIG_MEMORY_FAILURE
+> being disabled.
+> 
+> Patch 1/2 introduces stubs for CONFIG_MEMORY_FAILURE disabled.
+> Patch 2/2 registers the device memory at the time of open instead of mmap.
+> 
+> Note that this is a reposting of an earlier series [1] which is partly
+> (patch 1/3) merged to v6.19-rc4. This one addresses the leftover patching.
+> Many thanks to Jason Gunthorpe (jgg@nvidia.com) and Alex Williamson
+> (alex@shazbot.org) for valuable suggestions.
+> 
+> Link: https://lore.kernel.org/all/20251213044708.3610-1-ankita@nvidia.com/ [1]
+> 
+> Changelog:
+> v2:
+> - Fixed nit to cleanup nvgrace_gpu_vfio_pci_register_pfn_range
+>   (Thanks Jiaqi Yan)
+> Link: https://lore.kernel.org/all/20260108153548.7386-1-ankita@nvidia.com/ [v1]
+> 
+> Ankit Agrawal (2):
+>   mm: add stubs for PFNMAP memory failure registration functions
+>   vfio/nvgrace-gpu: register device memory for poison handling
+> 
+>  drivers/vfio/pci/nvgrace-gpu/main.c | 113 +++++++++++++++++++++++++++-
+>  include/linux/memory-failure.h      |  13 +++-
+>  2 files changed, 120 insertions(+), 6 deletions(-)
+> 
 
-So, I understand we want to fail if mem_map_phys = 0, but thn FDT was properly
-passed (how is it possible)? I know I can read
-KHO_PROP_PREVIOUS_RELEASE/KHO_PROP_PREVIOUS_RELEASE from the fdt, even when
-mem_map_phys is 0.
+Applied to vfio next branch for v6.20/7.0.  Thanks,
+
+Alex
 
