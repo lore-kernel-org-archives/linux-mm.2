@@ -4,112 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB4ECA5FEE
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 06:35:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EECCCA5FEF
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 06:37:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33EFD6B0117; Mon, 19 Jan 2026 01:35:20 -0500 (EST)
+	id 81D956B011A; Mon, 19 Jan 2026 01:37:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 300BF6B0119; Mon, 19 Jan 2026 01:35:20 -0500 (EST)
+	id 7F4956B011B; Mon, 19 Jan 2026 01:37:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 225046B011A; Mon, 19 Jan 2026 01:35:20 -0500 (EST)
+	id 7000F6B011C; Mon, 19 Jan 2026 01:37:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F5EA6B0117
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 01:35:20 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F2091AEE4C
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:35:19 +0000 (UTC)
-X-FDA: 84347751558.07.D881E25
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 67B2FC0003
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:35:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BJCeMgow;
-	spf=pass (imf28.hostedemail.com: domain of zhiguo.zhou@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=zhiguo.zhou@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768804517; a=rsa-sha256;
-	cv=none;
-	b=c+PBlv0M/gd1UeTJO3dH9lb9bCZlHCoVtS6sqY7q8lnOIjlAEUBedzm8FrclWhPX0ZNiGZ
-	4926VEUBwrWe5Ho6ulsuZ7JnBBKekTCisefvCI5lQQlPsJJxt3pg644fTlDuTtIVK4ZY09
-	eASKojRoAM13tH6PFbBTGX9cF7icELE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BJCeMgow;
-	spf=pass (imf28.hostedemail.com: domain of zhiguo.zhou@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=zhiguo.zhou@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F7776B011A
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 01:37:11 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F33E7D21F8
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:37:10 +0000 (UTC)
+X-FDA: 84347756220.27.AE6E7BA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 224FD40006
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:37:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768804517;
+	s=arc-20220608; t=1768804629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z9kk5WyYaTAdvlo+75lF0PamA5cI6Jqb9YL1SgDnxaI=;
-	b=vCA5vBrU4bcvn+sGl80+CtdGgxdNdAJ8uCSAoZrvn9OIGRgWtz9RLie/hLpiyruva5OX5g
-	mT0rPZOfuMyLTqqLYoAIYmxmdjw/QIj5Ixrho5peNX3KfGugD2kYzX+jEYydwG1HEpypHK
-	y7lrI55S8e55GrJrDDu98eTFMtiQYU8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768804517; x=1800340517;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2i4jwv95LJfSLU9N5oDj7KqmLz5Pp2tMLrjdxcGCIok=;
-  b=BJCeMgowQ80dEITXR20dr+mbLP0YL/tU84vL4s1/WawH/Wo0WAhT+YYS
-   To88KlJBd+W6LEQZCDfcGPcTtw1a9IG0bSK9WB9X2D/qqfq5BOQyheRl5
-   UeSpvxvy9hF4l0lZvKJ21XOUsV8L2T7rPQqKGMsv4QApqrErFy49GdByj
-   U7nH/BjZRCaGQoChwj31QU0rNMfzK86Jt2slQTfQPZvPviMMzrnH7gAiT
-   cFwN7a+stldUcSYE0qPV0+jOtfuUY1tKTBypIdYkCs1ERZIPHb8DmMhCb
-   ovVL6OYTgiZ/L9HCWG/OKnn+dk0ey717gOmf7/w7BSNQWubyH8fJJ/opn
-   A==;
-X-CSE-ConnectionGUID: 9HKk4V+RTIW8+RhpWEy+Tg==
-X-CSE-MsgGUID: OytVVbQKTyqCQ7a9wzg0dw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="57565333"
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
-   d="scan'208";a="57565333"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 22:35:17 -0800
-X-CSE-ConnectionGUID: lufysXv1SxWcJgRDDQu+dA==
-X-CSE-MsgGUID: ACq/P8ebQ3SpyWE5eOcZUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
-   d="scan'208";a="205824330"
-Received: from linux-pnp-server-15.sh.intel.com ([10.239.177.153])
-  by orviesa007.jf.intel.com with ESMTP; 18 Jan 2026 22:35:12 -0800
-From: Zhiguo Zhou <zhiguo.zhou@intel.com>
-To: linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Cc: willy@infradead.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	linux-kernel@vger.kernel.org,
-	tianyou.li@intel.com,
-	tim.c.chen@linux.intel.com,
-	gang.deng@intel.com,
-	Zhiguo Zhou <zhiguo.zhou@intel.com>
-Subject: [PATCH 2/2] mm/readahead: batch folio insertion to improve performance
-Date: Mon, 19 Jan 2026 14:50:25 +0800
-Message-ID: <20260119065027.918085-3-zhiguo.zhou@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260119065027.918085-1-zhiguo.zhou@intel.com>
-References: <20260119065027.918085-1-zhiguo.zhou@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HR5572oSydc/+v431u3xGCw+mnO5ICwWZzZrzrqYEo0=;
+	b=YYkmswX0bdBBrYD4Fp3EYHsM+Xw9nhl5Wx/VxyOCkRR6EcMPa3vN5KWU7Tzv3PPu834biE
+	5UFeKsNlhx3YevbskWSBvVeSyAp5ZunMUHq/bb/suF6LuY7zp+W7Ff3rm25p+I3bKl+c5i
+	0qo5R2j+QjELgmrn1mDTT3JE1DV/juw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768804629; a=rsa-sha256;
+	cv=none;
+	b=n0ziwrYkSf1a5wKKWuJXN2g1s1kpC6fTu7ZRlNNOnY9yDS/Y2wHKEgawuL33T1CdNdcOgT
+	/oS1X0MAJtuDM6eW6PwKHUwzl3rG2i6hHC3N7Xr5e5hHf674CZjJPT33YEOPKP5fmaM6XP
+	c5PiQVE16c8xhA5Vl2qG/osaPaQUk0o=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 80CB21517;
+	Sun, 18 Jan 2026 22:37:01 -0800 (PST)
+Received: from [10.164.18.63] (MacBook-Pro.blr.arm.com [10.164.18.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A0C303F632;
+	Sun, 18 Jan 2026 22:37:02 -0800 (PST)
+Message-ID: <6ed22a34-ce8a-4531-9776-b28e1a942450@arm.com>
+Date: Mon, 19 Jan 2026 12:06:59 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/5] mm: rmap: support batched unmapping for file large
+ folios
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <21cnbao@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+ <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
+ <20260106132203.kdxfvootlkxzex2l@master>
+ <CAGsJ_4yKRtyADU2ZxUMgvqdrhAEL4SpZxCMRt28gNJfUf--5zQ@mail.gmail.com>
+ <20260107014601.dxvq6b7ljgxwg7iu@master>
+ <db4d0a19-598b-48ff-accc-f5940a481035@arm.com>
+ <CAGsJ_4yo-EE__1VzHqxE8ehDOFQuxqP9GXcskkeZ-WTTyz12_A@mail.gmail.com>
+ <ccce0551-489a-4612-ab5d-2dd8a5cae66c@arm.com>
+ <29634bee-18c6-42c2-ac7f-703d4dfed867@linux.alibaba.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <29634bee-18c6-42c2-ac7f-703d4dfed867@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 84wjeox1md53zikwodnn67q8fpuunyym
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 67B2FC0003
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 224FD40006
 X-Rspam-User: 
-X-HE-Tag: 1768804517-105782
-X-HE-Meta: U2FsdGVkX1/NifNW4X2lmvI1Cf2FLY0UKPtrj5XVtYMlemoBfoOXhiO/Ohx49MQRaQFi9Ko4kxCMhbdDrJV6J5Hnd2o7x43yJUfXZ2o3nqePKyrcW0GxJC7UbjfI0I7PK59o9HmYFeIcYpqa9rjsu8Zp3/fUjj5prJZEeb4S/QH/tbFcVJo1VAtdQ9K0ZW2rInilCdHDbiHCL/YIfiPI8dPtya8EhHwCBCIeKNuq2aQMCPh337QfkSPLusDTSk9rUNO5EEO9dXDMKLAU47C5d8SIte9dYLuEH//GlqIEnDeD0C6Q4YVsfqnTwhJsYXPlCMLzEEb4BOJuq951o/Medm0ckNQ6khFbEt2mxazIbLHuEDewXY2GRqJgwVZE+d/ahB9SqNIjyNepvxSzYo7U1I0EEOlVzXccGt/BXlHu8HMYxO4NNO7Sc2f4eVqHFYwmo0PYbUATI95eL8O3nVsyBHjaFPp76IkFXdb1LbWvnz245yWDmy1GCzv4VePqKYdOnEp11j6LbXb4/AuLmbvWlAV2jLwKLuzDNc7G/9YDYBEavZ5HWZ4yXwXz4MnE6hsZDLz8PkjsaAUpvcbijUObpLU7gY52DjBaqZctuk7Dh7sIrLxscfXh86sY+asV7e515tu9VaTskA53TUFK2bRY+P5akS8uiGUWjeEC61cnWzQLRBYcBZ+rr54LIksz0yH+3E+MPn4qzPnQ+Kwf/DGwHub40tFZ5tNC5uVadsmerSjPEW7sfwllAUQtmHI9WgErwvrBOmctYM7Sk4w2z1C9MvHvLGqgBK4j0SxLdi/f6qvxug/+SCPBApSaGItvUS6+4Tn/soSCyMVS7byAB7VL37NOFEweHwKVKXHspnN3Ro0M+PnjkU6ru4SDHsPxUi6aZYiNzMGVoAbsrMGOUSFwhWYEVggY2/E0Y8w5U576oJmMaZGSy2ShCFugCNx56cqZUIKWsNNkoLmZTXS+VYo
- RJel8f4D
- +qLSAJKfy1/ixGGa08nWlqeGIDevpxKmjfYHnwAVAX4B8p82zfkOw4RZE0MUcKDKzFkFFCPMSXWSGpjfrikePB/aEmNUstJf4C2FgvpjMsZgQKC8zEYInJeK04ZB4qiXPdMOJzEncbZuExjEILBUxC08NhBbkIUD+tvB4F8GHp7YthKRzUYT5Srf9Eg==
+X-Stat-Signature: 644xw3rx5cx57qn9q9h4qcpjtmyhbxp3
+X-HE-Tag: 1768804628-752588
+X-HE-Meta: U2FsdGVkX1+xRoynto0s/efuIQhu58LC9TxekMgBBDiCqE50uLu4f5CpttFGetGkIfsnJyPntK2Nev7RCL/ZBs+cl0SGpQe4Ix3O/HEHkWxmREpKQ9/nWlIA8izOqqMNphjmN0bpLbtaTtSX7HGD1fjOH7cjNtlzJ+Igc6O6lody6fSF29W+BqZh4+Mg35DupWSOE66gxJbJ/sJ2KOSIX0K4QFWVPCZHElWIYp2ielkA/UzptTf44Pg97Iw6hh3Uh4IUT4crZ9ffyqZU7y0Pr2m8mGWh9b05oFAtGi+pmekXIIYB1wqb0AfTiXJQwLaYi+8Ajn6zPn12MpdSafhrAHdA6L27BVfhbn7/mJ2d+VlkLgvde7KFHCK04GUS5rEFAyVN0UQJvZszIs3ybD10kb9Bqoj2M8f/EsorEDKqVaR4cEYtWK5NTSN5rL6KVBh0rtC391KZjUcLhDspMeotXi1uJfGGsPuX+AbEbwvjQ2BIffO9akZVFD2ipIR65aUcrCJKjgUkCpwjBNOKcjJNs8yx9n0HUtRCONF28yAbRzfS5QjFKdyUiRjeBq1SSdmbVD9wxP4FIg1JkSD247MvFiLKJuWi6JoRjOPmruZqVSzukBJqSlnDSO/FsSCHRqYeXKgE2lnhEbDu21by+ONRxDT0nXZhNo0f3m3WWaxDIdkpu7v3bSdfQ0o0GMlGjKQrd4DlFuIhIp9NhPbCQnKlqTvcdeEnFxG9z0F6WDtjU51D6hN3IK+QPPT8YT5jSXn+YgaYScdVF1hQYtHj0lOjz74QZYzHsLIQFWMxVvr43KM3vAF7nUaUnEQu1+ZxJx+WxkdGcRVYpHnHNVitYTNWIainz7Xr8Dgvr9R6pe/MyeV5vkIwCkWYuljTAp5c8PZZmW+ama4/sX3wpgqt4T3hxv+SdPJjGZkmh2QjCJXJowzNmlpRQmbBE1CRkPxcfL8OtdmViHc2NVGphxqWXSL
+ 6pHMvFUf
+ XMxcG3IU8TB4p+XyC/7Ei03oVMcS0v9YidabOISJXiLEp4TDd3kP7Oz150X/4aSug8LXkxvMFAyLUZg8wrKB7goiUTZK249a/BdygTDat3JepzZDHgAJPj+fLCnybZC/mvUwfkFWQiNrc8VDe2qHwiDX9knUsdjx5dJayuudtWXaFYx4q3zmhPlHBqM+V1Yd8PCWAElhGrcTBNmJEikvAubcOA2XlFKG9IPn3QWwA0d4ScXK/rbi4EnU8zpYoHgpYAtFHU3p1XKs4OV5HBE5uNRumCCUErcP7FcXT9ZahDvkXDiPbrta6rlgPNgrYJYgOFuGR3QeycBcNO31QryPatgOwCnrqpjMwuP/RTP4LxQfWm6WaOnm/lB4wUw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,370 +100,248 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When `readahead` syscall is invocated, `page_cache_ra_unbounded` would
-insert folios into the page cache (`xarray`) individually. The `xa_lock`
-protected critical section could be scheduled across different cores,
-the cost of cacheline transfer together with lock contention may
-contribute significant part of execution time.
 
-To optimize the performance of `readahead`, the folio insertions are
-batched into a single critical section. This patch introduces
-`filemap_add_folio_range()`, which allows inserting an array of folios
-into a contiguous range of `xarray` while holding the lock only once.
-`page_cache_ra_unbounded` is updated to pre-allocate folios
-and use this new batching interface while keeping the original approach
-when memory is under pressure.
+On 19/01/26 11:20 am, Baolin Wang wrote:
+>
+>
+> On 1/18/26 1:46 PM, Dev Jain wrote:
+>>
+>> On 16/01/26 7:58 pm, Barry Song wrote:
+>>> On Fri, Jan 16, 2026 at 5:53 PM Dev Jain <dev.jain@arm.com> wrote:
+>>>>
+>>>> On 07/01/26 7:16 am, Wei Yang wrote:
+>>>>> On Wed, Jan 07, 2026 at 10:29:25AM +1300, Barry Song wrote:
+>>>>>> On Wed, Jan 7, 2026 at 2:22 AM Wei Yang <richard.weiyang@gmail.com>
+>>>>>> wrote:
+>>>>>>> On Fri, Dec 26, 2025 at 02:07:59PM +0800, Baolin Wang wrote:
+>>>>>>>> Similar to folio_referenced_one(), we can apply batched unmapping
+>>>>>>>> for file
+>>>>>>>> large folios to optimize the performance of file folios reclamation.
+>>>>>>>>
+>>>>>>>> Barry previously implemented batched unmapping for lazyfree
+>>>>>>>> anonymous large
+>>>>>>>> folios[1] and did not further optimize anonymous large folios or
+>>>>>>>> file-backed
+>>>>>>>> large folios at that stage. As for file-backed large folios, the
+>>>>>>>> batched
+>>>>>>>> unmapping support is relatively straightforward, as we only need
+>>>>>>>> to clear
+>>>>>>>> the consecutive (present) PTE entries for file-backed large folios.
+>>>>>>>>
+>>>>>>>> Performance testing:
+>>>>>>>> Allocate 10G clean file-backed folios by mmap() in a memory
+>>>>>>>> cgroup, and try to
+>>>>>>>> reclaim 8G file-backed folios via the memory.reclaim interface. I
+>>>>>>>> can observe
+>>>>>>>> 75% performance improvement on my Arm64 32-core server (and 50%+
+>>>>>>>> improvement
+>>>>>>>> on my X86 machine) with this patch.
+>>>>>>>>
+>>>>>>>> W/o patch:
+>>>>>>>> real    0m1.018s
+>>>>>>>> user    0m0.000s
+>>>>>>>> sys     0m1.018s
+>>>>>>>>
+>>>>>>>> W/ patch:
+>>>>>>>> real   0m0.249s
+>>>>>>>> user   0m0.000s
+>>>>>>>> sys    0m0.249s
+>>>>>>>>
+>>>>>>>> [1]
+>>>>>>>> https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
+>>>>>>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>>> Acked-by: Barry Song <baohua@kernel.org>
+>>>>>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>>> ---
+>>>>>>>> mm/rmap.c | 7 ++++---
+>>>>>>>> 1 file changed, 4 insertions(+), 3 deletions(-)
+>>>>>>>>
+>>>>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>>>>> index 985ab0b085ba..e1d16003c514 100644
+>>>>>>>> --- a/mm/rmap.c
+>>>>>>>> +++ b/mm/rmap.c
+>>>>>>>> @@ -1863,9 +1863,10 @@ static inline unsigned int
+>>>>>>>> folio_unmap_pte_batch(struct folio *folio,
+>>>>>>>>        end_addr = pmd_addr_end(addr, vma->vm_end);
+>>>>>>>>        max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>>>>>>>>
+>>>>>>>> -      /* We only support lazyfree batching for now ... */
+>>>>>>>> -      if (!folio_test_anon(folio) || folio_test_swapbacked(folio))
+>>>>>>>> +      /* We only support lazyfree or file folios batching for now
+>>>>>>>> ... */
+>>>>>>>> +      if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>>>>>>>>                return 1;
+>>>>>>>> +
+>>>>>>>>        if (pte_unused(pte))
+>>>>>>>>                return 1;
+>>>>>>>>
+>>>>>>>> @@ -2231,7 +2232,7 @@ static bool try_to_unmap_one(struct folio
+>>>>>>>> *folio, struct vm_area_struct *vma,
+>>>>>>>>                         *
+>>>>>>>>                         * See Documentation/mm/mmu_notifier.rst
+>>>>>>>>                         */
+>>>>>>>> -                      dec_mm_counter(mm, mm_counter_file(folio));
+>>>>>>>> +                      add_mm_counter(mm, mm_counter_file(folio),
+>>>>>>>> -nr_pages);
+>>>>>>>>                }
+>>>>>>>> discard:
+>>>>>>>>                if (unlikely(folio_test_hugetlb(folio))) {
+>>>>>>>> -- 
+>>>>>>>> 2.47.3
+>>>>>>>>
+>>>>>>> Hi, Baolin
+>>>>>>>
+>>>>>>> When reading your patch, I come up one small question.
+>>>>>>>
+>>>>>>> Current try_to_unmap_one() has following structure:
+>>>>>>>
+>>>>>>>      try_to_unmap_one()
+>>>>>>>          while (page_vma_mapped_walk(&pvmw)) {
+>>>>>>>              nr_pages = folio_unmap_pte_batch()
+>>>>>>>
+>>>>>>>              if (nr_pages = folio_nr_pages(folio))
+>>>>>>>                  goto walk_done;
+>>>>>>>          }
+>>>>>>>
+>>>>>>> I am thinking what if nr_pages > 1 but nr_pages != folio_nr_pages().
+>>>>>>>
+>>>>>>> If my understanding is correct, page_vma_mapped_walk() would start
+>>>>>>> from
+>>>>>>> (pvmw->address + PAGE_SIZE) in next iteration, but we have already
+>>>>>>> cleared to
+>>>>>>> (pvmw->address + nr_pages * PAGE_SIZE), right?
+>>>>>>>
+>>>>>>> Not sure my understanding is correct, if so do we have some reason
+>>>>>>> not to
+>>>>>>> skip the cleared range?
+>>>>>> I don’t quite understand your question. For nr_pages > 1 but not equal
+>>>>>> to nr_pages, page_vma_mapped_walk will skip the nr_pages - 1 PTEs
+>>>>>> inside.
+>>>>>>
+>>>>>> take a look:
+>>>>>>
+>>>>>> next_pte:
+>>>>>>                 do {
+>>>>>>                         pvmw->address += PAGE_SIZE;
+>>>>>>                         if (pvmw->address >= end)
+>>>>>>                                 return not_found(pvmw);
+>>>>>>                         /* Did we cross page table boundary? */
+>>>>>>                         if ((pvmw->address & (PMD_SIZE - PAGE_SIZE))
+>>>>>> == 0) {
+>>>>>>                                 if (pvmw->ptl) {
+>>>>>>                                         spin_unlock(pvmw->ptl);
+>>>>>>                                         pvmw->ptl = NULL;
+>>>>>>                                 }
+>>>>>>                                 pte_unmap(pvmw->pte);
+>>>>>>                                 pvmw->pte = NULL;
+>>>>>>                                 pvmw->flags |= PVMW_PGTABLE_CROSSED;
+>>>>>>                                 goto restart;
+>>>>>>                         }
+>>>>>>                         pvmw->pte++;
+>>>>>>                 } while (pte_none(ptep_get(pvmw->pte)));
+>>>>>>
+>>>>> Yes, we do it in page_vma_mapped_walk() now. Since they are
+>>>>> pte_none(), they
+>>>>> will be skipped.
+>>>>>
+>>>>> I mean maybe we can skip it in try_to_unmap_one(), for example:
+>>>>>
+>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>> index 9e5bd4834481..ea1afec7c802 100644
+>>>>> --- a/mm/rmap.c
+>>>>> +++ b/mm/rmap.c
+>>>>> @@ -2250,6 +2250,10 @@ static bool try_to_unmap_one(struct folio
+>>>>> *folio, struct vm_area_struct *vma,
+>>>>>                 */
+>>>>>                if (nr_pages == folio_nr_pages(folio))
+>>>>>                        goto walk_done;
+>>>>> +             else {
+>>>>> +                     pvmw.address += PAGE_SIZE * (nr_pages - 1);
+>>>>> +                     pvmw.pte += nr_pages - 1;
+>>>>> +             }
+>>>>>                continue;
+>>>>>   walk_abort:
+>>>>>                ret = false;
+>>>> I am of the opinion that we should do something like this. In the
+>>>> internal pvmw code,
+>>> I am still not convinced that skipping PTEs in try_to_unmap_one()
+>>> is the right place. If we really want to skip certain PTEs early,
+>>> should we instead hint page_vma_mapped_walk()? That said, I don't
+>>> see much value in doing so, since in most cases nr is either 1 or
+>>> folio_nr_pages(folio).
+>>>
+>>>> we keep skipping ptes till the ptes are none. With my proposed
+>>>> uffd-fix [1], if the old
+>>>> ptes were uffd-wp armed, pte_install_uffd_wp_if_needed will convert
+>>>> all ptes from none
+>>>> to not none, and we will lose the batching effect. I also plan to
+>>>> extend support to
+>>>> anonymous folios (therefore generalizing for all types of memory)
+>>>> which will set a
+>>>> batch of ptes as swap, and the internal pvmw code won't be able to
+>>>> skip through the
+>>>> batch.
+>>> Thanks for catching this, Dev. I already filter out some of the more
+>>> complex cases, for example:
+>>> if (pte_unused(pte))
+>>>          return 1;
+>>>
+>>> Since the userfaultfd write-protection case is also a corner case,
+>>> could we filter it out as well?
+>>>
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index c86f1135222b..6bb8ba6f046e 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -1870,6 +1870,9 @@ static inline unsigned int
+>>> folio_unmap_pte_batch(struct folio *folio,
+>>>          if (pte_unused(pte))
+>>>                  return 1;
+>>>
+>>> +       if (userfaultfd_wp(vma))
+>>> +               return 1;
+>>> +
+>>>          return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+>>> }
+>>>
+>>> Just offering a second option — yours is probably better.
+>>
+>> No. This is not an edge case. This is a case which gets exposed by your
+>> work, and
+>> I believe that if you intend to get the file folio batching thingy in,
+>> then you
+>> need to fix the uffd stuff too.
+>
+> Barry’s point isn’t that this is an edge case. I think he means that uffd
+> is not a common performance-sensitive scenario in production. Also, we
+> typically fall back to per-page handling for uffd cases (see
+> finish_fault() and alloc_anon_folio()). So I perfer to follow Barry’s
+> suggestion and filter out the uffd cases until we have test case to show
+> performance improvement. 
 
-The performance of RocksDB's `db_bench` for the `readseq` subcase [1]
-was tested on a 32-vCPU instance [2], and the results show:
-- Profiling shows the IPC of `page_cache_ra_unbounded` (excluding
-  `raw_spin_lock_irq` overhead) improved by 2.18x.
-- Throughput (ops/sec) improved by 1.51x.
-- Latency reduced significantly: P50 by 63.9%, P75 by 42.1%, P99 by
-31.4%.
+I am of the opinion that you are making the wrong analogy here. The
+per-page fault fidelity is *required* for uffd.
 
-+------------+------------------+-----------------+-----------+
-| Percentile | Latency (before) | Latency (after) | Reduction |
-+------------+------------------+-----------------+-----------+
-| P50        | 6.15 usec        | 2.22 usec       | 63.92%    |
-| P75        | 13.38 usec       | 7.75 usec       | 42.09%    |
-| P99        | 507.95 usec      | 348.54 usec     | 31.38%    |
-+------------+------------------+-----------------+-----------+
+When you say you want to support file folio batched unmapping, I think it's
+inappropriate to say "let us refuse to
 
-[1] Command to launch the test
-./db_bench --benchmarks=readseq,stats --use_existing_db=1
---num_multi_db=32 --threads=32 --num=1600000 --value_size=8192
---cache_size=16GB
+batch if the pte mapping the file folio is smeared with a particular bit
+and consider it a totally different case". Instead
 
-[2] Hardware: Intel Ice Lake server
-    Kernel  : v6.19-rc5
-    Memory  : 256GB
+of getting in folio (all memory types) batched unmapping in, we have
+already broken this to "lazyfree folio", then
 
-Reported-by: Gang Deng <gang.deng@intel.com>
-Reviewed-by: Tianyou Li <tianyou.li@intel.com>
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Zhiguo Zhou <zhiguo.zhou@intel.com>
----
- include/linux/pagemap.h |   2 +
- mm/filemap.c            |  65 +++++++++++++
- mm/readahead.c          | 196 +++++++++++++++++++++++++++++++---------
- 3 files changed, 222 insertions(+), 41 deletions(-)
+"file folio", the remaining being "anon folio". Now you intend to break
+"file folio" to "file folio non uffd" and "file folio uffd".
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 59cbf57fb55b..62cb90471372 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1286,6 +1286,8 @@ int add_to_page_cache_lru(struct page *page, struct address_space *mapping,
- 		pgoff_t index, gfp_t gfp);
- int filemap_add_folio(struct address_space *mapping, struct folio *folio,
- 		pgoff_t index, gfp_t gfp);
-+long filemap_add_folio_range(struct address_space *mapping, struct folio **folios,
-+		pgoff_t start, pgoff_t end, gfp_t gfp);
- void filemap_remove_folio(struct folio *folio);
- void __filemap_remove_folio(struct folio *folio, void *shadow);
- void replace_page_cache_folio(struct folio *old, struct folio *new);
-diff --git a/mm/filemap.c b/mm/filemap.c
-index eb9e28e5cbd7..d0d79599c7fa 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1016,6 +1016,71 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
- }
- EXPORT_SYMBOL_GPL(filemap_add_folio);
- 
-+/**
-+ * filemap_add_folio_range - add folios to the page range [start, end) of filemap.
-+ * @mapping:	The address space structure to add folios to.
-+ * @folios:	The array of folios to add to page cache.
-+ * @start:	The starting page cache index.
-+ * @end:	The ending page cache index (exclusive).
-+ * @gfp:	The memory allocator flags to use.
-+ *
-+ * This function adds folios to mapping->i_pages with contiguous indices.
-+ *
-+ * If an entry for an index in the range [start, end) already exists, a folio is
-+ * invalid, or _filemap_add_folio fails, this function aborts. All folios up
-+ * to the point of failure will have been inserted, the rest are left uninserted.
-+ *
-+ * Return: If the pages are partially or fully added to the page cache, the number
-+ * of pages (instead of folios) is returned. Elsewise, if no pages are inserted,
-+ * the error number is returned.
-+ */
-+long filemap_add_folio_range(struct address_space *mapping, struct folio **folios,
-+			     pgoff_t start, pgoff_t end, gfp_t gfp)
-+{
-+	int ret;
-+	XA_STATE_ORDER(xas, &mapping->i_pages, start, mapping_min_folio_order(mapping));
-+	unsigned long min_nrpages = mapping_min_folio_nrpages(mapping);
-+
-+	do {
-+		xas_lock_irq(&xas);
-+
-+		while (xas.xa_index < end) {
-+			unsigned long index = (xas.xa_index - start) / min_nrpages;
-+			struct folio *folio;
-+
-+			folio = xas_load(&xas);
-+			if (folio && !xa_is_value(folio)) {
-+				ret = -EEXIST;
-+				break;
-+			}
-+
-+			folio = folios[index];
-+			if (!folio) {
-+				ret = -EINVAL;
-+				break;
-+			}
-+
-+			ret = _filemap_add_folio(mapping, folio, &xas, gfp, true);
-+
-+			if (unlikely(ret))
-+				break;
-+
-+			/*
-+			 * On successful insertion, the folio's array entry is set to NULL.
-+			 * The caller is responsible for reclaiming any uninserted folios.
-+			 */
-+			folios[index] = NULL;
-+			for (unsigned int i = 0; i < min_nrpages; i++)
-+				xas_next(&xas);
-+		}
-+
-+		xas_unlock_irq(&xas);
-+	} while (xas_nomem(&xas, gfp & GFP_RECLAIM_MASK));
-+
-+	return xas.xa_index > start ? (long) xas.xa_index - start : ret;
-+}
-+EXPORT_SYMBOL_GPL(filemap_add_folio_range);
-+
- #ifdef CONFIG_NUMA
- struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
- 		struct mempolicy *policy)
-diff --git a/mm/readahead.c b/mm/readahead.c
-index b415c9969176..4fe87b467d61 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -193,6 +193,149 @@ static struct folio *ractl_alloc_folio(struct readahead_control *ractl,
- 	return folio;
- }
- 
-+static void ractl_free_folios(struct folio **folios, unsigned long folio_count)
-+{
-+	unsigned long i;
-+
-+	if (!folios)
-+		return;
-+
-+	for (i = 0; i < folio_count; ++i) {
-+		if (folios[i])
-+			folio_put(folios[i]);
-+	}
-+	kvfree(folios);
-+}
-+
-+static struct folio **ractl_alloc_folios(struct readahead_control *ractl,
-+					 gfp_t gfp_mask, unsigned int order,
-+					 unsigned long folio_count)
-+{
-+	struct folio **folios;
-+	unsigned long i;
-+
-+	folios = kvcalloc(folio_count, sizeof(struct folio *), GFP_KERNEL);
-+
-+	if (!folios)
-+		return NULL;
-+
-+	for (i = 0; i < folio_count; ++i) {
-+		struct folio *folio = ractl_alloc_folio(ractl, gfp_mask, order);
-+
-+		if (!folio)
-+			break;
-+		folios[i] = folio;
-+	}
-+
-+	if (i != folio_count) {
-+		ractl_free_folios(folios, i);
-+		i = 0;
-+		folios = NULL;
-+	}
-+
-+	return folios;
-+}
-+
-+static void ra_fill_folios_batched(struct readahead_control *ractl,
-+				   struct folio **folios, unsigned long nr_to_read,
-+				   unsigned long start_index, unsigned long mark,
-+				   gfp_t gfp_mask)
-+{
-+	struct address_space *mapping = ractl->mapping;
-+	unsigned int min_nrpages = mapping_min_folio_nrpages(mapping);
-+	unsigned long added_folios = 0;
-+	unsigned long i = 0;
-+
-+	while (i < nr_to_read) {
-+		long ret;
-+		unsigned long added_nrpages;
-+
-+		ret = filemap_add_folio_range(mapping, folios + added_folios,
-+					      start_index + i,
-+					      start_index + nr_to_read,
-+					      gfp_mask);
-+
-+		if (unlikely(ret < 0)) {
-+			if (ret == -ENOMEM)
-+				break;
-+			read_pages(ractl);
-+			ractl->_index += min_nrpages;
-+			i = ractl->_index + ractl->_nr_pages - start_index;
-+			continue;
-+		}
-+
-+		if (unlikely(ret == 0))
-+			break;
-+
-+		added_nrpages = ret;
-+		/*
-+		 * `added_nrpages` is multiple of min_nrpages.
-+		 */
-+		added_folios += added_nrpages / min_nrpages;
-+
-+		if (i <= mark && mark < i + added_nrpages)
-+			folio_set_readahead(xa_load(&mapping->i_pages,
-+						    start_index + mark));
-+		for (unsigned long j = i; j < i + added_nrpages; j += min_nrpages)
-+			ractl->_workingset |= folio_test_workingset(xa_load(&mapping->i_pages,
-+									    start_index + j));
-+		ractl->_nr_pages += added_nrpages;
-+
-+		i += added_nrpages;
-+	}
-+}
-+
-+static void ra_fill_folios_single(struct readahead_control *ractl,
-+				  unsigned long nr_to_read,
-+				  unsigned long start_index, unsigned long mark,
-+				  gfp_t gfp_mask)
-+{
-+	struct address_space *mapping = ractl->mapping;
-+	unsigned int min_nrpages = mapping_min_folio_nrpages(mapping);
-+	unsigned long i = 0;
-+
-+	while (i < nr_to_read) {
-+		struct folio *folio = xa_load(&mapping->i_pages, start_index + i);
-+		int ret;
-+
-+		if (folio && !xa_is_value(folio)) {
-+			/*
-+			 * Page already present?  Kick off the current batch
-+			 * of contiguous pages before continuing with the
-+			 * next batch.  This page may be the one we would
-+			 * have intended to mark as Readahead, but we don't
-+			 * have a stable reference to this page, and it's
-+			 * not worth getting one just for that.
-+			 */
-+			read_pages(ractl);
-+			ractl->_index += min_nrpages;
-+			i = ractl->_index + ractl->_nr_pages - start_index;
-+			continue;
-+		}
-+
-+		folio = ractl_alloc_folio(ractl, gfp_mask,
-+					  mapping_min_folio_order(mapping));
-+		if (!folio)
-+			break;
-+
-+		ret = filemap_add_folio(mapping, folio, start_index + i, gfp_mask);
-+		if (ret < 0) {
-+			folio_put(folio);
-+			if (ret == -ENOMEM)
-+				break;
-+			read_pages(ractl);
-+			ractl->_index += min_nrpages;
-+			i = ractl->_index + ractl->_nr_pages - start_index;
-+			continue;
-+		}
-+		if (i == mark)
-+			folio_set_readahead(folio);
-+		ractl->_workingset |= folio_test_workingset(folio);
-+		ractl->_nr_pages += min_nrpages;
-+		i += min_nrpages;
-+	}
-+}
-+
- /**
-  * page_cache_ra_unbounded - Start unchecked readahead.
-  * @ractl: Readahead control.
-@@ -213,8 +356,10 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
- 	struct address_space *mapping = ractl->mapping;
- 	unsigned long index = readahead_index(ractl);
- 	gfp_t gfp_mask = readahead_gfp_mask(mapping);
--	unsigned long mark = ULONG_MAX, i = 0;
-+	unsigned long mark = ULONG_MAX;
- 	unsigned int min_nrpages = mapping_min_folio_nrpages(mapping);
-+	struct folio **folios = NULL;
-+	unsigned long alloc_folios = 0;
- 
- 	/*
- 	 * Partway through the readahead operation, we will have added
-@@ -249,49 +394,18 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
- 	}
- 	nr_to_read += readahead_index(ractl) - index;
- 	ractl->_index = index;
--
-+	alloc_folios = DIV_ROUND_UP(nr_to_read, min_nrpages);
- 	/*
- 	 * Preallocate as many pages as we will need.
- 	 */
--	while (i < nr_to_read) {
--		struct folio *folio = xa_load(&mapping->i_pages, index + i);
--		int ret;
--
--		if (folio && !xa_is_value(folio)) {
--			/*
--			 * Page already present?  Kick off the current batch
--			 * of contiguous pages before continuing with the
--			 * next batch.  This page may be the one we would
--			 * have intended to mark as Readahead, but we don't
--			 * have a stable reference to this page, and it's
--			 * not worth getting one just for that.
--			 */
--			read_pages(ractl);
--			ractl->_index += min_nrpages;
--			i = ractl->_index + ractl->_nr_pages - index;
--			continue;
--		}
--
--		folio = ractl_alloc_folio(ractl, gfp_mask,
--					mapping_min_folio_order(mapping));
--		if (!folio)
--			break;
--
--		ret = filemap_add_folio(mapping, folio, index + i, gfp_mask);
--		if (ret < 0) {
--			folio_put(folio);
--			if (ret == -ENOMEM)
--				break;
--			read_pages(ractl);
--			ractl->_index += min_nrpages;
--			i = ractl->_index + ractl->_nr_pages - index;
--			continue;
--		}
--		if (i == mark)
--			folio_set_readahead(folio);
--		ractl->_workingset |= folio_test_workingset(folio);
--		ractl->_nr_pages += min_nrpages;
--		i += min_nrpages;
-+	folios = ractl_alloc_folios(ractl, gfp_mask,
-+				    mapping_min_folio_order(mapping),
-+				    alloc_folios);
-+	if (folios) {
-+		ra_fill_folios_batched(ractl, folios, nr_to_read, index, mark, gfp_mask);
-+		ractl_free_folios(folios, alloc_folios);
-+	} else {
-+		ra_fill_folios_single(ractl, nr_to_read, index, mark, gfp_mask);
- 	}
- 
- 	/*
--- 
-2.43.0
 
+Just my 2C, I don't opine strongly here.
+
+
+>
+> I also think you can continue iterating your patch[1] to support batched
+> unmapping for uffd VMAs, and provide data to evaluate its value.
+>
+> [1]
+> https://lore.kernel.org/linux-mm/20260116082721.275178-1-dev.jain@arm.com/
 
