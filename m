@@ -4,141 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4F14CCF2D2
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 10:19:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B27CCF2D2
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 10:20:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18C766B0163; Mon, 19 Jan 2026 05:19:03 -0500 (EST)
+	id 7CC966B0164; Mon, 19 Jan 2026 05:20:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1644E6B0164; Mon, 19 Jan 2026 05:19:03 -0500 (EST)
+	id 78D4C6B0166; Mon, 19 Jan 2026 05:20:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0664B6B0165; Mon, 19 Jan 2026 05:19:03 -0500 (EST)
+	id 6BA886B0167; Mon, 19 Jan 2026 05:20:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EB8416B0163
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:19:02 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 970CAD1924
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:19:02 +0000 (UTC)
-X-FDA: 84348315324.28.B249B49
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BA0DB40008
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:19:00 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d7bFMmLq;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 55BF16B0164
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 05:20:17 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F4197C24E4
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:20:16 +0000 (UTC)
+X-FDA: 84348318432.14.366E7EF
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 27A294000D
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 10:20:14 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768818015; a=rsa-sha256;
+	cv=none;
+	b=q+6FFLP4dhKft3Qymu2OL2UJBrIzmIQ0MJ/inalPm8JFELLNGOPLgL3Kk66J0QHVFxZKG+
+	PoLCs5YCZDZUIiJ51g1F6iMjibXhuBB4Fz38nr96eSEgXR/aSBJBQ6AlFdsmrz2LrvYcbH
+	5h6tB9BICgnp49+W1rJzHk+wm8jIPQI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.161.42 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768817940;
+	s=arc-20220608; t=1768818015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AeXwYwnz7qLDfFEoaMRB4whAgP1Yo3U6h7g3p4bkyAI=;
-	b=i9/1IsXHNH4/HYpHppsC2VJR34Z0Bf/tfYLYv80Tf8KYmWec/YMi/Sm9o5Av+GtNJl5nTE
-	Ga5KXKM5uSLkQ2rNVWNpB9yqVp/oF7NlgiZ4gp77+CqZMzS7NiETEY07kGxiI39vGJaTMI
-	M1Zi3Se4e3aYEReD3VCs+rCVmqoUEwQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d7bFMmLq;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768817940; a=rsa-sha256;
-	cv=none;
-	b=vbJrROKgRDYsFQfSO+ueho301zEd3SePttQwpx9C+jfRD7crq6eDeNSOoi3Tz6v/Gn70l+
-	IYvpkB8nEAGnkts8NlKa8etmpjFaowncEW+iIb1KrFhrFA3qGxG67uig6v6a9zQc6T3ofy
-	e6TM25m5fxOvSdXqHh4WLYTXyFMURAs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C34443303;
-	Mon, 19 Jan 2026 10:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AFFC2BCB2;
-	Mon, 19 Jan 2026 10:18:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768817939;
-	bh=fChsW6zHlCrxmXpBWFm7rxfPs3w59SiQtBb4E9KHfFg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d7bFMmLq1M9B8AoeKJQ9vihTU2U179+WmU91kWylvHMAex0kvNr1DQu7ArTzlhgmn
-	 4pPAxBoFN99lPf4XxyZ7tKbta1qikb7XJrp4yQh6co8oYvuotYRIA1NvXdzUJZRifS
-	 FxhutMYG4Y4QWgPa5uqAQinVsFZ/C3a1U/Ly553bgwajDO3Eafz7qBAx+ZsgAtcKkO
-	 zZN7xdRM9KwgEZWJ72QmBNlK7I+iUWDUAFicFdjUCQSAPYwBG/CXF+M+t1L9sAxu1e
-	 JiR+7Xwrb5/DZiknvTj7tiHrF90zeuEV3qr6RB81V4uGa/vwe/R5dc7JkZ36tQyv3/
-	 F3k5MADrrYaOg==
-Message-ID: <d38fcbe5-8b4a-40bc-b8c8-1c49ccaa9964@kernel.org>
-Date: Mon, 19 Jan 2026 11:18:52 +0100
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uufwEcA26X2L64ykZaFMsbyH8luZYH3uk+bytmn50hk=;
+	b=UtM0APJtOv/pnW062gkUG3lxtUN5cccVRm3mDxXdy/K4s2QteWrK3jJvBRIOOgzetkloB3
+	KtwTps05BIoLKHUks/++Sp1u+2Z2r1GGlAi65On5+PY8ioGblUzXQSc/OtAYrs6Vkal6vp
+	lh1w/KV+uqte9FMhDzpqjOPc0h36JUQ=
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-65f65538a90so3065714eaf.1
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 02:20:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768818014; x=1769422814;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uufwEcA26X2L64ykZaFMsbyH8luZYH3uk+bytmn50hk=;
+        b=lMlWOX6+NZLGkUAKo+wqgDKxrd9wsXFsWJrw9S1Zbv4atdIMcQNd+k0YPCk3vqcB8x
+         9sZdzQx//mc4RXjeoJgbxM1kAf6A839JvK5Q3igNcEo0addXnKqKV40gHv6DgrKqnFsb
+         1yCHF/7vccg6omJnDoxLTFmlG14wzj7du0RwnTQ4rgh94dsU78KhhLfXiTA0HpQnKlVV
+         SOpgwH02DmUdWDA+Y3cFwLv8s/NPSRjxfssjkA4vQVjXygaOuMBV5tnnwgVUBZSp1Rln
+         ls425XUbvIqLPaU5/K40Qt5AzH7XlQQgS6yeFH9X9A6sI8o8CJnOOy5I/3852Q+H3RRn
+         uyGw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqJrmavMmpki9WGg3g1xpg5Jpl3mMo4wRwI2WQpf9WTCl7W7pRUxYj+MlIUzKdlKKx1RJa9m2zSg==@kvack.org
+X-Gm-Message-State: AOJu0YwMp8NrpeUjTvCI54BQEkX1mc/A/jD+w+oBtbbapLEgqFpSCz6C
+	Er/5Sa+v9LrmkX8AJd8jhuEETiom2Ey9eMT35k+JskKzv67/QOLwhX+8
+X-Gm-Gg: AY/fxX6gJoZrkiPro5blc69yiXzzN3vOhyLYzDsz5GyH2Y3190mmKlprlkgsF/AkKhg
+	ioG7J0sMYk6c/GOUcdw62Jv8gtEOOhwUZTr1La5oubObXOc31D3thnXAYeujDoh0RcvUEk3nRSX
+	PF7qqRMa6ZwWVuElSHqj0YTP/T6uKIMsy2NeVI2ub0qwumXhvxK6xq/HNg3SCTFtaCWI+wOHVpe
+	t9BnXPBci3VHW3VrIiw0P+IneKkB+evtJE68w0rtYQbbTUAPeCJNcUXL0JeZHIpkDPHrflVYitA
+	HCQ7wrrdd7SQ6z8peFID2wZb8DmTYkQ8ZklCTs/gEvUmmy2rwRjq+iAm4qcBhxQe1do9w9GLfPV
+	c8cNcH2fOw3vCvHEW8og39/KOZWYcEnlEw9lRFZQMuRFJHVlUEOEMgeLVYFPWDIYoO6R/AcBxDf
+	cMUw==
+X-Received: by 2002:a05:6820:4613:b0:661:154a:c289 with SMTP id 006d021491bc7-6611812574amr4202939eaf.31.1768818014192;
+        Mon, 19 Jan 2026 02:20:14 -0800 (PST)
+Received: from gmail.com ([2a03:2880:10ff:41::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66289e3af7dsm3342356eaf.14.2026.01.19.02.20.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 02:20:13 -0800 (PST)
+Date: Mon, 19 Jan 2026 02:20:11 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Marco Elver <elver@google.com>, akpm@linux-foundation.org
+Cc: Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, clm@meta.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/kfence: fix potential deadlock in reboot notifier
+Message-ID: <i2slhi24qpy4u4mtb7edm3sqqcazjfiw52xnz44i4o3vrhvoqe@d2qy423tdjly>
+References: <20260116-kfence_fix-v1-1-4165a055933f@debian.org>
+ <CANpmjNP5R3ALvtuMyLVhHGZpyZ2MoR7hq07jJFcSAN62Cnig2g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-To: Wei Yang <richard.weiyang@gmail.com>, Qi Zheng <qi.zheng@linux.dev>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
- ioworker0@gmail.com, linmag7@gmail.com, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
- <20251231094243.zmjs7kgflm7q6k73@master>
- <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
- <20260101020715.45wqnjgcklvjcth3@master>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260101020715.45wqnjgcklvjcth3@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BA0DB40008
-X-Stat-Signature: 7d39dyebctwcoxfqb7qdud6bc1wsxk3u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNP5R3ALvtuMyLVhHGZpyZ2MoR7hq07jJFcSAN62Cnig2g@mail.gmail.com>
+X-Stat-Signature: 94t4fg698buuw71fzqhq8rzsgbxyqk38
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 27A294000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768817940-877916
-X-HE-Meta: U2FsdGVkX19rmCIIZ6q9Ul6XocBwu5wib5rUxo+jjGZch0SU1bTj+8FvKRLlI7Oa+pSni8BsMtFnolk91GpqG74Xd+gt0B53dAtsPU7GUyMC2ZuKPZxUNPnZtlyHnTepYWl62c4vNrc/iOkXsf+u+wEeLwZFHPedswuhBnXoyFY7lmmUPheeCWXYQcdrPL27ZWFgyfZCjw1tIaEaqMfLStLnb4IThs5g2Qz4rhSnwfNVQ9/op+XIPWlmr9rqNm1qv2uNY8hK/JD5A7QtxoiNmjxwKofh8HcC/cBfrJn3sS/ewMrPfErcg+pfjPUlyP/2z0K4tiC9027WKyyOHYU7qHjR6lgjpfKHxVUAZqbazMcMdRxURU+p/4xTfFjaHvpFvCLG5/BoVjho4KCHYPD2Hfoobwb2Fy5FuugVoWfe58paNfIdTvOuXRwPiRwEGW+NtMAHZDxICpK6MH9jVncaY5NITYRKtV2t9wrhus/T8/dOPi5uMECFGxNOWa1OuSKO+Z0/kVAHdSgfGqiH/d3JDqpU6ivuDamoRncOeKN6YzrLE0QwON92OpoSiP+9IVxNKzmDH8WsYHIODNQrzMeIpu3qMg/p1RhElbuOnMRQdHfKq6MDgzRqlzuMrDGNDCFbLPl0YmtSYOsjpeUuoasnYR4Xl8MW/IPxMv5zjq5rOAV6DcNhEUp4OQWRzt9QMLvdweuOcNDIALratclWgcB8SLt/5O5MZC59bekUMcPUFBXKVGVUUfVQu1nZkKgo3/VV/d/76+xMMwJkcFRR1uDOMRukswQqIAP67Qi0H5DKzaA6pvD6/eueDnJDUmUC9OogE0VOMA0FPAG9rY9j2IQnKts4No8NZmOHdyloWGMrHSQigIznJa4YdFIcOWxA75P3JVPFr11J2YVoxb/TvpTKXpomtoU9wlIM8orKPsn0ZAxfwvEKja5hUarOorYkVQ3wR2O2wcKXSL5JEOBKkHW
- 1vhAja2c
- qBbJkSagNCTLkzA+blNz3HTkhhS6jJHygQkSDVnWzGRP03z3zVpbUtIdUsB8YdcGcc7NLvQjFdsCTdhEUxcu+DF8+D9Y92O/vm3g3yLpiIaXrn5LMQlZiPpYi0TnEVN6BD+GrsjGvveRvu1GaevlOOL7Ht0kctbiVbeVEAEOKXdhBTmscEDG39/5/ll+kYs4/f11E5yPWF/EtjI0n8edqy3UuvjbWlkm4NvTp6zRdNu+2oo+2eCgSJJQw+MTiZDTBr7sv7XOCPYKooZkKGTY7jK1eOeiLts5j8ISZfZ+wIYO+6KxIyyEIqgGG8dBroAeUEfxDfG8RT+o/RoeAfL6fLPsTyAuBQe8bY0zH0bGAAQp2c3b8M1yRijwlwSchM+E+U5QZgzho5L2EE1rnJvWiosEEsw==
+X-HE-Tag: 1768818014-891984
+X-HE-Meta: U2FsdGVkX1/8IrVXz96E2nBLy3rHBHE9+C+Yos/GzemdEpt8FxzRVn6xMA6rG5AfB4W2PH99MIU7sdry2Y1ItoiPbB2QiDrbKEGgm4Odhh0/7gOnKZi5ONXoc2irbD4m1yvOvKeZjlZ9QZ4kVOO/2yU8FJXhkvg2YT6pOHqg8dYpzhw4CqxHjh9o6lLUoRzjB09uQimXC7NK6PtUGFYEK4DlFvaHAcGzehQEJpDX8nKU/UWQj6Ck5ZvkGBHgKnPFBSyG5QmpUcwbwD8rZMnnf4qYevfZkpdQBr2t12rCIXji0rKRR0tdNR/2zn217i2IJf8wLWewqHi49a+FiWt6bM5+mVELNW4YDWHb/4+ZB+8FhFdl5vO92rm8J37QsGUAKModLjbzogdEQA2sTd9AHqOnUNQJXqCoeCkyyM9ecVKD7GUTRcKk2EQD+MHfTQVWkpGH98hmUSh3w/VQv77lr3fLzVKN0vDkdBMg+lycnThXCuzvPcSVS8R3CAzuvssOLwNVAYJtszbtqgTQ38H8AxaTZuRBvFOvgjq6iJaCeJeV4M8DrNnOInqRj5n2esHXDBX7xjp4HWc8LZ0XHlhbTomh3mwrXO76nnZAAP0qU5/ef4vI6Nhj5YUfCiB+AOjF7wTn8FxxJAvGrnV8wbi7zSyiLnrLUs90MVzKNqU4PQesM8b4xrenKBd6EgmqU8iCxNqwEh9EO3dxx/u0pRsKiHjKMSRTWYwlJSWT5Jx3p05PhL+eBLP3j78S2qjq11Rv2cjWYs/FolqXAhW3EvHp421/Z4+nMrK7eoQtfZ0v89t/KfvrxqCFspip7+BMn1fhHT0CkWd+DxllkLXk+eFlnhdE9Ez7f/OIKWKPPrij6XVAtPLqr5AilJ+C5Gi92oRFiJ9feLycdz8rCb7phQmVJdVMfBhW45gaEfCmxcXlr2gL0imShiOBoXrteTm4LZURlm8oMjDSzILEPziN0r1
+ FDsffXe7
+ d/HFg5K8ZUaWwdY7acrUVybkSX2gJghQNyMPOEuYLvcnN4Iei6gaq7zrB4plLBsLfkVZDy/ObMxjfTpnTj2fDpSVZQ/Ap0Noa+7TgGKcZjSCaAG6cblsd4Nv+VYfN8cnLoCek8E/40XINMvSqt+q8jDYQUMySkhCtwEOytd7tcAW+bvu6E2Ptwy60U7sZdIoVOCpp3MAXz2o8u4m5VfdKxXfyexIts10fMoG+Y3kBCfEuDWvOhcBK5uLVImsEF9FD1KJcw9+EEvVrs+D5RI5ZLuZDNWR/x8QLZMri7sTLJ/kwACN71hCqCUMSaRCtuj8KA85hfP17OBNH8s6L/l+OibcA7jmjcvjB5uw4BIS2wyaNYTkTKgZF1umgvv4VeLrBAt/jS6HmGSnFkErpdW+WUYu77aZQZuQRAXKZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,110 +107,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/1/26 03:07, Wei Yang wrote:
-> On Wed, Dec 31, 2025 at 05:52:57PM +0800, Qi Zheng wrote:
->>
->>
->> On 12/31/25 5:42 PM, Wei Yang wrote:
->>> On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
->>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>
->>>> The PT_RECLAIM can work on all architectures that support
->>>> MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
->>>> MMU_GATHER_RCU_TABLE_FREE.
->>>>
->>>> BTW, change PT_RECLAIM to be enabled by default, since nobody should want
->>>> to turn it off.
->>>>
->>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>> ---
->>>> arch/x86/Kconfig | 1 -
->>>> mm/Kconfig       | 9 ++-------
->>>> 2 files changed, 2 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>>> index 80527299f859a..0d22da56a71b0 100644
->>>> --- a/arch/x86/Kconfig
->>>> +++ b/arch/x86/Kconfig
->>>> @@ -331,7 +331,6 @@ config X86
->>>> 	select FUNCTION_ALIGNMENT_4B
->>>> 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>>> 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->>>> -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->>>> 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->>>> 	select SCHED_SMT			if SMP
->>>> 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
->>>> diff --git a/mm/Kconfig b/mm/Kconfig
->>>> index bd0ea5454af82..fc00b429b7129 100644
->>>> --- a/mm/Kconfig
->>>> +++ b/mm/Kconfig
->>>> @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
->>>> 	  The architecture has hardware support for userspace shadow call
->>>>             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->>>>
->>>> -config ARCH_SUPPORTS_PT_RECLAIM
->>>> -	def_bool n
->>>> -
->>>> config PT_RECLAIM
->>>> -	bool "reclaim empty user page table pages"
->>>> -	default y
->>>> -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->>>> -	select MMU_GATHER_RCU_TABLE_FREE
->>>> +	def_bool y
->>>> +	depends on MMU_GATHER_RCU_TABLE_FREE
->>>> 	help
->>>> 	  Try to reclaim empty user page table pages in paths other than munmap
->>>> 	  and exit_mmap path.
->>>
->>> Hi, Qi
->>>
->>> I am new to PT_RECLAIM, when reading related code I got one question.
->>>
->>> Before this patch,  we could have this config combination:
->>>
->>>       CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
->>>
->>> This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
->>> is semi rcu version.
->>>
->>> I am curious could we use rcu version tlb_remove_table_one() for this case?
->>> Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
->>> there some limitation here?
->>
->> I think there's no problem. The rcu version can also ensure that the
->> fast GUP works well.
->>
+Hello Marco, Andrew,
+
+On Mon, Jan 19, 2026 at 08:00:00AM +0100, Marco Elver wrote:
+> On Fri, 16 Jan 2026 at 16:49, Breno Leitao <leitao@debian.org> wrote:
+>
+> > The issue is that cancel_delayed_work_sync() waits for the work to
+> > complete, but the work is waiting for kfence_allocation_gate > 0
+> > which requires allocations to happen (each allocation is increated by 1)
 > 
-> Thanks for your quick response :-)
-> 
-> And Happy New Year
-> 
-> So my little suggestion is move the definition of __tlb_remove_table_one()
-> under CONFIG_MMU_GATHER_RCU_TABLE_FREE. Do you thinks this would be more
-> clear?
+> increated -> increased
 
+[...]
 
-Do you mean
+> Reviewed-by: Marco Elver <elver@google.com>
 
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 2faa23d7f8d42..6aeba4bae68d2 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -319,7 +319,7 @@ static inline void tlb_table_invalidate(struct 
-mmu_gather *tlb)
-         }
-  }
+Thanks for reviewing this patch.
 
--#ifdef CONFIG_PT_RECLAIM
-+#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
-  static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
-  {
-         struct ptdesc *ptdesc;
+Andrew,
 
-?
+Please let me know if you want to send me a v2 with the typo above
+fixed, or, if you can fix it in your own tree.
 
--- 
-Cheers
-
-David
+Thanks
+--breno
 
