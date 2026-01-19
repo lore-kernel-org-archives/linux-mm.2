@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BFED29C2A
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 13:30:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 633EBD29C2A
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 14:15:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7BCF6B01A2; Mon, 19 Jan 2026 08:30:54 -0500 (EST)
+	id 5C3E76B01A5; Mon, 19 Jan 2026 09:15:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D45FF6B01A4; Mon, 19 Jan 2026 08:30:54 -0500 (EST)
+	id 546E86B01A6; Mon, 19 Jan 2026 09:15:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C73A56B01A5; Mon, 19 Jan 2026 08:30:54 -0500 (EST)
+	id 4532C6B01A7; Mon, 19 Jan 2026 09:15:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B58476B01A2
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 08:30:54 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 533EC1ABD59
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 13:30:54 +0000 (UTC)
-X-FDA: 84348798828.05.B0D5EA8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A89F3C000B
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 13:30:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 346606B01A5
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:15:37 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7D7055DAD
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:15:36 +0000 (UTC)
+X-FDA: 84348911472.28.DEC87E3
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7291716000B
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:15:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ppE7BImW;
+	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768829452;
+	s=arc-20220608; t=1768832135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1P1nE/rAtWRsTJFlGlwRPm+3eocw/OOTCUMKzo5i0+c=;
-	b=128ZTYELdsHQDy4ozB3/6kSklp8tMyY1rmkTsdDsx6DDGYin/u/D0fyD0/jE/MLxzXWOrT
-	ibF73mZURjPd5tH+hw19Xtnqf3QnCTOs/q9VfVxydQzqUoiJVD+GtqBEu7xSjro3yz5WTH
-	mxtl+zxhJF7ooyzB4wYF/V9fidu+7mQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768829452; a=rsa-sha256;
-	cv=none;
-	b=MvCP/asElPOik4vInALYSBRoMRYkHmtRfcxTPmo6XBSlJ7b+Pg7toHRCG+goyLnKDLs0MX
-	BohsjbdjacmdOXJB85bKVpCJnCf+QqLFvnFgLdbgzO6xK7YUpWXYnDDJnnx1wuhYGI/PSj
-	RKQuKObVFF8mWf3/49iERml+e1f/Cr0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9xgRfJpL28zXK/+9Mu0NkoRr9adKwzNEuyYL6hfZRhI=;
+	b=041ezUKJFwdKW6hwi9l+JV1L0b4E0JPNzEZ/utJLNUqNHABbiniBaT6AhdZFMkRJUKdrUo
+	IGzMkWQ/QRMQBLwFnqqkF2dyLiAlYBN2b8s63ZosxF9HFFfuyu1t3Ppw4x2mVwZc6Jlo5T
+	B7GVlYTp0AgvgQShdaN66YGs0c/wsKU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 251F8497;
-	Mon, 19 Jan 2026 05:30:45 -0800 (PST)
-Received: from [10.44.160.85] (e126510-lin.lund.arm.com [10.44.160.85])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 39B813F740;
-	Mon, 19 Jan 2026 05:30:48 -0800 (PST)
-Message-ID: <a78f2fdf-ef4d-4570-b592-b2943b6ac06d@arm.com>
-Date: Mon, 19 Jan 2026 14:30:45 +0100
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ppE7BImW;
+	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768832135; a=rsa-sha256;
+	cv=none;
+	b=RtKIbz/LvDsxLBKITSpB9DQSm4pd+wGFaz7v1dJY9DodJ8Tx9NjUDBIz0cCHsNZ2VZsUWc
+	AoCSQTIHQga+5xadY+lhjGaZuhhvwDTUxEoeMpiz4OLvw+gJ3ejQMhqD11MXhs9RdFmoyO
+	wa15jLM7A6gkq8nzq+988YbzQ1t6Wk8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9xgRfJpL28zXK/+9Mu0NkoRr9adKwzNEuyYL6hfZRhI=; b=ppE7BImW71CsJWjLVHwbleqLui
+	SBUUNKziZnjCMKOroDlbZbRX7b2F15jXDrTclVlwPrKAny6Zfmno1y49CaWUDxPVOGsp1lWDIX3wA
+	aLo5w5TkUAwOy+HYkY/MxnQ5nc1VO9KSHUMzYnDOY/yqhdBOuONkQSFy+HgB3etzRt4PHkFSC5+ID
+	BJ9JyJ1DryXxZ3sxu1k85zRjFaShVdoAzKIShmvv0o9T/KA71mSV+W7fZPqpDFWLtxKFqxNr7cZpZ
+	Eqjxg86c+e3BYlNc4xxVzr2UN7ce9TRkz+qiQ+D91UJ7mHz5ZdCmi8YVPLPIRizKtfynykkcHucy6
+	3jw0GATw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vhq2Q-0000000DOsr-1sAM;
+	Mon, 19 Jan 2026 14:15:26 +0000
+Date: Mon, 19 Jan 2026 14:15:26 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Zhiguo Zhou <zhiguo.zhou@intel.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org,
+	gang.deng@intel.com, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
+	osalvador@suse.de, rppt@kernel.org, surenb@google.com,
+	tianyou.li@intel.com, tim.c.chen@linux.intel.com, vbabka@suse.cz
+Subject: Re: [PATCH v2 0/2] mm/readahead: batch folio insertion to improve
+ performance
+Message-ID: <aW48fk0IVus32QtW@casper.infradead.org>
+References: <20260119065027.918085-1-zhiguo.zhou@intel.com>
+ <20260119100301.922922-1-zhiguo.zhou@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/8] selftests/mm: fix faulting-in code in
- pagemap_ioctl test
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark Brown
- <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Usama Anjum <Usama.Anjum@arm.com>
-References: <20260107164842.3289559-1-kevin.brodsky@arm.com>
- <20260107164842.3289559-7-kevin.brodsky@arm.com>
- <cd9e1fca-81ef-4eaa-aea1-aac6dd00623d@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <cd9e1fca-81ef-4eaa-aea1-aac6dd00623d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A89F3C000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260119100301.922922-1-zhiguo.zhou@intel.com>
+X-Rspamd-Queue-Id: 7291716000B
+X-Stat-Signature: xcjxnneb9n583wsi3k9swkssnhfnm55k
 X-Rspam-User: 
-X-Stat-Signature: a77swocu57greuzshkojz43dc4j3ct5g
-X-HE-Tag: 1768829452-287887
-X-HE-Meta: U2FsdGVkX18Nia42JlXvOIk9TTyV3lCrnKx5qcRaRXXMvcGjLeiQQUzI6PeLC6eU9rY0H/I4IezcZSgQG8LgxvfbXLI3RTc6Grz/1XQmEHtNRfQHbQQ0inj2W89VIv2tAURAoe2bm+xxJDasbOZVMhr6IBT8+OS33GJIwSCvpH1Qp4yoWMrtlprJN6xjhqZVdSBD8Hb+P97t+UBF21y9XzYVPsrZBd1tW/6x7F+cEgkOBjcH42rYMOJ6/R+jfAFQxAgCA8mhixmLBboJZHi81cJCEiHJpwwPDNqiE4m+XpOFS8CURqkIy3w8WEIQlJK7iswSejm46jk7MU2ekyjvWrLNgXpKCNXtsuYmIziVdge48jXYm0vnH2rvNtJgWs5zW3OToOkq0VyIstiONlrdHZd6kHoLEdYbKrF8d9iSCPeq8QUDAcuA9lgGKvyCht1N73/njBQU1X1fen9j//OWaAUElGgyREKm8iqML73UtoMx47BPDeKDN0jgzKqqUFDd9/5TQ+wyuJxZykP0wz6d0pXj7RCeWZXJpQoHoa4xu7LPDruI23KFGHbPl/vxDDz9MCRXduDspre+Jp35ag1tJXLUBG+GddrHMkbMUF4DlV8jtnZ8Q/Y5Lm7pswda3aniSRuqwakft580nB0pj240xGGAoRC+QooXWL8pe+OTK/SybRnsZrlL/YI/FHsqJCxQAONfMU7PiCdxPd/ZnA6L/znTO9ENHL3uiuzFnvJ4TTwaH6RC/VBdXqUVv4/z38uwX0S5VGiXBPdFkibzHcJ5VBZU94pGzInpeMlHMtkOSu7S0JJFm3wQNHSjtiaWh0t8F36luSWP3esk8QMAXt9+CCnPiCBOOD2oZJicWd7txz42vtff5pjWHV5lq82GDibECnIe6X1hH3TXkTpt57+j2bR9x4OYa6T5YolaZ714e26VMkRlVePVJquhvvYh0mVWOt7wfNJ7aCWIfJRgKMZ
- nWn5IhuV
- ny1docAPbbB/7nuYr/tI3XTynO9mhKaUq+DQIHxhWKK1BbF/+ieQmxr8FJvHUhQlf+MzTRgehFjQ5t6EpWt6JpHvcSoQGAB4CFkUWEvXnJ4t53UozH6iMiaeceXlbAJHU/4fSAd/sJAUKdYMub3pEiVpg4AdxACVEMl0/+WkmYrqTS+3gbMUjnhZZp2/YPTuDKJNtEltazGATwbQrK56Iw5Zijg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768832134-694393
+X-HE-Meta: U2FsdGVkX19vrf/9yPtR9ZUSWRpey0/XccIqF8WHvpk8UxV1434Piv8wSoUgKnp72d/Ui3Mcr4yWnj6Pf3neOqAxQoQ6VLhAXjknsSd6kG4fKV+k7srkMY8ybYYIAI4AzD1ceFw3IJ6c+9Mv/zxmrnxOwssdEgg3tHPnmekW5Q4cPBj1AwWCxOBLbITntIQf0KtArBX8D3SAkrNbbYCdVfBPqDS+LBQLK97BZyFerNxCH2puuhwamYwzo3ck4yqdF+tqmOuGWSP5IedZO55OfhgsOjKMtSIFzRo/05GqLB2SEt4XQnrfb9tEJXex8fGTJ56lbuHcQP3wOHF3ESNMYojIkTq1z9BXJ4HwI3vXd5vcEWm+ilgb+79yrPyxQLySoZrtIsd1zMTRSCZGiR9eroN09eIp65kONOJBo63BWkFEyeEtnkanLyfDBVAMGuT38nxw1gM5WX8Ctp8qzhgUsPH57D/Y8qfmkoWDBV7f03vNMsBMM4aJHaS9Bf/goJQgyhd3YFbPbsmP0MDw+x25lbFEV1wTM8UfkEZNcrn72fvn6dAJn84gZxjYK25GWEgpTcpOmzCEfdqKMHWZLUl7BDXSlHCzilOkLa2HiPfgoqhIaVimS19ZRbcd6rS+K8kkQbV+g0Vlyr1S/yXltc0x81Pcq3rxOjpfNtj6p1p/T2JlEsVIDsoXqVPRCHBaJ3EENR9nRpRqhubP8wnEkcZs4KlyIY1m7dyPTwa9SUKHtWCaoJkHDHR351CMRRCz8JAFyXuK+T50ioSHkxm31EXNsZUORvdN0jyLVnyg4CwYSHwD/mzIaq/BRZc7uZTCxscI6MwjqZbM2AWlU9eheN7x8M411Uh+H5zga0AYGndybFApzPSCyaABTyBff1oU7muPjBaFT2q2wpJ3bqMyIPSruR6qJXayjchBLlqe3I0/ej9Js4Y12bjsz++mqHJvRrIGx9wUU574ED316iPWYpj
+ /Y70HV2d
+ PU99fesn0zIkWSdDUMr6Me6fvdnlPL6coOxraEnFhblTP8Uyimv4pgLe1LK7SauAoR5RIedR2f/J8nwJV1Tg225rgkhjM6fO6uUtBGdJoBucdin5UuaftLiUFMpqNHZEZMF2zFLF4Xw7cApEosi5Tehl13238My8mO6f1UhUCSlir6ia1zP6GzyZN5AGXUPEd9w9kb7JA8hHbWLNfnrGwLjYuYFfiYRn+gdKJ9dujv0gV3t2VUms2sNzigP7T5bYtM9o8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,24 +95,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19/01/2026 12:09, David Hildenbrand (Red Hat) wrote:
-> On 1/7/26 17:48, Kevin Brodsky wrote:
->> One of the pagemap_ioctl tests attempts to fault in pages by
->> memcpy()'ing them to an unused buffer. This probably worked
->> originally, but since commit 46036188ea1f ("selftests/mm: build with
->> -O2") the compiler is free to optimise away that unused buffer and
->> the memcpy() with it. As a result there might not be any resident
->> page in the mapping and the test may fail.
->
-> Yes, I assume so. Using FORCE_READ() etc is the way to go.
->
->
-> Should we add
->
-> Fixes: 46036188ea1f ("selftests/mm: build with -O2") 
+On Mon, Jan 19, 2026 at 06:02:57PM +0800, Zhiguo Zhou wrote:
+> This patch series improves readahead performance by batching folio
+> insertions into the page cache's xarray, reducing the cacheline transfers,
+> and optimizing the execution efficiency in the critical section.
 
-Yes that seems reasonable, the test was arguably broken to start with
-but it is this commit that revealed it ;)
+1. Don't resend patches immediately.  Wait for feedback.
 
-- Kevin
+2. Don't send v2 as a reply to v1.  New thread.
+
+3. This is unutterably ugly.
+
+4. Passing boolean parameters to functions is an antipattern.  You
+never know at the caller site what 'true' or 'false' means.
+
+5. Passing 'is_locked' is specifically an antipattern of its own.
+
+6. You've EXPORTed a symbol that has no in-tree modular user.
+
+7. Do you want to keep trying to do this or do you want me to do it
+properly?  I don't have much patience for doing development by patch
+feedback, not for something as sensitive as the page cache.
 
