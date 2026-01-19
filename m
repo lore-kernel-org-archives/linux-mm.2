@@ -4,179 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4144CCF2D0
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 09:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1058ACCF2D0
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 09:17:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21B576B0143; Mon, 19 Jan 2026 04:13:56 -0500 (EST)
+	id 6A08F6B0145; Mon, 19 Jan 2026 04:17:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C5466B0145; Mon, 19 Jan 2026 04:13:56 -0500 (EST)
+	id 66DF36B0147; Mon, 19 Jan 2026 04:17:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A0F86B0146; Mon, 19 Jan 2026 04:13:56 -0500 (EST)
+	id 5453A6B0148; Mon, 19 Jan 2026 04:17:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EFC2C6B0143
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:13:55 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAD2C160694
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:13:55 +0000 (UTC)
-X-FDA: 84348151230.03.339A2AD
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7BD2A14000B
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:13:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=quUkNXI8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jYX9y27W;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=quUkNXI8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jYX9y27W;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768814033; a=rsa-sha256;
-	cv=none;
-	b=AyoZjjLvR3Tm0jC+5kLYST6HGe0pgH5rqDVYJcJov78PtrdTTSWs62eGk2KqnukMRrFarf
-	bp0MjBzbW4bndcWwiS9QRwX3Gqb2W8cY3rJBxtAVyg5ZdfKAwbnJniIXJmaorcPxEeU5Ok
-	ecv+Vk2Tex31CKqCgAvOs/Z/XyjA77g=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=quUkNXI8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jYX9y27W;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=quUkNXI8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jYX9y27W;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C63A6B0145
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 04:17:30 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D95D8C2548
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:17:29 +0000 (UTC)
+X-FDA: 84348160218.02.AA06199
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8E903140003
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:17:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Wai4K+J7;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768814033;
+	s=arc-20220608; t=1768814247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XhooBqjIFB2Zss7F6dtPfbhQAxjPz0yCTX0IY1G6TwY=;
-	b=ti8A6Xth7gkvOCRrICt+o+N/fT6OHfxp42S5VS9l+jeDF6cP09KtmnBKK8GZcyIIynvQ5U
-	n2ESsh0jykhhA9Zn39/KKnZ233DVrPvBeDXeLl8oifaASe8vKExNJ5tk0Mm4kgQnSIRqPn
-	Wu8Ag1NHK2879VcfC9DLmeI0qtiRrdM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8B814336FE;
-	Mon, 19 Jan 2026 09:13:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768814031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XhooBqjIFB2Zss7F6dtPfbhQAxjPz0yCTX0IY1G6TwY=;
-	b=quUkNXI8whjFLXWQEgtlqwb32btvqRwOBu9Kvhxud89O3mPo6629RCETHf8qy+6O3xc/zw
-	Z6i3iMI86eABtBJ5GYZmsq1t+0LD2ZieYJAIBnZMeTKfyURACAGYgLFtF5hJ8Qd8nSHPFO
-	pul/4lqAegwdIbXIPOZtNNqUjjpnMRE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768814031;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XhooBqjIFB2Zss7F6dtPfbhQAxjPz0yCTX0IY1G6TwY=;
-	b=jYX9y27Wks0FdQuI6wroIgn1vU/1z8p4cyNoHI6b/nvSjBKPpbe51MwiUuUqpsd921RmyX
-	piwd/dX+3zLKQcCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768814031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XhooBqjIFB2Zss7F6dtPfbhQAxjPz0yCTX0IY1G6TwY=;
-	b=quUkNXI8whjFLXWQEgtlqwb32btvqRwOBu9Kvhxud89O3mPo6629RCETHf8qy+6O3xc/zw
-	Z6i3iMI86eABtBJ5GYZmsq1t+0LD2ZieYJAIBnZMeTKfyURACAGYgLFtF5hJ8Qd8nSHPFO
-	pul/4lqAegwdIbXIPOZtNNqUjjpnMRE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768814031;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XhooBqjIFB2Zss7F6dtPfbhQAxjPz0yCTX0IY1G6TwY=;
-	b=jYX9y27Wks0FdQuI6wroIgn1vU/1z8p4cyNoHI6b/nvSjBKPpbe51MwiUuUqpsd921RmyX
-	piwd/dX+3zLKQcCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D7AD3EA65;
-	Mon, 19 Jan 2026 09:13:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id OFZ/Fs/1bWnsQwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 19 Jan 2026 09:13:51 +0000
-Message-ID: <41048e09-5dd9-42a6-b5d8-dadee3ecfd9c@suse.cz>
-Date: Mon, 19 Jan 2026 10:13:51 +0100
+	bh=nSuKq4vtiYSh+zXJzFy3zaTzhBwfPSV+9FyaCHAA774=;
+	b=1Zx36n3ho4sh1657y1A2csCG9hqCGqwQyWqcrJEEC1X/INNlGaVlxUzZb9ZoijAl34/hvJ
+	UwVMyuX2w3AItekkJKKMKgMYf8puE1L4oQNDUr/kU7txMiF16j/C+qkkVYsiYA1MdfpteW
+	osZPiTVUXXwsz0AV3l2D/As/tZLE9zk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Wai4K+J7;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768814247; a=rsa-sha256;
+	cv=none;
+	b=bfv+i9czMj/qGnUMiOhKVJUaPyKZs1bjv/xEpk9ZggAG9Y5BAXtLDIF4f6HnJstSgKXvgn
+	iQP1ZzRKuzDF8l6elIHFvIxb/MGatm+vgUUlxG38flMfChlp2pCT2UEjmXVYCeS5pj8tcG
+	lqTGGMwkcI5vMojlCZQ+bwnGI37jUDU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768814247; x=1800350247;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AU9JVoNnfRKsIj4AsW7oSKQlXRJhBnRLc/ccZNkzymE=;
+  b=Wai4K+J7dJvf9H+zK+kaEnz7wzh4fDD2n4IIp4/KMGYmD24pXKxWjbVi
+   J7hA6mbE36dO+ZD2OOnf1e/bhd3gCZNd796YEAF6j+vS24EU2mDh5koTP
+   VWKi5K2FxPc4laRyujTD2pvg5iO9hai/y1fvSnLAsP0+3j/3FY+iRRBzX
+   IuYBjvTvzPIY9k3QSJw9Frw/VP38YdKjsZ/GLL38dJ3zZh7zJWPZxGJFN
+   IAo0c9ttY7mDtQOcgXbFTdtti4bLY9xxKTTWwrD3zgkTDp9oll1d85e7O
+   GaBR+rFPnEHY+pVB2DRugn1tzRm0iCVX6DP//dFcvHnnEFmJPTbF9mAIb
+   w==;
+X-CSE-ConnectionGUID: PVzcnBvISyKregdowDKy/A==
+X-CSE-MsgGUID: PCQYNlX6Q5iPEJlVg/sVUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="73881378"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="73881378"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 01:17:25 -0800
+X-CSE-ConnectionGUID: hDP+P3CzSqW+srxROFK3Pg==
+X-CSE-MsgGUID: sXSNzcZUQDmRSiM+EyGXIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="206249073"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 19 Jan 2026 01:17:20 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vhlNu-00000000Ndd-1Vmo;
+	Mon, 19 Jan 2026 09:17:18 +0000
+Date: Mon, 19 Jan 2026 17:16:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zhiguo Zhou <zhiguo.zhou@intel.com>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	willy@infradead.org, akpm@linux-foundation.org, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	muchun.song@linux.dev, osalvador@suse.de,
+	linux-kernel@vger.kernel.org, tianyou.li@intel.com,
+	tim.c.chen@linux.intel.com, gang.deng@intel.com,
+	Zhiguo Zhou <zhiguo.zhou@intel.com>
+Subject: Re: [PATCH 1/2] mm/filemap: refactor __filemap_add_folio to separate
+ critical section
+Message-ID: <202601191620.O1a0T02o-lkp@intel.com>
+References: <20260119065027.918085-2-zhiguo.zhou@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/21] slab: introduce percpu sheaves bootstrap
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>
-Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-6-5595cb000772@suse.cz>
- <CAJuCfpERcCzBysPVh63g7d0FpUBNQeq9nCL+ycem1iR08gDmaQ@mail.gmail.com>
- <aW2nlIlXFXGk4yx1@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aW2nlIlXFXGk4yx1@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7BD2A14000B
-X-Stat-Signature: kgduy3ca85e3zzd45kbqqjn7qzgw9a98
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260119065027.918085-2-zhiguo.zhou@intel.com>
 X-Rspam-User: 
-X-HE-Tag: 1768814033-783891
-X-HE-Meta: U2FsdGVkX1/QkeencjqhcFkrw7/O7CsXtnoH4WcfLeQOz6DcJp6DFqiy2zKbTwUoDkLGN36vAETPaB+DtN5kmdjmQxdxr29IBNa1P05drJpulpKXde0FhzVwdk34ZKEVTvmRKPxWdgA4e0pcQdFXhvuWTKPlrSWP1qZLzG3GOq35a+7PM1qZUpBD9qBOlaFp0F9+6Fe7AZdY4gdB8QQP0TMFCRh9ag4pZaPyPBlUlgBpS2BPNUInM7966rfD+L4PCcJ6c9b4QTTB/1R/mZ/5u8IW1b5sIuDJABywrhHcwS22E6eqCOXh4RKczTx+Ufir+/iQarB+eKLs8XzOFQfR4AzXso3wGt2jRRZvEWqR+dbGObiQWwj0Ub1+6YaUqDtoTpvTKwvQ6sufcwPCfv4tghs/i1igpHOEaKUFPrS3tBcv3kEcEgIo3jurVWa2gOyDOM5BcoS8MWKoGwxoNqAelBgZJU7Hhy64X14/RrdaaG8xiUGhwa/inX+dSIQYQfSWpO2buQn8B6BZzU20UOdqvbhRQBxa4qzeWYMuCWw9xRNVoYArgZ41jbOGN2xT1UaEunPAIqS6qy8wX4s5K6wzEcpATq6PXqRnJjyOW/F9ys4CSDzzVRjwgXs4yRlcZdzz1/yWgNdn0AK/knvrz4nYhzgktVIVJtZN7toinDQuWi0mK91VDHyad2xRoWFD61lYN+63wroLwHe7O5+8TE9bef6jYX93V+YZ58iMSyPOIbNoleQpXN+43mvrkJgTPhO37G3lhjrxDPZT6BD6uFo78ZWTnzxm4wlllGEsakqwj2GSgwLtk18Q/5r3/Oa3ACuOyCbJrT0x8Lcvh1uYZoleAN7XXYnVsOqf4rVayoVmiHABA9JIh/mJMrz6F9xRb1wb/ESxqACv+hg6ahI5hnBSbA==
+X-Stat-Signature: o6oexizpkui3t9wku59rszm78tf7q3wh
+X-Rspamd-Queue-Id: 8E903140003
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768814246-465919
+X-HE-Meta: U2FsdGVkX197wTp2EIj8SHHyFq+4MuejLmCaKIjZPCCRSvzEtyge4Dv8Sd4PtNcgj03q89/eQ6/zyQP11ZERK8ggpb1RTDVRgzmF2NLe8Zcah+pOzJqpd4wlYw0qrhRSBv3EXv6Psr1HXhWErFFupMxJiLwVoK/pn1Aj/qNjyfsDTda7Pep7LG4HhHAUYEiaBbW8Td6aBAsBq4SKG/3sbq3d1j9vTc6CB0ONqYWWphe565lIAhAa4mhfsyFEavM3GB+U1pkjcvERtW8D29oPFTVgoeFVP3vxWVHMGr8vF9wayhAFSxGQWsyrInWpJjzlRJ3+3a15HitxgPnqIgrFoliSaNZPPnhHDl6eQOtzheWHhGWWGGq2qo8e8C82K16Rdw/UIbW/YY5MJM81QQEIPUXBiO8sdaQOUrg0uciEkg3m7GUh7LoxEGh+Fo70ctbHaEIDggBbIRIDdkyuYWFZE5V1TDom6Sh/uGOY0aYcB7C9WIXPAavMpxGlBPzKW2W4BMBCJTaEpepAES9uyONJY5OZrUKiLg3TkfCLlu1mGJ7A/Ni9EMpn0E4klCFNYx6/7c0bw4gzbINGBZV9oL7OZZthZnPW6Tku/aRfJPLYIk4ZHoOpQ5KoJmJzL1Mkgq3oCxXsAHtsyERvgJv1v9jvTEOPRqXXxAB5J5DCN4bJuZV+dV68QjQ8TBJYFNyDOtm2VKenEU/YfKBIOnKpC9WWfBTdZ0v3fMHK8pEpLuKMrIADK6i414lLWqXIuNdGCGJW60uqq5g6A970noh0o+TTM8Vz+aqy63zHAinZsCSASITCed5GRxCXqv9ozpX6EH0sIIh1PTO7O5GDibg1ZKfZqaKDFYxUNRhcICgLbYPBwJMoDpYPM9w8GBXg1nkGmwxZ73lzMpdxedRaIzDZ4ciJQYmWj/8iWDhFIAoGk54L+3JpNpOOzcLUGrAKprU7FnAZYwR8v9YiG0J68AXIsEE
+ uUNVNnZ5
+ 2lPxCL9dZzoO3dOSue7KDqVTSbbvLn7TWc2hwtL75H5YFkMIagm2esEBLSzneCUgUACqFoUJs0jphcRopTF2J+Nx+sDcpEf7hx0NZymzB/t+AQa8G3f4cYfuO7/SO5VpykeCUiHSW/Uwlu5BpiVMIe7EFBoNB2kpsnV4eXr2SmvRXgYvQ8zzN+0gTJamym5gNfb/YUe01fpWQRJlLiFwUx/mTLSVPaHZQJjye7wHEv2gZNwTGWR/S1ujnCJQLczrT9HfEifRHHye+g1QMsBR1cl7arawr2+RQrZEfP8GbrRzIskbo8o5rMz3cpJg6ilxHCwrUFXQ2ZlDneLGVYxRbro6dpj/uz1rlPkhhliabPS/f7/YvPjm/XhI+r56xM6PsCVnLF3QEYLBrQ7jMZiNojshHx2KI3dSJXCZ9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,44 +115,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/19/26 04:40, Harry Yoo wrote:
-> On Sat, Jan 17, 2026 at 02:11:02AM +0000, Suren Baghdasaryan wrote:
->> On Fri, Jan 16, 2026 at 2:40 PM Vlastimil Babka <vbabka@suse.cz> wrote:
->> >
->> > Until now, kmem_cache->cpu_sheaves was !NULL only for caches with
->> > sheaves enabled. Since we want to enable them for almost all caches,
->> > it's suboptimal to test the pointer in the fast paths, so instead
->> > allocate it for all caches in do_kmem_cache_create(). Instead of testing
->> > the cpu_sheaves pointer to recognize caches (yet) without sheaves, test
->> > kmem_cache->sheaf_capacity for being 0, where needed, using a new
->> > cache_has_sheaves() helper.
->> >
->> > However, for the fast paths sake we also assume that the main sheaf
->> > always exists (pcs->main is !NULL), and during bootstrap we cannot
->> > allocate sheaves yet.
->> >
->> > Solve this by introducing a single static bootstrap_sheaf that's
->> > assigned as pcs->main during bootstrap. It has a size of 0, so during
->> > allocations, the fast path will find it's empty. Since the size of 0
->> > matches sheaf_capacity of 0, the freeing fast paths will find it's
->> > "full". In the slow path handlers, we use cache_has_sheaves() to
->> > recognize that the cache doesn't (yet) have real sheaves, and fall back.
->> 
->> I don't think kmem_cache_prefill_sheaf() handles this case, does it?
->> Or do you rely on the caller to never try prefilling a bootstrapped
->> sheaf?
-> 
-> If a cache doesn't have sheaves, s->sheaf_capacity should be 0,
-> so the sheaf returned by kmem_cache_prefill_sheaf() should be
-> "oversized" one... unless the user tries to prefill a sheaf with
-> size == 0?
+Hi Zhiguo,
 
-I'll add a
+kernel test robot noticed the following build errors:
 
-        if (unlikely(!size))
-                return NULL;
+[auto build test ERROR on akpm-mm/mm-everything]
 
-to kmem_cache_prefill_sheaf() so we don't have to deal with oversized
-sheaves of size 0 just for this theoretical case...
+url:    https://github.com/intel-lab-lkp/linux/commits/Zhiguo-Zhou/mm-filemap-refactor-__filemap_add_folio-to-separate-critical-section/20260119-143737
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260119065027.918085-2-zhiguo.zhou%40intel.com
+patch subject: [PATCH 1/2] mm/filemap: refactor __filemap_add_folio to separate critical section
+config: s390-randconfig-002-20260119 (https://download.01.org/0day-ci/archive/20260119/202601191620.O1a0T02o-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260119/202601191620.O1a0T02o-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601191620.O1a0T02o-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/filemap.c:861:2: error: member reference type 'spinlock_t' (aka 'struct spinlock') is not a pointer; did you mean to use '.'?
+     861 |         lockdep_assert_held(xas->xa->xa_lock);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:285:17: note: expanded from macro 'lockdep_assert_held'
+     285 |         lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
+         |         ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:252:52: note: expanded from macro 'lockdep_is_held'
+     252 | #define lockdep_is_held(lock)           lock_is_held(&(lock)->dep_map)
+         |                                                             ^
+   include/linux/lockdep.h:279:32: note: expanded from macro 'lockdep_assert'
+     279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
+         |              ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   include/asm-generic/bug.h:110:25: note: expanded from macro 'WARN_ON'
+     110 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+>> mm/filemap.c:861:2: error: cannot take the address of an rvalue of type 'struct lockdep_map'
+     861 |         lockdep_assert_held(xas->xa->xa_lock);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:285:17: note: expanded from macro 'lockdep_assert_held'
+     285 |         lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
+         |         ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:252:45: note: expanded from macro 'lockdep_is_held'
+     252 | #define lockdep_is_held(lock)           lock_is_held(&(lock)->dep_map)
+         |                                                      ^
+   include/linux/lockdep.h:279:32: note: expanded from macro 'lockdep_assert'
+     279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
+         |              ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   include/asm-generic/bug.h:110:25: note: expanded from macro 'WARN_ON'
+     110 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   mm/filemap.c:941:3: error: member reference type 'spinlock_t' (aka 'struct spinlock') is not a pointer; did you mean to use '.'?
+     941 |                 lockdep_assert_held(xas->xa->xa_lock);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:285:17: note: expanded from macro 'lockdep_assert_held'
+     285 |         lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
+         |         ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:252:52: note: expanded from macro 'lockdep_is_held'
+     252 | #define lockdep_is_held(lock)           lock_is_held(&(lock)->dep_map)
+         |                                                             ^
+   include/linux/lockdep.h:279:32: note: expanded from macro 'lockdep_assert'
+     279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
+         |              ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   include/asm-generic/bug.h:110:25: note: expanded from macro 'WARN_ON'
+     110 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   mm/filemap.c:941:3: error: cannot take the address of an rvalue of type 'struct lockdep_map'
+     941 |                 lockdep_assert_held(xas->xa->xa_lock);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:285:17: note: expanded from macro 'lockdep_assert_held'
+     285 |         lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
+         |         ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:252:45: note: expanded from macro 'lockdep_is_held'
+     252 | #define lockdep_is_held(lock)           lock_is_held(&(lock)->dep_map)
+         |                                                      ^
+   include/linux/lockdep.h:279:32: note: expanded from macro 'lockdep_assert'
+     279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
+         |              ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   include/asm-generic/bug.h:110:25: note: expanded from macro 'WARN_ON'
+     110 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   mm/filemap.c:944:3: error: member reference type 'spinlock_t' (aka 'struct spinlock') is not a pointer; did you mean to use '.'?
+     944 |                 lockdep_assert_not_held(xas->xa->xa_lock);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:288:17: note: expanded from macro 'lockdep_assert_not_held'
+     288 |         lockdep_assert(lockdep_is_held(l) != LOCK_STATE_HELD)
+         |         ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:252:52: note: expanded from macro 'lockdep_is_held'
+     252 | #define lockdep_is_held(lock)           lock_is_held(&(lock)->dep_map)
+         |                                                             ^
+   include/linux/lockdep.h:279:32: note: expanded from macro 'lockdep_assert'
+     279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
+         |              ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   include/asm-generic/bug.h:110:25: note: expanded from macro 'WARN_ON'
+     110 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   mm/filemap.c:944:3: error: cannot take the address of an rvalue of type 'struct lockdep_map'
+     944 |                 lockdep_assert_not_held(xas->xa->xa_lock);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:288:17: note: expanded from macro 'lockdep_assert_not_held'
+     288 |         lockdep_assert(lockdep_is_held(l) != LOCK_STATE_HELD)
+         |         ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/lockdep.h:252:45: note: expanded from macro 'lockdep_is_held'
+     252 | #define lockdep_is_held(lock)           lock_is_held(&(lock)->dep_map)
+         |                                                      ^
+   include/linux/lockdep.h:279:32: note: expanded from macro 'lockdep_assert'
+     279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
+         |              ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+   include/asm-generic/bug.h:110:25: note: expanded from macro 'WARN_ON'
+     110 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   6 errors generated.
+
+
+vim +861 mm/filemap.c
+
+   847	
+   848	/*
+   849	 * The critical section for storing a folio in an XArray.
+   850	 * Context: Expects xas->xa->xa_lock to be held.
+   851	 */
+   852	static void __filemap_add_folio_xa_locked(struct xa_state *xas,
+   853			struct address_space *mapping, struct folio *folio, void **shadowp)
+   854	{
+   855		bool huge;
+   856		long nr;
+   857		unsigned int forder = folio_order(folio);
+   858		int order = -1;
+   859		void *entry, *old = NULL;
+   860	
+ > 861		lockdep_assert_held(xas->xa->xa_lock);
+   862	
+   863		huge = folio_test_hugetlb(folio);
+   864		nr = folio_nr_pages(folio);
+   865	
+   866		xas_for_each_conflict(xas, entry) {
+   867			old = entry;
+   868			if (!xa_is_value(entry)) {
+   869				xas_set_err(xas, -EEXIST);
+   870				return;
+   871			}
+   872			/*
+   873			 * If a larger entry exists,
+   874			 * it will be the first and only entry iterated.
+   875			 */
+   876			if (order == -1)
+   877				order = xas_get_order(xas);
+   878		}
+   879	
+   880		if (old) {
+   881			if (order > 0 && order > forder) {
+   882				unsigned int split_order = max(forder,
+   883						xas_try_split_min_order(order));
+   884	
+   885				/* How to handle large swap entries? */
+   886				BUG_ON(shmem_mapping(mapping));
+   887	
+   888				while (order > forder) {
+   889					xas_set_order(xas, xas->xa_index, split_order);
+   890					xas_try_split(xas, old, order);
+   891					if (xas_error(xas))
+   892						return;
+   893					order = split_order;
+   894					split_order =
+   895						max(xas_try_split_min_order(
+   896							    split_order),
+   897						    forder);
+   898				}
+   899				xas_reset(xas);
+   900			}
+   901			if (shadowp)
+   902				*shadowp = old;
+   903		}
+   904	
+   905		xas_store(xas, folio);
+   906		if (xas_error(xas))
+   907			return;
+   908	
+   909		mapping->nrpages += nr;
+   910	
+   911		/* hugetlb pages do not participate in page cache accounting */
+   912		if (!huge) {
+   913			lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
+   914			if (folio_test_pmd_mappable(folio))
+   915				lruvec_stat_mod_folio(folio,
+   916						NR_FILE_THPS, nr);
+   917		}
+   918	}
+   919	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
