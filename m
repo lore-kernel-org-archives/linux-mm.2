@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE833D2ECEF
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 23:03:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADCFDD2ECF6
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 23:03:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D58C6B0305; Mon, 19 Jan 2026 18:03:50 -0500 (EST)
+	id 1AE246B0306; Mon, 19 Jan 2026 18:03:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 596F66B0306; Mon, 19 Jan 2026 18:03:50 -0500 (EST)
+	id 16DAF6B032B; Mon, 19 Jan 2026 18:03:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 498456B0308; Mon, 19 Jan 2026 18:03:50 -0500 (EST)
+	id 09AC76B032D; Mon, 19 Jan 2026 18:03:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 367C06B0305
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 18:03:50 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0208C13A86D
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:03:49 +0000 (UTC)
-X-FDA: 84350242620.20.0BFED05
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 40DC640003
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:03:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f8J/4Vdc";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E9FDD6B0306
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 18:03:56 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ABD7F1AEBA0
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:03:56 +0000 (UTC)
+X-FDA: 84350242872.28.48BD773
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1965C180005
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 23:03:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vIW4fuGu;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768863835; a=rsa-sha256;
+	cv=none;
+	b=xuEZy5/gO0pZ4yrCf1ywkDhy/+m6HTL3zMo5tOdQN6Lubxl7yY5WKei0fHsaVd93Z/PGDo
+	BXXjpgjODJJrAuemp47BcUy6h3FnWL/fpxgjpGUt+jdS7/wctzh8InI1ZkycEaUJfuJu0x
+	Z4vPteVt+IprqqjJLOSH2xWXDhvD790=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vIW4fuGu;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768863828;
+	s=arc-20220608; t=1768863835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T7hwfO2cKw85nt82n4iGmVBkB9S8A+CcgyBu1vNXXR8=;
-	b=EYomUwamfzTQkndPZxltWRPeiUIVrXJo9E6RAc8rc1hYEgPp9e9cZ5mdyQtkVCB0P9QqUE
-	losldvM7Wy4tCtQCJbIz9/QoGPB4igtPXUesEgpHYwbRNr23EiMiSuTk8mI1kMcaCoySD/
-	UJbLfbdnjwd/ovgaEfC6AhIib0BnsAI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f8J/4Vdc";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768863828; a=rsa-sha256;
-	cv=none;
-	b=aqSAg3Q7+bGStcc3LeTF8L81DC3tN+7e2OAiz6ERIMcpPu1zeyK1lS4uYcJ73rvTtnovuW
-	XPDcleldQFSnbFNISqGhvb0yO2bpT9tPNtLfhpofl+iTiQnfHpor0rlikaatBjlYc5rnmd
-	slxTz9HrEV/YpDaIlbVkwhlAuKMJAf4=
+	bh=q0PZsdKyWYnYNA53sTkL74r4LhKT8UMg6WKjB0J3+cU=;
+	b=HcxEUH7z0ANlqobsmYw/Tps0Z8+T0vD8/CU69rdptEHX2+RZR+L0OCyai/ystbzP+G0XVm
+	1kLMo1oRCH+ajMFLmcEXYNuhhfYrb+7e7shwUCLWO5fgMbv3fUCQmXuu8RzRbF0sq0VXPu
+	PNcDukYiLcyhWb6AIsxuA0dEnNeVl9Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 68A0840201;
+	by tor.source.kernel.org (Postfix) with ESMTP id A38F460155;
+	Mon, 19 Jan 2026 23:03:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09B1C19423;
 	Mon, 19 Jan 2026 23:03:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19448C2BC87;
-	Mon, 19 Jan 2026 23:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768863827;
-	bh=KZzIizZvvXk5/lfOietMXSEPEGZqiuCDOnY5HWS5lB4=;
+	s=k20201202; t=1768863834;
+	bh=kH1VyttzME5xFeeFdR/qAHeXrLO5pFzDG/LyJb7V0HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8J/4Vdc+eCRJIAoxZbYJ40lQpJ5YxM1F/DqyvPfB4iJiREt/aP0cufXXYmkJTiIM
-	 rh0LWKL3Nl0Ig6I/DaxSbZKowewwb6MLwBm7BJJM7POJE6T/6Wb4590Bv4XgR6miZz
-	 uCagcFY0+R+8aQpuwm359CC04g5+OYUbM8mPxOLnyFL2g2jXX5Z2xE7rr+QfftChow
-	 4Kfzlq3Guc+H5BI7frRkqQcFPbG757vyABP3hefzynK6Qxh39ZXxZ09NfWxMCn0UVR
-	 1BRBgGimswwiqjm1cQ0jMqScckqGXfw5zyMHy1U0YopOuZK/DGiBJhdz2D+GLvFryi
-	 ae0irgoEhRC6g==
+	b=vIW4fuGu6Fvm5fTOSiPeFfrt4FFXeyafRlE/6kmfcrtG7aEdsGaWbIX8IeNn0sRPI
+	 D1gHKWfPif0n1VW7nAJDk74228u1Cqx673N4Z9fsSSg05aYrMD2ZIUbz9hY/4oO7bM
+	 VL4FmwdTOM8cvcKd/7ean9yDQe6QSyh5qIrWAMD4tSL/fBAfsAXe2BxwiO8AyPSWlw
+	 Sd014FoSAVVq/hPIOFEXgyp+hyyWVjl/iMDU9M1xyvBBnP83HdnmLnVyHuaoHkldUy
+	 jj+CCjjMAKeHDv2/xjWGDVT/h7E+d6KiWNokqEor3Ae83lM+IA1yIRczDY3yZDzAwQ
+	 eP3Gi+2s8wxjg==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -92,22 +92,22 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v3 18/24] mm/balloon_compaction: remove "extern" from functions
-Date: Tue, 20 Jan 2026 00:01:26 +0100
-Message-ID: <20260119230133.3551867-19-david@kernel.org>
+Subject: [PATCH v3 19/24] mm/vmscan: drop inclusion of balloon_compaction.h
+Date: Tue, 20 Jan 2026 00:01:27 +0100
+Message-ID: <20260119230133.3551867-20-david@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119230133.3551867-1-david@kernel.org>
 References: <20260119230133.3551867-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 40DC640003
-X-Stat-Signature: ckaza1jgk3xiw6oeshfsjynzura3nwfn
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1965C180005
+X-Stat-Signature: oe1dkcgbrwb56a3bzokdypd4tzbsbyxh
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768863828-752759
-X-HE-Meta: U2FsdGVkX19YEymswcryI2pj3NRpPFA5IdlkhV7QfjXbSPH1/jGCEgegMhy0Ie184izfM5mAFnP62oGhLO4U8KjswzBkY7bvnMA4/oj3Yp10dxkESc5ncWA4fLEvIZfK7R/D1waTY9E+db9aBnfsRFPj96rcIQ+MWL30YlM9ayXKm3aExu2YVxAx6Sf21f8qHogwREi9K7kQUxGsdw7KyMygQ4kCh8gg2RnFB1cXvO5om+V+JYD74+xT3Wi4Q5yiB9692qpk7DD9y0AF35HXrU7WmGdYYyE+KIa/8FtviTiKFPH9tmObToB3fQv+FZZGFgm4DhvYKOfdhTUJmJqgL5e6l/99pjoBOhLhiRVp64iAWXPjz5NNfETUfzG1XaruICt3YVF8d78mZTNtNepUe5Ongr14VyTPTOhmvMZ/uv5Ik1RZAzKgwUEwz2EnBKV2Ec/HsW//ndCgYF1UrfU8ZHBmqmqbIa2/XeXA9oAzBUd+fD2skZkdyzIFHk2LkGEx8KtEGdaEqI5c6nZ69G/DdIYpVh88IOrGrr3dEsZoLpPRNsq9wFMGXKnpOUSuh1YicPkwmMR379snAyYfPKk3MN01HStUExtNzeQY0LjZPpiglR00BOEz8ITaBegAj1vxym6zgkIrjLKLq9ZuPTbXXk+ywOqzVBKLJG9ccFZ+kUHuf8aU7n+zaCTJSTgKiZSyT7Cwpo4l/ScRNCuf6NnKQX2+Cy0EqE1xHg+IJqUE4+11mQQ/DN/F8+dBSK96O9flF9p4S9/vzHJP4dAcrtp0NLB4QFf2Q76sO7L7wRDumlqD9M0yfNyM/kQXU8q8RaS4Bdu4xxEIhiyKUbrhn5aRHZ5YKLFjuuVP58+/ip5EczQJjx3Po53DJTCTjaJzYOkUEyjrGdwD6Lwf7tFBNIMd+YQJHdwUOUWX/2jpvz1u0Hplht2yxx8+eSIcrCi3puhpScx0GpI+WRqSKHU6wGm
- v0PpuJNO
- ja2+JKYk22BM+VvRyd+fdrIYoy/5Fgq4DLBvC0mzQtMje4/VYWL3cX3c24wzpbBz4dlRtVCvO0DKTVAW2EoemUEh8HXVsnU1XN5fHKkxTvd0p6fwUQ5XAM3fbaVXkX66IQvP8PjNeC3Cwi7n/jo/NHsUAmT1TJyHl7QDdY1mw+2a2Ik+FLSFuKuT/1srB6z4M16msD1EvB83gePr9Jgdi+Um7LasCRPhUkaorlkbatGijfC8FpwOoOafZNOG1nx6EA1rLWjZdWXUf+8xBSamG4j7Q5svTiJWlhypCi2ox9MfhD2ysmFevb+mUc5Gq8n6ZaNJ9lr7OIV7Yv+4=
+X-HE-Tag: 1768863834-126050
+X-HE-Meta: U2FsdGVkX1/0IB2AhpEFt7zPVniv1wEboRZ3YjGt9gUVo8s7G4pXW+Zk/GdqMKc8zIMHvzz9EWGSYi2n4ZXltuAWz8qjRcLGq9dua8TzFeAuPLovBeyTB9Lzp/npOawDp1i6OpN1CzORdDA/yUIzXSV7eukd7130NJ5B766wfRthRcYc2wLLPB74llRWcoXoL43twQ5u6L5YECBZmYyeKY+cyY+75UnPc2l41olQE75SdfQV45AZEynlgJ2NG7EFufX1+rqFDipS/oGNboSb1Ny5xZEM0aF+duRGg0yvmtKAiMrF5M7BbmzU92L30Mug8RCTByCUbx4CHnZZeKTSlxKejOhe26KSUNiGgcMHjEuuvwlocBulQtdX/lbtgEVPHEsMNxWbX9uiHK46nFOXTFi6X+IeAXrZ9NKRRUC0Hunh7mcZ9MvtHaaRs6M0A3NQNj6IQX5dN97h2c254py6ZIAoJePVdCB8EyaiSTfG430n6mvgq1c8Y5fRFVm609iKZ3+qH0ZTdo98qoSTtkOMwFJVeByMpB7DwgmnD444ACEX3mWGYtcj+fdUhe5j8GSXff/VwwRksm49f4bssNZuu7snf2RDviWPR2kCJRKdMVeQDnOh/re+UJzPe5MhTl4m4wI+EnI4hMDaQX+tzH5eaC8i0WdstZwmPTVCk4LgvOYHboellOhzS+ucdhC6H9yqRXgzAqeCOvWnXP/cEPMMvVONmdIiZasd8nnWNQqad1HAPAe2hWt2XzkoF8BjwU71G1ZyNG3RXNkiFMATWUNNkmhMMbK8I+ujxp1ZGHFyG/5E+8BSfwesndhKC027xsbHYg/DoijRXbmVyZqOvsLth3PHTPH143fbYv8wmPPVocb7YVKiaMZILAt4NMBR6CSvQSXRoNnIG9vBUkt3fSiZu9aeD0Qc0hM1WGyR97jAJIuKFS4bfktRr86YsdvVLxKRRurD9KIYwhKvkp0f8wb
+ qftarnnT
+ YrPCXxGK0uIqe0H+HSY1PrwsEh4/VYlilOrRpnpNzxuGZ1fruoBORV24ghIrrWoiJTnqo7oHQ7cm3KJkapO+u+U3ppLG7yn4WC05pGltyDqfvc6imGRuIrlU1j582H0RZc1njEfYhYy9RjhioxnqCEjAQGDvs+z6YcYhDf7qmva0LGNzhgJRVfj/VtHlnmQWs7XmaUDkylnJz7mbWye35STJpFjct4aTt1QcJnQMybhKtETrW+YbspCR7yDGLWBApmJAldjynlCPgB0dAp83/lrL/d3cyV6gWvJPN1Gn2GvmHfNm9Hth2iWGB5nF3TaIK4ZYwXbP29iireMq2O0/hMWLr09VHugJlItGmRfiF+5GPnsA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,43 +116,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Adding "extern" to functions is frowned-upon. Let's just get rid of it
-for all functions here.
+Before commit b1123ea6d3b3 ("mm: balloon: use general non-lru movable page
+feature"), the include was required because of isolated_balloon_page().
+
+It's no longer required, so let's remove it.
 
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- include/linux/balloon_compaction.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ mm/vmscan.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-index eec8994056a44..7757e0e314fdb 100644
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon_compaction.h
-@@ -59,14 +59,14 @@ struct balloon_dev_info {
- 	bool adjust_managed_page_count;
- };
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index a0e3f51de749e..cd9f9a779e89b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -63,7 +63,6 @@
+ #include <asm/div64.h>
  
--extern struct page *balloon_page_alloc(void);
--extern void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
--				 struct page *page);
--extern struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info);
--extern size_t balloon_page_list_enqueue(struct balloon_dev_info *b_dev_info,
--				      struct list_head *pages);
--extern size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
--				     struct list_head *pages, size_t n_req_pages);
-+struct page *balloon_page_alloc(void);
-+void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
-+		struct page *page);
-+struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info);
-+size_t balloon_page_list_enqueue(struct balloon_dev_info *b_dev_info,
-+		struct list_head *pages);
-+size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
-+		struct list_head *pages, size_t n_req_pages);
+ #include <linux/swapops.h>
+-#include <linux/balloon_compaction.h>
+ #include <linux/sched/sysctl.h>
  
- static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
- {
+ #include "internal.h"
 -- 
 2.52.0
 
