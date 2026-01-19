@@ -4,128 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95624D29C33
-	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 14:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DAF6D29C2E
+	for <linux-mm@archiver.kernel.org>; Mon, 19 Jan 2026 14:46:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E76F56B01FC; Mon, 19 Jan 2026 09:44:03 -0500 (EST)
+	id 2ED1B6B01FE; Mon, 19 Jan 2026 09:46:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E215F6B01FE; Mon, 19 Jan 2026 09:44:03 -0500 (EST)
+	id 284186B0200; Mon, 19 Jan 2026 09:46:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D30D86B01FF; Mon, 19 Jan 2026 09:44:03 -0500 (EST)
+	id 186A76B0201; Mon, 19 Jan 2026 09:46:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C196C6B01FC
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:44:03 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78BD6137501
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:44:03 +0000 (UTC)
-X-FDA: 84348983166.09.ECC6170
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6DAE0140008
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:44:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ivSSP6B8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768833841; a=rsa-sha256;
-	cv=none;
-	b=4eRFj8vofJTNlcN7H1Bm5YpMG9dTevuwx1uC2c0ClGTB8zr1lyskzDAQoSVIyOA3Zok2+u
-	6yCwgRC9yTVS6avUhVL2Gxrc6yGCnEPXlDQgE+YbcO4k6SEWkB+Zrhf0MvWwYZYchMWGm9
-	KiZj5yng+f4/5S6GnWSOikdyorf6J7g=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ivSSP6B8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 065766B01FE
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 09:46:08 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A09F1137FF9
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:46:07 +0000 (UTC)
+X-FDA: 84348988374.30.7228AB6
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BD1CA1A0009
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 14:46:05 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FwLhzSyK;
+	spf=pass (imf19.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768833841;
+	s=arc-20220608; t=1768833965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hw8g4FncQCT0qG+FJkoHCdORpG7mMrMlB+H9ZegPebQ=;
-	b=wXvv8LO4bKRa02g07y6fNB2SPlYHZifXJc662WWcwQ1JN1Pr2fD11YxAXdaCOvlW0ePEaS
-	vwfO0aldq22eztV3QNw09C/zIjU8P2+/5AOFJvhNIlF0c4nPx+TOwXNl3OsxUzr9fNKZOc
-	3ZuPyQ+BmIQk85EYsvMy9AcLT93Jrps=
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59b77ff32feso479789e87.0
-        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:44:01 -0800 (PST)
+	bh=fsjvsl9QLRbiT7Kn7hO3fVpNzPEyahcgYF/8T1qgI5c=;
+	b=fBTJdXGPuI5qyRkfVwprTp9nINH25Wi6qLmpg/Dq1GcEONNqh2C1TOqu3jtJ2CQkPkEHIU
+	401+7dDmRpktY7d2EEy+a+UGUTJXFZzffcQjcuHiPeVz6zjpb8Ld6bSv9Rq3f0Bd1K5b3e
+	vDwLN01ohJgIegqU7HGwBALJBIYMfQk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768833965; a=rsa-sha256;
+	cv=none;
+	b=Qu0yOuNsmrv7VpOFRrCMCWO8FggRgwqjky16GqDD0x8LR9CY2wx9MWdalrDlPn3573u33B
+	71QRcH+Td1SD4HdHy41AocHe4nZbySHiAMq3sL1LskNHN6uNRDV7j0LL/w8wXD5tIGCvAu
+	G56qe8Hgsn5zItA5Pk2IQwBKoRzEN8U=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FwLhzSyK;
+	spf=pass (imf19.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59b9fee27ccso454716e87.2
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 06:46:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768833839; x=1769438639; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Hw8g4FncQCT0qG+FJkoHCdORpG7mMrMlB+H9ZegPebQ=;
-        b=ivSSP6B8oeRpL42T9NAXUPglj+f6OlN18sKVHwldR+jxb6/bukRbtwlqciX+sJzWDs
-         6AOtSsgGUWRMRXJbZNNVFbxTdprf2TdNYf4UO7ll6I3KHCqH5L8FUIndUsJtxxVQxzEG
-         bdh6TFCiXIF2rNf/PwSDivoM6J8hYfuP9COCeaoTGeYPVu3XymWj9jJmvxgFrk098Tff
-         e2gGuS8XUMKOICm4zLDBIhHDUl0DQOVlNRVkewB88XVs9NLah5dMxxBTXGFouScKVcAc
-         C9Nf5bVCbWi/qaFH1yNjoSntCwAfsEUbf7PXF/w78Fuxmk2y+tZvMok9eYi+k46eaDtN
-         SMgA==
+        d=gmail.com; s=20230601; t=1768833964; x=1769438764; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fsjvsl9QLRbiT7Kn7hO3fVpNzPEyahcgYF/8T1qgI5c=;
+        b=FwLhzSyKAI6HgW8ej6/EgKgcxnm/dV1DepFtxQBNSNBGVj/lAUv9irltsDtYh88bhq
+         C7yzzsJfGTFfubJJ75d++RSVEMUSMMwmuvFSs6J94iFM2Jg1r5Lnf9NirMHhJh4jyDvC
+         J9Jlg1U19w5slUaR+7BgnuOvE+hZSY0up/CnPqsW+xLkAQaQfYzeLz/spuScdFhmeWT0
+         8zf6F5j0dAyb1KcNDSRV+F0BeAlRQ7dT0Wvnt8kWNhj5NQkzqucYT6SZwrP35L9O4iw6
+         zxw0n7hWG1r1EsTAyfKMF7Dks7Ilei5tz+AjhO21DcMiLubWnYoallvBCb4ZovZFGCrn
+         EGsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768833839; x=1769438639;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Hw8g4FncQCT0qG+FJkoHCdORpG7mMrMlB+H9ZegPebQ=;
-        b=sSUc7n37hiY9DRvt1968vb581u2U16bx7pxoJI2jLyQ1WFenQgw9wVWHJfht6BZ3b+
-         YK95S5U9kuebKBuXab2d/B0YMjGwX/M2V3vhAitaSngGAfu6tcmquyO8KSzbopJyAwD3
-         iPRxmuPoGm4SVCp6VToMGTAEgcUEwtEyWRPwyXphuwnyVCA1+jQnfrOGjggg6NoxbEDn
-         W1KhkMrFJEb7w35b3AfZZuajUhbx0DzvFzuyQpTn3U5MPua+4QDv1hy8zdmVkWEVq+6D
-         T41tSyq+HoiWyOiQ8kiErxBtaHD8T/8nUc8pzP8ZLqrdvU3aDi0i/xv0imv91RYauFSc
-         dPAw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4hMo6GxBZ/aoaAXkBY0s+qee3Sv/+VVaPO5Tx684jsLFfXyzRs/i6LNDIxSf1mPePLuZH6dDwsA==@kvack.org
-X-Gm-Message-State: AOJu0YxqVGWRy6Y9osNPSciuDpSG6FAOgToXMv1NNBKZEl8xKFrl2llu
-	LyLlGz2QljmlCZyWRSsFSlZIa/FJtkgzVFToA+AjqJzc9hOo+Blz0eTZ
-X-Gm-Gg: AY/fxX63SIqSMZzcgA1tVsxlbiqUgsHC6ifc49bLO5l0RwH3V3NUw8Krwl7QJ16OSK0
-	0UZnLNXbOUqmOKIiDg2lS0fh3HEIm4EA+j1F9C+6vD1x+IY3x24EOnhs8DzXtiSDOLTL4VmziPd
-	nQZm5VFMgYe0EgtBHhrfgpZqVvm2VE1Dl575j5RqZCBBYBaDebJiaw/+P3V2YFhzuW8qGdfS2Eo
-	6mQSg910TWzIL5KdFdvXIRMW4svWmh25jA+//g7Iv9qDtGYKbtoUY8ciK8QGXx5o2h7oMwb3qES
-	f/2Zpa2PhGnpqQK9E9imbP0OKgTay463PCj/jOOrlmXr2E1J1J6bEJ4pGsKJlcBESNS2kseyflE
-	XB1i4tPvIqGWj1n+07mVR2N3AQbt56pEtiYfV1EA19GfAMmhESyRWFVb7VetjDtQpo6b+bM325F
-	2ccTE0fbNzGxzcEoHq5lrC84x7omFI
-X-Received: by 2002:ac2:4f14:0:b0:597:d7a1:aa9c with SMTP id 2adb3069b0e04-59baeefe804mr2049768e87.3.1768833839215;
-        Mon, 19 Jan 2026 06:43:59 -0800 (PST)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf3a1746sm3435146e87.91.2026.01.19.06.43.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 06:43:58 -0800 (PST)
-Message-ID: <38bcbe9c-5bc6-4bfa-b4ed-e187e048d600@gmail.com>
-Date: Mon, 19 Jan 2026 15:43:02 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
-To: Andrew Morton <akpm@linux-foundation.org>,
- Andrey Konovalov <andreyknvl@gmail.com>
-Cc: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
- Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
- Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
- Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, joonki.min@samsung-slsi.corp-partner.google.com,
- stable@vger.kernel.org
-References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
- <20260113191516.31015-1-ryabinin.a.a@gmail.com>
- <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
- <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
- <CA+fCnZeDaNG+hXq1kP2uEX1V4ZY=PNg_M8Ljfwoi9i+4qGSm6A@mail.gmail.com>
- <CA+fCnZcFcpbME+a34L49pk2Z-WLbT_L25bSzZFixUiNFevJXzA@mail.gmail.com>
- <20260118164812.411f8f4f76e3a8aeec5d4704@linux-foundation.org>
-Content-Language: en-US
+        d=1e100.net; s=20230601; t=1768833964; x=1769438764;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fsjvsl9QLRbiT7Kn7hO3fVpNzPEyahcgYF/8T1qgI5c=;
+        b=Du+Epiznc8tzV40WDYHj6Si/yA2ikz00bVfdPdMy72sKgNKp9rpK38L4FirL165eGm
+         9Qq30qcVmpih0I7Z/EUUUu8ecdn9PmJ/KdiRt7ng9XtIp4ajgQKlXbxdGj70SMxjfc7T
+         GJ6OPbMt5TTKz85Y94ezPaKeqL0II3sFmDIl17f01B73g2OnkECl8pPn8/uql6WVIy83
+         CoBMAyby+3DJqw+SP8q+M90kceYsxLIrgEIP12TVNQY2UpVOtxi9i9j0EeQcYZQBedDw
+         Ylh8ILeRrZWXtJ8LI1awU2zAUhtcZQhfvn9FHqANl0MKDE/S0uEjMHkU6yQlpAU0iibY
+         ZGEg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+Ww9CK5ZYnGz3rIDW/T4Fd4JbX0W7uQwSUoUxYOAlqQQby87wAIynWrUEJTsb0WIe+viuOFaVpw==@kvack.org
+X-Gm-Message-State: AOJu0YzhkUrvJ1DlgcuoQLtp8XYo8DdiZqZi3Iyhr74uhjOvG+9ks3kc
+	4JanK4rHnFzu8CPoVJWqPGWO7P7E4XGKzh5LiHe14lWvxy9RCZzO5ypk
+X-Gm-Gg: AY/fxX7YnG7fI9rwpAAfr/+xPLFrg41BTH/hrUjnE2TEddljqbN/TpgoG/xX+92H1gs
+	OyFqQ8DrtrSOKbSaNcVgfbTYlTe4qkMzE8bYiThhpm834P0xxcjsGlHeev5jMzgGeDzppzyT+0E
+	jMau+t5bNNEzHIXfv7aC9NvTWZuLzKFnASr1D0cR+iBwW/HGTSFxb6lkvha1Tj3Wj2mntQlwTSA
+	SkmPGgC7T6SN37GOv87mJ1D1ZJS72AL9n6bH6GOq5gdAxBDVgemT8mG8rzWrMu5B7OlGeRymgv1
+	gxeV/rVUJah//I+ZKPWbmCpFPNZ35nWImSIld5Ly+7p5kD1eH0sOLKJ5wJqWnhTck0aO/1rWElh
+	86GVMuZ0TmJV4gJn9VlPA7F2+jfScUFad7fDZdSTomhVWp+Cl5th2W0Uhjem0enJE7qCFJDGuk8
+	292AD8mNbLXoDdrSsMjmNRvGM=
+X-Received: by 2002:ac2:568c:0:b0:59d:a4ed:2309 with SMTP id 2adb3069b0e04-59da4ed238fmr294405e87.1.1768833963843;
+        Mon, 19 Jan 2026 06:46:03 -0800 (PST)
+Received: from dellarbn.yandex.net ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf33ed36sm3408385e87.18.2026.01.19.06.46.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 06:46:03 -0800 (PST)
 From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20260118164812.411f8f4f76e3a8aeec5d4704@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	kasan-dev@googlegroups.com,
+	Uladzislau Rezki <urezki@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Subject: [PATCH] mm-kasan-fix-kasan-poisoning-in-vrealloc-fix
+Date: Mon, 19 Jan 2026 15:45:09 +0100
+Message-ID: <20260119144509.32767-1-ryabinin.a.a@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <CA+fCnZcFcpbME+a34L49pk2Z-WLbT_L25bSzZFixUiNFevJXzA@mail.gmail.com>
+References: <CA+fCnZcFcpbME+a34L49pk2Z-WLbT_L25bSzZFixUiNFevJXzA@mail.gmail.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6DAE0140008
-X-Stat-Signature: i1kjixd33k9s7jfoaqgjdhfsr4pxbski
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BD1CA1A0009
 X-Rspam-User: 
-X-HE-Tag: 1768833841-758017
-X-HE-Meta: U2FsdGVkX1+zmbBpths2ebDWEw+w9N50atNkQPdeiGwQgqV9ewdJxzBHloGlanAhIyaadsYBEAM1L4Xu/knXOn1WvpjfWRmcbbevS6LyZQjesAACTBuXkawmNMs0Jl7JD6UjVmG9s13FFF8DCxaEp32iTt38xfw8fleA8uTxO50b6rZaF1eHJ4BVbP3FzZq8XZY/n0omQEzYVHpRhs+ondgW1zhWJc/gUc1MQR9Mc+v4cVQsoDVT8nWz45AYSnDcbjtpIFzDqXSuQcTtxKaia4mbQ74HqipCrHtPebQNxJlXs8rAkd2DtGuQjqOOrgNU0jhpnckTSSD71NQ0Hvd+y2qDr4qdSEny8/Bh8Lt32VWEpVG+aTCrB2RqDl7U7plwYwDhELt6BSQPACtQ1WiTFReKBf0XjTjWgH6WG9oppWD010EWRzf659oQ9FisWl1wtVg7tEGOrOSWLlYbGnxiGEmnWwhWc5zj4XBnj+/LatpSnF6w9O7rli7SNGbF3Dh2INO3F9AqTAAItaHbyrmETxibrmjmbg3y3eUB3wo5p5tF7Yg2Kc3jdPVxTnWbeRyHFBp5IIJlwbhG+WTsNNho4mA8YJjfgxEmrBMOB9jDaD/7KznVkjtyDdLVUhw/CMlJRufTz9tIRFQIJcDIGxFWCs+aQnBUs8X2NKKP2tPHDcVYCWciXprmfXAgT/Z46pKgwYnZkzv+Xm3tuApx9syMh5yguNxEfVgNNKrPTmlG2Mc9ReSwdearUzkdmmTCOn1ahYfECq8c55GznurKJUnItiZOoGQA8q+/IdqO11xUskrtBLD2un3cZzTUv8wlHivtMXh8XKd3eY6iBEIuJrILa8fSdDJccJL/oZqBw6tApPd0wEmHD5aVLH/SP6upa66SXBQgsMkPrmd/JLfdeJnwp/IEZTdvK6hvXM6qy3FzWiXUxeWoUKJkzasOv0LaDH7xCX9PMvuDcZqbk8j4YmA
- eBNTDKND
- EBJuIo2neHqACM/sIGo/8F7nOVI9vqTNL5/7ifLCqMsITMU3vtAlT0l8HOK1BZLsTkvPf+XLC6P396i3lXcdkf78bF4IS3837/6kYoym0+d2hS8akE29+hNE9Ns5tbDHo8r/IjmyBrWe5RzUnogt6A7wo0AsOCJg669Tz/Eqzu/HAE1Joddsp6nSdo8hmOyfzKcwem4S9tWOf1quyicaX6vV8scGlzl6IWj2WQqtf8OFADFkO4guUfiWwmiG7sQ6vuDYDUA9GzL6si4OAzeLRyl6u7vSdg/Ho8dMQes131W5zVq+ZsZKPWi41lyHrBpIH45Lg2bTV7RtcZl0XX5b8V4v/DD/7ES5Y5awsnFUuHJjz0ObmmZralV6I+iFE+4aRVg5bGo5XWnIUPB0jtjvNysWpLDRhIn2JxHm6GNoYoE01hL/5wHl1IUJ92dIYr26fliOjhZ2D7+PVIx/6ijTMqshfnET4kPTDJJ0+lnKp/rJsaR9vurwfDaKzc072YLpgq3zzmrKE1t/FGpg=
+X-Stat-Signature: wy1qssao1pn6ar54kozeh7mx5qfdetuz
+X-HE-Tag: 1768833965-262775
+X-HE-Meta: U2FsdGVkX19ev4DAD5oHrYrwYHU+t4npZC9xTW9vAcPOqtca9V2f2gUoS3RHaUyBEtcLz5FyNFGBHguMKGKJtIWxvwGBV+qsez1cOm7upHknwCqyk6HnZE3CAv2HMlcb3C3BqH4rpEdThwd8PeR/81W9spfNm0Usqe7F2jayKvKJFOKGoot8O5wj8C2mNrv6DgpZDkRyGuqiVv95UKFtlchXvyF2mBc6MYSsQIUxkJShA0pGbGCfrgM06qQEXjpeJ07JM5mJqB60nafN3j3sbeSYJiR+poOd+ycn22Hio908Qk+ikmZTwHxTT0ebQO48x1eyqAL4YpttXc6CLcXRY8xTuxdBtQb3TSFfpyiJC5jXoDrkJiDAiDg5L/DmQSjd6pVGclpNys0If54TsB1dW/O6+OALNWw2LWdJ/jLXH/j+AT2CK9FUZz0hr0VfLzzzaKTQjUAhvACJ/EJ3KWfdjS2o7qnu6GSWl63h7umOhCl2OhveVYl3v3fwTd+GP1f656llRdY3Oowt7XhPb5BvqZFi5VZOyuyCfPO0pB5cAHAL00b/6BMS0/pAs+jcEK/aS/hbfBaPRVsjyqu/CVyGvNZahjSCvXBFIxZAfQPb8Z2HL1VC4WsXa/dN5q3QoLYb6JzYYBMcOEEklbIN0T0bFR7UWtrBo0/Lb0q+ujTM4xczvRxYkpENDTudfkw5r4vLHjKldkDwfbnr2AXdA72cfnkt3DnJvXwK66ql43OTkCe1D9Pc8UNC1mz4CCcQCnLXkfNiZHDWO4Q5bB2ioDj254JECe/K57K9PWwha6ElLPKMmTGPwDYIv8Ztp//0hd8pz06n5SFUDapfbMe4AaYfPSfxCIPNolivOYaCLqruUTIKa5GVgfqp22VccT2h6J3tR8udICkyYJviqs9vWRx1WsKbC7QtF/TvLErAsL96qTD3sCkUES9XVn8UV9872JG+e3Ug7JZEDplYzPo86Ox
+ IJ6A3v3a
+ wuqw2ABS2WG0UQpqeQudsmIDijYynXrOH5CNprnBBcKgAs2qYKVTobdwjx8WJ96ceygYdc3IBvrxpw/mncIbQmbF3T5V2ZR0ggu4G/6NeqyCq/I91CRGzA3eEmMkFLGdp1dPUH1jSAG0C4hl2XudRTIWZy3k6L6+pjHnA2p+Zq85oB2unHCojQYxEz82rLJ+5zONX8A1GikZRBMQrtHAM4iti8m9Lz7phHHDifEx3ZWcnKRUsxJ4tAhWN65i1Zksf6Ek8z3/zu/8fH0UcvPP4AS8o3iHl0r7T05XOiK1U345LucIIpZKKnI0/+BN3aeVj6Q4prS9j1JNB8847183RvrwXV3AjeQQoaVOwIGqFOxfL60xmeTY7nXfohHvGSlN57OfPZYlMwtF6n5y+S0P1y7iFLcPTzNd4Pyw97jzVaMDahKscPDtRHYbdpjlbkXHaBRauNCSUHUF9JGI05eaulhuK+oxy9unS/B5896ru6py+7dy5dbLDL94QsdYVmxSSs0AayyKb6CztMgw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,36 +127,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Move kasan_enabled() check to header function to avoid function call
+if kasan disabled via boot cmdline.
 
+Move __kasan_vrealloc() to common.c to fix CONFIG_KASAN_HW_TAGS=y
 
-On 1/19/26 1:48 AM, Andrew Morton wrote:
-> On Sat, 17 Jan 2026 18:08:36 +0100 Andrey Konovalov <andreyknvl@gmail.com> wrote:
-> 
->> On Sat, Jan 17, 2026 at 2:16 AM Andrey Konovalov <andreyknvl@gmail.com> wrote:
->>>
->>> On Fri, Jan 16, 2026 at 2:26 PM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
->>>>
->>>> So something like bellow I guess.
->>>
->>> Yeah, looks good.
->>>
->>>> I think this would actually have the opposite effect and make the code harder to follow.
->>>> Introducing an extra wrapper adds another layer of indirection and more boilerplate, which
->>>> makes the control flow less obvious and the code harder to navigate and grep.
->>>>
->>>> And what's the benefit here? I don't clearly see it.
->>>
->>> One functional benefit is when HW_TAGS mode enabled in .config but
->>> disabled via command-line, we avoid a function call into KASAN
->>> runtime.
->>
->> Ah, and I just realized than kasan_vrealloc should go into common.c -
->> we also need it for HW_TAGS.
-> 
-> I think I'll send this cc:stable bugfix upstream as-is.
-> 
+Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+---
+ include/linux/kasan.h | 10 +++++++++-
+ mm/kasan/common.c     | 21 +++++++++++++++++++++
+ mm/kasan/shadow.c     | 24 ------------------------
+ 3 files changed, 30 insertions(+), 25 deletions(-)
 
-Please, include follow-up fix before sending. We have to move kasan_vrealloc()
-to common.c as shadow.c is not compiled for CONFIG_KASAN_HW_TAGS=y.
-So without the fixup, CONFIG_KASAN_HW_TAGS=y will become broken.
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index ff27712dd3c8..338a1921a50a 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -641,9 +641,17 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+ 		__kasan_unpoison_vmap_areas(vms, nr_vms, flags);
+ }
+ 
+-void kasan_vrealloc(const void *start, unsigned long old_size,
++void __kasan_vrealloc(const void *start, unsigned long old_size,
+ 		unsigned long new_size);
+ 
++static __always_inline void kasan_vrealloc(const void *start,
++					unsigned long old_size,
++					unsigned long new_size)
++{
++	if (kasan_enabled())
++		__kasan_vrealloc(start, old_size, new_size);
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
+ 
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index ed489a14dddf..b7d05c2a6d93 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -606,4 +606,25 @@ void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+ 			__kasan_unpoison_vmalloc(addr, size, flags | KASAN_VMALLOC_KEEP_TAG);
+ 	}
+ }
++
++void __kasan_vrealloc(const void *addr, unsigned long old_size,
++		unsigned long new_size)
++{
++	if (new_size < old_size) {
++		kasan_poison_last_granule(addr, new_size);
++
++		new_size = round_up(new_size, KASAN_GRANULE_SIZE);
++		old_size = round_up(old_size, KASAN_GRANULE_SIZE);
++		if (new_size < old_size)
++			__kasan_poison_vmalloc(addr + new_size,
++					old_size - new_size);
++	} else if (new_size > old_size) {
++		old_size = round_down(old_size, KASAN_GRANULE_SIZE);
++		__kasan_unpoison_vmalloc(addr + old_size,
++					new_size - old_size,
++					KASAN_VMALLOC_PROT_NORMAL |
++					KASAN_VMALLOC_VM_ALLOC |
++					KASAN_VMALLOC_KEEP_TAG);
++	}
++}
+ #endif
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index e9b6b2d8e651..32fbdf759ea2 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -651,30 +651,6 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
+ 	kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+ }
+ 
+-void kasan_vrealloc(const void *addr, unsigned long old_size,
+-		unsigned long new_size)
+-{
+-	if (!kasan_enabled())
+-		return;
+-
+-	if (new_size < old_size) {
+-		kasan_poison_last_granule(addr, new_size);
+-
+-		new_size = round_up(new_size, KASAN_GRANULE_SIZE);
+-		old_size = round_up(old_size, KASAN_GRANULE_SIZE);
+-		if (new_size < old_size)
+-			__kasan_poison_vmalloc(addr + new_size,
+-					old_size - new_size);
+-	} else if (new_size > old_size) {
+-		old_size = round_down(old_size, KASAN_GRANULE_SIZE);
+-		__kasan_unpoison_vmalloc(addr + old_size,
+-					new_size - old_size,
+-					KASAN_VMALLOC_PROT_NORMAL |
+-					KASAN_VMALLOC_VM_ALLOC |
+-					KASAN_VMALLOC_KEEP_TAG);
+-	}
+-}
+-
+ #else /* CONFIG_KASAN_VMALLOC */
+ 
+ int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask)
+-- 
+2.52.0
+
 
