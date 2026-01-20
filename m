@@ -4,133 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79653D2ECF9
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 06:44:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB423D2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 07:19:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9A5F6B0370; Tue, 20 Jan 2026 01:44:44 -0500 (EST)
+	id 0A5A26B0373; Tue, 20 Jan 2026 02:19:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D44226B0372; Tue, 20 Jan 2026 01:44:44 -0500 (EST)
+	id 033236B0374; Tue, 20 Jan 2026 02:19:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3DA96B0373; Tue, 20 Jan 2026 01:44:44 -0500 (EST)
+	id EA1AF6B0375; Tue, 20 Jan 2026 02:19:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B5D196B0370
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:44:44 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4A2EB58C3B
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:44:44 +0000 (UTC)
-X-FDA: 84351404088.06.AD078FE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 69D97180004
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:44:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MZrlEhoh;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D98A96B0373
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:19:49 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7EFD513AE88
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 07:19:49 +0000 (UTC)
+X-FDA: 84351492498.17.D36FB58
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A58E64000B
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 07:19:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ms2mAtWJ;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768891482;
+	s=arc-20220608; t=1768893588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o36L/7+teoVK/NrokCGWRYNhVF+VUPJa/AecgI9q4Zw=;
-	b=qSrwgSCFE8IqrjOaiomvXvvFhPqg6nlHRgdmyK0hKTC4n42WFQ+B1SqWSIRvqvozxnl5c0
-	sFehrjvS1CMNzRO4mtjXd/FG468c7m6akHOrbiqzth204PyOMSUu5FgnHjbX257FvMYKzS
-	2F6vQ1V7yo/bHJs5TJ8xDThp/93vPTc=
+	bh=/HlxvZX2gPKCzNfgWKeEIdwyaofi4etP4O/2x5X3mrQ=;
+	b=HvFEC/pVYV+SoT4F16CZU/hUD49FnqN5fKHsI6VmeWJNuwK2nhsE/R10iV4TOSAaMfgbw1
+	qzQnNnJedcVOCqekvWhMXavDaaJA1LTdqrh9t9C86dgBByqNsjNozu1q/2Ny2gcbbkG9Qm
+	HDhsqQbw2bj1J09KUoZdTtlyPxZLLLM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MZrlEhoh;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768891482; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ms2mAtWJ;
+	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768893588; a=rsa-sha256;
 	cv=none;
-	b=p21YFeP0/crkM/aoE94M8CV8x7i/j9nvxHNwepENVFZA6Upi27sePLIuSuUZr8s/ArUC8k
-	jbT+ZOZjqzeXSOltvO3nrCEUbRTeSFk8zo3bWF5E4ezKeB+ZMBmmSH3jDbQnsoL/UDk/3C
-	LEViCBYjEqQC1PJtbbJbh3arx7BfGmU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A748416C3;
-	Tue, 20 Jan 2026 06:44:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA230C19425;
-	Tue, 20 Jan 2026 06:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768891481;
-	bh=fVZodrtrlB4eQWOfQQDpyqC4aE5YuNhMLG4v6dA486c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MZrlEhohCL9rwVNrkEbEnAMLK4YjTjhZCaWebD3/VYEiAD3GBN+4ahxvemx5oAMJq
-	 Ke7Qpx+VhrnwjzSXzNhthxzW6DfIZo5hPk1NtLBqc+WMQCW4g/bcDL2zefvpRtwqJf
-	 TR9VQtaagkwHm+D7qhTEzDApB/i+ceen3GSiWw5s4iLHrbtxKgXh4XRpSSbkKK0KFr
-	 iSJJuuHZjY75pVGREsqiX2NjBxOuVPOTm9MuZHkAmLVNokM5ScpupSLMLLuG43jTCp
-	 qBRuRL7PvknMNc7755FIiuXMKgLk9Ih6lQtovnTMGnKsJQycdfPIkmgYjXgf8THEk4
-	 hYasGi/d1yWug==
-Message-ID: <ec5971d7-faaa-4716-a697-1c7c90d624d7@kernel.org>
-Date: Tue, 20 Jan 2026 07:44:37 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [akpm-mm:mm-unstable 319/345] mm/balloon.c:19:33: warning:
- 'balloon_page_device' defined but not used
-To: kernel test robot <lkp@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-References: <202601201338.4muFmFHV-lkp@intel.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <202601201338.4muFmFHV-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xuhbzma7uq65oy1d8bkdckreeiyj1qq9
+	b=wenRiltbpp4HDxURYHgFFEkttGpLjzM+F7lXSmbQo/otDBZGQokDVk9s2v9EH77pS1egxf
+	FvVBrFKg0dwlZL0Um/RZFxjRf9hThOMdQ7wXm5goV7ONWD2DgH+p1EA2pca8/CJI7eSt1f
+	Dlxehiol1cz4Tt+i5byXmDYaHdWXHnE=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768893585;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/HlxvZX2gPKCzNfgWKeEIdwyaofi4etP4O/2x5X3mrQ=;
+	b=Ms2mAtWJVCJ3bCD2diLe3CLeoi8jlKaH2qIr4FlGtR6V3qhfMJT0Ib9OAeVP03hAHK9ufe
+	MNzGg4ABpc3blKV10kpt/lBWMkPSHtv7OVMYSw/apNXrvrVm0wXIxChAGS/BmkfqH1tDNU
+	jQYdymDeTksa5BeyAQvFkDsjGyKiCwM=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH v3 28/30 fix 1/2] mm: memcontrol: fix
+ lruvec_stats->state_local reparenting
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <5a18658e-2076-4cbf-bc53-5b6e99c1035f@linux.dev>
+Date: Tue, 20 Jan 2026 15:19:00 +0800
+Cc: hannes@cmpxchg.org,
+ hughd@google.com,
+ mhocko@suse.com,
+ roman.gushchin@linux.dev,
+ david@kernel.org,
+ lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com,
+ harry.yoo@oracle.com,
+ yosry.ahmed@linux.dev,
+ imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com,
+ yuanchu@google.com,
+ weixugc@google.com,
+ chenridong@huaweicloud.com,
+ mkoutny@suse.com,
+ akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com,
+ apais@linux.microsoft.com,
+ lance.yang@linux.dev,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A13923AA-8200-4863-8080-EC4B254BA3AA@linux.dev>
+References: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
+ <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
+ <ifcth3hxyrwmmeo3nejettdtkw2ndxdjbylszmhq3vohuhsncl@k23pew6gywko>
+ <5a18658e-2076-4cbf-bc53-5b6e99c1035f@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 69D97180004
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768891482-37403
-X-HE-Meta: U2FsdGVkX1/nIrG2coahQHVzwbAngJDYkK4Tb5oE5T7QHwDAHCCODBHTcMrHXmzO44nY7cFBKBmEIaEnZjWTEtCQPF3T5QbgsBgkmoEE12/44RrtjhnHvqg0/s9ODRVvlIwAoMBifpdH8Z3OzpTwp35W8IdGN8BAytvPzvx1OWVV2h2YZOYo0lZ4zL0LnGfEeeEMLXTQQlvwvIXTk2tFW6Ah8jzdJoPLJa4vxt5Jm59ggqpULfeAnY4RYdzbvtvsQjQmBxBibQEXyd41JoXYCcWHPRRMrcswJ04WqXTLGwO01uaj4y2lyWiHfy3oHLxn6i0mnihXW2vAV1mvAm6ePGWgOlBFHBgoByq2Q29aLVHxlzNgB/PyMZTLOnQ87aIQMemRhd3L0m98zlcumRQTfwFlTRgKS9h18xWbrC7rmqtODXgv14FSOF3PqJBmstijqshLLWFgJdP83ztJIe2hDpeQYNLjm+KoQiq4HI0fLsa+JiCAZ0tt1E8q9FMuuZIi3JtOyPgHUctG3RNjRVV/dMOCfp9HHwL5BaFgo8+5XO8nB87igQ3gG7ZngBB4PFBjknagCuiTAyxbRpKjsxCpROBc8vsGQ+ZxxU29/uW89gOLBG/IYDCKiDQ1ewwnn2x/Xn9UXNFv4ObuXe6u7Cq+CcUC1cksz55inBAxkpzyovXCgEWhFpMhevQTVNMv7I7CYBTvLBlgbba8gvMhhA9NpOKXdpoWRONCyQXTzup3Pgv7I98MYsK6F9mRQNirvvQjWufPBgkv+DpIFULe28Bsb4M3VB3CywwJoQsiA6cCyNcX3nuvomIddgF597lolBGaQ742PVlrgWO/5bJNJfNCWA8mcgi56f562uJJsAEBo1L6LwK9IJdlT04JtshddI7Mbspizt8xFhd0CvVLoH/mRwe6ty9kZUAHmKyt77sKLYpqsk1DciVRr6He9t5MV6S9aUF7yeaKEISbdpPti2p
- wW7o1vZX
- zEkL1RFIVn8cWIz8x+4DdSXNSU6aFY1nZ8xsdr2rhUR6kA8XPRQKM5BRZNwNtAeJDJbl2IfklnUrRyk4/oNg0kahcfxr+QJyKIvh8sUnn9Ebe88HdaxjL5gnkhUFKN66ctxNm4qNornIcjzo8F9EOx6d4ipBZWek6nIxN1n6axcqJltwdJILrCR3dm9OtjNsJt7ZKIPLLrkeF0mZWDm6xSaeOLsGQ676KjmHLz9oil1VFZ/+2ZoS0aJlAXC6gloEZcOugV0MFTur+lB1ht7fA+TWDNkq2KjvtWRQ8WV6Sjz7rdvIYWdFzy1XIZLT1s45qX5EdkiADYJ7Yim6oTfSB5bxuRpaPXJus9UPHNgsq2M4JkjpN2EKpZKZb8FZIkFbHF40NWyIgGjwjol7on8AEuFVvaj9rNVoN37de/O2ZAXzaYAU=
+X-Stat-Signature: ijsrbbzsdxm4pt61qhfd9brehyydnumf
+X-Rspamd-Queue-Id: A58E64000B
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768893587-270907
+X-HE-Meta: U2FsdGVkX18NOhnRegZoqFpnN1+1HpqNbtX+f5RqVlD9BhXfUcaAWm3k6Ys3mii++uMkRvYqnQRirmIaRwl9L8dN17vOvIS0smZiQXrPm2g0k/DrzhASGMAZme8L2k8U4yVJz4sPamlhfTLvXH6jqaonDt+JDHwJCVHnxLEa6xeIMKX01J+dZrue/xFp5QWKJmMAVF5BUWK8boovmv4PDTKYppflw0O7eghoVqao86Qi/lc4vR7MSHzb+ZuMWvcszkK+dkFQffcu+G5nWBRoJTfZ9A3n05UWo5xMvza4XF9nPuqZb5ZiNRv5li9ATSfdc8qIlFjI0x2ZrME7APrdEhydg1pXe3dtd9BE1EKzB+T/iDiWeFm2z82OgXpB/CdMz+/78BesXjCziC1k9tQd5gAzKqnWOWqHMxncfz9TNNWrYF8w5AXYI2tANJ+foXEFtKKDj0OWELsesBVc8OypyLOGKhBvbyZvC/XIZdf/+mN1aIw/8IV4Fa37/jl1XPRcenY79L7XH8yJlTGMVtmwQKGuGsbUz4F4T4L5066SPVBSj0eNgUesoSkCr4zXLPc5cJm3cw2D2gCfOnadR+dBcsqzYFaQkgygzyHg8wF9TYxa4gHgTzshwSKxG5qzWWu4BGVt7coMvwnd2/FajkmnfzR75PD3AzpkWXBUkgjFq7yf5X+r7f6vUY071yDu7VfrY5DVA5k/0fvIE8PSYon8MTkFXyq5n+GrnIZIxfRks+4EncsVu3hvCVrsHTRk++RZZX0ILcpC1JPD5MU+qUxaAiRsMxjOpgcFZMq5/Q5XLXZTB1PhZzBlxIidE+G0gUmJyALww3LVJ/du5IRrcXNUyoASD5Bu2PlaKkCcOw+I/u8ZC3Z5sC6Fs4bcNksJ0WkMmJn0uQflYuB+4kBSdJAlsd9jQuAib2eD3NzSlJEXJlwrTtJg7ac/Y6KuHDvMpV0jNHQUKhrDFuPn3sf7pf5
+ CpFF7GnL
+ ykSp6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,46 +117,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/20/26 06:31, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> head:   bd361423f30912263920dd83326dcf142c16ce31
-> commit: f100e6eee69ff5746c327bc88a7fa6f43dbdf92c [319/345] mm: rename balloon_compaction.(c|h) to balloon.(c|h)
-> config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20260120/202601201338.4muFmFHV-lkp@intel.com/config)
-> compiler: sh4-linux-gcc (GCC) 15.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601201338.4muFmFHV-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202601201338.4muFmFHV-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
->>> mm/balloon.c:19:33: warning: 'balloon_page_device' defined but not used [-Wunused-function]
->        19 | static struct balloon_dev_info *balloon_page_device(struct page *page)
->           |                                 ^~~~~~~~~~~~~~~~~~~
-> 
-> 
-> vim +/balloon_page_device +19 mm/balloon.c
-> 
-> 50fe4326e833f0 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  18)
-> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20 @19) static struct balloon_dev_info *balloon_page_device(struct page *page)
-> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  20) {
-> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  21) 	return (struct balloon_dev_info *)page_private(page);
-> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  22) }
-> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  23)
-> 
-> :::::: The code at line 19 was first introduced by commit
-> :::::: ecc7c3359cb47658444833b09785c2ceb8459a78 mm/balloon_compaction: move internal helpers to balloon_compaction.c
-> 
-> :::::: TO: David Hildenbrand (Red Hat) <david@kernel.org>
-> :::::: CC: Andrew Morton <akpm@linux-foundation.org>
-> 
 
-https://lkml.kernel.org/r/27f0adf1-54c1-4d99-8b7f-fd45574e7f41@kernel.org
 
--- 
-Cheers
+> On Jan 19, 2026, at 11:36, Qi Zheng <qi.zheng@linux.dev> wrote:
+>=20
+>=20
+>=20
+> On 1/18/26 11:22 AM, Shakeel Butt wrote:
+>> On Thu, Jan 15, 2026 at 06:41:38PM +0800, Qi Zheng wrote:
+>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>=20
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> ---
+>>>  include/linux/memcontrol.h |  2 --
+>>>  mm/memcontrol-v1.c         |  8 --------
+>>>  mm/memcontrol-v1.h         |  5 ++++-
+>>>  mm/memcontrol.c            | 19 ++++++++-----------
+>>>  4 files changed, 12 insertions(+), 22 deletions(-)
+>>>=20
+>>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>>> index 1fe554eec1e25..e0b84b109b7ac 100644
+>>> --- a/include/linux/memcontrol.h
+>>> +++ b/include/linux/memcontrol.h
+>>> @@ -944,8 +944,6 @@ bool memcg_vm_event_item_valid(enum =
+vm_event_item idx);
+>>>  unsigned long lruvec_page_state(struct lruvec *lruvec, enum =
+node_stat_item idx);
+>>>  unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+>>>         enum node_stat_item idx);
+>>> -void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+>>> -        struct mem_cgroup *parent, int idx);
+>>>    void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
+>>>  void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
+>>> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+>>> index 03b924920d6a5..daf9bad8c45ea 100644
+>>> --- a/mm/memcontrol-v1.c
+>>> +++ b/mm/memcontrol-v1.c
+>>> @@ -1909,14 +1909,6 @@ void reparent_memcg1_state_local(struct =
+mem_cgroup *memcg, struct mem_cgroup *pa
+>>>   reparent_memcg_state_local(memcg, parent, memcg1_stats[i]);
+>>>  }
+>>>  -void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, =
+struct mem_cgroup *parent)
+>>> -{
+>>> - int i;
+>>> -
+>>> - for (i =3D 0; i < ARRAY_SIZE(memcg1_stats); i++)
+>>> - reparent_memcg_lruvec_state_local(memcg, parent, memcg1_stats[i]);
+>>> -}
+>>> -
+>>>  void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf =
+*s)
+>>>  {
+>>>   unsigned long memory, memsw;
+>>> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+>>> index 45528195d3578..5b1188f3d4173 100644
+>>> --- a/mm/memcontrol-v1.h
+>>> +++ b/mm/memcontrol-v1.h
+>>> @@ -75,7 +75,6 @@ void memcg1_uncharge_batch(struct mem_cgroup =
+*memcg, unsigned long pgpgout,
+>>>    void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf =
+*s);
+>>>  void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct =
+mem_cgroup *parent);
+>>> -void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, =
+struct mem_cgroup *parent);
+>>>    void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages);
+>>>  static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg)
+>>> @@ -116,6 +115,10 @@ static inline void memcg1_uncharge_batch(struct =
+mem_cgroup *memcg,
+>>>    static inline void memcg1_stat_format(struct mem_cgroup *memcg, =
+struct seq_buf *s) {}
+>>>  +static inline void reparent_memcg1_state_local(struct mem_cgroup =
+*memcg, struct mem_cgroup *parent)
+>>> +{
+>>> +}
+>>> +
+>>>  static inline void memcg1_account_kmem(struct mem_cgroup *memcg, =
+int nr_pages) {}
+>>>  static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg) { =
+return false; }
+>>>  static inline bool memcg1_charge_skmem(struct mem_cgroup *memcg, =
+unsigned int nr_pages,
+>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>>> index 7333a37830051..b7b35143d4d2d 100644
+>>> --- a/mm/memcontrol.c
+>>> +++ b/mm/memcontrol.c
+>>> @@ -225,13 +225,13 @@ static inline struct obj_cgroup =
+*__memcg_reparent_objcgs(struct mem_cgroup *memc
+>>>   return objcg;
+>>>  }
+>>>  -#ifdef CONFIG_MEMCG_V1
+>>> +static void reparent_memcg_lruvec_state_local(struct mem_cgroup =
+*memcg,
+>>> +       struct mem_cgroup *parent, int idx);
+>>>  static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool =
+force);
+>>>    static inline void reparent_state_local(struct mem_cgroup *memcg, =
+struct mem_cgroup *parent)
+>>>  {
+>> No reparenting local stats for v2.
+>=20
+> It seems that lruvec_stats->state_local (non-hierarchical) needs to be
+> relocated in both v1 and v2.
 
-David
+Here we might need to elaborate a bit. Specifically, in the function
+`count_shadow_nodes`, the use of `lruvec_page_state_local` to obtain
+LRU and SLAB pages seems to also require these logics to work correctly.
+For SLAB, it appears that the statistics here have already been
+problematic for a while since SLAB pages have been reparented, right?
+
+>=20
+>>> - if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+>>> - return;
+>>> + int i;
+>>>     synchronize_rcu();
+>>>  @@ -239,13 +239,10 @@ static inline void =
+reparent_state_local(struct mem_cgroup *memcg, struct mem_cgr
+>>>     /* The following counts are all non-hierarchical and need to be =
+reparented. */
+>>>   reparent_memcg1_state_local(memcg, parent);
+>>> - reparent_memcg1_lruvec_state_local(memcg, parent);
+>>> -}
+>>> -#else
+>>> -static inline void reparent_state_local(struct mem_cgroup *memcg, =
+struct mem_cgroup *parent)
+>>> -{
+>>> +
+>>> + for (i =3D 0; i < NR_LRU_LISTS; i++)
+>>> + reparent_memcg_lruvec_state_local(memcg, parent, i);
+>>>  }
+>>> -#endif
+>>>    static inline void reparent_locks(struct mem_cgroup *memcg, =
+struct mem_cgroup *parent)
+>>>  {
+>>> @@ -510,8 +507,8 @@ unsigned long lruvec_page_state_local(struct =
+lruvec *lruvec,
+>>>   return x;
+>>>  }
+>>>  -void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+>>> -        struct mem_cgroup *parent, int idx)
+>>> +static void reparent_memcg_lruvec_state_local(struct mem_cgroup =
+*memcg,
+>>> +       struct mem_cgroup *parent, int idx)
+>>>  {
+>>>   int i =3D memcg_stats_index(idx);
+>>>   int nid;
+>>> --=20
+>>> 2.20.1
+
+
 
