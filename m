@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB33D2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 11:38:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C619FD2ED0F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 11:51:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 785BB6B03C9; Tue, 20 Jan 2026 06:38:24 -0500 (EST)
+	id 0E4596B03CB; Tue, 20 Jan 2026 06:51:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75DD26B03CA; Tue, 20 Jan 2026 06:38:24 -0500 (EST)
+	id 0BC076B03CC; Tue, 20 Jan 2026 06:51:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6869F6B03CB; Tue, 20 Jan 2026 06:38:24 -0500 (EST)
+	id F2A606B03CD; Tue, 20 Jan 2026 06:51:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 56D716B03C9
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:38:24 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D04061404B0
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:38:23 +0000 (UTC)
-X-FDA: 84352144086.02.8E80B3E
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B0A0120006
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:38:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xoQOYj1f;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E001D6B03CB
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:51:52 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 81DC35904C
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:51:52 +0000 (UTC)
+X-FDA: 84352178064.23.3FD297A
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 89B81A0006
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:51:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FoBP3E4u;
+	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768909102;
+	s=arc-20220608; t=1768909911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HLjY/4B4aU0tiyH4zKLoN88x79CrKM/2QcD82GdY0Aw=;
-	b=X7a+Tq5KVYAdpkCh15bX8a6ii0OcwpU1nEtzfYEllmTwJKy32yn9MrkKRbvO1DOhFqIJhc
-	B3kAyYA552xwYxkbppgjXt4tHuFNNBACdHLA0mp3vKK2GzRQfRPVhvoUzrgRm4sYz4qRi5
-	0PpB1VK8lWhmUwf0ghTjPX5PBojwwnE=
+	bh=x9xxVtMuSeOSiPFHs2DPvF1bZM+k4doJowUTIgEXb84=;
+	b=aKZV8vQSpQPh4S3i1G+QYoOSFYOZyuKM7adztk20rVtLJEcENjVNgadj8SvYmiZS9hDCHW
+	Jl/lk5djda0J20QrUzEKR778QzeUiMbtzIikFmZ3Bdqsoe0m2ozg7FbGITgzGCTp1BH5oc
+	I3CaifbhRWhdx8DYJuujaG3zSKLI6kQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xoQOYj1f;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FoBP3E4u;
+	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768909102; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768909911; a=rsa-sha256;
 	cv=none;
-	b=tVe4Nk3BLBzkUcIZWRhVLf5l8b8vDyBLE/kQdYYyQJYtqxIZt7FFVKffRdZbVo+lsOKPsa
-	iYR402etB0gNoiSlgwJCkjFpNp9yxeW0/F5/wJs05bJMgWXpLI0FSzHJU+RIRpJGiMKEnF
-	DL7YI0fG49CZ6NV/YC0jESILWKcS9mU=
-Message-ID: <bd464b0f-e396-42dc-9850-4b21e1c525ce@linux.dev>
+	b=TM2r91JDnxVJ55zLWWTjJgo3RI3xd3/l4gOSjbNjxklqUaLi2BBg8Fb0Oj+GwQK0cgcwkI
+	8aW+5I3EcCLVdplp8T35o+efT00vV3ydxws3N5DymJLPx6jaj1RYDLsnnGF2rnCs7vpYfo
+	MZygbwv9MFDHhiVBWbmotVVXb/JtIv4=
+Message-ID: <88d90d30-8f54-43f5-98d6-1769aa05a10a@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768909099;
+	t=1768909908;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HLjY/4B4aU0tiyH4zKLoN88x79CrKM/2QcD82GdY0Aw=;
-	b=xoQOYj1fvHhW3ghjYtoNiZgeOBuw8F5d3DA2srvPBuKdBnAIsaL9Hx+kz35x7AvUnVMJ0G
-	K4NPHfEpaq0vmZLwMYRxp7jWRLCfGFQbrcCg6Gz3kyKdrTZemgwqm4CruTlCwLN5SNUCGC
-	j0srSKc66/KBL0Qvedu67IEcm55VDZE=
-Date: Tue, 20 Jan 2026 19:38:05 +0800
+	bh=x9xxVtMuSeOSiPFHs2DPvF1bZM+k4doJowUTIgEXb84=;
+	b=FoBP3E4uU4cp25iVs0YnuLXf8CmTrLWVI1GO/15ajs+mzhMyEradq4fhK4j0VFhngoJ5kb
+	qw0gnnUyDkR14vYXjGlGgA9V4nPaMOxs8iZwchUgWN6gFNOpS0ruLM+dl7Uex3jPp9EbCf
+	oGjXSaTppQvh1No36QGTU8/5TF9RLj8=
+Date: Tue, 20 Jan 2026 19:51:29 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 1/1] mm/khugepaged: move tlb_remove_table_sync_one out
-To: hughd@google.com, baolin.wang@linux.alibaba.com
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
- david@kernel.org, dev.jain@arm.com, ioworker0@gmail.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, npache@redhat.com,
- rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com, vbabka@suse.cz,
- ziy@nvidia.com, qi.zheng@linux.dev
-References: <62e637cf-91e6-454d-a943-e5946bdf7784@linux.dev>
- <20260118083911.21523-1-lance.yang@linux.dev>
-Content-Language: en-US
+Subject: Re: [PATCH v3 24/30] mm: memcontrol: prepare for reparenting LRU
+ pages for lruvec lock
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+ <0252f9acc29d4b1e9b8252dc003aff065c8ac1f6.1768389889.git.zhengqi.arch@bytedance.com>
+ <aW86_5SOdtQQnVr7@hyeyoo>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260118083911.21523-1-lance.yang@linux.dev>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aW86_5SOdtQQnVr7@hyeyoo>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: fbnixhsj593o5167tt3waisxrjp3ugwc
-X-Rspamd-Queue-Id: B0A0120006
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768909101-93580
-X-HE-Meta: U2FsdGVkX18E4EfOkpKURtYoctS47FLCKcFwmfu+Kh4zSIQci5bYvJ19Rsy5miDdLJGBUkunq+D2H0cxEz06r4wL9nnxxndqyiAX0iO7ORZ0z3d6kfx5cZyZPr1ONr50YVSIYFGmtTcZ1CVi1/hC0g1GfbZFg7TrBeXIqsnHfhwUJ4ia7EFv55Ftuy1Fepj1Rf1jpSUj8/qQsxjjlitCn4isgPO9UI17xu9jT4/AWWSCZ7Obc+e3b+jbUQ1A1Jhq0m8dPbi3fgew3frLL/GVKtIJEuTA09i8UaZ6ic4M6Xzb2gHrGDhx8IeFA/19Q0YJWeQ/nEpRRGPcLtFB5YPAG5uG+ZWy2cNjX83v7qG6U27057aSPRj4YYJstbCjH5KhMOvEyCqmzS1LoksUhYjsLxoxK5L0YbF0Kzr52fjeFMjBlagpJ/r/YPW7l+bkWKlIGG0tkm3PzKDnuDwKlnZI9oPtH0QOyZHEb3/NNKHZCkvAirMIJ6arS6SeLs5beEhr9pTLLl5OOWJh9zruEfGjzEwRBLdbSLW1/gcZvkJUCvMzCJdwUL4GmDsQd53O2xDG+apSY+6o0JC/dNgkxw+QY1zJqY1f9JLFr7iczSbKLUh95g70KpG2VhJSrX+3n1/pVV19v1nBodmLGnaN23hdddUVRpTiYOIrvDb+EVSJfG9Su0K0S4tGhV8TfUH0DBjcMDXog5kUy3JPYRiM3DSHhkl01/rhMOQUUTgEIe4CTVpOF2cerZ94pXI5U5PcsPtdRXbCz21817dN7eXnOSc5YmJYgz/v1qYT32vHClHl17XSSrh4wgs/RXbLNsAgJkB9+p29FlWx03LZ1X7oFCO0i6vwYS9JjP3lZyY/Eb9l9ZSHDLn8/n4s6LoT+dZcQalq4ZcNSAWWydjVcraxSEEyZIP+oZGFSHopN/OCRGt3PFW7PDUHKBO2wkbIXtD+DQTAc41+Zo8t9IUCRN3vjmD
- DclqU31H
- 7ubJo6Bw9ulRfIe1xD/6aRjSDmGRtY/fTqZ2wldy49pgNqAEqU9rrGV7L1isEpc+SZ+ifkfBOCMProcs5MgXCQhV6w3g/zGaZuXvHZN56jMMAdI4yGLBOxjhhbTg4OsA7Yxa04gD2hfIVibwRdl3NTrtu8wcniNBN0aexj96oHqGc5btgk9cy0BQH3n19VkcDjdNSn8iBB3yE6jxruwY14EcYw7Jwg7PCkzN88Tshyqug6UzaTtU9xIrQVWFVlDB/mT+WzUorHcv8sW2sYrnugX4Uig==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 89B81A0006
+X-Stat-Signature: tffyeh6o4b1ihp37ukd7osrb7fy71pwn
+X-HE-Tag: 1768909910-553523
+X-HE-Meta: U2FsdGVkX19oUN9LXneq10YvOCV01uUwOHQw+gUUEHs44DY/XIAcAxOZ1bgzVwxtAvfBmcWzvuLvMePUZYe1iFUFywjM3/DRBKWioylSalKXRa4Zj+eNsEVIuLnHSemttQEZ6sBbccZbQi8AirrNWUKU/BHebN5ECam+9MvnxFAu/H5IOKg/HiafEyES/rIgxZG31iz7wV25IWNDwkTgAKWb/7pQTPBASiow79/T84CnsXr7WxfYM01FYrixkHBprEsd3esDSfoXmTDJif2pvsmvy5KN+UjC4hEMRFPImQBmi0Vzyj1jcb5ne9sRy93FR0wLSBIYRZUFwZwGWD/F8WVPFrtVwErh1suXOHptMnq8aB9G+LwdvlBGDvIy7H/fxYg1iVTXrvKdEdozG26WoFXlp0VnL8FlkQHM8fzhmEv0yxM8g9ONOdxK0HwLJbT4Ys6zUjAZovdj6OiuA8mOF5BcrdRmI2ZZ7EScMr4V1XxA4U7sQ9Ls397M8ydL7GwT+xhxr7CoSPm0mRtcsenYn4lZgeNrmIY+c8ua6OlelRwzD1r8YFgeUvrJw5gWFWt7ptCpzWwujFXVyIZ6dvi30vOWvYnMxT35Uti2F/7i/SGWSu4XYORdLd9cH+h5TUrBp5JCtnFZ9tloNrsmqADPT15i41cxHnR3grz0VxQyySPH9W4S6jto+5Rn3R9FJOqJI4HvOuWqQXuWYSwY2l8WyrOa+8zKHp6rxny+U8aaRybBT0Do4JA3G5eWinwtfBFWKoy30LUvbUG6UO76zCdoGbuk5ZceFHta8jSvnxMRwXV2NXM2mdwfnK7QIHFUn6ewsszQJP4qzX0cwIT43rar16GJECEqJWs1QywCopOowpImy0DlxxFZGRiEqm8EjbTx2FyHWRoEVVpa0qyYI39JKCYRVSgq6YRYdoaTptfxSILorLZWRUWe3NuZS9wnF+mrorIOucInCdzHCFQMstk
+ w9bmI2L0
+ 2qZ7tDjciZxOkP/NPjEZJRJSVW3uvfI0KNZ9Q7sqxx2YhQsqLrEtAurkYYqHYM52eiHFIXHzqHFF5Gj+087lHHsbA/m+A5AXubdiXsLchui/OmleMFhsL1daMOCMcCoKq7cKJ0X+pMI2A0v6AkwOzZBBtIEeCGKCM2QS1l7bwYt+vbCRCSUv83SgbVdhBG0Rhq7X7o05ALT0/L9ViDMPdnE2MFNYiT/UXDJ7lCGfTkdNEXV/2sCpbkJQ3GW3a+1JNLRjSBibnuogB2VY3Wd5tMPkUHyjh+/KPdsiuvB5f0OZ/fbnKaSCsWE2fJr4vvge6AhVWkWph18CQiLY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,139 +102,120 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/1/18 16:39, Lance Yang wrote:
-> Hi Hugh,
-> 
-> Could you check if my understanding is correct?
-> 
-> On PAE, pmdp_get_lockless() reads pmd_low first, then pmd_high. There's a
-> risk of reading mismatched values if another CPU modifies the PMD between
-> the two reads.
-> 
-> Commit 146b42e07494[1] introduced local_irq_save() to protect the
-> split-read, blocking TLB flush IPIs during the operation.
-> 
-> After modifying the PMD, pmdp_get_lockless_sync() sends an IPI to ensure
-> all ongoing split-reads complete before proceeding with pte_free_defer().
-> 
-> As commit 146b42e07494[1] says:
-> 
-> ```
-> Complement this pmdp_get_lockless_start() and pmdp_get_lockless_end(),
-> used only locally in __pte_offset_map(), with a pmdp_get_lockless_sync()
-> synonym for tlb_remove_table_sync_one(): to send the necessary interrupt
-> at the right moment on those configs which do not already send it.
-> ```
-> 
-> And commit 1043173eb5eb[2] says:
-> 
-> ```
-> Follow the pattern in retract_page_tables(); and using pte_free_defer()
-> removes most of the need for tlb_remove_table_sync_one() here; but call
-> pmdp_get_lockless_sync() to use it in the PAE case.
-> ```
-> 
-> Regarding moving pmdp_get_lockless_sync() out from under PTL: Since
-> lockless readers (e.g., GUP-fast, __pte_offset_map()) are protected by
-> local_irq_save() rather than PTL, pmdp_get_lockless_sync() can be called
-> outside PTL as long as it's before pte_free_defer().
-
-
-Looking at commit 146b42e07494[1] again, it says pmdp_get_lockless_sync()
-should be called "at the right moment". I now realize moving it outside
-PTL might not be safe.
-
-If we release PTL before calling pmdp_get_lockless_sync(), another CPU
-could set a new PMD while a lockless reader is still in local_irq_save()
-reading the old PMD (split-read). I'm not sure if this race is actually
-possible, but if it is, it would hit the ABA problem where the reader
-gets mismatched pmd_low (old) and pmd_high (new) - the "faint risk"
-mentioned in commit 146b42e07494[1].
-
-On Native x86 PAE, pmdp_collapse_flush() sends IPI and waits, preventing
-this race. But on PV, the hypercall returns immediately, so we need
-pmdp_get_lockless_sync() to ensure all IRQ-off readers complete before
-releasing PTL.
-
-I should keep it under PTL to be safe.
-
-Sorry for the churn :(
-
-[1] 
-https://github.com/torvalds/linux/commit/146b42e07494e45f7c7bcf2cbf7afd1424afd78e
-
-
-Thanks,
-Lance
-
-> 
-> In contrast, for non-PAE, PMD reads are atomic, so pmdp_get_lockless_sync()
-> is a no-op.
-> 
-> [1] https://github.com/torvalds/linux/commit/146b42e07494e45f7c7bcf2cbf7afd1424afd78e
-> [2] https://github.com/torvalds/linux/commit/1043173eb5eb351a1dba11cca12705075fe74a9e
-> 
-> 
-> Thanks,
-> Lance
-> 
-> On Fri, 16 Jan 2026 09:25:54 +0800, Lance Yang wrote:
+On 1/20/26 4:21 PM, Harry Yoo wrote:
+> On Wed, Jan 14, 2026 at 07:32:51PM +0800, Qi Zheng wrote:
+>> From: Muchun Song <songmuchun@bytedance.com>
 >>
+>> The following diagram illustrates how to ensure the safety of the folio
+>> lruvec lock when LRU folios undergo reparenting.
 >>
->> On 2026/1/16 09:03, Baolin Wang wrote:
->>>
->>>
->>> On 1/15/26 8:28 PM, Lance Yang wrote:
->>>>
->>>>
->>>> On 2026/1/15 18:00, Baolin Wang wrote:
->>>>> Hi Lance,
->>>>>
->>>>> On 1/15/26 3:16 PM, Lance Yang wrote:
->>>>>> From: Lance Yang <lance.yang@linux.dev>
->>>>>>
->>>>>> tlb_remove_table_sync_one() sends IPIs to all CPUs and waits for them,
->>>>>> which we really don't want to do while holding PTL.
->>>>>
->>>>> Could you add more comments to explain why this is safe for the PAE
->>>>> case?
->>>>
->>>> Yep, IIUC, it is safe because we've already done pmdp_collapse_flush()
->>>> which ensures the PMD change is visible.
->>>>
->>>> pmdp_get_lockless_sync() (which calls tlb_remove_table_sync_one() on PAE)
->>>> is just to ensure any ongoing lockless pmd readers (e.g., GUP-fast)
->>>> complete
->>>> before we proceed. It sends IPIs to all CPUs and waits for responses -
->>>> a CPU
->>>> can only respond when it's not between local_irq_save() and
->>>> local_irq_restore().
->>>>
->>>> Moving it out from under PTL doesn't change the synchronization
->>>> semantics,
->>>> since lockless readers don't depend on PTL anyway.
->>>
->>> Cc Hugh who introduced the pmdp_get_lockless_sync(), to double check.
->>>
->>> Sounds reasonable to me, please add these comments into the commit
->>> message. Thanks.
+>> In the folio_lruvec_lock(folio) function:
+>> ```
+>>      rcu_read_lock();
+>> retry:
+>>      lruvec = folio_lruvec(folio);
+>>      /* There is a possibility of folio reparenting at this point. */
+>>      spin_lock(&lruvec->lru_lock);
+>>      if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
+>>          /*
+>>           * The wrong lruvec lock was acquired, and a retry is required.
+>>           * This is because the folio resides on the parent memcg lruvec
+>>           * list.
+>>           */
+>>          spin_unlock(&lruvec->lru_lock);
+>>          goto retry;
+>>      }
 >>
->> Yes, will do. Thanks!
+>>      /* Reaching here indicates that folio_memcg() is stable. */
+>> ```
 >>
->>>
->>>>> For the non-PAE case, you added a new tlb_remove_table_sync_one(),
->>>>> why we need this (to solve what problem)? Please also add more
->>>>> comments to explain.
->>>>
->>>> Oops, you're right, the original macro was a no-op for non-PAE.
->>>>
->>>> I should just move the macro call out from under PTL, rather than
->>>> replacing it with direct tlb_remove_table_sync_one() calls.
->>>
->>> OK.
+>> In the memcg_reparent_objcgs(memcg) function:
+>> ```
+>>      spin_lock(&lruvec->lru_lock);
+>>      spin_lock(&lruvec_parent->lru_lock);
+>>      /* Transfer folios from the lruvec list to the parent's. */
+>>      spin_unlock(&lruvec_parent->lru_lock);
+>>      spin_unlock(&lruvec->lru_lock);
+>> ```
 >>
->> Cheers,
->> Lance
+>> After acquiring the lruvec lock, it is necessary to verify whether
+>> the folio has been reparented. If reparenting has occurred, the new
+>> lruvec lock must be reacquired. During the LRU folio reparenting
+>> process, the lruvec lock will also be acquired (this will be
+>> implemented in a subsequent patch). Therefore, folio_memcg() remains
+>> unchanged while the lruvec lock is held.
 >>
+>> Given that lruvec_memcg(lruvec) is always equal to folio_memcg(folio)
+>> after the lruvec lock is acquired, the lruvec_memcg_debug() check is
+>> redundant. Hence, it is removed.
+>>
+>> This patch serves as a preparation for the reparenting of LRU folios.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>> ---
+>>   include/linux/memcontrol.h | 45 +++++++++++++++++++----------
+>>   include/linux/swap.h       |  1 +
+>>   mm/compaction.c            | 29 +++++++++++++++----
+>>   mm/memcontrol.c            | 59 +++++++++++++++++++++-----------------
+>>   mm/swap.c                  |  4 +++
+>>   5 files changed, 91 insertions(+), 47 deletions(-)
+>>
+>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>> index 4b6f20dc694ba..26c3c0e375f58 100644
+>> --- a/include/linux/memcontrol.h
+>> +++ b/include/linux/memcontrol.h
+>> @@ -742,7 +742,15 @@ static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
+>>    * folio_lruvec - return lruvec for isolating/putting an LRU folio
+>>    * @folio: Pointer to the folio.
+>>    *
+>> - * This function relies on folio->mem_cgroup being stable.
+>> + * Call with rcu_read_lock() held to ensure the lifetime of the returned lruvec.
+>> + * Note that this alone will NOT guarantee the stability of the folio->lruvec
+>> + * association; the folio can be reparented to an ancestor if this races with
+>> + * cgroup deletion.
+>> + *
+>> + * Use folio_lruvec_lock() to ensure both lifetime and stability of the binding.
+>> + * Once a lruvec is locked, folio_lruvec() can be called on other folios, and
+>> + * their binding is stable if the returned lruvec matches the one the caller has
+>> + * locked. Useful for lock batching.
+>>    */
+>>   static inline struct lruvec *folio_lruvec(struct folio *folio)
+>>   {
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 548e67dbf2386..a1573600d4188 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> diff --git a/mm/swap.c b/mm/swap.c
+>> index cb1148a92d8ec..7e53479ca1732 100644
+>> --- a/mm/swap.c
+>> +++ b/mm/swap.c
+>> @@ -284,9 +286,11 @@ void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
+>>   		}
+>>   
+>>   		spin_unlock_irq(&lruvec->lru_lock);
+>> +		rcu_read_unlock();
+>>   		lruvec = parent_lruvec(lruvec);
+> 
+> It looks bit weird to call parent_lruvec(lruvec) outside RCU read lock
+> because the reason why it holds RCU read lock is to prevent release of
+> memory cgroup and its lruvec.
+> 
+> I guess this isn't broken (for now) because all callers of
+> lru_note_cost_unlock_irq() are holding a reference to the memcg?
+
+I checked all the callers again, and they do indeed hold the refcnt
+for the memcg, so it's safe for now. But it seems rather fragile,
+perhaps we should also include parent_lruvec() within the RCU lock.
+
+> 
+>>   		if (!lruvec)
+>>   			break;
+>> +		rcu_read_lock();
+>>   		spin_lock_irq(&lruvec->lru_lock);
+>>   	}
+>>   }
+> 
 
 
