@@ -4,118 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCD3AD2ED0F
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:58:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1ADED2ECE9
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 14:01:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 373046B0414; Tue, 20 Jan 2026 08:58:00 -0500 (EST)
+	id 0CE566B0417; Tue, 20 Jan 2026 09:01:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 350996B0417; Tue, 20 Jan 2026 08:58:00 -0500 (EST)
+	id 0A5FC6B041C; Tue, 20 Jan 2026 09:01:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24F6F6B041B; Tue, 20 Jan 2026 08:58:00 -0500 (EST)
+	id EF38A6B041D; Tue, 20 Jan 2026 09:01:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 10A8D6B0414
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:58:00 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAC0D1605AB
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:57:59 +0000 (UTC)
-X-FDA: 84352495878.06.DD20734
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AD9968000C
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:57:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB89C6B0417
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:01:28 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F1ACC2034
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:01:28 +0000 (UTC)
+X-FDA: 84352504656.24.1A51899
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B34BF140019
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:01:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QF9TNIp7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="2GxwD/W9";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QF9TNIp7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="2GxwD/W9";
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768917478;
+	s=arc-20220608; t=1768917686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gdhzlrx55EGoldjs9yuPXbO8HChhfZn/w/44Kl13GaY=;
-	b=i4eDvGUOkuvEDAm6zCbB7ynxrWFSVYn+MDOcwk/hkLkKCCDsMwlH93KAhYTcljq2dsdjXq
-	j8r79TGITYcgAj58xTzO+99hpTau+Y6dc+MkTdh8uHvRPLwQh8zcYD4rx1r6WEtOuSrc0K
-	eyyeGpu81p3Qb6q1WziwKTVtbkB+40U=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WB/QAIhLT30gDx+iBsgOOPnda3Hx0tMddPYYIhfYYOA=;
+	b=UKiE84HQuMiytMZkA0ZuHRh98qOiZZlHw/3Pk2xBhRebcI+A3CBNImXJiVcUAEaDUqwN6y
+	9x+lT0hCkcQVYuWXxdLSFWAUx6zh4T1oUo5KTGsOBMz4PEh+wa+UqCLaAb3Su8w2aemCKi
+	CSt2aYqS+pZJmif++ynWdZfW43JRGjc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QF9TNIp7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="2GxwD/W9";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QF9TNIp7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="2GxwD/W9";
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768917478; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768917686; a=rsa-sha256;
 	cv=none;
-	b=HYXzd+ozWxkcsCZyrZlaQqgNT3mNWkMAE0JV19yJb5OMCSLxJcSDsubmVOsJwY/X+af7OE
-	LV6jtxd2fhbb/LWC32WhpiwaQhSjSRQGp3rqE53bM2xFkWM2JpzXgjmV3bwzNtp0uOoYXd
-	SMF9nxGkGi38s+aKWiEJOAP5hJBbVTM=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dwTR73xyjzYQvJC
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 21:57:23 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 6FD6940570
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 21:57:47 +0800 (CST)
-Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
-	by APP4 (Coremail) with SMTP id gCh0CgCnCPnQiW9pwhTxEQ--.10691S9;
-	Tue, 20 Jan 2026 21:57:47 +0800 (CST)
-From: Chen Ridong <chenridong@huaweicloud.com>
-To: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	hannes@cmpxchg.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	zhengqi.arch@bytedance.com
-Cc: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	lujialin4@huawei.com,
-	chenridong@huaweicloud.com,
-	ryncsn@gmail.com
-Subject: [RFC PATCH -next 7/7] mm/mglru: remove memcg lru
-Date: Tue, 20 Jan 2026 13:42:56 +0000
-Message-Id: <20260120134256.2271710-8-chenridong@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260120134256.2271710-1-chenridong@huaweicloud.com>
-References: <20260120134256.2271710-1-chenridong@huaweicloud.com>
+	b=N6dXCE6syi/r+iCnvZqzU6nBnOUtgV+u5ojD9BSzpACkzCQuBqvGhc7NIck7cyYLaIgZUq
+	pVKylOPewoYLx3EjVliBVKuSxgInOxnA3iur+wIL/nnP49/BYo6GTxeF/f0YhJhM0lTLsT
+	jx7OjKvnLOPr5pEQ1im6EIvG32TNUgA=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7CAF9337D0;
+	Tue, 20 Jan 2026 14:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768917683; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WB/QAIhLT30gDx+iBsgOOPnda3Hx0tMddPYYIhfYYOA=;
+	b=QF9TNIp7cpmu/rXWlGlQdyofxy8eqMnoupjgmIAkpL78b/S1s4FFSu8wDVwu26fAJyWLP9
+	Pn/Zkt/rpy3SRT1kUvkkFLK4S/E0vM1tg/xlQTMZH664HVKhXSnkIeSUHbwgpYtW9BcSRO
+	Lf/msVv40yhL/zY1HsH91Yeeg038wkc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768917683;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WB/QAIhLT30gDx+iBsgOOPnda3Hx0tMddPYYIhfYYOA=;
+	b=2GxwD/W9SNxf7x2i61kshj3kQvNwvD/njJP5TLYqNWSKekQs58CC0JsqQI4AklMYtMDXF+
+	kiNLM6Rm0Zpcw9Ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768917683; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WB/QAIhLT30gDx+iBsgOOPnda3Hx0tMddPYYIhfYYOA=;
+	b=QF9TNIp7cpmu/rXWlGlQdyofxy8eqMnoupjgmIAkpL78b/S1s4FFSu8wDVwu26fAJyWLP9
+	Pn/Zkt/rpy3SRT1kUvkkFLK4S/E0vM1tg/xlQTMZH664HVKhXSnkIeSUHbwgpYtW9BcSRO
+	Lf/msVv40yhL/zY1HsH91Yeeg038wkc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768917683;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WB/QAIhLT30gDx+iBsgOOPnda3Hx0tMddPYYIhfYYOA=;
+	b=2GxwD/W9SNxf7x2i61kshj3kQvNwvD/njJP5TLYqNWSKekQs58CC0JsqQI4AklMYtMDXF+
+	kiNLM6Rm0Zpcw9Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5F8E03EA63;
+	Tue, 20 Jan 2026 14:01:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Ixu5FbOKb2kuRAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 20 Jan 2026 14:01:23 +0000
+Message-ID: <efd02f1f-b09b-4786-aa55-aa366f58442f@suse.cz>
+Date: Tue, 20 Jan 2026 15:01:23 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCnCPnQiW9pwhTxEQ--.10691S9
-X-Coremail-Antispam: 1UD129KBjvAXoW3Kw1ftw4kKry3tw15Wr18AFb_yoW8XF47to
-	WSvr4DC3Zagr18Xw18ZrsFyF9xZF4DKryrXw15JwsrC3W2vrn8Wr4DJw4UGFyfJF1rGay0
-	vryYqw1UXrZ3Jw13n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUOV7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20EY4v20xva
-	j40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r126s0DM28Irc
-	Ia0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l
-	84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJV
-	WxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE
-	3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2I
-	x0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8
-	JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2
-	ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
-	z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
-	AF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1l
-	IxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
-	1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIY
-	CTnIWIevJa73UjIFyTuYvjTRRyxRDUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slab: replace cache_from_obj() with inline checks
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Eric Dumazet <edumazet@google.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20260120-b4-remove_cache_from_obj-v1-1-ace30c41eecf@suse.cz>
+ <imazcyfzfkxofsnriyp5wa5v6yzszozljircucw2tgj6zex2ee@ytew6wy4kkh6>
+ <8bd3c3e8-9865-4467-86d5-17d891f6f21b@suse.cz>
+ <vyhpr6lq5rb6qgkshksg26a5ns5gd5ryqu46pqx2z5twy2gzlx@t4xaze2lhoen>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <vyhpr6lq5rb6qgkshksg26a5ns5gd5ryqu46pqx2z5twy2gzlx@t4xaze2lhoen>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Stat-Signature: e4gky5mp4iutxgfcdm9gzdmtyezzxmg4
-X-Rspamd-Queue-Id: AD9968000C
+X-Stat-Signature: cdjedsb8myqjzp75ukz7hf4y3gb8hp5u
+X-Rspamd-Queue-Id: B34BF140019
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1768917476-219505
-X-HE-Meta: U2FsdGVkX1+6pgMmsWbMdVVWeTN5+GtCBv3hvUGNjYa1/JBNKRNYIcqpsn95aMxWH5Ht2PX2h+Ewj0inNuatohzQChxK3KCUMC7OHHV2urREPZmzzhI150PQJcB6bV5ZFpR2psbqIiJP0xVkz711XYSqefMb6zz67chbvr1T82ijmeVjPO0WSu3qI1dZZ8JldL+CbewJhFJg3fkp1QVXd6N/se0W62fuMS1q7NuWDf2AwdCQ3/vXNdUFqCz9dywTORUOFfogihKw04s25VJ9s/2unvnd/fsGdC/HagvdKGYP3nt48+kCiXaCGjDKnFVJyWEqurSL9+wlO9sY6LujFuCCB0Lvw6C9CU9QZUNaLHVu8S67oxyZma5vrNsqH6XYZErQtz0RL3Lc8ZBiEX1X6dQW0yanvW2Q1Ogwh+tHlgjA9weUtiTOcSRpvLG5d6PxRlu2bBAD4cBeH527LEMfwt3j7piVEBHl//G9vQMCo7ql6Kp2eHsVTGwXuygRmGWfe9PcShK1EyLyhuxtts4Qcwyv62TfPRiauC3wPeHTGnnSQkrlA0OUw4S4e66OmQivbs1mysFXpqC0tphT3yOq2jCuK5v+bbZ5y1NJmNPMfv3rvtaZ+QgVfS0Q4fdCLGII8wucxEC9Z3kuqjPqWeT/Gah8GX4UOnj7lt7fsiOR9YFR9Cxf3cuDS9tWE0TQCB6nP57e7Q5cWijypbmz4gkwHhMo70PuiSzcK+I1lbmw64Smf3mvRsPgAUwEneWBIupNVSsXynlz6Ws8A3IN8pthzd+411Xu+m3b46BXU2l9DEDkLhh3ViHrPdBzzl8UlBLk0MVFt+W5BxJBlJliusecgMFcX1mmwU6cD/fXY2fV1dLtzBxQFuj3INWoXYEoVM4NmbZXmfWljZFVO+QuiQcJq4+zQICuUCHGOENqHDvgnoJy2CTVmtY9Qetpv55KkxLZMcgC4cPr72OouEI301T
- Cj8Jn1l/
- xh9OYWsukdqQW6DN+vc0fzr0jGNfQjja2Hek63iZVOJ4+et9BIwqLMY/lMIpmWxv5bBhyzJsIX5q3Df7OAvlN08ozc7oNmKFkRI/7xj6EtPDDlG0fMT3jZhe9TwfFeCG/BUlB
+X-HE-Tag: 1768917685-605711
+X-HE-Meta: U2FsdGVkX19H3rz5ewW9SmntLYjPSC0cfrMQGSYyUzvKY75VI/FKzRq+qtEaaymm/ubLIvBX2PHUplBw3vEap5BRXfPeopruqoBrAxS7yOLUEKRElBkKrF5ewc9rRvFv5bU/9XsBAx7h98axMTkmEgfkges2MFD6DMzIuv4Oiud7q3O3DCz+SxZju7JyygK/EORsaHvhC2vJyG22PXZzG8aRHHy8wt/o3gM8IVvko3OfR+Zs+UdKGCKK2HwTjYOsaFfKXEUnFbSOAYJyjQm4/MKuzXVzBRcOiICmvzBZ4eKpvWtzNjsmbuN9r7ZMWh6OVBAf66hKHtFHOnjL17OXTAb8dfF2FdUGadP12uMs7+zC9KmxGbbSVeMHiQgaRUGkI1mfIA533rOQpKHW/VtmjT4rMW0exfYUDGtec2nM3IrYOXlmJAamBTHTyzKgIDTtZSezcNN/5MOUs/Q/ITbHbs0GQ2dkCQHfZYd3qqOgFiFJ+fzyzjgY2wVDPW0CxC03jkHvLvnlpDbSNNn1w/jWrupeyyXsg2cs07rk8N15vv8bImAQSqvv8JgZPCLi+K7jrW0jGQx00dpSe1RwovkMdsUrPRdIxlyzoSYCgAa51GmAFZriyhazHNgth5Z38DYl2JG80KlkWji9d1JLUgjLB+dBF7qg3Ta4wsQpEB+2CE3Jw9eQoDOAsZenljPWSK7yCD1qlalcWyO1LHAA5GxeOuQRcQvjyMfk73prTkMw7XvED252vEftRvMcpesOgcrV4uAdUr2TDq2fyKYOmS6mJkYJoTEiIhdjYX8Hlr8ZvM0LEPHKfh2hh13P0fFQXJsG5yEvCNm/XOTouduQ0Yjn+kmxdKBppGLYLJ4g83PZQvdpkmsTduGXdSJ9d1MWX1UfyG3Z34+rRHZV+X28Tjhw55uwtUhZAllnhr2Piqr9QFEHWEZC7ClbbAs/uRe20e9/yzl1ftQmGMSVcimzCmH
+ dBlaeqlA
+ bBluglrk+7PPRkre1f+18CE6gRNbRJDnFysfD1E8pdKSe/HbfPotSn9ZzQsoPvcVQf+wt3bMM+vSK86kqsR8P6MOXHg5PuW/kgdUKZaP3mAsfkWftneCZfwH+oVYjM5gclZrqRO4IUnjEeSctbIX2zalxJAhtedNbKg4Aq6pUBa6KEMD8Woy3JR9URcO9KD0k58u0/24FefFdQtWwKl2N0QH85+RHb1OxFRbvFhSgPj0hRGG+0Kd5BkPZxJG5JX0u6MJSVCnSRWnAUuYMTdwXYoLJ1GnUzq92GvIi2vwYCeOY03hrorVb0R1coNi9YhR92tkT6a0n/9G3LJU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,446 +182,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chen Ridong <chenridong@huawei.com>
+On 1/20/26 14:56, Hao Li wrote:
+> On Tue, Jan 20, 2026 at 01:55:09PM +0100, Vlastimil Babka wrote:
+>> On 1/20/26 12:57, Hao Li wrote:
+>> 
+>> >> @@ -6774,11 +6770,21 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
+>> >>   */
+>> >>  void kmem_cache_free(struct kmem_cache *s, void *x)
+>> >>  {
+>> >> -	s = cache_from_obj(s, x);
+>> >> -	if (!s)
+>> >> -		return;
+>> >> +	struct slab *slab;
+>> >> +
+>> >> +	slab = virt_to_slab(x);
+>> >> +
+>> >> +	if (IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) ||
+>> >> +	    kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS)) {
+>> >> +
+>> >> +		if (unlikely(!slab || (slab->slab_cache != s))) {
+>> >> +			warn_free_bad_obj(s, x);
+>> > 
+>> > Just to make sure I'm understanding correctly, are we intentionally not
+>> > releasing the object x in this case? Thanks.
+>> 
+>> Yes, it means something went wrong so it's better not to do anything.
+> 
+> Got it, that makes sense - thanks!
+> 
+>> That was true before this patch as well.
+> 
+> I'm still not entirely sure I follow. I read the original code, and it seems
+> like it retrieved the real cache from the object and released the object into
+> that correct cache. Did I misunderstand something?
 
-Now that the previous patch has switched global reclaim to use
-mem_cgroup_iter, the specialized memcg LRU infrastructure is no longer
-needed. This patch removes all related code:
+You're right, I misread it as returning NULL, but that was only on
+virt_to_slab() failure. So that's a change, but I believe a proper one. But
+I'll mention it in the changelog and the comment. Thanks!
 
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
----
- Documentation/mm/multigen_lru.rst |  30 ------
- include/linux/mmzone.h            |  89 -----------------
- mm/memcontrol-v1.c                |   6 --
- mm/memcontrol.c                   |   4 -
- mm/mm_init.c                      |   1 -
- mm/vmscan.c                       | 156 +-----------------------------
- 6 files changed, 2 insertions(+), 284 deletions(-)
 
-diff --git a/Documentation/mm/multigen_lru.rst b/Documentation/mm/multigen_lru.rst
-index 52ed5092022f..bf8547e2f592 100644
---- a/Documentation/mm/multigen_lru.rst
-+++ b/Documentation/mm/multigen_lru.rst
-@@ -220,36 +220,6 @@ time domain because a CPU can scan pages at different rates under
- varying memory pressure. It calculates a moving average for each new
- generation to avoid being permanently locked in a suboptimal state.
- 
--Memcg LRU
-----------
--An memcg LRU is a per-node LRU of memcgs. It is also an LRU of LRUs,
--since each node and memcg combination has an LRU of folios (see
--``mem_cgroup_lruvec()``). Its goal is to improve the scalability of
--global reclaim, which is critical to system-wide memory overcommit in
--data centers. Note that memcg LRU only applies to global reclaim.
--
--The basic structure of an memcg LRU can be understood by an analogy to
--the active/inactive LRU (of folios):
--
--1. It has the young and the old (generations), i.e., the counterparts
--   to the active and the inactive;
--2. The increment of ``max_seq`` triggers promotion, i.e., the
--   counterpart to activation;
--3. Other events trigger similar operations, e.g., offlining an memcg
--   triggers demotion, i.e., the counterpart to deactivation.
--
--In terms of global reclaim, it has two distinct features:
--
--1. Sharding, which allows each thread to start at a random memcg (in
--   the old generation) and improves parallelism;
--2. Eventual fairness, which allows direct reclaim to bail out at will
--   and reduces latency without affecting fairness over some time.
--
--In terms of traversing memcgs during global reclaim, it improves the
--best-case complexity from O(n) to O(1) and does not affect the
--worst-case complexity O(n). Therefore, on average, it has a sublinear
--complexity.
--
- Summary
- -------
- The multi-gen LRU (of folios) can be disassembled into the following
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index cf3095198db6..5bb7ed3fa238 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -509,12 +509,6 @@ struct lru_gen_folio {
- 	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
- 	/* whether the multi-gen LRU is enabled */
- 	bool enabled;
--	/* the memcg generation this lru_gen_folio belongs to */
--	u8 gen;
--	/* the list segment this lru_gen_folio belongs to */
--	u8 seg;
--	/* per-node lru_gen_folio list for global reclaim */
--	struct hlist_nulls_node list;
- };
- 
- enum {
-@@ -558,79 +552,14 @@ struct lru_gen_mm_walk {
- 	bool force_scan;
- };
- 
--/*
-- * For each node, memcgs are divided into two generations: the old and the
-- * young. For each generation, memcgs are randomly sharded into multiple bins
-- * to improve scalability. For each bin, the hlist_nulls is virtually divided
-- * into three segments: the head, the tail and the default.
-- *
-- * An onlining memcg is added to the tail of a random bin in the old generation.
-- * The eviction starts at the head of a random bin in the old generation. The
-- * per-node memcg generation counter, whose reminder (mod MEMCG_NR_GENS) indexes
-- * the old generation, is incremented when all its bins become empty.
-- *
-- * There are four operations:
-- * 1. MEMCG_LRU_HEAD, which moves a memcg to the head of a random bin in its
-- *    current generation (old or young) and updates its "seg" to "head";
-- * 2. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
-- *    current generation (old or young) and updates its "seg" to "tail";
-- * 3. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
-- *    generation, updates its "gen" to "old" and resets its "seg" to "default";
-- * 4. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
-- *    young generation, updates its "gen" to "young" and resets its "seg" to
-- *    "default".
-- *
-- * The events that trigger the above operations are:
-- * 1. Exceeding the soft limit, which triggers MEMCG_LRU_HEAD;
-- * 2. The first attempt to reclaim a memcg below low, which triggers
-- *    MEMCG_LRU_TAIL;
-- * 3. The first attempt to reclaim a memcg offlined or below reclaimable size
-- *    threshold, which triggers MEMCG_LRU_TAIL;
-- * 4. The second attempt to reclaim a memcg offlined or below reclaimable size
-- *    threshold, which triggers MEMCG_LRU_YOUNG;
-- * 5. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
-- * 6. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
-- * 7. Offlining a memcg, which triggers MEMCG_LRU_OLD.
-- *
-- * Notes:
-- * 1. Memcg LRU only applies to global reclaim, and the round-robin incrementing
-- *    of their max_seq counters ensures the eventual fairness to all eligible
-- *    memcgs. For memcg reclaim, it still relies on mem_cgroup_iter().
-- * 2. There are only two valid generations: old (seq) and young (seq+1).
-- *    MEMCG_NR_GENS is set to three so that when reading the generation counter
-- *    locklessly, a stale value (seq-1) does not wraparound to young.
-- */
--#define MEMCG_NR_GENS	3
--#define MEMCG_NR_BINS	8
--
--struct lru_gen_memcg {
--	/* the per-node memcg generation counter */
--	unsigned long seq;
--	/* each memcg has one lru_gen_folio per node */
--	unsigned long nr_memcgs[MEMCG_NR_GENS];
--	/* per-node lru_gen_folio list for global reclaim */
--	struct hlist_nulls_head	fifo[MEMCG_NR_GENS][MEMCG_NR_BINS];
--	/* protects the above */
--	spinlock_t lock;
--};
--
--void lru_gen_init_pgdat(struct pglist_data *pgdat);
- void lru_gen_init_lruvec(struct lruvec *lruvec);
- bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw);
- 
- void lru_gen_init_memcg(struct mem_cgroup *memcg);
- void lru_gen_exit_memcg(struct mem_cgroup *memcg);
--void lru_gen_online_memcg(struct mem_cgroup *memcg);
--void lru_gen_offline_memcg(struct mem_cgroup *memcg);
--void lru_gen_release_memcg(struct mem_cgroup *memcg);
--void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid);
- 
- #else /* !CONFIG_LRU_GEN */
- 
--static inline void lru_gen_init_pgdat(struct pglist_data *pgdat)
--{
--}
--
- static inline void lru_gen_init_lruvec(struct lruvec *lruvec)
- {
- }
-@@ -648,22 +577,6 @@ static inline void lru_gen_exit_memcg(struct mem_cgroup *memcg)
- {
- }
- 
--static inline void lru_gen_online_memcg(struct mem_cgroup *memcg)
--{
--}
--
--static inline void lru_gen_offline_memcg(struct mem_cgroup *memcg)
--{
--}
--
--static inline void lru_gen_release_memcg(struct mem_cgroup *memcg)
--{
--}
--
--static inline void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
--{
--}
--
- #endif /* CONFIG_LRU_GEN */
- 
- struct lruvec {
-@@ -1503,8 +1416,6 @@ typedef struct pglist_data {
- #ifdef CONFIG_LRU_GEN
- 	/* kswap mm walk data */
- 	struct lru_gen_mm_walk mm_walk;
--	/* lru_gen_folio list */
--	struct lru_gen_memcg memcg_lru;
- #endif
- 
- 	CACHELINE_PADDING(_pad2_);
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index f0ef650d2317..3f0fd1141f37 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -182,12 +182,6 @@ static void memcg1_update_tree(struct mem_cgroup *memcg, int nid)
- 	struct mem_cgroup_per_node *mz;
- 	struct mem_cgroup_tree_per_node *mctz;
- 
--	if (lru_gen_enabled()) {
--		if (soft_limit_excess(memcg))
--			lru_gen_soft_reclaim(memcg, nid);
--		return;
--	}
--
- 	mctz = soft_limit_tree.rb_tree_per_node[nid];
- 	if (!mctz)
- 		return;
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 675d49ad7e2c..f9aace496881 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3894,8 +3894,6 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 	if (unlikely(mem_cgroup_is_root(memcg)) && !mem_cgroup_disabled())
- 		queue_delayed_work(system_dfl_wq, &stats_flush_dwork,
- 				   FLUSH_TIME);
--	lru_gen_online_memcg(memcg);
--
- 	/* Online state pins memcg ID, memcg ID pins CSS */
- 	refcount_set(&memcg->id.ref, 1);
- 	css_get(css);
-@@ -3935,7 +3933,6 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
- 	reparent_deferred_split_queue(memcg);
- 	reparent_shrinker_deferred(memcg);
- 	wb_memcg_offline(memcg);
--	lru_gen_offline_memcg(memcg);
- 
- 	drain_all_stock(memcg);
- 
-@@ -3947,7 +3944,6 @@ static void mem_cgroup_css_released(struct cgroup_subsys_state *css)
- 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
- 
- 	invalidate_reclaim_iterators(memcg);
--	lru_gen_release_memcg(memcg);
- }
- 
- static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 46ac915558d4..262238925c50 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1742,7 +1742,6 @@ static void __init free_area_init_node(int nid)
- 	pgdat_set_deferred_range(pgdat);
- 
- 	free_area_init_core(pgdat);
--	lru_gen_init_pgdat(pgdat);
- }
- 
- /* Any regular or high memory on that node? */
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index d4eaa8221174..0946ba0af064 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2726,9 +2726,6 @@ static bool should_clear_pmd_young(void)
- #define for_each_evictable_type(type, swappiness)			\
- 	for ((type) = min_type(swappiness); (type) <= max_type(swappiness); (type)++)
- 
--#define get_memcg_gen(seq)	((seq) % MEMCG_NR_GENS)
--#define get_memcg_bin(bin)	((bin) % MEMCG_NR_BINS)
--
- static struct lruvec *get_lruvec(struct mem_cgroup *memcg, int nid)
- {
- 	struct pglist_data *pgdat = NODE_DATA(nid);
-@@ -4315,140 +4312,6 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 	return true;
- }
- 
--/******************************************************************************
-- *                          memcg LRU
-- ******************************************************************************/
--
--/* see the comment on MEMCG_NR_GENS */
--enum {
--	MEMCG_LRU_NOP,
--	MEMCG_LRU_HEAD,
--	MEMCG_LRU_TAIL,
--	MEMCG_LRU_OLD,
--	MEMCG_LRU_YOUNG,
--};
--
--static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
--{
--	int seg;
--	int old, new;
--	unsigned long flags;
--	int bin = get_random_u32_below(MEMCG_NR_BINS);
--	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
--
--	spin_lock_irqsave(&pgdat->memcg_lru.lock, flags);
--
--	VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
--
--	seg = 0;
--	new = old = lruvec->lrugen.gen;
--
--	/* see the comment on MEMCG_NR_GENS */
--	if (op == MEMCG_LRU_HEAD)
--		seg = MEMCG_LRU_HEAD;
--	else if (op == MEMCG_LRU_TAIL)
--		seg = MEMCG_LRU_TAIL;
--	else if (op == MEMCG_LRU_OLD)
--		new = get_memcg_gen(pgdat->memcg_lru.seq);
--	else if (op == MEMCG_LRU_YOUNG)
--		new = get_memcg_gen(pgdat->memcg_lru.seq + 1);
--	else
--		VM_WARN_ON_ONCE(true);
--
--	WRITE_ONCE(lruvec->lrugen.seg, seg);
--	WRITE_ONCE(lruvec->lrugen.gen, new);
--
--	hlist_nulls_del_rcu(&lruvec->lrugen.list);
--
--	if (op == MEMCG_LRU_HEAD || op == MEMCG_LRU_OLD)
--		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
--	else
--		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
--
--	pgdat->memcg_lru.nr_memcgs[old]--;
--	pgdat->memcg_lru.nr_memcgs[new]++;
--
--	if (!pgdat->memcg_lru.nr_memcgs[old] && old == get_memcg_gen(pgdat->memcg_lru.seq))
--		WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
--
--	spin_unlock_irqrestore(&pgdat->memcg_lru.lock, flags);
--}
--
--#ifdef CONFIG_MEMCG
--
--void lru_gen_online_memcg(struct mem_cgroup *memcg)
--{
--	int gen;
--	int nid;
--	int bin = get_random_u32_below(MEMCG_NR_BINS);
--
--	for_each_node(nid) {
--		struct pglist_data *pgdat = NODE_DATA(nid);
--		struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--		spin_lock_irq(&pgdat->memcg_lru.lock);
--
--		VM_WARN_ON_ONCE(!hlist_nulls_unhashed(&lruvec->lrugen.list));
--
--		gen = get_memcg_gen(pgdat->memcg_lru.seq);
--
--		lruvec->lrugen.gen = gen;
--
--		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[gen][bin]);
--		pgdat->memcg_lru.nr_memcgs[gen]++;
--
--		spin_unlock_irq(&pgdat->memcg_lru.lock);
--	}
--}
--
--void lru_gen_offline_memcg(struct mem_cgroup *memcg)
--{
--	int nid;
--
--	for_each_node(nid) {
--		struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_OLD);
--	}
--}
--
--void lru_gen_release_memcg(struct mem_cgroup *memcg)
--{
--	int gen;
--	int nid;
--
--	for_each_node(nid) {
--		struct pglist_data *pgdat = NODE_DATA(nid);
--		struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--		spin_lock_irq(&pgdat->memcg_lru.lock);
--
--		if (hlist_nulls_unhashed(&lruvec->lrugen.list))
--			goto unlock;
--
--		gen = lruvec->lrugen.gen;
--
--		hlist_nulls_del_init_rcu(&lruvec->lrugen.list);
--		pgdat->memcg_lru.nr_memcgs[gen]--;
--
--		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
--			WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
--unlock:
--		spin_unlock_irq(&pgdat->memcg_lru.lock);
--	}
--}
--
--void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
--{
--	struct lruvec *lruvec = get_lruvec(memcg, nid);
--
--	/* see the comment on MEMCG_NR_GENS */
--	if (READ_ONCE(lruvec->lrugen.seg) != MEMCG_LRU_HEAD)
--		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
--}
--
--#endif /* CONFIG_MEMCG */
--
- /******************************************************************************
-  *                          the eviction
-  ******************************************************************************/
-@@ -4945,8 +4808,7 @@ static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc
- 
- 	set_mm_walk(NULL, sc->proactive);
- 
--	if (try_to_shrink_lruvec(lruvec, sc))
--		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_YOUNG);
-+	try_to_shrink_lruvec(lruvec, sc);
- 
- 	clear_mm_walk();
- 
-@@ -5575,18 +5437,6 @@ static const struct file_operations lru_gen_ro_fops = {
-  *                          initialization
-  ******************************************************************************/
- 
--void lru_gen_init_pgdat(struct pglist_data *pgdat)
--{
--	int i, j;
--
--	spin_lock_init(&pgdat->memcg_lru.lock);
--
--	for (i = 0; i < MEMCG_NR_GENS; i++) {
--		for (j = 0; j < MEMCG_NR_BINS; j++)
--			INIT_HLIST_NULLS_HEAD(&pgdat->memcg_lru.fifo[i][j], i);
--	}
--}
--
- void lru_gen_init_lruvec(struct lruvec *lruvec)
- {
- 	int i;
-@@ -5633,9 +5483,7 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
- 		struct lru_gen_mm_state *mm_state = get_mm_state(lruvec);
- 
- 		VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
--					   sizeof(lruvec->lrugen.nr_pages)));
--
--		lruvec->lrugen.list.next = LIST_POISON1;
-+				   sizeof(lruvec->lrugen.nr_pages)));
- 
- 		if (!mm_state)
- 			continue;
--- 
-2.34.1
 
 
