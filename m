@@ -4,133 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F49ED2629C
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 19:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0638D2629C
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 20:30:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 865206B04A1; Tue, 20 Jan 2026 14:56:57 -0500 (EST)
+	id 027EA6B0005; Tue, 20 Jan 2026 15:30:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 812FB6B04A2; Tue, 20 Jan 2026 14:56:57 -0500 (EST)
+	id F17196B0088; Tue, 20 Jan 2026 15:30:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71F686B04A3; Tue, 20 Jan 2026 14:56:57 -0500 (EST)
+	id E22F76B0089; Tue, 20 Jan 2026 15:30:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 62CBE6B04A1
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:56:57 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 041B8D275C
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 19:56:56 +0000 (UTC)
-X-FDA: 84353400474.11.8FDA427
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F059280006
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 19:56:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YjpIfUyQ;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768939015; a=rsa-sha256;
-	cv=pass;
-	b=ltO/0zYHWWXLb0h5QSMXwruVJh03bIBN12je5W5z2jY0xbPW8rHwSs2Zvyepg1HLBFO12+
-	zCMTsJa7ba5VXVSLX+x0hUQIeZlZ72WbXuGeU0+lGeG2dMKodiSJW1K6coUUoHmNnRTukC
-	pdgIsrBNOoC3vMi6tX2J0AqTRGRg9jM=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YjpIfUyQ;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768939015;
+	by kanga.kvack.org (Postfix) with ESMTP id D4A446B0005
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:30:37 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D44A14073F
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 20:30:37 +0000 (UTC)
+X-FDA: 84353485314.05.16FFE61
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B09411C0014
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 20:30:35 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vXDZ5y5a;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768941035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W6V0MzzonTsj3SY2V0AuVyvuQ6Xxvu4Y/qBnCAG3I38=;
-	b=GDvB+ZwIIm1ZurkuzDjf/yXxFVznp6IQyhCSwx/x0TgjWuUtxk9g+2JkjFv8F4eG4ZxPJK
-	zlMw8Ul0CMkTbdXo2UMFgowbj8eebqnFCK47kioR54UQw2/sZOsuVhLBcja2LQAv6VUW2s
-	gJQzdAZyjw4fk7xnyRkxj9e0vUByg8A=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47f5c2283b6so38354215e9.1
-        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:56:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768939013; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Q+ZybN9PSt5sy88fZTJnu8BmtQIizXkQX8LUMZTsCiVIpARUB+SAJiB6hO0ZVSjRJP
-         vBmPibkSGrkAKaN0fG+VBpFoFuAX7UWg8bSO3gIvwbpQJvyAzjFabsii/Y0VUiBMWXTw
-         7Jy2KyLkYfnVCsbl6VPZeIdb2OQVx4rZVRiEp8NzOWu7BXPon7QU9x3EiAavMZ6AGX/L
-         Q3//Y/IuhDzhm5YGVc6XzskBHW1qJpiDVhULGbQ8iqdJ2Qlj7M9tQGotS+O/NVuCcZnC
-         PFNB9Uw94cnyZikB/J3/g9oBHw5XVipTFNM89HAukXxZE1YRVNllRLBL/xTJZLJfYhdG
-         lNxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=W6V0MzzonTsj3SY2V0AuVyvuQ6Xxvu4Y/qBnCAG3I38=;
-        fh=4tAhOyg+QgcfsYZtuarfoKlePn0M4IW5B0cI0S/jj9Q=;
-        b=LRv5toFHzhqDNywKW9ZmvqCKaa0TKxOn09lu5BuFqg/sB3Rf++KGs614LfUdu+iZHS
-         gOg8E5jLUbPg7R+tcEYVoALQICVIFivWvRMIVgSTT20UzGaUY2d5jONyxYmL8VhW0OBz
-         T2pYAImsBo/qclYK+UjWXYgu9XGJQsVQ65R77Wtymhf3vUdwcpG9jDeRPDGKGcPUcrS3
-         t7wuCmGu2nHjsSO+LPJdq2lXB/AYwuxsxWO8qhJfKSDQCcBtePWOiQRri/UXD0IEVlpS
-         sJ5z2eUYYHbzVC/neGMnmbM7SUBscY1SlMLe/TtGdb+Mny29sOwvaLfYh8qnhLDFOW/C
-         uRcg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768939013; x=1769543813; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W6V0MzzonTsj3SY2V0AuVyvuQ6Xxvu4Y/qBnCAG3I38=;
-        b=YjpIfUyQt7GQ0UAWMvorjurzoyhCxrfBt9NU2P4bm/tY2lV+XHQL1SUIHvIaeVXHkp
-         Bif8/5Ut6b1V2oXqa4hV0g8xGAHcP/g3pMqUK7/Y9HGqnxx+rm+7lnxSfau6FCjdunvT
-         61I61a1RNXnO0x7M3nHL01SpiZDnepO6gaWctqNozrrzcIgaCIYyzjvvgo7jEF1EWi6f
-         HzxloUAMlbU9oKq2qw01A/sGRpXkLg8ysYpzuDUl/961YF8JXqzQTCUoRK21QGbYl5Ly
-         OLAnPPg/So0YBjTxVix0NaUxFEZCG5pgITtKdjW2+4EK3nm9FZ+FZyBgQ6nqd5F1JvXb
-         BMNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768939013; x=1769543813;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=W6V0MzzonTsj3SY2V0AuVyvuQ6Xxvu4Y/qBnCAG3I38=;
-        b=S5t9GlIcbpXyM2c7c6AXjgrsQFOvunFepT/Hv26ulsB+T84InoripCdkQllEF/ZkaG
-         3tyrfvgww+fIFuTLddhUWPLpRqgZzvKfAG+v/dZ9QJK/LJbpToq4icUUlXwoVUcwREK9
-         8+OFdUMNVDTWuAwWXlp52Qi6Vx0jwpWgHHk/bU0yuYy4Y1Q9ZZb3hVnwPUHOi7sWtl01
-         RAn7Akwul4T97EIrGi32oK4jlKcO1BBHGlkhYkCIOUwV/QrmQTTrn+WGWdRr918XMYU0
-         BoTTfCW221M9YyNXK7vP26WaS33TRMtcQ3QZwsMd8wpB0c768aEFQbQ4/qS/4A929rDo
-         1lKg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7ew6KFldY3y9FX3UbEcysAAVvZStnJP6j1SLzYWDAzzcc9TL4s2Lb9VJs10jIxe0E5riuV3KHww==@kvack.org
-X-Gm-Message-State: AOJu0YyMO7/NV21Y4apkCkU/LJb+Ar2GNrYH27BRNdmQS1PZ4hR7ahMX
-	F/O+KV4DykHhazG6o9BwSPUxx+ANS80UtMjZtRhhi+ighW0BG1cVxXpSHWjqrtyeR8IjmcWKaYO
-	gVoc6PyDCUaW8CwkPyb2KTsmLQO7Ef6g=
-X-Gm-Gg: AZuq6aKNo83/XqGokvpo34DdztibTl7YrqUkQPTskGrSawylOxkXKg0f5eO0a2jqWEx
-	7PMiKYLIyr+ltbTutG5xJwxuVBs+Pe1DpPPFLslx6XKSlEA56umINoscImeagsPSN3grKAloEq7
-	qHi6DkO5L4vDu8vlzjWxvrcn9mMvz+M+sYDqHH0EeMQu2tTBH8mKOnqpjhwUuNiMRGM0DpsTuTv
-	cri6ryrRHEdjYYst6dV8npEQkwVKVHdgYsm8p1XXM0Vd5HNMIjNth2rsFUgJZAlXvAF4jQ=
-X-Received: by 2002:a05:6000:2912:b0:430:f454:84ae with SMTP id
- ffacd0b85a97d-4358ff6facfmr4656211f8f.63.1768939012951; Tue, 20 Jan 2026
- 11:56:52 -0800 (PST)
-MIME-Version: 1.0
-References: <20260117025406.799428-1-senozhatsky@chromium.org>
-In-Reply-To: <20260117025406.799428-1-senozhatsky@chromium.org>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 20 Jan 2026 11:56:41 -0800
-X-Gm-Features: AZwV_QijmhvOjpYw2seYqtQZ2Lsp1lrYo6pizQH5md_5eMLBevC-IDWt5651bz0
-Message-ID: <CAKEwX=PrYbegbCF6Y4OhQHZBsru_rPLf-YtUO1jHpYh_hL8qkA@mail.gmail.com>
-Subject: Re: [PATCHv2] zsmalloc: make common caches global
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Minchan Kim <minchan@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ny5a11bk8gcikn4xd59ifka88nqugkro
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F059280006
+	bh=DO/WfFZNeNHn1GuyUKxXT/nRtMSqIdMWRVExovtJpsg=;
+	b=Og9XjOpb8K3aOh7IlghhfP1bExjgYFLTcfoISyzWkmlwZwC7bbMspxtSPpYI5/gDqzUd4B
+	D1r8BTvWE3XW475u7MbyCAj9v5hMVyNlV1Xe5m1j4fACpNNY10K39U0kEGQATJULCdO24/
+	cuM1Spga/uWfU9OHU1Y7mhq0zvGkNOg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vXDZ5y5a;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768941035; a=rsa-sha256;
+	cv=none;
+	b=Fvgwh3SiuGRB+olMaY9VsNnfwhMHV/OdI9+kEw0sOBfUVa33CjDicGYPp5XTcBa/NGTGnk
+	NjiY3hOeGsKO4w5Mb5RCQjw24z9/l2z+Fh0tEkL0u878Il7N1F7knXzY8XPeetS+cgFTHl
+	izabvLfKMQlgucVLLk4oQmbJXzpj9dU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 971556001A;
+	Tue, 20 Jan 2026 20:30:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C42AC16AAE;
+	Tue, 20 Jan 2026 20:30:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768941034;
+	bh=gQqT6mFfMSf2uJPK6Qy5o07DzG64JdRhARiJi+q6Ngs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=vXDZ5y5aVLeXC2R4rIUZdrkYjLUf5R/CiCq8HTi/ZdjcIbrSKGXrQbdGhPflSixiE
+	 DkuRq02KU+hX8OS9UL5rhBuTl5+X0OG6+HlqnhHWrPYfHxCAGYYw6onUZpiK+FETx9
+	 4C8YH0/Vy7mfu8scc/+ee6cRqdujTEVaxj9Af3jk=
+Date: Tue, 20 Jan 2026 12:30:33 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Jiayuan Chen <jiayuan.chen@shopee.com>,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] mm/vmscan: mitigate spurious kswapd_failures
+ reset and add tracepoints
+Message-Id: <20260120123033.b2f0dec292fba02d5c8aafab@linux-foundation.org>
+In-Reply-To: <20260120024402.387576-1-jiayuan.chen@linux.dev>
+References: <20260120024402.387576-1-jiayuan.chen@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B09411C0014
+X-Stat-Signature: 5tuk8gmencqrxuun46qgrw41841dsubi
 X-Rspam-User: 
-X-HE-Tag: 1768939014-596132
-X-HE-Meta: U2FsdGVkX18JZv1rxiHlmeir7rg96idOmVpdTBzhKpP+Hv56jU/aKqAo9bV9fJVFM/UWSKuEl6m1fqvFlU296j5t9NGO8B6Um5db8HmJXS0bwG3YoeZwsIfJtKg6+iyvHVaKh50orIuh9PvyqP0ky6ydQPURPlBv6A9PaIs2epvaFswVGg21F0VcNPbSQQYtNljL0o2v9vvu6trOSbT4iKblu2CXi0WrxPT32lQj49phafQX/QRknlvAR8l5m7e4d3tMgjGlyARA8ZpMSqKYxOJm+Mowir6We3wLHlpq/+t6QOvc+GuCaksqitjJnjJSmQ+Ze2KORXueXI+XR1eKtajWX36mW+RZPtCU4xQFLd7dhg0bZ+zTNysMvFz1aci3jNWaJNfjTOY8BMmQz755CtTbxPr3ASJkaurNL+QaCdULo9ohK0WRVtDjtJNM/Ndw/KuBfu4UjnKb8dT4eowmS5W4sVypPLCHhg06fhXwgLeCNeqoxzIrr//8slYwte+l9ESuPwwtVnTLm5iSoapViw0BoxANli1z8NihxehnFD/sKfYf0pGkFrpACEqjsuZrdKVZUAg5kYSg1wOcr03fwM3jPqSMTkLYKjxldh1bHmLpoAw4OVF51Oqy5glhp3tVlJzQ1QRZhSwkXgqhGGLjGVhx9Jykx7mkF9gqFgk4Cy13yEzc1e5CzPb/g/E67FDJlYMCSDsIlvBi2HVjIEePc7auZV46rdmiX/0YaKzBMnP1IGRXe9FJrAB3W07YLQ0eNyKyjusVONCDfgpL+hjjHYiDcXsIjRD3SUEfjxcAPU2f2MgERX6/4RqPgOe8vPH3d9N6y/HFnFONWU6i8g9UdWeymA6PbUQvR4CgTCRtStMh5JdY8+2ffKiNO5giccHY5a6hC3BGsOO5agjyZicm5hdMERPXsjSfWlu1We/aBOhjz1sTqoWRCw1iRp1AYiR6YYPO5rA7UqpJLJQ0tAD
- JN90u0qA
- He3FA/q8r7BDgTLf+VAD5mT2dYPhanng0fxz85Ofz0vkc04UHmlEoHnXV6E980PZpDGT0btYHVKNfgEi5byiG9kd/wsvTQj8xgycnon03Wlb6UvJsS7j2Qb0LIanoeP/9808XBWcUm+u5tfUBDZ3KHXy2wN/edH7zI5kUlCeLUtmK3BdsGdruZBUgh/E8aXI0JlN2owU45VvFFYpg82q9FNl4RpMcZoYttiKQbxuMbn2X0Xqyzf3F75liMhQFBfsuakVVZyo8Cjiwp/EPCnrdIErp6nKJdgmXZk25c6RBZP9e60djd8uEsjvtZHQfahxjyEvaGADg+pQEr9p9E4oizdQwqFReg4YNfB/OK+FEwa1g50My4+nP3yQuQre+bC/Y0bUtbKrtNNdqQZO5GP2AhRSSBkpYkQdPnhMDUsjHXtd5xyeo6h7IhtEfnLmEqop37izhk0/FMu3bSrwdTEDb6iUS6g==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768941035-659852
+X-HE-Meta: U2FsdGVkX1+a9Y02P1qoaNjanirWBJHNEtxxZwtaXVLtjIaOaObqkZdSEKzlJyh3a1Vp7LY9cEOsQFBUKYkpdrQ9sJ7XZRz/Fhnmwds7lpLMQjCMU6M/N8ihD6M+WvRF/0s4XQpUdpx5jeIBw5o5mIzZLZzt6+FpG5WDzOfEfRBFX7gadWV44fOsMwsSD1gQ1HdVTfer0bWVi1M3txTS3zNjWUNW5VaihGoIdNT1RqHVnFmg6dc+nQwbZ+Jy4nRIy98Ntb45pWuH9MSp9mW5PfqFdr5kFKqRGyztiN9PG7CbivJ664uXjMQD5iThW0DfyR2ZrMPvHb6ZtXX2G7gRozfXw8LQD8KuO2X0RgYiBvuAvbyl9ccd8mSmWKnQx33hSj4QqiLWROww0itrrfCtIdmDNKOs+HLKm/yxrjiaz2zxvc5bVN79WL0QtkZbOCSBwFYOUwUP6gKLwDpDi/pTlywQCrQ/2UqesRAcdYSYV24zIVzAykFW2S3ZoLU4/CkV9XPJ4iLc6ZaGZXtzKdyAtyvcAebhU6v6vVhLVLtTM9/+leR5nj0lLbuJ1o2TpNZjAXTUdOBfUjSF/XrvFOsMcofuUy0PR0/TWWLT6Y2MV5VLFvXASMfPXo9LfiTWDu23dbmU3aMFbMf5TBEhtF5HV+uLYDMYykc4mXPhH1ShVdAiYlppzssZFUmJJEEEvzEZEz4llUo1yYtEBKebYjGeRxMRmXSHyt/25vFZ0KL9TotHTf0C5Yq1eoPCLc5jgATiMTlkSauX2KeMGaWcevu+qjmGVJ/Y2GcrpMt4lYFqMVPTHFItX39Y+Xm+0QHUKHqZYQ2AHj8jBfanN37TvWZSShQR4rdo3wpGmRCwFklRdXTFr1M6hnjT2fAzz7w6Nggy8JIkjb142lPgb20ji3BqDuyKk0G4ezasPCEQUhi/SCJNIdnYsm736Nqikd8HxbGiZTn0C3M2uxAmS30PNQM
+ zXMvW/hc
+ jcE5303LDK57/YAr+StytThr2ZExhS7o6d6r6h1N5zESfZoFnv9H8wJiet4bLV/zaD79CrH3yhF8IW+r9sqHYAzr1uMPONpQqw8cibBettQlT99vAynOz0/P6Q6PMiq3sAIkS/DWF04Sp/cijRX2gEGdtuGPFkGpdEEZV/bswhz9cPOQfJX6J2Q1phGC3hMtA0qbEDrvwFovZ+zsD2NHs/eiWSpVthw8ipzXEYnrQl9ltRWbCIus+/1wznTkO98rnp1Sm4JdqLIWuyCPZS2OEbQ3OFZh6bTh3TTAOoJ7Frusyb9o2XEtVZ3ixMtbSXkJDa3Pu69vKKBjEEYkY0iE08IyvLEf11W4CH5v6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,22 +101,295 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 6:54=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> Currently, zsmalloc creates kmem_cache of handles and zspages
-> for each pool, which may be suboptimal from the memory usage
-> point of view (extra internal fragmentation per pool).  Systems
-> that create multiple zsmalloc pools may benefit from shared
-> common zsmalloc caches.
->
-> Make handles and zspages kmem caches global.  The memory
-> savings depend on particular setup and data patterns and
-> can be found via slabinfo.
->
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+On Tue, 20 Jan 2026 10:43:47 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
 
-LGTM!
+> == Problem ==
+> 
+> We observed an issue in production on a multi-NUMA system where kswapd
+> runs endlessly, causing sustained heavy IO READ pressure across the
+> entire system.
+> 
+> The root cause is that direct reclaim triggered by cgroup memory.high
+> keeps resetting kswapd_failures to 0, even when the node cannot be
+> balanced. This prevents kswapd from ever stopping after reaching
+> MAX_RECLAIM_RETRIES.
+> 
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Updated, thanks.
+
+> v3 -> v4: https://lore.kernel.org/linux-mm/20260114074049.229935-1-jiayuan.chen@linux.dev/
+>   - Add Acked-by tags
+>   - Some modifications suggested by Johannes Weiner 
+
+Here's how v4 altered mm.git:
+
+
+ include/linux/mmzone.h        |   26 ++++++++-----
+ include/trace/events/vmscan.h |   24 ++++++------
+ mm/memory-tiers.c             |    2 -
+ mm/page_alloc.c               |    4 +-
+ mm/show_mem.c                 |    3 -
+ mm/vmscan.c                   |   60 +++++++++++++++++---------------
+ mm/vmstat.c                   |    2 -
+ 7 files changed, 64 insertions(+), 57 deletions(-)
+
+--- a/include/linux/mmzone.h~b
++++ a/include/linux/mmzone.h
+@@ -1531,26 +1531,30 @@ static inline unsigned long pgdat_end_pf
+ 	return pgdat->node_start_pfn + pgdat->node_spanned_pages;
+ }
+ 
+-enum reset_kswapd_failures_reason {
+-	RESET_KSWAPD_FAILURES_OTHER = 0,
+-	RESET_KSWAPD_FAILURES_KSWAPD,
+-	RESET_KSWAPD_FAILURES_DIRECT,
+-	RESET_KSWAPD_FAILURES_PCP,
+-};
+-
+-void pgdat_reset_kswapd_failures(pg_data_t *pgdat, enum reset_kswapd_failures_reason reason);
+-
+ #include <linux/memory_hotplug.h>
+ 
+ void build_all_zonelists(pg_data_t *pgdat);
+-void wakeup_kswapd(struct zone *zone, gfp_t gfp_mask, int order,
+-		   enum zone_type highest_zoneidx);
+ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
+ 			 int highest_zoneidx, unsigned int alloc_flags,
+ 			 long free_pages);
+ bool zone_watermark_ok(struct zone *z, unsigned int order,
+ 		unsigned long mark, int highest_zoneidx,
+ 		unsigned int alloc_flags);
++
++enum kswapd_clear_hopeless_reason {
++	KSWAPD_CLEAR_HOPELESS_OTHER = 0,
++	KSWAPD_CLEAR_HOPELESS_KSWAPD,
++	KSWAPD_CLEAR_HOPELESS_DIRECT,
++	KSWAPD_CLEAR_HOPELESS_PCP,
++};
++
++void wakeup_kswapd(struct zone *zone, gfp_t gfp_mask, int order,
++		   enum zone_type highest_zoneidx);
++void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
++			       unsigned int order, int highest_zoneidx);
++void kswapd_clear_hopeless(pg_data_t *pgdat, enum kswapd_clear_hopeless_reason reason);
++bool kswapd_test_hopeless(pg_data_t *pgdat);
++
+ /*
+  * Memory initialization context, use to differentiate memory added by
+  * the platform statically or via memory hotplug interface.
+--- a/include/trace/events/vmscan.h~b
++++ a/include/trace/events/vmscan.h
+@@ -40,16 +40,16 @@
+ 		{_VMSCAN_THROTTLE_CONGESTED,	"VMSCAN_THROTTLE_CONGESTED"}	\
+ 		) : "VMSCAN_THROTTLE_NONE"
+ 
+-TRACE_DEFINE_ENUM(RESET_KSWAPD_FAILURES_OTHER);
+-TRACE_DEFINE_ENUM(RESET_KSWAPD_FAILURES_KSWAPD);
+-TRACE_DEFINE_ENUM(RESET_KSWAPD_FAILURES_DIRECT);
+-TRACE_DEFINE_ENUM(RESET_KSWAPD_FAILURES_PCP);
+-
+-#define reset_kswapd_src				\
+-	{RESET_KSWAPD_FAILURES_KSWAPD,	"KSWAPD"},	\
+-	{RESET_KSWAPD_FAILURES_DIRECT,	"DIRECT"},	\
+-	{RESET_KSWAPD_FAILURES_PCP,	"PCP"},		\
+-	{RESET_KSWAPD_FAILURES_OTHER,	"OTHER"}
++TRACE_DEFINE_ENUM(KSWAPD_CLEAR_HOPELESS_OTHER);
++TRACE_DEFINE_ENUM(KSWAPD_CLEAR_HOPELESS_KSWAPD);
++TRACE_DEFINE_ENUM(KSWAPD_CLEAR_HOPELESS_DIRECT);
++TRACE_DEFINE_ENUM(KSWAPD_CLEAR_HOPELESS_PCP);
++
++#define kswapd_clear_hopeless_reason_ops		\
++	{KSWAPD_CLEAR_HOPELESS_KSWAPD,	"KSWAPD"},	\
++	{KSWAPD_CLEAR_HOPELESS_DIRECT,	"DIRECT"},	\
++	{KSWAPD_CLEAR_HOPELESS_PCP,	"PCP"},		\
++	{KSWAPD_CLEAR_HOPELESS_OTHER,	"OTHER"}
+ 
+ #define trace_reclaim_flags(file) ( \
+ 	(file ? RECLAIM_WB_FILE : RECLAIM_WB_ANON) | \
+@@ -566,7 +566,7 @@ TRACE_EVENT(mm_vmscan_kswapd_reclaim_fai
+ 		__entry->nid, __entry->failures)
+ );
+ 
+-TRACE_EVENT(mm_vmscan_reset_kswapd_failures,
++TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
+ 
+ 	TP_PROTO(int nid, int reason),
+ 
+@@ -584,7 +584,7 @@ TRACE_EVENT(mm_vmscan_reset_kswapd_failu
+ 
+ 	TP_printk("nid=%d reason=%s",
+ 		__entry->nid,
+-		__print_symbolic(__entry->reason, reset_kswapd_src))
++		__print_symbolic(__entry->reason, kswapd_clear_hopeless_reason_ops))
+ );
+ #endif /* _TRACE_VMSCAN_H */
+ 
+--- a/mm/memory-tiers.c~b
++++ a/mm/memory-tiers.c
+@@ -955,7 +955,7 @@ static ssize_t demotion_enabled_store(st
+ 		struct pglist_data *pgdat;
+ 
+ 		for_each_online_pgdat(pgdat)
+-			pgdat_reset_kswapd_failures(pgdat, RESET_KSWAPD_FAILURES_OTHER);
++			kswapd_clear_hopeless(pgdat, KSWAPD_CLEAR_HOPELESS_OTHER);
+ 	}
+ 
+ 	return count;
+--- a/mm/page_alloc.c~b
++++ a/mm/page_alloc.c
+@@ -2945,9 +2945,9 @@ static bool free_frozen_page_commit(stru
+ 		 * 'hopeless node' to stay in that state for a while.  Let
+ 		 * kswapd work again by resetting kswapd_failures.
+ 		 */
+-		if (atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES &&
++		if (kswapd_test_hopeless(pgdat) &&
+ 		    next_memory_node(pgdat->node_id) < MAX_NUMNODES)
+-			pgdat_reset_kswapd_failures(pgdat, RESET_KSWAPD_FAILURES_PCP);
++			kswapd_clear_hopeless(pgdat, KSWAPD_CLEAR_HOPELESS_PCP);
+ 	}
+ 	return ret;
+ }
+--- a/mm/show_mem.c~b
++++ a/mm/show_mem.c
+@@ -278,8 +278,7 @@ static void show_free_areas(unsigned int
+ #endif
+ 			K(node_page_state(pgdat, NR_PAGETABLE)),
+ 			K(node_page_state(pgdat, NR_SECONDARY_PAGETABLE)),
+-			str_yes_no(atomic_read(&pgdat->kswapd_failures) >=
+-				   MAX_RECLAIM_RETRIES),
++			str_yes_no(kswapd_test_hopeless(pgdat)),
+ 			K(node_page_state(pgdat, NR_BALLOON_PAGES)));
+ 	}
+ 
+--- a/mm/vmscan.c~b
++++ a/mm/vmscan.c
+@@ -506,7 +506,7 @@ static bool skip_throttle_noprogress(pg_
+ 	 * If kswapd is disabled, reschedule if necessary but do not
+ 	 * throttle as the system is likely near OOM.
+ 	 */
+-	if (atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES)
++	if (kswapd_test_hopeless(pgdat))
+ 		return true;
+ 
+ 	/*
+@@ -2647,28 +2647,6 @@ static bool can_age_anon_pages(struct lr
+ 			  lruvec_memcg(lruvec));
+ }
+ 
+-void pgdat_reset_kswapd_failures(pg_data_t *pgdat, enum reset_kswapd_failures_reason reason)
+-{
+-	/* Only trace actual resets, not redundant zero-to-zero */
+-	if (atomic_xchg(&pgdat->kswapd_failures, 0))
+-		trace_mm_vmscan_reset_kswapd_failures(pgdat->node_id, reason);
+-}
+-
+-/*
+- * Reset kswapd_failures only when the node is balanced. Without this
+- * check, successful direct reclaim (e.g., from cgroup memory.high
+- * throttling) can keep resetting kswapd_failures even when the node
+- * cannot be balanced, causing kswapd to run endlessly.
+- */
+-static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx);
+-static inline void pgdat_try_reset_kswapd_failures(struct pglist_data *pgdat,
+-						   struct scan_control *sc)
+-{
+-	if (pgdat_balanced(pgdat, sc->order, sc->reclaim_idx))
+-		pgdat_reset_kswapd_failures(pgdat, current_is_kswapd() ?
+-			RESET_KSWAPD_FAILURES_KSWAPD : RESET_KSWAPD_FAILURES_DIRECT);
+-}
+-
+ #ifdef CONFIG_LRU_GEN
+ 
+ #ifdef CONFIG_LRU_GEN_ENABLED
+@@ -5086,7 +5064,7 @@ static void lru_gen_shrink_node(struct p
+ 	blk_finish_plug(&plug);
+ done:
+ 	if (sc->nr_reclaimed > reclaimed)
+-		pgdat_try_reset_kswapd_failures(pgdat, sc);
++		kswapd_try_clear_hopeless(pgdat, sc->order, sc->reclaim_idx);
+ }
+ 
+ /******************************************************************************
+@@ -6153,7 +6131,7 @@ again:
+ 	 * successful direct reclaim run will revive a dormant kswapd.
+ 	 */
+ 	if (reclaimable)
+-		pgdat_try_reset_kswapd_failures(pgdat, sc);
++		kswapd_try_clear_hopeless(pgdat, sc->order, sc->reclaim_idx);
+ 	else if (sc->cache_trim_mode)
+ 		sc->cache_trim_mode_failed = 1;
+ }
+@@ -6458,7 +6436,7 @@ static bool allow_direct_reclaim(pg_data
+ 	int i;
+ 	bool wmark_ok;
+ 
+-	if (atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES)
++	if (kswapd_test_hopeless(pgdat))
+ 		return true;
+ 
+ 	for_each_managed_zone_pgdat(zone, pgdat, i, ZONE_NORMAL) {
+@@ -6867,7 +6845,7 @@ static bool prepare_kswapd_sleep(pg_data
+ 		wake_up_all(&pgdat->pfmemalloc_wait);
+ 
+ 	/* Hopeless node, leave it to direct reclaim */
+-	if (atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES)
++	if (kswapd_test_hopeless(pgdat))
+ 		return true;
+ 
+ 	if (pgdat_balanced(pgdat, order, highest_zoneidx)) {
+@@ -7395,7 +7373,7 @@ void wakeup_kswapd(struct zone *zone, gf
+ 		return;
+ 
+ 	/* Hopeless node, leave it to direct reclaim if possible */
+-	if (atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES ||
++	if (kswapd_test_hopeless(pgdat) ||
+ 	    (pgdat_balanced(pgdat, order, highest_zoneidx) &&
+ 	     !pgdat_watermark_boosted(pgdat, highest_zoneidx))) {
+ 		/*
+@@ -7415,6 +7393,32 @@ void wakeup_kswapd(struct zone *zone, gf
+ 	wake_up_interruptible(&pgdat->kswapd_wait);
+ }
+ 
++void kswapd_clear_hopeless(pg_data_t *pgdat, enum kswapd_clear_hopeless_reason reason)
++{
++	/* Only trace actual resets, not redundant zero-to-zero */
++	if (atomic_xchg(&pgdat->kswapd_failures, 0))
++		trace_mm_vmscan_kswapd_clear_hopeless(pgdat->node_id, reason);
++}
++
++/*
++ * Reset kswapd_failures only when the node is balanced. Without this
++ * check, successful direct reclaim (e.g., from cgroup memory.high
++ * throttling) can keep resetting kswapd_failures even when the node
++ * cannot be balanced, causing kswapd to run endlessly.
++ */
++void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
++			       unsigned int order, int highest_zoneidx)
++{
++	if (pgdat_balanced(pgdat, order, highest_zoneidx))
++		kswapd_clear_hopeless(pgdat, current_is_kswapd() ?
++			KSWAPD_CLEAR_HOPELESS_KSWAPD : KSWAPD_CLEAR_HOPELESS_DIRECT);
++}
++
++bool kswapd_test_hopeless(pg_data_t *pgdat)
++{
++	return atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES;
++}
++
+ #ifdef CONFIG_HIBERNATION
+ /*
+  * Try to free `nr_to_reclaim' of memory, system-wide, and return the number of
+--- a/mm/vmstat.c~b
++++ a/mm/vmstat.c
+@@ -1840,7 +1840,7 @@ static void zoneinfo_show_print(struct s
+ 		   "\n  start_pfn:           %lu"
+ 		   "\n  reserved_highatomic: %lu"
+ 		   "\n  free_highatomic:     %lu",
+-		   atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES,
++		   kswapd_test_hopeless(pgdat),
+ 		   zone->zone_start_pfn,
+ 		   zone->nr_reserved_highatomic,
+ 		   zone->nr_free_highatomic);
+_
+
 
