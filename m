@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A01D2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83A6FD2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:05:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D859F6B03E9; Tue, 20 Jan 2026 08:03:57 -0500 (EST)
+	id EB0C06B03EA; Tue, 20 Jan 2026 08:05:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D33266B03EA; Tue, 20 Jan 2026 08:03:57 -0500 (EST)
+	id E5B3B6B03EC; Tue, 20 Jan 2026 08:05:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C69986B03EB; Tue, 20 Jan 2026 08:03:57 -0500 (EST)
+	id D5D836B03ED; Tue, 20 Jan 2026 08:05:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B3B5D6B03E9
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:03:57 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59E101AE4FE
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:03:57 +0000 (UTC)
-X-FDA: 84352359714.16.84FD8E3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AF58FC000B
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:03:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IjSYQTxZ;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C3DA16B03EA
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:05:12 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C88DC1ACA
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:05:12 +0000 (UTC)
+X-FDA: 84352362864.04.A160673
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AFAC480012
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:05:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jVGSgD5R;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768914235;
+	s=arc-20220608; t=1768914310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6HK2XDqvr0szkHQ7whJ4JBYHd5Ew9QIOfMDRmAhXuEc=;
-	b=PhmSw3YvVcwuG5airrFw1J00nSht02LqDz35B7W7eMZc4SmKZliCgJlYKNifau6F7EJXG1
-	O+JiB6HYX405Lk1lhLiJmO6I42iQ/1OSpWHp9H01ZcHl/qYBM0gS14IraMq0ZPl2a8Kr/m
-	pKD+ihuojmvjw2tDD8QPYx/AAD2Zmyk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768914235; a=rsa-sha256;
+	bh=Rm1+TH9fC63RHVsLPRFocRZcBTCLYTOhVyDXox1xIhw=;
+	b=4X0hfwSndgmxQ+u1f7WuAHLWa3jw/sZs5U+/D15bIS+6yQrg9PcFlNF1arW8qDElljTvL9
+	b2eYBclTP1KhZwSM8Jc7vCG2w0UR32NSelgUbx0+NTOvMBba+QWXgUuqYz8h2+PHFES5/i
+	wOtc60yVw21BJQsdenrwKD/QgBdkVKc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768914310; a=rsa-sha256;
 	cv=none;
-	b=5xultNP2FswRje5/lzpw7h3dnX7DKRBAErPuco/WqdYw1AE+ewp2glPQgiHjA04R+e2Z4t
-	wPtJycasvIWXxsnJ7ECvAecZ4tivzYffYYFyHgjzaj2CCt2SlMlxU4jnO99YdxtdQ94jlw
-	PpbrgMqO1M+dNJFZSnC2GyXwCB2s3Ys=
+	b=hVAQ7du9IZSXgDGRHb64nb3ouyLHCXOyRCqA1y1h2dozTnGoj0gZaHKvT7dxra6va+uxbE
+	D+JDD1U9y2gBnY3ihvNlno4iJqpx0kSNNEYj0QiHqpSS80Ek0mzwcS/+SkCzsBK3vwnMZ+
+	UW1klMnMs+HUxRf7MrTmxtU5H7Ct/nY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IjSYQTxZ;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jVGSgD5R;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D49AE60018;
-	Tue, 20 Jan 2026 13:03:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C6FC16AAE;
-	Tue, 20 Jan 2026 13:03:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B97DE44136;
+	Tue, 20 Jan 2026 13:05:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89D1C16AAE;
+	Tue, 20 Jan 2026 13:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768914234;
-	bh=VjNsk+rGW49szc0ZaDC/PxUEhkP0A5D50M/kBU1Njlc=;
+	s=k20201202; t=1768914309;
+	bh=nLvy/n1nlxvVvAZe/tXcawkxy7YqzQ4rJIes0g8gIsM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IjSYQTxZO9zOdD8dgFokigXt6el1iimLLAw18aUnWCJHji5YWJKX+76HBlEkC0+nm
-	 shaw36qPYg7q8aymOeUc3lZgVkWU+ZuL3raurQsht2qGETyMlHKnqwl1f/1l2xOSE7
-	 iiEEMdG7DRfOK6PIa5SEklmz+dMki95fKZ3WxKkzgQ9ShoxwBZ4bDZveME7VZL4SoY
-	 OgiNyNxxlSRXkBaBmCB5/xXtUVHl/OrU5jFCwY1TWAblP/9hShU2Xm5skNyRpr0Aa9
-	 6aK5NAYPw03LVj7OBXyWXzxMYZ1YG7auxZS7kGxuTX3RoBC9pZ7UpoE/YXaPqlD1pQ
-	 aEr2k0DRRsGLg==
-Date: Tue, 20 Jan 2026 15:03:48 +0200
+	b=jVGSgD5Rp1+S26FlKdh30mQwBmeaUSion/wrJY6TRn2CeLWpMfYSoIijBm3rZOtDn
+	 B8NnkxN7gQPYUZSnhffWRW3+IjJgN25XZc0kWkdEt4saUjL70y6fJCeIylbEOlrZY9
+	 Vn64zowOOPPCSxLjw8cVHRskMwr76wGxWYl7Ngcb65fJziF4r6RXv84mJC1eMjatdh
+	 GRfsVQ+Tp8dVRCRq2zwU7TWyQMFfqtMVPm+HnrBXiy2n51kutFv6xWmSzmP72dxjPu
+	 hXba3PzVdw+dTB3OvyUtkXg126TGuRvrW961FdYoQU4imDSKPhL69VMV5atQqwOKnQ
+	 aP0c/0ccLqYBQ==
+Date: Tue, 20 Jan 2026 15:05:03 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pratyush Yadav <pratyush@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -72,22 +72,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	kexec@lists.infradead.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v2 1/2] kho: use unsigned long for nr_pages
-Message-ID: <aW99NEjHAZ8n-uwW@kernel.org>
+Subject: Re: [PATCH v2 2/2] kho: simplify page initialization in
+ kho_restore_page()
+Message-ID: <aW99f7WAAAGtCfx9@kernel.org>
 References: <20260116112217.915803-1-pratyush@kernel.org>
- <20260116112217.915803-2-pratyush@kernel.org>
+ <20260116112217.915803-3-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260116112217.915803-2-pratyush@kernel.org>
+In-Reply-To: <20260116112217.915803-3-pratyush@kernel.org>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AF58FC000B
+X-Rspamd-Queue-Id: AFAC480012
 X-Rspam-User: 
-X-Stat-Signature: 6g8fzg1cny56f1g5ufoq9afhdfx3noj3
-X-HE-Tag: 1768914235-530790
-X-HE-Meta: U2FsdGVkX19B9RoNR+e1RWg0/HPeheqRblK+d1upFuh2icwq2SwoMooAqflaJKkqqq46yAiASqgsxNIeA+/YhaImaHJzVnYoKlxnnhjFetycQ8Zggb3mm8yUNwJevHG4WHbLOHoGD2LpFnBtkqtu3E4O5WCM8vwu3gZrmHEfV/fPQ4b+ysbdOTwDrViduyQ89e5C9jxqxlcwp6pzjujqwz/WcVlluCtze3A7Vu6NIZi1hepGQwP2kkCBLOcyv45mRkwli4NfZTIXB5cxUDE2rNzt+Xd0ksekseIA0IPOhr9GXzKBYk3Ft/yYF0jvhJu77Vh3kM8tAM2g5s6dKp+6oReSKaPQfonIGn/vXTHP67swonfQcmkn5EiZVV4WVn0PtIb5Tw7wyaY+srB/3D1ccFidxIfXk1KRlneZJ4NsGSE0FyemplYh8+76xV5jbeD6BGbsMvOBJTYpHHYPVHqX8ReeB0skN245sni3fPv5t6haNTqXPGhjOBOlj4dRYgWEhmxXcugmLG0UJjZgpdDUgLsPrxptUwbk6EToi97yotMXsoEjGUrhE25Q84qmr+peCtQyHutQE7aYITOiitNbV9Gk7p2iN0iZXZwJ5dhv5aLiCDDUafflT6Zr4a+lMW8EpRqO9+vu8QR8P2mXlOHkemaA95wgJ0E3EI1uiNKXP9oCnKCWqCsLdrKTrglKOHQSdY+DHLk1uHCHIR4cFWUthUn/fY9/k5qIugXV9RsE0VIOtSv/4vDJENv4Hvv2Ra6F3IdKWWHsVw/UzY2Ev6Zz/Eq6BmWaZFtywPxYuX7LedpaY1Yai2l8xYRGlYwtFhrvk2tI+H4SpLnGBfl0f02Q73IBECEqNW/qVeCxpKuLgtBi8cxQWAVKiW7yB+jyJiMxlykbzAfApau6kU5ingUauP92xKTQaFc6CETiYNaGlug60cyrZeB8gbqo6MzD4jQNAQn+UWtHEkAZ0YPBi6z
- GmtmneWD
- quqRCvQx/pAp6co0JnC4NesJ7qwD8npTaBHbbdo5hwSJBss/8YooRBExWTdCMpvKWg6ZqeiQrayC4C/5PCrXUlkEwaw5KHYtZ9iQDvsAwx9fuD7w+w97rmIYwHxihjD/p4MNqxg8v1k/77TN8gSMFHYFlq22LdqjBsNGdeb2VNYk3uPOERgyRhTDznk3nMXkh5mU9tAlTmgX0FxVck3MJWVrhofVqpTsIdwYO73CESPY8+67/344jcekd7IWkM3Gi4Jz1vPTYORXp/QW/n6OEStaNrsFxL/5uXfm65R1DJu9nSFDoyMo0raVrGn7zpUueSZP/+ir9J9JTDE445yGtsd5OSkSAkbcNKsRz7PwrCDx9QcviM5xpBuH4j9+6yfmT0DGQ
+X-Stat-Signature: 3uut1xuz1ct5amj558zuukmkm4ab7p3a
+X-HE-Tag: 1768914310-154405
+X-HE-Meta: U2FsdGVkX19+qehac9rv96B60lTvQs8PKe5wi1+/onfRzjtvdqqfZMhktv78n4rmTMDZBf3v0SXsb1pz/1Dqny49CKj9KPCP0voFCSIyDmuDbGZi7vqTznehYK7+bYJ5IQWCAUC5eFv0MWPWdvLaRM5WJ4nOFaCtBKNzvgCIv67pcoPx/Xau+u2M3Z3lIvehLLeT+Wi6gJmmnpLHSbTtKSGMP+M3MXWsnMQUZGIF+XVm2YnoJwA2m1dbRHdNx3m9WESCtdL/OmACpPAKj3lzZ13wgTCyZpTdzVGZbi/6H3pCjOfw1OA032u7mC+oGZAXJb0HugAI8m+dPwShkB2BJnO/mv7fG4jM1N1tlUKIR1z8Ewl77idnkadhf6YgP4E88WZ9MNw1AbgtEVNHyt4ByptyoB7zohbMSQ/FgYFN99+CTI/kBv7VvwDgsJEk+y1VJyhlzcHHUbysUZGc+Jf2sgmwd5TEYRMp73ZphbURvwh9J4bWkB06/Rr0Jsu/YS8tkGJmCX43egMFQCs4QiFUZcp/8YnS87LJTLOIs5tU46bqyyxXL4KvPi07ppuxBJIuhLLq0qjGjYmQ7dS4kZa3fpMxu2YkMuQwLQtIj3ont3HwX+/85cJNHqDjZSRNU0aIC7ef2crHbEiIhmO8R7wDz1fNCNlUGaJU/j6gDnLY28Vyt33Q+MilJqL8tj1K3lQ+Q5EMNDo8FPI0gfzZGXY2l9jza70qKHPWrwW22TAg6kFVVHG0AGEFSwZrSZHZe+KIrjHYq4wUWfnnAzBDK2903ZeW17bjTK/5rMmZIq6YymevfkMa/pwtiXoJAhsd8j2besetqvgVrsirn5eLEWE5numPNW+I35SZl0aFyB1wx3r8bsZoAYbqlIQn7r95URaja1aTnHbVfxouoShsdLn7la2xdVwwEt05Nh/suNAvyTRN+xs8eurWGVVvLvbrb0haTno9FhhdRMxUUs4Rj0A
+ 8Y6LiHW/
+ mOQJmXYSeToCwInPCSP9PZLhQt8rpST6I/FsB9G1sHpOGgL5Qdv67UIza+UAYF6ZbvIwvlO6hCzDvO/0ZVsMdYZhBDsc0CHfg3t582j3M9Sei3wmruSxOkwagym7FUGVJRRl1HToxy27demVDaNi0ApRew659AECPjOq34lIpVYXiAtHP7pWD+br0YdpFieM240a5yUWC966WNjDEPvHHaJlKnddtN2hnKAkK8AYVzJY8xUL0Ogy1J33K0DHZ8fB5piZCA6nUBoys4+LHIdIAwUHTwz+v+Yy0EcVzDVqGg/etAySqUKn6RT2Dp+nPZhuW028n
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,12 +97,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 11:22:14AM +0000, Pratyush Yadav wrote:
-> With 4k pages, a 32-bit nr_pages can span up to 16 TiB. While it is a
-> lot, there exist systems with terabytes of RAM. gup is also moving to
-> using long for nr_pages. Use unsigned long and make KHO future-proof.
+On Fri, Jan 16, 2026 at 11:22:15AM +0000, Pratyush Yadav wrote:
+> When restoring a page (from kho_restore_pages()) or folio (from
+> kho_restore_folio()), KHO must initialize the struct page. The
+> initialization differs slightly depending on if a folio is requested or
+> a set of 0-order pages is requested.
 > 
-> Suggested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Conceptually, it is quite simple to understand. When restoring 0-order
+> pages, each page gets a refcount of 1 and that's it. When restoring a
+> folio, head page gets a refcount of 1 and tail pages get 0.
+> 
+> kho_restore_page() tries to combine the two separate initialization flow
+> into one piece of code. While it works fine, it is more complicated to
+> read than it needs to be. Make the code simpler by splitting the two
+> initalization paths into two separate functions. This improves
+> readability by clearly showing how each type must be initialized.
+> 
 > Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
@@ -109,85 +120,74 @@ Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
 > 
 > Changes in v2:
-> - New in v2.
+> - Use unsigned long for nr_pages.
 > 
->  include/linux/kexec_handover.h     |  6 +++---
->  kernel/liveupdate/kexec_handover.c | 11 ++++++-----
->  2 files changed, 9 insertions(+), 8 deletions(-)
+>  kernel/liveupdate/kexec_handover.c | 40 +++++++++++++++++++-----------
+>  1 file changed, 26 insertions(+), 14 deletions(-)
 > 
-> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-> index 5f7b9de97e8d..81814aa92370 100644
-> --- a/include/linux/kexec_handover.h
-> +++ b/include/linux/kexec_handover.h
-> @@ -45,15 +45,15 @@ bool is_kho_boot(void);
->  
->  int kho_preserve_folio(struct folio *folio);
->  void kho_unpreserve_folio(struct folio *folio);
-> -int kho_preserve_pages(struct page *page, unsigned int nr_pages);
-> -void kho_unpreserve_pages(struct page *page, unsigned int nr_pages);
-> +int kho_preserve_pages(struct page *page, unsigned long nr_pages);
-> +void kho_unpreserve_pages(struct page *page, unsigned long nr_pages);
->  int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
->  void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation);
->  void *kho_alloc_preserve(size_t size);
->  void kho_unpreserve_free(void *mem);
->  void kho_restore_free(void *mem);
->  struct folio *kho_restore_folio(phys_addr_t phys);
-> -struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
-> +struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages);
->  void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
->  int kho_add_subtree(const char *name, void *fdt);
->  void kho_remove_subtree(void *fdt);
 > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 9dc51fab604f..709484fbf9fd 100644
+> index 709484fbf9fd..92da76977684 100644
 > --- a/kernel/liveupdate/kexec_handover.c
 > +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -222,7 +222,8 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+> @@ -219,11 +219,32 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+>  	return 0;
+>  }
+>  
+> +/* For physically contiguous 0-order pages. */
+> +static void kho_init_pages(struct page *page, unsigned long nr_pages)
+> +{
+> +	for (unsigned long i = 0; i < nr_pages; i++)
+> +		set_page_count(page + i, 1);
+> +}
+> +
+> +static void kho_init_folio(struct page *page, unsigned int order)
+> +{
+> +	unsigned long nr_pages = (1 << order);
+> +
+> +	/* Head page gets refcount of 1. */
+> +	set_page_count(page, 1);
+> +
+> +	/* For higher order folios, tail pages get a page count of zero. */
+> +	for (unsigned long i = 1; i < nr_pages; i++)
+> +		set_page_count(page + i, 0);
+> +
+> +	if (order > 0)
+> +		prep_compound_page(page, order);
+> +}
+> +
 >  static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
 >  {
 >  	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
-> -	unsigned int nr_pages, ref_cnt;
-> +	unsigned long nr_pages;
-> +	unsigned int ref_cnt;
+>  	unsigned long nr_pages;
+> -	unsigned int ref_cnt;
 >  	union kho_page_info info;
 >  
 >  	if (!page)
-> @@ -249,7 +250,7 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
->  	 * count of 1
->  	 */
->  	ref_cnt = is_folio ? 0 : 1;
-> -	for (unsigned int i = 1; i < nr_pages; i++)
-> +	for (unsigned long i = 1; i < nr_pages; i++)
->  		set_page_count(page + i, ref_cnt);
+> @@ -241,20 +262,11 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
 >  
->  	if (is_folio && info.order)
-> @@ -283,7 +284,7 @@ EXPORT_SYMBOL_GPL(kho_restore_folio);
->   *
->   * Return: 0 on success, error code on failure
->   */
-> -struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages)
-> +struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
->  {
->  	const unsigned long start_pfn = PHYS_PFN(phys);
->  	const unsigned long end_pfn = start_pfn + nr_pages;
-> @@ -829,7 +830,7 @@ EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
->   *
->   * Return: 0 on success, error code on failure
->   */
-> -int kho_preserve_pages(struct page *page, unsigned int nr_pages)
-> +int kho_preserve_pages(struct page *page, unsigned long nr_pages)
->  {
->  	struct kho_mem_track *track = &kho_out.track;
->  	const unsigned long start_pfn = page_to_pfn(page);
-> @@ -873,7 +874,7 @@ EXPORT_SYMBOL_GPL(kho_preserve_pages);
->   * kho_preserve_pages() call. Unpreserving arbitrary sub-ranges of larger
->   * preserved blocks is not supported.
->   */
-> -void kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
-> +void kho_unpreserve_pages(struct page *page, unsigned long nr_pages)
->  {
->  	struct kho_mem_track *track = &kho_out.track;
->  	const unsigned long start_pfn = page_to_pfn(page);
+>  	/* Clear private to make sure later restores on this page error out. */
+>  	page->private = 0;
+> -	/* Head page gets refcount of 1. */
+> -	set_page_count(page, 1);
+> -
+> -	/*
+> -	 * For higher order folios, tail pages get a page count of zero.
+> -	 * For physically contiguous order-0 pages every pages gets a page
+> -	 * count of 1
+> -	 */
+> -	ref_cnt = is_folio ? 0 : 1;
+> -	for (unsigned long i = 1; i < nr_pages; i++)
+> -		set_page_count(page + i, ref_cnt);
+>  
+> -	if (is_folio && info.order)
+> -		prep_compound_page(page, info.order);
+> +	if (is_folio)
+> +		kho_init_folio(page, info.order);
+> +	else
+> +		kho_init_pages(page, nr_pages);
+>  
+>  	adjust_managed_page_count(page, nr_pages);
+>  	return page;
 > -- 
 > 2.52.0.457.g6b5491de43-goog
 > 
