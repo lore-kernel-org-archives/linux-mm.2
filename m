@@ -4,132 +4,204 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F73D2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 14:35:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D30ED2ECE9
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 14:36:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29A976B0425; Tue, 20 Jan 2026 09:35:43 -0500 (EST)
+	id D33176B0426; Tue, 20 Jan 2026 09:35:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21E256B0426; Tue, 20 Jan 2026 09:35:43 -0500 (EST)
+	id D0AC26B0428; Tue, 20 Jan 2026 09:35:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A066B0427; Tue, 20 Jan 2026 09:35:43 -0500 (EST)
+	id BB92A6B0429; Tue, 20 Jan 2026 09:35:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F3F176B0425
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:35:42 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A33C598BF
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:35:42 +0000 (UTC)
-X-FDA: 84352590924.01.7E1F2D0
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2C09C180004
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:35:39 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fzTmFh6U;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0uyNt8Te;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fzTmFh6U;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0uyNt8Te;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768919740; a=rsa-sha256;
-	cv=none;
-	b=8oig8lRG1sa6dgto+1yRe1dYON8PtsxQZIpW8EqbK5wbHZMHGqaKVMOR57Giil+GoV6Nmu
-	brcrycdniHHUBxI5AL7lGXWMxRmSAK134oaWQh6ep/z4QC5R4oEQI80kDEqXGQ6LziXFd9
-	/QSbHdxTYkTIkD7tMBIEDHgE+NJzmS0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fzTmFh6U;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0uyNt8Te;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fzTmFh6U;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0uyNt8Te;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AAAE76B0426
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:35:59 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 683A21AF4DC
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:35:59 +0000 (UTC)
+X-FDA: 84352591638.30.22281CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BAB7C16000A
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:35:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0Yb6Fai;
+	spf=pass (imf08.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768919740;
+	s=arc-20220608; t=1768919757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dr07aLXDVCjM7i/UybL6ay/mRo+PckVKNWM0IK2ZlRk=;
-	b=OIKWecuIEOhCpEpZKGtKN6CjBgANgWlxfDI+9AQaXhi6h6MgSUkHzWMAp+hhRawrVb3rTg
-	G/bPL9tAabooZSf/mIKCf/7ClCZ0Rv8I+i43LJwEoqlk5PECkcJJoLm9ys1t0kvk39+jzI
-	/pW9pQOUKOFwN2e+YHqyo769AmOIGn4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6708A5BCCD;
-	Tue, 20 Jan 2026 14:35:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768919738; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dr07aLXDVCjM7i/UybL6ay/mRo+PckVKNWM0IK2ZlRk=;
-	b=fzTmFh6UPmm1R2MPTU/2h5WoDP5GcRIbztOJ37Wf0G2Ho7SS5T6lRdqZkFyQmcxULesV4C
-	dytHCyddQBpjDhgRwUhhD4N0WRbT2zJlEhSN5tgbUbt/wVfejG1RjB1bvc0duo7t/o8JBO
-	pJwPb8f1ZVR9gajrVhGnvBk46JEwxlk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768919738;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dr07aLXDVCjM7i/UybL6ay/mRo+PckVKNWM0IK2ZlRk=;
-	b=0uyNt8Tewmtk1dT9/EczhE/wUA5iTwOeidApiLlYykzMTfAVxyEXD2CR4kG8tH62pZ5353
-	iL/Jig2ZSyQATfAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768919738; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dr07aLXDVCjM7i/UybL6ay/mRo+PckVKNWM0IK2ZlRk=;
-	b=fzTmFh6UPmm1R2MPTU/2h5WoDP5GcRIbztOJ37Wf0G2Ho7SS5T6lRdqZkFyQmcxULesV4C
-	dytHCyddQBpjDhgRwUhhD4N0WRbT2zJlEhSN5tgbUbt/wVfejG1RjB1bvc0duo7t/o8JBO
-	pJwPb8f1ZVR9gajrVhGnvBk46JEwxlk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768919738;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dr07aLXDVCjM7i/UybL6ay/mRo+PckVKNWM0IK2ZlRk=;
-	b=0uyNt8Tewmtk1dT9/EczhE/wUA5iTwOeidApiLlYykzMTfAVxyEXD2CR4kG8tH62pZ5353
-	iL/Jig2ZSyQATfAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BEEF13EA63;
-	Tue, 20 Jan 2026 14:35:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 79qaLrmSb2mcZgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 20 Jan 2026 14:35:37 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 68DD6A09DA; Tue, 20 Jan 2026 15:35:33 +0100 (CET)
-Date: Tue, 20 Jan 2026 15:35:33 +0100
-From: Jan Kara <jack@suse.cz>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Bernd Schubert <bernd@bsbernd.com>, Jan Kara <jack@suse.cz>, 
-	Joanne Koong <joannelkoong@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Horst Birthelmer <hbirthelmer@ddn.com>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: Re: __folio_end_writeback() lockdep issue
-Message-ID: <4sn6k56c7g3jwvzze4imc4pilmomekvcelo7zo2awjqxsifaqe@djs5p2l55q64>
-References: <9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com>
- <b7b72183-f9e1-4e58-b40f-45a267cc6831@bsbernd.com>
- <aWJ-pHIY8Y8sjLeC@casper.infradead.org>
- <wu7mu22kgr7pmzrneq6rkivhwvpbximyrkouciktl7wf5w7wur@rsyqyczopba2>
+	bh=UbFweHnCfNFJ0Lr75y2VSbMSAb/CPhNz6+GMTbzeNoM=;
+	b=qgx6kydw8KLb27jT6WAz7vLDs0VbX7jw1YAb/Qvi/ZtoxeZ/r9cbPvdnde1fcBKMQSmwTs
+	tJLTLPHKRy1yDaLQHhsCq4pY6L4nWzNHtxbXsMjFntWz+IQwDwH00cZOn7iy6CfH5DtvM+
+	7ZCMuedgKAsPBuB5I7Ol+0458jjrCrA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0Yb6Fai;
+	spf=pass (imf08.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768919757; a=rsa-sha256;
+	cv=none;
+	b=Thg18rP9KqlabBChqF8jAMyUBlahh1ZZO7lmpEBwqVR4Z8xBR+jJKeVYa2XP4fS3HkWSvO
+	joZFO8N9QGvw+oGMe2GHpV2ndsNF2whcswOB2qjzEUcbA+ziMyhQ1L5+cMzoQL4SBD1miu
+	hsOH73DT/QlBWU0yPejQ6Csv8sX6vYg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F4094391F;
+	Tue, 20 Jan 2026 14:35:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E02C16AAE;
+	Tue, 20 Jan 2026 14:35:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768919756;
+	bh=dpS+PxEHDbPvZHdk4rsi82HgYDznM+Ad7e2Y2GUOqM0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=c0Yb6FaiYwLqlqQz3OwDA/IDqUxyfXBp9KbKpjmBBfSeVXvxXUbg9q9NdfGgmZWgW
+	 LBb/OzfIa5D1/ur6fI8X1Vk7TdmXZKRMcEbjf9JlXnfEB9MYhrugESVBOALo3dfsJN
+	 c3kyXsUItLSCJTQSL1vvZL/3HJKK84XphEQiwTOn6YtKVhBnj9QBGOT4f0CwrcGO8u
+	 yGALNKq6Knah/9QOmKYxcHJkuuYwydE3ayRFjpzgUGf4tYVBIXe6uQ3AjWXvBoJsWL
+	 PgAgzCMENAMM68Vji4VPbqanPmS2G1JSuw16TDRDByd2ZHk+IW8jbpd/hMVDkrbbE8
+	 vt/1AfPD2XjbQ==
+Message-ID: <2ed97731c54ef130ea58861a91c80dacd785de9a.camel@kernel.org>
+Subject: Re: [PATCH v2 01/31] Documentation: document EXPORT_OP_NOLOCKS
+From: Jeff Layton <jlayton@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro	
+ <viro@zeniv.linux.org.uk>, Chuck Lever <chuck.lever@oracle.com>, NeilBrown	
+ <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo	
+ <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Amir Goldstein	
+ <amir73il@gmail.com>, Hugh Dickins <hughd@google.com>, Baolin Wang	
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+  Theodore Ts'o	 <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
+ Jan Kara	 <jack@suse.com>, Gao Xiang <xiang@kernel.org>, Chao Yu
+ <chao@kernel.org>, Yue Hu	 <zbestahu@gmail.com>, Jeffle Xu
+ <jefflexu@linux.alibaba.com>, Sandeep Dhavale	 <dhavale@google.com>, Hongbo
+ Li <lihongbo22@huawei.com>, Chunhai Guo	 <guochunhai@vivo.com>, Carlos
+ Maiolino <cem@kernel.org>, Ilya Dryomov	 <idryomov@gmail.com>, Alex Markuze
+ <amarkuze@redhat.com>, Viacheslav Dubeyko	 <slava@dubeyko.com>, Chris Mason
+ <clm@fb.com>, David Sterba <dsterba@suse.com>,  Luis de Bethencourt	
+ <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, Phillip Lougher	
+ <phillip@squashfs.org.uk>, Steve French <sfrench@samba.org>, Paulo
+ Alcantara	 <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Shyam Prasad N	 <sprasad@microsoft.com>, Bharath SM
+ <bharathsm@microsoft.com>, Miklos Szeredi	 <miklos@szeredi.hu>, Mike
+ Marshall <hubcap@omnibond.com>, Martin Brandenburg	 <martin@omnibond.com>,
+ Mark Fasheh <mark@fasheh.com>, Joel Becker	 <jlbec@evilplan.org>, Joseph Qi
+ <joseph.qi@linux.alibaba.com>, Konstantin Komarov
+ <almaz.alexandrovich@paragon-software.com>, Ryusuke Konishi
+ <konishi.ryusuke@gmail.com>,  Trond Myklebust <trondmy@kernel.org>, Anna
+ Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, David
+ Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan
+ Kara <jack@suse.cz>,  Andreas Gruenbacher	 <agruenba@redhat.com>, OGAWA
+ Hirofumi <hirofumi@mail.parknet.co.jp>, Jaegeuk Kim <jaegeuk@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, David Laight	
+ <david.laight.linux@gmail.com>, Dave Chinner <david@fromorbit.com>, 
+	linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-ext4@vger.kernel.org, 	linux-erofs@lists.ozlabs.org,
+ linux-xfs@vger.kernel.org, 	ceph-devel@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, 	linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, 	linux-unionfs@vger.kernel.org,
+ devel@lists.orangefs.org, 	ocfs2-devel@lists.linux.dev,
+ ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org, 
+	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
+	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-doc@vger.kernel.org
+Date: Tue, 20 Jan 2026 09:35:48 -0500
+In-Reply-To: <707f08e114bf603caf7de020bb630d5477e86bca.camel@kernel.org>
+References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
+			 <20260119-exportfs-nfsd-v2-1-d93368f903bd@kernel.org>
+			 <aW8yV6v8ZDiynOUm@infradead.org>
+		 <9b64bed72e43d0bf24e9b1e3bc770c4a87082762.camel@kernel.org>
+	 <707f08e114bf603caf7de020bb630d5477e86bca.camel@kernel.org>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
+ n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
+ egyjnSsFt7EGoDjdKqr1TS9syJYFjagYtvWk/UfHlW09X+jOh4vYtfX7iYSx/NfqV3W1D7EDi0PqV
+ T2h6v8i8YqsATFPwO4nuiTmL6I40ZofxVd+9wdRI4Db8yUNA4ZSP2nqLcLtFjClYRBoJvRWvsv4lm
+ 0OX6MYPtv76hka8lW4mnRmZqqx3UtfHX/hF/zH24Gj7A6sYKYLCU3YrI2Ogiu7/ksKcl7goQjpvtV
+ YrOOI5VGLHge0awt7bhMCTM9KAfPc+xL/ZxAMVWd3NCk5SamL2cE99UWgtvNOIYU8m6EjTLhsj8sn
+ VluJH0/RcxEeFbnSaswVChNSGa7mXJrTR22lRL6ZPjdMgS2Km90haWPRc8Wolcz07Y2se0xpGVLEQ
+ cDEsvv5IMmeMe1/qLZ6NaVkNuL3WOXvxaVT9USW1+/SGipO2IpKJjeDZfehlB/kpfF24+RrK+seQf
+ CBYyUE8QJpvTZyfUHNYldXlrjO6n5MdOempLqWpfOmcGkwnyNRBR46g/jf8KnPRwXs509yAqDB6sE
+ LZH+yWr9LQZEwARAQABtCVKZWZmIExheXRvbiA8amxheXRvbkBwb29jaGllcmVkcy5uZXQ+iQI7BB
+ MBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCTpXWPAIZAQAKCRAADmhBGVaCFc65D/4
+ gBLNMHopQYgG/9RIM3kgFCCQV0pLv0hcg1cjr+bPI5f1PzJoOVi9s0wBDHwp8+vtHgYhM54yt43uI
+ 7Htij0RHFL5eFqoVT4TSfAg2qlvNemJEOY0e4daljjmZM7UtmpGs9NN0r9r50W82eb5Kw5bc/r0km
+ R/arUS2st+ecRsCnwAOj6HiURwIgfDMHGPtSkoPpu3DDp/cjcYUg3HaOJuTjtGHFH963B+f+hyQ2B
+ rQZBBE76ErgTDJ2Db9Ey0kw7VEZ4I2nnVUY9B5dE2pJFVO5HJBMp30fUGKvwaKqYCU2iAKxdmJXRI
+ ONb7dSde8LqZahuunPDMZyMA5+mkQl7kpIpR6kVDIiqmxzRuPeiMP7O2FCUlS2DnJnRVrHmCljLkZ
+ Wf7ZUA22wJpepBligemtSRSbqCyZ3B48zJ8g5B8xLEntPo/NknSJaYRvfEQqGxgk5kkNWMIMDkfQO
+ lDSXZvoxqU9wFH/9jTv1/6p8dHeGM0BsbBLMqQaqnWiVt5mG92E1zkOW69LnoozE6Le+12DsNW7Rj
+ iR5K+27MObjXEYIW7FIvNN/TQ6U1EOsdxwB8o//Yfc3p2QqPr5uS93SDDan5ehH59BnHpguTc27Xi
+ QQZ9EGiieCUx6Zh2ze3X2UW9YNzE15uKwkkuEIj60NvQRmEDfweYfOfPVOueC+iFifbQgSmVmZiBM
+ YXl0b24gPGpsYXl0b25AcmVkaGF0LmNvbT6JAjgEEwECACIFAk6V0q0CGwMGCwkIBwMCBhUIAgkKC
+ wQWAgMBAh4BAheAAAoJEAAOaEEZVoIViKUQALpvsacTMWWOd7SlPFzIYy2/fjvKlfB/Xs4YdNcf9q
+ LqF+lk2RBUHdR/dGwZpvw/OLmnZ8TryDo2zXVJNWEEUFNc7wQpl3i78r6UU/GUY/RQmOgPhs3epQC
+ 3PMJj4xFx+VuVcf/MXgDDdBUHaCTT793hyBeDbQuciARDJAW24Q1RCmjcwWIV/pgrlFa4lAXsmhoa
+ c8UPc82Ijrs6ivlTweFf16VBc4nSLX5FB3ls7S5noRhm5/Zsd4PGPgIHgCZcPgkAnU1S/A/rSqf3F
+ LpU+CbVBDvlVAnOq9gfNF+QiTlOHdZVIe4gEYAU3CUjbleywQqV02BKxPVM0C5/oVjMVx3bri75n1
+ TkBYGmqAXy9usCkHIsG5CBHmphv9MHmqMZQVsxvCzfnI5IO1+7MoloeeW/lxuyd0pU88dZsV/riHw
+ 87i2GJUJtVlMl5IGBNFpqoNUoqmvRfEMeXhy/kUX4Xc03I1coZIgmwLmCSXwx9MaCPFzV/dOOrju2
+ xjO+2sYyB5BNtxRqUEyXglpujFZqJxxau7E0eXoYgoY9gtFGsspzFkVNntamVXEWVVgzJJr/EWW0y
+ +jNd54MfPRqH+eCGuqlnNLktSAVz1MvVRY1dxUltSlDZT7P2bUoMorIPu8p7ZCg9dyX1+9T6Muc5d
+ Hxf/BBP/ir+3e8JTFQBFOiLNdFtB9KZWZmIExheXRvbiA8amxheXRvbkBzYW1iYS5vcmc+iQI4BBM
+ BAgAiBQJOldK9AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRAADmhBGVaCFWgWD/0ZRi4h
+ N9FK2BdQs9RwNnFZUr7JidAWfCrs37XrA/56olQl3ojn0fQtrP4DbTmCuh0SfMijB24psy1GnkPep
+ naQ6VRf7Dxg/Y8muZELSOtsv2CKt3/02J1BBitrkkqmHyni5fLLYYg6fub0T/8Kwo1qGPdu1hx2BQ
+ RERYtQ/S5d/T0cACdlzi6w8rs5f09hU9Tu4qV1JLKmBTgUWKN969HPRkxiojLQziHVyM/weR5Reu6
+ FZVNuVBGqBD+sfk/c98VJHjsQhYJijcsmgMb1NohAzwrBKcSGKOWJToGEO/1RkIN8tqGnYNp2G+aR
+ 685D0chgTl1WzPRM6mFG1+n2b2RR95DxumKVpwBwdLPoCkI24JkeDJ7lXSe3uFWISstFGt0HL8Eew
+ P8RuGC8s5h7Ct91HMNQTbjgA+Vi1foWUVXpEintAKgoywaIDlJfTZIl6Ew8ETN/7DLy8bXYgq0Xzh
+ aKg3CnOUuGQV5/nl4OAX/3jocT5Cz/OtAiNYj5mLPeL5z2ZszjoCAH6caqsF2oLyAnLqRgDgR+wTQ
+ T6gMhr2IRsl+cp8gPHBwQ4uZMb+X00c/Amm9VfviT+BI7B66cnC7Zv6Gvmtu2rEjWDGWPqUgccB7h
+ dMKnKDthkA227/82tYoFiFMb/NwtgGrn5n2vwJyKN6SEoygGrNt0SI84y6hEVbQlSmVmZiBMYXl0b
+ 24gPGpsYXl0b25AcHJpbWFyeWRhdGEuY29tPokCOQQTAQIAIwUCU4xmKQIbAwcLCQgHAwIBBhUIAg
+ kKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIV1H0P/j4OUTwFd7BBbpoSp695qb6HqCzWMuExsp8nZjr
+ uymMaeZbGr3OWMNEXRI1FWNHMtcMHWLP/RaDqCJil28proO+PQ/yPhsr2QqJcW4nr91tBrv/MqItu
+ AXLYlsgXqp4BxLP67bzRJ1Bd2x0bWXurpEXY//VBOLnODqThGEcL7jouwjmnRh9FTKZfBDpFRaEfD
+ FOXIfAkMKBa/c9TQwRpx2DPsl3eFWVCNuNGKeGsirLqCxUg5kWTxEorROppz9oU4HPicL6rRH22Ce
+ 6nOAON2vHvhkUuO3GbffhrcsPD4DaYup4ic+DxWm+DaSSRJ+e1yJvwi6NmQ9P9UAuLG93S2MdNNbo
+ sZ9P8k2mTOVKMc+GooI9Ve/vH8unwitwo7ORMVXhJeU6Q0X7zf3SjwDq2lBhn1DSuTsn2DbsNTiDv
+ qrAaCvbsTsw+SZRwF85eG67eAwouYk+dnKmp1q57LDKMyzysij2oDKbcBlwB/TeX16p8+LxECv51a
+ sjS9TInnipssssUDrHIvoTTXWcz7Y5wIngxDFwT8rPY3EggzLGfK5Zx2Q5S/N0FfmADmKknG/D8qG
+ IcJE574D956tiUDKN4I+/g125ORR1v7bP+OIaayAvq17RP+qcAqkxc0x8iCYVCYDouDyNvWPGRhbL
+ UO7mlBpjW9jK9e2fvZY9iw3QzIPGKtClKZWZmIExheXRvbiA8amVmZi5sYXl0b25AcHJpbWFyeWRh
+ dGEuY29tPokCOQQTAQIAIwUCU4xmUAIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOa
+ EEZVoIVzJoQALFCS6n/FHQS+hIzHIb56JbokhK0AFqoLVzLKzrnaeXhE5isWcVg0eoV2oTScIwUSU
+ apy94if69tnUo4Q7YNt8/6yFM6hwZAxFjOXR0ciGE3Q+Z1zi49Ox51yjGMQGxlakV9ep4sV/d5a50
+ M+LFTmYSAFp6HY23JN9PkjVJC4PUv5DYRbOZ6Y1+TfXKBAewMVqtwT1Y+LPlfmI8dbbbuUX/kKZ5d
+ dhV2736fgyfpslvJKYl0YifUOVy4D1G/oSycyHkJG78OvX4JKcf2kKzVvg7/Rnv+AueCfFQ6nGwPn
+ 0P91I7TEOC4XfZ6a1K3uTp4fPPs1Wn75X7K8lzJP/p8lme40uqwAyBjk+IA5VGd+CVRiyJTpGZwA0
+ jwSYLyXboX+Dqm9pSYzmC9+/AE7lIgpWj+3iNisp1SWtHc4pdtQ5EU2SEz8yKvDbD0lNDbv4ljI7e
+ flPsvN6vOrxz24mCliEco5DwhpaaSnzWnbAPXhQDWb/lUgs/JNk8dtwmvWnqCwRqElMLVisAbJmC0
+ BhZ/Ab4sph3EaiZfdXKhiQqSGdK4La3OTJOJYZphPdGgnkvDV9Pl1QZ0ijXQrVIy3zd6VCNaKYq7B
+ AKidn5g/2Q8oio9Tf4XfdZ9dtwcB+bwDJFgvvDYaZ5bI3ln4V3EyW5i2NfXazz/GA/I/ZtbsigCFc
+ 8ftCBKZWZmIExheXRvbiA8amxheXRvbkBrZXJuZWwub3JnPokCOAQTAQIAIgUCWe8u6AIbAwYLCQg
+ HAwIGFQgCCQoLBBYCAwECHgECF4AACgkQAA5oQRlWghUuCg/+Lb/xGxZD2Q1oJVAE37uW308UpVSD
+ 2tAMJUvFTdDbfe3zKlPDTuVsyNsALBGclPLagJ5ZTP+Vp2irAN9uwBuacBOTtmOdz4ZN2tdvNgozz
+ uxp4CHBDVzAslUi2idy+xpsp47DWPxYFIRP3M8QG/aNW052LaPc0cedYxp8+9eiVUNpxF4SiU4i9J
+ DfX/sn9XcfoVZIxMpCRE750zvJvcCUz9HojsrMQ1NFc7MFT1z3MOW2/RlzPcog7xvR5ENPH19ojRD
+ CHqumUHRry+RF0lH00clzX/W8OrQJZtoBPXv9ahka/Vp7kEulcBJr1cH5Wz/WprhsIM7U9pse1f1g
+ Yy9YbXtWctUz8uvDR7shsQxAhX3qO7DilMtuGo1v97I/Kx4gXQ52syh/w6EBny71CZrOgD6kJwPVV
+ AaM1LRC28muq91WCFhs/nzHozpbzcheyGtMUI2Ao4K6mnY+3zIuXPygZMFr9KXE6fF7HzKxKuZMJO
+ aEZCiDOq0anx6FmOzs5E6Jqdpo/mtI8beK+BE7Va6ni7YrQlnT0i3vaTVMTiCThbqsB20VrbMjlhp
+ f8lfK1XVNbRq/R7GZ9zHESlsa35ha60yd/j3pu5hT2xyy8krV8vGhHvnJ1XRMJBAB/UYb6FyC7S+m
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wu7mu22kgr7pmzrneq6rkivhwvpbximyrkouciktl7wf5w7wur@rsyqyczopba2>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2C09C180004
-X-Stat-Signature: byspdt3pss67kf8tyjze15n4stjrt5c8
 X-Rspam-User: 
-X-HE-Tag: 1768919739-904075
-X-HE-Meta: U2FsdGVkX1/S2+ae1zzXn9+Dn650pqhshwO4Lp9eb6oOInVwZ6VPZoSCFscBRLUFs0lSTzq2WOrm6lj5YJ/fYjl/KCls+xIvtqJcjle5H9fTeT3EFajeQgDoJM6a5GF1bJYmUatIjdY+/IhnLcE34LW9gFKxN7T8lJEI1nl3ZCIlxpZ4n2KBXcKMGTaSccaQJ+d8yJl4b3R9AOje1qXfk8a9MtOrENibZd/9puYHMwKEn9ZBncYySQP0dbx6/K0bMRC1U9b6f30pG/axMtuZjrhwmHWlL1ycQRn13Jm6bha6RsbRFLCFV9BiqWRV6Yxf5BZmtGUwZEN9FEh9a1kFNF1DBwA3WUyQrAdXuzZ92na9RH/l27W2Rq2sFyaMuCo1+SkILtlPJoe11KN7ETuW+o71r2e+D3FPH8FgPJkN7iRmbssGzD8b/kT5ViFaMJu6fV71/0whdjDutc2RHG67p5PCpfyjKAA1AgL5/3BzK4zm7ABGGbDEz1ZIHwtql2jpkbUb7byAeWBNrNrRKFFYNoN2mWGTNkO7XbTC/Au9nDsM7JdU57rM+iKaQ9dBuL0/AWE0xJnD8p7al99yimgnc4aAMEwNGh7fWBDZsSW5z0wJG//7p9pRSJo25OLA90AP7FyWnAYesIykc9HEKTMcYTPkCqZJa9tVJ89aCIjsKOF4tgKQiVZMvaAKqlNzXnFcGwlI2+QwbRsp7aXk7+tsY7djnC31cvTEKkiKlUAn+F189539Sg3biScdPRXIUGHHFqiIi0hxm2FjBXg6a38CiD3OQIQIWKkL9Vavxr6W0omU1hUBu83lhfzb8VWUZdopR8iJ6wwpzPO8B4S0+fhDAmXBD4Rs+B7mPrULQy8Y7Jq/wLdRGlKgfy4NwwsaAKuETKqTeKIgiunLEsXnXBY7q2ONje0diYD/FqfF4Q024oiP8b2a98yFGCjaF2NOakWXi8fvhZL3Cq8KrkDqXPF
- zRznAfv3
- S34vd/d/tfXjj/eMPZ1rC+FPr/kTn93xRTEvGlqiyosRdUz+GuEBCFaJyjolNPYV637saaI+lAADLfG/HhjxTftbKhY1OFyrV4O/0bTV98VYIuM2vqlgBnceLPjNR2hC1+foG1gddrcZLPwiydvQeY53yHWgO3MbGeNh54FSGBGEmsXTKRnXkiDy5ZrTrS2AU7KAPYhtVASUOSvzAhCdRD8slB1GO/R1hTeZ4ou1R+ALWc7v0Fueb0/nBso2cYoSVHNgwvjOaEfXc1/gUhXyVMf1PMV962CECxERQCpaVlN4rJmvaG+sEAkzcACwkxySRA6cUXJeDxy7Jc7o93DCA0GuBjv2Rmh1vYe2nSv0bGArrQTkWsWOiVHErLoGD78R/YCMk0TzdsYGR/Tq237cmxebjr6aP1o4CCVfw+T/zu2H1ymA=
+X-Stat-Signature: o97zciunze91xfhs6atcisu7bsu6uw3b
+X-Rspamd-Queue-Id: BAB7C16000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768919757-44343
+X-HE-Meta: U2FsdGVkX19ZbAA8sknFV7FisN3CSB0hBJ2223XvZsWNxIRHneAe0DRylMnjrBPq1dMT74A0LGExigPrr6gJ5OFH5gxLhTq9h9AGBzXJ+eHzzeEf8wT7LKM01wj2OwE/5/8Ttk4bY/AfmHLjNmtXXYFOo0xG3qzOTS/U2jQ7Lqnnp+90OO3eT01ZGM2yIKgiXSbV46O+dUvx77r8q1eapIQPPjFDQ6iSaFVHxFQav2Xqy2YaQg00NXwfv/STV536bFLzQXIBJUSt1GBxt//pjSg1h5xz1VoTpL4tKG3CdvTWhmatGKJmLrypUundJY8yAwn4AKUdJzPLebEEakfvJVIwUmJ9PzRPm9eM6hMYq4kuOcDhGNwlXYG2SHPFwk+1cJo96rpJk89iPwnQB3zp2Jw+s1XB81hyzG7dwMOQLF7HEA4eqzipLBO4SzcmFr3WigjI9S+mgIR4ugUPXGEmQCzLGDKDrQkvzmHqIyAgC3hCmEOFys47BOIfvlgvyJBnNbORUkPuH81NRfP2ZndOGh7yDxVu4TwENh75IMHsP1UA7BMJe+lBL4mLqyoOjpPlleNQ2WoD/3BVZURZmlTRqMUldGzmitlmm0ZQtkEWKQt+ZUZAV8Gzp/hVEayliOe2X0Y0Gpfian93AeDTiRdSudIN0Wd7rl78V6JGwXj6bJCFZAOaR5LPbCjvMWuxkrbsKG1bWLgIkUVVho8AfABOlg8d9nrQVEXbfw/1dIgdaxlCHdZcB6FMCLoQB/0G92Yes6EmHRdnuM9mfvu3Aa13XRmkJi+XuckrbdyrFm9HHKGCfULeSJKfbQNFZTtY/0bF4CNiu7kVOlKj+OZw0Pp0bMGrPPqVmmBe4RJd9TvpofKRPFnyXJBl+42X68un1yQz9RIMl6G30JoOcgF2DpD0CqwvMBzmTW9o6XLpACNXs6TyJISg7Vu0Gzig08OFKOWa3kM9xlFYtxBwkzDALcj
+ tf12YYwG
+ XTEgngNf3jI7lg7PBukQFU7ZbBemcOyOizH0sp8MOJxatr74=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,88 +210,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 12-01-26 14:06:26, Jan Kara wrote:
-> On Sat 10-01-26 16:30:28, Matthew Wilcox wrote:
-> > On Sat, Jan 10, 2026 at 04:31:28PM +0100, Bernd Schubert wrote:
-> > > [  872.499480]  Possible interrupt unsafe locking scenario:
-> > > [  872.499480] 
-> > > [  872.500326]        CPU0                    CPU1
-> > > [  872.500906]        ----                    ----
-> > > [  872.501464]   lock(&p->sequence);
-> > > [  872.501923]                                local_irq_disable();
-> > > [  872.502615]                                lock(&xa->xa_lock#4);
-> > > [  872.503327]                                lock(&p->sequence);
-> > > [  872.504116]   <Interrupt>
-> > > [  872.504513]     lock(&xa->xa_lock#4);
-> > > 
-> > > 
-> > > Which is introduced by commit 2841808f35ee for all file systems. 
-> > > The should be rather generic - I shouldn't be the only one seeing
-> > > it?
-> > 
-> > Oh wow, 2841808f35ee has a very confusing commit message.  It implies
-> > that _no_ filesystem uses BDI_CAP_WRITEBACK_ACCT, but what it really
-> > means is that no filesystem now _clears_ BDI_CAP_WRITEBACK_ACCT, so
-> > all filesystems do use this code path and therefore the flag can be
-> > removed.  And that matches the code change.
-> > 
-> > So you should be able to reproduce this problem with commit 494d2f508883
-> > as well?
-> > 
-> > That tells me that this is something fuse-specific.  Other filesystems
-> > aren't seeing this.  Wonder why ...
-> > 
-> > __wb_writeout_add() or its predecessor __wb_writeout_inc() have been in
-> > that spot since 2015 or earlier.  
-> > 
-> > The sequence lock itself is taken inside fprop_new_period() called from
-> > writeout_period() which has been there since 2012, so that's not it.
-> > 
-> > Looking at fprop_new_period() is more interesting.  Commit a91befde3503
-> > removed an earlier call to local_irq_save().  It was then replaced with
-> > preempt_disable() in 9458e0a78c45 but maybe removing it was just
-> > erroneous?
-> > 
-> > Anyway, that was 2022, so it doesn't answer "why is this only showing up
-> > now and only for fuse?"  But maybe replacing the preempt-disable with
-> > irq-disable in fprop_new_period() is the right solution, regardless.
-> 
-> So I don't have a great explanation why it is showing up only now and only
-> for FUSE. It seems the fprop code is unsafe wrt interrupts because
-> fprop_new_period() grabs
-> 
->         write_seqcount_begin(&p->sequence);
-> 
-> and if IO completion interrupt on this CPU comes while p->sequence is odd,
-> the call to
-> 
-> 	read_seqcount_begin(&p->sequence);
-> 
-> in __folio_end_writeback() -> __wb_writeout_add() -> wb_domain_writeout_add()
-> -> __fprop_add_percpu_max() -> fprop_fraction_percpu() will loop
-> indefinitely. *However* this isn't in fact possible because
-> fprop_new_period() is only called from a timer code and thus in softirq
-> context and thus IO completion softirq cannot really preempt it.
-> 
-> But for the same reason I don't think what lockdep complains about is
-> really possible because xa_lock gets only used from IO completion softirq as
-> well. Or can we really acquire it from some hard irq context? Based on
-> lockdep report at least lockdep things IO completion runs in hardirq
-> context but then I don't see why we're not seeing complaints like this all
-> the time and even deadlocks I've described above. I guess I'll have to do
-> some experimentation to refresh how these things behave these days...
+On Tue, 2026-01-20 at 09:12 -0500, Jeff Layton wrote:
+> On Tue, 2026-01-20 at 08:20 -0500, Jeff Layton wrote:
+> > On Mon, 2026-01-19 at 23:44 -0800, Christoph Hellwig wrote:
+> > > On Mon, Jan 19, 2026 at 11:26:18AM -0500, Jeff Layton wrote:
+> > > > +  EXPORT_OP_NOLOCKS - Disable file locking on this filesystem. Som=
+e
+> > > > +    filesystems cannot properly support file locking as implemente=
+d by
+> > > > +    nfsd. A case in point is reexport of NFS itself, which can't b=
+e done
+> > > > +    safely without coordinating the grace period handling. Other c=
+lustered
+> > > > +    and networked filesystems can be problematic here as well.
+> > >=20
+> > > I'm not sure this is very useful.  It really needs to document what
+> > > locking semantics nfs expects, because otherwise no reader will know
+> > > if they set this or not.
+> >=20
+> > Fair point. I'll see if I can draft something better. Suggestions
+> > welcome.
+>=20
+> How about this?
+>=20
+> +  EXPORT_OP_NOLOCKS - Disable file locking on this filesystem. Filesyste=
+ms
+> +    that want to support locking over NFS must support POSIX file lockin=
+g
+> +    semantics and must handle lock recovery requests from clients after =
+a
+> +    reboot. Most local disk, RAM, or pseudo-filesystems use the generic =
+POSIX
+> +    locking support in the kernel and naturally provide this capability.=
+ Network
+> +    or clustered filesystems usually need special handling to do this pr=
+operly.
 
-So I've got to experiment with this some more. It appears that my
-recollection of block layer IO completion code is about decade old and
-these days bio completion routines (and thus __folio_end_writeback()) are
-getting called in hardirq context in most cases (verified this with ftrace).
-Hence the flexible proportions code is indeed prone to deadlocks with
-hardirqs. I'm just wondering why aren't we seeing much more lockdep reports
-about this and possibly also real deadlocks... Anyway, I'll send a patch to
-make fprop_new_period() irq safe.
+Even better, I think?
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
++
++  EXPORT_OP_NOLOCKS - Disable file locking on this filesystem. Filesystems
++    that want to support locking over NFS must support POSIX file locking
++    semantics. When the server reboots, the clients will issue requests to
++    recover their locks, which nfsd will issue to the filesystem as new lo=
+ck
++    requests. Those must succeed in order for lock recovery to work. Most
++    local disk, RAM, or pseudo-filesystems use the generic POSIX locking
++    support in the kernel and naturally provide this capability. Network o=
+r
++    clustered filesystems usually need special handling to do this properl=
+y.
++    Set this flag on filesystems that can't guarantee the proper semantics
++    (e.g. reexported NFS).
+
+--=20
+Jeff Layton <jlayton@kernel.org>
 
