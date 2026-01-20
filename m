@@ -4,85 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D685FD2ECFC
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 01:16:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87FCFD2ECFC
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 01:19:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4790C6B033F; Mon, 19 Jan 2026 20:16:40 -0500 (EST)
+	id E70ED6B0342; Mon, 19 Jan 2026 20:19:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 450546B0342; Mon, 19 Jan 2026 20:16:40 -0500 (EST)
+	id E484B6B0344; Mon, 19 Jan 2026 20:19:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 353056B0343; Mon, 19 Jan 2026 20:16:40 -0500 (EST)
+	id D7E586B0345; Mon, 19 Jan 2026 20:19:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 21BE06B033F
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:16:40 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5AF01AE04F
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:16:39 +0000 (UTC)
-X-FDA: 84350577318.08.1F349B1
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 82077A0003
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:16:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=M5XjkrFG;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id C399F6B0342
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 20:19:22 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84FC11AEDF8
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:19:22 +0000 (UTC)
+X-FDA: 84350584164.06.25E18B3
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8D9B1C0008
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:19:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="Z/oA6+kh";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf22.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768871960; a=rsa-sha256;
+	cv=none;
+	b=D5RrhR3dF+ij2aIvP1cXfJsSESEic3b0U7hcnU3wwGQmqBRceTCSCZqn4iS862XI9hUG/j
+	wZ3Us1N9D2C3XDgITJbopEREapPvf2sovzvBsMdSJT4rUqzMdtOmhm5q/24zaaYj8a6IV2
+	lYvVW6SiQ5gyT6qKYUVNAmvVXULMgIM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="Z/oA6+kh";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf22.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768871798;
+	s=arc-20220608; t=1768871960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tOHQsrEmVvikkCnWyd025/g3MvKnBrG2ukxJxETFEIM=;
-	b=V++tAFZI36qsV1BJU5GY+89Om5+wyHYaI2/KjOv0MOL1ne5T2i8IfXqIS4LHewEi31IcX5
-	V4HYIvAyNao3JdJcxiNBWl80LN7PWa2QCGXNoSYtmKi8kEj2exjffIS/kSmOI0CGqRHHO+
-	NDa+Xe+XOJDN7gTfD5pe95DtPHGYgRQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=M5XjkrFG;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768871798; a=rsa-sha256;
-	cv=none;
-	b=KpXkuJeCDwxYiZQUflXnKcpNblGhv1zzRDbu+pM725IHvFKSsMiEPgajpB0p/QtrU5ELcf
-	tsqBVnGnfIAodISqSbSkEBkaEHStPlByBCRWPTvvkZgn9WI6eOucxCkH1FGHyGZt9nfGC4
-	w0NAZnp3zdFQ0/aDmPM+egm5QghOZgk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1768871793; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=tOHQsrEmVvikkCnWyd025/g3MvKnBrG2ukxJxETFEIM=;
-	b=M5XjkrFGLqe5eP1AjA7hoLYNldGMkxs1stIo1LI7J/T5xaecJUbFdy1aqotOF/2IsQLewSfv2tV4U1FSmDW6BGDKkN2M6Aerm3n9cIhcVbwP0a7GYMqVpKuTCbDE2AkxOYqDLOhywvCEd+sPCBQojmbHnfLoYiAldqU2IEHyyak=
-Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WxSDocC_1768871791 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 20 Jan 2026 09:16:32 +0800
-Message-ID: <9961743c-6d5f-4a62-9220-50869ac9a2d5@linux.alibaba.com>
-Date: Tue, 20 Jan 2026 09:16:31 +0800
+	bh=rMGYex7CtCaRfZT11xZYlmk1T/ScS7WJskb3/TJYX3c=;
+	b=r94W0jUBpiGeOfXU6il0gSge8C9lsFykkOS0uIGGTgDT/9JCJR5YyGgn5NktaZlOXyxd0r
+	pxdTYIH4sNEPDDyyPU6iSFKZHFmhvDvT8OMgE5/J3kl0Xl1/zWfx/7kj0/szh5NGDlVkO3
+	fepd42DKdHhbbttMo+9nvRomf8reCIM=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29f2676bb21so48690095ad.0
+        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 17:19:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1768871959; x=1769476759; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rMGYex7CtCaRfZT11xZYlmk1T/ScS7WJskb3/TJYX3c=;
+        b=Z/oA6+khgmbpVTBkAAmt3dNxaY8UFRjntDYiLlM1mCX0Ny+cFLe6TmIQDNPVGuQR2q
+         Z6SzzvR9LWD2NM6EHEHH5b2RaW3D9Arx2ULgqEsyYTfr8lxQ0uT7/BQmIqKOQCyX/8k2
+         j/av15mT12XUReLOgXdN9qagVeqVg+jxwARQw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768871959; x=1769476759;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rMGYex7CtCaRfZT11xZYlmk1T/ScS7WJskb3/TJYX3c=;
+        b=sTbJyWNarPTTOEUHvOv2l13osqAyhCg0iUY9RnJ23dYBChN7H0JxPl99t5Fis8vdT7
+         8ooyCUDQayxHIysCQzAB/hk/cIgDAHBgiEz0QSxnMa1jVJQ7WIVKRz2H8unSXi0tu8YC
+         7kZ80ONxD9qbQGZw/NaapTT6PsMmlr2v8M2mUzkfJQuDcoUSkCs8540UZtjKuEd1r5hj
+         5Aldh7C0zTz+O33lcSS+2YYRwlo4nBhqaqxip1hGRxtr/liq4MM4Xe3LDRBJT5L4TWsm
+         MMzed2HgpADLx7yc7Bqc99harzZiNURzwRfcU9eu1uSTgdFEY0gnpAmYFZT1b4rLjx8y
+         nmKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWJoEYqJfAdjhOwLB89JaiiDrniOjv6pHAKpMbw0wkfXV4tAMBF7AK96NqcBaKKYt6EtNIWxX44Ug==@kvack.org
+X-Gm-Message-State: AOJu0Yw0Od1doUVV4clmg/JRW4myxwdHcRf85pXOvhIX4+41ODpNMmYX
+	cN4GXf7omBImUHiw48rtKr9IUOxKaWvsckmu25wrKEA0BzJfMAhGGUOz+Z7fVtF+mNd5PxqcCGI
+	YY5A=
+X-Gm-Gg: AZuq6aJqzsmw3d2dyz1G0LGUkExjntEUVnmkB2OkTuJZTi6j7sv1j85IeF8Cgs+MGfB
+	hh7pIwKbW97bgDDRIXEExufyeTGkjNrhtf3Mjz835axC4z1xkrZX2KYcqZM/nM3PFhyfO6SVzzS
+	qWW8ZzRfJNK+YwjvZ/6OJ/xmAJTyEBrjEF9U49mXagSP92WkReMdZ07JVdLWcU5dt4dOQjTn72d
+	iZyc+jmRK/1CkdVZNc4ihTzZELeDCPLECf1ENarE5dp6UwZbcWVCADdomqlYUadfKvYt0KuuYDO
+	Xf5lSBp1GKAzwZ6xFl5+JiJ6s+tutbQ5ellxNGQnOExe3odcM2XHmlJug7US7V7BQqo6bvaCijv
+	6Ve5nhJi0uJVlfD9RPW0Mvu4HSL01LzmtwwZfocQM/CYz/y2s3K1+IL+hYh4PyJG1wxhdL0bjKE
+	ZaPA403lBdUNk13C0RHNP6+wninFqisKZ8Hw54WN/CWevLq1xp7qQ=
+X-Received: by 2002:a17:902:ce11:b0:2a0:9ca7:7405 with SMTP id d9443c01a7336-2a7188f91acmr132088615ad.36.1768871959407;
+        Mon, 19 Jan 2026 17:19:19 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:b424:8c31:f047:b690])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a755a68b28sm5145815ad.101.2026.01.19.17.19.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 17:19:18 -0800 (PST)
+Date: Tue, 20 Jan 2026 10:19:13 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Minchan Kim <minchan@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH] zsmalloc: make common caches global
+Message-ID: <qs7qfzsldjz4fd3lozlm72p2vmebzxvsxos76r2h4gvjc555un@3mfigywcnenv>
+References: <20260116044841.334821-1-senozhatsky@chromium.org>
+ <CAKEwX=PxJo6RijehmJMz+kK45Qr9AcQMCedO7KY_+GWzsW20tQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry
- split
-To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
- stable@vger.kernel.org
-References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 82077A0003
-X-Stat-Signature: rc4k9ozpoqcmgt94thqqbeipf9s11qw7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=PxJo6RijehmJMz+kK45Qr9AcQMCedO7KY_+GWzsW20tQ@mail.gmail.com>
+X-Rspamd-Queue-Id: 8D9B1C0008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xc46bnrxi7kqh8nxae4wa89ck437gxc1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768871796-177051
-X-HE-Meta: U2FsdGVkX19XnxKA4cEw2NDfok8+/HJNDqQ9ROT+iEDNtgKXOzHmH47TmjsscXVlKV3jvXWv5p5mkrKt0n+s1SNKCTN3FZQ6RmgcSPF7uA+Jtfq3rrZmuwk6U7e3/lcNx8EQAyI9RKNvineVhnlibb/f9WSv3xkyASwO83tYaZtl/YpKp/6gox92c3Q1N6ASoK07VwTAy5eql2Rm2Z+056QODS1o91suhCRUkzaCtkmNSRDKi6B2uFO+BaREiZVciyabQjNMYkEYUxElvT5T6FAK+5ziU8/7AuYTi/oJeHthC87y5z0okagefupauMKfmuw1Qhwk/qAkHPjRXI9nB2klRClzNhIEl2Ea8KhCslM/GHpwwpkBpUCnGgwKPdOntvjdbsqaUDu7iIeojjQ1IGkXM+ofloWSdQ/YvGqv2tpl1fYY7JO+nvOo86NKI91r1T5QeD7Z7mjCsWCv3FW9RKkmuYhfnxx89T+CdNzJYSrfzuttAG6jkFhsIyspr7NT1WL5tbqE5ijDXkVOaEXRTd+9AYBtw3CmwroKN+OspCJDfwYAUkfrndwTiU4dbBWwlnKK9VTOm8ohN3lDSZ4OULm73PucBshohvDWLkJol3Y6ONuQe19d/+NsD13vDscN3gWOhEvD4B1ujU5+ZIqEo/X8w2Zpq2pwUFwvpGA+0XeQk+D1TXAcJlwOAwt5LQW0g16yaLuE9YPdp2D5EoDR15EMnOltSqeLEIBSp8kRDyS9zvX4tlUHKkyfQ0bzLHk8I9sBl70cz8wtFSHWNQ/yc/t430alYzcpxFF1LDCGt/c0SVBGnSWwTsBv64po0yNaAL8z1x++Vg+V7mbYfDpGEz7i7UZsOqFVl+F2RMdcsypds468VWhXEd+v/qYkGxKpPKYmbVa2aK6/D6j8hhxOxmsB6gR1kHKeAOmk1qwldq5eXqoXcYZahYmbCIzeV7EZUcIhZVFGTLkZk5dMit+
- Quabnbak
- 6SIiZoqhGgfuG4qvsItP/VyOwyrcYuQq5Xf+oYd21lek+5RqndoUuJF0vjzzei0AGafXYEL481QaZsf/yinbKbmz89GDxtcvAXH24slfQZSI6QzRFbG8wa4tEuEOvNn4lTScU2wm5k+GjRpLkygZie4AMd3IfLyn2I82HkupW0SwcFK5zHhwRU8CKcQubdf3I+qFxvgHytmtrErswmvPvhhp78ve0kasS2inlToRH0VMO8Hw33ppBE97czel2+cNISnYFXUlBpY9GoTadS4228C6iDU9ak7BiCj3Ns6js7070qa6KxXC2CPd7OyX5wZmmTmGctdYa04xMEaY9fHJ+upjQsyxw/eAMjRuq
+X-HE-Tag: 1768871960-79491
+X-HE-Meta: U2FsdGVkX18pitIDciMNb61VOjFt9H9vP7xZ0afBf4I+S7oTbF6HGwyLCrd/CbEHZozzxmy+zqDcF/II3ayBLpfaTmhHKz53Z5CGw/hZ8KDT2I0DjM9D76yxyi/43RlziYHNV/Y0xdscTuYdwQll0lPwVwocCdjcu0SptoBXGO2sEKtBZED19D+VLBXPedhZ/N041PnbtF/0gXQkZx3Put1zIY8L3M4t4R/U1OZGs6dFtavE3udpAvsdGQV2taAZ6DbzJdeP263iFNjZW2ZuZJGFApX+u8ksscLJ6N/6mR/IHC8UO9Gc2r63EUlYIqlY7rsSvL9iMlzm8O1wp/Y9z2tZA/US5UASH6S7AggQ4qeVgmaW3UbDm+sYP7OZY/02ImeblZBL9EJxK++hlFUubCM//+fq2+htimPEIQwm5JxEBjoBUct0S5imDEXJudselzoCoiNNoV92QuA8ZzLT1uQx5rH855QAMC+dO/BuaGudKSFL7AtIXTPcSvfQPHM6jEXIf1EcVJ3Uw3/VkIiluTUe9zMH/ge3V2Jrs80G0+7s8FKCAyMR/ZcCtNlTOep6Q32w0oziMoN9pPjcpAGes7P391Pp/HWv1YO+Y/pDId1l0AhEHC1eKFuFfcYN1mbv9zd8M0wMtHoj+f3kragsgD57YP3mevVmu6am+mgh0J+p3AORvNzAiRxygqrq9ynrl4SX9LGxQCgVtPdQESZCnZudQru25+3+V+mK+3ee7i2GBymj+287O406SIVRsDs7npXMu4YKMnVdbBmss/26CrdfIKWEkPOhqFLY3NNlCAJC1BytdY8H9UFTPn3ZsedruGkc5hWD/Xqj894KeL6PFXfu7ONvcOn5cXzCfZgFqWweFd8pFP18uo8ylDUKPUZZKfmBf7auIorh0S9BBQDjauo2hu3kuQp+7IbMjXR1GvY3B+5YgjjKc/vzTLygtbtVhEjTowfLLGojae5Tg+6
+ KiAN1+g0
+ 8QVAtAA2aZTVCpFGRpgm+hnQwbvSzT2Ad5JlEcqJlDZqpiz7lgm7h4DgB7qduEkb5e6rcRGnBYNghLnJ1cbFSyEuTFci5eKecofDXQrJDpGvPXA2PSmlgkzjPzvG18NSWqKR5WkQSs3kHOzLjeJ2o/UXegVfW0H9CWrFMkQZplqJI8cyTdfLhIu943nm3uHQd0pj6H8CuTvR6WuzAHx/EhvZcgTMFvQrD7Kni5MlSlvSkJSXZx43GVKn102EyglqtrBreqhii4sayNCnscSgPiFFhUlkSIWTM13tEe2+g1iIxUHcYW9Mw7/kFfJU6iizAr16O+a39K1s0rsVncIBL3E0vBUaiwv7GHDYEzt9tni91KBj2OLmLk+Nszw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,145 +121,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On (26/01/19 13:43), Nhat Pham wrote:
+> On Thu, Jan 15, 2026 at 8:49 PM Sergey Senozhatsky
+> <senozhatsky@chromium.org> wrote:
+> >
+> > Currently, zsmalloc creates kmem_cache of handles and zspages
+> > for each pool, which may be suboptimal from the memory usage
+> > point of view (extra internal fragmentation per pool).  Systems
+> > that create multiple zsmalloc pools may benefit from shared
+> > common zsmalloc caches.
+> >
+> > Make handles and zspages kmem caches global.
+> 
+> Hmm yeah this sounds reasonable to me. No reason to have dedicated
+> kmem_cache per zs_pool (in the case of zswap, I suppose it's one for
+> each compression algorithm, which is usually just one - but still...).
+> 
+> Is there any lock contention implications?
 
-
-On 1/20/26 12:11 AM, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> The helper for shmem swap freeing is not handling the order of swap
-> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry, but
-> it gets the entry order before that using xa_get_order without lock
-> protection, and it may get an outdated order value if the entry is split
-> or changed in other ways after the xa_get_order and before the
-> xa_cmpxchg_irq.
-> 
-> And besides, the order could grow and be larger than expected, and cause
-> truncation to erase data beyond the end border. For example, if the
-> target entry and following entries are swapped in or freed, then a large
-> folio was added in place and swapped out, using the same entry, the
-> xa_cmpxchg_irq will still succeed, it's very unlikely to happen though.
-> 
-> To fix that, open code the Xarray cmpxchg and put the order retrieval
-> and value checking in the same critical section. Also, ensure the order
-> won't exceed the end border, skip it if the entry goes across the
-> border.
-> 
-> Skipping large swap entries crosses the end border is safe here.
-> Shmem truncate iterates the range twice, in the first iteration,
-> find_lock_entries already filtered such entries, and shmem will
-> swapin the entries that cross the end border and partially truncate the
-> folio (split the folio or at least zero part of it). So in the second
-> loop here, if we see a swap entry that crosses the end order, it must
-> at least have its content erased already.
-> 
-> I observed random swapoff hangs and kernel panics when stress testing
-> ZSWAP with shmem. After applying this patch, all problems are gone.
-> 
-> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-
-LGTM. Thanks.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
-> ---
-> Changes in v3:
-> - Rebased on top of mainline.
-> - Fix nr_pages calculation [ Baolin Wang ]
-> - Link to v2: https://lore.kernel.org/r/20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com
-> 
-> Changes in v2:
-> - Fix a potential retry loop issue and improvement to code style thanks
->    to Baoling Wang. I didn't split the change into two patches because a
->    separate patch doesn't stand well as a fix.
-> - Link to v1: https://lore.kernel.org/r/20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com
-> ---
->   mm/shmem.c | 45 ++++++++++++++++++++++++++++++++++-----------
->   1 file changed, 34 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index ec6c01378e9d..6c3485d24d66 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -962,17 +962,29 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
->    * being freed).
->    */
->   static long shmem_free_swap(struct address_space *mapping,
-> -			    pgoff_t index, void *radswap)
-> +			    pgoff_t index, pgoff_t end, void *radswap)
->   {
-> -	int order = xa_get_order(&mapping->i_pages, index);
-> -	void *old;
-> +	XA_STATE(xas, &mapping->i_pages, index);
-> +	unsigned int nr_pages = 0;
-> +	pgoff_t base;
-> +	void *entry;
->   
-> -	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
-> -	if (old != radswap)
-> -		return 0;
-> -	free_swap_and_cache_nr(radix_to_swp_entry(radswap), 1 << order);
-> +	xas_lock_irq(&xas);
-> +	entry = xas_load(&xas);
-> +	if (entry == radswap) {
-> +		nr_pages = 1 << xas_get_order(&xas);
-> +		base = round_down(xas.xa_index, nr_pages);
-> +		if (base < index || base + nr_pages - 1 > end)
-> +			nr_pages = 0;
-> +		else
-> +			xas_store(&xas, NULL);
-> +	}
-> +	xas_unlock_irq(&xas);
-> +
-> +	if (nr_pages)
-> +		free_swap_and_cache_nr(radix_to_swp_entry(radswap), nr_pages);
->   
-> -	return 1 << order;
-> +	return nr_pages;
->   }
->   
->   /*
-> @@ -1124,8 +1136,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->   			if (xa_is_value(folio)) {
->   				if (unfalloc)
->   					continue;
-> -				nr_swaps_freed += shmem_free_swap(mapping,
-> -							indices[i], folio);
-> +				nr_swaps_freed += shmem_free_swap(mapping, indices[i],
-> +								  end - 1, folio);
->   				continue;
->   			}
->   
-> @@ -1191,12 +1203,23 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->   			folio = fbatch.folios[i];
->   
->   			if (xa_is_value(folio)) {
-> +				int order;
->   				long swaps_freed;
->   
->   				if (unfalloc)
->   					continue;
-> -				swaps_freed = shmem_free_swap(mapping, indices[i], folio);
-> +				swaps_freed = shmem_free_swap(mapping, indices[i],
-> +							      end - 1, folio);
->   				if (!swaps_freed) {
-> +					/*
-> +					 * If found a large swap entry cross the end border,
-> +					 * skip it as the truncate_inode_partial_folio above
-> +					 * should have at least zerod its content once.
-> +					 */
-> +					order = shmem_confirm_swap(mapping, indices[i],
-> +								   radix_to_swp_entry(folio));
-> +					if (order > 0 && indices[i] + (1 << order) > end)
-> +						continue;
->   					/* Swap was replaced by page: retry */
->   					index = indices[i];
->   					break;
-> 
-> ---
-> base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
-> change-id: 20260111-shmem-swap-fix-8d0e20a14b5d
-> 
-> Best regards,
-
+cache_alloc_handle()/cache_alloc_zspage() (and their free counterparts)
+are called outside of scope of any zsmalloc locks, so the upper boundary
+on the number of concurrent callers is the same - num_online_cpus().
 
