@@ -4,133 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52082D2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 11:19:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB33D2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 11:38:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D168D6B03C7; Tue, 20 Jan 2026 06:19:54 -0500 (EST)
+	id 785BB6B03C9; Tue, 20 Jan 2026 06:38:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C40986B03C8; Tue, 20 Jan 2026 06:19:54 -0500 (EST)
+	id 75DD26B03CA; Tue, 20 Jan 2026 06:38:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9719B6B03C9; Tue, 20 Jan 2026 06:19:54 -0500 (EST)
+	id 6869F6B03CB; Tue, 20 Jan 2026 06:38:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C2506B03C7
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:19:54 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19A89C1D9D
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:19:54 +0000 (UTC)
-X-FDA: 84352097508.26.B6E4FB0
-Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F1377180005
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:19:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="b plZG/W";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=bGwiLDt+;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.140 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768907992; a=rsa-sha256;
-	cv=none;
-	b=zQPyKDl4s6b+xKKV8h7hUNeOYtV2lG/AJqy0Sao/Eebu0erF9zBKpg/vZ/NLIpjd7lfaG8
-	UlnZB02HLcvnWD0CvJZvk0RW0T1OD4zMFF2wJAyyLF1jkGarZ7UbW/vPoFJvx01YAQ2wox
-	oKB02chcELkVCf68JSslzDReYCK3lSU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="b plZG/W";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=bGwiLDt+;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.140 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 56D716B03C9
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:38:24 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D04061404B0
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:38:23 +0000 (UTC)
+X-FDA: 84352144086.02.8E80B3E
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B0A0120006
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:38:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xoQOYj1f;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768907992;
+	s=arc-20220608; t=1768909102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=foChf5V6FBeqdFIVO3ToaRk7LOuOObFXHZ+T8o8z1Lk=;
-	b=VIoPj4HGlxmvL9zeIVGn7mMdxowarucx4oX6dRHCnQtOFSlaXuKF33sZg1637FiV5KXApT
-	xE0CD6NSADPTnCtftp5UNsSA7dBD8farVT7Q+JYRFhqEHapXNH6XfQRa93bTbW7rTeUY44
-	BKtKRIiHZf445XN1Je0t2lLVulF16Ws=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 886B7130056E;
-	Tue, 20 Jan 2026 06:19:50 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 20 Jan 2026 06:19:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1768907990; x=
-	1768915190; bh=foChf5V6FBeqdFIVO3ToaRk7LOuOObFXHZ+T8o8z1Lk=; b=b
-	plZG/WsuoUP2kVdpM+pH8UfdS0M6Z8QrpHpObysjC1brXoYXjcVYtoLw1nYhyG1V
-	ImOlI9X18f8I6zZjJPsaLVqWpyfpU0Yy33/4WIfGCw0PYfO7pdFXNVzCBW1e5Ovx
-	uGWb3yw38fQjUJl4rnEG49/9WhHI9hOVWT/xoHl5sVh/7ODCp9XUzNSSfk4SUDMs
-	6uYZIRg4Ddg1YoHoMSMDK8gISCT9ILu1sB9IlHTbj8zWB747Qe+KCjOsdBjoO8g/
-	1LJ0b88Z0SD/pxm6rCRatfYsPOHB4M0yXimj4A+GZdnqikSgySAwGyEjMc+m9Q17
-	96bY/qkfFcTJYyeQjGcYw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1768907990; x=1768915190; bh=foChf5V6FBeqdFIVO3ToaRk7LOuOObFXHZ+
-	T8o8z1Lk=; b=bGwiLDt+EvHViHcK0/T8nv8olWqcxwBhEarWWlDWnbDfbtIfRrJ
-	ZLM7MtuBhyTplhEiUsWdrYSJXay9jV7tXvgMnvIZgZRm1MxuWCmoQNxoNh1Y9RdV
-	Oc01W9RFtwblxXaW28eIOS53Ljs2HX08Mtajnqse0W1VYdUuIOu4TjIHdRFhMeT9
-	qiQFiPugGw+RizF2p7hK+g2VoFXXooDOme/4xfr95KXw0dn07chIbMFQVUE8YolT
-	clPqFJ0lEsPDyOIGJFtjXqfmcZ48VFxgiMgzqWb57cNHuYYe9X7IYsx0rqSFXdgA
-	FjzSWCyIM1KZf13xvnUIhWbrlHsPpEIRwTA==
-X-ME-Sender: <xms:1mRvaUPnH3jQssVNwRIxCGHIMJ-DkHnk92HxOSWGpBc_CnaLobUBiA>
-    <xme:1mRvacRa8bjB4d1AZm5-cQhBIxS8nYEsU2_fQBI00ulZcmD-orK0Zist9LpYWOxo9
-    mLA-aymCrJGAR6YvEGKgV1NvRcFxFDAK-80jkY7fIg9ZTOFcOqHvSI>
-X-ME-Received: <xmr:1mRvaf7BLtYgqF474QSD1bO2xu85hTwZ9KjTNIzuXg3mHB-CItn09i7biYQZjg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedtvdejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhephedvveefteelgefgteeitdehvdehkefgteekteejleejlefgheei
-    uedtjefgvdelnecuffhomhgrihhnpehinhhithhirghlihiivggurdhmmhenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhh
-    uhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhpoh
-    huthdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
-    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhu
-    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhorhgvnhiiohdrshhtoh
-    grkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhirghmrdhhohiflhgvthht
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgesshhushgvrdgtiidprh
-    gtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgs
-    sehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:1mRvafZ0Fvn3troQU3yULE7637MwCkRrlAcnxDdPC7_r3R2-_zavhw>
-    <xmx:1mRvaTZukqhqKUYem2FrPVwB85BpU4D2I82flQqFTg3xQlAkRyygbw>
-    <xmx:1mRvaS04kt4yVpq38AIU9AxT46xcNYSYd7zH66h5FkENP_ixzMnlwg>
-    <xmx:1mRvabac9MbgxbwDzT2KKui33ZxDES-HJd7BYUPymR_HVSEY_6e-nQ>
-    <xmx:1mRvaZ-_ucglKlSEg-L6haGS_bdQdbuuUPAJiQaL4JN7yavQaFeBiqhk>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Jan 2026 06:19:49 -0500 (EST)
-Date: Tue, 20 Jan 2026 11:19:47 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v1 1/2] mm: move pte table reclaim code to memory.c
-Message-ID: <aW9i3Er3HXzg9V7C@thinkstation>
-References: <20260119220708.3438514-1-david@kernel.org>
- <20260119220708.3438514-2-david@kernel.org>
+	bh=HLjY/4B4aU0tiyH4zKLoN88x79CrKM/2QcD82GdY0Aw=;
+	b=X7a+Tq5KVYAdpkCh15bX8a6ii0OcwpU1nEtzfYEllmTwJKy32yn9MrkKRbvO1DOhFqIJhc
+	B3kAyYA552xwYxkbppgjXt4tHuFNNBACdHLA0mp3vKK2GzRQfRPVhvoUzrgRm4sYz4qRi5
+	0PpB1VK8lWhmUwf0ghTjPX5PBojwwnE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xoQOYj1f;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768909102; a=rsa-sha256;
+	cv=none;
+	b=tVe4Nk3BLBzkUcIZWRhVLf5l8b8vDyBLE/kQdYYyQJYtqxIZt7FFVKffRdZbVo+lsOKPsa
+	iYR402etB0gNoiSlgwJCkjFpNp9yxeW0/F5/wJs05bJMgWXpLI0FSzHJU+RIRpJGiMKEnF
+	DL7YI0fG49CZ6NV/YC0jESILWKcS9mU=
+Message-ID: <bd464b0f-e396-42dc-9850-4b21e1c525ce@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768909099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HLjY/4B4aU0tiyH4zKLoN88x79CrKM/2QcD82GdY0Aw=;
+	b=xoQOYj1fvHhW3ghjYtoNiZgeOBuw8F5d3DA2srvPBuKdBnAIsaL9Hx+kz35x7AvUnVMJ0G
+	K4NPHfEpaq0vmZLwMYRxp7jWRLCfGFQbrcCg6Gz3kyKdrTZemgwqm4CruTlCwLN5SNUCGC
+	j0srSKc66/KBL0Qvedu67IEcm55VDZE=
+Date: Tue, 20 Jan 2026 19:38:05 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260119220708.3438514-2-david@kernel.org>
+Subject: Re: [PATCH v1 1/1] mm/khugepaged: move tlb_remove_table_sync_one out
+To: hughd@google.com, baolin.wang@linux.alibaba.com
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
+ david@kernel.org, dev.jain@arm.com, ioworker0@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, npache@redhat.com,
+ rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com, vbabka@suse.cz,
+ ziy@nvidia.com, qi.zheng@linux.dev
+References: <62e637cf-91e6-454d-a943-e5946bdf7784@linux.dev>
+ <20260118083911.21523-1-lance.yang@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260118083911.21523-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: hsq95apupu6kyfixmzdo5mcso3xezf61
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F1377180005
-X-HE-Tag: 1768907991-66994
-X-HE-Meta: U2FsdGVkX19UuNW4T8Zguf512ycULV2fru/AcITRqtU1pSO1oYgHYFmKObvVGEu+dpOjb/RFMUKPdgwBWi8MW5COOkc/UY/8zLHxMyYsvjNPb/+GFTcfh+rduDR0+vRF8t8jDSCeah5m6j0YZY3R1EzEP2EgNz9XELDHpnaZNUQMVBkh6wjzeajK2npS1eaN/rnrXZpK3jaU1Z9i7QfWLzGn7VxoluD1H4eaIjoNEW+h8fhhH1wOsXlJyg/ii4lEpVrPL/Jj6A8srIdfu5c28pV0Rsb9nZTGsiXnjOCcE01tTHy2KpMRpEogaEOGsWXWUaqBoku7rIaH4g8NGNdvUSSMK7+2O7DSaDGcRTPKrfG1TmHtkD4F1+tiWD1p0KeuAJrXvTigkrj+TsykXabDtF2TQ9R6Dm0LGTzuRiPl3GaDKr+8Q6uv5g4aeIQgsicqGEsy8WBa8z4fh8NQRWx8WPcwQA+d6z3MJQhL3B/qBvLSYe/Al/yWeH5NDqmq+GWUyDSd5llJSzmGSSq2awvD3Q6qsBng9CqKC5EfW/nWyTTYTxhVwZfRBUzGDplPqUxgGaUedxRPshmL53hZdPOnheh1T1w/6f8L2NnGzYW9BJTFq/bX84I2imJ2fMwv3mr3YKWyHD0CsjrCUc7CznmHKlGqYBEf9xA9DSmz4gPeiUpC4d79m8/07i5jGjOPHHaiZ9wzAvFT8gqDCC7GNIE4mMOOXsWNXKHgWl2it8cqDAFNO0xAJ9f7tZXpPO+UT09cXkTitB+Qo8Pe98zO77ZAM98HRWfgnGRfRaTb2yRqhitywgPQxdquEbEEqbqYcBibY3naLwDd15fQWiMO5pOykBLZrHGLs+hAxTYu/KwnDK46JATSxe1y7vZW5DaN+rhpAP4UXru6Tz3hocCB4JX2gXC+0ArF05nxuIYGj63B5RhuvnXfAs6cXIpl8mWfYi9xdOZ6AU5Nvjxog4u5u/Y
- RCvcktPX
- sEXKvOk5AF1EyKHAHQeJnVY6ThL3eZIG3f0WkH2N6rAcfCSxm+SY96xseMJRoiTM50kOVJNaODcs7C5yJwmjzhyC4cXVHkB58EgspbHT84QowYXG6Qsav615+vKR8DU+MgrahP812gKvutIaFTNJVuvMI9mEt3U/xH4k0otXYdl6ZeNi/q9WxRvvZyngcKF7ovlg9FWEFtnS7TGppRYOEPjHILHRsaKgBM80YzMGRsiz8JQwVOBdNYuySi6tuh5CKqeNxDBFqLCmXDpvag7twkESzLwwMdOU0hBUL/9srZt8VB/llLknWzwAHGYGMangacP6C9vkwYiI7b4uheo1iOhCc5phHRJrVe1GO9zPnbN77LJ+VUeBg3P63Ip2+0KCgZfZl+GyY3YaxOcWHiBqNcP0dc7Qrp20XKOSrPvj6gDk0GHpYiS1vKpzssQ==
+X-Stat-Signature: fbnixhsj593o5167tt3waisxrjp3ugwc
+X-Rspamd-Queue-Id: B0A0120006
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768909101-93580
+X-HE-Meta: U2FsdGVkX18E4EfOkpKURtYoctS47FLCKcFwmfu+Kh4zSIQci5bYvJ19Rsy5miDdLJGBUkunq+D2H0cxEz06r4wL9nnxxndqyiAX0iO7ORZ0z3d6kfx5cZyZPr1ONr50YVSIYFGmtTcZ1CVi1/hC0g1GfbZFg7TrBeXIqsnHfhwUJ4ia7EFv55Ftuy1Fepj1Rf1jpSUj8/qQsxjjlitCn4isgPO9UI17xu9jT4/AWWSCZ7Obc+e3b+jbUQ1A1Jhq0m8dPbi3fgew3frLL/GVKtIJEuTA09i8UaZ6ic4M6Xzb2gHrGDhx8IeFA/19Q0YJWeQ/nEpRRGPcLtFB5YPAG5uG+ZWy2cNjX83v7qG6U27057aSPRj4YYJstbCjH5KhMOvEyCqmzS1LoksUhYjsLxoxK5L0YbF0Kzr52fjeFMjBlagpJ/r/YPW7l+bkWKlIGG0tkm3PzKDnuDwKlnZI9oPtH0QOyZHEb3/NNKHZCkvAirMIJ6arS6SeLs5beEhr9pTLLl5OOWJh9zruEfGjzEwRBLdbSLW1/gcZvkJUCvMzCJdwUL4GmDsQd53O2xDG+apSY+6o0JC/dNgkxw+QY1zJqY1f9JLFr7iczSbKLUh95g70KpG2VhJSrX+3n1/pVV19v1nBodmLGnaN23hdddUVRpTiYOIrvDb+EVSJfG9Su0K0S4tGhV8TfUH0DBjcMDXog5kUy3JPYRiM3DSHhkl01/rhMOQUUTgEIe4CTVpOF2cerZ94pXI5U5PcsPtdRXbCz21817dN7eXnOSc5YmJYgz/v1qYT32vHClHl17XSSrh4wgs/RXbLNsAgJkB9+p29FlWx03LZ1X7oFCO0i6vwYS9JjP3lZyY/Eb9l9ZSHDLn8/n4s6LoT+dZcQalq4ZcNSAWWydjVcraxSEEyZIP+oZGFSHopN/OCRGt3PFW7PDUHKBO2wkbIXtD+DQTAc41+Zo8t9IUCRN3vjmD
+ DclqU31H
+ 7ubJo6Bw9ulRfIe1xD/6aRjSDmGRtY/fTqZ2wldy49pgNqAEqU9rrGV7L1isEpc+SZ+ifkfBOCMProcs5MgXCQhV6w3g/zGaZuXvHZN56jMMAdI4yGLBOxjhhbTg4OsA7Yxa04gD2hfIVibwRdl3NTrtu8wcniNBN0aexj96oHqGc5btgk9cy0BQH3n19VkcDjdNSn8iBB3yE6jxruwY14EcYw7Jwg7PCkzN88Tshyqug6UzaTtU9xIrQVWFVlDB/mT+WzUorHcv8sW2sYrnugX4Uig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,40 +95,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 19, 2026 at 11:07:07PM +0100, David Hildenbrand (Red Hat) wrote:
-> The pte-table reclaim code is only called from memory.c, while zapping
-> pages, and it better also stays that way in the long run. If we ever
-> have to call it from other files, we should expose proper high-level
-> helpers for zapping if the existing helpers are not good enough.
+
+
+On 2026/1/18 16:39, Lance Yang wrote:
+> Hi Hugh,
 > 
-> So, let's move the code over (it's not a lot) and slightly clean it up a
-> bit by:
-> - Renaming the functions.
-> - Dropping the "Check if it is empty PTE page" comment, which is now
->   self-explaining given the function name.
-> - Making zap_pte_table_if_empty() return whether zapping worked so the
->   caller can free it.
-> - Adding a comment in pte_table_reclaim_possible().
-> - Inlining free_pte() in the last remaining user.
-> - In zap_empty_pte_table(), switch from pmdp_get_lcokless() to
->   pmd_clear(), we are holding the PMD PT lock.
+> Could you check if my understanding is correct?
 > 
-> By moving the code over, compilers can also easily figure out when
-> zap_empty_pte_table() does not initialize the pmdval variable, avoiding
-> false-positive warnings about the variable possibly not being
-> initialized.
+> On PAE, pmdp_get_lockless() reads pmd_low first, then pmd_high. There's a
+> risk of reading mismatched values if another CPU modifies the PMD between
+> the two reads.
+> 
+> Commit 146b42e07494[1] introduced local_irq_save() to protect the
+> split-read, blocking TLB flush IPIs during the operation.
+> 
+> After modifying the PMD, pmdp_get_lockless_sync() sends an IPI to ensure
+> all ongoing split-reads complete before proceeding with pte_free_defer().
+> 
+> As commit 146b42e07494[1] says:
+> 
+> ```
+> Complement this pmdp_get_lockless_start() and pmdp_get_lockless_end(),
+> used only locally in __pte_offset_map(), with a pmdp_get_lockless_sync()
+> synonym for tlb_remove_table_sync_one(): to send the necessary interrupt
+> at the right moment on those configs which do not already send it.
+> ```
+> 
+> And commit 1043173eb5eb[2] says:
+> 
+> ```
+> Follow the pattern in retract_page_tables(); and using pte_free_defer()
+> removes most of the need for tlb_remove_table_sync_one() here; but call
+> pmdp_get_lockless_sync() to use it in the PAE case.
+> ```
+> 
+> Regarding moving pmdp_get_lockless_sync() out from under PTL: Since
+> lockless readers (e.g., GUP-fast, __pte_offset_map()) are protected by
+> local_irq_save() rather than PTL, pmdp_get_lockless_sync() can be called
+> outside PTL as long as it's before pte_free_defer().
 
-mm/memory.c is a kitchen sink as it is.
 
-I think you miss opportunity to introduce mm/zap.c and move all zap
-code.
+Looking at commit 146b42e07494[1] again, it says pmdp_get_lockless_sync()
+should be called "at the right moment". I now realize moving it outside
+PTL might not be safe.
 
-It can be done for code from both mm/memory.c and mm/huge_memory.c.
-Line between THP and non-THP code gets more and more blurry over time.
+If we release PTL before calling pmdp_get_lockless_sync(), another CPU
+could set a new PMD while a lockless reader is still in local_irq_save()
+reading the old PMD (split-read). I'm not sure if this race is actually
+possible, but if it is, it would hit the ABA problem where the reader
+gets mismatched pmd_low (old) and pmd_high (new) - the "faint risk"
+mentioned in commit 146b42e07494[1].
 
-The same can be done for copy and fault code. I think it is going to be
-more maintainable this way.
+On Native x86 PAE, pmdp_collapse_flush() sends IPI and waits, preventing
+this race. But on PV, the hypercall returns immediately, so we need
+pmdp_get_lockless_sync() to ensure all IRQ-off readers complete before
+releasing PTL.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I should keep it under PTL to be safe.
+
+Sorry for the churn :(
+
+[1] 
+https://github.com/torvalds/linux/commit/146b42e07494e45f7c7bcf2cbf7afd1424afd78e
+
+
+Thanks,
+Lance
+
+> 
+> In contrast, for non-PAE, PMD reads are atomic, so pmdp_get_lockless_sync()
+> is a no-op.
+> 
+> [1] https://github.com/torvalds/linux/commit/146b42e07494e45f7c7bcf2cbf7afd1424afd78e
+> [2] https://github.com/torvalds/linux/commit/1043173eb5eb351a1dba11cca12705075fe74a9e
+> 
+> 
+> Thanks,
+> Lance
+> 
+> On Fri, 16 Jan 2026 09:25:54 +0800, Lance Yang wrote:
+>>
+>>
+>> On 2026/1/16 09:03, Baolin Wang wrote:
+>>>
+>>>
+>>> On 1/15/26 8:28 PM, Lance Yang wrote:
+>>>>
+>>>>
+>>>> On 2026/1/15 18:00, Baolin Wang wrote:
+>>>>> Hi Lance,
+>>>>>
+>>>>> On 1/15/26 3:16 PM, Lance Yang wrote:
+>>>>>> From: Lance Yang <lance.yang@linux.dev>
+>>>>>>
+>>>>>> tlb_remove_table_sync_one() sends IPIs to all CPUs and waits for them,
+>>>>>> which we really don't want to do while holding PTL.
+>>>>>
+>>>>> Could you add more comments to explain why this is safe for the PAE
+>>>>> case?
+>>>>
+>>>> Yep, IIUC, it is safe because we've already done pmdp_collapse_flush()
+>>>> which ensures the PMD change is visible.
+>>>>
+>>>> pmdp_get_lockless_sync() (which calls tlb_remove_table_sync_one() on PAE)
+>>>> is just to ensure any ongoing lockless pmd readers (e.g., GUP-fast)
+>>>> complete
+>>>> before we proceed. It sends IPIs to all CPUs and waits for responses -
+>>>> a CPU
+>>>> can only respond when it's not between local_irq_save() and
+>>>> local_irq_restore().
+>>>>
+>>>> Moving it out from under PTL doesn't change the synchronization
+>>>> semantics,
+>>>> since lockless readers don't depend on PTL anyway.
+>>>
+>>> Cc Hugh who introduced the pmdp_get_lockless_sync(), to double check.
+>>>
+>>> Sounds reasonable to me, please add these comments into the commit
+>>> message. Thanks.
+>>
+>> Yes, will do. Thanks!
+>>
+>>>
+>>>>> For the non-PAE case, you added a new tlb_remove_table_sync_one(),
+>>>>> why we need this (to solve what problem)? Please also add more
+>>>>> comments to explain.
+>>>>
+>>>> Oops, you're right, the original macro was a no-op for non-PAE.
+>>>>
+>>>> I should just move the macro call out from under PTL, rather than
+>>>> replacing it with direct tlb_remove_table_sync_one() calls.
+>>>
+>>> OK.
+>>
+>> Cheers,
+>> Lance
+>>
+
 
