@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43540D26284
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 18:43:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C267DD26284
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 18:44:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B6596B048C; Tue, 20 Jan 2026 13:43:01 -0500 (EST)
+	id 266A16B048F; Tue, 20 Jan 2026 13:44:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C3E76B048E; Tue, 20 Jan 2026 13:43:01 -0500 (EST)
+	id 1F4296B0490; Tue, 20 Jan 2026 13:44:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FD0A6B048F; Tue, 20 Jan 2026 13:43:01 -0500 (EST)
+	id 12A1F6B0491; Tue, 20 Jan 2026 13:44:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F20BC6B048C
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:43:00 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A2E1313B921
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:43:00 +0000 (UTC)
-X-FDA: 84353214120.21.590D364
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 00ABE6B048F
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:44:18 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A77B1C19B7
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:44:18 +0000 (UTC)
+X-FDA: 84353217396.30.3CE4BF6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id ECC601C000B
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:42:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SjqiEUIQ;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768934579; a=rsa-sha256;
-	cv=none;
-	b=A07QI5BN3fGGuLDuL+KwShm4scup1HaKx35R1Qp/oayQQR73p4nj6SrzGW0tcPAX7Va7yB
-	dUmru5CMIf+hxD5Q+Xfd0o6ut1xGeWzM9TjCBDEsSNdRXOR7MRfkT7ruG4YptWOUEhO+Ky
-	HY0J/mXuyVaeZAH6ufAaoLHPk+lHvWQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SjqiEUIQ;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id E394E2000A
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:44:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rfna6mHD;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768934579;
+	s=arc-20220608; t=1768934657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4X3p1hsMbO1Gjz1e07Um2YapRO5gCA5rv2LgEFafNKo=;
-	b=38E99DU2aCw3MWPJafxD+ktQFLXa9pclBg0LAR2PcciiHeiiNN6cAO3A/G+AK3IFT4zueO
-	qxCMZItN6jTN4Fs//tb37kJqcbNP3tnIdpZ6MsngkDQCSS92W5q19id08R9R8H8C+ND8yQ
-	8SMs0oIwnuRxf+G2+iiId78KC4uY9iI=
+	bh=VGSkGElZi1cLOojEet4P0f949OnKsvKzNEf/YSqlH4s=;
+	b=I5iHOEOhTXjLTNTlktjv2a7ktq4UJkWj1lNRzy6JiHX7DTu17KAtHd3cGlPe4jVHluD9cy
+	SgDdbRSY86zEefVzp17Trzqo3QMvaSXAuWA2v3pNdVheeYdpffLVSz4KMgFSbtrhPTT4xQ
+	l4JZu8pzOD5Cx+6ZFgynE3OHOb/kNmg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768934657; a=rsa-sha256;
+	cv=none;
+	b=8UOsQ43fGgBqkgx5t2w0GkyJTgkZ3XsL4wv/Td36wXgsoMxwKQrNnv0Iaasis7kKSDds6j
+	SfQCW8Gfeh/uW4NVEYLIHbPy0/TMhthpu6p477JghLdbrDyhmBFSJ6/3tPfTiXzxwA4V19
+	3O1pKYOcAKJ6Q6y8OYI0dvxn3fCU6L8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rfna6mHD;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E98B3435B4;
-	Tue, 20 Jan 2026 18:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABADC16AAE;
-	Tue, 20 Jan 2026 18:42:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 11AB443D4E;
+	Tue, 20 Jan 2026 18:44:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965E4C16AAE;
+	Tue, 20 Jan 2026 18:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768934577;
-	bh=9asjItjUuW66QRWbqI3QXT7hKg9DauBgryF6+gZ2LNk=;
+	s=k20201202; t=1768934655;
+	bh=+LEXTeoZdMHLGFiNXxSwJZf0gVNOtmF4IeqOGsRfK6U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SjqiEUIQDfHO6Y7G/RKwZ5STzyAI3pmHlAXYrmpO177JUyGX8ZQ2arH5agwQ1mIQF
-	 06Q/WGxNJm5wqvx44LsUPycGl7t9/iaBz6ay83UeQystb/yWY8U5aE4cXTa2HhvIId
-	 p4g6qBLQjwFsPg9ld8SgZeCG1wtu8ENI6AGo/S1AMjok8WBwK8v+/JCidE2dfZW40v
-	 yiKeRoX1WOHyN6rAKE0zpbSZ6yubd6llKtUZQKTOs5NrqUFsfflDd+ffq/YnzWu5bn
-	 +ZGUcPE8CUQKafbu7zRgvs4L01dfbNM7AsTbpwQjfSHIFqzE+m6sm4biqw7EOiKZ/d
-	 /qsbKT+M1zyrA==
-Date: Tue, 20 Jan 2026 20:42:50 +0200
+	b=Rfna6mHD2LRS7oTOemBIwJdZafQvXxTBtjtJzov0cI2eTcGpPOxG9WzD6132eCHP7
+	 x9MV32MZI4jUaUJTgYTtDbBBV8NGFpQtkeIrRss0itkOoX+8rlieEhajWmM/qOzj17
+	 amnNjFssKpPSpgx1kz0SfcUbuZDuCj2rqAFs2zmDKUmSGo25kf19/PE4WuwHaKjcqd
+	 WAqLKOUi9ZOnLtdx7VUJJ6x/o/1T1d1go3OlbaRW0W+ZMgLMCFzxk6WMbUYL3YNAps
+	 vh5SGjE8mhhzYLZtfsTncHoQIshzuWqT3upKMLuEZd/uFM4y1DkE1uD0IrGoFzBmmY
+	 KnJq9N5FZYICQ==
+Date: Tue, 20 Jan 2026 20:44:08 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pratyush Yadav <pratyush@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -72,24 +72,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
 	kexec@lists.infradead.org, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 5/6] kho: Relocate vmalloc preservation structure to KHO
- ABI header
-Message-ID: <aW_Mqp6HcqLwQImS@kernel.org>
+Subject: Re: [PATCH 6/6] kho/abi: add memblock ABI header
+Message-ID: <aW_M-HYZzx5SkbnZ@kernel.org>
 References: <20260105165839.285270-1-rppt@kernel.org>
- <20260105165839.285270-6-rppt@kernel.org>
- <2vxzy0lscks4.fsf@kernel.org>
+ <20260105165839.285270-7-rppt@kernel.org>
+ <2vxzqzrkckkv.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2vxzy0lscks4.fsf@kernel.org>
-X-Stat-Signature: h83pb6q6e6ra78nryytxhr8xa7dqhegp
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ECC601C000B
+In-Reply-To: <2vxzqzrkckkv.fsf@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E394E2000A
 X-Rspam-User: 
-X-HE-Tag: 1768934578-15359
-X-HE-Meta: U2FsdGVkX19ly5bgcZAPPeW+5V0ttUMR0EnvDANomOZK8iejr8+PixJgAUbY0kmIuZ6tVk2win4zrMu4bMOYPtJHTX9vZdJTA+xpihfPaD2UJ5f3Zwj9uMhm5TIQRK5cDN2pj+K/mF0QNQQrC6gK+PO+GDWgs20WweuF4gKa5Pq8o7CqCXNeEZQasb4MPl+9TfTDok/2mvIvrO4ISUizifoXhdwewbRqFQdrT+h2BMBDBhpAQ7wg4Gz2his2KeAYa5nsAksox9KHM207/H/jSv1SQW7rLdh/buJA5p+GYlQ79EYDXOcRl6/EIdA3O5kKyb32OhBE10VuDyq9PhLC1vHon64HhELYQ0x7pFTzwdmuRlFMnOi67+2N8m5emKShHodAL9Oe+BqLY1PnUbUo7CdR4N43WMSiilLJqoQk9fml9VCfeeuB3k1nUjyvmw6Y3JNWz836JpiOEvOOYp9tM50jTnVCQ0NOH6Uq7Z2kB8CWIwb7ocJUUQf2GvwpHEsK4w2/KiuD0FX1BbboZ7JsCkyaW7+ym46keSX1SG1Tt4qLae5aXe3GxaMHBGniPHC6ZHtTNqTOcDrEdpKjdLigeKP5XHJLvKtx2k+g7TQ6ljkFIHhUJIwNXhGX7aWdvUdjBO7sTpC6DS33ezCYyZAs1Bt5RGFS1r+Bgh8iR2TVpujP0tEH5AOJY30VDufQmcrASi6CvN7r/9yWWr5AI8jMpZm9TGi4DIbRdSP1p7IF6epALDO3OcFcU5DEvDeNR2cv6h6v0q/eHxpCo00kR+ogAwIaZYKluxKmeMSENnJ8E82NwpaITgM7c1pNTM7eVEJD6KhNAbtjmIQU1dTKRNGNQ5k/644bfUJqaOu62eRjoRJ0QcAruXlTdv8qVUBdHjOfyBbhZPz8FvqAxm7LYzmHO+ME/XrAAadW4gn6V0Y06PLNeF5VUDBkK0mGj/TXaD3OSowQTJVKJNPpgOczVO0
- YAbpRIHP
- BD91mqHRE2rszt/eZXU8M11afzYM254qs1cHsfzXoxJ5Zi0L+kAqTCpw4d1VEhc6cLRgM1VegOsv+xt4lr9dGUotJc2iD0tsVC5C0ghY5fCUokovpzk/rX3mpvIYeJE2R3lNbvPKq/PWIpDf3RIxi1hKGSITGhZ6uc1gs2NzGLqe7k+mOJ336amrwq8IS4rZxjNVzHJkUVCZ/viqaXtt0BUsTeGbsu1kDPv3mjDogd0Eij3Rv1wSd1gy5M2rFXAOkayqthTptfSSQkM2UZp6nQyrrFtb27f5arLKw8TgOmxjbzmk=
+X-Stat-Signature: jr9q6qxjf8xmk77u6a37ajwrh4e4wxcy
+X-HE-Tag: 1768934656-817966
+X-HE-Meta: U2FsdGVkX18Gf6psTuXhBhaOfzEs2bp3wUNUrnVnEOFWDi4Jw39rPT2r7CWVXjPWKJ5tYIAsQhkHHA8GsVau2v+tcbFSINunlr9UzNPLeSrIGa4f7B3iLNkY96HTvVEPqcP/zNIskN60Uzwi+HG/QW8tCkDFBJQLKG8XQ49Dg8mTDKXneTUew4HNk8WRG/+HWCq4XS7YIx1c1aLmHEOkewfqT+0vgXzLWfLBV1mKwHvKCUpYWj82yCJweYt3TfnZgzMu7BcrcvjMeqJ5cbbYINB9r25bsec3TiZVZark+JJ0jl3ZgqQVIgYiSIM8C92CxGWY31q0jP+zi8VgRRnVHn8NcyMFGxTj34MiENRPy89/R816URoRoCvobArOx7KgLQMuG9ZnubA56QjlNuYvRkIttmPvcr6nJGvjMbqqjq4g4hG5EBp7WDvqCgIqiw8mzsUnA8ejXt47oXzMPLyGm0EeNttFuBn3K0G+EkO19khAZ2Sfcoa447kYlxd9Qr9VMgE2bdtonEw/b41ZtrV+CUmbzSAAWFvOZslEbdXRpP3aFTYOsd71qNXvi8T1I5H8qVgeBuZQjLgsPO2i5KZjRpzfdBLeurJWw2+n7r3bbeuLbVzXCQ8KZ4LHuyPykYiKdWC540UFy5yRPrAsm0xMkwLnWBBhM4CWHVk/2se3KFTaUrbqMXrB5RhboyNKJEB3gTzrJfRGykhEqwSZUal7wUwtBi2oqHBgQWBjHf0SXUZ6aYXUzn1SGSqOlIUdbBOVLJkt3Wgrpq8UnXMGZ0WgWvzVh9wKo8qOyLnRyU8dSS17Z3dn4P+WIyVg0ZIIVT26edEy2VzBvg4/CjkJ27TmwHf0QgyY+oDxewdZ2v8lvvRQHbH79C0fgrh4NZUaBq71NM3RNlz57nLDoMjjt2X0HwIOF2e6YE84ShmEjIg8meyhlfhuJRInJ+oeWqzds/iNLTFc/HrGBgPAXHQcReI
+ +uWWfDEa
+ 298m4B7yG8kDe4acHvMParehlB6eryxJt4CTiFNIvx0kc6ZaMM8Xu2mORNzAT7uqVQyB94LB15Pyh35S9aqtKoJwqWtPAgrPdGKnt0iDhtiXG6445Gdc0sUSxwovMtTMllWMWtZ/hURugq8yQuF8pfebjwbPocIIA8/16LNC4GMSJ7n8cHuXKhQ+RXGR/3xwVMuSLu7KlLzqNjtkrJuvnAsi8+TfUvAjmPubMYpRMqJShDY0Wms0kCec6JlJVqVVxYvIiGqp9uozZK9YAfir5WVmG0g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,99 +97,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 20, 2026 at 04:26:51PM +0000, Pratyush Yadav wrote:
+On Tue, Jan 20, 2026 at 04:31:12PM +0000, Pratyush Yadav wrote:
 > On Mon, Jan 05 2026, Mike Rapoport wrote:
 > 
-> > From: Jason Miu <jasonmiu@google.com>
-> >
-> > The `struct kho_vmalloc` defines the in-memory layout for preserving
-> > vmalloc regions across kexec. This layout is a contract between kernels
-> > and part of the KHO ABI.
-> >
-> > To reflect this relationship, the related structs and helper macros are
-> > relocated to the ABI header, `include/linux/kho/abi/kexec_handover.h`.
-> > This move places the structure's definition under the protection of the
-> > KHO_FDT_COMPATIBLE version string.
-> >
-> > The structure and its components are now also documented within the
-> > ABI header to describe the contract and prevent ABI breaks.
-> >
-> > Signed-off-by: Jason Miu <jasonmiu@google.com>
-> > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> [...]
-> > +/* Helper macro to define a union for a serializable pointer. */
-> > +#define DECLARE_KHOSER_PTR(name, type)	\
-> > +	union {                        \
-> > +		u64 phys;              \
-> > +		type ptr;              \
-> > +	} name
-> > +
-> > +/* Stores the physical address of a serializable pointer. */
-> > +#define KHOSER_STORE_PTR(dest, val)               \
-> > +	({                                        \
-> > +		typeof(val) v = val;              \
-> > +		typecheck(typeof((dest).ptr), v); \
-> > +		(dest).phys = virt_to_phys(v);    \
-> > +	})
-> > +
-> > +/* Loads the stored physical address back to a pointer. */
-> > +#define KHOSER_LOAD_PTR(src)						\
-> > +	({                                                                   \
-> > +		typeof(src) s = src;                                         \
-> > +		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
-> > +	})
+> > + * reserved_mem node:
+> > + *   These nodes describe all reserve_mem regions.
+> > + *
 > 
-> Nit: not a fan of exposing code internals to the ABI header. But without
-> this the definition of kho_vmalloc_hdr won't make any sense to someone
-> reading the doc without looking at the code. Dunno if we can do anything
-> better though...
-
-These might be actually useful for other KHO users. 
-
-> > +/*
-> > + * This header is embedded at the beginning of each `kho_vmalloc_chunk`
-> > + * and contains a pointer to the next chunk in the linked list,
-> > + * stored as a physical address for handover.
-> > + */
-> > +struct kho_vmalloc_hdr {
-> > +	DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
-> > +};
-> > +
-> > +#define KHO_VMALLOC_SIZE				\
-> > +	((PAGE_SIZE - sizeof(struct kho_vmalloc_hdr)) / \
-> > +	 sizeof(u64))
-> > +
-> > +/*
-> > + * Each chunk is a single page and is part of a linked list that describes
-> > + * a preserved vmalloc area. It contains the header with the link to the next
-> > + * chunk and an array of physical addresses of the pages that make up the
-> > + * preserved vmalloc area.
-> 
-> Perhaps also mention that the array is 0-terminated?
-
-Yeah, sure.
+> I think you should also mention that the name of the node is the name of
+> the map.
 
 @Andrew, can you please add this as a fixup:
 
-diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
-index 285eda8a36e4..2201a0d2c159 100644
---- a/include/linux/kho/abi/kexec_handover.h
-+++ b/include/linux/kho/abi/kexec_handover.h
-@@ -138,8 +138,8 @@ struct kho_vmalloc_hdr {
- /*
-  * Each chunk is a single page and is part of a linked list that describes
-  * a preserved vmalloc area. It contains the header with the link to the next
-- * chunk and an array of physical addresses of the pages that make up the
-- * preserved vmalloc area.
-+ * chunk and a zero terminated array of physical addresses of the pages that
-+ * make up the preserved vmalloc area.
-  */
- struct kho_vmalloc_chunk {
- 	struct kho_vmalloc_hdr hdr;
+diff --git a/include/linux/kho/abi/memblock.h b/include/linux/kho/abi/memblock.h
+index fbfb2eb1b1cf..27b042f470e1 100644
+--- a/include/linux/kho/abi/memblock.h
++++ b/include/linux/kho/abi/memblock.h
+@@ -45,7 +45,8 @@
+  *     Identifies the overall memblock ABI version.
+  *
+  * reserved_mem node:
+- *   These nodes describe all reserve_mem regions.
++ *   These nodes describe all reserve_mem regions. The node name is the name
++ *   defined by the user for a reserve_mem region.
+  *
+  *   - compatible: "reserve-mem-v1"
+  *
+ 
+> Other than this,
+> 
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-
-> Looks good otherwise.
+Thanks!
+ 
 > -- 
 > Regards,
 > Pratyush Yadav
