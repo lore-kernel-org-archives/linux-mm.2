@@ -4,154 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6642DCA5FA2
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 16:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98C63CA5FA7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 16:31:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA2AD6B0458; Tue, 20 Jan 2026 11:28:54 -0500 (EST)
+	id EEB456B045A; Tue, 20 Jan 2026 11:31:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7AFA6B045A; Tue, 20 Jan 2026 11:28:54 -0500 (EST)
+	id EC2D46B045C; Tue, 20 Jan 2026 11:31:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA7D56B045B; Tue, 20 Jan 2026 11:28:54 -0500 (EST)
+	id DEF776B045D; Tue, 20 Jan 2026 11:31:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ACD876B0458
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:28:54 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 770D2D189D
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:28:54 +0000 (UTC)
-X-FDA: 84352876188.20.98C2BE3
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6C837120003
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:28:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fkoSeDE9;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf29.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768926532;
+	by kanga.kvack.org (Postfix) with ESMTP id CA7496B045A
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:31:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94E47BA87C
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:31:18 +0000 (UTC)
+X-FDA: 84352882236.18.33BF05A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D939B4000E
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:31:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lllm8gJK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768926677; a=rsa-sha256;
+	cv=none;
+	b=c2t/EDeNTUi+4PeDiXmcuS8oISdZy/IBG4uiNW0qDxOR1w6iH6gtvKgnqWGv4cYRpyHhwR
+	thcGXYQytG8RLG9zjxhsvTRJuwxDHWP0uBuj/TSFBWWoKCtcL/2YnrESjpco/P32L5AxOT
+	4K091ElDr1Xy+Cz08eWws0fq/0QwbPw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lllm8gJK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768926677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2NdbYcVwZi1ih+onTl3vtMwhcrSn8T+MqEL2Cz0G25Q=;
-	b=IGD5Og2VNxhaYfSq5w/M7YNOrytUyYydBeE3GXe3d205S66F026aFs5nnHrOG0AXALWpC7
-	QV5IpT95vJCJMFt/liTuhCKrc8LpjxoQJCtFk+2Mg6sbm574sLulUSQXm83IS5rlg4SxCM
-	M/ZQhKuSnoUeTMqEkl9ZD1w/XdDuKFM=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fkoSeDE9;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf29.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768926532; a=rsa-sha256;
-	cv=pass;
-	b=6SS4FwXb+e98m33ZSv5kNEszjUwYpSGoHRNdjFUxqXYh3N+n1RLvcQSo+tOJ7V6+qyMF9k
-	d/8hjkCQDaI6Bz/lU8xuGIYuIqUyePTJaxlc8dMd1C4/nY/uw9A7dZJhabgCuaYcisltkY
-	OnBoz7MwVcthvPpfDCFnSEf4FYHi644=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47ee0a62115so187385e9.0
-        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:28:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768926531; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QERBc8JTFYS1U6jC9DovHL8DCkO1Y9YNws6ZdMVeaqqbhyFUfKYGDIO4mOttCi9S5W
-         TWneo4iP1ab1edqA54Z+xta7y4Jg2ln1+KqTGI8/LpJ1KilccZa6BVtdNpDPC2bxwvcr
-         IFcckvTfHX7ZbF9hxeF9VdUohFe4t4Xqgb3I+RBU1CG4fpZKWCuUWLGdXFJNLs7QOmue
-         zI7aIo6xgL+iYQ9rwJdSpkHYGOPw/mJtaIyRkIo+AGQigbTZI5EWHmpvThxJ48ASOzss
-         VLHr0EXOeJGF/ACn7Pd/NNGdqUG8qOm5dELsSGJYbKOWwm48GVyP56AtyDJD4L+FVd1P
-         kS6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2NdbYcVwZi1ih+onTl3vtMwhcrSn8T+MqEL2Cz0G25Q=;
-        fh=8Rw+jbh795zxOPAqMRswhWpJG2l4e6pZNX2FFQ0/elE=;
-        b=O63cH9oGAI3LprzH+7YdAtscIpeJBUnKFv72X/AfR4F3K7BJU9mMN9+tjbUz1Nzu4i
-         WPuVUPNpx3vhwzEOn2yMbIUnvKyIDrguEoyi0EFhsPTAALA44BAbWVYFFcnsNP7G0TQB
-         aXlCV413LnhuduUp0VlLB1DX+AXDltffnUx+yH5VYSZKZSDyuio3Ml3V13Szb2bJnH4E
-         34Ww1CgiDzoFVxO6LiDgstk1U5JNybpFWwpxmXNt5P7JF5Z+OuMCiIFKfjcAlm6EWfGQ
-         rIMO1oYfHHrAMHM97qo5L55nxAYwBV4w4VQGFPoq+L4UcfAuJBTfkhz7kQvIGYMfsA49
-         s5KQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768926531; x=1769531331; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2NdbYcVwZi1ih+onTl3vtMwhcrSn8T+MqEL2Cz0G25Q=;
-        b=fkoSeDE9ZSuFhLHOddHnm+7184weczaaJcfoJild/28LSIYJgqptwYx7TV0MUX2Vsd
-         GSLs1NBOOGviQnlhzOA7QeSK0oqSlqJ7epN3+Tz8Sid3f5mD/YSfxru+jdRjs5Y0IyXz
-         A3Lx7qzTIsFF5HNAy6undHBfF3BEP08f56Bp+i+SAoiCk+Z0SZdX2YcLL6+fXXFnWNyH
-         +CGIn8Q0ugcixS6S+HsfpRJHueZrSC8TPdl7zy3RzPwF7jVMKUFzWnyVFJ3DS11wMc1X
-         s3yZuzLoDxpOwAkiIXV8zcXKW2Nf8tTUv10MTSyYWja2UYer7TbUzgwVDK+q3RESbZNq
-         /14Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768926531; x=1769531331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2NdbYcVwZi1ih+onTl3vtMwhcrSn8T+MqEL2Cz0G25Q=;
-        b=Cfbplt5V1z6xPkdU61pbMkMFscn+Tb9UlwdRl3PwF5TLjTZtVW4sVn+E6bzLU4gSO6
-         Gg/vhWLLfJJ+Z3C1BFW2VJ14pNap1x6/Npfbbz7BTP7QOZZxLS8Y2w6YG2L5TNk52cyq
-         TvQxlADStW2SZFKxOG2mStlskYJWU03dT8C79xWT9zXZd0c2SsFgOLVdEt3Zd8EQ1CQD
-         II0V6+M8wQVUqRACsFOy75jGwG6/Yu5nq8pU9NLRaLzieaBNdTpBcFm8v68Fa8IMWZ8Z
-         5iue9PpcwAA7yBr8NK3Wc3NsDpwjkeAj6b6w567ek/1plNbLFNFhOZm7IZZvLAA1fXr0
-         phMw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8+iMTklo4HE6l9G4x3h+A1Kd9Y1pf3qaD8BDco3TMv6TiVrdiM/u9Lgl3pqmtuX6de2K0goKMIw==@kvack.org
-X-Gm-Message-State: AOJu0YzkkYrDogMD/kK8f0ZaSgScUufuOnXd8S/mRb6pKX5raKww8dqk
-	sSvzvKpVQVhKTZCnF3/dDyoE/Lkv7OZjEraXqnPqAXRZD4I8eVQ2RU2bnbFmtETIceic1zAJaaW
-	bZOxn/OID2bINSzfiTlTaJANOvdHCkIgijRpwGhZL
-X-Gm-Gg: AY/fxX6V+HhXMwDezJsFpjg8uhAOn2HmxPJYP23tPNKqHQHstJsTCvVQP9aWBxQEnfw
-	2msyJm9NyqBdCQ+s0/syEDFbg4QLGX5VU3cM1ZzPAM5cCJh9Ott0lXVqEn4vV1GVNCF/2dRExxS
-	oxzu7JtXCOlg5stfE9J1QiojYrIXpkRhSKn3mQ3GZzymbdcm266aV+aQiVj/0O0BNqCB+t9qXrH
-	X2eDrv0OUdvPNV8YtdYLx4Tqt0vRaJjroZ07Xc59dTnD5ttRyH2KtGngbyp82UAk2BaC9vhsCWv
-	SkG2F8dINDGs3k/rb/EiFqPcfaqM
-X-Received: by 2002:a05:600c:198b:b0:47e:dc0a:8591 with SMTP id
- 5b1f17b1804b1-4802788e239mr2686005e9.2.1768926530251; Tue, 20 Jan 2026
- 08:28:50 -0800 (PST)
+	bh=/9bvytCEld5G8KAmP/gN8sR/WGKE3Vrlr77tW8T8mGo=;
+	b=4AmW9UbZAO0vTUw9qn++wG5sUk8+N3/Mj4RzcakDl7Y183Wm0vC7Ho+oVaHSlIFnh8D/wT
+	jEyB7CeqxksSH+rphNPWfl9V5+rn+t0YD1hBr1ZutQ1D6WYjSqcbrvQlQc/zUnBQTyt9qo
+	EkmHhmGl0ghtI6J/rADSgd+X1cPHbDU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DAEDE40D88;
+	Tue, 20 Jan 2026 16:31:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E42C16AAE;
+	Tue, 20 Jan 2026 16:31:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768926675;
+	bh=b+DEzrhzQLEZaXZekFtcaQ+EoJRPMgcm+b7GQK00jzs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Lllm8gJKsKXKIIbGa/8Mhv3Frwq887BG2Yh/JTKwz3Cs30xtnoRwE075kz3xMtERX
+	 8VbtdWkRd8wwxP5YPBII0c5+/TxFnfnoWO5J0VWK2z1LEJcN+/JVeQpb3DHWY6LEET
+	 OzS+5sAmZKniDDSXOJKC5RHqITIbB9bFf6b9yt5/FRwBrGabs4g0INX0mMVFG/gkfr
+	 FFDWmgC9EXOvhj3znC5tjScmOclMBI2vArmTbFQ+2FX3nYuWFV+z6PgZoSZJYvHrPZ
+	 Uw6nq+uPcpUyOkMuiF0eD8lwHjnxJqFJMQXhWOb0cZYZrk0xbG37uYBtMWZMFQR01U
+	 heAP9PWzXct7w==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
+ <graf@amazon.com>,  Jason Miu <jasonmiu@google.com>,  Jonathan Corbet
+ <corbet@lwn.net>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
+  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH 6/6] kho/abi: add memblock ABI header
+In-Reply-To: <20260105165839.285270-7-rppt@kernel.org> (Mike Rapoport's
+	message of "Mon, 5 Jan 2026 18:58:39 +0200")
+References: <20260105165839.285270-1-rppt@kernel.org>
+	<20260105165839.285270-7-rppt@kernel.org>
+Date: Tue, 20 Jan 2026 16:31:12 +0000
+Message-ID: <2vxzqzrkckkv.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20251102184434.2406-1-ankita@nvidia.com> <CACw3F51k=sFtXB1JE3HCcXP6EA0Tt4Yf44VUi3JLz0bgW-aArQ@mail.gmail.com>
- <SA1PR12MB71997E2E101E55CDE65EA6B3B08AA@SA1PR12MB7199.namprd12.prod.outlook.com>
-In-Reply-To: <SA1PR12MB71997E2E101E55CDE65EA6B3B08AA@SA1PR12MB7199.namprd12.prod.outlook.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Tue, 20 Jan 2026 08:28:38 -0800
-X-Gm-Features: AZwV_Qi-sOyZ-R41AFqxYbo27tCfgIMGnJS7jLDAEJnKTv2-_C3tqbgzg63dbdA
-Message-ID: <CACw3F51qrBXnN370Btk7=bcKU7s44nmQYfN=EAfq25MondRUNA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/3] mm: Implement ECC handling for pfn with no struct page
-To: Ankit Agrawal <ankita@nvidia.com>
-Cc: Aniket Agashe <aniketa@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Matt Ochs <mochs@nvidia.com>, 
-	Shameer Kolothum <skolothumtho@nvidia.com>, "linmiaohe@huawei.com" <linmiaohe@huawei.com>, 
-	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@redhat.com" <david@redhat.com>, 
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
-	"tony.luck@intel.com" <tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"rafael@kernel.org" <rafael@kernel.org>, "guohanjun@huawei.com" <guohanjun@huawei.com>, 
-	"mchehab@kernel.org" <mchehab@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
-	"kevin.tian@intel.com" <kevin.tian@intel.com>, "alex@shazbot.org" <alex@shazbot.org>, Neo Jia <cjia@nvidia.com>, 
-	Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
-	Dheeraj Nigam <dnigam@nvidia.com>, Krishnakant Jaju <kjaju@nvidia.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, 
-	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>, 
-	"Smita.KoralahalliChannabasappa@amd.com" <Smita.KoralahalliChannabasappa@amd.com>, 
-	"u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>, 
-	"peterz@infradead.org" <peterz@infradead.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Rspamd-Queue-Id: D939B4000E
+X-Rspamd-Server: rspam06
+X-Stat-Signature: dg9p93xg5moudhiwqa6o4yyeocig3mwt
 X-Rspam-User: 
-X-Stat-Signature: od3uoxhtgcgssukbhtaegyhs4587obk3
-X-Rspamd-Queue-Id: 6C837120003
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768926532-597304
-X-HE-Meta: U2FsdGVkX18aMPDLA5W2rIbGtvhkURRvv4L0P/UJAxU5p9uImDkXlAkKrKHW/5cZUO8fFJQlSrOpXkcJ4JT7N7+A+3ZXjDbe7Q5VOt7EOAXAlsBzN3A0BsGyfWC/fy8G2V4jIazXF465qxjHKpCMTtYsKXoJmRznKIVDv1G20YyZpk/5ubcfTxJ61V0h7p2ldupiR6T1Z3pGqX2yc/pnz0ZnPoplOYqQmSnsmi8KhdB7lgIngImyqtB4nnxl9WlnSaaEbwA2sN6a7ohHTqUfkfTJlzuCKCYPXnyriGNI9UjbonEiYwpzbuBw/Yilby++8wB4v2rL/5eKG9++aQ1vkClKx1dGJ3IMJWi3djVzJ0sNu8ykWtL7SQr6659amAs9oSn55Y/1iYSzRYVylEdyie2d7LGOiL9orw7b2J1Er0DItyeu7eItRFD0Meh6QgIDljgI69fzppacRtf89OckDKqNH3mB/En92L76ualzscmAKGxXLNBjy6mHmm/7ZHsUHreyUf18nRF2CTM39sBsLdL/LxsJPdopoS60e4LQXLM4Stnxu6i/K/OnCkp67DvLGiUDFcycnsWPCWihBdnOLMjot4exnEAoCYFUtIAqmnAdXhVlvWVEngZxDlcdy3wu/bldPtznhPwY032cZtKUuzNLYRHm0Jm5E2iTYj5x/8QKAFvKOdZK2NH54MUikxCw6RlqzYZp64Q8WmCz7MuaiBp9G6N1eXlJvVmS6l0u8kaEHgxtQtKTZLfgAuExJpyAVcGs36xh01gli4gTtbunWh9PDEAFtyx5EnTpZ7De4/a3AuSv4Bb4GEY6sHJJobeg5UmuGICjF3Ui0hPnssCoDZaXJpGU54bRzgLeOkcdhHq0A8pw809KiM3r/UUc00T95Xu7cUqxKFD9sipyi9gGSkqRCjVwRFqs/ZA2doFl97MWQ4tMFiBbqsGmrgDbrm6sBTBJYwCBT7ukd0kpLUA
- n+vQtsh+
- 3tSllgi8FDNsFK/InhcN/5SGa1CAxfQIVsiUhemlwmKr8TQ26CV6lrB4QugSaDQ9MhbdqW34RwsK/dgZSFlP4Pc/0/OlxqAlY9dkAYHqC+tjVU2j/PcI8wB9ZXvxO3DiHzJ+kvFSXnsXE2Qe7NBETXBxqdDrh7vn6Bze/EIE9q/Bq1MnoJt5SFw6XCajF3t0X/7lg+KvKyy9vgyYJf+7CCU6buxSRvICznb9mlZ7MkVHOdOgkuHo/z+CYB1Jit1LrwAo5x2FHfHNV+pgo485qu82B0GQJEEYUMzl7FCFLK+sDA2NDHwkJCO4HNSLtNPiYDma5/5JtkqgUkB1yaX4yNY6z2AHgW/IOL95oEvRIvc0yrV8WO3iZ7Ojz4EvhBumD3g6ATIXF+csISvLkSbPfWoBUv0gQzheaeGr7KZkFeB//n8w=
+X-HE-Tag: 1768926676-541549
+X-HE-Meta: U2FsdGVkX18K69K5q3jePKs1CMS9n/faLFWP+0+NwOdpMcClHTAf24TWZ2pz29VpwIKs+nhMwrPhB2+g5JlmtknMpoY+WOWq9A1OVoP262vTX5U23kII1P2quf2JzerX96VSsw0qW9RyrvlHAxjrEgH6rughsnOjVYKfkTmdN0HQcwsSP3RMn3Dol57ur1PFqch2VNUyMgRBYK18a4JDAjjjA6x29rNpprcA5z7S9f8DKZck2EW0Yv40zgRSKT57cTfo5lHJuUl3TO7Ir1Bl8+MrRmxqd1kSQKRDvygJg2Qrud47/oH2ke03rxer14YzPL6EFdtNYYcsOLqSBvsUZqXUMyaRTdPHllu0Oz+4rLMRPsvZ+ezhNdVpPC16C5gAZr1gqgDPCGytEHVCVWcEYRAkD5vkXnQYoIZlsSoxf70JVam8RydANYzH2ERlpUVyiFvKHsTGX9mun+gg6jiWl4CddSDEkl5mygY1UIWQpwxAv98ATq9Faf2OwvvuWcqV4pyYVkfsgN5Ia9xsg05sroOM6oIfmGEytKi/qTpoza4lQUqxqKt6NeEq3hAuJNcFMxXa3NvvMtUngKejPN+gMS7W6PEjFC6MmPDac4QPollrSMT3Lwn0vNoJOr5ynjiMaE1bctumznDlAvbT7kUkYGblEGcIlgOA2I0A7R6dWohyh6rrHhsBTuG2nrwssM82MCAfneVwtpTytcP/n3xbnmeed8VN2d0QMiPoJumAh4dNz9P3jBeDBkCCge/8v0HOvPbB2GHNX02ShTHBBgaoBhqWWBZ2LcuknrCaZMIHtMuck+x/x1PUtC2muXuc2Nd01O828Dl5M0LU5r9iRStE6haibdgW1LU0MewDsDOYGvJm8B4d/LF+oO1J4MSRpTRKoMDDySOs7c42+CdKSocju/GtqY/0Ceh8ydxHugiWco6WnyVO1liGQps1ep1SH1YlFvX+iLdfNf+XTu1hFdA
+ Vwd/gylH
+ 6toumrwMUGTOVZczykpyNuVCPIPKg8xgz80v4uffcufs9wsRGlQjqJ7YG/2t4vv6zVnB/nKLNtFQx5cLPc+BbJIt0cMT5yLwZq2ucFjWUWtaGtzr2QBlPy4h+Q+fHFCw8HFHVwJjR0HcnLhgNQzjm19LFk7RqtMy17ZDvkOU+oIBbbf6/L0gC60JvTiJdJy5jdQG6+XlmV+3vYudBG4VNnsqHPQf51ikX4QDMR4X4Bus+Hxc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,48 +97,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 9:36=E2=80=AFPM Ankit Agrawal <ankita@nvidia.com> w=
-rote:
->
-> >>
-> >> v2 -> v3
-> >> - Rebased to v6.17-rc7.
-> >> - Skipped the unmapping of PFNMAP during reception of poison. Suggeste=
-d by
-> >> Jason Gunthorpe, Jiaqi Yan, Vikram Sethi (Thanks!)
-> >> - Updated the check to prevent multiple registration to the same PFN
-> >> range using interval_tree_iter_first. Thanks Shameer Kolothum for the
-> >> suggestion.
-> >> - Removed the callback function in the nvgrace-gpu requiring tracking =
-of
-> >> poisoned PFN as it isn't required anymore.
-> >
-> > Hi Ankit,
-> >
-> >
-> > I get that for nvgrace-gpu driver, you removed pfn_address_space_ops
-> > because there is no need to unmap poisoned HBM page.
-> >
-> > What about the nvgrace-egm driver? Now that you removed the
-> > pfn_address_space_ops callback from pfn_address_space in [1], how can
-> > nvgrace-egm driver know the poisoned EGM pages at runtime?
-> >
-> > I expect the functionality to return retired pages should also include
-> > runtime poisoned pages, which are not in the list queried from
-> > egm-retired-pages-data-base during initialization. Or maybe my
-> > expection is wrong/obsolete?
->
-> Hi Jiaqi, yes the EGM code will include consideration for runtime
-> poisoned pages as well. It will now instead make use of the
-> pfn_to_vma_pgoff callback merged through https://github.com/torvalds/linu=
-x/commit/e6dbcb7c0e7b508d443a9aa6f77f63a2f83b1ae4
+On Mon, Jan 05 2026, Mike Rapoport wrote:
 
-Thank you! Sorry I wasn't following that thread closely and missed it.
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Introduce KHO ABI header describing preservation ABI for memblock's
+> reserve_mem regions and link the relevant documentation to KHO docs.
+>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+[...]
+> + *	/ {
+> + *		compatible = "memblock-v1";
+> + *
+> + *		n1 {
+> + *			compatible = "reserve-mem-v1";
+> + *			start = <0xc06b 0x4000000>;
+> + *			size = <0x04 0x00>;
+> + *		};
+> + *	};
+> + *
+> + * Main memblock node (/):
+> + *
+> + *   - compatible: "memblock-v1"
+> +
+> + *     Identifies the overall memblock ABI version.
+> + *
+> + * reserved_mem node:
+> + *   These nodes describe all reserve_mem regions.
+> + *
+> + *   - compatible: "reserve-mem-v1"
+> + *
+> + *     Identifies the ABI version of reserve_mem descriptions
+> + *
+> + *   - start: u64
+> + *
+> + *     Physical address of the reserved memory region.
+> + *
+> + *   - size: u64
+> + *
+> + *     size in bytes of the reserved memory region.
 
->
-> > [1] https://lore.kernel.org/linux-mm/20230920140210.12663-2-ankita@nvid=
-ia.com
-> > [2] https://lore.kernel.org/kvm/20250904040828.319452-12-ankita@nvidia.=
-com
->
+I think you should also mention that the name of the node is the name of
+the map.
+
+Other than this,
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+> + */
+> +
+> +/* Top level memblock FDT node name. */
+> +#define MEMBLOCK_KHO_FDT "memblock"
+> +
+> +/* The compatible string for the memblock FDT root node. */
+> +#define MEMBLOCK_KHO_NODE_COMPATIBLE "memblock-v1"
+> +
+> +/* The compatible string for the reserve_mem FDT nodes. */
+> +#define RESERVE_MEM_KHO_NODE_COMPATIBLE "reserve-mem-v1"
+> +
+> +#endif /* _LINUX_KHO_ABI_MEMBLOCK_H */
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
