@@ -4,94 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4038FCA5FCC
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 17:57:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8532CA5FD1
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 17:59:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EF916B047A; Tue, 20 Jan 2026 12:57:48 -0500 (EST)
+	id 19E1A6B047C; Tue, 20 Jan 2026 12:59:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99D516B047C; Tue, 20 Jan 2026 12:57:48 -0500 (EST)
+	id 14C436B047E; Tue, 20 Jan 2026 12:59:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C9C86B047D; Tue, 20 Jan 2026 12:57:48 -0500 (EST)
+	id 075856B047F; Tue, 20 Jan 2026 12:59:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 788916B047A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:57:48 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1306813B90E
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:57:48 +0000 (UTC)
-X-FDA: 84353100216.22.3FD36F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 57B1C80004
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:57:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DTUy1n4w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768931866; a=rsa-sha256;
-	cv=none;
-	b=zRHZM5kDJ6N6fefGOQcyZTqTrn6RJ+BFTNLf3q1jgyMXIGAyStiQoQdaCz46PpJDBQCtpW
-	+wEhVxSFSAAGF4OQyZtFYe9dTuDuixCS9C2m27ChLGl9XMv4brPUvxososXMlUVXaaobI1
-	Owr11xxU5XYm6JqlBn+NoFy1ucMM314=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DTUy1n4w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8BA06B047C
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:59:29 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9968BBAA8F
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:59:29 +0000 (UTC)
+X-FDA: 84353104458.29.28D7797
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6AF65C000A
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:59:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=PvkPagIF;
+	spf=pass (imf28.hostedemail.com: domain of "prvs=473b322d2=epetron@amazon.de" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=473b322d2=epetron@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768931866;
+	s=arc-20220608; t=1768931967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MfhT75hO3NZBcebmZbN8NiQlhZEwXQzjYMHe6XNmZFw=;
-	b=iNRZ0BA1NAodsnf+GhyyaUYlFUjk7ADrxQAFsWJVZYUosaM5c9o7zFeUGzn23okOjN72dM
-	2YdRskKwLu+EyLLgGvn4K1/NkRPU21lPRwX8Ol8MeunSdlqn4cz1J7J4sojVBO78fkYwai
-	oXoBnxAnX4mheLGAT0Pn6N9M8QpmonI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 25B5A40485;
-	Tue, 20 Jan 2026 17:57:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2854AC16AAE;
-	Tue, 20 Jan 2026 17:57:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768931865;
-	bh=YpDjEfkNyumQSj2vKApRnaV2QIrJCawbl/fbFRLhjvs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DTUy1n4wndhSupFBOffwXqXmKNwnFwm/n+eeE46Wo+yZ8Kbn2dJr3RrCfkJuRWYi/
-	 pEHCFCX6KfjgiR7YTg55Y0w26XvYnbzdmQ94nheoUD3Kp+DA5I427bvu4Dk3tGOsUn
-	 ymc/ptSYMFWjtFx5aIi7DLYfY3fuz83zrASsBzH9QHnR1znbtpSM8rSIeFQoa+U8c0
-	 Xt1gRRlJnxqNG7BwFNHUSTbSa5xRLwgIiIkmucPHpBhQj5ruBcA8VnCSzRk9Pyhdyz
-	 rNEAOf8tvwk9N5fkvY0MFf2b/hK2DSkRxLX0vEazp4um7ulfj2fG40UWaMrSnbdPhy
-	 P0jdxOzuBkSSg==
-Date: Tue, 20 Jan 2026 19:57:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Jason Miu <jasonmiu@google.com>
-Cc: Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v7 1/2] kho: Adopt radix tree for preserved memory
- tracking
-Message-ID: <aW_CEV-Qqrj2dvEb@kernel.org>
-References: <20260116034432.1520731-1-jasonmiu@google.com>
- <20260116034432.1520731-2-jasonmiu@google.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jwrVgQu8T1zQqFt9YAueQy5DCsjrQY33U9ppp5mocfU=;
+	b=LOaFTh3dqAxWO1eXPviQneCSGGfCd0WhrTU0tKsmBvePhDVnvpoX4h/lzEpCuX0MSaZIL/
+	nLpKQPcXQEt5gptMKXdiCZ/N7BRg4geKajGeiMC6xWvDBepnhox9eja9rmT3qGwz1fIK4N
+	AD6ItaWJSs99/CCf6j1JeeL2lkYv3bc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=PvkPagIF;
+	spf=pass (imf28.hostedemail.com: domain of "prvs=473b322d2=epetron@amazon.de" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=473b322d2=epetron@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768931967; a=rsa-sha256;
+	cv=none;
+	b=Za9Dv/YkcknclmQBrU47LfFbIBlhTzkto5scSU604XOB31jw45Yxv2cvUgerAC1uupseyy
+	NVNY5ND/IjwCFPUGsdKfABOn50ILXmZW2kPve50eReOxhaS/u6a1AslW49jAT2lfVZ7jeR
+	ZhcBoZuqMHXS9l6CIIyAUlTZLCouR34=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1768931967; x=1800467967;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jwrVgQu8T1zQqFt9YAueQy5DCsjrQY33U9ppp5mocfU=;
+  b=PvkPagIF17YBVMSINEn8eWLc8q1cAjmp2qvf8yu2ZwJgqiD6nWDGlQ2B
+   H2ftG/qjzN5vAJvIHh0QflQEGbTrcTNdFsdGT1s8yt2Ha64ezOdCYc9zW
+   fiknjq1XU3aKS1XsmPk86rRByXlwGZmbUHHpbI26srUpm8wUEkIgS2LRm
+   gRTPd82K/ikBKTcjFJMLGfFOTMQZL3mV2/aX1266kzzmGi9y8Gb2TEbLp
+   OJxJab52B54QqDbpeozzpcgxXbwwwko9YwKlp2Av61OK35+D5C/0NU0+h
+   SL8+qJvpfHwlpq1zSposgely6Fu/TTk8dXp18qabA2goOl5W3AzoE1luI
+   g==;
+X-CSE-ConnectionGUID: DOz3H3uJRdeGXpuxql/bYw==
+X-CSE-MsgGUID: h62isw/sQbqrB5itx0IYpw==
+X-IronPort-AV: E=Sophos;i="6.21,241,1763424000"; 
+   d="scan'208";a="11095148"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 17:59:23 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:10556]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.14.244:2525] with esmtp (Farcaster)
+ id 1f2c0798-ec03-4bf6-a1ae-8006272cbe1b; Tue, 20 Jan 2026 17:59:23 +0000 (UTC)
+X-Farcaster-Flow-ID: 1f2c0798-ec03-4bf6-a1ae-8006272cbe1b
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
+ Tue, 20 Jan 2026 17:59:23 +0000
+Received: from dev-dsk-epetron-1c-1d4d9719.eu-west-1.amazon.com
+ (10.253.109.105) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35; Tue, 20 Jan 2026
+ 17:59:21 +0000
+From: Evangelos Petrongonas <epetron@amazon.de>
+To: Mike Rapoport <rppt@kernel.org>
+CC: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin
+	<pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, "Alexander
+ Graf" <graf@amazon.com>, Jason Miu <jasonmiu@google.com>,
+	<linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
+	<linux-mm@kvack.org>, <nh-open-source@amazon.com>
+Subject: [PATCH v2] kho: skip memoryless NUMA nodes when reserving scratch areas
+Date: Tue, 20 Jan 2026 17:59:11 +0000
+Message-ID: <20260120175913.34368-1-epetron@amazon.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116034432.1520731-2-jasonmiu@google.com>
-X-Rspamd-Queue-Id: 57B1C80004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: s1bkp95c4phn7wndgnsq853zy6wpi68z
+X-Originating-IP: [10.253.109.105]
+X-ClientProxiedBy: EX19D036UWB002.ant.amazon.com (10.13.139.139) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b91e97kcgy6wf11rataapbnghf1yuwoy
 X-Rspam-User: 
-X-HE-Tag: 1768931866-221501
-X-HE-Meta: U2FsdGVkX1/cYwJlGApjzjjb999CW4M61rAUy3MhWp/BNeD2SvHigHupWHP4gDMCDMIwEBdue1wuHA4EflCfOLMxht+w9a203MOwb674UUlL/PFbUb5tF2padxizsDKyualmPSUt+FPj2BVOOStz6FcmXdk4JaPtqaf7gR+rvwVFz+OlRnIhX+3zzONKXTwVc6426N8VLPxS1fiJa/fuV+1Ln+n6PAI4zqg3zGrtCnSyNQdsKQlY2WZ595vjYa2OEGouULu7uG49qqo2WevVR1HO1gMIhjxLclU7VDmyKU2TfPx9/XiNijaPOm8gNd60p4Sv9JAMY4KCPi2Sfz/NUwCDGPwL0knAHwNhaNRFytlSoEkcxb7qJxzcj4DeBeH9RDYcHfLDPk27t06yIm1q3YgUa1giu0uf3IJThgyDGGNsshCaAD5e7zLeckyUAYT4M94W8JNjH432W4WbLanvQ5sJyD+mRTUlYITvMtRMUn3DGBeo5gxef5Daj7TwGM0C5P4ulK+Bkd8+SA6i9/+CrKL+6a80CF8wNruKuiQsx9WHXz35liJPO8mDFEHJs8Ch77p6LLdh0nt2Ukq2FfNdvTYSff5a28qdqVtbJkDNfqzY6lXZOrVvyQ+zvt/t7B2nsqq6EcsrcP6toToKkAT0woDlLHFWo81jpNgyzChlSqfNAEpcX4St+ys23FwbBQCkKcWuyiXWwBqSigvy61RTQmTP6HN70ramGb3W2Y7D/EjFv+VFzKI1ks8XmGklTFGRAK/O0OGxIJ4jL8TDaPy7AYYNusQnodC8ntiSghTvLoCEzLeudWWByj39+o2rXkP2whLvQTs52RiQea2upgAied8w7fg6TGvUtoPdC6MV6N/W1o42ualSUQy2lNb6aipqJA3aIaMmtd52PrU2MwRDydvs7xNrDlTposwqm2LNW/FcYZH5Y+L0DcBSpoJHR8hRMnJoNJCUMttlGvwD/Fh
- 0xJjhAfk
- DkYqhGK7KT6RGx0NnDW5uIwh5eUHBAyPg0KyYLCkW7qYyw+RYnnxIYlsUR71da9ZxW3XAenW5b2goQRsQLXr1UIw8Ej8OvBErHs8Dehx7gkpxiGUDCoqJiIh76LjXstS4dRCJIMM6wAqZw3wI9fvHiLs9vY9dWJ8HKSSfqmpyvDxsPre1sBge2CJz+NOe+ak1B/s/3aeoKGB3CuvWfsXfag2M+nQ46iYNPFyYHgwpwLLpsGsBYZU9+hDfZoLgUZUrMFMsgRv6zvVU5JR/QO1OIxKpY/xibW+OkW0jrq0d5DYxoq0wejn6GnJSJzv8OUTORU3TvylExgqndYI9elTGJv/nc3lajR+cL6I//DvKzpusPFY=
+X-Rspamd-Queue-Id: 6AF65C000A
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768931967-831916
+X-HE-Meta: U2FsdGVkX198Vx0Za6oywO7XMpP+F/yYiwiCywndr1L5ZSgDrt62eN0Eg7NvuDJG3UdJIelA6o2JIzMl4MeJTo74PBp9yQ9k+s6gJDRyz5aj0h/Rx9u+sH03KTKRIF7nwL2Sbzn1g4mlOaCsh2uJz9AJerjlp5AS4bDkCgIsrFEZI2bGEkitSznBXTh048DAkPZXzGCYq4xr1uRsvh6DTNHCKuEYGZrhQWSuFahPC1hIQCM3nsMqcvtcuqtfmQaHMyOoR6W4fejKSEsc/xMrs540i0mMgZp9qErt4l04HBfsC1P8tBkOluGD0ItPS8e0oWGOsCiVsi9ltgXfZXJraw8lKYLjMM04YqFkoBe8OIRlOLkV4mXfAbgLEu5Y+G334D7pldPeK/mEIoWMvuoRg2vb6drJbM6dnwLiK+Qx7yML5r9ij0z5mNNTgYM3EGoh1gorL1830PPu4wP2rGsfUGX31Dvhq5i4PndpI8NzpL5JPi4TnG5cDePEE4tI09QS0Y6qYWKi9NP1RdMxGJMh3319Zh65OPgWGVxNmJmF5Melalhg84nxw5j8mubbN5+ooOl8JhxDtNxb4D6k7CuFbkXRFwY/D+qHoLOF6xEdlXwYgA+8Kcc1XbVe+gUAY17lujj4qh5MKCVLZ2UsQNUqbEBikKGsA3H9u0ptyr0Ya4KkbK15UTRqk4ZAahiXtAvvMjCCrnNJtdE+GHcgQAu5DHJngOPi1+kdhZj8mPzPxWXqbFr32Rw9G9jgiWevfPXa0sPjdFa6myntFxZdlbDXZ6iclzO+pgSV5A2e2vpW2Y7B6FclLb2vUR7i+H7VMn6hnjNgQS/vlATwCvpAklQa2YrL/5emnNOrLxRmlFOCVhDyw/XDmoTGJNYyFbsGH4Nja/nbfbR7mwvDMxxdQBnFbtVWpArQ+8+6o6BUO9D7XBU1vNbqjaavYU2yQipUpgtknEEAazTNzgV/mE/cXsd
+ XxCN7VPf
+ etJfcfajlxX3MlSyg4/iOqQGAMF9uhiLMG0qkKK8SUbllzNUfG1tPaKvOqI3E81DhWpnIYTE+kJC4z2uA1a81vfNSOEEDVY0OGCIywpJNe6YhKb1/fOyKoZkDX93QtxubJktsoVoRX3MrOjCAw88RVkwtYz6r3jy4Pe+sRgIhf088cBadLAPXeBmP1CvsYc6MruWu7ky/UiM/SIIEXQpDoksphesXWvVg1kYDsz74rvBQsQcBPYO0o6Ie8xKaUMiHxMRE5dAZDdvYc5wCMS48Wc+MPn8LCMUue6oMhsFvSu/ABLqjLYsy+84gxro7vd69uye130ep+ca8CaCgqTC/5M7cujOEbfXMn06TXZBd+p/Vuhcb4EwFViWwbX35u2FwNO4Ji3RhfEWsq/r+0nYL0ojGXYA7hINHH2CmcbyKp/s2kwiBgjndCp+7j4ntPIfXn0lgTQNOxgdXgDw6XROJOV3z08Ry6DHvWpZH/+6LLhECV3uRdUCen43wt0ALLerkOnE78RlDrcd2pxtj180VpM8zv+5IJXDxsU+F
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,179 +113,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+kho_reserve_scratch() iterates over all online NUMA nodes to allocate
+per-node scratch memory. On systems with memoryless NUMA nodes (nodes
+that have CPUs but no memory), memblock_alloc_range_nid() fails because
+there is no memory available on that node. This causes KHO initialization
+to fail and kho_enable to be set to false.
 
-On Thu, Jan 15, 2026 at 07:44:31PM -0800, Jason Miu wrote:
-> Introduce a radix tree implementation for tracking preserved memory
-> pages and switch the KHO memory tracking mechanism to use it. This
-> lays the groundwork for a stateless KHO implementation that eliminates
-> the need for serialization and the associated "finalize" state.
-> 
-> This patch introduces the core radix tree data structures and
-> constants to the KHO ABI. It adds the radix tree node and leaf
-> structures, along with documentation for the radix tree key encoding
-> scheme that combines a page's physical address and order.
-> 
-> To support broader use by other kernel subsystems, such as hugetlb
-> preservation, the core radix tree manipulation functions are exported
-> as a public API.
-> 
-> The xarray-based memory tracking is replaced with this new radix tree
-> implementation. The core KHO preservation and unpreservation functions
-> are wired up to use the radix tree helpers. On boot, the second kernel
-> restores the preserved memory map by walking the radix tree whose root
-> physical address is passed via the FDT.
-> 
-> The ABI `compatible` version is bumped to "kho-v2" to reflect the
-> structural changes in the preserved memory map and sub-FDT property
-> names. This includes renaming "fdt" to "preserved-data" to better
-> reflect that preserved state may use formats other than FDT.
-> 
-> Signed-off-by: Jason Miu <jasonmiu@google.com>
+Some ARM64 systems have NUMA topologies where certain nodes contain only
+CPUs without any associated memory. These configurations are valid and
+should not prevent KHO from functioning.
 
-...
+Fix this by only counting nodes that have memory (N_MEMORY state) and
+skip memoryless nodes in the per-node scratch allocation loop.
 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 49bf2cecab12..06adaf56cd69 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -5,6 +5,7 @@
->   * Copyright (C) 2025 Microsoft Corporation, Mike Rapoport <rppt@kernel.org>
->   * Copyright (C) 2025 Google LLC, Changyuan Lyu <changyuanl@google.com>
->   * Copyright (C) 2025 Pasha Tatashin <pasha.tatashin@soleen.com>
-> + * Copyright (C) 2025 Google LLC, Jason Miu <jasonmiu@google.com>
+Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+---
+v2:
+- Removed kho_mem_nodes_count in favour of nodes_weight(nodes_state[N_MEMORY])
+- Use for_each_node_state(nid, N_MEMORY) to loop over nodes that are both
+online and have memory.
+TIL: Nodes in N_MEMORY are a subset of those that are online. Thanks Mike :)
 
-It's already 2026 ;-)
+ kernel/liveupdate/kexec_handover.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
->   */
->  
->  #define pr_fmt(fmt) "KHO: " fmt
-
-...
-
-> +int kho_radix_add_page(struct kho_radix_tree *tree,
-> +		       unsigned long pfn, unsigned int order)
-> +{
-> +	/* Newly allocated nodes for error cleanup */
-> +	struct kho_radix_node *intermediate_nodes[KHO_TREE_MAX_DEPTH] = { 0 };
-> +	unsigned long key = kho_radix_encode_key(PFN_PHYS(pfn), order);
-> +	struct kho_radix_node *new_node, *anchor_node;
-> +	struct kho_radix_node *node = tree->root;
-> +	unsigned int i, idx, anchor_idx;
-> +	struct kho_radix_leaf *leaf;
-> +	int err = 0;
-> +
-> +	if (WARN_ON_ONCE(!tree->root))
-> +		return -EINVAL;
-> +
-> +	might_sleep();
-> +
-> +	guard(mutex)(&tree->lock);
-> +
-> +	/* Go from high levels to low levels */
-> +	for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--) {
-> +		idx = kho_radix_get_table_index(key, i);
-> +
-> +		if (node->table[idx]) {
-> +			node = phys_to_virt(node->table[idx]);
-> +			continue;
-> +		}
-> +
-> +		/* Next node is empty, create a new node for it */
-> +		new_node = (struct kho_radix_node *)get_zeroed_page(GFP_KERNEL);
-> +		if (!new_node) {
-> +			err = -ENOMEM;
-> +			goto err_free_nodes;
-> +		}
-> +
-> +		node->table[idx] = virt_to_phys(new_node);
-> +
-> +		/*
-> +		 * Capture the node where the new branch starts for cleanup
-> +		 * if allocation fails.
-> +		 */
-> +		if (!anchor_node) {
-
-I think anchor_node should be initialized to NULL for this to work.
-
-> +			anchor_node = node;
-> +			anchor_idx = idx;
-> +		}
-> +		intermediate_nodes[i] = new_node;
-> +
-> +		node = new_node;
-> +	}
-> +
-> +	/* Handle the leaf level bitmap (level 0) */
-> +	idx = kho_radix_get_bitmap_index(key);
-> +	leaf = (struct kho_radix_leaf *)node;
-> +	__set_bit(idx, leaf->bitmap);
-> +
-> +	return 0;
-> +
-> +err_free_nodes:
-> +	for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--) {
-> +		if (intermediate_nodes[i])
-> +			free_page((unsigned long)intermediate_nodes[i]);
-> +	}
-> +	if (anchor_node)
-> +		anchor_node->table[anchor_idx] = 0;
-> +
-> +	return err;
-> +}
-> +EXPORT_SYMBOL_GPL(kho_radix_add_page);
-
-...
-
-> +		if (WARN_ON(!node->table[idx]))
-> +			return;
-> +
-> +		node = phys_to_virt((phys_addr_t)node->table[idx]);
-
-No need for casting.
-
-> +		shift = ((level - 1) * KHO_TABLE_SIZE_LOG2) +
-> +			KHO_BITMAP_SIZE_LOG2;
-> +		key = start | (i << shift);
-> +
-> +		node = phys_to_virt((phys_addr_t)root->table[i]);
-
-Ditto.
-
-> @@ -1466,12 +1489,6 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  		goto out;
->  	}
->  
-> -	mem_map_phys = kho_get_mem_map_phys(fdt);
-> -	if (!mem_map_phys) {
-> -		err = -ENOENT;
-> -		goto out;
-> -	}
-
-I think we should keep the logic that skips scratch initialization if there
-were no memory preservations, like Pasha implemented here:
-https://lkml.kernel.org/r/20251223140140.2090337-1-pasha.tatashin@soleen.com
-(commit e1c3bfd091f3 ("kho: validate preserved memory map during
-population") in today's mm tree)
-
-We just should update the validation to work with the radix tree.
-
->  	scratch = early_memremap(scratch_phys, scratch_len);
->  	if (!scratch) {
->  		pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
-> @@ -1512,7 +1529,6 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  
->  	kho_in.fdt_phys = fdt_phys;
->  	kho_in.scratch_phys = scratch_phys;
-> -	kho_in.mem_map_phys = mem_map_phys;
->  	kho_scratch_cnt = scratch_cnt;
->  	pr_info("found kexec handover data.\n");
->  
-> -- 
-> 2.52.0.457.g6b5491de43-goog
-> 
-
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 9dc51fab604f..979ebaf015bf 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -643,7 +643,7 @@ static void __init kho_reserve_scratch(void)
+ 	scratch_size_update();
+ 
+ 	/* FIXME: deal with node hot-plug/remove */
+-	kho_scratch_cnt = num_online_nodes() + 2;
++	kho_scratch_cnt = nodes_weight(node_states[N_MEMORY]) + 2;
+ 	size = kho_scratch_cnt * sizeof(*kho_scratch);
+ 	kho_scratch = memblock_alloc(size, PAGE_SIZE);
+ 	if (!kho_scratch)
+@@ -673,7 +673,11 @@ static void __init kho_reserve_scratch(void)
+ 	kho_scratch[i].size = size;
+ 	i++;
+ 
+-	for_each_online_node(nid) {
++	/*
++	 * Loop over nodes that have both memory and are online. Skip
++	 * memoryless nodes, as we can not allocate scratch areas there.
++	 */
++	for_each_node_state(nid, N_MEMORY) {
+ 		size = scratch_size_node(nid);
+ 		addr = memblock_alloc_range_nid(size, CMA_MIN_ALIGNMENT_BYTES,
+ 						0, MEMBLOCK_ALLOC_ACCESSIBLE,
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
