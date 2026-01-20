@@ -4,124 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6356CD2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 10:32:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 078BAD2ED0F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 10:33:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6F626B03B3; Tue, 20 Jan 2026 05:32:15 -0500 (EST)
+	id 694B06B03B4; Tue, 20 Jan 2026 05:33:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1CA76B03B4; Tue, 20 Jan 2026 05:32:15 -0500 (EST)
+	id 6357A6B03B6; Tue, 20 Jan 2026 05:33:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B28796B03B5; Tue, 20 Jan 2026 05:32:15 -0500 (EST)
+	id 50D976B03B7; Tue, 20 Jan 2026 05:33:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E0B66B03B3
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 05:32:15 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F23B8B964
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:32:15 +0000 (UTC)
-X-FDA: 84351977430.26.8F0364A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 90D6714000F
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:32:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sYn1JLyP;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E9B76B03B4
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 05:33:02 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFE4716046D
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:33:01 +0000 (UTC)
+X-FDA: 84351979362.10.3640380
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 68F9440009
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:32:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ncNBYv1u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mG5hgfYY;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ncNBYv1u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mG5hgfYY;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768905133;
+	s=arc-20220608; t=1768905179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GIPzDp4//6enUE/aZW6TaDiQzaEzpTggtDW+VnkFMJ8=;
-	b=2APeCpOT+JfBg27NoP9wSQr5rk2zS6GN9hjYEHBjjrsZsIMkEHu8WhyhIhThJySKmLnNj3
-	Q9XXiM6f0vMsgjOmSPLvwNCcbz+nTUHQylb3zR3RayrJKlNywrRHlHXWS+Q7Ca2az8ee/+
-	FScVeSuC59jCdgiHoit58MVTrNAAxQA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sYn1JLyP;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768905133; a=rsa-sha256;
+	bh=XyrDx1MhY3e+hHISP5xpS3IMhu37A0mWxWGFA4RwEpQ=;
+	b=X0c9EbPHcOHc10sM5mtkrqVsDZphixC8v/3I9nPfAx8UfD/7hAfdOo8v4g6y48+NdfWPAn
+	7HIbzhFwee+tM6AuCo1uu4iomTZgLf9tiidrarU7okdoA7yGRTJhjRJe+qDDCeSNknvusv
+	WUw7Ka60sFqSn66Iwnn2lMg+YsLdnUI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768905179; a=rsa-sha256;
 	cv=none;
-	b=JDEFQYYMPmER8eJc1BsfUgRMa1BtOuzG0QcE4PW+j+4Zfy+rJDpZBFwX7BZVo1RzU6AXzj
-	s5n20bWHoNxtyh4NIaAotBt6gCKGSQBenVGM4vI5BLN/q9wL4G2Lzop6WB4eFP3EyWaqRo
-	MR7kwg00yAjP1kU2OZE5oyxNKPDG2f0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E44E60018;
-	Tue, 20 Jan 2026 10:32:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A27C16AAE;
-	Tue, 20 Jan 2026 10:31:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768905132;
-	bh=TXpuEn3+iHgMswY7v2yl+yBnFlWexn06CYVhrLra0ps=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sYn1JLyPJPiGC80xsPWNxbtykfUUs946DA7esf6l3JMX38rt0GRoNF1cRYsres/wk
-	 PEJViML67kDs58KnQ01Y/RlO5bKq7d0ZXMcSQ/mkeXLjjLZV/fDEUuF8X1z67vGwDl
-	 S4BDLlAOBnwFrMcS0CNaziW6IFGszNB0/JTGCLvnEXaABq+5D8szxy7iodrNzItOUv
-	 lpWjW+neeYAI9cglsT/f5525FKsTcWuHVc8VwgMC9LA2j5BhSVKDtyEXhQPSbOCGl2
-	 KQoI5KR3jG9uCQrTTBeQZHZsxSZCqULdPd8KRVm4QkItj+8BOixBLgQenBp1VoSz3y
-	 OcHgGkgocKzkA==
-Date: Tue, 20 Jan 2026 11:31:54 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: NeilBrown <neil@brown.name>
-Cc: Christoph Hellwig <hch@infradead.org>, 
-	Jeff Layton <jlayton@kernel.org>, Amir Goldstein <amir73il@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Chuck Lever <chuck.lever@oracle.com>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Gao Xiang <xiang@kernel.org>, 
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
-	Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>, 
-	David Sterba <dsterba@suse.com>, Luis de Bethencourt <luisbg@kernel.org>, 
-	Salah Triki <salah.triki@gmail.com>, Phillip Lougher <phillip@squashfs.org.uk>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Bharath SM <bharathsm@microsoft.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-ext4@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, 
-	linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
- nfsd export support
-Message-ID: <20260120-hacken-revision-88209121ac2c@brauner>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
- <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
- <176877859306.16766.15009835437490907207@noble.neil.brown.name>
- <aW3SAKIr_QsnEE5Q@infradead.org>
- <176880736225.16766.4203157325432990313@noble.neil.brown.name>
- <20260119-kanufahren-meerjungfrau-775048806544@brauner>
- <176885553525.16766.291581709413217562@noble.neil.brown.name>
- <20260120-entmilitarisieren-wanken-afd04b910897@brauner>
- <176890211061.16766.16354247063052030403@noble.neil.brown.name>
+	b=fpMHUae1dKIQg3od+zNWEjIHbfVILuB50LI5OjTjbEid5vvT3eHDFhsO36xwe6Qm80qopb
+	50nSH0PGeiCXm0sY4ilVXFishoTZ/FD0epENB7Zq538P4kTRt+6rvlO3xVuedAsfK5rurh
+	9TuDKTsfDjjBj5Plhn/qLutYLFn1Hkk=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ncNBYv1u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mG5hgfYY;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ncNBYv1u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mG5hgfYY;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D30305BCD4;
+	Tue, 20 Jan 2026 10:32:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768905177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=XyrDx1MhY3e+hHISP5xpS3IMhu37A0mWxWGFA4RwEpQ=;
+	b=ncNBYv1uYVI7iTVuDDYCpDh7Z0KbKWyMrsKVFc8roZI3uZ4vgnVfVOSENXGtEYf0JICIcr
+	0vtu5IffI1xRM7m9B7WX/r6uDZFZebqaGrWNrKlgLe7pHpbwvY9+Z3FRq0BxrKMpMRoA38
+	g55WsebXmqSBZzIluLQGkn6PUQEACEo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768905177;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=XyrDx1MhY3e+hHISP5xpS3IMhu37A0mWxWGFA4RwEpQ=;
+	b=mG5hgfYYLTULX0CjTEDcnSPZJsgF4JoEa6xtQYgBdMRuZYMY7wvsnlQNWmEnLNbJDV8D+8
+	iMQ4IPA13Q4Hv6AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768905177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=XyrDx1MhY3e+hHISP5xpS3IMhu37A0mWxWGFA4RwEpQ=;
+	b=ncNBYv1uYVI7iTVuDDYCpDh7Z0KbKWyMrsKVFc8roZI3uZ4vgnVfVOSENXGtEYf0JICIcr
+	0vtu5IffI1xRM7m9B7WX/r6uDZFZebqaGrWNrKlgLe7pHpbwvY9+Z3FRq0BxrKMpMRoA38
+	g55WsebXmqSBZzIluLQGkn6PUQEACEo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768905177;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=XyrDx1MhY3e+hHISP5xpS3IMhu37A0mWxWGFA4RwEpQ=;
+	b=mG5hgfYYLTULX0CjTEDcnSPZJsgF4JoEa6xtQYgBdMRuZYMY7wvsnlQNWmEnLNbJDV8D+8
+	iMQ4IPA13Q4Hv6AA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A69C43EA63;
+	Tue, 20 Jan 2026 10:32:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yYFUKNlZb2kdbwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 20 Jan 2026 10:32:57 +0000
+Message-ID: <1390b9ce-0ed1-4cc9-845f-fa4dd5f3ffc8@suse.cz>
+Date: Tue, 20 Jan 2026 11:32:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <176890211061.16766.16354247063052030403@noble.neil.brown.name>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/21] slab: add optimized sheaf refill from partial
+ list
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-9-5595cb000772@suse.cz>
+ <aW7pSzVPvLLbQGxn@hyeyoo> <2232564a-b3f7-4591-abe2-8f1711590e6e@suse.cz>
+ <aW9Yl-nqLjAJyBkB@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aW9Yl-nqLjAJyBkB@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 68F9440009
 X-Rspam-User: 
-X-Stat-Signature: naocg56ut95mrhb5xfmnijdhfnngibfd
-X-Rspamd-Queue-Id: 90D6714000F
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768905133-389870
-X-HE-Meta: U2FsdGVkX1+gLq2mVhQpBdysD8/qxL1mumCjpyBkoyCBQaFEBIJxLv/w+9KNNdPHS1zcG8wAQ0LdwO7reYooLMSNsE6a1Tk2KBwRUB5Iq+NpR2lvuJhQYDXHgt4NE8M1Z64tmDx45UBY/wjMY4ykqtHaseYKaajdHDV86Swss+vPe/zIVRg1jlofFEAjtF7j25j6ucVgLPVfGjI1ON9w67P0fzEqT0N0LK04gdYxY1IqphjEKU/cvndQR5Iki+1HC8iIm6nhJy/IusEBY9PG2RaHbjz286cvqW6/kE0DmrDbaTuWjLPcMWl5oSmWYoOpbyEUWRc8O1Quwj+OlcrdmZGwAjCt9Vk0q5a5wHuq8L+EFp29k2qmvgkv5623cPimT9tPsOZd8DgZkkYpk/96ihI5Nqashfns6gd5S+kARY8l3F9T7Tc/m+TwFQTWuaGLYvoMSHOG/qqFh5LVdq5v/PH+UAguRlR8Vl421ZdidQEU6jFtfPdMUBlVrTY9744hbTKS+VzrnAo9X2YRNOuC/Ldm70xUi2EdsBePde2FoTImjJviL1mJsqivWPl1sNTWN+jQavhE50tt1ZVqRC1LZEE7fDKNbrO0T0UBtNSq64EAJI6U8X12jlDXV/h4xyXVEO2tObKdAk47V4EVfht8YWHtnDuILv0/MHoIXvxND/3uhEGhT/FT2olfjua1rM6Llwk7G5EvJCnWj8ExN3K2kxNLwSSsmgFTjKNT/CwSBDX+mQiyhoF2ws+9ITzB190ujFsH9kdH0B0Dlc45g30Zv4Wwmd3HY0ZrBNJulzEgyeI/prmtHDeCEKaXp+Pt9m8yfAClIrrEW8nKtW8xbJ2pFUPgY9/8b9mk8X/yenDek9PFNv/4xk5TZSeLm1fN74C2PJqm1g83yYuOhQXVgtG108vWBOFOhONG9+kZjqQ00PtSNWIarmAEaxLZjO1lXmQ7GoFasgW0Db6Xhkbj/oS
- NEnbmdL2
- mYlQleidU0OVcvWCQHWJ8PQLCZ7v2EdMLtN5TVUMwmj814j2OM+NQtKw1aLtjkTAc5tzNwmRmfo50ubV3Ao9ziWAhhJ65VJaQPHmWfFcu8X0kA9bmdCAxnMbZ/JtB2aIo8quAF2yTAi+UFpNDOManE5u1Nh78/mjSKxpJQRljlPAlip/SJQrVUOp/5mxDgbPxKra++zW63ck08oaPNYG6skVWU5lbCuFl6dfCBoxzq0E938gdwVcCOfGlh3FlOf8mk26YG7KFfLAYeUWMPhRbYNMhSQrbUvgqz8vW6Io10mHUJOxEWNQr30v+07uG/hU2EGwHWV5ADtDYfJs=
+X-Stat-Signature: ishqa6rbedsu69t6ag36ztbdaio6nr8k
+X-HE-Tag: 1768905179-638579
+X-HE-Meta: U2FsdGVkX1+o+B+4OODBoJZJWsVSwAUvuJfseX0049s0lpPZqxo4mG1JUESXtP9YAPwkT+doIz8FCLHqrgrF0t0LSipAwnUoIXlYMLRCqmdMdHbhbC7Q49ExosxCZFctDa1q6x26k9QqA2bx7IIzmQ/FNmty++1OSTzQcs4w5RJlGVxpvHNuRbPYgTSXY8dYbXS7UFqI3WKe9x4ntQuq+NOprB87nhOhQaf2kxVn6Jk7H/xnzaOcaogH2ClNIq1FcVXX3fsRg9B7i8eBZ2FeOqdz15+RDAZgVtE8lRzyiE5oGhVhms7sK3FKMnKq/aua5NqUD+LEfhnHXwQIxSaX/2P6dtPsVfGfHNzmF1QCsRihiNyfUSpOF0SFFoEcGnsK6gbZymYn4ppV1T78X6DOsgGxT4iHo0e3QRJ/rg3X70Mb7hUtoP+njumJilVjXemYY05lyG6d6cBL+XXW/QmkqCerYwYbrB07RZGDoUmU3SLG64B6v9GdmsDSpqwljw/8Ui8W4Jl2lR4MH3gwz9kupxDdB1xlmfgqKPfVAvbMUDuPUmPGKeEstBQO02It4SSC02TC+sKggi+1al5kPSaa7T0UjOXtY03qsBuqKEJXIFE32cz2I5+m78tKNjy2cbDQilZtne1r9qBhl/6arbSurLD5d+NSrBfiqtgkJnPaROdzeKdQgHrmDutNtbJkcks6UQMbxBKLkBnvanBFSh/B+d4oguCTMtwSVvDSeLzNxtnGKQxiBqiyGJU3UPI3rrUiytWciHV1tpgaYIlkdlSLwQLWDGjYUTCOTsH8XQ5u8qJi+0oRDTLFLN+STkrEbAndssjlseERyBLlIPFAyWSsIud39a516kL3UNqpvoQ6aBaap1bG2rGebf1hSSCouS6dMzZVTC1jAPhiEI6TSwAWvWPKz+O4DQ8ZdPx1V3Tqji/uAKkrkAbgA8qilBJPqBLdrdrtJirDiO526tADUSN
+ VkkpSTnS
+ 4T6ttc8ujWTTlzXWii51mtDBq2IclEw3hPvoDmyuH68Ek3sYDGQWe4YheiSeFw8Nhcoir6AEgEV4RYxZjHDZqIQS/S4zctWYpNnK0l3CiGZ7b9kplXX7hCVntEsllHJRYS4EMwMkpoHyFVQu+XWJKBJrRcgL8hIil4vwtvyGDBGgzpIOSEV9BlfioOepaKuQEx4tXE2n/kTphZTSbKvVGwX6ZASSCV4fk1uD/19zISa33uMbK/G0nxPhHg4pmlqL8Fyh6kLn2LomuGwWERGeqB0lHxAUGaoq0W+As
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,131 +190,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 20, 2026 at 08:41:50PM +1100, NeilBrown wrote:
-> On Tue, 20 Jan 2026, Christian Brauner wrote:
-> > On Tue, Jan 20, 2026 at 07:45:35AM +1100, NeilBrown wrote:
-> > > On Mon, 19 Jan 2026, Christian Brauner wrote:
-> > > > On Mon, Jan 19, 2026 at 06:22:42PM +1100, NeilBrown wrote:
-> > > > > On Mon, 19 Jan 2026, Christoph Hellwig wrote:
-> > > > > > On Mon, Jan 19, 2026 at 10:23:13AM +1100, NeilBrown wrote:
-> > > > > > > > This was Chuck's suggested name. His point was that STABLE means that
-> > > > > > > > the FH's don't change during the lifetime of the file.
-> > > > > > > > 
-> > > > > > > > I don't much care about the flag name, so if everyone likes PERSISTENT
-> > > > > > > > better I'll roll with that.
-> > > > > > > 
-> > > > > > > I don't like PERSISTENT.
-> > > > > > > I'd rather call a spade a spade.
-> > > > > > > 
-> > > > > > >   EXPORT_OP_SUPPORTS_NFS_EXPORT
-> > > > > > > or
-> > > > > > >   EXPORT_OP_NOT_NFS_COMPATIBLE
-> > > > > > > 
-> > > > > > > The issue here is NFS export and indirection doesn't bring any benefits.
-> > > > > > 
-> > > > > > No, it absolutely is not.  And the whole concept of calling something
-> > > > > > after the initial or main use is a recipe for a mess.
-> > > > > 
-> > > > > We are calling it for it's only use.  If there was ever another use, we
-> > > > > could change the name if that made sense.  It is not a public name, it
-> > > > > is easy to change.
-> > > > > 
-> > > > > > 
-> > > > > > Pick a name that conveys what the flag is about, and document those
-> > > > > > semantics well.  This flag is about the fact that for a given file,
-> > > > > > as long as that file exists in the file system the handle is stable.
-> > > > > > Both stable and persistent are suitable for that, nfs is everything
-> > > > > > but.
-> > > > > 
-> > > > > My understanding is that kernfs would not get the flag.
-> > > > > kernfs filehandles do not change as long as the file exist.
-> > > > > But this is not sufficient for the files to be usefully exported.
-> > > > > 
-> > > > > I suspect kernfs does re-use filehandles relatively soon after the
-> > > > > file/object has been destroyed.  Maybe that is the real problem here:
-> > > > > filehandle reuse, not filehandle stability.
-> > > > > 
-> > > > > Jeff: could you please give details (and preserve them in future cover
-> > > > > letters) of which filesystems are known to have problems and what
-> > > > > exactly those problems are?
-> > > > > 
-> > > > > > 
-> > > > > > Remember nfs also support volatile file handles, and other applications
-> > > > > > might rely on this (I know of quite a few user space applications that
-> > > > > > do, but they are kinda hardwired to xfs anyway).
-> > > > > 
-> > > > > The NFS protocol supports volatile file handles.  knfsd does not.
-> > > > > So maybe
-> > > > >   EXPORT_OP_NOT_NFSD_COMPATIBLE
-> > > > > might be better.  or EXPORT_OP_NOT_LINUX_NFSD_COMPATIBLE.
-> > > > > (I prefer opt-out rather than opt-in because nfsd export was the
-> > > > > original purpose of export_operations, but it isn't something
-> > > > > I would fight for)
-> > > > 
-> > > > I prefer one of the variants you proposed here but I don't particularly
-> > > > care. It's not a hill worth dying on. So if Christoph insists on the
-> > > > other name then I say let's just go with it.
-> > > > 
-> > > 
-> > > This sounds like you are recommending that we give in to bullying.
-> > > I would rather the decision be made based on the facts of the case, not
-> > > the opinions that are stated most bluntly.
-> > > 
-> > > I actually think that what Christoph wants is actually quite different
-> > > from what Jeff wants, and maybe two flags are needed.  But I don't yet
-> > > have a clear understanding of what Christoph wants, so I cannot be sure.
-> > 
-> > I've tried to indirectly ask whether you would be willing to compromise
-> > here or whether you want to insist on your alternative name. Apparently
-> > that didn't come through.
+On 1/20/26 11:27, Harry Yoo wrote:
+> On Tue, Jan 20, 2026 at 07:33:47AM +0100, Vlastimil Babka wrote:
+>> 
+>> Right, so the plan was to set min to some fraction of max when refilling
+>> sheaves, with the goal of maximizing the chance that once we grab a slab
+>> from the partial list, we almost certainly fully use it and don't have to
+>> return it back.
 > 
-> This would be the "not a hill worthy dying on" part of your statement.
-> I think I see that implication now.
-> But no, I don't think compromise is relevant.  I think the problem
-> statement as originally given by Jeff is misleading, and people have
-> been misled to an incorrect name.
+> Oh, you had a plan!
 > 
-> > 
-> > I'm unclear what your goal is in suggesting that I recommend "we" give
-> > into bullying. All it achieved was to further derail this thread.
-> > 
-> 
-> The "We" is the same as the "us" in "let's just go with it".
-> 
-> 
-> > I also think it's not very helpful at v6 of the discussion to start
-> > figuring out what the actual key rift between Jeff's and Christoph's
-> > position is. If you've figured it out and gotten an agreement and this
-> > is already in, send a follow-up series.
-> 
-> v6?  v2 was posted today.  But maybe you are referring the some other
-> precursors.
-> 
-> The introductory statement in v2 is
-> 
->    This patchset adds a flag that indicates whether the filesystem supports
->    stable filehandles (i.e. that they don't change over the life of the
->    file). It then makes any filesystem that doesn't set that flag
->    ineligible for nfsd export.
-> 
-> Nobody else questioned the validity of that.  I do.
-> No evidence was given that there are *any* filesystems that don't
-> support stable filehandles.  The only filesystem mentioned is cgroups
-> and it DOES provide stable filehandles.
+> I'm having trouble imagining what it would look like though.
+> If we fetch more objects than `to_fill`, where do they go?
+> Have a larger array and fill multiple sheaves with it?
 
-Oh yes we did. And this is a merry-go-round.
+Ah that wouldn't happen. Rather we would consider sheaf to be full even if
+it was filled a bit below its capacity, if trying to reach the full capacity
+would mean taking a slab from partial list, not using all objects from it
+and having to return it to the list.
+Of course this would not apply for a prefilled sheaf request or
+kmem_cache_alloc_bulk().
 
-It is very much fine for a filesystems to support file handles without
-wanting to support exporting via NFS. That is especially true for
-in-kernel pseudo filesystems.
+>> But I didn't get to there yet. It seems worthwile to try
+>> though so we can leave the implementation prepared for it?
+> 
+> Yeah that's fine.
+> 
 
-As I've said before multiple times I want a way to allow filesystems
-such as pidfs and nsfs to use file handles without supporting export.
-Whatever that fscking flag is called at this point I fundamentally don't
-care. And we are reliving the same arguments over and over.
-
-I will _hard NAK_ anything that starts mandating that export of
-filesystems must be allowed simply because their file handles fit export
-criteria. I do not care whether pidfs or nsfs file handles fit the bill.
-They will not be exported.
 
