@@ -4,175 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B2B4D2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 10:16:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E00AD2ED0F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 10:20:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC8896B03AB; Tue, 20 Jan 2026 05:16:19 -0500 (EST)
+	id ADD5A6B03AD; Tue, 20 Jan 2026 05:20:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D75E56B03AC; Tue, 20 Jan 2026 05:16:19 -0500 (EST)
+	id AB4E26B03AE; Tue, 20 Jan 2026 05:20:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C74C86B03AD; Tue, 20 Jan 2026 05:16:19 -0500 (EST)
+	id 9EBAB6B03AF; Tue, 20 Jan 2026 05:20:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B51976B03AB
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 05:16:19 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 746E18BA5F
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:16:19 +0000 (UTC)
-X-FDA: 84351937278.13.B6C2F01
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EFFD580004
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:16:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=imCXFMlb;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R5nUwaFv;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=imCXFMlb;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R5nUwaFv;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768904177; a=rsa-sha256;
-	cv=none;
-	b=OpYYv1zhu3kBFsJaLdgV5sV2/emDju4bEFBLoMH2wMNvc2o9CFCZl6mKpIdiZeCTf/5MBD
-	JXptSZyErlGEEl29JQI9NQS3ABOTvq8Z+9cnrSUVu1VYKp8oeotLTFx6hJ0EYElKyQLHAL
-	cTHPQd2JcxIaDlAtlNF2K51IMQ+nRHQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=imCXFMlb;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R5nUwaFv;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=imCXFMlb;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R5nUwaFv;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ADAD6B03AD
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 05:20:55 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 200B8C1D01
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:20:55 +0000 (UTC)
+X-FDA: 84351948870.14.55643CE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DCAB7A0003
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:20:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768904177;
+	s=arc-20220608; t=1768904453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ij9HMZHBxG4L87Hf9Nb+LHWEtPk4EOpyvqCky6BrClo=;
-	b=cbCXIoSyrZoxhODxNCPrQDFeRQFTXjDdqxEwL1WwQvziJbvxlbcVFsuDn/Mf/UyiRN4Na2
-	uNw1qxn9DVYZh6ca00MyIR8v0vzXt95or3L6W7IDZqACCMWu4FKDS+dvftprltFqd3eb7K
-	lUpPTWSh6F8R+2y3T9nZA8SpX0xmJVI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4FC705BCCD;
-	Tue, 20 Jan 2026 10:16:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768904175; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ij9HMZHBxG4L87Hf9Nb+LHWEtPk4EOpyvqCky6BrClo=;
-	b=imCXFMlbaAwn54xfRRIN+op2TGXksW/YbDt40MUzG5X022woIoH4PAAn/sZbrO8qCVCb3/
-	rlxEYUYmK4PqYWm/hxQvoz90fxXUQJQenFM3xpoc6By+IeBUR0oDcCH3Xf0u12FFKDSzP0
-	IpQ3NMa7yajly0FE6PM9WUKW99V/vl0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768904175;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ij9HMZHBxG4L87Hf9Nb+LHWEtPk4EOpyvqCky6BrClo=;
-	b=R5nUwaFvZi5bswFuaMntab5R+cl2qagoHnvAHTV/72SYThrCOacH7MHbTDFscuPP59Fc/5
-	M1pVH52XciXBNAAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768904175; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ij9HMZHBxG4L87Hf9Nb+LHWEtPk4EOpyvqCky6BrClo=;
-	b=imCXFMlbaAwn54xfRRIN+op2TGXksW/YbDt40MUzG5X022woIoH4PAAn/sZbrO8qCVCb3/
-	rlxEYUYmK4PqYWm/hxQvoz90fxXUQJQenFM3xpoc6By+IeBUR0oDcCH3Xf0u12FFKDSzP0
-	IpQ3NMa7yajly0FE6PM9WUKW99V/vl0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768904175;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ij9HMZHBxG4L87Hf9Nb+LHWEtPk4EOpyvqCky6BrClo=;
-	b=R5nUwaFvZi5bswFuaMntab5R+cl2qagoHnvAHTV/72SYThrCOacH7MHbTDFscuPP59Fc/5
-	M1pVH52XciXBNAAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 33B4A3EA63;
-	Tue, 20 Jan 2026 10:16:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G/HtCe9Vb2nbXgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 20 Jan 2026 10:16:15 +0000
-Message-ID: <ab41791a-2ffc-429b-ae5e-1853106224fa@suse.cz>
-Date: Tue, 20 Jan 2026 11:16:14 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=flvbTW8cGb6deilLmI5t+JKo7K9LDXUoyDniHF2AX+Y=;
+	b=z0UVOzi0HxoCCgC7CqLBFaX8OoDrcgQ9EwjHQbH5rRLN/9CPXJJ1GOLqg5ZkOXckQt85EN
+	q0718oOn9DKC4lLvue7QU5WkOk5iqpBwUR4BAbMEzRREmGs0qC/0M9Bz6Ip810aEYvepcI
+	6Km6sZhZTNLRVoAJakVlIotfmzAyO+A=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768904453; a=rsa-sha256;
+	cv=none;
+	b=WBmOQt5IwIsIKYOvQSV/W2e/ZLEE8Q8+6DvvowY96GJWML3Oqk8A+8fQ6mWR93kDHpVXeB
+	fy3v6uOBvJn8GSWGywGwrIGavPtjj2fpUT/zZapk9teIEsMvi5lXXsFAhL00viw/Lap7X6
+	VtMBHaqibjO3LDJBklP4t41Rv8FXnRY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 271771476;
+	Tue, 20 Jan 2026 02:20:45 -0800 (PST)
+Received: from [10.164.18.63] (MacBook-Pro.blr.arm.com [10.164.18.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03AB03F694;
+	Tue, 20 Jan 2026 02:20:47 -0800 (PST)
+Message-ID: <27ca39af-27d2-4f99-8988-5c45211b659a@arm.com>
+Date: Tue, 20 Jan 2026 15:50:45 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_alloc: Avoid duplicate NR_FREE_PAGES updates
- in move_to_free_list()
+Subject: Re: [PATCH] selftests/mm: remove virtual_address_range test
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ aneesh.kumar@kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>
+References: <20260116132053.857887-1-lorenzo.stoakes@oracle.com>
+ <5957ae48-87b8-4981-a6f7-8113141e7b6b@arm.com>
+ <f44fdda0-80da-49a6-a9dd-75b9a46e1f76@lucifer.local>
+ <e71ffffc-8623-48d6-88b7-4684af4534aa@arm.com>
+ <f7ed83bf-3554-4bfb-8d77-30ed4785a4a8@lucifer.local>
+ <f5f92d9d-d65c-444b-8357-17cca7ec176c@arm.com>
+ <8acef9ff-c5e2-4111-9437-f50b427db061@lucifer.local>
 Content-Language: en-US
-To: Yajun Deng <yajun.deng@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Joshua Hahn <joshua.hahnjy@gmail.com>
-References: <20260112121614.1840607-1-yajun.deng@linux.dev>
- <aWUKKyBZzsCBELLi@cmpxchg.org>
- <5cda8821bd3ac432a06698fa7eebdab0aff77452@linux.dev>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <5cda8821bd3ac432a06698fa7eebdab0aff77452@linux.dev>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <8acef9ff-c5e2-4111-9437-f50b427db061@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: DCAB7A0003
+X-Stat-Signature: agdepytoupcg441khdcj8snoh7t8frpd
 X-Rspam-User: 
-X-Stat-Signature: 5351cif5pq9g3m7mzcu94xqp7m57jywj
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EFFD580004
-X-HE-Tag: 1768904176-638203
-X-HE-Meta: U2FsdGVkX1+no+9bVYopF0Dpo1/CaVQ2KQ00vu9/taSPTYsMsONg+X1CKYLU1HUuCBMxHnzolTEPCiazn24e33U9XA8T5591sG5KqfVAWrTZK96huFtN1Dmk6IE+I3hDJL+XjgmCLQarCw5ynzSdHB7YFxVX044tM9L9S6hyIvKxL7dgvOcoxFP97gpwJ3FQc3xxqDhMoNDG9Xa7eC2duDU7PQdXfgAM736fJtbjUaG0uoZfuQN+to6TSNKqjz84HB26PmhnAq7P1zpcpxCdOEjH2KrC6/wp6h/V+tXUIjfB62Ib7CFys8mw46oRTdaLOoWWnCFLDP6lBMuVXxAAgN2PxFzwcl96hMF+eGiqn30c7ohLj+FHs+YaxT5zy4Xa6plDd09LIzjFdczxTiESOoSI/5tIxzRHaYrTlSZlqohvYEIjJhswdvMK5gK8AsCGWnhc8vBz7e0UjKikQ6kSHK7C0T9iaCmW2XEh42YLy2WoOvoAcsH3EwBde4pqztDmyVI+rKY3fvYEz1KDbM1qFxUHSGRxB1PEFi0U31kRWrX6QT0DUTEvlEieh0Agd4gbbIvNBnXPMtppSoW0sn80dTzVYmaHfRFyaSh4FQUMcIX1PoiLEYwyZbdfnMNcrWJO/fYd/Oo0jcywwXO3dFA07Ah17P7XiAbrCKVAu0LzKQxOmKf/C2sw3Pe4L+ow95e68xZ3rWXOVA7XlM4WW90UKUf8QwbXChpSUk9vGy5yg287pc4lD34BVH86a4X3n4OVAWrX6v8xv+O0aKA8pBc//4I7VXgrB6hk+JzRpiGftDOtRbNLJMwbTn1sXL//R1m0mDN2aeQPyuZNPY6Nu6Q2dBwiRlOqMIo+oaLNkdJpGI4teWHDb/f3lqLSfJxLPt/hfeSjJPvy4bhyOvJMnVblWCawyfmV4XaGMvctgjLsgUWp9bpUFdT2pHXg0NcYqFQ5Jop4sMdmEAN+49n3uJL
- 0GUsNbJr
- QlfNMW16eGGbjF5A5zohk5m8swo67N9UrzPIiTzHjcAonjdfy3r9e8qdi4Wn4NlWauiSuNWJAtIZh95ChK6TKn49dF79pnP3xPdZPoRWXUl0rLu3rejMZQ/Z5hmNvj83IJxG0An2D8ZdZyvxRTvV7A+l0pJclUThkeXK0R4JjOxbhAIyZpINtToFK1KL0r+axIOSzz73dEZUiev/bVx54R9weU5K0+PjGWj+RFgjUGIAUaTEcYOKfq7EozWz9jesKm17CaDUADGiyPCvDQShH7bfnTLqv2QYAbEqIMQpoI2cMGovj+9adZKVMDDp5iT99WPTcRbnBn+MMgfgh6zb+D3C0tvZe42K4WB/KXmVDefyhBJpvZo6VRqPWS9zt9FwVT0GtRWYLE6FgbP8dIfRl1fX6TC8wrZdH+lqRmhBNC3CBYkXUdcaMzH5tVwO2iYVxf0/TtoeeaK6imyKZaJywOwFepG4ukLXWRGu1fNptJOwLCnD/Q+nAuPUydNjUmgFIV6U5y69Sa2v1Xce9NzzWIuh8kA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768904452-371268
+X-HE-Meta: U2FsdGVkX1+zyx6GCib+h32W7zWre0+ewjs5hq0gEjAal0koLMUqUWaaxERR5UvbnvUwEV8FscfFHkt5uqAz6tr0DraxiPPdiNvUtkLA2548D/X1j3F1QrGyit9paBaJckJHupbuNLIm7BLrFzL/P1Hi8AENjybb9w/4Tf/rFU97Hm0zjfyRAinDQQgehoR5iTRB/qDgeoRthtpLZbtigZ1yKQSC6LSNjO+3O5evlwIBf/79d6jlrRf9XHPUJ05vnzOcqy9xMg5zHweUVj9LCu0GbPG6+0hgHqTfuQYu+YFnDnjgZ0JgL7UOrJbqfymSpHL5UbfO/OcnLygnxqzpdWt8zDDwHCsWJNI48S80YNKLdJ5YIMr9UpJf/SuaY/b5ZkotZu3UmBrLX2icSTQE4KRJ5Yn3Vrr0T/JDWpM+k3/0q/QbYtwdMBcK75yDy2oDubm2bT4rap1FOrEOTVA7Wax1HsSWmqszamaWfe/hF3z5R45TndcG190QQSUshvj/HOXoGk/hsM3vruusTE61DHwFDz8w5cw9hG9n+0BSzIZJHXc8W9HQbSoVz90fYZArN8o5p+trvo/EwJEPXN5frXIBuoMLiq2Su4+fHPzwZ81bhOc9j/slwqzLnSteSziQxYmKYUKn6HDlvlVq1ppzg8S7DsZ5pBpIYX4jaC2g/6QI5zl78yPKv5TZT3rf/ew5BMtHQhv7gSY2y0eIYxnwgd1Nm7p6jFaL3dSi7YamqG5/QwOVVszKkFoIhHj8JDZ59A3RRrpldOSJ3gP41IzwGyIkfZB8C8HEiz7AVSKXi/E+uItuSKtJ0QwRzwjLunTiEQ+ExgovIRPqkuXACJ6T0rpt2Q+39j2P9L9B9ddlUxIZXQsg68k4b03OH2/b5fU5hZQf52kGQgBbwBMEOI5rXQ+/WifUiafUyLUx0cJMwFt37HZ0Q5oCBzrdKGPLq/4F9lWi5PCaF+kj71T4op6
+ kgHYyB+/
+ 4Nh4k6A5dhxP56TrRrvxU/dwIe4qEobrW4Zpq+skQ3k+L4Em9Ufd++veVhjH6P5lEJTGyRalcKqsfoGYUZA076Te5XmB5Sy18xv4t6Rmv1dGUtpEe+ySDp91gC/QOjKNLWKtrKVjv8UI+uhIFYVt6e1t/kafkyQVsOd1ZSCnpA+FRoJg9ovn4GeFWmKOHgYl34x1p
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,59 +97,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/13/26 08:13, Yajun Deng wrote:
-> January 12, 2026 at 10:50 PM, "Johannes Weiner" <hannes@cmpxchg.org mailto:hannes@cmpxchg.org?to=%22Johannes%20Weiner%22%20%3Channes%40cmpxchg.org%3E > wrote:
-> 
-> 
->> 
->> On Mon, Jan 12, 2026 at 08:16:14PM +0800, Yajun Deng wrote:
->> 
->> > 
->> > In move_to_free_list(), when a page block changes its migration type,
->> >  we need to update free page counts for both the old and new types.
->> >  Originally, this was done by two calls to account_freepages(), which
->> >  updates NR_FREE_PAGES and also type-specific counters. However, this
->> >  causes NR_FREE_PAGES to be updated twice, while the net change is zero
->> >  in most cases.
->> >  
->> >  This patch adds a condition that updates the NR_FREE_PAGES only if one of
->> >  the two types is the isolate type. This avoids NR_FREE_PAGES being
->> >  updates twice.
->> >  
->> >  The optimization avoid duplicate NR_FREE_PAGES updates in
->> >  move_to_free_list().
->> >  
->> >  Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
->> >  Suggested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->> > 
->> I'm not a fan of this.
->> 
->> The code ends up more complicated, more lines, and fragile because the
->> accounting decisions are now spread out over multiple places (again).
 
-Agreed.
-
->> 
-> How about V1? It will introduce account_freepages_both().
-> https://lore.kernel.org/all/20260109105121.328780-1-yajun.deng@linux.dev/
-
-Also not a fan myself.
-
-Thanks,
-Vlastimil
-
->> Is it worth it? move_to_free_list() is used in page isolation, which
->> has to do the accounting anyway; and migratetype fallbacks, which we
->> are trying to avoid as much as possible. So this path shouldn't be all
->> that hot to begin with.
->> 
-> Not all cases are of the isolation type. There are indeed duplicate caculations.
-> move_freepages_block() will be called in __isolate_free_page().
-> Both old_mt and new_mt are mergeable type in this case.
-> 
->> Simplicity & maintainability trumps here, IMO, unless you have hard
->> data showing this is worth the pain.
+On 20/01/26 2:13 pm, Lorenzo Stoakes wrote:
+> On Tue, Jan 20, 2026 at 10:59:01AM +0530, Dev Jain wrote:
+>> I'll reply to everything here otherwise I'll have to repeat myself at different places.
 >>
-> I'm tring to do it, but I haven't yet.
+>> "Also exhausting VA space is an inherently silly thing for a test to do, you're
+>> making assumptions about existing VMA layout which is absolutely an
+>> implementation detail and may even be influence by libc..."
+>>
+>> The original version only uses mmap() and checks whether we got a high address mmap
+>> success when we shouldn't have. There are no assumptions being made here about
+>> VA layout. No matter the VA layout, the test will succeed because the kernel
+>> must enforce the distinction between low and high addresses (but see point 3 below).
+>>
+>>
+>> "It is therefore ENTIRELY a user-facing and kernel/user API thing that has to be tested from this perspective."
+>>
+>> So in merge.c, the statements ASSERT_NE(ptrx, MAP_FAILED) surely assert the
+>> user-visible API - that mremap must not fail. But there are statements which
+>> also assert where a VMA starts and where it ends, testing VMA merging -
+>> I was concerned about these. It is not the goal of userspace to minimize the
+>> number of VMAs while making a syscall - that is a kernel optimization. My point being,
+>> I suspect that the mm selftests *already* test internal details a lot, and I believe
+>> that they *need* to! Running selftests is the most convenient way of testing the mm subsystem.
+>> Hence this should not be a ground for removal of test.
+> Dev I would rather try to be positive not negative in review but again,
+> this isn't constructive, we're not talking about merge.c and even if it
+> contained the comment /* Ha ha I am a contradiction */ it wouldn't impact
+> this discussion.
+>
+> You're not correct, mremap() has an API requirement that you can't cross
+> VMA boundaries for most operations, therefore start/end of VMA's and
+> merging _does_ matter. This also impacts how e.g. madvise() behaves.
+>
+> As I said before:
+>
+> 	But you do not - both VMA merge and CoW impact API. Re: merging
+> 	certain user-facing functions, most notably mremap(), have API
+> 	requirements that the user must not cross VMA boundaries. It is
+> 	therefore ENTIRELY a user-facing and kernel/user API thing that has
+> 	to be tested from this perspective.
+>
+> Can we drop the subject please?
 
+I think we are talking past each other, and communication by email has not been
+the greatest thing, so I'll step back.
+
+>
+>> Talking about the recent commits, they can be reverted. So, the ground for
+>> removal should be that the ratio of the time taken by the test (exhausting VA
+>> space), to the coverage of the test (for arm64, it is testing backward compatibility of 48-bit VA
+>> on 52-bit VA, which one can argue is easy to spot if it ever breaks, and easy to fix)
+>> is too large and does not justify a selftest. I tend to agree here.
+>>
+>> "Add a _new_ selftest, named something sensible like mmap_hint.c or something ..."
+>>
+>> va_high_addr_switch.c tests stuff around the switch boundary. But it does not
+>> exhaust VA space. We *must* exhaust VA space if we are to check that the kernel,
+>> in a situation of "emergency" (i.e exhausted lower VA space), starts giving out
+>> high addresses, when it shouldn't. Again, one may argue that trying to test
+>> this out is not worth it.
+>>
+>> I personally opine that besides testing the back compat of 48 bit VA on 52 bit VA,
+>> we are testing something more important here: exhausting the VA space tests whether
+>> the kernel can truly distinguish b/w virtual and physical memory - we stress the virtual
+>> memory subsystem without touching physical memory, something which the kernel should be able
+>> to handle. But again, any such test has the potential for a timeout. I wonder if there is a
+>> faster way of filling up VA space.
+>>
+>> To summarize, I will agree with you that currently
+>>
+>> 1. The test is in a broken state
+>> 2. The test is taking too much time to test something trivial
+>> 3. It is a maintenance hazard. It turns out that the original version used
+>>    MAP_CHUNK_SIZE of 16GB, but then it was changed to 1GB because (this is the bit
+>>    where the dependency on VA layout comes) on some systems even a single 16GB mmap
+>>    may fail. So now we are stuck in making a tradeoff between the size of a single
+>>    mmap versus the time taken by the test
+>>
+>> So the better option seems to just remove the test.
+> Right let's just focus on that.
+>
+>> A separate question: Do you think that the functionality advertised by validate_complete_va_space,
+>> to check the gaps between VMAs, deserves a test in kunit / tools/testing/vma, or somewhere else?
+> I don't think so as it's not a requirement set in stone as far as I
+> understand it.
+>
+> But expectations as to what get_unmapped_area() should be doing makes more
+> sense as a kunit test.
+>
+> Thanks, Lorenzo
 
