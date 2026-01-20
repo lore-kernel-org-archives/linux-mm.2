@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA1BD26292
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 19:30:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BF38D2629A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 19:53:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5FBE6B049D; Tue, 20 Jan 2026 14:30:33 -0500 (EST)
+	id 1329B6B049F; Tue, 20 Jan 2026 14:53:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0C266B049E; Tue, 20 Jan 2026 14:30:33 -0500 (EST)
+	id 1099E6B04A0; Tue, 20 Jan 2026 14:53:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90B046B049F; Tue, 20 Jan 2026 14:30:33 -0500 (EST)
+	id 0404D6B04A1; Tue, 20 Jan 2026 14:53:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DEDC6B049D
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:30:33 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39AA113B874
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 19:30:33 +0000 (UTC)
-X-FDA: 84353333946.09.CE752DA
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3B05DA0007
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 19:30:31 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LvfO70Ak;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768937431; a=rsa-sha256;
-	cv=none;
-	b=AD06SHgVB4i24Jz5kL4fBMPM3iEVRAF7554Coh228TaRyAcaCARKYEPOT7v5tSNq+dgW0+
-	Jqyq4njavm8bEqFfsPqcl2+dZtXXrWgr5WQ5m/zQ/XZk/oqHox9CqlwplbrBVR7KFbRDTk
-	3nIsLP2TzbJoeQ/lG5xzRCp2OIP1sgA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LvfO70Ak;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E66BB6B049F
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:53:26 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 582251AF575
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 19:53:26 +0000 (UTC)
+X-FDA: 84353391612.12.0096D9A
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8421B120002
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 19:53:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=IsZfov6L;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768937431;
+	s=arc-20220608; t=1768938804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q2V6UawHQ9s5MFToZpU8099TxdYIwpRpbE9unot+c64=;
-	b=Kn1MOgV33FtC6wZoTaM/3gxC839wWwr6ZMh3QAz9uYojEdwVnoUkI+cJ5H5Q9v8ZC/sMDv
-	O8Z2Ixz3bbrc4B0Gfhjr0F5G7xFe0qYfxkrWxD05Sgma/0lohhXXMcok9Suxl/QzoQ8oIe
-	5aRpdSNZD9rZN6JJLI9S0xlkn02xaBg=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so3191069f8f.0
-        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:30:30 -0800 (PST)
+	bh=DT7f+nwKNVqRHxBLOEjBQ8JdR4wJCXmuunwEQyjFXwk=;
+	b=MGjnfkZW6+cgcwd8434LmCuVKQxOFHBKrFV9NS74seUE3PRZjOW2yTnLN+wIKLj7ljqM0E
+	xBeyPz4g6DHS8mpVj4ogQV8A4miDa0tTVqw1qTUQH8Mz8HhJ2z9dhNXuClG1cO/s97ISvJ
+	Un7Hj+EZ+HqOmRwKtKTPECGrN8W+Kfo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=IsZfov6L;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768938804; a=rsa-sha256;
+	cv=none;
+	b=U4km8obklt26Aevosc8dKKFF889WMSv2BNLaS6Ma35/aH8ynmGMHnrD6jc6C0QuUoRYpyY
+	cyULiho4R5LjrcRMtni6iGRxjGgf73LzYKx6COtlQxOYYqDsMufc9qpjTkh2XtvqHaiy1a
+	Gjpo8nX7CBfE+BuwiNN+11oFz7kTxi8=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8946f12b1cfso3446016d6.0
+        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:53:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768937429; x=1769542229; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q2V6UawHQ9s5MFToZpU8099TxdYIwpRpbE9unot+c64=;
-        b=LvfO70AkiEapJLJp52Y+Ogj6yDqDJagKaj5BC4/HY8VrF6FidXItR8l6puIb6A+PK7
-         vM6TLvQBzWSw0vd10LdcPue6vvgOvJo/1RWENKjWDzXb8KFlPDFDOHJqAjF/BGzChiDt
-         bVY8Nc8tCvxBGpRvKJOLjXrwU+uUep6q3/5tw4BETUDsh+8ZpAx8poLME63W3gXM0rdV
-         ILV1a3OwEXAUqC4EhP//RGBNPBrBrkSviMHiFNdN7NyeqGdXHkCzQTS8qDCfBuI+Uol5
-         2ysEfCHbn8UkdkoWLroSZv//Rc6OZcfyFR5vKS/rpRQuEZcn3ldpTpYXQFen2w1DJD3d
-         f0CA==
+        d=gourry.net; s=google; t=1768938803; x=1769543603; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DT7f+nwKNVqRHxBLOEjBQ8JdR4wJCXmuunwEQyjFXwk=;
+        b=IsZfov6LyEC3EvVxkcmEf5fiJ2WF1iWxJl/bO94H0r+HY3DfgwPE6gWxWfXIibFKRf
+         3B+TNfJRIGSbWzgWyZ9CFcRKXneP1K+yL636zvQMSlYZuyXIAEKL1YC7UGyo4bDYK1zc
+         Qqq6JkizA+QuJcNsmZK/d4DAkAQ9YsnPbV0zKw4xfm0HWok2dfEMd9W6oEgV/yiYb0+8
+         ifW0G+J/lJRDbAYKNkaLTXMY6xd3dwVhzpghCg8YCepqy0Klg3GEKBtDJDrqeZubvUkm
+         /6TvWSOTxKT6fo1vCHx1MAVnVgJa6ilRJdbxr5xWg63+yUdjpcm4euz2Tq5jghSHA+2H
+         bpkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768937429; x=1769542229;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=q2V6UawHQ9s5MFToZpU8099TxdYIwpRpbE9unot+c64=;
-        b=T6LeHhUp1TpmY8idz1xRYeD7FEV59aTBM04iSfcxkgvMfe1EzCRUvbwiMLHxrN8PQp
-         hupB1SZ+AmQe9XZEzH4QWNhW94DXHB0vYoZYTDJ7V0SBlzARCdUJbVstPJIifEUULxVI
-         0CqSWz2WdFWv/DvK/s2Wb+SAXhybx5MDjThqnqNlxm085+Pu6KURNre8QJGk0pabRoaH
-         uDl/WNx/x6CfZdZB7S4lJFzXWgtCNvj6eYgheMXH2fQqiMrqPvzRrrAX7Z+qu1oiBnz4
-         81KtguQly/aG6Ixi/EAFPbERWVjBQ4a03iRrnv52oqajpXfUlhPy6oRT1tgvB7X2n40+
-         XAhg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7jZzdYQO/LKtG5WTC6/mFVJpLxJMxYaeuBFSEVWAd4gg9qsndGTK49NNjBjqfoA4T7oxpvr8/1Q==@kvack.org
-X-Gm-Message-State: AOJu0YyeTgeHqi0qbi5E7PFge8W0GCCx+1qVo1540z89ay3B0ytbWHE8
-	BUNSkUpgRjZb1nSLSN1vQKSmla3pWwDV36wMn22HJb9QuWhJ2vL4sJy3
-X-Gm-Gg: AZuq6aKq2nAZ+DLgSSxV8uce22ekZYryxQkA06UUmJH0fKK+vhJ+WL75WNJP5r9/OQ8
-	T2RGbm8ZqXm4pSruQiA2WcCnfPR6mgIyJzTFDMaYKG9lJk5COlG/90nq7waWhbx80/OJzKLh5xK
-	0TZoGGMo9I7ZgjNwi02327XUza3TboQwy0lUewICug+UiFx/0cqv5xj0ZIVVmItg/+TwsBc83L0
-	Zy5+TS3XEQ5cxct0ylySvRKLyelZh8Xh5TcA0dHoAjuZQXoaYG9JTl7AoWCV1/rEWY6ZahvItqD
-	a3i1jESTSoEZ5tbgvdOpBSYKDQ7MYoKqBaUHZ8HjLZ3ETgYZEk99MY49XMWklj4JvL49+R/Thh8
-	xbQYcv18bKDodywdPo7uioVevA3AGjSFPgTX4wBuCzxwFyeCeDNgeOyQJnWo4rAW8yozqipoAZJ
-	bUpjq5Z82apffJmUX0I10P7JnrLGkyG/uqBwJOUJhlmFtVrXuxpbnDoXJCbuRlqhA=
-X-Received: by 2002:a05:6000:420a:b0:430:fdc8:8bbd with SMTP id ffacd0b85a97d-4356a053899mr20086025f8f.41.1768937429265;
-        Tue, 20 Jan 2026 11:30:29 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997e6dasm31642908f8f.32.2026.01.20.11.30.28
+        d=1e100.net; s=20230601; t=1768938803; x=1769543603;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DT7f+nwKNVqRHxBLOEjBQ8JdR4wJCXmuunwEQyjFXwk=;
+        b=JhhRpUnUaNXXl8Vu7uK2zTVSXWa/CBWeh0nUGlh/jkMqC6vIjeNgj/+J6xppTxu3rc
+         tcWcwnY8ZkrIQp1uSrj96CaXGUuzO0Vi3yQZdS+XnwMgCaK7hHoNVyrqt8k03AiWEcin
+         LDX5ZuVMsm3tZYwD6V78EJUnqt9FzbgX0uih0nyU6h07cK1HuEDl+ogHuHR+iEcw5XoL
+         quuKumv5vp0JX/T3XXBxbK3/CZ2uXEK36ybIb5nHAxMSLgK5AMHvzOTDMBTokZyp2bpj
+         nSHS2r+X2gXCY0rVxc5P1RC/jOZ6WRc8aK9odbhcHZ2NBmSkGrZYc0Z0+aGv3fA37uOj
+         kKZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXoV39QSnkwo/Yxx85L9hbiJ2iHoGvAm23SxGFZ5QtSJ7ICWg33nIqEsoYTXpuuG99SbYq26zX8Pg==@kvack.org
+X-Gm-Message-State: AOJu0Yxki6ImAsG9YIbwtspyAmERqGUC9yCEPfa65kf892UeO0JXlcWG
+	2a1fko5MOIyXs+MYYpKOS/W5gYwub0EIc7s4azA5sHLgee8RdVitKWyHE34A0xinTZM=
+X-Gm-Gg: AZuq6aJIcCsyVouC0nf+g8ccAR1oQVFovbcOBnattdtokljSOjbCWQparsKaxDsb2by
+	kBPvqb0BK3JlnDYqZMCtFZI0+7OTiokYi5ji9cgJpbvdz6/DtD1al5lrZi0eOlUS8dnSiL0t/bc
+	cVXkNHY4RMxAGmOgR0JYHSeNGb+ocduFkatTKZMRibFz5zBSZaJ2+odp7hxB6SP/Qzvm9IOgOu9
+	MzEsrG+qVPRocUyQYCjaZUetCmt1oNqJQ/2N0/YJrUmpkcqIH+6XVI6xKbqdPI5VbbQ8//6DlD1
+	0gNC22EQJJZPcYboEvKwjHBqeA99XLN+MlQxeaGvEo2F0vSzjtjBiiCGKbUV5YgCT3qgCFSucIm
+	rdOE/dZV4VlS2T7rgLbQr0Gwq2MT+ofZOxRu9KKDtaLRc6jCO14TjctO1deC7sMLxb5fBRwRR5u
+	xVzPZJZqB5nhYzAzRg/81+mZbgjAKHW0ZQDRZTkCoSPEIaF6kr+KvtBwf01u9IunSlLi6DFAqas
+	XqMEx5y
+X-Received: by 2002:a05:6214:258c:b0:882:3759:9158 with SMTP id 6a1803df08f44-8942dda46camr231992556d6.61.1768938803293;
+        Tue, 20 Jan 2026 11:53:23 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6ad6ffsm110202716d6.27.2026.01.20.11.53.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 11:30:29 -0800 (PST)
-Date: Tue, 20 Jan 2026 19:30:27 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Gregory Price <gourry@gourry.net>
+        Tue, 20 Jan 2026 11:53:22 -0800 (PST)
+Date: Tue, 20 Jan 2026 14:52:50 -0500
+From: Gregory Price <gourry@gourry.net>
+To: David Laight <david.laight.linux@gmail.com>
 Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
- ankur.a.arora@oracle.com, dan.j.williams@intel.com, dave@stgolabs.net,
- david@kernel.org, fvdl@google.com, joao.m.martins@oracle.com,
- jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
- mjguzik@gmail.com, muchun.song@linux.dev, osalvador@suse.de,
- raghavendra.kt@amd.com, wangzhou1@hisilicon.com, zhanjie9@hisilicon.com
+	ankur.a.arora@oracle.com, dan.j.williams@intel.com,
+	dave@stgolabs.net, david@kernel.org, fvdl@google.com,
+	joao.m.martins@oracle.com, jonathan.cameron@huawei.com,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, mhocko@suse.com, mjguzik@gmail.com,
+	muchun.song@linux.dev, osalvador@suse.de, raghavendra.kt@amd.com,
+	wangzhou1@hisilicon.com, zhanjie9@hisilicon.com
 Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
-Message-ID: <20260120193027.3d160211@pumpkin>
-In-Reply-To: <aW_G66HeWLbyiPHs@gourry-fedora-PF4VCD3F>
+Message-ID: <aW_dEjSr4E4N5Fn7@gourry-fedora-PF4VCD3F>
 References: <20260120094744.5d92e34a@pumpkin>
-	<20260120103949.7673-1-lizhe.67@bytedance.com>
-	<aW_G66HeWLbyiPHs@gourry-fedora-PF4VCD3F>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+ <20260120103949.7673-1-lizhe.67@bytedance.com>
+ <aW_G66HeWLbyiPHs@gourry-fedora-PF4VCD3F>
+ <20260120193027.3d160211@pumpkin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120193027.3d160211@pumpkin>
+X-Stat-Signature: 7mi6hudapr3kezem5rythdc39z3tocd1
 X-Rspam-User: 
-X-Stat-Signature: ammtd6ijy3cmmzrd8j8bdd4yjd881k9e
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3B05DA0007
-X-HE-Tag: 1768937431-494830
-X-HE-Meta: U2FsdGVkX184mKw4KuocFf8gqGelmujWdyVfGHEbGYaw/aoN9HGg4LnacID2o4o50hfHKah6bb3Y20IETqhCmHAhFjqA9vqRvO/5NAnFpSH7hqZBN+wCDAjBQ0z8rq8Ca6Yw+/8WDZTcO8xlmv62BxmMJjTbfNMtm+9AJbrNmwLVdDQ+QE7C/1tqDxCuwSCX/mheguRmxStU9XG9Lhd4wwTfYqGB76aRqXfVnmnO9wYeccumU+pDmgQ+O2iR/ipYnWQX4jm2+UNHnlonFXaYmV8m5Po+RWo8Ar7qt0AYbPvg7f7mLcFjusaeliWCjNt6yGwCngRXu9C6Ucful/pWfwC5Ou3IWufmqNI4j3AtgvIFjGZQDcF2Ef0cz8MxYzBdd9VPHD7JfjEtZp21ju7L4UdloVXTx1tqGbYLURVtM08CsRo5PH2ggSimV4sVbPaZuoTalHYrF2g565/jG+QTkX52uOjOC6uSHX2rokEwdmGw/l2wUnMRgEjWgwLBgCK6mDaQVVf494Qi//TloQOSb3MQtenBMOSMiJJF76HBk/ksLF20wjch6m/hNeHC0WeOCCF9IxAlqmQpCINQ3hEq1KpFKRXcfkdorSFJeU4Gesn/KddzQUDe4xghV6l2dKPce8pE7sW2rPEEB/KyUlJznJciM+DiC8/RpqsEahjNS6RJlBVdIA4zLLxAEQHK24bDviO63CLFjjh4/sGTkmnzoANvIiQ42naxTa3rikKmKFibfHV8xMhOYiQ1PvqMtUZzjBFej5dQAzaUmbi27mujN7sajGOzJmNNwOvMaPMNmXuVLcakMb3IlsP7mMcGzL5mdUemHuR90mC6ZhsuWbePnMvTiE/8Z9829B2qMyqnbiVku4QJNTora2jmpCUDGWxJDDymiphhWbyutZl0TV+anB9MVJby8ScK96xDTKx/TPQMlnFwbLefpp/EsRs70XtGCuAEPjd21jhtI+SscmP
- /i/iDQ9I
- kzypX4VFBS6fXRmVpAjar6NuKcZ9kfqafHaqqbc8GwMcrritNC7k6kTy09PREfoeWFdkSIH0rQPvMZigzX4t641FYTx3Nug1S4vqROL8N/LlM70uGbGtiDZeoP5KRMy5ME6KYLH7OsQNzOsxDz/zvfLVG7QfSMeIMFjtzEnNKRFwfjfGia+BLq7bSdwCNltUyFBNCgp011gLG1ufNEay/t+gZN9a26ydCQ3TxuoU8rzQOiUH/B+bEuE3v8DL3Z07dxefA6xZ1Uo3GHv6/UGOSWCpHw2j08+EWkidLI0Q3UhOWXJuv1giRn9h6vXY9c6Ua6Y0Wy7KoQq5QkJp4ICXfmY98c6BNxjKsxX+P3Nc7fG2BYBCGu8g3qid2ppXQt4RD6CGIulLdoZImT0xAorLZlNdEW9tnaHZH55iEFXdKql9ujdAT/bh9EOwdbh3UKQSgBt2p3ZfE84v0/TG3SazOcj/VflyaoXzv4Ei6uQj/4LGueeprMdonrYES5BulHkU5t7d75OYg79/16SH1EQXl+YrQJ86O1hlrpHVi
+X-Rspamd-Queue-Id: 8421B120002
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768938804-124137
+X-HE-Meta: U2FsdGVkX18SUHdGlRbJalEjJhK/sFPP0Q2II1K8kZP15D4tbivkvdxPisC28vEL2OJ1y2AD2ZMHuBHLiZOu8udiwOsOrS77XBavy0Y2Ot31jUuF0qWYXFzNxWP/SWufzwGvrd4IPAbqg45Ju2+k/CuBBpvKac1QZ8tELG36dNjB8fmKygvFD4i+O+KLyKca2vWvCv8PJl2ZqTTgfOt4LiIx0UVqsIwAworh3j3Gj8/mIdfUrAhIgKT3HjZKkEC/SYkgg4na8CY398GeWiIq9IgHi2j76+LokgKTLdoWozkNypZmHg6StJ/BbkMPz/eT1odelLqz477yKTIkwmoSs7kv1CTT+2LAyTUF42z+KVQJOzOeQrxG3OM4f32155/wnrqQb/K0u2lxJM4NJI8PaNeM1WaJy6d3En3TkWsf/NJHtr/GBSZB4egxLebKFSdsk/3GzMMu63SzYtnL75UCNUVf9NqHIBXSYm+y24h5TJswrT1D3PhnJ5Fon0Ktx/U/jxI0/Prbg8cA9mB6z56IalAEXFF2nFrnfSlaxFL17xk0T4kTG26tVX9mEHEY//W2ZRw2mOWPbR6JYoPndLDEK4rqHtPgM564xbxp0A0JMZO2H7ZK0jKLOrj/FYPDMFME9EOh6QDhoBomfcMi7Z7dLz0aGbepsYGOlIiWqOGtPAegVycODW1ytI1N+B/no6LLeRHdmIyDrNZ3xGTsJkSMOpTxXjqDvqBmsrR6Vs/IqicOsyngMtUaTGbDuvAmxJNdKo0WUjtnzNc+9wGj/YirO9zcbcKRC0zijOoBAlnmXErPL/hJxVybynyJXxBP+ErCK9B15PRBteDLmiaDprbkUB5MXO9nnkHNi+jjRsMfPop3CJlXN6zsPzWvHmWkE24KD7kbxTvr4AkaWdfBi+hnM1FLFV0e3wZ9P8OgMXrLbIERFQdC8G2NzEFmwe++X34LUanykgm/cjFmlL7M+r2
+ brc2zVHM
+ 3CnQYA8ab8jH4bfgwZh/nXhPWmc2i6Ju9wXNEiBTgiCGriniPO13RIP4/6L8PRkpEvjiTiIOnISbRw29Tqt3ikmDQKwPyt7JYNfyaMWU9t5hecCfHvl75cEB+js/GV6ysY585rlYUT944FFbkB1NpeHjDZ8SSqneXcuoFQiSzUVLUckl8uyDSHa3cUkX6/qcuT1cHWXC3acBCxrER071/v0LOIgSaiNdt4cNStgFn7Bx7ej64+s1iOcg3NwPtTH8u58Cxy4p+BFTa9ppbcC+8x93E2aC+KZEYBsfF6ngfFy09YcK5qYZUptB1o1YNswwFHkaGJljWvCibeULe4T6YVqVCU7g6ESCRh9fmPGIPxnrVcsorWSLfommIdHJzEIK0ymUuLVn7BA3MUplA4ZOms1z1xQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,99 +127,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 20 Jan 2026 13:18:19 -0500
-Gregory Price <gourry@gourry.net> wrote:
+On Tue, Jan 20, 2026 at 07:30:27PM +0000, David Laight wrote:
+> > /* Run programs in serial */
+> > sh:  program_a && program_b
+> > 
+> > in zero_on_alloc():
+> > 	program_a eats zero(10) cost on startup
+> > 	program_b eats zero(5) cost on startup
+> > 	Overall zero(15) cost to start program_b
+> > 
+> > in zero_on_free()
+> > 	program_a eats zero(10) cost on startup
+> 
+> Do you get that cost? - wont all the unused memory be zeros.
+> 
 
-> On Tue, Jan 20, 2026 at 06:39:48PM +0800, Li Zhe wrote:
-> > On Tue, 20 Jan 2026 09:47:44 +0000, david.laight.linux@gmail.com wrote:
-> >  =20
-> > > On Tue, 20 Jan 2026 14:27:06 +0800
-> > > "Li Zhe" <lizhe.67@bytedance.com> wrote:
-> > >  =20
-> > > > In light of the preceding discussion, we appear to have reached the
-> > > > following understanding:
-> > > >=20
-> > > > (1) At present we prefer to mitigate slow application startup (e.g.,
-> > > > VM creation) by zeroing huge pages at the moment they are freed
-> > > > (init_on_free). The principal benefit is that user space gains the
-> > > > performance improvement without deploying any additional user space
-> > > > daemon. =20
-> > >=20
-> > > Am I missing something?
-> > > If userspace does:
-> > > $ program_a; program_b
-> > > and pages used by program_a are zeroed when it exits you get the delay
-> > > for zeroing all the pages it used before program_b starts.
-> > > OTOH if the zeroing is deferred program_b only needs to zero the pages
-> > > it needs to start (and there may be some lurking). =20
-> >=20
-> > Under the init_on-free approach, improving the speed of zeroing may
-> > indeed prove necessary.
-> >=20
-> > However, I believe we should first reach consensus on adopting
-> > =E2=80=9Cinit_on_free=E2=80=9D as the solution to slow application star=
-tup before
-> > turning to performance tuning.
-> >  =20
->=20
-> His point was init_on_free may not actually reduce any delays on serial
-> applications, and can actually introduce additional delays.
->=20
-> Example
-> -------
-> program_a:  alloc_hugepages(10);
->             exit();
->=20
-> program b:  alloc_hugepages(5);
-> 	    exit();
->=20
-> /* Run programs in serial */
-> sh:  program_a && program_b
->=20
-> in zero_on_alloc():
-> 	program_a eats zero(10) cost on startup
-> 	program_b eats zero(5) cost on startup
-> 	Overall zero(15) cost to start program_b
->=20
-> in zero_on_free()
-> 	program_a eats zero(10) cost on startup
+If program_a was the first to access, wouldn't it have had to zero it?
 
-Do you get that cost? - wont all the unused memory be zeros.
+> > But just trivially, starting from the base case of no pages being
+> > zeroed, you're just injecting an additional zero(X) cost if program_a()
+> > consumes more hugepages than program_b().
+> 
+> I'd consider a different test:
+> 	for c in $(jot 1 1000); do program_a; done
+> 
+> Regardless of whether you zero on alloc or free all the zeroing is in line.
+> Move it to a low priority thread (that uses a non-aggressive loop) and
+> there will be reasonable chance of there being pre-zeroed pages available.
+> (Most DMA is far too aggressive...)
+> 
+> If you zero on free it might also be a waste of time.
+> Maybe the memory is next used to read data from a disk file.
+> 
 
-> 	program_a eats zero(10) cost on exit
-> 	program_b eats zero(0) cost on startup
-> 	Overall zero(20) cost to start program_b
->=20
-> zero_on_free is worse by zero(5)
-> -------
->=20
-> This is a trivial example, but it's unclear zero_on_free actually
-> provides a benefit.  You have to know ahead of time what the runtime
-> behavior, pre-zeroed count, and allocation pattern (0->10->5->...) would
-> be to determine whether there's an actual reduction in startup time.
->=20
-> But just trivially, starting from the base case of no pages being
-> zeroed, you're just injecting an additional zero(X) cost if program_a()
-> consumes more hugepages than program_b().
+Right, both points here being that it's heuristic-y, it only applies in
+certain scenarios and trying to optimize for one probably hurts another.
 
-I'd consider a different test:
-	for c in $(jot 1 1000); do program_a; done
-
-Regardless of whether you zero on alloc or free all the zeroing is in line.
-Move it to a low priority thread (that uses a non-aggressive loop) and
-there will be reasonable chance of there being pre-zeroed pages available.
-(Most DMA is far too aggressive...)
-
-If you zero on free it might also be a waste of time.
-Maybe the memory is next used to read data from a disk file.
-
-	David
-
->=20
-> Long way of saying the shift from alloc to free seems heuristic-y and
-> you need stronger analysis / better data to show this change is actually
-> beneficial in the general case.
->=20
-> ~Gregory
-
+~Gregory
 
