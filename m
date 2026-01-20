@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41002CCF2DD
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 15:49:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E4ACCF2DD
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 15:49:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 928036B0443; Tue, 20 Jan 2026 10:49:01 -0500 (EST)
+	id E73636B0444; Tue, 20 Jan 2026 10:49:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D54A6B0444; Tue, 20 Jan 2026 10:49:01 -0500 (EST)
+	id E3DF26B0446; Tue, 20 Jan 2026 10:49:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80BE86B0445; Tue, 20 Jan 2026 10:49:01 -0500 (EST)
+	id D6B1B6B0447; Tue, 20 Jan 2026 10:49:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 71DE46B0443
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:49:01 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 084A6D2401
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:49:01 +0000 (UTC)
-X-FDA: 84352775682.23.FBAEB4F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 66BDC4000D
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:48:59 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhkDiB2V;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C38D36B0444
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:49:24 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 64BECD2401
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:49:24 +0000 (UTC)
+X-FDA: 84352776648.02.C2C33F5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 95BD0C0006
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:49:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZXYUZUgh;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768924139;
+	s=arc-20220608; t=1768924162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gPrnJ5h+JTd5xfQX0msksUXYMd1kTQebAy6gvwTvYy4=;
-	b=WCWU9pCeLLDZmzGBNwy2weY8rDX70xfOp5ltdZjGFGfjNbUylfjVLoEacf06EEQ0pLzQ15
-	n6QwupYXvIUvjiM6mrN71utYyB06nA2Y+8xwLf0bd8BsnmME4eT/7lrDMnob+OK3isFtn0
-	IS8YM38zmYUTK3lRVzJn3yWQpfEM3g8=
+	bh=sedTFGR0UIxMIY6PBuudToOLvbWS3cx6h34dkkTHn1A=;
+	b=IzzaACIm0jFjQG2jJlHwJrS6ehgBxIYt94Vlf3zGwXTynGQRKxRJBByd6+IkSu48/jfBqO
+	clME7fBC56phVCucPvNZSglHVXRusqgGxutRh6tjUlheWpIz+uOh6yt/DxyfFNawLcX1oh
+	XwXxFYErfkpgKFfCaH+esRhH44KB1MM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhkDiB2V;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZXYUZUgh;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768924139; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768924162; a=rsa-sha256;
 	cv=none;
-	b=QhuacJajWl8JfieOE4bJPhHrwjUIolc1+fqtusc0k0Bw8rBUuOLbraWp2+kCk7nfAU7FGN
-	3l10T5ILCKRK4T4HZdC2rfXw1RH3dGbdtSXNuVXzKWs3d5zvQi5jUa5y+fMUv7gx1p7zLE
-	HHNC51Pc8NXCmUcAa2dcr6pjQrKczBI=
+	b=n8VR6P0Bs8+dHPqdSvf36ydKai8mZu/lplqWEGgNZ8QnFChsunrR8pK9zpZB+FUpq/se+p
+	ln2Ffix0J9HGIXJcATGrLEF5aDlobgeOhXuVI66GozDemP6jfMyHaNYqRefhAZXX1mqbX+
+	quCHxoqk8k5ickhOaO5m5WiHJSJOX4o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 680C9600CB;
-	Tue, 20 Jan 2026 15:48:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B08C16AAE;
-	Tue, 20 Jan 2026 15:48:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4DF084436E;
+	Tue, 20 Jan 2026 15:49:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645B5C19422;
+	Tue, 20 Jan 2026 15:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768924138;
-	bh=Sibm+aZ98LIkL5kbuZa070QHCHMd8TMrKU2FEeENzvI=;
+	s=k20201202; t=1768924161;
+	bh=Y/AbB7KgatkBwFOqIeCh37bW6yqZKTt6YIephjTthpE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GhkDiB2Vp1VQB8+q+3lgV8ww3kKRKo+NC2AOuTXsRDcK8rLtDeAOOvRR25qyOkbDJ
-	 A15QFxATiZSqYrRwpleFYkpRYLHyPxiuJ0ALEULuUJHTcS7GR2Sf0CBPSCCtrVbTPo
-	 GnLK5XOXviPq0Sdv++gz07BSE0UjK6kkHVQPh3AWLBoUMa2vtJ05mFEHn7Fttk2hUm
-	 0aGYilay/5fTAwUq70c0ukjadN/sh5lIOaHib2CP6gc/G+dEu3I5kzIY+0Pg4kaITt
-	 Nt2C9z4eMdxr/n+/INAP0hq5Im5Otbn83ml2ISTrZpUR2hmIW54KqlowRHJdPy9z99
-	 YfikI/LkK4b6g==
+	b=ZXYUZUghgW6RMboSc06ViBc7jvzZ9CGg4hucUHqCbYExeJE0/Hvu3Tk/xY3EewL8h
+	 75PVDNC07Yw5qzGqyTG0NRtfrBvsWL7L7lugWh1Ewg+Rz7ep8WZG+qHc55M+edrcM2
+	 5KZd1kW90br4dzAtum9kF3SgS4tDj8zqGQkmhDix3v37vHRymhdgIY8ZI3lJlxxYER
+	 HskWglueLRn36V8/lAsy2MJhJxi+WrU8Omo5KHKgXWjfP/a6LxY4Y0CZOSoe2hVgia
+	 NIaj3FaQEv8+Z/tZD0P/bLVFMn1AbdKmvvPjukxiJnE4LhckWdiaSc9TXVn0Ng2vU5
+	 PWDIltP8LEeqw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
@@ -71,25 +71,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
  Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
   linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
   linux-mm@kvack.org
-Subject: Re: [PATCH 1/6] kho/abi: luo: make generated documentation more
+Subject: Re: [PATCH 2/6] kho/abi: memfd: make generated documentation more
  coherent
-In-Reply-To: <20260105165839.285270-2-rppt@kernel.org> (Mike Rapoport's
-	message of "Mon, 5 Jan 2026 18:58:34 +0200")
+In-Reply-To: <20260105165839.285270-3-rppt@kernel.org> (Mike Rapoport's
+	message of "Mon, 5 Jan 2026 18:58:35 +0200")
 References: <20260105165839.285270-1-rppt@kernel.org>
-	<20260105165839.285270-2-rppt@kernel.org>
-Date: Tue, 20 Jan 2026 15:48:54 +0000
-Message-ID: <2vxzikcwe13t.fsf@kernel.org>
+	<20260105165839.285270-3-rppt@kernel.org>
+Date: Tue, 20 Jan 2026 15:49:18 +0000
+Message-ID: <2vxzecnke135.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 66BDC4000D
-X-Stat-Signature: h5gc9dxh7ss4pqjsxf9c8mbs5uko7es6
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768924139-13491
-X-HE-Meta: U2FsdGVkX193WpPvCluioWP5K18prntp2gSNt/GZ/jxpnc8y65LneRLNXpX2hbycM6W5Krwcsd3LcEDs7DUee5YpWraX1/8QZ7bvwNB30SO9nmHINubcK4bZ3N3K4tzDWlG6u36JzUsWqC7vyxicnASRyiOeBC6gMPMDmDMWC8TeugTc+VxAXf7X6qLu0cF5cqGy43D9FXShEnYM105GEKiDLCFn3KjLA92OttcOmmLpJ9RHYF7hB5goXlDUxASsbr3SBc9+bdGu0x/FajrhEY8NaUR2+X31KKX98oKMd/d8AQ4AXJCjD2kSTBSyMja4f07b4oOtOTOKvJ7ADPvsf1rZdzFn8EU7G/w/7bMZKNWRmlLDRARF8LgiO9Xdy+zAAYof3Zjwi/Vz+jUVoKOLinVgQjs0WvgsIp8/XSSsS39hcR4rutEoSkBGiPZDEQH9kk3sObPheU15I00tOcmov65TeUffEM8hR+N0sgWcU1ZF8tb3iVYUrFRYlWQoJa5782Qjy01OnQUI3w064MILahbDFZPugfSUMEv6geBdblxkVLaPjmtjPbHZjHppQSOrINl/YE+AJMENB7FWnOusvw1grqRQ24V6sZSOenhEBIJCPYTYVQZLts1BQhQJLwj1An3RHmJ6npkQZyU9KynJ342ayEZPtanjImgVnzkHjMDGrIsFoyVVJS3ALIusz4ZhD4biTeB4WlUnlTxxBivACkJ+0U2/FYaceGvgsOwsTbwmhy0MRjwYH7sqzqp+iWwbXdxrD9V5Ck/Spjf8taFKO6RTu57z85s7C3CcNcBwwnYo8SzyNXm6OVGaNLkYZUBuvjIkZbvZkbqNzSHXxjxdm5SQt5+LaJP0AkRkLb1jGtXHuiKDuybWNEC5fxQzrwhpZ4lhBqa2IDVim4UG7nCmZVIabcOH5hKztMcilJMzzYsGqbXi9fEsC/7+ybVtLoclQdawx1tghu34Gp+47ro
- NZPLj4zx
- sZAtOdtliGAmT4UtlICRBKKjzGeLjpfNbQPVu+Lc+cXmqVFYDM5zaCyzQZZJca0W3VE31mbrPCXv7u+0FeYOeS+A9jB4CZV4RN/IkmxroRe7BB5ruSBG4eVIhzfb2SKECku4uz1O3ztm5ypo8f6SsYzRgYTgg/RwLwlycl1zRa36+bc8BSJ/uQORHcMzLTY/SKWNm
+X-Stat-Signature: qe1g9z841scwwqeruc8mmd6ffbhu41mr
+X-Rspamd-Queue-Id: 95BD0C0006
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768924162-836314
+X-HE-Meta: U2FsdGVkX18Hm9tbMK+ZhHRCvyO8MCHNdZ0A6GIVS9R5B9ezWLabRqrfm51V05dgv1n4VYSupA+ASzcOj/DcwgIAlXO2foFFPGe7oNoh6kzcH6ibHUf1C802XXd5jlHHxrB8LGo5BdXECrPEJt5kXfks53wDFN5M25K+PomLc0T6ZeJgHVGhPh7oM0LZ6SJC3EjUFkVKmldpi4WaDpnzSRWX2KO6Y30qFUVTKGL6J6tkb2yq5ftFQI7F3JHdtHsYep/sbqlPYrHSMtcxQxHp9P2vOH7p49U+w1ub4JX7lJgmNFx5XUpnKrYpfM6jZY0PQ6Unupq5/1G0i0XC8o1FY4IrS7MRoRtBoJctew+Z/BV6hXdi1cebJwTTsDT8BC9PFF2pAPSFR2Bdzhl5nCL2exx4PM7b8Tkh36Nlal9hhGpQHgY9f+p4kDo7ujNL41/mrbOJn0sAAlSsbKXy3cfsX7b2/zPayrjNxDqRm9qMRyJguKy5H3EynrLo3zKN7GEKulklvgGvUnbo5H6q7mbWLpEilDOsEkXuiOFREfokoqgUhsRRD66iZ6ZOJ0sEAcJmcTJ+i3/wFDd9kA17oyG6+lGFjc8pKdEs1/HZB//yNjHEyOcFsgPKxXmpBPWhzr0EYQMKZGXFJzQByB4FpTLydzURviHBWRYk43RlsMWRXHvJ8RKxNNkV7pxZYYDeR0Mo4oWCtCHrY08l9Nia4HgpWwXcL/5br+jZKynN+Q+e6w9rFboNpzZEFj3vHC/uT9XvbcxUZKnVhixkjQ/UAGbjJnNBwZT7v+CPwclLq/r0qHM3QZSh2m5HZjqr8TYxaaYAD16iQENZ2O4CITWh8JFNIssxv4KU5TbcYO/bw3Shiug+0PfhXrJMjDSmWSWNvEB1SezsiLNjEy0BVkZjJsId93c6Dv13+SUfhMYRoMzZUzWiyJKhn+D5fNzFjGXLiD0gfoJGi6xE73LFcmlQ9De
+ GNZv6YjM
+ 2IGnC2Ku8EoW4gDswsyMD+Iorbnq7HWXsNKpqjJ2SsPr33Dab6HfRaeITb6b8ITxh/iS5GRleAShLQeg2YD8++rjGh0cJQGaugKgneR/ODOe5HP0tbaEfO+aGWfwf1E3D2GaC627A1wKQXNnEX8VuiOL+o3AKXBveQPB+I4NbMRaOm1jfQxyfIHDCtbNw4nfFqB1H
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,8 +102,9 @@ On Mon, Jan 05 2026, Mike Rapoport wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 >
-> LUO ABI description starts with "This header defines" which is fine in
-> the header but reads weird in the generated html documentation.
+> memfd preservation ABI description starts with "This header defines"
+> which is fine in the header but reads weird in the generated html
+> documentation.
 >
 > Update it to make the generated documentation coherent.
 >
