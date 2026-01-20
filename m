@@ -4,241 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5FF0D2ED0F
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 08:22:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 412FAD2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 08:36:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1F336B0381; Tue, 20 Jan 2026 03:22:05 -0500 (EST)
+	id 8605C6B0383; Tue, 20 Jan 2026 03:36:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF72E6B0382; Tue, 20 Jan 2026 03:22:05 -0500 (EST)
+	id 80E0C6B0384; Tue, 20 Jan 2026 03:36:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C79F96B0383; Tue, 20 Jan 2026 03:22:05 -0500 (EST)
+	id 741796B0385; Tue, 20 Jan 2026 03:36:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B2D356B0381
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 03:22:05 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 068E716045A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:22:05 +0000 (UTC)
-X-FDA: 84351649410.03.6BDD2FF
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7C0EC40003
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:22:01 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 63D8B6B0383
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 03:36:31 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A7078BA46
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:36:31 +0000 (UTC)
+X-FDA: 84351685782.17.F958C28
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B3AFE40009
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:36:27 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=RLn5eY98;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Yw0WkX8Q;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf07.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768897321;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J9zB9Dhh;
+	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768898189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BfYHl3Or6iuRiNrO+FsjAWkAcwtYBHxt/Yf++f8NuEw=;
-	b=V/Y8Vs8FRhOPU3F2A0LAmjQ4P3TkDgCjQbEvblaoItI8ozikn3jLt4v9laEOSEDSTGs3sj
-	PRSsQHledBsKejBm3bdqboVBrVkpD1SKkvZTDVPF0z8WnuY7Nv1yDvJXE55JoMKoZKGxw0
-	dQZSm/zaqdtGRTRPBbVa8FVFzKB/JVE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768897321; a=rsa-sha256;
-	cv=pass;
-	b=nk1RwSM9yy8Vtmd1/YRY7KxZKv6DipV2Ca080tEeNxlvMI25AbtBLGqYpdP+35ne56LlUX
-	HN8wpi/CbJb51lhoxCdLOpNqBaVW/J3Us0DpBF3c+A4WcqOp6uxLdRBuE27V9R1mdIhdqE
-	lWCrkAye2O4XCpbCz8Dw3wg7V1Cxb34=
-ARC-Authentication-Results: i=2;
+	bh=1lkVn59AgzHG41rfxCcQcwV1gp3xTqlToekIxDgd/Iw=;
+	b=R3zxeK6za3Qa1COfpWufEnjgN7cDyNVhBDPCNyRBsoD4R4sv9ZO1162MroxCE70lOAUV1X
+	4ilfpPiMRmjbXiikE6KwD99SKDRLDhUm+CErCPR+7fPOtNmhhgh+MicssF+HQcb2vyXz+X
+	aR51zEkVIuGUH2zH1KdWLhPsRaihZEA=
+ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=RLn5eY98;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Yw0WkX8Q;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf07.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K7v8rb3430913;
-	Tue, 20 Jan 2026 08:21:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=BfYHl3Or6iuRiNrO+F
-	sjAWkAcwtYBHxt/Yf++f8NuEw=; b=RLn5eY98j+Yh/fLMQMHlKRQAwLL2Q78YgT
-	q+svgyD1lbDTLB6KOVwujX9UFxJB/MH71VNZl9VS7Jv5F4U7SkSPbCmBZa0lkhgd
-	SPsEeXLmjs844a3luox3tcrKdkxyAQe7ydDH6zAgJTUvlc3I6vBDgqtTp8YhYJSD
-	cDD5MwYlYY17sJxViIGCTrHBnf0+kGwQgki82K3kYJLyZV4VvwMYcIpIrGPn2RLX
-	PsqXHYhMUrdahneJovu7gJWO7F2/yTcCiLs9RFN2flD7y/utefk1/VhsA+KCe3cb
-	HcHaQSQJRuqAgYVd4Cq06DLq5gouP7knhwl8Ipsv15JWo8Ei81RA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br2a5k5hv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Jan 2026 08:21:33 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60K6JdxO032191;
-	Tue, 20 Jan 2026 08:21:32 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010049.outbound.protection.outlook.com [52.101.61.49])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4br0vd2dv3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Jan 2026 08:21:32 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eGpW0T3tCmBDYZe/Ibj1meN3Qo4QEHRkkDDQQFdNynJ3ZC5SoTVl9jYQpoNinXCez/bTkfu5wJB9yfYI/AWvhA/tJinpzbdPQXQsy8GlILDgeozA0W2W28mluKRVuj+qVIrJKIpqfzJy2iBlYoW675XJ1tUZeu1XifYyEjp4pbDBYQogh78zSsBOrQhTjL+6Fw/gaBiSQjFQv4Crp0WjnA7jnD79LtYZ9kfS8dLjCzDfU6qOazyNuDfp7Hs40nLqQ0Ag/NQOo0tFfP2MF41apC82c2BlGepwEy5NL/V97It4D3xHmQfLEHb0ItJ92EmaB8Kft5ivJ+BjJiK04cAKqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BfYHl3Or6iuRiNrO+FsjAWkAcwtYBHxt/Yf++f8NuEw=;
- b=HfbDt4e5utsFdFLKThDBdaxTCJhHjDJ/9Ht0BmVKRBvkQZu/vpVXcKv1DJmhgzeQL41E3KXGnPflIVbsHc+MphkW3KaxuVnbl3KBGdMfSmdGs/K9xgbk6OQljLKSfO1213yIDn27Z2hn+6GEN9gWjYb+qPGP7RzeFHJTSrGe/6ne4Dwq39Lu995HmLu1Fk3l3XK5ghjorM2Lx/t+72a2ivE3tHZL58I0GWANdgcrDGKpdVLTRkRXxYMsEKH/TrjOXJEKYOgBOP5j3MBJfDEAXXFTdeMkoYMu/zXvKl+QW6dSVukk4BVQhAHs607tItNQbmqws7jxaIOrqRahBaNlTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BfYHl3Or6iuRiNrO+FsjAWkAcwtYBHxt/Yf++f8NuEw=;
- b=Yw0WkX8Qn3/L1myQqZxvDeLCtpPXPPNPuOBS1+K0m9vxsedSkyp3l6ZO/RS69ER7+8a6VSp3YjdSoWzA6ofcSwz756RrQkVhwudUu/Q0m1KcYaQrT7qr3KQiZMAUmZ+Bao0plcpMkhRQcSjocJk2RRk/ce2npQgG6V0OPn/ILpA=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by CH2PR10MB4343.namprd10.prod.outlook.com (2603:10b6:610:a9::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.11; Tue, 20 Jan
- 2026 08:21:29 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
- 08:21:29 +0000
-Date: Tue, 20 Jan 2026 17:21:19 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
-        roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-        muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
-        ziy@nvidia.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
-        kamalesh.babulal@oracle.com, axelrasmussen@google.com,
-        yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com,
-        mkoutny@suse.com, akpm@linux-foundation.org,
-        hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
-        lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 24/30] mm: memcontrol: prepare for reparenting LRU
- pages for lruvec lock
-Message-ID: <aW86_5SOdtQQnVr7@hyeyoo>
-References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
- <0252f9acc29d4b1e9b8252dc003aff065c8ac1f6.1768389889.git.zhengqi.arch@bytedance.com>
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J9zB9Dhh;
+	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768898189; a=rsa-sha256;
+	cv=none;
+	b=6G6WF4F0+8XhbToDiMaoy3XRU5dUtraPszIQkajcbVEgx2j7kXovQ7CBHnIY0qBlCj9CPZ
+	L3vPjqbUui+wmm717i8yaTRl4PiqcQCMflVnUyS74QBxLKUAZgjw0oyusdHrUpm+UrZvFq
+	s+qHe7dtx4m6S7Oj2ak08+5OJ4/pXQM=
+Date: Tue, 20 Jan 2026 16:36:15 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768898185;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1lkVn59AgzHG41rfxCcQcwV1gp3xTqlToekIxDgd/Iw=;
+	b=J9zB9DhhUzdt+lyzMLvszXOIyc2O+nJbkjXAPF+9kplfQRYb3b0AdG2zwqsIa9Tc7oedl/
+	xly2q2eVVCxZp+KuiRa91VtU8un+owcrglfFW355Jdu0yaA62lQp3MTqpXT17iRik49aTf
+	rhZuKzl/oUxYHs0h0XBPgo7dHwjgKuE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v3 10/21] slab: remove cpu (partial) slabs usage from
+ allocation paths
+Message-ID: <g73gai6ztmaxrigoqwvstyeatdsb6wjunli6gbbhvy7fxqomzv@la3452pj5na4>
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-10-5595cb000772@suse.cz>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0252f9acc29d4b1e9b8252dc003aff065c8ac1f6.1768389889.git.zhengqi.arch@bytedance.com>
-X-ClientProxiedBy: SE2P216CA0153.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c1::9) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CH2PR10MB4343:EE_
-X-MS-Office365-Filtering-Correlation-Id: cebc0681-ea37-4d38-2d4c-08de57fce97c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZNYKHHxEGlAEN/sueFx6LzVOZyhNf3+xPkTbnj1T/0rgxWcnribOekSedb06?=
- =?us-ascii?Q?e/fRxCaJ+jZUSdHLYBmOjnqYC/GPvengMnJwK2Pb6Dw/iDvSD62B+bpbhVFa?=
- =?us-ascii?Q?Wk2/gg4cT+YFgzFVHKaugxzHmQHQTT1/g2zb25m7YgNOXWRF4/oz6FDyHTTd?=
- =?us-ascii?Q?MQQW14ux3+Zd5slt39VoLln+xytGOEOr6Zt04MlwjaHGq9jumkPspiX2gF1U?=
- =?us-ascii?Q?/znEq+9FICLVG9FURlCmd+nR3prxbzXsRJNi+CISGaC/apPtD3rEYg50xt3M?=
- =?us-ascii?Q?+SwKC5ospyeGWU0Sr0HsZkfbYgjRrUdydsbN6vdPUKUvGUwEoR7fJnZBfmy/?=
- =?us-ascii?Q?bw5NMGIDf21+5nci1Rd1Nd9d4OxbdqwmhO0dVF66JPGQoMcm1+Vum7L41Btw?=
- =?us-ascii?Q?TjFA+9e/9rh2F1dxROSgWyTEI1RWeZg8ZplyGXTs5YGIfDROOA8GxEHCrMJ5?=
- =?us-ascii?Q?iGBgaLDwLB2kMl9P8bmFss2RNZZ7CDT9aRwcQ5NvR4Fu1gE5LG3n2LvhYTUv?=
- =?us-ascii?Q?vEhj4to9tjMTSeXLI2YMAOIl3pB7uCZWnR4mr1eNnXqvpO5Nvtmv3Do7BfB7?=
- =?us-ascii?Q?gdhqzbBYUKnla5XWUS75jRAYjaOcs3Lg/ynsZ6Q7k25V+7NKheGskOcKrpnV?=
- =?us-ascii?Q?xyTup8e7WTOQWKo3tPncM8SDjOl+sY0PEqqFLtcV5iBQiOTZaEDH2qQMIxHu?=
- =?us-ascii?Q?neoYcfz0HpvOsBixU/zNq3BpprgfzXYAktcmk0MVizIlPpAVkjcyYXdICsgl?=
- =?us-ascii?Q?fTNT7J1zsledh8MNrHqhVYo0WpUFSDQcAsSmQ6t3GjZTerE9gjmhl+DLmmkY?=
- =?us-ascii?Q?hjB/KRHtwvqA5jAkFJp+7IYES8RSjOBLHVh2r97Ug3hDJriqBeGUDgjM9NyR?=
- =?us-ascii?Q?dIxsguPV/F6FrR8J8OkbBIDZOC5DH2XQLgRX3t1HxzRIdlLNWbTljCGE/z+V?=
- =?us-ascii?Q?ssrPUz/s5C+ywoRvg0y5+Pu0cI7JRB/wv8ylvV0zO60kDN//aDelGpkR4wIb?=
- =?us-ascii?Q?DkZEI2BJFehBOZYF2KjGkX+dYKPzLYkuUW8kTWAROuuSD7H1nv3vo8CqHhdI?=
- =?us-ascii?Q?iJ5LAl8tGq6jJrLiGB86Pclidjbd3M2OG2DmqoCDGnVglTYQqsUvfcK9C8Qp?=
- =?us-ascii?Q?tdEGayMDAKwZ2sEoKE+x9B1fGS82m5g8i8MnlipXgAm//C9jB/+/fSvgZ8L4?=
- =?us-ascii?Q?b+8oak3bGgvJvDbS6pVBcEjfuod+ZpQ3cP5Oj5EZXlE298rK7Zo48T8jEhaK?=
- =?us-ascii?Q?JgsROicMwVoyv5+DvY0EB5m4/PCqy/dRe5UBo1oR8PEyZQ7DGckFntsiGYPZ?=
- =?us-ascii?Q?NmsL4tZVie581K/iAD7xKx+6gcqCOWFhjzZpwD3o8UVw50UMT4H4vyLigVWa?=
- =?us-ascii?Q?wWIiqe0y9sZIzUJTZTutPEG1CNWNMvFxmJCkMOheq4VzWkhK+ju7fUZT4/Db?=
- =?us-ascii?Q?jzJoi8crjbityVHS2E5DgIe5LQvx3M6QUB+jaCNEwm/a1arMB4dNUzifLh29?=
- =?us-ascii?Q?qIzCEF4VUWost9/JW9OCT1tSvHLyu/vak7+gHa3tPHZ3IAYi0VV5ia+IAf96?=
- =?us-ascii?Q?tGiftTwb2fw2wfF7ODc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?M1bAP1VDg8DIhInHYTNMf35Yiz0qixe0GIx3ia/6Ni7HOBT7ijN0Xdr+gUIh?=
- =?us-ascii?Q?t/W8kyPFZPMKCGO2VlgiiW0UWY41rmZUBpbEwnodAUW+H4UZ4jXkoHVBXKn3?=
- =?us-ascii?Q?mXb0niOXsRa9g8mBPqLzGlKnZnlZdTimqjfbDrGvqhVwv9JUsipfn7kZeuTh?=
- =?us-ascii?Q?FREA7b/XdOGh3Tj0IROsQg3mr/BfiFZnULDVzLn+1NptGZTZb7bFHPDlC1CS?=
- =?us-ascii?Q?yFJdap1Ux50RxigIH7BJKCVEShe+A+kAbrGoLL1/46WP426VKH6BrsgEZ7gF?=
- =?us-ascii?Q?WTpmZDwCrsxdutfwHo8MyBMJ3cubEPoWtrKX3i9oBrcBAeJFyRqvZhamNs1y?=
- =?us-ascii?Q?W56Obx5jQhDVg5OwG3iYoEt2eILk4W5PdNduOtGzz+ru9v/sr1Ss5pxDBaGR?=
- =?us-ascii?Q?dVRN3gMz2V+Fdrffun/JN+cHYYQzZyvBrkOtMrNvtuFNoHbqmp5KkiWnqf2f?=
- =?us-ascii?Q?rQFQoCconh742aW4PVyTK/rd9twzH2aQCJ63QKUz7uj/UDcwt0cyPsPE9Zmd?=
- =?us-ascii?Q?j1hhIc9b/2aaVJH9wCtRg2yTGJCON51GrIVVEzpA5QhBeMHZg9bH3p70u6ja?=
- =?us-ascii?Q?brr78TT2MtgytAOYqAf1UZH5wHQDwtkjN/StQeBQaUH+DZ4CnLbvyq7+RFbn?=
- =?us-ascii?Q?ekh8tf8I4XutytjdI0FEzyFGk1ojgu6BvJNF0gM5GggzYgl7cFtiMW3h3TJ7?=
- =?us-ascii?Q?xTrkF48hDKCPw2QpyuuRS9z4xvsMeKIpSuFgcPclg1h6tiT/WmwLDIqRbdC9?=
- =?us-ascii?Q?fjSp0zqkLEFH/KuH7DSGjb5lp6Ku1GqroImJs0Z8nQYtAkbLdQ+3zDOGpuUC?=
- =?us-ascii?Q?aegbO017QAcSTwiLk/i4lx5KORoMRJZWHlIh8ZTvZEpNm16E4eSmFpzAg8bM?=
- =?us-ascii?Q?0R1zGf/xtvkXYgxGRsG5pTlSiDTTI9giZz+oevMwXHiSgwtktOo0GzPlq9Qi?=
- =?us-ascii?Q?QaNyw1QayZmWI/1O2grrCNw3+RoVq06yAZDMbVGMCivqDnaIWuQdUjEdUvqK?=
- =?us-ascii?Q?IL070/IEU5mBZeeuzIR4/HdIUFyN974tOb6ssTsZrJgwl6Ou3KW3DzUravT4?=
- =?us-ascii?Q?AQ/tYlssGNYK0c1UkabouwBAtHuZvicVxXzyU6MmrlxJ1mGG+lWXgChzgkF+?=
- =?us-ascii?Q?ss7Mido/QAnMSeU7Yxa0AZT8mBpNzZqFc9Y6CaGrp4XrvpjekGCTfniL+Lhb?=
- =?us-ascii?Q?U+Jfqm3d4gr6SjRdfe70ZRw0VBj1KYlqRBNC8K0PpQ2+aVsyakGuXRqwHIY/?=
- =?us-ascii?Q?EsfXQlWVHnVBx3wj72Fww5/gBsSyII3xGkBdtcxAy3kbqMy2t3UF5gsWrqPP?=
- =?us-ascii?Q?WgHQ7eclcBFNLVD2Hw1sxIJ9czZx5FRWengpxxI4jwyu8IHxNa2p9+i3loP/?=
- =?us-ascii?Q?9yhjFKSd3ob491Bvi0kn/Ejq6+q5N7Nxyiw5abygn3OT2fVywOz1dDVIqOrv?=
- =?us-ascii?Q?KSL4lbJEfnI24Q6tXAjxk7P/OUvPX/ScjPbDzEF4RIld0s2p/KTiAev1b+Cr?=
- =?us-ascii?Q?UReC377+j7iU8AKRsQvi2+GpQ54q8tUhgX/+skEpkPj8DMNq6nXt8Wfl4nox?=
- =?us-ascii?Q?LAXId8LBXhi1TB26EK1yyqQ4LUzPc9lQMdpDOBftmmMMBkDVjOGG6sNPKPPc?=
- =?us-ascii?Q?7vdRb8Ofec89yEQIJcUgNySyuNR4wuZAeAnvKyIrl7fbBIY1kFMJ5u4VHrhE?=
- =?us-ascii?Q?+RVX/ktrABTDMmfxJ9MPrURmhyEeSuUOX19AU2t9XVqCtvFopJ/REpxRrXSa?=
- =?us-ascii?Q?h+03rB6Sow=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	XcjmrYCG8snNl3HUT4g9ubLRIq8yRE5DMP3Z+TpTsBozAspVKJyMWYqBlCGErva6/9IX/xl56WExcoTadDGyQYN7FOhlFA4dSVe88zGLFnOdmOESeD9xpoJ6tiXmxcTrpTST3IZdpWKCUrvkIxL6m+RAJy+0nt4Cu3xsgo6hY1scy5a4KXZpyfX1obE2awjFzUBOiLNnHrRhUOtg36ogqLKBRdoetMuE7HE12gJH+RDfLuYCgocJnQzCNuSrcMbEwyQAoRORne8MzLaI3goIkns3vXdm5TNWZTLU/w8rQvQQ7YSLSJjRHwGispIcw9/z3TbYxAaKzLtFDfxzJ/nj0IOaXfbdnDe1qutXLWcKLSoWmL6AmBP1FJrH7r/52DPbkLHK548ARpU589C+n4KOVEhNCytADDL/D9yBQaZESifXMwfv0PbP3WHAEJR5ltY4D54h5AVV7dpvL8LISgisyYmFv0EbCZ15LWrf4X3ET3Q1zfrqW/4y1L4Q16h/dFPlwQmto9QrpbItTQ6VtngrOhg0pDQ9BhqFBQrWGDoo9Jqo/FfJYedB2Ed32wzqHBBBATUrxk/1Y1KskD/uO+dWe/SgYKEkOXM5kgz5Fprka+o=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cebc0681-ea37-4d38-2d4c-08de57fce97c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 08:21:29.7277
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l/8YBRGf0A6FPdOY5GyFfxCQgSJj17OK7+aBcu6qAkt7SHaWV9FyOXHOWurRxJ2z7Ab7guDuUBbZIE4OWBMjXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4343
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-20_02,2026-01-19_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 adultscore=0
- spamscore=0 phishscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601200068
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA2OSBTYWx0ZWRfX6cGjk665MKov
- pylElzjtplYWjX9tZB6jp0/UOeo9ZIppnKAt0Aj13jMv1sRwxe/FVeSzcF2yXw5juzZNiOMhr25
- I4TZS9iLX/th0NWg0Cz7YkjG71HQ5Owia7PjwKgljAoyRMo5fpP9daCEDZEfoB32x9yFyFw3Kr5
- CD10a9+XQAMUv1H75B2q26EwigNNoaKjOZgoSQgsosiHQNcSb2OBwquyqxCcGGrA1MCXnU9WGTN
- TutALSPAS2V11BL/ZMkdReEfCDyWylPz6P4xI47bsXb9QlpveRi5FgBw9H7+j8JicuPHjCQBLzd
- tBNqbkNogyJWULIM01lRycuTtkrQyUbR8+VC63qL+qRGfPu378TWA4jHEhLfuqegdrp304QiDB4
- YqJAhwWqF7aWwSksIcX9fvKe9xEDGp1flW2Fosqr+WDX9B5fHFbwBpV/+acSAtXpUhaxBlJJHJ5
- cUv73I5T/OgOCEpDPtUySeGvwGtrVIoAtYyRBpzg=
-X-Proofpoint-GUID: 8QtRc0FT0nOmivcni2smPMxY2dmpFZaf
-X-Authority-Analysis: v=2.4 cv=XK49iAhE c=1 sm=1 tr=0 ts=696f3b0d b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=968KyxNXAAAA:8 a=ufHFDILaAAAA:8 a=vnbn0GdLyxwCu2Ke3TIA:9 a=CjuIK1q_8ugA:10
- a=ZmIg1sZ3JBWsdXgziEIF:22 cc=ntf awl=host:13654
-X-Proofpoint-ORIG-GUID: 8QtRc0FT0nOmivcni2smPMxY2dmpFZaf
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7C0EC40003
+In-Reply-To: <20260116-sheaves-for-all-v3-10-5595cb000772@suse.cz>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: B3AFE40009
+X-Stat-Signature: w6xrqsn8gj19kuwmjsrh63ju1nf49uoq
 X-Rspam-User: 
-X-Stat-Signature: pktgpsh5pza96u16swrhn54tapmnpxus
-X-HE-Tag: 1768897321-422757
-X-HE-Meta: U2FsdGVkX18qevq2GLjHUpg2qHbE/c8vTVqF8+UbZrNaSMfTH6Wd65j5r1Rg6pGWJKMb4SQ9X7iRqvnF7Equzsdj1raL20hIEMZz3YV9ah1ZY7VBFkWaYy6T/wIURZuhb4c/XyYAMWk4uF1li5diAlrSW0Tl/TTF0eYZ/VQU0DyHk+dXXQ/XjX96+oHpk7lKZzb7FXRg/HMgrgJqAQaNcrhi0C6D3GeT4JQIbczu5/w9DBsBW6u4P8dWWHgBZg5JaEgRHU/YMb78++VPJd02TjJXOK6zHKCMQHBbGJk0FbLTiOJbfBSFICLWwCSpzT24M/mxDB2znJFaFzbOvw6yE4pi6l7BMyBMe42+1tWiWecjxFOKzZLZWHevAxqw+YO2UWHpnn/c3p1YzvyW26pPtSkHuUP0MeDyAM2IpFvqFDcc6w3wHpvxdsyxd8kuYp+WjHJa1Nnm8DW7f+ROCfFF0ELqqmThazOkEgGnXPyRyG+NrMJ8ULp3bUJvqSr8i9i5YuS4ftBRnEhv6+wBeba2pLuVAFHj+oprb+Du3eaV1Zo+llgr/VvSOZKQrll8HKfXNJzDmMix6B+dTns5MJ5aziT/ksjw29ANLbQLURNZwRcJYbF4A7ziYK+b8Y1hqxVTuCoTfJT+9RfONvWgcYjxOQcLFKbATiT/AD4N9IzDJ6yYxZbPoSx9DXbCTLqYUFQwUKp96xTloLSeXp8x5HKMujcg/4w7OiWqiHo1H9uPYytf18BpFcSteptEwTfwqFiWpyuQo7bWnTOyDL5F58CHHLfFrUZzEp+ig224tCHYng1rWDIWI1HtR+gAiC8XxDKiDb4Idcz0oJQ2YZenw56VY+BTixQzLTERQCR9aL7Q5Cuu4dacw6J8sctl/vf3C7QkBauHUhimBOS5otMg/j3VeZIpy5WAvfajRrvmS5wlH16uAcFallwJPOds7k7KfVBhMrm+UUM/HnIzUzEO4GR
- bVqYmDDc
- khLdXgQkunkuQa3ji2xYy4bprvaMB9jTuvRbFzAvOxh+1mll1wphRsBuW17kjZBFqeEaBwCgY/rovFLyq99nvpRDKV97Q/6bb+OdlObBxqh+jLdilZBZsDqaHdCzSrUx0vxXwpv1wTsDN7qZD15q5MCF89pvmfClTJeAzp0awxrQfEogAwF+Sv7FHa383oFkNeF2FaRMU44saaP7k0qg55VSGj+SDdwUPLiMHUCMsx2r1dG12BrKIGKTUTKlMYpziDFHioEjsrXXOz2cNcMxi8lDa09RfNewtbqESRzLZQ2BYh1OzihjyoE/gEHQkVlAOWe4Q/J1TxVPd0z4Ltq6j1tG/kxdjz9/+gPgguDWE4mAXLLox4TO/AAl31pKLP4XemtXm5mspuEssmxUO7Yc6pSSJvDeMoKImgTnluOaOWehj5SJPSy1EkgSyDOLfAsgvtbU1UKyD1gQ+z4DvMHKkvbhNPtM2dO/4ZnkbxJdriTD/gwKKY1IjkVF11Cf53TjJl75nLp52twgiIJYuXUS48RcxRDyGI/Q3ezggOfXKBX6ZKVn/VRPfWDH/fPql3lpS/MgQ/QCM39yG0Cx9Jp9h/NFSFCHeGzfAvIpuv1u5JVz7B0gSOO9mD2PDTzsjemQqPpMHh6b005eZeSQ0uLSVZ/z8eiRNOeEikh03tXvcXgutCQEInRHk1UmnDlRVIXqpd9nsGQ4FlkhnBCI=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768898187-851663
+X-HE-Meta: U2FsdGVkX188zZLXbtrYS+bCpTWVo0/5gbIojggT7CGCf47OICYD9LndP/krVYgT90H1PjHOUyo2LRbx0ugrcarbAx4y+UpAcklbpqJru63MGATDwUoxmNYrsQ6Yk+MzwKtcdCW1H1RNW4e8/8CRGondNYTz5EyVzPSrzOf6brozc+rXVDH2saA3A6Bps2nRMoubMSwreZ30G1DxTKy56DlHNTE1Kc67SSujn4uTqqEOp5X40xXQbhep/5zFM/NFhnGZRsvZUNG8yy1kSFRego4x779atIY/YMOXS1C36B41eyIlWMqLiib78JOHkCRcrBqmlyAviDgGmxOIuF+Tm+A0sjnOHz/BH1jIOyGtd8ebYvFx/1hDsWGQcz2Xqbur5ANj54zjoRyM5J+03MINPrQrvmY2tJT6t0LiStmPjg3M/Wlzxvmy0kfGStzEJ8sT/4fVsAsJzrw0E6VY3BWcbh4bT2Lv360LeI9d8ifQ+l7AOJbiTyjg5APWUX55Vy85EQujr8Syii2awcZhssOU3Z2hEceJLr3ZA/8T5d2BuB8m8vxD5tzBECpXdHeEQgwaQQyfby8qspSSlfntR4flY3qKXKOo8iiudxWuz3gZwtijLHyEnadxF18oYoy8k4nh92dMULJ+JS0U6t4S8DBI9e2tcXHHxdio/n4rsOv1MJcEaSB0tVFXNKKpxyv80EvLszKF+nRsbvLQ6xRA0ziNeDPpw5EhYK4RVp1H/JcY/Y9R3gVglwSl3iKewwSoYoYjvw7VkbMTn5kJ13Wd1vMQaQvARtUfD83BfRhuALtlHsspDTs49uvCVDshe0WaLJPckBqwnkdxBmdyJMuDD4XNDOsb68sH6m8eT6VVTPRP3XwWM4OCi5IEGg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -247,116 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 07:32:51PM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
+On Fri, Jan 16, 2026 at 03:40:30PM +0100, Vlastimil Babka wrote:
+> We now rely on sheaves as the percpu caching layer and can refill them
+> directly from partial or newly allocated slabs. Start removing the cpu
+> (partial) slabs code, first from allocation paths.
 > 
-> The following diagram illustrates how to ensure the safety of the folio
-> lruvec lock when LRU folios undergo reparenting.
+> This means that any allocation not satisfied from percpu sheaves will
+> end up in ___slab_alloc(), where we remove the usage of cpu (partial)
+> slabs, so it will only perform get_partial() or new_slab(). In the
+> latter case we reuse alloc_from_new_slab() (when we don't use
+> the debug/tiny alloc_single_from_new_slab() variant).
 > 
-> In the folio_lruvec_lock(folio) function:
-> ```
->     rcu_read_lock();
-> retry:
->     lruvec = folio_lruvec(folio);
->     /* There is a possibility of folio reparenting at this point. */
->     spin_lock(&lruvec->lru_lock);
->     if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
->         /*
->          * The wrong lruvec lock was acquired, and a retry is required.
->          * This is because the folio resides on the parent memcg lruvec
->          * list.
->          */
->         spin_unlock(&lruvec->lru_lock);
->         goto retry;
->     }
+> In get_partial_node() we used to return a slab for freezing as the cpu
+> slab and to refill the partial slab. Now we only want to return a single
+> object and leave the slab on the list (unless it became full). We can't
+> simply reuse alloc_single_from_partial() as that assumes freeing uses
+> free_to_partial_list(). Instead we need to use __slab_update_freelist()
+> to work properly against a racing __slab_free().
 > 
->     /* Reaching here indicates that folio_memcg() is stable. */
-> ```
+> The rest of the changes is removing functions that no longer have any
+> callers.
 > 
-> In the memcg_reparent_objcgs(memcg) function:
-> ```
->     spin_lock(&lruvec->lru_lock);
->     spin_lock(&lruvec_parent->lru_lock);
->     /* Transfer folios from the lruvec list to the parent's. */
->     spin_unlock(&lruvec_parent->lru_lock);
->     spin_unlock(&lruvec->lru_lock);
-> ```
-> 
-> After acquiring the lruvec lock, it is necessary to verify whether
-> the folio has been reparented. If reparenting has occurred, the new
-> lruvec lock must be reacquired. During the LRU folio reparenting
-> process, the lruvec lock will also be acquired (this will be
-> implemented in a subsequent patch). Therefore, folio_memcg() remains
-> unchanged while the lruvec lock is held.
-> 
-> Given that lruvec_memcg(lruvec) is always equal to folio_memcg(folio)
-> after the lruvec lock is acquired, the lruvec_memcg_debug() check is
-> redundant. Hence, it is removed.
-> 
-> This patch serves as a preparation for the reparenting of LRU folios.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > ---
->  include/linux/memcontrol.h | 45 +++++++++++++++++++----------
->  include/linux/swap.h       |  1 +
->  mm/compaction.c            | 29 +++++++++++++++----
->  mm/memcontrol.c            | 59 +++++++++++++++++++++-----------------
->  mm/swap.c                  |  4 +++
->  5 files changed, 91 insertions(+), 47 deletions(-)
+>  mm/slub.c | 612 ++++++++------------------------------------------------------
+>  1 file changed, 79 insertions(+), 533 deletions(-)
 > 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 4b6f20dc694ba..26c3c0e375f58 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -742,7 +742,15 @@ static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
->   * folio_lruvec - return lruvec for isolating/putting an LRU folio
->   * @folio: Pointer to the folio.
->   *
-> - * This function relies on folio->mem_cgroup being stable.
-> + * Call with rcu_read_lock() held to ensure the lifetime of the returned lruvec.
-> + * Note that this alone will NOT guarantee the stability of the folio->lruvec
-> + * association; the folio can be reparented to an ancestor if this races with
-> + * cgroup deletion.
-> + *
-> + * Use folio_lruvec_lock() to ensure both lifetime and stability of the binding.
-> + * Once a lruvec is locked, folio_lruvec() can be called on other folios, and
-> + * their binding is stable if the returned lruvec matches the one the caller has
-> + * locked. Useful for lock batching.
->   */
->  static inline struct lruvec *folio_lruvec(struct folio *folio)
->  {
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 548e67dbf2386..a1573600d4188 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> diff --git a/mm/swap.c b/mm/swap.c
-> index cb1148a92d8ec..7e53479ca1732 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -284,9 +286,11 @@ void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
->  		}
->  
->  		spin_unlock_irq(&lruvec->lru_lock);
-> +		rcu_read_unlock();
->  		lruvec = parent_lruvec(lruvec);
 
-It looks bit weird to call parent_lruvec(lruvec) outside RCU read lock
-because the reason why it holds RCU read lock is to prevent release of
-memory cgroup and its lruvec.
-
-I guess this isn't broken (for now) because all callers of
-lru_note_cost_unlock_irq() are holding a reference to the memcg?
-
->  		if (!lruvec)
->  			break;
-> +		rcu_read_lock();
->  		spin_lock_irq(&lruvec->lru_lock);
->  	}
->  }
+Looks good to me.
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
 -- 
-Cheers,
-Harry / Hyeonggon
+Thanks,
+Hao
 
