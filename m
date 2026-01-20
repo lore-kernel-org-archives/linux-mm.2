@@ -4,111 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB423D2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 07:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E362DD2ECF9
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 07:38:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A5A26B0373; Tue, 20 Jan 2026 02:19:50 -0500 (EST)
+	id F11006B0375; Tue, 20 Jan 2026 02:38:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 033236B0374; Tue, 20 Jan 2026 02:19:49 -0500 (EST)
+	id EBEF06B0376; Tue, 20 Jan 2026 02:38:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA1AF6B0375; Tue, 20 Jan 2026 02:19:49 -0500 (EST)
+	id DA20C6B0377; Tue, 20 Jan 2026 02:38:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D98A96B0373
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:19:49 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7EFD513AE88
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 07:19:49 +0000 (UTC)
-X-FDA: 84351492498.17.D36FB58
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A58E64000B
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 07:19:47 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ms2mAtWJ;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C35726B0375
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:38:34 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 297F4C1A02
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 07:38:34 +0000 (UTC)
+X-FDA: 84351539748.30.6D201E5
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A14654000D
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 07:38:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=QQjy8Utf;
+	spf=none (imf04.hostedemail.com: domain of BATV+6f87a82fb8d0462b7f15+8185+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+6f87a82fb8d0462b7f15+8185+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768893588;
+	s=arc-20220608; t=1768894712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/HlxvZX2gPKCzNfgWKeEIdwyaofi4etP4O/2x5X3mrQ=;
-	b=HvFEC/pVYV+SoT4F16CZU/hUD49FnqN5fKHsI6VmeWJNuwK2nhsE/R10iV4TOSAaMfgbw1
-	qzQnNnJedcVOCqekvWhMXavDaaJA1LTdqrh9t9C86dgBByqNsjNozu1q/2Ny2gcbbkG9Qm
-	HDhsqQbw2bj1J09KUoZdTtlyPxZLLLM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ms2mAtWJ;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768893588; a=rsa-sha256;
+	bh=MWgDWsJcZSPLDHs9IJsUoi9AsdVhP2NHHfcQigencrE=;
+	b=oRmxmK3wosfEPeU7yNXk48n4uM25JjJsbnX7ciuhNMRIox0866vCQyleVpz66oQpAGHugj
+	guzSwoKxB2Fgoh/0bx4uutw/18HAzTs1IZOySuE989NhdUOXRPMalQU2tyeOrXp6c6pMcq
+	y+NaJfnYWok2dlv+N4E61YRbDHL5af0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768894712; a=rsa-sha256;
 	cv=none;
-	b=wenRiltbpp4HDxURYHgFFEkttGpLjzM+F7lXSmbQo/otDBZGQokDVk9s2v9EH77pS1egxf
-	FvVBrFKg0dwlZL0Um/RZFxjRf9hThOMdQ7wXm5goV7ONWD2DgH+p1EA2pca8/CJI7eSt1f
-	Dlxehiol1cz4Tt+i5byXmDYaHdWXHnE=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768893585;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/HlxvZX2gPKCzNfgWKeEIdwyaofi4etP4O/2x5X3mrQ=;
-	b=Ms2mAtWJVCJ3bCD2diLe3CLeoi8jlKaH2qIr4FlGtR6V3qhfMJT0Ib9OAeVP03hAHK9ufe
-	MNzGg4ABpc3blKV10kpt/lBWMkPSHtv7OVMYSw/apNXrvrVm0wXIxChAGS/BmkfqH1tDNU
-	jQYdymDeTksa5BeyAQvFkDsjGyKiCwM=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v3 28/30 fix 1/2] mm: memcontrol: fix
- lruvec_stats->state_local reparenting
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <5a18658e-2076-4cbf-bc53-5b6e99c1035f@linux.dev>
-Date: Tue, 20 Jan 2026 15:19:00 +0800
-Cc: hannes@cmpxchg.org,
- hughd@google.com,
- mhocko@suse.com,
- roman.gushchin@linux.dev,
- david@kernel.org,
- lorenzo.stoakes@oracle.com,
- ziy@nvidia.com,
- harry.yoo@oracle.com,
- yosry.ahmed@linux.dev,
- imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com,
- axelrasmussen@google.com,
- yuanchu@google.com,
- weixugc@google.com,
- chenridong@huaweicloud.com,
- mkoutny@suse.com,
- akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com,
- apais@linux.microsoft.com,
- lance.yang@linux.dev,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A13923AA-8200-4863-8080-EC4B254BA3AA@linux.dev>
-References: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
- <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
- <ifcth3hxyrwmmeo3nejettdtkw2ndxdjbylszmhq3vohuhsncl@k23pew6gywko>
- <5a18658e-2076-4cbf-bc53-5b6e99c1035f@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+	b=Lh2xWbRBCNuhsvV3VkNBE0XDj6MeCtPqioxxgs0U1hKMWxK/MNp+U1dN3vsJNouujdtg0F
+	uer6fMyshiyt17uoTGxapoZsC1pVU3KwJGzh+ZUHkbK2W6OxWNi0I8tvU0ugNQ7PxiErgI
+	LV2igXT9OS0SO0EoNatxeJEKZOaicZ0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=QQjy8Utf;
+	spf=none (imf04.hostedemail.com: domain of BATV+6f87a82fb8d0462b7f15+8185+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+6f87a82fb8d0462b7f15+8185+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=MWgDWsJcZSPLDHs9IJsUoi9AsdVhP2NHHfcQigencrE=; b=QQjy8UtfJINxBhZn7YjEMtg5bI
+	RR/UTX6ry3NKZFPfoe8NvA46huniC8Qe5WKKYr9odSic6x/azSx6ttNuGshX1v/vo0/uShB8r7jvu
+	oQsFb6UppuK9W5J+pQ3LkkqP9wItu6+F+hdSK/8VV2v841T7dec2Zxhhl1cf/V6K+X8k3OQle+nM1
+	+QFFtmJGhnxZTPqgAKCdQOUJoPKo1QuoWKyKACFSMKWKPzqQYD3//Ir7gB2tYr9y/jfHBn8vwIeOu
+	m3+XtJchvn4RXotvr9JWjd2NEnaFbSv/vkLKgykdLYa9ocsv+hA7DGOxFY+mj7v7P2zZZO29/i/nl
+	B9PJVAUw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vi6JN-00000003MRN-2vIx;
+	Tue, 20 Jan 2026 07:38:01 +0000
+Date: Mon, 19 Jan 2026 23:38:01 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: NeilBrown <neil@brown.name>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Chunhai Guo <guochunhai@vivo.com>, Carlos Maiolino <cem@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Luis de Bethencourt <luisbg@kernel.org>,
+	Salah Triki <salah.triki@gmail.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Jaegeuk Kim <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
+	ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org,
+	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org,
+	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
+ nfsd export support
+Message-ID: <aW8w2SRyFnmA2uqk@infradead.org>
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
+ <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
+ <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
+ <176877859306.16766.15009835437490907207@noble.neil.brown.name>
+ <aW3SAKIr_QsnEE5Q@infradead.org>
+ <176880736225.16766.4203157325432990313@noble.neil.brown.name>
+ <20260119-kanufahren-meerjungfrau-775048806544@brauner>
+ <176885553525.16766.291581709413217562@noble.neil.brown.name>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <176885553525.16766.291581709413217562@noble.neil.brown.name>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A14654000D
 X-Rspam-User: 
-X-Stat-Signature: ijsrbbzsdxm4pt61qhfd9brehyydnumf
-X-Rspamd-Queue-Id: A58E64000B
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768893587-270907
-X-HE-Meta: U2FsdGVkX18NOhnRegZoqFpnN1+1HpqNbtX+f5RqVlD9BhXfUcaAWm3k6Ys3mii++uMkRvYqnQRirmIaRwl9L8dN17vOvIS0smZiQXrPm2g0k/DrzhASGMAZme8L2k8U4yVJz4sPamlhfTLvXH6jqaonDt+JDHwJCVHnxLEa6xeIMKX01J+dZrue/xFp5QWKJmMAVF5BUWK8boovmv4PDTKYppflw0O7eghoVqao86Qi/lc4vR7MSHzb+ZuMWvcszkK+dkFQffcu+G5nWBRoJTfZ9A3n05UWo5xMvza4XF9nPuqZb5ZiNRv5li9ATSfdc8qIlFjI0x2ZrME7APrdEhydg1pXe3dtd9BE1EKzB+T/iDiWeFm2z82OgXpB/CdMz+/78BesXjCziC1k9tQd5gAzKqnWOWqHMxncfz9TNNWrYF8w5AXYI2tANJ+foXEFtKKDj0OWELsesBVc8OypyLOGKhBvbyZvC/XIZdf/+mN1aIw/8IV4Fa37/jl1XPRcenY79L7XH8yJlTGMVtmwQKGuGsbUz4F4T4L5066SPVBSj0eNgUesoSkCr4zXLPc5cJm3cw2D2gCfOnadR+dBcsqzYFaQkgygzyHg8wF9TYxa4gHgTzshwSKxG5qzWWu4BGVt7coMvwnd2/FajkmnfzR75PD3AzpkWXBUkgjFq7yf5X+r7f6vUY071yDu7VfrY5DVA5k/0fvIE8PSYon8MTkFXyq5n+GrnIZIxfRks+4EncsVu3hvCVrsHTRk++RZZX0ILcpC1JPD5MU+qUxaAiRsMxjOpgcFZMq5/Q5XLXZTB1PhZzBlxIidE+G0gUmJyALww3LVJ/du5IRrcXNUyoASD5Bu2PlaKkCcOw+I/u8ZC3Z5sC6Fs4bcNksJ0WkMmJn0uQflYuB+4kBSdJAlsd9jQuAib2eD3NzSlJEXJlwrTtJg7ac/Y6KuHDvMpV0jNHQUKhrDFuPn3sf7pf5
- CpFF7GnL
- ykSp6
+X-Stat-Signature: 4ptpgqehpan66pwzgzbdmk9wdd8qpozz
+X-HE-Tag: 1768894711-127127
+X-HE-Meta: U2FsdGVkX180mtJ5FhJysbaWDyFkXov2QkfVxJzrFfg9OBYDdbndKB1uKXmaPn7dJ/YxZ20WIADsT86m12bbqJFUEGKg1D2geVplgWT3pA6M3mnLjXqmxuRAV4nK31cUlT94qnEvoKY7Ilzd+VDN2TLDT0QUfP277GDEjYD+hOlvBheKk9jpVLjEDCpa4Cgbkf4UTeER+gtVZKfSwmm6+QUjxqjbW8eSgXQVpkJhakq4XHVirDejxuvlsL3bzz9T/S3k5J1OT7NkngDyuHUhJY5ez0Rqn7ju3HgfHHMR3lYtHO6SVMN5v/ocSh/Af878Kz/nQtGKWzHwPvxi8BmfZO21BXiebVjOqeZh5B26flXz8sP+Ptc0PZz1eAidGgt1N1eySU2WdaswrHJI9sq6gsF8NAdvjpyq0FYrnDKPFZiKogr7mvtJJO5QSANaVt2m5TFCVTd16LPV6XSUP/FJO0/dLhyzjeiRnYWKLDaGQhCbnY5bkFnpMbBXys2gbvzkbzuSOaPi0GKxvYNEZ/UvgiWyN38ilQhTnJi7l8nsRGcne+l90UH7E5KWM1Ey97Fh7BoUflL4KznriYPmWjt7WMrp3fB9bCE/6Ar6KlaGsM/rcK4blW5MA8Lolm1gtbzfwfEHkKVtn9c+KdEgeqQQ6aTLC4n5gX5No8kM25qcdkSQ/SBgT5GDzDBNVLlwYXQ17gMUZ1Icn7+X7K6keQ//BQ/1rLk4yVBilEJppGvulZh1Q/GtMgv4/C6tYbG+8at9s71oWpDfshHTtUVZG8IldYF5S/Jhv4NHqbzUSYTml8fOF+qxAGDTjMIrrlxA8nvCIeQm61rBmErBerY83wOgfosK7MOQwbDMfsZYbT8h8bPZi9t4WvRkOSvUXIghA0tbhekmEcPsVzB8B9u0Aux8LD1d9UkS/BF9qAMnkdQHqszdJfgS9GQBrXxP5d/ZMbWdlcMSMt6aY658mExhVW7
+ LCkccczj
+ 6Clk4BJkarpQYYUo04dGWEmm43Gv8Pn5vm2Qqadpug5OhZ+IO28nC5w4yXhAoKZpo92XX7yR629ijrL1RhpMmzv1hVy0OoM5d0UMhA6NrM02Ji1t3eMA3MnLZZd0svbQhQ0XjWTzzMysTiUbJzb9TDe4YUD1d6BdMxFZH9AHO6Q2y/w0uAk83jo0Mxi2imtQmBuNelNMdCmfNuuOqPb9h5Hs8aOJ3IaOvSK2JXhtPsYz0V0NMoVHZT2/fm9r1jwHvTLRRa5r3mPGeQgTVh44gcFkXdZTu5d1i1KnFPzQeYfSL1OKn8xk4UaoJHA1TM5KXEYICh6eC8dBQehe28emlFbxB4AFjy/E54IaPzdw3zkBH81DG9x9heSdUSEe6tsde87tO3+LihRg7GK2/vuNaxdz5mQ/+LZ4Bze78hyNsnvjHkxM61V1tZT9EWePmJtv/FQfGZu4L4txL+ptJH9FG3w59VZ4RupZviNEwMexmuH0pYqxRbdz7cY9UpmpnDkVi208XWnTBHuP7Fe4PzI2hR6E2savm7Xo92v8NUgPfgbblWPReCVCQrBdsG/N4n7fM0xSy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,154 +149,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jan 20, 2026 at 07:45:35AM +1100, NeilBrown wrote:
+> This sounds like you are recommending that we give in to bullying.
 
+I find your suggestion that anything you disagree with is bullying
+extremely offensive.  If you have valid reasons for naming something
+after the user instead of explaining the semantics, please explain that.
 
-> On Jan 19, 2026, at 11:36, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
->=20
->=20
-> On 1/18/26 11:22 AM, Shakeel Butt wrote:
->> On Thu, Jan 15, 2026 at 06:41:38PM +0800, Qi Zheng wrote:
->>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>=20
->>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>> ---
->>>  include/linux/memcontrol.h |  2 --
->>>  mm/memcontrol-v1.c         |  8 --------
->>>  mm/memcontrol-v1.h         |  5 ++++-
->>>  mm/memcontrol.c            | 19 ++++++++-----------
->>>  4 files changed, 12 insertions(+), 22 deletions(-)
->>>=20
->>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->>> index 1fe554eec1e25..e0b84b109b7ac 100644
->>> --- a/include/linux/memcontrol.h
->>> +++ b/include/linux/memcontrol.h
->>> @@ -944,8 +944,6 @@ bool memcg_vm_event_item_valid(enum =
-vm_event_item idx);
->>>  unsigned long lruvec_page_state(struct lruvec *lruvec, enum =
-node_stat_item idx);
->>>  unsigned long lruvec_page_state_local(struct lruvec *lruvec,
->>>         enum node_stat_item idx);
->>> -void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
->>> -        struct mem_cgroup *parent, int idx);
->>>    void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
->>>  void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
->>> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
->>> index 03b924920d6a5..daf9bad8c45ea 100644
->>> --- a/mm/memcontrol-v1.c
->>> +++ b/mm/memcontrol-v1.c
->>> @@ -1909,14 +1909,6 @@ void reparent_memcg1_state_local(struct =
-mem_cgroup *memcg, struct mem_cgroup *pa
->>>   reparent_memcg_state_local(memcg, parent, memcg1_stats[i]);
->>>  }
->>>  -void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, =
-struct mem_cgroup *parent)
->>> -{
->>> - int i;
->>> -
->>> - for (i =3D 0; i < ARRAY_SIZE(memcg1_stats); i++)
->>> - reparent_memcg_lruvec_state_local(memcg, parent, memcg1_stats[i]);
->>> -}
->>> -
->>>  void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf =
-*s)
->>>  {
->>>   unsigned long memory, memsw;
->>> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
->>> index 45528195d3578..5b1188f3d4173 100644
->>> --- a/mm/memcontrol-v1.h
->>> +++ b/mm/memcontrol-v1.h
->>> @@ -75,7 +75,6 @@ void memcg1_uncharge_batch(struct mem_cgroup =
-*memcg, unsigned long pgpgout,
->>>    void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf =
-*s);
->>>  void reparent_memcg1_state_local(struct mem_cgroup *memcg, struct =
-mem_cgroup *parent);
->>> -void reparent_memcg1_lruvec_state_local(struct mem_cgroup *memcg, =
-struct mem_cgroup *parent);
->>>    void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages);
->>>  static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg)
->>> @@ -116,6 +115,10 @@ static inline void memcg1_uncharge_batch(struct =
-mem_cgroup *memcg,
->>>    static inline void memcg1_stat_format(struct mem_cgroup *memcg, =
-struct seq_buf *s) {}
->>>  +static inline void reparent_memcg1_state_local(struct mem_cgroup =
-*memcg, struct mem_cgroup *parent)
->>> +{
->>> +}
->>> +
->>>  static inline void memcg1_account_kmem(struct mem_cgroup *memcg, =
-int nr_pages) {}
->>>  static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg) { =
-return false; }
->>>  static inline bool memcg1_charge_skmem(struct mem_cgroup *memcg, =
-unsigned int nr_pages,
->>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->>> index 7333a37830051..b7b35143d4d2d 100644
->>> --- a/mm/memcontrol.c
->>> +++ b/mm/memcontrol.c
->>> @@ -225,13 +225,13 @@ static inline struct obj_cgroup =
-*__memcg_reparent_objcgs(struct mem_cgroup *memc
->>>   return objcg;
->>>  }
->>>  -#ifdef CONFIG_MEMCG_V1
->>> +static void reparent_memcg_lruvec_state_local(struct mem_cgroup =
-*memcg,
->>> +       struct mem_cgroup *parent, int idx);
->>>  static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool =
-force);
->>>    static inline void reparent_state_local(struct mem_cgroup *memcg, =
-struct mem_cgroup *parent)
->>>  {
->> No reparenting local stats for v2.
->=20
-> It seems that lruvec_stats->state_local (non-hierarchical) needs to be
-> relocated in both v1 and v2.
-
-Here we might need to elaborate a bit. Specifically, in the function
-`count_shadow_nodes`, the use of `lruvec_page_state_local` to obtain
-LRU and SLAB pages seems to also require these logics to work correctly.
-For SLAB, it appears that the statistics here have already been
-problematic for a while since SLAB pages have been reparented, right?
-
->=20
->>> - if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
->>> - return;
->>> + int i;
->>>     synchronize_rcu();
->>>  @@ -239,13 +239,10 @@ static inline void =
-reparent_state_local(struct mem_cgroup *memcg, struct mem_cgr
->>>     /* The following counts are all non-hierarchical and need to be =
-reparented. */
->>>   reparent_memcg1_state_local(memcg, parent);
->>> - reparent_memcg1_lruvec_state_local(memcg, parent);
->>> -}
->>> -#else
->>> -static inline void reparent_state_local(struct mem_cgroup *memcg, =
-struct mem_cgroup *parent)
->>> -{
->>> +
->>> + for (i =3D 0; i < NR_LRU_LISTS; i++)
->>> + reparent_memcg_lruvec_state_local(memcg, parent, i);
->>>  }
->>> -#endif
->>>    static inline void reparent_locks(struct mem_cgroup *memcg, =
-struct mem_cgroup *parent)
->>>  {
->>> @@ -510,8 +507,8 @@ unsigned long lruvec_page_state_local(struct =
-lruvec *lruvec,
->>>   return x;
->>>  }
->>>  -void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
->>> -        struct mem_cgroup *parent, int idx)
->>> +static void reparent_memcg_lruvec_state_local(struct mem_cgroup =
-*memcg,
->>> +       struct mem_cgroup *parent, int idx)
->>>  {
->>>   int i =3D memcg_stats_index(idx);
->>>   int nid;
->>> --=20
->>> 2.20.1
-
+If you think NFS actually explains the semantics pretty well, please
+explain that too, especially in forms that can be put into
+documentation, including for the user ABI.
 
 
