@@ -4,91 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A0C0CA5FA2
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 16:14:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76892CA5FA8
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 16:16:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 823ED6B044E; Tue, 20 Jan 2026 11:14:08 -0500 (EST)
+	id D9A646B0450; Tue, 20 Jan 2026 11:16:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D1ED6B0450; Tue, 20 Jan 2026 11:14:08 -0500 (EST)
+	id D47EB6B0452; Tue, 20 Jan 2026 11:16:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7078B6B0451; Tue, 20 Jan 2026 11:14:08 -0500 (EST)
+	id C47066B0453; Tue, 20 Jan 2026 11:16:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 602D26B044E
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:14:08 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF27F160635
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:14:07 +0000 (UTC)
-X-FDA: 84352838934.04.D203885
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 17E12160009
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:14:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dV47J2SI;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B275D6B0450
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:16:15 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 568D68C0DE
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:16:15 +0000 (UTC)
+X-FDA: 84352844310.25.D6E47B1
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6B686180010
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:16:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GrwOLtMJ;
+	spf=pass (imf24.hostedemail.com: domain of 3S6pvaQUKCLAfYcodWeeWbU.SecbYdkn-ccalQSa.ehW@flex--pimyn.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3S6pvaQUKCLAfYcodWeeWbU.SecbYdkn-ccalQSa.ehW@flex--pimyn.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768925646;
+	s=arc-20220608; t=1768925773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AP3b1QG+xPI6jPhdm+mXUYSwKq6bcsjkSqEhuIl9PpA=;
-	b=anWBQs9CPawmL/d+Uc2iEfBvKu9KY9ZU4814AyVDksyBFhWQ7O0CmWPhff0KVNn3H/1Bct
-	OEXoAVLR0LFIflwZ7JY2Wqs4UApoW2ci28+kxlUxXnElmyUZJru/v8uauyO2gsdoD/mxPK
-	x3oXmlYJpJpR8Ez196FTiwGZs3yiZqI=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zECdq2qx8LIRzMbM9dI3FS5kU++am0Lig5cv/EMeCDY=;
+	b=dH1vIFLK6zVoeGS3K17Yo723KVsnk+Qvy9nRck1dqyeMPiUM7jbYQKHhi9O3csB2HNv5lU
+	O14ij2jZWK9U7PBmlEVX2PmIKGqzXz/xCUYpiYUxtWaLwNbcTF1eenOTCM//Tg2jMWV+EI
+	mEM0aMnNirtT8HR+KWAP4HbgoN2Cn4I=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dV47J2SI;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768925646; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GrwOLtMJ;
+	spf=pass (imf24.hostedemail.com: domain of 3S6pvaQUKCLAfYcodWeeWbU.SecbYdkn-ccalQSa.ehW@flex--pimyn.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3S6pvaQUKCLAfYcodWeeWbU.SecbYdkn-ccalQSa.ehW@flex--pimyn.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768925773; a=rsa-sha256;
 	cv=none;
-	b=5T2hZjSKl65knlQqmESsKfOxEsWnulaNvJMBtNJunwJvbo1WxnkI7mjgzqsvlY965T3EnP
-	o4fIGTctYsUmGQv69YbjYIwGlqTeMkUCP2KYXvZNdrRoamr216qjFL6sCEB7frVaiwhX4z
-	AoMYK51oDLk3/6SXDdEJwEsUFB6UtRI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C041740BC0;
-	Tue, 20 Jan 2026 16:14:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF835C16AAE;
-	Tue, 20 Jan 2026 16:14:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768925644;
-	bh=C1IvwOEB2IeBsljjj1U5exHtGWqVJB2lEhayoPqkk5Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dV47J2SIEbcMdZkZ9Lifr8FksIvm38/wEBwH1gTlZgjkovIsgQnrHeducibOmFi2u
-	 0MXW3RUHb176VYbMK+JyeNcRLKwK0htuCP642Do6W9esCNrZRZeWgKmjratMzZhxJr
-	 /Y/U7vCLf/7KDZtCnyqsm9dTVBjlTW7u7n4Y36QbguNVCx+fcoocx9lfyB/wYY22GI
-	 YQxLDv4C46PPgDTux/jLnKScOureFjXjQ3T6yun1zCpFJ4Tb4SkyPicZP67prLnJsO
-	 81We6TisKb/KfU/+uDFPsfyFCg9wnY9yaM5CIJw6/dHdUdK9aIvJTFBmcf7RmuOPU6
-	 LE8IcaGoozNaQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
- <graf@amazon.com>,  Jason Miu <jasonmiu@google.com>,  Jonathan Corbet
- <corbet@lwn.net>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
- Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
-  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH 4/6] kho: Introduce KHO FDT ABI header
-In-Reply-To: <20260105165839.285270-5-rppt@kernel.org> (Mike Rapoport's
-	message of "Mon, 5 Jan 2026 18:58:37 +0200")
-References: <20260105165839.285270-1-rppt@kernel.org>
-	<20260105165839.285270-5-rppt@kernel.org>
-Date: Tue, 20 Jan 2026 16:14:01 +0000
-Message-ID: <2vxz3440dzxy.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
+	b=C0lk1Tc3NhYz9DUm090NUDFZfJPp2nYy2AATf5b1WvIjlQ4L2h/KLE5jRvas2V/tlS8OGB
+	46UhRiRTzBInXJSh2tmBdgok+mO9WTvK1+zrnh9jYskdqiYAxTjXjdxvd0LXiZMySyFm2W
+	1Ooukchv2PmzyemiFevtQ0FqMuwViQc=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47fff4fd76dso38201735e9.3
+        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:16:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768925772; x=1769530572; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zECdq2qx8LIRzMbM9dI3FS5kU++am0Lig5cv/EMeCDY=;
+        b=GrwOLtMJs/bNJRAYWvQIRxJvs/TFh5BY4Rj/ePm8zfXFtlUyAjgKMF6lrKUN+97763
+         i7w80pUZzQTYmTwUK9sFEf7OVApJsfj7ch4ZlETY3lgBQO5wezJloXYZMT/P2p11GM7w
+         fHI6hcWVoGoZ159oprKwJ19KgyA8s7fcPUj+RwGzg29IJSKIwMHf4ZszWLYvKbABJcAY
+         KpBNwirkVjNkuswpGdoRTr08Grcp6qxYWbhG2t0g209FBAMy9qEwdmtzmojYSZHg0VlH
+         E0CVVOauxaVAb7AEQGzbMvjtvEuI6V3qMH4rJf4JcUwJ68eAHDCZfmI971wAzFkOyQHF
+         mn+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768925772; x=1769530572;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zECdq2qx8LIRzMbM9dI3FS5kU++am0Lig5cv/EMeCDY=;
+        b=ce1QA33kJa3N1VqrEK7cCxVjBlWmP0gcYD++6sMqQlL5A4wqUOfMMGdrZnLNaA0Ilo
+         yMh/i5qAqntgHqNMh7MeSFDaRlXy3enkqLoqNj/hNVi5r0xsUBeY4TsJstkBtD90hVO5
+         5ZmGdOnjzhqV639PoayibSQ0LpCvhi/TcnFSVIEztDZfqlWj7v308QC45A0HNYG6exLe
+         xAFQdY/2pU4rKWmlypku4jNjB1lPq0njSn04V4PtRta/J76Ch28yitXJODarDCO5Y/MV
+         7rzWWy+dXvyts923tH9BW7YI2dNXLcvRpEW4280JlYW0DggjavgGE8+JYe/a0jCEqX4T
+         GxVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXdCNLtuKv7JJ4/5WLt9+gdqbIALoYEl1FjgrUvsNO9oBZB5P08+lM7unmFF//XhyqIdznKRFeE2g==@kvack.org
+X-Gm-Message-State: AOJu0Yy8LLsjN6rSitfYDGQBRMqDNDyxsfeJP+nQ1Al2gdXEtIujGd1x
+	+sVQxT9zpbeSe1oC1jEHP/rHhipFcrhyNdTTNMW1yoNZrVXxNtJuxrj5cdwSZDkDg0mc+mrkfh2
+	qQw==
+X-Received: from wmsm27.prod.google.com ([2002:a05:600c:3b1b:b0:477:9769:66d0])
+ (user=pimyn job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8b78:b0:47e:e8c2:905f
+ with SMTP id 5b1f17b1804b1-4801e30a790mr216491795e9.8.1768925771811; Tue, 20
+ Jan 2026 08:16:11 -0800 (PST)
+Date: Tue, 20 Jan 2026 17:15:10 +0100
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260120161510.3289089-1-pimyn@google.com>
+Subject: [PATCH] mm/kfence: randomize the freelist on initialization
+From: Pimyn Girgis <pimyn@google.com>
+To: pimyn@google.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, elver@google.com, dvyukov@google.com, 
+	glider@google.com, kasan-dev@googlegroups.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 6B686180010
+X-Stat-Signature: wob6nc7wkkaxku3cfacjzmd5fsy7wk91
 X-Rspam-User: 
-X-Stat-Signature: qfj11p86wchj47tgdbrqnogxw4z6f5wo
-X-Rspamd-Queue-Id: 17E12160009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768925645-750893
-X-HE-Meta: U2FsdGVkX1+JpPkSU/kl6LP1bDfQ80zSJ0r1nFLC9k35ZrcPEc7Q0jW++0VtBJzxpz8TXiY2M8kxqbd2SfXj2xo2JNPntQ+/X+9Yx37tJM7VYhyB744RjFJA/7Th1Oeg9To4MfpKNoQmupW6xJRF5Lxf7CO9zFEcC+nIbicN7wo9orwauHm4DY5NFeftNbXklo/05aiKe4aaz6om2N5sOwHUmH0ttG438issQMQXep+SjAnOz/l5wRNsxmUxzwTzWS1WMB5V+4kO6SBT7eKUyC2E0fPJJMAoJboAi/4HAoRpzDBE6njEtH2Qk9o80ifD/7FsyvoK9XWjbf8rQyQuLE4BT7hzGD/MmeMlpaM3fseRDkj5GnuO4R8NAGkqQ1DKaTk0uaDcMoBWV+oN049q5Lg6kzBMfOcPAInkdPiQIyibGXjDTpDykOVa3zY6ZIFDNoKfjBG0fka66DsVg3iDeic+xigo3RRLG0O0u2+cU6buFHje3F/uedWgCbRpQRJLVpBXjgYpZYudNBtr2F6EHoIv+fKRk9bvEwraWTMxOBndiYO+peHxMcWldQoBzMujpvS3a37Cs/Zriuv400lS4m6VQ0G4xkHTXdquIumjvMUM3IOdfDM/fkEdWfYnmPUPQOmDq7r52PgCXRRq1nwq2zIK3FL+4HuuUVw2iFvZODkLmiLmShPQ67AxmJzvic/v6KejxKLd8cgBQs3zblqe8j4gT58u8ytHXZFHB6dmiNDBvmC09gOLhU3ivgvwI3w4oDKXUWlPiRhrgdbeGoTTK92R9zG/oOh5vb5lWwdmvyG0fjwDO5jrSBTna+SRa1FRZsD0B8TecWLrWW2z+09hVXWzRZd8S7huLXFJeR3QTbbyx5lYCFadyHx2lFuoY+IiWBxryTg7OrGAnJJ4qaEn+zNfGy22kIrYF8xBODw+LUHbCOvn/UDsONHKeE3OsZHeMeJb0Il450fsDVE7eTX
- 66fhVa/O
- Xov8KVzwsnjqRhg1PGxgH+S8d5TZcXt8pnObiZ3pfQjrvBfyb7ZV0YcERN/HgdL/zDuzYEb+Oj7fO1bc5epavsVa+mBO1pFoq/K562r/IzHArV7soyHVMkqsm66rhTy9TlEl1VFLDw7klVTXFnlO/70IVzWpa409gmf/Ffo/BukGrN1Wx8YTL09ed6/uB2z5t0Tuy+C/ZHo0CW1ZwYkeigqWsaw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768925773-62955
+X-HE-Meta: U2FsdGVkX1/fPbOgeu9YdCxg8bzSYiPJlwqtOS7nZXKn4Qz92xcQEkKav48zcscfXCEdNNMmg1BmN45qGAyOBqB5Su36ZCDgMgZE05xP3PH5iUAoCp3+kuyqnldohsssyFlFXdP8FqU/CzpWS34y2L3GYLvnoSQVoeyTN5CVn+eEhpb6JD83b8oBfHQ1wn2l8DxIIBp3PBkVkiOe9zmL40v6aM/KhOquMzCaBCwC4qRuF97wG9LvBEw14RiAFRtHCZ4vZrdpszuE/s13XozV2JFxoycGrEa+iN/CBE6QM9+9eBGso9+QXZwkL3ZF07e2Yy1gpf9/kG3aO3e5GyvAXrIGWCsGUZWvCiDgCRhuFt/MPw/C/H1WgWcoXXRaHnS8nnghpgIOz3awm0WjfzPgGxqT4adyR6yWXqb/vNEs5Pu9E73GfdU7ZJcH0VPB2MNoO2s24wy0Xxw/Ci/cVVsiKniXXfPQjqBl1KRNsoqip7nzWFRnPRSvSYutIfcJVOGzMSgVj8qCN1ebX8e+6pnCJczggFihqqIN8+BDfCiq9Q5LRJUiV+cbJPKBOglTxImMW4O6gqAWINiWq39rxDOCkAFDfA9eVr0bKifmIA9TrJ0rEgOMpz4BOaDu0buMyWLfINYS520DjXwomOUdfeGKprS7bOuXx6UkCDi042VS2ZfxZeuIH2ox1e9wNIQdtg9Chq78aXqArcu2oCOKpQSVD8ecW2c3jKP0ancla6e6zHMKECFhHTqql8+e5tgz1v7IbUgOVupyZYUBwKBypuphDgJD08aeanmVTEMo+qm+5VWKIWgcGvzL+vZnB8RztBFRnjOy3nk/kPsyyI09A/4N4IFO1Hy+en760NS98jRRMx8u/VQz9cIIQtKsVrE4tAcnS3GWh3GmoqAeG8yqJegF9NJpH2eR9XFVvJQLs6DsEKJSmQp98bkk9LimEs1NLh52hvqbXFVGNHMqWWhhibH
+ T8mUOPtO
+ 3oFbC4RFVt3U8Rx/RkNZM7AxM+VT2exRJXx3BfeFCaeg9PmUJnRVb32mQgIG2C9WczRXPYnD4OezZPeW5bIiEt6xy90YeGJ7UfSJ9BWJKa4IFeDhObNSS2GhBx+BlpJZqWoz/3lBhMiXFpa8yi4oW2icbbfLm8HFyPXJJcNJWbmOmfKBmy//QYpUlqfs7TRpk9kvEK87tzDhFxTyP83DoJyP9LFoOPqJnt3w6YqvSH+Y2PE4Sdz4Zg9n9+Skzrm5SLO/2wXxZV8xhZMyhLdD0jpIhO8HoCHs0NMvQqudYlTZFm9Ec9LBFpka4JL0o2lP2y1Ew2AdezTgJc1b3xq/b11FiafEQKGTRwdnzi2/OYgpvS2VHJRxWKAyCotn4sEWJOHCUX6voNH0/cPe/1ffFTr4W6fnorbkrXau+VuxlOUwkuTpuXAZfpISq55XUKYHuGdHYGQM7uPxKoEr2W6tUplY6ONeCnld40K6ICFD4SSr8iBu03wnpTcroUndcfCj4rt7h6h2xqAGHxS5cD9QVjgNXxx2xUt/wCSkKdSP4QDslVmQHIWeE6g/eLA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,33 +106,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05 2026, Mike Rapoport wrote:
+Randomize the KFENCE freelist during pool initialization to make allocation
+patterns less predictable. This is achieved by shuffling the order in which
+metadata objects are added to the freelist using get_random_u32_below().
 
-> From: Jason Miu <jasonmiu@google.com>
->
-> Introduce the `include/linux/kho/abi/kexec_handover.h` header file,
-> which defines the stable ABI for the KHO mechanism. This header specifies
-> how preserved data is passed between kernels using an FDT.
->
-> The ABI contract includes the FDT structure, node properties, and the
-> "kho-v1" compatible string. By centralizing these definitions, this
-> header serves as the foundational agreement for inter-kernel
-> communication of preserved states, ensuring forward compatibility and
-> preventing misinterpretation of data across kexec transitions.
->
-> Since the ABI definitions are now centralized in the header files, the
-> YAML files that previously described the FDT interfaces are
-> redundant. These redundant files have therefore been removed.
->
-> Signed-off-by: Jason Miu <jasonmiu@google.com>
-> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Additionally, ensure the error path correctly calculates the address range
+to be reset if initialization fails, as the address increment logic has
+been moved to a separate loop.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+---
+ mm/kfence/core.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-[...]
-
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 577a1699c553..9e8b3cfd3f76 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -596,7 +596,7 @@ static void rcu_guarded_free(struct rcu_head *h)
+ static unsigned long kfence_init_pool(void)
+ {
+ 	unsigned long addr, start_pfn;
+-	int i;
++	int i, rand;
+ 
+ 	if (!arch_kfence_init_pool())
+ 		return (unsigned long)__kfence_pool;
+@@ -647,13 +647,27 @@ static unsigned long kfence_init_pool(void)
+ 		INIT_LIST_HEAD(&meta->list);
+ 		raw_spin_lock_init(&meta->lock);
+ 		meta->state = KFENCE_OBJECT_UNUSED;
+-		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
+-		list_add_tail(&meta->list, &kfence_freelist);
++		/* Use addr to randomize the freelist. */
++		meta->addr = i;
+ 
+ 		/* Protect the right redzone. */
+-		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
++		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
+ 			goto reset_slab;
++	}
++
++	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
++		rand = get_random_u32_below(i);
++		swap(kfence_metadata_init[i - 1].addr, kfence_metadata_init[rand].addr);
++	}
+ 
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		struct kfence_metadata *meta_1 = &kfence_metadata_init[i];
++		struct kfence_metadata *meta_2 = &kfence_metadata_init[meta_1->addr];
++
++		list_add_tail(&meta_2->list, &kfence_freelist);
++	}
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		kfence_metadata_init[i].addr = addr;
+ 		addr += 2 * PAGE_SIZE;
+ 	}
+ 
+@@ -666,6 +680,7 @@ static unsigned long kfence_init_pool(void)
+ 	return 0;
+ 
+ reset_slab:
++	addr += 2 * i * PAGE_SIZE;
+ 	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+ 		struct page *page;
+ 
 -- 
-Regards,
-Pratyush Yadav
+2.52.0.457.g6b5491de43-goog
+
 
