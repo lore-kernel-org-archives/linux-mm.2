@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3633D2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 12:06:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E32D2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 12:11:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3C8B6B03D1; Tue, 20 Jan 2026 07:06:55 -0500 (EST)
+	id 540606B03D2; Tue, 20 Jan 2026 07:11:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0FCB6B03D2; Tue, 20 Jan 2026 07:06:55 -0500 (EST)
+	id 50DC86B03D4; Tue, 20 Jan 2026 07:11:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D12466B03D3; Tue, 20 Jan 2026 07:06:55 -0500 (EST)
+	id 3E5766B03D5; Tue, 20 Jan 2026 07:11:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BF6B76B03D1
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 07:06:55 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 475BBB9DF2
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:06:55 +0000 (UTC)
-X-FDA: 84352215990.05.91724D8
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2A6011C000A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:06:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="B3tfj/CD";
-	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 222946B03D2
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 07:11:29 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7571C1F24
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:11:28 +0000 (UTC)
+X-FDA: 84352227456.08.2412992
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E9D544000B
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:11:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q4pTiUAf;
+	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768910813;
+	s=arc-20220608; t=1768911087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESCIkjisjdBoNxNmZSiugnc2ar1AP8Qe4a9WPcWHEQg=;
-	b=nE5+M+gBvI04wCJvU3XCOrzwLEZu0Vo3aKIWr35MbG0u8gZpcN8qQevDB8kFhtGG2giQrP
-	iPuXdHXpq8u4hwRuG+jsPsyBl0sYZPZk7xuSGipxS8lPNmG/35dnkhVro8t4KXGWQzqz9U
-	HaxtbObyvFrk5aCoVS+EE8W1zw/ezvk=
+	bh=ft4cfnsazH2fqh82dag3UKKoVEEmk8hPCPptOiIZ6Ls=;
+	b=ofjKq4X2WUcMqHUrcBFEFDk8X8lV89RlQdK/3fwjo+6ZNAFyG4KloAuDrhUfFJQrFK/uXp
+	KaHI+MZHtJDZYF9U7pl/u1U72Q4EmTdlQQIzwSZFBXo78LWM1GBbo/iLWrC4dlWfvanjTq
+	gWIO+ydDSlOx5ct+qORAkFOpwAs7PTs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="B3tfj/CD";
-	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q4pTiUAf;
+	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768910813; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768911087; a=rsa-sha256;
 	cv=none;
-	b=Nt08rHASa3S5zowXa8HL+VKSaVW2FVi79DxZH70lBF5FNPdZEcMXXKm0+vFSM731i7i+PU
-	lkB5sQ0IEjlmJ0flliRisXtfVZKQwZ2kZQ53fr19JFHr3RmtAv6I2Nq3yfzlJFJoW5/8lH
-	GzNydL3scwdx59xywOWMMHGcGsJSZDQ=
-Date: Tue, 20 Jan 2026 20:06:38 +0800
+	b=DQlfWCg38z/EVnfSY/++wY6lsgFQ8l0BBX3s4btfU4zrI1rur8j4ZXmqdI7F2/VjVz0wN8
+	8jN894OLHtP+BRipVGFksK/n2n7b4xSBQOYJuIHu60sSCpkchbzzRf5IYHhyQ5Q3gmH5nR
+	KrYOYbVVBZi3orcr3NjfSzwb/GmyTRA=
+Date: Tue, 20 Jan 2026 20:10:55 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768910810;
+	t=1768911084;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ESCIkjisjdBoNxNmZSiugnc2ar1AP8Qe4a9WPcWHEQg=;
-	b=B3tfj/CD7ml1wwxDHlSdZGI2fMeAG9dEZeL8ElH3c2JbaLRx9ONJKwKUhiNLU0mpx9IPvr
-	1JbmxoMW4dMfazWRtJdpKfA/nGUJN7HkWBFmdVUVANTaGNaEzHrowcbvenSZXtPDrzmh8t
-	H9PVU7umQJM8dUNl9IkMFI2cLvTkX44=
+	bh=ft4cfnsazH2fqh82dag3UKKoVEEmk8hPCPptOiIZ6Ls=;
+	b=q4pTiUAfOIKpOsCaPxK7ufMZNY66q32D+T6qXJJExTNSxwJ2okdO2ymUJknkUzAKiW8yBq
+	Q/y0CluMbt79RShE0/KvxS79Bl40SYaVHrdvCs22+iNKnaLsmI+uSrZOev9JWGfCrKcY7O
+	h+6Ys3n0CeZTFZDrSjJWfpDJDu7UQRE=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
 To: Vlastimil Babka <vbabka@suse.cz>
@@ -68,23 +68,23 @@ Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
 	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
 	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 14/21] slab: simplify kmalloc_nolock()
-Message-ID: <2tvnelafuozzzfyvmxvflqmx2sepgy7ottnw4n2trkh33rrk6b@oewlapq3smvg>
+Subject: Re: [PATCH v3 11/21] slab: remove SLUB_CPU_PARTIAL
+Message-ID: <3vjyq6wpkvaczzgl3r2qhwi7zdluh6zldejjxnki2hft7vxr52@g7gn4lqbdi3c>
 References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-14-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-11-5595cb000772@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260116-sheaves-for-all-v3-14-5595cb000772@suse.cz>
+In-Reply-To: <20260116-sheaves-for-all-v3-11-5595cb000772@suse.cz>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: q47d3nbcbq3ptrh3tybzdb4pewh3c9hy
-X-Rspamd-Queue-Id: 2A6011C000A
+X-Stat-Signature: odqp3hmay7yz3ewpnq4gfn47o4z6zcij
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768910812-33269
-X-HE-Meta: U2FsdGVkX19S7OXUh6Xh757zYhREI4pxVdyIQu1ZSMllLElT/+eMzBvi218woJRGPn8lrhhSbjxDWSaxlwlyX3hrgZH1H6a/Pg8ECOTCBAzKNcBPB7WSAqLdsg8KHAjYrZZDcw6WWu7SK/BfCoDxIpEG0WP4VEDxSf+BMlvsCwRx4wgT+yCvoWQCF9POywKS6k1tWTDjM/7OEQ/rp7jYRHEbMVWF+IHgapMNh5B8UcxbOPXw5PY1xf0peR1sump36hY2MkG+ugtv9cWLLfTRvY5ff9MaNKWA4F4tQ1j6ZvhaVPdpar1asSTGwtqfegFM9zYNJw14OozyL/PMS4YgkiO2L6XqQTV7Bntd+2t7jr8Y79g2u47NopdWKwbuH8pd79xnN7sEFdZ4QRAghgq0Jo7kD+ZbE2xqjNzMu1znqDCgcBvhp4LqapyQCeU1eDLEvSZn8zF1QPbxpQwhhA9bRcLgS0vvw7lPs4fS3vMsYm1Nh+ngMLCxo5XzSeFQx3U7UOugLRaKJ6uNHdo+eeuO8d+++FnwbDxE5yFrb8XXdBag6xVPWzgTX2nu4zwJj0uqLlhO1bZE1b66nxlOjgxo9UMMrf3F7R9icQa0dHwU2bxggZ6QHOeX+gBewoIT6owjxp5wzKvKoQ5pfUblmhjdT8zZGX/uj7kCYh9o+mZJVilOHKY5QOpe6lrwyXepw2axC3qznryO3b7Xy4xVrbq+ZgugrMGBXhmzJrOKojar/LkQ/hVcdil0jim7skXdEIb2jvJ/nGiM6fdSOiUFPFxEZtJqHM+YQIagRp3ejNAw2Vw4UEmCpr33pROPu6vkWeiMznBdvFkBw0d8AWV6DuV4hioaqBel/DQWrAIiAvIXD2j5CRYg3nG2tI86ChQAs7zR2aIHvLeKlcdTILnsCqDHmplANTFDxmYhizwcIBCiUe4PK8ZaDNGhEDpmwznZ9X9XFSUqfpawFdxR40zpzYD
- 7E/FvIl3
- rAu6lFwp8JyAhfrPfKUiXrZnV0BAKpBamMsmypiC2J9NoYO/BXGAiShAHlWG0J+tPb0g6KmoP4/3DgSUBCQln3KiU46CLVz+nXgzTwCzWiYK2r3FVEQGvCX0AhlhHtrvnndXebfhPu6GTXtdlDTdmUbl4JAKS343aC+/on/IUdKJeBr8bJbqmMvEMnwpUPoxDFmVLVcXUymxbUtM7rP7xUt9nYJon0obSrlMQy8RVO3xs4GwUvrQ1JfarJCdWn0HeWo78
+X-Rspamd-Queue-Id: E9D544000B
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768911086-118540
+X-HE-Meta: U2FsdGVkX19Ahc0hjbabLn5zifCXfGj5pVWvtPtKbJlktkGK/wkMBKjj/gix+/izMzk6mDzYp0EZk7MF4AWpz6mazjkWoS5Kscgha+gGZz6V/mi2IOZtLhv0oL3aIbtTMkqktlMUWQhfMalxc8tV6IQ+/UiBScsriBbM4C7ZYYCGoVs1WnAu6D7NLDA94HD2/GN0M9BGnwKpGQpOaRDPELrVrwK0N1dybsddT0C54B87nGoI3FKiDMMNfVGigIHZJwsJnA3pJ2Dggw/LK7506iqcV3jiTu6ei5vDBW+sfDeSHKyrx9o0vA4d9QOa3NIZ5ylaVRn3GRVnhhOnOIRyt3Vvc0xyL0VxyFLUwnbGpuF6SgQKSJb1Vg/vYDGWbfRotjHISrqC/EYxWfz5hkmLA5qkKr8OC+a6KjA6Stu+96t81Ii2KlV3oDUgav5Z865L0gtu3l1iOYkamQp3fPE0otP2GEAisLBhE1tlGPW3iYAq+W1rtXJ2AB8cNAS+eWHUh60aqnx5kpD73dMPe3REe0da0o64xARc//tKVmhBOKUl0qgbjyKDNrbO/Ju9pjPicVHgA0VfVa3Ueiw/hnBebDi2KVkLmwXEFV5f3wnG5J6U2udzbuuKQTvn6TUH6eOgi/hjzz9knbXrLq9ec/86msFGD9+gBrg8JrIVssaWZ7M/Y/iHS2BsFfD0uWT7o81MLYacOF8faXijuxN3bQXs25uBqAV8AepsJG4Nbh3aL2Hh7QXAQtVRZh2iEzpqMqnsoknyoTBmQGUkS4lBD9WvC55c8WyaPM7tnmoHyWGBZ307WcmhxALl6TZnBmVNSEI/24OP77081wHJ5MOAvUEtCLLf0SC+gmmUZULOaAqWmRZxYqgTQIm2ZQKJH7j7mPKD/2PXmCcw9lfrInJfyRWfQ33hXI0nhMj8L9+LV6aS9co+w/LgBc4F7+LOqmO/hF/0il+McKS6ONTRMacgN1B
+ 85aeSy3m
+ iOwhab2gJKY/Lo0R8AN+uwdEoUevqv6q9pBvjOpGJWzh4obJvUVhEGTaaR35eVFyHaxBm8Qyxd/20PBkZdkq4W7r1MeoZRQCE/JKwb+jmTcE2CLQuYRWS9TEfgUDPsu/Co4OzKg3RooeHpvPuBrCkwz55hg9c/k+/UeKoNO/8BxPLwWKjF3YAan8t+Swa+pxQUfR+UY9fWuZ2qG//6zEzzhNfD1rTGMjINp3txTpDkLT4N93P0SrvgZDnrqEtxAq1l8nSY/3shqxBte3hAu+OCcui2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,39 +93,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 03:40:34PM +0100, Vlastimil Babka wrote:
-> The kmalloc_nolock() implementation has several complications and
-> restrictions due to SLUB's cpu slab locking, lockless fastpath and
-> PREEMPT_RT differences. With cpu slab usage removed, we can simplify
-> things:
+On Fri, Jan 16, 2026 at 03:40:31PM +0100, Vlastimil Babka wrote:
+> We have removed the partial slab usage from allocation paths. Now remove
+> the whole config option and associated code.
 > 
-> - relax the PREEMPT_RT context checks as they were before commit
->   a4ae75d1b6a2 ("slab: fix kmalloc_nolock() context check for
->   PREEMPT_RT") and also reference the explanation comment in the page
->   allocator
-> 
-> - the local_lock_cpu_slab() macros became unused, remove them
-> 
-> - we no longer need to set up lockdep classes on PREEMPT_RT
-> 
-> - we no longer need to annotate ___slab_alloc as NOKPROBE_SYMBOL
->   since there's no lockless cpu freelist manipulation anymore
-> 
-> - __slab_alloc_node() can be called from kmalloc_nolock_noprof()
->   unconditionally. It can also no longer return EBUSY. But trylock
->   failures can still happen so retry with the larger bucket if the
->   allocation fails for any reason.
-> 
-> Note that we still need __CMPXCHG_DOUBLE, because while it was removed
-> we don't use cmpxchg16b on cpu freelist anymore, we still use it on
-> slab freelist, and the alternative is slab_lock() which can be
-> interrupted by a nmi. Clarify the comment to mention it specifically.
-> 
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > ---
->  mm/slab.h |   1 -
->  mm/slub.c | 144 +++++++++++++-------------------------------------------------
->  2 files changed, 29 insertions(+), 116 deletions(-)
+>  mm/Kconfig |  11 ---
+>  mm/slab.h  |  29 ------
+>  mm/slub.c  | 321 ++++---------------------------------------------------------
+>  3 files changed, 19 insertions(+), 342 deletions(-)
 > 
 
 Looks good to me.
