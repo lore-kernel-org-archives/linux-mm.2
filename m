@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A8ACA5FB9
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 17:46:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38971CA5FBD
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 17:47:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13A846B0472; Tue, 20 Jan 2026 12:46:29 -0500 (EST)
+	id 9AFEE6B046B; Tue, 20 Jan 2026 12:47:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E6716B0474; Tue, 20 Jan 2026 12:46:29 -0500 (EST)
+	id 9464F6B0474; Tue, 20 Jan 2026 12:47:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFFB96B0475; Tue, 20 Jan 2026 12:46:28 -0500 (EST)
+	id 873526B0476; Tue, 20 Jan 2026 12:47:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DDE706B0472
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:46:28 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A02FA1406C3
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:46:28 +0000 (UTC)
-X-FDA: 84353071656.16.ED9C500
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7591F6B046B
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:47:50 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 41C5E1A0344
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:47:50 +0000 (UTC)
+X-FDA: 84353075100.23.5004E91
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DC285A0015
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:46:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aNhRKUeB;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8B5EFC0013
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:47:48 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tjfohsLY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768931187; a=rsa-sha256;
+	spf=pass (imf22.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768931268; a=rsa-sha256;
 	cv=none;
-	b=EBWkHUr2mEJSGT8P+AUxKPceYI75F9W0i0P0nyn7xY3a8l0ofEWuRmJi7bjYBLlvdI8e6Z
-	W/FjuwP2NJwYJ/XicBUIY9KG4z2qEAIa1NmbSyZakCGUShZZRsfYKEUKvXyRKPexl0Av82
-	oJOXUm2t/ct1vSwUf0XveTq8Q5/HCko=
+	b=sRTlV52YlnXP5RdPRGClXwwlAXT4SRLby5uz9EQIpncT8kDdZjrOXiP1GHTWvEW9NpJ4qc
+	CI2ed0B3OFep6B/1szWzkkKhJ0zo0qP3LG80r2m8XqDIxCjjjxgLS7/947xsr6qSV0tQWy
+	7aT0h7XnuIDz+kPaN1xLNZ+o2OxTrxo=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aNhRKUeB;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tjfohsLY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768931187;
+	s=arc-20220608; t=1768931268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p5H4DaA+BVtjixlH8iyAw/Zu0Kz11wPIolxdn5hMZ8I=;
-	b=C/sQbobPnfYB6KLn7bHmlSESar16F9y0Q/q8uTGZBVdNhE9IdUSS7wlOF7LW86N8yHuVDX
-	bxCh4wraqiLMaqLohJ+LnBxIh9lkEgY/QRcPx2WuccQXfSc9VpX62AB5mVDwV4jzN4K0WL
-	1b1z1Q9Q3uX6XNEnjTYG0Dq2+TzDkvY=
+	bh=buh3AgwE6eEq11741pBPAo1tMuqYqSxOmLQ1xeWQiB0=;
+	b=Up806Xfq36+mEUFjB6ykotXlMOTJzj7RS9VKrJJogy1fykXolMAHpm3X7n6K3B7L6ybCjl
+	ODGWJ2p3x4RPhl4YYaN5gVRthL/SLobLofDKqWACPfHDSYfJu5W70mJQsw5G1aJhmmRdmu
+	beuhA4lzrzwYj7mo49i5Fb8GrgMdS0Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0545143509;
-	Tue, 20 Jan 2026 17:46:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C96C19425;
-	Tue, 20 Jan 2026 17:46:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C1C1443C3;
+	Tue, 20 Jan 2026 17:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB3BC16AAE;
+	Tue, 20 Jan 2026 17:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768931185;
-	bh=TBRtgmjrWAjuHKUcUNVVb7dFeVlm8K/wDFyukeuO4yA=;
+	s=k20201202; t=1768931267;
+	bh=kTyxrUC6CLXmKB4WiPhS98nLWRKe80cbQkubQV09cw4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aNhRKUeBDn7HI+Rf4DnqVFcGEjTt+0wEI6/IYeAJiUCBHmIWokXFrZn66wnsDkvH3
-	 vfYVkodq5FbsVrJ0N8kngkIzwi820ZViMbFcmgdPlWGCmuNsnIjU4Uz9QMSV3T8/9V
-	 s1V2Ap5zlzr41jcOI39ugYO52ab0iWLECdqHdeXLAbbSQbwQBP9STm6fSJauGBK1Lf
-	 LS3ZJ8EEwYSD8oJ+6OIIyrNA3KsQ2xqBoWOirw1+32T7EFXzfv9X0i7qBoGeQD6w1v
-	 Q1mjvhDfWv1z92xh7JgnHoLxjSrIGM7vsnQuFgcbg1+Osn4AR28QiDXkIPdYf3LybR
-	 xV4p94jQcpeGA==
-Date: Tue, 20 Jan 2026 17:46:20 +0000
+	b=tjfohsLY2n3lhzlLuIaem06nUrkrYK25Vsr8jtE1qJtX1GFAV1ahjAEdbWd4kV6pQ
+	 IF1iIU9wRnJoD6xq4YBNabtMvcGIWI8oaps0JECB6JdQ2JalO0BfrnxJTAzt1O6ftU
+	 5yinsTx7AGDH5VCtkADKuBuBkQYlyCvZBQe8egdKsBvUznDBTiWs14r/ysOETfQAKG
+	 4glBF1fE23o83O9JW2VRy/mI8fL/8DkWMZoZUbizml8OvJv6FP6PMgE/lLAEOXSFxa
+	 S9FEeTEMvOHgtci1B/GHxiYzxIVfGNR1yk5YttjkuKi3lMwirEfn/UmS9zxRxrLDut
+	 6ivA7ZI8oihdw==
+Date: Tue, 20 Jan 2026 17:47:42 +0000
 From: Mark Brown <broonie@kernel.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: akpm@linux-foundation.org, shuah@kernel.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	nao.horiguchi@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] selftests/mm: add memory failure anonymous page
- test
-Message-ID: <737310eb-05e5-4234-af67-9118b3f395ab@sirena.org.uk>
-References: <20260120123239.909882-1-linmiaohe@huawei.com>
- <20260120123239.909882-2-linmiaohe@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: Have the harness run each test category
+ separately
+Message-ID: <aaa9cdf2-8fd9-4073-8c5e-f4ae3762a1bb@sirena.org.uk>
+References: <20260120-selftests-mm-run-suites-separately-v1-1-a4334f0cbb3a@kernel.org>
+ <20260120092252.8597a496ed1cdebe5e120fb6@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ObFgKhUWYWaLUrs4"
+	protocol="application/pgp-signature"; boundary="QDSOccJa/e7tiZgO"
 Content-Disposition: inline
-In-Reply-To: <20260120123239.909882-2-linmiaohe@huawei.com>
-X-Cookie: Leveraging always beats prototyping.
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DC285A0015
-X-Stat-Signature: ccd7p7r9h5txnmq9nfnxbisw77yca8pq
+In-Reply-To: <20260120092252.8597a496ed1cdebe5e120fb6@linux-foundation.org>
+X-Cookie: Slippery when wet.
 X-Rspam-User: 
-X-HE-Tag: 1768931186-768548
-X-HE-Meta: U2FsdGVkX1++nHwOVUOVJXQfZwuzko3VyCZpLkrVr7Vd52mqbfaFsYhrjZp6tzh8uhdsKwcAaVfD2S1v5o7p3Vpu8HLI7NKO4EKyDUC0q1xHHS8NS2hNQmSGaL7moNL8nEkIaRBEulG5eEgNeHNAME/RPjnm5YWNb+7ogWfQZrTdYp3sN0KK/QtQnheIXd2KlaNYSaS41TDupLw9r4VQ0L++qi+7wUgpfX0SrfmQ23ow7vzinFphPBTe3xm8Mrf3YcQqAvCeSHy2wbjvD7iIeNr3TrGBP8D8iTvzwXbbOZ5xJ1YHlssPjVoAdbVg3W2Tn70QrUUZNzuFiGdj2nRtxCGIBtINsSQ3MdqC39nAyX691eqQUjA0tBDqeJjm10h90urzXq0A9hSrVhLuWtXuTrYQ/pHZwYoXYWB1pLDhMdH/A90DnzGBxpCUV/RrNfERR1xtzs/cDeHzKY5nrPTbta9zWp6QlYsGV0PUPBT6dtFS8M9/rJOwmBIQ0gCh+lQbNeJr+wQjHXGpCtkt1ytzrkgLfTdmigFni/h3eg8KtajUbbwJbOeqXPzoIORp4LWCZxAKB5olkem18mXnBHgbB9PL4rSJ21ey53B5bOvNzuxdlrVkuZ9XzT0GxoH1tDemIzAeA+jWud2cwW+g7dj3v1Bmf6CBNTxft3vjzsXJ2NW0+Bz2Q8I1ggSb4amUq01N24bp6gz4uMvL32iuvOYX+2OWztbnVGIep3cTRQPsDbOQ94EzGL3A8YGSAvpSQRE0Y5PABs8KP3O2tJiqAKWjBY9lKvuUxBwMmvSCQEITktSOSTLVVHlZ064sUF2wvwF1JCi6MCYNU5iy35i3HKhkev/vFUTHHn4/fthfCPTsV5eDmqGJ9Z19H1wZCn+Aj+iEWBMtSp8vEjJ7OhKC047GRhiFL4OEFZo8Qy4nIuxFt0GnFl9FW1B4PMyp5l7xGOcRz4ZeqSz0u4MttDdseMR
- OtHMG7of
- RLBW0teXEkvoq3troL3mtunp5rSsWIE1hVpMn9YtSRhNc3qG8xAt5Lo59WWJDPcrkBJiH0qz2GasviMkD8RKG6iCUWISeqVgx5G3Nzkw5OqcKmVzXERPnWZ86iG0uBWI1ViEJihnz4XzS5v6u3YglekztkNAQZG/hJu5wmZiksnVdMA2y0xG9HDCEy+iKkgPYVDrsKWfvQrvikCtf5Oe86C1LGYIF+sLCGI5kR274jPOFgnCRFtn8/t2UEe9+dLOkvw1ZaGc5n3220xvSI7MZqY8JZ5tK362KQCLumfXNAayfO6ot4jKrKyDYxuOtBq/jf1lTXZAH/yfkLcCxHbzp4r/L89OuN1eNr7NYi4BVwCuGWX5Q7KFEi1bNDy/ftBETIMWj
+X-Stat-Signature: 8pq3kmp5jo6q4wkf589q5s567qgqjf9s
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8B5EFC0013
+X-HE-Tag: 1768931268-463700
+X-HE-Meta: U2FsdGVkX1/gxPAuwKdV88Zc7iBoTmJeTrMnf/GuR1LPiHgST6GhIJtW3XzA0PirTv85tUbuRji5PtDj0KQ7yq9Jcme7kZZ9bj3kcxqdramwYiPK67+XA4fqatjSoFJOxYgOPmmOXv/i4wQUM2b6f4GxBiuU+zX3VTSfh2OewmmRj16u7gzRXGPzjOBGzj4+nWcygJw/feJO1VEL5rZ0Et2NxgrlgvKHaBC4Ux5zdUtPKyPMSvV/Q4UHxPJ2+XkRRMIrIluxu//fyUCczvYJRZtsL2NSGnxMA6qu/bFDKfQCkhbJNlNZD08uOVpp+sCPwF5a3xFHVcOwoBOllfalEJBycmbuK+ZfZkgeaO3hL3hNmvpiKTg2kOF5JJ4f39DZAkpwhXnwFV51agTsmkmr1tV7rgUBqVl02v/nCd9K4wJRquvOpH7yYgCgZublJfGuSW1q99Z52xZtiU2UptUOl3gygdWsyC1hkTiyqFfiDf0Edk5lddSvUwxRhnDW+wMmcVf+qZ2LsXaWl96I3FCgicwrJVFSyoLQ/LJr0OzYO7hBbBuSXSMXV1anIu+i0dU7Cp6U9C9chhNAeulzyKk8ifJWS1n/H066lnuW966nhgLMiMbQsPraENXKdc5K9GnQ77qsZx7gUZTS3XtEu+O1tU/Bb1L6488c55L5nJtwxlCpo2uMZnBoMnmPrXShs4GebviT/loSwM9b91axFqjsmvbaC4ojCzCPgScNkzg2wE+Kmpr6K/NggMjUV2B4OPw2oHTsYGhWTv9x9P3o/75A9Elu8T6bQ8sPfAnqr48HcXKcxBl6HL51QUygH9TiNaCpTsqjhkqPswXAxg/mP30r2nRgb9oHVKUFUgNsoRKe/TAAAgg0nFcZCGWm2Nggp8O+sTEEe9aoAPPVgvT2eKf+xfmMmW6GvNxZN61inhAj/STPDeFOqvCMzlua0lTpPj4FtJa+ULOkuLlm6yX3sTY
+ M+0ZT68P
+ hrT3Q3pDy9ELSNobpIRPtY0/IprZlDrmVByTv0y864BUanfzURF1z7I3gicbsCS87r8LzRK2CJRACHltrCOaeElMBQj15RIgHIUa/wDKpU2fdx/kTo7IzVrwnwojXgIQgLWDi1fGCnrwasc5ncb+JUd68K54pyGiCnVMeStcU+ZZ/M6uE6F4V9LIPq+Uj7OfEN79XKdn3zai3F4tsWGZ/eS/H9H56NxHroQNA1HQIVqjEv6KHt2UGaAVh8O1koHURsFRbWwbPXlWnTf7kR1dKPVgV3LKPuVNFnVc/gXEneLCbqAsMNcHkbi0IEOLXlTXxRDPxCQbD+heqEN5wVkhBBz3xxURvcn/y3TvPN14S1WZOPuU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,45 +103,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---ObFgKhUWYWaLUrs4
+--QDSOccJa/e7tiZgO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jan 20, 2026 at 08:32:37PM +0800, Miaohe Lin wrote:
+On Tue, Jan 20, 2026 at 09:22:52AM -0800, Andrew Morton wrote:
+> On Tue, 20 Jan 2026 13:25:32 +0000 Mark Brown <broonie@kernel.org> wrote:
 
-> +# Try to load hwpoison_inject if not present.
-> +HWPOISON_DIR=/sys/kernel/debug/hwpoison/
-> +if [ ! -d "$HWPOISON_DIR" ]; then
-> +	if ! modprobe -q -R hwpoison_inject; then
-> +		echo "Module hwpoison_inject not found, skipping..."
-> +	else
-> +		modprobe hwpoison_inject > /dev/null 2>&1
-> +		LOADED_MOD=1
-> +	fi
-> +fi
+> > has separately.  Since kselftest really wants to run test programs this
+> > is done by providing a trivial wrapper script for each categorty that
+> > invokes run_vmtest.sh, this is not a thing of great elegence but it is
+> > clear and simple.  Since run_vmtests.sh is doing runtime support
+> > detection, scenario enumeration and setup for many of the tests we can't
+> > consistently tell the framework about the individual test programs.
 
-You should also add HWPOISION_INJECT and likely also MEMORY_FAILURE
-(which it depends on) to the config fragment in
+> Thanks, let's see what people think.
 
-   tools/testing/selftests/mm/config
+> What happens with tests which are newly added but which don't integrate
+> into this new framework?  eg,
+> https://lkml.kernel.org/r/20260120123239.909882-2-linmiaohe@huawei.com
 
-so people and tools know the config options are needed to get all the
-tests running.
+Anything adding a new category will just not get run by the kselftest
+harness until someone adds a wrapper script for them, they'll still get
+run if someone invokes run_vmtest.sh with no arguments directly.  As the
+changelog says it's not particularly nice, but hopefully people don't
+add new categories all that often.
 
---ObFgKhUWYWaLUrs4
+--QDSOccJa/e7tiZgO
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlvv2sACgkQJNaLcl1U
-h9AeOgf/TpiwY5cSu8LPqhvpbJnimocDBJ2K+sADzVszT6mIF7B4Un4ISFwMtoN5
-1LFLpWadwOpWZm+fAu6aj9z6pm4gXV/h3wvKE4rhgvCmLopMxaYZs/ZPyppookNb
-wwh9UsnigPV07m6pqg5BFpwzdNj2QqOKJP+HWCNjCwvOw5FgDMhOFUhdnzCswd1B
-Yn0kHmRW4RGceobzLmMN2CoYk4zs4gk97NjX2dNAUUwtSTLftMVQswUX0CnEaUoS
-wRPA//UIgzYgIl0yTmaSwRMlCeGlE8wZz8cDX96cEOXBLH5dTPZUzs9KXgwGX8E6
-rEt6r2ADfzxEDWkdX92JQvkkjIBlRw==
-=wRVM
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlvv70ACgkQJNaLcl1U
+h9AngQf9G3Ze83SF/F3V1fpJUOzG1cp7X3rxRdHXAD3jPIkkxrcJBCsPUCQ6ezUM
+5ZpepjtIZTHUbOT+PP6W+2TDPgctkyjvPjhsHpzP2Sp6zX6jQsL8xK6oHf8uFyDu
+mQldN1NgIN1UyG51gK9fuIK33+6U9s4q5f2ZW8cHaK9G4waMJ8syYWzaX1lUL694
+8aUZUaKUyadQHoOfII3lpsTgSqQa21DhoAvOhm9oPuQ2aw0oCFlaH0wi216JJuhg
+oM8qQ0sWPHjfV2focUPtnCa2sBjv9ZExJZUgvXYdfi9HKHVyYRcENjE9UCDJVa6p
+9T6VXv0OEPvmur6nlJC1UbW5ak0BeQ==
+=ABcn
 -----END PGP SIGNATURE-----
 
---ObFgKhUWYWaLUrs4--
+--QDSOccJa/e7tiZgO--
 
