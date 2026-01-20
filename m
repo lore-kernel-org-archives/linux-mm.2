@@ -4,202 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3294D2ECE9
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:21:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C397D2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:24:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09BA86B03F0; Tue, 20 Jan 2026 08:21:56 -0500 (EST)
+	id 700776B03F2; Tue, 20 Jan 2026 08:24:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0739C6B03F2; Tue, 20 Jan 2026 08:21:56 -0500 (EST)
+	id 6D8CB6B03F4; Tue, 20 Jan 2026 08:24:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6E4E6B03F3; Tue, 20 Jan 2026 08:21:55 -0500 (EST)
+	id 5E4DD6B03F5; Tue, 20 Jan 2026 08:24:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D3CD86B03F0
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:21:55 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92E361AF416
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:21:55 +0000 (UTC)
-X-FDA: 84352404990.19.CAEFF07
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E59BBC0006
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:21:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HArzV8jG;
-	spf=pass (imf22.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768915313;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 49AAF6B03F2
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:24:31 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1E01C2023
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:24:30 +0000 (UTC)
+X-FDA: 84352411500.01.DFF7EB8
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CD71E120004
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:24:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="3U/8yi50";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf29.hostedemail.com: domain of glider@google.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=glider@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768915468; a=rsa-sha256;
+	cv=pass;
+	b=luyyLR8fgK62rMUrBPJK6yOBarzgX3Xpm6l5us6j6RMadu+JAuUEH1RkJ6N1Za7BT1wVRo
+	xTxFCcmAJgwPfuv/Ldrk6a6H1pIZ13pliEZgRlYkJWjE9utO9ToAeMTrD9evgkKuytExUR
+	epaxCu5P3uaokBYbhdlno0YQ9AFgwag=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="3U/8yi50";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf29.hostedemail.com: domain of glider@google.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=glider@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768915468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ibUPede0USBPjxkDuhY4QOK6BHW2ig1Fvu6koEcKyLk=;
-	b=PdemiNnm512ZH7fu9wxyFGAjBXe0qZMUUIR/TM6y8y3Nte9czGO+4DmkkAlGJTmh56RcEN
-	LlleRZb0zSVo6QmkedoPOtIe+cd9ptf5H+t/9BnCYAKHyqmCQwWyXDUXheiQ0PP+er61Vc
-	ripKEHr8s0XNjjwNliJ1VgosBnWD3Tg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HArzV8jG;
-	spf=pass (imf22.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768915313; a=rsa-sha256;
-	cv=none;
-	b=LT7+BseWGwd8WoXESy0gUah4q5TcAacAE3YwRtax23538KHHqMkDuwzRGCOLs1KjiESQDB
-	zu/l8zAvasplITcHJIjJaNr3YGqSnvcaklYPy5Dew1mZB3D3a2qGVM+AIuN7CvaMAgfmvw
-	wvlib5Bpe8L3Map89AACHI2H85BZGsQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 393B060131;
-	Tue, 20 Jan 2026 13:21:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB2EC16AAE;
-	Tue, 20 Jan 2026 13:21:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768915312;
-	bh=f2qFmDHnAGeH2DQsfDbKX6ov0cXKUQc3FlYWkzQ0G+o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=HArzV8jGiJF9EjuBcuhlJs4TShV4NxERmXFPUT+J8+gfAJ4DE490qIALJ076bILOb
-	 e408+yivjAyOomjEdqgF7pCaN/qMG9T58VsCZ+YqBNrLJMz+X7GC3/EKUmI1086fJz
-	 MjiZ9qewu5a5y2wbA741RboftmNGOHR283JnbrHlWH2I1F6Ud3GfwTl2MLTVOi85M3
-	 vu6PPer10vwGTgfXrjWnVB6g2DP0q2XLjum5hcNA35pe4SEs/CtQqpZE1o1MPwISke
-	 0OB6jpokJJJ+B9F86zTx8EgeG2ymAYs0Cvj1uS+q0lVb6LwtO5ZRJTXF9J9DnnB/xd
-	 V7CI25VZpkgCg==
-Message-ID: <a4c6b9cb5617fdea92739e85ff1a29da1ac14f30.camel@kernel.org>
-Subject: Re: [PATCH v2 02/31] exportfs: add new EXPORT_OP_STABLE_HANDLES flag
-From: Jeff Layton <jlayton@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro	
- <viro@zeniv.linux.org.uk>, Chuck Lever <chuck.lever@oracle.com>, NeilBrown	
- <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo	
- <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Amir Goldstein	
- <amir73il@gmail.com>, Hugh Dickins <hughd@google.com>, Baolin Wang	
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
-  Theodore Ts'o	 <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
- Jan Kara	 <jack@suse.com>, Gao Xiang <xiang@kernel.org>, Chao Yu
- <chao@kernel.org>, Yue Hu	 <zbestahu@gmail.com>, Jeffle Xu
- <jefflexu@linux.alibaba.com>, Sandeep Dhavale	 <dhavale@google.com>, Hongbo
- Li <lihongbo22@huawei.com>, Chunhai Guo	 <guochunhai@vivo.com>, Carlos
- Maiolino <cem@kernel.org>, Ilya Dryomov	 <idryomov@gmail.com>, Alex Markuze
- <amarkuze@redhat.com>, Viacheslav Dubeyko	 <slava@dubeyko.com>, Chris Mason
- <clm@fb.com>, David Sterba <dsterba@suse.com>,  Luis de Bethencourt	
- <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, Phillip Lougher	
- <phillip@squashfs.org.uk>, Steve French <sfrench@samba.org>, Paulo
- Alcantara	 <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N	 <sprasad@microsoft.com>, Bharath SM
- <bharathsm@microsoft.com>, Miklos Szeredi	 <miklos@szeredi.hu>, Mike
- Marshall <hubcap@omnibond.com>, Martin Brandenburg	 <martin@omnibond.com>,
- Mark Fasheh <mark@fasheh.com>, Joel Becker	 <jlbec@evilplan.org>, Joseph Qi
- <joseph.qi@linux.alibaba.com>, Konstantin Komarov
- <almaz.alexandrovich@paragon-software.com>, Ryusuke Konishi
- <konishi.ryusuke@gmail.com>,  Trond Myklebust <trondmy@kernel.org>, Anna
- Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, David
- Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan
- Kara <jack@suse.cz>,  Andreas Gruenbacher	 <agruenba@redhat.com>, OGAWA
- Hirofumi <hirofumi@mail.parknet.co.jp>, Jaegeuk Kim <jaegeuk@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, David Laight	
- <david.laight.linux@gmail.com>, Dave Chinner <david@fromorbit.com>, 
-	linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-ext4@vger.kernel.org, 	linux-erofs@lists.ozlabs.org,
- linux-xfs@vger.kernel.org, 	ceph-devel@vger.kernel.org,
- linux-btrfs@vger.kernel.org, 	linux-cifs@vger.kernel.org,
- samba-technical@lists.samba.org, 	linux-unionfs@vger.kernel.org,
- devel@lists.orangefs.org, 	ocfs2-devel@lists.linux.dev,
- ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
-	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-doc@vger.kernel.org
-Date: Tue, 20 Jan 2026 08:21:45 -0500
-In-Reply-To: <aW8ztQ-RbhxwzMk7@infradead.org>
-References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
-	 <20260119-exportfs-nfsd-v2-2-d93368f903bd@kernel.org>
-	 <aW8ztQ-RbhxwzMk7@infradead.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+	bh=4nu4xZEY0rSvLbxW/bG040Gc/VM91yZ6fjUuBWMnaOo=;
+	b=wmUPBrRWV20MjMfrawoIEWIkGKG3Q3FnZW1YVszNoGwjoeEKudlNtP1h7jxlboN7ghb6oJ
+	91+GLSFWjllvIBKGKAM9gYjZ+xyu+UfjQD3FrA4sUhivE+B3jJ+44QPsGqfPaEIAZZoayc
+	DQKW3kJZq3nvCOnw0gWaTVA1jES0E+c=
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8c6a822068eso530253485a.3
+        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 05:24:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768915468; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PAiAJ8w3H9MoNfULk+VNxSiwpqHcGHeDHG4PfmjZ0uq0GDmLYQlzzKbNRea15Cg7XN
+         +BMYrBd/4NU4gGQveLQ/LqLjc8jvJVOZ6/ySE4jIz1NcRsO/VfDvoymxC0P6rhxZv9V3
+         UyF6xFu3cXuYXVw8BPCEZmSb/eoRC0pffZwnk084UpKqtFhPylxtpyZtFmviKGlSvtRu
+         1BbxYl1Ny/T58QTctr5hnjHb6/aIJ+5y39vD9tTZC27mvEPrUBLNtv1cSsKhumYkSfrA
+         LcrpKpBuLzVVm/DJpRPVCht3E2qdCztW/K6EntH6ZCbmEYxvM2lBobNyjXp3pPchCCpU
+         4ZnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4nu4xZEY0rSvLbxW/bG040Gc/VM91yZ6fjUuBWMnaOo=;
+        fh=0BozamZgmg4yJhQmA1UyGh255SabChY6eycwXuauF/Y=;
+        b=eXFF02ce3J7YLV7Mkafx8d99LYQ0eRGdtNAyW4J0/Xt1mcS78N4z2y5E7t3XmmoZNI
+         vX2RSac7d16s8MD+a7nojqKpC+JDvLwQOxSpVTOHbwn6izrP17FM37di1biedAORzXMu
+         WV78AdeNtq5IQ/mE8YYTBZRWs07qhQYRoY9m3nm3B/LctyoNRAqKVLh0/GJc9h7K/CYr
+         x/cfp/pXaTmt9hyY6La6mrWy7YHVAEOqwfdXhw88Xbj+9xrZZ4MPeG5i7VDDLxQvw6KH
+         CR3LiCNC8v4NhqjiLudmyQ502dH0x5unK6X5ORvDhdTwcwX0jjZFiMrG9aAvnBIYltQZ
+         DDqw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768915468; x=1769520268; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4nu4xZEY0rSvLbxW/bG040Gc/VM91yZ6fjUuBWMnaOo=;
+        b=3U/8yi50KiybYb64BArTSuV2zSfA/4sUT8MmQEkQ3rcIk9jrar4ZfbGJVNTSy6Y6Ip
+         I7XlXkCoTUGl4x6TxjCeOeniXa4xEEQadj5zouufd17SX66Y4Sj/iHVYSAbIYMCNekEi
+         urv6lA5dwoPLRpMdwaCNGA9+ZlR7j9NUXM0eG8MltzTyRB/OcHH3iVmGiKzhw/D52w06
+         /wJWbsi6VIGw9ApE1z4Blqoa37Vi0QP/hnFBnEhCg9z+q5rNz6mkbohB0j3o4yoSCSIZ
+         453zHUOjCjmroXEEJQ9cdo0EZSfl8LhxusWn4Y1PuAAEeNMrO+9ytMBtF7LPxRLbpNPN
+         n+RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768915468; x=1769520268;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4nu4xZEY0rSvLbxW/bG040Gc/VM91yZ6fjUuBWMnaOo=;
+        b=r5/vYdGm2sj7Y38cM7OFmWyFj/c2AJZ3s5f5vUyIJF/jeBAVV82VeLNcUiUFUIw3FP
+         MsN9MspbrhQa6vxtPdJ+PnGTWuRTFNgw5dEceinjl0idTIkNbaVzl9F72OcAwB7NkbWV
+         Gsh3yXbFxisc1MMkaeMsvplUKSC4fniobbilUFeoe5sKyoE+rZQ3lZItBuwemer+jLy/
+         4l6QmxCwpmSFUw9A/0NOdn/+gULUpgH5rS44PVTeWaIkgM27MN9N0AGPstb9E1iPNmE9
+         E5MWWxjb0pJE0c3/kFfOuqGNCZ56pkOLzhz+0rA5jwucwMztAUh1ddynLTarAiLe9aqI
+         zk+A==
+X-Forwarded-Encrypted: i=1; AJvYcCX4ohCJy2F10ibXSvzTSze/CWmqo0bA6CuYF99qAcbzcEWG+Sn3NummHP9mnhA62fcUee4kZYTm2A==@kvack.org
+X-Gm-Message-State: AOJu0YwvDFUobG9riY00b5iIRwNinNuhqPTGzEqNyjmdYAyvpRl9tty+
+	RVRcYzQXg8lmIyPk+HFr/jhtnwvf9VTmjWJO+t483SYjwLo8bKrMA1hA1BLiCP8JMQZ8Rzacdgy
+	mQgO/2AUX9eETOqxlG2IEvaLXWCxIJKP2k06GvQvq
+X-Gm-Gg: AY/fxX4CnZhLQPJlabTRpUTDlSjV0c7HNHY6+3Peb9szJe2JQllrs1dzj+WaVo8DbGQ
+	XPyRmpPxQFjxKI1aFb3kJTqO61Ka3sdbxPO5gVJj8a6pt7vDJjQTdIulREQ2TYXQ8Cr5sOhOwAj
+	yCHSRRQ2sfYcGAPOdXhNCUsRs7tDw4ddJVN19qVC7ACebBh42NwrqCH/WUg9fwgw/arvv60tEQ2
+	QGe/UbH61/48u8oLm/7l0bgaJMtrXNvT/5y1/gXHC8Yl80OEDudkGuyg4D1crV7+bdoasVoLWdz
+	3jT/yHNKKgkXXPeN6eoWU7g0CxNBVhWG3mM=
+X-Received: by 2002:a05:620a:a819:b0:8c6:aaf3:cb44 with SMTP id
+ af79cd13be357-8c6aaf3cd9bmr1776741585a.4.1768915467445; Tue, 20 Jan 2026
+ 05:24:27 -0800 (PST)
+MIME-Version: 1.0
+References: <20260112192827.25989-1-ethan.w.s.graham@gmail.com> <20260112192827.25989-2-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20260112192827.25989-2-ethan.w.s.graham@gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Tue, 20 Jan 2026 14:23:50 +0100
+X-Gm-Features: AZwV_QjW2mQ_xeztIGqfilZWMz9KqTXvzLTRYEAqSaJ4no1YJpwzVkinmD1XMRA
+Message-ID: <CAG_fn=U46vT+gOAX1D1RxDP3oaduWbsRMs2RWG99U2ND+BM_Vg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/6] kfuzztest: add user-facing API and data structures
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
+Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, andy@kernel.org, 
+	andy.shevchenko@gmail.com, brauner@kernel.org, brendan.higgins@linux.dev, 
+	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com, 
+	dvyukov@google.com, ebiggers@kernel.org, elver@google.com, 
+	gregkh@linuxfoundation.org, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
+	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
+	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lukas@wunner.de, mcgrof@kernel.org, rmoar@google.com, 
+	shuah@kernel.org, sj@kernel.org, skhan@linuxfoundation.org, 
+	tarasmadan@google.com, wentaoz5@illinois.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
-MIME-Version: 1.0
-X-Rspamd-Queue-Id: E59BBC0006
-X-Stat-Signature: n8xnaejjyzjooia9wsn93m18i14qak7x
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768915313-370087
-X-HE-Meta: U2FsdGVkX19jysuwc121AG9GeHkKjOk8U8i29BxX0RbFakLFGU7WFML2KPl561V5uf2SUcNmoa+eVdOxuCXFTwmGDJ/C5Sd4NeHzho8b5PeCs4dLbqR/pbqdRzxgf668ynNmjW6eI37TKqIfdPYF/eoIDUoyaO6HM4t2Z/7BYq6E81WU6B8PP882Nvi9121zOPzKthIMzL7vJrIay9m7X7jWArMAuSQ8TKRzzvAFKrNMRHuLHdLSQtUeUXOCKzfyv0prJ3xYkpcZ7fGbEByGVwAe8mNGDSAUoSKm0UOkZ3Sz5mWzygdCSPkO0sz2eGZyaj+C+AvS7SnDt8IbrrnxRYYnaSN0GJSd1aYzofbh9BnZBE6nT4usOi1YOUhc8Iqp+VG4bSCf/s6R2W1SppGTH32SKxlco+v2k0g4RX9CXQfgsJtLY+Q70UORDUymUA5RFsCcHRvtIkgiJat8csXL5XnCd7bxWybDY4zacwxBjMYnIo3mBXL87ofFNe/LEVwaC1lYsRKsdqad1Aep0LnrZcFReyL7WewhyEPFx39e1pEYXG232YCViG2IuHpOPDCbVwDOF+d1qDMtlIlyd74iTgMjV8xdQ9m/BqoUCsjng/R5R5sFkYKqh8O/4mfZqFmS5bqtT4xsE1XjJMM93dmryUU2M3g2U5xBPq6ycoiMyh8wi9XK7kwO5oC7/fRZA+7OquSqWkqymOjPXCYO0KZdiZKLPLo+ap6we7Ezm7Raw6wDKPFQ9AgVMLSlmf0wVA0zOFKbfFnj3H4cDnzIoRp1v30pwQ4Gx52LOpQB5idmbl961BBF2xctItJAymPngm9yWbCf6iDnFUkadMsgn2sXpPuzo5CjfUwH2OmKiGGVDt4pis2cnGLUioh+zPI5//gp50xaQdU4qgN6Ms2P4il/l3VzVUzNySPXk0KI89rUPZR7rVV0PVTu5GyYcoVZXPmvKXNEPBwT9WsWP7biYuu
- EnlMgni/
- Vo8WQpBHNnBxc8rW3W9MoEcMVv08AZxbRebAk9maqPBHUrkav+729UAeZkf3bxMEE8pud5+4M/B538glou5B4dcFbnVJBTXDJeL0y77ETj+8RNpZHNSOQacm6VCO6pCd+eJfokC8YFTnFHKITIk7q26+V5h3uPtJ4iqL//VwbWSpEXqnjiJ8k0+RMhRcQONBwxJ66Mr0lpB3h4bwIwmy1hVb4R9BLtzG9wyNjYnihrKSNTPiR2v25ffadovjV9oeNu2QtxUcrfXtACCyqeaAv1rNy5TPh5knRZRIp04ahfoBLbmrPrvWcs/b0pdDY8lGqkIPj
+X-Stat-Signature: my7h7now18idfcgdk9zipozihjt9io68
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CD71E120004
+X-HE-Tag: 1768915468-898063
+X-HE-Meta: U2FsdGVkX1/sZCNyYcCpeQliMCB17kFqkRweO6tNOT0QGWcZ5oWs7+aGTG0N2cY+57nf4NPWelfl+qbZX4EDb0eKpiVQTHaNgUh+Qme1jWPAwPwIvkZPbCXILRnXVNpI7R83lBjeeF3Tajes/d9UUpCCHksYQWBcVgX2eNOmxUTQC/BhqhdF0bGj6KnYh5ItvruR7zBM/u+DCt0Ulac3Dp9C5Dy/qZ/HgAMoiSL858s3JQ5jQuDjvp8yPD7cRIpSsK8s5VJKUEdZ7skBxzUJisx2+YlJW/+4ackjDDXHqxagV083wuERcHgoMzZY4AlnaaRaW8zRjzwWRADS99x9au7Yaspp4TQH+74OL2en0Cgnme20pcsqhLWTB4CszNHhnXZ0eaVfTy2qhLk8gN/miAthrEzMnM2utLaAZyLYcSwUxECJpckPJfcdgbmx60ZoK/evmEezFJwqXZzJ1O0aqDhMtmkPjUSSRQkbvRL9BI9Mp+7FS5y9BgzkpVPcgFeul/y9zq8Lae+g8OyPgj/Aj8NZNTFYE6vgHrL25hieXx/cCZ38isZACn4gJf7mW7iOqWsI6Mi9+a571YV66k5F1rzNb/GYNjzjOsiXjnIREBFrDngNpWy6T1Refgmyfkk7cliOJAPUXXHtcI4Ylt6dmijxTuVCfEcBbR8kUIJ6tqu9X83dlNl9NOtuH+aDLEYLYyRLs8keGAcXWnb5T4EzpYe1Z6+DaUvOdF6031vEYPnlaS8JU/jkpOkiOy9vN+fmlipuNMWFBnWsA0Z/+MLyCzJL2iqYAgrs9CYmNtWuerTr/PHaQJqbKxHO74tkdqjvtF5w/ZhcrMUnO4xut44SWor75nwJEYH5gbWAyO0itZNVksTA43iz+q3K4ojrRXmxNuhQydr56XtdZzU2XAjCNlLMxZDJisAtTm6mjOLaQwY0rr8hexAjJLreJ1t1EN+00G1pWziRCVd1eW8s6+a
+ x68PR7Gz
+ DyukF3n9b0Q/buEBK5mJVEwu38kBrfWaRhdqCZChB6ROxgITRsqTrIqfddHTocSbkDWyVqRZTlanJaoD1R8flnWwyDbr+qvVb4kRiDUzbJGS/AZi/IZZZypHw0nm52/qw+XORXq3qvfekuj0g9oa/gZQSy7poXW2umNZGT1iAc8YW41FbEPCSzQVe3PDF0NB+gHEtW9sFeiS9f593NoGTFhhwyXyy6TwM6gpIbUNOk6cSV7m0OjItw++hsOE6MqoC9d3q46WkgGj+2h3ABhYTR8KpOo40M0UTGRvRU1ui6ITDNJcyBMHPIpsgRWFWBU/90toayWFJvDm98kU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,44 +148,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-01-19 at 23:50 -0800, Christoph Hellwig wrote:
-> On Mon, Jan 19, 2026 at 11:26:19AM -0500, Jeff Layton wrote:
-> > +  EXPORT_OP_STABLE_HANDLES - This filesystem provides filehandles that=
- are
-> > +    stable across the lifetime of a file. This is a hard requirement f=
-or export
-> > +    via nfsd. Any filesystem that is eligible to be exported via nfsd =
-must
-> > +    indicate this guarantee by setting this flag. Most disk-based file=
-systems
-> > +    can do this naturally. Pseudofilesystems that are for local report=
-ing and
-> > +    control (e.g. kernfs, pidfs, nsfs) usually can't support this.
->=20
-> Suggested rewording, taking some of the ideas from Dave Chinners earlier
-> comments into account:
->=20
->   EXPORT_OP_STABLE_HANDLES - This filesystem provides filehandles that ar=
-e
->     stable across the lifetime of a file.  A file in this context is an
->     instantiated inode reachable by one or more file names, or still open=
- after
->     the last name has been unlinked.  Reuses of the same on-disk inode st=
-ructure
->     are considered new files and must provide different file handles from=
- the
->     previous incarnation.  Most file systems designed to store user data
->     naturally provide this capability.  Pseudofilesystems that are for lo=
-cal
->     reporting and control (e.g. kernfs, pidfs, nsfs) usually can't suppor=
-t this.
->=20
->     This flags is a hard requirement for export via nfsd. Any filesystem =
-that
->     is eligible to be exported via nfsd must indicate this guarantee by
->     setting this flag.
+On Mon, Jan 12, 2026 at 8:28=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmai=
+l.com> wrote:
 
-Thanks Christoph! I'll plan to adopt this for v3.
---=20
-Jeff Layton <jlayton@kernel.org>
+> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmli=
+nux.lds.h
+> index ae2d2359b79e..5aa46dbbc9b2 100644
+> --- a/include/asm-generic/vmlinux.lds.h
+> +++ b/include/asm-generic/vmlinux.lds.h
+> @@ -373,7 +373,8 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPE=
+LLER_CLANG)
+>         TRACE_PRINTKS()                                                 \
+>         BPF_RAW_TP()                                                    \
+>         TRACEPOINT_STR()                                                \
+> -       KUNIT_TABLE()
+> +       KUNIT_TABLE()                                                   \
+> +       KFUZZTEST_TABLE()
+>
+>  /*
+>   * Data section helpers
+> @@ -966,6 +967,17 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROP=
+ELLER_CLANG)
+>                 BOUNDED_SECTION_POST_LABEL(.kunit_init_test_suites, \
+>                                 __kunit_init_suites, _start, _end)
+>
+> +#ifdef CONFIG_KFUZZTEST
+> +#define KFUZZTEST_TABLE()                                              \
+> +       . =3D ALIGN(PAGE_SIZE);                                          =
+ \
+
+Can you remind me if PAGE_SIZE alignment is strictly required here?
+
+
+> +
+> +#define KFUZZTEST_MAX_INPUT_SIZE (PAGE_SIZE * 16)
+
+Right now KFUZZTEST_MAX_INPUT_SIZE is only used in a single C file,
+can you move it there?
+
+
+> + * User-provided Logic:
+> + * The developer must provide the body of the fuzz test logic within the=
+ curly
+> + * braces following the macro invocation. Within this scope, the framewo=
+rk
+> + * implicitly defines the following variables:
+> + *
+> + * - `char *data`: A pointer to the raw input data.
+> + * - `size_t datalen`: The length of the input data.
+> + *
+> + * Example Usage:
+> + *
+> + * // 1. The kernel function that we want to fuzz.
+> + * int process_data(const char *data, size_t datalen);
+
+Maybe we'd better use u8 or unsigned char here for clarity?
+
+
+                                \
+> +               void *buffer;                                            =
+                                               \
+> +               int ret;                                                 =
+                                               \
+> +                                                                        =
+                                               \
+> +               ret =3D kfuzztest_write_cb_common(filp, buf, len, off, &b=
+uffer);                                          \
+> +               if (ret < 0)                                             =
+                                               \
+> +                       goto out;                                        =
+                                               \
+> +               ret =3D kfuzztest_simple_logic_##test_name(buffer, len); =
+                                                 \
+> +               if (ret =3D=3D 0)                                        =
+                                                   \
+> +                       ret =3D len;                                     =
+                                                 \
+> +               kfree(buffer);                                           =
+                                               \
+
+Please ensure we have includes for everything used in this header
+(e.g. linux/slab.h is missing).
 
