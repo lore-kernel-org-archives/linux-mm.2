@@ -4,296 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFD5DD2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 15:11:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C536D2ED0F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 15:11:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4793B6B0436; Tue, 20 Jan 2026 10:11:45 -0500 (EST)
+	id C238C6B0439; Tue, 20 Jan 2026 10:11:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4436D6B0438; Tue, 20 Jan 2026 10:11:45 -0500 (EST)
+	id BDB846B043A; Tue, 20 Jan 2026 10:11:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B3066B0437; Tue, 20 Jan 2026 10:11:45 -0500 (EST)
+	id B11DF6B043B; Tue, 20 Jan 2026 10:11:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ABD96B0436
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:11:45 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD99F59B47
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:11:44 +0000 (UTC)
-X-FDA: 84352681728.27.4151D91
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E8D4D1A0018;
-	Tue, 20 Jan 2026 15:11:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oYgRuDzL;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="BwP9u/zX";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768921901; a=rsa-sha256;
-	cv=pass;
-	b=D2TPldG3L2l8N6SvYkNjBWhggI49jwYG+azFtdOeBO4NEbtio8Du4zPb8THjlSJ3TUf2u/
-	O76fFaOZazXF6kCUW0PN8boZcPnTKa7ay+rrA0gcWXg1Wvglx+4/8znpmqmZ84giKQBnTl
-	6iPus88E//SlYR5fZJkQvG5VywUQ9Tw=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oYgRuDzL;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="BwP9u/zX";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768921901;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 99C356B0439
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:11:47 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 289488C0D9
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:11:47 +0000 (UTC)
+X-FDA: 84352681854.26.4F1AE4B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 67D4480005
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:11:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pqNBI0K4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768921905; a=rsa-sha256;
+	cv=none;
+	b=x513JkhYehwA9C+kI0OA3NF9avFc9qwp79TClOgLxNJxPKOMDpMz5PgJAnO4goo0bKO+U1
+	ZuT0XnyqESZBgaUrM1h5lxAN8pWcwzAIG7erGlj1W6UhUfCyBXsh4BuW9D+zqstTHfYd3L
+	eCq7X4TKjV2DKKIZ/iJ93tE/qgmkJXY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pqNBI0K4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768921905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=50hrOELBDbhERj97OWSU8+qfureZunBOSOIB2UVQlX4=;
-	b=GIUjhEAwkcoew+gswCDF3QyhiUn09cbWTv5Q/ogP/VnI1hFvpfYDGNNzsabwXWEQlULRGm
-	I3q1dBlsVLOUVJ4Ayd1lHUAHhoovMbSfnESLUjz+bSgHduXJq76esKf6RyA9K1v8NN59DL
-	+AgQvUyJ/LCDtnyBwEXbYt3cY1LGaHU=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K7vHXT3523936;
-	Tue, 20 Jan 2026 15:10:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=50hrOELBDbhERj97OW
-	SU8+qfureZunBOSOIB2UVQlX4=; b=oYgRuDzLp6+Gp0ugftv0ubqbAtgltSJ0qT
-	qkrM8RrwlVy92nMyFw+9e+NEKCbIyU+CQhwhPAXg18QTOPPfES54d1HlX0AJLJS+
-	mnixTSxrN07ZSOWvbd/8eijc9oJCiT6UM3j7r1Mafz7sroajivlrxh9mwXNqwQRz
-	En6NA1K45pM6/3GWc+XoCwUIDtvcvNOQX+ww3rR+b/iIlEVCPHY8qQjiMjTOYDZj
-	ghnxagYNsAdiYHDxOJv2gY7WYB0eW8+Rpj0qbi0Rn1nWvNUsJfM0E2VPxFAl34iO
-	tAPYDkrj9OAx05fExhztzKw/QjD6b6s9AWzZuQlwHEZduZEaEMHg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br21qbu86-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Jan 2026 15:10:58 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60KF20Nu037842;
-	Tue, 20 Jan 2026 15:10:57 GMT
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013052.outbound.protection.outlook.com [40.93.196.52])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4br0v9sg9x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Jan 2026 15:10:57 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YyzyI1e9SafuOKYrPadFI69L/rKljUGx8FXFlytTRhgSwlSO9uAR21Ptc8Zn6RjMAL1ZVKV2zpHjcwDEzs3ZLCexWTYDNFN3QffTIDfXEF0bBeYu6B5gPol4nhnl9X0NKU1YIGuw9Jm9GTCnQG4t0NnuNRDr+5dhOwwT6ugFGFUQu5yg9NO2kXLcj3oDQ1QKmTQzhULoRdzIt98t/NCk4RT/W87SiJu+42JOmC5VcCco+o9Qy4Mb+Sh3O266sc3ksfsSU2dDs7SCCjlUGNtmYEkp1bbkelOx6eZ2DC6YhrVeok1IYF+/TMgRUqI3pouvTshh4pj64yYMDnQNPNuYlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=50hrOELBDbhERj97OWSU8+qfureZunBOSOIB2UVQlX4=;
- b=EOfrHhr+SBmRqokREx5THkOrzq0yZL0XcjsLVhhqyNpXIztM3/X+4VPPWbBEISAc5wgLBVEmiBP8j+mFhg1ScQ7vkf6RijfPX23A/nSNZIv7V0XCJrqd5KgfzYKV8XHShWgym1kblOwZAruBOcxIfipGqX/woBaddwpoVix7fw5FQCZl9hjJ5Su6vJ6WD/3vSkHEssQEZGnyj29N5QMnE7k9IDDHmI8PlESRKmNdtyR2Ys96N25SUI/ws5BegJX3Q9sWoPhhCykp5rDTKJpVTqQr+X+sZwe9lUmJQCNCakPUKrWtntdE/H8PaZZsISr+eRY+3nwRpiSQULQr6d44JA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=50hrOELBDbhERj97OWSU8+qfureZunBOSOIB2UVQlX4=;
- b=BwP9u/zXfp0PUgGSjkZBKgrSESWiQcUsrtkMQQ/QWKiRBIhmmFO7S+KQJUV5oSrrBS/fDIid1pDxIt7G+GoIYLcOhJhvek3X2RH/uHBKEfphit+PKIcUbkWV/+c6MKJqVGDRO3SojnAgSPQxaGQz0OghnbR9zFVkstegkUwEFs0=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by PH0PR10MB997595.namprd10.prod.outlook.com (2603:10b6:510:381::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Tue, 20 Jan
- 2026 15:10:52 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Tue, 20 Jan 2026
- 15:10:52 +0000
-Date: Tue, 20 Jan 2026 15:10:54 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-        Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Sandeep Dhavale <dhavale@google.com>,
-        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Babu Moger <babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-sgx@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, linux-erofs@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
-        devel@lists.orangefs.org, linux-xfs@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH RESEND 09/12] mm: make vm_area_desc utilise vma_flags_t
- only
-Message-ID: <488a0fd8-5d64-4907-873b-60cefee96979@lucifer.local>
-References: <cover.1768857200.git.lorenzo.stoakes@oracle.com>
- <baac396f309264c6b3ff30465dba0fbd63f8479c.1768857200.git.lorenzo.stoakes@oracle.com>
- <20260119231403.GS1134360@nvidia.com>
- <36abc616-471b-4c7b-82f5-db87f324d708@lucifer.local>
- <20260120133619.GZ1134360@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120133619.GZ1134360@nvidia.com>
-X-ClientProxiedBy: LO6P265CA0003.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:339::10) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+	bh=CUtpmFDmLNiTFlIK3X8Uw2GEumNSuKgQOqkNqnM02+Y=;
+	b=Df4Gz/liehM5xHQfF2ZYTkVyypCD585hMAQZcFNcjdaZlDTreP/rKqL4guw5QxsdYAm0Mf
+	H7yp2PvRGO483KUgOhizGFGFrGcWYX/Gt2LiMlBN9FiTXYzjdwe0tcyV7pIVPK3JMJkhNG
+	GSFPSfQ7axjsBU3Ex3ePNJ0uw6TP7rY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6DF3441846;
+	Tue, 20 Jan 2026 15:11:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79283C16AAE;
+	Tue, 20 Jan 2026 15:11:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768921904;
+	bh=L0kijvKmmnnVJts9P035SvIiJZGDcTy18QVATluzDTk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=pqNBI0K4mNIsrekd8AQKjzjwr7TpaE02BvkUwCFkvouaKATK39xHpsYYUwhlDz/F8
+	 xvMXfZuXW10ipkYaIXa6VJnj+Xrb7tHqCH6m8QGJd7+1BY3+qrnKOO9f2tv38MyMeP
+	 R3XumRvZvWK4kZjucabXR6uQLPsS/cG/QNj5PrGRqV8pw4gT86SVseb42WeazYWfE9
+	 6rdi1BynKj+Iht7MSeFAG8sPuI6zzH4srLDTx51YsQ78T8l3+pqdZDUUP6nqwDmLq1
+	 JJgZ9YoaaExJx7qmFJqPXm5+pD6iy9ak7d8jOIgP7BYIdDhU2edmZDtbx0TTA8E12o
+	 k1hkwtG2XrgEg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Breno Leitao <leitao@debian.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  akpm@linux-foundation.org,
+  graf@amazon.com,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  ricardo.neri-calderon@linux.intel.com,  kernel-team@meta.com
+Subject: Re: [PATCH v4] kho: validate preserved memory map during population
+In-Reply-To: <aWx5qHHYEXJXNuXm@kernel.org> (Mike Rapoport's message of "Sun,
+	18 Jan 2026 08:11:52 +0200")
+References: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
+	<jixxiqeajngwox3nh2u3pwf2rivhmqxxmpyttqxu32pixshyde@4jdn5jvg5hvk>
+	<2vxzo6mt7cl3.fsf@kernel.org> <aWx5qHHYEXJXNuXm@kernel.org>
+Date: Tue, 20 Jan 2026 15:11:41 +0000
+Message-ID: <2vxzv7gwe2tu.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|PH0PR10MB997595:EE_
-X-MS-Office365-Filtering-Correlation-Id: 918fdbbb-2b7b-4c03-ef72-08de58361a3b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8ShsyOO/gEOPFKo7DJVgkG0eZFbrGDXXe7/VitR7Vv8yyIPxnc0ooEkxgFCI?=
- =?us-ascii?Q?/lMD6wGjvXA33trx6OkbaDOYnJ/rCwMBnwLZ+SO2g1ViMA1pqcJO9aZkAnES?=
- =?us-ascii?Q?O7/v0Pi7r3ibBT+wtWTlhUTVVeqC+YcUpOm2ajWidAYdC85ghYIFn5kszKjY?=
- =?us-ascii?Q?AwX+lLcz495bBoPR61FRJJTQejmvm6jWAxMifVWfust9MT1RkthGD5GDK64D?=
- =?us-ascii?Q?9qQW8XovwJyjUmY08dnmLIn3EovdcKnQOVfoTvtPIHT/KcqiUgGkXxsF7AAD?=
- =?us-ascii?Q?LKKSGMjEJmanLktR92CBiWV17oHcNTfrTCKS432ETOIvbIV1rVL2n5dwk+b3?=
- =?us-ascii?Q?QE3i5QBbE9OHcTNObO7mniA6Fiq66kSE886mUQY03M+TsWGcdmROH9UXeXOV?=
- =?us-ascii?Q?pxTZ8NhNaz5FzCzDqfzi2CRKZU0KRgKFTwIWGLaFcL1g5wr7TMWkwbYTIbn7?=
- =?us-ascii?Q?I45nycXdYVp88CcWq6s6xoup4YjWbsddXoc+ERuUXSFc8OdFu+IN4wJ34T68?=
- =?us-ascii?Q?WpP1XxwVt+dRsVrZWgf/9zV5SeMCCyIigouihSXkGbzim3mnfg8BTdkHs43/?=
- =?us-ascii?Q?QJdcZ2NFlzbNi060tRfBjeIscV0Ec6CTTbVg1GvySTbd6T1ARrpCwMrXB8iM?=
- =?us-ascii?Q?HdKDXcl7fbFr+ITcAHc2BzyVEqcQeCXD3AaJ55k5i5n5RwygxP9PRXdKtGjm?=
- =?us-ascii?Q?yq0oJttoccfcqyF75XCK7iZ8ziDQ4eQBRz4jhrPzySRu+kUaJyViG1et8EqD?=
- =?us-ascii?Q?y+OoP31f+yayyF+pGOdOwib6/1GxX9Zu2iuZFpy9AtrVWI2ybi2UqM764Hgw?=
- =?us-ascii?Q?+32g3w+z+5JwPcaXBNY4RmRc1oyPOgP5d+808A3wNgrTksi6FtLQfxwQ5bxa?=
- =?us-ascii?Q?+RowVY/6NFaB2CfvfeIvcNmhvB74N7KrETivADGmB2XFTM9Or8Jeg8x+3ASs?=
- =?us-ascii?Q?POCfkL+lxaMrzt/Ao2qF/Siuer2Wc0rOvhKCZOZQRh/xrjWfkDW8TjMyiSLQ?=
- =?us-ascii?Q?BfV/Fhm7RrpjrN2cf3h+lcNHSauu5wC20T1/Dq31+Q2nA4Env3Q7hJo4Ajac?=
- =?us-ascii?Q?UvGY9Gkmt55xJC1qCZfFYawlueqwTcHK/lgHVV6MJpHiaoAy+yTMSPB1Ny1Q?=
- =?us-ascii?Q?POtgmUGQCCaBt07VNbTpD93p6p675uHPg2/aXUVdEGjXIAoADMrvVeM6YfxG?=
- =?us-ascii?Q?Z772PHBH4338R0+nIRa8XYOxsa456olKAjnFzydwosJKec0hw+Il3b+OOU4m?=
- =?us-ascii?Q?m1UNMlrEPaUFmVNM5iE4OHPFvq0u0p7VP4SVYdeJ2eMgynal6CIM8exAHa79?=
- =?us-ascii?Q?7f8X64HvaJkGI8k6XxSMWgH5rnnZq9OekLVSYWAtB/dnNHPtEGfznQJ5rMgU?=
- =?us-ascii?Q?DxWoNMQKFZdBzARV5Fd6owMV8KfSi5Gn5kWavAgilMQWcJr75KNy1VJf6EPK?=
- =?us-ascii?Q?LyYeS0sIxEH+5hFhHsiXCZuiUoUSLxen5UD8iJvu79TBwtJDsBgFem+PFri2?=
- =?us-ascii?Q?UmDOr0upxC3ohdiMtVOgKXESWRRp25Al9DW19hkm3LDMV5j6jQwYxjUzaEs3?=
- =?us-ascii?Q?4K3euMaOwBa82vzw+rc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MoKTjnZqwdNT+lKaG7KIJkqnHcNJdOrIMR2ndWLiysv546z+xw8NBr9PBnbY?=
- =?us-ascii?Q?owB5Z+SVX769q/WNCgh+wKbdAgwcq0XRui2thmi/bx5FsyqR/E4sYYPCLFUw?=
- =?us-ascii?Q?8o3M1xe2ctE8EryGInzt8m5ujkpGyW8tApUCbb5fumKYK8b6mKGAJSTpwhs0?=
- =?us-ascii?Q?/IW2wvgSUYw0k4R8kFA7vyoTL67fZWbLW9W3X+0poMdif9QWpFxJVUAMdaMA?=
- =?us-ascii?Q?bqurtsHTIqVJjG7YOhpytFQVTzm+YFHr4C9qv2yGYyF2UVeulK+sfupp2YMv?=
- =?us-ascii?Q?tdPx1P4Gl0nMmgBtYTITh9F0V6NTSHaQd9pZxGCxj5v5FhYtDiQGc0imOEas?=
- =?us-ascii?Q?iF+H2fyHWnI2Tqps53Tf17vAP+gLdH2h2Ar8W90j5EqS4RNeerP3Ob26R3V0?=
- =?us-ascii?Q?FzBOFUNlp13qwwKBlD68Uaf82NDHEBSnT6OVgMjQI6X14kyvuQNbeqSGh8EO?=
- =?us-ascii?Q?tMOz23qqhdS/VGsJl2bRvxXusTKnvMT8dexrYYRHCOjL/OinG1mLZHIV5eD/?=
- =?us-ascii?Q?t42xGpCkjGvt0AcgH4HVvkNlr//j0d19/w/omNpOxXkQrWobd0OHsJNY1LZv?=
- =?us-ascii?Q?3Wyx62cdkqjQs4jCbWNkU3TMnKsx5fxPuEV5B+vVI1EJvhJdbX7AE7jF4O/o?=
- =?us-ascii?Q?O+ExwbQ5uxuI9aw40gQOB8U/bigdoK08mjiTwgKiI0jKZbAjQC04HYNtAgyM?=
- =?us-ascii?Q?Y1kS6f42HV+C2WRTtNKil6x1XC5170u2wh5gfmFy9QwSX35ybQbcun6Mhxfo?=
- =?us-ascii?Q?Hfq3J4R9gXDgpqEUMr+0SZFZ5ODq8njW+gP9tlQsNu9kM0u1HoOesreqk5i2?=
- =?us-ascii?Q?UlKUWi7QvAYCYSWHa+6P21/hR0axn8eB47R6OJQn6EhSCG6+aawPpR7cjack?=
- =?us-ascii?Q?lzwq7cx0rx3nsC4Gzv6UTAXWiBqD0chP1vxZ2TfFbK9HlvSMF8Yj+WhQfqlC?=
- =?us-ascii?Q?YMd+n9X6Fk5bGqLCoOjMahvjrPlqxjsI0liPGwSFd+5crMJ6SF/QN9OgajU7?=
- =?us-ascii?Q?qABtje2LoMZ84WRwfAbBrvIXEsblbqaEqFBZ4xpJJKpgg0ejDvoKXCsFu7qf?=
- =?us-ascii?Q?+BcwlsbFNmoFw+pBCIISALEgQ8R9cT0e9uW+MZjoPYyrm26keLSY1FDbHV6F?=
- =?us-ascii?Q?mGZlML5APxQqva8Vm0jPq38Zk6j6sqPRS9YNhW8HpaZ8AHSXusky1TJhmlbX?=
- =?us-ascii?Q?6lYQ27xZzz38TxD5mI7+GPmZOaJMTfYhEO2f6zpilfvaaH5ai6GxY6fZY47C?=
- =?us-ascii?Q?Q+0wHTxCpq0WBbfUUSWP47IItvK61geaRgX2rk+NSt26X5zR2lYvScWrriJX?=
- =?us-ascii?Q?7udAjUed8+qbTlx2+EcyJj8jP+wSGGJ3jyevxdEX69JLtE+JiREx8sTBRsk+?=
- =?us-ascii?Q?FGQRW2dpSvPPj2ZJ451XN+MpyfM7/tAPmcFUXIrhfC2MFgSR/uc98WeX/33x?=
- =?us-ascii?Q?RVBNDZTxc8TfSZAGeEGDP6EQvFacpbt/JuSVcNt1OQF6z+cs+kZYq7JWXUHG?=
- =?us-ascii?Q?wuLpDHV/Hv6mdD+eAV9x+s+OA/YzLCzYRqI8qd6es9w6aci0AZEz9kbMFQXc?=
- =?us-ascii?Q?uWvpjixtqmRs4qMP4F3omZXGONT9iXVqnev3k6zzt/ELA68jypVExY/5f13N?=
- =?us-ascii?Q?jgmlFUWCPCYUmTfJIVGZBbB6D0TIYZbDgu/ghY29syRtCsk8vv60C+1X8cMP?=
- =?us-ascii?Q?T0PunNytDcgcozWvJM9D/WTFebDbMt7dJ5pQ1bJ/sizYdMHa+dhgIes+v0Xf?=
- =?us-ascii?Q?6C/5j1OsQ3k0NQDViE0nTWlN37xQLfA=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	adB0hw8chaEsxsWsM7XtJhbPEAuyFaHE+863nVOcYfqdAKI67VvZEZuCw3/DnzhIoZctgk/xwjk+P0Do+GSJNHHQ6XU75rA++aKObhYHRuKWT/7z2tVZdEEnCnM7irVsrrAV8h1YQPyhERKIIcSdfJzIoCYV7BZHiQKNZOv6zrHs4uS+cw+ceyCNgIxA97oePZeTmAg3IrzWv0McZKUPM7QGQZ9OO+9JFqlEzRn6DN/WPp4otcuO4BgMWeyzWTV7u14BK7R1uQK0HbP8TGdvIwf2f7kSaUDXg056AZoaU2qZtg0pirYImTaS1AG6bo1aTgi/EcfcSzG3hc66a0LYM6F0Yo+a0ERX1auI4UTHk+sCY0XtwTcqsNKPQmb33JUxkbn3pwZhWvd8i74dRhc+BLce6njiafiluy4vbBF8Uog2jph/RS0znDNqmIpWafRjc6aHFdjEByT2xkDhKWyYMwsRb0b4rpoanstBm3Kd8350ZqDHWlKjC+KCXyFFbKQIjGc3jRA4pb9q7iuQXLN37hO5xmvmy2sF3gxisKzNr9xrFf69VhNUDkwv0jC17+Bw4QUeafXpfgXSmFoCnZkdIjsGHanSUa4RRgB/3sXqnos=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 918fdbbb-2b7b-4c03-ef72-08de58361a3b
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 15:10:52.5978
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d6buiMPEgkTIDQl2u3atTRb2RhSYR+JFGtM9Wq5RIdcu4Lf8uM1URyfKcjpZcaLOewPncS8SPlbSpbz/MC0gDLtlqR7nWVTgTz/Aazlzf6Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB997595
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-20_04,2026-01-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 phishscore=0
- malwarescore=0 adultscore=0 mlxlogscore=985 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601200126
-X-Proofpoint-GUID: CnkwTqrA78BkfgcC4I1v5GaB9JIPPlmg
-X-Proofpoint-ORIG-GUID: CnkwTqrA78BkfgcC4I1v5GaB9JIPPlmg
-X-Authority-Analysis: v=2.4 cv=QdJrf8bv c=1 sm=1 tr=0 ts=696f9b02 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=NbbQPaNqh1ZckODCHBwA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDEyNiBTYWx0ZWRfXyHl3VEbq+f5m
- O2Ufvb+UDZ+A4EJntc5F1uz9RHRgZ9BWeaqn/heiXyh0ZHsslp/9XvQH5EI8xprcjS9Cz67Gf76
- Gf9EhV/kH/25+Wg+lwkUfGjbckHjxTm420hiA/JJnq2icLZExoqv1aQFJEkXHUxekoSMqkKR6qE
- f7x9+MrJ5barOQPt9ziybu34QAvIeXpN2RPLlx8Wz/6S/jX6Ejb85Jbimo/KOoCRvTKAJdmwq0S
- MJZl5ENKN3lmzoEi6wz/5FXPE+cGBtgdd8gFroeLw2lfhbSuUs6tT4rZpyavzXhtvlOzJJBUE+f
- B57XRe7GyeNxuSwNntK0rz0LTIHSDRJeyw03ndpEOGFFTBXSGAO2fXUNrk5KkdcWgNrHEhvphz7
- LK17Iel0IqGzv/BMEqKYJty9qEOJRpgYuclK6hp5q7f7254Iyl7V6+GacI+xL99YcDp4bvcvRAw
- xJMtJ4gtOx34+qnOO9w==
-X-Rspamd-Queue-Id: E8D4D1A0018
-X-Rspamd-Server: rspam06
-X-Stat-Signature: uaze96guokjmjpnn1fdsmtxzq8u14bkx
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1768921900-526731
-X-HE-Meta: U2FsdGVkX1+o9Q3Bpe0fOO6Eu2Ckz0pMqs3gg6O0Ec7Nu+j93fEvOJ7O4tcptvuqRp6KqogOJYbu7CjMuTTUvII0L6AFU3fhGFa2UJ0A1zaOIx4iXxCZhLShZ00jX1LKW6ggxIEYs+a9/pv4GajFTFtdqmbhPLwSsMkj1SOlXlovVRNpkfmRrhkAoOm1aAGsfox0uPJcFEnW7FIW1284ffAMWSI/X84l306u2Hgt3NwPP+WPdcxcWYtNTEXzlONgWgUONyQOsM2B1rDhisj5pkIRX+WlvwUGXKWyLSPCpW5SLB3wpWjHurCZC1bf57m1gjLojjSRK+xT10gBwJpMOpAdfFu7o8G11S/9su0Zy15tDoOF6+aqSSp6Wb+cjp765wt4eEf6CVeql2wBYG3uEeFzvHBWdakfYyWTwq/SfJtae1mW+E4EUI3ts43m6KzJQF5La/403eS6cve6PfrkhMGOJfs/hY3McE0ztIlGTzxPiXFFN5oNN3KayFj4buOPqLANmdBxGSENA63QomuF7wMBSn5eGx9GoQKotuXG/6KbE9YIRxwx6Ug/yTs+quMNR5V5LYFZdl8o1D7PFJnuXk0gj7FlIclFRqRjm0B3W/EIixmiWeGlJEluICBj0fbfyt3pweTudJtea99Q16LR1NhL8fdk3L+0TnfjzLA9FRAiy0CXFfthgz3KtFuILzAcAN6a+gUTg323wi2U1SPWoIY/7M5sYloGAP8X6cawpyAuppX4SOt49BHboxZLbM99ujqgAXwBUCaAu9XQxLNYbWM8bHYNbmZ8AxcwHNvrug7FR8WNjjmExE37RrGtwRY3JbjT5rKoE5oHzn5C47J6PrCWErki2P02Nxm4Pn8QUkUdlAcr7Zl6FemDvuui/Tog6yPGhQstDbYMXV1JUnsUadjlTTOmFk0P2+dcX4hlwuK3JtUTbj0+OHhNMymiONVK3GolSPoMFBudUTEYlA3
- 3c/+wVtf
- 9j0mP8s8ACjN5bM211GyMGCn96Ja5/kMFgU8ebQkhQVbrh8NLtJOZkloeRx+HBwkYMGkg+yd7B0k2ND1AYzEGLe6dfsGE+Cc9YQOvMBDk7yhQmEM9ewgq2dqWQw9wFeU5pu3lj6CWENLh0rzSiXzcTZVJqrvlTd/vWLzFhKmB9F28/M4l6xSu23gn7ZI0R0cOXliHp6qlXhzWTTdNpg/rDuos/4fL0VsF1Yd+ky2cnG0kz3nkJcxvmj/Pt4g/pjAzs88cTuemfxMlUFogoAdLMU+3SwuocT41/HXFRL+m6QmTrKUmDtgOFP3UC84n5H2INnDu7pSCtUj+JdmRyr6blZZFF3EonqSrbTl6jS9j+wBTleSH9g4BnTumj1OjZ59E6MevJ9MOptX/ObspR69TPf8yHCHj+EL1aV9Dlh8TOi+qZozxGdyNkmU9249LOEbNweqWVm2AAF9mZov7IgAdXSdiAmL821PcK1QHywDnbnx9H6wAbpiBih9XTkutlYAV1tdojTRWyYNP+3QR7+bMUp6Csml/MeT/CLi5Poeb9AHS/rPup2X4j2Cds1/W2BNge8qolCYI1EU/kruMAyhSu5+3QVCAZ4NOak40ZqUccAc45U2nfKS4J4qaJYftbtukMvkFyioTRyfaej5o0UYVSQ5C53YBSROKi380a2sIimr3lKKovmeApIXuHZij4InotyUJBUgjuvNnQeGldy+YwAuvdZGNVh1HxxTCzSmTTyyXHoo=
+X-Stat-Signature: pd59z7yd3raiiupk4pd5nq8d445y6wpr
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 67D4480005
+X-HE-Tag: 1768921905-856107
+X-HE-Meta: U2FsdGVkX1/dqAGo42GK9HfhiJDDpdaOBhjccYl+h95vU1Yo9ME3ZXDFMlvNUiOCD+bdqvbHNIhbs/mr8v9nknP8KyY33QZZKBbqbQ2MU9gB06ZyMK6IOdWfQMf4hJBJF8ZEQCiYy/SJc700bLnz4A+XM52i9GWh08tUVvPThMA1eoUhFGD08ouds3HbQ9NkEDqML2Tfs1xV4EnFd2hBmPFF1QF8BoOk7fvHEUQ5CBcCuJU2lo4vtnq0NGmU7hnBRKeHr6eJWC8rJOjN6BmLpb04jGsvHqEvRIeq0u3lSmoVaiT066s4/bGGqaDv1anZm3HfuZKYWkyp4AQ+61KMjFVU4EFmJmt33TFyenIIIfzqenKFhD5WgJEolJx2VblOCvKyAC0LF+jGGCj/cYIBhWRHRVps3os30hJ545UqCQdGngliobJfiuJMbmJYhOEmCc2JvmRanQkhRTg+2OFq+FgtvqSu4HLL/01hvjQLCx/7cX4TSrpvwPUdyIFc0o/N9KsIykBSoIWIai9sQN3sTujPnPYRpiTBeS5bguc++mahCl3eywMa7/ZdOWWzc/d8LbhWBm4LiUMO+KxdYItaTeC6U/RtWEXTW00thytEWuVNAcjOVotGV8765tJG6WNyPR/hbUC7niY+RjcDnxAtsE1Ry/E8mmEgfJZz/nZSaFDHdxgdprBTwAHtMGYX2DVoQPNxZKh4DlEt3MTGZH3JY9fkBrEp2zKa0otjXDx+ZbvPmRlooO2fOK0BaPcY7Er+q1lhlrt/N8CzR6EnrBL3GyvSJw326QS3jow2NDCQcjaoEB/zPI5ghTtPR154eOEO6ty+e1PUkEGgrZObFMGKVpzjJAvpI93BmQwfeGnozlldU8xENyb2Xl5C65KPEOy9lvzfL1ZVy7hGJFdE6u72UpgnzMrJ69UUNtOwKf7FSm8FvgD/9L0nikgu2juBDdFxg33TSPows0ZW8m/nkUa
+ 6Dr5nuNa
+ cKUemAOquISg3Vzx2LXNl3g0DyWe24s56vskyFXtpX7lePygHq1zU6Tt0pn2BMfAmKRuX0mT5pW9qOjk1t87TWJvjwqYd9o2KSbjxUGAoTpE8MJ4sdvxjvh/Ydc4Ra7QdtsW9FuPtXtxPofh0diFEE9Z3jgl/SggKTS4n7mWcRN7NQh7U1/Rf5Ao2a+haIj+CTwLJZcWiyivm9NYRKtr+A+1GUA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -302,106 +97,270 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 20, 2026 at 09:36:19AM -0400, Jason Gunthorpe wrote:
-> On Tue, Jan 20, 2026 at 09:46:05AM +0000, Lorenzo Stoakes wrote:
-> > On Mon, Jan 19, 2026 at 07:14:03PM -0400, Jason Gunthorpe wrote:
-> > > On Mon, Jan 19, 2026 at 09:19:11PM +0000, Lorenzo Stoakes wrote:
-> > > > +static inline bool is_shared_maywrite(vma_flags_t flags)
-> > > > +{
-> > >
-> > > I'm not sure it is ideal to pass this array by value? Seems like it
-> > > might invite some negative optimizations since now the compiler has to
-> > > optimze away a copy too.
-> >
-> > I really don't think so? This is inlined and thus collapses to a totally
-> > standard vma_flags_test_all() which passes by value anyway.
+On Sun, Jan 18 2026, Mike Rapoport wrote:
+
+> On Fri, Jan 16, 2026 at 04:21:28PM +0000, Pratyush Yadav wrote:
+>> Hi Breno,
+>> 
+>> On Thu, Jan 08 2026, Breno Leitao wrote:
+>> 
+>> > Hello Pasha,
+>> >
+>> > On Tue, Dec 23, 2025 at 09:01:40AM -0500, Pasha Tatashin wrote:
+>> >> If the previous kernel enabled KHO but did not call kho_finalize()
+>> >> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
+>> >> the 'preserved-memory-map' property in the FDT remains empty/zero.
+>> >> 
+>> >> Previously, kho_populate() would succeed regardless of the memory map's
+>> >> state, reserving the incoming scratch regions in memblock. However,
+>> >> kho_memory_init() would later fail to deserialize the empty map. By that
+>> >> time, the scratch regions were already registered, leading to partial
+>> >> initialization and subsequent list corruption (freeing scratch area
+>> >> twice) during kho_init().
+>> >
+>> > While trying my new patchset [0] on top of this patch, I got the
+>> > following issue:
+>> >
+>> > 	[    0.000000] KHO: disabling KHO revival: -2
+>> >
+>> > Trying to solve it, I come up with a change in kho_get_mem_map_phys() to
+>> > distinguish no memory and error, see the patch attached later.
+>> >
+>> > This is what I used to test [0] on top of linux-next. Is this useful?
+>> >
+>> > Link: https://lore.kernel.org/all/20260108-kho-v3-1-b1d6b7a89342@debian.org/ [0]
+>> >
+>> > thanks
+>> > --breno
+>> >
+>> > commit 5d7855fede8110d74942e1b67056ba589a1cb54a
+>> > Author: Breno Leitao <leitao@debian.org>
+>> > Date:   Thu Jan 8 07:44:08 2026 -0800
+>> >
+>> >     kho: allow KHO to work when no memory is preserved
+>> >     
+>> >     Fix KHO initialization failing when no memory pages were preserved by
+>> >     the previous kernel.
+>> >     
+>> >     Commit eda79a683a0a ("kho: validate preserved memory map during
+>> >     population") introduced kho_get_mem_map_phys() which returns the physical
+>> >     address of the preserved memory map directly as its return value. The
+>> >     caller then validates it with:
+>> >     
+>> >         mem_map_phys = kho_get_mem_map_phys(fdt);
+>> >         if (!mem_map_phys) {
+>> >             err = -ENOENT;
+>> >             goto out;
+>> >         }
+>> >     
+>> >     This creates an ambiguity: physical address 0 is used both as an error
+>> >     indicator (property missing/malformed) and as a valid value (property
+>> >     exists with value 0, meaning no memory was preserved).
+>> >     
+>> >     "No memory preserved" is a legitimate state. KHO provides features beyond
+>> >     memory page preservation, such as previous kernel version tracking and
+>> >     kexec count tracking. When the previous kernel enables KHO but doesn't
+>> >     preserve any memory pages, it sets 'preserved-memory-map' to 0. This is
+>> >     semantically different from "KHO not initialized" - it means "KHO is
+>> >     active, there's just nothing in the memory map."
+>> 
+>> This isn't true. If you hand over _any_ state, you will at least need
+>> the KHO FDT. And the KHO FDT is preserved memory (see the
+>> kho_alloc_preserve() call in kho_init()). So I don't see how you can
+>> ever have valid KHO with no memory.
+>> 
+>> mem_map_phys _can_ be 0, but only when KHO was enabled but not used. And
+>> that is of course also a valid use case.
+>> 
+>> We want to treat mem_map_phys == 0 the same as the error path, just
+>> without the error print. This lets us discard all previous scratch areas
+>> since they don't have anything useful anyway, and have a fresh start.
+>> 
+>> So while you are seeing this error message, I don't think it should
+>> break anything and KHO should still be working fine. You can
+>> double-check this by inspecting /sys/kernel/debug/kho/out.
+>> 
+>> So I think the patch is certainly a useful fix, it just needs some
+>> re-wording and fixups.
+>> 
+>> Some comments on the code below.
+>> 
+>> >     
+>> >     Before eda79a683a0a, the code handled this gracefully in
+>> >     kho_mem_deserialize():
+>> >     
+>> >         chunk = mem ? phys_to_virt(mem) : NULL;
+>> >         if (!chunk)
+>> >             return false;  // No pages, but KHO could still work
+>> >     
+>> >     After eda79a683a0a, the early validation conflated "no property" with
+>> >     "property value is 0", causing KHO to be completely disabled in both
+>> >     cases.
+>> >     
+>> >     Fix this by changing kho_get_mem_map_phys() to return an error code and
+>> >     pass the physical address via pointer. This allows distinguishing between:
+>> >      - Property missing/malformed: return -ENOENT (KHO fails)
+>> >      - Property exists with value 0: return 0 (KHO succeeds, no memory to
+>> >        restore)
+>> >     
+>> >     Fixes: eda79a683a0a ("kho: validate preserved memory map during population")
+>> >     Signed-off-by: Breno Leitao <leitao@debian.org>
+>> >
+>> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+>> > index 271d90198a08..3cf2dc6840c9 100644
+>> > --- a/kernel/liveupdate/kexec_handover.c
+>> > +++ b/kernel/liveupdate/kexec_handover.c
+>> > @@ -471,8 +471,8 @@ static void __init deserialize_bitmap(unsigned int order,
+>> >  	}
+>> >  }
+>> >  
+>> > -/* Returns physical address of the preserved memory map from FDT */
+>> > -static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
+>> > +/* Returns 0 on success and stores physical address in *phys_out */
+>> > +static int __init kho_get_mem_map_phys(const void *fdt, phys_addr_t *phys_out)
+>> >  {
+>> >  	const void *mem_ptr;
+>> >  	int len;
+>> > @@ -480,10 +480,11 @@ static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
+>> >  	mem_ptr = fdt_getprop(fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, &len);
+>> >  	if (!mem_ptr || len != sizeof(u64)) {
+>> >  		pr_err("failed to get preserved memory bitmaps\n");
+>> > -		return 0;
+>> > +		return -ENOENT;
+>> >  	}
+>> >  
+>> > -	return get_unaligned((const u64 *)mem_ptr);
+>> > +	*phys_out = get_unaligned((const u64 *)mem_ptr);
+>> > +	return 0;
+>> >  }
+>> >  
+>> >  static void __init kho_mem_deserialize(struct khoser_mem_chunk *chunk)
+>> > @@ -1439,7 +1440,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>> >  			 phys_addr_t scratch_phys, u64 scratch_len)
+>> >  {
+>> >  	struct kho_scratch *scratch = NULL;
+>> > -	phys_addr_t mem_map_phys;
+>> > +	phys_addr_t mem_map_phys = 0;
+>> >  	void *fdt = NULL;
+>> >  	int err = 0;
+>> >  	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
+>> > @@ -1466,11 +1467,9 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>> >  		goto out;
+>> >  	}
+>> >  
+>> > -	mem_map_phys = kho_get_mem_map_phys(fdt);
+>> > -	if (!mem_map_phys) {
+>> > -		err = -ENOENT;
+>> > +	err = kho_get_mem_map_phys(fdt, &mem_map_phys);
+>> > +	if (err)
+>> 
+>> This will break when mem_map_phys == 0. As I explained earlier, when
+>> that happens we want to discard all previous scratch info and start with
+>> a clean slate.
+>> 
+>> Making this if (err || !mem_map_phys) should do the trick. The if (err)
+>> check before the print should make sure the error message is not printed
+>> when we have a valid property but its value is 0.
 >
-> > Do you have specific examples or evidence the compiler will optimise poorly here
-> > on that basis as compared to pass by reference? And pass by reference would
-> > necessitate:
->
-> I've recently seen enough cases of older compilers and other arches
-> making weird choices to be a little concerened. In the above case
-> there is no reason not to use a const pointer (and indeed that would
-> be the expected idomatic kernel style), so why take chances is my
-> thinking.
+> While we are on it, I'd suggest to change kho_populate() error handling to
+> use goto, (i.e like below)
+> Then a simple if (err) will do and that's much clearer.
 
-With respect Jason, you're going to have to do better than that.
-
-The entire implementation is dependent on passing-by-value.
-
-Right now we can do:
-
-	vma_flags_test(&flags, VMA_READ_BIT, VMA_WRITE_BIT, ...);
-
-Which uses mk_vma_flags() in a macro to generalise to:
-
-	vma_flags_test(&flags, <vma_flags_t value>);
-
-The natural implication of what you're saying is that we can no longer use this
-from _anywhere_ because - hey - passing this by value is bad so now _everything_
-has to be re-written as:
-
-	vma_flags_t flags_to_set = mk_vma_flags(<flags>);
-
-	if (vma_flags_test(&flags, &flags_to_set)) { ... }
-
-Right?
-
-But is even that ok? Because presumably these compilers can inline, so that is
-basically equivalent to what the macro's doing so does that rule out the VMA
-bitmap flags concept altogether...
-
-For hand-waved 'old compilers' (ok, people who use old compilers should not
-expect optimal code) or 'other arches' (unspecified)?
-
-If it was just changing this one function I'd still object as it makes it differ
-from _every other test predicate_ using vma_flags_t but maybe to humour you I'd
-change it, but surely by this argument you're essentially objecting to the whole
-series?
-
-I find it really strange you're going down this road as it was you who suggested
-this approach in the first place and had to convince me the compiler would
-manage it!...
-
-Maybe I'm missing something here...
-
-I am not sure about this 'idiomatic kernel style' thing either, it feels rather
-conjured. Yes you wouldn't ordinarily pass something larger than a register size
-by-value, but here the intent is for it to be inlined anyway right?
-
-It strikes me that the key optimisation here is the inlining, now if the issue
-is that ye olde compiler might choose not to inline very small functions (seems
-unlikely) we could always throw in an __always_inline?
-
-But it seems rather silly for a one-liner?
-
-If the concern is deeper (not optimising the bitmap operations) then aren't you
-saying no to the whole concept of the series?
-
-Out of interest I godbolted a bunch of architectures:
-
-x86-64
-riscv
-mips
-s390x
-sparc
-arm7 32-bit
-loongarch
-m68k
-xtensa
-
-And found the manual method vs. the pass-by-value macro method were equivalent
-in each case as far as I could tell.
-
-In the worst case if we hit a weirdo case we can always substitute something
-manual I have all the vma_flags_*word*() stuff available (which I recall you
-objecting to...!)
-
-I may have completely the wrong end of the stick here?...
+Yeah, looks like a good cleanup.
 
 >
-> Jason
+> Another thing I noticed it that assigning err to -EFAULT or -EINVAL after
+> printks is completely redundant, since we anyway report what went wrong, so
+> printing the error value in the end just not needed.
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index feffeafa51b7..2bba111149c4 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1453,27 +1453,27 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>  	if (!fdt) {
+>  		pr_warn("setup: failed to memremap FDT (0x%llx)\n", fdt_phys);
+>  		err = -EFAULT;
+> -		goto out;
+> +		goto err_report;
+>  	}
+>  	err = fdt_check_header(fdt);
+>  	if (err) {
+>  		pr_warn("setup: handover FDT (0x%llx) is invalid: %d\n",
+>  			fdt_phys, err);
+>  		err = -EINVAL;
+> -		goto out;
+> +		goto err_unmap_fdt;
+>  	}
+>  	err = fdt_node_check_compatible(fdt, 0, KHO_FDT_COMPATIBLE);
+>  	if (err) {
+>  		pr_warn("setup: handover FDT (0x%llx) is incompatible with '%s': %d\n",
+>  			fdt_phys, KHO_FDT_COMPATIBLE, err);
+>  		err = -EINVAL;
+> -		goto out;
+> +		goto err_unmap_fdt;
+>  	}
+>  
+>  	mem_map_phys = kho_get_mem_map_phys(fdt);
+>  	if (!mem_map_phys) {
+>  		err = -ENOENT;
+> -		goto out;
+> +		goto err_unmap_fdt;
+>  	}
+>  
+>  	scratch = early_memremap(scratch_phys, scratch_len);
+> @@ -1481,7 +1481,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>  		pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
+>  			scratch_phys, scratch_len);
+>  		err = -EFAULT;
+> -		goto out;
+> +		goto err_unmap_scratch;
+>  	}
+>  
+>  	/*
+> @@ -1498,7 +1498,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>  		if (WARN_ON(err)) {
+>  			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %pe",
+>  				&area->addr, &size, ERR_PTR(err));
+> -			goto out;
+> +			goto err_unmap_scratch;
+>  		}
+>  		pr_debug("Marked 0x%pa+0x%pa as scratch", &area->addr, &size);
+>  	}
+> @@ -1520,13 +1520,14 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>  	kho_scratch_cnt = scratch_cnt;
+>  	pr_info("found kexec handover data.\n");
+>  
+> -out:
+> -	if (fdt)
+> -		early_memunmap(fdt, fdt_len);
+> -	if (scratch)
+> -		early_memunmap(scratch, scratch_len);
+> -	if (err)
+> -		pr_warn("disabling KHO revival: %d\n", err);
+> +	return;
+> +
+> +err_unmap_scratch:
+> +	early_memunmap(scratch, scratch_len);
+> +err_unmap_fdt:
+> +	early_memunmap(fdt, fdt_len);
+> +err_report:
+> +	pr_warn("disabling KHO revival: %d\n", err);
+>  }
+>  
+>  /* Helper functions for kexec_file_load */
+>  
+>> >  		goto out;
+>> > -	}
+>> >  
+>> >  	scratch = early_memremap(scratch_phys, scratch_len);
+>> >  	if (!scratch) {
+>> 
+>> -- 
+>> Regards,
+>> Pratyush Yadav
 
-Thanks, Lorenzo
+-- 
+Regards,
+Pratyush Yadav
 
