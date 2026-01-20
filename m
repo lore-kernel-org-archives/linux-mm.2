@@ -4,121 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B736D2ECF9
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 06:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B07A0D2ED0F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 06:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 489ED6B036A; Tue, 20 Jan 2026 01:30:03 -0500 (EST)
+	id 0A7906B036D; Tue, 20 Jan 2026 01:33:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40DCE6B036C; Tue, 20 Jan 2026 01:30:03 -0500 (EST)
+	id 0548E6B036E; Tue, 20 Jan 2026 01:33:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 319FA6B036D; Tue, 20 Jan 2026 01:30:03 -0500 (EST)
+	id E78326B036F; Tue, 20 Jan 2026 01:33:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 15E8C6B036A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:30:03 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D8B6E6B036D
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:33:52 -0500 (EST)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9DFFD58D9F
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:30:02 +0000 (UTC)
-X-FDA: 84351367044.14.961796A
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 92079140007
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:30:00 +0000 (UTC)
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 640C813ADDE
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:33:52 +0000 (UTC)
+X-FDA: 84351376704.14.38B6FA9
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D569C14000A
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:33:49 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=L7X9TmN1;
-	spf=pass (imf23.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HgCjMk+E;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/RqIpGWo";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ScNhbrR+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CwkFapkR;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768890600;
+	s=arc-20220608; t=1768890830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=AEWbkgnTvkqzPgeo47yZYvD2LbBZqNGtjtOFOPaqgWg=;
-	b=UiLSzjb5mKRim8y9kZlJAfkhmqFvAgQ0or6zZpB6A9iKHN2MALTl2OOqfJYAl+PsACAkaY
-	8Hola62wB45rh9xqCDTL52Z/rXT8WCbHfSqgs9C2FgrWLh839/vJj1/hXA2yEsgVL3biR8
-	IcYzqLpONfsZB+o8jR9hxDPnna9q1yg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VK5LAWZJGesYmfMe3akrFE9Qr+u5i9eRqUPU6M9O84A=;
+	b=lzo98JZ7pZQiW4WLW/okKxGLRE/uZqWcbObgXykbwJXHGDylBxmocYrrryrul/eetCz/j9
+	t9rYEXcnAUpyfKPLw0X41G5tS+QcLESSqmxLH7pksg0rar3l10h5SpjKbniv6ilmsfPpxd
+	Hz7sB8XCve1DDSE4IrlbQAg2QIdCK18=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=L7X9TmN1;
-	spf=pass (imf23.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768890600; a=rsa-sha256;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HgCjMk+E;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/RqIpGWo";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ScNhbrR+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CwkFapkR;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768890830; a=rsa-sha256;
 	cv=none;
-	b=70izxFItIb66C7hJrL5ipNXAW71GtB5TkSnfUpYn/ND501oIwYmkPbPgNKTicC4uHjoaea
-	3U81Lx8jQzIXNPhW6sqP1EszoxSoDiTRDpfBQenvhNyhsHADuOXwP9ZteX4pYZe8lMvf2z
-	hgk21PHny72ts9OTko2lRPkW+UrRptQ=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47ee301a06aso46284605e9.0
-        for <linux-mm@kvack.org>; Mon, 19 Jan 2026 22:30:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1768890599; x=1769495399; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AEWbkgnTvkqzPgeo47yZYvD2LbBZqNGtjtOFOPaqgWg=;
-        b=L7X9TmN1khCZ+0lG8TG8QRdRJv2tbuV/tH4AGjSEu2m58y4rht7dG5anEoVeTLfOvY
-         wWYp2SySxVyS900Yj6aPw3irg2W5CQ0rJaZ6mqgluPeo7lu5Gam5Rto9gq+PtvNU4Dfy
-         8HoSLG/C8zqishpM5OuL+yZmKyS+YL1DRJer3pyLABf+QROq+R9avnYMMMaFU+DN3JlO
-         oTZ6AUHL5wDXzheXflrpzMksGlkbQr85hGs/k7dWJ52GKY/Ajtafn9nOdf8BlCbCJsaL
-         D2luek7RzQlg7X2EU+R8r7hkIIKbjWEI3OBdFJxzd4yUeau4HSqyAz3haEW0I6hvLqwg
-         7AMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768890599; x=1769495399;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AEWbkgnTvkqzPgeo47yZYvD2LbBZqNGtjtOFOPaqgWg=;
-        b=UcLbp3GS53wIchRt5Xci3echCwZHf8zNFFrtUmpCHUzvPpvVPsjOGOUUQuY7Rj9s1j
-         nuZJkLXIdql+opevSksfH8od7UVcOfmir3vqgCctNVaipoykYRYCLw2ZgC67KEgJ2dB+
-         DJZioVRwgZ8wduJCALsevon4NaxLJ+YzODifvIIEPgDQxM8ybjib7RB9I6hK25LcvpWn
-         m4EotAKez7zR0gY9F7Va8xlqoa52E6F3rOilyi35Rs20hYMPYjeJZpZqaTd7aED2lK6o
-         YVMEjRC1Pm/6GnwMTO44O+020FP1iBqNtc3P2beV9cGim8lLE2Y2yK+eymIKUyjJ57Aa
-         TwTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRm4gCQxn43Dyxh2sTkqKm5hdo5hByWpIkyFx3iGt7qVb6JnRj3jcaluufseV0Ap157zmjEKmyhg==@kvack.org
-X-Gm-Message-State: AOJu0YxI++PURBNP/CXIp12G9TctkOJneUh5vRtW9/K/BLfSgvg6YFCU
-	olnOPbELA1HH0PPN616oGKtLuxrODtOoez/O6fxH1O7Qi9uVLF22BJ61XnKR37f72Ow=
-X-Gm-Gg: AY/fxX6scOLptQRMBqOlUjqpNCbb9g60M/mdFfahwyO3rjqJpZL5i5eKACULqjabXQU
-	UWTs0gwASFUlCBENkmUeHICY+GOMMKx/nN/oMuulV9RmtaZjasY2G/nCuPoLqIoy75XXhvephuJ
-	N2uaTXl6HNdxIV34IkaT2jdGDxlUE097cz7nWkfQgi3VC2/MS54Xb8t7QtEmHKFXj29y/OEgzD5
-	/ayxnvunz5ZmaUBUSSrPiBARYqElYyQvxFeRjx7KKIAZQ2gP6hx6+LzMejWCadBejB7m9BarEvc
-	oUlJ6wksGdGbRQycKqDxbOlNrALfO7srOxChsef8hqM1PxV9A9k0ng2iQBNaszRzUwYEZn/ybf2
-	gg1+7OZ7m6M3yXeDOVIMtn+vnufzfEzgiIT0R4iIjsuj9EQPMx0f/1cxuzlplTecMJcwzFO/cng
-	U7FTRpNnFiRgyWXHeq
-X-Received: by 2002:a05:600c:870e:b0:47d:264e:b35a with SMTP id 5b1f17b1804b1-4801eabf1eamr154903985e9.13.1768890598747;
-        Mon, 19 Jan 2026 22:29:58 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801e879537sm231880515e9.5.2026.01.19.22.29.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 22:29:58 -0800 (PST)
-Date: Tue, 20 Jan 2026 09:29:55 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, mpenttil@redhat.com, linux-mm@kvack.org
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH v2 1/3] mm: unified hmm fault and migrate device pagewalk
- paths
-Message-ID: <202601200251.uRdWeQPq-lkp@intel.com>
+	b=YWeHeNMR4BPIIGTkgixTbcL3fW1DnKr9RILkx4qhzv+MXlRVr+Yv5xWdCsxe71dQoucis/
+	nmjU2A3eQUyeZ6dVc4I6sHMxq2aW5PMqRdl6aGHX8NCS+EjSgUlcXiQvy07rQluSswS1z4
+	PN+qK/H5ngVdsr5EQTLnoiZeDFoBKEQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DDF775BCC9;
+	Tue, 20 Jan 2026 06:33:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768890828; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VK5LAWZJGesYmfMe3akrFE9Qr+u5i9eRqUPU6M9O84A=;
+	b=HgCjMk+Eeeek0ViYMGJZHfXPrpt91EQyv/WZhxIssU7+VTqcZMCHLR9PaARjSrRv+9y81C
+	Ca4VPpdPw9/s9SAMX8K74Bow/H7G4J1T66yl6jr018FUgpRii1fIc4hf/o+xR/mhO9Y7yx
+	TqTse/uDn4KB4O3xziG1Dy8tjTdNjMA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768890828;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VK5LAWZJGesYmfMe3akrFE9Qr+u5i9eRqUPU6M9O84A=;
+	b=/RqIpGWoYhLlSBZI1+coiVcbhpn4cXVVNMgcAF05LnsnR+0A8Cb3jXGIV577L/BBhgS35b
+	yInvfJ1pkLwYXGAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768890827; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VK5LAWZJGesYmfMe3akrFE9Qr+u5i9eRqUPU6M9O84A=;
+	b=ScNhbrR+3/oaBrjT9QPc7vNyJBqtT/kLM6kXRBYM6ATBcu66I99UJZwUcVJP4hGjGwtNzm
+	CFrLQ7Cr6zNqv7hOSVpSPfR2rq6cczVcyLcsAg5tLP/WScyx7vlsqVcI12gWSY4vTHEi6U
+	toEujIvHQrKUOT8TeyqvXJLX7KqZcHA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768890827;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VK5LAWZJGesYmfMe3akrFE9Qr+u5i9eRqUPU6M9O84A=;
+	b=CwkFapkRy8eNu4Yhm45k1te576OuxQByC7CIkaBzdUH+y1blptJ2vChjRTZae9SXOw6Mdo
+	H9pm0J2cedcycyCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC09A3EA63;
+	Tue, 20 Jan 2026 06:33:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id c0s8KMshb2lLAgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 20 Jan 2026 06:33:47 +0000
+Message-ID: <2232564a-b3f7-4591-abe2-8f1711590e6e@suse.cz>
+Date: Tue, 20 Jan 2026 07:33:47 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260119112502.645059-2-mpenttil@redhat.com>
-X-Rspamd-Queue-Id: 92079140007
-X-Stat-Signature: ko3z6n7oz839tqd5dnk3r63ub6ww4jpn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/21] slab: add optimized sheaf refill from partial
+ list
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-9-5595cb000772@suse.cz>
+ <aW7pSzVPvLLbQGxn@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aW7pSzVPvLLbQGxn@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 41e7p6uen115y5rc5isuz9edfuboa5sb
+X-Rspamd-Queue-Id: D569C14000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768890600-10429
-X-HE-Meta: U2FsdGVkX18OnAEawJ6triEehXx+xGv3jJyXODp7tXko2kNjtKkt+sCclGcpSGVMModFBYiK8W4bmss6pOMyAlmAXNvXBr/D/brULwqNbcE8xlS6uiVQuAu+ChUqHSywtNHgsDMsBVwwFq82XGrkChxTxyOYgd4A9MWtXhF3q7zx8xZJv8LJPBn8RRbsy0GeuA0kM5fBqRvvao+S7LNE1xefWZk6I303zId5TMNhxeeCrY9JHbviz9IrlVL6wJh56b5cY6ER8xYjdEtuTpi78J/BxNO0e1sHgADYtdaMT2Yk1R3m0NRYns2E94DOd2KfKiS3dOLTv4Gmj8ryLgClSybaH/l6rpXxGshASWUsqKUn5WgFqZw5h6quvFmdZSDun+0CRftROBNegOQWQ2LBCnb4ScKpDy2YVvxrSVaMOmR3MaHdkw+j3YHsihKDp51sMObT71/Rap2cE8N47TeQC8pFe3MgKD9AA3M2KGfI0dmpSUIMPH6zVDYXRbJQ8QJOkLE2/AR8TRWhdApdpvlnctY3sgI/js8aB1CT203qktjU1+0bmM2DNu3jrvgIGc9XaZHOsUnZ6gG3VghOjwfgVEMzKHRROcab4SuvF6tDBF0AG4foMdqsJwPhLLsost5ZWNxoeLXSWmlWBvIZ7xGg5XEUGi2ilUr3Ca6cd6D+z+lYqz0yDjXd2phluBds9Mxg5caADXI5HnqpcsAgOiThL9R6U87VHYrDJWx3en8i2cJkjnrPnBSKrCVwEw9vGgeuVsf/cCa0Wo4bE7G/8/ospGwLTB+BVmfMnujvgjiQ4eTUe7X3+Q/lgqC2My1MADqYCXw+xdK6QG6ilhZlJv6Dazh9+3li8eE9Ik7yibP2T/O5q8AX0TluCwcKeisKFdrqvvQ1Bhs0Ak4lm2snFemofLgb6rDdRLF/c6E+zZwMYslGyO/XkfrijHu508SfwbiQDIXh6o+l9PdfRVecRNQ
- 7Rh8MFZt
- yhyAsDkPorPRLyUK8uWxDrWPS7EWYT0+iaOGNW5xK0LWouewG+ohvyQY9FS9CWKPvbLvK62CzkNmsCuigzFYBuUgolNIMDUdAwen5OWBeBZmWfZiUc2J5HtPBi8suFogDhNUnaFXQceR0ZRjVEWyEWbiSXc39UFuNGDs8ntWpnYkbCcPOCYic9DyHOxIKQCvuDR+RY6UT8fdCPme3FnIRd7YpC4SjUQjw0ug4M4+YcVdrtXngzXWNRqWQhet/RxqJ/ul0CzNIAG8+MirlXJnHv2yvXkxzauU96yU4OW8+Yini0Z18OtsxmKK4+jwynR03TWoApwRmSrpBm1nZZDth9gHEH02Lj8u/bUm4zsB9dOUwefEqimUxiv6WmkzjuyxE6cDMv6inOyBlCur4a9jBJMrU5zg6KV6Bf7UZnmESWMWQIuAebiQ/uCRFs7wdlG4zUmiGkryfgCHd+3VBqdXBumGAeASLT+P81lftw2K9vdn4DsoQoOqt+JFoCXwjIQjyM9p8vUXUSH49j4Dvc7Op13LbqAomgGQ8j47GiGnYnVaoFa+6gJAvBwMvq0lKHH2ETjMnplYGpmP3vXjVtKG1Xn6kIA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768890829-282626
+X-HE-Meta: U2FsdGVkX19Ss/ND0wsBd1NnFy8gRgRd6eHEzMuEly9IJTmRNvsTbpC3VX2B/cTrgTr2aYw1+QuHiNXMoXT2RfYGIV1JeZVCqgE1OLaUbwCiI2W3L6gpAsOECmofET26gGpBVEDui716yr59ipPXlPHl8NS1mIUAAZfirFXf2h1cEnorPy+mzHL7wDB9uUpA1K5gymy93o4WCH3kOI4Y7W8pjhZB9ArHluO9uKgpxYQcjw6QOdPLpzfJ5COMf6Wh2s7ZSDVlKPE6bOxT2MiESDMX/wAcgKxXdFKMeYeyrFbUpdtRr5c5nRcNGLCfQ0+cPydAKrY11c0DImXHOXNBFOqX9wTElX3zcP4vc4J+NM9Hb8yQ1m1qv90KMLyT1HaKndW/V8LyBmELV8tFJj42f4/ad9aQsIbTPDRw6OH/C8E/dVr5SY5JiRV2yprkTp94FBkJdIGVanG3rd/RDwp9gw6Frjbzwb6MqZ9FESW2sWPHNki/pSn6aDsJZa5I75ua4jDqlNJK2wiolbuqTcOPoWrO8ezj/4Nw2Xd4twdkOV0HHQb+W4VS1O0eBVwzuqi0r3S1ipBQUv1VgtnRGLh6Pc3NBa7ykvJs73Lbw9xDPHDWIwMRdsaoN+jC9WHQNrhKYreRmyuYSfRbgEIv7OnvrsdR5ka51YWENQv3oFPIiRhkykTM9KchqMS0JzNOkYhAC24ISed+wDN9SBeYg7F9NEqu2AjXjiLqUeHbi3kTT2x9Ib+UZ5Hd6VweKE+gfvKC0KD2z7EymM76RO2VVq9lOoNcD/LvJP+A9fW5+ceGShf8LH7y5eqs5ELSg1Li89KFhqaoOEu4LGOYklGTGuUqiqzcYiyCpKvY35q7hPwwvTF1ijXztYVMeQiZEK6ca+M525v9j6F9MwHqMIC8UBnXdLpLUT6sS5tltVXLNHsH/3NLNm6doPdhNwTrqQ3ny1GVvzEifPm/WuoDwV3rSyX
+ SNhxO2T5
+ xXjf0Z8/WOib0VHWxxLSysCE8OrjyElnp09xFvDbyJpafoQemKNoYmy6ba4iFcG1RSMpuDKuR5gytjSXcejC1i4j/YajVwcVVIOIJAFmHvplJnZv+h6i89vxZ2j9LyLfGpuVYKCLOq4BNhr5TEgCbY28U3lPhKuO8lOipiEFs5OrbCD6iE665tF1V/vQujqlTWly9UsTOkNQXBp0iDkmRbOMv/0M3BBBTcjkCLEnFpQbfkXnaDfK5m5eX9XYpbVTjSmmLPj34wuyaykC4Ggcsz/MRT0+4nZRGeasf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,209 +188,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 1/20/26 03:32, Harry Yoo wrote:
+> On Fri, Jan 16, 2026 at 03:40:29PM +0100, Vlastimil Babka wrote:
+>> At this point we have sheaves enabled for all caches, but their refill
+>> is done via __kmem_cache_alloc_bulk() which relies on cpu (partial)
+>> slabs - now a redundant caching layer that we are about to remove.
+>> 
+>> The refill will thus be done from slabs on the node partial list.
+>> Introduce new functions that can do that in an optimized way as it's
+>> easier than modifying the __kmem_cache_alloc_bulk() call chain.
+>> 
+>> Extend struct partial_context so it can return a list of slabs from the
+>> partial list with the sum of free objects in them within the requested
+>> min and max.
+>> 
+>> Introduce get_partial_node_bulk() that removes the slabs from freelist
+>> and returns them in the list.
+>> 
+>> Introduce get_freelist_nofreeze() which grabs the freelist without
+>> freezing the slab.
+>> 
+>> Introduce alloc_from_new_slab() which can allocate multiple objects from
+>> a newly allocated slab where we don't need to synchronize with freeing.
+>> In some aspects it's similar to alloc_single_from_new_slab() but assumes
+>> the cache is a non-debug one so it can avoid some actions.
+>> 
+>> Introduce __refill_objects() that uses the functions above to fill an
+>> array of objects. It has to handle the possibility that the slabs will
+>> contain more objects that were requested, due to concurrent freeing of
+>> objects to those slabs. When no more slabs on partial lists are
+>> available, it will allocate new slabs. It is intended to be only used
+>> in context where spinning is allowed, so add a WARN_ON_ONCE check there.
+>> 
+>> Finally, switch refill_sheaf() to use __refill_objects(). Sheaves are
+>> only refilled from contexts that allow spinning, or even blocking.
+>> 
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>> ---
+>>  mm/slub.c | 284 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+>>  1 file changed, 264 insertions(+), 20 deletions(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 9bea8a65e510..dce80463f92c 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -246,6 +246,9 @@ struct partial_context {
+>>  	gfp_t flags;
+>>  	unsigned int orig_size;
+>>  	void *object;
+>> +	unsigned int min_objects;
+>> +	unsigned int max_objects;
+>> +	struct list_head slabs;
+>>  };
+>>  
+>>  static inline bool kmem_cache_debug(struct kmem_cache *s)
+>> @@ -2663,8 +2666,8 @@ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+>>  	if (!to_fill)
+>>  		return 0;
+>>  
+>> -	filled = __kmem_cache_alloc_bulk(s, gfp, to_fill,
+>> -					 &sheaf->objects[sheaf->size]);
+>> +	filled = __refill_objects(s, &sheaf->objects[sheaf->size], gfp,
+>> +			to_fill, to_fill);
+> 
+> nit: perhaps handling min and max separately is unnecessary
+> if it's always min == max? we could have simply one 'count' or 'size'?
 
-kernel test robot noticed the following build warnings:
+Right, so the plan was to set min to some fraction of max when refilling
+sheaves, with the goal of maximizing the chance that once we grab a slab
+from the partial list, we almost certainly fully use it and don't have to
+return it back. But I didn't get to there yet. It seems worthwile to try
+though so we can leave the implementation prepared for it?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/mpenttil-redhat-com/mm-unified-hmm-fault-and-migrate-device-pagewalk-paths/20260119-193100
-base:   24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
-patch link:    https://lore.kernel.org/r/20260119112502.645059-2-mpenttil%40redhat.com
-patch subject: [PATCH v2 1/3] mm: unified hmm fault and migrate device pagewalk paths
-config: sparc-randconfig-r071-20260119 (https://download.01.org/0day-ci/archive/20260120/202601200251.uRdWeQPq-lkp@intel.com/config)
-compiler: sparc-linux-gcc (GCC) 15.2.0
-smatch version: v0.5.0-8985-g2614ff1a
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202601200251.uRdWeQPq-lkp@intel.com/
-
-smatch warnings:
-mm/hmm.c:960 hmm_vma_walk_pmd() warn: missing error code? 'r'
-mm/hmm.c:1310 hmm_range_fault() error: we previously assumed 'range->notifier' could be null (see line 1296)
-
-vim +/r +960 mm/hmm.c
-
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   926  static int hmm_vma_walk_pmd(pmd_t *pmdp,
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   927  			    unsigned long start,
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   928  			    unsigned long end,
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   929  			    struct mm_walk *walk)
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   930  {
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   931  	struct hmm_vma_walk *hmm_vma_walk = walk->private;
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   932  	struct hmm_range *range = hmm_vma_walk->range;
-2733ea144dcce7 Jason Gunthorpe 2020-05-01   933  	unsigned long *hmm_pfns =
-2733ea144dcce7 Jason Gunthorpe 2020-05-01   934  		&range->hmm_pfns[(start - range->start) >> PAGE_SHIFT];
-2288a9a68175ce Jason Gunthorpe 2020-03-05   935  	unsigned long npages = (end - start) >> PAGE_SHIFT;
-adc5de78797562 Mika Penttilä   2026-01-19   936  	struct mm_struct *mm = walk->vma->vm_mm;
-2288a9a68175ce Jason Gunthorpe 2020-03-05   937  	unsigned long addr = start;
-adc5de78797562 Mika Penttilä   2026-01-19   938  	enum migrate_vma_info minfo;
-adc5de78797562 Mika Penttilä   2026-01-19   939  	unsigned long i;
-adc5de78797562 Mika Penttilä   2026-01-19   940  	spinlock_t *ptl;
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   941  	pte_t *ptep;
-d08faca018c461 Jérôme Glisse   2018-10-30   942  	pmd_t pmd;
-adc5de78797562 Mika Penttilä   2026-01-19   943  	int r;
-adc5de78797562 Mika Penttilä   2026-01-19   944  
-adc5de78797562 Mika Penttilä   2026-01-19   945  	minfo = hmm_select_migrate(range);
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   946  
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   947  again:
-adc5de78797562 Mika Penttilä   2026-01-19   948  	hmm_vma_walk->locked = false;
-adc5de78797562 Mika Penttilä   2026-01-19   949  	hmm_vma_walk->pmdlocked = false;
-26e1a0c3277d7f Hugh Dickins    2023-06-08   950  	pmd = pmdp_get_lockless(pmdp);
-adc5de78797562 Mika Penttilä   2026-01-19   951  	if (pmd_none(pmd)) {
-adc5de78797562 Mika Penttilä   2026-01-19   952  		r = hmm_vma_walk_hole(start, end, -1, walk);
-adc5de78797562 Mika Penttilä   2026-01-19   953  		if (r || !minfo)
-adc5de78797562 Mika Penttilä   2026-01-19   954  			return r;
-
-if minfo is NULL do we return success?
-
-adc5de78797562 Mika Penttilä   2026-01-19   955  
-adc5de78797562 Mika Penttilä   2026-01-19   956  		ptl = pmd_lock(walk->mm, pmdp);
-adc5de78797562 Mika Penttilä   2026-01-19   957  		if (pmd_none(*pmdp)) {
-adc5de78797562 Mika Penttilä   2026-01-19   958  			// hmm_vma_walk_hole() filled migration needs
-adc5de78797562 Mika Penttilä   2026-01-19   959  			spin_unlock(ptl);
-adc5de78797562 Mika Penttilä   2026-01-19  @960  			return r;
-
-And here?
-
-adc5de78797562 Mika Penttilä   2026-01-19   961  		}
-adc5de78797562 Mika Penttilä   2026-01-19   962  		spin_unlock(ptl);
-adc5de78797562 Mika Penttilä   2026-01-19   963  	}
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   964  
-0ac881efe16468 Lorenzo Stoakes 2025-11-10   965  	if (thp_migration_supported() && pmd_is_migration_entry(pmd)) {
-adc5de78797562 Mika Penttilä   2026-01-19   966  		if (!minfo) {
-2733ea144dcce7 Jason Gunthorpe 2020-05-01   967  			if (hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, 0)) {
-d08faca018c461 Jérôme Glisse   2018-10-30   968  				hmm_vma_walk->last = addr;
-d2e8d551165ccb Ralph Campbell  2019-07-25   969  				pmd_migration_entry_wait(walk->mm, pmdp);
-73231612dc7c90 Jérôme Glisse   2019-05-13   970  				return -EBUSY;
-d08faca018c461 Jérôme Glisse   2018-10-30   971  			}
-2288a9a68175ce Jason Gunthorpe 2020-03-05   972  		}
-adc5de78797562 Mika Penttilä   2026-01-19   973  		for (i = 0; addr < end; addr += PAGE_SIZE, i++)
-adc5de78797562 Mika Penttilä   2026-01-19   974  			hmm_pfns[i] &= HMM_PFN_INOUT_FLAGS;
-2288a9a68175ce Jason Gunthorpe 2020-03-05   975  
-adc5de78797562 Mika Penttilä   2026-01-19   976  		return 0;
-adc5de78797562 Mika Penttilä   2026-01-19   977  	}
-adc5de78797562 Mika Penttilä   2026-01-19   978  
-adc5de78797562 Mika Penttilä   2026-01-19   979  	if (minfo) {
-adc5de78797562 Mika Penttilä   2026-01-19   980  		hmm_vma_walk->ptl = pmd_lock(mm, pmdp);
-adc5de78797562 Mika Penttilä   2026-01-19   981  		hmm_vma_walk->pmdlocked = true;
-adc5de78797562 Mika Penttilä   2026-01-19   982  		pmd = pmdp_get(pmdp);
-adc5de78797562 Mika Penttilä   2026-01-19   983  	} else
-adc5de78797562 Mika Penttilä   2026-01-19   984  		pmd = pmdp_get_lockless(pmdp);
-adc5de78797562 Mika Penttilä   2026-01-19   985  
-adc5de78797562 Mika Penttilä   2026-01-19   986  	if (pmd_trans_huge(pmd) || !pmd_present(pmd)) {
-adc5de78797562 Mika Penttilä   2026-01-19   987  
-adc5de78797562 Mika Penttilä   2026-01-19   988  		if (!pmd_present(pmd)) {
-adc5de78797562 Mika Penttilä   2026-01-19   989  			r = hmm_vma_handle_absent_pmd(walk, start, end, hmm_pfns,
-10b9feee2d0dc8 Francois Dugast 2025-09-08   990  						      pmd);
-adc5de78797562 Mika Penttilä   2026-01-19   991  			if (r || !minfo)
-adc5de78797562 Mika Penttilä   2026-01-19   992  				return r;
-
-Same
-
-adc5de78797562 Mika Penttilä   2026-01-19   993  		} else {
-d08faca018c461 Jérôme Glisse   2018-10-30   994  
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   995  			/*
-adc5de78797562 Mika Penttilä   2026-01-19   996  			 * No need to take pmd_lock here if not migrating,
-adc5de78797562 Mika Penttilä   2026-01-19   997  			 * even if some other thread is splitting the huge
-adc5de78797562 Mika Penttilä   2026-01-19   998  			 * pmd we will get that event through mmu_notifier callback.
-53f5c3f489ecdd Jérôme Glisse   2018-04-10   999  			 *
-d2e8d551165ccb Ralph Campbell  2019-07-25  1000  			 * So just read pmd value and check again it's a transparent
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1001  			 * huge or device mapping one and compute corresponding pfn
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1002  			 * values.
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1003  			 */
-adc5de78797562 Mika Penttilä   2026-01-19  1004  
-adc5de78797562 Mika Penttilä   2026-01-19  1005  			if (!pmd_trans_huge(pmd)) {
-adc5de78797562 Mika Penttilä   2026-01-19  1006  				// must be lockless
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1007  				goto again;
-adc5de78797562 Mika Penttilä   2026-01-19  1008  			}
-adc5de78797562 Mika Penttilä   2026-01-19  1009  
-adc5de78797562 Mika Penttilä   2026-01-19  1010  			r = hmm_vma_handle_pmd(walk, addr, end, hmm_pfns, pmd);
-adc5de78797562 Mika Penttilä   2026-01-19  1011  
-adc5de78797562 Mika Penttilä   2026-01-19  1012  			if (r || !minfo)
-adc5de78797562 Mika Penttilä   2026-01-19  1013  				return r;
-
-Same?
-
-adc5de78797562 Mika Penttilä   2026-01-19  1014  		}
-adc5de78797562 Mika Penttilä   2026-01-19  1015  
-adc5de78797562 Mika Penttilä   2026-01-19  1016  		r = hmm_vma_handle_migrate_prepare_pmd(walk, pmdp, start, end, hmm_pfns);
-adc5de78797562 Mika Penttilä   2026-01-19  1017  
-adc5de78797562 Mika Penttilä   2026-01-19  1018  		if (hmm_vma_walk->pmdlocked) {
-adc5de78797562 Mika Penttilä   2026-01-19  1019  			spin_unlock(hmm_vma_walk->ptl);
-adc5de78797562 Mika Penttilä   2026-01-19  1020  			hmm_vma_walk->pmdlocked = false;
-adc5de78797562 Mika Penttilä   2026-01-19  1021  		}
-adc5de78797562 Mika Penttilä   2026-01-19  1022  
-adc5de78797562 Mika Penttilä   2026-01-19  1023  		if (r == -ENOENT) {
-adc5de78797562 Mika Penttilä   2026-01-19  1024  			r = hmm_vma_walk_split(pmdp, addr, walk);
-adc5de78797562 Mika Penttilä   2026-01-19  1025  			if (r) {
-adc5de78797562 Mika Penttilä   2026-01-19  1026  				/* Split not successful, skip */
-adc5de78797562 Mika Penttilä   2026-01-19  1027  				return hmm_pfns_fill(start, end, hmm_vma_walk, HMM_PFN_ERROR);
-adc5de78797562 Mika Penttilä   2026-01-19  1028  			}
-adc5de78797562 Mika Penttilä   2026-01-19  1029  
-adc5de78797562 Mika Penttilä   2026-01-19  1030  			/* Split successful or "again", reloop */
-adc5de78797562 Mika Penttilä   2026-01-19  1031  			hmm_vma_walk->last = addr;
-adc5de78797562 Mika Penttilä   2026-01-19  1032  			return -EBUSY;
-adc5de78797562 Mika Penttilä   2026-01-19  1033  		}
-adc5de78797562 Mika Penttilä   2026-01-19  1034  
-adc5de78797562 Mika Penttilä   2026-01-19  1035  		return r;
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1036  
-adc5de78797562 Mika Penttilä   2026-01-19  1037  	}
-adc5de78797562 Mika Penttilä   2026-01-19  1038  
-adc5de78797562 Mika Penttilä   2026-01-19  1039  	if (hmm_vma_walk->pmdlocked) {
-adc5de78797562 Mika Penttilä   2026-01-19  1040  		spin_unlock(hmm_vma_walk->ptl);
-adc5de78797562 Mika Penttilä   2026-01-19  1041  		hmm_vma_walk->pmdlocked = false;
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1042  	}
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1043  
-d08faca018c461 Jérôme Glisse   2018-10-30  1044  	/*
-d2e8d551165ccb Ralph Campbell  2019-07-25  1045  	 * We have handled all the valid cases above ie either none, migration,
-d08faca018c461 Jérôme Glisse   2018-10-30  1046  	 * huge or transparent huge. At this point either it is a valid pmd
-d08faca018c461 Jérôme Glisse   2018-10-30  1047  	 * entry pointing to pte directory or it is a bad pmd that will not
-d08faca018c461 Jérôme Glisse   2018-10-30  1048  	 * recover.
-d08faca018c461 Jérôme Glisse   2018-10-30  1049  	 */
-2288a9a68175ce Jason Gunthorpe 2020-03-05  1050  	if (pmd_bad(pmd)) {
-2733ea144dcce7 Jason Gunthorpe 2020-05-01  1051  		if (hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, 0))
-2288a9a68175ce Jason Gunthorpe 2020-03-05  1052  			return -EFAULT;
-adc5de78797562 Mika Penttilä   2026-01-19  1053  		return hmm_pfns_fill(start, end, hmm_vma_walk, HMM_PFN_ERROR);
-2288a9a68175ce Jason Gunthorpe 2020-03-05  1054  	}
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1055  
-adc5de78797562 Mika Penttilä   2026-01-19  1056  	if (minfo) {
-adc5de78797562 Mika Penttilä   2026-01-19  1057  		ptep = pte_offset_map_lock(mm, pmdp, addr, &hmm_vma_walk->ptl);
-adc5de78797562 Mika Penttilä   2026-01-19  1058  		if (ptep)
-adc5de78797562 Mika Penttilä   2026-01-19  1059  			hmm_vma_walk->locked = true;
-adc5de78797562 Mika Penttilä   2026-01-19  1060  	} else
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1061  		ptep = pte_offset_map(pmdp, addr);
-6ec1905f6ec7f9 Hugh Dickins    2023-06-08  1062  	if (!ptep)
-6ec1905f6ec7f9 Hugh Dickins    2023-06-08  1063  		goto again;
-adc5de78797562 Mika Penttilä   2026-01-19  1064  
-2733ea144dcce7 Jason Gunthorpe 2020-05-01  1065  	for (; addr < end; addr += PAGE_SIZE, ptep++, hmm_pfns++) {
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1066  
-2733ea144dcce7 Jason Gunthorpe 2020-05-01  1067  		r = hmm_vma_handle_pte(walk, addr, end, pmdp, ptep, hmm_pfns);
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1068  		if (r) {
-dfdc22078f3f06 Jason Gunthorpe 2020-02-28  1069  			/* hmm_vma_handle_pte() did pte_unmap() */
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1070  			return r;
-53f5c3f489ecdd Jérôme Glisse   2018-04-10  1071  		}
-adc5de78797562 Mika Penttilä   2026-01-19  1072  
-adc5de78797562 Mika Penttilä   2026-01-19  1073  		r = hmm_vma_handle_migrate_prepare(walk, pmdp, ptep, addr, hmm_pfns);
-adc5de78797562 Mika Penttilä   2026-01-19  1074  		if (r == -EAGAIN) {
-adc5de78797562 Mika Penttilä   2026-01-19  1075  			goto again;
-adc5de78797562 Mika Penttilä   2026-01-19  1076  		}
-adc5de78797562 Mika Penttilä   2026-01-19  1077  		if (r) {
-adc5de78797562 Mika Penttilä   2026-01-19  1078  			hmm_pfns_fill(addr, end, hmm_vma_walk, HMM_PFN_ERROR);
-adc5de78797562 Mika Penttilä   2026-01-19  1079  			break;
-da4c3c735ea4dc Jérôme Glisse   2017-09-08  1080  		}
-adc5de78797562 Mika Penttilä   2026-01-19  1081  	}
-adc5de78797562 Mika Penttilä   2026-01-19  1082  
-adc5de78797562 Mika Penttilä   2026-01-19  1083  	if (hmm_vma_walk->locked)
-adc5de78797562 Mika Penttilä   2026-01-19  1084  		pte_unmap_unlock(ptep - 1, hmm_vma_walk->ptl);
-adc5de78797562 Mika Penttilä   2026-01-19  1085  	else
-da4c3c735ea4dc Jérôme Glisse   2017-09-08  1086  		pte_unmap(ptep - 1);
-adc5de78797562 Mika Penttilä   2026-01-19  1087  
-da4c3c735ea4dc Jérôme Glisse   2017-09-08  1088  	return 0;
-da4c3c735ea4dc Jérôme Glisse   2017-09-08  1089  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> Otherwise LGTM!
+> 
 
 
