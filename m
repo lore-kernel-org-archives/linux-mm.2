@@ -4,63 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B351D2ECFF
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 02:44:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93B3FD2ECFF
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 02:44:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D29A36B0346; Mon, 19 Jan 2026 21:44:42 -0500 (EST)
+	id 052846B0348; Mon, 19 Jan 2026 21:44:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6CC6B0348; Mon, 19 Jan 2026 21:44:42 -0500 (EST)
+	id 029BB6B034A; Mon, 19 Jan 2026 21:44:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C03DD6B0349; Mon, 19 Jan 2026 21:44:42 -0500 (EST)
+	id EA2BD6B034B; Mon, 19 Jan 2026 21:44:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE8C06B0346
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 21:44:42 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 72AED1AEC32
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:44:42 +0000 (UTC)
-X-FDA: 84350799204.06.DCC727D
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1A2C21C000F
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:44:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QUyaBr+Z;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768877081; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D693E6B0348
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 21:44:53 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8E63516039F
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:44:53 +0000 (UTC)
+X-FDA: 84350799666.17.E33375C
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C1F65C000B
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:44:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="CddlsIq/";
+	spf=pass (imf10.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768877092; a=rsa-sha256;
 	cv=none;
-	b=WVTY80+Sv95BO1pI0ZATphiDE8GNVDMhusxGDKnbWYnCTSiPC6HLLBTvtGp/dkA/M7vMXK
-	lhX7ONWE1wlAiR78EOWV00ILXARHyNBk6wUn6o47IQJMVq4VtudIBlD87hxiRTX5+wa8O4
-	skIIcqsqX606sR8RNbGHLqHtQP237FM=
+	b=es76f/M2zd1TYl+lAfAzX/CbijQ5LMtK/TH+7TDIk+EuaR5eQIzFWwiuxGg4L+uoJR8ozW
+	ZCMD2GkAtt8betx87mCDlaKzXqhhlIFkO3tLA2NXFlV49dFLo5qQgRxSilWwBvHHOd2E2+
+	An+THSq2Ryi9qyzzfok5JeIyG1ImRRI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QUyaBr+Z;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="CddlsIq/";
+	spf=pass (imf10.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768877081;
+	s=arc-20220608; t=1768877091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=K6wbMkRwjKapK5CoBKSnPQTD2eR277R70T25OkML4K4=;
-	b=0YLZhRPklOK7jmqbwIknrRFQtOaca5alpmosVD52x51v50ZW+cjLW7xaiP5dNarDnAV1Jx
-	zIvnC31hYIABBMx9Yyypker38GPCy2CRaT2uLU5VLbcs2zxEyg/+bpb864B11viF1YswbI
-	uznjPbkJk0JUwRX4PSRdTC0s+qWkjuI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pls5MXmyRyRItrjpCM4LqoeGJ08hhYmNWXA6AmLbX1E=;
+	b=4kSvK6CFNRmkVE4UyVGXA6f3/Ci8TRe7Ax0VpHblx+/C44hlbnRE8+u6P9aWUa7j4Paw3n
+	Zpp56CHChogb0N7MP8y5PESq7L5oMH6t5y0hANAeBkzoXo/XTeHIwT/AIP3MJ1RXLdb9Ng
+	WNBNGK4XRhI5DYxzUueRRbHpfQcaRdY=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768877076;
+	t=1768877090;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=K6wbMkRwjKapK5CoBKSnPQTD2eR277R70T25OkML4K4=;
-	b=QUyaBr+Zbc1RpsjkBxPDIQhd9bVXyI/ftOUnCU4cBBZ02m5kSTnVOQXr6Qn2AttbjeE7sY
-	Y7Cqo9hS00h++vca6yMk5n/Lh7a8dubUI3CEJmyWwp+PRN01xmw1gaLQ7ugKVeFvpFYnic
-	OrK+shqWr2bTuYNdZKk2VPLMslNftQs=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pls5MXmyRyRItrjpCM4LqoeGJ08hhYmNWXA6AmLbX1E=;
+	b=CddlsIq/Ciydyqy4nKbcYe6ckcjbSG+ZOowYiATHpCXohzhOJCjnIjqmiLbLJWxRorTMPY
+	tDX3Ud3S3yxDcjyHrSJEj4zQtkOz/RK8+FnIs5eNgF0sXMYDMFXFXA8xFcPdn6K7sq/xbI
+	YTYn0BLs4eO9e2FdexEzxOwtLkEJkgI=
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: linux-mm@kvack.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -79,24 +82,24 @@ Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Zi Yan <ziy@nvidia.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
 	linux-kernel@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH v4 0/2] mm/vmscan: mitigate spurious kswapd_failures reset and add tracepoints
-Date: Tue, 20 Jan 2026 10:43:47 +0800
-Message-ID: <20260120024402.387576-1-jiayuan.chen@linux.dev>
+Subject: [PATCH v4 1/2] mm/vmscan: mitigate spurious kswapd_failures reset from direct reclaim
+Date: Tue, 20 Jan 2026 10:43:48 +0800
+Message-ID: <20260120024402.387576-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260120024402.387576-1-jiayuan.chen@linux.dev>
+References: <20260120024402.387576-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1A2C21C000F
-X-Stat-Signature: moth4u7srhpmfogfu5hzbtje4wdrd3op
+X-Stat-Signature: x4hobyptzsgfhkmcq6tzy85cwq99ukto
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C1F65C000B
 X-Rspam-User: 
-X-HE-Tag: 1768877078-787826
-X-HE-Meta: U2FsdGVkX19ZefqO/hg5MTeSNv2D7lY4a7I8aXaGLy07lBz7uz2KxkQQiKSJuZW6FptcEZySu678XhNDvmWv9tWkxbkBI6IhGEFPYYudo7NazjIfKA3xnwsDtKaDpU7bVl4kEaRmI7CpFChriZFagMrIUtZWymdSEM7tIgcQuvGkDRlELO4Q4qk5FgKV1R7AifyYdLKt9JiIYBivD1nsDsyRVN8bCFXHWf4obCPNaACXqf/gt2cIKjYXO6qwEF/fvrRHwARDToN9qYNR9jwnHhbns7dlceQj3jPlbNGsOiOmc93JLF/UP3/D2UWZ+Ufl9TKXRjkk6hmShqdym6tbMy265FO7FORuQ4FLaA35mTsO0RPMlFzlhf2RUPO9GZH+BCHqbZKd+e6sxPSHMy3CFRCSNnBcYhmlHlP+gNdKVNxaAe7V7+0p7fFWoTFx/5gkFZEyx9FbWLdsq0PAOsvBWHTJ1/xbHufY8K5wr4ga0EfTpyyPeLPab9CGElcc2OaSRZFKEXb8pK8+SP5gwIt15iizm6Fs8eFV70Gt0TN8s6tSaiO37t8PPSizfKoXXIFy9DTOmZMK2ZIGZ6pCUfLZbj/BM6X9017ytuPEXE5YMdl+3v+Kd8YIohpNCbK7dcLvvWxeruK6fRMdY+AmWvmO0RxT1B52/GR9zVZNTvWwJgHNnsRj/nvXhNlF9dPDzfd7nlaQ2z8UYyWtXCI5ZlhzSTyZVyYQQ1FUZRt6trCcaVgpjzFcJXsegjNtRBQbiCZEJLMYvoK2ExlBecWnXPdckhsgDNxDAZYcXQzNqr6s3uM+YvG+3MZZ0KLLknAW/RH+A/ozuVXIN19e/3SIaDusVvrrQHi+O1m/kBhF0yhRPhT4Ww4f7jjTlBQ2yLT4NaJi3EIX8+m3oP66FfPXPorI21R05z78Zq5I9OCnbgQnJIfwYwMcHq1z2b4C10RgfPynYzgyIEDjaXeN2t/n0N6
- sqhXSqo2
- IxuCeSkzXVEavVUydmWE02jjNL1pGbW2UKDOAdkyDeBGOOEazV41Urf4lsCb/bb85nvFaGYcEJp9ijoUCoFXHzaC5UIgx6ydKJlfVNR37ZbFvPktCz0k7mjgLS8kzLMXLz8AYjSR1u+Uzww3GfDrvjVKl9o1ioDrAkKmrhuCjHqLxc2k8M1Cdf0E43TPwKo0cNYIKhlHhfTNWvDsf0JSy2H6aKLIUB3C4z/+mqNhPEhtO0M4plavCtAF64RngJFNoy6TimCouYTATqLs=
+X-HE-Tag: 1768877091-428020
+X-HE-Meta: U2FsdGVkX19z3srN4oCk4xeNqS4AJkKrO55Qcuqvs5DQ6PutYx85iToMQeAIAM4WulDaCu1VCjFiu0jPHJD4sOWUdjaJdpc1Ls0fUuPJLC8dzzSSbhCHhEt1SDp8rD3cz3sPedcJxo5b4Zcf7KEJ/vkmJW/OOYK2ll6KrwcvXFoyRrp6vtTqQ8+zni9vC4IMkaNjbz9LErfHZCRvs5dXSAZKz9Zzf9Z+j0wVsse8f3QbEBcQs4Xk2jyRSnaC2Hkw6b7jcslmsxZNuNHYA4Vmv2apCV+n2NV9R6vPOzqU3YJwqNhLl9PerXueQkRBnuZaSaoM3aCayW9aRLUMuM7dqywR32YDwHXyXelsVE3Oy7PZTttRpnqcWi8xVm2oZB9QvoiI7XuvEukVFgNgsO68F6EWXEZD+/U5b9UvYkH5Y4gpRzlH2q11E3KvHIxt5FB/gFzmu7dSbaEiQQWl/pGWbbKKNmPyewxNLaaQ7wRnMZb4JxLH4En6Mu6xMjcziiA/ulHn4iLUjgAKBGqR2Qz+rwcsBKSIcuVfZ87l1iJjNCWvM09TDtvld36wLgG9yR/GkA3STWSIuisN9O11mf3gukLcLDSmlyUcMvk9tJAkzUyoMwMovEBPU2u1yCkdnl12DAZZ3npyrxMC20kIEGFPLxiJ7o9gibQTMh4eaAcTQRaqmZfj5iwmGyxqs5Tz/+MjcuME/arbr556HmOKGr/oxg0RYE3mJb6vK2Uo5bcbRWw49pfDSzze/VDGRsrk6iUgoax22FP2mDKAJuVbHAu7XTDuoA1jSMIwWRSOFIzK0Co+VFrkYR3jJ8Mj1yfTp2R0Zg/FQUtkYCMaghJS/iU2MDLz9FfxFrcQN7JqLTd4eicvZ567FV1jL1kBDthEFf+wVw8uiwJYWgui+ICGGAd3i4TUl/OHdM/aP9MLsu46eD0i4jveIO3XFJzvA8IOTBDCC61x7OAiI++TBBmHlyF
+ DIVCiPoK
+ u1UdZizTMiqyx5yAf7/2VF3e6uDumZj71YymcbcBD2BY/c4YaqgzYNDa3BeBMob2dzFFAKlatwaPPZ29Vp3ArZTJUGeeuC+LJ+VH4x9dUpTlC0DI/s98a0MdG0nNVDghRr3STrvthqt2sOlAyU+LsFByBiUzhPJNUDb8OW/vPs6X0RwKdRdjZKYBTaRmioSc+GQOZWrUv3A+3JUHwYB642W/48xCpNWCw5S2pj+CgijpXSu+aqiCmPpIQdGsZxKckJNJ0bKI8oiG58ZjRVqJWTbAkcZ6CVllbZQ7R0mrt592ellT5VBK134YBSg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,75 +108,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-== Problem ==
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-We observed an issue in production on a multi-NUMA system where kswapd
-runs endlessly, causing sustained heavy IO READ pressure across the
-entire system.
+When kswapd fails to reclaim memory, kswapd_failures is incremented.
+Once it reaches MAX_RECLAIM_RETRIES, kswapd stops running to avoid
+futile reclaim attempts. However, any successful direct reclaim
+unconditionally resets kswapd_failures to 0, which can cause problems.
 
-The root cause is that direct reclaim triggered by cgroup memory.high
-keeps resetting kswapd_failures to 0, even when the node cannot be
-balanced. This prevents kswapd from ever stopping after reaching
-MAX_RECLAIM_RETRIES.
+We observed an issue in production on a multi-NUMA system where a
+process allocated large amounts of anonymous pages on a single NUMA
+node, causing its watermark to drop below high and evicting most file
+pages:
 
-```bash
-bpftrace -e '
- #include <linux/mmzone.h>
- #include <linux/shrinker.h>
-kprobe:balance_pgdat {
-	$pgdat = (struct pglist_data *)arg0;
-	if ($pgdat->kswapd_failures > 0) {
-		printf("[node %d] [%lu] kswapd end, kswapd_failures %d\n",
-                       $pgdat->node_id, jiffies, $pgdat->kswapd_failures);
-	}
-}
-tracepoint:vmscan:mm_vmscan_direct_reclaim_end {
-	printf("[cpu %d] [%ul] reset kswapd_failures %d \n", cpu, jiffies,
-               args.nr_reclaimed)
-}
-'
-```
+$ numastat -m
+Per-node system memory usage (in MBs):
+                          Node 0          Node 1           Total
+                 --------------- --------------- ---------------
+MemTotal               128222.19       127983.91       256206.11
+MemFree                  1414.48         1432.80         2847.29
+MemUsed                126807.71       126551.11       252358.82
+SwapCached                  0.00            0.00            0.00
+Active                  29017.91        25554.57        54572.48
+Inactive                92749.06        95377.00       188126.06
+Active(anon)            28998.96        23356.47        52355.43
+Inactive(anon)          92685.27        87466.11       180151.39
+Active(file)               18.95         2198.10         2217.05
+Inactive(file)             63.79         7910.89         7974.68
 
-The trace results showed that when kswapd_failures reaches 15, continuous
-direct reclaim keeps resetting it to 0. This was accompanied by a flood of
-kswapd_failures log entries, and shortly after, we observed massive
-refaults occurring.
+With swap disabled, only file pages can be reclaimed. When kswapd is
+woken (e.g., via wake_all_kswapds()), it runs continuously but cannot
+raise free memory above the high watermark since reclaimable file pages
+are insufficient. Normally, kswapd would eventually stop after
+kswapd_failures reaches MAX_RECLAIM_RETRIES.
 
-== Solution ==
+However, containers on this machine have memory.high set in their
+cgroup. Business processes continuously trigger the high limit, causing
+frequent direct reclaim that keeps resetting kswapd_failures to 0. This
+prevents kswapd from ever stopping.
 
-Patch 1 fixes the issue by only resetting kswapd_failures when the node
-is actually balanced. This introduces pgdat_try_reset_kswapd_failures()
-as a wrapper that checks pgdat_balanced() before resetting.
+The key insight is that direct reclaim triggered by cgroup memory.high
+performs aggressive scanning to throttle the allocating process. With
+sufficiently aggressive scanning, even hot pages will eventually be
+reclaimed, making direct reclaim "successful" at freeing some memory.
+However, this success does not mean the node has reached a balanced
+state - the freed memory may still be insufficient to bring free pages
+above the high watermark. Unconditionally resetting kswapd_failures in
+this case keeps kswapd alive indefinitely.
 
-Patch 2 extends the wrapper to track why kswapd_failures was reset,
-adding tracepoints for better observability:
-  - mm_vmscan_reset_kswapd_failures: traces each reset with reason
-  - mm_vmscan_kswapd_reclaim_fail: traces each kswapd reclaim failure
+The result is that kswapd runs endlessly. Unlike direct reclaim which
+only reclaims from the allocating cgroup, kswapd scans the entire node's
+memory. This causes hot file pages from all workloads on the node to be
+evicted, not just those from the cgroup triggering memory.high. These
+pages constantly refault, generating sustained heavy IO READ pressure
+across the entire system.
 
+Fix this by only resetting kswapd_failures when the node is actually
+balanced. This allows both kswapd and direct reclaim to clear
+kswapd_failures upon successful reclaim, but only when the reclaim
+actually resolves the memory pressure (i.e., the node becomes balanced).
+
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 ---
+ include/linux/mmzone.h |  2 ++
+ mm/vmscan.c            | 22 ++++++++++++++++++++--
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
-v3 -> v4: https://lore.kernel.org/linux-mm/20260114074049.229935-1-jiayuan.chen@linux.dev/
-  - Add Acked-by tags
-  - Some modifications suggested by Johannes Weiner 
-v2 -> v3: https://lore.kernel.org/all/20251226080042.291657-1-jiayuan.chen@linux.dev/
-  - Add tracepoints for kswapd_failures reset and reclaim failure
-  - Expand commit message with test results
-
-v1 -> v2: https://lore.kernel.org/all/20251222122022.254268-1-jiayuan.chen@linux.dev/
-
-Jiayuan Chen (2):
-  mm/vmscan: mitigate spurious kswapd_failures reset from direct reclaim
-  mm/vmscan: add tracepoint and reason for kswapd_failures reset
-
- include/linux/mmzone.h        | 17 ++++++++++--
- include/trace/events/vmscan.h | 51 +++++++++++++++++++++++++++++++++++
- mm/memory-tiers.c             |  2 +-
- mm/page_alloc.c               |  4 +--
- mm/show_mem.c                 |  3 +--
- mm/vmscan.c                   | 45 +++++++++++++++++++++++++------
- mm/vmstat.c                   |  2 +-
- 7 files changed, 108 insertions(+), 16 deletions(-)
-
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 75ef7c9f9307..3a0f52188ff6 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1536,6 +1536,8 @@ static inline unsigned long pgdat_end_pfn(pg_data_t *pgdat)
+ void build_all_zonelists(pg_data_t *pgdat);
+ void wakeup_kswapd(struct zone *zone, gfp_t gfp_mask, int order,
+ 		   enum zone_type highest_zoneidx);
++void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
++			       unsigned int order, int highest_zoneidx);
+ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
+ 			 int highest_zoneidx, unsigned int alloc_flags,
+ 			 long free_pages);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 670fe9fae5ba..ecd019b8b452 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5067,7 +5067,7 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
+ 	blk_finish_plug(&plug);
+ done:
+ 	if (sc->nr_reclaimed > reclaimed)
+-		atomic_set(&pgdat->kswapd_failures, 0);
++		kswapd_try_clear_hopeless(pgdat, sc->order, sc->reclaim_idx);
+ }
+ 
+ /******************************************************************************
+@@ -6141,7 +6141,7 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
+ 	 * successful direct reclaim run will revive a dormant kswapd.
+ 	 */
+ 	if (reclaimable)
+-		atomic_set(&pgdat->kswapd_failures, 0);
++		kswapd_try_clear_hopeless(pgdat, sc->order, sc->reclaim_idx);
+ 	else if (sc->cache_trim_mode)
+ 		sc->cache_trim_mode_failed = 1;
+ }
+@@ -7414,6 +7414,24 @@ void wakeup_kswapd(struct zone *zone, gfp_t gfp_flags, int order,
+ 	wake_up_interruptible(&pgdat->kswapd_wait);
+ }
+ 
++static void kswapd_clear_hopeless(pg_data_t *pgdat)
++{
++	atomic_set(&pgdat->kswapd_failures, 0);
++}
++
++/*
++ * Reset kswapd_failures only when the node is balanced. Without this
++ * check, successful direct reclaim (e.g., from cgroup memory.high
++ * throttling) can keep resetting kswapd_failures even when the node
++ * cannot be balanced, causing kswapd to run endlessly.
++ */
++void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
++			       unsigned int order, int highest_zoneidx)
++{
++	if (pgdat_balanced(pgdat, order, highest_zoneidx))
++		kswapd_clear_hopeless(pgdat);
++}
++
+ #ifdef CONFIG_HIBERNATION
+ /*
+  * Try to free `nr_to_reclaim' of memory, system-wide, and return the number of
 -- 
 2.43.0
 
