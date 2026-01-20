@@ -4,82 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF25DD2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 14:41:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D9B0D2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 15:10:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 570346B0432; Tue, 20 Jan 2026 09:41:51 -0500 (EST)
+	id A6D106B0433; Tue, 20 Jan 2026 10:10:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51DA56B0433; Tue, 20 Jan 2026 09:41:51 -0500 (EST)
+	id A1A666B0434; Tue, 20 Jan 2026 10:10:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45E0D6B0434; Tue, 20 Jan 2026 09:41:51 -0500 (EST)
+	id 950D06B0435; Tue, 20 Jan 2026 10:10:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3851E6B0432
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:41:51 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D7A5B140160
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:41:50 +0000 (UTC)
-X-FDA: 84352606380.05.D4D5584
-Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1EACF100009
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:41:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b="iaSfVFV/";
-	spf=pass (imf14.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.101 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768920109; a=rsa-sha256;
-	cv=none;
-	b=ChKQRrv/R0ZRjkUdQa6afZiG7rJoQbkbM+nrJ6BklFD+5e0k1sjELSj450r3NMsErDnWBn
-	xdDxgyLSFxXMdl/F2mj7//a7KjGE+c+G8XoH8EEv6ueafGpHiroZakkQoTL1pU3JNZu/Wk
-	XREXoCxFi5RG1gQirzC5yVZoL2ZMMbM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b="iaSfVFV/";
-	spf=pass (imf14.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.101 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8646F6B0433
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:10:12 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B8A11AF548
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:10:12 +0000 (UTC)
+X-FDA: 84352677864.26.1D9C7E5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 773431C0011
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:10:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NfGHLI45;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768920109;
+	s=arc-20220608; t=1768921810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lQJLMP4Gv0lA08mztwDwUY7/t2r+QHQJpY7kM+Q6kDo=;
-	b=enTwT4LQi8nzpikNJhxxK7Yct0Lhymx39HhTvwQ2aSAf/WUIpS9EI7KFYqpDSqMtvKHk7e
-	ahX3PHgpJprNTUVKQJa+FoKXPIp6xK1TPRfvoi6XYIZLGYLbbhBGY2q5CnuiOhOe4ordQj
-	iHZ3nV1h0uotZWe/nzyPJbqdP37CAc8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1768920107; x=1769179307;
-	bh=lQJLMP4Gv0lA08mztwDwUY7/t2r+QHQJpY7kM+Q6kDo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=iaSfVFV/73NRu7Xuo5uhg+qFjd9okscHF7pD1FvYAeXrGoJr29shiGEA+2X5zcsst
-	 hlZZu9ZdTDiizFYjl8F30lH6vsmeNA4lirNhoSY5PLEoYVwZHcxo+Dhc7XefRn6iti
-	 HWSz/1z7a441UcsTUbLC4NcxVd2mV+wV/MyboVYq7wT0JqCRu+z+q9FHNQEfUymTxc
-	 lJdCACYxYernE8o0Iiwmgv96wGdTy5gyzMndwJwns0/qH1qO8Svf6RBysDFjL9eYuH
-	 lVfbrWWvTGD4XP09mioW+oab37nPw+kJ/HbkzKVrdrwIaPUnfGC0CUMuAjhrD/c59s
-	 rw1QzhdaieLbQ==
-Date: Tue, 20 Jan 2026 14:41:43 +0000
-To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, Uladzislau Rezki <urezki@gmail.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: m.wieczorretman@pm.me, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Alexander Potapenko <glider@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v9 06/13] mm/execmem: Untag addresses in EXECMEM_ROX related pointer arithmetic
-Message-ID: <50701245bae3d2c543f518d206539ba71367075c.1768845098.git.m.wieczorretman@pm.me>
-In-Reply-To: <cover.1768845098.git.m.wieczorretman@pm.me>
-References: <cover.1768845098.git.m.wieczorretman@pm.me>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 72074259788e0a13e140673de760fd8bafe7309f
+	bh=HqjEZVVpEWVpvNsRDimy5H0O4JUtkAM1U7A7eHcD2eI=;
+	b=4zLJ3JpCL7nDbqb+zEiFm8pf7q9UG36WXgtZNomJ3g55QsU3e4To96oj1xvwkHvHXDCInD
+	isKFkg4z44F7t1dtTE7ey2S+l/xDqjjTiJ2vs21cCJqmi4kHMBeQ55GCTQ3ynf8R+XVKJd
+	wI8Nc9osmzZ1Mrwy9TsGjz2peEYUKek=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768921810; a=rsa-sha256;
+	cv=none;
+	b=yO7TXd3A1SBJFookDPX15bj91avT0vzGg9MtPET5Og+rpMsmQ5TAiPyRB3+GZYXxAeF2oQ
+	egEP3vJEy2LNMRw5qg+8F3xYmHlQdZZcPF2NFWKsMdGcGzxesnpZNC7wOqWQYuepbGsQWQ
+	eM3qlIQ/YSO5UQayUYFX15qpff9TDp0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NfGHLI45;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9AD4160018;
+	Tue, 20 Jan 2026 15:10:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66953C16AAE;
+	Tue, 20 Jan 2026 15:10:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768921809;
+	bh=oZZE0N+eBzoJVtvYCEh6PCsNcP68xQvWg7NAAt/aY4A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=NfGHLI45keW1oS6vBkgEIO9GCPODJHiejXbFWjBkYXTa7lCQEhDMG+rFsNRnDa1c5
+	 WlQuGK9Juf4eWvh7ID25y0EiEKtjfISl/eF3p3aWTDO1OkyptIRm6CAV3QFQCzqhvs
+	 6Qj9ZTw4gVI7jh7FaInMwjIaqYxzUJAH0nSd9JZ06g0UveLNxRInRXwhmGvJix+djJ
+	 ocjjG/YHQxDUC55tVn4EAM+YV4dp+unGxRBiKqYSxA9x2UuWXP+n2PMMA1W9uJXeB9
+	 pvSSISbUERSf8ie+ZxEaSwlgAVQp4hvZzmsEr8kvRcyYW1keLvA3lhtU2isgrICOPP
+	 mrhGRknlXuaWQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  akpm@linux-foundation.org,  rppt@kernel.org,
+  graf@amazon.com,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  ricardo.neri-calderon@linux.intel.com,  kernel-team@meta.com
+Subject: Re: [PATCH v4] kho: validate preserved memory map during population
+In-Reply-To: <z2lraqiivexvfvokff4gmqyvbpswmfwhbkhv4u7lo3nnnyz346@mibnt7dkrvey>
+	(Breno Leitao's message of "Mon, 19 Jan 2026 10:54:09 -0800")
+References: <20251223140140.2090337-1-pasha.tatashin@soleen.com>
+	<jixxiqeajngwox3nh2u3pwf2rivhmqxxmpyttqxu32pixshyde@4jdn5jvg5hvk>
+	<2vxzo6mt7cl3.fsf@kernel.org>
+	<z2lraqiivexvfvokff4gmqyvbpswmfwhbkhv4u7lo3nnnyz346@mibnt7dkrvey>
+Date: Tue, 20 Jan 2026 15:10:05 +0000
+Message-ID: <2vxzzf68e2wi.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1EACF100009
-X-Stat-Signature: w9yxgian5jyfkyh55xtm6jy4q68aip4g
+Content-Type: text/plain
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 773431C0011
 X-Rspam-User: 
-X-HE-Tag: 1768920108-745515
-X-HE-Meta: U2FsdGVkX1+tR7g2sw39AaKxXiHrWMss5qwNVC+ksP5BerlYVFA447SpyPWgL3uI0Obx1MFgdAH+3mZcouG/2Y94loMSGlPlMTaJQwHuDsJnn/BFecfJwYey/Gq2i9ACbTfxMA/hCyPh8KNMnx7Q8tlxAdGmLQVIqZRLdlY24nyiDuYGgVElh2CasnXPWSJ5z9vIXgKRB2hinaWPoJsWPWc2fgWg5dwhrZJKsGLVDHu5cTbQ/VuoNCopAK0gTD1JqQEAyibQWfJQkk7elxDdRBzipBaMmvscKufskyITmVBamfz059GtMa/V+LwdpvKY9YMSO4OgSdiGVpVNd+aSFClyJewCx19waL0Ey8pQ38PFSnpyZ4E+dsmRpCgx2I17Ow9k9YXnfM2AqE7yZtftCBFg7a07SpLUQfRrPvtI+Trr8CJJ0Sp+TdVjAs2556vVaa7TunJyYPSx/ntCp1JsvusWApm74l11fAmPtD1WsvyqtoY21n03JxK8NJYRmPS0DaQLhLImy9aNnv57kB7qmE5d4wYZVcpmVmWpIodbmkoyE5FkV4IaM0XGEmB/OPbI0NzQXqFZXUKYg0qRXEO2xPX/WNYGU7yL1jqJ3nOsiOybPCRcTd6tWwGbmjConT0N5+BUUQ7TewtiKoAaeg79UqdAXSlZz6gnN1WP72THmx+z0HF3EWlMFk1q6m4q1wK7nCfNfarw+6HQ5oCElDnL7gUK1SlwCLlXAtoRb9dk315gdD1sABHMAjTHb2WlFHpxROIDtxwaoIXIu0os8i1J4t0pMuGKi4uwL1h6+14OhhJXsU1pv1NYQ1v18UCNTsD1Fg4Myu59ASqpyunIjrpBU+bB5gOkpur+qc7fSsmilWKEE4mMQSh5gdWxZQV45HRv
+X-Stat-Signature: ez3csx1yp1yd7erfp8js3ug1tajk68id
+X-HE-Tag: 1768921810-233391
+X-HE-Meta: U2FsdGVkX1+kd9r7x4znpe5fPKug1y6bgq9G9KcYNjodXetqlyB3ykCcTrKWQqu22YP7zRqxbnMTpL3FQhog763JG/vH8WNRBFxVw9q8fX/zpWPJvDmFtxtb6ztP3ArPoy99tUAxa25YBaPvRqjYIVwUFKqNVJvieAxKmRIhd/xzHRGW0SQMCN0aHWOVv6wt5+WeL742PsD+4QfZ6l406rt2/eUVZws79A76LE3gOF4UUE+b++JLesgVtLaAgro3YxS172VjO+YFgngjG2+X40Wwy/jJ1F218yXWEzhOv2R8qJM1Mv03u5luHSKhRc5THw4bQWhFD+Q7zEopQTVMMAOrEL3Yv7+iZDHUgvcBKhW/RkyUM1FVHOl93CxgnII+NTl2sm1EqOycTbtR/6xCF9de9mq+tQpIxbnADKt/iTXlsYGdLJ2lLvvoYxGBntYe1Ap+nMCrtLQyZewZ8/uxY1/DEWLQhElCmumVjWFDBfnfXYcjzYba4T/FGuJ8t9RKtcgpqQEGnDL/CEIbfgAobtGA/HSyV6YyFoLyXxIFzseL1jrB4hzv/55eSQUUCNLVXoZh3LhbMarb71qEhdPDPYC+Fx08aQdDk6InWlQP1xLzDXy1p5c2fabzj4Qyey2+qKAl0jLUk9/MYRt9O+Gbr0p9Y0+l3z/xfN6M8B7XbBgJRZflBrNPM+kLwUPKfXD09Oxwbr5St1ke2LM9T3oRIUE98GheSQUkXK/qHnNEF+ycXrQr2AZljFIR7R8FqDIsIXT297QgTV6a4uOj3b9HIkciDBZPe3w880VAt/CbHT9CcV971FZJgDhqdSiQXSJHs/+GhiFggXAr5S18J/m/34TmOKNsdjO3TvF1FeyiW7IrLRzjONHo3yczKWJ5p2JW+0wk6bCFrNsMISzwuz3Ywk7VkQITTwzT7n+EWKhvY9ZvjkcnWq5SAJiIwCRAiLxEPAJj44quQjysBpxOZYd
+ zsnoR6Jj
+ tmoNmywyk0+OMwa7gjaR6cOpSMsf6RJoClb4j5WyuhMPKwC3Olc4K630RCxussPSL71Wx6nuPWIdl7ztMZM+fLJqHVWb8dWZBVuP8KA1Ifb3iQb0amrrXTtfnsJu3O4LKIzhX8JFIRBy7PO1MYg1IaItuwZ/vYZAGP7TJYcGjclIURz6HEhnXUE8CEl70qy7qzI7MqPpQXJW6z67mjbnxFFkgLw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,90 +98,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+On Mon, Jan 19 2026, Breno Leitao wrote:
 
-ARCH_HAS_EXECMEM_ROX was re-enabled in x86 at Linux 6.14 release.
-vm_reset_perms() calculates range's start and end addresses using min()
-and max() functions. To do that it compares pointers but, with KASAN
-software tags mode enabled, some are tagged - addr variable is, while
-start and end variables aren't. This can cause the wrong address to be
-chosen and result in various errors in different places.
+> On Fri, Jan 16, 2026 at 04:21:28PM +0000, Pratyush Yadav wrote:
+>> > On Tue, Dec 23, 2025 at 09:01:40AM -0500, Pasha Tatashin wrote:
+>> >> If the previous kernel enabled KHO but did not call kho_finalize()
+>> >> (e.g., CONFIG_LIVEUPDATE=n or userspace skipped the finalization step),
+>> >> the 'preserved-memory-map' property in the FDT remains empty/zero.
+>> >> 
+>> >> Previously, kho_populate() would succeed regardless of the memory map's
+>> >> state, reserving the incoming scratch regions in memblock. However,
+>> >> kho_memory_init() would later fail to deserialize the empty map. By that
+>> >> time, the scratch regions were already registered, leading to partial
+>> >> initialization and subsequent list corruption (freeing scratch area
+>> >> twice) during kho_init().
+>> >
+>> > While trying my new patchset [0] on top of this patch, I got the
+>> > following issue:
+>> >
+>> > 	[    0.000000] KHO: disabling KHO revival: -2
+>> >
+>> > Trying to solve it, I come up with a change in kho_get_mem_map_phys() to
+>> > distinguish no memory and error, see the patch attached later.
+>> >
+>> > This is what I used to test [0] on top of linux-next. Is this useful?
+>> >
+>> > Link: https://lore.kernel.org/all/20260108-kho-v3-1-b1d6b7a89342@debian.org/ [0]
+>> >
+>> > thanks
+>> > --breno
+>> >
+>> > commit 5d7855fede8110d74942e1b67056ba589a1cb54a
+>> > Author: Breno Leitao <leitao@debian.org>
+>> > Date:   Thu Jan 8 07:44:08 2026 -0800
+>> >
+>> >     kho: allow KHO to work when no memory is preserved
+>> >     
+>> >     Fix KHO initialization failing when no memory pages were preserved by
+>> >     the previous kernel.
+>> >     
+>> >     Commit eda79a683a0a ("kho: validate preserved memory map during
+>> >     population") introduced kho_get_mem_map_phys() which returns the physical
+>> >     address of the preserved memory map directly as its return value. The
+>> >     caller then validates it with:
+>> >     
+>> >         mem_map_phys = kho_get_mem_map_phys(fdt);
+>> >         if (!mem_map_phys) {
+>> >             err = -ENOENT;
+>> >             goto out;
+>> >         }
+>> >     
+>> >     This creates an ambiguity: physical address 0 is used both as an error
+>> >     indicator (property missing/malformed) and as a valid value (property
+>> >     exists with value 0, meaning no memory was preserved).
+>> >     
+>> >     "No memory preserved" is a legitimate state. KHO provides features beyond
+>> >     memory page preservation, such as previous kernel version tracking and
+>> >     kexec count tracking. When the previous kernel enables KHO but doesn't
+>> >     preserve any memory pages, it sets 'preserved-memory-map' to 0. This is
+>> >     semantically different from "KHO not initialized" - it means "KHO is
+>> >     active, there's just nothing in the memory map."
+>> 
+>> This isn't true. If you hand over _any_ state, you will at least need
+>> the KHO FDT. And the KHO FDT is preserved memory (see the
+>> kho_alloc_preserve() call in kho_init()). So I don't see how you can
+>> ever have valid KHO with no memory.
+>> 
+>> mem_map_phys _can_ be 0, but only when KHO was enabled but not used. And
+>> that is of course also a valid use case.
+>
+> Oh, I was not finalizing KHO, and in commit e1c3bfd091f363c1
+> ("kho: validate preserved memory map during population") started to fail this
+> on purpose.
+>
+> So, I understand we want to fail if mem_map_phys = 0, but thn FDT was properly
+> passed (how is it possible)? I know I can read
+> KHO_PROP_PREVIOUS_RELEASE/KHO_PROP_PREVIOUS_RELEASE from the fdt, even when
+> mem_map_phys is 0.
 
-Reset tags in the address used as function argument in min(), max().
+See commit d7255959b69a ("kho: allow kexec load before KHO
+finalization") for more of an explanation of why this is done.
 
-execmem_cache_add() adds tagged pointers to a maple tree structure,
-which then are incorrectly compared when walking the tree. That results
-in different pointers being returned later and page permission violation
-errors panicking the kernel.
+The FDT is always handed over because when the KHO image is set up, we
+don't know if KHO will actually be used. On the next boot, it is
+discarded if KHO was not finalized (that is, mem_map_phys == 0) since it
+won't contain any memory to hand over.
 
-Reset tag of the address range inserted into the maple tree inside
-execmem_vmalloc() which then gets propagated to execmem_cache_add().
+Since you had the previous release in the FDT itself, you were able to
+read it. If you move to subtrees as I suggested, then it would stop
+working.
 
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Acked-by: Alexander Potapenko <glider@google.com>
----
-Changelog v7:
-- Add Alexander's acked-by tag.
-- Add comments on why these tag resets are needed (Alexander)
+The KHO FDT is special in a way. We access it _before_ going into
+scratch-only mode, and until then we just have to hope nobody
+over-writes that (which is unlikely in early boot anyway). So it is safe
+to use the contents of the FDT itself to signal if we have any useful
+KHO state to hand over.
 
-Changelog v6:
-- Move back the tag reset from execmem_cache_add() to execmem_vmalloc()
-  (Mike Rapoport)
-- Rewrite the changelogs to match the code changes from v6 and v5.
-
-Changelog v5:
-- Remove the within_range() change.
-- arch_kasan_reset_tag -> kasan_reset_tag.
-
-Changelog v4:
-- Add patch to the series.
-
- mm/execmem.c | 9 ++++++++-
- mm/vmalloc.c | 7 ++++++-
- 2 files changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/mm/execmem.c b/mm/execmem.c
-index 810a4ba9c924..dc7422222cf7 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -59,7 +59,14 @@ static void *execmem_vmalloc(struct execmem_range *range=
-, size_t size,
- =09=09return NULL;
- =09}
-=20
--=09return p;
-+=09/*
-+=09 * Resetting the tag here is necessary to avoid the tagged address
-+=09 * ending up in the maple tree structure. There it's linear address
-+=09 * can be incorrectly compared with other addresses which can result in
-+=09 * a wrong address being picked down the line and for example a page
-+=09 * permission violation error panicking the kernel.
-+=09 */
-+=09return kasan_reset_tag(p);
- }
-=20
- struct vm_struct *execmem_vmap(size_t size)
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 628f96e83b11..1479a7b362f4 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3354,7 +3354,12 @@ static void vm_reset_perms(struct vm_struct *area)
- =09 * the vm_unmap_aliases() flush includes the direct map.
- =09 */
- =09for (i =3D 0; i < area->nr_pages; i +=3D 1U << page_order) {
--=09=09unsigned long addr =3D (unsigned long)page_address(area->pages[i]);
-+=09=09/*
-+=09=09 * Addresses' tag needs resetting so it can be properly used in
-+=09=09 * the min() and max() below. Otherwise the start or end values
-+=09=09 * might be favoured.
-+=09=09 */
-+=09=09unsigned long addr =3D (unsigned long)kasan_reset_tag(page_address(a=
-rea->pages[i]));
-=20
- =09=09if (addr) {
- =09=09=09unsigned long page_size;
---=20
-2.52.0
-
-
+-- 
+Regards,
+Pratyush Yadav
 
