@@ -4,109 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D106ED2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:05:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08C0AD2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:11:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F3A56B038C; Tue, 20 Jan 2026 04:05:17 -0500 (EST)
+	id 67E6B6B038F; Tue, 20 Jan 2026 04:11:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C4706B038E; Tue, 20 Jan 2026 04:05:17 -0500 (EST)
+	id 62C3A6B0390; Tue, 20 Jan 2026 04:11:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FBA56B038F; Tue, 20 Jan 2026 04:05:17 -0500 (EST)
+	id 52B116B0391; Tue, 20 Jan 2026 04:11:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EF3AD6B038C
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:05:16 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A21F41403B5
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:05:16 +0000 (UTC)
-X-FDA: 84351758232.23.190DC7E
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DE2D214000A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:05:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=sxtVUNrq;
-	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 416AA6B038F
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:11:57 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA80B8ACE2
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:11:56 +0000 (UTC)
+X-FDA: 84351775032.26.74BE611
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9A8A51C0007
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:11:53 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZTrAZams;
+	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768899914;
+	s=arc-20220608; t=1768900314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3fjzOR9RQDpRiigeCgSn0QNalR2ltrBLZFD1Hj4R1Fk=;
-	b=Zv1BvBG7d6QyZItweAzTdk1+S7J5UZAsJTyZiag8ITeHVELkd7tMUvHFjUKl46dlFqtz79
-	VNuIJZ+3SDaAYxTIHtq9S9dbwiVxKft0XKnFpy9/ay+PCojLyzNohUVZ+qU3J6J+v9lE5G
-	9hm4qEg/Fn8jBZLppPQu+tGae5l8DBU=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=szg5IQ98Or5Gi59BEnDoTgnNuPwokGFPQCEApME3dXs=;
+	b=xhyRMzb4P3ivFBz0HdMLO1m0VNHVl2qYxcZrZh6iHWTHFisqaRsOo4HCUkJH0st90pbZus
+	mWS/1TIlAYmkLkeN5H5J7pTtoVRyE+jR9RdroJd2gVsTwX3ZN90glZJSmuO83MTOiD24fY
+	r99o/IKgd5Mvy14+NQ+gGmHwsBNHKoA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=sxtVUNrq;
-	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768899914; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZTrAZams;
+	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768900314; a=rsa-sha256;
 	cv=none;
-	b=5skQbRo89iLz1vCG1yQcCJvn3TMf9uxpdM4WWA1X5/fFU2v9lFz/r9XDr68pd09cCdYRjo
-	jntFcUpJdpJskx7MOuO2V6t5ZdTqFRbmTeKcB8jkqNXK5v96NGCE6rw606R70sTXZW4zrW
-	eyq0/Oy3eraNEO3KdNGW2gy6j+DWzj8=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=3fjzOR9RQDpRiigeCgSn0QNalR2ltrBLZFD1Hj4R1Fk=;
-	b=sxtVUNrq0zhGG055Ry9BCVeQiu8OoMVeRVLgQM6NpMHmkGaEMVJhWmDQ7DfyjNgvvBADcj6mg
-	kzD2Ly7cmCvK3UkGy04HojRrnGGjsrJJmuiN7jRG7xMXf2ykiZ370meWOjRZs/tqg/5I9w0iUEj
-	4OBM4vwH9jQMhIlUBQkMaxY=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4dwLt00KTPzRhSH;
-	Tue, 20 Jan 2026 17:01:44 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7A3F2405A9;
-	Tue, 20 Jan 2026 17:05:07 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 20 Jan 2026 17:05:07 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 20 Jan 2026 17:05:06 +0800
-Subject: Re: [PATCH 0/3] selftests/mm: add memory failure selftests
-To: Philip Li <philip.li@intel.com>, "David Hildenbrand (Red Hat)"
-	<david@kernel.org>
-CC: <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<akpm@linux-foundation.org>, <shuah@kernel.org>
-References: <20260107093710.3928374-1-linmiaohe@huawei.com>
- <9413a995-9182-493e-a28a-6d2d3a17236b@kernel.org>
- <2ae04380-fd60-a8a1-6217-386454fec610@huawei.com>
- <693dc9aa-cf86-48c7-be9c-ec554f9da855@kernel.org>
- <d958d80a-8412-6107-e144-975b8d545568@huawei.com>
- <b258b6c0-7af1-4443-bd81-2722dec610f7@huawei.com>
- <d6a544a5-9d22-4c89-bd53-92330f4a9f51@kernel.org>
- <aWZRKk92pYvwBLj6@rli9-mobl>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <e62bda7d-4584-3f5d-f1f8-7685ca4d92df@huawei.com>
-Date: Tue, 20 Jan 2026 17:05:05 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <aWZRKk92pYvwBLj6@rli9-mobl>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+	b=GWIngY4GHG6kMH/6s5qP15awFf9fD2+2+SHgL1ktaRgHMOmBigM80LQj/ovNdfsdzRDFez
+	Hor76jIYnSwY7HqpFJ/Sh9pgaCASte+YRI+3EQ5Jlswwmzx8+KM8M2Wz7UbVohvVg/BCqc
+	40dbbcWJts43cPeNiFhzpNCEGIlnvSg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768900314; x=1800436314;
+  h=date:from:to:cc:subject:message-id;
+  bh=JrxKwrQLyzmRYseDka1fCr4Iiio7LvUtqyZYyMLehRQ=;
+  b=ZTrAZamsWmokwOBsb+1yKFpvIkqKrkk/O+T8PcXz01xRc+BxbZXqAUo2
+   b8jKjeJ3A6u75e2XMOZBqoV/KtDbHPiYBwAWC6M8G1r6iGans3gZvaqtm
+   Y2JbfbplS3UYVWsgPn3fv9O3rWd7+ZIs8WfkenrKhdfbmKohZs6OEirTg
+   M/XIfctjS8tQ0Si/kvn/TpDXTgSBCitkFTVDPdb5dNS1Al3sIxs8FWDp3
+   5qvEGbfYFOdaeBJZkZ/IQx2Py3G3BztE4F3SLDspCmRUdLKVy4/7yZXvQ
+   5HqaubiZYIa7ZNYBVhaMqHjqQnn7gOr/20vShz1YoLOyHmYeWdmTNZDAp
+   w==;
+X-CSE-ConnectionGUID: RDzSzpjhSlKNww9P6aal1g==
+X-CSE-MsgGUID: K+HomEG7Szy1oHT7LNyLdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="80825466"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="80825466"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 01:11:52 -0800
+X-CSE-ConnectionGUID: 91CWJxYbSkaohD/2HqzpPg==
+X-CSE-MsgGUID: na7nsREnRH6LNQ3vRqS1uw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="206119638"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 20 Jan 2026 01:11:50 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vi7m7-00000000Ol3-09ML;
+	Tue, 20 Jan 2026 09:11:47 +0000
+Date: Tue, 20 Jan 2026 17:10:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 418/422] fs/orangefs/file.c:414:9: sparse:
+ sparse: dereference of noderef expression
+Message-ID: <202601201701.IhxeGffs-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: qt1gz1djgqst3pz7bczocwyt51xpysue
+X-Rspamd-Queue-Id: 9A8A51C0007
 X-Rspam-User: 
-X-Stat-Signature: pyamfo8rex786bnmxksxksmonxsr97bn
-X-Rspamd-Queue-Id: DE2D214000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768899912-885990
-X-HE-Meta: U2FsdGVkX19w9WH8nGUbRTI81gbq8HGjikaRK6O/JjJW0Af19UdkdQqS9LzEa5y33Qnn0C8g47HIe22a1Rdr5ALSDNwadFQfLpGe7P0TbOLL+dt9AGvGoxZoliG2fZHYVxzBhRYDWZ4At+X9SnlqWUAClAEBiq5Wjejr5e3XPs03Kv3MPk8NMmr94vxHmvp2KPav8dY9ez8h16pjG38bFO666895ndo+YRPc3yfgeZty0+ZbMfPk6afTWtWBP9UcMjEDPSeKFm1/kHwWAH07meyIIEjq2SJe9xf4mGaqxKaRJ1LwkcaONh9bA2Bm1F/LePyAphMfD1Vjy+vMweq5QgQXu3d0fxwnofZi80NM7yxsUk7JAglPP3aEFEvrWkABryy/36kyV9wyrF90z2JrLRCYFypb8pjJExnc7hDVJCgRTITCD2emZM4fnBPsuYcZgCLwNZE2f5UEP/0Q/mbCFfG8IH/12YABozn0Et0abqLN7ZHAFZOI/ZLmUQtROigxh8eljMveSO/PHCh/XFZCmh9an6Vu4fDUNq0F09sXV6YLEBiUf/Ai3yO5fGmaQRG+mSKbxSgIA9oqAdh6QLjldaBZE8Q4KNM9lH0J82RO7+VasS4wjeGM2JnSUEj6pP9mIwh4yALTdfP6ly8WWlRaEf5Q+Fru2XsW+FRqDxIpBvgpDyg+uKlOjy3R0wmQHrnfHkVAckw9QU5cYa4x6aOp/P0PDMa0a3YwLGcgTlxGfqj5OUE4TSto57rORzqopk71jZImbZop/FyahxUXSk96WXX8OtsQKSA6HBSVMOm6MzHl1E+2lEtW+3WJlKvKmhxCjaKx9GDlxcjaODksuwOfs9rFWMIrji9uAzvhyxb5xqMaEieibC/ZlW98c1mCcJJmXjgYku2hgaqkTxIxc0F+u1Bm1Cs+nY5mFp2OAMcS2o+oIZQHGODpXDoMdOScjN5tAoTjbyST9jnVU73g6Gc
- NQe6qQYO
- Fzo1qw6jSiD7wLfWhmefWMc/NggT3DGKB2UuHqVlq/eECKBjLHI5BcaL3P77Pg7BtESaDULqdu6LC/oTbt5L7/01ENeg7OQg5LT/y2zfIDDs4n14K9GB/hX1bkOlT5mpRxeCxhsXXFwn60dDwJvbJJhYEoNg4Z52DH1AORC4kOG/BYcTcxCslftC+cGaa7s1pHJ+q8/ssVOUQx7lPZLOiytkllPXtXDhlX9r/XGzKMynn6japr8hkBVujbSgL4foUyZGp3JmmO1vDDNBmr4YHUqOG/ECY2dUliCeDUj09ZV5VFj5EKl4Iyvu63mCCfgaTh94CuqzSpWSsMhGLrR2tPHKnIc5e9XBcXNsQYa/QvBqHIgomT14pXcBvdA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768900313-327788
+X-HE-Meta: U2FsdGVkX19RS2Xeov1FNVkT/I01f+39scRgshjjgfKxyEH9j70FPQUICpyLbJQUafuq+H16/jHvEY+DnImaTWsYEDao+DtP579vPIcF5M7XmwNKi5kDVhQ2s+ULe/yvC/4e1KavxDBODtLRNviAqEZMN4JCrSWFB8jK+34KQIwa4IgSBYJJCqeINy7wCpPDy6DGF1OdnbXoa4bCENEBzd9wiE6N4mYnO+JqL9VAiTPUiN3CGp+k4Gocn5vQYyxG5prkebTl0oKoOEgkP819FjLrAYGvd/CCMZEGn+MDUp9AByXaPsFnC9sU6AnVAOs5U8ZTR2CmA0UsxZ/HQL9gSxsdQsYHS4VyBxWrTd69V6OHdZTkxGZs0FqtL65r3w3z8O97RX6MoNjTd09iUwKE1xLq8VM0/hQaFTjlGkBiyYyzPADalUyPI2F335kioBEjXXehva3Js4Xu5sO3cy5p0ieQyKDSGuAKtmdze6DARbl9flBg+RSydFos5tTPzk++/xFN/MXNrA8QzEhO36c4jfo7jUoCZu+MPn2mEQYhq700DU6mVKxTDhxFlwTSNVh+jj03c9BKvFSKz8DrXn4ABbBNUog3ePtt6Orcb6qjuKKAu6M8ZkrCz3KRwoh8nSe9sRiWbHs7obIsgsbtded6wBa34PqAmTAEq8/COBfrh29HwY8Lefij6yVkrOsbBYjYJpz+8lssueHG63z3lwFJSaPKQOPJ8Sv3mxUyST6kqFCDBDm4VYerJ/c4dpwTFfCsfN20b6o7HBMTgIHHLPp5Ori5NzdgHwy2NWczR6IEMDxIWKd+CB19wPBatl57ADvxgQSeHpEzNAn2una7C9/GyF7/zzcUO5oTpvvjp/oT9/WHAqUi1wTqYzs2UJ7gBW8Jba4c3MwZlHpT318qsnaGzYa7VkEosmztafToqFYbkNVf6C6sOkunI3l/C/ANh3yGLBVOj7mjrIwZy4dXYuI
+ /OEgMpFb
+ Wf+JPKeaMJ91OdmX8J2xQazOcPtCSAkeSSEXpIpLdH3NbuOIdGNF/4ogiPfH2v2T40+WBz+QZ2XaxbBDW5tFb/L9dqvIhdXhBslA8CVBWSJ1dENle1Ye2AmgYfDlv9KrHi9igFwm6eaYBNwNh36wFKH2eh8Afi2x2gRkWWkVBomT+1z3iJNwdlTvWZLVwm8vqk7AoyrtDEsjNVlj5kC7MZxDYBtkNE61uLE1gMrSd1RBGH9YlefpKjv/KzPSiQLLgS67fkBuSo5ZPkhDC9RkhBXOWRQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,74 +103,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/1/13 22:05, Philip Li wrote:
-> On Mon, Jan 12, 2026 at 08:38:58PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 1/12/26 13:44, Miaohe Lin wrote:
->>> On 2026/1/12 19:33, Miaohe Lin wrote:
-> 
-> ...
-> 
->>>>>>> # # # Starting 6 tests from 2 test cases.
->>>>>>> # # #  RUN           memory_failure.madv_hard.anon ...
->>>>>>> # # #            OK  memory_failure.madv_hard.anon
->>>>>>> # not ok 71 memory-failure # exit=1
->>>>>>>
->>>>>>>
->>>>>>> Can the test maybe not deal with running in certain environments (config options etc)?
->>>>>>
->>>>>> To run the test, I think there should be:
->>>>>>     1.CONFIG_MEMORY_FAILURE and CONFIG_HWPOISON_INJECT should be enabled.
-> 
-> in 0day env, the configs are below
-> 
-> CONFIG_MEMORY_FAILURE=y
-> CONFIG_HWPOISON_INJECT=m
-> 
->>>>>>     2.Root privilege is required.
-> 
-> yes, use root to run
-> 
->>>>>>     3.For dirty/clean pagecache testcases, the test file "./clean-page-cache-test-file" and
->>>>>>       "./dirty-page-cache-test-file" are assumed to be created on non-memory file systems
->>>>>>       such as xfs, ext4, etc.
-> 
-> this is a problem in 0day, the test is running in tmpfs. Let me further check
-> to correct this.
-> 
->>>>>>
->>>>>> Does your test environment break any of the above rules?
->>>>>
->>>>> It is 0day environment, so very likely yes. I suspect 1).
->>>
->>> Hi David,
->>>
->>> After taking a more close look, I think CONFIG_MEMORY_FAILURE and CONFIG_HWPOISON_INJECT should have been
->>> enabled in 0day environment or testcase memory_failure.madv_hard.anon should fail. memory_failure.madv_hard.anon
->>> will inject memory failure and expects seeing a SIGBUG signal.
->>
->> Good point.
->>
->>>
->>>>>
->>>>>> Am I expected to add some code to
->>>>>> guard against this?
->>>>>
->>>>> Yes, at least some.
->>>>>
->>>>> Checking for root privileges is not required. The tests are commonly run from non-memory file systems, but, in theory, could be run from nfs etc.
->>>>>
->>>>> If you require special file systems, take a look at gup_longterm.o where we test for some fileystsem types.
->>>
->>> And I think the cause of failures of testcases memory_failure.madv_hard.clean_pagecache and memory_failure.madv_hard.dirty_pagecache
->>> is they running on memory filesystems. The error pages are kept in page cache in that case while memory_failure.madv_hard.clean_pagecache
->>> expects to see the error page truncated.
->>
->> Maybe they are run on shmem? Good question. (@Phil?)
-> 
-> yes, it runs on tmpfs, let me further check to resolve it.
+Hi Lorenzo,
 
-Thanks both. This information is really helpful. I will add some codes to handle this.
+FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
 
-Thanks.
-.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   e4348a62bb1acacafcdeb149c9363291fae08c0c
+commit: ccbdd8044f13617fe9f2bce61aed556314544664 [418/422] mm: update all remaining mmap_prepare users to use vma_flags_t
+config: arm-randconfig-r131-20260120 (https://download.01.org/0day-ci/archive/20260120/202601201701.IhxeGffs-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601201701.IhxeGffs-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601201701.IhxeGffs-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> fs/orangefs/file.c:414:9: sparse: sparse: dereference of noderef expression
+   fs/orangefs/file.c: note: in included file (through arch/arm/include/asm/cacheflush.h, include/linux/cacheflush.h, include/linux/highmem.h, ...):
+   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1199:46: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1199:46: sparse: sparse: dereference of noderef expression
+   fs/orangefs/file.c:415:9: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1216:48: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1216:48: sparse: sparse: dereference of noderef expression
+--
+>> fs/ramfs/file-nommu.c:267:40: sparse: sparse: dereference of noderef expression
+>> fs/ramfs/file-nommu.c:267:40: sparse: sparse: dereference of noderef expression
+   fs/ramfs/file-nommu.c: note: in included file:
+   include/linux/mm.h:1954:16: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1954:16: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1954:16: sparse: sparse: dereference of noderef expression
+   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
+
+vim +414 fs/orangefs/file.c
+
+   397	
+   398	/*
+   399	 * Memory map a region of a file.
+   400	 */
+   401	static int orangefs_file_mmap_prepare(struct vm_area_desc *desc)
+   402	{
+   403		struct file *file = desc->file;
+   404		int ret;
+   405	
+   406		ret = orangefs_revalidate_mapping(file_inode(file));
+   407		if (ret)
+   408			return ret;
+   409	
+   410		gossip_debug(GOSSIP_FILE_DEBUG,
+   411			     "orangefs_file_mmap: called on %pD\n", file);
+   412	
+   413		/* set the sequential readahead hint */
+ > 414		vma_desc_set_flags(desc, VMA_SEQ_READ_BIT);
+   415		vma_desc_clear_flags(desc, VMA_RAND_READ_BIT);
+   416	
+   417		file_accessed(file);
+   418		desc->vm_ops = &orangefs_file_vm_ops;
+   419		return 0;
+   420	}
+   421	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
