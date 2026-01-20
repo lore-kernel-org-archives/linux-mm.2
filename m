@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E4ACCF2DD
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 15:49:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAECECCF2DD
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 15:54:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E73636B0444; Tue, 20 Jan 2026 10:49:24 -0500 (EST)
+	id 3FE296B0447; Tue, 20 Jan 2026 10:54:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3DF26B0446; Tue, 20 Jan 2026 10:49:24 -0500 (EST)
+	id 3D5EE6B0448; Tue, 20 Jan 2026 10:54:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6B1B6B0447; Tue, 20 Jan 2026 10:49:24 -0500 (EST)
+	id 30C776B0449; Tue, 20 Jan 2026 10:54:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C38D36B0444
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:49:24 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 64BECD2401
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:49:24 +0000 (UTC)
-X-FDA: 84352776648.02.C2C33F5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 95BD0C0006
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:49:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZXYUZUgh;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2386B0447
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 10:54:54 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC14C140674
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:54:53 +0000 (UTC)
+X-FDA: 84352790466.11.EE200E2
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EDBEC2000E
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 15:54:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ScaXqcI3;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768924162;
+	s=arc-20220608; t=1768924492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sedTFGR0UIxMIY6PBuudToOLvbWS3cx6h34dkkTHn1A=;
-	b=IzzaACIm0jFjQG2jJlHwJrS6ehgBxIYt94Vlf3zGwXTynGQRKxRJBByd6+IkSu48/jfBqO
-	clME7fBC56phVCucPvNZSglHVXRusqgGxutRh6tjUlheWpIz+uOh6yt/DxyfFNawLcX1oh
-	XwXxFYErfkpgKFfCaH+esRhH44KB1MM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZXYUZUgh;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768924162; a=rsa-sha256;
+	bh=IhsVj2SW0FOxYtaPNx5A7XnA7ZGrfb7ONRjNT2dq1cs=;
+	b=gxpaZyVMlByt/7Qo/2JqGtXnfTp/hZDI8e4DiKJs0NmIu5eNuw6FiOVsvrPN26eoYIW+cu
+	kbX5IFzjeyjcGTt133SHMOyp7V+yVv6g4Q3NC7mfMHo0bb3IDI8LokbcPb+0UTxJMiEQwv
+	PloNGXihhk1D9hILeI6ua/5RCtFRyZo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768924492; a=rsa-sha256;
 	cv=none;
-	b=n8VR6P0Bs8+dHPqdSvf36ydKai8mZu/lplqWEGgNZ8QnFChsunrR8pK9zpZB+FUpq/se+p
-	ln2Ffix0J9HGIXJcATGrLEF5aDlobgeOhXuVI66GozDemP6jfMyHaNYqRefhAZXX1mqbX+
-	quCHxoqk8k5ickhOaO5m5WiHJSJOX4o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4DF084436E;
-	Tue, 20 Jan 2026 15:49:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645B5C19422;
-	Tue, 20 Jan 2026 15:49:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768924161;
-	bh=Y/AbB7KgatkBwFOqIeCh37bW6yqZKTt6YIephjTthpE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ZXYUZUghgW6RMboSc06ViBc7jvzZ9CGg4hucUHqCbYExeJE0/Hvu3Tk/xY3EewL8h
-	 75PVDNC07Yw5qzGqyTG0NRtfrBvsWL7L7lugWh1Ewg+Rz7ep8WZG+qHc55M+edrcM2
-	 5KZd1kW90br4dzAtum9kF3SgS4tDj8zqGQkmhDix3v37vHRymhdgIY8ZI3lJlxxYER
-	 HskWglueLRn36V8/lAsy2MJhJxi+WrU8Omo5KHKgXWjfP/a6LxY4Y0CZOSoe2hVgia
-	 NIaj3FaQEv8+Z/tZD0P/bLVFMn1AbdKmvvPjukxiJnE4LhckWdiaSc9TXVn0Ng2vU5
-	 PWDIltP8LEeqw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
- <graf@amazon.com>,  Jason Miu <jasonmiu@google.com>,  Jonathan Corbet
- <corbet@lwn.net>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
- Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
-  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH 2/6] kho/abi: memfd: make generated documentation more
- coherent
-In-Reply-To: <20260105165839.285270-3-rppt@kernel.org> (Mike Rapoport's
-	message of "Mon, 5 Jan 2026 18:58:35 +0200")
-References: <20260105165839.285270-1-rppt@kernel.org>
-	<20260105165839.285270-3-rppt@kernel.org>
-Date: Tue, 20 Jan 2026 15:49:18 +0000
-Message-ID: <2vxzecnke135.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=li2zEcI8j7qYG6cnwSWKRcG0LxyGJ9t7DL52PahNhldIcpZ2PIwGRxQ4f5EI87bnVFUjdN
+	VNIRLS1HufJe7shUCROkXKyKLLQoXeHyObG98IsEo/zYeaWWSm0ffMww2I0jO5EWLfCWuI
+	EzRJtrYdesqaUUSs0Wktj9ptvmI9pXw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ScaXqcI3;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 20 Jan 2026 07:54:43 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768924489;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IhsVj2SW0FOxYtaPNx5A7XnA7ZGrfb7ONRjNT2dq1cs=;
+	b=ScaXqcI355Enod1tJ2i/3AlhFJPA6uABNdikdvdAsNXrGz6B/WaEJtYD7pN0V7ZfndiNgp
+	tMeCJgJiIA2TJXFybimJiSW9WBvpNKUpINDiBCOKgh4yvGG957S0wQIrfLH8cLd8F6sNq+
+	D3ATwcewePPGGTLuuJWokdKA0bEIXWI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>, 
+	hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev, 
+	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev
+Subject: Re: [PATCH v3 24/30] mm: memcontrol: prepare for reparenting LRU
+ pages for lruvec lock
+Message-ID: <7ruaiutqvgcja5l3zmxluwjp4c7utn62f3lx6ybwcwz5liki37@77fhdxyhmyk5>
+References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
+ <0252f9acc29d4b1e9b8252dc003aff065c8ac1f6.1768389889.git.zhengqi.arch@bytedance.com>
+ <4a1b69d2-df29-4204-91fd-bb00b52350db@linux.dev>
+ <e7aa1221-040e-4806-a259-56718844897f@linux.dev>
+ <ncg4ibcrecdutsizzwdu4buw2fvqc57yji4rx3hsdwv4mgobkz@krdjtokzz4xg>
+ <dd288f1a-e7b0-48ae-9b11-d882f42bab36@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dd288f1a-e7b0-48ae-9b11-d882f42bab36@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EDBEC2000E
 X-Rspam-User: 
-X-Stat-Signature: qe1g9z841scwwqeruc8mmd6ffbhu41mr
-X-Rspamd-Queue-Id: 95BD0C0006
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768924162-836314
-X-HE-Meta: U2FsdGVkX18Hm9tbMK+ZhHRCvyO8MCHNdZ0A6GIVS9R5B9ezWLabRqrfm51V05dgv1n4VYSupA+ASzcOj/DcwgIAlXO2foFFPGe7oNoh6kzcH6ibHUf1C802XXd5jlHHxrB8LGo5BdXECrPEJt5kXfks53wDFN5M25K+PomLc0T6ZeJgHVGhPh7oM0LZ6SJC3EjUFkVKmldpi4WaDpnzSRWX2KO6Y30qFUVTKGL6J6tkb2yq5ftFQI7F3JHdtHsYep/sbqlPYrHSMtcxQxHp9P2vOH7p49U+w1ub4JX7lJgmNFx5XUpnKrYpfM6jZY0PQ6Unupq5/1G0i0XC8o1FY4IrS7MRoRtBoJctew+Z/BV6hXdi1cebJwTTsDT8BC9PFF2pAPSFR2Bdzhl5nCL2exx4PM7b8Tkh36Nlal9hhGpQHgY9f+p4kDo7ujNL41/mrbOJn0sAAlSsbKXy3cfsX7b2/zPayrjNxDqRm9qMRyJguKy5H3EynrLo3zKN7GEKulklvgGvUnbo5H6q7mbWLpEilDOsEkXuiOFREfokoqgUhsRRD66iZ6ZOJ0sEAcJmcTJ+i3/wFDd9kA17oyG6+lGFjc8pKdEs1/HZB//yNjHEyOcFsgPKxXmpBPWhzr0EYQMKZGXFJzQByB4FpTLydzURviHBWRYk43RlsMWRXHvJ8RKxNNkV7pxZYYDeR0Mo4oWCtCHrY08l9Nia4HgpWwXcL/5br+jZKynN+Q+e6w9rFboNpzZEFj3vHC/uT9XvbcxUZKnVhixkjQ/UAGbjJnNBwZT7v+CPwclLq/r0qHM3QZSh2m5HZjqr8TYxaaYAD16iQENZ2O4CITWh8JFNIssxv4KU5TbcYO/bw3Shiug+0PfhXrJMjDSmWSWNvEB1SezsiLNjEy0BVkZjJsId93c6Dv13+SUfhMYRoMzZUzWiyJKhn+D5fNzFjGXLiD0gfoJGi6xE73LFcmlQ9De
- GNZv6YjM
- 2IGnC2Ku8EoW4gDswsyMD+Iorbnq7HWXsNKpqjJ2SsPr33Dab6HfRaeITb6b8ITxh/iS5GRleAShLQeg2YD8++rjGh0cJQGaugKgneR/ODOe5HP0tbaEfO+aGWfwf1E3D2GaC627A1wKQXNnEX8VuiOL+o3AKXBveQPB+I4NbMRaOm1jfQxyfIHDCtbNw4nfFqB1H
+X-Stat-Signature: q8p33cjcm1ozmdt5pux4k1o8ujb3kcot
+X-HE-Tag: 1768924491-466227
+X-HE-Meta: U2FsdGVkX19WHMGJRrjP+Gq8wYTLKlqhX7WXVlFnlq5AnBtrweEiQ6WwyEw8qpdXmvVBQdWVqNQJFYIG3SUqU1N2tGv8uCuMnNC6T8cE1bfJc/ubry8Pz9yeYONAJrozAFBsElMP7R1S6BIdMoIILSYbODepHi1rlem2Xe0ro8kLwH6JsM+azid5i/mVfguYntyKMzNA2whNFK/IlZ2gLfhPg0NB3BbccrNJIoVtTcnKyW3cpE//hxbsCncTOKcbLhoK19Oe8mu3h5BJScjnyXSbRiy1/uwzq+dUTV4f4fqEQNknJrgT5+IrINb4ppianAD35miiKCPSSWBahQLhSWhJO9zcUMwHNp7f3eXNL16fVOHUDwW+0i90xLTCc3GoXhwj44vzDj1l1dqvtMTIrskISYxFFrjIKXC18lfuB4uionZNxCWi4HBDLQdB0sGF08Z2nW18rtk2xj01+g3IR0icp5uXty+erPANSyQGK3radj2hmPGqY2kuBHHfn7yZ3dOI6ZqK4+HwxYAMBsohe986DtVlRt5hZJtQa5nDte/lr8Tp7TWvNNZzbzKG2hPpcf7vvbEZN25phCVw8MJwFCyBhT0z2vFBmmlxAwXRqFUzPjSdCjGPWdMmdElsuvM8M0F+ZN3zLxFpYi0yAtGQnPPpfF9FjOIARrMEdsw8nzoyEmliEpNHxry76vI8+6WAyrs5zbBF3q9QEBmuRcP3R0LhJ6fSl1Ue7puW5BGKBR9kHQOzR1g0VIo4iOZoIkOgdz4Z0T7BAwMx8k1kty/2jilfiz8HzatC2zKB9qJ20VTVUjEA1bJ8q4gY7gSHDf+S0KTJzP9R8f5MGhcejngV2rsDABXUy5452l3U9YCSQVo6BTjfWzJX1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,23 +97,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 05 2026, Mike Rapoport wrote:
-
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> memfd preservation ABI description starts with "This header defines"
-> which is fine in the header but reads weird in the generated html
-> documentation.
->
-> Update it to make the generated documentation coherent.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-
+On Mon, Jan 19, 2026 at 11:44:09AM +0800, Qi Zheng wrote:
+> 
+> 
 [...]
+> > > 
+> > > If no one else objects, I will drop __acquires/__releases in the next
+> > > version.
+> > > 
+> > 
+> > If you drop these annotations from header file and keep in the C file,
+> > do you still get the compilation error?
+> 
+> I did test it this way, and it does fix the compilation error, but
+> Muchun thinks these functions are very simple and there's no need to put
+> them in a C file.
+> 
 
--- 
-Regards,
-Pratyush Yadav
+I think we should prefer correctness at this stage. We can always change
+these functions later if we see performance impact of these. So, I would
+recommend to keep them in C file along with these annotations.
 
