@@ -4,107 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D1FD2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:19:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F856D2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:28:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAD5E6B0394; Tue, 20 Jan 2026 04:19:37 -0500 (EST)
+	id 82C576B0397; Tue, 20 Jan 2026 04:28:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0AD86B0396; Tue, 20 Jan 2026 04:19:37 -0500 (EST)
+	id 7D9A76B0398; Tue, 20 Jan 2026 04:28:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CFC66B0397; Tue, 20 Jan 2026 04:19:37 -0500 (EST)
+	id 6BBA66B0399; Tue, 20 Jan 2026 04:28:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 705E76B0394
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:19:37 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 122161401A4
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:19:37 +0000 (UTC)
-X-FDA: 84351794394.30.77ACFA9
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3E50D1C0007
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:19:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=G374bfE5;
-	spf=pass (imf21.hostedemail.com: domain of 3pUhvaQgKCEY0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3pUhvaQgKCEY0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768900775; a=rsa-sha256;
-	cv=none;
-	b=0vzawTOezUXW7H2khDq1dMG8yov5O/s1fjk01F+yJU2OwYifUqiiKt+j7pBgX4r36sYO31
-	BW3FW+pMsk6BmJib+TG8WituzTaL7ZIOPft7VizCRlHbBBseFIMrS5IxTR/GULRfev2xrJ
-	7M34UdRfbCo19md0mdZV8Z9y+gWUMnw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=G374bfE5;
-	spf=pass (imf21.hostedemail.com: domain of 3pUhvaQgKCEY0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3pUhvaQgKCEY0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 575A26B0397
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:28:18 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E6BB78ACE2
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:28:17 +0000 (UTC)
+X-FDA: 84351816234.16.237F89B
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CD4E94000C
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:28:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b=j33OTuP0;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="v RfEPB9";
+	spf=pass (imf17.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768900775;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768901296;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AU5Nlg7dydy9DysYi/5+drcb7JZfuoXoKO5f+zthvtA=;
-	b=aGW443cpA6qdgmT0IfTcokw1mv8MtxRnrIlZyC2FXWJh2kNb259wqiW4OKP145EzPQBR6W
-	xOhyWxUAvXzVnJHnZoPU1ReyTeldpikWCBCwNKZZJuvHuuqwQknuj3Ua/XUeeGHjg7JSy5
-	XFruGMp0JGCiRkimZebNjSPQwdxdkDg=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-432488a0ce8so4240783f8f.2
-        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:19:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768900774; x=1769505574; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AU5Nlg7dydy9DysYi/5+drcb7JZfuoXoKO5f+zthvtA=;
-        b=G374bfE5P+m63RVDsv9xSQJgO3913BrXUa8eJQx88PpzxgER2xIpoqzMenT+3XIPU/
-         gyMala6U1SQ4ZNItnsKp3ZgGlA6UVkLZrNG/R69Jr9uDhJXazO0esl2kfyp8KihsrDVT
-         w/XJaSUHl8UKUdFCP0CoKHbqkGYeQpm+KwKPsPjCt3/C9Vr9qviFWf6bXmqRvTFONqwR
-         97pFHePxvl5Q1BRMzgLbAdeWIKloI2Z33gcvbVvNoYrWkAySVXGs9G8+m20dfcAgLyDv
-         Hnz6lShnWh56EZhQJikM6PFbJjJOc02PTMpQhLQen18bGsmTjEp/GaFdjze4mszAt/Mw
-         FUXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768900774; x=1769505574;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AU5Nlg7dydy9DysYi/5+drcb7JZfuoXoKO5f+zthvtA=;
-        b=fqMFxj4EjEzYcIKtFFdbWllIS0STiSsdHCSy4p+Nuuu36e0fCYnfJFFz5qGBkw5gJc
-         OikJj17uy7KljGeRpJu0oISz30pN+YXYJ8iSY1PleAP2hFLalhYOA8rr4QEBsZ1yHqLS
-         WTtillLqOXVMuWN/Fpx1KfqxmId8B7O1JduiyZ+w4psXYdk2m7cEZ6McwZay06peCrKy
-         HG3hLzDnJEx9VinMeV6hFbNdci2i8zX8BXiGHTFTozx8VKqi9xzJeYe0p0cFKx2s6hpC
-         B8J57cKD/+s0CK9zPG6tf6nxwaGnF3uD+w0gEVCSvOw90tdCPd2pVc9KKXWhUlKWH5zw
-         kD/g==
-X-Gm-Message-State: AOJu0YwXWJRUzdKWGfhv5Utam+6kUTTGCCCDCSw3b1VykVbT0rUaICkn
-	ObEgWXS/YK/bxkjS5kQjYhW2bA/c8282ojvEdCV3cZY4Ex6923Z/vBLm3+b3YCUelRTgwxoqzES
-	fJXQ8YsmD8MmLBC5v6ObNTVBjo7JHKQQM+XGGIBozbpI3qvG2a+TW+pgRvJ6AD3TDQirVrhdX2n
-	lO8hSfTuq3kOVOroeKw1Hlx9ImqkPJhlCVLBLhmMl+Cg==
-X-Received: from wrbef5.prod.google.com ([2002:a05:6000:2185:b0:435:8d79:2bc8])
- (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5f90:0:b0:42f:bc61:d1bd with SMTP id ffacd0b85a97d-4358ff62652mr1802129f8f.45.1768900773611;
- Tue, 20 Jan 2026 01:19:33 -0800 (PST)
-Date: Tue, 20 Jan 2026 09:19:26 +0000
-In-Reply-To: <20260120091926.670155-1-smostafa@google.com>
-Mime-Version: 1.0
-References: <20260120091926.670155-1-smostafa@google.com>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260120091926.670155-3-smostafa@google.com>
-Subject: [PATCH v2 2/2] iommu: debug-pagealloc: Use page_ext_get_from_phys()
-From: Mostafa Saleh <smostafa@google.com>
-To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
-	Mostafa Saleh <smostafa@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3E50D1C0007
-X-Stat-Signature: 894szjc9q73kc7oxhhzsibpsn9ujyfbk
+	bh=7QgCrbLkIptlQB8MVpfuQ5CmfZ1YH3bd02HxJZ3+58E=;
+	b=nwQNcBSw/tA8QTQhCq/W57gGEWXYG7wYl95Sj+/lz2CV2QJGYFUzqWYKAV0CheBSPCJAd4
+	nkaVjZvHzTdtJZM89em17CDNkXV4vUj/Hf9UZhKX2CuFxaxEI8iXFT3b9sm05xGgNDBz53
+	4NkHG9gZqKpgGOooipD6dla3vFrASFM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b=j33OTuP0;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="v RfEPB9";
+	spf=pass (imf17.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768901296; a=rsa-sha256;
+	cv=none;
+	b=LRtIsdQgyYi3A0en4Z0xwSSSA83BlTV7qxGFEBiTM0FjfTUj0jKXPtUiTA2MTw+YAM6bzv
+	cSElLb7uVJBDq25z2/sKEkUYbux8HTWdn8t1wq7kCX5HKWbzJBkRmbVfCtE/k1ilSw9pAZ
+	kU5f4wCxEQLqMrOylRQmUh+FIwurGdw=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id CE9921300F39;
+	Tue, 20 Jan 2026 04:28:12 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Tue, 20 Jan 2026 04:28:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
+	1768901292; x=1768908492; bh=7QgCrbLkIptlQB8MVpfuQ5CmfZ1YH3bd02H
+	xJZ3+58E=; b=j33OTuP0cjno3z5TCSPfTCf69nIJq4J2TB5KtE0o/LhmJQgOMMH
+	kw9U4yfo+H4rbb4XXms15vEyKh5x5b9B49ixFXgMxO4Fm/hlFNGiQ+bGN45gDtRw
+	OmBoeYoqajuPHnyR9SoIEo6hAUWx0AGYwxm0DKRLHzi1XCnz83A+Hu2GZPA6aOKy
+	RYLYKmY0UNhDwR1vtSOzYxhEesYwmuTg/Wi6L8FGSkj9+ZIBdbcCFjmPCZksIcHe
+	kKd1xQhaGqcg0mozQ4CX54TPCVBCAS2wCwpvglGH91fDXLL6Bvjn2GFbB+NC5Mzg
+	8aJ9uAz6SFiYHNlOnXGI9e3y5wQd6hGFAJQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768901292; x=
+	1768908492; bh=7QgCrbLkIptlQB8MVpfuQ5CmfZ1YH3bd02HxJZ3+58E=; b=v
+	RfEPB9lwITUP46pQlb43ZbdMvxQAVBGMGvib8VTBG9JSo9K4qJAJLjbu5y7j73ym
+	Qq3Bc0GK6JEw8nge/9U3NMkxvbjnEI/Ql3zoReMMAU2ycFjN5VLIXyTGDlZ9tldG
+	YgURkKvG64q2sB1nBTb/8GE6Lw99gQK+2TICCynSDho7Mvxl3hSSag9eGoZb+MaV
+	oo8v63rBhvVlkO8Ct3o6GUqwRPu+Ijq5yt0cKqsqAdpEZGpx+AkEVlFEQ3yPkt8x
+	uJ/IqXAfO3Pl34Ql8sGavblmOZ2r9+wh8PIDOYvjhIPgR5sCl1S563/bzjtKHtCZ
+	P4olLR+6UbfSBxEoSdPgg==
+X-ME-Sender: <xms:qEpvaZRu_TffLaKZaE2CMY56BJZs69KBOLtnttktrwuGzZ9ody-WNQ>
+    <xme:qEpvaQKNRSt0Wi7GeDYGOldsinZiQ_yhrx7t0k8T2G3tKf8FjH9OLeJ94c9A7G_ww
+    X6RDyQAeSOcxaWQTYme-4_uSzp1k5iDvZmDz68VmQKXregkq1o>
+X-ME-Received: <xmr:qEpvaUCQIq-1KHB6_RIe1LGDrNvPT7-Pf2pS69NApMKw_XyWcd3Xjgm1K74OT05ZV5sAHW67jfmb2iTtKkO835nraIAcdJpfENZOC6QYa41Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedttdehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtjeertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epudetfefhudevhedvfeeufedvffekveekgfdtfefggfekheejgefhteeihffggfelnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepjedvpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
+    hrtghpthhtohepghhuohgthhhunhhhrghisehvihhvohdrtghomhdprhgtphhtthhopehl
+    ihhnuhigqdigfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidquhhnihhonhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhnihhlfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
+    hnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:qEpvaeYFJm2gr5_L8NWl6mKqz3iuWcYL5GhOz7qN1Jbytm-BYS6-XA>
+    <xmx:qEpvaWaRmlMl_FAkLOWmvpEFBndgYt5ijvyvEjxWGEaN27mPHvAi-g>
+    <xmx:qEpvaQ3aTzLxTMX0gQJAiP7LkrKQZuiwBkg6xW_bdcSF80TWtR8qMw>
+    <xmx:qEpvaefZ5gApKS4TFvhYKouLIp05WV67rLedqicozK4OIkyQ2Rx9Zg>
+    <xmx:rEpvaZbrohR6KsMgi07NQMg42JbqLkXHlbfm5plWcXavjDNCqQ_UV7PJ>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Jan 2026 04:27:50 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+From: NeilBrown <neilb@ownmail.net>
+To: "Christoph Hellwig" <hch@infradead.org>
+Cc: "Christian Brauner" <brauner@kernel.org>,
+ "Christoph Hellwig" <hch@infradead.org>,
+ "Jeff Layton" <jlayton@kernel.org>,
+ "Amir Goldstein" <amir73il@gmail.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Chuck Lever" <chuck.lever@oracle.com>,
+ "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Theodore Ts'o" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>, "Jan Kara" <jack@suse.com>,
+ "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
+ "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
+ "Sandeep Dhavale" <dhavale@google.com>,
+ "Hongbo Li" <lihongbo22@huawei.com>, "Chunhai Guo" <guochunhai@vivo.com>,
+ "Carlos Maiolino" <cem@kernel.org>, "Ilya Dryomov" <idryomov@gmail.com>,
+ "Alex Markuze" <amarkuze@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>, "Chris Mason" <clm@fb.com>,
+ "David Sterba" <dsterba@suse.com>,
+ "Luis de Bethencourt" <luisbg@kernel.org>,
+ "Salah Triki" <salah.triki@gmail.com>,
+ "Phillip Lougher" <phillip@squashfs.org.uk>,
+ "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Dave Kleikamp" <shaggy@kernel.org>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>, "Jan Kara" <jack@suse.cz>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+ devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
+ ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org,
+ jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org,
+ gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
+ nfsd export support
+In-reply-to: <aW8w2SRyFnmA2uqk@infradead.org>
+References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>,
+ <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>,
+ <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>,
+ <176877859306.16766.15009835437490907207@noble.neil.brown.name>,
+ <aW3SAKIr_QsnEE5Q@infradead.org>,
+ <176880736225.16766.4203157325432990313@noble.neil.brown.name>,
+ <20260119-kanufahren-meerjungfrau-775048806544@brauner>,
+ <176885553525.16766.291581709413217562@noble.neil.brown.name>,
+ <aW8w2SRyFnmA2uqk@infradead.org>
+Date: Tue, 20 Jan 2026 20:27:46 +1100
+Message-id: <176890126683.16766.5241619788613840985@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 X-Rspam-User: 
-X-HE-Tag: 1768900774-86980
-X-HE-Meta: U2FsdGVkX18rp5PoUFnUo6d2zr8KpEzXXKZN4DtD62Gxl3GkXsbgEUrUOXMkoHjn3N+5dib8yzTTEml5fDNm+v8A0/VODgcx5l12v7BYifMrXq64XrMao6djAAA7WneGqMz6iZQhJXBgQwXqquk8sbvp1TfGzyEOkPbGOnTLbgGOucNdY3u2CPgQwRRf8QJHFYSDC1x77sVcHWDawnQgcb8/vx/WTASPGEyKGJBy9GrTUSinQlWrZjnLDYtYgoc1L+vsFn0ECqFw2twyJE4gdbN9g6ZdekBxdE7rZJG7uZXHDLhCVr33UmYxx0QGFGjOpnqwrVkapk9VXPVVvbYELsBO8hBQ+x6LfG4J/Qnmb0rgnkztDCJD3xHyKRJE0XmFTDfz2f9kS/77iOAxew8lQM6EVPubmGVTCVJ0R8dC9z2FdTlGeROx1F63GPbmr0kCQK8a+y2jdcKECpxk4xKls9Dd+mZdc+cySd6ZHN3NB4DOAS/BKqqMXbeWruY3wUzGsAPH/Gc+F+snOmLN45NaOYWEw8vtDzKg6bpFlpLqWfJ9SsEtQJa24lGNZdx7i18/6ZoaoJ4U/u1obkU8ZyPs9LJ9/ZzXi/OrJIsY3GRYu69gSlnqTCgrolzdl2HN3fwLljVmS5Kb69iSHPZHoQbctNs1KzqorqBSBRuwcRdZ37CloWempOUAqzCGw5T0DeluaV6sLOy/n6AkWgeyhV8BfN622/z2zlBoTKFPC9e5GfwDElaQ/b2jKDFFZYxBsqw1RZuN1e2V+JvrA3k0XQf7lb1LwdLGyremU5BB0HbL0wlnhihDup7Z3AY48tZS1BMtIwv2QAdCxXVBR5Tla3dJq6wMXggWXeGdb3CitOdyU3TUOW6UcR6hHdrBsZddE0m33EleXGmTbdOcXqtO31D7D7Iuew2D4wb/inNup6ZT4D7B5r3izcYVvQ1OYb9IDW+1EEm7H6qd1PdcpQDFRoq
- RLQnvFko
- UiKi/A/Qwa4Iep/FB4Oq71jyp6lV0BPAG1HzssplmMkC9gny1MPJl/LA89aVUAQj/IimBPce1m2sC3v4bBgJv3NrmVLaVDwXAwybUDnbOMKG8wSIztW6D+mHUqHGsPbEgxLYDY9IPGdHsvx3SoJNnpTioXRGOfmPBDro8I2oOrZBlPWMALlQRnoK3AA+zva5c/n2Q/36vuYiCaHwLfJhDU4PTXIVdsz6G2ovX7AymcbEfSo4Ofh5PRWBnfcVzQgoaKj3BIGn1GkAb6R9CKCr+EHg2TJMUCFCyO6TaddnTFy8x8CdoSdJ/3CTBXpRTyw6Kwa/1wowqLE0w+2l71mVNgMDJDwN0xe8Cbtjc2b1/Gz5M2jFWMQxXPCS+HaY5PwaygFiQGV+F9uOg0j9/OZhHCGK6tLMsV2ZhkeQzanZHhfWFRa63eh7gVFKonnnOJ8CFM0LdzHpYBHUDtF7APHy1kVsGPefiBB2WGFwBfLcF25TUNv4NKQrb2v8K3VBen+MKkugzmvpQNbPla/Rp03/ObqCUIYFAF2esjJlf7CXnQjBoCSM7/xTeTx7ixtQxZPAVhfnUuciA48S2MSmP7d7CwL9pwp8rlEhUnVhz
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CD4E94000C
+X-Stat-Signature: ib6dw7x6s7btq7ib4kix67qkzk96ge1n
+X-HE-Tag: 1768901295-446323
+X-HE-Meta: U2FsdGVkX1/WtzhmNiKs3u87KJ7UqVcgRBoUqwfgbi0vJ1Wp9rJNN9qV5FFA/6kTDI758F4RdElhvnYhwzsr1WHXVlFhgY9YvoAE5NH3Tly7Cy5JnCiB5VT/SGQH9gTq5qnekavUTyV7Cne3LYYbHaJVFrhLPbYMeDlwdrbKEZ6U7/N33L9IE21R11afxw3vH7nwpYW7n6ClGZ5f6TB7VTj0+LRZcAp1twS0ywKLIEGiWGrt6CJcpuqOY9z5KsLe6iFh4pkOqDjpsNVMe46mpCj/hI560Si4wG1dTSRAQBNy/N3GzN0BIGztF5IzxbGfekwhJr35RbznRas+tiA8d6kkuMMHdHHlfSEvJn5HQJGPZqkCJkX4fp2CbbL41juXRxos+IbRETGJth6ptre3q+EHs8A+C5KBZdoC1mKx5SPmN841R1orVRYQck+CRDHcRsqskbkEwNSslobExspwJJJFlv34SYRHPPM8t9TXixgXV5AU0W2u5kPNjCEJ/WkoZafDaaqZcAxoq1xRiBB/pFWBcYmDcmNut+kKvEANromfbsDNoW28OpSIfwdIA1T0I9+F4APrll0i8LCPFL7SIFptu7twWTKehdgazaa9+KmxRHyxsFZVwGm3ObovDZAxYCWFsOFixONJlWboLifwfYnpNWiUC/2md0/f2v+0rIw3NEM/Kr/tKEqJbBJF/oRrofzDjtUb+IUNgYb1CIMS7TBanaIrnY2Ht9VHw8wk4YRZW3Q8He2j6+O0i4IGJaWbwr1ZxKeAhlAHny72Iq8mem8dj2Nmhm7LTmWS3gq+orwI6uvehNHjuR5GbEEsc4U3Z4hUeE/l4JKDGJLv6bFFmpDG/iAdIX/THSwwG/7HO4NBJdKXudMBe65b9tKhI/KpmMEu6abABcd6TbFN+jXi3ZItCAJZgW6bREGj9HsschG/wHMOSB5YY7YEpO5gtxekg5F+BblmMVqJJ9nx2Gu
+ v0gjX0X9
+ DDVUJVfUSP156EZiW6AOldy6HKRk0FiBjN5ROUv+4HWKKPxic73v6gPl1QSc9meCnQem1z/xX1CH7aJ75BI5uFlK+9anURn87MOlxs9ft6EL07mh1L0SX4lHMDgpBqv7a0okFCDATzeyRB6tZ7t0a8a2Pky5dcaDZYvwJi/tZ3H5oeDrtR60JraK6ti7e8hMZjATwJRdMOmJ3fNZTlA3P3O1a4FqthO2hfPriGTZJwvaEmUlxZDPxqXfvTF6OI9XmWPVAbSo65MsFamhl9ljysKqjVj6bp84D1rm7He4rLaqKrpFdNme7D5x2qXNBcxXHk5xvPWnsrQnIGiu/EsW1lbPmhMwiE9270OK6TPrYSX5yOqDIc1IzVya+OCcA+HnQaDRbJwU381PodVsM8WhaN8mnwU2OL6U5bB1mHrPSqNugPsNA8bQHjiBLbvB/IrMjYUec+9Pv5tVBW6Pn0reXs51AtVKSWlQNIPfEGcV13fCHyhDMYfiHgQOx1ouy9u0afLhRv1hMhkWEzkKDOCFvkIFM6HG+wBpKJU1Z+6sMxL4qN91l6PSgjeLJZzzQvutlBpQ7BC7P6yWZIMY6nsedWssj3AeGaDZrMNxftFjco8a476LCrqfaz4N8U69gnuSSjTcZuqiFS+6X08YPYXqD0/SJ4w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,89 +196,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of calling pfn_valid() and then getting the page, call
-the newly added function page_ext_get_from_phys(), which would
-also check for MMIO and offline memory and return NULL in that
-case.
+On Tue, 20 Jan 2026, Christoph Hellwig wrote:
+> On Tue, Jan 20, 2026 at 07:45:35AM +1100, NeilBrown wrote:
+> > This sounds like you are recommending that we give in to bullying.
+> 
+> I find your suggestion that anything you disagree with is bullying
+> extremely offensive.  If you have valid reasons for naming something
+> after the user instead of explaining the semantics, please explain that.
 
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
----
- drivers/iommu/iommu-debug-pagealloc.c | 31 ++++++++++++---------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+I was referring not to your behaviour but to this statement by Christian:
 
-diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-index c080a38f45a4..80164df5bab1 100644
---- a/drivers/iommu/iommu-debug-pagealloc.c
-+++ b/drivers/iommu/iommu-debug-pagealloc.c
-@@ -30,14 +30,6 @@ struct page_ext_operations page_iommu_debug_ops = {
- 	.need = need_iommu_debug,
- };
- 
--static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
--{
--	struct page *page = phys_to_page(phys);
--	struct page_ext *page_ext = page_ext_get(page);
--
--	return page_ext;
--}
--
- static struct iommu_debug_metadata *get_iommu_data(struct page_ext *page_ext)
- {
- 	return page_ext_data(page_ext, &page_iommu_debug_ops);
-@@ -45,18 +37,26 @@ static struct iommu_debug_metadata *get_iommu_data(struct page_ext *page_ext)
- 
- static void iommu_debug_inc_page(phys_addr_t phys)
- {
--	struct page_ext *page_ext = get_iommu_page_ext(phys);
--	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
-+	struct page_ext *page_ext = page_ext_from_phys(phys);
-+	struct iommu_debug_metadata *d;
-+
-+	if (!page_ext)
-+		return;
- 
-+	d = get_iommu_data(page_ext);
- 	WARN_ON(atomic_inc_return_relaxed(&d->ref) <= 0);
- 	page_ext_put(page_ext);
- }
- 
- static void iommu_debug_dec_page(phys_addr_t phys)
- {
--	struct page_ext *page_ext = get_iommu_page_ext(phys);
--	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
-+	struct page_ext *page_ext = page_ext_from_phys(phys);
-+	struct iommu_debug_metadata *d;
-+
-+	if (!page_ext)
-+		return;
- 
-+	d = get_iommu_data(page_ext);
- 	WARN_ON(atomic_dec_return_relaxed(&d->ref) < 0);
- 	page_ext_put(page_ext);
- }
-@@ -104,11 +104,8 @@ void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t siz
- 	if (WARN_ON(!phys || check_add_overflow(phys, size, &end)))
- 		return;
- 
--	for (off = 0 ; off < size ; off += page_size) {
--		if (!pfn_valid(__phys_to_pfn(phys + off)))
--			continue;
-+	for (off = 0 ; off < size ; off += page_size)
- 		iommu_debug_inc_page(phys + off);
--	}
- }
- 
- static void __iommu_debug_update_iova(struct iommu_domain *domain,
-@@ -123,7 +120,7 @@ static void __iommu_debug_update_iova(struct iommu_domain *domain,
- 	for (off = 0 ; off < size ; off += page_size) {
- 		phys_addr_t phys = iommu_iova_to_phys(domain, iova + off);
- 
--		if (!phys || !pfn_valid(__phys_to_pfn(phys)))
-+		if (!phys)
- 			continue;
- 
- 		if (inc)
--- 
-2.52.0.457.g6b5491de43-goog
+  So if Christoph insists on the other name then I say let's just go with it.
 
+I think that someone "insisting" on something rather than "arguing
+rationally" for something "sounds like" bullying.  Had Christian said
+something like "Christoph has convinced me of the wisdom of his choice"
+that would have been very different.
+
+I am quite happy to have reasoned discussions with people who disagree
+with me.  I hope to always provide new relevant information, and hope
+they will too.
+
+> 
+> If you think NFS actually explains the semantics pretty well, please
+> explain that too, especially in forms that can be put into
+> documentation, including for the user ABI.
+
+There are multiple issues here:
+
+ - filehandle stability.  As far as I know all filesystems provide
+   stable filehandles when the "subtree_check" export option is not used.
+   Certainly cgroupfs does.  So having an EXPORT_OP_STABLE_HANDLES
+   flag would mean it was set for every filesystem - unless there is
+   something else I'm not aware of.  That is certainly possible and I
+   hope someone will let me know if I'm missing something.
+
+ - filehandle uniqueness.  This is somewhat important and if a
+   filesystem doesn't provide it, that should be considered a bug.  In a
+   different thread Christian has observed that there would be benefit
+   if pidfs and nsfs provided uniqueness across reboots.  It is quite
+   easy for a virtual filesystem to generate a 64 bit random number when
+   the fs is initialised, and include that in file handles.  Having a
+   EXPORT_OP_REUSES_HANDLES flag could mark filesystems that are still
+   buggy if that is thought to be useful.
+
+ - GETATTR always reporting file size of 0.  This is the only concrete
+   symptom that Jeff has reported (that I have seen).  This  makes it
+   impossible to read files over NFS even if they have content.
+   Would EXPORT_OP_INACCURATE_SIZE be useful?
+
+ - maintainer feature choice.  A maintainer may choose not to support
+   export over NFS because they feel that there is no value and the
+   possible support burden would not be worth it.  There may be locking
+   / lease / etc issues that further complicate things.  So it might be
+   reasonable for a maintainer to choose to forbid NFS export while
+   allowing local fhandle access. EXPORT_OP_NO_NFS_EXPORT.
+
+It took me a while to sift through the code/patches/comments and come to
+this understanding and I apologise if I wasn't as clear earlier.  But
+my intuition was always that file handle stability was never the real
+issue, and maintainer choice was.  Hence my rejection of the
+"STABLE_HANDLES" name.
+
+Thanks,
+NeilBrown
 
