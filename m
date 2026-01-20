@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79B0DD2ECE9
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:20:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3294D2ECE9
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:21:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B14FD6B03EF; Tue, 20 Jan 2026 08:20:17 -0500 (EST)
+	id 09BA86B03F0; Tue, 20 Jan 2026 08:21:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC2736B03F0; Tue, 20 Jan 2026 08:20:17 -0500 (EST)
+	id 0739C6B03F2; Tue, 20 Jan 2026 08:21:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99A126B03F1; Tue, 20 Jan 2026 08:20:17 -0500 (EST)
+	id E6E4E6B03F3; Tue, 20 Jan 2026 08:21:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8625B6B03EF
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:20:17 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3551A1AF3FD
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:20:17 +0000 (UTC)
-X-FDA: 84352400874.02.FC7EFDC
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D3CD86B03F0
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:21:55 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92E361AF416
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:21:55 +0000 (UTC)
+X-FDA: 84352404990.19.CAEFF07
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6AF2E14000E
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:20:15 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BtzWd0dX;
-	spf=pass (imf09.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768915215; a=rsa-sha256;
-	cv=none;
-	b=C2Vl9ainJgN6NP5RI/8CyvkhGMfK4EV5qOeK+2Ab6mAEN7CIYRRVa+G0TnOF5/BU4rVZkx
-	XPPd2tMkxZVFKHmyaJal7oQrWHCFzEeftECGe//9YhTJV4J4k5kYxhtSo6QKXftypU+I+7
-	ATB7qE92LeR+j1nOzRZEEOAQEBdoDPo=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BtzWd0dX;
-	spf=pass (imf09.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id E59BBC0006
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:21:53 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HArzV8jG;
+	spf=pass (imf22.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768915215;
+	s=arc-20220608; t=1768915313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i8M3unCvvvCXXWqYVTWs6YOmSdeAHHZ28NvKcawP/Mc=;
-	b=2hMN2SS/41QKYPniRE5vZFC9C7YswK5QJE72E4nT4o9XX05vsGTE/GmKFHctQfxLopBrqQ
-	vRzkjz9hfKRwYRqSmoiFI4WIFOW4FuirfZQTcbDylVdnc7bd6QDzro+29hTtI1biy4uQ7C
-	5rUB4JIJo0S+VajZryW9Rjf7pVAX+UQ=
+	bh=ibUPede0USBPjxkDuhY4QOK6BHW2ig1Fvu6koEcKyLk=;
+	b=PdemiNnm512ZH7fu9wxyFGAjBXe0qZMUUIR/TM6y8y3Nte9czGO+4DmkkAlGJTmh56RcEN
+	LlleRZb0zSVo6QmkedoPOtIe+cd9ptf5H+t/9BnCYAKHyqmCQwWyXDUXheiQ0PP+er61Vc
+	ripKEHr8s0XNjjwNliJ1VgosBnWD3Tg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HArzV8jG;
+	spf=pass (imf22.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768915313; a=rsa-sha256;
+	cv=none;
+	b=LT7+BseWGwd8WoXESy0gUah4q5TcAacAE3YwRtax23538KHHqMkDuwzRGCOLs1KjiESQDB
+	zu/l8zAvasplITcHJIjJaNr3YGqSnvcaklYPy5Dew1mZB3D3a2qGVM+AIuN7CvaMAgfmvw
+	wvlib5Bpe8L3Map89AACHI2H85BZGsQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 962E660153;
-	Tue, 20 Jan 2026 13:20:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672F2C16AAE;
-	Tue, 20 Jan 2026 13:20:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 393B060131;
+	Tue, 20 Jan 2026 13:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB2EC16AAE;
+	Tue, 20 Jan 2026 13:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768915214;
-	bh=2q4hi60bazvcilbJNiRaJ1JXOg/rrf7FitaJTcVDTb8=;
+	s=k20201202; t=1768915312;
+	bh=f2qFmDHnAGeH2DQsfDbKX6ov0cXKUQc3FlYWkzQ0G+o=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=BtzWd0dX8xBjfl+Rd+agDtCA43l7AAkFA/UsKIDl9a7o4TBkTAytTBAuUr0Qyuh75
-	 2N7fm3ZAHeK0SWNrzZRWqfSRMDMMqT3mpkwnv7lmITCL2CwjeO/xepTD7gyE7YHLl2
-	 gM+m3vW5GHY1o82g5ze5dgIN3bLPNkibscKkg0isZRuq/GGlvGiuzt3eWvg3a5Pl2D
-	 7Xay7ZOUmajqckfhjbuheztwcouRty0bEYtF4WcXwaAwtOWOwNnr8WWChOTQqMKgHX
-	 B428QQ2/IOEF+hZbWNjI/5dC68aGe6BBGOTCHedvnLkRZD6kmneMW0MiewKug88TR0
-	 XdKyqpB0lgjYQ==
-Message-ID: <9b64bed72e43d0bf24e9b1e3bc770c4a87082762.camel@kernel.org>
-Subject: Re: [PATCH v2 01/31] Documentation: document EXPORT_OP_NOLOCKS
+	b=HArzV8jGiJF9EjuBcuhlJs4TShV4NxERmXFPUT+J8+gfAJ4DE490qIALJ076bILOb
+	 e408+yivjAyOomjEdqgF7pCaN/qMG9T58VsCZ+YqBNrLJMz+X7GC3/EKUmI1086fJz
+	 MjiZ9qewu5a5y2wbA741RboftmNGOHR283JnbrHlWH2I1F6Ud3GfwTl2MLTVOi85M3
+	 vu6PPer10vwGTgfXrjWnVB6g2DP0q2XLjum5hcNA35pe4SEs/CtQqpZE1o1MPwISke
+	 0OB6jpokJJJ+B9F86zTx8EgeG2ymAYs0Cvj1uS+q0lVb6LwtO5ZRJTXF9J9DnnB/xd
+	 V7CI25VZpkgCg==
+Message-ID: <a4c6b9cb5617fdea92739e85ff1a29da1ac14f30.camel@kernel.org>
+Subject: Re: [PATCH v2 02/31] exportfs: add new EXPORT_OP_STABLE_HANDLES flag
 From: Jeff Layton <jlayton@kernel.org>
 To: Christoph Hellwig <hch@infradead.org>
 Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro	
@@ -109,11 +109,11 @@ Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro
 	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
 	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net, 
 	linux-doc@vger.kernel.org
-Date: Tue, 20 Jan 2026 08:20:06 -0500
-In-Reply-To: <aW8yV6v8ZDiynOUm@infradead.org>
+Date: Tue, 20 Jan 2026 08:21:45 -0500
+In-Reply-To: <aW8ztQ-RbhxwzMk7@infradead.org>
 References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
-	 <20260119-exportfs-nfsd-v2-1-d93368f903bd@kernel.org>
-	 <aW8yV6v8ZDiynOUm@infradead.org>
+	 <20260119-exportfs-nfsd-v2-2-d93368f903bd@kernel.org>
+	 <aW8ztQ-RbhxwzMk7@infradead.org>
 Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
  keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
  n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
@@ -192,14 +192,14 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 MIME-Version: 1.0
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6AF2E14000E
-X-Stat-Signature: ex1k91sn5ca9gct7pxx35oqkadoctzh6
+X-Rspamd-Queue-Id: E59BBC0006
+X-Stat-Signature: n8xnaejjyzjooia9wsn93m18i14qak7x
 X-Rspam-User: 
-X-HE-Tag: 1768915215-427193
-X-HE-Meta: U2FsdGVkX19MR/faMP+kE7xoJ4MVHPWlHbOa06qtTEKJrbSdxW3CTt59gAKTS1+JBrP1/Xg70Azi5lkldPIgoic4W1hQMlUyERlfMs+PjYql+RYv6YMvmfG1w+MrXpujsBEMKX9QVDmLiAVp085VpAtlmCfgD0V7JJLqjxwFSJm4gkKau/6m35LAT2aCVb2/ZcfInMBdnmO6pV4V5gYZ4GmzXKuIUckX7MeiOtIX8mYKVOtP4nAx9Ql00OHmBV31mdLzcQhqW231c1KnvNwKWGAtZXRLe1YWSBp2PopcjNRG27GWKxAhMchgzhSpZxKcZTI1TyZerH8cuyayR/mIQS1RJVOADFBM8jGKtOCGKb0mKsjfXwdsuZ937acQAaCJZS796QN3Qulz9cvCwlBmoc66GBhs0W4EGnp8/RGgbaqxtxwbOOU9Atmp5mdH1+vsKDmI4kKALymtEcUReTj0pBFsfiNJEeDvuRF0VQ7yu3dGpD1ZfG0u+cRhmyiaNJ499jut4bwdBteS0zpJ7oDbhsPpncnm0i0UCSinh6Y02rHJoWWHqDm5zJh2817NKZK8gHpyU+Qmhqh2jQUy860qyIKmRGnPFc/g887SmwbpojrM1/P+uzJueYweG+IbSXJiQpG2jQpow8AgMMTFcF1iCduJJUQp7nmCD3igYgFn/y+1yhShHsLbbbeL+m7YQ+B0STaO4Y7XtBVNePHzpzBF1/VHVtHfa0kg3z8gNoJTRiJVdtGU9A3dwHJRPn21ZJtb1Lh1FIfQpnEl7Te6HeGsz+jgzSu6V4SUha4z8epedkU1lrfd+uyTVnFekhrOQanDfQEuX9ccNQ9t3P0t83jku88bmBmUkG8iFumznOt5hbXUA9o/8zBMnBNcnDq/vnHMd6W/gmOjh3U/VvAdzAa9n/wpFEeIbGb5/VbP6yfQNHhaqg0mN0LOzlrq294altOfmd2Og5H2lWVeu9vyt8b
- 5NS06y0Z
- 5bYTVI2pvEPhT/A6hCBsBB8X82N90JftW5bFQjNtLSaF5GU54KMazKcfjk5o7m3vY52qp4IM8hicNQIEN6rcuGj45qBqey2D5x1yMvzoXZ9jzx54pxnBDzgmn9x/fkcT5A8YBj1/VdtPmYcRW6QARlHe/70Nm3Ii2OeS/G5BdooEtjYZEkXPkDvUo8rVBAmtxqBo9VIUCpy69aiGEPTPJAN/Wutnyb7wYEF32Lr/2/YU5uK4A02G4PwcOI2csrOCQxFpyHARjheJ20Dx1chPKUKtXfxUZ3PN+f/H2QZk/ZFVS6hMSLXmNoimvy1rhCrjHLMY9QGlV/FLOSqdtv5Y2jHxTWEWxrEyLYfp7d5uPnFYqrYQ=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768915313-370087
+X-HE-Meta: U2FsdGVkX19jysuwc121AG9GeHkKjOk8U8i29BxX0RbFakLFGU7WFML2KPl561V5uf2SUcNmoa+eVdOxuCXFTwmGDJ/C5Sd4NeHzho8b5PeCs4dLbqR/pbqdRzxgf668ynNmjW6eI37TKqIfdPYF/eoIDUoyaO6HM4t2Z/7BYq6E81WU6B8PP882Nvi9121zOPzKthIMzL7vJrIay9m7X7jWArMAuSQ8TKRzzvAFKrNMRHuLHdLSQtUeUXOCKzfyv0prJ3xYkpcZ7fGbEByGVwAe8mNGDSAUoSKm0UOkZ3Sz5mWzygdCSPkO0sz2eGZyaj+C+AvS7SnDt8IbrrnxRYYnaSN0GJSd1aYzofbh9BnZBE6nT4usOi1YOUhc8Iqp+VG4bSCf/s6R2W1SppGTH32SKxlco+v2k0g4RX9CXQfgsJtLY+Q70UORDUymUA5RFsCcHRvtIkgiJat8csXL5XnCd7bxWybDY4zacwxBjMYnIo3mBXL87ofFNe/LEVwaC1lYsRKsdqad1Aep0LnrZcFReyL7WewhyEPFx39e1pEYXG232YCViG2IuHpOPDCbVwDOF+d1qDMtlIlyd74iTgMjV8xdQ9m/BqoUCsjng/R5R5sFkYKqh8O/4mfZqFmS5bqtT4xsE1XjJMM93dmryUU2M3g2U5xBPq6ycoiMyh8wi9XK7kwO5oC7/fRZA+7OquSqWkqymOjPXCYO0KZdiZKLPLo+ap6we7Ezm7Raw6wDKPFQ9AgVMLSlmf0wVA0zOFKbfFnj3H4cDnzIoRp1v30pwQ4Gx52LOpQB5idmbl961BBF2xctItJAymPngm9yWbCf6iDnFUkadMsgn2sXpPuzo5CjfUwH2OmKiGGVDt4pis2cnGLUioh+zPI5//gp50xaQdU4qgN6Ms2P4il/l3VzVUzNySPXk0KI89rUPZR7rVV0PVTu5GyYcoVZXPmvKXNEPBwT9WsWP7biYuu
+ EnlMgni/
+ Vo8WQpBHNnBxc8rW3W9MoEcMVv08AZxbRebAk9maqPBHUrkav+729UAeZkf3bxMEE8pud5+4M/B538glou5B4dcFbnVJBTXDJeL0y77ETj+8RNpZHNSOQacm6VCO6pCd+eJfokC8YFTnFHKITIk7q26+V5h3uPtJ4iqL//VwbWSpEXqnjiJ8k0+RMhRcQONBwxJ66Mr0lpB3h4bwIwmy1hVb4R9BLtzG9wyNjYnihrKSNTPiR2v25ffadovjV9oeNu2QtxUcrfXtACCyqeaAv1rNy5TPh5knRZRIp04ahfoBLbmrPrvWcs/b0pdDY8lGqkIPj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,22 +208,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-01-19 at 23:44 -0800, Christoph Hellwig wrote:
-> On Mon, Jan 19, 2026 at 11:26:18AM -0500, Jeff Layton wrote:
-> > +  EXPORT_OP_NOLOCKS - Disable file locking on this filesystem. Some
-> > +    filesystems cannot properly support file locking as implemented by
-> > +    nfsd. A case in point is reexport of NFS itself, which can't be do=
-ne
-> > +    safely without coordinating the grace period handling. Other clust=
-ered
-> > +    and networked filesystems can be problematic here as well.
+On Mon, 2026-01-19 at 23:50 -0800, Christoph Hellwig wrote:
+> On Mon, Jan 19, 2026 at 11:26:19AM -0500, Jeff Layton wrote:
+> > +  EXPORT_OP_STABLE_HANDLES - This filesystem provides filehandles that=
+ are
+> > +    stable across the lifetime of a file. This is a hard requirement f=
+or export
+> > +    via nfsd. Any filesystem that is eligible to be exported via nfsd =
+must
+> > +    indicate this guarantee by setting this flag. Most disk-based file=
+systems
+> > +    can do this naturally. Pseudofilesystems that are for local report=
+ing and
+> > +    control (e.g. kernfs, pidfs, nsfs) usually can't support this.
 >=20
-> I'm not sure this is very useful.  It really needs to document what
-> locking semantics nfs expects, because otherwise no reader will know
-> if they set this or not.
+> Suggested rewording, taking some of the ideas from Dave Chinners earlier
+> comments into account:
+>=20
+>   EXPORT_OP_STABLE_HANDLES - This filesystem provides filehandles that ar=
+e
+>     stable across the lifetime of a file.  A file in this context is an
+>     instantiated inode reachable by one or more file names, or still open=
+ after
+>     the last name has been unlinked.  Reuses of the same on-disk inode st=
+ructure
+>     are considered new files and must provide different file handles from=
+ the
+>     previous incarnation.  Most file systems designed to store user data
+>     naturally provide this capability.  Pseudofilesystems that are for lo=
+cal
+>     reporting and control (e.g. kernfs, pidfs, nsfs) usually can't suppor=
+t this.
+>=20
+>     This flags is a hard requirement for export via nfsd. Any filesystem =
+that
+>     is eligible to be exported via nfsd must indicate this guarantee by
+>     setting this flag.
 
-Fair point. I'll see if I can draft something better. Suggestions
-welcome.
+Thanks Christoph! I'll plan to adopt this for v3.
 --=20
 Jeff Layton <jlayton@kernel.org>
 
