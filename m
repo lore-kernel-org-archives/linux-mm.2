@@ -4,301 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41697CA5FB2
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 16:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99DACCA5FB7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 17:20:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A09426B0469; Tue, 20 Jan 2026 11:50:56 -0500 (EST)
+	id 83C466B0468; Tue, 20 Jan 2026 12:20:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967FD6B046C; Tue, 20 Jan 2026 11:50:56 -0500 (EST)
+	id 812C36B046A; Tue, 20 Jan 2026 12:20:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 791826B046B; Tue, 20 Jan 2026 11:50:56 -0500 (EST)
+	id 6F56D6B046B; Tue, 20 Jan 2026 12:20:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 667BF6B0469
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:50:56 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D3E513B826
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:50:56 +0000 (UTC)
-X-FDA: 84352931712.09.F631C17
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 75C3A1C0007;
-	Tue, 20 Jan 2026 16:50:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=NLUjnCFg;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=iOdZUzSO;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768927852; a=rsa-sha256;
-	cv=pass;
-	b=HOE+Ehy14fsUvDA3+Q3fe+da46FEOCM1Jk4wCJv2rigYvlLxgIxuX/paD5DJCHOOpXix9+
-	2Iey3gPbBzlEyPMCiqDODnaXfgBXl4x4/1N3395u2wwi1PjqPymAlivK0upJB0V0IgIdhV
-	6M0ysrW/geEfURNa3KMjQso3MsfyP6Q=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=NLUjnCFg;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=iOdZUzSO;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 594216B0468
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 12:20:13 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B247D140611
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:20:12 +0000 (UTC)
+X-FDA: 84353005464.25.74DE06F
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 80E43C000B
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:20:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="NETE/aaj";
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768927852;
+	s=arc-20220608; t=1768929609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dWPsAKWWNqF0UmUQSyaKlT6iCFPV5OdFrD+24wSbB3I=;
-	b=k303gIiv6rP+iBLQQw3iYxAXXCh7ZQ7p2L4WNbhKvZ1MCeGqP7DgW1R84Y6UY5SQz182F+
-	8oKBM4lzs3yufYaHEib4ypnbyOkJ+euVMRwO53NDtRWPMOusrOYyIg/jVbn5eQIt+CBlvO
-	PyCQYUjaMffUn70OQ6ZISn7QQKmEHB8=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K7upR43028845;
-	Tue, 20 Jan 2026 16:50:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=dWPsAKWWNqF0UmUQSy
-	aKlT6iCFPV5OdFrD+24wSbB3I=; b=NLUjnCFgoTwIfDqxD70C87YCtG+DWTDTM/
-	b4W2ZN8MJG1gorLu0lhpC6bL91gtFJozJutmVmtAylgWn9HTG7GY9WZ2SWq/ZE26
-	cYCzYQln5Jy9NQ9/p6CenVU0IHGOMBYKneKVD1UrxtkeenCE2+BXr4xGrtGdKl3/
-	MfOU8JRSk6gYEEu/+FLcigIbZTZviNBLwD4qGZ5aKAlDw6o6erP7lwJVVRkRlk7K
-	yYtU9QvRaS4QvNS7usIygElYrWh8CYYZ4f3ylGdpS+MrtJZ4WcUFJcVM0ptnVNYc
-	iXyzdPJwQ9O1UswbIejjIdtaEBGvRsCEuwJZRYJsEb1DB7VpqEeQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br10vv06c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Jan 2026 16:50:30 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60KGjHSP039561;
-	Tue, 20 Jan 2026 16:50:30 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012005.outbound.protection.outlook.com [52.101.48.5])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4br0v9wmym-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Jan 2026 16:50:30 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GynYXTq7dohvWOlkGi0giYjTrXgBFgb5ekj9O8NqUSaQWeWEXMqHcqs5IigycXSK0oJDhQUygHQBlKrnFg6BmUckNAyqS9Bx5puyLtK0NNr0t193EF88qoQ2Q1KngQihEKgeh3RRbomArFB8VLG+njfsovaS4Czs0t/vyfCrNccLubejkHgbYaKloG1RgespLE05LaIGwE/NQPOJLS4QfTyWhT7J47Db+tA64UAPsvEaIpbJOAAII/POwf+hS5zrEB1LfiPr7uBYDBWPNgcGgREFPE41xdqWsTzCUayA2Os3fFAig8ixCobVB85ZtcvjNiWgdXmVdehLKZz5nAgmgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dWPsAKWWNqF0UmUQSyaKlT6iCFPV5OdFrD+24wSbB3I=;
- b=oXO7W3tYZFN+w1F9b6Fl97lI3FkaLV4XqErxl8+GF9Kj7AfscXHyBYc6TAKVbovoNfmMM5fSEpAWQTPdfQV1g4JxgfOezO3gmPPNESIaHOJ0nv6lVFX9d+x2bb1Cx4RgseSW6KbSXWg0p8Hm0Hy4bYQLyMam6hKuR5o/++hGOFDks9nJY2b1jfkMZ7n/2jl09VU8p9gn4pqgwz9aFRdRvxthMAAOzieAkMUTTb04a/vf6VsphZF0XVwkPQFeG9VS9P4JLn2FBOcRrJXD6OByJvpbL2vPPYZaNN1+qBiDdoBArxkzR6wHkGZb/7acpjhyr5QKNr6H/OfH2v3Wh8UQLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=XjgInJxzHZA1FL2RVNq/kScJMYVHdTMpDmOcyNlB2Pg=;
+	b=p5LQBNC5RN9CCga5Wah9VjtXr0D/1J0tC+GwuCzKaFeqnAHt8AFedURpjFMOfGJ4ypHDzn
+	h0wZBPNHELcr1jt5Caxp6pttk2PxrcZ8oPbMdQk6RzDz699c/NgiBnG8zR03/W8Cy6rFGM
+	aPEW4j6eE+WSMcau6ROgxbAX1UJHdN0=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="NETE/aaj";
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768929609; a=rsa-sha256;
+	cv=pass;
+	b=O2TPi1+rY/cHetiBeWIbv8Nw6j/6TUSUuhPmP7xKvyT7wNb/HsiSg7s8dlMHsZr2vcNazm
+	ZcUt5uE0TTq6KW9cxcdSxJZmj1fmdbjtrsJs51C5C6PS3O8A/K7QSz9xtvuE2tyuOcdJg2
+	Qmdja28MOepNEhhg9NqBKziDaKYVeEY=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50299648ae9so1458421cf.1
+        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:20:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768929608; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EkK9QLJgKKc8BUqktzldXV7XHaQI7YcOJ/Ff5eMFlb7eSEdLrX1OOOTgcHy3DzesTc
+         KfXvx4p+0R5xRto7TeVUzn89HZB7oBssc88RjcS6luYCXeyuzt7xbsVRjHOwHhVh9+rt
+         O6bctfTFxX+r5PXstD1u9SShhRVWSVbn2fk1lR6TpVpOKmfYspryoRpPPQgsVko/PZRw
+         YsmfhtV1VQhBqkb/rJENLfcEiwGtBy3lkub9QB5xFQT06BtTji+PwOYVPm98mQtrrmU6
+         RC9MVYv3AxdtOMjq/9TZJVUjk0f3R1HZqWSxlgdSUCtUFWnIuPkRnIObX0W1SQuzWH+a
+         V//A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XjgInJxzHZA1FL2RVNq/kScJMYVHdTMpDmOcyNlB2Pg=;
+        fh=8e7BvsbtjpRlE+DkSpX1OWhtV/F48qOLy/o91c/9jMk=;
+        b=D4c+OsPZPFJDaZKIP1g7WyqJjHEq2EnmrIxrRN5YnlWz7Ax/dqXETUFQhx2FGsOaUg
+         zt6ngI6Bq2Zw1lv+eatf0OOW2xPMv4xLXhleCY7SEwVLJjtwSnuzeulnvLnV9zZWz/0Y
+         OlsU2zqy50vBJrFokhQllLQbZpRxKOC0FgtP7iNlANvcyX3EVAGWzLifAB+SbQAWhtU+
+         0UwJGsOkq1i7jV3eq3X4Jqj+CUeeFNl3B+fMI4XICrV8kBj75ekwps5brFoXOvozfFwi
+         pxupR5bQ7ebgGvMCBIcoXMoeXrh9BlvO/5b+sP8ec3SeoB72o/TRX4mHpAdDlKgyxi4R
+         J06A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dWPsAKWWNqF0UmUQSyaKlT6iCFPV5OdFrD+24wSbB3I=;
- b=iOdZUzSOWVmzAG1YxnAxdqTDbNDhj6cZ+v3/u6O/pnpHdo0vO3Hbjwd2svLReGabJ9tt7y8x4PcgfxHMZu8GQnVIkKOcnCTmpc3hpmzH/6ICnpEub5vsb0oH8IcAVZjmbRLtYqf6/T4wIHGnyMYa7GLzQ9tU+vJe8DF1ZZZRUw8=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by SA1PR10MB6663.namprd10.prod.outlook.com (2603:10b6:806:2ba::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
- 2026 16:50:18 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Tue, 20 Jan 2026
- 16:50:18 +0000
-Date: Tue, 20 Jan 2026 16:50:21 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Dave Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-        Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Sandeep Dhavale <dhavale@google.com>,
-        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Babu Moger <babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-sgx@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, linux-erofs@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
-        devel@lists.orangefs.org, linux-xfs@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH RESEND 09/12] mm: make vm_area_desc utilise vma_flags_t
- only
-Message-ID: <7ac64213-26f9-470c-bf6a-abd1c0f6c83d@lucifer.local>
-References: <cover.1768857200.git.lorenzo.stoakes@oracle.com>
- <baac396f309264c6b3ff30465dba0fbd63f8479c.1768857200.git.lorenzo.stoakes@oracle.com>
- <20260119231403.GS1134360@nvidia.com>
- <36abc616-471b-4c7b-82f5-db87f324d708@lucifer.local>
- <20260120133619.GZ1134360@nvidia.com>
- <488a0fd8-5d64-4907-873b-60cefee96979@lucifer.local>
- <1617ac60-6261-483d-aeb5-13aba5f477af@app.fastmail.com>
- <44461883-a75c-466b-a278-97c4ab46b461@lucifer.local>
- <9ff58468-a72d-4984-95f4-d0a60554705d@app.fastmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9ff58468-a72d-4984-95f4-d0a60554705d@app.fastmail.com>
-X-ClientProxiedBy: LO6P123CA0051.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:310::7) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+        d=google.com; s=20230601; t=1768929608; x=1769534408; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XjgInJxzHZA1FL2RVNq/kScJMYVHdTMpDmOcyNlB2Pg=;
+        b=NETE/aajBfDsK3jOc+bTjo+Jz7/yBTMAQyBeUSJ76PuEp/padtrm/px4ukDSRC5/+g
+         AH47GMP8fUGpgWCwPQpHac5AFjfCcdrUTpDmYKLO7ksFe7kzvZbnQdPC8ltxxcycpOg1
+         AGYMJxDhcGcs+vPG1TrTLHZo+Q2yMRmA+7B4zRrMEHBhs8hFuPVP97b1XcQGzYEpsF7s
+         zmcC7ZADQxQ/A50x1OzGTkiey+oxwHjiA/WRy5rxbARFRYlnro1veJ6znehMkb7yL72Q
+         r49OyRJH6ogoKDetJblN1kO2kWC5LpDamJeyiH/pnNrcLpmvxRqwFpWAb3B/ZaXlffFy
+         Jz2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768929608; x=1769534408;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XjgInJxzHZA1FL2RVNq/kScJMYVHdTMpDmOcyNlB2Pg=;
+        b=bRknJhK/7A0AdG7cLM/oAqnEQoToYVeui7oHAEZBxvTwX2TWLTJWV24mlT8xKAXQUm
+         sI5uUlOHmad0QYyWB5c32zu3Aevr489r3slGxAOS0KqpSIKcc8ecnAlTK0a5yIbZXpIF
+         PorngSIQJ5M1ouQGLyeAG/iFwNoUrNR7DzUprrcVLl0nJNBpJlh1+ARALgmUuh5JRZNA
+         64f+1vDcp9SVN9VQPbAVO1mIwLtas8CJ1sKtjZez3g0cR6t7HAdv/2KBw818J0flIZ4g
+         zR5DQ7ub/3UG5M4BbH+M6xKsYypt3XDroX2znsKYGEFS7cvVrah+iUbwc8Npd4G4zCD0
+         KGUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVXKztGSmt/AM3q+EI2Ho13onJYeKds5earzTbfkR2XaKgPKEGNNcuHW/4w9ekry5exhneSH/WPBQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw96rTLd/t1AmVwKbaSM8GRaKArpxDqYiILzLc2WKMBAt+dy8qU
+	ah1G/BM0CU08QjuMfxH9uCxaUN40jQdqGL3Hx5aIkaoIv9nKgW71SAxCl3c5v81U+FYDMFY2uEm
+	wjCRdYWTepnYPClWg38F1pKAmn/UCaRXtgl0KoJMh
+X-Gm-Gg: AY/fxX44NDImsOyBwskhpWmZS+usNz/l8BGZZj9f1+G/FXM6JYK0hTNMxA/H7USf5QM
+	PUboI1Kt8nsSpxoLTTMUmT20SPPbJUFz0mSFz+nO84CBQMDTlbX38y8lo0aFmY01N3Hq3DRDaqj
+	ZIqDJ3E/sDyXBW0kcarVuFxxn/bsp8+G7XufqODDwW4hXs5tjel5RhTY0928LJogMKPJxpVKjhU
+	SIrHXKxFqW+XPWCXC/yvyVE1Gry6pMP32GlH+Wz9U89YJ3SLIfE0gXgxCM/DP/Ho2me6BJOlPqZ
+	fwlZ4b1Meylox1a+EYnfUAs9jJln480gzg==
+X-Received: by 2002:ac8:7f49:0:b0:4ed:ff77:1a85 with SMTP id
+ d75a77b69052e-502b07275d9mr30014031cf.17.1768929607523; Tue, 20 Jan 2026
+ 09:20:07 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|SA1PR10MB6663:EE_
-X-MS-Office365-Filtering-Correlation-Id: 599f77b5-bc63-4e25-b92c-08de5843fe65
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?e0JgHC2OyT45OYyD+FXSSGS7riDFC4SWESYimzU8AxBki3MAtKO6/DM/rjc/?=
- =?us-ascii?Q?00bdEhr3vFO0dWj9HgB+4GnK5DB0mkgerJnnxO8W1CVZpUBjhRJn++Zlbyhu?=
- =?us-ascii?Q?YMd5MvEXmOeGfaDnbhB1YLFBECsXrkrMFImh3/zS+xqs1yC4jj1ysVZhe9bs?=
- =?us-ascii?Q?UerQBPnF4lfhjJ3QgaQY9A+sRYbHjlrI5qEBQWDjSw93bWWvn3krWZIr5FNA?=
- =?us-ascii?Q?MUEudHw4ZAIZwU+Cjq+YU6kRfVZUCh4Ir1vrtjWjPgoHF+mD3QPilZ/2Vhhd?=
- =?us-ascii?Q?Vvh/AmbF0nU2ikUX8g1KLuj9yloSkFiVvMh00E0VCzAzM//H/Vgp8ODE0dkf?=
- =?us-ascii?Q?v788oSmL7aSv+oRbmAtI5MUfrkw/xWYnQdWyctvPnFTiky9Y2WEfuKCqqe7z?=
- =?us-ascii?Q?TLswWkV8VwnvtvmR8YBbwRA2C31k/DFCkUJ1vL2y3daJ0ZWsEqFg/7/2B5Nk?=
- =?us-ascii?Q?A2iYi7cVLW1eOxoTO48y/YkGI+xjTnR9dzmuiZMqd8PW5N4N2WF6HZvyyp8A?=
- =?us-ascii?Q?de9Rj3Ov/EAl/B43SftpqMA/aifccxFl3TAPaM9CJj1/eLOOdAOAn6LmXP9U?=
- =?us-ascii?Q?Ms2avF35pTKiZNJbEC2SEI4iu9hTgvNLMX0fIIGbKP0tYMAgdBNdFGHdF5pj?=
- =?us-ascii?Q?FV1oGVZE5YYs8NWJcrTZ9S53dNegwLMXIgEgkDwmr2GPrT+1gO0f024JrlhN?=
- =?us-ascii?Q?viqJfc2DztDSnpnFpc4M5xyrLzkSNzW2qcbjGjNgi9VDAyHu9gqnI44XxsYt?=
- =?us-ascii?Q?7ucsWdO8n0IBw4Xebj0hp1yEvi10MuFxvv/JZqdrtj234+XsT2VbqSnlOVpH?=
- =?us-ascii?Q?u3IyWIW++mwzi2kyyblRMK/Eov75uzYzD7l4Pttgh6psKAqhwcZADLVtG75N?=
- =?us-ascii?Q?8mW/KXwfh2D7d/6AY4t5qwqjiKuTQDoB3wjhjZG58+UkTUuEJrNEcJWG3o0J?=
- =?us-ascii?Q?WLKgfQ1/lh5wA4lIdmI2iQAuCUhMJO5xTjV2RWeWxG14cORDLLS521W4U5p5?=
- =?us-ascii?Q?AcoWGQyQ8Hf7sdQDwgn+WCLO7g67kTIECjvjSU1KS10V+uvW6hEFImhZ+NqE?=
- =?us-ascii?Q?7gHANNxgoZ1Vx5eyBVt9hcnyruHfejlaIBiBntd3yxXueHbPiTLV8Nq0WH3N?=
- =?us-ascii?Q?76NAa+i0SFBszYwT8eAgqZ0LszVlVpabLiWIyQARq6Q2evWN4E6qZS4C71je?=
- =?us-ascii?Q?U/nLKXvjXFSHyUuJbcYG2MlmDapiz6UaZcXG+2uVnQZf4sNAYJc0WLv/dos1?=
- =?us-ascii?Q?U618To41Zgxz8Q30GwikRyO74h5ryLgBNcHlIEqnVOeb1EZz7NShjJwb4Apa?=
- =?us-ascii?Q?YpCHowRlqwGuSrNU6YM8y6v6PojxnJqiiEppFeLIYYfkDfm9Z1CuhaS1g/zW?=
- =?us-ascii?Q?kWRA4a3CzV3HWUKX7AcoFgmSqK+9y66G9i9INAdtJQ6LrVjPqBT+ax+pdx0d?=
- =?us-ascii?Q?zC+gV2UpbzsPJLoRNieL5OQIp75GfMLT//N9CyJpHtKcD0c0MK7yxJBKsp23?=
- =?us-ascii?Q?yGAGQwe32xMxMcCA9/SByp/BgKCW8CSmQ8J6ILk4L/4f18+8240T9nAJIzuC?=
- =?us-ascii?Q?QhNaL8W0AGV1PrLhMjM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZrXPCfaeXhU5byniXN+09zmc/WT9fhj+QwXCuyIcVZLxveS8e5j6PXAddEYE?=
- =?us-ascii?Q?QKW0PsZUTqLG9goUjphAdY/tBaMVIX+wJ9J0kzRnMCoOXSe4X7yFZ3Dj52sm?=
- =?us-ascii?Q?QhEcQlI8ohgw2x7YOzHzRk9btjYcOcyuibOAMYRL9QXjQrX/fETXwocFgQne?=
- =?us-ascii?Q?Gyji80AzaBrSiAD2VqZmywtobV2Q+BrXWHGj1f+Y7/mq0JjPuxWYnQaU9Wg8?=
- =?us-ascii?Q?PpOnxQk1TA2H1VJCmLtePriTb5GBuOPPmJRYP1CHur4nZgdRQCc7mKGF2qoG?=
- =?us-ascii?Q?bss/EPNjyKFx2SB/tjKbrebsmIOn/PZoU6JwzbJS5FjUwOyN2btEfXXZ/+7t?=
- =?us-ascii?Q?GFdwEEE+/jYwkthGjIoXIIViyljDpdv9Ko1dvxkYp+ljcm+ydxjdq3ZO+GVk?=
- =?us-ascii?Q?ZzSiF4jWt8yuqZIfSP8AgLqawd4ovTrV+yYuDmVI0Ee9VMob9ZpYZgIPLXXo?=
- =?us-ascii?Q?kikfd+bWM1uUKgfkwgqDv72a6lNqlvtlPykRhjulcealkKil0pf4rmeY8QE6?=
- =?us-ascii?Q?Ey42anuVHKQvQqOuDV4z8jfT1vHL9857Aehtxui3Ks4qQTQ+aU30fJ7hNGu3?=
- =?us-ascii?Q?4y4U5o1vyXHUidpw+Ha0/8N6VmINbZRG/AnCFIaQQFq5XikH3rP24s3r/+/1?=
- =?us-ascii?Q?wNxFHh+zsRdB1LPv1qIpXJbcZksQ2VYyspYKSUkKy7gXSNjajRJ44BHZVmYN?=
- =?us-ascii?Q?2N2FOqHBd8zr7vibbIbFo88TZHffVrNBBeOTvGBo8VjVJRjuKcXeJYArMOWf?=
- =?us-ascii?Q?oEjWajJcrqJajHRXiIv3tTvqBAuyiBcdYdC5Vbk8WkgtjWtge2y7k/tANk4I?=
- =?us-ascii?Q?H5BURgP5VX8J6a3HXQyRTNb8fDyvKFzpk9Aa1zpI97fKEl7cLa8jGLsIFd/x?=
- =?us-ascii?Q?aCS+Ib+HVYaiSOWOx361fxVHC4ORl8FvJ5VORSarvmLRc8WMD5R7EOO2/+kX?=
- =?us-ascii?Q?Qx83mA/dWlfAyYoT+eCGzW6Gf/FLWSus2W+nDJ0rm6u/Gom8NxOlQUZoCvYq?=
- =?us-ascii?Q?RljKOVii75+cNzV3um12baRBngDGM4gVopmDqmXbucwwR/55PG5uWvP8cnnS?=
- =?us-ascii?Q?cTKFEp+uNUlzTD1iUoVQ4fd4NPc9n9aNy7HD4QtkELUyj+R0IHHBOModUlHy?=
- =?us-ascii?Q?pexU4pWAX83os6+817wS7M2ocx7GvicbfCUXkZiL7WJefWmtTVmObrkLkWne?=
- =?us-ascii?Q?9fZXVZ6hmol14NhXcCMGtrmCbQ80AKzwjLJ8ZcM6SgLxj5mHCYm+WOgfBP09?=
- =?us-ascii?Q?ep7JMipcba7evk/tvoAzdu+mUUrzdoKa2OOMvLsAQCQuboOCSwahYPDzyDEy?=
- =?us-ascii?Q?vUmh4IeYY5/YOP8Wje2xCM8dTRXRTFQnMiLjXgzI7N7UkEPUFuEUL5iGxg6F?=
- =?us-ascii?Q?4byEvQ+ovJMG8Io0ni0lDQ1Ize7Pul+f3GAw3MsNwrOz6CBb9K59Mle1kmNJ?=
- =?us-ascii?Q?XBbFY+m7iw3lEy8Q1yEJbP9Zo01eplm5DEFc18Nk8szxNXj7vuHU6g3Wv7gT?=
- =?us-ascii?Q?4/728QHf/0H/KVuk033L+eJv181BUbyU5xRuc+eZbdXUET9mjSy5wzmWU6aH?=
- =?us-ascii?Q?nVQ210owjoHQK1v2RSUk+DW2rBikp2ho/oXXRJxYa54zpjQ8Er9JoMwFyhQ8?=
- =?us-ascii?Q?1+xnJpP3dSpkLngPQFjlMfifxfhMo7wMcwcBGmwlf9zyIEU/VOgXT658ny3z?=
- =?us-ascii?Q?l8TiW9/v6Friz3nOtSZn4JTSc3fFWmffxbB54OPUU7kDYv5rApMorvprOGyk?=
- =?us-ascii?Q?Q2S7fFaPjmgUYlOvigYgUwMHMTCwL4U=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	chOOwHhUu4AZbdz9DlMTarn+aXBnCVKBIfhLiyV7Aeyurn9PM5C9ibp44xavTtaa9GQlV5C7Gr+mq93vPYOqt2q6K8T2wDbjUr4QAdLCLQt1cMWfZ2MOvXpmypKV5j6+Jb7NnQ+1aY/FjcX7bjCApeDwHQP4yWMcFW7TYNk7GGlaeMNzLg2Tk6E7j2t2PLpIZGcxO2xqeNZrNw3ZzhB/cDQPfPRK7lOuS4YRgFPVwm3w1UxJGsQKcXpI+EaPcN6+VjyCZ9AqFmS8NhCBs79QrTewgTsA8Eg0hufpHPOPfKfa4liwJ4s56spnwS0/+Uc7mVr/qnEYQADUV9H4VBprmH7Rz6oglHBjwh5RrKxB0n4pin0v8CFkZwshfEx0VHcHT0ONk047ncRNceEFPMXVEmANrL9NxfsJLkiFv3KINJegtvN3H3YV96clcl2pEV+MiAXjI1T9HUU6oB1tE3JoZ+pq2IYm+pxxzJSUBI5T/1sG9MN/e9n/fPxjDESzK6Jjl+83VVnBob6M0IwHWOcEloXUbmxcEpeay3XCvykW3qAeTpHfoddvJDo3eYC/wyvfpiQmPvKl/6qWVk3LFpvg46fiyslJ/xK+P5tHHeYHvL0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 599f77b5-bc63-4e25-b92c-08de5843fe65
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 16:50:18.8080
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gKFdNKqerOo0hwzGfEp3cX2jdHVPncpMAMD73eY5egQFeCSy6L0sktwc8juQat5YONUKj41onxqITId2tNXTICM/hX/i3D3aQpbgiiBsHMM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB6663
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-20_04,2026-01-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 phishscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601200140
-X-Authority-Analysis: v=2.4 cv=H4nWAuYi c=1 sm=1 tr=0 ts=696fb256 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=90Ukn_98quSV7Lvi1P0A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: VYQO6K5M5jh5JHmBNwhXW7mvnKN5BzTC
-X-Proofpoint-ORIG-GUID: VYQO6K5M5jh5JHmBNwhXW7mvnKN5BzTC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDE0MCBTYWx0ZWRfX74WuK404jhOp
- gd2cOrrAocNqLKIWCimOzcFCkoyn6sA97wP43VtIZ9D3nmtgdD8GdT0b3kacqF/rh9sKaAvgtFx
- 0bba/vbsi7pp/JTOlrb0hbNnvjjLjSj7MVM5QknuKl+JSeO096lzhOmnlc+/vmsnLFZdEWWfZNa
- oYgb59SBQFKZFoIKjIUq6SNeVP0WvTl6ch6GakemgsF9THqtl5NWA0hlPeh4HgNDhZA6WZNhfsq
- 9en/Jf+ptQ7w2RHAKeD+Qt7+UIaCgsyeZb8pnzFEHMYcxFHEcDasPknVw8G6V0Y67M0TFk+Wh0D
- X0xO/A3Oo8WAtCfzjNn/JnFszI6pi+VfDaj18DdXotSqCnmFQ/vm0uOcZU3A+XgLjIMfSbBB6F+
- ksA8kvM2ORZ0pgvW4787jGDTdLML3gZ+aOr8a+mpYRApz67uYr3wboPg700wXfQd6yBZ1t2yojZ
- Vr833GWhxDH6AsDJRJA==
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 75C3A1C0007
-X-Stat-Signature: sjhium3axejxbq36pp16btz44gfd9cr7
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz> <20260116-sheaves-for-all-v3-9-5595cb000772@suse.cz>
+In-Reply-To: <20260116-sheaves-for-all-v3-9-5595cb000772@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 20 Jan 2026 17:19:56 +0000
+X-Gm-Features: AZwV_Qi9JsdZs4u4zpyMKVEbr1yatFKMUCA5FvcV_dcEEUthHo8JPVRpfNJYn0g
+Message-ID: <CAJuCfpErRjMi2aCCThHiS1F_LvaXjkVQvX9kJjqrpw8YnXoNBA@mail.gmail.com>
+Subject: Re: [PATCH v3 09/21] slab: add optimized sheaf refill from partial list
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
+	kasan-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: j8uq8ugwpmksysx3me7o8iadjdda1mqo
 X-Rspam-User: 
-X-HE-Tag: 1768927852-342410
-X-HE-Meta: U2FsdGVkX1+fXq0bG78nuYvfZXAGV7wjEyCTNheznHMlaBVkrwN1RvZOo9Q9/3pTupzBrj78YxsoJkRmfYu5Jbzjqzq9E9/W1c2xTnAAFLIvTTgWhpUZdRFBwEAp56lHAhvehWZ+6zIrhmpLumBU8ZtaZsF1HDPJxxoWnSztFhIz+IOdlu72fQ1jWqgokBKHgu86diBSNjOwOl0q3cZf/cBK+5/GOWvzhgNU6zq7tZILZeZbdA6vX+HTx52LfT9+fNx1QAaRbdMtP/Ms+5mLSVLlDhW9uEsDTP7m12hPyQRi9tspaVit7DXCPsGlsjs8clN+NFMy+1x7bPAwxY+b1oXUfyLkOGN7BgmVO0XBlGInzv16Ac2f20WWqrID6T2RL+fn8xeq7qemi3xNJAFvEkl7tWYKbp8tVojCEjqrf4s5g2CRnjkDcXONN3XjkVBPHOOXo7iqKZmNz42MUMLM96fVU605y1f/VOslK6Mrnk+hL3Nv+k0BI5HFdm8xvGHINcQ+nfaVbRELHVCI2tN2QYRgM5BBzJvLXcm1oqjaJb+qiigVVQSZEj0dotXjKthUOfNlnH+tiMEsmYOKO3e4DxycoIzoKxJs/rjbK65uuVs//CZPBiC8HPUwHFS6nLZ3FN46V/WO1YSmJkL5XTil32f/ywoh/N1HhV1HSbaw52oPabNzIx5WZXD9ffABhByoMEQJyz3ECvB8ZlqOvEvCRygIeKSlI5y0JdCUWYqq1cC1e7OhMG4h4gI7SdTBLi7w0L0EQ4fPm4krK7sWeB6ATWQRKUyKdjvRes8sM7F1yv6Y4BTOCZ2JmybylyWtJMN3Jb37NBYDNiYLLd0MGrI6UBU7pPXMElp2mG1r0NOaWa5vm92OPIz3lw8kBs/81geY4N4ktjYkSB2G+Uap/mXu3tQFq2vr9UJQoORxrmLJA9All+QBh6XsdEWN+Ik6klz9l+AtXsoRkqxRF1yyJbK
- yYAsgaLJ
- 5xiLzLBZ63MhaBIPoBqPuho5F9BbWsjBGzWCnKsvjGLTNZ23ExCYDdqU178pO5pr7P/wgllc5JtgMUZiIkZWFHJUFrA5fqKkzjplT+twhi34ClK3iE6vxzZjsRp7WnZ+9fOIEtd5R78djI3tInPPuu0KrI86248RRIL1a
+X-Rspamd-Queue-Id: 80E43C000B
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768929609-581968
+X-HE-Meta: U2FsdGVkX19whnKI+BMiWNQR3z2DPo2Kt8K7Od2Q4aTFhk0B9mJM3QsW9/AJBhUxcwN29H+PurIL2RPeQzEygMaw/ToyXgu9V09HHwLew/Gq0Gr6fKesXeOrERqErDTZub0uQVbHgG0vmvSDhegOaqEr2vSpjxt2plJr+B2U6gCQga8kFaMgD7wsdmCvoiBrUEC9tm5jl0otC98pCTZSXIZjaAC1ucyZcuz4FIGl2ZZNR5/NDwrZCj9ShEdaNkgC2k8byqEk/AHW/2chV5m75C/uwykmOrzIeahbHTdp+WySxKcxEDvFF27qUZ7eJnrf9/dMtXfenLAHKNroqef3KligpdOXPGHacZSCzf1TdmtfisWZjgj+tRRb7kHH+Uax9ydFPsa3YvJtmoAhUGSaai8xOxd557bTc/n9rVBvANSHe/QI/HfJejxxwrUWjHAXRR4yxyhDqFE1oIlXcnh0eODfBZT2jswTau0qTMrjN7pJc79dTXDjEaWDMfbykZBuDZHKDyge/b1w7x37lRlXjoX27FL26sfHxasjS6WeZutVzsge3QtYkALFQ8Q9nCuoqF7s2LYvZ6TcFifatWjfvKJPu79EXohXa9qb1Zz7XGHMEx0c4AMPMyzcP8SAj0tO9p4w4Py7sQ1/0U5dAwu0YG4SwlPtO4Nz+tXNMYPaQSP2hWV8RcX90fH/Q3x34hHqOY52luDMVOFtcoaB/Obhx3qLz/azw4ZW2Qdc6qeNWxbq3RGlkM8RC0d3IQQlHLyOKTr8xzB/JI4S+OPm7biDnRkNnZNQsBUuMzH3u/GfO3RXwmqgsV/JHaedTbILae4X80CWRa2/eplsPR3M+9u6O10WnlDn5LqQEwiDFEp+xgWjZ8Gu282WgK3B+XI2acb4KJA4DVtoPuWkPge2TtsQK9T1aBxQ0DYwVOPyx69Hb9rldrVouNcCZyYd7RBTSQRAf88IEm/+27L3vJnXq9A
+ ftszAucF
+ PQaUxwGD5H4JiL6viFlr2XVKopO+s/KpsCFFTkXYfNddrUP8hOCtcWVV6qIN9IhJeFFKRXWXIlfbl+Ekt/UW5UhbDs35hQkBJZeIxyrsTTi+2JW2THSLpD19Wxl/icQWRIKozujoBf0umJwCm7Gv8eMhTCewxxK8dzqp2vtFR0h4oRI2DrYoxQMiF8hc06D3LAPbiO+dPVOy8bx1gxBf9Eyo3F94V1++5JUqY00eGHksTTh3KYVb4vqC9j05TPgA5IqM5kJ7np39rzaE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -307,41 +145,467 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 20, 2026 at 05:44:29PM +0100, Arnd Bergmann wrote:
-> On Tue, Jan 20, 2026, at 17:22, Lorenzo Stoakes wrote:
-> > On Tue, Jan 20, 2026 at 05:00:28PM +0100, Arnd Bergmann wrote:
-> >> On Tue, Jan 20, 2026, at 16:10, Lorenzo Stoakes wrote:
-> >> >
-> >> > It strikes me that the key optimisation here is the inlining, now if the issue
-> >> > is that ye olde compiler might choose not to inline very small functions (seems
-> >> > unlikely) we could always throw in an __always_inline?
-> >>
-> >> I can think of three specific things going wrong with structures passed
-> >> by value:
-> >
-> > I mean now you seem to be talking about it _in general_ which, _in theory_,
-> > kills the whole concept of bitmap VMA flags _altogether_ really, or at
-> > least any workable version of them.
+On Fri, Jan 16, 2026 at 2:40=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
 >
-> No, what I'm saying is "understand what the pitfalls are", not
-> "don't do it". I think that is what Jason was also getting at.
+> At this point we have sheaves enabled for all caches, but their refill
+> is done via __kmem_cache_alloc_bulk() which relies on cpu (partial)
+> slabs - now a redundant caching layer that we are about to remove.
 >
->      Arnd
+> The refill will thus be done from slabs on the node partial list.
+> Introduce new functions that can do that in an optimized way as it's
+> easier than modifying the __kmem_cache_alloc_bulk() call chain.
+>
+> Extend struct partial_context so it can return a list of slabs from the
+> partial list with the sum of free objects in them within the requested
+> min and max.
+>
+> Introduce get_partial_node_bulk() that removes the slabs from freelist
+> and returns them in the list.
+>
+> Introduce get_freelist_nofreeze() which grabs the freelist without
+> freezing the slab.
+>
+> Introduce alloc_from_new_slab() which can allocate multiple objects from
+> a newly allocated slab where we don't need to synchronize with freeing.
+> In some aspects it's similar to alloc_single_from_new_slab() but assumes
+> the cache is a non-debug one so it can avoid some actions.
+>
+> Introduce __refill_objects() that uses the functions above to fill an
+> array of objects. It has to handle the possibility that the slabs will
+> contain more objects that were requested, due to concurrent freeing of
+> objects to those slabs. When no more slabs on partial lists are
+> available, it will allocate new slabs. It is intended to be only used
+> in context where spinning is allowed, so add a WARN_ON_ONCE check there.
+>
+> Finally, switch refill_sheaf() to use __refill_objects(). Sheaves are
+> only refilled from contexts that allow spinning, or even blocking.
+>
 
-Ack sure and your input is appreciated :) It's important to kick the tyres
-and be aware of possible issues.
+Some nits, but otherwise LGTM.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-Actually I think now I understand where Jason's coming from - the by-value
-cases will be const value for the most part - which should make life MUCH
-easier for the compiler and avoid a lot of the issues you raised.
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+>  mm/slub.c | 284 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
++-----
+>  1 file changed, 264 insertions(+), 20 deletions(-)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 9bea8a65e510..dce80463f92c 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -246,6 +246,9 @@ struct partial_context {
+>         gfp_t flags;
+>         unsigned int orig_size;
+>         void *object;
+> +       unsigned int min_objects;
+> +       unsigned int max_objects;
+> +       struct list_head slabs;
+>  };
+>
+>  static inline bool kmem_cache_debug(struct kmem_cache *s)
+> @@ -2650,9 +2653,9 @@ static void free_empty_sheaf(struct kmem_cache *s, =
+struct slab_sheaf *sheaf)
+>         stat(s, SHEAF_FREE);
+>  }
+>
+> -static int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
+> -                                  size_t size, void **p);
+> -
+> +static unsigned int
+> +__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int=
+ min,
+> +                unsigned int max);
+>
+>  static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+>                          gfp_t gfp)
+> @@ -2663,8 +2666,8 @@ static int refill_sheaf(struct kmem_cache *s, struc=
+t slab_sheaf *sheaf,
+>         if (!to_fill)
+>                 return 0;
+>
+> -       filled =3D __kmem_cache_alloc_bulk(s, gfp, to_fill,
+> -                                        &sheaf->objects[sheaf->size]);
+> +       filled =3D __refill_objects(s, &sheaf->objects[sheaf->size], gfp,
+> +                       to_fill, to_fill);
+>
+>         sheaf->size +=3D filled;
+>
+> @@ -3522,6 +3525,63 @@ static inline void put_cpu_partial(struct kmem_cac=
+he *s, struct slab *slab,
+>  #endif
+>  static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags);
+>
+> +static bool get_partial_node_bulk(struct kmem_cache *s,
+> +                                 struct kmem_cache_node *n,
+> +                                 struct partial_context *pc)
+> +{
+> +       struct slab *slab, *slab2;
+> +       unsigned int total_free =3D 0;
+> +       unsigned long flags;
+> +
+> +       /* Racy check to avoid taking the lock unnecessarily. */
+> +       if (!n || data_race(!n->nr_partial))
+> +               return false;
+> +
+> +       INIT_LIST_HEAD(&pc->slabs);
+> +
+> +       spin_lock_irqsave(&n->list_lock, flags);
+> +
+> +       list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
+> +               struct freelist_counters flc;
+> +               unsigned int slab_free;
+> +
+> +               if (!pfmemalloc_match(slab, pc->flags))
+> +                       continue;
+> +
+> +               /*
+> +                * determine the number of free objects in the slab racil=
+y
+> +                *
+> +                * due to atomic updates done by a racing free we should =
+not
+> +                * read an inconsistent value here, but do a sanity check=
+ anyway
+> +                *
+> +                * slab_free is a lower bound due to subsequent concurren=
+t
+> +                * freeing, the caller might get more objects than reques=
+ted and
+> +                * must deal with it
+> +                */
+> +               flc.counters =3D data_race(READ_ONCE(slab->counters));
+> +               slab_free =3D flc.objects - flc.inuse;
+> +
+> +               if (unlikely(slab_free > oo_objects(s->oo)))
+> +                       continue;
+> +
+> +               /* we have already min and this would get us over the max=
+ */
+> +               if (total_free >=3D pc->min_objects
+> +                   && total_free + slab_free > pc->max_objects)
+> +                       break;
+> +
+> +               remove_partial(n, slab);
+> +
+> +               list_add(&slab->slab_list, &pc->slabs);
+> +
+> +               total_free +=3D slab_free;
+> +               if (total_free >=3D pc->max_objects)
+> +                       break;
 
-So _hopefully_ we're mitigated. Again as I said, in cases where we might
-not be, I will take action to figure out workarounds.
+From the above code it seems like you are trying to get at least
+pc->min_objects and as close as possible to the pc->max_objects
+without exceeding it (with a possibility that we will exceed both
+min_objects and max_objects in one step). Is that indeed the intent?
+Because otherwise could could simplify these conditions to stop once
+you crossed pc->min_objects.
 
-I'm excited by the proposed approach in general (+ again thanks to Jason to
-opening my eyes to the possibility in the first place), so perhaps a
-_little_ defensive, as it allows for a like-for-like replacement generally
-which should HUGELY speed up + simplify the transition :)
+> +       }
+> +
+> +       spin_unlock_irqrestore(&n->list_lock, flags);
+> +       return total_free > 0;
+> +}
+> +
+>  /*
+>   * Try to allocate a partial slab from a specific node.
+>   */
+> @@ -4448,6 +4508,33 @@ static inline void *get_freelist(struct kmem_cache=
+ *s, struct slab *slab)
+>         return old.freelist;
+>  }
+>
+> +/*
+> + * Get the slab's freelist and do not freeze it.
+> + *
+> + * Assumes the slab is isolated from node partial list and not frozen.
+> + *
+> + * Assumes this is performed only for caches without debugging so we
+> + * don't need to worry about adding the slab to the full list
 
-Cheers, Lorenzo
+nit: Missing a period sign at the end of the above sentence.
+
+> + */
+> +static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct s=
+lab *slab)
+
+I was going to comment on similarities between
+get_freelist_nofreeze(), get_freelist() and freeze_slab() and
+possibility of consolidating them but then I saw you removing the
+other functions in the next patch. So, I'm mentioning it here merely
+for other reviewers not to trip on this.
+
+> +{
+> +       struct freelist_counters old, new;
+> +
+> +       do {
+> +               old.freelist =3D slab->freelist;
+> +               old.counters =3D slab->counters;
+> +
+> +               new.freelist =3D NULL;
+> +               new.counters =3D old.counters;
+> +               VM_WARN_ON_ONCE(new.frozen);
+> +
+> +               new.inuse =3D old.objects;
+> +
+> +       } while (!slab_update_freelist(s, slab, &old, &new, "get_freelist=
+_nofreeze"));
+> +
+> +       return old.freelist;
+> +}
+> +
+>  /*
+>   * Freeze the partial slab and return the pointer to the freelist.
+>   */
+> @@ -4471,6 +4558,65 @@ static inline void *freeze_slab(struct kmem_cache =
+*s, struct slab *slab)
+>         return old.freelist;
+>  }
+>
+> +/*
+> + * If the object has been wiped upon free, make sure it's fully initiali=
+zed by
+> + * zeroing out freelist pointer.
+> + *
+> + * Note that we also wipe custom freelist pointers.
+> + */
+> +static __always_inline void maybe_wipe_obj_freeptr(struct kmem_cache *s,
+> +                                                  void *obj)
+> +{
+> +       if (unlikely(slab_want_init_on_free(s)) && obj &&
+> +           !freeptr_outside_object(s))
+> +               memset((void *)((char *)kasan_reset_tag(obj) + s->offset)=
+,
+> +                       0, sizeof(void *));
+> +}
+> +
+> +static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct sla=
+b *slab,
+> +               void **p, unsigned int count, bool allow_spin)
+> +{
+> +       unsigned int allocated =3D 0;
+> +       struct kmem_cache_node *n;
+> +       unsigned long flags;
+> +       void *object;
+> +
+> +       if (!allow_spin && (slab->objects - slab->inuse) > count) {
+> +
+> +               n =3D get_node(s, slab_nid(slab));
+> +
+> +               if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+> +                       /* Unlucky, discard newly allocated slab */
+> +                       defer_deactivate_slab(slab, NULL);
+> +                       return 0;
+> +               }
+> +       }
+> +
+> +       object =3D slab->freelist;
+> +       while (object && allocated < count) {
+> +               p[allocated] =3D object;
+> +               object =3D get_freepointer(s, object);
+> +               maybe_wipe_obj_freeptr(s, p[allocated]);
+> +
+> +               slab->inuse++;
+> +               allocated++;
+> +       }
+> +       slab->freelist =3D object;
+> +
+> +       if (slab->freelist) {
+
+nit: It's a bit subtle that the checks for slab->freelist here and the
+earlier one for ((slab->objects - slab->inuse) > count) are
+effectively equivalent. That's because this is a new slab and objects
+can't be freed into it concurrently. I would feel better if both
+checks were explicitly the same, like having "bool extra_objs =3D
+(slab->objects - slab->inuse) > count;" and use it for both checks.
+But this is minor, so feel free to ignore.
+
+> +
+> +               if (allow_spin) {
+> +                       n =3D get_node(s, slab_nid(slab));
+> +                       spin_lock_irqsave(&n->list_lock, flags);
+> +               }
+> +               add_partial(n, slab, DEACTIVATE_TO_HEAD);
+> +               spin_unlock_irqrestore(&n->list_lock, flags);
+> +       }
+> +
+> +       inc_slabs_node(s, slab_nid(slab), slab->objects);
+> +       return allocated;
+> +}
+> +
+>  /*
+>   * Slow path. The lockless freelist is empty or we need to perform
+>   * debugging duties.
+> @@ -4913,21 +5059,6 @@ static __always_inline void *__slab_alloc_node(str=
+uct kmem_cache *s,
+>         return object;
+>  }
+>
+> -/*
+> - * If the object has been wiped upon free, make sure it's fully initiali=
+zed by
+> - * zeroing out freelist pointer.
+> - *
+> - * Note that we also wipe custom freelist pointers.
+> - */
+> -static __always_inline void maybe_wipe_obj_freeptr(struct kmem_cache *s,
+> -                                                  void *obj)
+> -{
+> -       if (unlikely(slab_want_init_on_free(s)) && obj &&
+> -           !freeptr_outside_object(s))
+> -               memset((void *)((char *)kasan_reset_tag(obj) + s->offset)=
+,
+> -                       0, sizeof(void *));
+> -}
+> -
+>  static __fastpath_inline
+>  struct kmem_cache *slab_pre_alloc_hook(struct kmem_cache *s, gfp_t flags=
+)
+>  {
+> @@ -5388,6 +5519,9 @@ static int __prefill_sheaf_pfmemalloc(struct kmem_c=
+ache *s,
+>         return ret;
+>  }
+>
+> +static int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
+> +                                  size_t size, void **p);
+> +
+>  /*
+>   * returns a sheaf that has at least the requested size
+>   * when prefilling is needed, do so with given gfp flags
+> @@ -7463,6 +7597,116 @@ void kmem_cache_free_bulk(struct kmem_cache *s, s=
+ize_t size, void **p)
+>  }
+>  EXPORT_SYMBOL(kmem_cache_free_bulk);
+>
+> +static unsigned int
+> +__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int=
+ min,
+> +                unsigned int max)
+> +{
+> +       struct slab *slab, *slab2;
+> +       struct partial_context pc;
+> +       unsigned int refilled =3D 0;
+> +       unsigned long flags;
+> +       void *object;
+> +       int node;
+> +
+> +       pc.flags =3D gfp;
+> +       pc.min_objects =3D min;
+> +       pc.max_objects =3D max;
+> +
+> +       node =3D numa_mem_id();
+> +
+> +       if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
+> +               return 0;
+> +
+> +       /* TODO: consider also other nodes? */
+> +       if (!get_partial_node_bulk(s, get_node(s, node), &pc))
+> +               goto new_slab;
+> +
+> +       list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+> +
+> +               list_del(&slab->slab_list);
+> +
+> +               object =3D get_freelist_nofreeze(s, slab);
+> +
+> +               while (object && refilled < max) {
+> +                       p[refilled] =3D object;
+> +                       object =3D get_freepointer(s, object);
+> +                       maybe_wipe_obj_freeptr(s, p[refilled]);
+> +
+> +                       refilled++;
+> +               }
+> +
+> +               /*
+> +                * Freelist had more objects than we can accommodate, we =
+need to
+> +                * free them back. We can treat it like a detached freeli=
+st, just
+> +                * need to find the tail object.
+> +                */
+> +               if (unlikely(object)) {
+> +                       void *head =3D object;
+> +                       void *tail;
+> +                       int cnt =3D 0;
+> +
+> +                       do {
+> +                               tail =3D object;
+> +                               cnt++;
+> +                               object =3D get_freepointer(s, object);
+> +                       } while (object);
+> +                       do_slab_free(s, slab, head, tail, cnt, _RET_IP_);
+> +               }
+> +
+> +               if (refilled >=3D max)
+> +                       break;
+> +       }
+> +
+> +       if (unlikely(!list_empty(&pc.slabs))) {
+> +               struct kmem_cache_node *n =3D get_node(s, node);
+> +
+> +               spin_lock_irqsave(&n->list_lock, flags);
+> +
+> +               list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_lis=
+t) {
+> +
+> +                       if (unlikely(!slab->inuse && n->nr_partial >=3D s=
+->min_partial))
+> +                               continue;
+> +
+> +                       list_del(&slab->slab_list);
+> +                       add_partial(n, slab, DEACTIVATE_TO_HEAD);
+> +               }
+> +
+> +               spin_unlock_irqrestore(&n->list_lock, flags);
+> +
+> +               /* any slabs left are completely free and for discard */
+> +               list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_lis=
+t) {
+> +
+> +                       list_del(&slab->slab_list);
+> +                       discard_slab(s, slab);
+> +               }
+> +       }
+> +
+> +
+> +       if (likely(refilled >=3D min))
+> +               goto out;
+> +
+> +new_slab:
+> +
+> +       slab =3D new_slab(s, pc.flags, node);
+> +       if (!slab)
+> +               goto out;
+> +
+> +       stat(s, ALLOC_SLAB);
+> +
+> +       /*
+> +        * TODO: possible optimization - if we know we will consume the w=
+hole
+> +        * slab we might skip creating the freelist?
+> +        */
+> +       refilled +=3D alloc_from_new_slab(s, slab, p + refilled, max - re=
+filled,
+> +                                       /* allow_spin =3D */ true);
+> +
+> +       if (refilled < min)
+> +               goto new_slab;
+
+Ok, allow_spin=3Dtrue saves us from a potential infinite loop here. LGTM.
+
+> +out:
+> +
+> +       return refilled;
+> +}
+> +
+>  static inline
+>  int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t si=
+ze,
+>                             void **p)
+>
+> --
+> 2.52.0
+>
 
