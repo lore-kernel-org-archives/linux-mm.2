@@ -4,104 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 118AFD2ED0F
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 11:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6167D2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 11:57:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55B826B03CC; Tue, 20 Jan 2026 06:54:23 -0500 (EST)
+	id E1B916B03CF; Tue, 20 Jan 2026 06:57:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5055C6B03CE; Tue, 20 Jan 2026 06:54:23 -0500 (EST)
+	id DC70F6B03D0; Tue, 20 Jan 2026 06:57:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 431896B03CF; Tue, 20 Jan 2026 06:54:23 -0500 (EST)
+	id CF4066B03D1; Tue, 20 Jan 2026 06:57:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C5DE6B03CC
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:54:23 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BE0286B03CF
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:57:39 -0500 (EST)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 866718BC1B
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:54:22 +0000 (UTC)
-X-FDA: 84352184364.14.AC7DC02
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 397AF40003
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:54:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="iKsu+/mh";
-	spf=pass (imf01.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 601D91AE793
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:57:39 +0000 (UTC)
+X-FDA: 84352192638.14.60F3BC1
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5FE1B120002
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:57:37 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rJ4VrhTy;
+	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768910060;
+	s=arc-20220608; t=1768910257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LD2S+Q4ihx8nd0KPbEgJkcPOIMRBud8mbNzwagk5rek=;
-	b=NJ9SIq3m3wUa7J9Ht+XhO+gXimxl/V99QLEjThOZNPHrzXEJytY68TMa1xG4rW57yFQLD7
-	NZtSR5fqJUOGCcDXAwxnjramTzJ7maUiVo/69bRwaYOCM3oaxjR9b6e9XaBcE7wVhShR4f
-	Vr5MIIGrPYlfrwCQQAdg2KDszGgkwhM=
+	bh=HYEpCcCgyOkPKRRfQKMgVhYxxpRPIrOqb5axcNzE03I=;
+	b=TxV8LngzhmKcY+hxepUQ94TOxLqbnU1nqUBMSrROfE/u0/G9UHsUM6zjNZxrXyqg6urHxD
+	DnH5IGexBLUpnfD0J0xkIglrJ3iPFy3rD3fI9MD4msxypHU38Q+4veJ2hzEQ7qgwD9m9qa
+	wGzENrjoHlCNZOWg+uACbmzo+jpsrUE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="iKsu+/mh";
-	spf=pass (imf01.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768910060; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rJ4VrhTy;
+	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768910257; a=rsa-sha256;
 	cv=none;
-	b=VYtrxG+ljm3OMqcjE5C0Dhp6AWyQdgnIQbtKF8SeySHsOV3eAOXb04orcNiOxif5mznMuO
-	TpRf15xRO2ZSeKMQ0O2IWazT+RKmP1O0DErC/JDw5TcoWB9o1FJJ1K0aAlCFzWjT7IsK0U
-	UHqcip6ZWB4A+c3vavuppENsnC2qBKQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=LD2S+Q4ihx8nd0KPbEgJkcPOIMRBud8mbNzwagk5rek=;
-	b=iKsu+/mhPJ6YLmsegjpkHBAxm56LWV2D3sCl261iIHJ61pTh6rmqg7N9ydTLXo2iYaooxFr/1
-	C5Qa6XrwAnfjxb1JPktZ6kYdLxfydQ2QpeVdJD/HtLwjxDOqYZMwMZFdEK2kx+1tdl8CIok0R9/
-	yjzjyo553GGg5FeyNXPIwCA=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dwQcR47trznTys;
-	Tue, 20 Jan 2026 19:50:15 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1CAA640563;
-	Tue, 20 Jan 2026 19:54:14 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 20 Jan 2026 19:54:13 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 20 Jan 2026 19:54:12 +0800
-Subject: Re: [PATCH v6 1/2] mm/memory-failure: fix missing ->mf_stats count in
- hugetlb poison
-To: Jane Chu <jane.chu@oracle.com>
-CC: <linux-mm@kvack.org>, <stable@vger.kernel.org>, <muchun.song@linux.dev>,
-	<osalvador@suse.de>, <david@kernel.org>, <jiaqiyan@google.com>,
-	<william.roche@oracle.com>, <rientjes@google.com>,
-	<akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
-	<Liam.Howlett@Oracle.com>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <willy@infradead.org>, <clm@meta.com>, linux-kernel
-	<linux-kernel@vger.kernel.org>
-References: <20260116203834.3179551-1-jane.chu@oracle.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <958f1e3a-3c40-51ae-8fac-a185e76aa940@huawei.com>
-Date: Tue, 20 Jan 2026 19:54:12 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	b=ezPZvYpHyb60jP2ZNj9FHm+b7CrwfGw4Fs59wHnjk/u+VCosS/DZOz/DkF6mHDXcU4e+Xu
+	viRe6CwNnFaR3ViOftgAp05vWpredk88JQUL23NAxpXrvR19b6QsHeE6BUeqypRDgHBcGt
+	zYPIq9WcBdcpucpfmw4PMdq/0NHISQQ=
+Date: Tue, 20 Jan 2026 19:57:26 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768910255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HYEpCcCgyOkPKRRfQKMgVhYxxpRPIrOqb5axcNzE03I=;
+	b=rJ4VrhTyQdhFkerciHCs4dOwK9+lY9C7TBgHlyFYs8jDjUXtO+FfCbZ3OKuoZ5ZpEN81wo
+	jwdDHUZNY4AGhASTayKavNAEBTL4zkrJcH1/9r7+3ho1ZECOr0LQZ5kPav2OThdYhYKGQy
+	voC9+uXPzq1YLOkFof5WavjYyk3wXRM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Eric Dumazet <edumazet@google.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev
+Subject: Re: [PATCH] slab: replace cache_from_obj() with inline checks
+Message-ID: <imazcyfzfkxofsnriyp5wa5v6yzszozljircucw2tgj6zex2ee@ytew6wy4kkh6>
+References: <20260120-b4-remove_cache_from_obj-v1-1-ace30c41eecf@suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <20260116203834.3179551-1-jane.chu@oracle.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: 397AF40003
-X-Stat-Signature: bq6mki6z8ha5jk3pyfh5rc4qcadgqgxf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120-b4-remove_cache_from_obj-v1-1-ace30c41eecf@suse.cz>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1768910058-515336
-X-HE-Meta: U2FsdGVkX18oMun27g2+V+LNvbU/EflkDHYhkS2gihDm/0LTP17k5g1aGhKMeb0CqJvQF9fpK54J+4Vz33qL91fZ2BUqcHMhhMlWQvtmjX1gn7I0BdwyujO7SsvN4EcZIabfL/X2h359JAYSlMYXDLdRtC20mcxaLFaLEtRhg8zzNesuKm7muXxKFv3eV1LR2ykrf9xySUb4VdouTzXq4GfIpJHTO66m+LrJF1+ywWIfS4Fa5CTSyi9fbhpcykPkGEplhdazeOgH6bTleNmgQctYOcIQPyteVzA2SiPfs0WhFqMDjlfwqfnOCDKArC/hhfKLFIq7WH7HWYqMbrmZAHJwyhrz9cyOYCyj/93VEb0hB1gKHzqa1aly15cN7hT+3NIoYjqjobWgK3qv4gwFXe5C7kyYd2NDGCok8tGnP3u0yQ8uB8MH3wyqWWDJPWweDs86yWdjZaoNeqMFISg89PvXCE6/x8SsiiRong3Tj5mD68wDEKtpMegs4VP6O2OxHKEY+LEf9XNz9oe4Y94uU74x36o5GNVm8DjneHookei/AYWJa84XGLPDbMPJIRElxowqfWu3/5YmGafzVQQT4WY7cqN4To7bd1gaY0bwensJWi8hXiyNVC660TIovDDc+zInHBSIeLoDXl9uUw/msjKsyOGiR7xbNqgKQFAYMtuDAlbwEQ1dJqBetXw/hU9A7MzOIcZIGrx+YkrmFZ7n7wQ/n2zPq5mTqkF7VY+7LYPFbsCvF2v480klGJbaPYe4C+d1ZKkCjjoW9R8noqLzpMQQJjlrsJnl/7uQ0ikX7iQz8QPZn3ceX1yX1kty8/p4/XJJKybyb3PTImd4ddJ9DJ+8Adsi27S6gs2rhWT4O/SJuxg5F5euv7iOfQXuMnIDbWoGTBu5cMG9e26oiVwioRD8JdC7nKL6U1GSdGJLYjxmCHTPnhH78W8kCXEvY0JWQHWKRfIuMdjoannWCg8
- qb/QE2Bl
- LnkrJDHzIPCLPKXMNuFcDkm4p3bqVPR2duceZRtbAA6Ov/nlwCJfnlBuewma3Ua/dKWN6eN1lGucbDZfd2Z2/EeY4Oid22feDh3thEo3I5dFKyLXlkDESHU8gBClT6vUtx8yd1vH2sCTfEF6DOoPSGC9kttiLrdCxcqRfku+Dvj/FFzzdOtj+h84o3JNpZaDzb9cfTOQNqkfM1SCQt2ygn2bs1MPPUwKPYAVByAUsnzahZg1MQcUpy1qtD6zMApTapi1ZG5qIrB6aCFmfTsza0pMk47B3LdQ1xsGG1cJ1366D8CeSIOHKKvGV9oIDX5WSYc72UtNrDZgWfycd1VfX1MUyrV8R79Z5Uy5/DKLw86zTxv4+5cmh85lzPQiEvOt/Qhtm5Dtn9u4pN/o=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5FE1B120002
+X-Stat-Signature: dnq13um4x9mdmyrepk8i3ah458n8r67e
+X-HE-Tag: 1768910257-257914
+X-HE-Meta: U2FsdGVkX18IY19nXHMfDFM5f9KG6CIkA4cMU084O29wSFfJucGMJP2xikDUrEJbRaSMuDRzaXbp8G0BvGrQ9R8FafzA2BdOwHcetJAJ1OgJ5aOP5VNklhdfeFIBrObItNuDFntbR4RJMTmBZcHnpdkcUtb1KqQ1sAqUIEl1AQV808nZr+80UyMKzUqAOKVYnFXD0weuf5+Ra63vWd+KQNw6erduAct40fT/IxLdEvgkumAt54CfR/hBrXkTsHhRopJZlCugqpC8ld4NWafQrZGbQDgQAx+QdFSCs0AcKbRH0d/bygU8l4D6n0iAqOKB1jqfRrPk/dkfBO9/8pUVOcVSdRvuww62+hBDUMbBDWUGIPAbjBlWbHp3/b60d/j373zrgo6tRnaQVEdTPojKqQRq0T6vvqvL8O+Qpjs1SEwVU1+/TH3f22WCeqV7a8kvlZ23aEW1ULiqjuxRauqr0iAWRNm297EDTv1nrL2ZB+l65vZMPgfXFKxrHKc728uXoiIFJKLvmjahSZn4ycArmqpGWcyFBeOyoSfQXuTwoH2g2bLlV4kHmkKQvlOn6V+zH8F6RKXGeM64SvCA1Kk3EX34MjKO7auVsNSflGjXVbPv3Z1mWRZqa/gNsANYp9ak9XNs3xQhBmSGhaMq4APiqka1yjrgNWt2ebuZnDpw9W7C7lczZ4w6VNvIYh91OAzL9HW3Vihe/IZolTdH7VJkG/CCHSpMPm8jxOW3tzQkIXdNlGU9GBYYP8Z/xJMkYsmcoNKG8HTTsgFJZ60oMbByvs7WzJ0LsioH2QFLG4B+TT6bMSV+seCW6kR7m4momdizHGg5ik7a0Zg4B7s6rGkPDTPhiMN1ZZ+sAda7p6ETj0+0dx9HBDYRwFXKNwsS3XThCGmJ+tKQTOwnH3PuhoTHgCxTi7s5qc3HNwc9G63XSb5mG6AtnGr8wVYLwUF/9q5qA8xdIRUH4WMSvQL2Xs6
+ jgzTF5qI
+ tkO335UMpAnbiiY9XNdyMLwDTuDBeL5sPoUunSDumNmixez1mjytAj5kGF/pz9awO5fbpJKWqO5T3XGTku/AvYxOxa4058RO4NcqOCih0wcYSbdcse/UtUf+EElMHtp6GGL9eBxmH8FRuz3eqPtS7HcpMDiqZYTe9wUnow9esc0gWv7mWIZrvhqkHSdJMeGUEqWj6FXLITQpT5xh6hx5mD1kKbS10KL7WoZnsOQiFbt63Zea2fLCzdwakI49LHd5/19dX2mZEHd6Eoierl1hJPOJy9/lnuEkg4RaknaFLvclLzLw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,180 +89,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/1/17 4:38, Jane Chu wrote:
-> When a newly poisoned subpage ends up in an already poisoned hugetlb
-> folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
-> is not. Fix the inconsistency by designating action_result() to update
-> them both.
+On Tue, Jan 20, 2026 at 10:35:42AM +0100, Vlastimil Babka wrote:
+> Eric Dumazet has noticed cache_from_obj() is not inlined with clang and
+> suggested splitting it into two functions, where the smaller inlined one
+> assumes the fastpath is !CONFIG_SLAB_FREELIST_HARDENED. However most
+> distros enable it these days and so this would likely add a function
+> call to the object free fastpaths.
 > 
-> While at it, define __get_huge_page_for_hwpoison() return values in terms
-> of symbol names for better readibility. Also rename
-> folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
-> function does more than the conventional bit setting and the fact
-> three possible return values are expected.
+> Instead take a step back and consider that cache_from_obj() is a relict
+> from when memcgs created their separate kmem_cache copies, as the
+> outdated comment in build_detached_freelist() reminds us.
 > 
-> Fixes: 18f41fa616ee ("mm: memory-failure: bump memory failure stats to pglist_data")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-
-This patch looks good to me with some nits below.
-
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-
+> Meanwhile hardening/debugging had reused cache_from_obj() to validate
+> that the freed object really belongs to a slab from the cache we think
+> we are freeing from.
+> 
+> In build_detached_freelist() simply remove this, because it did not
+> handle the NULL result from cache_from_obj() failure properly, nor
+> validate objects (for the NULL slab->slab_cache pointer) when called via
+> kfree_bulk(). If anyone is motivated to implement it properly, it should
+> be possible in a similar way to kmem_cache_free().
+> 
+> In kmem_cache_free(), do the hardening/debugging checks directly so they
+> are inlined by definition and virt_to_slab(obj) is performed just once.
+> In case they failed, call a newly introduced warn_free_bad_obj() that
+> performs the warnings outside of the fastpath.
+> 
+> As a result the fastpath should be inlined in all configs and the
+> warnings are moved away.
+> 
+> Reported-by: Eric Dumazet <edumazet@google.com>
+> Closes: https://lore.kernel.org/all/20260115130642.3419324-1-edumazet@google.com/
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > ---
-> v5 -> v6:
->   comments from Miaohe.
-> v5 -> v4:
->   fix a bug pointed out by William and Chris, add comment.
-> v3 -> v4:
->   incorporate/adapt David's suggestions.
-> v2 -> v3:
->   No change.
-> v1 -> v2:
->   adapted David and Liam's comment, define __get_huge_page_for_hwpoison()
-> return values in terms of symbol names instead of naked integers for better
-> readibility.  #define instead of enum is used since the function has footprint
-> outside MF, just try to limit the MF specifics local.
->   also renamed folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison()
-> since the function does more than the conventional bit setting and the
-> fact three possible return values are expected.
+>  mm/slub.c | 52 +++++++++++++++++++++++++++++-----------------------
+>  1 file changed, 29 insertions(+), 23 deletions(-)
 > 
-> ---
->  mm/memory-failure.c | 91 +++++++++++++++++++++++++++------------------
->  1 file changed, 54 insertions(+), 37 deletions(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index c80c2907da33..49ced16e9c1a 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1883,12 +1883,22 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
->  	return count;
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 861592ac5425..1bdb4f73d61b 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6738,30 +6738,26 @@ void ___cache_free(struct kmem_cache *cache, void *x, unsigned long addr)
+>  }
+>  #endif
+>  
+> -static inline struct kmem_cache *virt_to_cache(const void *obj)
+> +static noinline void warn_free_bad_obj(struct kmem_cache *s, void *obj)
+>  {
+> +	struct kmem_cache *cachep;
+>  	struct slab *slab;
+>  
+>  	slab = virt_to_slab(obj);
+> -	if (WARN_ONCE(!slab, "%s: Object is not a Slab page!\n", __func__))
+> -		return NULL;
+> -	return slab->slab_cache;
+> -}
+> -
+> -static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
+> -{
+> -	struct kmem_cache *cachep;
+> +	if (WARN_ONCE(!slab,
+> +			"kmem_cache_free(%s, %p): object is not in a slab page\n",
+> +			s->name, obj))
+> +		return;
+>  
+> -	if (!IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) &&
+> -	    !kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS))
+> -		return s;
+> +	cachep = slab->slab_cache;
+>  
+> -	cachep = virt_to_cache(x);
+> -	if (WARN(cachep && cachep != s,
+> -		 "%s: Wrong slab cache. %s but object is from %s\n",
+> -		 __func__, s->name, cachep->name))
+> -		print_tracking(cachep, x);
+> -	return cachep;
+> +	if (WARN_ONCE(cachep != s,
+> +			"kmem_cache_free(%s, %p): object belongs to different cache %s\n",
+> +			s->name, obj, cachep ? cachep->name : "(NULL)")) {
+> +		if (cachep)
+> +			print_tracking(cachep, obj);
+> +		return;
+> +	}
 >  }
 >  
-> -static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
-> +#define	MF_HUGETLB_FREED		0	/* freed hugepage */
-> +#define	MF_HUGETLB_IN_USED		1	/* in-use hugepage */
-> +#define	MF_HUGETLB_NON_HUGEPAGE		2	/* not a hugepage */
-> +#define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
-> +#define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
-> +#define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
-> +/*
-> + * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
-> + * to keep track of the poisoned pages.
-> + */
-> +static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
->  {
->  	struct llist_head *head;
->  	struct raw_hwp_page *raw_hwp;
->  	struct raw_hwp_page *p;
-> -	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
-> +	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
->  
->  	/*
->  	 * Once the hwpoison hugepage has lost reliable raw error info,
-> @@ -1896,20 +1906,17 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
->  	 * so skip to add additional raw error info.
->  	 */
->  	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
-> -		return -EHWPOISON;
-> +		return MF_HUGETLB_FOLIO_PRE_POISONED;
->  	head = raw_hwp_list_head(folio);
->  	llist_for_each_entry(p, head->first, node) {
->  		if (p->page == page)
-> -			return -EHWPOISON;
-> +			return MF_HUGETLB_PAGE_PRE_POISONED;
->  	}
->  
->  	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
->  	if (raw_hwp) {
->  		raw_hwp->page = page;
->  		llist_add(&raw_hwp->node, head);
-> -		/* the first error event will be counted in action_result(). */
-> -		if (ret)
-> -			num_poisoned_pages_inc(page_to_pfn(page));
->  	} else {
->  		/*
->  		 * Failed to save raw error info.  We no longer trace all
-> @@ -1957,42 +1964,38 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
->  
->  /*
->   * Called from hugetlb code with hugetlb_lock held.
-> - *
-> - * Return values:
-> - *   0             - free hugepage
-> - *   1             - in-use hugepage
-> - *   2             - not a hugepage
-> - *   -EBUSY        - the hugepage is busy (try to retry)
-> - *   -EHWPOISON    - the hugepage is already hwpoisoned
+>  /**
+> @@ -6774,11 +6770,21 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
 >   */
->  int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->  				 bool *migratable_cleared)
+>  void kmem_cache_free(struct kmem_cache *s, void *x)
 >  {
->  	struct page *page = pfn_to_page(pfn);
->  	struct folio *folio = page_folio(page);
-> -	int ret = 2;	/* fallback to normal page handling */
->  	bool count_increased = false;
-> +	int ret, rc;
+> -	s = cache_from_obj(s, x);
+> -	if (!s)
+> -		return;
+> +	struct slab *slab;
+> +
+> +	slab = virt_to_slab(x);
+> +
+> +	if (IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) ||
+> +	    kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS)) {
+> +
+> +		if (unlikely(!slab || (slab->slab_cache != s))) {
+> +			warn_free_bad_obj(s, x);
+
+Just to make sure I'm understanding correctly, are we intentionally not
+releasing the object x in this case? Thanks.
+
+> +			return;
+> +		}
+> +	}
+> +
+>  	trace_kmem_cache_free(_RET_IP_, x, s);
+> -	slab_free(s, virt_to_slab(x), x, _RET_IP_);
+> +	slab_free(s, slab, x, _RET_IP_);
+>  }
+>  EXPORT_SYMBOL(kmem_cache_free);
 >  
-> -	if (!folio_test_hugetlb(folio))
-> +	if (!folio_test_hugetlb(folio)) {
-> +		ret = MF_HUGETLB_NON_HUGEPAGE;
->  		goto out;
-> -
-> -	if (flags & MF_COUNT_INCREASED) {
-> -		ret = 1;
-> +	} else if (flags & MF_COUNT_INCREASED) {
-> +		ret = MF_HUGETLB_IN_USED;
->  		count_increased = true;
->  	} else if (folio_test_hugetlb_freed(folio)) {
-> -		ret = 0;
-> +		ret = MF_HUGETLB_FREED;
->  	} else if (folio_test_hugetlb_migratable(folio)) {
-> -		ret = folio_try_get(folio);
-> -		if (ret)
-> +		if (folio_try_get(folio)) {
-> +			ret = MF_HUGETLB_IN_USED;
->  			count_increased = true;
-> +		} else
-> +			ret = MF_HUGETLB_FREED;
-
-IIRC, code style requires {} here. .i.e
-
-if (folio_try_get(folio)) {
-	ret = MF_HUGETLB_IN_USED;
-	count_increased = true;
-} else {
-	ret = MF_HUGETLB_FREED;
-}
-
+> @@ -7305,7 +7311,7 @@ int build_detached_freelist(struct kmem_cache *s, size_t size,
+>  		df->s = slab->slab_cache;
 >  	} else {
-> -		ret = -EBUSY;
-> +		ret = MF_HUGETLB_RETRY;
->  		if (!(flags & MF_NO_RETRY))
->  			goto out;
+>  		df->slab = slab;
+> -		df->s = cache_from_obj(s, object); /* Support for memcg */
+> +		df->s = s;
 >  	}
 >  
-> -	if (folio_set_hugetlb_hwpoison(folio, page)) {
-> -		ret = -EHWPOISON;
-> +	rc = hugetlb_update_hwpoison(folio, page);
-> +	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
-> +		ret = rc;
->  		goto out;
->  	}
->  
-> @@ -2017,10 +2020,15 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->   * with basic operations like hugepage allocation/free/demotion.
->   * So some of prechecks for hwpoison (pinning, and testing/setting
->   * PageHWPoison) should be done in single hugetlb_lock range.
-> + * Returns:
-> + *	0		- not hugetlb, or recovered
-> + *	-EBUSY		- not recovered
-> + *	-EOPNOTSUPP	- hwpoison_filter'ed
-> + *	-EHWPOISON	- folio or exact page already poisoned
-
--EFAULT can be returned when kill_accessing_process finds p->mm is null. So it might be better
-to comment EFAULT case too.
-
-Thanks.
-.
+>  	/* Start new detached freelist */
+> 
+> ---
+> base-commit: 0f61b1860cc3f52aef9036d7235ed1f017632193
+> change-id: 20260120-b4-remove_cache_from_obj-190fcaf16789
+> 
+> Best regards,
+> -- 
+> Vlastimil Babka <vbabka@suse.cz>
+> 
 
