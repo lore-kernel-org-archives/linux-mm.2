@@ -4,92 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF19ED2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 06:43:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79653D2ECF9
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 06:44:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14E7C6B036F; Tue, 20 Jan 2026 01:43:27 -0500 (EST)
+	id D9A5F6B0370; Tue, 20 Jan 2026 01:44:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 126A06B0370; Tue, 20 Jan 2026 01:43:27 -0500 (EST)
+	id D44226B0372; Tue, 20 Jan 2026 01:44:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 028506B0371; Tue, 20 Jan 2026 01:43:26 -0500 (EST)
+	id C3DA96B0373; Tue, 20 Jan 2026 01:44:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E37BD6B036F
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:43:26 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9022D8B8CF
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:43:26 +0000 (UTC)
-X-FDA: 84351400812.26.FD1A761
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D219D140002
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:43:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nk4HkZgj;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B5D196B0370
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:44:44 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4A2EB58C3B
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:44:44 +0000 (UTC)
+X-FDA: 84351404088.06.AD078FE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 69D97180004
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:44:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MZrlEhoh;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768891404;
+	s=arc-20220608; t=1768891482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C6if+LcGjNYtJ4hNc0emoNvyfA7JdNu83+Hmj3PNywc=;
-	b=wQjHKRVc0Ij5pxz+NA+SDVjYk7u7dWlK3b//BK8GnoF6LZ2Rz5Gtk1uPOaYJUsC4MDbrG0
-	B/c8PKBqU0J1iV3EdIXUEP0byoK7vQWU0YKlp+5X4PXv62ZnD2WkfH8VCzpTOSokq8RFIG
-	25h6nQuLKUKiirfsjFEtyA4qLRrRAUI=
+	bh=o36L/7+teoVK/NrokCGWRYNhVF+VUPJa/AecgI9q4Zw=;
+	b=qSrwgSCFE8IqrjOaiomvXvvFhPqg6nlHRgdmyK0hKTC4n42WFQ+B1SqWSIRvqvozxnl5c0
+	sFehrjvS1CMNzRO4mtjXd/FG468c7m6akHOrbiqzth204PyOMSUu5FgnHjbX257FvMYKzS
+	2F6vQ1V7yo/bHJs5TJ8xDThp/93vPTc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nk4HkZgj;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MZrlEhoh;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768891404; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768891482; a=rsa-sha256;
 	cv=none;
-	b=lMlnlWc916biAqaRGqwdg02k1RX0xJoaxfglVpTvc/qJmdUCyj5dNEpRRue7Pb4f1Nh673
-	jy8uYM8d60pBhcAHMQnvqkLdZEGwi4fw/6ftXCtboBjqeeAoqSciyuV/J2QWp0MReNRKDs
-	rFssUCIeJzjH5G8dmWyH209A07S7y2M=
+	b=p21YFeP0/crkM/aoE94M8CV8x7i/j9nvxHNwepENVFZA6Upi27sePLIuSuUZr8s/ArUC8k
+	jbT+ZOZjqzeXSOltvO3nrCEUbRTeSFk8zo3bWF5E4ezKeB+ZMBmmSH3jDbQnsoL/UDk/3C
+	LEViCBYjEqQC1PJtbbJbh3arx7BfGmU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00D1C60008;
-	Tue, 20 Jan 2026 06:43:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DB0C19424;
-	Tue, 20 Jan 2026 06:43:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A748416C3;
+	Tue, 20 Jan 2026 06:44:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA230C19425;
+	Tue, 20 Jan 2026 06:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768891403;
-	bh=Q6DZgPGZjNX1B9EVQMzmA20g4dsscqih90PlrSVuaYc=;
+	s=k20201202; t=1768891481;
+	bh=fVZodrtrlB4eQWOfQQDpyqC4aE5YuNhMLG4v6dA486c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Nk4HkZgjrYVS+vhm53rXMdVIPfF/97GazOLwF6yiaxf1o4KqZQTLLVJF7anBpTgW8
-	 IX0EjbkwPDONkljjeuUrH9DeRlecTWkuglPX0u1Ksldi8dlywyFAqrWEOJAgw8A94X
-	 kK/W1bCa86MHEZezshHbLp3czwvGHHJqlgh52Xk3zzFP7kbzfgV2iUMd27UjsI/g14
-	 5tO71nd1Kj4c7PJV1rc1n/+2BoaBm+PLjAsgpfqS5J5UhhoaXoZ70Bxi55xoleKVLd
-	 YIOPFXksCOdxkz0/lg9MkziwkVfBoxdaLQ71BWcCKWCekvgvd+N/fTwo9KM5nbV2Le
-	 VQ/XM0a6NfcFw==
-Message-ID: <27f0adf1-54c1-4d99-8b7f-fd45574e7f41@kernel.org>
-Date: Tue, 20 Jan 2026 07:43:15 +0100
+	b=MZrlEhohCL9rwVNrkEbEnAMLK4YjTjhZCaWebD3/VYEiAD3GBN+4ahxvemx5oAMJq
+	 Ke7Qpx+VhrnwjzSXzNhthxzW6DfIZo5hPk1NtLBqc+WMQCW4g/bcDL2zefvpRtwqJf
+	 TR9VQtaagkwHm+D7qhTEzDApB/i+ceen3GSiWw5s4iLHrbtxKgXh4XRpSSbkKK0KFr
+	 iSJJuuHZjY75pVGREsqiX2NjBxOuVPOTm9MuZHkAmLVNokM5ScpupSLMLLuG43jTCp
+	 qBRuRL7PvknMNc7755FIiuXMKgLk9Ih6lQtovnTMGnKsJQycdfPIkmgYjXgf8THEk4
+	 hYasGi/d1yWug==
+Message-ID: <ec5971d7-faaa-4716-a697-1c7c90d624d7@kernel.org>
+Date: Tue, 20 Jan 2026 07:44:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 15/24] mm/balloon_compaction: move internal helpers to
- balloon_compaction.c
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
- virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
- <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
-References: <20260119230133.3551867-1-david@kernel.org>
- <20260119230133.3551867-16-david@kernel.org>
+Subject: Re: [akpm-mm:mm-unstable 319/345] mm/balloon.c:19:33: warning:
+ 'balloon_page_device' defined but not used
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+References: <202601201338.4muFmFHV-lkp@intel.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260119230133.3551867-16-david@kernel.org>
+In-Reply-To: <202601201338.4muFmFHV-lkp@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 78esg9w6kw5kjqfbzp4rsscyjncbp917
-X-Rspamd-Queue-Id: D219D140002
+X-Stat-Signature: xuhbzma7uq65oy1d8bkdckreeiyj1qq9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768891404-212988
-X-HE-Meta: U2FsdGVkX1/yChlN25YO6tWjuR+hJThaFRD8e/f10LSqFYPQGC4U2Iv08aim/508FVW6EEqiNWIUAYEU8VGAaz3Cyltt8buwTJUuYZ60SuadbIq+mTElDvRijeU7KDG5A68OjzweNV2lv0aegjb5TwZvgizkNY2aaqk19WlcszoMthrkqt1fgyIlBDeHFi+Qk2lO7fFylYqDkS5uEC+n7GAs9Xqh5m23U0q6Z0HuS4Cw3jPv7tWBzi8b/+ohucKXuYDoxwYN3/FAeIO0rqaxzCSjsghMGa8UpUokFi2WASZmwelL2xFOmcqpQTCf0vNj11psfcI3cAxWNMcesq8YJ4q9MB73TsNu7qC4onIHm1IXH0c/2VRog1oRcrn7eR6O8U3cMbDTmUN9qqWO9EvvG4Xgt+Bizd6tcfTxiyjg0UY/hRibf2mUrj9dOToisP5K5iF/jkt0Obib5rEwyx3wPSyQh6cfFey4IBakmcVZZx7ipkSyq5LMSzIq/f4vhGLWOtILN0yEe13LcwaAGyGd1naSa9yzUnH6Rr1olaedUXe0Lge8tfpj+qu9DOCfvs6bU8WMtEFtd7wVl6XGkNYgow3xjh/NQZQNbvW7Nv1f9tZdyIGg5OI3ytVh7+nQuDm3991t9+bKiaEbuqRiDzcbrLsd5ipp/QB84Vr8GeJSC6PmryouTvZWWSsZWpIuDThuwesKgNvdyxnsuMQ8CalpNJd9c2aO0RAicv8UjO5fajTdEYeNY2fKw5nj20ZCf9gcyAkD8fi101x1SHUp0VLweCSBAxgh1mRdNOjt1p13Y+T2pQT1upEK2MpBPlX4FhQCLU1ktnNjSX/4Nlw+6rfu8Hc6Bh8r3Y7ODdipn4Lmd/J4fNahmmAQO8QN8jsiRXOXxYp7mW+Zl99qLpqMkOQpQyq4sqqDf1WAj2Ndv+h/XFo4vEXU4OOYd5usdBFSkj2n7laiKKe70Qh5Qyj8zos
- GLXSkMZ6
- Ppt8P1rwEBwXeLq5MuZC/5oVyVVGT48GBRWprrb1wewiz6QB9JK1VadW22yescYj9Cl+w760zQsn8y44dF0Nl2xePx1Ev5ARseu9pxyCAncCjGfovRz1Fr4s44+lFgzRE6hGVupYHIgtY8weKpfoNwuDwFFEmHMM0DFIIk+NefZQkLwOn6goDngp9TZ39H0YTDrPkkhcuEXb6inIs9ikY0pSLVOV6ToD9yXmBr78MHT5yRkX82j8qnN5TvfcSVHNSG4mwsfG5sf4NhpyCqpswrF31bkrwq0TRrNTmzsybQWRYQajDAENsRQ63pwh0ysSBe0BPeZefsJ5TxIpi9bcseT5J3MdzxV4R2ovEPNJXZ2Ofw96bJq5Sys2dqR21SmO0VhTa/KOSb16jK45neGGgugXP4A==
+X-Rspamd-Queue-Id: 69D97180004
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768891482-37403
+X-HE-Meta: U2FsdGVkX1/nIrG2coahQHVzwbAngJDYkK4Tb5oE5T7QHwDAHCCODBHTcMrHXmzO44nY7cFBKBmEIaEnZjWTEtCQPF3T5QbgsBgkmoEE12/44RrtjhnHvqg0/s9ODRVvlIwAoMBifpdH8Z3OzpTwp35W8IdGN8BAytvPzvx1OWVV2h2YZOYo0lZ4zL0LnGfEeeEMLXTQQlvwvIXTk2tFW6Ah8jzdJoPLJa4vxt5Jm59ggqpULfeAnY4RYdzbvtvsQjQmBxBibQEXyd41JoXYCcWHPRRMrcswJ04WqXTLGwO01uaj4y2lyWiHfy3oHLxn6i0mnihXW2vAV1mvAm6ePGWgOlBFHBgoByq2Q29aLVHxlzNgB/PyMZTLOnQ87aIQMemRhd3L0m98zlcumRQTfwFlTRgKS9h18xWbrC7rmqtODXgv14FSOF3PqJBmstijqshLLWFgJdP83ztJIe2hDpeQYNLjm+KoQiq4HI0fLsa+JiCAZ0tt1E8q9FMuuZIi3JtOyPgHUctG3RNjRVV/dMOCfp9HHwL5BaFgo8+5XO8nB87igQ3gG7ZngBB4PFBjknagCuiTAyxbRpKjsxCpROBc8vsGQ+ZxxU29/uW89gOLBG/IYDCKiDQ1ewwnn2x/Xn9UXNFv4ObuXe6u7Cq+CcUC1cksz55inBAxkpzyovXCgEWhFpMhevQTVNMv7I7CYBTvLBlgbba8gvMhhA9NpOKXdpoWRONCyQXTzup3Pgv7I98MYsK6F9mRQNirvvQjWufPBgkv+DpIFULe28Bsb4M3VB3CywwJoQsiA6cCyNcX3nuvomIddgF597lolBGaQ742PVlrgWO/5bJNJfNCWA8mcgi56f562uJJsAEBo1L6LwK9IJdlT04JtshddI7Mbspizt8xFhd0CvVLoH/mRwe6ty9kZUAHmKyt77sKLYpqsk1DciVRr6He9t5MV6S9aUF7yeaKEISbdpPti2p
+ wW7o1vZX
+ zEkL1RFIVn8cWIz8x+4DdSXNSU6aFY1nZ8xsdr2rhUR6kA8XPRQKM5BRZNwNtAeJDJbl2IfklnUrRyk4/oNg0kahcfxr+QJyKIvh8sUnn9Ebe88HdaxjL5gnkhUFKN66ctxNm4qNornIcjzo8F9EOx6d4ipBZWek6nIxN1n6axcqJltwdJILrCR3dm9OtjNsJt7ZKIPLLrkeF0mZWDm6xSaeOLsGQ676KjmHLz9oil1VFZ/+2ZoS0aJlAXC6gloEZcOugV0MFTur+lB1ht7fA+TWDNkq2KjvtWRQ8WV6Sjz7rdvIYWdFzy1XIZLT1s45qX5EdkiADYJ7Yim6oTfSB5bxuRpaPXJus9UPHNgsq2M4JkjpN2EKpZKZb8FZIkFbHF40NWyIgGjwjol7on8AEuFVvaj9rNVoN37de/O2ZAXzaYAU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,174 +139,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/20/26 00:01, David Hildenbrand (Red Hat) wrote:
-> Let's move the helpers that are not required by drivers anymore.
+On 1/20/26 06:31, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+> head:   bd361423f30912263920dd83326dcf142c16ce31
+> commit: f100e6eee69ff5746c327bc88a7fa6f43dbdf92c [319/345] mm: rename balloon_compaction.(c|h) to balloon.(c|h)
+> config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20260120/202601201338.4muFmFHV-lkp@intel.com/config)
+> compiler: sh4-linux-gcc (GCC) 15.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601201338.4muFmFHV-lkp@intel.com/reproduce)
 > 
-> While at it, drop the doc of balloon_page_device() as it is trivial.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601201338.4muFmFHV-lkp@intel.com/
 > 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> ---
->   include/linux/balloon_compaction.h | 44 ------------------------------
->   mm/balloon_compaction.c            | 38 ++++++++++++++++++++++++++
->   2 files changed, 38 insertions(+), 44 deletions(-)
+> All warnings (new ones prefixed by >>):
 > 
-> diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-> index d1d4739398978..eec8994056a44 100644
-> --- a/include/linux/balloon_compaction.h
-> +++ b/include/linux/balloon_compaction.h
-> @@ -75,48 +75,4 @@ static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
->   	balloon->migratepage = NULL;
->   	balloon->adjust_managed_page_count = false;
->   }
-> -
-> -#ifdef CONFIG_BALLOON_COMPACTION
-> -/*
-> - * balloon_page_device - get the b_dev_info descriptor for the balloon device
-> - *			 that enqueues the given page.
-> - */
-> -static inline struct balloon_dev_info *balloon_page_device(struct page *page)
-> -{
-> -	return (struct balloon_dev_info *)page_private(page);
-> -}
-> -#endif /* CONFIG_BALLOON_COMPACTION */
-> -
-> -/*
-> - * balloon_page_insert - insert a page into the balloon's page list and make
-> - *			 the page->private assignment accordingly.
-> - * @balloon : pointer to balloon device
-> - * @page    : page to be assigned as a 'balloon page'
-> - *
-> - * Caller must ensure the balloon_pages_lock is held.
-> - */
-> -static inline void balloon_page_insert(struct balloon_dev_info *balloon,
-> -				       struct page *page)
-> -{
-> -	__SetPageOffline(page);
-> -	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
-> -		SetPageMovableOps(page);
-> -		set_page_private(page, (unsigned long)balloon);
-> -	}
-> -	list_add(&page->lru, &balloon->pages);
-> -}
-> -
-> -/*
-> - * balloon_page_finalize - prepare a balloon page that was removed from the
-> - *			   balloon list for release to the page allocator
-> - * @page: page to be released to the page allocator
-> - *
-> - * Caller must ensure the balloon_pages_lock is held.
-> - */
-> -static inline void balloon_page_finalize(struct page *page)
-> -{
-> -	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-> -		set_page_private(page, 0);
-> -	/* PageOffline is sticky until the page is freed to the buddy. */
-> -}
->   #endif /* _LINUX_BALLOON_COMPACTION_H */
-> diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
-> index 1843e168db3ca..e0a4b481c3eda 100644
-> --- a/mm/balloon_compaction.c
-> +++ b/mm/balloon_compaction.c
-> @@ -17,6 +17,44 @@
->    */
->   static DEFINE_SPINLOCK(balloon_pages_lock);
->   
-> +static struct balloon_dev_info *balloon_page_device(struct page *page)
-> +{
-> +	return (struct balloon_dev_info *)page_private(page);
-> +}
-> +
-> +/*
-> + * balloon_page_insert - insert a page into the balloon's page list and make
-> + *			 the page->private assignment accordingly.
-> + * @balloon : pointer to balloon device
-> + * @page    : page to be assigned as a 'balloon page'
-> + *
-> + * Caller must ensure the balloon_pages_lock is held.
-> + */
-> +static void balloon_page_insert(struct balloon_dev_info *balloon,
-> +				       struct page *page)
-> +{
-> +	__SetPageOffline(page);
-> +	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
-> +		SetPageMovableOps(page);
-> +		set_page_private(page, (unsigned long)balloon);
-> +	}
-> +	list_add(&page->lru, &balloon->pages);
-> +}
-> +
-> +/*
-> + * balloon_page_finalize - prepare a balloon page that was removed from the
-> + *			   balloon list for release to the page allocator
-> + * @page: page to be released to the page allocator
-> + *
-> + * Caller must ensure the balloon_pages_lock is held.
-> + */
-> +static void balloon_page_finalize(struct page *page)
-> +{
-> +	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-> +		set_page_private(page, 0);
-> +	/* PageOffline is sticky until the page is freed to the buddy. */
-> +}
-> +
->   static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
->   				     struct page *page)
->   {
+>>> mm/balloon.c:19:33: warning: 'balloon_page_device' defined but not used [-Wunused-function]
+>        19 | static struct balloon_dev_info *balloon_page_device(struct page *page)
+>           |                                 ^~~~~~~~~~~~~~~~~~~
+> 
+> 
+> vim +/balloon_page_device +19 mm/balloon.c
+> 
+> 50fe4326e833f0 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  18)
+> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20 @19) static struct balloon_dev_info *balloon_page_device(struct page *page)
+> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  20) {
+> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  21) 	return (struct balloon_dev_info *)page_private(page);
+> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  22) }
+> ecc7c3359cb476 mm/balloon_compaction.c David Hildenbrand (Red Hat  2026-01-20  23)
+> 
+> :::::: The code at line 19 was first introduced by commit
+> :::::: ecc7c3359cb47658444833b09785c2ceb8459a78 mm/balloon_compaction: move internal helpers to balloon_compaction.c
+> 
+> :::::: TO: David Hildenbrand (Red Hat) <david@kernel.org>
+> :::::: CC: Andrew Morton <akpm@linux-foundation.org>
+> 
 
-The following on top to silence [1]. Results in two contextual conflicts
-in later patches which is easy to resolve. As an alternative, we could throw in a
-__maybe_unused but this is cleaner.
-
-[1] https://lkml.kernel.org/r/202601201338.4muFmFHV-lkp@intel.com
-
-
- From a02a0de0670a6be9a34d06eea3ba41297ce547dc Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Date: Tue, 20 Jan 2026 07:37:39 +0100
-Subject: [PATCH] fixup: mm/balloon_compaction: move internal helpers to
-  balloon_compaction.c
-
-Move balloon_page_device() under CONFIG_BALLOON_COMPACTION.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202601201338.4muFmFHV-lkp@intel.com/
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
----
-  mm/balloon_compaction.c | 9 ++++-----
-  1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
-index e0a4b481c3eda..30fa7ee8e1f3a 100644
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon_compaction.c
-@@ -17,11 +17,6 @@
-   */
-  static DEFINE_SPINLOCK(balloon_pages_lock);
-  
--static struct balloon_dev_info *balloon_page_device(struct page *page)
--{
--	return (struct balloon_dev_info *)page_private(page);
--}
--
-  /*
-   * balloon_page_insert - insert a page into the balloon's page list and make
-   *			 the page->private assignment accordingly.
-@@ -232,6 +227,10 @@ struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info)
-  EXPORT_SYMBOL_GPL(balloon_page_dequeue);
-  
-  #ifdef CONFIG_BALLOON_COMPACTION
-+static struct balloon_dev_info *balloon_page_device(struct page *page)
-+{
-+	return (struct balloon_dev_info *)page_private(page);
-+}
-  
-  static bool balloon_page_isolate(struct page *page, isolate_mode_t mode)
-  
--- 
-2.52.0
-
+https://lkml.kernel.org/r/27f0adf1-54c1-4d99-8b7f-fd45574e7f41@kernel.org
 
 -- 
 Cheers
