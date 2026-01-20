@@ -4,94 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C619FD2ED0F
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 11:51:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 118AFD2ED0F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 11:54:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E4596B03CB; Tue, 20 Jan 2026 06:51:53 -0500 (EST)
+	id 55B826B03CC; Tue, 20 Jan 2026 06:54:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BC076B03CC; Tue, 20 Jan 2026 06:51:53 -0500 (EST)
+	id 5055C6B03CE; Tue, 20 Jan 2026 06:54:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2A606B03CD; Tue, 20 Jan 2026 06:51:52 -0500 (EST)
+	id 431896B03CF; Tue, 20 Jan 2026 06:54:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E001D6B03CB
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:51:52 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 81DC35904C
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:51:52 +0000 (UTC)
-X-FDA: 84352178064.23.3FD297A
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 89B81A0006
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:51:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FoBP3E4u;
-	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C5DE6B03CC
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 06:54:23 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 866718BC1B
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:54:22 +0000 (UTC)
+X-FDA: 84352184364.14.AC7DC02
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 397AF40003
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:54:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="iKsu+/mh";
+	spf=pass (imf01.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768909911;
+	s=arc-20220608; t=1768910060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x9xxVtMuSeOSiPFHs2DPvF1bZM+k4doJowUTIgEXb84=;
-	b=aKZV8vQSpQPh4S3i1G+QYoOSFYOZyuKM7adztk20rVtLJEcENjVNgadj8SvYmiZS9hDCHW
-	Jl/lk5djda0J20QrUzEKR778QzeUiMbtzIikFmZ3Bdqsoe0m2ozg7FbGITgzGCTp1BH5oc
-	I3CaifbhRWhdx8DYJuujaG3zSKLI6kQ=
+	bh=LD2S+Q4ihx8nd0KPbEgJkcPOIMRBud8mbNzwagk5rek=;
+	b=NJ9SIq3m3wUa7J9Ht+XhO+gXimxl/V99QLEjThOZNPHrzXEJytY68TMa1xG4rW57yFQLD7
+	NZtSR5fqJUOGCcDXAwxnjramTzJ7maUiVo/69bRwaYOCM3oaxjR9b6e9XaBcE7wVhShR4f
+	Vr5MIIGrPYlfrwCQQAdg2KDszGgkwhM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FoBP3E4u;
-	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768909911; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="iKsu+/mh";
+	spf=pass (imf01.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768910060; a=rsa-sha256;
 	cv=none;
-	b=TM2r91JDnxVJ55zLWWTjJgo3RI3xd3/l4gOSjbNjxklqUaLi2BBg8Fb0Oj+GwQK0cgcwkI
-	8aW+5I3EcCLVdplp8T35o+efT00vV3ydxws3N5DymJLPx6jaj1RYDLsnnGF2rnCs7vpYfo
-	MZygbwv9MFDHhiVBWbmotVVXb/JtIv4=
-Message-ID: <88d90d30-8f54-43f5-98d6-1769aa05a10a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768909908;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x9xxVtMuSeOSiPFHs2DPvF1bZM+k4doJowUTIgEXb84=;
-	b=FoBP3E4uU4cp25iVs0YnuLXf8CmTrLWVI1GO/15ajs+mzhMyEradq4fhK4j0VFhngoJ5kb
-	qw0gnnUyDkR14vYXjGlGgA9V4nPaMOxs8iZwchUgWN6gFNOpS0ruLM+dl7Uex3jPp9EbCf
-	oGjXSaTppQvh1No36QGTU8/5TF9RLj8=
-Date: Tue, 20 Jan 2026 19:51:29 +0800
+	b=VYtrxG+ljm3OMqcjE5C0Dhp6AWyQdgnIQbtKF8SeySHsOV3eAOXb04orcNiOxif5mznMuO
+	TpRf15xRO2ZSeKMQ0O2IWazT+RKmP1O0DErC/JDw5TcoWB9o1FJJ1K0aAlCFzWjT7IsK0U
+	UHqcip6ZWB4A+c3vavuppENsnC2qBKQ=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=LD2S+Q4ihx8nd0KPbEgJkcPOIMRBud8mbNzwagk5rek=;
+	b=iKsu+/mhPJ6YLmsegjpkHBAxm56LWV2D3sCl261iIHJ61pTh6rmqg7N9ydTLXo2iYaooxFr/1
+	C5Qa6XrwAnfjxb1JPktZ6kYdLxfydQ2QpeVdJD/HtLwjxDOqYZMwMZFdEK2kx+1tdl8CIok0R9/
+	yjzjyo553GGg5FeyNXPIwCA=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dwQcR47trznTys;
+	Tue, 20 Jan 2026 19:50:15 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1CAA640563;
+	Tue, 20 Jan 2026 19:54:14 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 20 Jan 2026 19:54:13 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 20 Jan 2026 19:54:12 +0800
+Subject: Re: [PATCH v6 1/2] mm/memory-failure: fix missing ->mf_stats count in
+ hugetlb poison
+To: Jane Chu <jane.chu@oracle.com>
+CC: <linux-mm@kvack.org>, <stable@vger.kernel.org>, <muchun.song@linux.dev>,
+	<osalvador@suse.de>, <david@kernel.org>, <jiaqiyan@google.com>,
+	<william.roche@oracle.com>, <rientjes@google.com>,
+	<akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
+	<Liam.Howlett@Oracle.com>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <willy@infradead.org>, <clm@meta.com>, linux-kernel
+	<linux-kernel@vger.kernel.org>
+References: <20260116203834.3179551-1-jane.chu@oracle.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <958f1e3a-3c40-51ae-8fac-a185e76aa940@huawei.com>
+Date: Tue, 20 Jan 2026 19:54:12 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 24/30] mm: memcontrol: prepare for reparenting LRU
- pages for lruvec lock
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1768389889.git.zhengqi.arch@bytedance.com>
- <0252f9acc29d4b1e9b8252dc003aff065c8ac1f6.1768389889.git.zhengqi.arch@bytedance.com>
- <aW86_5SOdtQQnVr7@hyeyoo>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aW86_5SOdtQQnVr7@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260116203834.3179551-1-jane.chu@oracle.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: 397AF40003
+X-Stat-Signature: bq6mki6z8ha5jk3pyfh5rc4qcadgqgxf
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 89B81A0006
-X-Stat-Signature: tffyeh6o4b1ihp37ukd7osrb7fy71pwn
-X-HE-Tag: 1768909910-553523
-X-HE-Meta: U2FsdGVkX19oUN9LXneq10YvOCV01uUwOHQw+gUUEHs44DY/XIAcAxOZ1bgzVwxtAvfBmcWzvuLvMePUZYe1iFUFywjM3/DRBKWioylSalKXRa4Zj+eNsEVIuLnHSemttQEZ6sBbccZbQi8AirrNWUKU/BHebN5ECam+9MvnxFAu/H5IOKg/HiafEyES/rIgxZG31iz7wV25IWNDwkTgAKWb/7pQTPBASiow79/T84CnsXr7WxfYM01FYrixkHBprEsd3esDSfoXmTDJif2pvsmvy5KN+UjC4hEMRFPImQBmi0Vzyj1jcb5ne9sRy93FR0wLSBIYRZUFwZwGWD/F8WVPFrtVwErh1suXOHptMnq8aB9G+LwdvlBGDvIy7H/fxYg1iVTXrvKdEdozG26WoFXlp0VnL8FlkQHM8fzhmEv0yxM8g9ONOdxK0HwLJbT4Ys6zUjAZovdj6OiuA8mOF5BcrdRmI2ZZ7EScMr4V1XxA4U7sQ9Ls397M8ydL7GwT+xhxr7CoSPm0mRtcsenYn4lZgeNrmIY+c8ua6OlelRwzD1r8YFgeUvrJw5gWFWt7ptCpzWwujFXVyIZ6dvi30vOWvYnMxT35Uti2F/7i/SGWSu4XYORdLd9cH+h5TUrBp5JCtnFZ9tloNrsmqADPT15i41cxHnR3grz0VxQyySPH9W4S6jto+5Rn3R9FJOqJI4HvOuWqQXuWYSwY2l8WyrOa+8zKHp6rxny+U8aaRybBT0Do4JA3G5eWinwtfBFWKoy30LUvbUG6UO76zCdoGbuk5ZceFHta8jSvnxMRwXV2NXM2mdwfnK7QIHFUn6ewsszQJP4qzX0cwIT43rar16GJECEqJWs1QywCopOowpImy0DlxxFZGRiEqm8EjbTx2FyHWRoEVVpa0qyYI39JKCYRVSgq6YRYdoaTptfxSILorLZWRUWe3NuZS9wnF+mrorIOucInCdzHCFQMstk
- w9bmI2L0
- 2qZ7tDjciZxOkP/NPjEZJRJSVW3uvfI0KNZ9Q7sqxx2YhQsqLrEtAurkYYqHYM52eiHFIXHzqHFF5Gj+087lHHsbA/m+A5AXubdiXsLchui/OmleMFhsL1daMOCMcCoKq7cKJ0X+pMI2A0v6AkwOzZBBtIEeCGKCM2QS1l7bwYt+vbCRCSUv83SgbVdhBG0Rhq7X7o05ALT0/L9ViDMPdnE2MFNYiT/UXDJ7lCGfTkdNEXV/2sCpbkJQ3GW3a+1JNLRjSBibnuogB2VY3Wd5tMPkUHyjh+/KPdsiuvB5f0OZ/fbnKaSCsWE2fJr4vvge6AhVWkWph18CQiLY=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1768910058-515336
+X-HE-Meta: U2FsdGVkX18oMun27g2+V+LNvbU/EflkDHYhkS2gihDm/0LTP17k5g1aGhKMeb0CqJvQF9fpK54J+4Vz33qL91fZ2BUqcHMhhMlWQvtmjX1gn7I0BdwyujO7SsvN4EcZIabfL/X2h359JAYSlMYXDLdRtC20mcxaLFaLEtRhg8zzNesuKm7muXxKFv3eV1LR2ykrf9xySUb4VdouTzXq4GfIpJHTO66m+LrJF1+ywWIfS4Fa5CTSyi9fbhpcykPkGEplhdazeOgH6bTleNmgQctYOcIQPyteVzA2SiPfs0WhFqMDjlfwqfnOCDKArC/hhfKLFIq7WH7HWYqMbrmZAHJwyhrz9cyOYCyj/93VEb0hB1gKHzqa1aly15cN7hT+3NIoYjqjobWgK3qv4gwFXe5C7kyYd2NDGCok8tGnP3u0yQ8uB8MH3wyqWWDJPWweDs86yWdjZaoNeqMFISg89PvXCE6/x8SsiiRong3Tj5mD68wDEKtpMegs4VP6O2OxHKEY+LEf9XNz9oe4Y94uU74x36o5GNVm8DjneHookei/AYWJa84XGLPDbMPJIRElxowqfWu3/5YmGafzVQQT4WY7cqN4To7bd1gaY0bwensJWi8hXiyNVC660TIovDDc+zInHBSIeLoDXl9uUw/msjKsyOGiR7xbNqgKQFAYMtuDAlbwEQ1dJqBetXw/hU9A7MzOIcZIGrx+YkrmFZ7n7wQ/n2zPq5mTqkF7VY+7LYPFbsCvF2v480klGJbaPYe4C+d1ZKkCjjoW9R8noqLzpMQQJjlrsJnl/7uQ0ikX7iQz8QPZn3ceX1yX1kty8/p4/XJJKybyb3PTImd4ddJ9DJ+8Adsi27S6gs2rhWT4O/SJuxg5F5euv7iOfQXuMnIDbWoGTBu5cMG9e26oiVwioRD8JdC7nKL6U1GSdGJLYjxmCHTPnhH78W8kCXEvY0JWQHWKRfIuMdjoannWCg8
+ qb/QE2Bl
+ LnkrJDHzIPCLPKXMNuFcDkm4p3bqVPR2duceZRtbAA6Ov/nlwCJfnlBuewma3Ua/dKWN6eN1lGucbDZfd2Z2/EeY4Oid22feDh3thEo3I5dFKyLXlkDESHU8gBClT6vUtx8yd1vH2sCTfEF6DOoPSGC9kttiLrdCxcqRfku+Dvj/FFzzdOtj+h84o3JNpZaDzb9cfTOQNqkfM1SCQt2ygn2bs1MPPUwKPYAVByAUsnzahZg1MQcUpy1qtD6zMApTapi1ZG5qIrB6aCFmfTsza0pMk47B3LdQ1xsGG1cJ1366D8CeSIOHKKvGV9oIDX5WSYc72UtNrDZgWfycd1VfX1MUyrV8R79Z5Uy5/DKLw86zTxv4+5cmh85lzPQiEvOt/Qhtm5Dtn9u4pN/o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,122 +110,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 1/20/26 4:21 PM, Harry Yoo wrote:
-> On Wed, Jan 14, 2026 at 07:32:51PM +0800, Qi Zheng wrote:
->> From: Muchun Song <songmuchun@bytedance.com>
->>
->> The following diagram illustrates how to ensure the safety of the folio
->> lruvec lock when LRU folios undergo reparenting.
->>
->> In the folio_lruvec_lock(folio) function:
->> ```
->>      rcu_read_lock();
->> retry:
->>      lruvec = folio_lruvec(folio);
->>      /* There is a possibility of folio reparenting at this point. */
->>      spin_lock(&lruvec->lru_lock);
->>      if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
->>          /*
->>           * The wrong lruvec lock was acquired, and a retry is required.
->>           * This is because the folio resides on the parent memcg lruvec
->>           * list.
->>           */
->>          spin_unlock(&lruvec->lru_lock);
->>          goto retry;
->>      }
->>
->>      /* Reaching here indicates that folio_memcg() is stable. */
->> ```
->>
->> In the memcg_reparent_objcgs(memcg) function:
->> ```
->>      spin_lock(&lruvec->lru_lock);
->>      spin_lock(&lruvec_parent->lru_lock);
->>      /* Transfer folios from the lruvec list to the parent's. */
->>      spin_unlock(&lruvec_parent->lru_lock);
->>      spin_unlock(&lruvec->lru_lock);
->> ```
->>
->> After acquiring the lruvec lock, it is necessary to verify whether
->> the folio has been reparented. If reparenting has occurred, the new
->> lruvec lock must be reacquired. During the LRU folio reparenting
->> process, the lruvec lock will also be acquired (this will be
->> implemented in a subsequent patch). Therefore, folio_memcg() remains
->> unchanged while the lruvec lock is held.
->>
->> Given that lruvec_memcg(lruvec) is always equal to folio_memcg(folio)
->> after the lruvec lock is acquired, the lruvec_memcg_debug() check is
->> redundant. Hence, it is removed.
->>
->> This patch serves as a preparation for the reparenting of LRU folios.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
->> ---
->>   include/linux/memcontrol.h | 45 +++++++++++++++++++----------
->>   include/linux/swap.h       |  1 +
->>   mm/compaction.c            | 29 +++++++++++++++----
->>   mm/memcontrol.c            | 59 +++++++++++++++++++++-----------------
->>   mm/swap.c                  |  4 +++
->>   5 files changed, 91 insertions(+), 47 deletions(-)
->>
->> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->> index 4b6f20dc694ba..26c3c0e375f58 100644
->> --- a/include/linux/memcontrol.h
->> +++ b/include/linux/memcontrol.h
->> @@ -742,7 +742,15 @@ static inline struct lruvec *mem_cgroup_lruvec(struct mem_cgroup *memcg,
->>    * folio_lruvec - return lruvec for isolating/putting an LRU folio
->>    * @folio: Pointer to the folio.
->>    *
->> - * This function relies on folio->mem_cgroup being stable.
->> + * Call with rcu_read_lock() held to ensure the lifetime of the returned lruvec.
->> + * Note that this alone will NOT guarantee the stability of the folio->lruvec
->> + * association; the folio can be reparented to an ancestor if this races with
->> + * cgroup deletion.
->> + *
->> + * Use folio_lruvec_lock() to ensure both lifetime and stability of the binding.
->> + * Once a lruvec is locked, folio_lruvec() can be called on other folios, and
->> + * their binding is stable if the returned lruvec matches the one the caller has
->> + * locked. Useful for lock batching.
->>    */
->>   static inline struct lruvec *folio_lruvec(struct folio *folio)
->>   {
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 548e67dbf2386..a1573600d4188 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> diff --git a/mm/swap.c b/mm/swap.c
->> index cb1148a92d8ec..7e53479ca1732 100644
->> --- a/mm/swap.c
->> +++ b/mm/swap.c
->> @@ -284,9 +286,11 @@ void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
->>   		}
->>   
->>   		spin_unlock_irq(&lruvec->lru_lock);
->> +		rcu_read_unlock();
->>   		lruvec = parent_lruvec(lruvec);
+On 2026/1/17 4:38, Jane Chu wrote:
+> When a newly poisoned subpage ends up in an already poisoned hugetlb
+> folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
+> is not. Fix the inconsistency by designating action_result() to update
+> them both.
 > 
-> It looks bit weird to call parent_lruvec(lruvec) outside RCU read lock
-> because the reason why it holds RCU read lock is to prevent release of
-> memory cgroup and its lruvec.
+> While at it, define __get_huge_page_for_hwpoison() return values in terms
+> of symbol names for better readibility. Also rename
+> folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
+> function does more than the conventional bit setting and the fact
+> three possible return values are expected.
 > 
-> I guess this isn't broken (for now) because all callers of
-> lru_note_cost_unlock_irq() are holding a reference to the memcg?
+> Fixes: 18f41fa616ee ("mm: memory-failure: bump memory failure stats to pglist_data")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
 
-I checked all the callers again, and they do indeed hold the refcnt
-for the memcg, so it's safe for now. But it seems rather fragile,
-perhaps we should also include parent_lruvec() within the RCU lock.
+This patch looks good to me with some nits below.
 
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+
+> ---
+> v5 -> v6:
+>   comments from Miaohe.
+> v5 -> v4:
+>   fix a bug pointed out by William and Chris, add comment.
+> v3 -> v4:
+>   incorporate/adapt David's suggestions.
+> v2 -> v3:
+>   No change.
+> v1 -> v2:
+>   adapted David and Liam's comment, define __get_huge_page_for_hwpoison()
+> return values in terms of symbol names instead of naked integers for better
+> readibility.  #define instead of enum is used since the function has footprint
+> outside MF, just try to limit the MF specifics local.
+>   also renamed folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison()
+> since the function does more than the conventional bit setting and the
+> fact three possible return values are expected.
 > 
->>   		if (!lruvec)
->>   			break;
->> +		rcu_read_lock();
->>   		spin_lock_irq(&lruvec->lru_lock);
->>   	}
->>   }
+> ---
+>  mm/memory-failure.c | 91 +++++++++++++++++++++++++++------------------
+>  1 file changed, 54 insertions(+), 37 deletions(-)
 > 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index c80c2907da33..49ced16e9c1a 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1883,12 +1883,22 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+>  	return count;
+>  }
+>  
+> -static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+> +#define	MF_HUGETLB_FREED		0	/* freed hugepage */
+> +#define	MF_HUGETLB_IN_USED		1	/* in-use hugepage */
+> +#define	MF_HUGETLB_NON_HUGEPAGE		2	/* not a hugepage */
+> +#define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
+> +#define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
+> +#define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
+> +/*
+> + * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
+> + * to keep track of the poisoned pages.
+> + */
+> +static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+>  {
+>  	struct llist_head *head;
+>  	struct raw_hwp_page *raw_hwp;
+>  	struct raw_hwp_page *p;
+> -	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
+> +	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
+>  
+>  	/*
+>  	 * Once the hwpoison hugepage has lost reliable raw error info,
+> @@ -1896,20 +1906,17 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+>  	 * so skip to add additional raw error info.
+>  	 */
+>  	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+> -		return -EHWPOISON;
+> +		return MF_HUGETLB_FOLIO_PRE_POISONED;
+>  	head = raw_hwp_list_head(folio);
+>  	llist_for_each_entry(p, head->first, node) {
+>  		if (p->page == page)
+> -			return -EHWPOISON;
+> +			return MF_HUGETLB_PAGE_PRE_POISONED;
+>  	}
+>  
+>  	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
+>  	if (raw_hwp) {
+>  		raw_hwp->page = page;
+>  		llist_add(&raw_hwp->node, head);
+> -		/* the first error event will be counted in action_result(). */
+> -		if (ret)
+> -			num_poisoned_pages_inc(page_to_pfn(page));
+>  	} else {
+>  		/*
+>  		 * Failed to save raw error info.  We no longer trace all
+> @@ -1957,42 +1964,38 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+>  
+>  /*
+>   * Called from hugetlb code with hugetlb_lock held.
+> - *
+> - * Return values:
+> - *   0             - free hugepage
+> - *   1             - in-use hugepage
+> - *   2             - not a hugepage
+> - *   -EBUSY        - the hugepage is busy (try to retry)
+> - *   -EHWPOISON    - the hugepage is already hwpoisoned
+>   */
+>  int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>  				 bool *migratable_cleared)
+>  {
+>  	struct page *page = pfn_to_page(pfn);
+>  	struct folio *folio = page_folio(page);
+> -	int ret = 2;	/* fallback to normal page handling */
+>  	bool count_increased = false;
+> +	int ret, rc;
+>  
+> -	if (!folio_test_hugetlb(folio))
+> +	if (!folio_test_hugetlb(folio)) {
+> +		ret = MF_HUGETLB_NON_HUGEPAGE;
+>  		goto out;
+> -
+> -	if (flags & MF_COUNT_INCREASED) {
+> -		ret = 1;
+> +	} else if (flags & MF_COUNT_INCREASED) {
+> +		ret = MF_HUGETLB_IN_USED;
+>  		count_increased = true;
+>  	} else if (folio_test_hugetlb_freed(folio)) {
+> -		ret = 0;
+> +		ret = MF_HUGETLB_FREED;
+>  	} else if (folio_test_hugetlb_migratable(folio)) {
+> -		ret = folio_try_get(folio);
+> -		if (ret)
+> +		if (folio_try_get(folio)) {
+> +			ret = MF_HUGETLB_IN_USED;
+>  			count_increased = true;
+> +		} else
+> +			ret = MF_HUGETLB_FREED;
 
+IIRC, code style requires {} here. .i.e
+
+if (folio_try_get(folio)) {
+	ret = MF_HUGETLB_IN_USED;
+	count_increased = true;
+} else {
+	ret = MF_HUGETLB_FREED;
+}
+
+>  	} else {
+> -		ret = -EBUSY;
+> +		ret = MF_HUGETLB_RETRY;
+>  		if (!(flags & MF_NO_RETRY))
+>  			goto out;
+>  	}
+>  
+> -	if (folio_set_hugetlb_hwpoison(folio, page)) {
+> -		ret = -EHWPOISON;
+> +	rc = hugetlb_update_hwpoison(folio, page);
+> +	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
+> +		ret = rc;
+>  		goto out;
+>  	}
+>  
+> @@ -2017,10 +2020,15 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>   * with basic operations like hugepage allocation/free/demotion.
+>   * So some of prechecks for hwpoison (pinning, and testing/setting
+>   * PageHWPoison) should be done in single hugetlb_lock range.
+> + * Returns:
+> + *	0		- not hugetlb, or recovered
+> + *	-EBUSY		- not recovered
+> + *	-EOPNOTSUPP	- hwpoison_filter'ed
+> + *	-EHWPOISON	- folio or exact page already poisoned
+
+-EFAULT can be returned when kill_accessing_process finds p->mm is null. So it might be better
+to comment EFAULT case too.
+
+Thanks.
+.
 
