@@ -4,97 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08C0AD2ECF7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:11:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA6B0D2ED0F
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:19:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67E6B6B038F; Tue, 20 Jan 2026 04:11:57 -0500 (EST)
+	id 13F226B0391; Tue, 20 Jan 2026 04:19:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62C3A6B0390; Tue, 20 Jan 2026 04:11:57 -0500 (EST)
+	id 116916B0392; Tue, 20 Jan 2026 04:19:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52B116B0391; Tue, 20 Jan 2026 04:11:57 -0500 (EST)
+	id 01E1C6B0393; Tue, 20 Jan 2026 04:19:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 416AA6B038F
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:11:57 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA80B8ACE2
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:11:56 +0000 (UTC)
-X-FDA: 84351775032.26.74BE611
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9A8A51C0007
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:11:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZTrAZams;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E2C326B0391
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:19:35 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 706D0B99B5
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:19:35 +0000 (UTC)
+X-FDA: 84351794310.04.D146F40
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C2C36120003
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:19:33 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=EzY8N8RE;
+	spf=pass (imf29.hostedemail.com: domain of 3o0hvaQgKCEQysuyzglgmuumrk.iusrot03-ssq1giq.uxm@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3o0hvaQgKCEQysuyzglgmuumrk.iusrot03-ssq1giq.uxm@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768900314;
+	s=arc-20220608; t=1768900773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=szg5IQ98Or5Gi59BEnDoTgnNuPwokGFPQCEApME3dXs=;
-	b=xhyRMzb4P3ivFBz0HdMLO1m0VNHVl2qYxcZrZh6iHWTHFisqaRsOo4HCUkJH0st90pbZus
-	mWS/1TIlAYmkLkeN5H5J7pTtoVRyE+jR9RdroJd2gVsTwX3ZN90glZJSmuO83MTOiD24fY
-	r99o/IKgd5Mvy14+NQ+gGmHwsBNHKoA=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Gf2YI936iIbQws0HxhhxYueO3tESeyYZp/38y2RVRZI=;
+	b=B5LLA1wnsAc8Hhi2qozPyCZ7tiH52BkFxzJNS3V8hspfdcDw8USHlkbvpW6Nf8yvM2DdKR
+	BOEL5kqOOZ86hHgGs1tjLCSFN5i0hxr6tW9+Nh9VfRMYA8X2eFkRMHuN97CmU7z1DPgDJk
+	U0Jj6rYNw7EWic1MWuKILnMlKou+nVY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZTrAZams;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768900314; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=EzY8N8RE;
+	spf=pass (imf29.hostedemail.com: domain of 3o0hvaQgKCEQysuyzglgmuumrk.iusrot03-ssq1giq.uxm@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3o0hvaQgKCEQysuyzglgmuumrk.iusrot03-ssq1giq.uxm@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768900773; a=rsa-sha256;
 	cv=none;
-	b=GWIngY4GHG6kMH/6s5qP15awFf9fD2+2+SHgL1ktaRgHMOmBigM80LQj/ovNdfsdzRDFez
-	Hor76jIYnSwY7HqpFJ/Sh9pgaCASte+YRI+3EQ5Jlswwmzx8+KM8M2Wz7UbVohvVg/BCqc
-	40dbbcWJts43cPeNiFhzpNCEGIlnvSg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768900314; x=1800436314;
-  h=date:from:to:cc:subject:message-id;
-  bh=JrxKwrQLyzmRYseDka1fCr4Iiio7LvUtqyZYyMLehRQ=;
-  b=ZTrAZamsWmokwOBsb+1yKFpvIkqKrkk/O+T8PcXz01xRc+BxbZXqAUo2
-   b8jKjeJ3A6u75e2XMOZBqoV/KtDbHPiYBwAWC6M8G1r6iGans3gZvaqtm
-   Y2JbfbplS3UYVWsgPn3fv9O3rWd7+ZIs8WfkenrKhdfbmKohZs6OEirTg
-   M/XIfctjS8tQ0Si/kvn/TpDXTgSBCitkFTVDPdb5dNS1Al3sIxs8FWDp3
-   5qvEGbfYFOdaeBJZkZ/IQx2Py3G3BztE4F3SLDspCmRUdLKVy4/7yZXvQ
-   5HqaubiZYIa7ZNYBVhaMqHjqQnn7gOr/20vShz1YoLOyHmYeWdmTNZDAp
-   w==;
-X-CSE-ConnectionGUID: RDzSzpjhSlKNww9P6aal1g==
-X-CSE-MsgGUID: K+HomEG7Szy1oHT7LNyLdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="80825466"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="80825466"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 01:11:52 -0800
-X-CSE-ConnectionGUID: 91CWJxYbSkaohD/2HqzpPg==
-X-CSE-MsgGUID: na7nsREnRH6LNQ3vRqS1uw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="206119638"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 20 Jan 2026 01:11:50 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vi7m7-00000000Ol3-09ML;
-	Tue, 20 Jan 2026 09:11:47 +0000
-Date: Tue, 20 Jan 2026 17:10:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-new 418/422] fs/orangefs/file.c:414:9: sparse:
- sparse: dereference of noderef expression
-Message-ID: <202601201701.IhxeGffs-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: qt1gz1djgqst3pz7bczocwyt51xpysue
-X-Rspamd-Queue-Id: 9A8A51C0007
+	b=4Kw956W2Iou2FhQllP27Ee7qlTmYrNk7T3jk7WbbB2gMeV64DshySfWScjwX16YBLxbDWO
+	/fxd70oIma7RIfxEwvQFx/gqomCLMRs3VJO44SqslqR9GmsMRrauWVjsEZ62vSd0DByzpf
+	rpNGMhIMwMJvchzK36tq6JrvCSfgclQ=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-434302283dcso3864440f8f.0
+        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:19:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768900772; x=1769505572; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Gf2YI936iIbQws0HxhhxYueO3tESeyYZp/38y2RVRZI=;
+        b=EzY8N8REJW9XyjRfmfKe+kfuMBTtYHpeN8UlqI3OySqRZQjSlbUKzzpFe++x68G0sz
+         V1kQuraCatLkIkUoMVZn4TAN08qn7zaeCxBDWMWnJ+UWm0xUb7F4+CYWrBFMCpam3pZD
+         h+4RX/Md4iv0V/WzRmGs5ijUsGzzvdVNOC64MFmgYeSMJDqIwjMqRWAzIq3TXWHmrjno
+         rJ/eVEQcm7BsRrIWQdh4DV3BLF5zxtk5+Ftr6hZ4/7LcTA7ojvVIEoAjdnLBcp6E87nl
+         UojjXaSLK+QSiKwb1E+EG4RlStBCjQPbEmi3WlOSL5xTkWl8cuNRJ8lJ/2EZHf3x+1oW
+         duYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768900772; x=1769505572;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Gf2YI936iIbQws0HxhhxYueO3tESeyYZp/38y2RVRZI=;
+        b=XWGzbQCRCcIgL/fpE3zTmmVEfatCRDxvvNQsrNuyKWVS8fwsAT7eHfU8or653XFrUZ
+         XY1yVWJJNj+rlIQYb9606K6BN3HK++PG4vvYJETCBvwt6er0dIrtz5qT1ZWkHt6TbnfZ
+         AL/jR4CvanaTghRp4RIGoASUCWwZ9e5kMCsywYj6w4mXlyb65IPZm8vaDJCwBJbpBiho
+         VsaUMsZdFfsuymaYgM2i2+jq6VjtH/+yd66+OVRTZfDX2FUoKJtZwWpwpQRVQIw/VoBx
+         nhgukUBEJSPhTx4MluwfUprCNoKkdvGC8rO+ilbeMNI/xMS1nKL4MT7cW7ZXTU6McSzL
+         L4aQ==
+X-Gm-Message-State: AOJu0Ywe2+EH5Ep+sxbE02roCZ1cGMkU57sfb/PNXVNYzAcO2mrc6uYt
+	qG62EDXxb7LhZLBGvY+PjZSuDmfJJSixGVtD794ijbUfQLwsJW73nhRqVCrQNlWOXp8jwVKyS2U
+	X3zAj4aOa4GaxPMAVjjJ/mloFWjTJWTqXa/i1XNMaPP/5Ggad84zsXD12VI3EmvU4Z+qDHW9sUS
+	v9ieLsjJpRKvzC/Vq+OCvEGUgYsAV9Amn/wdCgXVUEzg==
+X-Received: from wrvk17.prod.google.com ([2002:a5d:5191:0:b0:430:f5ea:d30b])
+ (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1448:b0:42f:f627:3aa3 with SMTP id ffacd0b85a97d-4358ff398b2mr1994536f8f.56.1768900771795;
+ Tue, 20 Jan 2026 01:19:31 -0800 (PST)
+Date: Tue, 20 Jan 2026 09:19:24 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260120091926.670155-1-smostafa@google.com>
+Subject: [PATCH v2 0/2] iommu: debug-pagealloc: Remove pfn_valid() usage
+From: Mostafa Saleh <smostafa@google.com>
+To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
+	Mostafa Saleh <smostafa@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 7tss7fqdmcz4k8heit5c7ogspoqwq6br
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1768900313-327788
-X-HE-Meta: U2FsdGVkX19RS2Xeov1FNVkT/I01f+39scRgshjjgfKxyEH9j70FPQUICpyLbJQUafuq+H16/jHvEY+DnImaTWsYEDao+DtP579vPIcF5M7XmwNKi5kDVhQ2s+ULe/yvC/4e1KavxDBODtLRNviAqEZMN4JCrSWFB8jK+34KQIwa4IgSBYJJCqeINy7wCpPDy6DGF1OdnbXoa4bCENEBzd9wiE6N4mYnO+JqL9VAiTPUiN3CGp+k4Gocn5vQYyxG5prkebTl0oKoOEgkP819FjLrAYGvd/CCMZEGn+MDUp9AByXaPsFnC9sU6AnVAOs5U8ZTR2CmA0UsxZ/HQL9gSxsdQsYHS4VyBxWrTd69V6OHdZTkxGZs0FqtL65r3w3z8O97RX6MoNjTd09iUwKE1xLq8VM0/hQaFTjlGkBiyYyzPADalUyPI2F335kioBEjXXehva3Js4Xu5sO3cy5p0ieQyKDSGuAKtmdze6DARbl9flBg+RSydFos5tTPzk++/xFN/MXNrA8QzEhO36c4jfo7jUoCZu+MPn2mEQYhq700DU6mVKxTDhxFlwTSNVh+jj03c9BKvFSKz8DrXn4ABbBNUog3ePtt6Orcb6qjuKKAu6M8ZkrCz3KRwoh8nSe9sRiWbHs7obIsgsbtded6wBa34PqAmTAEq8/COBfrh29HwY8Lefij6yVkrOsbBYjYJpz+8lssueHG63z3lwFJSaPKQOPJ8Sv3mxUyST6kqFCDBDm4VYerJ/c4dpwTFfCsfN20b6o7HBMTgIHHLPp5Ori5NzdgHwy2NWczR6IEMDxIWKd+CB19wPBatl57ADvxgQSeHpEzNAn2una7C9/GyF7/zzcUO5oTpvvjp/oT9/WHAqUi1wTqYzs2UJ7gBW8Jba4c3MwZlHpT318qsnaGzYa7VkEosmztafToqFYbkNVf6C6sOkunI3l/C/ANh3yGLBVOj7mjrIwZy4dXYuI
- /OEgMpFb
- Wf+JPKeaMJ91OdmX8J2xQazOcPtCSAkeSSEXpIpLdH3NbuOIdGNF/4ogiPfH2v2T40+WBz+QZ2XaxbBDW5tFb/L9dqvIhdXhBslA8CVBWSJ1dENle1Ye2AmgYfDlv9KrHi9igFwm6eaYBNwNh36wFKH2eh8Afi2x2gRkWWkVBomT+1z3iJNwdlTvWZLVwm8vqk7AoyrtDEsjNVlj5kC7MZxDYBtkNE61uLE1gMrSd1RBGH9YlefpKjv/KzPSiQLLgS67fkBuSo5ZPkhDC9RkhBXOWRQ==
+X-Rspamd-Queue-Id: C2C36120003
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768900773-939768
+X-HE-Meta: U2FsdGVkX1/VrptlNINvkERifl2RLCvnd3/dwM9hvM0lOdSF3kBvLC/bt7u1s3bJteBdwANJtbtWc4YuyvDKzQSU2bR5FgOEydUs0mi35S2/HzG5QidS8HolJTF9Kv8SJbiKkaliwm90e9qpHL9RnFtjlPiQ3sJ3b4zM3JkElFheegN2xQVn4yPiF5m/VzqkQJHUZk69JZSEH0g2MPkkU0zyviM/tFo7tR4MGAFZRGlvxcPJwELFueC1xEJLisM5MrFr+6U3YqMVZRSBY2hKbVcWKTmvzh77aNWo3PRkGI0VT1mPv3uJNGOczEp245JNZfCY4OhEa1/iNV4CCB/v/wDcftrMl1LquvewCZnWl1Tfk3EGiz2GW+VYuuZ2ANirfGt+bJAWB21R/X7zSp8/Z8Xx7CTVlikJ9+ksGdIKIJuZ8Ew4SWONNwMQM0x/2bvw7/vQcDtu9CpAK7R6T5I34A4sa/4uH4F3tY7FmluRklDJd+PZk04mnML7U0PA2n7nQlEOvY3csp79Nszvsn5mOwg6VwJFVqr8nbsSxyoQbj/VV/yNiUq7jAExzpN2gD493PJcyq8r2myYpmfIyvnuUeuILk+yDfKyuo+v087/cVig+H9r3u03HaECmc20ES8SA0D8V2UTyFjyGlYEfsycgMyKoJczfMADazs69Skcvj6HBDKQYy3BkJBPhcyNozUwRb5KYSv/2aWSEEg2+QUkcsa07t6MMvp2RPaLw3t2bVY51T94Sd7I+DdgyXY5vqCt64ykJDt4kax2hKIcZd2zvcHKjbJxPGiIzonBgJ+qyvfn2/t0n3ViQDZSn6ZIfNJjztZFDbmUpZltIvo5DCt8ssqnKvKdypVazy/MTZ57q0cLU+m9gGZWDWtvXkRws3dejVnB19Ng3+AmfrtcXZpLbs8xTiOhmn8lKUeoc2OdMIusdQUdN1fWjSUWltA8NoRvNfQXrg20uyR5FKMF/Re
+ mMoXxjfX
+ 3m15DL+yUNqBVeN/HLVAdzwOpzN7C8uOYwSwmYiJwSXyNShLnZ31Rua/GfKMNE7Aq69S4dqE+nMwthm+vosAof1L4Q3YF+2vX1+ZciOxkQHUy9OeacRW+8ytDtRWfQjHy5vXz/toNBGpvOMk5NHJNkcHAw81ouO1Cqu9hi82BDt59FKz/NHwbRf16h0TMYqEQhgWCjDJaBPpZAaDtu0nWyvzUEMH7VOhRsN40/ztEj7C6m/QPP14RxSGt1dF/71Nl3++isMaDLxRA2lqAm0K++gF58jH/eUELPuTRgDTq1pqnR68+TzKKoLr2sH1vwx3r3qTs3rNEuury4Q0sLccK3R48jCPVbdMdSJOJ0adO+nN2q/cAEJccjORz0Bx8z8mVH4fvTxfmWgVIaqOr+vzdiL6eSemf8WTD2OD+UA/10CSUsCGk2rQ0Nu+VeXczF7HwEXWANoY1gUhJzbn9+FuJH3oV8ZfeGIcg0gqf2zJq0DpOfz90n8bLuozyYACMOQoR7Cn8ulz9WboreHxWtaFUYyRuzdkIpK0LusWHy1yljKS29VH9JW6B4cKMOyKa+E3Xetpghx/65bgLOhJpRIZNB2uTL1VG/CRD0O4xWjGBms57QJmELgPFgBXXKDR7v5USj7yXW1nMAMbiJ7EJoBnVZ7dqMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,73 +110,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+This is a small fix for the new config IOMMU_DEBUG_PAGEALLOC based
+on the discussion:
+https://lore.kernel.org/linux-iommu/CAFgf54pBAUm3ao-UJksiuGKtvv4wzRyFq_uKwLe0H1ettO4DLQ@mail.gmail.com/
 
-FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+Where it was concluded that pfn_valid() is not enough to validate
+physical addresses before access to page_ext.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   e4348a62bb1acacafcdeb149c9363291fae08c0c
-commit: ccbdd8044f13617fe9f2bce61aed556314544664 [418/422] mm: update all remaining mmap_prepare users to use vma_flags_t
-config: arm-randconfig-r131-20260120 (https://download.01.org/0day-ci/archive/20260120/202601201701.IhxeGffs-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601201701.IhxeGffs-lkp@intel.com/reproduce)
+The first patch introduces a new function in page_ext that takes a
+physical address as an argument, and the second patch uses it instead
+of calling pfn_valid() and phys_to_page()
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601201701.IhxeGffs-lkp@intel.com/
+Benchmarks with the new implementation can be found in:
+https://lore.kernel.org/linux-iommu/20260114164322.787125-1-smostafa@google.com/
 
-sparse warnings: (new ones prefixed by >>)
->> fs/orangefs/file.c:414:9: sparse: sparse: dereference of noderef expression
-   fs/orangefs/file.c: note: in included file (through arch/arm/include/asm/cacheflush.h, include/linux/cacheflush.h, include/linux/highmem.h, ...):
-   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1199:46: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1199:46: sparse: sparse: dereference of noderef expression
-   fs/orangefs/file.c:415:9: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1216:48: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1216:48: sparse: sparse: dereference of noderef expression
---
->> fs/ramfs/file-nommu.c:267:40: sparse: sparse: dereference of noderef expression
->> fs/ramfs/file-nommu.c:267:40: sparse: sparse: dereference of noderef expression
-   fs/ramfs/file-nommu.c: note: in included file:
-   include/linux/mm.h:1954:16: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1954:16: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1954:16: sparse: sparse: dereference of noderef expression
-   include/linux/mm.h:1048:16: sparse: sparse: dereference of noderef expression
+This series applies to iommu/core tree.
 
-vim +414 fs/orangefs/file.c
+Changes on v2:
+v1: https://lore.kernel.org/linux-iommu/20260119142246.3821052-1-smostafa@google.com/
+- Rename page_ext_phys() to page_ext_from_phys()
+- Reword comment and commit messages.
 
-   397	
-   398	/*
-   399	 * Memory map a region of a file.
-   400	 */
-   401	static int orangefs_file_mmap_prepare(struct vm_area_desc *desc)
-   402	{
-   403		struct file *file = desc->file;
-   404		int ret;
-   405	
-   406		ret = orangefs_revalidate_mapping(file_inode(file));
-   407		if (ret)
-   408			return ret;
-   409	
-   410		gossip_debug(GOSSIP_FILE_DEBUG,
-   411			     "orangefs_file_mmap: called on %pD\n", file);
-   412	
-   413		/* set the sequential readahead hint */
- > 414		vma_desc_set_flags(desc, VMA_SEQ_READ_BIT);
-   415		vma_desc_clear_flags(desc, VMA_RAND_READ_BIT);
-   416	
-   417		file_accessed(file);
-   418		desc->vm_ops = &orangefs_file_vm_ops;
-   419		return 0;
-   420	}
-   421	
+Mostafa Saleh (2):
+  mm/page_ext: Add page_ext_get_from_phys()
+  iommu: debug-pagealloc: Use page_ext_get_from_phys()
+
+ drivers/iommu/iommu-debug-pagealloc.c | 31 ++++++++++++---------------
+ include/linux/page_ext.h              |  6 ++++++
+ mm/page_ext.c                         | 23 ++++++++++++++++++++
+ 3 files changed, 43 insertions(+), 17 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0.457.g6b5491de43-goog
+
 
