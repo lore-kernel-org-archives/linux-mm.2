@@ -4,142 +4,203 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1409D2ECE9
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:39:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97A1AD2ECE9
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 13:42:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DDAE6B03FE; Tue, 20 Jan 2026 08:39:58 -0500 (EST)
+	id DA3B66B0402; Tue, 20 Jan 2026 08:42:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14A836B0401; Tue, 20 Jan 2026 08:39:58 -0500 (EST)
+	id D52046B0404; Tue, 20 Jan 2026 08:42:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F06566B0403; Tue, 20 Jan 2026 08:39:57 -0500 (EST)
+	id BFC176B0405; Tue, 20 Jan 2026 08:42:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCBA36B03FE
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:39:57 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DFA5BA39A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:39:57 +0000 (UTC)
-X-FDA: 84352450434.19.C9BBA5D
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8AFE320013
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:39:55 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id AB4916B0402
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 08:42:20 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E1FB13B31C
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:42:20 +0000 (UTC)
+X-FDA: 84352456440.28.E84B7A4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B316220007
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:42:18 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KHOmiQKl;
-	spf=pass (imf03.hostedemail.com: domain of glider@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768916395;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E3IfCvhF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768916538; a=rsa-sha256;
+	cv=none;
+	b=Id0pQpc8MLaQCrMPWU2Qnq6s8sLz0SGL/na/dkJQte7/YNPnedlngceMnZsK/1S4QeB0pP
+	7yd4moowTdiUIW4T7aIBjBcl3YSjYpSyOL6Xeuho/feZku4UJ4jDIxiF4Mx4suEn+l5TIV
+	N38rMkEdlvjc3N3RiyyyTFLslBbehtM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E3IfCvhF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768916538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0q6rVfmOcQQ7ikYVJ6BpQMxddONQmNjn6LAGePsigA8=;
-	b=rCcG4EzkI/f0BgjSk3AcVkw2jTjvQfT1Oaqo9G+4gZ8lRmDY2uIYwQzbPw1FZYoxGS/nA0
-	DQNec8FNAeUVS+N8EPRADa1Dz2VH+mieId233x7XKvxdOse2wnmonEDbXDnY0PNGL0crYY
-	jDEkDMjFh9O5yleV2FFecv8gYDLFrB8=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KHOmiQKl;
-	spf=pass (imf03.hostedemail.com: domain of glider@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768916395; a=rsa-sha256;
-	cv=pass;
-	b=SNx8TshEYeL9uSVecByBIJxvE6q1rbnYwiEkokqG+lSA0kXRRVt+p7ve6MOvRHIqnT9ODE
-	KHHJC3ctng4AZqP5+11xDAMhNgCF00sKafLziX/tNoSAQyQT1C2hCB7bjAKVCX+uOz4fxB
-	Vv+XSkiduh1szVejAPJHYaMZ9H04hOk=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-502a407dabaso35001501cf.0
-        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 05:39:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768916395; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YgxqdXjrj1y1CXKjzP7SDQEOhKNDCm0k8bVzilzTG49Fh5sQYeA84sFQSA3XQtqQXv
-         5fe1TsyzknGP3ImzHLckz0ubBRYVO8fqaJntMRVfEddZwKVLPC7o9OAoX0of8hI5hvEG
-         UWUOySVs+/7jXsCJMmMQwX7iz7HAA7KRjRuoEWP0UxTkanD3qoSKkyJ02LfJGFM6YZOa
-         f3tW7FYi4kB/7auxpi5YVAttCTjOYcKK+O6b5Oo0/RkFIvc9mH6uU6yFhHw2SPYjCgyA
-         nQUGVyLmVZZIzTN4InlkmesRqQqOoLjvrwnFQIETXAiq5C61s/LR0kUgpyLAcnAsImt1
-         sLTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0q6rVfmOcQQ7ikYVJ6BpQMxddONQmNjn6LAGePsigA8=;
-        fh=683PHmTFY12pcaprJiA2L5VWxvFQIJoewh8dP2y70jA=;
-        b=GngLQeCl3UX9YV7OHlrHtCJrLWbsS0ABIIAD1TNCxSM7HGNyolMl7jjjbfh8y3Ypni
-         7sVWzsDjdAP06gBDqwBx/ljopjz0BXcDq9Jorlwd7Jj41bKQa2PTTwHB+as7uz23SqNo
-         E+XOuC2HAOwXkjy267tabVmkE/oS7VwiyTW0+whec8QT2R82Vngf/W4VsFtcSCZcOf2+
-         ljn6CWuBrPKSygt8hxSrkE+uF2hQWj7QQYJdcb47v1VZhHH7SC8VeCGxV/37MdmaeSKg
-         XcGoy0aIpEakQ6DQgv0wTG5CQ+DQL77HliMaNzTecSoC+9CA/gzP5QFJmPRhsVvZSO+J
-         7JdA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768916395; x=1769521195; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0q6rVfmOcQQ7ikYVJ6BpQMxddONQmNjn6LAGePsigA8=;
-        b=KHOmiQKlIFiiEoGaw7dtG5mKHYgn3SMp6LV1pTrA3v9meP90j98ZF++BfTFA3ktWse
-         R26awsVtP2PPzmfeB9/wBYclb9OQQv+sd9mtECAbkb6WZe2SDl6oHmnlv0j7681fxCeQ
-         2vEII+OYzfbOVLAjfLKUdIL+QyB51eDKBbHEXTXgAjtZElh1h88ZBSnuDQQrVQyNeNSe
-         A/UZ6HRO1xmQWlpMNk8Lpmz3ReZqV7lG4x+lV09qrBDs7Zt0+Fh6W7PTF8/3p1/yud1+
-         t0NSDDxLk1/iquFKjalwLiBog/+GMdtsrdd+6i3PVvcQ/ZW/F/w/roN+fxbZC6lg5bkY
-         DJ/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768916395; x=1769521195;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0q6rVfmOcQQ7ikYVJ6BpQMxddONQmNjn6LAGePsigA8=;
-        b=Nz7s/iPRcBYYXlUewMBxjaBOoj/oaR4U7NyMUYWDqdJWsqzYQAMBHmpwaV9zVhDYhk
-         gcsXch3/A6Md3XD5SG7g4zmW/bX+6GejjZo/eADZUP3nsSXXHBW8veYFf8T72PrNJCUA
-         wDWDwQmtfJ/i0Ec1iHf9D0FfNSAbMobDYtTD5J/GUmNIkAwpjU1NWQrW9hdbZuGYsFeC
-         xgI7hz+s9u0ryg8mM/QuuMV8c15KXbYa89WzBjjzl31sKGbbMBSlvP+8Nm8gvS0Drg/9
-         FASN6LUuyCFOqbzh+gwJXu/JHzGuHlYKg2+zYlfg6fAgY48z71rlFocxFvK3Bi5CyiO2
-         Mu+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXeVO8zgqHuGhu0Pv8bSy73Z6o/W0nYgFl/ihfGBTBa/kV56JO8qn7x3zMlCfKvEREx35dfIZefgQ==@kvack.org
-X-Gm-Message-State: AOJu0YyziJ3VsmW76da99PnkpvDdX6u/4g6MtDG2n6GcPjMtf+Xc8FA8
-	FkjjMX4dhzxiAQoyvQyQvEmCZYQBFqMZnuWgenDVFTKPB/Q8mOR4KRqmGnrzZv2C2ViKPYvgtJJ
-	WMcgioiDvbP7MPGqISwR/sduGi23t0FGMpEVPYS8A
-X-Gm-Gg: AY/fxX6JJk/r7hdHRsaGgjBT38cBcZLLCYZNw0jMHVCDzbEb5TPJPuggQ81VisvbJvI
-	y9FQL5cckEkljWje+Dlk9sHpHClEreFMs0T7XkzLm3BBQ+nw9WJg9DN/3CS0qjXkSczQ+D+mvv9
-	BfYfV2TgGssxDMfFTK/egPacyk0iTkqOrX9ZIUEzQU+UgI8pePyi9v0jfzEWavs5E5G2vqnCCWP
-	oPiohikroLCfzv92CPBwellN6MVj6n+SoQ4wC5aKf7UU7kfEajCMQEghF24V4kE8t3nVUwftYFJ
-	D1pA7iuGdpHkVEe0ymuKY8Ja
-X-Received: by 2002:a05:622a:1884:b0:4f1:df6f:6399 with SMTP id
- d75a77b69052e-502a15e468cmr183024831cf.14.1768916394245; Tue, 20 Jan 2026
- 05:39:54 -0800 (PST)
-MIME-Version: 1.0
-References: <20260112192827.25989-1-ethan.w.s.graham@gmail.com> <20260112192827.25989-3-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20260112192827.25989-3-ethan.w.s.graham@gmail.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Tue, 20 Jan 2026 14:39:17 +0100
-X-Gm-Features: AZwV_Qhyxy4QYBC9vsg-1pl1r-iBwYh-56DZQ4fI_mrGZ4r5y44flCCfgaeUkgg
-Message-ID: <CAG_fn=VWpu6eDgumX7KV1LuRu+qYJjQzKqqYyapwyzPFWrAYXw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] kfuzztest: implement core module and input processing
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, andy@kernel.org, 
-	andy.shevchenko@gmail.com, brauner@kernel.org, brendan.higgins@linux.dev, 
-	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com, 
-	dvyukov@google.com, ebiggers@kernel.org, elver@google.com, 
-	gregkh@linuxfoundation.org, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
-	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lukas@wunner.de, mcgrof@kernel.org, rmoar@google.com, 
-	shuah@kernel.org, sj@kernel.org, skhan@linuxfoundation.org, 
-	tarasmadan@google.com, wentaoz5@illinois.edu
+	bh=ZPh1bIEeClZlMd7bH2zfFr1HL2hgNaprhlSBrD/6mSY=;
+	b=sjYVfKBDV+keouxz8nhz9l39pCfifrunodcjnTeqk6HT4PjJuO4KCt088s/9SARyML5FZG
+	ZQKFWLhDGx9ZPj9fc8eYd4iMv3T706Cabw/wdF0i33CpR5fD3VGCdxIbQi9nP71OZV2goG
+	9hdG9KNUgyIgSc4R7BJUVxPszoKcjJU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1D83860010;
+	Tue, 20 Jan 2026 13:42:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C70C19423;
+	Tue, 20 Jan 2026 13:42:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768916537;
+	bh=70xOEysdn9UJBfJ6hZvmemjOLtpi4tu/aOHR5XtOJmA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=E3IfCvhFSjcgHbt8sW4iAN9Q+Fhoo2DaD/SdAlRpv5OIPZC2KO18v2JPtkn+685tY
+	 EBsUPVQuLfdcLN8M507Lkfwl8ntIF0Bxo5A8li5m903Umi34vm1DpY9uf/HNucGVJk
+	 F42IDUQfsCdgr/65dLR+KmnfcUTo2tbwQSuLHJeNzLBOvxJ1phqg7/EtJLJ2nk3Msj
+	 qqRAXA3jTIzPkUx4cdGr6x4p8vu4y8RPPuuf65DOzOMlgsNdx+yjN5G7O9ww9z7EyI
+	 blrbxcoszpmxC+JpNJCS2rZImSbbScoXp5uZ/dSFvVnxzxRU9sK+DrZte9HsbyjIjH
+	 xlDkN+7kByVlw==
+Message-ID: <cd6d3f59b22d3febfe7e58fc740df2715e2b9ee3.camel@kernel.org>
+Subject: Re: [PATCH v2 31/31] nfsd: convert dprintks in check_export() to
+ tracepoints
+From: Jeff Layton <jlayton@kernel.org>
+To: Chuck Lever <chuck.lever@oracle.com>, Christian Brauner
+ <brauner@kernel.org>,  Alexander Viro <viro@zeniv.linux.org.uk>, NeilBrown
+ <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,  Dai Ngo
+ <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Amir Goldstein
+ <amir73il@gmail.com>,  Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton	
+ <akpm@linux-foundation.org>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger	
+ <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Gao Xiang
+ <xiang@kernel.org>,  Chao Yu <chao@kernel.org>, Yue Hu
+ <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,  Sandeep
+ Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, Chunhai
+ Guo <guochunhai@vivo.com>,  Carlos Maiolino	 <cem@kernel.org>, Ilya Dryomov
+ <idryomov@gmail.com>, Alex Markuze	 <amarkuze@redhat.com>, Viacheslav
+ Dubeyko <slava@dubeyko.com>, Chris Mason	 <clm@fb.com>, David Sterba
+ <dsterba@suse.com>, Luis de Bethencourt	 <luisbg@kernel.org>, Salah Triki
+ <salah.triki@gmail.com>, Phillip Lougher	 <phillip@squashfs.org.uk>, Steve
+ French <sfrench@samba.org>, Paulo Alcantara	 <pc@manguebit.org>, Ronnie
+ Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N	
+ <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>, Miklos
+ Szeredi	 <miklos@szeredi.hu>, Mike Marshall <hubcap@omnibond.com>, Martin
+ Brandenburg	 <martin@omnibond.com>, Mark Fasheh <mark@fasheh.com>, Joel
+ Becker	 <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Ryusuke
+ Konishi <konishi.ryusuke@gmail.com>,  Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, David
+ Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan
+ Kara <jack@suse.cz>,  Andreas Gruenbacher	 <agruenba@redhat.com>, OGAWA
+ Hirofumi <hirofumi@mail.parknet.co.jp>, Jaegeuk Kim <jaegeuk@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+Cc: David Laight <david.laight.linux@gmail.com>, Dave Chinner	
+ <david@fromorbit.com>, Christoph Hellwig <hch@infradead.org>, 
+	linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-ext4@vger.kernel.org, 	linux-erofs@lists.ozlabs.org,
+ linux-xfs@vger.kernel.org, 	ceph-devel@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, 	linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, 	linux-unionfs@vger.kernel.org,
+ devel@lists.orangefs.org, 	ocfs2-devel@lists.linux.dev,
+ ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org, 
+	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org, 
+	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-doc@vger.kernel.org
+Date: Tue, 20 Jan 2026 08:42:09 -0500
+In-Reply-To: <8808c9f0-a998-448c-a4b6-b88fabb2ca23@oracle.com>
+References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>
+	 <20260119-exportfs-nfsd-v2-31-d93368f903bd@kernel.org>
+	 <8808c9f0-a998-448c-a4b6-b88fabb2ca23@oracle.com>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9tbagxff38qgegr3fywtgbkfdhfqk7sa
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: B316220007
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xi1b31pbfnyapyd4rzjnhftixxjbmro9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8AFE320013
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1768916395-193842
-X-HE-Meta: U2FsdGVkX1/2xBNXv2mPHiyklVs/IoofamDLzoFy96EwSx5RXx3jew9eLkf+86KyHI4kcOiL799F3XKN+UWQXpQv26Rm+C4o0VsRAiISEY1kkesWEfdTNBDPw36cpB5R/AHFeBryevbtJ67iQlQQiIwnDLrA557gAKQuYqvmKIUYhq2DqGX9eZlYD+xnH9DOYrrwsLsrzoomKqAfYF2RPj93er38Z9UAk8OucEvUx+mQqozV0LDE4bVYVO6fCLpqFXr3jEAGq2AuXJcQO35x8pph5vCNlq1z9FQWhWWpXTMbRjRGvT2anJ+eY2f5t2I3SqusyOnJHht7D8qL7M7B8hls+M/mvRZKboyrHLlG9MieJpnuzIkqbtGeO3aWSKPvQwD6AqxsNLhRhA6r10BInWe62Y/e+zBSuaeZ6M8LEw61ksjj3AWv+5vfMeG/DIQ+bYergkDiASIiQviqDlC+cO2F51ZPr+a4/vBhHOm6FhTFGptb3NcDqDc+RcmgkujNLysdFJ2xqTHjklq4h88UKVkygvO6WtL0MOyl6yhEhhJNzWtS73VY8HSMKdb9nONHVkSN/0MDwbI3NWH9U6rw2SYrvGp78jNJg1uMQrpiWUFuxccmAC37hOx4yHsIqlQbkfvIMxe5zOQBkAs+hjwoYLL68EO07lK1Q9Xs8fGHe2ULrKFUDNyeJyp/Rpo+BYC54LaWkjINq4uvKrBvzrdheIP/nr7LD+/qxee6P8wUI9uEXOMx6hG6SHwmEh29LuQPACEn0diimtIAsSNcddh1+R0V8yUWNdVrkwQDzWh7cMcTrq168nyDQ63DtFToFM0SuoCYIPhz1DPRpcm6dlY6nzFNIy+18pIrF6DBpRICY1Qcr67G3cM7kxxmfZrgDx0iwO4UiWRmCnSms7vIeYpjWjv5VWcptBxFKa4H2bwNSITs6DSTlTVI6Ko55b+EuzAfPgd5lwqNqvmwmQDS6K4
- vHia3YHM
- GDXuNnqYNGg9aDJi+yVZL3YiT2sS3v4dlqR5lzhqzFIhmTmYbNrWRVSOxurdP658nds14WyGHbIS8xMZ1vIABpJ1XgUp0rjrZDfalbkayL/loueoZ9eZkHtSNuAoS64mA3aOPh40Qw+unDk7h++2Oj74gJg7jzBCwdostwV/K3ze0XmVymqPy6p/fpg6YAPrsss28JRqbSbCKDEHghKj2cyYr9Wd3oxvf4XMGISzr37AbYTN3waGt5SYceALRkF9UobmGFgPz/+NmiCIn5/XCjRRG634WqFhzIOzV5UQmpIXTAj8=
+X-HE-Tag: 1768916538-662335
+X-HE-Meta: U2FsdGVkX19pWMgkERHQ9T+erLTVC3oTBHaYKNdjL88d1ZobziKGdMnPuYwPK+PY6RHO2ED1zuydLzE9CAL1eCQCUEtuBIVJYLxvrdsRB9f/OdP73QY1EJ1z0cCGJQOjxx1P6ikAz/AHgb4OJAQP6Or8JHKZtZ2U9N+aw5OTwO2B/BArlynyfFyyja5zLREXYpuN3jW587i65RQ8c4AxTFEBxzg8s953xrTzlVoufuFwFnrvjxNefxmwbLvqDm20sAIhCJ67nE0F8l2UNLHPhs/qKJXM1sfaspF6oYuJ7fSYs3ph6/b8UceDsbmT8JyvPo3qGyEJoWz7kxForJOYs9Gk4ViKA2MAu8oFdrXQE2WF5KtyxCVcuhIsJWjUgV3DWzXh3Lw3+ZlExK5pICc8ALvl3TLQw6VBLtdnj96/VNQLXwQXL9NvQHsoXdqUjm9vRxj+pY6cf/EScrStemwqBFAHBW+gePXFrj3HbJiX6coEo2qdk8K6tUAWJnb3aVH2Jt7aIuWiCRF6bgtZDgCBrtC8k3e0AoK8kERpT/XbuoDqZ131AAMwfCKsmK0WmjyxX7SjRzSVtIrIiEfdO64S0FkQw/0cBk4Th2kPadECyYFhZix1mvP+oRTbwtPx1p87jGtk+dHbtcaAvS3IKPmRUnmFkLhhh4NNqpcDegKvU1kPeBVAb4Y12XC17PYUD2mDYFYgXy5Gu+KF8vunZqvtU++xmX+KZc/TvhmX0yVa5oge1/DIje0bWh0ZyHF+6xXXXWQjIaq16DMoqYy8QPSAtOtUyK7Y4pX2r7GvBoNrS+uQ7+TUkkYe2MME5hs8k3qPuL362cyY/H4DxwjSU4YhSWTx3YCnCuGvBI49oul2vHym4Xw0ihV1jIDK7RS48HFNWYC/+AuxkSyg3ouNwCBIus2z4ADsIYErn1+iREtuz5UpD/i9120xjaz4M86SCnzd0rsabjkeObSbR1yMJQR
+ 9qXs1Lu8
+ i+HIinAWYfhE+btc8hvKJnY+CCSfYJvJ3gJtHb/rANiPAu0fOeoxuXu27A3IkH26eZxHLLg2AdMqrFMw+OCescTJor9pZfB0ZsbDv2E9ZAIsKl7OAsR2uZrMiNqAdu5FXF9DdljT9r6kzEqlzzg5kZ0AdOV1mA16ExFa4m9jUjCTc9lsjEaKnfSXoVBZVnKPTY/Oflw4fvaWtBFJwQECs8p2bVdLDbPG6yv9tmMDpU8it6sfBQXbS7FNFi+cOMXIEMoRnxBDi/nUWPgxhUG7+g3B45inL+BUwbztiEP9QY2vimD5f8mxAt6b+exA0lG6Q6+8rYlMPtXgjHkPYgkzffDcPwjY2RHiNEYxdej+qNtxs8g7AdTqOUa5IQZQdcpcxvrU4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,85 +209,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 12, 2026 at 8:28=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmai=
-l.com> wrote:
+On Mon, 2026-01-19 at 11:47 -0500, Chuck Lever wrote:
+> On 1/19/26 11:26 AM, Jeff Layton wrote:
+> > Get rid of the dprintk messages in check_export(). Instead add new
+> > tracepoints that show the terminal inode and the flags.
+> >=20
+> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > ---
+> >  fs/nfsd/export.c | 11 ++++++-----
+> >  fs/nfsd/trace.h  | 52 ++++++++++++++++++++++++++++++++++++++++++++++++=
+++++
+> >  2 files changed, 58 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
+> > index bc703cf58bfa210c7c57d49f22f15bc10d7cfc91..3cc336b953b38573966c430=
+00f31cd341380837b 100644
+> > --- a/fs/nfsd/export.c
+> > +++ b/fs/nfsd/export.c
+> > @@ -435,31 +435,32 @@ static int check_export(const struct path *path, =
+int *flags, unsigned char *uuid
+> >  	if (!(inode->i_sb->s_type->fs_flags & FS_REQUIRES_DEV) &&
+> >  	    !(*flags & NFSEXP_FSID) &&
+> >  	    uuid =3D=3D NULL) {
+> > -		dprintk("exp_export: export of non-dev fs without fsid\n");
+> > +		trace_nfsd_check_export_need_fsid(inode, *flags);
+> >  		return -EINVAL;
+> >  	}
+> > =20
+> >  	if (!exportfs_can_decode_fh(inode->i_sb->s_export_op)) {
+> > -		dprintk("exp_export: export of invalid fs type.\n");
+> > +		trace_nfsd_check_export_invalid_fstype(inode, *flags);
+> >  		return -EINVAL;
+> >  	}
+> > =20
+> >  	if (!(inode->i_sb->s_export_op->flags & EXPORT_OP_STABLE_HANDLES)) {
+> > -		dprintk("%s: fs does not provide stable filehandles!\n", __func__);
+> > +		trace_nfsd_check_export_no_stable_fh(inode, *flags);
+> >  		return -EINVAL;
+> >  	}
+> > =20
+> >  	if (is_idmapped_mnt(path->mnt)) {
+> >  		dprintk("exp_export: export of idmapped mounts not yet supported.\n"=
+);
 
-> + * Copyright 2025 Google LLC
-> + */
-> +#include <linux/kfuzztest.h>
+Doh! I left the above dprintk() in -- fixed in tree.
 
-General comment: please include what you use.
-Make sure there are headers for e.g. add_taint(), pr_warn(), kzalloc().
+> > +		trace_nfsd_check_export_idmapped(inode, *flags);
+> >  		return -EINVAL;
+> >  	}
+> > =20
+> >  	if (inode->i_sb->s_export_op->flags & EXPORT_OP_NOSUBTREECHK &&
+> >  	    !(*flags & NFSEXP_NOSUBTREECHECK)) {
+> > -		dprintk("%s: %s does not support subtree checking!\n",
+> > -			__func__, inode->i_sb->s_type->name);
+> > +		trace_nfsd_check_export_subtree(inode, *flags);
+> >  		return -EINVAL;
+> >  	}
+> > +	trace_nfsd_check_export_success(inode, *flags);
+> >  	return 0;
+> >  }
+> > =20
+> > diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+> > index 5ae2a611e57f4b4e51a4d9eb6e0fccb66ad8d288..e3f5fe1181b605b34cb70d5=
+3f32739c3ef9b82f6 100644
+> > --- a/fs/nfsd/trace.h
+> > +++ b/fs/nfsd/trace.h
+> > @@ -339,6 +339,58 @@ DEFINE_EVENT_CONDITION(nfsd_fh_err_class, nfsd_##n=
+ame,	\
+> >  DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badexport);
+> >  DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badhandle);
+> > =20
+> > +#define show_export_flags(val)						\
+>=20
+> Whacky. I thought we had one of these already, but I can't find one.
+>=20
+>=20
+> > +	__print_flags(val, "|",						\
+> > +		{ NFSEXP_READONLY,		"READONLY" },		\
+> > +		{ NFSEXP_INSECURE_PORT,		"INSECURE" },		\
+> > +		{ NFSEXP_ROOTSQUASH,		"ROOTSQUASH" },		\
+> > +		{ NFSEXP_ALLSQUASH,		"ALLSQUASH" },		\
+> > +		{ NFSEXP_ASYNC,			"ASYNC" },		\
+> > +		{ NFSEXP_GATHERED_WRITES,	"GATHERED_WRITES" },	\
+> > +		{ NFSEXP_NOREADDIRPLUS,		"NOREADDIRPLUS" },	\
+> > +		{ NFSEXP_SECURITY_LABEL,	"SECURITY_LABEL" },	\
+> > +		{ NFSEXP_NOHIDE,		"NOHIDE" },		\
+> > +		{ NFSEXP_NOSUBTREECHECK,	"NOSUBTREECHECK" },	\
+> > +		{ NFSEXP_NOAUTHNLM,		"NOAUTHNLM" },		\
+> > +		{ NFSEXP_MSNFS,			"MSNFS" },		\
+> > +		{ NFSEXP_FSID,			"FSID" },		\
+> > +		{ NFSEXP_CROSSMOUNT,		"CROSSMOUNT" },		\
+> > +		{ NFSEXP_NOACL,			"NOACL" },		\
+> > +		{ NFSEXP_V4ROOT,		"V4ROOT" },		\
+> > +		{ NFSEXP_PNFS,			"PNFS" })
+> > +
+> > +DECLARE_EVENT_CLASS(nfsd_check_export_class,
+> > +	TP_PROTO(const struct inode *inode,
+> > +		 int flags),
+> > +	TP_ARGS(inode, flags),
+> > +	TP_STRUCT__entry(
+> > +		__field(dev_t, dev)
+> > +		__field(ino_t, ino)
+> > +		__field(int, flags)
+> > +	),
+> > +	TP_fast_assign(
+> > +		__entry->dev =3D inode->i_sb->s_dev;
+> > +		__entry->ino =3D inode->i_ino;
+> > +		__entry->flags =3D flags;
+> > +	),
+> > +	TP_printk("dev=3D%u:%u:%lu flags=3D%s",
+> > +		  MAJOR(__entry->dev), MINOR(__entry->dev),
+> > +		  __entry->ino, show_export_flags(__entry->flags))
+> > +)
+> > +
+> > +#define DEFINE_NFSD_CHECK_EXPORT_EVENT(name)			\
+> > +DEFINE_EVENT(nfsd_check_export_class, nfsd_check_export_##name,	\
+> > +	TP_PROTO(const struct inode *inode,			\
+> > +		 int flags),					\
+> > +	TP_ARGS(inode, flags))
+> > +
+> > +DEFINE_NFSD_CHECK_EXPORT_EVENT(need_fsid);
+> > +DEFINE_NFSD_CHECK_EXPORT_EVENT(invalid_fstype);
+> > +DEFINE_NFSD_CHECK_EXPORT_EVENT(no_stable_fh);
+> > +DEFINE_NFSD_CHECK_EXPORT_EVENT(idmapped);
+> > +DEFINE_NFSD_CHECK_EXPORT_EVENT(subtree);
+> > +DEFINE_NFSD_CHECK_EXPORT_EVENT(success);
+> > +
+> >  TRACE_EVENT(nfsd_exp_find_key,
+> >  	TP_PROTO(const struct svc_expkey *key,
+> >  		 int status),
+> >=20
+>=20
+> 'Twould be nice to report the namespace or client address that
+> was making the failing request, but maybe that information is
+> not available in check_export.
+>
+> Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+>=20
 
+That might be possible, but it means refactoring check_export().
 
-> +        * Taint the kernel on the first fuzzing invocation. The debugfs
-> +        * interface provides a high-risk entry point for userspace to
-> +        * call kernel functions with untrusted input.
-> +        */
-> +       if (!test_taint(TAINT_TEST))
-> +               add_taint(TAINT_TEST, LOCKDEP_STILL_OK);
-> +
-> +       if (len > KFUZZTEST_MAX_INPUT_SIZE) {
-> +               pr_warn("kfuzztest: user input of size %zu is too large",=
- len);
+Given that we're still haggling over the flag name and semantics, lets
+drop this patch from the series for now.
 
-Let's change it to pr_warn_ratelimited() to avoid log spamming.
-Or maybe -EINVAL is enough for the userspace even without a log message?
+Once the other bits are settled, I'll respin the tracepoint patches on
+top. That part can be better sorted out on the linux-nfs ml anyway.
 
-> +               return -EINVAL;
-> +       }
-> +
-> +       buffer =3D kzalloc(len, GFP_KERNEL);
-> +       if (!buffer)
-> +               return -ENOMEM;
-> +
-> +       ret =3D simple_write_to_buffer(buffer, len, off, buf, len);
-> +       if (ret !=3D len) {
-> +               kfree(buffer);
-> +               return -EFAULT;
-
-I suggest returning `ret` here if it is < 0, and -EFAULT otherwise.
-
-
-> +#include <linux/atomic.h>
-> +#include <linux/debugfs.h>
-> +#include <linux/err.h>
-> +#include <linux/fs.h>
-> +#include <linux/kasan.h>
-> +#include <linux/kfuzztest.h>
-> +#include <linux/module.h>
-> +#include <linux/printk.h>
-
-Missing <linux/slab.h> for the allocation functions.
-
-> +       /* Create the main "kfuzztest" directory in /sys/kernel/debug. */
-> +       state.kfuzztest_dir =3D debugfs_create_dir("kfuzztest", NULL);
-> +       if (!state.kfuzztest_dir) {
-> +               pr_warn("kfuzztest: could not create 'kfuzztest' debugfs =
-directory");
-> +               return -ENOMEM;
-
-Note: leaking state.target_fops here.
-
-
-> +       for (targ =3D __kfuzztest_simple_targets_start; targ < __kfuzztes=
-t_simple_targets_end; targ++, i++) {
-> +               state.target_fops[i].target_simple =3D (struct file_opera=
-tions){
-> +                       .owner =3D THIS_MODULE,
-> +                       .write =3D targ->write_input_cb,
-> +               };
-> +               err =3D initialize_target_dir(&state, targ, &state.target=
-_fops[i]);
-> +               /*
-> +                * Bail out if a single target fails to initialize. This =
-avoids
-> +                * partial setup, and a failure here likely indicates an =
-issue
-> +                * with debugfs.
-> +                */
-
-An initialization failure could result from something as simple as a
-name collision.
-Do we want to bail out in such cases?
+Thanks!
+--=20
+Jeff Layton <jlayton@kernel.org>
 
