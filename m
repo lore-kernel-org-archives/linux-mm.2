@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6056D2628B
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 18:48:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6980D26284
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 18:56:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C6A76B0492; Tue, 20 Jan 2026 13:48:14 -0500 (EST)
+	id 171A66B0495; Tue, 20 Jan 2026 13:56:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 075196B0494; Tue, 20 Jan 2026 13:48:14 -0500 (EST)
+	id 11FBC6B0496; Tue, 20 Jan 2026 13:56:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE3956B0495; Tue, 20 Jan 2026 13:48:13 -0500 (EST)
+	id 055AA6B0497; Tue, 20 Jan 2026 13:56:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D98B66B0492
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:48:13 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 848B814070E
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:48:13 +0000 (UTC)
-X-FDA: 84353227266.08.0A79B32
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 97E3320006
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:48:11 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ff4gV0uz;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E53C86B0495
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:56:22 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FC4E1606C7
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:56:22 +0000 (UTC)
+X-FDA: 84353247804.02.A6609F8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A38B78000B
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:56:20 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a5PDQPI4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768935380; a=rsa-sha256;
+	cv=none;
+	b=H1SE7l4nXkMUXBc6vAmYr51tJ7fdbSiiZg6XFBxXbJ2fezPJKJclRHIfmU1b82y1HmAxth
+	sJcrREBy4afD+wstVtmlVlkSdy597kh7n5Z0SrNCqDn0wnrm3n8lkZQJ57oEmoHxkcnsul
+	6GCuprxAVqc+EJeDMMUyjtc9bdP6RIU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a5PDQPI4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768934892;
+	s=arc-20220608; t=1768935380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=32T8g5Z2a+COFbjzTZpCqoJaWL2em40m0e1QJ2DjQH8=;
-	b=xs5ZL55gZr1fohw2EZbiwuIp2zQUT+j31tg1yxevgtBh5W1gp5+tkga0mNCz+bAKqfdTLW
-	5pr0ryeoq0y3CQBb93N47zQT0cZx1hqx1IQJmYh6d+oBB7QpzxzZJdebrNvS3kP+ZIB5AY
-	XWRJR03fZ2ios3TbcRtS3jtWGUDjm7I=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ff4gV0uz;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768934892; a=rsa-sha256;
-	cv=none;
-	b=h+YaKnr5argz5Wz3sh4rmdnuadV/UiAvBApotxn/V/CY9jj3Z3whu2aIKS+w5b9s/A6IIh
-	sIFqsono1wgTEN0VgOzrpmLDn7Wc/FhRF5+JJIhYzImVm7rrNzjvTTtcG0hkp6aVAOlMDJ
-	5X8Av/Sc0GYUpT8DMPHsW3CAGT9ycpM=
-Date: Tue, 20 Jan 2026 10:47:55 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768934889;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=32T8g5Z2a+COFbjzTZpCqoJaWL2em40m0e1QJ2DjQH8=;
-	b=ff4gV0uzB6STXVulXC+E25UKJvOFC6aCJVpX6bdgvUuTTCrXZehmVzbQKhVwdZUleOTWDy
-	SXvnLq+K8df3D8ul7Cvt6enNm4AynJEzsdiAHlK3bczDr3npBOUAzqRRA6twzaG1ymUZWv
-	oDFdLhF/nqFKH8xw8rUbsfh2TPf276w=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com, 
-	mhocko@suse.com, roman.gushchin@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
-	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 28/30 fix 1/2] mm: memcontrol: fix
- lruvec_stats->state_local reparenting
-Message-ID: <moupi2ch2cpuyrurthk66igh275ks62pltjk2zfngxozj52oxs@64lxvcgh3ays>
-References: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
- <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
- <ifcth3hxyrwmmeo3nejettdtkw2ndxdjbylszmhq3vohuhsncl@k23pew6gywko>
- <5a18658e-2076-4cbf-bc53-5b6e99c1035f@linux.dev>
- <A13923AA-8200-4863-8080-EC4B254BA3AA@linux.dev>
+	bh=OFnwDkZU7Jyj9BN+wJryS5fMKIElBRiPVeTddDtgh1w=;
+	b=ie178AMiXoZxW5PjMYOoua8pUqTz9Eq6weAwS57UT2AAPbcYnBminKdP51f56f1yT+AVWZ
+	CNdTnNgpBr8epNjcyq0yMWlgpNS6jM7lajjhM+0oOIivVSPu+56fKNHAUnn86Q1KNRRJK+
+	1P5ELGowcOTOh2Bj5Y4spD78Sw6lV3k=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8BCEE438E3;
+	Tue, 20 Jan 2026 18:56:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A84DC16AAE;
+	Tue, 20 Jan 2026 18:56:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768935379;
+	bh=NXgqW8xOX8NnK1Jm5wywr5UqQugivqCTFBrNxOL3X9o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=a5PDQPI4CaRseh0D+/3F6Ex115b3FY9vj36ryNtZS+MfjEwSdXipBJo3n9LMFULYx
+	 JspPLSyiE46U5m4JWjjmsxPwhYXpAqnDX8l83Uqezxi497ThDqickWfFFV7KBUjzg/
+	 IGIOcSf6ucIMXtt7ddriGQY2zFdfBJEpKDg36vP/pKaDRG9BYduuKbzeOSkhYjvmIc
+	 2ODsi+ype4fBmrSJNDAPiQMbUoDOWXftp5Xjbfw8E2aYNGA8pK+h8A/N+ifPyly8K3
+	 DwzprpcHZkOyMly23EdJhxlrGbotqeCVhYiPYpgwioayp/INcxmby38um4ghp+yQlc
+	 uKF//m23MJqSA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Alexander Graf <graf@amazon.com>,  Jason Miu
+ <jasonmiu@google.com>,  Jonathan Corbet <corbet@lwn.net>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  kexec@lists.infradead.org,
+  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH 5/6] kho: Relocate vmalloc preservation structure to KHO
+ ABI header
+In-Reply-To: <aW_Mqp6HcqLwQImS@kernel.org> (Mike Rapoport's message of "Tue,
+	20 Jan 2026 20:42:50 +0200")
+References: <20260105165839.285270-1-rppt@kernel.org>
+	<20260105165839.285270-6-rppt@kernel.org> <2vxzy0lscks4.fsf@kernel.org>
+	<aW_Mqp6HcqLwQImS@kernel.org>
+Date: Tue, 20 Jan 2026 18:56:16 +0000
+Message-ID: <2vxz5x8wcdv3.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <A13923AA-8200-4863-8080-EC4B254BA3AA@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A38B78000B
+X-Stat-Signature: d4uid4o7s9ye7u9cpwg53i46ipoeegoz
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 97E3320006
-X-Stat-Signature: 6a5xpy1ayatwb5t5x59ceewdupzcgxic
-X-HE-Tag: 1768934891-183248
-X-HE-Meta: U2FsdGVkX1/NANoNli83ehMoWNd+zsoowpPRAZvKcTAReY+LDNdCi83e5VWPWxs24oeWwe5m8Frqrs3Y5G2r+K0AN2gzqqsG+oVaKpPt0I4OdVKCPOJJNjtlSpduU2iG7ZopASke0lqAk/RKtSkbw1NdBMthDgpiXLpFmnMOGsMALkHQj+yjxgRA4vGHe9ZAvL4Ufd2tfMFRsfsiYz4gtxEEPpH5UitUbJOX+C5V2+oR7+Vr1z7Zw6zNa4bQLEr353cbYaoKr9yOzzHxnbBq1ljy1AoHasLuRblXdWXJ8csg1PPORkbwwAx3T+ROR25KXioba0ZV+cX5+Ycnq5IbTkK4xp8V8ppBoFVn/M7Rvxkl9/tkqGsV+k7qgcu9IhHkzJhyui18SXRXclm1gSd+cNrKa3oYRxdYbi8v+09ZZdnPi9LEv41i9sFAEbTSg2qp7JGJAIHigV5xhC7lcnRgvFwSNJlzr/yUPiD+FVPhfHY4TmmUiNytJfTYItLNWY33+JByCBO3u4cKfpOmCHM7s9qeQguz6BqtOMrc5gC4o2cKeh8pRfhJhV3ZqHFoflSxxII6Gm2kqakSuAJvslBUnpPUXhMJDJXqYi3tJjhA3Ro/KscAM8W80mo20+Kr/vwuYbKKbFHVbtsjRy1X5fJa8twQo6co/El3H3B0i31/UEmoH4Mn+fWuifXShwSSU/LWhoqKg87vx73Fixk6sHWS1P7LtBzWDIKFXAjUkTbxcE3ibNALaDgsbThufFApPGSLgNO61BWMmhHc49aRe0z4EalGvYfl5NIWLY8d34DZcOHhufon1X68afdafDuTL/CjEv5hQfKrtsir0tLR9WbpYioD325O9mdDr6WR6QAVM5dap8UYwNDZEari+k9OhIg956Sdkhtp6yd8cKcTKemwFLMY5oruu6fQUxaiHvbCML6gcd8kPcDSoJqS28RtI9kiRAT13qcY6NzRtFgh7bc
- cnqJKvcn
- vDZ0fS2bb/LmXBGkoqhmdOd1oXbcMYJLraK86RoyuTVfuNBtJxJo19M3HVqL5wED3oOHpo3XP/dh8cj6mIAczxKUMaHzGEap/5UsgvqW+MimSOmjof9cM7+9w1FqFmAZXq+8T9lRvwO9XxpV49Shcl7UZ5kG86I2VSG2iZ9q+PlRwOCR2Q60n09PAAtr/87ort04vqvOnzRa+Ov5F/lDRJ3/kGZEIEssvVOueutokNqw4grGDDeInrhRAiFX8oev39xHn
+X-HE-Tag: 1768935380-252497
+X-HE-Meta: U2FsdGVkX1/bEXStVtCZdKZWU9YUQVwU6EVRLPJ6tdVNnywWYL3HDIdDy9LI70AX5b6mG5BEALsn4/QRyDsXtEdLHCniOIMG3ZxwkDOEJvH0NUeWliE7UFeXXaLJSmV/aqc2pbiD3E6mFrh40RdWVzHa4e/axEyVWB2knmYDO+O0ZP6rNL/MVZZtLVNJyLZasGkZMMKQSWDVVL3wGZ7J31Ga5lgjbBI8QdXyaLOVmIaRqjXQhm8P5k+Uf+494ydwPDYpaxH1CeUIaoM4ojZxphSmOKS480JcLMVkVmP0m02UR7G30s7Gnl7CLP9nBfax0hv/pQzWHqHq5pB5ZgAFJ/7KaYhONOCPvym4Rli9zmss7E879/lBPdnt66C8h0C2KhB2H39HIPNRp03r4eQFib0l3EqMDssfnpo02ipNkTiwyg0Cx4Y+5creRVbQwA+Gcug9y7+sdhlrxD9cnTC3Dtfb1Akz2lW6h1qs+l5Gv9O3lDDo1cMWFwtoOHqn1LIk0nx68zY82YEFFHHNNl8VESQsfdWhaviBrcECvMGcX6GIdheEODdv8xW/9xEUNh27yV8Qb2GuC+i7a2nOG+LjtFpmgfyNyeZS34ryDQlQnqwUH0DAmDjl+qRRAE4vt58UFDwAq2OAo0r6xQw7lmXNmQmLl5xxE1rDZrPI4Ss3dv2HBmS32EwCU79rzOFdNmZH/ZalX7o2+KQcPQ/e6rrJgcf0LY+nKHYkF2298kWslq/o5PqumTkRn4BFwXgef6Nkbp9E03i8ZdWzqBuU+JBaa/UpPbBQ6CIVJ6+hQV8xw9kgG+wrVlg6PwXR5Popa74DAG5Tw+R0dHGRhXD0r+NQuc1gP2ittHTt8hNaefBN5JpR3GKQrFpA0QvoUIMf42ZpFFucyYfrQFILNFmbV4PUrvnKv2jUqPgvDpU0X6Icjq1yfO7zjRDbCqvyjpwaXir6aY3XjIjjbbA2gLykE9K
+ H1K8M1l5
+ 2sO3OriiEyq3NCyQLmsZnt/SktxNx8nFSnO3C1ZiYIyTgqsZWFbvl/Xyg07Etx9z4mEBLT6KBpfLWivr4YpTbxR/y9hyREQynquYmFMWa9ASjZS5Q7nPhPI1NYqEMm+sR5G8JPyZoSFqR9JViCJFSdGQEM3PfbpTUkWzFF5+wV0ZHtARlSeyIfTbw7mFfO8Yy1omQG9SAgQgIj3G8rs5rTKibVw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,24 +99,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 20, 2026 at 03:19:00PM +0800, Muchun Song wrote:
-> 
-> 
-> >> No reparenting local stats for v2.
-> > 
-> > It seems that lruvec_stats->state_local (non-hierarchical) needs to be
-> > relocated in both v1 and v2.
-> 
-> Here we might need to elaborate a bit. Specifically, in the function
-> `count_shadow_nodes`, the use of `lruvec_page_state_local` to obtain
-> LRU and SLAB pages seems to also require these logics to work correctly.
-> For SLAB, it appears that the statistics here have already been
-> problematic for a while since SLAB pages have been reparented, right?
-> 
+On Tue, Jan 20 2026, Mike Rapoport wrote:
 
-Thanks a lot, now it is clear and yes it seems like SLAB is problematic
-but now I am wondering if it is really worth fixing. For LRU pages, how
-about using lruvec_lru_size() defined in vmscan.c. That would at least
-keep count_shadow_nodes() working irrespective of LRU reparenting.
+> On Tue, Jan 20, 2026 at 04:26:51PM +0000, Pratyush Yadav wrote:
+>> On Mon, Jan 05 2026, Mike Rapoport wrote:
+>> 
+>> > From: Jason Miu <jasonmiu@google.com>
+>> >
+>> > The `struct kho_vmalloc` defines the in-memory layout for preserving
+>> > vmalloc regions across kexec. This layout is a contract between kernels
+>> > and part of the KHO ABI.
+>> >
+>> > To reflect this relationship, the related structs and helper macros are
+>> > relocated to the ABI header, `include/linux/kho/abi/kexec_handover.h`.
+>> > This move places the structure's definition under the protection of the
+>> > KHO_FDT_COMPATIBLE version string.
+>> >
+>> > The structure and its components are now also documented within the
+>> > ABI header to describe the contract and prevent ABI breaks.
+>> >
+>> > Signed-off-by: Jason Miu <jasonmiu@google.com>
+>> > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> [...]
+>> > +/* Helper macro to define a union for a serializable pointer. */
+>> > +#define DECLARE_KHOSER_PTR(name, type)	\
+>> > +	union {                        \
+>> > +		u64 phys;              \
+>> > +		type ptr;              \
+>> > +	} name
+>> > +
+>> > +/* Stores the physical address of a serializable pointer. */
+>> > +#define KHOSER_STORE_PTR(dest, val)               \
+>> > +	({                                        \
+>> > +		typeof(val) v = val;              \
+>> > +		typecheck(typeof((dest).ptr), v); \
+>> > +		(dest).phys = virt_to_phys(v);    \
+>> > +	})
+>> > +
+>> > +/* Loads the stored physical address back to a pointer. */
+>> > +#define KHOSER_LOAD_PTR(src)						\
+>> > +	({                                                                   \
+>> > +		typeof(src) s = src;                                         \
+>> > +		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
+>> > +	})
+>> 
+>> Nit: not a fan of exposing code internals to the ABI header. But without
+>> this the definition of kho_vmalloc_hdr won't make any sense to someone
+>> reading the doc without looking at the code. Dunno if we can do anything
+>> better though...
+>
+> These might be actually useful for other KHO users. 
 
+Hmm, okay. Let's keep them here then.
+
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
