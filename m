@@ -4,122 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69FC4D2ED14
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D106ED2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:05:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FC176B038A; Tue, 20 Jan 2026 04:04:23 -0500 (EST)
+	id 1F3A56B038C; Tue, 20 Jan 2026 04:05:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CD496B038B; Tue, 20 Jan 2026 04:04:23 -0500 (EST)
+	id 1C4706B038E; Tue, 20 Jan 2026 04:05:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D0436B038D; Tue, 20 Jan 2026 04:04:23 -0500 (EST)
+	id 0FBA56B038F; Tue, 20 Jan 2026 04:05:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 673A76B038A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:04:23 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC4DF8BA32
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:04:22 +0000 (UTC)
-X-FDA: 84351755964.27.26E5275
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6413F18000A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:04:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fGDb6CKy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768899861; a=rsa-sha256;
-	cv=none;
-	b=3c4foaECJiM/Mi9jGxgYbSKJprv4JDAgHH9wKWN2Vo/q3C/rv6Y+P6LqzH7bEcnAb4qPcg
-	vJv0mjlf2cs47A6ggDGaG109kmrUjteJWLy3Y6+hQJctODLoyDYdygskKFjLYy2dXZsJ2/
-	x29h6JGWQKUDf5oQAgDSL4qT6vGbbt4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fGDb6CKy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EF3AD6B038C
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:05:16 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A21F41403B5
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:05:16 +0000 (UTC)
+X-FDA: 84351758232.23.190DC7E
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DE2D214000A
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:05:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=sxtVUNrq;
+	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768899861;
+	s=arc-20220608; t=1768899914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xsSgKIDuo4qDjit1pBG7rOXsILAbrUIuqR6z6YgwzJI=;
-	b=lxPeOGLS5FaJpAQxz6SL/9QGMo58QpFPOz0dEalPxShQQXzEDc4+MfHzGz3damSXf0t9b5
-	+1KK17Kiu2OIZbUh/ez5EZAH+bdKOoXrH/itpBRZF4lkv06ZBSjMKChYv+4Ki65vvlG/78
-	4a5SYr5rAONpebLxHOBVIDWmhrU5lKM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E0AFA4412C;
-	Tue, 20 Jan 2026 09:04:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27E6C16AAE;
-	Tue, 20 Jan 2026 09:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768899859;
-	bh=JhDsyPDpvGvdyDqhxS7TmcgEIlTc18FPxLf75vE9wzQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fGDb6CKy+f5LfPcob1huzIh9QAzk76QrguP0qOMXMNMmAKfWnMvffuvnLOaaLC7ew
-	 wiubvCikcdnsEOdPZbW0H4zHWxmUCevg43yAEJPXPT7hXH00W12HfQMEdyIDGD9O0j
-	 nz71osv3r1RJtNqoyCLf3dZK5Tzfa3wtmYACMeGkq0oSzzypljd57xjg95SjtXty51
-	 UWd/sW/tdqfH5YKWLFRsczUlBeW+ZFhuEDFDscE+KtGNfb9dtk0DPBFCrkx1ut54Lk
-	 X+2fXMq+FuO5POPWMylL14pwRJfTUXJAHUYehRsOz+2S0efemBjlbHErutvPMV85s8
-	 rd90Iu7ZfyW+Q==
-Date: Tue, 20 Jan 2026 10:04:02 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: NeilBrown <neil@brown.name>
-Cc: Christoph Hellwig <hch@infradead.org>, 
-	Jeff Layton <jlayton@kernel.org>, Amir Goldstein <amir73il@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Chuck Lever <chuck.lever@oracle.com>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Gao Xiang <xiang@kernel.org>, 
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, 
-	Carlos Maiolino <cem@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>, 
-	David Sterba <dsterba@suse.com>, Luis de Bethencourt <luisbg@kernel.org>, 
-	Salah Triki <salah.triki@gmail.com>, Phillip Lougher <phillip@squashfs.org.uk>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Bharath SM <bharathsm@microsoft.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>, 
-	Andreas Gruenbacher <agruenba@redhat.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-ext4@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev, 
-	linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-mtd@lists.infradead.org, gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
- nfsd export support
-Message-ID: <20260120-entmilitarisieren-wanken-afd04b910897@brauner>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>
- <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
- <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
- <176877859306.16766.15009835437490907207@noble.neil.brown.name>
- <aW3SAKIr_QsnEE5Q@infradead.org>
- <176880736225.16766.4203157325432990313@noble.neil.brown.name>
- <20260119-kanufahren-meerjungfrau-775048806544@brauner>
- <176885553525.16766.291581709413217562@noble.neil.brown.name>
+	bh=3fjzOR9RQDpRiigeCgSn0QNalR2ltrBLZFD1Hj4R1Fk=;
+	b=Zv1BvBG7d6QyZItweAzTdk1+S7J5UZAsJTyZiag8ITeHVELkd7tMUvHFjUKl46dlFqtz79
+	VNuIJZ+3SDaAYxTIHtq9S9dbwiVxKft0XKnFpy9/ay+PCojLyzNohUVZ+qU3J6J+v9lE5G
+	9hm4qEg/Fn8jBZLppPQu+tGae5l8DBU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=sxtVUNrq;
+	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768899914; a=rsa-sha256;
+	cv=none;
+	b=5skQbRo89iLz1vCG1yQcCJvn3TMf9uxpdM4WWA1X5/fFU2v9lFz/r9XDr68pd09cCdYRjo
+	jntFcUpJdpJskx7MOuO2V6t5ZdTqFRbmTeKcB8jkqNXK5v96NGCE6rw606R70sTXZW4zrW
+	eyq0/Oy3eraNEO3KdNGW2gy6j+DWzj8=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=3fjzOR9RQDpRiigeCgSn0QNalR2ltrBLZFD1Hj4R1Fk=;
+	b=sxtVUNrq0zhGG055Ry9BCVeQiu8OoMVeRVLgQM6NpMHmkGaEMVJhWmDQ7DfyjNgvvBADcj6mg
+	kzD2Ly7cmCvK3UkGy04HojRrnGGjsrJJmuiN7jRG7xMXf2ykiZ370meWOjRZs/tqg/5I9w0iUEj
+	4OBM4vwH9jQMhIlUBQkMaxY=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4dwLt00KTPzRhSH;
+	Tue, 20 Jan 2026 17:01:44 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7A3F2405A9;
+	Tue, 20 Jan 2026 17:05:07 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 20 Jan 2026 17:05:07 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 20 Jan 2026 17:05:06 +0800
+Subject: Re: [PATCH 0/3] selftests/mm: add memory failure selftests
+To: Philip Li <philip.li@intel.com>, "David Hildenbrand (Red Hat)"
+	<david@kernel.org>
+CC: <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<akpm@linux-foundation.org>, <shuah@kernel.org>
+References: <20260107093710.3928374-1-linmiaohe@huawei.com>
+ <9413a995-9182-493e-a28a-6d2d3a17236b@kernel.org>
+ <2ae04380-fd60-a8a1-6217-386454fec610@huawei.com>
+ <693dc9aa-cf86-48c7-be9c-ec554f9da855@kernel.org>
+ <d958d80a-8412-6107-e144-975b8d545568@huawei.com>
+ <b258b6c0-7af1-4443-bd81-2722dec610f7@huawei.com>
+ <d6a544a5-9d22-4c89-bd53-92330f4a9f51@kernel.org>
+ <aWZRKk92pYvwBLj6@rli9-mobl>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <e62bda7d-4584-3f5d-f1f8-7685ca4d92df@huawei.com>
+Date: Tue, 20 Jan 2026 17:05:05 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <176885553525.16766.291581709413217562@noble.neil.brown.name>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6413F18000A
-X-Stat-Signature: gy7gmyo6nxapbj756im9huzr8eoey3nj
+In-Reply-To: <aWZRKk92pYvwBLj6@rli9-mobl>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-HE-Tag: 1768899861-919016
-X-HE-Meta: U2FsdGVkX19qJ9q3+yZj29eWjJ2RTTYxPZjDq3HSFo0XQhsppxTpKxEeMEscEHbAuhq3gbgjQLMEErjLo5UVetWobXnmnY1ZPuwBa+56cd288mXe+fyFdFdJ6HJgol9w+c4hM1cSI/tPawyUNocZaMaZdGIJQ6sE4u9coT2SoMiw4JAxN2jk7uJ3Qsb0vPNIPkEOb9HCYDhmLuddkdOcCIGUdxN7tvU9y9upc9O5kYlw/aDkJDaz+OeciSvp9savSsxBxZKDOHL6pvYMTv8y69jiMCFsV7uxqKNRHWCFIhMeR7mH61F3PKl4rSJ5rWDLnPFAjS5ksw+wWmnSaPptJSKVVc22gLWdxJZFHgmURWIM7/UUEqw1rhsm1Oxtnrv861RX8qoZdqcmo9S79DjH7xVUYL24CVhdMbc7hPAJCsquQxv2OlBYS1V8lwQkJl7AU2R8R1Ijw/82WSBaSZviHja19vlkGeARXKhl0pp2ZeFunaxB+rRs784uvbudHcoRKbQpnMLMXFrP5HJUcS9E5jcka7KesSQqbf2aclw02hUaa7gPOrz1lf/gi0xU6SCAPfIEHi8zRtNhgK1L7our0O2Z/+98ZdYH4VXS5Hj6933CggARgvOn+luROLwI95eqM4OUHmhN3oyveNMpABEgDxkUl0Fyz74xAJ1dfYerhGMGn3B99swUCPcysKWK7+t/bOw9x8s0q3jCtQg47f6Z302Z9EPU2axCGIzFdnswz1uQVoUqhBHqsK+kCS3XYsZ1bLvkcP4HSaQRQpocmfbO9/D2IPfr32yM/sHxqGs2MQ/6dYU3xhowYnRTRzNo4GcCDx4oMzY5zVOH7b5uvC4JdB36eeKuoruBYwg6im6woDXoxIcEi9EBaYGJG+oiK+QwZHsjqDIX76i+iDJEHXdaPgqAU5wekViE5zqwcpJn0y7sQ7dyl3IavjfL7UG198StZ5nsNsRUAqCLvOHuQIa
- azhrNfBn
- ren/ZB3ptqqN2uxeyKrNb/h7bn4wvb0L3Ph8U
+X-Stat-Signature: pyamfo8rex786bnmxksxksmonxsr97bn
+X-Rspamd-Queue-Id: DE2D214000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768899912-885990
+X-HE-Meta: U2FsdGVkX19w9WH8nGUbRTI81gbq8HGjikaRK6O/JjJW0Af19UdkdQqS9LzEa5y33Qnn0C8g47HIe22a1Rdr5ALSDNwadFQfLpGe7P0TbOLL+dt9AGvGoxZoliG2fZHYVxzBhRYDWZ4At+X9SnlqWUAClAEBiq5Wjejr5e3XPs03Kv3MPk8NMmr94vxHmvp2KPav8dY9ez8h16pjG38bFO666895ndo+YRPc3yfgeZty0+ZbMfPk6afTWtWBP9UcMjEDPSeKFm1/kHwWAH07meyIIEjq2SJe9xf4mGaqxKaRJ1LwkcaONh9bA2Bm1F/LePyAphMfD1Vjy+vMweq5QgQXu3d0fxwnofZi80NM7yxsUk7JAglPP3aEFEvrWkABryy/36kyV9wyrF90z2JrLRCYFypb8pjJExnc7hDVJCgRTITCD2emZM4fnBPsuYcZgCLwNZE2f5UEP/0Q/mbCFfG8IH/12YABozn0Et0abqLN7ZHAFZOI/ZLmUQtROigxh8eljMveSO/PHCh/XFZCmh9an6Vu4fDUNq0F09sXV6YLEBiUf/Ai3yO5fGmaQRG+mSKbxSgIA9oqAdh6QLjldaBZE8Q4KNM9lH0J82RO7+VasS4wjeGM2JnSUEj6pP9mIwh4yALTdfP6ly8WWlRaEf5Q+Fru2XsW+FRqDxIpBvgpDyg+uKlOjy3R0wmQHrnfHkVAckw9QU5cYa4x6aOp/P0PDMa0a3YwLGcgTlxGfqj5OUE4TSto57rORzqopk71jZImbZop/FyahxUXSk96WXX8OtsQKSA6HBSVMOm6MzHl1E+2lEtW+3WJlKvKmhxCjaKx9GDlxcjaODksuwOfs9rFWMIrji9uAzvhyxb5xqMaEieibC/ZlW98c1mCcJJmXjgYku2hgaqkTxIxc0F+u1Bm1Cs+nY5mFp2OAMcS2o+oIZQHGODpXDoMdOScjN5tAoTjbyST9jnVU73g6Gc
+ NQe6qQYO
+ Fzo1qw6jSiD7wLfWhmefWMc/NggT3DGKB2UuHqVlq/eECKBjLHI5BcaL3P77Pg7BtESaDULqdu6LC/oTbt5L7/01ENeg7OQg5LT/y2zfIDDs4n14K9GB/hX1bkOlT5mpRxeCxhsXXFwn60dDwJvbJJhYEoNg4Z52DH1AORC4kOG/BYcTcxCslftC+cGaa7s1pHJ+q8/ssVOUQx7lPZLOiytkllPXtXDhlX9r/XGzKMynn6japr8hkBVujbSgL4foUyZGp3JmmO1vDDNBmr4YHUqOG/ECY2dUliCeDUj09ZV5VFj5EKl4Iyvu63mCCfgaTh94CuqzSpWSsMhGLrR2tPHKnIc5e9XBcXNsQYa/QvBqHIgomT14pXcBvdA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,90 +115,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 20, 2026 at 07:45:35AM +1100, NeilBrown wrote:
-> On Mon, 19 Jan 2026, Christian Brauner wrote:
-> > On Mon, Jan 19, 2026 at 06:22:42PM +1100, NeilBrown wrote:
-> > > On Mon, 19 Jan 2026, Christoph Hellwig wrote:
-> > > > On Mon, Jan 19, 2026 at 10:23:13AM +1100, NeilBrown wrote:
-> > > > > > This was Chuck's suggested name. His point was that STABLE means that
-> > > > > > the FH's don't change during the lifetime of the file.
-> > > > > > 
-> > > > > > I don't much care about the flag name, so if everyone likes PERSISTENT
-> > > > > > better I'll roll with that.
-> > > > > 
-> > > > > I don't like PERSISTENT.
-> > > > > I'd rather call a spade a spade.
-> > > > > 
-> > > > >   EXPORT_OP_SUPPORTS_NFS_EXPORT
-> > > > > or
-> > > > >   EXPORT_OP_NOT_NFS_COMPATIBLE
-> > > > > 
-> > > > > The issue here is NFS export and indirection doesn't bring any benefits.
-> > > > 
-> > > > No, it absolutely is not.  And the whole concept of calling something
-> > > > after the initial or main use is a recipe for a mess.
-> > > 
-> > > We are calling it for it's only use.  If there was ever another use, we
-> > > could change the name if that made sense.  It is not a public name, it
-> > > is easy to change.
-> > > 
-> > > > 
-> > > > Pick a name that conveys what the flag is about, and document those
-> > > > semantics well.  This flag is about the fact that for a given file,
-> > > > as long as that file exists in the file system the handle is stable.
-> > > > Both stable and persistent are suitable for that, nfs is everything
-> > > > but.
-> > > 
-> > > My understanding is that kernfs would not get the flag.
-> > > kernfs filehandles do not change as long as the file exist.
-> > > But this is not sufficient for the files to be usefully exported.
-> > > 
-> > > I suspect kernfs does re-use filehandles relatively soon after the
-> > > file/object has been destroyed.  Maybe that is the real problem here:
-> > > filehandle reuse, not filehandle stability.
-> > > 
-> > > Jeff: could you please give details (and preserve them in future cover
-> > > letters) of which filesystems are known to have problems and what
-> > > exactly those problems are?
-> > > 
-> > > > 
-> > > > Remember nfs also support volatile file handles, and other applications
-> > > > might rely on this (I know of quite a few user space applications that
-> > > > do, but they are kinda hardwired to xfs anyway).
-> > > 
-> > > The NFS protocol supports volatile file handles.  knfsd does not.
-> > > So maybe
-> > >   EXPORT_OP_NOT_NFSD_COMPATIBLE
-> > > might be better.  or EXPORT_OP_NOT_LINUX_NFSD_COMPATIBLE.
-> > > (I prefer opt-out rather than opt-in because nfsd export was the
-> > > original purpose of export_operations, but it isn't something
-> > > I would fight for)
-> > 
-> > I prefer one of the variants you proposed here but I don't particularly
-> > care. It's not a hill worth dying on. So if Christoph insists on the
-> > other name then I say let's just go with it.
-> > 
+On 2026/1/13 22:05, Philip Li wrote:
+> On Mon, Jan 12, 2026 at 08:38:58PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/12/26 13:44, Miaohe Lin wrote:
+>>> On 2026/1/12 19:33, Miaohe Lin wrote:
 > 
-> This sounds like you are recommending that we give in to bullying.
-> I would rather the decision be made based on the facts of the case, not
-> the opinions that are stated most bluntly.
+> ...
 > 
-> I actually think that what Christoph wants is actually quite different
-> from what Jeff wants, and maybe two flags are needed.  But I don't yet
-> have a clear understanding of what Christoph wants, so I cannot be sure.
+>>>>>>> # # # Starting 6 tests from 2 test cases.
+>>>>>>> # # #  RUN           memory_failure.madv_hard.anon ...
+>>>>>>> # # #            OK  memory_failure.madv_hard.anon
+>>>>>>> # not ok 71 memory-failure # exit=1
+>>>>>>>
+>>>>>>>
+>>>>>>> Can the test maybe not deal with running in certain environments (config options etc)?
+>>>>>>
+>>>>>> To run the test, I think there should be:
+>>>>>>     1.CONFIG_MEMORY_FAILURE and CONFIG_HWPOISON_INJECT should be enabled.
+> 
+> in 0day env, the configs are below
+> 
+> CONFIG_MEMORY_FAILURE=y
+> CONFIG_HWPOISON_INJECT=m
+> 
+>>>>>>     2.Root privilege is required.
+> 
+> yes, use root to run
+> 
+>>>>>>     3.For dirty/clean pagecache testcases, the test file "./clean-page-cache-test-file" and
+>>>>>>       "./dirty-page-cache-test-file" are assumed to be created on non-memory file systems
+>>>>>>       such as xfs, ext4, etc.
+> 
+> this is a problem in 0day, the test is running in tmpfs. Let me further check
+> to correct this.
+> 
+>>>>>>
+>>>>>> Does your test environment break any of the above rules?
+>>>>>
+>>>>> It is 0day environment, so very likely yes. I suspect 1).
+>>>
+>>> Hi David,
+>>>
+>>> After taking a more close look, I think CONFIG_MEMORY_FAILURE and CONFIG_HWPOISON_INJECT should have been
+>>> enabled in 0day environment or testcase memory_failure.madv_hard.anon should fail. memory_failure.madv_hard.anon
+>>> will inject memory failure and expects seeing a SIGBUG signal.
+>>
+>> Good point.
+>>
+>>>
+>>>>>
+>>>>>> Am I expected to add some code to
+>>>>>> guard against this?
+>>>>>
+>>>>> Yes, at least some.
+>>>>>
+>>>>> Checking for root privileges is not required. The tests are commonly run from non-memory file systems, but, in theory, could be run from nfs etc.
+>>>>>
+>>>>> If you require special file systems, take a look at gup_longterm.o where we test for some fileystsem types.
+>>>
+>>> And I think the cause of failures of testcases memory_failure.madv_hard.clean_pagecache and memory_failure.madv_hard.dirty_pagecache
+>>> is they running on memory filesystems. The error pages are kept in page cache in that case while memory_failure.madv_hard.clean_pagecache
+>>> expects to see the error page truncated.
+>>
+>> Maybe they are run on shmem? Good question. (@Phil?)
+> 
+> yes, it runs on tmpfs, let me further check to resolve it.
 
-I've tried to indirectly ask whether you would be willing to compromise
-here or whether you want to insist on your alternative name. Apparently
-that didn't come through.
+Thanks both. This information is really helpful. I will add some codes to handle this.
 
-I'm unclear what your goal is in suggesting that I recommend "we" give
-into bullying. All it achieved was to further derail this thread.
-
-I also think it's not very helpful at v6 of the discussion to start
-figuring out what the actual key rift between Jeff's and Christoph's
-position is. If you've figured it out and gotten an agreement and this
-is already in, send a follow-up series.
-
-If I don't like it I can always just rename it to EXPORT_OP_DONKEY_KONG
-when applying.
+Thanks.
+.
 
