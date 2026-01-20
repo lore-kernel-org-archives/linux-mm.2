@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FB99D2ED11
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:19:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D1FD2ECF7
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 09:19:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C2426B0392; Tue, 20 Jan 2026 04:19:36 -0500 (EST)
+	id AAD5E6B0394; Tue, 20 Jan 2026 04:19:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 943CC6B0394; Tue, 20 Jan 2026 04:19:36 -0500 (EST)
+	id A0AD86B0396; Tue, 20 Jan 2026 04:19:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 751D36B0395; Tue, 20 Jan 2026 04:19:36 -0500 (EST)
+	id 8CFC66B0397; Tue, 20 Jan 2026 04:19:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6421B6B0392
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:19:36 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 33FAB1AF0C1
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:19:36 +0000 (UTC)
-X-FDA: 84351794352.02.F13B16A
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7421540003
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 705E76B0394
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 04:19:37 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 122161401A4
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:19:37 +0000 (UTC)
+X-FDA: 84351794394.30.77ACFA9
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3E50D1C0007
 	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 09:19:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=eFA42CRZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3pEhvaQgKCEUztvz0hmhnvvnsl.jvtspu14-ttr2hjr.vyn@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pEhvaQgKCEUztvz0hmhnvvnsl.jvtspu14-ttr2hjr.vyn@flex--smostafa.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768900774; a=rsa-sha256;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=G374bfE5;
+	spf=pass (imf21.hostedemail.com: domain of 3pUhvaQgKCEY0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3pUhvaQgKCEY0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768900775; a=rsa-sha256;
 	cv=none;
-	b=Hit7eSCc9HypWiCgeP2uIb3x4t6PcFVyvgnMIkepXwX2KgGpCFQ3B7KJwhdQbgSuagefJm
-	0qJesVPVgjr13R1+Lj2r1hDQQYYamTCuKCnZ/4v157ftlloXqEuZ0FO5Oz0egjKGqJyzqP
-	gawHE04iNlHEze9XmD2/3CMHtOTLT2g=
+	b=0vzawTOezUXW7H2khDq1dMG8yov5O/s1fjk01F+yJU2OwYifUqiiKt+j7pBgX4r36sYO31
+	BW3FW+pMsk6BmJib+TG8WituzTaL7ZIOPft7VizCRlHbBBseFIMrS5IxTR/GULRfev2xrJ
+	7M34UdRfbCo19md0mdZV8Z9y+gWUMnw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=eFA42CRZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3pEhvaQgKCEUztvz0hmhnvvnsl.jvtspu14-ttr2hjr.vyn@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3pEhvaQgKCEUztvz0hmhnvvnsl.jvtspu14-ttr2hjr.vyn@flex--smostafa.bounces.google.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=G374bfE5;
+	spf=pass (imf21.hostedemail.com: domain of 3pUhvaQgKCEY0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3pUhvaQgKCEY0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768900774;
+	s=arc-20220608; t=1768900775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X0gVSCji/amPzVpAugMKA+gNQb8Vp/dW4y1DM63bYO0=;
-	b=4C961dEH0bp9Z5g3MJftKBzOWnEcXc2n35Hf+WTlsADWb2yzF6vzUc7XLFjlujc5C1SQA2
-	zcBmPLzG12/q3TjrkVRFq6PpPzii8JlNN6JtQREMt8E0db8nAd2C0EgYKqO5hQLnp8OGe8
-	SKLaLuLlJ45D6uzxUIvuvIY4jFLkpV8=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d62cc05daso35497785e9.3
+	bh=AU5Nlg7dydy9DysYi/5+drcb7JZfuoXoKO5f+zthvtA=;
+	b=aGW443cpA6qdgmT0IfTcokw1mv8MtxRnrIlZyC2FXWJh2kNb259wqiW4OKP145EzPQBR6W
+	xOhyWxUAvXzVnJHnZoPU1ReyTeldpikWCBCwNKZZJuvHuuqwQknuj3Ua/XUeeGHjg7JSy5
+	XFruGMp0JGCiRkimZebNjSPQwdxdkDg=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-432488a0ce8so4240783f8f.2
         for <linux-mm@kvack.org>; Tue, 20 Jan 2026 01:19:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768900773; x=1769505573; darn=kvack.org;
+        d=google.com; s=20230601; t=1768900774; x=1769505574; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X0gVSCji/amPzVpAugMKA+gNQb8Vp/dW4y1DM63bYO0=;
-        b=eFA42CRZ86hUI5mlBmUow37PD+V8I4DQrFo4veEcXN14yj7KvdKEuj5vnNFYxcFKnD
-         cn0XCJXFuOU90+fh5ghrU8+kyuqQwH4HPrdtnLxq+iyK7IeSMXvNbiCT5t7od5Ud44nT
-         qgC1sT/P17laM5VQw0f+KkOZNCnZHSrfcG5/cX6RMIkxBLEF8lLtTSnkYI2QlylarbZ6
-         CyeYIjRoMSSBZCBzhBEA7uHwnNrUpDjd9bnKRgiJcV0HyQUy6Z62bkI7YSq+jv4+Z+RD
-         xJENJQYT5o24uA/EXy8M3bYQi2pc1LivMi5FfrxMMAUvKqESHG90Y1JokzSNVsbrvBMf
-         YJaA==
+        bh=AU5Nlg7dydy9DysYi/5+drcb7JZfuoXoKO5f+zthvtA=;
+        b=G374bfE5P+m63RVDsv9xSQJgO3913BrXUa8eJQx88PpzxgER2xIpoqzMenT+3XIPU/
+         gyMala6U1SQ4ZNItnsKp3ZgGlA6UVkLZrNG/R69Jr9uDhJXazO0esl2kfyp8KihsrDVT
+         w/XJaSUHl8UKUdFCP0CoKHbqkGYeQpm+KwKPsPjCt3/C9Vr9qviFWf6bXmqRvTFONqwR
+         97pFHePxvl5Q1BRMzgLbAdeWIKloI2Z33gcvbVvNoYrWkAySVXGs9G8+m20dfcAgLyDv
+         Hnz6lShnWh56EZhQJikM6PFbJjJOc02PTMpQhLQen18bGsmTjEp/GaFdjze4mszAt/Mw
+         FUXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768900773; x=1769505573;
+        d=1e100.net; s=20230601; t=1768900774; x=1769505574;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X0gVSCji/amPzVpAugMKA+gNQb8Vp/dW4y1DM63bYO0=;
-        b=Q6G9ggTqGElzkcCM09d9m96glkPb/kmjkP1KDhWj1JkfFOTn+oIXkL4ZD8ux6C3+RP
-         lf43NMs94v0TSnh37zD/qluCZCVbdUUj1AbgrCa55pjDoBz4JV2WOt0bIMegPDwhmS7m
-         +MPgp8z6bC+Wjj2oiBD8Wwq9ttZUyVjly7Qbo6IV+D9atdSLzIcoJ++tnBvUHfJ1rqGU
-         ut//qLs3nw9HO4J+8gHh5ZPKQ7iixaznPTvsPEbkjwy9IyuhNGvMBp4yPLrDdxFwCjhD
-         NsuNFr2FwSMaDuIzhUV2YSna5iMD1lrxy8Xz++M447GbpZdKdRDVHtl5kguipVdRPc6i
-         H3+Q==
-X-Gm-Message-State: AOJu0Yx8NUY2qy1qOoUemkXoQMeYR4AiP8PXQKvdIU8wfIO0tZA4qVrz
-	22ggvrwVZ5j6EZ2HroiEc255m50aQMBToH8N+zmYxu2X+5sDJBMXrNZ8gdbPgXex087pbLBiMWV
-	9QcCAHgOMWwEnyqNzcd9Ig9rT82L6h66/p5hjJ1oUClDTzhkdsUb1Zpnes7/q8P+cOkxUnSutoI
-	c13CnsoqYW4lfivMekjujK0TMMCZNzgU+UFZ6HPnZhFg==
-X-Received: from wrbgz21.prod.google.com ([2002:a05:6000:4815:b0:435:64f6:e987])
+        bh=AU5Nlg7dydy9DysYi/5+drcb7JZfuoXoKO5f+zthvtA=;
+        b=fqMFxj4EjEzYcIKtFFdbWllIS0STiSsdHCSy4p+Nuuu36e0fCYnfJFFz5qGBkw5gJc
+         OikJj17uy7KljGeRpJu0oISz30pN+YXYJ8iSY1PleAP2hFLalhYOA8rr4QEBsZ1yHqLS
+         WTtillLqOXVMuWN/Fpx1KfqxmId8B7O1JduiyZ+w4psXYdk2m7cEZ6McwZay06peCrKy
+         HG3hLzDnJEx9VinMeV6hFbNdci2i8zX8BXiGHTFTozx8VKqi9xzJeYe0p0cFKx2s6hpC
+         B8J57cKD/+s0CK9zPG6tf6nxwaGnF3uD+w0gEVCSvOw90tdCPd2pVc9KKXWhUlKWH5zw
+         kD/g==
+X-Gm-Message-State: AOJu0YwXWJRUzdKWGfhv5Utam+6kUTTGCCCDCSw3b1VykVbT0rUaICkn
+	ObEgWXS/YK/bxkjS5kQjYhW2bA/c8282ojvEdCV3cZY4Ex6923Z/vBLm3+b3YCUelRTgwxoqzES
+	fJXQ8YsmD8MmLBC5v6ObNTVBjo7JHKQQM+XGGIBozbpI3qvG2a+TW+pgRvJ6AD3TDQirVrhdX2n
+	lO8hSfTuq3kOVOroeKw1Hlx9ImqkPJhlCVLBLhmMl+Cg==
+X-Received: from wrbef5.prod.google.com ([2002:a05:6000:2185:b0:435:8d79:2bc8])
  (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6099:b0:47e:e952:86ca with SMTP id 5b1f17b1804b1-4803e79b81dmr13478605e9.2.1768900772778;
- Tue, 20 Jan 2026 01:19:32 -0800 (PST)
-Date: Tue, 20 Jan 2026 09:19:25 +0000
+ 2002:a5d:5f90:0:b0:42f:bc61:d1bd with SMTP id ffacd0b85a97d-4358ff62652mr1802129f8f.45.1768900773611;
+ Tue, 20 Jan 2026 01:19:33 -0800 (PST)
+Date: Tue, 20 Jan 2026 09:19:26 +0000
 In-Reply-To: <20260120091926.670155-1-smostafa@google.com>
 Mime-Version: 1.0
 References: <20260120091926.670155-1-smostafa@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260120091926.670155-2-smostafa@google.com>
-Subject: [PATCH v2 1/2] mm/page_ext: Add page_ext_get_from_phys()
+Message-ID: <20260120091926.670155-3-smostafa@google.com>
+Subject: [PATCH v2 2/2] iommu: debug-pagealloc: Use page_ext_get_from_phys()
 From: Mostafa Saleh <smostafa@google.com>
 To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org
@@ -97,14 +97,14 @@ Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
 	xiaqinxin@huawei.com, baolu.lu@linux.intel.com, rdunlap@infradead.org, 
 	Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7421540003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ykyr4utpa5d15zjxq17p8ezmg357i3eh
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3E50D1C0007
+X-Stat-Signature: 894szjc9q73kc7oxhhzsibpsn9ujyfbk
 X-Rspam-User: 
-X-HE-Tag: 1768900774-975576
-X-HE-Meta: U2FsdGVkX1+icUxoCL47kh0xq/i5E6pXTYI6LVBUoazMLE7uPoFn7jbZh60Crcxgjeks5pha51I+UFktCqk+KiyWVmt2Xogm6ps6WHe3aLsWDb4ppWbkw7Ml/+wDeBc2zlLjmIlM6JxS5Ukrh4a2UIIzb26jaEazs7h4uIG1ONytITdsFkgU0EBQFaCMBcpoaRehtrvxPPZebLqrO/naUNZmKYOhhaI/kNFA4+i3m9VSJXToUdnTZ6hAFa3j+nqBWD5087APABch5Sbv72bO/qC+Kksa3MumrxSrUCt4U9TSKGg4Zpyo0A00fPBpURVlCc+524SNmMTZ81qPElPB15/QCcOfx6Kvc6MWnl7rVwWRHI/XYt15w6Y26xiDOz7sXzG7QuHpEA5c4lWgcEkJxOBuE5GnFRCkKn7GjP4CqOH35l58tyPfoT/D0KDV4fnSkDwErKPHslgHoupFmdGUwQ9oX2WUUyRgBEehuTg4yr5nTt63BvjA7q6b79c+POVoqLTI6/MJw+RiLUWpX8ty9MbbV6T2mLVaj4bQ/0OxkW/q8lZKZevwpRxlWvsDcNJ9azhep9EFjwBQaX3Eh64/Kcpb01/mbCiY0S/rIdKt9apb3Bw6q3xGQfRdMHhbvbrVZdbBstNN4Nt9pIZ4+vKtK3V3y/01SFSVbXx7KLek/oL4cpKRvwAJyi9knGRtWc0v+JAfhZLuwcOctGU+4O7wOTYtHI8M9c0M+G+Og9Dnu435L0ss5D2idfhTQKdQZcWCN7/fbAYKkC4qool4OkTEb/v1EZVYCCd8JVxTD41i5JLgEfVs5XgVS5A0ehi9jd4SuhRZduR+VccEihuUJexVrRlA63Tq1XFi8iArxqCZd7wq63r6lRrV9fXJ/lcIW/9qVaG3oCEFtQ72iQFmxPMY9C48BhQX2SYMDUnam4xQxhCIPJZv6eiiAM92PZhLoVQmeLUovRgz97upBmbxTOP
- INApy/Xz
- QJ2LJfRCk2G3jfMe7lsL7hJItl3IewnYPnWgA2aZMiIoKsCfZLWqGEgEQo0xjACT1V69bl3vV8wLMPe0t84lsiUE2azLJSOIIMX7/md5BwXS/0FVVS8776vLIVrptfyoG7+zLXdzLfK9Y7LC2/ptRC2pLbu4f4/EAiiOw4E1EwnWUFXDFJc742xMJtkHCB+TNGmmRTO07vMGytqQsKrUgmSA3dvBqJva8cz6ZSG4LGPR57NX2/akgPlXUQsIku5o6XhJiE5hMSNn6MAcA4ipWaJWP+yRQvnRO5vEiZcXHh3q/uzsRt1dXiGa2BW6xpmmu3U8ez9qYBetEqmtXggu3uy5EBlQDGrvkj9jbycUYq7vdr1FlUTit58uZUCNPyY0Pg9K3Hz8/AL7nzR65F6nEh92M2K7coIkaz6XH7tIuafQBJHsVGOYyzeF4asxNLKgQ4EZSnJ+c57+mMKgq8V54x30ifnkLhh1Bg2S7IQZaMNk0llj1dAg5/eU6oJU+SQfeBN1y/2SPLEcvboZoaIJp1ePcqhav18oUHCOc+6y7GBFJIZVkt/4Px7rMayEmTbQnmzK/ssGVDUKsrV1P+sU8UZ0VHlPQ2bOjHwWf
+X-HE-Tag: 1768900774-86980
+X-HE-Meta: U2FsdGVkX18rp5PoUFnUo6d2zr8KpEzXXKZN4DtD62Gxl3GkXsbgEUrUOXMkoHjn3N+5dib8yzTTEml5fDNm+v8A0/VODgcx5l12v7BYifMrXq64XrMao6djAAA7WneGqMz6iZQhJXBgQwXqquk8sbvp1TfGzyEOkPbGOnTLbgGOucNdY3u2CPgQwRRf8QJHFYSDC1x77sVcHWDawnQgcb8/vx/WTASPGEyKGJBy9GrTUSinQlWrZjnLDYtYgoc1L+vsFn0ECqFw2twyJE4gdbN9g6ZdekBxdE7rZJG7uZXHDLhCVr33UmYxx0QGFGjOpnqwrVkapk9VXPVVvbYELsBO8hBQ+x6LfG4J/Qnmb0rgnkztDCJD3xHyKRJE0XmFTDfz2f9kS/77iOAxew8lQM6EVPubmGVTCVJ0R8dC9z2FdTlGeROx1F63GPbmr0kCQK8a+y2jdcKECpxk4xKls9Dd+mZdc+cySd6ZHN3NB4DOAS/BKqqMXbeWruY3wUzGsAPH/Gc+F+snOmLN45NaOYWEw8vtDzKg6bpFlpLqWfJ9SsEtQJa24lGNZdx7i18/6ZoaoJ4U/u1obkU8ZyPs9LJ9/ZzXi/OrJIsY3GRYu69gSlnqTCgrolzdl2HN3fwLljVmS5Kb69iSHPZHoQbctNs1KzqorqBSBRuwcRdZ37CloWempOUAqzCGw5T0DeluaV6sLOy/n6AkWgeyhV8BfN622/z2zlBoTKFPC9e5GfwDElaQ/b2jKDFFZYxBsqw1RZuN1e2V+JvrA3k0XQf7lb1LwdLGyremU5BB0HbL0wlnhihDup7Z3AY48tZS1BMtIwv2QAdCxXVBR5Tla3dJq6wMXggWXeGdb3CitOdyU3TUOW6UcR6hHdrBsZddE0m33EleXGmTbdOcXqtO31D7D7Iuew2D4wb/inNup6ZT4D7B5r3izcYVvQ1OYb9IDW+1EEm7H6qd1PdcpQDFRoq
+ RLQnvFko
+ UiKi/A/Qwa4Iep/FB4Oq71jyp6lV0BPAG1HzssplmMkC9gny1MPJl/LA89aVUAQj/IimBPce1m2sC3v4bBgJv3NrmVLaVDwXAwybUDnbOMKG8wSIztW6D+mHUqHGsPbEgxLYDY9IPGdHsvx3SoJNnpTioXRGOfmPBDro8I2oOrZBlPWMALlQRnoK3AA+zva5c/n2Q/36vuYiCaHwLfJhDU4PTXIVdsz6G2ovX7AymcbEfSo4Ofh5PRWBnfcVzQgoaKj3BIGn1GkAb6R9CKCr+EHg2TJMUCFCyO6TaddnTFy8x8CdoSdJ/3CTBXpRTyw6Kwa/1wowqLE0w+2l71mVNgMDJDwN0xe8Cbtjc2b1/Gz5M2jFWMQxXPCS+HaY5PwaygFiQGV+F9uOg0j9/OZhHCGK6tLMsV2ZhkeQzanZHhfWFRa63eh7gVFKonnnOJ8CFM0LdzHpYBHUDtF7APHy1kVsGPefiBB2WGFwBfLcF25TUNv4NKQrb2v8K3VBen+MKkugzmvpQNbPla/Rp03/ObqCUIYFAF2esjJlf7CXnQjBoCSM7/xTeTx7ixtQxZPAVhfnUuciA48S2MSmP7d7CwL9pwp8rlEhUnVhz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,76 +113,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The IOMMU code operates on physical addresses which can be outside
-of system RAM.
-
-Add a new function page_ext_get_from_phys() to abstract the logic of
-checking the address and returning the page_ext.
+Instead of calling pfn_valid() and then getting the page, call
+the newly added function page_ext_get_from_phys(), which would
+also check for MMIO and offline memory and return NULL in that
+case.
 
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
- include/linux/page_ext.h |  6 ++++++
- mm/page_ext.c            | 23 +++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ drivers/iommu/iommu-debug-pagealloc.c | 31 ++++++++++++---------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
-index 76c817162d2f..61e876e255e8 100644
---- a/include/linux/page_ext.h
-+++ b/include/linux/page_ext.h
-@@ -93,6 +93,7 @@ static inline bool page_ext_iter_next_fast_possible(unsigned long next_pfn)
- #endif
+diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
+index c080a38f45a4..80164df5bab1 100644
+--- a/drivers/iommu/iommu-debug-pagealloc.c
++++ b/drivers/iommu/iommu-debug-pagealloc.c
+@@ -30,14 +30,6 @@ struct page_ext_operations page_iommu_debug_ops = {
+ 	.need = need_iommu_debug,
+ };
  
- extern struct page_ext *page_ext_get(const struct page *page);
-+extern struct page_ext *page_ext_from_phys(phys_addr_t phys);
- extern void page_ext_put(struct page_ext *page_ext);
- extern struct page_ext *page_ext_lookup(unsigned long pfn);
- 
-@@ -215,6 +216,11 @@ static inline struct page_ext *page_ext_get(const struct page *page)
- 	return NULL;
- }
- 
-+static inline struct page_ext *page_ext_from_phys(phys_addr_t phys)
-+{
-+	return NULL;
-+}
-+
- static inline void page_ext_put(struct page_ext *page_ext)
+-static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
+-{
+-	struct page *page = phys_to_page(phys);
+-	struct page_ext *page_ext = page_ext_get(page);
+-
+-	return page_ext;
+-}
+-
+ static struct iommu_debug_metadata *get_iommu_data(struct page_ext *page_ext)
  {
- }
-diff --git a/mm/page_ext.c b/mm/page_ext.c
-index 297e4cd8ce90..e2e92bd27ebd 100644
---- a/mm/page_ext.c
-+++ b/mm/page_ext.c
-@@ -538,6 +538,29 @@ struct page_ext *page_ext_get(const struct page *page)
- 	return page_ext;
+ 	return page_ext_data(page_ext, &page_iommu_debug_ops);
+@@ -45,18 +37,26 @@ static struct iommu_debug_metadata *get_iommu_data(struct page_ext *page_ext)
+ 
+ static void iommu_debug_inc_page(phys_addr_t phys)
+ {
+-	struct page_ext *page_ext = get_iommu_page_ext(phys);
+-	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
++	struct page_ext *page_ext = page_ext_from_phys(phys);
++	struct iommu_debug_metadata *d;
++
++	if (!page_ext)
++		return;
+ 
++	d = get_iommu_data(page_ext);
+ 	WARN_ON(atomic_inc_return_relaxed(&d->ref) <= 0);
+ 	page_ext_put(page_ext);
  }
  
-+/**
-+ * page_ext_from_phys() - Get the page_ext structure for a physical address.
-+ * @phys: The physical address to query.
-+ *
-+ * This function safely gets the `struct page_ext` associated with a given
-+ * physical address. It performs validation to ensure the address corresponds
-+ * to a valid, online struct page before attempting to access it.
-+ * It returns NULL for MMIO, ZONE_DEVICE, holes and offline memory.
-+ *
-+ * Return: NULL if no page_ext exists for this physical address.
-+ * Context: Any context.  Caller may not sleep until they have called
-+ * page_ext_put().
-+ */
-+struct page_ext *page_ext_from_phys(phys_addr_t phys)
-+{
-+	struct page *page = pfn_to_online_page(__phys_to_pfn(phys));
+ static void iommu_debug_dec_page(phys_addr_t phys)
+ {
+-	struct page_ext *page_ext = get_iommu_page_ext(phys);
+-	struct iommu_debug_metadata *d = get_iommu_data(page_ext);
++	struct page_ext *page_ext = page_ext_from_phys(phys);
++	struct iommu_debug_metadata *d;
 +
-+	if (!page)
-+		return NULL;
-+
-+	return page_ext_get(page);
-+}
-+
- /**
-  * page_ext_put() - Working with page extended information is done.
-  * @page_ext: Page extended information received from page_ext_get().
++	if (!page_ext)
++		return;
+ 
++	d = get_iommu_data(page_ext);
+ 	WARN_ON(atomic_dec_return_relaxed(&d->ref) < 0);
+ 	page_ext_put(page_ext);
+ }
+@@ -104,11 +104,8 @@ void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t siz
+ 	if (WARN_ON(!phys || check_add_overflow(phys, size, &end)))
+ 		return;
+ 
+-	for (off = 0 ; off < size ; off += page_size) {
+-		if (!pfn_valid(__phys_to_pfn(phys + off)))
+-			continue;
++	for (off = 0 ; off < size ; off += page_size)
+ 		iommu_debug_inc_page(phys + off);
+-	}
+ }
+ 
+ static void __iommu_debug_update_iova(struct iommu_domain *domain,
+@@ -123,7 +120,7 @@ static void __iommu_debug_update_iova(struct iommu_domain *domain,
+ 	for (off = 0 ; off < size ; off += page_size) {
+ 		phys_addr_t phys = iommu_iova_to_phys(domain, iova + off);
+ 
+-		if (!phys || !pfn_valid(__phys_to_pfn(phys)))
++		if (!phys)
+ 			continue;
+ 
+ 		if (inc)
 -- 
 2.52.0.457.g6b5491de43-goog
 
