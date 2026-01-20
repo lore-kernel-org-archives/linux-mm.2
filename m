@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98C63CA5FA7
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 16:31:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEEBCA5FA8
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 16:32:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEB456B045A; Tue, 20 Jan 2026 11:31:18 -0500 (EST)
+	id 3DE346B045C; Tue, 20 Jan 2026 11:32:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC2D46B045C; Tue, 20 Jan 2026 11:31:18 -0500 (EST)
+	id 3B53E6B045E; Tue, 20 Jan 2026 11:32:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEF776B045D; Tue, 20 Jan 2026 11:31:18 -0500 (EST)
+	id 3032E6B045F; Tue, 20 Jan 2026 11:32:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CA7496B045A
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:31:18 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94E47BA87C
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:31:18 +0000 (UTC)
-X-FDA: 84352882236.18.33BF05A
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 204DB6B045C
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 11:32:39 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEB571A061C
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:32:38 +0000 (UTC)
+X-FDA: 84352885596.14.C7C01CB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D939B4000E
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:31:16 +0000 (UTC)
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1ABD640011
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 16:32:36 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lllm8gJK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768926677; a=rsa-sha256;
-	cv=none;
-	b=c2t/EDeNTUi+4PeDiXmcuS8oISdZy/IBG4uiNW0qDxOR1w6iH6gtvKgnqWGv4cYRpyHhwR
-	thcGXYQytG8RLG9zjxhsvTRJuwxDHWP0uBuj/TSFBWWoKCtcL/2YnrESjpco/P32L5AxOT
-	4K091ElDr1Xy+Cz08eWws0fq/0QwbPw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lllm8gJK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M15qmp5z;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768926677;
+	s=arc-20220608; t=1768926757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/9bvytCEld5G8KAmP/gN8sR/WGKE3Vrlr77tW8T8mGo=;
-	b=4AmW9UbZAO0vTUw9qn++wG5sUk8+N3/Mj4RzcakDl7Y183Wm0vC7Ho+oVaHSlIFnh8D/wT
-	jEyB7CeqxksSH+rphNPWfl9V5+rn+t0YD1hBr1ZutQ1D6WYjSqcbrvQlQc/zUnBQTyt9qo
-	EkmHhmGl0ghtI6J/rADSgd+X1cPHbDU=
+	bh=2zko+Zb4bPzkw+/TAVgPBIZvS5AM/HE7Ar8QGiBe6cM=;
+	b=qtUcg/4AwoCmY/gfgdfVMF/hlZf6AFPfblapyFzZhyRBvuCxtOUMJKsJtLLsH54vNeDN31
+	SGkwBRlIlp4mLux4Voau9C7uOsGZ7yPvKCnqV6ofFrOF+jQN1IegjV4HdCS/R5sRlUE1VS
+	Jy2EBcPZPo+2dE3SlSOm4WYgJY7YD1Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768926757; a=rsa-sha256;
+	cv=none;
+	b=7QloaFhHxa04ueuqrkO+fKrn71bLfcVs+8VPh3Lzi8Gg1L8hOy0neWJKCItUk9DtjJ2ucu
+	jy8P1TkwCHIy7Uo/2E23pB49AecfRqx3R5ZmmOxQo52ItEQ1PL3ien50UxCpijfUigwLJW
+	sW4ePT16XpuAR9BCVN0P2+R32aCIjp8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M15qmp5z;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DAEDE40D88;
-	Tue, 20 Jan 2026 16:31:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E42C16AAE;
-	Tue, 20 Jan 2026 16:31:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1934242A4E;
+	Tue, 20 Jan 2026 16:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF72C16AAE;
+	Tue, 20 Jan 2026 16:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768926675;
-	bh=b+DEzrhzQLEZaXZekFtcaQ+EoJRPMgcm+b7GQK00jzs=;
+	s=k20201202; t=1768926756;
+	bh=BkuoYdiOjEdaSxlt18GMMC+iBXjttPiaqaXPWhOTAOg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Lllm8gJKsKXKIIbGa/8Mhv3Frwq887BG2Yh/JTKwz3Cs30xtnoRwE075kz3xMtERX
-	 8VbtdWkRd8wwxP5YPBII0c5+/TxFnfnoWO5J0VWK2z1LEJcN+/JVeQpb3DHWY6LEET
-	 OzS+5sAmZKniDDSXOJKC5RHqITIbB9bFf6b9yt5/FRwBrGabs4g0INX0mMVFG/gkfr
-	 FFDWmgC9EXOvhj3znC5tjScmOclMBI2vArmTbFQ+2FX3nYuWFV+z6PgZoSZJYvHrPZ
-	 Uw6nq+uPcpUyOkMuiF0eD8lwHjnxJqFJMQXhWOb0cZYZrk0xbG37uYBtMWZMFQR01U
-	 heAP9PWzXct7w==
+	b=M15qmp5zcgPGZax3J+ZpO3YDXmk7U0i6dtAhX2uoznBFQL6z5+MRRhW9PsqcRm1qP
+	 oL33nkA/ilfO744wGvuCqNvPRWbuskm3T9vocCqHZoMXP3wuH19kiHhQJ7AX9YYL5g
+	 ANehmWMB5hXgbPWRvRn3jXjgOHfvCWhlFiHmRerz+D52DzvXq6rgdViR5uplteyW3z
+	 Q1Nm/DQLL/ois8KKJ2sqoNfliwN0DFQMdwRV0+29Ok0CNq6xiSr73DLWWTl3wvxeku
+	 KrBOWFA4RZ3lBbyc2JG+BJ1aF2eB57Uyw2VkRpycAgiOSy2yDKJwTbW0bQFVriPBdu
+	 pvNuc20XRJrHQ==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
@@ -71,24 +71,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
  Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
   linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
   linux-mm@kvack.org
-Subject: Re: [PATCH 6/6] kho/abi: add memblock ABI header
-In-Reply-To: <20260105165839.285270-7-rppt@kernel.org> (Mike Rapoport's
-	message of "Mon, 5 Jan 2026 18:58:39 +0200")
+Subject: Re: [PATCH 0/6] kho: ABI headers and Documentation updates
+In-Reply-To: <20260105165839.285270-1-rppt@kernel.org> (Mike Rapoport's
+	message of "Mon, 5 Jan 2026 18:58:33 +0200")
 References: <20260105165839.285270-1-rppt@kernel.org>
-	<20260105165839.285270-7-rppt@kernel.org>
-Date: Tue, 20 Jan 2026 16:31:12 +0000
-Message-ID: <2vxzqzrkckkv.fsf@kernel.org>
+Date: Tue, 20 Jan 2026 16:32:32 +0000
+Message-ID: <2vxzms28ckin.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: D939B4000E
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dg9p93xg5moudhiwqa6o4yyeocig3mwt
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1ABD640011
 X-Rspam-User: 
-X-HE-Tag: 1768926676-541549
-X-HE-Meta: U2FsdGVkX18K69K5q3jePKs1CMS9n/faLFWP+0+NwOdpMcClHTAf24TWZ2pz29VpwIKs+nhMwrPhB2+g5JlmtknMpoY+WOWq9A1OVoP262vTX5U23kII1P2quf2JzerX96VSsw0qW9RyrvlHAxjrEgH6rughsnOjVYKfkTmdN0HQcwsSP3RMn3Dol57ur1PFqch2VNUyMgRBYK18a4JDAjjjA6x29rNpprcA5z7S9f8DKZck2EW0Yv40zgRSKT57cTfo5lHJuUl3TO7Ir1Bl8+MrRmxqd1kSQKRDvygJg2Qrud47/oH2ke03rxer14YzPL6EFdtNYYcsOLqSBvsUZqXUMyaRTdPHllu0Oz+4rLMRPsvZ+ezhNdVpPC16C5gAZr1gqgDPCGytEHVCVWcEYRAkD5vkXnQYoIZlsSoxf70JVam8RydANYzH2ERlpUVyiFvKHsTGX9mun+gg6jiWl4CddSDEkl5mygY1UIWQpwxAv98ATq9Faf2OwvvuWcqV4pyYVkfsgN5Ia9xsg05sroOM6oIfmGEytKi/qTpoza4lQUqxqKt6NeEq3hAuJNcFMxXa3NvvMtUngKejPN+gMS7W6PEjFC6MmPDac4QPollrSMT3Lwn0vNoJOr5ynjiMaE1bctumznDlAvbT7kUkYGblEGcIlgOA2I0A7R6dWohyh6rrHhsBTuG2nrwssM82MCAfneVwtpTytcP/n3xbnmeed8VN2d0QMiPoJumAh4dNz9P3jBeDBkCCge/8v0HOvPbB2GHNX02ShTHBBgaoBhqWWBZ2LcuknrCaZMIHtMuck+x/x1PUtC2muXuc2Nd01O828Dl5M0LU5r9iRStE6haibdgW1LU0MewDsDOYGvJm8B4d/LF+oO1J4MSRpTRKoMDDySOs7c42+CdKSocju/GtqY/0Ceh8ydxHugiWco6WnyVO1liGQps1ep1SH1YlFvX+iLdfNf+XTu1hFdA
- Vwd/gylH
- 6toumrwMUGTOVZczykpyNuVCPIPKg8xgz80v4uffcufs9wsRGlQjqJ7YG/2t4vv6zVnB/nKLNtFQx5cLPc+BbJIt0cMT5yLwZq2ucFjWUWtaGtzr2QBlPy4h+Q+fHFCw8HFHVwJjR0HcnLhgNQzjm19LFk7RqtMy17ZDvkOU+oIBbbf6/L0gC60JvTiJdJy5jdQG6+XlmV+3vYudBG4VNnsqHPQf51ikX4QDMR4X4Bus+Hxc=
+X-Stat-Signature: 4krmrd7omnkef6rayc1xeesgqy8i6ken
+X-HE-Tag: 1768926756-285816
+X-HE-Meta: U2FsdGVkX19Rglw1vikGY+8xNZWAF4LUcY5lM1fYugSNzeFv9rOuzqqu9lmWUt5k5DiQ0xr81aG7yFtT6nSgkWeWi74+2X0gqUIh6oukiAfgc5CSJ8luzBQVQQmBp6AbLjydVqWpFHQbcPRbObg1nnNIA5zwSTgxSoW0rMO499nJNOpvoebtjwIIHvvUifp43mhd68TZCzrB4EKbXW8csPjwu7N6FPHHYIr4IN8PrmNiLzkSk1lLE4HHE1sKyl/k7i4VCpjN07YLVbmMLUT9TRT60bWod/XzZNyIfpme4g7CCs/0zgRIUQRxFTa6HVZJn3lhnp7iqaZuP4VRRd2xn0X67k80dqsi0lLTRuIVp/Veoxs8HQ0hIsb6YWxtasO7XtHcuADczNJ4swUVZ1pAMMUbtYyELCdpnKTbTuUwTou+CoO9acH0tchynFGwTNqjQkN+bXLwMl8pD9ZtGoWiD5k95wuzXmGHGquP4kzQn4xhB7kLcnZzv1GNk620s5tRluCOxVbGJIHs1PaG5dxVFttFy0k/cS+vgNdAuHDLcjDM5EA90Fic31xCbV9tk6uKlUbqcxav827h8lYQmOxjzMvbuqDmLafEh3tXWZAbelFcJnm1TyRA7NPOx33Z/LZAjioJDRchFJqbynvaIuZ3MdoI0hqRLr0kFeJLM1IHO8epzyZPfFmk3FGFeDuWJEjdBFtAn7lg9+GFQ0xM30V7w5oWh5GFNclcTXphdKKg3Z8xhfyEA16qmdPSRawEns9AnLX1nTmHp0Ox+mBO0Jl1uctHR3IHxVWjaFEjqLJ9Ro7x9RyUuN04NwaQevXQqMdxVYxoriln3Vlb1qhkX8Z0tbc3a5bczJAgYPPABzcDhLMhx6kB40AzX1aQfMzMsxH+Y6qgBSmNt1n4C/WrfrpFrr1NGAmG1pIGf/b/DO95jbSTEX2cTlqY7EaQl4BZaTFZXzc3hpvmvW/ovfMYwK9
+ +lqRKF6+
+ ReFuADakeci+/ppIBEeN9Y+UzQOU2LXQHB9IaQnK3dnp+y4G7jzvvcGuEt00/rYzR111zYWMljwlRbUNd2Ws5LlCeNEBS5+tAAJiR8W0l3BBWqLzZKP7frjnH5C2IMNef1l0nwqzE7iFEwO8QE4yG4BrLyqLNgLUBwHIYuM+88+juW8g8xaDqIpSckTu78RaYMCaz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,62 +100,20 @@ On Mon, Jan 05 2026, Mike Rapoport wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 >
-> Introduce KHO ABI header describing preservation ABI for memblock's
-> reserve_mem regions and link the relevant documentation to KHO docs.
+> Hi,
 >
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-[...]
-> + *	/ {
-> + *		compatible = "memblock-v1";
-> + *
-> + *		n1 {
-> + *			compatible = "reserve-mem-v1";
-> + *			start = <0xc06b 0x4000000>;
-> + *			size = <0x04 0x00>;
-> + *		};
-> + *	};
-> + *
-> + * Main memblock node (/):
-> + *
-> + *   - compatible: "memblock-v1"
-> +
-> + *     Identifies the overall memblock ABI version.
-> + *
-> + * reserved_mem node:
-> + *   These nodes describe all reserve_mem regions.
-> + *
-> + *   - compatible: "reserve-mem-v1"
-> + *
-> + *     Identifies the ABI version of reserve_mem descriptions
-> + *
-> + *   - start: u64
-> + *
-> + *     Physical address of the reserved memory region.
-> + *
-> + *   - size: u64
-> + *
-> + *     size in bytes of the reserved memory region.
+> LUO started adding KHO ABI headers to include/linux/kho/abi, but the
+> core parts of KHO and memblock are still using the old way for
+> descriptions on their ABIs.
+>
+> Let's consolidate all things KHO in include/linux/kho/abi.
+>
+> And while on that, make some documentation updates to have more coherent
+> KHO docs.
 
-I think you should also mention that the name of the node is the name of
-the map.
+Thanks for working on this! It is nice to have the ABI consolidated and
+cleaned.
 
-Other than this,
-
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-
-> + */
-> +
-> +/* Top level memblock FDT node name. */
-> +#define MEMBLOCK_KHO_FDT "memblock"
-> +
-> +/* The compatible string for the memblock FDT root node. */
-> +#define MEMBLOCK_KHO_NODE_COMPATIBLE "memblock-v1"
-> +
-> +/* The compatible string for the reserve_mem FDT nodes. */
-> +#define RESERVE_MEM_KHO_NODE_COMPATIBLE "reserve-mem-v1"
-> +
-> +#endif /* _LINUX_KHO_ABI_MEMBLOCK_H */
 [...]
 
 -- 
