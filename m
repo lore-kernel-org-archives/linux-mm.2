@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF74CD2628A
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 18:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02017D2628A
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 19:00:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1279B6B0496; Tue, 20 Jan 2026 13:58:13 -0500 (EST)
+	id 59D7D6B0498; Tue, 20 Jan 2026 14:00:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FFD06B0498; Tue, 20 Jan 2026 13:58:13 -0500 (EST)
+	id 575816B049A; Tue, 20 Jan 2026 14:00:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0018F6B0499; Tue, 20 Jan 2026 13:58:12 -0500 (EST)
+	id 4A1A46B049B; Tue, 20 Jan 2026 14:00:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E127D6B0496
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 13:58:12 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 72AF813B92D
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:58:12 +0000 (UTC)
-X-FDA: 84353252424.14.9C6B43C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 34B2E6B0498
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 14:00:17 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE6031A0637
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 19:00:16 +0000 (UTC)
+X-FDA: 84353257632.01.6BBB4D1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E1390180010
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 18:58:10 +0000 (UTC)
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1EBCA180012
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 19:00:14 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhB7IVkw;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bxw8pyjH;
 	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768935490;
+	s=arc-20220608; t=1768935615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ytTCX43YaWLKtzXMqmoIG0r0Wwfc5JFXaC5vs4GyATw=;
-	b=Qtj8OdEgSOmbVJVczn/bWyme/gLF14MZxa8zMSEXPt0RaxY8tICNlihjiRUFLCHj7kuAu3
-	5gN72eyR3E72NL0p5xIy839Oran/4gTLUim053gkP0jPHFVXHHeLXSAZcVzs365z0AUFd0
-	MT0LOkxf4eamlz1+DeLlLf04L0d9a2s=
+	bh=lq3aLbEqRyA37VDbVG+GjNtcxF/ESTkZeYhJniRXhow=;
+	b=uugPoxNFnytO+Xj28HaV/g4PjZ0lQbAyGO8mAtfQ2Qa3OmvJH5eK8gQktjTakin+A4ND4S
+	NYzyxS0TkETXxQgR1OSwG55J/Af9tKPmXlUO+IPqf6dWbPOYGlD4XDbaRjH7KVB4stKZ27
+	20lfoSDPsOWKUWSlpO7NwDGK5ogSeho=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhB7IVkw;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bxw8pyjH;
 	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768935490; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768935615; a=rsa-sha256;
 	cv=none;
-	b=fwGWlgfTUkm7eCfs4xva81VYJikpVIxJ9eJV2fzn4wVaEv/rwtsMajwfXi5O+Lv+J51c7N
-	w1tBzuNGUFkbrWeUUS7aBte5djKVsDEkPUEhTcPDIB3c6c34NdvZLzadnDD4tlyz3s/3zq
-	nUzRu4LLaytU1xvR/g2EMN2DJFBFqTI=
+	b=sYf0oOqPZ2E73CV6p1Ol2QwUPstQmqtsDoz1KbJDtT+Aw98N58W7be+almVjri6pvbCfj5
+	/vNRaiVfVHlgWazy6jsUgW1G0utbEygHyb3Jo4zbZ2EmA0wGbacjZuS4yVYF6PfiFpDKN8
+	4wk7eSJbKm64hcia2pq0pY8d81UrNPE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 46E7A6001A;
-	Tue, 20 Jan 2026 18:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEA8C16AAE;
-	Tue, 20 Jan 2026 18:58:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 78868600BB;
+	Tue, 20 Jan 2026 19:00:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A071C16AAE;
+	Tue, 20 Jan 2026 19:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768935490;
-	bh=I5q0oGB+BoA/gz8qsotA61iskY7SDlYKob9LdnVdGNY=;
+	s=k20201202; t=1768935614;
+	bh=yvQMSUis/1NCpptkFQ9k3gZYHiivZOEOD7LfuZ7H1ks=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GhB7IVkwG/XveGj1F09VZwJYfZ6BTg7yXMg4IEJIePaigtf7knr23e4MQvTMxS+XR
-	 3XGbUKDlpl5+VcPlQFcjc3V9gDkHfwLhvQtn1622KVxhrL30oJc5/p1DDSVoy5b+oK
-	 gBhlEsuMf2+/UQWGOlx0kq6hZGbVeB28j90YZPDymuuRHHHrT0mJOWLA4U3nnby16v
-	 xCMZ/fk+eOp/cSZbaK58BPKykl50BWitcslIvDcc3KdijKzNQ8tUR6m4ERC7oTDGHh
-	 8D5Dnc+dFsby36GI2D0phtpjip1EDcbHqJ8Lu/KtkMuKJMuTGQxieNcRvQdi2kptia
-	 B2purnqkBT7Ig==
-Date: Tue, 20 Jan 2026 20:58:02 +0200
+	b=Bxw8pyjHejSup2eL6mvA96uU19t1osAViIerhPz9jEnZivgiUot4+fBfGEx0iha+T
+	 tXrlbmjA2vd6EeDIeLRb2kKyZz70+J3Lr77AfxsAALlJdTn0+9HmXJY2vVEfquWKl+
+	 /kUgz8xUTkbXsDISlW7QbcnuTK+LqCWkiBo4cft+B3f0bWY8VaUZvdrh5qXW97zWu+
+	 Xwojtdzz62UqOT6v+AEq2StJ47k/j+r5XCK4QMrieSUO8Dxi0VYsRqff8ZaCPywzDC
+	 kk+ZxOYZl+u0wBH1Yd6NDCEzY7/NzyT+lk7J1sMjayMtIa2SKc2vNKYRBOWT+MAnMQ
+	 3/uXHubLDOvIA==
+Date: Tue, 20 Jan 2026 21:00:07 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>, Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
+To: Evangelos Petrongonas <epetron@amazon.de>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>, Jason Miu <jasonmiu@google.com>,
 	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com,
-	clm@fb.com, riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH v3 1/2] kho: history: track previous kernel version
-Message-ID: <aW_QOpA1ocySNLAF@kernel.org>
-References: <20260108-kho-v3-0-b1d6b7a89342@debian.org>
- <20260108-kho-v3-1-b1d6b7a89342@debian.org>
- <2vxzy0m0gfyo.fsf@kernel.org>
- <v7g7nmd3jif6vftvnmucvpluevufcdxmefcgqq3yfpnzyb7mql@ojpotuu4hgxm>
- <2vxzms28e1ib.fsf@kernel.org>
+	linux-mm@kvack.org, nh-open-source@amazon.com
+Subject: Re: [PATCH v2] kho: skip memoryless NUMA nodes when reserving
+ scratch areas
+Message-ID: <aW_Qtz6X-XErS74D@kernel.org>
+References: <20260120175913.34368-1-epetron@amazon.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2vxzms28e1ib.fsf@kernel.org>
-X-Rspamd-Queue-Id: E1390180010
-X-Stat-Signature: hz7zgzjwika573fspg7qh43bw9i7po8o
+In-Reply-To: <20260120175913.34368-1-epetron@amazon.de>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768935490-134749
-X-HE-Meta: U2FsdGVkX1/7HQUPLH3xlAWTA8PIt4kVeAvpXGLuCL5nP/YvWVqO4VYDpqN/qLmOuZ+y9Zpc/MJAnwrKi1hEiTHv0x74RhJ1I2o82w/YAP5kQ0FFphVelQ/jL3GCpzcxJgI9dRaaaxfIg+iVMhkSmpFBRh4UdXrW62EO5tnvN5JQ+u4vzK9qHjpoeQBF2/+0LQimkA7tB0No3nNGvU0gmJalHahZDo7g66skN09YdvikAosluskejq3dHP9SmHKdp7ymHVkJ7YhlIEiy+nyf0zh1L6dNcBDgC+9KM3yqaQ5z4p1Dra7SZ73dEKSgQXtBPIXISO5x0jmd/W+At4qIzTmuM8JpPvKZw+MOzZj2w8XIH6ejV9u9uCWkg5NpEEBfmlpu2gdSm0UbWC677fb8fNOlmdG2R3TmUbZufbEQQyncGshB7UCCM4DWePOV5RTQMyvkbHu0gxNsQpTwQpRDQzVdJ2dYAtTRcvj/nz4R6R0lxlxiVuGTJQPUuHLqrigOQl1AbJ+tET87kIzYMvBe3YIjyIAGH8smoClS/scUGH4P8etCGc9gphSB1SS+Jdp8Hiz0S7f3AY9MtNCvTXRKhse+Gb2zOXhNuzjtQbdxeH5okkxNSmxMauW78z2sb8j6kiMBQLBgV2/EWHmhHrijl3z5WVJMEhpDzjX00Ws/lqr/cYYDZEXHLbUXee2QJvLDv4/tWiNUsmPhjsk96pxv2BQEr2Iih798iIlh1/Ps4gGsc9VV05I60/eiTmncmxCUBxkjXgFCbB+xxqnduUt3zUzMD5uqmY4NxsHuPxNjVp6+CthY5REjTXtYhnMKGcG1HrqD2b50W1TJjPm4o5Bo2FiqcysmBRliU3bIhWRUb02OZN7uUdKFhdBooXC0yZb9KmFMlFZHwze1SLfca2a3CZGfrofVr8n99Bh3fyAW5wOrGwVM2pCOHAt3Vtu7WsPJEVJpeKZnfhHvIzX1bEE
- /oJceSNn
- SHwj991SHoGU8bSRpbMef0gbRn2pfWGRdxU04i8xOW7mHRZBT5T7h296xbjH5vXxGItH3YUvFwSzQtZXsrtrlhDDJNFxmdw2KfB4GY0RmJm8Y0fC7eE8klpg+0K8vc/iIj3uwJLLELqZJj9mGwmU467FGPPPQ8J6yArasmpbj9uUnhUbsnhuOJqQvYGRgW8tinNj1I2M5H//FNg2QCp97qbSVlWwbVHnc1u936w8eroo0l1PdGirB3RZ6GIfe+ePgbluy
+X-Stat-Signature: j47f1thsmbeey34b45zbw1d4nno9a7xr
+X-Rspamd-Queue-Id: 1EBCA180012
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1768935614-968749
+X-HE-Meta: U2FsdGVkX1+4CxTrPjdb3nQBh1PTlCuP+BaYr/0dT1y0Z3gHaT1+ordV2iRYFfEqqa+6UHWzeVZhrdoXsRwH6xSmGXLFF3XWsrZt6fnydEn4mYEA3KOvGmU1Y8+rvfb/8FPddOmxn7T585259sCc5zyLYskuMSSuhQ4TEYK4olyJUPNx0Lukf4rHlDchtUwM6BkHjH04/BknqMxEX3O/PqESh2pNGfD+R/iohmzfk+0XF1llijP1reD8KBhmRFbOaJnDMd/Uu+VQMr4DhJ0sTFey1SWhDE4o+o3Y84FPD9PW1dV7+kzyLCK1zu00OXZ3+V6sJHkTv+ZYRuuNOqbHWp92ZcMV62Y8k2z0G5DmsBP2iOrfuZprhP3PaWs4NqrXr9HEwaVG4CENdDkwjbusTIAWmVclksc3aIqI1Vpk/VJMQ9vsekSyp9KtCYdCcQtDehDSdeJfpDN5x4xQfRNet+TO6sirycpq/IUBzsrTnAjW1MS6pNyvyqXwojDqDPqmxGN7hUJ17GKTHztnAaKLJ/K7eIDRlYDvCYnXgYKnxn3NQQfMu7Lg6hz+XWjcx9xP0Htfwdk7jZzA/20yoOEdHEHAKcW6CVfYGdO4OBIW9KE0DPL2ulFjPb4NlQphxry9u+S5uvOYTwlKEmh7hXFl2J/nXUoFhtIoDbSZRHg0GgXwMUMv8MUed86yhXH9DrWbfg/L98gnvaW0NZLa8D9ps3qFrt1ah5jeXGivzs8DrlkU7QK0hEnHyJQAHbqq6tc8pH/UKZKvIdC3g1VKB/M2lSHt7nYzft5hdkfhKq+W94LVmardakc6Ft6QmsQ1o8FY+Rk+I9wVeGg8HWKuueI6OwXBI7hAwGwJkFz+qaYbH1piVu6c4vLNNfnhJKx9E9/nmnyxa5nD0yYYL0SE+H0PDSW/5BVWkT7l/J3UgqDsJuxS56x+zU/xbceM9aGYVxOHlAJffeEBi2sODYEa5P2
+ VweZB7Ti
+ QNOCeS7YCeqqb+z9+In4ugZn9Vw/IDQjun18CI+Hz4nIbPHI7IAPGPm8Ht0Al8NtkgbMAbd6+IO4LiZzzYf2bYFJeuvV+RjpJlajHO/mvPa6on1HXixBC2LP3jrcFV7Ed/r8wLKOrQnppSg3V7mWAuUoSlCRYJQxETpTjtYbohU7PzznRHrKEr2YB2koTGwpLMXdlFzXNo/v585/sBZiixaSfmJZMyIBYsUaLp9vhSu6coYvlkjELbtUigapBWqt8EszhqSuM10mjok+Fpa8F71jWXg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,55 +95,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Tue, Jan 20, 2026 at 03:40:12PM +0000, Pratyush Yadav wrote:
-> On Fri, Jan 16 2026, Breno Leitao wrote:
-> >     
-> >     On cold boot, kexec-count starts at 0 and increments with each kexec.
-> >     The count helps identify issues that only manifest after multiple
-> >     consecutive kexec reboots.
+On Tue, Jan 20, 2026 at 05:59:11PM +0000, Evangelos Petrongonas wrote:
+> kho_reserve_scratch() iterates over all online NUMA nodes to allocate
+> per-node scratch memory. On systems with memoryless NUMA nodes (nodes
+> that have CPUs but no memory), memblock_alloc_range_nid() fails because
+> there is no memory available on that node. This causes KHO initialization
+> to fail and kho_enable to be set to false.
 > 
-> Very well written changelog!
-
-@Breno, the submission would be perfect if you'd start a new thread rather
-than reply to v1 ;-)
- 
-> > +/*
-> > + * The "history" subtree stores optional metadata about the kexec chain.
-> > + * It is registered as a separate FDT via kho_add_subtree(), keeping it
-> > + * independent from the core KHO ABI. This allows the history format to
-> > + * evolve without affecting other KHO consumers.
-> > + *
-> > + * The history FDT structure:
+> Some ARM64 systems have NUMA topologies where certain nodes contain only
+> CPUs without any associated memory. These configurations are valid and
+> should not prevent KHO from functioning.
 > 
-> I don't have a strong preference here, but you don't _have_ to use FDT.
-> For example, with memfd, we moved from FDT to plain C structs during the
-> evolution of the patchset. Main reason is that FDT programming is a bit
-> annoying. C structs make many things much easier. For example, you can
-> always assume a certain property always exists and is of a given size,
-> and you don't have to validate every single property you read.
+> Fix this by only counting nodes that have memory (N_MEMORY state) and
+> skip memoryless nodes in the per-node scratch allocation loop.
 > 
-> Anyway, I don't mind either way.
+> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
 
-Yeah, I agree that a plain C structure with an array of chars and u64 will
-make things simpler.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> > + *
-> > + *   / {
-> > + *       compatible = "kho-history-v1";
-> > + *       previous-release = "6.x.y-...";
-> > + *       kexec-count = <N>;
-> > + *   };
-> > + */
-> > +#define KHO_HISTORY_NODE_NAME "history"
+> ---
+> v2:
+> - Removed kho_mem_nodes_count in favour of nodes_weight(nodes_state[N_MEMORY])
+> - Use for_each_node_state(nid, N_MEMORY) to loop over nodes that are both
+> online and have memory.
+> TIL: Nodes in N_MEMORY are a subset of those that are online. Thanks Mike :)
 > 
-> Do we want to call it history? Perhaps "kexec-metadata" instead? So we
-> could use it for other misc information if needed later.
+>  kernel/liveupdate/kexec_handover.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> Mike/Pasha, any thoughts?
-
-I like kexec-metadata.
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 9dc51fab604f..979ebaf015bf 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -643,7 +643,7 @@ static void __init kho_reserve_scratch(void)
+>  	scratch_size_update();
+>  
+>  	/* FIXME: deal with node hot-plug/remove */
+> -	kho_scratch_cnt = num_online_nodes() + 2;
+> +	kho_scratch_cnt = nodes_weight(node_states[N_MEMORY]) + 2;
+>  	size = kho_scratch_cnt * sizeof(*kho_scratch);
+>  	kho_scratch = memblock_alloc(size, PAGE_SIZE);
+>  	if (!kho_scratch)
+> @@ -673,7 +673,11 @@ static void __init kho_reserve_scratch(void)
+>  	kho_scratch[i].size = size;
+>  	i++;
+>  
+> -	for_each_online_node(nid) {
+> +	/*
+> +	 * Loop over nodes that have both memory and are online. Skip
+> +	 * memoryless nodes, as we can not allocate scratch areas there.
+> +	 */
+> +	for_each_node_state(nid, N_MEMORY) {
+>  		size = scratch_size_node(nid);
+>  		addr = memblock_alloc_range_nid(size, CMA_MIN_ALIGNMENT_BYTES,
+>  						0, MEMBLOCK_ALLOC_ACCESSIBLE,
+> -- 
+> 2.43.0
+> 
+> 
+> 
+> 
+> Amazon Web Services Development Center Germany GmbH
+> Tamara-Danz-Str. 13
+> 10243 Berlin
+> Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+> Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+> Sitz: Berlin
+> Ust-ID: DE 365 538 597
+> 
 
 -- 
 Sincerely yours,
