@@ -4,88 +4,232 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 788E2D2ECFE
-	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 02:55:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06FE3D2ED01
+	for <linux-mm@archiver.kernel.org>; Tue, 20 Jan 2026 03:00:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA4576B0351; Mon, 19 Jan 2026 21:55:57 -0500 (EST)
+	id 621D06B0355; Mon, 19 Jan 2026 22:00:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D27756B0352; Mon, 19 Jan 2026 21:55:57 -0500 (EST)
+	id 599E66B0354; Mon, 19 Jan 2026 22:00:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5DB76B0353; Mon, 19 Jan 2026 21:55:57 -0500 (EST)
+	id 3F3276B0353; Mon, 19 Jan 2026 22:00:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B62286B0351
-	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 21:55:57 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 42C5B8B0A2
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:55:57 +0000 (UTC)
-X-FDA: 84350827554.07.D1CE0AE
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7AC8340004
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 02:55:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ul671Yoi;
-	spf=pass (imf17.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768877755;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 225736B0353
+	for <linux-mm@kvack.org>; Mon, 19 Jan 2026 22:00:13 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC969C1338
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 03:00:12 +0000 (UTC)
+X-FDA: 84350838264.08.FBDADEB
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010016.outbound.protection.outlook.com [52.101.85.16])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EAF441C000A;
+	Tue, 20 Jan 2026 03:00:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RTv4TyDV;
+	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.16 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768878009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=inDvl4GaipWhYSp0U8tScgUdBjqvSGDRhS8Caxa209Y=;
-	b=wQYgize93gdXKrtebAGdMhkDT+mZUKMAaxj+eK0X7ay0rljtnZskVvFS+gk/aHn+4HrbHv
-	MVR3Z4h4e8LuBJJy+BjFjODfhBJNsBAz5Nzyf+s3KtlFJ7183WcWjdAVnjIi6CJAu/K9mQ
-	QPR7LHBeDyFNdYlAcYrVZLZWcpjz0YE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768877755; a=rsa-sha256;
-	cv=none;
-	b=bbKMYL/lJGK6QCTnv65J46okXix5cW9gEMHuc/CprYycr1R8HfpMYdnCIv+2XNO1s/X+ne
-	zLzQkbS8+u3iMsrjblRJ23Pt1lWX7GOfsZHMKRHJ2Gd6g/vrMMMnXfR6SdcJH19cVHdctc
-	u0O9WKsX94vAuhtJis9K7M2+aPRA7lY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ul671Yoi;
-	spf=pass (imf17.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 20 Jan 2026 10:55:25 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768877753;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=inDvl4GaipWhYSp0U8tScgUdBjqvSGDRhS8Caxa209Y=;
-	b=ul671YoiONtDqTS7xjqdHK4X3D3Owh+owPHC7p9o2xf3i7N+8ciy56TQYlYyc7/Q5ZKJW4
-	D6NudN0qKhjeL7HzUnSyWXP7TZe0hth0jPtLqD6KzCT4QFHSWJLwjBcMJsxYdhnrAHFGQZ
-	wLKPDyWep2KgRvrn5a0joUvFP4eMhmM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 09/21] slab: add optimized sheaf refill from partial
- list
-Message-ID: <mxrcthlqj6rbecg5z33lc7oqnbicr5fn5lmvni2tjo2dc3oe76@u5vettfyypl4>
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-9-5595cb000772@suse.cz>
+	bh=ifspOPvAHjHKumkbivxuWVDY4dH23AyrQ1x0wCeSl64=;
+	b=hs8lytaTWPaK/RwCzLbIpMG5iizpHjnvZCnjyyyWhwWS0aRQZ9ZgUDR/1Mgku72MMylI00
+	p8e1E/bNqmHVNVKy5JP6HBKbcfWaup6Dc3+Z4nSniU9NjNSena29ruhOAT+VP4floBaGxz
+	WuSiOrkExvXLpg9HAnurjgr59WB3Da0=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RTv4TyDV;
+	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.16 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768878009; a=rsa-sha256;
+	cv=pass;
+	b=7E0D7fSbU3pwU4JjxwNYzQcjadvqG7hxMgMyYu8M75zpz992orLX6TJm/y81AjxxyiyI9h
+	vskkt2N1L1xz2btVJJlkQc31wNWtOCEvcccLKkabqaRp8B/9Fc8+y0rPnfJO3XlwWKFN86
+	HQ4Y/P+zkhaYCMxMsezurBrUGBSSiv0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KBdhBJfZq4Wxak7tjKaAfopsf34wdy3UCd2oqpvtxvJUrHo8GlCxOLjCqyT3+0LpJt8KAjKXavXWd+Vsb3zDst6tYH2h9bq1S98/4J4oMsaCTMhU0MpkJsOOP1aczAhLLb0Mt1j4utfI35DZENmRJ6F7K0JScJUGkVRpzGBjCLmjxmacGNdgtzk51qamJiICXKKu1nbxAjCihHhe7/q5GgNA6PpqDv8959rxbevx5YmE73c0iC6ime6t2Yaeb10hYTBcOVgC5jHKMOMshTUVfLWp2v95k9V5s3QcqRjrlOBeP5PaAtLanjNU7U8AyqX1VixmADR2FZft3sEl8ymaEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ifspOPvAHjHKumkbivxuWVDY4dH23AyrQ1x0wCeSl64=;
+ b=zF6CuOa8F6QGHuOWXPQmad+020WjuoikQWuidMtHPEBdKsh4EL6AaHf6yWVRBYuJbX/59cVrgx4H9aV320xgVJeAO/oF+v7freOaEThWiYWSh3+Gd23X5iTpSKe/M3a3CnPBRWLUqGQBaFUm7CsFdDJo+W1f9Dhg46qlvzFsxQAHI0gl04zVXbGTB7EliNF3N/p34LsAVGEl3lfu/mScIt/wDWfEC8CzTAhKZmWaaPB+JdkrFptfGpHYRXxaEAArwBu9U+48Z2ay8BUPKx3r4K7AIhwVPYAQ3PcJbfy8bgXnIeq42xwc1XNK42dSIssaukMWbuXL/hRycSw/W+23qw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ifspOPvAHjHKumkbivxuWVDY4dH23AyrQ1x0wCeSl64=;
+ b=RTv4TyDVNI6RFPgRL1p0CqxhK25TLZCM1m3ychl0DD2G7+vhB0lRDLXjW2nQOaZzm+Y3aZiMklqr4SnIq5Wh7MnOtJmP1yGCcZydGNYt4IA9QR//81SQ6iMnm27Bzxv7C57N9OBEuu3q0w+Z9+EMUA5CJ3jUMqrUqGEKtPJ0EQ6uTKrf9eTjEyhAEurGrIyYigE3bBYcn6C75wZNLOgIHopAcxDscE9oHcCzz3A1ItGPWw+yGXUGtKWfbSHNlSUahqgf993cFyBOE8wirRi7zwqJPHIIvo9VDrCwb5IctzZxvbYvlf7ms5SGAhXpQHVyKKi/dIMo2P+SAnj054faVg==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CH0PR12MB8461.namprd12.prod.outlook.com (2603:10b6:610:183::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
+ 2026 03:00:05 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
+ 03:00:05 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Jarkko Sakkinen <jarkko@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
+ Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+ Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>,
+ Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
+ "Theodore Ts'o" <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+ Mike Marshall <hubcap@omnibond.com>,
+ Martin Brandenburg <martin@omnibond.com>, Tony Luck <tony.luck@intel.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
+ Babu Moger <babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
+ Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
+ Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E . Hallyn" <serge@hallyn.com>, Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-sgx@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+ linux-aio@kvack.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
+ devel@lists.orangefs.org, linux-xfs@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH RESEND 08/12] mm: update all remaining mmap_prepare users
+ to use vma_flags_t
+Date: Mon, 19 Jan 2026 21:59:51 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <34F72E48-5F22-4A20-BF32-917CDB898164@nvidia.com>
+In-Reply-To: <24317e6f6b71e8b439e672893da8d268880f7ada.1768857200.git.lorenzo.stoakes@oracle.com>
+References: <cover.1768857200.git.lorenzo.stoakes@oracle.com>
+ <24317e6f6b71e8b439e672893da8d268880f7ada.1768857200.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0091.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::6) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116-sheaves-for-all-v3-9-5595cb000772@suse.cz>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7AC8340004
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH0PR12MB8461:EE_
+X-MS-Office365-Filtering-Correlation-Id: 88ff9f82-4c70-4599-06a7-08de57d002fc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?o6u8pGL/yFCvatiUOrPflzcBl3TmfzqDyeHJBJDRSNQEntPYpPaVbUil6NvN?=
+ =?us-ascii?Q?kpmbdniDXi7KPGwbZTXOdVDRuY8n4jQGX9thWhtkDTXEppUWgxpdMGH1Qvxd?=
+ =?us-ascii?Q?UFyZOlRp/bUX9IFBaZIzqS67dQwtPTtvDRqiSldCXxzPAy0LCJYLyCnMNrfc?=
+ =?us-ascii?Q?MexbsCYMsqOaeZCD5L5LwiaR3Qq8fI/R70bcPaEPb+RVYUB9EOHemjFJmLcq?=
+ =?us-ascii?Q?+fqTbPrIevdbB764L5Z9h6xmiBDSBUfuDV4IM5dJu8MXLg13yra5dqsAlYaf?=
+ =?us-ascii?Q?MEJcNSchj2/czLrLSs84o292XUfPj43O0QG1jAAfksUCFc3tc6BRFPml38Od?=
+ =?us-ascii?Q?drFFdohfJX6vmaOkG3emmkVzJU0bWTAFTcl/ReV5ryOgqaGl5yDbJDhUERqt?=
+ =?us-ascii?Q?CyyAv65F6e0UEectKUZjpDj3vm6zmNCrjBnTooMNYI7kSRNpWtGMt1sMU0A4?=
+ =?us-ascii?Q?Ivj+PNHX4ectUFl5/AsAI4pMUHpm8Aw9uFBbg/JljQGVorqYeG007T/YsQVt?=
+ =?us-ascii?Q?lBBTfJmmaf1sBE4j5VJghl4TcadX3j2vQGeaeuOuQPr+2dOpHs+6YzDUGGNi?=
+ =?us-ascii?Q?hCzeEEMvZBclxLWustXQw0Mc9RSDHaU/jTT7j5/GEmjb1sJgXdUZnvudaTVk?=
+ =?us-ascii?Q?utiKrDC27z3CRaGaDYrRdUigx0gDte8TPAI+EifizyhmzNTiiZ8xvI25r1ct?=
+ =?us-ascii?Q?hMuu9WviCFlIbH0Nk2hOa4uZ5HGyj5kmhcOA6wntdia6cc91y3Z/tqWvU4hn?=
+ =?us-ascii?Q?Rguvs6tXmp+cMPHgFV0UiZ3okaF5QyQUeNmrRObjHxqeByxZwoqOi84dEsWk?=
+ =?us-ascii?Q?uii4b+4Gy/ELFZGLBoWUjTDZRWP5uX1Sl3bV1Nttgifqm4FswwBHvaNBSoo9?=
+ =?us-ascii?Q?aPTZYAC4dfmHRWVNbruD5HF6eqUgZHAn8Ttgi2kNG1jx9auDfaCWIBApm3fF?=
+ =?us-ascii?Q?T2NJATQy5chzNV1kG5IbpQluEvBxRGlUVQyraKZuvcsPSGTp94eZCGP9UYnY?=
+ =?us-ascii?Q?2pbqs1O+ZXt0XaXTza9iu2aahHl8x7h5fT3czgwT25toAvNxZ7OI6lrft4sq?=
+ =?us-ascii?Q?SKaUQvoefF/xaz9wLzwCwg1dED6MQq2E6mBgkr8GIwkD8S5C5VXyVom4b8kP?=
+ =?us-ascii?Q?1wWZCWaqCuMvlC4SOxsmN9Fd2K/8tlfCga6a5l/h5Ksj+S+sdbUCpK+M3mzS?=
+ =?us-ascii?Q?xcMLxqfH9Q37sP562iNcHj733jP5A6chibJ5JA84YHTh84I9jIwenjqQ0GTZ?=
+ =?us-ascii?Q?v3ezLwf/9gfM5/1DnKLEQUFuUBp297mWh56pV9NfDlZH+LrTJgOtUtWS+3CP?=
+ =?us-ascii?Q?Fi3L15Qw62Vaz1sQEYup5eXBekq6sV0XfsTtwOrq2myoGEifh4eLwVqYo563?=
+ =?us-ascii?Q?SqDVUtTrAcpcRb7MC2OICjsID4oOcmcLY9q7d0MRmOcifOM+7NkhUtcK5+Q7?=
+ =?us-ascii?Q?amY6x+3HrsAvhOm9dGF5FQlhG4AEFCYLSyPe7t6BQKhC6H9KP97OGo4uAdOo?=
+ =?us-ascii?Q?df8NB4hKka9nt3al52sPoFlx8iZWC+okYvXZNUU/9pOeroxpZ9F7q/uFafVj?=
+ =?us-ascii?Q?vhA7nLr29yRO/zcFACc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jM1KVFEnXvSWWuDyNmgus2UW5CEhX/YbAcoXtiWiKhOc/y8YvPLjkVa3xAvw?=
+ =?us-ascii?Q?HKXBml1rRutYzvKKGU63F/FdqlljkIuicghrrReyfSb8NVAoyyERiQ4MI1Kv?=
+ =?us-ascii?Q?Ec2X6hwKWa0kaD9KnDqDbg7JdiBtHo47PSEMIbp5jRHd5+ihg8cMVfAQDeq7?=
+ =?us-ascii?Q?4DqWtTYxpG45orz/Ge4C1Bhlv4p9GYvB4czXqzmpXUvrK639Yrm/BXVqf8M2?=
+ =?us-ascii?Q?7j1ZwIRoWhDC5PCCDIjtKTRvEV3B5CTPU8BHMLlG4gsuMt138xiuhoOnWoBV?=
+ =?us-ascii?Q?yOVNF2amGkBqDapr7Q8D2WWD2dQdiK3WUP2uCp9h/Azc6X7OvkfqIkCQdY1B?=
+ =?us-ascii?Q?2dWgXHah6k6LfYWvUPbf/FXQIdUDXI1w2KWfKDq7OQVcBYFXI8PrWI6MArlC?=
+ =?us-ascii?Q?LUJbTY6z7lY60QgMkp+Cjecoxj9OoDfIqYhil3VGT8Gz5uyYZg3pO0EeQLmb?=
+ =?us-ascii?Q?dcpLqAHJsRfWBS4MxmVSgxElG3BXvm9YjSTnOX41q3jlEI6C/JY5o5K8sbDP?=
+ =?us-ascii?Q?sabPbUgzuwFtZCrNa1rwWChq5y1M/syEixb5iTtnO0JI0eKM7SirDFQOnpMb?=
+ =?us-ascii?Q?d+WOzs1CU3A5WgLm76OCdPUdgS9eShvjDaOvn+2bXIjj4Eb8zvBsbz4gxUQP?=
+ =?us-ascii?Q?Tu+IvX3CrJ036G3WaPyVKBQIpKfqEa+nkn8qcfr0Lrkx01TI2tW/5tuxLUBM?=
+ =?us-ascii?Q?ObtOmux6RQ+Uqj+S1t6vsA+2kPNo2zVH03CSpAG/1NI73sXHAJg1Lxewc0Ok?=
+ =?us-ascii?Q?5piqvA+7XWoGOUXEvwOlEvFS0uJ+a1T2/LXCCV1GQUYoWb857UfK2ELobI0r?=
+ =?us-ascii?Q?bJQfIPkddNYRCXGwYBub8rIZ/ubHf6tW5ct0Znr8JhWkSbzsS4DU2MDR0gyx?=
+ =?us-ascii?Q?fb/mt7nyCd/kKNh69FeQPmfxi4hG+Rw9fyf+OHX4zarNsHJUTR0SEUPaXUyV?=
+ =?us-ascii?Q?Zjz5WeLezEwrg5xNUKRtbLvmKVLjov0008gVvX0z8cszLWH7xMRPhwzEw8/d?=
+ =?us-ascii?Q?PR+D/m8ll9vvs9UrHiBwHlUPSKmTFy84JyxRI2foFltMQLiSiJ+ITjF6gEFw?=
+ =?us-ascii?Q?dHDq4fg6P/jdJBRG3+NfLoZb7rA2lnoDGofRVTUbEz9e+XdqPJvNm0sHDVkM?=
+ =?us-ascii?Q?BFLApngnYlQF8VF1/nTjYb26OJvmiKP4QfUaGe2ZodD1my5zJesbDbLyvtAc?=
+ =?us-ascii?Q?skOhCiV+L480gWzCpqJFW0uYToF6XkCYEShm2i9xTYmL4NmDNcH7Cyu7M2o1?=
+ =?us-ascii?Q?ea1n+RWdsDdjleOWqCL1RMCTiK7hnFYTJZKJZQitGHbS/untWr1M3Mj5fVAv?=
+ =?us-ascii?Q?/Cn2+EsgEf0KZoIKzW0vWndZ254RdjySA+g0IMLxZyiLJIHXTTGYlL8w2rV7?=
+ =?us-ascii?Q?NyZwq2IM8NTT5USI4ZZfav/NZWjPTH22osxSlvmrhpVsVdMAZVI3Kq5G7/Lg?=
+ =?us-ascii?Q?FKNFt1wDwGoqUJqOTGTVZUUW/f0rs4JR0+w/YYszh4n1WzlfChI3MmTgFawJ?=
+ =?us-ascii?Q?bWfz2EwZGsIKH1rHlE1i80i5Xxu41KeTmw8p3RcAghxkewHEVcC4hUJM/An2?=
+ =?us-ascii?Q?OAbEXBU8jEvqQW6sKx7GpLL/gExg/2lhI6WcOD3R97TbdVCffpXbB8d8JnsJ?=
+ =?us-ascii?Q?6WlhQ5wrlUncH2ydmwDFKQnAejFCI6sJnO/ohcdndz0bTBYjG5e3qtzgocAs?=
+ =?us-ascii?Q?1NzrTuS/BNJNkBsbdRWGseIblck7AHXYb60ma0LcvMo6BkmN?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88ff9f82-4c70-4599-06a7-08de57d002fc
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 03:00:04.9626
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qXZQrpVwbUMltY4PA6HgiQTPadV/zydOLSvwnlPlZtemGz7wNFN1SHYYusXBQb7V
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8461
+X-Rspamd-Queue-Id: EAF441C000A
+X-Stat-Signature: 646qnu7derwfwe7ogfjqyc7bteotpe5t
 X-Rspam-User: 
-X-Stat-Signature: s5at5wzmjmx4bdxsh6ddimuzueonh4t1
-X-HE-Tag: 1768877755-326412
-X-HE-Meta: U2FsdGVkX19TO2o0WQ/mhFYX1HAQV/8rz/+O18FHfCgcN7iFhtCC6nKZUbWIKwY8Cvlh7xBTLoBpyjOLn1wKLao46CPKxDdshK1hnSDPHp/xwPMmGlFILkTWopC3r4wcun+wjhO5Q5aj9hhKB4hzizFJUq6tB7fzVVhSBE/Y4VvSkvvIixsaC5aScaPaqEn7Za4ewWAc5rqOHhvCLpSLjs/ONFgjkLwtVoF7mUuENj9QfMyeL//M6VFEYfPI0FbUTAeNSDC2RNBZIVcRoF5I6mAx60lz+xGBv1RzaHXe64/VKz9DE7BVMr4BbqW8bGKQ7LfxHRtQgvHDUXHUhuOYfd1S9vuM4kMtSf2hkIzjCw1qpC0nMoLVwLhmVOFLd/i+YFpU12pkEA3kJ83/OZleD27ZHDJ5FElx5shGJhlfIoLUI/tfI97YhllDc3Q4VsdHqT2LKFgUKHv85W10Nk0s6I7UBe2h1CBrizparH/jGuFAM+pATtsXsX/jDJ7QxLM+tIpKEXf8645wB6i9br7Fv9OeJI33N37zx6niYui8lH/uUlCpzAwwOF2N/PsLUG5mBFPr2VuRXOd4RqjVyklgWRHhWdxnwFg9OUudJ4z/2cEb1JFeUc+pENRLyI9jm81NTK9hob+6+2zGDtH586Pw7fi91t9vJUMOSL8KymywjGweaROcgrA8tgWFA4lgjQDOUYL/9DIebOLNkItV1HSUh9a0fVPv8tbQ4wTmAe3vB9hMtIxohEjao7vYLXh90+5d3b6ZG2yFb9HZcbWtVEP/xmbYovyaZgHvIh4IaSNDaqEWwGHp1cgaRHgrZAsKbtk4AvzcUOp3ap0qOjU24+KMU2KSn4+oU+zkowlxurMTZcJU1RNd78uxYLHw6PuoSA0vPW3WEr9785e2jPilR6CHw10CH0j3gyzyBelYfpLI5Imjw+38aUJRyQEBSFeuAn28HwxtES/0QBW+OWQBDj2
- 8yiOTmIa
- lC2UgNWVO0a35aJcJVDJgaxXKCmRK9xrG7zfcN0pN6SMBXfJIFTEbSl/ewMrCNJPgCKmaxKbvcfI5Wxt1/VijV8oeCgAutDQSitwy7K2rF6ayss2L6GblEmj3VVVs+vchO6OjCKlblXzM7arwSGtaBoheRTFsT9ZhABBraj/lHkIiyKsbv8tZpemSsgG2yrcAuHhdB133WMUu7RA=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768878008-395841
+X-HE-Meta: U2FsdGVkX19fWLPuNQJRTDIhLIWSl+WnGAcXrnMpgMUaobLn9DmnE3V9BE8SyJr3YMCEhhv2lTfovQcTelSZzGnM/IcLA45akdhdow8nzep5MotAiK3zlJ5LXOJqtMozgfjEA/MWZ7FbAV/KR0XyGmwy0v2d+VFmnRoyvArjyPq987kN2OQpgpQsNePjEl+a5OldXBnodEvujIGpyZsL+h8lGtLhWZpUAgu1pnDX7h0WDQ0JU3fN9wuTzh5akwPwpvHzVzvlKwYrpZ11Pf8ekadvlZJMgir2YXDv+o2rvWfEGId9WdbiEelm5UX4CuwihGpZtJw5kdbNDMhYzRsBGFb1V2JLknU42S4pjfnaFev3jT6S8lJJ5px80KsL5FG7Dutc4AXFJhAtXEJGBZKgLlNNpYjRMPFe1nqsLk+nVzCfILjG2yYJUcAmqAUsSgdVT1TkI86iU2LLmlxvXC5P1/phkybE81MHAaOEvJii7jRmU8kz4y8fRnsl27PEYC6Ex0Q6B8HME79xSuofgYOP/XPzcbnMH3Y9WVc+K58WKvNZSRR3iY4Vo9JkXPPtqhGbHzp6F1ZrX0jvnCHC0WPQRUt+el956y5T0FMcjjkGefosUjIVdI+Zj58aCaVpqlocLBHfdNjRxf75ta39LtgqcNibztRN4TeTR3/UYGi/8FoOMa6/AZAgIFRtndXw6thiVK9wHAMHBEUVhDbWBWZDuKaPYzuPUWuP2Cp9cpoj0kmSlDnUekNbqNqzrfKcKHwG5oJf7RkLiA+YDvp47Lo3EPKAxXLY0FMwfzMyhfTGWxJFVvCvEbNo7nH8B9rquJK7siwQfVwfe54lAPPC6ZZPEI/Td3hwqF1CtferRQNu2/C3XAYYAirZ8o4iLrfAa9vuHep1aaDfoa9wSK+ZKMWlkdFV6aMBJk8lLOFqaQVwmwprhDPqnXWzHUlL1uan9ElV5NKDFeWqiHGevxVbj5a
+ 7+Cdcn2x
+ 26Vg/qCTyyu0DSKwM8eZUNX+f+OIQeWKLxjeQ1LJgBYgi6v7QJ6QIW227fhYGYt3dPccli1qG77o1Kb0NMi1vNfO8HZQ18zF5YAU5t46gWHO6AGzQMDw9XUsPZoJhKoUyM4GOaSjAhnpXWOQPZEiic0fU5w4KdFAr1hJeKBGqC8/l5O1dcLcQ5m1wz5+pDHtqraW9qL4iZHbXeuHSKKCDuFennJ7BYQ0su7jQNFP6VK7LXrEwG6NX0lWlsM5SoEPrc4RlA4Yhs8DcONqLxi3qjUvkdfUrJ2lIcydVtcr7bNBYljRw/uaz09N/zN/RmpPJXbLHYCh8D3juPqJA71ZURTxz/Om3HPKYWcrQVhfWiJ6rDhEgtD6d6SwOvbhCiyHITnNxDuLj9Zrx+szBFKCMcajokRb+KCk0jcid5Te7CvVm7bSrDHZBmRXgjwTIrjQ8NYtl9PFweK5Luo+fjEaS+3lVo0wcTzl8YzlUWSNNBWcrcIV2hwVkR9Pjhg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,107 +238,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 03:40:29PM +0100, Vlastimil Babka wrote:
-> At this point we have sheaves enabled for all caches, but their refill
-> is done via __kmem_cache_alloc_bulk() which relies on cpu (partial)
-> slabs - now a redundant caching layer that we are about to remove.
-> 
-> The refill will thus be done from slabs on the node partial list.
-> Introduce new functions that can do that in an optimized way as it's
-> easier than modifying the __kmem_cache_alloc_bulk() call chain.
-> 
-> Extend struct partial_context so it can return a list of slabs from the
-> partial list with the sum of free objects in them within the requested
-> min and max.
-> 
-> Introduce get_partial_node_bulk() that removes the slabs from freelist
-> and returns them in the list.
-> 
-> Introduce get_freelist_nofreeze() which grabs the freelist without
-> freezing the slab.
-> 
-> Introduce alloc_from_new_slab() which can allocate multiple objects from
-> a newly allocated slab where we don't need to synchronize with freeing.
-> In some aspects it's similar to alloc_single_from_new_slab() but assumes
-> the cache is a non-debug one so it can avoid some actions.
-> 
-> Introduce __refill_objects() that uses the functions above to fill an
-> array of objects. It has to handle the possibility that the slabs will
-> contain more objects that were requested, due to concurrent freeing of
-> objects to those slabs. When no more slabs on partial lists are
-> available, it will allocate new slabs. It is intended to be only used
-> in context where spinning is allowed, so add a WARN_ON_ONCE check there.
-> 
-> Finally, switch refill_sheaf() to use __refill_objects(). Sheaves are
-> only refilled from contexts that allow spinning, or even blocking.
-> 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+On 19 Jan 2026, at 16:19, Lorenzo Stoakes wrote:
+
+> We will be shortly removing the vm_flags_t field from vm_area_desc so we
+> need to update all mmap_prepare users to only use the dessc->vma_flags
+> field.
+>
+> This patch achieves that and makes all ancillary changes required to make
+> this possible.
+>
+> This lays the groundwork for future work to eliminate the use of vm_flags_t
+> in vm_area_desc altogether and more broadly throughout the kernel.
+>
+> While we're here, we take the opportunity to replace VM_REMAP_FLAGS with
+> VMA_REMAP_FLAGS, the vma_flags_t equivalent.
+>
+> No functional changes intended.
+>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > ---
->  mm/slub.c | 284 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 264 insertions(+), 20 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 9bea8a65e510..dce80463f92c 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -246,6 +246,9 @@ struct partial_context {
->  	gfp_t flags;
->  	unsigned int orig_size;
->  	void *object;
-> +	unsigned int min_objects;
-> +	unsigned int max_objects;
-> +	struct list_head slabs;
->  };
->  
-...
-> +static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
-> +		void **p, unsigned int count, bool allow_spin)
-> +{
-> +	unsigned int allocated = 0;
-> +	struct kmem_cache_node *n;
-> +	unsigned long flags;
-> +	void *object;
-> +
-> +	if (!allow_spin && (slab->objects - slab->inuse) > count) {
+>  drivers/char/mem.c       |  6 +++---
+>  drivers/dax/device.c     | 10 +++++-----
+>  fs/aio.c                 |  2 +-
+>  fs/erofs/data.c          |  5 +++--
+>  fs/ext4/file.c           |  4 ++--
+>  fs/ntfs3/file.c          |  2 +-
+>  fs/orangefs/file.c       |  4 ++--
+>  fs/ramfs/file-nommu.c    |  2 +-
+>  fs/resctrl/pseudo_lock.c |  2 +-
+>  fs/romfs/mmap-nommu.c    |  2 +-
+>  fs/xfs/xfs_file.c        |  4 ++--
+>  fs/zonefs/file.c         |  3 ++-
+>  include/linux/dax.h      |  4 ++--
+>  include/linux/mm.h       | 24 +++++++++++++++++++-----
+>  kernel/relay.c           |  2 +-
+>  mm/memory.c              | 17 ++++++++---------
+>  16 files changed, 54 insertions(+), 39 deletions(-)
+>
 
-I was wondering - given that slab->inuse is 0 for a newly allocated slab, is
-there a reason to use "slab->objects - slab->inuse" instead of simply
-slab->objects.
+You missed one instance in !CONFIG_DAX:
 
-> +
-> +		n = get_node(s, slab_nid(slab));
-> +
-> +		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
-> +			/* Unlucky, discard newly allocated slab */
-> +			defer_deactivate_slab(slab, NULL);
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	object = slab->freelist;
-> +	while (object && allocated < count) {
-> +		p[allocated] = object;
-> +		object = get_freepointer(s, object);
-> +		maybe_wipe_obj_freeptr(s, p[allocated]);
-> +
-> +		slab->inuse++;
-> +		allocated++;
-> +	}
-> +	slab->freelist = object;
-> +
-> +	if (slab->freelist) {
-> +
-> +		if (allow_spin) {
-> +			n = get_node(s, slab_nid(slab));
-> +			spin_lock_irqsave(&n->list_lock, flags);
-> +		}
-> +		add_partial(n, slab, DEACTIVATE_TO_HEAD);
-> +		spin_unlock_irqrestore(&n->list_lock, flags);
-> +	}
-> +
-> +	inc_slabs_node(s, slab_nid(slab), slab->objects);
-> +	return allocated;
-> +}
-> +
-...
+diff --git a/include/linux/dax.h b/include/linux/dax.h
+index 162c19fe478c..48d20b790a7d 100644
+--- a/include/linux/dax.h
++++ b/include/linux/dax.h
+@@ -111,11 +111,11 @@ static inline void set_dax_nomc(struct dax_device *dax_dev)
+ static inline void set_dax_synchronous(struct dax_device *dax_dev)
+ {
+ }
+-static inline bool daxdev_mapping_supported(vm_flags_t vm_flags,
++static inline bool daxdev_mapping_supported(vma_flags_t flags,
+ 					    const struct inode *inode,
+ 					    struct dax_device *dax_dev)
+ {
+-	return !(vm_flags & VM_SYNC);
++	return !vma_flags_test(flags, VMA_SYNC_BIT);
+ }
+ static inline size_t dax_recovery_write(struct dax_device *dax_dev,
+ 		pgoff_t pgoff, void *addr, size_t bytes, struct iov_iter *i)
+
+
+Best Regards,
+Yan, Zi
 
