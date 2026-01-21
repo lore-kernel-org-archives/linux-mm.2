@@ -4,115 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AB11D262B5
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 14:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5D04CA5FD7
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 14:38:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAF746B0005; Wed, 21 Jan 2026 09:38:10 -0500 (EST)
+	id 25B476B0005; Wed, 21 Jan 2026 09:38:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A87C86B0088; Wed, 21 Jan 2026 09:38:10 -0500 (EST)
+	id 224A96B0088; Wed, 21 Jan 2026 09:38:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B4246B0089; Wed, 21 Jan 2026 09:38:10 -0500 (EST)
+	id 14E056B0089; Wed, 21 Jan 2026 09:38:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 87B776B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:38:10 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B06258B9C
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:38:10 +0000 (UTC)
-X-FDA: 84356225940.07.CB34A78
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 10ED980016
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:38:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CRB12vaS;
-	spf=pass (imf02.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 038BD6B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:38:45 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A027A160498
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:38:44 +0000 (UTC)
+X-FDA: 84356227368.11.6F288DC
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1E84F140007
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:38:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=H11EW6za;
+	spf=pass (imf26.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769006288;
+	s=arc-20220608; t=1769006323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rCFnBYovc8CaOJRyUXyWvhAiDjdFkUOm+Iek0vayQAg=;
-	b=4Aw3xlGKq7Wa1CizFJzCpjOV3jcKN0bOicfnumSZzuvqwNDC96ahLKD5MsTyMc/cLw52Uw
-	+p2DqYZNi0lBhDv+KtHejKxh9wGY+uX2a59bhxfFNp/05+hPb0r+XsLigdS2zoCwptoCXX
-	KJArzTiFniTZ3Fe1L4RMknGFx5RJO0s=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=w/WDHKSYXm8Fddt+PSh+C072ZZ2mR98/5mghWuOHgEc=;
+	b=KjXYRiQhlt6lO/veSSkDOJW9TK3ZtKXPGyh7QMtIsxrnkVcI0lrQGZ9AD3PIhM0ke5AElw
+	Nek9KKe5MfumNF1FMymHv7VbP4F8+kENJEmCoMyMzkwd9PV5HqQ2bwRCa1eCx56Nx9vTSc
+	yifxar8iIqYTJ9NH4XTCDxxQNd7HkhM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CRB12vaS;
-	spf=pass (imf02.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769006288; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=H11EW6za;
+	spf=pass (imf26.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769006323; a=rsa-sha256;
 	cv=none;
-	b=jJz+oSjPTmrsj/YSLCWXX1XDebJGOhdxR5l6ZHA6/HiaW//S/J5ie8B/lASsCZOl1ddRuv
-	SFkMK89XubrORTQAXdsLSM/NyrJLZIGqIgbemSo+n4BqElc87aO+ABP5rmyqNg4pFJtGjo
-	O4FjPZ5SoEq7hd18wqUtFF2EPnWw+oM=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4801c1ad878so55531535e9.1
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:38:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769006286; x=1769611086; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rCFnBYovc8CaOJRyUXyWvhAiDjdFkUOm+Iek0vayQAg=;
-        b=CRB12vaSoRRJqjGbHy2CicXA+Nmy0ZRVOYYpdTtN0ziRU3ZPx3SgeaV7SnDJ6CueiV
-         m9SKuhrB//jWjzxlbF7l7DAILoQs4GlSdq8E/7Rg8ecIbDIOKwYhQLjsngIdkAaFgJiY
-         LJqINQ+xLreyNAWF/OXE54WMYwbHQZQjwwMHhflRUar9sIgCE/0qoNAmZkTQIapSoEH0
-         pObP/+4HrLDq7CnwA6LAi6nERc3P2DX2nPPgbEHVc0TaOalGI7Ew1+120wCIw0+iaAcy
-         r860wE6CO7w2fuUylr2P2s/kDgn1VY5x1jSmzraFqWpDSjn6cL8Y8MA7SZe9IRU16wW+
-         0UEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769006286; x=1769611086;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rCFnBYovc8CaOJRyUXyWvhAiDjdFkUOm+Iek0vayQAg=;
-        b=iGdwLNrXIc/yyHTGsDlKTQbaQN/q7TCTu9ozq9OJUp2IhTVHswGB7Z1BoMNCtx4XDh
-         h6KKSUW9vxA9R7A7yoQC8Odp2W6cTHnLJhBQ7a8+SlVTn/tQsFsim5s7PfRrzJfjdZgQ
-         YZAvXVRuByDYT3qu3zHgQq3XkGWaAII4hTZwkvdAKP9voDDXszByYtqnRe814UIZOsFO
-         SNRdomwQUtKPeLed7duD17bk7WgnPlhe2ilbSpOIgGdXcfQ4c/uB8M/DkypXADTmqxYr
-         zgjzd4SJpmos8OIHeoEvNZMOoXAeVbhgmPGgyWleuInfRFxFxbAtvtj5XTGvJLwftL5J
-         m4eA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqhGtnFrQ6b3m+7TX5pG7PNfJTHVjH3bswpzMC/TMQobilRafwU5e9/3L212XIHoURGjYVKgvybg==@kvack.org
-X-Gm-Message-State: AOJu0YztqqUg83SRKQSGf3wchbqfAH7BuPYXX/HBUhRyXW2ZZ4x0reft
-	26qmmGZDzMCRzdov0cupGuJV2sIM6D/6JfPr6Zmq5khCOV8bWlmizGQE2nP2rWQMT2croJDU1CD
-	f2/ob
-X-Gm-Gg: AZuq6aJjrMB5oL3f4OSFNej6/zGpuzb76uaHNoNzLfIswgM5iJWeDSbaNOm13yxU3B3
-	keL2qCrrixnIhapIQFPSG/bxI3GJDfHcnAyG0IE/4M0j9NXyS8/MmLlAoWP7xyNNpOcS8aoj95n
-	rSB1A2bL/NaB3AR0dM2PTqGpgn8srNrIz9R3n0WcVQHBPGL52yyNGlGK7oKmPnjxW4HlcYfyvso
-	uOQhBKEW/AK6MbtDVTOGX85qPWKvcWQDPgr7Q4CXHwKDPwm2x2UqiahEyhwzOdw93L2DQYzM1cK
-	wcpznPK9ZTw2vsZUUoU81CEXOcRSI1a1kKRUDCH5wE2pipJJBjKuWNc6TNGs8k6lrVTQ1en3JQy
-	45yri3hJwLoJHzixHn5vZxHBZx4ci7E5ES/6sMJUvvS/ZEbABUj4cD/V+u5c+uEEt7rRpv6088s
-	3e2OWN+PG+28g+nVeZqNKxnfY9
-X-Received: by 2002:a05:600c:154e:b0:47a:80f8:82ab with SMTP id 5b1f17b1804b1-48042c3a712mr47102365e9.24.1769006286356;
-        Wed, 21 Jan 2026 06:38:06 -0800 (PST)
-Received: from localhost (109-81-91-169.rct.o2.cz. [109.81.91.169])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801e886829sm312872195e9.8.2026.01.21.06.38.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 06:38:05 -0800 (PST)
-Date: Wed, 21 Jan 2026 15:38:04 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
+	b=NN89TaCydG6u2TOkYg1j6Om3ho6KoQGVAVD+TNysJBgUXPTlV+iVuSoLeG6G0tcABm39rE
+	/XGDLMpVnS7Wa26j4hT98RDDLRnQOEz+8EJlzKF+HzRsBeu1KfIFy7e2OTmk8sl6vd2CuN
+	6J/1uAsN1tTmBpGR3KIJu7cnxYfDEtQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=w/
+	WDHKSYXm8Fddt+PSh+C072ZZ2mR98/5mghWuOHgEc=; b=H11EW6zabDu1SOki7q
+	DfOJPT+8F8W1lFgEMzRSRCSDRiA3xmPo9TLo2eko2FxeV7lHoWoKSp28ZMxGletz
+	+ux56OGnr8BVOcIPtgYpn/mhAUOArjE5TDpgKRhg8QHAeXXV3NzMPZ5fpLWoK60x
+	duqIyhzT4ikaLYVm9w7GdCgK0=
+Received: from ubuntu24-z.. (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgA3oF_443Bpg3L7MA--.289S2;
+	Wed, 21 Jan 2026 22:34:35 +0800 (CST)
+From: ranxiaokai627@163.com
+To: pratyush@kernel.org,
+	surenb@google.com,
+	akpm@linux-foundation.org
+Cc: pasha.tatashin@soleen.com,
+	kent.overstreet@linux.dev,
+	rppt@kernel.org,
+	graf@amazon.com,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Subject: Re: [PATCH] mm: bail out when meet the goal of proactive memcg
- reclaim
-Message-ID: <aXDkzHygHZasufg9@tiehlicka>
-References: <20260121090620.559242-1-zhaoyang.huang@unisoc.com>
+	kexec@lists.infradead.org,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com
+Subject: [PATCH v3] kho: init alloc tags when restoring pages from reserved memory
+Date: Wed, 21 Jan 2026 14:34:30 +0000
+Message-ID: <20260121143430.175294-1-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260121090620.559242-1-zhaoyang.huang@unisoc.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgA3oF_443Bpg3L7MA--.289S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ArWkWr1xuFWrXFyruw4xXrb_yoW8KFyfpr
+	W8tw1ktayrJan8Za17ta1q934ftws5JayrJay7u34fXFnxA3Z2yas7Xa4jvFy5Gry8XF4x
+	Ww4UJrZ0v3Z09aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piFdgJUUUUU=
+X-Originating-IP: [218.203.227.98]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxRyu+mlw4-xfYwAA33
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 10ED980016
-X-Stat-Signature: sxodket94ggwkgqzi1fcuorrjz1yo46i
+X-Rspamd-Queue-Id: 1E84F140007
+X-Stat-Signature: 1p3oirh4tghompb1b7kabcoqu9x7d8ey
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1769006287-358677
-X-HE-Meta: U2FsdGVkX19wH9/irQvDnqShCTJWhQfzLTASXD6+22FwjalnPxiOSc0yyxTVsK05aBIuXxGg4sdKAgKuD3h/56iD2WX3OnQe4lh3gjy/9Ozp+dEOom4ENJFtUXzHiX4zdCRfEB3w26gn8cEOQcF4J/uSgH/dOCVfBZ8yPGlJatdgWhEBYY6x+lz0X2dJ22cHOP1p185QPYenopTEUwfE3bt0ZRRy/g7uBesTuq38+zgTmdBpBxH1+8hBy63T4Y/s8w9pcksIZwsfV/dS4YYqaaHvoz15OTKy7kOk3iy6Buc6FluRe3dj6qfSgYDi8rnZyFhDB6d+m7B74r++/gTiYB4YKbnaaorNSAexgQyGD72oYKmHxrUQvMFsuyFZQ29r56bzcVqGdQTiIbvysFd2pv/j+IwSRI5coJv3H2hry1jJnmCcJqFBZVU/dahulaGGVUn5HAnxAMrr73eixUSJAm7vpO//zfNXKFE06zlYiKKSRadKlhNixVUZFQbvl9Zp70ziAVfbq6LoHaFcc0Q+qR81nhiiBeyv9bd2Xwo5YDiYDekq4o+PPlmvvh4W9bL0lVVJulRIqQLRBRHQImMeGfGQk9A+NWujuHf1sSMqEbwnnacGv+dxonJjcolh9zOIbpUasBEDF+11i98SN91i2fAfT2NvZabFJnKX7ERvvotiwwXgeFU+6uGEgGFZSboJ2/NMbKcwl2+pKM3opjotFMO8BUT3PQGBt8bKPN3DzeeA3ZJUsOwwTtWbiLKRZd1/Z7oLfzMXQAMyNv1TIwfW8HU+Dwz8i7ysAUs7t4K3jUuNmXDxMP5HU1Tl6zxpuyA9s87Kay++QhoN97yDNW1mh3udk/ACzXS7dTs5LLnOtsTuEsZhQYRRJIVdvmIYKUEVaxrSQggT4rTdP/KVjT03plkBdFCSsMeZrGeYnxYjoYN5Oti7y2+mRbsiwaLMAuvIOl7cNUzURWxqrnv+CNl
- 8xPDSKXO
- TTZ2QgDc0LK0HxvHoqW8C0WGVWuNEivRO+7DYpDtrKGXjBoDAZU7MnLOPwTAG8M+OsR67972sDLEuAQCSDhq5gWOjQMcyLAmc1xZvLVsZ0vT1pN1g2PLuFW4BVvoqeaBrjsC3ZQUNXf9TowI3nlVGyYEPuqPbwSTB1SBP5NdCZWpHeJzoF4HXGGXalmSTCQptFzT5q7tCe5/3jsRYQpgPHoF2vtCTBdh9SO07Z/PhnZNhUINVAzlx/8sxpebn+Byzz95GtFw1eziTAV0nLrtOC660GlpjO6O3hk6cNVKI4nW13wuVHFwlm0iuedFGhWSmEFBOGk12ZMAF5fP5ofJrC8mCeT3YSLaERFuc9eKLuocESkLksXjWZ3fFHjg4utuAnaSaAnJeQVFdr2EHioZaPDhWJYxUbQLY6fnPU9q/F1OVBhDd0LXbKqf7ZRDW1YRP5Dbk
+X-HE-Tag: 1769006321-706220
+X-HE-Meta: U2FsdGVkX1/losHUxiSojXjs6d04CttmJbddSqMKXkWozUN/KVq96r9tY14BBj0bxy/m2jUslC97y/5xElxPhDX+9dBD4qpi1Rqf71M40YSxijwYEY5zVP4bqoHQDuwjkyiSCFA72i52SlyXevzChhurPEWTqJyw7aFkT5htkodOnV17j+lk5NfJyDQSBgCtmIAKBKdZ2vrToNSHeORU2Cu0GlKnT6UC8h7aaTTbv9irlEyYBjkM2e4YLiZ56Zp1QKz+jMuLNotLj1vYOX4TbAT0ziQDHj+KlvT03+oqIHyNNmZrKfemNQGoXkMw1f2Ye2vMDKTWSQ8Zn/j3ajB1D0LFsdAZPOFqCUraiGN5ZqqF080YC7wFUZBGV5QPdJH6Szx7Z8x4AMPue3YenzFYie2+6nZLZ1E44jMFaanhYLw+fqJhEYZq9tHwKSbR4REARAXDRjv/LTyN/VCDsn9W3JEcB1IF/OupRBfof6PDjw6X7u8QL9l6JZXMfpAbB9lCxqIuzLOZAsoI3cBgXgLs1oIW7xwl4M3GlmC8K6yYiaGHnLBD3ypRl0HH2LSclmp2G4K38HGFTXdT0csS5Y+Fqy350s6QtZ/eSGSvJg+mvwpe7JbzhgYHeOUUDqh4dD6ook1ur4bKJhvmDbppc8g13PzH6r5BZkGqZpYQliBwnWllyciCLz9azWiiCC8mMBKLaL3dt/7Q59L1tuOsgUdDDusN3auFXjewkyZQoAMKf7JLH8S4SEfqUT4P54vwbj3jsWDjgh2fvrxWdg0FUDopy1w7J8Zbrxge3drt+DHYIAdLq5V+GFXpHbZS6iN565IqkO1KHlOkYZ+DeqnvSKoWG2OQtqutuOr2EElFUhD8W+ef3o+MkWyiAYKEbAdbKg+3+QjFAtMHwOAYQEjp081/GeiLJqj7P5ouvvzFk5XngQOnri0nNNxfz1Aeek4G98Hapt0579CzFRbPUTvmWXP
+ qC5Jjmcc
+ 4DUoOrjF5JU2+SJyszlT60D+fOknnJ56VY+nL8rTe38upT6Hxqet0H/jkJs0hBVeVKSBee0igrF9BfXrUzWJSxX75NaRmQOmSuHEXrTptJxlkvH25/ymCG1xsU24cjoR0r9dpb83FdnmTbfRitWF8sMihM04PLE5I7hS3Hzt7xd1egIbYQW7oE65AlvtiZtiwY6fGOU2edeYvBny8mLl18flo0AlCoyQ3BIQ+fYE8SRSRpWgvYdqzz3/CeybNhX3zXIE+3JvLLt/N9MszizIJBqCYpBbmhWU7DKnDTzubbASaJ9MedW1if4ocsbIM+1FyGGOqu4J0jqx07rtEQmerCh4atgpTauwxaDN3uC9+Jiv7i62Gy4H/suX1dNCuXPTKZv3Yipq0a+FsF0w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,52 +99,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 21-01-26 17:06:20, zhaoyang.huang wrote:
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> 
-> The proactive memcg reclaim defines the specific target mem cgroup
-> as well as a certain number of memories, which is different to
-> the kswapd and direct reclaim that need to keep the fairness among
-> cgroups. This commit would like to introduce a criteria to have
-> proactive reclaim bail out when target mem cgroup could meet the goal
-> via its own lruvec, which means the reclaim would also go through the
-> whole tree if the iter start on the desendants.
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Could you describe the actual problem you are trying to deal with?
-I would be also interested why the limit aplies only to target_memcg.
+Memblock pages (including reserved memory) should have their allocation
+tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
+released to the page allocator. When kho restores pages through
+kho_restore_page(), missing this call causes mismatched
+allocation/deallocation tracking and below warning message:
 
-> 
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> ---
->  mm/vmscan.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 670fe9fae5ba..5dcca4559b18 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -6028,8 +6028,15 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
->  				   sc->nr_scanned - scanned,
->  				   sc->nr_reclaimed - reclaimed);
->  
-> -		/* If partial walks are allowed, bail once goal is reached */
-> -		if (partial && sc->nr_reclaimed >= sc->nr_to_reclaim) {
-> +		/* If partial walks are allowed, or proactive reclaim where
-> +		 * the target memcg is clearly defined that could let us ignore
-> +		 * the fairness thing, bail once goal is reached.
-> +		 * note: for proactive reclaim, the criteria make sense only
-> +		 * when target_memcg has both of descendant groups and folios
-> +		 * charged. Other wise, walk the whole tree under target_memcg.
-> +		 */
-> +		if ((partial || (sc->proactive && target_memcg == memcg)) &&
-> +			       sc->nr_reclaimed >= sc->nr_to_reclaim) {
->  			mem_cgroup_iter_break(target_memcg, memcg);
->  			break;
->  		}
-> -- 
-> 2.25.1
+alloc_tag was not set
+WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
+RIP: 0010:___free_pages+0xb8/0x260
+ kho_restore_vmalloc+0x187/0x2e0
+ kho_test_init+0x3c4/0xa30
+ do_one_initcall+0x62/0x2b0
+ kernel_init_freeable+0x25b/0x480
+ kernel_init+0x1a/0x1c0
+ ret_from_fork+0x2d1/0x360
 
+Add missing clear_page_tag_ref() annotation in kho_restore_page() to
+fix this.
+
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+---
+It is based on linux-next 20260120. I dont konw whether this base is ok ?
+
+ kernel/liveupdate/kexec_handover.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 43d9d2661163..8f7e09d67e1b 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -219,8 +219,11 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+ /* For physically contiguous 0-order pages. */
+ static void kho_init_pages(struct page *page, unsigned long nr_pages)
+ {
+-	for (unsigned long i = 0; i < nr_pages; i++)
++	for (unsigned long i = 0; i < nr_pages; i++) {
+ 		set_page_count(page + i, 1);
++		/* Mark the codetag as empty to avoid accounting mismatch */
++		clear_page_tag_ref(page + i);
++	}
+ }
+ 
+ static void kho_init_folio(struct page *page, unsigned int order)
+@@ -236,6 +239,9 @@ static void kho_init_folio(struct page *page, unsigned int order)
+ 
+ 	if (order > 0)
+ 		prep_compound_page(page, order);
++
++	/* Mark the codetag as empty to avoid accounting mismatch */
++	clear_page_tag_ref(page);
+ }
+ 
+ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+@@ -265,7 +271,6 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+ 	else
+ 		kho_init_pages(page, nr_pages);
+ 
+-	clear_page_tag_ref(page);
+ 	adjust_managed_page_count(page, nr_pages);
+ 	return page;
+ }
 -- 
-Michal Hocko
-SUSE Labs
+2.25.1
+
+
 
