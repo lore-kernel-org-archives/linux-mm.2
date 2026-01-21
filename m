@@ -4,115 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66BF1C4451E
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 11:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F257C4450D
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 11:52:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 472C66B0005; Wed, 21 Jan 2026 06:49:18 -0500 (EST)
+	id A0FD86B0005; Wed, 21 Jan 2026 06:52:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4207C6B0088; Wed, 21 Jan 2026 06:49:18 -0500 (EST)
+	id 9B96B6B0088; Wed, 21 Jan 2026 06:52:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32C2E6B0089; Wed, 21 Jan 2026 06:49:18 -0500 (EST)
+	id 8BB8B6B0089; Wed, 21 Jan 2026 06:52:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ECD86B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:49:18 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AEC7C13C1F2
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:49:17 +0000 (UTC)
-X-FDA: 84355800354.15.31204F9
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0EF9214000B
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:49:15 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="iuznYV3/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of 3Or1waQgKCMkyprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3Or1waQgKCMkyprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B9946B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:52:12 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EEBF213C1EB
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:52:11 +0000 (UTC)
+X-FDA: 84355807662.04.3948A45
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 112E818000B
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:52:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=8bytes.org header.s=default header.b=4QbZz+Ur;
+	spf=pass (imf06.hostedemail.com: domain of joro@8bytes.org designates 85.214.250.239 as permitted sender) smtp.mailfrom=joro@8bytes.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768996156;
+	s=arc-20220608; t=1768996330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hDVt8yY2/5hunMbzbLaciGoWHJvxPm3JadMnQq3QoQw=;
-	b=23e9FYRb+lMgNZMeI87iOfH+fvUsfMeXi/jNhoVP6PblYBfCN8646isMZUOuo48aGxFWCK
-	cH3IFKWkaXV1dR1eNUEU/usjRB/X7tki1Om1pzusxXx0gvcoHkKW95ay/2fD73qq3Kum1S
-	9ZUffOYZu0fG2DxdrmzjjiPGaOZv8tI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768996156; a=rsa-sha256;
-	cv=none;
-	b=NwNA9LJnIWxxaEGHKucsxq+wuFzhOY1ejeUrsslSD2QgEbubgoIfrrLjDMX74iAakwmsGu
-	Sz1vz/BUgD2gsN6RecnxQ3nmXtqA/dKHzN46qWbsDOYrKrXFeRELJcTx8oeKoXsk6n4XVK
-	tqGCvAvMyuLqqug2Lbsay/rz1D52lDY=
+	bh=O1s4bVh2Rsv/3h6xv/qTf0E+2TTmsrjI97ETgfwYeUM=;
+	b=Eg4MvkJZemQhfZJHOpKi1DgAX+9SvaUT057GMP4u46Z4m2ZZe33JpbhVlG7b3JJm7E4hjf
+	USW++VMchSWqeKFUDL8wDgkCN5ia5V35K+6S/lLJUkBbGXHX4QkhLDBtjKs6AmlLigzbHG
+	6oz9gimXdxNybWZnKQAiNvh6gyzkRI0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="iuznYV3/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of 3Or1waQgKCMkyprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3Or1waQgKCMkyprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b8773bf3ddbso581443166b.1
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 03:49:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768996154; x=1769600954; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hDVt8yY2/5hunMbzbLaciGoWHJvxPm3JadMnQq3QoQw=;
-        b=iuznYV3/tgsXOSiMb9srgNBA33NFPYIvXS3yjWTO9XhcatIc5Z6jckdVKp3wWMN3F8
-         94zz/TMq1SDumEOBUAmBC3NdDdpNeBC/oFMZ6ZsXta/8YgOuHsMidSTLUeUvOGuVL2Sl
-         5AIgc8/ZUgyIeYuOdZ8ipfFsQHeY+Ayz1SDtWzOg+tGtvMMrVrf9dK0A1a1ub/pvlXTw
-         t9B1AZmgcHE0udVA3mkloJkMNDTXA9P9VwoU1m7CpC45AFmv3nNZ8sPKy4Pq3C4qDoI+
-         00BJqVIzuDGVsNyFKo509kd2+zgzcMM1qRkyIksjy9y23yNASUtaRzTbJo0/2xTx3loA
-         4OnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768996154; x=1769600954;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hDVt8yY2/5hunMbzbLaciGoWHJvxPm3JadMnQq3QoQw=;
-        b=v/CYPHpopEwg5DZ/oHESYOHuLg12cZzkPGe/hHFxKcUM9UD7YO+bFycp0z20ZqiuS+
-         moonFp8NKPSh5HUnsmin5csmQQ5UHRz3Opu/OsVs4Xg46jZHGZncZPmzdh6MYdtwpVSN
-         fR6RrVi2YHUdd9ex2bWzWvSe0COr7DJ0pJAohhzTI2NCEz9q51o8VtQXkdfEOff4kQPr
-         fqIuROtkugH3+G0vBNhGHILql0bvZkrF8j8AsLHnwyyfsb+ntfhRKGAsqfz0Mj0TqrdC
-         HDaFRz+vyOeDfSt8LxacbbWd4HLCHnm+FtjXPgVdy9eSg4tJMS+FHjPdJc8KJzP8dd0r
-         0IfA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0H9ziUNH0gnMDCBR0vUuZplGl0MpkFxmP737P/gAsqyAAYsbVVZ6UOGmSbvmczDZkAgIFS2HJ1Q==@kvack.org
-X-Gm-Message-State: AOJu0YzPxtousU5sNZ3K7m6VVs2EbYBMsFBygtCLD5w4pG+Hsnw4X6nq
-	dI501mQ9FVeKOY/UNCKmH8GsDOU1GKDR4V1pBAF8iDXCDs8jLR1mzw85Q8+0l8n3k6rDetH/yQJ
-	WTfx/Ve/t3/+U3w==
-X-Received: from edzd5.prod.google.com ([2002:a05:6402:8c5:b0:658:786:7029])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:fe0e:b0:b76:d4d0:68da with SMTP id a640c23a62f3a-b8800234f39mr320389366b.6.1768996154161;
- Wed, 21 Jan 2026 03:49:14 -0800 (PST)
-Date: Wed, 21 Jan 2026 11:49:13 +0000
-In-Reply-To: <20260121112738.GBaXC4KgFQ2J667ea5@fat_crate.local>
-Mime-Version: 1.0
-References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-5-2d861768041f@google.com> <08338619-6aa1-4905-bdf8-bf1a90857307@intel.com>
- <DD7WQ97R8OG6.1CA5E2FU5ISMZ@google.com> <19e5012a-3c58-4696-9e4e-39e2b7d2b5af@intel.com>
- <DD80374YZEWM.1L31D2VUKK80C@google.com> <20260120163728.GDaW-vSLGY1P_E0DqS@fat_crate.local>
- <DFU660CYC3H5.3L7IVBXG8AIY1@google.com> <20260121112738.GBaXC4KgFQ2J667ea5@fat_crate.local>
-X-Mailer: aerc 0.21.0
-Message-ID: <DFU8STXKQXN9.E9NXUMU72SFQ@google.com>
-Subject: Re: [PATCH 05/21] x86/mm/pat: mirror direct map changes to ASI
-From: Brendan Jackman <jackmanb@google.com>
-To: Borislav Petkov <bp@alien8.de>, Brendan Jackman <jackmanb@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, <peterz@infradead.org>, 
-	<dave.hansen@linux.intel.com>, <mingo@redhat.com>, <tglx@linutronix.de>, 
-	<akpm@linux-foundation.org>, <david@redhat.com>, <derkling@google.com>, 
-	<junaids@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<reijiw@google.com>, <rientjes@google.com>, <rppt@kernel.org>, 
-	<vbabka@suse.cz>, <x86@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+	imf06.hostedemail.com;
+	dkim=pass header.d=8bytes.org header.s=default header.b=4QbZz+Ur;
+	spf=pass (imf06.hostedemail.com: domain of joro@8bytes.org designates 85.214.250.239 as permitted sender) smtp.mailfrom=joro@8bytes.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768996330; a=rsa-sha256;
+	cv=none;
+	b=x7YAuLFEhI2W9gM5IzbMP+rOAgu3xYAVCJiPubF5n2+G1+DatjokG9SZASWM6vn2VIgbiN
+	1PKziSxhAYLWqQBLJzXTcOktUZvghIvMYAgN+dX4lRfsHMZ+AYG0kMU1vuF3zjg2ESePYT
+	59AlHa9yI7uKxChNky38sgWzmT5u4qA=
+Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 386A61A268D;
+	Wed, 21 Jan 2026 12:52:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1768996328;
+	bh=e/LSjLy480JOTxFI01dXHOL1Q7hisUSXSCINws+Rksc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=4QbZz+Ur+wTdgiVgjwQfU//4PR+9fqRE2V2CokJ8fBPzWHPdMSkLrGxLcRN8IGvAs
+	 K4iDoYct8JcmgnNpkDM6kVWHbaCeZRBgQgQEJ+ZDdC4rjN6b4atN2tmIlkSIN/uh2G
+	 Fs92BppThSWJsOzqhj2gcoRMpBHGzpb0WNOkrcbevepuNmt+H8PQU4c9MNpdAFVkyU
+	 jl3EgiMBVgazb12ZF6SqRWCeduDP6hpnKlyuzaXHscswbYPgBn9jeLmO9iY/QcAP37
+	 BpvO8WPu0MIrmuKaLSWYpfvsmK2k6NrxkHJDg2PdrgHkMMWHLT+0S3AstXtszkUYQN
+	 Uk13cbOy/t3AQ==
+Date: Wed, 21 Jan 2026 12:52:07 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: linux-mm@kvack.org, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, corbet@lwn.net, will@kernel.org, 
+	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, 
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
+	david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	rppt@kernel.org, xiaqinxin@huawei.com, baolu.lu@linux.intel.com, 
+	rdunlap@infradead.org
+Subject: Re: [PATCH v2 0/2] iommu: debug-pagealloc: Remove pfn_valid() usage
+Message-ID: <p7j3zm4epypqkjmbecxzkfbyqggtbdoee5phfldjlbbxi47oti@fdxe3mt2r77m>
+References: <20260120091926.670155-1-smostafa@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120091926.670155-1-smostafa@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0EF9214000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 3ixhypbqrbsdrkmzs7d1373jgk3ci67h
-X-HE-Tag: 1768996155-899349
-X-HE-Meta: U2FsdGVkX1+/qNArXzc2SoVBh8w5XpFC6L3IymDBIbFYhIh4ucA0VL9ZPjzGTbZcCrO5gABXntkCiaWFwZeSiV7tBgufhSz1mijrXKQxnq0PgrGKpm3B1XMJjbOdErn6n0Gg7bnhDD00WjZ6BvmHZDTane+laxbXW5nBAfk5VlSA5+GqWZBlYFlW8E/EIWg+yQb5IHOo1YaI+wOgN3+LWbqabYicGq3t19LcTc1LycP7phsFEnLLqVP0dwt4zBL+xBjM9WQ/jSLDuDCYM5JPuSJwbd0y01ieErtLoel4wXZnH3GCYaxS49qk8I8sluJr/tNk3LSE/Vq1c0zWEPVYqseoV8mc58TaNFP4z8dTGgU3mLf9AF7BdafM/nfwZOecmcCFx3hP9nPDnVhc/Be6DGp+oPUS+v8j3wWo0Ba4F51/v0mI9leSPIedQfs/7DX0jLlGIVhDEjkWl/QH5sOpetqljeOh1N6dJMCK8HkBk9AWFomDBIUnOlMCLcZF0DiJe2i06IfiEzle6zwi+GDbDlOpbq6ir+M+8+oIuSEHuTHc7emBszgqBBDU4g6dzYYSc7DCaZyGlbEerN3988/uH2w1BZMIMoyoqC5BCOfO5q9zHCi7oR0/NXYBbPolR+dlH8IwqPZb1qWe76IXFohbIUCjv0iULyoul7+tDFDT9M50d7pU/GUH6GklNHEkIHwJhXsrPvSiysXKluFHmB1VcF0uLeWyqtU6FCBs6f34CXIKGiYinylTjsCap/DW8fZiVQuxG4fGrit2aVZ5pCxjiXlCD85ztQidRj3Kjx1XIPMhI8jSZnX0EVBC664zoci0xM03ZYgn09sF+YSWo4ydFEU/n4bmuTZB3oPAHk4Cb0y0Mgsaj+xlvvqs8zUNdjREQbyzUxggiy7/jevsFcNUTYQvbH9XeMH6tC/msZGCHpm7KyOkyqYBFHuvihVqHh+9NpB1Pr48Q26cVtztVcC
- lQSXMrob
- 0ah98YbnlHsVtXr4tDRap/a5j1ynLa6rMU5HzT+HkmQSq+KMW47lAwP/goihAWxIgzM1FPa2ywokhopUoX30tyxMgkmm3YynnWZS+501CheJjRlZP4fXrXtOMqHb/sQYLpMfAwvDPAuAK59ClEUelYgZxUV4DkVTnUXLxAlQaYQ0/QsbIZLYgPrAH9rtU9XI56ESW3CJl6Cnitbyr4JZhcaJNiAa+kC+n6U5bJUbse/D6mj4RXXacsjs+zT+rR7lCDst74/4Fp2zTtzv/OJZmIbZb1RWyYxx+f3TWSv8tX1Hl5HoHPjR+7h1L5e30/R6n2uZJsj9NtoSJU/FX/lpt2NAXxDOGkb7v7CkWAZtLp5VuQV4=
+X-Rspamd-Queue-Id: 112E818000B
+X-Stat-Signature: 8zbmpj4fcb8toujbtfs6jhui4qwyigp8
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768996329-198494
+X-HE-Meta: U2FsdGVkX19TPoGel8xBd7NzYrN1DSJhAwhXvVnA07bUuZ2+tW/o2Xx6tbglo2nitAH15D9T2zfqzXB7tMhfPRMpb/zfn5SX0N/ms/uAIWwJEl4jl8BWB9uGEOrBdpZ26B9cqsNxCPhCaLW9H6BDBBsKxZeGIJFGOQGAGqA29c1317fs9ZeXu0qNKj51hXbBlO7sCmKyWyeC5nV3N6IT8MIcIBZsJ3TsdXAd6kwETD+fKj63Qt9RFeCekelmxEX1BW54QcsEMg1qGpg39uQG3N2qermKcQF7sNE8ex0ccPNW8TkJR1LBUAjhNRTqNYVzSsr3OOSUl0Ys4zb7qQzCzfHpipIDmKa3QfTbUekquP8yGmcA640qKOte01nDsX9CoLepMSov0CJZIrrmXPTWYR78qri5/CdOQ+TTADFVXwECta/c59uXT7KiKvgcDCnnMarG20yA/qsvcupxNvf6YAyBrZA60NPwBDKsJSRl0RgDKg2nIMMFGQNVXMafKg3aG6pfmNPV8L46SCBiQ+03/vjgHvMl18NG5iPltZL7HYERLD1Z9vwAwx6gO4hJSRvFGm2Qi6JO2vyOOQOsvVLUy7OtrK0qaQkN3dnRXe7ww7X0e/PxPPadSJm+sDlkyplkwtkG1ljotCsX2OMfNt1V2Z6/WHWw0WWzpU1OIIFiEe0UkgyNc4GweVpk8xDR9Js6KdQRbkX3N15xeyKgHpOrlfwwrjAzst0Q9/3JV+7iqquBILvNP0oAZgdC+upBpI8L+CMOqXFhJt7lI7uiDGCPBfKr7I4fo2PW/CRZsouYspQllpGx4+6zQYL4GsiVCBBfluZsoNCHAr7ARa96IJMB4Y8XLR2Fm9UBxeEuWCC6rx2n1HrUBc0WO2fpxPBd8XVT38E2Irj+HHM4pY0Z2lmfAnifsREFqfLfJKJchura0KQzjxQOexaq6HC064LnYB3LIEOcxHZiRDJ9eQrPq/q
+ o6dl9u5a
+ eJ2pz54jJAOwGFcADVNvvMKR+0gcW2DweMX/yfddHNX1Jw6JZKH+qMXB+/b/ELtiCZURwPqd9Ibbdg82PCwGgS+etODjWfAwM0FDn+iEFvwwErB8V6Tf5OWQ9wahijpPdyisfDZeQxniT70e7+UR0kX7VdN+xUoiYPKbP4ropPQhWavmAejg/IbdFnm8KQwax3wgiJVvTmFgA73dEVp9q1C9N7RdjQuMlhXOsG4dJ+rOnSD95OL9nFzMaZqTjQZxOndBV7tw9Jh2sjRdZxVbqv+68wxCsxtsIyz+fy2zWQmomj22s8cYHa9PzBVM+iU+cDEIIwvcfz1sF/HOaBRi4Ypg3vPkexsTEFRaC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,27 +97,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Jan 21, 2026 at 11:27 AM UTC, Borislav Petkov wrote:
-> On Wed, Jan 21, 2026 at 09:45:22AM +0000, Brendan Jackman wrote:
->> 2. The property of some memory being mapped or unmapped in the
->>    "restricted"/"partial"/"sensitive" address space (current patch's
->>    terminology: sensitive/nonsensitive).
->
-> Why do we care about the sensitivity of memory? To the kernel it doesn't
-> matter whether memory is sensitive or not. You simply map it in the sensitive
-> page table or in the nonsensitive or in both.
->
-> Having a sensitive and nonsensitive pagetable should be enough. And that'll
-> make the whole concept a lot simpler.
+On Tue, Jan 20, 2026 at 09:19:24AM +0000, Mostafa Saleh wrote:
+> Mostafa Saleh (2):
+>   mm/page_ext: Add page_ext_get_from_phys()
+>   iommu: debug-pagealloc: Use page_ext_get_from_phys()
+> 
+>  drivers/iommu/iommu-debug-pagealloc.c | 31 ++++++++++++---------------
+>  include/linux/page_ext.h              |  6 ++++++
+>  mm/page_ext.c                         | 23 ++++++++++++++++++++
+>  3 files changed, 43 insertions(+), 17 deletions(-)
 
-Well, something has to manage those pagetables and that thing needs a
-term to describe the stuff it's acting on. I.e. we need an adjective
-better than "to-be-mapped-into-the-full-pagtable".
-
-Anyway, I think this will be an easier debate to have once we're looking
-at actual code etc - I'm still debugging my page allocator changes to
-support the guest_memfd thing and that code doesn't need to care about
-"sensitivity" at all, there's just one address space and data is
-"mapped" or "unmapped". So I propose we defer this conversation until
-after that...
+Applied, thanks.
 
