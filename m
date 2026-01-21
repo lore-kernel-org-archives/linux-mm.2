@@ -4,144 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B54BCD46942
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 14:47:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58F76D46942
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 14:58:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B8596B0005; Wed, 21 Jan 2026 09:47:48 -0500 (EST)
+	id 517786B0005; Wed, 21 Jan 2026 09:58:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 066286B0088; Wed, 21 Jan 2026 09:47:47 -0500 (EST)
+	id 4BE9F6B0088; Wed, 21 Jan 2026 09:58:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E89C46B0089; Wed, 21 Jan 2026 09:47:47 -0500 (EST)
+	id 375CC6B0089; Wed, 21 Jan 2026 09:58:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D762A6B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:47:47 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 647B78BBC0
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:47:47 +0000 (UTC)
-X-FDA: 84356250174.12.9BCA928
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A293912000D
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:47:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lyoZtqRM;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf29.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769006865; a=rsa-sha256;
-	cv=none;
-	b=eLOgo2hdCxCGIlQ3/JOcP2ADx9UvGYt7R/2ULjG5tDWj4UE1oeyGBleKg3dfSod1oYPyKc
-	OS2GBq0blcFiR4XoncWED8o++pg2SNwBEKzA+L6fizZJ1iIAbG7sjKYzIWHVjx4/uiOugS
-	cXWcQ3KBUYgWswVGPl3B7xe4syWrpDk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lyoZtqRM;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf29.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 25C0F6B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:58:39 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC6CEC1F4A
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:58:38 +0000 (UTC)
+X-FDA: 84356277516.02.379C3BC
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E872A40013
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:58:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O7+CNAmJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769006865;
+	s=arc-20220608; t=1769007517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=edtMn02AVod+IBbJIVsMu3fhJTzD4OTVoerhqOtkeWk=;
-	b=Godt3zrkKsuApKWTEQAaqSV8P2ygEXFor+PMSsGSx6mi9SHgrCbobBq6HKh09gUV4ntFty
-	j3S4WJLLZogDgZG8kuqvQPzSSKuMOCtCJdEP/xkh3AX1Qd8N+FdLXzLGTfqD+pq/nT4Ro8
-	5SevP2+F76ImQF0zUMMs5V6i1ykbU+s=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=edtMn02AVod+IBbJIVsMu3fhJTzD4OTVoerhqOtkeWk=; b=lyoZtqRMQf0KSh1E6771IlhF4T
-	RrLjV0QALpxuAPKkekpZyZQzp1pko+bePRoZZJZ8ieyVV9svFucFsTJJihcCgY79/+Ga4AHQJAc9s
-	0HjxA2m6YspkhDbzNJ8FksqryID1wx0o/FHYrZbeQAZmuJVCMo088yeeWEO0vm0Tt9I/3s7710GOE
-	h1vZyqOcZojbUC8ClviRx150cBwXx7bgs0Stvn7e/Y74KTKUQD3jGgHsXsJfr8QvEdBTO4/qnlaWf
-	rvTpv2se5FecitDGJbn+/YyKGUb7cbrew+LBJmByxqOXDXj2JzWyvd5zyQm4Qr4kt6qFg51hdkrIL
-	K1f5k5Dw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viZUG-00000005dMj-1Wd9;
-	Wed, 21 Jan 2026 14:47:12 +0000
-Date: Wed, 21 Jan 2026 06:47:12 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: NeilBrown <neil@brown.name>, Christoph Hellwig <hch@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Carlos Maiolino <cem@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-ext4@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org,
-	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
-	ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org,
-	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org,
-	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
- nfsd export support
-Message-ID: <aXDm8FPPOHs04w9m@infradead.org>
-References: <176877859306.16766.15009835437490907207@noble.neil.brown.name>
- <aW3SAKIr_QsnEE5Q@infradead.org>
- <176880736225.16766.4203157325432990313@noble.neil.brown.name>
- <20260119-kanufahren-meerjungfrau-775048806544@brauner>
- <176885553525.16766.291581709413217562@noble.neil.brown.name>
- <aW8w2SRyFnmA2uqk@infradead.org>
- <176890126683.16766.5241619788613840985@noble.neil.brown.name>
- <aXCg-MqXH0E6IuwS@infradead.org>
- <176899164457.16766.16099772451425825775@noble.neil.brown.name>
- <364d2fd98af52a2e2c32ca286decbdc1fe1c80d3.camel@kernel.org>
+	bh=UpnJM6r29OmlECz6ZZJlv11hzQUIyaYlzl/s4DXsy2Q=;
+	b=ka4CENGtl7P+El98zrA30P1dKoKwTWWyLWXigpo9YGod1cJCiCVWrfck4/prT0rVTYCe64
+	KkBnOC0T/aSIVyqd/zp2fOBdd/bcFTscbcW1iqst2m/tyeIhCIz59ZAjJUWAw+DXfsY2ND
+	uxKWIYHQL5yp7603kwRy8sQK69npr0w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769007517; a=rsa-sha256;
+	cv=none;
+	b=08iv26N9NzrsEGHi0zc5Qp5WOhSKTvHv9Js50AtgXQh+koVMMTItgrElTVge4BaacUWl2i
+	QqTzSBPMYi8WM/hEJ6i8/hZfDOdTwVbi2q5RD1C56y2bKE7QfONZdPoT8DHK4mmd4QO7As
+	S6RAr8bdhez7eR4ysA9STM0RNYhtxAU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O7+CNAmJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a7afb2cf09so4614465ad.3
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:58:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769007516; x=1769612316; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UpnJM6r29OmlECz6ZZJlv11hzQUIyaYlzl/s4DXsy2Q=;
+        b=O7+CNAmJZ/b8oPIt3ciCMIjbIGt6SYmsz4/eG6RW/InBfYAtUrDmduv7cZjx5aqYcr
+         fftlT1JsaOIZ/EBBq5Wbfc6jCklOflDCujarsT0uQ4kvWrZOQnMPG3bHA0s93EvKG/iH
+         s/Jctviw+vdrgGcAs65yypIW/2DOUtylR5Ez2WCpGADWdNOhSKGQxNa5W5wX/dMpDcnR
+         cRjGCNj8E7jGdlLvuSQ9MeFU1LrjOjNFEAdloxknSpBLxzg/weGAQpfBlu2JR9/h6OGJ
+         jZiVv6RICYs8YponoDl7zgEwIIXVcvjxWqrTI4rW1ipMUvI9dYNeeBKnR4gwKKZo9eeG
+         V93Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769007516; x=1769612316;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UpnJM6r29OmlECz6ZZJlv11hzQUIyaYlzl/s4DXsy2Q=;
+        b=T6251WVtjCVoYvgNib2ohJh8LfNAMddj7saMOUhSf15XG3YoCGNHwdQb4YIKpehpL7
+         lqeINdfyRU1tY0ajsAv4Ebo5kKsCOWx2Qb3FJq3SBa7NJw+KSqKOtQEVl9VXAYq1sLQn
+         5HulnCBzksY+ygUbw/kQTw7ddqHK3ZSE3kCjWbVE3vd3lPekBLv27w8MPjyzF7aVcrOO
+         i6aDEUvqkhv9E41fx9ZkccQV8lXGAhIpLvjJwDrQU7/Yj5B+9nZGjJ0mbJFYYx2oQlRv
+         8bMyu9I89bTcrq4E7fpRuBrwMYAJ9+FQRRf+RXpfs+iXPpod0dDcf5nwo6jN/mZh4MWX
+         Wf0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXzTt2+/fcPBvprLHVokjpsIZIO9UpEpAXXN+rmthVlzBT3W0UPiivQyn44tJLIEEDAV68iRZEBUQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxykq7AnLQbKkbh7kXEK0P72tZMUjpV3iStKWl2GiqH5SkPpOqc
+	BzeutU8tSfcij7F1xPv4CxhDY3bPYRt6l1CNSkJPMZ7A0xAwaV/M8lHa
+X-Gm-Gg: AZuq6aL4dNa3DQSaJHZ64DUhIqxrTFCvLUEvP0LUorinIvmydj880O7jFq49msaSSvc
+	v3ukDP/wlQXTDxvk4igQTemgKtfilMyut4bK/MP6F3VAHc7DYMxVMN/x1nQfBUQ/J9KbmOl/sPx
+	85Dmss1h6R32IGgGy65zHUSb7skAuNTwOHWWZdT4vFx18sxNsScKrYa2MG8CwXsGaOPvUStn/1H
+	+uzpECHznHLkOfa3XQisJdyywNmdWACtoXITjYe3odM9paPCk/oH9VLa5DAoQ7AQIIL7FMsACTF
+	mR3tdbMM6PJag+udPO8QNIz4zNc0wGOcLycFtbPF+mIJx6xJ1a4ypycxhZfqGpGgP/+EiND8HZ1
+	YZOlCNf7mOZmq7e5E63jsXQE0T5BbZfR5UjH8gTRKHkXMrWK2yVLJn7aIWSLoYyjT2WdZA9Bdfk
+	6BYFojmu1XL6L25q17Lc+LOKgjvD+cI8EHwRmzy4Tgv7uEd+g=
+X-Received: by 2002:a17:902:c949:b0:2a1:3cd8:d2df with SMTP id d9443c01a7336-2a7177db71fmr179679185ad.54.1769007515562;
+        Wed, 21 Jan 2026 06:58:35 -0800 (PST)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7646119b4sm53170045ad.71.2026.01.21.06.58.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 06:58:34 -0800 (PST)
+Date: Wed, 21 Jan 2026 22:58:27 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, hannes@cmpxchg.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	zhengqi.arch@bytedance.com, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, lujialin4@huawei.com
+Subject: Re: [RFC PATCH -next 1/7] vmscan: add memcg heat level for reclaim
+Message-ID: <aXDfTiDrUHbQaFWX@KASONG-MC4>
+References: <20260120134256.2271710-1-chenridong@huaweicloud.com>
+ <20260120134256.2271710-2-chenridong@huaweicloud.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <364d2fd98af52a2e2c32ca286decbdc1fe1c80d3.camel@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A293912000D
-X-Stat-Signature: k6y3oingzyzdogy4d83cj5fymnumoy85
+In-Reply-To: <20260120134256.2271710-2-chenridong@huaweicloud.com>
 X-Rspam-User: 
-X-HE-Tag: 1769006864-765199
-X-HE-Meta: U2FsdGVkX18aG+oVxi6LhLDzXiVKGtGB5LpCUWzO3l4yvUpd8Nzz0pE82mX43tvVIvBV13xATIyd2kL2DqO7zduQmcEvbO4utCLbvgNRUS8yu0u4icTAdWNd0jpeafvZsB2oZSWRQt6OtDY0S4EgjTc3SfTzSQQBppChjWwKh0ntMIntBqe3uev5fUrhn0/ulii6Rb6cEhWP4Tyk+QDpxhigJE8tj0aTrjbQdu2EO98oMZmkTw1O/xQhcVdCj20vXjJn8gii6JlfAGdhkTeRs+K7mI55zitbPp0Ov1HC0DLFfLc6GOZ817vigdhjG3xwiTWAjfGY6bYJGy6JdPMky5Iea4qdj54ZfGGlSBm8UjF+NRjVemZC/S2RBdQ/dtO0GkbF86gbrDqlXIOKGktkUWeC/ep7PuKn6fkaBFjHIsukl9Dx5BlZRTjaAhx4bu58Gb33AXZoNhWit2S0eJZBLSBbuyK72P3QzTNie86EQMuFufBv8Yde9EKY9nAhaR4DKVbwMJYFGRftefvknP4XLtFfij/7RDsir86zOK0q9A1re/TQA5wIWGTGb5E0uTvej4TLauxg4kHP2OjAf6UJV1Xd2GdhZsroonqH3De0doI/8KWeoFFzF7hM7BjKJZPPfnKeK06QlKmwbHe5TGXun++AVtPlPY2zGPBcsaH+qwT2Q31EVTxwyd4W1+5E+5+SpSQ031T04nJNp2BpmEbxfmD7nuCM8gH/p4rriebFz80fyWLt47xXLR8x5CvkwxufnN+QryGmMqX1CgT326mDynJ7xuUY7yYncHvTEXuDvYozkINciTzY8VRZvk4QgLgnIaqLzTbum5Cxm/t/zuz2xLVw0rtn+WsKlQbTYoGzGm3PGP0NVi8Ml4QVgOWzcD6WXIaPWeCBR/T/97nh20hK9++enisKdHaDk2sNgF97D1pVN2xV2lu+NIdUlXokTVxIE85FunZl7uRUE7hGALk
- FcEMUWJk
- WnKM0zFPUh7OPV9fVMvcauUQ+ieknCOQBFmz5CSvBITFx1KUhnEf9Y8S8x7SfolMEKMAyQuJpdVR0zNzanLptYV1HVQPVii/MtmHrNYZlgEX1NbESkhR/kVw2i/b3J9W55cNqUrxKpzOM/Dqj7QpHmu9avBETZlJ9EuD/TX534Ogw4/qlJYi2mVyfnpH04DaSaTHmJ3jy0Za7V5k/L9+o6hVphtSGXVczFJytXAM8JZOZKSI36AUdOX2N7mi2S8/mZO8xhCSMkyDi0qHlsDTPmMXGVRvu0REC4XgVSuqHXBL5t1B2HqjyDw5rk/XDWMiDZREOl5Ouu1zxTM9UuFjSGmplN+8+8oLIl0VBHVoEpO7SeZd7e0xmsyfZG9MyhHX6S+/xjyEbfxoWw4mytKm1EzLkOgD+yCet+K9RjDWJhkGuqT3VEvymNOxv/vZScexmxO0Z6eBLoJpfMUzeZH22SMxiLJuaI1Gko4vkSLAd1RupSZ4YGSWc7tylZzXRSgC7fNfiflz3r4E4geYTWyiH/rLuh0Rh6GZRd2vN5b6GAF7YIb+y8DbFdrvav4dCdyOJFdYf
+X-Rspamd-Queue-Id: E872A40013
+X-Rspamd-Server: rspam12
+X-Stat-Signature: z7yaodip3dz9y9trja47sty7d3kusfmp
+X-HE-Tag: 1769007516-687290
+X-HE-Meta: U2FsdGVkX1/d0wEMm3LVSa6hXf6fJVps0QC9tnF8ovrDwDbJk77Uu/FIN6jlV1FCxZ1M10j61PVBPwMktHrdkTglqcjtw/PDQyAPXd+TL2zTu7mOQgC0aIrOmAsbDPJYMaUph2PEAw8Jzo82np99uHoaDkJsdEHXNWYXCkPZEYLtt/0OLv34xs5E0YNlDGsqF3wd4SQseFCQiKQw9wPWsuLIaPXeggX0JPdQPmQfveGOdDdL5Nzq6b6N5JW5zmaITWGjTpWa53q7yPnmkgtNR+EU/nbj2SC5FiisMLzJzB9iTHa5yekcoMsEwzBFQDiKbtdkoy1Vg5wYUAyai4g40mktBxfaV48lmwWtFD1W888eiPZrTd+K1sy8ElqSqCblWTqZfMMKs37nczn/vYq5SLKUWQbzUW9x3yobkFe4pP4t3EvdzapuTYt1nvx/435YQX9/wecRutrph/6buO1g7CY9PltIoSuNCkdMa0VjPDJs/k9FqGB3/9YV+Bef6fgecd/Z6VG0mxJUf4YeqryaHyI1Lm7mBXxL/deyWPFR1CKuJZwgKiZ9Cm7e/P619DFzWdnzRcmvs0aW8yJuy8IGUFqrYZIAyeZW3dJwMu5sBS/GctiGxNIChPzjSERoUzKGXyxr+ot7NHk7tGZC4avGd+vuNvb48FmtYqWcfJn6o3/M7ikI7I2wldXb2CzCxk33HNsqZvuVaq3SNSriWunHuaZf6SOiZE37KUj+8DlrJWJ2YYHERAHG2Z6N5Zzgosq8SZSw2d2PiAJJ9B5Q7S80yddUSqH3j0EcW60eSbhkbk/tKG2ElIHeHduEuT9q3LHJnuMdyLSblojyZq/SErqgTqMbZIIILZPX+jYhkK05eXKvPCU+bvxRdLpzP6FKaoN2oKQj5QsAXW4yBTNbcgJ67V2RVxRzizA8hRMOackLcce3++ztp2e1ud4Oz5ebXMUh11MY81ShvFVCWmoLdJU
+ 66evWhT8
+ +0uHXQXcF5awkEo0rOHptkDUoyTcmDYZb6UBb3Nk85hGH71IpDiOxBxnI6ll5iD+YOgJSHE07wfL8wb83cN8E6wUWwfJMhQ7M8z8NMXrGKBwhhe8SY+hB3vXOhlCetBdjWmYD0veyljBarrz90qW1feJOfnE0epvoQjBAgIwjPP/CtajxDyxVOaiwtN2FTL0R8tEeHWGDXFf2zuVnZXuTCreX4RCgUBgm3YT7mgWsNYzbADjb49YRiGiPJw5VztbqlIIAoicb0ZY6hlEt+Ju1G2YWlYIHvsuFG6m/vw/82x6eW7FBtBXDyh7/0+IaLNB7QemcvgFEDfJ2Xteu1L/xkyIMXOpKWX5a3b1D4vKSreNweR0YMEDZVqkFrfSZAuCxYjJAW5PIYT2+ih3J8u+9cgQYvP+gke9dpLLSIkj3n6ygXfhmuxNHwWYEzz4lTBJ0suRlgvjfZ8HPMmjwLCmsyYasaQOzdHahE9k+77V8TSygZHWl6YJqcfOXhp1Al+GolXQFxofW/CQboEBv/t7GfeOhbiVbz28f5pXFX+uWuvmTvP4egByKNBUDFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,48 +123,407 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 09:27:38AM -0500, Jeff Layton wrote:
-> Using your definitions, stability is not a problem for Linux
-> filesystems. The filehandles generally don't change after they have
-> been established.
-
-fat seems to be an exception as far as the 'real' file systems go.
-And it did sound to me like some of the synthetic ones had similar
-issues.
-
-> > We'll still need a stable handles flag, and expose it to userspace
-> > to avoid applications being tricked into using broken non-stable
-> > file handles.  We should have caught that when they were added, but
-> > didn't unfortunately.
-> > 
+On Tue, Jan 20, 2026 at 01:42:50PM +0800, Chen Ridong wrote:
+> From: Chen Ridong <chenridong@huawei.com>
 > 
-> If we assume he meant "unique handles" flag, then I think we're all
-> mostly in agreement here.  As far as this patchset goes: what if we
-> were to just rename EXPORT_OP_STABLE_HANDLES to
-> EXPORT_OP_UNIQUE_HANDLES (and clean up the documentation), since that's
-> the main issue for existing filesystems. It would be fairly simple to
-> advertise handle uniqueness using statx or something.
+> The memcg LRU was originally introduced to improve scalability during
+> global reclaim. However, it is complex and only works with gen lru
+> global reclaim. Moreover, its implementation complexity has led to
+> performance regressions when handling a large number of memory cgroups [1].
+> 
+> This patch introduces a per-memcg heat level for reclaim, aiming to unify
+> gen lru and traditional LRU global reclaim. The core idea is to track
+> per-node per-memcg reclaim state, including heat, last_decay, and
+> last_refault. The last_refault records the total reclaimed data from the
+> previous memcg reclaim. The last_decay is a time-based parameter; the heat
+> level decays over time if the memcg is not reclaimed again. Both last_decay
+> and last_refault are used to calculate the current heat level when reclaim
+> starts.
+> 
+> Three reclaim heat levels are defined: cold, warm, and hot. Cold memcgs are
+> reclaimed first; only if cold memcgs cannot reclaim enough pages, warm
+> memcgs become eligible for reclaim. Hot memcgs are reclaimed last.
+> 
+> While this design can be applied to all memcg reclaim scenarios, this patch
+> is conservative and only introduces heat levels for traditional LRU global
+> reclaim. Subsequent patches will replace the memcg LRU with
+> heat-level-based reclaim.
+> 
+> Based on tests provided by YU Zhao, traditional LRU global reclaim shows
+> significant performance improvement with heat-level reclaim enabled.
+> 
+> The results below are from a 2-hour run of the test [2].
+> 
+> Throughput (number of requests)		before	   after	Change
+> Total					1734169    2353717	+35%
+> 
+> Tail latency (number of requests)	before	   after	Change
+> [128s, inf)				1231	   1057		-14%
+> [64s, 128s)				586	   444		-24%
+> [32s, 64s)				1658	   1061		-36%
+> [16s, 32s)				4611	   2863		-38%
+> 
+> [1] https://lore.kernel.org/r/20251126171513.GC135004@cmpxchg.org
+> [2] https://lore.kernel.org/all/20221220214923.1229538-1-yuzhao@google.com/
 
-Unique seems to also only capture part of it, but I could absolutely
-live with it, if the documentation includes all aspecs.  But maybe
-use persistent as in the nfs spec?
+Hi Ridong,
+
+Thanks very much for checking the test! The benchmark looks good.
+
+While I don't have strong opinion on the whole approach yet as I'm
+still checking the whole series. But I have some comment and question
+for this patch:
 
 > 
-> Alternately, instead of denying access to these filesystems, we could
-> just fix these filesystems to create unique handles (a'la random
-> i_generation value or something similar). That should mostly prevent
-> filehandles from being reusable across a reboot on these filesystems.
+> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+> ---
+>  include/linux/memcontrol.h |   7 ++
+>  mm/memcontrol.c            |   3 +
+>  mm/vmscan.c                | 227 +++++++++++++++++++++++++++++--------
+>  3 files changed, 192 insertions(+), 45 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index af352cabedba..b293caf70034 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -76,6 +76,12 @@ struct memcg_vmstats;
+>  struct lruvec_stats_percpu;
+>  struct lruvec_stats;
+>  
+> +struct memcg_reclaim_state {
+> +	atomic_long_t heat;
+> +	unsigned long last_decay;
+> +	atomic_long_t last_refault;
+> +};
+> +
+>  struct mem_cgroup_reclaim_iter {
+>  	struct mem_cgroup *position;
+>  	/* scan generation, increased every round-trip */
+> @@ -114,6 +120,7 @@ struct mem_cgroup_per_node {
+>  	CACHELINE_PADDING(_pad2_);
+>  	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+>  	struct mem_cgroup_reclaim_iter	iter;
+> +	struct memcg_reclaim_state	reclaim;
+>  
+>  #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+>  	/* slab stats for nmi context */
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index f2b87e02574e..675d49ad7e2c 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3713,6 +3713,9 @@ static bool alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
+>  
+>  	lruvec_init(&pn->lruvec);
+>  	pn->memcg = memcg;
+> +	atomic_long_set(&pn->reclaim.heat, 0);
+> +	pn->reclaim.last_decay = jiffies;
+> +	atomic_long_set(&pn->reclaim.last_refault, 0);
+>  
+>  	memcg->nodeinfo[node] = pn;
+>  	return true;
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 4aa73f125772..3759cd52c336 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5978,6 +5978,124 @@ static inline bool should_continue_reclaim(struct pglist_data *pgdat,
+>  	return inactive_lru_pages > pages_for_compaction;
+>  }
+>  
+> +enum memcg_scan_level {
+> +	MEMCG_LEVEL_COLD,
+> +	MEMCG_LEVEL_WARM,
+> +	MEMCG_LEVEL_HOT,
+> +	MEMCG_LEVEL_MAX,
+> +};
 
-Do we even want to provide access to them?
+This looks similar to MEMCG_LRU_HEAD, MEMCG_LRU_TAIL, MEMCG_LRU_OLD,
+MEMCG_LRU_YOUNG of the memcg LRU? But now it's unaware of the aging event?
 
-> That would leave cgroupfs and the like exportable via nfsd, but as you
-> point out, we can't deny export by userland servers. If people want to
-> do this kind of crazy stuff, maybe we shouldn't deny them after all.
+> +
+> +#define MEMCG_HEAT_WARM		4
+> +#define MEMCG_HEAT_HOT		8
+> +#define MEMCG_HEAT_MAX		12
+> +#define MEMCG_HEAT_DECAY_STEP	1
+> +#define MEMCG_HEAT_DECAY_INTERVAL	(1 * HZ)
 
-I think Amirs patch would take care of that.  Although userland nfs
-servers or other storage applications using the handle syscalls would
-still see them.  Then again fixing the problem that some handles
-did not fulfill the long standing (but not documented well enough)
-semantics probably is a good fix on it's own.
+This is a hardcoded interval (1s), but memcg_decay_heat is driven by reclaim
+which is kind of random, could be very frequent or not happening at all,
+that doesn't look pretty by first look.
 
+> +
+> +static void memcg_adjust_heat(struct mem_cgroup_per_node *pn, long delta)
+> +{
+> +	long heat, new_heat;
+> +
+> +	if (mem_cgroup_is_root(pn->memcg))
+> +		return;
+> +
+> +	heat = atomic_long_read(&pn->reclaim.heat);
+> +	do {
+> +		new_heat = clamp_t(long, heat + delta, 0, MEMCG_HEAT_MAX);
+
+The hotness range is 0 - 12, is that a suitable value for all setup and
+workloads?
+
+> +		if (atomic_long_cmpxchg(&pn->reclaim.heat, heat, new_heat) == heat)
+> +			break;
+> +		heat = atomic_long_read(&pn->reclaim.heat);
+> +	} while (1);
+> +}
+> +
+> +static void memcg_decay_heat(struct mem_cgroup_per_node *pn)
+> +{
+> +	unsigned long last;
+> +	unsigned long now = jiffies;
+> +
+> +	if (mem_cgroup_is_root(pn->memcg))
+> +		return;
+> +
+> +	last = READ_ONCE(pn->reclaim.last_decay);
+> +	if (!time_after(now, last + MEMCG_HEAT_DECAY_INTERVAL))
+> +		return;
+> +
+> +	if (cmpxchg(&pn->reclaim.last_decay, last, now) != last)
+> +		return;
+> +
+> +	memcg_adjust_heat(pn, -MEMCG_HEAT_DECAY_STEP);
+> +}
+> +
+> +static int memcg_heat_level(struct mem_cgroup_per_node *pn)
+> +{
+> +	long heat;
+> +
+> +	if (mem_cgroup_is_root(pn->memcg))
+> +		return MEMCG_LEVEL_COLD;
+> +
+> +	memcg_decay_heat(pn);
+> +	heat = atomic_long_read(&pn->reclaim.heat);
+> +
+> +	if (heat >= MEMCG_HEAT_HOT)
+> +		return MEMCG_LEVEL_HOT;
+> +	if (heat >= MEMCG_HEAT_WARM)
+> +		return MEMCG_LEVEL_WARM;
+> +	return MEMCG_LEVEL_COLD;
+> +}
+> +
+> +static void memcg_record_reclaim_result(struct mem_cgroup_per_node *pn,
+> +					struct lruvec *lruvec,
+> +					unsigned long scanned,
+> +					unsigned long reclaimed)
+> +{
+> +	long delta;
+> +
+> +	if (mem_cgroup_is_root(pn->memcg))
+> +		return;
+> +
+> +	memcg_decay_heat(pn);
+> +
+> +	/*
+> +	 * Memory cgroup heat adjustment algorithm:
+> +	 * - If scanned == 0: mark as hottest (+MAX_HEAT)
+> +	 * - If reclaimed >= 50% * scanned: strong cool (-2)
+> +	 * - If reclaimed >= 25% * scanned: mild cool (-1)
+> +	 * - Otherwise:  warm up (+1)
+
+The naming is bit of confusing I think, no scan doesn't mean it's all hot.
+Maybe you mean no reclaim? No scan could also mean a empty memcg?
+
+> +	 */
+> +	if (!scanned)
+> +		delta = MEMCG_HEAT_MAX;
+> +	else if (reclaimed * 2 >= scanned)
+> +		delta = -2;
+> +	else if (reclaimed * 4 >= scanned)
+> +		delta = -1;
+> +	else
+> +		delta = 1;
+> +
+> +	/*
+> +	 * Refault-based heat adjustment:
+> +	 * - If refault increase > reclaimed pages: heat up (more cautious reclaim)
+> +	 * - If no refaults and currently warm:     cool down (allow more reclaim)
+> +	 * This prevents thrashing by backing off when refaults indicate over-reclaim.
+> +	 */
+> +	if (lruvec) {
+> +		unsigned long total_refaults;
+> +		unsigned long prev;
+> +		long refault_delta;
+> +
+> +		total_refaults = lruvec_page_state(lruvec, WORKINGSET_ACTIVATE_ANON);
+> +		total_refaults += lruvec_page_state(lruvec, WORKINGSET_ACTIVATE_FILE);
+
+I think you want WORKINGSET_REFAULT_* or WORKINGSET_RESTORE_* here.
+
+> +
+> +		prev = atomic_long_xchg(&pn->reclaim.last_refault, total_refaults);
+> +		refault_delta = total_refaults - prev;
+> +
+> +		if (refault_delta > reclaimed)
+> +			delta++;
+> +		else if (!refault_delta && delta > 0)
+> +			delta--;
+> +	}
+> +
+> +	memcg_adjust_heat(pn, delta);
+> +}
+> +
+>  static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
+>  {
+>  	struct mem_cgroup *target_memcg = sc->target_mem_cgroup;
+> @@ -5986,7 +6104,8 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
+>  	};
+>  	struct mem_cgroup_reclaim_cookie *partial = &reclaim;
+>  	struct mem_cgroup *memcg;
+> -
+> +	int level;
+> +	int max_level = root_reclaim(sc) ? MEMCG_LEVEL_MAX : MEMCG_LEVEL_WARM;
+
+Why limit to MEMCG_LEVEL_WARM when it's not a root reclaim?
+
+>  	/*
+>  	 * In most cases, direct reclaimers can do partial walks
+>  	 * through the cgroup tree, using an iterator state that
+> @@ -5999,62 +6118,80 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
+>  	if (current_is_kswapd() || sc->memcg_full_walk)
+>  		partial = NULL;
+>  
+> -	memcg = mem_cgroup_iter(target_memcg, NULL, partial);
+> -	do {
+> -		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> -		unsigned long reclaimed;
+> -		unsigned long scanned;
+> -
+> -		/*
+> -		 * This loop can become CPU-bound when target memcgs
+> -		 * aren't eligible for reclaim - either because they
+> -		 * don't have any reclaimable pages, or because their
+> -		 * memory is explicitly protected. Avoid soft lockups.
+> -		 */
+> -		cond_resched();
+> +	for (level = MEMCG_LEVEL_COLD; level < max_level; level++) {
+> +		bool need_next_level = false;
+>  
+> -		mem_cgroup_calculate_protection(target_memcg, memcg);
+> +		memcg = mem_cgroup_iter(target_memcg, NULL, partial);
+> +		do {
+> +			struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> +			unsigned long reclaimed;
+> +			unsigned long scanned;
+> +			struct mem_cgroup_per_node *pn = memcg->nodeinfo[pgdat->node_id];
+>  
+> -		if (mem_cgroup_below_min(target_memcg, memcg)) {
+> -			/*
+> -			 * Hard protection.
+> -			 * If there is no reclaimable memory, OOM.
+> -			 */
+> -			continue;
+> -		} else if (mem_cgroup_below_low(target_memcg, memcg)) {
+>  			/*
+> -			 * Soft protection.
+> -			 * Respect the protection only as long as
+> -			 * there is an unprotected supply
+> -			 * of reclaimable memory from other cgroups.
+> +			 * This loop can become CPU-bound when target memcgs
+> +			 * aren't eligible for reclaim - either because they
+> +			 * don't have any reclaimable pages, or because their
+> +			 * memory is explicitly protected. Avoid soft lockups.
+>  			 */
+> -			if (!sc->memcg_low_reclaim) {
+> -				sc->memcg_low_skipped = 1;
+> +			cond_resched();
+> +
+> +			mem_cgroup_calculate_protection(target_memcg, memcg);
+> +
+> +			if (mem_cgroup_below_min(target_memcg, memcg)) {
+> +				/*
+> +				 * Hard protection.
+> +				 * If there is no reclaimable memory, OOM.
+> +				 */
+>  				continue;
+> +			} else if (mem_cgroup_below_low(target_memcg, memcg)) {
+> +				/*
+> +				 * Soft protection.
+> +				 * Respect the protection only as long as
+> +				 * there is an unprotected supply
+> +				 * of reclaimable memory from other cgroups.
+> +				 */
+> +				if (!sc->memcg_low_reclaim) {
+> +					sc->memcg_low_skipped = 1;
+> +					continue;
+> +				}
+> +				memcg_memory_event(memcg, MEMCG_LOW);
+>  			}
+> -			memcg_memory_event(memcg, MEMCG_LOW);
+> -		}
+>  
+> -		reclaimed = sc->nr_reclaimed;
+> -		scanned = sc->nr_scanned;
+> +			if (root_reclaim(sc) && memcg_heat_level(pn) > level) {
+> +				need_next_level = true;
+> +				continue;
+> +			}
+>  
+> -		shrink_lruvec(lruvec, sc);
+> +			reclaimed = sc->nr_reclaimed;
+> +			scanned = sc->nr_scanned;
+>  
+> -		shrink_slab(sc->gfp_mask, pgdat->node_id, memcg,
+> -			    sc->priority);
+> +			shrink_lruvec(lruvec, sc);
+> +			if (!memcg || memcg_page_state(memcg, NR_SLAB_RECLAIMABLE_B))
+
+If we might have memcg == NULL here, the pn = memcg->nodeinfo[pgdat->node_id]
+and other memcg operations above looks kind of dangerous.
+
+Also why check NR_SLAB_RECLAIMABLE_B if there wasn't such a check previously?
+Maybe worth a separate patch.
+
+> +				shrink_slab(sc->gfp_mask, pgdat->node_id, memcg,
+> +					    sc->priority);
+>  
+> -		/* Record the group's reclaim efficiency */
+> -		if (!sc->proactive)
+> -			vmpressure(sc->gfp_mask, memcg, false,
+> -				   sc->nr_scanned - scanned,
+> -				   sc->nr_reclaimed - reclaimed);
+> +			if (root_reclaim(sc))
+> +				memcg_record_reclaim_result(pn, lruvec,
+> +						    sc->nr_scanned - scanned,
+> +						    sc->nr_reclaimed - reclaimed);
+
+Why only record the reclaim result for root_reclaim?
+
+>  
+> -		/* If partial walks are allowed, bail once goal is reached */
+> -		if (partial && sc->nr_reclaimed >= sc->nr_to_reclaim) {
+> -			mem_cgroup_iter_break(target_memcg, memcg);
+> +			/* Record the group's reclaim efficiency */
+> +			if (!sc->proactive)
+> +				vmpressure(sc->gfp_mask, memcg, false,
+> +					   sc->nr_scanned - scanned,
+> +					   sc->nr_reclaimed - reclaimed);
+> +
+> +			/* If partial walks are allowed, bail once goal is reached */
+> +			if (partial && sc->nr_reclaimed >= sc->nr_to_reclaim) {
+> +				mem_cgroup_iter_break(target_memcg, memcg);
+> +				break;
+> +			}
+> +		} while ((memcg = mem_cgroup_iter(target_memcg, memcg, partial)));
+> +
+> +		if (!need_next_level)
+>  			break;
+> -		}
+> -	} while ((memcg = mem_cgroup_iter(target_memcg, memcg, partial)));
+> +	}
+
+IIUC you are iterating all the memcg's for up to MEMCG_LEVEL_MAX times and
+only reclaim certain memcg in each iteration. I think in theory some workload
+may have a higher overhead since there are actually more iterations, and
+will this break the reclaim fairness?
+
+>  }
+>  
+>  static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
+> -- 
+> 2.34.1
 
