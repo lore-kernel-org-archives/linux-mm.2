@@ -4,93 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5D04CA5FD7
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 14:38:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30BFECA5FD7
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 14:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25B476B0005; Wed, 21 Jan 2026 09:38:45 -0500 (EST)
+	id 7FA6B6B0005; Wed, 21 Jan 2026 09:43:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 224A96B0088; Wed, 21 Jan 2026 09:38:45 -0500 (EST)
+	id 77E196B0088; Wed, 21 Jan 2026 09:43:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14E056B0089; Wed, 21 Jan 2026 09:38:45 -0500 (EST)
+	id 6355F6B0089; Wed, 21 Jan 2026 09:43:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 038BD6B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:38:45 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A027A160498
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:38:44 +0000 (UTC)
-X-FDA: 84356227368.11.6F288DC
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1E84F140007
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:38:41 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=H11EW6za;
-	spf=pass (imf26.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E58F6B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:43:34 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E699160496
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:43:34 +0000 (UTC)
+X-FDA: 84356239548.20.BAD6723
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7FE1E120010
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:43:31 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0xxDTGYP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UWFlwboY;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KEs+pPW8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=C6xIN9nM;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769006323;
+	s=arc-20220608; t=1769006612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=w/WDHKSYXm8Fddt+PSh+C072ZZ2mR98/5mghWuOHgEc=;
-	b=KjXYRiQhlt6lO/veSSkDOJW9TK3ZtKXPGyh7QMtIsxrnkVcI0lrQGZ9AD3PIhM0ke5AElw
-	Nek9KKe5MfumNF1FMymHv7VbP4F8+kENJEmCoMyMzkwd9PV5HqQ2bwRCa1eCx56Nx9vTSc
-	yifxar8iIqYTJ9NH4XTCDxxQNd7HkhM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=H11EW6za;
-	spf=pass (imf26.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769006323; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EmVjSrgHwt4rC/tyfPn0I3pmKcbRZfmv2nxAbVtf+zo=;
+	b=K9NkcvFFyQZUkjbz+S+dc1dpywepHuGz1tTGXzit7NPnnGR8ZmpXgdnsDpXmsd397G76FG
+	4R26GyKpy7Z5HUD42QWbnxbmR84FXysurO+67lSjIWSZKIgxhOrJv9XBgEcDynSRqr7NyO
+	VRuip+eJjG8MhxUkUGzCKdhQ6lJU57g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769006612; a=rsa-sha256;
 	cv=none;
-	b=NN89TaCydG6u2TOkYg1j6Om3ho6KoQGVAVD+TNysJBgUXPTlV+iVuSoLeG6G0tcABm39rE
-	/XGDLMpVnS7Wa26j4hT98RDDLRnQOEz+8EJlzKF+HzRsBeu1KfIFy7e2OTmk8sl6vd2CuN
-	6J/1uAsN1tTmBpGR3KIJu7cnxYfDEtQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=w/
-	WDHKSYXm8Fddt+PSh+C072ZZ2mR98/5mghWuOHgEc=; b=H11EW6zabDu1SOki7q
-	DfOJPT+8F8W1lFgEMzRSRCSDRiA3xmPo9TLo2eko2FxeV7lHoWoKSp28ZMxGletz
-	+ux56OGnr8BVOcIPtgYpn/mhAUOArjE5TDpgKRhg8QHAeXXV3NzMPZ5fpLWoK60x
-	duqIyhzT4ikaLYVm9w7GdCgK0=
-Received: from ubuntu24-z.. (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgA3oF_443Bpg3L7MA--.289S2;
-	Wed, 21 Jan 2026 22:34:35 +0800 (CST)
-From: ranxiaokai627@163.com
-To: pratyush@kernel.org,
-	surenb@google.com,
-	akpm@linux-foundation.org
-Cc: pasha.tatashin@soleen.com,
-	kent.overstreet@linux.dev,
-	rppt@kernel.org,
-	graf@amazon.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com
-Subject: [PATCH v3] kho: init alloc tags when restoring pages from reserved memory
-Date: Wed, 21 Jan 2026 14:34:30 +0000
-Message-ID: <20260121143430.175294-1-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
+	b=HiDX4xkl34F/aNkmAdWhInSGBGRr/Ma5kFcP+TLRXhozfIDYFkWmi9kLLlPpWUxwzw7TMf
+	9Xb54uE8f9SMZo/jsTl2wgQg/OdLPUvcwX3UTBH8i3Me0QJ9JsgYFPcFxSyjt+017B6e/M
+	kgjGPRTrmw7HgPC7Ehwj/b/RJWw0gRo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0xxDTGYP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UWFlwboY;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KEs+pPW8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=C6xIN9nM;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EC3C45BD14;
+	Wed, 21 Jan 2026 14:43:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769006610; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=EmVjSrgHwt4rC/tyfPn0I3pmKcbRZfmv2nxAbVtf+zo=;
+	b=0xxDTGYPXQKhBMOzVZp2CslVUV5XLo+2lm2ACuNG7skbzPzCIaO7hXXxQg0Tar/8+uWTFE
+	vCnP9PMRc+z3zwdM+4QQ738I74Wlhp4cIup+npvq2fpe1u8sRrtJHoM4ne//1yVkzCpFVY
+	JK+xfI2QgRu5Mw69hY/Mv7AySzevwqc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769006610;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=EmVjSrgHwt4rC/tyfPn0I3pmKcbRZfmv2nxAbVtf+zo=;
+	b=UWFlwboYs0YvRIlh31DQTWFeUA7pM/E0HLgqtZRCB0gJNVW3sG+/JfJxqlRFm0QUNLLNrX
+	fSxwnfZcT1E2rBCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769006609; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=EmVjSrgHwt4rC/tyfPn0I3pmKcbRZfmv2nxAbVtf+zo=;
+	b=KEs+pPW8O33d+5UwGK2eOdlBkBRjm1d1izBvsaSjQM9lyhVQXA7RLivL+jZtOyLSsMZ55C
+	d+X+vHq1lWSGW7JajilVke6PbGqESWykCOHFIM2K+2Iuas+3d9JNZIjWqO7iZkwCU4SeMi
+	7Y9/APDvX7/co61WCUPqpV0LTWE6Am4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769006609;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=EmVjSrgHwt4rC/tyfPn0I3pmKcbRZfmv2nxAbVtf+zo=;
+	b=C6xIN9nMGdinc0lkImj4jyQrmR+rXmglJ6v/W0+34dfMbJtt1tq9qUa7gpnppo+ouysww7
+	ACXsi//VCPADekCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C90643EA63;
+	Wed, 21 Jan 2026 14:43:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gXs0LxHmcGlxeQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 21 Jan 2026 14:43:29 +0000
+Message-ID: <afc38741-d647-4b28-8ffc-c752ab5bb5d6@suse.cz>
+Date: Wed, 21 Jan 2026 15:43:29 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/21] slab: remove SLUB_CPU_PARTIAL
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-11-5595cb000772@suse.cz>
+ <CAJuCfpHaSg2O0vZhfAD+61i7Vq=T3OeQ=NXirXMd-2GCKRAgjg@mail.gmail.com>
+ <c17d4413-1ffa-4d3e-8d87-0e7c2b022c16@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <c17d4413-1ffa-4d3e-8d87-0e7c2b022c16@suse.cz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgA3oF_443Bpg3L7MA--.289S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ArWkWr1xuFWrXFyruw4xXrb_yoW8KFyfpr
-	W8tw1ktayrJan8Za17ta1q934ftws5JayrJay7u34fXFnxA3Z2yas7Xa4jvFy5Gry8XF4x
-	Ww4UJrZ0v3Z09aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piFdgJUUUUU=
-X-Originating-IP: [218.203.227.98]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxRyu+mlw4-xfYwAA33
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1E84F140007
-X-Stat-Signature: 1p3oirh4tghompb1b7kabcoqu9x7d8ey
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769006321-706220
-X-HE-Meta: U2FsdGVkX1/losHUxiSojXjs6d04CttmJbddSqMKXkWozUN/KVq96r9tY14BBj0bxy/m2jUslC97y/5xElxPhDX+9dBD4qpi1Rqf71M40YSxijwYEY5zVP4bqoHQDuwjkyiSCFA72i52SlyXevzChhurPEWTqJyw7aFkT5htkodOnV17j+lk5NfJyDQSBgCtmIAKBKdZ2vrToNSHeORU2Cu0GlKnT6UC8h7aaTTbv9irlEyYBjkM2e4YLiZ56Zp1QKz+jMuLNotLj1vYOX4TbAT0ziQDHj+KlvT03+oqIHyNNmZrKfemNQGoXkMw1f2Ye2vMDKTWSQ8Zn/j3ajB1D0LFsdAZPOFqCUraiGN5ZqqF080YC7wFUZBGV5QPdJH6Szx7Z8x4AMPue3YenzFYie2+6nZLZ1E44jMFaanhYLw+fqJhEYZq9tHwKSbR4REARAXDRjv/LTyN/VCDsn9W3JEcB1IF/OupRBfof6PDjw6X7u8QL9l6JZXMfpAbB9lCxqIuzLOZAsoI3cBgXgLs1oIW7xwl4M3GlmC8K6yYiaGHnLBD3ypRl0HH2LSclmp2G4K38HGFTXdT0csS5Y+Fqy350s6QtZ/eSGSvJg+mvwpe7JbzhgYHeOUUDqh4dD6ook1ur4bKJhvmDbppc8g13PzH6r5BZkGqZpYQliBwnWllyciCLz9azWiiCC8mMBKLaL3dt/7Q59L1tuOsgUdDDusN3auFXjewkyZQoAMKf7JLH8S4SEfqUT4P54vwbj3jsWDjgh2fvrxWdg0FUDopy1w7J8Zbrxge3drt+DHYIAdLq5V+GFXpHbZS6iN565IqkO1KHlOkYZ+DeqnvSKoWG2OQtqutuOr2EElFUhD8W+ef3o+MkWyiAYKEbAdbKg+3+QjFAtMHwOAYQEjp081/GeiLJqj7P5ouvvzFk5XngQOnri0nNNxfz1Aeek4G98Hapt0579CzFRbPUTvmWXP
- qC5Jjmcc
- 4DUoOrjF5JU2+SJyszlT60D+fOknnJ56VY+nL8rTe38upT6Hxqet0H/jkJs0hBVeVKSBee0igrF9BfXrUzWJSxX75NaRmQOmSuHEXrTptJxlkvH25/ymCG1xsU24cjoR0r9dpb83FdnmTbfRitWF8sMihM04PLE5I7hS3Hzt7xd1egIbYQW7oE65AlvtiZtiwY6fGOU2edeYvBny8mLl18flo0AlCoyQ3BIQ+fYE8SRSRpWgvYdqzz3/CeybNhX3zXIE+3JvLLt/N9MszizIJBqCYpBbmhWU7DKnDTzubbASaJ9MedW1if4ocsbIM+1FyGGOqu4J0jqx07rtEQmerCh4atgpTauwxaDN3uC9+Jiv7i62Gy4H/suX1dNCuXPTKZv3Yipq0a+FsF0w=
+X-Rspamd-Queue-Id: 7FE1E120010
+X-Rspamd-Server: rspam12
+X-Stat-Signature: pskbuxii6oqagomiosrwpnxkdsbghqfa
+X-HE-Tag: 1769006611-835740
+X-HE-Meta: U2FsdGVkX1/4qm7WRqBGkDsqTrkwHl9U4Us5j1UQ1Ssq2QM1JLrs+AaXJk0kBx9v2kF+qQwiae075sh9mLqXCd6uaxzNt+bm/lETLI7tTsrakFrbkEGlpQLGBzLLd+WLV4SiOeZ3RcTcF/Ih2+HoLz0aXuBh5N2sUMHuyI/Sqah2OUI40vdDrKaORQvvFYlue/8qnfkRlusJ9u3G7VG5eHVRLGbEWQX/WCWJdk8jGAlbskiHzufCAq55/cEhaLAXfNas8YM2+KZBAUYbDrCxIjeXsfzrgvLkzk4lQWxc+yvJ6yfI2VFZP3jipM5pSqpScVrqgJ0tkx0DN38ErBBJppmpkQth8C/AEUNIR8jfY+2/8B1fX/jAKWFLzqQu/qdGvCKXVqDytUVpes3ypXr0nh1gsU7GNziHCjfaC+4+WxMZ7kDfFGhcyUbNyokJz/ecJVL3x3bnBqzlS0v99e5e+PJZmemUe6fEjJ4MwhE0Mf3wmIizTyStg7HN8Bdkn/V7co9caarsS8ydc+g8hiZ0HmvBNFZNXBBitLZjQmYnQTGs89nyv4+n4YDZC2SbkBO02E1iCuEq+Ir4skx7iwqWYwRcarUqX7VK2vs0P/oENUIR86DYhAF1nc0L5mtGyRYaNd/JnrVLJ9JO4xYssGBOD2+l3Sk6m7BHUkvlXfxFjU1AycjeTeuk/mFw4pqByf0RUcLHeBQhOl5o28UrRJZ26kSlsLQL0i95iDOzp7dyhkFImnfCBKTq5Yv+i9tKch0x4bb08OqmkgLMFYeAKzEbXQxp/lR9eytIL0m7ApxR4KYoOaGGQiDYQ8fNmVaE30kSH296pvAVsY19aAT4iLv5SIuWC8FrMb+UtZe1zIhJPFD6YwjcX7PvBcaRnzFznTTpbqN4Tz3qr296Fdjqr4xSWqZpvaxdN6YYLSZ7aq+/sO2uQhr/87Dkv5ecqEEK8XSntlEoVSG1kd5s/drRpG6
+ FyhpkBgD
+ uK51IjbG3zbo2UhrTL4FWuBtKcMn3ftrcRnqmDMq3JFamKDhepPOQ8lgB0GYGjiAEXZKUIcYRskHg7BxuDRzMJ6ZEn4EBDGigfvn1XNvxme20o4teTYqkD8awNRLig8OhyOPE2XH5fUKAyPM9czar/FnQUJm2yw+LOvTI3JxGWkX87N5PbUm+o0CHrNpyfaVwanOj8t9PMtzwb8KC5Ar+QSP5k/mWkQ7KY4wlvGoVh1I3aLwSg8xTFOK1N+8gqaFluYPXKGQaSK/BCjqq5AwEXb90nO00pEkQhY7zB4ZGtd+6O2edQwTjHnqVaMJpG0mxSrng6+aPWoAaCNQQipo2IrOC486I24oJmq5TVpdGoBNLkneJoS72668CFlIFcSLvjyl4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,71 +188,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On 1/21/26 15:22, Vlastimil Babka wrote:
+> On 1/20/26 23:25, Suren Baghdasaryan wrote:
+>> On Fri, Jan 16, 2026 at 2:40 PM Vlastimil Babka <vbabka@suse.cz> wrote:
+>>>
+>>> We have removed the partial slab usage from allocation paths. Now remove
+>>> the whole config option and associated code.
+>>>
+>>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>> 
+>> I did?
+> 
+> Hmm looks like you didn't. Wonder if I screwed up, or b4 did. Sorry about that.
 
-Memblock pages (including reserved memory) should have their allocation
-tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-released to the page allocator. When kho restores pages through
-kho_restore_page(), missing this call causes mismatched
-allocation/deallocation tracking and below warning message:
-
-alloc_tag was not set
-WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-RIP: 0010:___free_pages+0xb8/0x260
- kho_restore_vmalloc+0x187/0x2e0
- kho_test_init+0x3c4/0xa30
- do_one_initcall+0x62/0x2b0
- kernel_init_freeable+0x25b/0x480
- kernel_init+0x1a/0x1c0
- ret_from_fork+0x2d1/0x360
-
-Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-fix this.
-
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
----
-It is based on linux-next 20260120. I dont konw whether this base is ok ?
-
- kernel/liveupdate/kexec_handover.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 43d9d2661163..8f7e09d67e1b 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -219,8 +219,11 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
- /* For physically contiguous 0-order pages. */
- static void kho_init_pages(struct page *page, unsigned long nr_pages)
- {
--	for (unsigned long i = 0; i < nr_pages; i++)
-+	for (unsigned long i = 0; i < nr_pages; i++) {
- 		set_page_count(page + i, 1);
-+		/* Mark the codetag as empty to avoid accounting mismatch */
-+		clear_page_tag_ref(page + i);
-+	}
- }
- 
- static void kho_init_folio(struct page *page, unsigned int order)
-@@ -236,6 +239,9 @@ static void kho_init_folio(struct page *page, unsigned int order)
- 
- 	if (order > 0)
- 		prep_compound_page(page, order);
-+
-+	/* Mark the codetag as empty to avoid accounting mismatch */
-+	clear_page_tag_ref(page);
- }
- 
- static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
-@@ -265,7 +271,6 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
- 	else
- 		kho_init_pages(page, nr_pages);
- 
--	clear_page_tag_ref(page);
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
- }
--- 
-2.25.1
-
+Seems like it was b4 and did for all patches, damn. Sorry, will fix up to
+match reality.
 
 
