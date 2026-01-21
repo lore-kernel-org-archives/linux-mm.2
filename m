@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3784C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 09:59:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC37C44503
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 10:00:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F2B06B0089; Wed, 21 Jan 2026 04:59:18 -0500 (EST)
+	id E38D46B0089; Wed, 21 Jan 2026 05:00:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B9E86B008A; Wed, 21 Jan 2026 04:59:18 -0500 (EST)
+	id DFF976B008A; Wed, 21 Jan 2026 05:00:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BC686B008C; Wed, 21 Jan 2026 04:59:18 -0500 (EST)
+	id D0F1A6B008C; Wed, 21 Jan 2026 05:00:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AEE86B0089
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 04:59:18 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C6A5E8C91D
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:59:17 +0000 (UTC)
-X-FDA: 84355523154.04.EC954C1
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C29C66B0089
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 05:00:36 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7527A13BF1D
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:00:36 +0000 (UTC)
+X-FDA: 84355526472.03.19DCF0D
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3A818A0009
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:59:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GlzCRsx8;
-	spf=none (imf15.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id CB7F04000D
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:00:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pQX0zA99;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf12.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768989634; a=rsa-sha256;
+	cv=none;
+	b=LuvVYDxpsRqyKNXIazgI+ezNu5/dIxmGJUlSZYIGVPOY9S9eTbSZfELPGJfr3iD3CrS50W
+	rrXMBCMWslcAIUfF8rNnaH/S71rqQYLxDyKDfIc2YaGT99JMs2dW0Du714nRT3s677wKZ4
+	ZzBWKCi4GxT76Tz4heWziHiDhoxEDqM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pQX0zA99;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf12.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768989556;
+	s=arc-20220608; t=1768989634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BIxfnTqIxfG/JDCpqz8ddR3KhEWm3MiBJqi238v5YU4=;
-	b=XK3kZRM4ck+F9+gWZ93wPHBoAKrEV2pZnTbChuwCpLXHjwSTHaKHpuFQmJlziQHIz50yts
-	bUdwugLGfyqmqWFPRw6emY81nCS/27cOxLrGxwaq/rKlF8+BOQla48JMtbU/TjD+PAPluk
-	slUS2ZFVlFm2n+tM3Yo64fx88DMtu9I=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GlzCRsx8;
-	spf=none (imf15.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768989556; a=rsa-sha256;
-	cv=none;
-	b=NTYt/Se3SI9Xh8/g3Wqx9HhOAsCHNVsnT9rfjO5W4yrzME4De8Y/XYtMqdMH6geB0nUNk6
-	cTIzHEO1R30ZPIWproC3J86M1Lc13jwlfGmSi5DF6wb4QJyAV9d5cg8uRlOn+4pvdgqNXJ
-	HFR8GHw44viChbsofhP49vyHKHhJyDQ=
+	bh=wMbWURXBKlERnmrf5QHs0kPUbIXlx/juA5w6FY/x4Mo=;
+	b=hOQb+3A/LfJuSsPU2hANxyaID00twwMj3C1/7lNQDi5XyP+lo+bDq4z2c4S6k9+eme1cQr
+	0b395z30641VZmezU3o4kdOFWyvZdiFxwPDyrv/CsUVzKhbSXemEPJyFVSugtxaWTShWfr
+	kQiHIsWK7bD4edbrSIuBb8tPsYFe8VE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=BIxfnTqIxfG/JDCpqz8ddR3KhEWm3MiBJqi238v5YU4=; b=GlzCRsx84vMm8sXEe178jEsMHi
-	yEfsLuaiVDfKdvvIzvHHomVN4gwjGG/E7g6hvTZrX9Jl+jMggt9g7DJYZ9KBfIFzYhA3kss7211EY
-	GEs0h/iYU1akVr821mpLBTcpxPKmjbRmaNEdphN9zpqkHbi/dWkZXm28+Sqj5tXo4XslET+sDAg7q
-	8tiAmX+5fSaGZCHmy/XD/afOXoGw6dcJ4dJHsPsM0/1AOYGnrcB/NtcMCkFeZvjwrcVtFQsDFGHap
-	YeLREzyq2Ckz1YZlspGFTUyxh+vgvNaPEZGDQVL2D5WGr5K6wxV8nnmvIwla6TuNJ/6ZKDWgoUayq
-	u8VgPgRQ==;
+	bh=wMbWURXBKlERnmrf5QHs0kPUbIXlx/juA5w6FY/x4Mo=; b=pQX0zA99VzZEIlAcpAlPuQefUS
+	jy9CjjLBfeNNN1FNJitVD8JqerILO8jjC2fZiCCKiOnZ+AFbjn1TYpqjbQaKf+C8/KRnnpzD3SGrm
+	1PWJ9D0VnaLF05hqis2S5I41XDL1jyEKDnD+EFR38vRrwM8QPEg3EqDl695fgD/6Ar8xKBHcmKyax
+	7put0Wn3gyLR7YcoxmrK+vm9eU0JdOvfRB2prGJ/Am84hKoGOlEzX9X79ne8Tfk9prDNrEldtzRiA
+	ijbo3W0+o5oEyQQ0Ds62PvFNcq+zxEq6evP7CKwgfSi+8rKZW1NE7FntT3VSj7fEic6gmCvCHtw/f
+	BXWot+KA==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viUzJ-00000005EDM-2rax;
-	Wed, 21 Jan 2026 09:58:57 +0000
-Date: Wed, 21 Jan 2026 01:58:57 -0800
+	id 1viV0b-00000005EMZ-1e4Z;
+	Wed, 21 Jan 2026 10:00:17 +0000
+Date: Wed, 21 Jan 2026 02:00:17 -0800
 From: Christoph Hellwig <hch@infradead.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: NeilBrown <neil@brown.name>, Christoph Hellwig <hch@infradead.org>,
-	Jeff Layton <jlayton@kernel.org>,
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>, NeilBrown <neil@brown.name>,
+	Christoph Hellwig <hch@infradead.org>,
 	Amir Goldstein <amir73il@gmail.com>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
 	Chuck Lever <chuck.lever@oracle.com>,
@@ -118,9 +118,8 @@ Cc: NeilBrown <neil@brown.name>, Christoph Hellwig <hch@infradead.org>,
 	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
 Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
  nfsd export support
-Message-ID: <aXCjYY9tVKWv29fN@infradead.org>
-References: <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
- <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
+Message-ID: <aXCjsTBnHGuqTJdb@infradead.org>
+References: <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
  <176877859306.16766.15009835437490907207@noble.neil.brown.name>
  <aW3SAKIr_QsnEE5Q@infradead.org>
  <176880736225.16766.4203157325432990313@noble.neil.brown.name>
@@ -129,19 +128,20 @@ References: <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>
  <20260120-entmilitarisieren-wanken-afd04b910897@brauner>
  <176890211061.16766.16354247063052030403@noble.neil.brown.name>
  <20260120-hacken-revision-88209121ac2c@brauner>
+ <a35ac736d9ebc6c92a6e7d61aeb5198234102442.camel@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260120-hacken-revision-88209121ac2c@brauner>
+In-Reply-To: <a35ac736d9ebc6c92a6e7d61aeb5198234102442.camel@kernel.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CB7F04000D
+X-Stat-Signature: yin6t17qoohktounm7ktmm5hcugtozuy
 X-Rspam-User: 
-X-Stat-Signature: cnf151mon1193p44z3bnir7yr7tiiy6z
-X-Rspamd-Queue-Id: 3A818A0009
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768989556-503623
-X-HE-Meta: U2FsdGVkX19JrPtn7F0Zr+q30/rp5c3IFdoG1U62OGCC10l/GtfqbK6ITGooJVyHGvd/cCbk/Y3lCY0W4zzlZO0kyzTxvehCrs2ZApLYhrmXT49+BltuxAgIhElyVEZ1amhSfbVI9uJ+3zQnlpCOJoYl/JedEhyV2RiSLNzBNZ28ILnpmKb6m7aC+5HYAfA0t/91i52c8FOSSxUK2kHWvTqA0cpjcLABA+sIO21gREagB4sQZpco1b7vF4FZ+wIeYGKqTbxrY9kofz3dHPX9xh3Aht09X/R/UwQdeLlJowaMj8nDgVJ5hlqP7Sw1RYY+FsUYKeFztKeb9C4QpychTXiy/qsenbK1E46P88SDXb/9TAIr0h7E/XiCZz32tZ9XREUzgukUfHaQ/zLYVN5m/NQndLL0pGukWtXzRv3CW+4Qefvx1sAV+8jqtUD+oowP2iYYnFlFLDPno/3PEPvi4QVv8/cbTqMcw1WeUhN72ncJquIK5e5QLrwcUjk+0IMyaTrUU95iQ9MSkprFU0s47xOrcvTBcJjKqGbm5ZRK2X5VQUXOgtmuUMFJbn0N8yUsWyIgzOCnl0VxwFzZP2Anz454S/vj4KqcSzM+6zIeVvP//1l3eq5iuno4TpmtvOUhRJQZCpesBqjxsfRjDUfECGasswdzVcHRPuBc2IjrjJGjVdu/lpxsGpQXVz1ibrEtGBUfMDMhgmQxqUECY7cX23aIIR4vr8ht6ZMor4uuozeDmTpz8scVipDLDeAPVI7tQgkctpYT9cd2LG3eHhFWTZ2KMJzuYx3P6whDby3B1gPTJ2zY9Ry9w6KGMdGXCV+IAfPIPL5aEkeeguVW7rPBxgvY88p6W1hzNMcCPqxFVKI/Ee+a2VtjEttmrcJi8D3fpPt0pFBvFkIxv+yuedX6UGsSecxt8q8uOJ5zKzqo8UuTnDaa5urVbn6vW17mIKuFzpCSNLaknnYxfw3bbS4
- Xmuj0dOo
- HeqGlCtD+GR4Vvm/9+R8v0973tJK3wmVzi26g3mo2Ub7aw/RgoeQH3B3ZDAmGZ4VBdcwL/iSH/x+akf3yWLL1dEhmX3v0DofyhjieQYrbbfBhnQU/sKnpHvxirovmYIxhdlh4tSiDYrTTl2JM0IDA+tzo45irO/mTDUXjeBedkInGmRM/RbVBRjFSJxhbM5Vmh5S1V4YaWXXwHG00I6VvfCj4Yr82ghIbY6UcxlU+xDWiijVzYntZ+vJAuyV2/QfOlyTUA/oRSNNzqQog/xvpX6ndc+AkoH2VqtNk5LTFzNfmK549gRxLgGjno2+bOL5PvisMUNj+fM9ov2O//2Z3ixiU5kz+RbdVrfd2JQ7yK9YAka2PEpZcQuTA/FZNODczSVMrO6TxrVMiQFTvP3941uOcOjuUptpbW1hk6lbTxU9UxA2C2PT35S1FLjMvS3u8rLWNOSoA3edcIg4AmrNOlrcQFWj/opszzWEltCQmC3GFLFIKi8EJK8e2jvhZaNcYkrDdAcLtn2mgIU5mkFlZ089CywWl07Yc+V5CCZHhxkQsVO3BUQ0Zr+4wdrb+nsGr3POz
+X-HE-Tag: 1768989634-451107
+X-HE-Meta: U2FsdGVkX1+sgAFYBTfZVPUznPghyYTe2F5l47Rvmj8KW/q4RD36hibf4GHj4txhgz5uyFC1+ov5cR0HP2DO9EMyQm1lAuGaaFYqnVnCpgLry87Br6xS3ixcg4VQVwc9WvpXMkzVzeIeTTS7FOckYNJ0XljpqwiHyl1Oq75mnGiL0+4NHnpNfy9mfofr/d12ajbMANTULnGDLq6gl8wj5TXRYHxkE7JxZHPujwwelF9BXtt7HcI7g0YaGRLf7tmFpNkmSQ4MlSZEF9DtQzQBViXGrQaeszIkBl8prrBvoqmkNzhMnKZ0FVOqh0MfGgGcqd8R9seXwy3l0rXYjhMU8KVOvnz6dTXTYhCc/7pcnBqv+tsEAEKH11pJxgPeL2GgZpRUVMGXBkV2yPf//SdA8gV2bttUiermUFrkTLHYu+Aj8lP/OcYMI5ewdYLYmB9ZCJz1/JMzsHAO04TjCmSWZfPaCfCWs9drhQXWLB9tPG79gm4Z+7yu20/kE97Rhr8OkBkoTdTJdRm/io7K4L3711ONJMhWJ4MIPaHc7K6V9D7oJtzhjHKpp4LxDADW+kkg3VXnMlyLyb4QCLUngoTBnNOm5M9aiTgvOumJeDLTK7d/zOxPt6wa+vME02LBLTbYdZfaf7kiodC761Aiu8lkVnJGrMZKj7FCLc3I5ROFQAiSveaG6Y4wPDJVxMgdIRDI9YQvQzLucrc2IaG3MmpF2X4TCQNndq9Zib/9TjcLdCf+gzdmgPa5OMgc5utwmhacghCRosDq36RyrGHVf0UAtMOoNt3/em/qt/1H18RzqeGcIxzdVQuB1Thm7NL+PkyaITKiB5mkt6k9+zACrQu6zTurBv8AmmyXesyNx4Dv/F/HhqGADAyU4qfgoNAoUIxsyQxAvs7xHVOj0ewhHm3NYDNzx3DJnDANBWchLIMoKEn7+sAsLo7IwTBWamVzNiTFh9GsW1449NaDTOWJVvM
+ Y6bUv9u0
+ uLHnCU9dnvqB2XA+QtRyJhvpNY5pkhrf8Bp6tbe80DPS/O/nJ5nKJj4hja/JBMewzF5KLJ9dcVAkqQRSNGP9UPhK9rJTsyeK2D/8huvXCLW66FFP5OqaFeTXMCyicqHs6D9sE6CAgVb2mHddodJjs/4OWANN8ldQWNW4yt1+tgO2DN1RdlktHRZzV5ba5az+LG+C/6T6bLYP3ugNGJcnOuZYCxQLeEStgktu7XmoR/npkfLA1IkSy0Dg5q9fUn0e+fJyk+dxZ9xg6wbeaby+87rsONSW5oS3pSKbWCObO28MWxCBwlqFQzHIXBeWBp6Mxcbvi3XlWoupLIiAtHZop/KsgYH0ZbVIj1AvndAn1aUX0He+H6PIHpQMGW15W8nWRjTU60ccJyZ4fk0z8Bmgw3ATkvd8aKG5iQBn+AGkjWCQYq55rzwCDgzvh4tdi0zPvQekypMZthO7a1blGclBwyfmg9z8c0qmljkzbms9BGVuwFLPmfKGaXh72UsADTJRd0Ai3wJLCS6bpX0S5+0x84YZB7D6vgngqf+T65WD4L+duFnnlZDN2+xEM+32ulEJt4aKJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,16 +150,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 20, 2026 at 11:31:54AM +0100, Christian Brauner wrote:
-> It is very much fine for a filesystems to support file handles without
-> wanting to support exporting via NFS. That is especially true for
-> in-kernel pseudo filesystems.
+On Tue, Jan 20, 2026 at 07:50:32AM -0500, Jeff Layton wrote:
+> > > and it DOES provide stable filehandles.
+> > 
+> 
+> Across reboot? Not really.
+> 
+> It's quite possible that we may end up with the same "id" numbers in
+> cgroupfs on a new incarnation of the filesystem after a reboot. The
+> files in there are not the same ones as the ones before, but their
+> filehandles may match because kernfs doesn't factor in an i_generation
+> number.
+> 
+> Could we fix it by adding a random i_generation value or something?
+> Possibly, but there really isn't a good use-case that I can see for
+> allowing cgroupfs to be exported via nfsd. Best to disallow it until
+> someone comes up with one.
 
-I'm still amazed at this statement.  "Wanting to export" is not
-something for the file system to decide on in any kind of sane
-layering.  The file systems exports features, and layers higher
-in the stack make use of it.  We just need to be precise in describing
+Yeah.  And I'm pretty sure everyone here will push back hard on any
+such use case.
 
-In-kernel code will then we so nice to respect it.  But for userspace
-even then all bets are off.
 
