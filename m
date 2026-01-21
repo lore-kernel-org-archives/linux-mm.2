@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F0AC44507
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 11:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1AA8C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 11:22:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CA7D6B0005; Wed, 21 Jan 2026 06:17:30 -0500 (EST)
+	id F27AF6B0005; Wed, 21 Jan 2026 06:22:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7781A6B0088; Wed, 21 Jan 2026 06:17:30 -0500 (EST)
+	id EF1D16B0088; Wed, 21 Jan 2026 06:22:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 684036B0089; Wed, 21 Jan 2026 06:17:30 -0500 (EST)
+	id E32386B0089; Wed, 21 Jan 2026 06:22:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 544FF6B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:17:30 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D41758CCC3
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:17:29 +0000 (UTC)
-X-FDA: 84355720218.24.DA35CC9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 68C311C0004
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:17:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UWVtuXyF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D53596B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:22:11 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79658C37F8
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:22:11 +0000 (UTC)
+X-FDA: 84355732062.29.86110ED
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 54B1140007
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:22:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NEErvpnf;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768994248;
+	s=arc-20220608; t=1768994529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZyifTjkinWiyaCdMcJeuJbbtEVf4QvaXRWBHeX9RfF4=;
-	b=lqoWGUWX0wKW6nkQc3ItsZY7odbgZ1NceMudpDHGVoFlg27TWucQSwfNguzNVDB99A87Ow
-	XGJxpho6Df+r70ywk5aHnNvBOf6dRJiLv8q/4xbsTzzBN2McpeyJ7KJkJylpl4Ruu4cUDu
-	Cm4ofdbiYJL7i36HlK2yJQpO3i+ayys=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768994248; a=rsa-sha256;
-	cv=none;
-	b=t1LiLnzzC+UnBceN2CZi1zF8Um6QugdGoqcYxji4K9p/+FhaZZAdIWx9cwTdjvogsTtSIZ
-	cFm5mSRLlNYNFV5odmSwB5LnxRx1TTNywU1p6HyTYPrFHk+WGJ373Lcf4iodIZhrwkYxnV
-	XKd89WTAvrBoNplrT5dTa+m/Z5pMu1Q=
+	bh=FqhAFzJjI/DgbR47XPHmTUNDQmb22woy0wLaS+F3G48=;
+	b=AWXfl0iMSsTeshnufkDEJwRRb2XsrXLDdtBp0J2aRbEbwcrjJvpG7yL9v8Ye4mAN6UZjrB
+	m2k30tjjRxkB/wpzuvJn3m4UZq4flYfAjqQNmaPMXC6FNejLa5yC8vGtpOaeco5yw57R5L
+	U1hPA2uxO1Szw1l6YVXEOKjW+3gJoSo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UWVtuXyF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8AADD60097;
-	Wed, 21 Jan 2026 11:17:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A15C19422;
-	Wed, 21 Jan 2026 11:17:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768994247;
-	bh=UVjrrOUybRdchUO2zQhNsUuDB0kG8y8GNSns/te8tYQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UWVtuXyFklhh7/NH3E8DzkzMHmZPwkjCHWg7xvjvaGo0n/urnbzps3c9ASpFhOAV5
-	 2S2nAa54eg5FnuTiNG5oEmMqYAiBUw1oGvIe8GxQtbM0iyORtFQGfySEZQB6aqAEpa
-	 5fTJN2dKrA+qFg7JVnSRYaJEQcfDPPP8tvzpC9hNTzipRbYS+gViUCpOB+NLQo2CUC
-	 pUGdh3MZsp7ZSsV9lXB8sLBIUoRJZG49qTbqTBgCm7i8LAEcTaZYingWXEXsIJUic7
-	 LPnUQbnk0+Jdi3AvnO3CxgTyTxb1/NlhFn9c7ll4bb+p9tlRF5gKRV18oVfIej8I4F
-	 9ntNeFqZ4FnAg==
-Date: Wed, 21 Jan 2026 11:17:22 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: akpm@linux-foundation.org, shuah@kernel.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	nao.horiguchi@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] selftests/mm: add memory failure anonymous page
- test
-Message-ID: <857ec09e-deac-4d70-af6c-5f89ba0b9798@sirena.org.uk>
-References: <20260120123239.909882-1-linmiaohe@huawei.com>
- <20260120123239.909882-2-linmiaohe@huawei.com>
- <737310eb-05e5-4234-af67-9118b3f395ab@sirena.org.uk>
- <f1cb6029-9140-3784-5b44-ff58b4edde2c@huawei.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NEErvpnf;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768994529; a=rsa-sha256;
+	cv=none;
+	b=dgGJB0Qhu9dbUxxiTzcHsUYCYc0D36hh99aH434tS2yeqZ+NTJdNEDP8Gs8HCp4XhvHgCn
+	1AZ451ZYkUSPFYtlEWAole8nc2jVgwVmM+x+oq5Uq1HHNfQpwz2IPcBHJZyWx4rpylg407
+	d35BwGS3wbwvtqwxpTuC0qzkx4OnWN8=
+Message-ID: <b7ae0bf1-2a37-4848-80b3-7affa25cbde0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768994526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FqhAFzJjI/DgbR47XPHmTUNDQmb22woy0wLaS+F3G48=;
+	b=NEErvpnf+3SVo2420D1iw9gprXB3BTqiAM33r/uRjkK0hi0Y/fuIwdNJfhWFkwkYDC+c4G
+	qTkD02heYrDr8N0t/aJQS1SfgYz0ybVwc2YeKOLhsTkwZAc/x/QdpTcbg8qW3O3J0I73vO
+	Ce0rkbMrWZhoouAnbTdHwgoRcCkUAvo=
+Date: Wed, 21 Jan 2026 19:21:49 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ntNwiMA8Q5N3tkRg"
-Content-Disposition: inline
-In-Reply-To: <f1cb6029-9140-3784-5b44-ff58b4edde2c@huawei.com>
-X-Cookie: Eschew obfuscation.
-X-Stat-Signature: ruoesqexba4ef9y56arkqkwzwqhw98ip
-X-Rspamd-Queue-Id: 68C311C0004
+Subject: Re: [PATCH v3 26/30 fix] mm: mglru: do not call update_lru_size()
+ during reparenting
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <92e0728fed3d68855173352416cf8077670610f0.1768389889.git.zhengqi.arch@bytedance.com>
+ <20260115104444.85986-1-qi.zheng@linux.dev> <aXBNuLDtUmDVyXTv@hyeyoo>
+ <aXBT0R42Xuzwr3Ns@hyeyoo>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aXBT0R42Xuzwr3Ns@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 54B1140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1768994248-369617
-X-HE-Meta: U2FsdGVkX1/nxEDypVGRVT6E1xIK+YGni6tv5Ktx1HU/xx/a4OjS1eXMSuACp2LVRyNEygUNhLI7dHvl5gqH1hdb3gNZom9vP8jZWaJO8kH23mxrBjR9LTAUg7XPEBaCAoU4/wkR07AHwYyni9sRwR+GGTcifPrfUaS4ZkgELpiNUQHbdB5LvzHcJrn60LAA6c/rsVG2F5JScASL7emKCkHqnngbj3pGypogR7cQWfAhsjz0mRVPNXAFt3nDaZPB6m0w0tPBSAG48G24x4TAiGE1/D3HiclZLN7fhnKlQHjvJz4mPUEB36DMO9Gio22jwAxTzjRUYkPb1HJOXVE2EW8zEPvRDS0SpdabM32wA5wwGZ2xf3H6yYzbkYWzf9fZgG8TdGHe7zcxZ+YhauvwPQN3lorFCSWjzfW0i87j3ExrINF6C9dIih1eSKdG5IX6Z4EIVIsLKRMvbXaMPDxFahPo2XmnNzXaCPhnVhJBVhOLhf6FLONKglnqCiq02gCOsyw9hF86MAO2Xsg3cM1iJeb4VIjL8eldZ+05leGY2A8QTuEaBtCCY5wvdAlNc+/+YxKyvcvdycnL7Rz+TAhPAKZODblfdhUD0XHq1/0AOME0cfX4xw+D8tpghIJFr7QT1L5Z0kMBxeJCi9KWt1GRn6kxDp0UMkl8UTfTgnqgldvT0WStcdXrrKioanRa1cBKpq9sKWdABrUNP6ZOlbjcds60ZvSbJeiAJ49o9U3SoBk1cY9APgnRYaB6t+mq7F1VdZ9MfvQTe4mzQzZV0IN5w5IPacVnQ33RYB0IwQdqY68Z0+WLAEZKxesN+UMnpfL8I11kxvSay7ecm1ig1PzVmsAiErkuDwjHj4EZ9+i9OZTfFMEOLnccfoHjbIOhmYZ2l4T/6I68SpvEnfuiKuW2SGwIYu3X8aDrBEsgoCncRYkdrtfN+zeEgMmQYUOFRpIli2SuZVShia/HyHplH4G
- WtZ+olY2
- h/dj1MoBN/IFg0OReQMpXHI7a5pBfE0/EB9hftLsN4mzU7nVK4OJmleENMw==
+X-Stat-Signature: ohbh57ad8bfaieuxnn5e5q17ma9fo7eu
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1768994529-184259
+X-HE-Meta: U2FsdGVkX19eU5w/XrUVku9rGortpiciZiUN1oQkQxfsoSoJltrSiiRuilP9s0IFAQZwIDHBKl/uptugSMAvKbAI+Cv2RVSqnTQiSmMh+rfkytnNuddWpU2JefsrwnNXELwG3jxM060w0VMLG9Ff4Ppb/r7uwXKfAaUnDCZm9EKwyXg2IXId2jPJ0c0NE5WPxxY6WTfpaWLExOfOEKb0ZeTxNNJzqHiu3E1+5+nXStsanEJVaKWYKQCcKr6JLBgvGFPKzvwQSW5BbPVS9MH75x52BZAMMepOjYfBCAFXqpPkhSzSxYMscjzTtsoWGub9B5zTWLwXwLF2erWhqTs5o493/JTTq9DPc4WWa1Da79tKCpJYC05lsVPrNKYdAj9htC52AlJXoirotIurjQsqq3f/iU0cIe1G+Qkr3ANOd+FxTUo/AnkIqRa3kjJSisvMG+hpaseDwkfey7CCHKbUBcAEge6KJDImMvGGKiYW97PU3H1WLiXRQQEpqOATz5/gpsSmU5ONoOgWXU6sBgyhQ4B1IrYk3YQMSHfD5zj4wYE81+Eo2V6/YMnzHAYU11SoLtiHuytfFuLwgxHppBe99HQhxtntpjo7+cjmCoYVJJQ7tFG/g87NOvn3g6FTfCJyyv76eLdjZL1PU7tK/OXa7oDFc9O0eK2Pg35PCzK8o01gCKegId+FWSC3YUmApzxqeoPWA1KzR3Y7rtM1lVOMcECGdiSIKpxF+ozDVGKswJR170Aj5BZa3epGhWIY4w2SbYVzc7FKfRKgLFTeyAXESQi+vUWxmHUVYDoFaWFtAbvVwUcL/cZSA2WJ3JSoPWWijOnCURwHf4jzdA81Njf8IH/JF7lYSIyqhF6a8toml5wft4UbGBw5A/Oh+qsZ11e2E1olwY3Nq4TFgf5jaXULQlVpgv/4iN7Je1ELKCujqYxN3EE0uQdA13XR8wHo8ZSLg7D3Z4j+AgafL7P8X6W
+ l59pl9BU
+ IilNcNoqB6LgiAnEta/AKcUznQO2hnoB1YBYZ6OBXVIdDVv7MYrHJsjGp9K90yKvsYwnpNaUcewI3hM6DjvejJEHHB7PDrBU6Ym1UtnCRufRWq5tU0aNKgBas9opbH8mV8thpK21RzrZbgVflKlu1V9QnZqEWckgZAdX/xnn5QlA1eED0QBZyO44GLLHRHAAY/Zt+N/T8mpOlBF/k9iSeVZPvIB5oC59cbQKT3Lr+qzQcvH3chb2KKmNKhxQ/TWCIHMyK4ZbhCIafuabnS9biKUoVOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,38 +100,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---ntNwiMA8Q5N3tkRg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Jan 21, 2026 at 10:05:07AM +0800, Miaohe Lin wrote:
-> On 2026/1/21 1:46, Mark Brown wrote:
+On 1/21/26 12:19 PM, Harry Yoo wrote:
+> On Wed, Jan 21, 2026 at 12:53:28PM +0900, Harry Yoo wrote:
+>> On Thu, Jan 15, 2026 at 06:44:44PM +0800, Qi Zheng wrote:
+>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>
+>>> Only non-hierarchical lruvec_stats->state_local needs to be reparented,
+>>> so handle it in reparent_state_local(), and remove the unreasonable
+>>> update_lru_size() call in __lru_gen_reparent_memcg().
+>>
+>> Hmm well, how are the hierarchical statistics consistent when pages are
+>> reparented from an "active" gen to an "inactive" gen, or the other way around?
 
-> > You should also add HWPOISION_INJECT and likely also MEMORY_FAILURE
-> > (which it depends on) to the config fragment in
+Oh, I completely forgot about that. If update_lru_size() is not called
+during the rreparenting, this issue should be considered separately.
 
-> >    tools/testing/selftests/mm/config
+>>
+>> They'll become inconsistent when those pages are reclaimed or
+>> moved between generations?
+> 
+> FYI we've observed this while testing downstream implementation
+> as it led to MemAvailable being unreasonably high due to inconsistent
+> statistics.
+> 
+> The solution was, if lru_gen_is_active(child, gen) and
+> lru_gen_is_active(parent, gen) do not match, # of pages being
+> reparented must be subtracted from the child's statistics
+> (and up to the root, as it's hierarchical), and added to the parent's
+> statistics for the generation.
 
-> Currently if HWPOISION_INJECT or MEMORY_FAILURE isn't enabled, the test
-> will be skipped.
+Make sense, will fix it in v4.
 
-Yes, it handles them being missing correctly - it's just about letting
-people know what they need to enable so the tests get run.
+Thanks!
 
---ntNwiMA8Q5N3tkRg
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlwtcEACgkQJNaLcl1U
-h9ALEAf9HyGTBdDStODta1E5/aFHzVxupOBCCR+llLW72boxsbuj52j1RUdv4DRJ
-Yd6UuvWvt9OT0hsfHtT+HX3HJOPNRBk2Stmos6qs5js3NBCA/Yi5dHPdaOK1pRwt
-sokzcj9kQtgX4piNhwnQ7CWI3V3vNvKf3kpuxI55MUsTN3pwNA6GIFLUDW0qktbR
-2bCNHG5CTyUX4arR4y55v1Wem+5p0GbZXyHrlkfOuVvt2+7DiyHnoBPpQ/nRxV4G
-X8ISnvlBIZLOYcFT0nyoZY69SyzAbAEhzfIDB82oxDHr3MHesVRuRl8WV+hTTJ9V
-Qv3LP3X9K/eVooLQAbsJurpnEcHUBg==
-=VjLu
------END PGP SIGNATURE-----
-
---ntNwiMA8Q5N3tkRg--
 
