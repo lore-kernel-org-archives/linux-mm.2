@@ -4,113 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE987C4450D
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D17F9C44521
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:28:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CCC46B008A; Wed, 21 Jan 2026 07:10:59 -0500 (EST)
+	id D2DE76B0005; Wed, 21 Jan 2026 07:28:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 184386B008C; Wed, 21 Jan 2026 07:10:59 -0500 (EST)
+	id CB1156B0088; Wed, 21 Jan 2026 07:28:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0739E6B0092; Wed, 21 Jan 2026 07:10:59 -0500 (EST)
+	id B937F6B0089; Wed, 21 Jan 2026 07:28:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ED0D06B008A
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:10:58 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99268D33B2
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:10:58 +0000 (UTC)
-X-FDA: 84355854996.11.F649F78
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EAA0FC000B
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:10:56 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A48686B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:28:55 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45CD51B03A7
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:28:55 +0000 (UTC)
+X-FDA: 84355900230.16.CDCDA37
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 819F6C0007
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:28:53 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JFIbAubY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3T8JwaQkKCOgKVSMObiRVQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3T8JwaQkKCOgKVSMObiRVQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--aliceryhl.bounces.google.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Van3gsou;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768997457;
+	s=arc-20220608; t=1768998533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ziR3r9m7pUVvYH96OZBkYpK+ngyEyWi7rW5109gK7C4=;
-	b=Jd5d+KXsYTBkI0OuTr0GrPTt0JpN1EO4GJfLASaLM1TxYBpj4pk3UtNX5HI8jDf6rUSJV/
-	De+8FZs67rjaSOHN9+zlq8z1th8Ka6kXvABoQV/hLh9H90XLt5nURjuFzCGzxDj2y3h/P5
-	6La38AVbj2KhA1XKUajIRWw2dq6tfTs=
+	bh=zfolizuRiupadxkLVyaUdghY1K85KsuAKyP/VH2krjY=;
+	b=I9oCL7BwdCaH6G61PnoU63ppDCTIHk+RxjYQ27MaT5NXuwtfgMdHDZtcpA2/nU0IZ0DZdV
+	ms8saUoMD8YVsOClMXauOH/ovszHG+01RdA8F00PV1cLNbeVIt50IRvw+Wq/zvAZ5ZRYUL
+	5a4HW6DmZKSH1qG+WnJ8yn55dXd28ao=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JFIbAubY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3T8JwaQkKCOgKVSMObiRVQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3T8JwaQkKCOgKVSMObiRVQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--aliceryhl.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768997457; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Van3gsou;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768998533; a=rsa-sha256;
 	cv=none;
-	b=K7kjD0+3CzyUNUOdfi8MtT+21RqB+MxMnQH/YfqPA8ph5Ck3VA4KoSuEQLACBFnHzBxwkW
-	J7YOgDd4P3A8E9dXW9ECaqPsdbSlI6XdMy8ruXCB8+BoBGdUZPSXPPT6t3CvMbTVcImATE
-	VoV8irUw09CsjE9J0ynilxGJZUCbsgE=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d62cc05daso46897915e9.3
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 04:10:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768997455; x=1769602255; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ziR3r9m7pUVvYH96OZBkYpK+ngyEyWi7rW5109gK7C4=;
-        b=JFIbAubYfevIPy5bGvo0hwHTk7Irsnxk/duDZvq/GJ6tOiMkZlQCrWOFSsMApblt1N
-         H2eI3hhE+mIYiG3vvloP++y7PDFpLIYsT3PWlmHf3d3yZ2r0GVZeT9SXlJilCPNxQHoM
-         ECzexaOlqsH0lS3/maq2NCvrLnwWH43F8Ku/w7eIexv6JbP/chW/mfzC1Wf/nN8Dv+uQ
-         KtA3w/0fK9/C7wes5ixH8xvZblqOHgPNi5QS/1wK36wjKg8I9jU6PBcf+HY7TjRNZ5C5
-         SxzzeYtEnspKC3wbmexS+EhyjRBhJGFgGHHjUVzi1YJej3S73ZlficTW09SSnJ15Silx
-         fMjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768997455; x=1769602255;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ziR3r9m7pUVvYH96OZBkYpK+ngyEyWi7rW5109gK7C4=;
-        b=GcUH7buCh5yfUKo0zCOXURiwX1h72I6lk0hcbfMp2aD7ApZGkpYfDAUWKbn1KSL8QB
-         84gIbA06qL7W+L6XefO/kCIc2Cl8DGqTdLouQs1vmhZjU/Y+SEoKdbhBWOZmLNkdB5z3
-         tu53N5y4z9iU/lMv4hsH1sWpoiLj19I/5QZXPZXRPGByoVMRx9QgvAPp6TmoeUVYHCrG
-         vNSJEF5zWe8NPSLLA7C2KC8yZQewBf2oCFxQosNGU4A9OcFcbiNnmf7ytJ9/egVq8vK9
-         /3Skg+8pUmqbSZgUNoL5x2XTIzRi3UBzNClrvCvH7c+m+tKIM2tWY0CpNfC02i6fnHbl
-         mKcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlU+jJa1evm9wD+DkVEtRLRAZDM3R1cTPji1u5aAPGQq/Ef9GhkvPLZqUdIuU+H6Ep6m9DlVUZqg==@kvack.org
-X-Gm-Message-State: AOJu0Yx/eS6BrtrBE66jHZFoQM01RwvDmRzvFjyLrgOdIdW2RX1ahkOM
-	PaZRc/aOVCEOPO4By8IDl8UElSBFnMcXpETNuPH2i5X6scKG9IK08Y/sMw8bK+zxJWMka2/ENip
-	QabsOsTGtyGzwhUi/cQ==
-X-Received: from wmqh8.prod.google.com ([2002:a05:600c:3508:b0:47d:5dae:74f0])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6388:b0:477:9a28:b0a4 with SMTP id 5b1f17b1804b1-4803e713cc2mr75064445e9.0.1768997455476;
- Wed, 21 Jan 2026 04:10:55 -0800 (PST)
-Date: Wed, 21 Jan 2026 12:10:54 +0000
-In-Reply-To: <aWuV858wU3MeYeaX@tardis-2.local>
-Mime-Version: 1.0
-References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
- <aWrSkAPFkdH_tvtN@tardis-2.local> <aWt4muGXbe7lBmXt@google.com>
- <aWt8Ze-otTkexNIe@tardis-2.local> <aWuKqLERqpNz9qtz@google.com> <aWuV858wU3MeYeaX@tardis-2.local>
-Message-ID: <aXDCTvyneWOeok2L@google.com>
-Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
-	Andrew Ballance <andrewjballance@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+	b=O4ozbQpFvzwS2mKIG99isGpGKUAwKQqAcNxZpWXg26ftHoFV3fTGYDg2WHLemn7Mx0KWq6
+	/SVnePJRwHBE05U19J+ZeEtU6RUFcyRwLLiVvJ56lrMgEDX8Z7ngENf4tObFvgNcYh/s3Z
+	F+FZtQzcdqVBIyy10c7Y7qgzhhFurtw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 94352600AD;
+	Wed, 21 Jan 2026 12:28:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710C7C19425;
+	Wed, 21 Jan 2026 12:28:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768998532;
+	bh=rD/oyKTE7w7JyTws5uUSUhNwYTZKRqc+wudLFAsBZm0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Van3gsou9ts4cyfsepozn5LKKuQo2aUwO3UBchz0wUFhx/dkpRKOy+573A3NvmjZh
+	 jGezuSTzzTppkqwP0rE4dfyxIgbuAKwyYU1qtUzhXduKYP1SsozyvQ5eLK3M7wW5m9
+	 qLTzpFTuW8sg/028g70fznhb8P5OIF+1scPNLLyJWIDS6wHW5Y/Js2/qQ8SCQ6oHp0
+	 aLXUQgcMUuHKFmiaVgNPJnqApm1XY8plrpbYH61emhS3w9du8UpV4iMMqtMdfrXyXH
+	 4KuBepeH/tHjeMC4+fBWSh8GNJhjEz/44W4kSTIU6tOgfhxIAMz989uYoR9TF5lKHH
+	 Ge3oqL3EOMQSw==
+Message-ID: <f9bfaa03-bc02-4379-b542-457015053e5e@kernel.org>
+Date: Wed, 21 Jan 2026 13:28:46 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: Fix iterator variable usage after swap()
+To: Lance Yang <lance.yang@linux.dev>, zenghongling
+ <zenghongling@kylinos.cn>, Qi Zheng <qi.zheng@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>
+Cc: linux-mm@kvack.org, dev.jain@arm.com, akpm@linux-foundation.org,
+ ryan.roberts@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ linux-kernel@vger.kernel.org, baohua@kernel.org, Liam.Howlett@oracle.com,
+ zhongling0719@126.com, ziy@nvidia.com, lorenzo.stoakes@oracle.com
+References: <20260121081343.713715-1-zenghongling@kylinos.cn>
+ <ada6d430-fe18-4db7-aa1b-96a03f7af37b@linux.dev>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <ada6d430-fe18-4db7-aa1b-96a03f7af37b@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EAA0FC000B
+X-Rspamd-Queue-Id: 819F6C0007
 X-Rspamd-Server: rspam11
-X-Stat-Signature: fxkiuky1uj39ezi5eysth3oz1sae7w1f
-X-HE-Tag: 1768997456-820299
-X-HE-Meta: U2FsdGVkX1/VC3ogt9SnQ9+qIUEkUcfnqYL7UUtuuuzo4QC5JZEoql97vEY4OlBZkgUQ6FDcBdHUrK3MmRq1Uza3bbEX6j7c6M0/fZcJfKqSyx1/de1nU++Tc7EZ+d6ZgEhisOwFhmAHcIGb9mKXKB7ZDzuknE2ofAO5Frf2uQZIs5oiE+hSLz8sDqASTRCBnNPtjB5vjlKuuWMCIDB3Ji6+949FzSilrIaw5uzpTddtI5Cadk7rbexNnuKhIDyZgPu5R25kfTfkhK6ODNhPepVtPA9KuISzbjKR2ezU+WvILFgNYq28+mxTDdhxpPxRkv4KYtqnsOk056viM6ZoUjleCGpI+9HQA8fvX4HesRVUAV5p2QYHzL/BM8EKI4kWcPkhsC1o2kkxVf3dfYSSkk2Je0rHOohJlARHg4otxQjwtADf+ry/hkjCc+cMZXYJxu2mtfsJ8Z4r89iUkosv0TP0BN6IDUjootdD3KVNI3ZA68DBWlLsg0kcGBJw+HI8vJpgjsinlqcFMYAw6t7mna7Kf5zo+e5p7TsVNk0GupHXfH2U1smeaXvMtI8Gezoqi8P7mVhATRmjcAWbKkVKKjFQmIBZ9XUl6fkFNn9+0x5vnGm9XrHB7P1TptRSSYWKopYaTaem4vCOCBCwwhsFNeyRcgrviG+PlzSuEtzhTmpP9Xr9+dJkUuhf3bz2/NJa7J4MI4JL81GAHOmCT9YnnGRVDr/RTQsO4eL0hp+ZRlg5FYoXogpIYnBKJlPniEzPU1edd4bOKToBp3MLOqviXMDOfPuABvtGN1tjehsK5WFgXFEYFzZa0tOTuenctabqb8k3fXF/a6JbMm5zl6yI/Jqlh6TXMK8JODqVOUr6JV0mpgZxdL2UmpL0I3eMMgbpzndi6w/BnpSjLhI/CglgluIPTeL1obZkXUtHbgoOdW7eW5NxFGvOM1PpqZFMwMXtAe+koFVT5ntn8dqHVc7
- yrXKVRqq
- yByQ2JMxCuHPo2vZrvCChY4jP5Fi/mxTyXLXg2xe/NGcyudlInXP9Hm8l9dgv42ZF6d3WA8R0ikKNBPkrsZSROr08SpQM/IlAzVwgS08X6nasaAnBIm+ZYMsAeiSqnPm9E+mPZqHDTOtImXbTlA6JmYmsqtq4isH5Dd5ZV5oefhWsauJ0zVxQZJsuYzzwCCuhJGeye2440nLwkKNZTjZVpcT6IpnMFYssdp9OuFbBcAph9KJw9QXy//bffViY+289ce68qmRscRWiJbCPxaMloyw/BJhYnNrYamrqA90c44GppDsyE7HDPqvu/CajXuikjsFGaRxDaHKW2ZpedNjQkGeJQBzZFk8MqefsaYkuUILzDo9OmcP1xMvB5MO3ZgkQ5i4QWyZ0DcRSdEYsiw8M6zVNJ9cNVbE9VG1jn3G6vH/TZ66fjGnvQfNybQ==
+X-Stat-Signature: i9hhmuoph9uqmhyry3d9arzgahugjb7b
+X-HE-Tag: 1768998533-52939
+X-HE-Meta: U2FsdGVkX1+iIaKsNYLSs8fDGOaj4oeNR/zKAJzO/xoXgKvi5HxHNgP/eyMKb1SZh+DUPLsScyjT00YN8ozluOtoXLBbrJ6pM4M4lz+Ce9VIY2VCfS6blyLitUiWAVV/uOs60dhSrkLMuDjAAFL9wnwZz9dzIbE+8Lo6MUXT0pA5ADa/OjsY+c6dwaTdPbm4hSdM2XmDAnc61zNMgv3I9RrUiVzM20t9IeGiEOcQyrcWKU1CckEdpyNav2qQbhiWNIfe5rYlX2InXuVME+1cmZ7soUSC6cxNElCb7RG5fh0f/I3GUYFUH98+UYloQM7K6WNsS06XkXZlHf6gIvg7x/dnMdVK/7KKJ2G0ruLLCH4eHzppI37pWr1eW5Nowtn+jEABW9+wH/hpVWj+6jPctNSGbxX+NqFOL63u/iwZHPniCRU+LzdcizsxDq+BesdXM+RRBQREp9av0Crjg4B//mS7VyMuZ2M/I0JLFaKMqeMlE3o6lpXyYDjtjsYB1XSxYkBrlumcd6xJUbQhNU5nBEvFOuDbjdeVtkjHiogqP1jtiOeJO5lCDRvpHtMDsJ55OWJiMfLbErVmjDkELJZVNNTRoJm+B3SFELj35KKW8rHgKJ1qEuMKcSAATT/8DumHdiip65djsscxCi0DrsRqu9kU3LUm/rWUa+qRp9DUwAsEO7OBTm2Ai1rB+oTgvRPJi/3KzhSvUFSGs0T63boeloQPsiZiTTCNUinJUnq/O208KM8UCs+8q0VcRYf456dLkIsHaNiQ73XaeAHa6eZdQEDHp2oU0UQkQ2g4bzX6ai0L+9aIifQUlwOXQon0XK8ZIs0rbphWTzUF5k5HslbRsJZfF9TiIDJrWbQOCOYiA9QR1Z2SdyH3LmsfPSgd0FyvAN3KAf6NrIRLfZifTBLL+Q/HIph3ah0fvpma/K36P/mF/R+/+QeVY5ORZWGwufWJLIeC+5JcW9MshCw6Fdl
+ JL0RzC/9
+ AFShkSndUBSIYDgVbqd8dfNVmXlx4ZzG9tKp27IboD2cbLNnVUU/GRv+jgzWsenaw5LYBCTcI102zkWE8UjtUgW5zx3E1lc0mW0T3pXyB7FwW/pEqqOJek7Ca8Cc8bOw6t8X6i4xgNh58d2/QpQ/SWCsnZ5g3QVhxILuINN4RGbHCoZo3PH1QV0dML4zLs35GkWWVMzQW7RyQIoFARE4lZ/bNMMLo87yxPearVZMktwHU3JRk8nR9zu8eRKRdliqsrBLIws49aKc2Pe+0LosItzwE8a77q3bwQYSylOuBHpZ9qH7w7pTWS0FGLI2hwF/2NvOOeyYZ9HUkrpOyw27QArYmH3tEs0UaXjDd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,82 +142,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 17, 2026 at 10:00:19PM +0800, Boqun Feng wrote:
-> On Sat, Jan 17, 2026 at 01:12:08PM +0000, Alice Ryhl wrote:
-> [...]
-> > > > 1) "relaxed atomic" does not sound like something that provides an
-> > > >    address dependency to me.
-> > > 
-> > > If you look at rcu_dereference(), it's a READ_ONCE(), which is the same
-> > > as a relaxed atomic load, and yes in LKMM, relaxed atomic load provides
-> > > address dependency (Please see the DEPENDENCY part in
-> > > tools/memory-model/Documentation/explanation.txt).
-> > 
-> > You argued that we should rename READ_ONCE() to atomic load on that
-> > other patch series because "atomic load" naming is better than what LKMM
-> > normally uses. Fine, but relaxed atomic load is a much worse name than
+On 1/21/26 10:25, Lance Yang wrote:
 > 
-> To be clear, in that series, my argument was not about naming, it's
-> about READ_ONCE() being more powerful than atomic load (no, not because
-> of address dependency, they are the same on that, it's because of the
-> behaviors of them regarding a current access on the same memory
-> location), and we want user to specify the intention more clearly.
-
-Expressing intent more clearly is fine with me. I still think it's weird
-for us to not have READ_ONCE() when it's a primitive operation of our
-memory model, though.
-
-And I also think we should consider using an implementation along the
-lines of what I shared for our atomic_load() or READ_ONCE() or whatever
-you wish to call it. The perf impact of helpers makes me sad.
-
-> > READ_ONCE() if what you want to convey is "has address dependency".
-> > That's not what "relaxed" means!
-> > 
 > 
-> Also note that my previous reply was explaining why we don't need to
-> call rcu_dereference() from Rust, because implementation-wise the
-> LKMM relaxed atomic load provides the address dependency. Depending on
-> what we want to do, we can limit this address dependency only to
-> rcu_dereference() and make it a special case, this means we disallow the
-> address dependency provided by the "relaxed" in normal cases. Or we can
-> add a Consume ordering (a type alias to Relaxed) that makes user to
-> explicitly use it when they rely on the address dependency. I think
-> either would resolve your concern about the name of "relaxed".
-
-Yes, I suppose that would resolve my concern about the name.
-
-Well, I do have one partial concern there, which is that the wrong name
-will show up in stack traces as long as helpers are used.
-
-> > I suppose you can argue that the word "relaxed" means different things
-> > in LKMM than it does elsewhere, but I looked over the doc you mentioned,
-> > and there the LKMM calls said operation READ_ONCE(). The word "relaxed"
-> > does not appear even once. If we're going to change terminology / use
-> > new terminology, let's at least pick terminology that's not
-> > contradictory with the rest of the world.
-> > 
-> > > > 2) How do you intend to provide mutable access? By waiting a grace
-> > > >    period?
-> > > 
-> > > Please see the {read_}copy_update() in the RCU patches that I linked.
-> > > In short, you don't wait a grace for mutable access, since in RCU,
-> > > readers don't block updaters, but instead updater will copy the object,
-> > > atomically update the pointer and then get an `RcuOld`,
-> > > which you can either synchronize_rcu() or {call,kfree}_rcu().
-> > 
-> > Hm, ok. I don't really need that. What I want rcu for is the internal
-> > maple tree data structure, so mtree_load() doesn't need to block on the
-> > maple tree internal spinlock. The contents of the box would be protected
-> > by a separate lock (probably via LockedBy).
-> > 
+> On 2026/1/21 16:13, zenghongling wrote:
+>> The iterator variable 'folio' is swapped with 'prev' in the else
+>> branch. Using 'folio' after swap() checks the potentially NULL
+>> 'prev' value, not the original iterator value.
+>>
+>> Fix by moving folio_put() call before the swap operation in the
+>> path where swap() occurs.
+>>
+>> Found by:
+>> ./huge_memory.c:4225:6-11: ERROR: iterator variable bound on line 4178 cannot be NULL
 > 
-> You mean after `load_rcu()`, we could access mutably by a lock? You need
-> to hold that lock and the rcu_read_lock() while mutably accessing the
-> return of `load_rcu()`, right? That is basically using RCU as a proof
-> for existence.
 
-Yeah, that's right.
+Which tool did find that? A compiler?
 
-Alice
+> Good catch!
+> 
+> But which tree is your patch based on?
+> 
+> Seems like that was already fixed in commit 776bde7caf80[1]. The
+> whole thing deferred_split_scan() was refactored using folio_batch,
+> so the buggy code with swap(folio, prev) is gone ...
+> 
+> Ccing Muchun and Qi who fixed that.
+> 
+> [1]
+> https://lore.kernel.org/all/59cb6b6fb5ffcff9d23b81890b252960139ad8e7.1762762324.git.zhengqi.arch@bytedance.com/
+
+Right, in
+
+commit 776bde7caf80f6af72b087cafe7d9f607b14716d
+Author: Muchun Song <muchun.song@linux.dev>
+Date:   Mon Nov 10 16:17:57 2025 +0800
+
+     mm: thp: use folio_batch to handle THP splitting in deferred_split_scan()
+
+
+Which raises the question whether we would want to backport that patch to stable kernels
+if there was indeed a problem?
+
+
+But: I don't immediately see the problem.
+
+If pref is NULL (and folio obviously !+NULL), we'll end up with
+	* pref != NULL
+	* folio == NULL
+
+	The "if (folio)" check will do nothing, because we defer the freeing to the
+
+		if (prev)
+			folio_put(prev);
+
+	later
+
+If pref is != NULL (and folio obviously !+NULL), we'll end up with
+	* pref = NULL
+	* folio = NULL
+
+	The if (folio) and if (prev) handling will care of it all.
+
+
+So ... this pretty much looks like working as expected?
+
+-- 
+Cheers
+
+David
 
