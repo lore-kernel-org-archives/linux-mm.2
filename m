@@ -4,192 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6374C44503
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 10:34:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1595C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 10:38:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D478C6B0005; Wed, 21 Jan 2026 05:34:35 -0500 (EST)
+	id F1FEB6B0005; Wed, 21 Jan 2026 05:38:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF4D86B0088; Wed, 21 Jan 2026 05:34:35 -0500 (EST)
+	id EC5E16B0088; Wed, 21 Jan 2026 05:38:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B956C6B0089; Wed, 21 Jan 2026 05:34:35 -0500 (EST)
+	id DA7A76B0089; Wed, 21 Jan 2026 05:38:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A6FBF6B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 05:34:35 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 06A238CB03
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:34:35 +0000 (UTC)
-X-FDA: 84355612110.06.E8B3AE5
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DE4B5100004
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:34:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm2 header.b=kv5lmdgw;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="o 4LwLi0";
-	spf=pass (imf14.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CA2A26B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 05:38:20 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73E231A0AA7
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:38:20 +0000 (UTC)
+X-FDA: 84355621560.13.4C25F9B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 122F11C0004
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:38:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=01qCLiPV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0C60SNaU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=01qCLiPV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0C60SNaU;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768991673;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1768991898;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K9j3jhKpFIpiUQJzHWR2x3eEHOIQSB6ye1vrprKdmzg=;
-	b=zEOXLij2VimdrvRsKNintO0emwGc8+/TUozJUHIHMtM+YB8U5W2jeMvvZOHgydNnBpkhnb
-	DLcx3mwVrdVVoCyXFOckBv9o5lG+rXQRwWE1GieM1/b1JCEUSDABP/Uq32cRFsAvw7b5jx
-	sGpHIpxPo4qJbCGmbXL1U/D1JylEzKc=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ticWtdx2fEzPAZqNQf4bgVrxD5kj94KneesvApIQRus=;
+	b=wYCfhgvBm8n8Q+ojwKSMocpOS8n93Ke9Z6HFmd+zTN5F+PQNZRWgT8mBqN5r4t45OWRIrN
+	xfQvoSNe0n/3Od33sPtsqLUD/ti4FlaePFyy25AWPsqW0TgbdqzFPXGHxVUqbzvSQnD2TS
+	+b00vKvhtBvzRKpes+JlDMi1OOrKjsg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm2 header.b=kv5lmdgw;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="o 4LwLi0";
-	spf=pass (imf14.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768991673; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=01qCLiPV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0C60SNaU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=01qCLiPV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0C60SNaU;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768991898; a=rsa-sha256;
 	cv=none;
-	b=lDHq+NDCsRC5FTw6m0//0YImRE755RJ+ocdKu+PpiSptAaxjgxHFl+vH+O2nD9VD3mx3wx
-	Vfsvn5OX0IY4gyvPxe9vOzDAlYp19IrEZhX8b8VXDhcrV49OHowQL0bALd0az3NUv0Vpmo
-	yCRuelPSTP0z8djWTgg72cZKDqs8oS8=
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailflow.stl.internal (Postfix) with ESMTP id 14B671300419;
-	Wed, 21 Jan 2026 05:34:30 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Wed, 21 Jan 2026 05:34:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
-	1768991669; x=1768998869; bh=K9j3jhKpFIpiUQJzHWR2x3eEHOIQSB6ye1v
-	rprKdmzg=; b=kv5lmdgwptpNtolMex40wHyYDtu1zR3kROgUgHa9dV4DF424TII
-	xz8dxcyqZv5vn+C5E7je63p/kUX6FA6DJv49ZG4TEvmE9CmQROcNdltD80UCq70F
-	67OKAnNM8oyAk8/zKVARKWIUXc/0rwj0A3HsU66MhxNwBVK6BifqALpBS3KNgyjp
-	P0XbAYs6phH+mnFqRoXC1mh9pnuNQ+fFEwhXXc1sSnndee26t3rwwjTbJtTESJ9H
-	fxgBNTVTQMWx/Tnp/sidQDM5zxfwLw4V6i5O5idHrafun9SF76YRjqhEkQ+5kNcK
-	HcmbYYUHLFntzBcrv0lywLVtTimlIcl+nQw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768991669; x=
-	1768998869; bh=K9j3jhKpFIpiUQJzHWR2x3eEHOIQSB6ye1vrprKdmzg=; b=o
-	4LwLi0FQ1jEf8fskqm7+L10I5i+E4UcJvDl06S22E2N6MVzowyCMRqm/bH1M2J1a
-	JDwioi/R98Kd4aywyn9uZLSOM7z8MArbO4E7czObG95qdFlOtvQuQeCk3G1ZaKic
-	Tehtuqj1UGP3Eb7Ucl15f9362hASG+CEClGzitcQtKQLQ9R6sDLQi76cFZsvhiXR
-	ga+keMqdKP1sZXq4AW8N7RVWcf1Wq1jiHpO0YXPueFkCr92lRvi0sx0LsAgnwX8p
-	AKZCnY9vD6dcgSVBcblBk6RRY3JRRT1CNgtvJrCkNeFsfbLaIXO8m2mpKZ7xfZXV
-	VHjPUcyIoRUMrrAPKWG+w==
-X-ME-Sender: <xms:sqtwaejzMMYRFV89Y0xjhbUY2Ux7NPR7lm9XvAv8w1i7kASo3nK0Zw>
-    <xme:sqtwacbJbsKb0ZWVMi2Ld61rpE_gwOTUmZUOuIFkObP6qtSchisKdfJNZxw0XqFd2
-    dpJMMfqKKl9ncf8qF50uKZThAPLp5_pMzEv9z25paWGdt3g-rQ>
-X-ME-Received: <xmr:sqtwabSH-RRobwNx5gak-6jfqjdFsk_YBqmqf4AohoRb2sCX2uoyp4QOYu7NMlajZX_Q1etTmNQaSqmVM8w660ms4W7YiwL8iGuB03vkYszh>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeftdehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurheptgfgggfhvfevufgjfhffkfhrsehtjeertddttdejnecuhfhrohhmpefpvghilheu
-    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
-    epudetfefhudevhedvfeeufedvffekveekgfdtfefggfekheejgefhteeihffggfelnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
-    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepjedvpdhmohguvgepshhmthhp
-    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
-    hrtghpthhtohepghhuohgthhhunhhhrghisehvihhvohdrtghomhdprhgtphhtthhopehl
-    ihhnuhigqdigfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
-    hugidquhhnihhonhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
-    ihhnuhigqdhnihhlfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
-    hinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
-    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
-    hnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    lhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:sqtwaUqa76K57jmkll9tnYEPNFtkwAFRAIOxkmOCTcJg3wPstOKebw>
-    <xmx:sqtwafqX8Nkd7EHiHXFk0lbznDX828ETkTyNFowHaBS8I4Kgjb_iRQ>
-    <xmx:sqtwaRGfSRcbTn7ju_6NXus6mwh9CX54E07yQqtkZf6nvJqjRrtQ3A>
-    <xmx:sqtwaZtU8f1xqg3JxB6L05BW89l7H_7-dfzynjFDw6dcCKuLsBgwHQ>
-    <xmx:tatwaYpYIXr04Y4VvYfBrbHTBHEkDGuPdYscX8VKwQ1WEKpEcFWHhm0u>
-Feedback-ID: iab3e480c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 21 Jan 2026 05:34:08 -0500 (EST)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	b=t5ijboltgc2rCkxlEnRZj1nQRdSnWL8NCnkg2YsJuiKSP1JKXAf/fTnUmVDzHOPuPVhrHT
+	OycbTceUhNUtFrMlJd3M/zCRX26fZjTAgD6PuiKN7Le9YK4XBPXvGWKZPn3HcEJt/v1h+V
+	P7cXwBC+tAF9YS3J1bMbIciCxzow/qU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2D66533689;
+	Wed, 21 Jan 2026 10:38:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768991896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=ticWtdx2fEzPAZqNQf4bgVrxD5kj94KneesvApIQRus=;
+	b=01qCLiPVU5UKJ7agJWNIu3zAIS4Zsv2CqnAZZmJAxnGUP+TMfGnfrrMczZ+kckeV103KeN
+	tHXWNQj7+iR7ACXfhP+lIwTEBT7vEJjL8ZDQrE2tfbvWgoXDzugGuSTY12Je/rO+ZYx82p
+	5PTEHgxHj5qar2plF8I9VSLVNDj4wVs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768991896;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=ticWtdx2fEzPAZqNQf4bgVrxD5kj94KneesvApIQRus=;
+	b=0C60SNaUgX9nMqiyzIEvBsXCNaid2upMTG+TVHiMj/wh0yvz/VJ4TRSOpmcwruPiatTbxm
+	Yhho2wUkLKTDElBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768991896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=ticWtdx2fEzPAZqNQf4bgVrxD5kj94KneesvApIQRus=;
+	b=01qCLiPVU5UKJ7agJWNIu3zAIS4Zsv2CqnAZZmJAxnGUP+TMfGnfrrMczZ+kckeV103KeN
+	tHXWNQj7+iR7ACXfhP+lIwTEBT7vEJjL8ZDQrE2tfbvWgoXDzugGuSTY12Je/rO+ZYx82p
+	5PTEHgxHj5qar2plF8I9VSLVNDj4wVs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768991896;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=ticWtdx2fEzPAZqNQf4bgVrxD5kj94KneesvApIQRus=;
+	b=0C60SNaUgX9nMqiyzIEvBsXCNaid2upMTG+TVHiMj/wh0yvz/VJ4TRSOpmcwruPiatTbxm
+	Yhho2wUkLKTDElBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 971F43EA63;
+	Wed, 21 Jan 2026 10:38:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4GaJI5escGl8BAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 21 Jan 2026 10:38:15 +0000
+Message-ID: <76e95710-77b3-4095-b640-0a801dc055fd@suse.cz>
+Date: Wed, 21 Jan 2026 11:38:15 +0100
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Christoph Hellwig" <hch@infradead.org>
-Cc: "Christoph Hellwig" <hch@infradead.org>,
- "Christian Brauner" <brauner@kernel.org>,
- "Jeff Layton" <jlayton@kernel.org>,
- "Amir Goldstein" <amir73il@gmail.com>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Chuck Lever" <chuck.lever@oracle.com>,
- "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Hugh Dickins" <hughd@google.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Theodore Ts'o" <tytso@mit.edu>,
- "Andreas Dilger" <adilger.kernel@dilger.ca>, "Jan Kara" <jack@suse.com>,
- "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
- "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
- "Sandeep Dhavale" <dhavale@google.com>,
- "Hongbo Li" <lihongbo22@huawei.com>, "Chunhai Guo" <guochunhai@vivo.com>,
- "Carlos Maiolino" <cem@kernel.org>, "Ilya Dryomov" <idryomov@gmail.com>,
- "Alex Markuze" <amarkuze@redhat.com>,
- "Viacheslav Dubeyko" <slava@dubeyko.com>, "Chris Mason" <clm@fb.com>,
- "David Sterba" <dsterba@suse.com>,
- "Luis de Bethencourt" <luisbg@kernel.org>,
- "Salah Triki" <salah.triki@gmail.com>,
- "Phillip Lougher" <phillip@squashfs.org.uk>,
- "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
- "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
- "Shyam Prasad N" <sprasad@microsoft.com>,
- "Bharath SM" <bharathsm@microsoft.com>,
- "Miklos Szeredi" <miklos@szeredi.hu>,
- "Mike Marshall" <hubcap@omnibond.com>,
- "Martin Brandenburg" <martin@omnibond.com>,
- "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
- "Joseph Qi" <joseph.qi@linux.alibaba.com>,
- "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
- "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
- "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "Dave Kleikamp" <shaggy@kernel.org>,
- "David Woodhouse" <dwmw2@infradead.org>,
- "Richard Weinberger" <richard@nod.at>, "Jan Kara" <jack@suse.cz>,
- "Andreas Gruenbacher" <agruenba@redhat.com>,
- "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
- "Jaegeuk Kim" <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-ext4@vger.kernel.org,
- linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org,
- devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
- ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org,
- jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org,
- gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
- nfsd export support
-In-reply-to: <aXCg-MqXH0E6IuwS@infradead.org>
-References: <20260115-exportfs-nfsd-v1-0-8e80160e3c0c@kernel.org>,
- <CAOQ4uxjOJMwv_hRVTn3tJHDLMQHbeaCGsdLupiZYcwm7M2rm3g@mail.gmail.com>,
- <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>,
- <176877859306.16766.15009835437490907207@noble.neil.brown.name>,
- <aW3SAKIr_QsnEE5Q@infradead.org>,
- <176880736225.16766.4203157325432990313@noble.neil.brown.name>,
- <20260119-kanufahren-meerjungfrau-775048806544@brauner>,
- <176885553525.16766.291581709413217562@noble.neil.brown.name>,
- <aW8w2SRyFnmA2uqk@infradead.org>,
- <176890126683.16766.5241619788613840985@noble.neil.brown.name>,
- <aXCg-MqXH0E6IuwS@infradead.org>
-Date: Wed, 21 Jan 2026 21:34:04 +1100
-Message-id: <176899164457.16766.16099772451425825775@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+User-Agent: Mozilla Thunderbird
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [GIT PULL] slab fix for 6.19-rc7
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
+ Christoph Lameter <cl@gentwo.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 36tdjnhxhutd8xk7sz37qshyzpxye7aq
-X-Rspamd-Queue-Id: DE4B5100004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1768991672-411163
-X-HE-Meta: U2FsdGVkX1/dYwapJTg+MDfaITwpIoA/RynA+KvFYmLY+XMnqD8aZ6hZ2Waz4h67bvZ3guQckUBrDG3bJLTy/wRjBanQeAl0u/1d9a6PKB9YELr6Cw184qbafbztaa+4gz63AZ6hQMRmPjuHUYylpLheKbuG5FCcxPFolV/I2TjOHGM8WutLnUZ2YdxbdsawbEl4q8h09GUSZJNdcYviB+I5hq+ZneX+23trlw5kwkJnvrZSxRwBEyhVg7rDSeERLiMDD0MLyMk6VSgX4OTu0Bkh6SRErR0wrThsz6dMy3hHkFo2Ypf5gdDMznNzkbqsOI865jhDoqUif//qUI7DKS0REVarB+jMXWF1VhSD8LHADCtWVMepPHGuubz7JeGw4t8pxShHg/vQaU3j2HdMTAL+6LdGqyT0rXN73uIt5OEJJ6fsGtWzrzWNTT22OhuttjgkkdTRbgvuHnLnHkHzeZ+cNMPebPD3fFvxPgIEsFsgRhq2LDdVbt7FYGKCUq4sHeMN8V+LC2p3MSVnQsXcP0YNK7PvJrXiyBHGdOK20Ua+AfXwkSzJ9tuPghbKgFG7KDpw4aBtI+OrvFRV2r9meWDkps7iuR3rsPZBPCPyQxlzPfwuDMvoj1oQRtlssbOdzAXLlvPYLBwLsmWaf+k4JEeZ4p3v5ScrGR0L/isJHHsKNfd44LVfJprxipnQ1Cy3TrFvZ3n9I6H4mY3NeaSR7dr5CMMW8hCiMLmcBCgj0E1Akm3dorHW3t1DCjvm76fRaNRKaL8fSRYVFu3rOJsOYxw9ZPlzHPveH06X/J0bzFJTfaZlBvegqc3xqZtaZMnx0yCQvWOQvU0vXZW7doid7GTxMRdF3Ft0gY7X95wqDByT6YtOBgLizAAVg64iNLTx5mSo86pLSvZ8hbXF10l6pBpHy/EgGK6UpxvvyZHkt0PyXT1vqlJoZj1K6XRk6m3c60+XMYTGn8eO5j7nVSi
- nmEb1MQQ
- jE6Gy23y+myKPWJ5PjhQtOyf+TXpDV3fFdqDymGS1SMiZ1whtCTaEgB/V9M96SZ+WbBBo4qdJkBJkvTxAWFGVgF7QYU801rtM6UsOTNFGBRKQf1OthDJCHC5Ez+/qSb7WXevdLKlnE9cybfiEGlnu1KcolRkGmbBJDzUUmce6Z8bfYW9yVvWV+lxnEl35HYFp1OGOLFN8E+oZAwwd0N9mH7JqkcIszaa8Y86JediVzzutoh8HzrTthpuVGZ2ard1i20seMcnUn7zxr5Is0qK3GX/o7WmMwPxy/plKDqQUVKfVIvOy9apFu0pZd51iZiHMIp5ugIZWUhM6VoyAJcZQmNfHH3nFQYWgzJopNKstBPvzZrGpA77sT1jR0Q6cYi3IasVkoJWTSJJjBSKBCIYuZ3TlLuZ5S9od/4Eh2W5Mc0k78x39RGBDJw8ws3tUH7rlY526LignyO6cdbb/LnCQburiPNlFQ4pK4wrBmBk/4ivQLyfbLL+r/2yt63p7GKDvAfnjUVOuSRHaZG1pethtv8JPO4Fz5nfaKNguLGpIxuQ3rycCZOC2drTjfwBx4w17IzCnDazdoBFR2C7T6AKY5fxai8WJLBe/tRp0ZyNaDCloPXUcfKOdCzjIXnymrcYABhLEV8c9xKaR1N9TgpyVKJ8AIOjvFeLu2bhCfVBVX5ukIc5K4/Fv87D2Dw==
+X-Rspamd-Queue-Id: 122F11C0004
+X-Stat-Signature: ppz91rwqck7krbnnpz8owi4bpjs7pmj1
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768991897-795177
+X-HE-Meta: U2FsdGVkX1+tHjIF0FMzc5GXLOcywTi9X/hieyHn8LD/eBypHuoN+hLIhAEcZDJHrcCYF13Kf/P6SJrJMJPbc2liMBZ9U91w2OD2Mhdfi3wjvOHpxGZf9etwqoB3daYETuEc7tYYPS15MFHPzK4XUuUVuHWJn+4qmkjIVfFlxCUpV3oQftxLwKVvvK1xRJ9NGtffL/W8vQhJI6JIOeBKTSgtED07GUYG7W1F5UYvXpknaXgdzm+ITr3+zsLjnESDcIKW20JwneoQRc0nNttkRZlhe4uQehIf2meXgTPHq9jQqgqmdBtDXAKuyz3xrqMztq5j/8KleJ+i14lA2lDK0v1mCKP1Ihh2q/c++zGCwkOJL3euJt4UXgSCF5BTTdyDk7H/O4skmZq6OFvlmRAZZAviX7sYcnUNS9QxiyVwkXAIvHmUdVNOO7s5Wzd2JzdjXeANR9WJ3EBrP6leRfQhv2AIJsViNGJz6GVFY9aOMc/4UgJAY37MjZDoKdi6iezBOp2Zi+TNgCkEY+zwRGvAtD55fwUH0cP0pKeZmxJFJqUdK/tUObFCsCaJHfu/hFE5CvTihJnxgI4tzQi2Ahw2ggaN0hX4/mmawlLLl7iQWiD5D6iPHvO+P0/Q1iU8ycEZHvHGWc3ZDYCxBQM1iwAG1ad4euB147oQhg4gQBTKImBJEBc2d3wSpBzo4EOLM7KRB4egYi6opFW1MvnPe339ctyF8EXOayXfzkQavL28G3TCpPKve3i3JOoiNgtky8eyfDZNnbRtXUa0tTD4O+f5nm3qH7Ne0Qg8GIhcMx9AxLAvyGg5BMZ9M9GieVa/3/6Cz73Vo+LajHiWpH4HZIEr2zI6bCmElcGWJDI9GfjAufKXL1qrM8/02UQhHTud0cxDzAwNUl/zgp1Jw9feaC+VVn2fEHO7u/0G3zEbGb33fOMhWnpFjLSXu2fkHbdv0ACODFWL21FXhfIcmN+xxA8
+ NqQX/Zmi
+ y+IuXzKJX3uxhgZNWfpftTcU+6FY3iSZMH7tdjiez5XG402Vw38UnIqKC2OP2D8OpArlrf/50YbMYNAI3wgcf/QWllUWwdy6vtVs1HsduP6Hikz+CsM1s/FeMx+t+frHgutQcKuBdSWFY5UH0S3+RgMN7kfszbjsFl0xw4VGpmrstZI0PThdh622qlYeCxFPCnOf69/r783/4eiYmsnrhA3lnZxLJCS8doqT08t4zVrcdj+GKqmB9BgjvMsDPiSeScHILe9WEDriGb+BTJvVrvMLTbNDltUyWLLTMdQlIpY2wzX++xMZ7q4xBll7gcqJa8DikBACisE43bZHwcoUuFK1afJZaY0TNKm7/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -198,140 +172,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 21 Jan 2026, Christoph Hellwig wrote:
-> On Tue, Jan 20, 2026 at 08:27:46PM +1100, NeilBrown wrote:
-> > > If you think NFS actually explains the semantics pretty well, please
-> > > explain that too, especially in forms that can be put into
-> > > documentation, including for the user ABI.
-> > 
-> > There are multiple issues here:
-> > 
-> >  - filehandle stability.  As far as I know all filesystems provide
-> >    stable filehandles when the "subtree_check" export option is not used.
-> 
-> That is news to me, but certainly interesting.  Does this include not
-> reusing the file handle for a new incarnation of the same thing?
+Hi Linus,
 
-"stable" and "reuse" are quite distinct concepts in my mind.
-"a new incarnation of the same thing" is in my experience a new thing.
-  rmdir foo: mkdir foo
-on an empty directory will create a new incarnation of the same thing.
-But it will appear to be different in various ways.
+please pull the slab fix from:
 
-Names, not file handles, are generally used for new incarnations of the
-same thing (again - in my experience).
-
-I cannot 100% guarantee that all fs's provide filehandle stability, but
-I am not aware of any, and none have been presented in this discussion.
-
-It is true that the NFSv4 spec claims to allow them but I find the
-details provided insufficient.
-They might be able to work reliably if the server provided a delegation, but
-without it I don't think they can be used reliably.  I'm certainly not
-aware of any attempt to support them in Linux client or server.
-(I know Trond doesn't like "connectable" file handles).
-
-> 
-> >    Certainly cgroupfs does.  So having an EXPORT_OP_STABLE_HANDLES
-> >    flag would mean it was set for every filesystem - unless there is
-> >    something else I'm not aware of.  That is certainly possible and I
-> >    hope someone will let me know if I'm missing something.
-> 
-> Well, if does not provide stable file handles with the subtree_check
-> export option, or more importantly with the CONNECTABLE flag passed
-> to encode_fh, which is the level we're operating on, it can't set the
-> flag.
-> 
-
-Hmmm...  I didn't know that open_by_handle_at() supported CONNECTABLE
-requests. That seems relatively recent.
-
-If CONNECTABLE is requested, then only directories get stable
-filehandles.
-If CONNECTABLE is not requested, then all filehandles should be stable.
-
-
-
-> >  - filehandle uniqueness.  This is somewhat important and if a
-> >    filesystem doesn't provide it, that should be considered a bug.  In a
-> >    different thread Christian has observed that there would be benefit
-> >    if pidfs and nsfs provided uniqueness across reboots.  It is quite
-> >    easy for a virtual filesystem to generate a 64 bit random number when
-> >    the fs is initialised, and include that in file handles.  Having a
-> >    EXPORT_OP_REUSES_HANDLES flag could mark filesystems that are still
-> >    buggy if that is thought to be useful.
-> 
-> Yes.
-> 
-> >  - GETATTR always reporting file size of 0.  This is the only concrete
-> >    symptom that Jeff has reported (that I have seen).  This  makes it
-> >    impossible to read files over NFS even if they have content.
-> >    Would EXPORT_OP_INACCURATE_SIZE be useful?
-> 
-> i_size = 0 for a regular file sounds like a genuine bug to me.  I'm
-> actually surprised anything works with that.
-
-Files in /proc are all size zero.
-Files in /sys seem to be all 4096 (or maybe PAGE_SIZE).
-Files in /sys/kernel/security are all size zero
-Files in /sys/fs/cgroup are all zero
-
-I agree it is weird, but it seems to work ...  though I do have a vague
-memory of something not working because it used a library function to
-read a file, and it needed to be fixed.  No details come to mind except
-that it was probably md related.
-
-As some of these virtual files can be different every time they are
-read, there is TOCTOU issue with trying to make the i_size accurately
-reflect the result of a subsequent read.  I think the cost of setting an
-accurate i_size even when it is possible is not seen as worth while.
-
-> 
-> >  - maintainer feature choice.  A maintainer may choose not to support
-> >    export over NFS because they feel that there is no value and the
-> >    possible support burden would not be worth it.
-> 
-> The maintainer has no way to disallow exporting through nfs.  They can
-> at best disallow exporting using the kernel nfs daemon if we provide
-> that facility.  But as I've argued multiple times, making arbitrary,
-> selective and very narrow choices about use cases without technical
-> backing for them (which then would be expressable as a flag like those
-> listed by you above) is really bad software development practice, and
-> not something that we usually do in the Linux kernel.
-
-True: once you make files available to people you cannot control what
-people will do with them.
-So maybe you are saying "what is so special about knfsd that it gets
-information that no-one else can get".  I cannot argue against that.
-
-> 
-> >    There may be locking
-> >    / lease / etc issues that further complicate things.  So it might be
-> >    reasonable for a maintainer to choose to forbid NFS export while
-> >    allowing local fhandle access. EXPORT_OP_NO_NFS_EXPORT.
-> 
-> We already have a EXPORT_OP_NOLOCKS flag to deal with this.
-> 
-> > 
-> > It took me a while to sift through the code/patches/comments and come to
-> > this understanding and I apologise if I wasn't as clear earlier.  But
-> > my intuition was always that file handle stability was never the real
-> > issue, and maintainer choice was.  Hence my rejection of the
-> > "STABLE_HANDLES" name.
-> 
-> Why do you keep ignoring the fat that the stable handles are really
-> important for anyone wanting to actually use them for their original
-> storage purpose, be that for knfsd, a userland nfs damon, or other
-> storage applications in userspace despite explaining this countless
-> times?
-> 
-
-It isn't that I don't think they are important.  It is that I think they
-are universally provided (when not connectable).
-If we add an EXPORT_OP_STABLE_FILEHANDLES flag, I believe we would need to
-set it on every export_operations structure.  So what would be the
-point?
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.19-rc7
 
 Thanks,
-NeilBrown
+Vlastimil
+
+======================================
+
+- A stable fix for kmalloc_nolock() in non-preemptible contexts on
+  PREEMPT_RT (Swaraj Gaikwad)
+
+----------------------------------------------------------------
+The following changes since commit 0f61b1860cc3f52aef9036d7235ed1f017632193:
+
+  Linux 6.19-rc5 (2026-01-11 17:03:14 -1000)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.19-rc7
+
+for you to fetch changes up to 99a3e3a1cfc93b8fe318c0a3a5cfb01f1d4ad53c:
+
+  slab: fix kmalloc_nolock() context check for PREEMPT_RT (2026-01-21 11:34:18 +0100)
+
+----------------------------------------------------------------
+Swaraj Gaikwad (1):
+      slab: fix kmalloc_nolock() context check for PREEMPT_RT
+
+ mm/slub.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
