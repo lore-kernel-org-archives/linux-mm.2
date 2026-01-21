@@ -4,77 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D3DC4450D
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BCFBC4450D
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:08:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15B076B0089; Wed, 21 Jan 2026 07:05:45 -0500 (EST)
+	id 8EF366B0005; Wed, 21 Jan 2026 07:08:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11C266B008A; Wed, 21 Jan 2026 07:05:45 -0500 (EST)
+	id 8C6746B0088; Wed, 21 Jan 2026 07:08:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02BD66B008C; Wed, 21 Jan 2026 07:05:44 -0500 (EST)
+	id 7D29B6B008A; Wed, 21 Jan 2026 07:08:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E7E2C6B0089
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:05:44 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1EEE1B0286
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:05:44 +0000 (UTC)
-X-FDA: 84355841808.04.7D2FC64
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0A1561A0012
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:05:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UEBdEF8x;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A9AD6B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:08:09 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 14BB01A0D36
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:08:09 +0000 (UTC)
+X-FDA: 84355847898.01.34DCF3E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2B10340006
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:08:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dhakkB3L;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768997143;
+	s=arc-20220608; t=1768997287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wF2c4bbbn8KGgMSmxUlS5htoK6Nrgw4D+6fvQ26xhQI=;
-	b=Z8J8/JETViiYgo+14qXUa787tZri3dWOerRso6EKhg2Pyat9DzC2F/58xBGkj3mveVIzjw
-	3zQhbaXksHPIrn95MdOa8BPBK0g5hqGqNx25DFNJP4S3VhGj/AMdYYm+b9ZN2fU8WnV3Ow
-	ms75AQmZZUiS+hFZ6NC1dGe5eVxvVOg=
+	bh=dYQuoHxFtcE3s2fOb8hPMYy2cGQnR2DrgkUSJb6gtN8=;
+	b=qK2yCnxmo8fG9D8inRMnyJ74mgL5rAgKkD0FDoPUAfq1EOWgx+Er1vGCxM2KTFbdb0hGKo
+	v7VYbKPU/wbpl9R7XAbF9Yz/OAtwwBZC3S9RuUpu9D6Cv7l2r6IMBfDxfP5IdiIKS5zclK
+	/bzvAgiAnmZzruIlkEDehY/qYvLJsr8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UEBdEF8x;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dhakkB3L;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768997143; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768997287; a=rsa-sha256;
 	cv=none;
-	b=XdEu0kuXND4MleiF628Dj/Mw5ASg/HSDAUIkjDbObYTrW/K69V0D0+D5DDfBu8vpI3nJwv
-	J0N1/uXcxJ5XyLrDMuXTb5Ukdjya6/udl9L2UiLGnoiSUMZH4M0xa6T9OxQAjuRqgHZX9Q
-	hdC54rYlIB+XjrYzHaS4q+2YR98tADI=
+	b=q0XPUA32ycBv8IihjdaFZgaedz1sZNBznAhPwKWMfYKECZzjxopuV58pq0mLvWWEG06/KK
+	UnfAmMcl/G8wDLXIqOwWmCH0ZjeCd+mOSjcGnJhDOZYbF/4VMkwBpflpjs/f49mrAUGeIY
+	cwVJYKMuWrAmCeIrThxTFfV+anAwbAM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F6B5600AD;
-	Wed, 21 Jan 2026 12:05:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3CEC116D0;
-	Wed, 21 Jan 2026 12:05:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C9E7040542;
+	Wed, 21 Jan 2026 12:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0AD6C19425;
+	Wed, 21 Jan 2026 12:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768997142;
-	bh=YxxKP2xdVcpV/4c48pK90RgKaoPrMTMyK21rhMCrMyg=;
+	s=k20201202; t=1768997285;
+	bh=gk0BsMovNsGS2Kpyp/yON4csHC0IuD0vi07fmsUfXqo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UEBdEF8xOj6SZnXDosEKklPeckjiET3n9GqbmRelhrSWCfuGR/PNuIT8HclMeuDUY
-	 ScszL4n+Wm8xZhj0R9jhVoyuGMe9cuH7W+P5gRIepzSzPsXN07MzuZs8t/lcSIwzaS
-	 fJai5alJzpWbb9l6rvnjDPVxT3mtN2AlqPSp1raTQJwO8K5KSYO4jIHNVTkbEXaUSx
-	 SR/CiNMxp+ThAe6kGPMK1hhk1gTzfPgBO7v9NdSQBxZajMWQAH2Bp8a+g4Uhq2KH0W
-	 MZDLZ4RiQ9Ds/zsjHJe1BeYL5ne7IIRCYvtVrqu6drx+lWk3HdZ2uQe589mJOvRVJF
-	 A01mklmx1hfNA==
-Message-ID: <39f4490a-d713-44a8-a1d7-3568b01b3dc2@kernel.org>
-Date: Wed, 21 Jan 2026 13:05:36 +0100
+	b=dhakkB3LbtxvZcMkv4y89+GP5JGm3DMVD50uq8fotcFVaBNls6RmNTZpjyWqtYqk+
+	 D06JPppgYcJNrhvg58Yw5RKX7+3+Gh8aWBlQVzT7Y/DnghlU8UnQ08P+50KxhT3Sm9
+	 zDafBn7ITHI0M53wc6zW4yJz0VQ4H7FqKpg9sgJ35MnH0koUxmvCPBicxM0Vjkgo1c
+	 eqJNe1D5BxKkG72OEEarDLbz62Ce0vDize0fB4x5dxEMzRAeasfpIoCrkon1aXFjGw
+	 gJha7c9bPu2aTul021JRTe+0ZSeC38/aZ2qyO1+iV1YkyHe27tVv90JLFwQ9+vXumy
+	 cED+GniKYREYg==
+Message-ID: <fccb971f-3c7f-4bad-8c2d-6399985eefea@kernel.org>
+Date: Wed, 21 Jan 2026 13:08:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/pagewalk: use min() to simplify the code
-To: zenghongling <zenghongling@kylinos.cn>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, zhongling0719@126.com,
- Sahil Chandna <chandna.sahil@gmail.com>
-References: <20260120094932.183697-1-zenghongling@kylinos.cn>
+Subject: Re: [PATCH v1 1/2] mm: move pte table reclaim code to memory.c
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Qi Zheng <qi.zheng@linux.dev>
+References: <20260119220708.3438514-1-david@kernel.org>
+ <20260119220708.3438514-2-david@kernel.org> <aW9i3Er3HXzg9V7C@thinkstation>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260120094932.183697-1-zenghongling@kylinos.cn>
+In-Reply-To: <aW9i3Er3HXzg9V7C@thinkstation>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0A1561A0012
-X-Stat-Signature: rfj9y5thz3o7i43wiocq68iz8wimdski
 X-Rspam-User: 
-X-HE-Tag: 1768997142-317062
-X-HE-Meta: U2FsdGVkX1+0gnQS5gNZnapADWlqn/488donOd/hfPcHjVodj9WukAfmHmm/2j3YqbdTF5TdE5oSWHQWOkrbp/Dvu33VrNygZoesJhk81KMlxB7BD9pvOj/jeV0jN19z3ibEN6DUPSVwfW306qZpYgoz7jvLhyjSBMr9XkqyTQbm/AitP3DmsDhyLw+5KSZhoaoRbDAxEfLL1RZy6bCyM+WiV8nYrPSB3E42FL3s1Q68dwjucSE81Ck3baSr92oYLdz9XOcrRl0udl+qichqZmwa9822SY66s5lZC/omzHVhOaLN9/XX2kH6U4zvPLEKTjUeIGqPqwXK2yJoXtdN4UcbHt7bBuFUPQZC8iBWKkgtEHg0iAOIvn2G47KyqrZj1Wrd3FsTsnn1FyGR8jZ1jww7zo3EDFaknCSr+Nu5lYLOdH4qdZ6Gs372tKAZEf2QNcdTgDTqXig0kvkpo8NXdFPoy/EmOftJMC/q9QiyoqsoHPB3RcEWWtu74d+40K2Uk68GxC7hZEoGjW47YxhcXy8EvfHbs6YC2gifGkSeQtXy4mIY5z5BOhaCFbnPmZfZlTlZoOOpllrPsghMYVKdY8gRL35x7O3knvZExZDIUkJTAGWQMJlRfeUyN2wxTAq71BcRMilOh0JmEja4zZCz3007+aLa3LydVecdji1CQcYRIUO9p/UhsZURava5maU/C4IF6nsrfqM2r3sVk9/+DYQBXNf+9eDs+H7jwwFlTuQeuT5iYV4QicIFBpckXzhG6rrxDYlRN2CotIwfwDd+kXkFq7PLM+d8vOW4mwH0BZ1zhNheb/W5I5GartMuhEOFu/ZzHI+cEZumBqUYFhJT8AMMA4MvvS1jSfdpadrTiLntEGHfloLq3bggCOazlvQqoEnqduKhBZkn2OSvySbTU9hGPEysjS+3n7NjRK0kWZ9Slz7TN5dT+L9LCV9XnTdgRkukXN5HFGLrrcO5BJI
- iMj2yNN1
- 9e5B2OA/Zpcm709RoSiVOYfeXdLlgCY3/X807sZHWCIEWfPchl+/NBhH02gXhzIxMUqxEsXYB98gJUkaAy7m4YG0FnLUebjy+O1Ldl5qgf0+wSJOSvBf2nwZbivS5sDNdBfVm3VbFdACQbMXKT3iThGdRpMpZYAEXu2Dv+0A3dwbZ5VXEMTEHbSkrmSxV8rfcKAf60dgJkh3HqR4APv8ut8zchj+vaoES/kWxOJG9z8BdcMj0XxpiJsFz8pqBD+0AUbkhFJgiO7SKF/6FqY5aWPijQkwrLbBYjKL7hgtuawfuUqrtZhLfHEqWs9dzdfvPC8cNz6qWCZ4/9fAEH9uxMeZmMw==
+X-Stat-Signature: 44z95kejt9adegsno81zo7juqkss3rbz
+X-Rspamd-Queue-Id: 2B10340006
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1768997286-685041
+X-HE-Meta: U2FsdGVkX18Gu/xma9c2qPSmDcOiyEtRRxeRh1IQC99Y62BEViU9g/C4+B4LfI+k43CzMZz0OcoQrLH26BQGV2KiyCS7GgKv8eZKWj25ZqlvVeW3Oz+XvY8dST/AFEAw5fN4W0lZf+7LTES34wvJYWLkEHzmnF72Ol3BAQyi5EbKPNmUGVVm0oLrgKGw1AjcVsS9WlqJ2cfbr3HMzfS/H/G+q26ERp2IWYkg7sMuug3j8l3OrOcP8UTsRGdhlT18VqozKkmjJ8UIVUE7c2nvC8pnv0IZo9DT0x+MDFsVfJQy8oLjO5GQ9Xdxi52vSnpvsLHvqpDMxkRBDiygF+G7qSPm1SbTEDt3ijybn+zdRY55lGtGq4vmMSI8Im1fI6VcULEoDmH1wvVakjJWO3FNhwFqrui+0sO0f/vZyeRdCMMTvk3RqI6YaXlGKCRm+vKlxWcJ9XGLvdya32ZDZQ40KjTqxmB1UxLjqy1P6b4UyTwkOffl26x2x846BKWGPLKjzYdmsJ/Phs/bty2D/J53Pa5xtZj31/0sTOEXoayHLCz8JcyCoR/bejG2CXr4HgRrN4UsWyhs+78LCfFmO/yu4uqTdEThJx/YLLxNz7AZKAkjuODEam/4Njl8agxHDBb97yEUTjKxsILNqHqhZav2viVitVxI5dXLTtSekwTgqLtz3BQYaHOExwnDtetBBvXQX+lMFG0KBn/+/Pf0yn0Uh5xp8dd59jQUcNzVLJH+BlXry/DiEyqWAO8e9KB7oflBKV53WtEF2/H4+g+Gk8cZCm4buWV8MOO1Op24F7tGrcZGrHow4wUtBU1rIrWGKdTpkg6pvFdtBy2Z2hE+dhL29T0yWDrJPGQElo3JDnz7BiB/Lg+EMjE2x9DmIYE5O7udurWk53peA6uWzaJYivsW6rwx6atPG/WvAjJCnFK51iKpRaqxrpH+L7RADzxThStu7wmnGwHKlkis2SAculf
+ MH8IvNV7
+ g8bTNuWeJlD6k3CXUGLe6v1irotpITtHjk//VoXlXDFnlFd97Rh0h/BPRtLR1zPhMM8QFpYgU312LcjRoM+QVk3AuOc+Bpm26YXJN7llI3bz5v3Id5LgwioaSsTHZgSB3GFfkoIzaUdxb9k9uVpw8XkgBPlwnttSdKRcDl9SgbIjPqFI5duFBT4ZYEBig7+lewOxdQ6O3OGuXByIwXfZk3khe4qopluX4dr3cwBgn6vz48fUHU9+b3kn8QMK8FqA8efwv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,33 +143,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/20/26 10:49, zenghongling wrote:
-> Use the min() macro to simplify the function and improve
-> its readability.
+On 1/20/26 12:19, Kiryl Shutsemau wrote:
+> On Mon, Jan 19, 2026 at 11:07:07PM +0100, David Hildenbrand (Red Hat) wrote:
+>> The pte-table reclaim code is only called from memory.c, while zapping
+>> pages, and it better also stays that way in the long run. If we ever
+>> have to call it from other files, we should expose proper high-level
+>> helpers for zapping if the existing helpers are not good enough.
+>>
+>> So, let's move the code over (it's not a lot) and slightly clean it up a
+>> bit by:
+>> - Renaming the functions.
+>> - Dropping the "Check if it is empty PTE page" comment, which is now
+>>    self-explaining given the function name.
+>> - Making zap_pte_table_if_empty() return whether zapping worked so the
+>>    caller can free it.
+>> - Adding a comment in pte_table_reclaim_possible().
+>> - Inlining free_pte() in the last remaining user.
+>> - In zap_empty_pte_table(), switch from pmdp_get_lcokless() to
+>>    pmd_clear(), we are holding the PMD PT lock.
+>>
+>> By moving the code over, compilers can also easily figure out when
+>> zap_empty_pte_table() does not initialize the pmdval variable, avoiding
+>> false-positive warnings about the variable possibly not being
+>> initialized.
 > 
-> Signed-off-by: zenghongling <zenghongling@kylinos.cn>
-> ---
->   mm/pagewalk.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> mm/memory.c is a kitchen sink as it is.
 > 
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index 9f91cf85a5be..82db421b5b34 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -313,7 +313,7 @@ static unsigned long hugetlb_entry_end(struct hstate *h, unsigned long addr,
->   				       unsigned long end)
->   {
->   	unsigned long boundary = (addr & huge_page_mask(h)) + huge_page_size(h);
-> -	return boundary < end ? boundary : end;
-> +	return min(boundary, end);
+> I think you miss opportunity to introduce mm/zap.c and move all zap
+> code.
+> 
+> It can be done for code from both mm/memory.c and mm/huge_memory.c.
+> Line between THP and non-THP code gets more and more blurry over time.
+> 
+> The same can be done for copy and fault code. I think it is going to be
+> more maintainable this way.
 
-There was a length discussion recently about changing this code:
+While agree that memory.c contains too much stuff, I don't think zap.c 
+is the right abstraction either. And actually, I think basic page table 
+handling is well kept in memory.c, or moved along with other stuff 
+(fork()) handling somewhere else.
 
-https://lore.kernel.org/linux-mm/35ab82f052d248c0047c10bf01853e37e4f9b4e4.1764312627.git.chandna.sahil@gmail.com/
-
-Changing the min only LGTM.
-
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+So I won't do any of that as part of this patch.
 
 -- 
 Cheers
