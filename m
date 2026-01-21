@@ -4,87 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92AA3C44506
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 21:04:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C110C44506
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 21:27:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0F176B0095; Wed, 21 Jan 2026 16:04:38 -0500 (EST)
+	id D501F6B0098; Wed, 21 Jan 2026 16:27:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A926C6B0096; Wed, 21 Jan 2026 16:04:38 -0500 (EST)
+	id CFEAF6B0099; Wed, 21 Jan 2026 16:27:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C8AD6B0098; Wed, 21 Jan 2026 16:04:38 -0500 (EST)
+	id BD6176B009B; Wed, 21 Jan 2026 16:27:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A1396B0095
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:04:38 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38A6EC4362
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 21:04:38 +0000 (UTC)
-X-FDA: 84357199836.05.D57061C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 71BC320016
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 21:04:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I5bRxiWn;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ABB556B0098
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:27:35 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5477CD4374
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 21:27:35 +0000 (UTC)
+X-FDA: 84357257670.01.DE3C656
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9CB4D180004
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 21:27:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iR0WgM55;
+	spf=pass (imf24.hostedemail.com: domain of "SRS0=IiP5=72=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=IiP5=72=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769029476;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1769030853;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A1PRO3Boh8Hc4xavhVa5kA8UgGTSMaI6DS11l0HSnwY=;
-	b=UHj6RsiE6nNBCY1Tj5p32L718gha4wBud5Fdwnzow7uEmyUXrZIIzRnabb8q6wraBlRXjI
-	UpIOW9AwcPUNvQb8mxrCrMlal8Qw3I06ui1TcTUFPanlOR51gO8XBO6bAL8DyRsVfoNWo1
-	Ha9f/UtZ1zh4dfUNXwx5JnR9sXK6M0w=
+	bh=SvSqiXyu1StmFIXL1joabUBnfBjhJ+eTV30Qo2QOFsM=;
+	b=E2hCtuveyWxl6AQXnC1zIbj9q57fjctbMlaZled2cYl5eUP3pwNquCp0CmJ49iC9qnNZQr
+	p0VcEY2eTW5kgZbVKnqhVk3kykg13ChpEU+S0ozjm20xcXMIdhMPIICVB+8kL1CKguNvSx
+	eFDitwNTctdXPxpc6zUoPlB75q++dJE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I5bRxiWn;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769029476; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iR0WgM55;
+	spf=pass (imf24.hostedemail.com: domain of "SRS0=IiP5=72=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=IiP5=72=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769030853; a=rsa-sha256;
 	cv=none;
-	b=ltU61QM0RMC8iLjAdpDfLw5RFsVd1lBX2Wq+gzf1uTD1wbs7TCPhXksonaB4rkNV+v9Njw
-	A2pJMuG/LMP148CwaxSpKKJwg/iF4/Lghyx0QyfQoF6/rN93XPhDSU6kE7nCBLxeTL9Mos
-	PONport8632o7pYZe+eQgG69Ovgds5k=
+	b=Zdue1LUUIwdaGrf5cT0iG2NZvWsYmJ3dUh45wA/cn6Lqlyu3MDilDp8pds2oR6bF50rsxY
+	hZvaGdMbvoA68r/EAmQ726fYBZSw7sOHf7SCFWy86sOmfyI4+9BnDoyPHg09MQbM01TYJP
+	wXn4GWBA9zu42oXvUMgvHGMJtJdV2Hw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6272A43256;
-	Wed, 21 Jan 2026 21:04:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121E7C4CEF1;
-	Wed, 21 Jan 2026 21:04:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769029475;
-	bh=XqPSo2qYJf+IM8qIZYWHCUSgyZyv4XBXXJSAz69WzIY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I5bRxiWnPPbDS5UooeiebkHj2C9Wr0HfuLqxuj6LdfoYJvX+CylLeqozD04rrsY6X
-	 ypWlsq35EnQN0dBjTTnh7hdi7DNMfpTdVAeZbghrQG6fhjdgD0dWmji/XQJnH8qR4y
-	 Jtsuud/8lBn6YgFsccic5dGF6y09gN3NhWrjYXx8=
-Date: Wed, 21 Jan 2026 13:04:34 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
- oe-kbuild-all@lists.linux.dev, Linux Memory Management List
- <linux-mm@kvack.org>, Andrey Konovalov <andreyknvl@gmail.com>
-Subject: Re: [linux-next:master 7687/8302] ERROR: modpost:
- "vrealloc_node_align_noprof" [mm/kasan/kasan_test.ko] undefined!
-Message-Id: <20260121130434.1ab5355bb6ef31feabf4c4f3@linux-foundation.org>
-In-Reply-To: <8d5cea70-0e1d-4442-b761-e6589346d654@gmail.com>
-References: <202601211250.6uQzZrQp-lkp@intel.com>
-	<8d5cea70-0e1d-4442-b761-e6589346d654@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hjufpuk3hexippwne38tqzw4q9m5j3uy
-X-Rspamd-Queue-Id: 71BC320016
+	by tor.source.kernel.org (Postfix) with ESMTP id E93C1600C3;
+	Wed, 21 Jan 2026 21:27:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C295C4CEF1;
+	Wed, 21 Jan 2026 21:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769030852;
+	bh=wHIw5TPm4O6V3ga3pvGbmOKiv5XwGhHbujwaaUmkcig=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=iR0WgM55VOt/E2Nayn/DT1ITw6fKryAlV+r3QB7FriJX8eC1r8XR6i+ePxfBvtZzv
+	 KhzzNqPNcvu/Jxwm1WXV5AevamPSX1b4DYndcVNHs00yKVMmWQ7vl3AqshiGXllxdC
+	 eCjZXQm9pmlNwk2u84VUP45+LyNUbixckuFjxsJgl2TncSDguX1w3CtuZXa/ixY+uW
+	 Tf8nkLX4q9h985aIjHk18AKdsCW8yQDmrMYKNTQoDSSbsvFbCqQd/BaF+CYBGLO7Rv
+	 aM8THwkQXd7V0WKIzpxlfdiOjuFjPaArL341mvGsuIguuOi5s97WLJXAgE0wTrDPbq
+	 N1I/mKxP+noVg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 0B155CE0B2C; Wed, 21 Jan 2026 13:27:32 -0800 (PST)
+Date: Wed, 21 Jan 2026 13:27:32 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Waiman Long <llong@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH] mm/mm_init: Don't call cond_resched() in
+ deferred_init_memmap_chunk() if rcu_preempt_depth() set
+Message-ID: <13d0b8b5-1ba7-4a3e-a686-13a7b993d471@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260121191036.461389-1-longman@redhat.com>
+ <20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org>
+ <0e385146-67a3-4fdd-b119-059caba8c5f0@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0e385146-67a3-4fdd-b119-059caba8c5f0@redhat.com>
+X-Stat-Signature: u3whdon6hw15p81q5zd34shefcry5br4
+X-Rspamd-Queue-Id: 9CB4D180004
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1769029476-730324
-X-HE-Meta: U2FsdGVkX18hEpiTmY2VZ1kDPSot0sopEfmEyLvXdmlte20b+1/8hE8sDi+9LFnEWG9y4GMvOTQZXkudiPkdMx1GvgNe5TimW8CZvPeQ5EEeuTWnaSjIHZwx0LKIJNvQX8wte+QvJ6fl5bxhnW1rIlN0qhg0Cnq+yYCsM4JTjvPOUyWK1SdEyc4njrkfQFDBA431xgdXIAXyjtdw/6QGUpjJzr3+YZh3qgSPDB0yLAR0uvltjU83NZIFZNf+Nj17S62EukO7gf7iyudYBo1vSxPBREDJhBOMP6VOfOHlFYMsY6ZGT9qCEGFkqCMx+9IOXdScULj/Pdq1SRN1UAqM4Psdb1LVir5fKqLbcvS7svXSf0KsKeDcErrDQVMXs2rsAEPHOpXrt3K6UHjSMsygM1hw+72RnBaiwtxoo/KLW4J1sw40hVjYKlHagCkxfjle6Ci4WNg/GUF8ZH5Q3zEjx14+So7UWxiF1U3mcI7V/wf4k3C76ffg3i6XLbXIjtdzq56ccPZMcHlP1MT2iGFG0ot7HcZ1rlg40Mi47iCHj12+/GWX4XZSlokaMisKvKHpb2Pm2+X0EnPmAynfXd21lk+oAH1hErg2LE5Z+CkTn4nHXaCm61r13OJQTQ24Yy+zpYfp56931fZ4t1+Jtt4zrV0o52NQdvPj81CxD4Vn6WmS6jPB1ARNGj4dwtaZKWJGLLJlgWf0iLMzyuANvQcYyR/K5fkP9Lcs9b2Yzqy05I82fJ7b2R0H7BAr+JlXUKrTCCJy/BAxVaO8W/oujvqzFH15n+g7JBJjYaWIHtnZ3PCtVsSv4odQR2oCs7SrZUll1qWBbSki6hACwnKzZyDnrKhbS8WOdeJVTBQjZf34J2JeuLlDYLvPMr0LIfHGq9g34kKbKOOqFwOcJqrD83j0e2demveRqsxC5+1+LVmR6iFjeUVo14fJN6VXvzsRN+WYbunD5Fdtjlxq+yiwJtG
- xXAID/6T
- 9TPtTEUZe59X8G03KrfT9bwuOX4tSclReAtppvGfMRgDjUB0bB4fjeEiHR6vaO3a4l9kUMrx68lfr/4bWf6iO5AjaGTeatglPdlmXNf2DvEkMCPWfRTE7xJ/YsWZdbGhPtNpOm63NIzPJ/VTdqXE0PRKoqo6csUNvmC0EWkW/cxr155YZBlCWUppJJaLUV6UXUUG4lxjYZyHP2PNoqOFik+Alzwg97VFDunpvvDiKhCTwIYZ3bK721psj1grt9SDpH093py4ai/IWtOq9zqUEFwn7y/WiyjAYiZ2ZU4hH8oWCfxciCPXa4qPwVFuKmlkCbUj0o2UmPcWpt03+9r6sDStaO1TLzwFWZUqCm/r23r71OiiuhPbHquWkql6/+08QYNbpDg4EetZazfyhKLGMhZzTtqBggNM5GnAZdtN6KlvD8M3c537S9pXIEmWLDCYcRUe+nzkSnZqi4fmBhsDzKr1NY8VcBmByNGbMmuGnkvH/mTI28s/h4q15eIITyT92qNdSLYol+FDPlP5ZvvMf8rmOMADXG13/lLVIhIz/66nr4Wg=
+X-HE-Tag: 1769030853-460453
+X-HE-Meta: U2FsdGVkX18ucSiSmZUHqwL/5U2xQEH9BnBGNOAgKARGfyR0IDT+zz8Iq25DHhfQ+RTwg+hcnSEaEQii2hfFLlEUBxoWYKFVMghxWBbCnwgh8StI8F4UZKmgTy4NlQaokvDNKooK95x6+otvyKrsciAe8YOMO7oGYUs6VuX8mxKuUK/+/d8vy/cFsJLt4qk2HujGNq3eQ4t/ziFgLftOwWLoP/KtFRpIIOMVMQik2Io0fKg7wdgQmuTDF4FgP50K5cHCuAcV8GJK3KKBtMC22C57SB+i6bdkViWkxXcAjcsA+fwAcJZYqG4vzxJJrDNFlA3Wv3wu7pDS1M4/WxdhUaP6cziAFj1e2ROk327g+uQqY3f4dOckJ7HmzhtfYn+qZ2FFiRwb72e9KRarOoszJF5St31I1iWrp+5nIQs6hevoXR1TtP4fDjYFNuSKMSiCfpauGeK5nI0cCqxUEUT5l6l1oU6yxU8XlpnGOeLf+EnLhsALP9zuyi1AyVkjrIhwA374fWAIjJ04if1eWibo1NI8rpJYZfjCD9ORVlXEgzYLOj2NuloY521Iacw4ISSlgICmiUK361lTfjUPZdcnn+v7hXD6HC+zdeTSnZvYinfxQ/QbBB8ldzbawEF74WoYFpMg31pDk7IrxEhb9JGG9SNRedtI1w+1Am4iWozd8Ctb5vCNidyfgb9FeETy5KP98gtQF+n9wxhpVsrQ0Nch5wzD7GCTh8/QHjp3lrZmkueRn0wWhLA/Qmo9cI/e3ffAWQW9NJGh+DM+wAIGKNW5VBIUF9vuHodOJyoPFGoA88rct7xnU89Rf+BcWuYiyI0O0rkuHKI2AKq1imjzpBJtcY1nAlFJQkK9bveouuEH/chXztF8pTGioCrBmfSHKrTm9RM1XNu9pAbbcTg9Z1tuCfOdZbRpI2EUVudfY0X5pu+uD43iPYxtX1Y1PjBaxF0ezqtSSBim+mjPsiyYsGN
+ 0s0z22ZF
+ OjmNAWUJKdoc/+lmz9rEA2cNpWgX603yFKuOgQ9XsYJxDv3jzNBoF6l8HEIXuG13ksLquXjYd3gveKTTvus0jfhy92paoDfSncTcWBd7mR/pKRhY2oIULOpPp5nLbSmyibnJ1kJ8ijGFE2aBKksIrnFOD7RHUXw81RZmWBeX/5j1cjk/7zIfciEWoXYzX6FswE9DKbE/kC9/A/AgYm7U9TtFoFqrCyoTfj1JzQaJPYTSCIkbUwVjl84Awjb6Ya9SsYU9Uli0FUeSzdkplU3x82UJOHJLbztuIFCSLepPFcn70XhDtDajwbYQCzirqGtcJf0ENwNoHpO6tBCkJQIBlNFVk6fZGXAz+c+3rTSYFBmED3Q0WkQ/6F72/cGFXXUNp6RTC4yqaYUNqnWSfeU/hbFSjqecoXPYfsUx+DIxOtoJdg1nvaDZpJpNieiE6kI9xHtQezKuMbV+f5uUKIrkMCfST4iWlX2z8Rv1qLFx/+HE9AaNniA8MOvbbwbNdAmwsBxOYiDmmGuxwXD5mJuI7yZklWNpF+MXPlM0+so+hUqICOwU3YBOMvhiM+L1OwMWfHl/3xC0UAqTzzP9yfHPEoFsj4E247QasJmrlnVjLvPUpTAcdvi0ojCyK6m5t01IZzxeVUoaz91IPuAx8tS2sP+Q0qqgWzd1S+d9ImB5HXTwsAfsTD4qRSrDbuKnYZkPLYkk96FxNSpPhG/NHKbxderIZSctaP2o4CemWX4dASh5WklAtWIK2RnRN8pXCQVYxWyfIpXzisCwThn6riqmD/dumoirZSpW8KHylLd8WaapBLbGAPPZ9z1yIDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,37 +105,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 21 Jan 2026 18:04:36 +0100 Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
+On Wed, Jan 21, 2026 at 03:07:46PM -0500, Waiman Long wrote:
+> On 1/21/26 2:43 PM, Andrew Morton wrote:
+> > On Wed, 21 Jan 2026 14:10:36 -0500 Waiman Long<longman@redhat.com> wrote:
+> > 
+> > > Commit 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk()
+> > > in deferred_grow_zone()") made deferred_grow_zone() call
+> > > deferred_init_memmap_chunk() within a pgdat_resize_lock() critical
+> > > section with irqs disabled. It did check for irqs_disabled() in
+> > > deferred_init_memmap_chunk() to avoid calling cond_resched(). For a
+> > > PREEMPT_RT kernel build, however, spin_lock_irqsave() does not disable
+> > > interrupt but rcu_read_lock() is called. This leads to the following
+> > > bug report.
+> > > 
+> > >    BUG: sleeping function called from invalid context at mm/mm_init.c:2091
+> > >    in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
+> > >    preempt_count: 0, expected: 0
+> > >    RCU nest depth: 1, expected: 0
+> > >    3 locks held by swapper/0/1:
+> > >     #0: ffff80008471b7a0 (sched_domains_mutex){+.+.}-{4:4}, at: sched_domains_mutex_lock+0x28/0x40
+> > >     #1: ffff003bdfffef48 (&pgdat->node_size_lock){+.+.}-{3:3}, at: deferred_grow_zone+0x140/0x278
+> > >     #2: ffff800084acf600 (rcu_read_lock){....}-{1:3}, at: rt_spin_lock+0x1b4/0x408
+> > >    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.19.0-rc6-test #1 PREEMPT_{RT,(full)
+> > > }
+> > >    Tainted: [W]=WARN
+> > >    Call trace:
+> > >     show_stack+0x20/0x38 (C)
+> > >     dump_stack_lvl+0xdc/0xf8
+> > >     dump_stack+0x1c/0x28
+> > >     __might_resched+0x384/0x530
+> > >     deferred_init_memmap_chunk+0x560/0x688
+> > >     deferred_grow_zone+0x190/0x278
+> > >     _deferred_grow_zone+0x18/0x30
+> > >     get_page_from_freelist+0x780/0xf78
+> > >     __alloc_frozen_pages_noprof+0x1dc/0x348
+> > >     alloc_slab_page+0x30/0x110
+> > >     allocate_slab+0x98/0x2a0
+> > >     new_slab+0x4c/0x80
+> > >     ___slab_alloc+0x5a4/0x770
+> > >     __slab_alloc.constprop.0+0x88/0x1e0
+> > >     __kmalloc_node_noprof+0x2c0/0x598
+> > >     __sdt_alloc+0x3b8/0x728
+> > >     build_sched_domains+0xe0/0x1260
+> > >     sched_init_domains+0x14c/0x1c8
+> > >     sched_init_smp+0x9c/0x1d0
+> > >     kernel_init_freeable+0x218/0x358
+> > >     kernel_init+0x28/0x208
+> > >     ret_from_fork+0x10/0x20
+> > > 
+> > > Fix it by checking rcu_preempt_depth() as well to prevent calling
+> > > cond_resched(). Note that CONFIG_PREEMPT_RCU should always be enabled
+> > > in a PREEMPT_RT kernel.
+> > > 
+> > > ...
+> > > 
+> > > --- a/mm/mm_init.c
+> > > +++ b/mm/mm_init.c
+> > > @@ -2085,7 +2085,12 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+> > >   			spfn = chunk_end;
+> > > -			if (irqs_disabled())
+> > > +			/*
+> > > +			 * pgdat_resize_lock() only disables irqs in non-RT
+> > > +			 * kernels but calls rcu_read_lock() in a PREEMPT_RT
+> > > +			 * kernel.
+> > > +			 */
+> > > +			if (irqs_disabled() || rcu_preempt_depth())
+> > >   				touch_nmi_watchdog();
+> > rcu_preempt_depth() seems a fairly internal low-level thing - it's
+> > rarely used.
+> That is true. Beside the scheduler, workqueue also use rcu_preempt_depth().
+> This API is included in "include/linux/rcupdate.h" which is included
+> directly or indirectly by many kernel files. So even though it is rarely
+> used, but it is still a public API.
 
+It is a bit tricky, for example, given a kernel built with both
+CONFIG_PREEMPT_NONE=y and CONFIG_PREEMPT_DYNAMIC=y, it will never
+invoke touch_nmi_watchdog(), even if it really is in an RCU read-side
+critical section.  This is because it was intended for lockdep-like use,
+where (for example) you don't want to complain about sleeping in an RCU
+read-side critical section unless you are 100% sure that you are in fact
+in an RCU read-side critical section.
+
+Maybe something like this?
+
+	if (irqs_disabled() || !IS_ENABLED(CONFIG_PREEMPT_RCU) || rcu_preempt_depth())
+		touch_nmi_watchdog();
+
+This would *always* invoke touch_nmi_watchdog() for such kernels, which
+might or might not be OK.
+
+I freely confesss that I am not sure which of these is appropriate in
+this setting.
+
+							Thanx, Paul
+
+> > Is there a more official way of detecting this condition?  Maybe even
+> > #ifdef CONFIG_PREEMPT_RCU?
+> > 
+> I am not aware of a more official way of detecting this. Maybe Sebastian has
+> some ideas. rcu_preempt_count() is defined whether CONFIG_PREEMPT_RCU is
+> defined or not. So we don't need a "#ifdef CONFIG_PREEMPT_RCU". Maybe I
+> should explicitly include "include/linux/rcupdate.h" in mm/mm_init.c just to
+> be sure.
 > 
-> On 1/21/26 5:57 AM, kernel test robot wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> > head:   053966c344dbd346e71305f530e91ea77916189f
-> > commit: 22228c860d2633a22656cc506022c657fec15194 [7687/8302] mm/kasan/kunit: extend vmalloc OOB tests to cover vrealloc()
-> > config: x86_64-randconfig-121-20260120 (https://download.01.org/0day-ci/archive/20260121/202601211250.6uQzZrQp-lkp@intel.com/config)
-> > compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> > rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260121/202601211250.6uQzZrQp-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202601211250.6uQzZrQp-lkp@intel.com/
-> > 
-> > Note: the linux-next/master HEAD 053966c344dbd346e71305f530e91ea77916189f builds fine.
-> >       It may have been fixed somewhere.
-> > 
+> CONFIG_PREEMPT_RCU defaults to on if PREMPT_RT is set. With
+> !CONFIG_PREEMPT_RCU, rcu_preempt_depth() is hard-coded to 0 and will be
+> optimized out.
 > 
-> Yep, this has been fixed independently by https://lkml.kernel.org/r/20260107-export-vrealloc_node_align_noprof-v1-1-a581bec13054@google.com
-> It would be nice to reorder the patches so that the fix is applied before the kunit patch.
-
-No probs, I reordered the application order:
-
-: vmalloc-export-vrealloc_node_align_noprof.patch
-: #
-: mm-kasan-kunit-extend-vmalloc-oob-tests-to-cover-vrealloc.patch
-: mm-kasan-kunit-extend-vmalloc-oob-tests-to-cover-vrealloc-fix.patch
-
-(from https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/pc/devel-series)
-(not pushed out yet)
+> Cheers,
+> Longman
 
