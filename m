@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC37C44503
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 10:00:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C696C44502
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 10:01:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E38D46B0089; Wed, 21 Jan 2026 05:00:36 -0500 (EST)
+	id E82536B0005; Wed, 21 Jan 2026 05:01:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFF976B008A; Wed, 21 Jan 2026 05:00:36 -0500 (EST)
+	id E49846B0088; Wed, 21 Jan 2026 05:01:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0F1A6B008C; Wed, 21 Jan 2026 05:00:36 -0500 (EST)
+	id D4C2D6B0089; Wed, 21 Jan 2026 05:01:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C29C66B0089
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 05:00:36 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7527A13BF1D
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:00:36 +0000 (UTC)
-X-FDA: 84355526472.03.19DCF0D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BEF076B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 05:01:42 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C004BBEC1
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:01:42 +0000 (UTC)
+X-FDA: 84355529244.09.C77AA8F
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CB7F04000D
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:00:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pQX0zA99;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf12.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768989634; a=rsa-sha256;
-	cv=none;
-	b=LuvVYDxpsRqyKNXIazgI+ezNu5/dIxmGJUlSZYIGVPOY9S9eTbSZfELPGJfr3iD3CrS50W
-	rrXMBCMWslcAIUfF8rNnaH/S71rqQYLxDyKDfIc2YaGT99JMs2dW0Du714nRT3s677wKZ4
-	ZzBWKCi4GxT76Tz4heWziHiDhoxEDqM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pQX0zA99;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf12.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id E1F5A4000F
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:01:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=EaSvsuv1;
+	spf=none (imf17.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768989634;
+	s=arc-20220608; t=1768989700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMbWURXBKlERnmrf5QHs0kPUbIXlx/juA5w6FY/x4Mo=;
-	b=hOQb+3A/LfJuSsPU2hANxyaID00twwMj3C1/7lNQDi5XyP+lo+bDq4z2c4S6k9+eme1cQr
-	0b395z30641VZmezU3o4kdOFWyvZdiFxwPDyrv/CsUVzKhbSXemEPJyFVSugtxaWTShWfr
-	kQiHIsWK7bD4edbrSIuBb8tPsYFe8VE=
+	bh=GioNW15OomQxHDkrEn0KiwooaQGMLNQRkXTreUFMIec=;
+	b=M53o0TiJWKwKwL9coc4wnSj74a3qbUYcZPrGc+y66iJodXuZGMoi0lFtm/LOHNIdktqdfk
+	3QPS2aeQxi3NfbhHFwiNQBnVs5KmeyPdAaweMExSPAHVyR0i3VHVbEbDp/tx/wPBzF/SGN
+	Wr55vRDbAJoGAvIKvpAKQSYNnvnFKuk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=EaSvsuv1;
+	spf=none (imf17.hostedemail.com: domain of BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bcc91a9d4ebb8e7eb2a7+8186+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768989700; a=rsa-sha256;
+	cv=none;
+	b=pnarYkWoO8YCbKygpAQC4mQ+GkaOlFCEgv3GiiG9cyNTPmS1HGXCGff+C5ZoYFujlhyApk
+	s8P2LSsrjyhdtTeYt9eiQov5xKX71hF8rLXBNzXgdA4BPiwp+Qc6fO8sSxPfHmDt7Im6c8
+	O4AkKLnp6OE4bHtHIMS39Ls01P7c3Ps=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wMbWURXBKlERnmrf5QHs0kPUbIXlx/juA5w6FY/x4Mo=; b=pQX0zA99VzZEIlAcpAlPuQefUS
-	jy9CjjLBfeNNN1FNJitVD8JqerILO8jjC2fZiCCKiOnZ+AFbjn1TYpqjbQaKf+C8/KRnnpzD3SGrm
-	1PWJ9D0VnaLF05hqis2S5I41XDL1jyEKDnD+EFR38vRrwM8QPEg3EqDl695fgD/6Ar8xKBHcmKyax
-	7put0Wn3gyLR7YcoxmrK+vm9eU0JdOvfRB2prGJ/Am84hKoGOlEzX9X79ne8Tfk9prDNrEldtzRiA
-	ijbo3W0+o5oEyQQ0Ds62PvFNcq+zxEq6evP7CKwgfSi+8rKZW1NE7FntT3VSj7fEic6gmCvCHtw/f
-	BXWot+KA==;
+	bh=GioNW15OomQxHDkrEn0KiwooaQGMLNQRkXTreUFMIec=; b=EaSvsuv1TZU2mN64SuI/yRVvS1
+	3Rh/o5w7ffYW9KHMX3qJFZZJY4Zzl1PqNJPpWxGM180BKBkt1SVZFGf8QKJcPb0NWjtvv122nEg1H
+	OzFKwZ0gcBbQvObpgoOE/2S+Akn4EjCCUUrNtIIKyHvXpH4dzmYWnUtYA/DxyVwWVYhx9ZlF2yvok
+	Jrg9DRyKF5qf1NZ8Tm6yVvdUHQyxI2EoJTmHc6/BHt1VYfHI5t8QgU5fVVRxuVw0cApsiz1v6k8h0
+	KfPlNLRNbSqHEjiliAGF0iIZ/4UIT4AbAx2DF6R6e2q5SykjxB6n79Ri9aRji9M3oB2bi2qkRcfmf
+	m1yhErTQ==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viV0b-00000005EMZ-1e4Z;
-	Wed, 21 Jan 2026 10:00:17 +0000
-Date: Wed, 21 Jan 2026 02:00:17 -0800
+	id 1viV1i-00000005ETt-0UQN;
+	Wed, 21 Jan 2026 10:01:26 +0000
+Date: Wed, 21 Jan 2026 02:01:26 -0800
 From: Christoph Hellwig <hch@infradead.org>
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Christian Brauner <brauner@kernel.org>, NeilBrown <neil@brown.name>,
@@ -118,7 +118,7 @@ Cc: Christian Brauner <brauner@kernel.org>, NeilBrown <neil@brown.name>,
 	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
 Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
  nfsd export support
-Message-ID: <aXCjsTBnHGuqTJdb@infradead.org>
+Message-ID: <aXCj9ooYaqsL9oyP@infradead.org>
 References: <9c99197dde2eafa55a1b55dce2f0d4d02c77340a.camel@kernel.org>
  <176877859306.16766.15009835437490907207@noble.neil.brown.name>
  <aW3SAKIr_QsnEE5Q@infradead.org>
@@ -134,14 +134,14 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <a35ac736d9ebc6c92a6e7d61aeb5198234102442.camel@kernel.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CB7F04000D
-X-Stat-Signature: yin6t17qoohktounm7ktmm5hcugtozuy
 X-Rspam-User: 
-X-HE-Tag: 1768989634-451107
-X-HE-Meta: U2FsdGVkX1+sgAFYBTfZVPUznPghyYTe2F5l47Rvmj8KW/q4RD36hibf4GHj4txhgz5uyFC1+ov5cR0HP2DO9EMyQm1lAuGaaFYqnVnCpgLry87Br6xS3ixcg4VQVwc9WvpXMkzVzeIeTTS7FOckYNJ0XljpqwiHyl1Oq75mnGiL0+4NHnpNfy9mfofr/d12ajbMANTULnGDLq6gl8wj5TXRYHxkE7JxZHPujwwelF9BXtt7HcI7g0YaGRLf7tmFpNkmSQ4MlSZEF9DtQzQBViXGrQaeszIkBl8prrBvoqmkNzhMnKZ0FVOqh0MfGgGcqd8R9seXwy3l0rXYjhMU8KVOvnz6dTXTYhCc/7pcnBqv+tsEAEKH11pJxgPeL2GgZpRUVMGXBkV2yPf//SdA8gV2bttUiermUFrkTLHYu+Aj8lP/OcYMI5ewdYLYmB9ZCJz1/JMzsHAO04TjCmSWZfPaCfCWs9drhQXWLB9tPG79gm4Z+7yu20/kE97Rhr8OkBkoTdTJdRm/io7K4L3711ONJMhWJ4MIPaHc7K6V9D7oJtzhjHKpp4LxDADW+kkg3VXnMlyLyb4QCLUngoTBnNOm5M9aiTgvOumJeDLTK7d/zOxPt6wa+vME02LBLTbYdZfaf7kiodC761Aiu8lkVnJGrMZKj7FCLc3I5ROFQAiSveaG6Y4wPDJVxMgdIRDI9YQvQzLucrc2IaG3MmpF2X4TCQNndq9Zib/9TjcLdCf+gzdmgPa5OMgc5utwmhacghCRosDq36RyrGHVf0UAtMOoNt3/em/qt/1H18RzqeGcIxzdVQuB1Thm7NL+PkyaITKiB5mkt6k9+zACrQu6zTurBv8AmmyXesyNx4Dv/F/HhqGADAyU4qfgoNAoUIxsyQxAvs7xHVOj0ewhHm3NYDNzx3DJnDANBWchLIMoKEn7+sAsLo7IwTBWamVzNiTFh9GsW1449NaDTOWJVvM
- Y6bUv9u0
- uLHnCU9dnvqB2XA+QtRyJhvpNY5pkhrf8Bp6tbe80DPS/O/nJ5nKJj4hja/JBMewzF5KLJ9dcVAkqQRSNGP9UPhK9rJTsyeK2D/8huvXCLW66FFP5OqaFeTXMCyicqHs6D9sE6CAgVb2mHddodJjs/4OWANN8ldQWNW4yt1+tgO2DN1RdlktHRZzV5ba5az+LG+C/6T6bLYP3ugNGJcnOuZYCxQLeEStgktu7XmoR/npkfLA1IkSy0Dg5q9fUn0e+fJyk+dxZ9xg6wbeaby+87rsONSW5oS3pSKbWCObO28MWxCBwlqFQzHIXBeWBp6Mxcbvi3XlWoupLIiAtHZop/KsgYH0ZbVIj1AvndAn1aUX0He+H6PIHpQMGW15W8nWRjTU60ccJyZ4fk0z8Bmgw3ATkvd8aKG5iQBn+AGkjWCQYq55rzwCDgzvh4tdi0zPvQekypMZthO7a1blGclBwyfmg9z8c0qmljkzbms9BGVuwFLPmfKGaXh72UsADTJRd0Ai3wJLCS6bpX0S5+0x84YZB7D6vgngqf+T65WD4L+duFnnlZDN2+xEM+32ulEJt4aKJ
+X-Rspamd-Queue-Id: E1F5A4000F
+X-Stat-Signature: tqkxoe8graats5puc4kgcdpxt79spgjm
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1768989700-745924
+X-HE-Meta: U2FsdGVkX18GyWh/qcALd3+8rzC/WRsoHIda6sqErFejX3y2AwlJZ2zSDqUtmg/vK3AVRmAL4rO/bRaTk4lROmzURwAOjAPeIPcBP1WwHckP7HWdb44CRYh9uBRgvr4PX2Spuc7XrsDT2WCRlyBS1UM7+jSmRqoSAeXWBFqZyB4kXyezz6owxNkL0apPDVyapw8PJXeNJoyx4hSA8Hps38V+rX+wMe/1wsPQxZBGfuEk3u+piIErkaui15MTVkTwYJEOiRZfxhVp4c6EzlucFtsT7OyKXro3+wnaK1d8jjXCjm737iukyZbpU3AXOkpe0Y/CEJgLKRryiPdyHaY2OjioZXr6Nbx1TgOicv5M4JUNLokwCuj6EfSEkFtsBe//nRZsKbtyY2H0LrdbxiUzRlONwFVW7Ucj5Vc6HJv5VpZ4bwxq7Q7Jz6yVEHs8alYofjkf0B1PbabhOYiCPdH6/TPncowNKnLJYzJvfSa44tpQ1W4x0VNecDRGvmnc51ltQLC9I7XTpKYadEQlnSvJh/Yf8owWjBsGtvGr5QisNKEOlhqktQXgiiZ6LbnxoKBag5hPXJKvB1QEdafCGFtF6R/OD0cRUt6dP71tEMxFfJfomRNFieG/DfQMnGBuBPF/+NZnfh/0E3MplDT8sCTDOqm4mxu4WlTXYvkThgf8PS1leEO29udL9r62DTO8Ok6F374Cv4PZ9wQWtElCN4OjHW2gfT32iqD39nIfsV6FYoxavfZR42HOt6qw4puNwTUHRWCNWVMBdtKMgjdbxv10YQn5jXU1h3o/J+vJUxYsrCSBBZZptnjSG0jnSmohO+nwb6uxZw/GWuiBgCNLuHbOk/XhsTvXOBOrrbe52kVveUnNigL85HdR4xCRzUmeXPB1V2XiIeDoL0Xkx/OaSWweSQaeEeTq1M9u5NlpSHNwAqQI6wpDL8BEVuEObDXRqWi4zKRBmH982pnS/QxeAxe
+ kTA3EWA/
+ lxeQx9cTtDnqpLDnwbxP8NCW1OTj7NxA9jkTGgbM8LCT0x1CU88LnNbI37XKnUgDp5sHFNdSEsouNsXTnxTAFmVctYbdSRQHMM0B72rjRw9usm/TOTNhJSpZl82IsY/+NDFTOQh81rQQfcmrgAivy9h8pUji6ySOG78+cPV7JcgGRMdFal08AV/vHSaD0mliXYx/UoormPeJHW+Z2w2UwSZZWy1XapCmsEsqfIgSUO7qejnkWbSK6umMH/elCQZDLjxF1SY4Z8/xSf0S0yiovkcqzPEk/dBmX7rejWnXtuyn1LfzSSaTwt4LgpuYcDEthaubZfEtGoFo8PrJ+tuecij+XU82EqV/i2qL4gArEhGbPIV18CZVZ2uLAGhDZnHlWOkL7JgoSqISE6AycZIs8fKYq/uD074zaf0wX3NF86s2LOwqgDS0pRfYaz7BAPCr5I3INgsrsO5QAERJ2dFj6KYt+mKK4EKrtcDqICgGWadzInnHXZUaz3UeppMXqvmuQAP6etSypF5lxmSx1R2XETKYscLynQL/ILU/YVv+kR/zCiKb5AAo1qPKPvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,23 +151,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Tue, Jan 20, 2026 at 07:50:32AM -0500, Jeff Layton wrote:
-> > > and it DOES provide stable filehandles.
-> > 
-> 
-> Across reboot? Not really.
-> 
-> It's quite possible that we may end up with the same "id" numbers in
-> cgroupfs on a new incarnation of the filesystem after a reboot. The
-> files in there are not the same ones as the ones before, but their
-> filehandles may match because kernfs doesn't factor in an i_generation
-> number.
-> 
-> Could we fix it by adding a random i_generation value or something?
-> Possibly, but there really isn't a good use-case that I can see for
-> allowing cgroupfs to be exported via nfsd. Best to disallow it until
-> someone comes up with one.
+> At this point, maybe we should just go with Neil's 
+> EXPORT_OP_SUPPORTS_NFS_EXPORT or something. It's much more arbitrary,
+> than trying to base this on criteria about filehandle stability, but it
+> would give us the effect we want.
 
-Yeah.  And I'm pretty sure everyone here will push back hard on any
-such use case.
+We'll still need a stable handles flag, and expose it to userspace
+to avoid applications being tricked into using broken non-stable
+file handles.  We should have caught that when they were added, but
+didn't unfortunately.
 
 
