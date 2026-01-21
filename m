@@ -4,101 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11C57C44502
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 09:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E929CC44502
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 09:58:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F9BB6B0005; Wed, 21 Jan 2026 04:56:20 -0500 (EST)
+	id 2F5056B0005; Wed, 21 Jan 2026 04:58:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A7346B0088; Wed, 21 Jan 2026 04:56:20 -0500 (EST)
+	id 2A30B6B0088; Wed, 21 Jan 2026 04:58:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D40F6B0089; Wed, 21 Jan 2026 04:56:20 -0500 (EST)
+	id 184476B0089; Wed, 21 Jan 2026 04:58:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ED846B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 04:56:20 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3EE413BF2E
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:56:19 +0000 (UTC)
-X-FDA: 84355515678.27.170D6FD
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 24E811C0002
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:56:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 083FD6B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 04:58:38 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B0AF11AFBCC
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:58:37 +0000 (UTC)
+X-FDA: 84355521474.25.FD45EC5
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7CACA1C0007
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:58:35 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=IEO2JQYn;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of 3wKJwaQkKCBs1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3wKJwaQkKCBs1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b="u/+XlkNJ";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="K sgHoYF";
+	spf=pass (imf20.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768989378;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1768989515;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r4Vdmpp6SDCxVlxf20l2O/7vEQ7zWkGtSlAUCfaFALE=;
-	b=Fidyd8+Hgs2KY9YlO4qnFTk9Pxnyy5hwQOxYSLCPN7mRygaCmey2WTuc1upt/yu72Mb3Xx
-	5NV/UROY0R1//WTH+dPM9szEe6k70EUERCxHHUZXhvBQJ5Y8m4iB4jpjelL73b/0cgDmlB
-	vTLV3U9z/Oov48P/dVCHF0OIewq/sBY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768989378; a=rsa-sha256;
-	cv=none;
-	b=Ebtlf63EPr8jzGnLLKAUb7HwikjaMCYb/AjBVNQDg8r8TtUlk8zLgF9WIZlVBo+xNrD0Hx
-	lQJqVB0ODpxDyt9spNsz5p50QtJ33lOBSage7IrpmUE8ZDusZ2lbTyaM7CLT2VfHuhYecb
-	TQKMu5W8iajcGPPCm6EJFxBfDLkyW2k=
+	bh=SJFJMNOM7awUTkwMl4hIh6WDIUWbLKvHg9WhRsfaf2c=;
+	b=P49orB5+//fxDZ/sO35nVYQdml19OVtHws6WJbvjGRyCyxRSHBNkXg3B/vQGLrjmhffNrV
+	HuJyP9uT+baw+ljoImiDeihlyKTWO6lF4mYE0f7o9gz131pWEMQmLklJChtMCz+t9/mtyN
+	idYjBs1XAfsbTaRH6cxPhviKoW5lIy0=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=IEO2JQYn;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of 3wKJwaQkKCBs1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3wKJwaQkKCBs1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430fd96b2f5so6063953f8f.3
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:56:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768989376; x=1769594176; darn=kvack.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r4Vdmpp6SDCxVlxf20l2O/7vEQ7zWkGtSlAUCfaFALE=;
-        b=IEO2JQYnbbUxhNkFY5DFFyTnH8RpTaD6bKhd8IdlBtCDhre2GPo4vRex412msLfgax
-         Kc0QSu0+StiWK4gpE2gqcJL+RXfOhnVP45+5sbp1jnToD1BLs/bAOmWhQ2mPFiL9VWsM
-         wkBcZjhrDY8771L0Pioi2u/MVCeNb2Ym6tILuL9iToI62cc+ZiVFSBiXhA2fK06w3p/u
-         Ubu7e9WrQWhnDFeGecGTGMYRgmgzUj5ghbn2/L+C9cBdk0f0wugbOqK0WaM3kqEOhn9I
-         uoM/AYvea/Vw4AKHjlmVlUCOGxflxre9a906Zf1X+ZBJoYEBGyQMSWUhzc9KPjLEU55n
-         SOaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768989376; x=1769594176;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r4Vdmpp6SDCxVlxf20l2O/7vEQ7zWkGtSlAUCfaFALE=;
-        b=VWxM83i8NmbXmKbxk5GJyJ0IA7CtdF1RG2TkGQ/PhNeS8DgsIQ06vR/hR/1Lgk61Qk
-         JZjrhsNm9tqyIq8TS0+hJseQcaCujyrwwi5rJRfxRLdaro+O6paLmz3VU6POeV+WYBIT
-         UjXHlALzhl03ChW0MTKqg00qXVg4iT/Y8+9cw/ZnS2RUW89/S3PGD2jaVoTsxUf+WQKu
-         s4KkI613ZYle1YoIv2TB3mSu4c6dN7NDXxmN5YxENCwfOji5kJ0aANSj2gRP7J+8sLCm
-         FQCBFOdZp8/ZwK1tOW5Tla4hyNXLRg25xV/FisKw+DZ1NIzF2RMOTfEef8Y3CEaBf3nx
-         zumQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0AJJB5yr3YTvBIOUoVZOBcZNLH6YSeXy2UQUKma8sm4OXYhldinTijKM0ihT6Xt+MANeicsOMyw==@kvack.org
-X-Gm-Message-State: AOJu0YyqCtPCMoPfX3itEz4l+hcf/YpnpHBx7TWDjuVR5u5VXYYBJFz6
-	/wqZCyCPdiyCTk/Q+aZ5dcUlqZ2W7idPqyjBs93MOLoimaqheoCEOv8/AKwTFXsa4IHWIYhSWOS
-	G1NSG6+NSs316gyYyVQ==
-X-Received: from wrbfu17.prod.google.com ([2002:a05:6000:25f1:b0:432:84f6:8d9a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:186f:b0:432:7d2a:2be4 with SMTP id ffacd0b85a97d-4358ff6fb27mr7340210f8f.60.1768989376449;
- Wed, 21 Jan 2026 01:56:16 -0800 (PST)
-Date: Wed, 21 Jan 2026 09:56:15 +0000
-In-Reply-To: <tal36hph2g5azjk33h564bllr2n6bz2xhdw4vcvizkhptedfuq@56chjersnkfe>
-Mime-Version: 1.0
-References: <20260118-mas-next-doc-v1-1-827d9f4924ce@google.com> <tal36hph2g5azjk33h564bllr2n6bz2xhdw4vcvizkhptedfuq@56chjersnkfe>
-Message-ID: <aXCiv9vOrMTbiJtb@google.com>
-Subject: Re: [PATCH] maple_tree: update mas_next[_range] docs
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+	dkim=pass header.d=ownmail.net header.s=fm2 header.b="u/+XlkNJ";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="K sgHoYF";
+	spf=pass (imf20.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768989515; a=rsa-sha256;
+	cv=none;
+	b=Ll4nxzd00BxdvsM461p1ck3WZkYrzwJBmzG4/rk4yDgdlbGfUcano3uN7YXL0pnP0pXkXW
+	L0VENPo0Vl9kzbvp5jQJqMBx4Fw8a2f8kCgKSRZf1p4TVtnbKdyMNFpdB0lRT+9a3Btd+6
+	o7c9hHL98DBgrIRK7YrUV3VQeF4yYdY=
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailflow.stl.internal (Postfix) with ESMTP id 451251300E5F;
+	Wed, 21 Jan 2026 04:58:32 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Wed, 21 Jan 2026 04:58:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
+	1768989512; x=1768996712; bh=SJFJMNOM7awUTkwMl4hIh6WDIUWbLKvHg9W
+	hRsfaf2c=; b=u/+XlkNJ5V8C5rphAsXf4CRGr0/yY85HzlfIyvdWMIOWXjkQsZL
+	hepFVBVO1TGy2MoYqvQ7u24GdOhaMOyN4g29b2duuwJtKYPuWULecyd+MTKRrnGd
+	bn7kIcDBwiSCpdoLSUnyYvsgKKeCh1a1dboVMEHTkywI3/WnmYN3GCNjLf2VRDaS
+	mz10UPqJbOR5v9xAcZGKcH9zcUO4BUeKjYMDUBeMoVj1ZC1ebbxPD9BY7qRT3PmC
+	Gwn3pbkB6fVbCnilSsQt/utzs+2skAgouKRc4vJtaZN+evNBodtN4J3cJ2k+j3M7
+	oBRpH6fOpkxc7s+UTVvfrzOozmRmPn80CPQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768989512; x=
+	1768996712; bh=SJFJMNOM7awUTkwMl4hIh6WDIUWbLKvHg9WhRsfaf2c=; b=K
+	sgHoYFPnq/EWy/oXN2LK4RtBbAtHJ8+lCm2EZp7IwyvLgqOVBaJq5V/djUpulah9
+	UZ0lnTRqDqpfgEWG2bwPTyIhf+OkxtllFSCCXe8SSJx40Mx4bOPORKRjQmxip1hr
+	Hb36gWUn1deRpKO7vBAa/3uHu4mrPFLZ6AyHhEPvNlMxLsivck+jYIJfvJxUK3BQ
+	GCt+NV5AdMTQ9cbmkjq9uYNtDwzHhARKjkpF8i9scEBGI7u7PYYWuik1qWV+s+zq
+	gG23IiKM5UnKmkw6iHYCl3/e/WqQdwf43M3cAuoYqYAcuk/YbwF3Gb61tiHUVMiD
+	2n2dL6Sl4cIXHxXek/iYQ==
+X-ME-Sender: <xms:Q6NwadpokZr4zUG9s3yceH_yGV-75ZmEqaCw1iMpcdO-7P_bqHmGqA>
+    <xme:Q6NwaYq2ihpc8yBbDG1PVuLPaKeWe_7VoQt8GacEUU17dyYTuVoNw4BKpnWFQRT-4
+    Xg1led3wwge8NMYQ6_6srDDet02RciO8TD0ld2euMF5b0iDjA>
+X-ME-Received: <xmr:Q6NwaW9rCqB8cw6Q2kJ-ijrsI9kO3BQ343rhJ_gbt5YTx-pU0BQLrEVYYLR7F-XOpzmXxNsMMi5DLL_oShZmUtCCtUc08foOiDNqnALDYUDz>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugedvleekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epleejtdefgeeukeeiteduveehudevfeffvedutefgteduhfegvdfgtdeigeeuudejnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepjeejpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
+    hrtghpthhtohepghhuohgthhhunhhhrghisehvihhvohdrtghomhdprhgtphhtthhopehl
+    ihhnuhigqdigfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidquhhnihhonhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhnihhlfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
+    hnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:Q6NwaXP_r1AtxnebpNkWh0ccYaXxkWUlkdex3I21_ko1xomksZ4zhQ>
+    <xmx:Q6Nwadv_3MuYvlxZn64JB2BnqApISdsMFoP98SEqbGk-2TZ7AkLEZw>
+    <xmx:Q6NwaZ3nfLV93Vtn6SIHnsAzPzQFUB9XxFmo0He_Kd-2FrGyOzYc5Q>
+    <xmx:Q6NwaXZBKV6NDhrR9j2xzoxiBc-32Bgplw5GGYFI5LL9zipce5X4Yg>
+    <xmx:SKNwaTXSyiSStct1wtcBjcLkfs8d66i92fMj1g3ySdmDH9qv7jDxxYWO>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Jan 2026 04:58:08 -0500 (EST)
 Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: btraia5sej44isf8ye8cz7nar56g8uqx
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 24E811C0002
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+From: NeilBrown <neilb@ownmail.net>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Christoph Hellwig" <hch@infradead.org>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Chuck Lever" <chuck.lever@oracle.com>,
+ "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ "Amir Goldstein" <amir73il@gmail.com>, "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Theodore Ts'o" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>, "Jan Kara" <jack@suse.com>,
+ "Gao Xiang" <xiang@kernel.org>, "Chao Yu" <chao@kernel.org>,
+ "Yue Hu" <zbestahu@gmail.com>, "Jeffle Xu" <jefflexu@linux.alibaba.com>,
+ "Sandeep Dhavale" <dhavale@google.com>,
+ "Hongbo Li" <lihongbo22@huawei.com>, "Chunhai Guo" <guochunhai@vivo.com>,
+ "Carlos Maiolino" <cem@kernel.org>, "Ilya Dryomov" <idryomov@gmail.com>,
+ "Alex Markuze" <amarkuze@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>, "Chris Mason" <clm@fb.com>,
+ "David Sterba" <dsterba@suse.com>,
+ "Luis de Bethencourt" <luisbg@kernel.org>,
+ "Salah Triki" <salah.triki@gmail.com>,
+ "Phillip Lougher" <phillip@squashfs.org.uk>,
+ "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Dave Kleikamp" <shaggy@kernel.org>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>, "Jan Kara" <jack@suse.cz>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
+ "David Laight" <david.laight.linux@gmail.com>,
+ "Dave Chinner" <david@fromorbit.com>, linux-nfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+ linux-unionfs@vger.kernel.org, devel@lists.orangefs.org,
+ ocfs2-devel@lists.linux.dev, ntfs3@lists.linux.dev,
+ linux-nilfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+ linux-mtd@lists.infradead.org, gfs2@lists.linux.dev,
+ linux-f2fs-devel@lists.sourceforge.net, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 01/31] Documentation: document EXPORT_OP_NOLOCKS
+In-reply-to: <2ed97731c54ef130ea58861a91c80dacd785de9a.camel@kernel.org>
+References: <20260119-exportfs-nfsd-v2-0-d93368f903bd@kernel.org>,
+ <20260119-exportfs-nfsd-v2-1-d93368f903bd@kernel.org>,
+ <aW8yV6v8ZDiynOUm@infradead.org>,
+ <9b64bed72e43d0bf24e9b1e3bc770c4a87082762.camel@kernel.org>,
+ <707f08e114bf603caf7de020bb630d5477e86bca.camel@kernel.org>,
+ <2ed97731c54ef130ea58861a91c80dacd785de9a.camel@kernel.org>
+Date: Wed, 21 Jan 2026 20:58:06 +1100
+Message-id: <176898948697.16766.1729756714812778707@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7CACA1C0007
+X-Stat-Signature: pnd3s6gmad53om4spex67w6e1i4gyd4s
 X-Rspam-User: 
-X-HE-Tag: 1768989377-763811
-X-HE-Meta: U2FsdGVkX18wyCkSmxSmPgDbc4yK6cIkRYPQsE3CsK4LcoLucfkp1+j7E+Xy7VQTgtW0U3Jtl+6pdEn9A2MvSqV6RCu9iIB/gTLEmtPqxT8EoA1KeLF5jYy73IN1RsoK9UlELEwdnNVqWTQVsQ+oYFcr4L3v+/8ku7kOzbiuHcb5ULhJ68gff12ct3rhDhQY/pX1kA10PyGtMjsRQMPu8+rHe6EwEPhemWJnuFiQqEJ2h/v6V+Caw1RPp5qD1eBNnmdTjpCdmxC6+Pn7fe4inENkFGgkIqNaoXT6TnHCWZQWgQaRW2DCx3lymBmwU7Gb6P1VhGB7WANHW6waZSaOsPhiKct6JXiUhGPBfyfIDQUs0rf6y3PoESsq3VkHxsdKhAdROsIj1omuETDYFT3vqibxJvHdSrBekRMg4xwls470lUvpC4EPkUnrju8t2ZrC8nLdkjg4d7Lop+AOTNUhIu/bcHsYtHSqvNUMh6CGYDGcLOX/1ggG3HZJ8EMnbHR7RXlcZ+Y/IaPcoNy3sY2zaWPTgbltFT3u0e0T5evN7hbhxAoNMXJPYnFtljG3bTSlLm/hcBfNHuiuM0VXI11pHYCim458v0CIgxn1CsXCQEQq2cPjtoNq9vrGb/HEGeYzDUC800FTZ+h5BKjPoIwfE1JhCEi2gCp6SmurDe9I2Exp5yNgtgilBCZidJSPPXm7u+MCBdijjGZC49Z+CPQ6SztiWExPIjLYyL2J207WsDt/uf6bQ0QijB7rGl6bEyOp8CXzTvJOXjF0d+y/IHxc5ndEkelMy4X45XckIjSBLdP7nujae2X4Nu2ggpODXpGZ7v1GHmItepe3+z6Fh4/GF/jNVNZ3FprkIEy69zHpUiwUy6nPPErLEm1afFPOrUf+4t/GccrmjE+WHNyXTmyi6AAObN/NK6AgH1gx2EAd5Jtyfni2nnTYKFVV0gJ9L0OcCnJ68YHC8LCwI8Mmpac
- j8arXCdc
- Rp0q2ENvdnKP8M1LW9zBKGCYjnRJbNXKCCOS+lxgARs3BWGrUj+2Vr/8Zjsm3We2yE9G7X2plQIFmrIxiMOIl67OVXPCTzuMHrtcwkTE6BgxRh3inGyN99g5t3/vE9PtcFSpz6P5SS1beW+B42moOJTXU68ihrhUEUWUPXG8dwJ9FGaSkos3mAaRyGRCl0PFTDbtuuFcB7RzFfXMvGvD9fcFXe5rVFPhXrXZjOW1E70n4fzcknyLMbYPGbKiJWMI/IcMQbBlEmZAkK73H/q5GAyTak2asHnnRy+55HfjxuroGKUKr1uIQYoFSUfO9zBPtDCzyCPPM7K5VdnmpVeQk7tgFaCuEXxqsScVEmcX8nC5w+NfonK03zRUotTPXplUwhuHmFriDz+58BaSbuHbWSxVTLZBQru+0mceALYXqLOrWHaN6kuQmDExa6hcSdYIpagqWmGYOkOFAWJTg9pHSalU3yEVb0703eTWh5ivRdv5FJgS0tEKzQ0ARH1yXOxYn2Nn6R4o0/lsOjEO61CbfQ5GmaYNyQ7lYbwgh72URBSiJw39j10ZsImJqnAYx1laRumJ0haGmam9m6yiZgpruWxBWN6Qm2aFdjK/zgD4mYK6Dene7ny9PIGYEzpqvBcoB54kRY8EQ3GVDZZw=
+X-HE-Tag: 1768989515-407174
+X-HE-Meta: U2FsdGVkX188MgmX+h0/GZT4rNbSCrkKHfRd5a2iWc+0CKcOLWvJQ6naV21tdd9VII+VQKH+JXs0mM5gf8dRxKXoKPqwrcjdLUdaACIgvv/tsgafcP1SRMEAUngPQb6a10zuoEYHOSmHh1G7juMvHEysDZMSv6a5G8YzjgNYnJCYng/klYTtzlLS4Y+d4HtDWb1dxn27BPLVIeGUGcqE+2P+TKjGj/hXWcXkxrib34CsuWWw+TYlDrCAmoOqptRH4R6AvpYdxDLYOTTrQj7dK0MnGvImX2b/3yArWT08Wa2sJP6zIqvKilywH/4uSNFlTRBa779inrgXkFjrwS2FJ3aewZm+wYExop31hNuuwa2TeHFay45u6O/Kv5tS6HWbl9ujVP18DADlXgDUyvkcyMNDEzLe0zEaS767EMyOBzzFm1TL+DMMkDu+cxE/lRj171AMcHSxzNxn679qtxhO6EAsmsqJmyGSldtiEukBJJu4kkC9ecVBAyqofDY/0V2xS+oULNg8pZGFptEPyRNxympbvPGeTawC5hHAW/Mvu8LkJWxkFdu/+sRIY15dOxDpUoeM3Hgnlx8N4T1uIxx0PCHxR709lRyt9/bJtslq63fNfxXg52+35dU2yx+AIVos1sSgVpwMwZHOciU1T//s2A8SOxvdgzYQbcZsVU/a6EnT9/GS7p8H++mfPJsFMhaGIUoaHE47ZpITkg4Mkxm+cKqxOLphwVJZgtZrDdhVyeArjCdvjZ1Omiuy/5HayBTHxd3B3bz7dOeLtwmF31/JAB3VoEnTE8HLg2PU8xL/5MpaZh8E6KBm7AM2c75DKMnBJntZBT1up4QKmM6zds11oUixHBErc7yBCpPCrt2frkVAbPf8b5/po1I0JrEwvIWt1HBkjB1cxu2n96PCnpOTfRF5OFg4rwwubsP5dV93pQrsPpAgqjipb49kgIq6BhPjAyx+a0ycNbeWr3S2Xbr
+ AWhTvVqI
+ 9ItKKHKwgUiqLnW90wPurwzhsH7UNw53hxgGsaPrwowxNhC8EoaEb0g+8UtVlwEoOO+vGqJ3cOv/stkvvVmM3kVi3OmEUocyeNWvLd9pb8iZB78WcbIkvZDwO2EbXm1z5LukNCRxpaNtSPt6TZ0YyZaxZslOLJ6+hjBzSw3yBNucjNmf9tXDezFefniTjy1rkDlzBnm89CialN5y6pw2gTMeJvR4i9OFNwW5EEqvZ6QvW4ARowtY+gnL5VwK7vLWXzy1A5T+2BwQKtX/ONdUETle3Ftez6Exy0msq6ONRMmJtmbVMTCic+aPMFtnPMV/KsfCmXQKv6TC4jjSV2sqsD7A2rD3XG20rcqUZJC9THmqLr/sbhDcnHBvW2C0jRqbRAejz+VzfU3y9ijadZCNu1xBWmI8JSvJsEdLtCIBAGq7oedO1AzgNReQZwoOWduWcj0/2+t5pKrR1LHtwzAnbNkc0jwrY/eP+IO9HMjkjZ57OIMr5SYSinK6c24TmHcU5RL5ygzDY7/FZblEpjCKBVqcuq9sEoxpR+KQNQ4uDRd2KsHsVDbsnANopCP90K7k0YOUKMLDzELwhiApQTeJBLGif4ci5iEHCMDy1qCcMAFkVJUF56/dCzELcE0vJKDJbZyYzeIqEFqgLyCpgWqV1ZBIcY1U4cj1fV5z/tLEotZt+Al72Hd9wRPz6gEQQTOvLRx90w9wOePTpTHSczDh018XWEU4WnP+gEck3JdEd2hn8PGM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,31 +193,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 20, 2026 at 12:54:47PM -0500, Liam R. Howlett wrote:
-> * Alice Ryhl <aliceryhl@google.com> [260118 06:00]:
-> > If you read the docs, it sounds like the difference between these
-> > functions is whether mas->index and mas->last are updated. However, if
-> > you read the implementation, you will instead find that the difference
-> > is whether NULL entries are skipped.
-> 
-> This is not the intent.
-> 
-> mas_ should return special values including the XA_ZERO_ENTRY.
-> 
-> mas_next() should get the next non-NULL value.
-> 
-> mas_next_range() should advance the maple state to the next range,
-> regardless of what is in the range (NULL, special, or a regular entry).
-> 
-> Both should update the mas->index and mas->last values, if it moves
-> (ie, no error state is encountered).
+On Wed, 21 Jan 2026, Jeff Layton wrote:
+> On Tue, 2026-01-20 at 09:12 -0500, Jeff Layton wrote:
+> > On Tue, 2026-01-20 at 08:20 -0500, Jeff Layton wrote:
+> > > On Mon, 2026-01-19 at 23:44 -0800, Christoph Hellwig wrote:
+> > > > On Mon, Jan 19, 2026 at 11:26:18AM -0500, Jeff Layton wrote:
+> > > > > +  EXPORT_OP_NOLOCKS - Disable file locking on this filesystem. Some
+> > > > > +    filesystems cannot properly support file locking as implemente=
+d by
+> > > > > +    nfsd. A case in point is reexport of NFS itself, which can't b=
+e done
+> > > > > +    safely without coordinating the grace period handling. Other c=
+lustered
+> > > > > +    and networked filesystems can be problematic here as well.
+> > > >=20
+> > > > I'm not sure this is very useful.  It really needs to document what
+> > > > locking semantics nfs expects, because otherwise no reader will know
+> > > > if they set this or not.
+> > >=20
+> > > Fair point. I'll see if I can draft something better. Suggestions
+> > > welcome.
+> >=20
+> > How about this?
+> >=20
+> > +  EXPORT_OP_NOLOCKS - Disable file locking on this filesystem. Filesyste=
+ms
+> > +    that want to support locking over NFS must support POSIX file locking
+> > +    semantics and must handle lock recovery requests from clients after a
+> > +    reboot. Most local disk, RAM, or pseudo-filesystems use the generic =
+POSIX
+> > +    locking support in the kernel and naturally provide this capability.=
+ Network
+> > +    or clustered filesystems usually need special handling to do this pr=
+operly.
+>=20
+> Even better, I think?
+>=20
+> +
+> +  EXPORT_OP_NOLOCKS - Disable file locking on this filesystem. Filesystems
+> +    that want to support locking over NFS must support POSIX file locking
+> +    semantics. When the server reboots, the clients will issue requests to
+> +    recover their locks, which nfsd will issue to the filesystem as new lo=
+ck
+> +    requests. Those must succeed in order for lock recovery to work. Most
+> +    local disk, RAM, or pseudo-filesystems use the generic POSIX locking
+> +    support in the kernel and naturally provide this capability. Network or
+> +    clustered filesystems usually need special handling to do this properl=
+y.
+> +    Set this flag on filesystems that can't guarantee the proper semantics
+> +    (e.g. reexported NFS).
 
-I guess I'm a bit confused about the difference between XA_ZERO_ENTRY
-and returning NULL. Isn't the case where we return NULL when a slot has
-been reserved but not inserted yet?
+I think this is quite thorough, which it good ...  maybe too good :-) It
+reminds me that for true NFS compatibility the fs shouldn't allow local
+locks (or file opens!) until the grace period has passed.  I don't think
+any local filesystems enforce that - it would have to be locks.c that
+does I expect.  I doubt there would be much appetite for doing that
+though.
 
-Like the docs, you use "get" vs "advance" wording here, but I don't
-think there's any difference behavior-wise? Is one intended?
+Reviewed-by: NeilBrown <neil@brown.name>
 
-Alice
+Thanks,
+NeilBrown
 
