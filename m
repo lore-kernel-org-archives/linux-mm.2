@@ -4,119 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD0DEC44508
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 17:05:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 392DBC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 17:06:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E35386B00D5; Wed, 21 Jan 2026 12:05:35 -0500 (EST)
+	id 9EB036B00DA; Wed, 21 Jan 2026 12:06:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE3156B00D6; Wed, 21 Jan 2026 12:05:35 -0500 (EST)
+	id 9C28C6B00DE; Wed, 21 Jan 2026 12:06:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5DF6B00D9; Wed, 21 Jan 2026 12:05:35 -0500 (EST)
+	id 8EF9B6B00DF; Wed, 21 Jan 2026 12:06:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BBB436B00D5
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:05:35 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 70FF413BC51
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:05:35 +0000 (UTC)
-X-FDA: 84356597430.08.F15B003
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 65C2D1C0008
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:05:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LVsRSKgi;
-	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E0FF6B00DA
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:06:14 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12E5113BBFD
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:06:14 +0000 (UTC)
+X-FDA: 84356599068.21.7B067EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1ED9BC001B
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:06:11 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YurHeLrj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769015172; a=rsa-sha256;
+	cv=none;
+	b=a18BhmsjDTAlIzegJhZgsurpRihWBMplnOOVce4uFUimCpoqiXb3sDnRUTcsCHREAW04ig
+	gfa6+Ik2XxxAu1uvBLkKmlBYh8T9rV1EVgcQ33NN4Uy4U3V9MMS5If4mMo4PdfacMm4gYy
+	0vzjRlQ5KxnXw2allGFGzKO3v/yj/s4=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YurHeLrj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769015133;
+	s=arc-20220608; t=1769015172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jSywsaNq61h75Z1wzOoBhV8mE5CzphyKGUVeAGM9YLE=;
-	b=yXFieqIIN/txltSVM7KKNH5M6LX882BjhQPDOVVfbdRzT7e6SRFUCcU4t0YKqxLHRS3sG7
-	6tVZtX6lc/yoPDV+pEXQPq96deesxgj/wW9fczHInXRFyPg6kKyVEkwYdq19rTzBTchOw9
-	Rv/G3FzuKFNC5zw13J0lkSIrSTWVDc0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LVsRSKgi;
-	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769015133; a=rsa-sha256;
-	cv=none;
-	b=diL8swW/m1etD82+Awi/cH74Tj0nDN9A6unKxCnmNQLxEz0Jy027AOtRmcPpagXhYU6A4V
-	Wx+GXEtcChi/Sn7F+J9x1Mj7uK/4Wkywc5cf33tx4MaAd6ow94c9HekaJHUEp8x2VnJtlw
-	0rqqt8QVv2Vp5ETMzQDKUAN8/ITj2mg=
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3831b6abed6so66051fa.1
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:05:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769015131; x=1769619931; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jSywsaNq61h75Z1wzOoBhV8mE5CzphyKGUVeAGM9YLE=;
-        b=LVsRSKgiw/mJpnnMAKyBQUSdhnbivmXEIg5P8If+11PVbqYphN8KrwATKtjLjhBS4J
-         YifBmXSby/2PtYmBogepxxDfs9jDFdVxUjxK91I89d+2ds7wa+S+9XWZCTQ8Jt+MRjWI
-         q8o1NWhSOT9fgZy5bzhz8hJZp8zOYjf+QSjN+YuKd971RGzgFsv4Xkkx4dgVM6X8RW9q
-         nIgEER3Vjkp7/a69/ggHJwC793BFARwkjXN6gelJ+I7sCB+DlLQckQrXmd8GQNSpZGUT
-         js9YWPKicolChpOTQRj32XJfI3U0k2wjzCM083a5n7XanmjD4HmlsVj9tYzXTkjJGoT4
-         kwkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769015131; x=1769619931;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jSywsaNq61h75Z1wzOoBhV8mE5CzphyKGUVeAGM9YLE=;
-        b=hp4opzdsjsgRAL7aMYgd10eta093QCl+/5K5J2VF211okKzxrKhJeUb5SAXjs5HW79
-         Nhm0ZRs3UeC3jr22G9ZEqvoJRWClwSw3DW1l/Vx11MJR8/Pj/Br5B4JHf/DgYDBcbxcr
-         oBMSt89zkmaBOnzh1nJyB3EwHI+rrVFtKzxFK4+KJ8/U05VQKgfDO1ZVr3l6b9dTr0Vy
-         m66KNSZGf7318NyUT9cS5M6jcBrif8bTF6cIcPMrU7T/Z6Zwa7fQ11IiJU6rP8uXgl6e
-         hXjkmqXSOiBSsR3mzz1g/qpnt10IEEHR0GYqCo/3HWr1Lz1M+acuIhBu/p7uXEU4Bm4z
-         kRmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXeawKA8fNt3xb2D2G1V3HHbY0owoOlSItSKE715D6nF4WObmxyUi2eFTpigDJDAukUHiGaQKZcrQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw3hz+AhriSPEJvx0iSEsvSSmaTzAIyBFe2Wt4f03P79RFdEhqD
-	1WxMrbEo68p+1aNHOq27kLINkuHhNfp6w+lAgGrzQNhEmwK1rUaxSLoC
-X-Gm-Gg: AZuq6aLcTLlNyzOSH4T2CyM2tcDiMCOHS5AQNweOEgvc2alRA+6owOZAYvxQRnKzunw
-	jH9jKlpXKaLCF6qYC1f5wSwYy8dcRaXIKUQGhdUA5H0XhqiQXG89QCak85e2P6SZEuW8OTzEi3F
-	GiDuWyMeiOK5PvSjnqFH1l7HuoV3avEfBmhydTUBrcHvEkqkBarkMB+8kCO9DHhGudr2EY7bcLI
-	kL/ML2prdk4yfwDu3ngtvvsGmYhPB3buz8LwoeDQlJnWM0+BcHTNDryBaBmGGQoujF16R9Yz7lt
-	/p3uXP9P9ZXM1I3eoKAeqzuBtcVErI4AXl+qw0oF4v3kpIeRE46iyEgepVAOS0iURoPswNYGvCN
-	Wa/Ge0/JrwHSC+rSo0mKm6Pqoi+fR7UpXBSO+XUIDYYuPieMsX7lHJ2zKPtSm8T7LJ/0vdz8IJ+
-	6QJ/EKRjrBOOpCrcVAyw==
-X-Received: by 2002:a05:651c:547:b0:37a:9558:5bdd with SMTP id 38308e7fff4ca-383842ccf59mr39226381fa.3.1769015131133;
-        Wed, 21 Jan 2026 09:05:31 -0800 (PST)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38384dbe6c1sm46902931fa.22.2026.01.21.09.05.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jan 2026 09:05:30 -0800 (PST)
-Message-ID: <8d5cea70-0e1d-4442-b761-e6589346d654@gmail.com>
-Date: Wed, 21 Jan 2026 18:04:36 +0100
+	bh=ENCjiUyFyqKTfowkYdXmyJGMEeUb4ui0gjmTnlKiIkg=;
+	b=Rcms2j104PBwgbfQdN5Cj7k9mQ3zzf5bgMs1zwPdVdSEw1kaq82vgE7SrYkjTWU/TebdkG
+	sU62kOjM+RyOFUSoMCCAPbi9MqpQo8kKFRZN3EN5U4H+gR4FdqkBvCe8yaTAHy6gA9GWTg
+	aYXrOkV0MosevAxglikcOqwB4qjZBNY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0271A43290;
+	Wed, 21 Jan 2026 17:06:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A976C4CEF1;
+	Wed, 21 Jan 2026 17:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769015170;
+	bh=ida7uC1+IcLm3mH5OnwxhdYHy+GE2IR1NjNzomFuB9g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YurHeLrj0Kc1Z0kXwWObFZEVHgWtGcldhLnc/9rTtIWDrfOF5OHZhBDWWdjOE+462
+	 fvExXn7KnbYEhXpWGo0kukD1NpS4gyjv+Pr7pHR+Giv+UGDKpFQR4jiFII2JYw6KuB
+	 7Y8ozd5liCmajIIf/Gyx/RwYNYOZ5mWwJctr8S8J+TzMEv3rCWxOO3RhAdYzLaQL+n
+	 6gnoTvdwYhSMdpeIgae4LwcnvIuh1RGjcBa0Uwy7/qPLVdXh1CzAp+l96r9ZaxuEan
+	 Q0gajJnqRVo0ClKW8SRy7uN+F5eE04OGnRK255rIs66OEyyWUFcE6wDDLeD0IN5rPp
+	 vKuYKaTb2eaLg==
+Date: Wed, 21 Jan 2026 18:06:07 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Will Deacon <will@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 29/33] sched/arm64: Move fallback task cpumask to
+ HK_TYPE_DOMAIN
+Message-ID: <aXEHf5nbZMI8LT4b@localhost.localdomain>
+References: <20260101221359.22298-1-frederic@kernel.org>
+ <20260101221359.22298-30-frederic@kernel.org>
+ <aW-cAlJCtI5Qtify@willie-the-truck>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next:master 7687/8302] ERROR: modpost:
- "vrealloc_node_align_noprof" [mm/kasan/kasan_test.ko] undefined!
-To: kernel test robot <lkp@intel.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Andrey Konovalov <andreyknvl@gmail.com>
-References: <202601211250.6uQzZrQp-lkp@intel.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <202601211250.6uQzZrQp-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 65C2D1C0008
-X-Stat-Signature: aid5d7dzd6qntbabo1k6p1qxwyqqrzuh
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aW-cAlJCtI5Qtify@willie-the-truck>
 X-Rspam-User: 
-X-HE-Tag: 1769015133-155849
-X-HE-Meta: U2FsdGVkX18H77Jthjk3UwfLXcaikevIg70oj2JeZgL48hnGmAG9txUCrO8DupDuUZ9l3fS78czJRTzWvJVdM13sD+fcNYNjFLxuao1DjhBfbK5XwEAg/gJ9Kalpy/hDSwp2II12dBtekW3T1Jl28umRM3kkOgYU2VgLk/mR1mYvIqWw/Uctbk/tRxfDDoDFqqz3SifE1lyHLQuVSCxY7LhIW6HPe1KVRxYFHeZYEk0XOVJSoqj7qh4F+QGXUd/V5Lww5C8ISbIaJeMQqKNLvsvTxf2o0HYDZHtXEPKAhdzcAKFLbcHcODdQb92sNSHS876uLBCl5cHbCz++9/zD3Rwp0FeXToT0IKpeMkSSLg2vcy/DZv3gk1iknA0KlMb6Ki0CtS6v7aAX1/e/BXxCIb4OwWel56YLLKMO6va7Q5NtEWFytIINmHoh0BwH8cf5L4nuHeVko1VoL4QO6AJWq9vsG57fVG97MC7cRd5EKSId8nZEEZuvyINoqT2GlTNhcXl0sb0ipj/a9JmIr83qgK20SD9/Azr2Kul7kyAv/M/kd9hnQWVI00PXCA5eXK5lEAOoSg8o0i5uimO/xAFsRl5dJAFmtm2gWs/DKWZ9lDebB1jAK/hAwjOqBeUOf3IQOh6m2q/e43dr1CBnofuFCAHICt2vvrkZFbolRi4z97z2sIq3a01P2lGetLuBVLH2kJiasBIbaehHEum0IfJI6F86JejGPnq2Frvy89zTyp3Y2UkILmNwR6NICuRxw1jnALteTHdqjWaX8xiSixzow/Yf4MxDEXbRjJl6kOhwQ+3kwhAWDXl/p6soj0U2M7//yZvYEanWKektNPwCGjwLBMdiPNj/oy1STPebthwjkpkawMyeaYFv4F3imTngQdBdWqQbv9EwfPO82VDFkza93H/QZ5BZyQDsmJEFObz0Hx7jghOiAeUKqVoEtfZNyeLBanwCK8pjZS4O7oyYQ3m
- ysoUlu8M
- 1ZBe3psn1TiFuT9txrbWXKJA4mWOk8kZt/Floy2SRagJFjDXEGrPQk0d5Ke9VTz7PVYDucvWXDl3UO2jiKiWGqDizUPDoLsw5Bd3kBb6D3D1dGDdYHmxAhPI5MhH4cb0jrcwdHvrjd9IWGw9SbzPEW2FYIbSHNY9+t4av2y+uLzm4NbwoBwsitREvqTVhn7trDHt7CWdATxMkHXv3Ss9qu+aarCdHgn5a550CKTkLuxsh5fSKL9EkGmXOBkUFAZ8AHUs2cxCHU/eCgwjt7VCN3Ca5Ratvw3fJOxFK9lm70HCsIVx2k/d5hPk4T+SURJeswHu9iK6789E30BXW42+KxLcAdRYt/q2fWp5KfqpiiZBbSQiLbUh8AUkPyuo2XfOLkKYKYVXDxpyUPdfNpLERtzqvWa5LDPEiGrMpG2vK+qn0Pfuw/lTGN0/acE5GTPVe0gMeEQbbNqQj8pZ5dNMsXyOximq32i+IRzZ5FdlZHymTnGOnjKM2L9NIA2ouA7DqT9LIfILrecz1T3eDztWUi+ty616kgXn2CJquyvd5UzeFw8tYz1MeSdRTQJz7kwkFjnT4OS2/aryHK6Y9DXfhAefnFTossl6bsBjNbD1YOOK6Cf2MKoZLGecBkUoCAEK83f4LaYywlPMXLMfC5t+1NEUOXFXvKapddPFpjVbo3EtjavI=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1ED9BC001B
+X-Stat-Signature: e51jxwioh5xsin66h5nfzem9dz6yan6w
+X-HE-Tag: 1769015171-353513
+X-HE-Meta: U2FsdGVkX1+Ki/ks2jpseYqbu6svsszmxua1ikGmvDIQBz9u1wTKwH6nkblMzXl5YdZFSSwfPwhSPTO58ZnmYctH8bO/Uv1zh8gSNx6zxBVxRWvcT17niU7336Ts1cB8MUXt3sLxCVhZ7OVFLptZqPVl94KN4cDxC2bSRk4hNQ4v8o6A1d2J7SSTGZJv9IbxmUeARrbFJgXyQKhILysgNTMYLTv+KiVdDmisQxNhBA7CCIXtRPs7TcRy+lgZgkwB2I5pec6ezSpCX0dyvUXJFq9POaoXjkKrWHJ8nS0JC9007xkmptWeJKZeIitchDEfR2/X43QGIx/b3LznVgxE7/HFuf6mq+eXYq3dPNfk6q8LPatW9EJc9XcDG7vvvt1ONemtyIOS/XIs3Ixw66u4TFmfyA40AZ2VNQJm1VmODMbkoYUd88zHTbYG9RZCgnocbjf4Ooht/BtxUl7AHPmN8+cY4lfV2Bt15L6frOwufT2a0IayObmZMs6O4iBXV8wEa/Z4Hso8ERsIexB3Al/+CKRCppek7iGqAHlezQWKgaHSYgOUjcHyp2g8POPEOIRuf2+7k1j7EDMfCOG2iIAR3HK4HAyyW7mwwB4cZYHP1sHb4H8HMvMJTzzJV2xtDQRusb9c7dSv3vSVHZPnzbKbDEuw3+KkKpSzpXNjtpemcF7SpWxyCjRkTZ/b/tt1K0LNmTFQG299n+1Dl4MRdpn+29N1kR+vL+AorYNIYYjyA1BCFUlzuBoOYBj1MwWkmRRza7rGCSUhQz72roSIIecal3Q+LnqMn2eqHEielkzVaqYzcFsNkL04sFovgJtakBdHqiQFl5t/qVeGCa04M5q3hzkREGrlN4GGUwN8Id1+fgdQ5RsMQZZwP9DvEbYfzFlD4YzMylveLQb1jAAXWlBH/iMXVYFYnrAv7vtqFuXFQUb9B0jV/wn1C0PE7IlSLwclO80ykcBU0sb+GZKT1B2
+ cysDd/VK
+ 5D06GzAU4FFgOAlOsdvorH0WZUOGfXZ2KAMLtqFv9WBhAOkvuiGt1UFge8sK9KKo2vzlcZdbxKl5LUH96WY3FjDBlnQxUYNdwHWtIirdMAcLnPnF1XRLVZ7UUo4M42NxZwhAUPR1V2KB0pu/9tkTL8dne4wiNxA+xUtvaSrGhXvEXI1UWdhu8pxC5Crmf8/lQclVG4VMTqLbQAfVtQkR+oArNxF+FMJ3FYYB5cKzi3GEiuBOHCvpWWnuUtNRmu//1vaKKaMYM0arv4EVKlPOfgXbKQdoGy7qaExMJI5toqDZSZY5M8uebhJsqs5Ih0olSbTzX4d8wHRxuP42qYo0+ibXGTg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,32 +121,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 1/21/26 5:57 AM, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> head:   053966c344dbd346e71305f530e91ea77916189f
-> commit: 22228c860d2633a22656cc506022c657fec15194 [7687/8302] mm/kasan/kunit: extend vmalloc OOB tests to cover vrealloc()
-> config: x86_64-randconfig-121-20260120 (https://download.01.org/0day-ci/archive/20260121/202601211250.6uQzZrQp-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260121/202601211250.6uQzZrQp-lkp@intel.com/reproduce)
+Le Tue, Jan 20, 2026 at 03:15:14PM +0000, Will Deacon a écrit :
+> Hi Frederic,
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202601211250.6uQzZrQp-lkp@intel.com/
+> On Thu, Jan 01, 2026 at 11:13:54PM +0100, Frederic Weisbecker wrote:
+> > When none of the allowed CPUs of a task are online, it gets migrated
+> > to the fallback cpumask which is all the non nohz_full CPUs.
+> > 
+> > However just like nohz_full CPUs, domain isolated CPUs don't want to be
+> > disturbed by tasks that have lost their CPU affinities.
+> > 
+> > And since nohz_full rely on domain isolation to work correctly, the
+> > housekeeping mask of domain isolated CPUs should always be a superset of
+> > the housekeeping mask of nohz_full CPUs (there can be CPUs that are
+> > domain isolated but not nohz_full, OTOH there shouldn't be nohz_full
+> > CPUs that are not domain isolated):
+> > 
+> > 	HK_TYPE_DOMAIN | HK_TYPE_KERNEL_NOISE == HK_TYPE_DOMAIN
+> > 
+> > Therefore use HK_TYPE_DOMAIN as the appropriate fallback target for
+> > tasks and since this cpumask can be modified at runtime, make sure
+> > that 32 bits support CPUs on ARM64 mismatched systems are not isolated
+> > by cpusets.
+> > 
+> > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> > Reviewed-by: Waiman Long <longman@redhat.com>
+> > ---
+> >  arch/arm64/kernel/cpufeature.c | 18 +++++++++++++++---
+> >  include/linux/cpu.h            |  4 ++++
+> >  kernel/cgroup/cpuset.c         | 17 ++++++++++++++---
+> >  3 files changed, 33 insertions(+), 6 deletions(-)
 > 
-> Note: the linux-next/master HEAD 053966c344dbd346e71305f530e91ea77916189f builds fine.
->       It may have been fixed somewhere.
-> 
+> tbh, I'd also be fine just saying that isolation isn't reliable on these
+> systems and then you don't need to add the extra arch hook.
 
-Yep, this has been fixed independently by https://lkml.kernel.org/r/20260107-export-vrealloc_node_align_noprof-v1-1-a581bec13054@google.com
-It would be nice to reorder the patches so that the fix is applied before the kunit patch.
+Hmm, I think I heard about nohz_full usage on arm64 but I'm not sure.
+And I usually expect isolcpus or cpuset isolated partitions to be even
+more broadly used, it's lighter isolation with less constraints.
 
-> All errors (new ones prefixed by >>, old ones prefixed by <<):
-> 
->>> ERROR: modpost: "vrealloc_node_align_noprof" [mm/kasan/kasan_test.ko] undefined!
-> 
+Anyway you're probably right that we could remove isolation support here
+but I don't want to break any existing user.
 
+> Whatever you prefer, but please can you update the text in
+> Documentation/arch/arm64/asymmetric-32bit.rst to cover the interaction
+> between the asymmetric stuff and cpu isolation?
 
+I'll keep that path and update the documentation. I guess we can still
+consider removing that support afterward. If we do so anyway, it would
+deserve its own patchset and shouldn't be hidden in this pile.
+
+Thanks.
+
+-- 
+Frederic Weisbecker
+SUSE Labs
 
