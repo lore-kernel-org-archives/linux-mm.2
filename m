@@ -4,184 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8262DC44506
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 19:03:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 118FDC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 19:11:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA29E6B00AF; Wed, 21 Jan 2026 14:03:43 -0500 (EST)
+	id 7556B6B00AB; Wed, 21 Jan 2026 14:11:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4D796B00B0; Wed, 21 Jan 2026 14:03:43 -0500 (EST)
+	id 703306B00AC; Wed, 21 Jan 2026 14:11:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFADA6B00B1; Wed, 21 Jan 2026 14:03:43 -0500 (EST)
+	id 5E58D6B00AD; Wed, 21 Jan 2026 14:11:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B3F16B00AF
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:03:43 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 48B3F8CE8D
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:03:43 +0000 (UTC)
-X-FDA: 84356895126.26.48507B5
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A1922A0009
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:03:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=daIUECt6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qnsPYJ34;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ps48yUo6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hbaHzRDy;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D3F66B00AB
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:11:10 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DDC4ABD4CD
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:11:09 +0000 (UTC)
+X-FDA: 84356913858.14.60A7A45
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D8805C000B
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:11:07 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JYp4XiuJ;
+	spf=pass (imf22.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769022221;
+	s=arc-20220608; t=1769022668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wrMzqW5YGuDKPkpZJVNguF5+RS5LJEqkTsioRB+4hwU=;
-	b=v+fuEiLeJOkh8Hs1Fi9v9jnFnkLS6S29lVmkib+2g+Ly5jmGo6ZKXA0Et2ugbdAEf+tkGg
-	T1Ky8lzdNw3LhGK7up4rFyMPjYX+K83rpp+TrSdQsO8nvTmonYdQ7wxadGmkG0Kz9jKL6W
-	LKFK+SNVwQI9jXLOJwemtI5Ql077nBw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769022221; a=rsa-sha256;
-	cv=none;
-	b=EzXQ8vnK7ngzS+9/7tjkcvX1id/PTIeXzzAeovRPfLzQv4CvTboXooglLAe9XFGz29bAGD
-	O7qb3GBkminxUbyqu6dwwAHa1I4MTQV+lmBYQZJC7P5FIWwfNJi9Jl5SO73BTPSR3DR3tG
-	BPzfKPBFl54uLzDbV1BVwtdMqEki0+c=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SdZRkQhKinw2Zzq19HysXvpWY3I1Lr5Ul0XP6wR89Go=;
+	b=roQs652PH+XdL91VsNbMp2C2oIlSHt2/Tdpf+hZdmaCOxm9WUgubwj7xUED7j/DQrGkhK3
+	D7C9ep3tSyQelIlL7n60xtMmX0lTuczLKkgjaJ98uNwZMI8tG1Y52AwaRpb5FC87TIJ0Qo
+	cXeUkVj/UH6wLl/+ZMxDugUXneMsaeM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=daIUECt6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qnsPYJ34;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ps48yUo6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hbaHzRDy;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JYp4XiuJ;
+	spf=pass (imf22.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769022668; a=rsa-sha256;
+	cv=none;
+	b=l90gJ35IULhw7hVt7uskYjvP/vh2d3jQn/0zW1k/sb+cdTKr+72X9m4LskwjWb8JRGZmhK
+	tPH4vZWBjrGQ7DtnaoMnu4EoUXegiNWh8fAGAJTfXMd6Zv35KAd7TR71RXslGWAVpbAXFn
+	gqJ1JdYCIT/4GXMK0ZcARdwLm1GiPG4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769022667;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SdZRkQhKinw2Zzq19HysXvpWY3I1Lr5Ul0XP6wR89Go=;
+	b=JYp4XiuJEmFTJwullkuqz72UfXK8RRosxvYGjFBoER1VKdjSo8nWNzEN9cHPI+yvzqvfEI
+	uIIIzK0u8NZ4rPF5FV8b4d0pYzkogaqeTTIysDrr1OyY03j9yJl9zvQVw7+P90ADaGb73k
+	LS8721BxfMsAe5RUgtAZzokOU99Q7UI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-XN4vaPV7PW6RxpaJHQxHwg-1; Wed,
+ 21 Jan 2026 14:11:03 -0500
+X-MC-Unique: XN4vaPV7PW6RxpaJHQxHwg-1
+X-Mimecast-MFC-AGG-ID: XN4vaPV7PW6RxpaJHQxHwg_1769022662
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CC68A5BD6D;
-	Wed, 21 Jan 2026 19:03:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769022219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wrMzqW5YGuDKPkpZJVNguF5+RS5LJEqkTsioRB+4hwU=;
-	b=daIUECt6IGzDNLpn43IzvijsxJAvINi2hzO0rphu0q/vG+yHmpRYkq/aUkCAB+3oa0MMFm
-	1kswg1EhxSLThneqkVckY8e6Z0mOb/WaIBDwNqIr6umvuhF/40NvbUwtiSOr4lvE+gJpQP
-	dKEC8Ku6N+h2E9OlFclPjeuekOIRAEM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769022219;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wrMzqW5YGuDKPkpZJVNguF5+RS5LJEqkTsioRB+4hwU=;
-	b=qnsPYJ34//bTRq+kla8PLUsI2h9czlT36c/359vGJJmoLOQkllqoMlL3IxnXYIEUhUhU6y
-	t+bWEyJPd47LwuAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769022218; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wrMzqW5YGuDKPkpZJVNguF5+RS5LJEqkTsioRB+4hwU=;
-	b=ps48yUo63eQnwp+CgitvCmZ3yteaGIEgZn6fmEK+8iEPYeS1D8PMlykKz3hfMV7l29vHDj
-	cx+UyxYtxn94MZJOgNqqLd7XhwxvjfII/dWyTlmydzJ94yJrTPt64CplVAdory2CPQcrmw
-	++0KsrB/NApblNyFC38RRLQP1GQtk48=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769022218;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wrMzqW5YGuDKPkpZJVNguF5+RS5LJEqkTsioRB+4hwU=;
-	b=hbaHzRDy1lfW7FJpk39eHzpCiG4BUDFHpubzRjVUe8ksYJqYrh3rsbfNBD/JfJq8Qz9wiw
-	tnHBwnY7WRJVufDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9A0AA3EA63;
-	Wed, 21 Jan 2026 19:03:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1W0+IwojcWm8dwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 21 Jan 2026 19:03:38 +0000
-Message-ID: <c3eefa5d-21fc-4a37-9b48-90701159baba@suse.cz>
-Date: Wed, 21 Jan 2026 20:03:38 +0100
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 956081956096;
+	Wed, 21 Jan 2026 19:11:01 +0000 (UTC)
+Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.89.197])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3C42919560A2;
+	Wed, 21 Jan 2026 19:10:59 +0000 (UTC)
+From: Waiman Long <longman@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH] mm/mm_init: Don't call cond_resched() in deferred_init_memmap_chunk() if rcu_preempt_depth() set
+Date: Wed, 21 Jan 2026 14:10:36 -0500
+Message-ID: <20260121191036.461389-1-longman@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 15/21] slab: remove struct kmem_cache_cpu
-Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Li <hao.li@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-15-5595cb000772@suse.cz>
- <dxrm4m545d4pzxmxjve34qwxwlw4kbmuz3xwdhvjheyeosa6y7@2zezo6xejama>
- <6a814aef-7b81-4b9d-a0a5-39f7dd7daf3d@suse.cz>
- <CAJuCfpHRrFS3a8=x4shoNXHLtmvkFgV8xASsQL0-hiUBb-O1Kw@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAJuCfpHRrFS3a8=x4shoNXHLtmvkFgV8xASsQL0-hiUBb-O1Kw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: A1922A0009
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4kqrn9n465cpmqxcy157mhwekkueihkb
-X-HE-Tag: 1769022220-281976
-X-HE-Meta: U2FsdGVkX1+m6tpVEdDweQVTcKsUZBljeISvk7TozQBD9+2SXTKHf7Kpc9/rkoZJ5K7nMy0gDBOcXgPGFToO6TXD5jHOi96P+i6Q262KVqT93ivXDSfZSNZ09wU+CLlU5KmX6LC5Srzn7zjOQaglU5UZpjsV3qCMYn0nGe5Gr/lVEKvbiWSHndDyHJYAwi5ro0QFmmkjPTj8mwmYhh3JMvHCKjasd3qaApDN2A/E1y0iEU/i0SoolTOj+461w8WTgWawKGgfvUwTiOQKHjUqu0UeD9zCUsBzkIqWOt6U0N3r9k4zLll+OBLZCoANj9Bq88t3u6GuktMGe+V0545E2peHUaBZmwtt6uJE7y0+M29BOU7dhhShpoVm2sxnPNCHNzrBOt/7MqKssr5gGhM8jB6vPegOH9PJdqNgkRj673cIjFcqfc20B46ZL5R0gjXIN6xm3IylfwUZhAWI7QtqaQ94LgjVc5jmmsMgSGRju9u0FUbTYVjz37E3KQAJ9eWWlBQGgFXnTn+KO4CpdsgG6251c6p4TXbqWGTTKIFWqYsmVkadirJA3GNYOC6JDxuV5TgElc5A5uu7GMJhti9QoPYfN8J6DnCoawjIzd0ISQIehWyrw6nuB68Y+MTPnAeN0adwWCewsAQFID60/OCrdr9Mr8ge6llBGMDPJiTyoyDYLPakHAFkkN0JNE2pIJrF9aYiVPPzsO37rHrkM8ZIBdGyanm+kNWOVi8qKOSAv7W7VA1MdZnbxpizDVswKaB9aujKT+xnamF4CFz26vn97+CWBnM4dFK4zzSRaTwM9a2F6ZH4J1e4jr1oQOFbFp5hp0fxACtLIGsrZjyaT/KeZA6uL5NARWESSqdbqaEs3Gd+U4fDwQMYyJJMp4q72cjWoDs4TKzfxze5cUw5TKju5vlqakvJGW09SezfH2kN0OC8NT+MHgHv6NoucBamRHZvkbTqX6KRAydrMyZ6bMv
- 1euygeU1
- 0oDtVVRkR3T3GY8Rtb8H0E0Qz0ZZykTVlbt57bwU9Iut1f8/3ajq9vL9DfTL3xCC9nNgcspxidTMthFvboL3FjT5a3QIm6a3Y0NIC/8qG6hoM11+vw0M2RUcIDQmKVXEFZUzNj59EmtKcncgoYjk/eX5XnLRj/LHpwSWhuA2p+NyjliFs9p+m8XYXL+k6D+8SUF2OFoogAPIRB22mNypD2woAjJTtInpiIHgswTxq3LsM2XxNuRyg81a/RrsMy0J6S0hnb46DCmKPXmPbglKh4xcqNNwyl6SFml+wdJxc+lS6QQJ4CCsFlmc8fKJv38m0rFLDlidx9SaUvwgiz7R2xRNNr4TL4jjiP9gV40J42Tt7YYjbi7Bl+d2XKw0L0TNy9dW2
+X-Rspamd-Queue-Id: D8805C000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: rzre8ofc97fduh1zgeq43ozeoqq3dex5
+X-HE-Tag: 1769022667-472743
+X-HE-Meta: U2FsdGVkX19EOoqp45PC/oxEAjkmcV3AF7x1W0x/+1fMZN7ntMH6FvBKswB0TQYXfuiDdjA2LAyzeFilwc1EcAXjbb+b0yN05bGnRQucEDsz28knOtdnLiA/bPMZHjX/x2mrTeyx7ld/pKdA16UgtEimByGkyv7Dt9whCev/YM9hbf3O/J0JQLQ0q6rYa40ZuOP2Hj8lsjmhlKt3ERP16+pAgw9sn+8l3nu7ip1fnL0h9MB7LNhGXJfTXZP9ikW5u8rXKnD8NtLWEN0i0ZsvlCNxybJq/xzmC2XMZ8+f7vqZVyn5gVfp1stI7g4VZCpkgCDCl/N8xrPg71uAQyINWIJveiaLl2RCi04SEe3IW9WVNWEPN78PBwC8g0hxCR6mQMAZj2mDHFU7F0MxfmUuXFpAHgqEEFP4+Dh/jNqHqob2yvklFf8ZBBrphTMZqFKDPmb1F7jJBUAwEfTCEkKwUXuAB00hqZLOCP0YF6nttB5mbIbw+F8IhAYAATrFufi2qS2H2XDg29Lk9n3wPyR3Mf0/O3zv6HAffutEbDPqB5aIXonrWceWF0ak9A4q87tLVv//aMn+yvJZ4H+5PLn8ayuREZ7TZTfOk8mp6KOjvId4fhyLwxbvO6OTraIPsp90c0Wy8coac+UhTd88bikKi16CRQu6v7q27SrQUwleft87UUMsT53Ar2VZi3Jphz2/hGyITFgBDs7Nft1Qgc2dsFisi28Jv8Kc5D3E1/YNj0yOlyt9TFtX7nexTgf8ouNqrVb3+3YLnDv/VeY4HBb/AtiIZ4o4zY8bMT4NVb8gKRBR4CLeC/hNAX+3GTvsDJ/awb9FhyTJ3A/2q51W3LCSYbxaJy4CVz5bkcLIY5DvaGbxums8xrWsRLWKagYMmhnb8XRXjCEIG7DUV4e9pq3xyM5fPgAntJEk6Q9JUBcoAMzjVcQ+tVSuMse1PBjjokc6wA5hQUCuGm8POu4ZNUQ
+ y7B5nBKF
+ D4IVb26Cr9FZerBj/mNsx81+qpbK8vxU+HZU2mGzY9mzFUJOo6CCBDgBdCIj+Te4EYCw9hjGMSwDAuU/mAG6n35qcaMHw95pflqp4mOmpP50CeYCF2RHfEMAbuepNbDbDrpIQSa5yJcOCLbuf1W9MfnElIO+ZF6RW+Isk26a1IHsW7vz1uY685OPSDt8vFLiHWauOv7xsjBhfZbhveN/Vpyej4GNg9/ViOtcZIo7MV9E4EFnZw6hjZFqU0f/CzQ0IcstEK/JHRxEowSWLrm3FUgusdnesqthjSw6at5e6KTVA6ZAhrKrmMyGOxl1928qVuQMkqw7FS4eflC/fetLyqsqYd4O5saVas3J6T4Mx5cnO+fgJnbQQDSc7I42DX5bG7vKo3sjJFVPXpZl95O91p3ExRtrqr3l+UU1dpb3BY5xHUHQ99Zef8CLbnoVKddnK8k4w
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,41 +107,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/21/26 18:54, Suren Baghdasaryan wrote:
-> On Wed, Jan 21, 2026 at 2:29 PM Vlastimil Babka <vbabka@suse.cz> wrote:
->>
->> On 1/20/26 13:40, Hao Li wrote:
->> > On Fri, Jan 16, 2026 at 03:40:35PM +0100, Vlastimil Babka wrote:
->> >> @@ -3853,7 +3632,7 @@ static bool has_pcs_used(int cpu, struct kmem_cache *s)
->> >>  }
->> >>
->> >>  /*
->> >> - * Flush cpu slab.
->> >> + * Flush percpu sheaves
->> >>   *
->> >>   * Called from CPU work handler with migration disabled.
->> >>   */
->> >> @@ -3868,8 +3647,6 @@ static void flush_cpu_slab(struct work_struct *w)
->> >
->> > Nit: Would it make sense to rename flush_cpu_slab to flush_cpu_sheaf for better
->> > clarity?
->>
->> OK
->>
->> > Other than that, looks good to me. Thanks.
->> >
->> > Reviewed-by: Hao Li <hao.li@linux.dev>
-> 
-> I noticed one hit on deactivate_slab in the comments after applying
-> the entire patchset. Other than that LGTM.
+Commit 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk()
+in deferred_grow_zone()") made deferred_grow_zone() call
+deferred_init_memmap_chunk() within a pgdat_resize_lock() critical
+section with irqs disabled. It did check for irqs_disabled() in
+deferred_init_memmap_chunk() to avoid calling cond_resched(). For a
+PREEMPT_RT kernel build, however, spin_lock_irqsave() does not disable
+interrupt but rcu_read_lock() is called. This leads to the following
+bug report.
 
-Thanks, I'll remove it as part of "slab: remove defer_deactivate_slab()"
-where it belongs.
+  BUG: sleeping function called from invalid context at mm/mm_init.c:2091
+  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
+  preempt_count: 0, expected: 0
+  RCU nest depth: 1, expected: 0
+  3 locks held by swapper/0/1:
+   #0: ffff80008471b7a0 (sched_domains_mutex){+.+.}-{4:4}, at: sched_domains_mutex_lock+0x28/0x40
+   #1: ffff003bdfffef48 (&pgdat->node_size_lock){+.+.}-{3:3}, at: deferred_grow_zone+0x140/0x278
+   #2: ffff800084acf600 (rcu_read_lock){....}-{1:3}, at: rt_spin_lock+0x1b4/0x408
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.19.0-rc6-test #1 PREEMPT_{RT,(full)
+}
+  Tainted: [W]=WARN
+  Call trace:
+   show_stack+0x20/0x38 (C)
+   dump_stack_lvl+0xdc/0xf8
+   dump_stack+0x1c/0x28
+   __might_resched+0x384/0x530
+   deferred_init_memmap_chunk+0x560/0x688
+   deferred_grow_zone+0x190/0x278
+   _deferred_grow_zone+0x18/0x30
+   get_page_from_freelist+0x780/0xf78
+   __alloc_frozen_pages_noprof+0x1dc/0x348
+   alloc_slab_page+0x30/0x110
+   allocate_slab+0x98/0x2a0
+   new_slab+0x4c/0x80
+   ___slab_alloc+0x5a4/0x770
+   __slab_alloc.constprop.0+0x88/0x1e0
+   __kmalloc_node_noprof+0x2c0/0x598
+   __sdt_alloc+0x3b8/0x728
+   build_sched_domains+0xe0/0x1260
+   sched_init_domains+0x14c/0x1c8
+   sched_init_smp+0x9c/0x1d0
+   kernel_init_freeable+0x218/0x358
+   kernel_init+0x28/0x208
+   ret_from_fork+0x10/0x20
 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> 
->>
->> Thanks!
->>
+Fix it by checking rcu_preempt_depth() as well to prevent calling
+cond_resched(). Note that CONFIG_PREEMPT_RCU should always be enabled
+in a PREEMPT_RT kernel.
+
+Fixes: 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk() in deferred_grow_zone()")
+Signed-off-by: Waiman Long <longman@redhat.com>
+---
+ mm/mm_init.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index fc2a6f1e518f..4d6b6dac6f58 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2085,7 +2085,12 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+ 
+ 			spfn = chunk_end;
+ 
+-			if (irqs_disabled())
++			/*
++			 * pgdat_resize_lock() only disables irqs in non-RT
++			 * kernels but calls rcu_read_lock() in a PREEMPT_RT
++			 * kernel.
++			 */
++			if (irqs_disabled() || rcu_preempt_depth())
+ 				touch_nmi_watchdog();
+ 			else
+ 				cond_resched();
+-- 
+2.52.0
 
 
