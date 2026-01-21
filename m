@@ -4,94 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6586DD262B0
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 08:20:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7226BC44501
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 08:34:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAF136B0088; Wed, 21 Jan 2026 03:20:22 -0500 (EST)
+	id 00F556B0005; Wed, 21 Jan 2026 03:34:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5CB36B0089; Wed, 21 Jan 2026 03:20:22 -0500 (EST)
+	id EF5C06B0088; Wed, 21 Jan 2026 03:34:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B89766B008A; Wed, 21 Jan 2026 03:20:22 -0500 (EST)
+	id DE13C6B0089; Wed, 21 Jan 2026 03:34:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB0E06B0088
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 03:20:22 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 46A1F1AF8AB
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:20:22 +0000 (UTC)
-X-FDA: 84355273884.06.6751733
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5D36118000D
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:20:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DMquiX5p;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768983620;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CA8856B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 03:34:13 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F6A71A083C
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:34:13 +0000 (UTC)
+X-FDA: 84355308786.01.B3BED1E
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7B4D92000B
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:34:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=stsN9BBL;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of edumazet@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768984451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/C7RlKb6kG1iTpXvW7JQqVlIIZuudSPPRI9mtHGK9MM=;
-	b=g9cVoUJ7bNVEskaQYaPLoX5VRZHgAGiHRCJNDv2cfLlNvYOCDBSi6SBmLeRLOJe2iXcgjM
-	Eu+L+NfXrqCB6+3zXcT22EUmnCjaliA2CFvlUlRcWi8GmWLo18Zj1/RSr8aCyTCnLHw3us
-	c+wTRO1TG0RJuZzTX9gp3OKkZT2zFQ8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768983620; a=rsa-sha256;
-	cv=none;
-	b=8AAhNWk2PuXOJssFXRQF7CpL8nvWu9Q9y7GwwJDka6Qrsw8rx0DqaIY62dZZOYQc4ZSTK4
-	ILFylWTpcKnlLbwtPAb+9yMXhemkmiL2kRI7Ck/Z7T6Lv9nQ6Ec2wMaDQIj710fx/sofdR
-	RJxaynHq2si6jLEAA6Ggm3X/C/MRCM8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DMquiX5p;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-Date: Wed, 21 Jan 2026 00:20:10 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768983618;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/C7RlKb6kG1iTpXvW7JQqVlIIZuudSPPRI9mtHGK9MM=;
-	b=DMquiX5pLi5Jxf8xMEaJv17fESPSsBAXhtfXYVWupL0N0c37DPf2khFhe7aWvvq8A7U67E
-	lcUMcLLxBIPuCJAtrwMkrIMlObW1IVdm/NdIDjjr4QGSLdgJ/37hkcB4EDyWZPnbDvZKH8
-	0z/DybNcVBxCL0pPtHcCSynGH3HW9G0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, hannes@cmpxchg.org, 
-	hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
-	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 28/30 fix 1/2] mm: memcontrol: fix
- lruvec_stats->state_local reparenting
-Message-ID: <aXCIsLQMSdQ2GNc4@linux.dev>
-References: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
- <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
- <ifcth3hxyrwmmeo3nejettdtkw2ndxdjbylszmhq3vohuhsncl@k23pew6gywko>
- <5a18658e-2076-4cbf-bc53-5b6e99c1035f@linux.dev>
- <A13923AA-8200-4863-8080-EC4B254BA3AA@linux.dev>
- <moupi2ch2cpuyrurthk66igh275ks62pltjk2zfngxozj52oxs@64lxvcgh3ays>
- <37734a82-1544-4015-b4dc-30583441a7ba@linux.dev>
+	bh=qR8UQAhEPTcY6PXq6mSRhJOzhLXbgRU8yzc2N+B5a58=;
+	b=pt2krq+9tvDhI+vkMHnoXK2R/L0Gl4ooQ2fzPYF4uracqR5QX0GU2g7TdhToXivBEsn3Q+
+	GL4abTuLiKprIGS4S//fN4wRgVxgyLk1z9DvS7zSI5TyOByZgfHFwhLgK5odX25qT/ChMb
+	9vY5uPxIZRDu6AhlSZgFCNyko0zyYUs=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=stsN9BBL;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of edumazet@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768984451; a=rsa-sha256;
+	cv=pass;
+	b=8lC2MU7zvOIUdST0/nDbTsFPmE+nXt0E+bC9BeXC7XerGAKwa9kyicZRidGdA8YJR+ZQw3
+	j7RHlnJwgb8vKomF9NNeW1zrYwmHJ4VqKZ/1BhWf06ILhoghujODVlGOnUeGOMGh1M1W/p
+	NnMKFR2GPJmJL+QTPKIuHfO0nz8pT7Q=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-88fe44cce7eso64201316d6.3
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 00:34:11 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768984450; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZBJBBJbc00n/Kmts8hVgAPNoXxyr8hvaVrKX2w19OsIz6mYBKZmrGC5GZEnRESBVX7
+         oREIaHdT5PFSvhMyk9Uctc0MrG3BhiHPbbvSFiFoHq6bIHXSZpjRYx0LB3g6gfPqU2m2
+         VHICfd7eiecgj2pTeQJhWQZDIlWJPWhTZ5DF3H6c/X9V/DXc1TGnE2eOCYp/QIvCGiE9
+         tfukZXtFfXCzFJvwty5y4vrIDzwZRVA373LAHDAfn3kN/oadECoCU0MFnkCkUu9ZD9tB
+         icigQKLW1MtbhGz5VabfpvwtpkuhAe84MMratUIFnnFfU1IIP3dh4xrD5zz5PNKHS/1Q
+         X4EQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qR8UQAhEPTcY6PXq6mSRhJOzhLXbgRU8yzc2N+B5a58=;
+        fh=L8n3nFkd6QUvbiy6j1ZXgZNCNQ27uI28sph6x6rbctg=;
+        b=I+S9+A927OqlJcz9hP4BYK4qsXighEJsj5Hxv81pViQNc+k/IGYdhVAUqwMaQfrhT0
+         jVrrrY/6Xl8MutBu87NSTzneMhI3nQu7FtyNl5k57TWTHhc3D4kUN7yD6MtPye0GFHj9
+         VQo+atKxK/O0ipUlFoWHKJ96cydRiMMPUDaSojnRTX4uFoYCjMr8kxCTU1wlCY4beWwp
+         MHjzS31Brr3E1xxHYGCvwMV1OiyexA1lttTpkeEHxdN6UxvcFbVmFt1GLzrBC1GoUdn3
+         vVz7LS5mFyTysBlIRW12HUD/QAjVMbfVFAzNTLBU2DrvlsERVZfxSqPM/WWGBTxJQfXR
+         WQcg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768984450; x=1769589250; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qR8UQAhEPTcY6PXq6mSRhJOzhLXbgRU8yzc2N+B5a58=;
+        b=stsN9BBLMmwtNfxr6cp9bc//NAIbs//65mUgPsWcBBrjtReI20CkA/hsJdUBnPQgp1
+         11GoIExMw17Unf0Cl0ayPtbDWXTBuCPyIijOvk2ZN1397LlPx4JrEtYv/YW0ED3k0aOf
+         BRDjMGnwCqp886d3elSPBxQZFYau12Jf8J6M034vT58/ERKSwZ5yaC14P0uMMGaMK3qP
+         3lppAbJ0CLbQPYqXZ/8ydqfjIvtl6uHQO5uBIM+DzlUOGlhN6KBJ8OB4fp4YYRIteaFm
+         IknGbWBl29hgZ0zqbhcDZ6gjwU7G533fwXmgS+C9iGHNGzIY4YGT5Y8wyUMKBrnVB8s6
+         xUdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768984450; x=1769589250;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qR8UQAhEPTcY6PXq6mSRhJOzhLXbgRU8yzc2N+B5a58=;
+        b=lfpYKhAuM5AQh2YPMnPJVLaLbSKLe9tOGtizXS5Lf4S/Bbrl+o6wKqRTMJyIZU7mQa
+         m2b4CG+BLbPPFTb9x/tnJa5LdR+vZbN/vgEnRPH25cv7KXNT5xxBK21zTPGX+GYNBbnc
+         nBCc3HcgiYDCvhYLwMFClKlIEPgcul0MvUhEpRjoz3VXeYygdt47I+963FO2fwbkbBql
+         qyEnjWDd81W2/jCpEQ7cbmVjfeBLFg2VSzmP+NRLkGtu8SIsgymgtnUJqlIWPw41vpSP
+         K+Lx2UbYZHDw1ysSSzNQVOeCPwKOLL9JOZS46KsCIuZzchf0+hTKIaduU5jn8sKFmPgt
+         AaGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXdfeIC6bTFSQb32ALde7e+cHmUwmPFlmI2HvcRq/vY2gNlu9F9JfW7uJyNRNPUcINx/4Mbp8m//g==@kvack.org
+X-Gm-Message-State: AOJu0YzNoJudICZSDFlv8HeantJVIWihERjvRoSB44hHOqFRXnWBA3vf
+	v6L3fCdZvO9ZnrZLqE2NosBwhmbDcQUKIBMB/uoMknlz4q7NzScIHRE08r0IxgNA5IB3NST+v2z
+	L7Lf27LOux/0qV1XONjgOP5TBwrBPDX2vjFHBh6p+y5g9SQTbjQ296orw
+X-Gm-Gg: AZuq6aKRvSyigV6iwRMhZzenFy/FzGyPlagcuxBwhE6O9fa/pRVBql1O1KK9qzw2ynd
+	0G9eZ3ae3H+imaO09jdluOtp2nti7kNlkq/woAw9WC97GCctsaQ/vvzmgoHbEHgjhyw0Xm/OjpW
+	bRFfnGoCnhKYaDn0RFBbXr+SnTaPasYtXoGta2kUbE75rkSSxrg1tSytxkGs5zS13gjb60NGNJt
+	GQReJDpEKLldLNZH6As503kGH2ermU9BCjwGJ0O/TwMSXEzU/Ceit28n18AqyG6MqVWX1jW
+X-Received: by 2002:a05:622a:1a9e:b0:4ec:f26f:5aea with SMTP id
+ d75a77b69052e-502d852debamr64442781cf.68.1768984450268; Wed, 21 Jan 2026
+ 00:34:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <37734a82-1544-4015-b4dc-30583441a7ba@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ugx776w359jm663e1i4iirw3n3p4k5t3
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5D36118000D
+References: <20260121-b4-remove_cache_from_obj-v2-1-7213d36b89d5@suse.cz>
+In-Reply-To: <20260121-b4-remove_cache_from_obj-v2-1-7213d36b89d5@suse.cz>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 21 Jan 2026 09:33:58 +0100
+X-Gm-Features: AZwV_QikhwEzU8VLl-_D2F-UkNB_eH87BoWYdZ-Q4Ay03HF_gzeB9yWn3TofxPY
+Message-ID: <CANn89iJhz9RfpG62kW1XmL1=cTKvVN5kS-KM+TpzE-mPW4WhUQ@mail.gmail.com>
+Subject: Re: [PATCH v2] slab: replace cache_from_obj() with inline checks
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7B4D92000B
+X-Stat-Signature: 85okw1zafernuzzwohoob77iex1z4k7s
 X-Rspam-User: 
-X-HE-Tag: 1768983620-877747
-X-HE-Meta: U2FsdGVkX1/hIEMYbXvScaj24c3djG7ZCRVa94WQ+gRzN3eBFQuijsR7xWwte6WbDkEvpzr+JvP3kgkTrYfPWhnBmhWfsofDOsQU0tv4kZfe/1gYWM4Q7VYeKIaT7Yc9uBnnRCMWs2IiYFN5mKUBB3jpyZGOfXd98194BCbx+xDfuP1g9wtWXt1hT1+HgiejkHXWiKBNxXgqf7V5d4LIV2GakApe2vYmGlnSug8NmB0c4ULTh8sJ+H7Q0t4nR9WcuWvoLD3TpimO00nDrVjESoXuDc8a2kAfASyoj76Bzgc2XtS5KtFKFK49Bi30nXZM1yJe2a5AAbwq34/WW78pZnLvMk7YwNIpVWukzA/1Q9waZU82D24RT/dNR/xijPj5r4AxD+rBFzTgF57u5TrDNr75X0OFxN2idVG5emXXIA6CtJcsN/lABLP0rd2i0Zwzfah9AuDuSPlH2AGndmja0xQjo9Io1xlQ+JCLII2+rBqIoNu2ZWad78ijPdffSnK4ErxamiwIMxIyE+F10BYSIYVFqxTrar3BNKzng/Edf6EUqFWnU/oA7QkiQzNMqPvJsGNB68fCUi/i9RKitsjnw2EgbnezGZLbxTCAVueItnSUStqYvDrLaUbaBindoq4AOwsOOXjYOSJ18T7NioyMk46Ky8Dyy/gk3dHHSSSx9crbcu++TQL2cwgovJ3FfK6iVhZHt+ARB8l5mhNGBMxqlMMdpNpV5aqywjA/NyI/NDEd2M5UikkuDYF/hJK0hAr8nEBk69zBBzwbFsTY0aTeCqmtNEES6CoOOHv2puqCtyZW6hfQe5RDjo2XmviUBSaPLPjML+CmTXqrs3OiORHJ61Uzw+cygmDzdCU62AE2cM6Is7HjLj04gEYX6e09CIYwny73EHUI+Qhxv/hWS7Kzs9au/8evOpjhSAQFxJDr4l7by1e+yIRfZXFp6/PbOOzgxEOcP9RbLmX5Se/SEyK
- lCzI0KUL
- l8/s5jZy3FIt4mUPUsn+Vqjq2Pfgj1yFx92e3CC6AcJgRHVhdqGzVAYgqXc1crmqp2B/Kn9BKC254ailCUs5I4XolHQEX1i6qdqZHmtGt664QRfmPA/XndYn2g/nhJCM6tWg5dl0DnJh5PGwunJ0STobgUnzlFQma3Zn1+DZslQPEV2cfbe/7eulD7QhUrQrs6Y8XdLTN4Zy8hQqLW5qLe8qiT5RAqhO8mlxqvP7I+jr8nkEhTOkRu5dfgvsDP4H5rMrR
+X-HE-Tag: 1768984451-977807
+X-HE-Meta: U2FsdGVkX1/ztBHJiCGtF3UdLzlOWDtx+1wBwPmdlxk0cJmfkTGmrt04pKN1v6ehLlAA4GaBIeAFnR9Canao3DC0PCF2pJE372oBsImvGb8IXhb7ij1ATaOC/TZmlqv89lRGIFANMiuqL9p2OMPwAUn+/Nxp9pOdU1sJ72PpoTSghZHJEuti1Wy/1VAFi6Q1ik3YwkBM/oGwA/1UXQtWjOqDrnmbofOV5DiF+NGNn1nKcWqd90fSiEVdb3FORP3FlCxV9faao+UMe7r7zp+MvyXBcAzzBu0+lYGX1WsBP0tMYF4k28ACUi8CRgPQBKRDgTNWqHWY1BqO1zWTIst4arRjNl1YiSoJecoAxYte38geYk+I631epLDKaeG8pJtOEjn6jAn+fEdlqzj+dgCdPcTzK8u0Pnd3OZqZO36WAOQWJIsqpzBMnc7LczjCpRmVhZMrWTxRocV6K/LQW1QuUtzn3JMQ5VZnqGZbaQ54gnWiM81pKA3RpPYH2pxWKex7vQS4aLfXwTyFdZwFajyAKq3FRxx+m6/wjqkg1GZ7Ksud8PzI73G/a2xEC7b4iQyRO+svmmRS+JByCoZEMi/DEHNy91LiF9jUup2m2pgDpuJavkDWXNYSv2PIUWFaEvNw3V2mcwqc/EQB5YzSpi/fnfsSuHnhXRH5QKctaepDfaQP264FGyvcDKUjHkaSkfo1Mn2H8QKYIdNn6/6z3NQeXKd9tmzNoX8AAHLNU/F6CBiNPrDH4gZ5IKyvft3RTnesK/55EwOqGoj9Pi1IVDLunwAOvz/YVsifQ8cQORBdvaI4BhiBsADJWNwrg0eSevEwlmEhfRAOTwXiZ/jRmIoApfttGQnnfkCOc1QV3ut6777+pVtBEtMHS4FrdTI0tPdllOW5T0VXZPR5wvmbwY648Rr9Nt8u4m7bwbq4/D/c2Qz+Qd8vOWc2fg1x+LWfBzxYXIQsR5O0FAjKVfIIjUg
+ emqc0dJg
+ 95DCj99i/rV3SRpB1crQWU5r0SjRZ+o4/j9YPUYAswF1irufNueoKs5LpZBrzi8Evq28N5x89P8MyLukx2dHSFU3AFGpb+GLpjrBbUOmzQilSmpUAmBipKBpa05giPlU1alXllEVwKZP0iwdJwc4lq7V1f8Pk+0g6wlQ6BXs10FTAdUkgTJ28RZTyRgvbcD6fiuKKVOQeiUpNtkAiIOBCWQdbKs9edQOL1CdcYdC00X+GdRuOjFR6V5ZVCoyd+Dv1YaWnV71QUDgHVG4ePMU+fbhP5yeM5i3qZvJerEInHzDG/q9MZdK0uEk6kdHphNskaeBuX/Z3fJBVWaK/Ldjr/YPLKuBC/akD58LZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,42 +140,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 11:43:50AM +0800, Qi Zheng wrote:
-> 
-> 
-> On 1/21/26 2:47 AM, Shakeel Butt wrote:
-> > On Tue, Jan 20, 2026 at 03:19:00PM +0800, Muchun Song wrote:
-> > > 
-> > > 
-> > > > > No reparenting local stats for v2.
-> > > > 
-> > > > It seems that lruvec_stats->state_local (non-hierarchical) needs to be
-> > > > relocated in both v1 and v2.
-> > > 
-> > > Here we might need to elaborate a bit. Specifically, in the function
-> > > `count_shadow_nodes`, the use of `lruvec_page_state_local` to obtain
-> > > LRU and SLAB pages seems to also require these logics to work correctly.
-> > > For SLAB, it appears that the statistics here have already been
-> > > problematic for a while since SLAB pages have been reparented, right?
-> > > 
-> > 
-> > Thanks a lot, now it is clear and yes it seems like SLAB is problematic
-> > but now I am wondering if it is really worth fixing. For LRU pages, how
-> > about using lruvec_lru_size() defined in vmscan.c. That would at least
-> > keep count_shadow_nodes() working irrespective of LRU reparenting.
-> 
-> Do you mean calling lruvec_lru_size() in count_shadow_nodes()?
+On Wed, Jan 21, 2026 at 7:57=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> Eric Dumazet has noticed cache_from_obj() is not inlined with clang and
+> suggested splitting it into two functions, where the smaller inlined one
+> assumes the fastpath is !CONFIG_SLAB_FREELIST_HARDENED. However most
+> distros enable it these days and so this would likely add a function
+> call to the object free fastpaths.
+>
+> Instead take a step back and consider that cache_from_obj() is a relict
+> from when memcgs created their separate kmem_cache copies, as the
+> outdated comment in build_detached_freelist() reminds us.
+>
+> Meanwhile hardening/debugging had reused cache_from_obj() to validate
+> that the freed object really belongs to a slab from the cache we think
+> we are freeing from.
+>
+> In build_detached_freelist() simply remove this, because it did not
+> handle the NULL result from cache_from_obj() failure properly, nor
+> validate objects (for the NULL slab->slab_cache pointer) when called via
+> kfree_bulk(). If anyone is motivated to implement it properly, it should
+> be possible in a similar way to kmem_cache_free().
+>
+> In kmem_cache_free(), do the hardening/debugging checks directly so they
+> are inlined by definition and virt_to_slab(obj) is performed just once.
+> In case they failed, call a newly introduced warn_free_bad_obj() that
+> performs the warnings outside of the fastpath, and leak the object.
+>
+> As an intentional change, leak the object when slab->slab_cache differs
+> from the cache given to kmem_cache_free(). Previously we would only leak
+> when the object is not in a valid slab page or the slab->slab_cache
+> pointer is NULL, and otherwise trust the slab->slab_cache over the
+> kmem_cache_free() argument. But if those differ, it means something went
+> wrong enough that it's best not to continue freeing.
+>
+> As a result the fastpath should be inlined in all configs and the
+> warnings are moved away.
+>
+> Reported-by: Eric Dumazet <edumazet@google.com>
+> Closes: https://lore.kernel.org/all/20260115130642.3419324-1-edumazet@goo=
+gle.com/
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Reviewed-by: Hao Li <hao.li@linux.dev>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-Yes but I am mainly brainstorming. We can keep the reparenting local
-stats for both v1 and v2 for now as it is not a performance critical
-path. I am more worried about the stats update path where upward
-traversal of memcg for CSS_DYING can be costly and I don't want that in
-v2.
+Acked-by: Eric Dumazet <edumazet@google.com>
 
-> But
-> numa_stat interface also reads lruvec_stats->state and make it visible
-> to the user.
-> 
-
-Not sure how this is relevant.
+Thanks !
 
