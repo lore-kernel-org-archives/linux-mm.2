@@ -4,138 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB7AC44524
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:41:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9D05C44528
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:52:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A7A86B0092; Wed, 21 Jan 2026 07:41:44 -0500 (EST)
+	id 462466B0005; Wed, 21 Jan 2026 07:52:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16E946B0096; Wed, 21 Jan 2026 07:41:44 -0500 (EST)
+	id 42CA96B0088; Wed, 21 Jan 2026 07:52:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05CE26B0098; Wed, 21 Jan 2026 07:41:44 -0500 (EST)
+	id 365F36B0089; Wed, 21 Jan 2026 07:52:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E94C86B0092
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:41:43 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACC24140150
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:41:43 +0000 (UTC)
-X-FDA: 84355932486.04.67A56FB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D09B9180006
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:41:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gLIaRQRb;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 20FA06B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:52:33 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD39888E97
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:52:32 +0000 (UTC)
+X-FDA: 84355959744.20.E303433
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E2E0D2000B
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:52:29 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PCyoJaHp;
+	spf=pass (imf13.hostedemail.com: domain of zhao1.liu@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=zhao1.liu@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768999302;
+	s=arc-20220608; t=1768999950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hQwIUX57PWa5tqxAanQlxhNLVOxtFyBJLEJJJp/j06A=;
-	b=4SmtB/eAKWrC9SK4zmwy94TXBvKVJ7ngeSrGIvCtU4NzoG/gDwx1wPSg/Bq9JMNHXI90qG
-	6MO2xqVG8SPH9EOIFAwYX4CCVx0Edj3aA270B8aleWhT1umRcOL3CZTnDDMMHE2OnXfb4s
-	Vyi0yC0MXtNJz18Byhit7srqUjeoAzo=
+	bh=FpkD0z4M68ZfTMWJgSMbZuMpf1IUusaTld3FCOXfu8U=;
+	b=lBL8CNZKBYOb2IOH6TpW++enmweDOPzwRjLhQPXhXXZNuBOg4Lq7R7u1+/p5Vto1TYEEOu
+	vjm2mXlwc1i9CnnZBP7uywbv7ftjfzTLmYPAUFVDYs7qYApfdVFf7c6jx7KkDMZ3iOH6yE
+	DNGY4A2x6Dzs7caGrTZN/It5pucHELQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gLIaRQRb;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768999302; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PCyoJaHp;
+	spf=pass (imf13.hostedemail.com: domain of zhao1.liu@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=zhao1.liu@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768999950; a=rsa-sha256;
 	cv=none;
-	b=eFh/iHUzPUHvBE7GN0xQk460hTntqOQUs6z2W7QJr21KjE3rirA+xsHXmNCdPzAqnsC2At
-	suJCo37wAXWSxfVh+j8V9tHJb4fGzScyEWglzmVRkcYQ8pC1qHsQZOWDqiJxiwTCkL/6+4
-	gFRrLgnig7JE7GqNWkSIv8TOGJ2O508=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D3CEB4030C;
-	Wed, 21 Jan 2026 12:41:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00C8C116D0;
-	Wed, 21 Jan 2026 12:41:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768999300;
-	bh=Ot3wmRSgdlWXr/1d0aAM7xF9/+7KOTMVUro5hxmpKgM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gLIaRQRbO6LryUYKvEmAUETKOf0vwtVnf0ldAn+WKo4GaSz1NR17nXwyJy3XnYd+p
-	 jRUUeCx1mrGMBIPWBfGIMI7QrhbLOkOmODLW+AcD2vo12V4D6fKU3kQ+g7x0tr6jtq
-	 IoAaXYSE/Sfmp3l4NoseWo1dZRt8egy6wrB9jAtmQyVb5OcChkKxCxnD21CGx1nYrB
-	 GTv5aN2AaMsHb3YnfahXNoQeTkd6KbdndK4baa352eAsfPlaK73XVwluA0NJAQ00EP
-	 4R9WGvGtEb6vC3qn9LHhxhiKb/FtQDO+5rON3uxQFZFZzjS3ip+c5AkR/sfgmyu+jT
-	 Jav6nRjgFfIcg==
-Message-ID: <871f2a76-8ccb-4870-8a87-417371feb0b0@kernel.org>
-Date: Wed, 21 Jan 2026 13:41:33 +0100
+	b=i7SkljzJpmVA3zVhwGYDyiZoXVji5gp6NFPFKuaz3lWPirAtnUID2KjceVVw4K4c+yhapA
+	V/v9aFTrhu3qsQSTCsQSlmWpl+pM4tlTUWPZMxwuHstdbANSgtTXVCnL2Qgvaud7QQOg2I
+	8hJ2YpwSR5OzAeH2nf2bREsxGMYMcLM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768999950; x=1800535950;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=93qVCOReLolQAzWDuV7FilpZk3VhIeJNRhIl5LgLvD4=;
+  b=PCyoJaHphTecEciAzMcluqsOHPRsGmHGH2yEFEG+ioFt92Fei+OVthUt
+   iIbFCGG+gBKEzs8BtI7mKpjGXHDIexVjVC+VtfJ3Raf5VFRAT82+a/8p4
+   oM3deUou5QCWBZSbDvoyF5/6J9AvmPd654/GpeHf7LDG+6CmshEf6kVDS
+   8XwAo7C3sP12sNM8g5mOIe8v4j5MGzPR0rIwe5l+XysTgco+X/NRj2KEg
+   ZqTdcIHCB+QORvRG6Tm6Y4Mw4ZpwYJIz33pgOb6tF/b5bDRDTotbBohCm
+   C4nc5Yp5sgL6VRl5Kp2TDSJ63abcDG930hYRDaWIRS9l7MVN8BAv8Sih3
+   w==;
+X-CSE-ConnectionGUID: vQt7DM/sTk+5Vy1XcPqcJw==
+X-CSE-MsgGUID: p3HEtlzuSb2flr6iJQQiNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="69242543"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="69242543"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 04:52:28 -0800
+X-CSE-ConnectionGUID: 7urcOYczRA2ACdjtwuqQDA==
+X-CSE-MsgGUID: uG1TQmSuTnyH84e42KJ33w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="206506618"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by orviesa008.jf.intel.com with ESMTP; 21 Jan 2026 04:52:25 -0800
+Date: Wed, 21 Jan 2026 21:17:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Hao Li <hao.li@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Hao Li <haolee.swjtu@gmail.com>,
+	akpm@linux-foundation.org, harry.yoo@oracle.com, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, tim.c.chen@intel.com,
+	yu.c.chen@intel.com
+Subject: Re: [PATCH v2] slub: keep empty main sheaf as spare in
+ __pcs_replace_empty_main()
+Message-ID: <aXDSBD09n7jYAX9i@intel.com>
+References: <20251210002629.34448-1-haoli.tcs@gmail.com>
+ <a231264a-2da5-4468-a276-777fc0241246@suse.cz>
+ <aWi9nAbIkTfYFoMM@intel.com>
+ <3ozekmmsscrarwoa7vcytwjn5rxsiyxjrcsirlu3bhmlwtdxzn@s7a6rcxnqadc>
+ <aW86/Nc2+bkopFd7@intel.com>
+ <rey5elthflgiygw4lf5zqldlof6nd5b2mq5is7zbgec7zqvr7a@izbte4jmotrq>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
-To: Gregory Price <gourry@gourry.net>, Li Zhe <lizhe.67@bytedance.com>
-Cc: david.laight.linux@gmail.com, akpm@linux-foundation.org,
- ankur.a.arora@oracle.com, dan.j.williams@intel.com, dave@stgolabs.net,
- fvdl@google.com, joao.m.martins@oracle.com, jonathan.cameron@huawei.com,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mhocko@suse.com, mjguzik@gmail.com, muchun.song@linux.dev,
- osalvador@suse.de, raghavendra.kt@amd.com, wangzhou1@hisilicon.com,
- zhanjie9@hisilicon.com
-References: <20260120094744.5d92e34a@pumpkin>
- <20260120103949.7673-1-lizhe.67@bytedance.com>
- <aW_G66HeWLbyiPHs@gourry-fedora-PF4VCD3F>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <aW_G66HeWLbyiPHs@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D09B9180006
-X-Stat-Signature: sjxuqwsxxq6t1npk4ykpfwo6jfhk8r78
-X-Rspamd-Server: rspam09
+In-Reply-To: <rey5elthflgiygw4lf5zqldlof6nd5b2mq5is7zbgec7zqvr7a@izbte4jmotrq>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E2E0D2000B
+X-Stat-Signature: 116ih17r3qimtodxzs1id1y3bth79o7f
 X-Rspam-User: 
-X-HE-Tag: 1768999301-583567
-X-HE-Meta: U2FsdGVkX1+SjQApPOpDeSPmN5p+vtPMUfO+QV7QcLXVb3sxg7DCxKbPVHt0Pufk55gneX4vB/eBTeSbfbMppvB0P1wUZ7htE8j2oTcXsXDMmZlHGvrWhLjPy/YwRY4gCJsju7pQESDwL0gAxaUXCjxzd6PpWzxrrcJvxKs9cmWghEgESkPRMN+YMewY/xlI58GIjwlFJ/EC124iaFZsi4OUm88Y3tNRThcnwMog012BYIxafiqFEPqMlpA93LP18ghaHepbzS3HfNau1yLpfSNKap3xropyqfL5mmaSPtT6yyyY2++VekO5zJV4zwTssR/FvOL/h/llGVX+1dBUo8P7qGMSqHxUrg5SaYv8WwTtaZ9NTb+2o1eExloEAFUdLseYXFUrO2YhaN3PxvW4TqjjUIvna8mJlKbY6tBL8zR5MNYcE+UV0TzNG3boOIkAINWv6KLmyyKUui2NTAG8Lwt5hEi2+uNrSPCP+T60a0T7wxs0JuZp5XHsRPHSUj+CLpKdvxRj1yF6lKLgdocoJE/BtOKRUcTODyEJ0bigu5iRaJzR2vVeqgSSCsVGL71BPNt78PbK8z6JUSxl6KzQ5UqDcfRU15B5d/SoKdw6ZbPFO81sZCHbVPwQQEoGLZCp8B+VV44+tCPpoa+6bkSqm30CIgUehPP5Mtct39398t7718by/+SRlGUCDrIKE37YKgrMdHecagzv2HArykRkVtabqIZTeT0+m3DsuvDGeb4avSLVDIixab0oIxGrR4csn21Udi8Skf3BB5iosPADlapggZj60BbADJR0gZW6jh4VaEIqe0pmcOhrmaXt/6mQYVEnn7fCjb7BVzMiXaxhNWh46yLgv5Inj3cYp8V6h03VcHTT/HtXjKV0jTmEG07j7dW4JUA9i3pDGBHz9xufwCOD9vpGZb30XFXSKNXkqE2faSP3IrFIEXCtoUln00qV8VJORtZEacCDSlI43kx
- ASeVcv9r
- j9iZO0NxoulkEpixatEM6jZ2htJtnZmFTp99fPRUjotr4gDcYksFyKiwqzIp89iBvsnZFoKgDSPv8B2MVKhAcBQHTp0vEqBXhDM2pdmAT8ZPusCgUAWmQNRm32M2MvalFko+xP9dRyDtI5g3/uEwkrLAuNDkTvkwfmShDI9K3yVIaeJejpBPClwlysr0hfgtPOMaj1nZ/g9RgTkmI5cWszzuWsxOQk0CAOWQJDRJN8MryFD3Qk5+yfsa2M8XXrhpWbtx7nZwbuXZWCdWx1Q7RRUXygr625R52J+elQvSpqgwq3oS4fLRRnTVidfz6S12t0JXQiABXSJPqH/KziwwkAQhdafPGa2tzlR81P1KXglrmvTaoWy7d2DNTrCP7PX09bNd5+ednmDnGcUKdSwziJDGh5Q==
+X-HE-Tag: 1768999949-835219
+X-HE-Meta: U2FsdGVkX18Z85nbzSJ/koWmhLF+T2s4OIWp7Z7ojKTvc0/7e/J1fseoC8GsoeMOVETSL+8WtrHgPwlspWg1ksQTtTnekOnAH5H/yd/++6cyLx2Zc71iCXcP/HDCcWu4Qkz5Vrhpsx495YKy17hav4TyPgoQukFPjtzS7yFafW7/P3FNphcU2HUmdYmIcUJ7lVRmz3H9F/EVhPKO3v1Ua1T0qPcZij9OUUbhnrieVbNZ8rMEvPNEATeA0MLKPv9drMUM576ijJzOQTeBChoeZcXkfAB7G6vGbYCwmcIDRE9B7yWviZME7m6Ev6Qqq0TwqiXcRyjN8JQys4/Jdi8eQPGp2umFljzMddkIMAyuxoZzyXqWoKo+Kjw3Qy0ZRZP6jZCzAIW5VMTKODjjU1ciq4OzFQ7Q5HjC9p8267yjH0w16vJNskdDE7wWJlXMCyK4wURPU0xrsffmttFdz9H9wdbBkkug1aR3rqDnbV+wFkB5fZA86EhbbJPIFwOct2Sj0x0qKcE6s77jclnJjOhWorHBE18MzEjKc5OPiVZlexbx7SErvFKsOa3RbF8YkUz/vPdZvx5j9pzrENnXAV5jgxzLIwZSxiFrpDOY3DoOZE5sPrfo2s3beNaymcsuGhUU4dCqJ2a8WSGrifNrg6g+E8hHLW5nFFo/Ch8xfRm9O4rhCG2jvBL5vkZhFNPTMrFOnHs+fUaZM4ENS+ENB1ezzGXFv1+wlb9b96FM7O+kW0BGGjBFcl8Xpso5LJotuD1NlofeQNo5kot5QJ/bWOTEpDiwZuMG/ka2Y5CAJVUvviuw38ddV8gPS6+EIRQKg6cYOTIJH+qLZNaN9T41zaRtqt37UazmWBo6M3IvTtYuw+r8jmZz2JF3HYqhJuz3w6Qw5Rrdqq2hUf5jviiaBA8GLagnHw4J+Jk8vPwwXKw1lslVPGdgTZGCFSbBjpk1kkTuCccjD8bQPW9XM0MnLcX
+ KtQx+mAF
+ G2RBVLGiv/NyrxcT+IQ0caK+t+WGT/GpYIIZMxv7Z7vJDW2ZQh5ULZAtz9f2VLIkXNWzpcuWC0ZxP/sOAaMNNrS8R5Gg+S6ibIF6b5koMh/8x0K1nWuf+s7Pc1Pev1cpWmj7hVppvHG+b8g7u8zDd8cx6TLQhp8OiRsIcaDqdbNHPjeaohUFuJtJL95zkg2TrxGHy650c4dK3NLD1lq5WKCcCgZ/Q4FkAmgN0PJ6q2Il+N8iDRm40orTmgyK6DLYiCQoCklTx1V407342txKondE/bK5rumrcyOSbVtmfQc3HThnEoeabS5Ms/TFasiBif3cUijX72ep061iE30cTkGdwhg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,98 +114,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/20/26 19:18, Gregory Price wrote:
-> On Tue, Jan 20, 2026 at 06:39:48PM +0800, Li Zhe wrote:
->> On Tue, 20 Jan 2026 09:47:44 +0000, david.laight.linux@gmail.com wrote:
->>
->>> On Tue, 20 Jan 2026 14:27:06 +0800
->>> "Li Zhe" <lizhe.67@bytedance.com> wrote:
->>>
->>>
->>> Am I missing something?
->>> If userspace does:
->>> $ program_a; program_b
->>> and pages used by program_a are zeroed when it exits you get the delay
->>> for zeroing all the pages it used before program_b starts.
->>> OTOH if the zeroing is deferred program_b only needs to zero the pages
->>> it needs to start (and there may be some lurking).
->>
->> Under the init_on-free approach, improving the speed of zeroing may
->> indeed prove necessary.
->>
->> However, I believe we should first reach consensus on adopting
->> “init_on_free” as the solution to slow application startup before
->> turning to performance tuning.
->>
+> Thanks again for your thorough testing and detailed feedback - I really
+> appreciate your help.
+
+You're welcome and thanks for your patinece!
+
+> > It seems like this is a GNR machine - maybe SNC could be enabled.
 > 
-> His point was init_on_free may not actually reduce any delays on serial
-> applications, and can actually introduce additional delays.
+> Actually, my cpu is AMD EPYC 96-Core Processor. SNC is disabled, and
+> there's only one NUMA node per socket.
+
+That's interesting.
+
+> > For lkp, smt parameter is disabled. I tried with smt=1 locally, the
+> > difference between "with fix" & "w/o fix" is not significate. Maybe smt
+> > parameter could be set as 0.
 > 
-> Example
-> -------
-> program_a:  alloc_hugepages(10);
->              exit();
+> Just to confirm: do you mean that on your machine, when smt=1, the performance
+> difference between "with fix" and "without fix" is not significant - regardless
+> of whether it's a gain or regression? Thanks.
+
+Yes, that's what I found on my machine. Given that you're using an AMD machine,
+performance differences arise due to hardware difference :).
+
+> > On another machine (2 sockets with SNC3 enabled - 6 NUMA nodes), there's
+> > the similar regression happening when tasks fill up a socket and then
+> > there're more get_partial_node().
 > 
-> program b:  alloc_hugepages(5);
-> 	    exit();
+> From a theoretical standpoint, it seems like having more nodes should reduce
+> lock contention, not increase it...
 > 
-> /* Run programs in serial */
-> sh:  program_a && program_b
+> By the way, I wanted to confirm one thing: in your earlier perf data, I noticed
+> that the sampling ratio of native_queued_spin_lock_slowpath and get_partial_node
+> slightly increased with the patch. Does this suggest that the lock contention
+> you're observing mainly comes from kmem_cache_node->list_lock rather than
+> node_barn->lock?
+
+Yes, I think so.
+
+> If possible, could you help confirm this using "perf report -g" to see where the
+> contention is coming from?
+
+No problem,
+
+-   42.82%    42.82%  mmap2_processes  [kernel.vmlinux]          [k] native_queued_spin_lock_slowpath                                                      ▒
+   - 42.17% __mmap                                                                                                                                         ▒
+      - 42.17% entry_SYSCALL_64_after_hwframe                                                                                                              ▒
+         - do_syscall_64                                                                                                                                   ▒
+            - 42.16% ksys_mmap_pgoff                                                                                                                       ▒
+               - 42.16% vm_mmap_pgoff                                                                                                                      ▒
+                  - 42.15% do_mmap                                                                                                                         ▒
+                     - 42.14% __mmap_region                                                                                                                ▒
+                        - 42.09% __mmap_new_vma                                                                                                            ▒
+                           - 41.59% mas_preallocate                                                                                                        ▒
+                              - 41.59% kmem_cache_alloc_noprof                                                                                             ▒
+                                 - 41.58% __pcs_replace_empty_main                                                                                         ▒
+                                    - 40.38% __kmem_cache_alloc_bulk                                                                                       ▒
+                                       - 40.38% ___slab_alloc                                                                                              ▒
+                                          - 28.62% get_any_partial                                                                                         ▒
+                                             - 28.61% get_partial_node                                                                                     ▒
+                                                + 28.25% _raw_spin_lock_irqsave                                                                            ▒
+                                          - 11.76% get_partial_node                                                                                        ▒
+                                             + 11.66% _raw_spin_lock_irqsave                                                                               ▒
+                                    - 1.00% barn_replace_empty_sheaf                                                                                       ▒
+                                       + 0.95% _raw_spin_lock_irqsave                                                                                      ▒
+   + 0.65% __munmap                                                                                            
+
+> > Back to my previous test, I'm guessing that with this fix, under extreme
+> > conditions of massive mmap usage, each CPU now stores an empty spare sheaf
+> > locally. Previously, each CPU's spare sheaf was NULL. So memory pressure
+> > increases with more spare sheaves locally.
 > 
-> in zero_on_alloc():
-> 	program_a eats zero(10) cost on startup
-> 	program_b eats zero(5) cost on startup
-> 	Overall zero(15) cost to start program_b
+> I'm not quite sure about this point - my intuition is that this shouldn't
+> consume a significant amount of memory.
+>
+> > And in that extreme scenario,
+> > cross-socket remote NUMA access incurs significant overhead — which is why
+> > regression occurs here.
 > 
-> in zero_on_free()
-> 	program_a eats zero(10) cost on startup
-> 	program_a eats zero(10) cost on exit
-> 	program_b eats zero(0) cost on startup
-> 	Overall zero(20) cost to start program_b
+> This part I haven't fully figured out yet - still looking into it.
+
+This part is hard to say; it could also be due to certain differences in
+the hardware itself so that your machine didn't meet.
+
+> > However, testing from 1 task to max tasks (nr_tasks = nr_logical_cpus)
+> > shows overall significant improvements in most scenarios. Regressions
+> > only occur at the specific topology boundaries described above.
 > 
-> zero_on_free is worse by zero(5)
-> -------
+> It does look like there's some underlying factor at play, triggering a
+> performance tipping point. Though I haven't yet figured out the exact pattern.
+
+For details, on my machines, test where nr_task ranges from 0, 1, 4, 8 all the
+way up to max_cpus, and I plot the score curves with and without the fix to
+observe how the fix behaves under different conditions.
+
+> > I believe the cases with performance gains are more common. So I think
+> > the regression is a corner case. If it does indeed impact certain
+> > workloads in the future, we may need to reconsider optimization at that
+> > time. It can now be used as a reference.
 > 
-> This is a trivial example, but it's unclear zero_on_free actually
-> provides a benefit.  You have to know ahead of time what the runtime
-> behavior, pre-zeroed count, and allocation pattern (0->10->5->...) would
-> be to determine whether there's an actual reduction in startup time.
+> Agreed — this seems to be a corner case, and your test results have been really
+> helpful as a reference. Thanks again for the great support and insightful
+> discussion.
 
-For VMs with hugetlb people usually have some spare pages lying around. 
-VM startup time is more important for cloud providers than VM shutdown time.
+It's been a pleasure communicating with you. :)
 
-I'm sure there are examples where it is the other way around, but having 
-mixed workloads on the system is likely not the highest priority right now.
+Thanks,
+Zhao
 
-> 
-> But just trivially, starting from the base case of no pages being
-> zeroed, you're just injecting an additional zero(X) cost if program_a()
-> consumes more hugepages than program_b().
-
-
-And whatever you do,
-
-program_a()
-program_b()
-
-will have to zero the pages.
-
-No asynchronous mechanism will really help.
-
-> 
-> Long way of saying the shift from alloc to free seems heuristic-y and
-> you need stronger analysis / better data to show this change is actually
-> beneficial in the general case.
-
-I think the principle of "the allocator already contains zeroed pages" 
-is quite universal and simple.
-
-Whether you want to zero the pages actually when the last reference is 
-gone (like we do in the buddy), or have that happen from some 
-asynchonrous context is an rather an internal optimization.
-
--- 
-Cheers
-
-David
 
