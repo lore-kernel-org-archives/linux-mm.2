@@ -4,188 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5977DC44536
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 16:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95363C44536
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 16:44:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C391B6B00A6; Wed, 21 Jan 2026 11:35:49 -0500 (EST)
+	id 0257B6B00A9; Wed, 21 Jan 2026 11:44:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1BC16B00AD; Wed, 21 Jan 2026 11:35:49 -0500 (EST)
+	id F15906B00AA; Wed, 21 Jan 2026 11:44:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE6846B00AE; Wed, 21 Jan 2026 11:35:49 -0500 (EST)
+	id DF69C6B00AB; Wed, 21 Jan 2026 11:44:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C8C96B00A6
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:35:49 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 41332C2958
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:35:49 +0000 (UTC)
-X-FDA: 84356522418.03.F2D2D40
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010003.outbound.protection.outlook.com [52.101.61.3])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 80E4E160004
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:35:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kEDQOQZS;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.3 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769013346;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CEA936B00A9
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 11:44:23 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 750E7C2A2E
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:44:23 +0000 (UTC)
+X-FDA: 84356544006.24.9F68CAE
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 834D140003
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:44:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769013861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bR9zKqdn60Z4qB8Jyy34Feopgg7Q9qrnRRoj00n7Qwk=;
-	b=vErIiTKVXnKYnM6oZnQEIQmVwTqfTZH5nROlY77j7VFwbeP+47D4VlSt2uG2LnnpD4HYNM
-	4RPT5kdP9krJYkesdDTPhZ6MJ8OAPKhdCfxFkSS5dNN0wKSyi/gkKeelC9neLOzSwfdzvq
-	B8t31YeIIqXgJ0egWPMZQWPzxEp3Kvk=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kEDQOQZS;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.3 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769013346; a=rsa-sha256;
-	cv=pass;
-	b=4KngorjPjZ/Cuqmk3Fbco4KIx7nedcuWFM/2BJGohVujHuZXUn2yPlAxcCdS9EGpQoJMgc
-	g8TMUo4qwSTibNt9bYWk2SePiPFse3SXoh4URcqGWaHdcGXCfL6vOcoKwM59YhReYAckzw
-	yWjJSy5789CVrOh0nwkE15VeCutUXao=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hle3F+Y70yz6jFlOk7YbrTsMxf2NQJzVsVa4lboimNI7/PAjVfY/vUdJJoniDlheVr0MrW2veSpCWTMEm3qdRa4Fgj6U0gj8RUTgujnjaHUs8lY6O7+sPUVv8CWLnIYvitOmfu6L3QXwZC2eJMN4tAHBXDjl6dt1RVNYi13x14AcAgpnKFR2Qp1Iwa1cZmw7G9wG583iNTadkrZu5u+SXSCtZnTquWCnsfRMEhD/tl+TVvwGcSkRXuC3vf76k9G5Rc5q43x364LUSDLDcdq7nph1u9pQIqZMtqKNsCyzh9vJVjesQ9GfjU92mzKKSqItPswSGh1E2Crj8qjN6kPC9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bR9zKqdn60Z4qB8Jyy34Feopgg7Q9qrnRRoj00n7Qwk=;
- b=KyfRCAkEFaOBquX4na2/SRHhR/+/LaKf1y0hadeqzYbozjGlXLEXgEXQB6MGoAPIpXfijd9KxmnpwN70j3g4RfzhoF50q5wrpbfPfVICM/xGBbTOPWEpeQHTLP63Pti1og3qge6N6YU1/MtRrm2oTo2Vxbb5ZjgErwfuS2qXPdbabyZxGLdqet16LpXHHlFRY5/k761g6aCbYz3uDbFht66N/dOHiwgQpnsIIsA6INRy8MluSwFf+UQUcsxmJxFAQbGyPsHP4SwyGp0E3kPDs4YWUXvtYhuIVe/n2GLyZbJBLCPKQgoDa3TrawfkBJLajXDZGkSGxncIYL0pfdLBDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bR9zKqdn60Z4qB8Jyy34Feopgg7Q9qrnRRoj00n7Qwk=;
- b=kEDQOQZShRIVmQH/t+hAvYWRuYOugAetMXE3o/c+0mqQRotrapmGrim4uwP01y7LVWF0L3Xwg5yIOadvYKnItDDYXcq3pGEqmb2OzZbCQjag7SS1feSD0VNJmwTSyZCzGPjI9dHku2a7k6RhjjWOYACUvA+SWayE78ZqBtUdmZVA1G//Rvy2jg+bbxfENKkVyQH0sN7VMLvH8mOfMknc3Q1TQhEnOy7GJZxeCJYIRqV/DBOWdcsoBSJ+aak4mUhuwoMd7NL2JKQuuKaUMqYdnmWWFHFm80W23nSoXZd1rKnAA7n1EmyXtclnD4ZEmUlhMxVZmjcEca+mfMCHfNAx3A==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS5PPFEC0C6BDA1.namprd12.prod.outlook.com (2603:10b6:f:fc00::668) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Wed, 21 Jan
- 2026 16:35:43 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
- 16:35:42 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baoquan He <bhe@redhat.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv4 04/14] mm: Move set/clear_compound_head() next to
- compound_head()
-Date: Wed, 21 Jan 2026 11:35:37 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <F8A12704-8573-4F9D-90A6-0D54B3EBEFDD@nvidia.com>
-In-Reply-To: <20260121162253.2216580-5-kas@kernel.org>
-References: <20260121162253.2216580-1-kas@kernel.org>
- <20260121162253.2216580-5-kas@kernel.org>
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR04CA0029.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::39) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=8K6PyvxGfU1AMGKy34QhFpjB02JAayEePw3faIpbm3c=;
+	b=AXp9oFutJH8t+i1tlcZij2qTBKVcHPqOEkJbUUhPu+PSNyqhuO3zEpkcuPIF7DHW+Q33sZ
+	4+KPxXX+mlgpTF3HadZkZdjvrWnLSfUjVsvweBJeG9XJqrLQUHLYWM8aSLlpe9Yzhn0qej
+	TrijnSdgMDufWtTWvR4myfMP/HetsHI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769013861; a=rsa-sha256;
+	cv=none;
+	b=q7t8UzM87OAdySk92u5epKMFAdbDidFh6ycX9crlKKkItY/ikOiVbqnIJuUcyaTZhsXicC
+	+fYKPHL/YB9cw7dsBKs/IfWwSuXUUIWUuZivcMCkYbmgMqwVV3oJtJNzCiQgKg472cG+wm
+	DZ4XXaIdf3gnIbr0PJb9PUIfnfHFUMk=
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8c6af798a83so3326985a.0
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:44:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769013861; x=1769618661;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8K6PyvxGfU1AMGKy34QhFpjB02JAayEePw3faIpbm3c=;
+        b=ukxLlcnUOIt3sORr9sBJwiRW2ot8BsC/XiCC3ZGTs97uBwoNhdGU9bBxyj6wbUDVul
+         jM5q7XnmNHQzpPSrDUW/ZEBs3eHD7dvAikp1cFItVGZe1FTLc2GGzy2bkF2YVZyTO0dO
+         TUpkO7H5r43raS1ma9r3hH/DbO9HZeQvPUnHLuQyHjAQ3S+jnSrJtAac61TV0hQPQKH3
+         h0vp8LXJcRydvhV8vWw1VzKNGLAje8uc7uCEGPQgav/ZHy4/GtWkapEHeK824lbKMx5W
+         chmp7SGLkvh9fRpDlDPTQiFUjyI0gXwNSQaTDM4ElYTTbmt2nDZrpwawy7bkBcHXaAZe
+         xG7A==
+X-Forwarded-Encrypted: i=1; AJvYcCV4moTyAOz6qw/a5VYklFFG+8ktJmacqKHBKObgfAaBoutKfxeiOXJ8Ve2piDMmaLAfQGJwQyKwmg==@kvack.org
+X-Gm-Message-State: AOJu0YxLW4DlwCDPzsd+UcBNFiUMBjNDQt8M++DRCke8026+/tdUECLv
+	TzZi3AQR9Ur1YkvT6RjxMYAL/EfWzSlwVmw+HYXbnhw5zsVsv9jecPjyeOUBdQ==
+X-Gm-Gg: AZuq6aKIkr+afLB+4DC7bw+blOK/U64NTbuii/u8L+9r1kpd9qxiZqloecTHpAa2tYl
+	kGBvMfIdr/GscpzLY+RtkBs9hKR8hHVA8dZPOmtkWUYwJXZa7FwQMWh51zo9lHdSAVnLfjsrEqX
+	b9b6DSATOg+tHXejrQF0jh5AQKM1sYG2FjA2peVtfzHthNH+bJnR04SWx7RQVCbFXq8edSKRt3M
+	NacAhmq0GEZ9ofufc5zc8utZQChHJiDi26SEQj7nToHe4eW1/wYJaKjC1c/rBTOggVyH8DVJt7d
+	hZUUBIaFrX1xB/fUpHSSn8p1SsgLPgxKy3Whj07cdM14LPYca2cIrnIp3upj0976kVt5MC6GPi9
+	9tHYQV5gkGNoIwa55tvu9S0d2hiFQNmAo66lorQQccZOSnl+BF8Jsao8xZ+CVTWBImnJeAm46UV
+	8bHg==
+X-Received: by 2002:a05:6820:1798:b0:659:9a49:8fef with SMTP id 006d021491bc7-6611796ece0mr9284384eaf.28.1769007054264;
+        Wed, 21 Jan 2026 06:50:54 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:43::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-662b6c3ec82sm1497158eaf.17.2026.01.21.06.50.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 06:50:53 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 21 Jan 2026 06:50:38 -0800
+Subject: [PATCH v4] kho: kexec-metadata: track previous kernel chain
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS5PPFEC0C6BDA1:EE_
-X-MS-Office365-Filtering-Correlation-Id: c08cea46-0cd8-49b2-0cf5-08de590b1e9e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?T5iaKd4FsTJpLSaG1gw+3/+fLZV1J2imAxtqUBuCvrDhJnTzBYHdj5UWS8vA?=
- =?us-ascii?Q?sBIbdRkUa8ULB3MaCFp31pTOveok0mWuyzCCVfXFmWVolszYKJUq8lk0W8UY?=
- =?us-ascii?Q?Zrg3LoDxhkcO/cn96HoLx/K603N+sqv+nwN1dv1XqrMJ5xFRSYyQ3t6wT+Kf?=
- =?us-ascii?Q?bKqAXWTiQwA8sbNNKiouXJATMZ/qipBfUEI4nw0MtMasKzVQG5HnTonY8z4u?=
- =?us-ascii?Q?Vey7LDJPn7OhpMM9NsC4D4qQU6DVL9qixgLEYDc7lr0A/qMYT6USylKdMDZP?=
- =?us-ascii?Q?Zdou8OrL+IDBj/6aXk5tG5Ybxo0BOE/V1l/UOBdIXWD+Zt0sHWnwQUfeJFyg?=
- =?us-ascii?Q?PHAm63DKD1cNXBAaW9/NGcp2BBisVJfol0oXndhqElocxSvTvNm2ER1x4CDy?=
- =?us-ascii?Q?jKgJxAqoqi8DDnzhECMmwSoGozBdbnNQ2eaE/kCQPL7cG9UPWYu5zk9LU+uw?=
- =?us-ascii?Q?2lJEUx0TsOnGCxNkyWC+wqd9mwFxhUeim2YGaeHExlMjrNDN5cswccrLsrRC?=
- =?us-ascii?Q?N0t5F9VVuD2Bg63vtd8cF2+6yfVaqASgifp/nKi2CDxWuZt/u4a2nG7vFJZc?=
- =?us-ascii?Q?ZhptddDSnRZw945HOQqK7prqWqxzY4ZMZwuQm3a3RQEKcarLlI5MuiiI1FpD?=
- =?us-ascii?Q?GSJupe5v0vOIxwbpNxb8h7JK+cQ+9pEjpPTH/aBvlFYvkCRwsiLRqL7XQ8+U?=
- =?us-ascii?Q?5+B2c53uMsHydGqlGE2N+kpYT3WRBFJU1/+TDl2H/WJQ3dfjkzoj80MA8XWZ?=
- =?us-ascii?Q?GcLDfQsfEIdf8ADnezcPDw2wDiOH9I4vzeVvLrMq9U1gqEabOAJKHYOcaRSb?=
- =?us-ascii?Q?eeCxcP/8HW+INxDjE8AgfFMYiHM1PgV/QI/sqks17+8/+rV0Fzap1LthvQhm?=
- =?us-ascii?Q?ovMrYyuP+61gJAf1++1wGBxLZjYlrCXhcaLLsso18LfvriRV6yeIoXpWyy3L?=
- =?us-ascii?Q?uQ3YQnL6Q9JHYBeQaj3DYHI+tNO8ZqX3fsDMf45TcGZYt3/EDh1CGRGE9sav?=
- =?us-ascii?Q?SlnRvIs15fMX9YsxDyU7evjWhGXOeaqdyvNABHNNhimJamJBHD9UtjmOW0py?=
- =?us-ascii?Q?QsBf9/jINw3rQPGE2SX7ECXXrEGI0JZ+GxGRN224A8KjiXLZZNP4/nQfisji?=
- =?us-ascii?Q?+Kv9iL5wthG8/RkZ9RR9ddJqffKFQrl1I5INZ1QTj3X3G17RAMk69Ja1GUI3?=
- =?us-ascii?Q?HNiQ6AWq9f2VDJTJz1A4nJNo5QHgWEh7BjhQLM5w1KvHdEEIvD3o22E81MAJ?=
- =?us-ascii?Q?yXpkOVL6gGlGwbEzilRZgabEn0o6xKAjDWeeVynslH7b31bVBXrmPZbR/ap4?=
- =?us-ascii?Q?7LZUhQZAOK3XP5SncGvQX+T9kKEY7vFZxA7CIPwedTRWsaCpF9CGmx/2BuU5?=
- =?us-ascii?Q?h0zLbjna4kzs/GnWA67CdKlTAbgnoFNLbGj4cynUw14kil7iBVvFxe1RjtOH?=
- =?us-ascii?Q?ahcqUWl8oyuorzash0Ih7iUX/E+NJHoZwhIeWvmChM0Xx50yAPrr8lqdJTca?=
- =?us-ascii?Q?tzmupU/ZysuN54m7aFd4Z4iwX4oZwx9BQvSpWRCyh4/ufCsTII6Iwc4RMc7i?=
- =?us-ascii?Q?F+41UdwdBeWOJueeY1E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9Cc77ZVYLn0FtIlD5ijfumyYgc83guSg4ViS5Oj1vJPtUhvZ34HlZnrrTjKJ?=
- =?us-ascii?Q?bu+DRCYK83A7sKvvmtshQzilzw6JsdD6MdFb6mIiVVd62slC4Pl58JXWnn2+?=
- =?us-ascii?Q?OAgV0/cU7fK4ctMC8G5onc/2GgTSmLuA0hsDs4ETGdFOETVKvYTY8qWOWUH1?=
- =?us-ascii?Q?3zHfspTFMTTe+ciuPr8t75So38jyXF6A3mDbHO0cx9Qb0GNz5uXYwgaX4r2Y?=
- =?us-ascii?Q?fAZjCfaJ6qPwR3oaHmHAcCwdTgMSDiqnNombxxMTeBdCeXNxpl8HOqpQYQei?=
- =?us-ascii?Q?jptgArwlZQKQYYheFG8E0QfprdZK1yN2WLZZmlPMhDeg3HJLHuc8F8LsINiQ?=
- =?us-ascii?Q?90Eh83ckSm7sZbpcMsdH+U5qSXMpyXJ7+hxRG9ZRHv1ssEyfC6NNbIPmAzdt?=
- =?us-ascii?Q?OX1oVrgjb+CCEs8YbKPdVHFStUuZprTt5tKM9sXaIdWSbsMlWnVlhG38OkfF?=
- =?us-ascii?Q?NMhalns9TNOyvSKxQs42MkAaN56BrwGp7guopcDoty58Zf3A97vytju9oSj0?=
- =?us-ascii?Q?wQ19UIjRTlZeCIgXzia7T9XEjpujgJ5nYnXaV3p6Q0+DUkbCKtF4TSRVuhpi?=
- =?us-ascii?Q?VGhmtJcTSGCwhf6M2zcl0mEgy46K9u2LCCXj2WZBbDra+M5x6AViWyQ9Gh+c?=
- =?us-ascii?Q?dX7YpETDkDod/iC8Xzj3Cc/I327shzmxirNi3FbrUUCDZjDQlWbYzbn+aCrv?=
- =?us-ascii?Q?6ywMPNZ+23ROOHfWD6KTaTqKZvUTkGImmhXKpCMRz9zxP87XKG3YdSztzlk8?=
- =?us-ascii?Q?NHHeoxCr+t+6oI9MS3r8zeC4+51J3XNZApV/VpEazkWHJejWvHIHkDPySV74?=
- =?us-ascii?Q?OtCIl6N8nYbeHP4MLmMQy4tiQ+S8jpf+ROgR8Z/SUiUMsy+VmOStv7MtnaH+?=
- =?us-ascii?Q?20npojhuaT/GOuoqp5SpprDTDDzjQEMzycUBxJtCHj80HjsGwzveL0gX0Dyf?=
- =?us-ascii?Q?7Khizvq1cD0RnpFlAkpHVI0eeqt/qTWO3ApRXJsl2/JDBAxMZewB/lVwEo4l?=
- =?us-ascii?Q?6AY/DUVJh7gFp0Gl38EoJ4yfJyxidV0EONWWx+e2i9XL4732npFG+waDR0sl?=
- =?us-ascii?Q?gmbQTcCA9rrHpSNeqCFivbOXYnifPPRl5BK+Fd9QQtxDRAmLFEvQLVFMbTY0?=
- =?us-ascii?Q?qWmhnUMhKnQd9z0t/B7rbci/RooL9kYZRKLntTpZ/lXSMrLTYHv6kPH0YF4K?=
- =?us-ascii?Q?iVWS1437Oi8fS79cfuxpLoIEP0c1AuiROAQz+btrB0tfvD5D6WX4c8o8sbXJ?=
- =?us-ascii?Q?htnTDGACnb5lRvPsjiKxlSJakwLo7yy2NxNj9ewm+Ix/8xCC20lZZy8EiqLf?=
- =?us-ascii?Q?6b8STPzYIatF7nOTliHGQkaCF8yDGYw3IX5yjVL0VOWwVMRFFmJyCO/BXRH6?=
- =?us-ascii?Q?P+22L90jS7q8+pGFwTolrswW6ksJyzjkc/iYWOuHxAFqnava6hxGMe+hjtoi?=
- =?us-ascii?Q?eixqiOrKxxeATDLSfI83/V6aALXe0jsxymWW61sh6UnETKji3Hzp2bVLmVBr?=
- =?us-ascii?Q?2rlyVHJq5eOKNy/tcHPyUsbsuLVc/oXXPWB73Mmnx68R2Dl23My/1vQlJWec?=
- =?us-ascii?Q?FvtX7VsYmjvPAoYsAfUarpsiDkKgBtm5MvxBM+wRDuJxerk7B+KdbPRmrOjp?=
- =?us-ascii?Q?QQ/oFEIUdhlmQtb36Cdv5JzuA95zR1tdMmqJImntvguhuGK0L1742RzJweUC?=
- =?us-ascii?Q?KdT452jIrkYay7n/5GfC8/8+0I+0Di39v+dTw3Q6QMMlE3bgpQ3iKPag2qpo?=
- =?us-ascii?Q?M6j9w7WE9A=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c08cea46-0cd8-49b2-0cf5-08de590b1e9e
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 16:35:42.7721
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YP5m6chpij5vIVnCtbWM4qZPgoJENnQZ4QdzsxXNhRRphDS7d7SqVxPoPoLGCcn2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFEC0C6BDA1
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 80E4E160004
-X-Stat-Signature: 1r7efo58tz9qcxtq8mfgh1fa3uc84dcz
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260121-kho-v4-1-5c8fe77b6804@debian.org>
+X-B4-Tracking: v=1; b=H4sIAL7ncGkC/2XNwarCMBCF4VcJs3YkM4lN25XvIS4SM9rcC60kW
+ hTpu0stguJy4Hz/PKBITlKgVQ/IMqaShh5aZVcKDp3vT4IpQquANW+Ijcb/bkDntJPasxxJYKX
+ gnOWYbq/Kbr/c5Rr+5HCZ6bzoUrkM+f56M9K8+y6OhIQ2umbj2UbfyDZKSL5fD/kEc3LkN6o0a
+ V4Qo0Zy1gXyxlOsfpD5RPWCDGoMFKvgfN0Yy19omqYngDDDgBMBAAA=
+X-Change-ID: 20251230-kho-7707e8a2ef1e
+To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
+ riel@surriel.com, kernel-team@meta.com, Breno Leitao <leitao@debian.org>, 
+ SeongJae Park <sj@kernel.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7440; i=leitao@debian.org;
+ h=from:subject:message-id; bh=hUYPRcba9zfyDjZaQs2u9sw+0GVuFqBCoC/amy5CRqs=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcOfNxE5Gja7tEx8/C45TJeRXvSRq4Q5AukReO
+ pNqlM55YuSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXDnzQAKCRA1o5Of/Hh3
+ bZ87D/9s8Zqi9foS429xPJJzR8//2drUdxcbvNbh85j9cvjJxmV1E9CFsRUC/Y/udMVEFTqkgxl
+ YCkEPWKpnhFsbIdCKyabGr/EdbLYtPc9tlvgU3ruuCi/iApEAOvrouuiKVDCi2nOvdeWfnrAOKR
+ NvmUZBmCj3VCoT1n+u6LmG7JlSTVN9o233+ZIG6W6mwt/hIabdYCKiOPE+NN5cU5sz4vmQJdryE
+ CxTzXPkIAdcN9y9mj2Cnj7tGXmBZSy5zF8bxoEI7QllAPGtX48AiwPdqrtC+wg9gkDqWqBq8qZH
+ MQLof7I8jy+GBF9gXXER6XYpDOnd4xlhgQmw6I4jl5m7vGBMCq2VLcqBY1OuiZEfJI9mOTgdhqN
+ TzCoJKJOZlqJ6QJUy0Xj/Ia6vykQQ0skSF2t05ho71PrqktUDwfrb6L+mPWqYQz8I0NCLz5jyGK
+ p5wJfDl4SSUj70wwSy6Ysw6GbKKyiedImTix1Pv/aqpMQ5aorwvdqWCTvEjcTEJ5FaKwd9y02fe
+ bzKaZ8Nvoil2ZOdKd9I0miNiImNk2YBtI0iLSzrpPqyhE3jL7Y3vEzDlVLwHO/a4v08tcq3V6Ha
+ HjAHVlGE/tHS5RrNR6r17nTHSh6V5S5D4ftTu9Gms4jTo/JDmJy2XMQ5tBqyfON+VxNqI7a8pkG
+ yE73YjhXdQx6OEA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 834D140003
+X-Stat-Signature: bxq4t4krwh7ibnnfu5ephgcgccy3x33b
 X-Rspam-User: 
-X-HE-Tag: 1769013346-56257
-X-HE-Meta: U2FsdGVkX1/jd09HJYlifZUKgtV5lp2Uh2fCrkiS2XaFXLgodwSWjNEEcmDbbSN+WrxxvK7g5/Qic/YZsgzxR1tmfENeAhr0DZuGo/z9uPVZTJapv8ivcU/VgtFm9qiv7qoObQ1qibAhVDsk3cTGhwMDk7s+klVOqV69XCkcvhlFGf2m25pWm2Ahigmprt95AAEouuF/ceSk4Vd+i1cin0MXUNXW27jV/Uh4qVXVMbvQ57WcOw0sxZ7aE54YdINPQ9JxwGvarmbs5qaIv2uqfhhK9GE84LHG5d2AgHNqRkHCp9Sf7pccw+JQOgp67Ydli+PuJJC3TSdrQ9BqSuWygG9od+4Ack8asoXJwKWM4sglqzftpny1N0KzsvcSb/EZwBgkWvRP6fPWhZrUYQ+rji7E+8/f+DmmdpE6mtEsCPvZ3VrOdPbyd8vcKrpnfrShEGtNl7D/MDjb7v4Fd4WYVVzL2N7PCSyiq1k2SjfbJgs2C3c0ekSnx3HSQ3LHjG0uT17CqfL8VRzjImGPGZHBYWblS6dDIdrf3UjPksMBNMbju4VyuJdPfO8o0FxFErVBxQl4ymXB9irK22UeeeVxLdbc9K28HhXzizK0Y1EBLQPb0YMp0l6d7g3wPTXEaIWvSHd4luK6XDG38M/tpwD5ruJOCBQ/LJwDuGtK++9qnhrSFuU5o79EtUA9ZGzwF+EpyXjNyGuh3IJuJupLcRdGoHtBsludzx9Io6lZOBhWpiYDgy0NxYVQs0MbuNJMHGwbm2vt5YTsaR6PaL8Zswnp9HQR6lEUw8CnI1QLnf3sbFQeFqynFP/0p1F3hpdsw3rIhIPtI934kgpm1oQSwZnIUMS14tbNObc6RFo5CiaMmTkkjZWeiKqFCwq9/LRMc0Fu8FteJshJwz1SiPN/zoXY6KCNRdtXfXnxRJQCqKEtpwWi+5/vGNsTGBHqOcDbUW5QEOaUijU0VdyqcJ8OH5F
- 4cI8/Kv8
- WTbvh30prpshA+LC+jWbHUNKCr2Oi7bH43rzko7v1j0eba6KD1NFVonbj37IWlCYitaDaI9CsiSsOKD9kNKA6IJckNT6t2irYmq2S6hICWf/IJQailU95bNwZQKTDR4DQbHr2fX79MMuwTd2SI/rWIYAaXcaPipb0LhPrrUa7ESZzVDn6Dh6s6NK8Yiinh357NFJHk83wh0mVem8RiLlIvRFItbUPUeBKVuIMYesJGzl8zLdo8AX4UXOFOW5ytiBUlmrQnJxIYYPFMmu7Zvw6JC3sBVaBeer9qyFViom2hjDIHCYVR4HKN0vhNcYe5agURK1DxfZ+SMnuAjLU4TUkuqM3BlcO1vRJVrpGFQGg0WH5GE1zufN9bD7ZA/i2Yv5VWrqvsz/odP/1UriQl2SDhRegdsZUlAauxJA60aB8VtkLqi7bu05Nc/3rBGlnHr3ybZ1k
+X-HE-Tag: 1769013861-300035
+X-HE-Meta: U2FsdGVkX1+QRuWbiOoFRRCbohv6ZOBZRQPZges/SHs7sYbgF509hRqqRt1GVUm5Tqs6dRb4TNk+PKH+iEgNXxAFfjo2C2L/+ZMYXyP5QXqiyAKTf2DXeuG1vViKgp/esggN5FAn/tC13nxK8WIKGet0bpJP/RmwBz4fRnTdupAtU7gtB0+SkUPSRqR55uF5ocu5sOlryQ1ZSVgpkKWeE0dvjYMJH8fDkN6kKJy+Ii9u4cx5ofTMAU8SmRx2jBtPMjIdZ9xiC6OaPlFdqfu95FjFGXyJecCEDzpTmYyL8sA5o88R7zzcx2FyAWUUUVDE1Ipt1cr/k6AieG1M0wx3cxTC8pJ03E8WbH0PnCsXGGKzJ96243jpaXWkOd9FD0e2LkzaJPCPX29JD9F2qUOfLzKv6epRElBWsvwpdwEz7s2+EJob+333zrds6R8k8e9wIAsb2RUHZRsNjOma6p/fuZTUsRRZ+K1W6QVUzPDirzz4e56HpznX5XZq6Z+VZQw0WPrcv8sthigy32T6xCFkmPYB0cDTv3fdTUlA7vmrsbX47E8JvsWztqncEMLOri8JUdHYJI0j3AFHnqm7E4SGgGMRaV3YF9PFVt5WWkhZfpgpC9Lc0SVe+vlG1s0JFZ2eVJV+XzK+fIwEhLiiBDgKuOyN3dJZFr+gtC044hcEUStyblUr/RMGbFpUP2omvl1xf2TG7AfNu4NmrYeX+6bpTD9vgckQzJDPWZsW0yaaO8Olfu1lM4HWlgfNCw81njkwafIFoQjVBguJ1hdvG7Gr0406MBJbWyIKtPeMWdJauehzD8PTOKLs1kSMC1K70MbDLqZWlYP4hxqhuuaIZa/I/ZZt55tOkb/pzrse0+Og0Uday6CUGm+6ZOgQEuV4XZdZ/39iXuVpUd3VwcCdBCPz7ZZSsoP5L06uQpwUGKDUALC8C1wpdD4w/kgU3tsYpVw1JIqqYGW7PpOTLJCyQqL
+ cjFxLLMh
+ Qso8YRgidoezvXmJTC7/ITPo2pxYI5Ws8Y4QpVwiphwvrTX3wx++Koq4bUVUApODmVLx61ITBwYIu5sfHGJCPdMqGq7rXzrndNen0CY5CCIno2TUzxU01v6iXjvkd19FGT+wMbWnHBXbro1ssoGhWBhQi/WqCIZvhz9esrLsiZJbgXDPoyElFNKey1FJIZ2/TXUVyZdMpQQKi2iZRho0GDUUlTegrzUOjUvXj38rf6ewVR+TlN11tZh/rM0oC+fOhH1udRYBK3riXvW2juFedmHMuie+0dB0GsKgQEUKERuR3NrG/XnzLiiyVapFvmJUVoSdjlKE6t5IJdpt+fvLSYJgbL2BjdqdglMi50qjAJJq60wzh34MD2iLyuXBCAFGfTpSS81EOodH5Woi/CiNUCmGf+gFzxShIAX1iYstV3x2Y1jm8Nj25hIbp0o2iOSO70/xHZMUU/xJmsWCnXU/0A9NADV/khjAuZt38QIiNjIWf04GVWj2Yq1x+RDWDpwLOAhHNG9EkDYLNVqvK0y5Ak4vIClEQ9BOWjkzS4WX+qU0R3l+q7KvwfRCbxg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,25 +128,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21 Jan 2026, at 11:22, Kiryl Shutsemau wrote:
+Use Kexec Handover (KHO) to pass the previous kernel's version string
+and the number of kexec reboots since the last cold boot to the next
+kernel, and print it at boot time.
 
-> Move set_compound_head() and clear_compound_head() to be adjacent to the
-> compound_head() function in page-flags.h.
->
-> These functions encode and decode the same compound_info field, so
-> keeping them together makes it easier to verify their logic is
-> consistent, especially when the encoding changes.
->
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> ---
->  include/linux/page-flags.h | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
->
-Make sense.
+Example output:
+    [    0.000000] KHO: exec from: 6.19.0-rc4-next-20260107 (count 1)
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Motivation
+==========
 
-Best Regards,
-Yan, Zi
+Bugs that only reproduce when kexecing from specific kernel versions
+are difficult to diagnose. These issues occur when a buggy kernel
+kexecs into a new kernel, with the bug manifesting only in the second
+kernel.
+
+Recent examples include the following commits:
+
+ * eb2266312507 ("x86/boot: Fix page table access in 5-level to 4-level paging transition")
+ * 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption")
+ * 64b45dd46e15 ("x86/efi: skip memattr table on kexec boot")
+
+As kexec-based reboots become more common, these version-dependent bugs
+are appearing more frequently. At scale, correlating crashes to the
+previous kernel version is challenging, especially when issues only
+occur in specific transition scenarios.
+
+Implementation
+==============
+
+The kexec metadata is stored as a plain C struct (struct kho_kexec_metadata)
+rather than FDT format, for simplicity and direct field access. It is
+registered via kho_add_subtree() as a separate subtree, keeping it
+independent from the core KHO ABI. This design choice:
+
+ - Keeps the core KHO ABI minimal and stable
+ - Allows the metadata format to evolve independently
+ - Avoids requiring version bumps for all KHO consumers (LUO, etc.)
+   when the metadata format changes
+
+The struct kho_metadata contains two fields:
+ - previous_release: The kernel version that initiated the kexec
+ - kexec_count: Number of kexec boots since last cold boot
+
+On cold boot, kexec_count starts at 0 and increments with each kexec.
+The count helps identify issues that only manifest after multiple
+consecutive kexec reboots.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: SeongJae Park <sj@kernel.org>
+---
+Changes in v4:
+- Squashed everything in a single commit
+- Moved from FDT to C structs (Pratyush)
+- Usage of subtress intead of FDT directly (Pratyush)
+- Renamed a bunch of variables and functions.
+- Link to v3: https://patch.msgid.link/20260108-kho-v3-0-b1d6b7a89342@debian.org
+
+Changes in v3:
+- Remove the extra CONFIG for this feature.
+- Reworded some identifiers, properties and printks.
+- Better documented the questions raised during v2.
+- Link to v2: https://patch.msgid.link/20260102-kho-v2-0-1747b1a3a1d6@debian.org
+
+Changes from v2 to v1 (RFC)
+- Track the number of kexecs since cold boot (Pasha)
+- Change the printk() order compared to KHO
+- Rewording of the commit summary
+- Link to RFC: https://patch.msgid.link/20251230-kho-v1-1-4d795a24da9e@debian.org
+---
+ include/linux/kho/abi/kexec_handover.h | 29 +++++++++++++++
+ kernel/liveupdate/kexec_handover.c     | 65 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 94 insertions(+)
+
+diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+index 285eda8a36e45..e18022a4e664d 100644
+--- a/include/linux/kho/abi/kexec_handover.h
++++ b/include/linux/kho/abi/kexec_handover.h
+@@ -11,6 +11,7 @@
+ #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
+ 
+ #include <linux/types.h>
++#include <linux/utsname.h>
+ 
+ /**
+  * DOC: Kexec Handover ABI
+@@ -84,6 +85,34 @@
+ /* The FDT property for sub-FDTs. */
+ #define KHO_FDT_SUB_TREE_PROP_NAME "fdt"
+ 
++/**
++ * DOC: Kexec Metadata ABI
++ *
++ * The "kexec-metadata" subtree stores optional metadata about the kexec chain.
++ * It is registered via kho_add_subtree(), keeping it independent from the core
++ * KHO ABI. This allows the metadata format to evolve without affecting other
++ * KHO consumers.
++ *
++ * The metadata is stored as a plain C struct rather than FDT format for
++ * simplicity and direct field access.
++ */
++
++/**
++ * struct kho_kexec_metadata - Kexec metadata passed between kernels
++ * @previous_release: Kernel version string that initiated the kexec
++ * @kexec_count: Number of kexec boots since last cold boot
++ *
++ * This structure is preserved across kexec and allows the new kernel to
++ * identify which kernel it was booted from and how many kexec reboots
++ * have occurred.
++ */
++struct kho_kexec_metadata {
++	char previous_release[__NEW_UTS_LEN + 1];
++	u32 kexec_count;
++} __packed;
++
++#define KHO_METADATA_NODE_NAME "kexec-metadata"
++
+ /**
+  * DOC: Kexec Handover ABI for vmalloc Preservation
+  *
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 3cf2dc6840c92..3130444e183b3 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -15,6 +15,7 @@
+ #include <linux/count_zeros.h>
+ #include <linux/kexec.h>
+ #include <linux/kexec_handover.h>
++#include <linux/utsname.h>
+ #include <linux/kho/abi/kexec_handover.h>
+ #include <linux/libfdt.h>
+ #include <linux/list.h>
+@@ -1246,6 +1247,8 @@ struct kho_in {
+ 	phys_addr_t fdt_phys;
+ 	phys_addr_t scratch_phys;
+ 	phys_addr_t mem_map_phys;
++	char previous_release[__NEW_UTS_LEN + 1];
++	u32 kexec_count;
+ 	struct kho_debugfs dbg;
+ };
+ 
+@@ -1331,6 +1334,59 @@ static __init int kho_out_fdt_setup(void)
+ 	return err;
+ }
+ 
++static void __init kho_process_kexec_metadata(void)
++{
++	struct kho_kexec_metadata *metadata;
++	phys_addr_t metadata_phys;
++	int err;
++
++	err = kho_retrieve_subtree(KHO_METADATA_NODE_NAME, &metadata_phys);
++	if (err)
++		/* This is fine, previous kernel didn't export metadata */
++		return;
++
++	metadata = phys_to_virt(metadata_phys);
++
++	/*
++	 * Copy data to the kernel structure that will persist during
++	 * kernel lifetime.
++	 */
++	kho_in.kexec_count = metadata->kexec_count;
++	strscpy(kho_in.previous_release, metadata->previous_release,
++		sizeof(kho_in.previous_release));
++
++	pr_info("exec from: %s (count %u)\n", kho_in.previous_release,
++					      kho_in.kexec_count);
++}
++
++/*
++ * Create kexec metadata to pass kernel version and boot count to the
++ * next kernel. This keeps the core KHO ABI minimal and allows the
++ * metadata format to evolve independently.
++ */
++static __init int kho_populate_kexec_metadata(void)
++{
++	struct kho_kexec_metadata *metadata;
++	int err;
++
++	metadata = kho_alloc_preserve(sizeof(*metadata));
++	if (IS_ERR(metadata))
++		return PTR_ERR(metadata);
++
++	strscpy(metadata->previous_release, init_uts_ns.name.release,
++		sizeof(metadata->previous_release));
++	/* kho_in.kexec_count is set to 0 on cold boot */
++	metadata->kexec_count = kho_in.kexec_count + 1;
++
++	err = kho_add_subtree(KHO_METADATA_NODE_NAME, metadata);
++	if (err) {
++		kho_unpreserve_free(metadata);
++		return err;
++	}
++
++	return 0;
++}
++
+ static __init int kho_init(void)
+ {
+ 	const void *fdt = kho_get_fdt();
+@@ -1357,6 +1413,15 @@ static __init int kho_init(void)
+ 	if (err)
+ 		goto err_free_fdt;
+ 
++	if (fdt)
++		kho_process_kexec_metadata();
++
++	/* Populate kexec metadata for the possible next kexec */
++	err = kho_populate_kexec_metadata();
++	if (err)
++		pr_warn("failed to initialize kexec-metadata subtree: %d\n",
++			err);
++
+ 	if (fdt) {
+ 		kho_in_debugfs_init(&kho_in.dbg, fdt);
+ 		return 0;
+
+---
+base-commit: 5eec2b2e1f37acff8b926d2494eadaeef59be279
+change-id: 20251230-kho-7707e8a2ef1e
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
