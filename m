@@ -4,113 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57D94C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 08:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D2AC44502
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 09:02:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7217A6B0005; Wed, 21 Jan 2026 03:58:29 -0500 (EST)
+	id 616006B0005; Wed, 21 Jan 2026 04:02:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CF3F6B0088; Wed, 21 Jan 2026 03:58:29 -0500 (EST)
+	id 5C04D6B0088; Wed, 21 Jan 2026 04:02:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B1216B0089; Wed, 21 Jan 2026 03:58:29 -0500 (EST)
+	id 4C2F76B0089; Wed, 21 Jan 2026 04:02:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B75E6B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 03:58:29 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3D32BB9CB
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:58:28 +0000 (UTC)
-X-FDA: 84355369896.22.28A2226
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 15C16160005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:58:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=g1smLvZ0;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf08.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.44 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768985907; a=rsa-sha256;
-	cv=none;
-	b=GeW52bET5jkI1KDZnPJYCkIvZLBkYjnXjr3V7rwB4pHONL0G4JApndN+baZiptpaMUwCEN
-	prAEZSZfIIiKrIySmnFnYgJd/JP6VcFylCjb+KoLQ0xD6Spld/SH6PH6NrjsZqq06fZeEf
-	ClVnmUW2FWyz+3sysv7g2m+cFHMpL+I=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=g1smLvZ0;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf08.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.44 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B2226B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 04:02:02 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA20E1A0887
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:02:01 +0000 (UTC)
+X-FDA: 84355378842.06.77B8BC2
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DD4C0100003
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:01:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=T2Up0Th2;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768985907;
+	s=arc-20220608; t=1768986120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=G4X8dMKetrdNmqKhKcHZ5SlhB98c1MkwzIAdKHbK4l8=;
-	b=zuyBMPab4cs8oC0KJdT6rmc+Y9Y0shI92ehiWFK1cJ5GAVJxqf6WeOoSzn5U+qp9cpyn1r
-	UxwAHj/AYBz6mYtG1egVi6cXAstY0mg92TCAlK0O8Bkd0KmZEmqt+i07hxwZL9n8KeXqgs
-	VyscIlYEs/iBuom5zC/gPczjhq9wz4A=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47ee3a63300so59977665e9.2
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 00:58:26 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ltl0vQZysF180pSnX7bz0rPfU/LxOA0NNr3UUNnapNk=;
+	b=T+QqVbzv0lF3yTwdrD8lPG6ZWr8GhSaGR/TJKoaffdu9sTr2KwV/07w1LUBfNfKnhQLXb5
+	FaTjN8VmDrJCpeq5J9LcHDvv1xRrnGyuvBB7KVH56BWj1NVuMvKLMJXt/zZGvWu5Xk5dCN
+	66Y10cey6ztt30fvsnsp52BkOd2ttio=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=T2Up0Th2;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768986120; a=rsa-sha256;
+	cv=none;
+	b=FkHgdyRx33C3OiqeBpZw+FTWbND0xtfi9i+ncmpCQNa8WSlbs7l7KIs4HPZ3fIJ1km62a/
+	qeqauJz8I4LMHites4kKEtky20fHPlUZdGkylLJDdU7WrsedX/PTFnSSdUR2QfojRDpscB
+	eSe5IzQszBdPeOncqnZqg4wCTTdT8qs=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-81e8b1bdf0cso3635344b3a.3
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:01:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1768985905; x=1769590705; darn=kvack.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=G4X8dMKetrdNmqKhKcHZ5SlhB98c1MkwzIAdKHbK4l8=;
-        b=g1smLvZ0xsNZvLmLlmX7RkuPXAO2Xaechj2sb6Alz/94fdp1rbsDU8HgszKujciHo0
-         LYT5Fhe9TPw0f1y8ww61kSskLo3TyWbvZbyJB/OjeY/4RYhJ1C1/s46NVwMf3vNYgUT1
-         DJoSXohgbz8t8QuzxpYhSIWJetbOwTAMGVE2wwHvS8kMT2X9AFJjqe9T/IRok6a3wvqd
-         WMQTYL6UThczpwwDHvvGAjycKw3YUchvNLj69ogznXVJCOgBa6pRt7w7rLj89aN1neMp
-         EUpZ64KbTuWIeANuK9aESYv3nxCFkIFEChtk1nQX88rWPzt3EG1stD9H6xSEXcaRYEy2
-         ekWA==
+        d=chromium.org; s=google; t=1768986119; x=1769590919; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ltl0vQZysF180pSnX7bz0rPfU/LxOA0NNr3UUNnapNk=;
+        b=T2Up0Th2USay8MLziivkWkvLlUzMQcbiY+7xZfPgXw/OujZiVKPwkqGm/83QId5h50
+         ezPohAOtZh3KnWSIrgbNWgW2AyKiJI2NpjS5BDwhAvYR7Z1MV6jxlJyXfmGi3s9NoYfz
+         mrf41kGOO0yxWixU51ZpoKeTNOZdUMnDLZqP8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768985905; x=1769590705;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G4X8dMKetrdNmqKhKcHZ5SlhB98c1MkwzIAdKHbK4l8=;
-        b=v9eUDdEKNYnsAx95ip2LK41AHBJmALZqaJJchTODkEVxU//PO9yNhLwakSPeAbEaWA
-         3OGox+QNNjdWY68vMs9O0t6wLYrose13EThhVKWoTkNKzk2nt6c3VjA8+j0xKOvI15AT
-         juYnoCDdHKZWAeIyhRP2aD2V59Mupr1RMNUBCqorVbAkv9OTxKQKoTN4DBdc2lYPr64S
-         JWeKUSypRIZdMDElC1RLQoMr9uo+Q3NTaGRYzNK/r1DOZEWGwBIlIK0tK+PtbDogxGWq
-         kkmAQEkGA3Z3FATzexRtpGH1NSacqRH/bfw/BuIAD/utK1yUhCDvYECO1Qo1RNIr4e54
-         7sjA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6Dy4grSkoANHrLlDs7svwyWswtSSIW9sFPlTAVGIIO4T0wZf5qEEnMULXuNZldRSC+lO+9eXAvA==@kvack.org
-X-Gm-Message-State: AOJu0Yx0E78rnAW3G6Dpg+ngQZvXDI9aUmthkjDNYFQHKR5dYCa3+tyk
-	z+I0IbRxmfC2YBGvrz8shE7+ND7nSK2QDpkx7svjY01dYAkQBzjvyjJT8aeQDL+JGdk=
-X-Gm-Gg: AZuq6aLbKPN7ARgP1IbaI9PUrh/xIf3j8GQTnlOdmQCZ6ubZjToARKMw+djLva3CkFc
-	tXL3x1y8Ehxwi4/Rdu1WlTwEsEjIRXTPwmFXJuLEIVAdv8IyGRH7vcz+alXYuEaJX12n8ArYbpJ
-	ZimTyQKBkoxnUvgzlirlSI1pRULpQ0C17kt/26fWfv6XKlwySYmVsD20ybjlIc/5QFm1SgxB0BC
-	I6h5kVCQ/xIH6LCgmDCzf2Y4UrFV1Q5aIw0d8DHMdzl3AbVbd0Yt+HwjrYygTk/xCgl5oObfiDP
-	R2pnpmDgvFPdq2HzvTMWS+ir87BhaujZEzcqzzwwpFq4u3dbxavUGALiMuCEsCM+f6JQIsPodBd
-	irYCtg0RnPtv/ERLFEEaYus01J2hNMDu8JQJPHC6Lcg+sZCR8ZUOJeZ7CaYsBwpOalTtx7inI0V
-	4QrP/1B4iwjZ2MEHuNOpr2DcqRlgY=
-X-Received: by 2002:a05:600c:8011:b0:47e:dddc:3369 with SMTP id 5b1f17b1804b1-4803e801e7dmr62810625e9.35.1768985905121;
-        Wed, 21 Jan 2026 00:58:25 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804252b02dsm17027785e9.5.2026.01.21.00.58.24
+        d=1e100.net; s=20230601; t=1768986119; x=1769590919;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ltl0vQZysF180pSnX7bz0rPfU/LxOA0NNr3UUNnapNk=;
+        b=XpOVwqilkoHofvGspVPQzy/FI9nbHXXl8iQsL+lf3lhsr2W5iDcDIfefzfZIV4BcWP
+         zhwPdbgb2C/zDyHbRvB4da2y6mvtckEySFyIEGPIuxQc1ucqJqPrDb2UqgfvKguKk0eC
+         yPdHzBwD2gl4DrKLk664U4v9odzBW7fmU2vFhKtmaIvd5orqTmXXUaYHiHNCRoocdOGx
+         XTTozM6z3a0HTYcJtF4B4toLoWxCXIF5pVF3k+dISXasbSUoR8JbVxOielV3YY5MJ0EO
+         q9/+LnLoMRQAxXAp3Fby3ztbVoaTDC5dy4k7fcSYzLmiG1eDyB3xNlC0YdYjjsNNFo/4
+         uvhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVphuOWK+GfsJKedn8wS9K2v0/ycbrpByuJXbC+W+jx3iB6iLOEsAXKV11u8wyoEbrOOwCxgtmjw==@kvack.org
+X-Gm-Message-State: AOJu0YxAYutBAzk2+57DmAxvSeL08GCzOSEQ/3v+x0SGyABAt3QveCmG
+	MHuf9EZ928jK2ESZy5r4ZfA0r0giFRl4vGTvVcB9SQ3i7dEidnsWWEne6UksipIrwg==
+X-Gm-Gg: AZuq6aKU8MiOaC9dTB6nFJ24GoD4Szr1WPTTrU1XPWU/1XDV5nYkV5iUw3bVg33LoHI
+	aOPkg1O9Jl01ZLOYBQ+hUsFMjxJm0JemTa9GPtZ1laNgkpviO3o0ASMRsPkj+rAGGoj6GGE9w1k
+	1CkBxUu60y+2ILsBGdPXEd2aRXQFfq0GBZuPb9cyxULCF/pAdhP+0OT6s4/y2kq8juKq64HJSqd
+	Ii7CjgH1ywTZz5MzeNO9dr/50q+1/jfjqDS/FLXNdFboj9rddkgcl1ptLSJP0xr1KTfVn9wqYqf
+	hpvQYscQ2WViT/mHrNZII8k3ELa1zdmHbC7Id7xBITnKeYdemhYx0inahBbMI7xUR9+lbcgmPnR
+	6bsj9EOWH8NZbu9IMKb56CoSllYboVSI98c36VWclQjzytw8GK1MxGfG0QDyP446OnADecanSqi
+	hFklm6PZ8+9/4dppdKD4yfbHE7mQVdx5qKc9ktUXGCI5qDz5Wtyg==
+X-Received: by 2002:a05:6a21:3945:b0:38d:fa67:e853 with SMTP id adf61e73a8af0-38e45e6ce72mr4267935637.65.1768986118496;
+        Wed, 21 Jan 2026 01:01:58 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:a85f:a6d:c028:515a])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf32dbc2sm7823603a12.21.2026.01.21.01.01.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 00:58:24 -0800 (PST)
-Date: Wed, 21 Jan 2026 11:58:20 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: kernel/liveupdate/kexec_handover.c:994 kho_preserve_vmalloc() warn:
- missing error code 'err'
-Message-ID: <202601211636.IRaejjdw-lkp@intel.com>
+        Wed, 21 Jan 2026 01:01:57 -0800 (PST)
+Date: Wed, 21 Jan 2026 18:01:53 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [next-20260120] KASAN: maybe wild-memory-access in
+ select_task_rq_fair
+Message-ID: <tjgtdmhtsbnxuy7obaumw74gpsolml3nucb4fkidxmhbrr3cb2@m4eqiizyjjlx>
+References: <sjs2vhhxipw2zl7kya5owkrtdvrmj52dlqwul3r4rlyuodqnux@4rjdigvqofcr>
+ <3e3af3b6-28fe-448f-90f1-4f2ed0c651f4@paulmck-laptop>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <3e3af3b6-28fe-448f-90f1-4f2ed0c651f4@paulmck-laptop>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DD4C0100003
+X-Stat-Signature: eszyhexn6fa6e83bpdbdy5t84essec1h
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 15C16160005
-X-Stat-Signature: m3btpmkbpi31ht1xu6kg5bro5u8hjchi
-X-HE-Tag: 1768985906-691833
-X-HE-Meta: U2FsdGVkX1870injtps6DRXpa7VHSCdICWGj2cofgvzK3j5pXHTK9P2I0ZYJQpJ4roCRC4pn59Jvqd9erOrdX03YLXirtR1ibVgTK5/b+0IPu3dXkTadDwqUfTpOgMQCglRLeDygBflKCbcdLE85MBzfyThgB5zveI1ise7+ni7+o/9FWZcI0TuOakdbgZ//ibhH+wcWwwY733sbA7F1VKd75uXQbZiqKiSxFuQ6O8q3G5HY+895oeGYOwA5k7IjkAvQZ0HAsAvpXQoUu5SROtNiXNdmFEIdLecKq2ZPaaciHITy+bVVNYeNypAVy8Rl/AMU6fEFa6dT2u3Hu/Iehk3HPgiFMfEj4dxzdnygdVLOaMPlAonnHmMGRnENoHT5eFCzp69Is//jd2qvvxZPkVuZdt+uEGaFpvA/amwNhGlrnoG7g6buVdSDzhZcxjgLegMkGpc4oq8lST05pvLOIIoJHtds6+16FnQcJlj2LpNsh5oIQG7QQU1LP+joWBSNgmzS6630s+x13tn2UAqmdxsMFgekvdEfolryOeFUeqfvHGhwDhHHNcMizRzK3mmkxkzaXWJ6nkbDKSxv3ZBQaZjt4kJhRFLneZvhRV7zbl2Xz9NV+fp8niZir6FAYz+Qvub5IAiC0gePkqubwVIQNpDRxsACFylw/rq/jR8Nm3YshEqIuRzfl08V568S8t7mRBuyZGQ4BQ34UtbeoutKvCodJgLnH2CXeA5HAZJmQsEzfFVn+7/K3QYx7hr+XXpSPg+X3fUGswqh4efO2CtZD2fPaTYPmyZvmqCZcHZcpatnCusmyeMUqlmSYRU5RZsCpjBJUmPOWE4jNIkF29oGFwnb9LvjLywQnEiL12xSJV8zkxp0etMfbObKz0IcztPWfrbTlwsOZrsahMrMuo7sne3zyTTzdBZssxQ7r5uWigzOMovPp+S9FFRRJVNBdnXwA5pu6IVY/WWnag0i2/I
- Ng32czFO
- 1xB0SehDQ0SoIFE1UAit6vUjrhXFgQgX0wotNUqN5pQ4igDQ/FzcordygDifxIaHk5dSy9joXil0R1rxr/ZgJjYC8mHBPg7FRC5WcwoZWFDIkE64YPwcU6jZrbgE6Z+/NOmiwmH4ZVznQh+s0PXqh2s0ObrvVqe2LwiMI/Fgl8wyd+jfo+tbOce88vZcJYL2afJd/1uYZ4EiFkZQOfMSyKVkMtffp7mbo2FMAccpiGDfRbABqDZ75zo+3LxlvW+ZFZmhsByu6HYMsgd0GRDjQgmUZTrMKl4GVzuyBQaj6B6QHO/MwWRRB+ajwazyV1t6ngUMxM3fD4bzSbnhxUWhZ2r0jzVcODofil4rhBKVYIwFjtlcGeEu88SILlWppj5pqcRpxhniYiVqh9fUSFQfsmnrzne7C/u7aMzjXEjG8z0RXhwg5T4TxP4mBcFQ3+HdtarRWXx6Zwwx3cqqFRUSWbtFEgBqikvUDUbnJSSnkqxvY9BPf60Z25C9U0B+LYWSD5bn9pISpFWBuxHoyQ2s7PsFPPihOzGuCyE9o9RVbuE0UsSBfDeRH17wt5QlGNEzsWX5c
+X-HE-Tag: 1768986119-927473
+X-HE-Meta: U2FsdGVkX1/JuBlCqLM1tZXLd7PFgiTDgiDwvf1PkTQ0JxMwHRSrGZcYSCHSKdp+cmlY+wPysdiaduoqiEqwdlJ6oXwnIVwJog9kiTdZ0mpWLZmzO6Wx4Dg7PH0tnSYmiPMzuOfn7QDt3WKc6nap7ENDJTrdBF5WLh4Kps13On0kDDiI9wrKSuJ1+i58HQNbHjgTFWcUbBJ4PrBpVpgLZ6RT5xkErJ8LhAYJJ/iw0OoR0IR52YfQbWD9LXD9NWXn3zRbVSHAi/v4OE+Gi4aU84MYqJ33zAS4uK1WBHlYvPSjC2ZJx/9SeFYY8yiCVxeZIDb5AxSqIRuaO2Cf8uHG3DinIWaoXPybVdbX2ue88+YVRo67wThmC+xdnnZ0QRXsdJJ8EkQ83Lv414OL3pdvWvEcOJCGm80+QO7CFR45ytUHgqqgwTbVXZUxB7Q66nVfv7M41EazYb4KoIInQ6eRTPALIQosAYMMelwUJIVNjFT9XBMtvVU28sgloRiajdkliKRXVDBJ+b7DQDn+UeSJMZ/OvVFFZtN6mg2oQJP/nYaUiNWnP8e4VGQedz1UHSvLI5JDWKu1tGyEltjJh5emIjrAzvmYBmQSbz/ndtDL6yrZKPsC1lMZvfwxd38tFurIBXyJl03pxItUlzxUpF41Ee3A0JnpUbcxuL2EgVrb2Z3kRVyk4zsTHN+lAUNSniLeTcSGfZBofG9/v8PxJMqxXOLTeDpmH1o7bz7T3RI6qTXKBWfsUZrS8c2hEUPFIBnNA+V5rylhgUwsDktrxhPIhnk+XX4nmwZ9HKj16++zVxBxBBi3nQvaGeU+DW7E9kCQ69IQuc74Ys4Bjc5xG6qZVCcWGm1Rk/MeelyPQZcBrHg6rK60/koX8JXjiiMHm9flZ90UBNXwf1UolBJAwFaZSWGmXTAy9RGHDsU1RnybwZS9CkJYYibFNgFn5sk3OivY82+xGHgMDXar9U6+0oL
+ LJ8+Zgzc
+ h4HMGX1z4rG7s63HMIPhFSXpKvnKmKsR0YPS6gb5JrFn4yEkNL3hTejCdMP38biSGGVp5ih/qvS1X0qvplQBoKgV7xWHtCwejjRd1/0LmKpKp4M8/18QO3+n39nc7bwHAWwdoJWz5Y/YGrQxJTISibGVrHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,84 +118,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
+On (26/01/20 21:11), Paul E. McKenney wrote:
+> On Wed, Jan 21, 2026 at 01:03:02PM +0900, Sergey Senozhatsky wrote:
+> > Hello,
+> > 
+> > I'm seeing the following KASAN report on next-20260120 (qemu x86_64).
+> > There seems to be a lot of stuff going on in the call trace:
+> 
+> I'll say!
+> 
+> > [    1.714941][  T136] ==================================================================
+> > [    1.715713][    C0] Oops: general protection fault, probably for non-canonical address 0xeb1125008e9810b0: 0000 [#1] SMP KASAN
+> > [    1.715702][  T136] ------------[ cut here ]------------
+> > [    1.716702][    C0] KASAN: maybe wild-memory-access in range [0x5889480474c08580-0x5889480474c08587]
+> > [    1.716702][    C0] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.19.0-rc6-next-20260120-00004-g7dff00c348a6 #645 PREEMPT 
+> > [    1.715702][  T136] WARNING: kernel/rcu/tree_plugin.h:443 at __rcu_read_unlock+0xb6/0xe0, CPU#2: devtmpf.X/136
+> 
+> This is most likely to happen when you do an rcu_read_unlock()
+> without a matchine rcu_read_lock().  It could also happen if you
+> nested rcu_read_lock() a billion deep.  Or if RCU had a strange
+> bug.  Or if someone corrupted the current task_struct structure's
+> =>rcu_read_lock_nesting field.
+> 
+> Is it feasible to bisect this?
 
-First bad commit (maybe != root cause):
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   6c790212c588fddeb0d852f2790840753bb604b1
-commit: 48a1b2321d763b5edeaf20bd4576d8c4b5df772b liveupdate: kho: move to kernel/liveupdate
-config: x86_64-randconfig-r071-20260121 (https://download.01.org/0day-ci/archive/20260121/202601211636.IRaejjdw-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-smatch version: v0.5.0-8985-g2614ff1a
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202601211636.IRaejjdw-lkp@intel.com/
-
-smatch warnings:
-kernel/liveupdate/kexec_handover.c:994 kho_preserve_vmalloc() warn: missing error code 'err'
-
-vim +/err +994 kernel/liveupdate/kexec_handover.c
-
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   960) int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   961) {
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   962) 	struct kho_vmalloc_chunk *chunk;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   963) 	struct vm_struct *vm = find_vm_area(ptr);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   964) 	unsigned int order, flags, nr_contig_pages;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   965) 	unsigned int idx = 0;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   966) 	int err;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   967) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   968) 	if (!vm)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   969) 		return -EINVAL;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   970) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   971) 	if (vm->flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   972) 		return -EOPNOTSUPP;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   973) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   974) 	flags = vmalloc_flags_to_kho(vm->flags);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   975) 	order = get_vm_area_page_order(vm);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   976) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   977) 	chunk = new_vmalloc_chunk(NULL);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   978) 	if (!chunk)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   979) 		return -ENOMEM;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   980) 	KHOSER_STORE_PTR(preservation->first, chunk);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   981) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   982) 	nr_contig_pages = (1 << order);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   983) 	for (int i = 0; i < vm->nr_pages; i += nr_contig_pages) {
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   984) 		phys_addr_t phys = page_to_phys(vm->pages[i]);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   985) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   986) 		err = kho_preserve_pages(vm->pages[i], nr_contig_pages);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   987) 		if (err)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   988) 			goto err_free;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   989) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   990) 		chunk->phys[idx++] = phys;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   991) 		if (idx == ARRAY_SIZE(chunk->phys)) {
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   992) 			chunk = new_vmalloc_chunk(chunk);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   993) 			if (!chunk)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  @994) 				goto err_free;
-
-err = -ENOMEM;
-
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   995) 			idx = 0;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   996) 		}
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   997) 	}
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   998) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21   999) 	preservation->total_pages = vm->nr_pages;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1000) 	preservation->flags = flags;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1001) 	preservation->order = order;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1002) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1003) 	return 0;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1004) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1005) err_free:
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1006) 	kho_vmalloc_free_chunks(preservation);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1007) 	return err;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  1008) }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+I started bisect, but due to circumstances won't be done today
+(most likely will continue tomorrow).
 
