@@ -4,101 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13519C44506
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 17:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 882A4C44506
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 17:39:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 636036B00D3; Wed, 21 Jan 2026 12:26:25 -0500 (EST)
+	id B43446B00D1; Wed, 21 Jan 2026 12:39:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B9956B00D4; Wed, 21 Jan 2026 12:26:25 -0500 (EST)
+	id B10706B00D2; Wed, 21 Jan 2026 12:39:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C5116B00D5; Wed, 21 Jan 2026 12:26:25 -0500 (EST)
+	id A135C6B00D4; Wed, 21 Jan 2026 12:39:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D4956B00D3
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:26:25 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D07EAD381C
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:26:24 +0000 (UTC)
-X-FDA: 84356649888.16.09AFAAB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 427A580007
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:26:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nw9NAeAd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769016383;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F9846B00D1
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:39:16 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EBE2FC2FB7
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:39:15 +0000 (UTC)
+X-FDA: 84356682270.08.1596EBA
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 02F7E2001D
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:39:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LUlBPxKj;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769017154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=62VOSp1+bOdyw4Ey9gDf5/3EdQgHuQ85o/OWTyOpOjw=;
-	b=O9yEO5Tmgbn3WRTAaIlIh3h6Uon647Mh6VNQo5YkQ5QPBSoIxzuhpudlFiypWQqF2mGPpu
-	thEAZ3D5oF2UTSEJkIFrR+pV+FNFGeyy0gzuc0Of7iwsnSGnalbRn6eJAjTXukcBmqDAgb
-	wYg0u/ck0L2GBdmH6rYdBhALKbpSRfA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769016383; a=rsa-sha256;
-	cv=none;
-	b=a6AW3J1EHcS96zZAzFjqQgTjUE276ls0akU+ijD3u2tQ/mQESQhLHQodBAJ1GwfIgZt+QE
-	hC0ImOxFAE3BAkNEJsLte7GLPt6132nPlxtGhwmCB0sVnuJwcdMM25XUW1O8JD8nHGBs6v
-	wadO8Nx+ifmqnPtX9iuPacA4PUDLsos=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nw9NAeAd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 513B6600CB;
-	Wed, 21 Jan 2026 17:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B65C4CEF1;
-	Wed, 21 Jan 2026 17:26:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769016382;
-	bh=H2cZyOrU5YaqFRoEWy15WU0X17vWC6wsd1JZ58PmZ0U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nw9NAeAd2EREUfgIqRkY1OK+LynggE+5VrpuaSFH+0FLUq8/tgJfAV4avkYWL/LKr
-	 STN7AVVGJmR/i5ZPxio82Lw8a4gZjCTWd3x6xd+k5/NdQoBN/H2JzVarm0axJj3aiw
-	 9F7Y0cX4SagCNN6ZsqmjpoTn2CNVUVy/Zf0908tkrIdkDiqRcp2n1qSmDlJ0RQTI8g
-	 u5lCxgf/W3vbGl/5JBDibE8t1IFy0Rj16iZV4/XQZuavtljrI+N7xt0iQYZZR8ofuG
-	 GwdX6Tj6th9jhcAcpP4xK7zybBqblc5gSliR7Du/4lt4Vv4B8QGXnBkvCwzq5dfAeU
-	 0kjd1AjGSYaNA==
-From: SeongJae Park <sj@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Jann Horn <jannh@google.com>,
-	shikemeng@huaweicloud.com,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	chrisl@kernel.org,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v3 01/11] mm: Relocate the page table ceiling and floor definitions
-Date: Wed, 21 Jan 2026 09:26:17 -0800
-Message-ID: <20260121172618.39532-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260121164946.2093480-2-Liam.Howlett@oracle.com>
-References: 
+	bh=WZPB/nAuSxHMF8z7YKq4XwyLCyx1N2zE8w1NIox3Cbs=;
+	b=CYAFxWU8pCMvxvyBKRyxmPn2PivQeqVDggAvVzFXZ20LQS4mYrhkrPFWndILUAIHROiLP/
+	zej95tT7GL7ppuKq9dv9tHmmtDXYW/XDOdrHwo0bXd0krVkjJKzUmriEAK5Ui0t+5r2+yF
+	YtcoC74iUn8WYkMUlghIOm0grNXTCtE=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LUlBPxKj;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769017154; a=rsa-sha256;
+	cv=pass;
+	b=4pOqQ9KsmeGtRqRNL5zzbVzPyPsrhRCqM8nteu74Mh5Yk3x7AgRjV5fY5dj2+jb0Nz4bKX
+	TDSAracfHkHIAszqR/AnUd2tQfG/EjcSrq4hGrM4FWsxTk7L2PnEjYGQ8Z90j9e85ggtzH
+	xfiXCe/n/DJz1IOkRVUAwlXZAosf5vc=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5014acad6f2so144431cf.1
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:39:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769017153; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hmHOz1qeluhKUkcqzL/OeCE50gZhIVAx1iScyvS/vMvefKrXpHoSSK4QYlelXJY0ni
+         GF6fCZNw4NyoCwfyqAucVaW37C4F+2QyRrNxze9+OjH8siEtDZONVS7GWVS9JNvDbcFN
+         jMcolhDo82qgV6KHiDOWFgTfxrT3zbVdzm24+Sk63YKcgek1kLnH3pn+kUs5ibs5rtfl
+         wnq/LF3WK9ZmpwVsoDW7F8YCds+xxQ+5xn66Q93SJczvpEldxJzhY6JfXmVxMVbf6YIH
+         SSnyKqzEI504Lj5iDczFeSlMDgj50rii1UiUGt7xZSPlHNMOGuKACAovxfVQzFilQyof
+         OeqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WZPB/nAuSxHMF8z7YKq4XwyLCyx1N2zE8w1NIox3Cbs=;
+        fh=CU+LnSAxtZyC2vXGUWg5TntFeVnmekxmAmmUswAZ9hg=;
+        b=TEz+gfSYA4l4z/tggRG14HigtkvKOb73XVza99D1VZCfcNUoLYTDRb73UluQUEgJ7k
+         kVdL/CsFJjRR/n8FZ4KnzzTRjmqPNIKR7fL/AiswHv997uO1bxzuxhbfOeLW7tja04aZ
+         Sa1l80xZe54JhdKOtOK+q6fjZwtDBFuclTivSLb0hYsRErHq1fMsyFYk47kRUQ1Orp2+
+         SlVc7ygbX6a6M3dLIcS6xSFyfflhWCHqZ04dG80eugIzgEJSAQKfo0fGMhTIUIqcWwIr
+         iYi3eUw91VPyb4Qum2aBxnb7pZSUFtr8paFxM4gJxJGIC0yN20ghFpu7635bP55np6xL
+         QY2A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769017153; x=1769621953; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WZPB/nAuSxHMF8z7YKq4XwyLCyx1N2zE8w1NIox3Cbs=;
+        b=LUlBPxKjQ/x8kzcByTkyjaeJD+fhFE5ge3MD5BaQLI3JbiOHNwsi690BC2r9XZ+XOY
+         NVU9pvBgbrTvwBOf80CYmVMnTFwp8LtdQ9IXh8SNMkcOpAbwdM/CT3fpe1VdjIbCu2/j
+         Gdb8UdC8qh/fIHW4o9o0BZxyna0OICnFVa2HsvC4D2Enm4p7QVs8/taIu9qZ1E0ESdVO
+         5K7YUwTpEceBZq+YuldGqmdIePCsQfH4RFdctFrwj+KQb6kE6yxZgC+GNcfAat6GpQaj
+         /fepx2fyZbihMXeA3ijuwvKHUbOLAP//X0lrtRY1m+JdqkesSWnhZQGer4P/YR1naD+c
+         lL6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769017153; x=1769621953;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WZPB/nAuSxHMF8z7YKq4XwyLCyx1N2zE8w1NIox3Cbs=;
+        b=NdSjjXWfue7hm/i7vuoMLStNKLqMXc1kQeY6YbcUK4cshK5exUEm0jHFILzN7wIkjM
+         vQ9ss5CHElk5RpEjmOzMRlFJ0/J529tyG3rQ6I7gn+TXAkItXuwdE6B3qd4m9rKHxa8P
+         uuUP5QAHb9tRn6vj7REje8tvp/W1mhBpHbgrSReaDU/r++WgaKjFz2RxbIe3JMsBE32Z
+         Atd+g9v7SaSoCSzkcP5WoSpVmOwAh3WRGO1Sd7PClZXkvKRMx6/5+o65rBb8h1igtk6z
+         jJueKglX+i6trKL+LNK9ZEJMQy5Pljb1NdWQq97Iaj0HVGJjElHB4vPVgtgbT2Yjwvcp
+         d1mA==
+X-Forwarded-Encrypted: i=1; AJvYcCV97QB1KNtml6EsbWui36v1pBH8kUC8LojYBukV7kNcCkctAuAjKh19lOLq69sw86SKKi23z9JYrg==@kvack.org
+X-Gm-Message-State: AOJu0YzVxvbBZNbTmrmKRcxrXmPyjlMfanjlCXhBZaMFEXSkdFFKZXfL
+	zgWe3relfHxlTxY0NXpfbPJ1y9ZiGNbNRM3u68H+yGEqnmr4F7fcwkxeZsBBhD0D1tRxOInhIyH
+	2y6ZC2he3hrQcKtHyfZemCeaJAiyySwpsX3llgjZL
+X-Gm-Gg: AZuq6aIKBNVlDooNjMJxRiYrZbpW/pIPykX3V03zMf5cxeDKG+rM9tWYAMjM6tuDiCp
+	ZXKZW3Ahk4nIUXCLciP/OjQCwi7MeJvBO/xHbnoVksZ1fwlA9xw0VdJF4Bj0ORSvSB/GLG/kio1
+	7t5WwD44X+iVHox2RfrfAGjfhO4uRbAIS9eSB0dXa6gZx7RNqwCD/Iljb7XNy28uP0JuGkLpHTa
+	u/4Ad07krOMrorL9XQW2cvUKJ2+46epl6gzqvW5NX0aJm+M5vrZS8CWUZlbBUReSqVT0aYucY0+
+	bYtY6Rvdvmun3GAj5Ia1qhk=
+X-Received: by 2002:ac8:5994:0:b0:4ed:8103:8c37 with SMTP id
+ d75a77b69052e-502e0c6494emr14807601cf.12.1769017152599; Wed, 21 Jan 2026
+ 09:39:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 427A580007
-X-Stat-Signature: 6f7sbchb3ijrm5u9jnsu4bx459jkaids
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-14-5595cb000772@suse.cz> <2tvnelafuozzzfyvmxvflqmx2sepgy7ottnw4n2trkh33rrk6b@oewlapq3smvg>
+In-Reply-To: <2tvnelafuozzzfyvmxvflqmx2sepgy7ottnw4n2trkh33rrk6b@oewlapq3smvg>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 21 Jan 2026 17:39:00 +0000
+X-Gm-Features: AZwV_Qi3Y2iex4LEenR-glhvYF5fdvLAgmEL3JsgkohqCrj2SiE002EgBpgOZDM
+Message-ID: <CAJuCfpHGSxK99sSDmnh+xqJOaqLX6vVoH4oyPUS7J6J74RU=9A@mail.gmail.com>
+Subject: Re: [PATCH v3 14/21] slab: simplify kmalloc_nolock()
+To: Hao Li <hao.li@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
+	Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	bpf@vger.kernel.org, kasan-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 53ugu6j6o4xkeojthukm81tk1sprbirf
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769016383-966752
-X-HE-Meta: U2FsdGVkX1+t3jWV6F5DjC23hJG5S8YTlnViS/ctKt3L2krw/qTqI5HRnfjkhfzyPeZ/jK81/jtJsG7/4y0yFILdxSb9e8apPKNr1MkASq0dVkP2LW5lU1/xX3d1NkWMMsagY/w3++jLvRxhnCP8/soF/bZ4gZ7Zst86SvqOYJEkDSHx6nXFwEM4FOW0Fmsl3ElynGkoQ9sGyFRHBzvD1M8PZnmSSmkYO8EzS91Aky773wfeWzkgQD2Qt07dklMjJrx05Fp9jCNuQOibr9tiUPpSvGCDMDJH/On6OzxjR6tTTGOffe/jQCGVCYaiRNq+vROZJ84YTZzY1oGmq+StJ50a+ovDr8UyUcnr23+l+ZpwRpSdSUOXW+pG/gTqKM5d9MMLqwM3WKD3zEqHVyZGxrQzSl25wMh8BBwxpFUacuWN020oUWlF6EZtbZySBlQb5PJhKAIe0IiOUbpzoWHbYMYxKaB6XqlutxqlJElw7bwmv9W2+gYpJgLwvsUlHGGxtwlSIgUNG+sp/x+Cc5//IvTyvjejAVwZpHDleuuqhUYBK2WkuGC1acIh9YfJzjJWaZTTPM2Y4TAHFbVODON3q9HSKoLTG0MiveSe35r1U2AcTuoiii/yhsVoZfZnoOZtEyo+A5nOcmDdKjRbbTPuhEeeOdcM95ZmKmIxQ/EVE60MqRPGkgZU+WlNUC5JCX6A3cFLFpOJzX4kSU6YSHFGxgX8y3gGmJ4a4lIiv5g3YesujKUeN61n74T+k4gBF2fhinUAF1j6lHIs1ZtWxHdC7DMEwPgY3hCKWbf5fRLXSWsjMe/rG7gowNNfVoNQbsoSLc/s1jiMx/06isEV+ixX+jST8DNjThNDj+AMvZFvujmjpaRs4PTkkGfs1jXBsTdcwYqn871dI0iGsvKPT8HFusvkPabMHz8iqmuDpqemWa29a/PCiYIexhQX1iBXZh0nCCY0Dy4RIbidLGt6+lY
- StwOytr3
- rrGsRBoSFuKpB3nvIIhRaOykgozvZ/U+XYsDxYw3vZDTaXcBVDSZoZdu+DrHBxs5dfQZlpcxJccL3CnAg4jMyM7nLqCv+inRPBSGrrFW/I1/g+Xhyke/cfSweOyaxJnU/UWvDsegPgIu9JKLy+K+tnpHaenYLHoLQDGNcqQjM0R2gKPDEub89sXiGEVc0vn2sPa07fiUamHCjXgzOtZ9f5MnplERjBWDLqaL7EUMft6TZc86ouORt+Xk6Jk8vDhX6AgDl
+X-Rspamd-Queue-Id: 02F7E2001D
+X-HE-Tag: 1769017153-48306
+X-HE-Meta: U2FsdGVkX193nnto+HGyvthgEhKpaPoNT8uzWULs4UKNgCxxJijjHNGppPw6zFfZ2W573lNAD7Osc7uuH458ces18bvK1M4PHeu/V5tvsWqbG5p6RI5iitA9qxe9cZd5a+kAaPWtPq0kF3urhDWhP0/Tzyj3f3CFINSZHDowPDb5AbZ2NfPfbtLSkPrJLCQtJGnPBqWNH1CFzr1bvDx4+G7MmB4dmbAJW5TsOFlNBvnwbcvIC4jSYzjIBaMsqfkgJ4e9PS/Ko9gTNWI+zopG8CexIc+JRLpqKmOGL2Y94mOiChql1bELMQabbnWw4UjR7ocvX9TrTs3MILdIWgSnq34THYdDYPW7x6Bavk5tMu42qpgNzxqfPIz1x0AblxSo7XBVPJCd1jeCF35e0/Z4huodAmO/Re27zesaSNm68scDCi/5bWxXLuwqxrKJO0Xi4J4w+lffDwEabNwAV3b5x+XcHFfNOhZ1jqMg5b7jMU9bQWC36iq7YFN1UYg6+/bHMtQptbComI0ew87BS7KJSNcHX6YRRjFcaQuE+QiYpl/nD/iMCWRozJRkxabd3vr8pgoQlO15hCOQcCyD/6gHA7dDeJE2hrvax8X7B778V1EfJufwqS2ivWnRt/iAuJkBa5qINhJsecbJE3pFVyvFrP0hTuQzVO0yOomsGvTv0wmxyfu6Wu1Bp9yNdOgwo+BP/fpp+SortgY5gickOqU/MF0eN9bU0EDLN/26F5xeMlPgNkDttYmOL7+QGjYLyvO6etG5j8ZPboNb19M5qGx9QNN0xtcsYC7pZnj0GymlQhm9B5OHKZwulDVAWl//b5l1Ms6iJWZZy1c7qaVzBonVLBfPqAvndFAZn7DFBaJXwRO052RRlE4SqWZp6CfKV5+YV4Hs8RPcpt8xVbcTGUmTYbrpPTaEng71k4i3VX7Rkj6JJ2/pK6dumcdGLZu0kwjLsEJcRwfRxTVxC7zM/Yt
+ BtxroUFi
+ mtYW1cnNebHQhjYFwMGqkrt+17NfTeM6Gzl1gZ+0beyFWiR3DZGz/eBZ4So1jIfHLVcWnXtZzXkIL8qxGzaCB8v+HX730Qw2PF259HttcqDdJvfZlZcSNoeWMKmspGsxnAIzE/HCakjIlvkoODmnItJcLVxzd9gDMXzjqJ/U7DiFbURWSJ5Idn++EAfZDI/LvzpbXcOv1NnhCF566+yK3T5FmewFg47Vo8d3USG8Tiin4YARm+7HrkfMJGe6R6bt8QdaJwU+Y/o2TlyoMHZzlp9fNOuGaI6rzyD7CGk69sbliwp5QF4C2EKTSFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,103 +145,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 21 Jan 2026 11:49:36 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
+On Tue, Jan 20, 2026 at 12:07=E2=80=AFPM Hao Li <hao.li@linux.dev> wrote:
+>
+> On Fri, Jan 16, 2026 at 03:40:34PM +0100, Vlastimil Babka wrote:
+> > The kmalloc_nolock() implementation has several complications and
+> > restrictions due to SLUB's cpu slab locking, lockless fastpath and
+> > PREEMPT_RT differences. With cpu slab usage removed, we can simplify
+> > things:
+> >
+> > - relax the PREEMPT_RT context checks as they were before commit
+> >   a4ae75d1b6a2 ("slab: fix kmalloc_nolock() context check for
+> >   PREEMPT_RT") and also reference the explanation comment in the page
+> >   allocator
+> >
+> > - the local_lock_cpu_slab() macros became unused, remove them
+> >
+> > - we no longer need to set up lockdep classes on PREEMPT_RT
+> >
+> > - we no longer need to annotate ___slab_alloc as NOKPROBE_SYMBOL
+> >   since there's no lockless cpu freelist manipulation anymore
+> >
+> > - __slab_alloc_node() can be called from kmalloc_nolock_noprof()
+> >   unconditionally. It can also no longer return EBUSY. But trylock
+> >   failures can still happen so retry with the larger bucket if the
+> >   allocation fails for any reason.
+> >
+> > Note that we still need __CMPXCHG_DOUBLE, because while it was removed
+> > we don't use cmpxchg16b on cpu freelist anymore, we still use it on
+> > slab freelist, and the alternative is slab_lock() which can be
+> > interrupted by a nmi. Clarify the comment to mention it specifically.
+> >
+> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> > ---
+> >  mm/slab.h |   1 -
+> >  mm/slub.c | 144 +++++++++++++-----------------------------------------=
+--------
+> >  2 files changed, 29 insertions(+), 116 deletions(-)
+> >
+>
+> Looks good to me.
+> Reviewed-by: Hao Li <hao.li@linux.dev>
 
-> pgtables.h defines a fallback for ceiling and floor of the page tables
-> within the CONFIG_MMU section.  Moving the definitions to outside the
-> CONFIG_MMU Allows for using them in generic code.
-> 
-> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Suggested-by: SeongJae Park <sj@kernel.org>
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> ---
->  include/linux/pgtable.h | 39 ++++++++++++++++++++-------------------
->  mm/vma_internal.h       |  1 +
->  2 files changed, 21 insertions(+), 19 deletions(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index eb8aacba3698d..557ac918bdca6 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -22,25 +22,6 @@
->  #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
->  #endif
->  
-> -/*
-> - * On almost all architectures and configurations, 0 can be used as the
-> - * upper ceiling to free_pgtables(): on many architectures it has the same
-> - * effect as using TASK_SIZE.  However, there is one configuration which
-> - * must impose a more careful limit, to avoid freeing kernel pgtables.
-> - */
-> -#ifndef USER_PGTABLES_CEILING
-> -#define USER_PGTABLES_CEILING	0UL
-> -#endif
-> -
-> -/*
-> - * This defines the first usable user address. Platforms
-> - * can override its value with custom FIRST_USER_ADDRESS
-> - * defined in their respective <asm/pgtable.h>.
-> - */
-> -#ifndef FIRST_USER_ADDRESS
-> -#define FIRST_USER_ADDRESS	0UL
-> -#endif
-> -
->  /*
->   * This defines the generic helper for accessing PMD page
->   * table page. Although platforms can still override this
-> @@ -1660,6 +1641,26 @@ void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
->  
->  #endif /* CONFIG_MMU */
->  
-> +/*
-> + * On almost all architectures and configurations, 0 can be used as the
-> + * upper ceiling to free_pgtables(): on many architectures it has the same
-> + * effect as using TASK_SIZE.  However, there is one configuration which
-> + * must impose a more careful limit, to avoid freeing kernel pgtables.
-> + */
-> +#ifndef USER_PGTABLES_CEILING
-> +#define USER_PGTABLES_CEILING	0UL
-> +#endif
-> +
-> +/*
-> + * This defines the first usable user address. Platforms
-> + * can override its value with custom FIRST_USER_ADDRESS
-> + * defined in their respective <asm/pgtable.h>.
-> + */
-> +#ifndef FIRST_USER_ADDRESS
-> +#define FIRST_USER_ADDRESS	0UL
-> +#endif
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-Looks good to me :)
-
-> +
-> +
-
-Nit.  I think just one new line here should be ok?
-
->  /*
->   * No-op macros that just return the current protection value. Defined here
->   * because these macros can be used even if CONFIG_MMU is not defined.
-> diff --git a/mm/vma_internal.h b/mm/vma_internal.h
-> index 2f05735ff190c..2da6d224c1a85 100644
-> --- a/mm/vma_internal.h
-> +++ b/mm/vma_internal.h
-> @@ -46,6 +46,7 @@
->  #include <linux/swap.h>
->  #include <linux/uprobes.h>
->  #include <linux/userfaultfd_k.h>
-> +#include <linux/pgtable.h>
-
-I think this might be better to be done together with the following change that
-starts using the ceiling and floor from generic code, or mention this change in
-the description together?
-
-Above comments are for only trivial things that I don't really mind.  Please
-feel free to proceed as you want.
-
-
-Thanks,
-SJ
-
-[...]
+>
+> --
+> Thanks,
+> Hao
 
