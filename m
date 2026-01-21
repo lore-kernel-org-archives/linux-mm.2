@@ -4,156 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 010C2D2629F
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 01:32:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE89D262AD
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 01:36:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6599D6B0005; Tue, 20 Jan 2026 20:32:36 -0500 (EST)
+	id 0F66F6B0005; Tue, 20 Jan 2026 20:36:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6076F6B0088; Tue, 20 Jan 2026 20:32:36 -0500 (EST)
+	id 0CDE36B0088; Tue, 20 Jan 2026 20:36:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5065D6B0089; Tue, 20 Jan 2026 20:32:36 -0500 (EST)
+	id F1BBE6B0089; Tue, 20 Jan 2026 20:36:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BBA46B0005
-	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 20:32:36 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D49F21606A9
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:32:35 +0000 (UTC)
-X-FDA: 84354246270.14.0DC7399
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E532220006
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:32:33 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=CgUitnkg;
-	spf=pass (imf03.hostedemail.com: domain of zong.li@sifive.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=zong.li@sifive.com;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768959154;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E2CF56B0005
+	for <linux-mm@kvack.org>; Tue, 20 Jan 2026 20:36:35 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E8C4C1C97
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:36:35 +0000 (UTC)
+X-FDA: 84354256350.03.8EE6666
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 86E3140004
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:36:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HBi66FL3;
+	spf=pass (imf17.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768959393; a=rsa-sha256;
+	cv=none;
+	b=RyepEoYcM1vtRQqYuL9wkw1XRnF9TlyZhXy9SsVszgOyKurVraJIzDXdcCi1ZDc8CdiTt6
+	vWQhcGAGiSFrtdI1OzA0NIGTss35swbhg6VC1yZjAohZPEYFrgCkQHTu1bBYJ0S7DLLSTB
+	vUxeL5UHLcXehQntlMC17Eh2PowXU4I=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HBi66FL3;
+	spf=pass (imf17.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768959393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=phhznUg1me3aMCDh6RtpPgdrBfYLQTkKfqDDafoKBZI=;
-	b=JoWqf1AAl/94wvoQlzh/2QrMMc4Pb4G/kG2exq4F8URgtBDvj4F32AI9qnrzS31b/63Pfi
-	91Lr8ZA2kUUVKnNS+HhwNsjiepIh0wv22CiCi6Hbu/zo1zrjqwNP7lXCUnxYwDxGPZ7zYp
-	OI6+RkaLPZA+PrDU9i7Ow8DOwvAqc6I=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=CgUitnkg;
-	spf=pass (imf03.hostedemail.com: domain of zong.li@sifive.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=zong.li@sifive.com;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768959154; a=rsa-sha256;
-	cv=pass;
-	b=TbVXUcuxGWcPS2aYPV+oD8+MQSIOgyfJRhJQz1JVyCZk8ZjJn6D+PrpHrO37ts8PH2qimh
-	TaPPYkF2mr9ewVNVSCCBz0sU1+UZpCIuN5G8mukBukGYHl4qC4QGL0Uz4ofX4PO/yVc0zN
-	QGxtPubuLgg8qeqPUff+40iAXbW1n5Y=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b87cc82fd85so507104766b.2
-        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 17:32:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768959152; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QuV57DWuI2FW+J8ngIAmFIhHLjw/ea5dLZR0hbvwGp7n7/RbfuMYVFv/9zMwaP0LvX
-         CRCeil8GszR9CpYPF74Ba4ddk9LFfUiJkS0Lo1NKW5lBZpK6O6mmH10q73Cqf+xFGK+Z
-         YXaLod47TlD6ljq4ox/4L2GkhsRaPmCwpX5NOlyvfkUuUbJbrBoVeJCkXuSsGhXmrUGu
-         oz9wntYHe+2fjdyaUn5F1w6j4fOavoTPCMg7AvplAjwBujycL11QBnhGNgPWOgpzw7kt
-         1tEyNNY6QLYCcvfRlfwgS66bxYl16/q5biUiOxMMuvk+YiTpwF7UKjMQBTHqWznTZNuK
-         GJJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=phhznUg1me3aMCDh6RtpPgdrBfYLQTkKfqDDafoKBZI=;
-        fh=kmRBX75lPcqk4MXU+FgsOdKU1kciMz2bHGYd7o+fMiQ=;
-        b=I0KQF4AmM38hBZsJdk8nhScGJJvH8D0O0SBpO6c0HntfiCVXsFbJSdeBVZXq16hnot
-         44onTaLY31JrO8i1l2faEq4+kP39E3fgq+fISQCkioE67oK3NdDo1n7nfD7pd+ZxNU9H
-         ZT71iLL0IDABwhxVYD5mFLGE8AEN5MMU1B1DEMmgPqNIHVvnqyyOBsTa9vsE5iva7Rub
-         mhSHTtBabr+kNFzlHMrwSlXdwWyS2AEeSCr2mpOMRgxhKr8BWTN7Ze7CJ2rpviPFYMmU
-         4Dqzly3LFdtZ80lUeyAGkRQY2tpG30Br9t9Pnxg89EWWMBVX7A4bT4e1KAOyhL7IVdWC
-         4UoQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1768959152; x=1769563952; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=phhznUg1me3aMCDh6RtpPgdrBfYLQTkKfqDDafoKBZI=;
-        b=CgUitnkgZMxU+MWPav116VdW5aAIjq69PABzdmQG831FawoPWCHV1kjwJwcbK6kGxg
-         qxzLDikzYNUWYcPLLZQ3/uLl3V4LZ15Qw27+jx3Y0QoflBMUNb8iL19AKHxuVJpObCx3
-         aOH1mG6lwpDAuzqSJ8OACsoeiVL6/HyoyMuqIYFX9E98sUDVM6Teao/HxsCVbSOj4qC6
-         v/JdLx66XA0N3wugVzf4IWSosKCBuzFg2tJFJUD0eGP8SAnpBSju0akkxQIbQQw6ME6G
-         yTPXt/Zgq+Id9vcddR0aRRusEozlgp24Z4wy24or2l3TOqXrw3uPxzNZ97367hJa4sUQ
-         HNJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768959152; x=1769563952;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=phhznUg1me3aMCDh6RtpPgdrBfYLQTkKfqDDafoKBZI=;
-        b=EtKIqNILdwLO4Wf5kdMNYyFV+uPhsBLSOHl7nlaEIK4ZHLh3qCCTecdM8Cd2I9PwUJ
-         Ju3VWny4J9ToGM0+2e4ftEFWw3cCpjJfPO/wfDuyW4ezsvLLZ1m61f2qS4xs7JAZuMf8
-         6lIw5nO6OTLZrob683MdDGD5VpXi5H74qI4FoLk8suvvJfDQ7twuJrw9r3fiFEgQ1Ni7
-         owJcyJ6s5YonBRC+F9XQqfvsLRWLpZISDll+j/Qjqy96WT/F/TEtbBdSSMLi3autL6SM
-         zM1dygjMNhGZnJ64oc/9O0JB03B+l4kNo6/tuqGjPPH5JZAPwrn1ob8qzMVraDS4OrG5
-         zjvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXLuPDW2lelqGe6oYrbhN9eJEGEXzlE5fHidC9DY1bIR7q3QVGLeDELUu2SobbUqeb3m/acQ2goLw==@kvack.org
-X-Gm-Message-State: AOJu0Yw5DOvFUw+BNqzPGI0sXg+qgziTeSq3h4S4FNnWtPy7DOufz5hh
-	CqrM4/zax1gsa4IkmuE3B6XlxwqMGKD0TdkTmu4sWFmJavXomBGnsb4GXGNulSoa+8I2cCINQaQ
-	VpgcKnviVn3nMm9QgWdBEr8cthwfmsb+BKvdtJfgh+w==
-X-Gm-Gg: AZuq6aLhTR1iY+zuLrgZ3hsFp/WVcAm+E23TMe5MwedFSVU9TJ8FDG8DDnzULmX93Cq
-	DpEfyqwThdm7Joaztupec5bEQ0LJxt/5EC3v5bdM01v+gI1XYFPRbv2vup0LNwEmX342+T50wuU
-	llDHM1DN7UBH/bvJJgjIKCWFMk1phDowjLuifUzcqShnp+PAKpmztFRY66Y0fbBMb92ppWi45qJ
-	vev/dsGJlxOKfK+2uqqgL5kqkMePLF7l6KpfBrsbyhtp/6EMzoHAU1JMEr6Qda/GsJhohdoOg==
-X-Received: by 2002:a17:907:9488:b0:b87:7634:b20c with SMTP id
- a640c23a62f3a-b8796b215a4mr1301363166b.38.1768959152268; Tue, 20 Jan 2026
- 17:32:32 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=+IolQVkF+7UTpDVewB/Y2bOjTacpO437CdsV4Ah2nrY=;
+	b=IF4y/FmrcwWC/zPlbB3+Nqx5x5tihwEiiQ/P+EgE2cfmSbOxBdvO+8E9WvzSNEET8NVqS1
+	cU4vAWCZXrD3v1/zWM8Fo5rSeoPBjD+NyrRTASkxqSAIdPvlocIVglTxxIhdAQdqcwBImD
+	crHwrI5fW8UxISBA6HvGY1D1dMpLkz4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768959391;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+IolQVkF+7UTpDVewB/Y2bOjTacpO437CdsV4Ah2nrY=;
+	b=HBi66FL3kiW2dq0oZq81qI1Ia79wPYUpGTNiVC+kShReCTOQzSdZ0oBnyko1enQLLLcyQR
+	fy+6jMDQzE+9rFjFw9drVv9MEHs+LGw/3Xn+YC3mnDUUgUSjN/D6+WXwmaZGRyCsjsxD/Q
+	Aio7KMDAwxXYsYSzWccGmVxwlbv8lMQ=
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: [PATCH] mm: zswap: Use SG list decompression APIs from zsmalloc
+Date: Wed, 21 Jan 2026 01:36:15 +0000
+Message-ID: <20260121013615.2906368-1-yosry.ahmed@linux.dev>
 MIME-Version: 1.0
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
- <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org> <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
- <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
-In-Reply-To: <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
-From: Zong Li <zong.li@sifive.com>
-Date: Wed, 21 Jan 2026 09:32:20 +0800
-X-Gm-Features: AZwV_QgpJ38WsQTA-JLh1W5jk7su1plcAErfmIKl7ceT3yMsB0wZBJHvBBZ5Ujw
-Message-ID: <CANXhq0rpjSvOThACrB6_MMc8S34--xJsUYZ+HtMu1GUNyk8zOg@mail.gmail.com>
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Paul Walmsley <pjw@kernel.org>, x86@kernel.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, 
-	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, charlie@rivosinc.com, 
-	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
-	alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
-	Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
-	Valentin Haudiquet <valentin.haudiquet@canonical.com>, Charles Mirabile <cmirabil@redhat.com>, 
-	Jesse Huang <jesse.huang@sifive.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 86E3140004
+X-Stat-Signature: jmwpwudi85n9iipubdznoguhrrwqbheh
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E532220006
-X-Stat-Signature: hwud516wadqtaj81fzx4ohg1suyoh19j
-X-HE-Tag: 1768959153-342191
-X-HE-Meta: U2FsdGVkX1+S2JjnfQnqNjzkNmSaZejyrZDx9075S/vB5Rf6HQmutSZfNBUCd9rrEwU9SmpwGCRgoNO57tJm6sIBtj+jHUO8PdSBZ9rlHVfTLS+Tev1+0FM79ZAwh352H3N4CMWGJzK++0JuEHDTUp3FtCGR6y19CECqd5RRPkQfw9TCCsf7YM7JlwR6bty3P3KoELRSMs+bDuUO6lHvecHMmUojuyBdu5TJ2hnT/V8092dmbg8DrKR71k/Z6I+KA0uvpmxZ1DkkYb31ouHMtyyGbpZ3jL6rm7jgvtUXCl47HQ1gkCHvhgIrBRF5ZXzuo9OxN9uA41hOjZuW9E2KDxcQTNbsMyPdF8hg6juE5IusMqnOHbdd3cOIgIfozIUMQ7aBYgBZ/Yzav0MhPDG22FfbIAoAN1Z/4wPz62aMn13IJ8fCO2n83i5rxzrY3D4EB3S+uudEROTPPT2s13aveS69y1M8YHLdTPxOo6oRQLweKWCEpUcOcRb618lvODamxu+nqP7HTWJLIRvv0ywPkFrXxQ8Fd940SfI8yPxH9K7WgDx3fseGG5QYpU4+JKfjW0bKoicRPwdeLjjka7M0d1+Vd6QAPet53yZ/GkhZ7i48sdBZCht7MkSA3RpJZvKZYa7AjETa+TgczkA4AEQs23ZI9uKv8iUp621knDs1zAxlFfeZ7CGq1oXiJ42D3Gb/pOvWfaHN9UHksiS1j3hf4ZHDLAsiciZh9oxvXwDOz7UD/oAKC/67sJhg032IdKJtNNlkx7tFTZJPS2pmU5MxZcj9QsNnWhOtGxYAEXHhmCVYPFSArj29H8OBMQKZnNlKFxp8R5yhw/md+YGKTfXv7/tII5XCIloAsUSIku1ruKIy7iKcbJFJ4wBqzVf74hHd/yvOX9wmx6Wu922M9TV3rhbGvf+udJM7T2wovSb20blZP26EW/d5uD5C+Weff0YAUkiJK9coV+KQH8zvdJD
- N2yTPXF7
- r9OmxBdJShv9qiXkgLp186p7PpbM2BK4PpiX4WwAg1OPWvNaD/5nMN14M4r2IUSiV1d3xyUfgFM9spdtm1d9cz9DNGURoHgg+F7natA8PiAIwAqrUupnX17qDuP0jHGtb1hfVXUJBFXzkyTc=
+X-HE-Tag: 1768959393-137277
+X-HE-Meta: U2FsdGVkX1/qBA1zXTKpimYu2+G43iWSFxIEwwPJfyaZBqlAJazcT9wC80Cj/U8rzXV2xPt81OfE6lSaDKZWYT25fL/ds5u8/kYHxALXRJCV2Mm3GMaZf/PzWpcR4O4Y9O7QqVpab02HyGe1RU/Pnu/tFxOFT71HPzF1iaWEJ4lHgp/IvEHdbTOyIubZsdY+4iVwjvkPiYTW5nVaUMtxhnQ2Y4AZPxiEVd4jzFw4deOQQBfuy//ax2YtkRo9LSixvqYVshVCMVR20K2B2kveqrUFetN8sdhahItAkfefql9EJ+jHPUKUHxGuI8dxbGk22ibO3H+8IVhzNp2xiZiIzrKoAG7dyE2LTvtFBPwBHgVNnV5xt8VJ9Un8ZJT2jgYXxHzqmvnMtrml6/DKUzlDvtc97vGW1HZA6oEkctLn+mnTgASIYr24BbAxpAskYoh3/8Jfc9dn3/8UnDz6W715JJqhSzl7s6FoI7n5yhxd3jeNNxM2a/sEGwd5rOjkYRnA+WL+RvzmzzOwTydsTFbk/7aGI5ZpPG/4AoJKbCB2s4XnNLhKBXVpxTOluMQ8RWLIKLY8yDrcfVrYXU7yuNI4CuCGecz2GCv0JF6gM+fyyNewP3uQo+Br2O0BKMUUec9P8IwWySWdFAgQyBYMk57EoroM8ORF3XPv+jOQlV62VOLUW+qmw/SMckgQstYbNsvqAOS/NZtwXtNJ6dByB7+ZpazGyt/9Oa9pnY3Q9+m11sOJFXXUCksBuemtIGayJJ0Ku8uflgzXp3JB/vO33nZRwLwRD2Ukt+JWy6uSoG46JzzrrQPJN8iMyKpfwG74eUGQAHkxK3rZGXOd8zvtN+cJd+vdHkpaEV+eG4odES4LN3RgdyTPVFjFt9tgNqmzvinGHsJVRFiRAbsHUZdx4RbYJNeHdA4fuxNHskSbu1n62+UY1dBOe3MWHRIKcWiz7RMKLujqUeNQTZBC41JZnvf
+ zzjk7A9o
+ vTcjGq7SdS52S8loviBpD3TpcMJ/nKqHJnnz4HU6/IoXjAHa2jqdx9S4psBfSIpVNV5F8p2ZePEuK6O0x/zTKTneBf7aZbuRG6vrqQ5dSKYaljFZ1uLFcTNHh0JuCPaP9gj40XWEHAiB5ixPoxDKbE1sCToXMI8xOEuVMtF+YzPQD+hiSLHoce8uppDH29WAjwtvPKolr8Pv5bVlYDJEzetuxRjdl+mP70dTGVNyDuN8ORnz2X3OEtZuhTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,103 +90,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 8, 2026 at 11:10=E2=80=AFPM Deepak Gupta <debug@rivosinc.com> w=
-rote:
->
-> Hi Paul,
->
-> I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
-> implementation of `map_shadow_stack`.
->
-> Should I send a new series or only the bugfix-patch for implementation
-> of `map_shadow_stack`
->
+Use the new zs_obj_read_sg_*() APIs in zswap_decompress(), instead of
+zs_obj_read_*() APIs returning a linear address. The SG list is passed
+directly to the crypto API, simplifying the logic and dropping the
+workaround that copies highmem addresses to a buffer. The crypto API
+should internally linearize the SG list if needed.
 
-Hi Deepak,
-Not sure if I missed the bugfix patch, I couldn't find it on the
-mailing list. Could I know have you submitted it? If so, could you
-please point me where the patch is?
-Thanks
+This avoids the memcpy() in zsmalloc for objects spanning multiple
+pages, although an equivalent operation will be done internally by
+acomp/scomp. However, in the future compression algorithms could support
+handling discontiguous SG lists, completely eliminating the copying for
+spanning objects.
 
-> Let me know. Thanks.
->
-> -Deepak
->
-> -Deepak
->
->
->
-> On Fri, Dec 12, 2025 at 10:33=E2=80=AFAM Deepak Gupta <debug@rivosinc.com=
-> wrote:
-> >
-> > On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
-> > >On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
-> > >
-> > >> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shad=
-ow stack
-> > >> on MMU). Used b4 to pick tags, apparantly it messed up some tag pick=
-s. Fixing it
-> > >
-> > >Deepak: I'm now (at least) the third person to tell you to stop resend=
-ing
-> > >this entire series over and over again.
-> >
-> > To be very honest I also feel very bad doing and DOSing the lists. Sorr=
-y to you
-> > and everyone else.
-> >
-> > But I have been sitting on this patch series for last 3-4 merge windows=
- with
-> > patches being exactly same/similar. So I have been a little more than d=
-esperate
-> > to get it in.
-> >
-> > I really haven't had any meaningful feedback on patch series except sta=
-lling
-> > just before each merge window for reasons which really shouldn't stall =
-its
-> > merge. Sure that's the nature of open source development and it's maint=
-ainer's
-> > call at the end of the day. And I am new to this. I'll improve.
-> >
-> > >
-> > >First, a modified version of the CFI v23 series was ALREADY SITTING IN
-> > >LINUX-NEXT.  So there's no reason you should be resending the entire
-> > >series, UNLESS your intention for me is to drop the entire existing se=
-ries
-> > >and wait for another merge window.
-> > >
-> > >Second: when someone asks you questions about an individual patch, and=
- you
-> > >want to answer those questions, it's NOT GOOD for you to resend the en=
-tire
-> > >28 series as the response!  You are DDOSing a bunch of lists and E-mai=
-l
-> > >inboxes.  Just answer the question in a single E-mail.  If you want to
-> > >update a single patch, just send that one patch.
-> >
-> > Noted. I wasn't sure about it. I'll explicitly ask next time if you wan=
-t me to
-> > send another one.
-> >
-> > >
-> > >If you don't start paying attention to these rules then people are goi=
-ng
-> > >to start ignoring you -- at best! -- and it's going to give the entire
-> > >community a bad reputation.
-> >
-> > Even before this, this patch series has been ignored largely. I don't k=
-now
-> > how to get attention. All I wanted was either feedback or get it in. An=
-d as I
-> > said I've been desparate to get it in. Also as I said, I'll improve.
-> >
-> > >
-> > >Please acknowledge that you understand this,
-> >
-> > ACKed.
-> >
-> > >
-> > >
-> > >- Paul
+Zsmalloc fills an SG list up to 2 entries in size, so change the input
+SG list to fit 2 entries.
+
+Update the incompressible entries path to use memcpy_from_sglist() to
+copy the data to the folio. Opportunistically set dlen to PAGE_SIZE in
+the same code path (rather that at the top of the function) to make it
+clearer.
+
+Drop the goto in zswap_compress() as the code now is not simple enough
+for an if-else statement instead. Rename 'decomp_ret' to 'ret' and reuse
+it to keep the intermediate return value of crypto_acomp_decompress() to
+keep line lengths manageable.
+
+No functional change intended.
+
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+---
+
+This patch depends on "zsmalloc: introduce SG-list based object read
+API":
+
+https://lore.kernel.org/linux-mm/20260113034645.2729998-1-senozhatsky@chromium.org/
+
+---
+ mm/zswap.c | 49 +++++++++++++++++++------------------------------
+ 1 file changed, 19 insertions(+), 30 deletions(-)
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 2f410507cbc8..aea3267c5a96 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -26,6 +26,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/mempool.h>
+ #include <crypto/acompress.h>
++#include <crypto/scatterwalk.h>
+ #include <linux/zswap.h>
+ #include <linux/mm_types.h>
+ #include <linux/page-flags.h>
+@@ -936,53 +937,41 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ {
+ 	struct zswap_pool *pool = entry->pool;
+-	struct scatterlist input, output;
++	struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 entries */
++	struct scatterlist output;
+ 	struct crypto_acomp_ctx *acomp_ctx;
+-	int decomp_ret = 0, dlen = PAGE_SIZE;
+-	u8 *src, *obj;
++	int ret = 0, dlen;
+ 
+ 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+-	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, entry->length,
+-				acomp_ctx->buffer);
++	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
+ 
+ 	/* zswap entries of length PAGE_SIZE are not compressed. */
+ 	if (entry->length == PAGE_SIZE) {
+-		memcpy_to_folio(folio, 0, obj, entry->length);
+-		goto read_done;
+-	}
+-
+-	/*
+-	 * zs_obj_read_begin() might return a kmap address of highmem when
+-	 * acomp_ctx->buffer is not used.  However, sg_init_one() does not
+-	 * handle highmem addresses, so copy the object to acomp_ctx->buffer.
+-	 */
+-	if (virt_addr_valid(obj)) {
+-		src = obj;
++		WARN_ON_ONCE(input->length != PAGE_SIZE);
++		memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
++		dlen = PAGE_SIZE;
+ 	} else {
+-		WARN_ON_ONCE(obj == acomp_ctx->buffer);
+-		memcpy(acomp_ctx->buffer, obj, entry->length);
+-		src = acomp_ctx->buffer;
++		sg_init_table(&output, 1);
++		sg_set_folio(&output, folio, PAGE_SIZE, 0);
++		acomp_request_set_params(acomp_ctx->req, input, &output,
++					 entry->length, PAGE_SIZE);
++		ret = crypto_acomp_decompress(acomp_ctx->req);
++		ret = crypto_wait_req(ret, &acomp_ctx->wait);
++		dlen = acomp_ctx->req->dlen;
+ 	}
+ 
+-	sg_init_one(&input, src, entry->length);
+-	sg_init_table(&output, 1);
+-	sg_set_folio(&output, folio, PAGE_SIZE, 0);
+-	acomp_request_set_params(acomp_ctx->req, &input, &output, entry->length, PAGE_SIZE);
+-	decomp_ret = crypto_wait_req(crypto_acomp_decompress(acomp_ctx->req), &acomp_ctx->wait);
+-	dlen = acomp_ctx->req->dlen;
+-
+-read_done:
+-	zs_obj_read_end(pool->zs_pool, entry->handle, entry->length, obj);
++	zs_obj_read_sg_end(pool->zs_pool, entry->handle);
+ 	acomp_ctx_put_unlock(acomp_ctx);
+ 
+-	if (!decomp_ret && dlen == PAGE_SIZE)
++	if (!ret && dlen == PAGE_SIZE)
+ 		return true;
+ 
+ 	zswap_decompress_fail++;
+ 	pr_alert_ratelimited("Decompression error from zswap (%d:%lu %s %u->%d)\n",
+ 						swp_type(entry->swpentry),
+ 						swp_offset(entry->swpentry),
+-						entry->pool->tfm_name, entry->length, dlen);
++						entry->pool->tfm_name,
++						entry->length, dlen);
+ 	return false;
+ }
+ 
+-- 
+2.52.0.457.g6b5491de43-goog
+
 
