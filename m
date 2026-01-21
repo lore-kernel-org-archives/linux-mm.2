@@ -4,102 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6F4DC44525
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB7AC44524
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:41:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 187526B0093; Wed, 21 Jan 2026 07:40:37 -0500 (EST)
+	id 1A7A86B0092; Wed, 21 Jan 2026 07:41:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 131BF6B0095; Wed, 21 Jan 2026 07:40:37 -0500 (EST)
+	id 16E946B0096; Wed, 21 Jan 2026 07:41:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 054A16B0096; Wed, 21 Jan 2026 07:40:36 -0500 (EST)
+	id 05CE26B0098; Wed, 21 Jan 2026 07:41:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E8D766B0093
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:40:36 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8BE5214014C
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:40:36 +0000 (UTC)
-X-FDA: 84355929672.21.27733E7
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B8A1320006
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:40:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vYegVE80;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E94C86B0092
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:41:43 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACC24140150
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:41:43 +0000 (UTC)
+X-FDA: 84355932486.04.67A56FB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D09B9180006
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:41:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gLIaRQRb;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768999234;
+	s=arc-20220608; t=1768999302;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P/QIycmg/Rp660OZ1P92MK5kFHPJosNCmQKo3uxOY+w=;
-	b=Hv+AUre4B/lGMnvWro2h6T4FyPiKJv8Ghg820yciC59JdAu3Nk1ZTdbQmP19mQzn7msWns
-	WZaU5KesX5PpbDqDHFe7g9fl33zy7zXnRlozsN0VTbpMWFqXQDSTsC+Vl78R0efyUbvXtV
-	vc2S3gcnzisV4RKy9cZHDWafaOoJ8F0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768999234; a=rsa-sha256;
-	cv=none;
-	b=WWAo+NzTu+Nifj8etW8nkg3eYSWNRwO17VZ3UwYYaQ1jc0tbnEW/c+Ja6fGeV5XLMFAf78
-	EffD4Sis9J/uJismW6qFDwPd+Adm4HCcXTjZ9GppygenSRYvYtCT3SyVpUeCIJ1TFJnxzE
-	Bl70qVGajaZLima8MYTglIcdecTuwLg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vYegVE80;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768999233;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P/QIycmg/Rp660OZ1P92MK5kFHPJosNCmQKo3uxOY+w=;
-	b=vYegVE80q2P99aKNiXmOPWPUQvsIvoabN/PTHj4Kum0jSGe4HmwxKwWaVgP+XTxQLU9Vc+
-	xDL3GVtpm/ae90vlif6u21ElxIQ6gqwqm9oy1I8eyEFB4UGCb5zfTqhGJgQigxRYLi34D1
-	Ueac4zqmHjZtQ1v/IRwv8W4qr+aZYv4=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: linux-mm@kvack.org
-Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 3/3] docs/cgroup: document memory.lru_gen interface
-Date: Wed, 21 Jan 2026 20:39:49 +0800
-Message-ID: <20260121123955.84806-4-jiayuan.chen@linux.dev>
-In-Reply-To: <20260121123955.84806-1-jiayuan.chen@linux.dev>
-References: <20260121123955.84806-1-jiayuan.chen@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hQwIUX57PWa5tqxAanQlxhNLVOxtFyBJLEJJJp/j06A=;
+	b=4SmtB/eAKWrC9SK4zmwy94TXBvKVJ7ngeSrGIvCtU4NzoG/gDwx1wPSg/Bq9JMNHXI90qG
+	6MO2xqVG8SPH9EOIFAwYX4CCVx0Edj3aA270B8aleWhT1umRcOL3CZTnDDMMHE2OnXfb4s
+	Vyi0yC0MXtNJz18Byhit7srqUjeoAzo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gLIaRQRb;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768999302; a=rsa-sha256;
+	cv=none;
+	b=eFh/iHUzPUHvBE7GN0xQk460hTntqOQUs6z2W7QJr21KjE3rirA+xsHXmNCdPzAqnsC2At
+	suJCo37wAXWSxfVh+j8V9tHJb4fGzScyEWglzmVRkcYQ8pC1qHsQZOWDqiJxiwTCkL/6+4
+	gFRrLgnig7JE7GqNWkSIv8TOGJ2O508=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D3CEB4030C;
+	Wed, 21 Jan 2026 12:41:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00C8C116D0;
+	Wed, 21 Jan 2026 12:41:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768999300;
+	bh=Ot3wmRSgdlWXr/1d0aAM7xF9/+7KOTMVUro5hxmpKgM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gLIaRQRbO6LryUYKvEmAUETKOf0vwtVnf0ldAn+WKo4GaSz1NR17nXwyJy3XnYd+p
+	 jRUUeCx1mrGMBIPWBfGIMI7QrhbLOkOmODLW+AcD2vo12V4D6fKU3kQ+g7x0tr6jtq
+	 IoAaXYSE/Sfmp3l4NoseWo1dZRt8egy6wrB9jAtmQyVb5OcChkKxCxnD21CGx1nYrB
+	 GTv5aN2AaMsHb3YnfahXNoQeTkd6KbdndK4baa352eAsfPlaK73XVwluA0NJAQ00EP
+	 4R9WGvGtEb6vC3qn9LHhxhiKb/FtQDO+5rON3uxQFZFZzjS3ip+c5AkR/sfgmyu+jT
+	 Jav6nRjgFfIcg==
+Message-ID: <871f2a76-8ccb-4870-8a87-417371feb0b0@kernel.org>
+Date: Wed, 21 Jan 2026 13:41:33 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] Introduce a huge-page pre-zeroing mechanism
+To: Gregory Price <gourry@gourry.net>, Li Zhe <lizhe.67@bytedance.com>
+Cc: david.laight.linux@gmail.com, akpm@linux-foundation.org,
+ ankur.a.arora@oracle.com, dan.j.williams@intel.com, dave@stgolabs.net,
+ fvdl@google.com, joao.m.martins@oracle.com, jonathan.cameron@huawei.com,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mhocko@suse.com, mjguzik@gmail.com, muchun.song@linux.dev,
+ osalvador@suse.de, raghavendra.kt@amd.com, wangzhou1@hisilicon.com,
+ zhanjie9@hisilicon.com
+References: <20260120094744.5d92e34a@pumpkin>
+ <20260120103949.7673-1-lizhe.67@bytedance.com>
+ <aW_G66HeWLbyiPHs@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <aW_G66HeWLbyiPHs@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: uksuwaraff1puy1958gaszgqq89gkwro
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B8A1320006
+X-Rspamd-Queue-Id: D09B9180006
+X-Stat-Signature: sjxuqwsxxq6t1npk4ykpfwo6jfhk8r78
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1768999234-197746
-X-HE-Meta: U2FsdGVkX1/w6aaTBCOEvFfHcumoEbMA4sA8+dSmfEUvAywabixjLTdosrKQNyUd1GY7DLa8gEYxLBHNriidaxReE6TQaGvSlAsK9/GyQ5tsFxmcqJo7BJJDdM3W13wYDyNU9j/lvxqhMUqRFQY93rC7oqGM/QS/xNPEqOkW6WLIlOJ0l/JbWfpcSaRvgL4HiFEm0jIYoaw/iROcvoLyd2lsyqgS1p7i6ftjFpTxSOppCzlruphgXxR+D4MfRTvD9n0xMw9z1pY3y6wSBR2OBe8vYT8Xf6U7Y7Fvs09EVG0hQp3r7nENjbw3eAm2pknSN93f4xjzC7t1eKUilsm0ELgBAsfe3vzOcnzqc/KmlDwWE17x6eP3/f7jdk4iXLUBabn2swDbRlb9WduEicT1xV4rv/bkdZH4wVS0drYCeyXuE3Nq2pQUw3y3elvB30XgtKhEjNizdHBAigaPasU/J4a1Bg1ik/FmaNe7N3NZUrhq9uMJPr1E4z7fZLOFH6A2TPd/lGcICo9bK9VsPk1tQat1VqmarlbQQ+TNGbrZZAKImCAJEh+IUrPIZh8lXGh8nifw2UWqunfALNn1iFi91ih3WN4NIwXU9NKauf4jruFk0czcSgFqtqtPb/1afy0H54mEeTB/nXYFpgHc9oZhohhl6vmVTPLQRrgjNbKwluD0WDZi2JJr4k8hhD4OLSgKGTrgEoCAqsVxFUj4dhIrjTDJVVHVhO5YleSCTjj17CXkqoKfReC+WeS8aUA8d9kQV1Rze+1QSWa58z2Y29lNHPodO+mpVTgGPxliWm6zwCTqc07nlW2o8faup8/RSYzeRryubz8MDg4WBMQ6QELTVdQmS9vjeaOwCqpY2xzTd+XQIgUfpgpq8oWGVHEVmZXwdtOjGVtkM1005RiSISXzTjEOMtrHQ1wj536njT8f4rDpsAeFRP2hLzIpRYb+xOm06654P2KxyR54tt8EMpQ
- IeMgI4pa
- ch8bpnqrgN6nmR0CYqRzhTNmqIt6vSISok0H7lfj+8p2Rkm2ienMnqGIz4RnoCOk9AzTIQEfwG5crMVb7wAu8j94f6JKE9BbLAouHRJx0NMrGRvBzoxGzJw5kr7txpMqWkprV+Ta1J1l5D36EH1Sys18RGIreznHBy3YB+NPRlUbJiCzA2no7niIgusj+pnRpmRtdjQpKX88lnDLZJ9Q5hpKQkp8YuGWQcAEfi4a70XL4ihLlt1JYo+UcBCNujWySVGuk6S3D9T4by4d88NLczmHds08ysqJXolrKyjjq/Zo3IA4HO11WFd9XuxEGWIUpFfD/cP8JgauZ4OxRlTAfY3e8fw==
+X-HE-Tag: 1768999301-583567
+X-HE-Meta: U2FsdGVkX1+SjQApPOpDeSPmN5p+vtPMUfO+QV7QcLXVb3sxg7DCxKbPVHt0Pufk55gneX4vB/eBTeSbfbMppvB0P1wUZ7htE8j2oTcXsXDMmZlHGvrWhLjPy/YwRY4gCJsju7pQESDwL0gAxaUXCjxzd6PpWzxrrcJvxKs9cmWghEgESkPRMN+YMewY/xlI58GIjwlFJ/EC124iaFZsi4OUm88Y3tNRThcnwMog012BYIxafiqFEPqMlpA93LP18ghaHepbzS3HfNau1yLpfSNKap3xropyqfL5mmaSPtT6yyyY2++VekO5zJV4zwTssR/FvOL/h/llGVX+1dBUo8P7qGMSqHxUrg5SaYv8WwTtaZ9NTb+2o1eExloEAFUdLseYXFUrO2YhaN3PxvW4TqjjUIvna8mJlKbY6tBL8zR5MNYcE+UV0TzNG3boOIkAINWv6KLmyyKUui2NTAG8Lwt5hEi2+uNrSPCP+T60a0T7wxs0JuZp5XHsRPHSUj+CLpKdvxRj1yF6lKLgdocoJE/BtOKRUcTODyEJ0bigu5iRaJzR2vVeqgSSCsVGL71BPNt78PbK8z6JUSxl6KzQ5UqDcfRU15B5d/SoKdw6ZbPFO81sZCHbVPwQQEoGLZCp8B+VV44+tCPpoa+6bkSqm30CIgUehPP5Mtct39398t7718by/+SRlGUCDrIKE37YKgrMdHecagzv2HArykRkVtabqIZTeT0+m3DsuvDGeb4avSLVDIixab0oIxGrR4csn21Udi8Skf3BB5iosPADlapggZj60BbADJR0gZW6jh4VaEIqe0pmcOhrmaXt/6mQYVEnn7fCjb7BVzMiXaxhNWh46yLgv5Inj3cYp8V6h03VcHTT/HtXjKV0jTmEG07j7dW4JUA9i3pDGBHz9xufwCOD9vpGZb30XFXSKNXkqE2faSP3IrFIEXCtoUln00qV8VJORtZEacCDSlI43kx
+ ASeVcv9r
+ j9iZO0NxoulkEpixatEM6jZ2htJtnZmFTp99fPRUjotr4gDcYksFyKiwqzIp89iBvsnZFoKgDSPv8B2MVKhAcBQHTp0vEqBXhDM2pdmAT8ZPusCgUAWmQNRm32M2MvalFko+xP9dRyDtI5g3/uEwkrLAuNDkTvkwfmShDI9K3yVIaeJejpBPClwlysr0hfgtPOMaj1nZ/g9RgTkmI5cWszzuWsxOQk0CAOWQJDRJN8MryFD3Qk5+yfsa2M8XXrhpWbtx7nZwbuXZWCdWx1Q7RRUXygr625R52J+elQvSpqgwq3oS4fLRRnTVidfz6S12t0JXQiABXSJPqH/KziwwkAQhdafPGa2tzlR81P1KXglrmvTaoWy7d2DNTrCP7PX09bNd5+ednmDnGcUKdSwziJDGh5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,46 +144,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+On 1/20/26 19:18, Gregory Price wrote:
+> On Tue, Jan 20, 2026 at 06:39:48PM +0800, Li Zhe wrote:
+>> On Tue, 20 Jan 2026 09:47:44 +0000, david.laight.linux@gmail.com wrote:
+>>
+>>> On Tue, 20 Jan 2026 14:27:06 +0800
+>>> "Li Zhe" <lizhe.67@bytedance.com> wrote:
+>>>
+>>>
+>>> Am I missing something?
+>>> If userspace does:
+>>> $ program_a; program_b
+>>> and pages used by program_a are zeroed when it exits you get the delay
+>>> for zeroing all the pages it used before program_b starts.
+>>> OTOH if the zeroing is deferred program_b only needs to zero the pages
+>>> it needs to start (and there may be some lurking).
+>>
+>> Under the init_on-free approach, improving the speed of zeroing may
+>> indeed prove necessary.
+>>
+>> However, I believe we should first reach consensus on adopting
+>> “init_on_free” as the solution to slow application startup before
+>> turning to performance tuning.
+>>
+> 
+> His point was init_on_free may not actually reduce any delays on serial
+> applications, and can actually introduce additional delays.
+> 
+> Example
+> -------
+> program_a:  alloc_hugepages(10);
+>              exit();
+> 
+> program b:  alloc_hugepages(5);
+> 	    exit();
+> 
+> /* Run programs in serial */
+> sh:  program_a && program_b
+> 
+> in zero_on_alloc():
+> 	program_a eats zero(10) cost on startup
+> 	program_b eats zero(5) cost on startup
+> 	Overall zero(15) cost to start program_b
+> 
+> in zero_on_free()
+> 	program_a eats zero(10) cost on startup
+> 	program_a eats zero(10) cost on exit
+> 	program_b eats zero(0) cost on startup
+> 	Overall zero(20) cost to start program_b
+> 
+> zero_on_free is worse by zero(5)
+> -------
+> 
+> This is a trivial example, but it's unclear zero_on_free actually
+> provides a benefit.  You have to know ahead of time what the runtime
+> behavior, pre-zeroed count, and allocation pattern (0->10->5->...) would
+> be to determine whether there's an actual reduction in startup time.
 
-Add documentation for the memory.lru_gen interface in cgroup v2.
-For detailed information about MGLRU and the command format, refer
-to the multi-gen LRU documentation.
+For VMs with hugetlb people usually have some spare pages lying around. 
+VM startup time is more important for cloud providers than VM shutdown time.
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
----
- Documentation/admin-guide/cgroup-v2.rst | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+I'm sure there are examples where it is the other way around, but having 
+mixed workloads on the system is likely not the highest priority right now.
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 7f5b59d95fce..bb3ca7ffd600 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1426,6 +1426,23 @@ PAGE_SIZE multiple when read back.
- 	This means that the networking layer will not adapt based on
- 	reclaim induced by memory.reclaim.
- 
-+  memory.lru_gen
-+	A read-write file that exists when CONFIG_LRU_GEN is enabled.
-+
-+	Reading this file displays the multi-gen LRU information for
-+	this memcg, including generation numbers, page counts for
-+	anonymous and file pages across all NUMA nodes.
-+
-+	Writing to this file allows performing aging or eviction
-+	operations on this memcg. The format is::
-+
-+	  echo '<cmd> <node_id> <seq> [<swappiness> [<opt>]]' > memory.lru_gen
-+
-+	This interface provides the same functionality as the debugfs
-+	lru_gen interface but operates directly on the cgroup without
-+	requiring the memcg_id. For detailed documentation of the
-+	command format and MGLRU, see Documentation/admin-guide/mm/multigen_lru.rst.
-+
- The following nested keys are defined.
- 
- 	  ==========            ================================
+> 
+> But just trivially, starting from the base case of no pages being
+> zeroed, you're just injecting an additional zero(X) cost if program_a()
+> consumes more hugepages than program_b().
+
+
+And whatever you do,
+
+program_a()
+program_b()
+
+will have to zero the pages.
+
+No asynchronous mechanism will really help.
+
+> 
+> Long way of saying the shift from alloc to free seems heuristic-y and
+> you need stronger analysis / better data to show this change is actually
+> beneficial in the general case.
+
+I think the principle of "the allocator already contains zeroed pages" 
+is quite universal and simple.
+
+Whether you want to zero the pages actually when the last reference is 
+gone (like we do in the buddy), or have that happen from some 
+asynchonrous context is an rather an internal optimization.
+
 -- 
-2.43.0
+Cheers
 
+David
 
