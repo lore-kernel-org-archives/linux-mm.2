@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D2AC44502
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 09:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D89C44502
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 09:07:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 616006B0005; Wed, 21 Jan 2026 04:02:02 -0500 (EST)
+	id 28C9E6B0005; Wed, 21 Jan 2026 04:07:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C04D6B0088; Wed, 21 Jan 2026 04:02:02 -0500 (EST)
+	id 22CEF6B0088; Wed, 21 Jan 2026 04:07:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C2F76B0089; Wed, 21 Jan 2026 04:02:02 -0500 (EST)
+	id 164366B0089; Wed, 21 Jan 2026 04:07:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B2226B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 04:02:02 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA20E1A0887
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:02:01 +0000 (UTC)
-X-FDA: 84355378842.06.77B8BC2
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DD4C0100003
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:01:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=T2Up0Th2;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F341F6B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 04:07:31 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B5B01A08A7
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:07:31 +0000 (UTC)
+X-FDA: 84355392702.11.D05AE80
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B9FF5180008
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:07:29 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=fX7iZPaq;
+	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768986120;
+	s=arc-20220608; t=1768986449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ltl0vQZysF180pSnX7bz0rPfU/LxOA0NNr3UUNnapNk=;
-	b=T+QqVbzv0lF3yTwdrD8lPG6ZWr8GhSaGR/TJKoaffdu9sTr2KwV/07w1LUBfNfKnhQLXb5
-	FaTjN8VmDrJCpeq5J9LcHDvv1xRrnGyuvBB7KVH56BWj1NVuMvKLMJXt/zZGvWu5Xk5dCN
-	66Y10cey6ztt30fvsnsp52BkOd2ttio=
+	bh=c/neX29RcHQnz3p0o6Mj7UvK6DYCPTTa+yQ6GmWBzqY=;
+	b=Az/M6+uE/aYKXqIN1uwzIl8Uj52kYDpyj5KTDHy3wBxE5KDiNzA6+P0m7WxNa7Yt8BFJnq
+	zLbbXz58EqIJqQjxvRV/yENTiPBhm4VprSmPEtyS9u2lPIFdOUpT4rNgVN+Eze1infhHvc
+	JReGhvZHFcf5HmDEEObt5bkBWvffJqw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=T2Up0Th2;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.170 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=fX7iZPaq;
+	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768986120; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768986449; a=rsa-sha256;
 	cv=none;
-	b=FkHgdyRx33C3OiqeBpZw+FTWbND0xtfi9i+ncmpCQNa8WSlbs7l7KIs4HPZ3fIJ1km62a/
-	qeqauJz8I4LMHites4kKEtky20fHPlUZdGkylLJDdU7WrsedX/PTFnSSdUR2QfojRDpscB
-	eSe5IzQszBdPeOncqnZqg4wCTTdT8qs=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-81e8b1bdf0cso3635344b3a.3
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:01:59 -0800 (PST)
+	b=U7UvxKiXZZo1dsN6Z8wu6DZ+pJkhv/5Dc+w5ZsvM1sLAd75ay8U1fQq3oLguaFrDNKcFJj
+	Y6ziLGgDwKIBZsXstj1UcvR7JL7xb9DFBtFzvsPQ9E2KQJIPDCZDymre1rENEOtubn4cpH
+	q9rixK4hnWkQ/2wYO1Wj8XSV6AYKJNc=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso40795685ad.1
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:07:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1768986119; x=1769590919; darn=kvack.org;
+        d=chromium.org; s=google; t=1768986448; x=1769591248; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ltl0vQZysF180pSnX7bz0rPfU/LxOA0NNr3UUNnapNk=;
-        b=T2Up0Th2USay8MLziivkWkvLlUzMQcbiY+7xZfPgXw/OujZiVKPwkqGm/83QId5h50
-         ezPohAOtZh3KnWSIrgbNWgW2AyKiJI2NpjS5BDwhAvYR7Z1MV6jxlJyXfmGi3s9NoYfz
-         mrf41kGOO0yxWixU51ZpoKeTNOZdUMnDLZqP8=
+        bh=c/neX29RcHQnz3p0o6Mj7UvK6DYCPTTa+yQ6GmWBzqY=;
+        b=fX7iZPaqupyByYyy0TKqiPm+BqepwBTxAStN1pWnw1rl031xSW9F11vHVFxDJVjeNW
+         N9TCE4Hm5kPZdLScfC70e7EJea4t5N6C0f2JBKChD3AOKTJxocmpBIHNDxdCxMXtvwzN
+         O2s4RFnnv0HeRZ3gDx51La4MWloWdSwdzDmq4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768986119; x=1769590919;
+        d=1e100.net; s=20230601; t=1768986448; x=1769591248;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ltl0vQZysF180pSnX7bz0rPfU/LxOA0NNr3UUNnapNk=;
-        b=XpOVwqilkoHofvGspVPQzy/FI9nbHXXl8iQsL+lf3lhsr2W5iDcDIfefzfZIV4BcWP
-         zhwPdbgb2C/zDyHbRvB4da2y6mvtckEySFyIEGPIuxQc1ucqJqPrDb2UqgfvKguKk0eC
-         yPdHzBwD2gl4DrKLk664U4v9odzBW7fmU2vFhKtmaIvd5orqTmXXUaYHiHNCRoocdOGx
-         XTTozM6z3a0HTYcJtF4B4toLoWxCXIF5pVF3k+dISXasbSUoR8JbVxOielV3YY5MJ0EO
-         q9/+LnLoMRQAxXAp3Fby3ztbVoaTDC5dy4k7fcSYzLmiG1eDyB3xNlC0YdYjjsNNFo/4
-         uvhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVphuOWK+GfsJKedn8wS9K2v0/ycbrpByuJXbC+W+jx3iB6iLOEsAXKV11u8wyoEbrOOwCxgtmjw==@kvack.org
-X-Gm-Message-State: AOJu0YxAYutBAzk2+57DmAxvSeL08GCzOSEQ/3v+x0SGyABAt3QveCmG
-	MHuf9EZ928jK2ESZy5r4ZfA0r0giFRl4vGTvVcB9SQ3i7dEidnsWWEne6UksipIrwg==
-X-Gm-Gg: AZuq6aKU8MiOaC9dTB6nFJ24GoD4Szr1WPTTrU1XPWU/1XDV5nYkV5iUw3bVg33LoHI
-	aOPkg1O9Jl01ZLOYBQ+hUsFMjxJm0JemTa9GPtZ1laNgkpviO3o0ASMRsPkj+rAGGoj6GGE9w1k
-	1CkBxUu60y+2ILsBGdPXEd2aRXQFfq0GBZuPb9cyxULCF/pAdhP+0OT6s4/y2kq8juKq64HJSqd
-	Ii7CjgH1ywTZz5MzeNO9dr/50q+1/jfjqDS/FLXNdFboj9rddkgcl1ptLSJP0xr1KTfVn9wqYqf
-	hpvQYscQ2WViT/mHrNZII8k3ELa1zdmHbC7Id7xBITnKeYdemhYx0inahBbMI7xUR9+lbcgmPnR
-	6bsj9EOWH8NZbu9IMKb56CoSllYboVSI98c36VWclQjzytw8GK1MxGfG0QDyP446OnADecanSqi
-	hFklm6PZ8+9/4dppdKD4yfbHE7mQVdx5qKc9ktUXGCI5qDz5Wtyg==
-X-Received: by 2002:a05:6a21:3945:b0:38d:fa67:e853 with SMTP id adf61e73a8af0-38e45e6ce72mr4267935637.65.1768986118496;
-        Wed, 21 Jan 2026 01:01:58 -0800 (PST)
+        bh=c/neX29RcHQnz3p0o6Mj7UvK6DYCPTTa+yQ6GmWBzqY=;
+        b=I/qbtPwfDv4eJHuHWUAV1xV6CE5JUS/nEaa9fmoiBLQRMwVWyYVMrPAMhWsIgZ5SED
+         rfbVR+56dQfp09JCd8G5flD7VEUf+nSDapzhEfY2ngcSo7jRQQ3VOH4A1rjrMPn0e4dQ
+         TEPE1gEis8wRcXcjkImaWKrlQE3erdmF4rsMPg7Jf/w66M6Bt2VnRcABZdT823BmDzvr
+         Rfjho7OF0MgFUYM5s3xsWfd+UXeDehYpti6u684gI5peRKczDBB9MaE1ZBdNsMkojvfo
+         m8uV/QQXrqzBKjJj3KgTh4Ng0soI3pI4hASz7ITncazc2KBbefjyppMiZsSyI5y+RdX2
+         2OSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWf3xqZqI4Wn20JisT13qJVCa3vO8ScPeerpTTiAi/XzRHtLS8C7pGYXbWxK6ZmAifczKQor5QU4g==@kvack.org
+X-Gm-Message-State: AOJu0YwCgXHJn0bFkls5J466xjVmKZn1O29Jxbm3x36Sd7W/dEsK1ezU
+	G9SIaFo9ZUTZdjE1Wt0vBog9iNPRQFdTdi5S5CIyrcVGj6CWdzU2iPbKfntgXpxU0g==
+X-Gm-Gg: AZuq6aLrJkw8qhfc7RmdqSQky9/IeZPFf8TVe88523UOHwgkfJbi3HPh7jVbrTFjm7R
+	piQf4vh+fSBl/GQCJ+WrHiKFdO0tbxIPDUTWjjMgAC16qyvHxl0z707gwqM83eCE5K7zwemLSSf
+	p2EDcEb2+x5UmU26j7QkpmJ1b4c8daE59qYZdIpGhNXdwYOc01lyGnOoseydXqFHj7/ltGtlYtT
+	8eivaEvdKDqif5qm4Rzy9Xml3LeYXaLibmQkXAbIbf/Hw2lj2SWQVCDyKnfbw0tkvI12J58qEHa
+	f57n71J4Jg/GQ05HG8QLj75+zmYcfX9stszUa9mu4bdgwlo9Y9jSuv3D9SnTdIdgwio33i2g0Hi
+	bUdmFXIohecDbDmkGcHRiVZzlpzMSdVHjHNXv5VLWRNfhEXCMWEaUx//qiolM50ncFaJ5IOIz2m
+	21G9GtHkKqzDfzESWHl8Eu50/1qE0vKTquHkI988t/172839FESQ==
+X-Received: by 2002:a17:903:41d2:b0:2a1:243:94a8 with SMTP id d9443c01a7336-2a76b1693ddmr42759755ad.49.1768986448565;
+        Wed, 21 Jan 2026 01:07:28 -0800 (PST)
 Received: from google.com ([2a00:79e0:2031:6:a85f:a6d:c028:515a])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf32dbc2sm7823603a12.21.2026.01.21.01.01.55
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a71941dda9sm138563855ad.99.2026.01.21.01.07.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 01:01:57 -0800 (PST)
-Date: Wed, 21 Jan 2026 18:01:53 +0900
+        Wed, 21 Jan 2026 01:07:27 -0800 (PST)
+Date: Wed, 21 Jan 2026 18:07:22 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: "Paul E. McKenney" <paulmck@kernel.org>
 Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
@@ -95,21 +95,21 @@ Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
 	linux-kernel@vger.kernel.org
 Subject: Re: [next-20260120] KASAN: maybe wild-memory-access in
  select_task_rq_fair
-Message-ID: <tjgtdmhtsbnxuy7obaumw74gpsolml3nucb4fkidxmhbrr3cb2@m4eqiizyjjlx>
+Message-ID: <5vif6anhufcalcsrsmlmhssxzajd5jo4ztnnnuoqvdfwjta6vq@6yvfxq6fci22>
 References: <sjs2vhhxipw2zl7kya5owkrtdvrmj52dlqwul3r4rlyuodqnux@4rjdigvqofcr>
  <3e3af3b6-28fe-448f-90f1-4f2ed0c651f4@paulmck-laptop>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <3e3af3b6-28fe-448f-90f1-4f2ed0c651f4@paulmck-laptop>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DD4C0100003
-X-Stat-Signature: eszyhexn6fa6e83bpdbdy5t84essec1h
+X-Rspamd-Queue-Id: B9FF5180008
+X-Stat-Signature: ea5dej9k76zq1bmt9sjur65mgf9biosy
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1768986119-927473
-X-HE-Meta: U2FsdGVkX1/JuBlCqLM1tZXLd7PFgiTDgiDwvf1PkTQ0JxMwHRSrGZcYSCHSKdp+cmlY+wPysdiaduoqiEqwdlJ6oXwnIVwJog9kiTdZ0mpWLZmzO6Wx4Dg7PH0tnSYmiPMzuOfn7QDt3WKc6nap7ENDJTrdBF5WLh4Kps13On0kDDiI9wrKSuJ1+i58HQNbHjgTFWcUbBJ4PrBpVpgLZ6RT5xkErJ8LhAYJJ/iw0OoR0IR52YfQbWD9LXD9NWXn3zRbVSHAi/v4OE+Gi4aU84MYqJ33zAS4uK1WBHlYvPSjC2ZJx/9SeFYY8yiCVxeZIDb5AxSqIRuaO2Cf8uHG3DinIWaoXPybVdbX2ue88+YVRo67wThmC+xdnnZ0QRXsdJJ8EkQ83Lv414OL3pdvWvEcOJCGm80+QO7CFR45ytUHgqqgwTbVXZUxB7Q66nVfv7M41EazYb4KoIInQ6eRTPALIQosAYMMelwUJIVNjFT9XBMtvVU28sgloRiajdkliKRXVDBJ+b7DQDn+UeSJMZ/OvVFFZtN6mg2oQJP/nYaUiNWnP8e4VGQedz1UHSvLI5JDWKu1tGyEltjJh5emIjrAzvmYBmQSbz/ndtDL6yrZKPsC1lMZvfwxd38tFurIBXyJl03pxItUlzxUpF41Ee3A0JnpUbcxuL2EgVrb2Z3kRVyk4zsTHN+lAUNSniLeTcSGfZBofG9/v8PxJMqxXOLTeDpmH1o7bz7T3RI6qTXKBWfsUZrS8c2hEUPFIBnNA+V5rylhgUwsDktrxhPIhnk+XX4nmwZ9HKj16++zVxBxBBi3nQvaGeU+DW7E9kCQ69IQuc74Ys4Bjc5xG6qZVCcWGm1Rk/MeelyPQZcBrHg6rK60/koX8JXjiiMHm9flZ90UBNXwf1UolBJAwFaZSWGmXTAy9RGHDsU1RnybwZS9CkJYYibFNgFn5sk3OivY82+xGHgMDXar9U6+0oL
- LJ8+Zgzc
- h4HMGX1z4rG7s63HMIPhFSXpKvnKmKsR0YPS6gb5JrFn4yEkNL3hTejCdMP38biSGGVp5ih/qvS1X0qvplQBoKgV7xWHtCwejjRd1/0LmKpKp4M8/18QO3+n39nc7bwHAWwdoJWz5Y/YGrQxJTISibGVrHQ==
+X-HE-Tag: 1768986449-81674
+X-HE-Meta: U2FsdGVkX19fBq7KjH+rkWk6D0wEiFg2iALfytRT0rws9AOfhyoJOEFHGmwk9RjBqJ1H/aNVoDDMbBsMPSLrzRfpLS2NvycA+7ABttt6p8RjF0FdDo+pqXHGfySt2UckjozqDHrdqIdxOY79ESi+frRPTsp/vlYsYedDHlmdAjBFqMEjhfsGc45Hww4k8BHZZgoYA47tj1uBy9b9YEzaSMsMLA+GSRQShxJnNo1hUU8nQQlXgyVWCrxA+0rMTgyYdQdWBUQ7WnSE2ZVQUx8ypGKTfSpjVBVyO4Uf5Pys/rrjeFVTKhaZcKqU+qVOwoh2sqMzpp6I5m/fc0zk+9jQu1IhblXLn+5Y09Pf325AdEMerc9TeOQ12kO0ZlE2vWOuh5JNBD5+7XNtcfVzkBK7WtwC0NfvvP68sPvg1XOYotTIV8fvMYilD1aBqak4s0956nfDb4S4g+gRSQpLx9v5Xw68/yPaXxec/2xmJRoigr0Zb2PxwQYlq/JcuFcygwCqYRay4lyB1EtIQ70HH5Fk+IhLtOAHWiCUMLtQr8x8mN+jnUvpHhB2RtwDVSzrd8kiVZ2vq1OcXKbIMz18HB0yuPJPQ1m2lqtRB5e/n9uUg7z/25E06kA58F9h48DDco/DXnvej9XwUPpM1DJ5FCh/3pQZnulJQ2rX0ZpxvDB4ochsz4+3SOkgJoPreSMGjcu8TO/GXxrALS69HJ2CyO14hQP1wchMH6Ge5Vy7a6bjHaw+c0ZcYX5BF5uq6UkjK15So3GB905XH6ZXSvsCEVQoO86yL5qz8GNQ0rhnnE6u0LlQ6pFkgUVLHilv3hmNXXxG/CC+gGc9pAOAPWCspEOP7CizbK81gjUpGI0oll43ju+d/dgt5H/42HQK6j0r4LOLUUprnvYaxMLx3xZxDFlZj4mz7aM/EsA1EEyeIK0n9snSxIypBZ0W9aFarsK7BNcaEFBCLtWulwQpk+tMKaI
+ oBJJuHsf
+ SwYfxZTXZcsrYbp3OWqs2TjTO3/WJNy5A2PgUp8YEOGcodUCr8OMSOQ3ELk30Io42TQiv6ImYN09IE2JuOpNvSXUJwEibgb8CKs1/0/y5duzXJUWWKRWpnRaeWmNBGS48eF2W5sZQdDtF8HMXgG9t+vXwObWpbIBDsYlL0SKHTrNqRZUfxmozHu2MiXspWyu49Yz/FRI0Mip9hPk/SVy0om8lnos9NWlrIXmGgfZjjTPOuJVP2Ss2V3LR/nQvHSKEHqVaMA8RvFhPO5kBVuGS2WCyvgs1ZOXBsk/fCqq95Ny5gpZvMcQh8ZmY4zcRAb4eQcz//3vpXh/6TeOJ2DRIAgKY1PDFHOvcDJMMpyghOIzlrYWgrifIe7iNNglt1EkgphyrHw0grJ/T1MFXkSQo+Sz4qA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,9 +139,15 @@ On (26/01/20 21:11), Paul E. McKenney wrote:
 > nested rcu_read_lock() a billion deep.  Or if RCU had a strange
 > bug.  Or if someone corrupted the current task_struct structure's
 > =>rcu_read_lock_nesting field.
-> 
-> Is it feasible to bisect this?
 
-I started bisect, but due to circumstances won't be done today
-(most likely will continue tomorrow).
+RCU warn is not always trigger-able, sometimes it's might_sleep
+assertion:
+
+[    1.593114][  T136] BUG: sleeping function called from invalid context at ./include/linux/sched/mm.h:323
+[    1.595588][    C0] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000087: 0000 [#1] SMP KASAN
+[    1.596578][    C0] KASAN: null-ptr-deref in range [0x0000000000000438-0x000000000000043f]
+[    1.596578][    C0] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.19.0-rc6-next-20260120-00004-g7dff00c348a6 #676 PREEMPT 
+[    1.596578][    C0] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.1 11/11/2019
+[    1.596578][    C0] RIP: 0010:select_task_rq_fair+0x520/0x810
+[..]
 
