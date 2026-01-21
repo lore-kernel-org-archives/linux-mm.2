@@ -4,230 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9971D262B0
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 07:17:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FBD5D262B2
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 07:53:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D5F46B0005; Wed, 21 Jan 2026 02:17:39 -0500 (EST)
+	id AD73E6B0005; Wed, 21 Jan 2026 02:53:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A9E36B0088; Wed, 21 Jan 2026 02:17:39 -0500 (EST)
+	id A84CE6B0088; Wed, 21 Jan 2026 02:53:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 152266B0089; Wed, 21 Jan 2026 02:17:39 -0500 (EST)
+	id 9593B6B0089; Wed, 21 Jan 2026 02:53:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 04F4B6B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 02:17:39 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E634BB5BC
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:17:38 +0000 (UTC)
-X-FDA: 84355115796.05.665CD1F
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 789C4100009
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:17:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FQaHZZIP;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=iiHVpc6L;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf14.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768979855;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F2516B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 02:53:23 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 364828C39B
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:53:23 +0000 (UTC)
+X-FDA: 84355205886.10.4D01DE0
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 708F5120006
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:53:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1768982001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hapn24gIngChLkGnLAVX3SBCWaTstbF62GY2LBCQJsM=;
-	b=C3Fu/O5j+scm1k2TLM3hgugkEVMoThMdF8SYdjmDqNORY7DgGFNwGiVxe35RsriaIxhTFg
-	jK60xUFtSNG4tiX8gU3H51ztlpcMMijcGQ9vht0vymuxi7RH92AnDetj4WWm1GO+caFvBg
-	T5/JUvHk1GMk+XyMoQTVbynStugkbbc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1768979855; a=rsa-sha256;
-	cv=pass;
-	b=vFWYwnuSOOBpcaXTXLXbROp07ClwzOchIB6+3tvhKvQkYruxUl0ouqirrfy/hjvhfLb/LX
-	a5pC3bkRJvimqizf3IsLApFZ3bmSa+7xaOitAE8Umt+LaPdh/o1rrrLrBLsFr2Et6VOGdI
-	sWS1S/37GsYP9ghkc3sjtgpEOaLEK1k=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FQaHZZIP;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=iiHVpc6L;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf14.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60L72LYg420923;
-	Wed, 21 Jan 2026 07:17:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=Hapn24gIngChLkGnLA
-	VX3SBCWaTstbF62GY2LBCQJsM=; b=FQaHZZIP2qNAOAYM7r2cFDy9tulb7SePzs
-	YzCZTJM9OWte3mPTvm9S2Pp42+uWiGpN/Z9QrHkRfBOSN5sUOxk6KmjPKPnaPoEC
-	NUtsw/C9rMBAFTMaHAm7zZh/lembtKX3TX9X6LN+tlNkYd7545Qn5EkMa3Cwg1Dn
-	utEQc9SBtIcRcf4F5aOthF4C+dABBA5EvZP+UeNpYXvgvfoGG8uufRDAUMDEURn6
-	PirWPIDBi6mWCLuoQhHjo3fOF9vzlARQPHSjNcEQ7c+QyPXuqgg+mg14YoYHK4Lf
-	0mqndxxkWuYxverTtN+5nDSc/7jFqENTF08sZqQ5b+cZZamOpnaQ==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4btagcswm5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Jan 2026 07:17:32 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60L5nQFF022532;
-	Wed, 21 Jan 2026 07:17:31 GMT
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010062.outbound.protection.outlook.com [52.101.46.62])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4br0vempxx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Jan 2026 07:17:31 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RSNTQxusI1w6GL6kTPHP6mndukJ9tVIrEz98mVLW35aHxmG+tTTVclKOnABziuf3orkdAoa+VdeMe9iqKSZyrrT+UQkVD9SnwpDQg6Q63gAX4eXg0o6C9n4WjCi66uKBcffAJ27f6YVT1PlhdZ186laSOa1MiUNpxtl4nBeuz4w5Jw4x4Pp8brc3Jp9I49bmPzXsToVKyTWaUcYSaEQsq4bpPgGQp2VRqRESwBlonI+rrIpF9ape2GV/mxBzVF+TjdtrWFKYtxxA583CmIaoO29GLAHw1nxFDONOd9Xc89L8ILEwGn/QVE8fJb3cEuF1CnOuGT/BLTbAid2dW87sog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hapn24gIngChLkGnLAVX3SBCWaTstbF62GY2LBCQJsM=;
- b=GFDwmfQ4CDrRr9LVvgfpFEbYLg6DlgVraADRQknkvIfIZNCdwLNVMV/7bSk9keUy3hdosNPhbv4Gwp+ib4kChh8PjnlLj2LjAOerAoEWblIDovvOMJZcsvByIuqXoR7n/YgBTUHb+nGIbZj+RduRfCXk//cN+e2jPAwkqTwE73xdGcw4S1o0XmIX1wNpJwryLZtYpqSp5vB5bnRCPsZTNxbsHw2SPPRrGUwioZWePNEZ9JEZLKXlvoZxWWvP57+zaAG90rNk0olyHDder4ks7UzzaOYjrBO+vUDf0WU76/yHzVGQgJ7WFATTckSBPM+dnN2W+vmIPk9ITW+T53qhTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hapn24gIngChLkGnLAVX3SBCWaTstbF62GY2LBCQJsM=;
- b=iiHVpc6L6af7fMTTZ3++kVkS4rj3jmB8m3joqkV7fUKfZ33qSjVn+QViOenGPzj6nTRuUjk5DrzYvusIqK43Ok9/DrBXsyNM5hCHcNGwCC+qX77VFLIlKlgOSCoUKCEWRmWyBD57a/fsBY1XK98Hf35Uoj5D6O6yJn4X1FtpqLg=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by LV8PR10MB7800.namprd10.prod.outlook.com (2603:10b6:408:1f0::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Wed, 21 Jan
- 2026 07:17:29 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
- 07:17:29 +0000
-Date: Wed, 21 Jan 2026 16:17:24 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
-Subject: Re: Possible KCSAN/lockdep issue in -next barns
-Message-ID: <aXB9hHM3T_Q6KzfA@hyeyoo>
-References: <c858b9af-2510-448b-9ab3-058f7b80dd42@paulmck-laptop>
- <aXB68e_DtXsr7OcB@hyeyoo>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXB68e_DtXsr7OcB@hyeyoo>
-X-ClientProxiedBy: SE2P216CA0080.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c6::14) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rsPdlgVo7/l6qh9H7DkddGhkrGUkom3WNIceFm0xlqk=;
+	b=FGg8Yf0rrWz/EXAKWWJ3AhlngUZoTB13yhHks7rlWy/WSyRt/BnqEycKz/7J0J3KLWTNr1
+	nTWUrY79BMXKHmKAImqcTiyD5w/EPDuqoOfI9LA6FPRFQ02mAY3hLgeOERtWP4hedRkK6T
+	t5agd01gc3aG4nSh777E3AxzY5mF/nI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768982001; a=rsa-sha256;
+	cv=none;
+	b=7HbnNxhbsGhY4rTxUIWNYV9JDj8GrZhCWfrJxYQzTs5Dqge5ROeS1pMQv8iLJ1pfe0QaFb
+	3hz5/zBAhtcuDDyGb6NfRd8etjU/5gBYUbs/IrEHGDNLdhOotaU6tnSceWevDftEKi8SuM
+	iIyi8QSf1VUKREqbBJu+7S5VGXz5cBI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dwxJ01kRGzYRTMk
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 15:52:48 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 632A34058C
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 15:53:13 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgDXhfbnhXBpZ7ZKEg--.52232S2;
+	Wed, 21 Jan 2026 15:53:13 +0800 (CST)
+Message-ID: <6561bee6-fbe3-4f59-bc4d-17ec56768d3c@huaweicloud.com>
+Date: Wed, 21 Jan 2026 15:53:11 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|LV8PR10MB7800:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0c5114b-d449-4682-9cea-08de58bd22bb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2s/iZkr7WH9IGZ/4eb2EcXrnCREEi9dC9+eCw3wn93KxON5kKIRR7mYITAyc?=
- =?us-ascii?Q?kUupPlrCa9b5ZMI/wCE9uX9sv+/BO5FNNf9lUpucqaMOSVDlm4bwD2asI9FW?=
- =?us-ascii?Q?7BiiGYlB0cdFn20iW8oVTPtUn70NeJQfhJYoILHrDV32CQzUa4JNGr6zJ+oS?=
- =?us-ascii?Q?mGk7MqHSLU41HP9FFmvIsD0fWUcJdeyp/EnWbqsGhynDgWzdK/OwRpOsAjLE?=
- =?us-ascii?Q?EjwF7HKzQGkXNlzki5dTzG1G2YT9SAfMeALgfkKOegvfO2+8HwX35UOvG9nq?=
- =?us-ascii?Q?/1yuIMUJ1SjJBxhXE2eVovSzg+H/BYWVxp1f798BplYCzF56fKTl6d6vvEKd?=
- =?us-ascii?Q?NIpvxRZ5lO0TowlUzJRBYuH9dstFoB2gAgK5ecpiaAmfgl2jFch1eFqPFwaq?=
- =?us-ascii?Q?SPJ0c1JjPJcUMdpm60+f3BZlsB1+LHfNMDJkSAesdYdL9L1P0AavGFjGQc+c?=
- =?us-ascii?Q?51+iG2y3lknldrvnmgINfnIuywQanBIpI6L5mV6MBH9xdhFPa0r3IZD1Mx4u?=
- =?us-ascii?Q?77nJtq5t4jVeuDbpfbf27Iw/YngnLtQqWF9I2gqEGGYEA//DOoZC9T4Q+bER?=
- =?us-ascii?Q?RUnxlmxLQTRagNT2nO2BVsv+kyRGx16U85U0iS0JGaufct6Ojp4gkmVUGNQ6?=
- =?us-ascii?Q?xL81aYH70kHuZhtj0QVcVXxLaQggkXCOCchmc3jsTRRjxF9UZLYfzeb046/w?=
- =?us-ascii?Q?e3xZjLpPGcIRDi9SUjXOf+vydsS7wWDbsgzJ18NFL7FTjSELpJDGV0wJMTEc?=
- =?us-ascii?Q?bVmkDgcfPNaHuV/YWfl3KVKVLeDVAZcR5FZV+ce1juFkzRt+pXi3PY2rTIvn?=
- =?us-ascii?Q?PbLK2YWCOYYUMA4R45LLY49g9FS9agNUYC0IWPXGofXFlSbgpjoQrfwkRJ34?=
- =?us-ascii?Q?j6AWkMIcwXzk/3OvSzafacz+5BzgahsvzFKw76kzTE9aLiIlK/Nvhe7IaPX4?=
- =?us-ascii?Q?JVpBNHm12pnzVOyJx2JM0khm5InRnP0eGGt/AuIkhGTCSnfJpatOV/q5/8bE?=
- =?us-ascii?Q?ryKxXckYUI6ujp4WFpOoO2zUZIcQ4TdkdzECbxpkYgYzE6mv5MG9Vx3jShkc?=
- =?us-ascii?Q?lcWMNnL0F8zt3gHfNZBgCRWkAmaT9zf+7DUNiRWkOytXkyKnnrvAn8Q/6jOQ?=
- =?us-ascii?Q?v3CW6tfbcDjwxXTI2/yBZzaKmkaT2E2jModmKxwVspW0oZL+FEau9RORAriY?=
- =?us-ascii?Q?64kfDruHdkJdKvjSrkJb7b9tiGWtHXDTHmgk5Dt+eF58R8HtwZJTAmjHH2nz?=
- =?us-ascii?Q?BGX1rBqWEaRHMO6WA+/2eKj4/n5sRRsOxXdvxhr+Bspm+E/krG8YHJUsZ2Wf?=
- =?us-ascii?Q?NU8p9M8/FztPfXls9f9sPf1sRcnPn2ybFdnLuxCvRtfzOfSztiyTKkYiLXEU?=
- =?us-ascii?Q?p00endFAN60SckykMvcvDe4X3aLULh7zCD7sN2CohoGBbw1WaHOuuVqxYHri?=
- =?us-ascii?Q?TMmhzNhG9zv46eVjd/0inQmpOewD8B+vDnmIf6JeYjepdNPtlioBT5753LZE?=
- =?us-ascii?Q?mcx061ntLGDzeJVhpVS4NVu4NG+GRiy+gpwmIGs2y4lmNqOl9bu4btGLrRqS?=
- =?us-ascii?Q?yh2uv2NLDOaMBOdoeWw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gfR8NNkrG2KPGgT3157qPWhWYxU9aGd6Ny4q5C+zbeGOigvIk4jW3MjXF3EU?=
- =?us-ascii?Q?VOHsaEH8zf8ZJWQvnyXKXzbJF08sIpavJrqI6zDeKTDZJglI7+wmU53HghV4?=
- =?us-ascii?Q?/YTFPbBN0+mMrx224HqYifIOEu3xTCrbb9i1GpvunjAbI1b47vAzVcYoR877?=
- =?us-ascii?Q?iXt6ymbQgbwrCNeMYEI8tuaXJxooPZJGo8BjlriYPtXM+4o+EJaMDFJgTwiS?=
- =?us-ascii?Q?L4CXHCd2JRm42H30jFhH1ao6+0Q5ptgbx0OAmor5+hCOwR41/S7xQwxE8g90?=
- =?us-ascii?Q?X31ts4hrtsPj85fnFbkCUAX9H9dIoLDmVuVEIoVSlIDMInslWmB8XdtD3LGF?=
- =?us-ascii?Q?4m1CVo2X0qjxSu/grxVQ7EFM7VvTaV4F/YPF5RadrLdnMDjjJKNIBbP+gw8w?=
- =?us-ascii?Q?0+1cPCe87VjtPD0k9ssn7ImRf1YMpq6bXDdJgBwxvowUjm1tEcc7rK8kkk7a?=
- =?us-ascii?Q?irkEj3hYLH3RXRxE+9FcENeWvcKWmgwdsfO1XjxKNHB3Kqg/haP50lnkkA3L?=
- =?us-ascii?Q?949zjIpkQ9Qtd6nfHNsCKXU+2L4+aysBOdZv78K88Hn3oOVdDA8SdTikatw1?=
- =?us-ascii?Q?whtC5G0yuXC9HPe5GvWx12I/ggBH5tHrFZrk9+FhQqbqz6GXH/+zjw/pta6U?=
- =?us-ascii?Q?ZxUOIgRBjov0AWlaiIZc4d4k2XYhl7R71NidNisG9RqbUK/jX8v4ovc0piE9?=
- =?us-ascii?Q?p4H4ZuJvTe5lUYXxDt320oz3iQzUK+djdECviHGNQOayFLKR9q0WVq9wsNfe?=
- =?us-ascii?Q?BlrsyNmvH5Op45oDLQddkEN8W3tuYcK6x0xsonj0kLmK3PHjAa4nZwOWogzg?=
- =?us-ascii?Q?+bx6P06BPJnCElfWWpbltTAWN31BVcgz4qlzSGUquXkJRPm1MxJ+wUYzoQZ8?=
- =?us-ascii?Q?VHviJhK9GNHhmotJYpy3kyBWtsNaF4kQ/iwR/Iwg1fwizCnv3BK7vnhhwdxU?=
- =?us-ascii?Q?OkZ45VzSGRMCgZ8354TJ//dojhUi12U5+UJ7Ni3Vcch++ulfHNH38YXXNn5x?=
- =?us-ascii?Q?Bvb8ZgdOm+gblRuAfj3lJbHYTh1xPdKO4Fcpt2hY5DdDu5iboaIcR/PSMm/G?=
- =?us-ascii?Q?mfXS/yjtXw5rkb3y5O1jJlXlbVkfrb6e8Tsll8AmOTcC8EsBR5SldkETH92A?=
- =?us-ascii?Q?V46obxfAQT9cRx6MliKPyQ7kQhEyrVqT9e7gxgYxEFOjWL15vd6cY2iz3Jan?=
- =?us-ascii?Q?DTV+Nhz4fWuPGmJeuszcHxi2Ir5TNhd8vePjw3iz7FcdZ80i7V3/XHJkk42z?=
- =?us-ascii?Q?P/H7fuvZ1Fos7VB8Or+ko0nQbsXMX3qEwD1fa6ZAsSi7m6V4vQ2RWahpeySD?=
- =?us-ascii?Q?bz9wdDC2duhpzjaW7lJdshvoL8D0CsYJL447/dAa/LGWzwprn1smerI5Myxj?=
- =?us-ascii?Q?qWW2gS+GeH46/5deDRMOLXXJNwbD6nuCSWj8zm2ycB39zeLD7qyAJ0UGAUHm?=
- =?us-ascii?Q?Cq0di7l+9t8EIgHrtG8YlJJTtMdWjVqOqVbyrVoOUiHDhw6RlFRIWT2Eg+OK?=
- =?us-ascii?Q?S53XxJMIWZM/fUCrNJ1vIpdz4Vp55OR6EVVC3tyw40CARCs0LfNvV+65EIQE?=
- =?us-ascii?Q?YZVUzDFP1l1YhBek1jD7fXLESyiUzvdflQskii4xv+/dxxBC3lwvLgyXVOVI?=
- =?us-ascii?Q?+gYn2/Nd1wxLy8gDdrGohUHvn6pSkPtagKxKcSIgXxftRvPKG7sSMuZI5KZL?=
- =?us-ascii?Q?GTk/U0e0RIx/fw8zBpre0l1sx1DTu3vXwgdxMIyExksnIlS5u/MKY+O3XOuj?=
- =?us-ascii?Q?eLxM3jDWkg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	r3WsfMbgCNzQwrq85w+Xb87omOtGGk2BItzOe8NF+5RLyIHkVPixzE5R6ZeQGLWkAaDHhpX6ddV1YIvaTes1Pv5xw6Ow4hmUKNbRc6108qnjDZBKj8q8+RP/7oon/bGKaOGQB3NT6iZ1lNNdiCJe85BY763EaYCCzf9v9feS4JMVvVsKVIZPYs44z8GIV/qX5DKIVIQX2z2IvifbZ9DOAbQHTLriD8ucHL7OgIwU0tvGSZfNTMpJFz9pMR07iK+HMuP/SjiKdcdiKLGcPbgGZkKm8S20CrhmzBOz/VRWxtuu2Bitl2+MebnJ5ObCmD9mmPAbxjEjO5FygI6MpNLKA4kWq8aqsr70pmOmN8NT2R9w59uChe3BtQaudch/jhfo73qAdb6pp8BH2CJA8NycOHIXD0v5eu22z+gC+Mwmv2TnD1C7xj/K6zcRnBk51bsn2b3PrRJnUHj7FmjjWsieKpnCT6kAceD5d3S0Nd8q4s5DNFDG1scyx5AGQ3doN2iCiHlgeNzUWmUHtJu5dPnOUQO6cnvM8aZFFRtk66QIE5DkvuWKn0yM4z2Ni36q5cqUN5lUNPxRXQdtSTjzezXey9s0L1gPrcoyeWHedxX7ArA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0c5114b-d449-4682-9cea-08de58bd22bb
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 07:17:28.9086
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GTfvGZhFBhzEOrcVW7SDHnk1xSZ1RdE6d2F4C7+PC1m0mZ+Nm3jdAQ2BVA85WEtsdPMPgwYy6vVhzITHQpiR8Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR10MB7800
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-21_01,2026-01-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=987 mlxscore=0 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601210059
-X-Proofpoint-ORIG-GUID: 8DsCxGzpIYErc6KFZqFH0IQ7wHeLQhfd
-X-Authority-Analysis: v=2.4 cv=IsYTsb/g c=1 sm=1 tr=0 ts=69707d8c b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=ID6ng7r3AAAA:8 a=v8emn2m4d3Hifj3eK5kA:9 a=CjuIK1q_8ugA:10
- a=AkheI1RvQwOzcTXhi5f4:22 cc=ntf awl=host:12103
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIxMDA1OSBTYWx0ZWRfXzS4rkpsyx8Wp
- y+XMj6SYyuET0GDuKyRv/tUXN0VVL9dBnU7XTCOa4cpwDjXbpLltNZf79TBbRbjmiQhK0cMXHBv
- ma8hcNMkrB7HMWEypi6zJHq3ZTrf+G6JdMpFXjyWPPaCj7A1muz1s2uoOrFN6DfYISt3sdadj1V
- DhCFOeLRo8JhKMOUJZsTBcpagiai5PVBrGqRoOcBE2f2ae1i/rRHJPg0KwK8MwB4Ai5F9K9BjSV
- 744Oy8kqP2AbEBobf4uiy15oZUKTu1tFokaooffU2+4pnTGAPQ1GaNw00Lb22nGp9ZhOnjUHQgW
- 7mSTxRfJkKNY4iLlvY/UCEMRw6QAup9fkWv7itKvijtC7vQFSYkYZk3E+gq6rNEftoWwefMqbUX
- pRSID4SpqSMPTeYq5gW/+TSimxGhaJ+NM0hKbrU4KfDkPPTEd9FApDUWfE/bYiruTnKa0O9inY7
- n42phGlR6wuLEwCv49sW5s+JgqGyrmy8ruoz2D/o=
-X-Proofpoint-GUID: 8DsCxGzpIYErc6KFZqFH0IQ7wHeLQhfd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH -next 1/7] vmscan: add memcg heat level for reclaim
+To: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
+ hannes@cmpxchg.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, zhengqi.arch@bytedance.com
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, lujialin4@huawei.com,
+ ryncsn@gmail.com
+References: <20260120134256.2271710-1-chenridong@huaweicloud.com>
+ <20260120134256.2271710-2-chenridong@huaweicloud.com>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20260120134256.2271710-2-chenridong@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgDXhfbnhXBpZ7ZKEg--.52232S2
+X-Coremail-Antispam: 1UD129KBjvAXoWfCF1DArW5uF1Utr1fCr1DAwb_yoW5Zw4kJo
+	Wxtw1jva1qg3s8Cw1vya13WF4Y9Fn3Zws5Zw1DJrW8K3W3Cws5A3WfWa47Kw15ZrWSyayk
+	Zws8Z3WrJw4xGFn7n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UjIYCTnIWjp_UUUY77kC6x804xWl14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK
+	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
+	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF
+	7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 789C4100009
+X-Rspamd-Queue-Id: 708F5120006
 X-Rspamd-Server: rspam12
-X-Stat-Signature: hh6d7a8ypuzsdd9tne1zpnn1nf6dmmhp
-X-HE-Tag: 1768979855-808595
-X-HE-Meta: U2FsdGVkX1+QXZJZDVORxbXKvxB6sZxERO4Rwk/TvdiswimzJRHsjOCvLrZ4/FRQefXGZT0b+5GdDczEl9kumt7D4izWnWkDfZga9Hph+Hf6hVESwboVv1/twvxyA9n1chYo5ATLUMMrGeqGTA/Ln1Ig7q9gCx4oeCY6TcZ+SfXwCQn2fUzlkXNSjvddr0x90MOrVqM32oFq9TcmAU6JiPrbvI4c6KJYoHSkDtTRLhaiEaCh7BZKY95L67mBtSNDByVb1Vqhi47IbczUSH4baxmRKeFzTmCDpv1KOfLtzYBbMVRYh/4uItLI1eL6fUzr2b8kdt5ybw4PvYsd7f7XPE/7M5xg762HHTlDo7s6TZAp1/pGX0A9LtEjfanXG/tBFfcykQsL2BIKW46EW+uonThFo8Lz7TzKPv9Bj6JWvsEP1GhKtODJl3UfyUuDs9J8ifyLU/Iy2bc25Dd1DfX49jR8Q2UZRLnwy0drNkKnL3T7+ekW0GaCmqFmcLaQ1Y0UNNibKU7iz/mlGYT+0slrWIyBZUwkpbpAptu8BjjsIrZ8SrJICyGy3OsTON+RHANNf2gr16+bopalKDvNYt2S9KRsor1vP44iAXGtgMQ2orHebydrlPkLUftMzHkRNuluYkVqC+7x9bE2nePiU8Ne66wgniad9UUQ6gspFAiOW0EwSlWOTBi750VJ3EsFhcuQ5eQjf5vRwNeAWXM6t158EBuVnLKC5ZjKqfkalizSvqiKZKZTpW+O5d1yQoxnuk/+yvr4EXLYXJ4wQuNRaQJovvFRlotgTzgTQEVzHbQNmQl0Zq28KaUipQpPh5kHY5bOTq7GeGtz0eJu+iK8RM8x1RBhzW5Avr2KgRdbZs8txaWj7QdT3p2IkCZ+IDvvLDQ+m++WUtmbyzLQOT4itqrkEjkCXn5ZN1DWxrPekqOAJJsrx6zLF+8Ms+twGHsaWefmLM2pHMHrnScfoYYrWMQ
- r0SDONda
- RkwZNQ57NGqTHS7IKUxMWRqDoTp9FC63ujNGJdrEjqvAL1ssQq1venX52+sp/7NRUD6G7nHKdgRSdyfY=
+X-Stat-Signature: 893xzb9cfpqjukz5d4g3o7y4jxjgwq8g
+X-HE-Tag: 1768981998-979190
+X-HE-Meta: U2FsdGVkX19YZr1cGaQnbsuMDOXShkzq3nXiDxwE5/608ow9U1Bxw5OxHGJXWlSVs7qgsUyCec7RQ5hL+eub5R77OnN2YD+sQZZm9eMIMzeG2STOvzHgqaEFQZ3NjMNR3A1EAy8bOkEns7xuzL0CZL2P3wApH+FyjzqIhBI4WvOoaWe2PFTBoSQwrWrvC/HpGDsxvB6EQyRrbDbAY8DBs169W3JlgBGHqhkK2I6eCoGmVpLBvoGjwFJqDExBSPYyvPhWx3djnU95e1M14EI1YPotti1EfBclYYTpFoKBLiYK22Mi8LOjVK81DyL0FTNZ29byr1xNPXsf1H8tBxKXS+sUQAmK6gTR/b8iRQpfzJFVI5sN1MnlqyJkIrfNrEoHQLEH9yuPRKr6fDQ6GbjRcioqJobq/WS/6DBRO/euVDQn9jFdOElth2VFe+aLvP/YGj8BckG2pKFjLWzUi7S0b14unx1QqzdSjsDjlQXHMI455NuGAEgN4y6CNW0nSYE3co2ofcAZvjEOSFv/jzs096RtX5cAVT+7y5dNa8pTiqEn9hex3nqggky0ApHar3ryrGGx4n45sJAhx3TN0GhO1k8VEP58SK+nBjeAlRcN/RbkAE3TZRyVXft7eHqTK41qEW33urmpzmtpVCo0rXGmPCeaVMhnsj/QHVjsffE3lluiOz6r0fJ1G3m27CEOAJrT0CSYNWK56mdw8sNaB66kUEQAbHE6rHg08tZv8O5yZPcJqAP4k1UW0ZJi9CktaF8cIX67WtOilOoWEGh+Lj9XXFZF+bu+sesLPDarr3SZ1s9PslzsHSAMUU9lVJjamzNEJyb8/IIoaU8o1ayWA45pnqLACr8Kky/HBp14kqvul/89EY53a7jlpHx2VlIbFFfuFFZ3L2LFbUqwO4wlzmgeJXx6lJT6Wf+T90VKqTNb1jFRwGKKWDidL1DOqnACv32Tzax+Oy9+/z9Lpx4dpXK
+ NbZ371ez
+ YP3b8g7FMVbyABDCmEPtmW2kJV8zw/k8jPNnEaBP8k4JlBFSlB61a5V8yqJG3NgFL6hRvAa3pOC3fgOpZj88qkFT/adLS/xSqj2x5sWycQSsaokcjob8uRrWC3DROAf1TtfVQOdER7RNYTLT4UfLIcEMKSdDoARYhWclMoZbp6fzsiO8JWHdTzvW0WEt3aWB2+xrRxTsTfr+RJ7oilXljP443iMFssrhUcfK4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -236,80 +111,651 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 04:06:25PM +0900, Harry Yoo wrote:
-> On Tue, Jan 20, 2026 at 09:41:14PM -0800, Paul E. McKenney wrote:
-> > Hello, Vlastimil,
-> > 
-> > On the off-chance that this is useful new news.  This happened in
-> > rcutorture's TREE04 scenario running with KCSAN and lockdep enabled.
-> > 
-> > Thoughts?
-> > 
-> > 						Thanx, Paul
-> > 
-> > ------------------------------------------------------------------------
-> > 
-> > [  253.872153] =============================
-> > [  253.872271] [ BUG: Invalid wait context ]
-> > [  253.872271] 6.19.0-rc6-next-20260120 #21508 Not tainted
-> > [  253.875774] -----------------------------
-> > [  253.877983] migration/1/23 is trying to lock:
-> > [  253.877983] ffff8afd01054e98 (&barn->lock){..-.}-{3:3}, at: barn_get_empty_sheaf+0x1d/0xb0
-> > [  253.877983] other info that might help us debug this:
-> > [  253.877983] context-{5:5}
-> > [  253.877983] 3 locks held by migration/1/23:
-> > [  253.877983]  #0: ffff8afd01fd89a8 (&p->pi_lock){-.-.}-{2:2}, at: __balance_push_cpu_stop+0x3f/0x200
-> > [  253.877983]  #1: ffffffff9f15c5c8 (rcu_read_lock){....}-{1:3}, at: cpuset_cpus_allowed_fallback+0x27/0x250
-> > [  253.877983]  #2: ffff8afd1f470be0 ((local_lock_t *)&pcs->lock){+.+.}-{3:3}, at: __kfree_rcu_sheaf+0x52/0x3d0
-> > [  253.877983] stack backtrace:
-> > [  253.877983] CPU: 1 UID: 0 PID: 23 Comm: migration/1 Not tainted 6.19.0-rc6-next-20260120 #21508 PREEMPTLAZY
-> > [  253.877983] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-> > [  253.877983] Stopper: __balance_push_cpu_stop+0x0/0x200 <- balance_push+0x118/0x170
-> > [  253.877983] Call Trace:
-> > [  253.877983]  <TASK>
-> > [  253.877983]  __dump_stack+0x22/0x30
-> > [  253.877983]  dump_stack_lvl+0x60/0x80
-> > [  253.877983]  dump_stack+0x19/0x24
-> > [  253.877983]  __lock_acquire+0xd3a/0x28e0
-> > [  253.877983]  ? __lock_acquire+0x5a9/0x28e0
-> > [  253.877983]  ? __lock_acquire+0x5a9/0x28e0
-> > [  253.877983]  ? barn_get_empty_sheaf+0x1d/0xb0
-> > [  253.877983]  lock_acquire+0xc3/0x270
-> > [  253.877983]  ? barn_get_empty_sheaf+0x1d/0xb0
-> > [  253.877983]  ? __kfree_rcu_sheaf+0x52/0x3d0
-> > [  253.877983]  _raw_spin_lock_irqsave+0x47/0x70
-> > [  253.877983]  ? barn_get_empty_sheaf+0x1d/0xb0
-> > [  253.877983]  barn_get_empty_sheaf+0x1d/0xb0
-> > [  253.877983]  ? __kfree_rcu_sheaf+0x52/0x3d0
-> > [  253.877983]  __kfree_rcu_sheaf+0x19f/0x3d0
-> > [  253.877983]  kvfree_call_rcu+0xaf/0x390
-> > [  253.877983]  set_cpus_allowed_force+0xc8/0xf0
-> 
-> set_cpus_allowed_force() is calling kfree_rcu() with a raw spinlock
-> (pi_lock) held, but barn->lock is normal spinlock, lockdep prints an
-> error because on PREEMPT_RT normal spinlocks are converted to
-> sleeping locks but raw spinlocks are not.
-> 
-> Hmm... but it isn't great to convert barn->lock to
-> a raw spinlock just because of this?
 
-No, on PREEMPT_RT kfree_call_rcu() doesn't use sheaves.
-Is it benign and it's simply due to PROVE_RAW_LOCK_NESTING?
 
-> > [  253.877983]  ? cpuset_cpus_allowed_fallback+0x27/0x250
-> > [  253.877983]  cpuset_cpus_allowed_fallback+0x15d/0x250
-> > [  253.877983]  select_fallback_rq+0x1d8/0x250
-> > [  253.877983]  ? __pfx___balance_push_cpu_stop+0x10/0x10
-> > [  253.877983]  __balance_push_cpu_stop+0x4f/0x200
-> > [  253.877983]  cpu_stopper_thread+0x147/0x210
-> > [  253.877983]  ? __pfx_cpu_stopper_thread+0x10/0x10
-> > [  253.877983]  smpboot_thread_fn+0x24c/0x390
-> > [  253.877983]  ? __pfx_smpboot_thread_fn+0x10/0x10
-> > [  253.877983]  kthread+0x1fa/0x230
-> > [  253.877983]  ? __pfx_smpboot_thread_fn+0x10/0x10
-> > [  253.877983]  ? __pfx_kthread+0x10/0x10
-> > [  253.877983]  ret_from_fork+0x157/0x2c0
-> > [  253.877983]  ? __pfx_kthread+0x10/0x10
-> > [  253.877983]  ret_from_fork_asm+0x1a/0x30
-> > [  253.877983]  </TASK>
+On 2026/1/20 21:42, Chen Ridong wrote:
+> From: Chen Ridong <chenridong@huawei.com>
+> 
+> The memcg LRU was originally introduced to improve scalability during
+> global reclaim. However, it is complex and only works with gen lru
+> global reclaim. Moreover, its implementation complexity has led to
+> performance regressions when handling a large number of memory cgroups [1].
+> 
+> This patch introduces a per-memcg heat level for reclaim, aiming to unify
+> gen lru and traditional LRU global reclaim. The core idea is to track
+> per-node per-memcg reclaim state, including heat, last_decay, and
+> last_refault. The last_refault records the total reclaimed data from the
+> previous memcg reclaim. The last_decay is a time-based parameter; the heat
+> level decays over time if the memcg is not reclaimed again. Both last_decay
+> and last_refault are used to calculate the current heat level when reclaim
+> starts.
+> 
+> Three reclaim heat levels are defined: cold, warm, and hot. Cold memcgs are
+> reclaimed first; only if cold memcgs cannot reclaim enough pages, warm
+> memcgs become eligible for reclaim. Hot memcgs are reclaimed last.
+> 
+> While this design can be applied to all memcg reclaim scenarios, this patch
+> is conservative and only introduces heat levels for traditional LRU global
+> reclaim. Subsequent patches will replace the memcg LRU with
+> heat-level-based reclaim.
+> 
+> Based on tests provided by YU Zhao, traditional LRU global reclaim shows
+> significant performance improvement with heat-level reclaim enabled.
+> 
+> The results below are from a 2-hour run of the test [2].
+> 
+> Throughput (number of requests)		before	   after	Change
+> Total					1734169    2353717	+35%
+> 
+> Tail latency (number of requests)	before	   after	Change
+> [128s, inf)				1231	   1057		-14%
+> [64s, 128s)				586	   444		-24%
+> [32s, 64s)				1658	   1061		-36%
+> [16s, 32s)				4611	   2863		-38%
+> 
+
+The original data:
+
+Hardware
+========
+[root@localhost ~]# lscpu
+Architecture:                         aarch64
+CPU op-mode(s):                       64-bit
+Byte Order:                           Little Endian
+CPU(s):                               128
+On-line CPU(s) list:                  0-127
+Thread(s) per core:                   1
+Core(s) per socket:                   64
+Socket(s):                            2
+NUMA node(s):                         4
+Model:                                0
+Stepping:                             0x1
+Frequency boost:                      disabled
+CPU max MHz:                          2600.0000
+CPU min MHz:                          200.0000
+BogoMIPS:                             200.00
+L1d cache:                            8 MiB
+L1i cache:                            8 MiB
+L2 cache:                             64 MiB
+L3 cache:                             128 MiB
+NUMA node0 CPU(s):                    0-31
+NUMA node1 CPU(s):                    32-63
+NUMA node2 CPU(s):                    64-95
+NUMA node3 CPU(s):                    96-127
+Vulnerability Gather data sampling:   Not affected
+Vulnerability Itlb multihit:          Not affected
+Vulnerability L1tf:                   Not affected
+Vulnerability Mds:                    Not affected
+Vulnerability Meltdown:               Not affected
+Vulnerability Mmio stale data:        Not affected
+Vulnerability Reg file data sampling: Not affected
+Vulnerability Retbleed:               Not affected
+Vulnerability Spec rstack overflow:   Not affected
+Vulnerability Spec store bypass:      Not affected
+Vulnerability Spectre v1:             Mitigation; __user pointer sanitization
+Vulnerability Spectre v2:             Mitigation; CSV2, but not BHB
+Vulnerability Srbds:                  Not affected
+Vulnerability Tsa:                    Not affected
+Vulnerability Tsx async abort:        Not affected
+Flags:                                fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp
+asimdhp cpuid asimdrdm jscvt fcma dcpop asimddp
+                                       asimdfhm
+[root@localhost ~]# numactl -H
+available: 4 nodes (0-3)
+node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+node 0 size: 257576 MB
+node 0 free: 251580 MB
+node 1 cpus: 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60
+61 62 63
+node 1 size: 258002 MB
+node 1 free: 255859 MB
+node 2 cpus: 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92
+93 94 95
+node 2 size: 258043 MB
+node 2 free: 255941 MB
+node 3 cpus: 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118
+119 120 121 122 123 124 125 126 127
+node 3 size: 254967 MB
+node 3 free: 250749 MB
+node distances:
+node   0   1   2   3
+  0:  10  12  20  22
+  1:  12  10  22  24
+  2:  20  22  10  12
+  3:  22  24  12  10
+
+Software: Base on: 7eb60a75f521 ("Add linux-next specific files for 20251219")
+========
+[root@localhost ~]# node -v
+v12.18.4
+[root@localhost ~]# chromedriver -v
+ChromeDriver 133.0.6943.141 (2a5d6da0d6165d7b107502095a937fe7704fcef6-refs/branch-heads/6943@{#1912})
+[root@localhost ~]# python3 -c "import selenium; print(selenium.__version__)"
+4.39.0
+
+swaps created by:
+```
+fallocate -l 256G /home/swapfile1
+chmod 600 /home/swapfile1
+mkswap /home/swapfile1
+swapon /home/swapfile1
+
+fallocate -l 256G /home/swapfile2
+chmod 600 /home/swapfile2
+mkswap /home/swapfile2
+swapon /home/swapfile2
+```
+
+Procedure
+=========
+```
+[root@localhost kswapd]# cat server.js
+const chunks = 16;
+const size = 1024 * 1024 * 512;
+const stride = 512;
+
+const bufs = [];
+
+for (let i = 0; i < chunks; i++) {
+    bufs[i] = Buffer.alloc(size);
+}
+
+const http = require('http');
+
+const server = http.createServer(function(req, res) {
+    if (req.url != '/') {
+        res.writeHead(404);
+        res.end();
+        return;
+    }
+
+    const rand = Math.floor(Math.random() * chunks);
+
+    const buf = bufs[rand];
+    for (let i = 0; i < buf.length; i += stride) {
+        buf[i] = i;
+    }
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:,">
+<title>memory test</title>
+</head>
+<body>
+<div id="size">${buf.length}</div>
+</body>
+</html>`;
+
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(html);
+}).listen(process.argv[2]);
+
+function exit(sig) {
+    server.close(function() {
+        process.exit(0);
+    });
+}
+
+process.on('SIGINT', exit);
+```
+
+
+```
+[root@localhost kswapd]# cat client.py
+import signal
+import sys
+import time
+import os
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+
+# Clear proxy settings
+os.environ.update({
+    'http_proxy': '',
+    'https_proxy': '',
+    'HTTP_PROXY': '',
+    'HTTPS_PROXY': ''
+})
+
+secs = [0, 1, 2, 4, 8, 16, 32, 64, 128]
+hist = dict()
+
+js = '''
+const chunks = 4;
+const size = 1024 * 128;
+const stride = 128;
+
+const rand = Math.floor(Math.random() * chunks);
+
+const buf = new BigInt64Array(size * (chunks + 1));
+for (let i = 0; i < buf.length; i += stride) {
+    buf[i] = BigInt(i);
+}
+
+document.getElementById("size").innerHTML = "0";
+
+return buf.length;
+'''
+
+
+def stop(sig, stack):
+    raise KeyboardInterrupt
+
+signal.signal(signal.SIGINT, stop)
+
+def setup_driver():
+    """Configure and create WebDriver"""
+    options = Options()
+
+    # Specify chromium binary path
+    chromium_path = '/usr/bin/chromium-browser'
+    if os.path.exists(chromium_path):
+        options.binary_location = chromium_path
+    else:
+        # Try other possible paths
+        for path in ['/usr/bin/chromium', '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable']:
+            if os.path.exists(path):
+                options.binary_location = path
+                break
+
+    # Required arguments
+    options.add_argument('--no-sandbox')
+    options.add_argument('--headless')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--window-size=1920,1080')
+
+    # Specify chromedriver path
+    chromedriver_path = '/usr/bin/chromedriver'
+    if not os.path.exists(chromedriver_path):
+        # Try to find it
+        import subprocess
+        result = subprocess.run(['which', 'chromedriver'], capture_output=True, text=True)
+        if result.returncode == 0:
+            chromedriver_path = result.stdout.strip()
+        else:
+            raise FileNotFoundError("chromedriver not found")
+
+    print(f"Using chromedriver: {chromedriver_path}")
+    print(f"Using browser: {options.binary_location}")
+
+    service = Service(executable_path=chromedriver_path)
+    driver = webdriver.Chrome(service=service, options=options)
+
+    return driver
+
+try:
+    # Create driver
+    driver = setup_driver()
+    driver.set_script_timeout(600)
+    driver.set_page_load_timeout(600)
+
+    port = sys.argv[1] if len(sys.argv) > 1 else '8000'
+    url = f'http://127.0.0.1:{port}'
+    print(f"Accessing: {url}")
+
+    driver.get(url)
+
+    # Initialize hist
+    for sec in secs:
+        hist[sec] = 0
+
+    print("Starting test... (Press Ctrl+C to stop)")
+
+    while True:
+        try:
+            start = time.time()
+
+            driver.refresh()
+
+            # Use new find_element method
+            size_element = driver.find_element(By.ID, 'size')
+            size = int(size_element.text)
+            assert size > 0
+
+            size = driver.execute_script(js)
+            assert size > 0
+
+            elapsed = time.time() - start
+
+            for sec in reversed(secs):
+                if elapsed >= sec:
+                    hist[sec] += 1
+                    break
+
+            # Print progress every 100 iterations
+            total = sum(hist.values())
+            if total % 100 == 0:
+                print(f"Progress: {total} iterations")
+
+        except Exception as e:
+            # On exception, count as 128 seconds and retry
+            hist[128] += 1
+            print(f"client:{port} exception: {type(e).__name__}")
+            # Wait and retry
+            time.sleep(1)
+            continue
+
+except KeyboardInterrupt:
+    print('client:', sys.argv[1] if len(sys.argv) > 1 else '8000',
+          'total: %6d,' % sum(hist.values()),
+          ', '.join('%d: %6d' % (k, v) for k, v in hist.items()))
+finally:
+    if 'driver' in locals():
+        driver.quit()
+```
+
+```
+[root@localhost kswapd]# cat js_benchmark.sh
+echo 0 >/proc/sys/kernel/numa_balancing
+
+nodes=4
+memcgs=32
+
+run() {
+    trap 'wait' SIGINT
+
+    memcg=$1
+    path=/sys/fs/cgroup/memcg$memcg
+
+    mkdir $path
+    echo $BASHPID >$path/cgroup.procs
+
+    for ((node = 0; node < $nodes; node++)); do
+        port=$((nodes * memcg + node + 8000))
+
+        numactl -N $node -m $node node server.js $port &
+    done
+
+    sleep 60
+
+    for ((node = 0; node < $nodes; node++)); do
+        port=$((nodes * memcg + node + 8000))
+
+        numactl -N $node -m $node python3 client.py $port &
+    done
+
+    wait
+}
+
+for ((memcg = 0; memcg < $memcgs; memcg++)); do
+    run $memcg &
+done
+
+sleep $((2 * 60 * 60))
+trap 'wait' SIGINT
+kill -INT 0
+```
+Results(run 2h)
+=======
+Before
+------
+client: 8000 total:   5833, 0:   5624, 1:     49, 2:     43, 4:     32, 8:     18, 16:     17, 32:     14, 64:      2, 128:     34
+client: 8001 total:  14862, 0:  14256, 1:    175, 2:    148, 4:    116, 8:     94, 16:     49, 32:     19, 64:      4, 128:      1
+client: 8002 total:  18719, 0:  18160, 1:    172, 2:    118, 4:    112, 8:    111, 16:     25, 32:     16, 64:      4, 128:      1
+client: 8003 total:  12010, 0:  11524, 1:    122, 2:    107, 4:    106, 8:     80, 16:     43, 32:     13, 64:      3, 128:     12
+client: 8004 total:  15991, 0:  15529, 1:    135, 2:    113, 4:     94, 8:     58, 16:     37, 32:     10, 64:     11, 128:      4
+client: 8005 total:  10693, 0:  10168, 1:    178, 2:    107, 4:     99, 8:     67, 16:     41, 32:     15, 64:      7, 128:     11
+client: 8006 total:    138, 0:     64, 1:      3, 2:      5, 4:      0, 8:      3, 16:      3, 32:      3, 64:      4, 128:     53
+client: 8007 total:  14807, 0:  14282, 1:    164, 2:    114, 4:    103, 8:     90, 16:     25, 32:     16, 64:      6, 128:      7
+client: 8008 total:  18257, 0:  17700, 1:    169, 2:    130, 4:    114, 8:     84, 16:     37, 32:     20, 64:      3, 128:      0
+client: 8009 total:    126, 0:     53, 1:      2, 2:      2, 4:      3, 8:      4, 16:      1, 32:      7, 64:      2, 128:     52
+client: 8010 total:  17669, 0:  17160, 1:    163, 2:     99, 4:    123, 8:     68, 16:     37, 32:     11, 64:      5, 128:      3
+client: 8011 total:  13321, 0:  12763, 1:    161, 2:    115, 4:    121, 8:    100, 16:     38, 32:     11, 64:      9, 128:      3
+client: 8012 total:  14495, 0:  14050, 1:    119, 2:    115, 4:     90, 8:     73, 16:     28, 32:      6, 64:      2, 128:     12
+client: 8013 total:    141, 0:     63, 1:      3, 2:      3, 4:      4, 8:      3, 16:      3, 32:      4, 64:      8, 128:     50
+client: 8014 total:  17179, 0:  16681, 1:    165, 2:    106, 4:    100, 8:     73, 16:     31, 32:     14, 64:      4, 128:      5
+client: 8015 total:  13015, 0:  12451, 1:    162, 2:    111, 4:    123, 8:    103, 16:     35, 32:     19, 64:      6, 128:      5
+client: 8016 total:  15668, 0:  15183, 1:    143, 2:    117, 4:    101, 8:     66, 16:     36, 32:      9, 64:      4, 128:      9
+client: 8017 total:  13804, 0:  13238, 1:    160, 2:    117, 4:    118, 8:     91, 16:     51, 32:     20, 64:      7, 128:      2
+client: 8018 total:  17278, 0:  16733, 1:    158, 2:    128, 4:    110, 8:     88, 16:     47, 32:      9, 64:      1, 128:      4
+client: 8019 total:  14696, 0:  14115, 1:    163, 2:    140, 4:    130, 8:     90, 16:     33, 32:     15, 64:      4, 128:      6
+client: 8020 total:  16383, 0:  15816, 1:    181, 2:    147, 4:    110, 8:     68, 16:     41, 32:     13, 64:      5, 128:      2
+client: 8021 total:  13550, 0:  12928, 1:    198, 2:    147, 4:     96, 8:    104, 16:     50, 32:     19, 64:      3, 128:      5
+client: 8022 total:  17587, 0:  17053, 1:    160, 2:    112, 4:    131, 8:     84, 16:     30, 32:      6, 64:      8, 128:      3
+client: 8023 total:  12916, 0:  12418, 1:    145, 2:    107, 4:    103, 8:     70, 16:     42, 32:     14, 64:      9, 128:      8
+client: 8024 total:  16559, 0:  15965, 1:    181, 2:    143, 4:    127, 8:     77, 16:     44, 32:     19, 64:      3, 128:      0
+client: 8025 total:  11129, 0:  10603, 1:    141, 2:    117, 4:    112, 8:     85, 16:     43, 32:     14, 64:      6, 128:      8
+client: 8026 total:  15903, 0:  15412, 1:    156, 2:    116, 4:     85, 8:     64, 16:     44, 32:     15, 64:      6, 128:      5
+client: 8027 total:  14609, 0:  14013, 1:    166, 2:    158, 4:     97, 8:    103, 16:     43, 32:     22, 64:      7, 128:      0
+client: 8028 total:    120, 0:     54, 1:      0, 2:      0, 4:      1, 8:      1, 16:      4, 32:      3, 64:      4, 128:     53
+client: 8029 total:  14575, 0:  13926, 1:    202, 2:    156, 4:    136, 8:     87, 16:     43, 32:     16, 64:      5, 128:      4
+client: 8030 total:  17857, 0:  17341, 1:    140, 2:    125, 4:    106, 8:     85, 16:     41, 32:     11, 64:      6, 128:      2
+client: 8031 total:  14276, 0:  13660, 1:    169, 2:    130, 4:    151, 8:     93, 16:     51, 32:     15, 64:      4, 128:      3
+client: 8032 total:  14026, 0:  13372, 1:    227, 2:    158, 4:    123, 8:     84, 16:     43, 32:     10, 64:      5, 128:      4
+client: 8033 total:  15025, 0:  14387, 1:    182, 2:    151, 4:    144, 8:     96, 16:     47, 32:     10, 64:      4, 128:      4
+client: 8034 total:  14369, 0:  14001, 1:     96, 2:     89, 4:     69, 8:     49, 16:     35, 32:     12, 64:      4, 128:     14
+client: 8035 total:  14531, 0:  14069, 1:    123, 2:    102, 4:     94, 8:     77, 16:     32, 32:     23, 64:      5, 128:      6
+client: 8036 total:  10785, 0:  10289, 1:    124, 2:    138, 4:    100, 8:     66, 16:     34, 32:     15, 64:      2, 128:     17
+client: 8037 total:  12991, 0:  12504, 1:    135, 2:    100, 4:    110, 8:     67, 16:     51, 32:      7, 64:      7, 128:     10
+client: 8038 total:    418, 0:    313, 1:     11, 2:      8, 4:     10, 8:      9, 16:      7, 32:      8, 64:      4, 128:     48
+client: 8039 total:  14650, 0:  14058, 1:    169, 2:    130, 4:    123, 8:     92, 16:     55, 32:     17, 64:      2, 128:      4
+client: 8040 total:  14276, 0:  13646, 1:    211, 2:    146, 4:    133, 8:     80, 16:     40, 32:     13, 64:      3, 128:      4
+client: 8041 total:  14555, 0:  13951, 1:    202, 2:    136, 4:    117, 8:     87, 16:     34, 32:     18, 64:      7, 128:      3
+client: 8042 total:  14046, 0:  13491, 1:    165, 2:    132, 4:    101, 8:     99, 16:     34, 32:     14, 64:      6, 128:      4
+client: 8043 total:  14914, 0:  14348, 1:    168, 2:    128, 4:    113, 8:     86, 16:     46, 32:     18, 64:      4, 128:      3
+client: 8044 total:  18829, 0:  18172, 1:    182, 2:    178, 4:    150, 8:     91, 16:     42, 32:     14, 64:      0, 128:      0
+client: 8045 total:  14583, 0:  14004, 1:    198, 2:    110, 4:    119, 8:     81, 16:     43, 32:     18, 64:      7, 128:      3
+client: 8046 total:  16892, 0:  16328, 1:    176, 2:    139, 4:    108, 8:     85, 16:     38, 32:     11, 64:      2, 128:      5
+client: 8047 total:  15658, 0:  15082, 1:    179, 2:    127, 4:    124, 8:     75, 16:     47, 32:     16, 64:      6, 128:      2
+client: 8048 total:  18318, 0:  17713, 1:    184, 2:    147, 4:    143, 8:     77, 16:     38, 32:     11, 64:      4, 128:      1
+client: 8049 total:  14599, 0:  13960, 1:    212, 2:    118, 4:    141, 8:    113, 16:     31, 32:     18, 64:      5, 128:      1
+client: 8050 total:  16382, 0:  15913, 1:    142, 2:    103, 4:     97, 8:     82, 16:     24, 32:     14, 64:      3, 128:      4
+client: 8051 total:  10185, 0:   9657, 1:    156, 2:    108, 4:    101, 8:     95, 16:     37, 32:     14, 64:      2, 128:     15
+client: 8052 total:  17210, 0:  16658, 1:    165, 2:    134, 4:    118, 8:     73, 16:     47, 32:      9, 64:      5, 128:      1
+client: 8053 total:  10534, 0:  10043, 1:    134, 2:    107, 4:    103, 8:     88, 16:     28, 32:     16, 64:      5, 128:     10
+client: 8054 total:  12906, 0:  12451, 1:    130, 2:    103, 4:     94, 8:     70, 16:     31, 32:     12, 64:      7, 128:      8
+client: 8055 total:  15115, 0:  14492, 1:    192, 2:    152, 4:    131, 8:     77, 16:     45, 32:     18, 64:      6, 128:      2
+client: 8056 total:   6574, 0:   6206, 1:     95, 2:     81, 4:     59, 8:     65, 16:     30, 32:      6, 64:      2, 128:     30
+client: 8057 total:  15547, 0:  14932, 1:    194, 2:    140, 4:    126, 8:     81, 16:     50, 32:     19, 64:      2, 128:      3
+client: 8058 total:  17972, 0:  17438, 1:    160, 2:    120, 4:    106, 8:     88, 16:     45, 32:     10, 64:      4, 128:      1
+client: 8059 total:    132, 0:     64, 1:      2, 2:      0, 4:      1, 8:      4, 16:      2, 32:      5, 64:      1, 128:     53
+client: 8060 total:  17869, 0:  17225, 1:    212, 2:    152, 4:    133, 8:     94, 16:     40, 32:     11, 64:      2, 128:      0
+client: 8061 total:  15195, 0:  14569, 1:    204, 2:    143, 4:    122, 8:     84, 16:     44, 32:     23, 64:      5, 128:      1
+client: 8062 total:   4702, 0:   4435, 1:     72, 2:     45, 4:     56, 8:     34, 16:     16, 32:      5, 64:      5, 128:     34
+client: 8063 total:   9854, 0:   9361, 1:    121, 2:    106, 4:    117, 8:     70, 16:     43, 32:     17, 64:      6, 128:     13
+client: 8064 total:  15976, 0:  15365, 1:    204, 2:    151, 4:    107, 8:     84, 16:     43, 32:     16, 64:      6, 128:      0
+client: 8065 total:  14062, 0:  13493, 1:    162, 2:    132, 4:    101, 8:    100, 16:     51, 32:     15, 64:      6, 128:      2
+client: 8066 total:    138, 0:     70, 1:      3, 2:      1, 4:      1, 8:      1, 16:      2, 32:      5, 64:      3, 128:     52
+client: 8067 total:  15074, 0:  14482, 1:    160, 2:    138, 4:    139, 8:     88, 16:     42, 32:     16, 64:      6, 128:      3
+client: 8068 total:  18564, 0:  18065, 1:    142, 2:    142, 4:     97, 8:     69, 16:     26, 32:     15, 64:      3, 128:      5
+client: 8069 total:  15186, 0:  14548, 1:    189, 2:    137, 4:    150, 8:     94, 16:     45, 32:     18, 64:      4, 128:      1
+client: 8070 total:  16936, 0:  16355, 1:    207, 2:    116, 4:    129, 8:     71, 16:     37, 32:     15, 64:      4, 128:      2
+client: 8071 total:  15182, 0:  14521, 1:    214, 2:    147, 4:    124, 8:    103, 16:     49, 32:     20, 64:      4, 128:      0
+client: 8072 total:  17663, 0:  17160, 1:    162, 2:    130, 4:    106, 8:     51, 16:     28, 32:     15, 64:      8, 128:      3
+client: 8073 total:  15204, 0:  14634, 1:    173, 2:    134, 4:    127, 8:     79, 16:     32, 32:     13, 64:      9, 128:      3
+client: 8074 total:  13763, 0:  13391, 1:     93, 2:     77, 4:     79, 8:     62, 16:     34, 32:     11, 64:      4, 128:     12
+client: 8075 total:   4408, 0:   4111, 1:     78, 2:     57, 4:     52, 8:     41, 16:     28, 32:      6, 64:      6, 128:     29
+client: 8076 total:  17754, 0:  17211, 1:    171, 2:    135, 4:    107, 8:     73, 16:     37, 32:     15, 64:      3, 128:      2
+client: 8077 total:   5200, 0:   4911, 1:     84, 2:     49, 4:     53, 8:     33, 16:     22, 32:      8, 64:     10, 128:     30
+client: 8078 total:  17384, 0:  16864, 1:    163, 2:    119, 4:    100, 8:     81, 16:     33, 32:     16, 64:      5, 128:      3
+client: 8079 total:  15168, 0:  14605, 1:    182, 2:    114, 4:    120, 8:     86, 16:     34, 32:     17, 64:      5, 128:      5
+client: 8080 total:  15633, 0:  15074, 1:    147, 2:    147, 4:    132, 8:     84, 16:     30, 32:      9, 64:      6, 128:      4
+client: 8081 total:   1879, 0:   1662, 1:     44, 2:     29, 4:     36, 8:     32, 16:     28, 32:      4, 64:      2, 128:     42
+client: 8082 total:  17095, 0:  16579, 1:    153, 2:    120, 4:     93, 8:     78, 16:     52, 32:     14, 64:      3, 128:      3
+client: 8083 total:   4241, 0:   4019, 1:     58, 2:     42, 4:     32, 8:     35, 16:      9, 32:      7, 64:      8, 128:     31
+client: 8084 total:  16458, 0:  15833, 1:    188, 2:    159, 4:    133, 8:     97, 16:     33, 32:      8, 64:      3, 128:      4
+client: 8085 total:  13510, 0:  12968, 1:    160, 2:    132, 4:    118, 8:     76, 16:     28, 32:     11, 64:      9, 128:      8
+client: 8086 total:  18212, 0:  17715, 1:    139, 2:    124, 4:     93, 8:     77, 16:     41, 32:     15, 64:      7, 128:      1
+client: 8087 total:    125, 0:     55, 1:      2, 2:      5, 4:      2, 8:      1, 16:      2, 32:      7, 64:      2, 128:     49
+client: 8088 total:  15769, 0:  15230, 1:    139, 2:    144, 4:    120, 8:     72, 16:     43, 32:     14, 64:      3, 128:      4
+client: 8089 total:  12778, 0:  12184, 1:    184, 2:    132, 4:    123, 8:     94, 16:     35, 32:     14, 64:      5, 128:      7
+client: 8090 total:  18351, 0:  17817, 1:    170, 2:    105, 4:    113, 8:     84, 16:     39, 32:     20, 64:      2, 128:      1
+client: 8091 total:  14935, 0:  14393, 1:    170, 2:    113, 4:    107, 8:     91, 16:     36, 32:     14, 64:      5, 128:      6
+client: 8092 total:  18215, 0:  17610, 1:    195, 2:    136, 4:    132, 8:     88, 16:     41, 32:      8, 64:      4, 128:      1
+client: 8093 total:  15437, 0:  14807, 1:    187, 2:    166, 4:    123, 8:     86, 16:     44, 32:     17, 64:      4, 128:      3
+client: 8094 total:  18319, 0:  17758, 1:    170, 2:    129, 4:    118, 8:     91, 16:     40, 32:      7, 64:      3, 128:      3
+client: 8095 total:  16463, 0:  15862, 1:    176, 2:    131, 4:    131, 8:     99, 16:     49, 32:      7, 64:      4, 128:      4
+client: 8096 total:  17984, 0:  17393, 1:    188, 2:    128, 4:    126, 8:     82, 16:     51, 32:     14, 64:      2, 128:      0
+client: 8097 total:  15794, 0:  15180, 1:    202, 2:    132, 4:    139, 8:     85, 16:     32, 32:     13, 64:      8, 128:      3
+client: 8098 total:  16847, 0:  16297, 1:    163, 2:    122, 4:    125, 8:     77, 16:     41, 32:     19, 64:      1, 128:      2
+client: 8099 total:  14232, 0:  13658, 1:    175, 2:    125, 4:    115, 8:     89, 16:     43, 32:     17, 64:      7, 128:      3
+client: 8100 total:  11554, 0:  11213, 1:     95, 2:     77, 4:     48, 8:     60, 16:     30, 32:      9, 64:      3, 128:     19
+client: 8101 total:  14600, 0:  13966, 1:    184, 2:    143, 4:    134, 8:     91, 16:     61, 32:     17, 64:      4, 128:      0
+client: 8102 total:  17841, 0:  17247, 1:    175, 2:    124, 4:    124, 8:    105, 16:     57, 32:      7, 64:      1, 128:      1
+client: 8103 total:  16135, 0:  15532, 1:    188, 2:    134, 4:    112, 8:     95, 16:     52, 32:     15, 64:      6, 128:      1
+client: 8104 total:  18159, 0:  17600, 1:    155, 2:    146, 4:    119, 8:     83, 16:     42, 32:     11, 64:      2, 128:      1
+client: 8105 total:  14533, 0:  13851, 1:    218, 2:    148, 4:    147, 8:    100, 16:     51, 32:     13, 64:      4, 128:      1
+client: 8106 total:  18494, 0:  17959, 1:    173, 2:    129, 4:     98, 8:     75, 16:     43, 32:     11, 64:      3, 128:      3
+client: 8107 total:  14925, 0:  14314, 1:    165, 2:    151, 4:    125, 8:     97, 16:     48, 32:     19, 64:      5, 128:      1
+client: 8108 total:  16885, 0:  16302, 1:    150, 2:    146, 4:    143, 8:     88, 16:     40, 32:     11, 64:      4, 128:      1
+client: 8109 total:  14011, 0:  13411, 1:    180, 2:    155, 4:    134, 8:     73, 16:     32, 32:     14, 64:      6, 128:      6
+client: 8110 total:  16774, 0:  16227, 1:    174, 2:    120, 4:    104, 8:     80, 16:     47, 32:     16, 64:      4, 128:      2
+client: 8111 total:  15467, 0:  14885, 1:    162, 2:    127, 4:    117, 8:    104, 16:     46, 32:     20, 64:      5, 128:      1
+client: 8112 total:  17131, 0:  16595, 1:    180, 2:    114, 4:    113, 8:     67, 16:     38, 32:     17, 64:      4, 128:      3
+client: 8113 total:  15269, 0:  14640, 1:    208, 2:    131, 4:    136, 8:     92, 16:     40, 32:     15, 64:      4, 128:      3
+client: 8114 total:   9933, 0:   9575, 1:     92, 2:     85, 4:     74, 8:     44, 16:     27, 32:     10, 64:      4, 128:     22
+client: 8115 total:   9741, 0:   9295, 1:    108, 2:    113, 4:     74, 8:     85, 16:     31, 32:     12, 64:      7, 128:     16
+client: 8116 total:  16756, 0:  16206, 1:    162, 2:    142, 4:    125, 8:     72, 16:     26, 32:      9, 64:      9, 128:      5
+client: 8117 total:    130, 0:     61, 1:      2, 2:      5, 4:      2, 8:      1, 16:      1, 32:      1, 64:      3, 128:     54
+client: 8118 total:  17050, 0:  16494, 1:    174, 2:    132, 4:    106, 8:     89, 16:     34, 32:     14, 64:      7, 128:      0
+client: 8119 total:  13867, 0:  13291, 1:    178, 2:    129, 4:    110, 8:     94, 16:     34, 32:     18, 64:      9, 128:      4
+client: 8120 total:  17247, 0:  16684, 1:    174, 2:    148, 4:    103, 8:     87, 16:     34, 32:      8, 64:      3, 128:      6
+client: 8121 total:  13990, 0:  13436, 1:    175, 2:    125, 4:    110, 8:     80, 16:     39, 32:     13, 64:      4, 128:      8
+client: 8122 total:  17500, 0:  16948, 1:    181, 2:    130, 4:    109, 8:     67, 16:     43, 32:     16, 64:      2, 128:      4
+client: 8123 total:  14558, 0:  13954, 1:    154, 2:    135, 4:    149, 8:     90, 16:     52, 32:     18, 64:      6, 128:      0
+client: 8124 total:  18510, 0:  17944, 1:    162, 2:    154, 4:    110, 8:     79, 16:     46, 32:      8, 64:      7, 128:      0
+client: 8125 total:  12900, 0:  12388, 1:    153, 2:    135, 4:    104, 8:     65, 16:     27, 32:     11, 64:      5, 128:     12
+client: 8126 total:   6292, 0:   5908, 1:    102, 2:     96, 4:     73, 8:     50, 16:     26, 32:      5, 64:      4, 128:     28
+client: 8127 total:   6170, 0:   5760, 1:    120, 2:     73, 4:     78, 8:     71, 16:     32, 32:     10, 64:      3, 128:     23
+
+After
+-----
+client: 8000 total:  17468, 0:  16965, 1:    183, 2:    153, 4:     97, 8:     38, 16:      7, 32:      8, 64:      4, 128:     13
+client: 8001 total:  17679, 0:  17277, 1:    106, 2:     89, 4:     92, 8:     69, 16:     23, 32:     15, 64:      4, 128:      4
+client: 8002 total:  23029, 0:  22623, 1:    129, 2:     90, 4:     91, 8:     53, 16:     31, 32:      9, 64:      2, 128:      1
+client: 8003 total:  22498, 0:  22067, 1:    135, 2:    127, 4:     90, 8:     48, 16:     20, 32:      5, 64:      4, 128:      2
+client: 8004 total:  14136, 0:  13648, 1:    190, 2:    129, 4:     89, 8:     36, 16:     14, 32:      8, 64:      3, 128:     19
+client: 8005 total:  18527, 0:  18098, 1:     92, 2:    112, 4:     97, 8:     79, 16:     28, 32:     16, 64:      4, 128:      1
+client: 8006 total:   6436, 0:   6285, 1:     28, 2:     30, 4:     27, 8:     25, 16:      2, 32:      1, 64:      3, 128:     35
+client: 8007 total:  12236, 0:  11980, 1:     72, 2:     53, 4:     59, 8:     36, 16:      4, 32:      4, 64:      4, 128:     24
+client: 8008 total:  25641, 0:  25088, 1:    223, 2:    176, 4:     93, 8:     37, 16:     11, 32:      6, 64:      4, 128:      3
+client: 8009 total:  19214, 0:  18735, 1:    155, 2:    108, 4:     86, 8:     91, 16:     23, 32:     10, 64:      4, 128:      2
+client: 8010 total:  18909, 0:  18560, 1:     89, 2:     80, 4:     68, 8:     64, 16:     27, 32:     10, 64:      7, 128:      4
+client: 8011 total:  22242, 0:  21834, 1:    100, 2:    119, 4:    104, 8:     48, 16:     22, 32:     12, 64:      3, 128:      0
+client: 8012 total:    120, 0:     48, 1:      2, 2:      3, 4:      5, 8:      1, 16:      3, 32:      3, 64:      3, 128:     52
+client: 8013 total:  19254, 0:  18809, 1:    121, 2:    110, 4:    103, 8:     73, 16:     20, 32:     11, 64:      3, 128:      4
+client: 8014 total:    617, 0:    509, 1:      8, 2:     12, 4:      3, 8:     13, 16:     16, 32:      2, 64:      8, 128:     46
+client: 8015 total:  22097, 0:  21625, 1:    155, 2:    117, 4:    112, 8:     51, 16:     25, 32:      8, 64:      4, 128:      0
+client: 8016 total:  21352, 0:  20858, 1:    192, 2:    146, 4:     77, 8:     40, 16:     16, 32:     10, 64:      1, 128:     12
+client: 8017 total:  18049, 0:  17589, 1:    125, 2:    103, 4:    112, 8:     64, 16:     35, 32:     16, 64:      5, 128:      0
+client: 8018 total:  19155, 0:  18797, 1:     88, 2:     89, 4:     78, 8:     63, 16:     26, 32:      8, 64:      3, 128:      3
+client: 8019 total:  22008, 0:  21534, 1:    135, 2:    117, 4:    122, 8:     72, 16:     19, 32:      7, 64:      1, 128:      1
+client: 8020 total:  15444, 0:  15025, 1:    176, 2:    133, 4:     61, 8:     22, 16:      4, 32:      2, 64:      4, 128:     17
+client: 8021 total:   9252, 0:   9028, 1:     58, 2:     47, 4:     41, 8:     21, 16:     15, 32:      5, 64:     14, 128:     23
+client: 8022 total:  22300, 0:  21952, 1:     83, 2:     79, 4:    109, 8:     42, 16:     21, 32:      6, 64:      5, 128:      3
+client: 8023 total:    134, 0:     61, 1:      2, 2:      2, 4:      2, 8:      1, 16:      6, 32:      4, 64:      5, 128:     51
+client: 8024 total:  22997, 0:  22479, 1:    220, 2:    146, 4:     89, 8:     32, 16:     10, 32:      7, 64:      3, 128:     11
+client: 8025 total:    140, 0:     73, 1:      2, 2:      3, 4:      0, 8:      0, 16:      1, 32:      3, 64:      5, 128:     53
+client: 8026 total:  21543, 0:  21149, 1:    103, 2:     92, 4:    110, 8:     58, 16:     13, 32:     13, 64:      3, 128:      2
+client: 8027 total:    347, 0:    256, 1:      9, 2:      3, 4:      6, 8:      7, 16:      7, 32:      5, 64:      4, 128:     50
+client: 8028 total:  21340, 0:  20823, 1:    187, 2:    165, 4:     87, 8:     44, 16:     14, 32:      4, 64:      8, 128:      8
+client: 8029 total:  18430, 0:  17933, 1:    153, 2:    138, 4:     88, 8:     70, 16:     29, 32:     13, 64:      3, 128:      3
+client: 8030 total:  17339, 0:  17004, 1:     91, 2:     70, 4:     63, 8:     62, 16:     25, 32:     10, 64:      5, 128:      9
+client: 8031 total:    679, 0:    586, 1:      3, 2:     10, 4:      4, 8:      5, 16:     11, 32:      8, 64:      4, 128:     48
+client: 8032 total:  15330, 0:  14890, 1:    169, 2:    112, 4:     78, 8:     41, 16:     14, 32:      3, 64:      3, 128:     20
+client: 8033 total:  18419, 0:  18044, 1:     89, 2:    100, 4:     86, 8:     61, 16:     21, 32:      7, 64:      3, 128:      8
+client: 8034 total:  19947, 0:  19540, 1:    103, 2:     98, 4:     88, 8:     68, 16:     36, 32:     10, 64:      4, 128:      0
+client: 8035 total:  22006, 0:  21573, 1:    130, 2:    122, 4:    103, 8:     50, 16:     14, 32:      9, 64:      2, 128:      3
+client: 8036 total:  19452, 0:  18918, 1:    200, 2:    169, 4:     96, 8:     41, 16:      6, 32:      5, 64:      2, 128:     15
+client: 8037 total:  19846, 0:  19371, 1:    129, 2:    137, 4:     99, 8:     68, 16:     30, 32:      8, 64:      1, 128:      3
+client: 8038 total:  22000, 0:  21589, 1:    103, 2:     90, 4:    104, 8:     77, 16:     27, 32:      8, 64:      2, 128:      0
+client: 8039 total:  20612, 0:  20176, 1:    137, 2:    112, 4:     88, 8:     59, 16:     26, 32:     10, 64:      3, 128:      1
+client: 8040 total:  21084, 0:  20555, 1:    211, 2:    136, 4:    100, 8:     51, 16:     15, 32:      4, 64:      2, 128:     10
+client: 8041 total:  11465, 0:  11106, 1:     82, 2:     72, 4:     88, 8:     60, 16:     24, 32:     15, 64:      9, 128:      9
+client: 8042 total:  21455, 0:  21057, 1:    100, 2:     97, 4:    102, 8:     54, 16:     29, 32:     13, 64:      2, 128:      1
+client: 8043 total:  22832, 0:  22389, 1:    118, 2:    133, 4:    106, 8:     51, 16:     23, 32:     10, 64:      2, 128:      0
+client: 8044 total:  20445, 0:  19895, 1:    206, 2:    176, 4:     86, 8:     42, 16:     24, 32:      6, 64:      4, 128:      6
+client: 8045 total:  19368, 0:  18880, 1:    139, 2:    118, 4:    127, 8:     56, 16:     31, 32:     13, 64:      4, 128:      0
+client: 8046 total:  22747, 0:  22335, 1:    108, 2:     90, 4:    115, 8:     55, 16:     37, 32:      6, 64:      0, 128:      1
+client: 8047 total:  24223, 0:  23816, 1:    110, 2:    110, 4:     97, 8:     61, 16:     23, 32:      4, 64:      1, 128:      1
+client: 8048 total:  19573, 0:  19010, 1:    210, 2:    170, 4:     97, 8:     51, 16:     19, 32:      6, 64:      5, 128:      5
+client: 8049 total:  19436, 0:  18974, 1:    111, 2:    123, 4:    107, 8:     77, 16:     27, 32:     15, 64:      1, 128:      1
+client: 8050 total:  16210, 0:  15741, 1:    144, 2:    106, 4:     97, 8:     74, 16:     29, 32:     15, 64:      1, 128:      3
+client: 8051 total:  19325, 0:  18876, 1:    150, 2:    105, 4:     97, 8:     61, 16:     22, 32:      7, 64:      2, 128:      5
+client: 8052 total:  20278, 0:  19715, 1:    231, 2:    152, 4:    100, 8:     41, 16:     16, 32:     11, 64:      1, 128:     11
+client: 8053 total:  19534, 0:  19084, 1:    103, 2:    125, 4:     97, 8:     83, 16:     27, 32:     10, 64:      3, 128:      2
+client: 8054 total:  18630, 0:  18273, 1:    100, 2:     81, 4:     69, 8:     61, 16:     29, 32:      9, 64:      4, 128:      4
+client: 8055 total:  22449, 0:  22046, 1:    104, 2:    112, 4:     94, 8:     59, 16:     24, 32:      6, 64:      0, 128:      4
+client: 8056 total:  14745, 0:  14284, 1:    171, 2:    138, 4:     81, 8:     31, 16:     11, 32:     10, 64:      4, 128:     15
+client: 8057 total:  18698, 0:  18243, 1:    127, 2:    103, 4:    109, 8:     64, 16:     38, 32:      8, 64:      5, 128:      1
+client: 8058 total:  20386, 0:  19985, 1:     91, 2:    101, 4:     93, 8:     67, 16:     39, 32:      4, 64:      4, 128:      2
+client: 8059 total:  16392, 0:  16050, 1:     93, 2:     90, 4:     81, 8:     29, 16:     25, 32:     12, 64:      3, 128:      9
+client: 8060 total:  14156, 0:  13685, 1:    183, 2:    145, 4:     75, 8:     30, 16:      9, 32:      2, 64:      7, 128:     20
+client: 8061 total:  15487, 0:  15090, 1:    100, 2:    101, 4:     85, 8:     57, 16:     29, 32:     10, 64:      4, 128:     11
+client: 8062 total:  21870, 0:  21480, 1:     93, 2:     89, 4:     92, 8:     72, 16:     34, 32:      9, 64:      0, 128:      1
+client: 8063 total:  21548, 0:  21108, 1:    114, 2:    123, 4:    114, 8:     54, 16:     24, 32:      7, 64:      3, 128:      1
+client: 8064 total:  15865, 0:  15416, 1:    164, 2:    133, 4:     65, 8:     41, 16:     18, 32:      7, 64:      4, 128:     17
+client: 8065 total:  19300, 0:  18846, 1:    139, 2:     97, 4:    103, 8:     67, 16:     29, 32:     15, 64:      3, 128:      1
+client: 8066 total:  21636, 0:  21258, 1:     95, 2:     83, 4:     86, 8:     65, 16:     33, 32:     13, 64:      3, 128:      0
+client: 8067 total:  22998, 0:  22534, 1:    142, 2:    139, 4:     97, 8:     53, 16:     25, 32:      5, 64:      3, 128:      0
+client: 8068 total:  20846, 0:  20291, 1:    236, 2:    154, 4:     94, 8:     45, 16:      7, 32:      3, 64:      2, 128:     14
+client: 8069 total:  18455, 0:  18041, 1:    117, 2:     93, 4:     89, 8:     68, 16:     35, 32:      5, 64:      4, 128:      3
+client: 8070 total:  20788, 0:  20391, 1:    116, 2:     89, 4:     87, 8:     67, 16:     27, 32:      3, 64:      6, 128:      2
+client: 8071 total:  21160, 0:  20752, 1:    114, 2:    107, 4:     91, 8:     57, 16:     24, 32:     11, 64:      4, 128:      0
+client: 8072 total:  17179, 0:  16631, 1:    217, 2:    160, 4:     99, 8:     32, 16:     15, 32:      9, 64:      4, 128:     12
+client: 8073 total:  19738, 0:  19279, 1:    123, 2:    105, 4:     98, 8:     81, 16:     37, 32:     13, 64:      2, 128:      0
+client: 8074 total:  22019, 0:  21660, 1:     91, 2:     90, 4:     76, 8:     66, 16:     22, 32:      9, 64:      4, 128:      1
+client: 8075 total:  21195, 0:  20723, 1:    142, 2:    122, 4:    114, 8:     58, 16:     23, 32:      9, 64:      4, 128:      0
+client: 8076 total:  15700, 0:  15169, 1:    205, 2:    148, 4:    102, 8:     35, 16:     15, 32:      6, 64:      4, 128:     16
+client: 8077 total:  19681, 0:  19214, 1:    116, 2:    122, 4:    106, 8:     70, 16:     42, 32:      7, 64:      4, 128:      0
+client: 8078 total:  11631, 0:  11375, 1:     69, 2:     44, 4:     52, 8:     39, 16:     21, 32:      2, 64:      2, 128:     27
+client: 8079 total:  20008, 0:  19660, 1:     82, 2:     87, 4:     93, 8:     44, 16:     28, 32:      7, 64:      2, 128:      5
+client: 8080 total:  20259, 0:  19726, 1:    218, 2:    159, 4:     91, 8:     34, 16:     11, 32:      3, 64:      2, 128:     15
+client: 8081 total:  19811, 0:  19324, 1:    122, 2:    114, 4:    127, 8:     85, 16:     23, 32:     10, 64:      5, 128:      1
+client: 8082 total:  21245, 0:  20822, 1:    121, 2:     92, 4:     98, 8:     67, 16:     34, 32:      9, 64:      1, 128:      1
+client: 8083 total:  21712, 0:  21300, 1:    109, 2:    117, 4:     90, 8:     63, 16:     20, 32:      7, 64:      6, 128:      0
+client: 8084 total:   8961, 0:   8720, 1:     49, 2:     63, 4:     41, 8:     35, 16:     13, 32:      9, 64:      2, 128:     29
+client: 8085 total:  16346, 0:  15931, 1:     98, 2:    118, 4:     89, 8:     57, 16:     25, 32:     19, 64:      4, 128:      5
+client: 8086 total:  22391, 0:  22036, 1:     83, 2:     80, 4:     78, 8:     76, 16:     23, 32:     13, 64:      2, 128:      0
+client: 8087 total:  22899, 0:  22496, 1:    115, 2:    102, 4:     93, 8:     54, 16:     26, 32:     12, 64:      1, 128:      0
+client: 8088 total:  10856, 0:  10436, 1:    136, 2:    117, 4:     79, 8:     36, 16:     18, 32:      8, 64:      7, 128:     19
+client: 8089 total:  15974, 0:  15631, 1:     79, 2:     86, 4:     71, 8:     62, 16:     22, 32:      8, 64:      5, 128:     10
+client: 8090 total:  13596, 0:  13301, 1:     73, 2:     70, 4:     55, 8:     47, 16:     21, 32:      7, 64:      6, 128:     16
+client: 8091 total:  23783, 0:  23384, 1:     98, 2:    105, 4:    104, 8:     62, 16:     21, 32:      7, 64:      1, 128:      1
+client: 8092 total:  20799, 0:  20261, 1:    205, 2:    167, 4:    102, 8:     37, 16:     11, 32:      0, 64:      5, 128:     11
+client: 8093 total:  18659, 0:  18257, 1:    100, 2:     83, 4:     91, 8:     63, 16:     45, 32:     16, 64:      2, 128:      2
+client: 8094 total:  21400, 0:  21008, 1:    103, 2:     87, 4:     98, 8:     54, 16:     37, 32:     12, 64:      1, 128:      0
+client: 8095 total:  15427, 0:  15079, 1:     93, 2:     94, 4:     74, 8:     45, 16:     21, 32:      7, 64:      2, 128:     12
+client: 8096 total:  17711, 0:  17137, 1:    228, 2:    166, 4:    100, 8:     35, 16:     23, 32:      6, 64:      4, 128:     12
+client: 8097 total:  19350, 0:  18853, 1:    168, 2:    106, 4:     97, 8:     78, 16:     33, 32:     12, 64:      3, 128:      0
+client: 8098 total:  23316, 0:  22909, 1:    108, 2:     95, 4:     85, 8:     72, 16:     41, 32:      5, 64:      1, 128:      0
+client: 8099 total:  19561, 0:  19178, 1:     95, 2:    111, 4:     90, 8:     45, 16:     28, 32:      8, 64:      2, 128:      4
+client: 8100 total:  17246, 0:  16819, 1:    141, 2:    129, 4:     85, 8:     35, 16:      7, 32:      6, 64:      5, 128:     19
+client: 8101 total:  18356, 0:  17890, 1:    127, 2:    121, 4:     95, 8:     72, 16:     34, 32:     11, 64:      4, 128:      2
+client: 8102 total:  20836, 0:  20469, 1:     97, 2:     86, 4:     89, 8:     59, 16:     21, 32:      8, 64:      5, 128:      2
+client: 8103 total:  24089, 0:  23695, 1:    102, 2:    103, 4:    111, 8:     47, 16:     20, 32:     10, 64:      1, 128:      0
+client: 8104 total:  15747, 0:  15241, 1:    222, 2:    141, 4:     74, 8:     32, 16:     10, 32:      6, 64:      5, 128:     16
+client: 8105 total:  17002, 0:  16535, 1:    168, 2:    111, 4:     77, 8:     65, 16:     22, 32:     14, 64:      6, 128:      4
+client: 8106 total:  22628, 0:  22240, 1:    106, 2:     82, 4:     88, 8:     69, 16:     32, 32:     10, 64:      1, 128:      0
+client: 8107 total:  22023, 0:  21626, 1:    100, 2:    114, 4:     93, 8:     60, 16:     19, 32:      5, 64:      4, 128:      2
+client: 8108 total:  18144, 0:  17629, 1:    190, 2:    163, 4:     92, 8:     40, 16:      8, 32:      3, 64:      4, 128:     15
+client: 8109 total:  17561, 0:  17154, 1:    107, 2:     95, 4:     83, 8:     68, 16:     36, 32:      8, 64:      5, 128:      5
+client: 8110 total:  22314, 0:  21910, 1:     95, 2:     93, 4:     98, 8:     73, 16:     38, 32:      5, 64:      2, 128:      0
+client: 8111 total:  22880, 0:  22425, 1:    134, 2:    126, 4:    110, 8:     51, 16:     23, 32:      8, 64:      2, 128:      1
+client: 8112 total:  12952, 0:  12537, 1:    137, 2:    124, 4:     75, 8:     41, 16:      9, 32:      2, 64:      3, 128:     24
+client: 8113 total:  16787, 0:  16351, 1:    110, 2:    104, 4:     95, 8:     72, 16:     32, 32:     14, 64:      4, 128:      5
+client: 8114 total:  20322, 0:  19945, 1:    104, 2:     88, 4:     76, 8:     58, 16:     36, 32:     10, 64:      3, 128:      2
+client: 8115 total:  22593, 0:  22202, 1:    102, 2:    105, 4:    104, 8:     43, 16:     27, 32:      7, 64:      0, 128:      3
+client: 8116 total:  20900, 0:  20358, 1:    213, 2:    147, 4:     99, 8:     48, 16:     15, 32:      5, 64:      6, 128:      9
+client: 8117 total:  14035, 0:  13670, 1:     82, 2:     83, 4:     89, 8:     52, 16:     28, 32:     15, 64:      2, 128:     14
+client: 8118 total:  20964, 0:  20596, 1:    106, 2:     87, 4:     69, 8:     59, 16:     31, 32:     12, 64:      3, 128:      1
+client: 8119 total:  23436, 0:  23014, 1:    108, 2:    108, 4:    118, 8:     55, 16:     23, 32:      8, 64:      2, 128:      0
+client: 8120 total:  24200, 0:  23686, 1:    186, 2:    163, 4:     91, 8:     40, 16:     14, 32:      9, 64:      5, 128:      6
+client: 8121 total:  17591, 0:  17102, 1:    123, 2:    132, 4:    100, 8:     82, 16:     35, 32:     10, 64:      6, 128:      1
+client: 8122 total:  23257, 0:  22843, 1:     94, 2:    103, 4:    110, 8:     72, 16:     26, 32:      7, 64:      2, 128:      0
+client: 8123 total:  23511, 0:  23087, 1:    120, 2:    126, 4:     96, 8:     48, 16:     24, 32:      6, 64:      4, 128:      0
+client: 8124 total:  19985, 0:  19447, 1:    210, 2:    153, 4:    103, 8:     42, 16:      8, 32:      6, 64:      5, 128:     11
+client: 8125 total:  18987, 0:  18497, 1:    145, 2:    101, 4:     99, 8:     98, 16:     29, 32:     16, 64:      2, 128:      0
+client: 8126 total:  20228, 0:  19836, 1:     95, 2:     90, 4:     86, 8:     79, 16:     28, 32:      9, 64:      4, 128:      1
+client: 8127 total:  22328, 0:  21935, 1:    100, 2:    111, 4:     94, 8:     54, 16:     21, 32:      8, 64:      4, 128:      1
+
+-- 
+Best regards,
+Ridong
+
 
