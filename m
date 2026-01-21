@@ -4,139 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE318C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 18:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A581C44506
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 18:38:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 195766B00CC; Wed, 21 Jan 2026 13:30:45 -0500 (EST)
+	id 5BBA06B00C8; Wed, 21 Jan 2026 13:38:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 155DB6B00CD; Wed, 21 Jan 2026 13:30:45 -0500 (EST)
+	id 5931B6B00C9; Wed, 21 Jan 2026 13:38:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02DF86B00CE; Wed, 21 Jan 2026 13:30:44 -0500 (EST)
+	id 492246B00CD; Wed, 21 Jan 2026 13:38:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E62916B00CC
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:30:44 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57D9BC34A4
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:30:44 +0000 (UTC)
-X-FDA: 84356812008.22.634EE38
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 418D3140002
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:30:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ct3pCILQ;
-	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769020242;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 35CA96B00C8
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:38:11 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D61685C16D
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:38:10 +0000 (UTC)
+X-FDA: 84356830740.02.2AC0F2C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 356C7140002
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:38:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MegpK9gs;
+	spf=pass (imf26.hostedemail.com: domain of "SRS0=IiP5=72=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=IiP5=72=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769020689;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hk+loGahu/yMxf2HTXU45I8jZGBJg9jz2G1ZhRfU2lM=;
-	b=y0XBXDcGNoF/zDF4mBsec9J0+0QGFKxHvMYrHLA8JBfqmD7JfPj+oCAxKmgeTFQy4ho5ra
-	50ul79nZOz6gs8/xA3Hd3co9n6dwGWtPJWXoKsuj/g1Ir0GefsQWAvhS+AUpO/GgJYoS/G
-	g8HLJHFRXy9VS5Dtzv4eUnUGGUw0SCs=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ct3pCILQ;
-	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769020242; a=rsa-sha256;
-	cv=pass;
-	b=vrHgsu0655kc9wRAshxpCwuN0p3abPkzZvQJiRsOAO/jty3iG4f6hO3LAcKRFDwhXC2+mL
-	c9M9ju49PUzSQiVcRpTgtk9dDU0ipySmxc+xA/OLz7SdzCVa0EbAoWkbW4QG28FjY6tEJT
-	J21JaG+F1rth3GaHN/SE0xR6hfEbjf0=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50299648ae9so23791cf.1
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:30:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769020241; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bhGbhRI1QoWu5OeBf+iY1C1S+49EDSKYkrmD2ReqtscnqXL+N0VACp83Z5s/uEDMuH
-         3AhCnUk32MSF/K5xdog803ONS/dLuGdRrRnduu/u/7dxrpPIMkMokDiCLRSEoGIT3TdK
-         kUA0FH6WFrQ0dgChXFQZBYDwvQqIdSk1lzRJ6OVKOE0oQToRfKidg/Xty2Do2F2/XqSC
-         iuFHHzAZhkYTn8utrQbTkiS+yPj98q0Q8eQVd2mwo7PhVR8Pz2DA3cj8gEzV75d+oW+z
-         b0dD7TYJjYXd14lCGG4tPgD+bqyR5OO7XzZpl183GdHKrgYex6VG0UdacxAuObz+JQYj
-         q4Lg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hk+loGahu/yMxf2HTXU45I8jZGBJg9jz2G1ZhRfU2lM=;
-        fh=VJQhSB1bPwtuYJPDBUZrJqoMwC+D7/ZmeIRskV/xPzA=;
-        b=chbelz4v5KbUaJqoJ7F6tpz5LBpezYfZLTxE+zMAlhZFBDoEygEyFGU/gWvx9P7Uxg
-         pvAX3Ti8Is1oI2gxNjEwVa3yy5phFLB+BITfX1SGwFUGHLR65+r/DB2UHwhNIGZZPjVm
-         PHk00UBQuon1qDn0xk3C28l6xLrpfH8y3lobQ1z/dsXD9D/i9IyCVO2XZBYiwbxady/U
-         /u7hgVW2LrbAR2JDPAMKQxiCkGGDBqqH1ibf3GV2FOUXswlEiD7IE0X6fZWZVZFS/saJ
-         r5npoH7BpdBlz3kO1K8XbRC4KDF2AG9h0falq5bjY7mn6vXi4ZrIeVUo+09Ax2PfEdni
-         EsWw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769020241; x=1769625041; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hk+loGahu/yMxf2HTXU45I8jZGBJg9jz2G1ZhRfU2lM=;
-        b=ct3pCILQiCJ3kbf06gwiByWU7K+RWM8bU4EzJqZf7xi8wlhPjxwX0d+J17k/fGYsLJ
-         08OJx3vJhNHx7MfYGH2ybaLLSwLI9xrzNLOj8JY+1YzHKtdq5P50dOSn892rWe41to/U
-         Fpmzqb4Np5LQi+YC/eRJZQCWL+KAQWqRpU7J1r2jzLgAvdjQGKw9h7H9OOjOaEk5qVY4
-         jdliEKCUMOd/TeAGd0oGnsqArjeDjasq+ijbQpoy/ZvPnE86UE2t0hnHsD/87MQM8wgc
-         CwamopysB1D35YJTt55ntYTR1c2qfaqHEVqpgTU7ZbmSzi5/10o5Sa/uSDtRCxTAEZi1
-         daTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769020241; x=1769625041;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hk+loGahu/yMxf2HTXU45I8jZGBJg9jz2G1ZhRfU2lM=;
-        b=qOmBqqWGM7ALz8ygpfjVZrJxkkqCguMjHYlz5w3tm34OHM4uO9Oqg7gQdus7Mq0r1k
-         F5G60fVFSZdKWFPWOK5cgLu+xhGKOSmnkT6XqjEmiBJFxGF9Ka0Atkm6qXv3MoAPEE4W
-         fKv9Vqwa1hS/JW99A+jDPp+i9Sgwf3z7DWo1LZtlIWdfdbBXq8MK3F8ldOo+v7Xc6A1M
-         Pw+36SE65F/RiwJOZRei7gVPJ1rI+Zq5RTXe2wXR8X3Vo/Ss5axIGQeAb+QQ8hNlaPej
-         mOfI/5vR/SNjLHbs3S4wMpg+2pCDZyv2M9462GIx58aFTIEllsBVukoqm2SaHB293LIp
-         z44g==
-X-Forwarded-Encrypted: i=1; AJvYcCUBMrzKFkBHBWj+3UxDhXJEEs40SPydfZ6YsBJilJhUFKyxDKmgo2rLaqxbmy6Ng0buT22A/ffXMg==@kvack.org
-X-Gm-Message-State: AOJu0YyH87pbyhICEd10aah2NMUFyiZKcD5Nd+VGH8mQx+vIVOzdO17j
-	nhs29YUxbOuN9EzgjA8PyG81JGcsjf9aveu2UG7GOHfBO5TZS/dwuSI9mV0HorFJfTGgjoGlMwI
-	K4odV5qHFhQvclTjUbrXaJzeWDtoVaZWwuFd4wJqH
-X-Gm-Gg: AZuq6aI4KtXVrwEWKZ1XcyWnYa38KmZCprzF50QoWjh7HkHi/SAlv+NSqEKytVmo6xZ
-	60cnhvruTL3yG9uhk67axGH9BDClesFOmBIQ/BKzjby/jraciuPJfIivcA6GhKneMpTDuAQN4DN
-	ksJkWmKA63I5YEDDyG5Sbyo8AAd7lHtDZn0iDA6SDBD4tJw6Gmwq7Q58kkeZA02ckVWlCYyKWEP
-	iwxw5NpfEBE2DomuEMWU4eHb0KJw+ebFd1rbtAhDDOHUqp3zziMfyBjjGwuq1B7uZGWccDLqWVd
-	oybtToV0Ylhc7NzvbhoCToo=
-X-Received: by 2002:a05:622a:1825:b0:4f3:54eb:f26e with SMTP id
- d75a77b69052e-502ebddf1damr405151cf.1.1769020240526; Wed, 21 Jan 2026
- 10:30:40 -0800 (PST)
+	bh=F/uQZqP348MUBC3B1rmkS1Tv39JUtKuWbpk7OML86L4=;
+	b=Sghcs0PkfJQyoSI3og/+3pP1aV3NBPfwpJ3mhV/QcxbB9aj0ysSlhaNUaRgmempwVxbmG4
+	DErYr6gkkS8SqD3Fb3g9NvSI4et3MaP9yMV3MjB/RZ/qKwKMvAheW5dcra1wCq3XuRb52+
+	sEONXxqzm6cfIm+7bHzqti/JFKf/WEg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MegpK9gs;
+	spf=pass (imf26.hostedemail.com: domain of "SRS0=IiP5=72=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=IiP5=72=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769020689; a=rsa-sha256;
+	cv=none;
+	b=lVaDc+tXJPfkkn8/5ZCG5buWVUXNWGT+kHnlAEZG9E0CJ+BWQvPfK/9Dn2LsQGKswPVC93
+	QkhXkxpIm7W185ZgIJf8faAoG7mw1sKL9iTzj5N4Ky7ehqqtT82VvR46HQA89/BV5twNSy
+	0ARMj5YjZMEFQpfwOuoE4VG0JGGow9c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 46FDB600AA;
+	Wed, 21 Jan 2026 18:38:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DBBC4CEF1;
+	Wed, 21 Jan 2026 18:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769020688;
+	bh=1hh4ex1uDE6widfQ/8EJAr1hxwctCfZZuy9aDzidOUY=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=MegpK9gsVtYVh4R0tEQBj55SnWzqUincnli9RSKL3/Njw0EQvPdKkdqaYEMDEaadk
+	 yvQw2P5P6XJTY7KPskg3zSVDoBcBCcXZfADOx8rR7245xMP82speBsUjUcA+Ztq8DN
+	 AEyM3lPUGEjGTW8XwgpDPyw//3BvJ2V48gdLo9qwT1BCZ1yJEQaFXjeMc8rGkUaps4
+	 nTBzZOYSwYHqFhMCDTpkQ5uBo/qNFZTBIStg/rOeDvAJaHOiD6pQjQCzciHFhJIyTz
+	 zvd+Lv71sYyuv84IqXXdhiI35gmFA1fipY0QcBulzm0xniQtlgmR0oNcxk+1jE/VJg
+	 GVV06RrmP6aTA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 9900ECE0B2B; Wed, 21 Jan 2026 10:38:07 -0800 (PST)
+Date: Wed, 21 Jan 2026 10:38:07 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	rcu@vger.kernel.org, maple-tree@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
+Message-ID: <15c256da-a1cf-4b7f-bd60-10042a8e9fea@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
+ <aWrSkAPFkdH_tvtN@tardis-2.local>
+ <aWt4muGXbe7lBmXt@google.com>
+ <aWt8Ze-otTkexNIe@tardis-2.local>
+ <aWuKqLERqpNz9qtz@google.com>
+ <aWuV858wU3MeYeaX@tardis-2.local>
+ <aXDCTvyneWOeok2L@google.com>
+ <aXDRHerRiM7TzACy@tardis-2.local>
+ <aXDS6rNbsWhDVGK9@google.com>
 MIME-Version: 1.0
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz> <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
-In-Reply-To: <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 21 Jan 2026 18:30:28 +0000
-X-Gm-Features: AZwV_QgJsx28PWNy6MDtA7PMODlO-XxW0gxWFH0Lcu8zvlUQSetLY7ny4kvP86A
-Message-ID: <CAJuCfpHi_WqPkWvQuDqg3L1FNeV-P=E52uCakBCXz1AFmkHf=Q@mail.gmail.com>
-Subject: Re: [PATCH v3 17/21] slab: refill sheaves from all nodes
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
-	kasan-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 418D3140002
-X-Stat-Signature: p1xrup578eh8osea6jfbeibpio5f7erf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXDS6rNbsWhDVGK9@google.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8rp4g8cg8z37cygd71wdfqki4zu5w5k1
+X-Rspamd-Queue-Id: 356C7140002
 X-Rspam-User: 
-X-HE-Tag: 1769020242-812930
-X-HE-Meta: U2FsdGVkX1/j58zPPVpC6IudrgnZwA8FsG+JIJviRxm2CuVRgbQbODND+I4NTaralJ70eOYpkPciGhZaTdfh/Q1vNzciprDGAlPp/6eq4HCfXVpIYzpg6raGbzHRU2dlRaMbyEOHa7sraRqbP4eG2M52eJ/02yj14klciShTf4f3cSTKQCdJEfrRxKweoIRapM2d/xqOMQyNenRFVk6zorV2ylzRHbSAc/k3fghbQ+7mkoSLos17iS9x0h7NYTFpwywkmUguH4ddfHfjM9wvPTcuPlE7hVUkfDOMIF1MXtrAw/uEyWllpHzo8oRUZvmx9t2H2WDhxs6PVUyOBNNUfs2BidJL1fvgdQr+62tMEU7dph9QwxxIHl5ZJnn1D6tGr9nYU2B5KBYhEWsr+4sazgmKPfRXNVKPZLuOkeAyEk10v4bse5j8/NH3TvGVayjJlOwo2VdhR434AMJKbsa9QJ6/ISRr9ycdjXyclxJAVxdMv3sLLHYLGQUkwliqXq2ZUD78hTDw1vf1m/4ziBQthScSKxtY1uDpLnMSCM2hQsIlIRjOU0WaPcDqCKT7qHP8XhyrHOYdVAg8ktakLHi2+jyUs6RRyKht4NQzOfvRSYpgfn0woOqgPcJk/wzQCjEVRSTU3+3wh7Cz9mnrrCeHgMB7Jl31C1WJr//DLBfsumK3fxehdXKojgV2LP6fKmoayKZVt7ldl3FZ3j1sfj8lO9B5HH8xvEBO1HsB5sre/pmCiXRfT8v33AyNXV8BjhCDELsXCpX+F6a5o2qIIh2TITsvWifk1Fo03yBrO5JjEhHLb8cd/6T9ZK9jR+hJvG3O7bOd6zAY2Rokg6is1c6p4Kont3VQjthVofBAyGGLDc0rkRlF0/yffAYAsP/iIVCX27AuahakBle484DxIhw4XsSJ6LIWhfNUrc1lxHu6fy+5YqK0QvlfQ63Dgp/GAUmHYLPLY2bei8y1mSxVvPd
- Hy9huvaY
- i0x/ioikVZJ1+2tNhAIuF9D6Qth30/KlrH8VDLpKpfQzrgN1LgFiaVEj3NQ5t1Szy3XHZ3ztnRrWvhdSLlRn304LH9fRmJPQEIYiykzXN88j0SKSMnxAzMrHkybJBqdOnfyXilZAskiXidx8H81vd5aPqRB5FE+T7KMDlBiikeRfyfGrIzfaH5IELgvRGKJUfVMxXphA8zQWFY478+/MiQp9sdCIt2ofInGLsDqtz/+EkwfhtukBBYzkdSCoOHjEruTOB8te+mOAjqes=
+X-HE-Tag: 1769020689-68154
+X-HE-Meta: U2FsdGVkX1+DdpB/v6MaQ4rDHl+XuKksT/6npNfz1FEIYaeVYSEApv/h1NX4dH6a9Y3OEzVs6TDeb0qtK372oXr2Agk4PPs1W9h3+RXzEFiMXPteO3PWQnhU7tVZNdRemKcS8oFyeEGubGOvRyk+TtqgdXFgay8CNdmfI3HyQbeXUzHhxZTSoFlyWCngueR50bvG5jw85tbotIj4D5+IOOcXLVf5H4cIGKEQLBX5o8Kvt+ejM7C2WPfDtA6yLsA6OcVf10hLSmy9/obgSHY9dHyn9xMtz6EFJNduQiUOme+oyk1jogS5WwXIZacvrjs795Gx62j3nVWRTL3hyqa1eQCdW5SKzfT02yBeW0AD2vuq04inn9asaHOsZwkv8zuleLa1KmUPWjPPT5Sth3YMhtJMAfn4luE1cUF+A4UdngW+7rz72vVGkcQmBh25bgpYYthjPwPJ9H7fMO33+wP5943eYjxBTAjkjgGA2khByIXxiykJ1XxFFbYKzzx+rSv11RuiPcjWSgHirqX2DjE8S3bq6LjzdD+G9sDL5ORxSAycn3+/ORPcxbjFJaXgPbdSIcvZUGssFqyQFEK7WsodF8IAQreQsAkLAdL+lypjIaeKmv77kB3yBETuWEGs3XudNw6AJTLCN+4z5XerA4jIiW2v3/dfBMuZQ+Eer3KCGKuaA9F3ZPnN8ajV1IfG0cbd/Oaw7dIbaKUR/r0xC9ueMUVs8TlXOgsFd2lfGoPQw2spblp823iL3JZjw+Vdra2LaEeBU4S9A5fy829yNWgD5p6o2fPSi/LPD/cJXWsLJjzI0/GAWMqJi1bHr2Bw8Yl2kdeGAWI+hWbstXkfsMwBpSQ1Mq+Fzwn3iibJVzQfBTpMrFQ8wnupVglTBqN8qhWJQcBdKtXmtDKU/X63k2A4rEOMtSbTsmKyJHgRjKTHcHgenLLDIZDSo7UE8HvFa2i2Oglje8Hd3GGH7JKMRym
+ a9Di4d8k
+ F7MYAZpG8ehKPQdc9+vZkC7vlKaMux8dTjwP08N0ILZlJmxXTkvsPQHud4IY3eB2/lgrfrijKNUqxNRyNxFGdyATjV4N3KAFaPUm0smtjIu2bcmnA+k8rbapRjuDZeuueA0SJf8Ko+AZE3ImDc0VPZqV3DorvjXi4uw0ylkqhOOgw15+1izj1zf+b94fX5rgQXy38ED/wXaDwgbGGBhNSAbhKgoOZlxhzw057GBBL+0loU8/J8IOV2t50bA7Hq0ccylV5yHF1+L1opViFAtmvJ8lBL7KUgOwUeQtam6CULw2Kz9EqY/KkAX7psW9uwKG5kRiWnXxI/u5qnUbItKtPkKcpg5p3fBmtO2e7BrB4nob5Hsv41Ag3Vc4dbE/hxakGon8dKoN009ZrrLEJgtw1OsXHQDjUpVmv/I2KAxvBBBq9YrZ+sO3E5wHf7feFhgwLYWHSFVrf+AGp7aMZmgZ9zTm5gxiKjh3ylwoj8XQblsalo+udsGp9vmBsAS4Uhtfo5A7pSdRaYLy7HED53KMeLOmwXf9qGxt2RPHPIAOmIrJFtQL8PB5KjKMiy++CmDzg3/qf8Aj6mZNSJrMvamldRYXTKKIOVzYa5n/mE21oDEeImijTFa0uXovrX7+PYCD+ZIrQY5yInFgqPtBsHJwCRwZSfs9Ecp0Bchi0WdDc/QyZ3g9rl+ZgTWziYvfENI5h4WbUAWbMbF6Unpuh/eym7clRG31IWoEyamMQTKO48zNlVOQ3iUIJ9/cF61G3+eDKzF/6cDOJUz5BrHU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,288 +121,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 2:41=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> __refill_objects() currently only attempts to get partial slabs from the
-> local node and then allocates new slab(s). Expand it to trying also
-> other nodes while observing the remote node defrag ratio, similarly to
-> get_any_partial().
->
-> This will prevent allocating new slabs on a node while other nodes have
-> many free slabs. It does mean sheaves will contain non-local objects in
-> that case. Allocations that care about specific node will still be
-> served appropriately, but might get a slowpath allocation.
->
-> Like get_any_partial() we do observe cpuset_zone_allowed(), although we
-> might be refilling a sheaf that will be then used from a different
-> allocation context.
->
-> We can also use the resulting refill_objects() in
-> __kmem_cache_alloc_bulk() for non-debug caches. This means
-> kmem_cache_alloc_bulk() will get better performance when sheaves are
-> exhausted. kmem_cache_alloc_bulk() cannot indicate a preferred node so
-> it's compatible with sheaves refill in preferring the local node.
-> Its users also have gfp flags that allow spinning, so document that
-> as a requirement.
->
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+On Wed, Jan 21, 2026 at 01:21:46PM +0000, Alice Ryhl wrote:
+> On Wed, Jan 21, 2026 at 09:14:05PM +0800, Boqun Feng wrote:
+> > On Wed, Jan 21, 2026 at 12:10:54PM +0000, Alice Ryhl wrote:
+> > > On Sat, Jan 17, 2026 at 10:00:19PM +0800, Boqun Feng wrote:
+> > > > On Sat, Jan 17, 2026 at 01:12:08PM +0000, Alice Ryhl wrote:
+> > > > [...]
+> > > > > > > 1) "relaxed atomic" does not sound like something that provides an
+> > > > > > >    address dependency to me.
+> > > > > > 
+> > > > > > If you look at rcu_dereference(), it's a READ_ONCE(), which is the same
+> > > > > > as a relaxed atomic load, and yes in LKMM, relaxed atomic load provides
+> > > > > > address dependency (Please see the DEPENDENCY part in
+> > > > > > tools/memory-model/Documentation/explanation.txt).
+> > > > > 
+> > > > > You argued that we should rename READ_ONCE() to atomic load on that
+> > > > > other patch series because "atomic load" naming is better than what LKMM
+> > > > > normally uses. Fine, but relaxed atomic load is a much worse name than
+> > > > 
+> > > > To be clear, in that series, my argument was not about naming, it's
+> > > > about READ_ONCE() being more powerful than atomic load (no, not because
+> > > > of address dependency, they are the same on that, it's because of the
+> > > > behaviors of them regarding a current access on the same memory
+> > > > location), and we want user to specify the intention more clearly.
+> > > 
+> > > Expressing intent more clearly is fine with me. I still think it's weird
+> > > for us to not have READ_ONCE() when it's a primitive operation of our
+> > > memory model, though.
+> > > 
+> > 
+> > But in our memory model, it's exact the same as atomic_read() (see
+> > tools/memory-model/linux-kernel.def and search for "atomic_read"), so
+> > why do we want to have both? ;-)
+> 
+> I've been saying Rust should have both because I've been repeatedly told
+> that they are different. If READ_ONCE() and atomic_load() are the same,
+> then I retract my concern.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+I confess some bemusement on the allergy to READ_ONCE() and WRITE_ONCE().
+However, we have a similar thing within the Linux kernel.  READ_ONCE()
+is the same as atomic_read() from am memory-ordering perspective,
+and WRITE_ONCE() is the same as atomic_set() from a memory-ordering
+perspective.  The difference is typing.  READ_ONCE() and WRITE_ONCE()
+will eat anything, but atomic_read() and atomic_set() insist on pointers
+to atomic_t.  There is also atomic_long_t and atomic64_t, just in case
+you want more API members.  ;-)
 
-> ---
->  mm/slub.c | 137 ++++++++++++++++++++++++++++++++++++++++++++++++--------=
-------
->  1 file changed, 106 insertions(+), 31 deletions(-)
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index d52de6e3c2d5..2c522d2bf547 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2518,8 +2518,8 @@ static void free_empty_sheaf(struct kmem_cache *s, =
-struct slab_sheaf *sheaf)
->  }
->
->  static unsigned int
-> -__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int=
- min,
-> -                unsigned int max);
-> +refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int m=
-in,
-> +              unsigned int max);
->
->  static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
->                          gfp_t gfp)
-> @@ -2530,8 +2530,8 @@ static int refill_sheaf(struct kmem_cache *s, struc=
-t slab_sheaf *sheaf,
->         if (!to_fill)
->                 return 0;
->
-> -       filled =3D __refill_objects(s, &sheaf->objects[sheaf->size], gfp,
-> -                       to_fill, to_fill);
-> +       filled =3D refill_objects(s, &sheaf->objects[sheaf->size], gfp, t=
-o_fill,
-> +                               to_fill);
->
->         sheaf->size +=3D filled;
->
-> @@ -6522,29 +6522,22 @@ void kmem_cache_free_bulk(struct kmem_cache *s, s=
-ize_t size, void **p)
->  EXPORT_SYMBOL(kmem_cache_free_bulk);
->
->  static unsigned int
-> -__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int=
- min,
-> -                unsigned int max)
-> +__refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigne=
-d int min,
-> +                     unsigned int max, struct kmem_cache_node *n)
->  {
->         struct slab *slab, *slab2;
->         struct partial_context pc;
->         unsigned int refilled =3D 0;
->         unsigned long flags;
->         void *object;
-> -       int node;
->
->         pc.flags =3D gfp;
->         pc.min_objects =3D min;
->         pc.max_objects =3D max;
->
-> -       node =3D numa_mem_id();
-> -
-> -       if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
-> +       if (!get_partial_node_bulk(s, n, &pc))
->                 return 0;
->
-> -       /* TODO: consider also other nodes? */
-> -       if (!get_partial_node_bulk(s, get_node(s, node), &pc))
-> -               goto new_slab;
-> -
->         list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
->
->                 list_del(&slab->slab_list);
-> @@ -6582,8 +6575,6 @@ __refill_objects(struct kmem_cache *s, void **p, gf=
-p_t gfp, unsigned int min,
->         }
->
->         if (unlikely(!list_empty(&pc.slabs))) {
-> -               struct kmem_cache_node *n =3D get_node(s, node);
-> -
->                 spin_lock_irqsave(&n->list_lock, flags);
->
->                 list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_lis=
-t) {
-> @@ -6605,13 +6596,92 @@ __refill_objects(struct kmem_cache *s, void **p, =
-gfp_t gfp, unsigned int min,
->                 }
->         }
->
-> +       return refilled;
-> +}
->
-> -       if (likely(refilled >=3D min))
-> -               goto out;
-> +#ifdef CONFIG_NUMA
-> +static unsigned int
-> +__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned=
- int min,
-> +                    unsigned int max, int local_node)
-> +{
-> +       struct zonelist *zonelist;
-> +       struct zoneref *z;
-> +       struct zone *zone;
-> +       enum zone_type highest_zoneidx =3D gfp_zone(gfp);
-> +       unsigned int cpuset_mems_cookie;
-> +       unsigned int refilled =3D 0;
-> +
-> +       /* see get_any_partial() for the defrag ratio description */
-> +       if (!s->remote_node_defrag_ratio ||
-> +                       get_cycles() % 1024 > s->remote_node_defrag_ratio=
-)
-> +               return 0;
-> +
-> +       do {
-> +               cpuset_mems_cookie =3D read_mems_allowed_begin();
-> +               zonelist =3D node_zonelist(mempolicy_slab_node(), gfp);
-> +               for_each_zone_zonelist(zone, z, zonelist, highest_zoneidx=
-) {
-> +                       struct kmem_cache_node *n;
-> +                       unsigned int r;
-> +
-> +                       n =3D get_node(s, zone_to_nid(zone));
-> +
-> +                       if (!n || !cpuset_zone_allowed(zone, gfp) ||
-> +                                       n->nr_partial <=3D s->min_partial=
-)
-> +                               continue;
-> +
-> +                       r =3D __refill_objects_node(s, p, gfp, min, max, =
-n);
-> +                       refilled +=3D r;
-> +
-> +                       if (r >=3D min) {
-> +                               /*
-> +                                * Don't check read_mems_allowed_retry() =
-here -
-> +                                * if mems_allowed was updated in paralle=
-l, that
-> +                                * was a harmless race between allocation=
- and
-> +                                * the cpuset update
-> +                                */
-> +                               return refilled;
-> +                       }
-> +                       p +=3D r;
-> +                       min -=3D r;
-> +                       max -=3D r;
-> +               }
-> +       } while (read_mems_allowed_retry(cpuset_mems_cookie));
-> +
-> +       return refilled;
-> +}
-> +#else
-> +static inline unsigned int
-> +__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned=
- int min,
-> +                    unsigned int max, int local_node)
-> +{
-> +       return 0;
-> +}
-> +#endif
-> +
-> +static unsigned int
-> +refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int m=
-in,
-> +              unsigned int max)
-> +{
-> +       int local_node =3D numa_mem_id();
-> +       unsigned int refilled;
-> +       struct slab *slab;
-> +
-> +       if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
-> +               return 0;
-> +
-> +       refilled =3D __refill_objects_node(s, p, gfp, min, max,
-> +                                        get_node(s, local_node));
-> +       if (refilled >=3D min)
-> +               return refilled;
-> +
-> +       refilled +=3D __refill_objects_any(s, p + refilled, gfp, min - re=
-filled,
-> +                                        max - refilled, local_node);
-> +       if (refilled >=3D min)
-> +               return refilled;
->
->  new_slab:
->
-> -       slab =3D new_slab(s, pc.flags, node);
-> +       slab =3D new_slab(s, gfp, local_node);
->         if (!slab)
->                 goto out;
->
-> @@ -6626,8 +6696,8 @@ __refill_objects(struct kmem_cache *s, void **p, gf=
-p_t gfp, unsigned int min,
->
->         if (refilled < min)
->                 goto new_slab;
-> -out:
->
-> +out:
->         return refilled;
->  }
->
-> @@ -6637,18 +6707,20 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s,=
- gfp_t flags, size_t size,
->  {
->         int i;
->
-> -       /*
-> -        * TODO: this might be more efficient (if necessary) by reusing
-> -        * __refill_objects()
-> -        */
-> -       for (i =3D 0; i < size; i++) {
-> +       if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
-> +               for (i =3D 0; i < size; i++) {
->
-> -               p[i] =3D ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
-> -                                    s->object_size);
-> -               if (unlikely(!p[i]))
-> -                       goto error;
-> +                       p[i] =3D ___slab_alloc(s, flags, NUMA_NO_NODE, _R=
-ET_IP_,
-> +                                            s->object_size);
-> +                       if (unlikely(!p[i]))
-> +                               goto error;
->
-> -               maybe_wipe_obj_freeptr(s, p[i]);
-> +                       maybe_wipe_obj_freeptr(s, p[i]);
-> +               }
-> +       } else {
-> +               i =3D refill_objects(s, p, flags, size, size);
-> +               if (i < size)
-> +                       goto error;
->         }
->
->         return i;
-> @@ -6659,7 +6731,10 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, =
-gfp_t flags, size_t size,
->
->  }
->
-> -/* Note that interrupts must be enabled when calling this function. */
-> +/*
-> + * Note that interrupts must be enabled when calling this function and g=
-fp
-> + * flags must allow spinning.
-> + */
->  int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size=
-_t size,
->                                  void **p)
->  {
->
-> --
-> 2.52.0
->
+							Thanx, Paul
+
+> > > And I also think we should consider using an implementation along the
+> > > lines of what I shared for our atomic_load() or READ_ONCE() or whatever
+> > > you wish to call it. The perf impact of helpers makes me sad.
+> > > 
+> > 
+> > I'm not totally against that, it'll actually help Atomic as well, I also
+> > hope that we can use `asm!()` to implement the cases where
+> > `{read,write}_volatile()` cannot cover. However currently I would rely
+> > on helper inlining to resolve this to avoid duplicate implementations.
+> 
+> I'm in favor of using helpers to begin with. I think it's probably worth
+> to do atomic_load() before we do the other ops, since it's so much
+> simpler to implement that particular operation than the ones using asm.
+> 
+> Alice
 
