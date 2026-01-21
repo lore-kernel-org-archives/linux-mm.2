@@ -4,122 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1D58C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 17:01:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD0DEC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 17:05:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 541F26B00C8; Wed, 21 Jan 2026 12:01:31 -0500 (EST)
+	id E35386B00D5; Wed, 21 Jan 2026 12:05:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 519836B00C9; Wed, 21 Jan 2026 12:01:31 -0500 (EST)
+	id DE3156B00D6; Wed, 21 Jan 2026 12:05:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41C686B00D4; Wed, 21 Jan 2026 12:01:31 -0500 (EST)
+	id CE5DF6B00D9; Wed, 21 Jan 2026 12:05:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 301BD6B00C8
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:01:31 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BBB436B00D5
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:05:35 -0500 (EST)
 Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CAA0BC2BCC
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:01:30 +0000 (UTC)
-X-FDA: 84356587140.08.CDF0E10
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9DCF014000C
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:01:28 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=E+rIrso7;
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 70FF413BC51
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:05:35 +0000 (UTC)
+X-FDA: 84356597430.08.F15B003
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 65C2D1C0008
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:05:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LVsRSKgi;
+	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769014889;
+	s=arc-20220608; t=1769015133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K+uhcT8kuOkj3B6sfe7+hqE5T2/49CGXbVjQAIL7CP8=;
-	b=s8MR2PEcuDL8NhBAYjDtOcWfPE65NkXlPI3lkIblR9r3QDXxoc8ooBRq04CmcnjSomFDzL
-	CQPBXIL6lpzzOuntbKDGaVuXkdIv7ecujxEb1uzIy16wze8jWz/2Dg6lsrs+o0MW3ZJ1xg
-	C8nRTP25BQzyMC/Hr7NOvtwreEOBHm8=
+	bh=jSywsaNq61h75Z1wzOoBhV8mE5CzphyKGUVeAGM9YLE=;
+	b=yXFieqIIN/txltSVM7KKNH5M6LX882BjhQPDOVVfbdRzT7e6SRFUCcU4t0YKqxLHRS3sG7
+	6tVZtX6lc/yoPDV+pEXQPq96deesxgj/wW9fczHInXRFyPg6kKyVEkwYdq19rTzBTchOw9
+	Rv/G3FzuKFNC5zw13J0lkSIrSTWVDc0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=E+rIrso7;
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769014889; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LVsRSKgi;
+	spf=pass (imf20.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769015133; a=rsa-sha256;
 	cv=none;
-	b=WKKflmYS6l/izRkMXd0ofuex3eA/52zdxdDSoXnDRHiNalPo9PlSqkXk4GFY3zgvV3F5vB
-	IPmqXqGWzUw19327+3K14hoSuuHsRGRpv/4+GOSGweGYIfkI0DyJyI9//QifAB3m7fQtC9
-	4zh/6lwBtBAffGhaTGtn7K5v3HO6n20=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-502a4e3e611so392001cf.0
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:01:28 -0800 (PST)
+	b=diL8swW/m1etD82+Awi/cH74Tj0nDN9A6unKxCnmNQLxEz0Jy027AOtRmcPpagXhYU6A4V
+	Wx+GXEtcChi/Sn7F+J9x1Mj7uK/4Wkywc5cf33tx4MaAd6ow94c9HekaJHUEp8x2VnJtlw
+	0rqqt8QVv2Vp5ETMzQDKUAN8/ITj2mg=
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3831b6abed6so66051fa.1
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:05:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1769014887; x=1769619687; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K+uhcT8kuOkj3B6sfe7+hqE5T2/49CGXbVjQAIL7CP8=;
-        b=E+rIrso7qzpw8BTs/s8pffJ2k72PMGLKSn5M8xuPvMm4XEQUnAqVpw2N/+Y5A27ICC
-         ON2Xdq90oYnmza+bIKdhyZIN7/c1txhaCFIZt7NSjRc9E2nAqXwVGFSDRtyx3dnTsZBC
-         ceKDlOf8MAVIdWY2Ag3L1ELQkAUNVrK0oL31opWPZjsHohczzC7k4lGzI/w+ocq2nUoS
-         Vxzgm+kuoCF9MTPLLTG4VN+2yRKPw0vx2uRgq4D5XHsstyV2IB4MgigkOnyZozJhj4c/
-         GozN3CniAHwM4bfIge6hieDFguSnVeckggGcdUQPWNFOWshDI3J/8IDyUV42XrJpHDt8
-         +yjQ==
+        d=gmail.com; s=20230601; t=1769015131; x=1769619931; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jSywsaNq61h75Z1wzOoBhV8mE5CzphyKGUVeAGM9YLE=;
+        b=LVsRSKgiw/mJpnnMAKyBQUSdhnbivmXEIg5P8If+11PVbqYphN8KrwATKtjLjhBS4J
+         YifBmXSby/2PtYmBogepxxDfs9jDFdVxUjxK91I89d+2ds7wa+S+9XWZCTQ8Jt+MRjWI
+         q8o1NWhSOT9fgZy5bzhz8hJZp8zOYjf+QSjN+YuKd971RGzgFsv4Xkkx4dgVM6X8RW9q
+         nIgEER3Vjkp7/a69/ggHJwC793BFARwkjXN6gelJ+I7sCB+DlLQckQrXmd8GQNSpZGUT
+         js9YWPKicolChpOTQRj32XJfI3U0k2wjzCM083a5n7XanmjD4HmlsVj9tYzXTkjJGoT4
+         kwkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769014887; x=1769619687;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K+uhcT8kuOkj3B6sfe7+hqE5T2/49CGXbVjQAIL7CP8=;
-        b=Eg1+FZ5I8XuTA/6oEtu/1TrdaR1EfKZLu4wKrnHsopbvRkwzSYEyLAm1LyJ/3zTKtp
-         wh4I/Ex1pVqfZVHg6gX4TjeTVU25fsFQAFwYVtJL8NyPORqrXxryHwaxX0f87ZQkonGh
-         4ExDD/sTz0rC9JVXTNtkLZSBhXCbA6ONpJSgFKPPEvgzXT4gmd++s6sg0b87Vv6ivt4P
-         WPwMuHXYOQcclhlxbC54+n+Aris25Gy8ah9+2v13IrY8Dqk6Cz5jGHgWWEjYLiYP5oRr
-         QFsHqm6XQYSPrPTDmC5xj3KW5PNikZn1TJ6AvIWpwqn5BVlN+e4HyxYJbkaqd2uY+zds
-         QgTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSgkuQrCTTpt8UkMZx4R2hGDdfXPkdm2UwGQMpkREk0wlxyXCz+VKGXzmS4X2E4H/czzohYkUpLQ==@kvack.org
-X-Gm-Message-State: AOJu0YyIAMhekl9wf6gLfdb+T+7IE6Ult8NOKot4K5kTOTsZbdE032iN
-	61ekpYxl1vx+paGV49bAPEY7FIWaWS1ZZ7T+k1QA7KdnomRcyj3O28H/4W+CVpcPbjI=
-X-Gm-Gg: AZuq6aJOMCOn5g3S10iL5unANTM4NBfLzuNsZhS8U+hmcyrqmH+uIVwmRqDOOjLJtXN
-	5b4C2VUKn8ki9uZjk7KI4f4cBnihxXQ/Ffn6T4IgYGSjTtxAakEErDriX5ILL/b+8zIOjiYYhbv
-	4KdJH6qVug3UU5uDgICxRfikjlEN0lU0pnszvD4Ns9y/X1hZaUKc28UoG2cxxVtHpTaAd3Ppebl
-	30LO50E3FCB5MBR+3eDKZvMrH9prxbdvb7LPALualg06QgDU4RTeuVVUjZVSeVFI8mQlHfKjCSm
-	2H+kGTuITetgZmqMXiic2R0jLmIaeG4MGN0lrATDO2bktBi2LAMXAl2/ckynSamod87wRuNqwOS
-	NnWTMJf24MYwdy8wy+Be0m78K1RAdDnY7b8F1uIayy2zxl08baqkoHLYupNpSBr4DLn720YCZ5n
-	OrD+j9LpAVhK/BsfH1Ush0
-X-Received: by 2002:ac8:7d45:0:b0:4ed:a2dc:9e51 with SMTP id d75a77b69052e-502eb5bb64fmr1219411cf.21.1769014887073;
-        Wed, 21 Jan 2026 09:01:27 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8946ecce11dsm23458376d6.31.2026.01.21.09.01.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 09:01:26 -0800 (PST)
-Date: Wed, 21 Jan 2026 12:01:25 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot <syzbot+079a3b213add54dd18a7@syzkaller.appspotmail.com>,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, syzkaller-bugs@googlegroups.com,
-	Muchun Song <muchun.song@linux.dev>,
-	Minchan Kim <minchan@kernel.org>, Kairui Song <ryncsn@gmail.com>
-Subject: Re: [syzbot] [cgroups?] [mm?] WARNING in memcg1_swapout
-Message-ID: <aXEGZUb4TkuIUsvT@cmpxchg.org>
-References: <696b56b1.050a0220.3390f1.0007.GAE@google.com>
- <20260117165722.6dc25d72fd58254cb89e711b@linux-foundation.org>
- <CADhLXY6ACKeyLrjARTTdfWyrvUdLbtD-wXiQvsvhsbGjwmUqDA@mail.gmail.com>
- <CADhLXY7FJqRLjX7X2yJfa0=iDbUAMwhS35cOEExW+qBJWAnt+A@mail.gmail.com>
- <20260118125311.e1894f598e2a8ef626f47f25@linux-foundation.org>
- <aXDponX2AQoACOaI@cmpxchg.org>
- <20260121083526.81996ffd70ff4efc8484fd4d@linux-foundation.org>
+        d=1e100.net; s=20230601; t=1769015131; x=1769619931;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jSywsaNq61h75Z1wzOoBhV8mE5CzphyKGUVeAGM9YLE=;
+        b=hp4opzdsjsgRAL7aMYgd10eta093QCl+/5K5J2VF211okKzxrKhJeUb5SAXjs5HW79
+         Nhm0ZRs3UeC3jr22G9ZEqvoJRWClwSw3DW1l/Vx11MJR8/Pj/Br5B4JHf/DgYDBcbxcr
+         oBMSt89zkmaBOnzh1nJyB3EwHI+rrVFtKzxFK4+KJ8/U05VQKgfDO1ZVr3l6b9dTr0Vy
+         m66KNSZGf7318NyUT9cS5M6jcBrif8bTF6cIcPMrU7T/Z6Zwa7fQ11IiJU6rP8uXgl6e
+         hXjkmqXSOiBSsR3mzz1g/qpnt10IEEHR0GYqCo/3HWr1Lz1M+acuIhBu/p7uXEU4Bm4z
+         kRmg==
+X-Forwarded-Encrypted: i=1; AJvYcCXeawKA8fNt3xb2D2G1V3HHbY0owoOlSItSKE715D6nF4WObmxyUi2eFTpigDJDAukUHiGaQKZcrQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw3hz+AhriSPEJvx0iSEsvSSmaTzAIyBFe2Wt4f03P79RFdEhqD
+	1WxMrbEo68p+1aNHOq27kLINkuHhNfp6w+lAgGrzQNhEmwK1rUaxSLoC
+X-Gm-Gg: AZuq6aLcTLlNyzOSH4T2CyM2tcDiMCOHS5AQNweOEgvc2alRA+6owOZAYvxQRnKzunw
+	jH9jKlpXKaLCF6qYC1f5wSwYy8dcRaXIKUQGhdUA5H0XhqiQXG89QCak85e2P6SZEuW8OTzEi3F
+	GiDuWyMeiOK5PvSjnqFH1l7HuoV3avEfBmhydTUBrcHvEkqkBarkMB+8kCO9DHhGudr2EY7bcLI
+	kL/ML2prdk4yfwDu3ngtvvsGmYhPB3buz8LwoeDQlJnWM0+BcHTNDryBaBmGGQoujF16R9Yz7lt
+	/p3uXP9P9ZXM1I3eoKAeqzuBtcVErI4AXl+qw0oF4v3kpIeRE46iyEgepVAOS0iURoPswNYGvCN
+	Wa/Ge0/JrwHSC+rSo0mKm6Pqoi+fR7UpXBSO+XUIDYYuPieMsX7lHJ2zKPtSm8T7LJ/0vdz8IJ+
+	6QJ/EKRjrBOOpCrcVAyw==
+X-Received: by 2002:a05:651c:547:b0:37a:9558:5bdd with SMTP id 38308e7fff4ca-383842ccf59mr39226381fa.3.1769015131133;
+        Wed, 21 Jan 2026 09:05:31 -0800 (PST)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38384dbe6c1sm46902931fa.22.2026.01.21.09.05.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Jan 2026 09:05:30 -0800 (PST)
+Message-ID: <8d5cea70-0e1d-4442-b761-e6589346d654@gmail.com>
+Date: Wed, 21 Jan 2026 18:04:36 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260121083526.81996ffd70ff4efc8484fd4d@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next:master 7687/8302] ERROR: modpost:
+ "vrealloc_node_align_noprof" [mm/kasan/kasan_test.ko] undefined!
+To: kernel test robot <lkp@intel.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Andrey Konovalov <andreyknvl@gmail.com>
+References: <202601211250.6uQzZrQp-lkp@intel.com>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <202601211250.6uQzZrQp-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9DCF014000C
-X-Stat-Signature: 1tw3m8mng9cmzoa1fofba67a16fdc85e
+X-Rspamd-Queue-Id: 65C2D1C0008
+X-Stat-Signature: aid5d7dzd6qntbabo1k6p1qxwyqqrzuh
 X-Rspam-User: 
-X-HE-Tag: 1769014888-353193
-X-HE-Meta: U2FsdGVkX18r3cBcstEelr0OqrK4ybiJ4Qscpkekc9eaZVHSJ9/vcq1EgI0LJL0oY9LasTUUU16nqZ33OsouaYmUSOATN6cFzCjZe326ZurMXkaMRkm2AkT84HAdcpvZ+J8LUC5Y93lVhL4AhpzACPBT+a7UTCs4jqLKhl6LpowytomtlD5U82P3GaxKwVoVyqu4ZSaL81hhEzmYAqmAimH7bhH1r33sIENI+RHvWwytYWxzOSzCqPP2/o679VvnBmMXMjH762ybUXVq+laGkK+6af3HCbocbiBbfR2sZAqg+kCpdw/j/+r8Krws8Ss5i6JhQFQHbFIipdqi0pYk9Iae2efljAi/2f27Ofk6sSO/kfTqIF7+UXf4nsYnfqkFybU2verf4vRYgFGCLDy7sS4BLqYGoByN/QSSy2cqv18uRFOtXzDI2WbaBawoRJN4hzQ2SMEF/lOYC30nTtht93phhStkBXFczRhXdB57HdTNjuPTodS9+gf9yBEn6V/pvyjIRu5w89YpweaL/ZwOKONyE4MxWqVxa7rMzYOSsP8u2byDoqssudnErb+dcWurHCx3jm+UcVafql2vsleWbNwPskYs3ni/XE7OTCcY6a899rrpkxNAnlDS7hawN/33ExYd8U+IZzHuteEM3uU6f+sU/h+nZl3lZ3TrKzzzfUF7ysq4MEb+1J6EKV6cRwB3Ed3OvnocxUj2kIRM7Owc0cBw1o82cvwZpUZ3aqi0Lx+4LLxad/0iRsYeKg2OIpbWLdBaoV4667vfAueVS9nCZpZrno6EG3fuQo1wU4mBNGO0GMtcEgMW73oTmuumzhRPU1E0Y8LHz+yLYtp9TmhqrQ1sfuIMAqPhzsYVJXOHkeIZhN4OX1iv9jeew4B79VWCYHqpXmAfwX2WvcZrlO9j49JDsy7qRezWMy16G6fnmyjxSVst5f7YuCmUfeQ3vIXrsqZXDTyv65apqHwJlxs
- YgwrlYzs
- WlZ6Tsw6B4afZVawklo0bVJpgghYHsyoj2PJAQmZNYENzEtEmlqODDWJrJYvnB5mqr99YY1Y7gyOmlBsh7hzNStwyDyNsfewokpYq4RScVO2PI00uc4pFqvSwaOSH3FvTkCaISyBZDbsuwKNeVtoywDCG4XFj9SvlWdm/RBpslkCtAu3dYmGEhZKRFSmY7q1jsnv69CpyrRJDa/CSlpk6urLJogsBH1epqTw8250GVrwW2Nh29epLQmWRRc0Gd/Be/8Zqgy+zr8bQMa9o/WmX8/F2RPTBrNw3bHeJD+LmbKJIqc/EjieMDVbJAm7SMVGE6teAurcjZ0kaINCGGqx8Dh+F7tIs2gFkPWl7ykxVd1WJaDvtLSYNptlhrtc5omkFC6p2V5C1FqQGK7AcEMHkLfJ6qALdc0Y19X1NMz+b0SOVGA0sCG7BZ149twb+Xbcb0eE/e9iOdbMaE+ww2P9uLt9uPXFy6tEuALQY/0nxRt8h2n1CikyGVNbPWXLh2+4pfkHR4E4xIf5Q2lgG9/oIelgRuho7SZtGKCuVsZMy11fp3QIDhDliamz74yk8OBEkKRRpbSb2sVlR6NZx+ABPjq8zazTjXgdFT3EoW+g9mopF2MbhKVSMpTSAiELVkjOtOg8G67hAQHm19R6Hc1LDcWnAzRk2BfQm8/7Z
+X-HE-Tag: 1769015133-155849
+X-HE-Meta: U2FsdGVkX18H77Jthjk3UwfLXcaikevIg70oj2JeZgL48hnGmAG9txUCrO8DupDuUZ9l3fS78czJRTzWvJVdM13sD+fcNYNjFLxuao1DjhBfbK5XwEAg/gJ9Kalpy/hDSwp2II12dBtekW3T1Jl28umRM3kkOgYU2VgLk/mR1mYvIqWw/Uctbk/tRxfDDoDFqqz3SifE1lyHLQuVSCxY7LhIW6HPe1KVRxYFHeZYEk0XOVJSoqj7qh4F+QGXUd/V5Lww5C8ISbIaJeMQqKNLvsvTxf2o0HYDZHtXEPKAhdzcAKFLbcHcODdQb92sNSHS876uLBCl5cHbCz++9/zD3Rwp0FeXToT0IKpeMkSSLg2vcy/DZv3gk1iknA0KlMb6Ki0CtS6v7aAX1/e/BXxCIb4OwWel56YLLKMO6va7Q5NtEWFytIINmHoh0BwH8cf5L4nuHeVko1VoL4QO6AJWq9vsG57fVG97MC7cRd5EKSId8nZEEZuvyINoqT2GlTNhcXl0sb0ipj/a9JmIr83qgK20SD9/Azr2Kul7kyAv/M/kd9hnQWVI00PXCA5eXK5lEAOoSg8o0i5uimO/xAFsRl5dJAFmtm2gWs/DKWZ9lDebB1jAK/hAwjOqBeUOf3IQOh6m2q/e43dr1CBnofuFCAHICt2vvrkZFbolRi4z97z2sIq3a01P2lGetLuBVLH2kJiasBIbaehHEum0IfJI6F86JejGPnq2Frvy89zTyp3Y2UkILmNwR6NICuRxw1jnALteTHdqjWaX8xiSixzow/Yf4MxDEXbRjJl6kOhwQ+3kwhAWDXl/p6soj0U2M7//yZvYEanWKektNPwCGjwLBMdiPNj/oy1STPebthwjkpkawMyeaYFv4F3imTngQdBdWqQbv9EwfPO82VDFkza93H/QZ5BZyQDsmJEFObz0Hx7jghOiAeUKqVoEtfZNyeLBanwCK8pjZS4O7oyYQ3m
+ ysoUlu8M
+ 1ZBe3psn1TiFuT9txrbWXKJA4mWOk8kZt/Floy2SRagJFjDXEGrPQk0d5Ke9VTz7PVYDucvWXDl3UO2jiKiWGqDizUPDoLsw5Bd3kBb6D3D1dGDdYHmxAhPI5MhH4cb0jrcwdHvrjd9IWGw9SbzPEW2FYIbSHNY9+t4av2y+uLzm4NbwoBwsitREvqTVhn7trDHt7CWdATxMkHXv3Ss9qu+aarCdHgn5a550CKTkLuxsh5fSKL9EkGmXOBkUFAZ8AHUs2cxCHU/eCgwjt7VCN3Ca5Ratvw3fJOxFK9lm70HCsIVx2k/d5hPk4T+SURJeswHu9iK6789E30BXW42+KxLcAdRYt/q2fWp5KfqpiiZBbSQiLbUh8AUkPyuo2XfOLkKYKYVXDxpyUPdfNpLERtzqvWa5LDPEiGrMpG2vK+qn0Pfuw/lTGN0/acE5GTPVe0gMeEQbbNqQj8pZ5dNMsXyOximq32i+IRzZ5FdlZHymTnGOnjKM2L9NIA2ouA7DqT9LIfILrecz1T3eDztWUi+ty616kgXn2CJquyvd5UzeFw8tYz1MeSdRTQJz7kwkFjnT4OS2/aryHK6Y9DXfhAefnFTossl6bsBjNbD1YOOK6Cf2MKoZLGecBkUoCAEK83f4LaYywlPMXLMfC5t+1NEUOXFXvKapddPFpjVbo3EtjavI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,42 +125,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 08:35:26AM -0800, Andrew Morton wrote:
-> On Wed, 21 Jan 2026 09:58:42 -0500 Johannes Weiner <hannes@cmpxchg.org> wrote:
-> 
-> > > > I tested with the latest linux-next in sysbot. It is working fine
-> > > 
-> > > Great, thanks.  But we still don't have review for this one.
-> > 
-> > IOW, this is not necessary anymore. Kairui's (cc'd) fix which you
-> > picked up fixed the syzbot reported problem.
-> > 
-> > > For some reason I don't have cc:stable on this - could people
-> > > make a recommendation?
-> > 
-> > So this:
-> > 
-> > > From: Deepanshu Kartikey <kartikey406@gmail.com>
-> > > Subject: mm/swap_cgroup: fix kernel BUG in swap_cgroup_record
-> > 
-> > can be dropped.
-> > 
-> 
-> OK, thanks, I'll drop Deepanshu's "mm/swap_cgroup: fix kernel BUG in
-> swap_cgroup_record".  I understand that Kairui's
-> mm-swap-use-swap-cache-as-the-swap-in-synchronize-layer-fix
-> (https://lkml.kernel.org/r/CAMgjq7CGUnzOVG7uSaYjzw9wD7w2dSKOHprJfaEp4CcGLgE3iw@mail.gmail.com)
-> has addressed this mm-unstable issue.
 
-Yes.
-
-> However Deepanshu's "mm/swap_cgroup: fix kernel BUG in
-> swap_cgroup_record" has
+On 1/21/26 5:57 AM, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   053966c344dbd346e71305f530e91ea77916189f
+> commit: 22228c860d2633a22656cc506022c657fec15194 [7687/8302] mm/kasan/kunit: extend vmalloc OOB tests to cover vrealloc()
+> config: x86_64-randconfig-121-20260120 (https://download.01.org/0day-ci/archive/20260121/202601211250.6uQzZrQp-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260121/202601211250.6uQzZrQp-lkp@intel.com/reproduce)
 > 
-> 	Fixes: 1a4e58cce84e ("mm: introduce MADV_PAGEOUT")
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601211250.6uQzZrQp-lkp@intel.com/
 > 
-> Which I assume was mistaken?
+> Note: the linux-next/master HEAD 053966c344dbd346e71305f530e91ea77916189f builds fine.
+>       It may have been fixed somewhere.
+> 
 
-Yes, this appeared to be a misdiagnosis of the bug sequence.
-MADV_PAGEOUT was in the stacktrace, but not the culprit.
+Yep, this has been fixed independently by https://lkml.kernel.org/r/20260107-export-vrealloc_node_align_noprof-v1-1-a581bec13054@google.com
+It would be nice to reorder the patches so that the fix is applied before the kunit patch.
+
+> All errors (new ones prefixed by >>, old ones prefixed by <<):
+> 
+>>> ERROR: modpost: "vrealloc_node_align_noprof" [mm/kasan/kasan_test.ko] undefined!
+> 
+
+
 
