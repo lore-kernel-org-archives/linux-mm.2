@@ -4,115 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65623C4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 13:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A56FC44536
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 14:22:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD9F86B0005; Wed, 21 Jan 2026 08:56:46 -0500 (EST)
+	id 499186B0005; Wed, 21 Jan 2026 09:22:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B57676B0088; Wed, 21 Jan 2026 08:56:46 -0500 (EST)
+	id 41C5E6B0088; Wed, 21 Jan 2026 09:22:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0D7C6B008A; Wed, 21 Jan 2026 08:56:46 -0500 (EST)
+	id 2CAE26B0089; Wed, 21 Jan 2026 09:22:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B5A96B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:56:46 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C08C160361
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:56:46 +0000 (UTC)
-X-FDA: 84356121612.24.6E3C493
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9DEAF40003
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:56:43 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RLeqqG3F;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/hedZwf9";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tFX5PEb0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Pr1DDvzP;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B3806B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 09:22:14 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C9FD7D2841
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:22:13 +0000 (UTC)
+X-FDA: 84356185746.09.C83C0B2
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5E12F40008
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:22:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ysbgqLyh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pRX4TWzK;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ysbgqLyh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pRX4TWzK;
 	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769005331; a=rsa-sha256;
+	cv=none;
+	b=VEH6/YEnuefCM0+/FdY8fsLyE/7sJ0YXzKJIH/uTDC/WRx3FeEdoGPg/PmtL4hWPUQeF7O
+	IAbVMtnwglyVSmuc+glUdsMQBNvinHORv2/BNWkilN9jfmJIW8yR0rtF9OPrQAODVjwIhX
+	k4xLZsZYjY2wMp5vsrrP12I+sSGucIM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ysbgqLyh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pRX4TWzK;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ysbgqLyh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pRX4TWzK;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769003804;
+	s=arc-20220608; t=1769005331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F9wHHlvguHOFteeiwaIUOv2HvVMORPBkdi/Fa31GaTI=;
-	b=Mp7hl1zdTY8CzHhD/skEsDScZm8W5/PyAJQsDKWkRG4pjwEJ0SkAuatc/5NHyabsRcEi59
-	viqVEoNeRuOTNX6own7t8BhppoCYLMtm0pSG1YQf2NEgtAMqoW1c2BVryfq1W0Cb1d6/hU
-	1eJdWULmBBo5PG3qVgKTZ0ia9d5N6mQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RLeqqG3F;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/hedZwf9";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tFX5PEb0;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Pr1DDvzP;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769003804; a=rsa-sha256;
-	cv=none;
-	b=Ae4xz83h5snczNsM/PFKwDIYPHYUBU0JrXZ5dfxqgCqi51gORJP+FRn6vBsSQ0r/FCAXMj
-	v/5oxWyuE06e5lhYnf03BoS7W8LuK9SF/U28V9P69F9zueo0GBbWhFzF8jgAlM13pBcY22
-	gv/XtecUMSQGmUPJd9viPMTdy0Qja5U=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=Z+yin5yG1LXvKg7jj+26aW4ppEi8musD0t2dIbcTZus=;
+	b=PGJzb4rSaiCLZoAoKprZTRVaRIuszk/idsk1+lE1wWVNGIyeqNrU3oCLduRa8k0gEKtQFZ
+	Ni+sMGVBFgQnxyGuDxnuN/aAfMGbyCxj144HlzZruxrIpOrjiv41tnjlBCEPyC1/6WKH6f
+	H814kzAUSfPme5PD9qPOONb1Ys1j9dA=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id ED0035BD00;
-	Wed, 21 Jan 2026 13:56:41 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 624093368F;
+	Wed, 21 Jan 2026 14:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769003802; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769005329; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F9wHHlvguHOFteeiwaIUOv2HvVMORPBkdi/Fa31GaTI=;
-	b=RLeqqG3FBu6iZC5J6AXcjT3gpOi4hVC60z2SRmK6G5CxsQcvua/dBW64jgUGq7aonh16qK
-	6ENSDG2mHm4udJlnU1yVlrIts/rY8xKO6OQXhuSt+L49HlFuv+Mt/aOXrnkaHohnlRC5jH
-	u1EZ/kdpx5a59/4v48H5cPOZyhx3X3g=
+	bh=Z+yin5yG1LXvKg7jj+26aW4ppEi8musD0t2dIbcTZus=;
+	b=ysbgqLyhDSZoiZyX7wl331QMeBUA6+9OdXN9ovdPcBDSeXlQhQhzVhotZW72DAAalk0TUz
+	Ni0CPYSsObtMfCHQyNSpRzfjw5ouhojem7m5eK521nPh7WVNNK58XaVl6LVEp20Kg3zQeq
+	PfvYnF7gvk4YNYST8KE/yl4dVORLVws=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769003802;
+	s=susede2_ed25519; t=1769005329;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F9wHHlvguHOFteeiwaIUOv2HvVMORPBkdi/Fa31GaTI=;
-	b=/hedZwf9JmybVlrUnQGLtQkauKdrOaQO/RaqMOwGU6sjq6PbjeeAKOq3v/g9w2MrKkTLdc
-	qSxnI/VV8yLe5yAg==
+	bh=Z+yin5yG1LXvKg7jj+26aW4ppEi8musD0t2dIbcTZus=;
+	b=pRX4TWzKrBLCIaq/rke8r9QzgvXWDj8SJsuGMhKNfnPn9KZFaFkL2gqjDqbfiSRRwpi9En
+	BYCSE4kHlOjzymAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769003801; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769005329; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F9wHHlvguHOFteeiwaIUOv2HvVMORPBkdi/Fa31GaTI=;
-	b=tFX5PEb0xwPq3xl9IpsMuEp1+4qM7jgjeO7GQT4/vqUckuMkWlNSguNxybo/MHdWB1Xq4o
-	h5Wiq9SiI5b6HRD0HPWhMx8arPtKwmOggt/YNlmdBrYwJdqLWSpDdAEF0MbeXPbFTv7ptw
-	pCUH9FulIR9iBLS0Szb9tJiWOGVWWg0=
+	bh=Z+yin5yG1LXvKg7jj+26aW4ppEi8musD0t2dIbcTZus=;
+	b=ysbgqLyhDSZoiZyX7wl331QMeBUA6+9OdXN9ovdPcBDSeXlQhQhzVhotZW72DAAalk0TUz
+	Ni0CPYSsObtMfCHQyNSpRzfjw5ouhojem7m5eK521nPh7WVNNK58XaVl6LVEp20Kg3zQeq
+	PfvYnF7gvk4YNYST8KE/yl4dVORLVws=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769003801;
+	s=susede2_ed25519; t=1769005329;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F9wHHlvguHOFteeiwaIUOv2HvVMORPBkdi/Fa31GaTI=;
-	b=Pr1DDvzPVHUpSzqTkWGz/NhLXRVPZzyJ0YJ/GuJKa49oAwc+wlSzv5nYZN1tDGULxL1c1T
-	w8pPNaWz7JtOs1Cw==
+	bh=Z+yin5yG1LXvKg7jj+26aW4ppEi8musD0t2dIbcTZus=;
+	b=pRX4TWzKrBLCIaq/rke8r9QzgvXWDj8SJsuGMhKNfnPn9KZFaFkL2gqjDqbfiSRRwpi9En
+	BYCSE4kHlOjzymAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BA82A3EA63;
-	Wed, 21 Jan 2026 13:56:41 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 34D053EA63;
+	Wed, 21 Jan 2026 14:22:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mixHLBnbcGkTSgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 21 Jan 2026 13:56:41 +0000
-Message-ID: <c6ba66a3-0346-40c3-a27e-5528f30fc782@suse.cz>
-Date: Wed, 21 Jan 2026 14:56:41 +0100
+	id 3Z4bCxHhcGmiZAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 21 Jan 2026 14:22:09 +0000
+Message-ID: <c17d4413-1ffa-4d3e-8d87-0e7c2b022c16@suse.cz>
+Date: Wed, 21 Jan 2026 15:22:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/21] slab: remove cpu (partial) slabs usage from
- allocation paths
+Subject: Re: [PATCH v3 11/21] slab: remove SLUB_CPU_PARTIAL
 Content-Language: en-US
 To: Suren Baghdasaryan <surenb@google.com>
 Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
@@ -126,8 +125,8 @@ Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
  linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com
 References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-10-5595cb000772@suse.cz>
- <CAJuCfpEEUs98yCiNA=QOPY6Qk7=QhSBF+gqPn5a+B+bYbQwvsQ@mail.gmail.com>
+ <20260116-sheaves-for-all-v3-11-5595cb000772@suse.cz>
+ <CAJuCfpHaSg2O0vZhfAD+61i7Vq=T3OeQ=NXirXMd-2GCKRAgjg@mail.gmail.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -168,18 +167,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <CAJuCfpEEUs98yCiNA=QOPY6Qk7=QhSBF+gqPn5a+B+bYbQwvsQ@mail.gmail.com>
+In-Reply-To: <CAJuCfpHaSg2O0vZhfAD+61i7Vq=T3OeQ=NXirXMd-2GCKRAgjg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9DEAF40003
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ncwh9gyqh4nsbneocxji1ie8gji5wmef
-X-HE-Tag: 1769003803-619998
-X-HE-Meta: U2FsdGVkX18qtIc3ZN3YA7XsLTnZs+wyuTdf2Qd5wQfDsKj2uQj7SINIaMe0yhtrcrzJ5qgCXLWfbR5oFySOM5STIzcFUcLfZhaBqNgVHAR5r0sI4JSx83yFQF52UtiJBcD/xEz+EhUopSVWoOlLRIATDFdqdh7eYkcuskvBW+2qUZCeI9fGYGYIlIG6dP/crxlJhV/xU2wFhTsm5tN6aAH5OidJShHBpJy0yVJ6SHxTGbnec7UYYZflpysHe6p+wnjuCZmIxrDCCuI5LCOlqiB+PTG5aobjQCurGkDQBPXpSg3h8rwmY/c32suiM1k3+2d3URaGkp3bRMo2enKNp/BTM7ff1LroslmxMbX08eswVjkvuqUQOQJRfYsjLZR3ForfUvRKO2vAeuIZN72/i/1RwDiSgyN3TWmZW0jO5BENp1j+05RnfHiXZyEfKgPpIEF1ONkUBIEhXfvyZLu7kBdXlLrfWP5lvd3k2QBJTaZTlzVLzawN/dyef3uCi/sLn1YuhqOLkt06KYxA5Vo7YRX25aL/48XB0su75b2imVJX+aaKuRg/HkhuT/4y2w+kRz/WNUv6almngabjCdX3J0hSFfgIz/PukfROGpCCuVK0wxn929TpwbvtOjckoU91+VeGRVgEMfsw1dY4MPMbnGWNh+b3gHFin9em2VAKWvYzVnO9bQvnee4FnsbOUAcoT6qSuhvq3Xo6+VVmDw3eMjNSLSek9XCk2Pik5sAsdTAKqxGpBcd+cu+syrz2pwmdQaqVwDW+j1Kg/1gBTYXkyLz4DZt6Ga6NspDfVQ88LDDJctHovFm7FS4aycJWJsX779xRrf3d+QbhD9K900AV486KSXtZGRlVu6u6xjdOIeS2cOde1kMnJDb+5Ux/qMKijNuK+Df+Uw5kWs1rYYYmFKMGVnbMO5uTZ9NrSsOlj1Z3jOgxYDTvVeci+7GsS4hhxd1syww9sQVeTCUP/2w
- ye9LndSl
- sIKXC8sJMltwe/pAc7PDWT1CtxP39H0GOxNy6fsnAAoFJhzD4YOJGkafGhj+BiafyyVxKvE6pQV8yHbGTFA+CsankFMfe7yTrP41V4SwoLM5Dq5/Nim6Xzf4Rw4AL3UrcMd0QHQ07+7xpG3z44fiwuzzGOioJ6Nbg11++qBp1TxriB36SvwToLiZFNSoSU+t8Lq4l3dWKVdPjuB0eVCiMpXDZ3UM5tUqLWUy7tQocLevxRmodudo4FFxlJ8wd/asKVCifFCRBCmfAmcOdyQIWUjE9R5R5iX/KMiNxJxjIwIjVVsiXjmwr6eE+W/z3n6mg/6O4JASWMbBcRWkx4CQfqIvTEw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5E12F40008
+X-Stat-Signature: 8rom1oqfx1zympanx3ntwshaykbiqj7z
+X-HE-Tag: 1769005331-865313
+X-HE-Meta: U2FsdGVkX1+JIHsXFdu/PdcSWXNhCvmcfwYepgEoEDAXjUrIUGtjsCEB+Tn3BRW4WHu295SnVS21WhoWgSoIxv4FOQAiUOM07BLw/7v1XINSGGYEKoG4mTyeHrwbJhwy4TZsrNdxgOHx99ldie4Kow6BihrwWcf2E3LP5HXE9CIZesPGIb8gxOexzU3pQFOXvlmH62w3lLzPV77n1CD1/2rxGzF2KJ0BSvDyxDKKw9fDaOXnepDrSTmGmkeITkooPy9AZfnk/Eki6D1EjtHchZiNWZfFWTlmUUY7hy2fOLZzOOCvt3vZFqiY5/CLI4EqbHpzSH+SqZpTxawtVphCheWKHCgKZHenf4m+w1Cjwsj1UK6qFEoeBuu7SUqs5DtdJjS9/TV+O+X4KnR4OlebCcSKJdanC9Kl74TC6UBg1DLaPV8cPZroclq5E/Q/aYm/WOEgVFS27icGFvromFF6QkvTWUVnHE1L2LuQkCqv2XO1T3XlDOdhObUKFDh+lmqICz8vVlqTTgXTCydLPrSM+E42S5j1ikEBbsRfyE/nvBEGr6MMnfbV7fltsdinFZq076bBmukuqY5z8c8jk02J3a9nY9N08TNxV/uTa5cfT2SAEqWZRkA0RgmpzTg2CELvokqnpIwV5QKcK9gnByCVlIAHvlcINsz4GsFIHkVlYVTW38Q8FG58xc+gaRDnBXTO0Dj52V1APGa341Renhd5EGZWYD9vihpmSyQde6R1Y33z388MESA0HhHa4Qeroe8Ct+b25R4IoIK52Xa/IqKvDdJGaaI2/bI/fupSCb5YSriYY82L1Oqly2YOvqD/xbHV8B4+t2cv+kymmdhh8P59bpxd8ETfEkbN5MIuEZCVtyggjj/bExFA128W/gk36QUJhNLCt9jpy9mYzKtZMVwMzxME87oPWMJ+o35biC2Kfo0sUpG6pfFlDS+fcVi3tuwjVfwfLrM/lG6dd8v7sHV
+ 8JBICLPD
+ P0FHPVX+24sP/FykgFiSp/7wZyJnqZLLrpU5DULkBmv9QRokQmYMsnWExc+WTRIUbFwzWlQENxjAbzokire5F57kT7DkLNXFsOqF4LgkhXAobxzvEKgiInhiqtY7dL5krzaW3ZeSqj1b6KibFbgWTJigySjyQcPxJdIQ7e1DFx9Grl5qe7rQKabiVQVUxU5OdV+BenkV1Q+CE5hi3N31JkSCx8VtIsLTz7w5b7b7AEOjBN2TCEFAwQuBmKUSDNhpn7rrOh/5+8K4znNchpBsyVOWtnQWSI4zwW7u3OcLl2eoFqe4wstHiI5rpC56gKi/8EVPD2YZZ94jc23HvJKkgOU9luCJv4Xlr19kWguMINRLJS67Uvu4e8uCceDSOlxkc9aNi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,59 +186,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/20/26 19:06, Suren Baghdasaryan wrote:
+On 1/20/26 23:25, Suren Baghdasaryan wrote:
 > On Fri, Jan 16, 2026 at 2:40 PM Vlastimil Babka <vbabka@suse.cz> wrote:
 >>
->> We now rely on sheaves as the percpu caching layer and can refill them
->> directly from partial or newly allocated slabs. Start removing the cpu
->> (partial) slabs code, first from allocation paths.
+>> We have removed the partial slab usage from allocation paths. Now remove
+>> the whole config option and associated code.
 >>
->> This means that any allocation not satisfied from percpu sheaves will
->> end up in ___slab_alloc(), where we remove the usage of cpu (partial)
->> slabs, so it will only perform get_partial() or new_slab(). In the
->> latter case we reuse alloc_from_new_slab() (when we don't use
->> the debug/tiny alloc_single_from_new_slab() variant).
->>
->> In get_partial_node() we used to return a slab for freezing as the cpu
->> slab and to refill the partial slab. Now we only want to return a single
->> object and leave the slab on the list (unless it became full). We can't
->> simply reuse alloc_single_from_partial() as that assumes freeing uses
->> free_to_partial_list(). Instead we need to use __slab_update_freelist()
->> to work properly against a racing __slab_free().
->>
->> The rest of the changes is removing functions that no longer have any
->> callers.
->>
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > 
-> A couple of nits, but otherwise seems fine to me.
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> I did?
+
+Hmm looks like you didn't. Wonder if I screwed up, or b4 did. Sorry about that.
+
+> Well, if so, I missed some remaining mentions about cpu partial caches:
+> - slub.c has several hits on "cpu partial" in the comments.
+> - there is one hit on "put_cpu_partial" in slub.c in the comments.
+
+Should be addressed later by [PATCH v3 18/21] slab: update overview
+comments. I'll grep the result if anything is missing.
+
+> Should we also update Documentation/ABI/testing/sysfs-kernel-slab to
+> say that from now on cpu_partial control always reads 0?
+
+Uh those weird files. Does anyone care? I'd do that separately as well...
+
+> Once addressed, please feel free to keep my Reviewed-by.
 
 Thanks!
-
-
- > -static struct slab *get_partial_node(struct kmem_cache *s,
->> -                                    struct kmem_cache_node *n,
->> -                                    struct partial_context *pc)
->> +static void *get_partial_node(struct kmem_cache *s,
->> +                             struct kmem_cache_node *n,
->> +                             struct partial_context *pc)
-> 
-> Naming for get_partial()/get_partial_node()/get_any_partial() made
-> sense when they returned a slab. Now that they return object(s) the
-> naming is a bit confusing. I think renaming to
-> get_from_partial()/get_from_partial_node()/get_from_any_partial()
-> would be more appropriate.
-
-OK, will do.
-
->> -       }
->> +       freelist = get_partial(s, node, &pc);
-> 
-> I think all this cleanup results in this `freelist` variable being
-> used to always store a single object. Maybe rename it into `object`?
-
-Ack.
 
 
