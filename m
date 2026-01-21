@@ -4,144 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF3B2D262B0
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 06:57:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA404D262B2
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 06:57:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40E096B0005; Wed, 21 Jan 2026 01:57:25 -0500 (EST)
+	id 17EB56B0005; Wed, 21 Jan 2026 01:57:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3929F6B0088; Wed, 21 Jan 2026 01:57:25 -0500 (EST)
+	id 15F376B0088; Wed, 21 Jan 2026 01:57:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 273446B0089; Wed, 21 Jan 2026 01:57:25 -0500 (EST)
+	id 065D96B0089; Wed, 21 Jan 2026 01:57:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 12E386B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:57:25 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BAA771A07EF
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:57:24 +0000 (UTC)
-X-FDA: 84355064808.21.2B605A1
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2E6FA80007
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:57:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cUI9pn3n;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LtaYqiOp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cUI9pn3n;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LtaYqiOp;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768978642; a=rsa-sha256;
-	cv=none;
-	b=YJnNotHayxuvSO58eu592HVqrHF5+RuMg7b90NTIC76p+NqAWWZ2XWmzq/xffmf/Y+Yqay
-	yBRIBO8aCvarv99Jej9divqjKGp9wbXtgF96ockaEexGpHKsiE7UkAHKlJXd5DQSIJByKj
-	fDu2wigeRlUTGqwTcKP/GU35X6fxMRY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cUI9pn3n;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LtaYqiOp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cUI9pn3n;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LtaYqiOp;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E8F9D6B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:57:55 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7BD441AF5BD
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:57:55 +0000 (UTC)
+X-FDA: 84355066110.02.8C4F8B1
+Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D22F020003
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:57:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=L6SPPg2U;
+	spf=pass (imf13.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.66 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768978642;
+	s=arc-20220608; t=1768978673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=F2hV8Ptre9CxhtsWmxv63EQlnGTxB6W6LapKB5FH07U=;
-	b=qVNv0YlDGyz9W0EiMzzhSaSsNVEeD+VTCwGONfMUsZkow4IjZcaZBvFC2Vp8oFaKrowIQW
-	05lPyLHUgR2bX5pod7qR3cgNuvRj+PLO1UohVRuKnJl30VbT4mFVwWOxZo0xME/PL2Yott
-	XLlmOX6tP1sngQeBXUVhRx/giedsSh0=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3960E5BCCA;
-	Wed, 21 Jan 2026 06:57:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768978640; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=F2hV8Ptre9CxhtsWmxv63EQlnGTxB6W6LapKB5FH07U=;
-	b=cUI9pn3nKjJKaX/2oqP2ioLEjYaq0DnhuStUmV5y9AYoIxb7U4roSXqtM8sP+sB5DndRhk
-	JwtLuNGladv3JLqWStebq3cMdLHx+DdQ59gEUACaz9DZBqniQdMo5A3U9uILilAbVbRuJ9
-	JpqC1uxCE7ZgCtEydhARfWs9PZ8W4sg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768978640;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=F2hV8Ptre9CxhtsWmxv63EQlnGTxB6W6LapKB5FH07U=;
-	b=LtaYqiOpfp6zAANu2TdOQF5I7kziKq8HsDaJLp3WH/jvzXFUeBI8dS5l587mfPdMwwvx1P
-	/UwfJrftpuryolDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768978640; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=F2hV8Ptre9CxhtsWmxv63EQlnGTxB6W6LapKB5FH07U=;
-	b=cUI9pn3nKjJKaX/2oqP2ioLEjYaq0DnhuStUmV5y9AYoIxb7U4roSXqtM8sP+sB5DndRhk
-	JwtLuNGladv3JLqWStebq3cMdLHx+DdQ59gEUACaz9DZBqniQdMo5A3U9uILilAbVbRuJ9
-	JpqC1uxCE7ZgCtEydhARfWs9PZ8W4sg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768978640;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=F2hV8Ptre9CxhtsWmxv63EQlnGTxB6W6LapKB5FH07U=;
-	b=LtaYqiOpfp6zAANu2TdOQF5I7kziKq8HsDaJLp3WH/jvzXFUeBI8dS5l587mfPdMwwvx1P
-	/UwfJrftpuryolDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2779F3EA63;
-	Wed, 21 Jan 2026 06:57:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wiJhCdB4cGl6JQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 21 Jan 2026 06:57:20 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 21 Jan 2026 07:57:10 +0100
-Subject: [PATCH v2] slab: replace cache_from_obj() with inline checks
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QfNI6YqTs0cYKPLMD89dgBVnDvHEsK2S5AP6RZaGePE=;
+	b=0ItwJ+ReI6djAlfv+NPTmAHFVOLm+HwylgdX90FDIFLQyqjqk2SEklIppE8cmePxZ/ZG+6
+	d/3LohvYxmrdWAo6L6jIsi8DF9PEs5C6tnPIsZ0nHvkc7T5XeO+8H6eG4o3Hn+s/O+1d7j
+	yu6dCCw08Iifu9ATKGXYVvmxMZeqPno=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=L6SPPg2U;
+	spf=pass (imf13.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.66 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768978673; a=rsa-sha256;
+	cv=none;
+	b=vZO9mNOYFgGyTlEN5sY/W9OXm/wr4H2yDeY+4orLZhmPgAnjyUsAP/lrIQ1l4wKiZVpIYk
+	wtO/8VlCgSbDwNbFfF22E+mGEu8NBLsDX+fQdv82m5fhPQKiVtV+tFjkGU6KiDjYUCBjEZ
+	dMRyhmxOuhSRZcsnabFvcabzlamBKVM=
+Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-1233702afd3so7994619c88.0
+        for <linux-mm@kvack.org>; Tue, 20 Jan 2026 22:57:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768978673; x=1769583473; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QfNI6YqTs0cYKPLMD89dgBVnDvHEsK2S5AP6RZaGePE=;
+        b=L6SPPg2UuM8maUF6uL2PWS8u6Ut6QwZQ0pZ+zkTwIcInFwwhIiQ9PDGo43xqNBUIFA
+         u1ajkUku/fUV4lWJBVtgYIrUeW3yL+18e/n6na4VJ0fMs6VNPe5XnQ2f2LnUPE8dL60Y
+         0mOfskVlxuoLLpX6UDpg5hNLxC09bPAzFJG0gP6FtaOXhwk/02b25ugOLTRSVYyczS8+
+         BERpEhTCijLQlFk+HSXZ09VV2fneRK6zjx3O8nUqIhTWOBcfl8GZJwtaaed+mx0Y/Tpj
+         yU3ooghi9wHFDv+2neui8LMtphRGHdn6Xg3Aqk0/UvzRsZOao/oN4J2anRbAI+sZShR7
+         uW2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768978673; x=1769583473;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QfNI6YqTs0cYKPLMD89dgBVnDvHEsK2S5AP6RZaGePE=;
+        b=nqJswkEVy6JwGa6KOALXRpYO5Ad2cVFasM8wFUeqIcubn8zld9CowQRdNAR/e1HiSN
+         DSAK5MxBRi8XBunZ6BP5GP4g7A5z5vXXCd7fWJWzOFH15IRFQgu75xlQkDZ4VYiYc0Pv
+         n9YfOB/pp8hBksFEX9q+qu9F5FjdZfSJmZqw3PwlCkBbmgsuXJegoSg0nO7vThqosuwa
+         2xzz0oF2tzI9bunGkajKu3JyvJgwQkVNbYJNn7u0tXQY2mkDEjcdjIitb4b0uDItrQYC
+         nES+4V3qJok5Cl5Gh6Qs0L84P90kcuPbfIKryVYvdAJP4a0rN2LvPeJ0UYjO6xJLOZSG
+         Rt9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUrwUL/+20RpAhSJKPzCUOpB23+OrgycoyzbvqBklS+zbHHwYseDxqOJ3D4zdrkGaGNwgWt5HQS2A==@kvack.org
+X-Gm-Message-State: AOJu0Yzc4dRi2uEbnJLPKRQoDgQU3+xqrbumgnYiCN9fmQqxnNZiSuUq
+	Gmf3vxPTi1l3NpHzTzKl6J0PS6VWbw4AB39H0T0XXxMVyUF90WatYXMw
+X-Gm-Gg: AZuq6aJv0qRT/8NU+HpP6fwvyx7m/E41c66cRSFa05WC11YjZjRoSCXeQ7rZLpLZ7vj
+	zfQVNc2W45vAa8Y+quYCzzB9hYqRvlYzN1gNJR0SHfQnhlcyfZXPuSA9hIYShyT/k5pmkihLlZw
+	TGaRqLk1GeVZ3eRgAZ/Clmyi2+mMPiL6CxonRNzc5cWzvFf521gxeMLajmRJ47UJ5Irmhhrh2Q2
+	C2vaGCMd+ypPxAnFGIgKnRKE5FxAoQWBeP5sCiweC6aTwGexDJt0UjtBiAbvRGDW+e0ytI3DZKn
+	ITip79x25Pmv+mGoLS68OXOi/IHFam0AEEzuG7AGn/bVOiK2GgrCuZ8gqLSvOV/nT1bJ33J0QL4
+	Q46Iqtu7WsYULFNZZjI1A2y7WKBib1cOqF5M3gXuFVpLNlamGOsTqxZJvFXDNa2H5LsA62rwvlr
+	21Qbo=
+X-Received: by 2002:a05:7022:2491:b0:11b:9e5e:1a40 with SMTP id a92af1059eb24-1246a9669a1mr2718620c88.15.1768978672473;
+        Tue, 20 Jan 2026 22:57:52 -0800 (PST)
+Received: from debian ([74.48.213.230])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244aefa7c5sm25194468c88.10.2026.01.20.22.57.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 22:57:51 -0800 (PST)
+From: Qiliang Yuan <realwujing@gmail.com>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	mhocko@suse.com,
+	vbabka@suse.cz,
+	willy@infradead.org,
+	lance.yang@linux.dev,
+	hannes@cmpxchg.org,
+	surenb@google.com,
+	jackmanb@google.com,
+	ziy@nvidia.com,
+	weixugc@google.com,
+	rppt@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qiliang Yuan <realwujing@gmail.com>
+Subject: [PATCH v5] mm/page_alloc: boost watermarks on atomic allocation failure
+Date: Wed, 21 Jan 2026 01:57:40 -0500
+Message-ID: <20260121065740.35616-1-realwujing@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-b4-remove_cache_from_obj-v2-1-7213d36b89d5@suse.cz>
-X-B4-Tracking: v=1; b=H4sIAMV4cGkC/42NQQ7CIBBFr9LMWgyDTbWuvIdpCB0HwaTFgBK14
- e5iT+DyveS/v0Di6DnBsVkgcvbJh7mC2jRAzsxXFv5SGZRUnUQlxdiKyFPIrMmQY21jmHQYbwJ
- 7aclY7PaHHur8Htn615o+D5WdT48Q3+tTxp/9I5pRoDDEO0ktMpM9pWfiLX1gKKV8AXZlhH++A
- AAA
-X-Change-ID: 20260120-b4-remove_cache_from_obj-190fcaf16789
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Eric Dumazet <edumazet@google.com>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
- Vlastimil Babka <vbabka@suse.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5211; i=vbabka@suse.cz;
- h=from:subject:message-id; bh=15RYzhWLTEfcvtbEHKriVBTM8eBckeJmwTj2wXFUVKw=;
- b=owGbwMvMwMG4+8GG0kuuHbMYT6slMWQWVJzJ12rmbxVfrLxpwbkNSV5Kl8ODYouceTp+LJ983
- 2JltUdBJ6M/CwMjB4OlmCJL9e4TjqIzlT2mefh+hBnEygQyRVqkgQEIWBj4chPzSo10jPRMtQ31
- DA11gEwGLk4BmOoaZQ6GGWUv1ix4ETE/s+/Ci2fnf7xqma98kefc77dP30o8fHLiSc59i0MN/u9
- nvUg79UX7+LG0931syuctf2j87phzZoqUQvP8jYl35u0+wlTVtFyr9S3DLb3Tr2smKRfk2pfHKk
- W+OOduOZdD66Nd6691hwXaHr83LWSKXjuN7fObqIsfewu/mn4J02a7qLF41pGu1O23pI3uuuioh
- p9a9J3x3EGDSZ5C/VxTzwSF5+TpWD3i2jpZXuOntVR5QMa9rGkpKTyTLnMe7o8o7V/zqf4Sk+e1
- lWzlqj2M8720s9vNbyo+EVhgGrU6jfuVabKtzkapF1suC2qWPV4h4CI1wVBz73S5TpMFByqaCnz
- 2idkJAAA=
-X-Developer-Key: i=vbabka@suse.cz; a=openpgp;
- fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2E6FA80007
-X-Stat-Signature: e485m81m939b61kzi817y9of37j6uc6w
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D22F020003
+X-Stat-Signature: cgtmmxek83w1ypa976gezmq4fpj43hkt
 X-Rspam-User: 
-X-HE-Tag: 1768978641-142591
-X-HE-Meta: U2FsdGVkX1/LP9B5tLrJmkiLe78YIX76ooImoXQphQPmNkxWIkdETzKN2FPUs55C8OVA7V2ldHigcFWsQxqYr2k1F9OIbdv7LLQ3hsNRTQQTouogkcWbu90XIUFSBxnByRT3k6lYh/x7c1BlS3QrDbJwEZeHe9YJtisoK3Zh7K0hEN9us2DE9QueUsYmGEL/bG463GCjTO3D5uEGLRpSwH+DKOn6kccdiTbV0NoPja3hQF26cYUhYEiR2rDlqJUB3vHWE3AcMqMuW75di2lUp0GubvTs+yYluypJ2d8R7jPsoqlaPgLUCKh6nJEu/TrImuBs2WaxCgYVU2XyjP91mwBBAV/EVZH7PNFowe6Qm4mLcHEPYmCrhEzBeUoHoDT7rvXU7DEFKPSj7Llyu79ZTIUlB1uhZMoTyIP3pob7bc4edSPw2es+QCQyhEVLAHSmPHHNH85FXb+QGanQKW4otwT4/f1S4wWvHykYX15DeuHTyER7nUX7xEQgAdCoZprI940jWJiv9C1OxrZ5wxFuq0Uswo4dpvAYxIOLe3avYiYd7g/l3/48VHP3GV4d8Ovl0/fItUB/bPK3lR+8uznwgsOvsamO5AKD0HXtugqHINzYSYzgIVTRb8Xjoa0tzRnWG2dD8Aaa+atv0/mjYfOIOkPapgL1IAjgnIkaRimjrmWbKP0APXWoKNShFyk7SOGiAU7von3Ff1gRYW2z72V1JwMVxyDF9ymUmkrv92CM2oQ67bgMWw4X588KM3ycXxPsXMKwPsRzQadg+/q0yBjvf7hb2zh3SlPKpO1M+FY37R0N5gdu2wtOnhkEQEzyxVgdikGguZxojX/I/we0juCx3gCvSrPr5Q+m6fZOpkyfVuJHMU70doQjaKLQsP1+nVdLwC/SJYVzmhHMxeUsWdcuhvz+c501fxwqGvP4R4IgNTnbHvfkBs7ZMfQ2X47lDAjG/H042zZU/RD21SqMeYb
- GwmYkgc6
- 3vjLE4/xF1ttcxMMfWqFlVU2mRQQekJEmOQCfNK+Nq/gz+pyA0uyba6+XBdVAAd49Cpp2firhGrXvzR0Cp22el4oc4oXo86sgxd5+c9dK4DfgoI/o16tYTCnVT6LkgzzT7+BlD2ckz2hMskSj0qy1WDyjBTgHLYR4FxJTrbUDRDjMw2qYaOSWWOg5aTfusA7p+NYhMD8Wwo8iqzMiQkh1KTGj/Uep5AbkjThSFT5+DxkQOj7+6OkY/z3RpG4oDcrS195zF98K4k8jo91FnUBkD11DoEKmOq6eI7ngtBC3Qzcrr8dEkwuSCQxinccLo5Q2bfic1Ucr7yLdF9CIm9PLIqRV9Z60OtxbK/kPGB0Z3HQMhClx1kZcmQNI+vTMDbZa0/BxVJOR/djE/oXimcoLduZCKByfCFvhGkvW
+X-HE-Tag: 1768978673-870772
+X-HE-Meta: U2FsdGVkX1+qR4lJo9UUCFQG6m8sBLKoJ/dURszod5UY4lzGcUhwtiyegvvOtpvyHkf2NqFYwqgN8fwZjA1HHMQqm9PhsFbATgxFj92kPqr8zOasdsbY5444XrFm07zXFoCPTOR+e52GSsXkeI3OKWRhzqy/IORPVxsOP2wqiceadkab64EDfYxpDD3j3j7pmiRmKnqBROd5UF5k8CJRsDMcWaSpgaCKp9KNcv4fDIY5gbsc5j22GDIlPr51X3b+tf86qiJ439zUnTMItQTL2K90DwSw+/1iIMKtKrlDgRPg/kLTLUV42DDh5UkUTkErD4aQgZQruUsVd4L6UbQMALxgmXVRqI9OpBb8L1LXcX/cGnQl6wpofxSP8XRsdT3Rub+lGAvYgHusi5b+ZuPcObf9/ZIHHf9REoW+FbBGrILBP6b3rYEh3KtPnT5uhrfR9rJInK+d+DUsfZFvKWFQ+eb8dHRd1f9zmweIUb5UPo7bdop9vTe71kWXHd5yYHDm5kRb478xip9Xl18PqMZ3mw2YXZmVwqbp3+YUwMRLuohCE2vqqG9Km3Yzq6Eo2bvQIXWL32XaNpzhSD/2OmCBTs/RmYRWVvcgQMK/g/VX9XhWm5980afu9QfRixHYQ1KoKUepzI8TNr1gQ5IvFY0fVy0RFc85pSD7jizRyOqzOa/5Sc+npZ9Z7N9xewSpYik8r16Vkia1AfJAKq43DiwW4gSVAdvMFTMiVjNc75lhJ49+oOxN2p/xnMc/YDToQd8bCOlFhFy6UKMKI1lLEziEfCkYgYBf2ikMdsoavZrQxhDO/1qH2IM/KVAujREChgAxqXmrFJh6A92qViirkNiDcSmwcrnv/ob6kJ0tSVisltiWnMeiZXZuuVaCb2Rf3l2ug1QuyISvsf8vCJxrEPDtVlMp6YEElyGaIZJ9DKCMFgVfKzt0KemQJoSgVcAaNlfsi920yFtgfEFp37yCp/6
+ nphkdd8b
+ lL3VBTg8PEHIxfGBz6XqGym15FkUegI1aZZlqD7rZZ5Xe27oKbhUL573gHYJZHMxgZaBjHv91RoZIcHE3/Nj7Q9mAL/BM/Dd0apIjqrVacewy59nK04OM/gW9kgqGOr8dbRMMvzq4C1pjN2O6DAEennP/eVSpnLT6CuJQNFtmpaUwHW5RR0JrxiB1P2Ylpe9EReAB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,152 +127,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Eric Dumazet has noticed cache_from_obj() is not inlined with clang and
-suggested splitting it into two functions, where the smaller inlined one
-assumes the fastpath is !CONFIG_SLAB_FREELIST_HARDENED. However most
-distros enable it these days and so this would likely add a function
-call to the object free fastpaths.
+Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
+pressure as they cannot enter direct reclaim. This patch introduces a
+'Soft Boost' mechanism to mitigate this.
 
-Instead take a step back and consider that cache_from_obj() is a relict
-from when memcgs created their separate kmem_cache copies, as the
-outdated comment in build_detached_freelist() reminds us.
+When a GFP_ATOMIC request fails or enters the slowpath, the preferred
+zone's watermark_boost is increased. This triggers kswapd to proactively
+reclaim memory, creating a safety buffer for future atomic bursts.
 
-Meanwhile hardening/debugging had reused cache_from_obj() to validate
-that the freed object really belongs to a slab from the cache we think
-we are freeing from.
+To prevent excessive reclaim during packet storms, a 1-second debounce
+timer (last_boost_jiffies) is added to each zone to rate-limit boosts.
 
-In build_detached_freelist() simply remove this, because it did not
-handle the NULL result from cache_from_obj() failure properly, nor
-validate objects (for the NULL slab->slab_cache pointer) when called via
-kfree_bulk(). If anyone is motivated to implement it properly, it should
-be possible in a similar way to kmem_cache_free().
+This approach reuses existing watermark_boost infrastructure, ensuring
+minimal overhead and asynchronous background reclaim via kswapd.
 
-In kmem_cache_free(), do the hardening/debugging checks directly so they
-are inlined by definition and virt_to_slab(obj) is performed just once.
-In case they failed, call a newly introduced warn_free_bad_obj() that
-performs the warnings outside of the fastpath, and leak the object.
+Allocation failure logs:
+[38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
+[38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
+[38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
+[38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
+[38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535649.655523] warn_alloc: 59 callbacks suppressed
+[38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
+[38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
 
-As an intentional change, leak the object when slab->slab_cache differs
-from the cache given to kmem_cache_free(). Previously we would only leak
-when the object is not in a valid slab page or the slab->slab_cache
-pointer is NULL, and otherwise trust the slab->slab_cache over the
-kmem_cache_free() argument. But if those differ, it means something went
-wrong enough that it's best not to continue freeing.
-
-As a result the fastpath should be inlined in all configs and the
-warnings are moved away.
-
-Reported-by: Eric Dumazet <edumazet@google.com>
-Closes: https://lore.kernel.org/all/20260115130642.3419324-1-edumazet@google.com/
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Hao Li <hao.li@linux.dev>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
 ---
-I'll put this to slab/for-next. Thanks for the reviews!
-
-Changes in v2:
-- Add a comment and mention in the commit log that we are leaking the
-  freed object also in cases where s != slab->slab_cache (Hao Li)
-- Link to v1: https://patch.msgid.link/20260120-b4-remove_cache_from_obj-v1-1-ace30c41eecf@suse.cz
+v5:
+  - Replaced custom watermark_scale_boost and manual recomputations with 
+    native boost_watermark reuse.
+  - Simplified logic to use existing 'boost' architecture for better 
+    community acceptability.
+v4:
+  - Introduced watermark_scale_boost and gradual decay via balance_pgdat.
+  - Added proactive soft-boosting when entering slowpath.
+v3:
+  - Moved debounce timer to per-zone to avoid cross-node interference.
+  - Optimized candidate zone selection to reduce global reclaim pressure.
+v2:
+  - Added basic debounce logic and scaled boosting strength based on zone size.
+v1:
+  - Initial proposal: Basic watermark boost on atomic allocation failure.
 ---
- mm/slub.c | 56 +++++++++++++++++++++++++++++++++-----------------------
- 1 file changed, 33 insertions(+), 23 deletions(-)
+ include/linux/mmzone.h |  1 +
+ mm/page_alloc.c        | 29 ++++++++++++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 861592ac5425..fd915ea95121 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6738,30 +6738,26 @@ void ___cache_free(struct kmem_cache *cache, void *x, unsigned long addr)
- }
- #endif
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 75ef7c9f9307..8e37e4e6765b 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -882,6 +882,7 @@ struct zone {
+ 	/* zone watermarks, access with *_wmark_pages(zone) macros */
+ 	unsigned long _watermark[NR_WMARK];
+ 	unsigned long watermark_boost;
++	unsigned long last_boost_jiffies;
  
--static inline struct kmem_cache *virt_to_cache(const void *obj)
-+static noinline void warn_free_bad_obj(struct kmem_cache *s, void *obj)
- {
-+	struct kmem_cache *cachep;
- 	struct slab *slab;
+ 	unsigned long nr_reserved_highatomic;
+ 	unsigned long nr_free_highatomic;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c380f063e8b7..1faace9e2dc5 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2189,12 +2189,31 @@ static inline bool boost_watermark(struct zone *zone)
  
- 	slab = virt_to_slab(obj);
--	if (WARN_ONCE(!slab, "%s: Object is not a Slab page!\n", __func__))
--		return NULL;
--	return slab->slab_cache;
--}
--
--static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
--{
--	struct kmem_cache *cachep;
-+	if (WARN_ONCE(!slab,
-+			"kmem_cache_free(%s, %p): object is not in a slab page\n",
-+			s->name, obj))
-+		return;
+ 	max_boost = max(pageblock_nr_pages, max_boost);
  
--	if (!IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) &&
--	    !kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS))
--		return s;
-+	cachep = slab->slab_cache;
+-	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
++	zone->watermark_boost = min(zone->watermark_boost +
++		max(pageblock_nr_pages, zone_managed_pages(zone) >> 10),
+ 		max_boost);
  
--	cachep = virt_to_cache(x);
--	if (WARN(cachep && cachep != s,
--		 "%s: Wrong slab cache. %s but object is from %s\n",
--		 __func__, s->name, cachep->name))
--		print_tracking(cachep, x);
--	return cachep;
-+	if (WARN_ONCE(cachep != s,
-+			"kmem_cache_free(%s, %p): object belongs to different cache %s\n",
-+			s->name, obj, cachep ? cachep->name : "(NULL)")) {
-+		if (cachep)
-+			print_tracking(cachep, obj);
-+		return;
-+	}
+ 	return true;
  }
  
- /**
-@@ -6774,11 +6770,25 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
-  */
- void kmem_cache_free(struct kmem_cache *s, void *x)
- {
--	s = cache_from_obj(s, x);
--	if (!s)
--		return;
-+	struct slab *slab;
++static void boost_zones_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
++{
++	struct zoneref *z;
++	struct zone *zone;
++	unsigned long now = jiffies;
 +
-+	slab = virt_to_slab(x);
-+
-+	if (IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) ||
-+	    kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS)) {
-+
-+		/*
-+		 * Intentionally leak the object in these cases, because it
-+		 * would be too dangerous to continue.
-+		 */
-+		if (unlikely(!slab || (slab->slab_cache != s))) {
-+			warn_free_bad_obj(s, x);
-+			return;
++	for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
++		/* 1 second debounce to avoid spamming boosts in a burst */
++		if (time_after(now, zone->last_boost_jiffies + HZ)) {
++			zone->last_boost_jiffies = now;
++			if (boost_watermark(zone))
++				wakeup_kswapd(zone, gfp_mask, 0, ac->highest_zoneidx);
++			/* Only boost the preferred zone to be precise */
++			break;
 +		}
 +	}
++}
 +
- 	trace_kmem_cache_free(_RET_IP_, x, s);
--	slab_free(s, virt_to_slab(x), x, _RET_IP_);
-+	slab_free(s, slab, x, _RET_IP_);
- }
- EXPORT_SYMBOL(kmem_cache_free);
+ /*
+  * When we are falling back to another migratetype during allocation, should we
+  * try to claim an entire block to satisfy further allocations, instead of
+@@ -4742,6 +4761,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	if (page)
+ 		goto got_pg;
  
-@@ -7305,7 +7315,7 @@ int build_detached_freelist(struct kmem_cache *s, size_t size,
- 		df->s = slab->slab_cache;
- 	} else {
- 		df->slab = slab;
--		df->s = cache_from_obj(s, object); /* Support for memcg */
-+		df->s = s;
++	/* Proactively boost for atomic requests entering slowpath */
++	if ((gfp_mask & GFP_ATOMIC) && order == 0)
++		boost_zones_for_atomic(ac, gfp_mask);
++
+ 	/*
+ 	 * For costly allocations, try direct compaction first, as it's likely
+ 	 * that we have enough base pages and don't need to reclaim. For non-
+@@ -4947,6 +4970,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 		goto retry;
  	}
- 
- 	/* Start new detached freelist */
-
----
-base-commit: 0f61b1860cc3f52aef9036d7235ed1f017632193
-change-id: 20260120-b4-remove_cache_from_obj-190fcaf16789
-
-Best regards,
+ fail:
++	/* Boost watermarks on atomic allocation failure to trigger kswapd */
++	if (unlikely(page == NULL && (gfp_mask & GFP_ATOMIC) && order == 0))
++		boost_zones_for_atomic(ac, gfp_mask);
++
+ 	warn_alloc(gfp_mask, ac->nodemask,
+ 			"page allocation failure: order:%u", order);
+ got_pg:
 -- 
-Vlastimil Babka <vbabka@suse.cz>
+2.51.0
 
 
