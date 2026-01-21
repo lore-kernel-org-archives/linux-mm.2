@@ -4,84 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D012ED262B0
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 06:17:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2751D262B0
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 06:26:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D198F6B0005; Wed, 21 Jan 2026 01:17:17 -0500 (EST)
+	id E972B6B0005; Wed, 21 Jan 2026 01:26:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD0736B0088; Wed, 21 Jan 2026 01:17:17 -0500 (EST)
+	id E45166B0088; Wed, 21 Jan 2026 01:26:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C26D56B0089; Wed, 21 Jan 2026 01:17:17 -0500 (EST)
+	id D52BE6B0089; Wed, 21 Jan 2026 01:26:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4A656B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:17:17 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 41C691607A4
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:17:17 +0000 (UTC)
-X-FDA: 84354963714.12.C11459B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C1F146B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 01:26:58 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D9091A07EA
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:26:56 +0000 (UTC)
+X-FDA: 84354988032.28.9645D75
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E5C2F100002
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:17:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wAlL3gZu;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 10D341A0004
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 06:26:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=rwVwLK5M;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768976235;
+	s=arc-20220608; t=1768976815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VcBL8d2Tx+2ZFZ5f3VAnB2vrhIOAq8GII6J/15sAm3w=;
-	b=JDEvTT7tJsy/aQ1rhOqsYtUb/HAcvRUF3wSWYRs8Z5XHOs018VvCtA4NUXltS6/JetKRQf
-	DeKtoNMrhOOE/bLY3ZLTAI2756x4e7egVGrcRBXHM12ojQlV6JjurSAYNGA4XegFH/uyP7
-	mFbrTDGJAKEIcuzk4D5KnuSs995tQps=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768976235; a=rsa-sha256;
+	bh=PNhH2riMWX3Q+myVpHniFxOejkk4Wa8DeInyiyrQIbg=;
+	b=onvj+RNbbEJlWv8dcbqc8eXNviT0f6J6D8+LQihDme/u+Ya+3phaQZwgvKSiNdiSxPuX5j
+	7FByKYiePdSo/oDC05puWAcTu1HjZ2FAlJkmwlPPTz++3rsL5tDfnqZ+OnKd5pzL+ygoUw
+	JD6KgqeblMvMI0iJi4mN8jhW2LWIVlc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768976815; a=rsa-sha256;
 	cv=none;
-	b=2IZBqgq1ZeJrwwWuHN8U0Ue3hOkL9Fm7+L7PPvIIjwffylfNgmobXcmLJqCsYHrnz2jst1
-	3q8y4VYeOnayzE4imNXpf6Rl/vIqKWTk+ERHgisI357u12woVSxfnZaDNuuxynoOv4nsx3
-	/7f1wZtej/mC8LWfgdJi4x3JFNoxhzA=
+	b=FWt9IYgQycYLBSz+wMQJkyLWfoBrP74gjYaLL5NtIFpmoaIawdjX3n61Lu35WRRsHRzMoo
+	Dnr3XNaNxPF/cmGyACnpnuLn2dyW1KDhRIWQkNK69twg/Vh6ux/+1W1EDYyzVLt8+n3Omi
+	raMauTdMKZBi5oYRiOAZD1JdjvAZteE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wAlL3gZu;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=rwVwLK5M;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=VcBL8d2Tx+2ZFZ5f3VAnB2vrhIOAq8GII6J/15sAm3w=; b=wAlL3gZuurnhVR3RZjXKIacc6C
-	DpiVRxRwhsGlnwZyo4oOr7gwAAOmSM1QpcrMhzvtzC2a5dNlB2zSXmOBq+BJPwMTASNR3KTVLGalm
-	QZ6oupbY8Pk6H5cCP8WIL7dB+eq+P09obvWC/g28IRnOa3b3b3yXR0CT4nwf0bymuvFTUFOrBwUk5
-	WNcNCtx9VR99V9JVHqE16LQiYcQV6kemYKmE7HHk7jfhdUBOlgHkrmYPdx39KDMcfNcFp1W2q2x18
-	8LTk3FPsYCR9Rnip4hR/L+2BiFiza33+vRZHV4ozeQcDGOyNIwvwSffWvwPPh4TvRoN/+z0W1/F8O
-	hGV7VqQg==;
+	bh=PNhH2riMWX3Q+myVpHniFxOejkk4Wa8DeInyiyrQIbg=; b=rwVwLK5Ms767Y714H1sr3+c/rP
+	pQjmUSg0nCv4AHR88HEpeU/yN3u4pmbEyw5fVOv4nSrRUK+EGAKKdJeE4bGKKFSCtgZwH+9sPszSP
+	/b+QXFFUpDcSIROxu1pOXNv2PQI+PoXueLsQcjxfyzfvhbYdFNss0Ri4/baUoQjc8ulvGwCbs30i5
+	nqYk+sr0o1HmejMC0CfirI1e4yZIaqvfltSSoykgtsZOfZc1sUDG1KS5w/cTaX2S/wlxIGVZGkcpv
+	+k995blS+qXX0HkB11y8YuN6RoSzIE6Cn5kIGAWM1Osg5DGi5rlJsH/e+5mkzB2NmI8epl2M+qWPk
+	I49Kjvww==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viRWe-0000000FyFn-0Vs4;
-	Wed, 21 Jan 2026 06:17:08 +0000
-Date: Wed, 21 Jan 2026 06:17:07 +0000
+	id 1viRft-0000000Fymj-0Uvn;
+	Wed, 21 Jan 2026 06:26:41 +0000
+Date: Wed, 21 Jan 2026 06:26:40 +0000
 From: Matthew Wilcox <willy@infradead.org>
 To: zenghongling <zenghongling@kylinos.cn>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, zhongling0719@126.com
-Subject: Re: [PATCH] mm/hugetlb_vmemmap: Use max() macro to simplify the code
-Message-ID: <aXBvY_MjV2GZ0WPN@casper.infradead.org>
-References: <20260121015114.560424-1-zenghongling@kylinos.cn>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, hannes@cmpxchg.org, david@kernel.org,
+	mhocko@kernel.org, zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
+	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	zhongling0719@126.com
+Subject: Re: [PATCH] mm: Use %pe format specifier for error pointers
+Message-ID: <aXBxoBTz16h-eKEs@casper.infradead.org>
+References: <20260121034817.607435-1-zenghongling@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260121015114.560424-1-zenghongling@kylinos.cn>
-X-Stat-Signature: xjiojdtje9xecn765jsxtpx67t9ftiun
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E5C2F100002
+In-Reply-To: <20260121034817.607435-1-zenghongling@kylinos.cn>
 X-Rspam-User: 
-X-HE-Tag: 1768976234-217317
-X-HE-Meta: U2FsdGVkX1/37eMVMJ79EiYwJRKIFmp5txi3BPIxmzXH9vut+8mApYq5N3VsO5xxk1/6+8pGUAYD8AOfDhXmJMm9b2yXMVLuBaCPriTx0qBvQemLwwUTKmWelXaWUR8a8etphO7wZ+iria1HplMhaheWG73t0f8ruz0FyUr31AzWtn20XpibwI/XwnfRasJDEykYIv3gYgkhwatu4iOpRPd5f/NQs0Ql0xIr2BPV62cKEVtzZwUp31C2nPUwJMGhpE7of4RSidqOzsp7lflzfsd1sxpTJj6OpVbjRzMYMdvfXu0wQzPjqN4IdebE8a42jY7+DdhnxvAPfX8L9GIOf8j3frkKdnDZCoUwv8frz2qmMMuUlonzqgsFKScFcMtoDpW1Kjh7B0p5XNu8XpFmFtF7DXyPXm+LgIhxlFM6XqCrHNeI0PX8mm5K6wFQFS11xjUthjK+GTgoYSk7umQCgEiAgasX2vG87kBM9lbwIZdYYF7O8/Qs/Yqlgy4LE+fmn4s0nBM+/SNEiQwGxSfQh/C/iJ4swA9rmAFXl/aCsIMFd/5ZowXqWxOrTyNwL7stgXdnLhltinIGa+K9axyXQa11u3bt2mTkwhk6YaskWfqFc4WhvCMLX1M3ZzVldsx2AhF9nBBuSIJZR/LzLPMDMM8SnGo6PHmuwlmCgIwWAohlNy8BerJYeKxz/5O1wF4RQEQI8A96N9uYpcElDzWOCpr9eT2XXekPJbFMDy0dPgn3pTl9x/xPf/BVxZTLg/MjK451kgZ4mEqTFOyn8Hs/zlfvn4ZyvSV7kDxfm/IqcGEcpjT8qZfp5Qkh6ZZrvCQoICxoYACY1qRSNQaSZo5V0U5cn2R+WjnKkXWPVUJ2XYHw1uxRiz1hGuY/rSA00o3P8XL5atFUgDCx/RW4h/uXI/9xxBUAzkiPjtTt7Ux8eLsxIjWkIc6Ev2QNDWL1+OEyEsojV0IkkQGSRFh4G7T
- G2G6gNGX
- savSenaEc9Bz1FkwwZ85Bzny7f5FC6ESMWkWXaBNw9KR2B7VRmu6yb9bkhUskCw6eCpsWVelrpor4NvyppTbeWhpcdBZz2yR1RwgzVvj2v+U9aRyAgbL/Fcf9caRRWXIIhBQZ9pJz3TrgWf1dfa81/3AGEsyU497lolXTLa2eOlmkmlpswNtagkGhdclTan2ExaGVs7Xt1CXdRYc29tsDZmVaiPOSNtHiTdxmsM85l9hoOw0+TqwyTaG20dD+LoKIRl0rpAx1sSu3Ujuk4fhWhh1DuCW5CwtkZ8LShKpqZGykpAI=
+X-Rspamd-Queue-Id: 10D341A0004
+X-Rspamd-Server: rspam12
+X-Stat-Signature: t7thaiwgrx4dsf97gy8muqucwq37rn7c
+X-HE-Tag: 1768976814-595915
+X-HE-Meta: U2FsdGVkX1+Z/JpLotFPvOu9LA6npRi3yUUQCnSuNfT3JL2rLvGkUFNm+614+FG+62e0UKE1VpUQHbGTSeDuV5D/k1c2+4wMOhnVvK3y/8G1HDg4JpN2g/7Vn+M/T0UO9hUD5getb1NexMPENfBW7lCulPyTLYzC2ZFEHMh6vukM2Iu1s6qUzKrb6m5J21+dkwhZKJ217DyQr+lh8Ud8n7nPLQ3YZAYnzO5YpvPnUhq6unuR72mPYtlTWprP7ARU4ojfTqLapRgdYvfSM1BIa4DNQ8427x6gk35zxzSx2olJz7HaEA4Pkmusou5bskQcGNRePfQjnRrrNayUgzLX2rxM68qt7YIcgs7Mu7BGk+0Np8Iy+t2j4eair6DYRy7IskXU7Y/JhVb1y5s910iu5BoYefWG1YWUk07XJsHo6MblUKWV7wSZJxGjIhOB+nnFuGFc+LpLis6U6LqWH39MhpODYPySZdlduP+FqnLbY8GNQknJkAn+tDx4hTscxINwZfzeOmiVvj0/NKzUzjed6y6eHcK/rUjP7BV/ZkJMkkSdXgHowh0nXMIEwx/L2Z+NV4AQEMzNjIcrxqIozt4CmjLYEvQZBlLlzdbtOAcVHEgEasRVe37RAQKvcspe5+qCKmL/D8RjxccmHexjlEIK3MSMWZhr0JHnQagjiz755gNMfzwCGIOiXVS8bN/HP7HUAyIvayD8obDLOb7N7MIxg6nwGjZQLxMtWOeiIVV68x2GExcSJmwF9fkwsO1TZXjVXy00TRC966TdIvIf/Mm30MutGJsElnPbBwY+kqwYnrrYFX3cyLRYM9p8k471YlOSvClVlRmfPo4rNDOmVh2d5q7ykXt+GGZdgRDoGCLmJd3gC3SOL8z31tI9h2UJ60UoRLehAvnnGDoLl7xfagiS69LLIRqwVlPGeosdOFUg6aMZzMsE6REtiVt035j9fyw1tJWsa1Na47rZ7GyKNpv
+ 4xXENOCI
+ wEN1y/LwXJ1wb530ngCz/gwSwTSlB4BGf/h9rC/jP3YxOepjR7qpGHcAoqtMAo6TN6Q0ZW4xtK4PZiWZLBj/2e6CkrudwfM/MHC4tjonJUUVklRXzxtXDhW2mh0CkSacI4Qc3kn+BeqNvwmJ+7Z3Lg8l5PIDKi94Khmf+W0hU+Vql5YqIMwMioEoLlxVClpZd8Njqda/AMHFiwos6sAazdfrhXRNXEUGIb9m33rSaoNgdgQmv7lAK/dwKau4o+6OBrM23
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,17 +94,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 09:51:14AM +0800, zenghongling wrote:
-> Use the max() macro to simplify the function and improve
-> its readability.
+On Wed, Jan 21, 2026 at 11:48:17AM +0800, zenghongling wrote:
+> Convert error logging throughout the MM subsystem to use
+> the %pe format specifier instead of PTR_ERR() with integer
+> format specifiers.
+> 
+> Found by:
+> ----
+> ./zswap.c:753:20-27: WARNING: Consider using %pe to print PTR_ERR()
+> ./vmscan.c:7504:12-19: WARNING: Consider using %pe to print PTR_ERR()
 
-How does this improve readability?  I understand what this does in
-the ternary form.  I have to think far harder about it in the max()
-form.
-
->  	if (!is_power_of_2(sizeof(struct page)))
->  		return 0;
-> -	return size > 0 ? size : 0;
-> +	return max(size, 0);
->  }
+Please stop.
 
