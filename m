@@ -4,108 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9D05C44528
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 12:52:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B052AC44525
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 13:14:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 462466B0005; Wed, 21 Jan 2026 07:52:33 -0500 (EST)
+	id E5B0D6B0005; Wed, 21 Jan 2026 08:14:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42CA96B0088; Wed, 21 Jan 2026 07:52:33 -0500 (EST)
+	id E096D6B0088; Wed, 21 Jan 2026 08:14:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 365F36B0089; Wed, 21 Jan 2026 07:52:33 -0500 (EST)
+	id CC03C6B0089; Wed, 21 Jan 2026 08:14:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 20FA06B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 07:52:33 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD39888E97
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:52:32 +0000 (UTC)
-X-FDA: 84355959744.20.E303433
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E2E0D2000B
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:52:29 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PCyoJaHp;
-	spf=pass (imf13.hostedemail.com: domain of zhao1.liu@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=zhao1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BAFB76B0005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:14:13 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E9C38A7BA
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:14:13 +0000 (UTC)
+X-FDA: 84356014386.17.CDB7CB9
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3C8D4180005
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:14:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UgTDjzcm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768999950;
+	s=arc-20220608; t=1769001251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FpkD0z4M68ZfTMWJgSMbZuMpf1IUusaTld3FCOXfu8U=;
-	b=lBL8CNZKBYOb2IOH6TpW++enmweDOPzwRjLhQPXhXXZNuBOg4Lq7R7u1+/p5Vto1TYEEOu
-	vjm2mXlwc1i9CnnZBP7uywbv7ftjfzTLmYPAUFVDYs7qYApfdVFf7c6jx7KkDMZ3iOH6yE
-	DNGY4A2x6Dzs7caGrTZN/It5pucHELQ=
+	bh=/HQDkqfe8wWRgLYxMvvzfKdW4MZONwsks3Mx1gvqFM4=;
+	b=T9eNbWlwtxCKnm4gFp1KD4tv7UyZwx1GJri/LxBXgS0D/YqH/W6T7nezHt/KNhNZZXg1LN
+	tJXTBIM+NRSdyLL5u7WoXzYq8Uq0OEhDcXSFgMAKXIKZrocOJbjzWa398e5gObadm7QRH8
+	PW7FVi6KwyYYlbnZWBVRS3dtx/DAxY0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PCyoJaHp;
-	spf=pass (imf13.hostedemail.com: domain of zhao1.liu@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=zhao1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768999950; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UgTDjzcm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of boqun.feng@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=boqun.feng@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769001251; a=rsa-sha256;
 	cv=none;
-	b=i7SkljzJpmVA3zVhwGYDyiZoXVji5gp6NFPFKuaz3lWPirAtnUID2KjceVVw4K4c+yhapA
-	V/v9aFTrhu3qsQSTCsQSlmWpl+pM4tlTUWPZMxwuHstdbANSgtTXVCnL2Qgvaud7QQOg2I
-	8hJ2YpwSR5OzAeH2nf2bREsxGMYMcLM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768999950; x=1800535950;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=93qVCOReLolQAzWDuV7FilpZk3VhIeJNRhIl5LgLvD4=;
-  b=PCyoJaHphTecEciAzMcluqsOHPRsGmHGH2yEFEG+ioFt92Fei+OVthUt
-   iIbFCGG+gBKEzs8BtI7mKpjGXHDIexVjVC+VtfJ3Raf5VFRAT82+a/8p4
-   oM3deUou5QCWBZSbDvoyF5/6J9AvmPd654/GpeHf7LDG+6CmshEf6kVDS
-   8XwAo7C3sP12sNM8g5mOIe8v4j5MGzPR0rIwe5l+XysTgco+X/NRj2KEg
-   ZqTdcIHCB+QORvRG6Tm6Y4Mw4ZpwYJIz33pgOb6tF/b5bDRDTotbBohCm
-   C4nc5Yp5sgL6VRl5Kp2TDSJ63abcDG930hYRDaWIRS9l7MVN8BAv8Sih3
-   w==;
-X-CSE-ConnectionGUID: vQt7DM/sTk+5Vy1XcPqcJw==
-X-CSE-MsgGUID: p3HEtlzuSb2flr6iJQQiNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="69242543"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
-   d="scan'208";a="69242543"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 04:52:28 -0800
-X-CSE-ConnectionGUID: 7urcOYczRA2ACdjtwuqQDA==
-X-CSE-MsgGUID: uG1TQmSuTnyH84e42KJ33w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
-   d="scan'208";a="206506618"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by orviesa008.jf.intel.com with ESMTP; 21 Jan 2026 04:52:25 -0800
-Date: Wed, 21 Jan 2026 21:17:56 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Hao Li <hao.li@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Hao Li <haolee.swjtu@gmail.com>,
-	akpm@linux-foundation.org, harry.yoo@oracle.com, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, tim.c.chen@intel.com,
-	yu.c.chen@intel.com
-Subject: Re: [PATCH v2] slub: keep empty main sheaf as spare in
- __pcs_replace_empty_main()
-Message-ID: <aXDSBD09n7jYAX9i@intel.com>
-References: <20251210002629.34448-1-haoli.tcs@gmail.com>
- <a231264a-2da5-4468-a276-777fc0241246@suse.cz>
- <aWi9nAbIkTfYFoMM@intel.com>
- <3ozekmmsscrarwoa7vcytwjn5rxsiyxjrcsirlu3bhmlwtdxzn@s7a6rcxnqadc>
- <aW86/Nc2+bkopFd7@intel.com>
- <rey5elthflgiygw4lf5zqldlof6nd5b2mq5is7zbgec7zqvr7a@izbte4jmotrq>
+	b=LCoqzqZr31KFGXYnI/qmSGjfd1Su3jKb/nf8Gg4xoePcf4UcfoqfEi3r+TiVXTnm48oqMU
+	lmQACiVb3DoELYuw+ezPym1T9+WHzLO6+sRt2UIZYJxviT+wr0WIHZrnFfawhfcN+ai9zp
+	tP1BWcbpk2XZjIMr6zKCSa0fgm01mSM=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-50145d27b4cso67811921cf.2
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 05:14:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769001250; x=1769606050; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/HQDkqfe8wWRgLYxMvvzfKdW4MZONwsks3Mx1gvqFM4=;
+        b=UgTDjzcmQJPmBnI52//rpfbm0xTdNwOOiE1BhYv3JcV0nIB+ikekZA2J4xltXd7BTr
+         pWd4AWg0EB23P8tqAj9CzaBHYwq2vGjolzk1VKlTJ+9wxgI3yZInOJRHrmN2Nnc3F5cq
+         MYbqlT+dQ8H8KhtG5p7aoHozQ9E0XGM04cWCveg8XHqdLvDGGq54XkF+AAoeu9xeLXT7
+         mPEf3vBtVpAYb01nVTSXo//xhydRCu3qhgcbnL5M/ZDECyzzddAUvZaa9DZeGX8JPZzW
+         KahSOITEqR74ktfo/FhbrW2bcl38+EBIL9YozQXca2Dr8L40zSmj6m68OWKzjRSR6h+r
+         pvHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769001250; x=1769606050;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/HQDkqfe8wWRgLYxMvvzfKdW4MZONwsks3Mx1gvqFM4=;
+        b=f6DG9+qee2xgDJYdNkXJbPcGTn9iDk77F94LXZ7fKi2n+vExu9gc/uirmr7oTWww0d
+         qe9JnAz6/fSe3SuKEIBns+1bo1vz46d5Dph6DFV3hBNN4m/KRHXhVyffmgtEkp6lV6tE
+         ug60YLBvdZNI0d3RIAyuPrcAtb8SVmkMcUnv63rHVfCq1JiiO6wJw/X2TpWcSpd5VlBQ
+         j59jPWbC5BCualHnl6GA+Fdjrcng8L1bIVW3hUKtq/Ub7fcpDh7GFt3zjISkG+28yEfi
+         vJ4hSIAt0z9XSLRP2q7mC++XVibL4ujkSzy2gXpk43027Xq5Tn3Z1PIWlvQL0isykeIS
+         Cv3w==
+X-Forwarded-Encrypted: i=1; AJvYcCULlz347aYufolLXDsGXyVdqivDBDZ8F0N+mUow6XqvlCT4k9nk9qwX37sXKgln4DL4laJYk/WKJg==@kvack.org
+X-Gm-Message-State: AOJu0YwUl8eofbbv9X9QXHmvBP1BG1Nu197HwIW69Dg5M+WbBy3fCalE
+	t9y2NZMNGPE+Q/povWXs3rnPIrvSF9IwNfIP2UjlOP1LXT4xkf3hBdtG
+X-Gm-Gg: AZuq6aIAvd00G1WG1Ni1dRJegMNezc73ZwxjmK3QW8NzcsDc4JCqs2NPy5hVtbH15iT
+	zv9OMNUhx2n8jRodxN3ldZNR6RatztkatlG3Rd7dNuB5PWs1KLSXp6JQxo/x+1VGiZez2TDPFAc
+	l04zDF6YqEuSG4EHrAO71bnENpxOjoABCtNeYb5cU8oqjDborDaoxDjjZ+kAC0ZVLUgrWX+CO/v
+	mVCPinuCn/5cym6jA+yQy19GWItOHEuJYu92RKAFVcaJfODpUTSbdnHuZeQo+qmsa/i9ciiKFO+
+	tQg9NCwv/YAogD3Ri1ijAN0Hlcc0d9vW3byqVnR8jh0I1aIWDP2+1wARJa4pdYE2MtNKS6tUgKw
+	MAckpbOa4huGrDteCzvB4CTcNS96AgD1QjOrM4DfHWBcFoh5XHlgHTjPeNnR5N323Tf/P+4xx0O
+	lXoUFUa7zcaU9CasCAUKOOcGtNzjZPZDHgbLi6fabHPbA04wVSpDpBjoMCDPzFB8rieuaAiv0if
+	KDWbcNKtzLT7PvgRfiqScqDOw==
+X-Received: by 2002:a05:622a:1805:b0:502:99c9:591e with SMTP id d75a77b69052e-502a16b3a66mr243793681cf.38.1769001250090;
+        Wed, 21 Jan 2026 05:14:10 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6d7302sm124098106d6.52.2026.01.21.05.14.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 05:14:09 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 007D7F4006A;
+	Wed, 21 Jan 2026 08:14:08 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 21 Jan 2026 08:14:08 -0500
+X-ME-Sender: <xms:H9FwaT6QxyGAbq02ztxJgwthcxj-ep_vFFW8_qF2wco0e4hYfosIrA>
+    <xme:H9FwaYydmotzjXwsBUcX6kWw0iV39_Nra-amxLAv0A-EdzQtYcGVTdf1uTgyE7kMj
+    saWb_ykwgUSto98MXuuGUCD_0gG265YL5-hO5QETwbsIsEvJ89GFg>
+X-ME-Received: <xmr:H9FwaXzjSFalaBqzn87ia9lgR2N1Yjf6YsJbPNhNut2FR_T3301XFWvV>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeffeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpefhiedtieekleduledtgfelvdejffdvjeevvdefjedugeegffekjeeiiefhieff
+    veenucffohhmrghinhepthigthdrhihouhenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshho
+    nhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngh
+    eppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdei
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhogh
+    hlvgdrtghomhdprhgtphhtthhopehprghulhhmtghksehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtoh
+    epghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepohhjvggurgeskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
+    gtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhmghhroh
+    hsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:H9FwaQX7al9e38e0O4NKXddNLn6d0hY0fH7ac6s5kq4fAM9xS95MgQ>
+    <xmx:H9FwaUQ0N7NkeFHXrrQP4GyjuAwAU8USNw8_M8eIFD5eIKZokc9DEQ>
+    <xmx:H9FwafOeAGHKVYy0YYU9_ShbhoA_0ueMN1XMwgzhM-NefIgXik-fCA>
+    <xmx:H9FwaRy7ZjxD4UfFdS50NZ1LDTQwyTyiVe4znAPnA0ykVvCAKArP4w>
+    <xmx:H9FwaZpr7TPPcyL4pbNxYn9iVeS9_3-cX7zxPcbmzoj4Te_-qU8Q1HyI>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Jan 2026 08:14:07 -0500 (EST)
+Date: Wed, 21 Jan 2026 21:14:05 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	rcu@vger.kernel.org, maple-tree@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
+Message-ID: <aXDRHerRiM7TzACy@tardis-2.local>
+References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
+ <aWrSkAPFkdH_tvtN@tardis-2.local>
+ <aWt4muGXbe7lBmXt@google.com>
+ <aWt8Ze-otTkexNIe@tardis-2.local>
+ <aWuKqLERqpNz9qtz@google.com>
+ <aWuV858wU3MeYeaX@tardis-2.local>
+ <aXDCTvyneWOeok2L@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <rey5elthflgiygw4lf5zqldlof6nd5b2mq5is7zbgec7zqvr7a@izbte4jmotrq>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E2E0D2000B
-X-Stat-Signature: 116ih17r3qimtodxzs1id1y3bth79o7f
+In-Reply-To: <aXDCTvyneWOeok2L@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1768999949-835219
-X-HE-Meta: U2FsdGVkX18Z85nbzSJ/koWmhLF+T2s4OIWp7Z7ojKTvc0/7e/J1fseoC8GsoeMOVETSL+8WtrHgPwlspWg1ksQTtTnekOnAH5H/yd/++6cyLx2Zc71iCXcP/HDCcWu4Qkz5Vrhpsx495YKy17hav4TyPgoQukFPjtzS7yFafW7/P3FNphcU2HUmdYmIcUJ7lVRmz3H9F/EVhPKO3v1Ua1T0qPcZij9OUUbhnrieVbNZ8rMEvPNEATeA0MLKPv9drMUM576ijJzOQTeBChoeZcXkfAB7G6vGbYCwmcIDRE9B7yWviZME7m6Ev6Qqq0TwqiXcRyjN8JQys4/Jdi8eQPGp2umFljzMddkIMAyuxoZzyXqWoKo+Kjw3Qy0ZRZP6jZCzAIW5VMTKODjjU1ciq4OzFQ7Q5HjC9p8267yjH0w16vJNskdDE7wWJlXMCyK4wURPU0xrsffmttFdz9H9wdbBkkug1aR3rqDnbV+wFkB5fZA86EhbbJPIFwOct2Sj0x0qKcE6s77jclnJjOhWorHBE18MzEjKc5OPiVZlexbx7SErvFKsOa3RbF8YkUz/vPdZvx5j9pzrENnXAV5jgxzLIwZSxiFrpDOY3DoOZE5sPrfo2s3beNaymcsuGhUU4dCqJ2a8WSGrifNrg6g+E8hHLW5nFFo/Ch8xfRm9O4rhCG2jvBL5vkZhFNPTMrFOnHs+fUaZM4ENS+ENB1ezzGXFv1+wlb9b96FM7O+kW0BGGjBFcl8Xpso5LJotuD1NlofeQNo5kot5QJ/bWOTEpDiwZuMG/ka2Y5CAJVUvviuw38ddV8gPS6+EIRQKg6cYOTIJH+qLZNaN9T41zaRtqt37UazmWBo6M3IvTtYuw+r8jmZz2JF3HYqhJuz3w6Qw5Rrdqq2hUf5jviiaBA8GLagnHw4J+Jk8vPwwXKw1lslVPGdgTZGCFSbBjpk1kkTuCccjD8bQPW9XM0MnLcX
- KtQx+mAF
- G2RBVLGiv/NyrxcT+IQ0caK+t+WGT/GpYIIZMxv7Z7vJDW2ZQh5ULZAtz9f2VLIkXNWzpcuWC0ZxP/sOAaMNNrS8R5Gg+S6ibIF6b5koMh/8x0K1nWuf+s7Pc1Pev1cpWmj7hVppvHG+b8g7u8zDd8cx6TLQhp8OiRsIcaDqdbNHPjeaohUFuJtJL95zkg2TrxGHy650c4dK3NLD1lq5WKCcCgZ/Q4FkAmgN0PJ6q2Il+N8iDRm40orTmgyK6DLYiCQoCklTx1V407342txKondE/bK5rumrcyOSbVtmfQc3HThnEoeabS5Ms/TFasiBif3cUijX72ep061iE30cTkGdwhg==
+X-Rspamd-Queue-Id: 3C8D4180005
+X-Rspamd-Server: rspam11
+X-Stat-Signature: xd1ikbmar5s6hecgk6dpwgnosquqcp69
+X-HE-Tag: 1769001251-860430
+X-HE-Meta: U2FsdGVkX19uvEKgMlM+coUwgTmPNe5k4H6mhMc1ugiHWYAtvKNhh5QlCw/jUHwPUBNhTWAmzt7LBt7rY9Xa5FbqHWDthyPxK92OGc78hFoAk2LqTCM62JgzNzYIKozb9LK9KpuUDvIK8ZxcMPYBNX+aoiS1IRMsaGWce872L5/JDw6wBQPgy+LFE1C2YdgVrPeE5bRX8VHZF4pyisKrACJeyw+MPYDegLR5BzNilkW7Qh2KRxmWS/bWqkjZ549RboBIIlMkmKkkYtQA8SDvFrWV5UTRVl8b6Q44mXnhdMD5NXIn5Nsl45NnIf4kJ/xJNO+eWTJ3RfcjMGNU3JHHdUI2JABqR6EX5TglcDmtFbTfFzUOTNacQW+LDkVtsaNuIJvqUPHbC2ftSTauZWGO5CedW+pbZpL9zgSHE5D5Fux7DR+Vz9JRkiwb69Orp2gPHYnodQ8QLFrAbdStnrd79mwrNRVbFV1JNx8bkT87oNaFUkI00tlRI6gK3yHY/WUJo5ng5ApbW9m9fOUwWzMMsLVk4bxZdrjQVoYkBdvAMTzZYp5FWomqz1ubW98q9EgNsqQmx284JRmPkqRu6Xxi3QhnZrj28SmQJ5+u1U7V0dEoFDKvWES7ixFbeqoXsMX5m+vum1g31wS/VTL0zGR6AK71ZwZwIIjRC78hOzHhW8oO0DZSp2165U1MTqTMuauD3RTN/+gqi0ljjxt0IZlbQWWAtDBSWbS3j2vjSnpttD+SWL1wpxpWFEvHgmnApMW/uruaGccSuwSTH9aXN4qevqJB5i3K3B++mZWGi0ArBdKslhS1s7uddq5pwVciGZH5Ku8mZ3vE6MIZwtzvGb8A4A+SAfFeENflfunxCEya+czdBaaNwft/Q6OcVunbOhlRumLFj4IAC/ujNevd74wGKgFCzr+u3z3wQCpsvjL14zdD+d1yiB0CCXDevojE6fK7eF/wh4CGD9VyKk14F0n
+ fWG1v6zn
+ 5n5zPe26mjCrI8ibPQx5gPK66d4J9AmHwIWZCNtUY720HpP2w2337c5axSlnuaL+dfhd0Bi6nPY3JeakM5GDY/IQw2Ze8CsHkjyMtaCpI21+2FDlrpLO8cp1gvHLzgn6EO2TiOcwMx1yX8IojU0AS3M4+QnJ39fHicoOt7ce0QrXs8MQVtayweEbcmDri3QHjSGpREs+P43y1Sshb6JIlSOzSK2ru/Jzc5NBOoH8W/BDz0E+kDzRf3RO39NoDs/C9mkB1jnFgvj5/8JBZ0UqHtXxJ1iyesG8Ac4fl1XW9V0cTmHmu7SJ9ZHm4CvmSD1tiq08JKelmN0wAS/I83G/Zos4Z5n4D2GnC36ARnsL9ok9N/lcQ9dzCKIyppuEh9EGWjtaJZ4Jms3eIvht1CpQV09Nzr44YLronrxQbCz9m97upMqr7+KTuy8bBJdYlZMPFLAcJjLGPit9bakjob0iVJFD8c2yHoB7OSuwNa7zNZy4/ys0ocar5sFo2Pw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,112 +179,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Thanks again for your thorough testing and detailed feedback - I really
-> appreciate your help.
-
-You're welcome and thanks for your patinece!
-
-> > It seems like this is a GNR machine - maybe SNC could be enabled.
+On Wed, Jan 21, 2026 at 12:10:54PM +0000, Alice Ryhl wrote:
+> On Sat, Jan 17, 2026 at 10:00:19PM +0800, Boqun Feng wrote:
+> > On Sat, Jan 17, 2026 at 01:12:08PM +0000, Alice Ryhl wrote:
+> > [...]
+> > > > > 1) "relaxed atomic" does not sound like something that provides an
+> > > > >    address dependency to me.
+> > > > 
+> > > > If you look at rcu_dereference(), it's a READ_ONCE(), which is the same
+> > > > as a relaxed atomic load, and yes in LKMM, relaxed atomic load provides
+> > > > address dependency (Please see the DEPENDENCY part in
+> > > > tools/memory-model/Documentation/explanation.txt).
+> > > 
+> > > You argued that we should rename READ_ONCE() to atomic load on that
+> > > other patch series because "atomic load" naming is better than what LKMM
+> > > normally uses. Fine, but relaxed atomic load is a much worse name than
+> > 
+> > To be clear, in that series, my argument was not about naming, it's
+> > about READ_ONCE() being more powerful than atomic load (no, not because
+> > of address dependency, they are the same on that, it's because of the
+> > behaviors of them regarding a current access on the same memory
+> > location), and we want user to specify the intention more clearly.
 > 
-> Actually, my cpu is AMD EPYC 96-Core Processor. SNC is disabled, and
-> there's only one NUMA node per socket.
-
-That's interesting.
-
-> > For lkp, smt parameter is disabled. I tried with smt=1 locally, the
-> > difference between "with fix" & "w/o fix" is not significate. Maybe smt
-> > parameter could be set as 0.
+> Expressing intent more clearly is fine with me. I still think it's weird
+> for us to not have READ_ONCE() when it's a primitive operation of our
+> memory model, though.
 > 
-> Just to confirm: do you mean that on your machine, when smt=1, the performance
-> difference between "with fix" and "without fix" is not significant - regardless
-> of whether it's a gain or regression? Thanks.
 
-Yes, that's what I found on my machine. Given that you're using an AMD machine,
-performance differences arise due to hardware difference :).
+But in our memory model, it's exact the same as atomic_read() (see
+tools/memory-model/linux-kernel.def and search for "atomic_read"), so
+why do we want to have both? ;-)
 
-> > On another machine (2 sockets with SNC3 enabled - 6 NUMA nodes), there's
-> > the similar regression happening when tasks fill up a socket and then
-> > there're more get_partial_node().
+> And I also think we should consider using an implementation along the
+> lines of what I shared for our atomic_load() or READ_ONCE() or whatever
+> you wish to call it. The perf impact of helpers makes me sad.
 > 
-> From a theoretical standpoint, it seems like having more nodes should reduce
-> lock contention, not increase it...
+
+I'm not totally against that, it'll actually help Atomic as well, I also
+hope that we can use `asm!()` to implement the cases where
+`{read,write}_volatile()` cannot cover. However currently I would rely
+on helper inlining to resolve this to avoid duplicate implementations.
+
+> > > READ_ONCE() if what you want to convey is "has address dependency".
+> > > That's not what "relaxed" means!
+> > > 
+> > 
+> > Also note that my previous reply was explaining why we don't need to
+> > call rcu_dereference() from Rust, because implementation-wise the
+> > LKMM relaxed atomic load provides the address dependency. Depending on
+> > what we want to do, we can limit this address dependency only to
+> > rcu_dereference() and make it a special case, this means we disallow the
+> > address dependency provided by the "relaxed" in normal cases. Or we can
+> > add a Consume ordering (a type alias to Relaxed) that makes user to
+> > explicitly use it when they rely on the address dependency. I think
+> > either would resolve your concern about the name of "relaxed".
 > 
-> By the way, I wanted to confirm one thing: in your earlier perf data, I noticed
-> that the sampling ratio of native_queued_spin_lock_slowpath and get_partial_node
-> slightly increased with the patch. Does this suggest that the lock contention
-> you're observing mainly comes from kmem_cache_node->list_lock rather than
-> node_barn->lock?
-
-Yes, I think so.
-
-> If possible, could you help confirm this using "perf report -g" to see where the
-> contention is coming from?
-
-No problem,
-
--   42.82%    42.82%  mmap2_processes  [kernel.vmlinux]          [k] native_queued_spin_lock_slowpath                                                      ▒
-   - 42.17% __mmap                                                                                                                                         ▒
-      - 42.17% entry_SYSCALL_64_after_hwframe                                                                                                              ▒
-         - do_syscall_64                                                                                                                                   ▒
-            - 42.16% ksys_mmap_pgoff                                                                                                                       ▒
-               - 42.16% vm_mmap_pgoff                                                                                                                      ▒
-                  - 42.15% do_mmap                                                                                                                         ▒
-                     - 42.14% __mmap_region                                                                                                                ▒
-                        - 42.09% __mmap_new_vma                                                                                                            ▒
-                           - 41.59% mas_preallocate                                                                                                        ▒
-                              - 41.59% kmem_cache_alloc_noprof                                                                                             ▒
-                                 - 41.58% __pcs_replace_empty_main                                                                                         ▒
-                                    - 40.38% __kmem_cache_alloc_bulk                                                                                       ▒
-                                       - 40.38% ___slab_alloc                                                                                              ▒
-                                          - 28.62% get_any_partial                                                                                         ▒
-                                             - 28.61% get_partial_node                                                                                     ▒
-                                                + 28.25% _raw_spin_lock_irqsave                                                                            ▒
-                                          - 11.76% get_partial_node                                                                                        ▒
-                                             + 11.66% _raw_spin_lock_irqsave                                                                               ▒
-                                    - 1.00% barn_replace_empty_sheaf                                                                                       ▒
-                                       + 0.95% _raw_spin_lock_irqsave                                                                                      ▒
-   + 0.65% __munmap                                                                                            
-
-> > Back to my previous test, I'm guessing that with this fix, under extreme
-> > conditions of massive mmap usage, each CPU now stores an empty spare sheaf
-> > locally. Previously, each CPU's spare sheaf was NULL. So memory pressure
-> > increases with more spare sheaves locally.
+> Yes, I suppose that would resolve my concern about the name.
 > 
-> I'm not quite sure about this point - my intuition is that this shouldn't
-> consume a significant amount of memory.
->
-> > And in that extreme scenario,
-> > cross-socket remote NUMA access incurs significant overhead — which is why
-> > regression occurs here.
+> Well, I do have one partial concern there, which is that the wrong name
+> will show up in stack traces as long as helpers are used.
 > 
-> This part I haven't fully figured out yet - still looking into it.
 
-This part is hard to say; it could also be due to certain differences in
-the hardware itself so that your machine didn't meet.
+I think it won't be a problem since in LKMM, atomic_read() and
+READ_ONCE() are identical.
 
-> > However, testing from 1 task to max tasks (nr_tasks = nr_logical_cpus)
-> > shows overall significant improvements in most scenarios. Regressions
-> > only occur at the specific topology boundaries described above.
-> 
-> It does look like there's some underlying factor at play, triggering a
-> performance tipping point. Though I haven't yet figured out the exact pattern.
+Regards,
+Boqun
 
-For details, on my machines, test where nr_task ranges from 0, 1, 4, 8 all the
-way up to max_cpus, and I plot the score curves with and without the fix to
-observe how the fix behaves under different conditions.
-
-> > I believe the cases with performance gains are more common. So I think
-> > the regression is a corner case. If it does indeed impact certain
-> > workloads in the future, we may need to reconsider optimization at that
-> > time. It can now be used as a reference.
-> 
-> Agreed — this seems to be a corner case, and your test results have been really
-> helpful as a reference. Thanks again for the great support and insightful
-> discussion.
-
-It's been a pleasure communicating with you. :)
-
-Thanks,
-Zhao
-
+> > > I suppose you can argue that the word "relaxed" means different things
+> > > in LKMM than it does elsewhere, but I looked over the doc you mentioned,
+> > > and there the LKMM calls said operation READ_ONCE(). The word "relaxed"
+> > > does not appear even once. If we're going to change terminology / use
+> > > new terminology, let's at least pick terminology that's not
+> > > contradictory with the rest of the world.
+> > > 
+[...]
 
