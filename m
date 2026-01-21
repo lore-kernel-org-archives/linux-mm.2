@@ -4,187 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 290D0C44506
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 18:21:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE318C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 18:30:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 726436B00C6; Wed, 21 Jan 2026 13:21:58 -0500 (EST)
+	id 195766B00CC; Wed, 21 Jan 2026 13:30:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FDA76B00C9; Wed, 21 Jan 2026 13:21:58 -0500 (EST)
+	id 155DB6B00CD; Wed, 21 Jan 2026 13:30:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D6226B00CC; Wed, 21 Jan 2026 13:21:58 -0500 (EST)
+	id 02DF86B00CE; Wed, 21 Jan 2026 13:30:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EDE56B00C6
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:21:58 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27DA91B0A78
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:21:58 +0000 (UTC)
-X-FDA: 84356789916.17.4854BC2
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010071.outbound.protection.outlook.com [52.101.56.71])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 763E540007
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:21:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=osO5lkFu;
-	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E62916B00CC
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:30:44 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57D9BC34A4
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:30:44 +0000 (UTC)
+X-FDA: 84356812008.22.634EE38
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 418D3140002
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:30:42 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ct3pCILQ;
+	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769019715;
+	s=arc-20220608; t=1769020242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kIRlpFg9zFWmj92AKKa+mFEQjgM2zjxJHQwKGAW1O9w=;
-	b=NiydI6t0R8pcI0bpp0WukDOic/6Lzh+NQ5eHk/7rLhZ5M9gPcLdH7JH+ZJvwg9cdgpc3uG
-	XPpMelpVyGhqo0GkOK+Tbom1tQU6owDlFc9G14n3VLSyAGD0IMCl8fOr4DpmpSpXTb6h8V
-	zFc79H+fsjAdtWpimBvW108hie5OJS8=
+	bh=hk+loGahu/yMxf2HTXU45I8jZGBJg9jz2G1ZhRfU2lM=;
+	b=y0XBXDcGNoF/zDF4mBsec9J0+0QGFKxHvMYrHLA8JBfqmD7JfPj+oCAxKmgeTFQy4ho5ra
+	50ul79nZOz6gs8/xA3Hd3co9n6dwGWtPJWXoKsuj/g1Ir0GefsQWAvhS+AUpO/GgJYoS/G
+	g8HLJHFRXy9VS5Dtzv4eUnUGGUw0SCs=
 ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=osO5lkFu;
-	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769019715; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ct3pCILQ;
+	spf=pass (imf23.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769020242; a=rsa-sha256;
 	cv=pass;
-	b=inViAE6uNVm38/sT1LbuFygJBirf2tdW85Ia/36x4zXNY8HKGHIFtNaEk/oBdn0qP05K2n
-	DE9RruiuvWS4VsGn6on0dlfCO67FpbX4LOejRJanGFtBRJrmzqmUgYGSJNadfDDAeFGBaU
-	Z/d1f7UhlfHmDYhLDT2i+7TBZQ+wNF8=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GY4OAQ+mN3p+g1azYx8erJ/zLp2zYcXjhH2pkKyH8mXTO2VonqnJFhYSfb0B8ktLj9IPHXU0oNNs1Xt24fY19Z3HY4oNSDsBlC6s5LjrM1N2v89lvDRyFoaW+Eq26wIP5848FatvCsw/EoyDk7F4h7LAEGwGfioZiDG3iRYyYhQZWPwVlQLH+ZfPPEUMDTa2TeXFzyB6WAjhcbYkjeIkExCllfU+ICZpKVVkSDsQbNXIUruaol0fYMVJZC94BSd+CMENYLRaf7W+uzu3K7BudKQWHQrNaygT1wNJNjk/xb5Y0A+A3aOnblYFq/Z3T3eIUH+BuxYtmEvhCKWuICGmwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kIRlpFg9zFWmj92AKKa+mFEQjgM2zjxJHQwKGAW1O9w=;
- b=RZaO7I4seF5TaPEkKEIsgTEQdWvJPcpev/wLO3kruEszpzYX9OlEdDTnyuDyZUeb2qCBepcJIDTqidJPa7U/pKEA7Uu6PP0LOTa4ggXH3pBxOkmO4GD8u8iPmU+G5/elUs82VD2hXiwqXtGTJEAXZ+pcbubyc4l/24ozr/FsunZs/Pf7UIYiZfftTbOMWvaDN5c4tBjMYI3F0KjNt+o9p4G1uv4r1sMxQinYl50BST0B+IvFqjXXgD/nERLeo1ZloAJWZxotLRgW9PrcvCcIVftbMRBKdVxZvxAE2nsbCJZAxiz592CsjEbj/fG2UMzoFfFdcXznL4teRr7jdn1QSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kIRlpFg9zFWmj92AKKa+mFEQjgM2zjxJHQwKGAW1O9w=;
- b=osO5lkFupN5/NH34bczkJ/dYCIvz8mQTqUdGiTe1kYc3+eCxU+QzC21WZUYZuj+97ux+odM5Wnswru6835S7VqoIBqaWmv0fLKcRV3uBJvtmsJWZRxnZQcZm6AAbUIdvSywZqml+/baYu3rFcj6BqRHV45TcTeGUlByeeTTr4ByvV2IE4vNurEPxYzKjQakwmg9j0NnVTUDDYevgQ0vot1NppJnlLeerAQYaNslewVnNw275mB+y5PD6sO6mF1RfJVHyDA5mhOTDo3tAwxT6etEOiXr8/b5i31Kffy+UyzxiIIiZBCLYwsig4cnKFmwsqSY8JJCEFhjS7noB4Yat7A==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- IA1PR12MB8359.namprd12.prod.outlook.com (2603:10b6:208:3fc::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Wed, 21 Jan
- 2026 18:21:50 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
- 18:21:50 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baoquan He <bhe@redhat.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv4 13/14] mm: Remove the branch from compound_head()
-Date: Wed, 21 Jan 2026 13:21:45 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <576136E0-440F-4727-969D-B558C862CD19@nvidia.com>
-In-Reply-To: <20260121162253.2216580-14-kas@kernel.org>
-References: <20260121162253.2216580-1-kas@kernel.org>
- <20260121162253.2216580-14-kas@kernel.org>
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR05CA0108.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::49) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	b=vrHgsu0655kc9wRAshxpCwuN0p3abPkzZvQJiRsOAO/jty3iG4f6hO3LAcKRFDwhXC2+mL
+	c9M9ju49PUzSQiVcRpTgtk9dDU0ipySmxc+xA/OLz7SdzCVa0EbAoWkbW4QG28FjY6tEJT
+	J21JaG+F1rth3GaHN/SE0xR6hfEbjf0=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50299648ae9so23791cf.1
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 10:30:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769020241; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bhGbhRI1QoWu5OeBf+iY1C1S+49EDSKYkrmD2ReqtscnqXL+N0VACp83Z5s/uEDMuH
+         3AhCnUk32MSF/K5xdog803ONS/dLuGdRrRnduu/u/7dxrpPIMkMokDiCLRSEoGIT3TdK
+         kUA0FH6WFrQ0dgChXFQZBYDwvQqIdSk1lzRJ6OVKOE0oQToRfKidg/Xty2Do2F2/XqSC
+         iuFHHzAZhkYTn8utrQbTkiS+yPj98q0Q8eQVd2mwo7PhVR8Pz2DA3cj8gEzV75d+oW+z
+         b0dD7TYJjYXd14lCGG4tPgD+bqyR5OO7XzZpl183GdHKrgYex6VG0UdacxAuObz+JQYj
+         q4Lg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hk+loGahu/yMxf2HTXU45I8jZGBJg9jz2G1ZhRfU2lM=;
+        fh=VJQhSB1bPwtuYJPDBUZrJqoMwC+D7/ZmeIRskV/xPzA=;
+        b=chbelz4v5KbUaJqoJ7F6tpz5LBpezYfZLTxE+zMAlhZFBDoEygEyFGU/gWvx9P7Uxg
+         pvAX3Ti8Is1oI2gxNjEwVa3yy5phFLB+BITfX1SGwFUGHLR65+r/DB2UHwhNIGZZPjVm
+         PHk00UBQuon1qDn0xk3C28l6xLrpfH8y3lobQ1z/dsXD9D/i9IyCVO2XZBYiwbxady/U
+         /u7hgVW2LrbAR2JDPAMKQxiCkGGDBqqH1ibf3GV2FOUXswlEiD7IE0X6fZWZVZFS/saJ
+         r5npoH7BpdBlz3kO1K8XbRC4KDF2AG9h0falq5bjY7mn6vXi4ZrIeVUo+09Ax2PfEdni
+         EsWw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769020241; x=1769625041; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hk+loGahu/yMxf2HTXU45I8jZGBJg9jz2G1ZhRfU2lM=;
+        b=ct3pCILQiCJ3kbf06gwiByWU7K+RWM8bU4EzJqZf7xi8wlhPjxwX0d+J17k/fGYsLJ
+         08OJx3vJhNHx7MfYGH2ybaLLSwLI9xrzNLOj8JY+1YzHKtdq5P50dOSn892rWe41to/U
+         Fpmzqb4Np5LQi+YC/eRJZQCWL+KAQWqRpU7J1r2jzLgAvdjQGKw9h7H9OOjOaEk5qVY4
+         jdliEKCUMOd/TeAGd0oGnsqArjeDjasq+ijbQpoy/ZvPnE86UE2t0hnHsD/87MQM8wgc
+         CwamopysB1D35YJTt55ntYTR1c2qfaqHEVqpgTU7ZbmSzi5/10o5Sa/uSDtRCxTAEZi1
+         daTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769020241; x=1769625041;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hk+loGahu/yMxf2HTXU45I8jZGBJg9jz2G1ZhRfU2lM=;
+        b=qOmBqqWGM7ALz8ygpfjVZrJxkkqCguMjHYlz5w3tm34OHM4uO9Oqg7gQdus7Mq0r1k
+         F5G60fVFSZdKWFPWOK5cgLu+xhGKOSmnkT6XqjEmiBJFxGF9Ka0Atkm6qXv3MoAPEE4W
+         fKv9Vqwa1hS/JW99A+jDPp+i9Sgwf3z7DWo1LZtlIWdfdbBXq8MK3F8ldOo+v7Xc6A1M
+         Pw+36SE65F/RiwJOZRei7gVPJ1rI+Zq5RTXe2wXR8X3Vo/Ss5axIGQeAb+QQ8hNlaPej
+         mOfI/5vR/SNjLHbs3S4wMpg+2pCDZyv2M9462GIx58aFTIEllsBVukoqm2SaHB293LIp
+         z44g==
+X-Forwarded-Encrypted: i=1; AJvYcCUBMrzKFkBHBWj+3UxDhXJEEs40SPydfZ6YsBJilJhUFKyxDKmgo2rLaqxbmy6Ng0buT22A/ffXMg==@kvack.org
+X-Gm-Message-State: AOJu0YyH87pbyhICEd10aah2NMUFyiZKcD5Nd+VGH8mQx+vIVOzdO17j
+	nhs29YUxbOuN9EzgjA8PyG81JGcsjf9aveu2UG7GOHfBO5TZS/dwuSI9mV0HorFJfTGgjoGlMwI
+	K4odV5qHFhQvclTjUbrXaJzeWDtoVaZWwuFd4wJqH
+X-Gm-Gg: AZuq6aI4KtXVrwEWKZ1XcyWnYa38KmZCprzF50QoWjh7HkHi/SAlv+NSqEKytVmo6xZ
+	60cnhvruTL3yG9uhk67axGH9BDClesFOmBIQ/BKzjby/jraciuPJfIivcA6GhKneMpTDuAQN4DN
+	ksJkWmKA63I5YEDDyG5Sbyo8AAd7lHtDZn0iDA6SDBD4tJw6Gmwq7Q58kkeZA02ckVWlCYyKWEP
+	iwxw5NpfEBE2DomuEMWU4eHb0KJw+ebFd1rbtAhDDOHUqp3zziMfyBjjGwuq1B7uZGWccDLqWVd
+	oybtToV0Ylhc7NzvbhoCToo=
+X-Received: by 2002:a05:622a:1825:b0:4f3:54eb:f26e with SMTP id
+ d75a77b69052e-502ebddf1damr405151cf.1.1769020240526; Wed, 21 Jan 2026
+ 10:30:40 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA1PR12MB8359:EE_
-X-MS-Office365-Filtering-Correlation-Id: 655543df-2d83-4ea3-b2ea-08de5919f226
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?N4pBuSSSjlhYkux93Vc+tN27GNVsVXHlP2tkccHpvKXV5Tty7fONdmwxjPv0?=
- =?us-ascii?Q?DHv2tCSOd/WZyXYNBjC8aFIX0GhkSnkurTdyfPEatz75QPbwg4/gF4KmMt+L?=
- =?us-ascii?Q?wYeYNWnvkcthH6UT+KGj2J47R9qD/RyylpOX+mfUX/IetH3WmUrcFgcpAsfd?=
- =?us-ascii?Q?XZS1rOPWH3lUYrbfdajctQ8jayipSVvvgrYQX/hBwz4Rj9HRnR0HHlQBbm3K?=
- =?us-ascii?Q?kaDfUAdg7YIkD4BjxM/u48nhSykhU5jxuTwCY8/LVARlLixlozn9Z+SGqjv3?=
- =?us-ascii?Q?xGs7ogcbBXqnEtNGdUVdss1rn+AUFzXE4HZPCZhIsEPllpmYBvaCu5jwd+eE?=
- =?us-ascii?Q?T5QUHnQVbJPYOTTYuCaHPlTvCqtuYVMwRDkOil3jsD8vD1mdPEVuNPoK3V76?=
- =?us-ascii?Q?tm3LFMG5pXwi8bOHpMpV0wjgfjBFgdVd/Ec/RCvM6xjZ64Kq38p/A+ZO2qhS?=
- =?us-ascii?Q?U3wMDTF7DQIxqG2phakDOrWHIloInt3TjbSF3mRxm/fPzgU8AZz+W0z9ItRB?=
- =?us-ascii?Q?kZzAKcsVMEzHiI6VtvVBJLvIoY4V1dzYYT+xupy/omduOyr7ljWKqEzZEqvP?=
- =?us-ascii?Q?764fEpc3VzBkpx+B2vRS9OZay9ADZYIU/CUOXwvA/a9lKNXz5e+IpKA+ib2Y?=
- =?us-ascii?Q?2JrBRjgutx447OlfvNL+jkQGQfitxgZIRbz4zk+1FFIf6sZeYVmnnxeyR37u?=
- =?us-ascii?Q?H5QXhpRgeJi0FCUgAjtTa23aipyD+cW99X9TLz8Kwa3x2nOjdumIBJbClj/x?=
- =?us-ascii?Q?p+bJMUrmZxBb856xQMRxUvJ7fV3Skgrf4vFmj6s34XnZV5wEP9yzvI3tTgk2?=
- =?us-ascii?Q?08HaoCDHmW1gAX28N9AdJ5u3jiNXPZlhDaOCepZP1+v0NhyQe0lxErB2httv?=
- =?us-ascii?Q?Fp7Gw3qz+d38aIL9j3rRcDvC3THeczqdody9LpLQ+uLjivngtDZQyrrhZ/um?=
- =?us-ascii?Q?+p+Y4QWySN1RGBQkTS3YFJj29AQ1NRCgeCq68VnRyf0ACxtiIb8WXQMLbjSO?=
- =?us-ascii?Q?Iuf2y/E/V1btFjoZUIKhTn0p73CvLkglJt7IyGMTt18Q2R/3nBXQTnmIO2sr?=
- =?us-ascii?Q?ineItBd1rJ3OG44Tl+9fxdD3bpc/azvv1ITewlYmsPma4xqHJhIdTgzupYqh?=
- =?us-ascii?Q?1Lhx588+rG8fspIrQ1kqaDI0zNBr/J57zjC8zFHlXeBqY2OlxVKSqNxJitwr?=
- =?us-ascii?Q?Ix1PkzG/wyO+6w07mwmCcQKa8Xah8LZabO5kehE0kQr0yuL4bWyuPe5mhjcp?=
- =?us-ascii?Q?SIi5bUv2S7GJwP07zRK7ZDpSiSWSLozWjAHGzPqdphIBCdB4H1yHPRtCz0tf?=
- =?us-ascii?Q?nkcWcad0FjP7fPAEBhBrJyDLr1Zf5sDeGX01LCbi+6OXCocdaDrhALivnTHz?=
- =?us-ascii?Q?JMfiQvHMk85SjuD70izD5xUavNSSS6lDQ4od3YoBkuUz0AtJo1V8S8dRLuj1?=
- =?us-ascii?Q?9PwYQ7cIfPhS2ZDlyCxqZunNGtGmsTj7js5WLOxLuqPvhYN6tID2gA7iR9Aw?=
- =?us-ascii?Q?JSarPfceVOigWt56VZoFgBQ/+Gxopb4FBTzR5TUTstcBD9dQmJlwLQT1QOuz?=
- =?us-ascii?Q?ZRVM8zTPTwBXKAZwkeA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ytHdCZtz9C0/fzso3PkKS8PDztHL4qZQWPlLRS/i9DQppfpPJ3nkxlBi3hl0?=
- =?us-ascii?Q?1jOVdgixOzV7fX1LJzNERl7sGuEn3bukCdn00u1fQkF1sPppON3pYBp1/TQU?=
- =?us-ascii?Q?hU+HBBVamBr/6pFy7DFbjuTdpWz9oqaCgrr9The6NS0JVdptUyOeN0HccX/s?=
- =?us-ascii?Q?oMhNX48JvEVja5r7+legDUkGWylUwfiJqk0amrLbCXvzLSdOMXZTUiVb5ldF?=
- =?us-ascii?Q?KlYJdcQM6k4VAevsQioFN4VtoQxTM/OAMvvvZSHKeRStKlX7BdAH7N7d/075?=
- =?us-ascii?Q?KfiYGOsAcvJ4nkFodbELVDR5zxMRC0YoPyKAoCdOnCnbV1TQ9wljpcdQA/eX?=
- =?us-ascii?Q?WUmmdywToP/2b2uJHZ8bwleGS+TmDZRCxBUV//0j5QynVoO9exKMow7YEKUc?=
- =?us-ascii?Q?FZxpD/+sWDzaZvpFOvgvIeOjSK7upwA7y8nxLKxIc7gSqUmpDRtN15QbdVA9?=
- =?us-ascii?Q?8F6Q6cXpTNDf7StknyuRcAi7PiWDRDbZNwj5vJrMcUC6WukW23bfXCjadDXW?=
- =?us-ascii?Q?dFnqek58dm3vR+GioktJQ5tqD6Entu8WOpV0zNpLTMzA2u6U7XpZaQ/2rnfo?=
- =?us-ascii?Q?6OYaeE4iT1/92CVMQONbtQsdrs4Yk+ogZRYHz4NeWeLpXEKlfB6yq0Vurm/b?=
- =?us-ascii?Q?NDVRWE5BsenBKFp3zao04QJdRXa4cB5t4japezgXtnY52J4aMJDNpNPdyuVO?=
- =?us-ascii?Q?VPNSCF+bGqMBK2nCXzSy/CjaFRMfE6qHXoB6+KOFffh9d1SHkk0DJ1gSL1/b?=
- =?us-ascii?Q?BvGXsKwQ1ZpZIgHHiGBaISL4TBAz9jLw9AG+CI8roD7N0c4TU5qK8hdE8ZvN?=
- =?us-ascii?Q?b/Lu0hExfZPWpbQESqOYWdojtatK7vET7jwPry59ZH+CmGIxvFfjVpeWsaIi?=
- =?us-ascii?Q?b8F7rRs9MOXTKb1fGbNmVuY6ftcqPc1BwPeqGKSAZPiQ4ulfKS3GWQTy8aYo?=
- =?us-ascii?Q?DBkBFnpu0TFFM01TyqOoP6bYMaRFFEqfShyw30Tx9YgL2SIIUTOmq9Gxfwf/?=
- =?us-ascii?Q?NWzSjn9PRQPpox1pFI9yGE62He79VCHYPkyZjWKu4oCLht+PYN4nqT0+PsPp?=
- =?us-ascii?Q?w0KmdD1TdQDL1d5wQlYa7O3cHhzppf0VdZ2IxCnPs7zqXGNFRu7H0KKu0qiQ?=
- =?us-ascii?Q?sBdCGT/ZH+WEKz+4nWEAwQ8TvOmT4jHK2BnLNVQv/UoZLnwDNECrwevLJfx9?=
- =?us-ascii?Q?hMikbCisywE3vkyjEUZX8HVxsNMOVAZbDy6hA1cY1/CM3a+T8JOil58G4VCq?=
- =?us-ascii?Q?TAsQ5KpOIf6eCFAFjBDAgUYPgDWKaYMumc/TcX0kMWGWf0dIwojZ6CUDvYXB?=
- =?us-ascii?Q?1RcgFV92MloTgfyeQzKzDXD6epYmJzTsCpbxVEEra/MFj0IRUU6UDJZDgXlE?=
- =?us-ascii?Q?i9kw6t0ILr5DQAOYNUQxLcD4OSLT1qKY/vPGieOy6KIJJiJ2XvC6lPEHKHe4?=
- =?us-ascii?Q?/d/uWWVLkW08aDQVfDN597pzPcpYyeiehs+BFYv8A4kQ2R7VTgzloAjgwqBh?=
- =?us-ascii?Q?0oJdu0wVC8x3GdUdBqcGaB5e5M8JIymBjdDD7gbV4/HdFEEcXvMFGQOS0pzt?=
- =?us-ascii?Q?XGihK2PYAS+PFkscJhhH/34GufsZXzRTFclC8lFoQLJgbrAy5ljC3XSICJLk?=
- =?us-ascii?Q?geGwXo8CxdVsd+YVOu9GzSEFfWLx9ITpcaEL2FedcIFE/YSJSJCqWWVYA387?=
- =?us-ascii?Q?bEC1+gLZ8nMusGBmrxd+m3w10ZIBFOkzopWYW5wS9hbjKe0UT3bEyBeGYfK+?=
- =?us-ascii?Q?Qgq/5uvwVA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 655543df-2d83-4ea3-b2ea-08de5919f226
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 18:21:50.6053
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tdAU6HKee5+g7YlRQXG+mBTJLlTNYDyQ3lvzY2VpbUCUCYwKEfAriVK0Ewd6w3CB
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8359
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 6s7gub6xsmb7tcj46umm4ocmurcyu8hb
-X-Rspamd-Queue-Id: 763E540007
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz> <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
+In-Reply-To: <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 21 Jan 2026 18:30:28 +0000
+X-Gm-Features: AZwV_QgJsx28PWNy6MDtA7PMODlO-XxW0gxWFH0Lcu8zvlUQSetLY7ny4kvP86A
+Message-ID: <CAJuCfpHi_WqPkWvQuDqg3L1FNeV-P=E52uCakBCXz1AFmkHf=Q@mail.gmail.com>
+Subject: Re: [PATCH v3 17/21] slab: refill sheaves from all nodes
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
+	kasan-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 418D3140002
+X-Stat-Signature: p1xrup578eh8osea6jfbeibpio5f7erf
 X-Rspam-User: 
-X-HE-Tag: 1769019714-39393
-X-HE-Meta: U2FsdGVkX193DjOcCHJJOS5BctDxk/nMcfkOxqPu0bI6B0z9hmTuTEhBeNSL7dHZ+FsUTeBiSKNp9evRh8YV3//xiTlTJRFXZY1/j0C4Jdkxn8S9NpFCu9Z86/c1Y2g8cIq1JbMgK35vnLbQX6ru9zDxk4otZcdITmphb40F/f6dhrC1KBAg7n/bSd9/QRufe7FaWCXMHig3fOqicoe7y7fHa1vzLMOXvb3cPnnliLvYJYGIUWXzrEYEfkzPA3/kywYcIH9S5CeZda5NWmR7QgnPUeUHtBlherLGqtKFcj+CjsQQan2mWUzZkLk53swrnpd37tI+n0TRjvxHc3NwbbYzkPclPNFqZQ/iNcphx65LvmUupNv+7qyNv1jvGjh0nwieGNi/IPFhcgxQIxNOI/7T74RsJRBjME5de6kRLJdH+LyEOMH8tr2jzYAGVAirudxPTRknsvuJOYfaeyh5y09JQgjxyYIsmPV+0U2zykDXy8+2+PSvfBZmOEp5z+wYaDQbT700uRxMvzSzXbA4Kbye6PryqFSGm5et1yozKm+Xmm8m7XNCFAqzGD+3QAI94rCmpb1sm01h+kFT1n6GTAzAnOmUKj2KC12SoZLXOSluEU//zcvAsP+KCkSioJF49dRc8Ov2Sr2Qw41houIpq5DtDrpyxZw4UnWNiMWG3Phks0ViF/j5S/QBw58ttEjjfFBmREBGH+pqXkyDasbLei9SfkueOZ8QOIhTSb+bMMihHOFDeDllAnc8R+Kbj6KMfXa1CiGSuHMpDy0acCdMYLV75DjL3QdNE98qD0BV/hllPq1WeKU70EQvXNXVuTKUjWcYak5+sJy5tVIXli5uHtuwhddZWj4evPPm3o+KtrtOJHwDLRip7NnkBKPG4fd5NFt62PznMh9//4WQ0s3XhLiRzRW4G3vPTGC1XoYj6XpeLrFdQI7ivXUPCnGlmb6OA12YCqLfSduBa0YqvAH
- lsKObAxk
- /T63m6JDu/CzKwwBEROecAGmzg3Y4LqQcrr5Qv3aM0nToNGCGGFI6dqSGssxwrUB7XlstEYSCYXDwLwSFo/zPHcIC6vKqcxBKdypTa2ArmmfcwWrZK6PicHBnodLdxAm7vxE/7VQCGABM5XKD217YorJQSarbjYcJHmfwt8yWFDyzAmA//w5IbAM8DrOrEJbXyk5WKANU3Gw5aygRfwZWCdn7IIdzDnEqiHgE8NwJBEuxzxpXYSMI/7A/5OuF9QeElNi9zqlvk5dmClaTKlMIu305a4TcnHzLD71UThgmXxwRNYutcB/Efj5Fdv634fo/4u6XnPNWKly5L3GbdS9wnrNQK7ZkZiqAHCQ22gcezJmeqNvOTRXykeBbUHkZeQKI0efk50USL/Rr+jvDtFS5k7bzOi/yka6fbGKw
+X-HE-Tag: 1769020242-812930
+X-HE-Meta: U2FsdGVkX1/j58zPPVpC6IudrgnZwA8FsG+JIJviRxm2CuVRgbQbODND+I4NTaralJ70eOYpkPciGhZaTdfh/Q1vNzciprDGAlPp/6eq4HCfXVpIYzpg6raGbzHRU2dlRaMbyEOHa7sraRqbP4eG2M52eJ/02yj14klciShTf4f3cSTKQCdJEfrRxKweoIRapM2d/xqOMQyNenRFVk6zorV2ylzRHbSAc/k3fghbQ+7mkoSLos17iS9x0h7NYTFpwywkmUguH4ddfHfjM9wvPTcuPlE7hVUkfDOMIF1MXtrAw/uEyWllpHzo8oRUZvmx9t2H2WDhxs6PVUyOBNNUfs2BidJL1fvgdQr+62tMEU7dph9QwxxIHl5ZJnn1D6tGr9nYU2B5KBYhEWsr+4sazgmKPfRXNVKPZLuOkeAyEk10v4bse5j8/NH3TvGVayjJlOwo2VdhR434AMJKbsa9QJ6/ISRr9ycdjXyclxJAVxdMv3sLLHYLGQUkwliqXq2ZUD78hTDw1vf1m/4ziBQthScSKxtY1uDpLnMSCM2hQsIlIRjOU0WaPcDqCKT7qHP8XhyrHOYdVAg8ktakLHi2+jyUs6RRyKht4NQzOfvRSYpgfn0woOqgPcJk/wzQCjEVRSTU3+3wh7Cz9mnrrCeHgMB7Jl31C1WJr//DLBfsumK3fxehdXKojgV2LP6fKmoayKZVt7ldl3FZ3j1sfj8lO9B5HH8xvEBO1HsB5sre/pmCiXRfT8v33AyNXV8BjhCDELsXCpX+F6a5o2qIIh2TITsvWifk1Fo03yBrO5JjEhHLb8cd/6T9ZK9jR+hJvG3O7bOd6zAY2Rokg6is1c6p4Kont3VQjthVofBAyGGLDc0rkRlF0/yffAYAsP/iIVCX27AuahakBle484DxIhw4XsSJ6LIWhfNUrc1lxHu6fy+5YqK0QvlfQ63Dgp/GAUmHYLPLY2bei8y1mSxVvPd
+ Hy9huvaY
+ i0x/ioikVZJ1+2tNhAIuF9D6Qth30/KlrH8VDLpKpfQzrgN1LgFiaVEj3NQ5t1Szy3XHZ3ztnRrWvhdSLlRn304LH9fRmJPQEIYiykzXN88j0SKSMnxAzMrHkybJBqdOnfyXilZAskiXidx8H81vd5aPqRB5FE+T7KMDlBiikeRfyfGrIzfaH5IELgvRGKJUfVMxXphA8zQWFY478+/MiQp9sdCIt2ofInGLsDqtz/+EkwfhtukBBYzkdSCoOHjEruTOB8te+mOAjqes=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,57 +145,288 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21 Jan 2026, at 11:22, Kiryl Shutsemau wrote:
+On Fri, Jan 16, 2026 at 2:41=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> __refill_objects() currently only attempts to get partial slabs from the
+> local node and then allocates new slab(s). Expand it to trying also
+> other nodes while observing the remote node defrag ratio, similarly to
+> get_any_partial().
+>
+> This will prevent allocating new slabs on a node while other nodes have
+> many free slabs. It does mean sheaves will contain non-local objects in
+> that case. Allocations that care about specific node will still be
+> served appropriately, but might get a slowpath allocation.
+>
+> Like get_any_partial() we do observe cpuset_zone_allowed(), although we
+> might be refilling a sheaf that will be then used from a different
+> allocation context.
+>
+> We can also use the resulting refill_objects() in
+> __kmem_cache_alloc_bulk() for non-debug caches. This means
+> kmem_cache_alloc_bulk() will get better performance when sheaves are
+> exhausted. kmem_cache_alloc_bulk() cannot indicate a preferred node so
+> it's compatible with sheaves refill in preferring the local node.
+> Its users also have gfp flags that allow spinning, so document that
+> as a requirement.
+>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-> The compound_head() function is a hot path. For example, the zap path
-> calls it for every leaf page table entry.
->
-> Rewrite the helper function in a branchless manner to eliminate the risk
-> of CPU branch misprediction.
->
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+
 > ---
->  include/linux/page-flags.h | 27 +++++++++++++++++----------
->  1 file changed, 17 insertions(+), 10 deletions(-)
-
-LGTM. And it fixed the issue in patch 10.
-
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-
+>  mm/slub.c | 137 ++++++++++++++++++++++++++++++++++++++++++++++++--------=
+------
+>  1 file changed, 106 insertions(+), 31 deletions(-)
 >
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index f89702e101e8..95ac963b78af 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -224,25 +224,32 @@ static __always_inline bool compound_info_has_mask(void)
->  static __always_inline unsigned long _compound_head(const struct page *page)
+> diff --git a/mm/slub.c b/mm/slub.c
+> index d52de6e3c2d5..2c522d2bf547 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2518,8 +2518,8 @@ static void free_empty_sheaf(struct kmem_cache *s, =
+struct slab_sheaf *sheaf)
+>  }
+>
+>  static unsigned int
+> -__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int=
+ min,
+> -                unsigned int max);
+> +refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int m=
+in,
+> +              unsigned int max);
+>
+>  static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+>                          gfp_t gfp)
+> @@ -2530,8 +2530,8 @@ static int refill_sheaf(struct kmem_cache *s, struc=
+t slab_sheaf *sheaf,
+>         if (!to_fill)
+>                 return 0;
+>
+> -       filled =3D __refill_objects(s, &sheaf->objects[sheaf->size], gfp,
+> -                       to_fill, to_fill);
+> +       filled =3D refill_objects(s, &sheaf->objects[sheaf->size], gfp, t=
+o_fill,
+> +                               to_fill);
+>
+>         sheaf->size +=3D filled;
+>
+> @@ -6522,29 +6522,22 @@ void kmem_cache_free_bulk(struct kmem_cache *s, s=
+ize_t size, void **p)
+>  EXPORT_SYMBOL(kmem_cache_free_bulk);
+>
+>  static unsigned int
+> -__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int=
+ min,
+> -                unsigned int max)
+> +__refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigne=
+d int min,
+> +                     unsigned int max, struct kmem_cache_node *n)
 >  {
->  	unsigned long info = READ_ONCE(page->compound_info);
-> +	unsigned long mask;
-> +
-> +	if (!compound_info_has_mask()) {
-> +		/* Bit 0 encodes PageTail() */
-> +		if (info & 1)
-> +			return info - 1;
+>         struct slab *slab, *slab2;
+>         struct partial_context pc;
+>         unsigned int refilled =3D 0;
+>         unsigned long flags;
+>         void *object;
+> -       int node;
 >
-> -	/* Bit 0 encodes PageTail() */
-> -	if (!(info & 1))
->  		return (unsigned long)page;
-
-Here, info & 1 check now is guarded by compound_info_has_mask(), so the
-issue I mentioned in Patch 10 is gone.
-
+>         pc.flags =3D gfp;
+>         pc.min_objects =3D min;
+>         pc.max_objects =3D max;
+>
+> -       node =3D numa_mem_id();
 > -
-> -	/*
-> -	 * If compound_info_has_mask() is false, the rest of compound_info is
-> -	 * the pointer to the head page.
-> -	 */
-> -	if (!compound_info_has_mask())
-> -		return info - 1;
-> +	}
-
-
-Best Regards,
-Yan, Zi
+> -       if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
+> +       if (!get_partial_node_bulk(s, n, &pc))
+>                 return 0;
+>
+> -       /* TODO: consider also other nodes? */
+> -       if (!get_partial_node_bulk(s, get_node(s, node), &pc))
+> -               goto new_slab;
+> -
+>         list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+>
+>                 list_del(&slab->slab_list);
+> @@ -6582,8 +6575,6 @@ __refill_objects(struct kmem_cache *s, void **p, gf=
+p_t gfp, unsigned int min,
+>         }
+>
+>         if (unlikely(!list_empty(&pc.slabs))) {
+> -               struct kmem_cache_node *n =3D get_node(s, node);
+> -
+>                 spin_lock_irqsave(&n->list_lock, flags);
+>
+>                 list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_lis=
+t) {
+> @@ -6605,13 +6596,92 @@ __refill_objects(struct kmem_cache *s, void **p, =
+gfp_t gfp, unsigned int min,
+>                 }
+>         }
+>
+> +       return refilled;
+> +}
+>
+> -       if (likely(refilled >=3D min))
+> -               goto out;
+> +#ifdef CONFIG_NUMA
+> +static unsigned int
+> +__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned=
+ int min,
+> +                    unsigned int max, int local_node)
+> +{
+> +       struct zonelist *zonelist;
+> +       struct zoneref *z;
+> +       struct zone *zone;
+> +       enum zone_type highest_zoneidx =3D gfp_zone(gfp);
+> +       unsigned int cpuset_mems_cookie;
+> +       unsigned int refilled =3D 0;
+> +
+> +       /* see get_any_partial() for the defrag ratio description */
+> +       if (!s->remote_node_defrag_ratio ||
+> +                       get_cycles() % 1024 > s->remote_node_defrag_ratio=
+)
+> +               return 0;
+> +
+> +       do {
+> +               cpuset_mems_cookie =3D read_mems_allowed_begin();
+> +               zonelist =3D node_zonelist(mempolicy_slab_node(), gfp);
+> +               for_each_zone_zonelist(zone, z, zonelist, highest_zoneidx=
+) {
+> +                       struct kmem_cache_node *n;
+> +                       unsigned int r;
+> +
+> +                       n =3D get_node(s, zone_to_nid(zone));
+> +
+> +                       if (!n || !cpuset_zone_allowed(zone, gfp) ||
+> +                                       n->nr_partial <=3D s->min_partial=
+)
+> +                               continue;
+> +
+> +                       r =3D __refill_objects_node(s, p, gfp, min, max, =
+n);
+> +                       refilled +=3D r;
+> +
+> +                       if (r >=3D min) {
+> +                               /*
+> +                                * Don't check read_mems_allowed_retry() =
+here -
+> +                                * if mems_allowed was updated in paralle=
+l, that
+> +                                * was a harmless race between allocation=
+ and
+> +                                * the cpuset update
+> +                                */
+> +                               return refilled;
+> +                       }
+> +                       p +=3D r;
+> +                       min -=3D r;
+> +                       max -=3D r;
+> +               }
+> +       } while (read_mems_allowed_retry(cpuset_mems_cookie));
+> +
+> +       return refilled;
+> +}
+> +#else
+> +static inline unsigned int
+> +__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned=
+ int min,
+> +                    unsigned int max, int local_node)
+> +{
+> +       return 0;
+> +}
+> +#endif
+> +
+> +static unsigned int
+> +refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int m=
+in,
+> +              unsigned int max)
+> +{
+> +       int local_node =3D numa_mem_id();
+> +       unsigned int refilled;
+> +       struct slab *slab;
+> +
+> +       if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
+> +               return 0;
+> +
+> +       refilled =3D __refill_objects_node(s, p, gfp, min, max,
+> +                                        get_node(s, local_node));
+> +       if (refilled >=3D min)
+> +               return refilled;
+> +
+> +       refilled +=3D __refill_objects_any(s, p + refilled, gfp, min - re=
+filled,
+> +                                        max - refilled, local_node);
+> +       if (refilled >=3D min)
+> +               return refilled;
+>
+>  new_slab:
+>
+> -       slab =3D new_slab(s, pc.flags, node);
+> +       slab =3D new_slab(s, gfp, local_node);
+>         if (!slab)
+>                 goto out;
+>
+> @@ -6626,8 +6696,8 @@ __refill_objects(struct kmem_cache *s, void **p, gf=
+p_t gfp, unsigned int min,
+>
+>         if (refilled < min)
+>                 goto new_slab;
+> -out:
+>
+> +out:
+>         return refilled;
+>  }
+>
+> @@ -6637,18 +6707,20 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s,=
+ gfp_t flags, size_t size,
+>  {
+>         int i;
+>
+> -       /*
+> -        * TODO: this might be more efficient (if necessary) by reusing
+> -        * __refill_objects()
+> -        */
+> -       for (i =3D 0; i < size; i++) {
+> +       if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
+> +               for (i =3D 0; i < size; i++) {
+>
+> -               p[i] =3D ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
+> -                                    s->object_size);
+> -               if (unlikely(!p[i]))
+> -                       goto error;
+> +                       p[i] =3D ___slab_alloc(s, flags, NUMA_NO_NODE, _R=
+ET_IP_,
+> +                                            s->object_size);
+> +                       if (unlikely(!p[i]))
+> +                               goto error;
+>
+> -               maybe_wipe_obj_freeptr(s, p[i]);
+> +                       maybe_wipe_obj_freeptr(s, p[i]);
+> +               }
+> +       } else {
+> +               i =3D refill_objects(s, p, flags, size, size);
+> +               if (i < size)
+> +                       goto error;
+>         }
+>
+>         return i;
+> @@ -6659,7 +6731,10 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, =
+gfp_t flags, size_t size,
+>
+>  }
+>
+> -/* Note that interrupts must be enabled when calling this function. */
+> +/*
+> + * Note that interrupts must be enabled when calling this function and g=
+fp
+> + * flags must allow spinning.
+> + */
+>  int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size=
+_t size,
+>                                  void **p)
+>  {
+>
+> --
+> 2.52.0
+>
 
