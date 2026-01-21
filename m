@@ -4,106 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B833C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 19:55:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7977C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 20:07:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE9256B009B; Wed, 21 Jan 2026 14:54:59 -0500 (EST)
+	id 0A58E6B0098; Wed, 21 Jan 2026 15:07:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8D676B009D; Wed, 21 Jan 2026 14:54:59 -0500 (EST)
+	id 0538F6B0099; Wed, 21 Jan 2026 15:07:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6B5C6B009E; Wed, 21 Jan 2026 14:54:59 -0500 (EST)
+	id E94116B009B; Wed, 21 Jan 2026 15:07:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 92B416B009B
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 14:54:59 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 385778D162
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:54:59 +0000 (UTC)
-X-FDA: 84357024318.06.6EE5E94
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D65B96B0098
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 15:07:54 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 30ADF8D220
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 20:07:54 +0000 (UTC)
+X-FDA: 84357056868.14.2912991
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 337AB4000B
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:54:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hHZU8u0q;
-	spf=pass (imf17.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id CE0D1140004
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 20:07:51 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TO5cjHU1;
+	spf=pass (imf09.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769025297;
+	s=arc-20220608; t=1769026072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zfynPqgAvAkpjBmuuO2JFrn162BWPXesCBnZDuNhRyE=;
-	b=DBJmmIxKL1K+ecJWLxgyDv6Js98SYoPwsiNTRZyg2eC/GKSut5NbpPxdGnKAjH+XcuVg3E
-	MtOOGnHqw9wOvBViayAd2dQlGZaMpPIlc6X/oYUTJgRYQYpQpr+2EO2rTwjEFtMuOAzyZw
-	jgKa3yrzdsTX5/svnjDVZLjwO5pCZDE=
+	bh=bbBobMrMFMnxXuOT9SRofzQuxPsjw2p9SW8z4MTGrgE=;
+	b=RpMl9iNhnjAoxUA1OIqnTG+BFBxgydtEWqYaM8n5p05yAqo9ARM0VgNElCOLhjBcAHa6Av
+	iJ6PzEEbb3upEukbHboezgNQ/zxY9+njAAPJdLvXZeKGtp4Mr3TqijOvOvFffzAMTwhQ7/
+	wxqySH0fYOE8qwfX77m6V4vV0NZsKag=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hHZU8u0q;
-	spf=pass (imf17.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TO5cjHU1;
+	spf=pass (imf09.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769025297; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769026072; a=rsa-sha256;
 	cv=none;
-	b=7YiYE1N8DAiznCw7TwqKWdwy2AuxCABL6M4K8g6Mny6TIpdQfxl0Va6le9pyZM4WN/ZOWu
-	FpOZGblc2ZuUl/sUy3RLHe+iaZFH0XPbIvsuUcPnKAZQtJrpO8kEveHRttmmZViQ8IFAdv
-	kOmi5KVhzp1J7UFKCWVusfq/zrBehcg=
+	b=TNGMQj2aeTX3RsVyfBpYXMRfwcPajQ3u1PQRuPNlJQqWVgI1U8GSIceI/Nv/iEhfwpiqYA
+	deVOrM8CBHqLkuTO8AsXXwaTRE8uJy6VkB4DybN8wjmJ24/4zXRm2A0NXDzzEFQ0lxr5//
+	x4B8j4fc2MauIwlSa/C+L0rjYODm4AM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769025296;
+	s=mimecast20190719; t=1769026071;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zfynPqgAvAkpjBmuuO2JFrn162BWPXesCBnZDuNhRyE=;
-	b=hHZU8u0qBtUBcSMzbEQYk9D95HSmR5DiVofxBqsCvhJ+7HAK5liTzamOeXIajSNaI1Tjn6
-	3yRnoXfigKREAXxtOtL/j+HccxSId+wUEoX1s8GR+IlWG/5Q28pu8K1cki1TtzU3RTjaxD
-	D8q3MYOe1CrYT9S+Jquf4ZMaIwh0kuA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-lFkgxWuyM0i-XSDNQC4aXQ-1; Wed,
- 21 Jan 2026 14:54:51 -0500
-X-MC-Unique: lFkgxWuyM0i-XSDNQC4aXQ-1
-X-Mimecast-MFC-AGG-ID: lFkgxWuyM0i-XSDNQC4aXQ_1769025289
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4895719560B2;
-	Wed, 21 Jan 2026 19:54:47 +0000 (UTC)
-Received: from bfoster (unknown [10.22.64.128])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3A97018001D5;
-	Wed, 21 Jan 2026 19:54:42 +0000 (UTC)
-Date: Wed, 21 Jan 2026 14:54:40 -0500
-From: Brian Foster <bfoster@redhat.com>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com,
-	david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
-	hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org,
-	dave@stgolabs.net, cem@kernel.org, wangyufei@vivo.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org, gost.dev@samsung.com,
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v3 0/6] AG aware parallel writeback for XFS
-Message-ID: <aXEvAD5Rf5QLp4Ma@bfoster>
-References: <CGME20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4@epcas5p1.samsung.com>
- <20260116100818.7576-1-kundan.kumar@samsung.com>
+	bh=bbBobMrMFMnxXuOT9SRofzQuxPsjw2p9SW8z4MTGrgE=;
+	b=TO5cjHU1+0Mpg/SLzNYxkc0mM2YHBkQM9NAskh9e6NsIeo5wuL6/bmLdRlYn5B//i++cIt
+	CQ3d6sDiHLAibNgcJMrQIccNSRvLF+TcnzqwSXXTpGmHe+SDrZ8I/2wl+/X/DEeXrmkpdD
+	le2A9Rs5CWKXT53oMevHnCQZGq+AepE=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-456-2mYCpj9SPruWULHt-SsK2Q-1; Wed, 21 Jan 2026 15:07:49 -0500
+X-MC-Unique: 2mYCpj9SPruWULHt-SsK2Q-1
+X-Mimecast-MFC-AGG-ID: 2mYCpj9SPruWULHt-SsK2Q_1769026069
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8c6a241b5cdso38780585a.1
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 12:07:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769026069; x=1769630869;
+        h=in-reply-to:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bbBobMrMFMnxXuOT9SRofzQuxPsjw2p9SW8z4MTGrgE=;
+        b=Rg5y3XC0PvZQ0CLxZSCBsXr7Pm2C9eSxp9coXkyhLBoYC/U0XODKU1pJY0CXFon2ni
+         kCYJTtWqw5UhBzbF70f1r0wPVBxzykIWYE4OkuXpL4Kvt5hmSZGXuSzJoxyYhIZLx2ap
+         5jVu0bed5GR1gMcwfhRXhKQk5qyQXk1Wn9/tnqRyoIz1wpVCYA49lIeTipRX0f2P9SuH
+         ESRzTzsvHIU6LEP0x6G+ROW1T9ibqZTOE2sPfA3/n/duDFQukQAxxlq9aV9H2vunHinK
+         O6Cj9WKy2iOs2RVTcUJIoIUdgQd3z0tshi/stXjIrzLaNIm4ym/AD+YE0lrwLStNc+xC
+         gIsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzv4aJK2TmJrnkn00Z4Pvi6tJJ6zg6PxlQkZIdPtLkg29UEjBO8VBRIHW9QtXDh4PYM/pEvLP84A==@kvack.org
+X-Gm-Message-State: AOJu0YyuDmDDQBPmTeb5nV3fZmswtfQ1SWwfAKLdXOlpb25VyxXRbj8R
+	JmycKEU34aGkNoXyyARTDfuz7s67LrvDdDnuwX+3gzFAEbdpi9TmsouBJqtbM/8nWWs5Yz24OEw
+	Tis2KCN9XSXRWpdI5Kv8A5Ppk2zvUgmJV8U/0Y4d8dVr3+F8bQAT5
+X-Gm-Gg: AZuq6aKXZpthO3TlbzSSlRFPhDy7DgR8NCCHBA5W/rh+bCg9Uo5GYnLqDHv/Tp5yCbI
+	kva3absN1KOFjZtqAUpCujB7cRHNx+4hN6JuXwI3zIL9jbFtYvCF8Qr11KogK1v/4zewczq8Njf
+	5V/LYpcUStou+g6KnBG65VIwJ1SOrvVRXDXSU7NC22Gnvi+wjVjuzMSf/ZgR1sOLSlNacI0BX8o
+	Ciq7iH1n4/jp2Zwg9u2o42KGG6VV4mv7ixw+4rhTcCsZAL50yKFus5KF3ILnLkomuqrPUBI+t0q
+	ObTnULUVJnrAZfOTItZdmtU4f8CdthDYD8+d1lSzKhHQHzijq0M1YOw0XjgIfrqhUmcwkK8xTUi
+	kur6010lsL3L3P/H9eVp6YDjumnck+VL6rhwpjCZsuM2qT/7INPHpHZv+
+X-Received: by 2002:a05:620a:7014:b0:8b2:a049:4ac0 with SMTP id af79cd13be357-8c6a66e4bc2mr2474030685a.30.1769026069126;
+        Wed, 21 Jan 2026 12:07:49 -0800 (PST)
+X-Received: by 2002:a05:620a:7014:b0:8b2:a049:4ac0 with SMTP id af79cd13be357-8c6a66e4bc2mr2474026285a.30.1769026068697;
+        Wed, 21 Jan 2026 12:07:48 -0800 (PST)
+Received: from ?IPV6:2601:188:c102:b180:1f8b:71d0:77b1:1f6e? ([2601:188:c102:b180:1f8b:71d0:77b1:1f6e])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a71c083esm1287460985a.17.2026.01.21.12.07.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Jan 2026 12:07:47 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <0e385146-67a3-4fdd-b119-059caba8c5f0@redhat.com>
+Date: Wed, 21 Jan 2026 15:07:46 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260116100818.7576-1-kundan.kumar@samsung.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mm_init: Don't call cond_resched() in
+ deferred_init_memmap_chunk() if rcu_preempt_depth() set
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Mike Rapoport <rppt@kernel.org>, Clark Williams <clrkwllms@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@kernel.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>
+References: <20260121191036.461389-1-longman@redhat.com>
+ <20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org>
+In-Reply-To: <20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 870cWezHx6V9ID_kS62XdUJUODXNLP_VwUAcSDMT1vM_1769026069
+X-Mimecast-Originator: redhat.com
+Content-Type: multipart/alternative;
+ boundary="------------3YoXDFipTAldiOlsPPeC8MuF"
+Content-Language: en-US
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CE0D1140004
+X-Stat-Signature: x9zdnqfgz5u5i6aqf7pmzgc3hkg9ammp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 337AB4000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: kstzuwm1ahnzhhehw9az3g77gx999x3k
-X-HE-Tag: 1769025296-591840
-X-HE-Meta: U2FsdGVkX1+xSc+Dyxz2/UJEFj+74LoNpCeE99f6I4Mjn8woRbUT51hbSd7gYOSAyO9//MiChYAofWpPoEgUC4NyO6YsA6BhUJIn5NdGqXnvtq0D5nntpaUcqnQMuQWb5fNc3U3sxdQNEZGo/KZk/X0HyDiggeTRBu5PQSdBkklYVM5f+h92lMFAoDIgUVu23SP6O8c1x2KrAv5CIZnyCCrgEfYThHy+L8O565coTxHu3/ZAKteeOu79Mgu3zfHGTg6MxyK044+fjlSEXT8c0islUWSeMxnl+dsHCMXce3v/OzPyphDfZRmbaQtCRCJI3YTr6IBVn41n0rII7iqeh8YAwyDqkuYti5CT5aQ55EJavH8Pso61GHihh9Nfxsf0O0Ghqy+frzExj9t0nF0Kk+a+UMzwqhskNOmPtJK/HmqVcm601tnxzZVmi2LSYNhezorJ5D7VVtAatCGnO+dqgK7RizggtAhxqxxU+K8XvjVwKkzrTAjpb8nrAEf4keDItxX64LCX/c8PKqJnLeC9JvREiAcyH+EDHt/+z5R+Vg9dtybXCXLt8ZED7e6dfaZlo41eMkZJ9gnXSHCGkvuMX0XgjByGpe0v/u6JYIcRzS9xMUw1jN5/EOAroF7CcMFXnrDsjIJOFFoJHI71j8usm1x34ilth8gB6XoBB93aP61EYBXzw8RZ261KgPDqpAiiUnJGIyvmNEfWeGs0BGQ75eea4HLFKlHf2DgWrYaXgChkdrgznVjlAkCJZQ9SjUJQi2Zh2DBqwb7P9wY2c6Z3jhrqgRSUZyYxrFl7CUdPfJiZCaHckDzTS1epwpOUvFSV8y7K9cETv6kZy7r/fOkyPXPsfpmbeSyRqB6b15nKx9mueqEChGzebk5yjG2WBx05iiXfq52uHIFz7TIbImWhiMf0pmA4j1HH7RzZU+la4kKYYrxGLLDYO0IV1Lp61Gu5xXrCLLvFSpR2dfXYmPk
- FtTwvb+q
- vG5ZtAoQDCwSOpEwz5NWLcdXrVs8v+Qlzm43jm6gjmCQFsSkZ57OEmZf2f3qhONMH869EPHo0ANSA7qDW7J2WtUIQkgSzswfKRhnN7+OBtYur7TcGdeTF3FQ2XmOb21yehqkEGYfGhgeQmbIMeLumicxIWuiJQ6xZG9qs9mPONoEfvA1ZTYXabE6HE0AUdwvJj35QE8nPfmixyZZSk6/mflTQLRefmI+9syRDxnD2mHwL9ZPsFDOrlkfe4yTiOlsWauwYTUIVX5eNjF+GoI7Wq+xPFfzL02wJBkRhJv84AfOOdo1om/IMJXKt4H0t+mhQyY5JgcgETxB8ontZowT7o5D/wPcFPkAxcswgPOUVbBDWjTbhDG0DVAkdgKc/ryXfa5B7osnbMtocMTRFqRSKM0M/mPvPe/WrLgIqMnaxEV516i5aAB7pW9zL52du2btICawlnhTYGsl9VgBBGJkXjzuqnA==
+X-HE-Tag: 1769026071-794270
+X-HE-Meta: U2FsdGVkX1+aO2pxi/5p/pXOOAQ8p5QymJXU3yJCygnFElW4P6mSEAHozQtmjpcmDq69pb5vV6AFuRRffYGqrWUmGCTZWF/5H70D63qOBusa3518VzYPm31D07QBqkkL/VXCCdgcoJSOJsK17lL9LmwgDNqR7aKMnL1b4VrzY29YILZn4jv28vvISmXKIUKoxrRPEWkH5e+MODZm/kVeAXYz39A09tgEiTo6j4wSsr+cw81R+g0uSts8d5fRnhFKuMSc5/0LPBL4OOFn9R+tsYbyir5G+WGqXeH5KTV3gFetV+58iGOMzMEJRFtR/inM4Co4wZP0PYFGo5nsfgTPD9pcQExAloT9/kaJAdprkg5hxXa9/xPGMsEwAECdxZLKwYJibNSBpk8vVUyM5AJhnoxomWT0bRC3H/eHZ+jdZkEzJnCTC98HfhI6BBIDV0G/eo0dsGf7oHvCbMkhN4NDNOFSyV3mlzo92wO1Ii1MnXe7cfYdYvyQOKOq74ENGEafFIijBcVbVHu3LRJyve4ppS/goHXyZNrzPyg/JGfwnO/6n4gAz+hA5dIDOKPCK1Rb2CG31kKLa0UW+DS+xo800Kv14eVrL4KvlHZcBDi/SVS6a6dfVp1jHCfINncfYFaWnjgwK+tpJwWkZ9ASQr1VYYUgwRTbPZs9blB+Kg/PR7Ds424m2VkPssPTWEg9QZopSdI/1qMC9n70Buh0OlBK3bIoWl/XZFWqGq6Yg+/CVApntEOq0nOGTnUf/SLQH+LDP/foN18f0X7mm+iJgQPH0msUTMNUBSRE13ZpMNAvu7o5xRps0wRU+JBBP3DqiBwiNsYJtfnZHdA1AljOTJ0C5/csUIrRJvqAKA+iNy1oVl6/iHn+yOK2VQnp+OHSZ+XQRlncdJH+O09gzCRb6nCz7hy/XNbo/wzVkru2/nO9eVOSGwFxnapiGfDT5vYp9y4eWDGmePhdRaRIvnfDlKx
+ 6qv/u0FP
+ HZr2dhb54GaPhsYODoRoWv4m/Iz04mkps/W78YRLwyOctCGsf/682BakzLW9Qphn6YQpMfAYgZd93LwWdVn2LAwox0d7mHkg0ST9UJvwlbhxWo8MXrczjLNzlB9ZwYsaufmwzK96qpyPule9qRQgRxf3xkr9Q5o3FlsmevotXHSnhg0qqdroMD8M+pvtMK7uSwKSU3yBcd6pF97gb6fDd/dtnN12+NQMzCkK0RuoU6Y+S+QPfECsdaqqxhayOhWEQxR7qgQ3e/cfein2bjSi45qgorIsGgCvLjU1q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,147 +135,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 03:38:12PM +0530, Kundan Kumar wrote:
-> This series explores AG aware parallel writeback for XFS. The goal is
-> to reduce writeback contention and improve scalability by allowing
-> writeback to be distributed across allocation groups (AGs).
-> 
-> Problem statement
-> =================
-> Today, XFS writeback walks the page cache serially per inode and funnels
-> all writeback through a single writeback context. For aging filesystems,
-> especially with high parallel buffered IO this leads to limited
-> concurrency across independent AGs.
-> 
-> The filesystem already has strong AG level parallelism for allocation and
-> metadata operations, but writeback remains largely AG agnostic.
-> 
-> High-level approach
-> ===================
-> This series introduces an AG aware writeback with following model:
-> 1) Predict the target AG for buffered writes (mapped or delalloc) at write
->    time.
-> 2) Tag AG hints per folio (via lightweight metadata / xarray).
-> 3) Track dirty AGs per inode using bitmap.
-> 4) Offload writeback to per AG worker threads, each performing a onepass
->    scan.
-> 5) Workers filter folios and submit folios which are tagged for its AG.
-> 
-> Unlike our earlier approach that parallelized writeback by introducing
-> multiple writeback contexts per BDI, this series keeps all changes within
-> XFS and is orthogonal to that work. The AG aware mechanism uses per folio
-> AG hints to route writeback to AG specific workers, and therefore applies
-> even when a single inode’s data spans multiple AGs. This avoids the
-> earlier limitation of relying on inode-based AG locality, which can break
-> down on aged/fragmented filesystems.
-> 
-> IOPS and throughput
-> ===================
-> We see significant improvemnt in IOPS if files span across multiple AG
-> 
-> Workload 12 files each of 500M in 12 directories(AGs) - numjobs = 12
->     - NVMe device Intel Optane
->         Base XFS                : 308 MiB/s
->         Parallel Writeback XFS  : 1534 MiB/s  (+398%)
-> 
-> Workload 6 files each of 6G in 6 directories(AGs) - numjobs = 12
->     - NVMe device Intel Optane
->         Base XFS                : 409 MiB/s
->         Parallel Writeback XFS  : 1245 MiB/s  (+204%)
-> 
+This is a multi-part message in MIME format.
+--------------3YoXDFipTAldiOlsPPeC8MuF
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Kundan,
+On 1/21/26 2:43 PM, Andrew Morton wrote:
+> On Wed, 21 Jan 2026 14:10:36 -0500 Waiman Long<longman@redhat.com> wrote:
+>
+>> Commit 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk()
+>> in deferred_grow_zone()") made deferred_grow_zone() call
+>> deferred_init_memmap_chunk() within a pgdat_resize_lock() critical
+>> section with irqs disabled. It did check for irqs_disabled() in
+>> deferred_init_memmap_chunk() to avoid calling cond_resched(). For a
+>> PREEMPT_RT kernel build, however, spin_lock_irqsave() does not disable
+>> interrupt but rcu_read_lock() is called. This leads to the following
+>> bug report.
+>>
+>>    BUG: sleeping function called from invalid context at mm/mm_init.c:2091
+>>    in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
+>>    preempt_count: 0, expected: 0
+>>    RCU nest depth: 1, expected: 0
+>>    3 locks held by swapper/0/1:
+>>     #0: ffff80008471b7a0 (sched_domains_mutex){+.+.}-{4:4}, at: sched_domains_mutex_lock+0x28/0x40
+>>     #1: ffff003bdfffef48 (&pgdat->node_size_lock){+.+.}-{3:3}, at: deferred_grow_zone+0x140/0x278
+>>     #2: ffff800084acf600 (rcu_read_lock){....}-{1:3}, at: rt_spin_lock+0x1b4/0x408
+>>    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.19.0-rc6-test #1 PREEMPT_{RT,(full)
+>> }
+>>    Tainted: [W]=WARN
+>>    Call trace:
+>>     show_stack+0x20/0x38 (C)
+>>     dump_stack_lvl+0xdc/0xf8
+>>     dump_stack+0x1c/0x28
+>>     __might_resched+0x384/0x530
+>>     deferred_init_memmap_chunk+0x560/0x688
+>>     deferred_grow_zone+0x190/0x278
+>>     _deferred_grow_zone+0x18/0x30
+>>     get_page_from_freelist+0x780/0xf78
+>>     __alloc_frozen_pages_noprof+0x1dc/0x348
+>>     alloc_slab_page+0x30/0x110
+>>     allocate_slab+0x98/0x2a0
+>>     new_slab+0x4c/0x80
+>>     ___slab_alloc+0x5a4/0x770
+>>     __slab_alloc.constprop.0+0x88/0x1e0
+>>     __kmalloc_node_noprof+0x2c0/0x598
+>>     __sdt_alloc+0x3b8/0x728
+>>     build_sched_domains+0xe0/0x1260
+>>     sched_init_domains+0x14c/0x1c8
+>>     sched_init_smp+0x9c/0x1d0
+>>     kernel_init_freeable+0x218/0x358
+>>     kernel_init+0x28/0x208
+>>     ret_from_fork+0x10/0x20
+>>
+>> Fix it by checking rcu_preempt_depth() as well to prevent calling
+>> cond_resched(). Note that CONFIG_PREEMPT_RCU should always be enabled
+>> in a PREEMPT_RT kernel.
+>>
+>> ...
+>>
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -2085,7 +2085,12 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+>>   
+>>   			spfn = chunk_end;
+>>   
+>> -			if (irqs_disabled())
+>> +			/*
+>> +			 * pgdat_resize_lock() only disables irqs in non-RT
+>> +			 * kernels but calls rcu_read_lock() in a PREEMPT_RT
+>> +			 * kernel.
+>> +			 */
+>> +			if (irqs_disabled() || rcu_preempt_depth())
+>>   				touch_nmi_watchdog();
+> rcu_preempt_depth() seems a fairly internal low-level thing - it's
+> rarely used.
+That is true. Beside the scheduler, workqueue also use 
+rcu_preempt_depth(). This API is included in "include/linux/rcupdate.h" 
+which is included directly or indirectly by many kernel files. So even 
+though it is rarely used, but it is still a public API.
 
-Could you provide more detail on how you're testing here? I threw this
-at some beefier storage I have around out of curiosity and I'm not
-seeing much of a difference. It could be I'm missing some details or
-maybe the storage outweighs the processing benefit. But for example, is
-this a fio test command being used? Is there preallocation? What type of
-storage? Is a particular fs geometry being targeted for this
-optimization (i.e. smaller AGs), etc.?
+>
+> Is there a more official way of detecting this condition?  Maybe even
+> #ifdef CONFIG_PREEMPT_RCU?
+>
+I am not aware of a more official way of detecting this. Maybe Sebastian 
+has some ideas. rcu_preempt_count() is defined 
+whether CONFIG_PREEMPT_RCU is defined or not. So we don't need a "#ifdef 
+CONFIG_PREEMPT_RCU". Maybe I should explicitly include 
+"include/linux/rcupdate.h" in mm/mm_init.c just to be sure.
 
-FWIW, I skimmed through the code a bit and the main thing that kind of
-stands out to me is the write time per-folio hinting. Writeback handling
-for the overwrite (i.e. non-delalloc) case is basically a single lookup
-per mapping under shared inode lock. The question that comes to mind
-there is what is the value of per-ag batching as opposed to just adding
-generic concurrency? It seems unnecessary to me to take care to shuffle
-overwrites into per-ag based workers when the underlying locking is
-already shared.
+CONFIG_PREEMPT_RCU defaults to on if PREMPT_RT is set. With 
+!CONFIG_PREEMPT_RCU, rcu_preempt_depth() is hard-coded to 0 and will be 
+optimized out.
 
-WRT delalloc, it looks like we're basically taking the inode AG as the
-starting point and guessing based on the on-disk AGF free blocks counter
-at the time of the write. The delalloc accounting doesn't count against
-the AGF, however, so ISTM that in many cases this would just effectively
-land on the inode AG for larger delalloc writes. Is that not the case?
+Cheers,
+Longman
+--------------3YoXDFipTAldiOlsPPeC8MuF
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Once we get to delalloc writeback, we're under exclusive inode lock and
-fall into the block allocator. The latter trylock iterates the AGs
-looking for a good candidate. So what's the advantage of per-ag
-splitting delalloc at writeback time if we're sending the same inode to
-per-ag workers that all 1. require exclusive inode lock and 2. call into
-an allocator that is designed to be scalable (i.e. if one AG is locked
-it will just move to the next)?
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 1/21/26 2:43 PM, Andrew Morton
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+cite="mid:20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org">
+      <pre wrap="" class="moz-quote-pre">On Wed, 21 Jan 2026 14:10:36 -0500 Waiman Long <a class="moz-txt-link-rfc2396E" href="mailto:longman@redhat.com">&lt;longman@redhat.com&gt;</a> wrote:
 
-Yet another consideration is how delalloc conversion works at the
-xfs_bmapi_convert_delalloc() -> xfs_bmapi_convert_one_delalloc() level.
-If you take a look at the latter, we look up the entire delalloc extent
-backing the folio under writeback and attempt to allocate it all at once
-(not just the blocks backing the folio). So in theory if we were to end
-up tagging a sequence of contiguous delalloc backed folios at buffered
-write time with different AGs, we're still going to try to allocate all
-of that in one AG at writeback time. So the per-ag hinting also sort of
-competes with this by shuffling writeback of the same potential extent
-into different workers, making it a little hard to try and reason about.
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">Commit 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk()
+in deferred_grow_zone()") made deferred_grow_zone() call
+deferred_init_memmap_chunk() within a pgdat_resize_lock() critical
+section with irqs disabled. It did check for irqs_disabled() in
+deferred_init_memmap_chunk() to avoid calling cond_resched(). For a
+PREEMPT_RT kernel build, however, spin_lock_irqsave() does not disable
+interrupt but rcu_read_lock() is called. This leads to the following
+bug report.
 
-So stepping back it kind of feels to me like the write time hinting has
-so much potential for inaccuracy and unpredictability of writeback time
-behavior (for the delalloc case), that it makes me wonder if we're
-effectively just enabling arbitrary concurrency at writeback time and
-perhaps seeing benefit from that. If so, that makes me wonder if the
-associated value can be gained by somehow simplifying this to not
-require write time hinting at all.
+  BUG: sleeping function called from invalid context at mm/mm_init.c:2091
+  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
+  preempt_count: 0, expected: 0
+  RCU nest depth: 1, expected: 0
+  3 locks held by swapper/0/1:
+   #0: ffff80008471b7a0 (sched_domains_mutex){+.+.}-{4:4}, at: sched_domains_mutex_lock+0x28/0x40
+   #1: ffff003bdfffef48 (&amp;pgdat-&gt;node_size_lock){+.+.}-{3:3}, at: deferred_grow_zone+0x140/0x278
+   #2: ffff800084acf600 (rcu_read_lock){....}-{1:3}, at: rt_spin_lock+0x1b4/0x408
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.19.0-rc6-test #1 PREEMPT_{RT,(full)
+}
+  Tainted: [W]=WARN
+  Call trace:
+   show_stack+0x20/0x38 (C)
+   dump_stack_lvl+0xdc/0xf8
+   dump_stack+0x1c/0x28
+   __might_resched+0x384/0x530
+   deferred_init_memmap_chunk+0x560/0x688
+   deferred_grow_zone+0x190/0x278
+   _deferred_grow_zone+0x18/0x30
+   get_page_from_freelist+0x780/0xf78
+   __alloc_frozen_pages_noprof+0x1dc/0x348
+   alloc_slab_page+0x30/0x110
+   allocate_slab+0x98/0x2a0
+   new_slab+0x4c/0x80
+   ___slab_alloc+0x5a4/0x770
+   __slab_alloc.constprop.0+0x88/0x1e0
+   __kmalloc_node_noprof+0x2c0/0x598
+   __sdt_alloc+0x3b8/0x728
+   build_sched_domains+0xe0/0x1260
+   sched_init_domains+0x14c/0x1c8
+   sched_init_smp+0x9c/0x1d0
+   kernel_init_freeable+0x218/0x358
+   kernel_init+0x28/0x208
+   ret_from_fork+0x10/0x20
 
-Have you run any experiments that perhaps rotors inodes to the
-individual wb workers based on the inode AG (i.e. basically ignoring all
-the write time stuff) by chance? Or anything that otherwise helps
-quantify the value of per-ag batching over just basic concurrency? I'd
-be interested to see if/how behavior changes with something like that.
+Fix it by checking rcu_preempt_depth() as well to prevent calling
+cond_resched(). Note that CONFIG_PREEMPT_RCU should always be enabled
+in a PREEMPT_RT kernel.
 
-Brian
+...
 
-> These changes are on top of the v6.18 kernel release.
-> 
-> Future work involves tighten writeback control (wbc) handling to integrate
-> with global writeback accounting and range semantics, also evaluate
-> interaction with higher level writeback parallelism.
-> 
-> Kundan Kumar (6):
->   iomap: add write ops hook to attach metadata to folios
->   xfs: add helpers to pack AG prediction info for per-folio tracking
->   xfs: add per-inode AG prediction map and dirty-AG bitmap
->   xfs: tag folios with AG number during buffered write via iomap attach
->     hook
->   xfs: add per-AG writeback workqueue infrastructure
->   xfs: offload writeback by AG using per-inode dirty bitmap and per-AG
->     workers
-> 
->  fs/iomap/buffered-io.c |   3 +
->  fs/xfs/xfs_aops.c      | 257 +++++++++++++++++++++++++++++++++++++++++
->  fs/xfs/xfs_aops.h      |   3 +
->  fs/xfs/xfs_icache.c    |  27 +++++
->  fs/xfs/xfs_inode.h     |   5 +
->  fs/xfs/xfs_iomap.c     | 114 ++++++++++++++++++
->  fs/xfs/xfs_iomap.h     |  31 +++++
->  fs/xfs/xfs_mount.c     |   2 +
->  fs/xfs/xfs_mount.h     |  10 ++
->  fs/xfs/xfs_super.c     |   2 +
->  include/linux/iomap.h  |   3 +
->  11 files changed, 457 insertions(+)
-> 
-> -- 
-> 2.25.1
-> 
-> 
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2085,7 +2085,12 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+ 
+ 			spfn = chunk_end;
+ 
+-			if (irqs_disabled())
++			/*
++			 * pgdat_resize_lock() only disables irqs in non-RT
++			 * kernels but calls rcu_read_lock() in a PREEMPT_RT
++			 * kernel.
++			 */
++			if (irqs_disabled() || rcu_preempt_depth())
+ 				touch_nmi_watchdog();
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+rcu_preempt_depth() seems a fairly internal low-level thing - it's
+rarely used.</pre>
+    </blockquote>
+    That is true. Beside the scheduler, workqueue also use
+    rcu_preempt_depth(). This API is included in
+    "include/linux/rcupdate.h" which is included directly or indirectly
+    by many kernel files. So even though it is rarely used, but it is
+    still a public API.  <br>
+    <br>
+    <blockquote type="cite"
+cite="mid:20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org">
+      <pre wrap="" class="moz-quote-pre">
+
+Is there a more official way of detecting this condition?  Maybe even
+#ifdef CONFIG_PREEMPT_RCU?
+
+</pre>
+    </blockquote>
+    <p>I am not aware of a more official way of detecting this. Maybe
+      Sebastian has some ideas. rcu_preempt_count() is defined whether CONFIG_PREEMPT_RCU
+      is defined or not. So we don't need a "<span
+      style="white-space: pre-wrap">#ifdef CONFIG_PREEMPT_RCU". Maybe I should explicitly include "</span>include/linux/rcupdate.h"
+      in mm/mm_init.c just to be sure.</p>
+    <p>CONFIG_PREEMPT_RCU defaults to on if PREMPT_RT is set. With
+      !CONFIG_PREEMPT_RCU, rcu_preempt_depth() is hard-coded to 0 and
+      will be optimized out.</p>
+    Cheers,<br>
+    Longman
+  </body>
+</html>
+
+--------------3YoXDFipTAldiOlsPPeC8MuF--
 
 
