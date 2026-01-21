@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D962D262B2
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 08:20:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6586DD262B0
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 08:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A86A6B0005; Wed, 21 Jan 2026 03:20:07 -0500 (EST)
+	id CAF136B0088; Wed, 21 Jan 2026 03:20:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7808B6B0088; Wed, 21 Jan 2026 03:20:07 -0500 (EST)
+	id C5CB36B0089; Wed, 21 Jan 2026 03:20:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B6D16B0089; Wed, 21 Jan 2026 03:20:07 -0500 (EST)
+	id B89766B008A; Wed, 21 Jan 2026 03:20:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B20B6B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 03:20:07 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3958C298F
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:20:06 +0000 (UTC)
-X-FDA: 84355273212.08.AF41998
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 64C9D100003
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:20:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=00lkPeLf;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf14.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB0E06B0088
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 03:20:22 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 46A1F1AF8AB
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:20:22 +0000 (UTC)
+X-FDA: 84355273884.06.6751733
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5D36118000D
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 08:20:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DMquiX5p;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1768983605;
+	s=arc-20220608; t=1768983620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TSq6+yOT1HdiMWW0u9Yc+Zl3cqGQ3pgfZNbZ2cq5LD8=;
-	b=fnY2wfFCwFIRP6M12/JY/Lopa5PRjuJkCuUIYK+mCaVE2XJGv0qjJjUXmwMReBZeSzp0Es
-	nvcR0xpspN5Ir66S59aMHrLVv/t37pMVdyPKsCUPe34tJxMhFF7CT3j9lxUOdZN/uwAUdc
-	F/v8LoxEhE+6yYVjgZOZ7QRBsw052Vk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768983605; a=rsa-sha256;
+	bh=/C7RlKb6kG1iTpXvW7JQqVlIIZuudSPPRI9mtHGK9MM=;
+	b=g9cVoUJ7bNVEskaQYaPLoX5VRZHgAGiHRCJNDv2cfLlNvYOCDBSi6SBmLeRLOJe2iXcgjM
+	Eu+L+NfXrqCB6+3zXcT22EUmnCjaliA2CFvlUlRcWi8GmWLo18Zj1/RSr8aCyTCnLHw3us
+	c+wTRO1TG0RJuZzTX9gp3OKkZT2zFQ8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1768983620; a=rsa-sha256;
 	cv=none;
-	b=sAdTL7LwsNkwHyo3V5mJwHWwK38/1FflPudKKKS+KJftclSmYoMD4doM9Lh7/k3BCMk1Tz
-	bah/vQQ+IqG3Cypgne/gsKCSwlyVhfFMpSyRURKwIig4G/VExCKhZxAUdrFMb2B1XytjNW
-	WFoCwVqi6s7e9P+iNecLnDejMtKoRnE=
+	b=8AAhNWk2PuXOJssFXRQF7CpL8nvWu9Q9y7GwwJDka6Qrsw8rx0DqaIY62dZZOYQc4ZSTK4
+	ILFylWTpcKnlLbwtPAb+9yMXhemkmiL2kRI7Ck/Z7T6Lv9nQ6Ec2wMaDQIj710fx/sofdR
+	RJxaynHq2si6jLEAA6Ggm3X/C/MRCM8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=00lkPeLf;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf14.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=TSq6+yOT1HdiMWW0u9Yc+Zl3cqGQ3pgfZNbZ2cq5LD8=;
-	b=00lkPeLfx/QR/Ly6HZWxS/zzaQW8FdmDJ2XbgT/4I7N3GVIJXKexwFU/cG+gyO1W9q4zcDfte
-	fBhDGI9wOWeVL/NH1h7yhkltJcgP8S9DHFeyq/1Cs1u010nvL3P6BPEJRG1oj3j+U5vBLN696r8
-	yopauiLXq/lmdwGknS/gdGY=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4dwxpg43L2z1T4H4;
-	Wed, 21 Jan 2026 16:15:55 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2AE58405A8;
-	Wed, 21 Jan 2026 16:19:58 +0800 (CST)
-Received: from [10.174.179.179] (10.174.179.179) by
- kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 21 Jan 2026 16:19:57 +0800
-Message-ID: <baccc29c-a68d-40e3-9e0b-f172d32e3842@huawei.com>
-Date: Wed, 21 Jan 2026 16:19:56 +0800
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DMquiX5p;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Date: Wed, 21 Jan 2026 00:20:10 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768983618;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/C7RlKb6kG1iTpXvW7JQqVlIIZuudSPPRI9mtHGK9MM=;
+	b=DMquiX5pLi5Jxf8xMEaJv17fESPSsBAXhtfXYVWupL0N0c37DPf2khFhe7aWvvq8A7U67E
+	lcUMcLLxBIPuCJAtrwMkrIMlObW1IVdm/NdIDjjr4QGSLdgJ/37hkcB4EDyWZPnbDvZKH8
+	0z/DybNcVBxCL0pPtHcCSynGH3HW9G0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>, hannes@cmpxchg.org, 
+	hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v3 28/30 fix 1/2] mm: memcontrol: fix
+ lruvec_stats->state_local reparenting
+Message-ID: <aXCIsLQMSdQ2GNc4@linux.dev>
+References: <b11a0bde9fe18673a61a79398f226ad7cb04a894.1768389889.git.zhengqi.arch@bytedance.com>
+ <e5afd1b5ae95d70f82433b9b4e13201342d16707.1768473427.git.zhengqi.arch@bytedance.com>
+ <ifcth3hxyrwmmeo3nejettdtkw2ndxdjbylszmhq3vohuhsncl@k23pew6gywko>
+ <5a18658e-2076-4cbf-bc53-5b6e99c1035f@linux.dev>
+ <A13923AA-8200-4863-8080-EC4B254BA3AA@linux.dev>
+ <moupi2ch2cpuyrurthk66igh275ks62pltjk2zfngxozj52oxs@64lxvcgh3ays>
+ <37734a82-1544-4015-b4dc-30583441a7ba@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/khugepaged: free empty xa_nodes when rollbacks in
- collapse_file
-To: Matthew Wilcox <willy@infradead.org>
-CC: <akpm@linux-foundation.org>, <david@kernel.org>,
-	<lorenzo.stoakes@oracle.com>, <ziy@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <Liam.Howlett@oracle.com>,
-	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
-	<baohua@kernel.org>, <lance.yang@linux.dev>, <shardul.b@mpiricsoftware.com>,
-	<linux-mm@kvack.org>, <linux-fsdevel@vger.kernel.org>,
-	<wangkefeng.wang@huawei.com>
-References: <20260121062243.1893129-1-tujinjiang@huawei.com>
- <aXB0Zcu4bIEvSSuX@casper.infradead.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <aXB0Zcu4bIEvSSuX@casper.infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.179]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <37734a82-1544-4015-b4dc-30583441a7ba@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ugx776w359jm663e1i4iirw3n3p4k5t3
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5D36118000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 64C9D100003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: gkz73a9aop4c9wtc6i44bkhqbj7dun7c
-X-HE-Tag: 1768983603-594214
-X-HE-Meta: U2FsdGVkX1+dL7qytsboO2BtfgOfwUv4BNdwdzh9wyl9VBMB3BOQcBzLyxpsxPKHYhbIuDEHyiEZL+Em+nOeQHR+zijUGJV3E26B5WreinZMJ+pQfnXyWsm++3fOgBfs4sSZA5w8aD6rNQRMZk3XPb74DhrcbckBbSLG81rn1DuoKABV78JUMlQx1lRpXfKIqd6EtKKhcPXWwP6xfnS5fXfHFPHGg+p0vgXS0YRr0njNhkM8bdo4MMsbFT7NZUfdByQYi4Y5fsB6k5zRkSLhql+hA7n4i0XUtKITthruaMRTY7Y5vfHKoC6OHyLQEInykKJjR02mn2Y5q/I0uck5I9d8XbLu7NFfI4dMZvNEJZiz/VOYbRPzHWwgTBHB5qNp+thenoROz0GH18xs7ouitglBJ8kGKwkUhlgUeYPHpQn9ofviFNtgstbyPsvn7fkIgXOFyB0M5/m2b8W8Jx+7wuN6g16+zBJFneNx1pAdaUDH+1rpfC2PZGctKaZwEw/00GvkEuzfpHHZIfGDvKmLjCag+zpUNfFPQqHEuduTtA0vpS1y4WG8DsQo67ZJCjxtIH6NhSsC3RUP2hALhb4HQBQz+nOMU3JCDBNp0lvyp655NPe6rumk6GtIDKXsKr2RGOABc83wqxrEMdiNxwCJTbU9/CGsqRAruaOZSe/KX5/9N4zQCq6GPgW5fNpoUXOnvW/yOCnGiyYChguD6JvCTASzEJVtMBf1qLxkIWohzWbYXHyYrPdZWRYQPyVu24eH52s310dZSfrge+TitjwzIWd7mgd532xtCjtyl7pjaZJnKNXnNlRotwZevi+fHVOw5Rf4Xg41j1ltTuHICX67eTN1NrwXK+wV1My3rtb7iPq9x/BZvNgCZAURaTftPJNYJGKdQu2Qm7buwNFiC649TyUPIKtYFbFIMqpUGvEILbFR33SdzD8Q0vp9lg4SRtU/N6sBYivEiVRwdWN/JXt
- lc3hUIpc
- 8hfKxAqF7PpRFWjuB9x5LqV4RvaizYODJB6CPmn2SIJIO/eDTk2qvuUpStxY6JdWIdIO1S4OvJWQ7jcyAv/dmHtb2x3IDc92020ORTHkHFoR4id2El/CrZVyXJJqzP9r5wHffkenOpdwwzvMLnVxd4fh23gVsMXwgi4qhv6aLAfX6uB6ZV8DzVpUXAxmwfUVpFmRqa9OyL/DnEpXhwfStuLRYHZ+Oi+HqbY1ueCVNegIVvS6AXI/LSJS+VjrDk7zNE3omYFZgbozpJPiz5WiX45UT+tid4OlYKknRI7sh2XWUZmL0Gq0sUvnX0XylMvnqQe5ktlhQPRxbcaf812cFUw1PGOagVu7yx6JRr+QG2ZZ+4FoE0seKW47h98Ow4vv/JE+j
+X-HE-Tag: 1768983620-877747
+X-HE-Meta: U2FsdGVkX1/hIEMYbXvScaj24c3djG7ZCRVa94WQ+gRzN3eBFQuijsR7xWwte6WbDkEvpzr+JvP3kgkTrYfPWhnBmhWfsofDOsQU0tv4kZfe/1gYWM4Q7VYeKIaT7Yc9uBnnRCMWs2IiYFN5mKUBB3jpyZGOfXd98194BCbx+xDfuP1g9wtWXt1hT1+HgiejkHXWiKBNxXgqf7V5d4LIV2GakApe2vYmGlnSug8NmB0c4ULTh8sJ+H7Q0t4nR9WcuWvoLD3TpimO00nDrVjESoXuDc8a2kAfASyoj76Bzgc2XtS5KtFKFK49Bi30nXZM1yJe2a5AAbwq34/WW78pZnLvMk7YwNIpVWukzA/1Q9waZU82D24RT/dNR/xijPj5r4AxD+rBFzTgF57u5TrDNr75X0OFxN2idVG5emXXIA6CtJcsN/lABLP0rd2i0Zwzfah9AuDuSPlH2AGndmja0xQjo9Io1xlQ+JCLII2+rBqIoNu2ZWad78ijPdffSnK4ErxamiwIMxIyE+F10BYSIYVFqxTrar3BNKzng/Edf6EUqFWnU/oA7QkiQzNMqPvJsGNB68fCUi/i9RKitsjnw2EgbnezGZLbxTCAVueItnSUStqYvDrLaUbaBindoq4AOwsOOXjYOSJ18T7NioyMk46Ky8Dyy/gk3dHHSSSx9crbcu++TQL2cwgovJ3FfK6iVhZHt+ARB8l5mhNGBMxqlMMdpNpV5aqywjA/NyI/NDEd2M5UikkuDYF/hJK0hAr8nEBk69zBBzwbFsTY0aTeCqmtNEES6CoOOHv2puqCtyZW6hfQe5RDjo2XmviUBSaPLPjML+CmTXqrs3OiORHJ61Uzw+cygmDzdCU62AE2cM6Is7HjLj04gEYX6e09CIYwny73EHUI+Qhxv/hWS7Kzs9au/8evOpjhSAQFxJDr4l7by1e+yIRfZXFp6/PbOOzgxEOcP9RbLmX5Se/SEyK
+ lCzI0KUL
+ l8/s5jZy3FIt4mUPUsn+Vqjq2Pfgj1yFx92e3CC6AcJgRHVhdqGzVAYgqXc1crmqp2B/Kn9BKC254ailCUs5I4XolHQEX1i6qdqZHmtGt664QRfmPA/XndYn2g/nhJCM6tWg5dl0DnJh5PGwunJ0STobgUnzlFQma3Zn1+DZslQPEV2cfbe/7eulD7QhUrQrs6Y8XdLTN4Zy8hQqLW5qLe8qiT5RAqhO8mlxqvP7I+jr8nkEhTOkRu5dfgvsDP4H5rMrR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,49 +100,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jan 21, 2026 at 11:43:50AM +0800, Qi Zheng wrote:
+> 
+> 
+> On 1/21/26 2:47 AM, Shakeel Butt wrote:
+> > On Tue, Jan 20, 2026 at 03:19:00PM +0800, Muchun Song wrote:
+> > > 
+> > > 
+> > > > > No reparenting local stats for v2.
+> > > > 
+> > > > It seems that lruvec_stats->state_local (non-hierarchical) needs to be
+> > > > relocated in both v1 and v2.
+> > > 
+> > > Here we might need to elaborate a bit. Specifically, in the function
+> > > `count_shadow_nodes`, the use of `lruvec_page_state_local` to obtain
+> > > LRU and SLAB pages seems to also require these logics to work correctly.
+> > > For SLAB, it appears that the statistics here have already been
+> > > problematic for a while since SLAB pages have been reparented, right?
+> > > 
+> > 
+> > Thanks a lot, now it is clear and yes it seems like SLAB is problematic
+> > but now I am wondering if it is really worth fixing. For LRU pages, how
+> > about using lruvec_lru_size() defined in vmscan.c. That would at least
+> > keep count_shadow_nodes() working irrespective of LRU reparenting.
+> 
+> Do you mean calling lruvec_lru_size() in count_shadow_nodes()?
 
-在 2026/1/21 14:38, Matthew Wilcox 写道:
-> On Wed, Jan 21, 2026 at 02:22:43PM +0800, Jinjiang Tu wrote:
->> collapse_file() calls xas_create_range() to pre-create all slots needed.
->> If collapse_file() finally fails, these pre-created slots are empty nodes
->> and aren't destroyed.
-> try this instead
->
-> diff --git a/fs/inode.c b/fs/inode.c
-> index cff1d3af0d57..85886af1e7ab 100644
-> --- a/fs/inode.c
-> +++ b/fs/inode.c
-> @@ -744,22 +744,18 @@ void dump_mapping(const struct address_space *mapping)
->   
->   void clear_inode(struct inode *inode)
->   {
-> -	/*
-> -	 * We have to cycle the i_pages lock here because reclaim can be in the
-> -	 * process of removing the last page (in __filemap_remove_folio())
-> -	 * and we must not free the mapping under it.
-> -	 */
-> -	xa_lock_irq(&inode->i_data.i_pages);
-> -	BUG_ON(inode->i_data.nrpages);
->   	/*
->   	 * Almost always, mapping_empty(&inode->i_data) here; but there are
->   	 * two known and long-standing ways in which nodes may get left behind
->   	 * (when deep radix-tree node allocation failed partway; or when THP
-> -	 * collapse_file() failed). Until those two known cases are cleaned up,
-> -	 * or a cleanup function is called here, do not BUG_ON(!mapping_empty),
-> -	 * nor even WARN_ON(!mapping_empty).
-> +	 * collapse_file() failed).
-> +	 *
-> +	 * xa_destroy() also cycles the lock for us, which is needed because
-> +	 * reclaim can be in the process of removing the last folio (in
-> +	 * __filemap_remove_folio()) and we must not free the mapping under it.
->   	 */
-> -	xa_unlock_irq(&inode->i_data.i_pages);
-> +	xa_destroy(&inode->i_data.i_pages);
-> +	BUG_ON(inode->i_data.nrpages);
->   	BUG_ON(!list_empty(&inode->i_data.i_private_list));
->   	BUG_ON(!(inode->i_state & I_FREEING));
->   	BUG_ON(inode->i_state & I_CLEAR);
+Yes but I am mainly brainstorming. We can keep the reparenting local
+stats for both v1 and v2 for now as it is not a performance critical
+path. I am more worried about the stats update path where upward
+traversal of memcg for CSS_DYING can be costly and I don't want that in
+v2.
 
-I tried it, and the memleak disappears.
+> But
+> numa_stat interface also reads lruvec_stats->state and make it visible
+> to the user.
+> 
 
+Not sure how this is relevant.
 
