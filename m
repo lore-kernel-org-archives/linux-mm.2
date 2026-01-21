@@ -4,180 +4,248 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 990BDC44508
-	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 18:44:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C81AC44506
+	for <linux-mm@archiver.kernel.org>; Wed, 21 Jan 2026 18:52:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C694A6B00B4; Wed, 21 Jan 2026 13:44:21 -0500 (EST)
+	id BA8526B00B0; Wed, 21 Jan 2026 13:52:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C406F6B00B5; Wed, 21 Jan 2026 13:44:21 -0500 (EST)
+	id B68CE6B00B3; Wed, 21 Jan 2026 13:52:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B229F6B00B6; Wed, 21 Jan 2026 13:44:21 -0500 (EST)
+	id A16E66B00B4; Wed, 21 Jan 2026 13:52:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FD8E6B00B4
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:44:21 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C92D6B00B0
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 13:52:51 -0500 (EST)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A8C6160BCF
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:44:21 +0000 (UTC)
-X-FDA: 84356846322.16.E673E49
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id ACF1818000B
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:44:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Yobx9b/q";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=78Gec1+B;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Yobx9b/q";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=78Gec1+B;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769021059;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 228F78CDA9
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:52:51 +0000 (UTC)
+X-FDA: 84356867742.16.A3B04B2
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7A2A640009
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:52:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=V9dA8tei;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Yiw59oLc;
+	spf=pass (imf17.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769021567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i6ugDYYexV6tlXTntW5lrwN365JGB8kSnp3GfE2NxRw=;
-	b=iLKOInHNKE75RXf5EWrZyzYcO/9ZAmnoCXTQ2yBIgmf7ThwUk0YrAS0c0WCzzQFWsFdGpU
-	Oqt/kFypV2U72Bzpv+YaRGw2jcmF0K/pTwlBDHccnumK88d4T4qov43504ZwgGPxHSv9ZS
-	SswLllSk5PmkioPrePSYZ1wM4RqoIG4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Yobx9b/q";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=78Gec1+B;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Yobx9b/q";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=78Gec1+B;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769021059; a=rsa-sha256;
-	cv=none;
-	b=Z/qXdBYhZrkTu4R7KySVTuDOKAiLg3FS9JsqMJ2yvjiM0bBT7BYnNXk87nmR0+B0bEMkLC
-	HiVIsnsgW7eCVXp+J3vhr4F4vcwlJUvKVu0acntw7pXBk+ypN3/R5CiqekbM7mqWTfdYYa
-	hoJT7C9QIKfXGEEgMJ80neJyQ/C2MLE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 90FE4336F7;
-	Wed, 21 Jan 2026 18:44:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769021056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i6ugDYYexV6tlXTntW5lrwN365JGB8kSnp3GfE2NxRw=;
-	b=Yobx9b/qU+2xsltTGpMlbWRHGjIh8/EvBhQoQOErqZTeiSG/4c2u+EnMyOhDWvjvtrc23/
-	DhdaQ/aRtGjfbaFpzwHUYt3HOb3ihqB4kqORbAM7EQHrXGVHSR5yzk2upFRMHnM1G/Vm/y
-	45cGyh9mn6kwGMqdYIIOXOBCC8TYQu4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769021056;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i6ugDYYexV6tlXTntW5lrwN365JGB8kSnp3GfE2NxRw=;
-	b=78Gec1+B22YqNlEi+i5I6v/CgZgXFbmmGN61w+o4SBoWVoXyZXRpY03i56UNDu99R7Crrv
-	KxHEYpNDvI3CHzBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769021056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i6ugDYYexV6tlXTntW5lrwN365JGB8kSnp3GfE2NxRw=;
-	b=Yobx9b/qU+2xsltTGpMlbWRHGjIh8/EvBhQoQOErqZTeiSG/4c2u+EnMyOhDWvjvtrc23/
-	DhdaQ/aRtGjfbaFpzwHUYt3HOb3ihqB4kqORbAM7EQHrXGVHSR5yzk2upFRMHnM1G/Vm/y
-	45cGyh9mn6kwGMqdYIIOXOBCC8TYQu4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769021056;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i6ugDYYexV6tlXTntW5lrwN365JGB8kSnp3GfE2NxRw=;
-	b=78Gec1+B22YqNlEi+i5I6v/CgZgXFbmmGN61w+o4SBoWVoXyZXRpY03i56UNDu99R7Crrv
-	KxHEYpNDvI3CHzBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3B9B23EA63;
-	Wed, 21 Jan 2026 18:44:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kUnzDIAecWmEZQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 21 Jan 2026 18:44:16 +0000
-Message-ID: <bc7b8c62-a8b3-4407-a69f-30b3fd269566@suse.cz>
-Date: Wed, 21 Jan 2026 19:44:15 +0100
+	bh=6/cgBEbEUGwvI/ENT9C63msM/f8MCbO4yHwLd6KoO4E=;
+	b=UkaLmBXQIVVryNovLzvUJTTkrrTVH6qurUflhBgrHynbwoLEF+szvxqc+LcwSL+xtuWL8G
+	CZMDCKfdLYo/gp5zKrGpDbZ34YMqvXfPJ1fPJ427Mt6oEAb1cmtUKct2APTPwZ43kFYYH/
+	J8zgU3n7NBydEQVIRHkYFvU/AyfXUq8=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=V9dA8tei;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Yiw59oLc;
+	spf=pass (imf17.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769021567; a=rsa-sha256;
+	cv=pass;
+	b=6HaQvv5qPmzG6zhQ49fipNtbxdwQS+dzb5TfZPjzP3wB8/LHQOoJfMfxFN/uBUXoU6UBfQ
+	VGKzD7DH1McIDQ9huijUtLiiXGo+2eluTJwXPbsWnL/pemYPvdVQ1QlzilsFOg/pGehSh7
+	qQzVECIU/2wtf8fQwXYSEz+VCqCHVcA=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60LEKeeh3265014;
+	Wed, 21 Jan 2026 18:52:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=6/cgBEbEUGwvI/ENT9
+	C63msM/f8MCbO4yHwLd6KoO4E=; b=V9dA8teigof6G2TiOKfFOIKaVkeeKujnsv
+	Pnr1/lKlIzrMdt1uWhv5MxPwnWRsRLDFO8dIq5vy8EirW9nQzQ7C4quSGEAgVycK
+	1e30PMgGMXPn1Aeh+wdjz2pO2UVOjv3Is23Pv77RlgXqZsWWlad6Xiy9n3NUgotE
+	6LLufUA5dO6I3aKNVdCtwrOJp88HbFySLFrZ0RiFp3FFlmc/cXCNFNSlJ4hKNath
+	n1EBVwy3HIVJ+pS5MhY8vvSh/Z/kkqvL/GowWV/SeChreTiSUbzCTYvnUzcna8m6
+	7UdBQqS23OFbbcVfjhqw1Vmiwl8rDBmTn6UoTBEBKnSD4EP9q/CA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br1b8efby-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Jan 2026 18:52:28 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60LHjTBQ015756;
+	Wed, 21 Jan 2026 18:52:28 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011071.outbound.protection.outlook.com [40.107.208.71])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4br0vbp6xu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Jan 2026 18:52:27 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=u9oKZVN4ztZ+s6nVzk4Rv9LzU8A7QoAzg8XwRVCzuNAFHyUJqMS47mHRz09aAlOg0LeNqQLWmSLsZnZmNDUteuNdoa+FXNuDpEfomIgvNH5ISXViebY67w572SLfO/nWTO3KrBQ4NWdlFAJHjHzR1kmmMxvNL0gg1E7EkZsTgHYntVdfGlblttYE06NVn42ytTBKhcismzmeMSP1g2PJSCHcHox58hEYrQmaTAkXm2VjD1Byowk383VAC/V7VuTPzePllUbwCfAjkZk0ZKUr6cyn32VxvIGbQ1Da1A3RaKfRilWpL0gVEh4aKgT+yp7/CgOt8GZfddWaJX1w9RMLzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6/cgBEbEUGwvI/ENT9C63msM/f8MCbO4yHwLd6KoO4E=;
+ b=tJvyMHyLNXIBjBhXGEyiI4Sn/VciZB7Bon5HqD0Vonw2UtVRAXbpIzec0vdV7XDW09DG67FgvMt0NSRfjfFt2koeKC255VH6Ghnpo5n51x92vLySGbUVIvYRiDWAsxhzAU8Xvsb+X2Rqqeptcrad+fqGkiEVSFpnqn4AVCR1c6fa0PnurCUvUWUncegu4VSUWy683fCmqitbEXKstYR0og+SE8/IuzAFuKBH2u+On0vGjHOeXhfm2j7P/8axsKQMO7UR3DflYM6JRCbSgE2J8qdiRBGnTV8pGWrbQMUt7Ve48Ll4oL296DT/PtArL7moQBcQmcKi6OIJHnzWw1JadA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6/cgBEbEUGwvI/ENT9C63msM/f8MCbO4yHwLd6KoO4E=;
+ b=Yiw59oLcGKOdMnukbVYZh2KEN145v2xOaxVW3XGLiyE5iPinx4q+pqZs3/Q/aiRXCicm1rru+uqMIFfds5872slsIsFYWYQND4EUVd44+UG9oLSozixYumCkuxbexv13iYxGuIwU0K3SEYUOXC1arBU4FhNN9mYF9DovZMLCesw=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by SA1PR10MB6518.namprd10.prod.outlook.com (2603:10b6:806:2b4::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Wed, 21 Jan
+ 2026 18:52:25 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
+ 18:52:24 +0000
+Date: Wed, 21 Jan 2026 13:52:21 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@redhat.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>,
+        Jann Horn <jannh@google.com>, shikemeng@huaweicloud.com,
+        kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+        baohua@kernel.org, chrisl@kernel.org,
+        Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v3 01/11] mm: Relocate the page table ceiling and floor
+ definitions
+Message-ID: <2gkqk263l6iedpudwsvnspumseugbz5g4qbqzkrworqm3ch7mz@idsaxf2c5xpf>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@redhat.com>, Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, 
+	Jann Horn <jannh@google.com>, shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
+	bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org, 
+	Matthew Wilcox <willy@infradead.org>
+References: <20260121164946.2093480-2-Liam.Howlett@oracle.com>
+ <20260121172618.39532-1-sj@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121172618.39532-1-sj@kernel.org>
+User-Agent: NeoMutt/20250905
+X-ClientProxiedBy: YT4PR01CA0491.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10c::28) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv4 00/14] mm: Eliminate fake head pages from vmemmap
- optimization
-Content-Language: en-US
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20260121162253.2216580-1-kas@kernel.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260121162253.2216580-1-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|SA1PR10MB6518:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5ae054ba-a3a5-419d-a402-08de591e3754
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?DDd7W4jvJisf0iW4bfYK6fQw80d0Q17a+iPShPa/DSg5ukxsm23J7JA/Opeh?=
+ =?us-ascii?Q?o7gN4ksXffYVrS+tU96wqDwsDVdjayCDePwJhsJsuJGY8TOFLN1xz5aW+PNF?=
+ =?us-ascii?Q?aDK3NZ3PLBLwpLmfBc7OJrnKjd8oMMFBktpeDNxvWVV9H4LNSrIJ5j4A3zGJ?=
+ =?us-ascii?Q?WHwJRu4FRw1ZhHT2WmiLigPvbfIyUKx0ZJiHY438aqT66E13EVvHNsiwnrTh?=
+ =?us-ascii?Q?BaioXeg/HAOfiLgeNpguG9X1cD8clWs6ZMxE9FdZKUfQHsVjMxCQHKdVp0jI?=
+ =?us-ascii?Q?EZryvIrH20dU6hqWmI2+Z3n8H/RGG4KD0q9PbhyHhf/g8/+3yMz+G5Af13lm?=
+ =?us-ascii?Q?tn8JOts3iJoEsiPrhdPj296WqqdsP5Z/+Ut3IYxn07oNPbVirT2swiOe27WB?=
+ =?us-ascii?Q?a6E50SjO0jWK2zYcX6FwJjk/HAmZIcfNep2J/CU+6nzDI1mh5KkGRw9gMnSz?=
+ =?us-ascii?Q?L/lsWfi06cmkDtnz76xwnACEBHiCIQFr2TQD5x8Pb5DzeDGQSVqmiQVrOdj3?=
+ =?us-ascii?Q?zqpuEotl/5BrDBB/LOs+x1uinZaUPfcKWewbSHYZP8txrwnlDHvGyPy2S5JB?=
+ =?us-ascii?Q?lvG7Lrpf6al1S10WqOfLDSD1+3PpOpIwnUoIbscfmHSgzn0SKU3DASmAbh55?=
+ =?us-ascii?Q?aJfmGUxD1DWOmFlogYl4hGn8UJ/SFV173VKmP5V77y+oM09duc/mPas+WEa9?=
+ =?us-ascii?Q?zLYlm+2+R2dot7VMH/LpqJ2OL+QDr1mfOCZ1hDmUtGNZvKInRgLlHcHz9rLo?=
+ =?us-ascii?Q?rp25AbeoO/jeSJZiVCra/iUkRT+lBAuEg4ltReoo+UOYfPHKYLiNZNT4uYIY?=
+ =?us-ascii?Q?vGlvd5sgoFH54RUS4SrDBEq6/fadWua4fFO6J0R2KtZ8uMBwTTKI2DQ2PICm?=
+ =?us-ascii?Q?JvmlEQBYcZJhPXsZk78ecIEKISRIjjFF81aoLdsxKt/eQ0aqdpPASuZ5Qb1J?=
+ =?us-ascii?Q?+3KTkM6jZzvydFuoGC2pOE/okkauuc9mlbjM/JtUmsnQLCtfUWnWG0uapVO6?=
+ =?us-ascii?Q?Ct/xCfpRk1Zs+yh/g5dYAmX/HItPivewUjGd/SFREKQunsPELTxcWTelCm1p?=
+ =?us-ascii?Q?XyqY0INLs0BVj89FaI453UwGCsi0DhHpx+WOcYTcgjZvUo4dtQbdEMijb76T?=
+ =?us-ascii?Q?R8OvF8USzy9LiC1JjhgXMPFkTARPF29de8YTqC0EhuejRQj0shruqVecKXf6?=
+ =?us-ascii?Q?UZ2kVx48CJwaKFaYWomcec0Ug6bYPULRnvV0YVMjI7TGiAD+UKuLNVqcH4iE?=
+ =?us-ascii?Q?ypNzyjibVaaxSELko9zxdmYfHBVxCXiP4kT5GE2IHQJfp0OndW1mKs0OdVoc?=
+ =?us-ascii?Q?J4OlPFnhNTkyyh/D8AZPp1+SJiQX6Gkf9pdtHp+OggTuxYa/es2eJiGKUfBS?=
+ =?us-ascii?Q?ALEQfW+CwRWWfkkIcB5ejvL6kWxM5r21a7JrYAX7nJhpl+s1FFcYKJbSBIn4?=
+ =?us-ascii?Q?DfJaU4mndCdSEebf3di26USKRFX6CrpzaiEs8ocjY2qFQJ8rT9zYjGSL2bZk?=
+ =?us-ascii?Q?wwo8GohHijumrbJC0WwRWUM69seBfs0hoxurjcxC2ldOtJLSmf8czy73uTuC?=
+ =?us-ascii?Q?Z5PCCbBX83RsuX7Hdn0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8fc7QHSqtQkzXtOcTkBuFMhTCmofDLWcAtZv/p0qy7aVc8OxAGPsaXqdaJsr?=
+ =?us-ascii?Q?/BHK22p27rfk3IjxSkLIW0JQM79rs7+9YlYi8FU+r6cuuHjWck2oluEvpJAp?=
+ =?us-ascii?Q?RP9ONNDNH1zIMIesFGk6hOaWRmJFxzA6B2QoCPqErGHKHjKMZuflqKqeIAxb?=
+ =?us-ascii?Q?2miT93OslpZYQAlfYQ6Za3B7wn1cnBbojgewvvipNT76nKzXcJqOsE6yNrSw?=
+ =?us-ascii?Q?6hF7GDZXVTSnPLa7dluu506a0ZcoRvWNdgbgbkif7527q+sOWeTvYh4848ec?=
+ =?us-ascii?Q?JnARf8bzwC8N2Qh+WrAgSqlA5Dw88Jvu2g33+A+I4MiE4AjRaLzwD+miNcdb?=
+ =?us-ascii?Q?F0X6SZiECpqLeSZHPAh69vNMFl6P5Ij9vzMn63/ZqqMHKwYY5HWAu3s3uH15?=
+ =?us-ascii?Q?1l+BI1mHDb+OXyv73oIKGnacLpGJQhDtdb9Ks8oQCFnKhiYH43TLvePW1lVW?=
+ =?us-ascii?Q?pK1vJQeH8eqw1G05FNr26vRKF7BXs4IHkPaqANbGAnCJxej0xJ9qCUSI47Zf?=
+ =?us-ascii?Q?RJwRorK7XwOhSf/T6U2clGCB0M0gr7LuC+3XaVmsSD/bjs5WffqMv2qbKfaj?=
+ =?us-ascii?Q?8NGp/q9u5mLmSi6U4j0M/IM+p8KaBCcqnQtM1WDrEBoMCqNMJjGXaq3zhtjr?=
+ =?us-ascii?Q?UoYAH7sKxsWFG0mZy1ExVC/p5/e3G5XyM7eEKq/pC4ufMIKJ4S8G1TmE7P9H?=
+ =?us-ascii?Q?YVCpwkdvrSfeE8+tuy6cjh5Mla5N6xJ55blaHNaD18YjY1IuHF0rgDo3PqxA?=
+ =?us-ascii?Q?txEBXc5h6nLdFtZEaJWYm/i1yPcrmYs0zbnZabePudoCIhwACVrTUaJNq91y?=
+ =?us-ascii?Q?g9q5Ohhmw2CPajdPAwFhIsOYUGxptzFo9m3cIuP5nFK9DhN0FInXakjXwRuK?=
+ =?us-ascii?Q?gmKPlJN5F8uruqBUjFRhUDNrWP5kB0rpPJyHFkjbjKDojnsnvALKfjQtaZSv?=
+ =?us-ascii?Q?Z+E7nsvRkoP56zjfoyQ2ETKRPF7Q5AKL+TbAffw3Ofeh29MSgiliEd3V07GT?=
+ =?us-ascii?Q?Qu578H4pFAKelE4rTBXwJ2kq4+dH0u1TzPXbeP7AfjNqy9Z/xNZSRUR/SHYt?=
+ =?us-ascii?Q?W+Ct0m5NtDZloI/MTyQb0YVyxyUNq3Hdyr/nsy0GYM2Xndkdh8iHWt0XWwIr?=
+ =?us-ascii?Q?FJ/8rs2fry7CTWd+WrVv90esns47j9bS2rVtw6XAe2PyOdJTUplL+dohMNjO?=
+ =?us-ascii?Q?nwWlamApMvEUNmXoprDKUJlLOZbhQ4uLk2IDYj5VeKl61iNydVKCp35uA9Td?=
+ =?us-ascii?Q?POuY1CqyRUUeou8kcWwFKChgYxJMIgWblprbPgnaxYb3HyQyNemoW8Bb8WOM?=
+ =?us-ascii?Q?J5tNFvNXgkjASt2G6YafmsATbuiTi6XGTB6ogA1nqrZCpWRiN39otmVJHUJD?=
+ =?us-ascii?Q?XjhjO0zhkANRBjbzFDgjno9WoJT0WBxch0Bsdstrg7C/gGWxZKsKA+ly+cpJ?=
+ =?us-ascii?Q?uhWDmx/72t6xKPtfzk278zHdV0It2YXV0NPWqxz2h64d35gW7BlWDfNO2ReV?=
+ =?us-ascii?Q?IEqA6if616TKIz5VaBCGGc9/mzwiQu+REH/LuZ6KPXbEMZmX4jthnvSwmTgi?=
+ =?us-ascii?Q?a6cxrvnn15D4e7IgA6yjvLLU4wZoEsE+bSWVvB61+VoMyY4Yn9fSWY2NbZ2e?=
+ =?us-ascii?Q?LavFYWX2sZDTeuw0AaisoDfg0naZEUB72QFPhvabqo8ctUV66vWc9hxi91me?=
+ =?us-ascii?Q?tNa4XLpDoX2rQ8vDghhBiY9ku9pfSnx9LJm0FSmE8FgYYyP+tec4qlasG1Rv?=
+ =?us-ascii?Q?W3K55du+ww=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	mUHEZBUN188ERs6kMsKfJcJwWAylH+WmwBe2y/wwS24oFF1zuBdxDOvB5jXkkTqe/onAskTvyi/mJ9OAF/7FgA2hjegrcz+0JQnAtCW9gHnjO19BbZQT8rL45i9DtcQTC6FJcVUuWd7BwleDoeSZQaI7mnXXsoTMl64l7PHmp8THDA31Mi+7gJKFb28IbejK8JW2t8lYGM74WUOOl1Dtm/siZfBQmVTRGq4cMYNJof2XdoZfy3zuZteqJlJa5u/7Cza8rHqRXmJRODp0iUG1KW+U0oLb3mQN2bQiLAoHwSZ5Hfd9mOE1sfFzqd9CQDLGAUY/iP/l2fAAjwwRsO0FzY7elCLZ3oNFfLJJKq451wlPcRmgGaJMxOWyMM7GnzA7HP4ne5DZJGdKaPlyLnb0d5U/0Vtnur/WIpVSXY0Q3urDA7mNhe+ynKoBnxz8V8ftjCtwQKcImh5PPvVccKiIFncjsJaov9whhCDbs24IJGUD1SlApZfXjQhgOTUgHKxxue5s8olmN3VS43PInSS24DTjIlk1g4m1Rx4OhqrZwKZ5Sg6qeN+k2FPzKgKpbVwMkQ9w9FhP8JWMjpPg9r7iJScW7isSedGjql9SQIIEaYk=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ae054ba-a3a5-419d-a402-08de591e3754
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 18:52:24.7392
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aJnFh7ixrONqeUg5+afZKgOuYOS2ojKR+9M+GkPoG6zw0EocyIU8pR3o/l8CbT1Vp4urlOaNlpTIKUrY8k+SVA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB6518
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-21_03,2026-01-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 adultscore=0
+ phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2601210157
+X-Authority-Analysis: v=2.4 cv=WbcBqkhX c=1 sm=1 tr=0 ts=6971206c cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=tjSufP2J2ur6p9p-CWYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIxMDE1NyBTYWx0ZWRfX5On41BVIGTmv
+ vcO5thkOSIoA5IO2AJMrAkbjhgUQk9SsK9+KorefGQV8992ssxbtEQn5litVVlu2JSwWVlwuwDG
+ g4sAnWYCgwf+I7DKt0rNe5zIrbB+3cNO3P9UEuL9JBwlazLJpnxoRBH8rBXB4nIYe0X39zgnDpo
+ ApQMx9rFcaB6W5gqdSLco89M+3yg1wH8ilFGoMJf4gm56f2b7GWDXOGXtmJ/dOAc1QVP2qCsr3J
+ tMr30L97mZ6a+yJ4qccC4I6gvN2Qgqu4dCu/5FbR2dnZe3qsokZ9yCbA2OgPWHsDyV1IppCvOSf
+ KiIcwCsgW+4/eGQrYvEnUvlXsZPqUBL8rrp1GTyamNBQQOepgk55A6fI6ulWmAWTcexI2k9Cfkn
+ K/07YRGnotFnigob/n6TDwayh7bX8Y83aan0pg+uBIWwB0V8Uugrwt8ZZqIFk/uRtkV4Vgu8MEA
+ Wbmo9gozKWDn0IS0jNQ==
+X-Proofpoint-ORIG-GUID: CSZwKG2YiQRo6AFx1v_JgK1nCQ1FG5iV
+X-Proofpoint-GUID: CSZwKG2YiQRo6AFx1v_JgK1nCQ1FG5iV
+X-Stat-Signature: fwdh7mywwhn31ohabfue86cqei9zntdb
+X-Rspamd-Queue-Id: 7A2A640009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ACF1818000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: jd6jjq9o3munzwfjntzcgbs5w6hsou6p
-X-HE-Tag: 1769021058-410942
-X-HE-Meta: U2FsdGVkX1/LkBRePKSqXSshIJRayEo7HXTA3TErceSxkxraGCjjZo4STWnYvKgthf1Ao1Us06KtpwhuTaa9o23qulq2UZXw0zwkfqMa72bpXbCPRYn/+zGpcNnAhwirIhnsgiSFsb4U1NOnbvG5bCqFJx1VsTPGad9WZ+nSvo2mcJWJVeTmgjsHNskaVqDHKlVYJ2g/6a/fM1n8xTrOcCVAt1ZkMK/I+q4uMWTc7B7o2KS+p3mtLer1D44cKVZCaI59SXOe0NYnLar21FnyJA/sybwqPSD3yAYeIj8n7cmprSVsj7lKBfUfz8uDvtUQpZMu6MONkGyLRq0Ag143C3XL9OXlQIr8hXg9VZVIIVf30bAbbSMBezP7AcF0uyfPcJkeXNHJzcy8PhTX2VDBwJYRlz6vCj/Qs3itJ+bxxSqQr7qBu1laKq+vVuEqmsXEwz3aIvCg3DYMtMQmvTtUcCKuX3+6Ti9c9+GVe1A2zCQazp8cz4AqoMDvmPYYBlkEPuRDghFywhp023Fas0grZZuy2NPx9Zv6cuPVNrioD/ezNpttvsuq6ftdrU7MtbqhPAvGodLk0XN4vJDXEZo45cURS/Wy1BYDaM/TnypWIGEaCmpANoQK6rP3R4KhN6ePsyukZJyS9EOBOykLS250Dgq8T2L7TnHhivc/P9QMGTQ7EzJuTQE8FaQLW2bgTpQVwmXVNJqRcbNjjt1YIiZ+sqJ6u2Ebk+8pDLVbtFVZtMNgMXLXo9tPLTRAY8JbS3ctt1DPr3jPm/VMxEO0uAgNfC4VX4XySTKZYYyuRrOAh2qlGBsNnC8VZtZHqcOMPRMLiVXiIBF2kuycoGxkUIjbe2DEHP3bz9PzZWW0IXhsfQkHutBp9BBlVNfcdM2Gtq10xtKbAxDsB3Ooq8Xto/C4SD4pVSP4eOWy9nKp4KCvsR6+w6pL65cBUx46qebracos4HfpWMX+xv8+/nUNjRW
- HmflTiBs
- Vg5vZaOcxX7/8zZUNqvf+QA4BlGdwBULxVtjVNzH+1i62y6CKgyJ3HbsMjyc8g+rogqPG1ka3hq5sbUymBH8LVpy7pPHDoROz/BbO3LsLm4WxXzID/RxDMx0D22Et08QfAjHl9tnZZJOwOAEhKiV07FeLMzMbUNM5kXlvOPYhE6JVEXIH6y2ymUKeK3bQhahT0TtpNmghtnGJqnlkVB4tbDI5UNzezdEG2mQ57sNwU04GpA2is9bTzWsGrfj85DvO4WuVn+ZPn6GFCOUNxxc6nlbuq26/avvTfb4u
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769021567-884260
+X-HE-Meta: U2FsdGVkX196MiT1CL0FS5XAgpfwFA3/mF2L+MtG5rMClAKBVbDpKC8JQHLahmju9MpWYiSL2Gyvo5BcI6GyYfX3k7KJxeVtyBARdziqtShOQ3ChTNHUUP9Jv7NdoDrn/0Jvf9EPbS3IUn1YQcW6zRUja88a/ecYYELVyJ54ui6HRE8NH5Rp6bU+6PSRaqMOymyCiXt4sfemmpKHezGG6xRaTxws1Sv1yPdD0VHtrqzuGo8Tjlwo5f8lXbBEbqQ5I2aM//9b3V9Y7ZO9oQGG5QSuDBzM0OpLjRf4zuLdji7k0+aQEgttYv9EF+T4c0liQXGmwM66lJvi5MUgqYyhgIhvH5dGBy0WLSC8o/4MdvmSg/pcGSjt05wvXhNnJSBOo6M0NgRHc4clZVTW3DGQpop5f9TElvgocAaCQU05ugoFHi4KII0Usw2TpUzx3wjGvZysUUfjGr3BfdJTiFFtmYK+M0J82QfuWohy/Vfje/ap61VqVIfEvkuxnI7wrEpHPFbrO8myt47pFSpCqUMSbo7z399paWS4zRYjnf9ScgHoHOCZrvzqzUvH4BT26XaUuyO6affs19EqCnd5KjD60IkoINmUjM9x3kEcOro86DIogbw13p8fzWPhs+yujPBH0v+4XDO/DqvHs1yKop6hRM3PXdbC59iBOslazHXFEwULA6PU/MkOeuub/DzSZ10YvWdb3wKJeWFslE0scVZ5RdHOKYGPfZW89EBuMbeBHxeKthwNCYRMp3GsauzsxoMYz+HvTJUFOM+1YbAvol/OwB+iGCocbThwF/nqkvBy9E3ttdK/abgqP0qmeNSDEKe+ZbFGqKGOEmFiNLkveQWkFR9SMDZRPaeP0xzLxHvbFmqKOh8wYqfBQxTXkL6s9jnRx4diT4odmPyqnnIFqBgS+3LtNszWuQ1alaAoZgafN1YBDb3Gi9+aiJv9UT1yMFxyGxZEt1MC95MdM4Leytm
+ Ysi5Ikjg
+ hF7aCWAixNPhHV/nOnHHfO+tWQ7wnrwfcS1k8/Wp+vyI0RCQaE/TGBCHghTNs374pXlcw0FjEC8aXj+MAB2vlLCFo8GMq9p2G9m7GnOXDW5FewtbVJN1Tw7qz8fitqXL+1nJUhu7l8c0p/ptNdYJNaDvbE9iCKNI5i2VgxMsyPjFZklpQsRv4FRpNMDMJJH9gm01mAT8EpIvKS/MLnIy0Q1nqCMkauwcKD8Wk43tecOI/K2P80Gp0wvffBvT/A3GFIeoqjKGXzE7R0oAIh5kY6ImmliDKi/Enhiay8SJFgujcQkEvBCbG6lPwZ0mpqwMGhhIuiZnibGmPSQEMH57vqpMsDCafl8+Mv1ooQYvQrTpcoIn8begIMPW5NOkw7SDhuhx+VWPXUhRTptopITFhe5Mm6ymFs1vABnUb1gGTFfMjPi8VlfnruX9+EmpBiMDoChvYnQz+s0s6neWNRKsqQrERma0pgY0UepUg+zJ94nDpC16+XYLEb3wrmIYDmvEV/KbPWd2RNwJ0chOR47wSxKSTK3hO4aHm+3KFzxynU181AIYLEmWTchKLDOu1hvxEsnf5YhQixNLgdDgDh7o6G6J7Sf/GQ6qDHqqupW63x5F5pK3FFovZoFAWx8iy0lkhK044VmCM40Hq3YA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,173 +254,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/21/26 17:22, Kiryl Shutsemau wrote:
-> This series removes "fake head pages" from the HugeTLB vmemmap
-> optimization (HVO) by changing how tail pages encode their relationship
-> to the head page.
+* SeongJae Park <sj@kernel.org> [260121 12:26]:
+> On Wed, 21 Jan 2026 11:49:36 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
 > 
-> It simplifies compound_head() and page_ref_add_unless(). Both are in the
-> hot path.
+> > pgtables.h defines a fallback for ceiling and floor of the page tables
+> > within the CONFIG_MMU section.  Moving the definitions to outside the
+> > CONFIG_MMU Allows for using them in generic code.
+> > 
+> > Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Suggested-by: SeongJae Park <sj@kernel.org>
+> > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > ---
+> >  include/linux/pgtable.h | 39 ++++++++++++++++++++-------------------
+> >  mm/vma_internal.h       |  1 +
+> >  2 files changed, 21 insertions(+), 19 deletions(-)
+> > 
+> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > index eb8aacba3698d..557ac918bdca6 100644
+> > --- a/include/linux/pgtable.h
+> > +++ b/include/linux/pgtable.h
+> > @@ -22,25 +22,6 @@
+> >  #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
+> >  #endif
+> >  
+> > -/*
+> > - * On almost all architectures and configurations, 0 can be used as the
+> > - * upper ceiling to free_pgtables(): on many architectures it has the same
+> > - * effect as using TASK_SIZE.  However, there is one configuration which
+> > - * must impose a more careful limit, to avoid freeing kernel pgtables.
+> > - */
+> > -#ifndef USER_PGTABLES_CEILING
+> > -#define USER_PGTABLES_CEILING	0UL
+> > -#endif
+> > -
+> > -/*
+> > - * This defines the first usable user address. Platforms
+> > - * can override its value with custom FIRST_USER_ADDRESS
+> > - * defined in their respective <asm/pgtable.h>.
+> > - */
+> > -#ifndef FIRST_USER_ADDRESS
+> > -#define FIRST_USER_ADDRESS	0UL
+> > -#endif
+> > -
+> >  /*
+> >   * This defines the generic helper for accessing PMD page
+> >   * table page. Although platforms can still override this
+> > @@ -1660,6 +1641,26 @@ void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
+> >  
+> >  #endif /* CONFIG_MMU */
+> >  
+> > +/*
+> > + * On almost all architectures and configurations, 0 can be used as the
+> > + * upper ceiling to free_pgtables(): on many architectures it has the same
+> > + * effect as using TASK_SIZE.  However, there is one configuration which
+> > + * must impose a more careful limit, to avoid freeing kernel pgtables.
+> > + */
+> > +#ifndef USER_PGTABLES_CEILING
+> > +#define USER_PGTABLES_CEILING	0UL
+> > +#endif
+> > +
+> > +/*
+> > + * This defines the first usable user address. Platforms
+> > + * can override its value with custom FIRST_USER_ADDRESS
+> > + * defined in their respective <asm/pgtable.h>.
+> > + */
+> > +#ifndef FIRST_USER_ADDRESS
+> > +#define FIRST_USER_ADDRESS	0UL
+> > +#endif
+> 
+> Looks good to me :)
 
-We never got the definitive answer in the previous version discussions
-whether it's worth to do this now with the upcoming memdesc stuff, right?
+I had it at the start of the file but realised your change was more in
+line with what the file already did.
 
-> Background
-> ==========
 > 
-> HVO reduces memory overhead by freeing vmemmap pages for HugeTLB pages
-> and remapping the freed virtual addresses to a single physical page.
-> Previously, all tail page vmemmap entries were remapped to the first
-> vmemmap page (containing the head struct page), creating "fake heads" -
-> tail pages that appear to have PG_head set when accessed through the
-> deduplicated vmemmap.
+> > +
+> > +
 > 
-> This required special handling in compound_head() to detect and work
-> around fake heads, adding complexity and overhead to a very hot path.
+> Nit.  I think just one new line here should be ok?
 
-So a very stupid question, why did we remap everything to the first page,
-and not instead create two pages, where the first one would contain the head
-and the first batch of tails, and the second one would be used for the rest
-of the tails? I'd expect it wouldn't make the memory savings that much
-worse, and eliminate most of the issues?
+Agreed, Thanks.
 
-> New Approach
-> ============
+Andrew, can you remove this extra line?
+
 > 
-> For architectures/configs where sizeof(struct page) is a power of 2 (the
-> common case), this series changes how position of the head page is encoded
-> in the tail pages.
+> >  /*
+> >   * No-op macros that just return the current protection value. Defined here
+> >   * because these macros can be used even if CONFIG_MMU is not defined.
+> > diff --git a/mm/vma_internal.h b/mm/vma_internal.h
+> > index 2f05735ff190c..2da6d224c1a85 100644
+> > --- a/mm/vma_internal.h
+> > +++ b/mm/vma_internal.h
+> > @@ -46,6 +46,7 @@
+> >  #include <linux/swap.h>
+> >  #include <linux/uprobes.h>
+> >  #include <linux/userfaultfd_k.h>
+> > +#include <linux/pgtable.h>
 > 
-> Instead of storing a pointer to the head page, the ->compound_info
-> (renamed from ->compound_head) now stores a mask.
+> I think this might be better to be done together with the following change that
+> starts using the ceiling and floor from generic code, or mention this change in
+> the description together?
 > 
-> The mask can be applied to any tail page's virtual address to compute
-> the head page address. Critically, all tail pages of the same order now
-> have identical compound_info values, regardless of which compound page
-> they belong to.
-> 
-> The key insight is that all tail pages of the same order now have
-> identical compound_info values, regardless of which compound page they
-> belong to. This allows a single page of tail struct pages to be shared
-> across all huge pages of the same order on a NUMA node.
-> 
-> Benefits
-> ========
-> 
-> 1. Simplified compound_head(): No fake head detection needed, can be
->    implemented in a branchless manner.
-> 
-> 2. Simplified page_ref_add_unless(): RCU protection removed since there's
->    no race with fake head remapping.
-> 
-> 3. Cleaner architecture: The shared tail pages are truly read-only and
->    contain valid tail page metadata.
-> 
-> If sizeof(struct page) is not power-of-2, there are no functional changes.
-> HVO is not supported in this configuration.
-> 
-> I had hoped to see performance improvement, but my testing thus far has
-> shown either no change or only a slight improvement within the noise.
-> 
-> Series Organization
-> ===================
-> 
-> Patch 1: Preparation - move MAX_FOLIO_ORDER to mmzone.h
-> Patches 2-4: Refactoring - interface changes, field rename, code movement
-> Patch 5: Core change - new mask-based compound_head() encoding
-> Patch 6: Correctness fix - page_zonenum() must use head page
-> Patch 7: Add memmap alignment check for compound_info_has_mask()
-> Patch 8: Refactor vmemmap_walk for new design
-> Patch 9: Eliminate fake heads with shared tail pages
-> Patches 10-13: Cleanup - remove fake head infrastructure
-> Patch 14: Documentation update
-> 
-> Changes in v4:
-> ==============
->   - Fix build issues due to linux/mmzone.h <-> linux/pgtable.h
->     dependency loop by avoiding including linux/pgtable.h into
->     linux/mmzone.h
-> 
->   - Rework vmemmap_remap_alloc() interface. (Muchun)
-> 
->   - Use &folio->page instead of folio address for optimization
->     target. (Muchun)
-> 
-> Changes in v3:
-> ==============
->   - Fixed error recovery path in vmemmap_remap_free() to pass correct start
->     address for TLB flush. (Muchun)
-> 
->   - Wrapped the mask-based compound_info encoding within CONFIG_SPARSEMEM_VMEMMAP
->     check via compound_info_has_mask(). For other memory models, alignment
->     guarantees are harder to verify. (Muchun)
-> 
->   - Updated vmemmap_dedup.rst documentation wording: changed "vmemmap_tail
->     shared for the struct hstate" to "A single, per-node page frame shared
->     among all hugepages of the same size". (Muchun)
-> 
->   - Fixed build error with MAX_FOLIO_ORDER expanding to undefined PUD_ORDER
->     in certain configurations. (kernel test robot)
-> 
-> Changes in v2:
-> ==============
-> 
-> - Handle boot-allocated huge pages correctly. (Frank)
-> 
-> - Changed from per-hstate vmemmap_tail to per-node vmemmap_tails[] array
->   in pglist_data. (Muchun)
-> 
-> - Added spin_lock(&hugetlb_lock) protection in vmemmap_get_tail() to fix
->   a race condition where two threads could both allocate tail pages.
->   The losing thread now properly frees its allocated page. (Usama)
-> 
-> - Add warning if memmap is not aligned to MAX_FOLIO_SIZE, which is
->   required for the mask approach. (Muchun)
-> 
-> - Make page_zonenum() use head page - correctness fix since shared
->   tail pages cannot have valid zone information. (Muchun)
-> 
-> - Added 'const' qualifier to head parameter in set_compound_head() and
->   prep_compound_tail(). (Usama)
-> 
-> - Updated commit messages.
-> 
-> Kiryl Shutsemau (14):
->   mm: Move MAX_FOLIO_ORDER definition to mmzone.h
->   mm: Change the interface of prep_compound_tail()
->   mm: Rename the 'compound_head' field in the 'struct page' to
->     'compound_info'
->   mm: Move set/clear_compound_head() next to compound_head()
->   mm: Rework compound_head() for power-of-2 sizeof(struct page)
->   mm: Make page_zonenum() use head page
->   mm/sparse: Check memmap alignment for compound_info_has_mask()
->   mm/hugetlb: Refactor code around vmemmap_walk
->   mm/hugetlb: Remove fake head pages
->   mm: Drop fake head checks
->   hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
->   mm/hugetlb: Remove hugetlb_optimize_vmemmap_key static key
->   mm: Remove the branch from compound_head()
->   hugetlb: Update vmemmap_dedup.rst
-> 
->  .../admin-guide/kdump/vmcoreinfo.rst          |   2 +-
->  Documentation/mm/vmemmap_dedup.rst            |  62 ++--
->  include/linux/mm.h                            |  31 --
->  include/linux/mm_types.h                      |  20 +-
->  include/linux/mmzone.h                        |  47 +++
->  include/linux/page-flags.h                    | 167 +++++-----
->  include/linux/page_ref.h                      |   8 +-
->  include/linux/types.h                         |   2 +-
->  kernel/vmcore_info.c                          |   2 +-
->  mm/hugetlb.c                                  |   8 +-
->  mm/hugetlb_vmemmap.c                          | 300 ++++++++----------
->  mm/internal.h                                 |  12 +-
->  mm/mm_init.c                                  |   2 +-
->  mm/page_alloc.c                               |   4 +-
->  mm/slab.h                                     |   2 +-
->  mm/sparse-vmemmap.c                           |  44 ++-
->  mm/sparse.c                                   |   5 +
->  mm/util.c                                     |  16 +-
->  18 files changed, 369 insertions(+), 365 deletions(-)
-> 
+> Above comments are for only trivial things that I don't really mind.  Please
+> feel free to proceed as you want.
+
+I was also debating this, but the impact should be virtually unnoticed -
+it's included in most cases anyways, so arm32 and m68k would have the
+extra define.  Tracing the reason will have the cover letter in the
+change log as well.
+
+If anyone feels strongly, I can respin this in a few days again.
+
+Thanks again,
+Liam
 
 
