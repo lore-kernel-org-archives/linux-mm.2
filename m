@@ -4,135 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C0ABD6CFA3
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:30:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11122D6CFA3
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:34:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F03576B0304; Thu, 22 Jan 2026 13:30:08 -0500 (EST)
+	id 205BB6B0307; Thu, 22 Jan 2026 13:34:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC3B56B0306; Thu, 22 Jan 2026 13:30:08 -0500 (EST)
+	id 1B2E76B0308; Thu, 22 Jan 2026 13:34:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB9CD6B0307; Thu, 22 Jan 2026 13:30:08 -0500 (EST)
+	id 0B5586B0309; Thu, 22 Jan 2026 13:34:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CBEB56B0304
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:30:08 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E68D160503
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:30:08 +0000 (UTC)
-X-FDA: 84360439296.11.0C6ED3D
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6B01318000A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:30:06 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=SkfShrrZ;
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769106606;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA6686B0307
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:34:58 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A5100C1C9C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:34:58 +0000 (UTC)
+X-FDA: 84360451476.08.C575B73
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F0C81160008
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:34:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FgscWsjk;
+	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769106897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XqfjFZjqZ+qKfuAcLr5Lq6LxiUZh0aC9ms0gfa0kYpM=;
-	b=bMNQoN2iQsupyexaG1v9Nkpkwu68ZgISdtvqGMwowKgtPXbpuiDL9UGw9vnb6W+juIHhAc
-	d/lg6GX/Z7+akkNHpto+ScCYpjUaMAWfqNVMQygBlBGJ3imUPPtzCB9XOkn62c5AtQoK9m
-	PpJiJ01y7kX2zTEo9wsYtLumZave2t0=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=SkfShrrZ;
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769106606; a=rsa-sha256;
-	cv=pass;
-	b=cX/ZPOJlKkBZMHxQB/7uNAZYUh7Xldm+1vaJgZ9g7xgl9zuD0rml3mbJFxsbBcH0C+QcDV
-	dfenCtqZ6RvudUIA1dct0yXAOZ0Ycz9SpDLu45czrHAdmbOY2YEEisVJPCzK3MHd0diJMP
-	9eBm6qasVMwAmh2ZCPuFClH567IAKUE=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64b9dfc146fso2222324a12.0
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:30:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769106605; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DoNpzjPPr+7ZBl5lBFIfp6F/3kOgfA/F4dmvoWO6KuQ3Bmzak/+t6I3NhU5OIeT1Y5
-         M5erA+bLz7kbpziYE2elPLCM6nylFYF0UOap/0WbAWYxvJUobu2f1SpwGWWETGXhIWYo
-         DpEP0TNb3MgICKWaZJlXIyySY7Dk8dBvaIGVYyupIn3zoTjQVZYumUw8xDUhByhaaTyg
-         pPsoo7i5qI7lDUMpE2GLOgFN5IfqcP9fyzivvXtd0h/OV3WZsP8YP5aZtZOFrdlUdRyp
-         wG+o5VmxXRKNiUHcvvVfkeGfYHeYifFfEEBRr1ZA83uGfsCQVxKpuYVOE2LEo+89PKO/
-         LOEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XqfjFZjqZ+qKfuAcLr5Lq6LxiUZh0aC9ms0gfa0kYpM=;
-        fh=dUIty9LfZwSsscFVJhCWkjXMsmTtEhKcKtGm2hcn3tE=;
-        b=gUB61gX1LXr/fsFkUYtrSZmiqX9W4Ab4c3Voco3dJrXdNqKEr1wdejmmNqDJWU2mwr
-         0vsR59nahmJpdQlpgTo77D+o7VRPcw7C2dKziu/x2gwZqgurRbwGUWywpkWeGFaN1rMz
-         C/4WuloCDlUSMWl8QncJyqFjt2JeUjQ+V3LG3rtShBicD/wvbKrpLqwATZetPhfemfmw
-         oGmAxSIVBPAcrAtegr7aeskUPJAl7VJKKJ43ZzpwHZYeBIzQz135TzAPxJ49oQG1lXHR
-         Rd6yaRKKXivmkJ95QaGPWqjSKVtfx+KZqQaub1QX70lHT6eU7iEWwNztkahFaSCCA0ym
-         cYjA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=Mq5VJmqRAo0xyjSAtScAIcpCkrPE7TyUs2+qpNnChkY=;
+	b=Xmv6ebqKOhRe1IL20Ek35ztpuGask34rG8z6lhojPIX7qIh/DzKJiXemVZ+WGm/QrflGPf
+	/1TEGYmRXVNmXvEBgKlrbszzat/jLAlOyjLj5x3m9C3BqXiRfKXZsbuRro7AxM4zJUJWrD
+	SzGtdC83GYQagPMRhMIQsjYzYRNrcVw=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FgscWsjk;
+	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769106897; a=rsa-sha256;
+	cv=none;
+	b=poXyPTel7L6o/H/OCsOnlWuF2yHtlYPAgFjJaqzGF7U/Cyq8Kf7lX6F/GG0jV89xiHnGml
+	VbNw+M1Jr5h4ev3BwrfkLCNfDjkVDPsVkuiVP+EE/pcWsOIOPuMU1yZ2mDTyWvfVr55/zK
+	XkypXrUDdKBGSV6Fk1SCDrSVj3juISo=
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-640d4f2f13dso1393379d50.1
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:34:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1769106605; x=1769711405; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769106896; x=1769711696; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XqfjFZjqZ+qKfuAcLr5Lq6LxiUZh0aC9ms0gfa0kYpM=;
-        b=SkfShrrZ82Tdkc4WdqbyBrcXWEfrx1YFs7dcMOkrPU3RiQM+NQArNX6SfzYMVJqD1O
-         aMaQ/NIZ2PJHtP2TJRcuTtZWZL+LLUPM/K+7KCqasP+5SVaYzdSyIK+C6atfCjcSg9mH
-         ZyZGBq5gv2Ijy4cdNy9rHqBs4J4DeHBxCLs0tp1aOxhA4jVU8dCjiOndozTqn48pl1GA
-         frL83lUYWsga/djZ2mNPbNVvbiJncnSKOssDtKcA6loq6ZIVzvvyl2wOHFZfvfE7+HA7
-         rnbnqiacQ/nTZOP0k+MfC7givXQgcd5VFkXCstN9EX3DonKiZuy+l3tv05aHQofIcBqK
-         B4eA==
+        bh=Mq5VJmqRAo0xyjSAtScAIcpCkrPE7TyUs2+qpNnChkY=;
+        b=FgscWsjk7j2DSmHC5bQ3XS8W+d0nWEsaSeMSmVqaM7ICWSZXDbwhxPFeMVe1yDuwUc
+         zPU57YZpUMpjnLVcy4h0gxvAfT4jul/GrClmDJtugbEismIRJ9ea4EncucHXcQhX1+8+
+         VK8xF8FsQnHp50hcmVwXDlIEks6yfpiCfarqW/YFJyT3HvUDZIDL8QH1syGO9gdOmgGc
+         AaXaPXXsC5MdXQC7CcQT3bHii5zsG0BKD9Jjec0qirXRXI9ynwOntbk0vhShNrJLjVb3
+         jHFxKCEr92U4k9VZmsXNdHxLBcM3CCDwUhckb+NRm9ijiRpqQFxjLrEQDdAgdS0ZOzGe
+         AWVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769106605; x=1769711405;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1769106896; x=1769711696;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XqfjFZjqZ+qKfuAcLr5Lq6LxiUZh0aC9ms0gfa0kYpM=;
-        b=a1pKVPYnNpbofEOaVg012AJ1lqcgOVRqeYuGsMaJfQUGjT/4zGP+nq9wwc0vnUn7No
-         N5JtUEID6hmfBg+G/MgatO8gtRIHoR3H3Uhx6fkcUI/5+EVw744f5anOPDPJ1Z7dggDJ
-         Yw1R4FK76tUNFS4DsAqxw9cd08iP1LZ66gOEEVO5NCPTtIXdblmjezZjpVVGgRq9n8vT
-         pYk1Mrqb8U01m0+b+Xb0x5Txc5oJbrhso3AEAJT64slUzG6h901VKOeJcJeeRmH70MpQ
-         ZTcOGvnMsk7nQrf4DNLnNRsZ4Sb/ZJqK9coy1FegE+FUVHPYmkum6b1MdmXjLFO1Lu/v
-         eaEA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8PjpYdg+OGRyc7co8FSV1UpHyb45rXcD4BrVmGppG1OwYV6QIkKTs5A0s7Aln06BEzIf9W9Ftmw==@kvack.org
-X-Gm-Message-State: AOJu0Yxq4rcya6H/vC2HDeZS/nufEiCk9/YR2bDlRECEHlWZg+4YMCLN
-	75AIq8y01MLxOw4qBLvj4hoQqHIHPGjaL0MhM6KEfaHORdTc3sVrLN9nOUSvgBEHkqVoFFgZED1
-	23O1F6G53WcbrELF9pl31xUGYOqtDofBff3ajlYbKuw==
-X-Gm-Gg: AZuq6aKlKt0MSRIKLHt/hPeGmpOt9BD/DRcBR3SZg4VzTmWJHNji0T9CkU0EOzsKvyY
-	S7J07psWmi4HZquD/RrYblcCvxh9tnNfmb+HXc0IRGewnHbqnJONlAH76+A5IR+T5T1xkbo3Ltu
-	Xu4vz2IutjfTMiqPPGT+F/UmqHZCtyTdzCrhGCvud/rd18euFwsysE0gG/pnQFceKt8+bi8MLrT
-	iCRX74EZgqfEEnB77siXtp64Cp9EsX6PvC6IqbKwWW8FXi4QN9tdpsZAhaxrDk3YYOyfAmkJHwO
-	3DDMH7n0vnJAP6XukF3uGkMTuQ==
-X-Received: by 2002:a05:6402:13d4:b0:653:e391:6f2f with SMTP id
- 4fb4d7f45d1cf-6584b1a37e9mr194745a12.9.1769106604981; Thu, 22 Jan 2026
- 10:30:04 -0800 (PST)
+        bh=Mq5VJmqRAo0xyjSAtScAIcpCkrPE7TyUs2+qpNnChkY=;
+        b=DSr+TpqTMwfxTMCTJzQzNI7vdg4TgFosXJcUvE61G97PxT9BOKFCU7g+BrCw6qkpSD
+         4TLLNPbLAcxQQ0PjYbsz6kWsxwGPgR247ALUfoPYFvEUw5CV5M3iznPlBiPVneG2tepP
+         qUvDK680/9pTMJcXUqASTFHlMG4VwzwgueESXYnyavbLkUeJ75ThkR27kihlTHzu3ByL
+         W6j8ZMxclQK8lLtURzFf5/ValTgIf3SEq2jdUkMWRtFHeCick6dP65zWZVYW4i2dW+Wr
+         qNpIGQ6c98yGgmi8vCAOE9qQq/Kr0h3+navdHhf9DWMBMnZMRCJ39QwnHesZ6GXqMoYl
+         ow0A==
+X-Forwarded-Encrypted: i=1; AJvYcCX2XetpJIPUiET3kxbQb1MUBDnPWewBS/5ef5pLxxzVT9t+9AHYxxDbFDPNee/hQqEhBKgjSnUtzw==@kvack.org
+X-Gm-Message-State: AOJu0YxiYSlgrw9WzUNmQnsCzSYZSJrY9gmGQajakOey5IXA37/6dEwU
+	T0OUPY2ysMwJ9AjjSr0Js+aVfp9VbpVPREODs6ePH/KWujQtS0dCzKXj
+X-Gm-Gg: AZuq6aLdE/o4clwUwEvclwsvYoQTuam0VldS/jl0WKfQxffg+Td+Y9LpqLvfRU7avJ0
+	OsWqxzWKvV1Cv8esNzQhrQEd2/lMLe2i4v9HcEIfqLZ1+e+AAnBkfoBYuVjWpjf2WFjVwVtOOaQ
+	odFInYIoVUSKBvDUrozVBNXfwDa8oYA6C1mrs0akVtfy2Z6WU9qPIrHWdFnFgbVl8RympLH4ao9
+	yuLEFzcvShEHrrgDpFI49Bg8LM+8ZY+fY0ccCZ/FoOXchpf0Zfy39as4CNTKGNtM6dk0IWGiwUF
+	ZSuyNL1ry9kqISgXossCFmpc58AWEJBoAI+sCyJ9jx3E7j8WPkef9ycqqMyxYkudWNGFv9lHcE6
+	/XEhTqvwhMZ0OxjtV4iRITPTx2Kc9qsNQIiIbV2per8lWd2ECk8HFBxRQTDl4kJgay8Z05NiHuV
+	jddwRyTilrrA==
+X-Received: by 2002:a05:690e:13c3:b0:644:71e8:cd02 with SMTP id 956f58d0204a3-6495be6c0aamr352932d50.4.1769106895892;
+        Thu, 22 Jan 2026 10:34:55 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:47::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-649170bebaesm9858332d50.21.2026.01.22.10.34.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 10:34:55 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Akinobu Mita <akinobu.mita@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	david@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	bingjiao@google.com,
+	jonathan.cameron@huawei.com,
+	pratyush.brahma@oss.qualcomm.com
+Subject: Re: [PATCH v4 3/3] mm/vmscan: don't demote if there is not enough free memory in the lower memory tier
+Date: Thu, 22 Jan 2026 13:34:53 -0500
+Message-ID: <20260122183453.2619156-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAC5umyib=XmPkTvRT6eAsMx+WDx0NkSP9djh4xkhLJgwk_v8Mw@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20260105165839.285270-1-rppt@kernel.org> <20260105165839.285270-5-rppt@kernel.org>
-In-Reply-To: <20260105165839.285270-5-rppt@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 22 Jan 2026 13:29:27 -0500
-X-Gm-Features: AZwV_QgE9tT77JRQYCr53kQCb10BhXhbXggqjEIyG_WPw09DmKeAZcOWTin2V6Y
-Message-ID: <CA+CK2bCB+n5hK9SpMewWURU75a8sY3BJz=MEu_Zy1KwU4Kr5Tg@mail.gmail.com>
-Subject: Re: [PATCH 4/6] kho: Introduce KHO FDT ABI header
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
-	Jason Miu <jasonmiu@google.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: qpp1yb58gmx1adzjdzmp8cnptutyo9eo
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: yt46617pfj9r93piafwq8jefsti1yj5x
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6B01318000A
-X-HE-Tag: 1769106606-430450
-X-HE-Meta: U2FsdGVkX19nFJKXyiJejRXKTUDsckZ0WVd4gyI+nF0QNC6eQISy8xjuSBlH1iqfDaWJmmnMevszujDPtlqCYywZJJdsk6dyxpyRoq7sM+kvhHA2AcSYKQmYtaO0wnJ6SxMihHWDdjFKNmoJgcwTkw9OJjPisJ8JJeHQOkCGBwN8KederzGxz2OZuVSqjBKf1zygPYbkBZRCyX5RvodOsdqdUedPITGBiyryzDH1BRsA0IEuvmdrzl6tlxW21x9n7RFs4cPbq2oJAuogDODhkRFnCfivZKSzISBGpitWMCm4VXqi9L5asxfF7WM4m29udnWI3Vk6tpe3mlJeaHezUEVy25+vwhxw6h+fLQk+E8HJJt9SYs0qayQ0KdC8yAtmjP3ubaX0fSMHce++Eby78yL9eu50kAyXKdCH92aEiSpDkIrxa/CI7S4zm9yYKrCfSDGXkdkZ/gAOGRAqxALdjQ0KcUqgMxi1J63O2WXW2djo9oNMQPETazT3VJ1XAtci5c3OwATRs7HyYJPFMrOcnSxhKttczBJUfbd6IMNxSskow5AG297Je2XWWvXZ+1E29U8EpH3mDYP+McHtZvss7xPcN+Ny2yQbxUcSiP9mTm6xVXy4qmbMsN2lKoDR5Yy17XmfZrWcqhNFFKSpb5DSnwEwALjdZBsG7rJA4tF4+jdqx3RXpfo0iM/u4xLL21vZevFVyjx5pdCdHigcVHgOUMwSByBbc5TYVP37gHiLa612AgI0TvhNhFyshlI3yn4BvDY9fYFg2awpb0BeM16kuvG+MMPZdSEkZ9/jNnwsTsJmTUudKR3lB7twNWPb+dVGoGuNSH/s5Jqz+I+SZQGOYr8FbrStvyDbWnjhL2eVva1qzsEOA/sYZ4k9qVYzsnmpFuOPyO8gd5uPAvaIBkVl4kytORLQ/XCl3DG6ceJ0w+9nSK2eRkOSamZKVrqvtaQ/X4r9X2UrxbBPvgKJLc+
- rr/J6Loh
- /ilti3MBuA79v3rg8h7HfiICAK3/RhtWOcFbAdF8g7XqKBwGqomwOQwG3LXbKpWfgLQ8XvXrV8cgr+cVZMNHd/kGWLcjeMma+sZslpaU4m2jWoVjLVJYRMCB4kQtYSJSB/g5giaxeYBra2yEFskyARz3jftuVb8NxoyBG2KZPR++r5Scr+MVivWTQOA0HzE8Dl4JZBEIvZstwDjvLlCQBPqsCBX/98KVH65Masa+1E0XPADk0/ATxCUUQMBvRALycSD3BBY7rBugoyxPJVaZOyZ2dTpDpwPGffGQQNg6NDUeEkYS8i5jyGx3+RDY5DZrgR5kg07r1P1nHo8Ph8tRpWwPJ460UZTXRS89x1InkRenhN7hvgka3i2YjjXN070Geu7me6hAkllwcJAQ76tumB1/atvfAF0UKFRkwEMPJk7oipK0=
+X-Rspamd-Queue-Id: F0C81160008
+X-HE-Tag: 1769106896-456924
+X-HE-Meta: U2FsdGVkX19HDwNO6Ryn0gTWr9OF0tGXAPiBKf+fOlRdyUsUxG7Q/AjQrvhh48CctDUrgqcVTe8QY+Inuhb5Xa/WHQv0zDLCmZwEni6NdLXoZ1OsXBMkq1x8ZvpgSx+YkOePDnUGf33w7rDkMMjAin7tV+Kp4lmsZAXuBCS1j9XICjwm1nua4fe80sTsa7irNdKEKV/4lSkejwa1uh7tDGi0qs3AuwU8KC6BHQC/TWEJJcWlXDJihh4cjSNbR/A8iJXfIJfpXO3K0a84OeW945MMoR3Xgk2B6MefSbBqMj6onuix98XxioPYmldztBtCa8oRFw1Xmg878Qq7AZGe/eZWaFLM5tTVJGqQwOPzd1cb7BJfW77qCKjfd1qOkAYt64u6TBSd5Sp1p4kSiCRN+dKgrsBOpHtZh6UHMkrJ1FDLOwHriQXVXvG+lCq+ra2UBzVVpoZfJU/KHWUxdUCMNKw5logR4cydTWew2zOczNJ664QjG/sdZ/bhxisgrNYGb6LNSWM6nahjnBaQPt0LU1Xt3E0+sfxeLRj0V9db8FZ1R9a32iRn75DWsGsfCbKg0rmmgUEe35ely0kSKbPMzdJOa8ejUwIxcgSTvf+efgpieeyCfZ3hO922sQQsmU5sjnUedKG+kFCWWPsh7uSEe/j7Y1d0Od/m0UekpCDdrXPPabvhbVOGJCWyeRmuaAvbV4W4qtrWV1PMiTgDb7XDbnrJ0C8l6VeHmDeYkrQ8TWYnVw6wmVd/ZtDhZbdT2KDKCu8O4jMuv4OZlS5D6mka2RSFT9mzZQXLXf3J67I6jJKj+Tn4atRxBR15wNQaS/AibZHuox1EAtPajkR/QI43eDu2VQKpZpKtIJz6oJfB9aSIkms1dGzLd8BFez2NoMOLYS26sMzkmpzD2DYSCUw+z+H7Uu57mH6xjFw5qt6QuICQ3WMQsi6uJaFO0tzMrXO1mwSb4xnmRyyl6nG3aVb
+ aM+pMa55
+ mRhg5p3PCN41wBBkr5B/aOr+Yt/PcH7ZEAGdwIKqRdRblmVk9HENA0awTCIzVpzA1fOIHNtyl/OoxQUixyL4bNoL3F5ZPbUdm56bD4kv5pFIYKW1mBapSd3y9hNkSN9McraacH921CNOwgkdWpeY9bQ0snWdavGPRlg9NdQ8m+68UBzscEhUA35dI2160K5IFjIGy5obJWkJN0NQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,28 +144,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 5, 2026 at 11:58=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> From: Jason Miu <jasonmiu@google.com>
->
-> Introduce the `include/linux/kho/abi/kexec_handover.h` header file,
-> which defines the stable ABI for the KHO mechanism. This header specifies
-> how preserved data is passed between kernels using an FDT.
->
-> The ABI contract includes the FDT structure, node properties, and the
-> "kho-v1" compatible string. By centralizing these definitions, this
-> header serves as the foundational agreement for inter-kernel
-> communication of preserved states, ensuring forward compatibility and
-> preventing misinterpretation of data across kexec transitions.
->
-> Since the ABI definitions are now centralized in the header files, the
-> YAML files that previously described the FDT interfaces are
-> redundant. These redundant files have therefore been removed.
->
-> Signed-off-by: Jason Miu <jasonmiu@google.com>
-> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Hello Akinobu,
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+I hope you are doing well! First of all, sorry for the late review on the
+series. I have a few questions about the problem itself, and how it is being
+triggered.
+
+> > > On systems with multiple memory-tiers consisting of DRAM and CXL memory,
+> > > the OOM killer is not invoked properly.
+> > >
+> > > Here's the command to reproduce:
+> > >
+> > > $ sudo swapoff -a
+> > > $ stress-ng --oomable -v --memrate 20 --memrate-bytes 10G \
+> > >     --memrate-rd-mbs 1 --memrate-wr-mbs 1
+> > >
+> > > The memory usage is the number of workers specified with the --memrate
+> > > option multiplied by the buffer size specified with the --memrate-bytes
+> > > option, so please adjust it so that it exceeds the total size of the
+> > > installed DRAM and CXL memory.
+> > >
+> > > If swap is disabled, you can usually expect the OOM killer to terminate
+> > > the stress-ng process when memory usage approaches the installed memory
+> > > size.
+> > >
+> > > However, if multiple memory-tiers exist (multiple
+> > > /sys/devices/virtual/memory_tiering/memory_tier<N> directories exist) and
+> > > /sys/kernel/mm/numa/demotion_enabled is true, the OOM killer will not be
+> > > invoked and the system will become inoperable, regardless of whether MGLRU
+> > > is enabled or not.
+> > >
+> > > This issue can be reproduced using NUMA emulation even on systems with
+> > > only DRAM.  You can create two-fake memory-tiers by booting a single-node
+> > > system with "numa=fake=2 numa_emulation.adistance=576,704" kernel
+> > > parameters.
+
+[...snip...]
+ 
+> can_demote() is called from four places.
+> I tried modifying the patch to change the behavior only when can_demote()
+> is called from shrink_folio_list(), but the problem was not fixed
+> (oom did not occur).
+> 
+> Similarly, changing the behavior of can_demote() when called from
+> can_reclaim_anon_pages(), shrink_folio_list(), and can_age_anon_pages(),
+> but not when called from get_swappiness(), did not fix the problem either
+> (oom did not occur).
+> 
+> Conversely, changing the behavior only when called from get_swappiness(),
+> but not changing the behavior of can_reclaim_anon_pages(),
+> shrink_folio_list(), and can_age_anon_pages(), fixed the problem
+> (oom did occur).
+> 
+> Therefore, it appears that the behavior of get_swappiness() is important
+> in this issue.
+
+This is quite mysterious.
+
+Especially because get_swappiness() is an MGLRU exclusive function, I find
+it quite strange that the issue you mention above occurs regardless of whether
+MGLRU is enabled or disabled. With MGLRU disabled, did you see the same hangs
+as before? Were these hangs similarly fixed by modifying the callsite in
+get_swappiness?
+
+On a separate note, I feel a bit uncomfortable for making this the default
+setting, regardless of whether there is swap space or not. Just as it is
+easy to create a degenerate scenario where all memory is unreclaimable
+and the system starts going into (wasteful) reclaim on the lower tiers,
+it is equally easy to create a scenario where all memory is very easily
+reclaimable (say, clean pagecache) and we OOM without making any attempt to
+free up memory on the lower tiers.
+
+Reality is likely somewhere in between. And from my perspective, as long as
+we have some amount of easily reclaimable memory, I don't think immediately
+OOMing will be helpful for the system (and even if none of the memory is
+easily reclaimable, we should still try doing something before killing).
+
+> > > The reason for this issue is that memory allocations do not directly
+> > > trigger the oom-killer, assuming that if the target node has an underlying
+> > > memory tier, it can always be reclaimed by demotion.
+
+This patch enforces that the opposite of this assumption is true; that even
+if a target node has an underlying memory tier, it can never be reclaimed by
+demotion.
+
+Certainly for systems with swap and some compression methods (z{ram, swap}),
+this new enforcement could be harmful to the system. What do you think?
+
+Again, sorry for the late review. I hope you have a great day!
+Joshua
 
