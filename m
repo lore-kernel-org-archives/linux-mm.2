@@ -4,131 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06503C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E676C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:22:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 556A66B0148; Thu, 22 Jan 2026 06:21:14 -0500 (EST)
+	id 9ED6D6B0149; Thu, 22 Jan 2026 06:22:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5034E6B0149; Thu, 22 Jan 2026 06:21:14 -0500 (EST)
+	id 995E36B014B; Thu, 22 Jan 2026 06:22:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D8226B014A; Thu, 22 Jan 2026 06:21:14 -0500 (EST)
+	id 87BED6B014C; Thu, 22 Jan 2026 06:22:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 296FA6B0148
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:21:14 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB63A160275
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:21:13 +0000 (UTC)
-X-FDA: 84359358426.07.343E42D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BEA76160010
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:21:11 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J8tDWLDF;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 72C8B6B0149
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:22:20 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15C3DD269D
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:22:20 +0000 (UTC)
+X-FDA: 84359361240.19.6BFECE7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2A7AC140007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:22:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MtXcReft;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769080871;
+	s=arc-20220608; t=1769080938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LkMlLBnVtB58uayg0OjBxpblbKAdejsd+ZAPpjaHleo=;
-	b=5h+oWpDKVdeGrjJ+V9CMBXYuPSc3SkThGch/DbHPsqx97Ozx6QHUS0zCFoNVVzZYYLB7Df
-	b67+ezNYNykFzd71I8Tz67ebqqArK04A0bCVKJX8Np2DQ593gK6+ab/Swru2/bb07rjZXO
-	FJZV2KEnJ9/wABtPIcOxhAi7SIc4TVg=
+	bh=Om/rZOQIDleSoDIbcI6IoE+evj8lKFQsByV4u3Cnfyo=;
+	b=nvXHDgTkYtbo8LveT14zqXH5TV/0Is4gnY3a6C+HyrS0K8gt5y8+DE2PAOwVBAewgUa7xe
+	x1TnQ3oEgLpnmBKoht3KsYgHVAzjC6RQEgjdMmS7Ii/gjrPgnD50a2RoXnT6/BR5vsJrnq
+	efca+FX61hmbKmKMlXOPdveey3oqNt8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J8tDWLDF;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MtXcReft;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769080871; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769080938; a=rsa-sha256;
 	cv=none;
-	b=oBDZ9UyRSnd6tyqdsA7KTkFfqyR2v0E/KKMSwISMg2gc95c0kB1bPm2gBjqyYpsVwaNIb3
-	QBANLGlFtPsvWksr0pyRVmNrAnuacMZ1WF/sRaTLN5wojqV2sC39uLplHEB0rlqOZ/ztuq
-	uUJe/rL1p1FiLh69MpDOd94Y2yfkqMY=
+	b=EMKnJZtaXQlAY+S+Sd4KtXdgUHVrggK1fSPayoGjubEusPyeLZY57332E30p5qhIXnlnzX
+	eQqvFV0gKjajgYNaiJGuJNzBBlc3foBLg7PeLEJcBHj17Swn6ldfQL+K9n5qXp3KNS1ola
+	XInm42uPD3Z8GcErCzkh+FBVtS+wgAs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A99A843F1F;
-	Thu, 22 Jan 2026 11:21:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04515C4AF09;
-	Thu, 22 Jan 2026 11:21:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 37E85600C4;
+	Thu, 22 Jan 2026 11:22:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA0DC116D0;
+	Thu, 22 Jan 2026 11:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769080870;
-	bh=VVYB42EXsa5dHTnW7jkKj+G3U+OwviE4GOibQcUBCeE=;
+	s=k20201202; t=1769080936;
+	bh=jY+6Ux20wmAFYj3ZDCilg3Fqqbo+VmiY4n3Np5FgRm4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J8tDWLDFZJ7a8EY05CViBW55Ec7GfQaMHJ7bQs5Nf29ogSH6AGdHuJRvtIhiBE/PF
-	 RcSBwt2nDVNX6xmpEQA1GgWlN/ol7/G/e96zQzlf3LKKG1+ImTjkXCcJoyNB9jKRT9
-	 wvuQ6vhVh8hg8eG75dcVoCws7iJpaYfBJhFYVWf8+clgRgFx3wK64PIprO+Xlc/r0b
-	 Tb9CuQf/7s23tA4Z/CY0ACY3zzc8iPaGJ+FJm3mRm1Z1kQ0geg4YAaGkej7Hovrnd0
-	 R0QTRnQylmOoV+zfB1T9q/twqZzDfNflKA1Wpbsv6ct+fQ554+EzaL6OrC7OvrBo/j
-	 vOVZJ23bT0adQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 03631F40068;
-	Thu, 22 Jan 2026 06:21:09 -0500 (EST)
+	b=MtXcReftCdP2oFGE4OG0RTQX7Q5IiOPR0vhdBuwluNE3DUBS7ON9s+dbR7i3vzj4K
+	 2oubCIx2+Epn4BMnF+OkT+UFOGySFI0cpWmqaiIbfvH5rppwjD6T8RKVfVcxceDOIn
+	 znjINksqDZ04a/gR6K4KcQjXwTm2StzZEk01WJVUmg1kvn1Y8UDGoBqNL4oH/GNIwR
+	 nq3EVklGNFPF1RmqRVUU+FlO+hVTGrVSynU5exqtt27aTc/PqemXl3PYRdo+f3/hN9
+	 ibX2WrvEOi6VhsAhHyPv/olj5TTttldMggtLUJQCKnBcluUnqd3MQEaITxlZfzDOuy
+	 pI3wDL2CyptuQ==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id ACECAF40068;
+	Thu, 22 Jan 2026 06:22:15 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 22 Jan 2026 06:21:09 -0500
-X-ME-Sender: <xms:JAhyaSHblGvcUJSLJB_cXK7KFo9tSulKnNYWmc5d1jafjSpJb5mdKw>
-    <xme:JAhyaesR7EmfZZCFKnbMePKwmdL6Edw5gMgbTbmgOuXlxrkb8YuwDbiLMWXkNrLxr
-    MKwgYfWYLougID0kS4c0QaRI1JGp3EZLwV5cXkdeKMVjH1frENbgf7s>
-X-ME-Received: <xmr:JAhyaVjJ8QwrYtsqqWkt92Dc2l6n1-PRQRNKYx2f4RZ895A3FouqpRDL9VcGiw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeitddvucetufdoteggodetrf
+  by phl-compute-10.internal (MEProxy); Thu, 22 Jan 2026 06:22:15 -0500
+X-ME-Sender: <xms:ZwhyaQgWAfOH5lPwJgyrs-1gnAF3m2Q_4HcwNASz1Wv5_4mcWd2WBA>
+    <xme:ZwhyaUaw4M6u1dYaCv8I1qbUHy5fw5JTmQXxAUuhU4z093UynXs2devRrnsryUzF6
+    gh0QFGT1fUJ9JpFl6-zIUKCCFRArrHh_HJOF9H9AMymNmgciToKJ_s>
+X-ME-Received: <xmr:ZwhyaRf4QlVc7Un7uAwP62xF5Uw-EuYl_qXiO17SEqS_gTccYq3lwtqHl2Lgqg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeitdefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeegheduleehveejffdtueehgeduhfeiuedtgeejudekfeffueegveevhfetjeeu
-    hfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhp
-    vghrshhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppe
-    hkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohep
-    feekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeiiihihsehnvhhiughirgdrtg
-    homhdprhgtphhtthhopehvsggrsghkrgesshhushgvrdgtiidprhgtphhtthhopegrkhhp
-    mheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhhutghhuh
-    hnrdhsohhngheslhhinhhugidruggvvhdprhgtphhtthhopegurghvihgusehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtg
-    hpthhtohepuhhsrghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhrtghpthhtohep
-    fhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuh
-    hsvgdruggv
-X-ME-Proxy: <xmx:JAhyaT0SYx4WjkwcZtAqFfwXW9otD6VW8U4thpfdiXFWYVg1tVcA2Q>
-    <xmx:JAhyaT59dq4WFuAOYPZHJDGV4ZZYreINFXtMUxF2sIncHtdYHJZlxQ>
-    <xmx:JAhyaVoxhpRkVeakoFptGabghnw6mcKLxo3Y-WQSJeSmQjFDB5_UBg>
-    <xmx:JAhyaaCpkyAhQeGRQIMdsdR4GUc_ZzBVTOkGm4WGRBLP2jDXuhdZ1A>
-    <xmx:JAhyacxTKXwy2b4CVqVOVO1hYX1khOnZAMCpVLulNL2Pw7GIQdK734YW>
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugi
+    dqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhnghes
+    lhhinhhugidruggvvhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuhhs
+    rghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhhvughlsehgoh
+    hoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuhhsvgdruggvpdhr
+    tghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:ZwhyaZCTB5OcS3eOXlUVRsza8Mk5ui0vmfXzK8uhni8MMHhczov2CQ>
+    <xmx:ZwhyaZUfNlcv87PL6radnVQe0suIWRGxFuVaHWbDiEK67YiN8QDfYg>
+    <xmx:ZwhyaWV6LLQYMDzWw7XCWfHhxPccglpvxFKKl-7xF3g8WJxYkHn9Uw>
+    <xmx:ZwhyaU-lJOCqpcT1VSUvYV18KCDrf_kLwGbyfShy68v6e2_LFFAj7w>
+    <xmx:ZwhyaU-3VxbqCvRnTFqbNoCpS4ywUnwbelmbJoJ0-tY8kcd-el4eCVQS>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 22 Jan 2026 06:21:07 -0500 (EST)
-Date: Thu, 22 Jan 2026 11:21:00 +0000
+ 22 Jan 2026 06:22:13 -0500 (EST)
+Date: Thu, 22 Jan 2026 11:22:08 +0000
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Zi Yan <ziy@nvidia.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>, 
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv4 00/14] mm: Eliminate fake head pages from vmemmap
- optimization
-Message-ID: <aXIG96srTJw8_2aQ@thinkstation>
+Subject: Re: [PATCHv4 07/14] mm/sparse: Check memmap alignment for
+ compound_info_has_mask()
+Message-ID: <aXIIOf7cHe9hzk0W@thinkstation>
 References: <20260121162253.2216580-1-kas@kernel.org>
- <bc7b8c62-a8b3-4407-a69f-30b3fd269566@suse.cz>
- <E99A40AF-1535-4FC0-BEE5-6F0F5B3FF840@nvidia.com>
+ <20260121162253.2216580-8-kas@kernel.org>
+ <B752281D-4A31-4E2D-945B-FD18016B722E@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <E99A40AF-1535-4FC0-BEE5-6F0F5B3FF840@nvidia.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: op7xmxpq9zod9wg1xq56j8wgf934u9t7
-X-Rspamd-Queue-Id: BEA76160010
+In-Reply-To: <B752281D-4A31-4E2D-945B-FD18016B722E@nvidia.com>
+X-Stat-Signature: 86ageyn9scohbcdjahffjb6in1771toy
 X-Rspam-User: 
-X-HE-Tag: 1769080871-797702
-X-HE-Meta: U2FsdGVkX1+/t+CxvNPRRHRqS03jNrHA5fgIc0P95xQJghCHDSdC5QV5OJRbESLJDrU2uOqfq1QhL0HEkb8bKvatia5Huxx0hEmiHGJGa9pX+M+NpIqZzLjfJ7PB0cuKMNYVccLVz1nqMTfUQALqKvQDnb9eknMgMDzgWaY5sRAmLem7Yk2bb2muEmZpQJCkX6D0HL49Cfba3hvaUGXvCUDjF4GfoiB6D5PwZ5SkzicEeTmRkvZjNqxnlvHdOu0Z1batzOEGM027HDTm6DwjUteUsmnUafc6Wt9LCrLZB8bbEbfPfGr4hpyBZnCDjyVri6hvAvNoHvgcnhQl/0QTsvxWvATw+Z/mcFkFYYRhMCYWvV5yARk3s5+aWshJIvvi9jXiJFF2gX/41OP5pDewcNs+dZS1+rX2qkEQ1CBrPODyJHmCDFyEUq2QpfDGqnOYDGOmWgKlQiq6a2G0hEI30UeN+BLok+0HVQI5U/OBU1TUWNPq/zlYbEdlwnlwK4BhG/3n3nQdInHdQRfg7pnBJHbVzodVAFjz2P0AxQA1KJxNgdu1+QXKC6ZvnFilrxSekuvG7U4K/zEvyQqYiCuw+4AVOCKaPmnTExZpgGHjuN1BUk0GH2hU8SKE4221LIGhw4oMuOjavg/isgAcTukTRiK7xxVjae44NGv625rYt8ZdCtKoLfXycNnYcjhmxdXLLahGj341ruh3FBxCINvaLRhNEafppOoaVKuMnTAqQD6yVPIPu3upVjXNdSH1EBrFtnEedUBhD+o2rNSikTn3MJmGyqXQVeWRmzkKgy0/3xdjA8vrVG0lO5ja49jTXSvX1/R00reh40Hp1cChNlwaSIDZJvP2wO/Tm8VsYv9/q39LOiFPMJdIyFsp2FapsBr61Eq3dMd5HsnO+CPfdnEjskepNJHVodfRiohM5ICBjTPx5D6Am4AT1iyCqV76LOVc1WDAtznYp+Go8ap27QG
- bW+JuWyb
- HsODN0ur24Zu6N6jnvKMrRx0zTdNBl1BdprI1EZxS/m4uym/nMMkBtfzjhHDBAFNxtvhxl6ASO18CxyipWFX5BosWYrMsvjn/ib6wESJXUz4xJ2tZrBv88K7bc16xukSDMS5R5NcqFmMUecCobqL5Zh6UtUJ49y+cJZMRO8OIT9hi/aKa+ckzTEncpQmamWaXwtxhyUkjpi1lw3ZPXw6fdhWDXbg2ZAilVW678HOKpkHSxnF/hYEZVHPSb5QQkBFlYXxhTVHK6AkUHpLWHlmQRmDeDaqRz4UDkbYFRgq0Xl/vtHHPaJ1LBpzo0uf/5HXhyJGA8+YW6XFovocbsuGEjX0hwaxS0mi8L8mtEk77QpdqXWRvYKTpGT2o1M1jDoh79cNkQWJjGWLVE9dUBCIaaPHSZg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2A7AC140007
+X-HE-Tag: 1769080938-772023
+X-HE-Meta: U2FsdGVkX1/23qOlPYtiW4GHiB3dm0xNnPTc+l4KSXhFd5YaWKb+kTX3Zxfwe2FhOMyV/jZe/2l8YLUaM1i6h+So2qXuaEICavmODEa6Ma/HZZXfn5qQgfi7OGoqms4HGBl92qngA1Se31hAxQx7aAd/cvpPRhjP9AkpId+waeWhk9lHSUszJwDkdN10+uNBjud87/lOJ5evymyES1K+eBCFPSFpZNAbrV118I5m4vJgqUQjVaLlmVttpfnzBWusz9hwCQc/M424F1k4UuNPOtk/k5q1aAjjjf73Gx13MC1leKHQc+JyWZrQ0NNWWSFJpO4YBTYXRUN24Aov2dsO4BJ405qG0ZZFv336LFT2QGrCGOeA+oHNffFcVlR10l4lAmmACmceN4/BIvuA0lswKRwku3uTCudY2raX4cIf6oBEH6r4OnwOIBp2TcErZQxhMPFcFP5CUGIk11wI/laqnsun0sjtEs/xQ6Mdp0zq2AMyQx/21aUzlo6W2UIlgvvFEc+hH1sNIMVt0w68nMl7RVRLj75JTRV3ThcDRH3Vczt+xT56fx6m3YAei8dP0c04x16X9/qb9sRLPJaX1OLjVCd9/Y9AfFE9mcvRmvzFFbw5xb5lu0/2ckS4QlBJlhlPERoRMAJ/B9YXKe8TrAzn/4XQu1iKPljgX5YQEW51cadSQRg1lrwaowvs6uc7YhJ6slUJGH2RMOLtrbvwYro0wKurM+wvuNOGb7KJYZRGQoSdexzESxvmYCj5eFlR1Se9ijQeXxcZVXvAPcoM2v2dTq0wpZHC/ks9RNW8EII/BicYIDi9TQRAyazcOlYB7f8LpxcTjquU1QLikdyxzktIHEo77rvZ5DajVwHy53ryZQ+PwKvIB21IzykD2AV8/0Kt5dftADahAto+jpUoG4FR74ZiDTg/8wdCpvPJnB78PC38J1gr1CwhA8SPi9TCFpqRQWKBg7WdyTF+bhYUxaQ
+ 7bMHq4w9
+ 0TzNsI6UeGP/omLVM6dMI1ROhtoseS3sDLPmrMsXvwovOvhsaxClJskW43Fyzeo0bOaMsFkreEUfu1vrc6VL6G+46dSYyD/p5/rEkg2EXHJe0zPgBPrQEd4lPvXPby5LVkFFKgYwg6/d0r0MUfvLBYCPru/f/eGo17NgiOJPzalBiGnQm408GaUFiXpaem5eYzUweisSDbh0qi3nPDGGtN6lk7thabyCrMVx5K/uSOgpKFp8sANufuWSza9H9qrHEdUZhm7fUWYLy+uhE8Y/v8zP8QCuRMePqJ2H4GNpOM8O4WEHRFjoiwKefIcvbxM1wr9/siGyn9w2QXkoCiFxMFX3q8NSAKqDq8K9o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,56 +134,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 03:31:59PM -0500, Zi Yan wrote:
-> On 21 Jan 2026, at 13:44, Vlastimil Babka wrote:
+On Wed, Jan 21, 2026 at 12:58:36PM -0500, Zi Yan wrote:
+> On 21 Jan 2026, at 11:22, Kiryl Shutsemau wrote:
 > 
-> > On 1/21/26 17:22, Kiryl Shutsemau wrote:
-> >> This series removes "fake head pages" from the HugeTLB vmemmap
-> >> optimization (HVO) by changing how tail pages encode their relationship
-> >> to the head page.
-> >>
-> >> It simplifies compound_head() and page_ref_add_unless(). Both are in the
-> >> hot path.
+> > If page->compound_info encodes a mask, it is expected that memmap to be
+> > naturally aligned to the maximum folio size.
 > >
-> > We never got the definitive answer in the previous version discussions
-> > whether it's worth to do this now with the upcoming memdesc stuff, right?
-
-Right. Willy shared some details[1] about memdesc plan, but I cannot say
-I fully understand what it means for this patchset.
-
-I guess we will find out :P
-
-[1] https://lore.kernel.org/all/aWF3xg-72SV4tmLk@casper.infradead.org
-
-> >> Background
-> >> ==========
-> >>
-> >> HVO reduces memory overhead by freeing vmemmap pages for HugeTLB pages
-> >> and remapping the freed virtual addresses to a single physical page.
-> >> Previously, all tail page vmemmap entries were remapped to the first
-> >> vmemmap page (containing the head struct page), creating "fake heads" -
-> >> tail pages that appear to have PG_head set when accessed through the
-> >> deduplicated vmemmap.
-> >>
-> >> This required special handling in compound_head() to detect and work
-> >> around fake heads, adding complexity and overhead to a very hot path.
+> > Add a warning if it is not.
 > >
-> > So a very stupid question, why did we remap everything to the first page,
-> > and not instead create two pages, where the first one would contain the head
-> > and the first batch of tails, and the second one would be used for the rest
-> > of the tails? I'd expect it wouldn't make the memory savings that much
-> > worse, and eliminate most of the issues?
+> > A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
+> > kernel is still likely to be functional if this strict check fails.
+> >
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > ---
+> >  include/linux/mmzone.h | 1 +
+> >  mm/sparse.c            | 5 +++++
+> >  2 files changed, 6 insertions(+)
+> >
+> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > index 390ce11b3765..7e4f69b9d760 100644
+> > --- a/include/linux/mmzone.h
+> > +++ b/include/linux/mmzone.h
+> > @@ -91,6 +91,7 @@
+> >  #endif
+> >
+> >  #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
+> > +#define MAX_FOLIO_SIZE		(PAGE_SIZE << MAX_FOLIO_ORDER)
+> >
+> >  enum migratetype {
+> >  	MIGRATE_UNMOVABLE,
+> > diff --git a/mm/sparse.c b/mm/sparse.c
+> > index 17c50a6415c2..5f41a3edcc24 100644
+> > --- a/mm/sparse.c
+> > +++ b/mm/sparse.c
+> > @@ -600,6 +600,11 @@ void __init sparse_init(void)
+> >  	BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
+> >  	memblocks_present();
+> >
+> > +	if (compound_info_has_mask()) {
+> > +		WARN_ON(!IS_ALIGNED((unsigned long)pfn_to_page(0),
+> > +				    MAX_FOLIO_SIZE / sizeof(struct page)));
+> > +	}
+> > +
 > 
-> I think it was using 2 pages before[1]. The benefit of using one page is:
-> “
-> It further reduces the overhead of struct
-> page by 12.5% for a 2MB HugeTLB compared to the previous approach,
-> which means 2GB per 1TB HugeTLB (2MB type).
-> “
-> 
-> [1] https://lore.kernel.org/all/20211101031651.75851-1-songmuchun@bytedance.com/T/#u
+> 16GB is only possible in arm64 with 64KB base page. Would it be overkill
+> to align vmemmap to it unconditionally? Or how likely will this cause
+> false positive warning?
 
-Yeah, the 12.5%.
+CMA can give you 16GiB page on x86.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
