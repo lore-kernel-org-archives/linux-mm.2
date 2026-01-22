@@ -4,131 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCDF0D6CFA3
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 19:09:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D59D6CFA1
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 19:12:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E5E66B0313; Thu, 22 Jan 2026 14:09:32 -0500 (EST)
+	id 84EA86B0315; Thu, 22 Jan 2026 14:12:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D0B36B0314; Thu, 22 Jan 2026 14:09:32 -0500 (EST)
+	id 7FC596B0316; Thu, 22 Jan 2026 14:12:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15786B0315; Thu, 22 Jan 2026 14:09:31 -0500 (EST)
+	id 708816B0317; Thu, 22 Jan 2026 14:12:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E0B726B0313
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:09:31 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 995D31B03DF
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 19:09:31 +0000 (UTC)
-X-FDA: 84360538542.03.8E18C4F
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 91739C0005
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 19:09:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BNqHnv5S;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F18B6B0315
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:12:09 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 145C48C443
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 19:12:09 +0000 (UTC)
+X-FDA: 84360545178.09.DA411F2
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3A75E1C0009
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 19:12:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=jC6x1fVW;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769108969;
+	s=arc-20220608; t=1769109127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7uFuZoZJrwPWm069b7Zxl5WdE9K+cZvS9QdYX8aCTtE=;
-	b=WScC9FAdhzKmr8djXoLVvCqT0eUjk/eX3nfCpOipnKGmv/zCkaWBeKvUxr3cCmhtx92ANF
-	Lkn6BWoEanaCWKFAk5Ltazn0WiniVXLH324wiWSQ3I4BwoJ/ei2BR6FsXQdmJNzd2mZUq1
-	X8SMCjWXkkKTtgQXRwRBy67z2xE9crw=
+	bh=s7keTxLfsvNLS0EPh8K9+DpG6jqqIVhJos6SbOQ9CV0=;
+	b=NwOYBcIhFHKD7rC9pS5/59cMxh8gkkQG60olgo5ib5BLJW/ivQCNHaJsBOKps+ndhDxOPp
+	mgE+zReEEW3J7InFPcqXom5kiFc7zsx8cHnNxwffKarlNQDDG9vTzfLiP/IPIgBItCgKsw
+	WUKmktNLSFX7/4cX4kLKoRGNi5E+onE=
 ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BNqHnv5S;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769108969; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=jC6x1fVW;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769109127; a=rsa-sha256;
 	cv=pass;
-	b=8AGTR0HUCht5w4L9UCF/gtBRA5KqfZYMMo6EV6iWLTwByXvG5sI3kUvfs1whGuBMxcOY9a
-	VL7SPzjeI/ZwIU3eFkBUmyNPySso5ZAhLy3SmclHFIsXioZtnoaDbSUnXOt2EGKdrpGAE/
-	agfk8dJq04a11aKU0RySTMi1fzWhxpw=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-65832eb9723so2574984a12.1
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:09:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769108968; cv=none;
+	b=gnXQTDhxbooGWvdZdBIxY48sK+1tQk//6qgnoZKzUQXjDNR6NGBZDzOodGG9jPdxpAIhYr
+	tQ/wm2GUIzzovZvSmrAjHq42CT0Q/rTcW9g4XlGcszu9XnszUeAt/49T1OJoQqRSJoLrIu
+	HNArt4wrW85Qj4zVlm6ELHYSyzPubHU=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65807298140so2136371a12.2
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:12:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769109126; cv=none;
         d=google.com; s=arc-20240605;
-        b=W9NyOQRCgBfEr+OEX6MQC52frklOflE2ilVp6JEnEqZX/8QA8ovdCY5fY8+7siqqha
-         +yb20R848EtfjDmRhhWrLeTK7OzD1YxD/9QKh0G9d+KEHwqxWebyo/UnJfWQTrtureZA
-         j8set3VSBLCtBRRiosahUjdt/Vol7KOYLvuPs1Rap2jGi4q0I97ZHbxBDRH9QGWwd1/p
-         J2BsaUDg6FWWj3XyOGcO79FzwazZC/0xFP0l2flSeWsyRZfzjzNd3k7bxRSfdk9rXYme
-         ArugyJUL/QQ/L147ecBfvIwOUbTX3rBIu+XvyTxrx5cTXih3pXhf4hT0G7rPup6hbxQX
-         9Tvw==
+        b=cuwTw4jXuHdFJJvla2HgHlNooy0PodOyotQU10lWZRNjgfDCXulYt4hPnnebabWqJr
+         /s8GIL+QWDvm9rEDi62GAHSUZoC4ZUwL/CxFIwKKXGqSZzFfgLEEPySl2F3xixRLEV9T
+         IFFILiBsxP+yptwA/qTouR1fkHWy2WUmw3lUiGSmJrbtMm5yyAJvIUBaXOCxNb4jn1us
+         SR6y9oY3zOSMAj4+rdeJm13SHh5M+sBsleO6NLDLBQrQ5XwLUgF7qBgUwESPgQ689eZJ
+         0ReslrypuOc7wX/Txdldnt88jOI8lGKrcjoaUgMc8KYxgT2Z9f6AGDc7F/vzCuYMclRc
+         7ilg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=7uFuZoZJrwPWm069b7Zxl5WdE9K+cZvS9QdYX8aCTtE=;
-        fh=yXAYsgWWPlTAhkvqngovxH9FtrmnaCavZS3YmXa3W2c=;
-        b=JMYoSUejX4AU8wp4G4NOTPuqOq/+ybL/384u7bsnrCuiQ2FaNqVhTz5XUMXFMv/CpK
-         EIjgYwIrmCYJVq1H2A2z6cLGZUWymL8kXys72tcVKsRIo0c0P4vZhHC0WXyTCwv0DVVc
-         NTmfvKX3Nkn9dhU3EjQ5WSKXTBiIXB92iFFiohOcpHvOhbqi5swFyg1wUEnYMfDi+Ubq
-         mVPKDxMfRwkXsCa+4VJ2+I1RLzHLb69iuZF+LgBHpINjpgGf1IgnKrt+yX/x0O2BBLEp
-         Ij5hp1b0xqg1ExoTo7o9kI24PwX0kncMGxJ8u1NWTch7euhwgBQsN49y9lLEHcPIAVh5
-         V49g==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=s7keTxLfsvNLS0EPh8K9+DpG6jqqIVhJos6SbOQ9CV0=;
+        fh=haXNtJl07NU763+9vvoyBN7Gmzd9vUx7B6o6IlI5zKI=;
+        b=IzIRNMrjfcSclBRU+u5LfIBiURUb3Ddx2nseyug0MwPN5axTqMPjvmA6J0a8o9yfXy
+         oo1NqiXSreZ2aVj3ls6E65eI1mdLLKqv8tvaOi2xfPBELFLIkohIPDn6ECO+tzMrcp4e
+         Q0wfLpEQuc9xKHC3IBfUXcTyXOwwi9OtpyF1rlkUkra5prA/acH7wCbALOtZxvi2XS3b
+         7ZQEBVUtYymGzBhMbeOCfA/R3XFxdicTj1UpdwgyP15sUkoxToqUPPLcPhiBKBxS2IxH
+         7/ZuHkZxJNrqHOkXvfbb+a1VGqJkRd+MXF2b5arB61GCeNE6spdZx1XFuR5WdIJTfaqL
+         hkxA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1769108968; x=1769713768; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7uFuZoZJrwPWm069b7Zxl5WdE9K+cZvS9QdYX8aCTtE=;
-        b=BNqHnv5SyGOXD/TpAJjcJ8iR86ANJ2eh5zW1G7oHhD4JU3/OYw4kgRwRZtR6jv827q
-         qEpWRlWuu/U4RelyiwKLwEMjSDTHk7bRAwMc/hjTLJwRtmZohrwDNYLMiM6oR6+HilEb
-         vc75M2zQH/LwAioTlCZRuaa77JLGsxW05J27tLwi8S3u7pcD4o2mIT4XOTJVLNgXLpfU
-         J/WLG13lIYBI4ZECsBn+DMrLbv5REwmPcVvuTnNfMlmZ0tUuOC8qwa3wlWRKy3D/hMxj
-         af0YT694F1+9WdccuiKeCqcdDdMWT8QuEd2xJfeo6LV+6ziCisoLfCxU9+sr03ufhBpJ
-         RI2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769108968; x=1769713768;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1769109126; x=1769713926; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7uFuZoZJrwPWm069b7Zxl5WdE9K+cZvS9QdYX8aCTtE=;
-        b=xNN0ZDkI+RXW46fQMqOzk0ZWhKI4CONEHjzsq4gj0RANeQlsPaXU+TVCGzhsxkAjHU
-         TGjj8ZvstyHjmFpKCLo5cEe9/yEglLbJxBUs7D4X8h+WD7kUR6XK0Ub0KGdDPgFUIlN0
-         4sHgbw2tyu7hYc4pqaZbetyCh3T7X0niydI+ottN7vSRj3bDA3uXrW+ll+dLeN+HDX7j
-         o6mHO8d9eNI8XfiohCBsEuFel77gVDl9CkipfaMvm/SYbZNuu8f6sWEQMnNzXV1f7s1n
-         awAnwRmiqM6xOKyYxcgAFhtFpg8KvegeGJyfoMeoEh9JbuYzS0tjlr8dQQ70jOHhWCS7
-         Z/qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIaetpUBQ7/MGoptdggQygWSIhmkZF7FWga8vOQiVTV8hPpadT0h74gjinEH8nzPTMLJ0yrKkMZQ==@kvack.org
-X-Gm-Message-State: AOJu0YwdsPItXaPgZFLKE+R4mKMh+OI5bFVMpv1MzktAS9c7tUb+UaMi
-	93ja4hiXMJklEN9ujI7Y9zkb3Bx+UY+eWIfyzwe/wPkQplOuSh2gKzWVOmJqKvsPo0z468SBXEO
-	xvsuGddPR084eeHsMveTVPsCdfieSJdpTOsCHEw3KoQ==
-X-Gm-Gg: AZuq6aLjMBJdGQuVy4RoT0zXaSDxKzrwp2Vuw1JfwlYGJ42gUJaUWfdhoSM1oO/aEA1
-	ILxP9XbIKSk0Thf7I/HZ+raPme2J12cFb6FwHhYXMA/7JrccAkY3xNoNZtphs1sL7Bmh2iQXqJk
-	8eNmlpmBarxh38ouzoiT/HhhsCp5PzalRPNdWLMd4FE3qL4FOt+MzLpa1B0crWEYOmHyPReoXtz
-	erW9vUy20oBHUIildlfGaVucPmqSsFSYMocwOTA7uT7FXhgDaRaFLIEBBufZeSLIdqmiyl/9JuS
-	gBRr96NRsd7Ks6dDo6JZ19gYSw==
-X-Received: by 2002:a05:6402:1e91:b0:64b:bb79:96a8 with SMTP id
- 4fb4d7f45d1cf-6584874e5cdmr458412a12.3.1769108967947; Thu, 22 Jan 2026
- 11:09:27 -0800 (PST)
+        bh=s7keTxLfsvNLS0EPh8K9+DpG6jqqIVhJos6SbOQ9CV0=;
+        b=jC6x1fVWEYAtvVy2PZzLCdf9nA785abpDuk3nP9AiYgVyMSQRCFanbrU0qkM1Xe37q
+         Y922DMOHx+h9g3PD1S4IA1wM2lQqbGstdHaGawJkE7JQ4haODQUWPf/WYvM2a08SFMS4
+         bIsRHrzWxNcKqfRiPSllADxA7MMwZXu4VhkQPSpq8+9PE1FnimHxqCnahUtlRYs0dpyM
+         NYR8gpeIs5950hWpdlcmPrGdfE9FrJqvIIthJyeSAAKTg9pOyFpPYpOlgb+piu+z+sAe
+         cxY924+SYSCslIcFCHTykyInr8o2qMxg5qEzfP7IBPUIjVGPn1HdaFpDPAii+IrxRWac
+         Du9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769109126; x=1769713926;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=s7keTxLfsvNLS0EPh8K9+DpG6jqqIVhJos6SbOQ9CV0=;
+        b=ww8kTOZY0rIq5aOKuF0zD8Rvpln7h92NgF17l7DTv21Gse1nxEPKIv2vlludwOUGtR
+         MRQTCbCbRLaQ9JG9/tum3LxRUrwMEKKyHfHujtdkxnfNkjutR+zgTFSfGcShfQON+s6L
+         tOc/0bQMLoVfceUCUZzsRamO4sdlhJwA7fvXXGNurL6yCRjjnXSL5jWCk0hNfge5bb45
+         odayosAUV6+DiGiBmAbZCKHtc+MSkPp8h+EC29J+SbZutzllmkY+yp0KUyNBzp7P2p6K
+         UI7GSVjTgll5yov2C6U9T1nSKj9iMaMjOcap9Mx23sI9krtihd1tTd6cN4H+s/AAUcJq
+         A1bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWd9/bNOq1w7Qujx66/sjx7qSL+FOJ7kVUEeC0sSJoZc4U0OJ7vU4NQQZmIf1687o+UWpC2NYCTAw==@kvack.org
+X-Gm-Message-State: AOJu0YyfTVVdRKhx2U6D7LwPKVKwgrqi362CMiMODuJ8cxUj7kA8WvNh
+	yje1llrTq1QkGS2gNseqkz/sbZIwxU2/7FlvZtIr57m6X6Djy50qW+cIxHpVjOgIOUEmFU8IJJO
+	Fs/D1KC0T4aGvxboenz/QvnugQX5JitUTXNTLIVYuMw==
+X-Gm-Gg: AZuq6aKq6nqHnkXpiGOPn0LSQW3oB/4qE1SpbuxrEzwfSffSAln1JMJfSbnVyEvGxLy
+	2H+4xZ1siX6HllBXl/kqt/+Z3KigH5g8nXHdBGd2VHTs0bVFXKhMc2t3gOIxUMkf/kWVYEOVcsO
+	Vbuyv0izWMHtD8jn5kcLwI+4v+pR7jQ/zJS5NBZOne+IkU7SLCi8UgNPuXcADDekfV7b88BtPuN
+	UxD2WM8Ba9OPDntHlC7ExQL4twtLQzQVjmUA1CpPpAHKXUGJ6zTQAvgRjF9BRKzbOYsHxtTlxuK
+	HoGNnibNz7gxlFL6WdrEpruxRA==
+X-Received: by 2002:a05:6402:3647:b0:658:2ee0:66a8 with SMTP id
+ 4fb4d7f45d1cf-658487a11ffmr332902a12.18.1769109125806; Thu, 22 Jan 2026
+ 11:12:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20260116112217.915803-1-pratyush@kernel.org> <20260116112217.915803-2-pratyush@kernel.org>
-In-Reply-To: <20260116112217.915803-2-pratyush@kernel.org>
+References: <20260116112217.915803-1-pratyush@kernel.org> <20260116112217.915803-3-pratyush@kernel.org>
+In-Reply-To: <20260116112217.915803-3-pratyush@kernel.org>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 22 Jan 2026 14:08:51 -0500
-X-Gm-Features: AZwV_Qh1xgpWqyDuNv5Xd0XNYx9RNx5Okc3zvyw-nwyeS0nxuHtmcgoGkJDkvlo
-Message-ID: <CA+CK2bAsGHDQGm7t43MPTS7jCSHVdfvyTZ3Oj2Qnx6G=8N-P-g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] kho: use unsigned long for nr_pages
+Date: Thu, 22 Jan 2026 14:11:27 -0500
+X-Gm-Features: AZwV_QgAlu9tv78e6zZyKDfrOb0ic14yXrXnuRshKsxxfWgKKxJ9Gk9Gedsce3w
+Message-ID: <CA+CK2bCTT5Chn+i0ZxDBsn2WwZTx0qC0q-2PbkW+4xSbQa=GOg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] kho: simplify page initialization in kho_restore_page()
 To: Pratyush Yadav <pratyush@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
 	Mike Rapoport <rppt@kernel.org>, kexec@lists.infradead.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Stat-Signature: zk1ujo7rr6zpax53kbyc6a14mkkafcq7
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3A75E1C0009
+X-Stat-Signature: wumrr7khy16id51sedr3yudhwmyqkc8z
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 91739C0005
-X-HE-Tag: 1769108969-769431
-X-HE-Meta: U2FsdGVkX19cUcPrMsfcmmg9HgZ8wWBCNUpOhSEgAO2WSXC9nY1/5JzN8WlGNoX0x3PkLyEdzNi2yvftkgjIqr/Iu4zdUJlTrSyjVZ6PPiXPL7J9Ld1TGeVfXnw+DUmhzsNrrF2q8QhavtJ9PsSrj5eRwIjF4ssyU7de+sibJ4Ex6nLbJ8hiMdTbALhfe+8GQsu7sVY1jnou29ZQ1oOjU+c2MmdUblsC7ca/SVZyhxYoMUFddFyxJZIpIWMw2D4NODvt22pmXvAVFsZdHrVG0BVPYvu4AsLrW89KdSI4LkW27SD9LWT1MYqDOJG21dkXD+aPXGIGVzEH+ZnumVdd6EFasMujbSUh0pDZJpStnAwxmP+mzmH4j7LObHVBT6R709Y6zyDITDYubwB5IxL2o9rWrS6Kva82XEo9NJ3duKDI7zVgkHoX/aOpjSvi7kJcrWWVfUT15yoSGo4YpdfgOzpJhy55iEqC4Db4dvEr+eoCtIgsZOuUgw9rRV9JF8xlVhx/WtWxswDC35YbqEY+Qnj9JNTtbse5eYuVdeWGtZhzrH/UBzw2kqaq9+QT6GEHdAMQ07DZypVtR+eom+opmVho2IQ2murbfbYD9iUPTL4iCpqPs+wRyWm97F3O3vjAM+XnM0C3WXH20UTpD4OipZZ7mGnwa63lVNeXaJu68hUEr/TQjGfPj03Ruu+3/5NFmLbo0a2l+GuVcb77PUvVtzGFcrV9jjQi3pvcD3MBr1oB5WM4rk9xA0CcywsrAl0w/EgIEoEXbwJfmd1f+aW92hVdvI8aP19ugnQJ4S2TWU5H1tU6L3fbrWlDzPommKuaISgj54KG3Lja359tezhtJcpkAA0wx6YqTu5/1wytEpmGrnF3ZJJCyy0Cz026vB3mtQKvRR8mjybCJNKpUp0VLCkB+S6K6s98ettSsBIrnlPreiHCobFyp8BcziD2G1p5WgcdmZSHWvHYHvze11K
- 3QGBMzfN
- D/xEdA1Z76V7RWPpso1RKm1iRAlUJj2H8p60wNOWaPyOWvJdvSvcOnNtoXxXMSFgCSZmKGPGx8yn5OJL0Dxz/s4zCmwHR49RWReCTFOBPzwIbT51Mq3r3/aW/RiEWRBowXPu5k7J5WyIJDeB5mW2TaJfRdCQx00oSSUkamTduS08WdkCdym3bfODYbMbfxe1+F9q7dhj3PfguVNXUbHhNTlIHkTUrwwEJkhSSgNpeX0JKU45GuPFL6+Taltzf14fks9lz6Br1qaxPGRF2LItjnGDruAct+BIT+X/h7/4bt2TdceKRGuheKg9o0RLfYMoD8MkwCjk1gsh/s9GvqVi/b3HZCf09ImQoxBrXKsj+J3LZOSgfrV/ulE1sSK6hExgDHN8hRguIhbM2eEOGa1B7qDMBcZ9ppOMrBvGtawNOt47Qo04=
+X-HE-Tag: 1769109126-627970
+X-HE-Meta: U2FsdGVkX18SZ5El8HzOSxc7TXCFSa/45xk5+uatvnyHWRN0MEtNnYYkFS4aXDZcSHRFEYgAQMW+47z2RYr6g6/bUM9qMv/mOIh1zb8ZI7JqfLPiriVJunHTrlGQAMeNPRQJVhFYYHSBjby7jmeh5sUgciM55SFnKiq9WYNIePVGQXn9IM70rpzp3FEg/mOJUQOxUwAWQQ1k3RVtO53M1eZSZnP+bxP25v4ORUSne9bk7RlDDNTKFA0inixcWAx1ttgvsJ2X26C15JplZP3lztsB5PctkHgTqSqaRPCRFVElyVIgbfWwbReJ22zpJX9pRYEIqHOWtVhaVVz95cSI7ILMcxs0XLXWdQBnZQRqmD31LtWYcUdOIxgZ1k6PkX/Wud6+QhBgV5/ovPaj6IWTTXL6FKLI6kDzOOgYKVTwPRjrkXksrIICVH78/0seAquGNhMR6vQgm+Kp+4azn2Px+6lowlxt0RlmfrxOosfR9BIzwxa4ycW20Hl5kPevx2/AOVyHxZKMCb77EUXIhoAtao2W7+QdnoyC+IuTRCoXzBU581p88f5pCp3cI49Bg42tJwG1olJ6qAFOGbW9aZdQ0Sc6ju0alG+IP2p1iNIK7bBpBi0/LPLc+fzXKLUqccasCyRl55rFqsD30qZHCCE23wLkIaPlO1zrEE3nfqEUlFz1OKR8ctB3kXm3uOc7R5a4zp5nqQwNm42N3AU+FZQU5iDq6qPoB/bUbxl/3aFn89OIqKg67eKnCCmW37SDMYQPLnb4JrqVdU1cOSOFvughQAZ0kN+DRufzOLarA5tn3Oe6jshnbAyH85FRg1+Aqa6R8h0QZbe+KB3Y0v5kjfHYUhb8RrNmXHMpfZwMikDkPilKljEQs+IIzyUpjis/RdRXakWAJwOh0XEGhYp/YICV8WKucAqcuUoOFMi6bQex9K9zEKd3jTG2GeKSGojCuS5n+lfLudoSUDeK/09sFYd
+ ofOEHejW
+ JtNCiuD227VOLEHW0JN1tyHlfBs5ya9SwDa3kkpvjvp6WJ1nBtidobvSDTzfjSD4F8a5DwMxzhiTE5KdwA/Akuuiw2zlbLyjO2zyaPWi6iiPg7m4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,49 +140,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> @@ -222,7 +222,8 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
->  static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
->  {
->         struct page *page = pfn_to_online_page(PHYS_PFN(phys));
-> -       unsigned int nr_pages, ref_cnt;
-> +       unsigned long nr_pages;
-> +       unsigned int ref_cnt;
->         union kho_page_info info;
+On Fri, Jan 16, 2026 at 6:22=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
 >
->         if (!page)
-> @@ -249,7 +250,7 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
->          * count of 1
->          */
->         ref_cnt = is_folio ? 0 : 1;
-> -       for (unsigned int i = 1; i < nr_pages; i++)
-> +       for (unsigned long i = 1; i < nr_pages; i++)
->                 set_page_count(page + i, ref_cnt);
+> When restoring a page (from kho_restore_pages()) or folio (from
+> kho_restore_folio()), KHO must initialize the struct page. The
+> initialization differs slightly depending on if a folio is requested or
+> a set of 0-order pages is requested.
 >
->         if (is_folio && info.order)
-> @@ -283,7 +284,7 @@ EXPORT_SYMBOL_GPL(kho_restore_folio);
->   *
->   * Return: 0 on success, error code on failure
->   */
-> -struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages)
-> +struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
->  {
->         const unsigned long start_pfn = PHYS_PFN(phys);
->         const unsigned long end_pfn = start_pfn + nr_pages;
-> @@ -829,7 +830,7 @@ EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
->   *
->   * Return: 0 on success, error code on failure
->   */
-> -int kho_preserve_pages(struct page *page, unsigned int nr_pages)
-> +int kho_preserve_pages(struct page *page, unsigned long nr_pages)
->  {
->         struct kho_mem_track *track = &kho_out.track;
->         const unsigned long start_pfn = page_to_pfn(page);
-> @@ -873,7 +874,7 @@ EXPORT_SYMBOL_GPL(kho_preserve_pages);
->   * kho_preserve_pages() call. Unpreserving arbitrary sub-ranges of larger
->   * preserved blocks is not supported.
->   */
-> -void kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
-> +void kho_unpreserve_pages(struct page *page, unsigned long nr_pages)
+> Conceptually, it is quite simple to understand. When restoring 0-order
+> pages, each page gets a refcount of 1 and that's it. When restoring a
+> folio, head page gets a refcount of 1 and tail pages get 0.
+>
+> kho_restore_page() tries to combine the two separate initialization flow
+> into one piece of code. While it works fine, it is more complicated to
+> read than it needs to be. Make the code simpler by splitting the two
+> initalization paths into two separate functions. This improves
+> readability by clearly showing how each type must be initialized.
+>
+> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+
 
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
