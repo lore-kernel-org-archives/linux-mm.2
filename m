@@ -4,104 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35DADC44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:53:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2575C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:57:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9470D6B0163; Thu, 22 Jan 2026 06:53:41 -0500 (EST)
+	id 08C666B0165; Thu, 22 Jan 2026 06:57:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91E7E6B0164; Thu, 22 Jan 2026 06:53:41 -0500 (EST)
+	id 039ED6B0166; Thu, 22 Jan 2026 06:57:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 854B46B0165; Thu, 22 Jan 2026 06:53:41 -0500 (EST)
+	id E87D76B0167; Thu, 22 Jan 2026 06:57:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7164D6B0163
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:53:41 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E0E1160297
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:53:41 +0000 (UTC)
-X-FDA: 84359440242.20.166BE5E
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A5F2E100009
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:53:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EmMicMAr;
-	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D60AE6B0165
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:57:08 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7528A160297
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:57:08 +0000 (UTC)
+X-FDA: 84359448936.01.0B9FB77
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 16C0F40006
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:57:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XLNZTWOy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769083026; a=rsa-sha256;
+	cv=none;
+	b=TaZjYNZfNjzlbZA3qXSn5bG+oAAfz3axXlnCE9LzT/oHFPLGSVwSFNjMo/hZHuWk/xZ/zr
+	NLk78Z3qYRSzlJh+ltw4QhqYbxN7oi0rY00E6q1N51nTi0ZgI3PgVnRDbROyBvUv+oUgfq
+	B2HpkqUmFvt+y3b9k2uQHo5btijiXXg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XLNZTWOy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769082819;
+	s=arc-20220608; t=1769083026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nK3lpHbFMGMoogUekcAz2kADIERYkYftxCT2FRmWKLQ=;
-	b=zYblgcj8GZkGg1g5sfxX8ZABBbCLmJSEHxQoFX2I1G12ZTO5JsK9D8R8N1JEk2PxYjKZv7
-	SU9FpAJfzx6mH16KZ9SemlDv9MZ5y+qcjtPFAR2SOJ9GOsRfAdol9i8APMMQZyd4hfz+vN
-	QBlq2Hx3TIukJdWZbBlU9KKLvY5tFM8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EmMicMAr;
-	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769082819; a=rsa-sha256;
-	cv=none;
-	b=xhYuTiPIp6Vh5wFBSavS53+KE/qiYdkTNakZyh2OlQzZtXnSdEShdvVbe5EgM55YZr7THi
-	TZ4HMPpWOBuXnw8Bw76OjH8XtjvgPycigQiK5C6AuBwm2RwQ4uti/As62hs8ZR8J0fl1+L
-	ijPKMcNdcvmCuDju+xvbcM7OZW0v23E=
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769082815;
+	bh=mZODvw+hrx9/BESJmdl6IXKkX3UkDOU9hBN+El/x3X0=;
+	b=KEJPq6jr2sbd8OMyJWPfLE8uUdX2O6buYrvzSEYCU3YZ3NPuJilFjyw1LtVy1h0dWZdt4h
+	UeH4S4HxjCjwOCcM02T5pua2KZGJd1trhVIeoTAXQi1LszEOSaGyfAQF66evKuV/pbL6eJ
+	9XXLoMBa/1jTeFh0tLa71hoeNvKMczg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769083025;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nK3lpHbFMGMoogUekcAz2kADIERYkYftxCT2FRmWKLQ=;
-	b=EmMicMArBlyYzb+D+vR715OwkPD0z9nzIGfjpZO5HTCVF4+7K2WAZKp+mM73BuLfQn4Xv4
-	22T0gI2wR4WjYujVh24UdlzeogLeCXt+8iHDSTqedMbRe3mTgBVoKxS3n25fpqRQM9r2b5
-	oHaf8RsTTbEpjH8slm6r/odSav0G6lk=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCHv4 05/14] mm: Rework compound_head() for power-of-2
- sizeof(struct page)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <aXIKBhHd7IbaJkXg@thinkstation>
-Date: Thu, 22 Jan 2026 19:52:52 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>,
- Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baoquan He <bhe@redhat.com>,
- Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Jonathan Corbet <corbet@lwn.net>,
- kernel-team@meta.com,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
+	bh=mZODvw+hrx9/BESJmdl6IXKkX3UkDOU9hBN+El/x3X0=;
+	b=XLNZTWOy2YSVV4B5Ir2g5vpJVXa4UuXdvJhwa45AGFqmxMd+lXwKdzz1l/e5M4xviyVhFU
+	VHD84LUhbsy7iDIhukgc0IFk3uK2xbLUmHZs6mTp33dCiOzDZ5HkjyTtGhRtJSzRgVOCsH
+	BEFaw3BACmhv6MOznIsXT8u7wxfdSFo=
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
+ [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-374-S6H7uWDxMv6TZNA64yjXPw-1; Thu, 22 Jan 2026 06:57:04 -0500
+X-MC-Unique: S6H7uWDxMv6TZNA64yjXPw-1
+X-Mimecast-MFC-AGG-ID: S6H7uWDxMv6TZNA64yjXPw_1769083024
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-6445cf02fcbso1447276d50.2
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:57:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769083024; x=1769687824;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mZODvw+hrx9/BESJmdl6IXKkX3UkDOU9hBN+El/x3X0=;
+        b=pMJkNUDpq7gIiGxZdBqcuQ76cWrbV6DZDpt2H74L03hI0ucY6ro9nWrzYlXPZUQf6F
+         VBiF7sYa7RcWLBKQhSX+A5DxGcL18yrsVyqgTfpBrbEvY5ycDZ+4fIx297MOpzMgsL9e
+         reSL6jo0rTO/3dhdUGdvDOjFlqAsyUU8/IqhrGxqzdg3W/odruJEH0sdhRD4a81UYNZL
+         SiJGWL1Aw0j+QLjbtsQ0nuKsN8QcMhZ2FyKRpu3/upk8MGifDoMOGbDWbmY1ZnHShc05
+         KBAzTHIKBLPv+9ku7bvnqZVJJvk4EGnD6X8PnC1tw8PwJf5KOJZDsrHufuplC11rYQ5c
+         /OOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkBhz9lc6/DAiyTV/ZhYFs8bGkxZTF5J8O/DFSVZPxqCzRCgfvq2KFZhC2Glmh9383BmE71fPOUw==@kvack.org
+X-Gm-Message-State: AOJu0YzsvV9+xPz3vcWr3hUjHc7aPSs1nyhlAcavK77b9B56RHSbd9+M
+	udsiAKUVE44Ca90C23eH30ItFPNqA92M15mI3PaTGs7orZAfoB5vE7ds5LUMm5q2DGKthr7KptO
+	CDcey9VWokbsUCv85mFM+pIb7zkQQHW/O2r/t/wlTM9uC3YAmn0rrpib8Be3cSurv0k9YGegoxo
+	hy+PM3VL3dKCk7xY04yGkcgMaWjrw=
+X-Gm-Gg: AZuq6aKfTaByi7y7tBJQ5JMF5Yw1NmTiwS/GXKv2KlFW1/OKi/VpY2jv3lqQTrkxOPW
+	ApEPsLdHJuYj9QVw1Q7rA+H9L5ZLLpOrSLMJun9akrXvPt/2p7aYTnz1zVpxOKYL6kUhpQvFTcA
+	zOChsglZvFU0opprHqbG8fzxDGdvQMbVBBrw4gFmnp9gGbcjhtjNe8qSPHqH1jlnEIftqbSQJhq
+	YtG1Joc
+X-Received: by 2002:a05:690c:6312:b0:78f:8afc:c34b with SMTP id 00721157ae682-7940a21c226mr163125937b3.34.1769083023832;
+        Thu, 22 Jan 2026 03:57:03 -0800 (PST)
+X-Received: by 2002:a05:690c:6312:b0:78f:8afc:c34b with SMTP id
+ 00721157ae682-7940a21c226mr163125567b3.34.1769083023461; Thu, 22 Jan 2026
+ 03:57:03 -0800 (PST)
+MIME-Version: 1.0
+References: <20260118192253.9263-4-shivankg@amd.com> <20260118192253.9263-6-shivankg@amd.com>
+In-Reply-To: <20260118192253.9263-6-shivankg@amd.com>
+From: Nico Pache <npache@redhat.com>
+Date: Thu, 22 Jan 2026 04:56:37 -0700
+X-Gm-Features: AZwV_QjQJ98BVvBgFx7KzuIQZ9dnvMqmoAV5PsHfCMDGm8DbekvWiQQc2xEhOX0
+Message-ID: <CAA1CXcANigb+AsbT68kQYJuxTw9F_iNRfGDwm1AJC7CcUmpHYw@mail.gmail.com>
+Subject: Re: [PATCH V3 1/5] mm/khugepaged: remove unnecessary goto 'skip' label
+To: Shivank Garg <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Wga5CDj8863Y4teWVnBZupfW1BEFuJ7qghkAPJPt6LU_1769083024
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <85016E74-E7D6-4AA1-8754-24B86496CEFE@linux.dev>
-References: <20260121162253.2216580-1-kas@kernel.org>
- <20260121162253.2216580-6-kas@kernel.org>
- <EB8941D9-B6E0-41DD-9C44-038D21583E17@nvidia.com>
- <aXIKBhHd7IbaJkXg@thinkstation>
-To: Kiryl Shutsemau <kas@kernel.org>,
- Zi Yan <ziy@nvidia.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: qkipdi7668r6tk8qo36rg8m6gw7sh8jc
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A5F2E100009
-X-HE-Tag: 1769082817-578408
-X-HE-Meta: U2FsdGVkX18wlakPzqkUIH//EfKZi6/nAmMWqsSTU8/BuI6xFCJUYyKt9IIOPfcDLvGZoyq4ibBrlMdJjqqhsBAvoW+qSYTmO1iBv+zD9Mbvqt/kN0047xd4V5nMEpNk+90PCOUHFXooSOY+WZKVXUW9xkkjB/hJ/+oX4uhP7TQL377rLsAOqTq8nVzbKVUoh7y3LTLTPVOsRVgFof44e1yetCO2TwTiSm4TwkyXRaRu1G88u/3U77hxr0ybA5L3x3C+VqUAoA/9y+x7tQRDseFe5pxYa7rl5pfXDG/mW7WOutSET4bMOi6gC++pKLs+hKpifFLEzonWXcyX3jMEtMuXVC0FNCBsbTR2BgMH1AHTOrqBahAe5C7h1GFBjRaHAyyERlFAo21jI8ziahdRRuhIBW7bPYh4JvyOY2nQL+mN3GxY1YroYPrVw58VIBDGE+NV4VvwP/q/pbeqSISxGTbtzFlJlIx/gcEpK8k4ESHDP0WUinqdFganFKHTXxTP2Bjk6GPi99LtxdQBk4Ip/GefiqmgtsoPutrhcrXN7NR7sup/leBrxV9DO9gDUrFXc8Sqa3idTXSUeOuBDXnwb254aGbnmebkNzh5eKwqcgbyprymLtkuaxT38Bl1VXMld2uYgx64GvaUb+NIAk8J8CRsJpqWx2Zz2TcGESXzZjLh2sDEdvnCpKZ1SJluCSOJe0WrqhRMQvwBIPS1LO7GfY6lD+UDIigdE1wS4rJHP1cVHrq4vGUD/ZdeMbqawJqXjdfpYA1ZcjmETBuRdW/R5u85Y1+qed/T7K3k5Vm99kBrhiwQU1jb1WOzoeIpk+caoMf+j+SlPVi1P6DFUoDFmeLDVtkxmFkeIyZQSo+SvAEQqGfSkFIIxoFBxS2GRZj8RNlY10CmLQFh+nRDenq7zIIiTkM1GQtkxJrIJDV5SlxT26klg0O5/W/EYiwIlSkj4wd8Ls4EFdniHv1aS6i
- c28oxEeC
- kZ0wXvzJ7ab+eRcRxQolsMMCpq+zqnDIFWuUnPrhStKpVkiEUeaojmixUhFixX78DiV3mOV//DPbvpno4CRKI0qkNwLWzkDm67vrc28fkHwIvhBV15CZVo2kcNyUGOeEOZV1W4DVL+vXKDoAxW48W0FmQpXgwgyOXbg9bS9vk+ewyjCGXhOXSttvKJVGok95owwysQcL1fLaMTL6vXarVOEqoUIUw5dOtYFK4Bq6bX3CJ73MdQuntQ8nwZF9NlpE4p/Q1ZDJkEO1mBg8Qbmeao1gTwdJNHgUxSGNdg6szg8yft69I6P8QSzV0fA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 16C0F40006
+X-Stat-Signature: spkej6nefy6xn95qxqjaxkz3rnt1papw
+X-HE-Tag: 1769083025-443699
+X-HE-Meta: U2FsdGVkX1+DwH3ggsFvU6UM3jScSDgeLbFzUvuudnvphtUinoWA6Hpj8FuI0V8JJqPW7Sca10qOU44znPBYM76vPKxm5WGXjDl0EEzPJdPSEtU1Eg2YgmZSm6xT/0EgiK18wV8Qv5IJn7wyGrsExGA+Ziln+h5uQ3a3nR50qc/qKG5/yEOQcqJqTWSiTrtHq+HshSj+DhOcsULzuPVeZru3gU5SQIOruGf2XV/l/Bgd15+1W4NhR7fR3jEpkgvCP1qgxRQJvBPgoDOOp5u53r1AuJfGRocH6sisL3/xhjcKikcZst1eYDr0ij7OMnAj+YB0jZOdV/z8gCHObKAbEWLxMceLvYkjoraqXKjc7SYVoZGTT7m1wbVCUgWG+RPdbiMHgQpsHWFGtkCd15nkh2NfnKrXR8yWQur+ukXn5kdk4U+1Gi9rBNyeMgoXF0OVSHtgzKpJRn8PUgVcd23xK+ga+zM88BE8DtGBhkCmmEYdN0TqbMz9j2fQnVoUBmkKqlca4BRrtrQ4J7x2OtgDC23OPWJA+dJiJFd5JkRoBTH7WTG5PWSawjhl1wcCLZgDa2qRkt+dT6yl35o8kWiCeKbVno2hMKc+BdtoPmXgu0h5wjhtnT3Och/WjsYGBNeKb0W2gwFI1QnP1qBpwEd06xHwvHR8iZN0p61JlPj5UUmMCWMb5pMqK1m5VHvqQw82KPOQabOXcEu2Y1mK5wgIgfTGRw8tWJ3dLULFeHp6O3Rzhm42EsIhoJNP/+oHZDLXiThEe92weOkVFq9mELGrEOmNcIGK/s3FCP/xsU+58dUrvJ7rbmy0RSpSj0dwDOVAW+WtqWQlcSQGo2l+F7XTf912omGbF2DYOhiEsIGCrG5efkH6/pZsICac1JAs5VPVxQy6PB0i7V4GNfaZ0yfuAB8t4x8zteXK0OET4Wd4tS0wCgVZSLs3Gl5cCIXKCHteEeS5KChHUkw5cEsv+kx
+ KYVhFTqn
+ YwGAOd0d8ucMLagF3cT892ZORnVvXCiFm5tnZL2CKVHrBOI7kH8XbJk19tPSKDkSqSDkKw1e+vP9pnYpfvX5OevVp5xEh/VfpeXxUBvvuDvIy2Tyub95l8BDIlubvc7Txm+z+fs4sHjQ0wjygrR9AJGyTvzmx8YutBJwQhM9OWvSH2nQ/z/lSP1lpaknZ0lmjkmk/VE0xKQ13iLN9y/Uu0ut4yFn+P+hVxgKJORthh7p4dsgqUkYWNiUvVkEWK2jN2CR3n3TeQCOWyyAo7pawVn0Sn9qG2UrsBwNpP1qdxJmsJKobjuYLvkluK4ti6hnLyEj4cIVicRfHAdgbQ0aOIFHj3PSKg5V8MVm+qY+UNb2KGL4F5BKJeALKDgeMNNDwZi0nNn+vshXsEnHkuKDqYTRYn03UCMaOevIkdgclQUnfTjE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,39 +129,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, Jan 18, 2026 at 12:26=E2=80=AFPM Shivank Garg <shivankg@amd.com> wr=
+ote:
+>
+> Replace goto skip with actual logic for better code readability.
+>
+> No functional change.
+>
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 
+Recently I did a round of testing for khugepaged with regards to my
+mTHP changes. This series was part of that testing. Thanks for the
+cleanups!
 
-> On Jan 22, 2026, at 19:29, Kiryl Shutsemau <kas@kernel.org> wrote:
->=20
-> On Wed, Jan 21, 2026 at 12:12:13PM -0500, Zi Yan wrote:
->>> @@ -1244,8 +1244,8 @@ void snapshot_page(struct page_snapshot *ps, =
-const struct page *page)
->>> again:
->>> memset(&ps->folio_snapshot, 0, sizeof(struct folio));
->>> memcpy(&ps->page_snapshot, page, sizeof(*page));
->>> - head =3D ps->page_snapshot.compound_info;
->>> - if ((head & 1) =3D=3D 0) {
->>> + info =3D ps->page_snapshot.compound_info;
->>> + if ((info & 1) =3D=3D 0) {
->>=20
->> This could be =E2=80=9Cif (!(info & 1))=E2=80=9D like =
-_compound_head(), right?
->=20
-> Right. But I don't see why it has to change.
-
-Let me briefly explain my programming habits. I guess this might
-be Zi Yan's idea.
-
-When I use a variable as a boolean type, my habit is to use the
-"!var" operator to check if it is 0 (false). When I use a variable
-as a number (with a value range exceeding 0 and 1), and I need to
-check if this variable is 0, I usually use "var =3D=3D 0".
-
-The least significant bit here seems to be used as a boolean type.
-
->=20
->=20
-> --=20
->  Kiryl Shutsemau / Kirill A. Shutemov
+Tested-by: Nico Pache <npache@redhat.com>
+Reviewed-by: Nico Pache <npache@redhat.com>
+> ---
+>  mm/khugepaged.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 16582bdcb6ff..984294a16861 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2442,14 +2442,15 @@ static unsigned int khugepaged_scan_mm_slot(unsig=
+ned int pages, int *result,
+>                         break;
+>                 }
+>                 if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUG=
+EPAGED, PMD_ORDER)) {
+> -skip:
+>                         progress++;
+>                         continue;
+>                 }
+>                 hstart =3D round_up(vma->vm_start, HPAGE_PMD_SIZE);
+>                 hend =3D round_down(vma->vm_end, HPAGE_PMD_SIZE);
+> -               if (khugepaged_scan.address > hend)
+> -                       goto skip;
+> +               if (khugepaged_scan.address > hend) {
+> +                       progress++;
+> +                       continue;
+> +               }
+>                 if (khugepaged_scan.address < hstart)
+>                         khugepaged_scan.address =3D hstart;
+>                 VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
+> --
+> 2.43.0
+>
 
 
