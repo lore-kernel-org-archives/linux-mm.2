@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54625C44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC41C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:08:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B62E6B0141; Thu, 22 Jan 2026 06:00:41 -0500 (EST)
+	id A78436B0144; Thu, 22 Jan 2026 06:08:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8635E6B0143; Thu, 22 Jan 2026 06:00:41 -0500 (EST)
+	id A261F6B0145; Thu, 22 Jan 2026 06:08:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 799AA6B0144; Thu, 22 Jan 2026 06:00:41 -0500 (EST)
+	id 952516B0146; Thu, 22 Jan 2026 06:08:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 639666B0141
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:00:41 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 228EC1A028A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:00:41 +0000 (UTC)
-X-FDA: 84359306682.26.7BCA95D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 982154000A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:00:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QRfrLnhR;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 819016B0144
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:08:02 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 207EA578AB
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:08:02 +0000 (UTC)
+X-FDA: 84359325204.27.8C93130
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 13F87100006
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:07:59 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769079639;
+	s=arc-20220608; t=1769080080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=c3oN55RI91w/kJubFbrz31NiO/XmewonOi+1PWV6DuE=;
-	b=ivnQRqfNG15Yym+L4aOLwvFEKlLqwGYYukvtVQMHNJ2UKQDdjZj31xyHDKVaMUP0rMDhbW
-	SWnh1pPw+KpPiP7tTtUIs2KsHC0Rh6+0yAhV96zuJbaduspcYp0q0DOXHoy9MGtwX/Yvjh
-	ofqYaSglUUDPTmEvYq9MaV0AxmV/8+0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769079639; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uq+U7+WOerYXBavyw2dlRsIWjL7Q133qV3ayFU7Mivk=;
+	b=wxpn9xlObZxRKSHs8IBb5y2GHigReic5R9tXi5yym9+Eoz3kH4OD4arI7oyq8YLMPdEfkg
+	6DWV25fmei4XNAowY8sOn2ASizpt7ArgjsZclQR2JmaVw8dSL+RgXUkMt3l8EwPPTR1wpV
+	oC3HAJIEACzGmmI3YntBs/8r3pJRxH0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769080080; a=rsa-sha256;
 	cv=none;
-	b=nvvJY7HtiZX9kJZgwJQRqUAf22QsYoD22Cy58QnqYFgpxYGqQPDSkyHWYUZxdw0eDZmeqr
-	yN1Mzir6qu3vi5IBFwEBb23jfBEJNbqVTQo3FyVIsY6Eez3+C58tFfW0UG1PGY7RsNwhCu
-	I31ybIrypB57niFd1aY0qJ7Txp1D01I=
+	b=dIB2OwSMPVfhk0iTlndgyDCUrz6/6oANnaNiuEIzsbrWBBZa+3Nn8GPPaLvB+rJRrQS3s1
+	TqVokjKP56xjFTO0iAxA5XExgkqT7mqh2RQZeasK/vej0lGHLs+yS+oblHbPjkU3WSpewk
+	Ftg3kdCSThn5XTdsJhV7vd9cEuSidSo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QRfrLnhR;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769079639; x=1800615639;
-  h=date:from:to:cc:subject:message-id;
-  bh=414em0JwX8mnxT6thkz4YucztIoBgef8eaAQJlCszlE=;
-  b=QRfrLnhRe0Fx1ynHl25ZQSYgEMBF2++UrKgQbYFpbkXuyJYZBNkxMCj6
-   A5SD+e7ZCaRssm6job44MnmjtnhVS/oqcGBYLLrb4qSzAzgZ43WmvpP1p
-   YIuDRVd1K8Y1nKTtN8trkpQf+OTyRYiqkgnaomehSQ3WVeFQxlS17vIXS
-   k/68DjxUFMnDeAjuwSL8yew1aWSuneGRcXadahPdXe24cf7TaF0f9xIPX
-   XaD5rTeDWZyBnJ5K8zYW22rl2ux2hRL1TVQOKW5TZT9MuZ+6Ks8fpr0ZZ
-   XAi87pNo/apF1eKIFK90A/m/KYlwepxAcUbyBuqS2HuczsPncgyxlLh6h
-   Q==;
-X-CSE-ConnectionGUID: 4rCF9Ti7SDGgHbmenkL2cw==
-X-CSE-MsgGUID: A3msDjRDSXKB48+TmAydjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="87734261"
-X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
-   d="scan'208";a="87734261"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 03:00:37 -0800
-X-CSE-ConnectionGUID: 1KnDKlccQzuBjyj0PhtYag==
-X-CSE-MsgGUID: 1hiMTBsxQiG+nr8aEyVOVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
-   d="scan'208";a="211150202"
-Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
-  by fmviesa005.fm.intel.com with ESMTP; 22 Jan 2026 03:00:35 -0800
-Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1visQS-000000000UT-2Gnl;
-	Thu, 22 Jan 2026 11:00:32 +0000
-Date: Thu, 22 Jan 2026 12:00:08 +0100
-From: kernel test robot <lkp@intel.com>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-new 279/310] memory-failure.c:275:49: warning:
- format specifies type 'unsigned long' but the argument has type '__fsword_t'
- (aka 'int')
-Message-ID: <202601221142.mDWA1ucw-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: 982154000A
-X-Stat-Signature: 7s788dep4uyym79zgy6w5zqyope5j78p
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DF911476;
+	Thu, 22 Jan 2026 03:07:52 -0800 (PST)
+Received: from [10.164.18.63] (MacBook-Pro.blr.arm.com [10.164.18.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AD5E93F632;
+	Thu, 22 Jan 2026 03:07:53 -0800 (PST)
+Message-ID: <3aaa3e5d-7f66-40fc-a5b0-ea6a384a88a8@arm.com>
+Date: Thu, 22 Jan 2026 16:37:50 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 2/2] mm/khugepaged: retry with sync writeback for
+ MADV_COLLAPSE
+To: Shivank Garg <shivankg@amd.com>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Steven Rostedt
+ <rostedt@goodmis.org>, linux-trace-kernel@vger.kernel.org,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Branden Moore <Branden.Moore@amd.com>
+References: <20260118190939.8986-2-shivankg@amd.com>
+ <20260118190939.8986-7-shivankg@amd.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260118190939.8986-7-shivankg@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 13F87100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769079638-610514
-X-HE-Meta: U2FsdGVkX1+S7flZJpH/hkUN2SqbRDZ0uIULjsTe8Pnb/A/n4u7vmCXeaAaMOWjTfWN5mzKFfVNL0czLRVrHrfTymaoRZkx2k9YQEfnLaNi2khT28DAXDHhwXrar/vQi6rU03KirK7jn010Wsuaql3md+ICQwcfVTlq/BXok7ZCKtFFldxuFkVv3Cew3o9l6kUJoGpBmRIBvL68BPjpvVB0F0ItBsT00p0MwI7lIYu4HQknWnlzTdmwzat/F2L+2Z1Zrdy/9mF7vYaG08eX6fbBV8fCIEfg3QTtdSYsu6FwPkvp8MwomTlM1aum0ldvnbD4UJl2e/UjFEGce3ZaQ4NIgAPOCeFsZ2NEY7JsHf0iB6imXri7LxeCCdNC14XusCSwf8XUN3y/aANmybQdG6CNj32C+AwkTXBu7q36bD7rV+2+87g4xBif+V5kOBuCtUY4p5f8e8jmgcdz5BgeEgktdtIaeUOfEWlVSLfFp051NtTOwae+ymMAOUbjMsJdSgiF8fMw17xYZQvEfgJKeA8KTbMbKhzXITExNFJIztUTKopCuJCIyAj+jRQj8EMjbEKplsrbVEu8wDz6Z9YSZvRgrkDuJMeY3VFPDz80ch7RRbNc1CWtGpeLX1js+x9iWrKtNaszA6WPRv7xzIz+G/kFKeUD64ZG9YDr66RapQ11KvtKyWykxk1ruVW+yiTWnSlmEh6P4UdYFCFFS2CM8VnW9YC7Iq5rwKjfYiZW8SYWTJzfY6oLE5RJocu+Z9yPiE7LqbXfORbbmQ7v6my/Ml5IhQPdtkkT6oJp/wBIV2ucOhDPAgDwfjNqIdsPJ6W2bRBTCpCEzk5H71gOcXDxiHfSCK4F1TbJCu0sQf6zyg6zCONHskLh8s1Yl6oej9g5HFSdfRGL12dLBWUSN6TfU+HR8DbAZ7uZJimzk9h50l3Y7bOrXz0OPYIMRpi0PfX8axBkPA+QyW/QR9NxpT/V
- ArxeZlnk
- rm/+UMlNh6rpAMSenEymWCr9D2Q9yNw6PPhK38QQO4BpFwrxVPy8blKJUC3dHc5tWSl5AlfVW6itkKcCF/pf3fbUUkq/0+MNtiII7Ots/xi/yzW2EQ2iBrgODzS7mHXClKHG7Z7UYYKABkONr2r9wE/UJeZTMNPM3b3b4vzRKOYvT6/42+IVD0TlyP5yn3LcbvTml7B2BU5KmFMbBhCUQExNW23fjgxr5LN78qD+GaeGHh1a6COBawzg/JbniZoit9mu6/tsvQEItX+vAQvKljCmTt9r16mXrI6le
+X-Rspamd-Server: rspam05
+X-Stat-Signature: u6eh63yhdaghiywyf18bt45f9s4p1tc1
+X-HE-Tag: 1769080079-211690
+X-HE-Meta: U2FsdGVkX19ChRoVG7BeiyQQ67le++eAWBjh13Nh9BYpHIBeRsExBqcHdzUOmYB6I9ydKlizliqr0Alm1fLfxRYgmY/5Qz0ecUCRCoO3tM8KPWmkhoL+A4fctgwObvphtTIGf4UtF956IRHiObn9mBIixV/bJ99ZL3ut8Uta+j3N/gpkB2raSNTdYRSc6x/ita99r6eHwppWtDqaJWOQgVaxZcqUOli2pNKsqgm5m6qQqxRxW1LRheOA/eASXVxJqxs1Lo8TIvhE7k5j2P/AUHdETrDTM4tDIyl6mG7n99WTmcZUXuCz3JQVNbQbDh2rdnnwIV6Zft9mG8Iy3wAIe1+Yh44occGT/pgRDBsDRLf4lJ3mFOaxd/0Yen0e4LUAqtmZuiwJ+3aHWCvW/PbuRRepnckbcn+gzxNJ3Piud74mtEHPJtMq20HVF7ym4m0/V+E9eP23XK7f0YI3QcV4zyDu59BpfLz0ADeN065J/t6Eth8L4JsntvOcA1cSDsxqB6NNVLnMObkrX5ZgyOFokllwsfIe79vJ5qhpnLlg+xWvcWdyB/djJwUivwwL+daUOYab368cx0+qgaTaptHw6wXhHkLyfUPo6wMLYJ/XQf0cu3gE6IM01HpKRBuVi/vHp8eP/PT7S+8uKiz0NKoRHvueN0oAoVyspz2XlFooyDVUae9uvwX/UH5gQz5fJhnPnPG/qkjrahNo6PmkoeY/01NF+E8LNa+7EtV3k7ybFgycyOd41NHOdT8DhXg3pEgZxIFTWq02l9b5mS3NHxvQwkxlin7z4Urgy8XoMxU4n0v3NC+yHOyl/ZF+/rRv4jqgfPUte/Se8/Efk9njdsq7irH9PqpAuIzVnNpJYnNLOh7p9hA2xKoONo2juoH8JwgqlOkhC4NLp5To7YlUnE28zO1T2JnWVdAINSezQxAkKgMe/QcBFaI881/dRPBVvhqb3arK6X+eQumL1FU96/E
+ siyblLFP
+ geZ2W1IgUWAE8RUB5LZx0TPycoQ5rzrdLUQPCQebx/hCA5dytuPdLUg/urTJr1TkEOXXgxVT1mfDEgZ8yvzXOZrsJV7/Ckd4sQZ4pCspLLLRH2MoDZI8k39tSxEfxyD1VwekuRy+dzTxQK5B1ozYl945msZT/mCnTlE4BdRmHYe+7p+W6SI8N952NtvlheYd1vNc9oD8Bqmd6Nmz4Of/RFmePbnr2ja01634Zgc+8bWoZSxQ7aTkyweCB74GF4METPgl1kuYMBeq7Oi2FSNiwAIZLpfIgSHscKi7kua2HKSBFw1yM6QWqCVb/1eVcnT/wOJ2+fR99gf3Ye1Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,30 +97,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   dc4fe40a11269aead253fa0beb098b00417b8694
-commit: ce9b369feafe8c65aa134b0c8791bf7f19e463e2 [279/310] selftests/mm: add memory failure clean pagecache test
-config: i386-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260122/202601221142.mDWA1ucw-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601221142.mDWA1ucw-lkp@intel.com/reproduce)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601221142.mDWA1ucw-lkp@intel.com/
+On 19/01/26 12:39 am, Shivank Garg wrote:
+> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
+> text sections), the pages may still be dirty from recent writes.
+> collapse_file() will trigger async writeback and fail with
+> SCAN_PAGE_DIRTY_OR_WRITEBACK (-EAGAIN).
+>
+> MADV_COLLAPSE is a synchronous operation where userspace expects
+> immediate results. If the collapse fails due to dirty pages, perform
+> synchronous writeback on the specific range and retry once.
+>
+> This avoids spurious failures for freshly written executables while
+> avoiding unnecessary synchronous I/O for mappings that are already clean.
+>
+> Reported-by: Branden Moore <Branden.Moore@amd.com>
+> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
+> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>  mm/khugepaged.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 219dfa2e523c..16582bdcb6ff 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -22,6 +22,7 @@
+>  #include <linux/dax.h>
+>  #include <linux/ksm.h>
+>  #include <linux/pgalloc.h>
+> +#include <linux/backing-dev.h>
+>  
+>  #include <asm/tlb.h>
+>  #include "internal.h"
+> @@ -2788,7 +2789,9 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>  
+>  	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+>  		int result = SCAN_FAIL;
+> +		bool triggered_wb = false;
+>  
+> +retry:
+>  		if (!mmap_locked) {
+>  			cond_resched();
+>  			mmap_read_lock(mm);
+> @@ -2809,8 +2812,20 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>  
+>  			mmap_read_unlock(mm);
+>  			mmap_locked = false;
+> +			*lock_dropped = true;
+>  			result = hpage_collapse_scan_file(mm, addr, file, pgoff,
+>  							  cc);
+> +
+> +			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
+> +			    mapping_can_writeback(file->f_mapping)) {
+> +				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
+> +				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
+> +
+> +				filemap_write_and_wait_range(file->f_mapping, lstart, lend);
 
-All warnings (new ones prefixed by >>):
+So we don't care about the return value here because this is best-effort.
+I really wish we had in our coding-style.rst to typecast such things to (void),
+so we know explicitly that we are ignoring the return value, and not that the
+function itself returns void.
 
->> memory-failure.c:275:49: warning: format specifies type 'unsigned long' but the argument has type '__fsword_t' (aka 'int') [-Wformat]
-     275 |                 SKIP(return, "unsupported filesystem :%lx\n", fs_type);
-         |                                                       ~~~     ^~~~~~~
-         |                                                       %x
-   ./../kselftest_harness.h:132:47: note: expanded from macro 'SKIP'
-     132 |                  sizeof(_metadata->results->reason), fmt, ##__VA_ARGS__); \
-         |                                                      ~~~    ^~~~~~~~~~~
-   1 warning generated.
+Nothing jumps out at me,
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+> +				triggered_wb = true;
+> +				fput(file);
+> +				goto retry;
+> +			}
+>  			fput(file);
+>  		} else {
+>  			result = hpage_collapse_scan_pmd(mm, vma, addr,
 
