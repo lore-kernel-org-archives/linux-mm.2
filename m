@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE607C44508
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 00:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A5EBC44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 00:58:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F3B06B008A; Wed, 21 Jan 2026 19:54:23 -0500 (EST)
+	id A60F56B0092; Wed, 21 Jan 2026 19:58:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 477166B008C; Wed, 21 Jan 2026 19:54:23 -0500 (EST)
+	id A0E1E6B0093; Wed, 21 Jan 2026 19:58:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 358E46B0092; Wed, 21 Jan 2026 19:54:23 -0500 (EST)
+	id 919F96B0095; Wed, 21 Jan 2026 19:58:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 220026B008A
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:54:23 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2438161454
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:54:22 +0000 (UTC)
-X-FDA: 84357778764.19.15E7FE9
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BB97C40002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:54:20 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Q/3Mi5pv";
-	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DED16B0092
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:58:51 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27D3B13C9A8
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:58:51 +0000 (UTC)
+X-FDA: 84357790062.05.DF1E3DC
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 33FD420004
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:58:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BNLTmVpd;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769043260;
+	s=arc-20220608; t=1769043529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+NqFR4vEi17NIt2eo657HYzQ+UfH+loYG1rnphf1kfI=;
-	b=iTDOoDhtP3S0TyVh+ZvnBoPmrAPDR2ZkyI+68qgG7L4/ztGg4M4xpIFYuv3ot+nVYBfWGj
-	ZU6yocdQ1eNmKlUPtlsSNOjNTgNZuyoi+vKjrIM5TYrubc+Abfo+ZIwoyFwMELcUhqLV2X
-	ZWZX4YAVYmWWc6ena464IcUxiSeQptQ=
+	bh=VLIh79S7FhXMOMoT5i8cYC6nflwvZaP3UE034p5mOJs=;
+	b=HnmVDwtsbeSSacHyhCTp3DfpEkSwjDFZgME8DAU3HpzN46vXOYN1EKx8YA/qtw66ekAIVb
+	NupLJV/j/U1vPMIMIapDg7GzxXZ45/lpP2zs6iMlSt5jYPudqmHyRLSCYXSqqSE2VnWhm1
+	dvtSwitZ/Lvl0rPvtM0wj/uABcP5UJE=
 ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Q/3Mi5pv";
-	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BNLTmVpd;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769043260; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769043529; a=rsa-sha256;
 	cv=pass;
-	b=voxWs05OwFjPVWkUgdFHR4Jd9FMmsR/IMjW6SAhkre2iQ+Mc6NKV/IqCZs4UwnHzEu+vts
-	scSnDjeCB1BGTKnJ67Zl3BXngeX6/gdDuwU7qK2C7Bul/i3HCLazPidBg7Y55vIi8AueMM
-	vMlRZfaeu3MgAnuDvcbcJF25nWQa51o=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5014b5d8551so100351cf.0
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:54:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769043260; cv=none;
+	b=CADuIP4OswyMqoZWzoIQRcHxEsKROLcrJbTLHMWFV3doX0slQIaSJrT9vdD/vNeA0MKcMN
+	KhVdzpmMN7Qz15u/XvU1H/wxWP7of9g2VG8sMDplQApOMIE2x7wKz3qdaX/74+S/ZipMYr
+	k56FbwKPVoZ5GFgtMB15ZxkIzFU4xS4=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5014b5d8551so102401cf.0
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:58:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769043528; cv=none;
         d=google.com; s=arc-20240605;
-        b=X3HRYiLhG2KTQ3MKP/Y+u1ovOp+tGBqxutul9S3i4L2Yf+x9oMoysD7x2gEn8pkvnL
-         a7wHanXYcum8RiSYShnRQd+JhkjmG3PUDUHHdHkB7WavDKYQXwU1fPxOKJc3CUC6TOgq
-         4/ovqX/Ap9Hn4SqesRCqTlk6OyiVVoILrE1Wk8OECRzmIkzDdAI0ZODAqpSkkDitIKRf
-         pMahpHFjmZkeOrd63MREvzDi7mEbSLxxJfGunDq9k7RstAyS748GlTWDGSAuoZZSHtzQ
-         MbHz7BbVSAtyScmcJBVmlBWGcs1A/9M+W3pFQQVDDzIOXUdJDhzDwxh4lNqk3ggNw+3p
-         p89g==
+        b=DUuoikLIEFt0+rtR+ywGTHoTN0rysVX5xOapvV0+CkbdjVG1nZLyttjlhI7vInInpO
+         KN5H8Nkk/T4DGEQbg24AUI3VuNvZpbkwwYwThnWafT3dcyS9fCily1H806fQjQlV5/8p
+         zoRN6z5wDtkVay5q1TY3IPbX20Fgc2HntfGrjSfLIdKnxsRC8NrNVJd6yv+9C8ZEJFYG
+         Od/5NvURF+aNj8g8U6VKatcjWO8ePF3lVVxFoL4HA/6FaAHzgHzH6G+1cen0w3QoWnpM
+         4qv7S7HfJgK7W7TJH7/VrC4qAZ+dSH5cPKxcwpZTrzsieNy8PxfOYnW/XvLWb+QoU1yJ
+         l8+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=+NqFR4vEi17NIt2eo657HYzQ+UfH+loYG1rnphf1kfI=;
-        fh=AG9fdMPafxp+Zj5IxmiDAPk4YlPByck4tEY9BoO2ZYc=;
-        b=V3pwvTAA2jSngf6ep0Q2umt8c+pCvJSUnftycKxl7yccgLvnCMapfqaKGkcoSzQDe1
-         YEP/SQOxFXGSltUk5WQLcCwa0E+i0GJyK30z1l1bRNjugWbWg3pXYxbDj5Q2cEYqMUHK
-         1iTvQMIYsi/MTZ1Sr0cPSGRjrPvh78lCaaGE84s4OPNoHQfVJZrKoC1X7kKwkYZ3tnbl
-         1Sx0gCAJnHDBzv/kTqARB282dsyxBbNnJPm4oInkaWPQiTth23MVRmxFa8A2Nqcrncev
-         5TEAfiQ/aKsy+ZkwaL4s2R+W+CJlIvwLr7V13jhtXR/bICgce1iK0Viy/2WtiZiE4HD+
-         eWug==;
+        bh=VLIh79S7FhXMOMoT5i8cYC6nflwvZaP3UE034p5mOJs=;
+        fh=84H0qdT0ZfSMmzQ8mC0nWG9HSqlaNueJngvgEqXZpJ0=;
+        b=f+apmZe3EoZ3kaJXryPpQ3GZs5nd1+WeWfC1qkox6tAQQDEpoC73oYRGoZdML7QDxT
+         Y515woTXSw25EEc0gQbIeJr3chlLmOsPg081z03H+hncdhxUJCYJS8XEaZ9bftqPVioz
+         J3Qos5buv8IOZnFweJGji2lEfUtur/wAjcmsBEb4zQ1ZvwuUDPUQZvoTr0HXoStzjJIW
+         Xxuhf2ndh92tzWLLbaJqZNbmZq8wI+DX3+pijmBdiQN5kDV34f79pNz6htRsLrd8+akF
+         +HLgMZumUgXe1m0H5nKbLvNwUvJXC5+Ce6dMwEjR2Xk+ZsEEzGsjvKszFBYzHEv3iUdb
+         szhg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769043260; x=1769648060; darn=kvack.org;
+        d=google.com; s=20230601; t=1769043528; x=1769648328; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+NqFR4vEi17NIt2eo657HYzQ+UfH+loYG1rnphf1kfI=;
-        b=Q/3Mi5pv7kOVl8gpGI7kTRtBFzBwwGyz3MjprJA7n7d4ad8GVOJb+/61+96+VUIar7
-         YD+l7MOZ12pklh7U3ikIxG4vZU0na/a/oM34/AI5PpTB8sJXR5zsDJnfspyhmc5jwoTN
-         0VqvCQMiaDAMXIF0x6X5J/fFDOuZRuYCzlSI6MLH2P5hN0v+EFi+NULUOFmgCCMzNl3k
-         cz791gCfJJRUTQjgSKY+GPqOa84UtBrOctJTr5IuT1JWgDMa7c04HOjMIl+FoXbrkx4D
-         ykpOB75e5MM6Dx6WRi6+N1zZAILw64C6bacxBTOYa2IPeQOknPjTWa4X04pyp9wVSfAp
-         POJA==
+        bh=VLIh79S7FhXMOMoT5i8cYC6nflwvZaP3UE034p5mOJs=;
+        b=BNLTmVpdowL3kV0CQuVczWE7B30F8pchnnxcOPBeQ9LTlERWp0KWRRMDuM5c1CP6FV
+         lcevRJ6BUTPg9U7XBG/j9hEilKBL9ll0PbVHm+KOhlZOUf33cW1gBy5/Dj3c4LjG4DbA
+         kz6RuqPvHe8fJ00OTtYPwRTbG6tGVMOZEMSG1wXWn83hAKyLex9QmZNADaKgMpJIlKeb
+         LgiugyvyQ/RqLDYjjlXgfazMktsPCeoW1PiypTMQpx+EF0kg0GW/lqarskgA0zmtQYuN
+         nhT1UHl+f4MpmKA41eS+qTr2ulJGIqAC9dUjhTsB+VuQ5xV9t3cDAM5tIMcUu6v6mvrz
+         gjfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769043260; x=1769648060;
+        d=1e100.net; s=20230601; t=1769043528; x=1769648328;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+NqFR4vEi17NIt2eo657HYzQ+UfH+loYG1rnphf1kfI=;
-        b=kl/IwmQwnswxwaoJ1oQoDIaaSlKHS4DdBVdd4okJ1eRo6cMZ+5Ycy1M92SEdYqpgFn
-         87/ElAjz4wgXMf+XgCen3iXvSgjbkrOTflN2xr98Hq2YMQq69JWhyh4SlChYah37KT1c
-         0Dqrtybqm3hr4vlVSFbo3FSw6492Sg54zYGH158VQRlttk5hkgamjuvdLO+hIyqLLqeI
-         rGKB+k6jBW3g3Llrplsn7griwoqB3+Sn1kYqXSoKFCF1+1qaq/yn7j/g1V014ce5Wdl1
-         PUX6SbuwblCOtAFsoeBR7E38QwwHYmVI4VtZGr96cuMK9QpJgji/1TC0KRnj91nhS6WH
-         cD6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUofd3bfNQSiLYPZLLCpAIP3nL5c45a3dT6Gmttd688arT77yupHZqvdK7rrSmJ7iXoeoNkV9O4uQ==@kvack.org
-X-Gm-Message-State: AOJu0YwbSSyFT8Cuw/pqkDiM0fp4ivcjv4wRrGBwH4HXzTrGc2SNKAtH
-	wxRO629454yrML2pZaXN6rvTXN4hGq+apIqgvnBBGvi3ImlDzCoEEv0XPvE6uKL+h9wRpLOvRE1
-	OziKKsnHQiF9esM7AXINIUWqyycblar+/8wjWKpki
-X-Gm-Gg: AZuq6aIm77tvUJoGk3jPENSqTy0acpdlVBMsttYYkUBFp6Uh9iXbINdJxalpH2yFmjg
-	c9QpxgkN1I79CS4LQPcXz7k5TG5QHsZ5usByl/E4souvZ/lI1EGNQ8PlCGj/0qLSr7JJKm/5kiz
-	zQWKvnHRnEtpPc7lUH7VJK3WuPbZ6o+7gch8MJg8u4tlNMhYTROj47eAFurRNUsYfC2yWNiK3K6
-	zEIqlq5uJZ400YZSOXngvl7M+m0h47AQ5g1r/XwMETAPVWZ6mczl0bI8TF3hhZjt/daEkKIuRTM
-	tpDB5Kz0J/D4Aedv6BJBpYpO17Ag7oE5Yg==
-X-Received: by 2002:ac8:7f11:0:b0:501:3b94:bcae with SMTP id
- d75a77b69052e-502ebd67f28mr5244541cf.8.1769043259374; Wed, 21 Jan 2026
- 16:54:19 -0800 (PST)
+        bh=VLIh79S7FhXMOMoT5i8cYC6nflwvZaP3UE034p5mOJs=;
+        b=nGJDggJB0+kMqAmiKvmQllvFG1Tl951anbmeRtO4JyLqtCR/sIy+kqOh477hZEsXA0
+         cBai1XGnc/iSPEZocb7I11UkXxdhI0w0MEfHS0iMwbv2QYD4eE1fVwdZGBFFTBQ0xEwY
+         Yhkq8qL1DE3JDWIVZcLVzClpMJRIj6RdCiIIYk/EwhEuJSx8n83XMjdcm7TnojyM04OP
+         d94KbRUjF3ySN+Hy9+FmZJwX2ayl9XHHysUBWpSgw0u3i3qW01ytQfGGl6Y/d1aOUiIq
+         McxdXgkN9UtYWzKwfY9h+enqwjVGRzT4VGFy0K4/7v8mHxkw3F9awZM50lnVqW877EH7
+         UcJA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSdYFE5lpuLbdJTt9CqCSJ8UeMl065o4P5WfoquJPO+hsGUSUyDg/b3FQKIQVy5jmsFNSrRuisfg==@kvack.org
+X-Gm-Message-State: AOJu0YweXDdFDmonohkyERdX6tiVBD9fJWtf8WfM9tSkfw14empCOTzz
+	eZj9kWnzR+dncY4l8WxnLAkWdZRPFbpmQfZtf3t4GZN0sFhAQIff/TwNuKplD4hHErkiWvwUGJo
+	Zzj+KjGMBYqnJ+K5pafxdms7VtjqGrFsl2hE+U0pF
+X-Gm-Gg: AZuq6aILixWKKhmMhu8wsX/OvnskXknBx0KuN3/e0+ChFno9DbEJrI+X2pP393g1Z46
+	DeWwrojyXPq+C9lFNdFbP5BvWTZCFS8ztbTZWIrjmdVT60esLCUVgzb0LlzYx8nHjbEEQWhtsNz
+	+9Y8Tf1byxTEnAX2i0j1nMcs2F/JoM7hIwXhlscLZWt2asqEr1WvgLHDQEVlq0OxBBpe81BHz4d
+	au3b0Sf2vTwATsRgqhNZwGZiGub9gZtujR7wZ73qgh2tYGxL2gZRc9QO4D+ZTLhhn0wRWGxPNsW
+	507+CpmcRnMYSY4yiClc1jo=
+X-Received: by 2002:a05:622a:15cb:b0:4ed:ff77:1a85 with SMTP id
+ d75a77b69052e-502ece4dbc5mr3059331cf.17.1769043527916; Wed, 21 Jan 2026
+ 16:58:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz> <20260116-sheaves-for-all-v3-19-5595cb000772@suse.cz>
-In-Reply-To: <20260116-sheaves-for-all-v3-19-5595cb000772@suse.cz>
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz> <20260116-sheaves-for-all-v3-20-5595cb000772@suse.cz>
+In-Reply-To: <20260116-sheaves-for-all-v3-20-5595cb000772@suse.cz>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 22 Jan 2026 00:54:08 +0000
-X-Gm-Features: AZwV_QiKaqX658yaaNclaMUDJFMuWaWyjwe3fGXZJxanEvpjJyRl1f7lSqjnfpQ
-Message-ID: <CAJuCfpHggP+iefwGTOWnSxDma5U=uMROYNs8KS0A=u2w=1rq_w@mail.gmail.com>
-Subject: Re: [PATCH v3 19/21] slab: remove frozen slab checks from __slab_free()
+Date: Thu, 22 Jan 2026 00:58:36 +0000
+X-Gm-Features: AZwV_Qgalo5BT2cF8nB5P98paznJER_XoJhiYL5n6D0vsto2yVGgbP9TwAgaUBk
+Message-ID: <CAJuCfpF8xYb2j57HzO_-cfaTrOd-+jyv8pr4uFV1KwaSxKvghg@mail.gmail.com>
+Subject: Re: [PATCH v3 20/21] mm/slub: remove DEACTIVATE_TO_* stat items
 To: Vlastimil Babka <vbabka@suse.cz>
 Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
 	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
@@ -129,14 +129,14 @@ Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
 	kasan-dev@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: cakc15nh4hq7axda5hxj3o9twi9g51wk
-X-Rspamd-Queue-Id: BB97C40002
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 33FD420004
+X-Stat-Signature: q9nhan35ebygbbr8y1gygtzw17fz7ei1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769043260-372437
-X-HE-Meta: U2FsdGVkX19wv3+D5f+hMsA1kQJateHFIS3+lk6cgXS3wUPGbZCdZs+6sD5KCFSUFW+2MN22gvwjuTkxPmqiRZ6JtDfaLiPnMC+DgaeYcxtAbweGvFMm/5vn5oDhUiXW9rKUz1pyvVXPSp75yFK/q/0MBDpyi3K/yrYBrP71kR2UuPb4MtXdUkLXEaSLorBNFTwTfSCJm60yHPdL4m6PaaW8qmibos3fE4Bh8gW+G9hJUqjKZ0N7sl55dgsjpa86oKO2iH38r4phj71+1ncYPKgrXg78Ey3CW5xeQNtyDHDxmUw4rNqtD4EYKL9lSDLzJwJBieaFF2JAG8z8MHk67FOQz22i20ovV0rZYyAf0yFIDz1SOcrXoMQpxUPNCMST9S225B77WezTeqjiieKG9ZKa3CgxEEaU5DALlPi599blF6yL7YYOwh2LEGg7Qm1Xh93MTSsXURU5IzRvp2h/k9BX+A8fCmtUaDFxlQVjSKrcdnQjbqOtLKb/xt8qJ3aqOUhVLqenfkdNowJ/C+Z3xG0x9l/SOlJ+mlWV1Vx7qPzA/t5oMyusEg69SrjPh/qo/a3PFUdblQ4+D40S6xDN0TN0/6P+N04GSKUjHW9u+V/7uSPj7qYZ/d1p3P7VQUQLKt37jGnJnD3KBIesQnM0ot3EBmzHAjCIxIl1qR5E6KmwBAfrC77iWvtAQGHOzafgQwTy7zKRJfelcR5U8OMKu0I96Tv9aUkhQItKDBTRe9FqnWl9Pj2ywEWrcaH1D9yQbN8BG+orQ5XFT3icX4AZt6PYaG3WwKXpHD0HwL5U9ru/ri91aFhpqwYy8efmj1QvEEWPEbOhuO/uNdZ6IKAUGGqJkCoyUILD7uVjdoUdKo/lgUFjfSumJt3X58cyWaIgl7xBFjAD8ONqJ9fOqwnQW8sNrs2XTNnaX24HTEwaHJIvrj5ELMzKoQVRgrVskUcyMJ0AKZQu9v3bGbU/Yqo
- 4shXN5Qh
- 1w4ctmDhQHP3nLZoRRHodjXSn/y2V2MPMn51e4vPllVjt9O5oh/MpzO8PUeYyCRJBaZZZuWZveeEik+2hXK+yiGd4J1qapl+mKfQU9QLxZMuLPe6fg/ug2OTqnR5gDy2qKRD/1mS4VZezIv/KfSeSZRY/nD9Yt4zvMrT57qqIiK9dU00PcLlmw/qU2lD+JS7Bs+ZZeq5DwKc9wcxIQjBe8se5qBh3preU2BXwR7HYtEsN79leW3AbZdn7cEMwSTT3gEwk7eYidwLEvbjcCoTlakM4ILolljE2s5kNG7GGtv01SbRPxbHeZ3kdQA==
+X-HE-Tag: 1769043529-81421
+X-HE-Meta: U2FsdGVkX19tJnSbdFwqYxFH6l8Qp8pBy0xRZ8Pbqznuh+cLW+4LKB3DZVO5x4AwTGk36onIKi67Bt3U3j+AaS02fl17TJJdjFa0zhv51xW9b5fU5Pe2Jzb2X1acOtHc85LMwShg2cAvNQCu4hW7Yr9FsfA2fbxeM3aT5tOpGAOBidSEZIkyvJKUQADOAwCiUz4PJtDD05LkYSecoKM7FThMYC0I4txEJmP67Fepfyayb0qw6e4aVWoPze0lxaTCPlbz06ll7DcBMMiPKsS7G3tSVapBG0dm8WHgNr/d2gPaoIlG9EA+WFlGz1gELV+k5a4469uplyhh/GYMt06ja014UozqZNrVbioanaOLeQIz1r6y+yMAQ7HIL8AQvdEqLgiPlXZb2P3T7zS1roTEv9kzBBr2m3toCvySDrZ9h3brGOcPIS0Ryx9vtHkC+G4mBjzXjkfHKAV3Kajye7frRIXhdDG2WRERJ713+yUyAfgxBOhmZIaeU3Krx8QHJRBzvNr+JE9/wYyepQIQTsMIfsdzQJv1ZXdMqCyAaM2YlwmP85/ZgnZi1yzKCwfbZ2Ovv9APj+eyqubcDXf4ajVBAy7cNRKie3zypi5cRfGxItq8gLIBSODBaixZJZ8ymMT0pO8UHhN37jWE30BJYwar4GgtAfvhO33Gh9Lb754bDOjeZ/L2UqyR81gs4xXl+oNbpiGEjyWle4Ivvhq8dddX61/+ln4chTROcL9lFnHCmlko4QfSzsEP2UZAHj1m+52uB76kH3Za7NBmzSFuAIlhR4nirgZQFsS8AYwJVEi9ycjjSIdgXgQsoemrFatgfuCvlOmwkutItoLhdLhcOKi5RE0gdeznOP0o0JpGwvAk8vzLdNQxFy/vmAz4fgHWSTJs9lLWDtQS1Al0qosADLo5nK8Ko/hknELjIRPlK+7+AMO0eWtI/RQ1AhaAEYRzaQtJ4/pN0Nt+y4lE8SGEeje
+ Sv3fUCmm
+ LIta4dOGmrwOlaQk1IcjraTGCI/jnO1cXlK7vPEbnrYVBBNslF6lOkmcTYGAb2yrrI9gOeLeQ4oMuyOv4IjyX1/kNu7/MXxKhORf0lQfRMNhJbJZDOFII02X0epuK0P7i3mYfywtJuNqs1UXCGcFiNM5Of78xn9KFSBchB4siiFf6KT5mV7590f8DWvn7TQR02Zf0VZPJp0STOa0kramHsdmtmAwHvec/gCsTC5WIKTmx4Xwj7I1/ziUDDMvBfNVODXCs66mbzESZg9JonaktLDM1iKeEVwLRMUDbsnu5VdpaCk7w4I/PyRBlzVoFxzb1Kdygei5czMazLi+iKZJxItdC2Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,109 +148,156 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Fri, Jan 16, 2026 at 2:41=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
 ote:
 >
-> Currently slabs are only frozen after consistency checks failed. This
-> can happen only in caches with debugging enabled, and those use
-> free_to_partial_list() for freeing. The non-debug operation of
-> __slab_free() can thus stop considering the frozen field, and we can
-> remove the FREE_FROZEN stat.
+> The cpu slabs and their deactivations were removed, so remove the unused
+> stat items. Weirdly enough the values were also used to control
+> __add_partial() adding to head or tail of the list, so replace that with
+> a new enum add_mode, which is cleaner.
 >
 > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-Functionally looks fine to me. Do we need to do something about the
-UAPI breakage that removal of a sysfs node might cause?
+Same question about UAPI breakage, but otherwise LGTM.
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 > ---
->  mm/slub.c | 22 ++++------------------
->  1 file changed, 4 insertions(+), 18 deletions(-)
+>  mm/slub.c | 31 +++++++++++++++----------------
+>  1 file changed, 15 insertions(+), 16 deletions(-)
 >
 > diff --git a/mm/slub.c b/mm/slub.c
-> index 476a279f1a94..7ec7049c0ca5 100644
+> index 7ec7049c0ca5..c12e90cb2fca 100644
 > --- a/mm/slub.c
 > +++ b/mm/slub.c
-> @@ -333,7 +333,6 @@ enum stat_item {
->         FREE_RCU_SHEAF_FAIL,    /* Failed to free to a rcu_free sheaf */
->         FREE_FASTPATH,          /* Free to cpu slab */
->         FREE_SLOWPATH,          /* Freeing not to cpu slab */
-> -       FREE_FROZEN,            /* Freeing to frozen slab */
->         FREE_ADD_PARTIAL,       /* Freeing moves slab to partial list */
->         FREE_REMOVE_PARTIAL,    /* Freeing removes last object */
->         ALLOC_FROM_PARTIAL,     /* Cpu slab acquired from node partial li=
-st */
-> @@ -5103,7 +5102,7 @@ static void __slab_free(struct kmem_cache *s, struc=
-t slab *slab,
->                         unsigned long addr)
+> @@ -324,6 +324,11 @@ static void debugfs_slab_add(struct kmem_cache *);
+>  static inline void debugfs_slab_add(struct kmem_cache *s) { }
+>  #endif
 >
+> +enum add_mode {
+> +       ADD_TO_HEAD,
+> +       ADD_TO_TAIL,
+> +};
+> +
+>  enum stat_item {
+>         ALLOC_PCS,              /* Allocation from percpu sheaf */
+>         ALLOC_FASTPATH,         /* Allocation from cpu slab */
+> @@ -343,8 +348,6 @@ enum stat_item {
+>         CPUSLAB_FLUSH,          /* Abandoning of the cpu slab */
+>         DEACTIVATE_FULL,        /* Cpu slab was full when deactivated */
+>         DEACTIVATE_EMPTY,       /* Cpu slab was empty when deactivated */
+> -       DEACTIVATE_TO_HEAD,     /* Cpu slab was moved to the head of part=
+ials */
+> -       DEACTIVATE_TO_TAIL,     /* Cpu slab was moved to the tail of part=
+ials */
+>         DEACTIVATE_REMOTE_FREES,/* Slab contained remotely freed objects =
+*/
+>         DEACTIVATE_BYPASS,      /* Implicit deactivation */
+>         ORDER_FALLBACK,         /* Number of times fallback was necessary=
+ */
+> @@ -3268,10 +3271,10 @@ static inline void slab_clear_node_partial(struct=
+ slab *slab)
+>   * Management of partially allocated slabs.
+>   */
+>  static inline void
+> -__add_partial(struct kmem_cache_node *n, struct slab *slab, int tail)
+> +__add_partial(struct kmem_cache_node *n, struct slab *slab, enum add_mod=
+e mode)
 >  {
-> -       bool was_frozen, was_full;
-> +       bool was_full;
->         struct freelist_counters old, new;
->         struct kmem_cache_node *n =3D NULL;
->         unsigned long flags;
-> @@ -5126,7 +5125,6 @@ static void __slab_free(struct kmem_cache *s, struc=
-t slab *slab,
->                 old.counters =3D slab->counters;
+>         n->nr_partial++;
+> -       if (tail =3D=3D DEACTIVATE_TO_TAIL)
+> +       if (mode =3D=3D ADD_TO_TAIL)
+>                 list_add_tail(&slab->slab_list, &n->partial);
+>         else
+>                 list_add(&slab->slab_list, &n->partial);
+> @@ -3279,10 +3282,10 @@ __add_partial(struct kmem_cache_node *n, struct s=
+lab *slab, int tail)
+>  }
 >
->                 was_full =3D (old.freelist =3D=3D NULL);
-> -               was_frozen =3D old.frozen;
+>  static inline void add_partial(struct kmem_cache_node *n,
+> -                               struct slab *slab, int tail)
+> +                               struct slab *slab, enum add_mode mode)
+>  {
+>         lockdep_assert_held(&n->list_lock);
+> -       __add_partial(n, slab, tail);
+> +       __add_partial(n, slab, mode);
+>  }
 >
->                 set_freepointer(s, tail, old.freelist);
+>  static inline void remove_partial(struct kmem_cache_node *n,
+> @@ -3375,7 +3378,7 @@ static void *alloc_single_from_new_slab(struct kmem=
+_cache *s, struct slab *slab,
+>         if (slab->inuse =3D=3D slab->objects)
+>                 add_full(s, n, slab);
+>         else
+> -               add_partial(n, slab, DEACTIVATE_TO_HEAD);
+> +               add_partial(n, slab, ADD_TO_HEAD);
 >
-> @@ -5139,7 +5137,7 @@ static void __slab_free(struct kmem_cache *s, struc=
-t slab *slab,
->                  * to (due to not being full anymore) the partial list.
->                  * Unless it's frozen.
->                  */
-> -               if ((!new.inuse || was_full) && !was_frozen) {
-> +               if (!new.inuse || was_full) {
->
+>         inc_slabs_node(s, nid, slab->objects);
+>         spin_unlock_irqrestore(&n->list_lock, flags);
+> @@ -3996,7 +3999,7 @@ static unsigned int alloc_from_new_slab(struct kmem=
+_cache *s, struct slab *slab,
 >                         n =3D get_node(s, slab_nid(slab));
->                         /*
-> @@ -5158,20 +5156,10 @@ static void __slab_free(struct kmem_cache *s, str=
-uct slab *slab,
->         } while (!slab_update_freelist(s, slab, &old, &new, "__slab_free"=
-));
->
->         if (likely(!n)) {
-> -
-> -               if (likely(was_frozen)) {
-> -                       /*
-> -                        * The list lock was not taken therefore no list
-> -                        * activity can be necessary.
-> -                        */
-> -                       stat(s, FREE_FROZEN);
-> -               }
-> -
->                 /*
-> -                * In other cases we didn't take the list_lock because th=
-e slab
-> -                * was already on the partial list and will remain there.
-> +                * We didn't take the list_lock because the slab was alre=
-ady on
-> +                * the partial list and will remain there.
->                  */
-> -
->                 return;
+>                         spin_lock_irqsave(&n->list_lock, flags);
+>                 }
+> -               add_partial(n, slab, DEACTIVATE_TO_HEAD);
+> +               add_partial(n, slab, ADD_TO_HEAD);
+>                 spin_unlock_irqrestore(&n->list_lock, flags);
 >         }
 >
-> @@ -8721,7 +8709,6 @@ STAT_ATTR(FREE_RCU_SHEAF, free_rcu_sheaf);
->  STAT_ATTR(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail);
->  STAT_ATTR(FREE_FASTPATH, free_fastpath);
->  STAT_ATTR(FREE_SLOWPATH, free_slowpath);
-> -STAT_ATTR(FREE_FROZEN, free_frozen);
->  STAT_ATTR(FREE_ADD_PARTIAL, free_add_partial);
->  STAT_ATTR(FREE_REMOVE_PARTIAL, free_remove_partial);
->  STAT_ATTR(ALLOC_FROM_PARTIAL, alloc_from_partial);
-> @@ -8826,7 +8813,6 @@ static struct attribute *slab_attrs[] =3D {
->         &free_rcu_sheaf_fail_attr.attr,
->         &free_fastpath_attr.attr,
->         &free_slowpath_attr.attr,
-> -       &free_frozen_attr.attr,
->         &free_add_partial_attr.attr,
->         &free_remove_partial_attr.attr,
->         &alloc_from_partial_attr.attr,
+> @@ -5064,7 +5067,7 @@ static noinline void free_to_partial_list(
+>                         /* was on full list */
+>                         remove_full(s, n, slab);
+>                         if (!slab_free) {
+> -                               add_partial(n, slab, DEACTIVATE_TO_TAIL);
+> +                               add_partial(n, slab, ADD_TO_TAIL);
+>                                 stat(s, FREE_ADD_PARTIAL);
+>                         }
+>                 } else if (slab_free) {
+> @@ -5184,7 +5187,7 @@ static void __slab_free(struct kmem_cache *s, struc=
+t slab *slab,
+>          * then add it.
+>          */
+>         if (unlikely(was_full)) {
+> -               add_partial(n, slab, DEACTIVATE_TO_TAIL);
+> +               add_partial(n, slab, ADD_TO_TAIL);
+>                 stat(s, FREE_ADD_PARTIAL);
+>         }
+>         spin_unlock_irqrestore(&n->list_lock, flags);
+> @@ -6564,7 +6567,7 @@ __refill_objects_node(struct kmem_cache *s, void **=
+p, gfp_t gfp, unsigned int mi
+>                                 continue;
+>
+>                         list_del(&slab->slab_list);
+> -                       add_partial(n, slab, DEACTIVATE_TO_HEAD);
+> +                       add_partial(n, slab, ADD_TO_HEAD);
+>                 }
+>
+>                 spin_unlock_irqrestore(&n->list_lock, flags);
+> @@ -7031,7 +7034,7 @@ static void early_kmem_cache_node_alloc(int node)
+>          * No locks need to be taken here as it has just been
+>          * initialized and there is no concurrent access.
+>          */
+> -       __add_partial(n, slab, DEACTIVATE_TO_HEAD);
+> +       __add_partial(n, slab, ADD_TO_HEAD);
+>  }
+>
+>  static void free_kmem_cache_nodes(struct kmem_cache *s)
+> @@ -8719,8 +8722,6 @@ STAT_ATTR(FREE_SLAB, free_slab);
+>  STAT_ATTR(CPUSLAB_FLUSH, cpuslab_flush);
+>  STAT_ATTR(DEACTIVATE_FULL, deactivate_full);
+>  STAT_ATTR(DEACTIVATE_EMPTY, deactivate_empty);
+> -STAT_ATTR(DEACTIVATE_TO_HEAD, deactivate_to_head);
+> -STAT_ATTR(DEACTIVATE_TO_TAIL, deactivate_to_tail);
+>  STAT_ATTR(DEACTIVATE_REMOTE_FREES, deactivate_remote_frees);
+>  STAT_ATTR(DEACTIVATE_BYPASS, deactivate_bypass);
+>  STAT_ATTR(ORDER_FALLBACK, order_fallback);
+> @@ -8823,8 +8824,6 @@ static struct attribute *slab_attrs[] =3D {
+>         &cpuslab_flush_attr.attr,
+>         &deactivate_full_attr.attr,
+>         &deactivate_empty_attr.attr,
+> -       &deactivate_to_head_attr.attr,
+> -       &deactivate_to_tail_attr.attr,
+>         &deactivate_remote_frees_attr.attr,
+>         &deactivate_bypass_attr.attr,
+>         &order_fallback_attr.attr,
 >
 > --
 > 2.52.0
