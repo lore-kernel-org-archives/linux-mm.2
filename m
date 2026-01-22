@@ -4,116 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0FDFC44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 05:55:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F581C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 05:55:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECB606B00E1; Thu, 22 Jan 2026 00:55:00 -0500 (EST)
+	id D96D46B00E3; Thu, 22 Jan 2026 00:55:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E78976B00E3; Thu, 22 Jan 2026 00:55:00 -0500 (EST)
+	id D40E06B00E6; Thu, 22 Jan 2026 00:55:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA5066B00E4; Thu, 22 Jan 2026 00:55:00 -0500 (EST)
+	id C70CC6B00E5; Thu, 22 Jan 2026 00:55:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C57F36B00E1
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:55:00 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36EE286864
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:55:00 +0000 (UTC)
-X-FDA: 84358536360.26.7F8314D
-Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 65A63100008
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:54:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OIMD1OPS;
-	spf=pass (imf14.hostedemail.com: domain of tianwentong2000@gmail.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=tianwentong2000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B87076B00DF
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:55:27 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4758A1AEC99
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:55:27 +0000 (UTC)
+X-FDA: 84358537494.02.5F39E06
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 79326180007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:55:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TcEcwJDX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769061325; a=rsa-sha256;
+	cv=none;
+	b=ozXxLR6lndrQBaIOvMnVGHB7JzJ5zY/SIW/XX5EJ9e1wMbUiE23o0wHBL4aZMr5GmoeEaA
+	Mq7fFjl0vGthbue/aXJkyIMNRpXky4hNxY+db+vPLBjLYqMd728+WwSzoV4gKDjCrU9bMt
+	ZmwkCtKXUi8obT7WtVr7shO2ZsKlneM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TcEcwJDX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769061298;
+	s=arc-20220608; t=1769061325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=db5L71lFil1nMt4m3zHfhoBZD7zBth9lGqCdL+1iytU=;
-	b=JiaifkDLwM6XCtH8GTN1Ul9jUJFE6dSGH3eKwkWh0TPzKzpLswpUdMwAsejSm/ykMKrrPw
-	YFWPmeeOLxXKKJ4njj/91Oyqs90O7JHIYa4cNM0uIlZ4+HGPEV6EGbUJpSRjfOC65jgAPS
-	8TIlWz+aAnW93wZP+SlSibLc/qBbfQw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OIMD1OPS;
-	spf=pass (imf14.hostedemail.com: domain of tianwentong2000@gmail.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=tianwentong2000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769061298; a=rsa-sha256;
-	cv=none;
-	b=djAIR+wiuPQLrwb8iybVPRdcyBIVG0k7UzBVgr74/SsAziM3YHdNQePMfuanwiEouTePqf
-	VefJQjsSm+cc/czpTUX6dWsKdsPW6XZWlUKqDWS9sKhuA+zQbxXKckhSBAdPQ8spzYPYRO
-	KYOHlOjtWU9kFhNyoc3NQuXTvkpS2nU=
-Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2ae287a8444so328894eec.0
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 21:54:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769061297; x=1769666097; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=db5L71lFil1nMt4m3zHfhoBZD7zBth9lGqCdL+1iytU=;
-        b=OIMD1OPSYvxjyRVvMQMjYrqRVV511R+xzds1ytcC1JaZ7jqUVR7XbLQYJ7Qpkt3W6Y
-         SsVbjOrftBLOqao4wz3wVBraxg1j/4CTKRM+Dj6AbNupHZyKXV+EehoqQGxGQJ6xl3Bf
-         lN4h8kXeMEgSVV/0THyo/W3UiQcEjj9QTVv72k0WsJcDQnKB9Li2ehTkO8Stg/tgygmQ
-         l/YFyxX0Xe34F2MmXILW39jQMqBx9hCRxUYFnNK39Kzv71aleopabCPTDheZS4LhgP1V
-         R1TxTwH5nuFn3CIPuwT//y6QsDxp66P94F/EZK68nV1eB9BCBE0KghVqe0ZTshIrTdFx
-         bc5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769061297; x=1769666097;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=db5L71lFil1nMt4m3zHfhoBZD7zBth9lGqCdL+1iytU=;
-        b=nljqyQtqua/j/01j9GuIHellmM/t92UQ9XwHrhvcU0wn8uHsVTzQaOFJUVHQlDA3TW
-         s+g4vAeg8yVfQ8KfUY/jNVQDM704FO/SmS4VSmkslHgGBit3UqDC6NuoamiMoaP67akW
-         sB2onWtIuWpSKMpeV5nq/bELMdHFS8DqX4F4DzgE4aC7Ew+/gYZ5gMRg7D6DYsjXfmFz
-         6cRm220AKPCmfcVXfFDCRkF6nONfylbRn/9vWJJTlggQvhtjmukAey6AnFR4KhsRBazQ
-         oM3ZidQjC5vm6awee5gd/ixZKoXzhifVVOAYx/Jt4pxUHriXtgqYGh0h4YVXLg3DQsos
-         2+qA==
-X-Forwarded-Encrypted: i=1; AJvYcCXbjwvdqFdTAWJLY+tUypSBOh9uriEjCD2IEJ0OBj98/N+M2hyB4YAXxin1nY43zNf50b1/rnKFag==@kvack.org
-X-Gm-Message-State: AOJu0Yzn+joDFEthyn37h44UenbZsxV44wq5QM3LL8FEa/VHfNDtTibY
-	wIyyHnJvPnbs/D0lpdoMcsYOzwvfF4IGAVLbmxNcA2nmvqhZECxA6PK1
-X-Gm-Gg: AZuq6aLTVXOHrQuwDVgzGIiQ4Kuqcad449arLMcVFIT5+3TYRewEGhD1RAlm5xjrgBQ
-	pEUq3C7TVJr4MiOEn7KSCjctCNE5luxu0EC92C8uOna1a8N4KHBA3PvuJhggCPsvgMmkNzbzF3V
-	XWkT8MPFcgvao6+k90RADTgYCExg77gGDK1GMb/ksRjlLvhPNc4EfpM0FhEe6RCurVXOR8s59RP
-	e4HOq4Vk0S+Jp4mwziyVx5PvH8iNcCkOpD97EEohO1oiNF+VajbfNQ1kC6LBo0Hx3R8PSpCaeC1
-	/jZ7k6Fwz75Y+Pqc1f/yvehEKWtWaFlXOouMLJp5DZIx2A8u5fHdPDQTWioHGjhIlCAn5lKDnSs
-	7U0FP4iAxxc5WwS5wxgtGto0+UvBBEIjKBjfCb+/dP+dQLwqvnSII+6QV0jvANwce2f8eIuB4ZS
-	PFNpJel602iFvYgKPqEphd2MrOetU+MIlYPzTIb0ltEj03rvQ=
-X-Received: by 2002:a05:7300:d70b:b0:2b7:19a1:3bae with SMTP id 5a478bee46e88-2b724801cd0mr1034781eec.18.1769061296697;
-        Wed, 21 Jan 2026 21:54:56 -0800 (PST)
-Received: from 9fdcf7ea0ed5.localdomain ([142.171.172.108])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7047b099bsm8154623eec.31.2026.01.21.21.54.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 21:54:56 -0800 (PST)
-From: Wentong Tian <tianwentong2000@gmail.com>
-To: jarkko@kernel.org,
-	dave.hansen@linux.intel.com
-Cc: tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	linux-sgx@vger.kernel.org,
-	linux-mm@kvack.org,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=U2g6M0TcXJuKi6w/uBsBkarXCdawUqZDpWCRQ/XVDEA=;
+	b=Kcsi0d669mRAcrqbWhQ7Hy1yrNls7a/Jan4gaWsNZjQiIeJdJiTPxHjMrcVMovFz6J5Znx
+	PNBQ/4W8PtxuKixqBwHusrlqoPWrHh+Z7o7L7Q2fAA5a8OYQWxg14N9MdI7sgyvN3o8OLA
+	tSngKLMJtTntNCLVrkN7SQdxJMzED3E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3B855415B7;
+	Thu, 22 Jan 2026 05:55:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E14C116C6;
+	Thu, 22 Jan 2026 05:55:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769061324;
+	bh=FsEJ1i25ofqDLPMurKEIlGqdbxcvgVKLAQsTjORZPc0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TcEcwJDXuD62OY3g9lhU7gz5/Zw9IHOEcGPmHAXTJVWb09JQJ7c7xkfD8uuIJuoL4
+	 o1/eH1CJVchZ8eWCXIFo2aINCvfIAtlr84MiTtufkyBRP7hWKbMDPIFQtHhAccdjgE
+	 5VMx7TwU4ugt9PkrX88BAMmi3GyLh4c0/zHMz32l3ocOWfkYQKzMM55XF0/sSBMtKy
+	 N3uZ6l5LJxMjq4pXqMCugY1TMA2Hij+sZCdn+lvzHcA90t1PEtnaXSMpZw7j363ZAN
+	 YEHmQvDcFizzvsDoRGrrsE6ADlYSHjmOH4qzAZp2RWBeZyLZYy8AqaTuf+obf9A6tY
+	 X5isCwHhTOVGg==
+From: SeongJae Park <sj@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	maple-tree@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Wentong Tian <tianwentong2000@gmail.com>
-Subject: [PATCH] x86/sgx: use vm_flags_t for vm_prot_bits
-Date: Thu, 22 Jan 2026 13:54:35 +0800
-Message-Id: <20260122055435.95911-1-tianwentong2000@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	Suren Baghdasaryan <surenb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Kujau <lists@nerdbynature.de>
+Subject: Re: [PATCH v2 17/29] maple_tree: Start using maple copy node for destination
+Date: Wed, 21 Jan 2026 21:55:15 -0800
+Message-ID: <20260122055516.69335-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <202601220811.ac3t5OuP-lkp@intel.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 65A63100008
-X-Stat-Signature: jb8f45rep6jt89fehdhe446hpo6sjrph
 X-Rspam-User: 
-X-HE-Tag: 1769061298-134351
-X-HE-Meta: U2FsdGVkX19quwbpTs/ZuhL2//DPDQj6d+J9+x5n9SuvdqLNb6uJiX03ROiAVEgYB4BwPRTvMtJCezA7VpHoR/f0xMk9N0E7/vDMiOfXhbrAaDtHYAp+NptvgkaeTSz6qF057NfZxhXvmcU6RL+0mcN+vstbNa2z2HPiRJeTUq6hL/Cb2okOcXB5DPBxVOkb9guAEoCg7rLIdUJ5fmAnvPTff9LMoaG2nW9hNvC6kSfHdYm2a8cZ4CH5ILWkw4kRrudYfI5w21uSyqCJy5YeGjfQS/+CwJQ6ZVjl1EUJV8tJlrqWYxD9GLoHx7ZxawzOhwkXku9O5Xq8CKSrdQmdQjArd23G9jkVYQ6kXpLFPKm0NAWTJmgIVn7sYKgeO66OAIkvYrpLi6sLm1Rk4BCYwY03jUrBiITUozzYoa86YqSKJ7c+ZWPeU3ly5LDLAN4pVqkKP/glphonsffcp1bDmCxNZiri3L78RK+1DEybsi8SqRC8XOU6v+umtwBG3TaDQJ6qY8x1DFhsjTgaOyv/uoFIO/fbVQ13gOM+JL4ULWgjMSDjJFnjhJCw/7NaoS1zlbPa7WSo64wl2Wg/nNuPgc+kCpETa9MgUBDpaAzvixTlvtdcrrsKK44KX4YOiPC/e7OEq6e4XlJ79edaPd22P2jWq+eGCyBkIMaj30Ysui0iaIXzBPHT7GcPFT1Sow2j7cyxF7k0PwXNnaqN4DYAZ/5vh+VrmNcMT8FzsC5aMOQRNFKz0ciWw1a2/SiEEXG/WMEYHO80p38Yq8skPruXiFLWQqhwG6EIKSoYOrnELfWQOehQfXUJWPOEAEUgtxoPuQH7ovQC6q/kWAM0wbAYMUOpFoZnDtIi8VhyfmFlyHeYtyfsnkrEmTKDpr9Ski91frjV65rjmyGYPGsqrxhrYdMdN7SGUfEdyZV6lMWh8y51N8kKRknSeXiZ6Dz2h4cQGb54fSzIBv3WqrD8xTC
- U3u5Gra6
- 5yl8ssecD64aQLGb1N76KQ/ilbaBpKrR7QlG/GA7dqs6BvNOEvp7TtScUTNZ6e9xhXPYXw9b7l/MGEGTLAIFfYRtjlE94sl2YHNdsWsXcWQVFvZosYHoYc6YQYeYK5tOmIGo8acS82MLB8TtkXq51f96iINaZxlLfnZAuyWiJWdqDti2jB/2NHYSUugMMGUiQf+PHh8pwFGza9SwHiHyMs+SREUbLHg3icrllF08aPGEdTLvCzC3uhFeLcnJruOFmpmutX6qSsFuviT0tjeAsWcV4My8gObQGkSI0V2pDHLh5h4+HVF9dEfxU+pCYFDkG5f44jsgPF55KtYZbIKHIMQGLeiMj2lNkrF8we8IVi10s2YX1mfikUgu3oDXbU5XXYbwbsvdUJM583USXF2oeoANx4mvbTXtKDNd0NX28lLZFrlHiuIPJ/OkhEVFnA+6hOCjJdlJf5w4JuOQGFkOpxCTIkzg4gdW0eRcR23IgjpCWKcHQmKgHURV4Wet7VpmtuWcT3sPFHyY/4A6fhEokq6ph5oguJsehOqz9
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 79326180007
+X-Stat-Signature: np9itooospzzdoqbu4q1faiohfiby6qf
+X-HE-Tag: 1769061325-27098
+X-HE-Meta: U2FsdGVkX1+n//u15W7nAc+pISUmBU4qA8IlUiVk7edVX97m9dyUPXbnXoU5/HqxvSbA4A3RwnJbiO58IQEMakzeaBmNx7QbXt5sa+4A5I8TIZOLuS9Zz+qFuqW7Bnm54QLJFUoifr8Cd0zgvvHzTFZiGYq3NzrUPQx0NfJaY7qwaCjihyVjTvm8KVLEcxdkoJMCzLO6W6xigNqjruGxvu4e2PVxCbW1tw0lYCtD54y158rlcw0ti6KSo19EeCuldLrfC8CYhYcjVhVAhxwMcM9JBpIc5uAb08SExNozOYEUJ5Y2rAA5e/vCOiKTr51uBKGHJa4D8CAvuc9xvaxxuWRWkX1FaJv4HQojIfuR+6Rj2KWNRidMmBHaSjT1nvuBHxDnc72LdvXnw+Q7DD17EWqCFcVQx8vxiDxa5Jg6xIcxFTC4/y6qqjOE9XDPBt2qxkrUTv5y4Vbfi/vclZEU/U2/esIfhMbB1H1dQuMF4KV7DQ+F3fTmrEpqOAJf6tOGkm/5B0OL/Uk5z4EnLP/TV+RlUohT8Tx1QcRCpVc5j3XIIyGF8b7WNtOJ2aO6Hc2z17y9ju0WQXYBnKI5YGmcVC1vKkKOEwhGlIQ0DpEB+EDyj9E47jl6ZOmGg7Y0EDzZOaKUJmr+FTzDXwaik33TyhK4nrZz5IoOud8zu/dUb5fA/ixpxu0jHbH/zza1KoEkxGcROk5P0fGNOJ9fSwIJej597evVsPhGDY2a8iH+7Ufax/1zxpnVSBw8xNSSxt6SobBje7gwY0At4vF3m+noEUe4IdwJR6F6DSn9CdbnbZXjRrtkZUJOnn4LQbwul/F0GGLZgUt3+ja+s2g/Fa1mSpaI16ZKvBLWDXK90Gq4Gpo499u6yd4bcy4JgqvOgiFnG103LDyxLl3GW4Di2nVbNBkDJrlICqm5wz27OExHt/bm63dFHsnJU4pwvLIvhNwz0lTayIsVyC1ZZFujtUe
+ Y4T7NRz5
+ wknsmekoYqIuMMlNOng2iAlHnv0XrEzhem5fl/dAW83j8z6WJvhHsnlUgk/5Pr/L0QoUuJpSaQF0ZzDlEX9bvnpgeD8juWJaJUyZspzQs1iCM6IP9ACifTLJUhASxb8caPW41J/6yR2HiEpIzvx9cPeoK/tCkkjRUSeKDA3d/kobx604mP6mpR2iViCVoifiOBzDfp9WPnCYqNzncLF1eL/PKFPHqk6aV7z4oa+OAymjXabHkytDOZdgN6prgLZioJD1TEJP6WPLUAWL+IhhUPKZZxI7U+pR7MxXFrhr/1KSKXVfnPGOWpBddlA1HNSnoxerzmpY3pXCcNTz2t6WaBje8zKiJRy4rp3Ovu1oS//pq5JFcm2uDdtPS5YFFwJkB3YZwSiXsBTkDkvA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,36 +105,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The vm_flags_t type is the dedicated type for virtual memory flags.
-Architecture and driver code should use this type instead of assuming
-vm_flags is an unsigned long, as the underlying type may change in the
-future.
+On Thu, 22 Jan 2026 09:44:37 +0800 kernel test robot <lkp@intel.com> wrote:
 
-This follows the cleanup in commit d75fa3c94750 ("mm: update
-architecture and driver code to use vm_flags_t") by converting the
-remaining vm_prot_bits usage in SGX code.
+> Hi Liam,
+> 
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on akpm-mm/mm-everything]
+> [also build test ERROR on next-20260121]
+> [cannot apply to akpm-mm/mm-nonmm-unstable soc/for-next linus/master v6.19-rc6]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Liam-R-Howlett/maple_tree-Fix-mas_dup_alloc-sparse-warning/20260122-023746
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/20260121164526.2093265-18-Liam.Howlett%40oracle.com
+> patch subject: [PATCH v2 17/29] maple_tree: Start using maple copy node for destination
+> config: sparc-randconfig-002-20260122 (https://download.01.org/0day-ci/archive/20260122/202601220811.ac3t5OuP-lkp@intel.com/config)
+> compiler: sparc64-linux-gcc (GCC) 8.5.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601220811.ac3t5OuP-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601220811.ac3t5OuP-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    In file included from ./arch/sparc/include/generated/asm/rwonce.h:1,
+>                     from include/linux/compiler.h:380,
+>                     from include/linux/array_size.h:5,
+>                     from include/linux/kernel.h:16,
+>                     from include/linux/maple_tree.h:11,
+>                     from lib/maple_tree.c:56:
+>    lib/maple_tree.c: In function 'cp_dst_to_slots':
+> >> include/linux/rcupdate.h:555:36: error: dereferencing pointer to incomplete type 'struct maple_enode'
+>     #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
+>                                        ^~~~
+>    include/asm-generic/rwonce.h:55:33: note: in definition of macro '__WRITE_ONCE'
+>      *(volatile typeof(x) *)&(x) = (val);    \
+>                                     ^~~
+>    include/linux/rcupdate.h:1046:3: note: in expansion of macro 'WRITE_ONCE'
+>       WRITE_ONCE(p, RCU_INITIALIZER(v)); \
+>       ^~~~~~~~~~
+>    include/linux/rcupdate.h:1046:17: note: in expansion of macro 'RCU_INITIALIZER'
+>       WRITE_ONCE(p, RCU_INITIALIZER(v)); \
+>                     ^~~~~~~~~~~~~~~
+>    lib/maple_tree.c:3155:3: note: in expansion of macro 'RCU_INIT_POINTER'
+>       RCU_INIT_POINTER(cp->slot[d], mt_mk_node(mn, mt));
+>       ^~~~~~~~~~~~~~~~
 
-No functional change intended.
+Seems this issue depends on compiler version.  I got similar error on my build
+test, which uses gcc 8.1.0.  After increasing the version to 14.2.0, I don't
+get the build error.
 
-Signed-off-by: Wentong Tian <tianwentong2000@gmail.com>
+I also confirmed below simple change fixes the build error on my setup, and
+added to my tree as a temporal fix.  I'm not familiar with maple tree code or
+clearly understanding exactly what gcc change caused the issue, so I'm unsure
+if my fix is a right one.  I'm sharing that only for a reference, as anyway I
+have to make it and add to my tree as a temporal fix.
+
+
+Thanks,
+SJ
+
+[...]
+=== >8 ===
+From 6b0051e419cc5129133f8eb94db7f44afd8170fa Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Wed, 21 Jan 2026 21:24:08 -0800
+Subject: [PATCH] temporal build fix
+
+Link: https://lore.kernel.org/202601220811.ac3t5OuP-lkp@intel.com
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/encl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/maple_tree.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index cf149b9f4916..814edcde225d 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -281,7 +281,7 @@ static struct sgx_encl_page *sgx_encl_load_page_in_vma(struct sgx_encl *encl,
- 						       unsigned long addr,
- 						       vm_flags_t vm_flags)
- {
--	unsigned long vm_prot_bits = vm_flags & VM_ACCESS_FLAGS;
-+	vm_flags_t vm_prot_bits = vm_flags & VM_ACCESS_FLAGS;
- 	struct sgx_encl_page *entry;
- 
- 	entry = xa_load(&encl->page_array, PFN_DOWN(addr));
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index 2d840b9a360f8..7aafcec45c6f2 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -3152,7 +3152,7 @@ static inline void cp_dst_to_slots(struct maple_copy *cp, unsigned long min,
+ 		 * read-side operations that can view them until they are
+ 		 * inserted into the tree after an rcu_assign_pointer() call.
+ 		 */
+-		RCU_INIT_POINTER(cp->slot[d], mt_mk_node(mn, mt));
++		RCU_INIT_POINTER(cp->slot[d], (void *)mt_mk_node(mn, mt));
+ 		cp->pivot[d] = slot_max;
+ 		if (mt_is_alloc(mas->tree)) {
+ 			if (ma_is_leaf(mt)) {
+@@ -3375,7 +3375,8 @@ static bool spanning_ascend(struct maple_copy *cp, struct ma_state *mas,
+ 			 * the tree after an rcu_assign_pointer() call.
+ 			 */
+ 			RCU_INIT_POINTER(cp->slot[0],
+-					 mt_mk_node(cp->dst[0].node, mt));
++					 (void *)mt_mk_node(
++						 cp->dst[0].node, mt));
+ 			cp->height++;
+ 		}
+ 		WARN_ON_ONCE(cp->dst[0].node != mte_to_node(
 -- 
-2.34.1
+2.47.3
 
 
