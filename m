@@ -4,134 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DFA5C44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 02:18:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42713C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 02:23:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E51E76B00AD; Wed, 21 Jan 2026 21:18:04 -0500 (EST)
+	id AAE326B00B0; Wed, 21 Jan 2026 21:23:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E29906B00AF; Wed, 21 Jan 2026 21:18:04 -0500 (EST)
+	id A85706B00B1; Wed, 21 Jan 2026 21:23:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D56736B00B0; Wed, 21 Jan 2026 21:18:04 -0500 (EST)
+	id 9B2116B00B2; Wed, 21 Jan 2026 21:23:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C56F46B00AD
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 21:18:04 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C7C35F861
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 02:18:04 +0000 (UTC)
-X-FDA: 84357989688.12.5048287
-Received: from mail-dy1-f194.google.com (mail-dy1-f194.google.com [74.125.82.194])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8959680002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 02:18:02 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jw0iCzdz;
-	spf=pass (imf02.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.194 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A8176B00B0
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 21:23:17 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 230C7141546
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 02:23:17 +0000 (UTC)
+X-FDA: 84358002834.11.763A74F
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5666F140007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 02:23:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bNnN+GwT;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769048282;
+	s=arc-20220608; t=1769048595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dw/DgZzvLJTE04Xi6WXYLsL13zpRb3IL+pq9d6F+PXg=;
-	b=O9znwVPneDUjHLF63B3s0jyZPqAlRl0HPL4jgwb5i297jB8FvCK24xIkAdaR1ZZVITAmv7
-	OA/xRNWlH9qp9RoQkR+5dowgF3kKyyonH3zbkowPKo0YuNaIVNJiKXGTMAFbEvgWiK65pY
-	o/lu9W20hoK6erapNRLvxR/LZxF8EZs=
+	bh=bmiF8TW43ZnSou9pgCsnR1V6kCn/RdefnmsG8Ds8z2o=;
+	b=UzNHB4Oma//BATwsK9W1B0pIUR3/YB46UPeaW0fGyYfbPnKzJWmN3jR9h8FKrT4uinE+OA
+	KQCczvYCJTJ6sMZDN05pJrPEMBjDbFwpMO3xCgKZy9o4WBtJekLKT7I725/kqY7oPhRJa/
+	3YDDS4g4C0+Ejbcq4nxDup6uuKu4Pes=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jw0iCzdz;
-	spf=pass (imf02.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.194 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769048282; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bNnN+GwT;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769048595; a=rsa-sha256;
 	cv=none;
-	b=azGQ3C/coD4X6btmOpK40f+9zuyRf6LisY+/jFMSAtWDOmOBLNCz8bihpR7LhjIE+ekT8Z
-	HreZR2jlZIt9WBz4bl7HmmJ0x4rFVMOwVyS/NwyUSwPdumoJpc3XVvw1XeuBH4ljdtG5hZ
-	HYrdfXeuttC9BtTXFK4ZfhJ8PJd/Bwk=
-Received: by mail-dy1-f194.google.com with SMTP id 5a478bee46e88-2b71557299dso671927eec.1
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 18:18:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769048281; x=1769653081; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dw/DgZzvLJTE04Xi6WXYLsL13zpRb3IL+pq9d6F+PXg=;
-        b=jw0iCzdzcwran2pNVoTZOcwqZISTUdOt/xq4enNyE4tvWS/1o53kQcwnvsuQXF3HBI
-         FXlMVepDE/ZiNhZwDG9hm+Vz5SPxfb84NCKje4D9OOsWrOn8Q/Z31D2HfxzTUNHwDKQM
-         1HHeAWxKjimCrx89t0PTd6/0s3sAYqsBjYE7Mo84q1pFOm4YlwApsG47IbOV6ErfyNbt
-         bskH3BPSWvQQAs7DkOVmYH/SuVu6FgHBI+osnj3ZBoFDBuZnNZ1siGt7Ht4UN3Hjzl0u
-         gjEMzz3FArQhalqaO0cEtbo4PfJAH5LKaQt0NtiwCcuEQt99w+cD9VU6bbJOpGj+OLJP
-         3Sgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769048281; x=1769653081;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Dw/DgZzvLJTE04Xi6WXYLsL13zpRb3IL+pq9d6F+PXg=;
-        b=LUku+5KnbJ31gZWMqYyGKfNxqFhrK6xvsOEXNFiL5xwIkljpci/d6zHtpXyrpLOE/W
-         C47kqjCTpPYqVNXoIrk1QzsFXLy8bvUQZawxFO5Oq3sbZ1GUKnMC4c4XYRU30pBK5dgU
-         lccM7U5PjEHW2+sK9DEDKRCtbfsKzRw/8sXjoiYfUFr2roSxyStPcITix4Mx3RKKD9fj
-         +CL35lg18pvGVB7Al1Jh3ItjlLCcsXFUxBFUq5BrOOkIWPpUzzEFel/NQP+FU40gKscH
-         +rq9xUN0ZjHMQo2ngt7b0j0QPaCdYIP2+PGEpt1izwJEyMYwFzq8cJma/UemYYKXMXDW
-         ho9w==
-X-Forwarded-Encrypted: i=1; AJvYcCWRaGzPP/szcptp5GU4bGyNs7hOUGJXkBXLFE8kUog+2lJL6KzM7MvcvEI9mM5O5fv5UnM9DQGkLA==@kvack.org
-X-Gm-Message-State: AOJu0YwHlf7IDVg/b2p8AA4ROdhGHe+dUHbi6KG84JKV9uZV2AIU/dqJ
-	h4nce+Ig2Lq3+ppgWo2SdntE+Olit6GzAP/V4e6a5ifyTLwdNp7BoH/N
-X-Gm-Gg: AZuq6aJUufmup8+UzyhQhaMIsbNbd68NBAJdY/anE/IRcOd5cUdGt9T20/WT89E7jlU
-	5NryQ0AzIcWOD1X50fG2DTNn9vksFnV6Xr7NmjRVvIiijZaoJgYDvcAlvjO0adP4BhBvy1XadyE
-	aWOfgJ0Ynpxbn47EeQK10MLBnWBr4P8wEubRgxMEegVGlXGGz2is/88TPOFma+a5TKKZldPW5Vy
-	73twbGcLaA3qPckDrGBOVCenQfhLCeCJkHOK3tuSDDXjlCgWKCovrF2QhdtNN7RCAgNh6V+w/Hu
-	P6oDXzgDE/NCGDDOjXovjlhYKHxbs966OT3HsnW72Pr2tDQyp1FqTrFeUFCS6iecehJvjrjfNpc
-	r+WQ0KjIM4/sE6dneH9QEVP/s8bFGo0WEQEuEy0U3uRcDkMCnNl3VvWNRWOr/cwdUdqxLuHURsb
-	6Ocpk=
-X-Received: by 2002:a05:7300:549:b0:2af:7f2:50b3 with SMTP id 5a478bee46e88-2b6b46c6835mr14542939eec.5.1769048281251;
-        Wed, 21 Jan 2026 18:18:01 -0800 (PST)
-Received: from debian ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b34c11c4sm23694514eec.1.2026.01.21.18.17.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 18:18:00 -0800 (PST)
-From: Qiliang Yuan <realwujing@gmail.com>
-To: realwujing@gmail.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	edumazet@google.com,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
-	jis1@chinatelecom.cn,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	liyi1@chinatelecom.cn,
-	mhocko@suse.com,
-	netdev@vger.kernel.org,
-	rppt@kernel.org,
-	sunshx@chinatelecom.cn,
-	surenb@google.com,
-	vbabka@suse.cz,
-	wangh13@chinatelecom.cn,
-	weixugc@google.com,
-	willy@infradead.org,
-	yuanql9@chinatelecom.cn,
-	zhangjn11@chinatelecom.cn,
-	zhangzq20@chinatelecom.cn,
-	ziy@nvidia.com
-Subject: Re: [PATCH] mm/page_alloc: boost watermarks on atomic allocation failure
-Date: Wed, 21 Jan 2026 21:17:53 -0500
-Message-ID: <20260122021753.234007-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260122020035.227449-1-realwujing@gmail.com>
-References: <20260122020035.227449-1-realwujing@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	b=iTyuW8rPxOD9DSfwNZQe30hWyHaN2r126RgiPVU/MxGFIPXycI+nuEc/fG50k7jvGlTf/3
+	JkI/7Dmo6DWDc4zJOJAMnR/ChzRar7n55J+omE1RtsgLgVjEyY8fGBVQe7QQmlCRahzvye
+	Xlsup2rwQJcpsCTvCuYw/Y+BTskppQo=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769048593;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bmiF8TW43ZnSou9pgCsnR1V6kCn/RdefnmsG8Ds8z2o=;
+	b=bNnN+GwT+bN5BoNeArtLq1vGEBoMkCINtSJT2U6wT57wr0hFyp6KTmhsbVQ69A05kmZ0bY
+	lXw5fVrGTmsqyClAs8vdbKy/nWbbOuhGxLKtjORbt+pFfMIGbq6ddWUnWZi515oj0sxdA8
+	KaAJSttz0Ocbu3sPdlMuKQ7FWrDCIpo=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCHv4 14/14] hugetlb: Update vmemmap_dedup.rst
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260121162253.2216580-15-kas@kernel.org>
+Date: Thu, 22 Jan 2026 10:22:08 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <17A1336D-2D78-4F00-9164-D90BB7EBB707@linux.dev>
+References: <20260121162253.2216580-1-kas@kernel.org>
+ <20260121162253.2216580-15-kas@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8959680002
-X-Stat-Signature: 4t5kh5gpwe9bpmhy3hpcbof8a8owmria
+X-Rspamd-Queue-Id: 5666F140007
+X-Stat-Signature: yhek77y7q6wp3z9bz95q8ce47a7i83az
 X-Rspam-User: 
-X-HE-Tag: 1769048282-81584
-X-HE-Meta: U2FsdGVkX1/+vhZzX3X7eq9DVuT0BRt7gxEimikdvLG9/xggVk6RRRZV4CKprLwzpdv3Io2OpXAoRDzJpRg11P44rheM8H0z2lWTrXsKTRWY0oSYu5VkyQtIvTJSERo8TfdMWkcIZsUxjAiRplLtXdQq6uhuTmFzrFLS3mzW784IMoR4dxLqBT9i+lLTeXcT//HE5X7mZGcaCkh7o63tzaI2xHEnIsxNNwPiFEDeWqSEgkqn9RkfJ8QcxIJk+L+VOR+JO/C3bT6U6yrhZlYK3ehRBVrjRnzBe6eXiwTd/1RgwttJ1XYXOUtWHLrSMvzEskaGNbK31WBWzbQMZ4bGYzMGCtf6CpBE6ue6kODRrT47m+ltia8CLEhCIdLp/OXDvOy0wq3GDbPDJnhzaJznVmLr4uw6n5K1/YkZjz1L/VXkI0fEJZ19mRm07n3dGkBrx3jnEIVien6P0SEnabMt7UQm3O26a9AknOiQYj0dPj391W4K0VMNAhDJ+xQHBOhMn8N51YTsRV95sS9f6SbmK7g3KG9krJFIID0JIcRaq3pSqfqI+S0UYlawEUFI21xG8F6vGimILjGgQzltCkymivXn/PBlM3HrH5/wkkmG9OFxGEmGJCJxfZPdvdRjUCeOoKQJVV2T1Djm4f6bWyTmdm5Gx8ej/wQFHjQxU0+1B5Z4pLU2JbzsZJq/M3XfRZKVVcYllktPkclz9fpWUua6ePRnuErm4/5Hu2VErHwhxvbFTMMez2IAL/O8qqLZNPp+7/YDp/p1ZSX86udehC1IcPqmX59NcRooK/6z2EqvlVbDMdACz6gKms7BN6s/AybdftZiR+w6EBXMHjlqq46KXlZfP3/pd7pczElU/a0aseSnLs6VZZsFLVXvYtXoGafRQa6lsDU7CVtbETXd0eLrM2cDib7NuYAy1JtwlMY5x3+ZrGuDBRrGZFwBsvcMvCRTVOh1zdO3JCIwMBvvOjR
- cwNLbv6V
- G2+0RHDEJ2UWqQLaGE73IUBxnovZUrCGDp2x0JthkQX7fNA5cZ5sWKivyEhz3Q7/RtRtxgk/F+vgxnPgs7QPosz+MumM5NUu5hwxXsG9IZT4e7oMwuuYCCEyl0DlLuO1wWaNbF/hiyvrZHHb1bGbY1xA6pRuEVJRPhmDWJFKwf1c8VQjHahComZ6Sp+1OdWiZmtldryyrD+fiylDg/KM7AoAr14JzFQBznSvo6CNNo9/SOzFyRloC1yJWzFA85ykiYnpnEJchBixKCOVAL8HD8YvjtMZXVe0c1Za8ikAKO3UAk8fHGyO+SYNb1Lo5gOzPG45Oy6an2IE4iO6ze8XY65rwauUwTNOIRYsfZvXiuB6HlEXXsUBERvq3UY6Q9X2QgUISbDKmXvLRHQGvOhXacCMdOvqZBLR7AcffYVW9X1BsRZLvMHjKCW5UwzTkyOvoIO7AKKzqybz2oCt72/z/lmEnN5d600r4TxG/T6ZemJEEP9/ZrvKqs6IBkxVI8PdqJ/xW+lx4mvmqHW5sNeEZI1y/oE7MIEBZLgecBA4yPlg47AA=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000021, version=1.2.4
+X-HE-Tag: 1769048595-708940
+X-HE-Meta: U2FsdGVkX19/XvzGa6puf7hNjwJvydy0nZCTGTFS0IphQtNFEUjV6qpMykmYf7EKv6EpJ4H7bBBopES58Q+6NYIBkcYEyO6UxP8yiuWtZocKFAWFPvhJt3ahhoF14TNwg9UCQQR6ZadjqA2BuMsyrId+HtsFGlz2LtTMsRe2PSFN42hWAJdfpsg5f1cTevFnAhdpCIKCfSl6Yu/PwE2dupkDYHhm8C69Fwfv8eVYU5lnDKns4m+NEyAt5Np5jDpI2SJu96I1wm/hdB/chl1oC3bJ4a164CAKUE6ojYVL9ac5Q2OctUr/PVxvG7JKhfeGqW2flO9n8tq3Ep4zqfDwitjC+ekLQjcH3ycAIK74ArRH9ejMZBxAjD/VXqSl86z0+93RdlIu9BK9YXbwesIpokiMT5XJ+en6+0wYPjB2piWAvB+bPetE0SI3wQHO6OsWb1T8xG3h1+bcYvEV4q7eF6vPyUlmMWrAmMrhfvuM/2Xpx2mKZALK1PEZ5GxfDLAVq5HQE43GT29SY/PKl1b4bRqMvqmfl8VX1vn0vZsYPQ9w1iUys3zcno2fZw+M4b194czCKSTAkOk50M0TIUNSi/VqhSVeS6IHre1MdcHmONmxa2gE+ftlln1ZBMVWcuuBtmcKIYs1adHwsOPjipOF295oWzX2+/5AuhWjrne4qBnD5kv4dzU77bDYEHzEu7uGx1jvUAv2m/9VyukZc5Lsmz7Mjvmmgio0jUy4frsREHpyp2S9YAbuz4/WFtJtvneJvz4JnMyShm67uoqetcc5kXrWm/MAaS+/MrRejzx27Emt6FEJkz0OcEAQmCk4xF3znD/hnH66GoRSkFhXM22D/sTHPkVxMQdnkNLV8RzJ+Ewt3Pj9cEyBqTB5sR0lYbmXyvvSUFzEF50XKw2mekB19rCx1xj3fXi+XTsUzwp+AYkBAWsCJj/3XCcVCtnQEhUWxTT9Uv/Uh4o8jXxU74c
+ c/pm1Qkj
+ bBFd1qqF0p8BqSHHvu5UbeE+2FINzXP/XKshaD7vV5v0v22OcHtOhJY4RCAVN7rnDIPYYCv0LX7wTYkA0iliWZHa9Tilux4osqWGJjzNUPZCMdqrrDxq2SMuLIxISD+MKJClSaqi6+wTCr0cDAadtC9vgVOhRX7uskaDrPRmgsgT00qH26KpsMjbWKSmmZt3Yr0l0YKVuUvRKmo7V23sTJVS5XyNEeoZtggEF0bl3KgYI8CX/xZl14/7JieZ9VN6uZKliWVTYBIoeFPOnea0hVp/Uvpbct4Mhfw+8+jLey88b2VuPEsMH4Shg/w==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,14 +107,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-Please ignore this patch. I realized that I forgot to label the
-subject as v6, and I also forgot to rebase properly, so the changes
-from v5 were not correctly merged into this version. 
 
-I will rebase and send a proper v6 shortly. Sorry for the noise.
+> On Jan 22, 2026, at 00:22, Kiryl Shutsemau <kas@kernel.org> wrote:
+> 
+> Update the documentation regarding vmemmap optimization for hugetlb to
+> reflect the changes in how the kernel maps the tail pages.
+> 
+> Fake heads no longer exist. Remove their description.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 
-Best regards,
-Qiliang Yuan
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+
+
 
