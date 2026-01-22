@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18890C44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 03:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F053C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 03:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 713AF6B00CA; Wed, 21 Jan 2026 22:54:39 -0500 (EST)
+	id F06276B00CB; Wed, 21 Jan 2026 22:54:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EB396B00CB; Wed, 21 Jan 2026 22:54:39 -0500 (EST)
+	id E857F6B00CD; Wed, 21 Jan 2026 22:54:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6212C6B00CC; Wed, 21 Jan 2026 22:54:39 -0500 (EST)
+	id DB5CF6B00CE; Wed, 21 Jan 2026 22:54:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C6AC6B00CA
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 22:54:39 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD54F5FAE0
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:54:38 +0000 (UTC)
-X-FDA: 84358233036.05.7B3A62B
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2E602A000B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:54:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q9wgSQgA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C803E6B00CB
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 22:54:42 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6EB3C91A72
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:54:42 +0000 (UTC)
+X-FDA: 84358233204.21.242ED71
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B25E2A0003
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:54:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iBiWSJOE;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769054077;
+	s=arc-20220608; t=1769054080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vw444WMHV1aHVgp9YPBVa4B3NTBF6Yg7X7f7oG/aDTQ=;
-	b=2ZyZg8i6XSu65gB3Oe/ilzNpncWjabYLaxp3QvA1xktcMeroalTdir0Gw32cC/GydHdDyO
-	wROBQgMw0PjYhKZjncqDQ77rA8zaOq/tnBELYoc6QNOFhzhtw4/p3gour6sweSgEx8LHTm
-	EbGyC7rG2gZ4Z4PUkFWbtwJGxMVGhW0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769054077; a=rsa-sha256;
-	cv=none;
-	b=To3xIxZAG9eJPmmcPIB1iE5fY4hgLfmNfvZPjjVY4gd+kD/DnUbNh4ay1SUnUe1mYqGhpA
-	rFRuOaUVYLW/VB8Xf/s8FScZdHfJSyweVMBtMceGhrtisqC270RQMffS/mUkITKf3KGajc
-	U5TJD88Z4lhmFb502+Cd62pxoPEfiTE=
+	bh=Ji0CigumA7jfO9ppIET7zL2OUFQ+Uh5oYQd0iOYkPNM=;
+	b=nX9AC2huw9KXeKiSSR/cxogYHvwf070yaE51rZ/Wb2/KL4Or1rCkrQIQJHrgvfuBLJQGrv
+	Wuujb1P2nUKbVwVWaaxJR7coce2rJh2EktLu1HM2iuWr4JtQbJqiNdA6wgpnCBq49C9Tno
+	ZPUIAFBlWlk6F1JkhZzKKsEXnTE6hWg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q9wgSQgA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-Date: Thu, 22 Jan 2026 11:54:24 +0800
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iBiWSJOE;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769054080; a=rsa-sha256;
+	cv=none;
+	b=uGyjhoIhInOiaf26RgQsXRWsY8n7/4WYOd3cHiRhnlSEzmQ6TbeMkt983TTysfAz2u/tG7
+	hAyBsogh0TzIt/ntT3N/WBqcuj6bD/EFDuTGfO6YCqYt9fKMmJr+HSa9xejZRnhWUp/RUq
+	MVPA9IHayrOXLktc2kuT71vNrNybjc8=
+Content-Type: text/plain;
+	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769054074;
+	t=1769054078;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vw444WMHV1aHVgp9YPBVa4B3NTBF6Yg7X7f7oG/aDTQ=;
-	b=Q9wgSQgAUaAxbYPOPHC/7e626j5x0IAyk83MJrhyfQBagKBGM1/HedPrIHJ4/5P9RFaM/p
-	cYa8LFP72WuoDnZ+ZxZXDiSBXmqrpYKnQ62Xpj/EkRhWr+pKC2F6qY96wvKvOwg6Zl6urx
-	TDBrlYggwJZMqqLUE7u4pUwlXUg/91I=
+	bh=Ji0CigumA7jfO9ppIET7zL2OUFQ+Uh5oYQd0iOYkPNM=;
+	b=iBiWSJOElCJig6scRE+IEEvD2/hQIcBtsIFSHTrOZNRNk+kV6fLeA+5Yeb1NFnIhlSYWXe
+	GjXZarukkNQAbzlmh8Uv8K06w58xTKNK6qXzREHFLZx87oydMw4ecE6xrnnsVLIZ3Mpq/f
+	XSEFgusUPBi8lX8f5m9RbDnqEalBCKg=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH] hugetlb: increase hugepage reservations when using
+ node-specific "hugepages=" cmdline
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 18/21] slab: update overview comments
-Message-ID: <ki4y2wnhznq5s25hic2j25ohgxzjae3y7pkjjjkle75hp34e25@juljp5mukkfz>
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-18-5595cb000772@suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116-sheaves-for-all-v3-18-5595cb000772@suse.cz>
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260122035002.79958-1-lizhe.67@bytedance.com>
+Date: Thu, 22 Jan 2026 11:53:59 +0800
+Cc: osalvador@suse.de,
+ david@kernel.org,
+ akpm@linux-foundation.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <460D009E-AC58-4AF2-AF43-A1C38570CDFB@linux.dev>
+References: <20260122035002.79958-1-lizhe.67@bytedance.com>
+To: Li Zhe <lizhe.67@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 2E602A000B
-X-Stat-Signature: 3ju7nbgn6akx66mojz4ono9dfh8m8a8u
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B25E2A0003
+X-Stat-Signature: ue8e1tin75py65m5o1rmfssw866byqf8
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769054076-449385
-X-HE-Meta: U2FsdGVkX1/5cDGxYj+E6a4A/IYv7rif5ELyl4bqmUMZkdZ2+KrQaS4LZmHsF6kF2b1VQ18/eFl1RO9RCFYKr0X24HZgVGwrt+e6lgDUx9wD9SlE9syOS7ZkSwIqL1mIo2Vlwsct4ozWi2+l3lBqHiv/WKyLMXK7qVyBLHALeCY7/8z8wGfvYjqK4xyQNrFYX/ysdH5sVACQrWUIy2mB9Tf/+VwC232Sg2gwqDTn9K4ideWUc5cB9fw0RPfRY2/FghhLFYOAG+jibONwMqiDEsIp8H+OJBG1wfYjsDAeVGL17t3T+aPFmziiNSVZmsQR03nqAYmOAB2ZDcBD5NDfB/N8ieIo1qQLdv6u9A8cTpjWS7+m8xUKLdLpFXAb13xHem33Ry1RJFEEqEd904UkvkpUie/YmpjAdN075ASCrKMYYFNHbc0t0e1Qf4xESlBdySI8BNzIV4ZWbB/BfkiFVcRhuvqXzzkM6Q219kqDGYuAhWIpv7XLqCItcqK3CuOfAa6Tu4gj5Lsh4liaUJmfV+thkhgaYQ7N3r+sGXmAXZ+54muCOMs56gjIOP8cPOi3iEHOytRJumgPjdfmWr52LpdYqxcm6kugtNKgEMXSEIg6TetjFstk6ytw+d07lW58tiMKwVLmy1hCRufEpRUPLpyXTeYSWOs0NPdwjwps1MvaiBEIgT/LOOAV9GsVs/1pENGAqTLnjRIC4XoJQXweTwIz0utSvcmxmjToIwQ8l1VrKhXns9bgAOTlOZHkq7JVV8a1tQiTBUUyU1DhtymfWJwCHFezfPtYjY8g/oY2bYEWnCXUiEU2cFt3ruZ4HbTnW69p6evhzBCHlgGk+eV0gVAVMBQqmfMxrQcrpJJ7J+UUFCR2LcDa5Q==
+X-HE-Tag: 1769054080-894799
+X-HE-Meta: U2FsdGVkX1+zmuBHSMfwTTIyPuvBSy2uajtbO7i6MT7n3/Le+p1dO8wRJB7kMsjISc6LoXnduiV2NvRW/VdC7XI60P94XF8yu3oSDjWSCgn6rEexAQTzWL/KD+ddau8M/5zKEblkwcyTFex/5L9SWU+ugHKZsmv8pPnSjLuwbGs0BxxbUhwu/AbhnHztOPxB8uILzYlbuOVgBJPuDgKvXMS7UO2rc69dnrYGYgJsbkbZHlJiaOFNyZIDHz3CX4SVX72SOJJPMhkfdzjyLn5kfc0idmOg0ESVj9z4bKVA36RdM/y4iM8QOXSsW2PWwTP15SLQi5q0Ko0Hiuf0lvhM80mSg6NtAOOBtv5HvBTc31Aw1nBnlYPnZ/EJUcDvm+qHXDEp5l2/AL4IYRDH55OFxHl+qU+F0EC92d20Em6xFy3srEmyal/K+vw7Z/8c2wTQJQDWmtJ+Lcgqsq1/aMg4gx2Mg1Iej6qehB4VoxfQHQtmpcCslVsZfyWuLLuKwXYnU/GojnahPE7qiT9sg3C4JEjqpM/iKMBoTN5gFVdab3HeQyoZSHNMW5Uaruu3G91wf158c/yIT6ShAIdxZy9UWERr3JS65r0O0j2QyWfPSs0TjbT/SH7kt0jiQgyw8fP3eDjmont7JeWZHUzvDXYdD6fYZ1TgIjgE6cIi8AnDHsTxq5V/yKfm+j+inAYH91gXsmARtYVwRq6D+R2LwTzN1yaDynwjyOmVcBKFejS+1RvOZ8OjAK0ipX+2BkBT0xUji+aPMJIxISa9YsogjuWRZ9IpEbQ8nsR7B42wVD5QPPEXm8oCxY6AzK+TvgiG2vccnnLJSdI8R5GExFo3EDe5M226zxoHGEMa5Cv+Z1R7YVRhCXSsJ8NbiKFchU42ENMi06jZqesFATD2bq1kKVoGeICYhePjEz2vI7pXcEdohXQpa7R9EjDORGHEc+0e9p+XJSEcmQNQCEqeHWqqm5u
+ CFWbH/vD
+ aGr0ZykQQTnlfbFog9KMzStj67MymdcYnlopBESaOBF9gggZ13kzKRhlSjz839+FDfBm7w4frz6JGcFyP8zzJeipUOAkLfdkC/sVY3wrDKrSg+ovNBRsatngBKzpafauDgPYg9XHcVEyEK31u/IeKc8Y74EwikcDoLr7ejLUN1uNMQaH8buZMO0Z7Ium2ImwmoKFwHxrlj7LrMlvwhaTLU3fttJyoaH+LD8hcGHpG3510Ur4ruvZFPLmZns39gkeyfCOV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,23 +94,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 03:40:38PM +0100, Vlastimil Babka wrote:
-> The changes related to sheaves made the description of locking and other
-> details outdated. Update it to reflect current state.
-> 
-> Also add a new copyright line due to major changes.
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/slub.c | 141 +++++++++++++++++++++++++++++---------------------------------
->  1 file changed, 67 insertions(+), 74 deletions(-)
-> 
 
-Looks good to me.
-Reviewed-by: Hao Li <hao.li@linux.dev>
 
--- 
-Thanks,
-Hao
+> On Jan 22, 2026, at 11:50, Li Zhe <lizhe.67@bytedance.com> wrote:
+> 
+> Commit 3dfd02c90037 ("hugetlb: increase number of reserving hugepages
+> via cmdline") raised the number of hugepages that can be reserved
+> through the boot-time "hugepages=" parameter for the non-node-specific
+> case, but left the node-specific form of the same parameter unchanged.
+> 
+> This patch extends the same optimization to node-specific reservations.
+> When HugeTLB vmemmap optimization (HVO) is enabled and a node cannot
+> satisfy the requested hugepages, the code first releases ordinary
+> struct-page memory of hugepages obtained from the buddy allocator,
+> allowing their struct-page memory to be reclaimed and reused for
+> additional hugepage reservations on that node.
+> 
+> This is particularly beneficial for configurations that require
+> identical, large per-node hugepage reservations. On a four-node, 384 GB
+> x86 VM, the patch raises the attainable 2 MiB hugepage reservation from
+> under 374 GB to more than 379 GB.
+> 
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+
+
 
