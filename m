@@ -4,127 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D392C44508
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 01:40:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C286D2ED10
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 01:45:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B21E26B00A2; Wed, 21 Jan 2026 20:40:45 -0500 (EST)
+	id 4BDEC6B00A4; Wed, 21 Jan 2026 20:45:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF9696B00A3; Wed, 21 Jan 2026 20:40:45 -0500 (EST)
+	id 46B2D6B00A5; Wed, 21 Jan 2026 20:45:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A053E6B00A4; Wed, 21 Jan 2026 20:40:45 -0500 (EST)
+	id 398FE6B00A6; Wed, 21 Jan 2026 20:45:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D8076B00A2
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 20:40:45 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 473C5BEF38
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:40:45 +0000 (UTC)
-X-FDA: 84357895650.27.80D7E08
-Received: from mail-dl1-f67.google.com (mail-dl1-f67.google.com [74.125.82.67])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 688E4120002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:40:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V0cMtkd7;
-	spf=pass (imf29.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 25E436B00A4
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 20:45:34 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B93DC1615C1
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:45:33 +0000 (UTC)
+X-FDA: 84357907746.19.6EDA545
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 24ED4C0004
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:45:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GWPZVA95;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769046043;
+	s=arc-20220608; t=1769046331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bv3y2V8fADohDcIx1NVelau+w+a6LhiaxX40puOmnps=;
-	b=wgXw64q3VenOeIfJ3y4kbkENKp2IWmkL2ETqbxP97FJH96+zmp+a9jdxPMT+XHqxQ1mL5z
-	zFM4AcYM25nbT0gKji3/nx8qRRtuAbl1iPYXkonIc23lA3ibrs0SccXVKWsSYj0f2qOg0Z
-	Q4ksgeVYBO8aCCkrJ8iTk+kOZZTJJng=
+	bh=zPsG4+tgRg6qWP5v/lL0O8vJ9p//Szn5qYCQysmQ4K0=;
+	b=oPy+ZqXcaJ3evmRIj1vGiL3NHP620fvIf5Blie7KWZfFHHKp7m8P9cHpao6pXIbmmyXaNS
+	NNx/bJAh/4cxt/ArVqwF9F7rl7tdrtDdlq0LTrOGq3eIq/p9jHecZWLKoQCmxujCpbxC5+
+	ADJiqhEc78JsHs21zkRvde8aLBnDJdU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V0cMtkd7;
-	spf=pass (imf29.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769046043; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GWPZVA95;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769046331; a=rsa-sha256;
 	cv=none;
-	b=zAjgtGkQHX5WqpE8nKjZ9qfqTOqo68sxCjIrHRdgoNV+/r1mjmRF0lIOSedUQQhyYJXH0G
-	y5imfaZpnBeCPMDeXp/9czACrKw6ZWLZnsO0oJ6fKRy4xnK7sSiUnmXU8cIAfD7a49qn/5
-	kaYGRr9VleHbxXrKesg0nBAKhKdKfsQ=
-Received: by mail-dl1-f67.google.com with SMTP id a92af1059eb24-121bf277922so823925c88.0
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 17:40:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769046042; x=1769650842; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bv3y2V8fADohDcIx1NVelau+w+a6LhiaxX40puOmnps=;
-        b=V0cMtkd7t10iP/SQgUdYNhXhlEU7iAH2YDC7XLDh4pAeMHojSiF14SSEagw2tqjngy
-         e1nUq/KVa4Hg749E+iy9BuaOlAi7mhwAJzGxgdrHmjDBJJAxQqcDoUyguf/8qvJhblXQ
-         7HSj/Q41JCewiANs/7hdnCDMeQubW9oZcQBlME88tgS7zkHQGLBryoe+6Sx+gllImt+s
-         EqfsW8o1I0YjFCYpFYHAXo7qzpycQdknt0A2c6ImYPRFFpdPbnFQyck5GcR/NqsdOccH
-         NyOb+79HP2x0YzvUYEsuy2XJwq6IacdZEC/JZ/bSF4IJ4jUYkVBSkfyV2LCpLB6ksBRq
-         33RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769046042; x=1769650842;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bv3y2V8fADohDcIx1NVelau+w+a6LhiaxX40puOmnps=;
-        b=V+2WkeKa8PW9m23JpTH8IsOjygUuqFISG6ycDMaqnUQ4iBDnjFUDleEej/88+t++Xy
-         A8EisfaM8Os54Dc+8pjm1Jd9EwJL2b9mIhMD1dOB4+5CR6EYlGkufGiGsBdIGdi9Tj8v
-         B21WA+PqjfFcT8MEF6H6IoIzxWL7wfp/NFGF5BZjbTyU3KRvrYZ9p4YekVtzoM8Y1Tbe
-         VW2mug7r3JTPaEB31vzzO3T1m18ZDvc8u8Aab1YD+aTklgGiIgc+yD8rdKZu2Tg6lAh8
-         CzvntoYKO4iU2YCbF8aw9lQszWcCf8dGTPzVtsNXxmP9ajxyGNCKPTU+T2AXm2ihLLAr
-         yAcA==
-X-Forwarded-Encrypted: i=1; AJvYcCX37JWb5fvnVJpfGCajA75ArlgCZP8mgjg/X/iqGj4R09/GWFHhUakx05Gmp7D7m1yf7E1Z9uyoog==@kvack.org
-X-Gm-Message-State: AOJu0YzBgjQ1e83BPvyGxltXI9bSssYt4TrJFv2Tamp6elI5QQ32stg+
-	09Tc68lim9581FIGpmbOYObYxJwEy4X31A0ZFL6h42jQYqvERMvN04Nq
-X-Gm-Gg: AZuq6aL1zE9afHC4C5uRZREbGZEeYY4o25nrlTDZjyh7QDGQ+rA3+1KFvCABhJrGugJ
-	dSApgeItthIF0pDuZ2JJ/Dhnx4jmkzEbjmCK73cI5f8k6mnceBpK59if6v8iMeuFjzS30HAnd7p
-	Jm9o2aMLLeDmTCdeN8XsheWo3q8Nl+r2tA7JeIYRbFMdDkQ8qpelwpIhdV1XUHUQhLbUKN0slJg
-	VmpUGSZ+3+049+Ycs0GtJbaLOqIKl1USZk/sL51k2XZ3xgkCt/bQ6+ZkysldsAeK4szKnP6XDr/
-	cewBQUlePFLNIXCA8f+TmHYCS6hn7XQM1WlW8Qox8mJx1vmE5mbzM6+wUcTMXpDGg4JWpQv9BAC
-	JzhigKmiASO8LtQIq7HgT6zRv30J9MJL5TPQapZuWoCH+cxTU/nyIxCRQD1733bxeB6kMOwlI88
-	ud1ho=
-X-Received: by 2002:a05:7022:6284:b0:119:e569:f611 with SMTP id a92af1059eb24-1244b30446bmr12551894c88.10.1769046041263;
-        Wed, 21 Jan 2026 17:40:41 -0800 (PST)
-Received: from debian ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244ad72063sm29147090c88.6.2026.01.21.17.40.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 17:40:40 -0800 (PST)
-From: Qiliang Yuan <realwujing@gmail.com>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	mhocko@suse.com,
-	vbabka@suse.cz,
-	willy@infradead.org,
-	lance.yang@linux.dev,
-	hannes@cmpxchg.org,
-	surenb@google.com,
-	jackmanb@google.com,
-	ziy@nvidia.com,
-	weixugc@google.com,
-	rppt@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	edumazet@google.com
-Subject: Re: [PATCH v5] mm/page_alloc: boost watermarks on atomic allocation failure
-Date: Wed, 21 Jan 2026 20:40:10 -0500
-Message-ID: <20260122014034.223163-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260121125603.47b204cc8fbe9466b25cce16@linux-foundation.org>
-References: <20260121125603.47b204cc8fbe9466b25cce16@linux-foundation.org>
+	b=3sf0+wpZKDX6GBFG3TXfKhsqvwLim5s4UdkrmbmFsT9/oxnrxHCyg2TpoKU58Zp5MBD0+d
+	hBZ+mCa2yWwX2mWppDb2iaci+qofpLOnQtu/OrZ9dU3W15SWygaXTbb5UQqtPomRULDNHF
+	H9ILdPnPDJH38uLeQZjS2m01eFf4nFM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769046331; x=1800582331;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MarIfSOD6YNmERZZkeLAaUzHAHkjkbeLViVecmLVxJQ=;
+  b=GWPZVA95DYn75lMmVQNh9cd815R41r5JgsOigJaVPPyNzDC4U4bcNLR7
+   Dw2CcU6ZfR1Q4/IfzCiaXZwQv84vDVo3/O2lGxpeKMcXkvv6QqxSuc8GL
+   9Vb9Ewo7GOTjeumewh/Do3UVYN9KkO0ITsEMhSb2OV5h6cg+VDqvhhQ3O
+   gSPT25vg9qN110MzfkzqSdipPZI3XOrfyb7FwTI/ppc20LvAHS09IRIHS
+   R9xUMCeuYxGB94V14tGSXRBqdWJwGX51YDUkbd4+IMiVUkdRqGDS6Vfaw
+   D9xYcYLU4DDRRc0wErZ2kgxL1rDvn2mowQ4mRb80J/AqSgF85CrxTwRZw
+   g==;
+X-CSE-ConnectionGUID: 5cf+07rUR3GbWc1TgmlWOA==
+X-CSE-MsgGUID: LEXPAhZvTaGoX3TmYIYoyQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="87860987"
+X-IronPort-AV: E=Sophos;i="6.21,244,1763452800"; 
+   d="scan'208";a="87860987"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 17:45:30 -0800
+X-CSE-ConnectionGUID: T/8U7MkXSZKG7nxnwrlUjg==
+X-CSE-MsgGUID: Qfpkgs07SXeGIMYty5lt/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,244,1763452800"; 
+   d="scan'208";a="206927059"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 21 Jan 2026 17:45:26 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vijlD-00000000SHN-3Yb2;
+	Thu, 22 Jan 2026 01:45:23 +0000
+Date: Thu, 22 Jan 2026 09:44:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	maple-tree@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Suren Baghdasaryan <surenb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Alice Ryhl <aliceryhl@google.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Kujau <lists@nerdbynature.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH v2 17/29] maple_tree: Start using maple copy node for
+ destination
+Message-ID: <202601220811.ac3t5OuP-lkp@intel.com>
+References: <20260121164526.2093265-18-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: o6fr6dzft71xszjpjdn9xd6d9iuenf57
-X-Rspamd-Queue-Id: 688E4120002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121164526.2093265-18-Liam.Howlett@oracle.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 24ED4C0004
+X-Stat-Signature: ffuw7nnb7suozcy6nbms48bwqjhmmpak
 X-Rspam-User: 
-X-HE-Tag: 1769046043-504667
-X-HE-Meta: U2FsdGVkX197oXTGcB9NDoW8mwsFSULUn7icYYBnDDxyIMFlqBLMKUpc/ItjjpJsMlswTHzW6zgRJkAJ3ilb+tF0Bdag51+aYro6V8OWOBgyew90EZxkU24flIa2X2zEh5O9vnNJxpSHGX2tygc4RqubsNyVc084pjjce6xj53tSOrU7dc01Z+e6RrmIMi4OynvrTEjnj3nfeA+6FoypWrgNq5yIPXGiIByTi1qINoPK6LwkoR90fSHDOoEhbRwgdBRZton4sa1uwf38VEBsHji7ZM/P/broaEHiU1BOrYyGfG36ztgbi/GjTr0OGP25lGc+eMVwB6UlNJHmQjm6vq1yY4MIuv2Q47PTeaI5FwtbYjjkyoSh6+1a67sfVeag+cob2yOjpZ++3d/nTqFsDxjUfEUgS+SLCOyGe1F50vdr5QOcmTbwHth2w8dblMcU9qfSJPsAGPE0QUYLAfMQrirFOa2XlP2pIOWNM7Bud1swjZyNCArangfsOQokzXRXy0QCJfCMsbWvVLA8d6XtdQ65fSX2549ophecuRNApLoWUFsbvzQUbuQ2EIcza25FhntPUlemd+rNu/V0fInQdizj8JPpJFhQoMRqErhoio4f5qsu8LVfRyrz+zKTgDRKpcvgaDuP63scxqA6nIRg5AZ9+ZDl4h9yhideDYw2EtD+JKw1NZ9VAEDANU+TCHY4y+/vI8aGEr1XoXbraR7e0OOS7bH8Aqw0ujdY8Ws6GdgVzi/zRTI6HeDM5l82RL8O7b681kq/+lYJc/yo7OIIUw0YCS0nNONOvgcyxkqOhAZkScnyJOHGE//WXc8RQgO2NNbb/ZfLrc0phDpPOyBGW0aIQL886riPrKGilx4zUvyJSrm+kPTMqZNWTetQb3h6lVsiflr9MDtP5+U+AlWLUdD9LqA03IQlpyH8VPulxj2lBGuJkatVYRk9GEw7XXEFjgyFp0oS1BW0ZL/+Yks
- DCGZlDgR
- /qL8aLsGVI7+vJvUhx5Vv93ImlCYuiqe2NCLpJgYjUWCzRko3J7WGiYvh+heyTE1tjF1pFikmjo8MdymfRdm5JrbkBcvFw49xdwACt1zf/xYn/3BFM1NF9cSZZeTWOXhTFkt+OeUhiTBca1h1hTJ3VKl4aTExeJBlLknD24QfYKUjY7tmLiaEKlJ5K068tndJ3942zU56HRT/cEJHM1DScHxsz+Met2bCryOlf8W7eAdOebVT8zzMb9WyvPeKDnoctBeZ8B6Agflkg2Ft5w2bfsYDC4vIt3nrF3PuYCmBKgl5PmO1m7NbnubUnnH/7OWUkm0oc4zjQUaONtCyBZNYfIXV88Icm6nwtIZiRC0KATa5menrcMoj4404PpM/ogEEI8Dbgy8q7swL2gJ9Ytsy5PRZpOkkkripYOEAKI08nFCzAc3LF944GUBM3Ix7lUfXeISrHWkI5+BiEgHQddhSYdqbmI7tvY7SzApPcCoy/41pxDh9LEuOjaFtI6X/6jLYDsA6iHZzv2hRKg0gJBeaMU8lWbKmeUe7+SAcdCx/GXMBRChQlJeCEXreKLN0RLgPkdkmq2FpD1eXl3nQL7uDECeyNPHCxTzwcUylne4PRXjXyv8MpHkYZ3PMnzSGPxIVpkdJxi9vweMi4RAtN1J2tRK1zNUuHwTtdzT3gxIOhqonvC6yUKiQVep6Rg==
+X-HE-Tag: 1769046330-447788
+X-HE-Meta: U2FsdGVkX19kbnZiMJM5Ucr8lBrMNnys932v1FDc1jerTaLHnQV2hD+2StFTI/k8Smgd0tPD4wE6zYJHsPoWZBMSGwTnWEAlJhyoNcjBbvLPDYZVyhXNMOjgVtOto1L++upuvZIORUszWVgZPiQeRpYEsDVyVrov53RRGM38BnY6KJk2VcQUDVZ2n8wVqRPYucKb4wJH/3TwRZ6IdpLdB21pJt6GbZ6Mom4comloZrfZMK4lOW8MD8K5gCXPQrl9T9mRatO/lhBbhyaH+tFBPU86ZdSgpQ1XuQubsA9rIj6L2wes5XzMX5MUipIUtzFVU40Bqc8jLIDWWOlM8eK0UL4lBZ++3wGGwi7EX4Sf/U4eEiV/TJ4bdYdNvmVt25jcL54NzhPccoeN5SjjoYgIt3zXdqQ/kToS7Zr6aR/6tqP27qRftcobxqjeamLyPSzlqS0f5VMsO6smrzRaKsYtSVVi6LsMI9m9sTbWoA5vrV0L+nGSL1LZ2oaSRzfLEq7u1Brai7KJLAkXa+dmNeliyqAOiOKlz8DaaXW0re2aCI1DsBEFElfejSw3rgqLK/Eup53v1GJlTnO0aRBalVauuurtJFY7ZFjUkG/FnLE/ZvzAEm2/RwZL03MOsS4p2s3byKyY4zrH7Mb9PoHReYPRy8G9sKiF+zd4nSOtSLIQm3mm92Jq9AOVBsBnQ2EsJqyJM1cjrCQ1v2NNJJtGAsaHK6THhIpxt6r08sexg3nGSgot6XrGqOsFIkTp9tYrZsMV0pbVPCaG9oKeJLYGowYoCkulGTTBZn01ZQzLvhYAI790R3OGxEVVpO0pbdys8Gr5wt/2aLmgv5NlkMaO5QJk/+ypc2Xq4ByIR4BpceZTCL6kUOI4HP3deo4TwFyqMBb9abrzxEt9Mwk9FDCdOy8ntAtKkRBdyCbN3NHAvY/44nAJ2pV9GZ6jF0jaLNtlO/K7SpkSF3hJfrU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,103 +117,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 21 Jan 2026 12:56:03 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+Hi Liam,
 
-> This seems sensible to me - dynamically boost reserves in response to
-> sustained GFP_ATOMIC allocation failures.  It's very much a networking
-> thing and I expect the networking people have been looking at these
-> issues for years.  So let's start by cc'ing them!
+kernel test robot noticed the following build errors:
 
-Thank you for the feedback and for cc'ing the networking folks! I appreciate
-your continued engagement throughout this patch series (v1-v5).
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on next-20260121]
+[cannot apply to akpm-mm/mm-nonmm-unstable soc/for-next linus/master v6.19-rc6]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Obvious question, which I think was asked before: what about gradually
-> decreasing those reserves when the packet storm has subsided?
-> 
-> > v4:
-> > - Introduced watermark_scale_boost and gradual decay via balance_pgdat.
-> 
-> And there it is, but v5 removed this.  Why?  Or perhaps I'm misreading
-> the implementation.
+url:    https://github.com/intel-lab-lkp/linux/commits/Liam-R-Howlett/maple_tree-Fix-mas_dup_alloc-sparse-warning/20260122-023746
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260121164526.2093265-18-Liam.Howlett%40oracle.com
+patch subject: [PATCH v2 17/29] maple_tree: Start using maple copy node for destination
+config: sparc-randconfig-002-20260122 (https://download.01.org/0day-ci/archive/20260122/202601220811.ac3t5OuP-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601220811.ac3t5OuP-lkp@intel.com/reproduce)
 
-You're absolutely right - v4 did include a gradual decay mechanism. The
-evolution from v1 to v5 was driven by community feedback, and I'd like to
-explain the rationale for each major change:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601220811.ac3t5OuP-lkp@intel.com/
 
-**v1 → v2**: Following your and Matthew Wilcox's feedback on v1, I:
-- Reduced the boost from doubling (100%) to 50% increase
-- Added a decay mechanism (5% every 5 minutes)
-- Added debounce logic
-- v1: https://lore.kernel.org/all/tencent_9DB6637676D639B4B7AEA09CC6A6F9E49D0A@qq.com/
-- v2: https://lore.kernel.org/all/tencent_6FE67BA7BE8376AB038A71ACAD4FF8A90006@qq.com/
+All errors (new ones prefixed by >>):
 
-**v2 → v3**: Following Michal Hocko's suggestion to use watermark_scale_factor
-instead of min_free_kbytes, I switched to the watermark_boost infrastructure.
-This was a significant simplification that reused existing MM subsystem patterns.
-- v3: https://lore.kernel.org/all/tencent_44B556221480D8371FBC534ACCF3CE2C8707@qq.com/
+   In file included from ./arch/sparc/include/generated/asm/rwonce.h:1,
+                    from include/linux/compiler.h:380,
+                    from include/linux/array_size.h:5,
+                    from include/linux/kernel.h:16,
+                    from include/linux/maple_tree.h:11,
+                    from lib/maple_tree.c:56:
+   lib/maple_tree.c: In function 'cp_dst_to_slots':
+>> include/linux/rcupdate.h:555:36: error: dereferencing pointer to incomplete type 'struct maple_enode'
+    #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
+                                       ^~~~
+   include/asm-generic/rwonce.h:55:33: note: in definition of macro '__WRITE_ONCE'
+     *(volatile typeof(x) *)&(x) = (val);    \
+                                    ^~~
+   include/linux/rcupdate.h:1046:3: note: in expansion of macro 'WRITE_ONCE'
+      WRITE_ONCE(p, RCU_INITIALIZER(v)); \
+      ^~~~~~~~~~
+   include/linux/rcupdate.h:1046:17: note: in expansion of macro 'RCU_INITIALIZER'
+      WRITE_ONCE(p, RCU_INITIALIZER(v)); \
+                    ^~~~~~~~~~~~~~~
+   lib/maple_tree.c:3155:3: note: in expansion of macro 'RCU_INIT_POINTER'
+      RCU_INIT_POINTER(cp->slot[d], mt_mk_node(mn, mt));
+      ^~~~~~~~~~~~~~~~
 
-**v3 → v4**: Added watermark_scale_boost and gradual decay via balance_pgdat()
-to provide more fine-grained control over the reclaim aggressiveness.
-- v4: https://lore.kernel.org/all/tencent_D23BFCB69EA088C55AFAF89F926036743E0A@qq.com/
 
-**v4 → v5**: Removed watermark_scale_boost for the following reasons:
-- v5: https://lore.kernel.org/all/20260121065740.35616-1-realwujing@gmail.com/
+vim +555 include/linux/rcupdate.h
 
-1. **Natural decay exists**: The existing watermark_boost infrastructure already
-   has a built-in decay path. When kswapd successfully reclaims memory and the
-   zone becomes balanced, kswapd_shrink_node() automatically resets
-   watermark_boost to 0. This happens organically without custom decay logic.
+ca5ecddfa8fcbd Paul E. McKenney 2010-04-28  550  
+462225ae47d717 Paul E. McKenney 2013-11-11  551  /**
+462225ae47d717 Paul E. McKenney 2013-11-11  552   * RCU_INITIALIZER() - statically initialize an RCU-protected global variable
+462225ae47d717 Paul E. McKenney 2013-11-11  553   * @v: The value to statically initialize with.
+462225ae47d717 Paul E. McKenney 2013-11-11  554   */
+462225ae47d717 Paul E. McKenney 2013-11-11 @555  #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
+462225ae47d717 Paul E. McKenney 2013-11-11  556  
 
-2. **Simplicity**: The v4 approach added custom watermark_scale_boost tracking
-   and manual decay in balance_pgdat(). This added complexity that duplicated
-   functionality already present in the kswapd reclaim path.
-
-3. **Production validation**: In our production environment (high-throughput
-   networking workloads), the natural decay via kswapd proved sufficient. Once
-   memory pressure subsides and kswapd successfully reclaims to the high
-   watermark, the boost is cleared automatically within seconds.
-
-However, I recognize this is a trade-off. The v4 gradual decay provided more
-explicit control over the decay rate. If you or the networking maintainers feel
-that explicit decay control is important for packet storm scenarios, I'm happy
-to reintroduce the v4 approach or explore alternative decay strategies (e.g.,
-time-based decay independent of kswapd success).
-
-> > +	zone->watermark_boost = min(zone->watermark_boost +
-> > +		max(pageblock_nr_pages, zone_managed_pages(zone) >> 10),
-> 
-> ">> 10" is a magic number.  What is the reasoning behind choosing this
-> value?
-
-Good catch. The ">> 10" (divide by 1024) was chosen to provide a
-zone-proportional boost that scales with zone size:
-
-- For a 1GB zone: ~1MB boost per trigger
-- For a 16GB zone: ~16MB boost per trigger
-
-The rationale:
-1. **Proportionality**: Larger zones experiencing atomic allocation pressure
-   likely need proportionally larger safety buffers. A fixed pageblock_nr_pages
-   (typically 2MB) might be insufficient for large zones under heavy load.
-   
-2. **Conservative scaling**: 1/1024 (~0.1%) is aggressive enough to help during
-   sustained pressure but conservative enough to avoid over-reclaim. This was
-   empirically tuned based on our production workload.
-   
-3. **Production results**: In our high-throughput networking environment
-   (100Gbps+ traffic bursts), this value reduced GFP_ATOMIC failures by ~95%
-   without causing excessive kswapd activity or impacting normal allocations.
-
-I should document this better. I propose adding a #define:
-
-```c
-/*
- * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
- * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
- */
-#define ATOMIC_BOOST_SCALE_SHIFT 10
-```
-
-Best regards,
-Qiliang Yuan
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
