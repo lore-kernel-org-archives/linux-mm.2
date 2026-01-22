@@ -4,95 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B5F3C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCE66C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:34:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE0FB6B0154; Thu, 22 Jan 2026 06:33:06 -0500 (EST)
+	id 4B0DE6B0155; Thu, 22 Jan 2026 06:34:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB85D6B0155; Thu, 22 Jan 2026 06:33:06 -0500 (EST)
+	id 488AE6B0158; Thu, 22 Jan 2026 06:34:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC4096B0156; Thu, 22 Jan 2026 06:33:06 -0500 (EST)
+	id 3B5116B0159; Thu, 22 Jan 2026 06:34:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AAD9F6B0154
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:33:06 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5DF4C16025D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:33:06 +0000 (UTC)
-X-FDA: 84359388372.17.7A94119
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E777C14000A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:33:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=elXN6kAD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769081584; a=rsa-sha256;
-	cv=none;
-	b=oi1kxfNCctiXJL32oUhfGVw7wDfyAlnDqLH+r9EzL5LVe9G79vd+FThHABJ6wNeHqJu5Y5
-	ls2EPFcVmpAcgeBAQ07WZUvXwjqfNuIHlhRjq/P5UQIoHfscmrOeTA9bCBOS1c+4SPkrx9
-	PXFbB908nUCSPv9PVjDtcQ/6cuHiLjs=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=elXN6kAD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AE216B0155
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:34:39 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CB8EF13A701
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:34:38 +0000 (UTC)
+X-FDA: 84359392236.18.3137443
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 465354000E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:34:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CDDYiCVY;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769081584;
+	s=arc-20220608; t=1769081677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VkcESs9IRUmQ6wO9mvJ+w9N+5/hR0W6iCxEMY0nDun0=;
-	b=D13ZLFJpIyTzHkNgjWFY8IgDNqMGOAlPkK6dmKHoO0fkh8B3kncdVAeYHddgc41+Q+5AtT
-	9jNdMRA203T8UDh1/7luyG5q5HswCi5PQbke3k1aWrq09gZaWMP/GvEAneFQm7Mcub7KUK
-	IyDH1dnUi8AK16VpsxUS2H5e11cMXqI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 236AC600C3;
-	Thu, 22 Jan 2026 11:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A708C116C6;
-	Thu, 22 Jan 2026 11:32:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769081583;
-	bh=MT9pFV75h0kEmZC8bIWLFiHCACTEbTBp++ksnQFyvoc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=elXN6kADHsYbxw7riLecWjrnoHwzXUqXB0BHU6NtMjlC/TRgi6c5iq18AS+JGg/7p
-	 GAXSrk2TGJSdoSvtU/gnNY/0xbNnLM5BMYJgV5zjWtjbyduX0kIqp/LLhoJAkJGnPl
-	 Zg/hVqzht+qvSNzrRLGcZiqeV54nQufdxn6K6aDfoUbnIXvxgoliiNkdorrVJCMxqh
-	 ry7uB9fFUBOZwkCmUPd+ZtAWEeUeYJl5k82Y1W5+fYIepLhv4nd8M1L/GdBmKnRQvL
-	 eygIHwdBhAoexps7q5rHryWJLO8rQDDya4lPdFcaLVpXNUaYRdGAV+FRWmjACK+Ltj
-	 5uu74gQGbTJRQ==
-Date: Thu, 22 Jan 2026 13:32:55 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tianyou Li <tianyou.li@intel.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
-	Yuan Liu <yuan1.liu@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 2/3] mm/memory hotplug/unplug: Add
- online_memory_block_pages() and offline_memory_block_pages()
-Message-ID: <aXIK55fQeKfB-jM0@kernel.org>
-References: <20260120143346.1427837-1-tianyou.li@intel.com>
- <20260120143346.1427837-3-tianyou.li@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120143346.1427837-3-tianyou.li@intel.com>
+	bh=pAlXGRAOWdN5cZQVeZGpzPTXjQW9FuCmk9rlk2Vtu/Q=;
+	b=KHMsjojj7OtPdE0hbl79ZXzON8SVK7mxVxnfkX2tO8xC/vQmJnkFpNCPjJ9qqvkzP6q4KY
+	WdmteIbv8Kc9E3oSA9PJD4QSdSo3lkpW5ydk3rStEOV15uy0+ZfC/bRzNcFKsan6fvoiT3
+	fn9WF162KtlI/PFKnNNpu+THcfhShDc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CDDYiCVY;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769081677; a=rsa-sha256;
+	cv=none;
+	b=HshFZn7Y/9X4I/IPojSyuFuI7DpULk8jkt/o5cYffStcjUKVBL/whXBEpUUWilzHtCwZPA
+	HKh9rJZn+XeUAVJyU6hI95D4TbQbrbM0LBviEBec1N3VsK1/0VLQQFvcdKSWcFtU8c+yJK
+	dsO/kKKd9mlIWp0PzglgZ2/Zpu7LPdA=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769081672;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pAlXGRAOWdN5cZQVeZGpzPTXjQW9FuCmk9rlk2Vtu/Q=;
+	b=CDDYiCVY6QsNHYrCeNyCnlwEgO04Zp8lCp7iBZj/D0AavOSFt3s7SB3NF7gCf1jCS//Dsv
+	Nvc9YYaA7xsbHWj00ejRnoNoT3OITFXVEYDHq1YObWXlsRYHghcBpcRDg2rEwgyaXNu0hb
+	fh2Vbua90N+/PL0ZP/F85ubU06G0Hgw=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCHv4 07/14] mm/sparse: Check memmap alignment for
+ compound_info_has_mask()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <aXIJY5irR0obgdQe@thinkstation>
+Date: Thu, 22 Jan 2026 19:33:51 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <35B81EA5-D719-4FC4-93C5-674DD5BFDA4F@linux.dev>
+References: <20260121162253.2216580-1-kas@kernel.org>
+ <20260121162253.2216580-8-kas@kernel.org>
+ <71F051F2-5F3B-40A5-9347-BA2D93F2FF3F@linux.dev>
+ <aXIJY5irR0obgdQe@thinkstation>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 465354000E
+X-Stat-Signature: 358f1fw7nae1opfxzuuwuopgyh8m6kr3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E777C14000A
-X-Stat-Signature: zqotmdy8g9q7cu7yq8sw5e79xiq397rc
-X-HE-Tag: 1769081584-96620
-X-HE-Meta: U2FsdGVkX1/dudT6180MCVDeRspD+puicE6uMe2UAm7V4a2ImMxebQkVVsmB54hTiFIvXyTIsiTe8KZA/29pJcRB3Op07lX2i4Cf7cYLKoCxWrLpvSlHZt1X5YyXmIW7TYmg4xg++1tsFnkBMUjOJ9XZ1ZY3pjJpSa2UbkPrqfPCYI8+YJ3LqpZSk5ryHJDiR2KcJyKZsPv4dlNb+g/blShIYYOcrxJYCyUarWNieF6Ueu9N5qmYP3Q2y54K0lWelD5ki1Hj9gZ/Oqg0pEZomo3hoFht1Sk2UTn+JQUIkXMPYLGeGTAcPguS7ZOJIVdx+6AA6aydousFTln3Ool6g4RJDN8xNJezBIuSdApL5ly/oOyO04kir+sbbyyXv7M3mE9DmHU8H8N7ON8YEppK9TUZCc6/GVuk9Wqzlpk4bCc3G8bzjJ2Mr6qVR+ys6EMKI3StT+jWzgSSTChlprkgT7nrODsqWJWtcmws62zMALwhyvSjgoIW/debpI0fLAXVT13QipIh7PkGeAQAzrnFpe1/9UVBOw7CaHBLnj0IpIEVuaYzdV20+z2yF1ns9Y0y2h0g8xPtigRMJ9ZGX5iqRQHj9QhD1z1ONeJsMitBCAQ+htCty/wAKZ/hoLR3lNEQr3ibTRxq9K4wGuxW/6Wt/Ey15H/YgWVg//NcSvp6SWpTq73+3zo21o3n1LP3+7kmHQIh2hD85g2IUJCFMGdYOVZrCyhHQhh00i++a0WyT63LmV5v7z+igi0t74bA8A1Ahc8eqIsc7vrHA5Ye3Gc4HU2kfM2JwFHyB1aWtbBudLqzuSG5IpOPIPmcwhzKpz1jockU5KkUGkrXy5raAFAhhd8SX83uJIsReQ9MhKIk5TsPIOy1uMWlxwJoK1D2P8zmDE6ILg3gNsSnGiq+/sStxiyWh+Ln6ZjSPn9wfr6WUD1fVQak91BnSyLLPCyrc8ectY8lVOUTGO+cU036Q4g
- zJfcaXEu
- 0My2PIo9v7hTEQ5/npQc+kiSgqlknzX2W0Dce
+X-HE-Tag: 1769081675-280061
+X-HE-Meta: U2FsdGVkX1+0d2Etd/Xux/usxizBm87F3xgSldXJQzdMkWBzPOoRM41eAGYXwWNp8LIUmGBpM7orUnoUt/azPb/dLE98Sl0JgC4SUrG4sl8/kmDLLGa7FAhDNyxeqTtfWhIGA4GKfXC7JLna4sT7ykxQGooWUV8uFcpWIf8/HB6e8XdsXTP4ee3CdK+2b2uh69bWsABxtcYCKg72EtcaHu1MUeLCR/HvQcKq44hCTKqGuZglM0PsnBFSuP1CxgJxEQlFGI216wy9HjGSOh1dUGaiebxCCatA5LjLvXrzFLu3BXYA8koYOcKDUddUfgSYDUEsLbUfmfsl9I6Tf4xwY5xvaQyp+lfzVZpqFOlETc221iqETHKHmPCphE6ADRYOAk+CzcJav6XZisX32BqixzbOBEBESZM79R2qUL4k7cjvN197kFQSu1e4XQrYYZb7HOAD4dGOgnTs0GRLEtRGnpvXULr34uLAFmZKokgITaGlD63RtAciZURI4mvNh2tnPgdS0V59afd2ajFLfkUStP6dDUYtpQptskF/n4pHWr2A5nL5jDLwNllg56JnXklniMKCImo8dRAaHsPycpIey7czhoUNfRNItuGaKJexPOTZnTCWEcdaZ0X6VkrcdUlQjqQjnQMQh7hssfd09s+MVIpfNjFIew0GYfeh2Rd37Kt8b6VUY2gAGGPZv36DWCyY0f+nHx6xRMmPlrf3HWfvZ5b10oMXpxPA+n3cpArfAiT8WXJJEGVOQAqGkwzEHQeg1gU8UIKle4Lxbzj6GFlMZWrOyJ4mD73egbQa8Ndm4URA6mP4LNhV9wItQ3inWNsqghUKVWttJGi4yjgwDRjrpCrD/nUD71EGYn/pTpEkZG3gdEcXz3rLOOiHw4PNk0YlblYqxfB8mv5ReG3bMeQWi34bmgeoZvdAPDBxQu7ZX67eiDrBhEX2KY3o8OWTHNHqzlnSte/Ci3nYHOrHHVo
+ w8adXYUp
+ 7NNz51T46apIfaDSYbIF8Ngo3QOOp/e1L84S+s47JNpYuXJYOksodhwNvtpGPh+ZLO3iiebFwHQnBfO0HIue+wBHWckk+X2MotqfmoUfb8qu/XuJhuCqceBiFT8PaVRcE0guaTK4d6/uS9hmtgGF1GuKDFTAaR/6pk14j5dsS7m93nSbVK+qgv1ZNIQ+0/kX58hdjedsicVPuTxIp+lNkOTmREPsrPhnF+rW1VnrdGDaxqWdLRyidVd64gH6dApobkc8uV9Bak/b/vd6pYIwfMrstIx4tFg7DuvicjjDtYoEVDwKvwYwhPnD9+Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,82 +110,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-On Tue, Jan 20, 2026 at 10:33:45PM +0800, Tianyou Li wrote:
-> Encapsulate the mhp_init_memmap_on_memory() and online_pages() into
-> online_memory_block_pages(). Thus we can further optimize the
-> set_zone_contiguous() to check the whole memory block range, instead
-> of check the zone contiguous in separate range.
-> 
-> Correspondingly, encapsulate the mhp_deinit_memmap_on_memory() and
-> offline_pages() into offline_memory_block_pages().
-> 
-> Tested-by: Yuan Liu <yuan1.liu@intel.com>
-> Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
-> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
-> ---
->  drivers/base/memory.c          | 53 ++++++---------------------
->  include/linux/memory_hotplug.h | 18 +++++-----
->  mm/memory_hotplug.c            | 65 +++++++++++++++++++++++++++++++---
->  3 files changed, 80 insertions(+), 56 deletions(-)
-> 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 751f248ca4a8..ea4d6fbf34fd 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -246,31 +246,12 @@ static int memory_block_online(struct memory_block *mem)
->  		nr_vmemmap_pages = mem->altmap->free;
->  
->  	mem_hotplug_begin();
-> -	if (nr_vmemmap_pages) {
-> -		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
-> -		if (ret)
-> -			goto out;
-> -	}
-> -
-> -	ret = online_pages(start_pfn + nr_vmemmap_pages,
-> -			   nr_pages - nr_vmemmap_pages, zone, mem->group);
-> -	if (ret) {
-> -		if (nr_vmemmap_pages)
-> -			mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
-> -		goto out;
-> -	}
-> -
-> -	/*
-> -	 * Account once onlining succeeded. If the zone was unpopulated, it is
-> -	 * now already properly populated.
-> -	 */
-> -	if (nr_vmemmap_pages)
-> -		adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
-> -					  nr_vmemmap_pages);
-> -
-> -	mem->zone = zone;
-> -out:
-> +	ret = online_memory_block_pages(start_pfn, nr_pages, nr_vmemmap_pages,
-> +					zone, mem->group);
-> +	if (!ret)
-> +		mem->zone = zone;
 
-I think we can move most of memory_block_online() to the new function and
-pass struct memory_block to it.
-I'd suggest 
-	
-	int mhp_block_online(struct memory_block *block)
+> On Jan 22, 2026, at 19:28, Kiryl Shutsemau <kas@kernel.org> wrote:
+>=20
+> On Thu, Jan 22, 2026 at 11:10:26AM +0800, Muchun Song wrote:
+>>=20
+>>=20
+>>> On Jan 22, 2026, at 00:22, Kiryl Shutsemau <kas@kernel.org> wrote:
+>>>=20
+>>> If page->compound_info encodes a mask, it is expected that memmap to =
+be
+>>> naturally aligned to the maximum folio size.
+>>>=20
+>>> Add a warning if it is not.
+>>>=20
+>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so =
+the
+>>> kernel is still likely to be functional if this strict check fails.
+>>>=20
+>>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+>>> ---
+>>> include/linux/mmzone.h | 1 +
+>>> mm/sparse.c            | 5 +++++
+>>> 2 files changed, 6 insertions(+)
+>>>=20
+>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>>> index 390ce11b3765..7e4f69b9d760 100644
+>>> --- a/include/linux/mmzone.h
+>>> +++ b/include/linux/mmzone.h
+>>> @@ -91,6 +91,7 @@
+>>> #endif
+>>>=20
+>>> #define MAX_FOLIO_NR_PAGES (1UL << MAX_FOLIO_ORDER)
+>>> +#define MAX_FOLIO_SIZE (PAGE_SIZE << MAX_FOLIO_ORDER)
+>>>=20
+>>> enum migratetype {
+>>> MIGRATE_UNMOVABLE,
+>>> diff --git a/mm/sparse.c b/mm/sparse.c
+>>> index 17c50a6415c2..5f41a3edcc24 100644
+>>> --- a/mm/sparse.c
+>>> +++ b/mm/sparse.c
+>>> @@ -600,6 +600,11 @@ void __init sparse_init(void)
+>>> BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
+>>> memblocks_present();
+>>>=20
+>>> +  if (compound_info_has_mask()) {
+>>> +  WARN_ON(!IS_ALIGNED((unsigned long)pfn_to_page(0),
+>>> +     MAX_FOLIO_SIZE / sizeof(struct page)));
+>>=20
+>> I still have concerns about this. If certain architectures or =
+configurations,
+>> especially when KASLR is enabled, do not meet the requirements during =
+the
+>> boot stage, only specific folios larger than a certain size might end =
+up with
+>> incorrect struct page entries as the system runs. How can we detect =
+issues
+>> arising from either updating the struct page or making incorrect =
+logical
+>> judgments based on information retrieved from the struct page?
+>>=20
+>> After all, when we see this warning, we don't know when or if a =
+problem will
+>> occur in the future. It's like a time bomb in the system, isn't it? =
+Therefore,
+>> I would like to add a warning check to the memory allocation place, =
+for
+>> example:=20
+>>=20
+>>  WARN_ON(!IS_ALIGNED((unsigned long)&folio->page, folio_size / =
+sizeof(struct page)));
+>=20
+> I don't think it is needed. Any compound page usage would trigger the
+> problem. It should happen pretty early.
 
-and 
+Why would you think it would be discovered early? If the alignment of =
+struct page
+can only meet the needs of 4M pages (i.e., the largest pages that buddy =
+can
+allocate), how can you be sure that there will be a similar path using =
+CMA
+early on if the system allocates through CMA in the future (after all, =
+CMA
+is used much less than buddy)?
 
-	int mhp_block_offline(struct memory_block *block)
+>=20
+> --=20
+>  Kiryl Shutsemau / Kirill A. Shutemov
 
-Other than that LGTM.
 
->  	mem_hotplug_done();
-> +
->  	return ret;
->  }
->  
-
--- 
-Sincerely yours,
-Mike.
 
