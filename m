@@ -4,113 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA2FDC44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 00:51:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE607C44508
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 00:54:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 244726B0005; Wed, 21 Jan 2026 19:51:31 -0500 (EST)
+	id 4F3B06B008A; Wed, 21 Jan 2026 19:54:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21CC86B0089; Wed, 21 Jan 2026 19:51:31 -0500 (EST)
+	id 477166B008C; Wed, 21 Jan 2026 19:54:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11B416B008A; Wed, 21 Jan 2026 19:51:31 -0500 (EST)
+	id 358E46B0092; Wed, 21 Jan 2026 19:54:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F0A386B0005
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:51:30 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9532D1412C4
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:51:30 +0000 (UTC)
-X-FDA: 84357771540.18.CDCF521
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E1ABB8000C
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:51:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mu3YSULU;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769043088;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 220026B008A
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:54:23 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2438161454
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:54:22 +0000 (UTC)
+X-FDA: 84357778764.19.15E7FE9
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BB97C40002
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:54:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Q/3Mi5pv";
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769043260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EvhBhWC+XPtsYYPSl8MUCgknKc6dEJ1uqWnCcYrsnEg=;
-	b=zPz7wsyAp/pCmeakYVWB0bLSjl4of8KRh+dJhaf5EouDn1X3N9oZ8DJEAU4YTRZ6NIwMSC
-	e/nawndkrZkZESysyNAWVfAfc+rmXaN8iqsm3KaNQJvAn3t7uwR5kW+6NfmFIRNTo3MCR3
-	NnuTTax5LczILKIs7AAgIbT4hD9ai3Y=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mu3YSULU;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769043088; a=rsa-sha256;
-	cv=none;
-	b=23Z4oGQn3vLwxceygnboAjexuH3R8Gm0QW3hQ88abdqJ1IzZZpnfAoH2XOdT4FIwEoJ49I
-	X/i8CTS6gLwaAhVQYaQZUT9fY/hFo1NXTC3GuwTMj+/3NaIHQff0mgHa2NxdiToc3ApBwu
-	TwPezRJIKptI8YdAggBZFreVXrcxjxw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769043088; x=1800579088;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RCNqkVMwIfVKf0aQSQfx46Kk4bHwCtxB2Y9S7fFQWu4=;
-  b=mu3YSULUrPZKzakR8BVTNl12M42KKHAMO4GxhWiRX6J6BBKotGmWTRv6
-   bsJGZWVRocembvmyJAcX3o7jWfCtd2kz3Yx9ij8hFc7RZqu5oT7XxMI2c
-   C2bstZVxf+Lb+Nvq99hFPuUA46sCGns7LUYFA4X571Di0pshlSWc7UC7+
-   vzzbGxfy5xcp4kbT051h4OawJsavXa1hmSuu18zT8eDbEaOd4fLnqp+Zh
-   tyYFl8HISMAHHE9YeZmTrg3R7kBqqmsn7vDzt+n/J4yY//kBCBSzfTyPF
-   pXOa+AT++5sF4tOTq6+KWw56tj9LQaERTUWNo8AN1qK1L1rL4JbNB4h8H
-   w==;
-X-CSE-ConnectionGUID: zkALhv8cSPywqMgb5RFKwQ==
-X-CSE-MsgGUID: tkKTMn5fTIW+6A5MrmqXFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70195050"
-X-IronPort-AV: E=Sophos;i="6.21,244,1763452800"; 
-   d="scan'208";a="70195050"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 16:51:27 -0800
-X-CSE-ConnectionGUID: yJHh1HgCSqaYPg05Nf/Q/g==
-X-CSE-MsgGUID: DwXXI/rqSsuGHmoae9oqng==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 21 Jan 2026 16:51:21 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1viiut-00000000SDR-2mlh;
-	Thu, 22 Jan 2026 00:51:19 +0000
-Date: Thu, 22 Jan 2026 08:50:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: david.laight.linux@gmail.com, Nathan Chancellor <nathan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: Re: [PATCH next 12/14] bits: move the defitions of BIT() and
- BIT_ULL() back to linux/bits.h
-Message-ID: <202601220832.NJbHlnXC-lkp@intel.com>
-References: <20260121145731.3623-13-david.laight.linux@gmail.com>
+	bh=+NqFR4vEi17NIt2eo657HYzQ+UfH+loYG1rnphf1kfI=;
+	b=iTDOoDhtP3S0TyVh+ZvnBoPmrAPDR2ZkyI+68qgG7L4/ztGg4M4xpIFYuv3ot+nVYBfWGj
+	ZU6yocdQ1eNmKlUPtlsSNOjNTgNZuyoi+vKjrIM5TYrubc+Abfo+ZIwoyFwMELcUhqLV2X
+	ZWZX4YAVYmWWc6ena464IcUxiSeQptQ=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Q/3Mi5pv";
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769043260; a=rsa-sha256;
+	cv=pass;
+	b=voxWs05OwFjPVWkUgdFHR4Jd9FMmsR/IMjW6SAhkre2iQ+Mc6NKV/IqCZs4UwnHzEu+vts
+	scSnDjeCB1BGTKnJ67Zl3BXngeX6/gdDuwU7qK2C7Bul/i3HCLazPidBg7Y55vIi8AueMM
+	vMlRZfaeu3MgAnuDvcbcJF25nWQa51o=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5014b5d8551so100351cf.0
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 16:54:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769043260; cv=none;
+        d=google.com; s=arc-20240605;
+        b=X3HRYiLhG2KTQ3MKP/Y+u1ovOp+tGBqxutul9S3i4L2Yf+x9oMoysD7x2gEn8pkvnL
+         a7wHanXYcum8RiSYShnRQd+JhkjmG3PUDUHHdHkB7WavDKYQXwU1fPxOKJc3CUC6TOgq
+         4/ovqX/Ap9Hn4SqesRCqTlk6OyiVVoILrE1Wk8OECRzmIkzDdAI0ZODAqpSkkDitIKRf
+         pMahpHFjmZkeOrd63MREvzDi7mEbSLxxJfGunDq9k7RstAyS748GlTWDGSAuoZZSHtzQ
+         MbHz7BbVSAtyScmcJBVmlBWGcs1A/9M+W3pFQQVDDzIOXUdJDhzDwxh4lNqk3ggNw+3p
+         p89g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+NqFR4vEi17NIt2eo657HYzQ+UfH+loYG1rnphf1kfI=;
+        fh=AG9fdMPafxp+Zj5IxmiDAPk4YlPByck4tEY9BoO2ZYc=;
+        b=V3pwvTAA2jSngf6ep0Q2umt8c+pCvJSUnftycKxl7yccgLvnCMapfqaKGkcoSzQDe1
+         YEP/SQOxFXGSltUk5WQLcCwa0E+i0GJyK30z1l1bRNjugWbWg3pXYxbDj5Q2cEYqMUHK
+         1iTvQMIYsi/MTZ1Sr0cPSGRjrPvh78lCaaGE84s4OPNoHQfVJZrKoC1X7kKwkYZ3tnbl
+         1Sx0gCAJnHDBzv/kTqARB282dsyxBbNnJPm4oInkaWPQiTth23MVRmxFa8A2Nqcrncev
+         5TEAfiQ/aKsy+ZkwaL4s2R+W+CJlIvwLr7V13jhtXR/bICgce1iK0Viy/2WtiZiE4HD+
+         eWug==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769043260; x=1769648060; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+NqFR4vEi17NIt2eo657HYzQ+UfH+loYG1rnphf1kfI=;
+        b=Q/3Mi5pv7kOVl8gpGI7kTRtBFzBwwGyz3MjprJA7n7d4ad8GVOJb+/61+96+VUIar7
+         YD+l7MOZ12pklh7U3ikIxG4vZU0na/a/oM34/AI5PpTB8sJXR5zsDJnfspyhmc5jwoTN
+         0VqvCQMiaDAMXIF0x6X5J/fFDOuZRuYCzlSI6MLH2P5hN0v+EFi+NULUOFmgCCMzNl3k
+         cz791gCfJJRUTQjgSKY+GPqOa84UtBrOctJTr5IuT1JWgDMa7c04HOjMIl+FoXbrkx4D
+         ykpOB75e5MM6Dx6WRi6+N1zZAILw64C6bacxBTOYa2IPeQOknPjTWa4X04pyp9wVSfAp
+         POJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769043260; x=1769648060;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+NqFR4vEi17NIt2eo657HYzQ+UfH+loYG1rnphf1kfI=;
+        b=kl/IwmQwnswxwaoJ1oQoDIaaSlKHS4DdBVdd4okJ1eRo6cMZ+5Ycy1M92SEdYqpgFn
+         87/ElAjz4wgXMf+XgCen3iXvSgjbkrOTflN2xr98Hq2YMQq69JWhyh4SlChYah37KT1c
+         0Dqrtybqm3hr4vlVSFbo3FSw6492Sg54zYGH158VQRlttk5hkgamjuvdLO+hIyqLLqeI
+         rGKB+k6jBW3g3Llrplsn7griwoqB3+Sn1kYqXSoKFCF1+1qaq/yn7j/g1V014ce5Wdl1
+         PUX6SbuwblCOtAFsoeBR7E38QwwHYmVI4VtZGr96cuMK9QpJgji/1TC0KRnj91nhS6WH
+         cD6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUofd3bfNQSiLYPZLLCpAIP3nL5c45a3dT6Gmttd688arT77yupHZqvdK7rrSmJ7iXoeoNkV9O4uQ==@kvack.org
+X-Gm-Message-State: AOJu0YwbSSyFT8Cuw/pqkDiM0fp4ivcjv4wRrGBwH4HXzTrGc2SNKAtH
+	wxRO629454yrML2pZaXN6rvTXN4hGq+apIqgvnBBGvi3ImlDzCoEEv0XPvE6uKL+h9wRpLOvRE1
+	OziKKsnHQiF9esM7AXINIUWqyycblar+/8wjWKpki
+X-Gm-Gg: AZuq6aIm77tvUJoGk3jPENSqTy0acpdlVBMsttYYkUBFp6Uh9iXbINdJxalpH2yFmjg
+	c9QpxgkN1I79CS4LQPcXz7k5TG5QHsZ5usByl/E4souvZ/lI1EGNQ8PlCGj/0qLSr7JJKm/5kiz
+	zQWKvnHRnEtpPc7lUH7VJK3WuPbZ6o+7gch8MJg8u4tlNMhYTROj47eAFurRNUsYfC2yWNiK3K6
+	zEIqlq5uJZ400YZSOXngvl7M+m0h47AQ5g1r/XwMETAPVWZ6mczl0bI8TF3hhZjt/daEkKIuRTM
+	tpDB5Kz0J/D4Aedv6BJBpYpO17Ag7oE5Yg==
+X-Received: by 2002:ac8:7f11:0:b0:501:3b94:bcae with SMTP id
+ d75a77b69052e-502ebd67f28mr5244541cf.8.1769043259374; Wed, 21 Jan 2026
+ 16:54:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260121145731.3623-13-david.laight.linux@gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E1ABB8000C
-X-Stat-Signature: z1uxaox7pkeetcm16r5bhn3c1qbk7t9d
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz> <20260116-sheaves-for-all-v3-19-5595cb000772@suse.cz>
+In-Reply-To: <20260116-sheaves-for-all-v3-19-5595cb000772@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 22 Jan 2026 00:54:08 +0000
+X-Gm-Features: AZwV_QiKaqX658yaaNclaMUDJFMuWaWyjwe3fGXZJxanEvpjJyRl1f7lSqjnfpQ
+Message-ID: <CAJuCfpHggP+iefwGTOWnSxDma5U=uMROYNs8KS0A=u2w=1rq_w@mail.gmail.com>
+Subject: Re: [PATCH v3 19/21] slab: remove frozen slab checks from __slab_free()
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
+	kasan-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: cakc15nh4hq7axda5hxj3o9twi9g51wk
+X-Rspamd-Queue-Id: BB97C40002
 X-Rspam-User: 
-X-HE-Tag: 1769043087-742748
-X-HE-Meta: U2FsdGVkX1+mvSo7wa3oemOaK8QandN+HG7f5yMgl90xrzAb7/QMCqGI4d7AUqoVyh3AIxxS9+qmvDUMx+qSd58SbWIVQLEkl+hYMHCTRLspSzmsmPHS0FARp8oO6c504YNZmKlZqXjRs21f5mmQCYUWBk15qNOqQRaa+2yZxQM1y1146Dqj99l2mtUCdjCgv6uwmFx7/eswTy7+WgKmY6g8G2qRi1GpA3uVl7h6Qd0Utid2KD6fmUj8IqeYen7RrIusMVgZu4uT/R4nEDjoQns6XsA/k0uBcsLnKfKXE1t36BKHjEAAM2J/LZe5RwskhBK/Qjj6YyET16TSLlXAwyMgm4iZGoycqdLUWywbAFSqCut0+1b2m2rffa3NTSLXclJQbkRP/hFQYErrvZaqh9EmvnuiifHi4f+Zer3s8WtGGBzr9+4kFNGY4QxhZPPgqCPjCCpmCBqcEfKEMQFqJMCQmvoz/GTgmDtLUhuLctUwmIzsXeh//4xF82e6JGbOWQFA9Pm0IXwMTzKMJAm0GMxxDM0iYZkB9F4NR8JkeStNMAXGOcSXS2cBUTx8/fZmOPxg7+7P97nwCj/PQIFc9IxpMJ7Uscb/pdMBEyloeAp+FYy+pYIwgg1nJTqnh7VigTIChKO3u/Fp5qgxUKBReoIIXz2hs+WVMBNTd0AlF4funiXz4vG9uU8FXVfxt0Z/oK/gdbkMu5iszJcIuGyoCeCizGrWTgHC+9fi1e2X6MTAFN12tSCMd73YwvzxsKYO/IQAhq9LKv8lED/rKAWtZ5aZCn0m8t+U4LCimdSL5AEGl6JKtNfRTGPtEaQVd8WtqH9/rZoinaK+Y4XAzy16YpH30zSeP/S8HoQCzFTdsOnLcREYju4e0KJtVtS7BVTOC0H/wRHpLwDAQFxYLfo8aC6W6ruParHBeJw7Nvw06rpSvichltUlNT2ZZ8d4or4q6TeAJzgOarq6tInq0pa
- OJJf2yO1
- tNbRUfSqTyo1fSv3pwJxVKhchsOYY7OyBn9fbX/IrqUup+eGvWXY0GTcJbUC8aQFoR2TDrwJhx2EKnHaS3aAv7veiqt/OQ8qdauiN8R/vrt4RykoU6hbc4+AtDBIzBRNw9TIvv+N45LDJsa3wuu1rkfnx1ATlnBFt+HKpTp6P1hb4vfelu7ym5UoAoMPCrzoTjWtGHFt4oa3t6f3g+8e8DAJJUnNAykdi0gPjrJIycM3QkOLiQHOurUEBgAjjmbP7nTWxt/KqPbEzGSlx18jtImAiCslmwDsNRQ4s6x8WF/WpFyhrPNrLdTprx2QLIAto8CwBazaP9tt1Vthdx3Dqbz78bbX/JxSZqXPG1HyEqDr3xb4HK20JCdxga9Q8eOu68fmuFaPgZsJMz0yleq3k3cQKJH0/CU4xXRwEuUCogcpIovWV02KaKwiBR5f3ydyQ2ECl2K2GmFkCO07wzYpLUWzobg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769043260-372437
+X-HE-Meta: U2FsdGVkX19wv3+D5f+hMsA1kQJateHFIS3+lk6cgXS3wUPGbZCdZs+6sD5KCFSUFW+2MN22gvwjuTkxPmqiRZ6JtDfaLiPnMC+DgaeYcxtAbweGvFMm/5vn5oDhUiXW9rKUz1pyvVXPSp75yFK/q/0MBDpyi3K/yrYBrP71kR2UuPb4MtXdUkLXEaSLorBNFTwTfSCJm60yHPdL4m6PaaW8qmibos3fE4Bh8gW+G9hJUqjKZ0N7sl55dgsjpa86oKO2iH38r4phj71+1ncYPKgrXg78Ey3CW5xeQNtyDHDxmUw4rNqtD4EYKL9lSDLzJwJBieaFF2JAG8z8MHk67FOQz22i20ovV0rZYyAf0yFIDz1SOcrXoMQpxUPNCMST9S225B77WezTeqjiieKG9ZKa3CgxEEaU5DALlPi599blF6yL7YYOwh2LEGg7Qm1Xh93MTSsXURU5IzRvp2h/k9BX+A8fCmtUaDFxlQVjSKrcdnQjbqOtLKb/xt8qJ3aqOUhVLqenfkdNowJ/C+Z3xG0x9l/SOlJ+mlWV1Vx7qPzA/t5oMyusEg69SrjPh/qo/a3PFUdblQ4+D40S6xDN0TN0/6P+N04GSKUjHW9u+V/7uSPj7qYZ/d1p3P7VQUQLKt37jGnJnD3KBIesQnM0ot3EBmzHAjCIxIl1qR5E6KmwBAfrC77iWvtAQGHOzafgQwTy7zKRJfelcR5U8OMKu0I96Tv9aUkhQItKDBTRe9FqnWl9Pj2ywEWrcaH1D9yQbN8BG+orQ5XFT3icX4AZt6PYaG3WwKXpHD0HwL5U9ru/ri91aFhpqwYy8efmj1QvEEWPEbOhuO/uNdZ6IKAUGGqJkCoyUILD7uVjdoUdKo/lgUFjfSumJt3X58cyWaIgl7xBFjAD8ONqJ9fOqwnQW8sNrs2XTNnaX24HTEwaHJIvrj5ELMzKoQVRgrVskUcyMJ0AKZQu9v3bGbU/Yqo
+ 4shXN5Qh
+ 1w4ctmDhQHP3nLZoRRHodjXSn/y2V2MPMn51e4vPllVjt9O5oh/MpzO8PUeYyCRJBaZZZuWZveeEik+2hXK+yiGd4J1qapl+mKfQU9QLxZMuLPe6fg/ug2OTqnR5gDy2qKRD/1mS4VZezIv/KfSeSZRY/nD9Yt4zvMrT57qqIiK9dU00PcLlmw/qU2lD+JS7Bs+ZZeq5DwKc9wcxIQjBe8se5qBh3preU2BXwR7HYtEsN79leW3AbZdn7cEMwSTT3gEwk7eYidwLEvbjcCoTlakM4ILolljE2s5kNG7GGtv01SbRPxbHeZ3kdQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,167 +145,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Fri, Jan 16, 2026 at 2:41=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> Currently slabs are only frozen after consistency checks failed. This
+> can happen only in caches with debugging enabled, and those use
+> free_to_partial_list() for freeing. The non-debug operation of
+> __slab_free() can thus stop considering the frozen field, and we can
+> remove the FREE_FROZEN stat.
+>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-kernel test robot noticed the following build errors:
+Functionally looks fine to me. Do we need to do something about the
+UAPI breakage that removal of a sysfs node might cause?
 
-[auto build test ERROR on next-20260120]
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/david-laight-linux-gmail-com/overflow-Reduce-expansion-of-__type_max/20260122-013456
-base:   next-20260120
-patch link:    https://lore.kernel.org/r/20260121145731.3623-13-david.laight.linux%40gmail.com
-patch subject: [PATCH next 12/14] bits: move the defitions of BIT() and BIT_ULL() back to linux/bits.h
-config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20260122/202601220832.NJbHlnXC-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601220832.NJbHlnXC-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601220832.NJbHlnXC-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-     163 | _SIG_SET_BINOP(sigandnsets, _sig_andn)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:139:8: note: expanded from macro '_SIG_SET_BINOP'
-     139 |                 b3 = b->sig[3]; b2 = b->sig[2];                         \
-         |                      ^      ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-      17 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/arm/kernel/asm-offsets.c:14:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:163:1: warning: array index 2 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     163 | _SIG_SET_BINOP(sigandnsets, _sig_andn)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:139:24: note: expanded from macro '_SIG_SET_BINOP'
-     139 |                 b3 = b->sig[3]; b2 = b->sig[2];                         \
-         |                                      ^      ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-      17 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/arm/kernel/asm-offsets.c:14:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:163:1: warning: array index 3 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-     163 | _SIG_SET_BINOP(sigandnsets, _sig_andn)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:140:3: note: expanded from macro '_SIG_SET_BINOP'
-     140 |                 r->sig[3] = op(a3, b3);                                 \
-         |                 ^      ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-      17 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/arm/kernel/asm-offsets.c:14:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:163:1: warning: array index 2 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-     163 | _SIG_SET_BINOP(sigandnsets, _sig_andn)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:141:3: note: expanded from macro '_SIG_SET_BINOP'
-     141 |                 r->sig[2] = op(a2, b2);                                 \
-         |                 ^      ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-      17 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/arm/kernel/asm-offsets.c:14:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:187:1: warning: array index 3 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-     187 | _SIG_SET_OP(signotset, _sig_not)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:174:27: note: expanded from macro '_SIG_SET_OP'
-     174 |         case 4: set->sig[3] = op(set->sig[3]);                          \
-         |                                  ^        ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-      17 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/arm/kernel/asm-offsets.c:14:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:187:1: warning: array index 3 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-     187 | _SIG_SET_OP(signotset, _sig_not)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:174:10: note: expanded from macro '_SIG_SET_OP'
-     174 |         case 4: set->sig[3] = op(set->sig[3]);                          \
-         |                 ^        ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-      17 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/arm/kernel/asm-offsets.c:14:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:187:1: warning: array index 2 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-     187 | _SIG_SET_OP(signotset, _sig_not)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:175:20: note: expanded from macro '_SIG_SET_OP'
-     175 |                 set->sig[2] = op(set->sig[2]);                          \
-         |                                  ^        ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-      17 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/arm/kernel/asm-offsets.c:14:
-   In file included from include/linux/mm.h:36:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:187:1: warning: array index 2 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-     187 | _SIG_SET_OP(signotset, _sig_not)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:175:3: note: expanded from macro '_SIG_SET_OP'
-     175 |                 set->sig[2] = op(set->sig[2]);                          \
-         |                 ^        ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-      17 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/arm/kernel/asm-offsets.c:14:
->> include/linux/mm.h:994:26: error: fields must have a constant size: 'variable length array in structure' extension will never be supported
-     994 |         const vm_flags_t mask = BIT((__force int)bit);
-         |                                 ^
-   include/linux/bits.h:94:18: note: expanded from macro 'BIT'
-      94 | #define BIT(nr)         BIT_TYPE(unsigned long, nr)
-         |                         ^
-   include/linux/bits.h:88:17: note: expanded from macro 'BIT_TYPE'
-      88 |         ((unsigned int)BIT_INPUT_CHECK(+(nr), BITS_PER_TYPE(type)) + ((type)1 << (nr)))
-         |                        ^
-   include/linux/bits.h:82:24: note: expanded from macro 'BIT_INPUT_CHECK'
-      82 |                 sizeof(struct { char bit_number_too_big[-((nr) >= (width))];}), \
-         |                                      ^
-   28 warnings and 16 errors generated.
-   make[3]: *** [scripts/Makefile.build:182: arch/arm/kernel/asm-offsets.s] Error 1
-   make[3]: Target 'prepare' not remade because of errors.
-   make[2]: *** [Makefile:1330: prepare0] Error 2
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
-
-
-vim +994 include/linux/mm.h
-
-bc292ab00f6c7a6 Suren Baghdasaryan 2023-01-26   990  
-568822502383acd Lorenzo Stoakes    2025-11-18   991  static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
-2b6a3f061f11372 Lorenzo Stoakes    2025-11-25   992  					   vma_flag_t bit)
-568822502383acd Lorenzo Stoakes    2025-11-18   993  {
-2b6a3f061f11372 Lorenzo Stoakes    2025-11-25  @994  	const vm_flags_t mask = BIT((__force int)bit);
-568822502383acd Lorenzo Stoakes    2025-11-18   995  
-568822502383acd Lorenzo Stoakes    2025-11-18   996  	/* Only specific flags are permitted */
-568822502383acd Lorenzo Stoakes    2025-11-18   997  	if (WARN_ON_ONCE(!(mask & VM_ATOMIC_SET_ALLOWED)))
-568822502383acd Lorenzo Stoakes    2025-11-18   998  		return false;
-568822502383acd Lorenzo Stoakes    2025-11-18   999  
-568822502383acd Lorenzo Stoakes    2025-11-18  1000  	return true;
-568822502383acd Lorenzo Stoakes    2025-11-18  1001  }
-568822502383acd Lorenzo Stoakes    2025-11-18  1002  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+>  mm/slub.c | 22 ++++------------------
+>  1 file changed, 4 insertions(+), 18 deletions(-)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 476a279f1a94..7ec7049c0ca5 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -333,7 +333,6 @@ enum stat_item {
+>         FREE_RCU_SHEAF_FAIL,    /* Failed to free to a rcu_free sheaf */
+>         FREE_FASTPATH,          /* Free to cpu slab */
+>         FREE_SLOWPATH,          /* Freeing not to cpu slab */
+> -       FREE_FROZEN,            /* Freeing to frozen slab */
+>         FREE_ADD_PARTIAL,       /* Freeing moves slab to partial list */
+>         FREE_REMOVE_PARTIAL,    /* Freeing removes last object */
+>         ALLOC_FROM_PARTIAL,     /* Cpu slab acquired from node partial li=
+st */
+> @@ -5103,7 +5102,7 @@ static void __slab_free(struct kmem_cache *s, struc=
+t slab *slab,
+>                         unsigned long addr)
+>
+>  {
+> -       bool was_frozen, was_full;
+> +       bool was_full;
+>         struct freelist_counters old, new;
+>         struct kmem_cache_node *n =3D NULL;
+>         unsigned long flags;
+> @@ -5126,7 +5125,6 @@ static void __slab_free(struct kmem_cache *s, struc=
+t slab *slab,
+>                 old.counters =3D slab->counters;
+>
+>                 was_full =3D (old.freelist =3D=3D NULL);
+> -               was_frozen =3D old.frozen;
+>
+>                 set_freepointer(s, tail, old.freelist);
+>
+> @@ -5139,7 +5137,7 @@ static void __slab_free(struct kmem_cache *s, struc=
+t slab *slab,
+>                  * to (due to not being full anymore) the partial list.
+>                  * Unless it's frozen.
+>                  */
+> -               if ((!new.inuse || was_full) && !was_frozen) {
+> +               if (!new.inuse || was_full) {
+>
+>                         n =3D get_node(s, slab_nid(slab));
+>                         /*
+> @@ -5158,20 +5156,10 @@ static void __slab_free(struct kmem_cache *s, str=
+uct slab *slab,
+>         } while (!slab_update_freelist(s, slab, &old, &new, "__slab_free"=
+));
+>
+>         if (likely(!n)) {
+> -
+> -               if (likely(was_frozen)) {
+> -                       /*
+> -                        * The list lock was not taken therefore no list
+> -                        * activity can be necessary.
+> -                        */
+> -                       stat(s, FREE_FROZEN);
+> -               }
+> -
+>                 /*
+> -                * In other cases we didn't take the list_lock because th=
+e slab
+> -                * was already on the partial list and will remain there.
+> +                * We didn't take the list_lock because the slab was alre=
+ady on
+> +                * the partial list and will remain there.
+>                  */
+> -
+>                 return;
+>         }
+>
+> @@ -8721,7 +8709,6 @@ STAT_ATTR(FREE_RCU_SHEAF, free_rcu_sheaf);
+>  STAT_ATTR(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail);
+>  STAT_ATTR(FREE_FASTPATH, free_fastpath);
+>  STAT_ATTR(FREE_SLOWPATH, free_slowpath);
+> -STAT_ATTR(FREE_FROZEN, free_frozen);
+>  STAT_ATTR(FREE_ADD_PARTIAL, free_add_partial);
+>  STAT_ATTR(FREE_REMOVE_PARTIAL, free_remove_partial);
+>  STAT_ATTR(ALLOC_FROM_PARTIAL, alloc_from_partial);
+> @@ -8826,7 +8813,6 @@ static struct attribute *slab_attrs[] =3D {
+>         &free_rcu_sheaf_fail_attr.attr,
+>         &free_fastpath_attr.attr,
+>         &free_slowpath_attr.attr,
+> -       &free_frozen_attr.attr,
+>         &free_add_partial_attr.attr,
+>         &free_remove_partial_attr.attr,
+>         &alloc_from_partial_attr.attr,
+>
+> --
+> 2.52.0
+>
 
