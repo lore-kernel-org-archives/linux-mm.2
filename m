@@ -4,111 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81756C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FA55C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:42:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24226B0118; Thu, 22 Jan 2026 03:37:23 -0500 (EST)
+	id D799B6B011A; Thu, 22 Jan 2026 03:42:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFC076B0119; Thu, 22 Jan 2026 03:37:23 -0500 (EST)
+	id D51C36B011B; Thu, 22 Jan 2026 03:42:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD3696B011A; Thu, 22 Jan 2026 03:37:23 -0500 (EST)
+	id C53DB6B011C; Thu, 22 Jan 2026 03:42:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4CC6B0118
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:37:23 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69E411401A3
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:37:23 +0000 (UTC)
-X-FDA: 84358945566.19.3CEC7CB
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0C4618000B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:37:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HsLZt+Gg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FOADQxoz;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HsLZt+Gg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FOADQxoz;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by kanga.kvack.org (Postfix) with ESMTP id B13D86B011A
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:42:36 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5AD9E56B54
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:42:36 +0000 (UTC)
+X-FDA: 84358958712.20.E0BFC7D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf23.hostedemail.com (Postfix) with ESMTP id ED65E140007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:42:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uhvEYvyl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5K56Hgh3;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BN1aHwYw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=beOCQ+fX;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769071041;
+	s=arc-20220608; t=1769071354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PhMSCpDyh7+8D4BXCTDHoTCid/2RtwqQ20a7TQiUGAc=;
-	b=7ZhlXgb3uAmFm20QTk31LS15pjRS+T61f+7C5x0aa34YMSYPjWCq5L0bQ9Snl8Tc2NHr2B
-	RGKwj6ssREF7+A8YoFGW9IscJiOGxPATWCmBzFFEwn5BiLTrb/ETNPqno0nCbtpCsxx/d4
-	RlXr5jQH6zf0mPrG/GlJ3PH+9Ltyj68=
+	bh=wtkavSVJht+G/RwkNgcjxFWYFwzxqjQgltbZ6uHMgU4=;
+	b=BTrPESMyOWVgGX7zk+K/hK7uhJFsBU+U+YUSQ7VAMJKdRnQVm9II/W22RHSxQuPMkolBQ7
+	HpN12mEJPCtboAQ4yw9H0OX5TLca+zGXtHgUhuq3uNkLLyfaG7v2fmr8OlJEJnkXEG/0UG
+	UF8jVSvg3PML9e49k6WKFU01YM4hZPo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HsLZt+Gg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FOADQxoz;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HsLZt+Gg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FOADQxoz;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uhvEYvyl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5K56Hgh3;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BN1aHwYw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=beOCQ+fX;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769071041; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769071354; a=rsa-sha256;
 	cv=none;
-	b=kyyCoXjZTuUFuwwCCeCQrwaf1BDEOvOtY9iXa9sF6tK01Qz2P1oEFngMJg2sIDK8aZiC+q
-	idVDezzJZ8TU4nrAll7Wko6s9wI9al3700jdqE6c7hZtKQK5F5PbDN+TeexCqQxAtNr32H
-	7jWDKn2nGCeLhc2OWJ43QIDMUm3ipVY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=m5xXogXOP/mbf9fb75kzsyImMlwffKKEoBIUpIR+tzEKFb6+5fdp8UDMl6uBcekGhQFrZ5
+	3SwZHlhTE57zVoEq2EOydYh4mgnILLp9V8msxT5d4nlBWkCU+BT+TI4QoJMLav4+QgKbD0
+	SoQUY7osWJcsEIAS+sty6NDV1FdS8F8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 87B805BCC6;
-	Thu, 22 Jan 2026 08:37:19 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F021333697;
+	Thu, 22 Jan 2026 08:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769071039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769071352; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PhMSCpDyh7+8D4BXCTDHoTCid/2RtwqQ20a7TQiUGAc=;
-	b=HsLZt+GgXlJlpaTUgqKh5++ZLYLWobCRmZ6zPe2WnQbRtc3jbayr/ZV3MZmubi9Wtgv8zv
-	teFc0vuYctaFTQV+PQ4qhj0yrxk1CMQpzt7qDzUsVQkaANTspye+sctUjG8bJzabfDATnq
-	qZy1hqKaPVZFuAAo/8Th3AmOj61cEbY=
+	bh=wtkavSVJht+G/RwkNgcjxFWYFwzxqjQgltbZ6uHMgU4=;
+	b=uhvEYvyldlgqEPhfp+7mSHTVYe4MkEDyB1xZjxJqhP4t7kbUHpF7+BqkBxWfARNMFa9HZK
+	hSYruhIPe9coBOBMqGqlaqBXkvZKqPonLq8FPvIjXzWr9tiKlmJo1IXBy5/Wc2QRTD5eDD
+	U4hjM1cnLEvahtfMFywDC8RGvQ0p+Qk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769071039;
+	s=susede2_ed25519; t=1769071352;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PhMSCpDyh7+8D4BXCTDHoTCid/2RtwqQ20a7TQiUGAc=;
-	b=FOADQxozPRXP/ivHRbt7xagpiryd5ky9lw5TaKydAj4XM+eKjiuYINK2t4Ng0utwHWaCSr
-	QS5GQ667d3ismUDw==
+	bh=wtkavSVJht+G/RwkNgcjxFWYFwzxqjQgltbZ6uHMgU4=;
+	b=5K56Hgh3PXtWSBnnFQ2fBBj7tnbSkFDB6wrPugus4lE4qmWEziBFuQO1cMntQeynJp/eMz
+	A47Jno53PH2EPuBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769071039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769071351; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PhMSCpDyh7+8D4BXCTDHoTCid/2RtwqQ20a7TQiUGAc=;
-	b=HsLZt+GgXlJlpaTUgqKh5++ZLYLWobCRmZ6zPe2WnQbRtc3jbayr/ZV3MZmubi9Wtgv8zv
-	teFc0vuYctaFTQV+PQ4qhj0yrxk1CMQpzt7qDzUsVQkaANTspye+sctUjG8bJzabfDATnq
-	qZy1hqKaPVZFuAAo/8Th3AmOj61cEbY=
+	bh=wtkavSVJht+G/RwkNgcjxFWYFwzxqjQgltbZ6uHMgU4=;
+	b=BN1aHwYwgAip7IHXrl4+wW64W5kUzJkg7s4i2Nx1QeOh1D7BYrxsTtBt6j82xlLRkjfXGR
+	gx0TPKCXrsjmil6UetSlGjaCGJpAeS46xXLnjcuguTFp4A8dxtajYJpNxCJKJHmlHZEGB+
+	PZjuCpBNnKBKERbR6vEs2wnQ6BL59F8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769071039;
+	s=susede2_ed25519; t=1769071351;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PhMSCpDyh7+8D4BXCTDHoTCid/2RtwqQ20a7TQiUGAc=;
-	b=FOADQxozPRXP/ivHRbt7xagpiryd5ky9lw5TaKydAj4XM+eKjiuYINK2t4Ng0utwHWaCSr
-	QS5GQ667d3ismUDw==
+	bh=wtkavSVJht+G/RwkNgcjxFWYFwzxqjQgltbZ6uHMgU4=;
+	b=beOCQ+fXGIpQg0Q+0Ue81cHQEZxt+Mg2Pe63z63BbDVbStxBVK5swApeL3XTehwNZcXASv
+	uGS+V7//BmhPyMBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 555613EA63;
-	Thu, 22 Jan 2026 08:37:19 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C64373EA63;
+	Thu, 22 Jan 2026 08:42:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 46l+FL/hcWm/bQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:37:19 +0000
-Message-ID: <4560a13c-a5cc-41ad-ae5e-ac40a0396286@suse.cz>
-Date: Thu, 22 Jan 2026 09:37:18 +0100
+	id QsbALvficWkRdwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:42:31 +0000
+Message-ID: <e341d9ef-9ec3-47c6-b5f0-3749c930f477@suse.cz>
+Date: Thu, 22 Jan 2026 09:42:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 17/21] slab: refill sheaves from all nodes
@@ -127,7 +127,7 @@ Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com
 References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
  <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
- <aXGrQSOoG_6NdqNT@hyeyoo>
+ <aXHLhF2kJxgy4M00@hyeyoo>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -168,18 +168,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <aXGrQSOoG_6NdqNT@hyeyoo>
+In-Reply-To: <aXHLhF2kJxgy4M00@hyeyoo>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 643dcb16xy995ij4hx3mkyhpajwuntg3
+X-Stat-Signature: 6cpbj7y6mya9msp6j3bjxu6fhe38rta3
+X-Rspamd-Queue-Id: ED65E140007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0C4618000B
-X-HE-Tag: 1769071040-185020
-X-HE-Meta: U2FsdGVkX19WTfnLXN2zkBTGOT0EsgO/24enqRiOeHwEOSgxxWnce6zGCKs9gzLf0EMaC73HKhIr5b88ZJ8ayJ2t4Y5dL0z4X9LlLe68FuEQtPvFQxFMiHfUlXw3uHGwiQDoFBi3xGy5GuyCFJsrNbVPyl98dKM4A7jGqBKUsB1gpyBb/lx6HnTISdabDLpNZU88KyPI6KjCa2W3Gj+gs7079EsI4Gty4CLyDn5b8sE0PWpAWRTOHSJYYteD/FKXOHELcV4dP58Jyt0591Yoo/SWbTPK1TI1hHUh+BO+aZ9iM3VPHiWDOh6eeQgvdlDtqxQmmh0h2AXQxpIb0j/aFof1NVmsYAL7Oafhu/zH+kGL2IZImoEHRXR0oc5sUv0yRwaqQ1i3sjLRMlvU5xBEMdYejRXw7MgFn67hBnhIGkosKDUtWHz2o9tDL+Ju7SeVWJ4Bq8WdvvRtIGqLtnzPHa2FqtZK3c+bw/NdBoheWwBIs//+PRDgRzPJTjbD5sYohdQN78hVL7+xUGBmfHY4ITV2vWtdr12y0sD8pxk98IYad/iSyL8TvuoGIP6H/0fKIStq/PbMp6mv70HewRFuMAjiRWZIZMuAmuLfryVh+7XuD6GycWpPkSugAsBK2lFSQ81mjeamdogJZvvqCrdyBcpEGl4xrnOQ1MyzxwP0+KRt0F1f9KXvGgRIHAV50ckIP0OQB5pQ51RXgK365SmJDYzbNLFKQN109OAZVbmMljvIBuP8vI59OZOcWdBUtEg8VZ5Gu6/6ZlS5tMWPpFjlqN4T+/uQDYxd5tubowXNOTxXc6wnozoH4aTS+N91tLWuXcd/OVixDsbwT2fH3jmnG21XaO/zY5a2tvsqhI1umpatenKyPXamxTWzY4UXhu2FbUd7wpjnBj+dv/KTW11JZdzwQgBYEJ2X+/9OIqLKMNbIzkohm9EdvcRNlbyLusPTr9vf7D1mMr29JFCqAY5
- +YhzDSGS
- rM6VoZ7PF/Qk1AWx0OlOWJlIqeaElewWid4FpFZkAqmlQ7JWwb0PNvvv5JlfbsJr+Q2KfNTgVFNEq4GAvQhUClgqMNLspneSRBUSJV9ekjdj0DU18vqw0D1U+7anYwCVzAFR0zemkoVDlW5RdPyMVxygxKwZylACA6l1D+qeRZK3l4l47eIliJsWxxW/nfgXSpj3tOjms04Y0Sy6MlgaV1CsB0763xKv5efK9OMl0ykx61LlHjyMtYiapAhnyFRI9tlDD+NVIGFcXnxjJV0H1bL4zcS8mNerwAetm41tclIO6kiFHuPYkTyMVsg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769071353-504448
+X-HE-Meta: U2FsdGVkX1/xs1gf+DZtg4qfJDYgfnvif5LxnK+uRAdl/2VsOEHrUa4+y8qThmFgSEEzm8DXYacZpHZCQ9K0Izr41CQ0kBEnwgle3Oiy3O3LXKqvoascdlW4AjyYllZfXRg3bnBjq2SlRipkU7qK8BEJFz5Spc8xNje+F4jQg4ug8hikCWllVnllO/xzKuAB3pn7h3KoaaHjurCfobGEmqBztEcpS7IWSt0lINnEw9Qg+EuBb2jKdKGIBAu9RprkWRqIRqDDOzkG0FshTTArxCXvemBf+lrZRG76B6buKApo82/szStFPvwkVzcEVC+G+fltlFinxiECQWidyMzafvSPuiGYn1mxR0IhC52r8spgWhjL12LyGaGUH9qZVmQ3MlP0H1SFV2eBqTfNysNkp51IOyQ2zhZtZ86tRlSrlO7mNoaa3/4S9IIOCQr21QDT/IZ9pp4/GKE6Bj/DN3XTAZdRfs+8sK9CDidpK22CIuc7PQxDjLLblbpKq4BjT8VFV0MtkRSsF0RekKmiXoOwV+WlQmvznZNThn34UwhUzA2d6uaADcEaq/3J3/kb26pymerEDmOIL0Ua6gLPbiD98Ugwbeq78hsXx8CVWW0AJmFwNOK3y//KDhmIw22fJ81UYJjNK5zDaQrRZVsgzo4vjXZeVoUTpZNFxjQcqaqoQUBjvk07h/goLd6B++l+AqRJy2lbKdBe2+X1HrzutmP52Tq6/VJqMw6RvMf+Fw21b6fnU97gSe4aKT+0pOkAUXDlQ54pWTvdg7P1YhlEe7CObMHHdJ0SGuVZhs6yKUK7hxo21UmlDQk7luH8LyT3RAc9OL0yxc20ksWDUgjZCCZQiU9b43KdgafsfaDYX0RtgLnk0Tip+ReQgk4cwzFpLXJRdIhz7+tMqK+Dz/vTv6TVPQ6dEtg/nzYfqkR59SWn8rFXEPmrbEVjQLOHUfqrutymzs0jzAvxZ/9bTjzg66C
+ ZrGklFr+
+ 1hc+pwSzSnkOwQwNrg0O9YxmlyJsEet1A/sUXN37cB0ZT/OF+7Q8tW4sonktNDjrsQHkPY8DtZxsln6d8n+q8sfbnaj3HfFgbW42qlhNsiGLE+SD1G9Ahfy8nKiEXPMgNMy68zN79s/uywKKj3h/coU0DTEpQne6r7Lyy8Uwq3OC870XWL3JQ6Lhap4Ob/7MZrd72gjbbxAWUKBi+7Yb37l6vzteSPqFIyRRjHMlc9o+ahy2a6nHVc+Lep0jsIm7yuNL3/+NYu8PPfifMivmKDRxxdDbIC5lxzc4gIRymLkyl+gyY7vWHg0QpjA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,7 +187,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/22/26 05:44, Harry Yoo wrote:
+On 1/22/26 08:02, Harry Yoo wrote:
 > On Fri, Jan 16, 2026 at 03:40:37PM +0100, Vlastimil Babka wrote:
 >> __refill_objects() currently only attempts to get partial slabs from the
 >> local node and then allocates new slab(s). Expand it to trying also
@@ -199,7 +198,21 @@ On 1/22/26 05:44, Harry Yoo wrote:
 >> many free slabs. It does mean sheaves will contain non-local objects in
 >> that case. Allocations that care about specific node will still be
 >> served appropriately, but might get a slowpath allocation.
->> 
+> 
+> Hmm one more question.
+> 
+> Given frees to remote nodes bypass sheaves layer anyway, isn't it
+> more reasonable to let refill_objects() fail sometimes instead of
+> allocating new local slabs and fall back to slowpath (based on defrag_ratio)?
+
+You mean if we can't refill from local partial list, we give up and perhaps
+fail alloc_from_pcs()? Then the __slab_alloc_node() fallback would do
+allocate local slab or try remote nodes?
+
+Wouldn't that mean __slab_alloc_node() does all that work for a single
+object, and slow everything down? Only in case of a new slab it would
+somehow amortize because the next attempt would refill from it.
+
 >> Like get_any_partial() we do observe cpuset_zone_allowed(), although we
 >> might be refilling a sheaf that will be then used from a different
 >> allocation context.
@@ -216,48 +229,6 @@ On 1/22/26 05:44, Harry Yoo wrote:
 >> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 >> ---
 > 
-> Could this cause strict_numa to not work as intended when
-> the policy is MPOL_BIND?
-
-Hm I guess it could be optimized differently later. I assume people running
-strict_numa would also tune remote_node_defrag_ratio accordingly and don't
-run into this often.
-
-> alloc_from_pcs() has:
->> #ifdef CONFIG_NUMA
->>         if (static_branch_unlikely(&strict_numa) &&
->>                          node == NUMA_NO_NODE) {
->>
->>                 struct mempolicy *mpol = current->mempolicy;
->>
->>                 if (mpol) {
->>                         /*
->>                          * Special BIND rule support. If the local node
->>                          * is in permitted set then do not redirect
->>                          * to a particular node.
->>                          * Otherwise we apply the memory policy to get
->>                          * the node we need to allocate on.
->>                          */
->>                         if (mpol->mode != MPOL_BIND ||
->>                                         !node_isset(numa_mem_id(), mpol->nodes))
-> 
-> This assumes the sheaves contain (mostly, although it wasn't strictly
-> guaranteed) objects from local node, and this change breaks that
-> assumption.
-> 
-> So... perhaps remove "Special BIND rule support"?
-
-Ideally we would check if the object in sheaf is from the permitted nodes
-instead of picking the local one. In a way that doesn't make systems with
-strict_numa disabled slower :)
-
->>
->>                                 node = mempolicy_slab_node(); 
->>                 }
->>         }
->> #endif
-> 
-> Otherwise LGTM.
 > 
 
 
