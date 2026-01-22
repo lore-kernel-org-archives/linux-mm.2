@@ -4,96 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3C24D46952
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 17:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 195F7D46977
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 17:39:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 402E46B02D6; Thu, 22 Jan 2026 12:36:26 -0500 (EST)
+	id 4F16A6B02DD; Thu, 22 Jan 2026 12:39:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C3E06B02D8; Thu, 22 Jan 2026 12:36:26 -0500 (EST)
+	id 4CF946B02DE; Thu, 22 Jan 2026 12:39:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F1076B02D9; Thu, 22 Jan 2026 12:36:26 -0500 (EST)
+	id 1F60D6B02DF; Thu, 22 Jan 2026 12:39:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EA346B02D6
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:36:26 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D7EB914046A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:36:25 +0000 (UTC)
-X-FDA: 84360303930.23.435224A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2C0F0C0002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:36:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J2UlAbs/";
-	spf=pass (imf10.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E0AC36B02DD
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:39:32 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8DDC1D2AF1
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:39:32 +0000 (UTC)
+X-FDA: 84360311784.11.5C96181
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E281240014
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:39:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769103384;
+	s=arc-20220608; t=1769103571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9t9Xol7Q8/sep6nxpCGFp464gvrarPBWKIBIvx6HDlw=;
-	b=KfanheIE8m98TFeLS3oiUvIzdOP2VS9HlRsl5OqvOPJI48rLDMmYW039zQNCsO4wDwOlrg
-	li1dDP6iGa6bjpUqP/ITWU8coNeQP99jhAuIMATHGdhp0T6ZoCtmaSWfibhhV0I0rFWHv4
-	CeRbvontN/26jSrNmk4sOA9QwTpUHAI=
+	 in-reply-to:in-reply-to:references:references;
+	bh=laCGWIoqjjsZRe+gHdM0Cql/2tn/LCKRdK5w6uw3Fxo=;
+	b=wztVd4q60V7orRpiiv659FGyLIJRJy0NBo0AgMxU7bHb3HuQHpJk2QXe+BmLB1X6pNcCFi
+	M7WsJAwuhqwnGu7omCqu0RbzpLR952q2ENDl/R+4vYWF9otxjIXwiqzRSmPlayxDYrg3ol
+	PV8rYvVQc7Y88osEV7nFcElevqiW67Q=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J2UlAbs/";
-	spf=pass (imf10.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769103384; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769103571; a=rsa-sha256;
 	cv=none;
-	b=29m0G5U5NqSIWHn1gs6HHDwaxEfdJ0sA13XVjRc/+qS/Dn0cxSqb6lExqiyveIFendQASC
-	H+g+FlzJwdMa/jIn1tFymb37qeiuMjDyB+60lVMEkBEaJqsSP/suv2BtcSDUH6kfiqrglb
-	qA37+DXmxOB/nT9vPtUtgDaqIbOdciM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 881C26013A;
-	Thu, 22 Jan 2026 17:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E08C16AAE;
-	Thu, 22 Jan 2026 17:36:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769103383;
-	bh=LWuS3t9H4s3n6SwgiZKmTr2O9DxNfnIGAD3zPijQ33Y=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=J2UlAbs/vbrkBlyTHAfoan1jPcOAJxwT4BQ6oTfUzQfCjFYnYuBOLhk45uDRuo3H/
-	 AJ8YLsNqMPeQk6bxrBUW4PebRQqKIJGaBH3o3sVJ/wCleTmh3Xs3rYCTFcCTV0DjdL
-	 lFfljb7U/kwXSMP8Jr+si3Cl0QrOaYVUt06WEriczzOsLxWottOB5M33ZaHWcmER1j
-	 Mk4ThL/ejNwhMrlPiTqkuu5YaIQ2gd2Dv060RYhMQ27NGNiy7CnmBVzhiURLuxKoM4
-	 Us6ZSRm/FeOLO4R3kRcxyGhfIE6bksw1Y7YGglSW0V6erdeJECMaqujSUGr8LSxRd/
-	 1+7wE2rIsVeXQ==
-Date: Thu, 22 Jan 2026 11:36:22 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	b=J+4duAwPE8JLZ0gLnH+bR/tD6HjLLJko/2eJlf9BiNnIWQKeDXwfVWSUfuK3Mpm0cUXGFJ
+	PHQULxMANI+vk9N9nhPCFOThRDlZZBk5ZvFeIUHxxS224/j9j6jV9qr1BZtJEGOelzmECY
+	/KX7eRPk96wuGvTaOCLtNdhNBV/9spw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 72BA81476;
+	Thu, 22 Jan 2026 09:39:23 -0800 (PST)
+Received: from [10.1.194.63] (e142334-100.cambridge.arm.com [10.1.194.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE0063F632;
+	Thu, 22 Jan 2026 09:39:28 -0800 (PST)
+Message-ID: <29fc7fb9-ec07-48f1-9883-82a44e637338@arm.com>
+Date: Thu, 22 Jan 2026 17:39:27 +0000
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
- David Airlie <airlied@gmail.com>, Sumit Garg <sumit.garg@kernel.org>, 
- Sumit Semwal <sumit.semwal@linaro.org>, devicetree@vger.kernel.org, 
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
- Brian Starkey <Brian.Starkey@arm.com>, Conor Dooley <conor+dt@kernel.org>, 
- dri-devel@lists.freedesktop.org, Simona Vetter <simona@ffwll.ch>, 
- linux-tegra@vger.kernel.org, John Stultz <jstultz@google.com>, 
- linaro-mm-sig@lists.linaro.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- "T . J . Mercier" <tjmercier@google.com>, 
- Benjamin Gaignard <benjamin.gaignard@collabora.com>
-To: Thierry Reding <thierry.reding@kernel.org>
-In-Reply-To: <20260122161009.3865888-3-thierry.reding@kernel.org>
-References: <20260122161009.3865888-1-thierry.reding@kernel.org>
- <20260122161009.3865888-3-thierry.reding@kernel.org>
-Message-Id: <176910338211.2903017.10944159060341564914.robh@kernel.org>
-Subject: Re: [PATCH v2 02/10] dt-bindings: display: tegra: Document memory
- regions
-X-Stat-Signature: kb6u4ncayrh87p1a7fxw69x6t9s3zuse
+User-Agent: Mozilla Thunderbird
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark Brown
+ <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH v3 6/9] selftests/mm: introduce helper to read every page
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+References: <20260122170224.4056513-1-kevin.brodsky@arm.com>
+ <20260122170224.4056513-7-kevin.brodsky@arm.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+In-Reply-To: <20260122170224.4056513-7-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2C0F0C0002
-X-HE-Tag: 1769103384-279399
-X-HE-Meta: U2FsdGVkX1/ymAVzBfVDurN3NfMUgdxSriGXZrhbxRhNQ8MidhkJ5eIYB3N6JqcAp7StLClRMIxWxffbqzfYtztV5oXpZfFnqLpcuuuy15ka37b4Hw6g5acog+b8OQL73aJ22gR7Med9g+1jy5j58Yb342jKhtDF/ktMwNyT9SaCyV8aiR2IQV7HIquEN8/ZXpuz4dmhcr2pqURT+TW0/KvTOjJ7hDCdRJt080pbEapqxyttyS2RT/5TbCOQgtDb5tB4rb4+/iAkZzA3t5ujT+ygbH7tfkOmM9RGpQ9nFXL0kZhkvqBeOIgY95PkT5xNLXL/HK1oaIpLhaQIgpymCYdqaheRByaNNxKiL51L2m/I9b/vlOOZOrbRsizsC2z+SSWXZszmnyFS6RiV4CDa/A6aLafCwhpQWE0QwgZ9s1ZlEuZmEVdrA6RqxaIKKA3caAeFAVTwPd7XHD5tO2PQ2EXNQEEHDKETDCSlBp47vxTsgabfsVU8fV5vVOn0zmj9P8n84rtiHrVNeOzcVPRggbbqJNVRUKGpkNZrvWkvBIl0K1gWuiL84h5GQ49VH+g1h+izInNxrkpeIP6u04flWPouUjwUgPXnw4AU4hDrRQegDmCFh9OZkxDxJS2wDMujFIGOfFnBEgv8UjNPgbZ+ZKPrWTwlCI2OCG0+aKbUOUfDFABDOmh0hsXmHtkaPLtsP9l2npNxrxUxQd1plRNkfFtJEZYhGzHzcFibrRIyB3bHMMBEv+MfKxPSRf63BLGwVLgC/DTVJR9PMhZoAhfXSRvYJKgGvsyo82VteBxrVf4Fc/8laozDurr14kA9MvPWeLfeE8zyf3nMeW8wLmQFFwbFMxCb+bt8VPvv4e8k4cXufDM+yO5luMI3u/DAhoEb34jbEygf6xnuh5lWjjZeqR3cUPYo763CWUhV/yz5U0PBOKd1h+iNrEkN7A1mCWdNWt7LvkV7z94jZR7TSfK
- FUmuLJrc
- sgRVf/Tx3cr58SelJcj/o/ALcOBBZtfHq5eof4LUH8gVW+CIE/PDHdJYqA3GwkWMylGqXdNTbdFX0k9RiA7xTX6eI6eJZpoY5bwOZcs9UDUgO2AVG0Wh3u+MXGn8fAz0uXLOxTLkN/H8vfEeTwnpt38iZ10na4p1Iei/rBiONO5u8jxD3ZcrUC0pjmHS+EJ+ak6L2jMvRNrReW+MzawRC3HOZ0h5B7Q7YpEZmfFyJgpW+C7w4XNvw8B9ynwjh4CjQyO9wSWWP6Y9AGZ+E7wE7CwXJUcJcA6xtszjNvjSgyU2klI/MXg+c4Qp2Gocxx1NqknNUVilzesiddDdfpT6RSkGFEUtZ7XY+yo0V62DtnYxjRCBzcAvtUvFESDU9SbEqvYDCw5/ToCQA7zihYWkoOSheZ29EnD1LuZL06HjTTqFsoRclKheRVjlksQ==
+X-Rspamd-Queue-Id: E281240014
+X-Rspamd-Server: rspam07
+X-Stat-Signature: wy97ccko4z6pm1jwyn9ysxap8m68365s
+X-HE-Tag: 1769103570-202153
+X-HE-Meta: U2FsdGVkX18OHHHmat4G/FFwc7MQNSIi4Vx5WFJJdL7L4r17puPRP7xbB9l5qYNhmU4CFRrpmf7cp6ZqXP6l/mV81VvzsxCAWli3BtWW3xZt2EfjppvqRYGG1R+0nyx7tOVmGOb9JBWAs+iGwLiN2252f+bZSKfqtnn7VJd4UX/a6/VWx2SIvecV36z3JiClBfDbAWeH3VYbbFCqXruv/I4+M+elCo4MiipzUVSY52FE68QxwJZa3YzrGfZiijAmu5H76RWKGl6H4yTgbW8of9BIW9eEnsNxQ364bMnju7r/izhjIb7XDktpbM/T8nX0cOUR7lCUJ+Gx1yuvzwhJ0n/2tAqUElAqChxnxU4oeFUTLq7P5LgR7T7ORzjR9V1s20yxSpIbH1IWQCepKvx8SaY3N2E3VMAmWtxGnfGrEUsmd33/0IwLCxsi26KCs9ST+5+iHM+qoGfAsA7O5P5baOvQnhmkwg1UNWytSApt4YAye8sfBWZuJNrWTHBGRsLjDC3tAotCCF/8woBMdhaVcZsvJG6OCNvm7LsfISOTWo3HwlC1PqSuWVYprmnC7svw99ROoFB3Y7hGXUrAVnAPikcl+AQl+tvAONQq2/EtPbWLw0M+pWWyyEhoTu/s2E9a1yfermONicBAAH+xp4Gus95zNUKUBn8I3ilBwN4f8PcSHoNzG4ExoIvVWfJQmoQGV1kmAKKzpmBaf2wXlDndfCLdWEmpp6Dv1eoTOZj6FzzVWPgQzxM8yb8LtenfFHr+1Tje4E3qjMxTsbAzCB2qTDY1mV6mlNp2fDFy9Ra+28VntPh+81vNd5VUntbHA4JQqM+rxwaNiUon1zaLs0+uGg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,56 +88,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Thu, 22 Jan 2026 17:10:01 +0100, Thierry Reding wrote:
-> From: Thierry Reding <treding@nvidia.com>
+On 22/01/2026 5:02 pm, Kevin Brodsky wrote:
+> FORCE_READ(*addr) ensures that the compiler will emit a load from
+> addr. Several tests need to trigger such a load for a range of
+> pages, ensuring that every page is faulted in, if it wasn't already.
 > 
-> Add the memory-region and memory-region-names properties to the bindings
-> for the display controllers and the host1x engine found on various Tegra
-> generations. These memory regions are used to access firmware-provided
-> framebuffer memory as well as the video protection region.
+> Introduce a new helper force_read_pages() that does exactly that and
+> replace existing loops with a call to it.
 > 
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
+> The step size (regular/huge page size) is preserved for all loops,
+> except in split_huge_page_test. Reading every byte is unnecessary;
+> we now read every huge page, matching the following call to
+> check_huge_file().
+> 
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
->  .../bindings/display/tegra/nvidia,tegra186-dc.yaml     | 10 ++++++++++
->  .../bindings/display/tegra/nvidia,tegra20-dc.yaml      | 10 +++++++++-
->  .../bindings/display/tegra/nvidia,tegra20-host1x.yaml  |  7 +++++++
->  3 files changed, 26 insertions(+), 1 deletion(-)
+>   tools/testing/selftests/mm/hugetlb-madvise.c      | 9 +--------
+>   tools/testing/selftests/mm/pfnmap.c               | 9 +++------
+>   tools/testing/selftests/mm/split_huge_page_test.c | 6 +-----
+>   tools/testing/selftests/mm/vm_util.h              | 7 +++++++
+>   4 files changed, 12 insertions(+), 19 deletions(-)
 > 
+> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
+> index 05d9d2805ae4..5b12041fa310 100644
+> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
+> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
+> @@ -47,14 +47,7 @@ void write_fault_pages(void *addr, unsigned long nr_pages)
+>   
+>   void read_fault_pages(void *addr, unsigned long nr_pages)
+>   {
+> -	unsigned long i;
+> -
+> -	for (i = 0; i < nr_pages; i++) {
+> -		unsigned long *addr2 =
+> -			((unsigned long *)(addr + (i * huge_page_size)));
+> -		/* Prevent the compiler from optimizing out the entire loop: */
+> -		FORCE_READ(*addr2);
+> -	}
+> +	force_read_pages(addr, nr_pages, huge_page_size);
+>   }
+>   
+>   int main(int argc, char **argv)
+> diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/pfnmap.c
+> index f546dfb10cae..45b5f1cf6019 100644
+> --- a/tools/testing/selftests/mm/pfnmap.c
+> +++ b/tools/testing/selftests/mm/pfnmap.c
+> @@ -35,18 +35,15 @@ static void signal_handler(int sig)
+>   
+>   static int test_read_access(char *addr, size_t size, size_t pagesize)
+>   {
+> -	size_t offs;
+>   	int ret;
+>   
+>   	if (signal(SIGSEGV, signal_handler) == SIG_ERR)
+>   		return -EINVAL;
+>   
+>   	ret = sigsetjmp(sigjmp_buf_env, 1);
+> -	if (!ret) {
+> -		for (offs = 0; offs < size; offs += pagesize)
+> -			/* Force a read that the compiler cannot optimize out. */
+> -			*((volatile char *)(addr + offs));
+> -	}
+> +	if (!ret)
+> +		force_read_pages(addr, size/pagesize, pagesize);
+> +
+>   	if (signal(SIGSEGV, SIG_DFL) == SIG_ERR)
+>   		return -EINVAL;
+>   
+> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> index 40799f3f0213..e0167111bdd1 100644
+> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> @@ -652,11 +652,7 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
+>   	}
+>   	madvise(*addr, fd_size, MADV_HUGEPAGE);
+>   
+> -	for (size_t i = 0; i < fd_size; i++) {
+> -		char *addr2 = *addr + i;
+> -
+> -		FORCE_READ(*addr2);
+> -	}
+> +	force_read_pages(*addr, fd_size / pmd_pagesize, pmd_pagesize);
+>   
+>   	if (!check_huge_file(*addr, fd_size / pmd_pagesize, pmd_pagesize)) {
+>   		ksft_print_msg("No large pagecache folio generated, please provide a filesystem supporting large folio\n");
+> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+> index 6ad32b1830f1..522f7f9050f5 100644
+> --- a/tools/testing/selftests/mm/vm_util.h
+> +++ b/tools/testing/selftests/mm/vm_util.h
+> @@ -54,6 +54,13 @@ static inline unsigned int pshift(void)
+>   	return __page_shift;
+>   }
+>   
+> +static inline void force_read_pages(char *addr, unsigned int nr_pages,
+> +				    size_t pagesize)
+> +{
+> +	for (unsigned int i = 0; i < nr_pages; i++)
+> +		FORCE_READ(addr[i * pagesize]);
+> +}
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml: properties:memory-region-names: 'anyOf' conditional failed, one must be fixed:
-	'maxitems' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	'type' was expected
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml: properties:memory-region-names:items: {'enum': ['framebuffer', 'protected']} is not of type 'array'
-	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml: properties:memory-region-names: Additional properties are not allowed ('maxitems' was unexpected)
-	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml: properties:memory-region-names:items: {'enum': ['framebuffer', 'protected']} is not of type 'array'
-	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml: properties:memory-region-names: Additional properties are not allowed ('maxitems' was unexpected)
-	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20260122161009.3865888-3-thierry.reding@kernel.org
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+> +
+>   bool detect_huge_zeropage(void);
+>   
+>   /*
 
 
