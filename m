@@ -4,131 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 892C0D3EE96
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:56:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E90ED3EE92
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 17:02:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE3C36B02B6; Thu, 22 Jan 2026 11:56:08 -0500 (EST)
+	id 6314F6B02B7; Thu, 22 Jan 2026 12:02:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8CBA6B02B5; Thu, 22 Jan 2026 11:56:08 -0500 (EST)
+	id 5C4FE6B02B9; Thu, 22 Jan 2026 12:02:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C647B6B02B9; Thu, 22 Jan 2026 11:56:08 -0500 (EST)
+	id 4F13D6B02BB; Thu, 22 Jan 2026 12:02:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B02596B02B5
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:56:08 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6DEED1A0331
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:56:08 +0000 (UTC)
-X-FDA: 84360202416.03.BA6F3E3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1FED1C0012;
-	Thu, 22 Jan 2026 16:56:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UTEaHcdr;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C2B26B02B7
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:02:38 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E56718BB53
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:02:37 +0000 (UTC)
+X-FDA: 84360218754.17.8383484
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D120A4000C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:02:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769100966;
+	s=arc-20220608; t=1769101356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Ouuw1KntUWS56pg/PFLpKK95mOBMuhGqPq2jMG5wGw=;
-	b=Ni23ybANGvKvRz89I1dqKf8WsrVKYt/DVYwfvEbEqhM095ZsTyWMOGWRkXXDuGE1qmGIYo
-	mhJrsPWC92ECc43YYwLxuRRuZS7xzzT0TqyEr49htWqdHA8bHOJKuc641mkOgj78mAo8wZ
-	d/mYihkbRj0rqVGagFYHO1R5NhWOLNk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=LR4F2R6PAnPX4z40dGn1Nazzul8J1/CW/226hDSbidE=;
+	b=hu3Cscpsu25NI1xUrs1Xbitg7/a3Gd7TdFIZA21Pij3EjDnO3ixLAHXftKf5hQM9Rg/7ur
+	FPWRqbwVCQKEIC+IhS0Dbl+OQcryXpuxYvC0oH1l0Zw62NKuWfTn0StCzP20U7aju/B/oq
+	h1JbH3YGG3dAju+6YabnDjmO5EuaZKI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UTEaHcdr;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769100966; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769101356; a=rsa-sha256;
 	cv=none;
-	b=YvHa1tI49SCT3DQyTLm0EHWcBpyxgmfZuUtbozroHwyfLPmIbWBNJVssMW0vZzzLTLD8Am
-	lb8Wuv9ReQnA7sqzVgvY4cNWv+dAYizlS7z1/OxnZttvz5wHT+yh/wv729pWR9JZ84PsUI
-	RKPx7Qyh2voQwqxPFvWE6QjdwnKUABc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2B5A43A88;
-	Thu, 22 Jan 2026 16:56:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C451BC116C6;
-	Thu, 22 Jan 2026 16:56:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769100964;
-	bh=jrjPF0WwvPZPRM6P6o/2VJJe4697MQWP7qZdUYFxSHY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UTEaHcdr42aH4+na9j15KfpiqbAYafbC0X2iMUD6k4y/YtdzCCZ1DycwTLHJx0PPt
-	 +CS99+ai15VAAJyTlXJod09HI5BHg9DqD+81D8WgglFvTzCgDavAE+Qd9mUxEIoEfe
-	 6FnS53cyUDclSITvSvJ4wllykWndkBImnZdCxvZI=
-Date: Thu, 22 Jan 2026 08:56:01 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams
- <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Dave
- Jiang <dave.jiang@intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, Christian
- Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Matthew
- Auld <matthew.auld@intel.com>, Matthew Brost <matthew.brost@intel.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Benjamin LaHaise
- <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
- Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
- Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
- Chunhai Guo <guochunhai@vivo.com>, Theodore Ts'o <tytso@mit.edu>, Andreas
- Dilger <adilger.kernel@dilger.ca>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mike
- Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>,
- Tony Luck <tony.luck@intel.com>, Reinette Chatre
- <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, James Morse
- <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>, Carlos Maiolino
- <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota
- <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox
- <willy@infradead.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh
- Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Zi
- Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, David Howells
- <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, James Morris
- <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, Yury Norov
- <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
- linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
- linux-mm@kvack.org, ntfs3@lists.linux.dev, devel@lists.orangefs.org,
- linux-xfs@vger.kernel.org, keyrings@vger.kernel.org,
- linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 00/13] mm: add bitmap VMA flag helpers and convert
- all mmap_prepare to use them
-Message-Id: <20260122085601.4d40447ca2f9a060d3140212@linux-foundation.org>
-In-Reply-To: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
-References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=orY+gNSyQPkw3hJAHYwenXuUx2tbhve9lHLg0LkZa3BSH3asY0UKPxjFuaIXB7T0KE/LRr
+	s0Cvm43PhsdNAjDObEUf1XsGJlPbTs2rGqctBzsHhkrGGLjjwKrHVgXolg686jsp80RywG
+	fTSElhRnCd2qP2+x+1uq2+TX5nUKXr4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EAD981476;
+	Thu, 22 Jan 2026 09:02:27 -0800 (PST)
+Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B71A3F632;
+	Thu, 22 Jan 2026 09:02:33 -0800 (PST)
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+To: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mark Brown <broonie@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Shuah Khan <shuah@kernel.org>
+Subject: [PATCH v3 0/9] Various mm kselftests improvements/fixes
+Date: Thu, 22 Jan 2026 17:02:15 +0000
+Message-ID: <20260122170224.4056513-1-kevin.brodsky@arm.com>
+X-Mailer: git-send-email 2.51.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D120A4000C
+X-Stat-Signature: u9y88kky8rcawp9yrjqfo1o8kprx1hie
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1FED1C0012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ra4iozhhcntxntr5brohzbeoqq1xjwb9
-X-HE-Tag: 1769100965-597075
-X-HE-Meta: U2FsdGVkX19rhH0tJeeB6mLIQ9C2D1Kj4X3VxvOgE1Ct0Ecv8KDQ/QQQ8RhCkvGzgdTXzgr91Y6PmLlGCo+anbiGoT3Z5g/wuMiAtXF1YNm6n0s8PtID2w/cNgPcddnjbhXBTcI/hZjpMyGx8Ty9ZoJrXxt5JS6n/EEI0JtnLL8sLESdqyCEfrK35JMEnYRIqplbvJHUiJdn3ZbwH6xSPakVSv2mzZ6ZDJVMUDTpK1JF0DXuBwKULjN6CDutbaMxOafPWdKADonyZbze1RhX0LDMN8Vppxo3bD50ve91xPt7jjQ4rhFpkn0l9mismSkXWjUh+waEk3w3K7RVSk8XV0QuzSI91UhYJAXTgwgjgzL9iZvt/RVjfc3OGpD8bk8xbMbmGmHncXNfFO3H0XWuql9F2zI/1o37w1bAixzRvxqHUm9WaAdTp/YkU1aDw03NRz3n6d6mjSpoIrAo1C/OipPjAB1cCBAtEd0dFb8T5UXRWxCuRkcBFFz47kFXrEDxyvO5WlLCVOxkmFN0EY/NZKA7Jbd3LDAZoL/PNJYwf3aqMsqHGX6TBtlUEgj1MGqb2FYqzZEwjZkLC1Y3/i3XtHAhuh6TQfq9O5Ao9vwtlpY+AOT3k26JDmHaWJSkthfqjb1w0zdLAxNWUpdpRGIOTJhd97Y6SuuN2deyWg8djS7iltFssmLTmXaq1/wHmSgAGk6ReN4lF0Oh27Fc6sGVaqzaD0PHLMXbJEQDGD3vFhs+cIdPZwR3J1k3Abkq6fy7xRaDaZaVU96fSR8CO8fnJkGNHxXy+vFi4gJE/TOe1NTmE9+fQJaKhX/C10qyONrNXgA+POL/+MC2teMt0xWJIzM0/z0pDCFhApgPGgYv9K0HeatpOVW3ujTXq4RxvJyGwxMmTqSyuL10i1d6fvl3bqSQIxKDGAhwXn1fvzKvZb1PE/nU6WPtD8LfzqSASxaucliXKpgj4PY4A3aVBxQ
- uxNE6JEc
- 3eERshzGV+vWI5z8n+j6pRHw7tzMVONH+I9QqQmOCia/b3GF8luXPdia56pLh1Kx/bH9QpLslNUJ2oSB6aGwufy7ajxwx5veCU+/DzEOA3fkG/syVP9vKIZjs2CMX1+DuT2Bwftgfs3C7KjbJpYcbXyccIFHmPG7b9/ZR2wUW9gqKI7Huw/7bgCLn0YmionSAZfhOFPB+suxJfsmU6ATKDhaJ+tGoMNaOKisFburw8NiC/Guiy5d8YKbfhhxUZUxH0rDhkSva6GRCnqM4LGFYiiuSJAy/vHsIKjzhzi9KH8+0MxIAdhcXYFSt6zPi13t3XKEDWnd63gEiXS0WT3wIUzbsOeD04dDr2AY5VpXpU9FHI/kfT44gQmsE68nkf/XUmM3/FDUSG8TEhUr5fhHGs+Bw5AHEF/csY88S
+X-HE-Tag: 1769101355-883341
+X-HE-Meta: U2FsdGVkX19YfJgvvZdJg9W2h4khU/mbzxS9VOIsZLwbvj1DfWTVX3Y7aGWwXVkXU8N4258w8QWsoSkCzg93LkwgC1Q0hF1TWr7J5WsC54/8gceogGimPGwhWJx1tj4pZIGJIc8v2AFgUUK31tzrViXK4S1KIoUVUfXZH2WlY3nFGUs3YgdtHkeOzfXojqwTjb/k+Z82GTJZc85R3RMGvtZGHfx9vhYLaDGH/sXcSA/PMc3WLTmvkpKqNbjn/nKzW2ieee03lJUClL77a4qKDt0R5nni1BiSOrRQRqJnL1Qmm4FUjkFWuEs8attOmvyoeEP2KNVnKc65CTFJj1+2th5Q3c/GzEmmKqaQUK5q/1AGIGMdZaaQT7wCHUDigytBPzp+lfEwa2Mny+bGxgPqt8oM0UZji9dSEtk9ycpi/1PFFn51gg0kAF8RNqlaZ41ouw0R9adHgneBk8KiRPXstRH3b+Skyxcf/pTKPk3WSxkjdWsHRzreJpfKocokH63R5vxX2dQEXZuoJmS/vShCSh1KIlvuJD54uFCRCymNR+MLqo/mc2fkQBvJLlnP2qImOYcPjnVsIf5Bo+JwlT7XanJ/q+w75hCBVaSUaZVCD92XBaCxZP+BMWSnT3tK/ZzfJgwmce+C5izicdIx/UTkvBjmLppwi8Q6s0vnJO3S8XQNfX3hTUCexgv0fyVh3zad3uYriBWi8ZRqgsr2QFx5H8TdQTYjS277Lh/g2VRhJRrNYnUEvvu7rcj/NBqw8jhEIVlBIYmnZnbviqR/TzqjXQaFH7TD0KR/uP/8CPIbu7ztfZf5C3AI1d4C8WsUgcUgZt+shOY7ASGw4I93txXIrW3GkdodFxwI0wzkhkywJ9Fi292PB8iAyUDzUh6y8Kq0spnhSAEDR/FfMxxdhUEWpw01KkzjBX2AMOC6sgKYTFfBtLCEU8MqGoZ16Eejj8gyH+fx8DiklFBtr4I5OIC
+ M6E2osFT
+ VLMEbqT+qzrU28p2IoIS5882UckHvKiWlLCCYKtKlTHhnVmELQTFruZQFs7phIWHvmNaiEbEC0LOvB9/cmu56ssJIfNviuSZhfn/cT/zjsOPI+IoKaDTmcW/lJ/vgveJ1dZBg2cCGQ44IU8TTusKd0yDaseKbafoIzJDDBT7qK0BFS5OLZDtee3+h/0E0rKJdzBDvt3OdjeUTmpRm4zMocOh/V410g8D/PzucpKo8/5jAV3OJPL0HHvHhnZZvx8BuBLoK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,27 +87,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 16:06:09 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+Various improvements/fixes for the mm kselftests:
 
-> We introduced the bitmap VMA type vma_flags_t in the aptly named commit
-> 9ea35a25d51b ("mm: introduce VMA flags bitmap type") in order to permit
-> future growth in VMA flags and to prevent the asinine requirement that VMA
-> flags be available to 64-bit kernels only if they happened to use a bit
-> number about 32-bits.
-> 
-> This is a long-term project as there are very many users of VMA flags
-> within the kernel that need to be updated in order to utilise this new
-> type.
-> 
-> In order to further this aim, this series adds a number of helper functions
-> to enable ordinary interactions with VMA flags - that is testing, setting
-> and clearing them.
+- Patch 1-3 extend support for more build configurations: out-of-tree
+  $KDIR, cross-compilation, etc.
 
-Thanks, I updated mm.git to this version.
+- Patch 4-7 fix issues related to faulting in pages, introducing a new
+  helper for that purpose.
 
-I dropped the memfd_luo.c hunk due to today's inclusion of
-https://lkml.kernel.org/r/20260122151842.4069702-3-pratyush@kernel.org
+- Patch 8 fixes the value returned by pagemap_ioctl (PASS was always
+  returned, which explains why the issue fixed in patch 6 went
+  unnoticed).
 
-`get_maintainer --nogit' wants me to cc 72 people on this patchset.  I
-didn't ;)
+- Patch 9 improves the exit code of pfnmap.
+
+Net results:
+- 1 test no longer fails (patch 7)
+- 3 tests are no longer skipped (patch 4)
+- More accurate return values for whole suites (patch 8, 9)
+- Extra tests are more likely to be built (patch 1-3)
+
+---
+v2..v3:
+- Patch 5: new patch [David Hildenbrand]
+- Patch 6: make the helper take a number of pages + pagesize, rename to
+  force_read_pages() [David]
+- Patch 7: improved page count calculation (avoiding floating-point
+  helper)
+- Patch 7: added Fixes tag [David]
+- Patch 9: open the file only once and save the fd [David]
+- Collected R-b/A-b
+
+v2: https://lore.kernel.org/all/20260107164842.3289559-1-kevin.brodsky@arm.com/
+
+v1..v2:
+- New patches: 1, 4, 5, 8
+
+v1: https://lore.kernel.org/all/20251216142633.2401447-1-kevin.brodsky@arm.com/
+---
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+---
+Kevin Brodsky (9):
+  selftests/mm: default KDIR to build directory
+  selftests/mm: remove flaky header check
+  selftests/mm: pass down full CC and CFLAGS to check_config.sh
+  selftests/mm: fix usage of FORCE_READ() in cow tests
+  selftests/mm: check that FORCE_READ() succeeded
+  selftests/mm: introduce helper to read every page
+  selftests/mm: fix faulting-in code in pagemap_ioctl test
+  selftests/mm: fix exit code in pagemap_ioctl
+  selftests/mm: report SKIP in pfnmap if a check fails
+
+ tools/testing/selftests/mm/Makefile           |  8 +-
+ tools/testing/selftests/mm/check_config.sh    |  3 +-
+ tools/testing/selftests/mm/cow.c              | 43 +++++++--
+ tools/testing/selftests/mm/hugetlb-madvise.c  |  9 +-
+ tools/testing/selftests/mm/page_frag/Makefile |  2 +-
+ tools/testing/selftests/mm/pagemap_ioctl.c    | 15 ++-
+ tools/testing/selftests/mm/pfnmap.c           | 93 +++++++++++--------
+ .../selftests/mm/split_huge_page_test.c       |  6 +-
+ tools/testing/selftests/mm/vm_util.h          |  7 ++
+ 9 files changed, 109 insertions(+), 77 deletions(-)
+
+
+base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
+-- 
+2.51.2
+
 
