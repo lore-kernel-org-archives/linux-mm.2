@@ -4,129 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAC66D6CFA2
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC32D6CFA1
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:00:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF4716B02E1; Thu, 22 Jan 2026 13:00:00 -0500 (EST)
+	id 94CC76B02E2; Thu, 22 Jan 2026 13:00:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9E7B6B02E2; Thu, 22 Jan 2026 13:00:00 -0500 (EST)
+	id 8FA1B6B02E4; Thu, 22 Jan 2026 13:00:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA0766B02E3; Thu, 22 Jan 2026 13:00:00 -0500 (EST)
+	id 7B2D26B02E5; Thu, 22 Jan 2026 13:00:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B72E06B02E1
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:00:00 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3080D1AFDAD
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:00:00 +0000 (UTC)
-X-FDA: 84360363360.09.D69C292
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0A1AF20005
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:59:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nLlvmX+r;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B0146B02E2
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:00:07 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0CD7B1604BC
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:00:07 +0000 (UTC)
+X-FDA: 84360363654.26.620CD81
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 679D5140012
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:00:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EfIyL8jj;
+	spf=pass (imf26.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769104798;
+	s=arc-20220608; t=1769104803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s3XFsHPN3VXtnh1Xfwn3CF8obsxLbBANgMnaypz5ktc=;
-	b=U+AIhx17mTZoT1w1bbpFWQmDhvhGMHIf83WFxMwVN9bzqueP2S70vKSzuN9ZxiST5o4cLu
-	US9mEkAlxJGMuDzCtaBbwa0y+FBJPNxQylXJix7PzOhTVy48FQVz2XkainDfq8Ola0zQla
-	sMpnnGzi8aGq7DJZ0LwSE2SXRhR8XSI=
+	bh=+ZLWX7Ttit3Pt1qm85Tbi244EW7S3psWz/a7zbS1I90=;
+	b=VKh6Hdl7dk2vVRqwI8aD/ifI6bYkcZtu+eQ92pemz1Yn8p1uD8KStvgsiLoQY0W7f0nuHd
+	2D6MX4ihF3wC71XpoqvBgwRvgHdwWhLoSPQ0zCPTVqQ/cczp4cFfEdlZtW56OxHylPZH71
+	4Y/vHRjZdXw+uGkWB0W3Hn369H+Zpas=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nLlvmX+r;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769104798; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EfIyL8jj;
+	spf=pass (imf26.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769104803; a=rsa-sha256;
 	cv=none;
-	b=cYXSo8fxJcbloUu0fvYMYLWK3lBSMje0ycViG9rGzglr5iJdetwrm9soHAZvwpSosiRd9/
-	7KZRsUg+ouDKO3tteKnv37AZYnypm/6G6UpfCSJTnuGzoX1asxMiK4BKrcLDTrsp7F9BNx
-	5irYdlV5uNAI/bV6bOcROkDuE8oOUkc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED6BF42A61;
-	Thu, 22 Jan 2026 17:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64684C4AF09;
-	Thu, 22 Jan 2026 17:59:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769104796;
-	bh=cT6/GvZiYYHD0xqjiEm6vn61jo1kWgmPBjWYhruQBGI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nLlvmX+rUAV/wP9W2HSOKnCa/Yi0hhubfryeblW9MzVofTRkVYppTlgazbjSCisdT
-	 5YHRNDzOXKKhVuZq39994vf/eg9XqcFZIeIkoqWslXyFxEYDnKxMIpLTrhMIVppgtf
-	 8W3NTQW/CL/3AUdJS6uSkfva06AcwSEGR2JaXqVDGsRUDi8e6VHXW+l5V4vYy048tF
-	 sgAs51t6HcuFIJvLWlZ02srIzy1SVotbQckF4lHuQ2vDFsUbjxXJCT/w1KpkdCth5v
-	 7rWqn725m5NkcVbg90hA0Cb2hcu4evS6JC5x3uBRVKbzk8AEBFURh+pOcd9yZDXtov
-	 2B8CumLbMaaVQ==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 62201F40068;
-	Thu, 22 Jan 2026 12:59:55 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 22 Jan 2026 12:59:55 -0500
-X-ME-Sender: <xms:m2VyaXcIYubd4xlywkDlA0x1DRJmN-3o8H88RhSw5HiP3A63Vw040Q>
-    <xme:m2VyafSKvVe4AJvHPGbEk49reSDK3dl6oGY3jjR89nJgu82dbeEz5LMhxb5gADhd7
-    _ou_kFcICztd3hseJgJZW6b-Qie0WJ1YpbcnCvTqmPsjBdZ1no-YTw>
-X-ME-Received: <xmr:m2Vyaamp5spSRu5V2FTwctZNDu4vs1Ejpafq-Dc9RP9Oue2kdKX-K6QwDAUeBg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeikedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeeigfdvtdekveejhfehtdduueeuieekjeekvdfggfdtkeegieevjedvgeetvdeh
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeefkedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepmhhutghhuhhnrdhsohhngheslhhinhhugidruggvvhdprhgtphhtthhopegrkh
-    hpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhi
-    ugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrug
-    drohhrghdprhgtphhtthhopehushgrmhgrrghrihhfieegvdesghhmrghilhdrtghomhdp
-    rhgtphhtthhopehfvhgulhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhsrghlvh
-    grughorhesshhushgvrdguvgdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:m2VyaTr-GJw4uzn9FXbpJzttI2akIIHUxKD2JGVF_Rb2_imDh0t4gg>
-    <xmx:m2VyaaaE6TLy7fzbO2l9h2xEYX5BN9WEA5bZS94-UrBhXb22t95EPw>
-    <xmx:m2VyafxoxH80fwXZ_jMLwgY6U5VtgM0BOxvPVPCvoZt6X37nkVNxOA>
-    <xmx:m2Vyafh1pwBQrYmk-huetlLk9RpDyqvw96VnmWj34_qEHT8aK0YAiA>
-    <xmx:m2VyaXJtVBN_FBu8tF19Fw6TpJn2JEwPvypG_uCJkw-TgmKzZgDos0yd>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 22 Jan 2026 12:59:54 -0500 (EST)
-Date: Thu, 22 Jan 2026 17:59:48 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>, 
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv4 07/14] mm/sparse: Check memmap alignment for
- compound_info_has_mask()
-Message-ID: <aXJHI8El7QHXQuwT@thinkstation>
-References: <aXIaHZ5kNFelmuJi@thinkstation>
- <554FD2AA-16B5-498B-9F79-296798194DF7@linux.dev>
+	b=vWPABJA6VuKSann3IXLEwe/1Kxdh6CVGvX2qOnQ/RorEue5L2ivbFvNHq96b7mSc4iuE5I
+	/oLKDT4gLxmcQX843dSQSUjA7+9HWUssVYvVf6XgpD+LLbqFx5dVmPu2NCGghDiDGre7sS
+	MhgKf/1gsVif66rItcyfUmaQxwxe9YM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769104802;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+ZLWX7Ttit3Pt1qm85Tbi244EW7S3psWz/a7zbS1I90=;
+	b=EfIyL8jjGp4xUDTAEygL0coSOoCAJnbr1Q1fvKvOyKXuRVf3IbhUcifuaaJt4WlIrKyc7k
+	Ldalk1+kc8WdaOgQJ08WTlmCVn5Tp1oU4cHBF7MyU4FyqKQ6/txKQl5cpqFGdklykqNxVi
+	Y7eQA/WsNHcA8GRWP7WI1GZoYuB6O2g=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-625-8lw59hIpMF-oGm9zjxat0w-1; Thu, 22 Jan 2026 13:00:01 -0500
+X-MC-Unique: 8lw59hIpMF-oGm9zjxat0w-1
+X-Mimecast-MFC-AGG-ID: 8lw59hIpMF-oGm9zjxat0w_1769104800
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c53919fbfcso284464285a.2
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:00:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769104800; x=1769709600;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+ZLWX7Ttit3Pt1qm85Tbi244EW7S3psWz/a7zbS1I90=;
+        b=cTcAX2WU4hjC+SYCiidI5+cQnoDzXpEIr+Bl6qsL7V8OP0WqortPOfY+PAEKymoPsr
+         ODg+6PDy9TM/34ZpP9lPQcQXkfLYtwiQeadu8y2DmNTDhXCTwWqpad+YASVJeWtrvih3
+         KdzRDe6JYB5P61+/0nm9PzPFNQrCrkE3bk6yS7AvmxOV+DpFS4BbdN1mgtJCay2XAotZ
+         Ybi+cxqWfYnuPsWqTUxlceAPgiyE1DD2rh5HnP8AiR+S1F7Ke8aD0n2V+CFMc32GHXA5
+         LNMFL+QlVglUq+mMVOhsdGgkbAbX8Kdvxonsy76xYbw0nR8k8MeBOmv2EYwElxNnf1GJ
+         eDLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmqs8al6x5UzcszC0le1mtoO2EJzLHp7A6RnAXL2LkOxmJC6goW8kOKjAX1QhDMuDf8PlvytV2GQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywi8EDETBcn727regpMrurQIsI2wqDemcTpvd3+IWg4Nx8FN6AD
+	3kEzLFIm41wiTSZGtJb5V5whXuPuPH44/9AdZQw+7reObtwJbqbVURKSjZm+LKLWQDMYwOHNk0j
+	dV5iP2psyfgZi9H/O4Du1z3nGl686p8llwPjMCjvd01SCzx9GbAMB
+X-Gm-Gg: AZuq6aKAeMd1JYcH9XLOuWUvbFbJmpRi11r41QkNaQvKFNECfw6Eybkmqg1XSDcLPf6
+	OwJcfZv9zlUhOZTjGoXPP1nXM2RKTksRZXhVGG48XBuj8SLrXnW7erJ6GCMJjKjk/0xOTGnEpRi
+	+oiFj+nFOSKBt4wvOJwSTXaszUbapFWomg6CknTe0cf7ryIn9aSTawkJ3o4vMV1mubS2z7xq3B2
+	GiR58R/d7Lf30iJr0YMg8mlNvDunMrJopT1409SQokKtuTVYFNpaN3fMK+3B2UPMXXQIRevHuR6
+	zhOYjGMWZhiD5SZNmGDx+mXriO3cJtE7vViPu/R5ISQy9DuyrDCczlyXMVAFVdhiBq8eGv+bLYc
+	Qy3uFzMQmYZ1PsYmtEWrjc81HJUbedOjAJPhRW+qlPh4gjuJPA8LxzSi1
+X-Received: by 2002:a05:620a:1924:b0:89f:9693:2522 with SMTP id af79cd13be357-8c6e2e4ac7cmr34980085a.73.1769104800445;
+        Thu, 22 Jan 2026 10:00:00 -0800 (PST)
+X-Received: by 2002:a05:620a:1924:b0:89f:9693:2522 with SMTP id af79cd13be357-8c6e2e4ac7cmr34977385a.73.1769104800080;
+        Thu, 22 Jan 2026 10:00:00 -0800 (PST)
+Received: from ?IPV6:2601:188:c102:b180:1f8b:71d0:77b1:1f6e? ([2601:188:c102:b180:1f8b:71d0:77b1:1f6e])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6af506829sm1272959385a.37.2026.01.22.09.59.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jan 2026 09:59:58 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <0fcbb05f-fa7b-47a1-bd4a-d59f1e0ddc35@redhat.com>
+Date: Thu, 22 Jan 2026 12:59:57 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <554FD2AA-16B5-498B-9F79-296798194DF7@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mm_init: Don't call cond_resched() in
+ deferred_init_memmap_chunk() if rcu_preempt_depth() set
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Waiman Long <llong@redhat.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, Wei Yang <richard.weiyang@gmail.com>,
+ David Hildenbrand <david@kernel.org>
+References: <20260121191036.461389-1-longman@redhat.com>
+ <20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org>
+ <0e385146-67a3-4fdd-b119-059caba8c5f0@redhat.com>
+ <13d0b8b5-1ba7-4a3e-a686-13a7b993d471@paulmck-laptop>
+ <20260122075747.uSLrSJez@linutronix.de>
+In-Reply-To: <20260122075747.uSLrSJez@linutronix.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4Aaw0zZCu7bSebdOOYH0ileFLCdaACCKfFZKSkX3vjc_1769104800
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Stat-Signature: g4sbowwf9q84gps476mm8nhy6bxf1bsc
+X-Stat-Signature: 6rpdganc3hfwijyy3ncuzqouznkugomf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A1AF20005
-X-HE-Tag: 1769104797-562947
-X-HE-Meta: U2FsdGVkX18Trxb5Xr8TiHjf0jwWFxD9pNqur4lKDFe1r6zuZLyTHX9dYch6o0UjqXkn4UECmr6m1PsPb2Y7rczulJFQJQu9dhH31RiLQ7MGpF/qz9OpPGlg5RPYQqj42Ur9svYaMJyh2im0XcEGarK069LLJx0mbAahb/j+H/p7d5AuiLhKNsU3RSQHRFHC9DcEKNXAOVuzHwQO6tj1UdraanvsqhZ+yleMoEresQjlIzpEABdCTm73Da0r6Hp9LKxz3uL1QJJbdrpsqNOmH6CmH4czISRRYR1spc3fWSMpqem+xaw7flMt0Pk+YEqiqEQH5sjgU9XbrvtzMg2o70SIvhI4LDQhFiA8eAdsH+B/hRPFgTjRJMdlCk0lmoeLE/XLFjlTBXDlsLrPZG5b25lfI0JdDxiyF2teTTcUTNZ/8kXD4jtO7ewZrWiAcVKl73jDRdPZJJP/P4MRj12UkVlPSjj9yrcz+yElIn4xiOKad9syhA8Q8NM55II2MF+Wv88w82hpBT5E/ekBUqW459c98m/KfiyKQutUnZnPwPI3tbmPIsZ3KejAcGiPuHlrGjtsZry/gdPVB2PByahik0g3h0guQvaVyr4I8EAy1ljSLn4c7YBycva0C+JW0PtfFWPvHPYfwvdBsZA2k8OG12ef4MV5VfZo5FRoCRoOcADcLdTa050KV9ZJLWZLMtu+KNOZpdL8aSxHeiBHiHT8KxEn+hNCgQhL+JfAXdf6nipJLb0giimXJvZJ3HBOryshSF6u9TmcgXx7N8oll82Ho9RuOjWt4eo7BXfnfMCWo8bcbmctbEgBkicjPcRJMycK9hgz+tHhDrzSaeOQpOTtm8JNSwn+kqwx27qCO9VOzLTQs+dNInrnZ1Hhma54pKwXmL0Nh2weVuETaSyVD2bfkBnk6hNf3tB3g+xqudFoRhrZgEmMiGfFjEUD7d4pt4T4xBKrN/Hv/OEhj9Qvhsg
- smn7PF8H
- hulLA5t1mKFc1eIGnkmOFWrHvafj+Ac2zFOumRDb72WbGgBUQ5gsuZa4Q0UwsB74fl6oZRLA5Tz2B9Rungcyz2Et+Q1TqLRI/AO7zMIWE2PZoIL+1FsmKBqeamHeKNEGN2xT5d/zIO70T0+/VbP6WXKE5cCakvIkun54qyLejXB7UmX/il7/s8hNkSovUQHB/EJLu+g+CzmbL47bia1bMkQ3ROpX7tm7NpuUksn950Cu+Sqi790nI+i2hyK8CIDyBU4/ps0sZwVgCwihgEkdilzjE7wq9mpzxLHW/R+NtPk0EtbPxdVjs9TsziKG+W+qYbmW+9E29cQoRhyg2X1vq2FaCVXY4TaAL4bhAS1rrcLH/oE+Xh8zE5SUgNg==
+X-Rspamd-Queue-Id: 679D5140012
+X-HE-Tag: 1769104803-83313
+X-HE-Meta: U2FsdGVkX1/Bmi01oViMEOwrzXYYj+rVC0DSQB/F+hUNRZ727vtjnbhEszF4SQx1HRRtSpYlx9qHBkfZ84eF9nu+FtgMcXT7uKBKlUlAdPRAiP+2xiKj258VHiR5aWjRhIw1LiXDt/IujhITC4S6CLrti0BJmUTyxmkYFOz+P42examgUJvNZlYrf7Kog39UKfXYW7RpLZaHTNzvDuRQBMCaVnxnJC2o8mBVTsix+AKYKzqKoEI6qfHvd7akgFKE/YNMaLLbkfTcuUMx8kxcjzux+C+enK0qe0zTs/mXN6gAJ56toYiDJXfDNEOyWKbDsgRUPUKRmbkpLBpeD82DXC3vi6e+LbU3eZnEZZQbL/vNjW10sQz3zcSoXKAMrxHBkeOsdX9LL9DGz3AEQ1I5ME50g2243PT2rzsFDTrwWIM0loO0wAQZbnzfERnRwpyemARUrLZOTgQgnYey2ogiyXuuPlCwi95KPtVCJfqeh3oK/IEC9bY68ooERJxlxd9KG+fkhdoLuMQsHSgJjWsvj9IPtbtCiw5lbEMcx7xHuv+jlNCPvpNO/aHssKIqoA5ZjcCatD2QR79bYsITYe6kx0D8wqqUB1+NKNo81O5Jh2vKZmB7F9oXQJ8q2xO9Lf6hj5bAQcU8Q2BRSTS51clQUay/oOujwSu8GHosyxxNXBNlaIzdZKK92TxGoImfrPJ4Lb8Xe2avrqHt3ElAWj1A4TmMXJG35oQn7Tvtn2rxKWMa5kogWV/PlJ/toRhOgB+MfwbUP2SxoYhbSKtYFGm2dQVSutyAcXqXros49VStYH+19+FQDDFI34MI0nx4u4WxVFFqp2eXP2bxJr+X+wgj/CcJyjkgUZS/sIS7GSxMdtBZNBXzfqCCIVdWg25UfY5HdbN4z1H8iHPcC9LSYMyhBG1uoB9nYjJe+XbjP51S6YK/0+7fd3gzYe++KMVUfKqg72RKH4myoSgBRnEUpR4
+ 0NG3wSnp
+ ebKls2Kchac22LTCyhagVwdAYtWk62Higy8wqUZB5+Xq0YuGdxrq/tPOmdTePHMNsz3yRSZbmnPxwAkeWZGxeEtQjkABVKKhg92H9qUD0O0mk1dKhpNuSPfNva6QiFTT0R72Q8jU4iIZleUmGb4+mjD2CyZ4v0Mj46hCcx+ERvh7rv7l2wgR0CfkLoJZmuTwzFxQqs9Ff8mn/VG+frsS+Zwa0zKqd37blKNyYGJCz32qo2BOrTHNfKRR5yVO3GZGYWDFy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,129 +141,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 10:02:24PM +0800, Muchun Song wrote:
-> 
-> 
-> > On Jan 22, 2026, at 20:43, Kiryl Shutsemau <kas@kernel.org> wrote:
-> > 
-> > ﻿On Thu, Jan 22, 2026 at 07:42:47PM +0800, Muchun Song wrote:
-> >> 
-> >> 
-> >>>> On Jan 22, 2026, at 19:33, Muchun Song <muchun.song@linux.dev> wrote:
-> >>> 
-> >>> 
-> >>> 
-> >>>> On Jan 22, 2026, at 19:28, Kiryl Shutsemau <kas@kernel.org> wrote:
-> >>>> 
-> >>>> On Thu, Jan 22, 2026 at 11:10:26AM +0800, Muchun Song wrote:
-> >>>>> 
-> >>>>> 
-> >>>>>> On Jan 22, 2026, at 00:22, Kiryl Shutsemau <kas@kernel.org> wrote:
-> >>>>>> 
-> >>>>>> If page->compound_info encodes a mask, it is expected that memmap to be
-> >>>>>> naturally aligned to the maximum folio size.
-> >>>>>> 
-> >>>>>> Add a warning if it is not.
-> >>>>>> 
-> >>>>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
-> >>>>>> kernel is still likely to be functional if this strict check fails.
-> >>>>>> 
-> >>>>>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> >>>>>> ---
-> >>>>>> include/linux/mmzone.h | 1 +
-> >>>>>> mm/sparse.c            | 5 +++++
-> >>>>>> 2 files changed, 6 insertions(+)
-> >>>>>> 
-> >>>>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> >>>>>> index 390ce11b3765..7e4f69b9d760 100644
-> >>>>>> --- a/include/linux/mmzone.h
-> >>>>>> +++ b/include/linux/mmzone.h
-> >>>>>> @@ -91,6 +91,7 @@
-> >>>>>> #endif
-> >>>>>> 
-> >>>>>> #define MAX_FOLIO_NR_PAGES (1UL << MAX_FOLIO_ORDER)
-> >>>>>> +#define MAX_FOLIO_SIZE (PAGE_SIZE << MAX_FOLIO_ORDER)
-> >>>>>> 
-> >>>>>> enum migratetype {
-> >>>>>> MIGRATE_UNMOVABLE,
-> >>>>>> diff --git a/mm/sparse.c b/mm/sparse.c
-> >>>>>> index 17c50a6415c2..5f41a3edcc24 100644
-> >>>>>> --- a/mm/sparse.c
-> >>>>>> +++ b/mm/sparse.c
-> >>>>>> @@ -600,6 +600,11 @@ void __init sparse_init(void)
-> >>>>>> BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
-> >>>>>> memblocks_present();
-> >>>>>> 
-> >>>>>> +  if (compound_info_has_mask()) {
-> >>>>>> +  WARN_ON(!IS_ALIGNED((unsigned long)pfn_to_page(0),
-> >>>>>> +     MAX_FOLIO_SIZE / sizeof(struct page)));
-> >>>>> 
-> >>>>> I still have concerns about this. If certain architectures or configurations,
-> >>>>> especially when KASLR is enabled, do not meet the requirements during the
-> >>>>> boot stage, only specific folios larger than a certain size might end up with
-> >>>>> incorrect struct page entries as the system runs. How can we detect issues
-> >>>>> arising from either updating the struct page or making incorrect logical
-> >>>>> judgments based on information retrieved from the struct page?
-> >>>>> 
-> >>>>> After all, when we see this warning, we don't know when or if a problem will
-> >>>>> occur in the future. It's like a time bomb in the system, isn't it? Therefore,
-> >>>>> I would like to add a warning check to the memory allocation place, for
-> >>>>> example:
-> >>>>> 
-> >>>>> WARN_ON(!IS_ALIGNED((unsigned long)&folio->page, folio_size / sizeof(struct page)));
-> >>>> 
-> >>>> I don't think it is needed. Any compound page usage would trigger the
-> >>>> problem. It should happen pretty early.
-> >>> 
-> >>> Why would you think it would be discovered early? If the alignment of struct page
-> >>> can only meet the needs of 4M pages (i.e., the largest pages that buddy can
-> >>> allocate), how can you be sure that there will be a similar path using CMA
-> >>> early on if the system allocates through CMA in the future (after all, CMA
-> >>> is used much less than buddy)?
-> > 
-> > True.
-> > 
-> >> Suppose we are more aggressive. If the alignment requirement of struct page
-> >> cannot meet the needs of 2GB pages (which is an uncommon memory allocation
-> >> requirement), then users might not care about such a warning message after
-> >> the system boots. And if there is no allocation of pages greater than or
-> >> equal to 2GB for a period of time in the future, the system will have no
-> >> problems. But once some path allocates pages greater than or equal to 2GB,
-> >> the system will go into chaos. And by that time, the system log may no
-> >> longer have this warning message. Is that not the case?
-> > 
-> > It is.
-> > 
-> > I expect the warning to be reported early if we have configurations that
-> > do not satisfy the alignment requirement even in absence of the crash.
-> 
-> If you’re saying the issue was only caught during
-> testing, keep in mind that with KASLR enabled the
-> warning is triggered at run-time; you can’t assume it
-> will never appear in production.
+On 1/22/26 2:57 AM, Sebastian Andrzej Siewior wrote:
+> On 2026-01-21 13:27:32 [-0800], Paul E. McKenney wrote:
+>>>>> --- a/mm/mm_init.c
+>>>>> +++ b/mm/mm_init.c
+>>>>> @@ -2085,7 +2085,12 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+>>>>>    			spfn = chunk_end;
+>>>>> -			if (irqs_disabled())
+>>>>> +			/*
+>>>>> +			 * pgdat_resize_lock() only disables irqs in non-RT
+>>>>> +			 * kernels but calls rcu_read_lock() in a PREEMPT_RT
+>>>>> +			 * kernel.
+>>>>> +			 */
+>>>>> +			if (irqs_disabled() || rcu_preempt_depth())
+>>>>>    				touch_nmi_watchdog();
+>>>> rcu_preempt_depth() seems a fairly internal low-level thing - it's
+>>>> rarely used.
+> If you acquire a lock from time to time and you pass a bool the let the
+> function below know whether scheduling is fine or not then it is
+> obvious. If you choose to check for symptoms of an acquired lock then
+> you have to use also the rarely used functions ;)
+>
+>>> That is true. Beside the scheduler, workqueue also use rcu_preempt_depth().
+>>> This API is included in "include/linux/rcupdate.h" which is included
+>>> directly or indirectly by many kernel files. So even though it is rarely
+>>> used, but it is still a public API.
+>> It is a bit tricky, for example, given a kernel built with both
+>> CONFIG_PREEMPT_NONE=y and CONFIG_PREEMPT_DYNAMIC=y, it will never
+>> invoke touch_nmi_watchdog(), even if it really is in an RCU read-side
+>> critical section.  This is because it was intended for lockdep-like use,
+>> where (for example) you don't want to complain about sleeping in an RCU
+>> read-side critical section unless you are 100% sure that you are in fact
+>> in an RCU read-side critical section.
+>>
+>> Maybe something like this?
+>>
+>> 	if (irqs_disabled() || !IS_ENABLED(CONFIG_PREEMPT_RCU) || rcu_preempt_depth())
+>> 		touch_nmi_watchdog();
+> I don't understand the PREEMPT_NONE+DYNAMIC reasoning. irqs_disabled()
+> should not be affected by this and rcu_preempt_depth() will be 0 for
+> !CONFIG_PREEMPT_RCU so I don't think this is required.
+>
+>> This would *always* invoke touch_nmi_watchdog() for such kernels, which
+>> might or might not be OK.
+>>
+>> I freely confesss that I am not sure which of these is appropriate in
+>> this setting.
+> What about a more straight forward and obvious approach?
+>
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index fc2a6f1e518f1..0b283fd48b282 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2059,7 +2059,7 @@ static unsigned long __init deferred_init_pages(struct zone *zone,
+>    */
+>   static unsigned long __init
+>   deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+> -			   struct zone *zone)
+> +			   struct zone *zone, bool may_schedule)
+>   {
+>   	int nid = zone_to_nid(zone);
+>   	unsigned long nr_pages = 0;
+> @@ -2085,10 +2085,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+>   
+>   			spfn = chunk_end;
+>   
+> -			if (irqs_disabled())
+> -				touch_nmi_watchdog();
+> -			else
+> +			if (may_schedule)
+>   				cond_resched();
+> +			else
+> +				touch_nmi_watchdog();
+>   		}
+>   	}
+>   
+> @@ -2101,7 +2101,7 @@ deferred_init_memmap_job(unsigned long start_pfn, unsigned long end_pfn,
+>   {
+>   	struct zone *zone = arg;
+>   
+> -	deferred_init_memmap_chunk(start_pfn, end_pfn, zone);
+> +	deferred_init_memmap_chunk(start_pfn, end_pfn, zone, true);
+>   }
+>   
+>   static unsigned int __init
+> @@ -2216,7 +2216,7 @@ bool __init deferred_grow_zone(struct zone *zone, unsigned int order)
+>   	for (spfn = first_deferred_pfn, epfn = SECTION_ALIGN_UP(spfn + 1);
+>   	     nr_pages < nr_pages_needed && spfn < zone_end_pfn(zone);
+>   	     spfn = epfn, epfn += PAGES_PER_SECTION) {
+> -		nr_pages += deferred_init_memmap_chunk(spfn, epfn, zone);
+> +		nr_pages += deferred_init_memmap_chunk(spfn, epfn, zone, false);
+>   	}
+>   
+>   	/*
+>
+> Wouldn't this work?
 
-Let's look at what architectures actually do with vmemmap.
+Yes, I think that is the better approach. I will post a v3 with change 
+as Mike has no objection to it. Thanks!
 
-On 64-bit machines, we want vmemmap to be naturally aligned to
-accommodate 16GiB pages.
+Cheers,
+Longman
 
-Assuming 64 byte struct page, it requires 256 MiB alignment for 4K
-PAGE_SIZE, 64MiB for 16K PAGE_SIZE and 16MiB for 64K PAGE_SIZE.
-
-Only 3 architectures support HVO (select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP):
-loongarch, riscv and x86. We should make the feature conditional to HVO
-to limit exposure.
-
-I am not sure why arm64 is not in the club.
-
-x86 aligns vmemmap to 1G - OK.
-
-loongarch aligns vmemmap to PMD_SIZE does not fit us with 4K and 16K
-PAGE_SIZE. It should be easily fixable. No KALSR.
-
-riscv aligns vmemmap to section size (128MiB) which is not enough.
-Again, easily fixable.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
 
