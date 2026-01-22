@@ -4,110 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D21BAD3EE84
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:15:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B64D3EE8A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:15:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 089AA6B027C; Thu, 22 Jan 2026 11:15:09 -0500 (EST)
+	id 8A46A6B029F; Thu, 22 Jan 2026 11:15:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06BDE6B0298; Thu, 22 Jan 2026 11:15:09 -0500 (EST)
+	id 864E36B02A0; Thu, 22 Jan 2026 11:15:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC34E6B029A; Thu, 22 Jan 2026 11:15:08 -0500 (EST)
+	id 7502E6B02A1; Thu, 22 Jan 2026 11:15:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D98F76B027C
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:15:08 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D3F91A0445
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:15:08 +0000 (UTC)
-X-FDA: 84360099096.14.93D4CAA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0EF22C000F
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:15:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tLh5e7xw;
-	spf=pass (imf28.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D4016B029F
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:15:22 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0FD411A0408
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:15:22 +0000 (UTC)
+X-FDA: 84360099684.04.FC13FF8
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0EF9E8000E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:15:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=q1HlIrWN;
+	spf=pass (imf30.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769098507;
+	s=arc-20220608; t=1769098519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=U5RekFzJh3yLIQs1SywOGsNGakUv11/WNDSzc4EMU7c=;
-	b=3iyCxQztmsRwC9gXADkqhX6N9i9UddH8PD3bd+GnL+Kh0OooJvtVeVxPtwveeGkrmppuP3
-	3tQGyG3KwvZP+bwc/8RGzu+K1rxLr5nhTUCo44VUvpeKZeJvq1njBGbu6VZ3qtt3jJ0RtM
-	bvUHZI8bkNsB9kDYbzha9t7XWEbtKLE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ut0PvNTFkBDARJX4qSO9056XGy5KdZ5rJS/cjW/7pRk=;
+	b=lIJEdbsOE6EyVmGjnaJ4J+PNhrmYnnZ9F4znMewGY4T8OuQzKk5yAcgkWI3QFo52Saost3
+	S6Q9K6bwsXQJUB7b2HhVo1E858P2d+607nGwuThXAKHr3Rpy160Qr1iyy3+6yRALOCX3Dn
+	4cKqn9oia8b0Ule2Ob9KAsyZ9vVM9VQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tLh5e7xw;
-	spf=pass (imf28.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098507; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=q1HlIrWN;
+	spf=pass (imf30.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098519; a=rsa-sha256;
 	cv=none;
-	b=iUS04gGsNxuEFnBlaujd8118sazPfeKs/mTomiK0iFNjo8wOb2UzDGATAs5a8OrD7eeOty
-	D+q2gETcXEPbBmr2KHS8B2kFITQGqTRBd6e3O06QsB/oo2HQG2p6tPJ90BK/aJtgF+o/qq
-	wXVDwKgjTXxMqyFMp3Vhnc8Walne0ao=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 91780600CB;
-	Thu, 22 Jan 2026 16:15:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2086AC116C6;
-	Thu, 22 Jan 2026 16:15:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769098506;
-	bh=SJFHQ6Dsh1f3ySZRRJ37Il23iv7ykfQoJASPEADlhj4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=tLh5e7xwyLi35ByP+P/zx+FUIZG0/Y/cKNIGwGFiXAL/PUM7LOTUcK1jbPF0zrhbW
-	 QfWcHJziaTjycIc0UZky0Lxqkn5JXMqzA8amcf0V+QDYCC6W+IF0ubb4WgKlUZj5gc
-	 2fhR+uq+lWXlGDORM4eoBcJ8MpPpG8puVbwZ4QnvuSU2bbfCDufoO668SdQkAa2w0Y
-	 m9HgVWsHLrT86aXF56xvPBBAM1ivknGyvZ3Z2g9KgKceVnABiMNnxJqLkQQy53rbvp
-	 5weW0+uOX4bDc/i0DBPfurqkJVpfu0nO90iejA1w1Euge0UvXu/MHizO9U1La6QwEY
-	 GDcYIFh5457qg==
-Date: Thu, 22 Jan 2026 10:15:05 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 23/33] PCI: Remove superfluous HK_TYPE_WQ check
-Message-ID: <20260122161505.GA1250310@bhelgaas>
+	b=ZRKVSjxi8MfRv1evM4MwAjuvFCB9S/770Wn8UrAMsbfiN1zlPG3wlI2XJqfKDK5Fdt+ZXz
+	ycWlIh6nlURqI4DUf5Mq0qeZwE7iifmBCnf9ohWONOkYtCmPiU+s5BFdGa8bi5iMl2hxTy
+	NKZssp671aG0FH/85HK5APY8UjUjpO4=
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260122161515epoutp016eee2dd9a43a50342e4e02f56d9ef8d1~NGboF5wDq1036510365epoutp01W
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:15:15 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260122161515epoutp016eee2dd9a43a50342e4e02f56d9ef8d1~NGboF5wDq1036510365epoutp01W
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1769098515;
+	bh=Ut0PvNTFkBDARJX4qSO9056XGy5KdZ5rJS/cjW/7pRk=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=q1HlIrWNyqXlXJ8s7fdr+6FILnBgREtqtbL6tKRVnDJQDqNFP2+0kWYEsWdCFbTpY
+	 +Q/VOdgW4Pmp1Z0/7nsG/3bIUEvgFb8cmslFKPWLb5SKPakzqL1B2ApoYpixV7P4E1
+	 1lh6S8ZF86UVTN01KMmAKMW8lo42qiOHn4lGHGTE=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
+	20260122161514epcas5p2ece65e143be4209661a3f0354ecff169~NGbnfPXfZ2058720587epcas5p2o;
+	Thu, 22 Jan 2026 16:15:14 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.86]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4dxmPF5YJ7z2SSKY; Thu, 22 Jan
+	2026 16:15:13 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260122161513epcas5p2f245aaca490aadd994074f3fd52031e2~NGbmJDHS62060020600epcas5p2d;
+	Thu, 22 Jan 2026 16:15:13 +0000 (GMT)
+Received: from [107.111.86.57] (unknown [107.111.86.57]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260122161506epsmtip1e1a44b279ac7ac7ad390e8ab6dcb5c97~NGbgAiEqi0033200332epsmtip1T;
+	Thu, 22 Jan 2026 16:15:06 +0000 (GMT)
+Message-ID: <ca048ecf-5aec-4a0d-8faf-ad9fcd310e21@samsung.com>
+Date: Thu, 22 Jan 2026 21:45:05 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260101221359.22298-24-frederic@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0EF22C000F
-X-Stat-Signature: kpx3gua7ibntwpob7p531nkguhzeq3o5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/6] AG aware parallel writeback for XFS
+Content-Language: en-US
+To: Brian Foster <bfoster@redhat.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
+	amir73il@gmail.com, axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com,
+	djwong@kernel.org, dave@stgolabs.net, cem@kernel.org, wangyufei@vivo.com,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com,
+	vishak.g@samsung.com, joshi.k@samsung.com
+From: Kundan Kumar <kundan.kumar@samsung.com>
+In-Reply-To: <aXEvAD5Rf5QLp4Ma@bfoster>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260122161513epcas5p2f245aaca490aadd994074f3fd52031e2
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4
+References: <CGME20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4@epcas5p1.samsung.com>
+	<20260116100818.7576-1-kundan.kumar@samsung.com> <aXEvAD5Rf5QLp4Ma@bfoster>
+X-Stat-Signature: c9iskcwtma3j97take7ztcg4dituuqxj
 X-Rspam-User: 
-X-HE-Tag: 1769098506-211230
-X-HE-Meta: U2FsdGVkX191Do7MGGaPct/2A1wUFxFS7FQuyTulUPqgI6aeF1LW4ffY5SGeiaRJ2cY2WhmmBMrhh8IyMWkYlzViNk5dCc/QpEAmdBqrcEgOGFKq+mAt6x5RPGuiiFHFA0cOB3+/bDb0PGQEgbxV8TIxGOZZjR/4xYxyhVNVUbAH2Z8Nv8b0nSPT/O7ZT36fNhFpfbmwT7bDdIN2U2SiYb1i+3TfmsDW2lXvhQrT/nLdxKFRA93XcnkVLzyTguq/l344vj4APVDbV7r64Jr3S3HI+NNo3U42EuNznM6Gc2gnPskOUCkkYE0Iwdytl3czFJxB73vu9aOhwEVSUu7NOnfD2lY5t06hrAG1TjIXRdJ7lGYt8t3Vnlz8+b4sUcdmWwwx65bZI+KNAO4jSLAng0iHTgzrn4ukUKc6IyfaX9Tt467WYxicQjZ+0N+KrFuqz/p9i2QcWeIszPsqkVPVbsLnDt3DVc8wvhKVuRaWaPJw3U1/ckYmHT5rLioBNCdOlP06VFdKEV9uO87mSMZWpy0V2OSU7qilWJkao3Bg1no9fn9vxB3Ilu9vcIUaDCk6wQgYHsGrDEBspdcEkP3Qf6v03o+66as9GUnCANkhm4ieh6NwfoHCWsWVXPoCrH/hiArNtId7VGItByhioaBVpbrDZrPUD5WFKsP8hBMXcdvPOGw3hvjIlc4FKduHaiXsMkd3JrqVOg7kY1xdEJUaYC+ub974Q7OIdiFnEs5KkDyb9avlsK6BizeXYqRxuY2eoDRkuaXPRdtXUnB02QnXGG5g9Ab/FZRJaUi8mLhS3uyAuEVT+zkXRfT3ZsqMtKVKDW7HKhrlL1IuoM/tjanXe2IWuVGO51xLVRM9FqcnJ09eimShOGpwjXoCW+SyVyOlwuOfb8PiZGVyUJeeqvm2GJoA/OqB5CZOIoBbulpLDUe+SNgLhUbCoNSAB2W/3b1B4FYxWJXJEsYxDPfXw81
- s8iorOMj
- uyfLZI/ANK/jnTVGyp+DHT2EOuxBrM3yT41rC8N5v8cseiE95emYjDynJL7cJ0jfU7vBDx+QjFqbCDyQWfWkCRjJi2WCmoBBiVpr1XHF5KUG++C+sKsUHC4UGMfa9OZTNfLI7SRl8odi+loFhuP93U0UuJFoSJ0NwnrrbzCuEZxOuIi7Y8U1IWfvHdRYcLfsZpGWp3ig5+iObOwncpAthfLYANEbn7nJIDkV+ncY4B5vt5LWgXyifCaUkmOmuqMBxdd1HZm1mTpacd/rm07mwEB1mIY9toLkilshcrznbMhadUTB9XVRu+UyuQ4sDTWzfEgxMulUQbMwYPpwwIf3ssQz9Xw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0EF9E8000E
+X-HE-Tag: 1769098518-505323
+X-HE-Meta: U2FsdGVkX1/TkVhEZOyyJOWX3df631wCCdrLslmf2KGZR4dh1SWfgDnaK5uap04WMHg0i0UyVu627kd01R18PYSJvv8pkeNBx/9ZYgqP4h9KCu1lCq9ikBYFvlD7859lg9hqVvnExQS56D4E5f9MEiUMNDCzq1LFrtNeVhg1tWqJohe38qYDin+lNFKfunagXqlIaaB5rE6cqqWfcANETG8//7xRzOvI7xLsI0h4kEZUJoQ6SrwfHOryBfNmC5OSyfHCt2qoTLi1Xydir9DCPG5miGh3g1oLtOl7tQnkcIfFGDqtKTBqPWyVjc5Rr2yoDlObzKfKVXH0zDUYz6hcgz6KQXi32r0gfGfU1xmZRhPUG0S7kLthgINjVDWwCHsZHdIWuexegv968P2Q/UABi5rpshMPab/XBMxQu8cQLkipI3TnUaPyz1VinG8rVR9dIjHl4x48tO8Qk94TGw/fImNPFMVLBZC08e60rPH6xzTERSDYwKxIjLfIINWHNYZ+crIS9f9bQU5TM2mJNa2Si0lo5jJNlq1LItnLb6mfsP7ZBczACqBGqdOM8Hsuz6XPkWOkor/efaUr6iGwjYdaR2BW1GxLMn4CU7jgXI6dsD/c0Vj6v21u0+hJsafW25xSd2t/fSFZeGt7W2LGegcb1hqmxekmVxR/oOf/BYnTh8s2M+qEUPh1O4ebxGf4AEngu9QaoHYc3+PE6tftKxtXRHwADsHX0fRKQi+w8Kgh4gaK8gS/ryxt4vVcA0DATJe9AXDLqtXJFqLhz9Ob1mciN3UQEpJ5zhoA/U2oXqM7UrhjIKkn4cFOwyKt930nAX+JfipJHDx3MDq9Qk/WKJlJB/H4OS5fzux+MFf6gsewGaPWNYO6Ald2bor7M6hxKMrLkK82K++6UVN4q4glgLxn7E/ZH5fTvOv6L+HbJZm+0qh8+FshY+4Dub4qBmpnlVlpIKdQAj193XzhekmAR1/
+ U4p6lAsT
+ QeRjnyyab6MH9xj1NjZlUMJPCQ8nT4J1WpXTFFTcv7KS9qaHyNPFv7Lwsbvn47ReSZ79ZRctGPr3f0IoNFwhT8ldVOxLE6rkuswLyMDaBIyrA/hmxbqhHWnbQj63RIsjvKCAnx6yhRaGC3vPBMJrRZ3YvReythTbT5G+GfDLEoybKlIhYZCk/h56NH8i27SCXc8vR563aGRIerhk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,79 +117,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 01, 2026 at 11:13:48PM +0100, Frederic Weisbecker wrote:
-> It doesn't make sense to use nohz_full without also isolating the
-> related CPUs from the domain topology, either through the use of
-> isolcpus= or cpuset isolated partitions.
 > 
-> And now HK_TYPE_DOMAIN includes all kinds of domain isolated CPUs.
-> 
-> This means that HK_TYPE_KERNEL_NOISE (of which HK_TYPE_WQ is only an
-> alias) should always be a subset of HK_TYPE_DOMAIN.
-> 
-> Therefore sane configurations verify:
-> 
-> 	HK_TYPE_KERNEL_NOISE | HK_TYPE_DOMAIN == HK_TYPE_DOMAIN
-> 
-> Simplify the PCI probe target election accordingly.
-> 
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> Could you provide more detail on how you're testing here? I threw this
+> at some beefier storage I have around out of curiosity and I'm not
+> seeing much of a difference. It could be I'm missing some details or
+> maybe the storage outweighs the processing benefit. But for example, is
+> this a fio test command being used? Is there preallocation? What type of
+> storage? Is a particular fs geometry being targeted for this
+> optimization (i.e. smaller AGs), etc.?
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Thanks Brian for the detailed review and for taking the time to
+look through the code.
 
-> ---
->  drivers/pci/pci-driver.c | 17 +++--------------
->  1 file changed, 3 insertions(+), 14 deletions(-)
+The numbers quoted were from fio buffered write workloads on NVMe
+(Optane devices), using multiple files placed in different
+directories mapping to different AGs. Jobs were buffered
+randwrite with multiple jobs. This can be tested with both
+fallocate=none or otherwise.
+
+Sample script for 12 jobs to 12 directories(AGs) :
+
+mkfs.xfs -f -d agcount=12 /dev/nvme0n1
+mount /dev/nvme0n1 /mnt
+sync
+echo 3 > /proc/sys/vm/drop_caches
+
+for i in {1..12}; do
+   mkdir -p /mnt/dir$i
+done
+
+fio job.fio
+
+umount /mnt
+echo 3 > /proc/sys/vm/drop_caches
+
+The job file :
+
+[global]
+bs=4k
+iodepth=32
+rw=randwrite
+ioengine=io_uring
+fallocate=none
+nrfiles=12
+numjobs=1
+size=6G
+direct=0
+group_reporting=1
+create_on_open=1
+name=test
+
+[job1]
+directory=/mnt/dir1
+
+[job2]
+directory=/mnt/dir2
+...
+...
+[job12]
+directory=/mnt/dir12
+
 > 
-> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-> index b902d8adf9a5..a9590601835a 100644
-> --- a/drivers/pci/pci-driver.c
-> +++ b/drivers/pci/pci-driver.c
-> @@ -384,16 +384,9 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
->  	    pci_physfn_is_probed(dev)) {
->  		error = local_pci_probe(&ddi);
->  	} else {
-> -		cpumask_var_t wq_domain_mask;
->  		struct pci_probe_arg arg = { .ddi = &ddi };
->  
-> -		if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
-> -			error = -ENOMEM;
-> -			goto out;
-> -		}
-> -
->  		INIT_WORK_ONSTACK(&arg.work, local_pci_probe_callback);
-> -
->  		/*
->  		 * The target election and the enqueue of the work must be within
->  		 * the same RCU read side section so that when the workqueue pool
-> @@ -402,12 +395,9 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
->  		 * targets.
->  		 */
->  		rcu_read_lock();
-> -		cpumask_and(wq_domain_mask,
-> -			    housekeeping_cpumask(HK_TYPE_WQ),
-> -			    housekeeping_cpumask(HK_TYPE_DOMAIN));
-> -
->  		cpu = cpumask_any_and(cpumask_of_node(node),
-> -				      wq_domain_mask);
-> +				      housekeeping_cpumask(HK_TYPE_DOMAIN));
-> +
->  		if (cpu < nr_cpu_ids) {
->  			struct workqueue_struct *wq = pci_probe_wq;
->  
-> @@ -422,10 +412,9 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
->  			error = local_pci_probe(&ddi);
->  		}
->  
-> -		free_cpumask_var(wq_domain_mask);
->  		destroy_work_on_stack(&arg.work);
->  	}
-> -out:
-> +
->  	dev->is_probed = 0;
->  	cpu_hotplug_enable();
->  	return error;
-> -- 
-> 2.51.1
+> FWIW, I skimmed through the code a bit and the main thing that kind of
+> stands out to me is the write time per-folio hinting. Writeback handling
+> for the overwrite (i.e. non-delalloc) case is basically a single lookup
+> per mapping under shared inode lock. The question that comes to mind
+> there is what is the value of per-ag batching as opposed to just adding
+> generic concurrency? It seems unnecessary to me to take care to shuffle
+> overwrites into per-ag based workers when the underlying locking is
+> already shared.
 > 
+
+That’s a fair point. For the overwrite (non-delalloc) case, the
+per-folio AG hinting is not meant to change allocation behavior, and
+I agree the underlying inode locking remains shared. The primary value
+I’m seeing there is the ability to partition writeback iteration and
+submission when dirty data spans multiple AGs.
+I will try routing overwrite writeback to workers irrespective of AG
+(e.g. hash/inode based), to compare between generic concurrency vs AG
+batching.
+
+> WRT delalloc, it looks like we're basically taking the inode AG as the
+> starting point and guessing based on the on-disk AGF free blocks counter
+> at the time of the write. The delalloc accounting doesn't count against
+> the AGF, however, so ISTM that in many cases this would just effectively
+> land on the inode AG for larger delalloc writes. Is that not the case?
+> 
+> Once we get to delalloc writeback, we're under exclusive inode lock and
+> fall into the block allocator. The latter trylock iterates the AGs
+> looking for a good candidate. So what's the advantage of per-ag
+> splitting delalloc at writeback time if we're sending the same inode to
+> per-ag workers that all 1. require exclusive inode lock and 2. call into
+> an allocator that is designed to be scalable (i.e. if one AG is locked
+> it will just move to the next)?
+> 
+
+The intent of per-AG splitting is not to parallelize allocation
+within a single inode or override allocator behavior, but to
+partition writeback scheduling so that inodes associated with
+different AGs are routed to different workers. This implicitly
+distributes inodes across AG workers, even though each inode’s
+delalloc conversion remains serialized.
+
+> Yet another consideration is how delalloc conversion works at the
+> xfs_bmapi_convert_delalloc() -> xfs_bmapi_convert_one_delalloc() level.
+> If you take a look at the latter, we look up the entire delalloc extent
+> backing the folio under writeback and attempt to allocate it all at once
+> (not just the blocks backing the folio). So in theory if we were to end
+> up tagging a sequence of contiguous delalloc backed folios at buffered
+> write time with different AGs, we're still going to try to allocate all
+> of that in one AG at writeback time. So the per-ag hinting also sort of
+> competes with this by shuffling writeback of the same potential extent
+> into different workers, making it a little hard to try and reason about.
+> 
+
+Agreed — delalloc conversion happens at extent granularity, so
+per-folio AG hints are not meant to steer final allocation. In this
+series the hints are used purely as writeback scheduling tokens;
+allocation still occurs once per extent under XFS_ILOCK_EXCL using
+existing allocator logic. The goal is to partition writeback work and
+avoid funneling multiple inodes through a single writeback path, not
+to influence extent placement.
+
+> So stepping back it kind of feels to me like the write time hinting has
+> so much potential for inaccuracy and unpredictability of writeback time
+> behavior (for the delalloc case), that it makes me wonder if we're
+> effectively just enabling arbitrary concurrency at writeback time and
+> perhaps seeing benefit from that. If so, that makes me wonder if the
+> associated value can be gained by somehow simplifying this to not
+> require write time hinting at all.
+> 
+> Have you run any experiments that perhaps rotors inodes to the
+> individual wb workers based on the inode AG (i.e. basically ignoring all
+> the write time stuff) by chance? Or anything that otherwise helps
+> quantify the value of per-ag batching over just basic concurrency? I'd
+> be interested to see if/how behavior changes with something like that.
+
+Yes, inode-AG based routing has been explored as part of earlier
+higher-level writeback work (link below), where inodes are affined to
+writeback contexts based on inode AG. That effectively provides
+generic concurrency and serves as a useful baseline.
+https://lore.kernel.org/all/20251014120845.2361-1-kundan.kumar@samsung.com/
+
+The motivation for this series is the complementary case where a
+single inode’s dirty data spans multiple AGs on aged/fragmented
+filesystems, where inode-AG affinity breaks down. The folio-level AG
+hinting here is intended to explore whether finer-grained partitioning
+provides additional benefit beyond inode-based routing.
+
 
