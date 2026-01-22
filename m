@@ -4,124 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7603C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 12:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23250C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 12:14:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 103C76B016E; Thu, 22 Jan 2026 07:13:08 -0500 (EST)
+	id 8AF996B0170; Thu, 22 Jan 2026 07:14:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AE506B0170; Thu, 22 Jan 2026 07:13:08 -0500 (EST)
+	id 86FD86B0172; Thu, 22 Jan 2026 07:14:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF3796B0171; Thu, 22 Jan 2026 07:13:07 -0500 (EST)
+	id 752296B0173; Thu, 22 Jan 2026 07:14:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBD2B6B016E
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 07:13:07 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3311B7C21
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:13:07 +0000 (UTC)
-X-FDA: 84359489214.27.43AC7CA
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BA5761C0003
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:13:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kfUXVKW1;
-	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F5F46B0170
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 07:14:38 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 16D99D25F2
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:14:38 +0000 (UTC)
+X-FDA: 84359493036.28.B0E5891
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A23E840009
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:14:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gTY8ILWY;
+	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769083985;
+	s=arc-20220608; t=1769084075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UvVMyc7Izyekg4erNbUiI7MR1H3oQdShyZ4b768kWrQ=;
-	b=3mwKaKCTPgjT0f99/TZ9fsm1vY8O1p9znHhhs5yIlWmN4TMO2X4lbztlfxZh8KA3KdAVbg
-	IExOVJOQP+FYXiTomGT3MdL42rR+0U6MHyq2h5jLtgBYMPJVqhY2orh+LNDSj8GjNynNzw
-	Jug/PWUn3j+6oLDdomudhYOHPFd3SFw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kfUXVKW1;
-	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769083985; a=rsa-sha256;
+	bh=fVc63fzP8jYJOu4M36nOSwhzqNqPKt1gOJVpgrHGEmQ=;
+	b=L+NkX/kOJ0XmJji3983Pi2oTdKzKi7eKky3vfph2O/qS2NEwwCAPvWb0LCSJadvu1XEHE5
+	l5lXgf1PSnngbI1VSInzZC/95RJAvZXShnjelJSaWOQLrarm2FgiQLoFY7Zp8zbJjoQejH
+	Zrv8vnzxAEqLwm2POkcZ69d6tyXhF1U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769084075; a=rsa-sha256;
 	cv=none;
-	b=V8pdJgsqwk6+4IqenTvVXeXD19AEwjIC+ASOXVLfSn5mfE5NXxF8p+ukvjldVUnY2LncV3
-	RHQmm7MzKtClN4IXGxM/GSjuyeHt0qWwuqXHVKg0+XkEc5NFl1zLgO8hSUEY3oAA1vz5zs
-	ZjcowbW9c1jRPuZ6sveJOGj0koVx3sg=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b87003e998bso348772266b.1
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:13:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769083984; x=1769688784; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UvVMyc7Izyekg4erNbUiI7MR1H3oQdShyZ4b768kWrQ=;
-        b=kfUXVKW1vcD7Kubtmv7jj0GkHdPQaLgRrh9fadGJn98hS5coSx7rMQxZlmLCspT1JL
-         YbvTtu9P5y9HzjLwvR0vhVTeyei5Tzy98gRseMxypty3FdhkpWTdXCsgE0xTy2HHLju+
-         qaML7WxXQtnIQyzOskXgnCGTCsyWw8aEti9drqOdH3KXwZkeNCdXRKFrb+JgPKf9qkFG
-         nW7H23IQn9yfvYN2AyUIFlA9FwpDxQ/grVy96+sBh+cg7rH4J8vmdqJ0aS7QN1w3c51c
-         18oZuLVYrKt0vQunKcBP3ax0LkNNdUqYJGyGngnOWP5PWjeiX10+yrNANcU1llArocT9
-         rIpQ==
+	b=1+WiRXKQN+vuhbiUEr7trdceQHI+Q9VR5Ba947+LyQwEPklE5I4r3Xi8y8pdHybm8zeAlL
+	kLi+vTF1SmgTkTGqQRHa2QGBXoTgm8UA5BjM3gUFeKeJz/EsyGLLqQuMNNceMeiJ4kYvsh
+	RNKw6NMlNZQK95pErrt3oPZGT4RuRIQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gTY8ILWY;
+	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769084075;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fVc63fzP8jYJOu4M36nOSwhzqNqPKt1gOJVpgrHGEmQ=;
+	b=gTY8ILWYkXW+CtL3VC+ewPX+PdzU3thYpVgzffWxduiZoE90aWphn0oLD4yz/2AHqJID9p
+	1JxajGjAQzadW7SnEmzeMSGccc2J6QAo8SMW4IYJGKNjsP+44CWdpTyTjP0qZbiZb2p1sW
+	0Wk18Y34qp/rtNNzyF2ZtLded68SGl4=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-81-8OOp5ZViPa2TzMLkC8VETQ-1; Thu, 22 Jan 2026 07:14:33 -0500
+X-MC-Unique: 8OOp5ZViPa2TzMLkC8VETQ-1
+X-Mimecast-MFC-AGG-ID: 8OOp5ZViPa2TzMLkC8VETQ_1769084073
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-644548b1d9aso1326079d50.1
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:14:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769083984; x=1769688784;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1769084073; x=1769688873;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UvVMyc7Izyekg4erNbUiI7MR1H3oQdShyZ4b768kWrQ=;
-        b=gxmhsZuqYVG00+QQpWoYonBfurWbr2vxEhC7ktH944kX0ZOxB0j7G1Mulrhh10+/hf
-         2k3XGCvIthqjYf6PSWDSLwalOsVRATOXdjaJfTXjVhgvKPF5Z1L4lO5lvzEVCq1qamui
-         h0T25op5OV+UQJJbzc9LlEafFT+C/6g7aiA0dxC55ETozLGxVyx2yfQWEZayDkTgis1l
-         Pi5ZkgjR6m5iU2wxwXNcaUWwmG3HSMKUqfcyYZkajCa5sDSL5qQH+eIAKY3w7oTTS8L2
-         SUqcL/vPD/OeKCfv7wxqVMY1TVo3a0ne6vCnGdOSbkxaCKt6PsdBnWmI+9q5KMQWkFvO
-         xwXA==
-X-Forwarded-Encrypted: i=1; AJvYcCVRcQZkyQF47QQzvAtBI2qmdDbsqm4WCG4a2OWY+OHQJsFCZANEpIpbv0ooGohn2xGs2eEhZzFNAQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx1fash8zt79tCxb6Rqonz99yF2xyoL25hAD15z0ZyEZB4JANp0
-	Ujj7J4q8hmcSid1+U8lS5KWSI2mlkV/m82TT+vmR1bCS2tA+tXhhAVd/JB7a+Q==
-X-Gm-Gg: AZuq6aIFzHv+dTkEnoizWWaCRADGxfuW7O3sFxztrnafk562E+NskYzJyVZAAIhta6g
-	egWhKGF14ZE/kMrUXocLkRrurX0xpN4PT4EGex8ra62LBgOIHl0x0fP94WciFN+t33/tjWaWa5s
-	mo+OrcMWGDYJ16qUL1BqfYSSOSwJVBlwjvqSk/oy/PQbV/kQo1Y0x0w/sDvIFVw/eVTsVvK97DC
-	Sx8Ev8qgyOqPR0kHxUs7fPtsNjFjhjHKW1zeh7Qic1+UA8uXiOgUsSiRSihv+Fvp1SCGVOM8e/R
-	apG49a5WLOpFS+Gl7RPsNPdUXIQwCjYD2wZ3t+W5nK/WU0enXx8LuXPii+aIzXNYS2b92cPhIQA
-	1onlQGs+PhGeQPmfYEA90khbZal95huWcBDCXIAdRmqbx2/xm9rYEKdpRvnQKrRwrcYr7+wYRmA
-	KJb8ebvaNagB5QHr1l1sqlMneC0PVW9Xz23rK+5IIYoLqJoDu//C/F
-X-Received: by 2002:a05:6000:40c9:b0:3ea:6680:8fb9 with SMTP id ffacd0b85a97d-435a5f4da63mr4516285f8f.3.1769078019504;
-        Thu, 22 Jan 2026 02:33:39 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997e6dasm45262285f8f.32.2026.01.22.02.33.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 02:33:39 -0800 (PST)
-Date: Thu, 22 Jan 2026 10:33:37 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Nathan Chancellor <nathan@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Thomas Gleixner <tglx@linutronix.de>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, Yury Norov
- <yury.norov@gmail.com>, Jani Nikula <jani.nikula@intel.com>, Vincent
- Mailhol <mailhol.vincent@wanadoo.fr>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Kees Cook <keescook@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>, oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
- GENMASK() and BIT()
-Message-ID: <20260122103337.26473d1c@pumpkin>
-In-Reply-To: <202601221237.soiAkwkN-lkp@intel.com>
-References: <20260121145731.3623-12-david.laight.linux@gmail.com>
-	<202601221237.soiAkwkN-lkp@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        bh=fVc63fzP8jYJOu4M36nOSwhzqNqPKt1gOJVpgrHGEmQ=;
+        b=NsrRQomno1TWuYS+wHznWidfbJurh2lVOrWxmgUqhS3yURjC6U1rqSeJRITXdVQ10S
+         Es88736U5AZgsUkErqm1XMuBcOQWyaP8yZruEMlfx4i11EmqGSx03GKUcXq89IAQ3YMp
+         7/oJuMqgp4ArMPUK0kJ0r94pfFRh7EUNUevvHjILBCWsl/tcEbD0AUYWOMxr1daU98p/
+         b5goveC69tzUAxez3sNoT3wcVS5JqzTsjYYNN345HxVd+3IPqrzR14RfqwTXNvk3oXnA
+         6mkk377nOEqLqKJ1VNzeo5GnS66YyIW9jciaw0NrQmKR9JtU0TxsQQoU4GPzUHIf3V9o
+         +blA==
+X-Forwarded-Encrypted: i=1; AJvYcCWgn/LtqUmhBgtjXcxPe+aU+WViHjGaBZxjMgF5hznKyJFRwM9VMWLg/PUixxz4GVmLV97bcNhyUg==@kvack.org
+X-Gm-Message-State: AOJu0YxcjKFYNOPCD4rDVxGTZ8QfAcgdGpERV9gBRfsMeYgVvRIUxy/j
+	rZJSoPrxbAkU9e8eN7KJsuMH5hB4gNdh1gARrlFyRRKvuy1ON2uQBMFEdHHRChiuLGELpJjhX2f
+	8Y4/OEhPQaktbveJWzGzvakkNMjkDJyWn7Bor6bBVnVvNgmWH3pMn1IfmzthTH5FHqu3W+37J8z
+	feoPPSl+E1pKIXcqMS2J8u192GPGY=
+X-Gm-Gg: AZuq6aIqk6Kq30aQJAy3DOvDQHSoeKJ4pHINn4f1T84Nap6FEZYA3VmOiP90B76wCin
+	MMJg309zG6S24rcrqscoo7hXaumMsW/+WG23U0buLkX72xAIQ5lM4Xx0eKDxUlffWZJ2/m4P+m5
+	unUb335wICjRLTodwwC6QYAx0pf4H8jur4SHzbDTUT4uax1K9e8qTv6LvhOOPaxQNIzleo5J7oR
+	0x2to0/
+X-Received: by 2002:a05:690c:6209:b0:794:87a:fba7 with SMTP id 00721157ae682-7940a116c60mr146238487b3.15.1769084072969;
+        Thu, 22 Jan 2026 04:14:32 -0800 (PST)
+X-Received: by 2002:a05:690c:6209:b0:794:87a:fba7 with SMTP id
+ 00721157ae682-7940a116c60mr146237997b3.15.1769084072482; Thu, 22 Jan 2026
+ 04:14:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BA5761C0003
-X-Stat-Signature: 51yndq1n3m7j565wdcikewn9his6iw3q
+References: <20260118192253.9263-4-shivankg@amd.com> <20260118192253.9263-12-shivankg@amd.com>
+In-Reply-To: <20260118192253.9263-12-shivankg@amd.com>
+From: Nico Pache <npache@redhat.com>
+Date: Thu, 22 Jan 2026 05:14:06 -0700
+X-Gm-Features: AZwV_QjkvXSRyZYwsuEixLBEZunsyAhqEWm3V1WvL2iCvdVIhxDFRUeuUzlnaFM
+Message-ID: <CAA1CXcCGgX0QjtQR3NT6m-kRNg2jDJo5-JEV0zYK3MDXZvoE3w@mail.gmail.com>
+Subject: Re: [PATCH V3 4/5] mm/khugepaged: use enum scan_result for result
+ variables and return types
+To: Shivank Garg <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PCzkhgquTd5AE2QZ8EYdWNTJ7gWGiGwoocUHuFf9L9Y_1769084073
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A23E840009
 X-Rspam-User: 
-X-HE-Tag: 1769083985-132678
-X-HE-Meta: U2FsdGVkX183ca8pp2hq90bKfzzDV1x0iGC9H4WNs2Tu8YehlA0QElbU+ajWhNqsbcpVLemKIurFpTyHFRBwOAGlJaMbJHh9nKMhOAq3pQTBNR1t9c+qgpV6K+RpNCvDtDBDDo2u6MRAcpySnTpyppd3JcUHWXgbjTlIT9sMYkeXk1xEWqudO2B/QO3ohpjiRxSSYPYHKcZq1Du7GrbWmITvtOoUtYKQ8TB5xiYZjLn7ou88ePBUVdxhjkHmk6B8EDiNiATWYzktp94rx4/5Z09vMQggjdceWNoFCG1Zm50JvgWg+NKk9gfOK3dN9S1h4wROtbWgSecY8vVbrfLcB1DeKLWDjJYyz5DQV/ZunteExOKX5g3Hv7u3XbGtPH+XdD3MvhstNa63eUlpxqfjGKjGXkSdYRmEj9dxac1mejjetjH7FyRm/+/sYKoo7n0tMZy4pVhm3oxxG9gVPfSjG9MpR5noDe22dUy8REpTI6gww/f2b5blIvpLsI2mthQQJm8QuqxAhZVChrf/sO4Trz7u+mZG3hy8k0+VQFzB0M0uqG1RGimKpP0AAIQSzABL7BaGu6Sn1B7u+/YieZAsNTLmBwkSB0C+dinqEg0Tz4jdMbbTOM/Uq3xMZDKKDJenmwaI+Cw3iTX9ZktHw0QNEX0kiVB1UjjOEgGT3XeZCr+m4U5Zd+8aMy+S26FIRsLdGpWmO9eXWE8VY2UyfHZJLN6es+1jouj3X6yqwf8pQuAhEuM501chT7Fj1sJ8RlJ5ehn+4vexbHwZ3PjB8A1Nu33YAeBPxHy9JeMX0TKT69y7ASR6560yP7cHUL+cHEkNrBP8O+rS1Bka8xAffA/5udmld5oFKT7BQCwDNnR5vmidr/DOASPgNBCBPxFgNzHAQVXYxaLDoQAelpg92cJjrLTzFNk0dvOVHVyZ6au5RB7yqvYOCyEptydukO+4t0LBT5LmosVZc+6jk/JHQ1X
- tNUBbGrC
- Z8nNqUlMfQOgvKRy3zIyMWQVEmuWOqVz+yU+kuRbLq3km22Y1WvB6S3XR4WdhzpisTZA6zjgCZ5fXNsM5R9oOMQxwHYCoHWHKDa/mUp/Xbo46Ixl+BSLamiXmxIHnot5SCADx9BMXprVBq3HuglLqUelWBHZNQuMZ3ztMFyUt02pOSLzqNuQBFLWNM6QGtxHumGF3VhkctwE0lV0Pft6+h1CNvMsacu/KfIXGPkbuNme8nKaIIQC4Ma5dSHli/dgIKi2klFwhpKVJJUTnJXuPHGw/nzBnMZqdjUR2Q0ufDz+givfjtU8xYMHqaoYQYSn4Ux30h3z7mqXgXA/pxbWB++RXSG2cpoqz6/i8yiJfjD/6x00vterY+h9BkkzIMI+0NQWTMovDLkurMEDfuV2AbefBTmxzCUQoH1VL1Joyy84uaBepiKjzVwvM+tiRpZwKRLCm1/Ac36Bb2SwGTfapzSW0obi0FwqmnruBVE3lf12RjA7PiEGIGFoAdKJvDmZG2PUBOydtp1dX07KszbpjioC+/dXJ6b34tUIqYNnVjkEcIOMB9TskbSI5vvsIszCmt8FaCxtzdXuaew7gtTx20uRXtEPy9GMjdzAIBb67LJNmiKye+1iNybJ8PXi+k09NMBVrAGsaxHF0YolVvLZCV4xwMfJSG5lT5X1PhoGIos1B0QPbS2gN5y0NyIx56z6JUzDPd4Ar4d+dLZc=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 8ps58kpp7x4cor46xi87hcadppfpjow8
+X-HE-Tag: 1769084075-232957
+X-HE-Meta: U2FsdGVkX19Zv+D5mCjg2i2v81H4GG9ma6WpSTja5oUTptaY4CMEiJjpne3/UlctIw58+2kT4iVqYO6vLGR3tklLsLYBdIicYvaIYsHz21HNDP3kU1jM+amheu08Zb3uLgJKvlIxV8xdh9hpc81nKt2+Wi25ZnLCmdZ/Fd4cU5nIb7GVn07gaGdcEV53lBL1fxKgSEba6pP0etTvc4NYsReJPuB3LcE92bMeeuMnUHd2lmRfmCuB0CP2GkKoNlVkNxL06R1X+bbRK4L2lVpagZS6LmvUffTo7HzX0iMbFCj+wvkXhmunsl/OAXUbw2b5hbqpd57XuBsUOo1RFQDRWfQg4AqSLLIYZZyT3RDpbbMxtAaYQcIO3BeZ3rP0GpdyBh4caRkHgCOZlFhxbGRs0kK2ZrfUIwBDBFHjcmoeCLIGBtq9XNnLc0qWjqhiSe0GejfUm7JaE42bT8r//i5jcEjSbgqeRmJ/2Z9WsMniTo5p6q1i6Q7enMwPzs2HWhKmSxReYVtSnQcsqtDfNhBd/Es0qVJrLomZeD26QP7P68YBc7U9z1pxUXH3zuk3t9kq4ZaTQktpz7rXNgqaXCsPrpBZfBUa2cGz0t53yhmlXxgNGQahvCwSSXnIDa7XvLM2bjefmaMCTcUbMN5UbM2WFU6eBcI3jo5HZcxZR05z7KwJq8QpFHy5WDiskAbbrQFHsbnB7hQkmN8LGZJAUST316papfxl4536Ylov/uw2dF45whBMH7IE+saN5bZyf9ZCqX3jre6UqO5aWdQeoCaINgNOt+Qxk9JyEuOluZEQ6FVSTNH23RDcyN8v4fu5/dZTpuLrvSgCj1sAO+KwIGpxe611ZabcEYu/K1JGz2WzKi59UZl2PXDNOIArodw2hjKa5BFJAjXVBfWpn/PpjfkOjlQrGaFi1NtHKN9Jlthu458ErahBIPbKVcvaSJqdwqmFdO2cBJfAdPm+jeh3e02
+ wqSVFMDo
+ /VxAq5lmBDgJiF6kEb1ZCFel+byqqskESjm+7/MLybJlr/dMs87RYN8oJE0KoZDeohbQN4UBpZ4V/D8K7abytY5bG2rzas6BNyWTK1RF4M73esLInKZBsiiU16N2EhFNnGlvPWOx3B2q8qYSuZYkhNm3uZxH8GDkWwkQLWZW/RBdbOmGC12GUm5a3GYzt7UvCi6fpE6IbW/HEroo9/Ba+e06IWfF8LS+4r2Hw9a4YvmD6CMV7ZIP53mo9cWiilyMnwh5TDxsvuj5I/tG/qg50TU3F0nJ9ekWYU5VUB05ggH16tjoJvlm51mBwnTio9eLY30mPNfZGFHCSG0rGHWsPZa1Hdt9qBRG9sVFq6TXqq64X2gP2Ty+xk/dXtL1Njudg0Yh5a1h8Fpizw508V09kp6yK3q4b/jCzV1o0dsOsXHZNmPM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,33 +130,350 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 12:41:22 +0800
-kernel test robot <lkp@intel.com> wrote:
+On Sun, Jan 18, 2026 at 12:31=E2=80=AFPM Shivank Garg <shivankg@amd.com> wr=
+ote:
+>
+> Convert result variables and return types from int to enum scan_result
+> throughout khugepaged code. This improves type safety and code clarity
+> by making the intent explicit.
+>
+> No functional change.
+>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 
-> Hi,
-> 
-> kernel test robot noticed the following build warnings:
-> 
-> [auto build test WARNING on next-20260120]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/david-laight-linux-gmail-com/overflow-Reduce-expansion-of-__type_max/20260122-013456
-> base:   next-20260120
-> patch link:    https://lore.kernel.org/r/20260121145731.3623-12-david.laight.linux%40gmail.com
-> patch subject: [PATCH next 11/14] bit: Strengthen compile-time tests in GENMASK() and BIT()
-> config: mips-randconfig-r132-20260122 (https://download.01.org/0day-ci/archive/20260122/202601221237.soiAkwkN-lkp@intel.com/config)
-> compiler: mips64-linux-gcc (GCC) 10.5.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601221237.soiAkwkN-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202601221237.soiAkwkN-lkp@intel.com/
-> 
-> sparse warnings: (new ones prefixed by >>)
->    kernel/kthread.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-> >> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.  
+LGTM!
 
-Can we stop sparse complaining about sizeof(VLA) ?
+Tested-by: Nico Pache <npache@redhat.com>
+Reviewed-by: Nico Pache <npache@redhat.com>
 
-	David
+> ---
+>  mm/khugepaged.c | 99 +++++++++++++++++++++++--------------------------
+>  1 file changed, 46 insertions(+), 53 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 17f3f0043368..1667abae6d8d 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -537,17 +537,16 @@ static void release_pte_pages(pte_t *pte, pte_t *_p=
+te,
+>         }
+>  }
+>
+> -static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+> -                                       unsigned long start_addr,
+> -                                       pte_t *pte,
+> -                                       struct collapse_control *cc,
+> -                                       struct list_head *compound_pageli=
+st)
+> +static enum scan_result __collapse_huge_page_isolate(struct vm_area_stru=
+ct *vma,
+> +               unsigned long start_addr, pte_t *pte, struct collapse_con=
+trol *cc,
+> +               struct list_head *compound_pagelist)
+>  {
+>         struct page *page =3D NULL;
+>         struct folio *folio =3D NULL;
+>         unsigned long addr =3D start_addr;
+>         pte_t *_pte;
+> -       int none_or_zero =3D 0, shared =3D 0, result =3D SCAN_FAIL, refer=
+enced =3D 0;
+> +       int none_or_zero =3D 0, shared =3D 0, referenced =3D 0;
+> +       enum scan_result result =3D SCAN_FAIL;
+>
+>         for (_pte =3D pte; _pte < pte + HPAGE_PMD_NR;
+>              _pte++, addr +=3D PAGE_SIZE) {
+> @@ -780,13 +779,13 @@ static void __collapse_huge_page_copy_failed(pte_t =
+*pte,
+>   * @ptl: lock on raw pages' PTEs
+>   * @compound_pagelist: list that stores compound pages
+>   */
+> -static int __collapse_huge_page_copy(pte_t *pte, struct folio *folio,
+> +static enum scan_result __collapse_huge_page_copy(pte_t *pte, struct fol=
+io *folio,
+>                 pmd_t *pmd, pmd_t orig_pmd, struct vm_area_struct *vma,
+>                 unsigned long address, spinlock_t *ptl,
+>                 struct list_head *compound_pagelist)
+>  {
+>         unsigned int i;
+> -       int result =3D SCAN_SUCCEED;
+> +       enum scan_result result =3D SCAN_SUCCEED;
+>
+>         /*
+>          * Copying pages' contents is subject to memory poison at any ite=
+ration.
+> @@ -898,10 +897,8 @@ static int hpage_collapse_find_target_node(struct co=
+llapse_control *cc)
+>   * Returns enum scan_result value.
+>   */
+>
+> -static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long a=
+ddress,
+> -                                  bool expect_anon,
+> -                                  struct vm_area_struct **vmap,
+> -                                  struct collapse_control *cc)
+> +static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, un=
+signed long address,
+> +               bool expect_anon, struct vm_area_struct **vmap, struct co=
+llapse_control *cc)
+>  {
+>         struct vm_area_struct *vma;
+>         enum tva_type type =3D cc->is_khugepaged ? TVA_KHUGEPAGED :
+> @@ -930,7 +927,7 @@ static int hugepage_vma_revalidate(struct mm_struct *=
+mm, unsigned long address,
+>         return SCAN_SUCCEED;
+>  }
+>
+> -static inline int check_pmd_state(pmd_t *pmd)
+> +static inline enum scan_result check_pmd_state(pmd_t *pmd)
+>  {
+>         pmd_t pmde =3D pmdp_get_lockless(pmd);
+>
+> @@ -953,9 +950,8 @@ static inline int check_pmd_state(pmd_t *pmd)
+>         return SCAN_SUCCEED;
+>  }
+>
+> -static int find_pmd_or_thp_or_none(struct mm_struct *mm,
+> -                                  unsigned long address,
+> -                                  pmd_t **pmd)
+> +static enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
+> +               unsigned long address, pmd_t **pmd)
+>  {
+>         *pmd =3D mm_find_pmd(mm, address);
+>         if (!*pmd)
+> @@ -964,12 +960,11 @@ static int find_pmd_or_thp_or_none(struct mm_struct=
+ *mm,
+>         return check_pmd_state(*pmd);
+>  }
+>
+> -static int check_pmd_still_valid(struct mm_struct *mm,
+> -                                unsigned long address,
+> -                                pmd_t *pmd)
+> +static enum scan_result check_pmd_still_valid(struct mm_struct *mm,
+> +               unsigned long address, pmd_t *pmd)
+>  {
+>         pmd_t *new_pmd;
+> -       int result =3D find_pmd_or_thp_or_none(mm, address, &new_pmd);
+> +       enum scan_result result =3D find_pmd_or_thp_or_none(mm, address, =
+&new_pmd);
+>
+>         if (result !=3D SCAN_SUCCEED)
+>                 return result;
+> @@ -985,15 +980,14 @@ static int check_pmd_still_valid(struct mm_struct *=
+mm,
+>   * Called and returns without pte mapped or spinlocks held.
+>   * Returns result: if not SCAN_SUCCEED, mmap_lock has been released.
+>   */
+> -static int __collapse_huge_page_swapin(struct mm_struct *mm,
+> -                                      struct vm_area_struct *vma,
+> -                                      unsigned long start_addr, pmd_t *p=
+md,
+> -                                      int referenced)
+> +static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm=
+,
+> +               struct vm_area_struct *vma, unsigned long start_addr, pmd=
+_t *pmd,
+> +               int referenced)
+>  {
+>         int swapped_in =3D 0;
+>         vm_fault_t ret =3D 0;
+>         unsigned long addr, end =3D start_addr + (HPAGE_PMD_NR * PAGE_SIZ=
+E);
+> -       int result;
+> +       enum scan_result result;
+>         pte_t *pte =3D NULL;
+>         spinlock_t *ptl;
+>
+> @@ -1062,8 +1056,8 @@ static int __collapse_huge_page_swapin(struct mm_st=
+ruct *mm,
+>         return result;
+>  }
+>
+> -static int alloc_charge_folio(struct folio **foliop, struct mm_struct *m=
+m,
+> -                             struct collapse_control *cc)
+> +static enum scan_result alloc_charge_folio(struct folio **foliop, struct=
+ mm_struct *mm,
+> +               struct collapse_control *cc)
+>  {
+>         gfp_t gfp =3D (cc->is_khugepaged ? alloc_hugepage_khugepaged_gfpm=
+ask() :
+>                      GFP_TRANSHUGE);
+> @@ -1090,9 +1084,8 @@ static int alloc_charge_folio(struct folio **foliop=
+, struct mm_struct *mm,
+>         return SCAN_SUCCEED;
+>  }
+>
+> -static int collapse_huge_page(struct mm_struct *mm, unsigned long addres=
+s,
+> -                             int referenced, int unmapped,
+> -                             struct collapse_control *cc)
+> +static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigne=
+d long address,
+> +               int referenced, int unmapped, struct collapse_control *cc=
+)
+>  {
+>         LIST_HEAD(compound_pagelist);
+>         pmd_t *pmd, _pmd;
+> @@ -1100,7 +1093,7 @@ static int collapse_huge_page(struct mm_struct *mm,=
+ unsigned long address,
+>         pgtable_t pgtable;
+>         struct folio *folio;
+>         spinlock_t *pmd_ptl, *pte_ptl;
+> -       int result =3D SCAN_FAIL;
+> +       enum scan_result result =3D SCAN_FAIL;
+>         struct vm_area_struct *vma;
+>         struct mmu_notifier_range range;
+>
+> @@ -1246,15 +1239,14 @@ static int collapse_huge_page(struct mm_struct *m=
+m, unsigned long address,
+>         return result;
+>  }
+>
+> -static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+> -                                  struct vm_area_struct *vma,
+> -                                  unsigned long start_addr, bool *mmap_l=
+ocked,
+> -                                  struct collapse_control *cc)
+> +static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+> +               struct vm_area_struct *vma, unsigned long start_addr, boo=
+l *mmap_locked,
+> +               struct collapse_control *cc)
+>  {
+>         pmd_t *pmd;
+>         pte_t *pte, *_pte;
+> -       int result =3D SCAN_FAIL, referenced =3D 0;
+> -       int none_or_zero =3D 0, shared =3D 0;
+> +       int none_or_zero =3D 0, shared =3D 0, referenced =3D 0;
+> +       enum scan_result result =3D SCAN_FAIL;
+>         struct page *page =3D NULL;
+>         struct folio *folio =3D NULL;
+>         unsigned long addr;
+> @@ -1441,8 +1433,8 @@ static void collect_mm_slot(struct mm_slot *slot)
+>  }
+>
+>  /* folio must be locked, and mmap_lock must be held */
+> -static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
+> -                       pmd_t *pmdp, struct folio *folio, struct page *pa=
+ge)
+> +static enum scan_result set_huge_pmd(struct vm_area_struct *vma, unsigne=
+d long addr,
+> +               pmd_t *pmdp, struct folio *folio, struct page *page)
+>  {
+>         struct mm_struct *mm =3D vma->vm_mm;
+>         struct vm_fault vmf =3D {
+> @@ -1477,10 +1469,11 @@ static int set_huge_pmd(struct vm_area_struct *vm=
+a, unsigned long addr,
+>         return SCAN_SUCCEED;
+>  }
+>
+> -static int try_collapse_pte_mapped_thp(struct mm_struct *mm, unsigned lo=
+ng addr,
+> +static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm=
+, unsigned long addr,
+>                 bool install_pmd)
+>  {
+> -       int nr_mapped_ptes =3D 0, result =3D SCAN_FAIL;
+> +       enum scan_result result =3D SCAN_FAIL;
+> +       int nr_mapped_ptes =3D 0;
+>         unsigned int nr_batch_ptes;
+>         struct mmu_notifier_range range;
+>         bool notified =3D false;
+> @@ -1862,9 +1855,8 @@ static void retract_page_tables(struct address_spac=
+e *mapping, pgoff_t pgoff)
+>   *    + unlock old pages
+>   *    + unlock and free huge page;
+>   */
+> -static int collapse_file(struct mm_struct *mm, unsigned long addr,
+> -                        struct file *file, pgoff_t start,
+> -                        struct collapse_control *cc)
+> +static enum scan_result collapse_file(struct mm_struct *mm, unsigned lon=
+g addr,
+> +               struct file *file, pgoff_t start, struct collapse_control=
+ *cc)
+>  {
+>         struct address_space *mapping =3D file->f_mapping;
+>         struct page *dst;
+> @@ -1872,7 +1864,8 @@ static int collapse_file(struct mm_struct *mm, unsi=
+gned long addr,
+>         pgoff_t index =3D 0, end =3D start + HPAGE_PMD_NR;
+>         LIST_HEAD(pagelist);
+>         XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
+> -       int nr_none =3D 0, result =3D SCAN_SUCCEED;
+> +       enum scan_result result =3D SCAN_SUCCEED;
+> +       int nr_none =3D 0;
+>         bool is_shmem =3D shmem_file(file);
+>
+>         VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+> @@ -2293,16 +2286,15 @@ static int collapse_file(struct mm_struct *mm, un=
+signed long addr,
+>         return result;
+>  }
+>
+> -static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long =
+addr,
+> -                                   struct file *file, pgoff_t start,
+> -                                   struct collapse_control *cc)
+> +static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, u=
+nsigned long addr,
+> +               struct file *file, pgoff_t start, struct collapse_control=
+ *cc)
+>  {
+>         struct folio *folio =3D NULL;
+>         struct address_space *mapping =3D file->f_mapping;
+>         XA_STATE(xas, &mapping->i_pages, start);
+>         int present, swap;
+>         int node =3D NUMA_NO_NODE;
+> -       int result =3D SCAN_SUCCEED;
+> +       enum scan_result result =3D SCAN_SUCCEED;
+>
+>         present =3D 0;
+>         swap =3D 0;
+> @@ -2400,7 +2392,7 @@ static int hpage_collapse_scan_file(struct mm_struc=
+t *mm, unsigned long addr,
+>         return result;
+>  }
+>
+> -static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *res=
+ult,
+> +static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum sca=
+n_result *result,
+>                                             struct collapse_control *cc)
+>         __releases(&khugepaged_mm_lock)
+>         __acquires(&khugepaged_mm_lock)
+> @@ -2562,7 +2554,7 @@ static void khugepaged_do_scan(struct collapse_cont=
+rol *cc)
+>         unsigned int progress =3D 0, pass_through_head =3D 0;
+>         unsigned int pages =3D READ_ONCE(khugepaged_pages_to_scan);
+>         bool wait =3D true;
+> -       int result =3D SCAN_SUCCEED;
+> +       enum scan_result result =3D SCAN_SUCCEED;
+>
+>         lru_add_drain_all();
+>
+> @@ -2775,7 +2767,8 @@ int madvise_collapse(struct vm_area_struct *vma, un=
+signed long start,
+>         struct collapse_control *cc;
+>         struct mm_struct *mm =3D vma->vm_mm;
+>         unsigned long hstart, hend, addr;
+> -       int thps =3D 0, last_fail =3D SCAN_FAIL;
+> +       enum scan_result last_fail =3D SCAN_FAIL;
+> +       int thps =3D 0;
+>         bool mmap_locked =3D true;
+>
+>         BUG_ON(vma->vm_start > start);
+> @@ -2796,7 +2789,7 @@ int madvise_collapse(struct vm_area_struct *vma, un=
+signed long start,
+>         hend =3D end & HPAGE_PMD_MASK;
+>
+>         for (addr =3D hstart; addr < hend; addr +=3D HPAGE_PMD_SIZE) {
+> -               int result =3D SCAN_FAIL;
+> +               enum scan_result result =3D SCAN_FAIL;
+>                 bool triggered_wb =3D false;
+>
+>  retry:
+> --
+> 2.43.0
+>
+
 
