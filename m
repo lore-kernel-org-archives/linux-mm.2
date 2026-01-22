@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DACAD3EE8A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:10:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D07DD3EE8A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCA866B0292; Thu, 22 Jan 2026 11:10:41 -0500 (EST)
+	id 7D8FF6B0294; Thu, 22 Jan 2026 11:10:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3BCB6B0294; Thu, 22 Jan 2026 11:10:41 -0500 (EST)
+	id 7A6C76B0296; Thu, 22 Jan 2026 11:10:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 900266B0295; Thu, 22 Jan 2026 11:10:41 -0500 (EST)
+	id 6B2756B0297; Thu, 22 Jan 2026 11:10:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 78A356B0292
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:10:41 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46491D2BA7
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:41 +0000 (UTC)
-X-FDA: 84360087882.03.4A0634B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C8416B0294
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:10:44 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A5BFD2BE0
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:44 +0000 (UTC)
+X-FDA: 84360088008.25.581F659
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 91008C0004
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZXNZYYif;
-	spf=pass (imf28.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7690140014
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:42 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uTGUpU3Z;
+	spf=pass (imf11.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769098239;
+	s=arc-20220608; t=1769098242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WL2W/ZDkHyvzso2YcHTRw/lMxAY8yln4p4mC/TC5im4=;
-	b=ZCdXoWsWQioSZrbLao2AZhWx1OdY9S1EcSiDuXbpS3MrdJ63k3GgoHCx/4mnDs5150uIWU
-	GK6Y8i8lKEM7OuD1JFoFiu7QXKjDD/U+82/yRbjD4whB4eWwUciR+mQlPZmMQnp0VaTqTn
-	w+torSk3N1T9NgxzdjB3fcVu/wjRFvI=
+	bh=Z+/yj/4csgiXQAIn4zwpIztRE5FJZkQ6otcCk3HYOCE=;
+	b=sUidT0jLLeLtk0TY6fQ3jIi1SyKIUhNWoS1ZgG++96QBcZpO1t/S/E7DRqgJttCs/K2k9W
+	18aC+HO84Syk9jq6MeW+QCBrAmOp2RVrajI05DwK3HNfCN7XKyEC2zDF+jIjejkVOntzjc
+	MpLIGl7X7r7d+/VzqJtP0uNyvqEYWno=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZXNZYYif;
-	spf=pass (imf28.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uTGUpU3Z;
+	spf=pass (imf11.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098239; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098242; a=rsa-sha256;
 	cv=none;
-	b=bOJHSuYqDw2WAJlv9pJ0lBkaLjcOqIRrqKzE0UKmgWgQdXXOIm5kmqvVMyRjGhPsaIRLWP
-	lwguMVb7nKwtG0+eexLe0ZoRQoALO8873v6rnlz0C4+thRKCKpVYGhrurfjfKTU/yCce8a
-	Y5l5vM1mij81K7EX77CzYXISRN2luTI=
+	b=rNR2ExsHlt+5sMDRbOn96XrNg1u3UIvA9uXTuV7tI0JYVFfqK1Y3L9lRFbbLbgwm5721NA
+	8S7hdDbgMohqK+i/5YlvDbhRtSQKj6YIj9Gnhl8F6L6DStqzVQUm+szGvA78HzTMXvBqrc
+	FhYFAnQQ0zh3zm2/+J4PRaYmtq6DqOg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C59714437C;
-	Thu, 22 Jan 2026 16:10:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD1DC116D0;
-	Thu, 22 Jan 2026 16:10:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B48C44404;
+	Thu, 22 Jan 2026 16:10:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0395BC2BCAF;
+	Thu, 22 Jan 2026 16:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769098238;
-	bh=lNdb2W7doKmrgjPjgeTtoM+R64zDLdfcfrtXbX1koE0=;
+	s=k20201202; t=1769098241;
+	bh=03W+miu9snDAt7mFvXpzGvadHlBQWH/FakrfAMWKksA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXNZYYifm9VfYi+kclez8EXzUF8ZUAOh0AcT+MNc0D0RXJqfYWLhzByjq5MlhFmtd
-	 sRi82Cb1e2BEjdoX46KkmpvNQlwDNUbBT6soROJTmNcTVp6R5V6mnZ8R+wCv2EWXX/
-	 Kje8r41oR9ZvA5l07jd8nek36Ds7WLXFX5eopUTuk+FBIjaeG+nnDGS7sPlx3YOwBd
-	 H9BaINgwXQO+IksIcJQf2upD/v8eG5jRlow2zE4OaI8yOpyAYyXLx9L5hrUxwWtr57
-	 Vu5Fk8cQFq/REpI7FBn2B1cZSt5DkI1BTUqr1097jyARnhabib/vLus1qLBadiD8Gs
-	 8QvTL4WtyNSuw==
+	b=uTGUpU3ZmFiFvnjDXKELVR1KdEj2L7iy6TSUNG9eYUXeIteqryu0VBNTFn9B3W1a6
+	 hjZGmjAuLTXkBVKn+uWqQfrFkscEMjBipQgzR0Ic/gDLWHXfwb7GtnI5Yp13zlzMtJ
+	 i5uKRoBz8IAsSCEkbnweSF+AcfjkxnaOA0Z/KKTuAfgiYJs/Azupp1VUfCSl7txw8T
+	 BfIVNQerwdBwKwDYx1V85Fps4MFUwOcOWC94GZit9kYDF+vW1CpUAMjkmdn29+RyHP
+	 6NnTuC97wKAoi5VkqI6OFrEpyv3EcC7sGn1pL4QV+e7KOvNG3Kj0tftF19Jw8DTjTT
+	 xvpJA4fIdhQdQ==
 From: Thierry Reding <thierry.reding@kernel.org>
 To: Thierry Reding <thierry.reding@kernel.org>,
 	David Airlie <airlied@gmail.com>,
@@ -84,22 +84,22 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-tegra@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 08/10] arm64: tegra: Add GPU node on Tegra234
-Date: Thu, 22 Jan 2026 17:10:07 +0100
-Message-ID: <20260122161009.3865888-9-thierry.reding@kernel.org>
+Subject: [PATCH v2 09/10] arm64: tegra: Hook up VPR to host1x
+Date: Thu, 22 Jan 2026 17:10:08 +0100
+Message-ID: <20260122161009.3865888-10-thierry.reding@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260122161009.3865888-1-thierry.reding@kernel.org>
 References: <20260122161009.3865888-1-thierry.reding@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 91008C0004
-X-Stat-Signature: u368b67r5wytfcu19itmb1w88ns4ak7n
+X-Stat-Signature: 4wamgtmnuoqw6mtrosi91rpxwin5ysta
+X-Rspamd-Queue-Id: 7690140014
 X-Rspam-User: 
-X-HE-Tag: 1769098239-984717
-X-HE-Meta: U2FsdGVkX19EVpkUA6dSxGcpG56z5+PL5eJm8MmF0127xrric9e6mDO2fR0KwwtXl/N7nKbAfBPXr8s9AYtDzvEVYgfAtOVN18PbeEnj5C/9rHLJXbVmUUNzGgkd18jwHBZV6mT0U8xDe3yQMY0cA+gBFm0/Cu96C1jsvkYXoQdsSSa2oCGfFKrP73g+oZcOG6atspMRUoHGRlkSgwGRiuZMuiuUtxvOPp/s8HM+Y2gY8ChY6SlrQWaOUQMDmFkEmlmuoXbzd6fN7i2+3KxwpblEJ8V4UlPevTb3iaCNZiEPtR0tBH8dIzUvUqL9G3l6LriFIhYf7M7lUpp4O7XuwXnIzLGRwA3Q7SDzs4v1Hvxumr3MyipciUkbRcu8G8v9Z76sJ8gxq6t9MTG/vjPkrVjJnIaI8j4yIougI7jPq+eGg1uk70KaJAa5g68lypbmPUq05xdKYKrTlOSQA63dwzR+zJlJRRDILjYfb0ndCno8HZpiEfaNhFSGaZQaWIyjva+tUdlL2Cgujb1ozy8vm/ZE4I07ONnBw4+tpGMgQUciaeNkRqtkL7sZB/i8Fyoo21eVpi2ARjv4s9YdPQH80fsDSoEZ3ggfz5p9GTqf4uJr5mZGMthPfejdvCLGAABODMJpD5rP+w/t0jdM3YlvDq2ap6cmRMqWlF3tpYODqKdaMlPWZcfpfYPo3iuuOUCfbBsMyNLhw7IoaaBIICeMrnK5LG6BOn6QlpZTSPkQ+6QBaz1VQ8sYml67JTMbgLimE1w8VXjdrg6D+PC6QKlmq2rioNgsJ1TzphyaU/FYji3szEu3aJK46lTU1gIrf8nRWTJZTwwRgxvf9bCGG0GHtHPUSkROhZDkRz1VQ16ufW7NUDiBtNt9E2vlCFDFA/pk/wZPI7Z+cAgklpoQsDBzw/ViGse9W3WuGLwumDPUH2u0YaA/PYTdM7ubWhYH4h0hRfTEdQCodbz/szRfs+e
- 73tvyR+p
- L0jrANnEDFLBL3AHHQ666cBbFTDNasvxwqyKZSRnmgo6KAJGA/Ua3+0zuQHS8cXAZBIXWCq8EVIl3VyaaPW7v2+rlNcg7YHodHwbJK3ti8TE3meqZFnq7Ta1nqVqcWtH+/42ZXHcUvHVGnDcddZ+jSk5qCaUXWd6eGZHD6dZmVVlJDd9KE5TrfYRgjdGg4ekW9u6g18otk5LzScMzs/vqV7qGaGkBLJWIB7G2Icezr4BK9n+61zrSfRKOY018V55OYUN19Jlxaw3mOexaHy3zEiNRsU01+Pbb+ZkWZFcKd/oibIJBqLxVxheBVw==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769098242-432457
+X-HE-Meta: U2FsdGVkX1/sIlMxsGyhYHUaFy885pM1sVKzqkLj8Om3R98XzSyo7UDBVC8eC5B85qsQ4Uhud/A4OXjX0/LjGbikUHj1PO5L/8k0A5fu2R67uaYJWXs3/f5m2uoIebO4E1bE2pCLDzXRIBf3WV79j59JnfIgGeU/+oQlOQjEYNQCIth9Ujf5e4RX4NA7ju4xTUN7VWa1Yu1dWYZJ34PIQCXCHZpP0/2x9mh6TrpUO0P5lCJdRpZlOFATIqgjmINE6NlS1hYC9zFj556pNVCnizZQyAjxOhy9GBhmFH/RfpiS1tnmKs8HOrftiSz6HWJHCrXWaLUx4nZIlqfhPzjScyyyesGPRpXW/hj/GHehJBr9/3L9pCHG9+GlQaZ+BzCWzkDQmUnlAXJiJEDxnqz7/a8sfjDOUoJ0C/F4rp/aMmsSe3+xhdl5YJf1euwDM2bJbzE5wP3EWDFeC482bLpsn3a1o8Ov0FZug4VUFDuPZ0Iz7u2EV+SzmDyBhkea8kqBF3wdFv4GI6NadKjJQujKMYbgJVF5Q3LoLYtzmissToiZz02x3SABcjs2zTg0oGqo1UyNFx8/yCqsEPP6S9L07KVYzMSr1gfH2aAc/gDWKeQYxc4b3LDi9dlNHw+wk3PSJRkCegaCuWb1tVoJQKWnaAAFZW2t7jS3tZMojttF2tEM+BgUl9lq/ENdFFvzieWtsfYchlMBvhINXhWOf1ZSZ0BTx+6USPHslTgfKQEg3ZyZV7L8RuDaOX+bPRSIWclVVjAWFvqEGk5QAUN2Ztr34y5wLHIRQj9hpBLXZYpXdYHRDm3oQvMLoppEMP9tBhJaRWNp4zl2bDBY2f6k5VtsDZ0yaJHmHOGe5EImbhfOj19btIQvLx4mlS6kte2e42gK9ytaRPQwO++kXO3igjv0HzAvoZ1pDNeSpOeLiOeH8lsgpaqmsubFWcDh5aj2YzLjmb49eLr4VaYN1xx911X
+ yXbYO9ZB
+ UgcIIjUy5n5mgI2vcb2zKJBJ5MZua2CI2S7vh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,39 +110,38 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
+The host1x needs access to the VPR region, so make sure to reference it
+via the memory-region property.
+
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- arch/arm64/boot/dts/nvidia/tegra234.dtsi | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/nvidia/tegra234.dtsi b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-index 62a5dfde9e38..5f67d9b57226 100644
+index 5f67d9b57226..cfffa4f2f196 100644
 --- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
 +++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-@@ -5317,6 +5317,23 @@ pcie-ep@141e0000 {
- 		};
- 	};
- 
-+	gpu@17000000 {
-+		compatible = "nvidia,ga10b";
-+		reg = <0x0 0x17000000 0x0 0x1000000>,
-+		      <0x0 0x18000000 0x0 0x1000000>;
-+		interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>,
-+			     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "nonstall", "stall0", "stall1", "stall2";
-+		power-domains = <&bpmp TEGRA234_POWER_DOMAIN_GPU>;
-+		clocks = <&bpmp TEGRA234_CLK_GPUSYS>,
-+			 <&bpmp TEGRA234_CLK_GPC0CLK>,
-+			 <&bpmp TEGRA234_CLK_GPC1CLK>;
-+		clock-names = "sys", "gpc0", "gpc1";
-+		resets = <&bpmp TEGRA234_RESET_GPU>;
-+	};
+@@ -4474,6 +4474,9 @@ vic@15340000 {
+ 				interconnect-names = "dma-mem", "write";
+ 				iommus = <&smmu_niso1 TEGRA234_SID_VIC>;
+ 				dma-coherent;
 +
- 	sram@40000000 {
- 		compatible = "nvidia,tegra234-sysram", "mmio-sram";
- 		reg = <0x0 0x40000000 0x0 0x80000>;
++				memory-region = <&vpr>;
++				memory-region-names = "protected";
+ 			};
+ 
+ 			nvdec@15480000 {
+@@ -4492,6 +4495,9 @@ nvdec@15480000 {
+ 				iommus = <&smmu_niso1 TEGRA234_SID_NVDEC>;
+ 				dma-coherent;
+ 
++				memory-region = <&vpr>;
++				memory-region-names = "protected";
++
+ 				nvidia,memory-controller = <&mc>;
+ 
+ 				/*
 -- 
 2.52.0
 
