@@ -4,84 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BCEAD3EE97
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 17:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0185D3EE99
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 17:17:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5D556B02B2; Thu, 22 Jan 2026 12:13:55 -0500 (EST)
+	id 410D96B02C5; Thu, 22 Jan 2026 12:17:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0B2D6B02B3; Thu, 22 Jan 2026 12:13:55 -0500 (EST)
+	id 3E8586B02C7; Thu, 22 Jan 2026 12:17:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 909FD6B02B4; Thu, 22 Jan 2026 12:13:55 -0500 (EST)
+	id 314C96B02C8; Thu, 22 Jan 2026 12:17:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A4CF6B02B2
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:13:55 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 23897B9663
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:13:55 +0000 (UTC)
-X-FDA: 84360247230.29.948CB0B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7F242A0003
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:13:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vVvwcwn7;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DEC76B02C5
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:17:24 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B13258B98C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:17:23 +0000 (UTC)
+X-FDA: 84360255966.17.5DFC65B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E2DDF120002
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:17:21 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HwNktGx2;
+	spf=pass (imf29.hostedemail.com: domain of "SRS0=ucPx=73=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=ucPx=73=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769102033;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1769102242;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8kdI1og6J7L3Yky+74PNIedn05CEwcxNwVxoJd+g1qw=;
-	b=LFrdvI64GBFRIowyfTjIgLgFDTI3SoVm6gg4V9KonnseYJTuPFP5KILEggdof5MWyY40ZG
-	50WM71TpTjFwkVI/8ZrucROBHBt6MIYvRJbhXhhjUADJW9K2sW71MjC4nC07L27F4KfGXd
-	/fCXtjpE5kJ9BiRaYDkJES6DIl9AHSw=
+	bh=5pAyNP9u3hX6L+5sv0NSClnZu96SciSFz2fdcLiGdQc=;
+	b=0PQvRNlnHphmCl3+lf4aHYLLcBhpMHqrBDepd3CDHO8mFHqg293sGsu8Mw7fUFCUxmkPkm
+	KRcRD79I6MOygoGIqhs5wzQgzVVG1uE9bwcdc6akzg+ehpfbB7CCBQw+Iw/lW4toQ4yfwE
+	18HtqfSNCQ8+M0MrsjMUAnaFc5kEQow=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vVvwcwn7;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769102033; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HwNktGx2;
+	spf=pass (imf29.hostedemail.com: domain of "SRS0=ucPx=73=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=ucPx=73=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769102242; a=rsa-sha256;
 	cv=none;
-	b=la5ia0CQIOiMjMgLT3TZsYTus3NYUd/iSuXbAXFvvlYBc93Grvyc/W5oh6Hxbn8ucAHu+b
-	S37zUSSK3fuR7ISsHw2Om5fSL6WaX3kbPCvgK8fliPbwQKMbbnYHe1vdvwTMk9yXSzgV0E
-	NguTh+hQtE7kqOiNzLdWBsQQMUVdd4E=
+	b=frl6nY2UC+3fFu2CRcxTrDH2I4mQ6PUD4WqFgstBuK5Nk7X5TLfsNfaavKik6L5afaQA/V
+	gs7vVyHlDcNSTb6oEs/8GL56k4hDwWwg5PSejWXz/1NE6SZ+OyyWALgNIEibMhpqudXW9x
+	HL9Z1Pl78G6FeXvKfFkOB5ICZvg8NYU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C25A2600CB;
-	Thu, 22 Jan 2026 17:13:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2411EC116D0;
-	Thu, 22 Jan 2026 17:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769102032;
-	bh=7G/QqXvcC6v2q6kq4mByfBDUfC++L542v7aEpHMt1Gs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vVvwcwn7p2eSF8OAMa7tYkMn2kTkDU/wPhaNdoQeovpIeSndvlEMTIfKF7OgArV1j
-	 qCwF4mUnFifje2mTXdum7upR7dZSnWm+Tt5Md5YEmTBtT4SyYPn1JbB53Q68xYIo9r
-	 Hsze7rW0ouJRsMqAxWIlCC1LYhSwc9ceYZvNUKVA=
-Date: Thu, 22 Jan 2026 09:13:51 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: shakeel.butt@linux.dev, hannes@cmpxchg.org, mhocko@kernel.org,
- roman.gushchin@linux.dev, muchun.song@linux.dev, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm: optimize stat output for 11% sys time reduce
-Message-Id: <20260122091351.0cc1afd5d419fafa1d98b32f@linux-foundation.org>
-In-Reply-To: <20260122114242.72139-1-wujianyue000@gmail.com>
-References: <20260110042249.31960-1-jianyuew@nvidia.com>
-	<20260122114242.72139-1-wujianyue000@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7F242A0003
-X-Stat-Signature: k7cb7qr1gcartumiebcx1kxeb8fmtao4
+	by sea.source.kernel.org (Postfix) with ESMTP id F02FD42D69;
+	Thu, 22 Jan 2026 17:17:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE757C116D0;
+	Thu, 22 Jan 2026 17:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769102240;
+	bh=A9cQRSLz8v2njv45CmUGC/ju5GGeQ9vPP+m1Rqf8v0g=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=HwNktGx2wc5ES0Aj7U0G4a5y9BLRgWYSHcsQT3m8DkCleGR39McCiFdLfNYZjv/Ho
+	 KgrESmjedNz6CmlHIOzobCAOzrF24N623Wr2m2LwzKmtKpGcu7y75F6owqVqzrvEfT
+	 XditdUDtZqWsd/sp6D7kbGk1ncXUp80NG9cuyxjnsC3LkBGshvSjij/Ys8ebX+u4jc
+	 0tDnKoCZyHNK68DN/QadDj9aodF5MoPaDIeNEbOFybaECD3TIP00QSpzkzOx6nrzv5
+	 lsVkEkONqhS2sTWozRh01IvQ0h/KF1uRAOuhn8dV8kKMhqkuI8w2SW9ErsZfHFrZLy
+	 1+AhAnvEkC39g==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 63F9BCE0B6E; Thu, 22 Jan 2026 09:17:20 -0800 (PST)
+Date: Thu, 22 Jan 2026 09:17:20 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Waiman Long <llong@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH] mm/mm_init: Don't call cond_resched() in
+ deferred_init_memmap_chunk() if rcu_preempt_depth() set
+Message-ID: <61690638-e72d-4d8e-9687-9f4da3ede970@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260121191036.461389-1-longman@redhat.com>
+ <20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org>
+ <0e385146-67a3-4fdd-b119-059caba8c5f0@redhat.com>
+ <13d0b8b5-1ba7-4a3e-a686-13a7b993d471@paulmck-laptop>
+ <20260122075747.uSLrSJez@linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260122075747.uSLrSJez@linutronix.de>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E2DDF120002
+X-Stat-Signature: h6rsrb7nb4ghowubetfxt1bd1gweri1a
 X-Rspam-User: 
-X-HE-Tag: 1769102033-232400
-X-HE-Meta: U2FsdGVkX192Ol2Iu7oTdyyKO8qtui5KMadCmbmnqMurxaklN6FSzpDYExpcyLSXYBb+zWXbLogzQJBkakRtp5njbgCFVP3AjK4Hk6M0N3B+sAFNeph+oaInOGLfyzwCBorkW0wrAuxbfeNZvobpW6aHaExnXSOXy/uHANp/blchZVLLjPi4Y9hoh7C5ytwD7kQuUa+2JaAeHO4NejF3xK05+oMIaoYci8IepSwO20/VyD0j/khi9hfFb53Qg8QMgHSSB3DclfHK+9HkFBOkV75p0/7j3WHn07eMkmlh41cmWDjKHkt/rn65tDXEfIjebVAiTN2FFKOHoH+IgSogXPQewkJB7LXi9ymY6bp3Ua6/bBKriKSHSxWRMf3BAd4oq0syjIwd1ZJWufsJAahNOZyrwlvi2W4ocjiP2tuq8VphYXeb0gbzhx9WiOo2eHPtJKzOEZrX3zONzMA8rps32ZhSGVAkPpt/O1PvF4OBwQ6hJ340tlMbX5dosGPfGHTSCfesWpBIA9fkm03xgKmscinsTVkrez+hdA94+h9ZonRCpvts+C1THGcAYiwKqOj1nGqve/fzvI7Dy/Mzr09GQFl5SUPZigmF11tiyZz2O+Zp/rD0VJgOuLDNcSNyFOGMNnLfxg1sRRMXTgP5ZfxQLJ6Bv5bp39Ph0Jz17JC4gaetNChoT2+1D93SGgw94gUUCtzXvuYOiJVcFlLZT4nkPFDfUXCe2vzTL80diKIJCQCecp2oB1ZzwRUQlRlvy2247nWbv8YNn4pjoWulAxDScXeM6BgcoIgQY4FujxXxG6qJo34WiSHKlQ0Flxc87hv6C4jrKw3MgsEOmSbJV6oHaWFlzR5VG4T7tFgdYx4ACGBGXyNvptaiD59dOCf2YBLcJaBG06sW+/xt9os4+Rx+agfB7PX4M5xcDICdBNG3c8Y=
+X-HE-Tag: 1769102241-307470
+X-HE-Meta: U2FsdGVkX19zuGCX/pbbopDHSHL2msrFb6khQwhYbdJkyVLteGxMChdJlYgBAkV7OtWzkVf+djtwcq+2KHuk8+bx1Gi9fPzuVg0hQFHtNgnxK96G0jSZpTqq58aO3i1s+foup+qiYXs6QTWBVSZa9CgFVKlL8y3eUUrlsNcZoT5UReOvBr9RpHJGUs4LPKL+1KGqctbNbqHeTihwldyMZFFCdTqMt4VWcCOflVsnEDgYuS7CTwc/dTi/mwE6oZsVaJZ1DU4x9n52riufFZNHklkLg3/I6GByoTSz6srEyxJ6e/jUADQlMKRaxI/ZfUhPFu5P+cUCatjoOm9Q4aGBLTPt3UN7S9jmTGVsDoxoJ+6EqZOGaU8LaZw4IuAgupypBx+cVJBuLPZ1avpDBL7ziTwf895rqDgj+vLrr8JVF390xE/Cw+qJ2vZM/YwPKhyvGT98x7f83kTMz2woFfA2FtXo+/p9JnXUKgU82R7Dun6bOBiqodmPa9dvur8Eocwe7WhL/fiZzNZwfnXUtd8frm341qnsiW4OXQPAN3fVAsEjj5xwKQiDxAe0MRnKyHvzgcpXFUNMD1iPSmLe7odHN5YPmaTKCLdDbBNYJZoAS1dKEdMe0pXBYkSzau8JX0jpbRpW5OI6I4ub51AXxAWVDYZZwQVrMaXhmva4kRbq49NdxeNGCQB0LRXQ4RHlmkLkAoSRBicUJIyIMOZVwkbizP5xljreCa9zqGGZbQ67wqjC7p3rL8ggZyAaeMzjpVr9sFqII7GE4d3f9FKvxDjyCiNBOtMUT1SAM5F5AbH9xZrgsPurPA0Jx7a2LsccmyslK2OcPNzbPP7pm80EsKZsuNjYCmk0p61xCuql/6W67Fui69Xq4rSJmK0cdDV/Wb7gqMP0lDXOxnwU+j+3atQZlq6Et5DzILll8N4zlM6IkZK9CgFl/998QZlyEgbuBBEqlzpz+DTUn4crhDnszRe
+ fXNgy9ye
+ mcASEJdJtSDbhDFmVEIhrxLMJhQU87jSPnm4S62i34tc1ZIfB2iY84j34eGzW95Sh8Ta5hqtN8o1xagLuR8juf5bq8plQrXu1TPHE6zftX/TAkwykfqdsvhMxWIg7SghukQrKBXwwKACodTFTjU9cFkwcDwWJrjPY74XOhHVLQSTdP+e97eCtg00CmOMPwuWJBc7H9cW48c0L3tTnbU/cVxSK1G4zVV1ib7FmUykwnwSc+HBuRMD7VGGfAlcGXqqV7eCf8tNzKLhtt3VE4/CCEsRRWHN7vMaMqpTCj53tzTtRzBl97ua0O08xL5hw7KetkKyxwF1//rzkXAJ6/6rDfvXBz6qPLmhx+gpSxb0JZ5CVdgekV6PFPoMHi2zMsHQaha74iuRuih3oFG+Ynb+6Uk5vGLrFfLBRyAlF57X5V7KrPIqD3/EPT7/16Df9Q/otPDtI/QSZh6rz5HcIQSoNJrICybwAdiHwwV7KIVf88TYLmjS97U+QMKWdq1KwQ9cIfLLt7RZZOXAfw5W5nJNEc42QNyPvyXNMnUYqf2QFK6iYQDvv72KDUkMLZCnEIaGfdx/y8IhX+pACYctqfe4tV/nHR70xYw1n1teP4axuRM3JbeQci3jrjZXhrpld+l1ShPNwhtPePUKGNeTwm0iWFjh4/8/KTlcLNLc7tUM1ZQkCs2+JCMmD14UJnPOlIugYQEPi0hGiIjHnG8miIK3onxzaiV8/d3HDjrpt8JgXlqPIlP502h9CWhmpD1FzhMejSd8AmszXV5MLfteRRzxVrQK0gQ5d3NCRDC2X007X8NPyfDI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,40 +105,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 19:42:42 +0800 Jianyue Wu <wujianyue000@gmail.com> wrote:
+On Thu, Jan 22, 2026 at 08:57:47AM +0100, Sebastian Andrzej Siewior wrote:
+> On 2026-01-21 13:27:32 [-0800], Paul E. McKenney wrote:
+> > > > > --- a/mm/mm_init.c
+> > > > > +++ b/mm/mm_init.c
+> > > > > @@ -2085,7 +2085,12 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+> > > > >   			spfn = chunk_end;
+> > > > > -			if (irqs_disabled())
+> > > > > +			/*
+> > > > > +			 * pgdat_resize_lock() only disables irqs in non-RT
+> > > > > +			 * kernels but calls rcu_read_lock() in a PREEMPT_RT
+> > > > > +			 * kernel.
+> > > > > +			 */
+> > > > > +			if (irqs_disabled() || rcu_preempt_depth())
+> > > > >   				touch_nmi_watchdog();
+> > > > rcu_preempt_depth() seems a fairly internal low-level thing - it's
+> > > > rarely used.
+> If you acquire a lock from time to time and you pass a bool the let the
+> function below know whether scheduling is fine or not then it is
+> obvious. If you choose to check for symptoms of an acquired lock then
+> you have to use also the rarely used functions ;)
 
-> Replace seq_printf/seq_buf_printf with lightweight helpers to avoid
-> printf parsing in memcg stats output.
+Agreed.
+
+> > > That is true. Beside the scheduler, workqueue also use rcu_preempt_depth().
+> > > This API is included in "include/linux/rcupdate.h" which is included
+> > > directly or indirectly by many kernel files. So even though it is rarely
+> > > used, but it is still a public API.
+> > 
+> > It is a bit tricky, for example, given a kernel built with both
+> > CONFIG_PREEMPT_NONE=y and CONFIG_PREEMPT_DYNAMIC=y, it will never
+> > invoke touch_nmi_watchdog(), even if it really is in an RCU read-side
+> > critical section.  This is because it was intended for lockdep-like use,
+> > where (for example) you don't want to complain about sleeping in an RCU
+> > read-side critical section unless you are 100% sure that you are in fact
+> > in an RCU read-side critical section.
+> > 
+> > Maybe something like this?
+> > 
+> > 	if (irqs_disabled() || !IS_ENABLED(CONFIG_PREEMPT_RCU) || rcu_preempt_depth())
+> > 		touch_nmi_watchdog();
 > 
-> Key changes:
-> - Add memcg_seq_put_name_val() for seq_file "name value\n" formatting
-> - Add memcg_seq_buf_put_name_val() for seq_buf "name value\n" formatting
-> - Update __memory_events_show(), swap_events_show(),
->   memory_stat_format(), memory_numa_stat_show(), and related helpers
-> - Introduce local variables to improve readability and reduce line length
+> I don't understand the PREEMPT_NONE+DYNAMIC reasoning. irqs_disabled()
+> should not be affected by this and rcu_preempt_depth() will be 0 for
+> !CONFIG_PREEMPT_RCU so I don't think this is required. 
+
+If touch_nmi_watchdog() is fast enough that calling it in a potentially
+tight loop is OK, then agreed, this is not required.
+
+But maybe I should redefine !PREEMPT rcu_preempt_depth() in terms of
+preemptible() or some such.  Thoughts?
+
+> > This would *always* invoke touch_nmi_watchdog() for such kernels, which
+> > might or might not be OK.
+> > 
+> > I freely confesss that I am not sure which of these is appropriate in
+> > this setting.
 > 
-> Performance:
-> - 1M reads of memory.stat+memory.numa_stat
-> - Before: real 0m9.663s, user 0m4.840s, sys 0m4.823s
-> - After:  real 0m9.051s, user 0m4.775s, sys 0m4.275s (~11.4% sys drop)
+> What about a more straight forward and obvious approach?
+> 
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index fc2a6f1e518f1..0b283fd48b282 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2059,7 +2059,7 @@ static unsigned long __init deferred_init_pages(struct zone *zone,
+>   */
+>  static unsigned long __init
+>  deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+> -			   struct zone *zone)
+> +			   struct zone *zone, bool may_schedule)
+>  {
+>  	int nid = zone_to_nid(zone);
+>  	unsigned long nr_pages = 0;
+> @@ -2085,10 +2085,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+>  
+>  			spfn = chunk_end;
+>  
+> -			if (irqs_disabled())
+> -				touch_nmi_watchdog();
+> -			else
+> +			if (may_schedule)
+>  				cond_resched();
+> +			else
+> +				touch_nmi_watchdog();
+>  		}
+>  	}
+>  
+> @@ -2101,7 +2101,7 @@ deferred_init_memmap_job(unsigned long start_pfn, unsigned long end_pfn,
+>  {
+>  	struct zone *zone = arg;
+>  
+> -	deferred_init_memmap_chunk(start_pfn, end_pfn, zone);
+> +	deferred_init_memmap_chunk(start_pfn, end_pfn, zone, true);
+>  }
+>  
+>  static unsigned int __init
+> @@ -2216,7 +2216,7 @@ bool __init deferred_grow_zone(struct zone *zone, unsigned int order)
+>  	for (spfn = first_deferred_pfn, epfn = SECTION_ALIGN_UP(spfn + 1);
+>  	     nr_pages < nr_pages_needed && spfn < zone_end_pfn(zone);
+>  	     spfn = epfn, epfn += PAGES_PER_SECTION) {
+> -		nr_pages += deferred_init_memmap_chunk(spfn, epfn, zone);
+> +		nr_pages += deferred_init_memmap_chunk(spfn, epfn, zone, false);
+>  	}
+>  
+>  	/*
+> 
+> Wouldn't this work?
 
-So the tl;dr here is "vfprintf() is slow". 
+I will defer to the mm guys on this question.
 
-It's quite a large change, although not a complex one.
-
-Do we need to change so much?  Would some subset of these changes
-provide most of the benefit?
-
-It does rather uglify things so there's a risk that helpful people will
-send "cleanups" which switch back to using *printf*.  Explanatory code
-comments would help prevent that but we'd need a lot of them.
-
-I dunno, what do people think?  Does the benefit justify the change?
-
-> Tests:
-> - Script:
->   for ((i=1; i<=1000000; i++)); do
->       : > /dev/null < /sys/fs/cgroup/memory.stat
->       : > /dev/null < /sys/fs/cgroup/memory.numa_stat
->   done
+							Thanx, Paul
 
