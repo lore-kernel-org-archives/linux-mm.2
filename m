@@ -4,122 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F134C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:00:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6654C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:02:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4F696B0105; Thu, 22 Jan 2026 03:00:56 -0500 (EST)
+	id 58F0D6B0107; Thu, 22 Jan 2026 03:02:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFC426B0107; Thu, 22 Jan 2026 03:00:56 -0500 (EST)
+	id 546AB6B0109; Thu, 22 Jan 2026 03:02:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DD1C6B0108; Thu, 22 Jan 2026 03:00:56 -0500 (EST)
+	id 41ECC6B010A; Thu, 22 Jan 2026 03:02:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AABD6B0105
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:00:56 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3756F1AF239
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:00:56 +0000 (UTC)
-X-FDA: 84358853712.08.5B03C7F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 30A216B0107
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:02:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0BB3139079
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:02:15 +0000 (UTC)
+X-FDA: 84358857030.17.1CBAC8E
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A72EB40003
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:00:53 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0+HG3qpa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=x597raJU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0+HG3qpa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=x597raJU;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8D871180002
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:02:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WY6CuQqZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dt25Voui;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="GOIk/QeC";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xARCrcPr;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769068854;
+	s=arc-20220608; t=1769068933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C4zAQ80PqnRS6Q1GrwimdsrNjkQH2WZaJ1/YF1AonT4=;
-	b=cdwzOiZvl4qhUM50U295KRZJ3iXjJ0wdq93/oefUbQ8ANb61JLf72zDVAEaaXYFyrsBsvr
-	yGNvmRiaAPgdhrQQFLkWX7nTMUoNbJoc9qDT4FO3x6KXIBPnNIrjidHULmgIf7BrdF/dDj
-	7BHiaTIiUf8SBMmoK+RjYKyfb70sZDE=
+	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
+	b=jrlMnKOLgu7NZuTQCrfCQUAY8ci68gflNlK1Y5j+EoqYoCSFOljv2gN6HQNvIlvmaZOQzm
+	9syG9DTDk5t7ldgWIMdTMBEriJV/CkTZ2xaF7W6lcoZf/0L0UPzXvo0f0CpN+Bq3HBFjdO
+	CFGCMUERDYVRec1qsF/gCbeOscxUoX4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0+HG3qpa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=x597raJU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0+HG3qpa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=x597raJU;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WY6CuQqZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dt25Voui;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="GOIk/QeC";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xARCrcPr;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769068854; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769068933; a=rsa-sha256;
 	cv=none;
-	b=LIkgWsP5X25KHIiCpXOz2mHQWnS/LbKbwkC9zoQTFR8V4eT/SV9FA+6FL8t0a1/umGL3U1
-	TT1UBcJUszsDlr+E08CLyye+vihNxDOGGPfY9/AHmOzfDjb7b3bbZJhgeEGVamA5FRiedm
-	6CP6/tEgJDzOX/BlKjCPxj/aOtB2I2Q=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=Uv4Q+cgH3C1wCVskRQdx+TA8Jj4E5CCRDUVM4D3ZwVgUFdSi14XNMrzGvwxK08TJ6SzQH5
+	DCE3F50sSfjXaOe2x1iFh4NefYBzuO4kIn5OSvri5c//BPXzYIi18ujv/KUAyp1jOFpK/N
+	H+ZtCIrqR88EAWXCWB6zlO5NAEKp3aA=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B1ACC5BCC3;
-	Thu, 22 Jan 2026 08:00:51 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 99CA45BCC2;
+	Thu, 22 Jan 2026 08:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769068851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769068931; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=C4zAQ80PqnRS6Q1GrwimdsrNjkQH2WZaJ1/YF1AonT4=;
-	b=0+HG3qpa922ZmFTWiChvzCOHFaFbN+BSAoyy8kWnVwaxRZpTavBsrl7B8cou8DDDocqNDf
-	LhFdwQbss0NIn0vQxrcCY0ShhGp0uW9ePFcooKVk/lKlyuVJud++sMRSYXH3hP3a3Meg3m
-	Z9Jy/zkPvxmt0WWvbD5wFoFT1/EHVdc=
+	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
+	b=WY6CuQqZ5tA0cejnAXKMLHzYHPZOVQWXc98woGl9RkMWMVSQ+fjFeFt8mYrBrhdmK0q92G
+	y80uBbTuWP7D3hf+Cey/fedrvHt2WRC8+yjhONrvFG7QG7qIXMoX96r6mMM4d2NhwOrvpT
+	DDes6Ccn5XmTEA2mmn8u99BAhSz1Mq8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769068851;
+	s=susede2_ed25519; t=1769068931;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=C4zAQ80PqnRS6Q1GrwimdsrNjkQH2WZaJ1/YF1AonT4=;
-	b=x597raJUv0heYD/X2hwj4Q3SukHDJZ9okwTOr/PAfj/AdF1RQdOlSAH71dz298Tg9HsuaB
-	b/YNzkQVvHXxjwDA==
+	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
+	b=dt25VouiAL5Uo3mlTwcLwxX76wb/VevgRzYU0PCnczsVi2Ff5XEf3auw7MH5AME422rsvc
+	OfYbGLc8NwxjqiAA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769068851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769068930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=C4zAQ80PqnRS6Q1GrwimdsrNjkQH2WZaJ1/YF1AonT4=;
-	b=0+HG3qpa922ZmFTWiChvzCOHFaFbN+BSAoyy8kWnVwaxRZpTavBsrl7B8cou8DDDocqNDf
-	LhFdwQbss0NIn0vQxrcCY0ShhGp0uW9ePFcooKVk/lKlyuVJud++sMRSYXH3hP3a3Meg3m
-	Z9Jy/zkPvxmt0WWvbD5wFoFT1/EHVdc=
+	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
+	b=GOIk/QeCW54ajuj57g/uvfIbip7/Ti5UKaZ5kznY6hpuPnYXbAO4fCTpdIWvJ7nres4yJJ
+	NEo2Zc3AVLptnzvCHOQ7QJp3xLVGjOR+BMDDrKg5kdYYM5r9N+Mu6n4OXuqTRCbTDseRYA
+	NnbPq1DCo+cePiYKBXcWRr4A3qoj8cY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769068851;
+	s=susede2_ed25519; t=1769068930;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=C4zAQ80PqnRS6Q1GrwimdsrNjkQH2WZaJ1/YF1AonT4=;
-	b=x597raJUv0heYD/X2hwj4Q3SukHDJZ9okwTOr/PAfj/AdF1RQdOlSAH71dz298Tg9HsuaB
-	b/YNzkQVvHXxjwDA==
+	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
+	b=xARCrcPr72qH8NKGDMK0rr8WxgM6WxFzx+SdBIWMI1TvNxQnmqVJbYVS75PEmvT6Ljnjnn
+	Rwx3FItxbs1CvhAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 652B03EA63;
-	Thu, 22 Jan 2026 08:00:50 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 41FA83EA65;
+	Thu, 22 Jan 2026 08:02:10 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NQrwFzLZcWkDTAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:00:50 +0000
-Message-ID: <9077ab5b-f2c8-4c8d-8441-631e7c2cf384@suse.cz>
-Date: Thu, 22 Jan 2026 09:00:49 +0100
+	id j+18DoLZcWncTAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:02:10 +0000
+Message-ID: <a68d2e39-3041-4487-97a6-19ed7c3d332a@suse.cz>
+Date: Thu, 22 Jan 2026 09:02:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
  private folios
 Content-Language: en-US
-To: Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
- Matthew Wilcox <willy@infradead.org>, Alistair Popple <apopple@nvidia.com>,
- Francois Dugast <francois.dugast@intel.com>, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, adhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+From: Vlastimil Babka <vbabka@suse.cz>
+To: Francois Dugast <francois.dugast@intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
+ Zi Yan <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin
+ <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
  "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
  Felix Kuehling <Felix.Kuehling@amd.com>,
  Alex Deucher <alexander.deucher@amd.com>,
@@ -129,26 +130,18 @@ Cc: Jason Gunthorpe <jgg@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
  Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
  David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Leon Romanovsky
- <leon@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
  <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- linux-mm@kvack.org, linux-cxl@vger.kernel.org
-References: <eb94d115-18a6-455b-b020-f18f372e283a@nvidia.com>
- <aWsdv6dX2RgqajFQ@lstrano-desk.jf.intel.com>
- <4k72r4n5poss2glrof5fsapczkpcrnpokposeikw5wjvtodbto@wpqsxoxzpvy6>
- <20260119142019.GG1134360@nvidia.com>
- <96926697-070C-45DE-AD26-559652625859@nvidia.com>
- <20260119203551.GQ1134360@nvidia.com>
- <ef6ef1e2-25f1-4f1b-a8d4-98c0d7b4ad0c@nvidia.com>
- <EE2956E3-CCEA-4EF9-A1A4-A483245091FC@nvidia.com>
- <20260120135340.GA1134360@nvidia.com>
- <F7E3DF24-A37B-40A0-A507-CEF4AB76C44D@nvidia.com>
- <aXHPkQfwhMHU/oP6@lstrano-desk.jf.intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
+ Michal Hocko <mhocko@suse.com>, Balbir Singh <balbirs@nvidia.com>,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
+References: <20260116111325.1736137-1-francois.dugast@intel.com>
+ <20260116111325.1736137-2-francois.dugast@intel.com>
+ <ed6ca250-67ee-4f7a-bc3b-66169494549a@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -188,17 +181,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <aXHPkQfwhMHU/oP6@lstrano-desk.jf.intel.com>
+In-Reply-To: <ed6ca250-67ee-4f7a-bc3b-66169494549a@suse.cz>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A72EB40003
-X-Stat-Signature: 3ixfcuedmbfnxmoujqscw7weyh6sy3a1
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8D871180002
+X-Stat-Signature: cgpu99isumymsjpho4nnr6wdr9k1scj3
 X-Rspam-User: 
-X-HE-Tag: 1769068853-127804
-X-HE-Meta: U2FsdGVkX1/wp+3Rg1PX/niitARhaaUCqubntmZUBjxACY8NgaJDExPd5OQpnz1dlm5VJ0vIJRblGg5XDK1xWws6QcHitKwlgkVH8NiYoJne+6SuCUStT3szZU0w5FfnYjwOBS70pas+iJAOz2GoXwSBJi2GTPphz1EXnH7fprDBdPWUaFabfqHpFKYUhQZjhUGoBcaw1oRhpdz2FYGCI5h7b6ftUr0J6F76gXGQADBlqUnaFKYhnCpxx0XcaC5OF9585Fjk8sVcSookQBAVMPborC15rDQTIxlkS1dNlhCw1pSObdS2lz1rw9oK6ZSegoBu/A1nMBgc33oQu2F9+ij0JnzcmYYyFEN/LwkJAYRZbltHn26lZVy0rh88Y5LmmEDR/nP9sqlOKq89UiZOMFOd9TpHuPeUWV/Pok69wP31H3TTvdxi8ixRYSLeqAj+Y5TGxyboX9QouI02PSOEPH8/UiZ2TbqRFQZWHJ4a9VC/Xet3botjbUCgpcxfkGAl39oj5+K2WLjUnWugARs7FUs4Awf4L5rqbFcrZ/Mu4oTYp+aT8YPUshRkv03TK+gq4Y/hvf4llmZiFLQ3/v3MDtqyqVhrb95xfJbox+9BaIvBuMY/u6HZOxkcMGZfbkKifnnaDiUMiJ9JRdTJRCEf+sA9UKwYJDoqgRdgLpql2GNOSWPny1+iWTkJidNqRXk7j2g9u6UJFzBLmZ9L6KXOR6lUvsTtYvoCyJzXhl3FdzpPHYZ4rkZvAUfNhvU8XlD3Ho+TrI9qBMHcFNCcJMQKdrPFQjPqT2L+TO0QSjKeRoBjemLwWDLndAvBBRJc8zH2sfhrngX1SPbv7pUQO1vgolsbtbX3c8U4KawWSwKDTnxVc3vyqQwJBWTEKC3vtYyQA6/8GclvAkNzNh0r1lp96oUaRErjX9DMMrYRcfJUXRmqFpHf/rBQkAi+gFcrj95kcBOtnTKLWeUjnY4xlZQ
- ha9+si79
- Lx5xupgGA+vBA7bss+d7ZJgiDf+DyRZJUs0m7KYBa0myPcKBLcS6Z5Mcat6vF4rmDzsqLgtjmreMRquD36OM0OY2yoEPHWuVhzoat5J1z4DzXgMCZSrV7LArz/x45tG7mHZLOsQcgMVI3U8iXClINS04ByjUJka+x3k5QGJwrhALtR7TrnMA+j3m51anuwE+/W2WUJysBJ+LgcLs8oZVvwV0Ak+Obwq0miBudOUa020jh7B9yOISQ+xoUikwK3NNXRZ72NWL/uX7I8vmrQxFaPbueI4nMuy/BXI0m64NXjcnyFZOp/B5cmpBdHEK/rUYQA8vHWn41zPOmE/vTMkbSNr8D+LdB80CR8esrE46cXi2L1FA=
+X-HE-Tag: 1769068933-130546
+X-HE-Meta: U2FsdGVkX1+b4efShTQuB0GF1NVdtWxA2y1zsTv7onZvBZHGJLwLDMkuyo0B4fpmet3RXLIyNWhw8GrzXAkss2kvT2OFEy/dpRfel93J8MyxXfEUlqvh32Dm4W7UzpXWpwAtr7Rw9dFJ1tkgQpmtno8/kN5iAHgAb976rzlGMVq+U+8tlxddLfddYMQTfVpBl8JyizMVX9nZPklf1LyQL6SoG0Ob+2eTQaJougw0U6/yd3rw5gXJnPgKrx0ApdaV9xWx9SDlRKPOzGJTJ3xVYsQmAwhO832H9sfXkZusu8J8RdXGFP1e2QIvOsReV9M+iD42FYcvMSGZd4M/CbYKuOrpXb/BAqYge2cdX1JmnSK5doKhSFED7+tcFI8jB79j//EZdgcQ+Xh5zyLwAYeiJxzfWnqSbMAgZXzBP8D+trSr7s24wVp3xxyFlUJWF2eb9u2GDMbdMZgqvqaHS5XLZ9LPAGUwIoItd7YFM+NdHvDumcRKOhYcQzKQtyHZ4hg7xvChpPiUtKGbFFSzVKnFIzlyjGte1m7A2tzoEsgjvuuQSWPvI2hxHNy4gU1wD6K4balYXVbjC1hL/SYQEzjFV2SgyMSBhWL8kIqEUqmMkEPfUeNzQhOSWIjzITOTIG2ssA0gMlSgxSDAfdu8i/EnyGcGBmfl7Qst/l5gF9aoNHm3gToNoIpmm4s9PV/s7oTF6YpfDU4djcFJwFfsPSZ1da40ZCUa5j6eqsUA+EXtY7VgmyNGBF0LPDFvbxfqbYs/LKjIe5TJG2JKa3p36tpyNThK9fCxzcK723mPfgE+r7+KvMjHxaQQunFxbhI/v7OlH0XNPzClCv7ZTT3nmHvoi3bXzKUjssQuiZwx5aSFWFW+XOrZo9lIhv5vqOj7DOnvLP3xFxkpNIl2TDXC1AxN54YJONTfRfcbzjTeqHxfIAmzsL8AF4TOU2CEGBUxNMkLrTQAo2dzmz/9xCBfxQG
+ frC7lECY
+ JMLjRiDyi67ZR6f6YJy+W54pWoe8fXublyudMwMLVhyEbiThHZ5+weAzVMneW7U4798KZyLvZPpRHxTZsD93UQLxUQY9I0cvn1X37NSz3Njzg9POLEIwncbEaKZfmlhV4vAfu6Vm0zBUNoTVMEfPicSmC2H7w/uKA6SkihBcO0SSkQutZ2RJjRuveAaht+tSQ5O3TuLzms7zWjgqvtKkvgLa8R9NrifmI8IeY9h14qdzNXyZN5M3rxZXB0fPhLnThtRRCZ+FqTYdbfIvJXuLYfzRfmTtDvGx+gbOY73aOGTUlTKYgHXclT7wC261A4Aur1WafetBFe6VzU0DZ8SXP7ZkEHuXZtQnYuCZ5pIPuGynYwsg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -207,110 +201,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/22/26 08:19, Matthew Brost wrote:
-> On Tue, Jan 20, 2026 at 10:01:18PM -0500, Zi Yan wrote:
->> On 20 Jan 2026, at 8:53, Jason Gunthorpe wrote:
->> 
+On 1/16/26 17:07, Vlastimil Babka wrote:
+> On 1/16/26 12:10, Francois Dugast wrote:
+>> From: Matthew Brost <matthew.brost@intel.com>
+>> diff --git a/mm/memremap.c b/mm/memremap.c
+>> index 63c6ab4fdf08..ac7be07e3361 100644
+>> --- a/mm/memremap.c
+>> +++ b/mm/memremap.c
+>> @@ -477,10 +477,43 @@ void free_zone_device_folio(struct folio *folio)
+>>  	}
+>>  }
+>>  
+>> -void zone_device_page_init(struct page *page, unsigned int order)
+>> +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+>> +			   unsigned int order)
+>>  {
+>> +	struct page *new_page = page;
+>> +	unsigned int i;
+>> +
+>>  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+>>  
+>> +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
+>> +		struct folio *new_folio = (struct folio *)new_page;
+>> +
+>> +		/*
+>> +		 * new_page could have been part of previous higher order folio
+>> +		 * which encodes the order, in page + 1, in the flags bits. We
+>> +		 * blindly clear bits which could have set my order field here,
+>> +		 * including page head.
+>> +		 */
+>> +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
+>> +
+>> +#ifdef NR_PAGES_IN_LARGE_FOLIO
+>> +		/*
+>> +		 * This pointer math looks odd, but new_page could have been
+>> +		 * part of a previous higher order folio, which sets _nr_pages
+>> +		 * in page + 1 (new_page). Therefore, we use pointer casting to
+>> +		 * correctly locate the _nr_pages bits within new_page which
+>> +		 * could have modified by previous higher order folio.
+>> +		 */
+>> +		((struct folio *)(new_page - 1))->_nr_pages = 0;
+>> +#endif
+>> +
+>> +		new_folio->mapping = NULL;
+>> +		new_folio->pgmap = pgmap;	/* Also clear compound head */
+>> +		new_folio->share = 0;   /* fsdax only, unused for device private */
+>> +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
+>> +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
+>> +	}
+>> +
+>>  	/*
+>>  	 * Drivers shouldn't be allocating pages after calling
+>>  	 * memunmap_pages().
 > 
-> This whole thread makes my head hurt, as does core MM.
-> 
-> IMO the TL;DR is:
-> 
-> - Why is Intel the only one proving this stuff works? We can debate all
->   day about what should or should not work — but someone else needs to
->   actually prove it.i, rather than type hypotheticals.
-> 
-> - Intel has demonstrated that this works and is still getting blocked.
-> 
-> - This entire thread is about a fixes patch for large device pages.
->   Changing prep_compound_page is completely out of scope for a fixes
->   patch, and honestly so is most of the rest of what’s being proposed.
+> Can't say I'm a fan of this. It probably works now (so I'm not nacking) but
+> seems rather fragile. It seems likely to me somebody will try to change some
+> implementation detail in the page allocator and not notice it breaks this,
+> for example. I hope we can eventually get to something more robust.
 
-FWIW I'm ok if this lands as a fix patch, and perceived the discussion to be
-about how refactor things more properly afterwards, going forward.
+For doing this as a hotfix for 6.19, assuming we'll refactor later:
 
-> - At a minimum, you must clear every page’s flags in the loop. So why not
->   conservatively clear anything else a folio might have set before calling
->   an existing core-MM function, ensuring the pages are in a known state?
->   This is a fixes patch.
-> 
-> - Given the current state of the discussion, I don’t think large device
->   pages should be in 6.19. And if so, why didn’t the entire device pages
->   series receive this level of scrutiny earlier? It’s my mistake for not
->   saying “no” until the reallocation at different sizes issue was resolved.
-> 
-> @Andrew. - I'd revert large device pages in 6.19 as it doesn't work and
-> we seemly cannot close on this.
-> 
-> Matt
-> 
->> > On Mon, Jan 19, 2026 at 09:50:16PM -0500, Zi Yan wrote:
->> >>>> I suppose we want some prep_single_page(page) and some reorg to share
->> >>>> code with the other prep function.
->> >>
->> >> This is just an unnecessary need due to lack of knowledge of/do not want
->> >> to investigate core MM page and folio initialization code.
->> >
->> > It will be better to keep this related code together, not spread all
->> > around.
->> 
->> Or clarify what code is for preparing pages, which would go away at memdesc
->> time, and what code is for preparing folios, which would stay.
->> 
->> >
->> >>>> I don't think so. It should do the above job efficiently and iterate
->> >>>> over the page list exactly once.
->> >>
->> >> folio initialization should not iterate over any page list, since folio is
->> >> supposed to be treated as a whole instead of individual pages.
->> >
->> > The tail pages need to have the right data in them or compound_head
->> > won't work.
->> 
->> That is done by set_compound_head() in prep_compound_tail().
->> prep_compound_page() take cares of it. As long as it is called, even if
->> the pages in that compound page have random states before, the compound
->> page should function correctly afterwards.
->> 
->> >
->> >> folio->mapping = NULL;
->> >> folio->memcg_data = 0;
->> >> folio->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
->> >>
->> >> should be enough.
->> >
->> > This seems believable to me for setting up an order 0 page.
->> 
->> It works for any folio, regardless of its order. fields used in second
->> or third subpages are all taken care of by prep_compound_page().
->> 
->> >
->> >> if (order)
->> >> 	folio_set_large_rmappable(folio);
->> >
->> > That one is in zone_device_folio_init()
->> 
->> Yes. And the code location looks right to me.
->> 
->> >
->> > And maybe the naming has got really confused if we have both functions
->> > now :\
->> 
->> Yes. One of the issues is that device private code used to only handles
->> order-0 pages and was converted to use high order folio directly without
->> using high order page (namely compound page) as an intermediate step.
->> This two-step-in-one caused confusion. But the key thing to avoid the
->> confusion is that to form a high order folio, a list of contiguous pages
->> would become a compound page by calling prep_compound_page(), then
->> the compound page becomes a folio by calling folio_set_large_rmappable().
->> 
->> BTW, the code in prep_compound_head() after folio_set_order(folio, order)
->> should belong to folio_set_large_rmappable() and they are causing confusion,
->> since they are only applicable to rmappable large folios. I am going to
->> send a patch to fix it.
->> 
->> 
->> Best Regards,
->> Yan, Zi
-
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
