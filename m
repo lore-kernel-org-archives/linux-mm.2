@@ -4,130 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01F9CC44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B5F3C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:33:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 687346B0151; Thu, 22 Jan 2026 06:29:55 -0500 (EST)
+	id CE0FB6B0154; Thu, 22 Jan 2026 06:33:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6341E6B0153; Thu, 22 Jan 2026 06:29:55 -0500 (EST)
+	id CB85D6B0155; Thu, 22 Jan 2026 06:33:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 536AA6B0154; Thu, 22 Jan 2026 06:29:55 -0500 (EST)
+	id BC4096B0156; Thu, 22 Jan 2026 06:33:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 406216B0151
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:29:55 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0ABAED265D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:29:55 +0000 (UTC)
-X-FDA: 84359380350.03.2D737C9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 07F4C100007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:29:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rW1gA+My;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AAD9F6B0154
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:33:06 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5DF4C16025D
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:33:06 +0000 (UTC)
+X-FDA: 84359388372.17.7A94119
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E777C14000A
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:33:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=elXN6kAD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769081393; a=rsa-sha256;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769081584; a=rsa-sha256;
 	cv=none;
-	b=JISxNy+wF27jOkpNxR5i5Y0IN+KTDy4wSzcHmqf+9SbteeZ023oJN0HgUpoHRLgyc5ZQ5C
-	FwChGsq1ed5a7c+JqSSLcwQGx/iJUEzBtyaYu2yDmRzLdBJQXcNdrnCPelYRakZ2JUAGIx
-	24P4dKnxulbFE2mf7d5P3GIz7bzd25I=
+	b=oi1kxfNCctiXJL32oUhfGVw7wDfyAlnDqLH+r9EzL5LVe9G79vd+FThHABJ6wNeHqJu5Y5
+	ls2EPFcVmpAcgeBAQ07WZUvXwjqfNuIHlhRjq/P5UQIoHfscmrOeTA9bCBOS1c+4SPkrx9
+	PXFbB908nUCSPv9PVjDtcQ/6cuHiLjs=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rW1gA+My;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=elXN6kAD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769081393;
+	s=arc-20220608; t=1769081584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hQJXvXFp4Q8gFKgaqCb7Err1UsYYuhwZ1yCQX7aI5DA=;
-	b=hpyxteURJaE0m33QYmBidYQD7yD8Rftb73JrEpnhGOFBusRJ/rpercMH1sOqzcZk1O+zLn
-	PY1b0NjryHXmBnHQJLxCzZsffJWLBjUM0p2vMQXg5QCgsqllhqdBKAi9Bf6d7F0t0BhKNf
-	cWG0KvFZINu4g2IcjIfGembmHPJ2HZs=
+	bh=VkcESs9IRUmQ6wO9mvJ+w9N+5/hR0W6iCxEMY0nDun0=;
+	b=D13ZLFJpIyTzHkNgjWFY8IgDNqMGOAlPkK6dmKHoO0fkh8B3kncdVAeYHddgc41+Q+5AtT
+	9jNdMRA203T8UDh1/7luyG5q5HswCi5PQbke3k1aWrq09gZaWMP/GvEAneFQm7Mcub7KUK
+	IyDH1dnUi8AK16VpsxUS2H5e11cMXqI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 33DD5440B8;
-	Thu, 22 Jan 2026 11:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C3FC4AF09;
-	Thu, 22 Jan 2026 11:29:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 236AC600C3;
+	Thu, 22 Jan 2026 11:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A708C116C6;
+	Thu, 22 Jan 2026 11:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769081392;
-	bh=6+k4UVNbT+w35km52qtWegiDJEC7IGtBYhfU8DZwtes=;
+	s=k20201202; t=1769081583;
+	bh=MT9pFV75h0kEmZC8bIWLFiHCACTEbTBp++ksnQFyvoc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rW1gA+Mysg8qNsmPkZrSjxE9hLEPUy1tFzAO7z5dY0IkDeouLBOU0r2ljIA3fvUIQ
-	 IUW/ZTYm42XPCFnIAfhUEYu2ZGxo8VBmz3LhT6lN+j8ukQEfMOt8MVdl/1TLvuxmf6
-	 LCN/UP4caBRd7QMK19ZDXs/4jLIWvfkOQBwa1TgUm3POHqAzgclessdZz/nK3t304b
-	 su5plVDH5YToWm1ZYFk4hmThulQL6Nf+1kyf2CJTEwe2SsTWfXw59K8omnzA20Aozq
-	 HuN1syWuQY4sSmxZsozAaV5rmMMc7XvS5NFCrDd7oY1q04ZqBM3R72PFkoFCQ0hVNZ
-	 DPCIL1Q4C2kzQ==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 931E3F40069;
-	Thu, 22 Jan 2026 06:29:50 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 22 Jan 2026 06:29:50 -0500
-X-ME-Sender: <xms:LgpyaRMCOqG6TSxsLeBIsmLJ9ou2avO5AwZCqCxKyd7atvN5aXW66g>
-    <xme:LgpyafUSU0Wtv9NPso6hhIXRGICGK-gHqfUJmTlaZLf4IRlzjVzGuGmTF3DLD2l3z
-    OkJa4NeP7gJtxDmSdbuZH1xhUp7sqgbpKB_5pQnhwSAMQ_vc4XN4no>
-X-ME-Received: <xmr:LgpyaZo29EOFiQym1xfGjM85RhsqLDJpGA8Tq9JkrKhK2kvcGMm7U0RWGk_AdQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeitdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeeigfdvtdekveejhfehtdduueeuieekjeekvdfggfdtkeegieevjedvgeetvdeh
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeefkedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepiihihiesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuh
-    igqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehmuhgthhhunhdrshhonhhg
-    sehlihhnuhigrdguvghvpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehu
-    shgrmhgrrghrihhfieegvdesghhmrghilhdrtghomhdprhgtphhtthhopehfvhgulhesgh
-    hoohhglhgvrdgtohhmpdhrtghpthhtohepohhsrghlvhgrughorhesshhushgvrdguvgdp
-    rhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:LgpyaVfjbK06k--k_MSWJ66Q9g8RZysYYF-wNcrPVH3Dias3QjVrRg>
-    <xmx:LgpyaVDhebcBkMkPOiycyCMVNdjkKN0AZULhpzXikCuVmgvuQTlxwQ>
-    <xmx:LgpyaQT5d1PoaVkc3_G1s64mZdv1ZmaakCRlBVq2yFjXVgWGwdCE2A>
-    <xmx:LgpyaQJpoCNxDXghyE26KFHY0vlttGsHCI_HzxfExV--1CV2hdt28w>
-    <xmx:LgpyaYbc4KaLVQ1-VOARShkUV8Uk5W6Gk2_r3ovBVMnYT9oUUOKnOXfY>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 22 Jan 2026 06:29:48 -0500 (EST)
-Date: Thu, 22 Jan 2026 11:29:43 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv4 05/14] mm: Rework compound_head() for power-of-2
- sizeof(struct page)
-Message-ID: <aXIKBhHd7IbaJkXg@thinkstation>
-References: <20260121162253.2216580-1-kas@kernel.org>
- <20260121162253.2216580-6-kas@kernel.org>
- <EB8941D9-B6E0-41DD-9C44-038D21583E17@nvidia.com>
+	b=elXN6kADHsYbxw7riLecWjrnoHwzXUqXB0BHU6NtMjlC/TRgi6c5iq18AS+JGg/7p
+	 GAXSrk2TGJSdoSvtU/gnNY/0xbNnLM5BMYJgV5zjWtjbyduX0kIqp/LLhoJAkJGnPl
+	 Zg/hVqzht+qvSNzrRLGcZiqeV54nQufdxn6K6aDfoUbnIXvxgoliiNkdorrVJCMxqh
+	 ry7uB9fFUBOZwkCmUPd+ZtAWEeUeYJl5k82Y1W5+fYIepLhv4nd8M1L/GdBmKnRQvL
+	 eygIHwdBhAoexps7q5rHryWJLO8rQDDya4lPdFcaLVpXNUaYRdGAV+FRWmjACK+Ltj
+	 5uu74gQGbTJRQ==
+Date: Thu, 22 Jan 2026 13:32:55 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Tianyou Li <tianyou.li@intel.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 2/3] mm/memory hotplug/unplug: Add
+ online_memory_block_pages() and offline_memory_block_pages()
+Message-ID: <aXIK55fQeKfB-jM0@kernel.org>
+References: <20260120143346.1427837-1-tianyou.li@intel.com>
+ <20260120143346.1427837-3-tianyou.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <EB8941D9-B6E0-41DD-9C44-038D21583E17@nvidia.com>
+In-Reply-To: <20260120143346.1427837-3-tianyou.li@intel.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 07F4C100007
-X-Stat-Signature: p81qzho74m9min6ndifigc6168ug1px1
-X-HE-Tag: 1769081392-910792
-X-HE-Meta: U2FsdGVkX1/P2sW9X+9fWCREnX/DIu/NwcjYdqMpdL903XLoKELLoQUhaMg0Fg1lsMeUbh424vftRa018fCWgjBpToQdzI5qroKs1yQwM9PlnCDIl5OlLQidn2E7Ad8VG8pG37nEiCjxk19e+UhnuN4PuRg9x+Zrtgas8tTMT0poDuQjVxJ/xe1+JQXbd87dsBAA/5ceg2pB29/mEtbp8HzHwCllib4kBcH0yo8zhdQBqxq4m74iWh6H4okvQKuCGz8dfIeRJ+ccuxC3H9bHSh/UPlREIrGt006YAm6F0QinLPrTN3s/cz72GexlSMdt8vgIJOxdYAF8i9UNgpxuiD4bsU0ATRaYuppGZK2/QXqk0+CjG8W9q2SecahNQCN2S3k9bKLbDz74f3a3SHwzWbUkwqjefnGiJsiz/FD8wexXnI1ZLaz8tLg1sySrRH6u5j5jf6EVkdntUeCM9kRKzMKrxHx++nQyz76uL3vFEHgYCtKoyssCesRHjkGQeIHHhZ9FLneZl6mPI3JH5MaAW5et96M2ACApYXOKZCu6myztHRUNc1BoVgbyc/Z9Wt4lRAbciZoohECfP7TlzxQZs/lSGKZOZz0f0ge7LKLJZO0Ac79xxruASvCwo9cv+Iy/Mn+gmKNBDKBcuFs0ygm8ojm+nldoOh+NAORKHSspMONSGhOmfTvASXLgHVGqOtFKXRzWZRHWkYbbr8mOiCrYFjdYWeN3yrzeyjcMHNsPb1qr7t2IsL9tbkQom5TO+OwyEAYAtKTekvj8hERuzt6mOWU1tLXONGCvlAdX+w7z/BaZyme2/XBlVsnoD1NPO+jdnjIv9fKTLeRti+eZwpfrPY4NajZ8Uzw5f4jqKytqa2EmSoMsprn0kiCPruKCDgLlbPaOPnh3OkHSF6TteG9lT70jWUhWzMdC+o4618SJxGia8Zo9SC51/k8cwYXH8ApaepMjCkNCHZD+t5Yreyo
- sYSgsN8B
- +8zNT
+X-Rspamd-Queue-Id: E777C14000A
+X-Stat-Signature: zqotmdy8g9q7cu7yq8sw5e79xiq397rc
+X-HE-Tag: 1769081584-96620
+X-HE-Meta: U2FsdGVkX1/dudT6180MCVDeRspD+puicE6uMe2UAm7V4a2ImMxebQkVVsmB54hTiFIvXyTIsiTe8KZA/29pJcRB3Op07lX2i4Cf7cYLKoCxWrLpvSlHZt1X5YyXmIW7TYmg4xg++1tsFnkBMUjOJ9XZ1ZY3pjJpSa2UbkPrqfPCYI8+YJ3LqpZSk5ryHJDiR2KcJyKZsPv4dlNb+g/blShIYYOcrxJYCyUarWNieF6Ueu9N5qmYP3Q2y54K0lWelD5ki1Hj9gZ/Oqg0pEZomo3hoFht1Sk2UTn+JQUIkXMPYLGeGTAcPguS7ZOJIVdx+6AA6aydousFTln3Ool6g4RJDN8xNJezBIuSdApL5ly/oOyO04kir+sbbyyXv7M3mE9DmHU8H8N7ON8YEppK9TUZCc6/GVuk9Wqzlpk4bCc3G8bzjJ2Mr6qVR+ys6EMKI3StT+jWzgSSTChlprkgT7nrODsqWJWtcmws62zMALwhyvSjgoIW/debpI0fLAXVT13QipIh7PkGeAQAzrnFpe1/9UVBOw7CaHBLnj0IpIEVuaYzdV20+z2yF1ns9Y0y2h0g8xPtigRMJ9ZGX5iqRQHj9QhD1z1ONeJsMitBCAQ+htCty/wAKZ/hoLR3lNEQr3ibTRxq9K4wGuxW/6Wt/Ey15H/YgWVg//NcSvp6SWpTq73+3zo21o3n1LP3+7kmHQIh2hD85g2IUJCFMGdYOVZrCyhHQhh00i++a0WyT63LmV5v7z+igi0t74bA8A1Ahc8eqIsc7vrHA5Ye3Gc4HU2kfM2JwFHyB1aWtbBudLqzuSG5IpOPIPmcwhzKpz1jockU5KkUGkrXy5raAFAhhd8SX83uJIsReQ9MhKIk5TsPIOy1uMWlxwJoK1D2P8zmDE6ILg3gNsSnGiq+/sStxiyWh+Ln6ZjSPn9wfr6WUD1fVQak91BnSyLLPCyrc8ectY8lVOUTGO+cU036Q4g
+ zJfcaXEu
+ 0My2PIo9v7hTEQ5/npQc+kiSgqlknzX2W0Dce
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,21 +101,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 12:12:13PM -0500, Zi Yan wrote:
-> > @@ -1244,8 +1244,8 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
-> >  again:
-> >  	memset(&ps->folio_snapshot, 0, sizeof(struct folio));
-> >  	memcpy(&ps->page_snapshot, page, sizeof(*page));
-> > -	head = ps->page_snapshot.compound_info;
-> > -	if ((head & 1) == 0) {
-> > +	info = ps->page_snapshot.compound_info;
-> > +	if ((info & 1) == 0) {
+Hi,
+
+On Tue, Jan 20, 2026 at 10:33:45PM +0800, Tianyou Li wrote:
+> Encapsulate the mhp_init_memmap_on_memory() and online_pages() into
+> online_memory_block_pages(). Thus we can further optimize the
+> set_zone_contiguous() to check the whole memory block range, instead
+> of check the zone contiguous in separate range.
 > 
-> This could be “if (!(info & 1))” like _compound_head(), right?
+> Correspondingly, encapsulate the mhp_deinit_memmap_on_memory() and
+> offline_pages() into offline_memory_block_pages().
+> 
+> Tested-by: Yuan Liu <yuan1.liu@intel.com>
+> Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
+> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+> ---
+>  drivers/base/memory.c          | 53 ++++++---------------------
+>  include/linux/memory_hotplug.h | 18 +++++-----
+>  mm/memory_hotplug.c            | 65 +++++++++++++++++++++++++++++++---
+>  3 files changed, 80 insertions(+), 56 deletions(-)
+> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index 751f248ca4a8..ea4d6fbf34fd 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -246,31 +246,12 @@ static int memory_block_online(struct memory_block *mem)
+>  		nr_vmemmap_pages = mem->altmap->free;
+>  
+>  	mem_hotplug_begin();
+> -	if (nr_vmemmap_pages) {
+> -		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
+> -		if (ret)
+> -			goto out;
+> -	}
+> -
+> -	ret = online_pages(start_pfn + nr_vmemmap_pages,
+> -			   nr_pages - nr_vmemmap_pages, zone, mem->group);
+> -	if (ret) {
+> -		if (nr_vmemmap_pages)
+> -			mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
+> -		goto out;
+> -	}
+> -
+> -	/*
+> -	 * Account once onlining succeeded. If the zone was unpopulated, it is
+> -	 * now already properly populated.
+> -	 */
+> -	if (nr_vmemmap_pages)
+> -		adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
+> -					  nr_vmemmap_pages);
+> -
+> -	mem->zone = zone;
+> -out:
+> +	ret = online_memory_block_pages(start_pfn, nr_pages, nr_vmemmap_pages,
+> +					zone, mem->group);
+> +	if (!ret)
+> +		mem->zone = zone;
 
-Right. But I don't see why it has to change.
+I think we can move most of memory_block_online() to the new function and
+pass struct memory_block to it.
+I'd suggest 
+	
+	int mhp_block_online(struct memory_block *block)
 
+and 
+
+	int mhp_block_offline(struct memory_block *block)
+
+Other than that LGTM.
+
+>  	mem_hotplug_done();
+> +
+>  	return ret;
+>  }
+>  
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sincerely yours,
+Mike.
 
