@@ -4,181 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2318CC44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 06:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 168F3C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 06:37:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60E3F6B00F0; Thu, 22 Jan 2026 01:31:53 -0500 (EST)
+	id 7BFF36B00F2; Thu, 22 Jan 2026 01:37:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 591AB6B00F1; Thu, 22 Jan 2026 01:31:53 -0500 (EST)
+	id 76CB26B00F3; Thu, 22 Jan 2026 01:37:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43C046B00F2; Thu, 22 Jan 2026 01:31:53 -0500 (EST)
+	id 644656B00F4; Thu, 22 Jan 2026 01:37:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FC636B00F0
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:31:53 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD0BFC0152
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:31:52 +0000 (UTC)
-X-FDA: 84358629264.14.4382F27
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5F1DDC0003
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:31:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 532A96B00F2
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:37:41 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E08731AF11B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:37:40 +0000 (UTC)
+X-FDA: 84358643880.11.EBC9D9B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6E55CC000D
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:37:38 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zHQ1hoLe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nWTW6aKN;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zHQ1hoLe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nWTW6aKN;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=veFu9ksh;
+	spf=none (imf28.hostedemail.com: domain of BATV+561f00ef1fac768e3611+8187+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+561f00ef1fac768e3611+8187+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769063510;
+	s=arc-20220608; t=1769063859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=snlThi6xEbyLHgpAGreIAptLTtIG/sStzORilk3J78o=;
-	b=Iiiyg/zGDIek9gQrCX2VD/wA+FY3NkKBTcm9Qu673WhJPas4FyGu6IMTBrokMdRw/P3NG+
-	5LFSuCAqlHOBlxnd5qZ0s0dZYKpfCCQzORq2xALzgUqkmOMskmLtsIdMy4G6eAciV5Re+z
-	hC0YPZ9rVrmz1Pg6t+JEDuwXCyqy2N4=
+	bh=2Zt3JOdWvHJawcEaPBAxnFT+w3W/aAsZ/dTBj3bBY/8=;
+	b=AOtiHwbi1h6hm2XKx41tEhTUPUgkT92SO8ilBabvYnEZD+0f8odN9Fj3jmO/aSmlRubzwf
+	0DopK0ihDHoal25rJiRNuBICy+ry/Hl6mnXJuJW2PSNIgXi4U8w/VBko3KFB3Rsf6UvkNK
+	9VFwA5ubMqNoho13sP/33dZL81rM/Ss=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zHQ1hoLe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nWTW6aKN;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zHQ1hoLe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nWTW6aKN;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769063510; a=rsa-sha256;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=veFu9ksh;
+	spf=none (imf28.hostedemail.com: domain of BATV+561f00ef1fac768e3611+8187+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+561f00ef1fac768e3611+8187+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769063859; a=rsa-sha256;
 	cv=none;
-	b=OZqrLru/6ZNfpwcx4eMC5Rn5TXUEHaRC+9V4hpl75T6vEDS9NpUnYhv0aeSmaNgotJwbAw
-	IKaJWNtYcOmRnm1ILoZ4M5CRYKOVmAi7w/LVlSyWOC2nFmwBQheQ2n/LN8Gc+QDrRHoSeM
-	QSQbxzokGjk3fFszezUFCEn9QJVjgbE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 69642336E2;
-	Thu, 22 Jan 2026 06:31:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769063508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=snlThi6xEbyLHgpAGreIAptLTtIG/sStzORilk3J78o=;
-	b=zHQ1hoLeC/5cavLYx5OvU/D0QEQ93VhR9okhUNc8zOoL9mFrwy+2E8MuO6W4049oNippOq
-	kNE76fHFsYXFhNJqEefS+X0P4wt2sDQrAeU1HNFOc0i5Ex7WPrE03Eb0eu6HTGhUyLqqHa
-	BW6/aej7Xpacb7wmCnFsaSvz32nz/VM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769063508;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=snlThi6xEbyLHgpAGreIAptLTtIG/sStzORilk3J78o=;
-	b=nWTW6aKNwwJQmhH48v0849Ik2lAcm0Xizdf4ZwIRn3sq1gkN0fQm8HbkbMoJiFHeUQwtbS
-	0oghjhdTxItgZTCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769063508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=snlThi6xEbyLHgpAGreIAptLTtIG/sStzORilk3J78o=;
-	b=zHQ1hoLeC/5cavLYx5OvU/D0QEQ93VhR9okhUNc8zOoL9mFrwy+2E8MuO6W4049oNippOq
-	kNE76fHFsYXFhNJqEefS+X0P4wt2sDQrAeU1HNFOc0i5Ex7WPrE03Eb0eu6HTGhUyLqqHa
-	BW6/aej7Xpacb7wmCnFsaSvz32nz/VM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769063508;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=snlThi6xEbyLHgpAGreIAptLTtIG/sStzORilk3J78o=;
-	b=nWTW6aKNwwJQmhH48v0849Ik2lAcm0Xizdf4ZwIRn3sq1gkN0fQm8HbkbMoJiFHeUQwtbS
-	0oghjhdTxItgZTCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 46BC63EA63;
-	Thu, 22 Jan 2026 06:31:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vbnsEFTEcWnTdwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 06:31:48 +0000
-Message-ID: <6b48cc0f-f006-4d4c-af76-55f86f4267e3@suse.cz>
-Date: Thu, 22 Jan 2026 07:31:47 +0100
+	b=C3a1D7gY25sm0AVVP37JMLA8s4uP5xaJkAokDNH9qvImmaXiX9Ez9JUcoaUEwUMvSEgII7
+	CAqlk62wlm953SKnNXSYNKNxqlC6QhZxB1/CRn7pvY5DutcjeahvfSUbYwccBVy9hHmOCS
+	O2AmWsr3MEzRaLJd9h/DTwjAuFdACk8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2Zt3JOdWvHJawcEaPBAxnFT+w3W/aAsZ/dTBj3bBY/8=; b=veFu9kshJmEfxX7sRSxIgphS5e
+	GkI5twtuDvheZEcQcOVcNTVolyxAV6yIm7UVZuOxWiUq6LguBJpaaB/O71+aXxrhqH+X9CW/4A2n2
+	fS3arJyIzUy/31I2DAYhclYgb5MKjv0Mf4rp9oxF0P0vGPZj8C9ofNbuOUQhZpHCmS19OqenLHTkY
+	HPmFLmSxVNadVN/WfFM+uq+Jt2e6qSniJDaM5pDsUXR4/42wdoJgduXil3KiU8EbDXLw2fqtmy14M
+	6FyvJMau1BdSFMJf1dtb/j/2MnbIwzYxpFzI7GzNAiBV/pjgNCqH1CNn/FHFHKcaDh9eja2CZlL6d
+	1D8LeJDA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vioJY-00000006VUJ-2qSm;
+	Thu, 22 Jan 2026 06:37:08 +0000
+Date: Wed, 21 Jan 2026 22:37:08 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>, NeilBrown <neil@brown.name>,
+	Christian Brauner <brauner@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Chunhai Guo <guochunhai@vivo.com>, Carlos Maiolino <cem@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Luis de Bethencourt <luisbg@kernel.org>,
+	Salah Triki <salah.triki@gmail.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, Dave Kleikamp <shaggy@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Weinberger <richard@nod.at>, Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Jaegeuk Kim <jaegeuk@kernel.org>, linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-xfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+	devel@lists.orangefs.org, ocfs2-devel@lists.linux.dev,
+	ntfs3@lists.linux.dev, linux-nilfs@vger.kernel.org,
+	jfs-discussion@lists.sourceforge.net, linux-mtd@lists.infradead.org,
+	gfs2@lists.linux.dev, linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH 00/29] fs: require filesystems to explicitly opt-in to
+ nfsd export support
+Message-ID: <aXHFlF1tef68i2HU@infradead.org>
+References: <176880736225.16766.4203157325432990313@noble.neil.brown.name>
+ <20260119-kanufahren-meerjungfrau-775048806544@brauner>
+ <176885553525.16766.291581709413217562@noble.neil.brown.name>
+ <aW8w2SRyFnmA2uqk@infradead.org>
+ <176890126683.16766.5241619788613840985@noble.neil.brown.name>
+ <aXCg-MqXH0E6IuwS@infradead.org>
+ <176899164457.16766.16099772451425825775@noble.neil.brown.name>
+ <364d2fd98af52a2e2c32ca286decbdc1fe1c80d3.camel@kernel.org>
+ <aXDm8FPPOHs04w9m@infradead.org>
+ <3210d04fa2c0b1f4312d10506cac30586cb49a3c.camel@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 19/21] slab: remove frozen slab checks from
- __slab_free()
-Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-19-5595cb000772@suse.cz>
- <CAJuCfpHggP+iefwGTOWnSxDma5U=uMROYNs8KS0A=u2w=1rq_w@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAJuCfpHggP+iefwGTOWnSxDma5U=uMROYNs8KS0A=u2w=1rq_w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ctfrpbe5u7txyoigzra1gg9jgxh1k46q
-X-Rspamd-Queue-Id: 5F1DDC0003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3210d04fa2c0b1f4312d10506cac30586cb49a3c.camel@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6E55CC000D
+X-Stat-Signature: 41o7qdc8hfykp6h8z7ij5kxxibaqzrry
 X-Rspam-User: 
-X-HE-Tag: 1769063510-364530
-X-HE-Meta: U2FsdGVkX18zeCrGoo2AjXtf0xj1iv6Xy85S8GDstEBU+P5XB/SY4MacLH1K01rH3TPXSkSMvgrmfM0p8JxMqOQ0akmGmDr8CTp9cR8ChGxUyTtrzBdBMTGTzC803Uf29/zXCk6L09o3OpV0O6VpDq24rWl0m4BCT4vMk/w2vCLjaCvWbiD5vwnwip1DresJLLMpjNRRNJvIFv2vFlF3J+DGlo4PRypKSJWC4VuDJt0M0g5pl1Elf1DusOQ4s4fiQqwVwI5ZLKAnjff2jnRxV8P7KHb2YFzp/Ac+a8/tgBUgNHoeLdrjNqrAuKzBelAtWPe0tGLYFE5HUytaQ4kvUb+MO8uJgSbLITRdezV4DOi2XY1sR8Hyy1iU9CAkY32giyDt44voSPloA89KIMeWS2TkJMIG6x/hrp00zUs+y3j40KpyS3C2pZryw6HElsLfmS1l8FSl6ToVPJksPTVSVB4vmq6PVtTMAZ7zKiO6t6W+n0cspMBTaAs5/Xc0GMEJ38g0moVb2+v+Ae1OOdrHUOuM0M87suaMApwkYK2nLtmt3wr/7CJljJLtVnbryVUbwkQMWr+4T2GLaMVpXFDgmIxxDjrvf6MnUIk6llAsv/VT60eD2Y6r9eXu9rdhYaU3uqKLKpt/7YkMi/jUkVV43iVT4NqXkvKoAJEiFaCRwq2z4XTaGgQEgr3TNw+3RgRV8eP3Dvhwoy+GqAEuTvQqU3GZLXEQhtmh1jsZKs8Q+Jea6kexcpm4VK2F/uV1EZTJzZHVQruXPO4a7dAbxu4Y5MtcqRy7JVrAUblxtWE3wsifUZCVQ0r1gFIhksp/tPwFUDEV4fyQTuC4mNebjnI6ONRNUHTUQOkrfmspsLYVmCfORvcHKCEfyUdOOu9MaPXoQNUY1VOULXQNsQWH6NFffDA/pXaX+HxOI3eFsrHBZAj7fLAdBX9xk5oSRton/C0XSeloMBFbDP+IjJw3dY6
- V/BXAnrL
- ch1+UOq+F4BNHeW8TIHoVNcSBKlpwub1yen2uij3CrCRma+6PeHqWS2DfDjov9XIMJM85JXVA4JEQRjJc5v5fVgAubgylI2oJXV5v6DZVdZNnCu1lWm+d4pK/D8WCD8IziD5/nQYNGhIGwCewDhcXVR52toaq3Ok4LZWm+NEsy97CR+UdlgALF9S8LVzFzoV6nt9ds/25jY5el9T2V+b1U2Nrr5W3YIS2cfPdxc/Cj+6Tc7Yx+Kt8vGI3UnTvcbq7mmxTsSXZ1dDAXFUj2gT6P0/WukiDHTuRVNdCaF1p3an2AOTMwf++GN9f6jRKdwIL3O3Zz3fjvE3xWhbY1KBqhLklrRdD989JB1SzPUaYfzwO4n61ZeNne+AO26RKS5nySfZ7wFgvNsCqhWF6nDFXUgC+RrYOb4U4lLmyqJJAg+Cylj03UeK6EdqDu/y8QuregWp9Fcwq1xWXBM6FDEF0+jsZiVdqnGA7uApgdOZID5aVOyGUaFmpp0kXtqJueNxTYS16RiGV676jq51l+TTCeoSSNQ==
+X-HE-Tag: 1769063858-919301
+X-HE-Meta: U2FsdGVkX1/ZS0wvm5E+gMbMo7NWFXovWOOO85sTXXs7xNyO03YMY4YgTzkWhW5fLp335RoG+uLjUjBeYiuOGvXqwPpPjMMOmPAKD6alwQFkSYvN0FOYbWYuxljR+cFjR8YBE1ws23f9h5p66cyqq2cdkgS46TZi5NKx9Sa9ReGmTP5M69O5gfY9L+ikFrBZct+LXtcRtFd/+58EKX75NPjjUTB2jmtYfVSsgF/vqBh1uoMux7KqK7AdO9+oH2MMzM9vnmHnLrQJsL8LaCPeVehXxU2MklYlRAVaeXTP3xnZ5PJ9pZdIsagOiQBJzmWuzCXF0hJBLeu+XRV0FIyIf28/IqZlS75eVQdPhUEvon2k80n+9+VlzFrATsHNwC90WyEEfEc+jSD3QOt6asOZg6v2b2wS0YfG2oD9oEAWMMzQ0w04jqnjKYHmEJdstAvSxbBuBJ4BiPLgt5a3Q1neB2xHb3FYlDQBmhyzMNTIJxw0sNIxWDc9a2+dPwzlXBrYhZInAOOTbPZb0LgGgH0FkKv+21kwiSZNjp59qiCJ5bNoT/dmkaFZTq00OK9RQrHn8oI3Qt0JLC09pSo5V3/IrvgAsal3pWh0tLb/7aprOvosRCRoXeeDcDztcv84Hdu3BVhH0W4rDNkWUzc4a8iLZlskqjCwy5lc1NdpjWvuJdWbBvz2NEEknCmcYJSBwFOi8lfUE1L6HMi5e4HFp2S6B4s7ZzjB3ylyUVJczc2Qr5vXV+8V89mHknc/9XZUEke7HKXVLWEbDxbjj/VZr1Ng582pUveBFADchc5iF68E2fDeixnNHGkecWobQsdREIjd/lzLBprYB7Dz9JSKQOANNkhyjF2IbM6zpN2tumiUDPrvC2isrMwsH0d4GoQnf4IekfuSA7lmGsJltfiLaOPlNCcsJhyfdreAmhi2x3TNNxK6UzE1l5yl4PsY6Nt21ZbC0SISXiL0uMRjXibN8wu
+ /daIBr2S
+ 7CZLPUbLU7WQBGgexccYgc6IT9XNtz1vOeZ3wJSKmSTsl0pAg/yxMeSdmzeiNrUYprCZcWOf+U6ffCD6DFM+O6UiCVSkxJiSAhef8+H3YRvgKnqAwGsx1UjWL2rmTh1EbfjXwRbQl8ghPRNJxwyWxEGVxWDQo6j2o/c5Gv6mExqIuopFapmQka5zFfsQiOBOec4X16JfLLWJ7KtZsM/T+0v4EV1LI8duEaOBuY/+4mqQggNpaikBsSdZhATZlpBQnlrunSjO9Hyk3G7Ho7vaYXRczSqt4f9vuGJauP7pN0w+8JDJroaYdWvMvtjR1oOTFfltp9rZho6Yu+St1bA9xcN68jpyG9jj7MPIPpVam/zBy0R8JPgd2xuxIsIpxnsqMx/7tvGEWPHF4LABfN1frgzl9BE+ZSar7FeNFNTymUCReugT/OjeMQqK0zjaAxjmXFoaL6dYLFxXqiQm3TUzlAtdmX1qHjEGy+PUWi8BgcVOA08Ichlx2XdIATQ1XBbzn92LO7ahr//GBTBe34v7bw4V/+fg4mFH7OBhGMRT7mAJFdeyq+hgcrPww58vYVbj8QRPC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,115 +150,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/22/26 01:54, Suren Baghdasaryan wrote:
-> On Fri, Jan 16, 2026 at 2:41 PM Vlastimil Babka <vbabka@suse.cz> wrote:
->>
->> Currently slabs are only frozen after consistency checks failed. This
->> can happen only in caches with debugging enabled, and those use
->> free_to_partial_list() for freeing. The non-debug operation of
->> __slab_free() can thus stop considering the frozen field, and we can
->> remove the FREE_FROZEN stat.
->>
->> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+On Wed, Jan 21, 2026 at 10:18:00AM -0500, Jeff Layton wrote:
+> > fat seems to be an exception as far as the 'real' file systems go.
+> > And it did sound to me like some of the synthetic ones had similar
+> > issues.
+> > 
 > 
-> Functionally looks fine to me. Do we need to do something about the
-> UAPI breakage that removal of a sysfs node might cause?
+> Not sure what we can do about FAT without changing the filehandle
+> format in some fashion. The export ops just use
+> generic_encode_ino32_fh, and FAT doesn't have stable inode numbers.
+> The "nostale" ops seem sane enough but it looks like they only work
+> with the fs in r/o mode.
 
-Only if someone complains. Just this week it has been reiterated by Linus:
-https://lore.kernel.org/all/CAHk-%3Dwga8Qu0-OSE9VZbviq9GuqwhPhLUXeAt-S7_9%2BfMCLkKg@mail.gmail.com/
+Yeah.  I guess we need to ignore this because of <history>
 
-Given this is behing a config no distro enables, I think chances are good
-noone will complain:
-
-https://oracle.github.io/kconfigs/?config=UTS_RELEASE&config=SLUB_STATS
-
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> > I think Amirs patch would take care of that.  Although userland nfs
+> > servers or other storage applications using the handle syscalls would
+> > still see them.  Then again fixing the problem that some handles
+> > did not fulfill the long standing (but not documented well enough)
+> > semantics probably is a good fix on it's own.
 > 
->> ---
->>  mm/slub.c | 22 ++++------------------
->>  1 file changed, 4 insertions(+), 18 deletions(-)
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 476a279f1a94..7ec7049c0ca5 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -333,7 +333,6 @@ enum stat_item {
->>         FREE_RCU_SHEAF_FAIL,    /* Failed to free to a rcu_free sheaf */
->>         FREE_FASTPATH,          /* Free to cpu slab */
->>         FREE_SLOWPATH,          /* Freeing not to cpu slab */
->> -       FREE_FROZEN,            /* Freeing to frozen slab */
->>         FREE_ADD_PARTIAL,       /* Freeing moves slab to partial list */
->>         FREE_REMOVE_PARTIAL,    /* Freeing removes last object */
->>         ALLOC_FROM_PARTIAL,     /* Cpu slab acquired from node partial list */
->> @@ -5103,7 +5102,7 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
->>                         unsigned long addr)
->>
->>  {
->> -       bool was_frozen, was_full;
->> +       bool was_full;
->>         struct freelist_counters old, new;
->>         struct kmem_cache_node *n = NULL;
->>         unsigned long flags;
->> @@ -5126,7 +5125,6 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
->>                 old.counters = slab->counters;
->>
->>                 was_full = (old.freelist == NULL);
->> -               was_frozen = old.frozen;
->>
->>                 set_freepointer(s, tail, old.freelist);
->>
->> @@ -5139,7 +5137,7 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
->>                  * to (due to not being full anymore) the partial list.
->>                  * Unless it's frozen.
->>                  */
->> -               if ((!new.inuse || was_full) && !was_frozen) {
->> +               if (!new.inuse || was_full) {
->>
->>                         n = get_node(s, slab_nid(slab));
->>                         /*
->> @@ -5158,20 +5156,10 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
->>         } while (!slab_update_freelist(s, slab, &old, &new, "__slab_free"));
->>
->>         if (likely(!n)) {
->> -
->> -               if (likely(was_frozen)) {
->> -                       /*
->> -                        * The list lock was not taken therefore no list
->> -                        * activity can be necessary.
->> -                        */
->> -                       stat(s, FREE_FROZEN);
->> -               }
->> -
->>                 /*
->> -                * In other cases we didn't take the list_lock because the slab
->> -                * was already on the partial list and will remain there.
->> +                * We didn't take the list_lock because the slab was already on
->> +                * the partial list and will remain there.
->>                  */
->> -
->>                 return;
->>         }
->>
->> @@ -8721,7 +8709,6 @@ STAT_ATTR(FREE_RCU_SHEAF, free_rcu_sheaf);
->>  STAT_ATTR(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail);
->>  STAT_ATTR(FREE_FASTPATH, free_fastpath);
->>  STAT_ATTR(FREE_SLOWPATH, free_slowpath);
->> -STAT_ATTR(FREE_FROZEN, free_frozen);
->>  STAT_ATTR(FREE_ADD_PARTIAL, free_add_partial);
->>  STAT_ATTR(FREE_REMOVE_PARTIAL, free_remove_partial);
->>  STAT_ATTR(ALLOC_FROM_PARTIAL, alloc_from_partial);
->> @@ -8826,7 +8813,6 @@ static struct attribute *slab_attrs[] = {
->>         &free_rcu_sheaf_fail_attr.attr,
->>         &free_fastpath_attr.attr,
->>         &free_slowpath_attr.attr,
->> -       &free_frozen_attr.attr,
->>         &free_add_partial_attr.attr,
->>         &free_remove_partial_attr.attr,
->>         &alloc_from_partial_attr.attr,
->>
->> --
->> 2.52.0
->>
+> Agreed. We should try to ensure uniqueness and persistence in all
+> filehandles both for nfsd and userland applications.
+
+Sounds good to me.
 
 
