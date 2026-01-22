@@ -4,90 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3517D3EE67
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 13:35:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A10D3EE67
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 13:36:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E52496B01F6; Thu, 22 Jan 2026 08:35:47 -0500 (EST)
+	id 9FC206B01F7; Thu, 22 Jan 2026 08:36:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFEF56B01F7; Thu, 22 Jan 2026 08:35:47 -0500 (EST)
+	id 9CF7A6B01F9; Thu, 22 Jan 2026 08:36:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D01806B01F8; Thu, 22 Jan 2026 08:35:47 -0500 (EST)
+	id 909C46B01FA; Thu, 22 Jan 2026 08:36:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C0AEC6B01F6
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:35:47 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 732D61AF7D9
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:35:47 +0000 (UTC)
-X-FDA: 84359697534.06.BDC380E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D9ED01A000E
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:35:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mrM43KnI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769088945; a=rsa-sha256;
-	cv=none;
-	b=0TweX7hdc9p7JXCSfOxhvi4nEtc/4jzthvrhTm5F/Y1JG/Ll9mvE9Dg5mGuH7qn1kBLuIx
-	E1Fejo3JGLIDrUdZphprW/Y+siEvXBgAWb3tDq/6sA5tXlCrfovJR15uOHuDZMgQIBqcZq
-	3Iawn818qwSyl7ReoHhhRkzwtdv/NW0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mrM43KnI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B5C06B01F7
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:36:53 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 285F48B380
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:36:53 +0000 (UTC)
+X-FDA: 84359700306.20.4748FA9
+Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5E5FA1C0005
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:36:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SOSLAMh+;
+	spf=pass (imf20.hostedemail.com: domain of tianwentong2000@gmail.com designates 74.125.82.68 as permitted sender) smtp.mailfrom=tianwentong2000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769088945;
+	s=arc-20220608; t=1769089011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gh4XtAj9AB3rY76cV8CWTGYjLU/b8KyOlaB0cJ3cxrw=;
-	b=lPBDl4XvRnmyZyVdCGqT2Tg77d70z+lJ3+wYNJdAJdcR402XxYw7KoGLo+emfPVtMUIV2x
-	XZyGNi4Smcy5U4d0Pk65SzG9PqqgI237RAdLDg/ZN7P4QIewOjsmzYxK5LTGiHCdbojlSI
-	0hhSlFf9K/x28gE0tCEMHIf6c37a13w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5034B600C4;
-	Thu, 22 Jan 2026 13:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CE5C116C6;
-	Thu, 22 Jan 2026 13:35:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769088945;
-	bh=wED3dXV0kHkiBnPWNUBgYlSUdtgP2fArJ/kzjZEMltI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=mrM43KnIhyHDnc8ivUCX5HTrM9Pl42GBN8gXbejQ3Jl7OGoZ6s6TYv7Q9f+Ds41mV
-	 +atyWBT9K1XOmZr0pF5xVDisRvZ3G+sA0qlf+8xqzuMhEvZp4UEln1+29gf3zF8UIM
-	 hDr0aYGQEDqiPxMYnxspQa3y7BzZqMUsjuoGrP0jIAK+PgK0D2VLGCIn2k5S95TWLs
-	 uieNDly2PL9lHs2HFOjsXJgRHIrcw5486a5jYlh+T2wfAUhDov1hXXSAUo6cTbh/uZ
-	 yD8mWEN/VEDP5hyMTo/uckvNJclqUK7clMtEpzkS9kYenRw3CDQY2ZRB1Qh1ai61Ql
-	 pXhD2DGjTqOBQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: ranxiaokai627@163.com
-Cc: pratyush@kernel.org,  surenb@google.com,  akpm@linux-foundation.org,
-  pasha.tatashin@soleen.com,  kent.overstreet@linux.dev,  rppt@kernel.org,
-  graf@amazon.com,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  ran.xiaokai@zte.com.cn,
-  stable@vger.kernel.org
-Subject: Re: [PATCH RESEND v3] kho: init alloc tags when restoring pages
- from reserved memory
-In-Reply-To: <20260122132740.176468-1-ranxiaokai627@163.com> (ranxiaokai's
-	message of "Thu, 22 Jan 2026 13:27:40 +0000")
-References: <20260122132740.176468-1-ranxiaokai627@163.com>
-Date: Thu, 22 Jan 2026 14:35:41 +0100
-Message-ID: <2vxzcy31bwia.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=opvHDwiOpdiGMuXFIvJiRhV19eFW2enM116TYEfgc4s=;
+	b=69dlM0uv+splxX6piepTUfG4XOaC4EuGp7Z7jRp300R1CQBYookfOha7hkXhw/1kKBSVn+
+	3aONVSbvzH46L6GysU5JQaz1BJvjuwicshpXQiWwrQ2zsyO9huCr2aRiXZw/u4MJBWlddX
+	5Cwz0ApYlFg3ynI/oKCPjyHtdBnnNSw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769089011; a=rsa-sha256;
+	cv=none;
+	b=8SWKfICSt5qZQCHOGnPPQQcLq1IBwVyJxS0j6PptywD/JAOoqUYBbxZLvhu5P5EJ9dwTCr
+	03nnUvkP0rfeeIg5b0gLUCSqmXiKyTYNQZNhknqw4kbIXE2nZYJuGQuhrCueh7ZIEICbpB
+	gJ/oHYBuFFvHeZr9NBOfy5TTwnJMuss=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SOSLAMh+;
+	spf=pass (imf20.hostedemail.com: domain of tianwentong2000@gmail.com designates 74.125.82.68 as permitted sender) smtp.mailfrom=tianwentong2000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-12336f33098so1013731c88.0
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:36:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769089010; x=1769693810; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=opvHDwiOpdiGMuXFIvJiRhV19eFW2enM116TYEfgc4s=;
+        b=SOSLAMh+6x/Wsviw6bpUf76oXOuLyplgU9ukiy+9YmXP2UzfzIPtGZ4daTI4PVba9+
+         KnSjTTZcqYcVdx9M7efIQSi+vQByJYHuQzmKfhMUlnjniuG/JtmExJni/LMeKcVVAj+b
+         4Z8JJQdB2V9grXg2oG9cvPqN8FVngDLqIS7YIIe8EsJJ23ssbX/ZifOB0u8v/RiE+zdJ
+         hk2DuQ4/NW2Ec++FjYQWulq1hoYtfvnZ92BLxhCbr2kMX3H8TEDIw0on60g4B2oa4MAJ
+         NuBgn/XVdJiZU7LesxT7vogqBqy/VqkpsDaDM+fJKQ090Qal2k0O2zHhdBdVSXDoDkkW
+         Mj6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769089010; x=1769693810;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=opvHDwiOpdiGMuXFIvJiRhV19eFW2enM116TYEfgc4s=;
+        b=vWJ4+FXHEdOz26wn/ZK14sXzpC81vSOwjQGuo50tknddO84Fbu5bwCx7N6Y/AwICZ6
+         aiaqtBhexK1hXpy5a88L6FgHlgJ9JHVUQOsEqsCNngpf41VRB/IHuSdwNzp664CWvZs1
+         axHHjoSKWodLGWa9FfAgHSJwAq317NTwLVzRrTaF014InKdwXY9EhpTv0RvXPLqSOPLE
+         XFxR9xxh4qoprRzJagk40VdeO89VNpslwlMWUW1fVXiAn7NJ5hCjp6OVYKRDuPw+0ubC
+         8fP7sVD87KSRrQJ/FSFSKUMcqSlje2ch2Z0ntMGSZuRpDHbuLbKfv/5R6jLRAb1nnMk+
+         nVig==
+X-Forwarded-Encrypted: i=1; AJvYcCUco4AcVgNZX0O5ID5yYvoLsMyYo71v5dQPdGdpPxmdvRA8UcJxLjPcGRIrLySEuWQjdVmFDts5KQ==@kvack.org
+X-Gm-Message-State: AOJu0YzEHYWET6x3I6veIoYO+x7AlLeIXfej4dciQqKvNgXH8qg1YlCX
+	eO3pOsIPAEB85RVCKViWPT3rxKHOfvxa93IHle3foZMQ9glXKNfouc7r
+X-Gm-Gg: AZuq6aJWsnW/Lu5+yB+cqbCVdrmUEHmv4WHx58MvLv9MwI9Yd3hmPdjkj4Sv4SGmMpD
+	oaSYb8hMZXdcHsrGWbbw0ll/LRyAIcXEcbzjyDYf1E2x1+uqghNF12Cx2IEZVg/BmbwZ5QELOBL
+	duR8lpy3ZWE/xKcB41C9KwAnwiwVm10s0ly1Uktl0HMU5Sp8fj0VdZuAaVEnhlcsBsIVLOd0dSX
+	5NJ7O+JuwIe57IOzfiG9TbEq8pTEvkI0xU2MXK64Iqd0brpFVDWuUQm8CYWyrnxh/M6kRdSyb+C
+	ldEbesMu1asI16fb7c9d26m+voz7vVI/gF8HYw4HQxrDpFoTwsMFKrsfiLqZCB/KSJ884tg/HKS
+	xfFxlmVcPzVk12VSpFIm+fBZqswuNtUt5qPClb52r7CEnQgM8JlLk3mi192fg5f8TkWC4JMOqYX
+	dWQvzPRz5rDAQPzfwhB8g2ACQuzK4xKhep7LI=
+X-Received: by 2002:a05:7022:b8a:b0:119:e56b:91d1 with SMTP id a92af1059eb24-1244b307e4bmr13222512c88.2.1769089009918;
+        Thu, 22 Jan 2026 05:36:49 -0800 (PST)
+Received: from 9fdcf7ea0ed5.localdomain ([38.207.158.12])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244af108absm28378188c88.13.2026.01.22.05.36.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 05:36:49 -0800 (PST)
+From: Wentong Tian <tianwentong2000@gmail.com>
+To: jarkko@kernel.org,
+	dave.hansen@linux.intel.com
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	linux-sgx@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Wentong Tian <tianwentong2000@gmail.com>
+Subject: [PATCH v2] x86/sgx: use vm_flags_t for vm_prot_bits
+Date: Thu, 22 Jan 2026 21:36:33 +0800
+Message-Id: <20260122133633.79792-1-tianwentong2000@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5E5FA1C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D9ED01A000E
-X-Stat-Signature: nb45yjgjc654sbomy7oc9idpj5ep9ig3
-X-HE-Tag: 1769088945-162528
-X-HE-Meta: U2FsdGVkX18H/PwIGSSpcUFgTFawWTU1VM9lAfItgoj+OdY5u0LvIonF1sd4jnOixF03J8ZqdhxIX4uxBcUXp1lbF70P8rAeEt9/p6xhDv3/ZdFzdtxcIsRfEMaI6bUN0u/Hu+44Xg3V9W+Vg8U9RIz1bhIXsIfy4Cp0f55aXzOS/RP/jQ+seQ5fKM0r5uMQv6F2reINMcXQeo34EOHu5vRq/jWmgIL+RiRPK4h2KD9Byk+ugDODbolTES0I+RHxtmDVfpEQoGLtyIyJ8B+sKauPmgbTry7c65Em/MgTbuetVDcVmeCO0lKOCW5fe0P4OnrfXiueFg19y4syEgwTojzT7Dw1SR+WUks845bipwpHRabyr0iO9YeOcoCddECHq49jRh9YWvOeVzKOymceNpbwAew4IKWLijEK5+Mi/S8UMwlO2+0vuRce8eGzz3VCVMqgOmwHCaEv+c9OBIO8/YRQpO1f2qE4jufmzmngr+Jt/O1WVL0nAneC/uZhWlBYDStYTJUP6AxTKMgtVUWU8PQgtL5T7CET7PWZvHyCAFD/v2vO1cJx/bnK+Q0IzGksSUubbewVFYPCrZoXOeLcrCmwYdo6Ooe9RFpF7BiVzx8CW6PweiQExzf8L6kj6B1o+DRKpTtSIJVcIZgApMJlXdBNP6LCgo4dNToNz4rJw+Sl19gEzOlXz0KyQMJ6+hjhhTKIh1G4M+ODXoYZ23YgixzXxHRfBjQlyZBMhwG3lwonOiDNwliLbimqsn4QQnIneAsE/EJKAgiEfKjUaHZmHfQyb/v1Fq5xGPjgH5B6HDn5klKsHpSGdWLG3iKnV6jyiHI5h9GMMAyUQarrVM38IbrmKI0wVoRcoatmCYcwO/z+/Wo0UWZcW2/Ij2C31QmaytTvmMjerjYiDpLFZgWr8U+FGyPICWy2S4Bp5gOU3FX6banemT72d3ub2bLm+Q6rRt9dRJ+TcFahKkhsNEF
- aEumlbTm
- n/Djk2ghZXVYFlkm8qXVroLpNFwqVTL3RdU2hYP5y44hwmF5nlygv356Z6o1R65j+a3YAxa8y9GS+Mv77kUxkspep9R29N5d6lL4kisB9l2/+zzMmIVj0SRNTHXcc6OpStd7LLm+aiir5qXbCMZbllGzFunoVDKWxJwrBsw+uDbV96Dr4fkGmVpLkc/3GYVjdIov2qQNsdMQBFfoZKwJ5V+MExPAMxoedagK4OKRltwaKI9Sar8/vmyHMcV/DAXzHVLiXZkvZfYyWZO3D/702XRT8sg==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: w1hscghxdrcdgkw1didu86qn4jbqpour
+X-HE-Tag: 1769089011-126555
+X-HE-Meta: U2FsdGVkX1+W6sLsBkNCoXjLFUorY6Odcd+l2VaaOL9G4mmvd2ichidx7SS4GHyCXPqOizoW0/CP/IynfFK6cel1RyNphLAkgC/H2K2SKWhwxEnybwFc1d5hldURbpr2nlC++FYk8b5JiZ4+4AxAvUrymmM9kVrBoTR5TRm18j0+UniDtStv4LgGfwYYj2L9tiYEM1jj1GOOqpJAsyAa+m+8s7UJILp6hFNG/I/2+uEfJa7Qgcc7i29iFUvFzXtqFn5Pe56B4hqCGup06MHrhka2+9Z1s3TOvQQFMXLEeVbynr997c7kbwW7t02BjjBS/QVmnPRHrrmImiQuo508rF+AyQA/vlJxwtyBeY92axJb4PzIAJEYg6guAifIoAskq2HhlWG/gq+g+cLe/FNT12kcYN4y7fx6RNoshJxuiTiyfdmMbDwzkvuVxHcp2r73QmpPE5THZsgBmAY6H5relgJCDmFbYBxDYNqfQU6zu8rVP27N+EX0SDL/JDNPqBNRbMA+nviKTDpoSfVhDpHP2/Z0FsuIkdK55Ehqi3uBu+mmXm8gLrFR+l5KixAtsGyTdH31JQOIGG0oe5AsTotfG5lUTFuBLh3+RsTm2E7KrFSwmryHwvLPa0oQ9MLvPzGgmKL8IZ4SOBsG/6DTHV+ANhgPjXqaWKfboEYBTA9/fFo0vkgjV6V26aJHiMPr7FknpIZarH1kt2HUSZ/VBmV9v/idnoDIrLcUgIVBflkJ6a9UXKSMbdGHXi7bLyuBTcn7nkWdXWX3WivNma5Lm6Ii2LGeptqRzIV4m1HVcD/8CtNg6j0a4XEBy2UkQignP6J1e1atRfXJDZbbx0kpPUgKIMzGrYbkeUPQ71rwFGFTuSVW7pgW3OX0eQNGK+AGMuFSzt7MRSpwtG5xsgTB6WL+idjScnGIBbbyfIcgom1d575oN15sErj/XXCFs0mvPGdY6AVtcYc0zjSz+NdVilW
+ Nzo+M+Hd
+ 6NNXehsHPSoTDSeJYBQKE+Tpf14lMJlvjyFxOOnvtiMitxlsWg4P7v4YfNOhzdL0ua1D9HnvfPAcaw8YT4o7HVjX//56bNDsYpH9t9oL4uKp9kXqxcPCAKH0lQJwTWxGbFozW49MGKaUCfBbohHu5gODjPRB+2YEZ7K87HoJauPU/lEG0jUYsZuv/vWHVcZMPXQOP7UPPiPp5/WYScg/VRrtas7O1MycssJCjybaN6EQju3w+EWniHWH2GKgDLS7j8MsLCyzE+FzHHojVoPV94zlV+Igi+DddBRe49dFcg3NA4xmqUrqSww6nKH3VHluxIjZymWABgOnZYKIAPE4SkULIxAWqH/3h7Y2ChPrpOuNe7l0eEZZiREtI2A5bBLfjp3iiVH0PnELxSFMFzI5ML5boVKUefWf47tSJTzob7IY6YSkaA5O0WY/uiOW8c2q3cYiOC9vzBaZq3KlUlfT5eywMFWOGtlbGObdNhzIyye6BswIvrbg6TWsKVBi4oyGgJQF1VybXunyPYzOxv7lajUJ2Y3jeICtKA9W6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,68 +122,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22 2026, ranxiaokai627@163.com wrote:
+The vm_flags_t type is the dedicated type for virtual memory flags.
+Architecture and driver code should use this type instead of assuming
+vm_flags is an unsigned long, as the underlying type may change in the
+future.
 
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->
-> Memblock pages (including reserved memory) should have their allocation
-> tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-> released to the page allocator. When kho restores pages through
-> kho_restore_page(), missing this call causes mismatched
-> allocation/deallocation tracking and below warning message:
->
-> alloc_tag was not set
-> WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-> RIP: 0010:___free_pages+0xb8/0x260
->  kho_restore_vmalloc+0x187/0x2e0
->  kho_test_init+0x3c4/0xa30
->  do_one_initcall+0x62/0x2b0
->  kernel_init_freeable+0x25b/0x480
->  kernel_init+0x1a/0x1c0
->  ret_from_fork+0x2d1/0x360
->
-> Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-> fix this.
->
-> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> ---
->
-> v2 -> v3: 
->  - also call clear_page_tag_ref() for non-compound order-0 tail pages
->
->  kernel/liveupdate/kexec_handover.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index d4482b6e3cae..96767b106cac 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -255,6 +255,14 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
->  	if (is_folio && info.order)
->  		prep_compound_page(page, info.order);
->  
-> +	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
-> +	clear_page_tag_ref(page);
-> +	if (!is_folio) {
-> +		/* Also do that for the non-compound tail pages */
-> +		for (unsigned int i = 1; i < nr_pages; i++)
-> +			clear_page_tag_ref(page + i);
-> +	}
-> +
+This follows the cleanup in commit d75fa3c94750 ("mm: update
+architecture and driver code to use vm_flags_t") by converting the
+remaining vm_prot_bits usage in SGX code. Also, update the vm_max_prot_bits
+type in struct sgx_encl_page to vm_flags_t for consistency.
 
-I think it would be a little bit better if we just did this in the loop
-above instead of looping again. But I think it is fine for now. I can
-fix it up in the next release.
+No functional change intended.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Wentong Tian <tianwentong2000@gmail.com>
+---
+v2:
+ - Also convert the type of vm_max_prot_bits in struct sgx_encl_page
+   to vm_flags_t, as suggested.
 
->  	adjust_managed_page_count(page, nr_pages);
->  	return page;
->  }
+ arch/x86/kernel/cpu/sgx/encl.c | 2 +-
+ arch/x86/kernel/cpu/sgx/encl.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index cf149b9f4916..814edcde225d 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -281,7 +281,7 @@ static struct sgx_encl_page *sgx_encl_load_page_in_vma(struct sgx_encl *encl,
+ 						       unsigned long addr,
+ 						       vm_flags_t vm_flags)
+ {
+-	unsigned long vm_prot_bits = vm_flags & VM_ACCESS_FLAGS;
++	vm_flags_t vm_prot_bits = vm_flags & VM_ACCESS_FLAGS;
+ 	struct sgx_encl_page *entry;
+ 
+ 	entry = xa_load(&encl->page_array, PFN_DOWN(addr));
+diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
+index 8ff47f6652b9..0e0b97e91905 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.h
++++ b/arch/x86/kernel/cpu/sgx/encl.h
+@@ -27,7 +27,7 @@
+ 
+ struct sgx_encl_page {
+ 	unsigned long desc;
+-	unsigned long vm_max_prot_bits:8;
++	vm_flags_t vm_max_prot_bits:8;
+ 	enum sgx_page_type type:16;
+ 	struct sgx_epc_page *epc_page;
+ 	struct sgx_encl *encl;
 -- 
-Regards,
-Pratyush Yadav
+2.34.1
+
 
