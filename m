@@ -4,181 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB038C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5297C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:34:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F8A86B0112; Thu, 22 Jan 2026 03:32:48 -0500 (EST)
+	id 518FE6B0113; Thu, 22 Jan 2026 03:34:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D1686B0113; Thu, 22 Jan 2026 03:32:48 -0500 (EST)
+	id 4FA596B0115; Thu, 22 Jan 2026 03:34:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF52B6B0114; Thu, 22 Jan 2026 03:32:47 -0500 (EST)
+	id 427266B0116; Thu, 22 Jan 2026 03:34:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DEE6E6B0112
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:32:47 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81C26B692D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:32:47 +0000 (UTC)
-X-FDA: 84358933974.18.7E79CDE
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DDB4E100007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:32:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CyOHD67W;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vF8bn8e1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jd36sMSt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9Jwk37qx;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E33D6B0113
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:34:35 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B10CB1401A3
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:34:34 +0000 (UTC)
+X-FDA: 84358938468.30.FF0CA9B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2A66440008
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:34:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=2moXo0MM;
+	spf=none (imf27.hostedemail.com: domain of BATV+561f00ef1fac768e3611+8187+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+561f00ef1fac768e3611+8187+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769070765;
+	s=arc-20220608; t=1769070873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
-	b=UBR78Vu/pHaiPaow9kfllNuE9NFCo9scqVxAjI2FL3OF4IaXvpW4MPNg3UJhoGP4JeuV/d
-	El6nL0uoWIaxnuQGqa3UIEifYfLWAxVmyEHe9bCGsbXJPKxu6zsH/134F7r32dG2oWJWgZ
-	pJGIFnhU/h/rCYgGnG9mxAYtVInaWH8=
+	bh=wyKG6mSVnYVdf6WsGgp/YJqBxiUMWc/coML45itFX9Y=;
+	b=IWTaJI8DV5sEg+UPOwdbCteduXV9xTU765RNaa7DUIfTzlsTYtpQDFB3Z5v9IiB/JlK0g/
+	P18euAvegLIoddA+ehzOtoZO7BXqjF313QISVi1L0ZHt/FFX7+YYUc8zn335hx4VZO2UOQ
+	vahK8mz/5yeide/PYi0kceeftn2BZ9A=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CyOHD67W;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vF8bn8e1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jd36sMSt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9Jwk37qx;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769070765; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=2moXo0MM;
+	spf=none (imf27.hostedemail.com: domain of BATV+561f00ef1fac768e3611+8187+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+561f00ef1fac768e3611+8187+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769070873; a=rsa-sha256;
 	cv=none;
-	b=sw4lqEPSJiK0lgKzF9IFIS7nKjz39lvmeXS6S10eSZ27WpnfVBaNGppgWY7QEEbc7ivK5b
-	NZmJwKwuSE95AAydvRNEUpv1oj8OZzkb78poRngGmF3CMKjAkY/rI7BSHVQJXWsmQJ1Vcw
-	/B1dY80JYI4vrAe+OzWoMYpkHYu809I=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E9126336AE;
-	Thu, 22 Jan 2026 08:32:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769070763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
-	b=CyOHD67WOgxxhwxs9wUWMufZdLYjY5wfGu2utrAxoN9E4dGiX3FfaDJjf20rn2IzoudVBY
-	7NOqqUJLKGrvBEtm3KWFFVkiNsNm3wvht3MUr1ODsEg0KBR6PvMFba9jo5hffkXsoPl1rG
-	BnlzYPy8A330oi+32pZRNulAsJq9AtI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769070763;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
-	b=vF8bn8e1pbOzUIJ+ghZ6iRRNZOzroHL66EqPkNVYvS5qE5OFwwn7g07FmOnC9MLZ4I3XrL
-	fM189b3zWyDAn+BA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769070762; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
-	b=jd36sMStWaYrKXoUCSPdR0AfhzdGrbdk556t0F1tavZ5KxmyqYYwbi6m+CXOYnveXxM+KN
-	RoQI398eFm/THdd2HzIIveIZVQGl/AhqnjOgDd4VKuuLzBX319DJ6hK2dMBYHgykMrH9xW
-	4YWSSacJnKkeBMzZ82FBE8XsqwHjC5w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769070762;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
-	b=9Jwk37qx3lfbSGnOl/G3QxmjEfxUM7i1Plr4WZtcU9BuFqg+UXc/eF057LXbX0X024bFYc
-	50aAPzrjgXKjdMBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BA1193EA63;
-	Thu, 22 Jan 2026 08:32:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CcwWLargcWm/aQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:32:42 +0000
-Message-ID: <317f1725-5fc8-41bf-95cd-4f85dd1eb137@suse.cz>
-Date: Thu, 22 Jan 2026 09:32:42 +0100
+	b=SALcQR3Wg1CcxPCp8TPDeiunVjceB/q4haOqwYzWQpvDHTdyGPHlLAigMxT7ESdsYsR71j
+	fVHyThYFT4k0A714VSLEAdO+WSeG8z3Ror9Eo7CJx+LEul9dw5XpIQKktNFe//B3ssWtiA
+	7eqj/5iUGQu5g1aPzuUbCC+c6ct38PQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wyKG6mSVnYVdf6WsGgp/YJqBxiUMWc/coML45itFX9Y=; b=2moXo0MM7AqnOr1r91L6tzTt0Q
+	8Y4djegXXpfVa/iRYwy5+HfmImkZq/F+jqFu0eN101xM1Pg4Yrcu22qbT5qeBmFHTF99Bh2iU2yqP
+	NDIWpRfPtHUvqb5CZQ+RrNe7mFT79LRaVE7alJFRxUFZva1lmQtuTOHuNG5guqb6Z3G+9W1HzS61b
+	vl/P6QVlwyhzxjm3wXWTGtIw+fewNWfjVG8hDKxyaCGgvJuLMKdjcaSy8KvcI0wt54yOVytH12+GO
+	H/T+2MD+uAlklTccD9cnGVXmeGOjcl+CCavvGFgDqXe2LExL4CnOnZPvlEGe0Q+98/UPz13rAA08k
+	2sNAS85g==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1viq96-00000006epL-3gs3;
+	Thu, 22 Jan 2026 08:34:28 +0000
+Date: Thu, 22 Jan 2026 00:34:28 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] f2fs: improve readahead for POSIX_FADV_WILLNEED
+Message-ID: <aXHhFN-feFYFcKYu@infradead.org>
+References: <20251121014202.1969909-1-jaegeuk@kernel.org>
+ <aSALfvLUObUGSx-e@infradead.org>
+ <aSCpzRW8mUhNnjHB@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 17/21] slab: refill sheaves from all nodes
-Content-Language: en-US
-To: Hao Li <hao.li@linux.dev>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
- <gmpxnzifhxamwnngr6holbcfdd42fvuq2xtqrqvdz75zv6fb57@hxbmcgfxtuko>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <gmpxnzifhxamwnngr6holbcfdd42fvuq2xtqrqvdz75zv6fb57@hxbmcgfxtuko>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DDB4E100007
-X-Stat-Signature: w4c1moftf93n1qhx4ion1shcrhy13utp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSCpzRW8mUhNnjHB@google.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: 4n3t5ke5tnchb75bf4xyzf79g7qe5npu
 X-Rspam-User: 
-X-HE-Tag: 1769070764-602920
-X-HE-Meta: U2FsdGVkX1/goyCMS7vYsvTJGtv90d5PRvz9zrm6r8j5MZk40PlUfqRRXhaOhgh72BSFPN4wpdMTXWByocqMoptuBu+CbB1efoKhkjvDgkUyANK/qT3fvCjf6iIh7IAPLdrOas/OMarLiGMy0ODppUPMcLGwMMBfDpo2YqJNvcsBmwnUvu0GX59sOtgPMrFeiFmk6++1cCYwi3IoZRfz1Y5VHrquSArzVL76RQ38J84OwYxxRbkvC4fFZKCYn3Lz2fOi7UoxDc4EQmoBra9YmVpSFqcJl4g/HYQrTDM/v/AbbM7ZzlSk7jio/Pi9R0yVm27eGPhSLsCOCw9uB0jxlG2yAse1M5HZgxuP/JYBOMcEaF9oVBx6+KDOob7vMb9CgLQeHR/tKsABisIhNVXkCRUiE0KnVj2XKwCZSLeavFKzu35WLuAtMIOJoNa/CWIMm4ItxAhS5GpAY4T7RvaeLXEMJK1d+7wSvtnOnnXMtgREjmpIR5kdB4kx5+0TQmbXtdEnGqq9IzxNstcWbw61peoH7uMh8+NHB8/4E/1pEipgmV9nu17/295By9Vbere8kWAHjsLwl7XKSgaALRFo+KIDYvvi+yQlq3NhkbZLyuaOu0V9vG7fBOxCL0pMw+CI4h8TTyfl1Di53EeCgROOYdijTDfvjkuN70IjSFlhezUIXF4jDIxhuIiQ1UhIt/OrO87ZhtY6AKC+85EXO/sgf5vkV5PzIEv1/YEAcFuei9K07e4BBrWAk3EMD2Sjapf/RX7Fc8m/0ogbzyQ+ZQjVi5+kfd9JHJd41fvXizgBqYw2l0oC8GyHjHdMH9AosfO3EmUWjCPfhagnF81oMKhRo+xN5tBi5CDfXqTOAg1UezeewUo0a02CkMaI7TJmoRBboMVH7mW1kl9oU5ed5aNIqUlHfCbLEZ4auCjYMdqjDCRZTSDLHa+vYP0e/mU8sbnBEAQoXVBLnM7xI2VY+An
- HYrbhrcK
- q195MbB1mBhhj4KQcWOY2md9tORoJwtcaaqCWwkLZyjHYmIblkwA4qUDWWQ+CMkO2QR4FYMItMgyl3SCNf4YTe+Hy/OIwfp11P9czyhF4EGye++wzfE5x7E7FbMwZ2+muFK5woJZEhnGxNwKOuhzf214ha9V2axq+BzpN5HN0x9FXnS4lXM1caLoT8L12SgLVffKJSva/eag5INW5FY4yrN5QnOM0Z4XARPGHg0bWuY6OncOf0JXSVotBQT4l0W7ANsWr7jUeQkLN6uDDsa6hXSCw9/MJpo4l+Q29
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2A66440008
+X-HE-Tag: 1769070871-475197
+X-HE-Meta: U2FsdGVkX18xzJ5/qFWqFaBt87Q/u2/+Lle0ckSOZrrKgBO/UnNeWlV3JmE14pOd4Gh92j6NJQd3Gmx6kRdesxdoa77ycH+q3Y2Buw3YTulPf8pOWDo52VH2pLNewDEOfLHohE7CpSL8KG7+fFzUGZd3e9DtFyLpcgOcYemxbF5+N1hl218TC0MOA8/3oeAmQEeAkDfVDVFcNFPc7VawAIRtcKtQwLaqcuQC21br84QLCcnzP/S49zivhL8EzRFgr4rHH3LTl7GDUiezb6pid0ko96OTnNoyV8OwB3XFjyhJMDlfUEi8mj/XWpSB2MBjiIiz8v0Yap4RdqmjhSUtDLJKUhmHdXRe8ZGsWaebLtJCvu/5S9vPxP5MtRmC7vBY347ZLnd5uK2MRLODV6Y9ht6lAvNX9ZL8HUyYX7JnHHSUCFu9swvA+FsGY9I2r5hmzHg+pTg+witY7vqbDBzX+pusNOwYFhOyeiBKiL3bpkKX4XebMm6TQlLhD3bL/ooo5mVK7H49hS2XkvhgBAADEkSbkZWQ1/8HaUnDR7BF2XCkiFC7fI5B0NoHndez7OgGQ3z0AybSW74EOG/DO1xlStaBLgGgG75TE+FM+0SipAItkW9X5xPik1eXdR69hqECrjQ2GF+B7E1Eir28JXC73QlUaa6/wQk64GHvwFnFisD32Kb6VgXlAVsuyrbCLAOuDyoTTC464PGS62EiKWqJedTCI+JAp4JiZW14W/wibtgRaPEyNSD/1JETmoUPGNNFjm0bvr53+g5bbTDulBm8yMtwqvkf8smDsmbNIx744A1TwSoWbDCo0mvGcQ/ROYv2glTEAVOT+YezN2sG0bP7RIOSBQGjP0wAYOxVrCKHi7Xjpt3iAcMcELx3HddsCxwHn09FCE9vAa+wAbZqEOxVTKtW4o6uQZSn2lSN03yQfCXeVJl1AP94lMjQtzHYmPgZpGLOG5gMG4AdDFAUzx+
+ 4CBFU3T7
+ xNKCea5TytgaMlQHpgYlViJLLkkZDUPwScuGzmpHn+Dzb3Xb8FmDyhgKrlreO4LXelVw33sWZMWgrwZ7LjnY5g/lq01QGqSkpJrZjr+RDr3gRZ/Ml7eiJjLXLyeRYnDAsUsqlR6br/YvzEW7YCHSvU16t/tunfP9IduPtIANxPznLOkcIj28Yua/Olp93nq2bMYrzMkzZ8O8rUH+RH3ZWjvY9PDOMirOSqE5BA7/MkA/g3SyvD3mQduIQ168NdmKzA4R/t+oFhi6wyJCSwwfgw9Y+kYe4kGLpOqVQnibfV37xPkhrGSNeEeXdQJm+gbzk+Q4roUFO+b+gFsZiHto0oXWcgcFagEPjqodHEMpAd2FPPzTKylwYGqZYaKydmeK1WKNb6ptNAunb284/ZWXIWHUEmTvr3BO6IxUEoFul+Ajxk/BVyc0gH2WVgbgUv2CrXPbz4hXGH5eFckyG95QP+Hgbz02LHmi+tOWri/vymALXTJf8XNN6am0nxF/a5bAnfNvZSzpb0Gl7c6Ng0Fg+nbjF3fI7+bfB+N49YpMbm1nhDHg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,16 +95,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/22/26 05:58, Hao Li wrote:
-> Just a small note: I noticed that the local_node variable is unused. It seems
-> the intention was to skip local_node in __refill_objects_any(), since it had
-> already been attempted in __refill_objects_node().
-
-Ah, I'll remove it. Such skip wouldn't likely do much.
-
-> Everything else looks good.
+On Fri, Nov 21, 2025 at 06:05:01PM +0000, Jaegeuk Kim wrote:
+> On 11/20, Christoph Hellwig wrote:
+> > On Fri, Nov 21, 2025 at 01:42:01AM +0000, Jaegeuk Kim wrote:
+> > > This patch boosts readahead for POSIX_FADV_WILLNEED.
+> > 
+> > How?  That's not a good changelog.
+> > 
+> > Also open coding the read-ahead logic is not a good idea.  The only
+> > f2fs-specific bits are the compression check, and the extent precaching,
+> > but you surely should be able to share a read-ahead helper with common
+> > code instead of duplicating the logic.
 > 
-> Reviewed-by: Hao Li <hao.li@linux.dev>
+> Ok, let me try to write up and post a generic version of the changes.
 
-Thanks!
+Did this go anywhere?
+
 
