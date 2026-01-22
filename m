@@ -4,92 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E96C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:44:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0243CC44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:49:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AD4F6B011B; Thu, 22 Jan 2026 03:44:50 -0500 (EST)
+	id 2BD136B011E; Thu, 22 Jan 2026 03:49:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3548A6B011D; Thu, 22 Jan 2026 03:44:50 -0500 (EST)
+	id 294346B011F; Thu, 22 Jan 2026 03:49:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2871C6B011E; Thu, 22 Jan 2026 03:44:50 -0500 (EST)
+	id 176236B0120; Thu, 22 Jan 2026 03:49:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 150BB6B011B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:44:50 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A725EC09E5
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:44:49 +0000 (UTC)
-X-FDA: 84358964298.24.5E1C957
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3A7DC40003
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:44:45 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xVxOOwda;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 071566B011E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:49:20 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84454B6C1E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:49:19 +0000 (UTC)
+X-FDA: 84358975638.05.BC9A404
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E1B5220006
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:49:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yvk96SCx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wB4wkh1L;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yvk96SCx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wB4wkh1L;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769071488;
+	s=arc-20220608; t=1769071757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LDpjBA56UpKXX0RpCliwDF6LnVmLT09CUYEpTS3IAnM=;
-	b=Qf1pGG4xKA/z3HGe+A+BJxkY6Jjhc6Iuq04FFrbiYZsHv9+G8jrwLZtk3v/krxD8JWhPmc
-	3LW8YTSB0+nMrYbtaFFli7cFto1pVoG/TQQXcobviT3TbjUBA7OcbSTs6Khul3wdQ3isZX
-	4tfTynI6Cik5zpwGHuwZjpDfT7RT1TY=
+	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
+	b=pYpBHUCtoZUS+HxpqH1XqTi0RlbnZ4iiZdesNJJlGJKjddQ4XE2i0S0skI7cR1Vp1ZoNxU
+	kJtO1qb4j54ufKIU5nzxXzq511/8feoccTo8znf1qrQ3ZpVQV5pPTQPxd5uc0j9DFBSEwi
+	YiI/jLiE3xxIWE7RK/m4eXWUuXd/U90=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xVxOOwda;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769071488; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yvk96SCx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wB4wkh1L;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yvk96SCx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wB4wkh1L;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769071757; a=rsa-sha256;
 	cv=none;
-	b=iQQ+L3zufzh0wvJdwlYAsjy4L5TJjXnzQPD1dUuOl0knvK3jXfo+D5Zdrwn/hlYZ0+xSmy
-	MfnJ1ysORd/FSTZ22ZZAL5RwVyXkbEUEX+Z9HNWHH8REZhR5K3YBWtL555WKoH1n+wJHIn
-	s6vVshlQbMnnWmeSGJDAuCHWk1NoHHQ=
-Message-ID: <d9d569cc-127c-41f8-b16d-d6e11ba7b43a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769071483;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	b=T3kJg99dE9+h1MNAuQWaqrWJS5vA+BCp/J/RXVxMAjWcu7ilwf9HWC9pIozrUsxuBNe+pN
+	3V1RDdac5iZ/76a+DGK1WaMoM+SphIEFxalAaj1e6d7QrUOtuOJD8WlHKVoVlCu4TlwIhW
+	wuItOgntD9xHLx/sTGrrx+hgcCLfgWI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4E4EF33697;
+	Thu, 22 Jan 2026 08:49:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769071755; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LDpjBA56UpKXX0RpCliwDF6LnVmLT09CUYEpTS3IAnM=;
-	b=xVxOOwda5jznK+jwyc6xIB0HOEPChs0qQ/1VykeGm/guAcD0Md7lhQkKBupy7FYG0W1ATK
-	inN2d3OpwXCJKw0pf+YPIP6q+AK1pDQ5wdDTXZYFo5TrcsCmytsV+WupVyJEmAkVAlFsHt
-	UvooVn43fq0gN1Tt/fn5gk7lEd0Jdb4=
-Date: Thu, 22 Jan 2026 16:44:31 +0800
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
+	b=Yvk96SCxdNvYEexXEOK747I/Gg6lPcQTHvSga05IY2lwd2U9rqdxLq5BSDMej64sjUQxKB
+	TOpPFVwXW+28+Idev1+Dc9qQk7umBtZ2QWYSZazbgM/5lsYgcVn/vT9Rr+A5f7GRuZp5mw
+	Q069Cx/ciKkTUSgABf7ZkRjpTi5dVPc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769071755;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
+	b=wB4wkh1Lvhk0wx06u19ivN81peqMBi10+cDgIUBa8bKr1wzTgTfUVSw9miVhgMndlzdWK7
+	6iY66gOh34O//CDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769071755; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
+	b=Yvk96SCxdNvYEexXEOK747I/Gg6lPcQTHvSga05IY2lwd2U9rqdxLq5BSDMej64sjUQxKB
+	TOpPFVwXW+28+Idev1+Dc9qQk7umBtZ2QWYSZazbgM/5lsYgcVn/vT9Rr+A5f7GRuZp5mw
+	Q069Cx/ciKkTUSgABf7ZkRjpTi5dVPc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769071755;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
+	b=wB4wkh1Lvhk0wx06u19ivN81peqMBi10+cDgIUBa8bKr1wzTgTfUVSw9miVhgMndlzdWK7
+	6iY66gOh34O//CDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 306693EA63;
+	Thu, 22 Jan 2026 08:49:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +qgXCovkcWmFAwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:49:15 +0000
+Message-ID: <1e3092b1-23df-441d-8849-84aa0632ee88@suse.cz>
+Date: Thu, 22 Jan 2026 09:49:14 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH V3 2/5] mm/khugepaged: count small VMAs towards scan limit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 18/21] slab: update overview comments
 Content-Language: en-US
-To: Dev Jain <dev.jain@arm.com>, Shivank Garg <shivankg@amd.com>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Wei Yang <richard.weiyang@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20260118192253.9263-4-shivankg@amd.com>
- <20260118192253.9263-8-shivankg@amd.com>
- <829b62c8-e3eb-485f-8d7b-01419c841cc8@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <829b62c8-e3eb-485f-8d7b-01419c841cc8@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-18-5595cb000772@suse.cz>
+ <aXHGfLV6FdlNPc14@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <aXHGfLV6FdlNPc14@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Stat-Signature: eziekyephpxiixwcwenetud87c4ffuyq
-X-Rspamd-Queue-Id: 3A7DC40003
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E1B5220006
+X-Stat-Signature: 3eb5j3g7i8ed9p5qmkbtqwm6sdy731sg
 X-Rspam-User: 
-X-HE-Tag: 1769071485-282002
-X-HE-Meta: U2FsdGVkX1+/7dhbbD5ZySQrlTwt+07lGv7hNobr0DGShNmLZRgaCdGmxPZiWkIEt0FTH+rvKazTYxVDqWbufU7th3C7ZXkqKW1NaBYh5SrjMArmKjdZUo2d7Kh0RxihM77fJeeRwUVIAqKpTn4pOrhbZ0ws55n+Jkv3AMLdIpyLR4t1eef2QYeuoNsYV/RhRsRFIenaBcEED2AvIjcC4GFolElPDSdUxuqjO24ZBpQXM1lWnKjtk/4sxHngDEsEEoytusLmY1M2GpjzSEXIGW5eIhRHlO3ftJvSP5kHSRmOxtF7bBS+dJbEOzL/2JbSh4ar0ZoL2F4Qfl4SomRdV43h9iJE/yVrEMHqS9yWJ9kIYe0EKXPutc6uLSUVVPmFfZQNS1jweR4eB+ZwtKS9K2KjNcHUpmWaHJnQL6m1ZTfbCQQhLc6ydW/bqScw18PTqGqrg4OOGcSrj7VggNOXDHtyLKjyWWgjyvky+F8fFPCfmDlWPrdiYYd5rCl/gr5vh0p2NZV53uQtshH4TgYx0dfJewHlyZPNTM+ZMuSwl6SjM4fLQVjq+mJEw/k1GPVkMc+d0FbhfWYNeVQTBq2bz9h7LrIepjKidnfJogppreoqStR2lnXuP3pnZDw1ElCMc79BCq4O7LbyRGk9zIGseVKWjONfbFnUX6VYeKs29IOyt2XvyjOsXgJnvHVP1LWAXtjj5zHx9lMtAc7iJxecoh/EJggXewUD8nP8LUdJ0X+psGhfraPnXMtaxv4yoKUca8prPHMHT2tln+dQizRjVAKQiLULd86UIXCaFh1vTpWy1C06AsCkEPDV57LA7PATLuDO8L2awSowHfZQ1SopocCPMEG+vSCLKV0Hk6Evi45TFZFIzI4q2jgsp/Hf2tJ2NwMnP+XlrpMahvf6PZLTfA2JXu/mIsfMlbqwx6bbi7SC9fXCX2qSMxZHPzBHS7SWxPk8JyHyXoBMA9hLthZ
- qj2HACxN
- A6JRQosScMuGegEc3XpZ0oPkNe3nY3G8Y8/brGq2cOwT3hDZhizCSMnw/5N/TshbfEjZJkfi1n+3V6PeFbYk/pMEooQW20urUix1xuuU0qkfPP3+HT4tdOFbbKf1TiVf2Mu5JfXkqNN/A+wNVNGvfPrw9YZIlrLmg8x7cyPsf3qd3LTbEeUHlIMb1fRTMIMC4rmEXb6KSFBoo/iQUi8X4BVTVM1qzphURLEEFCu+SZjR48J1aOHSk9FTqVcBlih8NNpKc9q5a5AfOB7GKhA6x11WebuOKzl2wttbBSNKYWrGxDfBRg4PpcvQTYQ==
+X-HE-Tag: 1769071756-602119
+X-HE-Meta: U2FsdGVkX189DG7roP4Eg/1qPuHctVd4TlPkS989SDsVKnpKLiSHKHF/njWf+hbOZQFf+KsW6xoIWLwi37JqEThYE45OYAYfmkYG9fFJpIU/aQpiG8ZfnS3fgjOwTgna1eXmPDTo7ERyKAJDMXjiSO/WifXpdlP3Kv0/0ybZc8L+x9ipzwnCSTMhcVnV8fkDb185EkOMq4aupvro7OEyn2a25UrgODfQWA/LdcdSrSvxGE+V5eUcbYJav4N7nWaMJba75Jq3KOOPJm2zemalfGAHmNb3fQyDlkAmPjTocfuf7CB805tLiTD9FCBlscAgDF7RguwEehet+px5BhxfogEpoznbUhGJtjie/v2KbMsPMnzRuIxZNLShplfZfGPqLoC45oCkqO8NxH14NE2DEqrEz9150Gp7EVBkU5EtMzdcsFLhj/3IwOyK7iG7P52YjRJXgxluqsyldyGwJMa9yQm0TfTUWHzMV6ssnaCshfG20IBZ2xlCOLgRtjGaLF/ZftPRgr/0H4adF9jVxp32vNBJQTri/dkp1re/LVUunJywFPZZKyOBUxmW8Yu3KtTryUb8wNQLrGrDIibWln6g/Je2RdZJGBAEdL1NLZjEucngx7GxJ1rOhN68h+zMM0ZrmsfsgEAuN4HmMwmcWacjFJx0HPRkCCNYPdzuhizj0ZrncwKD16JBbFmjripdHYpqOdWxRnikZTL/8P9jc1HTI89c4PatO3dMl/d9SK1ucNveQiGuWTIRWGTfwfp5a6KdIWTOUpn3anHLpE2jxxRdmntybdlOOsOLE2zEQQ77v76vuQNhQQ2AY9Ug2Z9YbTEupXMBrHHWKAxNoWp1ipo2B6VyNYr9LAUbh8OI9UwfU1bU10UxaX5xqgWtpxGd7UmZgnVZLcl5kgp54wh84HXBylotWTpI9VFAseRvXpJ34H2aJ7k9Kdj5KwxLwFZ3yLdSJqDQS/6Am1RcGTMU+WD
+ 43fwSo+M
+ bmb/fcII6aghQpDzDhqmUAENI+Bs3CbU8eUD5d1u7KaS8EpQAavVENd643v/ekQKHzD1bGC2yuOyJXhFeGFJ3il/2VbbM1c+787wCidOdeD3NvVEkywOujOwFw0cD/L++rCJm5PVds53E+SNXH1iv3S+z6Gmn7Z7r2RMqbsVty+JUQ9tUM5+4TUgYUUPuzJHEpL9iVXzOr2bJbWfORCZvmiMD/O88F0HWbYCFuj6QBDWMvZdugVcrB4ZCCKc8eKmrVFWOcVIQ73GkTP6YbM8rIzrKyNki53xQHX/N9DmsKq1Gypo0Bd729/V71WJVVCZ9kU98jUpou2VL3jSnodTTFaMUYw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,91 +187,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/1/22 15:32, Dev Jain wrote:
-> 
-> On 19/01/26 12:52 am, Shivank Garg wrote:
->> The khugepaged_scan_mm_slot() uses a 'progress' counter to limit the
->> amount of work performed and consists of three components:
->> 1. Transitioning to a new mm (+1).
->> 2. Skipping an unsuitable VMA (+1).
->> 3. Scanning a PMD-sized range (+HPAGE_PMD_NR).
->>
->> Consider a 1MB VMA sitting between two 2MB alignment boundaries:
->>
->>       vma1       vma2   vma3
->>      +----------+------+----------+
->>      |2M        |1M    |2M        |
->>      +----------+------+----------+
->>                 ^      ^
->>                 start  end
->>                 ^
->>            hstart,hend
-> 
-> Won't such a VMA be skipped by thp_vma_allowable_order()? That internally
-> checks, apart from eligibility by sysfs, that the extent of the VMA can
-> map a hugepage.
-
-Ah, you're right!
-
-I was worrying about a case that doesn't actually happen.
-
-Thanks,
-Lance
-
-> 
->>
->> In this case, for vma2:
->>    hstart = round_up(start, HPAGE_PMD_SIZE)  -> Next 2MB alignment
->>    hend   = round_down(end, HPAGE_PMD_SIZE) -> Prev 2MB alignment
->>
->> Currently, since `hend <= hstart`, VMAs that are too small or unaligned
->> to contain a hugepage are skipped without incrementing 'progress'.
->> A process containing a large number of such small VMAs will unfairly
->> consume more CPU cycles before yielding compared to a process with
->> fewer, larger, or aligned VMAs.
->>
->> Fix this by incrementing progress when the `hend <= hstart` condition
->> is met.
->>
->> Additionally, change 'progress' type to `unsigned int` to match both
->> the 'pages' type and the function return value.
->>
->> Suggested-by: Wei Yang <richard.weiyang@gmail.com>
->> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
->> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
+On 1/22/26 07:41, Harry Yoo wrote:
+> On Fri, Jan 16, 2026 at 03:40:38PM +0100, Vlastimil Babka wrote:
+>> The changes related to sheaves made the description of locking and other
+>> details outdated. Update it to reflect current state.
+>> 
+>> Also add a new copyright line due to major changes.
+>> 
+>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 >> ---
->>
->> Incorporate comment feedback from Lance:
->> https://lore.kernel.org/linux-mm/6b408736-978a-4d40-adfc-97819951c3a6@linux.dev
->>
->>   mm/khugepaged.c | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 984294a16861..93ce39915f4a 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -2403,7 +2403,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->>   	struct mm_slot *slot;
->>   	struct mm_struct *mm;
->>   	struct vm_area_struct *vma;
->> -	int progress = 0;
->> +	unsigned int progress = 0;
->>   
->>   	VM_BUG_ON(!pages);
->>   	lockdep_assert_held(&khugepaged_mm_lock);
->> @@ -2447,7 +2447,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->>   		}
->>   		hstart = round_up(vma->vm_start, HPAGE_PMD_SIZE);
->>   		hend = round_down(vma->vm_end, HPAGE_PMD_SIZE);
->> -		if (khugepaged_scan.address > hend) {
->> +		if (khugepaged_scan.address > hend || hend <= hstart) {
->> +			/* VMA already scanned or too small/unaligned for hugepage. */
->>   			progress++;
->>   			continue;
->>   		}
+>> @@ -112,47 +123,46 @@
+>> + *   node->barn->lock (spinlock)
+>>   *
+>> - *   lockless fastpaths
+>> + *   Lockless freeing
+>> + *
+>> + *   Objects may have to be freed to their slabs when they are from a remote
+>> + *   node (where we want to avoid filling local sheaves with remote objects)
+>> + *   or when there are too many full sheaves. On architectures supporting
+>> + *   cmpxchg_double this is done by a lockless update of slab's freelist and
+>> + *   counters, otherwise slab_lock is taken. This only needs to take the
+>> + *   list_lock if it's a first free to a full slab, or when there are too many
+>> + *   fully free slabs and some need to be discarded.
+> 
+> nit: "or when a slab becomes empty after the free"?
+> because we don't check nr_partial before acquiring list_lock.
+> 
+> With that addressed,
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+
+Good point, thanks!
 
 
