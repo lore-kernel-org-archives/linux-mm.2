@@ -4,87 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F394C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 05:53:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0FDFC44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 05:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ACD46B00E0; Thu, 22 Jan 2026 00:53:03 -0500 (EST)
+	id ECB606B00E1; Thu, 22 Jan 2026 00:55:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65A8D6B00E1; Thu, 22 Jan 2026 00:53:03 -0500 (EST)
+	id E78976B00E3; Thu, 22 Jan 2026 00:55:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 586A96B00E2; Thu, 22 Jan 2026 00:53:03 -0500 (EST)
+	id DA5066B00E4; Thu, 22 Jan 2026 00:55:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 442E86B00E0
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:53:03 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C9ACA136C9F
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:53:02 +0000 (UTC)
-X-FDA: 84358531404.18.A3F2218
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C85A140007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:53:00 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=L2h4ihHa;
-	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C57F36B00E1
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:55:00 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36EE286864
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:55:00 +0000 (UTC)
+X-FDA: 84358536360.26.7F8314D
+Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 65A63100008
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:54:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OIMD1OPS;
+	spf=pass (imf14.hostedemail.com: domain of tianwentong2000@gmail.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=tianwentong2000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769061181;
+	s=arc-20220608; t=1769061298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vTGJaFhXlbsw1EOpmJJykqdjn7GgJkZ5tylkFbIkt4g=;
-	b=zhJyGlikmz7o65XHmaRNyjN678zjN3bixa6HYiieqoNxoVO2r0qQ8RmGto0o1CZ9zp2TyJ
-	kBJMg+4Qbh4oApD4RcbzSLj11jEaQK3oI8x1YP5Cgzft4xtqP4uRpmEKIGaYl/EbeWvWE/
-	8hvFMEYnnxU4z/HlOJbDsz8/Lrb+OQM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=db5L71lFil1nMt4m3zHfhoBZD7zBth9lGqCdL+1iytU=;
+	b=JiaifkDLwM6XCtH8GTN1Ul9jUJFE6dSGH3eKwkWh0TPzKzpLswpUdMwAsejSm/ykMKrrPw
+	YFWPmeeOLxXKKJ4njj/91Oyqs90O7JHIYa4cNM0uIlZ4+HGPEV6EGbUJpSRjfOC65jgAPS
+	8TIlWz+aAnW93wZP+SlSibLc/qBbfQw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=L2h4ihHa;
-	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769061181; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OIMD1OPS;
+	spf=pass (imf14.hostedemail.com: domain of tianwentong2000@gmail.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=tianwentong2000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769061298; a=rsa-sha256;
 	cv=none;
-	b=w57h75cWKaLfV/iL5b2XxWLl1lpeS88tvwxmK6DSBCcpDcw1GdTPpyizxcwFSk7lBYat3U
-	KqZCDOKlch/Ske6Kui+hOqYlGt73VNLgbBHs+l8MQjBix7rrQmNvgWhxbyVIOmjJuPAYvG
-	aul8WsC4zEPaCuY3o/NsqkehRhNZGrM=
-Date: Thu, 22 Jan 2026 13:52:48 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769061178;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vTGJaFhXlbsw1EOpmJJykqdjn7GgJkZ5tylkFbIkt4g=;
-	b=L2h4ihHa5di8qOkOTG1YwQKrsyF+rNJmC8iLx3iq4nFtNlTBmLc3/uKiCyoConCVw+gvX2
-	hwTWnd/L57W+rIE/1NtCeLopGNZ2y6ph4hQS1G24MJE4iEirT3LLS3myp+5VHsNYnYbNZv
-	iR9esG3KQM0hRVyb+wlj8scSE4K9AiY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 21/21] mm/slub: cleanup and repurpose some stat items
-Message-ID: <5rmxfyxuhloucetufg2qic5elgi6frd7onjzdsosmhtjdqglij@5htmiqrdhkoj>
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-21-5595cb000772@suse.cz>
+	b=djAIR+wiuPQLrwb8iybVPRdcyBIVG0k7UzBVgr74/SsAziM3YHdNQePMfuanwiEouTePqf
+	VefJQjsSm+cc/czpTUX6dWsKdsPW6XZWlUKqDWS9sKhuA+zQbxXKckhSBAdPQ8spzYPYRO
+	KYOHlOjtWU9kFhNyoc3NQuXTvkpS2nU=
+Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2ae287a8444so328894eec.0
+        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 21:54:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769061297; x=1769666097; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=db5L71lFil1nMt4m3zHfhoBZD7zBth9lGqCdL+1iytU=;
+        b=OIMD1OPSYvxjyRVvMQMjYrqRVV511R+xzds1ytcC1JaZ7jqUVR7XbLQYJ7Qpkt3W6Y
+         SsVbjOrftBLOqao4wz3wVBraxg1j/4CTKRM+Dj6AbNupHZyKXV+EehoqQGxGQJ6xl3Bf
+         lN4h8kXeMEgSVV/0THyo/W3UiQcEjj9QTVv72k0WsJcDQnKB9Li2ehTkO8Stg/tgygmQ
+         l/YFyxX0Xe34F2MmXILW39jQMqBx9hCRxUYFnNK39Kzv71aleopabCPTDheZS4LhgP1V
+         R1TxTwH5nuFn3CIPuwT//y6QsDxp66P94F/EZK68nV1eB9BCBE0KghVqe0ZTshIrTdFx
+         bc5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769061297; x=1769666097;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=db5L71lFil1nMt4m3zHfhoBZD7zBth9lGqCdL+1iytU=;
+        b=nljqyQtqua/j/01j9GuIHellmM/t92UQ9XwHrhvcU0wn8uHsVTzQaOFJUVHQlDA3TW
+         s+g4vAeg8yVfQ8KfUY/jNVQDM704FO/SmS4VSmkslHgGBit3UqDC6NuoamiMoaP67akW
+         sB2onWtIuWpSKMpeV5nq/bELMdHFS8DqX4F4DzgE4aC7Ew+/gYZ5gMRg7D6DYsjXfmFz
+         6cRm220AKPCmfcVXfFDCRkF6nONfylbRn/9vWJJTlggQvhtjmukAey6AnFR4KhsRBazQ
+         oM3ZidQjC5vm6awee5gd/ixZKoXzhifVVOAYx/Jt4pxUHriXtgqYGh0h4YVXLg3DQsos
+         2+qA==
+X-Forwarded-Encrypted: i=1; AJvYcCXbjwvdqFdTAWJLY+tUypSBOh9uriEjCD2IEJ0OBj98/N+M2hyB4YAXxin1nY43zNf50b1/rnKFag==@kvack.org
+X-Gm-Message-State: AOJu0Yzn+joDFEthyn37h44UenbZsxV44wq5QM3LL8FEa/VHfNDtTibY
+	wIyyHnJvPnbs/D0lpdoMcsYOzwvfF4IGAVLbmxNcA2nmvqhZECxA6PK1
+X-Gm-Gg: AZuq6aLTVXOHrQuwDVgzGIiQ4Kuqcad449arLMcVFIT5+3TYRewEGhD1RAlm5xjrgBQ
+	pEUq3C7TVJr4MiOEn7KSCjctCNE5luxu0EC92C8uOna1a8N4KHBA3PvuJhggCPsvgMmkNzbzF3V
+	XWkT8MPFcgvao6+k90RADTgYCExg77gGDK1GMb/ksRjlLvhPNc4EfpM0FhEe6RCurVXOR8s59RP
+	e4HOq4Vk0S+Jp4mwziyVx5PvH8iNcCkOpD97EEohO1oiNF+VajbfNQ1kC6LBo0Hx3R8PSpCaeC1
+	/jZ7k6Fwz75Y+Pqc1f/yvehEKWtWaFlXOouMLJp5DZIx2A8u5fHdPDQTWioHGjhIlCAn5lKDnSs
+	7U0FP4iAxxc5WwS5wxgtGto0+UvBBEIjKBjfCb+/dP+dQLwqvnSII+6QV0jvANwce2f8eIuB4ZS
+	PFNpJel602iFvYgKPqEphd2MrOetU+MIlYPzTIb0ltEj03rvQ=
+X-Received: by 2002:a05:7300:d70b:b0:2b7:19a1:3bae with SMTP id 5a478bee46e88-2b724801cd0mr1034781eec.18.1769061296697;
+        Wed, 21 Jan 2026 21:54:56 -0800 (PST)
+Received: from 9fdcf7ea0ed5.localdomain ([142.171.172.108])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7047b099bsm8154623eec.31.2026.01.21.21.54.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 21:54:56 -0800 (PST)
+From: Wentong Tian <tianwentong2000@gmail.com>
+To: jarkko@kernel.org,
+	dave.hansen@linux.intel.com
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	linux-sgx@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Wentong Tian <tianwentong2000@gmail.com>
+Subject: [PATCH] x86/sgx: use vm_flags_t for vm_prot_bits
+Date: Thu, 22 Jan 2026 13:54:35 +0800
+Message-Id: <20260122055435.95911-1-tianwentong2000@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116-sheaves-for-all-v3-21-5595cb000772@suse.cz>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C85A140007
-X-Stat-Signature: w7onycnz3oouda5kwnhjis4s58o7uknh
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 65A63100008
+X-Stat-Signature: jb8f45rep6jt89fehdhe446hpo6sjrph
 X-Rspam-User: 
-X-HE-Tag: 1769061180-640891
-X-HE-Meta: U2FsdGVkX192s3lP9yTpwSgLwkNcrKUTr/UYGlfbLGhU/jKaWEdaTZiXZAvhjDnxSDee/7pxYiE2ggYPXRD4ir5cN0tOhauE792EdDbYFE/q2UUMyu1/K5pQSC5A6E6ZYkDgz3u/1kmKL6JkHxNmWcX9gqjkx6J0y5BLxgCEWuVpxdPH6/FzRyZ017yLZggQ2DjtT3i5FSPFmdpsLHlCXXlLz1mZ6GTkdpKE722ejTYkNXCMlJO4LIPi4Hj14bjjI2gG+36t40SuZELz1TFgsX4RDGMd0UDmx68fL6sf2mUQFcCYnKROY3wy+CdV09PPqatdCECVqEKgnrOWYwgHf5WaXSl1RU2hYi8Bvfxw+dyBCaiAZNmSZlyxShCKXgtBSf8v5zvZYMfDQPaxyH87HhnUMwXPCUzd/qbtErmYIRXuDyY3zrOQ3MaJU3Q3I/Q1BGizY5PjWCprfUiG7ye7l06mjLukVTygCXZOqsnofzDKaAYbQ9HF14QN+uC907VECjQD0Zjw3G+IC0p+b/csiX9HibSXhI+agqkjAAbGcP5t30DKP6ppiH73SnbFMgyn8ljjZgcBsNZX5LPtv9OfuwG+6B5C7Emdy3pAVxMg9QPiNuDhz278LTy/2i/Lz23tl/AbbfKOgejdPFTtfrK0y1c9a/GKAjW5xYBI95gGQatEEAWEX6uAN/jSE1rZBzS7vX0ujZhAZjpXwhUPfy8AiAJkeEetQ8dEE6+KivoOUwvbTaB79nEWXx7vdNjZ2evfUiaZCwGCnQTEDrmHO2UPSjarYJpW5BTyZPk20Aei7HHXxUei1+Opljng9EHINnB7Di/NXGGhVGhtMywFVcCktMa6P0Q4ghfZQCYVn6KMvNA2ZTJFdzmMM3+wD3SJbgPHuycdHYl56YW/RxxwQKR+3Vl0Hurm4ZNjX1yRtM9KLTqEmTmExUvnUscABHuirOXkh+Ch00AGNDiGBFIjvoS
- 39SAh/1j
- CrnZ/0DseatC+FPoKKR+nsCG7cm5tbfCWQjFfJYSK2UiBtM8LLhzfIQSCuKVmjv5gns2uzsgC/h625UMdphvSUII25axY8CL8fsDXuSEEMmLvOiKwMZSgDlEqp8/Tc9xYpk3wOHn3FlhHUtcM42uoUDWOqvk/3qjZmMYW20YzZEbh9sGFxNEURJxFWQ90NStcWoqh1dYqEjRW+xsPZe3Hqdnhw49y/J7hOvLJFDtMyarEuxo=
+X-HE-Tag: 1769061298-134351
+X-HE-Meta: U2FsdGVkX19quwbpTs/ZuhL2//DPDQj6d+J9+x5n9SuvdqLNb6uJiX03ROiAVEgYB4BwPRTvMtJCezA7VpHoR/f0xMk9N0E7/vDMiOfXhbrAaDtHYAp+NptvgkaeTSz6qF057NfZxhXvmcU6RL+0mcN+vstbNa2z2HPiRJeTUq6hL/Cb2okOcXB5DPBxVOkb9guAEoCg7rLIdUJ5fmAnvPTff9LMoaG2nW9hNvC6kSfHdYm2a8cZ4CH5ILWkw4kRrudYfI5w21uSyqCJy5YeGjfQS/+CwJQ6ZVjl1EUJV8tJlrqWYxD9GLoHx7ZxawzOhwkXku9O5Xq8CKSrdQmdQjArd23G9jkVYQ6kXpLFPKm0NAWTJmgIVn7sYKgeO66OAIkvYrpLi6sLm1Rk4BCYwY03jUrBiITUozzYoa86YqSKJ7c+ZWPeU3ly5LDLAN4pVqkKP/glphonsffcp1bDmCxNZiri3L78RK+1DEybsi8SqRC8XOU6v+umtwBG3TaDQJ6qY8x1DFhsjTgaOyv/uoFIO/fbVQ13gOM+JL4ULWgjMSDjJFnjhJCw/7NaoS1zlbPa7WSo64wl2Wg/nNuPgc+kCpETa9MgUBDpaAzvixTlvtdcrrsKK44KX4YOiPC/e7OEq6e4XlJ79edaPd22P2jWq+eGCyBkIMaj30Ysui0iaIXzBPHT7GcPFT1Sow2j7cyxF7k0PwXNnaqN4DYAZ/5vh+VrmNcMT8FzsC5aMOQRNFKz0ciWw1a2/SiEEXG/WMEYHO80p38Yq8skPruXiFLWQqhwG6EIKSoYOrnELfWQOehQfXUJWPOEAEUgtxoPuQH7ovQC6q/kWAM0wbAYMUOpFoZnDtIi8VhyfmFlyHeYtyfsnkrEmTKDpr9Ski91frjV65rjmyGYPGsqrxhrYdMdN7SGUfEdyZV6lMWh8y51N8kKRknSeXiZ6Dz2h4cQGb54fSzIBv3WqrD8xTC
+ U3u5Gra6
+ 5yl8ssecD64aQLGb1N76KQ/ilbaBpKrR7QlG/GA7dqs6BvNOEvp7TtScUTNZ6e9xhXPYXw9b7l/MGEGTLAIFfYRtjlE94sl2YHNdsWsXcWQVFvZosYHoYc6YQYeYK5tOmIGo8acS82MLB8TtkXq51f96iINaZxlLfnZAuyWiJWdqDti2jB/2NHYSUugMMGUiQf+PHh8pwFGza9SwHiHyMs+SREUbLHg3icrllF08aPGEdTLvCzC3uhFeLcnJruOFmpmutX6qSsFuviT0tjeAsWcV4My8gObQGkSI0V2pDHLh5h4+HVF9dEfxU+pCYFDkG5f44jsgPF55KtYZbIKHIMQGLeiMj2lNkrF8we8IVi10s2YX1mfikUgu3oDXbU5XXYbwbsvdUJM583USXF2oeoANx4mvbTXtKDNd0NX28lLZFrlHiuIPJ/OkhEVFnA+6hOCjJdlJf5w4JuOQGFkOpxCTIkzg4gdW0eRcR23IgjpCWKcHQmKgHURV4Wet7VpmtuWcT3sPFHyY/4A6fhEokq6ph5oguJsehOqz9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,263 +122,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 03:40:41PM +0100, Vlastimil Babka wrote:
-> A number of stat items related to cpu slabs became unused, remove them.
-> 
-> Two of those were ALLOC_FASTPATH and FREE_FASTPATH. But instead of
-> removing those, use them instead of ALLOC_PCS and FREE_PCS, since
-> sheaves are the new (and only) fastpaths, Remove the recently added
-> _PCS variants instead.
-> 
-> Change where FREE_SLOWPATH is counted so that it only counts freeing of
-> objects by slab users that (for whatever reason) do not go to a percpu
-> sheaf, and not all (including internal) callers of __slab_free(). Thus
-> flushing sheaves (counted by SHEAF_FLUSH) no longer also increments
-> FREE_SLOWPATH. This matches how ALLOC_SLOWPATH doesn't count sheaf
-> refills (counted by SHEAF_REFILL).
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/slub.c | 77 +++++++++++++++++----------------------------------------------
->  1 file changed, 21 insertions(+), 56 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index c12e90cb2fca..d73ad44fa046 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -330,33 +330,19 @@ enum add_mode {
->  };
->  
->  enum stat_item {
-> -	ALLOC_PCS,		/* Allocation from percpu sheaf */
-> -	ALLOC_FASTPATH,		/* Allocation from cpu slab */
-> -	ALLOC_SLOWPATH,		/* Allocation by getting a new cpu slab */
-> -	FREE_PCS,		/* Free to percpu sheaf */
-> +	ALLOC_FASTPATH,		/* Allocation from percpu sheaves */
-> +	ALLOC_SLOWPATH,		/* Allocation from partial or new slab */
->  	FREE_RCU_SHEAF,		/* Free to rcu_free sheaf */
->  	FREE_RCU_SHEAF_FAIL,	/* Failed to free to a rcu_free sheaf */
-> -	FREE_FASTPATH,		/* Free to cpu slab */
-> -	FREE_SLOWPATH,		/* Freeing not to cpu slab */
-> +	FREE_FASTPATH,		/* Free to percpu sheaves */
-> +	FREE_SLOWPATH,		/* Free to a slab */
+The vm_flags_t type is the dedicated type for virtual memory flags.
+Architecture and driver code should use this type instead of assuming
+vm_flags is an unsigned long, as the underlying type may change in the
+future.
 
-Nits: Would it make sense to add stat(s, FREE_SLOWPATH) in
-free_deferred_objects() as well, since it also calls __slab_free()?
+This follows the cleanup in commit d75fa3c94750 ("mm: update
+architecture and driver code to use vm_flags_t") by converting the
+remaining vm_prot_bits usage in SGX code.
 
-Everything else looks good.
+No functional change intended.
 
-This patchset replaces cpu slab with cpu sheaves and really simplifies the code
-overall - I really like the direction and the end result. It's really been a
-pleasure reviewing this series. Thanks!
+Signed-off-by: Wentong Tian <tianwentong2000@gmail.com>
+---
+ arch/x86/kernel/cpu/sgx/encl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Hao Li <hao.li@linux.dev>
-
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index cf149b9f4916..814edcde225d 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -281,7 +281,7 @@ static struct sgx_encl_page *sgx_encl_load_page_in_vma(struct sgx_encl *encl,
+ 						       unsigned long addr,
+ 						       vm_flags_t vm_flags)
+ {
+-	unsigned long vm_prot_bits = vm_flags & VM_ACCESS_FLAGS;
++	vm_flags_t vm_prot_bits = vm_flags & VM_ACCESS_FLAGS;
+ 	struct sgx_encl_page *entry;
+ 
+ 	entry = xa_load(&encl->page_array, PFN_DOWN(addr));
 -- 
-Thanks,
-Hao
+2.34.1
 
->  	FREE_ADD_PARTIAL,	/* Freeing moves slab to partial list */
->  	FREE_REMOVE_PARTIAL,	/* Freeing removes last object */
-> -	ALLOC_FROM_PARTIAL,	/* Cpu slab acquired from node partial list */
-> -	ALLOC_SLAB,		/* Cpu slab acquired from page allocator */
-> -	ALLOC_REFILL,		/* Refill cpu slab from slab freelist */
-> -	ALLOC_NODE_MISMATCH,	/* Switching cpu slab */
-> +	ALLOC_SLAB,		/* New slab acquired from page allocator */
-> +	ALLOC_NODE_MISMATCH,	/* Requested node different from cpu sheaf */
->  	FREE_SLAB,		/* Slab freed to the page allocator */
-> -	CPUSLAB_FLUSH,		/* Abandoning of the cpu slab */
-> -	DEACTIVATE_FULL,	/* Cpu slab was full when deactivated */
-> -	DEACTIVATE_EMPTY,	/* Cpu slab was empty when deactivated */
-> -	DEACTIVATE_REMOTE_FREES,/* Slab contained remotely freed objects */
-> -	DEACTIVATE_BYPASS,	/* Implicit deactivation */
->  	ORDER_FALLBACK,		/* Number of times fallback was necessary */
-> -	CMPXCHG_DOUBLE_CPU_FAIL,/* Failures of this_cpu_cmpxchg_double */
->  	CMPXCHG_DOUBLE_FAIL,	/* Failures of slab freelist update */
-> -	CPU_PARTIAL_ALLOC,	/* Used cpu partial on alloc */
-> -	CPU_PARTIAL_FREE,	/* Refill cpu partial on free */
-> -	CPU_PARTIAL_NODE,	/* Refill cpu partial from node partial */
-> -	CPU_PARTIAL_DRAIN,	/* Drain cpu partial to node partial */
->  	SHEAF_FLUSH,		/* Objects flushed from a sheaf */
->  	SHEAF_REFILL,		/* Objects refilled to a sheaf */
->  	SHEAF_ALLOC,		/* Allocation of an empty sheaf */
-> @@ -4347,8 +4333,10 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
->  	 * We assume the percpu sheaves contain only local objects although it's
->  	 * not completely guaranteed, so we verify later.
->  	 */
-> -	if (unlikely(node_requested && node != numa_mem_id()))
-> +	if (unlikely(node_requested && node != numa_mem_id())) {
-> +		stat(s, ALLOC_NODE_MISMATCH);
->  		return NULL;
-> +	}
->  
->  	if (!local_trylock(&s->cpu_sheaves->lock))
->  		return NULL;
-> @@ -4371,6 +4359,7 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
->  		 */
->  		if (page_to_nid(virt_to_page(object)) != node) {
->  			local_unlock(&s->cpu_sheaves->lock);
-> +			stat(s, ALLOC_NODE_MISMATCH);
->  			return NULL;
->  		}
->  	}
-> @@ -4379,7 +4368,7 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
->  
->  	local_unlock(&s->cpu_sheaves->lock);
->  
-> -	stat(s, ALLOC_PCS);
-> +	stat(s, ALLOC_FASTPATH);
->  
->  	return object;
->  }
-> @@ -4451,7 +4440,7 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, gfp_t gfp, size_t size,
->  
->  	local_unlock(&s->cpu_sheaves->lock);
->  
-> -	stat_add(s, ALLOC_PCS, batch);
-> +	stat_add(s, ALLOC_FASTPATH, batch);
->  
->  	allocated += batch;
->  
-> @@ -5111,8 +5100,6 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
->  	unsigned long flags;
->  	bool on_node_partial;
->  
-> -	stat(s, FREE_SLOWPATH);
-> -
->  	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
->  		free_to_partial_list(s, slab, head, tail, cnt, addr);
->  		return;
-> @@ -5416,7 +5403,7 @@ bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
->  
->  	local_unlock(&s->cpu_sheaves->lock);
->  
-> -	stat(s, FREE_PCS);
-> +	stat(s, FREE_FASTPATH);
->  
->  	return true;
->  }
-> @@ -5664,7 +5651,7 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
->  
->  	local_unlock(&s->cpu_sheaves->lock);
->  
-> -	stat_add(s, FREE_PCS, batch);
-> +	stat_add(s, FREE_FASTPATH, batch);
->  
->  	if (batch < size) {
->  		p += batch;
-> @@ -5686,10 +5673,12 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
->  	 */
->  fallback:
->  	__kmem_cache_free_bulk(s, size, p);
-> +	stat_add(s, FREE_SLOWPATH, size);
->  
->  flush_remote:
->  	if (remote_nr) {
->  		__kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
-> +		stat_add(s, FREE_SLOWPATH, remote_nr);
->  		if (i < size) {
->  			remote_nr = 0;
->  			goto next_remote_batch;
-> @@ -5784,6 +5773,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
->  	}
->  
->  	__slab_free(s, slab, object, object, 1, addr);
-> +	stat(s, FREE_SLOWPATH);
->  }
->  
->  #ifdef CONFIG_MEMCG
-> @@ -5806,8 +5796,10 @@ void slab_free_bulk(struct kmem_cache *s, struct slab *slab, void *head,
->  	 * With KASAN enabled slab_free_freelist_hook modifies the freelist
->  	 * to remove objects, whose reuse must be delayed.
->  	 */
-> -	if (likely(slab_free_freelist_hook(s, &head, &tail, &cnt)))
-> +	if (likely(slab_free_freelist_hook(s, &head, &tail, &cnt))) {
->  		__slab_free(s, slab, head, tail, cnt, addr);
-> +		stat_add(s, FREE_SLOWPATH, cnt);
-> +	}
->  }
->  
->  #ifdef CONFIG_SLUB_RCU_DEBUG
-> @@ -6705,6 +6697,7 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
->  		i = refill_objects(s, p, flags, size, size);
->  		if (i < size)
->  			goto error;
-> +		stat_add(s, ALLOC_SLOWPATH, i);
->  	}
->  
->  	return i;
-> @@ -8704,33 +8697,19 @@ static ssize_t text##_store(struct kmem_cache *s,		\
->  }								\
->  SLAB_ATTR(text);						\
->  
-> -STAT_ATTR(ALLOC_PCS, alloc_cpu_sheaf);
->  STAT_ATTR(ALLOC_FASTPATH, alloc_fastpath);
->  STAT_ATTR(ALLOC_SLOWPATH, alloc_slowpath);
-> -STAT_ATTR(FREE_PCS, free_cpu_sheaf);
->  STAT_ATTR(FREE_RCU_SHEAF, free_rcu_sheaf);
->  STAT_ATTR(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail);
->  STAT_ATTR(FREE_FASTPATH, free_fastpath);
->  STAT_ATTR(FREE_SLOWPATH, free_slowpath);
->  STAT_ATTR(FREE_ADD_PARTIAL, free_add_partial);
->  STAT_ATTR(FREE_REMOVE_PARTIAL, free_remove_partial);
-> -STAT_ATTR(ALLOC_FROM_PARTIAL, alloc_from_partial);
->  STAT_ATTR(ALLOC_SLAB, alloc_slab);
-> -STAT_ATTR(ALLOC_REFILL, alloc_refill);
->  STAT_ATTR(ALLOC_NODE_MISMATCH, alloc_node_mismatch);
->  STAT_ATTR(FREE_SLAB, free_slab);
-> -STAT_ATTR(CPUSLAB_FLUSH, cpuslab_flush);
-> -STAT_ATTR(DEACTIVATE_FULL, deactivate_full);
-> -STAT_ATTR(DEACTIVATE_EMPTY, deactivate_empty);
-> -STAT_ATTR(DEACTIVATE_REMOTE_FREES, deactivate_remote_frees);
-> -STAT_ATTR(DEACTIVATE_BYPASS, deactivate_bypass);
->  STAT_ATTR(ORDER_FALLBACK, order_fallback);
-> -STAT_ATTR(CMPXCHG_DOUBLE_CPU_FAIL, cmpxchg_double_cpu_fail);
->  STAT_ATTR(CMPXCHG_DOUBLE_FAIL, cmpxchg_double_fail);
-> -STAT_ATTR(CPU_PARTIAL_ALLOC, cpu_partial_alloc);
-> -STAT_ATTR(CPU_PARTIAL_FREE, cpu_partial_free);
-> -STAT_ATTR(CPU_PARTIAL_NODE, cpu_partial_node);
-> -STAT_ATTR(CPU_PARTIAL_DRAIN, cpu_partial_drain);
->  STAT_ATTR(SHEAF_FLUSH, sheaf_flush);
->  STAT_ATTR(SHEAF_REFILL, sheaf_refill);
->  STAT_ATTR(SHEAF_ALLOC, sheaf_alloc);
-> @@ -8806,33 +8785,19 @@ static struct attribute *slab_attrs[] = {
->  	&remote_node_defrag_ratio_attr.attr,
->  #endif
->  #ifdef CONFIG_SLUB_STATS
-> -	&alloc_cpu_sheaf_attr.attr,
->  	&alloc_fastpath_attr.attr,
->  	&alloc_slowpath_attr.attr,
-> -	&free_cpu_sheaf_attr.attr,
->  	&free_rcu_sheaf_attr.attr,
->  	&free_rcu_sheaf_fail_attr.attr,
->  	&free_fastpath_attr.attr,
->  	&free_slowpath_attr.attr,
->  	&free_add_partial_attr.attr,
->  	&free_remove_partial_attr.attr,
-> -	&alloc_from_partial_attr.attr,
->  	&alloc_slab_attr.attr,
-> -	&alloc_refill_attr.attr,
->  	&alloc_node_mismatch_attr.attr,
->  	&free_slab_attr.attr,
-> -	&cpuslab_flush_attr.attr,
-> -	&deactivate_full_attr.attr,
-> -	&deactivate_empty_attr.attr,
-> -	&deactivate_remote_frees_attr.attr,
-> -	&deactivate_bypass_attr.attr,
->  	&order_fallback_attr.attr,
->  	&cmpxchg_double_fail_attr.attr,
-> -	&cmpxchg_double_cpu_fail_attr.attr,
-> -	&cpu_partial_alloc_attr.attr,
-> -	&cpu_partial_free_attr.attr,
-> -	&cpu_partial_node_attr.attr,
-> -	&cpu_partial_drain_attr.attr,
->  	&sheaf_flush_attr.attr,
->  	&sheaf_refill_attr.attr,
->  	&sheaf_alloc_attr.attr,
-> 
-> -- 
-> 2.52.0
-> 
 
