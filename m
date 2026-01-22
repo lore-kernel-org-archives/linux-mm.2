@@ -4,116 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0652DC44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 03:55:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69A33C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 04:16:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C39B6B00CD; Wed, 21 Jan 2026 22:55:21 -0500 (EST)
+	id 8F73E6B00D0; Wed, 21 Jan 2026 23:16:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66D876B00CF; Wed, 21 Jan 2026 22:55:21 -0500 (EST)
+	id 87AF56B00D1; Wed, 21 Jan 2026 23:16:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 545AC6B00D0; Wed, 21 Jan 2026 22:55:21 -0500 (EST)
+	id 77DF76B00D2; Wed, 21 Jan 2026 23:16:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 414166B00CD
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 22:55:21 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB0911A1734
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:55:20 +0000 (UTC)
-X-FDA: 84358234800.16.D53C16C
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0A7A0140002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:55:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="Bt/NZyh6";
-	spf=pass (imf23.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 676906B00D0
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 23:16:15 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED2A61AE632
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:16:14 +0000 (UTC)
+X-FDA: 84358287468.24.F72F917
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B2309180007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:16:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=UP6ztmWt;
+	spf=pass (imf06.hostedemail.com: domain of maninder1.s@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=maninder1.s@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769054119;
+	s=arc-20220608; t=1769055373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LeOYHGjjMiblWMiwD3gJwuwX7/B++TRGRlJnS/d+MF4=;
-	b=i2Rnh461vlEbmNTQBpZmDr/qEVrStnY1Tojyp3L2DzkAx+FdAHrHH6U4EwfD0rRAVAraMJ
-	m7hs9Mt0nXnNMBjKoECyivwqcrtYFvqcAtMZylk3GvSvKLEiCVBsmOAKhRl08bYyLi1oCH
-	f7ANApby9xRbvOUqbJQNhwT9cOGV2Us=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=ulwZDueuEPaWeca2kmd0L47zzrWdpEGAgSW2N/gE+Yg=;
+	b=US7LZMExQumzmLva+J/JSyQVwkrISidegXWqswP4KXol4yUdFeXQoqlMJ7xOVfaZ9bQnoM
+	nabGVu0ApQE/MZabJ+QCtJg8PPpH45wAA2n1XK8nWz+KuwTBKQsqohmVo4bsO/LoPZzes5
+	Hu/tKFb1QvD8eBGEV0JgydwUkQonHwg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="Bt/NZyh6";
-	spf=pass (imf23.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769054119; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=UP6ztmWt;
+	spf=pass (imf06.hostedemail.com: domain of maninder1.s@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=maninder1.s@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769055373; a=rsa-sha256;
 	cv=none;
-	b=E3FUhQhruMONJ6N/38rV0W334X/zKSDM2JKX5WLGfMADvHyjET077K8/6Ohwj9Ejt997a/
-	J89OZKEii3Ec7dP/dEJXPNfSZG/m9Ix+vqu8QaqoTdG2KAypw/lo33OzdJkCznmDStTbQQ
-	zp4MnIj1UCfbsZbV9Q5My8BJczrHCTo=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-81f4f4d4822so305363b3a.3
-        for <linux-mm@kvack.org>; Wed, 21 Jan 2026 19:55:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1769054118; x=1769658918; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LeOYHGjjMiblWMiwD3gJwuwX7/B++TRGRlJnS/d+MF4=;
-        b=Bt/NZyh6wRAjEeCL8Mhs/hn2PVmeciqJwSqGg29vj+6wpUm86kHnZenC0GocWJMBiW
-         EUUxxJjH+o/+rknwBtpUa0b9Zksrf3U3Tz7/CfddfYpBL54z+HPtgWz2sahvSSxXhYbG
-         KeH/R/xubpztry2Y4EnNEGKajI9Nm/PgDkO5g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769054118; x=1769658918;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LeOYHGjjMiblWMiwD3gJwuwX7/B++TRGRlJnS/d+MF4=;
-        b=GQ3He3gL0o1WxRmSFeV9CuJBWa+vcGGkrk1uRU72nf8aoO5OBpx3Pr3QlPa9ipC11c
-         zO8hXY6sNeEgfaXqGTTrUwz1wa9Lk/000o2heywIkI7fJEHAthpO4w8sugPewulg0PfI
-         z1CBqt42yBf1mRUmpKzyMbRdbHCklVkVirT4DjxMUCGMXaKH2GFcdiq+cmSUR/LKr0dx
-         T9SukZkcbcO7MZIiWRlaEvM3yjlEv5HmleQqHevtECm1PdlfzhkpRMb9uKyBFAw2fIJ1
-         Hwh/hFZM0vX02KphIMTSTyhCMvUR6kD16/Jo1jOFudOM44Gq4a4b7RUyOmp03/xpwQyx
-         bd8g==
-X-Forwarded-Encrypted: i=1; AJvYcCUe00IM/zDECCFozcQR+cMaQNSiD25GH+CnGOYJhRZeDBcZIt6cbL/WYiJezMJ51oBwcisFeoZpQQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywr95BiX3/i1Db2/5uogAI7iK8+76QvMpREQW1TVJnv6sGOB4aR
-	90XjV1r44K1wdXYV2aHOoKgXKTWhYSuaK+yYvf292E0ZIlLuuNSbV4yd+KnR6gjTZg==
-X-Gm-Gg: AZuq6aIUWgQc7g3IpByqssb8d0kUg1UDHE4tcpAmJ3b/ar4EYrQeJvPVPxjto7llVMK
-	HTtQII/u2RBevjvOGY9NWkzqlGkIz1as4Yb8Az2rHLFjqmR5MA4HSSJaOkvxsdCUYnOKD70GQL4
-	2/xiiDkOJyLlaK/jAwU4Z6Wujgv2dgermtZkETFR15nD2QEE/MtZJEtO1CJVhKJEFXSnI+9YVMl
-	oZHIcLMZPDy3IID6MUQ55Cc+SFLqmdyFYksxpIzVQlejQEUnqxxj7rP1nxPheTpDQE+MnoJpPnm
-	DDCk2n20O/NUsqJfriYOg6XyK0erAFfrvRTSpTDmm7FCrVDSwOA6URGmJ99OrfF91fYwU+aVmLP
-	c7EtGG3Pi+Zf8D2R+4yNhru0Fup8HyKElZqyj+j1/y/CwOc9DJr8wrqG4z3TfALwZcREtAcs5dM
-	vikDtyjB0hDs7withxrVHuffjfGmXqm8+jJnE3Eu0SltfLxahpMqM=
-X-Received: by 2002:a05:6a00:4c0a:b0:7e8:43f5:bd4c with SMTP id d2e1a72fcca58-81fe89edea6mr6888682b3a.56.1769054117813;
-        Wed, 21 Jan 2026 19:55:17 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:302d:ca04:e174:1470])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa108c23esm16555155b3a.8.2026.01.21.19.55.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 19:55:17 -0800 (PST)
-Date: Thu, 22 Jan 2026 12:55:12 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Minchan Kim <minchan@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH] zsmalloc: make common caches global
-Message-ID: <7u6k3kfvifkfcwfzxzgbwymdhjhcwmb2z6o4ju2kddwlfwtsaq@xapk55ehdonc>
-References: <20260116044841.334821-1-senozhatsky@chromium.org>
- <zfmvd2oogwtx6mbavyjgwxralsvrd576ye6jnscfwvqy4u4ayp@q7qpxnyaxb6f>
- <CAKEwX=OJBc38i6ZhObNsvsNGJ16ZuNXkV18f-j=JRd-2xecJQg@mail.gmail.com>
- <kmku2oyevj5vbt6na73iyksyod4sjcvik5zx43h4mw55m744oo@ddiynkvadmni>
- <cevxzukpt4363kdlb5ofre5tquuvm6jyphstp6nlxjxqibj4wx@2yg4xwlcxwg5>
- <uodv6dukliy7bnfprh4yoxjkrn77uqljarlg5pmlippxsxygzv@gthjss7yyrlf>
- <fjb3hzhbmnlgqquahaevekydn5enb45rhgzhixqrtykxaxjk5f@xlcyzanq6qxp>
+	b=OxUMydSk/vKMTdSYv1xRuM+eRGYxlW/fQ1LuQ6LrvATpDKjdpETq27qsRYr2X7Zt8Q+LOJ
+	YZq9OH6OW1NBe/TXAPLIlug5yjSu6w1H7uLOHmMtzYN/YEmqmvJGlvFQ9s+Tmf+ftQUBUy
+	MAZ6V3VohsyjbqN84qwg9GJKIF+B694=
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20260122041607epoutp0473b9f4d27e830821d5aab81df33f33de~M8nvJM2YJ1384713847epoutp04C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:16:07 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20260122041607epoutp0473b9f4d27e830821d5aab81df33f33de~M8nvJM2YJ1384713847epoutp04C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1769055367;
+	bh=ulwZDueuEPaWeca2kmd0L47zzrWdpEGAgSW2N/gE+Yg=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=UP6ztmWtmEqjyzx6T9Qh4hbepx8uyDTSmNZgqAUTiNecrZELvZeG1AuzD7eFazOq9
+	 cOpv/YuTN1L+aJrQ+MR/XlpbEw905LmXDC7cLir5xsrdCsWdnimb9hgqv9ffyg9HRB
+	 ivGRf6sneuU2uQQt6Q2emIzMOip73/UDGCiSRnxY=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20260122041606epcas5p3c2ae4cf2d797eed268772f8c60d1e326~M8nuuy6-k2478324783epcas5p3U;
+	Thu, 22 Jan 2026 04:16:06 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4dxSRV4bksz2SSKX; Thu, 22 Jan
+	2026 04:16:06 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20260122041606epcas5p4fb3f5c418b79bf19682e60022d7f1718~M8nugqkEh0494404944epcas5p4w;
+	Thu, 22 Jan 2026 04:16:06 +0000 (GMT)
+Received: from localhost.localdomain (unknown [107.97.243.203]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260122041604epsmtip1810334375c21d205d0ec8887af3691db~M8ns316Pt1745917459epsmtip1m;
+	Thu, 22 Jan 2026 04:16:04 +0000 (GMT)
+From: Maninder Singh <maninder1.s@samsung.com>
+To: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+	dvyukov@google.com, vincenzo.frascino@arm.com, akpm@linux-foundation.org
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Maninder Singh <maninder1.s@samsung.com>
+Subject: [PATCH 1/1] kasan: remove unnecessary sync argument from
+ start_report()
+Date: Thu, 22 Jan 2026 09:45:56 +0530
+Message-Id: <20260122041556.341868-1-maninder1.s@samsung.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fjb3hzhbmnlgqquahaevekydn5enb45rhgzhixqrtykxaxjk5f@xlcyzanq6qxp>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260122041606epcas5p4fb3f5c418b79bf19682e60022d7f1718
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CMS-RootMailID: 20260122041606epcas5p4fb3f5c418b79bf19682e60022d7f1718
+References: <CGME20260122041606epcas5p4fb3f5c418b79bf19682e60022d7f1718@epcas5p4.samsung.com>
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0A7A0140002
-X-Stat-Signature: t59i9k7xagff3caqjky5dxyi7zbi61ck
+X-Rspamd-Queue-Id: B2309180007
+X-Stat-Signature: i6j7b6oqm1rx6mz7jmekhn8ngpi7ypf1
 X-Rspam-User: 
-X-HE-Tag: 1769054118-503088
-X-HE-Meta: U2FsdGVkX1/kQXyiR6R7b7RsSwdWM6zpJH3n/UP/CdyYNH9tkb2DUFKO+ol0YNZvkvPYtVZTAElpoO8vEZ/B2JAfUzEh4sKaYWPzzk7r4C/Omo6xkhckxGMYpx7yiZZbvkNHqntZZT6gnMIbIjPwXfJq17wxXWM/mYRLI8QOLC1cS2vQamhODo9LmanOiz60QEDOoF7NiWIyV0Vo89u1DxTBB/34jcAxYU8jYY+GBw5BMwnwGuPJ85TQvasd5XD0iRzm+mom5K2p9IGZDioGnlpuqbsjaVH56A/+rdeBSr/ZduJ9KWh93uwiFimjAu01EBtdrh0NcYrF2Ge8PutIGvUAHGtANJFa+KRXmTV8mHvfB0E84SbmKxwkfx/4s9MIobQPLS9ZGGInQk73IyIdLHiVrBTd3U+l/p3o+Cy9067ablQDlHKfPLb3tO1cOFmuPpfYmD1heBUYpxoXRMRuaDpk70/WcWo1nTufmDWr3GTQ52/EKUEv3XfJ56EjeYJIRBCmH56xvLdKLoQxG9daV4mI4B10c4LAVYZmVAT8owgHK4XqskeqQzKHQxIl7VScNwlNzvKcks9l3x+hfuAbmEY1XerPfxtXvWkeDBZg3HQmlH8hsQXslx5osjeL1ql14cJd+bYk6oGJPMQLtRBjoBR8fvnvtM+0P2cy705Jd7RXDF1spSSrSCpHB3I3/aN/Ym57RKEjltJRpdLZ1tvC+f/ywJq9WxJv/fWC+LJZXupRb19MaLtYp66nQUAHht8t8jE5Q9abllvzYIlQvqQZrUOzhx9t8QyLi5z0sqtxAqp7KCSxhxrybdN4t1A4FQs4tWShi4C4Rjpow0Am+IdhlLP+d9v0VpBg6euus3/Ej3jfgJDtTKJCrcjUheteYQxyUfABfvYuS7p7Ipqc1lhY6loLYC9My+CIwfUsomZFI5hT7+PTgs2U8WfVLa5HngdX5eGjP48QtRfTgUbzqG5
- O16Cypcx
- D9n4+c9iFwuGjzGe6CKSjcOidJ6wT8GgCsv7mMJZ62MxyvElAL2Sz++XdkKO0sN5XW+UFLHZOTyi9ShpFAGvjutdBPNzHWsKiWbV90TuEGR8Y0xeAodUNGS58E3PsUmBvK5HqlRhfrRte8L/XMzP7bRMTprohjP2DhbMHh1E27vsAweh2YkgbXxg4M69Kfkhq+tNsDSJpzlnc0OT+MDofcPtAXCe8h4GvBu/TSRq8pjmD1TXO43kbd90Q2PsbhVv2vemMSP66Q90+3LJDOBNYr+FCwWomxMfPVTjSEBNZIHee0fslrZ+iqHGWYEAeFm8i1AyPMokS3wPeNBX6Zt3OeOqFeFBdCCDD1vdyR8Xc51I7kKpTyW6lC1EPtZSph1GONYpG3Ya6GzumZeBWfayTdQ+Xvq1sGiBSoQbAaeTrezZ7dLwWVbaUcPHYTJsjoSrCl1w5A9YNR1r95+mOcHa7hE7cRzW45Ytz5JlZQD/IFjumQZdoaCzcCB9D0A==
+X-HE-Tag: 1769055371-625901
+X-HE-Meta: U2FsdGVkX18bzeRIjnaFBFfhWjdLasxIU0mIUJiAok/fFcmjKWhgX+xfWkwhodkVSs3wv1sHFZllpySZB3j/leF3Hd/8pcxBIO3YseX1aUj/SfVK5YUPE60Uh15r2D4FyvWU+MfN5xV/rQpzKL1p4ZQ9U4v/xmsBItlHG8LoNkZek9btXEV22a3jh/ECp184BCS6h8khVxWgKneur8rhvrM7YTz2HkSBa0sQdMasy8X6yoVA65R9VNVYtJhgI2cNnsadsPGl5oN8PjT261E+N7jgLrKJph1Ls6JFodQA5CsuqlJmxYawEld1C93MgPddJcJcnhr3ldCdmWtfEotkQ/qgdL0tNB3QuloxANSNFKXrshtBOYJiO3575IP7AkQMAgTxHlhi0vkEz8j2AtQ3/ExsDFu9pLbv2/XV6dDnLLxB91qvDl1DBeagGd3TfD/wr9K834FbHlAfSc7SgJg6QzyQjzSFHLnLXZMn1/k9m2JUuaqzHS1q+S8eySQNPjHSsB7gsA/ys9PqgVkM1Xlp6UGwop0SLTWV0Mrr17FuYs4HUJdQ9Vj3iStglnhwPh64Cr0i/mO1FsIyDZBr7wejy5RPSGSJlrJGJbUVEAkx5InAtyoCj2PQcqKDTM+65QTe1iCifOp9qezoKtWHCQHSSIYypcQVQ6PI//PglO25f4QyPm5QPzeoOixem0fkKobTRkxzEX+PQGlrxmw5wIq6gNn4sW8s2zlb+zv3t4y0v/QtQoLAW0fAB6pqSXSImZtbr2CoR98UEpYkpwQfhPxpfiAqfEdRGp25jK38yLkI46q/5IzzTCpIbxstD29TvhmCe/9tdU45RzVzrNDZLwWFusu9xdsZKZifJUhQpjRs/0Ong99BsaOgSmwt4CEglB7+JyWDDuQUQf3rzd35U3+26rthFGmrLX6pUrLbgXNwPBxoHtf0+k38z09sUOetHXhXYCvhxQ5iBrP7WhPhdcs
+ D3awyb1Z
+ 1UZggdJf3dCvwinYVlWEj0Cj9JDSsNwqqJbi8ptcPHPxucZx9HBnYQSk5pCh5dxQNp0PFeQnkSU7GspSNy1Turh4SkzMFMfa+uXSisZIECZeCwfYfDgHvNR6Ru5y8n2Ttq2f6XqKYOpAAiCJOjdcL40TWIF1oKi+eiWRIcUBREOshnvxuPbj46pVsSD6c1g5jCKxuMb2yPPtmbjI5IITgrRWa70zOO/tzcFEZoYahmDwJiYycYbKS3Q0K/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,36 +109,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/01/22 03:39), Yosry Ahmed wrote:
-[..]
-> > That's a good question.  I haven't thought about just converting
-> > zsmalloc to a singleton pool by default.  I don't think I'm
-> > concerned with lock contention, the thing is we should have the
-> > same upper boundary contention wise (there are only num_online_cpus()
-> > tasks that can concurrently access any zsmalloc pool, be it a singleton
-> > or not).  I certainly will try to measure once I have linux-next booting
-> > again.
-> > 
-> > What was the reason why you allocated many zsmalloc pool in zswap?
-> 
-> IIRC it was actually lock contention, specifically the pool spinlock.
-> When the change was made to per-class spinlocks, we dropped the multiple
-> pools:
-> http://lore.kernel.org/linux-mm/20240617-zsmalloc-lock-mm-everything-v1-0-5e5081ea11b3@linux.dev/.
-> 
-> So having multiple pools does mitigate lock contention in some cases.
-> Even though the upper boundary might be the same, the actual number of
-> CPUs contending on the same lock would go down in practice.
-> 
-> While looking for this, I actually found something more interesting. I
-> did propose more-or-less the same exact patch back when zswap used
-> multiple pools:
-> https://lore.kernel.org/all/20240604175340.218175-1-yosryahmed@google.com/.
-> 
-> Seems like Minchan had some concerns back then. I wonder if those still
-> apply.
+commit 7ce0ea19d50e ("kasan: switch kunit tests to console tracepoints")
+removed use of sync variable, thus removing that extra argument also.
 
-Interesting.  Lifecycles are completely random, I don't see how we
-can make any assumptions about them and how we can rely on them to
-avoid/control fragmentation.  I think we should have global caches.
+Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+---
+ mm/kasan/report.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index 62c01b4527eb..27efb78eb32d 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -203,7 +203,7 @@ static inline void fail_non_kasan_kunit_test(void) { }
+ 
+ static DEFINE_RAW_SPINLOCK(report_lock);
+ 
+-static void start_report(unsigned long *flags, bool sync)
++static void start_report(unsigned long *flags)
+ {
+ 	fail_non_kasan_kunit_test();
+ 	/* Respect the /proc/sys/kernel/traceoff_on_warning interface. */
+@@ -543,7 +543,7 @@ void kasan_report_invalid_free(void *ptr, unsigned long ip, enum kasan_report_ty
+ 	if (unlikely(!report_enabled()))
+ 		return;
+ 
+-	start_report(&flags, true);
++	start_report(&flags);
+ 
+ 	__memset(&info, 0, sizeof(info));
+ 	info.type = type;
+@@ -581,7 +581,7 @@ bool kasan_report(const void *addr, size_t size, bool is_write,
+ 		goto out;
+ 	}
+ 
+-	start_report(&irq_flags, true);
++	start_report(&irq_flags);
+ 
+ 	__memset(&info, 0, sizeof(info));
+ 	info.type = KASAN_REPORT_ACCESS;
+@@ -615,7 +615,7 @@ void kasan_report_async(void)
+ 	if (unlikely(!report_enabled()))
+ 		return;
+ 
+-	start_report(&flags, false);
++	start_report(&flags);
+ 	pr_err("BUG: KASAN: invalid-access\n");
+ 	pr_err("Asynchronous fault: no details available\n");
+ 	pr_err("\n");
+-- 
+2.34.1
+
 
