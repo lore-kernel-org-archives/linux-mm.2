@@ -4,117 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81B03C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:29:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01F9CC44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC98A6B014F; Thu, 22 Jan 2026 06:29:23 -0500 (EST)
+	id 687346B0151; Thu, 22 Jan 2026 06:29:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9D7E6B0151; Thu, 22 Jan 2026 06:29:23 -0500 (EST)
+	id 6341E6B0153; Thu, 22 Jan 2026 06:29:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACD616B0152; Thu, 22 Jan 2026 06:29:23 -0500 (EST)
+	id 536AA6B0154; Thu, 22 Jan 2026 06:29:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CEEE6B014F
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:29:23 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E1F6C157B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:29:23 +0000 (UTC)
-X-FDA: 84359379006.19.78629E7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 406216B0151
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:29:55 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0ABAED265D
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:29:55 +0000 (UTC)
+X-FDA: 84359380350.03.2D737C9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6C5611A000B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:29:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hntVHlxv;
-	spf=pass (imf19.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 07F4C100007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:29:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rW1gA+My;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769081393; a=rsa-sha256;
+	cv=none;
+	b=JISxNy+wF27jOkpNxR5i5Y0IN+KTDy4wSzcHmqf+9SbteeZ023oJN0HgUpoHRLgyc5ZQ5C
+	FwChGsq1ed5a7c+JqSSLcwQGx/iJUEzBtyaYu2yDmRzLdBJQXcNdrnCPelYRakZ2JUAGIx
+	24P4dKnxulbFE2mf7d5P3GIz7bzd25I=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rW1gA+My;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769081361;
+	s=arc-20220608; t=1769081393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BTL/05y6Ck5Yf8IOljFlpo5NyFkh9H05oH3KXfdhA3k=;
-	b=KysUK/4/JLaFz1kp2qYpeMfrJOnorQ6caFWNBn8m0r/GLLZeTb7riqy5ZT7vRcHRy7xjsm
-	V13zfXQy2qXqdg74J3sJY0zVuw9JIEMbUZAgXKJ3bpHL/lsB196oniHP2RLnSJhiXI9kpD
-	1BiQJRaZlDrbm+HjWou2Ny6WAaMUCLk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hntVHlxv;
-	spf=pass (imf19.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769081361; a=rsa-sha256;
-	cv=none;
-	b=MTBu0taWsD/uNYt+KccE/RMG8MBoxYDEAEKJSvpYF41I26LtlKAGjj/GFuGlhM0fYcefyz
-	rKkgTaDV2cr96J/7UUbzdzyFMVKgJHV2WAywPCHPcPpBrxPahCk3S3qQ7qIbhkRFC75KuV
-	+1VNH+HdO0/hWu4oSQNn3R4+Jr0TgEE=
+	bh=hQJXvXFp4Q8gFKgaqCb7Err1UsYYuhwZ1yCQX7aI5DA=;
+	b=hpyxteURJaE0m33QYmBidYQD7yD8Rftb73JrEpnhGOFBusRJ/rpercMH1sOqzcZk1O+zLn
+	PY1b0NjryHXmBnHQJLxCzZsffJWLBjUM0p2vMQXg5QCgsqllhqdBKAi9Bf6d7F0t0BhKNf
+	cWG0KvFZINu4g2IcjIfGembmHPJ2HZs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7164043E60;
-	Thu, 22 Jan 2026 11:29:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAA5C116C6;
-	Thu, 22 Jan 2026 11:29:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 33DD5440B8;
+	Thu, 22 Jan 2026 11:29:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C3FC4AF09;
+	Thu, 22 Jan 2026 11:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769081360;
-	bh=WiogiOmlVrEBDmxiYq5jKojVlIXsrZ6n9wcQdU9VhMk=;
+	s=k20201202; t=1769081392;
+	bh=6+k4UVNbT+w35km52qtWegiDJEC7IGtBYhfU8DZwtes=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hntVHlxvRLtZcEpsFecgcuy2/WeJl9lYH2mWE9f8dZGjyucvG1zCLlgF1anVNM8Mq
-	 ATZwc6IftbgZO2kJLtftNKhMvBjvPvqfUNlH6JrZwPiiiEXtxPJi1HRA+GVlhwH0Xl
-	 7jI4hCzwdhtpWuORobWzm0YF5J1jsS7gh1CwOGDB5EOeJZKzxHCuCd4SkLrzE/tlGq
-	 JVFBs8UA8NYTjNB18RHp1AShNa5zdE3qLITZrz7qt2dsO/+/eP32L9P7IpEILF4h3H
-	 3+SL3O++ddzf33ljYPKdsDd6l1rT8hde2RP+XyHB6xkPeaAyuWp9p0Q+aK9fItrNc6
-	 XJd/YpjN6/DQQ==
-Date: Thu, 22 Jan 2026 12:29:17 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 29/33] sched/arm64: Move fallback task cpumask to
- HK_TYPE_DOMAIN
-Message-ID: <aXIKDduX5qUXvOUX@localhost.localdomain>
-References: <20260101221359.22298-1-frederic@kernel.org>
- <20260101221359.22298-30-frederic@kernel.org>
- <aW-cAlJCtI5Qtify@willie-the-truck>
- <aXEHf5nbZMI8LT4b@localhost.localdomain>
- <aXH0TZU7UNowTmwc@willie-the-truck>
+	b=rW1gA+Mysg8qNsmPkZrSjxE9hLEPUy1tFzAO7z5dY0IkDeouLBOU0r2ljIA3fvUIQ
+	 IUW/ZTYm42XPCFnIAfhUEYu2ZGxo8VBmz3LhT6lN+j8ukQEfMOt8MVdl/1TLvuxmf6
+	 LCN/UP4caBRd7QMK19ZDXs/4jLIWvfkOQBwa1TgUm3POHqAzgclessdZz/nK3t304b
+	 su5plVDH5YToWm1ZYFk4hmThulQL6Nf+1kyf2CJTEwe2SsTWfXw59K8omnzA20Aozq
+	 HuN1syWuQY4sSmxZsozAaV5rmMMc7XvS5NFCrDd7oY1q04ZqBM3R72PFkoFCQ0hVNZ
+	 DPCIL1Q4C2kzQ==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 931E3F40069;
+	Thu, 22 Jan 2026 06:29:50 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Thu, 22 Jan 2026 06:29:50 -0500
+X-ME-Sender: <xms:LgpyaRMCOqG6TSxsLeBIsmLJ9ou2avO5AwZCqCxKyd7atvN5aXW66g>
+    <xme:LgpyafUSU0Wtv9NPso6hhIXRGICGK-gHqfUJmTlaZLf4IRlzjVzGuGmTF3DLD2l3z
+    OkJa4NeP7gJtxDmSdbuZH1xhUp7sqgbpKB_5pQnhwSAMQ_vc4XN4no>
+X-ME-Received: <xmr:LgpyaZo29EOFiQym1xfGjM85RhsqLDJpGA8Tq9JkrKhK2kvcGMm7U0RWGk_AdQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeitdegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeigfdvtdekveejhfehtdduueeuieekjeekvdfggfdtkeegieevjedvgeetvdeh
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeefkedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepiihihiesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuh
+    igqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehmuhgthhhunhdrshhonhhg
+    sehlihhnuhigrdguvghvpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehu
+    shgrmhgrrghrihhfieegvdesghhmrghilhdrtghomhdprhgtphhtthhopehfvhgulhesgh
+    hoohhglhgvrdgtohhmpdhrtghpthhtohepohhsrghlvhgrughorhesshhushgvrdguvgdp
+    rhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:LgpyaVfjbK06k--k_MSWJ66Q9g8RZysYYF-wNcrPVH3Dias3QjVrRg>
+    <xmx:LgpyaVDhebcBkMkPOiycyCMVNdjkKN0AZULhpzXikCuVmgvuQTlxwQ>
+    <xmx:LgpyaQT5d1PoaVkc3_G1s64mZdv1ZmaakCRlBVq2yFjXVgWGwdCE2A>
+    <xmx:LgpyaQJpoCNxDXghyE26KFHY0vlttGsHCI_HzxfExV--1CV2hdt28w>
+    <xmx:LgpyaYbc4KaLVQ1-VOARShkUV8Uk5W6Gk2_r3ovBVMnYT9oUUOKnOXfY>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 22 Jan 2026 06:29:48 -0500 (EST)
+Date: Thu, 22 Jan 2026 11:29:43 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCHv4 05/14] mm: Rework compound_head() for power-of-2
+ sizeof(struct page)
+Message-ID: <aXIKBhHd7IbaJkXg@thinkstation>
+References: <20260121162253.2216580-1-kas@kernel.org>
+ <20260121162253.2216580-6-kas@kernel.org>
+ <EB8941D9-B6E0-41DD-9C44-038D21583E17@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aXH0TZU7UNowTmwc@willie-the-truck>
-X-Stat-Signature: 8udd8mx6we1974odesdmcxsxi9ikhsx7
-X-Rspamd-Queue-Id: 6C5611A000B
+In-Reply-To: <EB8941D9-B6E0-41DD-9C44-038D21583E17@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769081361-674346
-X-HE-Meta: U2FsdGVkX19R271okLq/hNqZ/sMH8VFKSjHZKpQFbESwipkAlYqmUE1IijkiC16AJhFMH6d/0G5Azi5hDu+kphn2cY00BPIqOzxYIJLOkN+x0fBhfZeQZsuzFsSvEhwXa5R1kEu5wXFqR8gRoWdUFS8Ba07jHfkCUDqYOms+y0iAXWdGe7PXXZ9fZoqkBcGacBZSTQwd6tZQsBwCBfHlzUS0hk4lodI1G5NyBSqXaw3NBnatVXVSBft2Z4uasBFYki5A79rOf1/DzXbk7NGUlLUFIvOJ6MRd/odhmVEg0ejmEurr/52YobdcPR+9SUUQCOaj/Hs9lxWC1pLRylWkCBJsnBxHmjSR+imidTTCIzMyWnBRuqmhqvp93xi2sW8SOu6XAKp9f1kk4mvr96cIGcULnVvWDryG8ZbjOmNgiJI0OpZIZgyr3IaXYHrf5jw6O0+9xlJqK5M+cpH1l5+2NE/QUav6AoCMi0LjA7jU5dlWo3FXguaV5p668Fb60F5jmocZblycwGs9rA58H+qSGD+H1X6VFsv/bWQNeCewvbgIwviMuV47PkfntOuKb7GuEUNoQudSbL/03urNqcY8bl4VO4JoEoYuvDyc8eNiKCreMQb/vSiYAhGThUZusYzyzLWwsQqoyvX8UU7THuqjSisgT0X3/m/eVUFd9VIxbiEBKs/dQr/9drw1bAxLJgDBx+9lCd4j0/MKALriYVa/Nd4FCrDyT+2WMx1H7HFzWPd/SrTtTg4N0hTLbufYM5IjUpRmjz47YNe1+3EeoV/8DZ1KW79yYPNWd+dyTgHVQayzHua4YFeOC9gam33fL4jLRr52Os5eDMTdSt9ixnL2p2hahAxdCTnKGkLtzo/mi5r5UXrcgR9ZSel9hx3L8/FnzpumIrTQLdlghUId3mQgl6AL84/kJdUVA5wfgzbewaFmJabVJSR1NgSaHrSb8IRcb2pnGYfG6YteU9x8Pbn
- O522ms1q
- cXUVPaP8cag4XcFvfR0S2HG1f+FtCoJDERFhBjYe0CR6Ar5a3/P9UfJy5PRNh31/LnlupJnlEkvYQvru/hR/yB2HHS8C2t+CL1JwuNrL85HvQDuU8fMK2AvfiDScE8/bydysrT3HriM+LEW/3MRus/ZEwbCRDD7Sz6Y/y+sD5U50G4AeBUM8lM6aP/9/rthaBnZz1i2vlUBQJodi4elUkUtRGNuizWDF4dcH8Zd6pTuASPicQGwpCMVpu/U9cb2VVnxWolwrUxiiJ5kDavb0NG9ggFSHQ0oQ/WkRmIrVe1s8Qid1Kk13OBdSO3m+7+Ig0D/ioSJ3kTvUJxQU=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 07F4C100007
+X-Stat-Signature: p81qzho74m9min6ndifigc6168ug1px1
+X-HE-Tag: 1769081392-910792
+X-HE-Meta: U2FsdGVkX1/P2sW9X+9fWCREnX/DIu/NwcjYdqMpdL903XLoKELLoQUhaMg0Fg1lsMeUbh424vftRa018fCWgjBpToQdzI5qroKs1yQwM9PlnCDIl5OlLQidn2E7Ad8VG8pG37nEiCjxk19e+UhnuN4PuRg9x+Zrtgas8tTMT0poDuQjVxJ/xe1+JQXbd87dsBAA/5ceg2pB29/mEtbp8HzHwCllib4kBcH0yo8zhdQBqxq4m74iWh6H4okvQKuCGz8dfIeRJ+ccuxC3H9bHSh/UPlREIrGt006YAm6F0QinLPrTN3s/cz72GexlSMdt8vgIJOxdYAF8i9UNgpxuiD4bsU0ATRaYuppGZK2/QXqk0+CjG8W9q2SecahNQCN2S3k9bKLbDz74f3a3SHwzWbUkwqjefnGiJsiz/FD8wexXnI1ZLaz8tLg1sySrRH6u5j5jf6EVkdntUeCM9kRKzMKrxHx++nQyz76uL3vFEHgYCtKoyssCesRHjkGQeIHHhZ9FLneZl6mPI3JH5MaAW5et96M2ACApYXOKZCu6myztHRUNc1BoVgbyc/Z9Wt4lRAbciZoohECfP7TlzxQZs/lSGKZOZz0f0ge7LKLJZO0Ac79xxruASvCwo9cv+Iy/Mn+gmKNBDKBcuFs0ygm8ojm+nldoOh+NAORKHSspMONSGhOmfTvASXLgHVGqOtFKXRzWZRHWkYbbr8mOiCrYFjdYWeN3yrzeyjcMHNsPb1qr7t2IsL9tbkQom5TO+OwyEAYAtKTekvj8hERuzt6mOWU1tLXONGCvlAdX+w7z/BaZyme2/XBlVsnoD1NPO+jdnjIv9fKTLeRti+eZwpfrPY4NajZ8Uzw5f4jqKytqa2EmSoMsprn0kiCPruKCDgLlbPaOPnh3OkHSF6TteG9lT70jWUhWzMdC+o4618SJxGia8Zo9SC51/k8cwYXH8ApaepMjCkNCHZD+t5Yreyo
+ sYSgsN8B
+ +8zNT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,63 +136,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Thu, Jan 22, 2026 at 09:56:29AM +0000, Will Deacon a Ècrit :
-> On Wed, Jan 21, 2026 at 06:06:07PM +0100, Frederic Weisbecker wrote:
-> > Le Tue, Jan 20, 2026 at 03:15:14PM +0000, Will Deacon a Ècrit :
-> > > Hi Frederic,
-> > > 
-> > > On Thu, Jan 01, 2026 at 11:13:54PM +0100, Frederic Weisbecker wrote:
-> > > > When none of the allowed CPUs of a task are online, it gets migrated
-> > > > to the fallback cpumask which is all the non nohz_full CPUs.
-> > > > 
-> > > > However just like nohz_full CPUs, domain isolated CPUs don't want to be
-> > > > disturbed by tasks that have lost their CPU affinities.
-> > > > 
-> > > > And since nohz_full rely on domain isolation to work correctly, the
-> > > > housekeeping mask of domain isolated CPUs should always be a superset of
-> > > > the housekeeping mask of nohz_full CPUs (there can be CPUs that are
-> > > > domain isolated but not nohz_full, OTOH there shouldn't be nohz_full
-> > > > CPUs that are not domain isolated):
-> > > > 
-> > > > 	HK_TYPE_DOMAIN | HK_TYPE_KERNEL_NOISE == HK_TYPE_DOMAIN
-> > > > 
-> > > > Therefore use HK_TYPE_DOMAIN as the appropriate fallback target for
-> > > > tasks and since this cpumask can be modified at runtime, make sure
-> > > > that 32 bits support CPUs on ARM64 mismatched systems are not isolated
-> > > > by cpusets.
-> > > > 
-> > > > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> > > > Reviewed-by: Waiman Long <longman@redhat.com>
-> > > > ---
-> > > >  arch/arm64/kernel/cpufeature.c | 18 +++++++++++++++---
-> > > >  include/linux/cpu.h            |  4 ++++
-> > > >  kernel/cgroup/cpuset.c         | 17 ++++++++++++++---
-> > > >  3 files changed, 33 insertions(+), 6 deletions(-)
-> > > 
-> > > tbh, I'd also be fine just saying that isolation isn't reliable on these
-> > > systems and then you don't need to add the extra arch hook.
-> > 
-> > Hmm, I think I heard about nohz_full usage on arm64 but I'm not sure.
-> > And I usually expect isolcpus or cpuset isolated partitions to be even
-> > more broadly used, it's lighter isolation with less constraints.
-> > 
-> > Anyway you're probably right that we could remove isolation support here
-> > but I don't want to break any existing user.
+On Wed, Jan 21, 2026 at 12:12:13PM -0500, Zi Yan wrote:
+> > @@ -1244,8 +1244,8 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
+> >  again:
+> >  	memset(&ps->folio_snapshot, 0, sizeof(struct folio));
+> >  	memcpy(&ps->page_snapshot, page, sizeof(*page));
+> > -	head = ps->page_snapshot.compound_info;
+> > -	if ((head & 1) == 0) {
+> > +	info = ps->page_snapshot.compound_info;
+> > +	if ((info & 1) == 0) {
 > 
-> fwiw, I think it's only some Android markets using the mismatched 32-bit
-> support and we're definitely not using nohz_full there.
+> This could be ‚Äúif (!(info & 1))‚Äù like _compound_head(), right?
 
-Now that removal becomes appealing. And what about isolcpus= / isolated cpuset
-which only consist in scheduler domain isolation? Probably not used by android
-either.
+Right. But I don't see why it has to change.
 
-Ok but is there a way to detect on early boot that the system has mismatched
-32 bits support? Because I need to fail nohz_full= and isolcpus= boot parameters
-early on top of this information without waiting for secondary CPUs boot.
-
-Thanks.
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+  Kiryl Shutsemau / Kirill A. Shutemov
 
