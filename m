@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E35D6CFAA
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:41:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28DA8D6CFAA
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:44:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 425C56B0375; Thu, 22 Jan 2026 17:41:35 -0500 (EST)
+	id 636CC6B0376; Thu, 22 Jan 2026 17:44:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FD7D6B0376; Thu, 22 Jan 2026 17:41:35 -0500 (EST)
+	id 60E356B0378; Thu, 22 Jan 2026 17:44:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 308D36B0377; Thu, 22 Jan 2026 17:41:35 -0500 (EST)
+	id 51A5D6B0379; Thu, 22 Jan 2026 17:44:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 209166B0375
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:41:35 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C15941A011B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:41:34 +0000 (UTC)
-X-FDA: 84361072908.10.365C922
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EABC6B0376
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:44:13 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E063416267C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:44:12 +0000 (UTC)
+X-FDA: 84361079544.12.C762CD4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E4C758000B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:41:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JV+htoEF;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1837E120004
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:44:10 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I8aPqN9g;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769121693;
+	s=arc-20220608; t=1769121851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FB+LD4a6dmTjlejWp7EhyZXPzJZPw52sw1F9UG62XBY=;
-	b=YhvZmnZ3SoXNaJs0Z7fhR1kZEI8L1iQ7HpfJRat/8DCanFVLsBzf4kmC2KP6+dptnlOYlk
-	N59nqi5t2zQRe2DNjudC3tarqyDSReKTRN705bAfhafY3xrNb61zply4phc5zA7bKvqQvU
-	bvXOGcmT8IphoJCX0tO2xAT+gZMYfec=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769121693; a=rsa-sha256;
-	cv=none;
-	b=dmqm6WmIwYuD9rON0V8L3N9AFor72Vmrenk0Zz1n9tOGC9RYE0NaSuu1J++Nnr0agzsXUG
-	6DiJTFhdFp6iLptgE+PMV2V9YqPMFgBV6Mdwb66GQ3KLwAzMWncVUUcQTChL1DSNOR6kFn
-	cwyzeKyO4lIsFqiwga8/wuaGreNpHZE=
+	bh=KoLchf1iX0zkcTc+QIZM8XCIVeK7xoezUZXXolD4Fkc=;
+	b=h7TulUEiMpmPAO5E2X8C2mKSpxjrHd4aeEDgCzSQ4hdCJjngvD3jryzKcscgij3qG02QdC
+	iQwS8BgJsOPTmnGVY7P1KTtRSu1M7+FvlTYGWBmRKHXz54VGZ8yVTFZc1uV3HF+hYpURIn
+	cSDkn8mvz+vQy8GYmrnLGIUxXK62NHs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JV+htoEF;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I8aPqN9g;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769121851; a=rsa-sha256;
+	cv=none;
+	b=6TEyVYnbpKfBEqzm2k5+iBSDEXdie4XEgpBgFRo+jON1fryPlvYklny5iiRXZzvvLknMxx
+	4MvNq3f+82Gl1jmv2KY0Gs7mC/p48UeCNABwozx7biUOxu0pLjUX/yGS2rt3AE8ByO5nhi
+	OxpHYfw8++Bcwt0iY8US9ZKkCbtba2Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E841542A3D;
-	Thu, 22 Jan 2026 22:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F92C116C6;
-	Thu, 22 Jan 2026 22:41:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0F5384035D;
+	Thu, 22 Jan 2026 22:44:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E002C116C6;
+	Thu, 22 Jan 2026 22:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769121691;
-	bh=ltunTCCxLClZAqNMOmXb49EoyZfyf/+7jYjno2nXdHY=;
+	s=k20201202; t=1769121849;
+	bh=tgc8g7sbE+TVJMNvbrnWDkXF0NeF0UTwcMLazAtdYZg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JV+htoEFB0wO2aziMKYdhq0dvY+C5OmmZw5YpFsknRRVCpqmW6JvCjDnS0gz6zY6P
-	 5jDdjxYGB8V53GIu/3zWtFjDab+zbJlKJqlz5i/SvnKwVlkf8JgSx3In4EhCND6ZAT
-	 c4fwD8NFjUU9GSl8yL+3w4mCYGD3ACM0+L2CP2Yp1VU1eXg/w74xV6tEn6mRJK5EB1
-	 0dZvMnKaKQxwYrMzV4yt7tVJ8TYXOk94DCBbHmF6KJalI2T7VYiL2OQzF/3RLMnayW
-	 5k8sy46SJ2opItsi+qX9h+imOmMqpPVf3plrJBwb/Mx/OHG0gk/xJd0C5epIwvl5Wl
-	 rDC/A/c+btr1w==
-Message-ID: <4520e7b0-8218-404d-8ede-e62d95c50825@kernel.org>
-Date: Thu, 22 Jan 2026 23:41:24 +0100
+	b=I8aPqN9gmtoB1klij8GwGiQ0xbOGZbdk2ZU++3mgy8iMUXnSlNrdQbsaIqrX40GSl
+	 bqNDMqFt+HSYIEtFPC1ev5xnH6MidZj+2+bCbTMZTYKkVZ3byvd/zaZ2AkXa+4hcaZ
+	 DP+pS0jOQ6CAgye/x31X8y7SRnd9UlaJfPR9BljUoVnevSaXa29OenElcHpDspumzi
+	 wV8wtS5ZS+PE+jqA8gGVsCrbCjtTRZ28I6wmC4w+D4NExM6BWyhfC/N2JD04+Q8aB9
+	 fdCkFOecl1p27j4gNwIwYS3TJCcYC+dpun6Sg6/JlA+PKWTRzAcS9Q1kNb/YRP+vxt
+	 /sXWGg2E8iHFg==
+Message-ID: <b0d4db87-1d58-4877-8a64-55a71f1960d1@kernel.org>
+Date: Thu, 22 Jan 2026 23:44:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] mm/memory_hotplug: add APIs for explicit online type
- control
+Subject: Re: [PATCH 8/8] dax/kmem: add memory notifier to block external state
+ changes
 To: Gregory Price <gourry@gourry.net>
 Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
  linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
  kernel-team@meta.com, dan.j.williams@intel.com, vishal.l.verma@intel.com,
  dave.jiang@intel.com, mst@redhat.com, jasowang@redhat.com,
  xuanzhuo@linux.alibaba.com, eperezma@redhat.com, osalvador@suse.de,
- akpm@linux-foundation.org
+ akpm@linux-foundation.org, Hannes Reinecke <hare@suse.de>
 References: <20260114085201.3222597-1-gourry@gourry.net>
- <20260114085201.3222597-4-gourry@gourry.net>
- <b3d435d2-643f-4dad-9928-bc7fb5080181@kernel.org>
- <aWfR86RIKEvyZsh6@gourry-fedora-PF4VCD3F>
+ <20260114085201.3222597-9-gourry@gourry.net>
+ <d1938a63-839b-44a5-a68f-34ad290fef21@kernel.org>
+ <aWfNN-hy64bGw6p2@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <aWfR86RIKEvyZsh6@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aWfNN-hy64bGw6p2@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E4C758000B
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1837E120004
+X-Stat-Signature: bxuqsdpmiu8dfgi5m6o1pyb7kk7iujkz
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: dmgku4gdd9p94mwd5bz4xrxostebsk5r
-X-HE-Tag: 1769121692-308753
-X-HE-Meta: U2FsdGVkX18TvrXsDHzp7EhO3o7/R72FwYeU28x5V13L/wVqMID8go6c9BeGlRe0Ry2ZiQ17qQbpptiE/z1C2GnG7BXNlPUVWbcDlUDaQW0Ntr4WhQ+xTmpTIt5dW1HcpY/7h/0h1Me8Ns2PcV+9y3KcbU2I7Oopm1nghh7ZXcWash+B9YNZC368EoLnpX6R2O1Vy+WyEtnxPAXfhlsUHrhLJW1P1TAkaqw3wBTOv9tHeyJdvDhJmZMTMNKqalQYef//mqCf12BBhqnbVtFOwv9GuG2BIpRCChQl/hC080glEBhKE1hVssNeWW0lrDKyHP3DvalyNYXI3cdyFdsrp6QjgUC0xuYqrOlJ4qhK6G/Uf2396xQBmqlW3uBF+ncX1fhGArO7j5HLZ78b6W+UNTtwPZugBHyoBRHgGIlAM9hmc3YGO37rCNOTSCqNiO4V21QYzxApONNXD207qUBx8ZrjR7OPJpAKe5NzVbzjXiccvodO3jrIkBALOsXS7p7wm3IZ7dgsUcFnuhqQS5/FaqQrH5Vy0nILsUka36idBT5n9I4XBJibYpiWcRN4j//yPn+yH7yozXOGaq9241PfHhjmklH1zES4BVBzde9ilFUfAUTlj9taPljqCkLAcTv1E07P2uPGWP9yKYqW0qneymUCbtqyZ2sWDMwHUJYUeIFdVf3dGmHg8F4RL1YyMO1+ze+Ea7fDRBsHvuD8MliQT/bR498GRZG1z5YV8IiNjQHE/qO4EzVEc6Fqx0YsZL4adLIfRgJVtp067RD1TbxGNHS6707zY6wxBwzXXBJD+jIRNWWxGEedBftQY1yJBE7olrk18kw4hYQ5mzgMttib+LAd/tCTeCdzAGt16Tgy3foI0FBXlu9luTsQ74q8+werxDpIdIuAozBR2hm5xY32iRDkSSZjdE/NXDwaW1YPcX20iXdCZdOD5h0yovUKof9lNKMc0gOn2S2zXIxWeZo
- IZHGHmwE
- faSvJd2ZTj9PKSigTPVw9k4nUiiK2iYpSmXHPFATrDPUwSE2shU8xzVssjAyKLT4vzI2JxLNq5fLIq7FHixSYWjvgUW8yYxKW4AG8UjxO4QI/gQkr5VpRz23SkDD+sCqoLGvmF3jzduaA/bGu9rxo8xMcul1qVLQUg5Qfba3zobuzcM/VFcmIk67rgqpHZBzg20+K3FQ3Sp/V5JP1Q6aG5Dok2C8NLbNuRWwDKNJ/WmQYHHCKBX3pe73coZA8/CRZ+nMl1FZjPQE+gLcU5vTtE48nrsIfxdhGBvFPTnKF6b3G2qrPRF7yC+KTjQ==
+X-HE-Tag: 1769121850-165534
+X-HE-Meta: U2FsdGVkX1//IK1vdG6D31q5NHzN1Bxwh2xeZHLG7grNRN1D81riqYNSdN+Cvv8aZAy5eoLhLzCmWIh1vQKlFQu4J5cn8pof4XlwG1+kJiEzopz05aH5QrYwbUlOJAZ7Ue9GQPr46HDR6O5lRehb5xhm+nSbC05obB/li5oxXImEQDyXtCx94JRlyxcsbcP1PC+dZ4UxIhxZ6Eqp/9fSLLpwcPj3LTzpcOv88LXKnXQ75XHiLfGkWz32Zwfn3MK2dcwJZsm862j+oaIEDR8Z7A5RoiGsnNQ0jkCnPf3cIc3TE/QYfIIwvdIZIs3h3sg4lGdW7HJa8HynL/3JwmfDzh+rttVPX92qU0tXWb4mZCrv1qek8mfIVm1H+0wCW8WP3Z+OVMof3TIjchX5Bxn0GQoGMPUg4gUoSL2k6LScawY2fy3CmEzDXa/EwFR1dpy7hApDhVoGaoJvBIgHlQNxYniDcxlJbNyzdd3DL1iQZ68WcPqt2DzYWC+9UvdciXu2e3kLA9WSVImzVVuQw6+/tERN84AERa4s8mik7bKBzaUrbXXFvsIXUI1vx3ygP+IknOlZpl5uGJfT/iBiUev5DEYWjwuYOrliZexddkEdFTjAjFWCJfIGbQtREHQCfO3o69vMcCEUIqW9hRMEDcPAw6Z3BLsjRbGSn56WY8nO6Y9TsnKic6OBnuPnzHFWsA086xzlQfYTUMQy3NQlrfckX85Skj9OuljxfjPnPzl1xngkTmvWH0rW3QEDCn02PhezDq+JKaFOKIJtYZYWGwKwMHaMkUFJ9fKSBLyQKjJJPooite2zW4KmRG1boswfiLMJJMrErBcBaASeAH/LeyVE5fUJj1yamb1N9OZHree439Scn3r3pOffhgNwXyda5gIKT96KRyyp8luq32hYGvBAe/1ovdDRzNMN5UNXU0gK5O6PAefgZxNPuhku+YZDDJx/bol4Uq2CCO4X+tzt/HR
+ erCvF7s7
+ UK7JIWybOhPX02OX8FoTWOWTvXez18k3Q1HnI9yek8lgTCW8t4iuMkIDsJajfQ80CUvwNPH/gEF1Jtqzul1naDv1SvdSGtFe6Ej5X4VlNj2T7KZct3fdda0Alqy2JHGLxYK46YlkGHj0EmOGFUGVld/J12ksQdzPVKv4a2tHZ3hst+o1QfMg4iB1aQwiig9USYeQ7m0AQI6b9ykFfvXSZe8Wdbhh8boTheb0kx5PIXPyz9Q3MR1PGbLQysVXMgizmdhDs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,32 +145,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> For dax we know that user space will define the policy.
+On 1/14/26 18:07, Gregory Price wrote:
+> On Wed, Jan 14, 2026 at 10:44:08AM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/14/26 09:52, Gregory Price wrote:
+>>> Add a memory notifier to prevent external operations from changing the
+>>> online/offline state of memory blocks managed by dax_kmem. This ensures
+>>> state changes only occur through the driver's hotplug sysfs interface,
+>>> providing consistent state tracking and preventing races with auto-online
+>>> policies or direct memory block sysfs manipulation.
+>>>
+>>> The notifier uses a transition protocol with memory barriers:
+>>>     - Before initiating a state change, set target_state then in_transition
+>>>     - Use a barrier to ensure target_state is visible before in_transition
+>>>     - The notifier checks in_transition, then uses barrier before reading
+>>>       target_state to ensure proper ordering on weakly-ordered architectures
+>>>
+>>> The notifier callback:
+>>>     - Returns NOTIFY_DONE for non-overlapping memory (not our concern)
+>>>     - Returns NOTIFY_BAD if in_transition is false (block external ops)
+>>>     - Validates the memory event matches target_state (MEM_GOING_ONLINE
+>>>       for online operations, MEM_GOING_OFFLINE for offline/unplug)
+>>>     - Returns NOTIFY_OK only for driver-initiated operations with matching
+>>>       target_state
+>>>
+>>> This prevents scenarios where:
+>>>     - Auto-online policies re-online memory the driver is trying to offline
+>>
+>> Is this still a problem when using offline_and_remove_memory() ?
 >>
 > 
-> Actually this may not always be true.  A driver spawning a dax on probe
-> might also end up selecting the policy... eventually... maybe... I might
-> be planning to add that glue between CXL and DAX so I can add some
-> config similar to the system-default policy to avoid systems with
-> multiple memory-devices being forced into the same policy
+> I suppose this commit more than the others is actually an RFC.
 > 
-> (e.g. CXL memory device can online auto in ZONE_MOVABLE, but the other
->   device can have its own policy).
+> DAX might not want it.  Other drivers might.  Now at least I have the
+> code to do that.
 > 
-> There's a weird corner case for CXL auto-regions (BIOS configured
-> everything but left the memory EFI_MEMORY_SP - so comes up as DAX).
-> I'm trying to keep those systems working the same as they have been
-> while the userland policy stuff catches up.  Early CXL patterns are :[
+>>>     - Users manually change memory state via /sys/devices/system/memory/
+>>
+>> I don't see why we would want to care about that :)
+>>
+> 
+> Absolutely critical if we have something like a CXL DCD region that
+> wants to try to protect hot-unplug.  But that is probably an argument
+> for implementing this in a cxl region driver than DAX.
 
-Right, but I don't want any other OOT kernel module to be able to make 
-use of add_memory_driver_managed() to do arbitrary things, because we 
-don't know if it's really user space setting the policy for that memory 
-then.
+I asked further questions about that in reply to the other longer mail.
 
-So either restrict add_memory_driver_managed() to kmem+virtio_mem 
-completely, or add another variant that will be kmem-only (or however 
-that dax/cxl module is called).
-
+Don't try to make the whole CXL DCD more special than anything else we 
+already have, otherwise you'll end up creating a mess for user space.
 
 -- 
 Cheers
