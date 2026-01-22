@@ -4,85 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E7C6D6CFA2
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:19:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFE34D6CFA2
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:20:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2C896B036C; Thu, 22 Jan 2026 17:19:04 -0500 (EST)
+	id 13BCE6B036E; Thu, 22 Jan 2026 17:20:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD7CA6B036E; Thu, 22 Jan 2026 17:19:04 -0500 (EST)
+	id 0BFA96B0370; Thu, 22 Jan 2026 17:20:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D113C6B036F; Thu, 22 Jan 2026 17:19:04 -0500 (EST)
+	id F033A6B0371; Thu, 22 Jan 2026 17:20:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C2CC76B036C
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:19:04 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A1469D192
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:19:04 +0000 (UTC)
-X-FDA: 84361016208.18.3C7E3B9
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC42A6B036E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:20:45 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E55114886B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:20:45 +0000 (UTC)
+X-FDA: 84361020450.15.FE9A16A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9CD92180002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:19:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ho5uRbv4;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf03.hostedemail.com (Postfix) with ESMTP id B1B4420007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:20:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bot4zvaC;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769120342;
+	s=arc-20220608; t=1769120443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4cJoa/bDPp8jVCZKjQzqnKKuPgFTVDX0LmbQXMJ3oOI=;
-	b=o6dXnaqxp4U3b1jmWhjKAO5hLIliv76SAY5sdrDRk3tH36KyeVQ2HKvVTMWhTKIXAg9Imb
-	tQ5Gy3/VP2dQX4nCend4jmJDmGoByRK2N5nXX6seWF28ZCzLy9IDzd7hVFEmeRzviARbwz
-	OjIaxvFOFHrkNz07XOyTCoZUxq6WVCY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ho5uRbv4;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769120342; a=rsa-sha256;
+	bh=8z8xGH6bXPgyCs41qa7c/SBy5H2xt6ozRAIrxxfMDXU=;
+	b=D+O1gUzMEKhmJATwFFWx0O2wvV0/+X1N3y/3K3pc3hOAst+6/E4tJC4MWglIF1Z/AR0HHs
+	Oxo9Px7rTfiYZnSD+mi46J3jaY/uMiMgEA+aPM2INAN1fYfRjxY3jMIfnQEto7tZ5ebly3
+	go5G8RwxYREdIKr08HsaSJaSOl/JYII=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769120443; a=rsa-sha256;
 	cv=none;
-	b=13RgiXeyvzv6C8gaa2cZanSiGiAaRhGLGYhmRtkj7XBlM94pRet9gmBIJ9IoXftju0RF1W
-	UhNzBfsrXJMEtL4vyXfwnIQBBqenLeImAb+NmbJ0aVjKMp1ZymsRLTk3j7ihlnph7DfhKP
-	rED3/Ym9gKWPPB6yoAADoAUknlPrV/w=
+	b=ZgwKGEzEUyMyka8/vXVI2c/Wpy7Kc2foZKPjk+HOlUOBgEyF75kN4J+5NMF/MjV0I6joji
+	PcgyyVMAfK4Eq0YCG2PdqxHW+8k9sMIGSaFt7/cBcN39ZMgDmKjs9Gjq7q7HGTljL51eb7
+	MHO/DTvDQDicofraXUkcF9gjqEe+/6U=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bot4zvaC;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A5FA3442E7;
-	Thu, 22 Jan 2026 22:19:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF61C116C6;
-	Thu, 22 Jan 2026 22:19:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769120341;
-	bh=6vyvXBeHPv3ZtA1GlptzUeZjv17+qL0cCQKu4626N/4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ho5uRbv4ImD9QPIm5FOT6ZoQk1/H+SjS3UhTiJQscMMkOW8sNpkQKXjpmRT7Ni9bB
-	 KNTjQNEUw65R0jO0JsTKJDV0UyTwzodp9Z/9bDhSO+n5MsSL9rGdyq8LRYE5e5WzIz
-	 Csq2IM4bVbUY9TaVJYH7Lxgj7wG62pgAlqFukGpo=
-Date: Thu, 22 Jan 2026 14:19:00 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Li Zhe" <lizhe.67@bytedance.com>
-Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] hugetlb: increase hugepage reservations when using
- node-specific "hugepages=" cmdline
-Message-Id: <20260122141900.3eb028abe20f6c31808f9b5d@linux-foundation.org>
-In-Reply-To: <20260122035002.79958-1-lizhe.67@bytedance.com>
-References: <20260122035002.79958-1-lizhe.67@bytedance.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	by sea.source.kernel.org (Postfix) with ESMTP id BBA68442D8;
+	Thu, 22 Jan 2026 22:20:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFBEC116D0;
+	Thu, 22 Jan 2026 22:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769120442;
+	bh=jzu4EH9RtPfER/4dAwUxG4EpQcz1B60rHGCR3ANTIko=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Bot4zvaC3VKoQCkLVxiMMW57UXfYBtgw0ff/qIvN9YUd5PizoNdJ2lOXAB7I+Eq5P
+	 GeQGgKlAh/CUAujvoR5vWMknR84HktdPw+yWM+Np72+1j9pSpEGXwR4ftwFU684A+T
+	 b66lWoDIiNsxQfM+n+7c034mIxqKRz/I3iw86yAtC9ovWh/obpnQkojQRyH/YM5M0U
+	 vIgBpuqbmjAtcNyC2bXLyWchPWAa8ypelg+YehL5g/sha5YZrTXacEr2ej8490a5/g
+	 du51+Rr54b/fwdu7okY3/2IC833rg6+rmcv21mpD+JypUnekAoqv6F7/HF+sqNnLqe
+	 c/tNK2R8Np7lA==
+Message-ID: <a4c83b16-3307-497d-9690-0e31672f3202@kernel.org>
+Date: Thu, 22 Jan 2026 23:20:37 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/9] selftests/mm: introduce helper to read every page
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Mark Brown <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>
+References: <20260122170224.4056513-1-kevin.brodsky@arm.com>
+ <20260122170224.4056513-7-kevin.brodsky@arm.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAa2VybmVsLm9yZz7CwY0EEwEIADcWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCaKYhwAIbAwUJJlgIpAILCQQVCgkIAhYCAh4FAheAAAoJEE3eEPcA/4Naa5EP/3a1
+ 9sgS9m7oiR0uenlj+C6kkIKlpWKRfGH/WvtFaHr/y06TKnWn6cMOZzJQ+8S39GOteyCCGADh
+ 6ceBx1KPf6/AvMktnGETDTqZ0N9roR4/aEPSMt8kHu/GKR3gtPwzfosX2NgqXNmA7ErU4puf
+ zica1DAmTvx44LOYjvBV24JQG99bZ5Bm2gTDjGXV15/X159CpS6Tc2e3KvYfnfRvezD+alhF
+ XIym8OvvGMeo97BCHpX88pHVIfBg2g2JogR6f0PAJtHGYz6M/9YMxyUShJfo0Df1SOMAbU1Q
+ Op0Ij4PlFCC64rovjH38ly0xfRZH37DZs6kP0jOj4QdExdaXcTILKJFIB3wWXWsqLbtJVgjR
+ YhOrPokd6mDA3gAque7481KkpKM4JraOEELg8pF6eRb3KcAwPRekvf/nYVIbOVyT9lXD5mJn
+ IZUY0LwZsFN0YhGhQJ8xronZy0A59faGBMuVnVb3oy2S0fO1y/r53IeUDTF1wCYF+fM5zo14
+ 5L8mE1GsDJ7FNLj5eSDu/qdZIKqzfY0/l0SAUAAt5yYYejKuii4kfTyLDF/j4LyYZD1QzxLC
+ MjQl36IEcmDTMznLf0/JvCHlxTYZsF0OjWWj1ATRMk41/Q+PX07XQlRCRcE13a8neEz3F6we
+ 08oWh2DnC4AXKbP+kuD9ZP6+5+x1H1zEzsFNBFXLn5EBEADn1959INH2cwYJv0tsxf5MUCgh
+ Cj/CA/lc/LMthqQ773gauB9mN+F1rE9cyyXb6jyOGn+GUjMbnq1o121Vm0+neKHUCBtHyseB
+ fDXHA6m4B3mUTWo13nid0e4AM71r0DS8+KYh6zvweLX/LL5kQS9GQeT+QNroXcC1NzWbitts
+ 6TZ+IrPOwT1hfB4WNC+X2n4AzDqp3+ILiVST2DT4VBc11Gz6jijpC/KI5Al8ZDhRwG47LUiu
+ Qmt3yqrmN63V9wzaPhC+xbwIsNZlLUvuRnmBPkTJwwrFRZvwu5GPHNndBjVpAfaSTOfppyKB
+ Tccu2AXJXWAE1Xjh6GOC8mlFjZwLxWFqdPHR1n2aPVgoiTLk34LR/bXO+e0GpzFXT7enwyvF
+ FFyAS0Nk1q/7EChPcbRbhJqEBpRNZemxmg55zC3GLvgLKd5A09MOM2BrMea+l0FUR+PuTenh
+ 2YmnmLRTro6eZ/qYwWkCu8FFIw4pT0OUDMyLgi+GI1aMpVogTZJ70FgV0pUAlpmrzk/bLbRk
+ F3TwgucpyPtcpmQtTkWSgDS50QG9DR/1As3LLLcNkwJBZzBG6PWbvcOyrwMQUF1nl4SSPV0L
+ LH63+BrrHasfJzxKXzqgrW28CTAE2x8qi7e/6M/+XXhrsMYG+uaViM7n2je3qKe7ofum3s4v
+ q7oFCPsOgwARAQABwsF8BBgBCAAmAhsMFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAmic2qsF
+ CSZYCKEACgkQTd4Q9wD/g1oq0xAAsAnw/OmsERdtdwRfAMpC74/++2wh9RvVQ0x8xXvoGJwZ
+ rk0Jmck1ABIM//5sWDo7eDHk1uEcc95pbP9XGU6ZgeiQeh06+0vRYILwDk8Q/y06TrTb1n4n
+ 7FRwyskKU1UWnNW86lvWUJuGPABXjrkfL41RJttSJHF3M1C0u2BnM5VnDuPFQKzhRRktBMK4
+ GkWBvXlsHFhn8Ev0xvPE/G99RAg9ufNAxyq2lSzbUIwrY918KHlziBKwNyLoPn9kgHD3hRBa
+ Yakz87WKUZd17ZnPMZiXriCWZxwPx7zs6cSAqcfcVucmdPiIlyG1K/HIk2LX63T6oO2Libzz
+ 7/0i4+oIpvpK2X6zZ2cu0k2uNcEYm2xAb+xGmqwnPnHX/ac8lJEyzH3lh+pt2slI4VcPNnz+
+ vzYeBAS1S+VJc1pcJr3l7PRSQ4bv5sObZvezRdqEFB4tUIfSbDdEBCCvvEMBgoisDB8ceYxO
+ cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
+ EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
+ qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
+In-Reply-To: <20260122170224.4056513-7-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9CD92180002
-X-Stat-Signature: 89ihxo1e7cpju75wc4zipp1cydj84bxn
+X-Rspamd-Queue-Id: B1B4420007
 X-Rspam-User: 
-X-HE-Tag: 1769120342-303399
-X-HE-Meta: U2FsdGVkX1/U1F22CMeuYdJSwqr9mV4uVMuvMcoJ8PR4cJ2O2ADgsn+RJbaBGcujFPryK6kr6+idWXmCpEkgEDPpil8I6Sl/3bMcRb/CqT1XNf+TT3SS8rX0ZAzZ7x0sxDq/3uJOAeVClZ4yQhB37RwdUH07dgoqWb2Ul6qaQft6dwzmHTgJXU5S48SpmP7nOp30T+ArTtinO/GfKahCMLOm3Sc+di4Lxtq3LavoPtfZtnfbpWdZSplFaQ340g5XyO3klS47kr/peC2W38pmpdQikjHYECy0GJxR8Y79eNJPwJ0ty+GehvxZvzKMmiXuWEsFuBd7rUj4TtsA6VnCHL/DMQpAMYjIzQc7regKJr6v+VRz0HEVttKkioZAO5rQbnOUWioNAkM/7OrMAzhLaNZyjsFvA3/qA4fAu7fwSnxbz9UNFOx3iNPd3aEhD2B+875HYNxDRxVumMfWAU/p1ETHP4XDoAnksxibQPQidle+1k6oWCmf0WB6nsM6tEqEevyI4VlkxqXGeriC2/mMKHXFta6TAeZE1ak1KIer7Aoa0ZwdAsyp63G6ESg1IX79zA/pU9LxKFSsTkj/8flYStYOquKTAGa0V6QpnU/pUJsPaDd5GlIunTA2iXF3Lfw7oPVdKvP+vThOZDl8Tjwi33mV60p37N59zQvsbQWCbacAOypQDyRPgezGTsDbZMA9pkh5bx/+/bE+EbfkwIUgtZKquO/EF6bXSUyg8ehYHP0O2LfPF0YnQzBLcuf1T1b7y/0b8nSdDcu1LhJhrJr1+4NhJcSltHOhZAhkk8jaG48yV0bBhkMaCpcVoZaNo4eFXVd7qL0efMw8I7+iyuZL1VNpgVXq+RbWP30+jwXB+z2MLBfXfsUOiELLox3oH3z32PyfHPyKduEBuWubIZ6av0zRHUnNY9R4oCBpMFhWnRhADeDN53Bv4c/ZTPnjjiEfV/vpa1MDoLQZ7tybuBg
- uUacqvzT
- zuY1zASYSjM2VuB6bqXdx11kUoVyqyT6rC6EjT2JXgGzc5VVm/u1LVURksjGu+4j/BpveuqxdRGvr7tWQicM+EOT7HDtEck4JvqfKc7Mpb9oiYKb8aj9TRE5vO72pUphjRfzddoKIk9YFwmbebiikNcniJlDeJzXpcSiwmo9QYcJchd2CtKerjtvsEinLToDIOH/ov8Ma0/L8vjexBaHDznfCwyytEZSTIUzzgP1Jl500g1ICSiLKVgoORZ/s2FR/1qFXymQPkVLxn2I=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: bkeco6mn7bgr9hy3my4sbcyz8txupe1y
+X-HE-Tag: 1769120443-48043
+X-HE-Meta: U2FsdGVkX1/YlmWwPNZervrk83MjxH2errhy7a3uwEwMCTeWYHnjUcjyF+P3LLVrwogbn4npXzP8Pby+U+ukOR/3g84sd0KVAHdktP6s8SRfn7Ggi9YJktiBAOvE2nCr/4nzYWXhLSf4eF1AA/xMf+OV08CrSOdT4jFCfXCs1Rp2ioVDRr/5SqMlzD0dw/q9qoKNxPE3mhpft3hcA0JGr5huicu5nr8WJ7Dqk6vWH3aoQ/WG8ioyUnSC7aOyow/Ord876tTF/wZupA+9hFRmvnsbgjz/Y5GZgGstSiNHINshPhs4S+IsJQIHnkxY/peAlempkmQaqocjLXsVZ1qaurXsX9kUSBz19DiedDrJ1M51QMhGSbeeX5GV19ujd+9yAHYtYThMrHpocKfbW55mBZ7KhoOvyXhOKmuEHtkTHuToSY6NhnS4wYGmMFRSBXcY180dguU9qYChbZj4+mAaLb2URHUkum1oKqY2wzlsNZQ4IOyd+yofrAW898zQDQxQorYVndxWUxvr4Ox1ZcuDbru05RhsLG6BA4kwcfeISfx05My74Pti9HcTtp6lJD18MCxJ3RGbg3BBFl5OSGlfCGTpkkLGowzH08SC/5iF/SoFVGw8RW1/IPpQUABPFN/Kp79P5vp9B/dzd7X3maEHig1kstYQeKqA5E3dSv0AcCwBjpWBR4XaGjT+HCAGZvrqrxGEQJtTDm/VlyW6p+k+eYjKXTi2aiLZKWqFaQFpr3J51AYdou5D6UXskse+kSA4Jkn8WKJIGVcTyTFnhDtBFeV7ygQlht78MBOGSSOYmSJ+jvNIRskHnQkm2VJ1SZRqD0dzS/wQgdpoxqtlPA5p5slTYus/muAek/4NgCqJt0bgWJSHX6l5ABnoZI+aoHkdWv4suIN99voSRXBUJ+4p/IHoer0Zp8JO32E7bgEyA6tzGfcuY0NfMTDBc+NbrpL7xtJDiv+v1y2cjUPMKve
+ y0HjZSyM
+ sHcnroAjx+kIoRj8hVPw5yvJv7MtBHY2t1/W+RJ1nTrzVdmXUB5Fo9XyYLbIuNRq6f3IvI3wuFwyZQnknrS6mWAEUl+XfkLfTYSiyhbWNCw4Iehg2BDiZoaMwhEAD4AMqoBpJkX1fydYz1Kkcxr6vGQ6cTUyK56krt+bHI3Cqghp2wtfd1p7CH7xxKR0VmTOjT5aU7tEkTKV7Dhoiseb46sW7mzN/+UWkhp/SpRGy/7zTJMmj2FM8Lctq0IIe/2c8Q+PYtzZbgM52zSrgxpDypmtxk4hjTUCmCvySk62qsVNF8W+hFblCq0ap2DkqH3oqrQppw5Yy0rjocyOSSYBlj0IeBQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,31 +141,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 11:50:02 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
-
-> Commit 3dfd02c90037 ("hugetlb: increase number of reserving hugepages
-> via cmdline") raised the number of hugepages that can be reserved
-> through the boot-time "hugepages=" parameter for the non-node-specific
-> case, but left the node-specific form of the same parameter unchanged.
+On 1/22/26 18:02, Kevin Brodsky wrote:
+> FORCE_READ(*addr) ensures that the compiler will emit a load from
+> addr. Several tests need to trigger such a load for a range of
+> pages, ensuring that every page is faulted in, if it wasn't already.
 > 
-> This patch extends the same optimization to node-specific reservations.
-> When HugeTLB vmemmap optimization (HVO) is enabled and a node cannot
-> satisfy the requested hugepages, the code first releases ordinary
-> struct-page memory of hugepages obtained from the buddy allocator,
-> allowing their struct-page memory to be reclaimed and reused for
-> additional hugepage reservations on that node.
+> Introduce a new helper force_read_pages() that does exactly that and
+> replace existing loops with a call to it.
 > 
-> This is particularly beneficial for configurations that require
-> identical, large per-node hugepage reservations. On a four-node, 384 GB
-> x86 VM, the patch raises the attainable 2 MiB hugepage reservation from
-> under 374 GB to more than 379 GB.
+> The step size (regular/huge page size) is preserved for all loops,
+> except in split_huge_page_test. Reading every byte is unnecessary;
+> we now read every huge page, matching the following call to
+> check_huge_file().
 > 
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>   tools/testing/selftests/mm/hugetlb-madvise.c      | 9 +--------
+>   tools/testing/selftests/mm/pfnmap.c               | 9 +++------
+>   tools/testing/selftests/mm/split_huge_page_test.c | 6 +-----
+>   tools/testing/selftests/mm/vm_util.h              | 7 +++++++
+>   4 files changed, 12 insertions(+), 19 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
+> index 05d9d2805ae4..5b12041fa310 100644
+> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
+> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
+> @@ -47,14 +47,7 @@ void write_fault_pages(void *addr, unsigned long nr_pages)
+>   
+>   void read_fault_pages(void *addr, unsigned long nr_pages)
+>   {
+> -	unsigned long i;
+> -
+> -	for (i = 0; i < nr_pages; i++) {
+> -		unsigned long *addr2 =
+> -			((unsigned long *)(addr + (i * huge_page_size)));
+> -		/* Prevent the compiler from optimizing out the entire loop: */
+> -		FORCE_READ(*addr2);
+> -	}
+> +	force_read_pages(addr, nr_pages, huge_page_size);
+>   }
 
-Thanks.
+Likely we could get rid of read_fault_pages() completely and simply let 
+the callers call force_read_pages() now?
 
-I *think* the hugepages= documentation in
-Documentation/admin-guide/mm/hugetlbpage.rst is still up to date and
-complete, but can you please check it, see if there's somethig we should
-do?
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
+
+-- 
+Cheers
+
+David
 
