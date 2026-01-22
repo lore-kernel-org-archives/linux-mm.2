@@ -4,126 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7975AD3EE6A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 14:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 156A0D3EE66
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 14:03:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D5A26B01FA; Thu, 22 Jan 2026 09:00:41 -0500 (EST)
+	id 212CE6B01FB; Thu, 22 Jan 2026 09:03:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7838D6B01FB; Thu, 22 Jan 2026 09:00:41 -0500 (EST)
+	id 1EA796B01FE; Thu, 22 Jan 2026 09:03:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 685D96B01FC; Thu, 22 Jan 2026 09:00:41 -0500 (EST)
+	id 1214F6B01FF; Thu, 22 Jan 2026 09:03:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59A9B6B01FA
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:00:41 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 063931403DD
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:00:41 +0000 (UTC)
-X-FDA: 84359760282.24.74F20F6
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5B85B180009
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:00:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=a4hQtNra;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F24456B01FB
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:03:16 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1CD98B6F2
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:03:16 +0000 (UTC)
+X-FDA: 84359766792.10.D9B777B
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 88E32140009
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:03:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mH868Ya+;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769090438;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1769090595;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KXXllTpn+4j3DQ+o0FpmjiZEdWUg34VA5GPm+3TDwac=;
-	b=iw/LerhAIy7ad9pm6RngGeFaD1Aa6w2791EkfIHavMTg5MST7cqOOWJ8k2iciHp8e8IWM3
-	FlfRURHFGSkov2uNjjcqBozi/JL1NKY+kakG8C+2kZZCJe0UEm5qH9IUwu0O3FfrWpm64D
-	pbzi8+GzJCmQ9QNWThoSw+DoSdwI3yY=
+	bh=Ag4pvlq0Xt7bkCn3IMv0eQk3VBjXmIBsOS9DJbsrrSM=;
+	b=veddgCRSgNgEmb/09C1t77RDIKMXRG8GAxSiQFVSWeamEewY29XLFS6K/tEJFCmmol6vc0
+	Iafoq0P/9jAZaQy5AIzCWkjIbsKXgH0hBVSz+1t9l2RzQkh3fY9I6akA8kKpwnzWi/Ryaa
+	pG8gmUWUQX7LKofk5xYy7JEWMMVeui8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=a4hQtNra;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769090438; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mH868Ya+;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769090595; a=rsa-sha256;
 	cv=none;
-	b=d3LrMfy9Y5tzgRncofn4GAmGiyrEQqiY/LRZgPzHvCo4yCaYXzXS8IuS9N4CEXgEKLfzCZ
-	lJG16DFLXQg+k4KBIh3VM+01bfM3GI+AW5aJ1K4RsP7JBW6FL10ixMsn7fIdoF3GmS7Z8p
-	ZGM5ob3Lzbgf/tjdSqi/9DBAsbqYi9s=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65808bb859cso1678877a12.2
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:00:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769090436; x=1769695236; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KXXllTpn+4j3DQ+o0FpmjiZEdWUg34VA5GPm+3TDwac=;
-        b=a4hQtNra7DdRd/Gr3PHE7/UqqvHGW3P99HEC3uCAM4DEJXIDVaWWimN4qrh5sc2Rhy
-         sPKbsWPMP2HBAeDubo4EhSY4A3fSgBwMgj6CSwsO2/bi+Zds2AvBnI+myxP++DL2CCZT
-         oiOPijj/4RrrY37Fm34WSsierGzymnT1iO6/B+kLsV6+6yQ4Yi4SEQWiflFDleTA86RV
-         clp7Mov3KZ/QPoWKygAc2Kw2lE71R7cyG0EhwlEus9WdYmd2tdLhwR3QZIevQVXCFDO4
-         Sbiwie2Ru1hhXcyv5x2hN2uyjlDjzZFloqKZIXh+yBmMETpB0JzrFwB66cdEiLdC1FdS
-         SbTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769090436; x=1769695236;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KXXllTpn+4j3DQ+o0FpmjiZEdWUg34VA5GPm+3TDwac=;
-        b=dnKsiqNphEgtttT5byfRuFR03S9w80s7bEIX6sA/F5ZaSf6aUCiWqc984VWSaHu2F4
-         p1yPDi8ACAqKLBwX3XaAsEyKYTLY044FRopCkAN97H0ww11z1UqUNqtUdKo+47frmHxY
-         BC+zsX8hETuXNSLjDNBzF10WJHi85p1ECxcuqXbl01eIR0WVEoRz2P91FNi9RziogTCd
-         iKp7r+yPfdM4KijrpB2p/npo1bBRNs8rXZASeKG0AvS0tc6fTBJWZ8HsJmMtWmKuSspd
-         2f0SqFcwqzZxE2FnyW49jUir6DIx46dwaavS9rmDwJLDsxUWkoq56QKKNpjrW8s1cB5s
-         N1xQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+Zhqn9tST/9eLVgZlwD4huXzi3+jTh7AYtbesvon57qgocU6pL5Y3aoSCnypEIfViSgxqFHGqLw==@kvack.org
-X-Gm-Message-State: AOJu0YzTlx7ZOtQ0XLeeaQ6jkfbeqJoVpsWp56vr5iqw+G4eLdT5ee3c
-	HHTB+t6nJsKC3Leiv0YbCgZkrmgObgNWX2N95wKBB0pkAFAnh9x5GJny
-X-Gm-Gg: AZuq6aLLQCOH7QKwD9mke2uF2g6oC+lZwhn4cV74mDdhZzDUdkWsrOhVtBdP6ppnpIe
-	erndSFnMSIc86XjBHP3868Bob6eJS6XVsfosCjY5Pg+qTMQex17dpqF+1HD+iPj9Y7wXHHodR6k
-	05ccszix2VJFfX2n7N1IuXxRaqIbz7GAS134kC8JvMMieTXJfFd3Ww7OXUqmwDMdIU4ryWiBc+y
-	C+I6a/GwzWpfEYH2zzKo1r1UyZ+TAlkV5W52nR3VWmwOkC8b9YO+rVp2GQTxoy5yfDR3c26Xv9y
-	Wxs7G1Gz19a1yYt/LnjRdLSEmS3YpC71Us2MnQCwO1+CV4UUsug4ncMB2IDEUqTXXex9Uc2dVfs
-	HL7ednUUuq3+/fmPOejx21D89BZsUIjBrjAOXMB3LKU+frCLl7vnCLn4/sedB/ZPsLnH12x2eUE
-	t//9Aww7bFAQ==
-X-Received: by 2002:a17:907:84e:b0:b87:33f3:6042 with SMTP id a640c23a62f3a-b8792d3be6dmr1826205366b.9.1769090435585;
-        Thu, 22 Jan 2026 06:00:35 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b884006d3bbsm68748466b.32.2026.01.22.06.00.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 22 Jan 2026 06:00:35 -0800 (PST)
-Date: Thu, 22 Jan 2026 14:00:34 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Qi Zheng <qi.zheng@linux.dev>,
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
-	peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
-	ioworker0@gmail.com, linmag7@gmail.com, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-Message-ID: <20260122140034.ymigrfppzwvmcjkr@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
- <20251231094243.zmjs7kgflm7q6k73@master>
- <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
- <20260101020715.45wqnjgcklvjcth3@master>
- <d38fcbe5-8b4a-40bc-b8c8-1c49ccaa9964@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d38fcbe5-8b4a-40bc-b8c8-1c49ccaa9964@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5B85B180009
-X-Stat-Signature: h5rgwfxz6i8pcohu8h3suyp9pbdusrzm
+	b=sdzYM29N/pO6Okzao5ZuJtwEa4z0F8w+HtIPMs4p1ALI2BvXtT02QyeuSYDbSf55uQzWCO
+	hkd7heIGYDDurIHozcCQSzxSfhc/IMHcMefVVVrRv1HhYaB19ljqUS/GHwhbdiTEGwBWK3
+	tCiqAPlrCoz7mHMZyCNYwm7py0xujEU=
+Content-Type: text/plain; charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769090592;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ag4pvlq0Xt7bkCn3IMv0eQk3VBjXmIBsOS9DJbsrrSM=;
+	b=mH868Ya+RRo/6e2/zo1l+T5Mc7oqXypqdF2i+4A0qDTVtEoGBoMiEizqwIhwipHS9mLGBL
+	SMcC08B0UYqDuGuKkgasiPm+PUmgui+ZfuWdruFQK4mVUfpC9jgKE8NsbWgHZ2gcirlmeb
+	cfA8IscdZhJOBr2jsRvWWyx5SCStBrM=
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCHv4 07/14] mm/sparse: Check memmap alignment for compound_info_has_mask()
+Date: Thu, 22 Jan 2026 22:02:24 +0800
+Message-Id: <554FD2AA-16B5-498B-9F79-296798194DF7@linux.dev>
+References: <aXIaHZ5kNFelmuJi@thinkstation>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+In-Reply-To: <aXIaHZ5kNFelmuJi@thinkstation>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 3ybgg4h6f8ad3btf8g8pzz3eh8yhhfr7
 X-Rspam-User: 
-X-HE-Tag: 1769090438-416950
-X-HE-Meta: U2FsdGVkX192TU4GoYoFsFVGEb1Cc9GQg3PhmW4MJJET86CGdyaIATUO2J57ilRyn30eoR0akDSsh9BOZ/Iu5RvLKd/GEoKOV+WDCWQaWygPq+OIx1mQcg/pyfjp5KayCRZ3kTi7XYHJU0ZgGfCwzSh/AqZfEUDeweCtEMnwNNqANorRL7gdH9cDXNQYsr+gGQa094c5WwwRC2UnKrNcays1UQXxI8GiZXOCarqsLYELw3+Aq1CCjSP4x7Pqx9NNld3IamyW1edxJYELovVw2v3Fvoa1RuxDZC2bpCw4KIMXJfEyBRrT+pbFJasosQTd3A1GS0fLIqzVOkhWGd8MyqrkYngADRJ0Hio2O8toVzfNIb5RfeiOUI6lYfYYclK7AbSTUW6hY5buPF9av1NS3r4WAsILhzUtbD9956DQvJe60X3Z8pwR4NpSWPFd40JNtY7cElAHukRQDUjg9uKJxND8T5MT7YFkepjWvvAxr0kCqwzCuTOlQaihibXKs4XuZMT8FmKGsN56wYiLHWQvwlDEeMR2D1PkYZWM5J60HEu2HDOlpIk3/+qnhnR9HQYjV+G6qgTMLFe5/mzBM9p5u0mxSPP70vqsDs0/81TCNxOg3t0VTqVZpPTtOyEm9kXTdGpCQNC1hw3azjDPcXKqqnj/32MDsbuydPbtUJtOKoD/sHPbqR7KQjZ0QfkXBGKkaenes1j9tFf3FenvhjA4u8CEFk/I7NM8r7eJg2YC65mTs8kEw/kcFvVmEHZ2niilyWqGrWaRxsRZ4B0zim6ewCILj7ZB+65q5scwbz5465iofyXsXAIw9FtZco2zwf341Jq2J5dM8uqHZ+ooTxdqzPSX7P36Q4n4FTKTpXPxj2Vr55Dg4pAS28DKbeAOSnzKvPdcUtofj32YxD64lq2JgqwCNLiuDssHZSZhJS2ZBc6moW0Lz1nyriwnwUumsGbtSVRexGIgoxXzqkmMN35
- XMXyC2Gs
- 8HAHQ3paK3kAll6eos13w9F79LxTy55IrqZwLmm4UsZ2tH4F6BFtFB9XCZdjz/UoaNnJdYTYAtlkuFo0ed2HQR2PYuMYpsZYNeauWOJEs7b3/Ij7f7My47T4CyqLpo5IjqkeWquF65Ax/hQhifQ8dddeFy/vI9MuOFhw1zX3ztJ/tLEIGbrRtENds2NS2wP/CixZS2MqvcXhvYyMS/mhNnuxEQToqApe47wi6RW9+MSt9cvnbG+dLQ8lM6UhE9bqO1nXFHEyncBwgg85iw5/wL3v53CX3187SjE6ypfbP/pVJosV1HMzamqPDiTnQ++ufGWbFHYdbpCHq+ioZqbJybevHSWma2CGmvNDKIp4l+QuXQ+NTZuhcpnl6TlvNcTVgXqACo7I9gxkzCjJtG2uyEovWYrbxXhc4c2paSJVqf3TAnlSbtvNWr1CyXU7Z8fiapqthu4oboFKOqkO/TcF7onF7ZzO0ZsOvuomXkwFfA4/OL9/eqrxHEXHNtslK9J5L8NrphSrS5EogKINb0vSHl346eoTqnKplkK5cE9Fk36r7SvswzLD2QjnLdMcZOzvyfZei7pzot9I0WFLhEE+Cu+85eELcimj1XDns7n8feTXb9F7eqPTakv4z7ZK9g8y6BhcRjf6SD82KfVu/ETaD/2lI6Fe5s+GdZjjhVEv2p+Uv731P+HrFkY7Sz0Jr425Ccrlzg4tHaH/LL8XsXxZ7ez78v9bJWueQcVGArgTVV5zBlFMPai9eBkK1Jqt320+txd+zN7xKSxN77yjV9kIS3q1693F8cz2xolTiAL4RuV8xcU2PTcyQ9tbw7dnxBrJAjVnOuDke+grZK0RvseY6r4+l6CEKWCgN3LPFb06T9eZL+CA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 88E32140009
+X-HE-Tag: 1769090594-802683
+X-HE-Meta: U2FsdGVkX1/orkdI/PDtDO0BPM/Jqbx9AAZJ/GbpbzSgtDTSY/UkgA3mHdHix9vK7JLuxzbnc6J2j+QwzjOGRRr4vtjW2jXPzLGZTNmaiPaKUmntHAeT3+jCD/gwJKpodfzUC7BouEWQVkwSekb7UgUJtLjlD6+4aAyQ6brOhl2bmRkFPpfUNsgkIHXN1Le8QghM4Dbz0Akyeq8BQ8tJ8I5je0fJsE2hp/TMeG9hrvTYul732D5YLHDQ//NgTJtDoSQ5cTExx98FyZHHuCK2wz0tbuQX5pEgagFyWGC4ga6XPhsPzV/5yQig6IHjL430vQIIQxp1Yg96sCabt21oqgMRTSNxdI9zzrQF96KMMk0pCWTlq9tnrOidkk+maF4LLOnRE74saCvGes5uwx7hX8HLmDUrk8DxUng6qhPOdENzK6bY2HZWQp1gYji/7r2o1ji9eYHn8056FdnTzwsFUD3J6lu4XyBWmQCvpw7dDrL5q/Nq4RbPaWg/KZ+p6rt4ez8Ce3z7WMnhxt4m4vaYDE800AHOIyeg5Nh3bskGceds3sc96R/ncCk/y4qPJsHsE2ozoATXcotNtBrGumccaMmaAu4iKJJ1JWks8en4gGUru0MF6Aqk99sGE43zuQsNO8HA6ax60Eu4qkx+lJrp9H2NyOsoLq4T4N0ojzshh1DybOvEPp8qRwZH9BhQiGuRbEWvOYhTAW2B2aePe2wKd66KvuaSmnwkcj5MJJek0ihiot9vAiWb1a7zTdY2cLDeQWL/hl/HDeALpZMFr8CrE+62ypTZUtTiJ58yDpABskpB/ioOglu1qVGBn0A5wxqANKdTr+gSgppTZuhr4GXKr/lJeqiKUuPsximaEXX1r24iNwWSs3m6JPkFqsBf54SR+JRoVOMIx0sVCYkP0of+F+2iQh5AwLstpnbQ/OMZJLi4qqsd91Vrk+WO5TzpGsfWwfNJTeVvr/hg0JROWag
+ TRN2+zaD
+ 5l9tj9j/NBDlxdLioUcz1dcNQAamIytlbXpHLuNEiC274jHTctGZhjCZTqrxA5VW572UB8wIWr9jx7Ey+BD9lHC5SfG2gFYG7kCkmQF/PritjGlwCIteLXYiswQB+NBvy9Ww+fDje64D1F+GSksdw6f+bGSiO0Oz93jXa18pru2DdYoB9dpIwAuIuLrDbgz/a9/pzeDdSE4HDktDCfa/D+K1ygsxoeHZVFL+In9ZsHCW6gvZjBjj21LO79eNtTbloMcuWLr7PRui7V66N7bmObJnJq3LsraAJ8r+S7YIH/6oEp3SsaKNh/0jIeQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,124 +97,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 19, 2026 at 11:18:52AM +0100, David Hildenbrand (Red Hat) wrote:
->On 1/1/26 03:07, Wei Yang wrote:
->> On Wed, Dec 31, 2025 at 05:52:57PM +0800, Qi Zheng wrote:
->> > 
->> > 
->> > On 12/31/25 5:42 PM, Wei Yang wrote:
->> > > On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
->> > > > From: Qi Zheng <zhengqi.arch@bytedance.com>
->> > > > 
->> > > > The PT_RECLAIM can work on all architectures that support
->> > > > MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
->> > > > MMU_GATHER_RCU_TABLE_FREE.
->> > > > 
->> > > > BTW, change PT_RECLAIM to be enabled by default, since nobody should want
->> > > > to turn it off.
->> > > > 
->> > > > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> > > > ---
->> > > > arch/x86/Kconfig | 1 -
->> > > > mm/Kconfig       | 9 ++-------
->> > > > 2 files changed, 2 insertions(+), 8 deletions(-)
->> > > > 
->> > > > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->> > > > index 80527299f859a..0d22da56a71b0 100644
->> > > > --- a/arch/x86/Kconfig
->> > > > +++ b/arch/x86/Kconfig
->> > > > @@ -331,7 +331,6 @@ config X86
->> > > > 	select FUNCTION_ALIGNMENT_4B
->> > > > 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->> > > > 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->> > > > -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->> > > > 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->> > > > 	select SCHED_SMT			if SMP
->> > > > 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
->> > > > diff --git a/mm/Kconfig b/mm/Kconfig
->> > > > index bd0ea5454af82..fc00b429b7129 100644
->> > > > --- a/mm/Kconfig
->> > > > +++ b/mm/Kconfig
->> > > > @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
->> > > > 	  The architecture has hardware support for userspace shadow call
->> > > >             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->> > > > 
->> > > > -config ARCH_SUPPORTS_PT_RECLAIM
->> > > > -	def_bool n
->> > > > -
->> > > > config PT_RECLAIM
->> > > > -	bool "reclaim empty user page table pages"
->> > > > -	default y
->> > > > -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->> > > > -	select MMU_GATHER_RCU_TABLE_FREE
->> > > > +	def_bool y
->> > > > +	depends on MMU_GATHER_RCU_TABLE_FREE
->> > > > 	help
->> > > > 	  Try to reclaim empty user page table pages in paths other than munmap
->> > > > 	  and exit_mmap path.
->> > > 
->> > > Hi, Qi
->> > > 
->> > > I am new to PT_RECLAIM, when reading related code I got one question.
->> > > 
->> > > Before this patch,  we could have this config combination:
->> > > 
->> > >       CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
->> > > 
->> > > This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
->> > > is semi rcu version.
->> > > 
->> > > I am curious could we use rcu version tlb_remove_table_one() for this case?
->> > > Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
->> > > there some limitation here?
->> > 
->> > I think there's no problem. The rcu version can also ensure that the
->> > fast GUP works well.
->> > 
->> 
->> Thanks for your quick response :-)
->> 
->> And Happy New Year
->> 
->> So my little suggestion is move the definition of __tlb_remove_table_one()
->> under CONFIG_MMU_GATHER_RCU_TABLE_FREE. Do you thinks this would be more
->> clear?
->
->
->Do you mean
->
->diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
->index 2faa23d7f8d42..6aeba4bae68d2 100644
->--- a/mm/mmu_gather.c
->+++ b/mm/mmu_gather.c
->@@ -319,7 +319,7 @@ static inline void tlb_table_invalidate(struct mmu_gather
->*tlb)
->        }
-> }
->
->-#ifdef CONFIG_PT_RECLAIM
->+#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
-> static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
-> {
->        struct ptdesc *ptdesc;
->
->?
 
-Sorry for the late reply.
 
-Yes, and maybe we can move the definition to the 
-#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE code block above, then to be next to
-tlb_remove_table_free().
+> On Jan 22, 2026, at 20:43, Kiryl Shutsemau <kas@kernel.org> wrote:
+>=20
+> =EF=BB=BFOn Thu, Jan 22, 2026 at 07:42:47PM +0800, Muchun Song wrote:
+>>=20
+>>=20
+>>>> On Jan 22, 2026, at 19:33, Muchun Song <muchun.song@linux.dev> wrote:
+>>>=20
+>>>=20
+>>>=20
+>>>> On Jan 22, 2026, at 19:28, Kiryl Shutsemau <kas@kernel.org> wrote:
+>>>>=20
+>>>> On Thu, Jan 22, 2026 at 11:10:26AM +0800, Muchun Song wrote:
+>>>>>=20
+>>>>>=20
+>>>>>> On Jan 22, 2026, at 00:22, Kiryl Shutsemau <kas@kernel.org> wrote:
+>>>>>>=20
+>>>>>> If page->compound_info encodes a mask, it is expected that memmap to b=
+e
+>>>>>> naturally aligned to the maximum folio size.
+>>>>>>=20
+>>>>>> Add a warning if it is not.
+>>>>>>=20
+>>>>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so th=
+e
+>>>>>> kernel is still likely to be functional if this strict check fails.
+>>>>>>=20
+>>>>>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+>>>>>> ---
+>>>>>> include/linux/mmzone.h | 1 +
+>>>>>> mm/sparse.c            | 5 +++++
+>>>>>> 2 files changed, 6 insertions(+)
+>>>>>>=20
+>>>>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>>>>>> index 390ce11b3765..7e4f69b9d760 100644
+>>>>>> --- a/include/linux/mmzone.h
+>>>>>> +++ b/include/linux/mmzone.h
+>>>>>> @@ -91,6 +91,7 @@
+>>>>>> #endif
+>>>>>>=20
+>>>>>> #define MAX_FOLIO_NR_PAGES (1UL << MAX_FOLIO_ORDER)
+>>>>>> +#define MAX_FOLIO_SIZE (PAGE_SIZE << MAX_FOLIO_ORDER)
+>>>>>>=20
+>>>>>> enum migratetype {
+>>>>>> MIGRATE_UNMOVABLE,
+>>>>>> diff --git a/mm/sparse.c b/mm/sparse.c
+>>>>>> index 17c50a6415c2..5f41a3edcc24 100644
+>>>>>> --- a/mm/sparse.c
+>>>>>> +++ b/mm/sparse.c
+>>>>>> @@ -600,6 +600,11 @@ void __init sparse_init(void)
+>>>>>> BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
+>>>>>> memblocks_present();
+>>>>>>=20
+>>>>>> +  if (compound_info_has_mask()) {
+>>>>>> +  WARN_ON(!IS_ALIGNED((unsigned long)pfn_to_page(0),
+>>>>>> +     MAX_FOLIO_SIZE / sizeof(struct page)));
+>>>>>=20
+>>>>> I still have concerns about this. If certain architectures or configur=
+ations,
+>>>>> especially when KASLR is enabled, do not meet the requirements during t=
+he
+>>>>> boot stage, only specific folios larger than a certain size might end u=
+p with
+>>>>> incorrect struct page entries as the system runs. How can we detect is=
+sues
+>>>>> arising from either updating the struct page or making incorrect logic=
+al
+>>>>> judgments based on information retrieved from the struct page?
+>>>>>=20
+>>>>> After all, when we see this warning, we don't know when or if a proble=
+m will
+>>>>> occur in the future. It's like a time bomb in the system, isn't it? Th=
+erefore,
+>>>>> I would like to add a warning check to the memory allocation place, fo=
+r
+>>>>> example:
+>>>>>=20
+>>>>> WARN_ON(!IS_ALIGNED((unsigned long)&folio->page, folio_size / sizeof(s=
+truct page)));
+>>>>=20
+>>>> I don't think it is needed. Any compound page usage would trigger the
+>>>> problem. It should happen pretty early.
+>>>=20
+>>> Why would you think it would be discovered early? If the alignment of st=
+ruct page
+>>> can only meet the needs of 4M pages (i.e., the largest pages that buddy c=
+an
+>>> allocate), how can you be sure that there will be a similar path using C=
+MA
+>>> early on if the system allocates through CMA in the future (after all, C=
+MA
+>>> is used much less than buddy)?
+>=20
+> True.
+>=20
+>> Suppose we are more aggressive. If the alignment requirement of struct pa=
+ge
+>> cannot meet the needs of 2GB pages (which is an uncommon memory allocatio=
+n
+>> requirement), then users might not care about such a warning message afte=
+r
+>> the system boots. And if there is no allocation of pages greater than or
+>> equal to 2GB for a period of time in the future, the system will have no
+>> problems. But once some path allocates pages greater than or equal to 2GB=
+,
+>> the system will go into chaos. And by that time, the system log may no
+>> longer have this warning message. Is that not the case?
+>=20
+> It is.
+>=20
+> I expect the warning to be reported early if we have configurations that
+> do not satisfy the alignment requirement even in absence of the crash.
 
-So that we always have rcu version when CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+If you=E2=80=99re saying the issue was only caught during
+testing, keep in mind that with KASLR enabled the
+warning is triggered at run-time; you can=E2=80=99t assume it
+will never appear in production.
 
->
->-- 
->Cheers
->
->David
+So I don't think the administrator will notice a
+warning in practice.=20
 
--- 
-Wei Yang
-Help you, Help me
+>=20
+> Adding a check to the allocation path if way too high price for a
+> theoretical problem.
+
+Not theoretical. It=E2=80=99s a problem indeed. We should
+ make the system works properly in production. And
+ I don=E2=80=99t think it=E2=80=99s too high price, as I said only adding
+ the check to CMA not buddy allocator, CMA
+ allocation is not supposed to be in a hot path=20
+(Please carefully read the reply plan I gave at the
+ very beginning.
+).=20
+
+>=20
+> --
+>  Kiryl Shutsemau / Kirill A. Shutemov
 
