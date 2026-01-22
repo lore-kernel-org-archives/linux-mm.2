@@ -4,115 +4,240 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 901ACC44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 04:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A536C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 04:45:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFCA46B00D4; Wed, 21 Jan 2026 23:41:46 -0500 (EST)
+	id BE8FA6B00D6; Wed, 21 Jan 2026 23:45:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAA626B00D5; Wed, 21 Jan 2026 23:41:46 -0500 (EST)
+	id B97116B00D7; Wed, 21 Jan 2026 23:45:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97ECC6B00D6; Wed, 21 Jan 2026 23:41:46 -0500 (EST)
+	id A6F436B00D8; Wed, 21 Jan 2026 23:45:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CBF76B00D4
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 23:41:46 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD77616013D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:41:45 +0000 (UTC)
-X-FDA: 84358351770.10.5564E01
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CD1CB40007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:41:42 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=M6AIGO0e;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769056903;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9249C6B00D6
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 23:45:19 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 259A81387DC
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:45:19 +0000 (UTC)
+X-FDA: 84358360758.04.581E821
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B615A160008
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:45:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kw51eDTy;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="eE/2gQ8k";
+	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769057115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sS81AtEXJnJ9u2/EVCRnHGNXhq7h63VIbv7BFGvdwK4=;
-	b=o6qRNFkOZO2bNHcQBBu3DKsgxkEBgWKW/8kuvuS8tVWtzHbzzagsk8GrEiWO3ZenGKPUyI
-	QxMUKO47nYw8T0CV70Gxrt1GoL9mYKGYcagTyx3dI2fdkFhScv5Y43LaZLc1+sGH69gDDb
-	kuAcQJRlfJsV0ps3IKxjFRB4lojwAE0=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=M6AIGO0e;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769056903; a=rsa-sha256;
-	cv=none;
-	b=SN277Q4lPnHGtbtF823plYew6em4VqD3z7OHTX/+qLSgyZCWe1qaOqksaEqErZPgOvvQut
-	o8UfmfZOREb6HINYzpO/g7YkPCIw8vbxPP2H1BCnpHgANQYqRy5N2UiSxtTuSb4NhD+aH/
-	de5+oDUYcN2FQKOR1TptIfRurcEOw8M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769056904; x=1800592904;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XDjJ+i/6OhmiyMhnzKwblycjAoTYUTnYXm/k+YWRXrY=;
-  b=M6AIGO0eF5QXcCDnLZtSxTYZhL3ppRROR5IrCVKh/lCpiXTvYaHSsIGZ
-   PhbR+4C2Y2q90ihl5LX2wQzMfodJ9q03D9ejlgKXSH2qqPoft8GlRv8iO
-   QDghm9EoqvojdNjC7K3GqTwhipdbfIszFhqCu/y9yj3JB0VHdlRBfJsh7
-   cLBYQ7TeA6CwKUWakcqxHEgf69jpfy+5LwVhmysrCW8kVGZCMz33dPHD9
-   xbH+FCCWgH1kP/nARuw+NgR9zbVP/O2C7cCSdfhhBFLGira1PBYkDgG/h
-   cx1L2awhrwXbgBbvbjuK+VMvTi9mU9C/cDAKrXOzfcxW3WeirwN32E/ZX
-   A==;
-X-CSE-ConnectionGUID: acpZW55FRzaJcOsip73BVw==
-X-CSE-MsgGUID: waZjEomNSFKAN7LeHoKo4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="92958133"
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; 
-   d="scan'208";a="92958133"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 20:41:42 -0800
-X-CSE-ConnectionGUID: 2tBuXIbfTgm/f3DnnFvNtg==
-X-CSE-MsgGUID: ktYzPGfESaG7x2rmUBIAhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; 
-   d="scan'208";a="206692855"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 21 Jan 2026 20:41:36 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vimVh-00000000SR9-2RdG;
-	Thu, 22 Jan 2026 04:41:33 +0000
-Date: Thu, 22 Jan 2026 12:41:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: david.laight.linux@gmail.com, Nathan Chancellor <nathan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
- GENMASK() and BIT()
-Message-ID: <202601221237.soiAkwkN-lkp@intel.com>
-References: <20260121145731.3623-12-david.laight.linux@gmail.com>
-MIME-Version: 1.0
+	bh=Ncvg6/5fdjdIcGH0A4Nis3Q6egixoEx1JAfZ2dy6/9s=;
+	b=wSd386iqoKJ2zQPIbTns8QteZPpVqGl2dnmJOYKSWulKb1RuWGcAeUT1nr4w6Dc+a2cPbC
+	AXX1RpDEkVwqqMLmbXHy/mVsJPA6AVPtUFoWPTIAzwgchrDVMRvA8g9fn3bfUuhE34QVHS
+	HY2LVEOAZVyzNCv4vD1TRqBSUMjABTo=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kw51eDTy;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="eE/2gQ8k";
+	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769057115; a=rsa-sha256;
+	cv=pass;
+	b=qZNIGgk3gvK6P5nFpnugWoUnUBds+4hQk6ZRbhmYN8n/VSTf2w9ybWb1C8PEFGDUDCioKj
+	ALbR+gfKB76kpv91GIyOCS96k8Wi/A1JbfJEIzCNOdE5y8Gcmf550ofJ0jt16q92cPGucM
+	UYaBPTZEYdidNJnvkxrIW356CmPjYKo=
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60LJVKja3523415;
+	Thu, 22 Jan 2026 04:45:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=Ncvg6/5fdjdIcGH0A4
+	Nis3Q6egixoEx1JAfZ2dy6/9s=; b=kw51eDTyArpRyHqNFgHzUKU+SdepfjReHs
+	kUBvOF85CFkGmGEEYp8pq09Af56Ux4aI/oaG3Q8byxf5HQDMwVapvxXY5GIBvPyJ
+	P4mJNO6oGwgg2YSe6pL4okTNzAwyddHNTyKTzQM7/DVkHckfXsdsg9OG70C+gKRA
+	TVriuzlYzBR6RXPEEeznNnM3aMAD+4Z6twLTq6B0GnveRhniBs9EnoBbYOe/Xm/Q
+	5juWgLR+3ZLrr5QflM9JXxkgHNUqWcaBl2kxgSJo1dsn/6JF3JvjkpeqclMpaKSW
+	9reKIhAMc+9h4p0G035rFLfUF4vwYTbyLz7hEwAdDC87aM8/3aog==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br21qfa6d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Jan 2026 04:45:09 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60M2hkCF008417;
+	Thu, 22 Jan 2026 04:45:09 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012002.outbound.protection.outlook.com [52.101.48.2])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4br0vcabm4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Jan 2026 04:45:09 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=idkH4K852XYb0C5hbcO9lJgcaVFbUIBhCpIm+Y18u/S0QK0t86463NWO7hbji1RUaY4CL41s2MGVPk4Wr05nhq2kycdRSbhBFgIO0SPR3F1SEw9cIv1E9RpdOEM4NULIf/wViTPc2N+0ZiLDWoGHAsw5NexABtawVyGwxi7Bfv/yfiarLUt7rCA/VyWeBJ/zQcmaCzFwYUkhJkuUugVHmjenCi7uRTaJmVidVve/cJYnw374XnAirKA1tH2fZwn6e1hkcUjC+nab+hCZdhiY4DWtuVgkTytDLp9CdhcMzBXGvelpuKjRy8VzV+atS0fcMNVYVgphahN/ZB8nyJW0rQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ncvg6/5fdjdIcGH0A4Nis3Q6egixoEx1JAfZ2dy6/9s=;
+ b=g/f5wTtGwUcNtHjIL+wDVsNwZESq7TQzhV3TdNL0vyeqEBT0fZ0XqFrHBdFdPDvxvEOUSGR3ywFmn7oTzA388s5ZJ80qXq0NDDt6w9LhUmYpt3FqNl9eSj2oKf/VApCvR3xWPTACLb4z64QGx+wTNu3J4npKX3rhOEDKQEHeNuqRg251tG5OG9G45yPKWAXF37wk64guYKJTJoQTJn4bLwDikqks7A+4FP93ZfCr7S06re6cQHmUMtVqiVfeuHjje4cF0sysGsk+pVSJEWlvxGeUaQ/r/7TWboiEsVCWPg/wnIoRybTNaEf/lAAPFTv9gS4w6+LbowOTS532RxzKRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ncvg6/5fdjdIcGH0A4Nis3Q6egixoEx1JAfZ2dy6/9s=;
+ b=eE/2gQ8kBTSafMucaJGn+mOk6ad0WOzFOsF/BwtaIveTc56dJoeYcftQ1a2bQHeKZp5yPwqIAWs8AUpQqHs6fDDbpXfvTjMJPj+KnOAEQmWNm2KSYuP+XSr4tF4G2QIUwCaTFNgLKctaGLBx6fwIvUXpB5t4HFyJ0eFtvovYIRs=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by MW5PR10MB5690.namprd10.prod.outlook.com (2603:10b6:303:19b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Thu, 22 Jan
+ 2026 04:45:00 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9542.009; Thu, 22 Jan 2026
+ 04:44:59 +0000
+Date: Thu, 22 Jan 2026 13:44:49 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+        David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+        bpf@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v3 17/21] slab: refill sheaves from all nodes
+Message-ID: <aXGrQSOoG_6NdqNT@hyeyoo>
+References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
+ <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260121145731.3623-12-david.laight.linux@gmail.com>
+In-Reply-To: <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
+X-ClientProxiedBy: SE2P216CA0083.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2c6::16) To DS0PR10MB7341.namprd10.prod.outlook.com
+ (2603:10b6:8:f8::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|MW5PR10MB5690:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54bf9c57-ae81-42bd-0887-08de5970ff77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Fvd0DLvDzNWow+vKO5jbOhrTb8Z4z6UEO9ShsUBgTUG+9FSCad7Bul6yoj+/?=
+ =?us-ascii?Q?HP0ehGI2ke0MZPxoxZyS546pNjGIkcdTcl8Nco6gnnlc1vmble/i5++f8Mxr?=
+ =?us-ascii?Q?GCysxvTMyGijSiGK4xzVEPWhASE6C7oMbufHIVrcSehCOM6yZfQ2LN+r4pa3?=
+ =?us-ascii?Q?sq23v/FVYaFqOXOyyUND2dy3QnVeTA4MSoE8ouMV9P6SwL29LM8jYY8CqRlx?=
+ =?us-ascii?Q?irzQp5EIJe3QNJ059AdN9TSU6x7xUaEgealO7y+reC8bRkNa4aocMBnNCn+5?=
+ =?us-ascii?Q?ZbhoZUi4+Ela9R94XC0fzf1C3HOMxfCyTNA+Jxjqo12oLAs9/HL9mS3adckp?=
+ =?us-ascii?Q?SkzHoHbPiDnz8eq+FSwLdiL488kehDZsDb3nbpfuAjFyoAEC1vswVXEzS8a+?=
+ =?us-ascii?Q?YzYJhXw7YwthPnutfTf473EAOeiI0Nv4vcJ6jFjQ+lzHCbKujR3seYZGR+Ea?=
+ =?us-ascii?Q?XH3ys/0E6ZSMoGQmzb+K0HtQVPObHpHtSR/ZVY+zavsIM+hls6vlFuDbOc6X?=
+ =?us-ascii?Q?2kRzkQgNErTrprBeK28UAnfx/RYUvosxP/t+jxg1KpJ2ba21bsxx70aaqKfz?=
+ =?us-ascii?Q?OZDt1ojVFtmuZz9vfiSEQJb/EMpKbK0rjnFuavNvOB/d4xGMjU5iv0cptT7m?=
+ =?us-ascii?Q?wso4i+EsAbWkJT8/VU2RrUBu4eM/aomg4t6WJVJ7lLZWPQIrb4POUn7jre61?=
+ =?us-ascii?Q?itR7ZbHiARGUlFh6bphzrYuwalAiU0K15UKMRyBHZkeaAdY6o70nf64rbVFt?=
+ =?us-ascii?Q?8++UFAWWgfY9OXoEGR9ltQ2mUJeQoRgYWIzHYm4GqqqE8JVtCii0vQejLAA0?=
+ =?us-ascii?Q?Uj34PkTH6mXK+KQsvjTH9Y+rOQBevRstiAikZcN3FapRcsab4awZYY/89Ha6?=
+ =?us-ascii?Q?qBm2Zay6/pP1gZ3q6HVWeyub3wuhZdxCuBgFHyJhOAwWWtLW7XrZf8IbsHeG?=
+ =?us-ascii?Q?Bozqzpmj6mdhgKxVWyfjZxTw9SscZLMGySLDAcZYVepQ0DOfdikpkVIK6KT1?=
+ =?us-ascii?Q?uCB/cKDevmlpBnlBWet1NnrY8EfJ2rdK8n0YElxHYCeMrkYSTvsIMUu8CRoL?=
+ =?us-ascii?Q?JlJKYJVGAIPIhU9lUm0o6p5n917JkTXOesIw/kGGNAA769ZJTCyTUsIBPqcP?=
+ =?us-ascii?Q?Q01Boi8czYeoovVWcYVJEVaczIvhpnfjRfGq9KDnEHOXnsGZv1Kqhf+78YRf?=
+ =?us-ascii?Q?daaK+r+GNIryTv+0jokVzuON6a64FUfF7Nwkt/eZQRkiIQMQjOVvDK21E/Yw?=
+ =?us-ascii?Q?1rTVFZdn1EY8x135DALs2DX6JTRoUd/YvnsFfdciO1BuuV1hBX/op5paGUIL?=
+ =?us-ascii?Q?2TxxjMZmrByZgIgibrGRAeB63dpxbVpFyf9Q5dlYBOKt6yVvWyGQy9mlH9yj?=
+ =?us-ascii?Q?wG23hNW0L0TiSfj/R96dZkVCWsyXxhVn/ezFBj6SydGmOvEZ0tLZ3IUQEwkS?=
+ =?us-ascii?Q?/nV+S91VQF8fIBIJN95V47+feCHS2kvjqXSWSqe8u/tWk3/pvGFGLsjpmm+w?=
+ =?us-ascii?Q?gL1HQM5Bq6vGr3WwYKjdMqUZUSIrpJUPF5ov7YbV0ucKjBUGMTW8jqLOtDGM?=
+ =?us-ascii?Q?8LhNNzxUsTiM79WOdm4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ftHZ6JZhtgeFk9RrapphdwbwcRVER2ZiJUvWtKcwAaAZyVfnj5sOvaIeX84R?=
+ =?us-ascii?Q?sza5/P+W7xpfM/HUl7u80/Lhr9OYiL3HHIWFdj7rmAraKZE2CupdXAkGeABc?=
+ =?us-ascii?Q?med/ZcezZCxlnskZ885r4cPhQdF531ADSkY4lh5QXlpBtabu0DP1TyDV27iC?=
+ =?us-ascii?Q?G1SKiNqe+32CzC0+n7iI99LJMxIOLAfmDVfMowY11heh5zmKl8VgimEXj057?=
+ =?us-ascii?Q?8LIVmUBi0LkbXlzRazc4p5yfycKvz5+0RTIBHfbgutOk+0Vt0cYedJ5rOVWe?=
+ =?us-ascii?Q?Ef82FrkTdCSxz2dsXATMqwNAzdq5PoZiuF7/EI7BGfrl7IZaj2ZIaLxKzFid?=
+ =?us-ascii?Q?JvetTtD6TWwPKVd2AmH9orgdcspJ/EpVVifQqPOOwhOJ80ZY00i9PyFNbDDk?=
+ =?us-ascii?Q?td5ygDyIGE7rovh4Y5EjavxaoOm8hoW5luxpObVtpigOlGH6XJN+0cIFEryX?=
+ =?us-ascii?Q?pudZ89GLAvcHtlb/uZa8+gyvzbbaoOLZDGV9Nyanv5sc8vbq/tnoIMq4qiz1?=
+ =?us-ascii?Q?vTsa8K5VyU498kDfrfLpwKP0bLPQ9Th3kWm1j0jJk7hZBP1ULNclE1KYFump?=
+ =?us-ascii?Q?4csNZdxhS2nZFVhnSj4p0HoHlUwxiPckbluN71Wus4wpjhD/gHrfO4otihNs?=
+ =?us-ascii?Q?FJb1opWBQjKAyyFfuODVceiEIBmiJ47Fz2EH7CLNUznzN9FaK+CG0AlAHny5?=
+ =?us-ascii?Q?CviRADPoKClFg4tFJwwNFQEp+pIp8icJS6Ubga4uhd2FMFFvSNKFj87jt7Dk?=
+ =?us-ascii?Q?qMq34OcF20AoXAVg25Twf/E4twQpGBeETxvkcfxkRu1X9YyZxMLEJbDlKwuc?=
+ =?us-ascii?Q?D98uyBMTmF5g6ARcQG7WX/dVs9DQC+40DJYG2blEmTTht6TYw/qbsL4FLLNc?=
+ =?us-ascii?Q?fAtRwbyNklf6QFUCAQqMFujsIPIE8+cFvB8vIIdooxMbZX68pBvfWlrgHJOt?=
+ =?us-ascii?Q?4YPGt/ONw6fiG58fpDy4bBFdSgd/Z35vBWtm1wDSOxqKglP+VXcdm4YftLg6?=
+ =?us-ascii?Q?NCsRZRlQ4mYm5MffqQB0AjItECBC1iV9LRt5PRHNRgUFZvo710rg3aHDPtqq?=
+ =?us-ascii?Q?8Mk5X1keosJe+m5+4T7RH/JXlQkwFLA1HR/ZGsFUpfxC58IUUFY8AooGWcgi?=
+ =?us-ascii?Q?TsrVOd1v+TxJe3yQdXtOlBGoGz+Z6aYgEHBrvca75uFbFq2/cobW9HZE6K+y?=
+ =?us-ascii?Q?yjvIm+odZRSJP+dcQh9nfjvnDhQU3mupAUGujR0RpIo8oV1bzINajDGIhqyx?=
+ =?us-ascii?Q?KkrLBeMmFF+df5egZCSmfMtCLJcpFBGbKcNVuIVQCrqfX4K2yX24EB7psKFE?=
+ =?us-ascii?Q?WaUByp0jYFoH58u6UIt7sjixkN5gizSKtrB4JhBqe5NfY1AEzYokVamxmGGs?=
+ =?us-ascii?Q?yFOZswsnM4h+W1veh2T6/ljHZCm0p3OtcIDAG/ibfZy0omWfm4hGs6jrnYoA?=
+ =?us-ascii?Q?UJCNKkb+N0eEugJ0tckswQcj2GXiuqm0R6FzCzTtP1UCar3+bIAsCLoXS7Pe?=
+ =?us-ascii?Q?MXkIgqkPgcMgvzpmekSIiNecZVXkZldmCa1p+N1x8rXAf4+uG/YB/24Cotkq?=
+ =?us-ascii?Q?6wZ7qbzNdYRQ1bh1HLnglsrrh7QQPxxKQjshpgUg9lgu8vKOWL/aB4419XsQ?=
+ =?us-ascii?Q?Yh5KtpsIGzBWrTRABgrwoO8HxeWN8cXGWnHNjchilBMsImTEgQEWI5Zy7ZyO?=
+ =?us-ascii?Q?nTKyrh8NSTf2+NfxeYn4TbAQDFQU2p4KWQ82Idut8ZUUAwpH5rt/AlPh2O0O?=
+ =?us-ascii?Q?nYLApWHrsQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	+2G/FKdCteHwIRooy4HoEGNn54Y2GnQjHC+W5vF4sqFzV3/UNEJLUaf9u8pFT9M3rzNVULLWeC58D5uF4tsE2iigAjIoRbTYs9ZmkbsFGo9qHq9ElBk2BW2yE58sJATq90IAKeGeOn7luQLl+6k9teUt48H9/nQwaNliDBbkA3r2+MdAh95PMEBG2mp9b3jPMYBKD8PyH5XZScVsssmW60nMQjlJhWiRt5gU3r3UD/Fk2wDUDYT79ayORhEgZAbGbyXRt/EkGIy0R2OUJRUYWyWjYgnhJoOg39FFrTy8HZLaqy9CiCCpdv2gCC1ezJkvIcZR9CmcPn/bH65yoC4QJxTvC+xoszhcUdMFq7VHu9sgIInmmG2eiZMMT461zaxJRW9AQbUsUCvMyhkEmlk+NJjYGACOISYkZ4fQkUdP7Db0K8Rl0fKTKKoFxBGBxI8on7uLGjydF749iGAWfPCRrS6zhd9DYb1cfml9QBQaKT0Nv99TBLUFVd8GSWVkll578NgMnUwuJtnpHiFkFJVyxcGnpg7NkWdeBx6WFQAxIGDAZUoEs2lbFmzkq0XUot+aHSAAflR9BwoYhqnmkgMAi8JCGB5HVczHCfQxoBGNvsc=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54bf9c57-ae81-42bd-0887-08de5970ff77
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7341.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 04:44:59.5654
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tqsyLh5mNnT93/sreV2kUjms9aK2J8i/uXnNlmMiJHoG8FHbsEVuANQv9PGyI1a5n64JuCFqv1E1rX762DlpfQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR10MB5690
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-21_04,2026-01-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=843 mlxscore=0 spamscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2601220029
+X-Proofpoint-GUID: pfqR5dtG5zn9GHfgPlYs2DH2Meii6YxT
+X-Proofpoint-ORIG-GUID: pfqR5dtG5zn9GHfgPlYs2DH2Meii6YxT
+X-Authority-Analysis: v=2.4 cv=QdJrf8bv c=1 sm=1 tr=0 ts=6971ab56 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=1XWaLZrsAAAA:8 a=OFLp2U7DW1u7eWAI-QYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIyMDAyOSBTYWx0ZWRfX9rc9vgYyA3iD
+ EeJw/tPlWHUDcV/9HNYCinqWKajMEw/vpnD55lLYl6ZLgCgAQmxXXcRQtPc1qv8yx5frT3GHp0Y
+ NZJ0ramAUNfATfmJNK2GcrADFI741qZRJTrkNiyWt72HZpijpkwo0B9fg37JuwLeXXUAdEIDBoj
+ TmhvK5MXYHQT5MnwMHx62NPb1n3lH4qvOnU0V7wgDuAvDBUkRELs5FVOr7wwc7OreclB43F9lYF
+ zga4cruVBkOX+cnwkIer3Z2z0rVu25KTKzdDqvXTRqnJwn2fZ3WBDqjNyDhD2wKdcFablu/5Gfm
+ 0E77D9AWHFFLnjV0iiy207RU3Z2HCF42RI47l9ywohpbkF1Qeeu3vtfmtTKjDJP28i8SK91F2X+
+ 8HDFGKdPAYRa3HW++jwoY0FXmT7Yu7l/uqW38p/D8FylRHz2jtrkWapsRQt0R+IG/kCOcACJ+Wc
+ cLDjW2jRgUsulvgnvng==
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CD1CB40007
-X-Stat-Signature: 6mm9bx5eq45yf15dufz3autn8x3tq5fk
+X-Rspamd-Queue-Id: B615A160008
+X-Stat-Signature: ci58omji6k87qwqrchuxa7i93rhxp8bb
 X-Rspam-User: 
-X-HE-Tag: 1769056902-7893
-X-HE-Meta: U2FsdGVkX19Sgh3wZ0lb9U0AEmnzCavdbODgjRUASTytel5BnSiCQnCP04smLvFImkF2oQckP9OEU+dOfGqBVgIuQajDJfGHqLzNmqBNXuogWUHFK/I71Zu/sifNvcMwO+GW2pUxzEGvB5q6EE1lxRCWYDfroX2Rlgss71fasWPXcruzINng7j2NS6h9eHneHs+gkt+d2NiqGpVPp6H1SOwedOhBjIWaHbwEoefl5+dQcK/udORaJ3BjywCEyDQHPSrXbHnaQx7dvJ2KEwSctijiVuA+P4Lri5Qc7sdvvXos5TpYrQa7gJ3gBHKKRI2johe15ebznwZPFLi8LyyBVAxFxQyrtflcaFMm/kAxc45FGP9P4V25o6zau171vGcgMRr+4Hpd+PuMvCIDg8uZHT4ZI+i7ocEpCv4m6Brn+FgdCkpQuNraZbULNJd0ji/pCv1aadr3+0o1jqwOzTxRg31g1tMM6FGIXWTva/M1j5jLgIrIAmDQHR14WvdWfBQT32dirSaKCW52uBDXL0EUYLNupDNmSNONDOtBrJSDxYZv3i0+jTa7L2UlCShgrf0SZyVJLsj0pRFqmPQQrDCMBMVENkxVtcOVYRXpxWEahahsjv4Jq0jdOtaTg7SV52NRi3OQxPv4OkRntIuTJPdkd4SyHkLyg/nDyRF+s7oKyUuErc5sCaSIeQQF1QXG4C6nqo4PrPvN+9eoJNoSJ8K53T7w6IbnpIyayP4sii9pM7sue8xFaJcojP/v1DzByiNy0O1HnQPleVX6Ak00gzNYH5wfUQLdNYvZ4ZJJld+o5vsBxhGvzA50g3mTIAWQ0Cu1dyREUqwaCzowQ7UGaA8qXx7CAEvYk+HVcJ8cs44hWBu/Rhzql6wyCPS4bwtNNUgnMhNt3NjOAlmk9xbGYbBz6yglQg00wslfPpGf4EHkwTNmSmPxesmfoE0SDndKrWTqPtCaPGKHZlgSHPMRbqN
- v5DGy8oo
- UIbQCBkDgTI58AlqB9nHnqZM6xUk1dViC1N6bMxBb/R34jNGzbqJvtL6hFpB1enTW6GwSmQOex1JSKDjfteP4BClut1b0CYvRoWzpVnTujIHFBrGHNT0lPH2ntYlEBPBy1AB+ujvMuMcSXWM6XaNw/Er3tqm4YN9ElNlHwhtoyhoBE0OqcUnpIQzB46NUnYguZKvLTUouJ4OjUgGpUsEfA7KVMTyxhIWopcdnhtgshqR+9Dsv4r43+kpJnsiEpXFUyyDkP9G7sYUhNRGALJy1ETi+ZuF/QC5vjiCjYaPf0uEku2ra8qL5WR1EYJgPvgQgx1RkGCZKVJYchPGtwEtHFG6Ml3u1QfCnucfp7wXiXWkJF4+WPzHqpYYAbcCUj9wwa/El9iubEhDG2OtV+VF4d+VA2SxK1zSpB8fxnm0i1ZxY38B6H0Z770qfmxDNq6tYw8hFiDdaZMMF/W5FBkF/M5tZ0SsV+aZmscHLmfJpCpsYlCc=
+X-HE-Tag: 1769057115-583758
+X-HE-Meta: U2FsdGVkX19L0ZphJbqbnNKdHu9dmKDjNyfnf1dpWFmyUFfQzAfMlLPJOvVLz54lbRSHw8uH1U6mrRZid4IYQA5bGsA21ltvWpABxZJG84rVkKUJhSBo0hQuoIjgpBrXarQQNL8mzXajP/rpWRJd+oH40TzKpSjMMb0yq1bh0Ac8m9OLj6gebNWUWgg/RPjOnRf4qJ5W5VkzpminR78ELDWsn5u8GvoHdyd28RmMI4rKjCUpBNtKir0cuuDsotMHAL4So1qi4kwbD2Q8sWQuC+MT4LfGc6kpxcglPMgqaUV7R82nQXlJayMruty/UDDEYrxWZvxBx2BMswkMP3RYddOGrY593+huUmU0tTCUZqrDjcYAAXixqSQduHuni9TUBVTEhJMYyv1yqACxP1+NM6FDs2UujW1YK7me37CzxbsfSAzXp0YDqJlIOMj4MbzX2oBLespa4SGbCqOsiZIND3vRlNTpySlrvbj8e0eXs8hwu5UpItttybM/yeaWeR/6BNUMJS2OsDC09gPXewTJrvmNreIgbT/N88lf1F7NOWTxYmPdKTBtNQaGxCbbStCNG7K/2JufOjrrptrlQipypes/nS5uNqnSsjLJaf2/je+U0lxncYxuTmgFq/NCwqOZHV8Zj8+cyK4GJl2xzQyU8V5h1J3ZoFC4fPW8whgFECs0WD4Nv9iGS+N7Wr5mRa6gkkA2KR/yQAFDHMe0UgMNxdmaS1HLjQKadnrg3BTQcfHQZo7AiY61dGX3kznt6vrRj7A/uewPruNqMiXLro5WSH8bw8ffQUlEUSqbjMOj+2vA9c8XIphVVBISJW343tfL2x3jnyubRgIedMLEVAf7qtLGppM/z8m/+2vZRVBKr0/genpONaFMQX89jUSkt2G8MmTKZXYx9c7GdVpvcjv3yq9hLM+Vq7MKui7K0YtaJusFdbMkYkGaB+nZ9L9iLSgHIoOXMlZ64VffK+h2ZHr
+ 5w2Yzc/p
+ SqwtNnpMhnq/SzWvv0D/B9fALvWnFBn6m/9A1EmKk4z5oQnhgzkUBXLHF9EVOiam3dKIQ/y8UPq5K5n4PvzmNPb/24+HlP4WyMHPtCz4Sd/Dv+mFBghUnqzCjO6wTetwH4aOziZ5dOrckJDX9z4wC7qxNUFJxg5F5qQYEIhbAbGTxmYBeTkTf2Td5JBOD7CDxYPyFqK82F2CnvJvDFRvFEg2B6Q1G+ByJKDl0BVljQVBIMMFFQYEbkaPx8kU17hvmAugPY6pMmNG7Ml/67WEsG54k8d8+ynsSW8uzrZkiEjlR7Gju1nX9AhAweQ+boi3AYJaMHTIzDrfxOq0JlK+I6HQmGDZ6adn7KW3nJJ9I4kcs7qshfeo0jskfBtFeKcIO69Y5bpz/riOfInyGztAxVWrtAbE7KB6AtXyHCIdsEph+WtJlZqfJHwtKiUb7F1rnNlr0vcfBW+vZV3F2Lk0x1D0nSiULbVuXqWUIx5s2aP/ROFSLITsHooFBPkMculusX/iLrQyFrhdd31zQ8G7oPjzLHRo7oWsAWDM8l5XyxcwqQgps9we437VaK/mU28adV1FyCneeFQ5rqmaX/DMirguuaqFsYlQ33f0Y17aDACvJ/uC5BKP58fOjAuObXk/jN5GjaEt1Y24FtWDreoWB1oUH8g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,603 +246,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Fri, Jan 16, 2026 at 03:40:37PM +0100, Vlastimil Babka wrote:
+> __refill_objects() currently only attempts to get partial slabs from the
+> local node and then allocates new slab(s). Expand it to trying also
+> other nodes while observing the remote node defrag ratio, similarly to
+> get_any_partial().
+> 
+> This will prevent allocating new slabs on a node while other nodes have
+> many free slabs. It does mean sheaves will contain non-local objects in
+> that case. Allocations that care about specific node will still be
+> served appropriately, but might get a slowpath allocation.
+> 
+> Like get_any_partial() we do observe cpuset_zone_allowed(), although we
+> might be refilling a sheaf that will be then used from a different
+> allocation context.
+> 
+> We can also use the resulting refill_objects() in
+> __kmem_cache_alloc_bulk() for non-debug caches. This means
+> kmem_cache_alloc_bulk() will get better performance when sheaves are
+> exhausted. kmem_cache_alloc_bulk() cannot indicate a preferred node so
+> it's compatible with sheaves refill in preferring the local node.
+> Its users also have gfp flags that allow spinning, so document that
+> as a requirement.
+> 
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
 
-kernel test robot noticed the following build warnings:
+Could this cause strict_numa to not work as intended when
+the policy is MPOL_BIND?
 
-[auto build test WARNING on next-20260120]
+alloc_from_pcs() has:
+> #ifdef CONFIG_NUMA
+>         if (static_branch_unlikely(&strict_numa) &&
+>                          node == NUMA_NO_NODE) {
+>
+>                 struct mempolicy *mpol = current->mempolicy;
+>
+>                 if (mpol) {
+>                         /*
+>                          * Special BIND rule support. If the local node
+>                          * is in permitted set then do not redirect
+>                          * to a particular node.
+>                          * Otherwise we apply the memory policy to get
+>                          * the node we need to allocate on.
+>                          */
+>                         if (mpol->mode != MPOL_BIND ||
+>                                         !node_isset(numa_mem_id(), mpol->nodes))
 
-url:    https://github.com/intel-lab-lkp/linux/commits/david-laight-linux-gmail-com/overflow-Reduce-expansion-of-__type_max/20260122-013456
-base:   next-20260120
-patch link:    https://lore.kernel.org/r/20260121145731.3623-12-david.laight.linux%40gmail.com
-patch subject: [PATCH next 11/14] bit: Strengthen compile-time tests in GENMASK() and BIT()
-config: mips-randconfig-r132-20260122 (https://download.01.org/0day-ci/archive/20260122/202601221237.soiAkwkN-lkp@intel.com/config)
-compiler: mips64-linux-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601221237.soiAkwkN-lkp@intel.com/reproduce)
+This assumes the sheaves contain (mostly, although it wasn't strictly
+guaranteed) objects from local node, and this change breaks that
+assumption.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601221237.soiAkwkN-lkp@intel.com/
+So... perhaps remove "Special BIND rule support"?
 
-sparse warnings: (new ones prefixed by >>)
-   kernel/kthread.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   kernel/reboot.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   lib/idr.c: note: in included file (through include/linux/bitmap.h):
-   include/linux/find.h:188:32: sparse: sparse: Variable length array is used.
-   include/linux/find.h:388:46: sparse: sparse: Variable length array is used.
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   lib/xarray.c: note: in included file (through include/linux/bitmap.h):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
-   lib/xarray.c: note: in included file:
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
-   lib/xarray.c: note: in included file (through include/linux/bitmap.h):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   lib/find_bit.c: note: in included file (through include/linux/bitmap.h):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   include/linux/find.h:238:46: sparse: sparse: Variable length array is used.
---
-   lib/bitmap-str.c: note: in included file:
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
-   lib/bitmap-str.c: note: in included file (through include/linux/bitmap.h):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
---
-   lib/genalloc.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
---
-   mm/oom_kill.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   mm/vmscan.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   mm/shmem.c: note: in included file (through include/linux/cpumask.h, include/linux/smp.h, arch/mips/include/asm/cpu-type.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
-   mm/percpu.c: note: in included file (through include/linux/bitmap.h):
-   include/linux/find.h:409:45: sparse: sparse: Variable length array is used.
-   include/linux/find.h:188:32: sparse: sparse: Variable length array is used.
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
-   mm/percpu.c: note: in included file:
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
-   mm/vmalloc.c: note: in included file (through arch/mips/include/asm/page.h, include/linux/shm.h, include/linux/sched.h, ...):
-   include/asm-generic/memory_model.h:30:23: sparse: sparse: unsigned value that used to be signed checked against zero?
-   mm/vmalloc.c:554:21: sparse: signed value source
-   mm/vmalloc.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
-   mm/vmalloc.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
-   mm/vmalloc.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   include/linux/find.h:188:32: sparse: sparse: Variable length array is used.
---
-   mm/slub.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   mm/hugetlb.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   mm/huge_memory.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
->> arch/mips/kernel/cmpxchg.c:20:16: sparse: sparse: Variable length array is used.
-   arch/mips/kernel/cmpxchg.c:61:16: sparse: sparse: Variable length array is used.
---
->> arch/mips/kernel/cpu-probe.c:709:41: sparse: sparse: Variable length array is used.
-   arch/mips/kernel/cpu-probe.c:712:45: sparse: sparse: Variable length array is used.
-   arch/mips/kernel/cpu-probe.c:214:9: sparse: sparse: cast truncates bits from constant value (3fffffffffffe000 becomes ffffe000)
-   arch/mips/kernel/cpu-probe.c:214:9: sparse: sparse: cast truncates bits from constant value (3fffffffffffe000 becomes ffffe000)
---
->> arch/mips/mm/tlb-r4k.c:536:20: sparse: sparse: Variable length array is used.
---
-   net/ethtool/ioctl.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, include/linux/smp.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   net/ethtool/bitset.c: note: in included file (through include/linux/ethtool.h, include/uapi/linux/ethtool_netlink.h, include/linux/ethtool_netlink.h):
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
-   net/ethtool/linkmodes.c: note: in included file (through include/linux/bitmap.h, include/linux/ethtool.h, include/uapi/linux/ethtool_netlink.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   net/ethtool/fec.c: note: in included file (through include/linux/bitmap.h, include/linux/ethtool.h, include/uapi/linux/ethtool_netlink.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
->> drivers/clk/clk-multiplier.c:48:16: sparse: sparse: Variable length array is used.
-   drivers/clk/clk-multiplier.c:141:17: sparse: sparse: Variable length array is used.
---
->> drivers/clk/clk-fractional-divider.c:89:17: sparse: sparse: Variable length array is used.
-   drivers/clk/clk-fractional-divider.c:90:17: sparse: sparse: Variable length array is used.
-   drivers/clk/clk-fractional-divider.c:146:25: sparse: sparse: Variable length array is used.
-   drivers/clk/clk-fractional-divider.c:147:25: sparse: sparse: Variable length array is used.
-   drivers/clk/clk-fractional-divider.c:195:25: sparse: sparse: Variable length array is used.
-   drivers/clk/clk-fractional-divider.c:196:25: sparse: sparse: Variable length array is used.
-   drivers/clk/clk-fractional-divider.c:205:17: sparse: sparse: Variable length array is used.
-   drivers/clk/clk-fractional-divider.c:206:17: sparse: sparse: Variable length array is used.
---
->> drivers/clocksource/mmio.c:66:27: sparse: sparse: Variable length array is used.
---
->> drivers/clocksource/timer-cadence-ttc.c:364:26: sparse: sparse: Variable length array is used.
---
->> drivers/clocksource/ingenic-timer.c:298:34: sparse: sparse: Variable length array is used.
-   drivers/clocksource/ingenic-timer.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-   include/linux/find.h:188:32: sparse: sparse: Variable length array is used.
---
->> drivers/base/regmap/regmap.c:1221:26: sparse: sparse: Variable length array is used.
---
-   drivers/base/regmap/regcache-rbtree.c: note: in included file (through include/linux/cpumask.h, include/linux/smp.h, arch/mips/include/asm/cpu-type.h, ...):
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
-   drivers/base/regmap/regcache-flat.c: note: in included file:
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
-   drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
-   drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
-   drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
->> drivers/clk/actions/owl-mux.c:42:17: sparse: sparse: Variable length array is used.
---
->> drivers/clk/actions/owl-divider.c:76:17: sparse: sparse: Variable length array is used.
---
-   drivers/gpio/gpiolib.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
-   drivers/gpio/gpiolib.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   include/linux/find.h:388:46: sparse: sparse: Variable length array is used.
-   include/linux/find.h:188:32: sparse: sparse: Variable length array is used.
-   drivers/gpio/gpiolib.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
---
->> drivers/gpio/gpio-nomadik.c:285:30: sparse: sparse: Variable length array is used.
-   drivers/gpio/gpio-nomadik.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
---
-   kernel/sched/build_utility.c: note: in included file:
-   kernel/sched/debug.c:624:17: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *[assigned] sd @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/debug.c:624:17: sparse:     expected struct sched_domain *[assigned] sd
-   kernel/sched/debug.c:624:17: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/debug.c:952:9: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct task_struct *tsk @@     got struct task_struct [noderef] __rcu *curr @@
-   kernel/sched/debug.c:952:9: sparse:     expected struct task_struct *tsk
-   kernel/sched/debug.c:952:9: sparse:     got struct task_struct [noderef] __rcu *curr
-   kernel/sched/debug.c:952:9: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct task_struct *tsk @@     got struct task_struct [noderef] __rcu *curr @@
-   kernel/sched/debug.c:952:9: sparse:     expected struct task_struct *tsk
-   kernel/sched/debug.c:952:9: sparse:     got struct task_struct [noderef] __rcu *curr
-   kernel/sched/build_utility.c: note: in included file:
-   kernel/sched/topology.c:115:56: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:115:56: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:115:56: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:134:60: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:134:60: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:134:60: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:157:20: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:157:20: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:157:20: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:468:19: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct perf_domain *pd @@     got struct perf_domain [noderef] __rcu *pd @@
-   kernel/sched/topology.c:468:19: sparse:     expected struct perf_domain *pd
-   kernel/sched/topology.c:468:19: sparse:     got struct perf_domain [noderef] __rcu *pd
-   kernel/sched/topology.c:638:49: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct sched_domain *parent @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:638:49: sparse:     expected struct sched_domain *parent
-   kernel/sched/topology.c:638:49: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:723:50: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct sched_domain *parent @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:723:50: sparse:     expected struct sched_domain *parent
-   kernel/sched/topology.c:723:50: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:731:55: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain [noderef] __rcu *[noderef] __rcu child @@     got struct sched_domain *[assigned] tmp @@
-   kernel/sched/topology.c:731:55: sparse:     expected struct sched_domain [noderef] __rcu *[noderef] __rcu child
-   kernel/sched/topology.c:731:55: sparse:     got struct sched_domain *[assigned] tmp
-   kernel/sched/topology.c:744:29: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *[assigned] tmp @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:744:29: sparse:     expected struct sched_domain *[assigned] tmp
-   kernel/sched/topology.c:744:29: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:749:20: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:749:20: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:749:20: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:770:13: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *[assigned] tmp @@     got struct sched_domain [noderef] __rcu *sd @@
-   kernel/sched/topology.c:770:13: sparse:     expected struct sched_domain *[assigned] tmp
-   kernel/sched/topology.c:770:13: sparse:     got struct sched_domain [noderef] __rcu *sd
-   kernel/sched/topology.c:932:70: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:932:70: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:932:70: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:961:59: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:961:59: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:961:59: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:1007:57: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:1007:57: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:1007:57: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:1009:25: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *sibling @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:1009:25: sparse:     expected struct sched_domain *sibling
-   kernel/sched/topology.c:1009:25: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:1017:55: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:1017:55: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:1017:55: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:1019:25: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *sibling @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:1019:25: sparse:     expected struct sched_domain *sibling
-   kernel/sched/topology.c:1019:25: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:1089:62: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sched_domain *sd @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:1089:62: sparse:     expected struct sched_domain *sd
-   kernel/sched/topology.c:1089:62: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:1193:40: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct sched_domain *child @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:1193:40: sparse:     expected struct sched_domain *child
-   kernel/sched/topology.c:1193:40: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:1331:9: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *[assigned] sd @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:1331:9: sparse:     expected struct sched_domain *[assigned] sd
-   kernel/sched/topology.c:1331:9: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:1680:43: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct sched_domain [noderef] __rcu *child @@     got struct sched_domain *child @@
-   kernel/sched/topology.c:1680:43: sparse:     expected struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:1680:43: sparse:     got struct sched_domain *child
-   kernel/sched/topology.c:2470:31: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain [noderef] __rcu *parent @@     got struct sched_domain *sd @@
-   kernel/sched/topology.c:2470:31: sparse:     expected struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:2470:31: sparse:     got struct sched_domain *sd
-   kernel/sched/topology.c:2591:57: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *[assigned] sd @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:2591:57: sparse:     expected struct sched_domain *[assigned] sd
-   kernel/sched/topology.c:2591:57: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:2612:56: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct sched_domain *child @@     got struct sched_domain [noderef] __rcu *child @@
-   kernel/sched/topology.c:2612:56: sparse:     expected struct sched_domain *child
-   kernel/sched/topology.c:2612:56: sparse:     got struct sched_domain [noderef] __rcu *child
-   kernel/sched/topology.c:2611:57: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *[assigned] sd @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:2611:57: sparse:     expected struct sched_domain *[assigned] sd
-   kernel/sched/topology.c:2611:57: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/topology.c:2666:57: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct sched_domain *[assigned] sd @@     got struct sched_domain [noderef] __rcu *parent @@
-   kernel/sched/topology.c:2666:57: sparse:     expected struct sched_domain *[assigned] sd
-   kernel/sched/topology.c:2666:57: sparse:     got struct sched_domain [noderef] __rcu *parent
-   kernel/sched/build_utility.c: note: in included file:
-   kernel/sched/build_utility.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, include/linux/smp.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   kernel/sched/build_utility.c: note: in included file:
-   kernel/sched/sched.h:2360:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
-   kernel/sched/sched.h:2360:25: sparse:    struct task_struct [noderef] __rcu *
-   kernel/sched/sched.h:2360:25: sparse:    struct task_struct *
---
->> drivers/clk/ingenic/cgu.c:95:42: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:97:42: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:102:27: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:224:18: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:227:18: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:231:26: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:345:26: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:389:24: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:423:31: sparse: sparse: Variable length array is used.
-   drivers/clk/ingenic/cgu.c:553:24: sparse: sparse: Variable length array is used.
---
-   kernel/irq/chip.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
-   kernel/irq/irq_sim.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
---
-   drivers/input/rmi4/rmi_driver.c: note: in included file (through include/linux/bitmap.h):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
-   drivers/input/rmi4/rmi_driver.c: note: in included file:
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
-   drivers/input/rmi4/rmi_driver.c: note: in included file (through include/linux/bitmap.h):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
---
->> drivers/crypto/intel/qat/qat_common/adf_gen4_vf_mig.c:338:31: sparse: sparse: Variable length array is used.
---
->> drivers/mfd/atmel-smc.c:56:32: sparse: sparse: Variable length array is used.
-   drivers/mfd/atmel-smc.c:57:32: sparse: sparse: Variable length array is used.
-   drivers/mfd/atmel-smc.c:120:27: sparse: sparse: Variable length array is used.
-   drivers/mfd/atmel-smc.c:159:25: sparse: sparse: Variable length array is used.
-   drivers/mfd/atmel-smc.c:198:25: sparse: sparse: Variable length array is used.
-   drivers/mfd/atmel-smc.c:236:25: sparse: sparse: Variable length array is used.
---
->> kernel/time/sched_clock.c:194:20: sparse: sparse: Variable length array is used.
---
->> drivers/mtd/nand/bbt.c:87:25: sparse: sparse: Variable length array is used.
-   drivers/mtd/nand/bbt.c:111:38: sparse: sparse: Variable length array is used.
-   drivers/mtd/nand/bbt.c:116:20: sparse: sparse: Variable length array is used.
-   drivers/mtd/nand/bbt.c:122:28: sparse: sparse: Variable length array is used.
---
-   drivers/opp/cpu.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
---
-   drivers/pci/pci.c:1157:36: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted pci_power_t [usertype] current_state @@     got int @@
-   drivers/pci/pci.c:1157:36: sparse:     expected restricted pci_power_t [usertype] current_state
-   drivers/pci/pci.c:1157:36: sparse:     got int
-   drivers/pci/pci.c:1336:15: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted pci_power_t [assigned] [usertype] state @@     got int @@
-   drivers/pci/pci.c:1336:15: sparse:     expected restricted pci_power_t [assigned] [usertype] state
-   drivers/pci/pci.c:1336:15: sparse:     got int
-   drivers/pci/pci.c:1338:50: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1338:69: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1391:28: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted pci_power_t [usertype] current_state @@     got int @@
-   drivers/pci/pci.c:1391:28: sparse:     expected restricted pci_power_t [usertype] current_state
-   drivers/pci/pci.c:1391:28: sparse:     got int
-   drivers/pci/pci.c:1481:16: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1481:35: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1481:52: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1481:70: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1506:15: sparse: sparse: invalid assignment: |=
-   drivers/pci/pci.c:1506:15: sparse:    left side has type unsigned short
-   drivers/pci/pci.c:1506:15: sparse:    right side has type restricted pci_power_t
-   drivers/pci/pci.c:1518:28: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted pci_power_t [usertype] current_state @@     got int @@
-   drivers/pci/pci.c:1518:28: sparse:     expected restricted pci_power_t [usertype] current_state
-   drivers/pci/pci.c:1518:28: sparse:     got int
-   drivers/pci/pci.c:1535:13: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1535:21: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1537:18: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1537:26: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1560:13: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1560:22: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:1865:38: sparse: sparse: array of flexible structures
-   drivers/pci/pci.c:2343:44: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:2662:60: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:2663:30: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:2834:20: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:2834:38: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:2857:49: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:2857:67: sparse: sparse: restricted pci_power_t degrades to integer
-   drivers/pci/pci.c:4486:13: sparse: sparse: invalid assignment: |=
-   drivers/pci/pci.c:4486:13: sparse:    left side has type unsigned short
-   drivers/pci/pci.c:4486:13: sparse:    right side has type restricted pci_power_t
-   drivers/pci/pci.c:4491:13: sparse: sparse: invalid assignment: |=
-   drivers/pci/pci.c:4491:13: sparse:    left side has type unsigned short
-   drivers/pci/pci.c:4491:13: sparse:    right side has type restricted pci_power_t
->> drivers/pci/pci.c:5983:19: sparse: sparse: Variable length array is used.
-   drivers/pci/pci.c:1112:24: sparse: sparse: incorrect type in return expression (different base types) @@     expected int @@     got restricted pci_power_t [usertype] @@
-   drivers/pci/pci.c:1112:24: sparse:     expected int
-   drivers/pci/pci.c:1112:24: sparse:     got restricted pci_power_t [usertype]
-   drivers/pci/pci.c:1112:24: sparse: sparse: incorrect type in return expression (different base types) @@     expected int @@     got restricted pci_power_t [usertype] @@
-   drivers/pci/pci.c:1112:24: sparse:     expected int
-   drivers/pci/pci.c:1112:24: sparse:     got restricted pci_power_t [usertype]
-   drivers/pci/pci.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
---
-   drivers/perf/xgene_pmu.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-   include/linux/find.h:388:46: sparse: sparse: Variable length array is used.
->> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
---
->> drivers/clk/renesas/rcar-gen3-cpg.c:287:22: sparse: sparse: Variable length array is used.
---
->> drivers/clk/renesas/rcar-gen4-cpg.c:400:22: sparse: sparse: Variable length array is used.
---
-   drivers/mtd/nand/raw/nand_macronix.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
->> drivers/clk/spacemit/ccu_mix.c:168:16: sparse: sparse: Variable length array is used.
-   drivers/clk/spacemit/ccu_mix.c:193:16: sparse: sparse: Variable length array is used.
---
->> drivers/clk/sprd/mux.c:56:17: sparse: sparse: Variable length array is used.
---
->> drivers/clk/sprd/div.c:60:17: sparse: sparse: Variable length array is used.
---
->> drivers/clk/sprd/pll.c:77:24: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:116:13: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:120:34: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:121:31: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:124:14: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:125:32: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:127:24: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:128:21: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:129:32: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:131:24: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:164:16: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:170:16: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:181:16: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:186:16: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:192:16: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:198:16: sparse: sparse: Variable length array is used.
-   drivers/clk/sprd/pll.c:210:16: sparse: sparse: Variable length array is used.
---
->> drivers/pci/pcie/bwctrl.c:94:26: sparse: sparse: Variable length array is used.
---
->> drivers/pinctrl/renesas/core.c:884:26: sparse: sparse: Variable length array is used.
-   drivers/pinctrl/renesas/core.c:942:34: sparse: sparse: Variable length array is used.
-   drivers/pinctrl/renesas/core.c:1241:34: sparse: sparse: Variable length array is used.
---
->> drivers/pinctrl/renesas/pinctrl.c:492:51: sparse: sparse: Variable length array is used.
-   drivers/pinctrl/renesas/pinctrl.c:527:17: sparse: sparse: Variable length array is used.
---
-   drivers/pci/controller/pcie-xilinx-dma-pl.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
-   drivers/pci/controller/pcie-xilinx-dma-pl.c: note: in included file (through include/linux/cpumask.h, arch/mips/include/asm/processor.h, arch/mips/include/asm/thread_info.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
---
-   drivers/pci/controller/dwc/pcie-designware-host.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, include/linux/smp.h, ...):
-   include/linux/find.h:69:31: sparse: sparse: Variable length array is used.
-   drivers/pci/controller/dwc/pcie-designware-host.c: note: in included file (through include/linux/cpumask.h, include/linux/smp.h, arch/mips/include/asm/cpu-type.h, ...):
-   include/linux/bitmap.h:488:25: sparse: sparse: Variable length array is used.
->> include/linux/bitmap.h:504:26: sparse: sparse: Variable length array is used.
+>
+>                                 node = mempolicy_slab_node(); 
+>                 }
+>         }
+> #endif
 
-vim +209 include/linux/find.h
-
-c56f97c5c71f17 include/linux/find.h              Yury Norov [NVIDIA] 2025-06-19   48  
-19de85ef574c3a include/asm-generic/bitops/find.h Akinobu Mita        2011-05-26   49  #ifndef find_next_bit
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29   50  /**
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29   51   * find_next_bit - find the next set bit in a memory region
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29   52   * @addr: The address to base the search on
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29   53   * @size: The bitmap size in bits
-6d7131bd52b3e0 include/linux/find.h              Anna-Maria Behnsen  2022-04-11   54   * @offset: The bitnumber to start searching at
-ec778edf97dcaa include/asm-generic/bitops/find.h Cody P Schafer      2013-11-12   55   *
-ec778edf97dcaa include/asm-generic/bitops/find.h Cody P Schafer      2013-11-12   56   * Returns the bit number for the next set bit
-ec778edf97dcaa include/asm-generic/bitops/find.h Cody P Schafer      2013-11-12   57   * If no bits are set, returns @size.
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29   58   */
-fda1dd3c54ef3c include/linux/find.h              Yury Norov          2024-07-18   59  static __always_inline
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   60  unsigned long find_next_bit(const unsigned long *addr, unsigned long size,
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   61  			    unsigned long offset)
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   62  {
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   63  	if (small_const_nbits(size)) {
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   64  		unsigned long val;
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   65  
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   66  		if (unlikely(offset >= size))
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   67  			return size;
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   68  
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  @69  		val = *addr & GENMASK(size - 1, offset);
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   70  		return val ? __ffs(val) : size;
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   71  	}
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   72  
-e79864f3164c57 include/linux/find.h              Yury Norov          2022-09-14   73  	return _find_next_bit(addr, size, offset);
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   74  }
-19de85ef574c3a include/asm-generic/bitops/find.h Akinobu Mita        2011-05-26   75  #endif
-c7f612cdf091de include/asm-generic/bitops/find.h Akinobu Mita        2006-03-26   76  
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   77  #ifndef find_next_and_bit
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   78  /**
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   79   * find_next_and_bit - find the next set bit in both memory regions
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   80   * @addr1: The first address to base the search on
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   81   * @addr2: The second address to base the search on
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   82   * @size: The bitmap size in bits
-6d7131bd52b3e0 include/linux/find.h              Anna-Maria Behnsen  2022-04-11   83   * @offset: The bitnumber to start searching at
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   84   *
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   85   * Returns the bit number for the next set bit
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   86   * If no bits are set, returns @size.
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   87   */
-fda1dd3c54ef3c include/linux/find.h              Yury Norov          2024-07-18   88  static __always_inline
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   89  unsigned long find_next_and_bit(const unsigned long *addr1,
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06   90  		const unsigned long *addr2, unsigned long size,
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   91  		unsigned long offset)
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   92  {
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   93  	if (small_const_nbits(size)) {
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   94  		unsigned long val;
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   95  
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   96  		if (unlikely(offset >= size))
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   97  			return size;
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   98  
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06   99  		val = *addr1 & *addr2 & GENMASK(size - 1, offset);
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  100  		return val ? __ffs(val) : size;
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  101  	}
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  102  
-e79864f3164c57 include/linux/find.h              Yury Norov          2022-09-14  103  	return _find_next_and_bit(addr1, addr2, size, offset);
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  104  }
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06  105  #endif
-0ade34c37012ea include/asm-generic/bitops/find.h Clement Courbet     2018-02-06  106  
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  107  #ifndef find_next_andnot_bit
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  108  /**
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  109   * find_next_andnot_bit - find the next set bit in *addr1 excluding all the bits
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  110   *                        in *addr2
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  111   * @addr1: The first address to base the search on
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  112   * @addr2: The second address to base the search on
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  113   * @size: The bitmap size in bits
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  114   * @offset: The bitnumber to start searching at
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  115   *
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  116   * Returns the bit number for the next set bit
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  117   * If no bits are set, returns @size.
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  118   */
-fda1dd3c54ef3c include/linux/find.h              Yury Norov          2024-07-18  119  static __always_inline
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  120  unsigned long find_next_andnot_bit(const unsigned long *addr1,
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  121  		const unsigned long *addr2, unsigned long size,
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  122  		unsigned long offset)
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  123  {
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  124  	if (small_const_nbits(size)) {
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  125  		unsigned long val;
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  126  
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  127  		if (unlikely(offset >= size))
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  128  			return size;
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  129  
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  130  		val = *addr1 & ~*addr2 & GENMASK(size - 1, offset);
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  131  		return val ? __ffs(val) : size;
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  132  	}
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  133  
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  134  	return _find_next_andnot_bit(addr1, addr2, size, offset);
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  135  }
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  136  #endif
-90d482908eedd5 include/linux/find.h              Valentin Schneider  2022-10-03  137  
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  138  #ifndef find_next_or_bit
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  139  /**
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  140   * find_next_or_bit - find the next set bit in either memory regions
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  141   * @addr1: The first address to base the search on
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  142   * @addr2: The second address to base the search on
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  143   * @size: The bitmap size in bits
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  144   * @offset: The bitnumber to start searching at
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  145   *
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  146   * Returns the bit number for the next set bit
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  147   * If no bits are set, returns @size.
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  148   */
-fda1dd3c54ef3c include/linux/find.h              Yury Norov          2024-07-18  149  static __always_inline
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  150  unsigned long find_next_or_bit(const unsigned long *addr1,
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  151  		const unsigned long *addr2, unsigned long size,
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  152  		unsigned long offset)
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  153  {
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  154  	if (small_const_nbits(size)) {
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  155  		unsigned long val;
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  156  
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  157  		if (unlikely(offset >= size))
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  158  			return size;
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  159  
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  160  		val = (*addr1 | *addr2) & GENMASK(size - 1, offset);
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  161  		return val ? __ffs(val) : size;
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  162  	}
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  163  
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  164  	return _find_next_or_bit(addr1, addr2, size, offset);
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  165  }
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  166  #endif
-1470afefc3c42d include/linux/find.h              Dave Chinner        2023-03-15  167  
-19de85ef574c3a include/asm-generic/bitops/find.h Akinobu Mita        2011-05-26  168  #ifndef find_next_zero_bit
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  169  /**
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  170   * find_next_zero_bit - find the next cleared bit in a memory region
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  171   * @addr: The address to base the search on
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  172   * @size: The bitmap size in bits
-6d7131bd52b3e0 include/linux/find.h              Anna-Maria Behnsen  2022-04-11  173   * @offset: The bitnumber to start searching at
-ec778edf97dcaa include/asm-generic/bitops/find.h Cody P Schafer      2013-11-12  174   *
-ec778edf97dcaa include/asm-generic/bitops/find.h Cody P Schafer      2013-11-12  175   * Returns the bit number of the next zero bit
-ec778edf97dcaa include/asm-generic/bitops/find.h Cody P Schafer      2013-11-12  176   * If no bits are zero, returns @size.
-d852a6afd91fc9 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  177   */
-fda1dd3c54ef3c include/linux/find.h              Yury Norov          2024-07-18  178  static __always_inline
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  179  unsigned long find_next_zero_bit(const unsigned long *addr, unsigned long size,
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  180  				 unsigned long offset)
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  181  {
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  182  	if (small_const_nbits(size)) {
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  183  		unsigned long val;
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  184  
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  185  		if (unlikely(offset >= size))
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  186  			return size;
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  187  
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  188  		val = *addr | ~GENMASK(size - 1, offset);
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  189  		return val == ~0UL ? size : ffz(val);
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  190  	}
-277a20a498d307 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  191  
-e79864f3164c57 include/linux/find.h              Yury Norov          2022-09-14  192  	return _find_next_zero_bit(addr, size, offset);
-5c88af59f9abc2 include/asm-generic/bitops/find.h Yury Norov          2021-05-06  193  }
-19de85ef574c3a include/asm-generic/bitops/find.h Akinobu Mita        2011-05-26  194  #endif
-c7f612cdf091de include/asm-generic/bitops/find.h Akinobu Mita        2006-03-26  195  
-b7ec62d7ee0f0b include/asm-generic/bitops/find.h Yury Norov          2021-08-14  196  #ifndef find_first_bit
-708ff2a0097b02 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  197  /**
-708ff2a0097b02 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  198   * find_first_bit - find the first set bit in a memory region
-708ff2a0097b02 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  199   * @addr: The address to start the search at
-ec778edf97dcaa include/asm-generic/bitops/find.h Cody P Schafer      2013-11-12  200   * @size: The maximum number of bits to search
-708ff2a0097b02 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  201   *
-708ff2a0097b02 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  202   * Returns the bit number of the first set bit.
-ec778edf97dcaa include/asm-generic/bitops/find.h Cody P Schafer      2013-11-12  203   * If no bits are set, returns @size.
-708ff2a0097b02 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  204   */
-fda1dd3c54ef3c include/linux/find.h              Yury Norov          2024-07-18  205  static __always_inline
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  206  unsigned long find_first_bit(const unsigned long *addr, unsigned long size)
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  207  {
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  208  	if (small_const_nbits(size)) {
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06 @209  		unsigned long val = *addr & GENMASK(size - 1, 0);
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  210  
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  211  		return val ? __ffs(val) : size;
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  212  	}
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  213  
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  214  	return _find_first_bit(addr, size);
-2cc7b6a44ac21d include/asm-generic/bitops/find.h Yury Norov          2021-05-06  215  }
-b7ec62d7ee0f0b include/asm-generic/bitops/find.h Yury Norov          2021-08-14  216  #endif
-708ff2a0097b02 include/asm-generic/bitops/find.h Akinobu Mita        2010-09-29  217  
+Otherwise LGTM.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Harry / Hyeonggon
 
