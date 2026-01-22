@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA33C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB038C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:32:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A782B6B0110; Thu, 22 Jan 2026 03:16:09 -0500 (EST)
+	id 0F8A86B0112; Thu, 22 Jan 2026 03:32:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A25E06B0111; Thu, 22 Jan 2026 03:16:09 -0500 (EST)
+	id 0D1686B0113; Thu, 22 Jan 2026 03:32:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 907AC6B0112; Thu, 22 Jan 2026 03:16:09 -0500 (EST)
+	id EF52B6B0114; Thu, 22 Jan 2026 03:32:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B3616B0110
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:16:09 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0385613965B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:16:08 +0000 (UTC)
-X-FDA: 84358892058.03.EC56C83
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7BAB01C000A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:16:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="T//lM8Gz";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SkLfFGUb;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FejGHDEr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Vmkm9l5p;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769069767; a=rsa-sha256;
-	cv=none;
-	b=nhoyuo0YQMKw6ZbvTLSGBZylJggCFm2TR7HzweXF44ZA0v7JdkPyE7+ZTNDwdYFKoJ6Xse
-	8uPuWWWBAK+y/Bx1p8Vs4qp9SJuz4kbaU7HkO4XEQeh9SOxmrw4E8QbkqT+cNbKXLqCRRu
-	+tEZe4dZ9x3q35EQmLKiOfZf1b04MUQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="T//lM8Gz";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SkLfFGUb;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FejGHDEr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Vmkm9l5p;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by kanga.kvack.org (Postfix) with ESMTP id DEE6E6B0112
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:32:47 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81C26B692D
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:32:47 +0000 (UTC)
+X-FDA: 84358933974.18.7E79CDE
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DDB4E100007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:32:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CyOHD67W;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vF8bn8e1;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jd36sMSt;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9Jwk37qx;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769069767;
+	s=arc-20220608; t=1769070765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zw7POV/9HzgQ7yJajz8n3KLlnlgcqjnTg/uCdgtJ8J0=;
-	b=OVCNc0teOM4B4+FXSMmFGqaf3Zd1Vezc24uTsLsMKLyM2nKNVU5iY4wA7wNO6gm+B1nqmX
-	hbXKCGqktrkljVqDm1QcvGIRR/GoinSbdKBzku9G99IaV8wfGCuml2NL4MH6Unl0WF4ZgL
-	KZYe1qwi0rR9zWTaArTGan73J5z2Rog=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
+	b=UBR78Vu/pHaiPaow9kfllNuE9NFCo9scqVxAjI2FL3OF4IaXvpW4MPNg3UJhoGP4JeuV/d
+	El6nL0uoWIaxnuQGqa3UIEifYfLWAxVmyEHe9bCGsbXJPKxu6zsH/134F7r32dG2oWJWgZ
+	pJGIFnhU/h/rCYgGnG9mxAYtVInaWH8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CyOHD67W;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vF8bn8e1;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jd36sMSt;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9Jwk37qx;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769070765; a=rsa-sha256;
+	cv=none;
+	b=sw4lqEPSJiK0lgKzF9IFIS7nKjz39lvmeXS6S10eSZ27WpnfVBaNGppgWY7QEEbc7ivK5b
+	NZmJwKwuSE95AAydvRNEUpv1oj8OZzkb78poRngGmF3CMKjAkY/rI7BSHVQJXWsmQJ1Vcw
+	/B1dY80JYI4vrAe+OzWoMYpkHYu809I=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D36A65BCC2;
-	Thu, 22 Jan 2026 08:16:04 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E9126336AE;
+	Thu, 22 Jan 2026 08:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769069765; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769070763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zw7POV/9HzgQ7yJajz8n3KLlnlgcqjnTg/uCdgtJ8J0=;
-	b=T//lM8GzKt7TmLJv3z4XB9qZ3ycAsbi8HyMzzLDnR6F0pd3QpDZsYQ7HKU6b/UkLm046VO
-	dujoCN4qfZl8xkznzqduiS+4aJwS7kyO+z9YGgMf05/3+K3dg3AZjSF3fx33TUsGYC3Ozt
-	wdzF9IidZiiNXx2Pt9A/P/xLeEm9pT8=
+	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
+	b=CyOHD67WOgxxhwxs9wUWMufZdLYjY5wfGu2utrAxoN9E4dGiX3FfaDJjf20rn2IzoudVBY
+	7NOqqUJLKGrvBEtm3KWFFVkiNsNm3wvht3MUr1ODsEg0KBR6PvMFba9jo5hffkXsoPl1rG
+	BnlzYPy8A330oi+32pZRNulAsJq9AtI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769069765;
+	s=susede2_ed25519; t=1769070763;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zw7POV/9HzgQ7yJajz8n3KLlnlgcqjnTg/uCdgtJ8J0=;
-	b=SkLfFGUb1iD++h8+I4L4mBaAU7XCVY4WCbZIFB/GeLiOfJDmsuFPOzVCLtgRe01GiOVaCs
-	MxfRyhegQjfZWPAg==
+	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
+	b=vF8bn8e1pbOzUIJ+ghZ6iRRNZOzroHL66EqPkNVYvS5qE5OFwwn7g07FmOnC9MLZ4I3XrL
+	fM189b3zWyDAn+BA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769069764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769070762; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zw7POV/9HzgQ7yJajz8n3KLlnlgcqjnTg/uCdgtJ8J0=;
-	b=FejGHDErbHK1DFmtGvDb1InlbgjTaNK7blqk+p7ezadmAd4O63JhQIRdX6+T+A4i99dJFt
-	Q4uJUE/W8/Vs0Gegs3hvRadCvwiggfbipOCxC+iJYF3WeoOKMsPLqOwH5SFltoIaMgy/NZ
-	iC+aMruJ7AmCCSRnyp2lOlVcy7dkS0E=
+	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
+	b=jd36sMStWaYrKXoUCSPdR0AfhzdGrbdk556t0F1tavZ5KxmyqYYwbi6m+CXOYnveXxM+KN
+	RoQI398eFm/THdd2HzIIveIZVQGl/AhqnjOgDd4VKuuLzBX319DJ6hK2dMBYHgykMrH9xW
+	4YWSSacJnKkeBMzZ82FBE8XsqwHjC5w=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769069764;
+	s=susede2_ed25519; t=1769070762;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zw7POV/9HzgQ7yJajz8n3KLlnlgcqjnTg/uCdgtJ8J0=;
-	b=Vmkm9l5pfjU2NjrbUbtRw0JFxfMfy2DvcRKHBsdhe1h/9M1BTacdvF8b/13m2kRjmlQIf5
-	K/OnrsIBtDF5WaDg==
+	bh=0aOmUmdAgwAgA81uoRZYrgnrXyhYcc/zOlOcDMoVAz8=;
+	b=9Jwk37qx3lfbSGnOl/G3QxmjEfxUM7i1Plr4WZtcU9BuFqg+UXc/eF057LXbX0X024bFYc
+	50aAPzrjgXKjdMBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B20D33EA63;
-	Thu, 22 Jan 2026 08:16:04 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BA1193EA63;
+	Thu, 22 Jan 2026 08:32:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DJObKcTccWlZWgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:16:04 +0000
-Message-ID: <3aa8d400-fa6a-48bd-b9f2-3bd6f37e523d@suse.cz>
-Date: Thu, 22 Jan 2026 09:16:04 +0100
+	id CcwWLargcWm/aQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:32:42 +0000
+Message-ID: <317f1725-5fc8-41bf-95cd-4f85dd1eb137@suse.cz>
+Date: Thu, 22 Jan 2026 09:32:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/21] slab: simplify kmalloc_nolock()
+Subject: Re: [PATCH v3 17/21] slab: refill sheaves from all nodes
 Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+To: Hao Li <hao.li@linux.dev>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>,
  Uladzislau Rezki <urezki@gmail.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
@@ -126,8 +126,8 @@ Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
  linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com
 References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-14-5595cb000772@suse.cz>
- <aXGC_JRmz3ICjMHW@hyeyoo>
+ <20260116-sheaves-for-all-v3-17-5595cb000772@suse.cz>
+ <gmpxnzifhxamwnngr6holbcfdd42fvuq2xtqrqvdz75zv6fb57@hxbmcgfxtuko>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -168,18 +168,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <aXGC_JRmz3ICjMHW@hyeyoo>
+In-Reply-To: <gmpxnzifhxamwnngr6holbcfdd42fvuq2xtqrqvdz75zv6fb57@hxbmcgfxtuko>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DDB4E100007
+X-Stat-Signature: w4c1moftf93n1qhx4ion1shcrhy13utp
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7BAB01C000A
-X-Stat-Signature: d5o19bitiq5qtfp6gyrjc3kggt6gfzdy
-X-HE-Tag: 1769069766-881072
-X-HE-Meta: U2FsdGVkX1/TdNZ0kuy7leN9lrWEq9cWuMjBkCLSLSrjH/c6E/kmC0XtskvRPeaoiwph66tYMCPTYWdr4vcOgT+GboJKqbGpFhc6fss5h4AZNCa2tK8t+m75J46akajJXVYLtA3l5iuLKwiHp1cnaXiNVL99YHIGHUfKSCNINZ5HKZkvQAlGNkjkKwEMVZ9xf0QXSaHSFxLFNxZTVjTpwfFb6AgmhSuiKRHEI6ATGAK6efGQEab/ityGL1OEe/BXOVx3YTdas1nNaXuGj4jHH9IVR6a9pAIUB0mnUcCFCP/GkNco/TckPoJqOKgRcuKVb/PDBPA99qBnngSIR7g13m8HZkC+qdBL1L8GbxTi0EW4+jMk2G1VZNHzBUuGXvgg++KpQ4oHZn2LVSNlJYBVe42Lsv/YGZiDLRyV0McV/BTvBphEF5EN+Q10lJJ1KTpm5Za5fIVRM1ppPwtI4wnTMel8uEGExNr0dXJszqbjR3qHrB0APOR6UosnyGc9DaR3V2WwHRa2YWZiEgHGTAEIONF3gP1jvE6fh7Z9yMPXIC33BXnyfI9k5UYJ2/5B4whEw30tsKUSCLl5Esxdf8b0VfPNYztQUuiaP7K3l3+I6A0KI6RI4sIi8H7ObDBTNgD+VdpUvkuq+HgumXoqIJQOCOUdxL2RDHJVm/r481zbolTci8yQCuQbkyVaD9QClLJlSwf93eKiWo76DOXyhdnFYCeAB2+BvzhMVcOWU5r9ozXGtsaGG7ZeSx9pkRbMnEXPUBHTw8lNo8J1t1nj9Kkg765eVp+g5A4/7IRpC/ETR7voMCkKa1nALVJAbLoy9tsAwBMeQkYGYOnNnhfq17jwrUhP5+fOYmb17b4ThEAng+paGQwxKLpTQSdENSfRfvYM3sFEF6EPtZocDEs7vmv/zXumi6aTlYnCDThMKIJtAo3GTZ8s5wWhS443hTNIdzhkfkGEVfuv/JEjIG+AP6M
- Y5YZtgdy
- WQyhR1PiLZvTS0n5kjJq7g4VBS3rn8MsEgOdFEV23VGfaSV2HFo7kFBkDjOp8hnjqAndGYhURxaV2ywo8W8FmhOmpX1fWAQBG8AZkYkKLW9IXR4GXFp2ZXIQOz+0qenTtJDYA88bK7G6IThzU0OrM9UYHGXirnxVL6ciI8ZLJcz3W6DDtKHhXj1as/ZyTQZKl94GsHeqhlhx9ybNyUU2DVtMJye3tqCvYlSnzCNNy8BtWEQatO3yG5kkmkYwtnWxLzl2wUnz3H3P4seUjWhlXjXT5kxZWXUCCYzs1j3e4tb1rwaTOmEph2hqOKjPjQT/jjNKoTgs//kMJCc3V/NNw6HciwasjhU/joPrSvcHhAvouT58=
+X-HE-Tag: 1769070764-602920
+X-HE-Meta: U2FsdGVkX1/goyCMS7vYsvTJGtv90d5PRvz9zrm6r8j5MZk40PlUfqRRXhaOhgh72BSFPN4wpdMTXWByocqMoptuBu+CbB1efoKhkjvDgkUyANK/qT3fvCjf6iIh7IAPLdrOas/OMarLiGMy0ODppUPMcLGwMMBfDpo2YqJNvcsBmwnUvu0GX59sOtgPMrFeiFmk6++1cCYwi3IoZRfz1Y5VHrquSArzVL76RQ38J84OwYxxRbkvC4fFZKCYn3Lz2fOi7UoxDc4EQmoBra9YmVpSFqcJl4g/HYQrTDM/v/AbbM7ZzlSk7jio/Pi9R0yVm27eGPhSLsCOCw9uB0jxlG2yAse1M5HZgxuP/JYBOMcEaF9oVBx6+KDOob7vMb9CgLQeHR/tKsABisIhNVXkCRUiE0KnVj2XKwCZSLeavFKzu35WLuAtMIOJoNa/CWIMm4ItxAhS5GpAY4T7RvaeLXEMJK1d+7wSvtnOnnXMtgREjmpIR5kdB4kx5+0TQmbXtdEnGqq9IzxNstcWbw61peoH7uMh8+NHB8/4E/1pEipgmV9nu17/295By9Vbere8kWAHjsLwl7XKSgaALRFo+KIDYvvi+yQlq3NhkbZLyuaOu0V9vG7fBOxCL0pMw+CI4h8TTyfl1Di53EeCgROOYdijTDfvjkuN70IjSFlhezUIXF4jDIxhuIiQ1UhIt/OrO87ZhtY6AKC+85EXO/sgf5vkV5PzIEv1/YEAcFuei9K07e4BBrWAk3EMD2Sjapf/RX7Fc8m/0ogbzyQ+ZQjVi5+kfd9JHJd41fvXizgBqYw2l0oC8GyHjHdMH9AosfO3EmUWjCPfhagnF81oMKhRo+xN5tBi5CDfXqTOAg1UezeewUo0a02CkMaI7TJmoRBboMVH7mW1kl9oU5ed5aNIqUlHfCbLEZ4auCjYMdqjDCRZTSDLHa+vYP0e/mU8sbnBEAQoXVBLnM7xI2VY+An
+ HYrbhrcK
+ q195MbB1mBhhj4KQcWOY2md9tORoJwtcaaqCWwkLZyjHYmIblkwA4qUDWWQ+CMkO2QR4FYMItMgyl3SCNf4YTe+Hy/OIwfp11P9czyhF4EGye++wzfE5x7E7FbMwZ2+muFK5woJZEhnGxNwKOuhzf214ha9V2axq+BzpN5HN0x9FXnS4lXM1caLoT8L12SgLVffKJSva/eag5INW5FY4yrN5QnOM0Z4XARPGHg0bWuY6OncOf0JXSVotBQT4l0W7ANsWr7jUeQkLN6uDDsa6hXSCw9/MJpo4l+Q29
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,87 +187,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/22/26 02:53, Harry Yoo wrote:
-> On Fri, Jan 16, 2026 at 03:40:34PM +0100, Vlastimil Babka wrote:
->> The kmalloc_nolock() implementation has several complications and
->> restrictions due to SLUB's cpu slab locking, lockless fastpath and
->> PREEMPT_RT differences. With cpu slab usage removed, we can simplify
->> things:
->> 
->> - relax the PREEMPT_RT context checks as they were before commit
->>   a4ae75d1b6a2 ("slab: fix kmalloc_nolock() context check for
->>   PREEMPT_RT") and also reference the explanation comment in the page
->>   allocator
->> 
->> - the local_lock_cpu_slab() macros became unused, remove them
->> 
->> - we no longer need to set up lockdep classes on PREEMPT_RT
->> 
->> - we no longer need to annotate ___slab_alloc as NOKPROBE_SYMBOL
->>   since there's no lockless cpu freelist manipulation anymore
->> 
->> - __slab_alloc_node() can be called from kmalloc_nolock_noprof()
->>   unconditionally. It can also no longer return EBUSY. But trylock
->>   failures can still happen so retry with the larger bucket if the
->>   allocation fails for any reason.
->> 
->> Note that we still need __CMPXCHG_DOUBLE, because while it was removed
->> we don't use cmpxchg16b on cpu freelist anymore, we still use it on
->> slab freelist, and the alternative is slab_lock() which can be
->> interrupted by a nmi. Clarify the comment to mention it specifically.
->> 
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
+On 1/22/26 05:58, Hao Li wrote:
+> Just a small note: I noticed that the local_node variable is unused. It seems
+> the intention was to skip local_node in __refill_objects_any(), since it had
+> already been attempted in __refill_objects_node().
+
+Ah, I'll remove it. Such skip wouldn't likely do much.
+
+> Everything else looks good.
 > 
-> What a nice cleanup!
-> 
-> Looks good to me,
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Reviewed-by: Hao Li <hao.li@linux.dev>
 
 Thanks!
-
-> with a nit below.
-> 
->>  mm/slab.h |   1 -
->>  mm/slub.c | 144 +++++++++++++-------------------------------------------------
->>  2 files changed, 29 insertions(+), 116 deletions(-)
->> 
->> diff --git a/mm/slab.h b/mm/slab.h
->> index 4efec41b6445..e9a0738133ed 100644
->> --- a/mm/slab.h
->> +++ b/mm/slab.h
->> @@ -5268,10 +5196,11 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
->>  	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
->>  		/*
->>  		 * kmalloc_nolock() is not supported on architectures that
->> -		 * don't implement cmpxchg16b, but debug caches don't use
->> -		 * per-cpu slab and per-cpu partial slabs. They rely on
->> -		 * kmem_cache_node->list_lock, so kmalloc_nolock() can
->> -		 * attempt to allocate from debug caches by
->> +		 * don't implement cmpxchg16b and thus need slab_lock()
->> +		 * which could be preempted by a nmi.
-> 
-> nit: I think now this limitation can be removed because the only slab
-> lock used in the allocation path is get_partial_node() ->
-> __slab_update_freelist(), but it is always used under n->list_lock.
-> 
-> Being preempted by a NMI while holding the slab lock is fine because
-> NMI context should fail to acquire n->list_lock and bail out.
-
-Hmm but somebody might be freeing with __slab_free() without taking the
-n->list_lock (slab is on partial list and expected to remain there after the
-free), then there's a NMI and the allocation can take n->list_lock fine?
-
-> But no hurry on this, it's probably not important enough to delay
-> this series :)
-> 
->> +		 * But debug caches don't use that and only rely on
->> +		 * kmem_cache_node->list_lock, so kmalloc_nolock() can attempt
->> +		 * to allocate from debug caches by
->>  		 * spin_trylock_irqsave(&n->list_lock, ...)
->>  		 */
->>  		return NULL;
->>
-> 
-
 
