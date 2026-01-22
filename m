@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFDAFD3EE74
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 15:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33AF9D3EE72
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 15:19:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 123546B020B; Thu, 22 Jan 2026 10:19:01 -0500 (EST)
+	id 4D74D6B020F; Thu, 22 Jan 2026 10:19:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E41B6B020C; Thu, 22 Jan 2026 10:19:01 -0500 (EST)
+	id 497A26B020E; Thu, 22 Jan 2026 10:19:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01BA56B020D; Thu, 22 Jan 2026 10:19:00 -0500 (EST)
+	id 3AD896B020F; Thu, 22 Jan 2026 10:19:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E2FE56B020B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:19:00 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 769E81A03F6
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:19:00 +0000 (UTC)
-X-FDA: 84359957640.28.919D0A3
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C87F6B020C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:19:02 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D1C3557CED
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:19:01 +0000 (UTC)
+X-FDA: 84359957682.22.5D8CFF1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 04F3918000A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:18:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m3j50Q62;
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 424C81C0008
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:19:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="F2B/t0Bt";
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769095139;
+	s=arc-20220608; t=1769095140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=u52WVtggwESo+ngof7T5gD1m76nZHMpw95jSdX5u/iQ=;
-	b=VY7IPHFpip8K9YYTNxpW8fUZMDPutwDA8Oz4vO/eJEVFL4lUxV4A4zzLPr3dl/3d2B/izB
-	09EWfkNNivn4K2iYzjLXgMkgJUe+5Q2hXFicQlM5LuiiGma40d5UVV9OLHwnyM9kI2AS08
-	yUlqGYsZRZz5EzNi6QNye7KE7961RtQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WCc/se3vP6IVUp9H5A8JAvUqt3vuVhT9ES2XwN2NrVQ=;
+	b=WCm4I+u76r82HMH7MkDEmR6fpp/tJcj7W23xlyd9n8fJpbIZBMx1tPhHOFxvOgt8Jnf1DI
+	RE5u2kJ7srq8qEv5APwFPny0I8CcqBZYsWV7CHp0qzM4Bw2RT7vuDN7YHCF8N4ZWYIIb4y
+	Ga66Xx74eGWC2Phq3Pxohw2uz+gR9hg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m3j50Q62;
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="F2B/t0Bt";
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769095139; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769095140; a=rsa-sha256;
 	cv=none;
-	b=bLs8/udPF9X9dPA8Rz1nr9KYzvOUp2QBvPn3XZB4Ac7rZwFq8OcPX1QkAshWE0P2eJMt2l
-	/IRo2fL22L4+m3kAhMMFmZuF4aeMv0gV2M+7nuewGmJNbOvYXzOBfXIKHQjl3d+vHIFVoG
-	hTMwG7gnvn7oFyOM3VEyYFCiuEm3MjY=
+	b=MBvYVSeoWk0PWuEelGFj6R+SIsG0NUjUR10+kRHndump4NzVCTWMirA5RCU+ViC+r+S9pJ
+	fke2W+2Fq6fNCaTpowYSmj5H9C953r3BP3D6xd2OAhqg91nh9B4BqMo+YDtKEyQMp5LLJH
+	B4R+QviLIYXEeRwVczt/PKUPIAfyEsM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 077E560053;
-	Thu, 22 Jan 2026 15:18:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552C7C19422;
-	Thu, 22 Jan 2026 15:18:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B94C1600CB;
+	Thu, 22 Jan 2026 15:18:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18692C4AF0B;
+	Thu, 22 Jan 2026 15:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769095137;
-	bh=YWtRqEQX746dBC046hHOHXXVAXgaUJFRqU1AQ+gWZrE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=m3j50Q62tM8nbh1mizsCGhX6uttEW4qp9B+nt8Vw9EI11WwosDlBeDMECQE9lJ79f
-	 +zO82adThlJuxHL+LKXf+jr/A54aEjo/0RTe5rx3lZ7y8Puhb7o3ac4qNtXLa/9pUK
-	 qdY87KXtNy4DLO2jjaoyOkLKqvFNL3ETXFjykduNmFXySjVhWjv2YTRArBuQ90j+Ot
-	 eXGVQeoPZ0BZCKQZ35+cxuV7hEqXAqx2ZeKH7dftF7wUfK94XlBOy4Rt25gnM8Ysai
-	 q8NE96mm/9DaxyauHHeVkSp8Wvk0B90eHZi2DehbSPW6qHnQRctjmjoO6Sohch68qa
-	 c4QyZ9LfRGI+Q==
+	s=k20201202; t=1769095139;
+	bh=272BvbxC7euhCsy4Z4uBhOtqpvh5RkKjXvXKDX/+ojY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=F2B/t0BtpaipEuqECr6q2CJUfcQms0HLxJ1OR2GUvVK3VTqXTupSVgtZ393faJZS7
+	 dQHSzB5HL5WVRoPI4ukuPgq0d/qGc7gxjesKU+pdoSlachfAsOmjvl5EJQtZvZ98cf
+	 Gp2gxyG+vB+3v1oSUkc9y0Rh8oIjWfDS/aWB/NydQt1SjKfF7jsTWJZCSF9q4wDsww
+	 7qizAlroyUkBBvubpL9dkVQsVt1+hSTdmt0fq6l7LUBAv8jv4z5PTv1UZZCFrnO2KG
+	 Rp3XuvFMJSQIO+AGJDB+u0tQRtAgTYNvF4hTXVH0vo5/zcIP1tQMXwmuCIG/0JvOKV
+	 Nn8gSvDHKY5+g==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Hugh Dickins <hughd@google.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -72,20 +72,22 @@ To: Hugh Dickins <hughd@google.com>,
 	Pratyush Yadav <pratyush@kernel.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] mm: memfd_luo hotfixes
-Date: Thu, 22 Jan 2026 16:18:38 +0100
-Message-ID: <20260122151842.4069702-1-pratyush@kernel.org>
+Subject: [PATCH 1/3] memfd: export alloc_file()
+Date: Thu, 22 Jan 2026 16:18:39 +0100
+Message-ID: <20260122151842.4069702-2-pratyush@kernel.org>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+In-Reply-To: <20260122151842.4069702-1-pratyush@kernel.org>
+References: <20260122151842.4069702-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: hc9ryi8sw3fqq9t69ieuzh8n7n9upwff
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 424C81C0008
+X-Stat-Signature: 14oja17ghceo9raysqwwhf3yentyg9fs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 04F3918000A
-X-HE-Tag: 1769095138-192262
-X-HE-Meta: U2FsdGVkX1+UmO2ymPdGawiLcZR7SeGrSnj2xMJpgB/oiLWtxmMgk5y2Ptt08Lbt8dcS+VCC6LqJoeOjUpHUjAA45nmTi3seQLGQu2zanHmNJbX9ZLMY6jFThVzyjoNkF99bob/vAAELAsiiRALDDbuHHKSsnul6z7zsHMmM7McRNTXz9rCfYlSvm+D4gDJ3R6H06RX9h2Ap371cLd+LurBIzrNHKQXKBt4uWshZScffXdTAtABa+habGiBQzBYydh5DtJK4tHz0P+DdoNlkPtwYOyYBs6EqIkGc3lmnQbMXtxVd+i+1Yjjsdi87NqIzhktbYqceBXV6ea99cB1lI5KDyObfQeqpE+ZZ3m9I0p1DSGvPN5sKDIz8GIBegEEqr8toGoyYTZb8iONUSnpEBe/qtYCoPSFEvZ4NUbDp8F4quX1uxTqg7RZ7F2B9a0exhhFMh4DUwFTW67xxzyd5b0rNznWt9OdRc5n1nslBzGa2EBtN76vCiLecfHT+Dmi3GhrSh6ZzHC8+8PL7RvSDiTkUkPu1vQT48UIBZWevtUndmS78BF3gCyektoCT+MfpmcgOFtLx55aRUy9CHOL/ZDkfc9oJlwG5F9TcjIUerEY3JT492x+VJtxpf5qlUKa5duWR3FiefYPgkjLxeCsnAdaAvVi3h9t3qdqfs8Fp3zLJ8dYRK/wm5Kx3SfIsTO6NAP0Y6tiOF3qdiprSNxKRD7D6ttELC1zCI7OsKD5c0WIQz6GwPiZ6OabcbyoDgH6RQrRSiDXUuvmZTDJfoVP7vpEJU29ZTH/BGUQBf05ILyZeFCdJ0IrCNtYfAq4EhkjInAX026PcLmJe2ZgvqSgqljocLIgLsvuvS6ajXMymyINbrBbq1qCKXGN3rhYoiv8Dv5u1Tp2B6zqecrNbhzZr/ydfteTq0BPF5SPyyk/3qfSIK9BDgcmVwpYvnolqbgF7ptuKqF8ZtlXlOOInKTJ
- LwtTsqc6
- PQyU8lxByawLm3MH6LPQt4UFcEFYV7fDb/cs5+ZjxRs61zjrl/ssiW1rRHPSizbYLzRnNOBDdToWMF2viift0k+9NljEeKVofj0Hk/6exLRYRQPWHVpdD4JwaECp/ld+eEzlqphECal21/5cSGaiGysV7s2DaOImj9DwDs4UzNtUAN/lvF4Y3iVaVug/wmNkjE9V72UrmX1+yzYqU4MpVd+TRnFDDH5CpEjdD0AlmlIV50A2c9k2qmbF82CcY1x7sxyf8/aCsmvVDiSlv5NXZY5eCVw==
+X-HE-Tag: 1769095140-633626
+X-HE-Meta: U2FsdGVkX18S2/sWBwikG/EcasBMhphCaIferTzBhjc2A4POzWMsLlmiwDaxnaB9/q7ni/XBYb6Kxg1XJPgshxZYIFkAfU4iZbZQX1g3KB3as6VP98orVtpF1gxccm3RNLvKhXh7n6D8FDPecq1xhDkjpzUefYGEqmT/nxs3r/TFMGBAg5vuEQa3Mfr2vzbptyHgtX1W2w4SPh9hQOk1kQkQvfolMNbQXoQq3aZRzz9B2PASUEOp7bxXZOKZNXvdcihSkaauSnKqXBgqHvh04vcAonkcM2VC8+VKB8vqFUTOJUdO4E0AEK98G7eDveSzbZQ+/ucEkO5vj6CNfEtEt54CPz4xzBawPz5DSxLt39nouE8TjcdtZq8IKZkYCNRydWsgZR9/9bfRx7L5CprwkfaBcmQZkXuOvg4XTkdcJh8+mfNWRWMEOsNeKvxE3Wf6im3scM5ub35P/Q6dcKQbI2F0yFuAuo3ydy2dEX33TaPBgqgJrPU1b4mDbkBHB3jcSB10oRR9hSAF0np4+kDWN1TPGPq+fXfor9DBDiCLU59rZGoptxhBXzwqUSgZZfVIfqlvJ5yVILNZRBm8bl19n9QK+U9m0gDJ/8vS1j1PsYjs8RLbso7pS2MU1r5kmVccTgxTPvIXkrXAb5AJocwhLxP17kr8/Zmnpy/0vUi+pVs6juZ3pAWaLhCOdX9eFGyB4Nb4iA2gS6xNo292rcqSBwQ3P6VbGW82OTvS6M60G+3lJAKZrluXKxuc0Rc5UlL2IZPvo9azQo5okPA8+YzbAWpp8QqcM7xTLKGks+ia1u3gJGB6NSyuEIA5qrTY1WCqW6Ezsezhsw86d4dYVdIJ0WY/tg8xkAu717kN/HYNBPcBTOpnxytU8ihwjI3m2lPVqDZufQl1xTfxlUf7L9//RvYWhm9PeC14PbnEo68mMuRrIvqEnGYeU97CgaV000qtmOfjcYP0LJP39hc2Qqb
+ tRPR6I88
+ QlNrXEeNpmxf/NzrZFMMMATHWzen34vr3xUM6Weu/seFDkNffNoPLKhAoC+21e8mRNk/vryiccUsTuSr0CIMyk1gUkNc5lGStqcn2rnIsv/EwLmXZvEaYRUSiJQuyfqqFP38W0i88tfiJaIYtGPhsEHO7mg6MU2mtJLhXy8dAN+ZZHfxxRGMnusOmYzgo5FL0IZRU9r9xa3TQ52FRzuIrm6j2L2iHWj4+xTdCxTvHPPUj1YXCTmPqO1JW73H5yjT0ytdJaFl+aMo2b1De9Mgr45H9FA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,33 +98,68 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Hi,
+The Live Update Orchestrator's (LUO) memfd preservation works by
+preserving all the folios of a memfd, re-creating an empty memfd on the
+next boot, and then inserting back the preserved folios.
 
-This series contains a couple of fixes for memfd preservation using LUO.
-Patch 1 is a preparatory patch for patch 2. Patch 2 sets up the right
-flags on the file and makes sure security hooks are called. Patch 3
-fixes a small memory leak in the error path.
+Currently it creates the file by directly calling shmem_file_setup().
+This leaves out other work done by alloc_file() like setting up the file
+mode, flags, or calling the security hooks.
 
-Andrew, it would be great if we can land these in v6.19, especially
-patches 1 and 2 since they fix a usability and a security problem. Patch
-3 can wait, but then it is pretty simple too. Anyway, since it is pretty
-late in the cycle, I'll leave it to your judgement.
+Export alloc_file() to let memfd_luo use it. Rename it to
+memfd_alloc_file() since it is no longer private and thus needs a
+subsystem prefix.
 
-Regards,
-Pratyush Yadav
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+ include/linux/memfd.h | 6 ++++++
+ mm/memfd.c            | 4 ++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-Pratyush Yadav (Google) (3):
-  memfd: export alloc_file()
-  mm: memfd_luo: use memfd_alloc_file() instead of shmem_file_setup()
-  mm: memfd_luo: restore and free memfd_luo_ser on failure
-
- include/linux/memfd.h |  6 ++++++
- mm/memfd.c            |  4 ++--
- mm/memfd_luo.c        | 10 ++++++----
- 3 files changed, 14 insertions(+), 6 deletions(-)
-
-
-base-commit: 1ac8a55c76e78fc4fc406fd7bd872d0127d04feb
+diff --git a/include/linux/memfd.h b/include/linux/memfd.h
+index cc74de3dbcfe..c328a7b356d0 100644
+--- a/include/linux/memfd.h
++++ b/include/linux/memfd.h
+@@ -17,6 +17,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
+  * to by vm_flags_ptr.
+  */
+ int memfd_check_seals_mmap(struct file *file, vm_flags_t *vm_flags_ptr);
++struct file *memfd_alloc_file(const char *name, unsigned int flags);
+ #else
+ static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned int a)
+ {
+@@ -31,6 +32,11 @@ static inline int memfd_check_seals_mmap(struct file *file,
+ {
+ 	return 0;
+ }
++
++static inline struct file *memfd_alloc_file(const char *name, unsigned int flags)
++{
++	return ERR_PTR(-EINVAL);
++}
+ #endif
+ 
+ #endif /* __LINUX_MEMFD_H */
+diff --git a/mm/memfd.c b/mm/memfd.c
+index ab5312aff14b..f032c6052926 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -456,7 +456,7 @@ static char *alloc_name(const char __user *uname)
+ 	return ERR_PTR(error);
+ }
+ 
+-static struct file *alloc_file(const char *name, unsigned int flags)
++struct file *memfd_alloc_file(const char *name, unsigned int flags)
+ {
+ 	unsigned int *file_seals;
+ 	struct file *file;
+@@ -520,5 +520,5 @@ SYSCALL_DEFINE2(memfd_create,
+ 		return PTR_ERR(name);
+ 
+ 	fd_flags = (flags & MFD_CLOEXEC) ? O_CLOEXEC : 0;
+-	return FD_ADD(fd_flags, alloc_file(name, flags));
++	return FD_ADD(fd_flags, memfd_alloc_file(name, flags));
+ }
 -- 
 2.52.0.457.g6b5491de43-goog
 
