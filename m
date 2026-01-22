@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8E03D3EE8B
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:10:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62FE2D3EE89
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:10:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27D966B0273; Thu, 22 Jan 2026 11:10:19 -0500 (EST)
+	id AD0FD6B0282; Thu, 22 Jan 2026 11:10:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 244266B0282; Thu, 22 Jan 2026 11:10:19 -0500 (EST)
+	id AB9F16B0286; Thu, 22 Jan 2026 11:10:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 185E76B0285; Thu, 22 Jan 2026 11:10:19 -0500 (EST)
+	id 9BC706B0287; Thu, 22 Jan 2026 11:10:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0592C6B0273
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:10:19 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B42661403BF
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:18 +0000 (UTC)
-X-FDA: 84360086916.06.C5411D0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 891076B0282
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:10:21 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 63DA41A043F
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:21 +0000 (UTC)
+X-FDA: 84360087042.13.F7C7508
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 10DAEA0020
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxw0zSYC;
-	spf=pass (imf25.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id C415540006
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qg+sVNEq;
+	spf=pass (imf04.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769098217;
+	s=arc-20220608; t=1769098219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=u10j6GV0P/m65kgOHElTqjDhK+nT/v6T7o/RCiR/9Uo=;
-	b=oyMsCUHNQppWtZOV50N4jkYw1jmObgl7Ph4ZbrWF99u8W/1lTeh+AC5x8HTQ+jFZbzgxxt
-	WGfHiFRlD6/ssUblEDVlqgEBb9kvSvUs8qlfCPsOgXiBSsLtFzfCCfWLfYJPur/DXqTTvo
-	FtWbnxcZJZHQ9Q+r7mWi5800femU3lU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxw0zSYC;
-	spf=pass (imf25.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098217; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=z9vVViweHtq7wuscpdvJdRX/l0VDshcBuuhGULqjHGs=;
+	b=PdIz5kkRDTM3PJ0CDWh1ukwO2xCDiQCHDiCH+MW+wocg/K6A5ijhzjM3AE4soRS4zGhpgQ
+	5LgHy7dIVX+r8unbsf1D4tXMGOfABulpQTUpAN77O6kPkN8Igxef4ZM9qwHm94zSC6mfUr
+	jRTWLPq1Hl9HPibfK9ghi4uic7Ix0BA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098219; a=rsa-sha256;
 	cv=none;
-	b=vpeZGuY5Vn/RQ0rxEbC6S/FTn7xBVFJYslOnqod5F9lQx+XxKDuN/i+UlJVUtBft7ou9PH
-	Vaxa0M7isZ+JrPv+gAjoOcVNVy2dBpROLgJ0P3uyxOU0ZKYINfiq9aPLo7dtJJ7grh5Wfr
-	foPiLbM2Loj/ZtgwxP3K8yJFlTeUYmE=
+	b=20glNrmb2KfWZCHy09nh/B9owIb7ido1c9URZMcmAgSFsuYS5SF3ApJ6Rv5N9cUoTeBp6l
+	40sHp/kKzLrXGYEn8CAE8TkPS4Vxr6GwVm7ImkvLKTwvStj2yzQdaZk4uYwPASzZXS++zQ
+	8bG9ULy46S7X5jRLRMMxQfcXSdERDj8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qg+sVNEq;
+	spf=pass (imf04.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6AF6B600C4;
-	Thu, 22 Jan 2026 16:10:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95341C116C6;
-	Thu, 22 Jan 2026 16:10:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5024E600C3;
+	Thu, 22 Jan 2026 16:10:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B674C116C6;
+	Thu, 22 Jan 2026 16:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769098216;
-	bh=ha3JA4N/2sbTZoLLt9Hk+/O5tkj/IAzHDfElKjAoOuU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=gxw0zSYCXNJ4FcqwQQa7I3h3D2XukR/5aI8fAthL9DSmSmnm5KNPPfNGJ1op1BP4Y
-	 MQ8cVwzVPjLYouTp/7uYsWSzL1ur0vhAi8L6FpMUXjN04ub6UPMiSU3ZiH+XtPFwfk
-	 VDdZWO7EoWXGrXVNri26ANlTn29LcOna1OgwmoqrgPHF2Z+DlEJR1wAkHWsZ6kesJv
-	 qbLK+3OIqfHgL9efAc72qE3r7O1STboGXJlBPqou0qcXN6QKZkFhWF6pvcrQDPFrx/
-	 MqiNydzq8TzcExsRUkFNe+MEx6i7Rghos0E8UwfsefR6oollk4PXYz9/GzaS+tOntT
-	 OxAMHTZ4pQ6Hg==
+	s=k20201202; t=1769098219;
+	bh=wprP5qSFccWPgCsBEyBcH1cv+pmmiGrAaswb0KExp1k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Qg+sVNEqkTWkKuBV8wwZkfUMtNnpz21o2pnCIbPK6JFd1GTpwksfgK5rI/SLZW7uu
+	 8q5fKDiVr/3uxG0owtnmWMQGpzenZAz2DKxPSfWSU+8KRA/u40ZlO9UW/A+roJKS/U
+	 ML7S7DE7XmZCQLTiGtartsWl3WrcJpxMnCm856DYR/ojhsaBNkLaoVRQwxKErrhkQd
+	 nyVlO/WcBRdoZkYgQGpMIVtb4pWIcwDCGt5I7CcWth3/y5RSpDLypse6ZvrbY1WcKy
+	 B1Azpbu28TqnrZw2ONDq3mqMk/EPIzQ9pmTYvawFdj0s+GCFjD/vo/MgbG/rju3yaH
+	 knfsE2mphcFFA==
 From: Thierry Reding <thierry.reding@kernel.org>
 To: Thierry Reding <thierry.reding@kernel.org>,
 	David Airlie <airlied@gmail.com>,
@@ -84,20 +84,22 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-tegra@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 00/10] dma-bug: heaps: Add Tegra VPR support
-Date: Thu, 22 Jan 2026 17:09:59 +0100
-Message-ID: <20260122161009.3865888-1-thierry.reding@kernel.org>
+Subject: [PATCH v2 01/10] dt-bindings: reserved-memory: Document Tegra VPR
+Date: Thu, 22 Jan 2026 17:10:00 +0100
+Message-ID: <20260122161009.3865888-2-thierry.reding@kernel.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260122161009.3865888-1-thierry.reding@kernel.org>
+References: <20260122161009.3865888-1-thierry.reding@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: b6qxudzwr84wcctycdbtcehn6p1u5gnn
+X-Rspamd-Queue-Id: C415540006
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 10DAEA0020
-X-HE-Tag: 1769098216-445117
-X-HE-Meta: U2FsdGVkX1/cyM3/h6xp6vwvUNwtYHrn537bn1VokRZNzQBotbgcEQO4YU0dYPtTkpgjIJqW8p2+pK1i1+ipS4G/6sXUGuVow6y2nvkQxnNYYH8KE4vcekEZG5VNdUsDRBxsLqf8NrGKmYdoM5IkQUwR7yG9jN8ZNlyE0ui93GbO4go3t7GroUuK0VvAKtyuBTyydj+itrzKER95AdhXlChFHn5Uu7B0R8V9T43nv/o6M1GxyuY2wHLmn9Ib9MacQRGis6n8dxlwINVQdf/xYM2YRAQ0SHHJoSvnOsL7EEojSnM0MreOGLACgpIKRVgz+usrtjcsLAkoA5PKmwdo0Hj+yc2n4FylKeEOyLhcZQ1zdPz5dQO2nD8BtfEnMnDw4oHYLcy+wnIen2DOduAj5BmoXcgN044jBb4jpDcTAQ3zvaX2BuQd5+pCqVzxp8nehSmRB72mdv5Jhf5R3J36SisVwALMzKfb4o5jHPYYTAqvoJjxRF/cdgfAGO3MQs50oJMhn4SuMRMRpqONm38o328G5OzZt1Y3lnt4s+ONp2KCckcAg88pz48RzujSkMB1BJtGnSVerAyog2C9e55OPeRDRdpZeVAg5P6xYfnQBFuxGy6xkcBwxGkBzRKNdqXKCJWcFObUMqp8HPOcPx94TEdX59jxxnhRVdZ/vuH/03EfKC/kdzwNtDL42dNNjphJQ8OI9VnCCRV0VRRpBZxRIYHIDMAyxUXFamH8zZpSXdLOFfhI4GchWmaNdWZ4CsoFDGXJDINjn3eUbXSJtcdpSIt7uQF5LSquvG3G0hKtQ+VDUhevMyovunDvv+YtLNXQsXWjex16ISbS9Iw8RX323o2NxCC0CpPi77ZSvuVEIWypAxUXSSQJmBD7Id97vH5jF7olQiawauMiBI0vwmrc950+2zV62/NXk9L4qxE9z5hufq1QD9RCcZktlAQuCU7y9bJjw2Ai7wu8T+LbEVh
- b4nJbWPt
- ORN6w9o16/TzmQ8yvzWNp5xDZmIyvqkd3v1tR3d6tkZ/6q449+90Aq4eb4lAn0fJsSG/rM/DC7M9RtRpOOdV1+ywWD9MB9RjcFHuTxbT32r9odz0YlUCjmeMfYlsg3qcgvu3GXO8S2CbroLQf4SbnUpQTW2Z6tjfaHq2v+LVpKEPaZlVj6EHZWLaPcfXU8lpcGBe03OtAy/uZlxdyATMBuQRwlfUYsCs69PK0P31qAeCpDZFFZO294ok+YSvJEmHPfhL9uXhiyY4aLImHIvNeaSTB7Nh5LoJIWQ5EWMBOohMvkNAyrLDgwcbxoA==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4uasgif8x9ctgwmx51359xhfhdz1gd8s
+X-HE-Tag: 1769098219-115527
+X-HE-Meta: U2FsdGVkX1+RItoLOPZD7whFPOvXb8jsAz0BjpBV69P9GOF9G6ZmIUCycu4/E79nZOzWwsyC0hxAytCaaqLk9ktrFRf3+aTmX93saTZZm39D2+9xT/wwNgF+7Txz+wKsRD8/MfCzqsSrMb1dHiZ4eqPcUJp8F6MSdG7fVM+M8umOfbLM4r2LYQi8s1LJpV/yeLD1sOoXY/so0t43LSrxiCCmh6xK3Li8CG0rgcl27yb5JJud2Bp7PTlPvBqWCxzZJdnQpjQtUF3t+Vyv+7kvdqtgK2L6IGyNYcj6UMRPY8VC4UWwfgW3kkLroNzVL5Z+uIrybtCsRUcjsfngYKXz9X9Om8Y7I6yVKAIv8B/pvK3r4nr8t63EhUjo3gQAlCTYNGwmckaCVRU/hQxbb2e54GDELJXiOZgRps++A+W2Wfllj5r2PazA6D1srxkLzMX1LQY2QP38lgaeprj7S3eMtfUnio9TuN87z+UGX/tjwCTGJW7b7Cyj48AfT0CeY/FJz3hOj885M9n78fu+uheGWtaNB/uNvHp55hMi7BE50B9JzDdIp8WU6II1+4M9GWWBx6riU/FJvfnIWTDibsvpXikNIdIRuNYXnH6kPlBXjU8oFdAJRqvetlfB3aNPTC/E1lLhPuNYbnKxKS9ZnN0yZqdaAQO0Qx6TxV+tl3gFHTa6Y9xgMguKNRWHooyZjNGM83zG7nf2piNPzAnWamnSzQk3iPOahFu9JEEkE8OgG38I2xV9bde2CSKNV31PgWN6o9PRiCACfwn6Dos4slW8SfhFQGwQChUZt6vdVUoSeZFprD/P0Vxb8IF/ty8+a8Dcj5TeAsX2MD2O/NUOuuLjJqJOSiPhpK0XUl8W+cGeonCAOYsd2JkxLOdeMPIYEgDB+urhQYIFGnXm+uyn8NJPjbXPCZBn2BGmYs8ciAp/0Nz72LPrfvNoWvPWIMunriX+DPQwUx7tnrbZ2ZPWFm9
+ zCPhhxtS
+ OD+IBmPI4NH8SF3YWjW2bEQBnOwYJhfNkQytstTHSXMq+soYSIvOcmeS/cnWQhsBZYLRal6SmtVrnt7OCZKVojURKM9lQnjxNWKACrjdgFNbjNr+qsEbV02xooFcn8iKk0stxCjC1cZ+9zf1pHkrzZXuz0dbyppvdQllLrJueLII7BIzO0sK7fa0k4BE8o+oTBzF3b5eOGcROfH1+PSXs/B97hC5UOSbsLP5e5P9sKWvnLfM2HRgWMj1eGsbxac2fj5lQv3L+oIvLGCDWqThhapBuF5MfdVADJ9t76bF2x0aVqFbcXH3Ar0DR/IEM24kYfUEPDIZaVnLAzcL6B/XQkv+nAljsR9iXi/7D5Uk+SuZbn7ubJfNW+ehImW5OMPPu04NW5H3hrQZgi+GeKe5SN7YcnFsc5xMw616s
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,78 +110,84 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-Hi,
+The Video Protection Region (VPR) found on NVIDIA Tegra chips is a
+region of memory that is protected from CPU accesses. It is used to
+decode and play back DRM protected content.
 
-This series adds support for the video protection region (VPR) used on
-Tegra SoC devices. It's a special region of memory that is protected
-from accesses by the CPU and used to store DRM protected content (both
-decrypted stream data as well as decoded video frames).
+It is a standard reserved memory region that can exist in two forms:
+static VPR where the base address and size are fixed (uses the "reg"
+property to describe the memory) and a resizable VPR where only the
+size is known upfront and the OS can allocate it wherever it can be
+accomodated.
 
-Patches 1 and 2 add DT binding documentation for the VPR and add the VPR
-to the list of memory-region items for display and host1x.
-
-Patch 3 adds bitmap_allocate(), which is like bitmap_allocate_region()
-but works on sizes that are not a power of two.
-
-Patch 4 introduces new APIs needed by the Tegra VPR implementation that
-allow CMA areas to be dynamically created at runtime rather than using
-the fixed, system-wide list. This is used in this driver specifically
-because it can use an arbitrary number of these areas (though they are
-currently limited to 4).
-
-Patch 5 adds some infrastructure for DMA heap implementations to provide
-information through debugfs.
-
-The Tegra VPR implementation is added in patch 6. See its commit message
-for more details about the specifics of this implementation.
-
-Finally, patches 7-10 add the VPR placeholder node on Tegra234 and hook
-it up to the host1x and GPU nodes so that they can make use of this
-region.
-
-Changes in v2:
-- Tegra VPR implementation is now more optimized to reduce the number of
-  (very slow) resize operations, and allows cross-chunk allocations
-- dynamic CMA areas are now trackd separately from static ones, but the
-  global number of CMA pages accounts for all areas
-
-Thierry
-
-Thierry Reding (10):
-  dt-bindings: reserved-memory: Document Tegra VPR
-  dt-bindings: display: tegra: Document memory regions
-  bitmap: Add bitmap_allocate() function
-  mm/cma: Allow dynamically creating CMA areas
-  dma-buf: heaps: Add debugfs support
-  dma-buf: heaps: Add support for Tegra VPR
-  arm64: tegra: Add VPR placeholder node on Tegra234
-  arm64: tegra: Add GPU node on Tegra234
-  arm64: tegra: Hook up VPR to host1x
-  arm64: tegra: Hook up VPR to the GPU
-
- .../display/tegra/nvidia,tegra186-dc.yaml     |   10 +
- .../display/tegra/nvidia,tegra20-dc.yaml      |   10 +-
- .../display/tegra/nvidia,tegra20-host1x.yaml  |    7 +
- .../nvidia,tegra-video-protection-region.yaml |   55 +
- arch/arm/mm/dma-mapping.c                     |    2 +-
- arch/arm64/boot/dts/nvidia/tegra234.dtsi      |   60 +
- arch/s390/mm/init.c                           |    2 +-
- drivers/dma-buf/dma-heap.c                    |   56 +
- drivers/dma-buf/heaps/Kconfig                 |    7 +
- drivers/dma-buf/heaps/Makefile                |    1 +
- drivers/dma-buf/heaps/cma_heap.c              |    2 +-
- drivers/dma-buf/heaps/tegra-vpr.c             | 1265 +++++++++++++++++
- include/linux/bitmap.h                        |   25 +-
- include/linux/cma.h                           |    7 +-
- include/linux/dma-heap.h                      |    2 +
- include/trace/events/tegra_vpr.h              |   57 +
- mm/cma.c                                      |  187 ++-
- mm/cma.h                                      |    5 +-
- 18 files changed, 1713 insertions(+), 47 deletions(-)
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+---
+ .../nvidia,tegra-video-protection-region.yaml | 55 +++++++++++++++++++
+ 1 file changed, 55 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
- create mode 100644 drivers/dma-buf/heaps/tegra-vpr.c
- create mode 100644 include/trace/events/tegra_vpr.h
 
+diff --git a/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml b/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
+new file mode 100644
+index 000000000000..c13292a791bb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/reserved-memory/nvidia,tegra-video-protection-region.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NVIDIA Tegra Video Protection Region (VPR)
++
++maintainers:
++  - Thierry Reding <thierry.reding@gmail.com>
++  - Jon Hunter <jonathanh@nvidia.com>
++
++description: |
++  NVIDIA Tegra chips have long supported a mechanism to protect a single,
++  contiguous memory region from non-secure memory accesses. Typically this
++  region is used for decoding and playback of DRM protected content. Various
++  devices, such as the display controller and multimedia engines (video
++  decoder) can access this region in a secure way. Access from the CPU is
++  generally forbidden.
++
++  Two variants exist for VPR: one is fixed in both the base address and size,
++  while the other is resizable. Fixed VPR can be described by just a "reg"
++  property specifying the base address and size, whereas the resizable VPR
++  is defined by a size/alignment pair of properties. For resizable VPR the
++  memory is reusable by the rest of the system when it's unused for VPR and
++  therefore the "reusable" property must be specified along with it. For a
++  fixed VPR, the memory is permanently protected, and therefore it's not
++  reusable and must also be marked as "no-map" to prevent any (including
++  speculative) accesses to it.
++
++allOf:
++  - $ref: reserved-memory.yaml
++
++properties:
++  compatible:
++    const: nvidia,tegra-video-protection-region
++
++dependencies:
++  size: [alignment, reusable]
++  alignment: [size, reusable]
++  reusable: [alignment, size]
++
++  reg: [no-map]
++  no-map: [reg]
++
++unevaluatedProperties: false
++
++oneOf:
++  - required:
++      - compatible
++      - reg
++
++  - required:
++      - compatible
++      - size
 -- 
 2.52.0
 
