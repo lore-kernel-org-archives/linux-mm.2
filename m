@@ -4,195 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6654C44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:02:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCBC8C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:04:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58F0D6B0107; Thu, 22 Jan 2026 03:02:16 -0500 (EST)
+	id D9CC46B0109; Thu, 22 Jan 2026 03:04:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 546AB6B0109; Thu, 22 Jan 2026 03:02:16 -0500 (EST)
+	id D4A706B010B; Thu, 22 Jan 2026 03:04:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41ECC6B010A; Thu, 22 Jan 2026 03:02:16 -0500 (EST)
+	id C774E6B010C; Thu, 22 Jan 2026 03:04:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 30A216B0107
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:02:16 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id B63496B0109
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:04:02 -0500 (EST)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0BB3139079
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:02:15 +0000 (UTC)
-X-FDA: 84358857030.17.1CBAC8E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8D871180002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:02:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WY6CuQqZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dt25Voui;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="GOIk/QeC";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xARCrcPr;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 76E7A568AA
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:04:02 +0000 (UTC)
+X-FDA: 84358861524.17.BE08EF1
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2376C140002
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:03:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769068933;
+	s=arc-20220608; t=1769069040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
-	b=jrlMnKOLgu7NZuTQCrfCQUAY8ci68gflNlK1Y5j+EoqYoCSFOljv2gN6HQNvIlvmaZOQzm
-	9syG9DTDk5t7ldgWIMdTMBEriJV/CkTZ2xaF7W6lcoZf/0L0UPzXvo0f0CpN+Bq3HBFjdO
-	CFGCMUERDYVRec1qsF/gCbeOscxUoX4=
+	 in-reply-to:in-reply-to:references:references;
+	bh=V8/eAamVR0ttrJqlJr3vIJA0wQ/ex3KjAWKTcDCL7Ro=;
+	b=LxIGejno7DodkjvIayQ4PlvCuNkklbVm+H0Y897JSG797nxdcCHEWhrb2aixbK0Sj7q9aD
+	owG/MLEcA/pO4+A9N1oMqdb+OyAG3D8AkrkUFTF9KrF0JUSK9lcQmeFT/cHKi11Hnr2/9x
+	ncu+MHQenKWtqQ592d6JS711UlDPBQ8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WY6CuQqZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dt25Voui;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="GOIk/QeC";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xARCrcPr;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769068933; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 129.150.39.64 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769069040; a=rsa-sha256;
 	cv=none;
-	b=Uv4Q+cgH3C1wCVskRQdx+TA8Jj4E5CCRDUVM4D3ZwVgUFdSi14XNMrzGvwxK08TJ6SzQH5
-	DCE3F50sSfjXaOe2x1iFh4NefYBzuO4kIn5OSvri5c//BPXzYIi18ujv/KUAyp1jOFpK/N
-	H+ZtCIrqR88EAWXCWB6zlO5NAEKp3aA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 99CA45BCC2;
-	Thu, 22 Jan 2026 08:02:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769068931; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
-	b=WY6CuQqZ5tA0cejnAXKMLHzYHPZOVQWXc98woGl9RkMWMVSQ+fjFeFt8mYrBrhdmK0q92G
-	y80uBbTuWP7D3hf+Cey/fedrvHt2WRC8+yjhONrvFG7QG7qIXMoX96r6mMM4d2NhwOrvpT
-	DDes6Ccn5XmTEA2mmn8u99BAhSz1Mq8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769068931;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
-	b=dt25VouiAL5Uo3mlTwcLwxX76wb/VevgRzYU0PCnczsVi2Ff5XEf3auw7MH5AME422rsvc
-	OfYbGLc8NwxjqiAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769068930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
-	b=GOIk/QeCW54ajuj57g/uvfIbip7/Ti5UKaZ5kznY6hpuPnYXbAO4fCTpdIWvJ7nres4yJJ
-	NEo2Zc3AVLptnzvCHOQ7QJp3xLVGjOR+BMDDrKg5kdYYM5r9N+Mu6n4OXuqTRCbTDseRYA
-	NnbPq1DCo+cePiYKBXcWRr4A3qoj8cY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769068930;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BMCr0iZ9/F3mbXgNWYLpd1cRazBq6RbfB0STRSxkwwI=;
-	b=xARCrcPr72qH8NKGDMK0rr8WxgM6WxFzx+SdBIWMI1TvNxQnmqVJbYVS75PEmvT6Ljnjnn
-	Rwx3FItxbs1CvhAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 41FA83EA65;
-	Thu, 22 Jan 2026 08:02:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id j+18DoLZcWncTAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:02:10 +0000
-Message-ID: <a68d2e39-3041-4487-97a6-19ed7c3d332a@suse.cz>
-Date: Thu, 22 Jan 2026 09:02:09 +0100
+	b=usZNUQuQjqo6aWieDmFP+/UefenfaznDHLcYm7muKc1wKzJ1addIkVtmZqe7fwtcDOMYg+
+	Wy6mdJNUk6zAvDrs1HVWlvwJGVM2rzGbpOfdBc3sJmW/pJCs07RwxrwQlRdOQMGFkE43t7
+	9L+Rbfvb6yAB2baGQSdxhs00lc3+I3g=
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBXXSXn2XFpBkdMAw--.12812S2;
+	Thu, 22 Jan 2026 16:03:52 +0800 (CST)
+Received: from [10.22.77.56] (unknown [123.150.8.50])
+	by mail (Coremail) with SMTP id AQAAfwDnQO7m2XFpT6cVAA--.38292S2;
+	Thu, 22 Jan 2026 16:03:51 +0800 (CST)
+Message-ID: <2d1e23ad-7ec1-483b-88b3-70ce19b69106@phytium.com.cn>
+Date: Thu, 22 Jan 2026 16:03:49 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
- private folios
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-To: Francois Dugast <francois.dugast@intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Zi Yan <ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin
- <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Felix Kuehling <Felix.Kuehling@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Balbir Singh <balbirs@nvidia.com>,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
-References: <20260116111325.1736137-1-francois.dugast@intel.com>
- <20260116111325.1736137-2-francois.dugast@intel.com>
- <ed6ca250-67ee-4f7a-bc3b-66169494549a@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <ed6ca250-67ee-4f7a-bc3b-66169494549a@suse.cz>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID of
+ CFMW
+To: dan.j.williams@intel.com, Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Mike Rapoport <rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
+ <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
+ <20260108094812.8757ce3ad8370668eaafb29c@linux-foundation.org>
+ <9132054c-3017-4af0-84e0-e4359b0794a6@phytium.com.cn>
+ <20260115101858.85fd7b8e837c1c92a4fdc5f0@linux-foundation.org>
+ <696944eca1837_34d2a10056@dwillia2-mobl4.notmuch>
+From: Cui Chao <cuichao1753@phytium.com.cn>
+In-Reply-To: <696944eca1837_34d2a10056@dwillia2-mobl4.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8D871180002
-X-Stat-Signature: cgpu99isumymsjpho4nnr6wdr9k1scj3
+X-CM-TRANSID:AQAAfwDnQO7m2XFpT6cVAA--.38292S2
+X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQADAGlxMvwDCgAAsd
+X-Coremail-Antispam: 1Uk129KBjvJXoWxCr4kWr1fAFyDtw4kWrWUCFg_yoWrCF13pa
+	y8JFWvyr4DGryIkr1kXw4kXr1F9ws7Gay3Gry5Cr95CrnxZF1F9r4SqayYvFZ3Gr1fWw1j
+	qF4jqrWjv3Z8ZaDanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
+X-Stat-Signature: ocmwqmjitrk9oyknih99rndx4cmkmcid
+X-Rspamd-Queue-Id: 2376C140002
 X-Rspam-User: 
-X-HE-Tag: 1769068933-130546
-X-HE-Meta: U2FsdGVkX1+b4efShTQuB0GF1NVdtWxA2y1zsTv7onZvBZHGJLwLDMkuyo0B4fpmet3RXLIyNWhw8GrzXAkss2kvT2OFEy/dpRfel93J8MyxXfEUlqvh32Dm4W7UzpXWpwAtr7Rw9dFJ1tkgQpmtno8/kN5iAHgAb976rzlGMVq+U+8tlxddLfddYMQTfVpBl8JyizMVX9nZPklf1LyQL6SoG0Ob+2eTQaJougw0U6/yd3rw5gXJnPgKrx0ApdaV9xWx9SDlRKPOzGJTJ3xVYsQmAwhO832H9sfXkZusu8J8RdXGFP1e2QIvOsReV9M+iD42FYcvMSGZd4M/CbYKuOrpXb/BAqYge2cdX1JmnSK5doKhSFED7+tcFI8jB79j//EZdgcQ+Xh5zyLwAYeiJxzfWnqSbMAgZXzBP8D+trSr7s24wVp3xxyFlUJWF2eb9u2GDMbdMZgqvqaHS5XLZ9LPAGUwIoItd7YFM+NdHvDumcRKOhYcQzKQtyHZ4hg7xvChpPiUtKGbFFSzVKnFIzlyjGte1m7A2tzoEsgjvuuQSWPvI2hxHNy4gU1wD6K4balYXVbjC1hL/SYQEzjFV2SgyMSBhWL8kIqEUqmMkEPfUeNzQhOSWIjzITOTIG2ssA0gMlSgxSDAfdu8i/EnyGcGBmfl7Qst/l5gF9aoNHm3gToNoIpmm4s9PV/s7oTF6YpfDU4djcFJwFfsPSZ1da40ZCUa5j6eqsUA+EXtY7VgmyNGBF0LPDFvbxfqbYs/LKjIe5TJG2JKa3p36tpyNThK9fCxzcK723mPfgE+r7+KvMjHxaQQunFxbhI/v7OlH0XNPzClCv7ZTT3nmHvoi3bXzKUjssQuiZwx5aSFWFW+XOrZo9lIhv5vqOj7DOnvLP3xFxkpNIl2TDXC1AxN54YJONTfRfcbzjTeqHxfIAmzsL8AF4TOU2CEGBUxNMkLrTQAo2dzmz/9xCBfxQG
- frC7lECY
- JMLjRiDyi67ZR6f6YJy+W54pWoe8fXublyudMwMLVhyEbiThHZ5+weAzVMneW7U4798KZyLvZPpRHxTZsD93UQLxUQY9I0cvn1X37NSz3Njzg9POLEIwncbEaKZfmlhV4vAfu6Vm0zBUNoTVMEfPicSmC2H7w/uKA6SkihBcO0SSkQutZ2RJjRuveAaht+tSQ5O3TuLzms7zWjgqvtKkvgLa8R9NrifmI8IeY9h14qdzNXyZN5M3rxZXB0fPhLnThtRRCZ+FqTYdbfIvJXuLYfzRfmTtDvGx+gbOY73aOGTUlTKYgHXclT7wC261A4Aur1WafetBFe6VzU0DZ8SXP7ZkEHuXZtQnYuCZ5pIPuGynYwsg=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769069037-397642
+X-HE-Meta: U2FsdGVkX1/+mWsEEZgZTwaNAT7yRLhn+kSrzeXAbfC4BDs6hhUn+C0Et7slBAwlxkQuJByFowY+y7TEVMkth3rhDe8ShCbffpwedQ6m6l7J1JmAx+PlgHQQqYzJD171UCZUvA16SPSX+d+i7qC0HunHvyokOxgNeWNGNW6k4zxsDv/iMeJTqaxm6WTb2uocVWmQfyYxi8oCY1ODihauSkAA/LU5cDLgSnvGB7Z8zU21PI+5/HpVlHSZnMqhwXahqsCBHWEA15+geZcJ99lzbAjAkw4S3hSQG7ywSHzfR4cPqcOSimDTWHOpKuWuhfwyc4GftriIliTgP+uZNOATGDhgq76snM0QsJ4vvUY1Zb7KVi/Q3FjAoMmmOlpipKrhOdSKut/np+AyKDiQdxNiEGH7Y3902vs5I8F43nba5MmqORf0up10CPyoKmsM9yeWdVCsaaZoJPQFdqln6zmha+iDQzj3ulO4D6XEXtmkzKk2NQRaT0F+lcotyctEyCgTLwDCR4TUazD7PlBaYiwM4Fa8S3t5iLUhXCJ2Kj6iFe4/DUEUgdgYIg95myEdGTwjCpSeNZpZ9vh6vDGMsM2YnBgfAgzCM90hHGoGQaTnk/quotwhy8ONlMivub633KiBe58vMsNhidERVVQ6LlOygW+lCYLBRy76SNPzLpC1G4vfiBZ40l/Dl6GVtD4ZhaC/Dlwm2y2UIRaz3gWLnmYEA+ptMtbRFWzJMZ7J9G/7Uwj8J9Gv75bVeXwsS4twAwqW/vrxyCkRuvv+cKEIZ8yeL3+hejnFHPdk+vCuxT64buCI+jsgGP+erc5kN1VAExHt3edfwJ1GSZMfJKSS+PQxG+gL2jakE9L4VoOuBMA1hzub0KRB6qx4Q77V8sQESIuxNkzs+z3Mn4wPyu1vVk247ciWv4+lMcg1DKpB/pOCldxVGAxnQ074fb6xeKdWnTpVrhqXjfel+BvFkH4zRcH
+ jyfd1Zhi
+ 9inRXr9k59wCpW+X+Te3j+bISxwjo4IZhZOV6qT4+rM3a+NsgQeiFPMrMLsTno+UivRiEtQwYAuACdIvrETtkI44ZNNaXIQWgTgHn6WntbgmTskzeJ6OM+d8CH2ve4sJ53vx6Wl4+akqp3IIM53MLRi4Zgw810Y1hDP2y0A+Iqj23a4Njcpkffy8RwGBiC5lKjkIm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,65 +96,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 17:07, Vlastimil Babka wrote:
-> On 1/16/26 12:10, Francois Dugast wrote:
->> From: Matthew Brost <matthew.brost@intel.com>
->> diff --git a/mm/memremap.c b/mm/memremap.c
->> index 63c6ab4fdf08..ac7be07e3361 100644
->> --- a/mm/memremap.c
->> +++ b/mm/memremap.c
->> @@ -477,10 +477,43 @@ void free_zone_device_folio(struct folio *folio)
->>  	}
->>  }
->>  
->> -void zone_device_page_init(struct page *page, unsigned int order)
->> +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
->> +			   unsigned int order)
->>  {
->> +	struct page *new_page = page;
->> +	unsigned int i;
->> +
->>  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
->>  
->> +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
->> +		struct folio *new_folio = (struct folio *)new_page;
->> +
->> +		/*
->> +		 * new_page could have been part of previous higher order folio
->> +		 * which encodes the order, in page + 1, in the flags bits. We
->> +		 * blindly clear bits which could have set my order field here,
->> +		 * including page head.
->> +		 */
->> +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
->> +
->> +#ifdef NR_PAGES_IN_LARGE_FOLIO
->> +		/*
->> +		 * This pointer math looks odd, but new_page could have been
->> +		 * part of a previous higher order folio, which sets _nr_pages
->> +		 * in page + 1 (new_page). Therefore, we use pointer casting to
->> +		 * correctly locate the _nr_pages bits within new_page which
->> +		 * could have modified by previous higher order folio.
->> +		 */
->> +		((struct folio *)(new_page - 1))->_nr_pages = 0;
->> +#endif
->> +
->> +		new_folio->mapping = NULL;
->> +		new_folio->pgmap = pgmap;	/* Also clear compound head */
->> +		new_folio->share = 0;   /* fsdax only, unused for device private */
->> +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
->> +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
->> +	}
->> +
->>  	/*
->>  	 * Drivers shouldn't be allocating pages after calling
->>  	 * memunmap_pages().
-> 
-> Can't say I'm a fan of this. It probably works now (so I'm not nacking) but
-> seems rather fragile. It seems likely to me somebody will try to change some
-> implementation detail in the page allocator and not notice it breaks this,
-> for example. I hope we can eventually get to something more robust.
 
-For doing this as a hotfix for 6.19, assuming we'll refactor later:
+On 1/16/2026 3:50 AM, dan.j.williams@intel.com wrote:
+> Andrew Morton wrote:
+>> On Thu, 15 Jan 2026 17:43:02 +0800 Cui Chao <cuichao1753@phytium.com.cn> wrote:
+>>
+>>> When a CXL RAM region is created in userspace, the memory capacity of
+>>> the newly created region is not added to the CFMW-dedicated NUMA node.
+>>> Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
+>>> containing RAM). This makes it impossible to clearly distinguish between
+>>> the two types of memory, which may affect memory-tiering applications.
+>>>
+>> OK, thanks, I added this to the changelog.  Please retain it when
+>> sending v3.
+>>
+>> What I'm actually looking for here are answers to the questions
+>>
+>>    Should we backport this into -stable kernels and if so, why?
+>>    And if not, why not?
+>>
+>> So a very complete description of the runtime effects really helps
+>> myself and others to decide which kernels to patch.  And it helps
+>> people to understand *why* we made that decision.
+>>
+>> And sorry, but "may affect memory-tiering applications" isn't very
+>> complete!
+>>
+>> So please, tell us how much our users are hurting from this and please
+>> make a recommendation on the backporting decision.
+>>
+> To add on here, Cui, please describe which shipping hardware platforms
+> in the wild create physical address maps like this. For example, if this
+> is something that only occurs in QEMU configurations or similar, then
+> the urgency is low and it is debatable if Linux should even worry about
+> fixing it.
+>
+> I know that x86 platforms typically do not do this. It is also
+> within the realm of possibility for platform firmware to fix. So in
+> addition to platform impact please also clarify why folks can not just
+> ask for a firmware update to get this fixed without updating their
+> kernel.
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Andrew, Dan, thank you for your review.
+
+1.Issue Impact and Backport Recommendation:
+
+This patch fixes an issue on hardware platforms (not QEMU emulation) 
+where, during the dynamic creation of a CXL RAM region, the memory 
+capacity is not assigned to the correct CFMW-dedicated NUMA node. This 
+issue leads to:
+
+  *
+
+    Failure of the memory tiering mechanism: The system is designed to
+    treat System RAM as fast memory and CXL memory as slow memory. For
+    performance optimization, hot pages may be migrated to fast memory
+    while cold pages are migrated to slow memory. The system uses NUMA
+    IDs as an index to identify different tiers of memory. If the NUMA
+    ID for CXL memory is calculated incorrectly and its capacity is
+    aggregated into the NUMA node containing System RAM (i.e., the node
+    for fast memory), the CXL memory cannot be correctly identified. It
+    may be misjudged as fast memory, thereby affecting performance
+    optimization strategies.
+
+  *
+
+    Inability to distinguish between System RAM and CXL memory even for
+    simple manual binding: Tools like |numactl|and other NUMA policy
+    utilities cannot differentiate between System RAM and CXL memory,
+    making it impossible to perform reasonable memory binding.
+
+  *
+
+    Inaccurate system reporting: Tools like |numactl -H|would display
+    memory capacities that do not match the actual physical hardware
+    layout, impacting operations and monitoring.
+
+This issue affects all users utilizing the CXL RAM functionality who 
+rely on memory tiering or NUMA-aware scheduling. Such configurations are 
+becoming increasingly common in data centers, cloud computing, and 
+high-performance computing scenarios.
+
+Therefore, I recommend backporting this patch to all stable kernel 
+series that support dynamic CXL region creation.
+
+2.Why a Kernel Update is Recommended Over a Firmware Update:
+
+In the scenario of dynamic CXL region creation, the association between 
+the memory's HPA range and its corresponding NUMA node is established 
+when the kernel driver performs the commit operation. This is a runtime, 
+OS-managed operation where the platform firmware cannot intervene to 
+provide a fix.
+
+Considering factors like hardware platform architecture, memory 
+resources, and others, such a physical address layout can indeed occur. 
+This patch does not introduce risk; it simply correctly handles the NUMA 
+node assignment for CXL RAM regions within such a physical address layout.
+
+Thus, I believe a kernel fix is necessary.
+
+-- 
+Best regards,
+Cui Chao.
+
 
