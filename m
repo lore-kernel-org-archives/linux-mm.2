@@ -4,128 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E676C44536
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE7CCC44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ED6D6B0149; Thu, 22 Jan 2026 06:22:20 -0500 (EST)
+	id 246A66B014B; Thu, 22 Jan 2026 06:24:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 995E36B014B; Thu, 22 Jan 2026 06:22:20 -0500 (EST)
+	id 21ABD6B014D; Thu, 22 Jan 2026 06:24:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87BED6B014C; Thu, 22 Jan 2026 06:22:20 -0500 (EST)
+	id 11D576B014E; Thu, 22 Jan 2026 06:24:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 72C8B6B0149
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:22:20 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15C3DD269D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:22:20 +0000 (UTC)
-X-FDA: 84359361240.19.6BFECE7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2A7AC140007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:22:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MtXcReft;
-	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F309E6B014B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:24:27 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 58BB5B6B6A
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:24:27 +0000 (UTC)
+X-FDA: 84359366574.21.E9CF46B
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5AA2920010
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:24:20 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	spf=pass (imf13.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769080938;
+	s=arc-20220608; t=1769081065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Om/rZOQIDleSoDIbcI6IoE+evj8lKFQsByV4u3Cnfyo=;
-	b=nvXHDgTkYtbo8LveT14zqXH5TV/0Is4gnY3a6C+HyrS0K8gt5y8+DE2PAOwVBAewgUa7xe
-	x1TnQ3oEgLpnmBKoht3KsYgHVAzjC6RQEgjdMmS7Ii/gjrPgnD50a2RoXnT6/BR5vsJrnq
-	efca+FX61hmbKmKMlXOPdveey3oqNt8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3ssCR9rekeOFHqHIas+Lv4pWQ7j/xMygJZgQfWbqcXY=;
+	b=Ve+RoWLJHQELpjDWLQWWIpOifreKC0Qu6BEPVsvvCZjE3GHetNzdwcNmMQb0EN/JK8+oN0
+	3W2SRJ0wELI+A6xtw8ihtLxqthIQWZ+4VbEaX0OcM6z4ft+mcXHQUPpO7fLM5Tzy1IfUSX
+	MZ2NTMJbOHy7hNjfrU4ZdF00QtAUF1M=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MtXcReft;
-	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769080938; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769081065; a=rsa-sha256;
 	cv=none;
-	b=EMKnJZtaXQlAY+S+Sd4KtXdgUHVrggK1fSPayoGjubEusPyeLZY57332E30p5qhIXnlnzX
-	eQqvFV0gKjajgYNaiJGuJNzBBlc3foBLg7PeLEJcBHj17Swn6ldfQL+K9n5qXp3KNS1ola
-	XInm42uPD3Z8GcErCzkh+FBVtS+wgAs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 37E85600C4;
-	Thu, 22 Jan 2026 11:22:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA0DC116D0;
-	Thu, 22 Jan 2026 11:22:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769080936;
-	bh=jY+6Ux20wmAFYj3ZDCilg3Fqqbo+VmiY4n3Np5FgRm4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MtXcReftCdP2oFGE4OG0RTQX7Q5IiOPR0vhdBuwluNE3DUBS7ON9s+dbR7i3vzj4K
-	 2oubCIx2+Epn4BMnF+OkT+UFOGySFI0cpWmqaiIbfvH5rppwjD6T8RKVfVcxceDOIn
-	 znjINksqDZ04a/gR6K4KcQjXwTm2StzZEk01WJVUmg1kvn1Y8UDGoBqNL4oH/GNIwR
-	 nq3EVklGNFPF1RmqRVUU+FlO+hVTGrVSynU5exqtt27aTc/PqemXl3PYRdo+f3/hN9
-	 ibX2WrvEOi6VhsAhHyPv/olj5TTttldMggtLUJQCKnBcluUnqd3MQEaITxlZfzDOuy
-	 pI3wDL2CyptuQ==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id ACECAF40068;
-	Thu, 22 Jan 2026 06:22:15 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Thu, 22 Jan 2026 06:22:15 -0500
-X-ME-Sender: <xms:ZwhyaQgWAfOH5lPwJgyrs-1gnAF3m2Q_4HcwNASz1Wv5_4mcWd2WBA>
-    <xme:ZwhyaUaw4M6u1dYaCv8I1qbUHy5fw5JTmQXxAUuhU4z093UynXs2devRrnsryUzF6
-    gh0QFGT1fUJ9JpFl6-zIUKCCFRArrHh_HJOF9H9AMymNmgciToKJ_s>
-X-ME-Received: <xmr:ZwhyaRf4QlVc7Un7uAwP62xF5Uw-EuYl_qXiO17SEqS_gTccYq3lwtqHl2Lgqg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeitdefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugi
-    dqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhnghes
-    lhhinhhugidruggvvhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuhhs
-    rghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhhvughlsehgoh
-    hoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuhhsvgdruggvpdhr
-    tghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:ZwhyaZCTB5OcS3eOXlUVRsza8Mk5ui0vmfXzK8uhni8MMHhczov2CQ>
-    <xmx:ZwhyaZUfNlcv87PL6radnVQe0suIWRGxFuVaHWbDiEK67YiN8QDfYg>
-    <xmx:ZwhyaWV6LLQYMDzWw7XCWfHhxPccglpvxFKKl-7xF3g8WJxYkHn9Uw>
-    <xmx:ZwhyaU-lJOCqpcT1VSUvYV18KCDrf_kLwGbyfShy68v6e2_LFFAj7w>
-    <xmx:ZwhyaU-3VxbqCvRnTFqbNoCpS4ywUnwbelmbJoJ0-tY8kcd-el4eCVQS>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 22 Jan 2026 06:22:13 -0500 (EST)
-Date: Thu, 22 Jan 2026 11:22:08 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv4 07/14] mm/sparse: Check memmap alignment for
- compound_info_has_mask()
-Message-ID: <aXIIOf7cHe9hzk0W@thinkstation>
-References: <20260121162253.2216580-1-kas@kernel.org>
- <20260121162253.2216580-8-kas@kernel.org>
- <B752281D-4A31-4E2D-945B-FD18016B722E@nvidia.com>
+	b=Wiqu3U22cyCiPd+Rq5tJml1y3mL+OkedkOTCc/BCnhXAJtOpe/Fk954OV9QCDe8nCYSHnP
+	7V40A+US6M5sWXdf8WuSjzD6Ab4sUjMgg80zZXoxg5kPjJ4t0L3YWREgKixMCTyHDN/C4L
+	zI6iQBO0sNEahf56Iw4NXNyaKHlDI3E=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dxdxR72tMzKHMZ5
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 19:24:11 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 2FF634058D
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 19:24:15 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgBH9fXaCHJpzfXUEg--.64027S2;
+	Thu, 22 Jan 2026 19:24:12 +0800 (CST)
+Message-ID: <fa4764db-430b-403c-a085-b71e3777ac5e@huaweicloud.com>
+Date: Thu, 22 Jan 2026 19:24:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B752281D-4A31-4E2D-945B-FD18016B722E@nvidia.com>
-X-Stat-Signature: 86ageyn9scohbcdjahffjb6in1771toy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/33] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
+To: Frederic Weisbecker <frederic@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+ Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org, netdev@vger.kernel.org
+References: <20260101221359.22298-1-frederic@kernel.org>
+ <20260101221359.22298-15-frederic@kernel.org>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20260101221359.22298-15-frederic@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgBH9fXaCHJpzfXUEg--.64027S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3WrWxAw4kJF4DJr1kCF1Dtrb_yoWxtFWfpF
+	WDWrWfGF4DJr13G3s8Zw1DArWrWwn3Cw18K3sxKw4rAFy2ga4vv3409FnxXrykZr97Cr17
+	ZF1Y9w4S93WjyrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8
+	Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	j6a0PUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam11
+X-Stat-Signature: o3jbx9h6m84q1csjbhw5kae4k7nyodzb
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2A7AC140007
-X-HE-Tag: 1769080938-772023
-X-HE-Meta: U2FsdGVkX1/23qOlPYtiW4GHiB3dm0xNnPTc+l4KSXhFd5YaWKb+kTX3Zxfwe2FhOMyV/jZe/2l8YLUaM1i6h+So2qXuaEICavmODEa6Ma/HZZXfn5qQgfi7OGoqms4HGBl92qngA1Se31hAxQx7aAd/cvpPRhjP9AkpId+waeWhk9lHSUszJwDkdN10+uNBjud87/lOJ5evymyES1K+eBCFPSFpZNAbrV118I5m4vJgqUQjVaLlmVttpfnzBWusz9hwCQc/M424F1k4UuNPOtk/k5q1aAjjjf73Gx13MC1leKHQc+JyWZrQ0NNWWSFJpO4YBTYXRUN24Aov2dsO4BJ405qG0ZZFv336LFT2QGrCGOeA+oHNffFcVlR10l4lAmmACmceN4/BIvuA0lswKRwku3uTCudY2raX4cIf6oBEH6r4OnwOIBp2TcErZQxhMPFcFP5CUGIk11wI/laqnsun0sjtEs/xQ6Mdp0zq2AMyQx/21aUzlo6W2UIlgvvFEc+hH1sNIMVt0w68nMl7RVRLj75JTRV3ThcDRH3Vczt+xT56fx6m3YAei8dP0c04x16X9/qb9sRLPJaX1OLjVCd9/Y9AfFE9mcvRmvzFFbw5xb5lu0/2ckS4QlBJlhlPERoRMAJ/B9YXKe8TrAzn/4XQu1iKPljgX5YQEW51cadSQRg1lrwaowvs6uc7YhJ6slUJGH2RMOLtrbvwYro0wKurM+wvuNOGb7KJYZRGQoSdexzESxvmYCj5eFlR1Se9ijQeXxcZVXvAPcoM2v2dTq0wpZHC/ks9RNW8EII/BicYIDi9TQRAyazcOlYB7f8LpxcTjquU1QLikdyxzktIHEo77rvZ5DajVwHy53ryZQ+PwKvIB21IzykD2AV8/0Kt5dftADahAto+jpUoG4FR74ZiDTg/8wdCpvPJnB78PC38J1gr1CwhA8SPi9TCFpqRQWKBg7WdyTF+bhYUxaQ
- 7bMHq4w9
- 0TzNsI6UeGP/omLVM6dMI1ROhtoseS3sDLPmrMsXvwovOvhsaxClJskW43Fyzeo0bOaMsFkreEUfu1vrc6VL6G+46dSYyD/p5/rEkg2EXHJe0zPgBPrQEd4lPvXPby5LVkFFKgYwg6/d0r0MUfvLBYCPru/f/eGo17NgiOJPzalBiGnQm408GaUFiXpaem5eYzUweisSDbh0qi3nPDGGtN6lk7thabyCrMVx5K/uSOgpKFp8sANufuWSza9H9qrHEdUZhm7fUWYLy+uhE8Y/v8zP8QCuRMePqJ2H4GNpOM8O4WEHRFjoiwKefIcvbxM1wr9/siGyn9w2QXkoCiFxMFX3q8NSAKqDq8K9o
+X-Rspamd-Queue-Id: 5AA2920010
+X-HE-Tag: 1769081060-483797
+X-HE-Meta: U2FsdGVkX1+a9kSSya/6wF9nHUxH1zoeNKP3TyH4DFQ4gro0QGff7TinUR3SyQBpAdDyLzMLhXnIM2ILWksHyydqid9LfMp/7+7bg98bQ9nXyAPv0rmejbvMfUvoYQPGLheFpYAZCiVa0R8mQV1bO8IIabwVU/1TDmQkksNrhUFtW6LFDoVFA1WqNNWd8JX0/uwZn3CfqkVjBscPySR7JjVfyFSmvKM23fYE5dTyUABMzHy7m8Gj970ewXOESn+GZOuQT0BCdndyH/kr1HLhTrm+VmYtf+dWdyB48cVX/T1la7rATt8SXGXae/nWXrOSvBvpoYNo5nV2fAS/HCQwEWHFVnyXlvYNkUrB/MdTNLT+/K1D+IF3ceIc+5mhwzrL0EbU/ANVFFb4c0eYg6v08YureH1oT3UWLh7NI+MbwU9sOTrNMY3z4STL0A3Kz5LIba+om7Ch62UenzAFSkgF28zh+jUHk/ZvZHW0PKkh7g7+7ZsDho8+NPmgQ6L+wiTlpSFnv/c/cBOGZ7+RrorCj6Eqt2ZM6iAVUmhq80F0gpsOmO9qSEF/mgG8pYUE7MpAYQMs3YXxcprh3wVvh8oXzFcYhVa58hbNGNG176I+eAQrlEUDz7t/l5lGlJ8+RF1f9vCrNoVWchW6EEdFyufX04BvG1xwyVRrq0LPNrKqCZqloO7DFzgjRV55e/snROs+G4pBGb3EKuBA1osgTylzn14qoJ5i1P74kQCcBCv9tC/VaArhTLmJF2SslEDkI3AWUx4uJl5CQo0R+pqqKiO5RTiewt/agiUuCnb24SFqfacWSuOJgpUcFhZBKQ9jwVsQSaTZjs85oe5wsle1BUwaWB/5oxz2O+tWd1KkuarOEvRGNpke7d+3HXxB3kfxuyFcL73rWG4S207wpS4Q2y4heUNHB7ezKqlsvuNTan01M6f9hP1Ac3i6iGWr3RLFHqm4lSTpti4yBDUjmShY91R
+ PLLWfsX+
+ yQMQzWSC25tE0Plyxj3G9KQr98LACK7TlbtD2/duyC8cHnfwlvjqPciuNbPSRKT/XZ/jN0CpjIYfve9B0koGzR1ufyDzH0ZXzOpGgDQBKxjde6DILLjx+imINFxZxYfaclG+E0eDxML/irSfMsgamMF/ggglv+TSU6QwJQWec6RlVjDaLS8Gkwlmf5bVL22AFm8K5c12WCEpk3cTWjWO6hfVughFiU5+linxzci0S4/bZ9FWnnx0bojNETOgbTlx9ghJC/PsKcIvlD8eyRS0+SBmEhaDKJXls76pJImSRkTI6LmA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,55 +126,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 12:58:36PM -0500, Zi Yan wrote:
-> On 21 Jan 2026, at 11:22, Kiryl Shutsemau wrote:
-> 
-> > If page->compound_info encodes a mask, it is expected that memmap to be
-> > naturally aligned to the maximum folio size.
-> >
-> > Add a warning if it is not.
-> >
-> > A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
-> > kernel is still likely to be functional if this strict check fails.
-> >
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > ---
-> >  include/linux/mmzone.h | 1 +
-> >  mm/sparse.c            | 5 +++++
-> >  2 files changed, 6 insertions(+)
-> >
-> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > index 390ce11b3765..7e4f69b9d760 100644
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -91,6 +91,7 @@
-> >  #endif
-> >
-> >  #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
-> > +#define MAX_FOLIO_SIZE		(PAGE_SIZE << MAX_FOLIO_ORDER)
-> >
-> >  enum migratetype {
-> >  	MIGRATE_UNMOVABLE,
-> > diff --git a/mm/sparse.c b/mm/sparse.c
-> > index 17c50a6415c2..5f41a3edcc24 100644
-> > --- a/mm/sparse.c
-> > +++ b/mm/sparse.c
-> > @@ -600,6 +600,11 @@ void __init sparse_init(void)
-> >  	BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
-> >  	memblocks_present();
-> >
-> > +	if (compound_info_has_mask()) {
-> > +		WARN_ON(!IS_ALIGNED((unsigned long)pfn_to_page(0),
-> > +				    MAX_FOLIO_SIZE / sizeof(struct page)));
-> > +	}
-> > +
-> 
-> 16GB is only possible in arm64 with 64KB base page. Would it be overkill
-> to align vmemmap to it unconditionally? Or how likely will this cause
-> false positive warning?
 
-CMA can give you 16GiB page on x86.
+
+On 2026/1/2 6:13, Frederic Weisbecker wrote:
+> Until now, HK_TYPE_DOMAIN used to only include boot defined isolated
+> CPUs passed through isolcpus= boot option. Users interested in also
+> knowing the runtime defined isolated CPUs through cpuset must use
+> different APIs: cpuset_cpu_is_isolated(), cpu_is_isolated(), etc...
+> 
+> There are many drawbacks to that approach:
+> 
+> 1) Most interested subsystems want to know about all isolated CPUs, not
+>   just those defined on boot time.
+> 
+> 2) cpuset_cpu_is_isolated() / cpu_is_isolated() are not synchronized with
+>   concurrent cpuset changes.
+> 
+> 3) Further cpuset modifications are not propagated to subsystems
+> 
+> Solve 1) and 2) and centralize all isolated CPUs within the
+> HK_TYPE_DOMAIN housekeeping cpumask.
+> 
+> Subsystems can rely on RCU to synchronize against concurrent changes.
+> 
+> The propagation mentioned in 3) will be handled in further patches.
+> 
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> Reviewed-by: Waiman Long <longman@redhat.com>
+> Reviewed-by: Chen Ridong <chenridong@huawei.com>
+> ---
+>  include/linux/sched/isolation.h |  7 ++++
+>  kernel/cgroup/cpuset.c          |  3 ++
+>  kernel/sched/isolation.c        | 73 ++++++++++++++++++++++++++++++---
+>  kernel/sched/sched.h            |  1 +
+>  4 files changed, 78 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+> index c7cf6934489c..d8d9baf44516 100644
+> --- a/include/linux/sched/isolation.h
+> +++ b/include/linux/sched/isolation.h
+> @@ -9,6 +9,11 @@
+>  enum hk_type {
+>  	/* Inverse of boot-time isolcpus= argument */
+>  	HK_TYPE_DOMAIN_BOOT,
+> +	/*
+> +	 * Same as HK_TYPE_DOMAIN_BOOT but also includes the
+> +	 * inverse of cpuset isolated partitions. As such it
+> +	 * is always a subset of HK_TYPE_DOMAIN_BOOT.
+> +	 */
+>  	HK_TYPE_DOMAIN,
+>  	/* Inverse of boot-time isolcpus=managed_irq argument */
+>  	HK_TYPE_MANAGED_IRQ,
+> @@ -35,6 +40,7 @@ extern const struct cpumask *housekeeping_cpumask(enum hk_type type);
+>  extern bool housekeeping_enabled(enum hk_type type);
+>  extern void housekeeping_affine(struct task_struct *t, enum hk_type type);
+>  extern bool housekeeping_test_cpu(int cpu, enum hk_type type);
+> +extern int housekeeping_update(struct cpumask *isol_mask);
+>  extern void __init housekeeping_init(void);
+>  
+>  #else
+> @@ -62,6 +68,7 @@ static inline bool housekeeping_test_cpu(int cpu, enum hk_type type)
+>  	return true;
+>  }
+>  
+> +static inline int housekeeping_update(struct cpumask *isol_mask) { return 0; }
+>  static inline void housekeeping_init(void) { }
+>  #endif /* CONFIG_CPU_ISOLATION */
+>  
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> index 5e2e3514c22e..1c0475e384dc 100644
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -1490,6 +1490,9 @@ static void update_isolation_cpumasks(void)
+>  	ret = tmigr_isolated_exclude_cpumask(isolated_cpus);
+>  	WARN_ON_ONCE(ret < 0);
+>  
+> +	ret = housekeeping_update(isolated_cpus);
+> +	WARN_ON_ONCE(ret < 0);
+> +
+>  	isolated_cpus_updating = false;
+>  }
+>  
+> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> index 83be49ec2b06..c61b7ef3e98e 100644
+> --- a/kernel/sched/isolation.c
+> +++ b/kernel/sched/isolation.c
+> @@ -29,18 +29,48 @@ static struct housekeeping housekeeping;
+>  
+>  bool housekeeping_enabled(enum hk_type type)
+>  {
+> -	return !!(housekeeping.flags & BIT(type));
+> +	return !!(READ_ONCE(housekeeping.flags) & BIT(type));
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_enabled);
+>  
+> +static bool housekeeping_dereference_check(enum hk_type type)
+> +{
+> +	if (IS_ENABLED(CONFIG_LOCKDEP) && type == HK_TYPE_DOMAIN) {
+> +		/* Cpuset isn't even writable yet? */
+> +		if (system_state <= SYSTEM_SCHEDULING)
+> +			return true;
+> +
+> +		/* CPU hotplug write locked, so cpuset partition can't be overwritten */
+> +		if (IS_ENABLED(CONFIG_HOTPLUG_CPU) && lockdep_is_cpus_write_held())
+> +			return true;
+> +
+> +		/* Cpuset lock held, partitions not writable */
+> +		if (IS_ENABLED(CONFIG_CPUSETS) && lockdep_is_cpuset_held())
+> +			return true;
+> +
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static inline struct cpumask *housekeeping_cpumask_dereference(enum hk_type type)
+> +{
+> +	return rcu_dereference_all_check(housekeeping.cpumasks[type],
+> +					 housekeeping_dereference_check(type));
+> +}
+> +
+>  const struct cpumask *housekeeping_cpumask(enum hk_type type)
+>  {
+> +	const struct cpumask *mask = NULL;
+> +
+>  	if (static_branch_unlikely(&housekeeping_overridden)) {
+> -		if (housekeeping.flags & BIT(type)) {
+> -			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
+> -		}
+> +		if (READ_ONCE(housekeeping.flags) & BIT(type))
+> +			mask = housekeeping_cpumask_dereference(type);
+>  	}
+> -	return cpu_possible_mask;
+> +	if (!mask)
+> +		mask = cpu_possible_mask;
+> +	return mask;
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+>  
+> @@ -80,12 +110,43 @@ EXPORT_SYMBOL_GPL(housekeeping_affine);
+>  
+>  bool housekeeping_test_cpu(int cpu, enum hk_type type)
+>  {
+> -	if (static_branch_unlikely(&housekeeping_overridden) && housekeeping.flags & BIT(type))
+> +	if (static_branch_unlikely(&housekeeping_overridden) &&
+> +	    READ_ONCE(housekeeping.flags) & BIT(type))
+>  		return cpumask_test_cpu(cpu, housekeeping_cpumask(type));
+>  	return true;
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
+>  
+> +int housekeeping_update(struct cpumask *isol_mask)
+> +{
+> +	struct cpumask *trial, *old = NULL;
+> +
+> +	trial = kmalloc(cpumask_size(), GFP_KERNEL);
+> +	if (!trial)
+> +		return -ENOMEM;
+> +
+> +	cpumask_andnot(trial, housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT), isol_mask);
+> +	if (!cpumask_intersects(trial, cpu_online_mask)) {
+> +		kfree(trial);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!housekeeping.flags)
+> +		static_branch_enable(&housekeeping_overridden);
+> +
+
+The cpu_read_lock is held outside, we should use static_branch_enable_cpuslocked
+here, since static_branch_enable acquires cpu_read_lock.
+
+I have sent out a patch to fix this issue.
+
+https://lore.kernel.org/cgroups/20260122080902.2312721-1-chenridong@huaweicloud.com/T/#u
+
+> +	if (housekeeping.flags & HK_FLAG_DOMAIN)
+> +		old = housekeeping_cpumask_dereference(HK_TYPE_DOMAIN);
+> +	else
+> +		WRITE_ONCE(housekeeping.flags, housekeeping.flags | HK_FLAG_DOMAIN);
+> +	rcu_assign_pointer(housekeeping.cpumasks[HK_TYPE_DOMAIN], trial);
+> +
+> +	synchronize_rcu();
+> +
+> +	kfree(old);
+> +
+> +	return 0;
+> +}
+> +
+>  void __init housekeeping_init(void)
+>  {
+>  	enum hk_type type;
+> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+> index 475bdab3b8db..653e898a996a 100644
+> --- a/kernel/sched/sched.h
+> +++ b/kernel/sched/sched.h
+> @@ -30,6 +30,7 @@
+>  #include <linux/context_tracking.h>
+>  #include <linux/cpufreq.h>
+>  #include <linux/cpumask_api.h>
+> +#include <linux/cpuset.h>
+>  #include <linux/ctype.h>
+>  #include <linux/file.h>
+>  #include <linux/fs_api.h>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Best regards,
+Ridong
+
 
