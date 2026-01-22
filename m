@@ -4,87 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1B1ED6CFA1
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:26:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92EF2D6CFA1
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:26:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F195C6B02FA; Thu, 22 Jan 2026 13:26:01 -0500 (EST)
+	id D381D6B02FC; Thu, 22 Jan 2026 13:26:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE1226B02FC; Thu, 22 Jan 2026 13:26:01 -0500 (EST)
+	id D09306B02FE; Thu, 22 Jan 2026 13:26:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E38196B02FD; Thu, 22 Jan 2026 13:26:01 -0500 (EST)
+	id C2C796B02FF; Thu, 22 Jan 2026 13:26:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D0EEE6B02FA
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:26:01 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B1F7E6B02FC
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:26:12 -0500 (EST)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 65C228BA69
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:26:01 +0000 (UTC)
-X-FDA: 84360428922.04.E5532DB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8B43B180003
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:25:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DOsG1sDg;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769106359;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53B84C1D9D
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:26:12 +0000 (UTC)
+X-FDA: 84360429384.04.80AB7C1
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5BBCFC0005
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:26:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=k+uYvc0O;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769106370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K0vA8huMqVVIPgi0LNLE6n5XQ3xN6ZIE5i2JvwAkQXE=;
-	b=Z4asS/Z2VoKNjeZqfc3B7yCafvc196R3YnG1OG82okUh5TqN+/NNvjCImdAROvc86cdJ+L
-	lv3O3dfsB/g54h1aC6Th7V1ToYicIK5k6CxK17PJGHp7AOSHgINlidm+aMye3gPrVDVy/0
-	z4e4aPcKRgKFL5hB2m8pG4aUVZqy19Y=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DOsG1sDg;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769106359; a=rsa-sha256;
-	cv=none;
-	b=NAtuzx9A/rANq2bIiNKVtvUza2a74iJmD8NOA/FTxq9ihWPI09FyBWOCjBozLsRNLeECrZ
-	fRp3PqqqEIh8BPEL9KTCNma3dZTZAj5/KyxaPI/i0r1yNO5AWi7hfn65U9xo8IzAd5nBFK
-	j1vkXN7r15HAl/1KCXXyn8t7TEOY65c=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C82243EEF;
-	Thu, 22 Jan 2026 18:25:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F9BC116C6;
-	Thu, 22 Jan 2026 18:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769106358;
-	bh=aLh8CjwfgGPV7i0+bwwtdSqKhoqStOVsDlLu0vdphXo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DOsG1sDgSWjT9DPOgMH1zR1BgIEzstzAUeTXSKwKKsfsDyVQ2oWWwVhFLXN+ZFGK3
-	 vFI5lpLDlNE6TSg2vEPqDJbmhRzz2AT8XvSnSXmmPL6rOYxpjPyLqrRG5lb8pgFNKX
-	 X9viiUZLcF8X7Z2Ma6SQ87A3kxEF/Te2YtKxdFbk=
-Date: Thu, 22 Jan 2026 10:25:57 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>, Dev
- Jain <dev.jain@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mark
- Brown <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan
- <shuah@kernel.org>
-Subject: Re: [PATCH v3 0/9] Various mm kselftests improvements/fixes
-Message-Id: <20260122102557.991604188ed67b59baab60c5@linux-foundation.org>
-In-Reply-To: <20260122170224.4056513-1-kevin.brodsky@arm.com>
-References: <20260122170224.4056513-1-kevin.brodsky@arm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=w9r8EjZfu+6WBBNKHZIudTdElM7NIcXhyZ7Jt0sf0KQ=;
+	b=qck6yEN60Deem2iQgq8oR/UKg+I9IWW265zhMWkufgqoUpRhq8CYpJBpjwWm0DRP9xGvIQ
+	P3oK5a5v0c+Ax4iXnq/xFM6eCL7CJgapAgItrvVCS3y9YD+qNgyBr0pIX568CjkpLVvRTA
+	WIbN08ScvcyGrr/pE4J27iOKT4H6LMY=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=k+uYvc0O;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769106370; a=rsa-sha256;
+	cv=pass;
+	b=C8IbotQ5GKK9Co9JncYrqFathKIJXdVz5UGYWbQqlC3+NJuv+R8apO3el5/z7RFHjeWWrm
+	ixwU20qr4ow2gt1QJLmuE4f/a94qjyF++ALrMRTDPKTxHa41KDg9/5EdKHtpQk6VuTbkVA
+	ywrw3dZ3le3KeqNidZAz0YjEac590e8=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6582e8831aeso1984831a12.1
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:26:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769106369; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jz6BqUEys/25EC10TVEz2FFr3oM1USX4mVPHS40cLh90jCR6LXmd0yu9bIlw5XUs/n
+         yeYyvch0bSEo9jeRjQiFMcJWcvin/qKVrm+lLAZNdK7CDtGCrHqURddmb7vuLM8NCNSS
+         +qveMm/EF4T2db4a3Dc74ON29E+57QKiqWvELCjNpVOr0rXGiBqYvugoM0ExWk1dEmi/
+         SM3ZCyl2k1hVzVJPd/RiI42U+tThayst7jWVA9sqEtMQ1MJwxuYaIjlreRGYbV/rM+u6
+         8D87IC1cO1i/yqNK4g4QHXn1Xvrp3zaJmcph2GVioC0dhP9gEFpn6VEtDrvTVkUEeBmn
+         iPeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=w9r8EjZfu+6WBBNKHZIudTdElM7NIcXhyZ7Jt0sf0KQ=;
+        fh=I5i8uVlA/k9rcxoFOKARHfbNpqfXYWCmYLdw34HxmKg=;
+        b=MLgz7mTOlrO5pamuzcKFgN2DghscSe4mdxhqJbojs9R36pcHTAqkFRRIkI1k8wb6bc
+         WPtoUNXHwzbpd5Mc9GDSbgJ1r8j4hZpykGxSSu3GwqpbulcomFvQfG/XBlYhxeTwKNFB
+         3JOWFSA8TEtX1uzAb6nq0ZMv1t0/zNdjQ5yICXVWqdL6TGQc6p6hXXNvvzn5on/YC4NQ
+         6nKk5JmpraMxvm94fpzctnfHy9Sjlnvyn7KwnTW9p/ydpFnCD72IxSqxWehD7M8uuboa
+         16wWvIfu7Ifzqj5oRn3a0A8UOIBkr6IXzEwSS250z1pkikiO7490531TMyDUWhGtZZTy
+         kT5A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1769106369; x=1769711169; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w9r8EjZfu+6WBBNKHZIudTdElM7NIcXhyZ7Jt0sf0KQ=;
+        b=k+uYvc0O5a5BwAzMoGtVKPuLFmn3FUdujK995Ctko2zdvw6z/q4WVbwfc+FiUmTsnV
+         DXGy4iK4lu2LhydzBHMq/GZuTZUCR7we2FVnrlBh6mGLwXKFQL5CHGuXwNiyy9s9tu81
+         QfDj2yiIG1Zp2RgKz0OmcagL6j7Z3sFBK0nQb9ll+tRfP0mGMZthnw4pkjaWPEzBM5+/
+         WwZtYn4K4gM+HhKZZzNa294hivQJ2mIX/cHDY8TAGs0p6LeLRlqvlP3lDb4K4rHvFxjI
+         3ztgSLl6tuAyqNrTrblBlqyFXBkOjWylqItOCDK9RScWPhMe91YH4Cm62UnAGQBHkeMa
+         YKHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769106369; x=1769711169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=w9r8EjZfu+6WBBNKHZIudTdElM7NIcXhyZ7Jt0sf0KQ=;
+        b=sKcicQpvC2p7W/UMQ9Ne2ReRbCORxL3H5VGE9IHSe5O5EpGQuasVd7zWAOKsF908W8
+         zepvVzKn6p5tNa42E2Ab7MbIEfYVqwqyw+bLwwhA6xa6UGuR+7BPvMpw/3PC7+zFEB25
+         h7lN7viJZshEc4iZPPdBNFcbW9J1StiTHaHRYhGMzBNov9WA9qksWHx8TIHEWuvKqC+d
+         SQeboBfaL84j9vCl2kiLYTBy8VrkSaOptF1wpJCy4C21ZTQs0UR1P+gNcqF2WjgrK11T
+         yVKJvBtBsU33IIUCin+BqZcQGG/XXtrjRTyu0D8kvLUyrNcagyX9wUTPZj63V7I1frnX
+         Uk/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUVKeNpqZF3c0plw29ORP24TUqzwx5QnT1l3v4sL0d4PQveaoM8FSwtuuFA443Dj4n6e45HdZ1NUg==@kvack.org
+X-Gm-Message-State: AOJu0YzF8CWEdu9PuTzDJjK1LiXPjTDZS2N445H1QuF+LeQ6WUBHURvG
+	mdYYJm6FCcUUp7G0+I5qZ4NMamC7UoYOJWWf98bRszpvUJCyJ45PLqHSJxT3p9qPS3hFOEoIYkY
+	b0r2G36OdpDP9jt9e4+d+NvhddxIHsKDtkoQX8kCLgw==
+X-Gm-Gg: AZuq6aJPM+tDslbsMb/SyHU9vCHKUhveXJ0JkX89W68pDhbyeTLXpkmUESoZ6+HJ3nT
+	OEkOTAXAVBFB/j9aXx2VFMWEDBKEPCP9P9jCu/N9HdogkOxYAftCJ7JryBLSqofRnVXB/AaHsZP
+	JVX5ljQ+GEjIeeFI55EB33cYIC4fQh8Mi+nWkXwxDyS5lK9euVFOYNVOzvto668nTFz25mnWIuk
+	eAZgG7ll1hSu0/YotL5jRTk+vi/IWQWNf8YzVynD1OI6Dvm/Wht6xYSlh/kRPV5j/qR4Rfz9x8p
+	3M9iIJBfw4IhRsgWSWzXa3lBgw==
+X-Received: by 2002:a05:6402:2745:b0:658:3c7b:5c3f with SMTP id
+ 4fb4d7f45d1cf-6584876232bmr343669a12.11.1769106368921; Thu, 22 Jan 2026
+ 10:26:08 -0800 (PST)
+MIME-Version: 1.0
+References: <20260105165839.285270-1-rppt@kernel.org> <20260105165839.285270-7-rppt@kernel.org>
+In-Reply-To: <20260105165839.285270-7-rppt@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 22 Jan 2026 13:25:32 -0500
+X-Gm-Features: AZwV_QiXDdGmSgod4IzeC1v1Mi9Wmeos0iKetVDkwL8LXL1nrc7MhMPUl8727d0
+Message-ID: <CA+CK2bBu=ThSf1nsrMWO6ij1cLB_TNrEK0dCCc8+kC-MtAXstQ@mail.gmail.com>
+Subject: Re: [PATCH 6/6] kho/abi: add memblock ABI header
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
+	Jason Miu <jasonmiu@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8B43B180003
-X-Stat-Signature: pezkeca186bxfoherreq5f9xw1ygjzrk
+X-Rspamd-Queue-Id: 5BBCFC0005
+X-Stat-Signature: oqwmmu3u4ujj5w18sgc8sdderr4nbef7
 X-Rspam-User: 
-X-HE-Tag: 1769106359-757250
-X-HE-Meta: U2FsdGVkX18nMPTowVMJvnWQe1cPdr6GuHzG1nxzXiWpu0DB1aFnrQUUxJf3Ph1MP7J02jJot55Hu1wN2hqlkwGaOLwFX5qa7NqRNR/wPvgTCskLMkOxk2RBW2iqwaxffUmMJ7qI6EjWp9rqmQiaKqdNHBulpElwi2iCTkQdvutSLKQQfHNRiZzYAyXs6fEQEQCrSs66srbLmb2Z3J/nbR2ysdq4lOmAV7g+AClDnyEnKFRa3NQFy99YcLVNme78kA4YFpNeycshMhcC0QTk/K8WeLbd1t4FD/HFFNhst3VN19nahgAjkF0ZZ72RZyT/UctqwpL/6PEyT/LGuiVgPgWA5lSaF4d+pef5w78jGjfUgc3rKyBtR0N6+iTScu/MJJujwpMYQVkS8krimxQQZ4GXJ2PtG+3QVRB7if2CaH73bNJ3gmaaT4QeXQ4UG8JZSS4Q/LzeBvT4+vGS7SuIM+vtlyoY5SGvVHSCfwcn1byuYy0mkPP2KB/3tO9ucHJWjkzwJsvx/DHjMcmhEB8RodXLBpHhoa4akiNLAQ3JfNz+f5YeiyEia3eyBHahHFVmSWTqChwXXd1tgdNcvdwhxvkvtcvQPq5CaouVdD2UcI06A8RbQC2e1WfaZAw8OyWQzlxuG9LJGa/3KDazP/Q5LsV+gBDcBR8Aoi4Acd3t0ytZ0dVSi/IfbVlbCHIQpoqbOZEGV1VbzOsWmZdn9+HPH99GT4+i0VDuvdhBs23V2TmVCYxN+Blu1U+t2C7+T64XyGJ65AkApwhphopCDmFIhXvPjZ09DqHbNIKUBbnw2Qq3IkL/LMAAEKF90Gslw4ZO05nMqU9v+WmaArAu/zktOssJngy8PEbxB5xVIDqahwUV/o2Qt8oJHb/MO2efSSRF5iumIPsTMXMeh1+UpXidIEwFqCjFKeGHG33SGexQwt8J7zA9U6hHP8GIUOjZ8pkiIPgTmvoLWVL8Biq4UYz
- vxM1ZPw5
- 2T9OJXCTuPMEo34+9cYKViSmBh75xNRs8cFdTEmskeevs0HaX+MAboRHcDxGfnpbPiVXkPhvXi7QoSg03RadReLAnlJKoi1SC1AmeeR5cDMNK2328+7PW9g2tx3N/PjQvMNYcUe3tBnLunfh5vFMIW48LGW3Z2f4GkYK0DtFE5t9RzaP9nSJgRP2X2s9Y4jWCoP3XRHO++7nYs3R48+Z+Zn9zk1Gjyh3jKVpWTuu7ANyXYykM/D51pVYlH6O8QRVu1S9M39aEhsxXNwebl3/9VNd7j3faxVQUeE6OaJ4civT6zYtLYrW2/1Gdqw==
+X-HE-Tag: 1769106370-757851
+X-HE-Meta: U2FsdGVkX18/036p4Jr8SPFAI0GQ5EjcUMFIY2erL0wWQJmF4Q6GxwFVOnDBdmK/1AAOyMXd4FMT3Z0mRQJzftnBlyVfWkggh+zLP4qy80IUxHtpQCucNOgMCdQp6zx2KWcj1H9rHbFOhKjGt02mTSxTw2i9GOIfnTN13hRH7dnZPcE/Qz5Fo7q5gxJMhDM1uoH9SBDu/apbVDhO42U3iKIeo4z6H0K7My6I/voVVa3B10cXVrc58hXvBH49ETm5X196zUzBznvxW+AcZlGwH3rZfTYq5K9rrGmSjeTJJaFz02AxJO7xnGPDOasadFqN4faxsW+2TOsJi/bV9haHpunDeQPHAGoTDs/BOboPB0soVd0n29akwRASI+u6L8POvnGH6yTFP3tsgw2BJhQ0E2sC+4IlVStR6D5C0kE5dpCA8Baego1W93uisUAzX8HHQWgyf5Fy5PJgloJlbwHJBrNbrkL8AI53ABIRSQ31DUJHQLpUwel0eTFw3NNPgqkmgSZLTNueq2lpaNV+UUcNFgstDXC6G6FaW856UlXLAbO+OfYScIX502uh2zeoLW5Wg9bcyk65xROO2F3MJYt8nJzO0wQY5ruE4uyXNzTJ/fOmg5lUxGtu3IIdhPHgx+nVimmKxPYuuq9lMplyxqM2cUC0yr/FUNrM43nqZey3dytyLIvrWYFBHv9zdWKr0lm1hh9BTt8vxjjwiYMKt7hn5kupg6jWxaZqSBxcTlEWntblFno+vVU+T52qA7SpcOrRy+embPyXo4Ij1Z47md8QcpAQd+JLkIqOc8E7vEMoDMdBkjCM0u1LU1yKlU4o5AjofvSaZeVP873neM8p3iPWZ1N+VZwBu4zucQcKwpnJF2XQRm2SnXuUJCwU2FNV3vb/DCpmw3szGAsN7ohiPO7RDlNUdlrJ0uO/dYrJHDKSRIxoBS5c7JEEU2EFvp0Cf7FPNebv5aEsBJ5uf9LPjqK
+ YasobKPD
+ 0xSHIwpfohR9DPsp6/BsD39Vyjg+Q3+k7xSeFwUpY8BfWuGPLFFKEuCL6H61ih6Mpm6zE4ax5vFCynwCG+i+PTDqKb4+T0xf+DiiMVbOCCZG1vLn5OLMBxLtqL1uiu6xwB5KVRjpax4blKcoibdWBGuH6Z3MY1Qr9eJLkCvKubol3P7B1U3/7ek8kALhYIXAHM2nc93SrkYOzILPfaZAM6mYPrQmBDQB+LOvXRMnTDineWfluyEWQWNjZn4YBZmF0JWKqMRCqEFb1l0wUL3ocCFnNzjrNVsI0KZvbcKUZzQke4IkcUuNrihs+6YHLvkYqPAmy/jMy/sS1oqch7O5HsVRQMp40fSQVruMperiH8vtlFpyl7jcf7yJ6Acj2f/f3Fuj5y05/dxVPnEqwXgNXQqlbLw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,318 +141,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 17:02:15 +0000 Kevin Brodsky <kevin.brodsky@arm.com> wrote:
+On Mon, Jan 5, 2026 at 11:59=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Introduce KHO ABI header describing preservation ABI for memblock's
+> reserve_mem regions and link the relevant documentation to KHO docs.
+>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> Various improvements/fixes for the mm kselftests:
-> 
-> - Patch 1-3 extend support for more build configurations: out-of-tree
->   $KDIR, cross-compilation, etc.
-> 
-> - Patch 4-7 fix issues related to faulting in pages, introducing a new
->   helper for that purpose.
-> 
-> - Patch 8 fixes the value returned by pagemap_ioctl (PASS was always
->   returned, which explains why the issue fixed in patch 6 went
->   unnoticed).
-> 
-> - Patch 9 improves the exit code of pfnmap.
-> 
-> Net results:
-> - 1 test no longer fails (patch 7)
-> - 3 tests are no longer skipped (patch 4)
-> - More accurate return values for whole suites (patch 8, 9)
-> - Extra tests are more likely to be built (patch 1-3)
-
-Updated, thanks.
-
-> ---
-> v2..v3:
-> - Patch 5: new patch [David Hildenbrand]
-> - Patch 6: make the helper take a number of pages + pagesize, rename to
->   force_read_pages() [David]
-> - Patch 7: improved page count calculation (avoiding floating-point
->   helper)
-> - Patch 7: added Fixes tag [David]
-> - Patch 9: open the file only once and save the fd [David]
-> - Collected R-b/A-b
-> 
-
-Below is how v3 altered mm.git:
-
-
---- a/tools/testing/selftests/mm/cow.c~b
-+++ a/tools/testing/selftests/mm/cow.c
-@@ -75,6 +75,18 @@ static bool range_is_swapped(void *addr,
- 	return true;
- }
- 
-+static bool populate_page_checked(char *addr)
-+{
-+	bool ret;
-+
-+	FORCE_READ(*addr);
-+	ret = pagemap_is_populated(pagemap_fd, addr);
-+	if (!ret)
-+		ksft_print_msg("Failed to populate page\n");
-+
-+	return ret;
-+}
-+
- struct comm_pipes {
- 	int child_ready[2];
- 	int parent_ready[2];
-@@ -1549,8 +1561,10 @@ static void run_with_zeropage(non_anon_t
- 	}
- 
- 	/* Read from the page to populate the shared zeropage. */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
- 
- 	fn(mem, smem, pagesize);
- munmap:
-@@ -1612,8 +1626,11 @@ static void run_with_huge_zeropage(non_a
- 	 * the first sub-page and test if we get another sub-page populated
- 	 * automatically.
- 	 */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
-+
- 	if (!pagemap_is_populated(pagemap_fd, mem + pagesize) ||
- 	    !pagemap_is_populated(pagemap_fd, smem + pagesize)) {
- 		ksft_test_result_skip("Did not get THPs populated\n");
-@@ -1663,8 +1680,10 @@ static void run_with_memfd(non_anon_test
- 	}
- 
- 	/* Fault the page in. */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
- 
- 	fn(mem, smem, pagesize);
- munmap:
-@@ -1719,8 +1738,10 @@ static void run_with_tmpfile(non_anon_te
- 	}
- 
- 	/* Fault the page in. */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
- 
- 	fn(mem, smem, pagesize);
- munmap:
-@@ -1773,8 +1794,10 @@ static void run_with_memfd_hugetlb(non_a
- 	}
- 
- 	/* Fault the page in. */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
- 
- 	fn(mem, smem, hugetlbsize);
- munmap:
---- a/tools/testing/selftests/mm/hugetlb-madvise.c~b
-+++ a/tools/testing/selftests/mm/hugetlb-madvise.c
-@@ -47,7 +47,7 @@ void write_fault_pages(void *addr, unsig
- 
- void read_fault_pages(void *addr, unsigned long nr_pages)
- {
--	force_read_pages_in_range(addr, nr_pages * huge_page_size);
-+	force_read_pages(addr, nr_pages, huge_page_size);
- }
- 
- int main(int argc, char **argv)
---- a/tools/testing/selftests/mm/pagemap_ioctl.c~b
-+++ a/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -1052,7 +1052,7 @@ static void test_simple(void)
- int sanity_tests(void)
- {
- 	unsigned long long mem_size, vec_size;
--	long ret, fd, i, buf_size;
-+	long ret, fd, i, buf_size, nr_pages;
- 	struct page_region *vec;
- 	char *mem, *fmem;
- 	struct stat sbuf;
-@@ -1166,13 +1166,14 @@ int sanity_tests(void)
- 	if (fmem == MAP_FAILED)
- 		ksft_exit_fail_msg("error nomem %d %s\n", errno, strerror(errno));
- 
--	force_read_pages_in_range(fmem, sbuf.st_size);
-+	nr_pages = (sbuf.st_size + page_size - 1) / page_size;
-+	force_read_pages(fmem, nr_pages, page_size);
- 
- 	ret = pagemap_ioctl(fmem, sbuf.st_size, vec, vec_size, 0, 0,
- 			    0, PAGEMAP_NON_WRITTEN_BITS, 0, PAGEMAP_NON_WRITTEN_BITS);
- 
- 	ksft_test_result(ret >= 0 && vec[0].start == (uintptr_t)fmem &&
--			 LEN(vec[0]) == ceilf((float)sbuf.st_size/page_size) &&
-+			 LEN(vec[0]) == nr_pages &&
- 			 (vec[0].categories & PAGE_IS_FILE),
- 			 "%s Memory mapped file\n", __func__);
- 
---- a/tools/testing/selftests/mm/pfnmap.c~b
-+++ a/tools/testing/selftests/mm/pfnmap.c
-@@ -30,13 +30,14 @@
- static sigjmp_buf sigjmp_buf_env;
- static char *file = "/dev/mem";
- static off_t file_offset;
-+static int fd;
- 
- static void signal_handler(int sig)
- {
- 	siglongjmp(sigjmp_buf_env, -EFAULT);
- }
- 
--static int test_read_access(char *addr, size_t size)
-+static int test_read_access(char *addr, size_t size, size_t pagesize)
- {
- 	int ret;
- 
-@@ -45,7 +46,7 @@ static int test_read_access(char *addr,
- 
- 	ret = sigsetjmp(sigjmp_buf_env, 1);
- 	if (!ret)
--		force_read_pages_in_range(addr, size);
-+		force_read_pages(addr, size/pagesize, pagesize);
- 
- 	if (signal(SIGSEGV, SIG_DFL) == SIG_ERR)
- 		return -EINVAL;
-@@ -104,7 +105,6 @@ static void pfnmap_init(void)
- {
- 	size_t pagesize = getpagesize();
- 	size_t size = DEV_MEM_NPAGES * pagesize;
--	int fd;
- 	void *addr;
- 
- 	if (strncmp(file, "/dev/mem", strlen("/dev/mem")) == 0) {
-@@ -117,16 +117,16 @@ static void pfnmap_init(void)
- 		file_offset = 0;
- 	}
- 
--	/*
--	 * Make sure we can open and map the file, and perform some basic
--	 * checks; skip the whole suite if anything goes wrong.
--	 * A fresh mapping is then created for every test case by
--	 * FIXTURE_SETUP(pfnmap).
--	 */
- 	fd = open(file, O_RDONLY);
- 	if (fd < 0)
- 		ksft_exit_skip("Cannot open '%s': %s\n", file, strerror(errno));
- 
-+	/*
-+	 * Make sure we can map the file, and perform some basic checks; skip
-+	 * the whole suite if anything goes wrong.
-+	 * A fresh mapping is then created for every test case by
-+	 * FIXTURE_SETUP(pfnmap).
-+	 */
- 	addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, file_offset);
- 	if (addr == MAP_FAILED)
- 		ksft_exit_skip("Cannot mmap '%s': %s\n", file, strerror(errno));
-@@ -134,17 +134,15 @@ static void pfnmap_init(void)
- 	if (!check_vmflag_pfnmap(addr))
- 		ksft_exit_skip("Invalid file: '%s'. Not pfnmap'ed\n", file);
- 
--	if (test_read_access(addr, size))
-+	if (test_read_access(addr, size, pagesize))
- 		ksft_exit_skip("Cannot read-access mmap'ed '%s'\n", file);
- 
- 	munmap(addr, size);
--	close(fd);
- }
- 
- FIXTURE(pfnmap)
- {
- 	size_t pagesize;
--	int dev_mem_fd;
- 	char *addr1;
- 	size_t size1;
- 	char *addr2;
-@@ -155,12 +153,9 @@ FIXTURE_SETUP(pfnmap)
- {
- 	self->pagesize = getpagesize();
- 
--	self->dev_mem_fd = open(file, O_RDONLY);
--	ASSERT_GE(self->dev_mem_fd, 0);
--
- 	self->size1 = DEV_MEM_NPAGES * self->pagesize;
- 	self->addr1 = mmap(NULL, self->size1, PROT_READ, MAP_SHARED,
--			   self->dev_mem_fd, file_offset);
-+			   fd, file_offset);
- 	ASSERT_NE(self->addr1, MAP_FAILED);
- 
- 	self->size2 = 0;
-@@ -173,8 +168,6 @@ FIXTURE_TEARDOWN(pfnmap)
- 		munmap(self->addr2, self->size2);
- 	if (self->addr1 != MAP_FAILED)
- 		munmap(self->addr1, self->size1);
--	if (self->dev_mem_fd >= 0)
--		close(self->dev_mem_fd);
- }
- 
- TEST_F(pfnmap, madvise_disallowed)
-@@ -214,7 +207,7 @@ TEST_F(pfnmap, munmap_split)
- 	 */
- 	self->size2 = self->pagesize;
- 	self->addr2 = mmap(NULL, self->pagesize, PROT_READ, MAP_SHARED,
--			   self->dev_mem_fd, file_offset);
-+			   fd, file_offset);
- 	ASSERT_NE(self->addr2, MAP_FAILED);
- }
- 
-@@ -265,7 +258,8 @@ TEST_F(pfnmap, fork)
- 	ASSERT_GE(pid, 0);
- 
- 	if (!pid) {
--		EXPECT_EQ(test_read_access(self->addr1, self->size1), 0);
-+		EXPECT_EQ(test_read_access(self->addr1, self->size1,
-+					   self->pagesize), 0);
- 		exit(0);
- 	}
- 
---- a/tools/testing/selftests/mm/split_huge_page_test.c~b
-+++ a/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -652,7 +652,7 @@ static int create_pagecache_thp_and_fd(c
- 	}
- 	madvise(*addr, fd_size, MADV_HUGEPAGE);
- 
--	force_read_pages_in_range(*addr, fd_size);
-+	force_read_pages(*addr, fd_size / pmd_pagesize, pmd_pagesize);
- 
- 	if (!check_huge_file(*addr, fd_size / pmd_pagesize, pmd_pagesize)) {
- 		ksft_print_msg("No large pagecache folio generated, please provide a filesystem supporting large folio\n");
---- a/tools/testing/selftests/mm/vm_util.h~b
-+++ a/tools/testing/selftests/mm/vm_util.h
-@@ -54,10 +54,11 @@ static inline unsigned int pshift(void)
- 	return __page_shift;
- }
- 
--static inline void force_read_pages_in_range(char *addr, size_t len)
-+static inline void force_read_pages(char *addr, unsigned int nr_pages,
-+				    size_t pagesize)
- {
--	for (size_t i = 0; i < len; i += psize())
--		FORCE_READ(addr[i]);
-+	for (unsigned int i = 0; i < nr_pages; i++)
-+		FORCE_READ(addr[i * pagesize]);
- }
- 
- bool detect_huge_zeropage(void);
-_
-
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
