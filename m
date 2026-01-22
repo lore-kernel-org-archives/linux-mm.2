@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 431ADC44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 09:47:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EAAAC44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 09:49:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A49156B0131; Thu, 22 Jan 2026 04:47:42 -0500 (EST)
+	id A44136B0133; Thu, 22 Jan 2026 04:49:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EF6D6B0133; Thu, 22 Jan 2026 04:47:42 -0500 (EST)
+	id A04346B0135; Thu, 22 Jan 2026 04:49:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 947096B0134; Thu, 22 Jan 2026 04:47:42 -0500 (EST)
+	id 930816B0136; Thu, 22 Jan 2026 04:49:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 819DA6B0131
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:47:42 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3FE891AF214
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:47:42 +0000 (UTC)
-X-FDA: 84359122764.04.37BFDAE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8376F1C0004
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:47:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GpbNi5sR;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 7F9336B0133
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 04:49:23 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53FC01601FE
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:49:23 +0000 (UTC)
+X-FDA: 84359127006.20.A768886
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C470E100002
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:49:21 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=adpgN6sN;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769075260;
+	s=arc-20220608; t=1769075361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z/di3aS+Khp7k2MvBSZFex5LUjDXW/4h4shKoAS+mVo=;
-	b=LcsIT9kqlPNyB9W7B2qd3fngxeN1kmApRJwHSTwtCr3Wj5amwklsmvrTwomRd5EBosQ+YK
-	QUWxRH7Vg76gwRCIieU/K5NLUFHEotmiIvLtuttelLh84R4I1hHP3UDS64zCSqCvd2EFP+
-	vam9xVqVabcxq15bXdaN1LgJbC3G6tQ=
+	bh=niC3ZIqPmgZvU8hV6cKqnhTP5zK/OcvEwYBFEMQbG54=;
+	b=Q6jNMgfjllqraMTYERara3R9ZO0hCxqcnJ9vadV1W1E5ocswarC3vmWxnCENODVwodnZo9
+	O1Wwvl/w/51Bs1nD/+1hyfnJgxepZNgIXBpnJIr1pUP3Vmj21xqOKXLxzdoupOQyL0ht5D
+	pqlJELct11Z5O/P8H97bRxGmIiyMORE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GpbNi5sR;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=adpgN6sN;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769075260; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769075361; a=rsa-sha256;
 	cv=none;
-	b=i48g2Dkyr+JZUzJCini+/lxCERCrH5iJCC7Ch5hwl8XNiRlMkDEZ+QeOELgSIkR9iyz74y
-	PrfWBur7lhbRhb4Wl4HSy4Illz/UIHuR0CH+qpSfUYUaGorMrOXwE3YbSR8kd5prD+/aH6
-	kpdFA/UGdfWTmAHKcQk1kT7apVtL4O0=
+	b=7QFJ7qonc53v2BAogfoWXAskqIH0QRNxCSkhdx4FSDtumOG+yfweUV2gwlMI//YdYCNY1t
+	OtKBriumz0JWaFe288y6xmveBFJzulVrdWiaKOGwNS6EGknEe4R44trPAtCaVM0wo/a+L1
+	G5CpBaclvSCxvGmZUl7afLuwc4cRcAk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3D9834424F;
-	Thu, 22 Jan 2026 09:47:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B71BC116C6;
-	Thu, 22 Jan 2026 09:47:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0A453600C3;
+	Thu, 22 Jan 2026 09:49:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51AAC116C6;
+	Thu, 22 Jan 2026 09:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769075259;
-	bh=LrI1u7CBAl4uC3y+gyT24+udVnx13tOxw8kLKpBQ7qA=;
+	s=k20201202; t=1769075360;
+	bh=dRV9tsm3tF8BwNf3UZE4OCSsbX34H1Ma1dmXtxPs/4U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GpbNi5sRXEKWS9gQTfzVJ8nPQSDQBsjTw9s+5TrpTIiQf10jjOgW79ftF4I+pXBUq
-	 c/eYJbZD/jTXgEanhZSsuenErpzwOnqKWrY1kRo/FT+EgLulk6pR+aTGf+Xmt4r+rJ
-	 rjba0YySrfbn1E6vlnHRYh9xxeHpI60CZcNjSd7r3I1BIS2aRdeT3KZDiQk4FnoRHp
-	 Oi2GL3TQdHTUxgYnagHd4ietmPWZVoBAwPFCtYwMKwC6cy7opdYNHtWNcCkiFW5oAJ
-	 FKex9n193pKNiHwQtqLesOKxVWMfGQ4mAPP3vC7YYGzaKT+rsrTYu/T3OkGdY0a+mf
-	 TW1cGoZmfBcbg==
-Date: Thu, 22 Jan 2026 11:47:31 +0200
+	b=adpgN6sNFvKPNN7MVXkTYjmvS7P8vMtwXhlHIVBZdGwJBKaAEnuGI8nZa9gurLgYV
+	 +/N/KStwJKlul9n+sqTe2xlS4mIlhArYBVVXWBWk+C58cOzBMjgqJ3C85gwMAGvkeF
+	 nHh0xE5eQqR0prbEAN1ChRBp0PAyeZfzAt4dV71ixCsihLoCiW2fqbW7eXb6Koq4t5
+	 k3lBsl3+7qrsKwXXbFIxOoImDdSA8+lrbgh7ZhgSGS8Nx2GW+mHpkTPsb/Zn98TtYy
+	 VnfMZbm515Lu9PpnuCGkS8+QzYU0FV+pomcfSist6Vl7zNsQ+smELTTlrnIB/Rt1UI
+	 LvqlwwZVDYFBQ==
+Date: Thu, 22 Jan 2026 11:49:13 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, Waiman Long <llong@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH] mm/mm_init: Don't call cond_resched() in
- deferred_init_memmap_chunk() if rcu_preempt_depth() set
-Message-ID: <aXHyM1R18GI7-gSD@kernel.org>
-References: <20260121191036.461389-1-longman@redhat.com>
- <20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org>
- <0e385146-67a3-4fdd-b119-059caba8c5f0@redhat.com>
- <13d0b8b5-1ba7-4a3e-a686-13a7b993d471@paulmck-laptop>
- <20260122075747.uSLrSJez@linutronix.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, oe-kbuild@lists.linux.dev,
+	Pasha Tatashin <pasha.tatashin@soleen.com>, lkp@intel.com,
+	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: kernel/liveupdate/kexec_handover.c:994 kho_preserve_vmalloc()
+ warn: missing error code 'err'
+Message-ID: <aXHymXWEXY4Bia9C@kernel.org>
+References: <202601211636.IRaejjdw-lkp@intel.com>
+ <20260121123922.c0bb0ef8505c70b99998c324@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260122075747.uSLrSJez@linutronix.de>
+In-Reply-To: <20260121123922.c0bb0ef8505c70b99998c324@linux-foundation.org>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 8esbw5n53qhbru7ys1njbhybeodi3oks
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8376F1C0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mwksygrhwxphjo577f5xhrzjwdkthmrd
-X-HE-Tag: 1769075260-469031
-X-HE-Meta: U2FsdGVkX1+QeCkqgSgFd4KfMHlFY4WF3HT8TiCaPCwBciD1/PQyw8QYSWRu1b+ysysc4/lg9GZZuffnSzSQx/1ZNMr7aF0065vKflB40KW6XdQnIZBNT85dwBgZ8khGVI9i190cLLLIIwm8ZEmeZKkv1f6jBFMP8a2ea92U9Jktp68TiSJ3BzBWfaYiQWd82n2a/W3v1gWY1Z+96575u5iGFTIESa8oXsrVei2moTYE8WmfPsr+ws7C+ar/qyIoflgzaD7pHM945O3bMZaRLFu9xivIHswz1Th5rJjw7b1LXk3xEr1qAUF197NGDVJ4DBMQ1nJdeHtHYr6+qZyXyykwRcuQ+l86s7Rl9bkfI/mzDYv4ooDeR4JKjGrJSyh4gmS2oUUNYjPP5WPNxGs7i7dxMDqeAfp+pIEfyvhAwwU57Sd8cOb9w+XKT/Cmd/Ncs6sczlsviwZjts5mkyvcjwVfy99mEDncET906ao1YEQUMns1C3wKRUjC3nbStsxwXKQmqagWcZGNUIq5WPg5VGWA17XeA95UP+BsFldPGYKRxLIgTnik2o88f+3L513l9tE5dFq+AmkHn4tN9JqX9JVNYHeoeIlbdhmHnOJGEU8kRKGqDWZV3B2gxvMN0PdcgfGG2KqtBMGKNsV0j3JaTubrjOt+QbUs1s7gK7QnOFrX0RAid9+xfrvUqrTTO1VvYY2ph2oCQAoxaTBjT1DkgMrjQhW9+1ZtT8QZ4ZDS1b8nF3zSgTygllrxN43GCJU6IjcxUZDWqqUUwnqH9Zdn1ROkKm8LYsu7D0WDVnklXfiD3KKc3FsjbypKEyjYgcnKDuWJE3f34cvz5IgNZuS1iXshl9Aa3rcHMUGy+XFXZHa9BwNk1nImoUOhn81N7cJzOumXGcp+nbxHkJGbVVt+A1VeeSv7OH+ZdEtra2n00TUAQm6UDj6ehEOWdCSppdEekFYuFnc3JfbEK0Uyzn4
- eEV6BAg9
- t7EI44ssirQOoIhQc1OJjeFDduaeMqUJiq8sl5jj9PwVoLkE9qTXqT8+EZvaBpPdMg7WN0bH+RQPn1JteiG1fE6Abfag11BGSqM0TjN6VYeub3Z+Lk56/W1NJCd+Qx2ow259dKCs2swrycqVdz7kVZ4d8peGk+m197rm4sWSPrPe3s2H+JWCfpyMmKyXDc4la/YbQQ+l0G94pmzMuXgv+fx72XopL+/DRsYIybctTZpOsUcJE0xV+MZjG41918mRM2Ve3dvs542AhVqe9REe4A/hHUFQUhZA086g3nrARsB4mhyCUKxCirzmv5327p5WzgmKPfSJFxyPxA+g8Azpslr9x9b2pufMasIMRWM+sobC7LcLqs/ELR68j3g==
+X-Rspamd-Queue-Id: C470E100002
+X-HE-Tag: 1769075361-107359
+X-HE-Meta: U2FsdGVkX1+2O/Ylp1+2Jc8dpGUAKXzwzB8xRxvuF+Tp5iC7UfKvsDVYRoQu0XKO4Ly0ggbd4DnxQBTRE879PnvEnpwkL69LDMyV+qtWh4UW6m4mGANfgXXMdVHA2RQEOiEog75NkfyMCs3vnqyw4vb10ziCxfWU+cuBYaoChe+e0iuwf6FnY69Sg/hvzmKgeVg9a/E/O8bEJKCDTZwwMiMFu17A+eCF5mjAe7kWxlbAU4YyNlnByd9m7Je/VEOc+hVCgvVK9yylN8kN9eJlGEaScV4B4I2cT2NowqhG7qnhy0UDLqOWw9NlVjDtEWAavA/n9SfkpEAVwR2hRv3PXP9EN8JcTw1l1wWVrnOqDCCemJufxLUgJUNDifOFeeXuKRxG2oKcjaheew2hsyn6Zej44t5I1/f7aKYZZyJHfcHyvbbsQNFO2DyF1lo62ZgmevAqFCYhAgrHlEPLZvU/1yWl/9P+PKoufvuvw/ilrZo7zS7bWhenL4Mb0WwttqnQkUqkY909kSPdNJjTZfNPQ42RrEghPhx5dMVsGuM4quVhMXY1AT+tU2SnborNR5n2OcFrzPI2hkwKI7/Pb58GFmUcrpsZ/wB/lgQKY4NYPrCBZrhT8C4I+gDtf07bDS5JkYA108t3xNdxUSE/SQvcUEbpNeJugGdOSke6lyCffEGhrp87xz3aAYNE+5GT06s/HuijdgrnTMIVuNUvhrpP6OukhEBFM+72vWfYexjL3cKuqBOY/A0gtFKakA9x95ZgicvvSmlDjI36A9A3wG6ys6jpmihoySKvoP635eTVkZTEp3HWb/YmUzl8yMay/UBsndlWKdHAqK5PNaj6U7/sS3o89kVu8T8tdVMKV45wuSxqLEenj4ZyYQOhKS1caJQLfHWPs8GVQGG3Tj1xCpLVDxMjNZ7ZBE3RJ0z5z4rJhtWpTJkrxKWjFS35GUVORLTJEId47+glt/ZFJj/7TTD
+ V3i5n3rW
+ IM4cm1mjOWtNdOXgEzaeqUjPus1GBDDdfk47dIlab54nrqaLm/LGLThu9crf68AsG+nbukiSYN1AMgiTO/A4dwz7giMk80wDVBvIK9+/U/dJmyPvpUBEOnk214CHAUT4MzL+FjVmelSnSryk+TJR5+IMogmXFKW9mU3vokZpzGbHdjtdF56Kpr9rtdgcBlpM4DQAOAJWlBIsimwJmCaNGfmsR8A3EGTsOtNoWLyi7iFGYG6xMchOyRAyF2BQ2H6CumwmH3oNFBFiisWz1rzBQCbxdS1PqpCPCdFOC4epanv+MJYovkNc2lmdwNmdHBVAJdtcd1M3yGBtyassW2ssbW1Wyp/s7Ji4kJsCUEOxnSqAxaXpQcb7llXsMG3OQwEL8MVXzolc+U9AHRNYIEV2QFWb6Lpx3RO1sqOxYywjdOjqfgezOVDdkhVg4zOCmhlEMFLvCCyOTKlDuH/b87HTz3jpayPjLctdDKQm7LyrTfuoBffDUQ7jTkEA9THG7oXzhAWaZHEEv2qLb0ldZFTS2DFxVelLAdPGvlD7IdOzuRUr6HRZCMWf8gAtoafHH9SpnLvdb3QQmqsk2/vvQxaL+XJfkSKccPtYmDhArqnC7RhpT8qBz1jdPvj/9EDxU6Bt7Pno4Ja6cmdSAFdSJR/ncqYUAeg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,85 +96,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 08:57:47AM +0100, Sebastian Andrzej Siewior wrote:
-> On 2026-01-21 13:27:32 [-0800], Paul E. McKenney wrote:
-> > 
-> > It is a bit tricky, for example, given a kernel built with both
-> > CONFIG_PREEMPT_NONE=y and CONFIG_PREEMPT_DYNAMIC=y, it will never
-> > invoke touch_nmi_watchdog(), even if it really is in an RCU read-side
-> > critical section.  This is because it was intended for lockdep-like use,
-> > where (for example) you don't want to complain about sleeping in an RCU
-> > read-side critical section unless you are 100% sure that you are in fact
-> > in an RCU read-side critical section.
-> > 
-> > Maybe something like this?
-> > 
-> > 	if (irqs_disabled() || !IS_ENABLED(CONFIG_PREEMPT_RCU) || rcu_preempt_depth())
-> > 		touch_nmi_watchdog();
+On Wed, Jan 21, 2026 at 12:39:22PM -0800, Andrew Morton wrote:
+> On Wed, 21 Jan 2026 11:58:20 +0300 Dan Carpenter <dan.carpenter@linaro.org> wrote:
 > 
-> I don't understand the PREEMPT_NONE+DYNAMIC reasoning. irqs_disabled()
-> should not be affected by this and rcu_preempt_depth() will be 0 for
-> !CONFIG_PREEMPT_RCU so I don't think this is required. 
-> 
-> > This would *always* invoke touch_nmi_watchdog() for such kernels, which
-> > might or might not be OK.
+> > Hi Pasha,
 > > 
-> > I freely confesss that I am not sure which of these is appropriate in
-> > this setting.
+> > First bad commit (maybe != root cause):
+> > 
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> > head:   6c790212c588fddeb0d852f2790840753bb604b1
+> > commit: 48a1b2321d763b5edeaf20bd4576d8c4b5df772b liveupdate: kho: move to kernel/liveupdate
+> > config: x86_64-randconfig-r071-20260121 (https://download.01.org/0day-ci/archive/20260121/202601211636.IRaejjdw-lkp@intel.com/config)
+> > compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> > rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+> > smatch version: v0.5.0-8985-g2614ff1a
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > | Closes: https://lore.kernel.org/r/202601211636.IRaejjdw-lkp@intel.com/
+> > 
+> > smatch warnings:
+> > kernel/liveupdate/kexec_handover.c:994 kho_preserve_vmalloc() warn: missing error code 'err'
 > 
-> What about a more straight forward and obvious approach?
+> Indeed, thanks.
 > 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index fc2a6f1e518f1..0b283fd48b282 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2059,7 +2059,7 @@ static unsigned long __init deferred_init_pages(struct zone *zone,
->   */
->  static unsigned long __init
->  deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
-> -			   struct zone *zone)
-> +			   struct zone *zone, bool may_schedule)
->  {
->  	int nid = zone_to_nid(zone);
->  	unsigned long nr_pages = 0;
-> @@ -2085,10 +2085,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
->  
->  			spfn = chunk_end;
->  
-> -			if (irqs_disabled())
-> -				touch_nmi_watchdog();
-> -			else
-> +			if (may_schedule)
->  				cond_resched();
-> +			else
-> +				touch_nmi_watchdog();
+> 
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: kho: kho_preserve_vmalloc(): don't return 0 when ENOMEM
+> Date: Wed Jan 21 12:36:17 PM PST 2026
+> 
+> kho_preserve_vmalloc() should return -ENOMEM when new_vmalloc_chunk()
+> fails.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/r/202601211636.IRaejjdw-lkp@intel.com/
+> Cc: Alexander Graf <graf@amazon.com>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Cc: Pratyush Yadav <pratyush@kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+Thanks!
+
+> ---
+> 
+>  kernel/liveupdate/kexec_handover.c |    4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> --- a/kernel/liveupdate/kexec_handover.c~a
+> +++ a/kernel/liveupdate/kexec_handover.c
+> @@ -1011,8 +1011,10 @@ int kho_preserve_vmalloc(void *ptr, stru
+>  		chunk->phys[idx++] = phys;
+>  		if (idx == ARRAY_SIZE(chunk->phys)) {
+>  			chunk = new_vmalloc_chunk(chunk);
+> -			if (!chunk)
+> +			if (!chunk) {
+> +				err = -ENOMEM;
+>  				goto err_free;
+> +			}
+>  			idx = 0;
 >  		}
 >  	}
->  
-> @@ -2101,7 +2101,7 @@ deferred_init_memmap_job(unsigned long start_pfn, unsigned long end_pfn,
->  {
->  	struct zone *zone = arg;
->  
-> -	deferred_init_memmap_chunk(start_pfn, end_pfn, zone);
-> +	deferred_init_memmap_chunk(start_pfn, end_pfn, zone, true);
->  }
->  
->  static unsigned int __init
-> @@ -2216,7 +2216,7 @@ bool __init deferred_grow_zone(struct zone *zone, unsigned int order)
->  	for (spfn = first_deferred_pfn, epfn = SECTION_ALIGN_UP(spfn + 1);
->  	     nr_pages < nr_pages_needed && spfn < zone_end_pfn(zone);
->  	     spfn = epfn, epfn += PAGES_PER_SECTION) {
-> -		nr_pages += deferred_init_memmap_chunk(spfn, epfn, zone);
-> +		nr_pages += deferred_init_memmap_chunk(spfn, epfn, zone, false);
->  	}
->  
->  	/*
-> 
-> Wouldn't this work?
-
-Yes, it will. And I think this is less fragile and clearer.
- 
-> Sebastian
+> _
 > 
 
 -- 
