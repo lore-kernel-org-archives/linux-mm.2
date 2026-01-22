@@ -4,181 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0243CC44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97CFDC44536
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 08:59:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BD136B011E; Thu, 22 Jan 2026 03:49:20 -0500 (EST)
+	id BB21C6B0120; Thu, 22 Jan 2026 03:59:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 294346B011F; Thu, 22 Jan 2026 03:49:20 -0500 (EST)
+	id B89F66B0121; Thu, 22 Jan 2026 03:59:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 176236B0120; Thu, 22 Jan 2026 03:49:20 -0500 (EST)
+	id A6BA76B0122; Thu, 22 Jan 2026 03:59:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 071566B011E
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:49:20 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84454B6C1E
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:49:19 +0000 (UTC)
-X-FDA: 84358975638.05.BC9A404
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E1B5220006
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:49:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yvk96SCx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wB4wkh1L;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yvk96SCx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wB4wkh1L;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769071757;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 965B16B0120
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:59:35 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B2E113979B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:59:35 +0000 (UTC)
+X-FDA: 84359001510.17.F8D1342
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 52B2E8000B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:59:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NvH8e+Ql;
+	spf=pass (imf02.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769072373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
-	b=pYpBHUCtoZUS+HxpqH1XqTi0RlbnZ4iiZdesNJJlGJKjddQ4XE2i0S0skI7cR1Vp1ZoNxU
-	kJtO1qb4j54ufKIU5nzxXzq511/8feoccTo8znf1qrQ3ZpVQV5pPTQPxd5uc0j9DFBSEwi
-	YiI/jLiE3xxIWE7RK/m4eXWUuXd/U90=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yvk96SCx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wB4wkh1L;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yvk96SCx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wB4wkh1L;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769071757; a=rsa-sha256;
-	cv=none;
-	b=T3kJg99dE9+h1MNAuQWaqrWJS5vA+BCp/J/RXVxMAjWcu7ilwf9HWC9pIozrUsxuBNe+pN
-	3V1RDdac5iZ/76a+DGK1WaMoM+SphIEFxalAaj1e6d7QrUOtuOJD8WlHKVoVlCu4TlwIhW
-	wuItOgntD9xHLx/sTGrrx+hgcCLfgWI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4E4EF33697;
-	Thu, 22 Jan 2026 08:49:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769071755; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
-	b=Yvk96SCxdNvYEexXEOK747I/Gg6lPcQTHvSga05IY2lwd2U9rqdxLq5BSDMej64sjUQxKB
-	TOpPFVwXW+28+Idev1+Dc9qQk7umBtZ2QWYSZazbgM/5lsYgcVn/vT9Rr+A5f7GRuZp5mw
-	Q069Cx/ciKkTUSgABf7ZkRjpTi5dVPc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769071755;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
-	b=wB4wkh1Lvhk0wx06u19ivN81peqMBi10+cDgIUBa8bKr1wzTgTfUVSw9miVhgMndlzdWK7
-	6iY66gOh34O//CDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769071755; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
-	b=Yvk96SCxdNvYEexXEOK747I/Gg6lPcQTHvSga05IY2lwd2U9rqdxLq5BSDMej64sjUQxKB
-	TOpPFVwXW+28+Idev1+Dc9qQk7umBtZ2QWYSZazbgM/5lsYgcVn/vT9Rr+A5f7GRuZp5mw
-	Q069Cx/ciKkTUSgABf7ZkRjpTi5dVPc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769071755;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sK1ACyocc5KtplqXf/k5n7xl2hUWgnhGLVkAdPAkMIg=;
-	b=wB4wkh1Lvhk0wx06u19ivN81peqMBi10+cDgIUBa8bKr1wzTgTfUVSw9miVhgMndlzdWK7
-	6iY66gOh34O//CDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 306693EA63;
-	Thu, 22 Jan 2026 08:49:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +qgXCovkcWmFAwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 08:49:15 +0000
-Message-ID: <1e3092b1-23df-441d-8849-84aa0632ee88@suse.cz>
-Date: Thu, 22 Jan 2026 09:49:14 +0100
+	bh=Wi+aiksRUdYPRu7nOjHBlGLDUjwQ5QAqfYPQCOfFmHk=;
+	b=aF2ASnOx51x7m2fbtSf5v2Rq1Zv0XRfjlRNy50Yf3cjN1c8HT6+h54z/WgCRz+KgKIBDcI
+	toGIyufCOQTGoBlzrCqhITPhXxhT8CD9lh82kPT/8OOOlvAG7z/rF2tK5QimTOKYy1/y1R
+	GDx/myPjenTUoZDlcFmSFP5R/yKL7YA=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NvH8e+Ql;
+	spf=pass (imf02.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769072373; a=rsa-sha256;
+	cv=pass;
+	b=8V/AzXpqqb+n5wmGCOgGAghI4j1QVAaon66fjPDxXQOq4XhXMfqyvl/UxhOk98XdCjEtMU
+	xCh6vYojGZpTaYMHUrYsgF/lo5KW9HGOAl02Ri+QJacHLSXlfGiwRlKXfMgQEYHnF0L/u2
+	kPKXfgV+/zAE7CANdlnWHKgvEMXa1J0=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-78f9b964c3eso1794727b3.1
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 00:59:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769072372; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CySMO7oJPxHQ0fLTWQ1emfr9RTEm2YkGeVP9X2YaQEXptZY1OIN6tRaBcxlafPXgAc
+         /mQjetLCFsfr+rWXPUEvIInBcHVCnldx3FQYZXoYjU2H39Uw/xVQ9O9tX18ItJXV3u1a
+         4yOqHqAVlO1shd2GT5B8eH9Tg2sDL+NG4bNjYANVzzpp4Kooj4MMEWTnXPVNUc1nukFW
+         4KP74WNjDA79Nejh3PeOFFUoBsb+5I7cUqg0LrlSDzanf0K9Q3CKzxykj8yP1OcKodT6
+         tY4ZcmubwtlM5eu5vfbvOFOL2dDnwoyLipeKf9AihY1LHIxt9Hz7m0BUNqXfkIh6OybU
+         wtWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=Wi+aiksRUdYPRu7nOjHBlGLDUjwQ5QAqfYPQCOfFmHk=;
+        fh=7N8+CggVGNZOKCfr56Y240ZeQv97MYXNkSNS/hIkOPk=;
+        b=in4Y/AQ8LLDivNLbQEqEwB2xrzm+l+pfltzuuBljSBp9vu+KcOd2XoizAtFXTr26GR
+         ml/2XwB/pQ9NMWmmDyE/hdG2Enwe5qGbN1fWDGxoWIYuHCP2Oj353nYqNT5yOdRlt0qC
+         rPfGHrlYhuCL13+WozeyqOIRc0cLA7f5daWpwKmKBx7kio9Okp+IT/hHdS7PSIFPO3it
+         WowP1elmn2pRI1FHYN0eEPjVr6G2XrsRbDgQzufeMJ9auQvpi6qfnbmb/HDPxrbsVbOW
+         K9XAgAmMiSq41qIJfONjlPIuDKyvLm0RvOFx+9heznwdFOGm7PgxpZrwloJt3RqPi5UY
+         eR5A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769072372; x=1769677172; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wi+aiksRUdYPRu7nOjHBlGLDUjwQ5QAqfYPQCOfFmHk=;
+        b=NvH8e+Qlv6HAI1CelzMLqflwxclx1jETbbYMUcIwf+TFbhUYMmGA6DT3Py36+aAEmy
+         +sdjduOcOsbTIi9c99VvWHNOVhcFY+RGLTHAtiAeSmphndyHuCYMabtxb7FKJRmsXZe0
+         S8Vlc2NwxOzYznuYXiup0hMPIPL/8xw/w+I6Ni6/whWa6WPWgzI0vgaogu8UpXJCFWYv
+         hyRlBX4dmCx25XFoe0/W2A4LOpIH0wA6ekPnnDqKX/hY51k5RiA/AQEcjRT+llxfXCDV
+         3OzddcUB0VYXhETR3Gf+iMjcjwZW09yXsdxcsjb0ug9XUmrcDXxXeCkxhrrm/L5N3Qsz
+         mtbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769072372; x=1769677172;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wi+aiksRUdYPRu7nOjHBlGLDUjwQ5QAqfYPQCOfFmHk=;
+        b=B312k0On26sSabtWF7XmfdYR0eZBNRK6bUQMNAKGeJK6j08Cbu/JmaHX1HP0i8gL5x
+         A3h01Q4CqfbRy608I5gzDvg3NoYbqweWB4nofCg7NEhghNvWCmzUoSlNT61iM1VDwR9S
+         peETlFNJmKUjav1aHjweB/m8h9mxgxXpGSllHeyh60ONaD2gd+wZcRgtkKmqWrFlGjpD
+         KVzK+WckWgU6jSyA+0GfIefk1FWsW3eS2d1alGOQ0HP896NyuI1TdNd9eCUjIzH6Qn3K
+         QnhUV7fpPiWyE4wSYl0zQxBygvm/Q1Gr8YkOjPC9Ki+HBXyiH4Go9fBOHFKu4uSU5yX4
+         NneA==
+X-Forwarded-Encrypted: i=1; AJvYcCXv7KnEEEH80JPsEUDzM4JaHGx+qjJuJRWOfSX07rfAFfAYrygVgomwP+74mZOOmXjquFYzJw/00Q==@kvack.org
+X-Gm-Message-State: AOJu0YxUgU6/eCDM2mF4516pGKGrXm4rhjXSeq7UydVuFRFOp7VdPd2c
+	0goY8CYJ/t0e//xrJSx7cV4vnrbYfPbMt6gl0yGwuVrVTMIQVvIONU3u8CwfY2M/rAMQGd70tcJ
+	S7Z6gOotbiQ80E+qUvNMxYoHwyoqbOYY=
+X-Gm-Gg: AZuq6aJODfvRlMFBdnp4klmTesREK+30pOeJmvHHEzNkCM+J2dTNvqAhzf+3F4U2iSW
+	5ToUxZDc8SAFEJ9HjH24YLBFES0ppMdq2Uik6IigHPWDUaKJPse3kDpLycgggKB3xfEm7riJ915
+	oXWmYy3AzAVglAjj8QJ8kcNLcp3jAypP/b6zZtcDC+PO4znCdRozdaKHaPjTWWeE5ftCVXuOKhI
+	lRsYlY6U3eINmVZ8+Fd3plqr7catlAnPy3AVa7lLGqwEnc+QWDJ/LJ9EqylGNjHPUJBVqMB
+X-Received: by 2002:a05:690e:190e:b0:649:47f1:26d8 with SMTP id
+ 956f58d0204a3-64947f12a86mr3259191d50.6.1769072372283; Thu, 22 Jan 2026
+ 00:59:32 -0800 (PST)
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 22 Jan 2026 00:59:30 -0800
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 22 Jan 2026 00:59:30 -0800
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <20260122041556.341868-1-maninder1.s@samsung.com>
+References: <CGME20260122041606epcas5p4fb3f5c418b79bf19682e60022d7f1718@epcas5p4.samsung.com>
+ <20260122041556.341868-1-maninder1.s@samsung.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 18/21] slab: update overview comments
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
- <20260116-sheaves-for-all-v3-18-5595cb000772@suse.cz>
- <aXHGfLV6FdlNPc14@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
- AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
- jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
- 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
- Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
- QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
- 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
- M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
- r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
- Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
- uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
- lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
- zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
- rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
- khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
- xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
- AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
- Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
- rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
- dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
- m6M14QORSWTLRg==
-In-Reply-To: <aXHGfLV6FdlNPc14@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E1B5220006
-X-Stat-Signature: 3eb5j3g7i8ed9p5qmkbtqwm6sdy731sg
+Date: Thu, 22 Jan 2026 00:59:30 -0800
+X-Gm-Features: AZwV_Qh0e4MZqYcnvCKaN8uGthW0KvntY5zaxHw78pviBg4F1BIOJs3rDhFDIDI
+Message-ID: <CAPAsAGyhr+iakYskfFXhOFHv7VBqhzD3sb51_MHMxDaQA9cZnA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] kasan: remove unnecessary sync argument from start_report()
+To: Maninder Singh <maninder1.s@samsung.com>, glider@google.com, andreyknvl@gmail.com, 
+	dvyukov@google.com, vincenzo.frascino@arm.com, akpm@linux-foundation.org
+Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: p4rcy6ooy3saj8p86m3ip7mksm7roydb
 X-Rspam-User: 
-X-HE-Tag: 1769071756-602119
-X-HE-Meta: U2FsdGVkX189DG7roP4Eg/1qPuHctVd4TlPkS989SDsVKnpKLiSHKHF/njWf+hbOZQFf+KsW6xoIWLwi37JqEThYE45OYAYfmkYG9fFJpIU/aQpiG8ZfnS3fgjOwTgna1eXmPDTo7ERyKAJDMXjiSO/WifXpdlP3Kv0/0ybZc8L+x9ipzwnCSTMhcVnV8fkDb185EkOMq4aupvro7OEyn2a25UrgODfQWA/LdcdSrSvxGE+V5eUcbYJav4N7nWaMJba75Jq3KOOPJm2zemalfGAHmNb3fQyDlkAmPjTocfuf7CB805tLiTD9FCBlscAgDF7RguwEehet+px5BhxfogEpoznbUhGJtjie/v2KbMsPMnzRuIxZNLShplfZfGPqLoC45oCkqO8NxH14NE2DEqrEz9150Gp7EVBkU5EtMzdcsFLhj/3IwOyK7iG7P52YjRJXgxluqsyldyGwJMa9yQm0TfTUWHzMV6ssnaCshfG20IBZ2xlCOLgRtjGaLF/ZftPRgr/0H4adF9jVxp32vNBJQTri/dkp1re/LVUunJywFPZZKyOBUxmW8Yu3KtTryUb8wNQLrGrDIibWln6g/Je2RdZJGBAEdL1NLZjEucngx7GxJ1rOhN68h+zMM0ZrmsfsgEAuN4HmMwmcWacjFJx0HPRkCCNYPdzuhizj0ZrncwKD16JBbFmjripdHYpqOdWxRnikZTL/8P9jc1HTI89c4PatO3dMl/d9SK1ucNveQiGuWTIRWGTfwfp5a6KdIWTOUpn3anHLpE2jxxRdmntybdlOOsOLE2zEQQ77v76vuQNhQQ2AY9Ug2Z9YbTEupXMBrHHWKAxNoWp1ipo2B6VyNYr9LAUbh8OI9UwfU1bU10UxaX5xqgWtpxGd7UmZgnVZLcl5kgp54wh84HXBylotWTpI9VFAseRvXpJ34H2aJ7k9Kdj5KwxLwFZ3yLdSJqDQS/6Am1RcGTMU+WD
- 43fwSo+M
- bmb/fcII6aghQpDzDhqmUAENI+Bs3CbU8eUD5d1u7KaS8EpQAavVENd643v/ekQKHzD1bGC2yuOyJXhFeGFJ3il/2VbbM1c+787wCidOdeD3NvVEkywOujOwFw0cD/L++rCJm5PVds53E+SNXH1iv3S+z6Gmn7Z7r2RMqbsVty+JUQ9tUM5+4TUgYUUPuzJHEpL9iVXzOr2bJbWfORCZvmiMD/O88F0HWbYCFuj6QBDWMvZdugVcrB4ZCCKc8eKmrVFWOcVIQ73GkTP6YbM8rIzrKyNki53xQHX/N9DmsKq1Gypo0Bd729/V71WJVVCZ9kU98jUpou2VL3jSnodTTFaMUYw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 52B2E8000B
+X-HE-Tag: 1769072373-501042
+X-HE-Meta: U2FsdGVkX19mWUflBnIOhnXXaJLe1y76jqM7cZb8Sam3jI1E9WEtzVLrU8orRmXk76aewOMCNO/6ar/nk4zjzZAsWMLCgi9F9y2s5k4b/7xJn+BCqRzqPdutdt+F5Gf5fQ1azlMVfj/6/cP8lHcUUFW3rrmj6O/N2u8298lUZqhYzOi5wiZuDj6hzWHgW3ma6TO9MndVhZhR9eIxMdrrX00fVOqSlu/VrVAc91RQjUcf0x1hQlcqgwzyp/T9ep6rbSi3w/TuA3VmBjFDTbLSIwJjX0OQZ1JL8rVLQ0aoDxpUE1vlfQRkIX9mp0jCBHTpnwzvV/UWzUw4goBia99/SQ/kYd4PXi7TWaWkEYZmBT5BE5RBUmlssPmWNT3wCJ3I5USv/h5TWoKiGH0Gx3J6zmfatwxA2Gsh9XtVLWTlBJ8K4apfBLnRLvPcMmxT3rL+Uu397UAI4Z8VQds2LP32S/qTpgbWx26Yijhl3wKypQ+2A2FOmAFHMEDvNJDUR1iDLXf5+SPIuM4NvEyPZpfUB7+0puHA2Gar4k6SCUVkpxk8pCmR1pBb2krQYC606JtkkD3orcGHG+qprDjPRNCAeBxKdBzkJpFXMx/da8T/owC+tSzLkb5wYMZelyA3kCH3RyGHh1qJ9OalyVdKN0ILVLgDP71Rq5lIRBXkxnI0k8rGing0JTHCzKj5orZXlQTA5IEieeO1IkwP/A4ZCOMtkMer7tpATieaVXaErrIrrxr0+g9xam2nxBJR08dr8ZP9x7hl+NVHasXyQRdO+vBqc7pqdtD4Qy7TNVAdAQ8O7osE2DeYN6cbxa/gX/fj5iFEou7/vLHjvqrUG07x5t7xonp9s0KbcDExKncgYAKGj0aIoR13wM316kDNQJz0XCM9zqpRI2+hZWa0yLjs/WGhLx84jPZXcuiVUc0BR8LN83/GbgwAfedqWQwewfHGBbaDM9q18wcrwQEMIxja+e+
+ fZgqdO8l
+ oZXumQxBmE4+adPAwjii7KVfSyTwywKdyrEAgzEy07kD3t+MpDcbdcO5bNupEuEoAmjMx+AEj9nw6CAcF94HzjoTgZ4ZkeoZ5Lv0S1pEwmj/u0+bHFEGyxan/qIOHsL6drFLMkZPvUryfSVWTohlX55RXeUvytnUaQniQMAFW8dtxUwGQQZmDk65rvETYR4iTMaQ9sQRZen4e7L5Vvj/Vq9IYJ+JRWe99ch66j6G5v7SQDPT1MjK0EKdU7MjR+blsdMQYeVAFDiBsXVbJy3vSC4V1W30iRMp+yZ90PnwkzM9b/i9yqZ/oBYHMwROQhaypHaIxdjNyvHlbECIMcwmXOQi7Wd/hTQ1QMfPHG4bPuhAPAJEunX4Kal0m/E8iDXM/jWok1BF3Mjp5bdPlLPhfPHA5OTr6NaoNmyww+EIme5sDC+sdZLwJzCDnnMDyodQ2P+kwZ6RuQ7e/atAiIsNOLF6G54/dwliHIzbKddjCYRuB8YhpzIfDPstuNeGhq/3EnN75tO1sANkaQuqGRhoP0Z6F/8P5653WB040K4AVrqyZ+uQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,36 +141,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/22/26 07:41, Harry Yoo wrote:
-> On Fri, Jan 16, 2026 at 03:40:38PM +0100, Vlastimil Babka wrote:
->> The changes related to sheaves made the description of locking and other
->> details outdated. Update it to reflect current state.
->> 
->> Also add a new copyright line due to major changes.
->> 
->> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
->> @@ -112,47 +123,46 @@
->> + *   node->barn->lock (spinlock)
->>   *
->> - *   lockless fastpaths
->> + *   Lockless freeing
->> + *
->> + *   Objects may have to be freed to their slabs when they are from a remote
->> + *   node (where we want to avoid filling local sheaves with remote objects)
->> + *   or when there are too many full sheaves. On architectures supporting
->> + *   cmpxchg_double this is done by a lockless update of slab's freelist and
->> + *   counters, otherwise slab_lock is taken. This only needs to take the
->> + *   list_lock if it's a first free to a full slab, or when there are too many
->> + *   fully free slabs and some need to be discarded.
-> 
-> nit: "or when a slab becomes empty after the free"?
-> because we don't check nr_partial before acquiring list_lock.
-> 
-> With that addressed,
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Maninder Singh <maninder1.s@samsung.com> writes:
 
-Good point, thanks!
+> commit 7ce0ea19d50e ("kasan: switch kunit tests to console tracepoints")
+> removed use of sync variable, thus removing that extra argument also.
+>
+> Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
 
+Acked-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
