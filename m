@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 692ADD6CFA3
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20847D6CFA3
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:29:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17206B0300; Thu, 22 Jan 2026 13:28:38 -0500 (EST)
+	id 7ADC26B0302; Thu, 22 Jan 2026 13:29:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA9B96B0302; Thu, 22 Jan 2026 13:28:38 -0500 (EST)
+	id 744CB6B0304; Thu, 22 Jan 2026 13:29:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BACBA6B0303; Thu, 22 Jan 2026 13:28:38 -0500 (EST)
+	id 61D466B0305; Thu, 22 Jan 2026 13:29:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A5A846B0300
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:28:38 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7DEFFD2DFF
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:28:38 +0000 (UTC)
-X-FDA: 84360435516.20.54CED26
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7F5D84000E
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:28:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QpHq+Uol;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 503236B0302
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:29:30 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16E09C1C8E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:29:30 +0000 (UTC)
+X-FDA: 84360437700.17.6F2D009
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E527C180009
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:29:27 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ZX2VllEv;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769106516; a=rsa-sha256;
-	cv=pass;
-	b=CeVzDGfqs7f/L4KsMZjKaUlCEMRAZYRvANHWHP4eqJRM9wRE34bU12ONmWtL0bRJsrxo/i
-	5ITE8ON8a3tOxhXMS2Y1Rvccb+wF04Go7uIjnw+avxiNlRE/3NI/vZrou6XtedstVmHStD
-	qe6t5j+l0p6cxxb1yVOf/+2+nao7+64=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QpHq+Uol;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769106516;
+	s=arc-20220608; t=1769106568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cmMh+ovoeRUCCwfFygbXGZ6j9n5SptMlw+qIxplX4y4=;
-	b=ybGbbrZ9tzW/0D5aRFbfBqBU5LG6HGW+jP/XB1Rq1qGyQsYgenfoULn3CYYKb5kOA82Qf1
-	0cn4VbY8+NVro76DPRyzbp00PKrFwRNeax/zr/TUxwTlX5ha/wc0PyFgY9yitPGlzRT9kr
-	ypW0Jwn8OiFGJ/yYfNAOfcCbb/A92wo=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b871cfb49e6so195948866b.1
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:28:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769106515; cv=none;
+	bh=hhM6KusIxk5pLuv1MBKQ22c+nR479iQtC12L+zVHy4k=;
+	b=rBgTfv+wy7zOpAMvUWHW4Kwswn4vKfXE9roQ9+N3S6X3uN7HSJo5O1mwohBRJCtak6Gne/
+	hH3x5tonOW9UAKdAK3UnY2vWTI9FJAuSzuuOx40gXMnjVAtC6jFBrLANJPldTHQMMUww5g
+	XLMiFwartf/4rR0xdrBttRDh9E5yeEU=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ZX2VllEv;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769106568; a=rsa-sha256;
+	cv=pass;
+	b=LSrBhdNWPc841qPeZNlWmJazr2Z1u4AHv5iSvH70iQTQXoxWeGzZBgObo1O31Uu4nDGI9I
+	pWDxGUAQqHD17UOtiUa54JgFyTpVGRGkkPkSXcgw6MHpdhdM/oSmIN6zqNkMzDpw6okMu2
+	lMTwfE5kQlJ/b9R8+HFnYqOFqNjsM24=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-65808bb859cso2224224a12.2
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:29:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769106566; cv=none;
         d=google.com; s=arc-20240605;
-        b=eVvmg4Mrc76dmFiUyUoYGPhOFjDpPb8gV60nxfAO2cxD9M7u3HhE7L/a1f6yQyCmVd
-         V4oMcht+2GIHrT0PwpxB+CmT+jaA8lyigFgvuxSSjDHYTO1WCbj8140A5c9sqtKPqym5
-         7bku+fwgOKahM494nd1xqemvyNDZeY+U1GKDA8yF8HXy2h2ThmygWJo10bbPBCIU/eC0
-         R8ViqGmzFQACs0v6CUyScwk44/sQ4lbaDj4jEHdZDsK7nmjAW9qUNkVWZAPLeZH7Z/WR
-         IS3vhuIdAqRuGFC9qGekam/iyXcC5nzjhIQea43woW9+qM9uphm4lrwvSZjVOHxBba5f
-         xibg==
+        b=caMmHl2vgFBcDX94kaNA35c0kPahPQCL8pp4KRH3ZQ2Cq3jXvVVbBGFA78G3CSZPo2
+         fDeoFrrCihVD0LH2D+UPdUHHFZuhgStu3I4rYeD7SUUL0T0C+9BqCDfX7798jU6Mt10L
+         UC6Oh28KgYajYBW1mGBmyOE8slntiEndoc4m6ZoHTTGJWt7ihzDVnuszxnXFYB6gPLau
+         PelrhGyhM9eNJSZ6lHIKVBaf0dGEglkvRq5m8NUgPTLzQK29bYVqwYntHw5O9OZY6HKJ
+         dWMxZGupBgSmPnS+Td3ZIpw7V6P3OoMm353IixiyKZ9ffecvNNgSXzEgx6xfp+rsv00e
+         8ZTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=cmMh+ovoeRUCCwfFygbXGZ6j9n5SptMlw+qIxplX4y4=;
-        fh=C6Nv3Aib/YbocFNFYx9a3A9DIXRrsp6vHIyoubM+iSI=;
-        b=Bwq99AoD4wQGw6e74LNX0ud3lQHLBcZ8xs2kUStk12FquxlLKByZQswlDCfl/tWgUy
-         Kt9w9XFNA4W3qWN33M5QRwZJZhi01b0EZ8WqlPjCzN/p0gBICJPVeV6ZAQ5CMNlE11V4
-         FJtTpUhQzbURyzK+6Y4aAoNvNmlD6h7RhFd4X1lWlDBXoUv26QPMDnqoznA0rF0VlmqV
-         gSXuVoCwuKLNU6wAPg4XiM3X6i0fNLCPmMqOoDnN6MbN6Bcn4L431CNTjvbAtL5gyi6n
-         wYfxgV2Uvi0C/ac1zJKsoiZ5HJ+5ZCf4gQKl4xzHkZlxEnKiD1cn2nnwguZpKBvfy2Cz
-         dFIw==;
+        bh=hhM6KusIxk5pLuv1MBKQ22c+nR479iQtC12L+zVHy4k=;
+        fh=TZXNRA7199IIz9RQyhcfSxCiz76+u+G1s25r8A67Doc=;
+        b=B8q+Fhc5UMzzlDnnj8zOAFnpDzoedgHWn1JurQf62uFOaBzXk8Z9rjsQEx+Fu24J4Z
+         Dr3trJKZEIts6rfaeyzu9valKURCZSKerjWC/4MNREzuVACCLj43kqikWowb9LOusZfA
+         JJ/KmUjmA7EwYxl0z9E/zE2OM7vcVog0DSb/y9hvspc+p3Ex+rHAZcSM2nBfLtD1rrjQ
+         Z1+yBjLmXawh/EfkbUc/V+4A3X4rWgSVT+q4NqsVqrgXJsIpTCwTAEasicFOc2nnxhUY
+         SQkO+lVmTrobiOqa+21Pv8uBqyHS9X1E/TlJdofroHxfsx4hwAyKsW9F4jvGCgHuIgAQ
+         SUQQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1769106515; x=1769711315; darn=kvack.org;
+        d=soleen.com; s=google; t=1769106566; x=1769711366; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cmMh+ovoeRUCCwfFygbXGZ6j9n5SptMlw+qIxplX4y4=;
-        b=QpHq+UolxgOY6hyRat9ER2vrNdXULZH/vHS62xFRBeVrY8NZi1RPRchRAClrCEnIXh
-         UfAfgfsELNQ2nHyqAmsd8o2Bzmv+ySHPG7yF3iW1F1NJc0i8v9q4U38GQnpbKOTRz4xD
-         S1AcjZQg44yHytL9VCIAr3Iq5hmipVu15TPVX2/FXd85rVDAzFXbjqEVVMfr2F/IAYWN
-         XTCkcMJEOsDZw3+sIT7gE5rKGNx67V5fpzqSJJXlkAd1wavvclwAfmowgcC6ThtJeB4+
-         gFzc8GAB2WDUvRIXHbXctN5DJukjJNyjzgoUKqDdVO6RyW+J6J4nGkuy8Lq/1edoJ5J9
-         WVAg==
+        bh=hhM6KusIxk5pLuv1MBKQ22c+nR479iQtC12L+zVHy4k=;
+        b=ZX2VllEvjCmXLE9oTuodiw/kTE+1znF3T5wyZpnB8Nl8c/IDmA3F9yHslobbx3vTdQ
+         bWwfzebjixW3kNXXhYToev83jy+COaOGMdhPKZD16siMKcSacywamlnRIYRVTU2XKZXp
+         JMqbS1hZP4cylpRVMYQTfLjoPC5KMy7YSO+jjyFv3e2y/oRYropOqj7BW5EhoUJ7OgAu
+         9ut/Ko5HNA5CsdbwbMwyAFtiLq38hUQn/v5DwmJtSUfiO7kZLIIUfDXe/GQkPpuStAfx
+         uJUrPJMGtJ9hLrxJ+/xa7d6TE9yuwm6O/8xG4+bJjPs/NALEIEL8BQDdP9dIw9Emy+DA
+         Sv6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769106515; x=1769711315;
+        d=1e100.net; s=20230601; t=1769106566; x=1769711366;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=cmMh+ovoeRUCCwfFygbXGZ6j9n5SptMlw+qIxplX4y4=;
-        b=SK6d0iYCWlqyFqDfYvSFyxwHgYSeA/Bsxr31RkAYuro1+JgDLGSTPrnWZLjNLALvp1
-         HqUUr6VK8FrbVpJ8bVg3tmz9Dio51nvGHpI3O2vIyBYYEnLs+ml8W9irdPPIFc5wbXZk
-         vZaG+G9l6ry4OcISwY3wNM4nAEa83LtM2ITftWiGtjrdxZbWhmdokJrq8r7hBiqUIYiP
-         w7H9EZbn08FVGl9aUaGU27kyYoiyC7pDA9AsKafBpTxDKV1+3rCmBGSAng+q+/tI9i40
-         YSL5F1iL7yGqGfLutqk4iG9yVnsWR2RJ7Wk0gpjZ8vajkmxtAPU145zWMGri/CcYQUl4
-         Zulw==
-X-Forwarded-Encrypted: i=1; AJvYcCWfc5ZBuIN2befbiBNzJ3mvXMLcSuJPWI1ZSdvm0RYjKntngvIBxKUDOaeQPPWEOptdwe3I0Lz0qQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyk1yj91sGJJdhTooXsv7tBztd3sm+/bXvy5m4ge6oWBnMiRNns
-	dFbcMppiz58gMdtklz4m5MEEwxZO4ALP+VzcxlABAt7B3Xhq44uAuXyHBfpZQCOFFBHWhv3J0XK
-	bleRiDGOfRQxGWGaXR5b/qOSleLcaPicvci0tvP4PxQ==
-X-Gm-Gg: AZuq6aJM+zcbn4YTWAvVHhXvrb3kgbyVKja6TRsP0vMn+DLnqfrV7hLB0rJkaIaqSTr
-	QaZhH4poxfKNlexaYfzCU3VsxdupFixGOlR1DBNwGp+jm3VsrO7R7PaaL+3MADgWG985uNahGrZ
-	JA6QB3w8vhpWK2EQxr9hrDqaIhjVSDBT7F32OW0KkQLYaXQ9h3EvR3L/Xh7OyjdeD/DRtQXr8LR
-	f1oI6ZE1VIfAjzTcdG6bZTNHc/6R4HVsBecX+kgwxrXtLP6SJkmqaRPBKjEHLq0Btvu2jjj5Yym
-	AgecFwyqHaAv1iTwnocNq5vDDA==
-X-Received: by 2002:a17:907:25c2:b0:b87:1b23:cad3 with SMTP id
- a640c23a62f3a-b885ac40b17mr13522966b.9.1769106514941; Thu, 22 Jan 2026
- 10:28:34 -0800 (PST)
+        bh=hhM6KusIxk5pLuv1MBKQ22c+nR479iQtC12L+zVHy4k=;
+        b=Faw8jobw5wjySWFHBd6uQF1tlL2O2TPSIViobRRcCt4KQXs4KuzKftZp38Co3bSahM
+         0BSJBKugEmq0YBsnnMUqRV62OifUN+T0aIDOVw78K4XKDZpa145PEYo/X/5CYPezcDyq
+         vYsS+dZ+np7a6zFtYesefsEtsV5+BrHOaFFP8dtek+Fh2dcE0JNHTCV5uRV+WM737C0Z
+         t5Jf5L85t4PeIHbZc/lQF9hMSvBEB9+To2kt5ZI1EtI8IKLhRiJQO9TDzozZT9Q7z7vp
+         9CfZghVcVej1GdYCfO/0ktSOsHn3iPsQiYAfFeGOgU31IwshrNsUqNpEDvaEZ1Ejrh+U
+         q7UA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdVFDuXccjg52KO5BszRWvsFyPM1v6B0bOvk8yIsxZgmF2vwKgUcmH9h7W8mrPHd4csorguTRULg==@kvack.org
+X-Gm-Message-State: AOJu0Yy0sDBcYj0RjdaNsLOS5LU6rkPVGtUis951a9hHTmsD/Yu02kK0
+	gdFsNg4g60i2Ktt3/XuBwSWTxh+wGiwo2PZtkK8jJGdR3Mbdptg8HUhytE4zh4OxGKbiMkNArrj
+	xxwPEm6mmoFdbEB/ns9eSRUAV4dm3rLWRMePDdOy6MQ==
+X-Gm-Gg: AZuq6aIBXcDQIgiajaJ+RdRZum2bMAUsIky3Ee37qCUSARplWn2gJU1YetO64w/PvDE
+	SWS1cx3p3P7arpqaodo5zsikJ8HWP6H1IQoLuJ1itZ+x47hqKxHwpxhHaGOiPgttsY/BeGPcbBn
+	d+B6T9qYW74SFux96hdHM53B4+txjdO2XRKG+32FV7Qv7S6Cmu1r0sC/ToS1gJRljt0g4VsyikD
+	gPD3Q7RpsEk7uE6M0zimVnYjeOvjmFi/O5h1y4otyB985L1/1JzgD6WaVDy4JJ14mwRDPHSjw9D
+	kyP+Fusp3e3cOC02Ynt+zyOWYjmAt0ysG7Rj/uPFb+calLg=
+X-Received: by 2002:a05:6402:268d:b0:658:31e0:4ab5 with SMTP id
+ 4fb4d7f45d1cf-658487626dcmr360840a12.11.1769106566431; Thu, 22 Jan 2026
+ 10:29:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20260105165839.285270-1-rppt@kernel.org> <20260105165839.285270-2-rppt@kernel.org>
-In-Reply-To: <20260105165839.285270-2-rppt@kernel.org>
+References: <20260105165839.285270-1-rppt@kernel.org> <20260105165839.285270-3-rppt@kernel.org>
+In-Reply-To: <20260105165839.285270-3-rppt@kernel.org>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 22 Jan 2026 13:27:58 -0500
-X-Gm-Features: AZwV_Qh8LphdBgzf-rB2D4uKAJkXice2g_NEcJK-xBvMhkC97uW462CJuKpoRTs
-Message-ID: <CA+CK2bDkVtwrCB9Jb=gSNC4CLgROJNHChjBPP3yYcad5y6AeUA@mail.gmail.com>
-Subject: Re: [PATCH 1/6] kho/abi: luo: make generated documentation more coherent
+Date: Thu, 22 Jan 2026 13:28:50 -0500
+X-Gm-Features: AZwV_QiNfRhOr3LvFRxRYZiugzOXBGGS10OWpm02Kx5rrzXcYiqpJE34NwK_FC8
+Message-ID: <CA+CK2bAuY0rKenkEbaAfnwYd8q=ER=U38TGga_8CkqZze=9Yjg@mail.gmail.com>
+Subject: Re: [PATCH 2/6] kho/abi: memfd: make generated documentation more coherent
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
 	Jason Miu <jasonmiu@google.com>, Jonathan Corbet <corbet@lwn.net>, 
@@ -125,15 +125,15 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: cdebowic3pckszpinaq4nij3tks6fkdk
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7F5D84000E
-X-Stat-Signature: 7n4qjesu431te3q64f67xr74dr6qi961
-X-HE-Tag: 1769106516-45617
-X-HE-Meta: U2FsdGVkX19Qmtq/dtk1EfDND7k+IzVvuIIFQ/E4+QavjlEiOfUopIV7QD49Xo+L1v4Eb6L8zf2iBKEd4Ue1QmMI7akHOPaFRE3a7RY0Y7ANOUVsW4lScvAvVRfDcSirLp3VOOdIN/MwKOW0pKktPOpPWckzG962jl/2Jiyf4c5A3n4PiqlTIWebZWnonrx5iKra2ioMfZzoFObCKAnm/mc9r2OmF9d5BXh5REb3mJJAtqARxvXEiYvyx7C4mVT16iffgaIHr0PvO3he9i8XZ5fmwIH1DSOMaKkn7u1nce0R2FuhYwDdXGQRTd2DjDtHlpBfHJqjijODiC9f9UY7HpbLfkVtOU8TaYPAt6vL+CWxknyY7BPftrcW/yuLKGkajKuc1bJlCOsZuP7LDXje+iwR9FyOi4mixYaiES6WoUCpxJCR7IojI11B4uZKYaNlL+cYqop7/IVnUFYKUXn1xt1ls/kYRV7/2dZ5OKNSVojMx9/GfpUJ9IyzzcR5pyfRWhSqqdSPa5Yf80Jsl0fQyPJRwSltHtuY8ruvSx30qo2lMwphFdpLH+Xw+PrIonQ2jgPjosh5d8ak8CeXnaHXz3DEI8BMd/NnKUvD228Vir+QJChWv/TMFBa1xqIyZdxIl/okkjv28Qf9qVeIsDLX9D+gy8ttVvZitZlN2lBTfIDlep1orcIZGUmY9QU3/RZ9pGMe4FZa8rLethh56eJXsccjGucRHFXsEPQucWAkjxTG44MNJqfC7QuE8lw+XmmCuzdNiRiOhvRWDGEHoaVzt6vXcsd7BDMCEkptWOxWClJ1F4FF0FTD+FdS4cOKlFVdG0xt0uX1zMx65or0n6oj+ZF2lrWLb8rA+0vWlgE+R2HF5MV9oS2dy82dpithnuqjtXtceJTkrTvB3ylVBA+iR/s1FyNotHLB9XgtMEk0DxIi2oj2I7eZEFRiXOHkmyfKQo4LMZtcaqvlFUiZaQP
- zLtoCNXr
- AFd0KjZa1+7DBWV9FC4S4q4w8iJ1smzeM/K6ZuXukmsQNx/a5c78Jj90/5sgltSw8LCsMCtGtbC3U7qCIvb1+jERhHojGXpZzDWX0VmeT/x8kA4zeRM09W2mu36RPLZUlJQ7JJTe1XGwy/gI3QCPQENTcwzhH+9OqSv0wgJgAJfO314Zn1cSNSLzU2Krim6ZfMCUxZquMcgIsCXRorOt9pN3jNB3EGxktpeAfB1UidSHHEyjaQ02FLeTvF8kwIlcR+B/FBUsoliL0tLK9loP7me7GhdG5Xfs12fgKEDdl2P+A/yr/I2LbmWhRu0GG4HE3l42s
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000030, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E527C180009
+X-HE-Tag: 1769106567-872804
+X-HE-Meta: U2FsdGVkX19JPXUCd5CfX05yUCJOddpmYpkbE3goGoFa8gz7xRd7m/K9JpWBsLXJfMnymXZlVv8DwxwWJZ9TW8aR7/qL1TXjR9caeMUSGmPBnRvEk+bblxFjxyTRKfR2gldhHeuMjjGzCME1Hze6DrdQ0n89mQnookR238ex1m4oZP6VBN41yCAdY1rArcNmdO/NxQ0ozzLbJT3a35y1RegaRpVePo43i9pd4ObKK+BYvbkE6lYUJBMlUmAC+MK5HbJc8olIiYCipzVk3uPlD2OOfUQwZCd/PyY6XbUc9mtomCd2uMNHQNpdNHuCL0asilsJAg9vbJVVMd8C5rz8lf0ipGQaWVcc1H1bKxaF3Mn2j6OXmv3Buc8G6THh5G5auyV2wgdE9PiEZWd6KEyLc7R9b8GlXdgtxDU1IaD1ayZpY3CaZR/23zJL5otE6MCd3Wli4oRUZbdyRON/q5ApIONhbshXko0uzgts8hziv+uAHOZr+B7JBreOkdEbxYBc4BMcKw7CQzjKyUWrJyB8AGx7/gtxN76xv6hzAEFlRDhvGNASObkmyYOL17QmgrBmvTIfTeiAl/Ri6u//hZq0j1nKC3fVCgcH4dOmEit2VmeFG5eiM+xnavhbF98kX2lvEL4XF3ZplUE8h4MM94lYxE0snwn+N6t1wiYysxd4t4NJTMymkqRyYDi1GVaYWR1vHdE/mRXTS2AdliWgYzaQG4yceJNlgdHmNzHbw3UwHrd+UvjEudtD8Bk3BX4Ur2Q/dz39qxtRQDOT9xPBdpvteGcTAP43w9cnp+SKZMRLu4mOgAbMK0p6xhg7zYlljhbSEou9mpdSTLqRorIGnPUawRs65u4y96LxKjdUT1zdV67js3IEZ65F39Bfk0OlwWNfE/R0Ao5zfyNOhsM2qs9kOOcunIOZ9Rbwv0I+gfe32eD23P4q6nANhWqPkO/+YsVYcvLxeEHr2Lh+CKYRHxs
+ Y3toOQlX
+ AGPfsXNgimBZYcx0ccOzfjb83PmF/7Kotkyr075Qm1CSCC2ureA7tUBx0Mk6O2rIaTPT6fV2gWHzatn6fmjrNY2E6ekCNIDZ95SrXD4E8j0hcbMDMZbOfbXAPnwYv6DjLhcuQAe4ZTBhbV56KcZ0H9Aue8AYFAQe9SPD1s8rhei+i2vKQ1BqisiKMxD/s6X6j4SOvXU2HoIlHGeJR/2RJTOB5N0KojGn+N8+LjryQTXP2JOikpgdorocItSNITDVb+pH1G4Ghk8sO50v455Tw8GrUrlMhxoXMmmrx0QmN4/10gkZTBUhZK9W1qyGVJmYjy4XOWepnYF6DjqLl/F459BpZBnJABV84Jms9OEopyx+x8+z68wpJneeEIz5vhhaax4MywsunG1lKhPbEF60K18zlvQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,41 +146,39 @@ te:
 >
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 >
-> LUO ABI description starts with "This header defines" which is fine in
-> the header but reads weird in the generated html documentation.
+> memfd preservation ABI description starts with "This header defines"
+> which is fine in the header but reads weird in the generated html
+> documentation.
 >
 > Update it to make the generated documentation coherent.
 >
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->  include/linux/kho/abi/luo.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  include/linux/kho/abi/memfd.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-> index bb099c92e469..beb86847b544 100644
-> --- a/include/linux/kho/abi/luo.h
-> +++ b/include/linux/kho/abi/luo.h
-> @@ -8,10 +8,10 @@
+> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.=
+h
+> index da7d063474a1..c211c31334a3 100644
+> --- a/include/linux/kho/abi/memfd.h
+> +++ b/include/linux/kho/abi/memfd.h
+> @@ -17,8 +17,8 @@
 >  /**
->   * DOC: Live Update Orchestrator ABI
+>   * DOC: memfd Live Update ABI
 >   *
-> - * This header defines the stable Application Binary Interface used by t=
-he
-> - * Live Update Orchestrator to pass state from a pre-update kernel to a
-> - * post-update kernel. The ABI is built upon the Kexec HandOver framewor=
-k
-> - * and uses a Flattened Device Tree to describe the preserved data.
-> + * Live Update Orchestrator uses the stable Application Binary Interface
-> + * defined below to pass state from a pre-update kernel to a post-update
-> + * kernel. The ABI is built upon the Kexec HandOver framework and uses a
-> + * Flattened Device Tree to describe the preserved data.
+> - * This header defines the ABI for preserving the state of a memfd acros=
+s a
+> - * kexec reboot using the LUO.
+> + * memfd uses the ABI defined below for preserving its state across a ke=
+xec
+> + * reboot using the LUO.
 >   *
->   * This interface is a contract. Any modification to the FDT structure, =
-node
->   * properties, compatible strings, or the layout of the `__packed` seria=
-lization
+>   * The state is serialized into a packed structure `struct memfd_luo_ser=
+`
+>   * which is handed over to the next kernel via the KHO mechanism.
 > --
 > 2.51.0
 >
+
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
