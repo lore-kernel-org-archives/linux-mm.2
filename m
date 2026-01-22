@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFE34D6CFA2
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:20:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2115D6CFA6
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:23:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13BCE6B036E; Thu, 22 Jan 2026 17:20:46 -0500 (EST)
+	id 662716B0370; Thu, 22 Jan 2026 17:23:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BFA96B0370; Thu, 22 Jan 2026 17:20:46 -0500 (EST)
+	id 638296B0372; Thu, 22 Jan 2026 17:23:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F033A6B0371; Thu, 22 Jan 2026 17:20:45 -0500 (EST)
+	id 56E2F6B0373; Thu, 22 Jan 2026 17:23:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DC42A6B036E
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:20:45 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E55114886B
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:20:45 +0000 (UTC)
-X-FDA: 84361020450.15.FE9A16A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B1B4420007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:20:43 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bot4zvaC;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 446556B0370
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:23:22 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A37FF1B3C8B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:23:20 +0000 (UTC)
+X-FDA: 84361026960.08.FE3B808
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7C1478000F
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:23:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Xj5/UTFB";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769120443;
+	s=arc-20220608; t=1769120598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8z8xGH6bXPgyCs41qa7c/SBy5H2xt6ozRAIrxxfMDXU=;
-	b=D+O1gUzMEKhmJATwFFWx0O2wvV0/+X1N3y/3K3pc3hOAst+6/E4tJC4MWglIF1Z/AR0HHs
-	Oxo9Px7rTfiYZnSD+mi46J3jaY/uMiMgEA+aPM2INAN1fYfRjxY3jMIfnQEto7tZ5ebly3
-	go5G8RwxYREdIKr08HsaSJaSOl/JYII=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769120443; a=rsa-sha256;
+	bh=P0w+grtRO/gA0qQtplfp3Re0ahEYp4a4gzSVGinZ6Gk=;
+	b=furST6o+v9T4xflSdEsbP+wpwSBgjCzYVtABGhPdSweHV5ITOchWxtvuZ5pJYFgHukkpcu
+	StGx+tfAWQVhSF+a7lltAtCGozYxvCnOGzUvLzgZpszlgDdGlrLEJB6auQYims3lzflJed
+	ypvWs43f7TFl1Xlo1AJrvNIKa+HkAIY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769120598; a=rsa-sha256;
 	cv=none;
-	b=ZgwKGEzEUyMyka8/vXVI2c/Wpy7Kc2foZKPjk+HOlUOBgEyF75kN4J+5NMF/MjV0I6joji
-	PcgyyVMAfK4Eq0YCG2PdqxHW+8k9sMIGSaFt7/cBcN39ZMgDmKjs9Gjq7q7HGTljL51eb7
-	MHO/DTvDQDicofraXUkcF9gjqEe+/6U=
+	b=xMLPNEpDrbE+mMqmJtLhJlrxAxkmMjvlvtNIStuHzm7Kpb8IHlDL0NlgRP+JH+kCk228QG
+	fb4z6rTZaGRPC9raYXtOX7VHPk/9WDw+GVxxq486kbjdbKMV4LtLS3ZrmPUf40wOWXUnUk
+	6uSV6Lv3pp0ujRQF/qtL9JfIlPX8bCI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bot4zvaC;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Xj5/UTFB";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BBA68442D8;
-	Thu, 22 Jan 2026 22:20:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFBEC116D0;
-	Thu, 22 Jan 2026 22:20:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E5B860010;
+	Thu, 22 Jan 2026 22:23:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8B7C116C6;
+	Thu, 22 Jan 2026 22:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769120442;
-	bh=jzu4EH9RtPfER/4dAwUxG4EpQcz1B60rHGCR3ANTIko=;
+	s=k20201202; t=1769120597;
+	bh=rI8cEY7QQ/tpSibbWQK6eB3pyIwIXZc1joW/Z6zajq8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Bot4zvaC3VKoQCkLVxiMMW57UXfYBtgw0ff/qIvN9YUd5PizoNdJ2lOXAB7I+Eq5P
-	 GeQGgKlAh/CUAujvoR5vWMknR84HktdPw+yWM+Np72+1j9pSpEGXwR4ftwFU684A+T
-	 b66lWoDIiNsxQfM+n+7c034mIxqKRz/I3iw86yAtC9ovWh/obpnQkojQRyH/YM5M0U
-	 vIgBpuqbmjAtcNyC2bXLyWchPWAa8ypelg+YehL5g/sha5YZrTXacEr2ej8490a5/g
-	 du51+Rr54b/fwdu7okY3/2IC833rg6+rmcv21mpD+JypUnekAoqv6F7/HF+sqNnLqe
-	 c/tNK2R8Np7lA==
-Message-ID: <a4c83b16-3307-497d-9690-0e31672f3202@kernel.org>
-Date: Thu, 22 Jan 2026 23:20:37 +0100
+	b=Xj5/UTFB2f/mWRyHUyR7fOrgLt7tdYGJ89R8wttK585IX2k+7+zX+0Vw5XPgm9VF7
+	 F30uDULPRZTO1j4S1+OqDT2KHGAsp3BvOZRubhj5N/vxjLbRmTaJb3xExRqQXpmD4J
+	 lDrNAWDhvoECk/a/HRQfMC7hqMddcceDFOy1DH9gpiIclHnlaPK1QIU7KR8t2U4WkC
+	 IjqS2EJVdDJc7kJ+pmCN6Mp8iJXnZ1JXk5sUepdU3g89o0plkE8xjbAkfVc1pc44Da
+	 ou8b7IdFp9nuIa2fiwB785GxYWBbFT4JoUmhygCX5Ok3R0ZtE+fhRRMeKFQ9aVnvBf
+	 zGzJzp+wwBs2Q==
+Message-ID: <514a3e29-6f5e-4d7c-9e67-cb001573d41c@kernel.org>
+Date: Thu, 22 Jan 2026 23:23:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/9] selftests/mm: introduce helper to read every page
+Subject: Re: [PATCH v3 9/9] selftests/mm: report SKIP in pfnmap if a check
+ fails
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
@@ -76,7 +77,7 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Mark Brown <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
  Shuah Khan <shuah@kernel.org>
 References: <20260122170224.4056513-1-kevin.brodsky@arm.com>
- <20260122170224.4056513-7-kevin.brodsky@arm.com>
+ <20260122170224.4056513-10-kevin.brodsky@arm.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260122170224.4056513-7-kevin.brodsky@arm.com>
+In-Reply-To: <20260122170224.4056513-10-kevin.brodsky@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B1B4420007
+X-Rspamd-Queue-Id: 7C1478000F
+X-Stat-Signature: ktmzjm5r6enoafebrmshow8jc1djdy7x
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: bkeco6mn7bgr9hy3my4sbcyz8txupe1y
-X-HE-Tag: 1769120443-48043
-X-HE-Meta: U2FsdGVkX1/YlmWwPNZervrk83MjxH2errhy7a3uwEwMCTeWYHnjUcjyF+P3LLVrwogbn4npXzP8Pby+U+ukOR/3g84sd0KVAHdktP6s8SRfn7Ggi9YJktiBAOvE2nCr/4nzYWXhLSf4eF1AA/xMf+OV08CrSOdT4jFCfXCs1Rp2ioVDRr/5SqMlzD0dw/q9qoKNxPE3mhpft3hcA0JGr5huicu5nr8WJ7Dqk6vWH3aoQ/WG8ioyUnSC7aOyow/Ord876tTF/wZupA+9hFRmvnsbgjz/Y5GZgGstSiNHINshPhs4S+IsJQIHnkxY/peAlempkmQaqocjLXsVZ1qaurXsX9kUSBz19DiedDrJ1M51QMhGSbeeX5GV19ujd+9yAHYtYThMrHpocKfbW55mBZ7KhoOvyXhOKmuEHtkTHuToSY6NhnS4wYGmMFRSBXcY180dguU9qYChbZj4+mAaLb2URHUkum1oKqY2wzlsNZQ4IOyd+yofrAW898zQDQxQorYVndxWUxvr4Ox1ZcuDbru05RhsLG6BA4kwcfeISfx05My74Pti9HcTtp6lJD18MCxJ3RGbg3BBFl5OSGlfCGTpkkLGowzH08SC/5iF/SoFVGw8RW1/IPpQUABPFN/Kp79P5vp9B/dzd7X3maEHig1kstYQeKqA5E3dSv0AcCwBjpWBR4XaGjT+HCAGZvrqrxGEQJtTDm/VlyW6p+k+eYjKXTi2aiLZKWqFaQFpr3J51AYdou5D6UXskse+kSA4Jkn8WKJIGVcTyTFnhDtBFeV7ygQlht78MBOGSSOYmSJ+jvNIRskHnQkm2VJ1SZRqD0dzS/wQgdpoxqtlPA5p5slTYus/muAek/4NgCqJt0bgWJSHX6l5ABnoZI+aoHkdWv4suIN99voSRXBUJ+4p/IHoer0Zp8JO32E7bgEyA6tzGfcuY0NfMTDBc+NbrpL7xtJDiv+v1y2cjUPMKve
- y0HjZSyM
- sHcnroAjx+kIoRj8hVPw5yvJv7MtBHY2t1/W+RJ1nTrzVdmXUB5Fo9XyYLbIuNRq6f3IvI3wuFwyZQnknrS6mWAEUl+XfkLfTYSiyhbWNCw4Iehg2BDiZoaMwhEAD4AMqoBpJkX1fydYz1Kkcxr6vGQ6cTUyK56krt+bHI3Cqghp2wtfd1p7CH7xxKR0VmTOjT5aU7tEkTKV7Dhoiseb46sW7mzN/+UWkhp/SpRGy/7zTJMmj2FM8Lctq0IIe/2c8Q+PYtzZbgM52zSrgxpDypmtxk4hjTUCmCvySk62qsVNF8W+hFblCq0ap2DkqH3oqrQppw5Yy0rjocyOSSYBlj0IeBQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769120598-874588
+X-HE-Meta: U2FsdGVkX1+QZW0I7VzOASjsY0039Q8jFg6P86I0FRkLUgZXTuhzxGKwjfyZJZ4/eODqSabH88T4n8RW0FzQ7U78hKw33riAgqW/AextkHfkhWyEvy4hEwil0K+AvtTdmXbsiRW3+QQb0Ud82YxZSThcQf64mYLfGCbZB69kp/TN8Y/n1AdBtnMECF+KHpa8maZ73EvVodV3QIbEhiV1rYCg0ge7a1kntDihqMdck9LGG3RByZNVub4ou5HB8EYGTq9rC07IVyXaBgmo8Ids7jNZTQweXeRxJXbx1319GkuD7QI+J5fvMYtSpTxEArV7H9bgrLIq+Lfw6C9y0wHx17ZGAqo1+HZ8cB8hr1mW4yOf0GDLom47Rbb97hqI3iR7WvX1i6c80z0JPe1LaJbW3x5+JOGqbMQyaZmOLyv/f3Msroh4G/Cs102fuQsjUe93sCk/9znDSS3DWhoVhTecjpa4210oXxlnUPnztn0kpJzNdi4383Bqf0knfW0S2+jMoKt9zz/HiJ+tS6SPFRymgmkqm6J9unheHmSpROr4Axu2ZsFAc1lh6j572YbkjgqS6Bvs9PLwMinOMZVpt5WX6O/7vaB1EkUI8rqco2fC4p0LktQhcgY9fMlbIJYtDOrrfbWccvolnx6izfrh0oTbPRC8MjW6ZmxiTBM/BMnjHTjp+AqdFHggSLgxWzMPrUu+J1ZI9Lb3hOd5ubCDYSOWTJWttUifI3w3HYHYMGTXnFvq12CGqesMrhrAKULvWtYPbiyY6j4p9nedgc+H58WVXinMc5sdrxkZfptSuNKgDVtiSw822Eba6WuMKxSi8KMofhScsynh0rdPoEFsnSYWuVBPidtl5vBosxbWjpjHNY7CSZPVOWeQdBk7LTDFDkYYbccKp45EVW1mQ51SalWhb0L2d/tVdPjicxXaBqfVLa+3hvLZyKNAq5pZVAdkZPsG2+61xf9o6JI4iYfYs/9
+ gLxlMX0X
+ L2VcKQebvy7Z9WGwTMBxQecTlX2ZysWpIeeGIcBXBK4/M01E3vAUDicosDG6xw+uiQi4wnZ5pvxwkVNd1fTFeVEljwu7Q6RUySj5xHRWDqHazfcqWwMNKLGOYlp+1OwlDyG8rC5VzK9IAwTx9vTE5eNyNXfPS3NIeZNdwe9vI37ZBLkttrxJrez3Uj78InuAbZNqPsbXFNXNpwrn4CNk2fZQPHCai71vCzXwztilO/zSJH9Lr/kVDXu8urR6y+nwPiOQFA3qKRvRO13bDdEcbLxZYErTlmU8KbJ9pHg0AWNqvqoeatVaPapTCIHnVMW9IDPkEuR6RXTQpTkJXyTA1eX+1dg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,51 +143,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 1/22/26 18:02, Kevin Brodsky wrote:
-> FORCE_READ(*addr) ensures that the compiler will emit a load from
-> addr. Several tests need to trigger such a load for a range of
-> pages, ensuring that every page is faulted in, if it wasn't already.
+> pfnmap currently checks the target file in FIXTURE_SETUP(pfnmap),
+> meaning once for every test, and skips the test if any check fails.
 > 
-> Introduce a new helper force_read_pages() that does exactly that and
-> replace existing loops with a call to it.
+> The target file is the same for every test so this is a little
+> overkill. More importantly, this approach means that the whole suite
+> will report PASS even if all the tests are skipped because kernel
+> configuration (e.g. CONFIG_STRICT_DEVMEM=y) prevented /dev/mem from
+> being mapped, for instance.
 > 
-> The step size (regular/huge page size) is preserved for all loops,
-> except in split_huge_page_test. Reading every byte is unnecessary;
-> we now read every huge page, matching the following call to
-> check_huge_file().
+> Let's ensure that KSFT_SKIP is returned as exit code if any check
+> fails by performing the checks in pfnmap_init(), run once. That
+> function also takes care of finding the offset of the pages to be
+> mapped and saves it in a global. The file is now opened only once
+> and the fd saved in a global, but it is still mapped/unmapped for
+> every test, as some of them modify the mapping.
 > 
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
 > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
->   tools/testing/selftests/mm/hugetlb-madvise.c      | 9 +--------
->   tools/testing/selftests/mm/pfnmap.c               | 9 +++------
->   tools/testing/selftests/mm/split_huge_page_test.c | 6 +-----
->   tools/testing/selftests/mm/vm_util.h              | 7 +++++++
->   4 files changed, 12 insertions(+), 19 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
-> index 05d9d2805ae4..5b12041fa310 100644
-> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
-> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
-> @@ -47,14 +47,7 @@ void write_fault_pages(void *addr, unsigned long nr_pages)
->   
->   void read_fault_pages(void *addr, unsigned long nr_pages)
->   {
-> -	unsigned long i;
-> -
-> -	for (i = 0; i < nr_pages; i++) {
-> -		unsigned long *addr2 =
-> -			((unsigned long *)(addr + (i * huge_page_size)));
-> -		/* Prevent the compiler from optimizing out the entire loop: */
-> -		FORCE_READ(*addr2);
-> -	}
-> +	force_read_pages(addr, nr_pages, huge_page_size);
->   }
-
-Likely we could get rid of read_fault_pages() completely and simply let 
-the callers call force_read_pages() now?
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
 
 -- 
 Cheers
