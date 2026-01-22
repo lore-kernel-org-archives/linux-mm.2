@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27308D3EE92
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 17:02:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF4A2D3EE92
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 17:02:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B684B6B02C2; Thu, 22 Jan 2026 12:02:45 -0500 (EST)
+	id 2E12F6B02C4; Thu, 22 Jan 2026 12:02:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF2846B02C4; Thu, 22 Jan 2026 12:02:45 -0500 (EST)
+	id 2D62C6B02C6; Thu, 22 Jan 2026 12:02:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C2ED6B02C5; Thu, 22 Jan 2026 12:02:45 -0500 (EST)
+	id 098F56B02C7; Thu, 22 Jan 2026 12:02:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 75EB36B02C2
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:02:45 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E2E158F97
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:02:45 +0000 (UTC)
-X-FDA: 84360219090.12.7E9257F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E20016B02C4
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:02:46 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B169B8BAE7
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:02:46 +0000 (UTC)
+X-FDA: 84360219132.13.BF5B487
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6B40840021
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:02:43 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 124BDA0027
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:02:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769101363;
+	s=arc-20220608; t=1769101365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sII895/ck0omx1kbUdhr1tyS4lQnzCkohcDow1BLj/A=;
-	b=KUpH6OpCHeCyXhlK6OGm888BdwJXR3xpA0wfqw2pIiXicUq0pyIxpQ7HbgArDOwVYaHhgt
-	vk/yQg8fCYWDjS2Mz5rirETxElol7DHB7ezOm0cZj+9RcLm431q5jY5w1YcXiUKTlE87WW
-	eM7miANWVlnBJEOHbGhVByKAbqrYPx8=
+	bh=TCHZ8j2ex12Nm8K214qlGHp2dEP9X/oexmEgiv2ymw4=;
+	b=reU80BFAh9Ovtbn48367LpTiJkDhHYeps8LUaCgrZFdL2WOj4EbbBIHX+eW3LV2lC6uL9p
+	9zljaSy/33V6i6qhh0ycOXLK8XMu9YNF95RcXJZBH+GDCATSG0IQheIIfWYbv4MiBYuGZm
+	FMZotFR+0zMXvGt2jKIm/wgpYfHbuoI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
+	imf15.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769101363; a=rsa-sha256;
+	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769101365; a=rsa-sha256;
 	cv=none;
-	b=ig4nI3UX+Dl81+SMsjJMVousXoNm+wNogm2OvmrcbfhT8PtHDASVrzUr0Ip9gNPCcj54AL
-	824fOQ9tXTUNeBQLvY1Y3fTMK7LFe6k3HJXFX3LHz6QNqdoGyfhOQ2Z8prwveP9ZV0N4ul
-	CM1unUlj/GaulhaRx4dP5Bo0f3HuS14=
+	b=H7URHzlLDQChOkSPBSQoLCnKO0orzp7rBnmvMsci6bBhm6RRnPZqPJaeKNcVNw5WvisrX2
+	CqyT8G8sdNtezl+d8poA4oPRA+jHZefXCsN+8P0zLwvYrpy8DeemVn2dwkdVcfND9pyWrY
+	Wnuzrskc4NSFUL8oMjF9RtglOuimZm8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A867165C;
-	Thu, 22 Jan 2026 09:02:36 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1813D1476;
+	Thu, 22 Jan 2026 09:02:38 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B4A1D3F632;
-	Thu, 22 Jan 2026 09:02:41 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4F9203F632;
+	Thu, 22 Jan 2026 09:02:43 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
@@ -66,22 +66,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Mark Brown <broonie@kernel.org>,
 	Ryan Roberts <ryan.roberts@arm.com>,
 	Shuah Khan <shuah@kernel.org>
-Subject: [PATCH v3 5/9] selftests/mm: check that FORCE_READ() succeeded
-Date: Thu, 22 Jan 2026 17:02:20 +0000
-Message-ID: <20260122170224.4056513-6-kevin.brodsky@arm.com>
+Subject: [PATCH v3 6/9] selftests/mm: introduce helper to read every page
+Date: Thu, 22 Jan 2026 17:02:21 +0000
+Message-ID: <20260122170224.4056513-7-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260122170224.4056513-1-kevin.brodsky@arm.com>
 References: <20260122170224.4056513-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6B40840021
-X-Stat-Signature: kkbfifqtbexh6yh3oaja7merm34fdsr7
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 124BDA0027
+X-Stat-Signature: fnne3ctu37a6g5u9stha5eg1hp9sydzh
 X-Rspam-User: 
-X-HE-Tag: 1769101363-757066
-X-HE-Meta: U2FsdGVkX1+natTNOhHZ8T4QiM/EseVcWO9uXCBiWF3GlAKh1uhqECwu5a72IN3sIK8oe9liTBG5SEbHT4pn8YCl2lYctYL27TUEQ8j1IiJWirf7B54vLRljSJD5fcWyfUWxOAiIsgHPszqPC63+6ZRzKHrdfovzBkC3uBl3JYzZBBrc9d3duhD1xjutXAAnMqH3X/ednZWTzrRIGac2y+LNwOlNOg8/XOgVGBf73qleb/78tZKx2Y9lVu2tX3RCQNPF4wtyjrXZl5iJq+jDy8+Usbx1xX7MkWBxEWRWvDZAcXDoUBpS6YZQHs/Ee32vpqGASPyTvPy1SKxCp4OLYy76ylkrB88mbitqZLXfKfNoePviHu2L0S3djmf6gCu9ybwo9yPvzs7QlSQcYwrqYHWolz7mypI5srEvcUOQiSJMvloXyW9OBkpPIkg4jC/y/LGrKIEUgDt2k1uq+L4GN1CvADa9uTeFDrJifujYDxfdxDdhgMQAjzkMxcznQWazYIsn60YbqFfjxAVXJ7y9tjdOLOmndDAhLomaKN5e11n/LpmIxao5DasneuFCG8x/6sBpCToe1UYleQQcZTluM4i5oaG5Oxoo7V7SMEpn74lffKHItN4E7r4O1m/PxI2MgiiiUV3JiLHKkNe3DvpScQw2uBO3n/nMFDs+GK/INveLuDzW6wLKwYwXxotHhWqwdRbW+hcZV0RZpd7HIZU0KaVDlB7mO+w3UTmXRZn5tDSF1tyiVSd2/1BDNxwb0X4cNb+crH/FOZTlNUPKXNh2viW2nTF4SY0rYSyVThyRHM7TSH9W/MBd4n4TMksy9vxq3wa9u4VEzuyZ5pJKTVaYFjnFWgSz4//rf2BQKgvGoflsXhXhWeGwrXcDKBjjRADrS2OLBDvNMO/SRHhWKzva1d9nKQ9Ow8hpXRh2XNdnFJ1S+dCFi0u9QFL7P/lMn0uAccOohGlNt5scuUHLYp0
- P9mrw65L
- wuAure4g/+XV0zvi1JYfStvZ1+Ae+mEpaRfLWSiiXm97PJmRRKzRZWc56B9jDj8xN0IXAzvYInsSd7XQ0vTgQZ3gYwaYidngdWBuAH+eKBLtAYLkKHURXnM+Zm1HvrPvWX/+AX1zzzAEC1jtsihuLDTZcrzv7YWn2rsZcrcEHPsZc9EyjcRlyfFzmKu4ruK2AvU3tzi3OYiNT4zi4IkUJhGFg33bLMej4PK0O
+X-HE-Tag: 1769101364-95258
+X-HE-Meta: U2FsdGVkX18le0F2C2P3VGKxK+3gUv2Y4bDNKdlIXfqbcdV+jambOYbZEKl7U4F7Q5ua0u5AUZBGjyf/jBY/fv2+7BeAFikLUrqRfUg4P2elvfNfTQPBganwVdA/P8WWPeNJUnfcNA+5tcyKDb4qInG/l37zKvtCQ8oEsjkKAdzT9iZOrOUPUYE6/KutvnmMHp/Ykz5pPRP2gyMEVOHvpjpqwEBh7GHukr3GN1IOw7HzIqFh4Ht995DKwrhJIxLXDVH5sXjiUJlhGS45dIA+4FNwoQHWW+vBfvyCRbW6qnmIUv2gH5Yf/mrp7FkThUP57YdJmp9SmmZ5VjcpX4ltYr028BJTMoU5BX/DoSwZRRpK+id6c3OtIWshNsl6UuRQ2/8aCVCh01S+1FVm8b9HzCGv4+cSjSHIL7ypYRnlqMR1/k9ZHQV7yBg3ioh+XeG17oeXnJPTjM5oWBRTBEw9sPCeRolRWXvXYTVYgoITzGZfIVlqQFBUKETxqapuaaIzJ1dfGV4CwUwNYDDxMibUvw4MtGCUgdlLpY+oDaQ3HMCvdAwp5mhiQJ9cQ+gWIIW+yhe3apwmmmSYlCE1yumPvi8kwLUI00LRrIUZA4hN23f0ZYsnplhkbTERnXKL5YVW1wymG7EuGINsKCThKONE15OEbzvjx28EpD2EWvJFa/iIve/7WqR1qZiD7awCz2IsrRYim+37rmZln9asvU6UV1HZFXbfoi6n2PYyeTmyyHohhQmiQ2vRS8vYBylbgNZlun8a6xiEVtAJ8KnA82S24T204A/1HgcMfZstDp1GUdLZPWIukj8amLu4IEtUC5tla3dlwj/UGXKFEJryj4vnpyCBNfKgYMIFn+aMtqqy/fIuO04YMo7JCY1KF6laFcfeCSyb08rrI+8zYFFHbDBXnco8YzfgM4gDUYOHFoXPNvo/0oj6U/Rs++YbTdQZPBlPIRZElMiKcZzW4y3/Z13
+ 11bJ2taK
+ AyzhDSi0mee/lvhrG26nYOJxj7YRkaSY9RdP9QmSVtVnpoWUw2zo/rMapYFq5h/I/SKtQX7wdlnLWH869Pa/0A2zUdkFzmwsyLkWxi8U6udg5P30mXrWjx1e9NkpPUgn9y+oTojxjXarOr+wcxlIV9gSXoA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,105 +90,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Many cow tests rely on FORCE_READ() to populate pages. Introduce a
-helper to make sure that the pages are actually populated, and fail
-otherwise.
+FORCE_READ(*addr) ensures that the compiler will emit a load from
+addr. Several tests need to trigger such a load for a range of
+pages, ensuring that every page is faulted in, if it wasn't already.
 
-Suggested-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Introduce a new helper force_read_pages() that does exactly that and
+replace existing loops with a call to it.
+
+The step size (regular/huge page size) is preserved for all loops,
+except in split_huge_page_test. Reading every byte is unnecessary;
+we now read every huge page, matching the following call to
+check_huge_file().
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- tools/testing/selftests/mm/cow.c | 43 ++++++++++++++++++++++++--------
- 1 file changed, 33 insertions(+), 10 deletions(-)
+ tools/testing/selftests/mm/hugetlb-madvise.c      | 9 +--------
+ tools/testing/selftests/mm/pfnmap.c               | 9 +++------
+ tools/testing/selftests/mm/split_huge_page_test.c | 6 +-----
+ tools/testing/selftests/mm/vm_util.h              | 7 +++++++
+ 4 files changed, 12 insertions(+), 19 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
-index 83b3563be26b..d9c69c04b67d 100644
---- a/tools/testing/selftests/mm/cow.c
-+++ b/tools/testing/selftests/mm/cow.c
-@@ -75,6 +75,18 @@ static bool range_is_swapped(void *addr, size_t size)
- 	return true;
+diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
+index 05d9d2805ae4..5b12041fa310 100644
+--- a/tools/testing/selftests/mm/hugetlb-madvise.c
++++ b/tools/testing/selftests/mm/hugetlb-madvise.c
+@@ -47,14 +47,7 @@ void write_fault_pages(void *addr, unsigned long nr_pages)
+ 
+ void read_fault_pages(void *addr, unsigned long nr_pages)
+ {
+-	unsigned long i;
+-
+-	for (i = 0; i < nr_pages; i++) {
+-		unsigned long *addr2 =
+-			((unsigned long *)(addr + (i * huge_page_size)));
+-		/* Prevent the compiler from optimizing out the entire loop: */
+-		FORCE_READ(*addr2);
+-	}
++	force_read_pages(addr, nr_pages, huge_page_size);
  }
  
-+static bool populate_page_checked(char *addr)
-+{
-+	bool ret;
-+
-+	FORCE_READ(*addr);
-+	ret = pagemap_is_populated(pagemap_fd, addr);
+ int main(int argc, char **argv)
+diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/pfnmap.c
+index f546dfb10cae..45b5f1cf6019 100644
+--- a/tools/testing/selftests/mm/pfnmap.c
++++ b/tools/testing/selftests/mm/pfnmap.c
+@@ -35,18 +35,15 @@ static void signal_handler(int sig)
+ 
+ static int test_read_access(char *addr, size_t size, size_t pagesize)
+ {
+-	size_t offs;
+ 	int ret;
+ 
+ 	if (signal(SIGSEGV, signal_handler) == SIG_ERR)
+ 		return -EINVAL;
+ 
+ 	ret = sigsetjmp(sigjmp_buf_env, 1);
+-	if (!ret) {
+-		for (offs = 0; offs < size; offs += pagesize)
+-			/* Force a read that the compiler cannot optimize out. */
+-			*((volatile char *)(addr + offs));
+-	}
 +	if (!ret)
-+		ksft_print_msg("Failed to populate page\n");
++		force_read_pages(addr, size/pagesize, pagesize);
 +
-+	return ret;
+ 	if (signal(SIGSEGV, SIG_DFL) == SIG_ERR)
+ 		return -EINVAL;
+ 
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 40799f3f0213..e0167111bdd1 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -652,11 +652,7 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
+ 	}
+ 	madvise(*addr, fd_size, MADV_HUGEPAGE);
+ 
+-	for (size_t i = 0; i < fd_size; i++) {
+-		char *addr2 = *addr + i;
+-
+-		FORCE_READ(*addr2);
+-	}
++	force_read_pages(*addr, fd_size / pmd_pagesize, pmd_pagesize);
+ 
+ 	if (!check_huge_file(*addr, fd_size / pmd_pagesize, pmd_pagesize)) {
+ 		ksft_print_msg("No large pagecache folio generated, please provide a filesystem supporting large folio\n");
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index 6ad32b1830f1..522f7f9050f5 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -54,6 +54,13 @@ static inline unsigned int pshift(void)
+ 	return __page_shift;
+ }
+ 
++static inline void force_read_pages(char *addr, unsigned int nr_pages,
++				    size_t pagesize)
++{
++	for (unsigned int i = 0; i < nr_pages; i++)
++		FORCE_READ(addr[i * pagesize]);
 +}
 +
- struct comm_pipes {
- 	int child_ready[2];
- 	int parent_ready[2];
-@@ -1549,8 +1561,10 @@ static void run_with_zeropage(non_anon_test_fn fn, const char *desc)
- 	}
+ bool detect_huge_zeropage(void);
  
- 	/* Read from the page to populate the shared zeropage. */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
- 
- 	fn(mem, smem, pagesize);
- munmap:
-@@ -1612,8 +1626,11 @@ static void run_with_huge_zeropage(non_anon_test_fn fn, const char *desc)
- 	 * the first sub-page and test if we get another sub-page populated
- 	 * automatically.
- 	 */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
-+
- 	if (!pagemap_is_populated(pagemap_fd, mem + pagesize) ||
- 	    !pagemap_is_populated(pagemap_fd, smem + pagesize)) {
- 		ksft_test_result_skip("Did not get THPs populated\n");
-@@ -1663,8 +1680,10 @@ static void run_with_memfd(non_anon_test_fn fn, const char *desc)
- 	}
- 
- 	/* Fault the page in. */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
- 
- 	fn(mem, smem, pagesize);
- munmap:
-@@ -1719,8 +1738,10 @@ static void run_with_tmpfile(non_anon_test_fn fn, const char *desc)
- 	}
- 
- 	/* Fault the page in. */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
- 
- 	fn(mem, smem, pagesize);
- munmap:
-@@ -1773,8 +1794,10 @@ static void run_with_memfd_hugetlb(non_anon_test_fn fn, const char *desc,
- 	}
- 
- 	/* Fault the page in. */
--	FORCE_READ(*mem);
--	FORCE_READ(*smem);
-+	if (!populate_page_checked(mem) || !populate_page_checked(smem)) {
-+		log_test_result(KSFT_FAIL);
-+		goto munmap;
-+	}
- 
- 	fn(mem, smem, hugetlbsize);
- munmap:
+ /*
 -- 
 2.51.2
 
