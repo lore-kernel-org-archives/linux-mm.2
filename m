@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9213DD3EE8A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:10:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A2CD3EE89
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:10:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 034026B0286; Thu, 22 Jan 2026 11:10:25 -0500 (EST)
+	id A04F26B0288; Thu, 22 Jan 2026 11:10:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 005A16B0288; Thu, 22 Jan 2026 11:10:24 -0500 (EST)
+	id 9B8666B028A; Thu, 22 Jan 2026 11:10:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E52686B0289; Thu, 22 Jan 2026 11:10:24 -0500 (EST)
+	id 88D216B028B; Thu, 22 Jan 2026 11:10:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D26186B0286
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:10:24 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9B3B16044A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:24 +0000 (UTC)
-X-FDA: 84360087168.15.859D067
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 007041C0015
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:22 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P643mR3S;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 703516B0288
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:10:27 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3673A13AF13
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:27 +0000 (UTC)
+X-FDA: 84360087294.01.C9C3058
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 85EC6C0005
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSJMMtX1;
+	spf=pass (imf10.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769098223;
+	s=arc-20220608; t=1769098225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vktLTCO4oVSPSGmW5h4KyJplbMaSYQdm7/DggjGaWc=;
-	b=nGgRyGa4RKwaLABsQ4iBTIpn/hXGlBIq4WFGJGCtt0pjQuc7N9IJrgHpBkq1rA80AfQWXm
-	p00Rb1fsJucUyq7xjo74+HcbLYmQ9GMlUj/5jW2tq+Cy5kPzWHoqDbW5JCh5eAi6/DGcUD
-	4vmrWHTZhMOpmAEkudlJUD/ODRE2ujY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098223; a=rsa-sha256;
-	cv=none;
-	b=r1tiHUIjoJ0hoHbDVYiAoOjvT7a+T02MP9td9wRJ0nwwD98RWKj7ZNiqZ9/nlY/8djFlAB
-	Nu4XARlYSGMpQc4SINjtmXljYG4dvYIisjQP1CIei2M+1QKbHSyEqvsWfY6yKkfF3aDlTR
-	iAOWFgDCxVQTYSoYBu6WKaj3QRLjt6Y=
+	bh=CGw9UBjkpyzbN70YDhl5jcX+BSpRYzPPHb7Ba1+nMrc=;
+	b=gV2ohtIBPlPDBWUolSGB27GpjKChFcOfwMn6svwIuSYM/2FixkXRHeuCPuuqhpMF7BKbg5
+	WLaVZHejnxFScuj5rPnMfsqBQ502evHMQd7Kvb6lGyyW7gLrjYvs6aYQ3Rgm4izlb1RprN
+	y4rfb0fj2TUr1NQXdmWDIm3qDTALxY0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P643mR3S;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSJMMtX1;
+	spf=pass (imf10.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098225; a=rsa-sha256;
+	cv=none;
+	b=iZpZ1Ia/2WT9QeeCX/AZz1ACGlZ8H3QJufRvGsSW0R4bkdpZr+d+8We3U1TFqVeAi1pJxw
+	9NkLIut8G2QhH4zRn73sqzyV84xjVx7/9mC4kzeB2ypKw1LVE3z2/WEoqOvZSbR7Q6SD52
+	y73T6d07OhbkTlSEKsGiQJVoqIOwoRI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 07FDF443A6;
-	Thu, 22 Jan 2026 16:10:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B004C19422;
-	Thu, 22 Jan 2026 16:10:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 062396012B;
+	Thu, 22 Jan 2026 16:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E87C116C6;
+	Thu, 22 Jan 2026 16:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769098221;
-	bh=2ICIoqHo9Cyhdy3+VtN+IUzW5+JGRQYoDcB2EFnohLY=;
+	s=k20201202; t=1769098224;
+	bh=LmgB3NAOjY2EXb6KKktntFdTHuCI5bomDczMPMk21vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P643mR3S+IDJaAPZiWwUtAcaWx//W+DWn1viojKNZ1sAIk/4Gyaq3Esjn9VI+dNkq
-	 aV34yMJuRdLhfDZBO4jW3OtAeULLLLKNvWDbFEcE/PuxaCU0U0ubuXbPZHVyizqdiB
-	 SHo1uN2IPS/hDePMAk4HmZ3HRYzPbFUk2NlP3nHnrg7K7h1hyDChhNtPsaeadLRucn
-	 SXDX1HxtDKyL4zKZOsfkHGkhx7Hir01tr6GE9ICYcRZ3DTSgVVrEUeLxP2YWBkIYe8
-	 Ul/dOCC0pRWf590X3fPIE3awh+sXtefl6YU48cXLlMKOw4+pDnAiM7U/BV6tafZ34l
-	 PWGKJHo2bEDHA==
+	b=qSJMMtX17uMId5qnzEFbziYqxYETI2pr51ysG1ENZJyeMwGCFR6aWtyor35a6hgWc
+	 mVoKE1PLfg1iqNj5RMwTd2bFk36grxBnFL3n/UH3W3mLyujydUCnh1AipUXW9koOvJ
+	 +W2jPRJwvcJ3ttoxIM0ifDKSIp1SMD7ZIDgE+yeiE/2YwprYArt5wBaBa/3ych9p9K
+	 YnFlVvo8EJ+W6DWZLfi96vHNYPxnU7SruN3LkQD3J4D+1DKGrN2LHi+PbqyYRQfA7D
+	 OEVibrds0rDZaojZuwjLuz5pzbuIGbX/duIVsWXVMWd+HycimpAa4sJmvlp2gUHOnC
+	 GxoWgTKQQFPuQ==
 From: Thierry Reding <thierry.reding@kernel.org>
 To: Thierry Reding <thierry.reding@kernel.org>,
 	David Airlie <airlied@gmail.com>,
@@ -84,22 +84,22 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-tegra@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 02/10] dt-bindings: display: tegra: Document memory regions
-Date: Thu, 22 Jan 2026 17:10:01 +0100
-Message-ID: <20260122161009.3865888-3-thierry.reding@kernel.org>
+Subject: [PATCH v2 03/10] bitmap: Add bitmap_allocate() function
+Date: Thu, 22 Jan 2026 17:10:02 +0100
+Message-ID: <20260122161009.3865888-4-thierry.reding@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260122161009.3865888-1-thierry.reding@kernel.org>
 References: <20260122161009.3865888-1-thierry.reding@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 007041C0015
-X-Stat-Signature: f9js9fx3sphahdst4xb4fy3egjcgyp3a
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 85EC6C0005
+X-Stat-Signature: w8mj3enxixod73bu88e3jqqxrk49dgf9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769098222-394092
-X-HE-Meta: U2FsdGVkX18ZOiog0yIVv3mWjrHLZqVI/3dA9oTZy21bVgdJmykp4FAXI7GPI3o5O7lChdqz/jwu441t9VeVqN2++APwnZHqq+tZb5W+YUsD3hMzlmv/AaVtQyWi5ejPXiqiP0L/gJQCh7Q0D/6uZidOfiMpXUSQydkErc/K9fx6NV060FqOGAZxz0RofXHh1S02Sosgily7LBbMWBeMAFNWy6l4JmJEtNE8o8Fdexq0jicUEn16Z7D/8M5t0VN6BkmgoRc3cmUO4xJdFJSlTRUtKIZSyRmjE9M9FS7UUvYzQMp487s2bTTZFyiq3lA+k53yScTmqGAarMzD0F1CRL+iGlafqWeWmnbWwWwEWm+vPXFBpozh+3tUwa6wR8sCryAv8eRifie0siC1ILor7ao4by9xosrpNdbrYvjKnpZgQDZEURJgRRjbJSv50qwJO6H08wF6m/6/U0IsNNEmQfpzz2uFNbe1a+owdurd2I02C7WiKs+zpe9OpAkcdoiFzms/DCBlBB3baxX/HaP1Rb5m/ZeCnCgGACiUEhg0oU8b8SMQQMuqutXYoWi6aKIgY90zzlbzmtyi+3s3snAbXrBRYS00MoGWdtpFwRyjNvsOkvwE7DjzliqLik441PBzHg9gRnSU0GxMuYKFqkzMG5EH4ivV9LW48UkgjpX5SYMYhhrNrBZa4l25Cng0sT9/VUqK6dV7cwkx6Ujw5AftUO7PGr5eRgAdGNU30PQl8H5+DYu4C0X9hRppJARjkpau4k5AFlHutltc8fEJLb+g8E0nr52dpZUeF0sH+k18DDso5JbsPpTcjBWYwc4HAKqMFcMl1sMzJUZO8J5IS1iJADrdc7cFE92F49vMqA9SpQAtSpMT4hj9Ti0iICGcT/qhYNZsFBS0PResRRXMX3bU7yoa+l43Gzl2sMq2I3CaY3i8g+OBZYCg/Vg4Dnh60MnnL+4e5ApWqY/adLerDiq
- vTR/dAZU
- QzpbRC4HKYhSReJ2NUzGIhpnijERTYqY06HuX31XIY9qN0FpaWUdNlJNUoC99fze63EtHQc/ifkyFUuk9JNzc2/uk3hIV7FbyQH0JCWCLYcKFpoNA3z5b1kk1VL+FDQtwNflkkOh68jU3mdT2CjQa96oNNFytJrGOWNIgmGkQcW29+zzNVE+m9aXE51SBxNoW2257By+Y4jm5yVtwgka6Gu4XKgd9S7W76l7y2MSy1jnSuSAIluFG/YzTV39BiWbAPGq1wJiUYv2gv+++zl9zhGNQ9Gq+CS/niKKaW6ep2jDLvXWtBznUKKw46Q==
+X-HE-Tag: 1769098225-487069
+X-HE-Meta: U2FsdGVkX1/Vy25iT6EOcVCNLpTzifpUxCL5rmNkUQ2VlEw9tc0PtdKdB4n2OyOthgxsWRL8KcQKUeTIRkzyQjYIvhyCpFaz6c5NvvGs+t9nbu0IV1EJY0Y6+FI49GfYS8HpM4SX3vDWWzXcY2QfMwzNm5wpKVvSp/LZIWvBzGrNil96YuRtUrAtZkbF/rymOVF3YyU0KP0eOM/8vSQLuTL7BzbeVOtGZZN9Bekc0ox8SwBMMmOWZUbbRow4GvAUAzpvzF937UsgouJcwhDF+0I650dj6xnVJSQ5z/Qq1/OON9mF+lUtfQaidXHXCLUALRBPWo/CRpzBjHk9yXPiFAG8JNdLctnaJEhIaaEXyxFCTfZTa3iwa+IUuPauw1F9Z1FHUBDgp/yfhVKvCrhUH7vsmWSpaOBZmIlRKOOoKaXfQ30I63Y3Po4rjTzXf1kitE9VtHGli7gOW/YYP0tWV5kKnX5l5YdMySV0feWby9gezsy0uNP7OFtiWH7MOxxghLf39rfjC688u6fpH7UEu7KnPhRk59NfTjsTO03CHz8g7VDLTOQhjn/DRUKeblwo+vawlJWLKfeIlaKXcHoehj24BZPLScs9xm5XIVXxkEwuotR9x8llWR+oII1gLAh+eGYFm9Xc5lFGanrJsXwL6re1jZhOfhEkGComqDMK/0cPlIYJaI0fMJgBARORAiY8tTnriTpH1NrdKzrFKFV9cJetbMbD3l1vdUkMPZMLapVbL6rqqNHS6uEzsgQfDXdAKWWOXwXci7qJl7fY5RBKog35ozBz/mp8l+HbMp4aaEuR1tNqRFA5ECx+yLaBxTaOx+Ui+DYVNZZoiMxRM1IiaZ4iJntjk/w3m5mYNItsMbEzEGw1GpkPeOnq+cFLMvVHJeKBR0xwazSTvHmZg7tzKIznNtNhgClhnPxRTDJd56uZ+zHZTKGqoYk06y/cBZVL6Az0AG1htG4QrvQxvqi
+ OIu47lMp
+ LtLfobrTsK81rLeNp1Df87FWq5+U1JD2W1yg5xNx2xBNyk9uqv2j3pXo6Ul33/k+wvOpH+9ho44mCjqMJsIfmjegdj5sH3Z+aY3iGYKaLVWLvR1QpOXS1xUkWL9Bh+xi9FTkAYyeVkzr+SS+0dO3+1AXNrZsDhbgkEB69Jy1R9D/FAfGwzcyArIoc8p00uCfZLFaJn5um6TnUJQgEiuOQBPTbYeQS3F+5sdRhGid0cTnaIR6S0SFc6//cTS3v0HsNj6pbxV4USGsTa2aub6zVYjlVstWDvz55J6LmbH9ZDfVlbZrFfl+q2Fm2z92EgfanitQPlj+rIJ3v8u53kUE2q7CoHVxuht7BHs/aDMnfGFH5YKTzsgJx2rLxsXk5Uww8m3k4c1nhVRrPbM0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,78 +110,69 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-Add the memory-region and memory-region-names properties to the bindings
-for the display controllers and the host1x engine found on various Tegra
-generations. These memory regions are used to access firmware-provided
-framebuffer memory as well as the video protection region.
+This is similar to bitmap_allocate_region() but allows allocation of
+non-power of two pages/bits.
+
+While at it, reimplement bitmap_allocate_region() in terms of this new
+helper to remove a sliver of code duplication.
 
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- .../bindings/display/tegra/nvidia,tegra186-dc.yaml     | 10 ++++++++++
- .../bindings/display/tegra/nvidia,tegra20-dc.yaml      | 10 +++++++++-
- .../bindings/display/tegra/nvidia,tegra20-host1x.yaml  |  7 +++++++
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ include/linux/bitmap.h | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
-index ce4589466a18..881bfbf4764d 100644
---- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
-+++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
-@@ -57,6 +57,16 @@ properties:
-       - const: dma-mem # read-0
-       - const: read-1
+diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
+index b0395e4ccf90..0fc259908262 100644
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -673,10 +673,10 @@ void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
+ }
  
-+  memory-region:
-+    minItems: 1
-+    maxItems: 2
-+
-+  memory-region-names:
-+    items:
-+      enum: [ framebuffer, protected ]
-+    minItems: 1
-+    maxItems: 2
-+
-   nvidia,outputs:
-     description: A list of phandles of outputs that this display
-       controller can drive.
-diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
-index 69be95afd562..a012644eeb7d 100644
---- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
-+++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
-@@ -65,7 +65,15 @@ properties:
-     items:
-       - description: phandle to the core power domain
+ /**
+- * bitmap_allocate_region - allocate bitmap region
++ * bitmap_allocate - allocate bitmap region
+  *	@bitmap: array of unsigned longs corresponding to the bitmap
+  *	@pos: beginning of bit region to allocate
+- *	@order: region size (log base 2 of number of bits) to allocate
++ *	@len: number of bits to allocate
+  *
+  * Allocate (set bits in) a specified region of a bitmap.
+  *
+@@ -684,16 +684,31 @@ void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
+  * free (not all bits were zero).
+  */
+ static __always_inline
+-int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
++int bitmap_allocate(unsigned long *bitmap, unsigned int pos, unsigned int len)
+ {
+-	unsigned int len = BIT(order);
+-
+ 	if (find_next_bit(bitmap, pos + len, pos) < pos + len)
+ 		return -EBUSY;
+ 	bitmap_set(bitmap, pos, len);
+ 	return 0;
+ }
  
--  memory-region: true
-+  memory-region:
-+    minItems: 1
-+    maxItems: 2
++/**
++ * bitmap_allocate_region - allocate bitmap region
++ *	@bitmap: array of unsigned longs corresponding to the bitmap
++ *	@pos: beginning of bit region to allocate
++ *	@order: region size (log base 2 of number of bits) to allocate
++ *
++ * Allocate (set bits in) a specified region of a bitmap.
++ *
++ * Returns: 0 on success, or %-EBUSY if specified region wasn't
++ * free (not all bits were zero).
++ */
++static __always_inline
++int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
++{
++	return bitmap_allocate(bitmap, pos, BIT(order));
++}
 +
-+  memory-region-names:
-+    items:
-+      enum: [ framebuffer, protected ]
-+    minItems: 1
-+    maxitems: 2
- 
-   nvidia,head:
-     $ref: /schemas/types.yaml#/definitions/uint32
-diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
-index 3563378a01af..f45be30835a8 100644
---- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
-+++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
-@@ -96,6 +96,13 @@ properties:
-     items:
-       - description: phandle to the HEG or core power domain
- 
-+  memory-region:
-+    maxItems: 1
-+
-+  memory-region-names:
-+    items:
-+      - const: protected
-+
- required:
-   - compatible
-   - interrupts
+ /**
+  * bitmap_find_free_region - find a contiguous aligned mem region
+  *	@bitmap: array of unsigned longs corresponding to the bitmap
 -- 
 2.52.0
 
