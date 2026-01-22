@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A09F0C44508
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 01:12:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD958C44508
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 01:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB87B6B0095; Wed, 21 Jan 2026 20:12:32 -0500 (EST)
+	id 00EE16B0098; Wed, 21 Jan 2026 20:23:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A903A6B0096; Wed, 21 Jan 2026 20:12:32 -0500 (EST)
+	id F28BD6B0099; Wed, 21 Jan 2026 20:23:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B9926B0098; Wed, 21 Jan 2026 20:12:32 -0500 (EST)
+	id E34D76B009B; Wed, 21 Jan 2026 20:23:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 88A6F6B0095
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 20:12:32 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 283A9D4C98
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:12:32 +0000 (UTC)
-X-FDA: 84357824544.18.B3A42F9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8F0A6140006
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:12:29 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IcAuBCJc;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769044350; a=rsa-sha256;
-	cv=none;
-	b=GggYb42z/yJ+BYMnScd8gcLkfq9eDxXaW0TK9xmjWWRtmN6SdMqPC9XccpJ8cVI60XQk1H
-	lMqb+WKlM+nGXYkHGEcLNdRbNHaqM50LsBLBXD/GH2loWo4iTIeLkRB0cmU0vznMicwHpv
-	wnNYpekb7SNeWAp6HH0dORgMNwvi9Wc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IcAuBCJc;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D04BE6B0098
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 20:23:34 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F2AC13C9EF
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:23:34 +0000 (UTC)
+X-FDA: 84357852348.19.C63D399
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9C51F1C0005
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:23:31 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=REmR6IZH;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769044350;
+	s=arc-20220608; t=1769045011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/7nDrfcQ9gATIAi+aqBLubgyvh7XxFjt7RQuHsrn51Q=;
-	b=hPej1wAvQII/GxbKiYZjMHNODmP87hdA6qrmTAdrn2hNdj2SJ0sXBSsqGffeHVfCPmbZmK
-	Tfk1yfz8hDLWTGxcDniqchkoPr49ONJViAA/O1mRFM4zjl/nXHkQZ7AIPdp9H6bUMju+l8
-	Jn5iYCW1LJY90VbN6mWMHdai+m30Uo8=
+	bh=SmvD5SIeHJPa1IPpg58+kdHp73KnGmnXe2hAhcjORiM=;
+	b=5mRIvhGoyvxPGYXyl/mYrG8hbxnp1ovyFMk9iO5/Nt46yqM3qLI9esrc+nQ/0/cmb7Fhwc
+	TBmDsibBIClJOotEOokrG9vw13ipJtNiXV4HWDgJ6cvAjXzuuEbEMzt1Ks7zsj7tmKS9qB
+	yHzW/BE5fsVXGmBwa0d5/ntfYdf04ew=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=REmR6IZH;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769045011; a=rsa-sha256;
+	cv=none;
+	b=GsJLtQDSZfxORDH3kTe/qqs3P2Od/NUmgsQlLwx9HS6tw5IXbcnST5nqaEqfcgTDgyXWNr
+	OadPw2rASPqnU3WtsE4C4XP53/IuvZHhGYbKqBgmJoRR3HCIlOkOoZmbicRttIYHeBphGY
+	MZldz1xX7DaQbYlnoqxdkCZ+oaOrxjo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769044350; x=1800580350;
+  t=1769045012; x=1800581012;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=QVMUWucKVUo5Jl2bgmDp5wlChrNcG2VDFMqtEXavpPo=;
-  b=IcAuBCJckfPmnz/MBI3ynYeTHIvknn5pEFCpV88oDEkhM4mOAVQOYsVP
-   B1+w/K96tExRUkyGoNiG5zc3S+6AjOtmMiPsZQya/YKyYP/TCRiweVqkg
-   vORrRaMkTP5UW/f/BSH4pXl5I4laFLCzwfLgUitqpbsiY0wcvWoGhyiUx
-   s7WMzJkEF62XvZ2+CfILj8cUH/PzOhZ9BS1UberFQC4GdxB8ebrerdzbg
-   ciU87qFXramtO4SCJvHbHDrmIxWbdNbBXn05Wn7gMWRgzhaW0F4+eDCuG
-   UW9cn/M+PEzJqtzC/Y5oYIefW4MYfrcdIJsjF/n/79AHB7wuozrEPuwke
-   A==;
-X-CSE-ConnectionGUID: F/G6miMtTL2gQQlkeUj+1g==
-X-CSE-MsgGUID: tvga9FkoRmOz67dYshZ/cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="80904732"
+  bh=roQTG7BUnVXv2IGEQlqh5+zLrO9mjPF10u/iCVEG5JM=;
+  b=REmR6IZHhLebjv6CCCXLuF8L+I7S1AbzKZ7DOktNxlHXJ2PxX7Pml90F
+   6Wb/Gp+luU48n5Kb0cYms9Q1vxup5KC3Z1D+i+kVigR34Qze66Ba7RVeS
+   4q93KgJBpR+5D6Ljig/wAhfjBb2fMCOt5yu5/+PibrHasm/IgsyQ8tpEV
+   vUsILCc/QrxxOPgX20LXXuytmeasuSclYZQa42KgoXVPxqwchujCiB5iC
+   +RGGafoldTT7sclN0LuwTB8jn0BXD3PY8M/bF15qg9Ikf27F3ZRLF2Bqc
+   4ublwIoH9cFTbrlqPdyXYxKhF/vCr57sRT0sozZrDxsCXn3ztUgTdHj4Z
+   w==;
+X-CSE-ConnectionGUID: kaTwDzUaQJinz8eAG212/Q==
+X-CSE-MsgGUID: sBFg5NqlTt++WcmylNv6EA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70448947"
 X-IronPort-AV: E=Sophos;i="6.21,244,1763452800"; 
-   d="scan'208";a="80904732"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 17:12:28 -0800
-X-CSE-ConnectionGUID: TQFW317MQY2Hv0HZmg/W7A==
-X-CSE-MsgGUID: L9x4vIJVRNaJJpOZZj8zOQ==
+   d="scan'208";a="70448947"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 17:23:29 -0800
+X-CSE-ConnectionGUID: 509RMO9hSZeFWJL92bc8nQ==
+X-CSE-MsgGUID: lnLLwhhmQUu/f10JpD2HZg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,244,1763452800"; 
-   d="scan'208";a="211106979"
+   d="scan'208";a="205842636"
 Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 21 Jan 2026 17:12:23 -0800
+  by orviesa010.jf.intel.com with ESMTP; 21 Jan 2026 17:23:25 -0800
 Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vijFE-00000000SET-1IMD;
-	Thu, 22 Jan 2026 01:12:20 +0000
-Date: Thu, 22 Jan 2026 09:11:53 +0800
+	id 1vijPt-00000000SG5-4BMx;
+	Thu, 22 Jan 2026 01:23:21 +0000
+Date: Thu, 22 Jan 2026 09:23:16 +0800
 From: kernel test robot <lkp@intel.com>
 To: david.laight.linux@gmail.com, Nathan Chancellor <nathan@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -94,25 +94,25 @@ To: david.laight.linux@gmail.com, Nathan Chancellor <nathan@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Kees Cook <keescook@chromium.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	Linux Memory Management List <linux-mm@kvack.org>,
 	David Laight <david.laight.linux@gmail.com>
-Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
- GENMASK() and BIT()
-Message-ID: <202601220829.MgTMeqqN-lkp@intel.com>
-References: <20260121145731.3623-12-david.laight.linux@gmail.com>
+Subject: Re: [PATCH next 12/14] bits: move the defitions of BIT() and
+ BIT_ULL() back to linux/bits.h
+Message-ID: <202601220951.7C4YG7hB-lkp@intel.com>
+References: <20260121145731.3623-13-david.laight.linux@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260121145731.3623-12-david.laight.linux@gmail.com>
+In-Reply-To: <20260121145731.3623-13-david.laight.linux@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8F0A6140006
-X-Stat-Signature: sn9wkxrxksibj1phsmfpqw7jf5ymgdc1
-X-HE-Tag: 1769044349-700587
-X-HE-Meta: U2FsdGVkX1+bnWEAvc9kLoB5j+vJZ0pzRtvwX0pDffm6tz6hJRxF2cJAC22V7Jk4j4s7RDRu+c6Mrq8AigLlh/uzzXB6pMU8am23eHMwY3Rs45/MjxjAAPb6owM+m3H0IpsZFldZHUhePfqoyEHk8CJYVF9RtpUP5vvnyli6NasBvOqa53dRLYXvkmAgLZNmh6xm67T3MuWQ7JsLbB2fqwX5X+PDzn5DxoCdBs4Bv4H6VB0N1pWuYFaBaUTWnC5AJMtr/J0O4BxcCihRdmCLLcbKwr3vcbM66BQhQGRHB3ie+HVGRGF8mZTcOYNJe5zUY0nmZg5PvZ0QkJBb84+4iePYToPn3KXlGnjztJFy5/JIF13aitSWwzQhL1S3r9aWHpg5/9utkanKWIAUeBL4SVFHq3627rfzY8G1MR1HCHLk38D0VM4kSZUJ+OkIiRbmFqcK0YB9KstNjvPah9nFEhh/wrRbRIBnZT3oqDBmiRTaaDHG/NFy/TSDTUCLya4hy8X1dPuw2bzmwduWhrytA2RNtPbCmj0s4Wp6XDdky4EGntF2U99ytiucHD01cIQxWdpN8NWDsJWFRzKv3k/opbM2thLIz3ShMWjBFrRkoUJsxjiPfJ5bkfUJBwuESH2WgcBYbaVy8owjr/ExXf4JafDRJUM2t2B51eU7UzAGuqEQs50f3v8xW8TRzL7J+wOAm2NJ+Vrx6Mh7aMraNMiHUEouTWVPv03UXJZ9OlydOjgNwOko6eeoeKGbJjbwVFiSTIvqRu9kMX22zBkK2l+E3h+vcw/GsB4vtjL5qaqbIx8XhKlj0AHFKVMyBUUjio0X8taPiQqaT4kxsr2Gz8IxL1MR5rypDwkvKvuVg6ANNh+vqfIM25dhRSrZRqDHH24FsP0Xc+hsTxfiW4Dl2RwTfXirzyHYwLB3hG1YUunn5FUnOEey5ofi1qpMF4cOSPstfWRxz4DFGfj0bjkFebm
- CLozlldA
- dZOTCKwD9Cp71hLw=
+X-Rspamd-Queue-Id: 9C51F1C0005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: m81frwq6zndss1mqoumt86updot5d8t9
+X-HE-Tag: 1769045011-410261
+X-HE-Meta: U2FsdGVkX1//LO2njVuZ3aTw0soEpQ3q80bbxclMzx7W+wGzT/oyrFKuuUedFm5PzoGGNq1HLnIbuzW10uWNwzFExlpyWZHVkkkraC10MI2mP6E8fgIR6oYfzvcOpGw/GCXZvZ0mMX/uE26a1lqIu+nImYcJZH62cTdtXZcJoRtDlDN9LDUdI1sAiGdx6Pj5ZKRwITRY5oUAdokAFdTEbUf5Hbx3puj7dx/LEgn0/oWqOXD5Z1ksZr/6qrwgFJ8M9eJKGuWjHw7bobYb/3XAczz81LjJP4STo6zhWj87ow479K/shcJ2AacC6jHHab0aEKVAwrza4cELcN5G298Fljc4GLg1cUeVAU2kiiIconhZgzJp4T8p99lOFK4dBbHQAG8fW93id3waz8EgHPPz6Pg2kmGxxGvOFlWWeKwgWBN6Qf+PXlXuMG5jbBS3B1KOKhed8Lhv14r4EvF0dTkMEXeu4AAEtk1sk60moqcpxcfHhF/+HXb00frNPbYlEgOrD4dWtfsUEpfBLWxRkmn6N0q0hCeh34fFhv8sNFrbKxbJuvm7r9+9irhKDkJg6ciIurHJVuGVK1l+HjwOur+NUqxUO0leKDSkBCfqjSScJSeeevGHeInv5Rcvp2B29jXu7DAzY3EIZSNbjJRKuYqQ1rl1uLdWMqYpczwtuhgnekzoB/hmWJ1U3ZvmJAjZmAMxPIRJSeF/UnfoxbfUFIe/+zJ+sE6QF6bk/QTQ7444fEPk4EcP3PbZwjWw3N5XAZGPo2e+eVPuqUHv0Fjb7KqIzY0dGNU2n1T54IqSiJaqB6t1DcKdYKeLaNNtf8QPz0Eq4nquWkOnr+/cFf35YjpzFuecf25cMI8f6XRx1b0Zy+bkylDTXHCeNvNj3mbT9Yr/NVurdV3I4lIiYw9Wj04MEPd0dLmnOzZdNDXQba28KZBqe3VJ7+g1uZrj52Dr20TSHiiZZjQQ8GefYYaUTPF
+ W6ZjmMMm
+ IFjuAcasNiKPJEjqUw3TCIYIXC4e/DnZtapAhWRkSnRpbxUL3qiKg78PIICsYPJnkPfube1LlaE3LkOtPJ9NINeh99cJ2fZjGeJuAzhVVR6PyPbhGYv2pGkG5iVS3R+HostgFNXSkrEEyrVBdfOXoPFNVD97BaBq9QFuxCoXMSe744wFZbgH9P3prtRUhUcjEQN8bj+lsMYhw9zL2J+L7CrSsXXNvpNnbG3XDHisCWaDDl/cVul02Y+RuLvIVyuzs+BMtjv48AuOcusX1EaP7Iyns65W57qcwjIf6nuXaNEjigQUp2XBNB60rouNHg4NmW73/meSoBFj/C6bwVnE0lWbocpSiSvp1A8GPkErn5VMYzRCQQgyafoAOyZds+Dfu3SNicBKdu+uzMSRJ89RhnbhUwBzRWKgadAcVWl1ENixTuxlwNesJaK9sUpixxmWVnPx5lkr81WyhRLX7SLtH4ilzEw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,237 +129,71 @@ kernel test robot noticed the following build errors:
 
 url:    https://github.com/intel-lab-lkp/linux/commits/david-laight-linux-gmail-com/overflow-Reduce-expansion-of-__type_max/20260122-013456
 base:   next-20260120
-patch link:    https://lore.kernel.org/r/20260121145731.3623-12-david.laight.linux%40gmail.com
-patch subject: [PATCH next 11/14] bit: Strengthen compile-time tests in GENMASK() and BIT()
-config: s390-randconfig-001-20260122 (https://download.01.org/0day-ci/archive/20260122/202601220829.MgTMeqqN-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601220829.MgTMeqqN-lkp@intel.com/reproduce)
+patch link:    https://lore.kernel.org/r/20260121145731.3623-13-david.laight.linux%40gmail.com
+patch subject: [PATCH next 12/14] bits: move the defitions of BIT() and BIT_ULL() back to linux/bits.h
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20260122/202601220951.7C4YG7hB-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601220951.7C4YG7hB-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601220829.MgTMeqqN-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601220951.7C4YG7hB-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
+All error/warnings (new ones prefixed by >>):
 
-   In file included from arch/s390/include/asm/bug.h:60,
-                    from include/linux/bug.h:5,
-                    from include/linux/mmdebug.h:5,
-                    from arch/s390/include/asm/cmpxchg.h:11,
-                    from arch/s390/include/asm/atomic.h:16,
-                    from include/linux/atomic.h:7,
-                    from include/asm-generic/bitops/atomic.h:5,
-                    from arch/s390/include/asm/bitops.h:75,
-                    from include/linux/bitops.h:67,
-                    from include/linux/kernel.h:23,
-                    from net/core/page_pool.c:10:
-   In function 'netmem_clear_pp_magic',
-       inlined from 'page_pool_clear_pp_info' at net/core/page_pool.c:721:2:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/bug.h:120:25: note: in definition of macro 'WARN_ON_ONCE'
-     int __ret_warn_on = !!(condition);    \
-                            ^~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   net/core/netmem_priv.h:18:52: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-     WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
-                                                       ^~~~~~~~~~~~~~~~~
---
-   In file included from include/linux/bitops.h:6,
-                    from arch/s390/include/asm/machine.h:25,
-                    from arch/s390/include/asm/lowcore.h:13,
-                    from arch/s390/include/asm/current.h:13,
-                    from arch/s390/include/asm/preempt.h:5,
-                    from include/linux/preempt.h:79,
-                    from arch/s390/include/asm/timex.h:13,
-                    from include/linux/timex.h:67,
-                    from include/linux/time32.h:13,
-                    from include/linux/time.h:60,
-                    from include/linux/stat.h:19,
-                    from include/linux/module.h:13,
-                    from net/core/skbuff.c:37:
-   In function 'netmem_get_pp_magic',
-       inlined from 'netmem_is_pp' at net/core/netmem_priv.h:25:10,
-       inlined from 'napi_pp_put_page' at net/core/skbuff.c:1027:6:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   net/core/netmem_priv.h:8:47: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-     return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
-                                                  ^~~~~~~~~~~~~~~~~
-   In function 'netmem_is_pp',
-       inlined from 'napi_pp_put_page' at net/core/skbuff.c:1027:6:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   include/linux/mm.h:4650:25: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-    #define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-                            ^~~~~~~~~~~~~~~~~
-   net/core/netmem_priv.h:25:40: note: in expansion of macro 'PP_MAGIC_MASK'
-     return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-                                           ^~~~~~~~~~~~~
-   In function 'netmem_get_pp_magic',
-       inlined from 'netmem_is_pp' at net/core/netmem_priv.h:25:10,
-       inlined from 'napi_pp_put_page' at net/core/skbuff.c:1027:6:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   net/core/netmem_priv.h:8:47: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-     return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
-                                                  ^~~~~~~~~~~~~~~~~
-   In function 'netmem_is_pp',
-       inlined from 'napi_pp_put_page' at net/core/skbuff.c:1027:6:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   include/linux/mm.h:4650:25: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-    #define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-                            ^~~~~~~~~~~~~~~~~
-   net/core/netmem_priv.h:25:40: note: in expansion of macro 'PP_MAGIC_MASK'
-     return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-                                           ^~~~~~~~~~~~~
-   In function 'netmem_get_pp_magic',
-       inlined from 'netmem_is_pp' at net/core/netmem_priv.h:25:10,
-       inlined from 'skb_pp_frag_ref' at net/core/skbuff.c:1067:7,
-       inlined from 'skb_try_coalesce' at net/core/skbuff.c:6203:6:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   net/core/netmem_priv.h:8:47: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-     return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
-                                                  ^~~~~~~~~~~~~~~~~
-   In function 'netmem_is_pp',
-       inlined from 'skb_pp_frag_ref' at net/core/skbuff.c:1067:7,
-       inlined from 'skb_try_coalesce' at net/core/skbuff.c:6203:6:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   include/linux/mm.h:4650:25: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-    #define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-                            ^~~~~~~~~~~~~~~~~
-   net/core/netmem_priv.h:25:40: note: in expansion of macro 'PP_MAGIC_MASK'
-     return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-                                           ^~~~~~~~~~~~~
-   In function 'netmem_get_pp_magic',
-       inlined from 'netmem_is_pp' at net/core/netmem_priv.h:25:10,
-       inlined from 'skb_pp_frag_ref' at net/core/skbuff.c:1067:7,
-       inlined from 'skb_try_coalesce' at net/core/skbuff.c:6203:6:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   net/core/netmem_priv.h:8:47: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-     return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
-                                                  ^~~~~~~~~~~~~~~~~
-   In function 'netmem_is_pp',
-       inlined from 'skb_pp_frag_ref' at net/core/skbuff.c:1067:7,
-       inlined from 'skb_try_coalesce' at net/core/skbuff.c:6203:6:
->> include/linux/bits.h:35:4: error: call to 'GENMASK_INPUT_CHECK_FAIL' declared with attribute error: Invalid bit numbers
-       GENMASK_INPUT_CHECK_FAIL()))
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:54:17: note: in expansion of macro 'GENMASK_INPUT_CHECK'
-     ((unsigned int)GENMASK_INPUT_CHECK(h, l, BITS_PER_TYPE(t)) + \
-                    ^~~~~~~~~~~~~~~~~~~
-   include/linux/bits.h:58:24: note: in expansion of macro 'GENMASK_TYPE'
-    #define GENMASK(h, l)  GENMASK_TYPE(unsigned long, h, l)
-                           ^~~~~~~~~~~~
-   include/linux/mm.h:4641:27: note: in expansion of macro 'GENMASK'
-    #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
-                              ^~~~~~~
-   include/linux/mm.h:4650:25: note: in expansion of macro 'PP_DMA_INDEX_MASK'
-    #define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-                            ^~~~~~~~~~~~~~~~~
-   net/core/netmem_priv.h:25:40: note: in expansion of macro 'PP_MAGIC_MASK'
-     return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-                                           ^~~~~~~~~~~~~
+   In file included from kernel/bounds.c:14:
+   In file included from include/linux/log2.h:12:
+   In file included from include/linux/bitops.h:28:
+   In file included from include/asm-generic/bitops/generic-non-atomic.h:7:
+   In file included from arch/arm64/include/asm/barrier.h:14:
+>> arch/arm64/include/asm/alternative-macros.h:18:20: warning: 'unsigned' is not defined, evaluates to 0 [-Wundef]
+      18 | #if ARM64_NCAPS >= ARM64_CB_BIT
+         |                    ^
+   arch/arm64/include/asm/alternative-macros.h:16:22: note: expanded from macro 'ARM64_CB_BIT'
+      16 | #define ARM64_CB_BIT    BIT(ARM64_CB_SHIFT)
+         |                         ^
+   include/linux/bits.h:94:18: note: expanded from macro 'BIT'
+      94 | #define BIT(nr)         BIT_TYPE(unsigned long, nr)
+         |                         ^
+   include/linux/bits.h:88:4: note: expanded from macro 'BIT_TYPE'
+      88 |         ((unsigned int)BIT_INPUT_CHECK(+(nr), BITS_PER_TYPE(type)) + ((type)1 << (nr)))
+         |           ^
+   In file included from kernel/bounds.c:14:
+   In file included from include/linux/log2.h:12:
+   In file included from include/linux/bitops.h:28:
+   In file included from include/asm-generic/bitops/generic-non-atomic.h:7:
+   In file included from arch/arm64/include/asm/barrier.h:14:
+>> arch/arm64/include/asm/alternative-macros.h:18:20: error: token is not a valid binary operator in a preprocessor subexpression
+      18 | #if ARM64_NCAPS >= ARM64_CB_BIT
+         |                    ^~~~~~~~~~~~
+   arch/arm64/include/asm/alternative-macros.h:16:22: note: expanded from macro 'ARM64_CB_BIT'
+      16 | #define ARM64_CB_BIT    BIT(ARM64_CB_SHIFT)
+         |                         ^~~~~~~~~~~~~~~~~~~
+   include/linux/bits.h:94:18: note: expanded from macro 'BIT'
+      94 | #define BIT(nr)         BIT_TYPE(unsigned long, nr)
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bits.h:88:13: note: expanded from macro 'BIT_TYPE'
+      88 |         ((unsigned int)BIT_INPUT_CHECK(+(nr), BITS_PER_TYPE(type)) + ((type)1 << (nr)))
+         |           ~~~~~~~~ ^
+   1 warning and 1 error generated.
+   make[3]: *** [scripts/Makefile.build:182: kernel/bounds.s] Error 1
+   make[3]: Target 'prepare' not remade because of errors.
+   make[2]: *** [Makefile:1330: prepare0] Error 2
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
 
 
-vim +/GENMASK_INPUT_CHECK_FAIL +35 include/linux/bits.h
+vim +18 arch/arm64/include/asm/alternative-macros.h
 
-    25	
-    26	#ifndef KBUILD_EXTRA_WARNc
-    27	#define GENMASK_INPUT_CHECK(h, l, width) 0
-    28	#else
-    29	int GENMASK_INPUT_CHECK_FAIL(void) __compiletime_error("Invalid bit numbers");
-    30	#define GENMASK_INPUT_CHECK(h, l, width)				\
-    31		(__builtin_choose_expr(__is_constexpr((l) > (h)),		\
-    32			sizeof(struct { char low_bit_greater_than_high[-((l) > (h))];}), \
-    33			__builtin_constant_p((l) | (h)) &&			\
-    34				((l) < 0 || (l) > (h) || (h) >= width) &&	\
-  > 35				GENMASK_INPUT_CHECK_FAIL()))
-    36	#endif
-    37	
+4c0bd995d73ed8 Mark Rutland 2022-09-12  17  
+4c0bd995d73ed8 Mark Rutland 2022-09-12 @18  #if ARM64_NCAPS >= ARM64_CB_BIT
+4c0bd995d73ed8 Mark Rutland 2022-09-12  19  #error "cpucaps have overflown ARM64_CB_BIT"
+4c0bd995d73ed8 Mark Rutland 2022-09-12  20  #endif
+7cda23da52ad79 Will Deacon  2020-06-30  21  
 
 -- 
 0-DAY CI Kernel Test Service
