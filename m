@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2503D3EE8E
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:10:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DACAD3EE8A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:10:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 125276B0290; Thu, 22 Jan 2026 11:10:39 -0500 (EST)
+	id BCA866B0292; Thu, 22 Jan 2026 11:10:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C31B6B0292; Thu, 22 Jan 2026 11:10:39 -0500 (EST)
+	id B3BCB6B0294; Thu, 22 Jan 2026 11:10:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E474D6B0293; Thu, 22 Jan 2026 11:10:38 -0500 (EST)
+	id 900266B0295; Thu, 22 Jan 2026 11:10:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C84E96B0290
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:10:38 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B557160442
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:38 +0000 (UTC)
-X-FDA: 84360087756.15.CAA1795
+	by kanga.kvack.org (Postfix) with ESMTP id 78A356B0292
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:10:41 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46491D2BA7
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:41 +0000 (UTC)
+X-FDA: 84360087882.03.4A0634B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EB6EA2000D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VbN8XEHw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098237; a=rsa-sha256;
-	cv=none;
-	b=W7otbWafIRqPk3XyVOxgL58+yYvX4LVSVHrrEkEOeOTfqd8ThMueSGH8aPtbtNjrylhyV0
-	yxvNwK+bFWVSD1TLN20NxMOn/ReiqHsDQNkTBeAn5khsKU/AfeFcdnqI4X7Uh7afB9dC87
-	+7LC7ckyE+gTEE8ihpF2n2QSyLODVw4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VbN8XEHw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 91008C0004
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:10:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZXNZYYif;
+	spf=pass (imf28.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769098237;
+	s=arc-20220608; t=1769098239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KKX97alVc3uCMGOeaUO6TRl+cQzdvqebk81QMWlUHYQ=;
-	b=qHivuyECnK+aHFKvcXEhQaC6JWIM2aEbn/H0n7+IB7qf18iFv7PJ3RkNrguld7526maihC
-	5pjxjJSxQWymfbt22/MUVnRO6sninAUIxnVg13RobGZbgX6UM/9GBX5fMAqq9nypjxmXXM
-	ilUovXVRGxwVlSJiHzc6SLkKQzIn5nY=
+	bh=WL2W/ZDkHyvzso2YcHTRw/lMxAY8yln4p4mC/TC5im4=;
+	b=ZCdXoWsWQioSZrbLao2AZhWx1OdY9S1EcSiDuXbpS3MrdJ63k3GgoHCx/4mnDs5150uIWU
+	GK6Y8i8lKEM7OuD1JFoFiu7QXKjDD/U+82/yRbjD4whB4eWwUciR+mQlPZmMQnp0VaTqTn
+	w+torSk3N1T9NgxzdjB3fcVu/wjRFvI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZXNZYYif;
+	spf=pass (imf28.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098239; a=rsa-sha256;
+	cv=none;
+	b=bOJHSuYqDw2WAJlv9pJ0lBkaLjcOqIRrqKzE0UKmgWgQdXXOIm5kmqvVMyRjGhPsaIRLWP
+	lwguMVb7nKwtG0+eexLe0ZoRQoALO8873v6rnlz0C4+thRKCKpVYGhrurfjfKTU/yCce8a
+	Y5l5vM1mij81K7EX77CzYXISRN2luTI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C5F74439C;
-	Thu, 22 Jan 2026 16:10:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6A8C116C6;
-	Thu, 22 Jan 2026 16:10:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C59714437C;
+	Thu, 22 Jan 2026 16:10:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD1DC116D0;
+	Thu, 22 Jan 2026 16:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769098236;
-	bh=m7OZFi6NVZYBpVcc9Brq/11LIbbM8dBnjfFzHERIm1Y=;
+	s=k20201202; t=1769098238;
+	bh=lNdb2W7doKmrgjPjgeTtoM+R64zDLdfcfrtXbX1koE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VbN8XEHw72VeMDyuWqKNlM0ZYRmW15E1SiTonTzrWsxolsQ4dOtRG3H0Q3oacARgr
-	 bFDLpvE2ygRw/Mc8R87hyuIfTIxn1xu+KLATFEaXyv/4z55VOSKFNmREjuqTs/Dahk
-	 dms0BlkPbL7CRlYKFiXkoU+2PR/GQZAeGtTSc1buSKNKtiqa9ZLm0maslOdswqYrOD
-	 LWMOZiXZUHJO6QgvKrYMXChxOf3/BcNGcRUs1mpia0ZOOhyeg2g9FEUC4mL2X6HSeh
-	 SlkxzQvkwdEx0CMkjHOLPZZq7ivthjMo060+NWqljOZURFE4k2TgKhQFGXTFzt6kCN
-	 KnKc6oBQtrc1g==
+	b=ZXNZYYifm9VfYi+kclez8EXzUF8ZUAOh0AcT+MNc0D0RXJqfYWLhzByjq5MlhFmtd
+	 sRi82Cb1e2BEjdoX46KkmpvNQlwDNUbBT6soROJTmNcTVp6R5V6mnZ8R+wCv2EWXX/
+	 Kje8r41oR9ZvA5l07jd8nek36Ds7WLXFX5eopUTuk+FBIjaeG+nnDGS7sPlx3YOwBd
+	 H9BaINgwXQO+IksIcJQf2upD/v8eG5jRlow2zE4OaI8yOpyAYyXLx9L5hrUxwWtr57
+	 Vu5Fk8cQFq/REpI7FBn2B1cZSt5DkI1BTUqr1097jyARnhabib/vLus1qLBadiD8Gs
+	 8QvTL4WtyNSuw==
 From: Thierry Reding <thierry.reding@kernel.org>
 To: Thierry Reding <thierry.reding@kernel.org>,
 	David Airlie <airlied@gmail.com>,
@@ -84,22 +84,22 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-tegra@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 07/10] arm64: tegra: Add VPR placeholder node on Tegra234
-Date: Thu, 22 Jan 2026 17:10:06 +0100
-Message-ID: <20260122161009.3865888-8-thierry.reding@kernel.org>
+Subject: [PATCH v2 08/10] arm64: tegra: Add GPU node on Tegra234
+Date: Thu, 22 Jan 2026 17:10:07 +0100
+Message-ID: <20260122161009.3865888-9-thierry.reding@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260122161009.3865888-1-thierry.reding@kernel.org>
 References: <20260122161009.3865888-1-thierry.reding@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 91008C0004
+X-Stat-Signature: u368b67r5wytfcu19itmb1w88ns4ak7n
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EB6EA2000D
-X-Stat-Signature: d71wngtrojn7ynoccp7y9dhoqx4s33nj
-X-HE-Tag: 1769098236-243816
-X-HE-Meta: U2FsdGVkX19W7ju06boIJ5+FfDuYhfZdgkNDqS5wbOiPqUhDN3f9S0JJxtuZe10mH+xVhkt2vbDBXaLySCGmZqZCFmK4O6NUuhlEdQPB00RRGJNjD06LOyM40wuFcz18z1WF8f2BUE34Fr3GxvmAQrcUZJksSwY1sk8SUMm6tigLHK9KgFhdoKExvOqVf1Ltdsz/Sv7Ek+FlQ3eKyr5NwokVAmVO8JRz9jepDoLQ5PbS3uoH3Kkw0ih4u2OI6jtMZN1CYTOVhGGL/AWm+8rw1A/ictyDxBvaacf8zIar7cjROp4sznb0kOYTmzTebH6h4SKUf2RWtS1W7cR3y4QCjZqGc8/CXGRLOISVsy96quhyWNeIWINREA8X7Co1c9pnz1LcZc+m4qJl1vdyKckEYU2uQ8zuVMhcinVJEZdAuIyiGXWOoNXJGnX5LAEdXw8OXhnm2o2ULwLH7S3f/JvcllGaH84tsH4UR4LwfogaulV0l/QlW5HJ4KcSZvY7Zcg0cjKNfXhAGqa2glq9trd0N5qEKXTaru03/6//qXyz0z6jLOZhbQ1vqONP/FxHD7GgF7lGUpi5eqw4azreg74CwE3sEnEmjaUT68YO/cg8t5y1QCGPC6qcpoSTRVzuftOUdAKQtS+0gCphQxpGqkugSL7HdYiXPq9pWdpHbmWUSo4N3w8HZZWjhfJu2ldFxMU4F1WqKt+ddkUD3clbP3jXRAnZXppcXf5jWJ8U3Nwq5HtyUiUymi3++nyXm/m7pfbiSG58uGdmd75llsZi/jfxiWpk3mDXyEZ2QOHPtcsRzY/1VjAh2qEf0rjQJGYJdItj5FTG7bc2IvyZyXN5qyb9oBrjsE4kc6PjVlVCN5NieGUWwbKSvviP0i5gvCixaNre2PaYf+dQXMt9S6QePPIRccr8D1wI8n0mAd2cp7big2PQSXRR9pYAlYiS1zTPT2mHuaUnrkqYT/rD7shDfaZ
- GrMOUrAn
- LMeGn/MXwQFq2gxpyTn8PdW83cU2fMBFGc6VgmCtLmv6I1R9NHhM59TurnhXAYKRvp8+csJnFDTQ831DqNJ5+wIYVIuIXuBobfZQbqOCiwIWjXJCV3c1sTpcm+S97aXULa90wUkdlWjL+rVZ04tY2+m+uQkSNuURKX0wy+sjzX7f/8c1HzrxesahULy4GXtLOPrV+bidepsUV1iJ/Vao6t3u2oxtW19ib+PS1/STe38cNTBC+6AyvkW/6J1PFQxI/QcICAsOxADXpedK05SigGGGHC5f1Jd/heZPRse/KYixhnDe1rfWmL+7VXHnDKht1tzIYpZbK6tAMaiLNjgq27P+isQ==
+X-HE-Tag: 1769098239-984717
+X-HE-Meta: U2FsdGVkX19EVpkUA6dSxGcpG56z5+PL5eJm8MmF0127xrric9e6mDO2fR0KwwtXl/N7nKbAfBPXr8s9AYtDzvEVYgfAtOVN18PbeEnj5C/9rHLJXbVmUUNzGgkd18jwHBZV6mT0U8xDe3yQMY0cA+gBFm0/Cu96C1jsvkYXoQdsSSa2oCGfFKrP73g+oZcOG6atspMRUoHGRlkSgwGRiuZMuiuUtxvOPp/s8HM+Y2gY8ChY6SlrQWaOUQMDmFkEmlmuoXbzd6fN7i2+3KxwpblEJ8V4UlPevTb3iaCNZiEPtR0tBH8dIzUvUqL9G3l6LriFIhYf7M7lUpp4O7XuwXnIzLGRwA3Q7SDzs4v1Hvxumr3MyipciUkbRcu8G8v9Z76sJ8gxq6t9MTG/vjPkrVjJnIaI8j4yIougI7jPq+eGg1uk70KaJAa5g68lypbmPUq05xdKYKrTlOSQA63dwzR+zJlJRRDILjYfb0ndCno8HZpiEfaNhFSGaZQaWIyjva+tUdlL2Cgujb1ozy8vm/ZE4I07ONnBw4+tpGMgQUciaeNkRqtkL7sZB/i8Fyoo21eVpi2ARjv4s9YdPQH80fsDSoEZ3ggfz5p9GTqf4uJr5mZGMthPfejdvCLGAABODMJpD5rP+w/t0jdM3YlvDq2ap6cmRMqWlF3tpYODqKdaMlPWZcfpfYPo3iuuOUCfbBsMyNLhw7IoaaBIICeMrnK5LG6BOn6QlpZTSPkQ+6QBaz1VQ8sYml67JTMbgLimE1w8VXjdrg6D+PC6QKlmq2rioNgsJ1TzphyaU/FYji3szEu3aJK46lTU1gIrf8nRWTJZTwwRgxvf9bCGG0GHtHPUSkROhZDkRz1VQ16ufW7NUDiBtNt9E2vlCFDFA/pk/wZPI7Z+cAgklpoQsDBzw/ViGse9W3WuGLwumDPUH2u0YaA/PYTdM7ubWhYH4h0hRfTEdQCodbz/szRfs+e
+ 73tvyR+p
+ L0jrANnEDFLBL3AHHQ666cBbFTDNasvxwqyKZSRnmgo6KAJGA/Ua3+0zuQHS8cXAZBIXWCq8EVIl3VyaaPW7v2+rlNcg7YHodHwbJK3ti8TE3meqZFnq7Ta1nqVqcWtH+/42ZXHcUvHVGnDcddZ+jSk5qCaUXWd6eGZHD6dZmVVlJDd9KE5TrfYRgjdGg4ekW9u6g18otk5LzScMzs/vqV7qGaGkBLJWIB7G2Icezr4BK9n+61zrSfRKOY018V55OYUN19Jlxaw3mOexaHy3zEiNRsU01+Pbb+ZkWZFcKd/oibIJBqLxVxheBVw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,67 +110,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-This node contains two sets of properties, one for the case where the
-VPR is resizable (in which case the VPR region will be dynamically
-allocated at boot time) and another case where the VPR is fixed in size
-and initialized by early firmware.
-
-The firmware running on the device is responsible for updating the node
-with the real physical address for the fixed VPR case and remove the
-properties needed only for resizable VPR. Similarly, if the VPR is
-resizable, the firmware should remove the "reg" property since it is no
-longer needed.
-
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- arch/arm64/boot/dts/nvidia/tegra234.dtsi | 34 ++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/nvidia/tegra234.dtsi b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-index 850c473235e3..62a5dfde9e38 100644
+index 62a5dfde9e38..5f67d9b57226 100644
 --- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
 +++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-@@ -29,6 +29,40 @@ aliases {
- 		i2c8 = &dp_aux_ch3_i2c;
+@@ -5317,6 +5317,23 @@ pcie-ep@141e0000 {
+ 		};
  	};
  
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		vpr: video-protection-region@0 {
-+			compatible = "nvidia,tegra-video-protection-region";
-+			status = "disabled";
-+			no-map;
-+
-+			/*
-+			 * Two variants exist for this. For fixed VPR, the
-+			 * firmware is supposed to update the "reg" property
-+			 * with the fixed memory region configured as VPR.
-+			 *
-+			 * For resizable VPR we don't care about the exact
-+			 * address and instead want a reserved region to be
-+			 * allocated with a certain size and alignment at
-+			 * boot time.
-+			 *
-+			 * The firmware is responsible for removing the
-+			 * unused set of properties.
-+			 */
-+
-+			/* fixed VPR */
-+			reg = <0x0 0x0 0x0 0x0>;
-+
-+			/* resizable VPR */
-+			size = <0x0 0x70000000>;
-+			alignment = <0x0 0x100000>;
-+			reusable;
-+		};
++	gpu@17000000 {
++		compatible = "nvidia,ga10b";
++		reg = <0x0 0x17000000 0x0 0x1000000>,
++		      <0x0 0x18000000 0x0 0x1000000>;
++		interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
++		interrupt-names = "nonstall", "stall0", "stall1", "stall2";
++		power-domains = <&bpmp TEGRA234_POWER_DOMAIN_GPU>;
++		clocks = <&bpmp TEGRA234_CLK_GPUSYS>,
++			 <&bpmp TEGRA234_CLK_GPC0CLK>,
++			 <&bpmp TEGRA234_CLK_GPC1CLK>;
++		clock-names = "sys", "gpc0", "gpc1";
++		resets = <&bpmp TEGRA234_RESET_GPU>;
 +	};
 +
- 	bus@0 {
- 		compatible = "simple-bus";
- 
+ 	sram@40000000 {
+ 		compatible = "nvidia,tegra234-sysram", "mmio-sram";
+ 		reg = <0x0 0x40000000 0x0 0x80000>;
 -- 
 2.52.0
 
