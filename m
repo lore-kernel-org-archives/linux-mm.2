@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6214D3EE64
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 13:25:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E6D7D3EE66
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 13:28:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 285CC6B01F2; Thu, 22 Jan 2026 08:25:19 -0500 (EST)
+	id B79CA6B01F3; Thu, 22 Jan 2026 08:28:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25D4A6B01F3; Thu, 22 Jan 2026 08:25:19 -0500 (EST)
+	id AF9A76B01F5; Thu, 22 Jan 2026 08:28:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18A0C6B01F4; Thu, 22 Jan 2026 08:25:19 -0500 (EST)
+	id 9A6A56B01F6; Thu, 22 Jan 2026 08:28:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E68AE6B01F2
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:25:18 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 93DDA1A02CC
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:25:18 +0000 (UTC)
-X-FDA: 84359671116.19.00B9936
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D63DB180007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:25:16 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YrWDFB4L;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 838876B01F3
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 08:28:34 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 44CFA585A4
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:28:34 +0000 (UTC)
+X-FDA: 84359679348.04.8EF957D
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D7B84100002
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:28:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=dC1wa78e;
+	spf=pass (imf05.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769088317;
+	s=arc-20220608; t=1769088512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vTHvVWFze9CJnkjQ6D1yc3NzdZ7K4HhoZBQaVdDFWhQ=;
-	b=kCtPdNf2GxEXfzHf2DUnLL0We/iF5fuDPPnQDrDkz7XX5OH2Jtfj1xRGmEMSVfiCzK2RBN
-	0L0SPrpkB6chI9NoszIlPbaJBvZvSbZdKJ5RWtvolher31isIRWfeP175lowaT1udQZtva
-	Rc01pSpwD2aVkKGIhZM1rjZHxp0i2iQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769088317; a=rsa-sha256;
-	cv=none;
-	b=K5bpkw9C03ydbqBgTnTeuexSDo6qGX7nM4EALGQS/wIonGNEQpx3ax/OXOqX4npRib0BFD
-	dQxT83ibbnYjdUMu/hNXdx/d62Qj17HZkVBeyDIn9+tTttRzTPrOrbKQUrPWL9JmdFc3+G
-	fMEy9PRO7iUww0t4DDKagnKvMf33nc8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=e+6gDoaU6sjJYiXvvo+102yEP3zTOi6BPXPONrmdz8k=;
+	b=2kcnK4XqA4IY4K6DtfHX+Z70zoCRBrH3hWeWKa3p7rKLWMGspK/QlKSX3RYGduA6utIfa7
+	OqcQOGICKdKWxbduWNogbFjOM+sYRnJmFEXWxrPtr3DKfuhks7IPc5CrPyYqSAS0Tn3g2U
+	l5myuArhU2FaM1OUc4KZOtD2jAKO3Yw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YrWDFB4L;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DC2944384A;
-	Thu, 22 Jan 2026 13:25:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BE2C116C6;
-	Thu, 22 Jan 2026 13:25:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769088315;
-	bh=d1MizkSspn35pSSs7WFrLUELoQ81+EVmGUW7ZT92Lrk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YrWDFB4LDs5qEsCqYCX4YttxexqobOOT5/sJCBLb0TEh9RryY3YsPgJZ/e5riSTlR
-	 IQ30Vc0vhpPtnYWppdOv4w+ZHtC8SNvTXJ8Kif6FC36DzL2brlBX+okaosbATHG8DH
-	 OiYwZLCElV2t0XYYeIHbXIiql8paKwShrc3rN80YTviSbeSNBx3NvpQpZlrT99h8QJ
-	 lcXzaakIx/Lee+fvfPbbHkIMGcXMFp56ydFtnTcHz+NXe0rS/olpls4/T2D8QlvNAT
-	 ed+eqflFLefMPQSfIEQwJP82SaiVpEjY5Olt34bHZaoNrvsc7amCvDKhh1gdK63vB1
-	 TJJtGQeF9zNsQ==
-Date: Thu, 22 Jan 2026 15:25:09 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] kho: cleanup error handling in kho_populate()
-Message-ID: <aXIlNX5uxms5DLrj@kernel.org>
-References: <20260122121757.575987-1-rppt@kernel.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=dC1wa78e;
+	spf=pass (imf05.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769088512; a=rsa-sha256;
+	cv=none;
+	b=FdXw2Ar+kS8cUpcWjC9Nfhb3iadbzRsyPAp4RSC55q0HUxTsNbuHcjGV2vxynCYVondmDd
+	1wSuWZQX6oxe3o17QR9wosaDDgyYCnTCHoiDKrbIIy06+pC4I0YYdawHcEXAcmJbNyouTL
+	s/H5J3q15qyMDudACgZWPcKCq6PJplo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=e+
+	6gDoaU6sjJYiXvvo+102yEP3zTOi6BPXPONrmdz8k=; b=dC1wa78esyeMyra8fB
+	Ue5iSWNlHlVvxuY3NcWOQse2SSMGWXKuMf6PBV/dz1nnHH2I/C4v74o5OT5qoye7
+	M21pKWJm/hmqwHr0UcNJiKjxzX+ocJ4dj9uLykTa1YoKx5Hnu6EcPpzUexqLwxjV
+	BNOA1Ag/wMheQnO8B32WwAWEs=
+Received: from ubuntu24-z.. (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgAnE2TOJXJpoBt0MQ--.31S2;
+	Thu, 22 Jan 2026 21:27:46 +0800 (CST)
+From: ranxiaokai627@163.com
+To: pratyush@kernel.org,
+	surenb@google.com,
+	akpm@linux-foundation.org
+Cc: pasha.tatashin@soleen.com,
+	kent.overstreet@linux.dev,
+	rppt@kernel.org,
+	graf@amazon.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND v3] kho: init alloc tags when restoring pages from reserved memory
+Date: Thu, 22 Jan 2026 13:27:40 +0000
+Message-ID: <20260122132740.176468-1-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122121757.575987-1-rppt@kernel.org>
-X-Rspamd-Queue-Id: D63DB180007
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgAnE2TOJXJpoBt0MQ--.31S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ArWkWr1xuFWrXFyruw4xXrb_yoW8CFWDpr
+	WUJr1kt3y5JwnrZws2va4vk34fXws5C3y5Jasru34fZF13Awn2yas7ZFy0vF15Zr4FvF48
+	Wr4UXrZ0v3WYk3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piFdgJUUUUU=
+X-Originating-IP: [218.203.227.98]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxRJ0wGlyJdLrAwAA3n
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 3p7sqcyieft66hxkodr4cyfy8w6gyo67
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: wtx8dkaz7tbnw1rzkcjfkxues7pn96cz
-X-HE-Tag: 1769088316-84939
-X-HE-Meta: U2FsdGVkX18gPMYq/DnrwxIH+y30IhK3LO/goIklSeuoggnGQc0tdk3+VlRAVA0ZLPCUUy7mYH6oZDyN0Haz9eMXg7q64sNF04GdaqCFg8TnzvbjjZr1V1fSuKGtS/U0AQdUHVwpetFn8CpDY3Jl5bGiIcPsN5eLVdXy/8ci6xpiJ1pbZA2VTmJyyV+BiIVWRQUzLGeJh6FjNnpUwhswnhNlaFkREH5ZnOfD8B9c8QIC9Dz0hc8zjISSaNxXOwuNKFiSZzDSx6mtaNHpEdcL9PFXnmOMKdomMNKkvklvrmck776sRIRqu0OyVyjbBZKEc/pHv9qxz28Wto7x4NvZ20SW+0tg2AJm1wxdfLp0pzIqTZNSk34HNkwLvF8LufMz+dLuxKef5kidnRNry2CxA/DpjV/WnGsUphsOV3OKg2dAPPs6MqpD5XOFYreMLujuxj2dhcOamF2wSUwi092YAsbtDHb/BHu5O1THO5HWIoTGXpXwePT2oGc5VEJnXWT56bvGOJbmRoPJuTocyXmaHixZMwTwaPhwnO4QdqCddBBKEU85hUKNCPrD4XCMaBA8exDLJCm7hveEiZakmJ9iSSgA1a3vsgg/1eVGgwqW1D8FS7tGvsO81KuyCpj3sAWLhevCskwPIINQpAK8rMGVpRrLB55CxFCiaFaQCKMiNVJa16UjmU5LSQCLfuWQ5oZ0ZFx8BXcAURIvtRWniaghT+BewQxlLM/xH5HDWgjATNlv/LgdUktZhtpbj47squxCaPkB4HMj0JCNuVSK2e668ytpapNVpob2JXTG1c5Ujb4uwbHHbvfWJuXKCkHpNh1viJVhgJiCzs+gsbz88sOnEqoxxkeoMKK3CF3/u/Xd8weagoazQCY8U0Y74IV3CiymkVwNhvoZUV6Aq/c8otx+xgGmbt7zAVEbBH+A770cRXDfUX5hzL3pdGhPkOZAnLl4KqTc6WZWMWNaRS/u8OP
- OIn4clzT
- gZiszziFQxK7Q7xgsQm7qFLtxOHCCLbtwG8TtYts2A1/8OPRMa5nz2oCAJ5GJPkk375wcyJW6LhCEuerXcVlMX6SUVBUBoqFvfbl+grI6h6ocAbHU5JJRO8V6Ov8TRbdtgMVRLa/GxNMwhYNXf0cLkKo278Ph1LhIDVOF91SEnUnckPh7EQN5jVjG3tv7WO8GPRf5khnyb8XM294zu7erwmNJezqKKSHx/afZeZccKqPM1HoqxZ2PjEmGK8F0xvw9nszA2reyVdtgAKb00b9FBfBoNmfx771TElwA9Q59pi9Fz8F7rWY+4rXkZt9rvrk/sFTq
+X-Rspamd-Queue-Id: D7B84100002
+X-HE-Tag: 1769088511-168821
+X-HE-Meta: U2FsdGVkX1/qdYzpJZDVo/YaM3rdy1fechNKauc4qT/frq6+5X4IwzjHXw532QrNzZCDNgxoui1wjvFnqYy9ESd+UK9Ls/OO00G/C7B1S1vgzhw5dNVZ703Dh1R0dIcn+gdByR8S88LAbu7kMTrryv6KnowX4g5InR8QvyaAoIao8rxSCNYzW+8qz4GN2AQgiDopfZiW7q/Up/2LeBgwxPIXq0mDXJAIeRJ2DG7jYBl85VjXJknZkMXbjponVduesdn5KYjpN3WssFIpVu6xwVvEccJQczHkYYeQy1rxdNXDyVImsP0HbnAySQtBVzLpxaxvjt0lknSnudBup7j4XLvFEH8hcDUZeubUb1cCvNYoHYQz/J/6tuCwGjeCPtGZW6mcbmNJOzSGXQva/WtF7Nlfyh8oNP+rj3N635dwJkcxhRB2BGQ3egvQvFD4HohAOlyIs5mPzp0AYEZKGAe3883UWVuYJXfEotdIqsmVvjJ7CRYOOdBG4B6PBDfUOZ9fRHHoQslJG3qkSzuhqWiAQWyeeOUgb0JaNZBK2e7xnaOKxmVaniGb3Fq/ahuUAAD8rA1Koy/c1WuJpqMyZHll0umqWQJxYJrGmxd2lb1TaN/yb8fUjwpMycEBsFSrmDVdZoX6F1MeshVwMXyYVR1xgH1Sjn4dzATcyTPlypoChTm9lSMtcgzSerenFA2PuEB5/byp+jRL85dKZg1O6VOcIeSQeyBU0b9u6YtHDOa77cHGD/l4tBeIqneZZ9NM7Yfcz6Jc+1dIziLA5Hd//7qOq7mUqSAD2zWgjAHHzfUMqqmZCj2PHEg7EwL38vcB2zinCx91ZtHyt31t/1Aw3XcjRcGYOfPziPv15NILxGIycnpRK8tCjAI5k3vqlOAC1nDa3NXGmSWdpO1hrIfxAgLpWRAGlx2AQ3KqU096osr9fZyZFXQS+3weF/9x/x0mVPimJqrPdhnCfYOtI50LPED
+ fCAD4oHH
+ SA4o6rXCP2BLAPLKr7/PPcUMevXh+/Attf1fDqZU4wDAMR26fuiBNRsTZ7KAeg3dPXwpvFmDq1TWgv1Vs/LzP20tNzbY4uHZPqmczMMkKHNFndnWdXZbbelGiRXrVCzwBSnpMN3OuALxJhWEO4fdH8e5Ye3i7U1c7pAFAgavB8HFgbZISHwK0DzanX967o2LPqN1o2u3Oak/vq5ud/4rMPGvqmwvMtXn4tbgLGewOh2LTyc3VHGsodtqM9ZwQ3q6JQ1Ol/pPFRiCarq5DMrDI3ArnuMlW+hBCCUpX32qlZqdBFqTrCPTBpzwNPvV9e1IBzqWHGKAvACYyy+6iDBZ9+iZ8ML8HWpLjm/420Vg8KqNnxmpfw1S8kGRaMBhXnyHmwOg2nsID6K64t6jAjDwl02mI0q7E9GUNGPv2DjlicvkbAt9uQaX9SvfYE+8YJ2r82XiDtygYh62S7VPySmioRhgnnH6GaKQU1YxdbKIEHO18mM5e/RsTBUHhFKtfwHpYJLJj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,119 +100,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(cc the correct Pratyush's address)
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-On Thu, Jan 22, 2026 at 02:17:57PM +0200, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> * use dedicated labels for error handling instead of checking if a pointer
->   is not null to decide if it should be unmapped
-> * drop assignment of values to err that are only used to print a numeric
->   error code, there are pr_warn()s for each failure already so printing a
->   numeric error code in the next line does not add anything useful
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  kernel/liveupdate/kexec_handover.c | 39 +++++++++++++-----------------
->  1 file changed, 17 insertions(+), 22 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index d4482b6e3cae..e248ce2e04b7 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1441,46 +1441,40 @@ void __init kho_memory_init(void)
->  void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  			 phys_addr_t scratch_phys, u64 scratch_len)
->  {
-> +	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
->  	struct kho_scratch *scratch = NULL;
->  	phys_addr_t mem_map_phys;
->  	void *fdt = NULL;
-> -	int err = 0;
-> -	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
-> +	int err;
->  
->  	/* Validate the input FDT */
->  	fdt = early_memremap(fdt_phys, fdt_len);
->  	if (!fdt) {
->  		pr_warn("setup: failed to memremap FDT (0x%llx)\n", fdt_phys);
-> -		err = -EFAULT;
-> -		goto out;
-> +		goto err_report;
->  	}
->  	err = fdt_check_header(fdt);
->  	if (err) {
->  		pr_warn("setup: handover FDT (0x%llx) is invalid: %d\n",
->  			fdt_phys, err);
-> -		err = -EINVAL;
-> -		goto out;
-> +		goto err_unmap_fdt;
->  	}
->  	err = fdt_node_check_compatible(fdt, 0, KHO_FDT_COMPATIBLE);
->  	if (err) {
->  		pr_warn("setup: handover FDT (0x%llx) is incompatible with '%s': %d\n",
->  			fdt_phys, KHO_FDT_COMPATIBLE, err);
-> -		err = -EINVAL;
-> -		goto out;
-> +		goto err_unmap_fdt;
->  	}
->  
->  	mem_map_phys = kho_get_mem_map_phys(fdt);
-> -	if (!mem_map_phys) {
-> -		err = -ENOENT;
-> -		goto out;
-> -	}
-> +	if (!mem_map_phys)
-> +		goto err_unmap_fdt;
->  
->  	scratch = early_memremap(scratch_phys, scratch_len);
->  	if (!scratch) {
->  		pr_warn("setup: failed to memremap scratch (phys=0x%llx, len=%lld)\n",
->  			scratch_phys, scratch_len);
-> -		err = -EFAULT;
-> -		goto out;
-> +		goto err_unmap_fdt;
->  	}
->  
->  	/*
-> @@ -1497,7 +1491,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  		if (WARN_ON(err)) {
->  			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %pe",
->  				&area->addr, &size, ERR_PTR(err));
-> -			goto out;
-> +			goto err_unmap_scratch;
->  		}
->  		pr_debug("Marked 0x%pa+0x%pa as scratch", &area->addr, &size);
->  	}
-> @@ -1519,13 +1513,14 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  	kho_scratch_cnt = scratch_cnt;
->  	pr_info("found kexec handover data.\n");
->  
-> -out:
-> -	if (fdt)
-> -		early_memunmap(fdt, fdt_len);
-> -	if (scratch)
-> -		early_memunmap(scratch, scratch_len);
-> -	if (err)
-> -		pr_warn("disabling KHO revival: %d\n", err);
-> +	return;
-> +
-> +err_unmap_scratch:
-> +	early_memunmap(scratch, scratch_len);
-> +err_unmap_fdt:
-> +	early_memunmap(fdt, fdt_len);
-> +err_report:
-> +	pr_warn("disabling KHO revival\n");
->  }
->  
->  /* Helper functions for kexec_file_load */
-> 
-> base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
-> -- 
-> 2.51.0
-> 
+Memblock pages (including reserved memory) should have their allocation
+tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
+released to the page allocator. When kho restores pages through
+kho_restore_page(), missing this call causes mismatched
+allocation/deallocation tracking and below warning message:
 
+alloc_tag was not set
+WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
+RIP: 0010:___free_pages+0xb8/0x260
+ kho_restore_vmalloc+0x187/0x2e0
+ kho_test_init+0x3c4/0xa30
+ do_one_initcall+0x62/0x2b0
+ kernel_init_freeable+0x25b/0x480
+ kernel_init+0x1a/0x1c0
+ ret_from_fork+0x2d1/0x360
+
+Add missing clear_page_tag_ref() annotation in kho_restore_page() to
+fix this.
+
+Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+---
+
+v2 -> v3: 
+ - also call clear_page_tag_ref() for non-compound order-0 tail pages
+
+ kernel/liveupdate/kexec_handover.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index d4482b6e3cae..96767b106cac 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -255,6 +255,14 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+ 	if (is_folio && info.order)
+ 		prep_compound_page(page, info.order);
+ 
++	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
++	clear_page_tag_ref(page);
++	if (!is_folio) {
++		/* Also do that for the non-compound tail pages */
++		for (unsigned int i = 1; i < nr_pages; i++)
++			clear_page_tag_ref(page + i);
++	}
++
+ 	adjust_managed_page_count(page, nr_pages);
+ 	return page;
+ }
 -- 
-Sincerely yours,
-Mike.
+2.25.1
+
+
 
