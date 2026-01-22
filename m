@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CC90D6CFA7
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:03:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 298C2D6CFA6
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:12:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C1FD6B0367; Thu, 22 Jan 2026 17:03:08 -0500 (EST)
+	id 4575D6B0369; Thu, 22 Jan 2026 17:12:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99A016B0368; Thu, 22 Jan 2026 17:03:08 -0500 (EST)
+	id 3F72D6B036A; Thu, 22 Jan 2026 17:12:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A5F06B0369; Thu, 22 Jan 2026 17:03:08 -0500 (EST)
+	id 308146B036B; Thu, 22 Jan 2026 17:12:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 764696B0367
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:03:08 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ED73013D87F
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:03:07 +0000 (UTC)
-X-FDA: 84360976014.03.91E96C7
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0131E120010
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:03:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=z1kJWS64;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 20E726B0369
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:12:41 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA8A71A22DB
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:12:40 +0000 (UTC)
+X-FDA: 84361000080.12.AFCD32B
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C2BBB80002
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:12:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0Bx+I17S;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769119386;
+	s=arc-20220608; t=1769119958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TUFswC7WALgWvhHt/vri/diAlr1YiuidCkTY+195eFs=;
-	b=vj+QuH5+mdFkbje5CeUJ5lnoZRwsk002e4LmDA//mPOLAHBCFUt/XSjCgot7BpnK2tq8vF
-	wTV8uILPqwgfXGLDAzfizPBDEn5pSdy9xrm7Otbd0d85m2vzWOc5jAUaedvR2C60ykVksT
-	JW4wiVbOm/CVApjSSggfulcv9zkjE4I=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769119386; a=rsa-sha256;
-	cv=pass;
-	b=Z0D8OWafqxmlSb9uF5luv6Wc3C4/+lygaXq2dcM95FnvlBS451sgPQVq3OtF03+mopKkX1
-	xsN951Tx0H3eWygxU4n6ifG1MNe/MPv+bW0uigASBfeqB4BZlasaL3mhnyECgjOK6HiQju
-	+D5uEKJoT77Ipba6q1C12RHLhg1rCrA=
+	bh=S0Z4UtmHMtrm22Dzvewt+n+aqxxbFiEfZAYYSqL4AsM=;
+	b=IagoMkt5C0NwSLGDOXFzZY4i6xjV344DRZWnjO+Fhz2XyMmRU65llE6ACz2ISK8zkub1ES
+	7uvedE8S7VJapr1Br9Gy9dA8a7zYo9BdOADwYzUP6BnUgoEG4ftjLfJCSyWZlaW13zhE03
+	02coKDB9zVe0ZGirHy1XDr4upn/RYn0=
 ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=z1kJWS64;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0Bx+I17S;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-50299648ae9so69651cf.1
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:03:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769119385; cv=none;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769119958; a=rsa-sha256;
+	cv=pass;
+	b=X6L8qDesYVEYiVzYyE7y4l8RX9t3xK9tcMT6s4GJiqj5bfuyUmplaWLziTcQmsjhB5rZjP
+	zs55UuI6t5ubSwIXxuXTrMJwbSUFYxrMWFfZHbvChoss66cbB/q+BbiLK/huuVFdWa6ffB
+	7CJKj9Ho8rYJUUGqiYdnQsduL+k5bp0=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-501511aa012so158681cf.0
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:12:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769119958; cv=none;
         d=google.com; s=arc-20240605;
-        b=lQjZKWTJVdNShSHPrRVaaEdCffK79hHYQDXmWeSeGAjABVPA3lKEt8VWKLQwNEQEpb
-         ze57h7BPSHShWCbSIkIsR1A/ZOQkfVS3uTOwCWXMokXtozkjpxYwaMagdc9gYJI/Gtz1
-         uT2GzOOCFzdF5jTnVVWhhBgD9GYof+iuVi2waHh39NRaetXWrwyae74cP31Zsrlc2AOv
-         SJmgcRnIqwse9deqIBwwUpSRjjMFfZgXBEfDaU6HY74xKbcRVNxGf/97AolslnFY3HQ7
-         0+Voxb4rVhpIkruzgNCKc+Osq3SGKiyeUMj3UGeVmiFxrOjErzxLYsyJOGiIP2slXE2K
-         2cNA==
+        b=JttWyqs7kXkD3wvhYHdgoJkZzZincCv9hM5VYr5lpzqRoBzZGI74F9WylZ39xzpjtc
+         daPhoK4S3Ib0EqDq/08NItps2jMsOe74tUVzryHhpGbQHuoO5028C+dxLkCvB1b8bd2q
+         tR1Z8snhNW8+nVcJOsaUZGQ/hFRGl0Rre8FiHdPZSNTTuBLMSYoD85Y2YWi75CKlRiCv
+         uBBL1GbZ5vFFoymh7StIefmiuIsfX6rDn+4ldBopbT5IR4Itz1710MX/6yq7VSkKw3Yo
+         KQ6hXjnQdsHMUO5F2ZKjgWQeboXQk9DxnNfHBRdFa+XHQr4fVhtcw1koDPQhYZzNGUey
+         4RAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=TUFswC7WALgWvhHt/vri/diAlr1YiuidCkTY+195eFs=;
-        fh=Xk3NishxZcLEAQuD5FxvZErIU5/qUZME4s4dCL1wagU=;
-        b=hlb36bo3p63bp1eE9xnkKWVk6ycujLUkC7U9uvh9ZNCbGrsFFIYJEpWwmkccsEXyMY
-         qnmZeqdRnUthOVaZ84mPn/N5jkex0GnjPYSS9px8c/rbn8inXVg9zmsVQ7I7PoS9wCbP
-         ONWxhikeUIxqEpJckv2kVoQw683w7KanN3cfzUNu9vhNK0B9zxwKeYhSNEyuc7PVo37X
-         NUWQ/boPX4UUG/vIpgHsCACCfRL6O5LPq0jQlciQeFt8BpsTkg2SX6ibitOR18FaHyRR
-         9nCUXa2nrvvSy8OmoU/M9beaeUWSTCyhVUyUMMSfD2/boEClxGfbPhb/29pOTFQxqqgs
-         K9kQ==;
+        bh=S0Z4UtmHMtrm22Dzvewt+n+aqxxbFiEfZAYYSqL4AsM=;
+        fh=0vJDVfG9BXW+sehGCwyYBAJsbixOfvyi2Vvp87Q0IWg=;
+        b=LHfdn6mHghfnRNSciRv7+/xeD+AWhEj8c/RgLifyzBbE9BBI4vk+BpeaCBIZUWjdU1
+         PamJrfyLcsUG6BxKkd0Jjdz8C0sn6ZhjI/xArIE20d9FDfqJYqUlNKhX0Doxf3nJ75WX
+         am9ojsBH7zPz08nD16R8DpeKikqETVmUfiudhorx5WTYvOYZZoxr1bdTdwFPMipirRli
+         JcV6JHD3GUoE7oYhKlTQs7Y36BlxHecKildkHqdQx4wWPsAIG5eF7MinEhcfgyNK3sL5
+         fysKkuUmx5Yxw3hopF2cCM+c2VXvhSCYt31MzTUtAj7jX0+4GFv7JLKdKtOv+DwIjTDB
+         dbIg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769119385; x=1769724185; darn=kvack.org;
+        d=google.com; s=20230601; t=1769119957; x=1769724757; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TUFswC7WALgWvhHt/vri/diAlr1YiuidCkTY+195eFs=;
-        b=z1kJWS64oRp66p0nhD+bDLYD0DnDKepBJ8XtaNAQpDR91Bct/1OF30eAE6/BCbNQgb
-         hhtTRt3dVsVp1ouRJ+PRMrbkI/ExM4s6k5YwXJDrttpVfueB7T1qDWD5U96OqUwmGo90
-         3rrGzYU+euKq04JTDkrc0Y+TvRwtAW+fTIiA/pPuaspBjbsjGQ6qsEUq3GN/bk7P+kZf
-         ZexvQX7lamXhEeBz8QNqw4I/lVHmDdwSpcOdlRitzEYn486R547YPahcMbQ2qnUmnLAd
-         8vzj3Uy0B8rKT0rdyy7VHT1z2VMbT0ZUj6XyvkYdwY7jH/Cp72gSrKxD8x62BDmos5oK
-         ZUcw==
+        bh=S0Z4UtmHMtrm22Dzvewt+n+aqxxbFiEfZAYYSqL4AsM=;
+        b=0Bx+I17Sz6qpIGAAPDF0qM50d01obsk/NG06jfvi5MQcOqsKY/uXRpsHCwYSEzfzOX
+         FAslhfUYCqNySPxnMgm8brNyLG1MXkkvqd7ffKiYMyKaZO4okG7oZTZOLlWo08OnHrSE
+         P+wXQQLm+GknkFh1k29H7Dpf8weRYWWM4o/+hqNjTL0gIS1Xg9J4JmX7376IvbSEtHkk
+         iJ6iIiDzP9xlGza0C/EClhKwu34o4HexfLz8cb5QvA8oW1zZoOsEnLCXW3jzMF0svzaN
+         HGtrzN1n02ORl6CwOTlJc16Nu0n5GbG/EMUsvcRTvE0PcOKjU94Zrj/7HmkKaHJlDz88
+         YfJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769119385; x=1769724185;
+        d=1e100.net; s=20230601; t=1769119957; x=1769724757;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TUFswC7WALgWvhHt/vri/diAlr1YiuidCkTY+195eFs=;
-        b=RyN0iSWJXKmoX08NTgRXa8oI7/V8J+UyXJhR7V6JqsZwGUlUSEprA+9vaG4FuzqVVD
-         gtqmalyDlV0+m4rqSeNt3dXOIe4VXzxZyExhZSxyVmserONZ+VycqMMS+njtPCfQeU7b
-         jihg7y6OetEyqIZRdUUm6Fpve40iLKfcmG1Je4LMnAwTeXC4aSuc0MqpYfvwSMXkKfaz
-         9fQIqWFI3shHDvEfD8qA2A5TCKH0cbidpgSPSJARob2YtUjlAWruiQyAJ1sA2d+RO8za
-         Xu/Y+JA3obJDu2ZF0E2B33AgJeNuZKRSlEb0/9abMGz0ZesrRYcFJUJSG/yTjGAsLCtE
-         lWIA==
-X-Forwarded-Encrypted: i=1; AJvYcCXUPZcMFq8VPDqfFVEn2IZCOLnt0JC4bfcCQUEC9H9y6cg2JBMBsk/OUXxUHFNZHD3bkZ+h1HahQA==@kvack.org
-X-Gm-Message-State: AOJu0YwNayrDO1inzOzWip2L0gNUY9xulWdGC7ql0efYnvF+Fi47FbTE
-	DCPXVK/xKGIdQGFJV5RzwZt7toahcNYHJE5o5azr79MiUhtlfYfC742Wfx77cmc+NKNl4EWWZLn
-	IYx95FCSy/Ql+/fY46an0H7p8TVif96C6Trc9dri2
-X-Gm-Gg: AZuq6aLB6kAcEUsvw6qFuP52EbLOiXoVVWT0W0ptS1NDP6d9dHkr9iX67VuN5D/jWtA
-	9WY2hcSR0qYnz7ZELAl9jNzTJWDpC2Kv2DaSA9Vf1vWGhB21IRceNh+3LsTtNel1d695RtCLIPE
-	gTJoPEOiyRotMHBDdRfu4Clexw2ZBzpTIXFum9xA7m3BzjdiDbKPeZlSnN4DG/BWX8eKWVqEYqO
-	PkWsUZ0fINYLD/ogTsEpXmZq6uM3EYOG2LZ+x0u32WotiuJHlOCXEJjLVFieWjK3HSPU1kJNdR1
-	y79QLvkM0GRngSUz5l40k3oM
-X-Received: by 2002:ac8:7dc6:0:b0:4f3:54eb:f26e with SMTP id
- d75a77b69052e-502f8d571admr1046721cf.1.1769119384657; Thu, 22 Jan 2026
- 14:03:04 -0800 (PST)
+        bh=S0Z4UtmHMtrm22Dzvewt+n+aqxxbFiEfZAYYSqL4AsM=;
+        b=UA5nKOajTS5njBDumEFmtEShCPsW9IbVM6Kuw6AWwdda1bQuEOSeM1TP1hdPQFxlRk
+         Zdi/1aocWLb45RdJIz6t7lUzALBccBeUCraCMRSxw4SPrYhB/48glLDQTRMlVKorSB6E
+         +ULRPARYdgIJW/FAs8+JeCDHma/3TGbLUVptzPnhM7r+qNPCp3DCi8EAL7z9NQI4Zuvo
+         eKda70bJ94W5LHuhB6DlzpTKStFVuxFcF3GAfWYiWgsslRaQDA0gABiJP9LhP5CZh+H+
+         cZFv7xSMXPBklmrJQsT621iy8ZgUGbFcXmk7TNEsXJCdgK/AwolWFmh/Ed3ILlj3M3XU
+         doUA==
+X-Forwarded-Encrypted: i=1; AJvYcCWh2/7vel4juvk/lZhJ4K1zfpzgqeOsB7+jf2pF3XWSUW+fXummP7HS+aCQeKom/K2y/Wm5msiH3Q==@kvack.org
+X-Gm-Message-State: AOJu0YzHIJYUPcKkmCV+lytHr9RyXMQM3qjP9IfAD5WbMZUs3/iZ7pXE
+	JuwS7i2p9m3HbNAPeJuLK9KnH4B64tsWcK1D6+c2PGJ0V+flHbjXbAALsL0qkQdXfuSQ0iz6Qae
+	+Ts2aRZ2xFn8U0z7jzjt3/+OUqmVyQuYyNCRbNRg2
+X-Gm-Gg: AZuq6aIvwqL1B0wfWGaWeZsBe6xDvT221pSvDoG5dX0vg4aqYtMNiGw4s0q1LlsMH/+
+	Uo/norJXBxvCF6gINIeQFlaBbL69dNUI3jzaXZRZRO68CMgoQrPhb2KlFQjoJobc6TAF89sqZXG
+	cwpjjN8lX/J1kDQuDHdA7c+CiOCDT1ZOeyBQzk6HPmEUlO2ca6sfnrYEOLnC8AiJv/ZMLFxqVvF
+	YqobXWlBNVwBphOWlHPFJcCB5i5KqIWXLawDT1xhSzcNHekR24GyVinM4oTls4bCeTnordvvGCQ
+	XLGTBAr5hR/Cr6oQulgOhBudkR0h57eNN+U=
+X-Received: by 2002:a05:622a:189e:b0:501:4eae:dbfc with SMTP id
+ d75a77b69052e-502f8db53bbmr1163411cf.5.1769119956786; Thu, 22 Jan 2026
+ 14:12:36 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1769086312.git.lorenzo.stoakes@oracle.com> <fbaa0ab025c1f345e559df2b1045b223663806ef.1769086312.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <fbaa0ab025c1f345e559df2b1045b223663806ef.1769086312.git.lorenzo.stoakes@oracle.com>
+References: <cover.1769086312.git.lorenzo.stoakes@oracle.com> <43c90424ba0874a71bb7ab9d6423b3a2bf616f8e.1769086312.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <43c90424ba0874a71bb7ab9d6423b3a2bf616f8e.1769086312.git.lorenzo.stoakes@oracle.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 22 Jan 2026 14:02:53 -0800
-X-Gm-Features: AZwV_QiH7uTftGNaxq_cn6-c5aA0bWdwkSr5uV6ZePFQF00zb8M9zgeuI3MJ7I8
-Message-ID: <CAJuCfpG_5Do+Qajtnhbv9uK+BssDh7NpXYGzfbKBJGZgtiKF0A@mail.gmail.com>
-Subject: Re: [PATCH RESEND v3 09/10] mm/vma: update vma_assert_locked() to use lockdep
+Date: Thu, 22 Jan 2026 14:12:25 -0800
+X-Gm-Features: AZwV_QgEDRlflQAy1nDh25c_dk6-859XJWS6UBtVlFMJyyoqvQVG2qiSotUSCKs
+Message-ID: <CAJuCfpEJ0NRB3vgZ2uajGcTRovKYTnrV6woSbFGWZ_LSFerkTA@mail.gmail.com>
+Subject: Re: [PATCH RESEND v3 10/10] mm/vma: add and use vma_assert_stabilised()
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
@@ -129,14 +129,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0131E120010
-X-Stat-Signature: 6qfi5zmdnmn7qcd84ojbpqn8z3q1zst9
+X-Rspamd-Server: rspam12
+X-Stat-Signature: w6duoobmwpqzxd7ycjhkwzs3gesd58ux
+X-Rspamd-Queue-Id: C2BBB80002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769119385-479927
-X-HE-Meta: U2FsdGVkX1+13Mg+y/l778cklrkfv6NUFLzWd2NvIsujVZkVhDz4GkpohbjRlGm+5muhd3W7j0VyuzZ+aNqOZ8FKUL4kuFhiBO+oA6q4UjrLHA8nXcpwkc05vctZ7+LxpsPdbz6a0c08M1QeGfey+3Un0KOzuTGHH4748F/HonaePHeNijIgz698nOZ9wuKZzwtZzMRs1K6gtIN4lcs0kbCeYSk7CexWQ2ITCa7FatTjWiPz9DeAVQytHkISF+uApLNO+hSyJsd6wC7eBQUMKIJ0u71ag7ryLUk1Ct/7/Skv3yL21mog6DurgVTNfUYqGWH7AXZhpzrFSkdJiKg+jj/HnAsICQWDQsVO115ZderenDmwe73zoUwPgjFZOWoA/b2jSDK680oYdysapZVdl/+Il7DrsYQb8sAAgAsHd9HSk6e8e6lyEG6R7q80R9GXmbw+g6vaJtQSstJEUsjwX6+SVx/f58HvQNPUkCgFWpksZ6RPFuFpCzLNVRVtxY1R49ANfwe5ANZx/czCKZH0zewbKkHlTTVDGjHgCVSraYdOPTCioQE18Kv+itfFn5tMwtX+iD4u1hLgKqMpE79+jDqfh9AFVl9fkUUD+jzhzLIxETvlKiHWIz4lXkCJbdqXmON4Xd4Sv6DS26HL4d/dGuDzNyBBmn60D7ZzGWOdrEYYIGzbZASK2a2m4/WLLLnb70bNUnAv0Z6W6rPa8YeJhCgXcDzexe3UoIIEhiyGAXnQPWXZyqN88N22m0spH5aMSjwEC2Od0vSwODAm/oTbua9+F1MibgBeXBOLaJcE76x/MyGGThX2HtiYyyDk/ikHpbxoQVnIk6edKgnQOWjxsRWv8dekXXSutunNwtXZ0jUzNESK/5LeUOTlDiKDEQvu7Nt8zsJivT03WUhpMaat4XmCvTKm6rlnC/eJds2hb3KrpsUckr4koxNocRJgkiIVhAe949xco4mr6XYPSty
- 6iGID+Js
- CIdxSLQ3MUs6ptuX3ZSzf0rY7RQgsaDaWkXHxu1MKOf/ol/o/YRSDYsBL0r+nFq9Yol1yI2lJbzwxxL8s0W/bQNaO9xTjUHuEBSElqVJIirDmBRyPClN1bV+FxYC3Ayhwfc2EWR2DT5NBsObkm5N+H8BG9hWiC3ga2NXfKqcDSUW0TucgvxTxb807cFRVdCq+dKC5wKMt8lnYHkS5JMEK0JssTvrFA0MxSpR5maB7CDkzWVfWtZBHCqkzIdx75jzZXR2cEJrNpQFhXAufZkfGkMCofjWsUMmdPTZEROdBkwVrwbFiMlAEEML/rQhewwy3HD0AZMVhzIvmRw4jVYjKYVMARSL8nWiNE7yO/WY16B2JrjddmfZApwwnnpEI+738wrkmkiWqB4z5oZH05F9JS2jfCQ==
+X-HE-Tag: 1769119958-301497
+X-HE-Meta: U2FsdGVkX19fHeflUBl6zg+kIwxWoLCajBRcuuS4XtbZ5LHXl3Er196ExCB73YPamNsT10AcW3og6v/SElz5V719I5NqIFRUR8W0Aw6k6suEALnHQiWxFTuRwM62itpWH8rnJg+xBFFxJaiWZpBjWLsXhPIuse4cpu0cuJRiYzXJKgS/ED39qtiwIGCbwcVyUjB1uC3CHZdW4tOhCc3fEjy63XmrwoXXJxvPgFuj3eDfoHJo8zZDdygCeFA+X3oUFWh8YXSm0OyLwaXwyFk/DobI3iCVp+U3ILdOmrTf2LoNwF8jB1AAjbJzRe1yanSHgsKhxUPQzmS7ButO8sXetHasZjiWanKO1Nb7U9TTgIkTEddf38+02si4/GMBGTIGS4cDjvG2/SNXD+VfJo1GYvHzFBWSLNHn/URNUXLf4WkKBvSuha7o+rsCv1OEoTL87oTd91vZQKzjexiHY4Ekd2wogn8RyO1/j1oEgUR9u5df9B+uTdMKNq2kzEIzYufsXNt8xx1zoeP4/x+6cZnOjg7knZypgWDzEFrNJ7bf3IGLBdtRQC71H3pgxPA7dhXtxZklUN1AWNUwFBm4AN2SezyZCjtMhFVn0XYbN+0upMX7iG7iwFlKgn/wJ8H9saUwLTL2KYbF2+hqYaJ2eJeq1rLZnXpcY8wCCu2eLQkxsMBpCTejsbKHlInTd3xBzhLYhuJf0gGz7rDmCfVeAA304RBN9omyT9rWsn0/w0gdrWb3sejVMbv9lw5RVbrfpDKyNo7e79nkv/BLe+x0VMEESEKX6ZnIvEK2kFIvD+lBS9VK9Ff1ITD1HGpYy7KpgMmpG94eWtwZNScy5TE+pw/Pl35gQyUx67XcGgjomcS4c0/akvWGG9O5ZvULmedSoMxb+9Exn3OYu7uiA8gf4qx9mVQkmDXyNz6plS6vqU6KSHvy+kAcMMjdzXx4YCHxRmPoYL/pXyfJdcgLDi1bCsZ
+ 7GHNsf+Z
+ 6iBfYmVjDKcEvuHfU+cZrImgFngqiTBAQxgWw/Hax8Dm/mzh271pOm60zZv4zN9ubK+ZgYIU0ZEOF++YT3TOBlAOsTN7F4gXBpKSlqosAPfwBidrIOTfQzJZcg/0S1LuxCyP5ZqfAiKvgIQRNvo7UASfCQv6VvPv2uTKn7xfkbFI0ReQA4+4I5VXG/n2zNPkiTV5OribnbU4p6oU+aBkKcmBUxaoO9OvlvKLNsrCQsFCgseTI1vLmpsevbHyXFhFVcq5NPpmMDGcM1jFSjpUsx6Blu60bL9tSDQYcj5IGXc8s8kkVcCHxn1qLTzaQZ+6coAtRPMjelE0gQVJNKppYVaWR7ctFgXxHLAGVH41s1QIKPYrCo5XSdwvad301nicItlEtB3HoA5gb0d+p1lXNYTf7kJ84NFkNxCujNCCfu0P1qpbK1T8Gw5+4FQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,97 +148,199 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Thu, Jan 22, 2026 at 5:02=E2=80=AFAM Lorenzo Stoakes
 <lorenzo.stoakes@oracle.com> wrote:
 >
-> We can use lockdep to avoid unnecessary work here, otherwise update the
-> code to logically evaluate all pertinent cases and share code with
-> vma_assert_write_locked().
+> Sometimes we wish to assert that a VMA is stable, that is - the VMA canno=
+t
+> be changed underneath us. This will be the case if EITHER the VMA lock or
+> the mmap lock is held.
 >
-> Make it clear here that we treat the VMA being detached at this point as =
-a
-> bug, this was only implicit before.
+> In order to do so, we introduce a new assert vma_assert_stablised() - thi=
+s
+
+s/vma_assert_stablised/vma_assert_stabilised
+
+> will make a lockdep assert if lockdep is enabled AND the VMA is
+> read-locked.
+>
+> Currently lockdep tracking for VMA write locks is not implemented, so it
+> suffices to check in this case that we have either an mmap read or write
+> semaphore held.
+>
+> Note that because the VMA lock uses the non-standard vmlock_dep_map namin=
+g
+> convention, we cannot use lockdep_assert_is_write_held() so have to open
+> code this ourselves via lockdep-asserting that
+> lock_is_held_type(&vma->vmlock_dep_map, 0).
+>
+> We have to be careful here - for instance when merging a VMA, we use the
+> mmap write lock to stabilise the examination of adjacent VMAs which might
+> be simultaneously VMA read-locked whilst being faulted in.
+>
+> If we were to assert VMA read lock using lockdep we would encounter an
+> incorrect lockdep assert.
+>
+> Also, we have to be careful about asserting mmap locks are held - if we t=
+ry
+> to address the above issue by first checking whether mmap lock is held an=
+d
+> if so asserting it via lockdep, we may find that we were raced by another
+> thread acquiring an mmap read lock simultaneously that either we don't
+> own (and thus can be released any time - so we are not stable) or was
+> indeed released since we last checked.
+>
+> So to deal with these complexities we end up with either a precise (if
+> lockdep is enabled) or imprecise (if not) approach - in the first instanc=
+e
+> we assert the lock is held using lockdep and thus whether we own it.
+>
+> If we do own it, then the check is complete, otherwise we must check for
+> the VMA read lock being held (VMA write lock implies mmap write lock so t=
+he
+> mmap lock suffices for this).
+>
+> If lockdep is not enabled we simply check if the mmap lock is held and ri=
+sk
+> a false negative (i.e. not asserting when we should do).
+>
+> There are a couple places in the kernel where we already do this
+> stabliisation check - the anon_vma_name() helper in mm/madvise.c and
+> vma_flag_set_atomic() in include/linux/mm.h, which we update to use
+> vma_assert_stabilised().
+>
+> This change abstracts these into vma_assert_stabilised(), uses lockdep if
+> possible, and avoids a duplicate check of whether the mmap lock is held.
+>
+> This is also self-documenting and lays the foundations for further VMA
+> stability checks in the code.
+
+So, is the lockdep addition the only functional change here?
+
 >
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Looks correct.
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 > ---
->  include/linux/mmap_lock.h | 42 ++++++++++++++++++++++++++++++++++++---
->  1 file changed, 39 insertions(+), 3 deletions(-)
+>  include/linux/mm.h        |  5 +---
+>  include/linux/mmap_lock.h | 52 +++++++++++++++++++++++++++++++++++++++
+>  mm/madvise.c              |  4 +--
+>  3 files changed, 54 insertions(+), 7 deletions(-)
 >
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6029a71a6908..d7ca837dd8a5 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1008,10 +1008,7 @@ static inline void vma_flag_set_atomic(struct vm_a=
+rea_struct *vma,
+>  {
+>         unsigned long *bitmap =3D ACCESS_PRIVATE(&vma->flags, __vma_flags=
+);
+>
+> -       /* mmap read lock/VMA read lock must be held. */
+> -       if (!rwsem_is_locked(&vma->vm_mm->mmap_lock))
+> -               vma_assert_locked(vma);
+> -
+> +       vma_assert_stabilised(vma);
+>         if (__vma_flag_atomic_valid(vma, bit))
+>                 set_bit((__force int)bit, bitmap);
+>  }
 > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index b00d34b5ad10..92ea07f0da4e 100644
+> index 92ea07f0da4e..e01161560608 100644
 > --- a/include/linux/mmap_lock.h
 > +++ b/include/linux/mmap_lock.h
-> @@ -319,6 +319,10 @@ int vma_start_write_killable(struct vm_area_struct *=
-vma)
->         return __vma_start_write(vma, mm_lock_seq, TASK_KILLABLE);
+> @@ -374,6 +374,52 @@ static inline void vma_assert_locked(struct vm_area_=
+struct *vma)
+>         vma_assert_write_locked(vma);
 >  }
 >
 > +/**
-> + * vma_assert_write_locked() - assert that @vma holds a VMA write lock.
-> + * @vma: The VMA to assert.
+> + * vma_assert_stabilised() - assert that this VMA cannot be changed from
+> + * underneath us either by having a VMA or mmap lock held.
+> + * @vma: The VMA whose stability we wish to assess.
+> + *
+> + * If lockdep is enabled we can precisely ensure stability via either an=
+ mmap
+> + * lock owned by us or a specific VMA lock.
+> + *
+> + * With lockdep disabled we may sometimes race with other threads acquir=
+ing the
+> + * mmap read lock simultaneous with our VMA read lock.
 > + */
->  static inline void vma_assert_write_locked(struct vm_area_struct *vma)
->  {
->         unsigned int mm_lock_seq;
-> @@ -326,16 +330,48 @@ static inline void vma_assert_write_locked(struct v=
-m_area_struct *vma)
->         VM_BUG_ON_VMA(!__is_vma_write_locked(vma, &mm_lock_seq), vma);
->  }
->
-> +/**
-> + * vma_assert_locked() - assert that @vma holds either a VMA read or a V=
-MA write
-> + * lock and is not detached.
-> + * @vma: The VMA to assert.
-> + */
->  static inline void vma_assert_locked(struct vm_area_struct *vma)
->  {
-> -       unsigned int mm_lock_seq;
-> +       unsigned int refs;
->
->         /*
->          * See the comment describing the vm_area_struct->vm_refcnt field=
- for
->          * details of possible refcnt values.
->          */
-> -       VM_BUG_ON_VMA(refcount_read(&vma->vm_refcnt) <=3D 1 &&
-> -                     !__is_vma_write_locked(vma, &mm_lock_seq), vma);
+> +static inline void vma_assert_stabilised(struct vm_area_struct *vma)
+> +{
+> +       /*
+> +        * If another thread owns an mmap lock, it may go away at any tim=
+e, and
+> +        * thus is no guarantee of stability.
+> +        *
+> +        * If lockdep is enabled we can accurately determine if an mmap l=
+ock is
+> +        * held and owned by us. Otherwise we must approximate.
+> +        *
+> +        * It doesn't necessarily mean we are not stabilised however, as =
+we may
+> +        * hold a VMA read lock (not a write lock as this would require a=
+n owned
+> +        * mmap lock).
+> +        *
+> +        * If (assuming lockdep is not enabled) we were to assert a VMA r=
+ead
+> +        * lock first we may also run into issues, as other threads can h=
+old VMA
+> +        * read locks simlutaneous to us.
+> +        *
+> +        * Therefore if lockdep is not enabled we risk a false negative (=
+i.e. no
+> +        * assert fired). If accurate checking is required, enable lockde=
+p.
+> +        */
+> +       if (IS_ENABLED(CONFIG_LOCKDEP)) {
+> +               if (lockdep_is_held(&vma->vm_mm->mmap_lock))
+> +                       return;
+> +       } else {
+> +               if (rwsem_is_locked(&vma->vm_mm->mmap_lock))
+> +                       return;
+> +       }
 > +
 > +       /*
-> +        * If read-locked or currently excluding readers, then the VMA is
-> +        * locked.
+> +        * We're not stabilised by the mmap lock, so assert that we're
+> +        * stabilised by a VMA lock.
 > +        */
-> +#ifdef CONFIG_LOCKDEP
-> +       if (lock_is_held(&vma->vmlock_dep_map))
-> +               return;
-> +#endif
+> +       vma_assert_locked(vma);
+> +}
 > +
-> +       refs =3D refcount_read(&vma->vm_refcnt);
-> +
-> +       /*
-> +        * In this case we're either read-locked, write-locked with tempo=
-rary
-> +        * readers, or in the midst of excluding readers, all of which me=
-ans
-> +        * we're locked.
-> +        */
-> +       if (refs > 1)
-> +               return;
-> +
-> +       /* It is a bug for the VMA to be detached here. */
-> +       VM_BUG_ON_VMA(!refs, vma);
-> +
-> +       /*
-> +        * OK, the VMA has a reference count of 1 which means it is eithe=
-r
-> +        * unlocked and attached or write-locked, so assert that it is
-> +        * write-locked.
-> +        */
-> +       vma_assert_write_locked(vma);
->  }
->
 >  static inline bool vma_is_attached(struct vm_area_struct *vma)
+>  {
+>         return refcount_read(&vma->vm_refcnt);
+> @@ -455,6 +501,12 @@ static inline void vma_assert_locked(struct vm_area_=
+struct *vma)
+>         mmap_assert_locked(vma->vm_mm);
+>  }
+>
+> +static inline void vma_assert_stabilised(struct vm_area_struct *vma)
+> +{
+> +       /* If no VMA locks, then either mmap lock suffices to stabilise. =
+*/
+> +       mmap_assert_locked(vma->vm_mm);
+> +}
+> +
+>  #endif /* CONFIG_PER_VMA_LOCK */
+>
+>  static inline void mmap_write_lock(struct mm_struct *mm)
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 4bf4c8c38fd3..1f3040688f04 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -109,9 +109,7 @@ void anon_vma_name_free(struct kref *kref)
+>
+>  struct anon_vma_name *anon_vma_name(struct vm_area_struct *vma)
+>  {
+> -       if (!rwsem_is_locked(&vma->vm_mm->mmap_lock))
+> -               vma_assert_locked(vma);
+> -
+> +       vma_assert_stabilised(vma);
+>         return vma->anon_name;
+>  }
+>
 > --
 > 2.52.0
 
