@@ -4,88 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 242A0D6CFAA
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E35D6CFAA
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF3876B0373; Thu, 22 Jan 2026 17:35:13 -0500 (EST)
+	id 425C56B0375; Thu, 22 Jan 2026 17:41:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCA926B0374; Thu, 22 Jan 2026 17:35:13 -0500 (EST)
+	id 3FD7D6B0376; Thu, 22 Jan 2026 17:41:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD6CE6B0375; Thu, 22 Jan 2026 17:35:13 -0500 (EST)
+	id 308D36B0377; Thu, 22 Jan 2026 17:41:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB17D6B0373
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:35:13 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5A22577C3
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:35:12 +0000 (UTC)
-X-FDA: 84361056864.02.8406E31
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 209166B0375
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:41:35 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C15941A011B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:41:34 +0000 (UTC)
+X-FDA: 84361072908.10.365C922
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 084468000D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:35:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gMuITffC;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id E4C758000B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:41:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JV+htoEF;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769121311;
+	s=arc-20220608; t=1769121693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N69P9gk87f3f5JsOD1wLC/vcEOrQqvcgL14LAZUiJJo=;
-	b=FeF0iIsbkIL6xq9ZOzXyUzcAqHCRhwoJlOZkZzl7Jy3ke9chTV1WrnPrT+sBCKzkDt2P5D
-	wCNkqFXIq1nD5Nd5/QJ+UVjCB5DVUyHfvK3GlXUjZutN0RpwUd2opyg3j/reOUU7ES9UC4
-	WXVq6Tc03deUMTlJtdEzD6hBxZrM7Go=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gMuITffC;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769121311; a=rsa-sha256;
+	bh=FB+LD4a6dmTjlejWp7EhyZXPzJZPw52sw1F9UG62XBY=;
+	b=YhvZmnZ3SoXNaJs0Z7fhR1kZEI8L1iQ7HpfJRat/8DCanFVLsBzf4kmC2KP6+dptnlOYlk
+	N59nqi5t2zQRe2DNjudC3tarqyDSReKTRN705bAfhafY3xrNb61zply4phc5zA7bKvqQvU
+	bvXOGcmT8IphoJCX0tO2xAT+gZMYfec=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769121693; a=rsa-sha256;
 	cv=none;
-	b=x3sn6kGO2uT2fsqlvZgkyUUXi+G4WBA0zCQSyxA8fAgnFSriKgloccgcWSIHK5h00sCuGI
-	KufZS2n3F6K1md8qazsjKcb09cqH4/pZNHAeisOPFZvVacuTPZ0FA3/j7obucSMD1gtCtj
-	dvfljFDhHuFyWB3tddu15vuUxhEFRtg=
+	b=dmqm6WmIwYuD9rON0V8L3N9AFor72Vmrenk0Zz1n9tOGC9RYE0NaSuu1J++Nnr0agzsXUG
+	6DiJTFhdFp6iLptgE+PMV2V9YqPMFgBV6Mdwb66GQ3KLwAzMWncVUUcQTChL1DSNOR6kFn
+	cwyzeKyO4lIsFqiwga8/wuaGreNpHZE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JV+htoEF;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DF9B340B09;
-	Thu, 22 Jan 2026 22:35:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8287C116C6;
-	Thu, 22 Jan 2026 22:35:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E841542A3D;
+	Thu, 22 Jan 2026 22:41:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F92C116C6;
+	Thu, 22 Jan 2026 22:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769121309;
-	bh=cel+85lgP008k2TuZNt+HCFnz2aRhDRJY2Ab7DEOzEE=;
+	s=k20201202; t=1769121691;
+	bh=ltunTCCxLClZAqNMOmXb49EoyZfyf/+7jYjno2nXdHY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gMuITffCjqizZ6qdmb0Rx4n1xO3es9euuSRc+oEYJyy9llTs3jtl8Ug0qXoQNCNEV
-	 iRTY17A9NU3zNCZRIbVAJ7SQKe6HOVW1D0DaknGltAs5id0FYibzX9CBuhlmQy0T6X
-	 dLLou0mJ1DToeshTVPcBhyM4XnOeDJgW/SLRAg0vuvUyZRTENr/XnKshJmR1QZbUEP
-	 gQ9o1n94fFs+ZU73EcvuFB86gs2TrWrKFfwuneULrGy6iJxUoW85Ey3IZxpxyLhTQT
-	 /tVObpHKWi/jX94lkakYsNc8uO5+U10tikJt9NhchbWUlJDubzHooW8XAcvZUhzvva
-	 BIM18QlsSa+gg==
-Message-ID: <f5c60f22-7bc7-494b-8dd3-5d0566c103e4@kernel.org>
-Date: Thu, 22 Jan 2026 23:34:49 +0100
+	b=JV+htoEFB0wO2aziMKYdhq0dvY+C5OmmZw5YpFsknRRVCpqmW6JvCjDnS0gz6zY6P
+	 5jDdjxYGB8V53GIu/3zWtFjDab+zbJlKJqlz5i/SvnKwVlkf8JgSx3In4EhCND6ZAT
+	 c4fwD8NFjUU9GSl8yL+3w4mCYGD3ACM0+L2CP2Yp1VU1eXg/w74xV6tEn6mRJK5EB1
+	 0dZvMnKaKQxwYrMzV4yt7tVJ8TYXOk94DCBbHmF6KJalI2T7VYiL2OQzF/3RLMnayW
+	 5k8sy46SJ2opItsi+qX9h+imOmMqpPVf3plrJBwb/Mx/OHG0gk/xJd0C5epIwvl5Wl
+	 rDC/A/c+btr1w==
+Message-ID: <4520e7b0-8218-404d-8ede-e62d95c50825@kernel.org>
+Date: Thu, 22 Jan 2026 23:41:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 2/2] mm/khugepaged: retry with sync writeback for
- MADV_COLLAPSE
-To: Dev Jain <dev.jain@arm.com>, Shivank Garg <shivankg@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Masami Hiramatsu <mhiramat@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, linux-trace-kernel@vger.kernel.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- Branden Moore <Branden.Moore@amd.com>
-References: <20260118190939.8986-2-shivankg@amd.com>
- <20260118190939.8986-7-shivankg@amd.com>
- <3aaa3e5d-7f66-40fc-a5b0-ea6a384a88a8@arm.com>
+Subject: Re: [PATCH 3/8] mm/memory_hotplug: add APIs for explicit online type
+ control
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+ kernel-team@meta.com, dan.j.williams@intel.com, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, mst@redhat.com, jasowang@redhat.com,
+ xuanzhuo@linux.alibaba.com, eperezma@redhat.com, osalvador@suse.de,
+ akpm@linux-foundation.org
+References: <20260114085201.3222597-1-gourry@gourry.net>
+ <20260114085201.3222597-4-gourry@gourry.net>
+ <b3d435d2-643f-4dad-9928-bc7fb5080181@kernel.org>
+ <aWfR86RIKEvyZsh6@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <3aaa3e5d-7f66-40fc-a5b0-ea6a384a88a8@arm.com>
+In-Reply-To: <aWfR86RIKEvyZsh6@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: owmc39i9pk8tyxbgac7foqg4ne1g7ozp
-X-Rspamd-Queue-Id: 084468000D
+X-Rspamd-Queue-Id: E4C758000B
 X-Rspam-User: 
-X-HE-Tag: 1769121310-544350
-X-HE-Meta: U2FsdGVkX1/1R4++DYzYgc+TqRwKL/aSHrX02xY+CXt6CIhWz7LIMFsnsUZeRHjAapk+cyaWUlFNDf1Tc2MKEPs7ZzdaUxzA7Azfc8E5BIXjTm0AWI8TyCif+A1HyN1TDEDVENTNTB3btuJjWZaiyMu9tdo6jtC3HYdiMK2wjXZSxSztc20QXU3yRfDW0fJOlKMcHKwism8VaPJ3rkS+tmvYdTbUrAUxhA/Wobg9f/asZJvTxOK5dhTRMAA4FQl+hF4doSkmcx5UXgdo1HWEG/eDtr0xaxsmT2WPcjoZfPHe7plZm/hU4691zQQD+NhyoKrY6mwbyOivQrbjSMREZdReVqvKae+xtp9OqdBV7kNB5tudt8lqxO/KX9DdIR5NdhURqLd2W6H+mVSd6v3EhmcwIA1XFanv+gK/75wc8jGL6VqaZZ1iG3g8POPOucM4HQh6ZIIaa86bhp5xBUP083qY8uOBfeeSdxa5dLJmvcSL+nQjF5bSYly42LoBKARzHhAU+yVzbOblNAXMsG/X4wVPcJOoSs3lHopCT9PMcjUPclrfmValcH3Bc9OFRJEb47iCLXJRSMU2z8D81HFp8yHEHVha/Rz7nldvNdWDhCTou5OousTytfWrgyCBGbMBzW5ypj+9643R7XXO9NY+/aAVvewFszZJYEz2myEsVZlX9J45KzBNhbdnmD4s7jIi2rlKBAdrMshT8WcHUB4s2HSoiRMFFsmG/tjhqhcJdjRYKchlMQYLEcfCS6eSI3zEqsDfVpCf4K6BXfcGst0WeSuIl78UENnMHGQzf6RA/R4zkxM4RmiK85ynNBHPKdW8QCC2+COhqgm7F2NAnqbVakpd077DWpKyKKnSAAxiU9bk/52shApcbBIirve1hf5jjG3f2PHMN/suRBG1S/QZusCmG5JV0ufNtsGe24bHZdN58jrdyWtNwx16hCwTQEtOtfW4WaGrg8/6rad6wOX
- NR0xGvQl
- auxVs7t9Hs6KY1jPGNs0lK9fHD1T9gkS+WKTxq8o0DY+Exj4abNyqGBCsbWgWyvclb2DWeoZO5GuwdO107ff9NquHKhh4ksYLrYAv0w/XjLcdykwYtwF2N/69oiX56u4HfXQpkY2JmCwgsJxgiICV4e3QLOurrDJ6onrhP67QQqdcYcqxVFxFWPAa/OAszYfegPPf5uLhu7KaZGy2F0OLf0RMIJvcFllpi9TMwki1Uk86YXXZmmztXiU3f+Xt61WKtI1MEiL239GjjOSUwNWks2lwu8RDbUJE6rgve32xdZ7HfOWDbfz+dvQCmw==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: dmgku4gdd9p94mwd5bz4xrxostebsk5r
+X-HE-Tag: 1769121692-308753
+X-HE-Meta: U2FsdGVkX18TvrXsDHzp7EhO3o7/R72FwYeU28x5V13L/wVqMID8go6c9BeGlRe0Ry2ZiQ17qQbpptiE/z1C2GnG7BXNlPUVWbcDlUDaQW0Ntr4WhQ+xTmpTIt5dW1HcpY/7h/0h1Me8Ns2PcV+9y3KcbU2I7Oopm1nghh7ZXcWash+B9YNZC368EoLnpX6R2O1Vy+WyEtnxPAXfhlsUHrhLJW1P1TAkaqw3wBTOv9tHeyJdvDhJmZMTMNKqalQYef//mqCf12BBhqnbVtFOwv9GuG2BIpRCChQl/hC080glEBhKE1hVssNeWW0lrDKyHP3DvalyNYXI3cdyFdsrp6QjgUC0xuYqrOlJ4qhK6G/Uf2396xQBmqlW3uBF+ncX1fhGArO7j5HLZ78b6W+UNTtwPZugBHyoBRHgGIlAM9hmc3YGO37rCNOTSCqNiO4V21QYzxApONNXD207qUBx8ZrjR7OPJpAKe5NzVbzjXiccvodO3jrIkBALOsXS7p7wm3IZ7dgsUcFnuhqQS5/FaqQrH5Vy0nILsUka36idBT5n9I4XBJibYpiWcRN4j//yPn+yH7yozXOGaq9241PfHhjmklH1zES4BVBzde9ilFUfAUTlj9taPljqCkLAcTv1E07P2uPGWP9yKYqW0qneymUCbtqyZ2sWDMwHUJYUeIFdVf3dGmHg8F4RL1YyMO1+ze+Ea7fDRBsHvuD8MliQT/bR498GRZG1z5YV8IiNjQHE/qO4EzVEc6Fqx0YsZL4adLIfRgJVtp067RD1TbxGNHS6707zY6wxBwzXXBJD+jIRNWWxGEedBftQY1yJBE7olrk18kw4hYQ5mzgMttib+LAd/tCTeCdzAGt16Tgy3foI0FBXlu9luTsQ74q8+werxDpIdIuAozBR2hm5xY32iRDkSSZjdE/NXDwaW1YPcX20iXdCZdOD5h0yovUKof9lNKMc0gOn2S2zXIxWeZo
+ IZHGHmwE
+ faSvJd2ZTj9PKSigTPVw9k4nUiiK2iYpSmXHPFATrDPUwSE2shU8xzVssjAyKLT4vzI2JxLNq5fLIq7FHixSYWjvgUW8yYxKW4AG8UjxO4QI/gQkr5VpRz23SkDD+sCqoLGvmF3jzduaA/bGu9rxo8xMcul1qVLQUg5Qfba3zobuzcM/VFcmIk67rgqpHZBzg20+K3FQ3Sp/V5JP1Q6aG5Dok2C8NLbNuRWwDKNJ/WmQYHHCKBX3pe73coZA8/CRZ+nMl1FZjPQE+gLcU5vTtE48nrsIfxdhGBvFPTnKF6b3G2qrPRF7yC+KTjQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,81 +145,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/22/26 12:07, Dev Jain wrote:
+>> For dax we know that user space will define the policy.
+>>
 > 
-> On 19/01/26 12:39 am, Shivank Garg wrote:
->> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
->> text sections), the pages may still be dirty from recent writes.
->> collapse_file() will trigger async writeback and fail with
->> SCAN_PAGE_DIRTY_OR_WRITEBACK (-EAGAIN).
->>
->> MADV_COLLAPSE is a synchronous operation where userspace expects
->> immediate results. If the collapse fails due to dirty pages, perform
->> synchronous writeback on the specific range and retry once.
->>
->> This avoids spurious failures for freshly written executables while
->> avoiding unnecessary synchronous I/O for mappings that are already clean.
->>
->> Reported-by: Branden Moore <Branden.Moore@amd.com>
->> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
->> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
->> Suggested-by: David Hildenbrand <david@kernel.org>
->> Tested-by: Lance Yang <lance.yang@linux.dev>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
->> ---
->>   mm/khugepaged.c | 15 +++++++++++++++
->>   1 file changed, 15 insertions(+)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 219dfa2e523c..16582bdcb6ff 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -22,6 +22,7 @@
->>   #include <linux/dax.h>
->>   #include <linux/ksm.h>
->>   #include <linux/pgalloc.h>
->> +#include <linux/backing-dev.h>
->>   
->>   #include <asm/tlb.h>
->>   #include "internal.h"
->> @@ -2788,7 +2789,9 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->>   
->>   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
->>   		int result = SCAN_FAIL;
->> +		bool triggered_wb = false;
->>   
->> +retry:
->>   		if (!mmap_locked) {
->>   			cond_resched();
->>   			mmap_read_lock(mm);
->> @@ -2809,8 +2812,20 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->>   
->>   			mmap_read_unlock(mm);
->>   			mmap_locked = false;
->> +			*lock_dropped = true;
->>   			result = hpage_collapse_scan_file(mm, addr, file, pgoff,
->>   							  cc);
->> +
->> +			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
->> +			    mapping_can_writeback(file->f_mapping)) {
->> +				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
->> +				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
->> +
->> +				filemap_write_and_wait_range(file->f_mapping, lstart, lend);
+> Actually this may not always be true.  A driver spawning a dax on probe
+> might also end up selecting the policy... eventually... maybe... I might
+> be planning to add that glue between CXL and DAX so I can add some
+> config similar to the system-default policy to avoid systems with
+> multiple memory-devices being forced into the same policy
 > 
-> So we don't care about the return value here because this is best-effort.
-> I really wish we had in our coding-style.rst to typecast such things to (void),
-> so we know explicitly that we are ignoring the return value, and not that the
-> function itself returns void.
+> (e.g. CXL memory device can online auto in ZONE_MOVABLE, but the other
+>   device can have its own policy).
+> 
+> There's a weird corner case for CXL auto-regions (BIOS configured
+> everything but left the memory EFI_MEMORY_SP - so comes up as DAX).
+> I'm trying to keep those systems working the same as they have been
+> while the userland policy stuff catches up.  Early CXL patterns are :[
 
-That makes functions like bitmap_and() hard (and ugly) to use that just 
-return some value for the caller's convenience.
+Right, but I don't want any other OOT kernel module to be able to make 
+use of add_memory_driver_managed() to do arbitrary things, because we 
+don't know if it's really user space setting the policy for that memory 
+then.
 
-For functions where we really want callers to think about this, we can 
-enforce such checks through __must_check.
+So either restrict add_memory_driver_managed() to kmem+virtio_mem 
+completely, or add another variant that will be kmem-only (or however 
+that dax/cxl module is called).
 
-Here, it's rather obvious that we don't care about the result as we only 
-retry once to then give up.
 
 -- 
 Cheers
