@@ -4,134 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E478D6CFA2
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B61D6CFA1
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:15:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1AC56B02F3; Thu, 22 Jan 2026 13:12:59 -0500 (EST)
+	id 6EDD46B027E; Thu, 22 Jan 2026 13:15:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF22B6B02F4; Thu, 22 Jan 2026 13:12:59 -0500 (EST)
+	id 69B9E6B02B1; Thu, 22 Jan 2026 13:15:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFDC36B02F5; Thu, 22 Jan 2026 13:12:59 -0500 (EST)
+	id 59DD36B02E8; Thu, 22 Jan 2026 13:15:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AC5A26B02F3
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:12:59 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5785513B14D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:12:59 +0000 (UTC)
-X-FDA: 84360396078.08.7217682
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 557FD80009
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:12:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ITTyR1vf;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 45DC36B027E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:15:30 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB5F8C1D41
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:15:29 +0000 (UTC)
+X-FDA: 84360402378.13.04D3B8C
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf13.hostedemail.com (Postfix) with ESMTP id ECA2220013
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:15:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=F0LC5JXE;
+	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769105577;
+	s=arc-20220608; t=1769105728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cgleVbWoUUJU7J/5S8L5DRHuujiCZGV/xdGRb4522Uk=;
-	b=VE7+CG0aZPB0qk1Bw9KoOr3mnF8WRK7MhUXfhrBm5rctHrsZNlHHPsc9/jsg1ID6Jy3Zt8
-	ExiU6IFTZCIi45mgTJvFhEvr41PlfduNL/XMLz+hSaOEJO5xow2mPqCr22xJHyQ9EXA14m
-	RTJp8dyW17wIHhLOXc3gSKVxcMxv9Ns=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769105577; a=rsa-sha256;
-	cv=pass;
-	b=2iXfXOckjJ0HiA1T1cq5h8hlvWUWgmHB0ieVtodrXnGXJcCOwM4iCM1MhE3bYR/IhqTdc1
-	9iq69qQ3g1rW/4eN/0HqdMyyQ/nrm9PJE2Ry5IUDdQ1WE4PQFLdKgDB4zdZIXkyyxEAMHn
-	Bt4gjIWEhjWeDSjmCYnwThwZvR2LJ7E=
+	bh=azOk63yV7A5TybPiH/Lg4nzY0I8Pa0E2B+WL4X7922E=;
+	b=HiPs0ZAXNlYwLUeLpihzoCwkp5kzwmsTrqV3AP4QcFufWFegTEQbSevAU+3oDWakX0ArQF
+	2R5k9qae+VHsWlthBMimVF4uYdj6f7Awr6kpNlVREX79Qhuxsnw9qXKUHUNObPW5eQ6UuX
+	llfwMIFf4wrlMHvTLcgeWhIBmoktHDc=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ITTyR1vf;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65814266b08so2438534a12.3
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:12:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769105576; cv=none;
+	imf13.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=F0LC5JXE;
+	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769105728; a=rsa-sha256;
+	cv=pass;
+	b=3XYmLwrUw8LPTs3PMhtjJvI7zGpuDQU/jrRUqWrRR6VzbrReQuRvmkBbGs19FDo8t2CdTr
+	ffg1PAr4bvT7Py+QaXyXyaS9kgHrHxLgR+KP7kNCycSyhR9StLti2BZI4NJxIv/w45kosO
+	wUUOVqCEnzroaaiawBIEM33+raxHD5w=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64b9dfc146fso2199935a12.0
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:15:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769105726; cv=none;
         d=google.com; s=arc-20240605;
-        b=diM+72pOHlKnHmhu5fCbmMoAqLniHEBZJ2QsCI+jD6zf68XQ98a2LjS8lBfVicQmaB
-         D6Jq6e4+4+CUJLAbpZKBV2bT3PwDaWZPl1rHYowqapUYv4OCB21XCoj7GiEYM4CSWc3p
-         Dt5RP/bf3aWK1Mgi4TUjvERzhxIu1jKTE8/OQD14Y0iWa8m2KaWUyt2QSeO+1Z8QIg7U
-         ZExaWLyNkyi6zUAXXh6LYC61GjECzETlXCGlXcFABqa0lyBszVvMDTs+BEzdj1SzWDSn
-         0q3TGrGNy/GN8LeN1P/70NU+k42qSVdrS6AjrMvgev4zNDitYwJOi1zOTtPs2mTDQigM
-         S0FQ==
+        b=R1XUxaKRQgRRdJ25HqgrxajK6gXTIWGyah2gd5El1XHWumf2to6qwm+4C2c4XwwaUa
+         O9145vSHBzPj07peNzp1XC60g3SLrV2qTPDw2fJ3Y/v77RLI30YeY10uYdmDDqY3ci8l
+         QXt/U2RBrQAB/1rhgpisHFyGA4nswvslvo8L6HTSCA7u/AKQW9J/cFyECDKEiW0B1qKt
+         dtDfP3593z+3cevanoUk6DcokIW3kId54xVsOoh8AVKulGqtGMN06GlvHHndoJl+H5Fk
+         dZ6Kic7us4e43Suk+SEtbZdhSQ3dvrZdLDOJKiOE9POEo++6ty6iZxavBDQVeSUXDsaj
+         uRhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cgleVbWoUUJU7J/5S8L5DRHuujiCZGV/xdGRb4522Uk=;
-        fh=QEQ6zrFtCDY+0sp5G2di82YmB0neaZXor9bW40kfoWw=;
-        b=ghXf9G1L6mLmoSWyILMzp9wi0ZBLJNabS6N+tehnAUB7xLw6WnG16Xf88q1sxhtg8j
-         28vuNnB6+ZJsrAUggTaOPRt01S99XAPPDpj4TXC+GdCKnWycTvXMwJ66iatiJIUckRFz
-         O86p2S6IlZU4nOO1dMUlfy0vQn9g4nrWUrAy7CuBzGau/9to0yx6VcfK5JKxuiXZvKrp
-         A/lwwZsBRAqKKHGjZHQkgh0uckQ4alFhLQ1ePhybwAjkgCEmFl7qT67IE+dnibxsOaQT
-         rg+BmkOqTjMhRTBzXNIUbXloN8RpDpI/7lfLu/gZbRe1wWSw55Ru3unsiCmokTdpPii4
-         nB7Q==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=azOk63yV7A5TybPiH/Lg4nzY0I8Pa0E2B+WL4X7922E=;
+        fh=UhzsjzIY6P4MrJyjnUJveDkLDruppsuxZrUn3qcOxpY=;
+        b=bPsXFpIvrJXiv40DOFvBPkgzHhiYWk71jp9fsdPf8mZZzZucuixfR6iHNWIbTadVPf
+         9OzGyV3q62s+88nmmopo06+LnF6BnUV3XxQJfp/BN2jIoDvgttdir/jWp0Y8unBOb8nj
+         LkBdoSKqjRYWiJSjQvZW1eGm1EpRvDftOno+WmDUU/cdLBm3oGJISNNNCKCeoVoIcRLc
+         bbR9dfLxn+0lLi7Nfi2dm/LUyrkWkNf5jstRZs81vKxh+lhYFwt7gZXmpi+9hTvLuvak
+         umcRM14gqU7KMyNOWoD25AGPl19FlgQ+dD11Yh2XadWQCjPfsU0HwI2D3unIkmEnDLVp
+         mpfg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1769105576; x=1769710376; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cgleVbWoUUJU7J/5S8L5DRHuujiCZGV/xdGRb4522Uk=;
-        b=ITTyR1vfRAVG5sL7khnLjEM9ZF9DoH7C84qV+CVFzxaYRNJLDxn+loTckudowsCMHN
-         hSf5BtwOB5ku6bQb0KIVphcL80p3zgM1AXmdoxgI2rQC/UvenEDDrPfwD1cLOavN1rZI
-         q+AltMG5NqrW3wnMsdndr4rYVdc0vgKbXVzsXW2HZghZKAwBSb2xFYzzK/07yslXSgz3
-         g5KC/pW3J8blbe3TU9r+PfHE8qMWMchbxqUO1FrXhzMWKVc7zI/yK5XqQDqNNBmPyoMQ
-         wIw1r/tcTKDVAMckwnx5fwf1Ga+0nxGf+/AucPHu1cs4jYe8jsawiBvOgi0D610o8wbp
-         KYWg==
+        d=soleen.com; s=google; t=1769105726; x=1769710526; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=azOk63yV7A5TybPiH/Lg4nzY0I8Pa0E2B+WL4X7922E=;
+        b=F0LC5JXEi9nSXnuxTQBuPmGyCtp+hqdqJlXa5ClkeQtB2DQu9mPkunI7a5VhO/iFnZ
+         tPFZsx8eAmplDyadH6PI9UJ7Mo9BmyB0i8+Ui4uPW22VPP62H8V9KDXeBqIxVachJ/R1
+         6TMaVWwLokKr9102/f5DDMHUN5bxZ5n2ddirD89VaU/2OsBNqGbBGBORhp8Nyx9FhPhE
+         hA4qJ5XCm1+z1ZB0LgEgckmRPyNk/7Zu7x/8dhf8A5oMSwuhBUGt63//L6vDpAxuyikY
+         oVe+usJ6/QlNq3pZSJRv7JGOt7j6tGkYr9nBRor37E37aUamGiOwhkvFOBYComrZxQ6s
+         GdBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769105576; x=1769710376;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cgleVbWoUUJU7J/5S8L5DRHuujiCZGV/xdGRb4522Uk=;
-        b=C8M4faqFVb0F3sUwfYzd8zw9BFZOaOS2UsiMa+6bO1uXyakc+4Rw9e494DvQfOxXd1
-         zR2c8F4Cnvt62IJSb1MSK0FYhnsz9BL1g/nAit4fGoZhQE5b9lJIW0ogcqRnOPtz3+Td
-         t/cZEsHQz7uXH2IQ0gb/ETKFZg2Ct/ach1un1wrXkA7Z35iQTbBRAujfAQh62l46YLkl
-         5SY5o6ZDT50/+SEFPx6N2RrdgwTIDBCmn2YL2ZIYt7rbBBg7klk7zJlNMHfMsngXqlTl
-         HG4N2lnNhf0oETSuNdF/SgDSJnJrpvvwR1KfVR+NW+/1SmHRTh+M/+ikT4lp5BbSJpQb
-         uy4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWrR9VUa4/lX1ro/olZij2GQ87mybgDlcvk2IDYjg81G/WMVoaWOlQRCIh12ejVNlSDAgtlntiEBw==@kvack.org
-X-Gm-Message-State: AOJu0YxCtK8DkZQxprewgI0YrxC6ADm6YRbVS345NiuCiXzjew6kg7/V
-	exMKUNHrBFiFdkHvHpEFjpSU4YajhHhkkcGloKXxahJWrvZ0eDCTomtGn44eLtkW91AjuoicYBI
-	rrKXjeprHtdbxwqxAgOIX/FXFEqxWzOqAwa582yhW1g==
-X-Gm-Gg: AZuq6aLDH4u93UKQIbxgPOWP3HznHctN7OOmy7W+64ju9YPpfAZSA4uwbkdMfcLC3T/
-	JMmUOBc4haJ31j5RPVRmxfAwnauT/5F4xaBw7sXLIPUhnDPMh0t7KKlEFbJsdtTw/Xpq83k65uZ
-	EVFPG451Kd4Sep0jC5K8rCglPLuffL2y+1r8jwJvupzlRVrAOeZTlf2J6T8hANCJJfQeIokPnIt
-	G3iy2+IkVGfqNkanQUB3cAW5UbMXr6YlHgItMnJT4eBPm0/fw2NOp5o4/+UO00pxtDFsPdo+ZX0
-	BkBQbSZ0uHj/45n1hDg+KzZWnQ==
-X-Received: by 2002:a05:6402:2745:b0:64b:46d4:5d54 with SMTP id
- 4fb4d7f45d1cf-65848763bd9mr334433a12.11.1769105575867; Thu, 22 Jan 2026
- 10:12:55 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769105726; x=1769710526;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=azOk63yV7A5TybPiH/Lg4nzY0I8Pa0E2B+WL4X7922E=;
+        b=bdpAU0FY0feNoS5ALzx5y45RVoNwK45m2b5FM/txlZrbmEl54IF9Eh/iei19WPOrs4
+         ij6N9t14y2OeZ/9u0RRvxryzRnVWEHxe2aonne7FB2HdCestcBJdaam+NGxh0zqkJD8L
+         3ZlBBMrKO0+hcEwLvL1CvB/2N9eEfk3MnJZE9nOtSHoe0R0KeOpvBcwYA58MgQma+GR9
+         fxJWLWP+IcY4rXiDJFk8XtOR49jEFq2Oeem4cAmTTxJCYwSyaXNO4GIDQxCDiZHlTgo/
+         OiW/VqTEaqdnO0625FXkYqbFxwVEGmkTP9h6vf4hhifWf9c98HsJu3Jc8U8YmU3NhKuC
+         okoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW5kVC+x3FDafE3lKgMJBd+3zfHW7nghGVDYkBiCS93kIxRDNOmL65Z1Teq+X6Tq03nVy6vE34ztA==@kvack.org
+X-Gm-Message-State: AOJu0Yzkp+LuVLCqtbp6VG3I5laZBWMWUmuGooyL2voWrBUCtgiCntxN
+	jpwGSHIuJfS+PerMiy45wLWUVf3RFJw78SbDw6Ri7UX8gvTIk1kil2na/zdoTqLi4PyW1r/e7iY
+	N+9vQ9kYq+7TiVZXxIWJqw8GF+RN9h4baXY+uznGRAQ==
+X-Gm-Gg: AZuq6aI8VSIDXPlmsfaA3NZU01ktKtsWe6PV2+gBGoVrNBPttFaV3zRH+gBsYPNvxCi
+	dCksBlonw7W04bmpmiXfCMNPtM3DtfBQKjuGRUBb4rzBaMRJTnNA/nO2Azqu2nSRp2J9DYA4L92
+	4doYeb32cUMI2PlOEjzG4XtW6u1FLqBMnJR1xfSeW5XC5lOcBe46pxkjdb1iphqDPyCl9LGowHv
+	MLsSgM+B3ESN8q6sYSztyE9Q39hPBXjFLckZglUE41cOpvoEZGSejDnqoZCm8+mkZoxZeSfvr8q
+	HPo9LchvCXlSELGC+ESNOvajMQ==
+X-Received: by 2002:aa7:db50:0:b0:658:1350:1fd2 with SMTP id
+ 4fb4d7f45d1cf-65832eb76a5mr1835496a12.13.1769105726405; Thu, 22 Jan 2026
+ 10:15:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20260122121757.575987-1-rppt@kernel.org>
-In-Reply-To: <20260122121757.575987-1-rppt@kernel.org>
+References: <202601211636.IRaejjdw-lkp@intel.com> <20260121123922.c0bb0ef8505c70b99998c324@linux-foundation.org>
+In-Reply-To: <20260121123922.c0bb0ef8505c70b99998c324@linux-foundation.org>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 22 Jan 2026 13:12:18 -0500
-X-Gm-Features: AZwV_QjD1qdgR1i_TWwWe-f0Ky_qgOK6uSXJjfLb15ZCQS_D3qhs3-TkGlSTUFo
-Message-ID: <CA+CK2bB-JZEFp57rCYK8wGKoGP8U1NX_nLd=RRu3ozuVn339UQ@mail.gmail.com>
-Subject: Re: [PATCH] kho: cleanup error handling in kho_populate()
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
-	Pratyush Yadav <ptyadav@amazon.de>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
+Date: Thu, 22 Jan 2026 13:14:49 -0500
+X-Gm-Features: AZwV_QjkOt8rryPZqYSqx98LQ60wO70s9K8cucBSZwSM5UYoS1ViJ13uHLsVIOo
+Message-ID: <CA+CK2bAyHHoUaT_4dTNK6AH2oyMMhs2sNhuW97hV4yRw7ie9Tg@mail.gmail.com>
+Subject: Re: kernel/liveupdate/kexec_handover.c:994 kho_preserve_vmalloc()
+ warn: missing error code 'err'
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, oe-kbuild@lists.linux.dev, lkp@intel.com, 
+	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Linux Memory Management List <linux-mm@kvack.org>, Jason Gunthorpe <jgg@nvidia.com>, 
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 557FD80009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: mn146o7icibmmgcgc6fbtgy5mo5h7ktc
-X-HE-Tag: 1769105577-571301
-X-HE-Meta: U2FsdGVkX18glCbQQwZqrAly7dReQukpV4LILkKLC6FAl2aD5uun/fVQgGo/srOnBsqh1EXndp7XjpWGB9XJ+xEgdLH/Jas6ORsOoCFvT20StQK/zApNu82HDCP8pbypxfczWIdMcsw5NT6fZb47IuE87YPetqbGmutPNUJq4EZ4cmwjydcKcgMiMJkQGVQBhGasZ/RB1Z5qrajAtLQqHhLKLM/P+2dT3c0p5e+fE+DFgrdhwA7U3wkz7tgA48Uzw/tX9P9hgChbc3Q775meNqd+5FzcafpHOMx1wTrFOXDgcpjLufWvem9pY+6r0TRXmmNTdvbSrYPthpwyVbslMfLzU5ktEYCWUMU8xkeVdVex49feY2yqqVTpmsjPmnfbpGVY0lYr5R5vIdrddxCwwx+WOlXCfk125SdFo/+PFyY5n0+lTDfmhM2QWPcXF3TS3NACKWNCy/LkFXQ/1Y4rb5Tw14x9S6ElAfR39+KWKk27GkVXyh1xCYzRYJtYVheCtls9RTg1SGEmRERd3JC/xXZ/7vtdvRn7vjOMYYL84FDkimcbZKT92nKnYY2kr7mEpMj1lrUH86HB/jwJeSHFvctokGwE3bo7CRptwpzoF6OJM3J3DGclPB0s7x8yNbSnY/6xrLt+iwS2EXqi7JQsSioD7C11YXSaGSiBzBiu+5ch9DU3l5YE1aYnPjJLT0Bo2iuhaQt+YMhARemgVGNUXVO2ulnY/e74NwvKMQ0yIN2YbQECaFadHWEzwkw2QnZCCQJSdyGlEIvDlB8Cr2MCx/S2TIjNzr04j53VyMTMZE/sVwfiOGauSgnT1Cg2PFTpcT1pGUSDb6rDro6aVS8FS3GK485G+K+VUDvVyt2T2emgLVDdfu5sF6tUVHHOSKM5xvwmdQbDEVbbDzAxns2g2PwSCXSg6TUiFClNGEWNYE10DsRQ4O2WhNndHBmX6+Vp9v9ohdcQM3iXoh817aj
- 3j0BcFe8
- 8yad43OjNSOZf2d5k3isWD1rcocGoQfoX4s/XTK/oYEgXybNZX/1Vd8YeLXyiuA4lU5xLOd8mTj/6wC1sFbOzcDDiLdtUtUcuM7DZTGpBvIR7cZ8Pim6zVkWg8WAXVkzpDTx448rcTTceYLJQl2T7OsHGDLX0iqoTKVGkFhX4bGelfCs0VGk7GRO9euJ4qXmRvGQwUKmIJ2H3Msy+OIY6KNyVZu5p84+pnPh3AmoSyr2mvDlUCwiV0SdEYiSUKedaARLMcuaJMSFa6QMDC1xUxmQ2I0PQ//LIABNqxR//Sh3iMeiY8RQQaM/Du9SUlRPw99Ckvx+Id9giGShoCZx5gl5GHnNp62lOhnZKUaEwrxzYNmGLbdGdE+8ZXt3sh2yBI7soDrLJuJOtk0x/A8kPOYyLLQMHhUurSTozbDUhIjG0ZGoYFh9bfVfY2Ld/NGK05hAZ
+X-Rspamd-Queue-Id: ECA2220013
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8cerkcw3dnbycm84bkheukb9tq5nopyg
+X-HE-Tag: 1769105727-271711
+X-HE-Meta: U2FsdGVkX1/yAL0KsJ9YMNYji3KbEjKwwlTKk2epMU6MzN9QnviOyO318Iyq9YQrhZ338dZrTYa+NVG858wo1A1ZAsUwQyzFLUlwuWdsd2LmVzDoCujpsKnPU1XFMndUHVDgR/eMIZF0W4ZZz9FlYlvGwN0rHfy2LL9oT2supYCDVZwNZDQaEUJvxy3uorYndjafT7ethQYLCduyhMHlwvYh1hJyct3cUE8X/zSfbLeIcKmkIFPIU5jeoNtxT9N+91WHYrlRms3fRMc2sRD+315kxbD6LvwoXrJeIxR82Fj0pemaH+sGMKWjc1AlXAcjwIFUMU6sFnHX1u1xJyQHxLTfwWEFIlFfPBfeU6G5OWfZd1TtKDY7IeiCno+kbWMgPW+/UfhhxLAjfglQzEgfKj1ZSOxs7/hAWV69tm0lhDo/rxM3B1N/d+oB4DoISEtLzv8AKagboDOuhjqagNdrfGAGEQ0l4Xu3LihCHtMt4VY9vuQ0li3fGxPUC839bV4+Msy8lcQ91rRGpDzKSoNKByAxv2LoT18lHOeX8bLJEjZ2rcGfKTc9xWI597wDQIL5K8ftNKeNcckyta42mn5jODTIeYZ1gwhbZEpSolRhZ5vf3dNBk3KBdAu6rZgXVAS2qYJ9GeD21/iacpvy7Ku91r5HPdcfWTyTpZrNwJmAJcLH+0Y7hDBuy9ujm57aLaL+87d0lvsm+t8dIBCnVpwmmEtOTY+s3rUNvID97JVljeYyg3FS18wRQ4QxOfqWf8hEbtVhLFoAz2VEm1mSSYGBd24/Fnz5N2VrRk7yBwyXQpGC3VIgNhY/yoNI+h3fxN8qgQFPTOZY/4cD0KYbSr/YKZ63Bc4dWLm55moVKBNsEBDlKKHxsMaJJbst7r7oOq+OrXLd4DyS7brXV6ZF4cnZ7Sm4rGP8Yrzpxve1VXrZ8KBXtU5n0sAyCBCTVhZiomESufShN2qTn/PYJw5Jf1L
+ BUnNeg5b
+ KOEa3K8yjYevPQikBMZnTK1ovtLLDtNF7APIdXgJzsaet0++VmZp6/q10zRSnbG/IzyF6B/0s73EadCenCqfYRHWR1QbJdH/IkkBGVXp3R+Q8z5MPVbgOtAHIr4ZrkQ94jxVfNCGCw7gmrgXj5pdC/VBS74Iu7KrP/01fvodp8mnv2lV4TB0vzl3veHfRQnQ8BgBAS+C2hnaMcx+fE/qJ3Wfek+7mJnqSxjd5vAV1j5FZMZtDZfclNezf24RVxUxtZU+gKYkw5OaKkrNL433ZLhd9lM91Tbdl44ccPaJDJWThwS4Bk3mWWqEWYrgx5GzlVfKMobek2EqP33JX+4lZvJuVXYD0i+rZQV6VhjCMwherSmX3h3rXZwfrHZ5tAUKEj9QS4PU5EwT0sZSDYumszZA2S86amaTbNCOtXg9qKOlNLbE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,122 +139,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 7:18=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> * use dedicated labels for error handling instead of checking if a pointe=
-r
->   is not null to decide if it should be unmapped
-> * drop assignment of values to err that are only used to print a numeric
->   error code, there are pr_warn()s for each failure already so printing a
->   numeric error code in the next line does not add anything useful
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  kernel/liveupdate/kexec_handover.c | 39 +++++++++++++-----------------
->  1 file changed, 17 insertions(+), 22 deletions(-)
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
-_handover.c
-> index d4482b6e3cae..e248ce2e04b7 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1441,46 +1441,40 @@ void __init kho_memory_init(void)
->  void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->                          phys_addr_t scratch_phys, u64 scratch_len)
->  {
-> +       unsigned int scratch_cnt =3D scratch_len / sizeof(*kho_scratch);
->         struct kho_scratch *scratch =3D NULL;
->         phys_addr_t mem_map_phys;
->         void *fdt =3D NULL;
-> -       int err =3D 0;
-> -       unsigned int scratch_cnt =3D scratch_len / sizeof(*kho_scratch);
-> +       int err;
->
->         /* Validate the input FDT */
->         fdt =3D early_memremap(fdt_phys, fdt_len);
->         if (!fdt) {
->                 pr_warn("setup: failed to memremap FDT (0x%llx)\n", fdt_p=
-hys);
-> -               err =3D -EFAULT;
-> -               goto out;
-> +               goto err_report;
->         }
->         err =3D fdt_check_header(fdt);
->         if (err) {
->                 pr_warn("setup: handover FDT (0x%llx) is invalid: %d\n",
->                         fdt_phys, err);
-> -               err =3D -EINVAL;
-> -               goto out;
-> +               goto err_unmap_fdt;
->         }
->         err =3D fdt_node_check_compatible(fdt, 0, KHO_FDT_COMPATIBLE);
->         if (err) {
->                 pr_warn("setup: handover FDT (0x%llx) is incompatible wit=
-h '%s': %d\n",
->                         fdt_phys, KHO_FDT_COMPATIBLE, err);
-> -               err =3D -EINVAL;
-> -               goto out;
-> +               goto err_unmap_fdt;
->         }
->
->         mem_map_phys =3D kho_get_mem_map_phys(fdt);
-> -       if (!mem_map_phys) {
-> -               err =3D -ENOENT;
-> -               goto out;
-> -       }
-> +       if (!mem_map_phys)
-> +               goto err_unmap_fdt;
->
->         scratch =3D early_memremap(scratch_phys, scratch_len);
->         if (!scratch) {
->                 pr_warn("setup: failed to memremap scratch (phys=3D0x%llx=
-, len=3D%lld)\n",
->                         scratch_phys, scratch_len);
-> -               err =3D -EFAULT;
-> -               goto out;
-> +               goto err_unmap_fdt;
->         }
->
->         /*
-> @@ -1497,7 +1491,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 =
-fdt_len,
->                 if (WARN_ON(err)) {
->                         pr_warn("failed to mark the scratch region 0x%pa+=
-0x%pa: %pe",
->                                 &area->addr, &size, ERR_PTR(err));
-> -                       goto out;
-> +                       goto err_unmap_scratch;
->                 }
->                 pr_debug("Marked 0x%pa+0x%pa as scratch", &area->addr, &s=
-ize);
->         }
-> @@ -1519,13 +1513,14 @@ void __init kho_populate(phys_addr_t fdt_phys, u6=
-4 fdt_len,
->         kho_scratch_cnt =3D scratch_cnt;
->         pr_info("found kexec handover data.\n");
->
-> -out:
-> -       if (fdt)
-> -               early_memunmap(fdt, fdt_len);
-> -       if (scratch)
-> -               early_memunmap(scratch, scratch_len);
-> -       if (err)
-> -               pr_warn("disabling KHO revival: %d\n", err);
-> +       return;
-> +
-> +err_unmap_scratch:
-> +       early_memunmap(scratch, scratch_len);
-> +err_unmap_fdt:
-> +       early_memunmap(fdt, fdt_len);
-> +err_report:
-> +       pr_warn("disabling KHO revival\n");
+> --- a/kernel/liveupdate/kexec_handover.c~a
+> +++ a/kernel/liveupdate/kexec_handover.c
+> @@ -1011,8 +1011,10 @@ int kho_preserve_vmalloc(void *ptr, stru
+>                 chunk->phys[idx++] = phys;
+>                 if (idx == ARRAY_SIZE(chunk->phys)) {
+>                         chunk = new_vmalloc_chunk(chunk);
+> -                       if (!chunk)
+> +                       if (!chunk) {
+> +                               err = -ENOMEM;
+>                                 goto err_free;
+> +                       }
 
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-Nice clean-up, thanks.
-
+Thank you,
 Pasha
 
