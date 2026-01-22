@@ -4,98 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9978D3EE6B
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 14:44:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843D1D3EE66
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 14:56:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6949F6B0205; Thu, 22 Jan 2026 09:44:11 -0500 (EST)
+	id E2CA56B0207; Thu, 22 Jan 2026 09:56:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 642396B0206; Thu, 22 Jan 2026 09:44:11 -0500 (EST)
+	id E03AE6B0208; Thu, 22 Jan 2026 09:56:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5784F6B0207; Thu, 22 Jan 2026 09:44:11 -0500 (EST)
+	id D0F1C6B0209; Thu, 22 Jan 2026 09:56:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 443E06B0205
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:44:11 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA0301DDE99
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:44:10 +0000 (UTC)
-X-FDA: 84359869860.14.4853C21
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F2DE240002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:44:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NCphwYqX;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C22446B0207
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:56:02 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 694061A03DC
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:56:02 +0000 (UTC)
+X-FDA: 84359899764.28.2F07518
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 51E7EC0009
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:56:00 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GpMeQa3n;
+	spf=pass (imf10.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769093049;
+	s=arc-20220608; t=1769093760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=h8XykmLemWYxi9zFSLfXx8SKXzYxKo6wH/sn5vJqzuU=;
-	b=Ly/U0hj/m462wPjkXGwhIGg54JxPzRVQr5C8QBw9giu76NyTx3ZUWctZsHAMhgfwpBrTRU
-	dLGeifo23Am7rxoReAec8eMEI7Eg0bElCLR0XTN9RRhbUvcs0FNwVnxz9C5QElsEzu0R7g
-	LeM23FGCQtiCZRpMVKVSE7+c8PGHbbA=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=39Z3xY5BPN6XAwZM/W6drGSAohVogKjxUvJh+CCUHDg=;
+	b=PfGzC45jKJw5MZHZT2r5X8238LoUUBXQ1n+hEEBZcVMt73xxGELo8+TNv/IDLJQ44KCk33
+	bAoZSuuHyoczSYZUT4HcuR35bz9GPAlgudYP66U/qGBUIS8Yk6oM4lcNmEYnV+dQ9x8vE4
+	vyt+9PyZF/MAcNqVQGvUybzqtqaX/GM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NCphwYqX;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769093049; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GpMeQa3n;
+	spf=pass (imf10.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769093760; a=rsa-sha256;
 	cv=none;
-	b=br6ElXkIclD43sIGSgQD0iILQ6+vE7/odZr7SH5naLOr/IItK+/A9aFQrtF4oosWLToWC0
-	WYnpy5ZLXA2Wln1ANTR0dr3qNJcZi8BaX+Kn0QmgihX+HIFm5ETleD0WDQ/W5VPrDpQN+/
-	IUuRwSI7R3C2SmbP9l8b/PXipZicPNE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769093048; x=1800629048;
-  h=date:from:to:cc:subject:message-id;
-  bh=ZRVbP8VF0SfpNF15gkPw87CRoenMXvXIhdADs1+Adjc=;
-  b=NCphwYqXBeiDaDsKP7XqlWZijIJXtktlEsEff65Wp8hJRSqxHrcWd/Q4
-   1EBsd+emqP4gUwoCWKyMSt221UwWGUspOl88rA8p8l+ZJBT2WXuwJtu5c
-   imt9SMM5TNgd/9R+MaE3GQLfLmUimKluf4f728aeXj1d5LK10UouYFG98
-   IlVFgLPZ/fPEKK7KENen3xcDZSNJcUX0Js9BVdPdI3oFjaZh5qWYzw+/z
-   jfiRXi38QfS94fH84WLPJXn/oXJBmmycC4bi5idnV/wBgLRsOtvq0oT+2
-   5iAnLsksxdUt0VT5AumZrE5GofkRkBSfaFlR0mhow6ryVJSmiDs9zSc9s
-   A==;
-X-CSE-ConnectionGUID: xuMsMGjMT8ezq/tRa62QyQ==
-X-CSE-MsgGUID: C4WnaJjwTD6z17nUdvRF0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70392102"
-X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
-   d="scan'208";a="70392102"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 06:44:07 -0800
-X-CSE-ConnectionGUID: pJHTuGUNRDy92Nq0JQIn2Q==
-X-CSE-MsgGUID: bVQeI2vWTju6L5wzLvneRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
-   d="scan'208";a="238004404"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 22 Jan 2026 06:44:04 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vivuk-00000000Svi-3a04;
-	Thu, 22 Jan 2026 14:44:02 +0000
-Date: Thu, 22 Jan 2026 22:43:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Nicolas Pitre <npitre@baylibre.com>
-Subject: mips64-linux-ld: lib/math/div64.c:undefined reference to
- `__multi3'
-Message-ID: <202601222217.uzed54La-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	b=W9Mz1F/XwLgdAGYBlCn0oNTa2bHEmPqBcfHXMp6ouN1wt1nvkxtUlefJHfimqEF2XyveHF
+	LjHHS4dIVWwcsyu/qnD0e+12ovCxNhsmABiNxMCKdP0FLUJXO5nkb2OAGKge3Rc2/LwVph
+	k3QmwUhpKEvjWD0GARrQ2Rl73TGLyfM=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-432d2c96215so886487f8f.3
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:56:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769093759; x=1769698559; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=39Z3xY5BPN6XAwZM/W6drGSAohVogKjxUvJh+CCUHDg=;
+        b=GpMeQa3nhub9hEdzbkBL5ySOLsjt4odhmFBWCxmSQxAJgt5/yXBYQRCYypc+jzeK/Y
+         xRwvGWBrWpWkt2YwididEbEZ0KsxDwLxmJ4EN/Eg/ucOpysO7y17mUnGloRtMme1ZZcV
+         F/pLYNFhZ0Si46Hx9ksoQXwEKpwWgoMYqq6QegYke9MoyqqnUK9hAb8GJulHBFsvmh9r
+         o5IsdTIMoQHNW/EZ6vJ0lZMnOxe5mCaZn6n34w4dK8sN+wVj86lZqoo+3gR1LkL9KORo
+         /ooPfZTU6Nq/USfLpelDjKKqjz3xeB0aQqRN52draIe/Aji4dkJJHnvva0OL7QWWJKfo
+         fZcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769093759; x=1769698559;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=39Z3xY5BPN6XAwZM/W6drGSAohVogKjxUvJh+CCUHDg=;
+        b=EMpnr93wduiW9k7SODH19C0OUP6450F6B44mQhxL2LKFnaEH0BxezfuDcYlheC6FLN
+         37Pxp9fsPcy85sWg/awQQyAy5vNRbRt6i8nebW2epKttDq2QxV+bBs8E5seCvT8suk9n
+         oPPV37KExEeTrYOo+z5BbDx051DYGrEEuSUn9CYis+yX8OaSd4ANUgEYa8KICzFHNSiD
+         ZNciyQsrMfoIhVBiLOMzi/YcWdStrUxHZ3xhH5A6mOt92+qoMPeTT2NR5/eE9+AFr33g
+         drvOXbqxNIMRTAwec/mrFgARaaeKpBhlflgDZY16gwVTqP+xiZhSIgPbIwHXJY6luLQi
+         cKPg==
+X-Forwarded-Encrypted: i=1; AJvYcCXESnYDHenKDCwacBPkkLsKi9Fri4OanD0Y4IUNrfD1UNsXHl8XH5jZLK36KtWQRMoxw9va9vI8iw==@kvack.org
+X-Gm-Message-State: AOJu0YwSwG3lEBRKeS5LQGaNP7CTJO/pyqvkCNPsEfBu/kZpzpaQuQUD
+	HLSSFy9XU1VfMLFKEMkdghbL0HbwIxTNjijDnzXt7i61lacV+Lj9B7+1
+X-Gm-Gg: AZuq6aLeui0E60LbZoPediWrk6VYjKYcaekQLaTtyu7uAoJDGz7fQoIZoRVYKE5tn5K
+	+CsmY6ccBkFyy4Bparkg79e8k3NrFBZXpfEpVfSzuHOY3y/wDOvKl2/x5KMGwH9ufL0rF6JRxlp
+	NURZrmps2ftIZ43GuRmb1J5RwT8Vr1ein6YvdjAQ2lj1/sYdxAePIpQBkdYxe6dOPiWD+JioRxQ
+	uujPKYX4+s8oz4HjQSPml/KDWlpOl7g4cNiSJqCUVS1G2MRzeFbvXI+kaoxETUmIkwTFXL4Yukh
+	aRitxtCq0xlgH/hTbmXnLm30CmtxjTGwaSuPrNwI/nCUTBf7s1lCttV4NZnORTOBlXqfNe1MntL
+	NaY8+ZsMB8r9jzWClLPAPGCl8nA2pWr9nkBMSJZ/cB7ZaXN3GQd/iku1tl4WZ/9USY3l15thzWJ
+	K7uhG/h34ErnSsHmAvNvS7oA8muoDZ6/heblf/avEjQA/Zvjdr1qGB
+X-Received: by 2002:a5d:584d:0:b0:432:84f9:8bea with SMTP id ffacd0b85a97d-43569bcf38emr33053462f8f.51.1769093758592;
+        Thu, 22 Jan 2026 06:55:58 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43569921f6esm44884589f8f.4.2026.01.22.06.55.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 06:55:58 -0800 (PST)
+Date: Thu, 22 Jan 2026 14:55:56 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: kernel test robot <lkp@intel.com>, Nathan Chancellor
+ <nathan@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Arnd Bergmann <arnd@arndb.de>,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, Yury Norov
+ <yury.norov@gmail.com>, Jani Nikula <jani.nikula@intel.com>, Vincent
+ Mailhol <mailhol.vincent@wanadoo.fr>, Kees Cook <keescook@chromium.org>,
+ Andrew Morton <akpm@linux-foundation.org>, oe-kbuild-all@lists.linux.dev,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
+ GENMASK() and BIT()
+Message-ID: <20260122145556.7d72f217@pumpkin>
+In-Reply-To: <aXIzpC6wpdv47cSH@smile.fi.intel.com>
+References: <20260121145731.3623-12-david.laight.linux@gmail.com>
+	<202601221237.soiAkwkN-lkp@intel.com>
+	<20260122103337.26473d1c@pumpkin>
+	<aXIzpC6wpdv47cSH@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: of16hean8tbu6nnmobkzf93dubcbujnz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F2DE240002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4kkf1by35hxqiausdied4tu4jus9asee
-X-HE-Tag: 1769093047-347502
-X-HE-Meta: U2FsdGVkX1/NW1OTWFRkdptk3hYcucB1tlqn9g406DwkbvdNi4gd4DW8/BrOPaDShZs+q7gzvSO3E4eNn4MQxpG0CQ/JvPVodSLovRH55vEdLt8Y0S0b3t4Qjjc7muPe4pwppAqg1vhe/Y37PpWFBIAlqlkGMFUBq+GhibRjpFP90VzLVrNZagj6YKOQPNDQv4ybg4yEmP150Ens3usjJobPqSgYYV+u730u1ybuSu8xHpHq08UBPu8Qsu6LkSZLZmwx6ut8GxHDpIaEhT577T4fsN4aEYWRDs60N1jbdL9pIMHLMNjTrsi95OfFBxheM27K8S7mzX1aFpyw8s9Z/f6sPDFIgUBSktV5c7lZ34DzC3csONtlv394uGbnZ32vh6bIOYQeP1dojRvGBEIWS0ozZH6kLUBm0RFrnYVag2sKc9wpyyzXUWHw/hHHIVzxECFAZE8pVawQh5BMKHTMOxuL9Gxss3qmR1SWCuKfbRS63DcBJIwRdeQ9uu1mI85NI/UeksR6nH9Ppi2ls7xAHSg9tvGGWli+7XVrbeD30l2EzOZIGDzvUVdBJE7rMZpWHdXNYtNRMA7TBfXHXL1tcaapY6q6CSJfPwaDY5JwVjsoG4SBYE/ffYnct9MKIyi+DYGZGoNw4zxJOuOe/ILGc4kOvSvXgGa6EYZRMsXJY2VJjCxywCXgJVGP1sJsejiko2G8uNlAspA2eLBMdS2iIwgqkjPl/Vi57IvefTjxaZwjH4la76fJUePEKVAnTOBaPpjPVgXVpmkqv+xtFJZL8si0TL2pCZ/+62Ti4zSd8r7xzPuOdmOtDWwx7ltGMQflOqk858qgkj3sPobKF06JqEI6/mRMux0l/dnf5V9cfgVRvF3/2pP4hQlomrozQYSZNx7CB/xi185WNvImHrzkhHaNJy4rSg/s52H5yzjsW30TpC//OU8e1QThgxAzVlqHamSDdqEGCR0nEOoQFIQ
- I05MhQhV
- euNSB0s9UAidF/UqN5s6rNZ8tccN0qEFKsBk5aeN3chLTCehvqU44m0BmMMTrehmlz8Cwe5AByJAnKkRAgFfm1cwQBnzwCGTUnbJG/8MrkaG57VAyijkeessVAT7XDh3LhGPlKgtSScVQ4MxjiyFZNaQxvsBnpkdzgXw3bLyb2j8yeNV7DQjw1tuhoLnT2RW7MCyE3KG3QpdHVdYSr0eV4GXEwJ/Engj8pG2cft0yL8Z83spI0JC39zxp2/3VVyC8/3Wy1w3ZGIWA7SmgsvHmJmQYTptkQ2OT+gBq1P4yGKLWa9hDisWi4AaeiVcatUkQzM87cEhBZ1x+7iLVSVepoJ40sRmq8b8XZRPrC6AeK8mK82s=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 51E7EC0009
+X-HE-Tag: 1769093760-845408
+X-HE-Meta: U2FsdGVkX19iXp7j41GaGKCCxUYS2jWdW13gtnaH3UYEe2ihRs1FK001dXuqKwN4f/DtMOrumgprc9q9S3tjuckmIo/Pa+lRttkJ/AbYX0HYlQiccsoJwzyfeUfe6ZNK4LwYBY9jepFQJjYI4QK7gz5VMmCvK0J3L77O+LC32/KY7FT0h1IbgMlNTzTx6UFQR5lqYyfbcksEuJJBWKWx5e6oHFqmqE+h8l5IQIwPUFqNZm2Rk9+h6jf32jdXVAztmDxSl1kaqmF2c3EoBGx7zEaV5fatlfvo3QVPesHnJV13j7IUkz0OENdyU6wEDPuGTtO2RrdUvfxwfaH8lfjOs3kR/3upOZCBzPlXEiD1EpyNnDZa9Y81Ts8ZIiWKfNkwloTiFCYYk8tnkclUVZBfF8A1/vfzzd5MU8/FRHwadYeWlsU4rSrQQGuXtiVjXnzWL1ihPwqXBTt+WrjzmBhUdnrImtiomkoQFCTCGNbsZQ5QkfliQfGr6QFo7PilCzKQlba9M8Spl7flcATCJL/oFs74WQmt4q97zV0HDj0cj0kegGYiSGoRuJcuUs7dR/ZvAOIkPzG75PCG6YfZSOX/j+5CA6qmmNXgBwC0USYmOremEPrO1+V7Muh/jv0Z8jFA2fjCeEuNdJnH0RMyotA+DTK0f7/A0l6v+Ot6kCqS5JWSNAwtt03cBBr05N8oiqr79pnZexnp4NLJasgk3Ve4jzLYoWsrjPhF8zCj2Gmbl6cgt6Wmc7gns/UpU6LKb5ZjnPqlpmbgqLI03xGtPx8umH2kM9/XQDbibRlQzzeVvN36mGI4nk9ahUFQZh0R4WSeYlnc3svO4z+uD5EkHtW0omcV9dXRKb9bQANfztrRm7d0T/3+1VUKmM38cQhwGW1WMjghCJPBu0Ej3znD3+k9KM80c7Oy8gTOQWbxzetpnnUrXLTAik0NmSA+2B1gPSwxWcozmNFkzj9Gueb1VNc
+ WLtA9na5
+ qB7isC81gw+YOq20VjZ30mwAfD8bcfPtP6pQaKqsFSxOBzEQGuHqWGsThyWNXor83pVGUHay8nB8Nt6B+NNnimmxcQgKL2M0KJNLqVpawksIq4awJKfJO6+yUVmriF5OkWqMldYF2QkeLokXzxjd4LwOOYWnXiZ74UGvdqV6ya7yb9LGzBgwKzA7F9rYUZmhK4ZfUmy4wsivcZqw8I9pUcXFd93+KVMOovjAEbtVyYKYuZyM7Kx8CAIk4JnR73bx60JA6eTROBH/R/d+2jylw0XOsBf9Un29HOsQPYYn0JpKV/QMfJG6G3B9SqjqSDRos9ywQkFOXBN6she0ePXOOUARXp8gz2XSr9lFjAaOkf7ZBmgtcIjnmxRrFMn3SsjQdPHd3AZ/pp4FqxBd9SUxCK9G9jD9Hp7U4M+vML/faaNwdKQpVpYLN0KiCVRmoHxsbvqIjZ4X50T6wkiV+QAgaAXk/FTgg45XK4KstWuM8urJYvRYALhUHSlWcezHGCo7g/TCiIkXGwotABeIdIs4DjaTTGQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,27 +132,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   a66191c590b3b58eaff05d2277971f854772bd5b
-commit: d10bb374c41e4c4dced04ae7d2fe2d782a5858a0 lib: mul_u64_u64_div_u64(): optimise the divide code
-date:   9 weeks ago
-config: mips-randconfig-r062-20260122 (https://download.01.org/0day-ci/archive/20260122/202601222217.uzed54La-lkp@intel.com/config)
-compiler: mips64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601222217.uzed54La-lkp@intel.com/reproduce)
+On Thu, 22 Jan 2026 16:26:44 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601222217.uzed54La-lkp@intel.com/
+> On Thu, Jan 22, 2026 at 10:33:37AM +0000, David Laight wrote:
+> > On Thu, 22 Jan 2026 12:41:22 +0800
+> > kernel test robot <lkp@intel.com> wrote:  
+> 
+> > > sparse warnings: (new ones prefixed by >>)
+> > >    kernel/kthread.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):  
+> > > >> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.    
+> > 
+> > Can we stop sparse complaining about sizeof(VLA) ?  
+> 
+> First of all, the LKP should install the fork of sparse by Al Viro. That will
+> fix tons of warnings that are related to modules and speed up the process
+> itself.
+> 
 
-All errors (new ones prefixed by >>):
+The problem I have is I want to generate a compile time error inside:
+	__builtin_choose_expr(__is_constexpr(x), x && error_a(),
+		statically_true(y) && error_b());
+Neither static_assert() nor a negative bitfield can be used in error_a()
+because they are errors when x isn't isn't a 'constexpr',
+There is less of a problem for error_b() it can contain a function call,
+but can't contain {( ...)}.
 
-   mips64-linux-ld: mips64-linux-ld: lib/math/div64.o: unable to get decompressed section .debug_info
-   lib/math/div64.o: in function `mul_u64_add_u64_div_u64':
-   lib/math/div64.c:(.text+0x60): undefined reference to `__multi3'
->> mips64-linux-ld: lib/math/div64.c:(.text+0x188): undefined reference to `__multi3'
+One of the compiler complained about sizeof (char [-!!(expr)]) as well.
+I'm not sure of anything else that can be use to get an error.
+I could use 0 >> -1 but that is only a warning, at least the error message
+is related to the bug.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Any other ideas?
+
+	David
+
 
