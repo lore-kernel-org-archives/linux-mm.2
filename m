@@ -4,123 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2575C44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:57:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0B12C44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 11:57:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08C666B0165; Thu, 22 Jan 2026 06:57:09 -0500 (EST)
+	id 4101C6B0166; Thu, 22 Jan 2026 06:57:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 039ED6B0166; Thu, 22 Jan 2026 06:57:08 -0500 (EST)
+	id 3E8636B0168; Thu, 22 Jan 2026 06:57:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E87D76B0167; Thu, 22 Jan 2026 06:57:08 -0500 (EST)
+	id 307D66B0169; Thu, 22 Jan 2026 06:57:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D60AE6B0165
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:57:08 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7528A160297
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:57:08 +0000 (UTC)
-X-FDA: 84359448936.01.0B9FB77
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 16C0F40006
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:57:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XLNZTWOy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769083026; a=rsa-sha256;
-	cv=none;
-	b=TaZjYNZfNjzlbZA3qXSn5bG+oAAfz3axXlnCE9LzT/oHFPLGSVwSFNjMo/hZHuWk/xZ/zr
-	NLk78Z3qYRSzlJh+ltw4QhqYbxN7oi0rY00E6q1N51nTi0ZgI3PgVnRDbROyBvUv+oUgfq
-	B2HpkqUmFvt+y3b9k2uQHo5btijiXXg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XLNZTWOy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DE8A6B0166
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:57:44 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA75F8AD20
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:57:43 +0000 (UTC)
+X-FDA: 84359450406.02.1629FB8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 49BD514000F
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:57:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CW2WiCbJ;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769083026;
+	s=arc-20220608; t=1769083061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZODvw+hrx9/BESJmdl6IXKkX3UkDOU9hBN+El/x3X0=;
-	b=KEJPq6jr2sbd8OMyJWPfLE8uUdX2O6buYrvzSEYCU3YZ3NPuJilFjyw1LtVy1h0dWZdt4h
-	UeH4S4HxjCjwOCcM02T5pua2KZGJd1trhVIeoTAXQi1LszEOSaGyfAQF66evKuV/pbL6eJ
-	9XXLoMBa/1jTeFh0tLa71hoeNvKMczg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769083025;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mZODvw+hrx9/BESJmdl6IXKkX3UkDOU9hBN+El/x3X0=;
-	b=XLNZTWOy2YSVV4B5Ir2g5vpJVXa4UuXdvJhwa45AGFqmxMd+lXwKdzz1l/e5M4xviyVhFU
-	VHD84LUhbsy7iDIhukgc0IFk3uK2xbLUmHZs6mTp33dCiOzDZ5HkjyTtGhRtJSzRgVOCsH
-	BEFaw3BACmhv6MOznIsXT8u7wxfdSFo=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-374-S6H7uWDxMv6TZNA64yjXPw-1; Thu, 22 Jan 2026 06:57:04 -0500
-X-MC-Unique: S6H7uWDxMv6TZNA64yjXPw-1
-X-Mimecast-MFC-AGG-ID: S6H7uWDxMv6TZNA64yjXPw_1769083024
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-6445cf02fcbso1447276d50.2
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 03:57:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769083024; x=1769687824;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mZODvw+hrx9/BESJmdl6IXKkX3UkDOU9hBN+El/x3X0=;
-        b=pMJkNUDpq7gIiGxZdBqcuQ76cWrbV6DZDpt2H74L03hI0ucY6ro9nWrzYlXPZUQf6F
-         VBiF7sYa7RcWLBKQhSX+A5DxGcL18yrsVyqgTfpBrbEvY5ycDZ+4fIx297MOpzMgsL9e
-         reSL6jo0rTO/3dhdUGdvDOjFlqAsyUU8/IqhrGxqzdg3W/odruJEH0sdhRD4a81UYNZL
-         SiJGWL1Aw0j+QLjbtsQ0nuKsN8QcMhZ2FyKRpu3/upk8MGifDoMOGbDWbmY1ZnHShc05
-         KBAzTHIKBLPv+9ku7bvnqZVJJvk4EGnD6X8PnC1tw8PwJf5KOJZDsrHufuplC11rYQ5c
-         /OOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUkBhz9lc6/DAiyTV/ZhYFs8bGkxZTF5J8O/DFSVZPxqCzRCgfvq2KFZhC2Glmh9383BmE71fPOUw==@kvack.org
-X-Gm-Message-State: AOJu0YzsvV9+xPz3vcWr3hUjHc7aPSs1nyhlAcavK77b9B56RHSbd9+M
-	udsiAKUVE44Ca90C23eH30ItFPNqA92M15mI3PaTGs7orZAfoB5vE7ds5LUMm5q2DGKthr7KptO
-	CDcey9VWokbsUCv85mFM+pIb7zkQQHW/O2r/t/wlTM9uC3YAmn0rrpib8Be3cSurv0k9YGegoxo
-	hy+PM3VL3dKCk7xY04yGkcgMaWjrw=
-X-Gm-Gg: AZuq6aKfTaByi7y7tBJQ5JMF5Yw1NmTiwS/GXKv2KlFW1/OKi/VpY2jv3lqQTrkxOPW
-	ApEPsLdHJuYj9QVw1Q7rA+H9L5ZLLpOrSLMJun9akrXvPt/2p7aYTnz1zVpxOKYL6kUhpQvFTcA
-	zOChsglZvFU0opprHqbG8fzxDGdvQMbVBBrw4gFmnp9gGbcjhtjNe8qSPHqH1jlnEIftqbSQJhq
-	YtG1Joc
-X-Received: by 2002:a05:690c:6312:b0:78f:8afc:c34b with SMTP id 00721157ae682-7940a21c226mr163125937b3.34.1769083023832;
-        Thu, 22 Jan 2026 03:57:03 -0800 (PST)
-X-Received: by 2002:a05:690c:6312:b0:78f:8afc:c34b with SMTP id
- 00721157ae682-7940a21c226mr163125567b3.34.1769083023461; Thu, 22 Jan 2026
- 03:57:03 -0800 (PST)
+	bh=UMLwKCniWDUnyDsUhQOOQuT7b5U00E0bQrDCPBQiDqU=;
+	b=gwgBdC0B8Or17fso4eOhGlbIeLfIZ92BZL/UUw3fzvWceyXkrqwmsb/iNFoFljeFcyW7qO
+	t5qpLYrd3uuniSItKWTWKNxGqemQbvuTMQgzGNoZVi2y3MuxEpVdoXWeMpoNZQ4ck1QLvJ
+	GYI6TgAAzhzo/fM353ROWpoZV4bKYDg=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CW2WiCbJ;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769083061; a=rsa-sha256;
+	cv=none;
+	b=e/NrkR6EOwzu5dQ/pRhu12tEfpzX/gqoLmFtxoi+/DKbPDufRoFJZdFeRE13bVpHDpVezG
+	5hbQ945I4wzStKWJVh3nOIt9KnESnn2uuwd6JTa8aPltK+J7FDht8+nF5wffuY9eISF0eV
+	agMbaCKrE3rZQuXBRCyMzH8oujFQ7pw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769083061; x=1800619061;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YA0QC/uuVi/Pla7THUSaJVW+WVYLDQx6KC9zI0/c4G0=;
+  b=CW2WiCbJ62mFwsXlPm6IfDlz5jjG1MI9Qgg+wpCNedtfXd2F/29Q7CKK
+   T3jed2E/vQ+YFvOkaJseyBdl+1fh7AmsDAoc+C2FW1dWXLQYFnZqVIYS2
+   +X/fRZUdENsGGf2pY32N0mlyIZ8BOPiWVdutu9DDCmR6CyHq7Z7kFRBHn
+   Z8QxdO+dp1gSJJxUe5hAF8IvsiNEZHjWd+qJnmlt2J8HQ2oogo8H7t9U1
+   roudKV3fWV/FMQT1sOryT3YrFj1d8nIhXwGnol8Y3ej1C24E0toJy8YQR
+   4cuQj/Z6sT4Yn28LpdEnmqREZO4v0vokTPbs2ZXlGWPthsbo2VszvSc5s
+   A==;
+X-CSE-ConnectionGUID: 0dqNAFs3QRmo+s+6E6W/Bw==
+X-CSE-MsgGUID: 1faD72vnRs2cB00n84wm3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="69340137"
+X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
+   d="scan'208";a="69340137"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 03:57:40 -0800
+X-CSE-ConnectionGUID: Ql9UBEfsQDOWEC2fNwU64A==
+X-CSE-MsgGUID: CI9rWv2OTcaAonwn5YcYJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
+   d="scan'208";a="244323105"
+Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
+  by orviesa001.jf.intel.com with ESMTP; 22 Jan 2026 03:57:35 -0800
+Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vitJc-000000000Un-3JQD;
+	Thu, 22 Jan 2026 11:57:32 +0000
+Date: Thu, 22 Jan 2026 12:56:55 +0100
+From: kernel test robot <lkp@intel.com>
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
+Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH v17 10/16] rust: sync: Introduce lock::Lock::lock_with()
+ and friends
+Message-ID: <202601221246.Qfwh5Atq-lkp@intel.com>
+References: <20260121223933.1568682-11-lyude@redhat.com>
 MIME-Version: 1.0
-References: <20260118192253.9263-4-shivankg@amd.com> <20260118192253.9263-6-shivankg@amd.com>
-In-Reply-To: <20260118192253.9263-6-shivankg@amd.com>
-From: Nico Pache <npache@redhat.com>
-Date: Thu, 22 Jan 2026 04:56:37 -0700
-X-Gm-Features: AZwV_QjQJ98BVvBgFx7KzuIQZ9dnvMqmoAV5PsHfCMDGm8DbekvWiQQc2xEhOX0
-Message-ID: <CAA1CXcANigb+AsbT68kQYJuxTw9F_iNRfGDwm1AJC7CcUmpHYw@mail.gmail.com>
-Subject: Re: [PATCH V3 1/5] mm/khugepaged: remove unnecessary goto 'skip' label
-To: Shivank Garg <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Wga5CDj8863Y4teWVnBZupfW1BEFuJ7qghkAPJPt6LU_1769083024
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121223933.1568682-11-lyude@redhat.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 49BD514000F
+X-Stat-Signature: iwzceesoejwah8k96h9bcohw7ktk55ks
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 16C0F40006
-X-Stat-Signature: spkej6nefy6xn95qxqjaxkz3rnt1papw
-X-HE-Tag: 1769083025-443699
-X-HE-Meta: U2FsdGVkX1+DwH3ggsFvU6UM3jScSDgeLbFzUvuudnvphtUinoWA6Hpj8FuI0V8JJqPW7Sca10qOU44znPBYM76vPKxm5WGXjDl0EEzPJdPSEtU1Eg2YgmZSm6xT/0EgiK18wV8Qv5IJn7wyGrsExGA+Ziln+h5uQ3a3nR50qc/qKG5/yEOQcqJqTWSiTrtHq+HshSj+DhOcsULzuPVeZru3gU5SQIOruGf2XV/l/Bgd15+1W4NhR7fR3jEpkgvCP1qgxRQJvBPgoDOOp5u53r1AuJfGRocH6sisL3/xhjcKikcZst1eYDr0ij7OMnAj+YB0jZOdV/z8gCHObKAbEWLxMceLvYkjoraqXKjc7SYVoZGTT7m1wbVCUgWG+RPdbiMHgQpsHWFGtkCd15nkh2NfnKrXR8yWQur+ukXn5kdk4U+1Gi9rBNyeMgoXF0OVSHtgzKpJRn8PUgVcd23xK+ga+zM88BE8DtGBhkCmmEYdN0TqbMz9j2fQnVoUBmkKqlca4BRrtrQ4J7x2OtgDC23OPWJA+dJiJFd5JkRoBTH7WTG5PWSawjhl1wcCLZgDa2qRkt+dT6yl35o8kWiCeKbVno2hMKc+BdtoPmXgu0h5wjhtnT3Och/WjsYGBNeKb0W2gwFI1QnP1qBpwEd06xHwvHR8iZN0p61JlPj5UUmMCWMb5pMqK1m5VHvqQw82KPOQabOXcEu2Y1mK5wgIgfTGRw8tWJ3dLULFeHp6O3Rzhm42EsIhoJNP/+oHZDLXiThEe92weOkVFq9mELGrEOmNcIGK/s3FCP/xsU+58dUrvJ7rbmy0RSpSj0dwDOVAW+WtqWQlcSQGo2l+F7XTf912omGbF2DYOhiEsIGCrG5efkH6/pZsICac1JAs5VPVxQy6PB0i7V4GNfaZ0yfuAB8t4x8zteXK0OET4Wd4tS0wCgVZSLs3Gl5cCIXKCHteEeS5KChHUkw5cEsv+kx
- KYVhFTqn
- YwGAOd0d8ucMLagF3cT892ZORnVvXCiFm5tnZL2CKVHrBOI7kH8XbJk19tPSKDkSqSDkKw1e+vP9pnYpfvX5OevVp5xEh/VfpeXxUBvvuDvIy2Tyub95l8BDIlubvc7Txm+z+fs4sHjQ0wjygrR9AJGyTvzmx8YutBJwQhM9OWvSH2nQ/z/lSP1lpaknZ0lmjkmk/VE0xKQ13iLN9y/Uu0ut4yFn+P+hVxgKJORthh7p4dsgqUkYWNiUvVkEWK2jN2CR3n3TeQCOWyyAo7pawVn0Sn9qG2UrsBwNpP1qdxJmsJKobjuYLvkluK4ti6hnLyEj4cIVicRfHAdgbQ0aOIFHj3PSKg5V8MVm+qY+UNb2KGL4F5BKJeALKDgeMNNDwZi0nNn+vshXsEnHkuKDqYTRYn03UCMaOevIkdgclQUnfTjE=
+X-HE-Tag: 1769083061-384188
+X-HE-Meta: U2FsdGVkX1/hWtQFrlNvrWo9I6sTAWEd5XC6NUimCp8dptGlP5sGSzD2LLSXA6zGdQXR8QnVOjevjodIDZafZpH2ja1BBXGPba7vlJ2yXT1LTz3w6o7wNQ7noPCtelZ38HHYQ7AyThOzJ9kjwgFIal0NhivSjU1YdGO0Yu2ktb1GnewPil0cFp6ttrV3ScFAQ7iUh9J8R17RvvRt+76KexV7iZkZV67oLXKV29fgeJzHBbTPWCN9vU0RA64eGTUMhXCObmTZbBt8v5ntYnbUv+N3FYJh+rwElDodsxkzT69FJB+WhCNU0k63VK8kRb5woCkuJ6bFgX+ig1ZFp1RajMaPY0Lp8CC3riMLTsUBPBnh/1V+biWQoDo0DhhR451awQoBpK00dE8vOL0U/FgbpTf9cdqw9+ftTY7QZjK+8R4i1PPxF1JQJrpnFnzHR2aINmF8L14FXZfKvQp9iOJCX4ys9SWfdFsaZ+ZcqK+RJdhrSyYgtpnHMx9zfwzK3X4YcUr4P5ByD0ZRC+1zWnO5sTmAxdmQoixapGHAxZgbNUZV9hr2ryqtW2D9tcfxiA9G5D+LAIsnCE6r+GCQr5QglH4Mf1dQQ+e2s7R4xl69nU03y6K9qubCgciuigGIcxUoxRC3C01gNXbFjMPNyrU0fhhwfvv2U+HvC0jmuH1y/V8N+S6yeNFlSgDgbnew6g4RAT0IYG60MhQQpKGKjDXb4a2oKbtbReNR4ME0YPVP+L6rt1Cb1kPn3BxXZPPBoDy3j0q+mdd1tAe7blegZhmDnk4eb++/1aU3xKPYVgzPMzH7s+84Mo0kunMhF2S7hk/ZXmor4Ce+LnhIXCRPnBg7xTedLoZksniPoc1FvOny5KUhj2Tq/7dkTUljJBJM0KectwxcEslZnmt3Ulk7nQF54U3hV6cM/HDKOhI/afVzYgp9RMbZt4+sHUOzWz7m7Qnjl9OmJlTu31iBE+ZH70m
+ VNZdZiy4
+ rs6T6B46Ts6/rgzXdKAnaGI0HjImEWZXxRIjluRzz9ruRo60pIW4Fd8V81U19e2rTyGD7E7Fnc4JU0+be4tScXQm7xM1kaHuC9r+IomzJ886sfIcgCNFW8n/0HW6Anj8Oo62GcoRJIn89U9sG3bxAMnOybug/aIydlDj19dZy1ItO1sbQAwRYAISOwZvP0ILHgFscCjLmDWw3ZaVweENJD2tTgNNUNr4rDQnCA8BhLjz0AarO0AzzHHH/SNujeQPM0uv4668XzpikdxwPT3BSkY1cMy2oagpZIVVQF9rjwpRhM/mXvDoYkmVBKeU6VAZiFQyHPBMzvcivBaPkKFA+E9v3yWOI4G+uHMREqBNjueZkL54XRl+v4mTwwcmffKGf/pJ+xsWvS1LLGxAstmpXk7zEV6qUJ+KYDZnugk8U8IFPhtsQdyJS22oRXmDOm+wUgO8x6Ig4n1NVZfYrqxq8BESUqw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,56 +121,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 18, 2026 at 12:26=E2=80=AFPM Shivank Garg <shivankg@amd.com> wr=
-ote:
->
-> Replace goto skip with actual logic for better code readability.
->
-> No functional change.
->
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+Hi Lyude,
 
-Recently I did a round of testing for khugepaged with regards to my
-mTHP changes. This series was part of that testing. Thanks for the
-cleanups!
+kernel test robot noticed the following build warnings:
 
-Tested-by: Nico Pache <npache@redhat.com>
-Reviewed-by: Nico Pache <npache@redhat.com>
-> ---
->  mm/khugepaged.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 16582bdcb6ff..984294a16861 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2442,14 +2442,15 @@ static unsigned int khugepaged_scan_mm_slot(unsig=
-ned int pages, int *result,
->                         break;
->                 }
->                 if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUG=
-EPAGED, PMD_ORDER)) {
-> -skip:
->                         progress++;
->                         continue;
->                 }
->                 hstart =3D round_up(vma->vm_start, HPAGE_PMD_SIZE);
->                 hend =3D round_down(vma->vm_end, HPAGE_PMD_SIZE);
-> -               if (khugepaged_scan.address > hend)
-> -                       goto skip;
-> +               if (khugepaged_scan.address > hend) {
-> +                       progress++;
-> +                       continue;
-> +               }
->                 if (khugepaged_scan.address < hstart)
->                         khugepaged_scan.address =3D hstart;
->                 VM_BUG_ON(khugepaged_scan.address & ~HPAGE_PMD_MASK);
-> --
-> 2.43.0
->
+[auto build test WARNING on 2ad6c5cdc89acfefb01b84afa5e55262c40d6fec]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Lyude-Paul/preempt-Introduce-HARDIRQ_DISABLE_BITS/20260122-064928
+base:   2ad6c5cdc89acfefb01b84afa5e55262c40d6fec
+patch link:    https://lore.kernel.org/r/20260121223933.1568682-11-lyude%40redhat.com
+patch subject: [PATCH v17 10/16] rust: sync: Introduce lock::Lock::lock_with() and friends
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260122/202601221246.Qfwh5Atq-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601221246.Qfwh5Atq-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601221246.Qfwh5Atq-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> warning: unresolved link to `Backend::BackendInContext`
+   --> rust/kernel/sync/lock.rs:39:27
+   |
+   39 | /// [`BackendInContext`]: Backend::BackendInContext
+   |                           ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Backend` has no associated item named `BackendInContext`
+   |
+   = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
+--
+>> warning: unresolved link to `Backend::Context`
+   --> rust/kernel/sync/lock.rs:40:18
+   |
+   40 | /// [`Context`]: Backend::Context
+   |                  ^^^^^^^^^^^^^^^^ the trait `Backend` has no associated item named `Context`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
