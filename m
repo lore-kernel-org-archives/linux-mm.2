@@ -4,126 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843D1D3EE66
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 14:56:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C9AD3EE66
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 15:01:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2CA56B0207; Thu, 22 Jan 2026 09:56:02 -0500 (EST)
+	id E3D776B0208; Thu, 22 Jan 2026 10:01:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E03AE6B0208; Thu, 22 Jan 2026 09:56:02 -0500 (EST)
+	id E15886B020A; Thu, 22 Jan 2026 10:01:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0F1C6B0209; Thu, 22 Jan 2026 09:56:02 -0500 (EST)
+	id D4BA26B020B; Thu, 22 Jan 2026 10:01:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C22446B0207
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 09:56:02 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 694061A03DC
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:56:02 +0000 (UTC)
-X-FDA: 84359899764.28.2F07518
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 51E7EC0009
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:56:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GpMeQa3n;
-	spf=pass (imf10.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C19B36B0208
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:01:56 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 63725B8DA1
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:01:56 +0000 (UTC)
+X-FDA: 84359914632.09.8D96223
+Received: from harvie.cz (harvie.cz [77.87.242.242])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6E547120016
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:01:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=gmail.com (policy=none);
+	spf=softfail (imf29.hostedemail.com: 77.87.242.242 is neither permitted nor denied by domain of tomas.mudrunka@gmail.com) smtp.mailfrom=tomas.mudrunka@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769093760;
+	s=arc-20220608; t=1769094114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=39Z3xY5BPN6XAwZM/W6drGSAohVogKjxUvJh+CCUHDg=;
-	b=PfGzC45jKJw5MZHZT2r5X8238LoUUBXQ1n+hEEBZcVMt73xxGELo8+TNv/IDLJQ44KCk33
-	bAoZSuuHyoczSYZUT4HcuR35bz9GPAlgudYP66U/qGBUIS8Yk6oM4lcNmEYnV+dQ9x8vE4
-	vyt+9PyZF/MAcNqVQGvUybzqtqaX/GM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=gmnFDYkBU2/QBLzqCjUdIhU686MtzIg6knsPKwVyrJM=;
+	b=4MN9GnlEtJgfO9gAYtxbmKV4t0MyY2NLUfl2GkAXOd5cyeQmlTSOvxdGqxR+M5da+GD1sl
+	A/LORRxvD0284oRtoQ9ovbMnEfjNYM4PgzE1LJY1xfNkzqQYPMrIX3MHbrxVQ6vhUwcF/7
+	LgO+2KbFXNON0DSGpzx+hkaG5LwltM8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GpMeQa3n;
-	spf=pass (imf10.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769093760; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=gmail.com (policy=none);
+	spf=softfail (imf29.hostedemail.com: 77.87.242.242 is neither permitted nor denied by domain of tomas.mudrunka@gmail.com) smtp.mailfrom=tomas.mudrunka@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769094114; a=rsa-sha256;
 	cv=none;
-	b=W9Mz1F/XwLgdAGYBlCn0oNTa2bHEmPqBcfHXMp6ouN1wt1nvkxtUlefJHfimqEF2XyveHF
-	LjHHS4dIVWwcsyu/qnD0e+12ovCxNhsmABiNxMCKdP0FLUJXO5nkb2OAGKge3Rc2/LwVph
-	k3QmwUhpKEvjWD0GARrQ2Rl73TGLyfM=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-432d2c96215so886487f8f.3
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 06:56:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769093759; x=1769698559; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=39Z3xY5BPN6XAwZM/W6drGSAohVogKjxUvJh+CCUHDg=;
-        b=GpMeQa3nhub9hEdzbkBL5ySOLsjt4odhmFBWCxmSQxAJgt5/yXBYQRCYypc+jzeK/Y
-         xRwvGWBrWpWkt2YwididEbEZ0KsxDwLxmJ4EN/Eg/ucOpysO7y17mUnGloRtMme1ZZcV
-         F/pLYNFhZ0Si46Hx9ksoQXwEKpwWgoMYqq6QegYke9MoyqqnUK9hAb8GJulHBFsvmh9r
-         o5IsdTIMoQHNW/EZ6vJ0lZMnOxe5mCaZn6n34w4dK8sN+wVj86lZqoo+3gR1LkL9KORo
-         /ooPfZTU6Nq/USfLpelDjKKqjz3xeB0aQqRN52draIe/Aji4dkJJHnvva0OL7QWWJKfo
-         fZcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769093759; x=1769698559;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=39Z3xY5BPN6XAwZM/W6drGSAohVogKjxUvJh+CCUHDg=;
-        b=EMpnr93wduiW9k7SODH19C0OUP6450F6B44mQhxL2LKFnaEH0BxezfuDcYlheC6FLN
-         37Pxp9fsPcy85sWg/awQQyAy5vNRbRt6i8nebW2epKttDq2QxV+bBs8E5seCvT8suk9n
-         oPPV37KExEeTrYOo+z5BbDx051DYGrEEuSUn9CYis+yX8OaSd4ANUgEYa8KICzFHNSiD
-         ZNciyQsrMfoIhVBiLOMzi/YcWdStrUxHZ3xhH5A6mOt92+qoMPeTT2NR5/eE9+AFr33g
-         drvOXbqxNIMRTAwec/mrFgARaaeKpBhlflgDZY16gwVTqP+xiZhSIgPbIwHXJY6luLQi
-         cKPg==
-X-Forwarded-Encrypted: i=1; AJvYcCXESnYDHenKDCwacBPkkLsKi9Fri4OanD0Y4IUNrfD1UNsXHl8XH5jZLK36KtWQRMoxw9va9vI8iw==@kvack.org
-X-Gm-Message-State: AOJu0YwSwG3lEBRKeS5LQGaNP7CTJO/pyqvkCNPsEfBu/kZpzpaQuQUD
-	HLSSFy9XU1VfMLFKEMkdghbL0HbwIxTNjijDnzXt7i61lacV+Lj9B7+1
-X-Gm-Gg: AZuq6aLeui0E60LbZoPediWrk6VYjKYcaekQLaTtyu7uAoJDGz7fQoIZoRVYKE5tn5K
-	+CsmY6ccBkFyy4Bparkg79e8k3NrFBZXpfEpVfSzuHOY3y/wDOvKl2/x5KMGwH9ufL0rF6JRxlp
-	NURZrmps2ftIZ43GuRmb1J5RwT8Vr1ein6YvdjAQ2lj1/sYdxAePIpQBkdYxe6dOPiWD+JioRxQ
-	uujPKYX4+s8oz4HjQSPml/KDWlpOl7g4cNiSJqCUVS1G2MRzeFbvXI+kaoxETUmIkwTFXL4Yukh
-	aRitxtCq0xlgH/hTbmXnLm30CmtxjTGwaSuPrNwI/nCUTBf7s1lCttV4NZnORTOBlXqfNe1MntL
-	NaY8+ZsMB8r9jzWClLPAPGCl8nA2pWr9nkBMSJZ/cB7ZaXN3GQd/iku1tl4WZ/9USY3l15thzWJ
-	K7uhG/h34ErnSsHmAvNvS7oA8muoDZ6/heblf/avEjQA/Zvjdr1qGB
-X-Received: by 2002:a5d:584d:0:b0:432:84f9:8bea with SMTP id ffacd0b85a97d-43569bcf38emr33053462f8f.51.1769093758592;
-        Thu, 22 Jan 2026 06:55:58 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43569921f6esm44884589f8f.4.2026.01.22.06.55.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 06:55:58 -0800 (PST)
-Date: Thu, 22 Jan 2026 14:55:56 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: kernel test robot <lkp@intel.com>, Nathan Chancellor
- <nathan@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, Yury Norov
- <yury.norov@gmail.com>, Jani Nikula <jani.nikula@intel.com>, Vincent
- Mailhol <mailhol.vincent@wanadoo.fr>, Kees Cook <keescook@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>, oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
- GENMASK() and BIT()
-Message-ID: <20260122145556.7d72f217@pumpkin>
-In-Reply-To: <aXIzpC6wpdv47cSH@smile.fi.intel.com>
-References: <20260121145731.3623-12-david.laight.linux@gmail.com>
-	<202601221237.soiAkwkN-lkp@intel.com>
-	<20260122103337.26473d1c@pumpkin>
-	<aXIzpC6wpdv47cSH@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	b=ahwG/9HOwdKO3pMjWCyXBA0tZEPvkVT5M9mk1/qiGHZv7jI05Ng/w8TOOQeHF1rkPlpqxH
+	woY56x+pd31wiS/DM0vXhzHBVlmyoa2EnT3sI0L3BnzbmB7CCpU7rbRs6w8eNrySjS5n8T
+	l17O2RIBm+z2pW6Sw+gQ06WDY936gJs=
+Received: from anemophobia.amit.cz (unknown [31.30.84.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by harvie.cz (Postfix) with ESMTPSA id B135B180116;
+	Thu, 22 Jan 2026 16:01:51 +0100 (CET)
+From: Tomas Mudrunka <tomas.mudrunka@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Tomas Mudrunka <tomas.mudrunka@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] MemTest: Test RAM address bus for stuck bits
+Date: Thu, 22 Jan 2026 16:01:14 +0100
+Message-ID: <20260122150116.3409572-1-tomas.mudrunka@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: of16hean8tbu6nnmobkzf93dubcbujnz
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9h6hh835xs58srq3tm5uodfgwqgtmema
+X-Rspamd-Queue-Id: 6E547120016
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 51E7EC0009
-X-HE-Tag: 1769093760-845408
-X-HE-Meta: U2FsdGVkX19iXp7j41GaGKCCxUYS2jWdW13gtnaH3UYEe2ihRs1FK001dXuqKwN4f/DtMOrumgprc9q9S3tjuckmIo/Pa+lRttkJ/AbYX0HYlQiccsoJwzyfeUfe6ZNK4LwYBY9jepFQJjYI4QK7gz5VMmCvK0J3L77O+LC32/KY7FT0h1IbgMlNTzTx6UFQR5lqYyfbcksEuJJBWKWx5e6oHFqmqE+h8l5IQIwPUFqNZm2Rk9+h6jf32jdXVAztmDxSl1kaqmF2c3EoBGx7zEaV5fatlfvo3QVPesHnJV13j7IUkz0OENdyU6wEDPuGTtO2RrdUvfxwfaH8lfjOs3kR/3upOZCBzPlXEiD1EpyNnDZa9Y81Ts8ZIiWKfNkwloTiFCYYk8tnkclUVZBfF8A1/vfzzd5MU8/FRHwadYeWlsU4rSrQQGuXtiVjXnzWL1ihPwqXBTt+WrjzmBhUdnrImtiomkoQFCTCGNbsZQ5QkfliQfGr6QFo7PilCzKQlba9M8Spl7flcATCJL/oFs74WQmt4q97zV0HDj0cj0kegGYiSGoRuJcuUs7dR/ZvAOIkPzG75PCG6YfZSOX/j+5CA6qmmNXgBwC0USYmOremEPrO1+V7Muh/jv0Z8jFA2fjCeEuNdJnH0RMyotA+DTK0f7/A0l6v+Ot6kCqS5JWSNAwtt03cBBr05N8oiqr79pnZexnp4NLJasgk3Ve4jzLYoWsrjPhF8zCj2Gmbl6cgt6Wmc7gns/UpU6LKb5ZjnPqlpmbgqLI03xGtPx8umH2kM9/XQDbibRlQzzeVvN36mGI4nk9ahUFQZh0R4WSeYlnc3svO4z+uD5EkHtW0omcV9dXRKb9bQANfztrRm7d0T/3+1VUKmM38cQhwGW1WMjghCJPBu0Ej3znD3+k9KM80c7Oy8gTOQWbxzetpnnUrXLTAik0NmSA+2B1gPSwxWcozmNFkzj9Gueb1VNc
- WLtA9na5
- qB7isC81gw+YOq20VjZ30mwAfD8bcfPtP6pQaKqsFSxOBzEQGuHqWGsThyWNXor83pVGUHay8nB8Nt6B+NNnimmxcQgKL2M0KJNLqVpawksIq4awJKfJO6+yUVmriF5OkWqMldYF2QkeLokXzxjd4LwOOYWnXiZ74UGvdqV6ya7yb9LGzBgwKzA7F9rYUZmhK4ZfUmy4wsivcZqw8I9pUcXFd93+KVMOovjAEbtVyYKYuZyM7Kx8CAIk4JnR73bx60JA6eTROBH/R/d+2jylw0XOsBf9Un29HOsQPYYn0JpKV/QMfJG6G3B9SqjqSDRos9ywQkFOXBN6she0ePXOOUARXp8gz2XSr9lFjAaOkf7ZBmgtcIjnmxRrFMn3SsjQdPHd3AZ/pp4FqxBd9SUxCK9G9jD9Hp7U4M+vML/faaNwdKQpVpYLN0KiCVRmoHxsbvqIjZ4X50T6wkiV+QAgaAXk/FTgg45XK4KstWuM8urJYvRYALhUHSlWcezHGCo7g/TCiIkXGwotABeIdIs4DjaTTGQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769094114-309116
+X-HE-Meta: U2FsdGVkX19p3E9OLvSbuxn586sAAMz40yRFX/W10JgW+2Tt6eysROgpi9g6GbFIng0QFb3MnvTvXzf26ZTR1pyxyd22b5VhMi6wIVW1+whYPuC6Tckjec/v4wT6kSOPLcQVDut2USqFys0czVpxnwxgpClhUby8KOtVIv/PhSqILVpABfv1xqrIqa26lHEQ35930mgzYbGUDQH4PJxMJ0rLvkxWDTGfe+D7cTyayJGeoA8LwaBhVj1R//LEiV86DbjVVchz3v1omUnyFZY6hBBC+Tp8qWBpjIfsf86ykYUpTBe/0zdi0jfnqsnLZSYxfgspxD0BHvKkz82TCGZ+0Fh/UxzrmL9ec6S6XjI+c3Rrlb4BPU2wGM6illK7tVDLffwM6QeBIwZsb9uobIbUTODbR3Aek1uRUUGmTXaf3nz+Wf7V9BGSYoBHeH5bzdxRa8oh6rwj6RbrOzTy9ljR3aZRYy6aZmUNtWd68/FThOkTYAyV1mERDvM0zPxibbKLb+LNIzUEKH8HIQqZJWPEgVfVligTYgN0eRoORivgkLcZmisMHIaiJlMaRrdgtJmLlK7dnMjuoxJQlEgv5hwwTtmIMsEqiYtMVxn9nwShL6Fw9Wl3cwrok2H4wE2hPgnjhDe5xZ5dYjs+lV/HfStCtDB6flgBKEplsFCllMkccMqdtADyquAMrwY0/BpDPgnGg2ijN/HG8o+yAvfg4lJ3Xh0IwyITXS8izasOGxrPHrkBIiqcYLmxOnqOA19P5I6rjtlgOUhsCjrUTiZLPr3LSuUv3vxv9iN6mzEuuiOCchx5mTQKui7AV9EzEgwP6/aTjoXYW+LnQpq89o9gpu8Pabc+6KFyXu0OVJvpg1mEWLWC4tB/OoRwwg7LOFPusFrTXZL8xjKn2A2MbsHnDxd2Qh0x4cjyQ0i4uGiUtgVf5RHR93N8aqLfNQWMfSK+b65U6tZiBbZEv+VgTZ8Fiuj
+ rAz7bcq4
+ ijPEc0lVlGr1XGBpvt6Erknhj6N86VJ63aPFAaqHIpVK9DCP2Gt7OSUfZu1fe8A9lUVDyhbrtxDZvAYBGYuhGTaMEhnIUrRi+D2fOPdLLvreOsXsSfeKLGz0G48n/ZJIz0+M0XZtZrqrA3UZyyBWUgxd81b0N9Ll81Eu5vXB2v+BU33x9T6/KIwCZjP3deX84vNb1ZS3F2gNMJ85sDBPAEC49jw+LMBk+IlVAJ5sDgpQcx64LhLP6R7rpIQcO4OU4JLUlKwofkH5kvF+BYk1xqKfqMypvKnfqy4sxt8pOdZ3Zy89ZUSYO7hRduRTyRY9t6YoXnVhNnpv3hvmPf56sWlOf0QEUhDX8L6UuKuCC7j+twryrACAPhKqpwqQUHZCyuISHIY5BeojFh+mHPHY8qCBYcVdsCk1SVbBpPNnuFapILIVjCaakuI/5BLF5PlqgfAM3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,39 +81,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 16:26:44 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Adds new test to early_memtest() that runs every time memtest is enabled.
+For each bit in phys_addr_t this tries to find pair of addresses in free
+memory that differ only in the tested bit. These pairs are then tested
+for aliasing/mirroring. This should detect loose connection or short on
+RAM address bus. Such problem would be traditionally ignored by normal
+early memtest. Result is then printed and exported via EarlyMemtestBad
+in /proc/meminfo. If there is no free memory pair found for given bit,
+it's printed and ignored.
 
-> On Thu, Jan 22, 2026 at 10:33:37AM +0000, David Laight wrote:
-> > On Thu, 22 Jan 2026 12:41:22 +0800
-> > kernel test robot <lkp@intel.com> wrote:  
-> 
-> > > sparse warnings: (new ones prefixed by >>)
-> > >    kernel/kthread.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):  
-> > > >> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.    
-> > 
-> > Can we stop sparse complaining about sizeof(VLA) ?  
-> 
-> First of all, the LKP should install the fork of sparse by Al Viro. That will
-> fix tons of warnings that are related to modules and speed up the process
-> itself.
-> 
+Please note that this mostly targets systems with fully parallel address
+bus like DDR3 and DDR4. Systems with DDR5 and similar are unlikely to boot
+at all, since these send multiple address bits in serial over address pins.
 
-The problem I have is I want to generate a compile time error inside:
-	__builtin_choose_expr(__is_constexpr(x), x && error_a(),
-		statically_true(y) && error_b());
-Neither static_assert() nor a negative bitfield can be used in error_a()
-because they are errors when x isn't isn't a 'constexpr',
-There is less of a problem for error_b() it can contain a function call,
-but can't contain {( ...)}.
+Coming from heavy industry, such hardware failure can be caused by
+vibrations and go undetected for quite a while, especially on higher bits.
+Therefore this test is very useful for early warning self-tests and
+quality control use cases.
 
-One of the compiler complained about sizeof (char [-!!(expr)]) as well.
-I'm not sure of anything else that can be use to get an error.
-I could use 0 >> -1 but that is only a warning, at least the error message
-is related to the bug.
+Signed-off-by: Tomas Mudrunka <tomas.mudrunka@gmail.com>
+---
+ mm/memtest.c | 118 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 118 insertions(+)
 
-Any other ideas?
-
-	David
+diff --git a/mm/memtest.c b/mm/memtest.c
+index c2c609c39..9b63f7917 100644
+--- a/mm/memtest.c
++++ b/mm/memtest.c
+@@ -4,10 +4,15 @@
+ #include <linux/init.h>
+ #include <linux/memblock.h>
+ #include <linux/seq_file.h>
++#include <linux/bitops.h>
+ 
+ static bool early_memtest_done;
+ static phys_addr_t early_memtest_bad_size;
+ 
++static u64 addr_bus_failed_bits;
++static u64 addr_bus_skipped_bits;
++static bool addr_bus_test_done;
++
+ static u64 patterns[] __initdata = {
+ 	/* The first entry has to be 0 to leave memtest with zeroed memory */
+ 	0,
+@@ -104,6 +109,114 @@ static int __init parse_memtest(char *arg)
+ 
+ early_param("memtest", parse_memtest);
+ 
++static bool __init is_address_free(phys_addr_t addr)
++{
++	return memblock_is_memory(addr) && !memblock_is_reserved(addr);
++}
++
++static bool __init find_test_pair(unsigned int bit, phys_addr_t *addr1, phys_addr_t *addr2)
++{
++	u64 i;
++	phys_addr_t this_start, this_end;
++	phys_addr_t candidate;
++	const phys_addr_t step = PAGE_SIZE;
++
++	for_each_free_mem_range(i, NUMA_NO_NODE, MEMBLOCK_NONE, &this_start,
++				&this_end, NULL) {
++		candidate = this_start;
++		while (candidate < this_end) {
++			phys_addr_t test_addr2;
++
++			/* Calculate address differing only in the specified bit */
++			test_addr2 = candidate ^ BIT_ULL(bit);
++
++			/* Check if both addresses are free */
++			if (is_address_free(candidate) && is_address_free(test_addr2)) {
++				*addr1 = candidate;
++				*addr2 = test_addr2;
++				return true;
++			}
++
++			/* Step to next candidate */
++			candidate += step;
++		}
++	}
++
++	return false;
++}
++
++static void __init test_address_bit(unsigned int bit)
++{
++	phys_addr_t addr1, addr2;
++	u8 *vaddr1, *vaddr2;
++	u8 val1, val2;
++
++	if (!find_test_pair(bit, &addr1, &addr2)) {
++		addr_bus_skipped_bits |= BIT_ULL(bit);
++		return;
++	}
++
++	vaddr1 = (u8 *)__va(addr1);
++	vaddr2 = (u8 *)__va(addr2);
++
++	/* Write different patterns to both addresses (1 byte to avoid overlap) */
++	WRITE_ONCE(*vaddr1, 0xAA);
++	WRITE_ONCE(*vaddr2, 0x55);
++
++	/* Read back and verify we got what we wrote */
++	val1 = READ_ONCE(*vaddr1);
++	val2 = READ_ONCE(*vaddr2);
++
++	/* Check for mirroring: if either address doesn't read its expected value, bit is stuck */
++	if (val1 != 0xAA || val2 != 0x55)
++		addr_bus_failed_bits |= BIT_ULL(bit);
++
++	/* Restore memory to zero */
++	WRITE_ONCE(*vaddr1, 0);
++	WRITE_ONCE(*vaddr2, 0);
++}
++
++static void __init test_address_bus(phys_addr_t start, phys_addr_t end)
++{
++	unsigned int addr_bits = sizeof(phys_addr_t) * 8;
++	unsigned int bit;
++	unsigned long failed_count, skipped_count, ok_count;
++	char result_str[128];
++	int pos = 0;
++
++	addr_bus_failed_bits = 0;
++	addr_bus_skipped_bits = 0;
++
++	for (bit = 0; bit < addr_bits; bit++) {
++		test_address_bit(bit);
++
++		/* Build compact result string */
++		if (bit > 0 && (bit % 8) == 0)
++			result_str[pos++] = ' ';
++		if (addr_bus_failed_bits & BIT_ULL(bit))
++			result_str[pos++] = 'F';
++		else if (addr_bus_skipped_bits & BIT_ULL(bit))
++			result_str[pos++] = '_';
++		else
++			result_str[pos++] = 'O';
++	}
++	result_str[pos] = '\0';
++
++	failed_count = hweight64(addr_bus_failed_bits);
++	skipped_count = hweight64(addr_bus_skipped_bits);
++	ok_count = addr_bits - failed_count - skipped_count;
++
++	pr_info("Address bus test: %s\n", result_str);
++	pr_info("Address bus: %lu OK, %lu FAIL, %lu UNKNOWN\n",
++		ok_count, failed_count, skipped_count);
++	if (addr_bus_failed_bits)
++		pr_info("Address bus failed bits: 0x%016llx\n", addr_bus_failed_bits);
++	if (addr_bus_skipped_bits)
++		pr_info("Address bus skipped bits: 0x%016llx\n", addr_bus_skipped_bits);
++
++	addr_bus_test_done = true;
++}
++
+ void __init early_memtest(phys_addr_t start, phys_addr_t end)
+ {
+ 	unsigned int i;
+@@ -117,6 +230,8 @@ void __init early_memtest(phys_addr_t start, phys_addr_t end)
+ 		idx = i % ARRAY_SIZE(patterns);
+ 		do_one_pass(patterns[idx], start, end);
+ 	}
++
++	test_address_bus(start, end);
+ }
+ 
+ void memtest_report_meminfo(struct seq_file *m)
+@@ -132,6 +247,9 @@ void memtest_report_meminfo(struct seq_file *m)
+ 	early_memtest_bad_size_kb = early_memtest_bad_size >> 10;
+ 	if (early_memtest_bad_size && !early_memtest_bad_size_kb)
+ 		early_memtest_bad_size_kb = 1;
++	/* If address bus test found failures, ensure we don't report 0 */
++	if (addr_bus_test_done && addr_bus_failed_bits && !early_memtest_bad_size_kb)
++		early_memtest_bad_size_kb = 1;
+ 	/* When 0 is reported, it means there actually was a successful test */
+ 	seq_printf(m, "EarlyMemtestBad:   %5lu kB\n", early_memtest_bad_size_kb);
+ }
+-- 
+2.52.0
 
 
