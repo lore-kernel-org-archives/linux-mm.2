@@ -4,97 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE5F3D4695A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 01:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13154D2ED0C
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 01:35:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C6A86B009E; Wed, 21 Jan 2026 20:30:50 -0500 (EST)
+	id 5BC4F6B00A0; Wed, 21 Jan 2026 20:35:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39E8B6B009F; Wed, 21 Jan 2026 20:30:50 -0500 (EST)
+	id 56A406B00A1; Wed, 21 Jan 2026 20:35:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D4CA6B00A0; Wed, 21 Jan 2026 20:30:50 -0500 (EST)
+	id 44BF36B00A2; Wed, 21 Jan 2026 20:35:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DCC96B009E
-	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 20:30:50 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8F99716151A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:30:49 +0000 (UTC)
-X-FDA: 84357870618.29.84980EE
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A8FDA1C0009
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:30:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FvS2215S;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769045448; a=rsa-sha256;
-	cv=none;
-	b=QIAxBrEH9wlVzwJ5pRJXMRLKDCkUjrxfn75V6e+Hi6MWQRf39cttMHXk74jKNxMoa7MeiJ
-	TOBj/BJgSIq28Vltr22xHkd1tJ3YGRzGvKCAYlGD0zMCYRvZlSnQFtXJ5Ydk8CUb0swQIt
-	d5Uyv8qVzGQxMMq7SMHIHtn+Monk9V8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FvS2215S;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 30AC26B00A0
+	for <linux-mm@kvack.org>; Wed, 21 Jan 2026 20:35:34 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD5D81A144E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:35:33 +0000 (UTC)
+X-FDA: 84357882546.25.73269EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3A8512000A
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 01:35:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bel17KRO;
+	spf=pass (imf13.hostedemail.com: domain of "SRS0=ucPx=73=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=ucPx=73=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769045447;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1769045732;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tKl8Jno7lJhkwOUwcQTSrgeBn0gJ6jgSqCy+B19d98w=;
-	b=CTP0BsU25s+9bIP1pjH2dLFqb4v/W8zQUsXwkV89fuSmnfzAYoleSCXXKIteTjwEfc2Ex8
-	0s4mqs1KUu33ZZvZL2T0D17SCWjySkPekDkKigRDny7ws22HBOs7HJA/enXqXQa7JMq5F2
-	WFWqhP4lMwf97npOyZ4toGfWmuF6yog=
+	bh=zNoXPWJR6CFHWVd50NmcS+jtmX+hCs43qT43d0pHuuw=;
+	b=q6sAckJk4Ug6npwHOOcezpL5xBBJLvw8w3nbBLaVlqYH3krrEOSkuHfyE2AMem7k06WgOG
+	k21A0T+lrroOuZ4ZqOKOxnMfOmEF8YSNeIy6gFfPuHasbE6T5x++as3TbZyN6KhDYgZLdX
+	jSgpPBbsgbAYxTua7h4qQW0etG5R1UA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bel17KRO;
+	spf=pass (imf13.hostedemail.com: domain of "SRS0=ucPx=73=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=ucPx=73=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769045732; a=rsa-sha256;
+	cv=none;
+	b=A8Q01ExXyc0gs/JsZwgBgzC1ARz/fizKaUBDbcX06x3OHXWyEDZXEDCZgB3K5v8bYS7FP6
+	Go2dgTXwbpDxWs7NRsmX+ZDVNblwFG5SaP0lUZ5XrwREnd7cB9mgFb3bJmjwEevuI6DD/v
+	QmGOxCh/0h6HAkn28wYvbCBMnCi7PPI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 65CE8600C3;
+	Thu, 22 Jan 2026 01:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C80EC4CEF1;
+	Thu, 22 Jan 2026 01:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769045731;
+	bh=gEsFl5ZSDbGUzaSg/Rz1mr17yCcatEQw2X7JV/tbYNU=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=bel17KRODqdrg/18M63JodZIhOeV8OLvgUZOcgL6cfY+F47bXhb4UzSvotJkTUjLH
+	 nusTamJV3dw60qJFPPkx6ROzWPgx+XqdpH+FRvvP0k6m6LrhuUZG+9ppbwRT0OVLe+
+	 kqTIXRhvQ8RcJIEPsayuAM6lTDk41kabxP6aqogW6POTHiAWOSu0YlEe2Cxvrw1LkT
+	 6kTdx9REFqVII9nfmK0NglLAQGjvmQ/t51MxjjzuzOZdps0zPfPPnb7lsOo22dH/M7
+	 Ik3VTNVA9mND8bFBmFmqMhcp3zbAgmT+1ifyMs6uuB1n1XApjPse65oq6/+jGT2kJb
+	 kPsFNPButNkkA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id B5B52CE0B2C; Wed, 21 Jan 2026 17:35:30 -0800 (PST)
+Date: Wed, 21 Jan 2026 17:35:30 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
+Subject: Re: Possible KCSAN/lockdep issue in -next barns
+Message-ID: <d37890bd-bd9f-4b49-b553-45858726fb0a@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <c858b9af-2510-448b-9ab3-058f7b80dd42@paulmck-laptop>
+ <aXB68e_DtXsr7OcB@hyeyoo>
+ <aXB9hHM3T_Q6KzfA@hyeyoo>
+ <55e3dd8f-1b56-4f83-8657-7583175de8f4@paulmck-laptop>
+ <aXF8UAEEa5IuIbGr@hyeyoo>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769045445;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tKl8Jno7lJhkwOUwcQTSrgeBn0gJ6jgSqCy+B19d98w=;
-	b=FvS2215SGQI3qb3MxlQhDug5Iwy0pKGdkZjE8IYX1wUcCvvUTVLSs6JXqKXQVILcdBQVcT
-	CHcTDiv58zSvLIoyTtyxj+VMlPducNqMBBXfjtMF2n/AlZ3mINeUXahO0xRMukNo3I33Rn
-	IdBPVprLxk0CZvf9fsB7j5FiweWlJXo=
-Date: Thu, 22 Jan 2026 01:30:42 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <bac18fc5600a0e8a2f0f5d1e46191ef1e6b64962@linux.dev>
-TLS-Required: No
-Subject: Re: [RFC PATCH 0/3] mm/lru_gen: add memory.lru_gen interface for
- cgroup v2
-To: "Shakeel Butt" <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, "Tejun Heo" <tj@kernel.org>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "=?utf-8?B?TWljaGFsIEtvdXRuw70=?="
- <mkoutny@suse.com>, "Jonathan Corbet" <corbet@lwn.net>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Axel Rasmussen" <axelrasmussen@google.com>,
- "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "David
- Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "Qi
- Zheng" <zhengqi.arch@bytedance.com>, cgroups@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <aXFPhnOn4oGllq_Q@linux.dev>
-References: <20260121123955.84806-1-jiayuan.chen@linux.dev>
- <aXFPhnOn4oGllq_Q@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXF8UAEEa5IuIbGr@hyeyoo>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: tussr894mgjzq9zheo49so43f6nepo47
+X-Rspamd-Queue-Id: 3A8512000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A8FDA1C0009
-X-Stat-Signature: pf8ru1i9mx8ms1crf8mwpj9ba78rbs88
-X-HE-Tag: 1769045447-803479
-X-HE-Meta: U2FsdGVkX1/aEQ9jSIWVyem+dyvFC9L2quh7hVJYir1Z2UpSUHjgkYIVoj4Qx1j3V0YMQHLF2P4opht+USL5Lu73SgAjOBmfAB7wvSl3+YOIWWH+UoRatK3Lb/rusr8tYP+rH9aXQ7UxpXofXjFo0VDVQ0RZHeJZ64RUcrqIq2ABYoROAwLCrJas7hLcu3gCTqt96o1cm7uU5UFMudQtxvTv7EXsTBWc96KYlHgVCZiwBxqQtCoSy+wLJTaPlbSy6KV4AmNukNKh2y9HFx2U2A3RrjLI/veS5NxbgGFsgfwDc+EZMzFFYCJyeKuymGfUvi22i8mvi5dO5LRENFVqk3YFC7R63T6Z8jJsAy3e9qq12lnKR0cCv7u8X71eMCLmVRa1sf4lUZQS1Q3cR0Z1hMJALCC/zQ76yhxXY0GQGbN4XE+CjydRvIJ7DK4EhlRb5q02pwm/u5FNaLKOCdWx62H/ZHiZf+0pQV/mNNlE575nOeo4XQI2y7qEzBShrUIJvaQiPAtai5LMoIdZZKHvzWnceNwFx3+ssfKfbR1SfhqLAfbom0mZB/RvtEt0p1InV4V6mw3y1ZJFRURswjhWK5/YhCiVbJCCbLX5ndeC3BHZKRzDEr/DDFZufDdK2WTJUsA2HDV1Ul7ABc0kYBreNwBi3CXLYuq2eRunpc7H6UTfFeXDpz9PDxxmD+q8tsCR8QS7PIMaBV+4HFHtlG2pkC2QIIwVY1n+wAGe9YB22RkfJ8DFGBewWHTq7BjxA7yf+ScPnyrkL/OhQPPX2jfiihKNOqfqZVaMDFzYjHTLuLuwKLjZHlu4apm4qQ3s5BCUaZEmjo6HsgayQNcv0G1ulqu/Jf6Jk6EayykJyTahflVmazPuTG6aSDuTzv75/xsefMJOzFCBZ6UFWeNr+Ppd+IRK2JrMG222lUxt2dnsNnfjd3pyTcsAnFybHe3vaGkKLj8siVwCJO0FAsjRHGg
- eDQnRBLA
- uDvcdQ7f78qUsHn6CMsCB29yHkyEmemEb/UKFpFcDh/K5669Tv682XGACuS2LWYXgvNf7j0wyx+bbw+c69cYQSkzjuzlky1nOGJVkYVxOIoB7q/1JRnmBaHdQv57Ip0bC7unA6TmU7JFTTBULoF32ViDRbLQ2OuUFBO1VNlgF21uPOGsUCvzxSH78SUYDZ6lcVlj+TOHn+DECNjZojQWI5ru+H7TO0P1BO8tqARrxnZ3JL63PzWngL/LvAbX1oY8t6+N+ERwjpy3EdaNt9myspdrwBsbVZgNzCfsSOH2Ebeoj6wwNkeJVqzdNu0jKi5LR2FGm
+X-HE-Tag: 1769045732-556561
+X-HE-Meta: U2FsdGVkX19xv5ydfPFAgUP8olVCQ/ZpUsNvjmgoXaBHLwuHDT6K3BJMOZloaqNryrozY82T1QKQHITt/OGwPoDzvUecxoSE0hBvw5J1yvK/hf7aQzwoUkbRow0hnjbTEQ4xJ0EX5yu2IxQ1+AcT8NrmfVMZPmHaFQiCMAFTUoRh/blsl0Qm+40zk28EA+LYIc9dAym+vE7UNFdu4sNaBQFcp5qD/8jYvh3Ls+RirY1j9FFNDPUL/vZm8FH1hkmEESxIftV3BbMvH79guXcK1FAC95MwnPw5y70tjvVzXmspmh1dk/61rG4lANJcEzsAPts3AABoTU2uT3e+wyPTPgzjm50H0bE8c7WGWWOOvee+DzjTgj7ew/yuzu9ZQ6JyZclHK1zlXey/QjakafhIJ7qtdl60v9epcn66d1Dg6k4g6PD230TZq7jFad3fAFF7RD4MP75PcVWSSJV8rJ3ENEeEHShC8Js7CezonTa+eMrwbw7f2zbdG8Ew/X+aSkawcH1z4fXslrt7lsqP9Us76tgJP0pQSet6ISNu7XZhgIerPF4bQDlTTGHw9glwVFA0J9dOo8GrXIIFkIUtaAjymF0AZvoi2D+8+WMGQbHIRfJ01kNxnT+/pWS30lvVYCKM+JCCr6muA9/ZzTDOPPrCYnPaSQo3IEuEU5ZuQbRDgsp3oRHV/Zj6fS5Nu9bzAoU25YrRpK0c88ME/axrVz6pMJvhsh4XNRj41qVPIpkGWCHIj6D/nOnpjG8QWgkRCXuHEG8PSuuJe5q53UUqgZiDrM5bgfA1ddTHwH+9qt/mmOgjXMksHiZW0HddYv/Wu/qqSc3IGaMA/8jZZR71t1s9OT0MaT7fAjw3FhwvXOoxJEvDfy48c5ewDiE2Te4gPYkcLSMaXw5di0mn87iXOirwm/BnCzmFxfoJiu+uw8eKs42WrPbwaEmwkFhIGGhYN84TBDNfHN6RXBzmm9pz9+y
+ Dvj9Q/HO
+ 7zjEy0Kx8ky1nhwWTFUBJ8lp4WKpzXUrDoaxBxw3fdp0OqhJzHZ1SzhICg7jl9lVppvUuUrdlnPAxxsdO6NouO0NrGoazytJL3/a/4jcSdMm8im8r2pPWGPKzTCDAW17LcsEnUCOKKKBQ9YhlJj1kmH82awwxWkZ0l0b4uLBiZFFVCcMq+bpIBp2IVmZU8wCw2at2TlQWNvt4yHwRlokV/b8JbYA0cNeW3A3dk8TFb4G5m3xBCV2wJ87OpOle7skKo1YU12PLSKPnctl0OA974DYP7qTjRHs3cKSMtS74DZTuEp30lpk9UtuWelNZg2mBPUZzF+EWUYAyjWYmqo9Hm31CAuoRza2iZ3G5lt4asGkvqrboN3+tM3GBXSKKWPyzQ9JCRvFuo83n1xgq0fUJUNBSZorSk12uXBKcv8lCy90mJJgQHoPHC+I2ZaH9V5N/Zgr+LJX7XAO1jcj4Du3WP30tta118nlCVnBGz+peSyCFn4EETPxilz1i/E6GjV6SsB8emdt2YXhZu3Ju2bs9kNR0W2uC+YwksLTKdu2WOSYRsgo+bGSa5A++302KJSwbDLHK8CYamQnMfFOUM2eu7IO80cFpWUp+8pzGK6h31UhILBhOEBZmKHrTNczIv7H2/FFkJFxID76jqMZYKfLa+aXuA4/dB1O8jIxiBBgAGW22JNfy+cg9s4w4k6zBTcnx++B3J1GYYWr79kM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,69 +97,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-January 22, 2026 at 06:19, "Shakeel Butt" <shakeel.butt@linux.dev mailto:=
-shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linu=
-x.dev%3E > wrote:
+On Thu, Jan 22, 2026 at 10:24:32AM +0900, Harry Yoo wrote:
+> On Wed, Jan 21, 2026 at 07:58:29AM -0800, Paul E. McKenney wrote:
+> > On Wed, Jan 21, 2026 at 04:17:24PM +0900, Harry Yoo wrote:
+> > > On Wed, Jan 21, 2026 at 04:06:25PM +0900, Harry Yoo wrote:
+> > > > On Tue, Jan 20, 2026 at 09:41:14PM -0800, Paul E. McKenney wrote:
+> > > > > Hello, Vlastimil,
+> > > > > 
+> > > > > On the off-chance that this is useful new news.  This happened in
+> > > > > rcutorture's TREE04 scenario running with KCSAN and lockdep enabled.
+> > > > > 
+> > > > > Thoughts?
+> > > > > 
+> > > > > 						Thanx, Paul
+> > > > > 
+> > > > > ------------------------------------------------------------------------
+> > > > > 
+> > > > > [  253.872153] =============================
+> > > > > [  253.872271] [ BUG: Invalid wait context ]
+> > > > > [  253.872271] 6.19.0-rc6-next-20260120 #21508 Not tainted
+> > > > > [  253.875774] -----------------------------
+> > > > > [  253.877983] migration/1/23 is trying to lock:
+> > > > > [  253.877983] ffff8afd01054e98 (&barn->lock){..-.}-{3:3}, at: barn_get_empty_sheaf+0x1d/0xb0
+> > > > > [  253.877983] other info that might help us debug this:
+> > > > > [  253.877983] context-{5:5}
+> > > > > [  253.877983] 3 locks held by migration/1/23:
+> > > > > [  253.877983]  #0: ffff8afd01fd89a8 (&p->pi_lock){-.-.}-{2:2}, at: __balance_push_cpu_stop+0x3f/0x200
+> > > > > [  253.877983]  #1: ffffffff9f15c5c8 (rcu_read_lock){....}-{1:3}, at: cpuset_cpus_allowed_fallback+0x27/0x250
+> > > > > [  253.877983]  #2: ffff8afd1f470be0 ((local_lock_t *)&pcs->lock){+.+.}-{3:3}, at: __kfree_rcu_sheaf+0x52/0x3d0
+> > > > > [  253.877983] stack backtrace:
+> > > > > [  253.877983] CPU: 1 UID: 0 PID: 23 Comm: migration/1 Not tainted 6.19.0-rc6-next-20260120 #21508 PREEMPTLAZY
+> > > > > [  253.877983] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+> > > > > [  253.877983] Stopper: __balance_push_cpu_stop+0x0/0x200 <- balance_push+0x118/0x170
+> > > > > [  253.877983] Call Trace:
+> > > > > [  253.877983]  <TASK>
+> > > > > [  253.877983]  __dump_stack+0x22/0x30
+> > > > > [  253.877983]  dump_stack_lvl+0x60/0x80
+> > > > > [  253.877983]  dump_stack+0x19/0x24
+> > > > > [  253.877983]  __lock_acquire+0xd3a/0x28e0
+> > > > > [  253.877983]  ? __lock_acquire+0x5a9/0x28e0
+> > > > > [  253.877983]  ? __lock_acquire+0x5a9/0x28e0
+> > > > > [  253.877983]  ? barn_get_empty_sheaf+0x1d/0xb0
+> > > > > [  253.877983]  lock_acquire+0xc3/0x270
+> > > > > [  253.877983]  ? barn_get_empty_sheaf+0x1d/0xb0
+> > > > > [  253.877983]  ? __kfree_rcu_sheaf+0x52/0x3d0
+> > > > > [  253.877983]  _raw_spin_lock_irqsave+0x47/0x70
+> > > > > [  253.877983]  ? barn_get_empty_sheaf+0x1d/0xb0
+> > > > > [  253.877983]  barn_get_empty_sheaf+0x1d/0xb0
+> > > > > [  253.877983]  ? __kfree_rcu_sheaf+0x52/0x3d0
+> > > > > [  253.877983]  __kfree_rcu_sheaf+0x19f/0x3d0
+> > > > > [  253.877983]  kvfree_call_rcu+0xaf/0x390
+> > > > > [  253.877983]  set_cpus_allowed_force+0xc8/0xf0
+> > > > 
+> > > > set_cpus_allowed_force() is calling kfree_rcu() with a raw spinlock
+> > > > (pi_lock) held, but barn->lock is normal spinlock, lockdep prints an
+> > > > error because on PREEMPT_RT normal spinlocks are converted to
+> > > > sleeping locks but raw spinlocks are not.
+> > > > 
+> > > > Hmm... but it isn't great to convert barn->lock to
+> > > > a raw spinlock just because of this?
+> > > 
+> > > No, on PREEMPT_RT kfree_call_rcu() doesn't use sheaves.
+> > > Is it benign and it's simply due to PROVE_RAW_LOCK_NESTING?
+> > 
+> > Unless your kernel is built with CONFIG_PREEMPT_RT=y, in which case it
+> > is a real bug that could call schedule() with preemption disabled.
+> 
+> Right, but it's fine because this path is never called with
+> CONFIG_PREEMPT_RT=y. Yesterday sent a fix to suppress this warning.
 
+Ah, missed that, apologies!
 
->=20
->=20On Wed, Jan 21, 2026 at 08:39:46PM +0800, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> This patchset adds a memory.lru_gen interface to cgroup v2, allowin=
-g users
-> >  to interact with MGLRU directly on a specific cgroup without needing=
- to
-> >  know the internal memcg_id.
-> >=20
->=20Unfortunetely we don't want to expose reclaim implementation specific
-> interface to a cgroup.=20
->=20
-> >=20
->=20> Motivation
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >  Currently, the only way to perform aging or eviction on a specific m=
-emcg
-> >  is through the debugfs interface (/sys/kernel/debug/lru_gen), which
-> >  requires the memcg_id. However, there's no straightforward way to ge=
-t the
-> >  memcg_id for a given cgroup path. This makes it difficult for users =
-to
-> >  leverage MGLRU's proactive reclaim capabilities on specific cgroups.
-> >=20
->=20From the next kernel version, this memcg_id will be inode number of t=
-he
-> cgroup for this interface. So, a simple 'ls -id cgroup_path' would be
-> sufficient for your use-case.
->=20
->=20The relevant series [1] is in mm-tree at the moment and if you want, =
-you
-> can backport it to your kernels.
->=20
->=20[1] https://lkml.kernel.org/r/20251225232116.294540-1-shakeel.butt@li=
-nux.dev
->
+> Thanks for reporting it, Paul!
 
-Hi Shakeel,
+Happy to help, whether with one "l" or two.  ;-)
 
-Thanks for the review and the pointer to the inode-based memcg_id series.
-
-I agree that using the cgroup inode number as memcg_id will simplify the
-write operations (aging/eviction) through the debugfs interface.
-
-However, I'd like to point out that the read operation (viewing lru_gen
-info for a specific cgroup) is still not convenient. Currently, users
-would need to parse the full debugfs output and grep for the specific
-memcg_id, which can be cumbersome especially on systems with many cgroups=
-.
-
-Would it be acceptable to add a read-only command to /lru_gen that only d=
-isplays
-the lru_gen information for the specified cgroup?
-
-Alternatively, if exposing any lru_gen info in cgroup is not desired, I
-understand and will use the debugfs approach with scripting.
-
-Thanks,
-chenjiayuan
+							Thanx, Paul
 
