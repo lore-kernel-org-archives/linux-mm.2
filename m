@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 213D6D3EE77
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 15:31:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82FE0D3EE75
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 15:45:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2644E6B0249; Thu, 22 Jan 2026 10:31:34 -0500 (EST)
+	id CA8F66B024B; Thu, 22 Jan 2026 10:45:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 214E56B024A; Thu, 22 Jan 2026 10:31:34 -0500 (EST)
+	id C56776B024C; Thu, 22 Jan 2026 10:45:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13E806B024B; Thu, 22 Jan 2026 10:31:34 -0500 (EST)
+	id B83ED6B024D; Thu, 22 Jan 2026 10:45:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 016356B0249
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:31:33 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A19EF13AA02
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:31:33 +0000 (UTC)
-X-FDA: 84359989266.26.4CCA18A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 83FFB1A000E
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:31:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=L7XP7F31;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A62836B024B
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:45:05 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 14FCB1A0408
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:45:05 +0000 (UTC)
+X-FDA: 84360023370.13.44BA541
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 89DF1120009
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 15:45:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Evfn9Bbf;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769095891;
+	s=arc-20220608; t=1769096703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CUCjI+CtzxnoxJaEVPmLhoENbRQdUcL5/NtzvXoJq34=;
-	b=XT+JHil6I1osNmwEPBMT7NEkItZUbykcZ+0OZOy7QWwX8ZkCe9KZKLrxYWIKBbMasc2U+M
-	2QFciZl/ZqI+caCGwC+Zd2xpLqEYw1MpxRUxJ9GVfvGjqVo76Mc6y/kYzHBUzIDfi8znXx
-	SMGo1lIx+ydj92JR1KZYy+c503mLIDw=
+	bh=MBH4OAZWQsKn81We9o0RG9SLqVKAoMOD64bGQSd1Cag=;
+	b=M09X4Sub8j23nInAv7FPzG23cFPioDHxXHs4SzCXl9jg7z8EOLRaGfR1NzdUz5aMKRkg+i
+	APzQcvxeCgcdb3+ruJzGCAiyBd4E2jTRFSICb+kJ2D6KwaiwBEiOZOWJnv9FzAnufIctuI
+	0fQ+nmi7StAPWpiR1rycR025mfsLCfo=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=L7XP7F31;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769095891; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Evfn9Bbf;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769096703; a=rsa-sha256;
 	cv=none;
-	b=Lpq0RNBk859VFah8657WZSEihgtKrfVNIYGrvXTl+h6eJ7H/8Kg9Tl5/qNvcSvQKKXCr+V
-	Iyrm8OckW4OdfJaZ/LzRxNR7GXpQs5NwdBCIR0Uh164Qe1u6jVe6hsm//mZhdEV1y9UNrk
-	itRGemJ8j63ypT1WWszAr+0tDv/NYNM=
+	b=WCSIRiUpMl9R6olvY/dpUxUVUd5irHymbTvTsUqfPmRMWOe6L1qyMVFcHk73GPsZM1mXxY
+	Qc/iJwhn1AW/cGZnt0sTyKO87c9tY+Evs15jCX1KZ8QK0YG3UA1pqqNLLIYs/YRkz3LHPk
+	BzBBOqsMXe+43JX82JByHpT4+UX6vIM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 46B5541567;
-	Thu, 22 Jan 2026 15:31:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBBAC116C6;
-	Thu, 22 Jan 2026 15:31:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769095890;
-	bh=QApDiBpGYcNk+c8GLuqpRlMuKY8TBhtdmMPGwIfToKI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L7XP7F31mZRjMY5qsErAhs0bJz0KvUoFCCXwoIXXL/D4FOsSg0+If3e3sc5i69ORn
-	 ZkRVjLMzZtwjNJ1o8oVPRTZNu5wjsURMVcN1yGQF9Pl9sNh1rWSmaTy4vA46W4DypR
-	 ff86NSUzVRmuZUCmNFjp1NSuaXcdFMywAmyXV2tY=
-Date: Thu, 22 Jan 2026 07:31:29 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id D70E160128;
+	Thu, 22 Jan 2026 15:45:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B3AC116C6;
+	Thu, 22 Jan 2026 15:44:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769096702;
+	bh=52XMBjtg9ukz4aelwXz5NWLALBx3/KQUBQRuzd6rRXQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Evfn9BbfvpGnIvAvt8Oqgd2YaoDCSTDUhz5V42CGfCouBunHnAWaffYOwFoq00iGt
+	 AbBFy6MAnqXp7gH99YT888MmuofDK29O9ulFFUNTZsLZckD1JQiZ7KHeGaqlL2joDs
+	 MvPpgNnH1Nxega7/W2TEiI6yjFkQSdhfkN/frrRIkiRqN9YuOPuxP8C7SwgN4LgTfu
+	 5yl+MM49NL1ZCh9dHZ4AMReiorkUkEpmJOnjL7jH3YjNurTBchTlTLAQdGn/s7rfum
+	 MTnyDXRLNkc5vNJGmceIijGi7uB3e6s5W3GGNNhRGm4BQzL/hg9L/yH1OHk4e7i1tx
+	 OYs6Gl+XVcUuA==
+Date: Thu, 22 Jan 2026 17:44:56 +0200
+From: Mike Rapoport <rppt@kernel.org>
 To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] mm: memfd_luo hotfixes
-Message-Id: <20260122073129.6fc316b1b11ebcfd8273629a@linux-foundation.org>
-In-Reply-To: <20260122151842.4069702-1-pratyush@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] memfd: export alloc_file()
+Message-ID: <aXJF-GGFxP55lgs8@kernel.org>
 References: <20260122151842.4069702-1-pratyush@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rrwjd5asq5ajabe7eb8g3dcgz148rsxu
-X-Rspamd-Queue-Id: 83FFB1A000E
+ <20260122151842.4069702-2-pratyush@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260122151842.4069702-2-pratyush@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 89DF1120009
+X-Stat-Signature: ed8f5m1xggdjwzihdaoucrue5i9tprah
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769095891-59479
-X-HE-Meta: U2FsdGVkX18/6e0iuLh3jJzHK46bw41+j5tCfZMiA3cVtxWS+8De3ZY5kdqTmgOKU/du6KIvR8ZnieTSgSrFNdIjEGwkZaNMs//4UX3WPWaBVlPFRvxKn6ziy1KLvf7ir4FwjhTpGBvh47iUmgdFgHah2Tjsoe/yqDdwDcrw3Ywfyo53bEtYoHfSaTdEtrvnJCbCYBshJ/o/2aZQIKrZt27ajhChiHhAJ7s5QTG1H5M2pa1SLv4TwYP5b/MptEratL/MC6VvrMsePlPG9kyohMtReWM1rEe/eybM+ore7hNCuvrdw/7jYKmkGlURgBzruFUeuzPPM3JkQrTahYXKVJZXwno1BkwKjmtHtY936ZaBf9gpc3c1SJBdhqT32NHzFe+envwmYDXNCgFbiJ6soVGjeYakXQQwggYQgSLg6XnOcSL/R/mF9HGxHvT2AYKXGtHcRcawY2tZSt0p2/t8IMaDyahSjrffRK1CpynIkgpxpB2QKYQ+yFyWgQfykk4sFjqJN9GF/YoJ5Jrrfq0I0gSTm+qlq0PI+oxMsTTI/HLqCNq27bUsG0Gwd/GkFqz34cu8xJhCHzJdzp4uUQ2TBUMiVVPPJqMCddOo1yv7iUVxti+5SSGmQ+K5Vy+WFJ/r6FGcAAXHHlxJXTK1BxsaqJQiK8ldpVXQZdJjyDLm/REhjajk3WMvEJ83tcyzDKiUU+MJxAQml5HUvdNbAEHCLM3FgSamzfQU32t8Jum9fKFg4DJ6Ecu41JkTrKVif0x64prlDsQKHiGHNVrMqaXVHN4FsctSmZrI8uD70Jc3YVHh046WW0kfICmRI5rgMt4NxDJM04H282i19Dmxiisq8A9t5f0U88RCBOBa4l2HbcWbYjaIzH5hMj4fFvVenBjbltnLGO80NbY7KDq+R4DT7LNvmW+h4Ouh3A8fT05xxhoE/yzNUdbg0DgrKPHtrHHJ2P3esbzn0m/Gl5EZHt2
- J0I6zq6V
- UjvNVCZ6ZXJpVJBr3SfXjqvQ6dZjj9Q/1i8HKZy8cY0jRMM07EN5FQcF6H096HWGHuGvlVq6FmTt7AUr0R78W9Wmi+IPwcfa2yKH75jJbRlcuY0zoX9ObjLwHU908Rk4y1v6dKnVwYs5dIo+ghNG2mTjA0GECGjBxVaGU8I5n2pTjXpIHVsEirB8C/I5T3T+VTCJtLXvh+ZB9G4gSFFKNwLR6u5kXKDSaI4s8ousZn3yVm67sl5x0HGRekUg1Ik14CZBOY78kYozRQ3pvElO0/h8wPZ+GGjPG3qRBYCcv028MEajBTiuhX1p+3M8COQ0eVyVU+0aJMb8y0KiGCLYZsf+6OA==
+X-HE-Tag: 1769096703-241169
+X-HE-Meta: U2FsdGVkX1/9xutSWfKXrDSsg5a0h9NstF17ee0r9Davabmu9arePf3VGnzKvvolrOQ4PJLZeo9UsVl/lpKcSpppca6kYwIfdDm5mjgcZaC+HX0iVHAoeowmGBYZ6WEc3/EnxDT43hTTc891NA71/k6WR7UxYNUZbV+d5aVyCgayDAYm1bd7zfmuoXZrYqxfx8FlVRSqqsTACFR64SjahAJOl4So+P3Kqae6e6lkL+0w8bvjfgfWtn7PsmVVk8F7LBTMGMWMEOeMK/EVRSfT0RogdbNG70tD0b2/bweyNqKIf1A98U2qOF0ySL7rt2hGjYG0lGlUVp+YweILr8qyupJDEu0vbFuWFJt9oOyG4fQpORc9+5i1gmjKEqSH+V5FlF/t8ll2mjCCXbFejXIvrwBShDQyIXOMOI60g6Yd4HjYSqv7pxoIKkVnS8xHeD+qO6Ubpu76dc3nmhsAIVA4bWofmSg8/suu+GbNOXdfPcB9fmlNpwE/3uVeLY0setaERUkLV1v9Fk8X3Oft0GoqUQzZOMivAYQoijKEQm57qCDRa1wl/U8SzfpAzSFBaK0CMjrVwTBZABbHlsCecfdP8ypCO5FF2WcqkXD1BUL27Dh3t9KF1esdBsUnLjPN8P+P4NCpjPYHyoqJYK+WDTQMid4mUOTepAZ8QDgAdp+ZK6NplsIKugPT6Pt/3gcWj0zynbzzaxNXoDCOfX3ufkqBEEOGwOmEbqBXqrhVs0cKNUCjzkO9oXi7tw7i45I9x1HDREHTi/OHenm7mf2Od1t80SDTy4Yo8+QZmDu00BvHAqnVSvH32vw5XtKNOfC1lldYqfugBXC+PhHrxV30Je24NIisjJJir4e9yiQvslignojck8t0ylMnekE7sMOvAEpmmXU1pymC/I19P/A4WhnvGQZ6zjjs7Vbu9DD1E1FDr6/WWyFc30t+8PAjbtzS+Phm/fiir9pU7gt8HeBEys2
+ NEshVZZb
+ Jq00/mMs2Yo/1X8wgJ5uzseG/JjOM2M543lEVZUgHwXxms4jxlWw2lHBqpwdMPm9YhFiJouLMXvWOTpFRISY4uWEASLaGIiOw68nO8FwZbSPVajbvT5e7i0M0SV5evijqWI+QYtF2vfEXahkqeJCOfAgOAlaAqbGReMd2Lsdnhio0HUoizfYaVURzjpL+lGJMigqFG3iO2dzZ23HS7rOmia2+1cX0ljk/a9ADXMkktcZe+FhyyVcKXW/J5T86BLInp3RTpJ6i+4/Mgo7Iaa1OzcHbFSO7+mAkf7GqwQsjNXIV++v3mXUTU9GAzvWHTOTZEvv1JGR8hZa1BitwJhmUhIqyb98GMaWegTyt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,21 +95,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 16:18:38 +0100 Pratyush Yadav <pratyush@kernel.org> wrote:
-
+On Thu, Jan 22, 2026 at 04:18:39PM +0100, Pratyush Yadav wrote:
 > From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 > 
-> Hi,
+> The Live Update Orchestrator's (LUO) memfd preservation works by
+> preserving all the folios of a memfd, re-creating an empty memfd on the
+> next boot, and then inserting back the preserved folios.
 > 
-> This series contains a couple of fixes for memfd preservation using LUO.
+> Currently it creates the file by directly calling shmem_file_setup().
+> This leaves out other work done by alloc_file() like setting up the file
+> mode, flags, or calling the security hooks.
+> 
+> Export alloc_file() to let memfd_luo use it. Rename it to
+> memfd_alloc_file() since it is no longer private and thus needs a
+> subsystem prefix.
+> 
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-Good stuff.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> Andrew, it would be great if we can land these in v6.19, especially
-> patches 1 and 2 since they fix a usability and a security problem. Patch
-> 3 can wait, but then it is pretty simple too.
-
-Absolutely.  Patches which fix material which was added in the current
-cycle get the red carpet treatment.
-
+-- 
+Sincerely yours,
+Mike.
 
