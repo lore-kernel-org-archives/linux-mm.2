@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0410ACA5FB6
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 12:43:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B64F3D262BF
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 12:48:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18ADA6B017D; Thu, 22 Jan 2026 07:43:07 -0500 (EST)
+	id 17A4F6B017E; Thu, 22 Jan 2026 07:48:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 138F56B017E; Thu, 22 Jan 2026 07:43:07 -0500 (EST)
+	id 128CA6B0180; Thu, 22 Jan 2026 07:48:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0442C6B017F; Thu, 22 Jan 2026 07:43:06 -0500 (EST)
+	id 000586B0181; Thu, 22 Jan 2026 07:48:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E78E76B017D
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 07:43:06 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CC231AF45A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:43:06 +0000 (UTC)
-X-FDA: 84359564772.17.7D245DC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A44C5180002
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:43:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dHiQCIuW;
-	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E4FE76B017E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 07:48:30 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 79AD7160283
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:48:30 +0000 (UTC)
+X-FDA: 84359578380.23.986506C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6F8E8A0003
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 12:48:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hwig5yiG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769085784;
+	s=arc-20220608; t=1769086108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UNWwXcdV9Ya6UyS1z9rRdOAQ+E17+4WFUgvX6AUp9po=;
-	b=krhKyJ+HkNo5c0B+EA3vv0lo2I78+P2NRnV0ddavahPKT5ywMd04RrxRLrymWjFKbEhC5H
-	GxI7hLFFyGARJPRCaHT51xhXEGdNw56ZolVZwaRJrpbBuKLMI9t0M1HrloaqXovcmdXhHA
-	Y6dVP/67sdFyiVhOW5RvE7NGGxf0K4E=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dHiQCIuW;
-	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769085784; a=rsa-sha256;
+	bh=rFvEYO1Y6ScpqGsO+ETZq7M/vyfIjPfoUktbOxzoWJk=;
+	b=Ro9Pri5UOWueTeVsvH4T2Atjt9SqLnSYz9ggRQ+IPtQwTYa5W/pmePEeMSzMfEh0D6iYKE
+	5zl15lbAFgkbZ+eFgOe/IlKmHrlR9DVLMF8coLst7j+mxMHlZD71cvAaT11DORHO6iTKnf
+	YwK1/dPXxIBHGItO8+IE6/v8w/kbQcI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769086108; a=rsa-sha256;
 	cv=none;
-	b=BvLDQqi2/ovSUxqvg/sYI3A0iLCwm45UUbO96UraLNgbiiqxXhj3yiM3xnxJ6gXqcx87J/
-	NJR5O4MLALEWsxM3U9W/PcQ5v1taW6P0NbZ/ULL3mWSO/hhlRSr2TPoascS4t8ye9P5/YU
-	Z/JtdeddcFlUaj4DPqLNuMuTLsIOurM=
+	b=My0BFCzZTRppVBa6fAhgAuWRaQ1xdbhDcyYBVXGXb1OE76XqzKMJARiWlaTEdyWbxxTzKu
+	+Ry5GnwbKrB0phSqFYjVWz/2ye3Jq7QfljYvscdqa0tKftTkrFa6bcW9NUlwjvMfWn6I97
+	cmVc0RBQuZLXNB6DhALYiswdV/Hg0Cw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hwig5yiG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9DA8600CB;
-	Thu, 22 Jan 2026 12:43:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B73C4AF0B;
-	Thu, 22 Jan 2026 12:43:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B137436B4;
+	Thu, 22 Jan 2026 12:48:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99159C116D0;
+	Thu, 22 Jan 2026 12:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769085783;
-	bh=Ztrx9kB3sLLvVxl3F+YuROIMVvnwytTbGDwHp6NrGTM=;
+	s=k20201202; t=1769086107;
+	bh=XakBjuBXojiy+bHqbnq0M9HVpyzFj/6SSmtXTz/8WSY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dHiQCIuWOKbaSX2Lbh3uBQRcAO10WYzApvYfHdq5kRLf0mvAncuYOdPIxiVzhZ6Ph
-	 96TlwDoUOTqdT3d6vuGGCONI+gYS0Z0DFm+jDrtZ4ImheYeFZc4+i5AFg0EjwsJAFA
-	 yHMQBteGRC1M9l5LVewEJxqzUbU32owP6k0lRw/RehJ+2XoAz9Ij6VTRIe8NkL06r9
-	 oOkOuRjuonCVdq/C9DFkxMc0/mGLMJt4+1ScHjN29wj6uhJ9zI3UlgmNNuH4BS1T48
-	 W6XxYvZ4O0oPJqO1crlREGnlxAQLJVGBZtMGVdpz2SdJ5uLKU88o1l5f7/9zc+nqeI
-	 vtf5TJkzJ01Aw==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B9123F40068;
-	Thu, 22 Jan 2026 07:43:01 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 22 Jan 2026 07:43:01 -0500
-X-ME-Sender: <xms:VRtyacdaf7vmyWJ8ck7gwYWgDmh0FSbz_wuhX8ke4j_HrFos9-Q8DA>
-    <xme:VRtyaZmPe6BGVGdHB0QMpMLu-D31O8kg1ZVJuWrNTbsrY93c7sPx4cTGynH9xXagV
-    cpXyzl7uuvYbSoK5SYRusJJncW5V4MDq04GQKot_igSUbBlQ5et6gY>
-X-ME-Received: <xmr:VRtyaW6gXJN7Do3aN65qSztIC79H0zFsiD0fcNCE-Gop0AKdPGbGIMmdjPpwtQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeiudelucetufdoteggodetrf
+	b=hwig5yiGmNbF3J8rJf4aQHvL1/VhfY9YyNF1noSCKpZ/pOhmhddne9G2/Lo8nVNN/
+	 oVxxYWZMVVK+E97wikNkZPIbA6pz0Hb6AHB6iTOxQF1NhgHNut4c1Woh/QC/iiwGC0
+	 B1RC2M+doPnowNPdiYsr7AAYMKIf5sUctl4/w3ZDStOi38KfD+PJ6KkcFFkL3R5+pZ
+	 BV5P7N7FlH08HUS/u2NhXQfBcl8f0zz6+5k3tPBKU0N9VcYGzcMZTlETk1ojAW7voO
+	 KKf9ifSFoKK+kjqgbrqp0YaEbQXuqyWvHvpe62uH/N2l1rk7muuS/wIaDnbZ99UWrC
+	 1HML6ZmeEHEpA==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BCC57F40068;
+	Thu, 22 Jan 2026 07:48:25 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 22 Jan 2026 07:48:25 -0500
+X-ME-Sender: <xms:mRxyaf07nYM300m4gkNaHVnaCjPgEtFG54FV7TczcMF-cpLZNeAefg>
+    <xme:mRxyaZf3Uh_Lg9hXAHRx9Iel3o11mcfhTLTMfHzPtYr3TJt-HskShKWJrxy4Rf-sm
+    dlAeXtq4mLb4v4tNgUG3vVSPxq9Yg-OQPTuXC_e8djrn3VwW-qyKDPJ>
+X-ME-Received: <xmr:mRxyaZQbqj6i1HzbnPIkL5N9JFggpUV3BLFbIrKjAvQjxiHukFUCWlXJl78LRw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeivddtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
@@ -82,53 +82,49 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeeiudelucetufdote
     hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
     qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
     hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehmuhgthhhunhdrshhonhhgsehlihhnuhigrdguvghvpdhrtghpthhtoheprghkph
-    hmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgu
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurd
-    horhhgpdhrtghpthhtohepuhhsrghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrg
-    guohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
-X-ME-Proxy: <xmx:VRtyaZtqZrPYwJbsyLU2hTO4fJos3CvZcAgwzYNKToxvXEx0DNh2Rg>
-    <xmx:VRtyaUSR7xynwHWQD72-6a3L2xR6kQb1PFsFdbOlWFRRwB70QSNs9A>
-    <xmx:VRtyaegbmQ9CQ7fqfYvTRkdfQKnA1-QdjcxenniXH3bBwxA0Kw2X6A>
-    <xmx:VRtyaRYcReUFB_XhL8YiNdUuPBSEq0WGbXwic-9mYv5XGyumqFqBuw>
-    <xmx:VRtyaQoUVYE1wmPna4NPKTqbRY_1dxVLJXaqxgEOiHmPZxaQzXOiTD0B>
+    thhopeiiihihsehnvhhiughirgdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugi
+    dqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhnghes
+    lhhinhhugidruggvvhdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuhhs
+    rghmrggrrhhifheigedvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhhvughlsehgoh
+    hoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrgguohhrsehsuhhsvgdruggvpdhr
+    tghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:mRxyacn9D7tHxO73dCr2PVDNBWZ_3BLr64tZA5QcxHz95v6v_ixPpw>
+    <xmx:mRxyadqPxkwzYfYU1oW30JieKjzGKsLbX2h47WA5BA-eaDKycsVn_g>
+    <xmx:mRxyacZFJl10uQZTwAGdk4Q2Aq7cYMSsUKEKoj_eS7XmjLUkmWSoCw>
+    <xmx:mRxyaZxjpdon9XMRbJpji66w0Ew4gdcXgBVa8klsNKcQUJrk50xCtQ>
+    <xmx:mRxyaRjsHZ97UOc1TLQZdQCca8gXkbDB_uuRCitETwpj-f8D15DbUN0z>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 22 Jan 2026 07:42:59 -0500 (EST)
-Date: Thu, 22 Jan 2026 12:42:54 +0000
+ 22 Jan 2026 07:48:25 -0500 (EST)
+Date: Thu, 22 Jan 2026 12:48:24 +0000
 From: Kiryl Shutsemau <kas@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
+To: Zi Yan <ziy@nvidia.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>, 
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCHv4 07/14] mm/sparse: Check memmap alignment for
- compound_info_has_mask()
-Message-ID: <aXIaHZ5kNFelmuJi@thinkstation>
+Subject: Re: [PATCHv4 10/14] mm: Drop fake head checks
+Message-ID: <aXIblgtZ-b9SCp7O@thinkstation>
 References: <20260121162253.2216580-1-kas@kernel.org>
- <20260121162253.2216580-8-kas@kernel.org>
- <71F051F2-5F3B-40A5-9347-BA2D93F2FF3F@linux.dev>
- <aXIJY5irR0obgdQe@thinkstation>
- <35B81EA5-D719-4FC4-93C5-674DD5BFDA4F@linux.dev>
- <45434FC3-455E-4CE8-9F43-F398D5EC73A9@linux.dev>
+ <20260121162253.2216580-11-kas@kernel.org>
+ <28A56ACE-55E9-48A9-9EB6-696695ABB254@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45434FC3-455E-4CE8-9F43-F398D5EC73A9@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A44C5180002
-X-Stat-Signature: jzqu6pzd9e8qz3eggcqg4e1881ickt7f
+In-Reply-To: <28A56ACE-55E9-48A9-9EB6-696695ABB254@nvidia.com>
+X-Rspamd-Queue-Id: 6F8E8A0003
+X-Stat-Signature: zjftd66kbpimjid61wpa3z3ormiha5ag
 X-Rspam-User: 
-X-HE-Tag: 1769085784-588346
-X-HE-Meta: U2FsdGVkX188efv68FF04YSAaVKf1WSnkYYFNCkKvlbhnjx/94nwqLOxXud1kmUWAgDet2LhPuNr0IgF1VWyJHwgOGansfN1n5TxP2rFKNLMqRHT/U1uyUpRqq11nurlJanT695ZrugerudOXSZmNfF9ywdeerhkx7799/HpC/QwFoJEBo6L8K6JK+ynQEr61lOt022QtzuL4o/YaZvXu2g12e+4aejjyNX91QSIjCg+pwoBFdzmP5GIQAfyIGqiCl2sr5uVVVmgJ5qufJcUyv53vV7MFy62BPO5RY3ismvrj88+iu5PXAwrqFKG5KKn3SSTsLkTFClfo4NK8mCfPlGtC88hZzLPUDzSGVrpIgpTB2hGmMbHhrA0p8zFLca7OEjcagZGUmt49ZLCCeqXolqzTOME90JxGcXqR6AzDetEFIrKzru9kVi7JFMFcUF5EdgpV2YwPPjdx0PxljEpwlCH/r2vjliXMxNupKze5F9RCYNM5c3cZOdY6Cw0+JWjOQgoRw1NpMygYja1g372Xxv2yHYm0uaKoyF7as5dpNwS/5c5sL/iLOigzNDl0A58+oQgSpfYeL3Ynv3sAXv2OQ5ErliMp7Tjtvq5M6+oUjFfCvvjseolD0Fh5g3HyZWT5CmBWmyoyGSqImpAfQwwlloLiXoSwOHMUP7nc2XLcYv9mSulL0YMo1Y4K/zrHOvkIRYmuDK0gIoNa1zaEXdY6YzlFEuTAgIuj5Itzx++oyLcLtGVvMY4scpMRQGgjHH4wOgOew+Z6XsnKCozN6z/jbZP7tL67Jmpze+LDs8Mh9CqaZPwULjyqvnzqXOpfWAxvGLY0AyaC0CMXgbTVImlkOa5zJ9chhoeDZWj7hWNwfYGBFcJbTkUhrbQ5l8M3zNVfqtY1j5VnXpB+6VFligRneS607gh6OhtlIB69yySe1Fk1Fr7h6Vzo8/6JsVFUo3OAyng3NhEsjDu1c4XDdu
- lLTJTQsz
- kyGv4Oh9CQgKG3dnOQS8sh8Xke+ZShp1HpJjSsDPOorf3OUBxdvEB/mjs9ykjq+5hOCindJMYQ+vqyDlIv/+dhGayqnmj7XdeBtULB+EwVEnhZUKc1HDMUhlbJUyT78ztnNuVkjTDfDpWhJJe8ijaLH7kiwTjpCTDUP8xjJzjvw2nsfuWuGXdU1eikFQehjNwHKVjlKQzDhHVRDPhH4duZjQm1DddCsgSTpRxHpvBHebEhdcSurvgwmmt6SUFcT467i1A+8/Kef1QnDG18pe2q24NDQOU+CyU3Q2Zw+qaNskhKSdcQbD5KyuC7RwumDBupbqyw/DiSGaAywpMwlVgMvlTjv3Tr+O9zxkK
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769086108-337890
+X-HE-Meta: U2FsdGVkX1/WLsC/mQ5W7MIwPxxNlNpwAaA93jfLN87w5bKxdoOIfdAURD5w3JVmS+/mgcw7EZv4jTfF+LhGqk030uW6suPKA4DYUpL5eAd10EC/iw85nO1ldcc238HH46E5MdmQ+fiQALZAk1qzOH8tAIa9EFADEINkLeY+7r2rh6i8eu50ccxQ5riF05KriGFIGwIsSti2U2aLhtjp8CFphKkxv6c5Kg+V5H+pTpWaQeFKC7fExnfZGt+wsuIKkQF9AfYuAVDO5fy7bzJso9XwJ8fijN2REuGxrlDkXjQrl47ni0+O6XKEOJGtIq/khsuYK+g0NlBbtihrOvbGPOvih5dntP73yOCr46IE7a86s3bTCtfEFzH0ZVbzjlu06zCDHdOAPR9q9AWVAI9qIi0RDoJZvImkqMR0PMutRWmVBFIW1JBoTOY03x7LVBb7mY6dGDmWpUTHmLtFMdMvx+gY838VqYe/5Khubz7E4HNT0z1P1zMFKgAmD0kdQFdbJz0/N02CUe0k2sNWW3D77ZFOUJZmFBVjRDIr5jp+htRwkEfqLc+97GKnsTkoVaxoTUKKDwtfmhUhlnYp3VCWnWpp9P9t0rWS51t7QfMjqtirH0l85vr0cA7FCcBAKPA02nYpTbTuToRNEuCaKFm+Xwr6xi4dc4Iw9+3onpNnfz58eqmhiotHN4bUEdzxQTJa7Df2VNuLFszW0Zs3ZZnAuian3knD/ug8CEFCt7WvopmzG46w9Y9s0CG8ycrnrxugyNPpu4wi0gh3fNpCZC2uSIG7q23TqhpYD17kFtrRgnxRZWwh3sXCA0r6Xyi7xtjhZ7LYGb0Vngq80MS0W2CvvRtyVbZ7qbELI5cDqBrFAkFxziq8J869dYpT+EY/SyYo2BDaqGWylSoxLFuXaZm2ehBKPLL8Unhnx1d8MJhi8sf+xSsE4ZqBrsQN2QK/ZEMVVWvl/IgSvWblbV6ROjX
+ /bwi+fQg
+ nKFZMYr28XcPqOG1eiRtMYqvkn0bYpoDh4mucGw5PO/7Timx/tz60S7KBIXVQ15VxtGzZUQMg+WOH+Iyd7sMVsT6LvGzZR+LeQaAiD3ttj5FwoJzhzTFW/pFOnCNOCMb1KVSDd/EV8dHHVPM8JYB+DOFXhzOltDlvP1L6oZNkqGlj0dL0EkHHuSLOpXX26tMpOirli/d6E7LWcVnQ1Rb42CMmndglBYMznFsF5ZkBCCRx0dd/onY9L681cRYFNzIOEf6jmZQmDQoTdyhrDOhU0iYGW5FcrFMrPhnB4qGcinjdMR8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,99 +133,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 07:42:47PM +0800, Muchun Song wrote:
+On Wed, Jan 21, 2026 at 01:16:23PM -0500, Zi Yan wrote:
+> On 21 Jan 2026, at 11:22, Kiryl Shutsemau wrote:
 > 
+> > With fake head pages eliminated in the previous commit, remove the
+> > supporting infrastructure:
+> >
+> >   - page_fixed_fake_head(): no longer needed to detect fake heads;
+> >   - page_is_fake_head(): no longer needed;
+> >   - page_count_writable(): no longer needed for RCU protection;
+> >   - RCU read_lock in page_ref_add_unless(): no longer needed;
+> >
+> > This substantially simplifies compound_head() and page_ref_add_unless(),
+> > removing both branches and RCU overhead from these hot paths.
+> >
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Reviewed-by: Muchun Song <muchun.song@linux.dev>
+> > ---
+> >  include/linux/page-flags.h | 93 ++------------------------------------
+> >  include/linux/page_ref.h   |  8 +---
+> >  2 files changed, 4 insertions(+), 97 deletions(-)
+> >
+> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> > index e16a4bc82856..660f9154a211 100644
+> > --- a/include/linux/page-flags.h
+> > +++ b/include/linux/page-flags.h
+> > @@ -221,102 +221,15 @@ static __always_inline bool compound_info_has_mask(void)
+> >  	return is_power_of_2(sizeof(struct page));
+> >  }
+> >
+> > -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> >  DECLARE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
+> >
+> > -/*
+> > - * Return the real head page struct iff the @page is a fake head page, otherwise
+> > - * return the @page itself. See Documentation/mm/vmemmap_dedup.rst.
+> > - */
+> > -static __always_inline const struct page *page_fixed_fake_head(const struct page *page)
+> > -{
+> > -	if (!static_branch_unlikely(&hugetlb_optimize_vmemmap_key))
+> > -		return page;
+> > -
+> > -	/* Fake heads only exists if compound_info_has_mask() is true */
+> > -	if (!compound_info_has_mask())
+> > -		return page;
+> > -
+> > -	/*
+> > -	 * Only addresses aligned with PAGE_SIZE of struct page may be fake head
+> > -	 * struct page. The alignment check aims to avoid access the fields (
+> > -	 * e.g. compound_info) of the @page[1]. It can avoid touch a (possibly)
+> > -	 * cold cacheline in some cases.
+> > -	 */
+> > -	if (IS_ALIGNED((unsigned long)page, PAGE_SIZE) &&
+> > -	    test_bit(PG_head, &page->flags.f)) {
+> > -		/*
+> > -		 * We can safely access the field of the @page[1] with PG_head
+> > -		 * because the @page is a compound page composed with at least
+> > -		 * two contiguous pages.
+> > -		 */
+> > -		unsigned long info = READ_ONCE(page[1].compound_info);
+> > -
+> > -		/* See set_compound_head() */
+> > -		if (likely(info & 1)) {
+> > -			unsigned long p = (unsigned long)page;
+> > -
+> > -			return (const struct page *)(p & info);
+> > -		}
+> > -	}
+> > -	return page;
+> > -}
+> > -
 > 
-> > On Jan 22, 2026, at 19:33, Muchun Song <muchun.song@linux.dev> wrote:
-> > 
-> > 
-> > 
-> >> On Jan 22, 2026, at 19:28, Kiryl Shutsemau <kas@kernel.org> wrote:
-> >> 
-> >> On Thu, Jan 22, 2026 at 11:10:26AM +0800, Muchun Song wrote:
-> >>> 
-> >>> 
-> >>>> On Jan 22, 2026, at 00:22, Kiryl Shutsemau <kas@kernel.org> wrote:
-> >>>> 
-> >>>> If page->compound_info encodes a mask, it is expected that memmap to be
-> >>>> naturally aligned to the maximum folio size.
-> >>>> 
-> >>>> Add a warning if it is not.
-> >>>> 
-> >>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, so the
-> >>>> kernel is still likely to be functional if this strict check fails.
-> >>>> 
-> >>>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> >>>> ---
-> >>>> include/linux/mmzone.h | 1 +
-> >>>> mm/sparse.c            | 5 +++++
-> >>>> 2 files changed, 6 insertions(+)
-> >>>> 
-> >>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> >>>> index 390ce11b3765..7e4f69b9d760 100644
-> >>>> --- a/include/linux/mmzone.h
-> >>>> +++ b/include/linux/mmzone.h
-> >>>> @@ -91,6 +91,7 @@
-> >>>> #endif
-> >>>> 
-> >>>> #define MAX_FOLIO_NR_PAGES (1UL << MAX_FOLIO_ORDER)
-> >>>> +#define MAX_FOLIO_SIZE (PAGE_SIZE << MAX_FOLIO_ORDER)
-> >>>> 
-> >>>> enum migratetype {
-> >>>> MIGRATE_UNMOVABLE,
-> >>>> diff --git a/mm/sparse.c b/mm/sparse.c
-> >>>> index 17c50a6415c2..5f41a3edcc24 100644
-> >>>> --- a/mm/sparse.c
-> >>>> +++ b/mm/sparse.c
-> >>>> @@ -600,6 +600,11 @@ void __init sparse_init(void)
-> >>>> BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
-> >>>> memblocks_present();
-> >>>> 
-> >>>> +  if (compound_info_has_mask()) {
-> >>>> +  WARN_ON(!IS_ALIGNED((unsigned long)pfn_to_page(0),
-> >>>> +     MAX_FOLIO_SIZE / sizeof(struct page)));
-> >>> 
-> >>> I still have concerns about this. If certain architectures or configurations,
-> >>> especially when KASLR is enabled, do not meet the requirements during the
-> >>> boot stage, only specific folios larger than a certain size might end up with
-> >>> incorrect struct page entries as the system runs. How can we detect issues
-> >>> arising from either updating the struct page or making incorrect logical
-> >>> judgments based on information retrieved from the struct page?
-> >>> 
-> >>> After all, when we see this warning, we don't know when or if a problem will
-> >>> occur in the future. It's like a time bomb in the system, isn't it? Therefore,
-> >>> I would like to add a warning check to the memory allocation place, for
-> >>> example: 
-> >>> 
-> >>> WARN_ON(!IS_ALIGNED((unsigned long)&folio->page, folio_size / sizeof(struct page)));
-> >> 
-> >> I don't think it is needed. Any compound page usage would trigger the
-> >> problem. It should happen pretty early.
-> > 
-> > Why would you think it would be discovered early? If the alignment of struct page
-> > can only meet the needs of 4M pages (i.e., the largest pages that buddy can
-> > allocate), how can you be sure that there will be a similar path using CMA
-> > early on if the system allocates through CMA in the future (after all, CMA
-> > is used much less than buddy)?
+> <snip>
+> 
+> >  static __always_inline unsigned long _compound_head(const struct page *page)
+> >  {
+> >  	unsigned long info = READ_ONCE(page->compound_info);
+> >
+> >  	/* Bit 0 encodes PageTail() */
+> >  	if (!(info & 1))
+> > -		return (unsigned long)page_fixed_fake_head(page);
+> > +		return (unsigned long)page;
+> 
+> Is this right? Assuming 64B struct page and 4KB page size, thus 64 struct pages
+> in a page, the 64th struct page (0-indexed) is mapped to the head page and
+> has !(info & 1). But _compound_head() should return page & info here.
+> Am I missing something? Thanks.
 
-True.
-
-> Suppose we are more aggressive. If the alignment requirement of struct page
-> cannot meet the needs of 2GB pages (which is an uncommon memory allocation
-> requirement), then users might not care about such a warning message after
-> the system boots. And if there is no allocation of pages greater than or
-> equal to 2GB for a period of time in the future, the system will have no
-> problems. But once some path allocates pages greater than or equal to 2GB,
-> the system will go into chaos. And by that time, the system log may no
-> longer have this warning message. Is that not the case?
-
-It is.
-
-I expect the warning to be reported early if we have configurations that
-do not satisfy the alignment requirement even in absence of the crash.
-
-Adding a check to the allocation path if way too high price for a
-theoretical problem.
+The point of removing fake heads is the we don't have head aliases
+anymore. 64-th struct page will be a tail page that. No special
+treatment is required.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
