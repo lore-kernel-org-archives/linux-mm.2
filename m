@@ -4,111 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B64D3EE8A
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:15:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B38FDD3EE8A
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 16:26:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A46A6B029F; Thu, 22 Jan 2026 11:15:22 -0500 (EST)
+	id 26FC26B02A1; Thu, 22 Jan 2026 11:26:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 864E36B02A0; Thu, 22 Jan 2026 11:15:22 -0500 (EST)
+	id 2474C6B02A2; Thu, 22 Jan 2026 11:26:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7502E6B02A1; Thu, 22 Jan 2026 11:15:22 -0500 (EST)
+	id 11F666B02A3; Thu, 22 Jan 2026 11:26:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D4016B029F
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:15:22 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0FD411A0408
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:15:22 +0000 (UTC)
-X-FDA: 84360099684.04.FC13FF8
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0EF9E8000E
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:15:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=q1HlIrWN;
-	spf=pass (imf30.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+	by kanga.kvack.org (Postfix) with ESMTP id F28736B02A1
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 11:26:18 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9FBA5B8724
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:26:18 +0000 (UTC)
+X-FDA: 84360127236.29.AA06538
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf23.hostedemail.com (Postfix) with ESMTP id F3195140007
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:26:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jJKKItUR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Dk8Q9Jze;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kL36N72O;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=13PF3AMW;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769098519;
+	s=arc-20220608; t=1769099176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ut0PvNTFkBDARJX4qSO9056XGy5KdZ5rJS/cjW/7pRk=;
-	b=lIJEdbsOE6EyVmGjnaJ4J+PNhrmYnnZ9F4znMewGY4T8OuQzKk5yAcgkWI3QFo52Saost3
-	S6Q9K6bwsXQJUB7b2HhVo1E858P2d+607nGwuThXAKHr3Rpy160Qr1iyy3+6yRALOCX3Dn
-	4cKqn9oia8b0Ule2Ob9KAsyZ9vVM9VQ=
+	bh=lhAO6JRvDmgniWiT+4x4JmaEjz5+uH6dH2x0bAyzNW4=;
+	b=ZDP1LqGzeTeHLjlNL/HhvU4MsvHXI0mITyzy9/wsc/yPYAcONYE0v4iv8Y7madZIVgRuOu
+	8enGMRZYaTgTUIo7jPOWwXt7YBsfdHvNMskcPROEVp8tnqpdfOd3KVFZHkQXNkRDpIQsG0
+	3dm3Yd89mSqcbDvq/AEII8DdQLX46Fw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=q1HlIrWN;
-	spf=pass (imf30.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769098519; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jJKKItUR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Dk8Q9Jze;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kL36N72O;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=13PF3AMW;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769099176; a=rsa-sha256;
 	cv=none;
-	b=ZRKVSjxi8MfRv1evM4MwAjuvFCB9S/770Wn8UrAMsbfiN1zlPG3wlI2XJqfKDK5Fdt+ZXz
-	ycWlIh6nlURqI4DUf5Mq0qeZwE7iifmBCnf9ohWONOkYtCmPiU+s5BFdGa8bi5iMl2hxTy
-	NKZssp671aG0FH/85HK5APY8UjUjpO4=
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260122161515epoutp016eee2dd9a43a50342e4e02f56d9ef8d1~NGboF5wDq1036510365epoutp01W
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 16:15:15 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260122161515epoutp016eee2dd9a43a50342e4e02f56d9ef8d1~NGboF5wDq1036510365epoutp01W
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1769098515;
-	bh=Ut0PvNTFkBDARJX4qSO9056XGy5KdZ5rJS/cjW/7pRk=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=q1HlIrWNyqXlXJ8s7fdr+6FILnBgREtqtbL6tKRVnDJQDqNFP2+0kWYEsWdCFbTpY
-	 +Q/VOdgW4Pmp1Z0/7nsG/3bIUEvgFb8cmslFKPWLb5SKPakzqL1B2ApoYpixV7P4E1
-	 1lh6S8ZF86UVTN01KMmAKMW8lo42qiOHn4lGHGTE=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
-	20260122161514epcas5p2ece65e143be4209661a3f0354ecff169~NGbnfPXfZ2058720587epcas5p2o;
-	Thu, 22 Jan 2026 16:15:14 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.86]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4dxmPF5YJ7z2SSKY; Thu, 22 Jan
-	2026 16:15:13 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260122161513epcas5p2f245aaca490aadd994074f3fd52031e2~NGbmJDHS62060020600epcas5p2d;
-	Thu, 22 Jan 2026 16:15:13 +0000 (GMT)
-Received: from [107.111.86.57] (unknown [107.111.86.57]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260122161506epsmtip1e1a44b279ac7ac7ad390e8ab6dcb5c97~NGbgAiEqi0033200332epsmtip1T;
-	Thu, 22 Jan 2026 16:15:06 +0000 (GMT)
-Message-ID: <ca048ecf-5aec-4a0d-8faf-ad9fcd310e21@samsung.com>
-Date: Thu, 22 Jan 2026 21:45:05 +0530
+	b=Rwd6i0Mfp5abB6I7ySeF4mdoex9eVCU+B0zkih8LztUcB2zqQlzD3WSslxkHZKstnKyAJP
+	z+ildeOZJRjWx8Hig8VvAQVwSbTyLZp5euMSVe80gl8+KcwmzyVGYSwAL4iYG6YJcmoIN4
+	vn1I5xN3cGmED7J3bqqFQnXCS+OIKJI=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EBE4E336C9;
+	Thu, 22 Jan 2026 16:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769099174; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lhAO6JRvDmgniWiT+4x4JmaEjz5+uH6dH2x0bAyzNW4=;
+	b=jJKKItURmgece1TxMBzVqICRtrRaWH4bi9sSOMofdpKEjOrjkVp8MXMVFr9OzM/QNzpUFM
+	k5u/7PLc9Pk3Pehw4W+9if9HoohZ1lirvQkgNq4DK24WmAj2Tzifkw+3FyLxox9r6cI7z2
+	FfJ+9ZXGTgWv011ow1Obuk5qKt6af0E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769099174;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lhAO6JRvDmgniWiT+4x4JmaEjz5+uH6dH2x0bAyzNW4=;
+	b=Dk8Q9JzeQ0XFx0pcsQB7lolqcDY2bg1bzejIy8RSXnW2uUkGiwKuI61z8TXoV1QOQam/9m
+	H0Rx1FEP/PUrymAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769099173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lhAO6JRvDmgniWiT+4x4JmaEjz5+uH6dH2x0bAyzNW4=;
+	b=kL36N72Oet36756J/1vuwz8owAMhV2/prKIPiGTIMGjIBvPEfcAbdgipiQa6unAz1i11TP
+	LPabOQS0CUykRzuqlY4q6F3IJigWRPCS1JdqZ+MV6q/7AdpZIjl8/4yEKgnyhj5FbFQT+p
+	WGks+SY5bmLAEuFz5X6phqSl+jMY+lg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769099173;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lhAO6JRvDmgniWiT+4x4JmaEjz5+uH6dH2x0bAyzNW4=;
+	b=13PF3AMWNDe+efLmUcgmWXxsv/urwyiwIm3npK6io0t1DBmpQl02NiYvPGaUIiMYV2ml+7
+	3c+CaNIrkPP9sKAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF7A913533;
+	Thu, 22 Jan 2026 16:26:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pxqAKaVPcmkoGwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 22 Jan 2026 16:26:13 +0000
+Message-ID: <6c8b63cc-d357-4e70-89d4-07afd004bc83@suse.cz>
+Date: Thu, 22 Jan 2026 17:26:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] AG aware parallel writeback for XFS
+Subject: Re: [PATCH RESEND v3 01/10] mm/vma: rename VMA_LOCK_OFFSET to
+ VM_REFCNT_EXCLUDE_READERS_FLAG
 Content-Language: en-US
-To: Brian Foster <bfoster@redhat.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
-	amir73il@gmail.com, axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com,
-	djwong@kernel.org, dave@stgolabs.net, cem@kernel.org, wangyufei@vivo.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com,
-	vishak.g@samsung.com, joshi.k@samsung.com
-From: Kundan Kumar <kundan.kumar@samsung.com>
-In-Reply-To: <aXEvAD5Rf5QLp4Ma@bfoster>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260122161513epcas5p2f245aaca490aadd994074f3fd52031e2
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4
-References: <CGME20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4@epcas5p1.samsung.com>
-	<20260116100818.7576-1-kundan.kumar@samsung.com> <aXEvAD5Rf5QLp4Ma@bfoster>
-X-Stat-Signature: c9iskcwtma3j97take7ztcg4dituuqxj
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Waiman Long <longman@redhat.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+References: <cover.1769086312.git.lorenzo.stoakes@oracle.com>
+ <f637c1a5c9ea237aab598bd8885df48e21497635.1769086312.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <f637c1a5c9ea237aab598bd8885df48e21497635.1769086312.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0EF9E8000E
-X-HE-Tag: 1769098518-505323
-X-HE-Meta: U2FsdGVkX1/TkVhEZOyyJOWX3df631wCCdrLslmf2KGZR4dh1SWfgDnaK5uap04WMHg0i0UyVu627kd01R18PYSJvv8pkeNBx/9ZYgqP4h9KCu1lCq9ikBYFvlD7859lg9hqVvnExQS56D4E5f9MEiUMNDCzq1LFrtNeVhg1tWqJohe38qYDin+lNFKfunagXqlIaaB5rE6cqqWfcANETG8//7xRzOvI7xLsI0h4kEZUJoQ6SrwfHOryBfNmC5OSyfHCt2qoTLi1Xydir9DCPG5miGh3g1oLtOl7tQnkcIfFGDqtKTBqPWyVjc5Rr2yoDlObzKfKVXH0zDUYz6hcgz6KQXi32r0gfGfU1xmZRhPUG0S7kLthgINjVDWwCHsZHdIWuexegv968P2Q/UABi5rpshMPab/XBMxQu8cQLkipI3TnUaPyz1VinG8rVR9dIjHl4x48tO8Qk94TGw/fImNPFMVLBZC08e60rPH6xzTERSDYwKxIjLfIINWHNYZ+crIS9f9bQU5TM2mJNa2Si0lo5jJNlq1LItnLb6mfsP7ZBczACqBGqdOM8Hsuz6XPkWOkor/efaUr6iGwjYdaR2BW1GxLMn4CU7jgXI6dsD/c0Vj6v21u0+hJsafW25xSd2t/fSFZeGt7W2LGegcb1hqmxekmVxR/oOf/BYnTh8s2M+qEUPh1O4ebxGf4AEngu9QaoHYc3+PE6tftKxtXRHwADsHX0fRKQi+w8Kgh4gaK8gS/ryxt4vVcA0DATJe9AXDLqtXJFqLhz9Ob1mciN3UQEpJ5zhoA/U2oXqM7UrhjIKkn4cFOwyKt930nAX+JfipJHDx3MDq9Qk/WKJlJB/H4OS5fzux+MFf6gsewGaPWNYO6Ald2bor7M6hxKMrLkK82K++6UVN4q4glgLxn7E/ZH5fTvOv6L+HbJZm+0qh8+FshY+4Dub4qBmpnlVlpIKdQAj193XzhekmAR1/
- U4p6lAsT
- QeRjnyyab6MH9xj1NjZlUMJPCQ8nT4J1WpXTFFTcv7KS9qaHyNPFv7Lwsbvn47ReSZ79ZRctGPr3f0IoNFwhT8ldVOxLE6rkuswLyMDaBIyrA/hmxbqhHWnbQj63RIsjvKCAnx6yhRaGC3vPBMJrRZ3YvReythTbT5G+GfDLEoybKlIhYZCk/h56NH8i27SCXc8vR563aGRIerhk=
+X-Rspamd-Queue-Id: F3195140007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4h1kzemoouqpueq7cqhoi51871ohz1m4
+X-HE-Tag: 1769099175-664687
+X-HE-Meta: U2FsdGVkX18MJDszw/IhFSNRUWE7gP69pyP4HBCCGXezTZ84OZskpZRudZte8yeKCbAczKSOnQgnDpjEGACTRh9QiwUUT0qVsX9TJ3K/vSNasdX0X9xJDd3fai80PQ04t6fTo5265gUytedbuOr6dNtvu2OT8OG0CQRBH1DoSt3dK3cTgKzQ2YiWgYnG8iD7xjXzfT1uJzUvxR15Yy5tppnt2JFSvpx68ALC6PKsoUVQ4dvt4hwyHPhprECnUR5d5ZOO1ne+de44GNIIwOyF0lyTxW2j4Kky3e6mP7VwFvMkr1MBuAOlc7YKURttItkk3WUVdt7PVntzEcr4qdoxo9kRtpCBMzAq0a1/46HaIWChCJmHs/JJ27llVdAJdXm2i/BzA1Ovyy9udchXXMMH4cM/BZ8znOHMM4BnThMQTv4YpI21JXnN8fM9YYYDIg/lpPBdBkDTv/7tkPOoxD2uGIO+uvMwjDLVwy2deT8nXHXU3SVpYvPVj7rBTkN0y5QrmJ+b+UfW7F3oKJfh3+LEvs+2KAk2HREwhswGfE3jcI0bMnfqMplKN/WcAOasPxQaBxekJpoKYNNU+3LD7RdNfZDcuW1XvPwotXniDPiDZ7Wtfobv7kN/5BNggWbYyOWNsUi9jEZvcbPjmej9tBcYa1m2jzZJwyT0MmEMV9r+GdbuP18EVdtoTotcPVOmt9C9cXo/ROoPBcjpE246PrmkjmIW3NJm8G7RhU+4+Unoqacwg5UthetrEF7Sl21111g6XMzoSftiZJ4VmSEydJEzetsIAelKYjVS/koN0sFyal7FWEM1xXpDg+F2PuM2kWWIUlNMZ+rHw8kUtWaX4awNpDt2srv0Rhd8qGsPZ3PlnADiZOhTsw/xtOJ8xNiKKlgHoWHtovld2QqU9A0FE39IF+ye3lNs0lwuwycdiMQ460nI6A7bjvhFl7a2t7wmS/CEmOCg9a4rP1/cpLxaGXt
+ y5opPgPQ
+ ixTTFTMdqd5xBSEJLyc/lwzyEO2KqsO/KdTcUSYGZ4XWj4x6g+SiFFpZVbuGQvKCfJVdlVzwO6qk2tlyEYPMduLljl/UCb5Jj6GcC86TXCmJsJEqeO906/FWbELV3isjDy410NlmTV0oCl9+UFgdmhGp+1mD9XBYTZVPU7TcvSkcNZ8ydPv644Ngr8TXFVsVJElzfmNXhq3WIJUfaed47Z7GXmpF9g43bsmmqzpEpBfnodqlpsGt4tr/uImTuRp8tmtcShd1aXW1GUgmaW7GQiNz9HSb+xGqjAe097TVLcBWul83qBRuk8gQF0LR5xGN5cT/DmlVDdzYrfyGLV1zE20Le0pnpFIZCvGKptY/UWrXrt/+NDuhu5EJ2DJW5jHiqRQSKQB3q1zcT2GrHggz59yHp8cHwymF9wak7gUSRcwvDmx4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,152 +189,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 1/22/26 14:01, Lorenzo Stoakes wrote:
+> The VMA_LOCK_OFFSET value encodes a flag which vma->vm_refcnt is set to in
+> order to indicate that a VMA is in the process of having VMA read-locks
+> excluded in __vma_enter_locked() (that is, first checking if there are any
+> VMA read locks held, and if there are, waiting on them to be released).
 > 
-> Could you provide more detail on how you're testing here? I threw this
-> at some beefier storage I have around out of curiosity and I'm not
-> seeing much of a difference. It could be I'm missing some details or
-> maybe the storage outweighs the processing benefit. But for example, is
-> this a fio test command being used? Is there preallocation? What type of
-> storage? Is a particular fs geometry being targeted for this
-> optimization (i.e. smaller AGs), etc.?
-
-Thanks Brian for the detailed review and for taking the time to
-look through the code.
-
-The numbers quoted were from fio buffered write workloads on NVMe
-(Optane devices), using multiple files placed in different
-directories mapping to different AGs. Jobs were buffered
-randwrite with multiple jobs. This can be tested with both
-fallocate=none or otherwise.
-
-Sample script for 12 jobs to 12 directories(AGs) :
-
-mkfs.xfs -f -d agcount=12 /dev/nvme0n1
-mount /dev/nvme0n1 /mnt
-sync
-echo 3 > /proc/sys/vm/drop_caches
-
-for i in {1..12}; do
-   mkdir -p /mnt/dir$i
-done
-
-fio job.fio
-
-umount /mnt
-echo 3 > /proc/sys/vm/drop_caches
-
-The job file :
-
-[global]
-bs=4k
-iodepth=32
-rw=randwrite
-ioengine=io_uring
-fallocate=none
-nrfiles=12
-numjobs=1
-size=6G
-direct=0
-group_reporting=1
-create_on_open=1
-name=test
-
-[job1]
-directory=/mnt/dir1
-
-[job2]
-directory=/mnt/dir2
-...
-...
-[job12]
-directory=/mnt/dir12
-
+> This happens when a VMA write lock is being established, or a VMA is being
+> marked detached and discovers that the VMA reference count is elevated due
+> to read-locks temporarily elevating the reference count only to discover a
+> VMA write lock is in place.
 > 
-> FWIW, I skimmed through the code a bit and the main thing that kind of
-> stands out to me is the write time per-folio hinting. Writeback handling
-> for the overwrite (i.e. non-delalloc) case is basically a single lookup
-> per mapping under shared inode lock. The question that comes to mind
-> there is what is the value of per-ag batching as opposed to just adding
-> generic concurrency? It seems unnecessary to me to take care to shuffle
-> overwrites into per-ag based workers when the underlying locking is
-> already shared.
+> The naming does not convey any of this, so rename VMA_LOCK_OFFSET to
+> VM_REFCNT_EXCLUDE_READERS_FLAG (with a sensible new prefix to differentiate
+> from the newly introduced VMA_*_BIT flags).
 > 
-
-That’s a fair point. For the overwrite (non-delalloc) case, the
-per-folio AG hinting is not meant to change allocation behavior, and
-I agree the underlying inode locking remains shared. The primary value
-I’m seeing there is the ability to partition writeback iteration and
-submission when dirty data spans multiple AGs.
-I will try routing overwrite writeback to workers irrespective of AG
-(e.g. hash/inode based), to compare between generic concurrency vs AG
-batching.
-
-> WRT delalloc, it looks like we're basically taking the inode AG as the
-> starting point and guessing based on the on-disk AGF free blocks counter
-> at the time of the write. The delalloc accounting doesn't count against
-> the AGF, however, so ISTM that in many cases this would just effectively
-> land on the inode AG for larger delalloc writes. Is that not the case?
+> Also rename VMA_REF_LIMIT to VM_REFCNT_LIMIT to make this consistent also.
 > 
-> Once we get to delalloc writeback, we're under exclusive inode lock and
-> fall into the block allocator. The latter trylock iterates the AGs
-> looking for a good candidate. So what's the advantage of per-ag
-> splitting delalloc at writeback time if we're sending the same inode to
-> per-ag workers that all 1. require exclusive inode lock and 2. call into
-> an allocator that is designed to be scalable (i.e. if one AG is locked
-> it will just move to the next)?
+> Update comments to reflect this.
 > 
-
-The intent of per-AG splitting is not to parallelize allocation
-within a single inode or override allocator behavior, but to
-partition writeback scheduling so that inodes associated with
-different AGs are routed to different workers. This implicitly
-distributes inodes across AG workers, even though each inode’s
-delalloc conversion remains serialized.
-
-> Yet another consideration is how delalloc conversion works at the
-> xfs_bmapi_convert_delalloc() -> xfs_bmapi_convert_one_delalloc() level.
-> If you take a look at the latter, we look up the entire delalloc extent
-> backing the folio under writeback and attempt to allocate it all at once
-> (not just the blocks backing the folio). So in theory if we were to end
-> up tagging a sequence of contiguous delalloc backed folios at buffered
-> write time with different AGs, we're still going to try to allocate all
-> of that in one AG at writeback time. So the per-ag hinting also sort of
-> competes with this by shuffling writeback of the same potential extent
-> into different workers, making it a little hard to try and reason about.
+> No functional change intended.
 > 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Agreed — delalloc conversion happens at extent granularity, so
-per-folio AG hints are not meant to steer final allocation. In this
-series the hints are used purely as writeback scheduling tokens;
-allocation still occurs once per extent under XFS_ILOCK_EXCL using
-existing allocator logic. The goal is to partition writeback work and
-avoid funneling multiple inodes through a single writeback path, not
-to influence extent placement.
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-> So stepping back it kind of feels to me like the write time hinting has
-> so much potential for inaccuracy and unpredictability of writeback time
-> behavior (for the delalloc case), that it makes me wonder if we're
-> effectively just enabling arbitrary concurrency at writeback time and
-> perhaps seeing benefit from that. If so, that makes me wonder if the
-> associated value can be gained by somehow simplifying this to not
-> require write time hinting at all.
-> 
-> Have you run any experiments that perhaps rotors inodes to the
-> individual wb workers based on the inode AG (i.e. basically ignoring all
-> the write time stuff) by chance? Or anything that otherwise helps
-> quantify the value of per-ag batching over just basic concurrency? I'd
-> be interested to see if/how behavior changes with something like that.
-
-Yes, inode-AG based routing has been explored as part of earlier
-higher-level writeback work (link below), where inodes are affined to
-writeback contexts based on inode AG. That effectively provides
-generic concurrency and serves as a useful baseline.
-https://lore.kernel.org/all/20251014120845.2361-1-kundan.kumar@samsung.com/
-
-The motivation for this series is the complementary case where a
-single inode’s dirty data spans multiple AGs on aged/fragmented
-filesystems, where inode-AG affinity breaks down. The folio-level AG
-hinting here is intended to explore whether finer-grained partitioning
-provides additional benefit beyond inode-based routing.
+git grep tells me VMA_LOCK_OFFSET is still used in
+tools/testing/vma/vma_internal.h but I guess it doesn't break the tests?
 
 
