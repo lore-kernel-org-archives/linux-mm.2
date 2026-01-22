@@ -4,139 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1BCCD6CFAB
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:49:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69180D6CFAC
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 22:51:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3370B6B0372; Thu, 22 Jan 2026 17:49:59 -0500 (EST)
+	id CB05D6B037C; Thu, 22 Jan 2026 17:51:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30E376B037C; Thu, 22 Jan 2026 17:49:59 -0500 (EST)
+	id C87CE6B037E; Thu, 22 Jan 2026 17:51:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23AD36B037D; Thu, 22 Jan 2026 17:49:59 -0500 (EST)
+	id B9DD46B037F; Thu, 22 Jan 2026 17:51:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 115FD6B0372
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:49:59 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE88D1AEEAA
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:49:58 +0000 (UTC)
-X-FDA: 84361094076.06.1868B46
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C55DF1C0007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:49:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=suv9xQxJ;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769122196;
+	by kanga.kvack.org (Postfix) with ESMTP id A8ADE6B037C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 17:51:26 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 790291AF16C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:51:26 +0000 (UTC)
+X-FDA: 84361097772.01.4302D18
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7849DC0009
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:51:24 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=faicmZmp;
+	spf=pass (imf22.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769122284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ICJuGF5wC0W7ZbSzVriavHpcK9cYzYCQ8RRulw4DujY=;
-	b=zISPfqHmLrKYAnYKMiBN8DeROpOPEoJl4tZXtwvEkX1YVddU8Nu8jA+8zQ6RPIUTAVpiWN
-	jFwQE0dqeGuKLzyzF896qy0lPPTfX7aTNHcGMEXBN7+aDZ/VQ3d4QN+0NK2d6sSuAfaUkd
-	AO6qVLXslFQtzd5yL0/tO6DLQFfEJvk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=suv9xQxJ;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769122197; a=rsa-sha256;
-	cv=none;
-	b=5wdeHjxD+lslYvTmFD6dHNbUEpd8gzuRISPqeETq0bQBfZyLfX3BaMiJFz+DLk655J7gof
-	yQ3H+g4sMkKfpGpmJiLPDWZB3VkUmo/FdZDPSuukS2++UlARw9IPnpiEHKBom4ZTaxNOQa
-	11gmXwihfOjROFf8Aee1aiKC5Oppq30=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D9302434E7;
-	Thu, 22 Jan 2026 22:49:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FE3C116C6;
-	Thu, 22 Jan 2026 22:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769122195;
-	bh=eWzfvBBJVfH3cs7Ugnr5IAe0m04aC03BbCpeh0poZTg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=suv9xQxJ/OmsZ2P8dFYa94e6zxbPnmiJ8c4Kih4qUGg8/Kg23CZNqKuShF8Vjn+5e
-	 IajYFVdMGTxzAo+o3q519CqQcmjnjMQUPUj6gKVctafcwRnYCUpKkrrP2WCSHyXu/e
-	 s0ybylPA2yN6Tl/B+pJsHt/eRo0fY/W0Cb4X+opdsYqn/6FGm42hsBuhmDgj7+/6Hn
-	 I2rnalAP7r7wD3p4cuBp7np1bXBKVmNu/yakcfPmnLMbm8JZQcvr5F0CrlNDSoVZ2y
-	 TsLHPowYb66DRZhr2IfUW1cfAGuJPgy1tkLnaKcN2AWbhZWOFYupXXhRiV9gWBhUro
-	 8Y4Q5ZR+GQU+g==
-Message-ID: <57c5f44f-3921-478b-843b-877fae536591@kernel.org>
-Date: Thu, 22 Jan 2026 23:49:48 +0100
+	bh=rFDzRwmjx4EhXlLQDIcJTBz1IG6oyRoOclxZcGUtJtM=;
+	b=uYffh8QeNl6WjoLp5CWJ4CoDJiHH0v2KGbPlTW7bDrj1L+rzPy2VGgVw1qCxSVKLUQM6T5
+	k6gpHbvwczJ7JT8Ecu6oExzGKoF5AuO4visp8uMWqSwA/isGrPSNAXj83nYZQDLhXooPf5
+	b+rm4J5LjwwuM7lvH2scAXHyA5EHIPY=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=faicmZmp;
+	spf=pass (imf22.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769122284; a=rsa-sha256;
+	cv=pass;
+	b=DeEymCqQxLdQ6zaJ0HnZtq4FurM3/VEAUWjn2Y47UkvFfpFsDqcYAe/BUUPlTGdYaJwC2t
+	mIJuX+VK4Y8LibZnz45fHquzy5yK8v6YvlcJtKs5z1fLhQMVZhvkHiy+/WB3rWibukXAQJ
+	JGFwAwpNnQkF720x97ay7ESCsReCxk0=
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4359a316d89so1220856f8f.0
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 14:51:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769122283; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Gv5jmHWXpdM6Sfz5N3jPpUyrVTSpK+4DkxXNhGqugJTx3zR3Rq7PaU9+NI1KaWw98V
+         PsuKfXmImCqHyjxhsZFOQnJ3wI21qeZQytzBYlmrgF9bVEUrZLfzSlH4yjxhVH9I4ZHW
+         0Kp/9DWWuz3Z33ITZbLqAuVRa83cTzw88oX8Oo+jgMIcgskxYUD97rBj1JVxtBNiZE5y
+         Vi2/GnKMGVPQ4DJ+3w19jjVZTte5zraampCIhEgKDr58G/0ueKWDG2/UhkKnxYnBG+b4
+         wNFyq0D2N3Kr01C1a64n+zVJZ3/51Xd89gotPksn8OtFH1JF2KDx7ZDzX3NvWKYYeE3M
+         GLBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rFDzRwmjx4EhXlLQDIcJTBz1IG6oyRoOclxZcGUtJtM=;
+        fh=87F71ChMhQKovUZp2ylIfOQ4GmpQywvwwhNlywh2Gw0=;
+        b=aSHMJlp531sBWqPlciIgJkIbUg/mAZXKxuy3t5/7Z70626INcfki9NYj2K2hMfmYes
+         Btc3wOMEYlhW95X16RM/vtrcpTkf8ai4ANHKufL1G7iK/HDp4+IGw2RP7HsV9J9GToQ8
+         /TtVMTIqgK9e/GXUMYBO5Uci3waGHsZQKI/cqcMZUVyP1Nr3HUrrdqIiRioRrC04AUu9
+         LMxTQG0JklLOfExRoNVBGMMSNWuYBAzinbiXcu1lRFyXU3xc7oumqmmRXSqN1Gg3yeFL
+         FyCpsu2JLbbKf35mxqA19TfSacZD6Te5vkDfAbbrsLjqEch5HxLDuFC6c5he32234ps9
+         sghQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769122283; x=1769727083; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rFDzRwmjx4EhXlLQDIcJTBz1IG6oyRoOclxZcGUtJtM=;
+        b=faicmZmpsyrkOMUE3s4PeRtwhWINRrODnyeo728bqOoWDUwNsggmhEHQaTjsC0cLkM
+         CNOIV0YjJme+zAyigmLEVU7rwg4bATuU58eOu3qhwY8Wnk7ouevSdPsB85sIdZPheDp3
+         5c7Jhi6wT3mfXIk92AVKvuOVtExhrlQeYNNkVZsHRuN+B/k4ouBN/EogJELEhjWScJGD
+         U6/J2kFoYaqIq2uqtmfI5LySVYVQr4d1R7qbHzlSAilIUbe71aY3qvFZJDd6j7idMs8X
+         hq4UEtybYRov4RMLmPoaZhSnyU26bPI5Cg7AZU9nnuvgx54EjkDQa09BLXdBjpsxz0bt
+         4i3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769122283; x=1769727083;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rFDzRwmjx4EhXlLQDIcJTBz1IG6oyRoOclxZcGUtJtM=;
+        b=DSV3n+LAkCd71afy0GFclhDAq67CYg2Q14PqkpFdn70er/UIEYJ+0cMUTXj7siRwUv
+         HaxW66mgEpH5xKB7pyLs7WfEK24BCWbdi3QQnSUQGkNkKN1r0Plt2MUU6ud2F6N1HqCd
+         +qKBRIkJw+O0GqO7fV7b6/XXcpQHivYoftjY+nLwf5GXHKObXCoHjkHt2gPHb2QtACz4
+         UadGW4NWB7diz0XY3BTPG6zNso0eE3IQ7d5/oM8+Z4YOhVSn5i4EJn+pSCL2MU2WltGN
+         38PeDgibKrtrJ9hfuhK/1eNAYdOfR0HUxXk1CzzB6E5FPOSP6ps6mkMjpB47U+dJKX7Q
+         yr2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUW8440CO2J1hM0M6sY+0LPXBGOyts6pOwSpBoYH4xLxn5CwkSO31yFKlmRjeqCKeXpjdyWEMrCgQ==@kvack.org
+X-Gm-Message-State: AOJu0YzXeZo54k11CBPvulM1ZsmqXRj/50KbgRoXrurXyIrlMmJRPAAm
+	9LXburqYyC4veLJ/DvFCy+UueAkzX8LLVt+hhLo/vPO8Lc2iZBplXQnNkvSy6+EJ9/u7TShI/LL
+	5jFOIfO4If+/uF59DJifi/jWx8Prx5Lw=
+X-Gm-Gg: AZuq6aKe96KCz/ghGIswNUc5bEoy4VViSyrsHgUP/pqvpa+5hhuXT3uYK3WzIvoMWqJ
+	0SIAm1roOCCuRFYPuaob/sk5JfMMDDHL/I6oGrMUp+YS0CQBqRwO5LrLA4w16ZW7ykxb/7kaEvR
+	XoHy65tmFz7CP1X+4cs0wtt1jw4wBG8if5asQI9cBBMAZOkl2/wOWtoXYCgAmtvWnB3JZrrMiUl
+	jfTm3z33ag3SYq3BZk+n7kTG+jUT+46J/cDci6ym5iOBM3yPW28N0eGdXrJm1IKNC27U2XsLur6
+	zyqG2QaXzf2Z1dUIQ4PIbP2q44+yNIhou4hy48dC
+X-Received: by 2002:a05:6000:2384:b0:435:96b7:e0db with SMTP id
+ ffacd0b85a97d-435b1594374mr1855311f8f.17.1769122282735; Thu, 22 Jan 2026
+ 14:51:22 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] dax/kmem: add sysfs interface for runtime hotplug
- state control
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
- kernel-team@meta.com, dan.j.williams@intel.com, vishal.l.verma@intel.com,
- dave.jiang@intel.com, mst@redhat.com, jasowang@redhat.com,
- xuanzhuo@linux.alibaba.com, eperezma@redhat.com, osalvador@suse.de,
- akpm@linux-foundation.org
-References: <20260114085201.3222597-1-gourry@gourry.net>
- <20260114085201.3222597-8-gourry@gourry.net>
- <3555385d-23de-492c-8192-a991f91d4343@kernel.org>
- <aWfcYjZVrROHfGyh@gourry-fedora-PF4VCD3F>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <aWfcYjZVrROHfGyh@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4nz5g9tfgprmqimgkpb3insjfpup5jyo
+References: <CGME20260122041606epcas5p4fb3f5c418b79bf19682e60022d7f1718@epcas5p4.samsung.com>
+ <20260122041556.341868-1-maninder1.s@samsung.com>
+In-Reply-To: <20260122041556.341868-1-maninder1.s@samsung.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Thu, 22 Jan 2026 23:51:11 +0100
+X-Gm-Features: AZwV_QhMwzaIv31P0NE6po4NpU8l338O_JlbC8ak064KxR_6vqfyzHCQqvW3ngE
+Message-ID: <CA+fCnZe+J-G-g594hXZf2G0BMoCuRbe0yM-gsxxQZSymyx8_MQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] kasan: remove unnecessary sync argument from start_report()
+To: Maninder Singh <maninder1.s@samsung.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
+	vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7849DC0009
+X-Stat-Signature: 5g6ahihimrbfmkhaa17fj4paw4gjutnn
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C55DF1C0007
-X-HE-Tag: 1769122196-336537
-X-HE-Meta: U2FsdGVkX1/jMLta4wc8HxPPR7OFce1qSU3hCOowciqyY9UEWoTf5nKyJQVnvCuHj8esb9NcPJTngoQ9+kVKk1aghJQs83VsdA2gtT7w1rB+TltZjEkSwRpX5WttNWz4C7Jct073yBtO240jpV5wHVSnk5c5UDWYNBNdaJ9jo9V6iP+dzDbu2NUq1vXV6JiLAjwYRkdvRKzfFsE12QTDOTRpOVRH3f5J19+YhPkeSS7AgcR5abFMSuDCy5KlT1E9WhUiaXZ3S+2qXdvvE7cc8KEprfwhL08lcTXYl/pO7qzhYeOUfGSaoVKW/qgW8TtDCwcXKczypuRqnYCca1aHVfeMoc/79VGmNHdJw86NGF2KKz+a2BQocQaeJ/TWkFIJDDclFzyjrEm/zucmXXG8pBKRonEtzn2DD8nym5Aa1f3h8wLwa9t/OrVHVLFRVtbSouhfWxgw8p/rT/wp+bgbNY0ncc0rezW9lvzFq0sJ13WR1wwCTe3q8c3uNo+UY/t1t5zibamrHVBsO4N3BQDu4Os0aEwgitzroQ/whBfzY7hyxLYsI0KOl9HP35A41HLSzKBNU+pvkDWBG9bg9Iq2q9J2yxBPY0a2W+9jTMj8alKizbmZbIUQKB4sr02Yl9heAVvx/m6ty7EDgtcOPbjB0PhhGO695ncDjS4sCM79BR4opJg9OqIcsEFGiAabOn9+mdvbJbSL6kaemianAHW7xd2t0w0JlqN7nRlq/EFK7olgSmxXQvaMyFXP3JksBoB9Zw2yi+hvRE0W3m5fHa/w3TNhI8x592GoSfj8WHxoIAth836Ch05S8hYUe4Iwp7X6e0kyAXEIYQFsRQH04aVExEXN/hoEFVOBovGhujCi8VET7Zj8pFydMUtC/JgZjH/GZzdL750xJ0mH2iyMRoZeIK9z+5Oikn2wMmzR3gyjExj2vOgqF9MAoqGRLg4lTDCi2m20kNvYtrIRsRG0i4W
- vaNkNE3I
- HtH8E6jD4Vhbz8Yxdb/08y1dG4dmWIY9eE9dSM1zKfqOVKO7EwUAGhwJuZFuFa3/zPA3dy0Y2SXPpXJFlpoA7/cvrNQe7TJGrcbmlVvajVug5UbEcBT10XLDZ8n4YsqSPNBm/xD3rAEvvPNv050DrMO92Igx5b3KITu8vOFUW//5Hxj88yrTh9p37tPwuIri90+BO58VZfFjDYAubHEc7lEnMNIO1PMs1d4innjkjpGi67YYDQ24Au8V3xf1HrM0QUYwI
+X-HE-Tag: 1769122284-226155
+X-HE-Meta: U2FsdGVkX19ey6/aR9gu0pqjetfLWlKRbksh/u9w16sNhBAHmy5PqNF/KZ2VhGsQC3Mgy6h8QZzeuUSH9WO3O7IFp2VdFBBhiBA4ZcK1yhFQR4gks1zxVvoQYPv+CA3+jTE7DXFPTDSdymyfbc9RnMtDhzCCU+XIiDr058GaNj+2ck7tt+H5xYYAoWdbfDXnCS3CVvinlTplas3+IsQZX7r61/BC8nT7o4jQcmcC5VczcbyYLbW4FRrQPp3dk7YvCmYSvKJxwxiRLDZ87Ege9dl7vw8dUKdVjgj9PAepEH0w9gHvdEtwtqzRerH+77C74NijhIONgmir2eirywQ1lolB0fi8KRA0OazHKdq0wIYWRk9Xk0uMVPdgXjciwgcqE6YGoo7xGJJw3LsEjKK9kZd1hXsOz6noYO62NROta4QAi6UcJ4V8udxHvEctu1PJECIyJf9VjIE6GVb76a5S5d6LSUA7MGV0tydU1QvvV1bSxd+ffjpTONYcvT/SJhkJfalq/DIz5yAMcSH6rGsSuGbVhi9oS/nx0sOn8nbMspYfPcrcDk2sbPaoN+roj+gR+WeDMHE2usEiP/oYj8Ypdu1DedGLWe/p00xbMm0W/aenmbEb1RvVKtCSkWK3OvnYtR0yQmkg9EU1VDwdFit+xfrGNkkCbdKuJ+zJ4Pc4MYYz0agFEC5g/HY8lhD5uLLXGJRoxg/OrL7Dnsfd7hW9boPkiMgFFO1s/KsMXiotVsYneQPJKHj53Qjcn/06UEWkt7kJxWSGHrL8Lvo8NtnoX/7wq8IJs2qiZ1wCTTSo3dKiCQu/r2wAT9x4GaZhzHPFVPaBdVKIBXq/bHgntJA95dNF1Q9I2qL0VMu01ZoQSGNj0oyShcy9Y1X2XhzW5VrhJaiT5tC1saORAIybU3h9g5ELD9rMqPUjTusLdm6y1mOXRY/gtwCSYlWEi87DlJk0R6H1bVpp2/2mbjvyzWd
+ SZ8wXRqX
+ 3U0P0BbrkrAKV86PnyNycUT3UkdI1JIM6PJj/xQlQyqObD6oKeMUpvTrKf/8SyjkOnNGE43T4TW3raU0IqXSBZyO0nUZrv/dyuqpDNwvKUD3YZcY2k0OMxX7TRABIaNN8cNFKsz9PC5rzSohZvXPWp8H6YnAiQkOkLZFT2GOvzZaUxfZNPlraCiyHkVJWIqEsAaWez+BYF0+WrrKGrXcx6/rXcjMar1nZsfgcifA2ZA8B49RxE5Bau8jXjqTNQbPblbLKypOZJMGPCS9Yabfx1auhG0ZgO080GiLfnto78rM/QxYsqScdLuOjSnYcc9J47PJC5emrFBJ3PF664TLCPNooioAXUZ4ycRUB+jcRO85igTLJotb90ZLRJga9NDFdf8/PksOyfLp5RN3moSEJtqDjbtZF7o6+0Q7UNzTi0VLNsYQNyct2DahhIs2mJSHBB7nY9ZAK6CO8c+JXA+9H4zzvHk1ymFysNicuQGLZGV9Hi/Lx47a3jRzN3arsx46gw3M5gd8yhUjtKrtVWcNVZYKB+/lrRBabsureqDjxOcY/pCaP78rdAchHTw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,78 +141,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/14/26 19:11, Gregory Price wrote:
-> On Wed, Jan 14, 2026 at 11:55:21AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 1/14/26 09:51, Gregory Price wrote:
->>> The dax kmem driver currently onlines memory automatically during
->>> probe using the system's default online policy but provides no way
->>> to control or query the memory state at runtime. Users cannot change
->>> the online type after probe, and there's no atomic way to offline and
->>> remove memory blocks together.
->>>
->>> Add a new 'hotplug' sysfs attribute that allows userspace to control
->>> and query the memory state. The interface supports the following states:
->>>
->>>     - "offline": memory is added but not online
->>>     - "online": memory is online as normal system RAM
->>>     - "online_movable": memory is online in ZONE_MOVABLE
->>>     - "unplug": memory is offlined and removed
->>>
->>> The initial state after probe uses MMOP_SYSTEM_DEFAULT to preserve
->>> backwards compatibility - existing systems with auto-online policies
->>> will continue to work as before.
->>>
->>> The state machine enforces valid transitions:
->>>     - From offline: can transition to online, online_movable, or unplug
->>>     - From online/online_movable: can transition to offline or unplug
->>>     - Cannot switch directly between online and online_movable
->>
->> Do we have to support these transitions right from the start?
->>
->> What are the use cases for adding memory as offline and then onlining it,
->> and why do we have to support that through this interface?
->>
-> 
-> After a re-read of the feedback - are you suggested to basically kill the
-> entire offline state of blocks entirely? (e.g. if a driver calls to
-> offline a block, instead fully unplug it)
+On Thu, Jan 22, 2026 at 5:16=E2=80=AFAM Maninder Singh <maninder1.s@samsung=
+.com> wrote:
+>
+> commit 7ce0ea19d50e ("kasan: switch kunit tests to console tracepoints")
+> removed use of sync variable, thus removing that extra argument also.
+>
+> Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+> ---
+>  mm/kasan/report.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+> index 62c01b4527eb..27efb78eb32d 100644
+> --- a/mm/kasan/report.c
+> +++ b/mm/kasan/report.c
+> @@ -203,7 +203,7 @@ static inline void fail_non_kasan_kunit_test(void) { =
+}
+>
+>  static DEFINE_RAW_SPINLOCK(report_lock);
+>
+> -static void start_report(unsigned long *flags, bool sync)
+> +static void start_report(unsigned long *flags)
+>  {
+>         fail_non_kasan_kunit_test();
+>         /* Respect the /proc/sys/kernel/traceoff_on_warning interface. */
+> @@ -543,7 +543,7 @@ void kasan_report_invalid_free(void *ptr, unsigned lo=
+ng ip, enum kasan_report_ty
+>         if (unlikely(!report_enabled()))
+>                 return;
+>
+> -       start_report(&flags, true);
+> +       start_report(&flags);
+>
+>         __memset(&info, 0, sizeof(info));
+>         info.type =3D type;
+> @@ -581,7 +581,7 @@ bool kasan_report(const void *addr, size_t size, bool=
+ is_write,
+>                 goto out;
+>         }
+>
+> -       start_report(&irq_flags, true);
+> +       start_report(&irq_flags);
+>
+>         __memset(&info, 0, sizeof(info));
+>         info.type =3D KASAN_REPORT_ACCESS;
+> @@ -615,7 +615,7 @@ void kasan_report_async(void)
+>         if (unlikely(!report_enabled()))
+>                 return;
+>
+> -       start_report(&flags, false);
+> +       start_report(&flags);
+>         pr_err("BUG: KASAN: invalid-access\n");
+>         pr_err("Asynchronous fault: no details available\n");
+>         pr_err("\n");
+> --
+> 2.34.1
+>
 
-I'm merely wondering why, in the new world, you would even want the 
-offline state.
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
 
-So what are the use cases for that?
-
-
-Sure, memory onlining can (in debug configs) fail, so you can maneuver 
-yourself into a position where some memory is online and other is offline.
-
-But "unfortunately having some memory blocks offline" is something 
-different then user space explicitly asking to "keep all of it offline".
-
-Why would user space possibly want that?
-
-> 
-> I took a look at the acpi and ppc code you suggested, and I think they
-> also have "expect offline then online" as a default expectation.  I
-> can't speak to those users requirements.
-
-That's because the policy is defined by user space, and in contrast to 
-CXL, hotplug of APPI is *not* triggered by user space, but by hardware / 
-hypervisor.
-
-> 
-> This would definitely break things like daxctl/ndctl, but maybe that's
-> preferable?  I pointed out that patch 8 does this anyway - and I'd like
-> input from ndctl folks as to whether that should end in a NACK.
-
-You mean that it would break the ndctl option to keep memory offline?
-
-Can't ndctl just use the old (existing) interface if such an operation 
-is requested, and the new one (you want to add) when we want to do 
-something reasonable (actually use system ram? :) ).
-
--- 
-Cheers
-
-David
+Thanks!
 
