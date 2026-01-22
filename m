@@ -4,135 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC32D6CFA1
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:00:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A47F3D6CFA2
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 18:01:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94CC76B02E2; Thu, 22 Jan 2026 13:00:07 -0500 (EST)
+	id 181206B02E4; Thu, 22 Jan 2026 13:01:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FA1B6B02E4; Thu, 22 Jan 2026 13:00:07 -0500 (EST)
+	id 1590B6B02E6; Thu, 22 Jan 2026 13:01:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B2D26B02E5; Thu, 22 Jan 2026 13:00:07 -0500 (EST)
+	id 08FA56B02E7; Thu, 22 Jan 2026 13:01:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B0146B02E2
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:00:07 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0CD7B1604BC
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:00:07 +0000 (UTC)
-X-FDA: 84360363654.26.620CD81
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 679D5140012
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:00:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EfIyL8jj;
-	spf=pass (imf26.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769104803;
+	by kanga.kvack.org (Postfix) with ESMTP id EBBDD6B02E4
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 13:01:15 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C30C3B98BF
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:01:15 +0000 (UTC)
+X-FDA: 84360366510.25.A592083
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9CFFA1A000E
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 18:01:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=jt87fClb;
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769104873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ZLWX7Ttit3Pt1qm85Tbi244EW7S3psWz/a7zbS1I90=;
-	b=VKh6Hdl7dk2vVRqwI8aD/ifI6bYkcZtu+eQ92pemz1Yn8p1uD8KStvgsiLoQY0W7f0nuHd
-	2D6MX4ihF3wC71XpoqvBgwRvgHdwWhLoSPQ0zCPTVqQ/cczp4cFfEdlZtW56OxHylPZH71
-	4Y/vHRjZdXw+uGkWB0W3Hn369H+Zpas=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EfIyL8jj;
-	spf=pass (imf26.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769104803; a=rsa-sha256;
-	cv=none;
-	b=vWPABJA6VuKSann3IXLEwe/1Kxdh6CVGvX2qOnQ/RorEue5L2ivbFvNHq96b7mSc4iuE5I
-	/oLKDT4gLxmcQX843dSQSUjA7+9HWUssVYvVf6XgpD+LLbqFx5dVmPu2NCGghDiDGre7sS
-	MhgKf/1gsVif66rItcyfUmaQxwxe9YM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769104802;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ZLWX7Ttit3Pt1qm85Tbi244EW7S3psWz/a7zbS1I90=;
-	b=EfIyL8jjGp4xUDTAEygL0coSOoCAJnbr1Q1fvKvOyKXuRVf3IbhUcifuaaJt4WlIrKyc7k
-	Ldalk1+kc8WdaOgQJ08WTlmCVn5Tp1oU4cHBF7MyU4FyqKQ6/txKQl5cpqFGdklykqNxVi
-	Y7eQA/WsNHcA8GRWP7WI1GZoYuB6O2g=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-8lw59hIpMF-oGm9zjxat0w-1; Thu, 22 Jan 2026 13:00:01 -0500
-X-MC-Unique: 8lw59hIpMF-oGm9zjxat0w-1
-X-Mimecast-MFC-AGG-ID: 8lw59hIpMF-oGm9zjxat0w_1769104800
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c53919fbfcso284464285a.2
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:00:00 -0800 (PST)
+	bh=8EwsGAwSi1XJnQ8Flt2gUZVpIyeVej/iJ1J1N/YRMmU=;
+	b=cZoMrm8xs5B61diW8lTsAQxhhsGy29XlpWKLXyl2JHbzaMSjyGaZacbLKdY9e/OG7ezV+m
+	r+C1+ENej5TdyA7rH/nnjGLyBeTXoifiUCFw//YrxklsJ/Wy6bM1US1yZK3dIlkZJAqOHl
+	gjrbAz6yLCvBdHHttGXsnJcPD6QPe8M=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=jt87fClb;
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769104873; a=rsa-sha256;
+	cv=pass;
+	b=OT56/lYIxN5tpJvAQmvMHve33njuYyu0KxvW3z6dTKPLFpQVcC9dqv4M+shCXbQNJDJVzZ
+	H4CzyqTFK001bYDYqztjchbfktC6wqRwAesR7Yc93wMm9A3YEi8sHAYaOo1O5MBlrIkULY
+	r9Jy60WFGSygYb3TCPLCU6YGZvtnHa0=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65063a95558so1887131a12.0
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:01:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769104872; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LBgdq49/So4DNV+PfGuIoe1oMQHCFhXsl7z6CDKuDutZMaKNpld3vFxNsrKItWlp0A
+         QvdaG3WsmuQPD+A2w+ri0lQloIR/gj84QLlOluI3CmKZYWUqLl8oIiZEEDFuZ6zkBS1w
+         rPbSxztHzi6zKWqRu44b9CMwYY8H8wTkWnsSURkIByFYyrxsyU5g9nYvqn/yRREaeSn4
+         Kowczb7qg2jha8kttz7+L6XMyEFUN39PGonwcf60O3aUUrfc5Ab0PMznOplkPnQDaYwl
+         uNlzA1EgF2k68rhMGWkoJNq27/fCeIiMbC2mcqqjJr++97tt5laohQKKdJeREQXIuQJa
+         1QLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=8EwsGAwSi1XJnQ8Flt2gUZVpIyeVej/iJ1J1N/YRMmU=;
+        fh=JGHKrKOHXMCvzsFcCbVNBhafRsavPtHlF24AnOt38m0=;
+        b=PscAwMCnzyJLfK0OKOb+HaYP069r2YfHG3eBWlK8QCwvh98/Ef3LxPsF11G9WpgPVq
+         JxoKRLgYafw8WQy7EgYOMrjngYc6kbW/ASTKijgDHaO0W4l550EHBStAYP//WLu0pi9U
+         WZS8n4iysCCwj8mEAZkMKWyoT3taR3+ybl79nPna5w6N498K56mxuUiYuJaDdSiGhn7C
+         OCrhhAl2kaznXm1fqTVKOn8SgXrc3jrTqDsJ3PlK8vRx6fxcIgfcdWPPx0+f8C1ZHnrY
+         t6JqYhtUt+Z/fDXyX9JJz/STRhOHB8ils7GEvofhF+t0vW8OBa5AUx6XgnwhY5decaHy
+         bSNA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1769104872; x=1769709672; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8EwsGAwSi1XJnQ8Flt2gUZVpIyeVej/iJ1J1N/YRMmU=;
+        b=jt87fClbFGzVyWb2VaXi3/kZAqh6Px3TcLbUZIfVx1pAqGAIgHCdmO2ef3KLV4txQP
+         Gd5w2GkY8jNPg+Td3u24MhaZV3SNZ9yopn+44p8dypaIVRxXBGvPw+mDKAaqfDKXxmL9
+         ELry1bT5LAkoTSYz4VcLg9CvmRSICKOtlbaDLGDt9y99ZhuKINaojcI/pnsC8cJzh5h7
+         RUNt/qCDeSNrFfVsIf9ULDbr7xB0odwEn0B2TQyFpGZmVDfWElR0IokpRfDMTS+EvPgz
+         W0aREluy52EyOc6lZ3GlUEUpFmemsBNPmDCd1Zx9qWppDv7/kAJE4T5yCeVoka5h+Vob
+         UFwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769104800; x=1769709600;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+ZLWX7Ttit3Pt1qm85Tbi244EW7S3psWz/a7zbS1I90=;
-        b=cTcAX2WU4hjC+SYCiidI5+cQnoDzXpEIr+Bl6qsL7V8OP0WqortPOfY+PAEKymoPsr
-         ODg+6PDy9TM/34ZpP9lPQcQXkfLYtwiQeadu8y2DmNTDhXCTwWqpad+YASVJeWtrvih3
-         KdzRDe6JYB5P61+/0nm9PzPFNQrCrkE3bk6yS7AvmxOV+DpFS4BbdN1mgtJCay2XAotZ
-         Ybi+cxqWfYnuPsWqTUxlceAPgiyE1DD2rh5HnP8AiR+S1F7Ke8aD0n2V+CFMc32GHXA5
-         LNMFL+QlVglUq+mMVOhsdGgkbAbX8Kdvxonsy76xYbw0nR8k8MeBOmv2EYwElxNnf1GJ
-         eDLA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmqs8al6x5UzcszC0le1mtoO2EJzLHp7A6RnAXL2LkOxmJC6goW8kOKjAX1QhDMuDf8PlvytV2GQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywi8EDETBcn727regpMrurQIsI2wqDemcTpvd3+IWg4Nx8FN6AD
-	3kEzLFIm41wiTSZGtJb5V5whXuPuPH44/9AdZQw+7reObtwJbqbVURKSjZm+LKLWQDMYwOHNk0j
-	dV5iP2psyfgZi9H/O4Du1z3nGl686p8llwPjMCjvd01SCzx9GbAMB
-X-Gm-Gg: AZuq6aKAeMd1JYcH9XLOuWUvbFbJmpRi11r41QkNaQvKFNECfw6Eybkmqg1XSDcLPf6
-	OwJcfZv9zlUhOZTjGoXPP1nXM2RKTksRZXhVGG48XBuj8SLrXnW7erJ6GCMJjKjk/0xOTGnEpRi
-	+oiFj+nFOSKBt4wvOJwSTXaszUbapFWomg6CknTe0cf7ryIn9aSTawkJ3o4vMV1mubS2z7xq3B2
-	GiR58R/d7Lf30iJr0YMg8mlNvDunMrJopT1409SQokKtuTVYFNpaN3fMK+3B2UPMXXQIRevHuR6
-	zhOYjGMWZhiD5SZNmGDx+mXriO3cJtE7vViPu/R5ISQy9DuyrDCczlyXMVAFVdhiBq8eGv+bLYc
-	Qy3uFzMQmYZ1PsYmtEWrjc81HJUbedOjAJPhRW+qlPh4gjuJPA8LxzSi1
-X-Received: by 2002:a05:620a:1924:b0:89f:9693:2522 with SMTP id af79cd13be357-8c6e2e4ac7cmr34980085a.73.1769104800445;
-        Thu, 22 Jan 2026 10:00:00 -0800 (PST)
-X-Received: by 2002:a05:620a:1924:b0:89f:9693:2522 with SMTP id af79cd13be357-8c6e2e4ac7cmr34977385a.73.1769104800080;
-        Thu, 22 Jan 2026 10:00:00 -0800 (PST)
-Received: from ?IPV6:2601:188:c102:b180:1f8b:71d0:77b1:1f6e? ([2601:188:c102:b180:1f8b:71d0:77b1:1f6e])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6af506829sm1272959385a.37.2026.01.22.09.59.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jan 2026 09:59:58 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <0fcbb05f-fa7b-47a1-bd4a-d59f1e0ddc35@redhat.com>
-Date: Thu, 22 Jan 2026 12:59:57 -0500
+        d=1e100.net; s=20230601; t=1769104872; x=1769709672;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8EwsGAwSi1XJnQ8Flt2gUZVpIyeVej/iJ1J1N/YRMmU=;
+        b=nKO7YrqIgsfLpLnvud+KDwvLMUPLI/BtIup98g3j4FTxrr3ajYY/z4e4NcLyDMIHeK
+         fCambxHfm/+vKeHdurO301RCuOedyw9Ke7RVyt3dlNCxqpy9hHK/58DmEwIr9+DGT4Fy
+         SJ7uhoJSgwEckKNgk53EgAPrVix0+FbCSd81qs33YIajTbKyOYEprf6ZMQp/zvsd0BUl
+         gWhjT942Rg/Ttp3yc/b0SVxpJuYqqqH26LUXJfz4nqli/q0lm4CvJDsmkZJh4EYtJh3B
+         FhdShMkAg1tCtT55cxXFLY4no0x+YBBJDCQmoa6V4EdUe6b2Zkh2qVaC+9RgfAZwI5qJ
+         vDMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQQ5KIC1eC5iAcoBxRpAwWhWuFl/2hMd/g+0Na23mVSRifxT5mGcPSYTsfggPf0zOogppQn4QLng==@kvack.org
+X-Gm-Message-State: AOJu0YzF4ymaqeWFLltLFI7gXcREk6fkan6r7yAvx150AsBIg8JkTWso
+	n1fraAjI5GQzknrOG4KXDYKXTw4fUhiZWTTvP4Xi0IJhN0JEfoJfbR591LQeQHXURQKOOdLxwRB
+	0MMh0/RtV8RwJLKfbIedfHPzuImHymvVVEodzdnrnxg==
+X-Gm-Gg: AZuq6aJYCAiKxVbZvQBR1SPu4yteDuvmOPvFv0nTfLV+eX9B0S0x1fPTmRrcYFI6bjz
+	cFDzvoumkpD7FRe2RU1rvKTp8KfZEalaa/lS6NNwILw+zZDlP7WNmz9iQxKFmgGiuti157z5GhA
+	iSdBgNloz+mOlPcqGx5gOc+0/udyWMvL8Em2S7IuJ7wIF40xMfYi+Dc1c8Z8JR/Z/Pb49DDdPYJ
+	M0yM5Z8Omew5Pq8HDqUObOyOl8m5ECk6nSMJc0zJzq0m7O7k0XF/DdLDrpITq27oCvyNK9hyz80
+	aeWLZ/rRx9uEySggmz30M8Bzdw==
+X-Received: by 2002:a05:6402:5256:b0:658:1eee:8a4a with SMTP id
+ 4fb4d7f45d1cf-65848763750mr300879a12.11.1769104869754; Thu, 22 Jan 2026
+ 10:01:09 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mm_init: Don't call cond_resched() in
- deferred_init_memmap_chunk() if rcu_preempt_depth() set
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Waiman Long <llong@redhat.com>, Andrew Morton
- <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, Wei Yang <richard.weiyang@gmail.com>,
- David Hildenbrand <david@kernel.org>
-References: <20260121191036.461389-1-longman@redhat.com>
- <20260121114330.6cd34b4732c7803f1720f0ba@linux-foundation.org>
- <0e385146-67a3-4fdd-b119-059caba8c5f0@redhat.com>
- <13d0b8b5-1ba7-4a3e-a686-13a7b993d471@paulmck-laptop>
- <20260122075747.uSLrSJez@linutronix.de>
-In-Reply-To: <20260122075747.uSLrSJez@linutronix.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4Aaw0zZCu7bSebdOOYH0ileFLCdaACCKfFZKSkX3vjc_1769104800
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 6rpdganc3hfwijyy3ncuzqouznkugomf
+References: <20260122151842.4069702-1-pratyush@kernel.org> <20260122151842.4069702-2-pratyush@kernel.org>
+In-Reply-To: <20260122151842.4069702-2-pratyush@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 22 Jan 2026 13:00:33 -0500
+X-Gm-Features: AZwV_Qi_J0zfzTpuqZ4EC8itmOnuRE-8X7R_DnpLfP1pz21cQKxOrv4CU34rILs
+Message-ID: <CA+CK2bBX6L2or4RRhKoinAOh6BpCv2mskx7MPQz-2EdCgdMW6Q@mail.gmail.com>
+Subject: Re: [PATCH 1/3] memfd: export alloc_file()
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: wthgw3x9yardj1ax9asx1mooh1ftoauo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 679D5140012
-X-HE-Tag: 1769104803-83313
-X-HE-Meta: U2FsdGVkX1/Bmi01oViMEOwrzXYYj+rVC0DSQB/F+hUNRZ727vtjnbhEszF4SQx1HRRtSpYlx9qHBkfZ84eF9nu+FtgMcXT7uKBKlUlAdPRAiP+2xiKj258VHiR5aWjRhIw1LiXDt/IujhITC4S6CLrti0BJmUTyxmkYFOz+P42examgUJvNZlYrf7Kog39UKfXYW7RpLZaHTNzvDuRQBMCaVnxnJC2o8mBVTsix+AKYKzqKoEI6qfHvd7akgFKE/YNMaLLbkfTcuUMx8kxcjzux+C+enK0qe0zTs/mXN6gAJ56toYiDJXfDNEOyWKbDsgRUPUKRmbkpLBpeD82DXC3vi6e+LbU3eZnEZZQbL/vNjW10sQz3zcSoXKAMrxHBkeOsdX9LL9DGz3AEQ1I5ME50g2243PT2rzsFDTrwWIM0loO0wAQZbnzfERnRwpyemARUrLZOTgQgnYey2ogiyXuuPlCwi95KPtVCJfqeh3oK/IEC9bY68ooERJxlxd9KG+fkhdoLuMQsHSgJjWsvj9IPtbtCiw5lbEMcx7xHuv+jlNCPvpNO/aHssKIqoA5ZjcCatD2QR79bYsITYe6kx0D8wqqUB1+NKNo81O5Jh2vKZmB7F9oXQJ8q2xO9Lf6hj5bAQcU8Q2BRSTS51clQUay/oOujwSu8GHosyxxNXBNlaIzdZKK92TxGoImfrPJ4Lb8Xe2avrqHt3ElAWj1A4TmMXJG35oQn7Tvtn2rxKWMa5kogWV/PlJ/toRhOgB+MfwbUP2SxoYhbSKtYFGm2dQVSutyAcXqXros49VStYH+19+FQDDFI34MI0nx4u4WxVFFqp2eXP2bxJr+X+wgj/CcJyjkgUZS/sIS7GSxMdtBZNBXzfqCCIVdWg25UfY5HdbN4z1H8iHPcC9LSYMyhBG1uoB9nYjJe+XbjP51S6YK/0+7fd3gzYe++KMVUfKqg72RKH4myoSgBRnEUpR4
- 0NG3wSnp
- ebKls2Kchac22LTCyhagVwdAYtWk62Higy8wqUZB5+Xq0YuGdxrq/tPOmdTePHMNsz3yRSZbmnPxwAkeWZGxeEtQjkABVKKhg92H9qUD0O0mk1dKhpNuSPfNva6QiFTT0R72Q8jU4iIZleUmGb4+mjD2CyZ4v0Mj46hCcx+ERvh7rv7l2wgR0CfkLoJZmuTwzFxQqs9Ff8mn/VG+frsS+Zwa0zKqd37blKNyYGJCz32qo2BOrTHNfKRR5yVO3GZGYWDFy
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9CFFA1A000E
+X-HE-Tag: 1769104873-524652
+X-HE-Meta: U2FsdGVkX1/jMM2d84FCfA8B2zl21KBSL3PHPc8oHhhaOoATOtRhHYxBMbh4ZVKDTyhHlWsAxxY9q13V+9VFEWrq/DvqKRs/2LeiE7naWqZOczm5EZivxXw3eldyv/fbcKPABhY0m05Ryt1J4T6J3Y7ILl0Ci2Ua6MvbFz0bXZ5jl8Hy59n3pNf6zGC4jpP074sLnGuBDecJd6oJ9AINEcsvtet0MHB1RuqSmBd0hC2Vp3kh4fQvWs4MIqWNwLHQgicAfRyisJJfEu117vOnN8M5HgZLmucr09vdqo3tk1Duw3E/74ZIkaASQzEVTlY6tKRrUAihqCvVqFUJRDr7Qe1SG46IWSkyywfj+9mp4KUZXCKEyHOftir1JqBPuEMrFcMBwF3B4XNyBFcYYP2sX/3x3uDqgR10VMlb3ewByXfWhR2FIYxI6unhVYoQXESSCXqGB4ueRU0TjI+1zWhrVqXyDzV94JC6bqbF7hz5hCnHiR3JemFDLgFW8GkuHuVXPFdJ7rmEI/+S5o1Czl80z+ALj/nB4dtBzG5VU2/wpxGF4P4qnrExhOhlquEgYYIgBuRUWhpsG33fpx8741dDFEJfLHmEYZ3IXaRPkkxKUb4S10CW0W/uqeO6xzDXk7uQnd88HwRFhFOOnRPNlC6HDbVqcf/iZfF2w6ukWUQTK3musQsaq1sC5dxlsl0aZmpBcI9vzFqvvsyFzvEruEVXCn/zuUPOVlaC1bGY7iX2PdheG3yXuPl8o9J3IsgyMwGkxwUQe4A/PFiX16IfIzmuLb/O0p2gioBfwwpnYBtMbGbb3m4MRUtI22tUXvu36hIC4cG0obSzXywVnMZCf62U8c+s3XQfekYhaPFwgLyzYQaJLt26Qm/6g8kVWoFfy6jtt7wTtkJxeedHxzn3e2VtPgmQvAWSdWH5aqXcf7XQLr46O5xB1PVHx8fyIo6zRU5MAoMHRaT/UuWpvu5pSI5
+ Cy+CEvFS
+ cSIKyyqGlO7J9/v8pMmfpRPg3D79oyI7eyj80Ls2B2kfk9VTsF/NrZOC8qqlYSXoo0QuAE6sio+xny1QD/d7MjbrJJze6ECv2F6VpjiwjQmaqXIhx3Xk0s7lgsnA5fs2JQx221d0T9G55BkyQbpZG48e2h4sP8tUYzjuaNw4sPGzMNWD+2wvbLNWnZFRA4XxwNVwJ7fVBNs9SJq8IvZUoO5DpH7LVjyOituz4qE/rwBJy1OSxhnata/yTokXNmnX+Jeu7kAaRUYx7EkNE9XIeENkXYnwrCE37ODQKVnN67Xw0eutIqec7HkTmu0o6ZaDWQ9zE7fLspK/hZBryqBsFJGageXJjNU4ls0v/bvAg80/4Lnn/xdqLgeOfIkWqV7Uw4Cvzba7HrOzNImdwXlgvMI0h2XV6lhzI9J8R86gUwbUjnvk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,106 +137,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/22/26 2:57 AM, Sebastian Andrzej Siewior wrote:
-> On 2026-01-21 13:27:32 [-0800], Paul E. McKenney wrote:
->>>>> --- a/mm/mm_init.c
->>>>> +++ b/mm/mm_init.c
->>>>> @@ -2085,7 +2085,12 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
->>>>>    			spfn = chunk_end;
->>>>> -			if (irqs_disabled())
->>>>> +			/*
->>>>> +			 * pgdat_resize_lock() only disables irqs in non-RT
->>>>> +			 * kernels but calls rcu_read_lock() in a PREEMPT_RT
->>>>> +			 * kernel.
->>>>> +			 */
->>>>> +			if (irqs_disabled() || rcu_preempt_depth())
->>>>>    				touch_nmi_watchdog();
->>>> rcu_preempt_depth() seems a fairly internal low-level thing - it's
->>>> rarely used.
-> If you acquire a lock from time to time and you pass a bool the let the
-> function below know whether scheduling is fine or not then it is
-> obvious. If you choose to check for symptoms of an acquired lock then
-> you have to use also the rarely used functions ;)
+> ---
+>  include/linux/memfd.h | 6 ++++++
+>  mm/memfd.c            | 4 ++--
+>  2 files changed, 8 insertions(+), 2 deletions(-)
 >
->>> That is true. Beside the scheduler, workqueue also use rcu_preempt_depth().
->>> This API is included in "include/linux/rcupdate.h" which is included
->>> directly or indirectly by many kernel files. So even though it is rarely
->>> used, but it is still a public API.
->> It is a bit tricky, for example, given a kernel built with both
->> CONFIG_PREEMPT_NONE=y and CONFIG_PREEMPT_DYNAMIC=y, it will never
->> invoke touch_nmi_watchdog(), even if it really is in an RCU read-side
->> critical section.  This is because it was intended for lockdep-like use,
->> where (for example) you don't want to complain about sleeping in an RCU
->> read-side critical section unless you are 100% sure that you are in fact
->> in an RCU read-side critical section.
->>
->> Maybe something like this?
->>
->> 	if (irqs_disabled() || !IS_ENABLED(CONFIG_PREEMPT_RCU) || rcu_preempt_depth())
->> 		touch_nmi_watchdog();
-> I don't understand the PREEMPT_NONE+DYNAMIC reasoning. irqs_disabled()
-> should not be affected by this and rcu_preempt_depth() will be 0 for
-> !CONFIG_PREEMPT_RCU so I don't think this is required.
+> diff --git a/include/linux/memfd.h b/include/linux/memfd.h
+> index cc74de3dbcfe..c328a7b356d0 100644
+> --- a/include/linux/memfd.h
+> +++ b/include/linux/memfd.h
+> @@ -17,6 +17,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
+>   * to by vm_flags_ptr.
+>   */
+>  int memfd_check_seals_mmap(struct file *file, vm_flags_t *vm_flags_ptr);
+> +struct file *memfd_alloc_file(const char *name, unsigned int flags);
+>  #else
+>  static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned int a)
+>  {
+> @@ -31,6 +32,11 @@ static inline int memfd_check_seals_mmap(struct file *file,
+>  {
+>         return 0;
+>  }
+> +
+> +static inline struct file *memfd_alloc_file(const char *name, unsigned int flags)
+> +{
+> +       return ERR_PTR(-EINVAL);
+> +}
+>  #endif
 >
->> This would *always* invoke touch_nmi_watchdog() for such kernels, which
->> might or might not be OK.
->>
->> I freely confesss that I am not sure which of these is appropriate in
->> this setting.
-> What about a more straight forward and obvious approach?
+>  #endif /* __LINUX_MEMFD_H */
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index ab5312aff14b..f032c6052926 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -456,7 +456,7 @@ static char *alloc_name(const char __user *uname)
+>         return ERR_PTR(error);
+>  }
 >
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index fc2a6f1e518f1..0b283fd48b282 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2059,7 +2059,7 @@ static unsigned long __init deferred_init_pages(struct zone *zone,
->    */
->   static unsigned long __init
->   deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
-> -			   struct zone *zone)
-> +			   struct zone *zone, bool may_schedule)
->   {
->   	int nid = zone_to_nid(zone);
->   	unsigned long nr_pages = 0;
-> @@ -2085,10 +2085,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
->   
->   			spfn = chunk_end;
->   
-> -			if (irqs_disabled())
-> -				touch_nmi_watchdog();
-> -			else
-> +			if (may_schedule)
->   				cond_resched();
-> +			else
-> +				touch_nmi_watchdog();
->   		}
->   	}
->   
-> @@ -2101,7 +2101,7 @@ deferred_init_memmap_job(unsigned long start_pfn, unsigned long end_pfn,
->   {
->   	struct zone *zone = arg;
->   
-> -	deferred_init_memmap_chunk(start_pfn, end_pfn, zone);
-> +	deferred_init_memmap_chunk(start_pfn, end_pfn, zone, true);
->   }
->   
->   static unsigned int __init
-> @@ -2216,7 +2216,7 @@ bool __init deferred_grow_zone(struct zone *zone, unsigned int order)
->   	for (spfn = first_deferred_pfn, epfn = SECTION_ALIGN_UP(spfn + 1);
->   	     nr_pages < nr_pages_needed && spfn < zone_end_pfn(zone);
->   	     spfn = epfn, epfn += PAGES_PER_SECTION) {
-> -		nr_pages += deferred_init_memmap_chunk(spfn, epfn, zone);
-> +		nr_pages += deferred_init_memmap_chunk(spfn, epfn, zone, false);
->   	}
->   
->   	/*
+> -static struct file *alloc_file(const char *name, unsigned int flags)
+> +struct file *memfd_alloc_file(const char *name, unsigned int flags)
+>  {
+>         unsigned int *file_seals;
+>         struct file *file;
+> @@ -520,5 +520,5 @@ SYSCALL_DEFINE2(memfd_create,
+>                 return PTR_ERR(name);
 >
-> Wouldn't this work?
+>         fd_flags = (flags & MFD_CLOEXEC) ? O_CLOEXEC : 0;
+> -       return FD_ADD(fd_flags, alloc_file(name, flags));
+> +       return FD_ADD(fd_flags, memfd_alloc_file(name, flags));
+>  }
 
-Yes, I think that is the better approach. I will post a v3 with change 
-as Mike has no objection to it. Thanks!
-
-Cheers,
-Longman
-
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
