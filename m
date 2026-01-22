@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB1FAC44500
-	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 10:23:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C940AC44500
+	for <linux-mm@archiver.kernel.org>; Thu, 22 Jan 2026 10:30:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D6086B013A; Thu, 22 Jan 2026 05:23:26 -0500 (EST)
+	id 164BE6B013C; Thu, 22 Jan 2026 05:30:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A4166B013B; Thu, 22 Jan 2026 05:23:26 -0500 (EST)
+	id 13C9A6B013D; Thu, 22 Jan 2026 05:30:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C2E36B013C; Thu, 22 Jan 2026 05:23:26 -0500 (EST)
+	id 03E716B013E; Thu, 22 Jan 2026 05:30:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CFC16B013A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:23:26 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3E29C03FF
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:23:24 +0000 (UTC)
-X-FDA: 84359212728.12.8B22F91
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E5C1B6B013C
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 05:30:55 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59DC8139276
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:30:55 +0000 (UTC)
+X-FDA: 84359231670.21.4032DA1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 260B980007
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:23:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f9A2yDif;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id C7C8C140013
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 10:30:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IEPPxBuZ;
+	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769077403;
+	s=arc-20220608; t=1769077853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8baty6keMhMUDZEZ/HySgtZbwD+Eaq2dG2O7a86KuYo=;
-	b=ImrmR6bvZqurzSIDpMiXAr2JarcylNBWc4wpDP3yyWjq8cKsb+F4zl3geZOlrJ+mEHnkHd
-	QydMlxZjd+CVwZjiwE7D1posNnui/DzQzmMt+bk+IR43wam1o4KvmPXXs7Rml+mDEL+wA+
-	Z5O6ctKnWzpOvaxkhLqqjNzW6IwPm2Q=
+	bh=sduvtt3pXg704z8GPOI1TTWW1Oiqiob70YQjjylMVtA=;
+	b=8pMzQ3WMyVODNBc3PN6uh2q+hDLQXAMXpvYWId9Goc73/LdOVMm6t7Rpmn36snz8xhdLxf
+	LYWDKnBmiz3OG9qSKZNiZugx/MXzcnffcwsg34X7xn2SdyYBvIBy2GjfB5QN57umYVZfag
+	fsEHDecyr71xo9RcAi3cpfpiZ++r0ho=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f9A2yDif;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IEPPxBuZ;
+	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769077403; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769077853; a=rsa-sha256;
 	cv=none;
-	b=X1gV9PCT1Lq7WJOk+9bWBJK415yDoMSSwNVVnWK9tAkNRyehSo23knvdAEurEzD2Jzsh9d
-	tUJRZCFUYXnrwuC1uM3npMH+k0T8DrojnPBTOyxGViQrL3QPmtMS3ky5hBJQsD4G/41oXv
-	4RNGaOR863ngQGbEP8k1LeDwQcyqs3o=
+	b=fVADKi8K6RgK/Z7DESU9690lsjSN7iSvJrL9j3mOtTD2++GuMz7hysdABQK/jN4N2pqqpG
+	iBqc5tpvmwLOry6aa3rkekgEg/Ur4HXFkdmmim8DEm+3oZBsiM+nf/vSgJBs9mcgDoARH9
+	Dqvu0mLrxjA7I/2fPuWQRTJc/ugcmsk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 720AE600C3;
-	Thu, 22 Jan 2026 10:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3463AC116C6;
-	Thu, 22 Jan 2026 10:23:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D818600C3;
+	Thu, 22 Jan 2026 10:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365EBC19423;
+	Thu, 22 Jan 2026 10:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769077402;
-	bh=0te499sdFFCQEZXIav3Juo25FvmqHOPhfdLK4InvpvY=;
+	s=k20201202; t=1769077852;
+	bh=oob4836ApX1NmCp6W5wN39YQoJSroAdcAzkzIA4BG4I=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=f9A2yDifc9zaJDGikz+SPpBGjANGZ4ZtYGk9NJnIjH1Xhs6PV/U1QQxa4KvrGTQQn
-	 okMz3uRIwBrZRTJoWDuhfOScqMTBWMVB0i6QB/mCDQDzT8QwInJ+E5+y/uWJspAjdm
-	 OYMX6nw1k3adDJWMx9VzX2VUN7uEnv4gTTDkvpLHmEHhQyKUfD1znHPns4zX95E/wv
-	 8ppBdCUsPUUkBoTR+Fj3t54GAIUrJuGBXEdkuk03fB44t/BUNWZOpDSC6GRFuVxH4o
-	 OOpWTLsceSevIae0ARyA9C3rEPmchP8AGB7yd3WVbRp7hJAizg7HNWjNfKcaUnp69B
-	 QnMgNHfAtmNLw==
+	b=IEPPxBuZeQAaoWrm0Q/0yacJ6g8aW1SaVBpZxnVfWGy+98v4PpmapYdHzAUnOPgb/
+	 9A1htMHuYPV1C47RCzZ5adWPCVUaNSmY3Dq26rpXwBiBP4KkmTg3mE5ocLIJJKeV8c
+	 ccUksZFyagWuncViM/Edd04a7N2s7a33xzRZTVSUOX/ovxbsMMjaSDIiEyRCjN+/pA
+	 xEH0yu19hHsYXNuDX9zModUUvano+eQfwho4D9p51O0iwKavo5DFq9ip8BZBies1t8
+	 Y6zAdUcX0Pc9r3Gqu3+mYqEvOlTMA6s7H2VIOWmWN4gQeANNFqJPLCqgyynoFVU5n7
+	 jNxA3pGCMQITA==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: ranxiaokai627@163.com
-Cc: akpm@linux-foundation.org,  graf@amazon.com,  kent.overstreet@linux.dev,
-  kexec@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org,  pasha.tatashin@soleen.com,  pratyush@kernel.org,
-  ran.xiaokai@zte.com.cn,  rppt@kernel.org,  surenb@google.com
-Subject: Re: [PATCH v3] kho: init alloc tags when restoring pages from
- reserved memory
-In-Reply-To: <20260122042506.175897-1-ranxiaokai627@163.com> (ranxiaokai's
-	message of "Thu, 22 Jan 2026 04:25:06 +0000")
-References: <20260121120804.d1334ea0cc66b4a6de691cbf@linux-foundation.org>
-	<20260122042506.175897-1-ranxiaokai627@163.com>
-Date: Thu, 22 Jan 2026 10:23:18 +0000
-Message-ID: <2vxzqzriaquh.fsf@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,  oe-kbuild@lists.linux.dev,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  lkp@intel.com,
+  oe-kbuild-all@lists.linux.dev,  linux-kernel@vger.kernel.org,  Linux
+ Memory Management List <linux-mm@kvack.org>,  Jason Gunthorpe
+ <jgg@nvidia.com>,  "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: Re: kernel/liveupdate/kexec_handover.c:994 kho_preserve_vmalloc()
+ warn: missing error code 'err'
+In-Reply-To: <20260121123922.c0bb0ef8505c70b99998c324@linux-foundation.org>
+	(Andrew Morton's message of "Wed, 21 Jan 2026 12:39:22 -0800")
+References: <202601211636.IRaejjdw-lkp@intel.com>
+	<20260121123922.c0bb0ef8505c70b99998c324@linux-foundation.org>
+Date: Thu, 22 Jan 2026 10:30:49 +0000
+Message-ID: <2vxzh5seaqhy.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam11
-X-Stat-Signature: mj7pqokerk45bkxtrfu4kqekan7yeaoy
+X-Stat-Signature: 791hc55ffigi865eupikocaaet7zp66k
+X-Rspamd-Queue-Id: C7C8C140013
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 260B980007
-X-HE-Tag: 1769077402-435604
-X-HE-Meta: U2FsdGVkX1+ix1+jvHqy1eyCZ2L6HHFmAkZu7+EAz1Yz4lsMA00g9Y+nrCxXrxzJ7bN02Tnbco3Eff1WlfZjHZ8L09+JeBUqC3/tsOM6oTQHrem/rzXeMUsSIMOgYQRrIAPTiWRikxGKvM/bpa72hH6jueKf9+YZOKMwC8YrEB+58pNhu1aBfSqdlDO52ZrBAhXJtokBfEPbDFFLLFHC1SJ9vM1+yNE7Qj0tHx/pAk+eaIEf4trheMpVMQ72bSRuTXxEjLFw/GWCcTL6lJPFnbrROGr9CNG1gpsaDfN5M4P/A83H33BO8Ox1Ynt42V3emGkHKvI5WONe7hvawb+cucsO1ds8brfCnI/RO5W++M0CnKN2mfUEMQeXbjzNyqD85NBP5esb1792yYtQOlnCcZJtjak/BxYIlfUnyNfYD/2Q4TXeA+Qow7LcMmY2KLPd1RZhs3X2xTt1w5yQ0rWwMDm+SxBSH0BPYx1KfBX4HQJUeGwjnxYnAZHz8p33U2d54ELRqXRORHM2Vm/utMO/MDd9L7Fxe44kG1oEJjcNSrG8XST/jv8fk1KWc/dnVbSt9Z4l8eGMqidNEpW9vYs57KAVTxdEUrsEwuLQhw/FBDqBMNJXuMX2mcZk8SY5VeWs/7ItB1wcErnAhyUrT/JHoEzKkS8HTUcCoAzu0eM1bFVEPRkUsyIjZ/VuKu6OyWfyHQa60YFISA70DVKC5YTOd8BJfLUWpMgxQPtJ7e16d2QM/m5oU4jXLa337jivndLD5hHGqmTHm96KQeNx+48rQ0LWHEyeuBYPauqB/SxAHPOoEgzqJgx/ny/IcR/YKRj1KsmbakW6zea1saH1EnZnMtBWGvh/oaYD1yvZZsvgz3yzM3f2YC6LuxURkPsvgFxVTKXSoxHUdIa1lIVmxo2/YwHVmKF+94+0i4T7sjnJXTKigtoKIR3eTyJ+HKmq8Msu0VyNgvEQUSRoUQueIRe
- IX5eWu3X
- lsPTQVVzcP64g5UamfhEhymJlbcplTYBXsHl/llc9OeZiWOw0tZ1huzFhkzzK4xWJjRrGNHgQX0BTXsLf3rVF4duUU+TBhrz8UZCFUWBEZbyilQm0yXwNOy+JM+FhBlr5Rhrfr30sqnzipiSjhPMo9Uq+b7pgYdD49QH9lRd9eWxkDk4vOeg7rQr5ZBs5JLZGfvNx129H3vQVbP6V9K+5pApjj5xK4DmDHYKbxmgbx6oyrPuto/N9AkYt+jo6oKV2xf7G
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769077853-247676
+X-HE-Meta: U2FsdGVkX1/U6oVAAnoRwsHc0Jr+XyajYnuw8Awru4PJydkZALI7OoFYvHrH/sSAKcTpdVCBoR7wzxSYF1P84HGiaOheb5aydCztYGiaSZu4Cu32Rb8Phh1xYYeo6mX6OEElP/iaHuzU0dyOQEmdnTBmA+ncsCOmyeulPaufy3VVWoUxpWlnFhzGe5lknWQ5ivhqgdIygEThLYa3WjghP9OL1ixFiOLWRFIDeOdyLtRHq7gXXG8ICsC5BOdZQYEbYC8D7j39LbA14YAKCeRbdvAiVWAzZylwwv/zWaCHMRpR4luILUJki+n4xYT/9/nUhUhU8WD233kg+6/9kZ9T6xEkOn0v0qxFxw+o6U/RQRrLVuJx1QyVHAxZTExrIvA+CHa56fVesZ3Vy0Chl8+rWpTQfC0zWSKPrGXwZKzcqzJm8i1nYN0Dv7ANhdYWXzhFtILu80qfEtjtcJb84hyj2WJG70yU8f3+6PHdxhwNJIpUXn7cShfOCRrXzcGz8y+cLv7QVViE4IhseH0sWTmJr7rjX9iccGQWy8q4XAZZ51I10usIt8EPqrNx0hJZH8CLXvTBm4E9yF9f3cFfGNnDBfdYhHGrQuVdC/lNHnBLkFWjgFAbGuUSe3VfwRfnbmBlbduAzFcSrMuxMrxSsJdlQbAkV2GaE2lMHBMyG47L8M6AgoSvnYJwqb/cB0SOLqNJbjPkAPZD9JAvTB7zDbtpM/34tcaCKiz7Bbu6GgHNVD2cgwz5BNLhjHKcboW37znvklg33QBRgIajTSx2oeBlXFBo8ilRBnds+W1u0QQ8hPyjUQj7ecOqv/Ae7FWVA5ZkUm/4wUEhd2MU9O+M36V5PvHhEeilIgZiN4N2du5qOAA1YO+DmTfNtgAwJON/0dbw1G/SImH/eu9PJXr2Y8dstNEOX5G4bqOuyC+RIW788O+gOBLZDmEWun6yzJguIMowQ5WXLnNoVB3RPzCpNI8
+ a4dULmbC
+ Mqthhg4EUELaqKN6JWsRSxIJBBJlgu8WAbiA5XHx6QS97EoRoh0p4kUDSvQ2BATkYDSwcND+yJSMDwPOcEfUfwztElmO0s9dK1nDLY61xz7ucp082Y2VS2W0H7dxhCnc85B1RJgn/5yjK7lZcc8cetOjUSAAGAGeG+XofylZ2Iwjmlv3ZirgT41iCc+3Uea16B96hviY408IqqtjHYZ5I1SnnXxtYFmzjOYrTV4h5n6GHLk8wTSV3Lh9ZwsD3eS/Osp93q1vySsbfYeBxT7Pv1MhhvajY4uRTsd8BuoBg9WKn9ssQ4ANpgTDfCE1hYeQdY70B84L5aO/KCVKuGM1mphq/f/pgdqXBKDPEU4ouZebLc+Bf4R62lAmqohrGh1Woc3BoDoJ47qrg96NKjl+Ujnnei6sZlQgPCchFTUbMnWRqY3UPOsZi4hOawjFwOvkr/RMqopIe1i8PNphi6OrhjBdSoQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,78 +97,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ran,
+On Wed, Jan 21 2026, Andrew Morton wrote:
 
-On Thu, Jan 22 2026, ranxiaokai627@163.com wrote:
-
->>> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->>> 
->>> Memblock pages (including reserved memory) should have their allocation
->>> tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
->>> released to the page allocator. When kho restores pages through
->>> kho_restore_page(), missing this call causes mismatched
->>> allocation/deallocation tracking and below warning message:
->>> 
->>> alloc_tag was not set
->>> WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
->>> RIP: 0010:___free_pages+0xb8/0x260
->>>  kho_restore_vmalloc+0x187/0x2e0
->>>  kho_test_init+0x3c4/0xa30
->>>  do_one_initcall+0x62/0x2b0
->>>  kernel_init_freeable+0x25b/0x480
->>>  kernel_init+0x1a/0x1c0
->>>  ret_from_fork+0x2d1/0x360
->>> 
->>> Add missing clear_page_tag_ref() annotation in kho_restore_page() to
->>> fix this.
->>> 
->>> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->>> ---
->>> It is based on linux-next 20260120. I dont konw whether this base is ok ?
->>
->>It's awkward.
->>
->>Your v2 patch was based on Linus mainline.  This is appropriate, as the
->>patch should be sent to Linus soon and it has cc:stable, so -stable
->>maintainers will try to backport it into earlier kernels.
->>
->>However your v3 patch is dependent upon other material ("kho: simplify
->>page initialization in kho_restore_page()") which is scheduled for
->>6.20(?)-rc1.
+> On Wed, 21 Jan 2026 11:58:20 +0300 Dan Carpenter <dan.carpenter@linaro.org> wrote:
 >
-> I think i misunderstood Pratyush's last reply:
-> "I suggested a re-roll of this patch based on top of my cleanup patches
-> [1], since I think with those the end result is a bit nicer."
-
-I was giving context to Andrew about the whole thing.
-
-I thought it was a good idea when I suggested it to you, but at the time
-I didn't think that this will go in the hotfixes branch. If it goes in
-hotfixes, it doesn't make sense to base it on a series for the next
-kernel.
-
-Sorry for the confusion.
-
+>> Hi Pasha,
+>> 
+>> First bad commit (maybe != root cause):
+>> 
+>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+>> head:   6c790212c588fddeb0d852f2790840753bb604b1
+>> commit: 48a1b2321d763b5edeaf20bd4576d8c4b5df772b liveupdate: kho: move to kernel/liveupdate
+>> config: x86_64-randconfig-r071-20260121 (https://download.01.org/0day-ci/archive/20260121/202601211636.IRaejjdw-lkp@intel.com/config)
+>> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+>> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+>> smatch version: v0.5.0-8985-g2614ff1a
+>> 
+>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <lkp@intel.com>
+>> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+>> | Closes: https://lore.kernel.org/r/202601211636.IRaejjdw-lkp@intel.com/
+>> 
+>> smatch warnings:
+>> kernel/liveupdate/kexec_handover.c:994 kho_preserve_vmalloc() warn: missing error code 'err'
 >
->>For a prompt, backportable merge it's best to base the fix on latest
->>Linus mainline, please.
->>
->>You didn't actually describe why v3 is different from v2.  If the
->>v2->v3 changes are just nice-to-have then let's redo those and base
->>them on linux-next in the usual fashion.
+> Indeed, thanks.
 >
->>Unless I'm missing something, your well-reviewed, decently-tested v2
->>patch remains suitable for upstreaming during 6.18-rcX
 >
-> v2 version just fixed the folio case(compound page), but didn't fix the
-> contiguous order 0 pages case. So i think it is better to send a v3 version
-> base on lastest Linus tree and drop the v2 version.
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: kho: kho_preserve_vmalloc(): don't return 0 when ENOMEM
+> Date: Wed Jan 21 12:36:17 PM PST 2026
+>
+> kho_preserve_vmalloc() should return -ENOMEM when new_vmalloc_chunk()
+> fails.
 
-Yep, that would be the idea. Resend the changes fixing both compound and
-non-compound cases on top of Linus' tree and ignore my "simplify page
-initialization" series.
+Thanks!
 
-And then I can later resend my series on top of your patch.
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+[...]
 
 -- 
 Regards,
