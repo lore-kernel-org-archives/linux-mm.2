@@ -4,86 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C755D6CFBD
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 03:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD582D6CFBA
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 04:00:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED1B26B037A; Thu, 22 Jan 2026 22:57:06 -0500 (EST)
+	id 041516B0386; Thu, 22 Jan 2026 23:00:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAFD66B0386; Thu, 22 Jan 2026 22:57:06 -0500 (EST)
+	id 00F7E6B0388; Thu, 22 Jan 2026 23:00:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE6116B0387; Thu, 22 Jan 2026 22:57:06 -0500 (EST)
+	id E88806B0389; Thu, 22 Jan 2026 23:00:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CDE2F6B037A
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:57:06 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5DE8F1AEA13
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:18:07 +0000 (UTC)
-X-FDA: 84361769814.09.14EBE27
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AEDCA120003
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:18:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BfxcSjFt;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D611D6B0386
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 23:00:09 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA1F3140147
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:22:15 +0000 (UTC)
+X-FDA: 84361780230.04.6B827F6
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2A574140006
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:22:11 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eXPMNHh9;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769138285;
+	s=arc-20220608; t=1769138534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bBa1opegXvihHUYsnRQChp1IEIKxoUt/Nr3e9tfuCps=;
-	b=N1sjFKhSNULifkvjhvMz+CM5nU+Bk/TYermBTp74FLKkQwx+GE7ci08I2E69ych7NlsQjc
-	g/utuxvxNjzprDoWAYQJ2ktonyMTBdWeaeshcIyksJtbtzYFQ6jlR/3NipYjKgCGkO0m/Q
-	KbPq92C/Hrpn4PazXdQXMqQSmyBTlEg=
+	bh=DpeJcCHVDm9aGgZT7fLJbUNNelWHXP+Bu4gd7TvaW7g=;
+	b=gXwMaIKWqA7ENETGxzB+skkk595qwO6VLILEfLqxGX9gMMrnFyUlTirSQVm17ZUZpfXS36
+	lNTpXRhqUoDk5r/pAM5jELhN7Otzqe+pONmlEXQOnI7ZFQeNCUp5f6CXuffb8p91gCq59z
+	4lGpv7NP+iv2fPNQ060AeN2oCPS5KeA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BfxcSjFt;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769138285; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eXPMNHh9;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769138534; a=rsa-sha256;
 	cv=none;
-	b=A2vrBKg+cxPde/GoDYx1unXKhmrr0mwUOaf8wejFrFxSnBZHQjlChBKsR/xt/ALwR/mzJs
-	QobjzUQzCYB3km3ReoEsfshHSBeloLKkLA+4xpHxzWvKNv60l8XGMlAUMGzeyUBOuUAe20
-	q58HTJl+wfukdGA/rG6RRL/CtU5lPHI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D174160135;
-	Fri, 23 Jan 2026 03:18:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D298C19421;
-	Fri, 23 Jan 2026 03:18:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769138284;
-	bh=nlPeJAhDYljmTRmioPpA2sw/m+1n7Bd8TriNkEkzG3g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BfxcSjFtu0XN92Qicx3/UT5FVLzq69pzsSNPzmVs/I0qZL4aTz87xgTRr8/SKNrt0
-	 4Du/XwpQmM8EjWl1N/QzZEmgYtFiJwsl1ZQFW0+yKUrgtnHW7ssCqVy8OhgDh/jsPL
-	 wEb8kqCSCQS5HQ2OPd9tz4JJnAk7VVqDMY5yFY38=
-Date: Thu, 22 Jan 2026 19:18:03 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Li Zhe" <lizhe.67@bytedance.com>
-Cc: <david@kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <muchun.song@linux.dev>, <osalvador@suse.de>
-Subject: Re: [PATCH] hugetlb: increase hugepage reservations when using
- node-specific "hugepages=" cmdline
-Message-Id: <20260122191803.96e521b3a8dd579373f5bd66@linux-foundation.org>
-In-Reply-To: <20260123031400.37480-1-lizhe.67@bytedance.com>
-References: <20260122141900.3eb028abe20f6c31808f9b5d@linux-foundation.org>
-	<20260123031400.37480-1-lizhe.67@bytedance.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	b=7H4VnakPI3p3JXHzMb/pQIat/yNffnK5aJ93V3Cu4KJqh3AwCZonW5pfqFoqI8D4APqC9J
+	ayKqExH6Km64B1VwMsDQVoCa4PnIHQE+UO/Lf7f/CqQr7CF9ONCqWigbScoHH6tBLc5chR
+	5TJq/J1cd/b5vDcMuvNWZ6b8LVsn1fE=
+Message-ID: <fd90c84b-9829-4699-b7df-c43020519ec9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769138529;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DpeJcCHVDm9aGgZT7fLJbUNNelWHXP+Bu4gd7TvaW7g=;
+	b=eXPMNHh9ctUnhtpd2wXxPJprv0KOzhjIIb/JZN2sRw4sr1qJsj2GswbWUwjQC99xFlGN+J
+	QxtDjJNo/hWzlNu69ifrt1uEPxLsnWQciI1TqcX0DRrEmtCLkDY/tqkEIuT8fAicEwvtwZ
+	cI4zum4BNHwOopAuRPtAWL6yfr/S8g4=
+Date: Fri, 23 Jan 2026 11:21:50 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
+ MMU_GATHER_RCU_TABLE_FREE
+To: Wei Yang <richard.weiyang@gmail.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
+ ioworker0@gmail.com, linmag7@gmail.com, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
+ <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
+ <20251231094243.zmjs7kgflm7q6k73@master>
+ <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
+ <20260101020715.45wqnjgcklvjcth3@master>
+ <d38fcbe5-8b4a-40bc-b8c8-1c49ccaa9964@kernel.org>
+ <20260122140034.ymigrfppzwvmcjkr@master>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260122140034.ymigrfppzwvmcjkr@master>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ezab96bsy6539pszy8yj65ebkccd158r
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 7cqzdwbzgac4srexhfkwe1nhuu543keb
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AEDCA120003
-X-HE-Tag: 1769138285-647135
-X-HE-Meta: U2FsdGVkX18Bj4LABBSnKlXaXqkv9EnEQbbbKPhkDcb2B+gujY5voKJ0T8PDV/mBd/oFeDYogW/tf+s5G6TLc4wv0jGhKiaqjKujRT75vUmSDdMTTmuf1GWB1In0xKtvbZT/kjNiFuqkumtfOYt67DqAZWeXAWou3BEU/NBLRt/nm/DKRTtuf3TtQwvGahOMj0/0X0O8d+hO7CqsigVMosGND2QZEV2lcg2XiovYdeTaVXg3XsT9TqfTLSv52KO164Fw7vME0ON+9Sivs5CddC1xZYwCDxRunsXPDdj8pfkwxU/SYldkZXkKpzWlXfvEaqlC7vPB1IoL0Lt5LKiUBatFQ40AdUT+m2vbKmhisS2xtXEA5wHPVzIMCSs4fv0uJUC7DMaNO72biTTG9Pppizo7AmdDA/iU46/qpeOEZnh31wHI4MzG64dwVnwhp1OZCt5YUPPic5D72kQ2XOlZPcNvZgHFa/1keIn/O2yaGjf8MEu1f1253XdCDn5lHtSpPtILS+9SoM2hgAy3XHSIDvYGC/am4wseDCwos4r9SdXtX/8XR6ItFClWwTXh0Ktc6Nl00hLTXIlhN9HzY/9iOhl/gvsLbkxeNyt7GtaEqMfvoPvwSj+IdfgiYPUnN80Vzy0e08gCwm1LGsl6kkHtB/Z+cZDXy/RmSsIrirNKEqi3r+lv71d2hxThpnrMQ+7LRtKLHPVdX9e+6kFR1d1Ly84U7D+mY6lofGZ+YFQmYRcezP+jIn7uvTh0kEAKvp/pl3s1VD2luR7POTKcdWTCXbYJ/T7B9lYH7a+wUGZaXplIvpdgqadKM7y/p8mcW+Hy+vom4BSuWsAHwGyXdUgTt8V+XNOkKRMfUNIKHYX6pseSV5CKpjWRz8eii5X0Iryh4B9SWROxjUAPpz26uTL3xxkMXmWYWleJPJF1bxWnegDa/scTGcHBja73BFqvHfIbei3IRipylE7xiNbbZ0j
- 5PLwPYQv
- qMdHzl8UIWKX60UBfKIlsZzFnw6frG6O8HqFvXp0S3z9Qyf3wI/6oX0YYJzr0QA/Ibzr6/ZS3WM+dKv2bxgAg1WdFkipYTHf3pLqI2+FxkiOgLeipfifoJY/VSGn3K0ct8wMfL+7HzQMI0dKX77d6NEytxB41d4OHRfTNlhfDJb5N92q8cxC38262CyqVtLCkh4/ONPwNQJmZHIm5lmp87GKs4kf9S3QKIgI2jo2CQQmfDDJduQzu9YypierjnT7svkj6PCHpcvSULYE=
+X-Rspamd-Queue-Id: 2A574140006
+X-HE-Tag: 1769138531-323942
+X-HE-Meta: U2FsdGVkX18FMNlrfVcER1MjOyGAu3wOgh08doVzMz3HAT9RhDLLqNi6uWcg4jraayu05ObTJ5ecCecT4ivsPSc61JOeYrNq4jk2whyPXzCf5ETgC8cAhwxN/GiULlKiJK+t/0e1KUtuTo/UR+EtIZM8DzcyBd4y8LliY2ZcarxoFT2XgL9QlVZ3FMx1pSvuONZOq7OIn/OZEQnqcm89cpECT+xlCmyU4CIbgnt04J4rfbJ9lfNt3W9rcRj99AC+a0Af/TH9Kg4QcXehZb1ecOKpQQP112egLZbEZEfvq/s1zBvxValGZbngKBUL/uunuyjq1Sei/FTXjVljbjSy7oxux4rcOolf+jS3aWlVvXg/cvjo4rOTaDRVbbT5V/RpslvgINbsh430bFF7bM+Kzn65LP4xFhWZ3i7sNPHFJI/TjHZ+4G7vBNVGP0TO6rGDj5pLjvYX7vpWaVnaPI6754yjoiJ9oa45uv3Iv5HHtvbBhnohIPPlMuLMmEX59W3wn6GpTakl/z6IfmPSsUBjK2hiX/WTv2STEtCyxdZrvYmzHQduqsy/l/g75oarlcCMxepnt/DQCU6ZVCSqI65XECjFNmFstd3w82Bkg+gu0fM8Y4OGWar/VMPD6k8Vrs9lcNRsUuS58ADovoRvIsBELk6nrZtA4We5Qci1fBqbHNWrxw5TwTaBWmIbamti6qYguVXj9yUQ1Y2bA4inXm1I7XZ2V4mCRRF4i3OBAX0ju8cA7dE3ANw4dYueylWCQAMYnUXq2WLXcNaQa29rOL546x1itiC3GRTGUAWjpketXK8doZtflTdXucOR3JqlZ2fD9t4XE5Xh8FujJt5vcqBIIEg7azqGQTXdmKkB+TkttSHivWW5OP3lhke/w7/F0yfS6SpCxARl1nLsBFGFBF/V3IJRhcYHFbo0nbqboD0/QTs7yX19DBGihks7fKl4iBqkMtSEEhAdElK9d61t0/X
+ tm+kFWwJ
+ 90kAjCiLtwxCYM0eOLI8EgAw2kwRp0FS1x1Mq1OfmurMTVk+qlqMfdNOZu4yFI/ilSOxT9cIfibnwwzdup3C5Pj4Z6g7V5IRgBEUvI6LeArwCMsmb8pV4UoXLDyFalRsHUSj2OJXXL53eiZWFaw6dRNm3P1rYne/G/8FiVwCDbVanTLlFzBvWzNJRPKVc2rQucU5yiFRQfUHgekofhosSUoJyc6rsZXhovAuf2otvTxtpwC2SYnDWtVTHsqCnyJ+ZWPcsPx2WpJkqVQswfAK3eAWKLUX/28IQ0hLh2X+sbvWOWL5XeazSduo8pBiPsnbBbfX5r46g7c6RJmcWDLgX6a3Ltn1dKfYGn2Jg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,16 +102,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 23 Jan 2026 11:14:00 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
 
-> > I *think* the hugepages= documentation in
-> > Documentation/admin-guide/mm/hugetlbpage.rst is still up to date and
-> > complete, but can you please check it, see if there's somethig we should
-> > do?
+
+On 1/22/26 10:00 PM, Wei Yang wrote:
+> On Mon, Jan 19, 2026 at 11:18:52AM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 1/1/26 03:07, Wei Yang wrote:
+>>> On Wed, Dec 31, 2025 at 05:52:57PM +0800, Qi Zheng wrote:
+>>>>
+>>>>
+>>>> On 12/31/25 5:42 PM, Wei Yang wrote:
+>>>>> On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
+>>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>>>
+>>>>>> The PT_RECLAIM can work on all architectures that support
+>>>>>> MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
+>>>>>> MMU_GATHER_RCU_TABLE_FREE.
+>>>>>>
+>>>>>> BTW, change PT_RECLAIM to be enabled by default, since nobody should want
+>>>>>> to turn it off.
+>>>>>>
+>>>>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>>> ---
+>>>>>> arch/x86/Kconfig | 1 -
+>>>>>> mm/Kconfig       | 9 ++-------
+>>>>>> 2 files changed, 2 insertions(+), 8 deletions(-)
+>>>>>>
+>>>>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+>>>>>> index 80527299f859a..0d22da56a71b0 100644
+>>>>>> --- a/arch/x86/Kconfig
+>>>>>> +++ b/arch/x86/Kconfig
+>>>>>> @@ -331,7 +331,6 @@ config X86
+>>>>>> 	select FUNCTION_ALIGNMENT_4B
+>>>>>> 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+>>>>>> 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
+>>>>>> -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
+>>>>>> 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
+>>>>>> 	select SCHED_SMT			if SMP
+>>>>>> 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
+>>>>>> diff --git a/mm/Kconfig b/mm/Kconfig
+>>>>>> index bd0ea5454af82..fc00b429b7129 100644
+>>>>>> --- a/mm/Kconfig
+>>>>>> +++ b/mm/Kconfig
+>>>>>> @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
+>>>>>> 	  The architecture has hardware support for userspace shadow call
+>>>>>>              stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+>>>>>>
+>>>>>> -config ARCH_SUPPORTS_PT_RECLAIM
+>>>>>> -	def_bool n
+>>>>>> -
+>>>>>> config PT_RECLAIM
+>>>>>> -	bool "reclaim empty user page table pages"
+>>>>>> -	default y
+>>>>>> -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
+>>>>>> -	select MMU_GATHER_RCU_TABLE_FREE
+>>>>>> +	def_bool y
+>>>>>> +	depends on MMU_GATHER_RCU_TABLE_FREE
+>>>>>> 	help
+>>>>>> 	  Try to reclaim empty user page table pages in paths other than munmap
+>>>>>> 	  and exit_mmap path.
+>>>>>
+>>>>> Hi, Qi
+>>>>>
+>>>>> I am new to PT_RECLAIM, when reading related code I got one question.
+>>>>>
+>>>>> Before this patch,  we could have this config combination:
+>>>>>
+>>>>>        CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
+>>>>>
+>>>>> This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
+>>>>> is semi rcu version.
+>>>>>
+>>>>> I am curious could we use rcu version tlb_remove_table_one() for this case?
+>>>>> Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
+>>>>> there some limitation here?
+>>>>
+>>>> I think there's no problem. The rcu version can also ensure that the
+>>>> fast GUP works well.
+>>>>
+>>>
+>>> Thanks for your quick response :-)
+>>>
+>>> And Happy New Year
+>>>
+>>> So my little suggestion is move the definition of __tlb_remove_table_one()
+>>> under CONFIG_MMU_GATHER_RCU_TABLE_FREE. Do you thinks this would be more
+>>> clear?
+>>
+>>
+>> Do you mean
+>>
+>> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+>> index 2faa23d7f8d42..6aeba4bae68d2 100644
+>> --- a/mm/mmu_gather.c
+>> +++ b/mm/mmu_gather.c
+>> @@ -319,7 +319,7 @@ static inline void tlb_table_invalidate(struct mmu_gather
+>> *tlb)
+>>         }
+>> }
+>>
+>> -#ifdef CONFIG_PT_RECLAIM
+>> +#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+>> static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
+>> {
+>>         struct ptdesc *ptdesc;
+>>
+>> ?
 > 
-> After carefully re-reading the documentation on the "hugepages="
-> parameter, I did not see any points that could or should be optimized
-> regarding the number of reserved huge pages.
+> Sorry for the late reply.
+> 
+> Yes, and maybe we can move the definition to the
+> #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE code block above, then to be next to
+> tlb_remove_table_free().
+> 
+> So that we always have rcu version when CONFIG_MMU_GATHER_RCU_TABLE_FREE.
 
-Wonderful, thanks!
+LGTM, could you help submit an official patch?
+
+Thanks,
+Qi
+
+> 
+>>
+>> -- 
+>> Cheers
+>>
+>> David
+> 
+
 
