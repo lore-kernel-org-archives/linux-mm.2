@@ -4,89 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC75ED77899
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 17:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07062D77899
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 17:55:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2F156B0520; Fri, 23 Jan 2026 12:45:09 -0500 (EST)
+	id 1AC826B0524; Fri, 23 Jan 2026 12:55:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D06CB6B0522; Fri, 23 Jan 2026 12:45:09 -0500 (EST)
+	id 0FEA76B0525; Fri, 23 Jan 2026 12:55:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32E26B0523; Fri, 23 Jan 2026 12:45:09 -0500 (EST)
+	id 00E376B0526; Fri, 23 Jan 2026 12:55:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B30DE6B0520
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 12:45:09 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C607D3446
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 17:45:09 +0000 (UTC)
-X-FDA: 84363954738.01.F2F4928
-Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9086040009
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 17:45:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E1F536B0523
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 12:55:45 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87EFB5938F
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 17:55:45 +0000 (UTC)
+X-FDA: 84363981450.05.E45EDB1
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A583C4000B
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 17:55:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769190307;
+	s=arc-20220608; t=1769190943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AZP786ZgVnhamB4OdzcrZmWyH7YCAT76LUfmJKvUIa0=;
-	b=sciXddXimZO9E4MWizB6BavbvRzesGauCLdHiKhSRuugMJZbBADVIspJ2xiImUWDCZvYRW
-	IW45FL+xk2e6i47jTuOTZ9MxTs5LXWSNLj8IjGo15u/j5xvLMl0UbNqU9FJTrEf9ypH5B6
-	vZo8M4SjPXG+X6qhlywBmVbhaa9rS7Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769190307; a=rsa-sha256;
-	cv=none;
-	b=QOMp9wHpQ7ASAodzNqAvCc+OCIqGmTdHQf7xBLfCeysFPOl6D39ln2uvMQofeITXOZTIny
-	i0DKLzvoLld5+pT7gQc1ILH5zEGMnRSE1cH9kShIS79n7qA6tRotD/wE4geRR/6A3Ukkn+
-	gA6za9hKjnsOBc3JjGp08C6CwRtPlls=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=wyT2DJXD/7GtnmCKEcExd6Pr/E0mPLYn4NIvaOM2ppI=;
+	b=MIsLzbeysBl3yjZKArWrIkRHKdFKwFkdbzX8BWNDt3bsQJ35s/H1sGNvrbrzgxwKRzB/DP
+	mChq8Bpg9jTkNIKywTd19W2PPYB6DGcqvCv7YrSgJnkarDH1ShHt3McUwe6tNt5tQEZins
+	kik7k1Z9aJ9eKYSZCj/2un2kOtRemN0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	none
-Received: from omf10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7453E13B16D;
-	Fri, 23 Jan 2026 17:45:04 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id E42D330;
-	Fri, 23 Jan 2026 17:44:59 +0000 (UTC)
-Date: Fri, 23 Jan 2026 12:45:28 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Andrew
- Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, Qi Zheng
- <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] mm/vmscan: add tracepoint and reason for
- kswapd_failures reset
-Message-ID: <20260123124528.3d118cca@gandalf.local.home>
-In-Reply-To: <20260120024402.387576-3-jiayuan.chen@linux.dev>
-References: <20260120024402.387576-1-jiayuan.chen@linux.dev>
-	<20260120024402.387576-3-jiayuan.chen@linux.dev>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769190943; a=rsa-sha256;
+	cv=none;
+	b=PvdXU7krzjTUfUVVPRGNt29kQTH5C1RJ+WxcHAFVXumqqGpYCJrYBmwfA0bDMnzROxNCI5
+	u3/5I9Er2+TdEs7WAZKu7bvEaSHqQa/hJmRVICUpdBvQye4IfuHpqSYu6RerWt/khB1wkQ
+	1A4sNdifDxupphRtAe6MA6B7lvTPfSU=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dyQYv5ySqzHnGd8;
+	Sat, 24 Jan 2026 01:54:59 +0800 (CST)
+Received: from dubpeml500008.china.huawei.com (unknown [7.214.146.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id E16B340572;
+	Sat, 24 Jan 2026 01:55:37 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.154.194) by
+ dubpeml500008.china.huawei.com (7.214.146.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 23 Jan 2026 17:55:36 +0000
+From: <shiju.jose@huawei.com>
+To: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
+	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>
+CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<shiju.jose@huawei.com>
+Subject: [PATCH v16 0/2] ACPI: Add support for ACPI RAS2 feature table
+Date: Fri, 23 Jan 2026 17:55:06 +0000
+Message-ID: <20260123175512.2066-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18JXD2BXE3/gdW7HdTzbiyh3DXw65GaDyQ=
-X-HE-Meta: U2FsdGVkX1/k0WOEjxuFlRjyrwM6ArGM7a37Fl64pCJk2GzPiMBmWsuXF8UK0DlA5h/C4mbQxdjBen0JUgQuQao39sP24WpFDoBSjXmo/ltdziwlBwEPBoXNkNV6agREqWfVHY4r2XGIzJMvf1rFArbAoTfyZbxs0LSj8jqtS2NKl1ew4vMM1Se1Ms5XvCZfSSisMN45JE9yGe0aBvnrMpOd0h6JAvSpmNKxOojpvrRHYWSvO4GQIPdin/aNhQ6WYvW0juG7STJpsJpOsK01MgaRr5by5kQ+a5mJaCpEitupsDHW+FJoJg4T2q1JpebOUfzJHoLi2lE7o561rmCIt2Ciko0EviKmKneUaumyl1OiQkvtF7WfCNC+Sn7sERm/+Ijcdoxbsf3QNEdovYnnO4MNaS2hHI13YUGg0GTQ0Ac9aAbHgv7BtvpSr25U367DPLTn9zGREABwH9XsaFB4T4cUgPJKkm6IjHyPH1c4BnCoMcYoMx5Vuw==
-X-Rspamd-Queue-Id: 9086040009
-X-HE-Tag-Orig: 1769190299-137174
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.48.154.194]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml500008.china.huawei.com (7.214.146.94)
+X-Stat-Signature: ewfus3yw66u33an7qe6db8tn76bicuju
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: q4zhqppw5gjibr9p9yjxnf81j4335nkf
-X-HE-Tag: 1769190307-867375
-X-HE-Meta: U2FsdGVkX1/bDC0pQ7xpdnGasmFGSiuLEEVl3NJ5Z+Ar/4WrsN3wBtUbmQBCSdNZ/4+CuvQ6WhmW1L4m3l1TBHQxCnkM5p2fppnTENoh1GuUKirn+zUfkklNsfIZEO6+LQpvF4nobacJdRdc3ZZyIGJl2pe8VhuM5m5ULu4YCD04F5hJ+vZawZK9TOKWgjTOBWrOc4YunaXbrxlN9LCS9UNoDIrp9mm5QUAMZ1g7qEJr3cdU/rlcv0eRSHPRxOfLhYe8xqz1t9s0OSZWSxm0Y/Fx8tRqq78e+CFUMblUpqnVFAM6yzLqK3dvRG29rhJmVx+pU7i0I9vf29CojeF1fhlXxWqdw5yNdqIxzTeAEDD1r7LF8rF7aaG/fg1YyX4qm/wBfCS3plb2et4dyHJuVytJAZ4x2V8IsnONOxOySANagrM6Udi1hhM5qG/v4M0xpf3gwl+Lb87Dl1uFU2NUteSTr6zRl7vzWjQWy8gzXpGPkiuQrXlnupvj7woC1j77QWPHP4mw6+cF8+/fvLEMAPkQzWZdx9/8apNvaXQm/K6DCnUwtX6KITgOfuVOBWLdkJ/OOjaRtQ+dx2h7+mMC8ZB//2GPQgntMmJt1gNZMfN9BFBpJ3cNnk945jnF3Fo1nKXHFukHMXOXTLnpHPdGcH3FLbgtKitqQ42EeE8HjrniU4305th9KpYDnPro49uYB+Zc3Vqs1E90p4lc0BzWqEyDWHnGFbfmq+cqyskuKvLW/zZsL/kg8N75A9q3PmYTFlp0oWotkoT6fQKoWGls984F8Zf4FlyVpCKmksIp89ccaOfdQb8XE5fwhQjakLlghropSyJ1fB/3lsogAwi6trGW5yOpTae2u2v4Vuahq94nVJYDJ8C/twNOGc7uo9Gj1ZNz37goH8tnYMfozVupEjaYqSbiZUPAvHj0V+ZTsdqsjRCOYkBI4zHcKZ70u1D+ZvElWitdhH/zh4B32wW
- 41Gf2e0z
- J0WuFnj+r59Nc2IoRBIP5ZNMTT3hx7CLNFbH+miXy23NJfNM0sYu3gHryUY8sjwmLTMnX/DEGmcyIV9BCnmGBaNp4fLA5iklVGalGFA3eOdYSW5vg83l6FOPEpFZhoBohb0CiDWxqutEbdseZgz9ch/iqLVDLLM3bzkoU
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A583C4000B
+X-HE-Tag: 1769190942-640673
+X-HE-Meta: U2FsdGVkX18NcL+kcor0xuSLSrbb5daWbCQndAybeXTkpxo+B+bwkqIpsOJ9QdRW5TKTSoj50MR9ZQqLlLxd/F8VlppIzj0syyyMOm0JaS7noCxEKQGsZJ3WtVNy6/2OsLtatqD1P31/VESsL470d7P9PDRafyqjrBGJDQQA+p3Me3UDsrGvZZqVvDALTG6nLBbV1dd+2ceXcEB7W7YIh8YDNd7UFN2Cnbk1gfKkQ4dpg2ufmVLPZquZy7BSqgHqNS1PPmrZgsfkFpSlnZu0StAScM60w3Dg8Kcp1+f9qV5dzZo3jCmN3R2/ZcqlvShISwnoSUmt6I5iIwgbkROyLaLFraxXyk4hXrAq7bj6GMGFRV2F14Dr2ljmOvpQFMMUX3GxWHLnS6keev79Ukico0ryecG4cp2Am6YFwFBYZcLUCrbDAvg0htVwwdvDy3+dDs1K8RPNWl4UIVHq6IBir7k7yJrNrm6IxInVrxJwqh6xbu5l4IkRxkkxn7FvPogd0J7S6JrgeRCrEhfH701XKXpp0leYboAAu30E1NREAbUZXNc03QOkVR5mz+kH83AILhVYV7aYTvQ+S7S5eMKwFVPilUZEpGDyOO1UAT9USnsYyB3iED3NOWRnBigCD0kQXjOwAN8T6kZuU7WopHs4mhc5jXy+mjmeXD1ztQWgSRxukfjQCvVskCcluCDAC8AV4eVcR1LaVuYy6d8dlqibLKBdv/1oAewBFUh59ZpVS0GAPz27Q3tb8Y1kxaI8hPaRVbCa1upBIZufep4IPG9o+Ehnqz8o9fYmwqFJifuVhV744daC2KJATfaYbwiSxV8T/IQUZ/gkLYd2uhwdst/lmvBGQ/K76I1KqcOpOsMUgI7VqncyG2UNgJqK4Uv+dET115KfS+f3WHVt/1tb9UHyTZstopqI3eiFQCmMz9JxXMpLwwHipnimYEngi/sOYLfL2LmQeCWUHISIqQGqHIl
+ 8ZT2JPE+
+ Mlr9y/+1YoSL565HsoFobOwirj4tUK6l4o9sc5+CAXWuIc7hRp+FcmOfuKzDYNxoT+1v8aVw04TAjezsPjff3fKZWrOZsug2QF6LMn3g4Mw7pbjQFeVXiUHmFqxPURYh7xCEY+P03/19/xPsxvqfOmAnUawic+UFe5gSY+o7iXHupLur3Arr8g8Q1yClMbVapBCkvlfNmqpgjyCdGRscMPjcipAEUYpca7FA3eZJvtQP04kPuQ/FxuEdaxfU+bwN6NcNdjPHoX89HDX0PtsI2x1ABJ1vZ4slkxiIrNsw6M8zgf0yCADAwNEHk6dyFfo8RTPp/gXwj8z6dO8XC2FJRWDLKNIdnA0NP9XADn9W1P709aF/oXnIjkF6WN297M4sHrlRBwY6BLpqDAyooWxKQCutv+OqeVHzx9VlB3YysX2j9tBHSRF73jDWpyJVpzvu9AXBw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,26 +101,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 20 Jan 2026 10:43:49 +0800
-Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+From: Shiju Jose <shiju.jose@huawei.com>
 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> ---
->  include/linux/mmzone.h        | 19 ++++++++++---
->  include/trace/events/vmscan.h | 51 +++++++++++++++++++++++++++++++++++
->  mm/memory-tiers.c             |  2 +-
->  mm/page_alloc.c               |  4 +--
->  mm/show_mem.c                 |  3 +--
->  mm/vmscan.c                   | 29 +++++++++++++-------
->  mm/vmstat.c                   |  2 +-
->  7 files changed, 91 insertions(+), 19 deletions(-)
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
-=46rom a tracing POV:
+ACPI RAS2 patches were part of the EDAC series [1].
 
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+The code is based on linux.git v6.19-rc5 [2].
 
--- Steve
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://github.com/torvalds/linux.git
+
+Changes
+=======
+v15 -> v16:
+Attempt to modify throughout the code and logs for the below comments from Borislav.
+Thanks for the comments.
+https://lore.kernel.org/all/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local/
+https://lore.kernel.org/all/20251231131512.GBaVUh4NSWqvr2xhbM@fat_crate.local/
+https://lore.kernel.org/all/20260119111701.GBaW4Sres045xnfkpz@fat_crate.local/
+
+v14 -> v15:
+1. Incorporated new changes suggested by Borislav on v13.
+   https://lore.kernel.org/all/20251231131512.GBaVUh4NSWqvr2xhbM@fat_crate.local/
+   
+2. Rebase to v6.19-rc5.
+
+v13 -> v14:
+1. Modifications for changes wanted by Borislav.
+   https://lore.kernel.org/all/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local/
+
+2. Changes for the comments from Randy Dunlap 
+   https://lore.kernel.org/all/4807417b-a8f7-47a3-b38a-94ea7bdbf775@infradead.org/
+   https://lore.kernel.org/all/af7b6cdc-c0a7-4896-ba6b-6bb933898d37@infradead.org/
+   https://lore.kernel.org/all/26083ba9-1979-4d14-8465-3f54f2f96d23@infradead.org/
+   
+v12 -> v13:
+1. Fixed some bugs reported and changes wanted by Borislav.
+   https://lore.kernel.org/all/20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local/ 
+
+2. Tried modifying the patch header as commented by Borislav.
+
+3. Fixed a bug reported by Yazen.
+   https://lore.kernel.org/all/20250909162434.GB11602@yaz-khff2.amd.com/
+
+4. Changed setting 'Requested Address Range' for GET_PATROL_PARAMETERS
+   command to meet the requirements from Daniel for Ampere Computing
+   platform. 
+   https://lore.kernel.org/all/7a211c5c-174c-438b-9a98-fd47b057ea4a@os.amperecomputing.com/
+
+5. In RAS2 driver, removed support for scrub control attributes 'addr' and
+   'size' for the time being with the expectation that a firmware will do
+   the full node demand scrubbing and may enable these attributes in the
+   future.
+   
+6. Add 'enable_demand' attribute to the EDAC scrub interface to start/stop
+   the demand scrub, which is used for the RAS2 demand scrub control.
+
+v11 -> v12:
+1. Modified logic for finding the lowest contiguous phy memory addr range for
+NUMA domain using node_start_pfn() and node_spanned_pages() according to the
+feedback from Mike Rapoport in v11.
+https://lore.kernel.org/all/aKsIlFTkBsAF5sqD@kernel.org/
+
+2. Rebase to 6.17-rc4.
+
+v10 -> v11:
+1. Simplified code by removing workarounds previously added to support
+   non-compliant case of single PCC channel shared across all proximity
+   domains (which is no longer required). 
+   https://lore.kernel.org/all/f5b28977-0b80-4c39-929b-cf02ab1efb97@os.amperecomputing.com/
+
+2. Fix for the comments from Borislav (Thanks).
+   https://lore.kernel.org/all/20250811152805.GQaJoMBecC4DSDtTAu@fat_crate.local/
+
+3. Rebase to 6.17-rc1.
+
+v9 -> v10:
+1. Use pcc_chan->shmem instead of 
+   acpi_os_ioremap(pcc_chan->shmem_base_addr,...) as it was
+   acpi_os_ioremap internally by the PCC driver to pcc_chan->shmem.
+   
+2. Changes required for the Ampere Computing system where uses a single
+   PCC channel for RAS2 memory features across all NUMA domains. Based on the
+   requirements from by Daniel on V9
+   https://lore.kernel.org/all/547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com/
+   and discussion with Jonathan.
+2.1 Add node_to_range lookup facility to numa_memblks. This is to retrieve the lowest
+    physical continuous memory range of the memory associated with a NUMA domain.
+2.2. Set requested addr range to the memory region's base addr and size
+   while send RAS2 cmd GET_PATROL_PARAMETER 
+   in functions ras2_update_patrol_scrub_params_cache() &
+   ras2_get_patrol_scrub_running().
+2.3. Split struct ras2_mem_ctx into struct ras2_mem_ctx_hdr and struct ras2_pxm_domain
+   to support cases, uses a single PCC channel for RAS2 scrubbers across all NUMA
+   domains and PCC channel per RAS2 scrub instance. Provided ACPI spec define single
+   memory scrub per NUMA domain.
+2.4. EDAC feature sysfs folder for RAS2 changed from "acpi_ras_memX" to  "acpi_ras_mem_idX"
+   because memory scrub instances across all NUMA domains would present under
+   "acpi_ras_mem_id0" when a system uses a single PCC channel for RAS2 scrubbers across
+   all NUMA domains etc.
+2.5. Removed Acked-by: Rafael from patch [2], because of the several above changes from v9.
+
+v8 -> v9:
+1. Added following changes for feedback from Yazen.
+ 1.1 In ras2_check_pcc_chan(..) function
+    - u32 variables moved to the same line.
+    - Updated error log for readw_relaxed_poll_timeout()
+    - Added error log for if (status & PCC_STATUS_ERROR), error condition.
+    - Removed an impossible condition check.
+  1.2. Added guard for ras2_pc_list_lock in ras2_get_pcc_subspace().
+        
+2. Rebased to linux.git v6.16-rc2 [2].
+
+v7 -> v8:
+1. Rebased to linux.git v6.16-rc1 [2].
+
+v6 -> v7:
+1. Fix for the issue reported by Daniel,
+   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+   if (status & PCC_STATUS_ERROR) check. 
+   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
+
+v5 -> v6:
+1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+   after firmware return INVALID DATA error for scrub request with invalid addr or size.
+   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+   
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature.
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+
+Shiju Jose (2):
+  ACPI:RAS2: Add driver for the ACPI RAS2 feature table
+  ras: mem: Add ACPI RAS2 memory driver
+
+ Documentation/ABI/testing/sysfs-edac-scrub |  13 +-
+ Documentation/edac/scrub.rst               |  60 +++
+ drivers/acpi/Kconfig                       |  10 +
+ drivers/acpi/Makefile                      |   1 +
+ drivers/acpi/bus.c                         |   3 +
+ drivers/acpi/ras2.c                        | 412 +++++++++++++++++++++
+ drivers/edac/scrub.c                       |  12 +
+ drivers/ras/Kconfig                        |  13 +
+ drivers/ras/Makefile                       |   1 +
+ drivers/ras/acpi_ras2.c                    | 402 ++++++++++++++++++++
+ include/acpi/ras2.h                        |  74 ++++
+ include/linux/edac.h                       |   4 +
+ 12 files changed, 1000 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
+
+-- 
+2.43.0
+
 
