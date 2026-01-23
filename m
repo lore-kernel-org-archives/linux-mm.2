@@ -4,82 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFA5DD72373
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 10:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECB1BD72372
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 10:54:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CE0C6B04AB; Fri, 23 Jan 2026 05:54:22 -0500 (EST)
+	id 479206B04AC; Fri, 23 Jan 2026 05:54:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27BF16B04AC; Fri, 23 Jan 2026 05:54:22 -0500 (EST)
+	id 450406B04AE; Fri, 23 Jan 2026 05:54:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 187216B04AD; Fri, 23 Jan 2026 05:54:22 -0500 (EST)
+	id 34F9D6B04AF; Fri, 23 Jan 2026 05:54:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 097B86B04AB
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 05:54:22 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9C4F0861C1
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 10:54:21 +0000 (UTC)
-X-FDA: 84362919522.07.28C735E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DA0071C0006
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 10:54:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 207946B04AC
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 05:54:51 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CAA6F1378AB
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 10:54:50 +0000 (UTC)
+X-FDA: 84362920740.24.D213B9C
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 462351A000D
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 10:54:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=mUBcwFDA;
+	spf=pass (imf19.hostedemail.com: domain of wintera@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=wintera@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769165660;
+	s=arc-20220608; t=1769165688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hS0S3WSxzDI8bVHZI1Xar/j+cepDQenEPx3rANfvERs=;
-	b=ny19yCqlrGUKy9Lj5ilbScWKDBvJSK+yv9XB66G4kEPIKB+O525DTW9BG3nAKUBiWoIFAF
-	iKhZ/AWL3XQ+TfjyXirmvxByp1Ybs4MipqQE38oL2JPTsjXBQXGySWpVMa9liteTc3d1fD
-	Ot+sATUVk1Y63zusa8DVHn2s0Pru9Rc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=csXEFZ8Rtqlj0OhRse/YTXINvL5yKhREspaRqgErWlw=;
+	b=be50ZTZCIQK2q3gYIkn2shBZYn65eG7z7QZnOlZRU/c/xrTVHae4lfrcAzqEphzTsQhIkW
+	lvY/xzdQsO4DHpU9AZ2IpSlL6A+7M1upm/qvXAvzEnXNe/KFXkxN8KyYB0PQBwnGz/Sbfi
+	ikRuETb0rdVBIE3H/LJ5pIn7ZzMgL8k=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769165660; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=mUBcwFDA;
+	spf=pass (imf19.hostedemail.com: domain of wintera@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=wintera@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769165688; a=rsa-sha256;
 	cv=none;
-	b=SJnlRgB6L0BKK/fOCFBDU1teXAzw9SnvBpP5e9sl/rwdVmc7bvLDRwa2cSpT7Mw1GdC106
-	t4rkPTxnwDkqtbo+TjqJXv28cZpOhmHrAYu5Yi187y0M3GhcjLee9588Q4sPJMNCQjo0kT
-	HRZ4sVmywJcXgFAn5IZAZFKt4z5mpmU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 488661476;
-	Fri, 23 Jan 2026 02:54:12 -0800 (PST)
-Received: from [10.164.136.38] (unknown [10.164.136.38])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E8723F632;
-	Fri, 23 Jan 2026 02:54:15 -0800 (PST)
-Message-ID: <152ccbbe-d32f-4842-9ea8-5476076c5abc@arm.com>
-Date: Fri, 23 Jan 2026 16:24:12 +0530
+	b=P0YIAitZG3E5hOfcW72mUFENLhbK2MbOEtLojJH/0F2t+Wcn1nYmZUBqNZ3GptBELZHstI
+	lgsph2Mz0F8H9/KRPf7OAibYMoozP/bSd5L596rJ8cqo5VQvI0VG/axWh3i6WeXZBkZnVb
+	MNtSh746jQ5i6398y4ynr2NCAfFFXbk=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60N0KvIF019648;
+	Fri, 23 Jan 2026 10:54:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=csXEFZ
+	8Rtqlj0OhRse/YTXINvL5yKhREspaRqgErWlw=; b=mUBcwFDAjlOKo4HvNcQjFD
+	Lw+hDpFqSKossTzU/13dUEv/HPtAGVAk9aPvb1xYee3ZMS3VOE8JUnZJCKCZTh2d
+	uKCgqqQNay1pidqH1NTNV0HUSLA23tS7ncJ6yGPi24uCUcxCz+dFpf+YzVCnDve9
+	iixyNcRG/ODkCQymsXWNCkKrbG7tfQLlNnjs1955i4bh5qp5EAbpuUQ56JvZ2sfd
+	o7S3vPud28eVBbSV+bdHwNoU7fsil4Mufs5mBPKK6aaa57xffvwQ3ZjMMTMhdvJF
+	TgWt2QFPA0ICJGtfh1QpcGw011Fteb7usYZE3C7X5SXgJVNx79Gt7ZXOh6RYczgw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br256fef5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Jan 2026 10:54:44 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60NAshMC006452;
+	Fri, 23 Jan 2026 10:54:44 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br256fef2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Jan 2026 10:54:43 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60NA5KfH016600;
+	Fri, 23 Jan 2026 10:54:42 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brn4ygqnv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Jan 2026 10:54:42 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60NAscIS59441584
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Jan 2026 10:54:38 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 352C920043;
+	Fri, 23 Jan 2026 10:54:38 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BDFE720040;
+	Fri, 23 Jan 2026 10:54:37 +0000 (GMT)
+Received: from [9.111.132.48] (unknown [9.111.132.48])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 23 Jan 2026 10:54:37 +0000 (GMT)
+Message-ID: <6f8de95e-b034-4ea8-a246-605047d142db@linux.ibm.com>
+Date: Fri, 23 Jan 2026 11:54:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v5 3/5] mm: add folio_test_lazyfree helper
-To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260123082232.16413-1-vernon2gm@gmail.com>
- <20260123082232.16413-4-vernon2gm@gmail.com>
+Subject: Re: [PATCH net-next 1/3] net/smc: cap allocation order for SMC-R
+ physically contiguous buffers
+To: "D. Wythe" <alibuda@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sidraya Jayagond <sidraya@linux.ibm.com>,
+        Uladzislau Rezki
+ <urezki@gmail.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>, Simon Horman
+ <horms@kernel.org>,
+        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+        netdev@vger.kernel.org, oliver.yang@linux.alibaba.com
+References: <20260123082349.42663-1-alibuda@linux.alibaba.com>
+ <20260123082349.42663-2-alibuda@linux.alibaba.com>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260123082232.16413-4-vernon2gm@gmail.com>
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260123082349.42663-2-alibuda@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DA0071C0006
-X-Stat-Signature: enp8yoh1rq5tys79ftegkbsxicjas4sa
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIzMDA4NyBTYWx0ZWRfX283tG++MGNtC
+ 0z7k81OTUFvAWo+ixbiBlazIsDbhz7VdUPceTVZwVjGq51U4brUVXJQD7lyUtmt/eiYJLWJQutg
+ jeJIbYtWU9MnxUU7spFhaIo/W3LmFSDbMPelFh7DWBW15bt1DG47RcQJV2v/z0lh7HStIgEZUZQ
+ vLMUlb3cPycJR2CccAuzNUdKQVSSBTGl1f9vqB6wh7u2eACS2S4KI1UySoxwKUy905PLtkBy3Cf
+ tz1txSC8iF/aDbjcbIiA+ihAoW+BQipjEegTc/NA3TDSHqxkpHx8fnbw7+0UsHNMzVeOX/tWVT1
+ I8fBrzR+rebVdOwMUuxckpfh7M2jupKcSCNiXg8bns2EVhUAgSQFzKrWgiOBvn6+sWgbfKTiZHI
+ Gs/cRM53KC3fdZfuROKWbAJs/pV579LJUL/5alri9+Uy64T7YxVvHqxxdVBiBWtwanW34RiGf9H
+ By9XgjQY1rgtJ2DF04Q==
+X-Authority-Analysis: v=2.4 cv=BpSQAIX5 c=1 sm=1 tr=0 ts=69735374 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=SRrdq9N9AAAA:8 a=VnNF1IyMAAAA:8 a=dTheS_w4H7qbiWTV3QcA:9
+ a=QEXdDO2ut3YA:10 a=-_B0kFfA75AA:10
+X-Proofpoint-GUID: 4DB0nUwNBqPXJw6bK7wTkhoyrtboA-7l
+X-Proofpoint-ORIG-GUID: OPcdjeIHknd5ucfLknkVuotX6sIIBtrs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-23_01,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 clxscore=1011 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601230087
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 462351A000D
+X-Stat-Signature: 8houpbunk59564x7enc1rdwkg1ftgtbh
 X-Rspam-User: 
-X-HE-Tag: 1769165659-591761
-X-HE-Meta: U2FsdGVkX1/i1fpY5vzw+oG1ZsjPTJoMtMWZl0mmzCQO1sDOu8eFheq+yHFaJlm3SB9V2w43iFJuRTRGJmFCecEgYau4bWYnDWu0CQqwqtM2odbWDn3gLLBEz5+RBJGM/gvsVf5PC/8IFiU66q8ZgLYSGJL8Dr6iDgTBvgo0/nbcfyiHQURJuk0jtIYYQi5w2u+vNzlf+NiT/zQjoW5TUPFVLmpqE35ULdOqXfVuSqN8grgrSpygB/vhhslxfKzHYRMp5bBfevFQtX/8jr2Ve0TJJnKRkF33RsSl5ehkGvVBc/Uk8tdgJcBBAryvRdDF+XyiOZcKvSrgrbfFmgAOIUM2u8ME9lx+bfHvadbisKajv5up24J3FPaU55I2sfwLJQcw9kEk7KJCHAzNBqmuXI7dclCKcXi/9tDAnEu2TFVPEAigtvDrT2q5/rAJ5WcNdK2sQ5ypqdR8oFxviX3LhfHEb/bRqZ4W0MPW5t5hWUQJKMPbhOmYuPmr/xSmTwHWqMoq8wf5tH2tElLMnAH2qQUkpefPEv3DyI6wkejYmSv+/ldgxOvmuo15Xa5gXbePI2sTkfMC5rwj7ianRdq9sGSb7odHpD6cZe211ph2ImFbObUEjNRFYNA6d5zcxrLnjvI0YhAsEe/5Hfd//Ju2gDncqXNF1FEHR4Q5rDuzDYM0CbyY1eACGG7WD+7JIw22bUYMm5EIUw9w/4I20EKSMccMMF8/eD85w066NU6YuHJ//z+aSPtpSHJ9lZzKKV34/Rgu+LXFSdsnwNhOEPUp+BRInnRls9iMy5laJxkjUCmvNdysAFeWQ4XbxS//d9yJgF6/vwp+JnE5jkxFi3Hth5DGWuLaDuZMl06YsIZcbhrdAtX4nhbyEZlwuslC8sL1AZswFy2/UB86CWKpuwkND3vCaCd7p8nqIV56zbJtVgpmmpNefy++PFm7nRrx08s9xCoAu7VuTpL19ABcetW
- zJXBF12t
- i84mrlhGslWdWWAjdHyKXO4tGY5LW+4D6uypOxYE6ZlIf6CdbB6qLQdLeaixl+JF3z4gACqy015dqcWhYDBNozJ9lev4rO9RYGW/4Nws5+x46YlzV+hrx7cCmbbIiiUo2j9uhVdR46waGe5XytC+U4TERVu1azefV+BWxjTYEva0qG0v6qOSQXG3rL4J/Y+80mbiwmbtSioLYDzTxuhd60+3KfwsnnQeYO1gfnbfJUYJJwxlisnf1q/Q5Y7CdzbzSaZadZA4JiROlAQUUdww4HJzmMfA/s8gLGDaq3bYOyywzKsMEoLcPdeh1hw==
+X-HE-Tag: 1769165688-281808
+X-HE-Meta: U2FsdGVkX1+VoKFrYSn/XIZVO5+WswFy6/Z0YCDc1IXbJPnvKnKxo0b3Ztq6uR659NUDIPrwK/A1TP+lXoqAoFYP75VOoPC6QjPd707cN2S/4Y0u/Jh/P7cyg+PMeGuqFfE/ugxQBK8RwyixXwyzxJgYokYSPB+xNc4n0X8uUNWkTsarN6Rd7cGRjlmkSW3Uapfk0omr4Z6GOOywOqRZNr9Mu3uvkQaWJzruuIqkz8W8cdRIL4baEeC8kFWQ90cPzG6MaJF4yXeXAvC7vPLd40lu7tbhLYw6SXR38IoOVVXvm24mD8ujyU01/lMrEtewQM/IXam3qZGMCeohp4of3ZPl2lkO+Mbnn4x73UkgFsiLqc+FU7IS8wuL5KhE+zUKNwR8NUExJl0oi9sMVwYkV633sx/+wXsjqHSFIwwwCRaLddho2I/2Oo0l81m/LKXUvm1S+mHD5b8OjgbpLujQM5QtGbmpgzdpfq4pZrVHf5XE1i2qXV0iCHGox723DN/czRsnI1Oxc9euzkiVDKuAbviHM1jGzByKVviE2OG1JDFzoDkbXH0mzVQD6t1uQ3hwXGepmVTlGBqjEzRCmGO/OuO0TtRAHqkFLANln3WJvH1KnBcbQ0q9ujXRqJkPXBsqfJyrH2ep17UvbW+/xbDUeRV2X2v3JrM2azfjO3ysvPgoXCwy56vIwMd6bssD1uXQvxHPvVEYI9/3V4kQ4qF/UyPUg42LblyX1Hm/DLrGemT8An4C3cLuCf5PB4ou/eWn7OrP4WWoSOUiNdbwqMP1BWGk7mfUNSa7/vV18XoD857LNVOiMbmhwqJaF8ey/fjOJB5zIVpK5ylahEZ34gLG31e02v2J0crFFfYvXiDY2vhfyxh8anzDyVALyR1ttIIZeeJxzROCdl+xd+fRbwGx2yUKL2Olphzo8WzeLMq876wRfArgfMcf2VknR/gn29chfgXr7mtEedqCmeqqOsj
+ gRD5SoFB
+ j72vkrsn1z3e0RQ2/LkDiKakEFEiSL7cu+m/UkRlzrbm5TWYISDFeIws44SzRXVQbFX8bVnh5aQPC+ZMp5daUdcvWqDy9GKU7i+8pfdsI8pCMzPP7ewuA2moLXIotYY26p1XdESQisI1W3uVGp5E5qyGkhi8DGpLJ+qTwLjqrTwiV271xamxGrfCBWhuPSc1x5fh/erLjJ7gNPudqLL77BI+gWWuUZb3PPYpAqNDgA2onKwC8ypdFgBlWvZqvzxPtG4bNuvwp5jQ95HIIyxgxUgUf9PL+w0n7xNMLKUETPw08tlCOzYDtqAto2FRCBjQafBHz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,76 +164,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 23/01/26 1:52 pm, Vernon Yang wrote:
-> From: Vernon Yang <yanglincheng@kylinos.cn>
->
-> Add folio_test_lazyfree() function to identify lazy-free folios to improve
-> code readability.
->
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-Thanks, this is very useful.
+On 23.01.26 09:23, D. Wythe wrote:
+Describe your changes in imperative mood.
+https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-> ---
->  include/linux/page-flags.h | 5 +++++
->  mm/rmap.c                  | 2 +-
->  mm/vmscan.c                | 5 ++---
->  3 files changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index f7a0e4af0c73..415e9f2ef616 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -724,6 +724,11 @@ static __always_inline bool folio_test_anon(const struct folio *folio)
->  	return ((unsigned long)folio->mapping & FOLIO_MAPPING_ANON) != 0;
->  }
->  
-> +static __always_inline bool folio_test_lazyfree(const struct folio *folio)
-> +{
-> +	return folio_test_anon(folio) && !folio_test_swapbacked(folio);
-> +}
-> +
->  static __always_inline bool PageAnonNotKsm(const struct page *page)
->  {
->  	unsigned long flags = (unsigned long)page_folio(page)->mapping;
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 088723f909e4..6b09be06c707 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2049,7 +2049,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  		}
->  
->  		if (!pvmw.pte) {
-> -			if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
-> +			if (folio_test_lazyfree(folio)) {
->  				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
->  					goto walk_done;
->  				/*
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 8643c0fb9162..1f32c74ec738 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -944,8 +944,7 @@ static void folio_check_dirty_writeback(struct folio *folio,
->  	 * They could be mistakenly treated as file lru. So further anon
->  	 * test is needed.
->  	 */
-> -	if (!folio_is_file_lru(folio) ||
-> -	    (folio_test_anon(folio) && !folio_test_swapbacked(folio))) {
-> +	if (!folio_is_file_lru(folio) || folio_test_lazyfree(folio)) {
->  		*dirty = false;
->  		*writeback = false;
->  		return;
-> @@ -1489,7 +1488,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  			}
->  		}
->  
-> -		if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
-> +		if (folio_test_lazyfree(folio)) {
->  			/* follow __remove_mapping for reference */
->  			if (!folio_ref_freeze(folio, 1))
->  				goto keep_locked;
+> For SMCR_PHYS_CONT_BUFS, the allocation order is now capped to
+> MAX_PAGE_ORDER, ensures the attempts to allocate the largest possible
+> physically contiguous chunk instead of failing with an invalid order,
+> which also avoid redundant "try-fail-degrade" cycles in __smc_buf_create().
+> 
+> For SMCR_MIXED_BUFS, If it's order exceeds MAX_PAGE_ORDER, skips the
+> doomed physical allocation attempt and fallback to virtual memory
+> immediately.
+> 
+
+Proposal for a version in imperative mood (iiuc):
+"
+For SMCR_PHYS_CONT_BUFS, cap the allocation order to MAX_PAGE_ORDER. This
+ensures the attempts to allocate the largest possible physically contiguous
+chunk succeed, instead of failing with an invalid order. This also avoids
+redundant "try-fail-degrade" cycles in __smc_buf_create().
+
+For SMCR_MIXED_BUFS, if its order exceeds MAX_PAGE_ORDER, skip the doomed
+physical allocation attempt and fallback to virtual memory immediately.
+"
+
+
+> Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+> Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+
+Other than that: LGTM
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+
 
