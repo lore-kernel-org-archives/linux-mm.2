@@ -4,103 +4,212 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CB93D6CFC6
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 05:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF1E2D6CFD2
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 05:39:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACF196B03BF; Fri, 23 Jan 2026 00:07:52 -0500 (EST)
+	id EEB866B03C1; Fri, 23 Jan 2026 00:39:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7CF46B03C0; Fri, 23 Jan 2026 00:07:52 -0500 (EST)
+	id E97DD6B03C2; Fri, 23 Jan 2026 00:39:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95E9F6B03C1; Fri, 23 Jan 2026 00:07:52 -0500 (EST)
+	id D6FF16B03C3; Fri, 23 Jan 2026 00:39:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 86E996B03BF
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 00:07:52 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2EE15B7497
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 05:07:52 +0000 (UTC)
-X-FDA: 84362046384.10.6E439BB
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3D654180004
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 05:07:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pdgnYyyX;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769144870;
+	by kanga.kvack.org (Postfix) with ESMTP id C14C56B03C1
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 00:39:02 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 672A4D1A3A
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 05:39:02 +0000 (UTC)
+X-FDA: 84362124924.17.789945D
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010036.outbound.protection.outlook.com [52.101.193.36])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 89C8C1A0008
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 05:38:59 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kqanfFcQ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf19.hostedemail.com: domain of apopple@nvidia.com designates 52.101.193.36 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769146739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sFRsUB2fiki1rnBoFdqWSSWTb0H7HGcu8eMrImuExro=;
-	b=L14/b/YTeknrFQad3bAFWr0M3si7uHnG7hDOza0NC4XfJfUiDtJ4KBxZeuahzQQ/5PNGJg
-	RzWYLss7lWAFSyq3CsNj1Cy94534wn96yEpF0l7X1+wKesRJzaq1rVOOrPewrJU8mZmqno
-	stfXbYeTuWCCgMESqB9YkRq/xVQ7lAE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769144870; a=rsa-sha256;
-	cv=none;
-	b=eXUr2iob6kqGli3+408xKXutJaQq1Zn9gwHykFEYxrYA4GLWtlcL9gXHjVWUbdAQmO0m47
-	J9HtDsm3DeoLMjpheN/jsBJTYXyu+WUxl5i+XPhXcCuq/+EYigvrII9IqaCT+geBqCoX7Z
-	AsqriuvmwLfBx/nWezEb/sf5yaiw3jU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pdgnYyyX;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <65dcf7ab-1299-411f-9cbc-438ae72ff757@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769144867;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sFRsUB2fiki1rnBoFdqWSSWTb0H7HGcu8eMrImuExro=;
-	b=pdgnYyyX9QKwooSTwRL3gPwN0gQ6ctxRiNO92M2DPTle3a4TI9mETzpWXx0W/pUXyMNP8p
-	2tROMYwNQQa9BT2Xzq7S/r/SJtavAE/SZu358cQUx1El2Vxrjlt3RGLYyAP54+9awzmb/b
-	+F2Rv1n+PCL/fv20UtoAoh6IOcSqREY=
-Date: Fri, 23 Jan 2026 13:07:16 +0800
+	bh=KsxljKAh94X0v4Pcrfc4mtCBLf1ukYCqZJtpZjRN850=;
+	b=795VN4i3f7Q6J4kQN0lwTdqrT09m0eU7pnqwJQI5ryk9dRitIaxr3CDi5NCCDXvgWZmWZ3
+	K05lK3XlGMKxH95sn+Nda3QsRzvSUZcnlcZp1WqkdoQ7r1ZOKhDTKeghKpVnOPmnwxFOJh
+	4YH2Yk0zRyxASSZkMkzf6llfuKaVoSo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769146739; a=rsa-sha256;
+	cv=pass;
+	b=eYvvADohnVI5GX2M51BAe54eLryGyldJY5wUUwpk5ADJhJ6q2as/nJDHHUJee1RYAMGANh
+	sYsmQG1k9dy4JneAvBTM9eP9UQ6mTbdZmS60on/C49oFB9OkUYMpTaa2IRUZhNB4/yo38K
+	lp0HQMO3/VRqlnYHlxUkAwNoHLaBeVo=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kqanfFcQ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf19.hostedemail.com: domain of apopple@nvidia.com designates 52.101.193.36 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l4ecgIYAkTOc6wQIh4/fIoqaVGcYIW9pQgYClA+5yFHhpmkPHqFAlsuxaXsCSkbqarX/kFHOi4FTPrfAmGiOijq3uKIJom9W+EN4/B+z/ZaCz9+g8R0PO7r6Kn1CnkCF2kH0UNj+Ia2puxihhtwtJCieSOFKOlYX9+bCEowwWyy9LMKBfzdxRKX8/JSp9diMR+PbtW/d2IIbKxQHNRkNvYDqHl5EMDrmr/eZSk4L3YS0AeYQExHodwVQMTF3wcQ2jQM+MrJppYAipYTA/e/f8rO26OTeJqdPi7g/cxr0Cd7/k6ooSk2ozfwkuagCop1Rt5e76Ed6ivD3EsPDCHEcgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KsxljKAh94X0v4Pcrfc4mtCBLf1ukYCqZJtpZjRN850=;
+ b=akY3TEfgEkOJmKd+i798CVRGL+qhezpQkGSbf+EceTZJXtfUdmYbxvH5oYxxn8Dbxau0BRCgLdvRa/X3xYZOViY2lVWvKTGmIhn5R8pOhw6P7L5ZDQE3Z7Coxue3sKDWRyjMaZ6VE1Ule83zY8/ijZyJr+IMpJUp7q4OIQ0TR7lf+kQjBQGDstvY3D9WNWbkWNlYlvJtna3WdVHmEUqbSXkZuyrIkkq/qveEFQLov7yZ1RdfQvG3lLULB33A0B930IYC9kaBYPx3UDJJtXR/q719gl0LSaH6/8o+gGoPse4IHyvuear0rcrrSNneHteyhqDN5mdN1OQV2uZHBM5FJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KsxljKAh94X0v4Pcrfc4mtCBLf1ukYCqZJtpZjRN850=;
+ b=kqanfFcQcmgZg9sqQmY4Ll6DW8nDQOhnNMiG11sYlK/Yr8MUT4URBSA/cKF4LxfRWrWzfPUJZBI9wHmETD7o0oskxiuyDbrJQAZ8EkEhgean5pfgSP3z/NEI9ej+knhIQnlkn4HWq9GLSbTnSw6XeVZQnJkw049wGnYcX3MZT0pUJ2zerTc6pfNZ3q6dQgqjg2qQZe9F7DrdNYZVXmVg/+bSiRX1vuemq070TJbe8Oy3uFwCBCe0QsF2/QCd1+4K/dwcDHfarUFgnY8jfnHbgJHXhN+HYjqZElcGiEDch5zYwWQz4NE3xYZfS7lLuDx/epZwZaUjpjb0u9ALBTFzKA==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SJ0PR12MB6831.namprd12.prod.outlook.com (2603:10b6:a03:47d::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.11; Fri, 23 Jan 2026 05:38:55 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9542.009; Fri, 23 Jan 2026
+ 05:38:54 +0000
+Date: Fri, 23 Jan 2026 16:38:49 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org, 
+	balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org, airlied@gmail.com, 
+	simona@ffwll.ch, rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com, 
+	willy@infradead.org, linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, 
+	jgg@ziepe.ca, Felix.Kuehling@amd.com
+Subject: Re: [PATCH v2 11/11] mm: Remove device private pages from the
+ physical address space
+Message-ID: <l5jxxobpj6shwuuthsyxlzfnhs6dx4spvzcqxrycn4chtywniq@e2eaio4nhorq>
+References: <20260107091823.68974-1-jniethe@nvidia.com>
+ <20260107091823.68974-12-jniethe@nvidia.com>
+ <36F96303-8FBB-4350-9472-52CC50BAB956@nvidia.com>
+ <c9afedc6-f763-410f-b78b-522b98122f06@nvidia.com>
+ <6C5F185E-BB12-4B01-8283-F2C956E84AA3@nvidia.com>
+ <fd4b6553-3e9e-4829-a12f-51d29a5d7571@nvidia.com>
+ <16770FCE-A248-4184-ABFC-94C02C0B30F3@nvidia.com>
+ <sezye7d27h7pioazf4k3wfrdbradxovmdqyyp5slhljkmcnxf5@ckj3ujikhsnj>
+ <DBBD65CA-A8F2-40AC-AFA0-FC95CBDB3DF5@nvidia.com>
+ <0C16A79F-5A7B-4358-9806-7F78E7EA8EE6@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0C16A79F-5A7B-4358-9806-7F78E7EA8EE6@nvidia.com>
+X-ClientProxiedBy: SY4P282CA0015.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:a0::25) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable v14 03/16] introduce collapse_single_pmd to
- unify khugepaged and madvise_collapse
-Content-Language: en-US
-To: Nico Pache <npache@redhat.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, linux-kernel@vger.kernel.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com,
- hannes@cmpxchg.org, willy@infradead.org, peterx@redhat.com,
- wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, kas@kernel.org, aarcange@redhat.com,
- raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com,
- tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
- cl@gentwo.org, jglisse@google.com, zokeefe@google.com, rientjes@google.com,
- rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-References: <20260122192841.128719-1-npache@redhat.com>
- <20260122192841.128719-4-npache@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260122192841.128719-4-npache@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3D654180004
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SJ0PR12MB6831:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c4d5552-044f-447a-ce5b-08de5a41b237
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?LzJkVks0RFJlc3EyWVlQWUtGODNWNjk5R3cyd09zais3bWQwVFFHNFA1Rmxr?=
+ =?utf-8?B?K0tITHZ5d1prYzNYeUcrUi8vK3Z1L3U3Yklld3VHOElqbmMwd0o5SlRvM29a?=
+ =?utf-8?B?RTA2WEFKVDBFVTh0NS9HNk1iTFI2VjFmbFh0d0tEeDVwQlVaY0lzcWVSVUxX?=
+ =?utf-8?B?QTdDL2dNYmFNSWZnS3R0YzEyTm96NDBRcVU5UVplbUwvQnFSV3hPSXdkS2k2?=
+ =?utf-8?B?djRiZDNJejdLLzNZR1daeDgwMXBOSytKS0pkcjZsOHZKRndHT1JIbDlNS05K?=
+ =?utf-8?B?dzY0eFp1OHhXZ0tJak9admo1ajZhdHFGNUhaV1JKbWZxMVVGQ29Lc1pNOFZY?=
+ =?utf-8?B?TlNIY3dIMjZqNkdRWElqNmxYVGhsUHZEYm9kWkh5SFl6bUxDWm9UVDAzWjZO?=
+ =?utf-8?B?OFQ1Ulcvb0kveCtwaFlkSzNNeW9TMnlHRkJid1FHUXgraWxCNjFTZVl6YzJv?=
+ =?utf-8?B?bzhjQWN1L0txK2pMdEMrTjV0Z2pDek5Wc3pLdmZlbFZjKzBEbmxLcGpZTXJG?=
+ =?utf-8?B?MFFlY1dKNDd6UzVRQ0lUV2lOOFJ1TGoxKzJlTnJmcUZIaVdXYWU4Vm1YMEdI?=
+ =?utf-8?B?em03MlpBMjRRcDlvYlFQOWhOcEpLYmRlSEpIWkVpUWdJcWtVdURMOERucnJj?=
+ =?utf-8?B?cnFMN0tyQ3NlUCtNNmhXN2NSeDJING05YXVHYlpIMWRKTWd0aUNmd0JLc2tF?=
+ =?utf-8?B?WmhQL3c1eVZRWVpmcWRJU3VLMFQ5cURySllqRGRpaWJUcXJGSWc5Y0I3Vnho?=
+ =?utf-8?B?dXIrcTVvbk5sSFAwUnFWanVEREdWTlV2Y2szVkVHOGgvNGp1UzcxbmhEa0Qx?=
+ =?utf-8?B?UVJmVXJEdTlhZUtlWXZLdWZPL0dETk40bmg5bitGcTJpb1QvYjdDUUJBQjA3?=
+ =?utf-8?B?bERNMG9GckRGRzRySmZBSzRoUG9aNHdvR0I5OGU4TThtUkx6YmVqV21meU9P?=
+ =?utf-8?B?bVdPUS9DNWp3OEFYNDd6eFVMNzh1eDFtUmNRNTkzZEZPYW9NRFFqU2JmekFr?=
+ =?utf-8?B?NklsSU1YZ21Sb2EvUDB0YkdMd3Y2QjZrV3NmcHhrTGhHVG9DMkx5TmdZSmJM?=
+ =?utf-8?B?UUlkdVlBVS95YWFWUmgvaUNGc1dYU0MwVWRqZXBVQ3lJQkZIbWx6NmRualJB?=
+ =?utf-8?B?WWIyVnkvaHhSbEEzM3Y4dUNodzZNNnRwaXhXN2I1UktIM2lPbkdCdFhtTmJn?=
+ =?utf-8?B?Q2Jadi9zUjViU081R1dNR2JtdmZKSWlwYmsvb0paZzdyV2RHTXlBWkp2WUh0?=
+ =?utf-8?B?RWk2YWtySmFaWkQ3REFLTWwvWnhWbjlXQTlzZGRETDZVM3NnL0tGNXQ2dm45?=
+ =?utf-8?B?SFR5bG9BaDVLN25zTGpUYVlSeFNNVnp5Qm1MajdONG1XTDZrZGFJUGl0blhV?=
+ =?utf-8?B?ZEQyZncxSkRpWnZrZFdUSy9Wb2RTalIreDVITWQ5TkljL2RUNlFtOXozalho?=
+ =?utf-8?B?dUgvN2p3N25BUDc5cWdPQlE3RENHVGtpSXZxeG5JSVFCbC9sVDU0enR3a0hZ?=
+ =?utf-8?B?ZFJOL1c0TWhVcThiamZidUxjdjJzNDU4dzBoc0QxQlcray9WMkpPajVyMDlN?=
+ =?utf-8?B?SUJaWlRGY2tiK3RmLzQ4a3lQbWxmdit0VThSM1NBNHp5bzdWUDhmVnNDeklR?=
+ =?utf-8?B?TXRkV0hSbkxPZkpMSW9tNnhDWWlMQ0hPaFJ6OVRyWnppSGl0YnZrTXdHRFpL?=
+ =?utf-8?B?SDE4WmdrVWRVOFJyb1ZrWElUdEtyTkloM25JTGROWnBydlFXWitNYWJkZ3Zl?=
+ =?utf-8?B?QjhVVk1ld3MrWDlDMXQ3QlRyMng5YjZ6WmFDY1l5QmN3Z2s2bFhYM01DaUF1?=
+ =?utf-8?B?RDg2cnBuVGx6NFNZTisvQStrWWpkSWxnellEWUJQcmgyUHE5ZHpjRk5HUWNK?=
+ =?utf-8?B?amY5YzcrSUVEN2FTZk5qZ2k5TzcyUDlwdno2YWlPT1MvZlJLZkNHQUlqZDRP?=
+ =?utf-8?B?SnFJc0tXOEYrazdxY3VaQStaeU9ZdDllSk11OWRUUzFBUkMybXZDZ2RwVkFY?=
+ =?utf-8?B?bitibVpCaWJqbWZhM3BsTkY1LzJSQzEzK0pBTzc0SExkM2hSMzd0dEpBWUc1?=
+ =?utf-8?B?anNIZTVoKzc4Sm5jZHRSdFdMVzkyZkRjNWxpb0lxdmMxY28vVmprTWgvWi9Y?=
+ =?utf-8?Q?A9Bw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SnpucWs2RjNzR0o5Y1Vob0RIeGhwQ1pyY04vQVZwWVduTUw2ZXlWNXkza3dY?=
+ =?utf-8?B?aWJlTHE1ZUNYSTU1MmwxajBKYWRWSTBqcGdQQXlaVVQzckpLanUvUjQ5SExp?=
+ =?utf-8?B?UjlDM01ZaHp4MHErWUlYdCtGY2w3OXg0eEhaM1FmNVFJVmdkMXFrNmxxMmpI?=
+ =?utf-8?B?MWxUWi9JTG1LQUlFY1FkM0NOc0ZJTWJBREZQSUhnUnJGRXo2SHlIQUY2ejlr?=
+ =?utf-8?B?OVFsZ1lRV01uVmx0YWlLT3BxcHI0Z05RYUV0aUtUNkcwazlsY3NoR2dWUDJR?=
+ =?utf-8?B?SGs1dmhYci9BQzRDaUx4OTBLL2gyNWw4bC9qaWtGa0hLcUlJMFRpYkIxcUQ3?=
+ =?utf-8?B?ZVZLNW9SMC9XT21UOFpwN3F1KzlzdjhaVm81aEYyUWphRWl2TmdTdjlQVENx?=
+ =?utf-8?B?eERUQjEwV2h0Z1Fxb0JXTmR0b0xoMG1wT3U3a2gvbXhuL3NYSE9qcUNtcjVl?=
+ =?utf-8?B?N3pYMDZrb0JzRkhSSTdWYW10SWozbEMxdVkyd1lRMWZMejhwY0JqREpWL1M2?=
+ =?utf-8?B?MXhJalR0VEhxeTVwSVpKYVRxOHB2emZ1YkVZbmkyTVJWNzljUVV4K1VCQzkx?=
+ =?utf-8?B?RE9Wamx2RXdRMHl3MGY0NjVtMEwyUG1TRjdyNzVYb2RZcHZzV09YTWlYWUFq?=
+ =?utf-8?B?MVB4SWRuZ0RJemh0OUdlaDJESTUrRG1RRERkU0VjdlVheEt3WTN1SDM5d2k3?=
+ =?utf-8?B?ZDNzTkUzRFM2SGQ4N2ZJMkJsWGJyTFVwdE9wNDVENllDUUJFbFE1YjBxRWdn?=
+ =?utf-8?B?MlRTV1F6cEZNYk9OSXhHQXJjSGwzYTdoNHNGVTd5VWk0M3dITmVhSDQvYjFK?=
+ =?utf-8?B?VU1aQXdSZXIvSlJ2QzdwQkpsdmk4MU82Q3VSNStYVW1Ed3AvdWttZ1Q5eVJk?=
+ =?utf-8?B?cytsYVl5YXZDUWIyalZVeitXQTg4elE2UVRTR0xLZHZRSzV2L2lJK0hJS2lT?=
+ =?utf-8?B?aW9JaDZSc3ZETWJXOW9tdzZTcDJ5OS9TL3M2SStMS1F4RU1YM1VrR2VRMWJN?=
+ =?utf-8?B?eEc4MWw2aWFPQkFCQlhBajROamV1a1lDeTlFZ01nS0VSQmlzWDlLdkpyL2kz?=
+ =?utf-8?B?WnNoZXcvSjB2Y0Q4UVQzb0M2bm8yODlNQUpqU1JQdXNoU29ybVgvdDZrcXdC?=
+ =?utf-8?B?WXR1WE9Jekx3anR0U0VBOUIraE54Ym1EYzlFY3YycStpc0RPVk0xTExVT1BU?=
+ =?utf-8?B?d1JrclZvZEw3ZEVGN0laUWUwWGR4c0N6cVpLbTBDNEpUN3RNbURXNHZWdWVK?=
+ =?utf-8?B?WFFvbnlSUnRtUTZ1R012Q1J4MXN2Z2M5QUFUQjlBRWhxempodnZYbTV2dnc4?=
+ =?utf-8?B?aXNlL3lsYmpYNkJjTTMyN2NQeW1BanBOT0N1cGpOTWQ4bFRZSmczenlNR1c4?=
+ =?utf-8?B?ZXJEL0xna0VFSzB2RnAxaGZ6NzBEbUZUbzI2Sk5uMHczSzVhemsyckVjZGhT?=
+ =?utf-8?B?RGJwbXZWenFnazNJa0hpM3NlWnhERUVWcElzOHlHczFmNlRwcnNIdDZFR0VL?=
+ =?utf-8?B?WXpMbk5tSzU2NVVhYXNwU1RjZlRLY2FEQWdTYTZxbk5hQzVUd3BXWTVwajY4?=
+ =?utf-8?B?OHlwdUhIOFhSd3lrTk1pZ05EeUhaYU0zOVJINk4rdEdOQXRDeGNaMGluT29v?=
+ =?utf-8?B?ZjNZaXU2Mzdnb3hIdTJTQ1ArU3ViZThGL2ZwMVRHSXM0aGkvK0plWVFxbUdM?=
+ =?utf-8?B?bTFUamRKc3N2WTBHZVBhUEl1dTQ0a2I5aDl3ZGpZYUNSbkhicWpXUmlYS2dk?=
+ =?utf-8?B?ZEVZV3A4R3RyQUhUSlpvSDI3U2xHdjBzVkM1RTR1b0h5eFp3am5qa1M4cnY0?=
+ =?utf-8?B?dk9OaXAxdnR6ZDkva1hFaExaMVlpeG83dXBTbHcydFNaSC9KRzlQbEdRU3Nj?=
+ =?utf-8?B?VHVFbmI2MGFXeUdUNkx1M1hxUzVZWSs1YU9Wdk1ETUxXRlFuYVpSS1dCWW94?=
+ =?utf-8?B?LzBZdW9zak1Za28wbkdRenc5OGlxUTRCZjEwOGNXQkkrWERyMXFsclNEU0ZB?=
+ =?utf-8?B?N3hibDNsZjNGSlRwaUVFYWQ1b1FXZUg4cThVR01KVERQWGNOWURrbWdhREc1?=
+ =?utf-8?B?QlA1RGtGNFJpcXJPcG94Rkd1VmVmRFRDMHpLM2tZdmhwVzVPZzI4S0lnWE1W?=
+ =?utf-8?B?c0RIZVQzUlo5NmFxbEJaTTdRWFYvTG9vTTYvSFBleXZxd1pDRUhCNlVjVFQy?=
+ =?utf-8?B?RzVtRE9iR1dpeG5uL3BtdHQrMlBGZ2d2RkpLU1EzbmpsRUNkUSsyODZyY0tC?=
+ =?utf-8?B?M29oS2pTcWJ4TGg5bXJSYm9VeFVGbmd2K2Y5Z0hrekFPREJNdkkvaGtad2dr?=
+ =?utf-8?B?aXNtbmFJNzhYR2REWEZrOVl6aC95R0dBUjhaODhkamZFdWl3dDUxdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c4d5552-044f-447a-ce5b-08de5a41b237
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 05:38:54.7305
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2XQqG2bnwQBsSRj3gB5gosaO4hsYssnG9/gYdJDeRYjZdChtn+FnkIs/gNTuhiTC8slWIA1VmV3MHOp9Mc0DTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6831
+X-Rspamd-Queue-Id: 89C8C1A0008
+X-Stat-Signature: bntikbs914wui7n41f7s7adybyo7jrte
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: rm166dk1rbcbd5qiabr5qjz4zf6by8n5
-X-HE-Tag: 1769144870-322824
-X-HE-Meta: U2FsdGVkX1/R7KbkS+YXgmdw83t14h63oDgJKK4Nm4vpEXQC/aBndiRm2Je8vDKykVF8AR01TsfbsUQ73rCdeXRM6htvZ/PEX5tjJOXaJbcGwP64oENpwRBjWPPlPPbZoeA4o678wKfqpC0GCqcguS0fr0jIjkQzcT2Jrf/iSEcV5pwIqbF+TfFqXpgqdsTdLE+2VeiOPZ/2T7gLhmf6WcUj7pKfKOw0IVbXbdeYPtePDBAQE9NU3vo3PSEShkGevaLB2bxk1hRfmAGtEkfsIWVFD1haZQCDHMeDrDMISJcZ6C7OoN1wLe1vXlkrYvstjo0B6BEHNmgR+IjSTy2COFwiu/rNs43lxzYDYOtVHJ/0ZgVjY5QyS3MhXH2/bS7IxvvJyLdol19OYGwycLBMGlLFb8KvVdcJRJ16YJaS9e4zbVDBkQA3/V9il8dCuRVycz4BXSvBa5IjrkQOeZvjkpB3VBhfQ/JGzr4WuFCwRLUAl+fgz3uyYmKpUjXll8JiBIuZG1FeUOABDQ9RHho6RfqnpU+aMc81SzB3VhjAQTH8dwk+QWnbdmIWhwjonL5Mf+bFIDoU8Xv4xXznCDj0wi2YYmlMIvSFvJyVy+In5Pr9jYvPK10dP3twF5/7DS/h0Bca8Vwhv1e4eucpaeKhPCZXEm5hU6lyvq9aYdmWeTl2v5Kjypc85hcjIEDVagJ7tBqs/KJ14rY7+X/wa3TxjwWgL+btB8KuwHftAeSYKYS/IldI23Yyz7lg8SEencZbLH5v9s4np348xl9K8iXIpiGwwFdPv/zUYFn9rHCh5uNQYilMVYAuAkI4nt4N55KM88VNIm/+HIbJFI+hMOHjd0JTQqWQTdxYDDRTGZBarxGOsLwJKsUkWaff5cEeiWT6P1twFpAfeoLRYavzr0wAu6yQUVX2P5laMU2AwK0jE+3efi6+8yjaKoemSm66PqWM+m+wgoMNQmKCBnx/4ww
- Oz2+d9ho
- gfp1nbnKwlj0kV4MuSOeBYa3gmrp+DMY7rVTdYnTCtoPp50/G4mYGRkrFe0XHqbFIJJd9L0fjouB83nEFSwoyy9ZjN+0lyDPHTzkQZ0XnRjTZvt6jHtB4DermgarH9Hqp73UDn0sNlpEzIdnnGUGsbXtqtXQv37kL5HGhww2Koro1tglOuESy/Sy00gOPAvK65RQFUk5cAflHqsfAr/G/QN2ZW9RajKlKvrReCPUSFDuAV5j24DH5behO9z1MfWnEI443RQEYs/CAb2glyTYL5t/4gf2Y3p3QfBhBS4ZO2qdVhs6eOB2ApgWTmZPW5GzvintgXrJsQYFfL0aX5f/JZioo6YjY6QDNB9h7jB7/o1T12te5IxGP2Of/pXEzDLuSO7+rOqQ9fGKqXSkEE/b7252OlTRItYNfsbF4BEA+6d+MKmzT+9lCK1hJ/eZ1DUUJ26wXbi9fJqFeb/23524AhBSPzQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769146739-781894
+X-HE-Meta: U2FsdGVkX1+E1E3mthLqSHXQxv05ujsovi1CkbPaguZs77124duvfn6gLZ4eDM4z7MtY8k5ps8O0uxQPqMKZCgt4z85Hx/4SRsLOiIWduwNf2qCNYfazY4idOQwfQCj7iVldPtzm6eyjxRLAZYkUkGgrv1rVjcbnrr0uW6EvaUSpRZC8W1ue64K0GVGkkd48xqhjpsUlvYeofxmlzUWXFYltFnCwbdTpunN8E2YkbJo0qAmDe531zHkVZUtQjokc/kD1TjKy4icTyBQCKB+eKIeKpExAUXZFoBBH+yaJ0DWAUvpK9ocjZWN4PZTc4Am64dk2DwmZItl0yr4CbnE2+PBPflfmFEaAQNIHb/vXHkj5W4zEg12BFNaxQrSUSIwVWjzNitFAWo7MEjapMWtCM5Vg0zVjGTznkAGo52uj2C2fH2BNTnCKn8VFLtXY+uCMbiq5Ru+VdSkpmmAi+8jtkGpNEw03tLxSPdOJmjGkk1tYB+1uC7Ds16r2qncEHTzOHAvqimPMqm6FyXR6qNYhh1kUr+8HEs6inCe5M3vt59YEEV2kcxUne9crKG92eu91IpYc4ptg3+v9ZIXaQPpUs76/vVLeSFOK3uG2aZuQE8HOfWOfwHWxJdtlP9Uz1wMR3bqAvTq1CjJFWWiavmDa0ir9jPmhNsk/vm2XTbAA90IpeGZlHIsl4NjPCKeKCgRBpTQfACaALJ+lj69RfPShnETgNnNJpWoaSTPwVYMReLb0zSzXKeuz6psiBO+/u7md9a2oUbqpYCO29X5Rr/JNN8/5/2dHvmyu0bcqKDViSFl0tcf92wLi64UtCGqvPJWBDjd36A1E/oIltzM0rZ+okkWCv/aZhP36mPqNonLhRfnFDwe1nPh3ipzwrLLuKjgRUgGgPoCr+srAf+gMMSCP4yrDyhcY4oUvAa7C5SbCqN01LUQ7L0u93tbeq4Hgw71HXGKvGmNSZ212as0V15Q
+ II1RZXd3
+ d0iswgTYsYduJeJ/0G96ccOlP5N3UsoNA0jDTwUqPCRuarEtSWIbBdFgqdpU7KxJ6+eLb3xScAq/1cBRanyFHa/9m0LZ+NNcQ7LQxOSfFQEmhABz7eoLfR7YRH/x88/l2R9yYMTmQdCaHXiqunF35iltuhX+Plvrwxs+8D9OLg6lSgoB9oS528nGDFN/9bba0NNfQ3FhwTiaffR5PTfPXulJbwnX508IrJc8iAZo4NIGBkZBKzTsSgy0MTvx0AQ/JpH+GKbdxOLlZoOgMvwiNOlS6cV9UGitVIxwfHZp3RE1SaIfa6JgV/8KNoqDoKNGRlzFNmvMHPw0Exk+R/ihFzt8MZuPGo4682yIe60hKRxEISUsnI6wE72WHG4KhMDCiaGgswzyf9UdqxXe6pCFBq/8L5ypPZSXKXjAiReHA1twL9VGrE4rdinxENziLPy6FUSgJLdDKqRfTsags0WAxzuwmVUjBs3+yY7nhBpiPKP22/cU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,223 +218,337 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/1/23 03:28, Nico Pache wrote:
-> The khugepaged daemon and madvise_collapse have two different
-> implementations that do almost the same thing.
+On 2026-01-23 at 14:09 +1100, Zi Yan <ziy@nvidia.com> wrote...
+> On 22 Jan 2026, at 22:06, Zi Yan wrote:
 > 
-> Create collapse_single_pmd to increase code reuse and create an entry
-> point to these two users.
+> > On 22 Jan 2026, at 21:02, Alistair Popple wrote:
+> >
+> >> On 2026-01-21 at 10:06 +1100, Zi Yan <ziy@nvidia.com> wrote...
+> >>> On 20 Jan 2026, at 18:02, Jordan Niethe wrote:
+> >>>
+> >>>> Hi,
+> >>>>
+> >>>> On 21/1/26 09:53, Zi Yan wrote:
+> >>>>> On 20 Jan 2026, at 17:33, Jordan Niethe wrote:
+> >>>>>
+> >>>>>> On 14/1/26 07:04, Zi Yan wrote:
+> >>>>>>> On 7 Jan 2026, at 4:18, Jordan Niethe wrote:
+> >>>>>>>
+> >>>>>>>> Currently when creating these device private struct pages, the first
+> >>>>>>>> step is to use request_free_mem_region() to get a range of physical
+> >>>>>>>> address space large enough to represent the devices memory. This
+> >>>>>>>> allocated physical address range is then remapped as device private
+> >>>>>>>> memory using memremap_pages().
+> >>>>>>>>
+> >>>>>>>> Needing allocation of physical address space has some problems:
+> >>>>>>>>
+> >>>>>>>>     1) There may be insufficient physical address space to represent the
+> >>>>>>>>        device memory. KASLR reducing the physical address space and VM
+> >>>>>>>>        configurations with limited physical address space increase the
+> >>>>>>>>        likelihood of hitting this especially as device memory increases. This
+> >>>>>>>>        has been observed to prevent device private from being initialized.
+> >>>>>>>>
+> >>>>>>>>     2) Attempting to add the device private pages to the linear map at
+> >>>>>>>>        addresses beyond the actual physical memory causes issues on
+> >>>>>>>>        architectures like aarch64 meaning the feature does not work there.
+> >>>>>>>>
+> >>>>>>>> Instead of using the physical address space, introduce a device private
+> >>>>>>>> address space and allocate devices regions from there to represent the
+> >>>>>>>> device private pages.
+> >>>>>>>>
+> >>>>>>>> Introduce a new interface memremap_device_private_pagemap() that
+> >>>>>>>> allocates a requested amount of device private address space and creates
+> >>>>>>>> the necessary device private pages.
+> >>>>>>>>
+> >>>>>>>> To support this new interface, struct dev_pagemap needs some changes:
+> >>>>>>>>
+> >>>>>>>>     - Add a new dev_pagemap::nr_pages field as an input parameter.
+> >>>>>>>>     - Add a new dev_pagemap::pages array to store the device
+> >>>>>>>>       private pages.
+> >>>>>>>>
+> >>>>>>>> When using memremap_device_private_pagemap(), rather then passing in
+> >>>>>>>> dev_pagemap::ranges[dev_pagemap::nr_ranges] of physical address space to
+> >>>>>>>> be remapped, dev_pagemap::nr_ranges will always be 1, and the device
+> >>>>>>>> private range that is reserved is returned in dev_pagemap::range.
+> >>>>>>>>
+> >>>>>>>> Forbid calling memremap_pages() with dev_pagemap::ranges::type =
+> >>>>>>>> MEMORY_DEVICE_PRIVATE.
+> >>>>>>>>
+> >>>>>>>> Represent this device private address space using a new
+> >>>>>>>> device_private_pgmap_tree maple tree. This tree maps a given device
+> >>>>>>>> private address to a struct dev_pagemap, where a specific device private
+> >>>>>>>> page may then be looked up in that dev_pagemap::pages array.
+> >>>>>>>>
+> >>>>>>>> Device private address space can be reclaimed and the assoicated device
+> >>>>>>>> private pages freed using the corresponding new
+> >>>>>>>> memunmap_device_private_pagemap() interface.
+> >>>>>>>>
+> >>>>>>>> Because the device private pages now live outside the physical address
+> >>>>>>>> space, they no longer have a normal PFN. This means that page_to_pfn(),
+> >>>>>>>> et al. are no longer meaningful.
+> >>>>>>>>
+> >>>>>>>> Introduce helpers:
+> >>>>>>>>
+> >>>>>>>>     - device_private_page_to_offset()
+> >>>>>>>>     - device_private_folio_to_offset()
+> >>>>>>>>
+> >>>>>>>> to take a given device private page / folio and return its offset within
+> >>>>>>>> the device private address space.
+> >>>>>>>>
+> >>>>>>>> Update the places where we previously converted a device private page to
+> >>>>>>>> a PFN to use these new helpers. When we encounter a device private
+> >>>>>>>> offset, instead of looking up its page within the pagemap use
+> >>>>>>>> device_private_offset_to_page() instead.
+> >>>>>>>>
+> >>>>>>>> Update the existing users:
+> >>>>>>>>
+> >>>>>>>>    - lib/test_hmm.c
+> >>>>>>>>    - ppc ultravisor
+> >>>>>>>>    - drm/amd/amdkfd
+> >>>>>>>>    - gpu/drm/xe
+> >>>>>>>>    - gpu/drm/nouveau
+> >>>>>>>>
+> >>>>>>>> to use the new memremap_device_private_pagemap() interface.
+> >>>>>>>>
+> >>>>>>>> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+> >>>>>>>> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> >>>>>>>>
+> >>>>>>>> ---
+> >>>>>>>>
+> >>>>>>>> NOTE: The updates to the existing drivers have only been compile tested.
+> >>>>>>>> I'll need some help in testing these drivers.
+> >>>>>>>>
+> >>>>>>>> v1:
+> >>>>>>>> - Include NUMA node paramater for memremap_device_private_pagemap()
+> >>>>>>>> - Add devm_memremap_device_private_pagemap() and friends
+> >>>>>>>> - Update existing users of memremap_pages():
+> >>>>>>>>       - ppc ultravisor
+> >>>>>>>>       - drm/amd/amdkfd
+> >>>>>>>>       - gpu/drm/xe
+> >>>>>>>>       - gpu/drm/nouveau
+> >>>>>>>> - Update for HMM huge page support
+> >>>>>>>> - Guard device_private_offset_to_page and friends with CONFIG_ZONE_DEVICE
+> >>>>>>>>
+> >>>>>>>> v2:
+> >>>>>>>> - Make sure last member of struct dev_pagemap remains DECLARE_FLEX_ARRAY(struct range, ranges);
+> >>>>>>>> ---
+> >>>>>>>>    Documentation/mm/hmm.rst                 |  11 +-
+> >>>>>>>>    arch/powerpc/kvm/book3s_hv_uvmem.c       |  41 ++---
+> >>>>>>>>    drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  23 +--
+> >>>>>>>>    drivers/gpu/drm/nouveau/nouveau_dmem.c   |  35 ++--
+> >>>>>>>>    drivers/gpu/drm/xe/xe_svm.c              |  28 +---
+> >>>>>>>>    include/linux/hmm.h                      |   3 +
+> >>>>>>>>    include/linux/leafops.h                  |  16 +-
+> >>>>>>>>    include/linux/memremap.h                 |  64 +++++++-
+> >>>>>>>>    include/linux/migrate.h                  |   6 +-
+> >>>>>>>>    include/linux/mm.h                       |   2 +
+> >>>>>>>>    include/linux/rmap.h                     |   5 +-
+> >>>>>>>>    include/linux/swapops.h                  |  10 +-
+> >>>>>>>>    lib/test_hmm.c                           |  69 ++++----
+> >>>>>>>>    mm/debug.c                               |   9 +-
+> >>>>>>>>    mm/memremap.c                            | 193 ++++++++++++++++++-----
+> >>>>>>>>    mm/mm_init.c                             |   8 +-
+> >>>>>>>>    mm/page_vma_mapped.c                     |  19 ++-
+> >>>>>>>>    mm/rmap.c                                |  43 +++--
+> >>>>>>>>    mm/util.c                                |   5 +-
+> >>>>>>>>    19 files changed, 391 insertions(+), 199 deletions(-)
+> >>>>>>>>
+> >>>>>>> <snip>
+> >>>>>>>
+> >>>>>>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> >>>>>>>> index e65329e1969f..b36599ab41ba 100644
+> >>>>>>>> --- a/include/linux/mm.h
+> >>>>>>>> +++ b/include/linux/mm.h
+> >>>>>>>> @@ -2038,6 +2038,8 @@ static inline unsigned long memdesc_section(memdesc_flags_t mdf)
+> >>>>>>>>     */
+> >>>>>>>>    static inline unsigned long folio_pfn(const struct folio *folio)
+> >>>>>>>>    {
+> >>>>>>>> +	VM_BUG_ON(folio_is_device_private(folio));
+> >>>>>>>
+> >>>>>>> Please use VM_WARN_ON instead.
+> >>>>>>
+> >>>>>> ack.
+> >>>>>>
+> >>>>>>>
+> >>>>>>>> +
+> >>>>>>>>    	return page_to_pfn(&folio->page);
+> >>>>>>>>    }
+> >>>>>>>>
+> >>>>>>>> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> >>>>>>>> index 57c63b6a8f65..c1561a92864f 100644
+> >>>>>>>> --- a/include/linux/rmap.h
+> >>>>>>>> +++ b/include/linux/rmap.h
+> >>>>>>>> @@ -951,7 +951,7 @@ static inline unsigned long page_vma_walk_pfn(unsigned long pfn)
+> >>>>>>>>    static inline unsigned long folio_page_vma_walk_pfn(const struct folio *folio)
+> >>>>>>>>    {
+> >>>>>>>>    	if (folio_is_device_private(folio))
+> >>>>>>>> -		return page_vma_walk_pfn(folio_pfn(folio)) |
+> >>>>>>>> +		return page_vma_walk_pfn(device_private_folio_to_offset(folio)) |
+> >>>>>>>>    		       PVMW_PFN_DEVICE_PRIVATE;
+> >>>>>>>>
+> >>>>>>>>    	return page_vma_walk_pfn(folio_pfn(folio));
+> >>>>>>>> @@ -959,6 +959,9 @@ static inline unsigned long folio_page_vma_walk_pfn(const struct folio *folio)
+> >>>>>>>>
+> >>>>>>>>    static inline struct page *page_vma_walk_pfn_to_page(unsigned long pvmw_pfn)
+> >>>>>>>>    {
+> >>>>>>>> +	if (pvmw_pfn & PVMW_PFN_DEVICE_PRIVATE)
+> >>>>>>>> +		return device_private_offset_to_page(pvmw_pfn >> PVMW_PFN_SHIFT);
+> >>>>>>>> +
+> >>>>>>>>    	return pfn_to_page(pvmw_pfn >> PVMW_PFN_SHIFT);
+> >>>>>>>>    }
+> >>>>>>>
+> >>>>>>> <snip>
+> >>>>>>>
+> >>>>>>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> >>>>>>>> index 96c525785d78..141fe5abd33f 100644
+> >>>>>>>> --- a/mm/page_vma_mapped.c
+> >>>>>>>> +++ b/mm/page_vma_mapped.c
+> >>>>>>>> @@ -107,6 +107,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+> >>>>>>>>    static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+> >>>>>>>>    {
+> >>>>>>>>    	unsigned long pfn;
+> >>>>>>>> +	bool device_private = false;
+> >>>>>>>>    	pte_t ptent = ptep_get(pvmw->pte);
+> >>>>>>>>
+> >>>>>>>>    	if (pvmw->flags & PVMW_MIGRATION) {
+> >>>>>>>> @@ -115,6 +116,9 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+> >>>>>>>>    		if (!softleaf_is_migration(entry))
+> >>>>>>>>    			return false;
+> >>>>>>>>
+> >>>>>>>> +		if (softleaf_is_migration_device_private(entry))
+> >>>>>>>> +			device_private = true;
+> >>>>>>>> +
+> >>>>>>>>    		pfn = softleaf_to_pfn(entry);
+> >>>>>>>>    	} else if (pte_present(ptent)) {
+> >>>>>>>>    		pfn = pte_pfn(ptent);
+> >>>>>>>> @@ -127,8 +131,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+> >>>>>>>>    			return false;
+> >>>>>>>>
+> >>>>>>>>    		pfn = softleaf_to_pfn(entry);
+> >>>>>>>> +
+> >>>>>>>> +		if (softleaf_is_device_private(entry))
+> >>>>>>>> +			device_private = true;
+> >>>>>>>>    	}
+> >>>>>>>>
+> >>>>>>>> +	if ((device_private) ^ !!(pvmw->pfn & PVMW_PFN_DEVICE_PRIVATE))
+> >>>>>>>> +		return false;
+> >>>>>>>> +
+> >>>>>>>>    	if ((pfn + pte_nr - 1) < (pvmw->pfn >> PVMW_PFN_SHIFT))
+> >>>>>>>>    		return false;
+> >>>>>>>>    	if (pfn > ((pvmw->pfn >> PVMW_PFN_SHIFT) + pvmw->nr_pages - 1))
+> >>>>>>>> @@ -137,8 +147,11 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+> >>>>>>>>    }
+> >>>>>>>>
+> >>>>>>>>    /* Returns true if the two ranges overlap.  Careful to not overflow. */
+> >>>>>>>> -static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+> >>>>>>>> +static bool check_pmd(unsigned long pfn, bool device_private, struct page_vma_mapped_walk *pvmw)
+> >>>>>>>>    {
+> >>>>>>>> +	if ((device_private) ^ !!(pvmw->pfn & PVMW_PFN_DEVICE_PRIVATE))
+> >>>>>>>> +		return false;
+> >>>>>>>> +
+> >>>>>>>>    	if ((pfn + HPAGE_PMD_NR - 1) < (pvmw->pfn >> PVMW_PFN_SHIFT))
+> >>>>>>>>    		return false;
+> >>>>>>>>    	if (pfn > (pvmw->pfn >> PVMW_PFN_SHIFT) + pvmw->nr_pages - 1)
+> >>>>>>>> @@ -255,6 +268,8 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> >>>>>>>>
+> >>>>>>>>    				if (!softleaf_is_migration(entry) ||
+> >>>>>>>>    				    !check_pmd(softleaf_to_pfn(entry),
+> >>>>>>>> +					       softleaf_is_device_private(entry) ||
+> >>>>>>>> +					       softleaf_is_migration_device_private(entry),
+> >>>>>>>>    					       pvmw))
+> >>>>>>>>    					return not_found(pvmw);
+> >>>>>>>>    				return true;
+> >>>>>>>> @@ -262,7 +277,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> >>>>>>>>    			if (likely(pmd_trans_huge(pmde))) {
+> >>>>>>>>    				if (pvmw->flags & PVMW_MIGRATION)
+> >>>>>>>>    					return not_found(pvmw);
+> >>>>>>>> -				if (!check_pmd(pmd_pfn(pmde), pvmw))
+> >>>>>>>> +				if (!check_pmd(pmd_pfn(pmde), false, pvmw))
+> >>>>>>>>    					return not_found(pvmw);
+> >>>>>>>>    				return true;
+> >>>>>>>>    			}
+> >>>>>>>
+> >>>>>>> It seems to me that you can add a new flag like “bool is_device_private” to
+> >>>>>>> indicate whether pfn is a device private index instead of pfn without
+> >>>>>>> manipulating pvmw->pfn itself.
+> >>>>>>
+> >>>>>> We could do it like that, however my concern with using a new param was that
+> >>>>>> storing this info seperately might make it easier to misuse a device private
+> >>>>>> index as a regular pfn.
+> >>>>>>
+> >>>>>> It seemed like it could be easy to overlook both when creating the pvmw and
+> >>>>>> then when accessing the pfn.
+> >>>>>
+> >>>>> That is why I asked for a helper function like page_vma_walk_pfn(pvmw) to
+> >>>>> return the converted pfn instead of pvmw->pfn directly. You can add a comment
+> >>>>> to ask people to use helper function and even mark pvmw->pfn /* do not use
+> >>>>> directly */.
+> >>>>
+> >>>> Yeah I agree that is a good idea.
+> >>>>
+> >>>>>
+> >>>>> In addition, your patch manipulates pfn by left shifting it by 1. Are you sure
+> >>>>> there is no weird arch having pfns with bit 63 being 1? Your change could
+> >>>>> break it, right?
+> >>>>
+> >>>> Currently for migrate pfns we left shift by pfns by MIGRATE_PFN_SHIFT (6), so I
+> >>>> thought doing something similiar here should be safe.
+> >>>
+> >>> Yeah, but that limits to archs supporting HMM. page_vma_mapped_walk is used
+> >>> by almost every arch, so it has a broader impact.
+> >>
+> >> We need to be a bit careful by what we mean when we say "HMM" in the kernel.
+> >>
+> >> Specifically MIGRATE_PFN_SHIFT is used with migrate_vma/migrate_device, which
+> >> is the migration half of "HMM" which does depend on CONFIG_DEVICE_MIGRATION or
+> >> really just CONFIG_ZONE_DEVICE making it somewhat arch specific.
+> >>
+> >> However hmm_range_fault() does something similar - see the definition of
+> >> hmm_pfn_flags - it actually steals the top 11 bits of a pfn for flags, and it is
+> >> not architecture specific. It only depends on CONFIG_MMU.
+> >
+> > Oh, that is hacky. But are HMM PFNs with any flag exposed to code outside HMM?
+> > Currently, device private needs to reserve PFNs for struct page, so I assume
+> > only the reserved PFNs are seen by outsiders. Otherwise, when outsiders see
+> > a HMM PFN with a flag, pfn_to_page() on such a PFN will read non exist
+> > struct page, right?
+
+Any user of hmm_range_fault() would be exposed to an issue - most users of
+hmm_range_fault() use it to grab a PFN (ie. physical address) to map into some
+remote page table. So potentially if some important bit in the PFN is dropped
+that could potentially result in users mapping the wrong physical address or
+page.
+
+And just to be clear this is completely orthogonal to any DEVICE_PRIVATE
+specific issue - it existed well before any changes here. Of course it may not
+actually be an issue - do we know if there are any architectures that actually
+use upper physical address bits? I assume not because how would they fit in a
+page table entry. But I don't really know.
+
+> > For this page_vma_mapped_walk code, it is manipulating PFNs used by everyone,
+> > not just HMM, and can potentially (might be very rare) alter their values
+> > after shifts.
 > 
-> Refactor madvise_collapse and collapse_scan_mm_slot to use the new
-> collapse_single_pmd function. This introduces a minor behavioral change
-> that is most likely an undiscovered bug. The current implementation of
-> khugepaged tests collapse_test_exit_or_disable before calling
-> collapse_pte_mapped_thp, but we weren't doing it in the madvise_collapse
-> case. By unifying these two callers madvise_collapse now also performs
-> this check. We also modify the return value to be SCAN_ANY_PROCESS which
-> properly indicates that this process is no longer valid to operate on.
 > 
-> We also guard the khugepaged_pages_collapsed variable to ensure its only
-> incremented for khugepaged.
+> > And if an HMM PFN with HMM_PFN_VALID is processed by the code,
+> > the HMM PFN will lose HMM_PFN_VALID bit. So I guess HMM PFN is not showing
+> > outside HMM code.
 > 
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
-
-I think this patch introduces some functional changes compared to previous
-version[1] ...
-
-Maybe we should drop the r-b tags and let folks take another look?
-
-There might be an issue with the vma access in madvise_collapse(). See 
-below:
-
-[1] 
-https://lore.kernel.org/linux-mm/20251201174627.23295-3-npache@redhat.com/
-
->   mm/khugepaged.c | 106 +++++++++++++++++++++++++++---------------------
->   1 file changed, 60 insertions(+), 46 deletions(-)
+> Oops, this code is removing PFN reservation mechanism, so please ignore
+> the above two sentences.
 > 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index fefcbdca4510..59e5a5588d85 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2394,6 +2394,54 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm, unsigned long a
->   	return result;
->   }
->   
-> +/*
-> + * Try to collapse a single PMD starting at a PMD aligned addr, and return
-> + * the results.
-> + */
-> +static enum scan_result collapse_single_pmd(unsigned long addr,
-> +		struct vm_area_struct *vma, bool *mmap_locked,
-> +		struct collapse_control *cc)
-> +{
-> +	struct mm_struct *mm = vma->vm_mm;
-> +	enum scan_result result;
-> +	struct file *file;
-> +	pgoff_t pgoff;
-> +
-> +	if (vma_is_anonymous(vma)) {
-> +		result = collapse_scan_pmd(mm, vma, addr, mmap_locked, cc);
-> +		goto end;
-> +	}
-> +
-> +	file = get_file(vma->vm_file);
-> +	pgoff = linear_page_index(vma, addr);
-> +
-> +	mmap_read_unlock(mm);
-> +	*mmap_locked = false;
-> +	result = collapse_scan_file(mm, addr, file, pgoff, cc);
-> +	fput(file);
-> +
-> +	if (result != SCAN_PTE_MAPPED_HUGEPAGE)
-> +		goto end;
-> +
-> +	mmap_read_lock(mm);
-> +	*mmap_locked = true;
-> +	if (collapse_test_exit_or_disable(mm)) {
-> +		mmap_read_unlock(mm);
-> +		*mmap_locked = false;
-> +		return SCAN_ANY_PROCESS;
-> +	}
-> +	result = try_collapse_pte_mapped_thp(mm, addr, !cc->is_khugepaged);
-> +	if (result == SCAN_PMD_MAPPED)
-> +		result = SCAN_SUCCEED;
-> +	mmap_read_unlock(mm);
-> +	*mmap_locked = false;
-> +
-> +end:
-> +	if (cc->is_khugepaged && result == SCAN_SUCCEED)
-> +		++khugepaged_pages_collapsed;
-> +	return result;
-> +}
-> +
->   static unsigned int collapse_scan_mm_slot(unsigned int pages, enum scan_result *result,
->   					    struct collapse_control *cc)
->   	__releases(&khugepaged_mm_lock)
-> @@ -2466,34 +2514,9 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, enum scan_result *
->   			VM_BUG_ON(khugepaged_scan.address < hstart ||
->   				  khugepaged_scan.address + HPAGE_PMD_SIZE >
->   				  hend);
-> -			if (!vma_is_anonymous(vma)) {
-> -				struct file *file = get_file(vma->vm_file);
-> -				pgoff_t pgoff = linear_page_index(vma,
-> -						khugepaged_scan.address);
-> -
-> -				mmap_read_unlock(mm);
-> -				mmap_locked = false;
-> -				*result = collapse_scan_file(mm,
-> -					khugepaged_scan.address, file, pgoff, cc);
-> -				fput(file);
-> -				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
-> -					mmap_read_lock(mm);
-> -					if (collapse_test_exit_or_disable(mm))
-> -						goto breakouterloop;
-> -					*result = try_collapse_pte_mapped_thp(mm,
-> -						khugepaged_scan.address, false);
-> -					if (*result == SCAN_PMD_MAPPED)
-> -						*result = SCAN_SUCCEED;
-> -					mmap_read_unlock(mm);
-> -				}
-> -			} else {
-> -				*result = collapse_scan_pmd(mm, vma,
-> -					khugepaged_scan.address, &mmap_locked, cc);
-> -			}
-> -
-> -			if (*result == SCAN_SUCCEED)
-> -				++khugepaged_pages_collapsed;
->   
-> +			*result = collapse_single_pmd(khugepaged_scan.address,
-> +						      vma, &mmap_locked, cc);
->   			/* move to next address */
->   			khugepaged_scan.address += HPAGE_PMD_SIZE;
->   			progress += HPAGE_PMD_NR;
-> @@ -2799,6 +2822,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   			cond_resched();
->   			mmap_read_lock(mm);
->   			mmap_locked = true;
-> +			*lock_dropped = true;
->   			result = hugepage_vma_revalidate(mm, addr, false, &vma,
->   							 cc);
->   			if (result  != SCAN_SUCCEED) {
-> @@ -2809,17 +2833,17 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
->   		}
->   		mmap_assert_locked(mm);
-> -		if (!vma_is_anonymous(vma)) {
-> -			struct file *file = get_file(vma->vm_file);
-> -			pgoff_t pgoff = linear_page_index(vma, addr);
->   
-> -			mmap_read_unlock(mm);
-> -			mmap_locked = false;
-> +		result = collapse_single_pmd(addr, vma, &mmap_locked, cc);
-> +
-> +		if (!mmap_locked)
->   			*lock_dropped = true;
-> -			result = collapse_scan_file(mm, addr, file, pgoff, cc);
->   
-> -			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
-> -			    mapping_can_writeback(file->f_mapping)) {
-> +		if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb) {
-> +			struct file *file = get_file(vma->vm_file);
-> +			pgoff_t pgoff = linear_page_index(vma, addr);
-
-
-After collapse_single_pmd() returns, mmap_lock might have been released. 
-Between
-that unlock and here, another thread could unmap/remap the VMA, making 
-the vma
-pointer stale when we access vma->vm_file?
-
-Would it be safer to get the file reference before calling 
-collapse_single_pmd()?
-Or we need to revalidate the VMA after getting the lock back?
-
-
-Thanks,
-Lance
-
-> +
-> +			if (mapping_can_writeback(file->f_mapping)) {
->   				loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
->   				loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
->   
-> @@ -2829,26 +2853,16 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   				goto retry;
->   			}
->   			fput(file);
-> -		} else {
-> -			result = collapse_scan_pmd(mm, vma, addr, &mmap_locked, cc);
->   		}
-> -		if (!mmap_locked)
-> -			*lock_dropped = true;
->   
-> -handle_result:
->   		switch (result) {
->   		case SCAN_SUCCEED:
->   		case SCAN_PMD_MAPPED:
->   			++thps;
->   			break;
-> -		case SCAN_PTE_MAPPED_HUGEPAGE:
-> -			BUG_ON(mmap_locked);
-> -			mmap_read_lock(mm);
-> -			result = try_collapse_pte_mapped_thp(mm, addr, true);
-> -			mmap_read_unlock(mm);
-> -			goto handle_result;
->   		/* Whitelisted set of results where continuing OK */
->   		case SCAN_NO_PTE_TABLE:
-> +		case SCAN_PTE_MAPPED_HUGEPAGE:
->   		case SCAN_PTE_NON_PRESENT:
->   		case SCAN_PTE_UFFD_WP:
->   		case SCAN_LACK_REFERENCED_PAGE:
-
+> >
+> >>
+> >> Now I'm not saying this implies it actually works on all architectures as I
+> >> agree the page_vma_mapped_walk code is used much more widely. Rather I'm just
+> >> pointing out if there are issues with some architectures using high PFN bits
+> >> then we likely have a problem here too :-)
+> >
+> >
+> > Best Regards,
+> > Yan, Zi
+> 
+> 
+> Best Regards,
+> Yan, Zi
 
