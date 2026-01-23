@@ -4,94 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F1F8D72347
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:24:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6704AD72347
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:24:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F116D6B0446; Fri, 23 Jan 2026 03:24:02 -0500 (EST)
+	id BEDF96B0449; Fri, 23 Jan 2026 03:24:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5FF96B044A; Fri, 23 Jan 2026 03:24:02 -0500 (EST)
+	id BA4FB6B044A; Fri, 23 Jan 2026 03:24:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE1436B0446; Fri, 23 Jan 2026 03:24:02 -0500 (EST)
+	id AC43E6B044D; Fri, 23 Jan 2026 03:24:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9832C6B0447
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:24:02 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49E75B6F6B
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:24:02 +0000 (UTC)
-X-FDA: 84362540724.10.A20C70F
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DFAA6C0006
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:23:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CWNdFIBu;
-	spf=pass (imf22.hostedemail.com: domain of alibuda@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=alibuda@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A6F26B0449
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:24:11 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FD55139E18
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:24:11 +0000 (UTC)
+X-FDA: 84362541102.07.A5BC125
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 24C5340004
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:24:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SiSXU6rK;
+	spf=pass (imf17.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769156640;
+	s=arc-20220608; t=1769156649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S1bjNuHUrGPdJip9CidbGVSG4Xe7mlDtcxJDAR5+R0s=;
-	b=UVYaQGIvtj6Oaa/cfIocJ3Rp5jd9GLzpDCx2OGN+zVSiKcNcY8M++bB17jwcyzTrGMXiVk
-	cGFE+EIPubm5FJxBghNU7xIq67F9fLAke5UVOZjTeKygLFVtgxZBE7GdlgSY1kJQ53GnWH
-	R0A2m4P0LsyodDE2G6Gvh6ARyaH70hc=
+	bh=ztj69k1nbusOojUJk8jDi2ddF1sRi1wMajjOdkSgexM=;
+	b=ookaHe9QRGeV8XZ93XnYq0AWZarcXhP0Hra6CTVIqnSrwnLihn9tlVFgpvUpJQ4t9gfthD
+	PqyIfBuoy4s5Eux7/vML2oaeP+1I4EZ6jsLe/SlSRod98UxhvgGn7z6l6LigGYYOSkArwv
+	VM2FZo67ORwcI1BARs6qyJIBVYV0kOw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CWNdFIBu;
-	spf=pass (imf22.hostedemail.com: domain of alibuda@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=alibuda@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769156640; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SiSXU6rK;
+	spf=pass (imf17.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769156649; a=rsa-sha256;
 	cv=none;
-	b=DsFScYLv+KzEKhEe/xebB60wBrKj4nzbxsa6ZrvS22L7x831yw23s4nb7Ui1Wd/xSy8hoU
-	3H5pOiT3oxm9Jp+0SrN+IOgr4jrh7PPOtam6eXMoBd/3jDeJJN+nORmIzFK9gPK0FsXgm9
-	EyOrImq3gnAZDQvPHYwdtOZ5CvgNrDw=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1769156637; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=S1bjNuHUrGPdJip9CidbGVSG4Xe7mlDtcxJDAR5+R0s=;
-	b=CWNdFIBuhN6eakJGcVvK8ZK+KZygZW+GsSqEtKtl7h+O1zNdpqU2KsbUYGCEKefNrtVEOuTJTl/jITwEL62IPvx39uEtLf/TAigoIqSbSoxXuQ8LzVZ7r6ze9P6WFgIakEIV/hxlp0eRtmQe2ePjMGvZzd7otGFiCMft7RhFyIg=
-Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0Wxf8owG_1769156635 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 23 Jan 2026 16:23:55 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com>
-To: "David S. Miller" <davem@davemloft.net>,
+	b=Ptk8XPfCql3EfxYM4r+/BQEhXg5Wgk3cvBT46hMadxM3r4CGsNGG+JE+jkAphJ/sACDIsw
+	1nCq6wok+8Hr6UU2crwhO09XT0MFARV4sCiOf3F+rqPXH+f0xhRtfUoNov+o2W4ocvAzL/
+	xjqfvz/l+3413AMHQD+TVaVv0wtSwf8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769156649; x=1800692649;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dwMlkmjcBaCYcjWa46P1uHRBsYlOiR+4SOQZ1svV6MQ=;
+  b=SiSXU6rKYgeB2iMsvI8mT9Lrq0AJ6myyWIigjBxYKVLYo+nLKJjkx5/s
+   g0eEW4Djs8R7O3atQhZuNsEPuhuqbyGkbwOXYBJAZTVao9FL7CQB2Tmj4
+   3s+vDpDIkSIGU0IxVNjK5xeAczbRvQuEkOuVBBtHFZBrUnrPWwn0wQEV0
+   2iGMAvBEd+h1aCbUV+DspxQRy1GdZCRrLjlKU+ynqHuz6As40hSGJv0Ws
+   xpH6TQ6of1aCSqdwHqCx/iRBXyV8H5i+710o7uO5qCCG2e+WCyqh8qxFE
+   3P/D2bjHRRXYrVswEfx0w7l+8/Xr/j/pdJQqYk5BiHYRvZsCOEiPvp3zq
+   g==;
+X-CSE-ConnectionGUID: nIVb3f1IQiC+vhPow1hrUw==
+X-CSE-MsgGUID: XzSi1A1BS+yVrb9G930YQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70318214"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
+   d="scan'208";a="70318214"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 00:24:07 -0800
+X-CSE-ConnectionGUID: lkoPECn7TsODORNe+iM/Hw==
+X-CSE-MsgGUID: Z3qn46K0TxqDntbM2syu4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
+   d="scan'208";a="206874169"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.112])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 00:24:03 -0800
+Date: Fri, 23 Jan 2026 10:24:01 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Vincent Mailhol <mailhol@kernel.org>, Philip Li <philip.li@intel.com>,
+	Chris Li <sparse@chrisli.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Kees Cook <keescook@chromium.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	oliver.yang@linux.alibaba.com
-Subject: [PATCH net-next 3/3] net/smc: optimize MTTE consumption for SMC-R buffers
-Date: Fri, 23 Jan 2026 16:23:49 +0800
-Message-ID: <20260123082349.42663-4-alibuda@linux.alibaba.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20260123082349.42663-1-alibuda@linux.alibaba.com>
-References: <20260123082349.42663-1-alibuda@linux.alibaba.com>
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
+ GENMASK() and BIT()
+Message-ID: <aXMwIcH7Zh-1yNq3@smile.fi.intel.com>
+References: <20260121145731.3623-12-david.laight.linux@gmail.com>
+ <202601221237.soiAkwkN-lkp@intel.com>
+ <20260122103337.26473d1c@pumpkin>
+ <aXIzpC6wpdv47cSH@smile.fi.intel.com>
+ <aXLOELiIG8MHKcIO@rli9-mobl>
+ <b49c9993-7676-4d33-a2d6-9f6b77b0fd34@kernel.org>
+ <aXMtJ_JurQjvN4tU@smile.fi.intel.com>
+ <20260123082027.GJ3183987@ZenIV>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DFAA6C0006
-X-Stat-Signature: r93hftuinedy15mxq3cayzids8bjxiuh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123082027.GJ3183987@ZenIV>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Server: rspam11
+X-Stat-Signature: gxh893nos7oykwi9ot8b75b7nqwdkjtz
 X-Rspam-User: 
-X-HE-Tag: 1769156639-128220
-X-HE-Meta: U2FsdGVkX19fnU/D+c6o7ZTuQb1yD/f3kx3E+YM8wpkch+3batV/vKhI9r6arLzlWV6stwlxuhDKd/K0r3pKSV8sfsnAVcjh0HH71ZSEZlifo7rwWEoPkE5S1iHVqT/IJ2NQLpT9gRWvsorPRc4h9ApJQua5nx0Ba9nE97FaV5GNjtyDFohxcNIBWaZRe2Ayb+pbvrobnrEefAlL0/KDZVaFiqO5/evpfBR0zQQj+U5+tUG27NKwcdvvYP+wVwvbwhsMGXUPbv/9RplMAGlk6+2ljacb84v6+9+zdjaqQjUmoNKsdQDXLxfOE3SwLcj2z0WimuMBzFPdEFsF7sS0G9WDySS2Khg6sMsu/gm+Mx8w+xbrjOLoLv0OSRvuqm1ivg0zXX4MObLY/DEF1tsnYQpMZJa4+ct1ZyPjuiVy1QmuX55q4ne2J7m4mlSmKD5uwtdaw+XS9ERQuLpZBto9gzJWOVkUZSJxZnDpS6autd4zApMj9VEHKrzX/K9ulXnSaKmVpfiau1PBeOV0CUCCzyPsbMSf6QtQPypRkCNpTdq2tqPu8wpWkBtap67+AraA8rdKU6BfSzhJci6Z/gMBazPoBW2LVaCaIL0qdrVbcuNHLduRFGIszIIe84KsG9cYOAi3SFwQmjkoAG3XdL33YMEGpq6YNQMStDuiyAZvD3k42pXMHmG5PdCsW1LdWu+1yDJGEuTs/Npb+DXTOeExfMnM8+zQ29kqCKqoc1hGrKeRm3ugjwcnHKInJdCuJrQxJ+S+KZBlKsYiQwQxNlxoRZreDFpFnk33Pw8mgidAC1FsWA+DU4GRCvTKol2NilgTJzSkLsAYnmidta7gsQGD/oLzk2qbpTeNrwH1ANspd2MHruZw50sfRQU3Y4oCyN11Eo+X+TS/WNHfI1UgNXjS+qOTEjFMbpGGIXkoArJe1wKsLDAc6I2euz915jsoVbrX+Tcex9qYSaJSFM2JBaV
- 6J1iKYfZ
- WaaTwq8d5omGtSwXKPSRXnP4JIXuFbcVqtkeLNdOMlYMn3h/q6PULJleJcxiwkdCM4DkLCif63FX7cC9PPrDZzuWEIHMYFqcEhtwI47yzEmTdtn2BvzcXiJtDqee53x9y1FBMdco4sZd0ID9ypZPRuRCPNxT8nBWeJx5+bch3U2OElK+n6Tsgd9PX68DZSmBaNoLOoEG7rGRnwZt0/DWtp6pPDoEpk0IR/RTquQaEkSo5+2jHl/v7bnqLfSrQSDrHUSmWCA3XJb0Xk4FELx4lrouVOvgbti+QRUcej/UOgAzYYFzsgaQKTB63kUCB6DK72oUVQMCC6GZhOZs=
+X-Rspamd-Queue-Id: 24C5340004
+X-HE-Tag: 1769156648-257329
+X-HE-Meta: U2FsdGVkX1+SqwA/FwbtE+PvOqyZm1iapXIWdcaDgZQr8nNIVbfsmXDDnSgmpJiMhjtJKlQAwQKSGT+c3ZzMwJZhek6IdtHcOEDmCg3vujmDhoMH9TiHVxdcXziaxltLB18Wcg0BIPgKPh3sB5W5lEcPd0mGw9aMSCvDmSaf06FZtHmjqVOnmVMBhBEStImHpOobfa/iRgx3ojgknENPkn23YzmgioELFdsDIrIji1Qt1tAI2WZtiVX8DdmBkrkpqL1nzY/ElJKUy2PmqCzdALER1oulbh+hZQfObAUCB/y71499pqKJYjyrwiH1hlnqqZ0V9/och1VNuXqrqjHeD38kjY4rbWlYTAasvG3LU8tHEGDVS4mioACxXeOxcgjlssEFUs8akc19IABiRl2NYuyWhASh7jUug7rBi8mPG6ycLKzNvt03XpbEVVQvCoAap4HpPtbJue4/nCeYCa2pFpNUGgoPiM4qIz2da4mEq1PZfK+D8dSiHCJGeJ3SWnZY8nGA0O3Y/5ZnBpQy/HXeW79PqJfNfdSGqCi/MLcn5fQ2wxMnUSTtGIBWSsN93e/Z66OTbEVD+7mDTjsTglUOQsgRB8P9coFPbd3BJHt/7+8Dii/QLFu1KmBGy/Fxff9jKJT6sKKZpdqS6XN1PkMf0emPrjTkHTYAkXubQSR99DUEIxJZPjvKZCGXPHsXDL/GHEJw5k5Le3SzRCyFCWhSl+4pq64j1XNeWwm7rMTaQa0a9yQ2j8F8H7MScE9FUhq3ClGmzV4KM7mcDjzZipdOj0xS3T3X9rqVP09rBV0KFKlajTbfhDdjWUC0rrKVMJmAMzOMS9U1uFpyc8mI9SbmP2UFO5OmNIRZQqtMQhAx4Vjg74sBCeZStQgvP5CTqyi9WUAEOcH0UsxH+OwklgekLMzHSc5ihj7xhnjCT/hdTNVgT8+G6bXQIZ2cRH1iozoa/7OFagXjMVPnDlvYJJB
+ 5SqhXb9t
+ vzYbVmnU1vGGiJK3m7Md+mT4wZITN+i7icPJomCdVOVOCqwaf/6x+bpPjoq7mdxJzRf1gMiLWgeiv6OCgzeale+k1H0fg8FlGvg/YIOAyL8HQ0TFt7Aw7WRpoh/oeId2HchP4Kurl4a6NID97iDFikSi32JLqoVkuzzmbi5Q5AP42YkwRyZZmqBDn6CeHNHEbKOvwToach7Cx9N078iMDqCRyZv77Kf++FYW4HkzD5/cgM+hAQakBYXrZW+CyNYkSqrl0ZAEc1P0MtMdVy/bp6EwkhlqB8JBEWfP7jht2iuL+flKKMqMPI0AWtA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,94 +128,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SMC-R buffers currently use 4KB page mapping for IB registration.
-Each page consumes one MTTE, which is inefficient and quickly depletes
-limited IB hardware resources for large buffers.
+On Fri, Jan 23, 2026 at 08:20:27AM +0000, Al Viro wrote:
+> On Fri, Jan 23, 2026 at 10:11:19AM +0200, Andy Shevchenko wrote:
+> 
+> > > Al Viro's fork just adds 8 commit on top of the upstream sparse repo.
+> > > Wouldn't it be possible to just merge those?
+> > 
+> > Ideally yes, but you also should kick the distro's asses to update it, and
+> > the sparse should bump its version...
+> > 
+> > > That would be much less confusing.
+> > 
+> > Seems Al become a sparse maintainer de facto :-)
+> 
+> Huh?  What happened to Chris?
 
-For virtual contiguous buffer, switch to vmalloc_huge() to leverage
-huge page support. By using larger page sizes during IB MR registration,
-we can drastically reduce MTTE consumption.
+I don't know, but upstream sparse haven't applied any solution for
+MODULE*("FOO") stuff, nor reaction on my ping in that discussion
+(I did it like week or so ago).
 
-For physically contiguous buffer, the entire buffer now requires only
-one single MTTE.
+> FWIW, I do have some followups to that series
+> sitting locally; need to get that finished (mostly for proper __VA_OPT__
+> handling; that got stalled on the lovely corner cases where the interplay
+> with side effects of macro expansion is really nasty - gcc and clang do
+> not agree and gcc is arguably buggy) and posted.
 
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
----
- net/smc/smc_core.c |  3 ++-
- net/smc/smc_ib.c   | 23 ++++++++++++++++++++---
- 2 files changed, 22 insertions(+), 4 deletions(-)
+Thanks for doing all this!
 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 6219db498976..8aca5dc54be7 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -2348,7 +2348,8 @@ static struct smc_buf_desc *smcr_new_buf_create(struct smc_link_group *lgr,
- 			goto out;
- 		fallthrough;	// try virtually contiguous buf
- 	case SMCR_VIRT_CONT_BUFS:
--		buf_desc->cpu_addr = vzalloc(PAGE_SIZE << buf_desc->order);
-+		buf_desc->cpu_addr = vmalloc_huge(PAGE_SIZE << buf_desc->order,
-+						  GFP_KERNEL | __GFP_ZERO);
- 		if (!buf_desc->cpu_addr)
- 			goto out;
- 		buf_desc->pages = NULL;
-diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-index 1154907c5c05..67211d44a1db 100644
---- a/net/smc/smc_ib.c
-+++ b/net/smc/smc_ib.c
-@@ -20,6 +20,7 @@
- #include <linux/wait.h>
- #include <linux/mutex.h>
- #include <linux/inetdevice.h>
-+#include <linux/vmalloc.h>
- #include <rdma/ib_verbs.h>
- #include <rdma/ib_cache.h>
- 
-@@ -697,6 +698,18 @@ void smc_ib_put_memory_region(struct ib_mr *mr)
- 	ib_dereg_mr(mr);
- }
- 
-+static inline int smc_buf_get_vm_page_order(struct smc_buf_desc *buf_slot)
-+{
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
-+	struct vm_struct *vm;
-+
-+	vm = find_vm_area(buf_slot->cpu_addr);
-+	return vm ? vm->page_order : 0;
-+#else
-+	return 0;
-+#endif
-+}
-+
- static int smc_ib_map_mr_sg(struct smc_buf_desc *buf_slot, u8 link_idx)
- {
- 	unsigned int offset = 0;
-@@ -706,8 +719,9 @@ static int smc_ib_map_mr_sg(struct smc_buf_desc *buf_slot, u8 link_idx)
- 	sg_num = ib_map_mr_sg(buf_slot->mr[link_idx],
- 			      buf_slot->sgt[link_idx].sgl,
- 			      buf_slot->sgt[link_idx].orig_nents,
--			      &offset, PAGE_SIZE);
--
-+			      &offset,
-+			      buf_slot->is_vm ? PAGE_SIZE << smc_buf_get_vm_page_order(buf_slot) :
-+			      PAGE_SIZE << buf_slot->order);
- 	return sg_num;
- }
- 
-@@ -719,7 +733,10 @@ int smc_ib_get_memory_region(struct ib_pd *pd, int access_flags,
- 		return 0; /* already done */
- 
- 	buf_slot->mr[link_idx] =
--		ib_alloc_mr(pd, IB_MR_TYPE_MEM_REG, 1 << buf_slot->order);
-+		ib_alloc_mr(pd, IB_MR_TYPE_MEM_REG,
-+			    buf_slot->is_vm ?
-+			    1 << (buf_slot->order - smc_buf_get_vm_page_order(buf_slot)) : 1);
-+
- 	if (IS_ERR(buf_slot->mr[link_idx])) {
- 		int rc;
- 
+> I've done quite a bit of sparse work over the years, but I would rather
+> prefer somebody else as overall maintainer, TYVM...
+
+
 -- 
-2.45.0
+With Best Regards,
+Andy Shevchenko
+
 
 
