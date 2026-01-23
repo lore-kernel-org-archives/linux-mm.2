@@ -4,108 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90B4DD77898
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 01:06:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71105D778B1
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 01:18:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C01FA6B056F; Fri, 23 Jan 2026 20:06:05 -0500 (EST)
+	id 902026B0570; Fri, 23 Jan 2026 20:18:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD94B6B0570; Fri, 23 Jan 2026 20:06:05 -0500 (EST)
+	id 884A66B0572; Fri, 23 Jan 2026 20:18:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE56F6B0571; Fri, 23 Jan 2026 20:06:05 -0500 (EST)
+	id 766696B0573; Fri, 23 Jan 2026 20:18:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 986D06B056F
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:06:05 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7970BB5445
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:40:00 +0000 (UTC)
-X-FDA: 84364697760.05.41F4F83
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 870B9100002
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:39:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KW+TgC3E;
-	spf=pass (imf05.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 61D746B0570
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:18:55 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8EF94D22F1
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:48:55 +0000 (UTC)
+X-FDA: 84364720230.20.F560A91
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D36D7140002
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:48:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IH9n5yfh;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769207998;
+	s=arc-20220608; t=1769208534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ISeqwZ3LCs+FdbftQL9N+R7jQ8une7cuCp1Me0wVDXk=;
-	b=VKecgzs6Pz/hgqU4/6GEynJVe8PP/Td4t6N8WtMU8gyVypAhQQPfGm5MFE+yFkS6R90ENk
-	WJMpZy90I+7ZiTqAotbBTunHNPXLCcW6jXhoovsNEfStkiK1PRlR/oHSVhL7TSIVT5gAh5
-	JPVGZgrkl6UTEjLHzrPcDQEdgzOau6E=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jVF2tmBG9ZVyWt8tDPMudTYSdHQAm+EgBpq4KTrshxc=;
+	b=EXRMRqmB+zb/9j5CYrOZZ4N3nF5KuFqBG/QyN/2NiENaz7HVv0UAPdiHRy5FASS0pxUasS
+	AvEVMbjoa0D+msAC10hC3q70hlMcvSRJZN+PWBSD6l7StH+kh6da4Oz1rF95mZsUvAZx9T
+	8JH/YqQQyxkKTRh8lQ7FJMNC+yDKVho=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KW+TgC3E;
-	spf=pass (imf05.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769207998; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IH9n5yfh;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769208534; a=rsa-sha256;
 	cv=none;
-	b=E0TUizyu5I6tG1dvezSl8s6GH8VJMCGl+c5iM73t1MzTOqlo73RO2A/KR5rRWeRmyZazW4
-	MapVM781BkXDtrYY+/KHkNg8PVTWHNFF+ZWHo+3wTk0o0wHTyeX/2I7KeGjQMCoMf4olHi
-	Op+E2ofmExyaO0Se4rYoiqhj3yDx+40=
+	b=AQZpS86AKJvNjvI576pCl2jAlKsWHYuH2nSDby4Y9wLv6xLAVULMD84yIqN9qFLT66kgtv
+	DyNbwRQ2IkIHKs25IvDXz0LFY/nAR8CvgetFQyv4H4c+b9KUGhvzxpfM4IvKwPpEv9iAlg
+	pS5BHxBSdYpNRf0LAejUSDjeh1YMmyY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1949B43670;
-	Fri, 23 Jan 2026 22:39:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153F6C4CEF1;
-	Fri, 23 Jan 2026 22:39:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769207995;
-	bh=vZX9tEDWCPt/E4k47aOA3Hjq/sisnm01br61YI26HFA=;
-	h=From:Date:Subject:To:Cc:From;
-	b=KW+TgC3EX6NjAY3+Ryc3F//h9F2cVHUFFGwc25TS4BJirCLW1xoMs+9IXsKNszYp6
-	 YfJMq9I1zNcFEkIvcwWmGO85QisDxV3GfXJt/6WWdmfmFhqzWEaqTmymHvg58ft5v9
-	 GBvfuld1ugdaqa1Ix5EOD0CeMPgyuqkrOFg9mkpehky9LK+0XNbD7+kW5f4Y3g8GoE
-	 x43TVTYiWZ2NpVGc10QZ1iQ8Bdst0+K9np4NhSIsOlu9t9224/IT5mxS0zZx1UJ5Hi
-	 6MFhe44bbqkOrJNd9UWkfEvIX6WxZ+Nsb2YLuhaYW2cPUhACfzbcgf26wzEcHVrkoA
-	 e+1vM0dx43/Qw==
-From: Mark Brown <broonie@kernel.org>
-Date: Fri, 23 Jan 2026 22:39:24 +0000
-Subject: [PATCH v2] selftests/mm: Have the harness run each test category
- separately
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	by tor.source.kernel.org (Postfix) with ESMTP id A9CFF600C4;
+	Fri, 23 Jan 2026 22:48:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2ABC4CEF1;
+	Fri, 23 Jan 2026 22:48:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769208532;
+	bh=wxD197rE+/TtE4bXLv/ENQIJmjflr7nik+q61gsCPG0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=IH9n5yfh1fh9c9KcsyWH/K4sWn/rfIoMa/QRgWK/5yCA84jcQhQCW0rvOsQnWO5OM
+	 7uuiemeF9bavSPx/6jEmax2D8LN72iocnE9vcbXOH2UclURVW/osuxLldFHLvkUCxr
+	 7wQQtHIuTkO8KwSHV5p3eNH/tscmFB+TFxGNfOeQ=
+Date: Fri, 23 Jan 2026 14:48:51 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn
+ <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>, Ingo
+ Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>, Sebastian Andrzej
+ Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v4 00/10] mm: add and use vma_assert_stabilised() helper
+Message-Id: <20260123144851.f752d80db3c8f700df31aa84@linux-foundation.org>
+In-Reply-To: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
+References: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-selftests-mm-run-suites-separately-v2-1-3e934edacbfa@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAJv4c2kC/42OSw6CQBBEr0Jm7Zj5hURX3sOwaIYGR/mleyASw
- t0d0AO4fJVKvVoFIwVkcc1WQTgHDkOfwJwy4R/QNyhDlVgYZXKl9UUytnVEjiy7TtLUS55C4pS
- PQBCxXWQOroIKtM29E2loJKzD+5Dciy/zVD7Rx315bzwCx4GW48Ws995PaNQ/wllLLcFZ62rly
- 9LC7YXUY3seqBHFtm0fMcek3+cAAAA=
-X-Change-ID: 20260119-selftests-mm-run-suites-separately-6a4dada136c4
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Leon Romanovsky <leon@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, Mark Brown <broonie@kernel.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15844; i=broonie@kernel.org;
- h=from:subject:message-id; bh=vZX9tEDWCPt/E4k47aOA3Hjq/sisnm01br61YI26HFA=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpc/i4Xd2nYLEbCxzebCyVOXW7b0zK52uohHVBF
- DJLyS9uLnCJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaXP4uAAKCRAk1otyXVSH
- 0PpnB/41lmCi2xtFXJggsXO3n6ljcUlpETtJLsDdGG/IoIJxsSjoWCtM+wntYPCWdjy2SdQJFLo
- R3y4j4CXeLz2xxCvgxe28rNEjr9qFGci77EMkZL3/jY7gHt3cff2OcAciD08h77hMC2gUFMpYaC
- wcNOo7u0OTe2Ud+M07rAX+EyOQIZ4dhMHfyjot5a+jRwtLeH3B5EENlvGfjdDOdc7rtBjBrdgke
- WF4sAMRZdDxPh8NY5V/AHsxatwM+xjRV7eia/0mKmdAQhsuaJBVTuP9/pvCRk4OgOHMM/M6FeOc
- Kcy8+7Mc2dMbAX0X/bL/87AMW8HJhKEDfrzQ9p8feNu1JlSH
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 870B9100002
-X-Stat-Signature: 8w6p38wenrbxikk4oam9idmgjxr319ud
+X-Rspamd-Server: rspam12
+X-Stat-Signature: aoedgyrhitjs4q7wgintn1jbxgb3g7jq
+X-Rspamd-Queue-Id: D36D7140002
 X-Rspam-User: 
-X-HE-Tag: 1769207998-420411
-X-HE-Meta: U2FsdGVkX18hmztNTfcW4CEUq8EpnFoQtIrQGdOC8pFqsZRtAx7HMLjG17Op9M4XI2ghXF/tb8eLmyYjMRhGKZlinVOosM2NH0oidlYa/5FX/iMG2qORxGNSrwnE+wFCJ9//jJDpDlI6QpPxkoYfCVBesk/IFG5ZRr0LCxcsYflK9Mw80Y0uFWwQ4vEqOlbU/VYD/lEsjsmKE1GCG26K7s1iorYcqhZIsjMiRECMT9gboIeiGGVuZE/rqY6rQy4a0XeFVvbM6xNEposVNbzYhniIb9Yd4wgz8LjiP9V9Y6tYXyEP8hPdpp0H6ht0p9Nx/2Wnx+M9YLRRaPe2ydPB1d1lLZrVeFS2XDq/XdzHMdSPugTr2edmYEWhFUxiXDesY/jRqazRZ9kRxPPEdxzLpNmKCUVKvwHj3axk5nv6U5qtxSF3gbinv2EzKjN1mXc1J+YXRC48hlk/LtrzKi6vfXgidsece4W8IeBG5yVhbpmzscZHqUVTDfOq4UjcpQ4/ecEijgzMyzI/42VRSdLa6e7icmWr8YEHTOOnLufyE2Khcn0HmWbHS2JM4YhuWFvuAHnKwHaZd7DVoFkcnlHQMFWuB5nyx0M9KI9XZ/oJ6REKpqe3LwSkGejt2NqcZjYBBSAT9hqU0yatQLjBpegi/IHVJiFX3JAysKGglK6ZbBSJUzEcstB6yJHTrSdHejXy06imN8FrYurmUswj2Kyq58g+qV9p4olo3vQce9fCmF0JGXrdyVBUTkAQE7j3BJ8Mv71YKYYlplW74MRVwvFQHnB+zF9ufN2csJQwwv6OcFMXWjGy/YJxeMDaG3GArcRLL2OzZXotXE3KKSz1/2rFjsK4UkL4dqmuBLGN/exP6eT3T6qLWQ/j6mAMag6QSabluOWZeNJQb4bgYMVyYF4btR3+SviyNrludtnc3jOYBIqL+w3lG3/faekBrfapHNz19Xwpp7ysIurFmsy9uZO
- 0enIianA
- sORvDL8OENO1+G3qGsQEMBfkZAS7NKEOAzWUVpPMmxdPF4B6RSVRNt4hbSaWQM9F0Ry15TqqJ6l7zgns3obTNspRP8VIsYP2+HAziE7+J3ve4ikmb1wW60ZqBccGeErJ6acZtacma6LkAXGkH3ZlrKTdMGQ67Qt5cj2QtNQ/ClNcOSQnDaoQWFBEsIk4NZmHSFJfEEiORhtZQO7AHTQiwlLu2sUx6Plv8K7KH7VFpOtj7qHyEM5W8+Cm58PzHn39ciz0IQm8uHLHsmSwrDH/mHGB2qYC5VQDcv82KaJo7cxS08qSP/4D8DatvLmdGpnGr7IabSSMGByyDpa0=
+X-HE-Tag: 1769208533-84346
+X-HE-Meta: U2FsdGVkX1+xvqdt0iL2XhteArC22wUYxGyH07Y0JnmrX5Zbhp91ksEVFPrQYMIch8QlqtJkSVKDpIyIoKW2YnuQd2IH1UKHjwBhReApHyeZ6pgLism2qZPeu9Jx2i5JgwTq56A1DgDYwOevMJrEvDsIKk4AbmHo3cgiPniuXzbCHUiHsR9j2T7arGuJIDOItctxDUHQZ8BiyFwAkYPBDHyEeyBc3PnQskKHltEsj9TP0dgtLNLKp/aQq8fXz24VF0MThKCDqsX41/1TJUZdePiF+f7uIxGF4Ct7KDuFh0HqIvyJWXp5oHqCnGUvNtqpmklzBrs8ATUmW3x70WZRbVUAbJly3m3Ulu3VM7FPboM+s62HxA6zpiR+P4k1+f3mScl2x/pCJHanb9Y8gvR6w1EiDjoYNWY0F8IZD/dKp9x99H5iVN/3BaIEMJIG+AyLp1yuoWn3cFCgNasX4hmT2HxfPZpsx5qvvIpCVP4sP+KYxZ+HqRo8rAV6ZIwDxs8SsILeMJ4ydJXSte/DIzkQvLsKqVEvSl0+xJBVVjhrwrhHsvQzfcJDc54quuYPv3qtVMbcEkHL0l0Qd9TPKE/qO3mAeObjIAs0Htl/S/kQcEGZq5R2EcbHMoi7SWxkywg86nQntkmqf5rnfoTcVWl0SA2WRMWLpHWmkC5y6S69OAfwY6ht5leUX+kwH3x0khSJXPz8RM016fdJGfXtRfnI89gDBBej/+7oQcQZL0S8HoAWZsQh1fRov780QI68MM8rmqsd+qSmBnbeg+BfymVUrbl59MzKtkIC1LxhuSjhxves0lN+idKLOMaMLAG366KkVs3bvzazUCp7NbIu8FhY4CZvxOduxID1EkuLO/RBnIYGmAO2E6a9p1JmS/9CZmOVK9FnjzF0AnTJlWu3TATqRBRExu25aoxXdvmEt8r5Ji5+LrjrpGp681VH2CciaBgJeKWHBYPrDJX/+vk/8lo
+ ZvuwWUpF
+ rb1uAw1XHZ7qhxD1Ac6LDCu11rRZHbR30dn/velIEmpEAVbR4CEzgtkDWNSNdW88DLNiTil9FfU6Gtd4dgVasVd27llPN96sqcLY0TPMb0RReNGRpwV3cAKHEabl31rQOggw4Y/fjfnW0SlyWDTPs3fktOrOl6enG8L+hcYmP+3TVtYiRQ8OT4Oi9u6T4UPTQTIK76wS/JCMeO5D5HhHanUJxLYcNXwewmheZ7BJa+jZKvykS5ysa21hGKOU3TpQS8rEqzQ7yiingBPRvzKNcuSJorWYtTf9Z0hHdx9VRPPx7i4W0vaOkd1SxNQ3njQljVyDMz5CWS4bEuX3Jj99TTD0fFoRjt5FR46VaJx4LVxqNQ2qgM9gtaFFvPPnMfH3NAQYV2AIy8g0nFH4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,441 +98,508 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-At present the mm selftests are integrated into the kselftest harness by
-having it run run_vmtest.sh and letting it pick it's default set of
-tests to invoke, rather than by telling the kselftest framework about
-each test program individually as is more standard.   This has some
-unfortunate interactions with the kselftest harness:
+On Fri, 23 Jan 2026 20:12:10 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
- - If any of the tests hangs the harness will kill the entire mm
-   selftests run rather than just the individual test, meaning no
-   further tests get run.
- - The timeout applied by the harness is applied to the whole run rather
-   than an individual test which frequently leads to the suite not being
-   completed in production testing.
+> This series first introduces a series of refactorings, intended to
+> significantly improve readability and abstraction of the code.
 
-Deploy a crude but effective mitigation for these issues by telling the
-kselftest framework to run each of the test categories that run_vmtests.sh
-has separately.  Since kselftest really wants to run test programs this
-is done by providing a trivial wrapper script for each categorty that
-invokes run_vmtest.sh, this is not a thing of great elegence but it is
-clear and simple.  Since run_vmtests.sh is doing runtime support
-detection, scenario enumeration and setup for many of the tests we can't
-consistently tell the framework about the individual test programs.
+I updated the mm-unstable branch with this, thanks.
 
-This has the side effect of reordering the tests, hopefully the testing
-is not overly sensitive to this.
+> v4:
+> * Propagated tags (thanks Vlastimil, Suren!)
+> * Updated reference count documentation in 2/10 as per Vlastimil, Suren.
+> * Updated 7/10 to update the references in the reference count comment from
+>   __vma_exit_locked() to __vma_end_exclude_readers().
+> * Renamed are_readers_excluded() to __vma_are_readers_excluded() as per
+>   Vlastimil.
+> * Several more comment updates as per Vlastimil, Suren in 3/10.
+> * Updated 3/10 commit message as per Suren.
+> * Updated __vma_refcount_put() to just return the newcnt as per Suren.
+> * Renamed __vma_refcount_put() to __vma_refcount_put_return() as per Vlastimil.
+> * Made __vma_refcount_put_return() __must_check too.
+> * Comment fixups on 4/10 as per Vlastimil.
+> * Renamed __vma_enter_exclusive_locked() and __vma_exit_exclusive_locked()
+>   to __vma_start_exclude_readers() and __vma_end_exclude_readers() as per
+>   Vlastimil in 6/10.
+> * Reworked comment as per Suren in 6/10.
+> * Avoided WARN_ON_ONCE() function invocation as per Suren in 6/10.
+> * s/ves->locked/ves->exclusive/ as per Suren in 7/10.
+> * Removed confusing asserts in 7/10 as per Suren.
+> * Changed from !ves.detached to ves.exclusive in 7/10 as per Suren.
+> * Updated comments in 7/10 as per Suren.
+> * Removed broken assert in __vma_end_exclude_readers() in 7/10 as per
+>   Vlastimil.
+> * Separated out vma_mark_detached() into static inline portion and unlikely
+>   exclude readers in 7/10 as per Vlastimil.
+> * Removed mm seq num output parameter from __is_vma_write_locked() as per
+>   Vlastimil in 8/10.
+> * Converted VM_BUG_ON_VMA() to VM_WARN_ON_ONCE() in 8/10 as per Vlastimil
+>   (though he said it in reply to a future commit :).
+> * Added helper function __vma_raw_mm_seqnum() to aid the conversion of
+>   __is_vma_write_locked() and updated the commit message accordingly.
+> * Moved mmap_assert_write_locked() to __vma_raw_mm_seqnum() is it is
+>   required for this access to be valid.
+> * Replaced VM_BUG_ON_VMA() with VM_WARN_ON_ONCE_VMA() on 9/10 as per
+>   Vlastiml.
+> * Renamed refs to refcnt in vma_assert_locked() to be consistent.
+> * Moved comment about reference count possible values above refcnt
+>   assignment so it's not just weirdly at the top of the function.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
-Changes in v2:
-- Add comments to Makefile and run_vmtests.sh about the need for
-  updates.
-- Link to v1: https://patch.msgid.link/20260120-selftests-mm-run-suites-separately-v1-1-a4334f0cbb3a@kernel.org
----
- tools/testing/selftests/mm/Makefile                | 33 +++++++++++++++++++++-
- tools/testing/selftests/mm/ksft_compaction.sh      |  4 +++
- tools/testing/selftests/mm/ksft_cow.sh             |  4 +++
- tools/testing/selftests/mm/ksft_gup_test.sh        |  4 +++
- tools/testing/selftests/mm/ksft_hmm.sh             |  4 +++
- tools/testing/selftests/mm/ksft_hugetlb.sh         |  4 +++
- tools/testing/selftests/mm/ksft_hugevm.sh          |  4 +++
- tools/testing/selftests/mm/ksft_ksm.sh             |  4 +++
- tools/testing/selftests/mm/ksft_ksm_numa.sh        |  4 +++
- tools/testing/selftests/mm/ksft_madv_guard.sh      |  4 +++
- tools/testing/selftests/mm/ksft_madv_populate.sh   |  4 +++
- tools/testing/selftests/mm/ksft_mdwe.sh            |  4 +++
- tools/testing/selftests/mm/ksft_memfd_secret.sh    |  4 +++
- tools/testing/selftests/mm/ksft_migration.sh       |  4 +++
- tools/testing/selftests/mm/ksft_mkdirty.sh         |  4 +++
- tools/testing/selftests/mm/ksft_mlock.sh           |  4 +++
- tools/testing/selftests/mm/ksft_mmap.sh            |  4 +++
- tools/testing/selftests/mm/ksft_mremap.sh          |  4 +++
- tools/testing/selftests/mm/ksft_page_frag.sh       |  4 +++
- tools/testing/selftests/mm/ksft_pagemap.sh         |  4 +++
- tools/testing/selftests/mm/ksft_pfnmap.sh          |  4 +++
- tools/testing/selftests/mm/ksft_pkey.sh            |  4 +++
- tools/testing/selftests/mm/ksft_process_madv.sh    |  4 +++
- .../testing/selftests/mm/ksft_process_mrelease.sh  |  4 +++
- tools/testing/selftests/mm/ksft_rmap.sh            |  4 +++
- tools/testing/selftests/mm/ksft_soft_dirty.sh      |  4 +++
- tools/testing/selftests/mm/ksft_thp.sh             |  4 +++
- tools/testing/selftests/mm/ksft_userfaultfd.sh     |  4 +++
- tools/testing/selftests/mm/ksft_vma_merge.sh       |  4 +++
- tools/testing/selftests/mm/ksft_vmalloc.sh         |  4 +++
- tools/testing/selftests/mm/run_vmtests.sh          |  4 +++
- 31 files changed, 152 insertions(+), 1 deletion(-)
+Below is how v4 altered mm.git:
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index eaf9312097f7..aa4951e8cb57 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -1,6 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0
- # Makefile for mm selftests
- 
-+# IMPORTANT: If you add a new test CATEGORY please add a simple wrapper
-+# script so kunit knows to run it, and add it to the list below.
-+# If you do not YOUR TESTS WILL NOT RUN IN THE CI.
-+
- LOCAL_HDRS += $(selfdir)/mm/local_config.h $(top_srcdir)/mm/gup_test.h
- LOCAL_HDRS += $(selfdir)/mm/mseal_helpers.h
- 
-@@ -146,7 +150,33 @@ endif
- TEST_GEN_FILES += write_to_hugetlbfs
- endif
- 
--TEST_PROGS := run_vmtests.sh
-+TEST_PROGS += ksft_compaction.sh
-+TEST_PROGS += ksft_cow.sh
-+TEST_PROGS += ksft_gup_test.sh
-+TEST_PROGS += ksft_hmm.sh
-+TEST_PROGS += ksft_hugetlb.sh
-+TEST_PROGS += ksft_hugevm.sh
-+TEST_PROGS += ksft_ksm.sh
-+TEST_PROGS += ksft_ksm_numa.sh
-+TEST_PROGS += ksft_madv_guard.sh
-+TEST_PROGS += ksft_madv_populate.sh
-+TEST_PROGS += ksft_memfd_secret.sh
-+TEST_PROGS += ksft_migration.sh
-+TEST_PROGS += ksft_mkdirty.sh
-+TEST_PROGS += ksft_mlock.sh
-+TEST_PROGS += ksft_mmap.sh
-+TEST_PROGS += ksft_mremap.sh
-+TEST_PROGS += ksft_pagemap.sh
-+TEST_PROGS += ksft_pfnmap.sh
-+TEST_PROGS += ksft_pkey.sh
-+TEST_PROGS += ksft_process_madv.sh
-+TEST_PROGS += ksft_process_mrelease.sh
-+TEST_PROGS += ksft_rmap.sh
-+TEST_PROGS += ksft_soft_dirty.sh
-+TEST_PROGS += ksft_thp.sh
-+TEST_PROGS += ksft_userfaultfd.sh
-+TEST_PROGS += ksft_vma_merge.sh
-+TEST_PROGS += ksft_vmalloc.sh
- 
- TEST_FILES := test_vmalloc.sh
- TEST_FILES += test_hmm.sh
-@@ -154,6 +184,7 @@ TEST_FILES += va_high_addr_switch.sh
- TEST_FILES += charge_reserved_hugetlb.sh
- TEST_FILES += hugetlb_reparenting_test.sh
- TEST_FILES += test_page_frag.sh
-+TEST_FILES += run_vmtests.sh
- 
- # required by charge_reserved_hugetlb.sh
- TEST_FILES += write_hugetlb_memory.sh
-diff --git a/tools/testing/selftests/mm/ksft_compaction.sh b/tools/testing/selftests/mm/ksft_compaction.sh
-new file mode 100755
-index 000000000000..1f38f4228a34
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_compaction.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t compaction
-diff --git a/tools/testing/selftests/mm/ksft_cow.sh b/tools/testing/selftests/mm/ksft_cow.sh
-new file mode 100755
-index 000000000000..1e03a95fd5f6
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_cow.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t cow
-diff --git a/tools/testing/selftests/mm/ksft_gup_test.sh b/tools/testing/selftests/mm/ksft_gup_test.sh
-new file mode 100755
-index 000000000000..09e586d2f446
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_gup_test.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t gup_test
-diff --git a/tools/testing/selftests/mm/ksft_hmm.sh b/tools/testing/selftests/mm/ksft_hmm.sh
-new file mode 100755
-index 000000000000..0a7b04f454d5
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_hmm.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t hmm
-diff --git a/tools/testing/selftests/mm/ksft_hugetlb.sh b/tools/testing/selftests/mm/ksft_hugetlb.sh
-new file mode 100755
-index 000000000000..4f92974a4eb5
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_hugetlb.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t hugetlb
-diff --git a/tools/testing/selftests/mm/ksft_hugevm.sh b/tools/testing/selftests/mm/ksft_hugevm.sh
-new file mode 100755
-index 000000000000..377967fe9c91
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_hugevm.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t hugevm
-diff --git a/tools/testing/selftests/mm/ksft_ksm.sh b/tools/testing/selftests/mm/ksft_ksm.sh
-new file mode 100755
-index 000000000000..f6a6fe13a3b0
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_ksm.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t ksm
-diff --git a/tools/testing/selftests/mm/ksft_ksm_numa.sh b/tools/testing/selftests/mm/ksft_ksm_numa.sh
-new file mode 100755
-index 000000000000..144b41a5e3bb
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_ksm_numa.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t ksm_numa
-diff --git a/tools/testing/selftests/mm/ksft_madv_guard.sh b/tools/testing/selftests/mm/ksft_madv_guard.sh
-new file mode 100755
-index 000000000000..2d810c049182
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_madv_guard.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t madv_guard
-diff --git a/tools/testing/selftests/mm/ksft_madv_populate.sh b/tools/testing/selftests/mm/ksft_madv_populate.sh
-new file mode 100755
-index 000000000000..127e22ed02c4
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_madv_populate.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t madv_populate
-diff --git a/tools/testing/selftests/mm/ksft_mdwe.sh b/tools/testing/selftests/mm/ksft_mdwe.sh
-new file mode 100755
-index 000000000000..3dcae95ddabc
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_mdwe.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t mdwe
-diff --git a/tools/testing/selftests/mm/ksft_memfd_secret.sh b/tools/testing/selftests/mm/ksft_memfd_secret.sh
-new file mode 100755
-index 000000000000..56e82dd648a7
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_memfd_secret.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t memfd_secret
-diff --git a/tools/testing/selftests/mm/ksft_migration.sh b/tools/testing/selftests/mm/ksft_migration.sh
-new file mode 100755
-index 000000000000..7cf37c72d26e
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_migration.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t migration
-diff --git a/tools/testing/selftests/mm/ksft_mkdirty.sh b/tools/testing/selftests/mm/ksft_mkdirty.sh
-new file mode 100755
-index 000000000000..dd6332df3204
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_mkdirty.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t mkdirty
-diff --git a/tools/testing/selftests/mm/ksft_mlock.sh b/tools/testing/selftests/mm/ksft_mlock.sh
-new file mode 100755
-index 000000000000..1e25ab9fdc8b
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_mlock.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t mlock
-diff --git a/tools/testing/selftests/mm/ksft_mmap.sh b/tools/testing/selftests/mm/ksft_mmap.sh
-new file mode 100755
-index 000000000000..2c3137ae8bc8
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_mmap.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t mmap
-diff --git a/tools/testing/selftests/mm/ksft_mremap.sh b/tools/testing/selftests/mm/ksft_mremap.sh
-new file mode 100755
-index 000000000000..4101670d0e19
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_mremap.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t mremap
-diff --git a/tools/testing/selftests/mm/ksft_page_frag.sh b/tools/testing/selftests/mm/ksft_page_frag.sh
-new file mode 100755
-index 000000000000..216e20ffe390
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_page_frag.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t page_frag
-diff --git a/tools/testing/selftests/mm/ksft_pagemap.sh b/tools/testing/selftests/mm/ksft_pagemap.sh
-new file mode 100755
-index 000000000000..b8d270fdd43e
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_pagemap.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t pagemap
-diff --git a/tools/testing/selftests/mm/ksft_pfnmap.sh b/tools/testing/selftests/mm/ksft_pfnmap.sh
-new file mode 100755
-index 000000000000..75758de968bb
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_pfnmap.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t pfnmap
-diff --git a/tools/testing/selftests/mm/ksft_pkey.sh b/tools/testing/selftests/mm/ksft_pkey.sh
-new file mode 100755
-index 000000000000..ac944233b7f7
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_pkey.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t pkey
-diff --git a/tools/testing/selftests/mm/ksft_process_madv.sh b/tools/testing/selftests/mm/ksft_process_madv.sh
-new file mode 100755
-index 000000000000..2c3137ae8bc8
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_process_madv.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t mmap
-diff --git a/tools/testing/selftests/mm/ksft_process_mrelease.sh b/tools/testing/selftests/mm/ksft_process_mrelease.sh
-new file mode 100755
-index 000000000000..f560aa5e4218
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_process_mrelease.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t process_mrelease
-diff --git a/tools/testing/selftests/mm/ksft_rmap.sh b/tools/testing/selftests/mm/ksft_rmap.sh
-new file mode 100755
-index 000000000000..974742b9b02f
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_rmap.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t rmap
-diff --git a/tools/testing/selftests/mm/ksft_soft_dirty.sh b/tools/testing/selftests/mm/ksft_soft_dirty.sh
-new file mode 100755
-index 000000000000..d160d7fea0a9
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_soft_dirty.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t soft_dirty
-diff --git a/tools/testing/selftests/mm/ksft_thp.sh b/tools/testing/selftests/mm/ksft_thp.sh
-new file mode 100755
-index 000000000000..95321aecabdb
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_thp.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t thp
-diff --git a/tools/testing/selftests/mm/ksft_userfaultfd.sh b/tools/testing/selftests/mm/ksft_userfaultfd.sh
-new file mode 100755
-index 000000000000..92667abde6c6
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_userfaultfd.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t userfaultfd
-diff --git a/tools/testing/selftests/mm/ksft_vma_merge.sh b/tools/testing/selftests/mm/ksft_vma_merge.sh
-new file mode 100755
-index 000000000000..68449d840680
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_vma_merge.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t vma_merge
-diff --git a/tools/testing/selftests/mm/ksft_vmalloc.sh b/tools/testing/selftests/mm/ksft_vmalloc.sh
-new file mode 100755
-index 000000000000..0b5019a76612
---- /dev/null
-+++ b/tools/testing/selftests/mm/ksft_vmalloc.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./run_vmtests.sh -t vmalloc
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index d9173f2312b7..1b4546324ba7 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -2,6 +2,10 @@
- # SPDX-License-Identifier: GPL-2.0
- # Please run as root
- 
-+# IMPORTANT: If you add a new test CATEGORY please add a simple wrapper
-+# script so kunit knows to run it, and add it to the list below.
-+# If you do not YOUR TESTS WILL NOT RUN IN THE CI.
-+
- # Kselftest framework requirement - SKIP code is 4.
- ksft_skip=4
- 
 
----
-base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
-change-id: 20260119-selftests-mm-run-suites-separately-6a4dada136c4
-
-Best regards,
---  
-Mark Brown <broonie@kernel.org>
+--- a/include/linux/mmap_lock.h~b
++++ a/include/linux/mmap_lock.h
+@@ -87,10 +87,11 @@ static inline void mmap_assert_write_loc
+  *
+  * Write locks are acquired exclusively per-VMA, but released in a shared
+  * fashion, that is upon vma_end_write_all(), we update the mmap's seqcount such
+- * that write lock is de-acquired.
++ * that write lock is released.
+  *
+  * We therefore cannot track write locks per-VMA, nor do we try. Mitigating this
+- * is the fact that, of course, we do lockdep-track the mmap lock rwsem.
++ * is the fact that, of course, we do lockdep-track the mmap lock rwsem which
++ * must be held when taking a VMA write lock.
+  *
+  * We do, however, want to indicate that during either acquisition of a VMA
+  * write lock or detachment of a VMA that we require the lock held be exclusive,
+@@ -152,14 +153,9 @@ static inline void vma_lock_init(struct
+ 	vma->vm_lock_seq = UINT_MAX;
+ }
+ 
+-/**
+- * are_readers_excluded() - Determine whether @refcnt describes a VMA which has
+- * excluded all VMA read locks.
+- * @refcnt: The VMA reference count obtained from vm_area_struct->vm_refcnt.
+- *
+- * We may be raced by other readers temporarily incrementing the reference
+- * count, though the race window is very small, this might cause spurious
+- * wakeups.
++/*
++ * This function determines whether the input VMA reference count describes a
++ * VMA which has excluded all VMA read locks.
+  *
+  * In the case of a detached VMA, we may incorrectly indicate that readers are
+  * excluded when one remains, because in that scenario we target a refcount of
+@@ -170,7 +166,7 @@ static inline void vma_lock_init(struct
+  *
+  * Returns: true if readers are excluded, false otherwise.
+  */
+-static inline bool are_readers_excluded(int refcnt)
++static inline bool __vma_are_readers_excluded(int refcnt)
+ {
+ 	/*
+ 	 * See the comment describing the vm_area_struct->vm_refcnt field for
+@@ -180,15 +176,21 @@ static inline bool are_readers_excluded(
+ 		refcnt <= VM_REFCNT_EXCLUDE_READERS_FLAG + 1;
+ }
+ 
+-static inline bool __vma_refcount_put(struct vm_area_struct *vma, int *refcnt)
++/*
++ * Actually decrement the VMA reference count.
++ *
++ * The function returns the reference count as it was immediately after the
++ * decrement took place. If it returns zero, the VMA is now detached.
++ */
++static inline __must_check unsigned int
++__vma_refcount_put_return(struct vm_area_struct *vma)
+ {
+ 	int oldcnt;
+-	bool detached;
+ 
+-	detached = __refcount_dec_and_test(&vma->vm_refcnt, &oldcnt);
+-	if (refcnt)
+-		*refcnt = oldcnt - 1;
+-	return detached;
++	if (__refcount_dec_and_test(&vma->vm_refcnt, &oldcnt))
++		return 0;
++
++	return oldcnt - 1;
+ }
+ 
+ /**
+@@ -203,17 +205,21 @@ static inline void vma_refcount_put(stru
+ {
+ 	/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt. */
+ 	struct mm_struct *mm = vma->vm_mm;
+-	int refcnt;
+-	bool detached;
++	int newcnt;
+ 
+ 	__vma_lockdep_release_read(vma);
+-	detached = __vma_refcount_put(vma, &refcnt);
++	newcnt = __vma_refcount_put_return(vma);
++
+ 	/*
+-	 * __vma_enter_exclusive_locked() may be sleeping waiting for readers to
++	 * __vma_start_exclude_readers() may be sleeping waiting for readers to
+ 	 * drop their reference count, so wake it up if we were the last reader
+ 	 * blocking it from being acquired.
++	 *
++	 * We may be raced by other readers temporarily incrementing the
++	 * reference count, though the race window is very small, this might
++	 * cause spurious wakeups.
+ 	 */
+-	if (!detached && are_readers_excluded(refcnt))
++	if (newcnt && __vma_are_readers_excluded(newcnt))
+ 		rcuwait_wake_up(&mm->vma_writer_wait);
+ }
+ 
+@@ -252,6 +258,15 @@ static inline void vma_end_read(struct v
+ 	vma_refcount_put(vma);
+ }
+ 
++static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
++{
++	const struct mm_struct *mm = vma->vm_mm;
++
++	/* We must hold an exclusive write lock for this access to be valid. */
++	mmap_assert_write_locked(vma->vm_mm);
++	return mm->mm_lock_seq.sequence;
++}
++
+ /*
+  * Determine whether a VMA is write-locked. Must be invoked ONLY if the mmap
+  * write lock is held.
+@@ -260,22 +275,13 @@ static inline void vma_end_read(struct v
+  *
+  * Note that mm_lock_seq is updated only if the VMA is NOT write-locked.
+  */
+-static inline bool __is_vma_write_locked(struct vm_area_struct *vma,
+-					 unsigned int *mm_lock_seq)
++static inline bool __is_vma_write_locked(struct vm_area_struct *vma)
+ {
+-	struct mm_struct *mm = vma->vm_mm;
+-	const unsigned int seq = mm->mm_lock_seq.sequence;
+-
+-	mmap_assert_write_locked(mm);
+-
+ 	/*
+ 	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
+ 	 * mm->mm_lock_seq can't be concurrently modified.
+ 	 */
+-	if (vma->vm_lock_seq == seq)
+-		return true;
+-	*mm_lock_seq = seq;
+-	return false;
++	return vma->vm_lock_seq == __vma_raw_mm_seqnum(vma);
+ }
+ 
+ int __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq,
+@@ -288,12 +294,10 @@ int __vma_start_write(struct vm_area_str
+  */
+ static inline void vma_start_write(struct vm_area_struct *vma)
+ {
+-	unsigned int mm_lock_seq;
+-
+-	if (__is_vma_write_locked(vma, &mm_lock_seq))
++	if (__is_vma_write_locked(vma))
+ 		return;
+ 
+-	__vma_start_write(vma, mm_lock_seq, TASK_UNINTERRUPTIBLE);
++	__vma_start_write(vma, __vma_raw_mm_seqnum(vma), TASK_UNINTERRUPTIBLE);
+ }
+ 
+ /**
+@@ -312,11 +316,10 @@ static inline void vma_start_write(struc
+ static inline __must_check
+ int vma_start_write_killable(struct vm_area_struct *vma)
+ {
+-	unsigned int mm_lock_seq;
+-
+-	if (__is_vma_write_locked(vma, &mm_lock_seq))
++	if (__is_vma_write_locked(vma))
+ 		return 0;
+-	return __vma_start_write(vma, mm_lock_seq, TASK_KILLABLE);
++
++	return __vma_start_write(vma, __vma_raw_mm_seqnum(vma), TASK_KILLABLE);
+ }
+ 
+ /**
+@@ -325,9 +328,7 @@ int vma_start_write_killable(struct vm_a
+  */
+ static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+ {
+-	unsigned int mm_lock_seq;
+-
+-	VM_BUG_ON_VMA(!__is_vma_write_locked(vma, &mm_lock_seq), vma);
++	VM_WARN_ON_ONCE_VMA(!__is_vma_write_locked(vma), vma);
+ }
+ 
+ /**
+@@ -337,12 +338,7 @@ static inline void vma_assert_write_lock
+  */
+ static inline void vma_assert_locked(struct vm_area_struct *vma)
+ {
+-	unsigned int refs;
+-
+-	/*
+-	 * See the comment describing the vm_area_struct->vm_refcnt field for
+-	 * details of possible refcnt values.
+-	 */
++	unsigned int refcnt;
+ 
+ 	/*
+ 	 * If read-locked or currently excluding readers, then the VMA is
+@@ -353,18 +349,22 @@ static inline void vma_assert_locked(str
+ 		return;
+ #endif
+ 
+-	refs = refcount_read(&vma->vm_refcnt);
++	/*
++	 * See the comment describing the vm_area_struct->vm_refcnt field for
++	 * details of possible refcnt values.
++	 */
++	refcnt = refcount_read(&vma->vm_refcnt);
+ 
+ 	/*
+ 	 * In this case we're either read-locked, write-locked with temporary
+ 	 * readers, or in the midst of excluding readers, all of which means
+ 	 * we're locked.
+ 	 */
+-	if (refs > 1)
++	if (refcnt > 1)
+ 		return;
+ 
+ 	/* It is a bug for the VMA to be detached here. */
+-	VM_BUG_ON_VMA(!refs, vma);
++	VM_WARN_ON_ONCE_VMA(!refcnt, vma);
+ 
+ 	/*
+ 	 * OK, the VMA has a reference count of 1 which means it is either
+@@ -447,7 +447,28 @@ static inline void vma_mark_attached(str
+ 	refcount_set_release(&vma->vm_refcnt, 1);
+ }
+ 
+-void vma_mark_detached(struct vm_area_struct *vma);
++void __vma_exclude_readers_for_detach(struct vm_area_struct *vma);
++
++static inline void vma_mark_detached(struct vm_area_struct *vma)
++{
++	vma_assert_write_locked(vma);
++	vma_assert_attached(vma);
++
++	/*
++	 * The VMA still being attached (refcnt > 0) - is unlikely, because the
++	 * vma has been already write-locked and readers can increment vm_refcnt
++	 * only temporarily before they check vm_lock_seq, realize the vma is
++	 * locked and drop back the vm_refcnt. That is a narrow window for
++	 * observing a raised vm_refcnt.
++	 *
++	 * See the comment describing the vm_area_struct->vm_refcnt field for
++	 * details of possible refcnt values.
++	 */
++	if (likely(!__vma_refcount_put_return(vma)))
++		return;
++
++	__vma_exclude_readers_for_detach(vma);
++}
+ 
+ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+ 					  unsigned long address);
+--- a/include/linux/mm_types.h~b
++++ a/include/linux/mm_types.h
+@@ -753,7 +753,7 @@ static inline struct anon_vma_name *anon
+ #endif
+ 
+ /*
+- * WHile __vma_enter_locked() is working to ensure are no read-locks held on a
++ * While __vma_enter_locked() is working to ensure are no read-locks held on a
+  * VMA (either while acquiring a VMA write lock or marking a VMA detached) we
+  * set the VM_REFCNT_EXCLUDE_READERS_FLAG in vma->vm_refcnt to indiciate to
+  * vma_start_read() that the reference count should be left alone.
+@@ -991,16 +991,19 @@ struct vm_area_struct {
+ #endif
+ #ifdef CONFIG_PER_VMA_LOCK
+ 	/*
+-	 * Used to keep track of the number of references taken by VMA read or
+-	 * write locks. May have the VM_REFCNT_EXCLUDE_READERS_FLAG set
+-	 * indicating that a thread has entered __vma_enter_locked() and is
+-	 * waiting on any outstanding read locks to exit.
++	 * Used to keep track of firstly, whether the VMA is attached, secondly,
++	 * if attached, how many read locks are taken, and thirdly, if the
++	 * VM_REFCNT_EXCLUDE_READERS_FLAG is set, whether any read locks held
++	 * are currently in the process of being excluded.
+ 	 *
+ 	 * This value can be equal to:
+ 	 *
+-	 * 0 - Detached.
++	 * 0 - Detached. IMPORTANT: when the refcnt is zero, readers cannot
++	 * increment it.
+ 	 *
+-	 * 1 - Unlocked or write-locked.
++	 * 1 - Attached and either unlocked or write-locked. Write locks are
++	 * identified via __is_vma_write_locked() which checks for equality of
++	 * vma->vm_lock_seq and mm->mm_lock_seq.
+ 	 *
+ 	 * >1, < VM_REFCNT_EXCLUDE_READERS_FLAG - Read-locked or (unlikely)
+ 	 * write-locked with other threads having temporarily incremented the
+@@ -1008,19 +1011,19 @@ struct vm_area_struct {
+ 	 * decrementing it again.
+ 	 *
+ 	 * VM_REFCNT_EXCLUDE_READERS_FLAG - Detached, pending
+-	 * __vma_exit_locked() completion which will decrement the reference
+-	 * count to zero. IMPORTANT - at this stage no further readers can
+-	 * increment the reference count. It can only be reduced.
+-	 *
+-	 * VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - Either an attached VMA pending
+-	 * __vma_exit_locked() completion which will decrement the reference
+-	 * count to one, OR a detached VMA waiting on a single spurious reader
+-	 * to decrement reference count. IMPORTANT - as above, no further
+-	 * readers can increment the reference count.
+-	 *
+-	 * > VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - VMA is waiting on readers,
+-	 * whether it is attempting to acquire a write lock or attempting to
+-	 * detach. IMPORTANT - as above, no ruther readers can increment the
++	 * __vma_exit_exclusive_locked() completion which will decrement the
++	 * reference count to zero. IMPORTANT - at this stage no further readers
++	 * can increment the reference count. It can only be reduced.
++	 *
++	 * VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - A thread is either write-locking
++	 * an attached VMA and has yet to invoke __vma_exit_exclusive_locked(),
++	 * OR a thread is detaching a VMA and is waiting on a single spurious
++	 * reader in order to decrement the reference count. IMPORTANT - as
++	 * above, no further readers can increment the reference count.
++	 *
++	 * > VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - A thread is either
++	 * write-locking or detaching a VMA is waiting on readers to
++	 * exit. IMPORTANT - as above, no ruther readers can increment the
+ 	 * reference count.
+ 	 *
+ 	 * NOTE: Unstable RCU readers are allowed to read this.
+--- a/mm/mmap_lock.c~b
++++ a/mm/mmap_lock.c
+@@ -53,6 +53,7 @@ struct vma_exclude_readers_state {
+ 	int state; /* TASK_KILLABLE or TASK_UNINTERRUPTIBLE. */
+ 	bool detaching;
+ 
++	/* Output parameters. */
+ 	bool detached;
+ 	bool exclusive; /* Are we exclusively locked? */
+ };
+@@ -60,15 +61,12 @@ struct vma_exclude_readers_state {
+ /*
+  * Now that all readers have been evicted, mark the VMA as being out of the
+  * 'exclude readers' state.
+- *
+- * Returns true if the VMA is now detached, otherwise false.
+  */
+-static void __vma_exit_exclusive_locked(struct vma_exclude_readers_state *ves)
++static void __vma_end_exclude_readers(struct vma_exclude_readers_state *ves)
+ {
+ 	struct vm_area_struct *vma = ves->vma;
+ 
+ 	VM_WARN_ON_ONCE(ves->detached);
+-	VM_WARN_ON_ONCE(!ves->exclusive);
+ 
+ 	ves->detached = refcount_sub_and_test(VM_REFCNT_EXCLUDE_READERS_FLAG,
+ 					      &vma->vm_refcnt);
+@@ -93,27 +91,24 @@ static unsigned int get_target_refcnt(st
+  * where we wish the thread to sleep uninterruptibly or TASK_KILLABLE if a fatal
+  * signal is permitted to kill it.
+  *
+- * The function sets the ves->locked parameter to true if an exclusive lock was
+- * acquired, or false if the VMA was detached or an error arose on wait.
++ * The function sets the ves->exclusive parameter to true if readers were
++ * excluded, or false if the VMA was detached or an error arose on wait.
+  *
+  * If the function indicates an exclusive lock was acquired via ves->exclusive
+- * (or equivalently, returning 0 with !ves->detached), the caller is required to
+- * invoke __vma_exit_exclusive_locked() once the exclusive state is no longer
+- * required.
++ * the caller is required to invoke __vma_end_exclude_readers() once the
++ * exclusive state is no longer required.
+  *
+  * If ves->state is set to something other than TASK_UNINTERRUPTIBLE, the
+  * function may also return -EINTR to indicate a fatal signal was received while
+  * waiting.
+  */
+-static int __vma_enter_exclusive_locked(struct vma_exclude_readers_state *ves)
++static int __vma_start_exclude_readers(struct vma_exclude_readers_state *ves)
+ {
+ 	struct vm_area_struct *vma = ves->vma;
+ 	unsigned int tgt_refcnt = get_target_refcnt(ves);
+ 	int err = 0;
+ 
+ 	mmap_assert_write_locked(vma->vm_mm);
+-	VM_WARN_ON_ONCE(ves->detached);
+-	VM_WARN_ON_ONCE(ves->exclusive);
+ 
+ 	/*
+ 	 * If vma is detached then only vma_mark_attached() can raise the
+@@ -132,7 +127,7 @@ static int __vma_enter_exclusive_locked(
+ 		   refcount_read(&vma->vm_refcnt) == tgt_refcnt,
+ 		   ves->state);
+ 	if (err) {
+-		__vma_exit_exclusive_locked(ves);
++		__vma_end_exclude_readers(ves);
+ 		return err;
+ 	}
+ 
+@@ -150,7 +145,7 @@ int __vma_start_write(struct vm_area_str
+ 		.state = state,
+ 	};
+ 
+-	err = __vma_enter_exclusive_locked(&ves);
++	err = __vma_start_exclude_readers(&ves);
+ 	if (err) {
+ 		WARN_ON_ONCE(ves.detached);
+ 		return err;
+@@ -164,8 +159,8 @@ int __vma_start_write(struct vm_area_str
+ 	 */
+ 	WRITE_ONCE(vma->vm_lock_seq, mm_lock_seq);
+ 
+-	if (!ves.detached) {
+-		__vma_exit_exclusive_locked(&ves);
++	if (ves.exclusive) {
++		__vma_end_exclude_readers(&ves);
+ 		/* VMA should remain attached. */
+ 		WARN_ON_ONCE(ves.detached);
+ 	}
+@@ -174,7 +169,7 @@ int __vma_start_write(struct vm_area_str
+ }
+ EXPORT_SYMBOL_GPL(__vma_start_write);
+ 
+-void vma_mark_detached(struct vm_area_struct *vma)
++void __vma_exclude_readers_for_detach(struct vm_area_struct *vma)
+ {
+ 	struct vma_exclude_readers_state ves = {
+ 		.vma = vma,
+@@ -183,16 +178,6 @@ void vma_mark_detached(struct vm_area_st
+ 	};
+ 	int err;
+ 
+-	vma_assert_write_locked(vma);
+-	vma_assert_attached(vma);
+-
+-	/*
+-	 * See the comment describing the vm_area_struct->vm_refcnt field for
+-	 * details of possible refcnt values.
+-	 */
+-	if (likely(__vma_refcount_put(vma, NULL)))
+-		return;
+-
+ 	/*
+ 	 * Wait until the VMA is detached with no readers. Since we hold the VMA
+ 	 * write lock, the only read locks that might be present are those from
+@@ -200,13 +185,13 @@ void vma_mark_detached(struct vm_area_st
+ 	 * reference count before realising the write lock is held and
+ 	 * decrementing it.
+ 	 */
+-	err = __vma_enter_exclusive_locked(&ves);
+-	if (!err && !ves.detached) {
++	err = __vma_start_exclude_readers(&ves);
++	if (!err && ves.exclusive) {
+ 		/*
+ 		 * Once this is complete, no readers can increment the
+ 		 * reference count, and the VMA is marked detached.
+ 		 */
+-		__vma_exit_exclusive_locked(&ves);
++		__vma_end_exclude_readers(&ves);
+ 	}
+ 	/* If an error arose but we were detached anyway, we don't care. */
+ 	WARN_ON_ONCE(!ves.detached);
+_
 
 
