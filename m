@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C408FD625E5
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:53:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C34DDD62602
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:53:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3565C6B03F5; Fri, 23 Jan 2026 01:53:21 -0500 (EST)
+	id 8F5FC6B03F8; Fri, 23 Jan 2026 01:53:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EBF96B03F8; Fri, 23 Jan 2026 01:53:21 -0500 (EST)
+	id 8B4E16B03FA; Fri, 23 Jan 2026 01:53:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CF276B03F9; Fri, 23 Jan 2026 01:53:21 -0500 (EST)
+	id 6A2EB6B03FB; Fri, 23 Jan 2026 01:53:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 069C86B03F5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5660C6B03F8
 	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:53:21 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B5E5C1A032A
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0296D160363
 	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:20 +0000 (UTC)
-X-FDA: 84362312160.05.66B4A6D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 89B74100005
+X-FDA: 84362312202.26.04BB6F9
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C931F1C0002
 	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:18 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LnxYZGzr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=f5V8qRMe;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oW6Bsr69;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ZlJuK/Q8";
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Gi3T+Xls;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Q9pnIhD8;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Gi3T+Xls;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Q9pnIhD8;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769151198;
+	s=arc-20220608; t=1769151199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UkJZc9VVDwbCOE5N88ecWISWdsb2/cOXldbaYOteozg=;
-	b=ZCW8uAcC92ouFD5VkROXLwVFEImJ0X+xVePEpNi6rY6XvsFCziJVUa0wqEkdWrqnZi6C6T
-	KQNx69i4NSfHYbXAbCKHTRQnzQkUX9jo7qBvbp4Gp2zEyJi9VMdEF54LKpizQbIC6IqQ3d
-	XdNOClAjyp8kpb93C1WRQzznG2Odxro=
+	bh=eEKVD7jaQE+LDv05PIHRGwJ26LSVOziITzWTXSPhpJk=;
+	b=QFIa+B5oe9EjTBUj45+4BE/vkD1pMj+BRCmzOTbvg//CbuMNhBkimJftJj9ZEijDz23Xua
+	xKpTBWIsuCNQ0E1xQ0a9Y0ag0PAkXz4iBI10M/qn+xk6f1oaBP8BOVauLnrGWGyYF84Jst
+	zqzWB0Q4+URklCVpTWVMUgKWVqETj5c=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LnxYZGzr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=f5V8qRMe;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oW6Bsr69;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ZlJuK/Q8";
-	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Gi3T+Xls;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Q9pnIhD8;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Gi3T+Xls;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Q9pnIhD8;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769151198; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769151199; a=rsa-sha256;
 	cv=none;
-	b=eePNLsSnd2q4kTge90uH723mIhsj4K+ThI2/1EogOLeWOajkZ3xmh75lRwH/aI6+L8Niaj
-	XqwE3Sq7ZtPTUc7VL50OIivR5tArB/w2cl48bgzwd2ENuYeVognxPlqY8QIlq6WnZ29EO1
-	om601u/slyN3xX2BHxbai/kU8FNLjs4=
+	b=Ow0q7bzHd5O9EKA3Midq1FG04E1ej7Udi50AowA+2XE9MfV1FYSLlsMEZRNzHh0aU7xIxO
+	oWHyfZOk5O0/Zd1EjEj73k1Dt07mwtcjn3oCQ7pe8SALMTtQIAsVWbxMuRTlZCTtfPtpRb
+	lnXD0atE9fzSyR+DRAQb+XCkgxczkhs=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A2C565BCCE;
-	Fri, 23 Jan 2026 06:53:09 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9EAF33376A;
+	Fri, 23 Jan 2026 06:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1769151190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UkJZc9VVDwbCOE5N88ecWISWdsb2/cOXldbaYOteozg=;
-	b=LnxYZGzrptkCsiSyPVbbUsSb0aPBRpWYY63pa5i9GzQr/0kWbbsqgglfJXQoBjEP08GU7O
-	SwcIK/aPkcDvv/8GcTwWycnQe+y2/thJtIu/7NVOiECeLCSnb6r6qanZyDmdMNh6ekhQZ0
-	PoMyeM0Rb2mJEIBzgr7EEwF7EIMl5Pg=
+	bh=eEKVD7jaQE+LDv05PIHRGwJ26LSVOziITzWTXSPhpJk=;
+	b=Gi3T+XlsDlqP0QQ71QXovXJrIlfjBGQeRqSBfbyQFpBKtEpHW5IgZGdCchVZs6aKCnB0TX
+	JSei/5QvWeNHR1Rmv6rtBGVw6+Gk4QjAHZBNJHDaao9btn6eVFPC686TxQWfTeWou9isfh
+	Ow8hOUG5opux48LL58BvidGqcCy+cDg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1769151190;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UkJZc9VVDwbCOE5N88ecWISWdsb2/cOXldbaYOteozg=;
-	b=f5V8qRMepjktCByLkxQJHJPmVw56oDDSlLdjzL0DNrLOJKv3kSwq+YyMH5koTXc+B/DlDZ
-	DM+KOze4M8yN95Cg==
+	bh=eEKVD7jaQE+LDv05PIHRGwJ26LSVOziITzWTXSPhpJk=;
+	b=Q9pnIhD8MFvOie+v6Hqk7CLnQQHVeGsOmf7qdQlSNz504NBYXUHG1V0G9PhcDnxT9qPr2x
+	YMLYiDqFZWzBygDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769151189; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769151190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UkJZc9VVDwbCOE5N88ecWISWdsb2/cOXldbaYOteozg=;
-	b=oW6Bsr697b230juFpxKrMJ5DXruKdLELNWZ5BQj8E4nBwoGGtacKIokf0ME1leGKco0m8H
-	fjV/D2WG9RgfKMbh+MNlW/dPL2ZeqWcFqzQG3bWEURZeyUk0jiMxp3MWufEkie64FIK/iG
-	AHENluaMEj5z6QrK37LCFsGyznAm/w8=
+	bh=eEKVD7jaQE+LDv05PIHRGwJ26LSVOziITzWTXSPhpJk=;
+	b=Gi3T+XlsDlqP0QQ71QXovXJrIlfjBGQeRqSBfbyQFpBKtEpHW5IgZGdCchVZs6aKCnB0TX
+	JSei/5QvWeNHR1Rmv6rtBGVw6+Gk4QjAHZBNJHDaao9btn6eVFPC686TxQWfTeWou9isfh
+	Ow8hOUG5opux48LL58BvidGqcCy+cDg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769151189;
+	s=susede2_ed25519; t=1769151190;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UkJZc9VVDwbCOE5N88ecWISWdsb2/cOXldbaYOteozg=;
-	b=ZlJuK/Q8UZyUbtl5OrmdzJw3m82QpZQClCaZVIa/VpaK7HLKcQnJTJfAfthDtKUKLyWG5c
-	jKDg8N7njGahNQDA==
+	bh=eEKVD7jaQE+LDv05PIHRGwJ26LSVOziITzWTXSPhpJk=;
+	b=Q9pnIhD8MFvOie+v6Hqk7CLnQQHVeGsOmf7qdQlSNz504NBYXUHG1V0G9PhcDnxT9qPr2x
+	YMLYiDqFZWzBygDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7CF5D139EB;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B1514139ED;
 	Fri, 23 Jan 2026 06:53:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aBk4HtUac2k4YgAAD6G6ig
+	id 0DYFK9Uac2k4YgAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Fri, 23 Jan 2026 06:53:09 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 23 Jan 2026 07:52:42 +0100
-Subject: [PATCH v4 04/22] mm/slab: move and refactor __kmem_cache_alias()
+Date: Fri, 23 Jan 2026 07:52:44 +0100
+Subject: [PATCH v4 06/22] slab: add sheaves to most caches
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-sheaves-for-all-v4-4-041323d506f7@suse.cz>
+Message-Id: <20260123-sheaves-for-all-v4-6-041323d506f7@suse.cz>
 References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 In-Reply-To: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
@@ -129,14 +129,14 @@ Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
  Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam11
-X-Stat-Signature: xh4afyuo5uorenb7dnrqt1e7w3xdkrxx
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C931F1C0002
+X-Stat-Signature: zjmdt7phs1n59egw9ttp11pi3jzt94rb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89B74100005
-X-HE-Tag: 1769151198-102647
-X-HE-Meta: U2FsdGVkX184P0GkxuTqUs61rCsLYEkWk0tnubJcMcEDwY0mFaRwUxCl1E4tyjW3UgGcAD8T/LbGbCnhWIPLGZANd0tDyujYOW2EbUnEzlUyl61TBC5oT/ghqpE7YqzA0yv2zewZvWnYrae+xbiExpBLaEzj5eXEJhGK25GxHXfZ7hk3Tse4dbUP9pWQ988EmcViqaxcODUTJ/MBxcJ5tVPH3SH1bC8ySQSNrfJ2oXZhzLFq/rfKbSQ5JbC8v8trAObNRF5rxjuGaocgCF6hUe6dr+6Rfx51l2HDAEDrmtryk3YIg1LaM2L9AjfnvtVnUAz0Yzueo8LRu2100IUGAyGn4R+JWRYLndzi7WfjIfDDOyVAxo++Aa+1fOgvbDPqyuoSm1G8HxnEgzebfIJmi/wcw9EDSmANY3h5Gp2OkRf691WJRnADamKSBjH2BhFECl7bHUrFiQAujtkRAODgncTkaEAEIwjVKyIQ3a1UtPt6ma+5vcND3ypi6InK/R6On6Oq4rmvWqOv1KCjQBYJ1X7vHByUcItkBow1qZXwec6RC62mYLFjlQVPRZTJNAPW3ffds5bdD9Ii+8z6vXfMOp+7Zd20GJ3s+3J5LrJeTIIN4Bap7hWnHFklhvghzQk4akiUiyQRfNnL6sYCrwzVh7z5546SEsxsbHq1izeY87nVdrbJYsRcVsG2qoe6bQj9T0YfMdp1Gw7+exfobaLGOwDO8FxEXV36An1X234IbQ5/aPHX/p/UUNEd7LRUQ26HblF9+hpNFw75Kp/EGrJYsknlDY5DCa2e79S2EolxgDVu7nmTexqFLJksafJnRHb4oGFyC7R29JfB0tRxLSj3peWdj3py6K2T/ABumc9o9JmqhqMSk6BUNCR/ViPFBr+ExkZ6Ie4JZdd7gWvw9DL3E8pOirB+DMCiDOPcKeA3bc97K3+O85WBWeCizndF5j0YfTm/h7aWj8MRM+4Poo9
- mjqaF0qL
- wouWx56jt7wKc628R9Nhij1YFPFfNBEnp5oSS9w+CuKslHle2HDElYw3B179hyYspMi82X7K5PmkJkNsKQ+JSO0fv4l05KLRtK1ArKWKew9hjqUpgLMTf6wGgzMZqKcnr8UfwZWjGH/ScG74HvPfHFbxny6jVdq7qW5bOnNDa06LxEdG+tY1DG1ZCp9LKN2NcV3jHDrL5LCqGJomHFBmsduVCYya+DxR9SLNtsjRbOFXbaiDKK4W0/W5MA/VNyBvdGQAXDuxp2J3ifjVQGyQo4RjF02rc4Qsx6ChVP5u4kmM5UfyRI/r1BRXLWXSV4lM+1p1GMU02LfrTAXfdCvCaUwKRyuM1i31k2Ya1
+X-HE-Tag: 1769151198-466048
+X-HE-Meta: U2FsdGVkX1/e47eBqN7EyphyqA1043ZA37W6w+u4Ipe9OMGS89JblBoVf+s6WZYXl/Hsza8/QaDx1dEqjG/Om5aPAIOacGXOarITNXcZmhU9p+Nwvzv3FSJWZzAZtp5pr/2oW9qN1viKVe+m00/wBLY4cH72PphjRd0GchBZc+Wi4ta6zxw4VrmwwfQwbaLlzqK1aKtYJZoN8bI4AqyDuA1gJvH2J2/+PInMBAf6xysw75v9KQ98W1I1jXXpK8pYm1zR94bEz+8oxHMYAor54qNdN8Y9dAz0HtzkQZssEfAOJsNjPWk93OcOnO5zE1WI6jRloa6aw1PvYekGB7GjNUbI0oK9hN4cRl75QA1sepyNzoFq2nRCkSlXO65wcGRjcqb+qlwIqabvaOOKcXy88nFLFSk5pdNWAmjxaqSKcOzhNIMIpSA9fRUaoewxbEPDxCdI9ELiV73Q+pgWkfpab27Hv5Q2Fr89501kzUPeo0rgbJyDUn7RzIDzdxnFZSXD6ww+lxkfA67Hx9iwaFhkaNfHt52z8C5J+CBifYUs36OxJ0N91BWwPAdJASodw2p9v5XKf81ltsXkzsfnO+pIBdtiusmkJ2lXj5Km0D6G2LQy30Ob+q4Hrm+ovgn4r7h9Q6XcWIlPdyIxCfoqDa20zEurzX/CVZPiibvqgt4KrgsEx2Iz9BryjIHnoWOcXlciMiqV+Dd9/Q+QzYoJtT064pkd6F/0mkZWi/6+Gol6b9Ti0gihvqPw7fQ1HxJhD1Fvrm9ckZ3hrtDKWDI5zTVOARxxu+xcRmAJnCn9Q0vmIapTmTFXFC+SG6D5xtJqybiwJkh925L8uP0rHDkPEwJ5owwx+7Ofeb7xikaOa/LFUk285SSr/2MvIjBhAG8OA58wbPWlO5YkR0V9AQMfoaKXnW6vQkvmVKcHH+EadnkLMIW763SPIbjXqaW/+EXl8oHKLgsXSAIbtWEPIeC2hMi
+ +6qglxVt
+ fi8U8hfXxa/0q9ZpVvOTjZ6DH5K9eMfRe1MPZ5BiMcM7U5rDNf6cCDh3VB5uIg6oZRbyCCEDfsbjAomhPubzuMrtHgFirf4nNZp/mcOoWP7fLptxY4IGm8lzaDkGR4pRO1MotnlfyLY21EVDogMeNJqj/Alt/8WWg8dWty/y7ZK6NtDcDRrxCmBcCxFdiQXeQ35W0bTG4m/kD+D9xPKrenWXibrFw/6A8fL/KYH0+pqzbpEymTliRyh71f4IgEHqUinT36bgxWmEmcr9tF4C4xTfsKCAqD9KtVTFAFVOzLFWJ2cU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,196 +145,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move __kmem_cache_alias() to slab_common.c since it's called by
-__kmem_cache_create_args() and calls find_mergeable() that both
-are in this file. We can remove two slab.h declarations and make
-them static. Instead declare sysfs_slab_alias() from slub.c so
-that __kmem_cache_alias() can keep calling it.
+In the first step to replace cpu (partial) slabs with sheaves, enable
+sheaves for almost all caches. Treat args->sheaf_capacity as a minimum,
+and calculate sheaf capacity with a formula that roughly follows the
+formula for number of objects in cpu partial slabs in set_cpu_partial().
 
-Add args parameter to __kmem_cache_alias() and find_mergeable() instead
-of align and ctor. With that we can also move the checks for usersize
-and sheaf_capacity there from __kmem_cache_create_args() and make the
-result more symmetric with slab_unmergeable().
+This should achieve roughly similar contention on the barn spin lock as
+there's currently for node list_lock without sheaves, to make
+benchmarking results comparable. It can be further tuned later.
 
-No functional changes intended.
+Don't enable sheaves for bootstrap caches as that wouldn't work. In
+order to recognize them by SLAB_NO_OBJ_EXT, make sure the flag exists
+even for !CONFIG_SLAB_OBJ_EXT.
 
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+This limitation will be lifted for kmalloc caches after the necessary
+bootstrapping changes.
+
+Also do not enable sheaves for SLAB_NOLEAKTRACE caches to avoid
+recursion with kmemleak tracking (thanks to Breno Leitao).
+
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slab.h        |  8 +++-----
- mm/slab_common.c | 44 +++++++++++++++++++++++++++++++++++++-------
- mm/slub.c        | 30 +-----------------------------
- 3 files changed, 41 insertions(+), 41 deletions(-)
+ include/linux/slab.h |  6 ------
+ mm/slub.c            | 56 ++++++++++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 52 insertions(+), 10 deletions(-)
 
-diff --git a/mm/slab.h b/mm/slab.h
-index e767aa7e91b0..cb48ce5014ba 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -281,9 +281,12 @@ struct kmem_cache {
- #define SLAB_SUPPORTS_SYSFS 1
- void sysfs_slab_unlink(struct kmem_cache *s);
- void sysfs_slab_release(struct kmem_cache *s);
-+int sysfs_slab_alias(struct kmem_cache *, const char *);
- #else
- static inline void sysfs_slab_unlink(struct kmem_cache *s) { }
- static inline void sysfs_slab_release(struct kmem_cache *s) { }
-+static inline int sysfs_slab_alias(struct kmem_cache *s, const char *p)
-+							{ return 0; }
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 2482992248dc..2682ee57ec90 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -57,9 +57,7 @@ enum _slab_flag_bits {
  #endif
+ 	_SLAB_OBJECT_POISON,
+ 	_SLAB_CMPXCHG_DOUBLE,
+-#ifdef CONFIG_SLAB_OBJ_EXT
+ 	_SLAB_NO_OBJ_EXT,
+-#endif
+ 	_SLAB_FLAGS_LAST_BIT
+ };
  
- void *fixup_red_left(struct kmem_cache *s, void *p);
-@@ -400,11 +403,6 @@ extern void create_boot_cache(struct kmem_cache *, const char *name,
- 			unsigned int useroffset, unsigned int usersize);
+@@ -238,11 +236,7 @@ enum _slab_flag_bits {
+ #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
  
- int slab_unmergeable(struct kmem_cache *s);
--struct kmem_cache *find_mergeable(unsigned size, unsigned align,
--		slab_flags_t flags, const char *name, void (*ctor)(void *));
--struct kmem_cache *
--__kmem_cache_alias(const char *name, unsigned int size, unsigned int align,
--		   slab_flags_t flags, void (*ctor)(void *));
+ /* Slab created using create_boot_cache */
+-#ifdef CONFIG_SLAB_OBJ_EXT
+ #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
+-#else
+-#define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
+-#endif
  
- slab_flags_t kmem_cache_flags(slab_flags_t flags, const char *name);
- 
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index e691ede0e6a8..ee245a880603 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -174,15 +174,22 @@ int slab_unmergeable(struct kmem_cache *s)
- 	return 0;
- }
- 
--struct kmem_cache *find_mergeable(unsigned int size, unsigned int align,
--		slab_flags_t flags, const char *name, void (*ctor)(void *))
-+static struct kmem_cache *find_mergeable(unsigned int size, slab_flags_t flags,
-+		const char *name, struct kmem_cache_args *args)
- {
- 	struct kmem_cache *s;
-+	unsigned int align;
- 
- 	if (slab_nomerge)
- 		return NULL;
- 
--	if (ctor)
-+	if (args->ctor)
-+		return NULL;
-+
-+	if (IS_ENABLED(CONFIG_HARDENED_USERCOPY) && args->usersize)
-+		return NULL;
-+
-+	if (args->sheaf_capacity)
- 		return NULL;
- 
- 	flags = kmem_cache_flags(flags, name);
-@@ -191,7 +198,7 @@ struct kmem_cache *find_mergeable(unsigned int size, unsigned int align,
- 		return NULL;
- 
- 	size = ALIGN(size, sizeof(void *));
--	align = calculate_alignment(flags, align, size);
-+	align = calculate_alignment(flags, args->align, size);
- 	size = ALIGN(size, align);
- 
- 	list_for_each_entry_reverse(s, &slab_caches, list) {
-@@ -252,6 +259,31 @@ static struct kmem_cache *create_cache(const char *name,
- 	return ERR_PTR(err);
- }
- 
-+static struct kmem_cache *
-+__kmem_cache_alias(const char *name, unsigned int size, slab_flags_t flags,
-+		   struct kmem_cache_args *args)
-+{
-+	struct kmem_cache *s;
-+
-+	s = find_mergeable(size, flags, name, args);
-+	if (s) {
-+		if (sysfs_slab_alias(s, name))
-+			pr_err("SLUB: Unable to add cache alias %s to sysfs\n",
-+			       name);
-+
-+		s->refcount++;
-+
-+		/*
-+		 * Adjust the object sizes so that we clear
-+		 * the complete object on kzalloc.
-+		 */
-+		s->object_size = max(s->object_size, size);
-+		s->inuse = max(s->inuse, ALIGN(size, sizeof(void *)));
-+	}
-+
-+	return s;
-+}
-+
- /**
-  * __kmem_cache_create_args - Create a kmem cache.
-  * @name: A string which is used in /proc/slabinfo to identify this cache.
-@@ -323,9 +355,7 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
- 		    object_size - args->usersize < args->useroffset))
- 		args->usersize = args->useroffset = 0;
- 
--	if (!args->usersize && !args->sheaf_capacity)
--		s = __kmem_cache_alias(name, object_size, args->align, flags,
--				       args->ctor);
-+	s = __kmem_cache_alias(name, object_size, flags, args);
- 	if (s)
- 		goto out_unlock;
- 
+ /*
+  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
 diff --git a/mm/slub.c b/mm/slub.c
-index 4eb60e99abd7..9d86c0505dcd 100644
+index 9d86c0505dcd..594f5fac39b3 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -350,11 +350,8 @@ enum track_item { TRACK_ALLOC, TRACK_FREE };
- 
- #ifdef SLAB_SUPPORTS_SYSFS
- static int sysfs_slab_add(struct kmem_cache *);
--static int sysfs_slab_alias(struct kmem_cache *, const char *);
- #else
- static inline int sysfs_slab_add(struct kmem_cache *s) { return 0; }
--static inline int sysfs_slab_alias(struct kmem_cache *s, const char *p)
--							{ return 0; }
+@@ -7880,6 +7880,53 @@ static void set_cpu_partial(struct kmem_cache *s)
  #endif
- 
- #if defined(CONFIG_DEBUG_FS) && defined(CONFIG_SLUB_DEBUG)
-@@ -8570,31 +8567,6 @@ void __init kmem_cache_init_late(void)
- 	WARN_ON(!flushwq);
  }
  
--struct kmem_cache *
--__kmem_cache_alias(const char *name, unsigned int size, unsigned int align,
--		   slab_flags_t flags, void (*ctor)(void *))
--{
--	struct kmem_cache *s;
--
--	s = find_mergeable(size, align, flags, name, ctor);
--	if (s) {
--		if (sysfs_slab_alias(s, name))
--			pr_err("SLUB: Unable to add cache alias %s to sysfs\n",
--			       name);
--
--		s->refcount++;
--
--		/*
--		 * Adjust the object sizes so that we clear
--		 * the complete object on kzalloc.
--		 */
--		s->object_size = max(s->object_size, size);
--		s->inuse = max(s->inuse, ALIGN(size, sizeof(void *)));
--	}
--
--	return s;
--}
--
- int do_kmem_cache_create(struct kmem_cache *s, const char *name,
- 			 unsigned int size, struct kmem_cache_args *args,
- 			 slab_flags_t flags)
-@@ -9827,7 +9799,7 @@ struct saved_alias {
++static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
++					     struct kmem_cache_args *args)
++
++{
++	unsigned int capacity;
++	size_t size;
++
++
++	if (IS_ENABLED(CONFIG_SLUB_TINY) || s->flags & SLAB_DEBUG_FLAGS)
++		return 0;
++
++	/*
++	 * Bootstrap caches can't have sheaves for now (SLAB_NO_OBJ_EXT).
++	 * SLAB_NOLEAKTRACE caches (e.g., kmemleak's object_cache) must not
++	 * have sheaves to avoid recursion when sheaf allocation triggers
++	 * kmemleak tracking.
++	 */
++	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
++		return 0;
++
++	/*
++	 * For now we use roughly similar formula (divided by two as there are
++	 * two percpu sheaves) as what was used for percpu partial slabs, which
++	 * should result in similar lock contention (barn or list_lock)
++	 */
++	if (s->size >= PAGE_SIZE)
++		capacity = 4;
++	else if (s->size >= 1024)
++		capacity = 12;
++	else if (s->size >= 256)
++		capacity = 26;
++	else
++		capacity = 60;
++
++	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
++	size = struct_size_t(struct slab_sheaf, objects, capacity);
++	size = kmalloc_size_roundup(size);
++	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
++
++	/*
++	 * Respect an explicit request for capacity that's typically motivated by
++	 * expected maximum size of kmem_cache_prefill_sheaf() to not end up
++	 * using low-performance oversize sheaves
++	 */
++	return max(capacity, args->sheaf_capacity);
++}
++
+ /*
+  * calculate_sizes() determines the order and the distribution of data within
+  * a slab object.
+@@ -8014,6 +8061,10 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 	if (s->flags & SLAB_RECLAIM_ACCOUNT)
+ 		s->allocflags |= __GFP_RECLAIMABLE;
  
- static struct saved_alias *alias_list;
++	/* kmalloc caches need extra care to support sheaves */
++	if (!is_kmalloc_cache(s))
++		s->sheaf_capacity = calculate_sheaf_capacity(s, args);
++
+ 	/*
+ 	 * Determine the number of objects per slab
+ 	 */
+@@ -8618,15 +8669,12 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
  
--static int sysfs_slab_alias(struct kmem_cache *s, const char *name)
-+int sysfs_slab_alias(struct kmem_cache *s, const char *name)
- {
- 	struct saved_alias *al;
+ 	set_cpu_partial(s);
  
+-	if (args->sheaf_capacity && !IS_ENABLED(CONFIG_SLUB_TINY)
+-					&& !(s->flags & SLAB_DEBUG_FLAGS)) {
++	if (s->sheaf_capacity) {
+ 		s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
+ 		if (!s->cpu_sheaves) {
+ 			err = -ENOMEM;
+ 			goto out;
+ 		}
+-		// TODO: increase capacity to grow slab_sheaf up to next kmalloc size?
+-		s->sheaf_capacity = args->sheaf_capacity;
+ 	}
+ 
+ #ifdef CONFIG_NUMA
 
 -- 
 2.52.0
