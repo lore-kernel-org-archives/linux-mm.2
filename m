@@ -4,220 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4AB9D6CFBB
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 05:00:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46F08D6CFC6
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 05:01:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 448126B03AE; Fri, 23 Jan 2026 00:00:59 -0500 (EST)
+	id A90296B03BC; Fri, 23 Jan 2026 00:00:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4122C6B03BC; Fri, 23 Jan 2026 00:00:59 -0500 (EST)
+	id A63336B03BE; Fri, 23 Jan 2026 00:00:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CD516B03BD; Fri, 23 Jan 2026 00:00:59 -0500 (EST)
+	id 8D3896B03BF; Fri, 23 Jan 2026 00:00:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 197F36B03AE
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AFEB6B03BC
 	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 00:00:59 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4CA0192D84
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:25:21 +0000 (UTC)
-X-FDA: 84361485642.10.D4CE645
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A1038C000C
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:25:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kMawL1xI;
-	spf=pass (imf22.hostedemail.com: domain of philip.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=philip.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769131517;
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78B1013C1B6
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 02:33:14 +0000 (UTC)
+X-FDA: 84361656708.02.AE40081
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7D77DA0003
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 02:33:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RCqcrNqQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769135593; a=rsa-sha256;
+	cv=none;
+	b=qo+a1IaL4rlphNlNLAhQyiQ4qtNX4PrsYH8tASGFm2P2QZUcRsG/VZzjRtbUmZ2kr/334w
+	KGz1k2GC7D+9PRtq2esOJwzdtA40/KwEeqOdLKdMYxj4zGsFNrduO7z+WviZDkkSDVThS4
+	dlmQ5ysYqoy7IzmQjvYAo5PARkr19Vs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RCqcrNqQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769135592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yy6+Yk+pE8k0E4cQNfGzs5+qQ24Uyp4WI7aZ7isNDRw=;
-	b=YIiNEB3+hI9Wcr1ZogigKbyyKoAyfCGH8QLl0dgPuEsAg0KulnadWVI33egTUT8jVDufml
-	7DtaQZ6Snip322NZCKmuzRqyb8liPPuKRj/L/MAJFn7LNcnaBNoa0QRRra7ZZDaM4+rwTt
-	GeS1xpCQbjau1lmvi+kFwE701JipKiE=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kMawL1xI;
-	spf=pass (imf22.hostedemail.com: domain of philip.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=philip.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769131517; a=rsa-sha256;
-	cv=fail;
-	b=LV3mq+9i8JPKKPrn2QuzH6/kpJtcRvHKvRUlffKhu5vYFANfptyt7/ZXFH2UDYC9DLal65
-	FcLX5abgYmKOiWF7ekubxhy3jl9+QqeKlVSHNSXDUT5EIKD6UwDbi6jNMyX4YHNesJEyFr
-	D8UIUis2MYfi8Tn7HtajHuJAFT45TSE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769131517; x=1800667517;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=6trf7U7kLVEhHfciocSLItkF8Uw+DSQrsF7Jc3kn260=;
-  b=kMawL1xIaeO/e+bL48eY6zPuyF9gQcv7i4581NZuJsoVMJXumgKcVBgf
-   eW/tOz/3XkZusxcKaIUttMVva13EIiEDLIYAJJ0A2n869TQNceF1iW2PD
-   sSxAaGmG+oAtk0iilvtyD+kH9vl6tsO0fiRWlyGan4sf2OljWhrcxvyPB
-   MIAnKM4sC+qNoKBYWDg9buN+CTCE9ZCiTNbRfpWelR+LQ/rOSgK6j1Wdw
-   ZE0z0lGutoxuqQNLA3GftOkDA4vx3kuYO0ZZT3ijHE/LcCwprDcUNc4S/
-   IdSxNTKdN0DzdOSxUEp5P8r/UszVomiOHMhiap/FhyadrdWddsN4XaHsn
-   Q==;
-X-CSE-ConnectionGUID: k7w2IwRqTnqoQnL8CHclNw==
-X-CSE-MsgGUID: vDhIB2hoR+mHnBkxzg7cvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="74236572"
-X-IronPort-AV: E=Sophos;i="6.21,247,1763452800"; 
-   d="scan'208";a="74236572"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 17:25:14 -0800
-X-CSE-ConnectionGUID: uSsav1eeQmapjwRkPMKVDg==
-X-CSE-MsgGUID: V/T4G2mXSuW8cRRNUpTxwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,247,1763452800"; 
-   d="scan'208";a="207313530"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 17:25:14 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Thu, 22 Jan 2026 17:25:12 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Thu, 22 Jan 2026 17:25:12 -0800
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.10) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Thu, 22 Jan 2026 17:25:12 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G168vl3KvhUUk9bHld70IdqPwaHjQCdcWAwH5pVUgnxPCvoaVVXozG6rTijp1wfblndosVxB0Ubw9888ScAmzuo4JltcUVdKL2EFC4jFRTius9At3+uTdM7Py/MeQoc032HsVNkUgVypioD1dnU8kifCimhBlDHtswKoy5eWR3Mit4ORonCQkOch5x2cJ4cdwym+hTwgH/U71WYAjzV5vbS+FTwJwHIjf5QCKqVWDUhXeoKvRSnntd6Tu/4kavNya9sKuxyPvfJojlyXa1tKYbK/IOojPtZB99Q3InQEMbXy278dUONazl4A5kRsBYumf3Y7RQz6nomRXlEmRxQztA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Yy6+Yk+pE8k0E4cQNfGzs5+qQ24Uyp4WI7aZ7isNDRw=;
- b=zFVhIT9esURN+hrTYbcGMBNxqC57kaLlSfi40GDEYvHSGY6H9NG4LjbGSPFTNiYBT+47OkfLGE92hXstId5yeIKR5Hn1TYFrFCBtKFUArB0A4EHACIipOR0k+sBI8gfoDeRr1ngfBX3LVAgU1xci7/ewd+AUT7IzeEetvUgyTBDbfZ275U6YzBnVEf3zYYl+hh9QqcsSaOz/xnL9l9xF6k29k3w1k6vS45poXFTVPwEURIRTNcU6oKERsLIOBJ8tqeqrAfuUdSmaVsUJ1kyLfXKP2c0e14hb9CPXbyBYW3t5fp44nZH/7pJJdnuDPMdmYcki++skDMCISBnkvYnnPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB8468.namprd11.prod.outlook.com (2603:10b6:610:1ba::19)
- by SA2PR11MB5161.namprd11.prod.outlook.com (2603:10b6:806:fa::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
- 2026 01:25:04 +0000
-Received: from CH3PR11MB8468.namprd11.prod.outlook.com
- ([fe80::8188:d688:bbca:2394]) by CH3PR11MB8468.namprd11.prod.outlook.com
- ([fe80::8188:d688:bbca:2394%5]) with mapi id 15.20.9542.009; Fri, 23 Jan 2026
- 01:25:04 +0000
-Date: Fri, 23 Jan 2026 09:24:50 +0800
-From: Philip Li <philip.li@intel.com>
-To: David Laight <david.laight.linux@gmail.com>
-CC: kernel test robot <lkp@intel.com>, Nathan Chancellor <nathan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Thomas Gleixner
-	<tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar
-	<mingo@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, "Arnd
- Bergmann" <arnd@arndb.de>, <linux-arch@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Yury Norov <yury.norov@gmail.com>, "Jani
- Nikula" <jani.nikula@intel.com>, Vincent Mailhol
-	<mailhol.vincent@wanadoo.fr>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>, <oe-kbuild-all@lists.linux.dev>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
- GENMASK() and BIT()
-Message-ID: <aXLN4iUVMczH042p@rli9-mobl>
-References: <20260121145731.3623-12-david.laight.linux@gmail.com>
- <202601221237.soiAkwkN-lkp@intel.com>
- <20260122103337.26473d1c@pumpkin>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260122103337.26473d1c@pumpkin>
-X-ClientProxiedBy: SG2PR04CA0162.apcprd04.prod.outlook.com (2603:1096:4::24)
- To PH7PR11MB8479.namprd11.prod.outlook.com (2603:10b6:510:30c::22)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8468:EE_|SA2PR11MB5161:EE_
-X-MS-Office365-Filtering-Correlation-Id: 22831885-2373-455f-e4c5-08de5a1e3c08
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?AI2+TGk3e4biGK2ng/tq2i8G9Nx9ZjC+LS6EVufvJ8TkBPvwQFtd7w7+HF88?=
- =?us-ascii?Q?paNmEUgGcSZCX6qgsFGVl7pWmLE2BfkVHT1suWnqrdHctsmucYnmD7nDH6kG?=
- =?us-ascii?Q?yXLdB5YQIXJap9JK+2lVPUaXZSKLAMLfXZsePwNu3wS+FisMOPl5NYbdpbxZ?=
- =?us-ascii?Q?cJ9tYMZaMz8dLnOOvliaSowEzCz1KrhZHqLz8oM7r8Xp/+d04vKNSoaWcwY9?=
- =?us-ascii?Q?N7rMV9gR3B0JnFhpduH2jhto1F7q1TSDk+tfDYs8Z723E8NIi7CgVOlPF/7T?=
- =?us-ascii?Q?uKoAXRtOhZORf46uxc1lZrbXqEgh01maIEExvqnk7cabM9POkQe0EU2bmyGt?=
- =?us-ascii?Q?5Np/eKMeL1G+xqk5AkH3iu3q3eyANsOoMnkYjntppoq7vvZXrMe0EI6omXcz?=
- =?us-ascii?Q?5drd5CBTWYhpwqacQVvR1KehKN/Qmg9Fcto/HKycsU2OBK0EgU96d7T7DhmH?=
- =?us-ascii?Q?Kh87BxB+uD8+021o8rtpoAIAIiroAcwuD7xG7RParWMglvRl3OQTvxI7rp3x?=
- =?us-ascii?Q?J88lvLLNSyvmzXF2JZefRabrhignwrRLL1wsbs/bE1T5SQlKWWlwU20817Aq?=
- =?us-ascii?Q?6FzVTw5csz3JQ+MulR/pjggTtN6QxIMJ8GpM3kit04OpZFjlVU0Iq3r4qW7R?=
- =?us-ascii?Q?42VcQ82UQqvM0NQjD9cjb60z8Ib3Yn24TBpuV1QNEGFLCqWMunJJyrbl/Btu?=
- =?us-ascii?Q?vYKO1OnSdqfRnJUgUrO+/SUG8Amp+POtX8CV2vlme+/FCc0LZMnntYZ8nx4J?=
- =?us-ascii?Q?8YFZRA5WsDr41F1mDxg/WtAQAn3sdmgNK+Y2cmiG4lNUadg6s4MkQIhvn8+I?=
- =?us-ascii?Q?aVqsk9T0KzO6++i8apNxO0kgR/lGaoCmYej4ZRw9+eHfMnQrQ8fj2N0tdwPS?=
- =?us-ascii?Q?PFHvcVy6TspJUTyF07ZwgPuViQCPw2l8BjrlwNTgcnAOBr29agG4bsuRWRbI?=
- =?us-ascii?Q?zZSi7HHBxoBXcuiwzrG0TYwW7BF5XSdeQf+NWLFlI52UZFQVv89Ps2pmCFcP?=
- =?us-ascii?Q?ODKSPCbMAyHTeuBCbGqhK5BErPSh37PhynrDFP4gEXcIIw4357o7ddGeWQaQ?=
- =?us-ascii?Q?tssAg4VlTfP88cs4SEbJ65B4fBJjuMdu/IaOjj9GUySyPQZIW2qMPU1JA+1p?=
- =?us-ascii?Q?pzn7TMj8cbyAVEu/wtJwWl4azGY38FbMT8iAAb+AU20xzzP5XQgde4lwaKhP?=
- =?us-ascii?Q?/2OADhA7cZTa99tvf0bG7O55dJifEJB2Ik6dGNRxBPiVgm1dezZP5TgSL6xD?=
- =?us-ascii?Q?VrJ1adNZ+7xsZfuw1yHRN6qvSshQH1VJ9Q9SLQp5vLwPVhvpukHVUY8L/S7i?=
- =?us-ascii?Q?nl35mFJDf2uZzJCs2RgiwPdCiy67fmnW4nRXnmgnlgtPvhNgZ7URt9iyHaR+?=
- =?us-ascii?Q?K5ag/FWVRm5yD/EJbP1IkBjSV1z1n6Pau9L85qJvrldm1qtKigknuvwhSkGm?=
- =?us-ascii?Q?q5/H1/69YCOcduxrorM3DVr/jXMPykueaH3KJdscdlfl8YDj/H1/fS+WrXEC?=
- =?us-ascii?Q?xYDOcPM9nwN38L2ofk8Sx1W4W/iX+ik67xGuxaJ64yITty7z4Qj2EG3r0Q8L?=
- =?us-ascii?Q?dCdVOgYYTz+HgQg7otEZ/WeL/1PELbN/fvX9IDaA?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8468.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SkMSKvAq0bSXwZnrEbLWslcHoJDTBlLkbsP6gIM7HgzwKDpE0MqO56ypp5I0?=
- =?us-ascii?Q?ijQfM1BLDn2FY174oDj2nrWvnpmSUT1JmMlxAWaSOI1HbxDNJ7DC6IcSo1eC?=
- =?us-ascii?Q?fIevfBUgeEjk5qM8A3sXhZrU49PX1P8nVClWN7wgn+34sKq4dRhdtpjWpbb8?=
- =?us-ascii?Q?IsMuiFp4N+ig9nTvg9Vlo/33Nrg6le4uASS47geAZD4/xjBTyycGrYyf0naE?=
- =?us-ascii?Q?wzIisI/2PoJB6UA+IwKLCud4k4zZCO9Cw58z9ZdcOguHc9jN3W7QVRBIzacF?=
- =?us-ascii?Q?9Ymg0/O5zJfca7iRXNJFKFYz+CWMYiE7oiOXaZwc+ZdC6GmAtajt7KB+ZHns?=
- =?us-ascii?Q?Ul3ICI5PQ339xxaoMPpEDf4+DjcDsMLtopaoCbBmbV3PCmrNuFe18eggHeAW?=
- =?us-ascii?Q?brXjny/vZ7pCddSV8WSGtAPNkSR1XlTMCS0p+w7n00tkTCvjJtGgP72LhsVr?=
- =?us-ascii?Q?d1ymTBUB9rHeSvFupfQOmYUHMWiNtbOfjDs/PGqz/z3VneChNdV8xtpLQc9e?=
- =?us-ascii?Q?JxAGL8e5irz5bUEZJS0jE+zlTDBM5ZMRA4246fHihV5HB9SyyWI6jbydLpr+?=
- =?us-ascii?Q?8U5UemFR8myXKfV+klxMwi88Wtc28uohYC2669n7JEOaTEYj4KVl8vNhEbn/?=
- =?us-ascii?Q?orK9VvxLTlO80jI8/L9J0ppgdWIVBEvIgelAB+VuHX3XAe7iu4JAnYiSdknJ?=
- =?us-ascii?Q?5zXEScXN7/S20t1F2nz3r/EQd620WjJhDrIUA0JTdkRZf0ntPXYihw2ZaLTW?=
- =?us-ascii?Q?9+/pmbYwKjkWVbzkYL1q6BwhmzRyJGrfn4AfqmZTzw6Oxt2Q/jaeK3I1Lbag?=
- =?us-ascii?Q?m3kbFBZyuAak9DVvd5Jd31PmtgY1T4Lr6+ujossab15J7H89WZk4NZjMtAZX?=
- =?us-ascii?Q?KeNKiKbUYT5nuq0uX3XF7YHB9E4XIS7xeihFm19Zp1ODMlqEPnpLP+/Xx9AK?=
- =?us-ascii?Q?fDX0vsHyqGy7gbJml5k61zLLQf1yI6QbRNSiSVRm/vbJHaFrMi3G/tY4Qnnl?=
- =?us-ascii?Q?A/zLk1UXZKGqbNP9Oy4iEb8vxyptejcTfcN92q6YOPWXh5M0Plexh1+dAtTf?=
- =?us-ascii?Q?Em2d87R8GvNe9eYzTRz/NG4xlu9VFbGN8BvIKurShXUO75x/fBDH0hA7dS8Y?=
- =?us-ascii?Q?Qlm4bUzifovt7nzwth973PA44TZmWiCVLiv1yhUI2CtOWcpyXnywWLhGx+Vi?=
- =?us-ascii?Q?ad2YqmZbVr0dDGqtZWAO4FLQEeYtyGzIqW5A4QgyVWM2zl7uh9Kt49/8FMec?=
- =?us-ascii?Q?A0XpdwAVV5BRIssX+QZg0iSlBVQABce5jBqj696fAkhVkEFckfhL1EiBz6go?=
- =?us-ascii?Q?KwMLhgjOXSyML5Po/ko42zO/zCfq8ofsnwZBLP6S8dw3Xg/buw6jKwK6tGFL?=
- =?us-ascii?Q?EE7YeCtsO6UsasW5hIUKyVhKzdE73HRU37omj60DhhAQHynlrM4QJsTb08U8?=
- =?us-ascii?Q?ubHYUK7gzncfwMyfORvRjGDoxxjO6hGFPZlKtzmAOdyEGZklPz/+E+5+pPPH?=
- =?us-ascii?Q?5qXxe6PKs6ogXT15sXYc2ZHuGYa9bazIC2Yj7CskrmgleKd6fdxVJM0+f2km?=
- =?us-ascii?Q?dlwc/HTIJU/6Tg+0lGU2i32CefwRLtRMIC1qgPD5l8OI7ncZ1g5DZxCX1N/m?=
- =?us-ascii?Q?Y3xmsgkVDC2GinVSac0wmYOXck4Ad57l9+nDttMP24mTIkcQ4hGVgLu6zkow?=
- =?us-ascii?Q?S8pGIkuU8UgDU7shsIYF4K/oZPIDm+5WK8hBL4MopUQyc1LKdHjpuz8RvBvk?=
- =?us-ascii?Q?vc4fXLDK6A=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22831885-2373-455f-e4c5-08de5a1e3c08
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8479.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 01:25:04.5269
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P0e7vtB+x+K8T61YTan0TExnuE1HGaJ7Ck5ryjrG/6CYKiUg9+g2qP2K7onoWhUEbtGKRrnPfwTHorO7E9RaQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5161
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A1038C000C
-X-Stat-Signature: nqdjng34onfjm7sh3sywdow78xourehp
+	bh=C9liem77MY2EVNcCbGxQuntRm1i5SoD+xhrv8gGumRc=;
+	b=IrIDntApQOSq24uwm6s56dRf4HRKsnrT3oZfN7tVA6o8nVW8PuAESAa/ruHy0pgAOeb7i5
+	aV0Km4M+1I+/xY+VVmS6nWKBMEFStxwoxQ6gddG2XbNpznFX+EV4TUoWjawRjtQEDW0REj
+	Bo33+OH3VAFyTx/t5llvd+DgqALHprI=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769135589;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C9liem77MY2EVNcCbGxQuntRm1i5SoD+xhrv8gGumRc=;
+	b=RCqcrNqQw8gUtzKTyi0COF9Gr/0vM4ntun0ePsp6fMbOS/taKQCpbwdhoKCwV9f5NAyvqc
+	+6gaVvviQZaxjaElkaAOBmTbwwhzsE76TUZi3Bz7DbAbITHYQPBFKdfym4jDkAusK8W2EZ
+	DO/HOT/jz7LtcBsxh60v4FGjku8egwY=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCHv4 07/14] mm/sparse: Check memmap alignment for
+ compound_info_has_mask()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <aXJHI8El7QHXQuwT@thinkstation>
+Date: Fri, 23 Jan 2026 10:32:28 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BFECEA67-90EC-444A-87A3-A220168B1B67@linux.dev>
+References: <aXIaHZ5kNFelmuJi@thinkstation>
+ <554FD2AA-16B5-498B-9F79-296798194DF7@linux.dev>
+ <aXJHI8El7QHXQuwT@thinkstation>
+To: Kiryl Shutsemau <kas@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1769131517-443790
-X-HE-Meta: U2FsdGVkX18zn8GVfAaENy5dIV5zD6o/1xFfY5CnfqQ2VJaJmd0Zr7MrkmSYXfyvD0m4+kwd6+mt45unTGxvkykkAZlMHHAgXN3iyGF7inlzZ8+BdeRPLqJy3yVJqKfg3g2Qj2eUdcTDJgLQ+IED2Ix7NGDmqAMm7GqYD1DBAIg0S5XCBMjuZIx3ObBRWIGfx+6gCyRuNY5OhtrEOWq6uukGyB/U4LVOIerfijVXJACk68u4PycDQQNjaj0XZshBQMrzjbqDSKcDorV5T5CwhSYedruHwPDonyjdBU81yn2BAfWowawypM6Vemab0BChlLE0l6OisFsXHfGCS2cu0si/WDRXDIiPk3N6mEhph2vqOx4mDA2x4LgnxxhZTn1lfzqFm+SGmuKDlm6+tQVNXxNpj1c1qerybjbhu2Y7gK4OE+dCZlycsCL0U8UkkD0NUrrX4yt+NyRI9t7UV+CajffrrRRPNGCq7ebfYiEG25o8hE9U1DXRleOkfeKxW9BZaLmwX4J14VSDXr1+Jz9hPYBkqlkwuJ2mNaswbvUP/z+77Sst7a/rFs6mgjFNPiFCqGeowqTTwLGeo6cxLjAq+3avENTVELFUZiNHr1kvGHDBJvx6ZzmHEYKtUyVm5HdsSvPFD3flvDSyH0xY389/rWki4BgcGuFEzAx9TIMo+BjLI0I5MVatb0oiuTcYxZhOnAKjAUZObvYqyaikd28Z+b0dVGxAoEvf0/FE2iIxD+1K91eBI1km0znlJP/L4Xi1KjHMBAl481xDCGyWrZGQB85trKPyzHFCQsRfvojbFRaFGHCXYOaxQg4/e1huW9a/DfGYF0gAuzMvHKqfs637nuQHxCIcWyPestp2G19gG6Sr2Q+XDMr/+Eza4wqrjZUtGN0/9ZsP8POQqLLoj2/K3kj/h27un+VA1oOAB0/Tq4zItXgcNghPaxhCEko3R/DWq/B2nqahCc4GQcoXY19
- AMJGsW/2
- SUS4BRTsBJbEFaQ+T/y6P/0tfqx/fugJW5SgDUi380yI5vm/33CeNemBQkz7ttz2EXkgjmlUMDMST/CB2iXvueC05LExibwOIE7qSLnaGdlTaUEfvlr0dw+e4Wc+ib1+yLNl7uB9GW9ohRItQNToa6iwUUAIW9MNCcmpYuVBSE/GlKTTO58+VZQJoIWaMTsRtbBYnxwMDN/b0S95SPfBpoN0XnKMVMTHZLDC+Uiao1xMv91FsjQ1z9rtX4spM4viG+QZ5p3wrSFNHxkjED9xgJWNpE1Np4UsHvwd+Tf0CTkZzfTX3iZhj4pO/RHnW/1XqSHg8UMRouBJFAx0NctaxSx8tD9ZZd6qJ61pc2fQZ46HqLreqdSMIiBauZpDfRCQx+FAITAes4xaqt4BRGb1pAyTbaENhHYO42BVgF14g+PIxVNOyY/oinf2lsaNhmpT6t4IjJpxSsYqRANNU69n3nfnDkWHQMMX7Dt5yXQBgVDg50F8fhLfAbabw8+WuzpIDhIeRNSFf5AoZPosmuJu82AB5CT4DernL3sTZotJ7g8IJYzQDEEfdp63Js00br5N3uHb0dAi5wE0NyZtQEg5GC5PlMQvIeMpgRBdSGcCVA5rkCnxR12eTHORjzqlmHzv3Fo11A//XIZlhzk2ZSFXU0TOJwKD23BcCAEwdlF+BzDUMg4xpnPfcGYiwvw2iDh6ZZKOq
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7D77DA0003
+X-Stat-Signature: h6rhuz1315t76exymmz3rmcboswbyy9e
+X-HE-Tag: 1769135592-735066
+X-HE-Meta: U2FsdGVkX19Qu5kJkj96BjF5QUku4q8Gc0MNssUmA21BSaAD5FdWm0HmIrcLCI6+f1yNnRMV+wGbewCBqfW7CTBF/SK3vV1OVx46xVszyG38XYPZoEIOGRkLevZgZ1ZW/yIV4sAJsTV7CmbEGIu5r+iZfvDl9r65aZZFErNBxwp9JsD7dBNmpvq9zWcjczx5ICeDwrZfLquf6K5g65mHT3uyMCM3dlQ0nnUip359kUpECuBrZNVcFKwubPxaFU90+PfEMCzuxB1N/aVgpv+eJ6B+g9cn+8dNehuLhmuZ5MFNgcsaUcCBzMlSDiu6aUnASufjHSWPko9jw4gOQyMwo+sugLWjw/TAtUC+GxmsWPje4Vq6l1fjJZ+Jm4ZeyHYhKc75rMMCEtKFvrLnY3KiWHd54QY50O60LAz8PSVMwUfg8GhfZXtGj1ItFXVF+B/pOOTh1xyYn6TItJk6Y3VUSv9cTdnEbZs82tOCeVgUVkYHmegDzyVHKcA4ci1tozrsD40U6LTx64lGQRa4GxqaJoLZdcxItPSPh1jH57YyW5gts5CgnXGH+H/Lgx+Pc/H6ePBaAPAawwA5ZJ7WF0ffHtaFdrvxKMU+T8QCZdm+7leDGd8fSFVt12aBxTpACVOqeW4CrH3ZzgdDTy+/yrWYxDshOrcs+YN9sOYlcDaVXsNp2Xqzf2Y2gJht8pkUd1Sa0y2dDbbN9Ca/wc3DzWeuJaBBV8UysXb+bhv1mqRvYcM/bDCSInmQG/yPAVAGPJRKge7q7fBrf5nxwkhiSUJbW4tDCbxymxiFlXtA7KRcOzBqiIf6DRyccdPo0hKCSMSZOWo43D75XzIIpIeH+jncwl6BflGVuMLsGT/w1IyD4bYPpcjjuVxaTPI1S+ZU7hHUcqClLC0XNJtgr4uJJgp4pZHkutD+jf/Q29KXkPT+85Pgych8WOYDO024641mbK74bIiZMRD+sj+nKzNf6mQ
+ xV4qhlcZ
+ aYXCVxPA5sWFv3kCCQm5usMy9kpqdg49lvbFS0cLrb0NKi0td7jX3p2KaDqYQS0j1b3744Hum7xdwKRww8XDZMleqJAbqvbhvr3/byDd+toYVa0JP0QfAxQjMMmtPx0xaCHjYVPl5E/T0eSmZfm23H2IaCHFKHyzcnQRmB+z3BWonXnH29DS76va6pOiObfON9AVGHZDHgCi3LXZVzZyvxga4Inifu+fIcxuq+5N2IFEet4qeJ3Mw9Zew+q+8Cywz+pDDn2qkaHy1qnIdwJvedJg7+9vQHAJ4BGPubo+DK8wNF+XX8woAK987AA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -226,38 +109,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 10:33:37AM +0000, David Laight wrote:
-> On Thu, 22 Jan 2026 12:41:22 +0800
-> kernel test robot <lkp@intel.com> wrote:
-> 
-> > Hi,
-> > 
-> > kernel test robot noticed the following build warnings:
-> > 
-> > [auto build test WARNING on next-20260120]
-> > 
-> > url:    https://github.com/intel-lab-lkp/linux/commits/david-laight-linux-gmail-com/overflow-Reduce-expansion-of-__type_max/20260122-013456
-> > base:   next-20260120
-> > patch link:    https://lore.kernel.org/r/20260121145731.3623-12-david.laight.linux%40gmail.com
-> > patch subject: [PATCH next 11/14] bit: Strengthen compile-time tests in GENMASK() and BIT()
-> > config: mips-randconfig-r132-20260122 (https://download.01.org/0day-ci/archive/20260122/202601221237.soiAkwkN-lkp@intel.com/config)
-> > compiler: mips64-linux-gcc (GCC) 10.5.0
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601221237.soiAkwkN-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202601221237.soiAkwkN-lkp@intel.com/
-> > 
-> > sparse warnings: (new ones prefixed by >>)
-> >    kernel/kthread.c: note: in included file (through include/linux/bitmap.h, include/linux/cpumask.h, arch/mips/include/asm/processor.h, ...):
-> > >> include/linux/find.h:209:45: sparse: sparse: Variable length array is used.  
-> 
-> Can we stop sparse complaining about sizeof(VLA) ?
 
-Got it, we will avoid the direct report this 'sparse: Variable length array is used' warning.
 
-> 
-> 	David
-> 
+> On Jan 23, 2026, at 01:59, Kiryl Shutsemau <kas@kernel.org> wrote:
+>=20
+> On Thu, Jan 22, 2026 at 10:02:24PM +0800, Muchun Song wrote:
+>>=20
+>>=20
+>>> On Jan 22, 2026, at 20:43, Kiryl Shutsemau <kas@kernel.org> wrote:
+>>>=20
+>>> =EF=BB=BFOn Thu, Jan 22, 2026 at 07:42:47PM +0800, Muchun Song =
+wrote:
+>>>>=20
+>>>>=20
+>>>>>> On Jan 22, 2026, at 19:33, Muchun Song <muchun.song@linux.dev> =
+wrote:
+>>>>>=20
+>>>>>=20
+>>>>>=20
+>>>>>> On Jan 22, 2026, at 19:28, Kiryl Shutsemau <kas@kernel.org> =
+wrote:
+>>>>>>=20
+>>>>>> On Thu, Jan 22, 2026 at 11:10:26AM +0800, Muchun Song wrote:
+>>>>>>>=20
+>>>>>>>=20
+>>>>>>>> On Jan 22, 2026, at 00:22, Kiryl Shutsemau <kas@kernel.org> =
+wrote:
+>>>>>>>>=20
+>>>>>>>> If page->compound_info encodes a mask, it is expected that =
+memmap to be
+>>>>>>>> naturally aligned to the maximum folio size.
+>>>>>>>>=20
+>>>>>>>> Add a warning if it is not.
+>>>>>>>>=20
+>>>>>>>> A warning is sufficient as MAX_FOLIO_ORDER is very rarely used, =
+so the
+>>>>>>>> kernel is still likely to be functional if this strict check =
+fails.
+>>>>>>>>=20
+>>>>>>>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+>>>>>>>> ---
+>>>>>>>> include/linux/mmzone.h | 1 +
+>>>>>>>> mm/sparse.c            | 5 +++++
+>>>>>>>> 2 files changed, 6 insertions(+)
+>>>>>>>>=20
+>>>>>>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>>>>>>>> index 390ce11b3765..7e4f69b9d760 100644
+>>>>>>>> --- a/include/linux/mmzone.h
+>>>>>>>> +++ b/include/linux/mmzone.h
+>>>>>>>> @@ -91,6 +91,7 @@
+>>>>>>>> #endif
+>>>>>>>>=20
+>>>>>>>> #define MAX_FOLIO_NR_PAGES (1UL << MAX_FOLIO_ORDER)
+>>>>>>>> +#define MAX_FOLIO_SIZE (PAGE_SIZE << MAX_FOLIO_ORDER)
+>>>>>>>>=20
+>>>>>>>> enum migratetype {
+>>>>>>>> MIGRATE_UNMOVABLE,
+>>>>>>>> diff --git a/mm/sparse.c b/mm/sparse.c
+>>>>>>>> index 17c50a6415c2..5f41a3edcc24 100644
+>>>>>>>> --- a/mm/sparse.c
+>>>>>>>> +++ b/mm/sparse.c
+>>>>>>>> @@ -600,6 +600,11 @@ void __init sparse_init(void)
+>>>>>>>> BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
+>>>>>>>> memblocks_present();
+>>>>>>>>=20
+>>>>>>>> +  if (compound_info_has_mask()) {
+>>>>>>>> +  WARN_ON(!IS_ALIGNED((unsigned long)pfn_to_page(0),
+>>>>>>>> +     MAX_FOLIO_SIZE / sizeof(struct page)));
+>>>>>>>=20
+>>>>>>> I still have concerns about this. If certain architectures or =
+configurations,
+>>>>>>> especially when KASLR is enabled, do not meet the requirements =
+during the
+>>>>>>> boot stage, only specific folios larger than a certain size =
+might end up with
+>>>>>>> incorrect struct page entries as the system runs. How can we =
+detect issues
+>>>>>>> arising from either updating the struct page or making incorrect =
+logical
+>>>>>>> judgments based on information retrieved from the struct page?
+>>>>>>>=20
+>>>>>>> After all, when we see this warning, we don't know when or if a =
+problem will
+>>>>>>> occur in the future. It's like a time bomb in the system, isn't =
+it? Therefore,
+>>>>>>> I would like to add a warning check to the memory allocation =
+place, for
+>>>>>>> example:
+>>>>>>>=20
+>>>>>>> WARN_ON(!IS_ALIGNED((unsigned long)&folio->page, folio_size / =
+sizeof(struct page)));
+>>>>>>=20
+>>>>>> I don't think it is needed. Any compound page usage would trigger =
+the
+>>>>>> problem. It should happen pretty early.
+>>>>>=20
+>>>>> Why would you think it would be discovered early? If the alignment =
+of struct page
+>>>>> can only meet the needs of 4M pages (i.e., the largest pages that =
+buddy can
+>>>>> allocate), how can you be sure that there will be a similar path =
+using CMA
+>>>>> early on if the system allocates through CMA in the future (after =
+all, CMA
+>>>>> is used much less than buddy)?
+>>>=20
+>>> True.
+>>>=20
+>>>> Suppose we are more aggressive. If the alignment requirement of =
+struct page
+>>>> cannot meet the needs of 2GB pages (which is an uncommon memory =
+allocation
+>>>> requirement), then users might not care about such a warning =
+message after
+>>>> the system boots. And if there is no allocation of pages greater =
+than or
+>>>> equal to 2GB for a period of time in the future, the system will =
+have no
+>>>> problems. But once some path allocates pages greater than or equal =
+to 2GB,
+>>>> the system will go into chaos. And by that time, the system log may =
+no
+>>>> longer have this warning message. Is that not the case?
+>>>=20
+>>> It is.
+>>>=20
+>>> I expect the warning to be reported early if we have configurations =
+that
+>>> do not satisfy the alignment requirement even in absence of the =
+crash.
+>>=20
+>> If you=E2=80=99re saying the issue was only caught during
+>> testing, keep in mind that with KASLR enabled the
+>> warning is triggered at run-time; you can=E2=80=99t assume it
+>> will never appear in production.
+>=20
+> Let's look at what architectures actually do with vmemmap.
+>=20
+> On 64-bit machines, we want vmemmap to be naturally aligned to
+> accommodate 16GiB pages.
+>=20
+> Assuming 64 byte struct page, it requires 256 MiB alignment for 4K
+> PAGE_SIZE, 64MiB for 16K PAGE_SIZE and 16MiB for 64K PAGE_SIZE.
+>=20
+> Only 3 architectures support HVO (select =
+ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP):
+> loongarch, riscv and x86. We should make the feature conditional to =
+HVO
+> to limit exposure.
+>=20
+> I am not sure why arm64 is not in the club.
+>=20
+> x86 aligns vmemmap to 1G - OK.
+>=20
+> loongarch aligns vmemmap to PMD_SIZE does not fit us with 4K and 16K
+> PAGE_SIZE. It should be easily fixable. No KALSR.
+>=20
+> riscv aligns vmemmap to section size (128MiB) which is not enough.
+> Again, easily fixable.
+>=20
+
+OK. After we fix all problems, I think changing WARN_ON to BUG_ON is =
+fine.
+
+> --=20
+>  Kiryl Shutsemau / Kirill A. Shutemov
+
+
 
