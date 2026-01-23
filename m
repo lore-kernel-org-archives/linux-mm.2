@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC4AFD625E5
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:53:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B62BD3EE9A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:53:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 174F06B0407; Fri, 23 Jan 2026 01:53:45 -0500 (EST)
+	id 797FD6B0408; Fri, 23 Jan 2026 01:53:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 135F56B0408; Fri, 23 Jan 2026 01:53:45 -0500 (EST)
+	id 761636B040A; Fri, 23 Jan 2026 01:53:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2FA46B0409; Fri, 23 Jan 2026 01:53:44 -0500 (EST)
+	id 676396B040B; Fri, 23 Jan 2026 01:53:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCB2D6B0407
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:53:44 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E3E913AA19
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:44 +0000 (UTC)
-X-FDA: 84362313168.05.77D0605
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 672AA16000A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FB766B0408
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:53:45 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 080671A0335
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:45 +0000 (UTC)
+X-FDA: 84362313210.18.9815BB5
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CD58E40003
 	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769151222;
+	s=arc-20220608; t=1769151223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pd9NhgTxEwmbln0uzdMB8QcqXtQLYyQ8wYbEE2RoEbc=;
-	b=h0kzhekvZYy6cfsnkwWQHs1tMF3gszGNJJCU9etECXh/zM0nkQKbXlpR4e6UQ2F/w3tuOL
-	9i5wxcnO2OwBSLDEXJCdMIXjID2ijbWOYyMdiiultg+ntOTS4hcySXVO2ipZgJNCdhKJ7d
-	Q1Of4Dy5DCoE9VR/AAv9xs5MxWd9NHQ=
+	bh=Iq7UWdW4QXI0XgzbTe6sxpLmaSn9uxzUuTNcFry6wsI=;
+	b=OP6a2NuQfmY8ihaQNpa7TRmL3WbDFhFnSn5x6lRzJq2v4p6P9GnfjyMO/zkmSk13HAljHi
+	n7Tnipv0KARniTmcDoZH/xVsUqdF3P+hqK5pHw2B5Lewi/aceGYGxLefkVNfXAmCaEUbWo
+	Ekx+oktsr+6jJwLs6pB4vyrajGadzGg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769151222; a=rsa-sha256;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769151223; a=rsa-sha256;
 	cv=none;
-	b=4tK6uQxIP6yQBMKF0wRyz3Q5f7GMovIUsj/ihbbV1qPPCer5Umk3libv+l+BJZDuxRwfv8
-	yJp/M0AQkKSw8iLM+0C+CPcwrAENww7uxPqewQ0jLgT4WgmnvvRFpEqLwEErrxQOYUUpEN
-	S4nVNLYjFGZ3/NHBxYPrNLyklwLLRFs=
+	b=SfIdd1w9w5AqODu6TB9elpu6+UyLouc6u9Ho5LsfVaje9yWeVl4YzGrX13Awa4X6WFpFsf
+	JZNLHB8jayDjIZ2FXR55BUQY842g3PUaZ/ITvNGdCtIx468EW+1pA30kiS3fE96k9/W2VN
+	AP9ehKd3IqMTGAP3npr5+yVqKjgJpNo=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D7A6733778;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C79315BCD0;
 	Fri, 23 Jan 2026 06:53:10 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 62858139F3;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9539D13A01;
 	Fri, 23 Jan 2026 06:53:10 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CDDJF9Yac2k4YgAAD6G6ig
+	id yBQnJNYac2k4YgAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Fri, 23 Jan 2026 06:53:10 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 23 Jan 2026 07:52:50 +0100
-Subject: [PATCH v4 12/22] slab: remove SLUB_CPU_PARTIAL
+Date: Fri, 23 Jan 2026 07:52:52 +0100
+Subject: [PATCH v4 14/22] slab: remove defer_deactivate_slab()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-sheaves-for-all-v4-12-041323d506f7@suse.cz>
+Message-Id: <20260123-sheaves-for-all-v4-14-041323d506f7@suse.cz>
 References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 In-Reply-To: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
@@ -92,14 +92,14 @@ X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 672AA16000A
-X-Stat-Signature: qzajnymmkbz193regddhwsg33k3owrnj
+X-Rspamd-Server: rspam12
+X-Stat-Signature: caw7w8tkw7qitfio9451wb3t19wywjei
+X-Rspamd-Queue-Id: CD58E40003
 X-Rspam-User: 
-X-HE-Tag: 1769151222-429245
-X-HE-Meta: U2FsdGVkX1/elsUDoHjCnT8ddhUCzFXguiO9tJ3Em2Sl8jDe+QpKQeUsRrCgnx4LiWdZSZmQgwwul+bk/KbmgkWRpLIxEzuUIt22hhrEcNNwa3R8d1bHi8PpIGmHs6kCoEz3G++G/IlLp3aG8dcAXtaqMsQAolSzG69oCq7/CPCG+7yfGDcZj1EDyz9r/OQAuVSZvF/farJGIfAWkK62NuUgR/GlO3bWv+PeT32WLw0Ka0ex2OmSpHaiW7rSSLsgFH+9W1voXUF1iFNfPZCvc6PvtzSyq43qA8Q32drmaYJSYTRcpgUKNdZw8rL9CZQCbPelkBqILhX28qbYrg1Y22gvV8aeRI2wWVGn4mwf6J6doKmg7CVtRdaGX8Ytua5VpgV1AMnyG0w0SnMGIK2SDMy7ihmBxLKQdcueVV6qym39sRkWbcIrAdt6Fg+QBbZwgOT0F57XaNDGbg1i/CeqV3CNzm9XuJ0+Obva2fOB+4zEVYDTWxzW7iS5w9hUhtj/XDiImf6y48kUbTIMab9Qt8ajLWtT0J0GsK5Fs+MehpR2ScQgfNzyg7wa1CL3jUzhm3gD9h5MqlvtCGMRrlX4LrzIcrwdy8dDmFE8qSECWd7y+1rENX0nS6l2K4jlvO9kcw8cV8hRAF2Gv8GTjOZwavbBN2q7wLKiqRYxN2Pw1c8MBD5nA2Pn3LLy6OIenmchjj6mLMGjtcClmsJchqBUd4QUVvcPeLavySupPm/x8Pt07DDLBjmUJ9GhGBLLAh7+HrYZjjX1SP5aFlGrWVfRW7Iq5Dnna1mhSm+I1O188sqvn0JmdW9IDnqRcxhPHZZZhHsTEJaXJcy6drPLQdmihsFcFeAKtvTIPa1O3/KoXn0akCZjsyHZx077bV51JKhFtKnwYM0GxQI7vh8HXXjCCu1fESRolmBaPFECVP1HNl2YR20x1kOgadoH/6g3+UErE2AzA3fjYgEbMyh+qBf
- IVTHQ/or
- cZ06DuCW/6GnmPDdcZXyay/TJd1b0cN9hTPtdtEps4eTWn1afHt63w4Dwy8xq2IBv8GzBrMyrGhjMRIMAV0j8ZIW7vYhwJYE35x7BYfVBNoeENkq9DMCF9kwJkWRjFPnvrdd9dHyOyQtXpd7y+ob0ly1xKXkmIAyG/tdC/eNmPmQqbpMNyykdXPhMNw==
+X-HE-Tag: 1769151222-940701
+X-HE-Meta: U2FsdGVkX181m+VGj2AvbzBV1dGDQtfneqPyBuFaZS0Eh7SvUiLKEUDpZ9xHBzmZbriABqCXLaytx8Of6smxY+ZDWQoQL1n/wasXPq09sW0NZW+g9wgRNto5QLl7hwKIVznLRbXEaI9+x1BHjBNyNBvoP5r3UMedO+87DReDl9v29sjnvui0j3Q5yxbz0O/rGqDLS0dEPu0qV05BvptxqBKV5/JhmqIDn37vA2KyUk3fIIh449YKHLsiaNlOFTIVTG4uo35lt3s8PxNO8l9b8daTsUXuknBgHK+BbSBg/KXiyFPbBIrfkscKk3Z0c5Kxd0Q2LbXllfHCQ04mR+gjKu9+KcyN7Ux+QNQcpROEtbjScjhpOqhsGn5VnC1xEeEEneCmWbxlB6J8MFDxHhGbcpbQQAu1nqZgR0Ii/jiICRx56a8Sm/E/kMuFXsmO1Xs5CbnGobRB1Kg/HIe9Sc3amsUu1cFXTf8Gf60XzNsBKvzK+oKRWJVQokoQuvpFVJvaQ/ePfVk+TH23gvjOYJu+L7WLYh9FD+WJHQj64vP21soLRinMUIkBCxqs3OQt+vXWt0b1qOyXGvhQkC+bD1up50tbNAKVY/ml8YcDbaNcSH4L34MgUCTE8C3buPUkpnaWz9tafIsX9D/wcOuwZCh7wY6JXtOYlXHii6R8HoL+x/HT9D0J9GGNboSg7gbWC7JQArQhjHjsqBjCZkClhbTGZjFZC9L5EIMJQTgck3URgC80BgD6BsY0iSruOOP6VgeoCco5l807rbCdoXa37yAwZJgDALUAjGR6AaoklyWHTPeYaU87s7Vicjk2FE8+FTodKRBzYDC2+pnj8Er03i4GgGV7Ue/hfmf1uIi1IVb/gzd8+8No5TPo6PvnNrZZbXm5zwdEKQk9WtCguB96gHq3h0Md+ta33AFpVQLDR+0URONh7y8YBo5LZDMnz/EaZE4GxePJWP0Icsb2NZiAIlz
+ 1wos5QiD
+ FAI6z7efTCL+3CK5FkrWdaWCY8ieA7eMTSXL5XihcNvLABsLCy4+F5wotjY6QGqWKy5i/53Xn1106rQS18KiHK1bHeXW1neSXJa5s9zKCjiLJ+jCvd4AASaJZHq0SNAV2uY5raWZArHb0H2g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,557 +108,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We have removed the partial slab usage from allocation paths. Now remove
-the whole config option and associated code.
+There are no more cpu slabs so we don't need their deferred
+deactivation. The function is now only used from places where we
+allocate a new slab but then can't spin on node list_lock to put it on
+the partial list. Instead of the deferred action we can free it directly
+via __free_slab(), we just need to tell it to use _nolock() freeing of
+the underlying pages and take care of the accounting.
+
+Since free_frozen_pages_nolock() variant does not yet exist for code
+outside of the page allocator, create it as a trivial wrapper for
+__free_frozen_pages(..., FPI_TRYLOCK).
 
 Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Reviewed-by: Hao Li <hao.li@linux.dev>
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/Kconfig |  11 ---
- mm/slab.h  |  29 ------
- mm/slub.c  | 321 ++++---------------------------------------------------------
- 3 files changed, 19 insertions(+), 342 deletions(-)
+ mm/internal.h   |  1 +
+ mm/page_alloc.c |  5 +++++
+ mm/slab.h       |  8 +-------
+ mm/slub.c       | 58 +++++++++++++++++++++------------------------------------
+ 4 files changed, 28 insertions(+), 44 deletions(-)
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index bd0ea5454af8..08593674cd20 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -247,17 +247,6 @@ config SLUB_STATS
- 	  out which slabs are relevant to a particular load.
- 	  Try running: slabinfo -DA
+diff --git a/mm/internal.h b/mm/internal.h
+index e430da900430..1f44ccb4badf 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -846,6 +846,7 @@ static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int ord
+ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int order);
+ #define alloc_frozen_pages_nolock(...) \
+ 	alloc_hooks(alloc_frozen_pages_nolock_noprof(__VA_ARGS__))
++void free_frozen_pages_nolock(struct page *page, unsigned int order);
  
--config SLUB_CPU_PARTIAL
--	default y
--	depends on SMP && !SLUB_TINY
--	bool "Enable per cpu partial caches"
--	help
--	  Per cpu partial caches accelerate objects allocation and freeing
--	  that is local to a processor at the price of more indeterminism
--	  in the latency of the free. On overflow these caches will be cleared
--	  which requires the taking of locks that may cause latency spikes.
--	  Typically one would choose no for a realtime system.
--
- config RANDOM_KMALLOC_CACHES
- 	default n
- 	depends on !SLUB_TINY
+ extern void zone_pcp_reset(struct zone *zone);
+ extern void zone_pcp_disable(struct zone *zone);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c380f063e8b7..0127e9d661ad 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2981,6 +2981,11 @@ void free_frozen_pages(struct page *page, unsigned int order)
+ 	__free_frozen_pages(page, order, FPI_NONE);
+ }
+ 
++void free_frozen_pages_nolock(struct page *page, unsigned int order)
++{
++	__free_frozen_pages(page, order, FPI_TRYLOCK);
++}
++
+ /*
+  * Free a batch of folios
+  */
 diff --git a/mm/slab.h b/mm/slab.h
-index a20a6af6e0ef..0fbe13bec864 100644
+index 0fbe13bec864..37090a7dffb6 100644
 --- a/mm/slab.h
 +++ b/mm/slab.h
-@@ -77,12 +77,6 @@ struct slab {
- 					struct llist_node llnode;
- 					void *flush_freelist;
- 				};
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--				struct {
--					struct slab *next;
--					int slabs;	/* Nr of slabs left */
+@@ -71,13 +71,7 @@ struct slab {
+ 	struct kmem_cache *slab_cache;
+ 	union {
+ 		struct {
+-			union {
+-				struct list_head slab_list;
+-				struct { /* For deferred deactivate_slab() */
+-					struct llist_node llnode;
+-					void *flush_freelist;
 -				};
--#endif
- 			};
+-			};
++			struct list_head slab_list;
  			/* Double-word boundary */
  			struct freelist_counters;
-@@ -188,23 +182,6 @@ static inline size_t slab_size(const struct slab *slab)
- 	return PAGE_SIZE << slab_order(slab);
- }
- 
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--#define slub_percpu_partial(c)			((c)->partial)
--
--#define slub_set_percpu_partial(c, p)		\
--({						\
--	slub_percpu_partial(c) = (p)->next;	\
--})
--
--#define slub_percpu_partial_read_once(c)	READ_ONCE(slub_percpu_partial(c))
--#else
--#define slub_percpu_partial(c)			NULL
--
--#define slub_set_percpu_partial(c, p)
--
--#define slub_percpu_partial_read_once(c)	NULL
--#endif // CONFIG_SLUB_CPU_PARTIAL
--
- /*
-  * Word size structure that can be atomically updated or read and that
-  * contains both the order and the number of objects that a slab of the
-@@ -228,12 +205,6 @@ struct kmem_cache {
- 	unsigned int object_size;	/* Object size without metadata */
- 	struct reciprocal_value reciprocal_size;
- 	unsigned int offset;		/* Free pointer offset */
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--	/* Number of per cpu partial objects to keep around */
--	unsigned int cpu_partial;
--	/* Number of per cpu partial slabs to keep around */
--	unsigned int cpu_partial_slabs;
--#endif
- 	unsigned int sheaf_capacity;
- 	struct kmem_cache_order_objects oo;
- 
+ 		};
 diff --git a/mm/slub.c b/mm/slub.c
-index 3a78cee811cf..914b51aedb25 100644
+index a63a0eed2c55..82950c2bc26d 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -268,15 +268,6 @@ void *fixup_red_left(struct kmem_cache *s, void *p)
- 	return p;
+@@ -3262,7 +3262,7 @@ static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 		flags & (GFP_RECLAIM_MASK | GFP_CONSTRAINT_MASK), node);
  }
  
--static inline bool kmem_cache_has_cpu_partial(struct kmem_cache *s)
--{
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--	return !kmem_cache_debug(s);
--#else
--	return false;
--#endif
--}
--
- /*
-  * Issues still to be resolved:
-  *
-@@ -431,9 +422,6 @@ struct freelist_tid {
- struct kmem_cache_cpu {
- 	struct freelist_tid;
- 	struct slab *slab;	/* The slab from which we are allocating */
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--	struct slab *partial;	/* Partially allocated slabs */
--#endif
- 	local_trylock_t lock;	/* Protects the fields above */
- #ifdef CONFIG_SLUB_STATS
- 	unsigned int stat[NR_SLUB_STAT_ITEMS];
-@@ -666,29 +654,6 @@ static inline unsigned int oo_objects(struct kmem_cache_order_objects x)
- 	return x.x & OO_MASK;
+-static void __free_slab(struct kmem_cache *s, struct slab *slab)
++static void __free_slab(struct kmem_cache *s, struct slab *slab, bool allow_spin)
+ {
+ 	struct page *page = slab_page(slab);
+ 	int order = compound_order(page);
+@@ -3273,14 +3273,26 @@ static void __free_slab(struct kmem_cache *s, struct slab *slab)
+ 	__ClearPageSlab(page);
+ 	mm_account_reclaimed_pages(pages);
+ 	unaccount_slab(slab, order, s);
+-	free_frozen_pages(page, order);
++	if (allow_spin)
++		free_frozen_pages(page, order);
++	else
++		free_frozen_pages_nolock(page, order);
++}
++
++static void free_new_slab_nolock(struct kmem_cache *s, struct slab *slab)
++{
++	/*
++	 * Since it was just allocated, we can skip the actions in
++	 * discard_slab() and free_slab().
++	 */
++	__free_slab(s, slab, false);
  }
  
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--static void slub_set_cpu_partial(struct kmem_cache *s, unsigned int nr_objects)
--{
--	unsigned int nr_slabs;
--
--	s->cpu_partial = nr_objects;
--
--	/*
--	 * We take the number of objects but actually limit the number of
--	 * slabs on the per cpu partial list, in order to limit excessive
--	 * growth of the list. For simplicity we assume that the slabs will
--	 * be half-full.
--	 */
--	nr_slabs = DIV_ROUND_UP(nr_objects * 2, oo_objects(s->oo));
--	s->cpu_partial_slabs = nr_slabs;
--}
--#elif defined(SLAB_SUPPORTS_SYSFS)
--static inline void
--slub_set_cpu_partial(struct kmem_cache *s, unsigned int nr_objects)
--{
--}
--#endif /* CONFIG_SLUB_CPU_PARTIAL */
--
- /*
-  * If network-based swap is enabled, slub must keep track of whether memory
-  * were allocated from pfmemalloc reserves.
-@@ -3476,12 +3441,6 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+ static void rcu_free_slab(struct rcu_head *h)
+ {
+ 	struct slab *slab = container_of(h, struct slab, rcu_head);
+ 
+-	__free_slab(slab->slab_cache, slab);
++	__free_slab(slab->slab_cache, slab, true);
+ }
+ 
+ static void free_slab(struct kmem_cache *s, struct slab *slab)
+@@ -3296,7 +3308,7 @@ static void free_slab(struct kmem_cache *s, struct slab *slab)
+ 	if (unlikely(s->flags & SLAB_TYPESAFE_BY_RCU))
+ 		call_rcu(&slab->rcu_head, rcu_free_slab);
+ 	else
+-		__free_slab(s, slab);
++		__free_slab(s, slab, true);
+ }
+ 
+ static void discard_slab(struct kmem_cache *s, struct slab *slab)
+@@ -3389,8 +3401,6 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
  	return object;
  }
  
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--static void put_cpu_partial(struct kmem_cache *s, struct slab *slab, int drain);
--#else
--static inline void put_cpu_partial(struct kmem_cache *s, struct slab *slab,
--				   int drain) { }
--#endif
- static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags);
+-static void defer_deactivate_slab(struct slab *slab, void *flush_freelist);
+-
+ /*
+  * Called only for kmem_cache_debug() caches to allocate from a freshly
+  * allocated slab. Allocate a single object instead of whole freelist
+@@ -3406,8 +3416,8 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+ 	void *object;
  
- static bool get_partial_node_bulk(struct kmem_cache *s,
-@@ -3894,131 +3853,6 @@ static void deactivate_slab(struct kmem_cache *s, struct slab *slab,
- #define local_unlock_cpu_slab(s, flags)	\
- 	local_unlock_irqrestore(&(s)->cpu_slab->lock, flags)
- 
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--static void __put_partials(struct kmem_cache *s, struct slab *partial_slab)
--{
--	struct kmem_cache_node *n = NULL, *n2 = NULL;
--	struct slab *slab, *slab_to_discard = NULL;
--	unsigned long flags = 0;
--
--	while (partial_slab) {
--		slab = partial_slab;
--		partial_slab = slab->next;
--
--		n2 = get_node(s, slab_nid(slab));
--		if (n != n2) {
--			if (n)
--				spin_unlock_irqrestore(&n->list_lock, flags);
--
--			n = n2;
--			spin_lock_irqsave(&n->list_lock, flags);
--		}
--
--		if (unlikely(!slab->inuse && n->nr_partial >= s->min_partial)) {
--			slab->next = slab_to_discard;
--			slab_to_discard = slab;
--		} else {
--			add_partial(n, slab, DEACTIVATE_TO_TAIL);
--			stat(s, FREE_ADD_PARTIAL);
--		}
--	}
--
--	if (n)
--		spin_unlock_irqrestore(&n->list_lock, flags);
--
--	while (slab_to_discard) {
--		slab = slab_to_discard;
--		slab_to_discard = slab_to_discard->next;
--
--		stat(s, DEACTIVATE_EMPTY);
--		discard_slab(s, slab);
--		stat(s, FREE_SLAB);
--	}
--}
--
--/*
-- * Put all the cpu partial slabs to the node partial list.
-- */
--static void put_partials(struct kmem_cache *s)
--{
--	struct slab *partial_slab;
--	unsigned long flags;
--
--	local_lock_irqsave(&s->cpu_slab->lock, flags);
--	partial_slab = this_cpu_read(s->cpu_slab->partial);
--	this_cpu_write(s->cpu_slab->partial, NULL);
--	local_unlock_irqrestore(&s->cpu_slab->lock, flags);
--
--	if (partial_slab)
--		__put_partials(s, partial_slab);
--}
--
--static void put_partials_cpu(struct kmem_cache *s,
--			     struct kmem_cache_cpu *c)
--{
--	struct slab *partial_slab;
--
--	partial_slab = slub_percpu_partial(c);
--	c->partial = NULL;
--
--	if (partial_slab)
--		__put_partials(s, partial_slab);
--}
--
--/*
-- * Put a slab into a partial slab slot if available.
-- *
-- * If we did not find a slot then simply move all the partials to the
-- * per node partial list.
-- */
--static void put_cpu_partial(struct kmem_cache *s, struct slab *slab, int drain)
--{
--	struct slab *oldslab;
--	struct slab *slab_to_put = NULL;
--	unsigned long flags;
--	int slabs = 0;
--
--	local_lock_cpu_slab(s, flags);
--
--	oldslab = this_cpu_read(s->cpu_slab->partial);
--
--	if (oldslab) {
--		if (drain && oldslab->slabs >= s->cpu_partial_slabs) {
--			/*
--			 * Partial array is full. Move the existing set to the
--			 * per node partial list. Postpone the actual unfreezing
--			 * outside of the critical section.
--			 */
--			slab_to_put = oldslab;
--			oldslab = NULL;
--		} else {
--			slabs = oldslab->slabs;
--		}
--	}
--
--	slabs++;
--
--	slab->slabs = slabs;
--	slab->next = oldslab;
--
--	this_cpu_write(s->cpu_slab->partial, slab);
--
--	local_unlock_cpu_slab(s, flags);
--
--	if (slab_to_put) {
--		__put_partials(s, slab_to_put);
--		stat(s, CPU_PARTIAL_DRAIN);
--	}
--}
--
--#else	/* CONFIG_SLUB_CPU_PARTIAL */
--
--static inline void put_partials(struct kmem_cache *s) { }
--static inline void put_partials_cpu(struct kmem_cache *s,
--				    struct kmem_cache_cpu *c) { }
--
--#endif	/* CONFIG_SLUB_CPU_PARTIAL */
--
- static inline void flush_slab(struct kmem_cache *s, struct kmem_cache_cpu *c)
- {
- 	unsigned long flags;
-@@ -4056,8 +3890,6 @@ static inline void __flush_cpu_slab(struct kmem_cache *s, int cpu)
- 		deactivate_slab(s, slab, freelist);
- 		stat(s, CPUSLAB_FLUSH);
+ 	if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
+-		/* Unlucky, discard newly allocated slab */
+-		defer_deactivate_slab(slab, NULL);
++		/* Unlucky, discard newly allocated slab. */
++		free_new_slab_nolock(s, slab);
+ 		return NULL;
  	}
--
--	put_partials_cpu(s, c);
- }
  
- static inline void flush_this_cpu_slab(struct kmem_cache *s)
-@@ -4066,15 +3898,13 @@ static inline void flush_this_cpu_slab(struct kmem_cache *s)
+@@ -4279,7 +4289,7 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
  
- 	if (c->slab)
- 		flush_slab(s, c);
--
--	put_partials(s);
- }
+ 		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+ 			/* Unlucky, discard newly allocated slab */
+-			defer_deactivate_slab(slab, NULL);
++			free_new_slab_nolock(s, slab);
+ 			return 0;
+ 		}
+ 	}
+@@ -6056,7 +6066,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
  
- static bool has_cpu_slab(int cpu, struct kmem_cache *s)
+ struct defer_free {
+ 	struct llist_head objects;
+-	struct llist_head slabs;
+ 	struct irq_work work;
+ };
+ 
+@@ -6064,23 +6073,21 @@ static void free_deferred_objects(struct irq_work *work);
+ 
+ static DEFINE_PER_CPU(struct defer_free, defer_free_objects) = {
+ 	.objects = LLIST_HEAD_INIT(objects),
+-	.slabs = LLIST_HEAD_INIT(slabs),
+ 	.work = IRQ_WORK_INIT(free_deferred_objects),
+ };
+ 
+ /*
+  * In PREEMPT_RT irq_work runs in per-cpu kthread, so it's safe
+- * to take sleeping spin_locks from __slab_free() and deactivate_slab().
++ * to take sleeping spin_locks from __slab_free().
+  * In !PREEMPT_RT irq_work will run after local_unlock_irqrestore().
+  */
+ static void free_deferred_objects(struct irq_work *work)
  {
- 	struct kmem_cache_cpu *c = per_cpu_ptr(s->cpu_slab, cpu);
+ 	struct defer_free *df = container_of(work, struct defer_free, work);
+ 	struct llist_head *objs = &df->objects;
+-	struct llist_head *slabs = &df->slabs;
+ 	struct llist_node *llnode, *pos, *t;
  
--	return c->slab || slub_percpu_partial(c);
-+	return c->slab;
- }
- 
- static bool has_pcs_used(int cpu, struct kmem_cache *s)
-@@ -5652,13 +5482,6 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+-	if (llist_empty(objs) && llist_empty(slabs))
++	if (llist_empty(objs))
  		return;
+ 
+ 	llnode = llist_del_all(objs);
+@@ -6104,16 +6111,6 @@ static void free_deferred_objects(struct irq_work *work)
+ 
+ 		__slab_free(s, slab, x, x, 1, _THIS_IP_);
  	}
- 
--	/*
--	 * It is enough to test IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) below
--	 * instead of kmem_cache_has_cpu_partial(s), because kmem_cache_debug(s)
--	 * is the only other reason it can be false, and it is already handled
--	 * above.
--	 */
 -
- 	do {
- 		if (unlikely(n)) {
- 			spin_unlock_irqrestore(&n->list_lock, flags);
-@@ -5683,26 +5506,19 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 		 * Unless it's frozen.
- 		 */
- 		if ((!new.inuse || was_full) && !was_frozen) {
-+
-+			n = get_node(s, slab_nid(slab));
- 			/*
--			 * If slab becomes non-full and we have cpu partial
--			 * lists, we put it there unconditionally to avoid
--			 * taking the list_lock. Otherwise we need it.
-+			 * Speculatively acquire the list_lock.
-+			 * If the cmpxchg does not succeed then we may
-+			 * drop the list_lock without any processing.
-+			 *
-+			 * Otherwise the list_lock will synchronize with
-+			 * other processors updating the list of slabs.
- 			 */
--			if (!(IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full)) {
+-	llnode = llist_del_all(slabs);
+-	llist_for_each_safe(pos, t, llnode) {
+-		struct slab *slab = container_of(pos, struct slab, llnode);
 -
--				n = get_node(s, slab_nid(slab));
--				/*
--				 * Speculatively acquire the list_lock.
--				 * If the cmpxchg does not succeed then we may
--				 * drop the list_lock without any processing.
--				 *
--				 * Otherwise the list_lock will synchronize with
--				 * other processors updating the list of slabs.
--				 */
--				spin_lock_irqsave(&n->list_lock, flags);
--
--				on_node_partial = slab_test_node_partial(slab);
--			}
-+			spin_lock_irqsave(&n->list_lock, flags);
-+
-+			on_node_partial = slab_test_node_partial(slab);
- 		}
- 
- 	} while (!slab_update_freelist(s, slab, &old, &new, "__slab_free"));
-@@ -5715,13 +5531,6 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 			 * activity can be necessary.
- 			 */
- 			stat(s, FREE_FROZEN);
--		} else if (IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) {
--			/*
--			 * If we started with a full slab then put it onto the
--			 * per cpu partial list.
--			 */
--			put_cpu_partial(s, slab, 1);
--			stat(s, CPU_PARTIAL_FREE);
- 		}
- 
- 		/*
-@@ -5750,10 +5559,9 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 
- 	/*
- 	 * Objects left in the slab. If it was not on the partial list before
--	 * then add it. This can only happen when cache has no per cpu partial
--	 * list otherwise we would have put it there.
-+	 * then add it.
- 	 */
--	if (!IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && unlikely(was_full)) {
-+	if (unlikely(was_full)) {
- 		add_partial(n, slab, DEACTIVATE_TO_TAIL);
- 		stat(s, FREE_ADD_PARTIAL);
- 	}
-@@ -6419,8 +6227,8 @@ static __always_inline void do_slab_free(struct kmem_cache *s,
- 		if (unlikely(!allow_spin)) {
- 			/*
- 			 * __slab_free() can locklessly cmpxchg16 into a slab,
--			 * but then it might need to take spin_lock or local_lock
--			 * in put_cpu_partial() for further processing.
-+			 * but then it might need to take spin_lock
-+			 * for further processing.
- 			 * Avoid the complexity and simply add to a deferred list.
- 			 */
- 			defer_free(s, head);
-@@ -7734,39 +7542,6 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
- 	return 1;
+-		if (slab->frozen)
+-			deactivate_slab(slab->slab_cache, slab, slab->flush_freelist);
+-		else
+-			free_slab(slab->slab_cache, slab);
+-	}
  }
  
--static void set_cpu_partial(struct kmem_cache *s)
+ static void defer_free(struct kmem_cache *s, void *head)
+@@ -6129,19 +6126,6 @@ static void defer_free(struct kmem_cache *s, void *head)
+ 		irq_work_queue(&df->work);
+ }
+ 
+-static void defer_deactivate_slab(struct slab *slab, void *flush_freelist)
 -{
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--	unsigned int nr_objects;
+-	struct defer_free *df;
 -
--	/*
--	 * cpu_partial determined the maximum number of objects kept in the
--	 * per cpu partial lists of a processor.
--	 *
--	 * Per cpu partial lists mainly contain slabs that just have one
--	 * object freed. If they are used for allocation then they can be
--	 * filled up again with minimal effort. The slab will never hit the
--	 * per node partial lists and therefore no locking will be required.
--	 *
--	 * For backwards compatibility reasons, this is determined as number
--	 * of objects, even though we now limit maximum number of pages, see
--	 * slub_set_cpu_partial()
--	 */
--	if (!kmem_cache_has_cpu_partial(s))
--		nr_objects = 0;
--	else if (s->size >= PAGE_SIZE)
--		nr_objects = 6;
--	else if (s->size >= 1024)
--		nr_objects = 24;
--	else if (s->size >= 256)
--		nr_objects = 52;
--	else
--		nr_objects = 120;
+-	slab->flush_freelist = flush_freelist;
 -
--	slub_set_cpu_partial(s, nr_objects);
--#endif
+-	guard(preempt)();
+-
+-	df = this_cpu_ptr(&defer_free_objects);
+-	if (llist_add(&slab->llnode, &df->slabs))
+-		irq_work_queue(&df->work);
 -}
 -
- static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
- 					     struct kmem_cache_args *args)
- 
-@@ -8627,8 +8402,6 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
- 	s->min_partial = min_t(unsigned long, MAX_PARTIAL, ilog2(s->size) / 2);
- 	s->min_partial = max_t(unsigned long, MIN_PARTIAL, s->min_partial);
- 
--	set_cpu_partial(s);
--
- 	s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
- 	if (!s->cpu_sheaves) {
- 		err = -ENOMEM;
-@@ -8992,20 +8765,6 @@ static ssize_t show_slab_objects(struct kmem_cache *s,
- 			total += x;
- 			nodes[node] += x;
- 
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--			slab = slub_percpu_partial_read_once(c);
--			if (slab) {
--				node = slab_nid(slab);
--				if (flags & SO_TOTAL)
--					WARN_ON_ONCE(1);
--				else if (flags & SO_OBJECTS)
--					WARN_ON_ONCE(1);
--				else
--					x = data_race(slab->slabs);
--				total += x;
--				nodes[node] += x;
--			}
--#endif
- 		}
- 	}
- 
-@@ -9140,12 +8899,7 @@ SLAB_ATTR(min_partial);
- 
- static ssize_t cpu_partial_show(struct kmem_cache *s, char *buf)
+ void defer_free_barrier(void)
  {
--	unsigned int nr_partial = 0;
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--	nr_partial = s->cpu_partial;
--#endif
--
--	return sysfs_emit(buf, "%u\n", nr_partial);
-+	return sysfs_emit(buf, "0\n");
- }
- 
- static ssize_t cpu_partial_store(struct kmem_cache *s, const char *buf,
-@@ -9157,11 +8911,9 @@ static ssize_t cpu_partial_store(struct kmem_cache *s, const char *buf,
- 	err = kstrtouint(buf, 10, &objects);
- 	if (err)
- 		return err;
--	if (objects && !kmem_cache_has_cpu_partial(s))
-+	if (objects)
- 		return -EINVAL;
- 
--	slub_set_cpu_partial(s, objects);
--	flush_all(s);
- 	return length;
- }
- SLAB_ATTR(cpu_partial);
-@@ -9200,42 +8952,7 @@ SLAB_ATTR_RO(objects_partial);
- 
- static ssize_t slabs_cpu_partial_show(struct kmem_cache *s, char *buf)
- {
--	int objects = 0;
--	int slabs = 0;
--	int cpu __maybe_unused;
--	int len = 0;
--
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--	for_each_online_cpu(cpu) {
--		struct slab *slab;
--
--		slab = slub_percpu_partial(per_cpu_ptr(s->cpu_slab, cpu));
--
--		if (slab)
--			slabs += data_race(slab->slabs);
--	}
--#endif
--
--	/* Approximate half-full slabs, see slub_set_cpu_partial() */
--	objects = (slabs * oo_objects(s->oo)) / 2;
--	len += sysfs_emit_at(buf, len, "%d(%d)", objects, slabs);
--
--#ifdef CONFIG_SLUB_CPU_PARTIAL
--	for_each_online_cpu(cpu) {
--		struct slab *slab;
--
--		slab = slub_percpu_partial(per_cpu_ptr(s->cpu_slab, cpu));
--		if (slab) {
--			slabs = data_race(slab->slabs);
--			objects = (slabs * oo_objects(s->oo)) / 2;
--			len += sysfs_emit_at(buf, len, " C%d=%d(%d)",
--					     cpu, objects, slabs);
--		}
--	}
--#endif
--	len += sysfs_emit_at(buf, len, "\n");
--
--	return len;
-+	return sysfs_emit(buf, "0(0)\n");
- }
- SLAB_ATTR_RO(slabs_cpu_partial);
- 
+ 	int cpu;
 
 -- 
 2.52.0
