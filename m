@@ -4,98 +4,265 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81141D77899
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 17:55:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9113ED7789C
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 17:59:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E08C6B0527; Fri, 23 Jan 2026 12:55:49 -0500 (EST)
+	id EFF926B0529; Fri, 23 Jan 2026 12:59:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 281056B0528; Fri, 23 Jan 2026 12:55:49 -0500 (EST)
+	id EAD5D6B052A; Fri, 23 Jan 2026 12:59:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 138FD6B0529; Fri, 23 Jan 2026 12:55:49 -0500 (EST)
+	id D30546B052B; Fri, 23 Jan 2026 12:59:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB78F6B0527
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 12:55:48 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9C9FF1404EC
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 17:55:48 +0000 (UTC)
-X-FDA: 84363981576.03.AD3C5F9
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9BE1340003
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 17:55:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf04.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769190946;
+	by kanga.kvack.org (Postfix) with ESMTP id BD6276B0529
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 12:59:52 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 880B3B9C17
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 17:59:52 +0000 (UTC)
+X-FDA: 84363991824.04.AF0A4DD
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 18EBF1A0009
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 17:59:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AX3HRvp9;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=uXGA0eXT;
+	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769191189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QXdkY13wk+ycpIpCfKg0DqRzDmSqhbsPxDZvgJ54o/A=;
-	b=DPxzYeq/DO2hEKxJp1YG6Jy2IPO5aN0tWBeYglm8sQ6r7VaQasB0tR3Q6GLCmd/i+wUvt0
-	gNsqacPrmpSmNfRy1JiZ/zLbG3mEUbqp8IxTt3snNCA8W8KsvmEU9SO9nEqdZ16au4twXQ
-	K/LgAAEFonSiRKFyl9/z3iClY98Juwg=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf04.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769190946; a=rsa-sha256;
-	cv=none;
-	b=EGSraAC0oduicf9ppC3G8nIGb8WQ2btDkZG1dwU6LJS7lCsHhlz9k7BBTjsQsOPNo4Fl0a
-	s3h5iZoq3EFPD9bT1X9TvmWeHEqVR1NjXMUnz2EUBkxjfsjgNnTV5vNCzT5mFnLIOV/yIt
-	F8eIPi7+R1JD0YFsyO2V2b2MseprZeY=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dyQZ96thszJ468m;
-	Sat, 24 Jan 2026 01:55:13 +0800 (CST)
-Received: from dubpeml500008.china.huawei.com (unknown [7.214.146.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id A0B4A40570;
-	Sat, 24 Jan 2026 01:55:43 +0800 (CST)
-Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.154.194) by
- dubpeml500008.china.huawei.com (7.214.146.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 23 Jan 2026 17:55:41 +0000
-From: <shiju.jose@huawei.com>
-To: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
-	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
-	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
-	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
-	<mchehab@kernel.org>
-CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
-	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
-	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
-	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
-	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
-	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
-	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
-	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
-	<shiju.jose@huawei.com>
-Subject: [PATCH v16 2/2] ras: mem: Add ACPI RAS2 memory driver
-Date: Fri, 23 Jan 2026 17:55:08 +0000
-Message-ID: <20260123175512.2066-3-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.43.0.windows.1
-In-Reply-To: <20260123175512.2066-1-shiju.jose@huawei.com>
-References: <20260123175512.2066-1-shiju.jose@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vadAbmAxyO9RHRbznwU7t082I/ZPDfN6Gm6p2KH2pHo=;
+	b=2UUfW+CwNpcuwcoclcoIv0cnubUr4oAUyEYKkyxgNWlj0/XojBDZzVQVKRBXzQYT+1D8d3
+	lEqPEjcwPt8fNtsRcVD1HmSpIhnz7/jK8yMdgQgvtU4P5xOYFxbsJ7X0lu07ktU7+nzIiu
+	e8dslFP7eVSZ1xXzhSf7qHD95w5DnNk=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AX3HRvp9;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=uXGA0eXT;
+	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769191189; a=rsa-sha256;
+	cv=pass;
+	b=bd4DU/CSY82yaH+Grsk3TA9wFgp9D+YC96jqNX42ZvrAOj2uR+0Kz1N/cuNSGRJkwIdyBS
+	cjGcgiBIsNzF6JQBEePhz+SpJAAU3ADrob0J/Q37ILRb4rMRjWDQSqWN8Mr2G+bBamXrog
+	ImSWPnWvcfYBPtYD6mLSjLjPZN2zD2s=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60NF7MYT2172801;
+	Fri, 23 Jan 2026 17:59:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=vadAbmAxyO9RHRbznwU7t082I/ZPDfN6Gm6p2KH2pHo=; b=
+	AX3HRvp9jC4xdiHBvQRQbgl752G7WuiPVtmum+FU90LbvlGbOYvDKc3mWNtXYdVK
+	Hdr9sqLq7OdNqswRczCs8Pf3PgugZLyweZRo1Y4G4u2R/2OiTMZ3aNBU4Tl47oEZ
+	WTkOi3U+SQRD3Z8aaSg5qTvO+BGsYAdPKhRzHnvD2a5S1N4gxXienvXTXy6RdafQ
+	jNh/miTJdcGgNC4y99rrt75fZ16J79NP0J9w2jyCJcyBq3BN4t/zgRArXCvLN6zp
+	ms3BMVEkqv+7Dg0E+L5e9JvHbEzfbl1uvmWz5nXvR6dF3Rsuy4E1BIrnf6gmzt7f
+	QCRqtxua7Gz6iiuE+L2YQw==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4btagd7c58-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Jan 2026 17:59:38 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60NGfH4U010697;
+	Fri, 23 Jan 2026 17:59:37 GMT
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012050.outbound.protection.outlook.com [40.93.195.50])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4butv0qbq1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Jan 2026 17:59:36 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=peaq52kwDTCjcrM5ZSHvbtlVtSsbMyTV6PPJk3No2sgm/jfZDoWHCe8LU31nvpS/JRhLGSaB17pwtEWIoX4gRxC7XSc8874C1T6wwvol6MTrEt0BNSNngwgrvKmsl/AonXKtZHFG3Mhpfww7ZBQOi1mt6qjWmWX73hAMMbev6pVBTYc/CRq9ljKE1j/XhW2sGSl+t/HycS7h/9wfvVvvWmmY6cCWBN1jrQ3wJTUw4KEhfIAiuk4W+QHY//5w44XEpKwsARQYKhz7aE3ClMPxFeGsvqfIfktxf6dDs511+2MP6TXZxZ/wo6Nz7DKqRVdLLR4dhtHWdLdwSnth1SKPIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vadAbmAxyO9RHRbznwU7t082I/ZPDfN6Gm6p2KH2pHo=;
+ b=APD2z2ULs7wHUpcV9fXxKjNHZh2C/ZAy0elx1eqLVFFq0Ewth1fY0GwnvLzTgyuaY+7GwFkvEn9TTIMNluK0Ud8woOIzN6QxUlc8KLQzIHhik8QZKO7M3PIZW1Z0V4kK1odm4h7Dtcynl2MWE0xbFUI+ElQovLBExB9QdcJ6iMtAzGf3qawFKwl0GUpW5JoR8sjcO5cd06fvU8UZ4HzrtEogCsjv9az00MGxlKb/EtX192poPrOoP3xFK5CgURovIpK8IWfI7+PeDsZB+olKXvw56R7ugsHnRY5q3dzLtv+uWDQymydUVCxpDT1/V35/lPoFP0rD3ErGfoPM8oW5mw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vadAbmAxyO9RHRbznwU7t082I/ZPDfN6Gm6p2KH2pHo=;
+ b=uXGA0eXTYb/xPCwGsgHNNQuga1REzaIent6oiLK2D37zY9UXKu+f3VdJWnhzG8+iJLsfJH6nHW46JIyVeVKyP6b9jSx7XftQVSFph7ZdqC0lh9OeUb936Vy/OQcBJiykH5QuEfwoK2ZxFxTmJI95BFpmhgjUuahg3rdiW9IiLPo=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by LV0PR10MB997613.namprd10.prod.outlook.com (2603:10b6:408:345::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.12; Fri, 23 Jan
+ 2026 17:59:34 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Fri, 23 Jan 2026
+ 17:59:34 +0000
+Date: Fri, 23 Jan 2026 17:59:38 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+        Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+        Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+        Waiman Long <longman@redhat.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Clark Williams <clrkwllms@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH RESEND v3 07/10] mm/vma: introduce helper struct + thread
+ through exclusive lock fns
+Message-ID: <c7c8158d-e360-4a29-9e48-f2b45b9ca147@lucifer.local>
+References: <cover.1769086312.git.lorenzo.stoakes@oracle.com>
+ <4f95671feac6b6d4cea3c53426c875f3fd8a8855.1769086312.git.lorenzo.stoakes@oracle.com>
+ <CAJuCfpEULwMTxAzxUdzfpHe2=+umXL6HFMvydkqW=tP8mB2ewg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.48.154.194]
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- dubpeml500008.china.huawei.com (7.214.146.94)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9BE1340003
-X-Stat-Signature: 3nkcudj8qob4qcqk17h4jz1z8huh456q
+In-Reply-To: <CAJuCfpEULwMTxAzxUdzfpHe2=+umXL6HFMvydkqW=tP8mB2ewg@mail.gmail.com>
+X-ClientProxiedBy: LO4P265CA0268.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:37a::20) To BL4PR10MB8229.namprd10.prod.outlook.com
+ (2603:10b6:208:4e6::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|LV0PR10MB997613:EE_
+X-MS-Office365-Filtering-Correlation-Id: a13c7e3d-c694-482e-53ef-08de5aa92abf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eFduWlV6WnR1UmFvYUVxWVlIQk9Ha2VsTWtVT09YbHo0LzZXWHRvZnVNSHow?=
+ =?utf-8?B?YWJjcmpXVjk5TlM2V283ZDFlMjZGL1Q4ekkxeDZtNFgyVGszMmp4L0xzMlBt?=
+ =?utf-8?B?QmFhS0JIWDZybS9sUGhIS1I1dEF2R05xVkVEcG1wZ2VlcElBWG1HMkxjKzNm?=
+ =?utf-8?B?TVdCQ05UdEVleW1mV3FkSGdzZy9jRzV0VUVoTFpvQU9NeGFHdFV3enVpcVVH?=
+ =?utf-8?B?aElLQ1FXcEcwNiswWkdNSzNYS0NKMFA5d20zcFZGdkE3SnJsblprVFdFOFRK?=
+ =?utf-8?B?cjBvUmRCUlBMYlRGK0lGUzB4MlhreVM3d1QyZDVzNXJWZFhaSGhBUnBYNEIz?=
+ =?utf-8?B?SEJ4QU1qY1N3WjRyVDNrYUE3VVR5QnUyZG9iVWhkb1pKL3c5TFdsTjZKN25p?=
+ =?utf-8?B?eDEyVG5Ld3RianNlakg5SktiQ1NkbkY3bmFXdkdEd3UrMUpMK3o5ZlVtNHUv?=
+ =?utf-8?B?R3JFbVJmWm9HVDRTY2FRclB4eHgzdzBRTXE1aFRGdDhzOWppR2JKa2ZGRTN5?=
+ =?utf-8?B?aEthdkdFRW1tcVlhbnVDTTdGTlFsUXprNTlocVoxN0thc3dWQVRzV3pjR080?=
+ =?utf-8?B?TmFpMVgrUHVZUWFtQjUxb2hNR3Q4Y1hWNFZ0VEVQZXl2eVFpQTNvbEE2WHJL?=
+ =?utf-8?B?TDdTcm0rdnBHUzU2V1ptVWxHYlBuTGlMdmZWSTBycnpXemNTL1c1ckRFNG4x?=
+ =?utf-8?B?b3BxN3JtTzgvdGlxdk9KT1Y4VEFzajBZczFaTDZSRkJyNVQ3SUdxRnVkV0p2?=
+ =?utf-8?B?U3VJK0lOSDdIVExBMFlPQUJ4VUFmdEtMMC92WFBHaUFtNWpPOFFTUUM1S2ty?=
+ =?utf-8?B?Vm94aitGU2lnemFXaDZNN0VDSTRlelUwVU9iWUVDbERoOUdaVGhSbEw0eGFt?=
+ =?utf-8?B?QUowNk13KzBqem9ESEdBSkIxQXRwcGw0QVZsWVlERUlYeUZFT0g0bjJlbldH?=
+ =?utf-8?B?Y3FyeWttTEFMTzkyamlBZ1l3ZW5iMndqUW42U1ZrMmhyZnhFNHBuZVV1dk9M?=
+ =?utf-8?B?TjBXUmxvUnNhVWZ5QzNyUXlBYjlhTC8xZ1crQlZaKy9SalVJZU5oVzFUeWc3?=
+ =?utf-8?B?LzZ5dnM3c3JhNktlMDZVd3Fkbk9xZEZWOWRFb1NiMnlKZmdDQTFwczJZZjlG?=
+ =?utf-8?B?SW9kRElweDd5MmhjVno1RWl3NEc2YWlyMzFXQnVlZUlZcTZRM2dKSENmTGRr?=
+ =?utf-8?B?K3h3MWpieXVtYmd4UTdiMXl5WlpzV2txOWVKTGZIZExSM09oR1RvUUwyTndZ?=
+ =?utf-8?B?MnB0ZGVlTmVuN1ZjbVRTYUVTdDE5d0ZTaWYzWDRHUjh0bVJERXN4Uldqb1Mv?=
+ =?utf-8?B?VytEWnlUZ25CWHR5QkRBN0o0OHZUay9JK1NBVlAyRFg4SkVTUXRCNGYwbXpQ?=
+ =?utf-8?B?NDZ5Z0JwSitKNmtpd3ZKRlJhWUpnV3V4V3pTVmREV1RoQTNsVzQyd210cEh3?=
+ =?utf-8?B?ekZHWTBWT285NDBpeStDTk9reGxabm96Rk5URThrY1JiNkpuZjM3eHNBcGZh?=
+ =?utf-8?B?aHVNcDU4bXhaRGxDaisxQmpKZGVwekRiVERhSU0xb25PeE9sQStsanNqYVlo?=
+ =?utf-8?B?cHA0cE5VOTh5aFlDanRYa1d2RW1DUUdPWjN2ZTVLamM5UHNPZVlNckx2cS9o?=
+ =?utf-8?B?RElydlAvbXh2TnBSYUdvOTJ2ZHQ5LzJ5SzMrcjM2Q0NMaUU4MmFueWk1QXNO?=
+ =?utf-8?B?emViRXk5RTJZUFlEdmNrVFRSY3ZYc3JQNGVmaVptTUJWZXdwakRINTJSblFB?=
+ =?utf-8?B?ZnlxeVhjNGZ2L294YWxYdnhqUWVVZVZJeUpXbW1JNEJSV0hzdU5JeTh2bFlk?=
+ =?utf-8?B?RDJsazBjNHUxOWpFQkc0VEZsM2duUUpIUW5rV3FsNXB3ZEIrUlk2UTVEVExN?=
+ =?utf-8?B?QmE5OFN5a0lpRGprTk0xSXBFUWpIRC9iUThFbGtmS0FwdnZFendTTGlDSkRl?=
+ =?utf-8?B?N1FYZk4za0g2eHRZc0Qvem5rdFlzOUlNTDM4dHBSSlZWaDZseGVuR2pONk1G?=
+ =?utf-8?B?NStyN2lhOWFTWmd1L3BiL3Z6Sk9NWXJBUE5nWUl2VFJ5TkdBV1lVL2JISFFS?=
+ =?utf-8?B?Tm55SzhmSHdTRDJmbEIvUFgxN1VJcTMrQmpqQjJjSEF1cFlMUnRmbDV5VWxh?=
+ =?utf-8?Q?tsrU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cHVHV3RPMExqeExuWTMrVGVaWjBaZWZSY2dFN0EyS0R2YjNHdVlGdVdyT0Rp?=
+ =?utf-8?B?Mm51dE5zYStGVlNRbEhiZmZqM0plcnRHVlVqNEdxMVpHNDZmTndaVkIwQ1Iz?=
+ =?utf-8?B?MktaUGsrQkh2SjNRWUMrLzBMQlhJN0YyRDIwNENheE4xMnQ4aXdmTTJzYTAz?=
+ =?utf-8?B?VlhRd1VmTXNlbXZ6MmNTR1Zic3FNL01pdkhxOXQwMjA5T0pRQ0wzYUlKWlY5?=
+ =?utf-8?B?SEM3WmtiaEFIb3V4cGlKMmx3N3pabFBZYmhYUW4yLzFaeTEva2NaTXVLMC9L?=
+ =?utf-8?B?UldiWE9FNDNsbFlsSHlWeXZuOFV0bzRkK3AwM1BjaWE4bFBodUNaQXdPYmZk?=
+ =?utf-8?B?dDFZUEsyQXJaV2JPS29hdTdoY2RWZ1JOVWVvMjMrbWwydHlJcHpNRWpPc2V0?=
+ =?utf-8?B?cW5IalJIa01kalZ1Wk1OcjFyRG1jbXAyM1U5b3VsWVpOdVVxdStpay9NZWdI?=
+ =?utf-8?B?bTZBTEVJTjJxUVRJRmJCMjdFbG50KzNwdSthbDlINDZTOHhUSjdaaUtSbHFN?=
+ =?utf-8?B?eU11L3M2Tmh5WFJpbUZtb2IraWlEWXRqU2ZSME56Y2IzdTU0WitFbkkxaURj?=
+ =?utf-8?B?d0czd3lURnpIcUttcXk0Zi9ZaFIxVnhDUkUrZEMyaUlNV3RXOFdvK0IzSFRk?=
+ =?utf-8?B?ZFhuTm1TVDFDV25LK3JhUmpLcHZrNU81Nm4ydkROYm96OE5zdGZQNkE3bE1p?=
+ =?utf-8?B?R1BVRG5Xek9JeVBJZEFaelAzaFpOeEFIcUNDZzRrcHBVZVE1WXBQbWd1RkJO?=
+ =?utf-8?B?dkNMVXBJdHRJZ0ExRjRTVmtDMG1rdld5M3VuL2krL0xkWVJTVWJiMjJlTEcx?=
+ =?utf-8?B?THBxYys1cCtzN3dRT1MwQ214OFI0ZVRxSmRwWlFMd0xCVVVhbnpvVXlzU0ds?=
+ =?utf-8?B?NjIvOGdqbmRKNGpXZHFrTk1ERHo5NTcrZ0lVbmJ6RDF6RzNoWng0L3ZXQWly?=
+ =?utf-8?B?THZvV2lOd1doM2lBWHh2N0JaYkNYREdWYlVnWlNxTkdYUHlrRUJ0RzJjQzhl?=
+ =?utf-8?B?UE1Lc3RwamdJOGdmUFZTUUw2UXREYjhnME9HdFhpK1Y3S2pxSS96QktCOHhi?=
+ =?utf-8?B?TVozWlpOVDhKZU81UUI1dkpIa1p5NDR4NmpnU2hSUWdvUjg3STdnSGFMNjl3?=
+ =?utf-8?B?VlRKdVU1blNPMEFFM3Rqd09DUVhwRUYzenl4bDhZeGkyb1pLRGk1dVBnbmJt?=
+ =?utf-8?B?ZUpYK2M5cEw3dkNRZHZSMVo0YWowTGZMZDRka0NlZWRnWFpXUUFPSmI5T2Ux?=
+ =?utf-8?B?aWkwOUFSRVo0QUV2WDgxVjQ2QWpackd3ejBiY0ZSNGxnQWIxV0E2Z083M1RC?=
+ =?utf-8?B?U0NFSFZOMVpicFJnMlBqbTk4UU1BU2V0RVV6L2xXNUpRV0NTbWFGbzE5ZjBx?=
+ =?utf-8?B?L3RFczQ5TTZTQ1lmWW9PcmwzZzhwczhjemtydUtjajdsdzc5VSt4ZHFOUGgz?=
+ =?utf-8?B?akw1YXRPbXFkdW83cW0vcWhkTTZwdUdxa0V1cThmQUxKcFhIVHI3KzV3RkJl?=
+ =?utf-8?B?d0hFOFBocTQ4THZGQkl2d1FlTi9Sa0lsNjU0ZU5XQW81bXZlV1cxSnhvSWt5?=
+ =?utf-8?B?NXNxMGtsb256emEwc3FJZkZ5bkhIRlJXR0pVbTVFN3lKM2JmaVNkVTN2NGxD?=
+ =?utf-8?B?WXpaTHdwK2JNUmQ1MlpvQnlBUGljNnJmSWI2bHh6dEo3L09OMWl3VzR5SHBC?=
+ =?utf-8?B?dHEzZE5oZk0vVDRWK3V1SmcvVUY4VTJMNkpsMXVEWGMyQzdqelRrekVCaWIv?=
+ =?utf-8?B?REp2dzNDd3VrbEpYaWEwdFllSStvVUwyRUZSb0o2QXZqYXo5ZTZjbU5pY0Np?=
+ =?utf-8?B?YlZ4NmpPYkMzYnh2MVV0MHNpa1R5ZTAvTEVMaklOcW14WkUzSmV1UTdjd2Uz?=
+ =?utf-8?B?RzFMbzE0bmFBOEJzUVNwb2ZlRUd2OENnU0YvUjZiUXdsWi93ZlkxbnMvVHhV?=
+ =?utf-8?B?ZEVFejdzR0I2ZVlVbUhKaDc3WWw0K1hVaTA5ZklNdWdCOVFTRUovZ2N1cFBn?=
+ =?utf-8?B?SVJPTDFpUHNmRmtSazJIVjlvcFlxOHFpbGJoMUtTNDI1a1hMOUpxTDQ1LytJ?=
+ =?utf-8?B?eFBnRWR2bVhtMjVBRW8rdXRjdWgrU0pRNEI5Mm1TdWxqTnl4VzF0c0ord1Yw?=
+ =?utf-8?B?Z25wUUplSkdJTTQ0SDltVzhTKzFDcXM5Q2JFZFl2TnMyTTdxLzY5UllBV1hk?=
+ =?utf-8?B?MUExYmdkamRSVXAwWkZUTk45YlhJS1JySFBidEdhVXRMa29TUENkS21zazNP?=
+ =?utf-8?B?MWM1aXJGRzFKK1ZyL0s5RXlUam1IUUgraksrRzh3YnZ0UzVGbFBYWC9QUHpG?=
+ =?utf-8?B?azNZUGhIeDhEZ3dqN0xOVW1qaW9hUEdDYzVNYmUvaHZuYXZPL2dWQzYrSEpw?=
+ =?utf-8?Q?HiMg8upl2vK6dJgo=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	i5AdaTVh4+Dm10TdtaYMqvSDWl2j8gjJdc8PQ6W0zBQ/S3tMJuA5/nfZ0Olh+DGiF6UXsWn7D/OSl0pOXv3AbiFCAylZ+33HOPGbF4NbvNl4fLXsUfUu8peAv2lD3Lngt66TPOcXuhFwWtMxtzhFHfqWtNzHNLeamaz2EPO7UOJvyH31qZNTkJe3ahHAqaAWap/QNVIgeudgbZuXI5zIbMboY7320He9Kck/21bvdaEBHlCgbMw1OsmUIOM5lsHr0AhL1LUCuzvD9M9dz5n5fdIKHObeHi0l3/fOU6oD6GIQ+0ScF9tdiksQ9gkhXldTpjKwit4PUPCWX4nO73hoPYsCeUJ7UjuUexVnSPnPMal6BlFIpXZbLMliL9CrgWyjJYkY46y4COZLs1qtVGdL7UEabcOuLKVdudvsNadDXRzKHTq9O+4h8TCjxKHBn/ZHAynK0Cg8lDuBiPDIX8IOQi+IRrwjIbgxX7o84dXYcP00H3CSKVrfdknNZFP1c+XQNH5hIfj0gy1nrRVDFoACTsLAnklF6uALWHQg+7aSe6jPmQXFy7nM+7cdAPkkJDhTQn2Y5UJaGuARPlGLApGMvqejlwjJDecq2yiDM9gtnFE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a13c7e3d-c694-482e-53ef-08de5aa92abf
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 17:59:34.8287
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TStGlO5dY5gVquNKTheKSDnlsSZY5P3KyxqMq+tdF8bcv8Yei0bcV3uzOGpd9nmKnqhcvDMTBeBF4yhnlv7RWOiqfkCTnLHKHwXvAS8dc4k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR10MB997613
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-23_03,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0
+ suspectscore=0 mlxlogscore=999 adultscore=0 phishscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2601150000 definitions=main-2601230135
+X-Authority-Analysis: v=2.4 cv=PqqergM3 c=1 sm=1 tr=0 ts=6973b70a b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=yPCof4ZbAAAA:8 a=rLaUndO_mI7gEzahClkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: HiDLefu-QnyXh2SIVd4Kj4kpkEng5u5D
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIzMDEzNiBTYWx0ZWRfX5w/iWhCl+RhX
+ cC2ZtTfjxLSzFi0QUKMpgC7EIB2WggSpAyFr2x14pc4WzUp6wc793h4CHDdrQSMXPxbTxb+wE4J
+ UoEy49goX/SlrjI2a1X2QJQU+vAqQ4MWriID/mf57SGH0bALAuWBRfI62mfiNbNipFliazei4xX
+ JCAwDpO/Xq/w4mEvBoP0/CDa0PC9LCh0uz0+2x5OP5EDI9qgFSncrqsKc2F9ABfMJ7REMBOxfZZ
+ PI20RNkzchhb1deIwpSkm2NtTyb34sN7KElqOB0cNmOUFEIk8txkusVMIsLTqfJ0IHtQGpP4iaf
+ Dwx9xciPaBTbq8geaEehkYsHt9ZMB9qVYKC6d/GnbY9RyodbC1vjMyLZdFcjzcRNeVvcFzb2asi
+ iuqkCQ+n7ope2oLDP+At1isySkcZ8AAlK1XIRF+BBcaUfJTKUQWRvXn3rCm9IPy6/Tu/3vu5Q7p
+ yICawqCFwQxJEoR761A==
+X-Proofpoint-GUID: HiDLefu-QnyXh2SIVd4Kj4kpkEng5u5D
+X-Stat-Signature: 4ozx6qjarnxywk5j7cujxmu19w4yuq51
+X-Rspamd-Queue-Id: 18EBF1A0009
 X-Rspam-User: 
-X-HE-Tag: 1769190946-171167
-X-HE-Meta: U2FsdGVkX1+eHeUJ8avb525UOmnmOLsQVIA3Wv6dlX3QMp5DyKueVrvYaKdqYwc1AsK6M9S5NIas03H5OIgC8cP6aLFx7LvedGOOehsJFQh5cr6bBk9wNhPcOcww5UXaX8eJIbDCypaYeh6h6hVC5u6ITgfhJ5XDumDPiNeZlF95MBi96GyD6hwzaJJ6eLs0tiOXRdbYJdk8fgz2OjXoEX6MgvLerdDSkAJJsOIJ7Nsn2moJyG3yYWB06ak5/wTIIZuqg2FLaOh/CtnDx0eYLiiNFZYe/oNbhKP0BkaOKo82r8v9uhrU77Qfty6rszKXWADnwV2+sXazhDRZ44pEacsz2DC5oLmANRsNfNa2N0YCERrboJyWQ0JqG1xECZrwiu2dWfEpsDMhyKzPPb9Q6TlTHaubSj943y2T5y6ctaYDHi9o/sDbg62swIzltgnMcFHyZkMvhJ3vHuGsdekP1DKfsUo8R4QvP3XV9V0asv+U7ppmFNdMTec0Vxiggde8yS6+zZuxCk645RCkrPP0ZRzI3JXdCSL0cBgakwbkvtYfzhzt4kBHX/mYyeNkVL6lK7Y/9sp5RxksGH1Na4K7iV3HBHCvZJHtG2N01ZXbucCIZKouJlzWp2j9p5sX/cVWrkksb1zFcvc/t7CBw8MbDyjLLHiexsCumjYhtY6aqjIMvhMPybmmpA+kwia/HgHDW9sdEpEVvbVqhkCqAEPudCmd79Wjx0KYdNlEl60+QM8HmuHmitWCQq5jHd3A8+tB5t9QwWbySrxfnCpiVjTIvkHbVmnUWDxMSAsyM6wyw+dUyoyG2Lk7dtRARhjsi4xHnUrbUC26WZnLG1HYOzgbcwZnpwHWMQoYquGHXOhi7HFWM88jwpFni4EEcdBxdpLaGwGOw2NvBfhzDtfEVL82FRyaq68SrLvpAHw2sok+iQF7IYhOtM6GJgPOTEA8kkJJwKkYFf0iXagfL7ThIi2
- 9Qgmidn4
- mMdQvQsS2QPIts2ZdftQTew1WOWrfYZ5+NYmgTFsrK2arTf1Ga0gJq3qrzC/yPFKL1/aas41ggWQoUrs3+VorIWuFr0ikSuXaf8MK2u72D5+x4gLrMLtBngUTV5Sb/Iy162/vI7PJvXLt26fR/HeaFsBAUM3JKkV/qreTMwwwg2VgOQdlQ7P8NG6jy2pA/5NEflRiIEHkE7FULUPu8D6g5UeWSZ+b71VhAZP+ApirHoU+QaY9SgB91JVukBAZUp1trYrGCAwyp/rb7j1t3uUMWiqpDPg6Ipg5jQuxQtfE4tgsdlb7ipspdSJfUBFfhTk++IC4iqRAAjT7tGvH1dGJj1URz7LkDopnHVFzua7ZEpPp+Pqi3zNoN8Sl3w==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769191188-990996
+X-HE-Meta: U2FsdGVkX1+tcjm1HZ3ODfZBSJKhTYVTf1NuViTrNi0RWIj3K3PW+8P5MCCudwoC6scNX5A6LBgVcDTBZICdRnlcIRvOa7wc4vL3sVhZLeg3Mm7u7+X2STLRRzg9RWsy91pdaZHtYS31HvFsI7PG3HdI816h6+krUN+4Fxa/YSfWAY/y8UDpIdOhHC6jtpKXSghXjBUU9w2EJ/S5QpdS96G3AKJZtLpIs+30WiAbGUu2tnhbn9TbZW/+yV4JB/BL7anxqB5w0OdaK9HgRdslsOCg62pX7YyUcgJLPlJGFMbqXfe3zdXEKhR/fKC5Bpm/VGgXM0jIRbFbgHJkAYfARz4rTkjaAOai4KVcZ2pT5PW93GquLpkHX6NgZdMWKj16GBdoT3UsMbB98Tq4RAsiuwCTw7cV6NjNWV9kBwWCQ+/WSgPue9hPRgcC4JAIgyK4RVsax2LZZDkvhba9Wfzh7Hyk4YRgsUJkhoUu4IzN8x68ebM1GVSu50UtjEpDcsoQOHoTG8zyFpqoqYHSz2AsW/63V2Dc5gpeBddjHtamEtBgZm/KYJwIR1lY00oSxJ74gCM4AbnXLaTcVNkjIOuZeMflOUVRYEaP5LuMOTBat6+Cpkt5PWeDg2HBjOHNgj0q0I5vrSLjEyA9SVCeQgrxj1pEQxep9S2wqskb6HtHvIWQFl6Wqp4RaooFxdtNDdPUY8cl5e4hTwhjolF39PFwdGMJAJVgz59cM3Cw8M10oTQVrANvo2e4AhtmJ2voRdB9ALLJKc+rx5/13hDy96IZXKCykeT1mcUSbK8rOgvAP6wL+QXXcTzXmBDGoi8BRA/hG26sLpEFI7XgzNfPCJDG7UagKz2RrugMcV8PFN2f2UspIHRGeexL0+nGX2/cWV5A5+XUOpr6xjdrwvJox+qO/qxqKPvRBAsfq36kmQzJuLyHLaAPWLRcKH3F2oYcH9Fem0WFghlEUGD9rSyh0pH
+ HbTo4AA3
+ Gtl1eQ3DIpORgj6U9nm/cP7i32CkJZp4xDBVhM9QR9AAo09qntJDXcBQr2I9mUI5c4g46tVUHi1/qNUQBOWpalFve4Tgt+It+fZcOiUVTDTvFvZibUjVcFxmEJE8AZ8VWqVSaiJpWNcHvz48Izb7ErEXfVWdtzTkmYwwHk+3F8jFFtwsu7cuGmXhJHvg3WhUiLJHKzdJqJk5oYMhDH/j3LlZfsGuL3P7UJ9HmofaPqHJBSj1DjQLFWEzrBMQ5UEYJ343zgwqGFyCF7sAymy05mvcSPeaV1TY6HzrvtNaK5ZxM22jxB+WIluUDdSWWoFPCHSb97frH506oE0hYm8/hmLox/N3tD7FpwE2Heg4h0KlCH+BGwLNthYkjh6g7zSYbrij5czKYS5mZdTqnUR2DbEXSf1HLBYN3Z8JPS02xBY1Z1WqbKn49fLffs64go1TU31xCKkIYXfbMq3NiMketBSbEHFnwl2vtwcV9/qgrvZHm7wBUJtTquxh9GMzHdXQydraCCZ55TMZ6XVJv8Tc1aOd/Oa/K5RCXHwVXsUhsUZ7P6ZhqD+/m/HWp72xMSgIg0wxTaBo8tOXnDIlSaf4EMJuJyZnYKXkp89dOU8DU3nWvkaj5eAXFs03s18wmLN78c1QnOCrp1CFj8WOMb1wK6JUplY21T66sWmOQeEwUKP2zfc2g8oDes54ULPJv2leSMuWllhkcCNJ3h9vV/Ur3jV7A1vx56fhpQEhBYaIC0hHiWK0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,710 +271,379 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shiju Jose <shiju.jose@huawei.com>
+On Thu, Jan 22, 2026 at 01:41:39PM -0800, Suren Baghdasaryan wrote:
+> On Thu, Jan 22, 2026 at 5:03 AM Lorenzo Stoakes
+> <lorenzo.stoakes@oracle.com> wrote:
+> >
+> > It is confusing to have __vma_enter_exclusive_locked() return 0, 1 or an
+> > error (but only when waiting for readers in TASK_KILLABLE state), and
+> > having the return value be stored in a stack variable called 'locked' is
+> > further confusion.
+> >
+> > More generally, we are doing a lock of rather finnicky things during the
+> > acquisition of a state in which readers are excluded and moving out of this
+> > state, including tracking whether we are detached or not or whether an
+> > error occurred.
+> >
+> > We are implementing logic in __vma_enter_exclusive_locked() that
+> > effectively acts as if 'if one caller calls us do X, if another then do Y',
+> > which is very confusing from a control flow perspective.
+> >
+> > Introducing the shared helper object state helps us avoid this, as we can
+> > now handle the 'an error arose but we're detached' condition correctly in
+> > both callers - a warning if not detaching, and treating the situation as if
+> > no error arose in the case of a VMA detaching.
+> >
+> > This also acts to help document what's going on and allows us to add some
+> > more logical debug asserts.
+> >
+> > Also update vma_mark_detached() to add a guard clause for the likely
+> > 'already detached' state (given we hold the mmap write lock), and add a
+> > comment about ephemeral VMA read lock reference count increments to clarify
+> > why we are entering/exiting an exclusive locked state here.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > ---
+> >  mm/mmap_lock.c | 144 +++++++++++++++++++++++++++++++------------------
+> >  1 file changed, 91 insertions(+), 53 deletions(-)
+> >
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index f73221174a8b..75166a43ffa4 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -46,20 +46,40 @@ EXPORT_SYMBOL(__mmap_lock_do_trace_released);
+> >  #ifdef CONFIG_MMU
+> >  #ifdef CONFIG_PER_VMA_LOCK
+> >
+> > +/* State shared across __vma_[enter, exit]_exclusive_locked(). */
+> > +struct vma_exclude_readers_state {
+> > +       /* Input parameters. */
+> > +       struct vm_area_struct *vma;
+> > +       int state; /* TASK_KILLABLE or TASK_UNINTERRUPTIBLE. */
+> > +       bool detaching;
+> > +
+> Are these:
+>             /* Output parameters. */
+> ?
 
-ACPI 6.5 Specification, section 5.2.21, defined RAS2 feature table (RAS2).
-Driver adds support for RAS2 feature table, which provides interfaces for
-platform RAS features, e.g., for HW-based memory scrubbing, and logical to
-PA translation service. RAS2 uses PCC channel subspace for communicating
-with the ACPI compliant HW platform.
+Yurp.
 
-ACPI RAS2 auxiliary driver for the memory features binds to the auxiliary
-device, which is added by the RAS2 table parser in the ACPI RAS2 driver.
+Oh you added the comment :) well clearly I should have, will do so.
 
-Given the address range is not provided to userspace (and hence no
-chance of exposing misleading values), even in the presence
-of disjoint address ranges, use the start to end of the NUMA node
-with the expectation that a firmware will allow that to indicate that
-the full node will be scrubbed, skipping address ranges that are from
-other NUMA nodes but happen to lie within this range.
+> > +       bool detached;
+> > +       bool exclusive; /* Are we exclusively locked? */
+> > +};
+> > +
+> >  /*
+> >   * Now that all readers have been evicted, mark the VMA as being out of the
+> >   * 'exclude readers' state.
+> >   *
+> >   * Returns true if the VMA is now detached, otherwise false.
+> >   */
+> > -static bool __must_check __vma_exit_exclusive_locked(struct vm_area_struct *vma)
+> > +static void __vma_exit_exclusive_locked(struct vma_exclude_readers_state *ves)
+> >  {
+> > -       bool detached;
+> > +       struct vm_area_struct *vma = ves->vma;
+> > +
+> > +       VM_WARN_ON_ONCE(ves->detached);
+> > +       VM_WARN_ON_ONCE(!ves->exclusive);
+> >
+> > -       detached = refcount_sub_and_test(VM_REFCNT_EXCLUDE_READERS_FLAG,
+> > -                                        &vma->vm_refcnt);
+> > +       ves->detached = refcount_sub_and_test(VM_REFCNT_EXCLUDE_READERS_FLAG,
+> > +                                             &vma->vm_refcnt);
+> >         __vma_lockdep_release_exclusive(vma);
+> > -       return detached;
+> > +}
+> > +
+> > +static unsigned int get_target_refcnt(struct vma_exclude_readers_state *ves)
+> > +{
+> > +       const unsigned int tgt = ves->detaching ? 0 : 1;
+> > +
+> > +       return tgt | VM_REFCNT_EXCLUDE_READERS_FLAG;
+> >  }
+> >
+> >  /*
+> > @@ -69,30 +89,31 @@ static bool __must_check __vma_exit_exclusive_locked(struct vm_area_struct *vma)
+> >   * Note that this function pairs with vma_refcount_put() which will wake up this
+> >   * thread when it detects that the last reader has released its lock.
+> >   *
+> > - * The state parameter ought to be set to TASK_UNINTERRUPTIBLE in cases where we
+> > - * wish the thread to sleep uninterruptibly or TASK_KILLABLE if a fatal signal
+> > - * is permitted to kill it.
+> > + * The ves->state parameter ought to be set to TASK_UNINTERRUPTIBLE in cases
+> > + * where we wish the thread to sleep uninterruptibly or TASK_KILLABLE if a fatal
+> > + * signal is permitted to kill it.
+> >   *
+> > - * The function will return 0 immediately if the VMA is detached, and 1 once the
+> > - * VMA has evicted all readers, leaving the VMA exclusively locked.
+> > + * The function sets the ves->locked parameter to true if an exclusive lock was
+>
+> s/ves->locked/ves->exclusive
+>
+> > + * acquired, or false if the VMA was detached or an error arose on wait.
+> >   *
+> > - * If the function returns 1, the caller is required to invoke
+> > - * __vma_exit_exclusive_locked() once the exclusive state is no longer required.
+> > + * If the function indicates an exclusive lock was acquired via ves->exclusive
+> > + * (or equivalently, returning 0 with !ves->detached),
+>
+> I would remove the mention of that equivalence because with this
+> change, return 0 simply indicates that the operation was successful
+> and should not be used to infer any additional states. To get specific
+> state the caller should use proper individual ves fields. Using return
+> value for anything else defeats the whole purpose of this cleanup.
 
-Driver retrieves the PA range of the NUMA domain and use it as the
-'Requested Address Range', when send RAS2 command GET_PATROL_PARAMETERS
-to get parameters that apply to all addresses in the NUMA domain as well
-as when send command START_PATROL_SCRUBBER to start the demand scrubbing.
+OK I'll remove the equivalency comment.
 
-Device with ACPI RAS2 scrub feature registers with EDAC device driver,
-which retrieves the scrub descriptor from EDAC scrub and exposes
-the scrub control attributes for RAS2 scrub instance to userspace in
-/sys/bus/edac/devices/acpi_ras_memX/scrub0/.
+>
+> > the caller is required to
+> > + * invoke __vma_exit_exclusive_locked() once the exclusive state is no longer
+> > + * required.
+> >   *
+> > - * If state is set to something other than TASK_UNINTERRUPTIBLE, the function
+> > - * may also return -EINTR to indicate a fatal signal was received while waiting.
+> > + * If ves->state is set to something other than TASK_UNINTERRUPTIBLE, the
+> > + * function may also return -EINTR to indicate a fatal signal was received while
+> > + * waiting.
+> >   */
+> > -static int __vma_enter_exclusive_locked(struct vm_area_struct *vma,
+> > -               bool detaching, int state)
+> > +static int __vma_enter_exclusive_locked(struct vma_exclude_readers_state *ves)
+> >  {
+> > -       int err;
+> > -       unsigned int tgt_refcnt = VM_REFCNT_EXCLUDE_READERS_FLAG;
+> > +       struct vm_area_struct *vma = ves->vma;
+> > +       unsigned int tgt_refcnt = get_target_refcnt(ves);
+> > +       int err = 0;
+> >
+> >         mmap_assert_write_locked(vma->vm_mm);
+> > -
+> > -       /* Additional refcnt if the vma is attached. */
+> > -       if (!detaching)
+> > -               tgt_refcnt++;
+> > +       VM_WARN_ON_ONCE(ves->detached);
+> > +       VM_WARN_ON_ONCE(ves->exclusive);
+>
+> Aren't these output parameters? If so, why do we stipulate their
+> initial values instead of setting them appropriately?
 
-Add 'enable_demand' attribute to the EDAC scrub interface to start/stop
-the demand scrub, which is used in the RAS2 demand scrub control.
-When a demand scrub is started, any background scrub currently in progress
-will be stopped and then automatically restarted at the beginning when the
-demand scrub has completed.
+I guess it was just to ensure correctly set up but yes it's a bit weird, will
+remove.
 
-In the future, RAS2 driver may add support for the ‘addr’ and ‘size’ EDAC
-scrub-control attributes, to enable the user to set address range of the
-memory region to scrub.
+>
+> >
+> >         /*
+> >          * If vma is detached then only vma_mark_attached() can raise the
+> > @@ -101,37 +122,39 @@ static int __vma_enter_exclusive_locked(struct vm_area_struct *vma,
+> >          * See the comment describing the vm_area_struct->vm_refcnt field for
+> >          * details of possible refcnt values.
+> >          */
+> > -       if (!refcount_add_not_zero(VM_REFCNT_EXCLUDE_READERS_FLAG, &vma->vm_refcnt))
+> > +       if (!refcount_add_not_zero(VM_REFCNT_EXCLUDE_READERS_FLAG, &vma->vm_refcnt)) {
+> > +               ves->detached = true;
+> >                 return 0;
+> > +       }
+> >
+> >         __vma_lockdep_acquire_exclusive(vma);
+> >         err = rcuwait_wait_event(&vma->vm_mm->vma_writer_wait,
+> >                    refcount_read(&vma->vm_refcnt) == tgt_refcnt,
+> > -                  state);
+> > +                  ves->state);
+> >         if (err) {
+> > -               if (__vma_exit_exclusive_locked(vma)) {
+> > -                       /*
+> > -                        * The wait failed, but the last reader went away
+> > -                        * as well. Tell the caller the VMA is detached.
+> > -                        */
+> > -                       WARN_ON_ONCE(!detaching);
+> > -                       err = 0;
+> > -               }
+> > +               __vma_exit_exclusive_locked(ves);
+> >                 return err;
+>
+> Nice! We preserve both error and detached state information.
 
-Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- Documentation/ABI/testing/sysfs-edac-scrub |  13 +-
- Documentation/edac/scrub.rst               |  60 +++
- drivers/edac/scrub.c                       |  12 +
- drivers/ras/Kconfig                        |  13 +
- drivers/ras/Makefile                       |   1 +
- drivers/ras/acpi_ras2.c                    | 402 +++++++++++++++++++++
- include/acpi/ras2.h                        |  17 +
- include/linux/edac.h                       |   4 +
- 8 files changed, 517 insertions(+), 5 deletions(-)
- create mode 100644 drivers/ras/acpi_ras2.c
+:)
 
-diff --git a/Documentation/ABI/testing/sysfs-edac-scrub b/Documentation/ABI/testing/sysfs-edac-scrub
-index ab6014743da5..3f68f63556f4 100644
---- a/Documentation/ABI/testing/sysfs-edac-scrub
-+++ b/Documentation/ABI/testing/sysfs-edac-scrub
-@@ -20,11 +20,7 @@ KernelVersion:	6.15
- Contact:	linux-edac@vger.kernel.org
- Description:
- 		(RW) The base address of the memory region to be scrubbed
--		for on-demand scrubbing. Setting address starts scrubbing.
--		The size must be set before that.
--
--		The readback addr value is non-zero if the requested
--		on-demand scrubbing is in progress, zero otherwise.
-+		for demand scrubbing.
- 
- What:		/sys/bus/edac/devices/<dev-name>/scrubX/size
- Date:		March 2025
-@@ -34,6 +30,13 @@ Description:
- 		(RW) The size of the memory region to be scrubbed
- 		(on-demand scrubbing).
- 
-+What:		/sys/bus/edac/devices/<dev-name>/scrubX/enable_demand
-+Date:		Jan 2026
-+KernelVersion:	6.19
-+Contact:	linux-edac@vger.kernel.org
-+Description:
-+		(RW) Start/Stop demand scrubbing if supported.
-+
- What:		/sys/bus/edac/devices/<dev-name>/scrubX/enable_background
- Date:		March 2025
- KernelVersion:	6.15
-diff --git a/Documentation/edac/scrub.rst b/Documentation/edac/scrub.rst
-index 2cfa74fa1ffd..deefc45116ab 100644
---- a/Documentation/edac/scrub.rst
-+++ b/Documentation/edac/scrub.rst
-@@ -340,3 +340,63 @@ controller or platform when unexpectedly high error rates are detected.
- 
- Sysfs files for scrubbing are documented in
- `Documentation/ABI/testing/sysfs-edac-ecs`
-+
-+3. ACPI RAS2 Hardware-based Memory Scrubbing
-+
-+3.1. On demand scrubbing for a specific memory region.
-+
-+3.1.1. Query the status of demand scrubbing
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_demand
-+
-+0
-+
-+3.1.2. Query what is device default/current scrub cycle setting.
-+
-+Applicable to both demand and background scrubbing. The unit of the
-+scrub cycle is seconds.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+36000
-+
-+3.1.3. Query the range of device supported scrub cycle for a memory region.
-+The unit of the scrub cycle range is seconds.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/min_cycle_duration
-+
-+3600
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/max_cycle_duration
-+
-+86400
-+
-+3.1.4. Program scrubbing for the memory region in RAS2 device to repeat every
-+43200 seconds (half a day).
-+
-+# echo 43200 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+3.1.5. Start 'demand scrubbing'.
-+
-+When a demand scrub is started, any background scrub currently in progress
-+will be stopped and then automatically restarted at the beginning when the
-+demand scrub has completed.
-+
-+# echo 1 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_demand
-+
-+3.2. Background scrubbing the entire memory
-+
-+3.2.1. Query the status of background scrubbing.
-+
-+# cat /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
-+
-+0
-+
-+3.2.2. Program background scrubbing for RAS2 device to repeat in every 21600
-+seconds (quarter of a day).
-+
-+# echo 21600 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/current_cycle_duration
-+
-+3.2.3. Start 'background scrubbing'.
-+
-+# echo 1 > /sys/bus/edac/devices/acpi_ras_mem0/scrub0/enable_background
-diff --git a/drivers/edac/scrub.c b/drivers/edac/scrub.c
-index f9d02af2fc3a..f3b9a2f04950 100644
---- a/drivers/edac/scrub.c
-+++ b/drivers/edac/scrub.c
-@@ -14,6 +14,7 @@ enum edac_scrub_attributes {
- 	SCRUB_ADDRESS,
- 	SCRUB_SIZE,
- 	SCRUB_ENABLE_BACKGROUND,
-+	SCRUB_ENABLE_DEMAND,
- 	SCRUB_MIN_CYCLE_DURATION,
- 	SCRUB_MAX_CYCLE_DURATION,
- 	SCRUB_CUR_CYCLE_DURATION,
-@@ -55,6 +56,7 @@ static ssize_t attrib##_show(struct device *ras_feat_dev,			\
- EDAC_SCRUB_ATTR_SHOW(addr, read_addr, u64, "0x%llx\n")
- EDAC_SCRUB_ATTR_SHOW(size, read_size, u64, "0x%llx\n")
- EDAC_SCRUB_ATTR_SHOW(enable_background, get_enabled_bg, bool, "%u\n")
-+EDAC_SCRUB_ATTR_SHOW(enable_demand, get_enabled_od, bool, "%u\n")
- EDAC_SCRUB_ATTR_SHOW(min_cycle_duration, get_min_cycle, u32, "%u\n")
- EDAC_SCRUB_ATTR_SHOW(max_cycle_duration, get_max_cycle, u32, "%u\n")
- EDAC_SCRUB_ATTR_SHOW(current_cycle_duration, get_cycle_duration, u32, "%u\n")
-@@ -84,6 +86,7 @@ static ssize_t attrib##_store(struct device *ras_feat_dev,			\
- EDAC_SCRUB_ATTR_STORE(addr, write_addr, u64, kstrtou64)
- EDAC_SCRUB_ATTR_STORE(size, write_size, u64, kstrtou64)
- EDAC_SCRUB_ATTR_STORE(enable_background, set_enabled_bg, unsigned long, kstrtoul)
-+EDAC_SCRUB_ATTR_STORE(enable_demand, set_enabled_od, unsigned long, kstrtoul)
- EDAC_SCRUB_ATTR_STORE(current_cycle_duration, set_cycle_duration, unsigned long, kstrtoul)
- 
- static umode_t scrub_attr_visible(struct kobject *kobj, struct attribute *a, int attr_id)
-@@ -119,6 +122,14 @@ static umode_t scrub_attr_visible(struct kobject *kobj, struct attribute *a, int
- 				return 0444;
- 		}
- 		break;
-+	case SCRUB_ENABLE_DEMAND:
-+		if (ops->get_enabled_od) {
-+			if (ops->set_enabled_od)
-+				return a->mode;
-+			else
-+				return 0444;
-+		}
-+		break;
- 	case SCRUB_MIN_CYCLE_DURATION:
- 		if (ops->get_min_cycle)
- 			return a->mode;
-@@ -164,6 +175,7 @@ static int scrub_create_desc(struct device *scrub_dev,
- 		[SCRUB_ADDRESS] = EDAC_SCRUB_ATTR_RW(addr, instance),
- 		[SCRUB_SIZE] = EDAC_SCRUB_ATTR_RW(size, instance),
- 		[SCRUB_ENABLE_BACKGROUND] = EDAC_SCRUB_ATTR_RW(enable_background, instance),
-+		[SCRUB_ENABLE_DEMAND] = EDAC_SCRUB_ATTR_RW(enable_demand, instance),
- 		[SCRUB_MIN_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RO(min_cycle_duration, instance),
- 		[SCRUB_MAX_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RO(max_cycle_duration, instance),
- 		[SCRUB_CUR_CYCLE_DURATION] = EDAC_SCRUB_ATTR_RW(current_cycle_duration, instance)
-diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
-index fc4f4bb94a4c..a1e6aed8bcc8 100644
---- a/drivers/ras/Kconfig
-+++ b/drivers/ras/Kconfig
-@@ -46,4 +46,17 @@ config RAS_FMPM
- 	  Memory will be retired during boot time and run time depending on
- 	  platform-specific policies.
- 
-+config MEM_ACPI_RAS2
-+	tristate "Memory ACPI RAS2 driver"
-+	depends on ACPI_RAS2
-+	depends on EDAC
-+	depends on EDAC_SCRUB
-+	select NUMA_KEEP_MEMINFO
-+	help
-+	  The driver binds to the auxiliary device added by the ACPI RAS2
-+	  feature table parser. The driver uses a PCC channel subspace to
-+	  communicate with the ACPI-compliant platform and provides
-+	  control of the HW-based memory scrubber parameters to the user
-+	  through the EDAC scrub interface.
-+
- endif
-diff --git a/drivers/ras/Makefile b/drivers/ras/Makefile
-index 11f95d59d397..a0e6e903d6b0 100644
---- a/drivers/ras/Makefile
-+++ b/drivers/ras/Makefile
-@@ -2,6 +2,7 @@
- obj-$(CONFIG_RAS)	+= ras.o
- obj-$(CONFIG_DEBUG_FS)	+= debugfs.o
- obj-$(CONFIG_RAS_CEC)	+= cec.o
-+obj-$(CONFIG_MEM_ACPI_RAS2)	+= acpi_ras2.o
- 
- obj-$(CONFIG_RAS_FMPM)	+= amd/fmpm.o
- obj-y			+= amd/atl/
-diff --git a/drivers/ras/acpi_ras2.c b/drivers/ras/acpi_ras2.c
-new file mode 100644
-index 000000000000..f1f024d12b92
---- /dev/null
-+++ b/drivers/ras/acpi_ras2.c
-@@ -0,0 +1,402 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * ACPI RAS2 memory driver
-+ *
-+ * Copyright (c) 2024-2026 HiSilicon Limited.
-+ *
-+ */
-+
-+#define pr_fmt(fmt)	"ACPI RAS2 MEMORY: " fmt
-+
-+#include <linux/bitfield.h>
-+#include <linux/delay.h>
-+#include <linux/edac.h>
-+#include <linux/kthread.h>
-+#include <linux/platform_device.h>
-+#include <acpi/ras2.h>
-+
-+#define RAS2_SUPPORT_HW_PARTOL_SCRUB BIT(0)
-+#define RAS2_TYPE_PATROL_SCRUB 0x0000
-+
-+#define RAS2_GET_PATROL_PARAMETERS 0x01
-+#define RAS2_START_PATROL_SCRUBBER 0x02
-+#define RAS2_STOP_PATROL_SCRUBBER 0x03
-+
-+/*
-+ * RAS2 patrol scrub
-+ */
-+#define RAS2_PS_SC_HRS_IN_MASK GENMASK(15, 8)
-+#define RAS2_PS_EN_BACKGROUND BIT(0)
-+#define RAS2_PS_SC_HRS_OUT_MASK GENMASK(7, 0)
-+#define RAS2_PS_MIN_SC_HRS_OUT_MASK GENMASK(15, 8)
-+#define RAS2_PS_MAX_SC_HRS_OUT_MASK GENMASK(23, 16)
-+#define RAS2_PS_FLAG_SCRUB_RUNNING BIT(0)
-+
-+#define RAS2_SCRUB_NAME_LEN 128
-+#define RAS2_HOUR_IN_SECS 3600
-+
-+struct acpi_ras2_ps_shared_mem {
-+	struct acpi_ras2_shmem common;
-+	struct acpi_ras2_patrol_scrub_param params;
-+};
-+
-+#define TO_ACPI_RAS2_PS_SHMEM(_addr) \
-+	container_of(_addr, struct acpi_ras2_ps_shared_mem, common)
-+
-+static int ras2_hw_scrub_set_enabled_bg(struct device *dev, void *drv_data, bool enable);
-+
-+static int ras2_is_patrol_scrub_support(struct ras2_mem_ctx *ras2_ctx)
-+{
-+	struct acpi_ras2_shmem __iomem *common = (void *)ras2_ctx->comm_addr;
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	common->set_caps[0] = 0;
-+
-+	return common->features[0] & RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+}
-+
-+static int ras2_update_patrol_scrub_params_cache(struct ras2_mem_ctx *ras2_ctx)
-+{
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		TO_ACPI_RAS2_PS_SHMEM(ras2_ctx->comm_addr);
-+	int ret;
-+
-+	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.command = RAS2_GET_PATROL_PARAMETERS;
-+	ps_sm->params.req_addr_range[0] = ras2_ctx->base;
-+	ps_sm->params.req_addr_range[1] = ras2_ctx->size;
-+	ret = ras2_send_pcc_cmd(ras2_ctx, PCC_CMD_EXEC_RAS2);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "Failed to read patrol scrub parameters\n");
-+		return ret;
-+	}
-+
-+	ras2_ctx->min_scrub_cycle = FIELD_GET(RAS2_PS_MIN_SC_HRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+	ras2_ctx->max_scrub_cycle = FIELD_GET(RAS2_PS_MAX_SC_HRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+	ras2_ctx->scrub_cycle_hrs = FIELD_GET(RAS2_PS_SC_HRS_OUT_MASK,
-+					      ps_sm->params.scrub_params_out);
-+	if (ras2_ctx->bg_scrub) {
-+		ras2_ctx->od_scrub = false;
-+		return 0;
-+	}
-+
-+	if  (ps_sm->params.flags & RAS2_PS_FLAG_SCRUB_RUNNING)
-+		ras2_ctx->od_scrub = true;
-+	else
-+		ras2_ctx->od_scrub = false;
-+
-+	return 0;
-+}
-+
-+/* Context - PCC lock must be held */
-+static int ras2_get_demand_scrub_running(struct ras2_mem_ctx *ras2_ctx, bool *running)
-+{
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm =
-+		TO_ACPI_RAS2_PS_SHMEM(ras2_ctx->comm_addr);
-+	int ret;
-+
-+	if (!ras2_ctx->od_scrub) {
-+		*running = false;
-+		return 0;
-+	}
-+
-+	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.command = RAS2_GET_PATROL_PARAMETERS;
-+	ps_sm->params.req_addr_range[0] = ras2_ctx->base;
-+	ps_sm->params.req_addr_range[1] = ras2_ctx->size;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, PCC_CMD_EXEC_RAS2);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "Failed to read patrol scrub parameters\n");
-+		return ret;
-+	}
-+
-+	*running = ps_sm->params.flags & RAS2_PS_FLAG_SCRUB_RUNNING;
-+	if (!(*running))
-+		ras2_ctx->od_scrub = false;
-+
-+	return 0;
-+}
-+
-+static int ras2_scrub_monitor_thread(void *p)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = (struct ras2_mem_ctx *)p;
-+	bool running;
-+	int ret;
-+
-+	while (!kthread_should_stop()) {
-+		if (!ras2_ctx->reenable_bg_scrub)
-+			return 0;
-+
-+		mutex_lock(ras2_ctx->pcc_lock);
-+		ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+		mutex_unlock(ras2_ctx->pcc_lock);
-+		if (ret)
-+			return ret;
-+
-+		if (!running)
-+			return ras2_hw_scrub_set_enabled_bg(ras2_ctx->dev, ras2_ctx, true);
-+
-+		msleep(1000);
-+	}
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_min_scrub_cycle(struct device *dev, void *drv_data, u32 *min)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*min = ras2_ctx->min_scrub_cycle * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_max_scrub_cycle(struct device *dev, void *drv_data, u32 *max)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*max = ras2_ctx->max_scrub_cycle * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_cycle_read(struct device *dev, void *drv_data, u32 *scrub_cycle_secs)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*scrub_cycle_secs = ras2_ctx->scrub_cycle_hrs * RAS2_HOUR_IN_SECS;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_cycle_write(struct device *dev, void *drv_data, u32 scrub_cycle_secs)
-+{
-+	u8 scrub_cycle_hrs = scrub_cycle_secs / RAS2_HOUR_IN_SECS;
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	bool running;
-+	int ret;
-+
-+	if (ras2_ctx->bg_scrub)
-+		return -EBUSY;
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	if (scrub_cycle_hrs < ras2_ctx->min_scrub_cycle ||
-+	    scrub_cycle_hrs > ras2_ctx->max_scrub_cycle)
-+		return -EINVAL;
-+
-+	ras2_ctx->scrub_cycle_hrs = scrub_cycle_hrs;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_get_enabled_bg(struct device *dev, void *drv_data, bool *enabled)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+
-+	*enabled = ras2_ctx->bg_scrub;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_set_enabled_bg(struct device *dev, void *drv_data, bool enable)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm = TO_ACPI_RAS2_PS_SHMEM(ras2_ctx->comm_addr);
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	if (enable) {
-+		if (ras2_ctx->bg_scrub || running)
-+			return -EBUSY;
-+
-+		ps_sm->params.req_addr_range[0] = 0;
-+		ps_sm->params.req_addr_range[1] = 0;
-+		ps_sm->params.scrub_params_in &= ~RAS2_PS_SC_HRS_IN_MASK;
-+		ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PS_SC_HRS_IN_MASK,
-+							    ras2_ctx->scrub_cycle_hrs);
-+		ps_sm->params.command = RAS2_START_PATROL_SCRUBBER;
-+	} else {
-+		if (!ras2_ctx->bg_scrub)
-+			return -EPERM;
-+
-+		ps_sm->params.command = RAS2_STOP_PATROL_SCRUBBER;
-+	}
-+
-+	ps_sm->params.scrub_params_in &= ~RAS2_PS_EN_BACKGROUND;
-+	ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PS_EN_BACKGROUND, enable);
-+	ret = ras2_send_pcc_cmd(ras2_ctx, PCC_CMD_EXEC_RAS2);
-+	if (ret) {
-+		dev_err(dev, "Failed to %s background scrubbing\n",
-+			str_enable_disable(enable));
-+		return ret;
-+	}
-+
-+	ras2_ctx->bg_scrub = enable;
-+	if (enable)
-+		ras2_ctx->reenable_bg_scrub = false;
-+
-+	/* Update the cache to account for rounding of supplied parameters and similar */
-+	return ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+}
-+
-+static int ras2_hw_scrub_get_enabled_od(struct device *dev, void *drv_data, bool *enabled)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	*enabled = running;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_set_enabled_od(struct device *dev, void *drv_data, bool enable)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = drv_data;
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm = TO_ACPI_RAS2_PS_SHMEM(ras2_ctx->comm_addr);
-+	struct task_struct *thrd;
-+	bool running;
-+	int ret;
-+
-+	if (!enable)
-+		return -EOPNOTSUPP;
-+
-+	/* Stop any background scrub currently in progress */
-+	if (ras2_ctx->bg_scrub) {
-+		ret = ras2_hw_scrub_set_enabled_bg(dev, drv_data, false);
-+		if (ret)
-+			return ret;
-+
-+		ras2_ctx->reenable_bg_scrub = true;
-+		thrd = kthread_run(ras2_scrub_monitor_thread, ras2_ctx,
-+				   "ras2_scrub_nid%d", ras2_ctx->sys_comp_nid);
-+		if (IS_ERR(thrd)) {
-+			ras2_ctx->reenable_bg_scrub = false;
-+			ras2_hw_scrub_set_enabled_bg(dev, drv_data, true);
-+			return PTR_ERR(thrd);
-+		}
-+	}
-+
-+	guard(mutex)(ras2_ctx->pcc_lock);
-+	ret = ras2_get_demand_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	ps_sm->common.set_caps[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.scrub_params_in &= ~RAS2_PS_SC_HRS_IN_MASK;
-+	ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PS_SC_HRS_IN_MASK,
-+						    ras2_ctx->scrub_cycle_hrs);
-+	ps_sm->params.req_addr_range[0] = ras2_ctx->base;
-+	ps_sm->params.req_addr_range[1] = ras2_ctx->size;
-+	ps_sm->params.scrub_params_in &= ~RAS2_PS_EN_BACKGROUND;
-+	ps_sm->params.command = RAS2_START_PATROL_SCRUBBER;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, PCC_CMD_EXEC_RAS2);
-+	if (ret) {
-+		dev_err(dev, "Failed to start demand scrubbing rc(%d)\n", ret);
-+		if (ret != -EBUSY) {
-+			ps_sm->params.req_addr_range[0] = 0;
-+			ps_sm->params.req_addr_range[1] = 0;
-+			ras2_ctx->od_scrub = false;
-+		}
-+		return ret;
-+	}
-+
-+	ras2_ctx->od_scrub = enable;
-+
-+	return ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+}
-+
-+static const struct edac_scrub_ops ras2_scrub_ops = {
-+	.get_enabled_bg = ras2_hw_scrub_get_enabled_bg,
-+	.set_enabled_bg = ras2_hw_scrub_set_enabled_bg,
-+	.get_enabled_od = ras2_hw_scrub_get_enabled_od,
-+	.set_enabled_od = ras2_hw_scrub_set_enabled_od,
-+	.get_min_cycle = ras2_hw_scrub_read_min_scrub_cycle,
-+	.get_max_cycle = ras2_hw_scrub_read_max_scrub_cycle,
-+	.get_cycle_duration = ras2_hw_scrub_cycle_read,
-+	.set_cycle_duration = ras2_hw_scrub_cycle_write,
-+};
-+
-+static int ras2_probe(struct auxiliary_device *auxdev, const struct auxiliary_device_id *id)
-+{
-+	struct ras2_mem_ctx *ras2_ctx = container_of(auxdev, struct ras2_mem_ctx, adev);
-+	struct edac_dev_feature ras_features;
-+	char scrub_name[RAS2_SCRUB_NAME_LEN];
-+	unsigned long start_pfn, size_pfn;
-+	int ret;
-+
-+	if (!ras2_is_patrol_scrub_support(ras2_ctx))
-+		return -EOPNOTSUPP;
-+
-+	/*
-+	 * Retrieve the PA range of the NUMA domain and use it as the
-+	 * 'Requested Address Range', when send RAS2 command
-+	 * GET_PATROL_PARAMETERS to get parameters that apply to all addresses
-+	 * in the NUMA domain as well as when send command START_PATROL_SCRUBBER
-+	 * to start the demand scrubbing.
-+	 */
-+	start_pfn = node_start_pfn(ras2_ctx->sys_comp_nid);
-+	size_pfn = node_spanned_pages(ras2_ctx->sys_comp_nid);
-+	if (!size_pfn) {
-+		pr_debug("Failed to find PA range of NUMA node(%u)\n", ras2_ctx->sys_comp_nid);
-+		return -EPERM;
-+	}
-+
-+	ras2_ctx->base = __pfn_to_phys(start_pfn);
-+	ras2_ctx->size = __pfn_to_phys(size_pfn);
-+	ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+	if (ret)
-+		return ret;
-+
-+	sprintf(scrub_name, "acpi_ras_mem%d", auxdev->id);
-+
-+	ras_features.ft_type	= RAS_FEAT_SCRUB;
-+	ras_features.instance	= 0;
-+	ras_features.scrub_ops	= &ras2_scrub_ops;
-+	ras_features.ctx	= ras2_ctx;
-+
-+	return edac_dev_register(&auxdev->dev, scrub_name, NULL, 1, &ras_features);
-+}
-+
-+static const struct auxiliary_device_id ras2_mem_dev_id_table[] = {
-+	{ .name = RAS2_AUX_DEV_NAME "." RAS2_MEM_DEV_ID_NAME, },
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(auxiliary, ras2_mem_dev_id_table);
-+
-+static struct auxiliary_driver ras2_mem_driver = {
-+	.name = RAS2_MEM_DEV_ID_NAME,
-+	.probe = ras2_probe,
-+	.id_table = ras2_mem_dev_id_table,
-+};
-+module_auxiliary_driver(ras2_mem_driver);
-+
-+MODULE_IMPORT_NS("ACPI_RAS2");
-+MODULE_DESCRIPTION("ACPI RAS2 memory driver");
-+MODULE_LICENSE("GPL");
-diff --git a/include/acpi/ras2.h b/include/acpi/ras2.h
-index f4574e8e0a12..1329eb8b7423 100644
---- a/include/acpi/ras2.h
-+++ b/include/acpi/ras2.h
-@@ -37,6 +37,15 @@ struct device;
-  *			is associated with. See ACPI spec 6.5 Table 5.80: RAS2
-  *			Platform Communication Channel Descriptor format,
-  *			Field: Instance
-+ * @base:		Base address of the memory region to scrub
-+ * @size:		Size of the memory region to scrub
-+ * @scrub_cycle_hrs:	Current scrub rate in hours
-+ * @min_scrub_cycle:	Minimum scrub rate supported
-+ * @max_scrub_cycle:	Maximum scrub rate supported
-+ * @od_scrub:		Status of demand scrubbing (memory region)
-+ * @bg_scrub:		Status of background patrol scrubbing
-+ * @reenable_bg_scrub:	Flag indicates restart background scrubbing after demand
-+ *			scrubbing is finished
-  */
- struct ras2_mem_ctx {
- 	struct auxiliary_device		adev;
-@@ -45,6 +54,14 @@ struct ras2_mem_ctx {
- 	void				*sspcc;
- 	struct mutex			*pcc_lock;
- 	u32				sys_comp_nid;
-+	u64				base;
-+	u64				size;
-+	u8				scrub_cycle_hrs;
-+	u8				min_scrub_cycle;
-+	u8				max_scrub_cycle;
-+	bool				od_scrub;
-+	bool				bg_scrub;
-+	bool				reenable_bg_scrub;
- };
- 
- #ifdef CONFIG_ACPI_RAS2
-diff --git a/include/linux/edac.h b/include/linux/edac.h
-index fa32f2aca22f..2342ff38e9d5 100644
---- a/include/linux/edac.h
-+++ b/include/linux/edac.h
-@@ -680,6 +680,8 @@ enum edac_dev_feat {
-  * @write_size: set offset of the scrubbing range.
-  * @get_enabled_bg: check if currently performing background scrub.
-  * @set_enabled_bg: start or stop a bg-scrub.
-+ * @get_enabled_od: check if currently performing demand scrub.
-+ * @set_enabled_od: start or stop a demand-scrub.
-  * @get_min_cycle: get minimum supported scrub cycle duration in seconds.
-  * @get_max_cycle: get maximum supported scrub cycle duration in seconds.
-  * @get_cycle_duration: get current scrub cycle duration in seconds.
-@@ -692,6 +694,8 @@ struct edac_scrub_ops {
- 	int (*write_size)(struct device *dev, void *drv_data, u64 size);
- 	int (*get_enabled_bg)(struct device *dev, void *drv_data, bool *enable);
- 	int (*set_enabled_bg)(struct device *dev, void *drv_data, bool enable);
-+	int (*get_enabled_od)(struct device *dev, void *drv_data, bool *enable);
-+	int (*set_enabled_od)(struct device *dev, void *drv_data, bool enable);
- 	int (*get_min_cycle)(struct device *dev, void *drv_data,  u32 *min);
- 	int (*get_max_cycle)(struct device *dev, void *drv_data,  u32 *max);
- 	int (*get_cycle_duration)(struct device *dev, void *drv_data, u32 *cycle);
--- 
-2.43.0
+>
+> >         }
+> > -       __vma_lockdep_stat_mark_acquired(vma);
+> >
+> > -       return 1;
+> > +       __vma_lockdep_stat_mark_acquired(vma);
+> > +       ves->exclusive = true;
+> > +       return 0;
+> >  }
+> >
+> >  int __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq,
+> >                 int state)
+> >  {
+> > -       int locked;
+> > +       int err;
+> > +       struct vma_exclude_readers_state ves = {
+> > +               .vma = vma,
+> > +               .state = state,
+> > +       };
+> >
+> > -       locked = __vma_enter_exclusive_locked(vma, false, state);
+> > -       if (locked < 0)
+> > -               return locked;
+> > +       err = __vma_enter_exclusive_locked(&ves);
+> > +       if (err) {
+> > +               WARN_ON_ONCE(ves.detached);
+>
+> I believe the above WARN_ON_ONCE() should stay inside of
+> __vma_enter_exclusive_locked(). Its correctness depends on the
+> implementation details of __vma_enter_exclusive_locked(). More
 
+Well this was kind of horrible in the original implementation, as you are
+literally telling the function whether you are detaching or not, and only doing
+this assert if you were not.
+
+That kind of 'if the caller is X do A, if the caller is Y do B' is really a code
+smell, you should have X do the thing.
+
+> specifically, it is only correct because
+> __vma_enter_exclusive_locked() returns 0 if the VMA is detached, even
+> if there was a pending SIGKILL.
+
+Well it's a documented aspect of the function that we return 0 immediately on
+detached state so I'm not sure that is an implementation detail?
+
+I significantly prefer having that here vs. 'if not detaching then assert if
+detached' for people to scratch their heads over in the function.
+
+I think this detail is incorrect anyway, because:
+
+	if (err) {
+		if (__vma_exit_exclusive_locked(vma)) {
+			/*
+			 * The wait failed, but the last reader went away
+			 * as well. Tell the caller the VMA is detached.
+			 */
+			 WARN_ON_ONCE(!detaching);
+			 err = 0;
+		}
+		...
+	}
+
+Implies - hey we're fine with err not being zero AND detaching right? In which
+case reset the error?
+
+Except when detaching we set TASK_UNINTERRUPTIBLE? Which surely means we never
+seen an error?
+
+Or do we?
+
+Either way it's something we handle differently based on _caller_. So it doesn't
+belong in the function at all.
+
+It's certainly logic that's highly confusing and needs to be handled
+differently.
+
+>
+> > +               return err;
+> > +       }
+> >
+> >         /*
+> >          * We should use WRITE_ONCE() here because we can have concurrent reads
+> > @@ -141,9 +164,11 @@ int __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq,
+> >          */
+> >         WRITE_ONCE(vma->vm_lock_seq, mm_lock_seq);
+> >
+> > -       /* vma should remain attached. */
+> > -       if (locked)
+> > -               WARN_ON_ONCE(__vma_exit_exclusive_locked(vma));
+> > +       if (!ves.detached) {
+>
+> Strictly speaking the above check should be checking ves->exclusive
+> instead of !ves.detached. What you have is technically correct but
+> it's again related to that comment:
+>
+> "If the function indicates an exclusive lock was acquired via
+> ves->exclusive (or equivalently, returning 0 with !ves->detached), the
+> caller is required to invoke __vma_exit_exclusive_locked() once the
+> exclusive state is no longer required."
+>
+> So, here you are using returning 0 with !ves->detached as an
+> indication that the VMA was successfully locked. I think it's less
+> confusing if we use the field dedicated for that purpose.
+
+OK changed.
+
+>
+> > +               __vma_exit_exclusive_locked(&ves);
+> > +               /* VMA should remain attached. */
+> > +               WARN_ON_ONCE(ves.detached);
+> > +       }
+> >
+> >         return 0;
+> >  }
+> > @@ -151,7 +176,12 @@ EXPORT_SYMBOL_GPL(__vma_start_write);
+> >
+> >  void vma_mark_detached(struct vm_area_struct *vma)
+> >  {
+> > -       bool detached;
+> > +       struct vma_exclude_readers_state ves = {
+> > +               .vma = vma,
+> > +               .state = TASK_UNINTERRUPTIBLE,
+> > +               .detaching = true,
+> > +       };
+> > +       int err;
+> >
+> >         vma_assert_write_locked(vma);
+> >         vma_assert_attached(vma);
+> > @@ -160,18 +190,26 @@ void vma_mark_detached(struct vm_area_struct *vma)
+> >          * See the comment describing the vm_area_struct->vm_refcnt field for
+> >          * details of possible refcnt values.
+> >          */
+> > -       detached = __vma_refcount_put(vma, NULL);
+> > -       if (unlikely(!detached)) {
+> > -               /* Wait until vma is detached with no readers. */
+> > -               if (__vma_enter_exclusive_locked(vma, true, TASK_UNINTERRUPTIBLE)) {
+> > -                       /*
+> > -                        * Once this is complete, no readers can increment the
+> > -                        * reference count, and the VMA is marked detached.
+> > -                        */
+> > -                       detached = __vma_exit_exclusive_locked(vma);
+> > -                       WARN_ON_ONCE(!detached);
+> > -               }
+> > +       if (likely(__vma_refcount_put(vma, NULL)))
+> > +               return;
+> > +
+> > +       /*
+> > +        * Wait until the VMA is detached with no readers. Since we hold the VMA
+> > +        * write lock, the only read locks that might be present are those from
+> > +        * threads trying to acquire the read lock and incrementing the
+> > +        * reference count before realising the write lock is held and
+> > +        * decrementing it.
+> > +        */
+> > +       err = __vma_enter_exclusive_locked(&ves);
+> > +       if (!err && !ves.detached) {
+>
+> Same here, we should be checking ves->exclusive to decide if
+> __vma_exit_exclusive_locked() should be called or not.
+
+Ack, changed.
+
+>
+> > +               /*
+> > +                * Once this is complete, no readers can increment the
+> > +                * reference count, and the VMA is marked detached.
+> > +                */
+> > +               __vma_exit_exclusive_locked(&ves);
+> >         }
+> > +       /* If an error arose but we were detached anyway, we don't care. */
+> > +       WARN_ON_ONCE(!ves.detached);
+> >  }
+> >
+> >  /*
+> > --
+> > 2.52.0
+
+Cheers, Lorenzo
 
