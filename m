@@ -4,96 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F060BD778AC
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 18:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3088D778AE
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 18:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C78D6B0532; Fri, 23 Jan 2026 13:25:36 -0500 (EST)
+	id 215A76B0534; Fri, 23 Jan 2026 13:36:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374916B0534; Fri, 23 Jan 2026 13:25:36 -0500 (EST)
+	id 1ED9C6B0536; Fri, 23 Jan 2026 13:36:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AB216B0535; Fri, 23 Jan 2026 13:25:36 -0500 (EST)
+	id 116E06B0537; Fri, 23 Jan 2026 13:36:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1967C6B0532
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 13:25:36 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA1EA1A04F4
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 18:25:35 +0000 (UTC)
-X-FDA: 84364056630.29.8A7304C
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EA6241C000B
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 18:25:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 010806B0534
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 13:36:15 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5845B9D1E
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 18:36:15 +0000 (UTC)
+X-FDA: 84364083510.05.5C02F7C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7C235C0004
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 18:36:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf18.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769192734; a=rsa-sha256;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf28.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769193374; a=rsa-sha256;
 	cv=none;
-	b=7iCdRAmyXB8gyL3lKzPH4BgF7U3eUNrdklMRhqKlltZWSDLoD3DOHblJxtudc1w4DtMkzD
-	TPTcbkXLjB1Z7Xzz6cjqvyk28PI7ZOYFhWMV//v7XeOko1memVtGnJkHjWsnuUkElpGAPi
-	Wu/4k58CFk+sLvbHetvTziZwzku57hQ=
+	b=BKQy9LBbTA1lOGKfSy2IA0hzkPxzIo2yBwhUqvxTUNgMLiyJ7O3FQggX/MYSU1Dbxnk7NV
+	8oPKUneltVRVrA9QCM6SQ5GF6uP2UFz1jPWbKV8ckEC3YazdCTzuBerQkBABksyvFELrF+
+	ovWsy9Yh5L185H9tgtpItRHzfCDtBlk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
+	imf28.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf18.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf28.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769192734;
+	s=arc-20220608; t=1769193374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4fyaRR4voNxq8GIVydnj3W1+pjQzyvci15sg++4o3rU=;
-	b=jS68xslaknxISswJo06nuA5MAlF6FDBZ7brab4/THwCEOzfECxPqulOEBdOVPSvmOVYjA/
-	IoLYDgdSj3Rgt1leK81FU8qpbpdCl3k67QzRXTpCwcAm/T32c7+WglAYcXwAGpQ8Sci1sA
-	A8CKnM/5dpNcxgSSTq59Bi4EeTQA5u4=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dyRDV5hM0zJ467F;
-	Sat, 24 Jan 2026 02:24:58 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 85A9F40570;
-	Sat, 24 Jan 2026 02:25:28 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 23 Jan
- 2026 18:25:27 +0000
-Date: Fri, 23 Jan 2026 18:25:26 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Gregory Price <gourry@gourry.net>
-CC: "David Hildenbrand (Red Hat)" <david@kernel.org>, <linux-mm@kvack.org>,
-	<linux-cxl@vger.kernel.org>, <nvdimm@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <virtualization@lists.linux.dev>,
-	<kernel-team@meta.com>, <dan.j.williams@intel.com>,
-	<vishal.l.verma@intel.com>, <dave.jiang@intel.com>, <mst@redhat.com>,
-	<jasowang@redhat.com>, <xuanzhuo@linux.alibaba.com>, <eperezma@redhat.com>,
-	<osalvador@suse.de>, <akpm@linux-foundation.org>
-Subject: Re: [PATCH 3/8] mm/memory_hotplug: add APIs for explicit online
- type control
-Message-ID: <20260123182526.00005ee8@huawei.com>
-In-Reply-To: <aXLCAtwMkSMH3DNj@gourry-fedora-PF4VCD3F>
-References: <20260114085201.3222597-1-gourry@gourry.net>
-	<20260114085201.3222597-4-gourry@gourry.net>
-	<b3d435d2-643f-4dad-9928-bc7fb5080181@kernel.org>
-	<aWfR86RIKEvyZsh6@gourry-fedora-PF4VCD3F>
-	<4520e7b0-8218-404d-8ede-e62d95c50825@kernel.org>
-	<aXLCAtwMkSMH3DNj@gourry-fedora-PF4VCD3F>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	bh=arKGCctrdsfQGPyMUlAxQ2/8+tmzN8yfWV9Z3XZP5U0=;
+	b=hmNVWjGG58BnAwdlxTN+NCRDtVTCXiWd8GitOg6kW+kP4tQPlSL1d3gkuY8wdSMVpKaOR/
+	xjJRmH6eB00oyUaiu76xIzaV3R2GXIYF9ixmi+Iiiq1pH0R+HSY4DvOakYiRg2+m9/ofdU
+	UJT17k/nvcb+qbIZmsYAD2Zu1LfET9Y=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBA081476;
+	Fri, 23 Jan 2026 10:36:05 -0800 (PST)
+Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 802393F694;
+	Fri, 23 Jan 2026 10:36:10 -0800 (PST)
+Date: Fri, 23 Jan 2026 18:36:07 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, will@kernel.org,
+	zengheng4@huawei.com, ryan.roberts@arm.com,
+	anshuman.khandual@arm.com, wangkefeng.wang@huawei.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH] arm64: mm: explicitly use kernel pte for ioremap_prot()
+Message-ID: <aXO_l_4OrC7Ja4rP@arm.com>
+References: <20260123030238.835748-1-tujinjiang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123030238.835748-1-tujinjiang@huawei.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EA6241C000B
-X-Stat-Signature: tjgxjxftyhc5chd6488kcartsfcht3zn
-X-HE-Tag: 1769192732-98700
-X-HE-Meta: U2FsdGVkX1/vx4kyOFpC4PmkbCDdK5/QXLu3wqX5snKr58pCjKcWCpAhAG9OYuIM/vftNHyx4BjXQ4rqkusuuqcTUxQ27vJ6izJabXQjiBPueWuwWFVk2EEtL0JTEyjUh3g3s3g6Ibgjm/Xb/l7neODLcsO5YAW0HQ6jeE/vgK7U+baKROgm8xlAaYauK6k6Lc1F8amqgzsEPh/8ZZtQyP2u8ZMQ8Thd0cfxiXDq0FqKw/qt1yWtOdLnmv6MdsLXpXZOi1e8v3JSNeJRrHTGtxi3Y3fQjR1qCCN6nUeQejqX5UtRVxo8xUDjirXimGAIaWwaaTA6OMvnPw1kKNuS0l4YwOp8niRhrDydVwako57frnt4QiNJ3pCXu9vv7qX+RSvBo/GrZuKU4s5oc0WRt8qObqgdiYobAMHsyIsDXsqK9fkI+fK6f7ELKd/k1abaHlyZLt4gvRhTYhzq7b8QUEMHiAvf54ALG+ZdODq7onskjkfeGlYNNt5Ss63O96Dke1MHX37ouoZVEtYUIUE9C0prz8gSrpAxb4KrtifNDMt7GVK8uVqcsenApTk8jADBiFIE0b00tNjDrcJTLg/S0tpOyZYsTnypxnuaDk0+YkrsGkjUbrgF/rKBVGCrGQOEfeXTJUV50na/4byHOL+JFGn5JD43ebxmbH/bUnsDNOaQ0vJGzQWLtGeYJzokWd3bsydpE1GBK44M4ApFSFTbz30Na33hfD3WKL2211CDa0beB1WomJqEwFaVrtKdScBW9hX/wAPutzsNp/1SmAne2maXfMVIIAul09bTaNZUIaG2UcJUoohdU86RqvdggmXlt9dsd29yAhWFj5NZAYIqhTEiLkNO6d4DUQMFaRlKAW+ELdOAyO96wyd3UjeytE+pcXT7o3zMoUKSGDrkc2dU22Zz6XZNkX66txS5WXxa8/pa3rMPFK6UHm3d09C9m3h4VIT7XXdcstWHvtGBODZ
- JZCo1eH1
- sHh6hu7f+IXJu/SQVFuiJaN/LeRrOGdr3IB3Q6dx8Y1Ufj7gBFZ+SeUzgwjad3xbp6+FE/wwAMfy6WLgDQgtm4dunQJHya6/eMnJVEE55eL8JtSvjRGhaq9Cx1AikVjOJECvJGXjWCmwelWgqWALIvXW84JS4znU0po1nfeDVYuD3yqnCKrRMKHNSgyg6AXAP29ef0n7tUA8RzFM+KSLKoYfS8M9sbZDiaq9xtRZOt4UMOLmhIRD0DV9iFgjs8359/+3nfaFkEG7gvtkLAKG7LcIRGD5uCZl+vDrr53r/Z4Z3ScDr0yG/rrJ8yDEE8GnWWrEBp9NdXg0CEwI=
+X-Rspamd-Queue-Id: 7C235C0004
+X-Stat-Signature: dpr7rb1yen6d1m93c9rkkd8ieqip6xht
+X-HE-Tag: 1769193373-345921
+X-HE-Meta: U2FsdGVkX1+Lem8HiPwNP/vQa7MCfFAl7052ERjLDteqSkn6Tney7xRJJzzjEFg54HZFtRvffSjXj5+iWfEeB0uTlQS5w6ilmBbzYMZKtd5J/SIp66vyhWxj9RXpJP3KB/j7SR8LgXLoMCqC25QbU8R+X7Zrhe4/x++qFqzlwUisIBwkTnwPqpTykutszy/w49BIV8cvnaH32jTXtWLuz5brcJvP++8qjbhSR6FqMgBRvXJw4TedVzJDq+mno2Nq331AySlJruTBJGb/5ZsqzWMcykPTsu+mnD5+gXH7KHtdeq05gmvHBzzWckiVqffQt6psAP3WCCy3mVccXuke/3OFrtOO2RhZjYne2zyAzE0BMdK7vv5aq35BLWo4ZJTbFl9XpTyBDCC2edIaMZndX+NdlDs7wUc6TNSZfaPzOpMbSmDQICTCt3z2YAIsg9nNDJ+U47ULzpD2PEfdctDLdK63BFqY315O2BiGmD2G2ue3MniSxkxSj5/HF5CnSjdQa4MAJrWcXBRrW9HAI8lIeDB3QC/s4WIOjED9wbkoPBZRgtazs2V/8yD60Lp1jATWQYsnF9k0BuueNkVWPMYNFH+eCDLrlYBSd3IvGD5N0cdNr83En6Jot4VyF9p1eVQn+KNWAW1mS+q/vs1dJcniHVfuxRrzOq1N8lnvgxZ4uyP0oJ0pMhrMX7tn8wNhOD0gnvjQaioxHSwU3oAq+GuFgQP8k2j+kc+EjqyRXRAHylceIiBb2xcJtPoWtQ4sL0zgrhgCsSuf8tiav4Gx+Z0MxUo7b099CwQ8KhxY6tl5i+HPAWWJjzCXM7jiO+UhS3pLPs4AWpQQ4RPJMF/BMr05I4STopNdbMzjP8N3RdxR9rNbm+mwe+YxIjHBXZts95jyug1JrYWMBrNSN/HjXPEDAPvTTA2BnC3zIdcAmWgwkYvniR8dg5mv/Zv6PW9fIeXQtA9l5zjANxm9EW1bzbH
+ L2sv1giW
+ w1Ch/u9HaiN+nZNUYG3Y9adUznw5WU2Vapubtbw01EeFtR9BtNzYa8yu7Dzi2I32BVp2WBWNAU15xRxKP1whDlta0rZzGeg8CoAgRKs9Ba69hgdhSObjLkf92CrvB4hEtxlGt7OKhU4cGXmcHeZDlXbS93Gwqn7g+3dmaEEnTKtN3Sbdz/VycKgiIuUW2UVThBQk3lvceGHQQ0t6HdTLJBWVcIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,40 +84,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 19:34:10 -0500
-Gregory Price <gourry@gourry.net> wrote:
+On Fri, Jan 23, 2026 at 11:02:38AM +0800, Jinjiang Tu wrote:
+> Here is a syzkaller error log:
+>   [0000000020ffc000] pgd=080000010598d403, p4d=080000010598d403, pud=0800000125ddb403,
+>                      pmd=080000007833c403, pte=01608000007fcfcf
+>   Unable to handle kernel read from unreadable memory at virtual address ffff80008ea89000
+>   KASAN: probably user-memory-access in range [0x0000000475448000-0x0000000475448007]
+>   Mem abort info:
+>     ESR = 0x000000009600000f
+>     EC = 0x25: DABT (current EL), IL = 32 bits
+>     SET = 0, FnV = 0
+>     EA = 0, S1PTW = 0
+>     FSC = 0x0f: level 3 permission fault
+>   Data abort info:
+>     ISV = 0, ISS = 0x0000000f, ISS2 = 0x00000000
+>     CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+>     GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+>   swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000001244aa000
+>   [ffff80008ea89000] pgd=100000013ffff403, p4d=100000013ffff403, pud=100000013fffe403,
+> 		     pmd=100000010a453403, pte=01608000007fcfcf
+>   Internal error: Oops: 000000009600000f [#1] SMP
+>   Modules linked in: team
+>   CPU: 1 PID: 10840 Comm: syz.9.83 Kdump: loaded Tainted: G
+>   Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+>   pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>   pc : __memcpy_fromio+0x80/0xf8
+>   lr : generic_access_phys+0x20c/0x2b8
+>   sp : ffff8000a0507960
+>   x29: ffff8000a0507960 x28: 1ffff000140a0f44 x27: ffff00003833cfe0
+>   x26: 0000000000000000 x25: 0000000000001000 x24: 0010000000000001
+>   x23: ffff80008ea89000 x22: ffff00004ea63000 x21: 0000000000001000
+>   x20: ffff80008ea89000 x19: ffff00004ea62000 x18: 0000000000000000
+>   x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000806f1e3c
+>   x14: ffff8000806f1d44 x13: 0000000041b58ab3 x12: ffff7000140a0f23
+>   x11: 1ffff000140a0f22 x10: ffff7000140a0f22 x9 : ffff800080579d24
+>   x8 : 0000000000000004 x7 : 0000000000000003 x6 : 0000000000000001
+>   x5 : ffff8000a0507910 x4 : ffff7000140a0f22 x3 : dfff800000000000
+>   x2 : 0000000000001000 x1 : ffff80008ea89000 x0 : ffff00004ea62000
+>   Call trace:
+>     __memcpy_fromio+0x80/0xf8
+>     generic_access_phys+0x20c/0x2b8
+>     __access_remote_vm+0x46c/0x5b8
+>     access_remote_vm+0x18/0x30
+>     environ_read+0x238/0x3e8
+>     vfs_read+0xe4/0x2b0
+>     ksys_read+0xcc/0x178
+>     __arm64_sys_read+0x4c/0x68
+>     invoke_syscall+0x68/0x1a0
+>     el0_svc_common.constprop.0+0x11c/0x150
+>     do_el0_svc+0x38/0x50
+>     el0_svc+0x50/0x258
+>     el0t_64_sync_handler+0xc0/0xc8
+>     el0t_64_sync+0x1a4/0x1a8
+>   Code: 91002339 aa1403f7 8b190276 d503201f (f94002f8)
+> 
+> The local syzkaller first maps I/O address from /dev/mem to userspace,
+> overiding the stack vma with MAP_FIXED flag. As a result, when reading
+> /proc/$pid/environ, generic_access_phys() is called to access the region,
+> which triggers a PAN permission-check fault and causes a kernel access
+> fault.
+> 
+> The root cause is that generic_access_phys() passes a user pte to
+> ioremap_prot(), the user pte sets PTE_USER and PTE_NG bits.  Consequently,
+> any subsequent kernel-mode access to the remapped address raises a fault.
+> 
+> To fix it, similar to ioremap_prot() in x86, use _PAGE_KERNEL as template,
+> and update PTE_WRITE and PTE_ATTRINDX according to the pgprot argument.
+> 
+> Fixes: 893dea9ccd08 ("arm64: Add HAVE_IOREMAP_PROT support")
+> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> ---
+>  arch/arm64/mm/ioremap.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/arm64/mm/ioremap.c b/arch/arm64/mm/ioremap.c
+> index 10e246f11271..78a63a14465f 100644
+> --- a/arch/arm64/mm/ioremap.c
+> +++ b/arch/arm64/mm/ioremap.c
+> @@ -18,6 +18,7 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+>  			   pgprot_t pgprot)
+>  {
+>  	unsigned long last_addr = phys_addr + size - 1;
+> +	unsigned long new_pgprot_val;
+>  
+>  	/* Don't allow outside PHYS_MASK */
+>  	if (last_addr & ~PHYS_MASK)
+> @@ -27,6 +28,11 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+>  	if (WARN_ON(pfn_is_map_memory(__phys_to_pfn(phys_addr))))
+>  		return NULL;
+>  
+> +	new_pgprot_val = _PAGE_KERNEL & ~(PTE_WRITE | PTE_ATTRINDX_MASK);
+> +	new_pgprot_val |= (pgprot_val(pgprot) & PTE_WRITE)
+> +				| (pgprot_val(pgprot) & PTE_ATTRINDX_MASK);
+> +	pgprot = __pgprot(new_pgprot_val);
+> +
+>  	/*
+>  	 * If a hook is registered (e.g. for confidential computing
+>  	 * purposes), call that now and barf if it fails.
 
-> On Thu, Jan 22, 2026 at 11:41:24PM +0100, David Hildenbrand (Red Hat) wrote:
-> > 
-> > Right, but I don't want any other OOT kernel module to be able to make use
-> > of add_memory_driver_managed() to do arbitrary things, because we don't know
-> > if it's really user space setting the policy for that memory then.
-> >   
-> 
-> Ah, this was lost on me.
-> 
-> > So either restrict add_memory_driver_managed() to kmem+virtio_mem
-> > completely, or add another variant that will be kmem-only (or however that
-> > dax/cxl module is called).  
-> 
-> unclear to me how to restrict a function to specific drivers, but i can
-> add add_and_online_memory_driver_managed() trivially so no big issue.
+generic_access_phys() is really weird - it takes the user PTE attributes
+and passes them to the kernel ioremap_prot(), hoping for the best. My
+immediate thought was to fix this in the core code. However, we also
+need to preserve the original memory type from vma->vm_page_prot and I
+don't think we have any generic macros to just preserve the attributes
+but with kernel permissions (pte_mkkernel?).
 
-Is EXPORT_SYMBOL_GPL_FOR_MODULE() enough?
-
-> 
-> You'd be ok with with this?
-> 
-> add_and_online_memory_driver_managed(..., online_type) {
->    ... existing add_memory_driver_managed() code ...
-> }
-> 
-> add_memory_driver_managed(...) {
->    add_and_online_memory_driver_managed(..., mhp_get_default_policy());
-> }
-
-> 
-> ~Gregory
-> 
-
+-- 
+Catalin
 
