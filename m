@@ -4,120 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF569D778AB
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 18:15:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D02CD7789C
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 18:17:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D5A76B052D; Fri, 23 Jan 2026 13:15:52 -0500 (EST)
+	id 9E7346B052E; Fri, 23 Jan 2026 13:17:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ADE56B052E; Fri, 23 Jan 2026 13:15:52 -0500 (EST)
+	id 991A56B0530; Fri, 23 Jan 2026 13:17:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF1D56B052F; Fri, 23 Jan 2026 13:15:51 -0500 (EST)
+	id 875CA6B0531; Fri, 23 Jan 2026 13:17:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DCA4D6B052D
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 13:15:51 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81E09D3525
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 18:15:51 +0000 (UTC)
-X-FDA: 84364032102.04.696A174
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A7166180009
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 18:15:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MpC3AVM7;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf06.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7175C6B052E
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 13:17:53 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 306D5B6612
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 18:17:53 +0000 (UTC)
+X-FDA: 84364037226.14.FF6BA42
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1C3A540016
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 18:17:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MxarTmbn;
+	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769192149;
+	s=arc-20220608; t=1769192271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I2nG00qw2ruBawht6GJzw6X6qOS/2LLsPM2l8lgx1yM=;
-	b=49YgdW+8hNgTM6gBdUgjvyY8mkhqBeX9xVIhz06KMV8Wtv2LjdcwQBf4FCcpQIjqo6r0I6
-	DC7LwekDIb7VAjQ8v4Y7AZjvD31BK7CsES/gQ5dqMP7ax2aqYrzaLT/xuu9ama6xscbuOr
-	IhKz7sX66xOAjTf5a9OLxWdTJMMMMYg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769192149; a=rsa-sha256;
-	cv=pass;
-	b=gAJdBaqw6Sbactj29EP5jezqMICb37QHoeNWHU5kq/zFf4Au5PCLqH4mM35rdZPu1HyZDc
-	Y7n65mHjyysg78pYgTYXkKuFS/1WS6pzn09XJLmia0gAtCAAiQB53amHxYaTEpQ09/540u
-	oSG3OYkM0+i7wN79ctHkErCa4GjG22w=
+	bh=8Njop685CDtDYAHuiepzZeOimPgVGEih4T1bD9GMBYQ=;
+	b=Vws+4W0UOTzUjMkSy1PEveuOy/837Aiq86AYWi0wX6mnbFwIjXcxdsyFtieYpD0Lm9u1mT
+	RtU6WupVeji3jWdDl48OLFS4n2XjqzTfyMlkz5Xtblr6L8PfE6NIZ1KhUBXcoWpecMkj3a
+	huEzm6i8KoaxKsBXPTJPPssx4UJPXg8=
 ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MpC3AVM7;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf06.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4327790c4e9so1618599f8f.2
-        for <linux-mm@kvack.org>; Fri, 23 Jan 2026 10:15:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769192148; cv=none;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MxarTmbn;
+	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769192271; a=rsa-sha256;
+	cv=pass;
+	b=igJknTUGehgLXRHyaqDPlMLSOB3te3Q8IYzWw4T+IsE/rRlxuLRge5clvDP0NbKicR47qX
+	p5D4vaULycj9SOsJ5TBNGkK33Jzes9cD+oY5T8lstikZp0qCu+cOWS0tzB6eSXgQjyzZ3b
+	6kKYGNNZVznHyEXJvPsBtmN1o+IIeGA=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47edd6111b4so29392815e9.1
+        for <linux-mm@kvack.org>; Fri, 23 Jan 2026 10:17:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769192270; cv=none;
         d=google.com; s=arc-20240605;
-        b=FQEbJkAs5DybYLaEoPK5IVaZDOeRzhzKGLxWzxQjXB0a6pXCkpeX0CUz8SoJNaAAxB
-         2fKkcPZorWkmP4v8pIbtXCfr04WS0Uzv6P78Aat9Zv4q9/r4tbnrJOL9mptGvRoXu0R3
-         KHsPRdXF8RLNa0bTLiWsDjUW/w/FyaKSVSDuZxrqG2jdERWWmPW4KKwd+gV2FWYDrfoI
-         poxkfI7or8WYR5D3aReV0zQHb0aTKOAuSCDc24KSgh+Dyx3gvO+zJP7VqaYRevloS6IC
-         R0KowIb47ImHGWjY5r0snxHVJ5d6BjsUeCS8J1AZ4F9SIFQl/vzyoEyG0/9ymtxRoUQz
-         U5mg==
+        b=bUHeI4eOXINSEkYRp/xrd+tmCualAC494lA5K4gd0nCI2GnifTyde4FUjLyO231d5+
+         Voqj1PDVhqMP1CQ1LgEWquMbtFTqWzP6krv1sROsTEv6Po9jrMVGWemRykcmbo7LH8Zv
+         0X82jPM1vH7NG6CaP/5OuXQ/C27+f6oazminooDceYFh43rjkb2hbHIGu7PfvCw5VVru
+         1Fq/zz1CvW+Stx0SdJqtflvc5jTpCPTxH4WyuCLN+nre9JvEuq9HJUiC5tes11mKlcDm
+         Gr+g1fembVH7PRVIGeINqzEZBGy7JKh++4W6KOsybOu0UDMeIxFiz2ZsGQWN3tPWqGWv
+         MZtg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=I2nG00qw2ruBawht6GJzw6X6qOS/2LLsPM2l8lgx1yM=;
-        fh=jgibI6IzrYBMB8q9uaRjUaeKWBd1xHEXoqCcOUKc2ss=;
-        b=IeF177BXTBgxy2WPMcQ5aejyklZ2P2X4lPmseDnP0Swccegn6FwsOGVIIRQVp0d2sB
-         mYYiTSVvFkMe+MoGfHfGlGqrH2NJCCphXd4WAEOKxWuWNFC9jfyNv0cQ0jbzp65FE/7m
-         jpzxgOXiLOD4Z5kstT57MepmLc4Xfd+hX9DSfgT168n2MxNMno31FVE93CqTz9cbFKwM
-         J2U317HHlD2SWlepOpmE5EsIkeTGijf+YQfIzzS+zpmafeEt9wEONrPpqVSvwLJIWyzw
-         GGk6jFKzWEJr4jKbSjIIRZOIziiEXIQqyh+eQfvOEVCuOuOMljXeWoFWmYj8S9qBgh7S
-         Aq5g==;
+        bh=8Njop685CDtDYAHuiepzZeOimPgVGEih4T1bD9GMBYQ=;
+        fh=cd2MIP7ELmZz4rDfhxgqR72SQhvh+eccviZJ5UOoz8E=;
+        b=AhLckVPBRMvnhrrcXfSpbnCvMVLoVUvrKpahJkeUun2462qsmr26jtUtHPIJJY0HBQ
+         fqqRXd9WumYmkgThUpXarEnvOQzF7wE2Lyq9eLFOK2o4fc0gzXk+IUkrUif/cHFnAY7C
+         rNrSvXH7TsyMvxABv/71CGRVo72Ss4vNadUsUDvn5m/S6IbSS+I31xY8HRLEVorKyRe2
+         GljwtFKfUb/WCzUk79t3qLOeUQNtzpO0/q2NHyzG3643y/Bf7+AA9x6o4UmwXl8o5rQD
+         mpD8d9jS0nJRmrGOXiEXpFTSPyHBChR+KrFmHN+IfyjOyXrs1wXr1yGZPAwWLCK5Fqlw
+         RP4Q==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769192148; x=1769796948; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769192270; x=1769797070; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I2nG00qw2ruBawht6GJzw6X6qOS/2LLsPM2l8lgx1yM=;
-        b=MpC3AVM7jL8LyMj/pNMhlUII+lpL2ISxAcH6k/omxVTVnkA22kfhkQ7/4v/wMd76ic
-         jTXvVo5cyVSa5UDXHwXXl4OjSvHAZGtrIycfhCkvOIL6pzM3yx6dm2zGdddhlBlAlZaX
-         oLxdQ1nD14/qV0tm1OIfMDCBTuKPwgudJ0DkqW6OitJYpybW4iEzHKc9iENXltdkgQUx
-         1bJJO7UxlhKCrTA44v+xnoDBRnAMNFJwgov1xKTcyufUWisNxo/pglLWEWDL9cMQ4bRw
-         v4ZuCNKVTlOMJ0dEBsiuoANCeVt/Y/BjhzpRDCRRCW1XaafyQAypn0GUB8xdgyfecdDX
-         awXA==
+        bh=8Njop685CDtDYAHuiepzZeOimPgVGEih4T1bD9GMBYQ=;
+        b=MxarTmbnEVEoqwOxJpB8r+8uA749Hu/5DCBHlAQUj3HnjNeV5e6ziWpus/WNEKen//
+         yCgYYpRByXBYBUN/CFl718E7FC9T7IGUFxBPAK8OCihmGhvYIfEB3VtSw8En2+tq75I0
+         8rCNXa71VCXHwrvyuU02G7NyBNGhsDwByAZC0JWgf7ortVL5r7ZK45E/d/Za393X/mT/
+         9CKQYpp1Ae6HafVTBrGvxrbqJ48RttV21RbI/Z/VbARGZ3WEALPFwvHeGwMv5vj1gb0e
+         3WyPmWUITlHoZm3XoL+8K6LiTXm2N1Cm+fJrBe8sZklcoB2e6MtBVc2C75ZfCGmJ6bw/
+         5eFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769192148; x=1769796948;
+        d=1e100.net; s=20230601; t=1769192270; x=1769797070;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=I2nG00qw2ruBawht6GJzw6X6qOS/2LLsPM2l8lgx1yM=;
-        b=mIAX2iDYoPfkAYRf5oB/60RqDP3eSeIhOc1rtRNVj+kTpe0Aci59nPVeiWRqgd4z6i
-         1g6y8dtCddwVqIltofmDyj536ewG+PIEJzwxI6+ct8eu6hZrQU/sToy4pyK2TL6D8J0O
-         0r3XHYKoPJ0ol8hVUBu0vRMjEY1Yu2gC1VspbsVwtddYN6YgorLznImoCU3yku9y0JTQ
-         7CNgYytEyHa2Uw1i1+SLI6gisRROu8uwYYbsYIuThzjshCrundXylmfMZWd26VIRh0Sl
-         Zl89tFXETubnZtRMYgjTQC8hPX9gzQgGLNPbcvOx1ynMKxul6D/W21RjP/qGtrRiz69J
-         pXDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUi7o9LmB1b/QPAEkX5d7hLyUifeg4Sj6Vdp3u96oTloKE9VXsHdhHZS1DnsN1YZSR/T3NHdg9FTg==@kvack.org
-X-Gm-Message-State: AOJu0YwS6aYMdvmtDnH21zbjT6CouEL6k/Keb0MsimwvNUK5m5O3lbeY
-	6brwmFCIrqQGc7HHXH4VsHWJJ6Ku8qDY1kx2hZLL8OsDS4Er6OMtxSHkexG60m8PuRuO0ljYjlz
-	OiqreoYiXUNVQZStABb+qtKm3QUiDFxQ=
-X-Gm-Gg: AZuq6aK/phVbwLpyRpdkQPga1ZUL6IhN0LYVgH8eiY5exmANmCuQ0Vouoj3N0WPMgUf
-	6mei64stXhM/qe68oh3p5PnmoNw/rPjW9IkdM0TRm3eyfVJR3fjsD9JqfyT8qYlpx64a4VBdrrJ
-	sHdVtevAUCGhAlTJ3emT+PHpWp0UgU/Wacz+cLhVuOJRWU0JEHiZJN3XgJvOSCixvfYYLfCYBrw
-	PRwJCRBTiF04JjdGwKqxf3entFTI5X1MntUhu6p+s0PL8VROCADJbtBWVYhfaIM3L3cVOU6PEq5
-	3NzlsAPbxpT/1QL5uR4TJoqoROMDU9u4oJCliKwb2FNTYQMhruDKx6GCes6k+RKrofJ7IPme
-X-Received: by 2002:a05:6000:607:b0:435:8f88:7226 with SMTP id
- ffacd0b85a97d-435b15fb134mr7443178f8f.40.1769192147696; Fri, 23 Jan 2026
- 10:15:47 -0800 (PST)
+        bh=8Njop685CDtDYAHuiepzZeOimPgVGEih4T1bD9GMBYQ=;
+        b=PfSnlYPqk0wUJgixFaRtWLmfOIODB3kshxIsWU6M/v6tpv+dZdTzyP2vlJrf/ESrT5
+         o+1XtpTfYykN/eaj5llV19jnA94jWNmcCWRDC3Pv2vv/cxWgz8v/cDz3b7hKXOd4pdDK
+         0gpTEp3iZd+MkEmo4sCvFtSL6+Ln8ZjqUvP1gQdXKSECpmFxsKQrt/X3PiGyTlYes6Pp
+         254tyXpDoFy4yweVQ8nD6JVM0gERbHZsiil8JD7dhIPFlzdWczLpmh81Nn5Hyqiyv10p
+         eRFpmBER7SYs1/SSKPGORnhs/Tf8UPvHVp5mu7q670Q8eq0uitrAkVfPJF/lVL3YKQ9S
+         qoUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVbnpZnkVICNnDlftul+740DEArjq2NhnkGBLlyjc9uMZLgGfH/rQ1jrVg5lptX9l0Xd+SO2OGSg==@kvack.org
+X-Gm-Message-State: AOJu0Yx0KctZRh3qks56lnFjiW3Ca96esnLakis3Zft9k09W1+P5AhEO
+	NbGbViXLtPGwG2GZelEcMucVEmibiwWjp3MgTMKfdkg2QA6lX0ydHGNQS8oFRWjPXtTruw77/Zr
+	0EsSPSn3Y64+ULWJhBxChYfFfDur6Lsg=
+X-Gm-Gg: AZuq6aJSRIiTL1J+vEzXjiac4WUXKhi+RJXFzIet3yANep48nvlNz65H2LbrH0zQdcs
+	hjIF7VHascBJQy9pgh/PKFFie723c5HlgxenQ99b6mIaC8kuVgxoadeTpGRFWbNZy1msSxxZX21
+	UGkRF3c9Gx8QgnVFtYwKtWunnjAoYow7XuZfs+09VWl756cbF1Bo0MH9/dsGIdeH3WoCibtrpxr
+	c/3QQcvtuf2kYUBczI/lz3Tv7RT9tx4zDX0PTBpGEnug9fiGMXfdxlon4kMEEEk2ls5YuDgrdhy
+	470qNNFkUXI/Whki62dpm7VpxVgXxjQ3vvGcWOd9ZnWn0kWA9Po7zNsjxNyy9eQ4JHPz+mP6
+X-Received: by 2002:a05:6000:2dc8:b0:435:a83e:88e with SMTP id
+ ffacd0b85a97d-435b1587c9bmr6392632f8f.2.1769192269543; Fri, 23 Jan 2026
+ 10:17:49 -0800 (PST)
 MIME-Version: 1.0
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz> <20260123-sheaves-for-all-v4-13-041323d506f7@suse.cz>
-In-Reply-To: <20260123-sheaves-for-all-v4-13-041323d506f7@suse.cz>
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz> <20260123-sheaves-for-all-v4-11-041323d506f7@suse.cz>
+In-Reply-To: <20260123-sheaves-for-all-v4-11-041323d506f7@suse.cz>
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 23 Jan 2026 10:15:35 -0800
-X-Gm-Features: AZwV_QjgW82i1crlpndwrb8M8pt69fP2CoWaYroMilL8QIj30Jgt-nfZQ9Vffac
-Message-ID: <CAADnVQLEupQB3O1RzFAPoVvg-frojmjFQhisAUcxTJOmkz02nw@mail.gmail.com>
-Subject: Re: [PATCH v4 13/22] slab: remove the do_slab_free() fastpath
+Date: Fri, 23 Jan 2026 10:17:37 -0800
+X-Gm-Features: AZwV_QhM-NYlnccFIjcj9RRt6cZ2UOQ2HcV0ateutcQQrobA-XAbfYILlKDwm8s
+Message-ID: <CAADnVQKbuLD=gaC1W9gtXrj9VdwQCqt2f_rtYwF1Tc1RcUOjKg@mail.gmail.com>
+Subject: Re: [PATCH v4 11/22] slab: remove cpu (partial) slabs usage from
+ allocation paths
 To: Vlastimil Babka <vbabka@suse.cz>
 Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
 	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
@@ -130,14 +131,14 @@ Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
 	kasan-dev <kasan-dev@googlegroups.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A7166180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qu1cwb7mz67qmgzu8gyg3pyug66spj7g
-X-HE-Tag: 1769192149-900549
-X-HE-Meta: U2FsdGVkX1+Tw4rzfJqLE0FIQCsE6Nk7cBaXvBeWVWqRuV85yqsD5Xp5AGjnikUiUrW2xE6ah5N0+gD9ai+AbmSkUMFXhqtKrhAok64ABtr2acYlOkQ8v5jWNe/lY7bFeKgZ9pFkZGzJAh9GIf+IlcDqWqwPf3CaR7CN2F+fR39vGUBMl+hPAf9COPyYAREY/WC6QkPuZO3pxoUOGvf9WmE8hOn+zps4OAEtZXfPhRX9OZ196z4dhzm7Or59xSzPojQADLo8YL5vRQSnbYrAN424jsBJ/jqzBa0WjD/DzaEhJND14yFihgzpWpzzQBdKERrlrx029Jw5hBkNYCjuWX+eJLT4oEq6JGSoDFEDMACWHeUzTJdC2u/LmCLYNWLomCkfO9FAzqK42SIPEYieA6CAQVgju3WDpKs1s0/p255ZPQ3vr6dg+x2O1V89TV9lXCCxus2q2oFV4Nydj/xU2hyzixusf/MGBrQTnUURDagZZf5oVcfqTMTVkEN/OmPp6EhHc7kf4+ETc9gm83Mk0BqqaxKioVZ2TZgV96/3IHZgs+RDVfBCXuLTMN1hf+oaNELSGPs9Nc1079aiVYGPMwprXmHDhsd349Z1B9pN4BVVOC9aOJR6pVhEhlRRY5QsV0usqj4HqGFjuAUH0gDjxCxQ7jmP5Cj/7O5CjqnVcHB+QFAQDZ5jtCnKgyBFGahACYGM5i0f5dTyGzaTnUEfiu1p5ZigcouHYtE4B1MEH69ytFeQveQIHowdRJNtcpWQXJe+zNMlpkWyIOd39c0ik72ZBml2LKlZ55JOpK645ELqtOBcaMAHcinGUPjEW1X21JRVTSgI3Y1o/4jJOcfufKYfzNN00Z4hIJTsYqNwgcM1P3mu00wmiyK0QKykgm2WdfWLeVT+vQCkzJByUBc2idexCcMoEsS4wOYtTJj0vjcKeVvA8gXaxzSIgWdeOp4vc+pRuo8CES0CTeBgPj8
- 6IntBZh7
- e+BLGak11/lHqP7tX3p9xZfwWagJxxMIRA48DRZmkbPpLtnfyR+rd6U4MKanR/7p+XTOaKPveM1qu8ncrHb9661Nw3f8ElwIEZWxR8gho42wDLGYBAcOftKtRllavSW5rXkzQuy/mdRNUdig=
+X-Rspamd-Queue-Id: 1C3A540016
+X-Rspamd-Server: rspam07
+X-Stat-Signature: xjwk5uqt3oe55bgwsocaz4tcap68qtoe
+X-HE-Tag: 1769192270-29295
+X-HE-Meta: U2FsdGVkX1/F2W1ql1c2aveYXnZWRQaqd16uYpprt2m59p0dl0i+BMtDbegP1NQoK+pg/bGw3uIWEkDJkUpIAcN/gO0G6iHUd+DVz18S23HuBNbIZAiKXFjoHq0QEIAF4giabGWz2ERr4LGABinmvHlmuBnvfOVIW1mU9pffS8UNULF6BG2Cer++HxKH7bXqA1XgKTc1vNjwuor8hEKBLaZ0Nhn+NmpXZVQbigTmFLsvMicyFsCO/sB5tC6qcS0zOgLb4MCN+XEqgvaUCeO/OOCVxx/TT0vJDSGJaY0Lzsp8PpUZ4kuZ/G5p8GzSNFTDOLcQAAnZ7dMMe8NHG29J8MdmLSSbf56y8VKGT8enPp9b8xSAVZIoLv+nLn/SL5A0VyQwOXtHsrP9n5z5Gf0Om0p2KJhA31bmt6Qj6a0QYb2UyYI/ehYYKiePjwxYyrjMbQfHmaWH+ammTABcTFAytrsBtulqN0tkKNjsr15x73OyiUIwYiFynxyZ0KAGx0zdBxewztjRSNqidCC/VQjOkVnNJlr2pVnen1SCE4MA/sDleqAC0Xi674pqU4+g/9ojorxS4Zjyv1iwiDR1mO+PwU4PqG5x+xUbYw3sLpYBws6syatFo82U0nV/1/p10wA1vxcHXGqpeybVJhiU3r1lSNX/R7wLkQZfCC5JmvOMjApAPczLgFfpY0EQkcdRoT3hf6PrYAJACslTboYVksSmqE6chMunyb2C8M2K8VuACysoTRjqEMqPSEMtVloLzkLQl4O2H1ecnAK3R8xbgUDfZoe66AnP4hqNK85AZ1kRgjGv4isMlaUPo+w7lkhajMIqdKhcP9lVQU6HIlWQAr48y7zrHzpxWkpv3EOgSOS8BTuSJLZHCJPHnOiSPuBiiQ+MGSizMnpbaeQiRO6yAoTwO/asxaS/8/yPNlQ1bryhJAgW+/y/z4p57Ifxcq+nWATkCL8GjQnoHOnCdZWysJ9
+ 74wWqYBn
+ p+EiU2JpvTywCf8q44nag60dSIzVFfhRhTkfkE1jMIoTBQa+sd4oysQV+ATA0lt8796K9q1Q0HACoVnkvmoozW0mXtt1/xzEB6AYvstM/VEazu1VazJTyoKxMhecsnvOTmn7Fy2O3aVFf3w/hS1yNNFvq90EfziP3Etx988yKEWrdFbzzzqZZMfol8m0Zn5OcZFQIKcOYfMiHrWvy7SzvKVpVkss/LFaGWVxtZGYl4oo94ZSlxkPUkcFdbcHdkk+VCLfDkuvZ4MRdlGEWn7QfbZ0O/zkkQflNNyqSJw490dR93P8x4IKh4y3F8h1ypkcmpI8+d7OjdZoG/l5aFjeYWsQGaGc/cu4UviWEtz4NLZVidobqA8H3nYDId+iag2Sfw/nMPLUr8yKK2aNVmMuH91uDvQ8SKBdiMbBUhXa4Zm6MLXeBuC9mUOBkpIrsjjmTtT0XvEk/OCl842PXIoZW78w3fxBq/XzYAY3vEkxU7AfXpU+u8l66pIcs5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,47 +147,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 10:53=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> w=
+On Thu, Jan 22, 2026 at 10:54=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> w=
 rote:
 >
-> We have removed cpu slab usage from allocation paths. Now remove
-> do_slab_free() which was freeing objects to the cpu slab when
-> the object belonged to it. Instead call __slab_free() directly,
-> which was previously the fallback.
+> We now rely on sheaves as the percpu caching layer and can refill them
+> directly from partial or newly allocated slabs. Start removing the cpu
+> (partial) slabs code, first from allocation paths.
 >
-> This simplifies kfree_nolock() - when freeing to percpu sheaf
-> fails, we can call defer_free() directly.
+> This means that any allocation not satisfied from percpu sheaves will
+> end up in ___slab_alloc(), where we remove the usage of cpu (partial)
+> slabs, so it will only perform get_partial() or new_slab(). In the
+> latter case we reuse alloc_from_new_slab() (when we don't use
+> the debug/tiny alloc_single_from_new_slab() variant).
 >
-> Also remove functions that became unused.
+> In get_partial_node() we used to return a slab for freezing as the cpu
+> slab and to refill the partial slab. Now we only want to return a single
+> object and leave the slab on the list (unless it became full). We can't
+> simply reuse alloc_single_from_partial() as that assumes freeing uses
+> free_to_partial_list(). Instead we need to use __slab_update_freelist()
+> to work properly against a racing __slab_free().
+>
+> To reflect the new purpose of get_partial() functions, rename them to
+> get_from_partial(), get_from_partial_node(), and get_from_any_partial().
+>
+> The rest of the changes is removing functions that no longer have any
+> callers.
 >
 > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 > Reviewed-by: Hao Li <hao.li@linux.dev>
 > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+>  mm/slub.c | 628 +++++++++-----------------------------------------------=
+------
+>  1 file changed, 87 insertions(+), 541 deletions(-)
 
-...
-
-> @@ -6557,7 +6429,12 @@ void kfree_nolock(const void *object)
->                         return;
->         }
->
-> -       do_slab_free(s, slab, x, x, 0, _RET_IP_);
-> +       /*
-> +        * __slab_free() can locklessly cmpxchg16 into a slab, but then i=
-t might
-> +        * need to take spin_lock for further processing.
-> +        * Avoid the complexity and simply add to a deferred list.
-> +        */
-> +       defer_free(s, x);
-
-We'll re-benchmark this when it lands.
-The current defer_free() path due to slab !=3D c->slab is causing
-spikes in some of the workloads.
-I think with sheaves
-slab_nid(slab) =3D=3D numa_mem_id() -> free_to_pcs()
-path should be exercised a lot more often and fall back to defer_free()
-should be rare.
-Just leaving a mental note.
+so much simpler. love the red diff.
 
 Acked-by: Alexei Starovoitov <ast@kernel.org>
 
