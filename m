@@ -4,95 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E9BFD778B1
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 01:21:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE36D778B1
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 01:40:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C92276B0575; Fri, 23 Jan 2026 20:21:46 -0500 (EST)
+	id 3ABEF6B0577; Fri, 23 Jan 2026 20:40:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5F986B0576; Fri, 23 Jan 2026 20:21:46 -0500 (EST)
+	id 37A3C6B0578; Fri, 23 Jan 2026 20:40:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B80356B0577; Fri, 23 Jan 2026 20:21:46 -0500 (EST)
+	id 2A3176B0579; Fri, 23 Jan 2026 20:40:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A93976B0575
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:21:46 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72D771601A4
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 01:21:46 +0000 (UTC)
-X-FDA: 84365105412.30.8F2358E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8A5D8180009
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 01:21:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=igSrjhCO;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 153616B0577
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:40:59 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 63C561363F6
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:55:49 +0000 (UTC)
+X-FDA: 84364435218.05.A0F9108
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id F23BAA0009
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:55:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sS06KUKX;
+	spf=pass (imf15.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769217704;
+	s=arc-20220608; t=1769201748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dpCxV+RRWIvlr5NP30NBERy12MavEkaOfOLkpLkKCVw=;
-	b=pIKI4R0gjd4nHBpGlRwK04yX+JVhieHvGteNBSR+itmEbbGBj17b0Ss0rMupQlW6anQR2x
-	DmXGHVCePwtM01tJ74BFGddn3ug8VkFHXoSLBQKGkiB7KAx5OEi6Tp2BmS8KcHmWO9QrgT
-	Y00/egvq3T0phcCFRVndv5pwq2YcHnw=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tGvbj+I0xSfb+Rbo7fH7Df3pTt2BvVPmdjfavW0Oxsg=;
+	b=bGtPq7cHxRaAtPCfB4itJOxkfqMyqBJgqagnqX3xHobV/OTazj4zSkAI03RRYUWjmcPKiN
+	rDiks7W8UzE2dwTwcFWuUBDZFw/XVGAmK1s7vdraLLVUo1IBgQv26wZ+ulOd2FlpsLwVxM
+	ydJqf5AeRrDcmmO/3ExBIL5F49l4aEs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=igSrjhCO;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769217704; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sS06KUKX;
+	spf=pass (imf15.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769201748; a=rsa-sha256;
 	cv=none;
-	b=Txx/DBqrgfSi0ATQsnGn6BvGowH9dNSZI/9GbWTAlwSRZMq7U3bE0SZd6Hrf+gTmpEiAlX
-	n9gOCMzcYfVFym82JfDdVgh5mX+eiI9Z60M9gCJoGNmdsxh00FSsw1bXsGnExNvJmAK0PG
-	AnIAkX7GGmZAk4KYISF6GnfL1QHRBhk=
+	b=yeuROUpeKaKKf+T4LGgBbxfGIhd12BOjgE4B8c92TImTJ5CWOF+i011SlBd4tpx+5r3Mtu
+	tfjhwQ6/n5zbaWqLkkKGaOZ1F+x5QYoZE5y3g/IGu5tCtQIh+ZVtx+oeRPF+Rk2VofyaSv
+	HIq2aQqlQhe9zmJC5rdRoEdwkpX8WQo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A2B543E3B;
-	Sat, 24 Jan 2026 01:21:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7907C4CEF1;
-	Sat, 24 Jan 2026 01:21:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769217703;
-	bh=00WbMUzAQnN9I1jPeJC3yMlN67r8CEu8MJSgu37GGo4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=igSrjhCOt1C3ikvNK04MoxSamznh/YF7Ie010d2C03CG6lgk8Q05RVTMEPRA0Oov9
-	 clbV9O2XJiVuyt9Qpe6/2+s2l4ZDh2O8ynNGcdTbtIe1pIC6oFpIye1Nh29O874DGZ
-	 8kW5qmzywKEvjm4Qk2Qp0f3UhmGueNRJ2re/7UEU=
-Date: Fri, 23 Jan 2026 17:21:42 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Garg, Shivank" <shivankg@amd.com>
-Cc: Dev Jain <dev.jain@arm.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Wei Yang <richard.weiyang@gmail.com>, Anshuman Khandual
- <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V3 5/5] mm/khugepaged: make khugepaged_collapse_control
- static
-Message-Id: <20260123172142.4bcdee865bc768d5c70b6a50@linux-foundation.org>
-In-Reply-To: <ba4502f7-0c35-460e-a42c-d32dea9ab9eb@amd.com>
-References: <20260118192253.9263-4-shivankg@amd.com>
-	<20260118192253.9263-14-shivankg@amd.com>
-	<6486c6dd-2702-4a4d-9662-09639532ce6f@arm.com>
-	<afc56f8f-0c22-4bac-a99b-b46df346334d@arm.com>
-	<ba4502f7-0c35-460e-a42c-d32dea9ab9eb@amd.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: rkn5bbnreb6dbknkpxgwcegwwyenwk6i
-X-Rspamd-Queue-Id: 8A5D8180009
+	by tor.source.kernel.org (Postfix) with ESMTP id 1F4DE600C4;
+	Fri, 23 Jan 2026 20:55:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADDEC4CEF1;
+	Fri, 23 Jan 2026 20:55:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769201746;
+	bh=MRLIJHMes6O1llUqkugm5ytuer8+s6cgNaGPzgrEq9U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sS06KUKX/sttv1aAZEgo7bIfPUpctd1CZk53JrmyNARckS9LWxwiw6f5LWLdiKDT2
+	 jGnctg2GFb/TSC6jQrGRXzCV3NTUzn6TwpeXv7Gy7unA5nMGP+JytGH7yeAg88tNxA
+	 myzW+r2amqWLf5l0udCOSqcWxEaQI9E+CmL/l5bxwGyY1qM9PBU8IWya0zRZz8vSxG
+	 AgNToFSwtjFcBuGGsfUqBH/CP8xEfS12OTieC9bsRGleFitlVQgjkxM7maBHgXs5Fs
+	 cvVLN8VBXWY2Eo8pXwkCfvFIHLMLqyG5yFLQVF0+/hcWFvCBO00Vya/6yXb6j1Jap3
+	 io3sPYa9DAcjQ==
+From: Dennis Zhou <dennis@kernel.org>
+To: Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Dennis Zhou <dennis@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH v3] percpu: add double free check to pcpu_free_area()
+Date: Fri, 23 Jan 2026 12:55:35 -0800
+Message-ID: <20260123205535.35267-1-dennis@kernel.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F23BAA0009
+X-Stat-Signature: 3x8otjfrt75i6eg1oy3wtsaqxz6hstyp
 X-Rspam-User: 
-X-HE-Tag: 1769217704-66838
-X-HE-Meta: U2FsdGVkX19DB7Mqzpraa7jtQ9SothXfU1uqIznEJpxn3/VP2BO6Y8dnCJbCgazV3innOJtN/zCKDjlXo/y4/264CcKWCqIASxGXIAHjnmGuOnQBjepiC6kbG84LnLChwd+/zcDVfnJpZb3bMKjmrPNShQPXmByLVTicBNdzHyCfcUNF7jjeF6yRQO74gt090mNAKrlHVI9ZucMr2LPrcFQ8aHGJPpB6YVFpKV7Vxfii6Tj8xdlz8N4HOQ0afzz3m55mkEuyuvSwR0jFoKDWNfdEDfLJUwK6B5reT/IfpF47wNzuG0H3ddGnkojdXke9BvfRUPk6AMV7Bn4g4e+5tmwkXRiwCZzKZXu6cd27R6nqnv5qKQmXHZa7m75e6Z+mJsXS/ZcJevs+0kQWf8RaGqtH4tHbozxAS0nawRieKPCxrEUOmaWSyNrhuCjGUD9lCMtDJMnsxSyL64VbhR/ZSOXv5TQx9616bltEWz66QTJm84hBwkk7k091zlz0o3uXI3XiBOehMFoXUKT7dF7P/VjWSkHhRuig676qkbWrU4CqXfAfftUVeokfLdsAaPVmRGjVRn9zAqXVM2MrJ4cTeImG7h6o5MTVY5ZjuF9lVs9VSctC6ouKQSzvZkh3UlfCWGUeuYceAhp1wlS7s0sbg0bHgWKZAbU/HhKK4tvIFgUZMcE8jqGyzXLkfNwoBExwMBw7HNhzedpzCTEwc5NIinahKUSv9oZwsrF08P5yQ9jQdNzHo5nFp9zY4e5NG5xvgfFs084v6ILwxZjKijSb+sTBjGqGxx1H+PnoQL9LXwUXSeuSTlWenN5VmRzULfZGLH6qhKM8J78U7Mj/kFoWyW1mZTX5H6OMKfHaSrkqgSgOLlZmm3KOSxU2et8OAvbdOQH3OH+ZnQaN8fSzKfiBKqpisHMQhhbWBpabB2E1bAZCxMb/hirO/cXmSG+l5xyWuyHY3mXCqcf3Daedxfl
- lxMl7EAC
- anNC+xqgIRwauOxn4IIbvkivNqqXoAVmLDTgXVPkWgUtEh3aI7+XC9vXFI+pdT4XY6FHenJymgHefTPfUmqfaA9icmBD3wXLrUZBe5MyBq15WFUjGTMrHl7Vvr5AOmHmWoVqL+wIbMvo32DNTeRsAImtuh2rNRzhC8aA26upc/O8RovPrWvhgxSKOeWiXXla91P8shuVtvLmT/O2AJU4jw7MrEipkGx1mjFWRjzQAUG5bp/f4U7hMOyU1sxZDON4+mVKnXuiD0O/iFRBXuLfPb1avqLbMBPLIOs72hSi1dE2NVN1ftjaGee5ogB+V+j2hwVVESG0sW3oIuVTNCRLgOXR3KMKPDkeALbeIsEalj325iq5tqU3OJ4wIruuIGl0HS8jTEd2v9j7TtPAQeMdpez4sowK4hdkL9VHUBL9eyBDknV20PhW7j7/M9IRbbYH13+n33n1zTraCK0ReM4LzK+vr9iRvqnwpmbXZ/fnJQaSnkJJl4OcbaZxlNf0aJJvP5GVaRdp51sSNUXTF8VMOij/C0CqzU6kA/hZMVWH6vhA5to1k9oLIMq2jjpgojGm45bWsppvryUcenwyhGpo37c0PCpGUAXmxBQ6jIfmnrI812d+jGgFkwrdnAi2Oo9yA0iD5/lIEG1GvAt6nfSo8ozkJWQ==
+X-HE-Tag: 1769201747-390624
+X-HE-Meta: U2FsdGVkX19gwTeJ5vsLI2xtX7IGYuaGBu6nCHGToSI5T8jKYcwPEIa8Iyy6HUKDYFJOOsplt5QfKiDoS6duSb+xCxb9K0sQnh7ePzyfwtaAXU5uviicYA/ePvy8/b+/aNWnWkA2Wlh35N1pR93fwvotryVw/y8cCv8cGaHrlvRwiSkUitZa4vAOzzp1y4BPUIqfGajByNK0ok/5KdMmdxzyAjXKkOu6dKTwTZiL2IdpH4k+07MvwO4WgSLeJjSlxA7vPhJn0oz4vo+SEN39WPwD+qlVFd8zz431aXxYn5SQ4NSjSII0IbyBtkEtKUuQWV06QvO7tJIf7l+iMy0UeB6sBTUj1RKXZLcFT0B5T0pn9TixnsXFX2j/HxcyH0fiweZKyi5L6YnpFHLa5X0ch025DHwfa1D2+gdxroqRgTVdtyr+/wJHTwBl26etv0woLmo1TZYqVks5L3kp9KAWVoh0FdhOi4uq0DXES78vNjWYSY6YZ6hYX3QFWP4q3kaeBV9HAFgaqGoxurOpgSAcWGIJ3VMeZnz5fDaHuxQSowxhdKONheGiBNU46I6q90MZrSxyxeXRMeV7c5G+fj49jQpTZ0UxAiyxjhnqJrCPDJoQFrVFZcYUwqN4hsLkjjL9uqBN1Z+jhdsSyA/Q1Hum870Ga3Htr1OKN9ionS5prjHmC2VcFoXx+a47jdGWc0JxP27H8u1DJeivVlfAzAso//KU13VRn6tzvVNfLnW3u3N2WpOxGqlwB1786+WGNOwSqZPNMw7dWsL7es/fG+oKLqkyht0ogkiL3JJvfYy5KtpcyYFXL5rwJi9uhJPm1gWgNt203D6QhbNroeJd9UxrJmEyhFpK6+GajrNRBd1vjzeSVfk04thboN0CoikBwhpG85QJbUb+udWTx02HA81IgEIzADTC6In8h5NylF9X7Q3q7/rElOndzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,100 +92,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 23 Jan 2026 15:03:58 +0530 "Garg, Shivank" <shivankg@amd.com> wrote:
+Percpu memory provides access via offsets into the percpu address space.
+Offsets are essentially fixed for the lifetime of a chunk and therefore
+require all users be good samaritans. If a user improperly handles the
+lifetime of the percpu object, it can result in corruption in a couple
+of ways:
+ - immediate double free - breaks percpu metadata accounting
+ - free after subsequent allocation
+    - corruption due to multiple owner problem (either prior owner still
+      writes or future allocation happens)
+    - potential for oops if the percpu pages are reclaimed as the
+      subsequent allocation isn't pinning the pages down
+    - can lead to page->private pointers pointing to freed chunks
 
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -829,10 +829,6 @@ static void khugepaged_alloc_sleep(void)
->  	remove_wait_queue(&khugepaged_wait, &wait);
->  }
->  
-> -static struct collapse_control khugepaged_collapse_control = {
-> -	.is_khugepaged = true,
-> -};
-> -
->  static bool hpage_collapse_scan_abort(int nid, struct collapse_control *cc)
->  {
->  	int i;
-> @@ -2629,13 +2625,16 @@ static void khugepaged_wait_work(void)
->  
->  static int khugepaged(void *none)
->  {
-> +	struct collapse_control cc = {
-> +		.is_khugepaged = true,
-> +	};
->  	struct mm_slot *slot;
->  
->  	set_freezable();
->  	set_user_nice(current, MAX_NICE);
->  
->  	while (!kthread_should_stop()) {
-> -		khugepaged_do_scan(&khugepaged_collapse_control);
-> +		khugepaged_do_scan(&cc);
->  		khugepaged_wait_work();
->  	}
->  
+Sebastian noticed that if this happens, none of the memory debugging
+facilities add additional information [2].
 
-lol, OK, I droppped $Subject and did this:
+This patch aims to catch invalid free scenarios within valid chunks. To
+better guard free_percpu(), we can either add a magic number or some
+tracking facility to the percpu subsystem in a separate patch.
 
-From: "Garg, Shivank" <shivankg@amd.com>
-Subject: mm/khugepaged: make khugepaged_collapse_control a local
-Date: Fri, 23 Jan 2026 15:03:58 +0530
+The invalid free check in pcpu_free_area() validates that the
+allocation’s starting bit is set in both alloc_map and bound_map. The
+alloc_map bit test ensures the area is allocated while the bound_map bit
+test checks we are freeing from the beginning of an allocation.  We
+choose not to check the validity of the offset as that is encoded in
+page->private being a valid chunk.
 
-Make this collapse_control instance local to the only function which uses
-it.
+pcpu_stats_area_dealloc() is moved later to only be on the happy path so
+stats are only updated on valid frees.
 
-Link: https://lkml.kernel.org/r/ba4502f7-0c35-460e-a42c-d32dea9ab9eb@amd.com
-Signed-off-by: Shivank Garg <shivankg@amd.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand (Red Hat) <david@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This is a respin of [1] adding the requested changes from me and
+Christoph.
+
+[1] https://lore.kernel.org/linux-mm/20250904143514.Yk6Ap-jy@linutronix.de/
+[2] https://lore.kernel.org/lkml/20260119074813.ecAFsGaT@linutronix.de/
+
+Signed-off-by: Dennis Zhou <dennis@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
+v3:
+- Removed bit_off in bounds check because it's derived from the address
+  passed in. If bit_off is bad, it's because we are getting a bad chunk
+  from page->private. Let's do a better check on chunk validity in a 
+  future patch probably behind a Kconfig.
+- Removed ratelimit in favor of WARN_ON_ONCE(1).
 
- mm/khugepaged.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ mm/percpu.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/mm/khugepaged.c~mm-khugepaged-make-khugepaged_collapse_control-a-local
-+++ a/mm/khugepaged.c
-@@ -827,10 +827,6 @@ static void khugepaged_alloc_sleep(void)
- 	remove_wait_queue(&khugepaged_wait, &wait);
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 81462ce5866e..a2107bdebf0b 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1279,12 +1279,16 @@ static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
+ 	int bit_off, bits, end, oslot, freed;
+ 
+ 	lockdep_assert_held(&pcpu_lock);
+-	pcpu_stats_area_dealloc(chunk);
+ 
+ 	oslot = pcpu_chunk_slot(chunk);
+ 
+ 	bit_off = off / PCPU_MIN_ALLOC_SIZE;
+ 
++	/* check invalid free */
++	if (!test_bit(bit_off, chunk->alloc_map) ||
++	    !test_bit(bit_off, chunk->bound_map))
++		return 0;
++
+ 	/* find end index */
+ 	end = find_next_bit(chunk->bound_map, pcpu_chunk_map_bits(chunk),
+ 			    bit_off + 1);
+@@ -1303,6 +1307,8 @@ static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
+ 
+ 	pcpu_chunk_relocate(chunk, oslot);
+ 
++	pcpu_stats_area_dealloc(chunk);
++
+ 	return freed;
  }
  
--struct collapse_control khugepaged_collapse_control = {
--	.is_khugepaged = true,
--};
--
- static bool hpage_collapse_scan_abort(int nid, struct collapse_control *cc)
- {
- 	int i;
-@@ -2618,13 +2614,16 @@ static void khugepaged_wait_work(void)
+@@ -2242,6 +2248,13 @@ void free_percpu(void __percpu *ptr)
  
- static int khugepaged(void *none)
- {
-+	struct collapse_control cc = {
-+		.is_khugepaged = true,
-+	};
- 	struct mm_slot *slot;
+ 	spin_lock_irqsave(&pcpu_lock, flags);
+ 	size = pcpu_free_area(chunk, off);
++	if (size == 0) {
++		spin_unlock_irqrestore(&pcpu_lock, flags);
++
++		/* invalid percpu free */
++		WARN_ON_ONCE(1);
++		return;
++	}
  
- 	set_freezable();
- 	set_user_nice(current, MAX_NICE);
+ 	pcpu_alloc_tag_free_hook(chunk, off, size);
  
- 	while (!kthread_should_stop()) {
--		khugepaged_do_scan(&khugepaged_collapse_control);
-+		khugepaged_do_scan(&cc);
- 		khugepaged_wait_work();
- 	}
- 
-_
+-- 
+2.43.0
 
 
