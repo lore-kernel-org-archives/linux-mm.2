@@ -4,89 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92AA3D72355
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:55:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D18A6D72355
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:56:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0339C6B0462; Fri, 23 Jan 2026 03:55:45 -0500 (EST)
+	id 48AF66B0464; Fri, 23 Jan 2026 03:56:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F20226B0464; Fri, 23 Jan 2026 03:55:44 -0500 (EST)
+	id 476D96B0466; Fri, 23 Jan 2026 03:56:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E50A36B0465; Fri, 23 Jan 2026 03:55:44 -0500 (EST)
+	id 376656B0467; Fri, 23 Jan 2026 03:56:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D212E6B0462
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:55:44 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97A7F58CA2
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:55:44 +0000 (UTC)
-X-FDA: 84362620608.28.FD9FF33
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 02ABD100003
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:55:42 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WoJ0nypq;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 216A76B0464
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:56:12 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA7A81AF9B6
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:56:11 +0000 (UTC)
+X-FDA: 84362621742.24.5E3134D
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A49664000E
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:56:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G2kxOYlq;
+	spf=pass (imf27.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769158543;
+	s=arc-20220608; t=1769158570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HPHstnKyauJbBsO6lryFaPd+v/fRclj9G8DTiqOAAcM=;
-	b=KCwUArB9GXHKs4ss/QmKlrhl7YE5w80VxBXbF80w1MvjrbS2+Wiw5i26dMa+z7D86/Y+dL
-	pmvT8x4EHu8BEVWUi+v65XjUzO7nmSFp/iKfMaLtfsbJx54XkcqZDK849amAB0gQstCrpS
-	NeMCx8U+XhSObBMRMD4gcVQGrmPPyL8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=VHVcltg7sXM9YHXZeqtOF/cnuVJD3lLW8h1Hwnn5+GY=;
+	b=QEPa3fmNHbQlU67b8QgT3GTon8qFpJowDdV8FIhl789e3YB/AnGlixMmcs5VxLK/x2eFlt
+	Ga8hRs1ZzKXyYdfc/NFuQvdXvCBC8Ba8OMZX4yiTcyMNpkBzysSxTyyP29CI6fRu/ncuBV
+	qGQlH3d5WTy8vdvzvlck9MwD4mLzEoA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WoJ0nypq;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769158543; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G2kxOYlq;
+	spf=pass (imf27.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769158570; a=rsa-sha256;
 	cv=none;
-	b=XV9tYvAD4IQkeiZYNY28y8Qw83m222K4+CmVhwGYUbwsoJq+k+h97X5vUoxdBkY/8fY2vN
-	SYQSgJIWR6kADrZsgqbzCER5XvxaWWcolY0YQRwNe0IiqTpOJNQ/SmzHQnAqw2Rc6y9rJJ
-	JerLPeSOWitTsg615JmKC/dhSgpPB+I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7542A600C3;
-	Fri, 23 Jan 2026 08:55:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51951C4CEF1;
-	Fri, 23 Jan 2026 08:55:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769158542;
-	bh=qipa/leqAcHIoHoVIyTRuSK7iSLnI0bYyPtkyQuKOwI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WoJ0nypqalaeViN45nqZS61DwLJvLaxS6Va7RYXhmCPffYKzA4qdEjCMvwy+oegw3
-	 aKfV7IBM1CmTPICv1FsvAfImMRMKEOCG5X7MpI/dePfmYI/JByz/LZYC0ZjrjP55Ao
-	 1SLnMSBL0Ke+sW43iPtgeIe6b9D4ydUSHzhKWjeaNBWdI0tlqCKYh3EUSBhdXc6j4g
-	 Syov6+OE4ubSQiSv1TfW/S9MSNsX9kLpZ7rHBdyf0+q1aYZRzbIOAAPe6UFwRdniIj
-	 QulhEZGmEzx4jlQmft7zPoZK+lQp6gZSh8Julc8gkPGTBfQXKSy2OVFVJHkJx/uMUy
-	 Jy70fsy4UJnYQ==
-Date: Fri, 23 Jan 2026 10:55:34 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: ranxiaokai627@163.com
-Cc: pratyush@kernel.org, surenb@google.com, akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com, kent.overstreet@linux.dev,
-	graf@amazon.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, ran.xiaokai@zte.com.cn,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND v3] kho: init alloc tags when restoring pages from
- reserved memory
-Message-ID: <aXM3hgqsCaleOh8p@kernel.org>
-References: <20260122132740.176468-1-ranxiaokai627@163.com>
+	b=bVJrfr+oVPdl0QXPRDpVN+t5HczyEZZIrl7d9U9VA3+fySzy8vICecdkRanLA4Y8SUUd+c
+	EJL8TUbWOuYJ12saKzaAXCJJfoJS/XCrSL5McEZjCZdnWCfGf+DhxbV/3qlKbcO1a2wwCJ
+	ZCCdpJKG05xMEQMSnZR+rytS8tJNZKQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769158567;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VHVcltg7sXM9YHXZeqtOF/cnuVJD3lLW8h1Hwnn5+GY=;
+	b=G2kxOYlqLgoZhYicZ+yBDSfHBa/FeyiUPBI2mNQdN/KDdkkrnSIWMbmXssiLjxP3072+gq
+	1tJMRXB8t8etMAMcHk02RXwGdhha8qLQtUSpG0Yhh5qZr82kxUKR9BPMqcf3joedpoAfsN
+	FXjD6PEeNuaFjwaUgHOvLtXUq20AiTA=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	mkoutny@suse.com,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	davem@davemloft.net,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [RFC PATCH bpf-next v3 00/12] mm: memcontrol: Add BPF hooks for memory controller
+Date: Fri, 23 Jan 2026 16:55:18 +0800
+Message-ID: <cover.1769157382.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122132740.176468-1-ranxiaokai627@163.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 02ABD100003
-X-Stat-Signature: 5416jsef3e8d7zxichz7nid5fsrd1c58
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ap4s1bg5dt4w1tct1fszjegj8wto1f8g
 X-Rspam-User: 
-X-HE-Tag: 1769158542-518986
-X-HE-Meta: U2FsdGVkX18R5c4fFMjOqBhNMfLoZg3r/85rxva5v3jLxsoCDFsUMyoruvMJLZSyQ/AV+z1oG8ksL3PMlx7sZUJWUXx1648VO3Tj1uyZNHx374SQYJzxNwFIAkXJk1WDlSt+9zOG46uINn1YL/RmDRwikCRY7vZjobMigpToObNniLD+2Y9hMDnlScaJZXu1lbxT2Azkx+gNIXi1kAbfhf0qivWpldRl17fz9NNbfVVNIF+T/fDD3/I2BuFOPl8YU387Z2LYnO/2w7EnpLFiUnZ/R+pzKqKW9iUVez7HetWZh0sJ4MuuaiRyPG7SkMlc/PDd7Nv4KsjGrFVT+9mxpuKRBhvNMMRKVuxQaa43KSjWTwoaWj1s4J3ltkv68ke6qFEjc+MQj/YTc4oDm1ReFvEBbT8sHDxE+0kHE5w7LeiUCt7AECIj16VpKUmwLz3qkbojtfGvaORte36QPnjpH3fIBONNRYKJk1T9yv8pihF88CIt0DfbuQCRmby8IA/EWonRABGvd37bqx+K9yfb4JCXlCoieQuzaRpuTYuIt16P3j/LvR3Imp2Al8sYG9FUSqOtAteFdeUQdvOjk2YpF6bXLnN/C0O6b/2Q59TTUWlElj+h7r/aCHMIMMgmgBp3hTiUgmV6YXcUyN71jffg067oeQV6JcVHnxJjAn0qVTXIy9LuleNbJ3KcIxQsOeyqg7dqfzBIVjeo00dcS95PrNgq3NLrifcW49g953R6rxo0MDxV0dCkDW9GshiHWbfF7ahe6aPHldi1APV3YKYv+jB+SOfk0/qb4xF/8p9CyOmP1VbdQh1As9Gc+F75n/qHQmzapb79wNPKBDRLCk9JQ1uPw1ZTdmZJdPVNCeO3y1Y9QN8PGLW0C29uw2Yg5sKlT3XFOLDGokFklP0BE93+7znWfDk7OxgC3THs0laCso1MOGAisiExBr3XlJEdD6cdH8RhVWs6Rm7Pgo24KGr
- 2Am5Guu2
- 1z3qARfu6irm98ayEo30nO8rfbteUrhpYa4Q8H5zNu/o/qO8JSR3nx3sIK1bz6LgwAC82yy+r1i/Smcel4PZMi/PAHODeIzVs1KX7ZU2EXHGoIufExp1QAGauwAeB3ldQNEq2CfI2ZuHWgVpFiztkzKCxdW4hgSVPAd1EpM0ZeO5jS358tzRQ84JfvzjwOc3vtrEfQjl5pguUyHEWuk8lPPZu4ggpgoRsH4j3C5U7VxVOeOPFFy7HJr2PbA+GHGrz1QYsTIfbuRgc+ZJOeF35XqhDXnub+xYz4YS6bg7DYWISz5a8ULKuDqnIpQOuPNLQqox6feSoAbZae5nHEpGJ17WIuuoOJiQ7vGZ4vB++9vy+f5I=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A49664000E
+X-HE-Tag: 1769158569-998673
+X-HE-Meta: U2FsdGVkX1+DDoae8vaqZ+3UiTQcGdYDMzNm+Kbh1YVDOpM/0F4ysQ9Vx2rUuIheohh9MYyZLdvGUI0DQKd3E0QE0gWjGbM0Qkol8fKmdDnnyX7fX+oEflMOmVZ5QBQorr33pW42ynMnA5Wv55HX38/L++EdlXhYNlwiqcW8qg03qOOGKnM6fs0TUbSDvbilPhSkaZnCLjpRwCfoN1HcbThRemn8FYMmRONF/T3qZt6MLweOerub7s+CbIF+oi8FFRJPHzx8U/HhiE0+U2fWS0YYUcUXGBpV6hoNRdTOggOi/jGGjPI4YtU62/MB2YtkEeb2h2nQMRYjd09Gzui4pkOVnoQCI4vSwwm1vDQUZoXuSIKnuuwdYB3cABvFwInVAZR0ZM+1Ejl4VQNHN3qy2knL4evznlCNzZTMEZqFW5EwLkvhsOPLbbrzjtPXGAgLKObm3xg1fDKhvU1/tfPAmWjDzG4UbcuKDj9L9AWwO1gZQ2HTf8vNOKUI4o/10kqx71U5Wd+qrnDMTb37vjSVS4kt0CLtDvBZnlNnvW9bxFzhyETVIjoEeWUlzhbCBb3hLGbmX3YBaNkZ6bqJONmMqs6aVwiZE9Dh0sGBPBxGY0Rm80FBX0W9NhQGlemYxTqm/1kGr69b2WGKNUjSBOgQrQflJooIrvGEx9VuzNqV9ebEEBGWZycmob787hqRiiBcaDby0+7gwumQ93IEnjzZdyTUjgkKixTj0LCDbFx7903jSJcd968oK/9aeJ+HZw3XutOtvBFyRgIOMHNXFHGi8Iofe71le0nRwO2z9tNsLYIDRx727zPG2vARh/FsyBCM5p9EI8px1aH7Tld9YD6FxVNag9VfrJoxdLIIVBxw4mrMeQxs5+Pu72caDKcXRWUnxWVfPWK9PEmvcFeoudsXUgOvrCjX5pyfKdz69nSTgoJAYMZDcGZwV5IfQPyuicQrkv16MoYI9GyXQMa7ob6
+ f90ZD0ro
+ 4KGMtX73UVtZG6R7ss9qo4+lVoODLM/KY1sOd3B+lYvylV7dHE9DHIsVgeEpWMcoU39TWoyyXeJaMbrnIuvr9ILqMRepZhXD1ke84c63LXjfrQFgamptfSzOv0TGXPU+x7iO/mdR4OvPnZNlkYqNAq4GQ2yAzj8trmse/1nRYS17j4nCDFoYtapiJ40TSFdx4ARwJxYpKzSRaAGiNb9lbGGzmGBT3bbWWRE7KFCLjzW6Y8+qz/pyvLSjfeBKbAT3wtnisasAJDVwblBEDhuFua9TJiPnXkSCy8P4m
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,67 +132,244 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 01:27:40PM +0000, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> 
-> Memblock pages (including reserved memory) should have their allocation
-> tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-> released to the page allocator. When kho restores pages through
-> kho_restore_page(), missing this call causes mismatched
-> allocation/deallocation tracking and below warning message:
-> 
-> alloc_tag was not set
-> WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-> RIP: 0010:___free_pages+0xb8/0x260
->  kho_restore_vmalloc+0x187/0x2e0
->  kho_test_init+0x3c4/0xa30
->  do_one_initcall+0x62/0x2b0
->  kernel_init_freeable+0x25b/0x480
->  kernel_init+0x1a/0x1c0
->  ret_from_fork+0x2d1/0x360
-> 
-> Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-> fix this.
-> 
-> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+eBPF infrastructure provides rich visibility into system performance
+metrics through various tracepoints and statistics.
+This patch series introduces BPF struct_ops for the memory controller.
+Then the eBPF program can help the system control the memory controller
+based on system performance metrics, thereby improving the utilization
+of system memory resources while ensuring memory limits are respected.
 
-> ---
-> 
-> v2 -> v3: 
->  - also call clear_page_tag_ref() for non-compound order-0 tail pages
-> 
->  kernel/liveupdate/kexec_handover.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index d4482b6e3cae..96767b106cac 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -255,6 +255,14 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
->  	if (is_folio && info.order)
->  		prep_compound_page(page, info.order);
->  
-> +	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
-> +	clear_page_tag_ref(page);
-> +	if (!is_folio) {
-> +		/* Also do that for the non-compound tail pages */
-> +		for (unsigned int i = 1; i < nr_pages; i++)
-> +			clear_page_tag_ref(page + i);
-> +	}
-> +
->  	adjust_managed_page_count(page, nr_pages);
->  	return page;
->  }
-> -- 
-> 2.25.1
-> 
-> 
+The following example illustrates how memcg eBPF can improve memory
+utilization in some scenarios.
+The example running on x86_64 QEMU (10 CPUs, 4GB RAM), using a
+file in tmpfs on the host as a swap device to reduce I/O impact.
+root@ubuntu:~# cat /proc/sys/vm/swappiness
+60
+This the high priority memcg.
+root@ubuntu:~# mkdir /sys/fs/cgroup/high
+This the low priority memcg.
+root@ubuntu:~# mkdir /sys/fs/cgroup/low
+root@ubuntu:~# free
+               total        used        free      shared  buff/cache   available
+Mem:         4007276      392320     3684940         908      101476     3614956
+Swap:       10485756           0    10485756
+
+First, The following test uses memory.low to reduce the likelihood of tasks in
+high-priority memory cgroups being reclaimed.
+root@ubuntu:~# echo $((3 * 1024 * 1024 * 1024)) > /sys/fs/cgroup/high/memory.low
+root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60 \
+& cgexec -g memory:high stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60
+[1] 1176
+stress-ng: info:  [1177] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1176] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1177] dispatching hogs: 4 vm
+stress-ng: info:  [1176] dispatching hogs: 4 vm
+stress-ng: metrc: [1177] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1177]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1177] vm             27047770     60.07    217.79      8.87    450289.91      119330.63        94.34        886936
+stress-ng: info:  [1177] skipped: 0
+stress-ng: info:  [1177] passed: 4: vm (4)
+stress-ng: info:  [1177] failed: 0
+stress-ng: info:  [1177] metrics untrustworthy: 0
+stress-ng: info:  [1177] successful run completed in 1 min, 0.07 secs
+stress-ng: metrc: [1176] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1176]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1176] vm               679754     60.12     11.82     72.78     11307.18        8034.42        35.18        469884
+stress-ng: info:  [1176] skipped: 0
+stress-ng: info:  [1176] passed: 4: vm (4)
+stress-ng: info:  [1176] failed: 0
+stress-ng: info:  [1176] metrics untrustworthy: 0
+stress-ng: info:  [1176] successful run completed in 1 min, 0.13 secs
+[1]+  Done                    cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes $((3 * 1024 * 1024 * 1024)) --vm-method all --seed 2025 --metrics -t 60
+
+
+The following test continues to use memory.low to reduce the likelihood
+of tasks in high-priority memory cgroups (memcg) being reclaimed.
+In this scenario, a Python script within the high-priority memcg simulates
+a low-load task.
+As a result, the Python script's performance is not affected by memory
+reclamation (as it sleeps after allocating memory).
+However, the performance of stress-ng is still impacted due to
+the memory.low setting.
+
+root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60 \
+& cgexec -g memory:high python3 -c \
+"import time; a = bytearray(3*1024*1024*1024); time.sleep(62)"
+[1] 1196
+stress-ng: info:  [1196] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1196] dispatching hogs: 4 vm
+stress-ng: metrc: [1196] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1196]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1196] vm               886893     60.10     17.76     56.61     14756.92       11925.69        30.94        788676
+stress-ng: info:  [1196] skipped: 0
+stress-ng: info:  [1196] passed: 4: vm (4)
+stress-ng: info:  [1196] failed: 0
+stress-ng: info:  [1196] metrics untrustworthy: 0
+stress-ng: info:  [1196] successful run completed in 1 min, 0.10 secs
+[1]+  Done                    cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes $((3 * 1024 * 1024 * 1024)) --vm-method all --seed 2025 --metrics -t 60
+root@ubuntu:~# echo 0 > /sys/fs/cgroup/high/memory.low
+
+Now, we switch to using the memcg eBPF program for memory priority control.
+memcg is a test program added to samples/bpf in this patch series.
+It loads memcg.bpf.c into the kernel.
+memcg.bpf.c monitors PGFAULT events in the high-priority memory cgroup.
+When the number of events triggered within one second exceeds a predefined
+threshold, the eBPF hook for the memory cgroup activates its control for
+one second.
+
+The following command configures the high-priority memory cgroup to
+return below_min during memory reclamation if the number of PGFAULT
+events per second exceeds one.
+root@ubuntu:~# ./memcg --low_path=/sys/fs/cgroup/low \
+     --high_path=/sys/fs/cgroup/high \
+     --threshold=1 --use_below_min
+Successfully attached!
+
+root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60 \
+& cgexec -g memory:high stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60
+[1] 1220
+stress-ng: info:  [1220] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1221] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1220] dispatching hogs: 4 vm
+stress-ng: info:  [1221] dispatching hogs: 4 vm
+stress-ng: metrc: [1221] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1221]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1221] vm             24295240     60.08    221.36      7.64    404392.49      106095.60        95.29        886684
+stress-ng: info:  [1221] skipped: 0
+stress-ng: info:  [1221] passed: 4: vm (4)
+stress-ng: info:  [1221] failed: 0
+stress-ng: info:  [1221] metrics untrustworthy: 0
+stress-ng: info:  [1221] successful run completed in 1 min, 0.11 secs
+stress-ng: metrc: [1220] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1220]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1220] vm               685732     60.13     11.69     75.98     11403.88        7822.30        36.45        496496
+stress-ng: info:  [1220] skipped: 0
+stress-ng: info:  [1220] passed: 4: vm (4)
+stress-ng: info:  [1220] failed: 0
+stress-ng: info:  [1220] metrics untrustworthy: 0
+stress-ng: info:  [1220] successful run completed in 1 min, 0.14 secs
+[1]+  Done                    cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes $((3 * 1024 * 1024 * 1024)) --vm-method all --seed 2025 --metrics -t 60
+
+This test demonstrates that because the Python process within the
+high-priority memory cgroup is sleeping after memory allocation, 
+no page fault events occur.
+As a result, the stress-ng process in the low-priority memory cgroup
+achieves normal memory performance.
+root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60 \
+& cgexec -g memory:high python3 -c \
+"import time; a = bytearray(3*1024*1024*1024); time.sleep(62)"
+[1] 1238
+stress-ng: info:  [1238] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1238] dispatching hogs: 4 vm
+stress-ng: metrc: [1238] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1238]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1238] vm             33107485     60.08    205.41     13.19    551082.91      151448.44        90.97        886064
+stress-ng: info:  [1238] skipped: 0
+stress-ng: info:  [1238] passed: 4: vm (4)
+stress-ng: info:  [1238] failed: 0
+stress-ng: info:  [1238] metrics untrustworthy: 0
+stress-ng: info:  [1238] successful run completed in 1 min, 0.09 secs
+
+In this patch series, I've incorporated a portion of Roman's patch in
+[1] to ensure the entire series can be compiled cleanly with bpf-next.
+I made some modifications to bpf_struct_ops_link_create
+in "bpf: Pass flags in bpf_link_create for struct_ops" and
+"libbpf: Support passing user-defined flags for struct_ops" to allow
+the flags parameter to be passed into the kernel.
+With this change, patch "mm/bpf: Add BPF_F_ALLOW_OVERRIDE support for
+memcg_bpf_ops" enables BPF_F_ALLOW_OVERRIDE support for memcg_bpf_ops.
+
+Patch "mm: memcontrol: Add BPF struct_ops for memory controller"
+introduces BPF struct_ops support to the memory controller, enabling
+custom and dynamic control over memory pressure. This is achieved
+through a new struct_ops type, `memcg_bpf_ops`.
+The `memcg_bpf_ops` struct provides the following hooks:
+- `get_high_delay_ms`: Returns a custom throttling delay in
+  milliseconds for a cgroup that has breached its `memory.high`
+  limit. This is the primary mechanism for BPF-driven throttling.
+- `below_low`: Overrides the `memory.low` protection check. If this
+  hook returns true, the cgroup is considered to be protected by its
+  `memory.low` setting, regardless of its actual usage.
+- `below_min`: Similar to `below_low`, this overrides the `memory.min`
+  protection check.
+- `handle_cgroup_online`/`offline`: Callbacks invoked when a cgroup
+  with an attached program comes online or goes offline, allowing for
+  state management.
+
+Patch "samples/bpf: Add memcg priority control example" introduces
+the programs memcg.c and memcg.bpf.c that were used in the previous
+examples.
+
+Changelog:
+v3:
+According to the comments of Michal Koutný and Chen Ridong, update hooks
+to get_high_delay_ms, below_low, below_min, handle_cgroup_online and
+handle_cgroup_offline.
+According to the comments of Michal Koutný, add BPF_F_ALLOW_OVERRIDE
+support to memcg_bpf_ops.
+v2:
+According to the comments of Tejun Heo, rebased on Roman Gushchin's BPF
+OOM patch series [1] and added hierarchical delegation support.
+According to the comments of Roman Gushchin and Michal Hocko, Designed
+concrete use case scenarios and provided test results.
+
+[1] https://lore.kernel.org/lkml/20251027231727.472628-1-roman.gushchin@linux.dev/
+
+Hui Zhu (7):
+  bpf: Pass flags in bpf_link_create for struct_ops
+  libbpf: Support passing user-defined flags for struct_ops
+  mm: memcontrol: Add BPF struct_ops for memory controller
+  selftests/bpf: Add tests for memcg_bpf_ops
+  mm/bpf: Add BPF_F_ALLOW_OVERRIDE support for  memcg_bpf_ops
+  selftests/bpf: Add test for memcg_bpf_ops hierarchies
+  samples/bpf: Add memcg priority control example
+
+Roman Gushchin (5):
+  bpf: move bpf_struct_ops_link into bpf.h
+  bpf: initial support for attaching struct ops to cgroups
+  bpf: mark struct oom_control's memcg field as TRUSTED_OR_NULL
+  mm: define mem_cgroup_get_from_ino() outside of CONFIG_SHRINKER_DEBUG
+  libbpf: introduce bpf_map__attach_struct_ops_opts()
+
+ MAINTAINERS                                   |   4 +
+ include/linux/bpf.h                           |   8 +
+ include/linux/memcontrol.h                    | 111 +++-
+ kernel/bpf/bpf_struct_ops.c                   |  20 +-
+ kernel/bpf/verifier.c                         |   5 +
+ mm/bpf_memcontrol.c                           | 274 +++++++-
+ mm/memcontrol.c                               |  34 +-
+ samples/bpf/.gitignore                        |   1 +
+ samples/bpf/Makefile                          |   9 +-
+ samples/bpf/memcg.bpf.c                       | 129 ++++
+ samples/bpf/memcg.c                           | 327 ++++++++++
+ tools/include/uapi/linux/bpf.h                |   2 +-
+ tools/lib/bpf/bpf.c                           |   8 +
+ tools/lib/bpf/libbpf.c                        |  19 +-
+ tools/lib/bpf/libbpf.h                        |  14 +
+ tools/lib/bpf/libbpf.map                      |   2 +-
+ .../selftests/bpf/prog_tests/memcg_ops.c      | 606 ++++++++++++++++++
+ tools/testing/selftests/bpf/progs/memcg_ops.c | 129 ++++
+ 18 files changed, 1674 insertions(+), 28 deletions(-)
+ create mode 100644 samples/bpf/memcg.bpf.c
+ create mode 100644 samples/bpf/memcg.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_ops.c
 
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
 
