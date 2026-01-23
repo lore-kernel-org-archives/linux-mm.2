@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACF5D6CFC4
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 04:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6DE6D6CFC4
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 04:57:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABA096B03B1; Thu, 22 Jan 2026 23:57:45 -0500 (EST)
+	id 918E26B03B3; Thu, 22 Jan 2026 23:57:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A537E6B03B3; Thu, 22 Jan 2026 23:57:45 -0500 (EST)
+	id 85A676B03B5; Thu, 22 Jan 2026 23:57:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9523F6B03B4; Thu, 22 Jan 2026 23:57:45 -0500 (EST)
+	id 71C156B03B6; Thu, 22 Jan 2026 23:57:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 769AC6B03B1
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 23:57:45 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2E365C136A
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:57:45 +0000 (UTC)
-X-FDA: 84362020890.19.AFD25F0
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 518686B03B3
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 23:57:47 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F2C1913A085
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:57:46 +0000 (UTC)
+X-FDA: 84362020932.29.DBBF9FB
 Received: from mail-yw1-f196.google.com (mail-yw1-f196.google.com [209.85.128.196])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5D69FA0006
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:57:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MVD23NNU;
-	spf=pass (imf25.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.196 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 28733180005
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:57:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FRNcCEFv;
+	spf=pass (imf06.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.196 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769144263;
+	s=arc-20220608; t=1769144265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zUE9K2FZw5Ls36EWUpBYNIoEjPdLY+PpGcwmuAyPWmY=;
-	b=eFwHC8jSrKz2GpR7ra6lxsaxshkoMphp2CpC2j6/Y6XQxa0qpWCJcWgPykKls1IDYtYX9n
-	w1caFu2T27dI0GNaC4NUVZACz2HGCNy4sTWPBAv0c2KTNiAirEuqCLn7/TmWu4jRsMeq0a
-	doroKoFGnnx7+B80EpI0J3anPDZYMQ8=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MVD23NNU;
-	spf=pass (imf25.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.196 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769144263; a=rsa-sha256;
+	bh=K0i7a7403YgQyMlpi7E1tGdpNbWRUN7COl/lkLxdLS4=;
+	b=wyXWe96i6v2TpmrCwKWyCGTIIDKy64HqFpCDIRqpncpqn96Kl037LLhr6Z0bwnGxM58KUv
+	2+p6D+oEe1whrKA+Vy77iJEMYvSchHJHrc2QGGHCfAEDhRGlMXS/cbTJL+wPpib5mXaF7Z
+	Xw+/xNoM5mfmOz4XM14mIS3+0Fsxdrc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769144265; a=rsa-sha256;
 	cv=none;
-	b=RY4m1HS1/fA2XhW0z1yseN+hsRGn1y6wlX8+6PlLvZIakRoQql3Fw6OABfIXKVGlWpBwzb
-	HooqUUOTvkjWZTZKuwXwmcDPaOUlcSbh7QVa5j+vWpjvzk9iV7OMD0/echpLgqSOvGlLRV
-	do2iXefRz79TF2RWJ/9+CR7M9BQIbsk=
-Received: by mail-yw1-f196.google.com with SMTP id 00721157ae682-78fdb90b670so16494557b3.2
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 20:57:43 -0800 (PST)
+	b=shCTP0zLHCloWC4WMR47/DRwgxhyUEHfsU2+J2Rj7oLV5NOCF/fgsmRXoaSnmxNrumiTyU
+	gcccrtmi1of1pW7PdHjlLI6EDOoax7d3BcbpqGVj1gC5G8i3fAqV59EAurTQJUnsBXky5S
+	zdI1LU2T+wT16MNddFKL/X6DMSk/WZ4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FRNcCEFv;
+	spf=pass (imf06.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.196 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f196.google.com with SMTP id 00721157ae682-78fb5764382so18751587b3.0
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 20:57:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769144262; x=1769749062; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769144264; x=1769749064; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zUE9K2FZw5Ls36EWUpBYNIoEjPdLY+PpGcwmuAyPWmY=;
-        b=MVD23NNU10xG3Wl/Bk5nyOIzIvc0rWoWIEVoz3tw61es2GHK3PJAFbaeJH9h69KaXP
-         YvjwWaAa62hFAflOg30PiDVc1N8fW4GPC45t77kRRZV86iLt2OBVIJ+///ZKgqnwBWbY
-         o68+pdegW+5tugdqA1SDTz1A3GgbTgHDzhMddnhss9kSNE4QBMhEaVX2XuR23CMcs07y
-         pa9i6k309eHS6CCXSJ3RC9wnAGnuGbRGSAnNpDvv9L+PfSYj3IGSjP833DdeRo9urV5C
-         NAaQuKcUhYffM3XFNNyrQx9Tc5/hcCwdiji9QhK/6mUxcBsTsPoiXhFYWRbIv0Dx5cnZ
-         EQUg==
+        bh=K0i7a7403YgQyMlpi7E1tGdpNbWRUN7COl/lkLxdLS4=;
+        b=FRNcCEFv9PkTGPce5VDe21HgRJMnix9DMXeV9hvOtT0bfkU80WxGdusbCs37w9/tyt
+         4mmRY0tJsoc8pfLTfBN7CYp/sVlKRray7Yg2Ln9HOJjBb6dVx2fWd3MVnfNkpw8Aq6eo
+         XsH3Y6MxrvenSYDaxBfXuuNgWoN38QbnXZHVjzj7ogPEW5j0SaS/dJqxOSaG03RDgS+j
+         gD+Exfxbek7K8VBe1kV3Bz1QnTFVBZJmzMrZ4fXwj7SxTDy3Sw27N4CJC13nd8cvtlPW
+         m2iMyURvkh3aX4R3i0/b/2kp3pm9uwnuuwlZaEwadFf+6yHbgzohnMm2XNxSuDUytje4
+         DSqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769144262; x=1769749062;
+        d=1e100.net; s=20230601; t=1769144264; x=1769749064;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=zUE9K2FZw5Ls36EWUpBYNIoEjPdLY+PpGcwmuAyPWmY=;
-        b=n+7WoIPaZleeX9XM8d40S7BqtebMz2nra/yKqV4icEiD/S2JNmbkXhfm8gBGtR+Czq
-         xh5Y8481Gkb8lWmqO0sWnOJSoZ2ft9an8A7a39WX/UtGae80UwNqW0qY1o1gIQsza5Ka
-         FVAGzaAPGSGSxYLZtt63WPelE0nMebl+aZaQzxd2Nux6gU+5X98z/qFtF0IZww5RPCIu
-         W32IrREKhH+iJmv4VH8uNPUlnOzw8QSH3UDmS5Xe4hTPQToVuYkx7AuA4E+U5GpoGhrX
-         dYNx6c/QFV3BUSdukdVWyKnbDsj6kzjRLTkosaMEgim8O/ct8R0hyNuAOevYp1kJaPEk
-         6keQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWoNfcUker2h6ANf95SyEb+Oyhq7DOTI/yThEHNfu4owTqodSYk8Gbar98/Ie63CqvGzcXifk6y/w==@kvack.org
-X-Gm-Message-State: AOJu0YzI38bhlIUYIr20Syiq9kefhlJSCCx3ZPahRGi/C1PR2X5/jcgW
-	J9LuMtOV/T9pnGkYJvLaUARAZ1oj7xVPEpyKC5OFOBJhHEs8RdaSVHA=
-X-Gm-Gg: AZuq6aJA/l5BAQwIA+zXJLtNCrs8f0MbbeDq7f44BDqJYOohB4mBo0Oj7GNip+NJoTk
-	UXBvfdQ6vYOYx5DPVzLHEylOrfu+c/9duzirjiuYIXLXlV67yreS2n54Diij8MfjuHiO529Jtp5
-	jxe2owRwC4ThXftC99jWNvEkyWzEFc76clDdgDP74J1ESt7mB47WhE4ydSSKkn/Xz2OlSB3/2C2
-	MKn59OZhqaBj21tltIKka9baGXNQjPN519CtDpLKziU+DYQGFUGVmcMs+eKjiFimIpwLHhawzIh
-	pNOTgR4wMJJJOvdssT5+8HHm895uKyqt/ZUhzUhmk0bePsO1e5noRkO9qDqHc1OmNIPfaDlea6O
-	TQbftvfYjdDZPnt81PfnUmXAjSLVTPuvDDCemfXxm385G+BbML4mm0S8rMcNoEXSMVFlt072z0j
-	3XoERaEM9NDBXB4lC9gCWe6AFPB65NMZwsPklv+prwg/xFsVDh93u/AAHLJmrc8g==
-X-Received: by 2002:a05:690c:39c:b0:794:4c3:65ec with SMTP id 00721157ae682-7943992fbf6mr17105327b3.22.1769144262401;
-        Thu, 22 Jan 2026 20:57:42 -0800 (PST)
+        bh=K0i7a7403YgQyMlpi7E1tGdpNbWRUN7COl/lkLxdLS4=;
+        b=Q7cDszqqP44V5y3LBfvdwQSPTmu0i+wOt6HOdqoqv4z+4MBvZ86+V/YfY37dsT05+o
+         DN3Wmk8LugFD2XrCdPsrKTt8tPposapJyg0GynWtKDNNk1w8D5bF0HzFDcc6czQlGuvN
+         FbuuARK660Rg/i0bYFe16HrBVe9TAmLtcmH/R2vZtTuQd0WtMdqz54UD8+kkBwnx079S
+         Tt2Nv4+mX01S4oXhFLvYy/Txm2LbEqbw8tG+pATl/x6+P9rYEiuIsOoicbcckZ3lLRQN
+         BOmR0AV3ze0PC5bOdLGk3cDrDQIT4p0wXoq0YoH9ex85vNlRBQFMbujtUWvP1RABPixr
+         Pdsg==
+X-Forwarded-Encrypted: i=1; AJvYcCXt+3cG/If2LU/qiPnfzgiOPiUeEZQCApSCuAEQoRxx9vRKF0H5Eebp2k254VZN2MysytQkOymltA==@kvack.org
+X-Gm-Message-State: AOJu0Yx01I1TxXSyuQhyN1/C5PgndFqHWJgIN3sFx1mm4aemgzMiNqXf
+	Up8JPnXm2aST+uVH9dJsaLfcFWjlwebOhAaa/+etaeb5QCSyCZJIKes=
+X-Gm-Gg: AZuq6aJi2c8DNMNY0YLQYmBD/0V/Epp+pkP6zxcHOEvPGyiRJbeplR2ySo3JBCBpxaj
+	ZpltRNdlW2rJY7hVmgx5hNAnVuWqzrwEA4lQJKrw5TAUsveMJbRssnzqD8AI2nzv/Ro1Yr6bDWT
+	/Xomrile7Z8uXOxxSSHXha5Joj14h9cHzS6+HKo2gVvW0Ee9qVlzPgqK42lG5ZQ4BF29Vzb4zKy
+	ye374lTgkAurewPa21nXswJpO3v88g8NrKKyd1FR0mezKStACnBIb0p7NRCOYgsoWt2tPxmwl6w
+	pc23dQSmalcmML0oWs+YLMZJhLIse/XJQ6+El/lD3c3Drp+mtquj7pxweNp3Xre6dnxIbzBjI5a
+	A6ntu50KVhCqOD6MoMOadiPvU88YXmHGfvNYN+bO8/2mo0u3KdGL5vSpTQ0XnvqS+/qz1YIggVz
+	A5GOc504DKQYTooXygqFxnkfOIC7fNJx9AGZAc2tUpOEqx0Wp8BXeAWFaR3yYWfQ==
+X-Received: by 2002:a05:690c:ed6:b0:787:b5ac:68e4 with SMTP id 00721157ae682-79440b4d2cbmr136867b3.48.1769144264173;
+        Thu, 22 Jan 2026 20:57:44 -0800 (PST)
 Received: from localhost (23-116-43-216.lightspeed.sntcca.sbcglobal.net. [23.116.43.216])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7943b2b9bfcsm6436687b3.38.2026.01.22.20.57.41
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7943af14163sm6332217b3.7.2026.01.22.20.57.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 20:57:42 -0800 (PST)
+        Thu, 22 Jan 2026 20:57:43 -0800 (PST)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: damon@lists.linux.dev,
 	linux-mm@kvack.org,
@@ -101,23 +101,23 @@ Cc: sj@kernel.org,
 	bijan311@gmail.com,
 	ajayjoshi@micron.com,
 	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Subject: [RFC PATCH 1/5] mm/damon/core: add DAMOS_QUOTA_NODE_SYS_BP metric
-Date: Thu, 22 Jan 2026 20:57:24 -0800
-Message-ID: <20260123045733.6954-2-ravis.opensrc@gmail.com>
+Subject: [RFC PATCH 2/5] mm/damon: add get_goal_metric() op and PA provider
+Date: Thu, 22 Jan 2026 20:57:25 -0800
+Message-ID: <20260123045733.6954-3-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260123045733.6954-1-ravis.opensrc@gmail.com>
 References: <20260123045733.6954-1-ravis.opensrc@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 28733180005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D69FA0006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mem6pyn35cm5n4tu9wc3hhcf38y6ybx8
-X-HE-Tag: 1769144263-680146
-X-HE-Meta: U2FsdGVkX184HfuZwi/mM+stLUkJUtXi6KhrJ1yRgiOwLVsfwAL19Q82YHT7Y57/JPGGGE+sVibJn0pdJW2Uf8AH2IBYX7a+ECAlC9c5Gzo9eJZ3eOZV3A6y9GApHoFPJC5XLjyugPDszpolCdOy+jKMINICsySowYsgrQTnF/Nqoo2y5uJnPArpjzy9ZesFbsjPfFY7akQLqUhWAeKTUUiVP2PJlTukdgLYlptzzsgVIntLfCn4nLL0YvJgVtIo61qh9oOC81WlM/yI8aXLbXjea60lM98eDCfxFcSPFpecvXJq94u8cZZP6UgDOXwUAh12awNYPx4hrx5P3n2huO2CjbrhqskUeGvftzKMHNvWl99+ayTZd26zvd9SH+3VeMdzeWKb5dsUfCOAfRO5rFWYYHUFrihE8SpLAKaZjCvIO71pXPBgX9n0EftoqG8Q+LRzBfITaDI2HQS0bTkyIO4SwKF7mv7uaY3OhQbAljLEL8fYmuXtxb+HMX4BO9dPfmg+74UGUPE0M0v5lD/1wfLpnQbeAyrBHDqBHV48GmNaJ0dpR57T4VfIEK+H+TsSvar71dYhHRlN+yo5jHcYaHbFFzAl2o+VQUq88Zen5qHEbCMnU9xEoOha9udvchua/4gTWwswEzqKRDOmqXhR+YvW5u5WiZJdd0LbGywt3EdpoO8sCs6W0UkiCiwbZlgh3XukMHY6C0HmtsQWI5h58bJXtmglxq0Wr+AeyCHOY69ZarkQp2oiHfurCAre/1NPoDCdCdqNnqQGmHyT6hmNUdKAf/alh+TLTmGf3BdEZeJXva0EvreA7Rnt7y5I/mqcDbYRE7EMdPdntEWt6G8nlVugaO8yB4ysVFRtdrrGg1/v1pRnoa77Z5By6HuAnIbbs3UbNFKnxeBVx0pf5NR69oqsYgZPKNYssKHn8gCIfZP8ASfjQ7PlDMtCF2iC3XycLbvUFhLuuvsBvJXqabA
- rJxUx7z/
- JQ4u1UTt/MaJND2pIbG7hqKFxp61QdXhOLq2/pwDeSgt7pkwLFcu1Inq3YWVEpI+S37uMv+PNr3egELaPznpe6svDXlZI0Q3GasDbZA251QUAABOez6sU7rn7L0GrVOP5uw+QE0bnyZ65YuNsxppgYisxfZAhieUAz0T97iDoZQhjzP4l5S/2STCqk9tnhdt4gbyZBEG+Cnm2BFODl8Cu6BqMIbNu1diu0nXOHXf74O6ZLADybd6ZOPQiMlE9n9+Z8Qf3ZZVM9lOXU/i2pQwXTP32VwyA1COmpQPe1SDKO0hVEmiVr7mdw/QkeBmVnaAVlioEiGefJpyq5u/FnrjwaNMoLUb8tg6EDmjxUcI+RpwNI/idRDh94ySKHDXRElJsgCA/uzgL/SQpFWTWxgNgNhexi9oO0NnbgeKSvFCs2IiIcu194C8x8/THpKqbFklZh3rkzHOs331RUEe6aUHx6DPC8SpE6CKBoeInXnK688mGMiDHS6i5xkIO7b394dsZGSS2+47IxcYGT0DWqjo4a8rq7yiWUa8LpFfDNrBsuhMua6ERJ7u9k6WJgAT+aT2THw9ruUkXDm7FEdUlpA+1T0mr2Diu/0pBAjnIZ7SaXu1oPMijwSGfhgAyYny4T/ihUdMszGMhf76YxTnOwDCqY48NtCUXUklRaqZ2cVsVRr0iEJnp9XzCjqTRjH7zXTBa+g7q
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000362, version=1.2.4
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 7q85jrgu9cmta98jiqi3xa85w3t5fqas
+X-HE-Tag: 1769144264-683452
+X-HE-Meta: U2FsdGVkX18yOnlIoURi7QCaxkoeFCw+s1mKyUTBJN8gDRw0ieK9R46z11iD5oVyHPxAo55rBgwOOI0eY9ldbtCp0/gVqDt79emfmk1PUPiDviDwiyyY1zfwOfC45zvL3GyCGQmLCXo5/wrjeHqqlOBQM9lm6j6fgBnppLqBXDspTN7lxd+aIbJeTvPDjZnX0BZ6jXrtjoyiUPKZV0JBLqYg4bU6G3VC3iFRphm24Tm/C7p+HhfCXgg04XKGy+3MR97I+7L5R1CWmSoQqLVcfJGs5MmMijiv8ePwnVA+3iEyQVIyUhO1l77b4ACRW1C81UxqRFSdQW1kDSWsvZzl4G+YTu6bTZ55hwd0+2/jh4v05VeXOX4eTlQWZ347w7VMZiVn++KK4xd62p8He7hPcYQLgdgJAWdqYB8brrYoV3mfHo1vd99Ll3RODGWVyfC+nESwghk8TgFbx+s60jFNId6bpSecp/e4tIcfXHuTHs8Yr+1tC15GuTPduOJtBSYeOEnvXcku4Kzgxsf3kunCvfjzUTgwydPNFhoFIkXdEc8SmuJRrLMX9s7+Lz6LsWTatUvna08fiXsIR1/5nwaPB5yj8MlQAHhVn/Ho270r6CcTXLlkVBj7qhoHU1kcRCHzEq8TbuRKMmVgKbaRQwDyF6ya0wvJ4L+c7KvjEi6PTFuTBCevQVfZ95jNIqeNQs6Oqp38aIXVwvlhzM9WsyOa4DInbYvjiZRok7MFnh3wfirsfYmBQojeuAENtfw/b8qXK8c7x+O4AUzrqhhxGP4liNyJkUQVVfr5jgb6RXJYf45JNn6UJVuQwPFCqGMCiEOfQfvuMVEL5FYgGpqOY87sVi1xbv9H+7u4THdIJPL2TIuJltyWKJzXfzXtiRidZ4JGqM85kKJgTGY5oikEH4UngZBi7nP+jrlK5XuCmMwL9TPNhbDU7GlkX6GXWcM+41XvBfaAd5bT2OZmFjMXZSE
+ Hi0hBc1u
+ ieqRNtK+KvG3J/PDKwTUWwboY0/MnoFgSqHjxjirDOJveqB70gVnzU3HqXAlV0lwssesOZNFhlT1kDKJGYuogp7vkpvHFULKOdaUPTCKExUYxyyiDWkjhWiBL4PlHDbIGCGg+nkl8WC65DkdMl1CTJpJ8bJwL2xG2n4T6tsdRyEvsA88pln8Xt9fO7zNrN2HYOxbkbIfrjcXHNqLPFbJH+acJa2ixNQky7v4r1XF9Pqp0Vh1d8GTcCcaK2T3lSox4N3c1pwR9vqVZP/03wkF5182CAmMr6uKdQFj7G+uIMLFKFBp3ckEF32iutvsmcoI1ERviQBPY8Ol8jDbryvU9KQeHalaUkrYbvVu+bsDugqZKge3+5c6VmHWusbygCIUB3MmSXl2ImIiGsieKCiontGMmTXGDXvqyX8JiIWn9Z6otjgpnwfbY1cixoz1uFau1Npft7y0zPuCFUOjHAV67w5C72DgkI6+8FRZo8vUdMEQIYSHx67ZGTjItsSQfX3uPArXcQiJUnC2g0rKmbcvW+/ukYqLok2s65xZb5R/agHH9oSfOJxD1csfiLkiX9fIeQhg6qELZ1jSyhBUAaO08QTsk9Iv0hKKDXS13RuM7HJ+n7rvgaCi0SL1FxwM+B9pg1XuZKUuGH7CkmU5OGmc+epb+34oRFzlGUnKqLJFCmg79EYBqDdbuzLnbd1RpHo12zx2z
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,37 +125,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a node-scoped "system bp" goal metric for PA-based migration
-control.
+Introduce an optional damon_operations callback `get_goal_metric()`
+that lets ops providers compute goal metrics requiring address-space
+knowledge.
 
-This metric represents basis points (bp, 1/10,000) for
-(scheme-eligible bytes on node nid) / (system total bytes)
+Provide a PA implementation that handles DAMOS_QUOTA_NODE_SYS_BP by
+iterating the monitored PFN regions and attributing bytes to the
+goal's nid.
+
+Core remains generic and asks ops only when needed.
 
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- include/linux/damon.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/damon.h |  3 +++
+ mm/damon/paddr.c      | 58 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 3813373a9200..ec5ed1a217fc 100644
+index ec5ed1a217fc..67233898c27c 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -155,6 +155,7 @@ enum damos_action {
-  * @DAMOS_QUOTA_NODE_MEM_FREE_BP:	MemFree ratio of a node.
-  * @DAMOS_QUOTA_NODE_MEMCG_USED_BP:	MemUsed ratio of a node for a cgroup.
-  * @DAMOS_QUOTA_NODE_MEMCG_FREE_BP:	MemFree ratio of a node for a cgroup.
-+ * @DAMOS_QUOTA_NODE_SYS_BP:		Scheme-eligible bytes ratio of a node.
-  * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
-  *
-  * Metrics equal to larger than @NR_DAMOS_QUOTA_GOAL_METRICS are unsupported.
-@@ -166,6 +167,7 @@ enum damos_quota_goal_metric {
- 	DAMOS_QUOTA_NODE_MEM_FREE_BP,
- 	DAMOS_QUOTA_NODE_MEMCG_USED_BP,
- 	DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
-+	DAMOS_QUOTA_NODE_SYS_BP,
- 	NR_DAMOS_QUOTA_GOAL_METRICS,
+@@ -649,6 +649,9 @@ struct damon_operations {
+ 	bool (*target_valid)(struct damon_target *t);
+ 	void (*cleanup_target)(struct damon_target *t);
+ 	void (*cleanup)(struct damon_ctx *context);
++	unsigned long (*get_goal_metric)(struct damon_ctx *ctx,
++				struct damos *scheme,
++				const struct damos_quota_goal *goal);
  };
  
+ /*
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 07a8aead439e..30e4e5663dcb 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -14,6 +14,8 @@
+ #include <linux/swap.h>
+ #include <linux/memory-tiers.h>
+ #include <linux/mm_inline.h>
++#include <linux/mm.h>
++#include <linux/mmzone.h>
+ 
+ #include "../internal.h"
+ #include "ops-common.h"
+@@ -148,6 +150,48 @@ static bool damon_pa_invalid_damos_folio(struct folio *folio, struct damos *s)
+ 	return false;
+ }
+ 
++/* System total RAM in bytes (denominator for bp computation) */
++static unsigned long damon_pa_totalram_bytes(void)
++{
++	return (unsigned long)totalram_pages() << PAGE_SHIFT;
++}
++
++/*
++ * Compute node-scoped system bp for PA contexts:
++ *   bp = (bytes attributed to goal->nid across monitored PA regions) /
++ *        (system total bytes) * 10000
++ */
++static unsigned long damon_pa_get_node_sys_bp(struct damon_ctx *ctx,
++					      struct damos *scheme,
++					      const struct damos_quota_goal *goal)
++{
++	int nid = goal ? goal->nid : -1;
++	unsigned long node_bytes = 0;
++	unsigned long total_bytes = damon_pa_totalram_bytes();
++	struct damon_target *t;
++	struct damon_region *r;
++
++	if (nid < 0 || !total_bytes)
++		return 0;
++
++	damon_for_each_target(t, ctx) {
++		damon_for_each_region(r, t) {
++			unsigned long start_pfn = r->ar.start >> PAGE_SHIFT;
++			unsigned long end_pfn   = r->ar.end   >> PAGE_SHIFT;
++			unsigned long pfn;
++
++			for (pfn = start_pfn; pfn < end_pfn; pfn++) {
++				if (!pfn_valid(pfn))
++					continue;
++				if (page_to_nid(pfn_to_page(pfn)) == nid)
++					node_bytes += PAGE_SIZE;
++			}
++		}
++	}
++
++	return div64_u64((u64)node_bytes * 10000ULL, total_bytes);
++}
++
+ static unsigned long damon_pa_pageout(struct damon_region *r,
+ 		unsigned long addr_unit, struct damos *s,
+ 		unsigned long *sz_filter_passed)
+@@ -344,6 +388,19 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
+ 	return 0;
+ }
+ 
++/* Generic goal-metric provider for PA */
++static unsigned long damon_pa_get_goal_metric(struct damon_ctx *ctx,
++					       struct damos *scheme,
++					       const struct damos_quota_goal *goal)
++{
++	switch (goal ? goal->metric : -1) {
++	case DAMOS_QUOTA_NODE_SYS_BP:
++		return damon_pa_get_node_sys_bp(ctx, scheme, goal);
++	default:
++		return 0;
++	}
++}
++
+ static int damon_pa_scheme_score(struct damon_ctx *context,
+ 		struct damon_target *t, struct damon_region *r,
+ 		struct damos *scheme)
+@@ -378,6 +435,7 @@ static int __init damon_pa_initcall(void)
+ 		.cleanup = NULL,
+ 		.apply_scheme = damon_pa_apply_scheme,
+ 		.get_scheme_score = damon_pa_scheme_score,
++		.get_goal_metric = damon_pa_get_goal_metric,
+ 	};
+ 
+ 	return damon_register_ops(&ops);
 -- 
 2.43.0
 
