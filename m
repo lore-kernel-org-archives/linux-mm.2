@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 878E4D72350
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 09:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E0C9D7235E
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 09:31:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBD9D6B0490; Fri, 23 Jan 2026 04:29:49 -0500 (EST)
+	id 8654C6B0492; Fri, 23 Jan 2026 04:31:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8AC16B0492; Fri, 23 Jan 2026 04:29:49 -0500 (EST)
+	id 84FF36B0494; Fri, 23 Jan 2026 04:31:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D94066B0493; Fri, 23 Jan 2026 04:29:49 -0500 (EST)
+	id 74F7A6B0495; Fri, 23 Jan 2026 04:31:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C4D8F6B0490
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:29:49 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D00C0C06DC
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:29:48 +0000 (UTC)
-X-FDA: 84362706456.30.30FF83E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 55B77A0006
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:29:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b="P+Da/JIQ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769160587; a=rsa-sha256;
-	cv=none;
-	b=RQuQlfJYF69ulU6iHxVRiTTpk+wI5y7RzG9Zv85v1AxoMJWwBSiZE9h3DzSMnDyEZmXfMG
-	Ef8GvAfMTuVeAj0eZt7KANRQHBPjRXZlGDHy4KyrzP5+4r0HrOoj2zj6htzC8L6mWnlEup
-	jKo6vQ1CZhCiU40ABzrLPJze/XdjmyA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b="P+Da/JIQ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 635966B0492
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:31:29 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 061F98B853
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:31:28 +0000 (UTC)
+X-FDA: 84362710698.21.593F702
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 60A1840014
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:31:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=V5Ac+VrA;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769160587;
+	s=arc-20220608; t=1769160687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DbplYpl+Lu304xGTqVB9SoG0eUdglpYqiaj68Ma6s8Y=;
-	b=PRqNNoiIYm+rRjoN97R/9LePJ2vgHbP9UKghAVYzc9McpoD0g8SyYkwhIz1ktLwhLTb5BQ
-	Roa+OwDoAbykV1FXMefbiFO9bRMCHyOlfE6iofILNOmtuenQmYNZaHukkgXK+g0cVtCd5R
-	i9u/t/8pG+Qwo1cp/eA8spOLcj5lmiU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD75360145;
-	Fri, 23 Jan 2026 09:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FCBC116D0;
-	Fri, 23 Jan 2026 09:29:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769160586;
-	bh=66bJXTJk22/mLio1RAI3vsCprk6nUWyXhsTyMDG/6mE=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=P+Da/JIQVUBFdjvtmkdMKF6CSdvIICA7ZvyHGDVa0wEg3lX968hjg0HzrYc1dY9cA
-	 82tsjt/LJncXYHEM2ytyit/TamThZnQoqQWOkSPiXqwMwEOd95l9wxc7pAMiFHADfW
-	 IRvr+kW47fQvxH1kFQYIjm014r0sqN7WBVhN4uZkELWsf/oHqk20Y/N2OvivUjNqFW
-	 qLXomYcSYWhPgCanwfxrYY8n+ltGd22kDDkB+GOg3v5314j4lfZ078NboWEMtZi0Z4
-	 JIHHi+hqh0o0zsdkduLL6j+/y9vYhEchxkVHpomNftsBShx6bQ+Q4Fp+DHNRriZ28d
-	 ruoT8dTtoWs2A==
-Content-Type: multipart/mixed; boundary="===============7258097213843698012=="
+	bh=n/xyTpIGA3LTDEVDvOpXmC85+4HpEgmpDuugKSvZEtY=;
+	b=z3Slye7wiKJ62RjLdbKNcmErGsJoeWyzOHvU3OPlsCSHNGovH7KDoLhYLpzAzD9guRrEeo
+	QVXfOOuo9x0JEsAWND26sJbvR/INFCIqfCA4DGVlA2CE76pntJ9WLpM3GCJmTGSNznZc2h
+	2UOYKUJz24DwedPGVw8rjE0sbKXtAVU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=V5Ac+VrA;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769160687; a=rsa-sha256;
+	cv=none;
+	b=h1FmZ0yQc0OzO+BbzYF/TIXRubE0B9vu40Hkfx/ITjjSm/O90oZgiLdIVDigKOm48GUGsa
+	wC45A4Dw/i218/xBaBBlYuJMWhrpJ6TcslNAuCtuVvgvdta/nhQsvq8YpjRnn7g/Y0jYjr
+	vLK7DN9qwfQvLNy4qo0YRnHxBKHzk3Y=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1769160682; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=n/xyTpIGA3LTDEVDvOpXmC85+4HpEgmpDuugKSvZEtY=;
+	b=V5Ac+VrAVyaQkHTp5syQHseqykN7pXK2ZSV0DyMFN7eH9YLiWVibVg/rvG3FKI5QgNd3msoOT7SZNbsKoSspkQUW1ZsqpqlOHEVa56+jBRJxvF6sSWif2d3Qdu+LPkQjZlk3pZa2iUZ38WN9PPil8h2kphxiJYv0gNBMGKyqVSU=
+Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WxfLOyU_1769160678 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 23 Jan 2026 17:31:19 +0800
+Message-ID: <b1747380-1f2e-4edd-81fe-f01b3fd01bad@linux.alibaba.com>
+Date: Fri, 23 Jan 2026 17:31:17 +0800
 MIME-Version: 1.0
-Message-Id: <f02212613904023c5e4f900ee1efdb15e8266c3c4f7d0572db4f515da3a700e5@mail.kernel.org>
-In-Reply-To: <863b91cb85097f137bc741e7cb686ff78d9bb95e.1769157382.git.zhuhui@kylinos.cn>
-References: <863b91cb85097f137bc741e7cb686ff78d9bb95e.1769157382.git.zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH bpf-next v3 08/12] mm: memcontrol: Add BPF struct_ops for memory controller
-From: bot+bpf-ci@kernel.org
-To: hui.zhu@linux.dev, akpm@linux-foundation.org, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
-	song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
-	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
-	jolsa@kernel.org, shuah@kernel.org, peterz@infradead.org,
-	ojeda@kernel.org, nathan@kernel.org, kees@kernel.org, tj@kernel.org,
-	jeffxu@chromium.org, mkoutny@suse.com, kernel@jfarr.cc,
-	brauner@kernel.org, rdunlap@infradead.org, brgerst@gmail.com,
-	masahiroy@kernel.org, davem@davemloft.net, kuba@kernel.org,
-	hawk@kernel.org, inwardvessel@gmail.com, willemb@google.com,
-	kerneljasonxing@gmail.com, paul.chaignon@gmail.com,
-	a.s.protopopov@gmail.com, ameryhung@gmail.com,
-	chenridong@huaweicloud.com, lance.yang@linux.dev,
-	jiayuan.chen@linux.dev, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linu@kvack.org, x-kselftest@vger.kernel.org
-Cc: zhuhui@kylinos.cn,geliang@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri, 23 Jan 2026 09:29:45 +0000 (UTC)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable v14 03/16] introduce collapse_single_pmd to
+ unify khugepaged and madvise_collapse
+To: Lance Yang <lance.yang@linux.dev>, Nico Pache <npache@redhat.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, vbabka@suse.cz, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, corbet@lwn.net, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ linux-kernel@vger.kernel.org, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
+ willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com,
+ usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+ will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, zokeefe@google.com, rientjes@google.com,
+ rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
+ David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+References: <20260122192841.128719-1-npache@redhat.com>
+ <20260122192841.128719-4-npache@redhat.com>
+ <65dcf7ab-1299-411f-9cbc-438ae72ff757@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <65dcf7ab-1299-411f-9cbc-438ae72ff757@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 60A1840014
+X-Stat-Signature: 8jkh3hfexa11zjh8pwurgmmy9g6rqspo
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 55B77A0006
-X-Stat-Signature: 5rypwycntq7inwkc3sfhwqqs8yrf7xq9
-X-HE-Tag: 1769160587-816202
-X-HE-Meta: U2FsdGVkX1/GqTROaQ1ws6EM8EJeCWuhzxK1fuG+OPtxIeg70C26qAaYaLNvzs3YMgQu14g/ItfNjr6sGYc1QS5O+JwjGH9/Jr4kdVo4maiYadgfVaMu/ru6gErtOtqRGZyHPL4r2vPjIYdZ+g0KrG4TACpEYxFCvJAM4LydycLBYMAVu7RDupWMIf6ESFcoEurq+tEc63JRWss/9GSl1oOwp/Xli7nE0jddzmPW3UW+bJYthX3geGerU6jResfDLRFkhSZ8QkbaughGKVJX523GmvoXr+uJLpZKkSZw8V154J9TiEttKEyRlDz/E+rqQGJgabRLUJwd9J8y2GlZtTBYutxAdvp+6BzZ6R3j2jF5lnY04W6lLbd49IS9lzTVOQ/1LNqFfu2ny5Bd4/Jme/e5YPqDMzmSoQupESkYnt79vBafCz+O5Pj4UM9U7Zr/nagMrhhLU0RPPxIgn3zaeNA3k3ccK0jipAvCJeepvg2RJCexsrxz4JnKRliHybpd33U42+hzbIr48kf1S9mnnrDuW88dC8lP8ud7GKj1MH6FqvujlU+/jy9oGAVLZpSgiiThGWBb9ZH/BdEPPLW+bOv5oWMJ+4vKJsJz+Vf7nrWXKwr76/5QuYb3PRhS45nlSBotAClimfqB+qawW2GRA1cp62QZsvUzi31FuHQW4CuvULdCX5ab+8ZlzEQU0VEsmoPiSvUk+sVK/dRptWAMfKyvngGcIKRCNp2TGK8pOxVisqLSFiGVjkkOCYqGKmjCi7nB1RheVXH+o0IOW1nIUTuOlhXWJJT4ahtDQSJQwtLerMcQP6k714YM0BM7pFnyh+mHBv5GZEfMbmAm5376RLjtfWYNvsQ/lcmaQoWdT3T1prDaflR7+UrFSNu/2hrhGpu54p5CTvbxbImpNV42SzYJdpqZfDYCh0BbAi/w6t9hI2B813oQxUPaCqlGpYPAjukvz+RW8aAY32kHIo9
- tkWxnOUt
- N9jG2Xdv856dDmxstNgbFA3hfe+PR6FAjTVdmrvBuyR6OApg+/TSjUtQSm2t0KcdfoRH1+bttcKZO9zxNjV3u2ew887Z3+GN3eWEx7ORRQIeBxI56P2Xe5JmF66ei8R5cIg2RGu7miQKbLF/X7KtkvwjWes34bmbmLNc2sEKruDVf5MWuyP1VYpdMMXu5oTXA2YkOJKysnvqM1H5RBso2u9GGYorPxqLtDHWH0Q0H4V65ihZAs5tjQ/eRGfU7S401Cn2OiTpm9/dFRZ9o6vUtkfCvKwn7WP52/O/xMbmpZEaCygtLXpOy2cZoTKxUe6NA4UlalInN9ZDKvzjm0A+4Irw6fPkfLbGsrwQYPJ6kvdbzc0sg01boDEZkU9CQd5THl6/7+3wffmYboI2bvCR4eV8fOXqJnSxAfxfS/tDsW9abpeLIlns7NhnseRp5S0/FPPUWu2I6zDEFGCURYNTpwTLMbhI82NWp0paKnA9k/NjVYhZ5b6AxlKukA58tkZEVecBaVMNxpH+SiNsLY+U1PoKdf2AfIyz2s5HIIOrCho+EnuVRPBctWTL8UDTmuKESkuZjEDuAPN5XUC1qjH4Q6OnQt5wr1H/DSUQ34PoD9uch2Qtoyjxwrsuv4C40lF+eDaXi
+X-HE-Tag: 1769160685-29258
+X-HE-Meta: U2FsdGVkX1+LQKgXNZW8ZNOVu/7xY6ev8M3gOyd3YPfRT8mPvCQvELfICc+yF28dpISJXUBBFV/OPb922xzm9f6IBNBsiOJBDP8MXat51EQ+r2wpNt7V/trzFRqSiELMvbgfxDwQ9Voi3RNUccB+N+krJP2BE20Y1c+d6K9WGWeRRDhu10TYLkjx60aGW8fEDmGPuJSKQtb6mCj4pc/v9/K1aqa/RhAbXvlOxb0nHobnn4hsGLlAqY7BJ64eKg95qW/4qXs0iuB4jZYMUHBbbCyfFdrOCETLckQdljK4llGg2Jfq6o1x3LDKnKgKAX3woQxIDf5VspwMgBieqEON4riXLClzqxMvq9D8IGPCi82PWGw9L5dhjmix7GBc4Znwn3fmDmk49UflNIO8z2Fc42iTOwHPuUBAKBykPIL7FXApuy474JCNk5Wb+PfhE1Vzt+FcAKdkoqMtPmvGtwNvR1tUNi/ZC0hOXXPqGgro3zwIrCsIQ/rTK9SwRILM6FA2e0UkHIpWKmn0H7uj+pE1Bwiv0wBsfctqNNayYKXtUZkl7D+iEL7OanYwwVPw39oEfblvzDcKqz3qZHa3LKW5C/l2+uEt4ULgk8NEa8BMGqXqxN7a2pApORO8DcATPS4H+tkzL9w8/Eu5giad0BFfPCE8vUH8lx6b8/1UiK88H/qp5IDpSCTQIRYIt4q5Ho5oc85pJ2F5OevSTm+VTtld2eP/SOalzZj/0HS9MkYc0CzuYJTr11jfb00vqmS/xH3P27tzgpeG5M5TvKjt/sIg4jTrineKKIEVEVuzfu7WFMKmWR1kqKQUZ8xemO+uMtQnKZERb0ujCHtfNKYtxs7/qW39guh3SiUpNLVj5e62YlaOei8a9ZAPEwOXA6soyIsxO2MF/55RGoO9D660iPyox54gcbrTj5PdTv1OPftfpLcTnuDE0S9zTIGWoGQkGG4+0E1gzsrJqzO/cjAyWdU
+ 8twRXPm6
+ FSC5E3JVu362uRXg1L1AhGAgkEX6xJdAjXkm69MuMn2zs2iXdXpzV4vifVuAiEZ5fGQ1OPMz4MwgZUS4rpSBVyxxCTsPEtlqJCHhumUXgDRxDhnHM4p8OKU6AMBm/pOX8IVcT3H8fbKhq0M8AX73hlD9wVM4V7JSz0CaDhCF1bgikhKcn+5n3ykKxrf6qfNXlHz8V8aICQcuhLHcsUyn1ZcuQmKgFx591he6d2+cmCNW6mvhVBCyvjP7vBVTMw4VF1+DQ/n2kEUBJ3gWpLn+HaGKojWUdVt8kzbi7ImthJwEX4Qs6ib6AY8dPWoQzZh6B5g+U3WcNF65Ai794TCE+RGarCrU9iwmRtOEln3DxNRxRGML7lWVNGwM1s2b0mlian04zqDF/Em9ANqS+jlPjPHRIxjHTNNSvKI9VPbNGWtkMawaOLdbY25JoVaWr8B+DLTWd0uwZ3vdgZywoxCJQOb6kTD0u1pYZe3cYESdNVBxx2E3fzu43Lm9YspqPPqsosbb3/aiH/AnOwoIS02hhlMKa2EjK40ejtqGKBNM6TJpS567KR9i1pzgnxw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,113 +106,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============7258097213843698012==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index f3b8c71870d8..d71e86b85ba7 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-
-[ ... ]
-
-> +#else /* CONFIG_BPF_SYSCALL */
-> +
-> +static inline unsigned long
-> +bpf_memcg_get_high_delay(struct mem_cgroup *memcg) { return 0 }
-> +static inline bpf_memcg_below_low(struct mem_cgroup *memcg) { return false }
-> +static inline bpf_memcg_below_min(struct mem_cgroup *memcg) { return false }
-                 ^^^^^^^^^^^^^^^^^^^^
-
-These stub functions appear to have syntax issues that would prevent
-compilation when CONFIG_BPF_SYSCALL is disabled:
-
-1. bpf_memcg_get_high_delay() is missing a semicolon after "return 0"
-2. bpf_memcg_below_low() is missing the "bool" return type
-3. bpf_memcg_below_min() is missing the "bool" return type
-
-Should these be:
-
-  static inline unsigned long
-  bpf_memcg_get_high_delay(struct mem_cgroup *memcg) { return 0; }
-  static inline bool bpf_memcg_below_low(struct mem_cgroup *memcg) { return false; }
-  static inline bool bpf_memcg_below_min(struct mem_cgroup *memcg) { return false; }
-
-> +static inline void memcontrol_bpf_online(struct mem_cgroup *memcg) { }
-> +static inline void memcontrol_bpf_offline(struct mem_cgroup *memcg) { }
-> +
-> +#endif /* CONFIG_BPF_SYSCALL */
-
-[ ... ]
-
-> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> index 716df49d7647..415e3c59b6a6 100644
-> --- a/mm/bpf_memcontrol.c
-> +++ b/mm/bpf_memcontrol.c
-
-[ ... ]
-
-> +static void clean_memcg_bpf_ops(struct mem_cgroup *memcg,
-> +				struct memcg_bpf_ops *ops)
-> +{
-> +	struct mem_cgroup *iter = NULL;
-> +
-> +	while ((iter = mem_cgroup_iter(memcg, iter, NULL))) {
-> +		if (ops) {
-> +			if (!WARN_ON(READ_ONCE(memcg->bpf_ops) != ops))
-> +				WRITE_ONCE(memcg->bpf_ops, NULL);
-                                         ^^^^^
-
-When ops is non-NULL, this code checks and writes to memcg->bpf_ops, but
-should it be using iter->bpf_ops instead? The else branch at the bottom
-correctly uses iter. As written, when called from bpf_memcg_ops_unreg()
-with a non-NULL ops argument, this only clears the root cgroup's bpf_ops
-pointer while leaving all descendant cgroups with stale pointers to the
-ops structure that will be freed after synchronize_srcu().
-
-> +		} else
-> +			WRITE_ONCE(iter->bpf_ops, NULL);
-> +	}
-> +}
-
-[ ... ]
-
-> +static int __init bpf_memcontrol_init(void)
-> +{
-> +	int err, err2;
-> +
-> +	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
-> +					&bpf_memcontrol_kfunc_set);
-> +	if (err)
-> +		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
-> +
-> +	err2 = register_bpf_struct_ops(&bpf_memcg_bpf_ops, memcg_bpf_ops);
-> +	if (err)
-            ^^^
-
-The condition here checks err but prints err2. Should this be "if (err2)"
-to log when the struct_ops registration fails?
-
-> +		pr_warn("error while registering memcontrol bpf ops: %d", err2);
-> +
-> +	return err ? err : err2;
-> +}
-> +late_initcall(bpf_memcontrol_init);
-
-Note: The clean_memcg_bpf_ops() issue appears to be addressed in a later
-commit in this series (90eaa9cd0346 "mm/bpf: Add BPF_F_ALLOW_OVERRIDE
-support for memcg_bpf_ops") which removes and rewrites the function
-entirely. However, the syntax errors in the stubs and the error check
-typo in bpf_memcontrol_init() do not appear to be fixed in the series.
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21280790825
-
---===============7258097213843698012==--
+On 1/23/26 1:07 PM, Lance Yang wrote:
+> 
+> 
+> On 2026/1/23 03:28, Nico Pache wrote:
+>> The khugepaged daemon and madvise_collapse have two different
+>> implementations that do almost the same thing.
+>>
+>> Create collapse_single_pmd to increase code reuse and create an entry
+>> point to these two users.
+>>
+>> Refactor madvise_collapse and collapse_scan_mm_slot to use the new
+>> collapse_single_pmd function. This introduces a minor behavioral change
+>> that is most likely an undiscovered bug. The current implementation of
+>> khugepaged tests collapse_test_exit_or_disable before calling
+>> collapse_pte_mapped_thp, but we weren't doing it in the madvise_collapse
+>> case. By unifying these two callers madvise_collapse now also performs
+>> this check. We also modify the return value to be SCAN_ANY_PROCESS which
+>> properly indicates that this process is no longer valid to operate on.
+>>
+>> We also guard the khugepaged_pages_collapsed variable to ensure its only
+>> incremented for khugepaged.
+>>
+>> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Nico Pache <npache@redhat.com>
+>> ---
+> 
+> I think this patch introduces some functional changes compared to previous
+> version[1] ...
+> 
+> Maybe we should drop the r-b tags and let folks take another look?
+> 
+> There might be an issue with the vma access in madvise_collapse(). See 
+> below:
+> 
+> [1] https://lore.kernel.org/linux-mm/20251201174627.23295-3- 
+> npache@redhat.com/
+> 
+>>   mm/khugepaged.c | 106 +++++++++++++++++++++++++++---------------------
+>>   1 file changed, 60 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index fefcbdca4510..59e5a5588d85 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -2394,6 +2394,54 @@ static enum scan_result 
+>> collapse_scan_file(struct mm_struct *mm, unsigned long a
+>>       return result;
+>>   }
+>> +/*
+>> + * Try to collapse a single PMD starting at a PMD aligned addr, and 
+>> return
+>> + * the results.
+>> + */
+>> +static enum scan_result collapse_single_pmd(unsigned long addr,
+>> +        struct vm_area_struct *vma, bool *mmap_locked,
+>> +        struct collapse_control *cc)
+>> +{
+>> +    struct mm_struct *mm = vma->vm_mm;
+>> +    enum scan_result result;
+>> +    struct file *file;
+>> +    pgoff_t pgoff;
+>> +
+>> +    if (vma_is_anonymous(vma)) {
+>> +        result = collapse_scan_pmd(mm, vma, addr, mmap_locked, cc);
+>> +        goto end;
+>> +    }
+>> +
+>> +    file = get_file(vma->vm_file);
+>> +    pgoff = linear_page_index(vma, addr);
+>> +
+>> +    mmap_read_unlock(mm);
+>> +    *mmap_locked = false;
+>> +    result = collapse_scan_file(mm, addr, file, pgoff, cc);
+>> +    fput(file);
+>> +
+>> +    if (result != SCAN_PTE_MAPPED_HUGEPAGE)
+>> +        goto end;
+>> +
+>> +    mmap_read_lock(mm);
+>> +    *mmap_locked = true;
+>> +    if (collapse_test_exit_or_disable(mm)) {
+>> +        mmap_read_unlock(mm);
+>> +        *mmap_locked = false;
+>> +        return SCAN_ANY_PROCESS;
+>> +    }
+>> +    result = try_collapse_pte_mapped_thp(mm, addr, !cc->is_khugepaged);
+>> +    if (result == SCAN_PMD_MAPPED)
+>> +        result = SCAN_SUCCEED;
+>> +    mmap_read_unlock(mm);
+>> +    *mmap_locked = false;
+>> +
+>> +end:
+>> +    if (cc->is_khugepaged && result == SCAN_SUCCEED)
+>> +        ++khugepaged_pages_collapsed;
+>> +    return result;
+>> +}
+>> +
+>>   static unsigned int collapse_scan_mm_slot(unsigned int pages, enum 
+>> scan_result *result,
+>>                           struct collapse_control *cc)
+>>       __releases(&khugepaged_mm_lock)
+>> @@ -2466,34 +2514,9 @@ static unsigned int 
+>> collapse_scan_mm_slot(unsigned int pages, enum scan_result *
+>>               VM_BUG_ON(khugepaged_scan.address < hstart ||
+>>                     khugepaged_scan.address + HPAGE_PMD_SIZE >
+>>                     hend);
+>> -            if (!vma_is_anonymous(vma)) {
+>> -                struct file *file = get_file(vma->vm_file);
+>> -                pgoff_t pgoff = linear_page_index(vma,
+>> -                        khugepaged_scan.address);
+>> -
+>> -                mmap_read_unlock(mm);
+>> -                mmap_locked = false;
+>> -                *result = collapse_scan_file(mm,
+>> -                    khugepaged_scan.address, file, pgoff, cc);
+>> -                fput(file);
+>> -                if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+>> -                    mmap_read_lock(mm);
+>> -                    if (collapse_test_exit_or_disable(mm))
+>> -                        goto breakouterloop;
+>> -                    *result = try_collapse_pte_mapped_thp(mm,
+>> -                        khugepaged_scan.address, false);
+>> -                    if (*result == SCAN_PMD_MAPPED)
+>> -                        *result = SCAN_SUCCEED;
+>> -                    mmap_read_unlock(mm);
+>> -                }
+>> -            } else {
+>> -                *result = collapse_scan_pmd(mm, vma,
+>> -                    khugepaged_scan.address, &mmap_locked, cc);
+>> -            }
+>> -
+>> -            if (*result == SCAN_SUCCEED)
+>> -                ++khugepaged_pages_collapsed;
+>> +            *result = collapse_single_pmd(khugepaged_scan.address,
+>> +                              vma, &mmap_locked, cc);
+>>               /* move to next address */
+>>               khugepaged_scan.address += HPAGE_PMD_SIZE;
+>>               progress += HPAGE_PMD_NR;
+>> @@ -2799,6 +2822,7 @@ int madvise_collapse(struct vm_area_struct *vma, 
+>> unsigned long start,
+>>               cond_resched();
+>>               mmap_read_lock(mm);
+>>               mmap_locked = true;
+>> +            *lock_dropped = true;
+>>               result = hugepage_vma_revalidate(mm, addr, false, &vma,
+>>                                cc);
+>>               if (result  != SCAN_SUCCEED) {
+>> @@ -2809,17 +2833,17 @@ int madvise_collapse(struct vm_area_struct 
+>> *vma, unsigned long start,
+>>               hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
+>>           }
+>>           mmap_assert_locked(mm);
+>> -        if (!vma_is_anonymous(vma)) {
+>> -            struct file *file = get_file(vma->vm_file);
+>> -            pgoff_t pgoff = linear_page_index(vma, addr);
+>> -            mmap_read_unlock(mm);
+>> -            mmap_locked = false;
+>> +        result = collapse_single_pmd(addr, vma, &mmap_locked, cc);
+>> +
+>> +        if (!mmap_locked)
+>>               *lock_dropped = true;
+>> -            result = collapse_scan_file(mm, addr, file, pgoff, cc);
+>> -            if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && ! 
+>> triggered_wb &&
+>> -                mapping_can_writeback(file->f_mapping)) {
+>> +        if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb) {
+>> +            struct file *file = get_file(vma->vm_file);
+>> +            pgoff_t pgoff = linear_page_index(vma, addr);
+> 
+> 
+> After collapse_single_pmd() returns, mmap_lock might have been released. 
+> Between
+> that unlock and here, another thread could unmap/remap the VMA, making 
+> the vma
+> pointer stale when we access vma->vm_file?
+> 
+> Would it be safer to get the file reference before calling 
+> collapse_single_pmd()?
+> Or we need to revalidate the VMA after getting the lock back?
+Good catch. I think we can move the filemap_write_and_wait_range() 
+related logic into collapse_single_pmd(), after we get a file reference.
 
