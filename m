@@ -4,200 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9C9D6CFDC
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:25:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 599C9D6CFDC
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:42:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00B0C6B03C7; Fri, 23 Jan 2026 01:25:54 -0500 (EST)
+	id 7DFCF6B03ED; Fri, 23 Jan 2026 01:42:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F17DA6B03EC; Fri, 23 Jan 2026 01:25:53 -0500 (EST)
+	id 7B6CD6B03EE; Fri, 23 Jan 2026 01:42:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E06096B03ED; Fri, 23 Jan 2026 01:25:53 -0500 (EST)
+	id 6B8E26B03EF; Fri, 23 Jan 2026 01:42:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD7866B03C7
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:25:53 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9708AC188C
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:25:53 +0000 (UTC)
-X-FDA: 84362242986.15.B589F85
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012049.outbound.protection.outlook.com [40.93.195.49])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C103914000A
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:25:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NyeP3h+7;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf09.hostedemail.com: domain of jniethe@nvidia.com designates 40.93.195.49 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769149550;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 552886B03ED
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:42:51 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EFDA01AF766
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:42:50 +0000 (UTC)
+X-FDA: 84362285700.21.1417076
+Received: from mail-dl1-f67.google.com (mail-dl1-f67.google.com [74.125.82.67])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2C46F1C0002
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:42:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eWJaYjyv;
+	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769150569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NJRKGijDy281u3FFBQFNlpVMWwAgnO4o4gEkUuYonCE=;
-	b=gWJSZQLeH3eElbMa886kvcSjeqX3kEqtocL2ef2axs9xsOreacPx9kh/YpZnDvuGDmwxRz
-	9DRDOL8po8QzLh80MdBl4uMvxrnG0Rj6qpZ8kJTRtCIQKPveHBW0nCVNxnsN0i+b107+qz
-	XyUGos/7We5BRsgKmV8YpFAyEmQzuns=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769149550; a=rsa-sha256;
-	cv=pass;
-	b=06ekS0T23V3VDaZ75aAqoMCnvU60GNNV9lRuqQavkNLgaiBiOV99f/GDfutS+kwzwk9uPA
-	HW817SeyZw3d2yRsYg38WtP4IMeRbYUQF8Ox+WFWUrX621TyWDvc04oQh+fLRsrQhB+Hma
-	dWpyrEWSwa5djC+xvOTAw+IRMRP1cMc=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NyeP3h+7;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf09.hostedemail.com: domain of jniethe@nvidia.com designates 40.93.195.49 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NGgv+RejmHYyW0jMISSGTfDmv5EbLzLJ9F6rUK3cH7rwhTc2rZlhL/EHdtMVFNDb4tyr+iMR73Ujd0uGNqhPOVSRIeQ285alRRdViSTAQd23hFHrJAbUBB1mDXewfZyKGZhMPQK1GpNW4XEumU1V71ojbr75rlhAoq9LshqiJ4BkrrDlBd9qO+89lYk1qSgqFVjhXOcNgQvlucJEuX2aTeIpl9Yg2Tz6n0mPXtyRcloYhUhZv8xdtZXUJN6R3YYHTOqqQj0NC1eVY8wOgzVFp0Qu7CM0cNfbNr5CKvvovbUBxtW8a8JOkMT17zN2156TU3MH1K11p62MKjXcDndT6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NJRKGijDy281u3FFBQFNlpVMWwAgnO4o4gEkUuYonCE=;
- b=W0BDjLvC/a+DfrylfzRwdBQ+1i86YIQ7Gs2YaYfGPTzdw1JN6TQOyDvFsZkXiVZ7riVz6qe9/mf0uBV/MHHj1hvLYTmcb8zz/HTYhKucR4gcwBsYagoIlygeaQRKVwCbk/gndEyaXlgST1jZNdtXBBPUu4bvuuFMmvIcBmx/dopg50UAHovVNbL9a/aygIShVLY87FDNhGOI3N8pdT7WH+I00uiYZEody4iBwph8LwEgYtGM1HAXo66gZJYyu1h1dlYHDzy6tM4SFUPnP0VA/euT4/dac5XhwUK/waIkW9y/2YK4R0mwD4djdAOZIXDa+IyRFNw5eaCpXTvcGyhrpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NJRKGijDy281u3FFBQFNlpVMWwAgnO4o4gEkUuYonCE=;
- b=NyeP3h+7xaqd9Sc94XwpktoNdy2JS0OBzZPJoOq/N1vAeKSk/CWLYaUJXYYUnMe6B/B4xsHNivjsEFGaGtof5sBYTmHXg1okBjrsXYHL+WrTYrKPSRDnM+9xd5hKfNhOBtWmDFPt0hOKLSe4iJH1DHCZ5HyBBXgwDIuH+nRG1ScCnvA/Gw5k6qRflIaeKMQ06SwhtGbZv8GgKCTUrIdaSbcbbH4dwr09dhZxE7OvCh1FCqXnqwgRgyZ62h234/9AkRxjTghV1/ShM2sIVe8pmrjQUFUZA3bEmrVnk8fNuHlWtmh7YmuLBAeHQniGoffVx+2h2q7tRDr6i4BtDMCADw==
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) by
- DS0PR12MB8020.namprd12.prod.outlook.com (2603:10b6:8:14f::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.11; Fri, 23 Jan 2026 06:24:23 +0000
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1]) by DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1%5]) with mapi id 15.20.9542.010; Fri, 23 Jan 2026
- 06:24:22 +0000
-From: Jordan Niethe <jniethe@nvidia.com>
-To: linux-mm@kvack.org
-Cc: balbirs@nvidia.com,
-	matthew.brost@intel.com,
-	akpm@linux-foundation.org,
+	bh=RurLsspuwixyatIbkQyVE9ShmUOAQwG6MPVdwLrORJU=;
+	b=uibxAySIQa531YdmcJJqtGbOYkTe5OvM/bs2caVnnRyG7p7ikCCydop8rmK1L2GYjRNPtN
+	IzxU3kAR/pOVUwap0Ih4PnjXDkN+3aLbsS7pgWxIxjvSGtx5rCD42aHcyyrvc92XxJGlzB
+	gwRHdORVG54vPbGiu6wNtHu/jlLXZZ8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eWJaYjyv;
+	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.67 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769150569; a=rsa-sha256;
+	cv=none;
+	b=OnNZUjEv/rA7MCNzSF/DFhhrdnNbFQ7OJ0E+8pbYdHW3TPEvn65WMdGnSEUzw8Z+RSi42j
+	aKaRooTy3oRcTNJdCs2Ks2Ji/BuMMbfzJPpsDI3pigdPzbFxQxbVvmwFuAqSbGZ8nA/wCG
+	J+pTc279nioeDMiDwc6t4WJTQ1GINVo=
+Received: by mail-dl1-f67.google.com with SMTP id a92af1059eb24-121a0bcd376so6535147c88.0
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 22:42:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769150568; x=1769755368; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RurLsspuwixyatIbkQyVE9ShmUOAQwG6MPVdwLrORJU=;
+        b=eWJaYjyvhGNvYVMdXrv5G+AoF66cL5UJL2PSE/Qb+z+BDfZ2+BZNRshapuI7+D9GYu
+         KHF4ylTeujz+YnIY6ZU3lxkwRxuSUI/3vghp7B8P66odXgHsY+q+Wc2GS9Sn7+Hkm1w0
+         SfLYhBMbz73UE1dtnsMDj10g5lZ46HRlxtX7QuBK03lNgckYJKuztfwuGV25ZGHCPCDH
+         WUVhJCT2Yq3gutJ7H5QJFJbLDt+fdUydflwD80PTBPtTLASdkcH6Uxx3Y8dgZZ+eDpTV
+         e742URwNZNUPJ20VAOlfn8M/n5Vtxa9ax8AoS2ahDAZP+7qrkIjTf8NbHbozKDIL4eF4
+         NdfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769150568; x=1769755368;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RurLsspuwixyatIbkQyVE9ShmUOAQwG6MPVdwLrORJU=;
+        b=J4DEU2yXuDH+ba9Y5Vfg1ulsv+RNP+kes+QgJdvbauh9iUpGcAIlzvr9NVIkpGgPJS
+         2/Ymzmnkfw1ikiJEbmm/498i+msa94sHglwA7ea/MD9+/G2a3Ju8eaHi9UY3NHhT6xOy
+         0hDvcEnncHE2N8yEvjjS28oqgqzqq6oKwX5OFcVfoAazBzq99oZrbTprvLbcjVJOrglU
+         Ab/Fk/1dnEZW9qrnV/oR/ieJdxWMzi4PDsxAsxkpQf9iy5uqyaPXz3YseoPQIoEE78tP
+         fC51J0PDT/gOf5eHMWw4HHFql30RIK1ryjvb5JaF5oq0ysjXseostpLMSxi/L5yVIp7/
+         A9cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCWScz7uKYNkzS1P0wCKot4hq5KjTX6uka78K1qTbSzKJcLa5urjHMakaD24CoHuznHA30Ol4KtA==@kvack.org
+X-Gm-Message-State: AOJu0Yxo3LHRjl4L8kkgiPNc57tfZKrhJOd769oJHDsvgTrOQB4q33wX
+	eC4X48cyvT+w/Jcdczb45HzrJmyHGdTZKueSJeLxsGNIv5dv4Wfcafwo
+X-Gm-Gg: AZuq6aJZ/BqGW2Zp0oXVq6bk2uUeT5Iytfm54DhfKFa468b+mMuS/XlwdRHg2HaOdZ/
+	CqOTBoWRQPQVPYn84UTQCDQi20+8JC32SNWX/S4Af8w/Lfmsd3UceqdrdetO+oC6oQEfiPUYP6j
+	Qss3WfP8Jh+uCMd3qa2cy6eOQUI+7x1KHQAB8tvsOb0UQJe3laAnUBqb39yorAE4mwN92+OCVWi
+	0U8pF6jP3RJch0fDdJqTdbzBCEaFgyP6aqsVc93nWDoSvO09/LKZ05mINiptfft2gAh5i1Pa0aM
+	ow1JCOsr5wijEPG2Fh75rIC/d5fr/D/IVFW2Z/qGpXSYznmV+8epEnbYm0TcHXG57AaKhhKuRI2
+	gk8nbzhVeCPqEFcSEvafY8lkcG/aZAok95xd9rr0o1aj1iWYF8VjE3Ncn6c1X28O2uHCY+lgj0W
+	wQMYk=
+X-Received: by 2002:a05:7022:102:b0:119:e56b:c74b with SMTP id a92af1059eb24-1247dbb463emr967983c88.16.1769150567825;
+        Thu, 22 Jan 2026 22:42:47 -0800 (PST)
+Received: from debian ([74.48.213.230])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247dba0135sm3130527c88.17.2026.01.22.22.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 22:42:47 -0800 (PST)
+From: Qiliang Yuan <realwujing@gmail.com>
+To: vbabka@suse.cz
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	edumazet@google.com,
+	hannes@cmpxchg.org,
+	jackmanb@google.com,
+	jis1@chinatelecom.cn,
+	lance.yang@linux.dev,
 	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	david@redhat.com,
-	ziy@nvidia.com,
-	apopple@nvidia.com,
-	lorenzo.stoakes@oracle.com,
-	lyude@redhat.com,
-	dakr@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	rcampbell@nvidia.com,
-	mpenttil@redhat.com,
-	jgg@nvidia.com,
+	linux-mm@kvack.org,
+	liyi1@chinatelecom.cn,
+	mhocko@suse.com,
+	netdev@vger.kernel.org,
+	realwujing@gmail.com,
+	rppt@kernel.org,
+	sunshx@chinatelecom.cn,
+	surenb@google.com,
+	wangh13@chinatelecom.cn,
+	weixugc@google.com,
 	willy@infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	intel-xe@lists.freedesktop.org,
-	jgg@ziepe.ca,
-	Felix.Kuehling@amd.com,
-	jniethe@nvidia.com,
-	jhubbard@nvidia.com
-Subject: [PATCH v3 09/13] mm: Begin creating device private migration entries
-Date: Fri, 23 Jan 2026 17:23:05 +1100
-Message-Id: <20260123062309.23090-10-jniethe@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260123062309.23090-1-jniethe@nvidia.com>
-References: <20260123062309.23090-1-jniethe@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0152.namprd03.prod.outlook.com
- (2603:10b6:a03:338::7) To DM4PR12MB9072.namprd12.prod.outlook.com
- (2603:10b6:8:be::6)
+	yuanql9@chinatelecom.cn,
+	zhangjn11@chinatelecom.cn,
+	zhangzq20@chinatelecom.cn,
+	ziy@nvidia.com
+Subject: [PATCH v7] mm/page_alloc: boost watermarks on atomic allocation failure
+Date: Fri, 23 Jan 2026 01:42:30 -0500
+Message-ID: <20260123064231.250767-1-realwujing@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <dfdd0648-a7da-4e8e-8781-cf094da4844f@suse.cz>
+References: <dfdd0648-a7da-4e8e-8781-cf094da4844f@suse.cz>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB9072:EE_|DS0PR12MB8020:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39f25c91-e68c-476f-d320-08de5a480c2a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?SH9CfAR6FJtJBsqN/p0iwChxvE5nPF5fcbX/G7B8JmDd1CuuP3A9kvedHkgi?=
- =?us-ascii?Q?Sm5uzYFZUMG8JKxmXAsvK02uZ1oaNPhOf3LcUKg7tsC+48PpUdttfJ1UYOCB?=
- =?us-ascii?Q?cXlevDI8DsVTNd6UOa4a3XW9Hj1BDeQUJXFApzTVv8VMKQdO0znxkf/PMrKc?=
- =?us-ascii?Q?Lvr0KqGimRw7AB8HQG42KnJClhieb7eI5tfDv6p9R2mCVvwUPIRR39+2DHZK?=
- =?us-ascii?Q?w2b2KNUzLqYDkeE5dHhTxRJWNQuCjdhH6WKSuoH+blqULzX1BitkEdfllWPf?=
- =?us-ascii?Q?iffGevZ6m9ophCTaeKjYeojnaHoZdh6kZzmJP4tuBUNCNJePgePXfbny8r+Q?=
- =?us-ascii?Q?Np43k3z7E8ak9M61u4/Kc3sK2/sTb1dlOUltG9z4BrYtOY6fBkbwRj1gq+iV?=
- =?us-ascii?Q?+1CPnwlC7Ytx002vhqDuSdrLq4BqK12jZkqjXPDo/HImnEcGSupS3AAV9kTi?=
- =?us-ascii?Q?bwcYc5cnPpVAKqeLPx1zlFjlvTxmvPeMQTufBXoV7aHE2WL/7sxqxw3sA5L4?=
- =?us-ascii?Q?/UZJYXfADSOyHedJWW3AH5AGRl21FLgpgKudIiQ/sgNzwDz+S9KVTjga16qK?=
- =?us-ascii?Q?ZG2QFHp7RtRtVnB1JyHY2AQwSLib2TPtz0GH2qSG/12CB/Y96NfL5i6+FYwj?=
- =?us-ascii?Q?jE0qJSSIOIEitHn0EEGPrqCeMtHjozrgJLO49PuQX9MCU5xePtTba/89/mhu?=
- =?us-ascii?Q?KABaDfQX7AUNdNZcAWmX0PShtE2JtMNr1wvZIxb/paGWkO/N5YAHmbNIb5F1?=
- =?us-ascii?Q?4E0gzOcSeZ80mpIcNeGcjkV+aex8O9KegNgtP+vQG4rQ8d8itFxiJBEXt3oC?=
- =?us-ascii?Q?M45FxYsQ5nnUtqtS8sdT/dEkPRmsDPJUT7hkyhv27c5TKWNfdlGmbL5Rr2zQ?=
- =?us-ascii?Q?rRfhmh7zmkCykYCUO9ZPZ6VJ6WpZJqQB4p86fcYnp1/dHS8n301d/YDtkKUF?=
- =?us-ascii?Q?8KlxKsTyv5vSFyWktb0aR8Z8L6INQcZLdp6wDV43dvQojDx5zG8lcBGzK97q?=
- =?us-ascii?Q?QCiPPlwfwKPJ1j/zSJJ6y0DmpF/TNQA/zAKGtu8BFhvsH8BcDKYdzUra9/G2?=
- =?us-ascii?Q?F7AJZfZ3+ZTHnrBRHtEVMBS307bJqpVKhbjmpXqk2dDZQpbe8k3AxHVbx+1F?=
- =?us-ascii?Q?QM0VMgXtGSvmr8xq/9mUaJp4UT74QTEnVQyJxbgMJYlF60DqFeFTVsfcn0Hw?=
- =?us-ascii?Q?inKMrExIKX3/hG1XE4+kDkr6RYSy8XQbcW1cBKAPLzz80SrKJLu/hUnA70XW?=
- =?us-ascii?Q?dYGYzcJpIln7qnnVRxFdTHqzQGA6YiJDTyDnu+JFOaoHuhb7JfeMgZ4999ek?=
- =?us-ascii?Q?jbLC77wX+iGifw3G4H1K/pRDe/vV0ajctDWqdeevdBmk2dEwmnmaU2GXU63X?=
- =?us-ascii?Q?JTmxy82uDI+Sij61eWI8jQiPV9HDhFQKwy7mkrc/D2vPet2aqq9ZnF+GqVcc?=
- =?us-ascii?Q?b4XuCf2h/H6MUvf/wTIiUFVDI+SGeqkVPefrpblci2mbQo1QTgEdEc7RgkAc?=
- =?us-ascii?Q?w1I3GPW96piLS0eYGvM1X5R2NisaOX++l7Q5DmjAaJ3pjOLrqT3+MHRIFX2p?=
- =?us-ascii?Q?ZtYCgaEW0vyQF3CMIbY=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB9072.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?UDxsSYvR3+rWsQll0qtAhWHNxVvRvP8t7WvEuTWX+2tP1HzOPKeSmLZXM8fp?=
- =?us-ascii?Q?U3JiY9VhsmDg5opcoIaldP4xa6UsgLDV/hTSF1tHdcXX3l97EZXdzlvRkd5d?=
- =?us-ascii?Q?BMgP2H15TKOJhJi5s08lOUP6+wKJoE5VFyrDI6+QDU/sGVOeSi4Pkp+iSSqm?=
- =?us-ascii?Q?ys1pZohzdxO9Ni9SjQTY67w396Qfdnxqk2IIshzVXPmn5YIMxVdq4ctTIkJx?=
- =?us-ascii?Q?b0S4WxlfYjKb3X9H1fjt3206pmnBpdWWgrfeJgk6Tf6Ku5h/IX2CnRcwQ2EE?=
- =?us-ascii?Q?9Uw5nNXDzoVb4EWq7R8c9yxLjiyDI0WgCIn12ToHAZfST7EneUbt2maUhub9?=
- =?us-ascii?Q?NZKdV+Stqak4gMXDyLa2MMiUj2r/wYlywnrAwYwmoFeAIGGoBuFUnLlHgz9t?=
- =?us-ascii?Q?YZmgWHMn/TPdKN0+zNmEYwE+XAQBwxHGf0zs9IHO5zhLEkUQT6Z6jJBGMBov?=
- =?us-ascii?Q?0r4YJVRz5iZOeguvKcH3Vqqjb33KdoiriT4SlZByAioEWFLl3HvEXu9W5fZ/?=
- =?us-ascii?Q?cS6Pue/Evkk0zuZ3NJ+wA/kPi8kT9be+CmpxmgWWx1hIKpC/07/9oh1kFCKC?=
- =?us-ascii?Q?Yl6BIUQddjfoAf38zT+2rxrpGfBF4Xj1q4tvvejbppBMC7nIZ32OJNRHyHOA?=
- =?us-ascii?Q?io6TOgma4p1GhW4U1wGsGKtqVq6nr/uAseliWcuXelNrTMVxZsj4cHR497Dd?=
- =?us-ascii?Q?yyMc6q2pA3Y3w5BpTKYMnpJJWOR4aBnvzvTHk4TqX8cVDHQuq1uVyyTV5B7O?=
- =?us-ascii?Q?QUjEnAyRKa4ekznxqok6b+KnwSVs6x70tc1F7TDQJwomxCN0urg2vgrAfLi6?=
- =?us-ascii?Q?AKqoIa8C44LdKldzCruZ3DU74UCIQ2dQgf8nk/wiM+tADSE4n8OD4w+EKDyg?=
- =?us-ascii?Q?JxKaqC7/uywUdUFmi+IcRJq89gY1L+24OsQMM7zJ1SPo/zwvNxZzhlYNY+ed?=
- =?us-ascii?Q?rH1N1jIjUWTh0Z2yrYODsj5pByK4G8MryrERkWMTtmK7jScUj25HeiQMHIDU?=
- =?us-ascii?Q?D2xCjh/yLZUdBO7zyn7UJfX5EJ2KGExyh776PEUPHydAQfyNtW8lXtCJ9SNz?=
- =?us-ascii?Q?jZmT0vzv4W0LNHsFOXeawWPRXmfoYPw96Rmjw1k+QVBA28sKN/iMTotv0h10?=
- =?us-ascii?Q?J3wTkXJwN46mS30BO+g8w+XEKXFNBHRtnvVoMYvpmfwBje2YTdY5CwKymqPE?=
- =?us-ascii?Q?TLds/mZFeZwWPo5lNni3rrdeCE4ghnYCQRqLf+gJomifyPnU/ytdAseQ7Gjy?=
- =?us-ascii?Q?Zo/4w4Sil8ItS3skllv2ecsgqycMPOczhQJIRaDzrlQMadH5HI54pP9z0ITI?=
- =?us-ascii?Q?ZVA5DODWwQXoeAxVrDQyzMNHMB3dKSb2zBYQyCRisdVVGH6qZAG3CwRXLjjv?=
- =?us-ascii?Q?8tR1cb3QtMzl7G9lqTqYqGniaDdN0kMbqQZvOj7SZHNNTXyLw0LheLFdLtHH?=
- =?us-ascii?Q?vDBb5/Hafqs4i9Qp7PwRWJmWMM8WtAkiFnevYOwhrP/TEHWJxcTmd0P98JvL?=
- =?us-ascii?Q?BWuac9xBVRODcjEF9X9CkQWTHGituU8dPOqpi3VCZJcFOF+KiGEYihSp5tj3?=
- =?us-ascii?Q?syosOfvzucumElK6FyaMsOttLdR/MUfbzx5xRjdXXuwC3o3/06fBO7TucXcU?=
- =?us-ascii?Q?bI9PcqP7bCM7jegkM8h7g2zBc45Pp9U7/n5cHLBaYdhVOlWZW1YREe2IIiTA?=
- =?us-ascii?Q?d4+7vw+UfXe1uRiXxpodkrqTks99N4I9HSt2ULaTM0xYryxcP8mpFIOdeo4Y?=
- =?us-ascii?Q?tbwFSjivJw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39f25c91-e68c-476f-d320-08de5a480c2a
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB9072.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 06:24:22.2519
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KNEiXOdYbiSJnz0SoMv5FhVodGtjVBJ4aJMoXZOL2h4haGw4nrf8gsSyw/vvQNNdUPcAdmXRf7PIEBPw7p0Dcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8020
-X-Rspamd-Queue-Id: C103914000A
-X-Stat-Signature: aot3modia9x7h18m986e6gp75fsaj6ke
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: imy5wpf4oazp8zghyhhqa7gxouuh7fod
+X-Rspamd-Queue-Id: 2C46F1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769149550-906899
-X-HE-Meta: U2FsdGVkX1/Q6YoFqJKuZ0WALMpdjDNvPut1utUvvsHiEGTBCwFCWoRXt1TJFFQz1zmZK3or4FDmZq5Cv1SuJNLOuTdIDfcx/ExJm93gjZrzc9fHPxvfwwnwiAp+5zWEbO+qfErrtF6Q8BY/eXlAbh3PPH1pfbAevILiGMsJjGMfiwazKKWgMbJ3nLpjpue1jtzdJrpbxw1+qeOWQc77MA5K6kVtAu5/PKf49tLpPe5axba3cPqrneezsdNYHwMKOKpibQ+yXVHjnRYEW/qYVsMqjaphvHXBF5SLOsoFj4y495a7sxnFA3k5gdQZciMAYz5e+raPhJC/RTmKlQjQ2v1gpGFIfmt+oU6g39TGLWmdF9JLp6TB8k0uchnIZLvidaSv9stYdT+hPJyGgP4QKKZ9y1L08mTcVKo6sdnUs8Odjzf2lJ7zPbxrH7izqTd1W7xMHfUkpY+wLp7dRUe18CcIfBPRVM9n+1/oF7swGJD1JJlqdL7tVk9Lap/+eQF6GdzK+ilPhi/ci6IpPm6ekSUup/tSDby08O0o/gHVwqe2rDy6PnE8a1YGUn9b9XF+4ZliP+mV9Ga9mIS1LVbGr0PH0t7AE/TpGedn9zP81i3NejZyJbvQGf55b5CeBGccdar3cov4yElC18P509c3iN127M3slX8qGwVQTtoiK3FRATJ1L16N3e3i1XM4tk6Davc1MH3qwmiEuRc3zqk+N5k7CRKmyNlSTTWaxLi0qMW3cNBn25c+BCdNt8ugk2tqZkN4V2qiJLBCHpEq3UqXKkTvbzfj1Sozram/tOhktQQ1MR9JbRAjD0pCNAmSATRgALb2TaG8hxOheDO2GQomhtuqahLjZxw2U8m0cN10fa6a3QuhGpLhyQ+YJhIIQB/vvmz3RPsnWJ11ou6gPqzJNSGwumyknBvfoVMhnK/Ejbz7DKLWmAEmFFk9LENzMlJUaZppH3bTyA5iQB35JSZ
- xvYJHsw2
- /O8BllYQnHtbseinNX4owAyGztg0k7msJ1dq4Vd2+LongEpWkx1updZZB8HE+59S6133uyR8Nys9WyfV7ESI4glw9MlNXg1W3pp/ySltlVhSXskpHRya1gFk30B3iTEFFTu+nwA43M2llpIK+GnB2BT1AU+iAtrseF6HSrB0ihQBwyQbscFSyg8r+AnYXn2FK4Gg9li5ZMGEbyXOTEciRSKDsK6tdQOxpadkX/spQM+zVL/3xOGJtUnbNOphYXTe1V/LDfzQ7daCcxXKnbMXv5jA/WLAR/ujBMfKa/fMcCxl2Gz2izI1QsBsJ9LUp/urGiz6lJKt3q/jsVEyh6R7ZOqG7fzTTFlhXk1VAFxCMiUyHKHNv+wPI25XuncE2TYE3XcY3yuDbRRryOmTt4Dc6IQaNTFzHkCOE6QYHEPklJDWQ2yPoekYwZ62D9NvlRntIewt9pYM5CKp7KSv3w8Co2YMdjHLeG/boXcF43Tn9seyVqpKBuwNwX2kuU/7LvMvrXFH2vDmC10HdC/GHvXwV6WS2DST3aCuBwCqw
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769150568-757533
+X-HE-Meta: U2FsdGVkX19WaG450cIpplcbTes6d8IdSRv/kZETny7NsDIhQ4G+GVXc2MpEGKg43B8SnsFyb6jYvmgrUVjCS/7+thOJ/3Bsba/98m9MhQzr1wIt01lJGohtAXlBpnq1pU0/dDN8PWB3Fu1qWbvy8k+b/JMiZTUBakmTQ4gX6ZJCOmjScEnc/93T1I8SIEv21ydnNftVCQKxXZNRbWX7JGByJ0PEKzPAj0Ffaac5gdIxkaJTEHclgM0MT54gQ3G0V0SdS3E4sor2QPSJJucDdlGcRh416O6VCA51XntMAoXwiU5BEmoyhxM3ng4z2reJeFhTafkTnj4iZsIN/9d1fctloiog/HeUxK9lr+aYRm8qqhjlWGgf+ktNuedBHZKVtRDDi4D1f/NcugaL7W+v9A/NEw2wM7/HbBzp8zTxuiGZkEC3SWTYQnV8bTW7hrCIM5RhmDVRIuFI4htaFdGAlvWYLU1xJbO6G1iXfCqe7EHFdwomr/6XHT22iPewRon0LfgaIH7ylnVePdO1GZ1ilVFsnZzjYuPmiYjoBkTcKcZju9ceK/KNZiFmB1WwMViJjNBL+Rva4C76fxs3evv9ueFaYtWmo3hwnNnZuFs3kzvDHjtBTPeO7IXPMajRSZnePHwqD2zOFJOaIGCblmUSQkdLAaZ8xHbfWxKkWWDC7prYpkNLq5rtukf7lrdwP03lofAOZve28772fdutESSWPk/ombd40K5VJK5pygwdP+M8IZUVjbJiIC3O0nwKEthf84Vp01kSZFLlaYBXrIT7OQxfJJ9mSx6UxAVm5CBFYcVw8GWaNrVIl9ICejf+5F21fk+Nae0QEO7DcqeWe1tkK9fooGHhcxqdSsNkLKnNbrsX3dIwOyri+ZSqL8uSnG5e64OCRvfWRx4Fnp9+prnER2qrkA6cQRHz4c3uqu0+bG6ML0p4eV04TK1qfGR5R9Jg+c1B/nbL8BtVO8aMfip
+ fRLYWURo
+ sUfP5wreIrMKn8UNlbn1aMNUOpMt6IDqFHbq+NjZMs88MsyO+/paVz8G8ezIWKcSJPSQVehH7Q0G/OKaT3Ngp4tYPGIlxyOe3UysZYK5bG4Kff4jGolwS8CwI706jWl3hllq03Mk6h1rCEH9l4dLFu9tA83Cb6baRdvtJtkX+ENPIvOigmkcmaa8Ph16q6hDtXMgCI5jiKMTin2iIAU2QY+sd7mwqMwt/3oIGDHtDR12TR8QUMSWQVfMvXOqhEIdylCbLgGxJ0LfABJQD5DykpDFHMrUY8OYpZM9FoNA6jPP9ypxChJjwVFKBdTpP0AKBITbk+g8bYes9w4tRLdNXH/iVBMPBH3EMT695fRcP/n++ZerU9jtPzgBPkrO8aHk8islbVhurBUi5tBxOdv5ljz4GhxtfjZqv5cTJaVMtvEaO8zOUoYyGrr/8bikpauec2JbgSAdpxsfoDWf1mZTfD/zfo2sGY3eoQTswtDOhHBrDmOkIWp2PsfWxMRGEm9cGycxxrKJ9ZHsBybOuAkySxewePccCcFd6JuvW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -206,58 +139,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the migration entry creation helpers to automatically create
-device private migration entries when invoked on device private pages.
+Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
+pressure as they cannot enter direct reclaim. This patch introduces a
+watermark boost mechanism to mitigate this issue.
 
-The corresponding softleaf predicates have already been updated to
-expect both migration and device private migration entries.
+When a GFP_ATOMIC request enters the slowpath, the preferred zone's
+watermark_boost is increased under zone->lock protection. This triggers
+kswapd to proactively reclaim memory, creating a safety buffer for
+future atomic allocations. A 1-second debounce timer prevents excessive
+boosts during traffic bursts.
 
-Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+This approach reuses existing watermark_boost infrastructure with
+minimal overhead and proper locking to ensure thread safety.
+
+Allocation failure logs:
+[38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
+[38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
+[38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
+[38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
+[38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535649.655523] warn_alloc: 59 callbacks suppressed
+[38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
+[38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
+
+Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
 ---
+v7:
+  - Use local variable for boost_amount to improve code readability
+  - Add zone->lock protection in boost_zones_for_atomic()
+  - Add lockdep assertion in boost_watermark() to prevent locking mistakes
+  - Remove redundant boost call at fail label due to 1-second debounce
+v6:
+  - Replace magic number ">> 10" with ATOMIC_BOOST_SCALE_SHIFT define
+  - Add documentation explaining 0.1% zone size boost rationale
+v5:
+  - Simplify to use native boost_watermark() instead of custom logic
+v4:
+  - Add watermark_scale_boost and gradual decay via balance_pgdat
 v3:
-  - Provided as an individual patch
----
- include/linux/swapops.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+  - Move debounce timer to per-zone; optimize zone selection
+v2:
+  - Add debounce logic and zone-proportional boosting
+v1:
+  - Initial: boost min_free_kbytes on GFP_ATOMIC failure
 
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index a70a6809e9c6..2591ed914d22 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -205,6 +205,10 @@ static inline swp_entry_t make_readable_migration_entry(pgoff_t offset)
+ include/linux/mmzone.h |  1 +
+ mm/page_alloc.c        | 46 ++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 45 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 75ef7c9f9307..8e37e4e6765b 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -882,6 +882,7 @@ struct zone {
+ 	/* zone watermarks, access with *_wmark_pages(zone) macros */
+ 	unsigned long _watermark[NR_WMARK];
+ 	unsigned long watermark_boost;
++	unsigned long last_boost_jiffies;
  
- static inline swp_entry_t make_readable_migration_entry_from_page(struct page *page, pgoff_t flags)
- {
-+	if (is_device_private_page(page))
-+		return make_readable_migration_device_private_entry(
-+				page_to_pfn(page) | flags);
+ 	unsigned long nr_reserved_highatomic;
+ 	unsigned long nr_free_highatomic;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c380f063e8b7..94168571cc38 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -218,6 +218,13 @@ unsigned int pageblock_order __read_mostly;
+ static void __free_pages_ok(struct page *page, unsigned int order,
+ 			    fpi_t fpi_flags);
+ 
++/*
++ * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
++ * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
++ * Larger zones under GFP_ATOMIC pressure need proportionally larger reserves.
++ */
++#define ATOMIC_BOOST_SCALE_SHIFT 10
 +
- 	return swp_entry(SWP_MIGRATION_READ, page_to_pfn(page) | flags);
+ /*
+  * results with 256, 32 in the lowmem_reserve sysctl:
+  *	1G machine -> (16M dma, 800M-16M normal, 1G-800M high)
+@@ -2161,6 +2168,9 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
+ static inline bool boost_watermark(struct zone *zone)
+ {
+ 	unsigned long max_boost;
++	unsigned long boost_amount;
++
++	lockdep_assert_held(&zone->lock);
+ 
+ 	if (!watermark_boost_factor)
+ 		return false;
+@@ -2189,12 +2199,40 @@ static inline bool boost_watermark(struct zone *zone)
+ 
+ 	max_boost = max(pageblock_nr_pages, max_boost);
+ 
+-	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
+-		max_boost);
++	boost_amount = max(pageblock_nr_pages,
++			   zone_managed_pages(zone) >> ATOMIC_BOOST_SCALE_SHIFT);
++	zone->watermark_boost = min(zone->watermark_boost + boost_amount,
++				    max_boost);
+ 
+ 	return true;
  }
  
-@@ -216,6 +220,10 @@ static inline swp_entry_t make_readable_exclusive_migration_entry(pgoff_t offset
- static inline swp_entry_t make_readable_exclusive_migration_entry_from_page(struct page *page,
- 									    pgoff_t flags)
- {
-+	if (is_device_private_page(page))
-+		return make_readable_exclusive_migration_device_private_entry(
-+				page_to_pfn(page) | flags);
++static void boost_zones_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
++{
++	struct zoneref *z;
++	struct zone *zone;
++	unsigned long now = jiffies;
++	bool should_wake;
 +
- 	return swp_entry(SWP_MIGRATION_READ_EXCLUSIVE, page_to_pfn(page) | flags);
- }
- 
-@@ -227,6 +235,10 @@ static inline swp_entry_t make_writable_migration_entry(pgoff_t offset)
- static inline swp_entry_t make_writable_migration_entry_from_page(struct page *page,
- 								  pgoff_t flags)
- {
-+	if (is_device_private_page(page))
-+		return make_writable_migration_device_private_entry(
-+				page_to_pfn(page) | flags);
++	for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
++		/* Rate-limit boosts to once per second per zone */
++		if (time_after(now, zone->last_boost_jiffies + HZ)) {
++			zone->last_boost_jiffies = now;
 +
- 	return swp_entry(SWP_MIGRATION_WRITE, page_to_pfn(page) | flags);
- }
++			/* Modify watermark under lock, wake kswapd outside */
++			spin_lock(&zone->lock);
++			should_wake = boost_watermark(zone);
++			spin_unlock(&zone->lock);
++
++			if (should_wake)
++				wakeup_kswapd(zone, gfp_mask, 0, ac->highest_zoneidx);
++
++			/* Boost only the preferred zone */
++			break;
++		}
++	}
++}
++
+ /*
+  * When we are falling back to another migratetype during allocation, should we
+  * try to claim an entire block to satisfy further allocations, instead of
+@@ -4742,6 +4780,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	if (page)
+ 		goto got_pg;
  
++	/* Boost watermarks for atomic requests entering slowpath */
++	if ((gfp_mask & GFP_ATOMIC) && order == 0)
++		boost_zones_for_atomic(ac, gfp_mask);
++
+ 	/*
+ 	 * For costly allocations, try direct compaction first, as it's likely
+ 	 * that we have enough base pages and don't need to reclaim. For non-
 -- 
-2.34.1
+2.51.0
 
 
