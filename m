@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89DCBD72362
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 09:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C46D72350
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 09:19:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCA486B0486; Fri, 23 Jan 2026 04:19:03 -0500 (EST)
+	id 9AF326B0488; Fri, 23 Jan 2026 04:19:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D94B56B0488; Fri, 23 Jan 2026 04:19:03 -0500 (EST)
+	id 92B6E6B048A; Fri, 23 Jan 2026 04:19:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C63456B0489; Fri, 23 Jan 2026 04:19:03 -0500 (EST)
+	id 771736B048B; Fri, 23 Jan 2026 04:19:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ADCF66B0486
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:19:03 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D47E160148
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:19:03 +0000 (UTC)
-X-FDA: 84362679366.28.AAC08A4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E37921C0004
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:19:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=N5SCKLXy;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 591206B0488
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:19:06 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1FA7616018F
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:19:06 +0000 (UTC)
+X-FDA: 84362679492.24.A1E1471
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 895D81A0004
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:19:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=kiwWVxqw;
+	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769159941;
+	s=arc-20220608; t=1769159944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WZlKlpSHCwLDlw5xSnqV9Gq0+CblMC7kHTtdvfgfoLk=;
-	b=i0YVcrBAjIERZnvo6NHktMQ7QBhOjDtGWsgjdEOZzFqZVO5/md4j3A/FTOOokltq+pPtEo
-	jtEBjzQu4abqJG19tCka/rocx2cyq1SWA3Gy7icSGPkpJ8UIZ9VVlFIvlIHNAkGOHKi9ih
-	wJdiFicpXTQAzfu5K/iwcfOeQ+T7t10=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769159941; a=rsa-sha256;
-	cv=none;
-	b=22IkJtyDgylDBg85p5MkFLRIZ9yeB0wT/firF4T8YEy7zr65TJ7as7m4Mu82zXGMcBuF+b
-	NWIzzufTm12YHw0AY+NygfUx0foYrDBkBeYlPo+fEUOlRDrNouIJVwWKPi61zGVgMcP2wK
-	Q36xtZQO23d/Lml1euBYdYnzQpw5PDg=
+	bh=PXtqj8SNV9zwzZjcPiVAucc5VG6lk9uPprPrNqSZIy0=;
+	b=zXhY7PvjaYe1/EeNDtiBB8ejhMlmYx4EPNeqjHQCCHcbW0xJr/YdzsD/OWKvlJKaAd7yJi
+	lBkY837uVZGuInVgjACxIiYFgYvj1ZeK6z+UG19LqiM2CV1CKQ0e+E8lFqG5kZV4DeXm5r
+	o4RjGbCGDTzY0Osgs+E484Yrx54Sofk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=N5SCKLXy;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf19.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=kiwWVxqw;
+	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769159944; a=rsa-sha256;
+	cv=none;
+	b=vc+Xd5HqCNqPI3bmfV12CqRhoJ0kMr22vi3huvChe7ExnUjGoSdJTpcAkN/URgvrqxvf1Z
+	Y6MTGm9H4NAIY+eWxm8Lf2tErVvjyOTO4X8n6nKywYzgOmvuzPNRAL/Iis8zL+HsrF6h0Q
+	jNFy+rAWcu6YoDevqbiLTeqDFpsL17M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 573F5600C3;
-	Fri, 23 Jan 2026 09:19:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBFFC19422;
-	Fri, 23 Jan 2026 09:18:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6ECDB44482;
+	Fri, 23 Jan 2026 09:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4B0C116D0;
+	Fri, 23 Jan 2026 09:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769159941;
-	bh=lAPN0HhdMwPzTnR1YDIQgmBs7lFW2+TjNgBMANKYj8Y=;
+	s=k20201202; t=1769159943;
+	bh=sxaiTV/qjZ9OJLWuPUm5lpJHeVnyKAH5pIqR5axWKB8=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=N5SCKLXyAELrFNy+gkbgIPeqfEvjDDv6H9Nvceu5DlOURyvJQieEH89DsJoE871Lq
-	 F2KUj/E1ZofIKSKhXCfShq5QIzhc1EcGMdvPIHwDrDBUa1pQuvRAG1+OsMTUnHte5F
-	 /HOCWw4+OY36AeeDHJA09t7H3R1zVLSMM461NItNIhQ6QMp6xN2sNq9SBi/saCLzcy
-	 k771BwY2DcyxlCXkJim6NjWEBd9Drwa3SKlUi9lSmE4oJ3fygQGYmlJiUQYGIRQT8m
-	 uyRo+ni/Wa9GwHvAM16GSiQ3a4Klus5nCUx1cvz/JOXgUw6S8/ZUxtBxt3MQK0lzUf
-	 mlUpBzxraCRvw==
-Content-Type: multipart/mixed; boundary="===============6891829209060571098=="
+	b=kiwWVxqwhLtICIYNAcF3V6WIubpaoam1UBgKy1c2x3txZXWC6q/CUSDTEEgAIWnSk
+	 KXT8Dfsl3g+fQTcj94wL+fWM2u3jZ+5yLtLVsPdtlBrnoX57qVIjJizC7LlhxREbHT
+	 x2USTPdVOG0S2IAJPc4BQnNEkGTBLTEfKce5lBHI1nRyFBGI6UqYtkurROa0l8JFD8
+	 gyqpPZwgCw4cJEyO+prp7szjajg5CiSXvHZ7geqQGSFMMxg8yVs7rwhv28gEDMRUNj
+	 v9rjQiJ1HImsMMOLlPkKxHg7gD4JcfQuCeGjIlq9QebL7CahgT/cSaNgLXTQnrxb9L
+	 H8CcOpfVl2dYQ==
+Content-Type: multipart/mixed; boundary="===============6020917005380425134=="
 MIME-Version: 1.0
-Message-Id: <0031e5a293a89b42ac55e019d44bc9cf6ad0eca5ab75f07eb1f12b46a5ec560c@mail.kernel.org>
-In-Reply-To: <e6ec046aab6205c6c381fdc4860decf6b8643ea8.1769157382.git.zhuhui@kylinos.cn>
-References: <e6ec046aab6205c6c381fdc4860decf6b8643ea8.1769157382.git.zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH bpf-next v3 12/12] samples/bpf: Add memcg priority control example
+Message-Id: <30378be80fdf3abf59019b02fe9dd351d63e9d71b9f074a9dd79de1b6a9bd6c9@mail.kernel.org>
+In-Reply-To: <03bf6aafe30def690c63e454d76e733f27dff4b3.1769157382.git.zhuhui@kylinos.cn>
+References: <03bf6aafe30def690c63e454d76e733f27dff4b3.1769157382.git.zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH bpf-next v3 05/12] libbpf: introduce bpf_map__attach_struct_ops_opts()
 From: bot+bpf-ci@kernel.org
 To: hui.zhu@linux.dev, akpm@linux-foundation.org, hannes@cmpxchg.org,
 	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
@@ -88,16 +88,16 @@ To: hui.zhu@linux.dev, akpm@linux-foundation.org, hannes@cmpxchg.org,
 	jiayuan.chen@linux.dev, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
 	netdev@vger.kernel.org, linu@kvack.org, x-kselftest@vger.kernel.org
-Cc: zhuhui@kylinos.cn,geliang@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri, 23 Jan 2026 09:18:59 +0000 (UTC)
-X-Rspamd-Queue-Id: E37921C0004
+Cc: ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Fri, 23 Jan 2026 09:19:02 +0000 (UTC)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 895D81A0004
+X-Stat-Signature: iyo4nra6hrk4dnoyzb8mj8aqzg3j87p8
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: p4szgmko6adg3pdhtj4wsgcs4en7prw9
-X-HE-Tag: 1769159941-511766
-X-HE-Meta: U2FsdGVkX19zah5RaR7fLRfHyNA4OTwHCz6Ty2OOt6OSc94vY7wO52DXy0di7KSaWiBzSmP2rCDwlZXRisw77WF0iEMT28Gek99Fn7F9DDoN5pNkCvIx7sSOF5N80coPKmsPMmUUr41bkKCdbpFPALsSDf3TIJbLtCPDYIFg5XM7krWQ7CUG7B3TJWrz9aS46bGMfs2qkVibmPPvF/CiXDTad24USbDnnG8vin32vsl3Qb9bXFYSACzFgrc7okH1D6VCZzlvGItNCDng/LQxadO28sMsUM+BBkLOZWAQferWnazWtTIfcOFNn21TJGq1PlH6MUFAa1vD+YC+a+dpVv5HXKy/CrRmN8lsjsuak0TRSCD14myfhoFjUlyw5rpGgO1uT9wXyv7zYTvMKfrzd5naS847LTS8abrYQNhyManvNX0QmPkn0XCeUjvPd5ve/Euok83Vu1YzpZ6bMeO0hdS8VlbSi7r5fL1SWj3ts+YtBCo2FYihfuqwc+xS4RNGYINUkxjM8IMPRRXHMfimyXiJfmEq2qgfJukponw5V07JXxa/Z+OGXq6dC65MIv4p+s1z0/ZiIl/a+Xh0s3ZL/7IM8iDDZQYvw7qPYh0gcxFir3rzjXS7PJFX9m3uzwe4DIUm/U62JsmfykHcujKfVhvA0RLZU/HMUv7NCi3nShLJx8z1CnEg1zZWdkiOr69DbuAuzHMwQq0GCIkg+QxC+3xiv+AEsT+X5UR6CR4BpwiZn2XaCtV2upjhLVf2nF5eAftLAXPGbwIxDwBXn9G8PH0+x3QuH7K4wIvBh3db2V/7kXWihYNX3JBjaooNFSAq6IV/eNt0Lb4vxF7auGCv6xx7ujaUTZGjdcO/vQLyqkkm5jjVOETTNuw+z0AU4PtnF4DxO9E3Tzwq26goppo7V3fw9dLwkRbyVO3H47h0eMvm6xqNDUQVMilSpKPiUlkbxZWCqDfWYlz55x7PB5x
- Bfc8bW6I
- Vx76TcUL/rrsim/XbaaSZcmGyqGSW39C6RblIy4orYCwYIszqxdlRfWZlS1mCPnk7HeA/+jxKr6ARqQ5CsMtqnAlSR6VLWP0U/T9xinxeOantOjF5/kMV2mUNVtm3u7vPcy0kg0KHdcadEi+o+H0SmQP7zucIRV9zWcLJ2WwhvqNJYN8soVngbwaHv9894+Ik9AWccePQlcHe/5cfwCxe9qljy94qseyBgDCtMGAgTUsIS8CF0byHJ0g6bs9R7NX6L9BoycnviLMk+dvxM8fRzH7YHTRu70wRQi+cQVCLKPFFfZWRmJ0xKWbC+vh+7nSi73MlK0pd7DHXKoW8hEEgVtL0yQLbWASq3TOrgc3Z4GRz8X7kGJ075GcrioSZnDnqtyS5y9Ph+adfUniQU37PPwpkShta5JVOa3ZC9cpxh37v3G6qIVK1tRwuPNciENELOMtDik8FWBKucK6mKnsNBESu+T7vFQG99sXEkMM52PCMnKgG20AxFTyd7TIVPUXCVRdn8KqG9HEq9aPZW0MwwSKHF1WnTNqUflJIbuodutTwf/o=
+X-HE-Tag: 1769159944-157323
+X-HE-Meta: U2FsdGVkX18n73oaGVCFD8Fb+9dFvOmuAwRjA65fSzREmiVKr1yXcGHvnjKfnXFgELcnnFbAX5D2uKdssvLReYTEgrCoggt2g0u0zKqoHTY3j+HhUBwx/v05XF7O6I6bOpZJKaHBQJP4aXeQJHRguAeVz3Da0agWmJx42vgE7KlljCXCT2CkkPMnZmvw8ioTdNTcX3qcAZ3mjFbkpmAO3L6cn++PiXb1Ax4pTeI1ai3XWCYiSKB6k2qHFdAhZ3+ssP9uqidn2mr8QfSoTYh5PgPw/CZxa+d5NtxeiE7/GVATnP5WfmBGWbe2w/PryXv0jl9Fl1/XQ7f/sf6UhW+wwiHaMFxyIgfrrSatvBKPv5ezN1ecM47Gf/k6QqZFBvCm/UGhWRBScJeAdzrVQucJyBbpui9GHcYgIEPq+GJ00hB9iQ4qWB+VBJB+1puHEldKZKuAvFJZ5t9X4GpwEyMxZ1y+wbJMTqUWYfqFteeBtqykhEEPd1gEyjZ8kU+aouur5XrOYpyTYRzwKNRVXoNvoypZ31bl3rsrreJbDT677ijAWrHyHHPflTlep5omr6S+oiNqz8TbgH+mWSqBZD34/1PAVVH4RmmZRwpPQRgXN5nDk5u0AXkwV5IKOpym8IFzDZQejroURkHq38QU1FMzwyd8AYL7R7H8wyL6T2qFngONcoOYhIzcJCs5ELRdONhC8ESj/UEcEgwRO+0pHQHauAlM+Y1cVGT2QceWltoLFN4PzRHHFz4deODj9b8YGpqHD3Gf6qRdheVIiIU+glfy2HG6nrTdmFf4CycroXzGpx/+uydTE9PIrr9yVbWqQWJ+4Ejx1v+bYWy2QvJG2lCwTjDryyxjHWQeK4AU9TOxjpEMMD8arxf75vNccPCy6bGlzZrSQYd8I3ZaJbpmdtDZR46+H8AICnJ1i9WgsI8JoKq7n7F6+GF4iDN5UwPozH3Vq0oSOdyEcOjKlYSRTQK
+ efuJQpJF
+ BqafKKHfS3BRQv3RygFWaSWiRFlgzNRj3oVMImNiQ8yovDFzeaheBskqrYuznMF5kl+NCuNkTaNS4F7LzkypUSv+g2t4rwy/ArvEep9bJx0sXtzOnBOMDxD5vZN5NMrCsDeNB1Bkyl3WVO/nT1pixTf8lrnbLHXlmaRCH3Fy4vwrl98QuD9sMMM/49dn0hv9K4q5ppabiC3SvM9wNc2kfhdJmZTcUgRkYKOe55aqSO4xr3V7Dhe/Ea5rj+yIKD+pI2q3CmAchAq6ByYuld72DnvHc9W5MAvgebI9+/MIMM4D2dIC8rUJFLf4myKKv+/8WuNlBaW0GUJ54UPTz5Wbwofu360JHHBcpcPSih44W6eOLUfV9H3kaBthFNV7OrYSMDaN1IWpO8+AMbaxVRHT8YiKwSqSGX2TJ14QQi4zR+hdOBG0o2vH4JWb8HagJk3HnZsvyAmVbp9QL+aGGr32P0BhfGK3qOOM8dmAyNpmFAdttE+uve82kcHNcye0OrUSwY/00TqO7SL1dSEiB+mYIX7BTOQoPfBVLctZg/6QdFAwp/oKXKsinid25Q3XIZzfL/NUl+SLddpXRgyau+L5sH58ZhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,83 +106,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============6891829209060571098==
+--===============6020917005380425134==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-> index 95a4fa1f1e44..6416c8aa3034 100644
+> diff --git a/tools/lib/bpf/libbpf.map b/tools/lib/bpf/libbpf.map
+> index d18fbcea7578..2bf514462045 100644
+> --- a/tools/lib/bpf/libbpf.map
+> +++ b/tools/lib/bpf/libbpf.map
+> @@ -453,5 +453,5 @@ LIBBPF_1.7.0 {
+>  		bpf_map__exclusive_program;
+>  		bpf_prog_assoc_struct_ops;
+>  		bpf_program__assoc_struct_ops;
+> -		btf__permute;
+> +		bpf_map__attach_struct_ops_opts;
+>  } LIBBPF_1.6.0;
 
-[ ... ]
+Was the removal of btf__permute from the symbol map intentional? The function
+is still implemented in btf.c and declared with LIBBPF_API in btf.h.
 
-> @@ -360,6 +366,7 @@ BPF_SKELS_LINKED := $(addprefix $(obj)/,$(LINKED_SKELS))
->
->  $(BPF_SKELS_LINKED): $(BPF_OBJS_LINKED) $(BPFTOOL)
->  	@echo "  BPF GEN-OBJ " $(@:.skel.h=)
-> +	echo $(Q)$(BPFTOOL) gen object $(@:.skel.h=.lbpf.o) $(addprefix $(obj)/,$($(@F)-deps))
->  	$(Q)$(BPFTOOL) gen object $(@:.skel.h=.lbpf.o) $(addprefix $(obj)/,$($(@F)-deps))
+It looks like the line was replaced instead of having a new line added. This
+would break applications using btf__permute() with link-time or runtime errors.
 
-Was this debug echo intended to be left in? The line without the @ prefix
-will print the unexpanded command during the build, which looks like
-leftover debug output.
+Perhaps this should be:
 
-> diff --git a/samples/bpf/memcg.c b/samples/bpf/memcg.c
-> new file mode 100644
-> index 000000000000..85432cb01c27
-> --- /dev/null
-> +++ b/samples/bpf/memcg.c
-
-[ ... ]
-
-> +	high_cgroup_id = get_cgroup_id(high_path);
-> +	if (!high_cgroup_id)
-> +		goto out;
-> +	high_cgroup_fd = open(high_path, O_RDONLY);
-> +	if (high_cgroup_fd < 0) {
-> +		fprintf(stderr,
-> +			"ERROR: open high cgroup '%s' failed: %d\n",
-> +			low_path, errno);
-                        ^^^^^^^^
-
-Should this be high_path instead of low_path? The error message says
-"open high cgroup" but prints low_path.
-
-[ ... ]
-
-> +	struct bpf_link *link = NULL, *link_low = NULL, *link_high = NULL;
-
-[ ... ]
-
-> +	if (over_high_ms) {
-
-[ ... ]
-
-> +		link_low = bpf_map__attach_struct_ops_opts(map, &opts);
-
-[ ... ]
-
-> +	if (use_below_low || use_below_min) {
-> +		map = bpf_object__find_map_by_name(obj, "high_mcg_ops");
-
-[ ... ]
-
-> +		link_low = bpf_map__attach_struct_ops_opts(map, &opts);
-                ^^^^^^^^
-
-This assigns to link_low again, overwriting the previous link if both
-over_high_ms and (use_below_low || use_below_min) are set. Should this
-be link_high instead? The link_high variable is declared but never
-assigned, and the first bpf_link would be leaked in this scenario.
-
-[ ... ]
-
-> +out:
-> +	bpf_link__destroy(link);
-> +	bpf_link__destroy(link_low);
-> +	bpf_link__destroy(link_high);
-
-Here link_high is always NULL since it was never assigned above.
+  bpf_program__assoc_struct_ops;
+  bpf_map__attach_struct_ops_opts;
+  btf__permute;
 
 
 ---
@@ -191,5 +142,5 @@ See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21280790825
 
---===============6891829209060571098==--
+--===============6020917005380425134==--
 
