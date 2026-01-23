@@ -4,91 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74AC2D72354
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB92D72353
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0EFB6B045E; Fri, 23 Jan 2026 03:53:52 -0500 (EST)
+	id 3E53B6B0460; Fri, 23 Jan 2026 03:54:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE5E76B0460; Fri, 23 Jan 2026 03:53:52 -0500 (EST)
+	id 3BD2E6B0462; Fri, 23 Jan 2026 03:54:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12B96B0461; Fri, 23 Jan 2026 03:53:52 -0500 (EST)
+	id 2BC8F6B0463; Fri, 23 Jan 2026 03:54:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9328C6B045E
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:53:52 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 43E411AF99E
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:53:52 +0000 (UTC)
-X-FDA: 84362615904.10.DE58426
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 94F53180003
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:53:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EJyy6q4G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769158430; a=rsa-sha256;
-	cv=none;
-	b=4pO9MujuMHtuqzSYtYYbQ4mgR+K5W/ft/B/SSUXypmLFtIbD/JzFjxQmVyg0FO2hIw4ep8
-	ZM/MX/gUIt9eogpMu+PgAXxUGw4GnJ0kUk8LyslN/yCSQQR9RI2GDum0MrfspE0Ghn47Kj
-	yTVTydGJFgaGE3WqCUeWNrbbKzzCrZA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EJyy6q4G;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AC7D6B0460
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:54:55 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9466C58C8B
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:54:54 +0000 (UTC)
+X-FDA: 84362618508.02.8FD9F97
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 18CAD40003
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:54:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3B3Xn3qm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4cZ1qBoU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IpY6C4ds;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=J7fXZghw;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769158430;
+	s=arc-20220608; t=1769158492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FSbY3XgNEeMt7RDjgwXfpbnZxu/CxSRhlv5jLZ5PvPA=;
-	b=keN9alvvhPmFoYoBzDs/NyP97iKdPdr0iwSA/fcwQgMv+E0grP4fafL5e29KbMjicXnBVD
-	Ny46sDGkIG2l/M/4TtFabxTR3iUjCh8yUq2ttyEQE8Oz8uEQeNezmaKtyMW7Sosr+Cdg98
-	6n83+ZslrAT6HDVxkV7A3JWRTYpCuGI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59399434FE;
-	Fri, 23 Jan 2026 08:53:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1591C4CEF1;
-	Fri, 23 Jan 2026 08:53:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769158429;
-	bh=8xDScLcsy5OFgIJg5rseIw23Z3H5/7lWSJmJgApIXko=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EJyy6q4GWlNjzBtY8qzSezHb7bGJ0MPYYNHtLo9jOXlGE/DhGzq1hfsdoLsqjLcHB
-	 KyHB/f8pdvDLTlYmTUYPNPK3Abt0FTBwhzIVXmzVsQmfZp8XB1Fdam7mJLMGII6GzU
-	 vGYWSG3J6wWzp/HHPspEPHFPwJiVIyoFxLIrAQoi8SlYn+5CFFzJUw6NavLlmM8SZc
-	 we7Wuh+48gW6nIFohR3yz54yhjHR4iYs2YXbW8XS6JyGqb/xIdxXwTjAIncCpcVpp4
-	 JnJb3EpXp66eRrCBIGWkp71VvVprmAHUEBHJVAXxdycnZQtMG+rVlM2T1F+sYDB5UL
-	 o13nTXz1H/wWw==
-Date: Fri, 23 Jan 2026 10:53:42 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>, Jason Miu <jasonmiu@google.com>,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, nh-open-source@amazon.com
-Subject: Re: [PATCH v2] kho: skip memoryless NUMA nodes when reserving
- scratch areas
-Message-ID: <aXM3FoK7g12P5h91@kernel.org>
-References: <20260120175913.34368-1-epetron@amazon.de>
- <20260122152112.1a8be8e7bdab72631234cd69@linux-foundation.org>
+	bh=lolhUMXL1i76ejiN0nNDsWdfi8cnvehcmMYWyLKNk88=;
+	b=BKLOAkPbHtMksMJrbePEA3PNSyQZ56Ktl9j2AgKxTYwXCreR8t4ocqum8lqO1jQiMCQ0N2
+	afF0dDtypSOrKXcOTgKzPTRTzTHS1UDzB0kA6YmA3ez/dgAIdh06lCbhcYFwMbPBoAzQyM
+	Llb9S0fzefkTMdkO+z70uVcDxnmfA6w=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3B3Xn3qm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4cZ1qBoU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IpY6C4ds;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=J7fXZghw;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769158492; a=rsa-sha256;
+	cv=none;
+	b=4E4rGbdYd9d25wzQDi3osLq5pEBdEqw4B1Aqr/vdYAnUzVkUNQ0ykXPQIiX3QrY5AvkiBW
+	ElgaLOJMy+db4FEN8zwDW9P45AZ/Nmto38D+mBe4QZqmhuU7Lg6jLg4QLPdGWFUok53vtg
+	K8prkwB1/URYXB5hT+fZ89jWSgJMONA=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 857893378C;
+	Fri, 23 Jan 2026 08:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769158490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lolhUMXL1i76ejiN0nNDsWdfi8cnvehcmMYWyLKNk88=;
+	b=3B3Xn3qml/14IloxJpiYb1hCN6sRkBzLqVqVSk8T+nCJJ4fZ1xLf1HxZvq1Z5pBxAs4fJe
+	RlnTfUjpY7Rx3oFFGpwOggm/sZ7YF+lCxExN3JijwsH73iuGcfRVVWD3tLHocwcSpSTkuK
+	zFKhX5Pfip8zAE03eIzsZfj0yg+WXtQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769158490;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lolhUMXL1i76ejiN0nNDsWdfi8cnvehcmMYWyLKNk88=;
+	b=4cZ1qBoU1lIZKPBl074SM5tSHjz0ioTV8mFN1k0+K8aS6PMnTONq0D/8wDcZTbm9Ca3VZk
+	r7xDinx0WvUTmeDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769158489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lolhUMXL1i76ejiN0nNDsWdfi8cnvehcmMYWyLKNk88=;
+	b=IpY6C4dsoJJTSYQph4hW0k9X+EbHJDxoCz+rRkh1v2L7Jio71t9nFX6wNSywKvDOb9dRNl
+	eqwyGrAxMRLSln4COXVaS8tdiu2wEgJXnhk00jvuJdsnGk9pOyWtJhq0yL80d3jchCVtS1
+	cqji33SInWcVIiWxLNfmf9bJ4BYYPMs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769158489;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lolhUMXL1i76ejiN0nNDsWdfi8cnvehcmMYWyLKNk88=;
+	b=J7fXZghwPOb0f/jbWFwF1d4Z+MMKneUI/+aqFp6Kr5QGZBCzrll9Rf87RvaDshMOunu7jw
+	apobb6GR87IFRfAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 574111395E;
+	Fri, 23 Jan 2026 08:54:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jSz+FFk3c2k3VwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 23 Jan 2026 08:54:49 +0000
+Message-ID: <04bfb078-be50-4dcf-9838-f0ccff352d02@suse.cz>
+Date: Fri, 23 Jan 2026 09:54:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122152112.1a8be8e7bdab72631234cd69@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v3 05/10] mm/vma: de-duplicate __vma_enter_locked()
+ error path
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Waiman Long <longman@redhat.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+References: <cover.1769086312.git.lorenzo.stoakes@oracle.com>
+ <2611b2b6957b7aef587e9ae62712a888159dce60.1769086312.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <2611b2b6957b7aef587e9ae62712a888159dce60.1769086312.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 18CAD40003
+X-Stat-Signature: zi6kpxeqix8adfjnt5hp3z5roosgg491
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 94F53180003
-X-Stat-Signature: o4kn4toncmrtq8y3qgm4prxumyfszszn
-X-HE-Tag: 1769158430-18561
-X-HE-Meta: U2FsdGVkX19asbYQIra/pYQOIaZdO9/CR3axvMma4ydopaS+bT6oXKtye4FGkBa8nBKfRJU623hXq1TB+bDnsJxptAchnbKDlaS6zinMXj93+fFwoachu5gRW4Kf+JcAg6UZkTpTROYxwYqYbhtVtzo1OhJpe+L0kVg0ttok3wjiTS6JeQmNP2HMJIIS3qF/pSjuCh9JA6FWMqZf5Y+L5JVFbNaTcCJC9bUo9bvyGTuRrNahagHNFFkZZtah8F6PIeIPpBABPp41OBIO90q61xH6AuP171fUFqAPONnXLAM++S/hSZg4rPkMSNli2HZhTVJuzv3t+fcYY2xigltSHXPUUmvZVA6WuYCEHBGfxUh3HgntR+WvS7nrbIy6sk4NYIBRcsRfB6SPNi2RhH9wkC7XsC/jp+PvbNQmDcazRP52xUisWKcZ4li6lWulDzVQ7sPNMCHqDZoVkzGI3eGTZdewrfxc2L/NbWGxbMqkTLY1AWf35A6s4VHAF9qgXhDHc2EsF8iRDPIKtkXHMrrWzly9w1nX8wUNCgkAX5S+mmryjdZT9/spiKQBTHlZGJODW859Hmw1jazLFwUL3Z+vmCU0KR1K6+x3930yb6y7hpe4itn4R8zoSUg/x7KbaKqXX87C0oHjPe0e9rBYElj7EaoFT3LugLAjTPaj+GtDDdf1DStbSFkT7XxV4tXjJ+7dPm3BWdd7Ry9agXUt5Ps8wLQ+pTvA+gd/qBYtraP+tGP/7AkW3/suRKVDEQZ8EJBCkF4etQjTAbCFR+T/QoRQQ9ZAYPELhYuIx8EegLDcoSw9SbTGcFHYOMfPyokJ6oPfC4WJ7owTFuWfj8CRHcYFeHB6nCPPgwUL5Rq08hj4W1ZRERJQ/Nni+BrTO5X13UdcTgSBh6sBFmbKUCZUzFlJ5KlA9tJKKyND4NZ0DW5YobB8dF6zzzot2k+6i0WVBBDJFEVTK2gFkqatNSOE5NG
- 8mZ9VWkH
- XzLT7Vi2P4cUkPGoJkkGS19bQMT1ntuLf0l396XtGR9kkbnPcJEGYfiMVZA/gz75ynAvt1OGHqhFNm8KCXcvsB+J6Pq2+Cd+AjgQ5ZT2umh3jNVLQTW6E0thos1sF2JvPJLes0cXK1t28Xsx49GZheejK++rJT0xvwN5wK5vAhFNTt4OYr0/58ebOgFFSXuC3ZML83o5INguHUge8ND1j4UhpvBjMcNgpNjk/eh9YwdHLrjl63vB25GLj8jtedz83MUO7
+X-HE-Tag: 1769158491-658480
+X-HE-Meta: U2FsdGVkX1+RLOjdGZBNmRcEN6d7OQc55ne82Qc8rME5RgCWPwuOcdjG3cHgin4vYwdYnCw4itqFWR8N03jhd0PpP4tnqzPQCRInGYBXwkRjj1pL70RQPKJz4NK7bL+YHblE8VjmBJcpLRQGzs46h7dV/qVpdNLl/Uh8UGdOEW/fs6y53Wx61bO5fyH4KlkhvjWczbdFqASpiK48mVPsgQbXEd37MLONvF5iqdXCMrRI0IPIq7BYOASR7mwUZqM02duE2+53cJ/HG3URt4pc/H+C0v0bQ0j0hEJuDAX7oUEb214zh52qp8lzsgghvv/JVZ5xMO7DJxmf57joZdJZV1afP6cXn7z+8duusan9Npbm3Eo9Gh/KDnMi/Nv76kln6NnE5vyP4x646MfaSCFbpFXX4SOqvfvcNTjZkq4HvfKR9Tt+qDh5QzQVRqXKfm9gG+AhpwehLczsL953yMLnVhzqxCjWbDtkfB+Ggv8PFOjcEO0AmUMLX0BTRojaIrgvDP01FxHhqkRamfQHUu4MtCYBJ/GRYrzJTfY7fcwWEdosV4nWQQVZQEsgE44dqbMkYq/EcFMpo8roNAMWIyOPwhQRWvdN67qBlwyLS4wuSkBp94OtJ+m0X699nrpdqfOsnqa4Euf2jCljltrnVY/d/2QSNISLD++N57+sga29JpW6rvv+QZOYlcB3r62M12vrTkifzSsjg18qARY65zl4/rnMPK9IQlfrUMrsy7gD4HGqZrnJkEF+XmwJC9tLs8oyXhz0dwrb6E2r9d/TgeFhoJDvHKnmHLn6IuLFTHw6u6LAHrMGaUtGB5jcSCnL7Rw65GJfJuHUs7QdNlo1Fl32yxnXFXOh2nw+1nkwOJXV1JYWKnoX+E8sEKEnZAMVZlb+TSgMKzmxyJuACoC2qkwzX5zAC8aP4TzvzYI9cB9XQXO1adzoxRLALnZmaVkvsIfWfA1S9KT1JGcpGMxbJ44
+ 7QExU4Ht
+ ZJXxaXrSOjnSxrFGAVyVW2WqmAKi2NuuvlAHz40WG9qf8pjQ80sH4jXBgnVRL6tfz18UUKIMUFROOCCWDBQcEVPIt0o7iQWA64nViQu8b7sNugXmOUw9c3R8MK1y97GS//lE2GWFkCiY+rzJ4MKm9XYTN3Z8hn383g8G1RIe4FB1vNdiDqBYTcU4zbGfp8PMfYcmzBX5ciKdB+CQYvksQdmM8p7czvCRY3WpdIje4DyeqApL1hSYR2PoRifRW208orRB6GT7ZOkLqtjWxKIFEra/h6Y0PhzZUSqEf9tW5dIPTH5Poe2FZW8GKORexwFskoCWfCo9/bSQaWjHW7pyVn1RuUBok+gFFOCygJGVafGsaWXx4y9OR9H51r/TCxwxeUXovbUwin86nmEGPX+KrwcfU8xfagUIFsK1f3sBOxZ7YO7GJ5knb1s8GGeza0KSjrK1lkA+0AE0k+meAaUvouLSwPA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,32 +189,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 03:21:12PM -0800, Andrew Morton wrote:
-> On Tue, 20 Jan 2026 17:59:11 +0000 Evangelos Petrongonas <epetron@amazon.de> wrote:
+On 1/22/26 14:01, Lorenzo Stoakes wrote:
+> We're doing precisely the same thing that __vma_exit_locked() does, so
+> de-duplicate this code and keep the refcount primitive in one place.
 > 
-> > kho_reserve_scratch() iterates over all online NUMA nodes to allocate
-> > per-node scratch memory. On systems with memoryless NUMA nodes (nodes
-> > that have CPUs but no memory), memblock_alloc_range_nid() fails because
-> > there is no memory available on that node. This causes KHO initialization
-> > to fail and kho_enable to be set to false.
-> > 
-> > Some ARM64 systems have NUMA topologies where certain nodes contain only
-> > CPUs without any associated memory. These configurations are valid and
-> > should not prevent KHO from functioning.
-> > 
-> > Fix this by only counting nodes that have memory (N_MEMORY state) and
-> > skip memoryless nodes in the per-node scratch allocation loop.
-> > 
+> No functional change intended.
 > 
-> So kho is unusable on such machines.
-> 
-> Should we backport this?  I'm thinking
-> 
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers").
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-It's only for v6.18, but sure, why not. 
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
--- 
-Sincerely yours,
-Mike.
 
