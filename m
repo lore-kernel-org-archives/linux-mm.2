@@ -4,124 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4941ED72347
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:46:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAA75D72347
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:46:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A592B6B0457; Fri, 23 Jan 2026 03:46:49 -0500 (EST)
+	id 5F68F6B0458; Fri, 23 Jan 2026 03:46:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A311C6B0458; Fri, 23 Jan 2026 03:46:49 -0500 (EST)
+	id 5A3DB6B045A; Fri, 23 Jan 2026 03:46:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95A206B0459; Fri, 23 Jan 2026 03:46:49 -0500 (EST)
+	id 4AFF56B045B; Fri, 23 Jan 2026 03:46:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 831046B0457
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:46:49 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F093C1AFE
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:46:49 +0000 (UTC)
-X-FDA: 84362598138.18.82D3D82
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7259B20003
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:46:46 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JaV05bai;
-	spf=pass (imf13.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3792C6B0458
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:46:54 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C78B61A03BC
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:46:53 +0000 (UTC)
+X-FDA: 84362598306.06.48AEE8D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 460E91C0002
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:46:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pMYi7O9W;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769158007;
+	s=arc-20220608; t=1769158012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eAY8O7YOi+dEDxNM++qodOcwNRnUwrN2mf04X/KuRWE=;
-	b=JwHbEnQk35gPf83hdlIqEhgI59gCnZcNKSk71aDcnuevr6h54zDv3nAM2BIZmYfdl/c12B
-	nDP1hMDpIrSPGl6Zk1+ov7vpUY7PyI9NFwmHWqyFkkeDjvxqHyMjuGK7iVOgdKArPTd1x1
-	YfGaRE1GedA8NqUBy3LofAn1D6Oc9nA=
+	bh=I9JX+DeBwl7vjVTkeg5lPNjIJzfn7qArJKhN8g81jxQ=;
+	b=AOs7BsUV3NN3lwV6TD2kMIeG3kJBE5kuH3V9CLydDuPjOSzdMrGTdvZEYtB4l18SG1xqKX
+	gdGF+imgIjjzPKLzRsQNGVoerRRPLRknPacvhAwyDur9QbG00Bj8A5pxvkgTlaEY8MRr5G
+	aB1Q8B2DJjKwnT/meBm+0smAJU2rvU8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JaV05bai;
-	spf=pass (imf13.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769158007; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pMYi7O9W;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769158012; a=rsa-sha256;
 	cv=none;
-	b=uhuP4kUpb/n+s0shDgRXhHRugzHVSL/oRNAqUUZB4vXF1hTdC4F+HqnQNiNiR0iiMG4A3w
-	ZYmERH2y2W/++zUrdUxPQkpbgklCxf3bR20i0LbNFiLtTVXoZeG6n862HMP3ad5wJ1Debp
-	2gvhOGDZEc+cV3bSa1Y6v4sfDm0sIKI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769158006; x=1800694006;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yxLPZsI3BlaCXSYy3VRdvRI8ej/dhsqIiU79HyiDkSY=;
-  b=JaV05bai+se7RdmD9c7IRcNcv19b6AkcUVDPVT2NelJbbZ0XCex79+WL
-   dBZuNpixrHqp2O/mIlFk4t7vw/iQRqLwWn0C7h54mnumktprnKBmTNRfW
-   FXNTfIJT4P/MJj4PkVD51RLzjTysztnAw6njs6d6LHSHb+lSB6DY1Oj2d
-   zgj9LzrFZk8PgAt00E4JBL26WovUnVQATlxtBwBgjPMbIRZQFarEAo9gy
-   gUU6EyXaKG2kcYmbqkKUC/L14jijGLthZKKyOky9jJJvNmvWyTVWcXJ/M
-   M9kN3sjb5njdUBczVeKvsw2ULR8qbRgK8RE1uJhb/q79i/NggDIturZ4b
-   w==;
-X-CSE-ConnectionGUID: gS3KI0/JSWC5vQWx5jUd8Q==
-X-CSE-MsgGUID: jBmQa5h1TzmaqT2jUm9EnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70310704"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="70310704"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 00:46:45 -0800
-X-CSE-ConnectionGUID: I0uBEMeHRLq8+KZyIRqqfA==
-X-CSE-MsgGUID: fUlz+CFyRPexsZDcn7SC4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="237621745"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.112])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 00:46:40 -0800
-Date: Fri, 23 Jan 2026 10:46:37 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vincent Mailhol <mailhol@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, Chris Li <sparse@chrisli.org>,
-	Philip Li <philip.li@intel.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
- GENMASK() and BIT()
-Message-ID: <aXM1bWepP2sVy9qA@smile.fi.intel.com>
-References: <20260121145731.3623-12-david.laight.linux@gmail.com>
- <202601221237.soiAkwkN-lkp@intel.com>
- <20260122103337.26473d1c@pumpkin>
- <aXIzpC6wpdv47cSH@smile.fi.intel.com>
- <aXLOELiIG8MHKcIO@rli9-mobl>
- <b49c9993-7676-4d33-a2d6-9f6b77b0fd34@kernel.org>
- <aXMtJ_JurQjvN4tU@smile.fi.intel.com>
- <20260123082027.GJ3183987@ZenIV>
- <aXMwIcH7Zh-1yNq3@smile.fi.intel.com>
- <f9fcd1c6-373c-4345-b413-9bb6c1cd2d3a@kernel.org>
+	b=jz2i2Hm2A6ByuGWRKI43bCw0mjIbpAR53Q5pg3vw2yBIQCdfrAiLRtB+zGqH+ryYxY3Du+
+	aeNe5btfi0zGd1FXLJFpNQvpr9X3tGyOFhRRwHcrZuWYK94050z9rW5PmT0/ut/zJtQ83E
+	HaYmgR+ipOSqTPLo9DKkQt2x4mnSLqU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B347C60010;
+	Fri, 23 Jan 2026 08:46:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8B9C19423;
+	Fri, 23 Jan 2026 08:46:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769158011;
+	bh=zlDYEoOkDwoDamgPxSwYuVDpDkFq4ttprobmkbfSa0U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pMYi7O9Wzk4xL+ptKZFskBEAy2sMbDOm21rkjCBTr3+31p+kgjN5ghCT3gKWYyQe5
+	 eVaJBjV5V/Fo2ORr2P0xGrNN2fd8bluNWvUjOslB4mXahJXHK0aZ9WFz5EqxE0fI+m
+	 RctiRAW9zH8dGPXigIaHsb5MwbrbqD2Jt27aYPxd+LiJlrrd5gBQ9Gk/MmjYNqJ/Bq
+	 RU0zkQGrxBD7PcRxiucWCLvsDrBfeY/NdFZpUItPCUyvz8m5ksZLYTBz0ci6NHedY+
+	 E3+W+e00I8qWZvMeCt91IM0DEwfMxoUmnHe2vCUWCYhpUXmGi+EMly11xgKB24ngut
+	 n1yI2xhLvSrvg==
+Date: Fri, 23 Jan 2026 10:46:44 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Waiman Long <longman@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v3] mm/mm_init: Don't cond_resched() in
+ deferred_init_memmap_chunk() if called from deferred_grow_zone()
+Message-ID: <aXM1dF6o3wwJltiV@kernel.org>
+References: <20260122184343.546627-1-longman@redhat.com>
+ <20260122112920.2b435873a0cc5f396df5d1a7@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f9fcd1c6-373c-4345-b413-9bb6c1cd2d3a@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20260122112920.2b435873a0cc5f396df5d1a7@linux-foundation.org>
+X-Stat-Signature: jhoh8geoc9qhqrr1nhdj1es4u5m9ccnk
+X-Rspamd-Queue-Id: 460E91C0002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7259B20003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: kiqb99shao6tbxuqd9gswjg5q7ax31kt
-X-HE-Tag: 1769158006-96745
-X-HE-Meta: U2FsdGVkX1/UZ6NyFS8kvN4E+gdf1k565DO5F+aPhB01Lc8/2FUqtEg+8Xt7eMlI1sgXd5qTJMggO3hkm1dPigOQePW+RuoD5dbgoFeZScJM8kxA2/+hD2piVizognm/epbtKIHKRw3xqAU1kNXzJuayb0uWkpLDVo/mnrGosDEhHoEUuIdJEHCIL5C5t/r+u4Ka+llNN/rRL3w9aHYDUojupVZJzx6zFnZ943BNIT/mRzUp1RKYryAN85XM2O5+/2pmp5t9CbH2QO5hnbekeNANNkUBKsGwMvCtlM87aTdhPasblyB1802u1a4QoCXa+UVt/ATrkuakTzbWANdIXLg+f1pkJ7PKQIfF6HlvF/blbviQnHC0AwAYIFGrLOfnXmGSOOQszWjbV3P0tpQwkrpg4QRXpEUPxNIDVQLq/WEVvUFkuR9P1sQheT0L2A5+I/1MSfYHTewcmBKeS+K3BHDFqI3blLHwKhaTkw1Gx0F1h4PsTmZR2amZZKGpAsogo9I4qObZc0DZDE7OpvlvxrQ6cYCcrXsCbmhUa/z/PTvs4obKsBSdvdXBqPa/3Rev+/i3hnHDg+dRMhgnUi3KJleEx0XGWwweQ7QM9gTz9q3a+SKlBAAUD1q4Op2T/NofYfYPWU0ISd+cuR5RzKYKF9Oc/vu0FjbxYbD9cgonsTVwEkQWwSZ6UGwtddDFU5z9PGodOX1pY0iYN5Cn4x6frxnnxE59vOLJoYklpmY2SAFVCaIbE5cpEjc4OEixkDcerIVOTW1NrKKf5QM2U6oEuOpSDiKlM//xOcnBcx/EboUju7JwDH1RfjsXiovEiKXQm7uI0b05ImqFkYya3y4KelGSBmuIXAyKoOHdM7HdhFyX/tJxP3xDNSNYX+FKrRymdJj9Powr69J2AVhm+i7Yhs2xdVnkbCaQCFLjHwkXrtxE+2cki8FtZeDGDAvuMCV+AFCFG6sAKrkMjrBlbx8
- W1k6kBJH
- TT8lyt2/jTwQdQvRHUz01UqWkV2nMkc9DrE67Y6H6YwBT9aOWWsNKel8GLEq0T1QagFO8tPTdnD5HyIgx6vs0HpUbk8tkBKtFf/Jau/JZRAiuFv4AREU3SfzthRyST7pE1JxxwxiNatLeLYdHehCniZ03zYwBLsv0dYFw4vEDPDjdjwarkLjOdCw9mmRt1hhcVE6BiZb9chdnQ9sBcom0m2zQ8q/ccmK6G8tysgETI1qTCem6wEqoNjfreuLZ40wopHJm7z0c55gt1dW4PnEXmDPh2xxTNzMYga0zKaPJQJqA1RdPP4NdYy7kZ/YSM99GgCgCjkp9Y+yv8ANuBmv3SFU3MZCAptErHG7/qYHlJCPb3oWctjx+Dmb4Il/845FuekXx
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769158012-292361
+X-HE-Meta: U2FsdGVkX1+7P2fXQa7zrhaPiO+b6lEox1L4YbIPqgkNaOnSe8yz0hkeCe4unX0sJ/bPuZ/tPyDrYunEyGu0quZ2A+9TTfQHTmGO62AetewCUA8wmVx9/S9SFleEdAnnknCFjECVxH1fMyluSRVCgVoU6MayO1kWHIv13LovCSUa39Nxl7znYCb4Z0N8E1eslfhvPSV89ZgcufV9kNRZCKzbgWKTkf1zSgkBNoyOv9T1cGHIYS0A6ITsd7YPXyfgR5ueQ3ibTMv9CuYo2v4o/PKn9/3PpO4Tiop7sq2AlWjgp0/kkzWVfp3P1jJNaS9fxLwk9NzUxdK/lrz+yzBB5wdni775Hs3OY/uRbqP+EJ5Zj7MBwRZWdFas9kVaRURJMU/RrLGpKP2vFXtlMygpUv6OB/e/4VS5HRkHNTzTB5S/s7dH9iV/yvzlLBcaA1aJCmzvycglUdC2imqODhT6tOXu037A2PaKpvYWo2XY09a72a9hAG+TwhYC3YUENCRRckzY2svq9vj7sdouSytkcVV1W0fur8UKcJv6BOghHLpXrg4xvZVAXnl4D0wtgJ5/vwIA92aQJL9GWqeAIJO9aCp2hnX2uHUQ/Drh65Avo2JvFzuBNrWCNL/AGOasXL/HtjPvSnVpuT5uKRgsIt4gTbY8lpu2Svi2wCiyoZe4NXTlvjbzF9z2i/XE5BQ7JbEUNayVHugy6GMTTLt6XGx30qY1ZskeOLa/A2D6GvZJ81HQB9yE27BmolOadA8YGhkvMaT3sSRFcFrInDfcq4pPOYW11/XN6nT43EJ71vtK6QtSKQl90oDt1BZeFYM68/L699FugJ64xYzgNoHKANNq/7BS41WKWTKrUc5mUf4PvNcFH/gZU99ijIX2Q+YmuMfoGIJHvXsxOSncKs66/pcqWCfVMb3DaYcU/Nq4jApBpKv4eCVDwI8bithaTGEQf094woPzGgpNGf1G/AFwAaF
+ Z5AO8Jvb
+ kBbe7kwiWKhluih7MUECPc5UQ2RU0BWT/FON+uIGf/MO3JOaqcg9+RJ9bNp2COMD38UX84aqcVmdSJgO2RQAxB2YwpYCqwcmImuevsjOUzHCua7B1mm7tu7lBWCZZbsXSSdMuhGo+fabGa75Wxo6/vVE5bHMLvYjlAQfLxM/kvBk8fnAX3qa5twn2h5KqZcoQFwahjfgWpYmcojAajsCC1B5glte4fXF3MDvUuYiwX8XRfjFyvzqyXet23k89LSeSN5caWq59eXMDsLFlYXrLGQGl41TdPBduEtRKaDVS2i9h0P0mcKtqG2wR57zkzUjdl3pRaQ1SoPtlUdMrp9i+cQ+mpKGfrh6b1bE5cGtnCDKK1mbBqa//lEmFNTL8a9rMa2IuEjsbiQN8rMs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,48 +99,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 23, 2026 at 09:32:39AM +0100, Vincent Mailhol wrote:
-> On 23/01/2026 at 09:24, Andy Shevchenko wrote:
-> > On Fri, Jan 23, 2026 at 08:20:27AM +0000, Al Viro wrote:
-> >> On Fri, Jan 23, 2026 at 10:11:19AM +0200, Andy Shevchenko wrote:
-
-...
-
-> >>>> Al Viro's fork just adds 8 commit on top of the upstream sparse repo.
-> >>>> Wouldn't it be possible to just merge those?
-> >>>
-> >>> Ideally yes, but you also should kick the distro's asses to update it, and
-> >>> the sparse should bump its version...
-> >>>
-> >>>> That would be much less confusing.
-> >>>
-> >>> Seems Al become a sparse maintainer de facto :-)
-> >>
-> >> Huh?  What happened to Chris?
+On Thu, Jan 22, 2026 at 11:29:20AM -0800, Andrew Morton wrote:
+> On Thu, 22 Jan 2026 13:43:43 -0500 Waiman Long <longman@redhat.com> wrote:
 > 
-> After the project hiatus, I can imagine that there is some confusion :)
+> > Commit 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk()
+> > in deferred_grow_zone()") made deferred_grow_zone() call
+> > deferred_init_memmap_chunk() within a pgdat_resize_lock() critical
+> > section with irqs disabled.
+> >
+> > It did check for irqs_disabled() in
+> > deferred_init_memmap_chunk() to avoid calling cond_resched(). For a
+> > PREEMPT_RT kernel build, however, spin_lock_irqsave() does not disable
+> > interrupt but rcu_read_lock() is called. This leads to the following
+> > bug report.
+> > 
+> >   BUG: sleeping function called from invalid context at mm/mm_init.c:2091
+> >   in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
+> >   preempt_count: 0, expected: 0
+> >
+> > @@ -2085,10 +2085,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+> >  
+> >  			spfn = chunk_end;
+> >  
+> > -			if (irqs_disabled())
+> > -				touch_nmi_watchdog();
+> > -			else
+> > +			if (can_resched)
+> >  				cond_resched();
+> > +			else
+> > +				touch_nmi_watchdog();
+> >  		}
+> >  	}
 > 
-> But Chris is back in his role of maintainer since September 2025. See:
+> Disables the cond_resched() in some situations.  Can this reintroduce
+> the watchdog warnings which that cond_resched() was intended to
+> prevent?
 > 
->   - https://lore.kernel.org/linux-sparse/CACePvbXDO1ZybDu3RaFhED9D-9gC6LTMpWrxoh5xD+ZO5SLdzA@mail.gmail.com/
->   - https://git.kernel.org/pub/scm/devel/sparse/sparse.git/commit/?id=67f0a03cee4637e495151c48a02be642a158cbbb
+> The cond_resched() was added by <dig, dig> da97f2d56bbd ("mm: call
+> cond_resched() from deferred_init_memmap()").
 > 
-> > I don't know, but upstream sparse haven't applied any solution for
-> > MODULE*("FOO") stuff, nor reaction on my ping in that discussion
-> > (I did it like week or so ago).
+> Pasha's 2020 patch replaced touch_nmi_watchdog() with cond_resched() to
+> prevent RCU stall warnings.  So I think the answer to my question is
+> yes, going back to touch_nmi_watchdog() could reintroduce those RCU
+> warnings.
 
-My ping: https://lore.kernel.org/all/aV9vo7_turBr84bs@black.igk.intel.com/
-But now I realised that there was another version of the series, and Chris
-seems active there.
-https://lore.kernel.org/all/CACePvbU5Pqo=bw_j8arOq16o1JBOSwPtuMZBVozy4FV7YsSLGw@mail.gmail.com/
+Before 3acb913c9d5b ("mm/mm_init: use deferred_init_memmap_chunk() we had
+touch_nmi_watchdog() in deferred_grow_zone() and cond_resched() in the
+deferred_init_memmap()->deferred_init_memmap_chunk() that ran in a thread context.
 
-> I am out of context here, but were the correct people CCed?
+I thought irqs_disabled() would be enough to differentiate these cases
+because deferred_grow_zone() takes a spinlock, but I missed that with RT
+spinlock also sleeps.
 
-I dunno.
+Using a boolean essentially restores the behaviour we had before the
+refactoring.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Sincerely yours,
+Mike.
 
