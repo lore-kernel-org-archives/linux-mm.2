@@ -4,119 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88234D7234A
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D883D7234A
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:24:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB7A16B0442; Fri, 23 Jan 2026 03:23:16 -0500 (EST)
+	id BE32A6B0447; Fri, 23 Jan 2026 03:24:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E61E76B0444; Fri, 23 Jan 2026 03:23:16 -0500 (EST)
+	id BAD206B044A; Fri, 23 Jan 2026 03:24:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D66FA6B0445; Fri, 23 Jan 2026 03:23:16 -0500 (EST)
+	id A66006B0449; Fri, 23 Jan 2026 03:24:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C3E106B0442
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:23:16 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90A86B6F6B
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:23:16 +0000 (UTC)
-X-FDA: 84362538792.19.E7EF8BF
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BAD561C0002
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:23:14 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BEAC6B0444
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:24:02 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 503B51384CC
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:24:02 +0000 (UTC)
+X-FDA: 84362540724.08.CF8A4E8
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D67191C0007
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:23:59 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HvviYcYi;
-	spf=pass (imf21.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=N8UOb1xg;
+	spf=pass (imf21.hostedemail.com: domain of alibuda@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=alibuda@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769156594;
+	s=arc-20220608; t=1769156640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1s3RUysc9inCnOBypifiKMBUtySmMfCZj5RN3VGE8+E=;
-	b=4kxGhB1H2PrP12KHcjvVx2va9fgI5J0Led43yIZ5S7aQ3IwBoK+xNugqoH2BKDtO5zzZS1
-	6tsplLyjdEgUASqIcrso3Q0auZsssmKhl+i2wvIaBmHKcPcDOP93mhn4hE0eoxkaJU9cwO
-	NBn4nhrLc2n/0Whm+egX23W1oJUx4B4=
+	bh=l4ux9tDlFdT94Vxn27fx7SeIZf5wjhCyTIcjZvfwWJQ=;
+	b=o9lPivV/rl7TaGmKflvm0PMGzvXamNt4egN6ZHtz9rUJfbDvMYSXYtJjF1YgAH68zbgZl9
+	KFx3CL1jZjJvjEMqVV3irm47erMRZ5sYWCfEiegwCMg0yYx+vLqWmsuzik8KMbCa2QUINt
+	NMLeD0jfufR7XyonSSE4Qva2O5cE+Bk=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HvviYcYi;
-	spf=pass (imf21.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769156594; a=rsa-sha256;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=N8UOb1xg;
+	spf=pass (imf21.hostedemail.com: domain of alibuda@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=alibuda@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769156640; a=rsa-sha256;
 	cv=none;
-	b=p1so/c/Ra0G+GN5Q80CeyhTGnE/srgAnyU2vQRj/sNh7yBBF1qh32aY5m8YpL1+ZjgZwF+
-	AyTPfGfxsa/0TqoT51BNkhHXZzeekchLGQONe02Ut4DYQbL9wkR98c+osuVcR2fvySdCAo
-	nmR803m8orJOrR1SG0KwgJWCOqVUyxA=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-81ed3e6b8e3so972110b3a.2
-        for <linux-mm@kvack.org>; Fri, 23 Jan 2026 00:23:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769156593; x=1769761393; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1s3RUysc9inCnOBypifiKMBUtySmMfCZj5RN3VGE8+E=;
-        b=HvviYcYida9PRdfg0Nk7tQu+sVnhqtRrnLp2deXznbfYRr6S9XRgAbvaeH8d0f9Nt8
-         rEaTtTldNXFXq/lPNcl76xJYmZviYVEMTT1xok5VQw+uJGtDTXziaWHpNgBeRdbR325p
-         zd+zRTZ+iIs+MzZ2QIuq/ZCjYxpFQN9ajVSmi3dOEZbPWbcHS/PzG2nwQB9qcLz2wgcz
-         UGUjGHNQJEml7P5/Bhkcv7D0ZHCobnCWBfnaK0oFCERFtYtcPQ9+Fo9YptocHuQEyeaU
-         N9L0Ns7RhU+ISWcc4iJEQVXbUiIlpee1TLQ9dPrEj9XihnbO6IE4q7pbrKLT1V0ZKrao
-         JCZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769156593; x=1769761393;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1s3RUysc9inCnOBypifiKMBUtySmMfCZj5RN3VGE8+E=;
-        b=TXntyLYlTqtpHbDHP9eDg482xk2pdyat8D4W9gXhnaA5n1udZ/xS97eChqDqJupRGG
-         tF4Eh6Bd5Wy/mq0LDJkRlDagFcGOPGoQ3LiKKBougMsrtGPN0UKZw9qe2X8k3O3gNsx6
-         6LRrWQ+/oK9mK0zpIMnq0oVea9+hxbqZCw9rbYd8DOlAMPHxs+MwZI2FdSb9kbWaASDd
-         GRV1rXsSbJ1CZUaMJo8AeQEEQt29K9pT6cBzkrpYDkYELrDSmtobRXYm4es8Q/721wUK
-         ApRmvR4VtIuuaSgiECErTAhtwVGQ+4RYfqlZGJ5Pwkit60SDRPq3OuTImkJvHF++muKH
-         uzRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXbBbDsc/+emaSdd/BofGuR8SDwDAqalvgM7Gu8K1fmgSarWfHkguiRRHx7mteHFI8cjCEkBRldUA==@kvack.org
-X-Gm-Message-State: AOJu0YzTrbv/fa5RAxqSQz+PTIgz6w7UQadC1DvYt5YGGg3AlotGp62F
-	0TyOtG0dw/d4IsQpOP+f8LQhHcJxDnRUoPN6wjhgpHMexN+jlAkRkOya
-X-Gm-Gg: AZuq6aLGEAA+xH5dtGXfOWygLkJpO7prpzcWfxqanTjHWpimMioVn95vkz7mzIRga2F
-	4H7lkf+jBgEdsdhhJfiPXbByuJr+h0eC1uGQRUu5i3rUlvdC+3NeA7Z7BnY6PDhNYTlPD4UxKOT
-	74MwjmGiPSWiTfLRknze+gA7rP+pePhJrQ0anPlZlZUOXopy1cpPEgNCKJxEqR3RR6mRM0pQ0au
-	81e+dU54rfx65KYIkW6xpZtd1cZBTCSsT+LSHM21ebfkanggebqdggk+rH25dux7dqK+En9haKr
-	dqQBlrxHM7fpqsFAcolbLx7e4pwF+6ziABEB64lpUFIedn8W+wsEKmCE01Vt4FV3D+dhKCoXWXl
-	rKLWDFD1y98WD7zE0TdEuqo345zd4cou/sE+ku1ntiVovqrByh6WNuk8KQBsfNZr1+Fyh4JXNYR
-	3htJU8QIxV96wuxFAYC23SHhes
-X-Received: by 2002:a05:6a20:2585:b0:350:55e0:5522 with SMTP id adf61e73a8af0-38e6f7ce9f1mr2253928637.37.1769156593579;
-        Fri, 23 Jan 2026 00:23:13 -0800 (PST)
-Received: from localhost.localdomain ([221.227.246.159])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c635a43f11csm1348363a12.35.2026.01.23.00.23.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 00:23:13 -0800 (PST)
-From: Vernon Yang <vernon2gm@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
+	b=CDs4vcpoB8aVXcTSeC7y0Lt12CqlfO0gWNtLjaYmDmC8x/U1DYbXuFigUNOakqK3DjmrAi
+	mv1v/7/nzLagcYv9ChaYfJ/GqiF5uApxzqpATCx6jiycbZXi2be7hYDLA/Q5g5Iih0iZnD
+	cVC0H/EnvPOFq2xWlGcY6JJM/0KetRs=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1769156635; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=l4ux9tDlFdT94Vxn27fx7SeIZf5wjhCyTIcjZvfwWJQ=;
+	b=N8UOb1xgztH32QrTnJLQ0HErMKTEVypillYb5NrAbLG8ndcOQhHNa5GUXp/tWaUXBbOfNbs+VD1vFb5i1Y0P+GybToMmiESnuDDiAbyqHpWzV/RypwVcPh2RbmnhuKjZRNxA0AGfDLYQtSrrLl6WwPx+fEgjmwlXaCH9gy6mxtI=
+Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0Wxf8ov-_1769156634 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 23 Jan 2026 16:23:54 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: [PATCH mm-new v5 5/5] mm: khugepaged: set to next mm direct when mm has MMF_DISABLE_THP_COMPLETELY
-Date: Fri, 23 Jan 2026 16:22:32 +0800
-Message-ID: <20260123082232.16413-6-vernon2gm@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260123082232.16413-1-vernon2gm@gmail.com>
-References: <20260123082232.16413-1-vernon2gm@gmail.com>
+	linux-mm@kvack.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	oliver.yang@linux.alibaba.com
+Subject: [PATCH net-next 1/3] net/smc: cap allocation order for SMC-R physically contiguous buffers
+Date: Fri, 23 Jan 2026 16:23:47 +0800
+Message-ID: <20260123082349.42663-2-alibuda@linux.alibaba.com>
+X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20260123082349.42663-1-alibuda@linux.alibaba.com>
+References: <20260123082349.42663-1-alibuda@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: czndy36xdkobup1bxfpnaaagrghkn9w3
-X-Rspamd-Queue-Id: BAD561C0002
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D67191C0007
+X-Stat-Signature: fcxdcetkmfyn4wezwbm841hfb47osnzj
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769156594-893931
-X-HE-Meta: U2FsdGVkX1/MmEfumHX5lMrbZ4SIPnS7a0rt4v8NC3+sHIZurgenoIpPnISRQtJNRophc0ezzS0XD03zLvKGSXlhFhcQsSPw9pnOa0umZKXcTD76cxRY0NbOZ2ly0Q1SOkoQ1Ezlkrdgq9Q+jtlhiEDLx1qmoM513mglBJOn9Qo9DS3/I7X0T3HZuqAIVSEPYVVGW4NvNn9N/gSQ/lQCEx4UZo3VscfzO+nmjXenb+VoYVaSxu6HF1Iiiufz5BcQycs6I56ly+XxKwM8JF6Ezqr47jK8c7wSwlqKP+EZ8AtDcG5JiZDUTKY7CU+4zHWSJef2N/S2FnWdUa9SWZ5jlpYNLtZMJN17OFZOtSfdjdkDouClWAYEp3re27/CJ9bZoVAsCFBo4kOIQaqlrAriQeFL3Mwq8kLrfhh5bwVWPAk1VZebJ0jWwCAi6K06WcU7qB+xFdPahp7keP/zk27B+mHiAHWEe28Dlij4LvfXRFtF/nQiTjE2COylDCqvMByiG8YXr65iCti3U3tjRK6d5vTiEWfA1uADr3qJ1IKxDr6IoW36fkls89ClAKKfqz0P0gxbUtxJn9NIfQcBYNvJMhfwD4GfXX+KNL1/ioa7mJ2F5wqwB+fZAR3ZDfi4Tqt5YE6JfUhKZydVrBkU1AGMzYE+nmHL840jFIOxt1rup5uLTvmSwrDInS/F96I2pfA94yFHeuSGKT8w1X1luIbX3aBBwn59IG8n7h/kbOhQSIeq+doPlQ8f6BCn7SJ+mwhVJTEtIxRuvgra4opI95979AUUSZWqovQyXNc2BNnDvqRUWp5fEJjMCS+dRX5kdFCIOrtDN5hpp+j0XOpIGXEXwXrIu8GvSOOPAyRuBATK4ja/rojLLwcHSfD9OjkcBcNSyVShAt2eCUgU9c/7gExivB94RWnXLTNELXk5cR06RF7y+luw3siux8ZTQfR2YQ7ayIRmrJldg9o/0TsCQvt
- dVDEiAiq
- Cbda2GQgwVq7r/9eHn9mjvN6rDkm22zzJLQtXfuVyPipxBWVBa4RstzYc3AjvNJscKaZf+G9VM9ZJSPO6CPFket/rh5Vsf3m+hf1clw26dStGng9VabMTJGOqd6voNKucAqGuKqv6u0UHf6rZKLWGSpbfqByHKFc+Xakru7Ji3K9q/02k+hz48kZzV1vn6tR6uEabfK+b+qLgF6kaYR/w8GtMjvX3pLCLoPzUjYVgndf+uH9i3zH7/Gk3t2WBMleBMytT7NOU5rAZtyCDdlHOa5+VV6izWLDe3zy63ZRjc0w/CCsmK/d9OyiBkRcMoBoKfzHDJSdOO8a2UbSrj5cRZ9VHwQ3OtMRbsRmI4ZEiKFCXgOLPC+oRDDqcsiq1iBnIBVpRM36ZLonxnXLRFPEk9bKyxCd5JdQmkEMo9jBZuWj92BQqmgt3wt0K7mF/DRz2fU/BF6E+CGxAdRjKJCrzUrGJGU1VAv5s+CyjrRIFb826l1k8SnB2DrNuwT+m6xEAQ854P/LyP6pNz/3gHnObX7JIFr6vzyEHOolN2LedYYvEqzo=
+X-HE-Tag: 1769156639-70342
+X-HE-Meta: U2FsdGVkX19dCrXHAGrH8ieZbGf5A8vPSL6rI2HhnDDe9C8eU6YFT2S/DaWcIB0Mz4HSzppgk4eiEzsHQ0qKp+9s7IBQN3PVATbimGGuFz6NSx9V5YiwBPN0mVbYoOD2T4MftKMzo2fYW2y73hXqNHL/A04P5GzI2AxKjxAfaTmogXVInwg0Cnv43k8ECZxGd4vJYREDAiCTx4m88+uYiv2OXN+fr1pMYAk6mrQG2rFKWaDrGjFrgMRzbg/Dis1ECFRANou0nt3KTyx98fx8BtnRkdDumroYd1d4qxynIAPi9tvJDelMSiaJGN00uIBgqoroEp8lZ7puABDzNgjIiHjy1p15ublOukg4pDzka0DLcd7qUUrEn23klCspJh/q8RgYAKM9KYZ2yebypc6Tdohhsy7I9WXlk9DKzOltwg673m/4ZOmylnAIyK/S8rOHrmrjEURKVmy8ECwA6NT+kWrDn7HNMYxuvbYVDpUdfumLBjVCpD/PI1jG5JTRQyW3XRVi9TbbzxLQj1Xs/FAuk70yPLK4LWcLrmZ30HGC6tSO7g2KfeEBCZ7RkEAuMqHWL2/3tfL8zFR49IWNkAiBgkINRR+AespvtgDtaR2A8i2464DVzcxec1zfskpdT+6rfFQZ5l/9FHkpTykpv97wQDa4QZyTVozJzXha3TlyIRRvfNS29oKR4JgjEQfnzqGBgb37ZBzJAjxM1ew5x7ChKVAQFVZNyrWDClK84vGzR7wWoWIF+zTeimuWSqzCfS/LNZ82YaR4EsZ+/gCG7qBa5CR65nz2Y6buGdQq3WybD1YAS1LksadtsxZL3Rq1ZTxACQ+Yzsuxb5iJ98B8cML6P+lbr9etpDueSqTNhRbCxX+MxQDQDX3hDUcOh/oZp1jHSzlRInQ+4eXYsREljlX81Jw3jKP5Xnoux50m/jhnBw3TcvtJskyoP0OZuzxMzxDTv0Mfk87yjiJot9qRU7q
+ z0gsjRzo
+ ydnRECNVh6Cbd3IdsvkGLAJNMxlRJng6AeCVvNjw+KV7FI/6M2YDCFsGNr7ha4m65wIOi9RNL4iKj0iAj5Q1FbicvIPHHLegZr/JShbuG5lpLgvrOGsuypntSm7eG5P3krY2Qz8q+ci9rf/Msdlp39c+ZXcQDQHqUAb5Jk3gxV+m1Pp/hhvVXeWfKT8EfKtqL2xMwuBBa3s6ek8/FvWM12EUHRCyFj8ZPxekFo4oggdxOn4fg1aXNyRq27PBtSFlzMB9o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,39 +100,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Vernon Yang <yanglincheng@kylinos.cn>
+The alloc_page() cannot satisfy requests exceeding MAX_PAGE_ORDER,
+and attempting such allocations will lead to guaranteed failures
+and potential kernel warnings.
 
-When an mm with the MMF_DISABLE_THP_COMPLETELY flag is detected during
-scanning, directly set khugepaged_scan.mm_slot to the next mm_slot,
-reduce redundant operation.
+For SMCR_PHYS_CONT_BUFS, the allocation order is now capped to
+MAX_PAGE_ORDER, ensures the attempts to allocate the largest possible
+physically contiguous chunk instead of failing with an invalid order,
+which also avoid redundant "try-fail-degrade" cycles in __smc_buf_create().
 
-Without this patch, entering khugepaged_scan_mm_slot() next time, we
-will set khugepaged_scan.mm_slot to the next mm_slot.
+For SMCR_MIXED_BUFS, If it's order exceeds MAX_PAGE_ORDER, skips the
+doomed physical allocation attempt and fallback to virtual memory
+immediately.
 
-With this patch, we will directly set khugepaged_scan.mm_slot to the
-next mm_slot.
-
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
 ---
- mm/khugepaged.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/smc/smc_core.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index be1c09842ea2..1dc19c1b1f97 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2558,7 +2558,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 	 * Release the current mm_slot if this mm is about to die, or
- 	 * if we scanned all vmas of this mm.
- 	 */
--	if (hpage_collapse_test_exit(mm) || !vma) {
-+	if (hpage_collapse_test_exit_or_disable(mm) || !vma) {
- 		/*
- 		 * Make sure that if mm_users is reaching zero while
- 		 * khugepaged runs here, khugepaged_exit will find
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index e4eabc83719e..6219db498976 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -2324,26 +2324,30 @@ static struct smc_buf_desc *smcr_new_buf_create(struct smc_link_group *lgr,
+ 	if (!buf_desc)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	buf_desc->order = get_order(bufsize);
++
+ 	switch (lgr->buf_type) {
+ 	case SMCR_PHYS_CONT_BUFS:
++		buf_desc->order = min(buf_desc->order, MAX_PAGE_ORDER);
++		fallthrough;
+ 	case SMCR_MIXED_BUFS:
+-		buf_desc->order = get_order(bufsize);
+-		buf_desc->pages = alloc_pages(GFP_KERNEL | __GFP_NOWARN |
+-					      __GFP_NOMEMALLOC | __GFP_COMP |
+-					      __GFP_NORETRY | __GFP_ZERO,
+-					      buf_desc->order);
+-		if (buf_desc->pages) {
+-			buf_desc->cpu_addr =
+-				(void *)page_address(buf_desc->pages);
+-			buf_desc->len = bufsize;
+-			buf_desc->is_vm = false;
+-			break;
++		if (buf_desc->order <= MAX_PAGE_ORDER) {
++			buf_desc->pages = alloc_pages(GFP_KERNEL | __GFP_NOWARN |
++						      __GFP_NOMEMALLOC | __GFP_COMP |
++						      __GFP_NORETRY | __GFP_ZERO,
++						      buf_desc->order);
++			if (buf_desc->pages) {
++				buf_desc->cpu_addr =
++					(void *)page_address(buf_desc->pages);
++				buf_desc->len = bufsize;
++				buf_desc->is_vm = false;
++				break;
++			}
+ 		}
+ 		if (lgr->buf_type == SMCR_PHYS_CONT_BUFS)
+ 			goto out;
+ 		fallthrough;	// try virtually contiguous buf
+ 	case SMCR_VIRT_CONT_BUFS:
+-		buf_desc->order = get_order(bufsize);
+ 		buf_desc->cpu_addr = vzalloc(PAGE_SIZE << buf_desc->order);
+ 		if (!buf_desc->cpu_addr)
+ 			goto out;
 -- 
-2.51.0
+2.45.0
 
 
