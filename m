@@ -4,96 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD582D6CFBA
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 04:00:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17837D6CFBB
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 04:02:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 041516B0386; Thu, 22 Jan 2026 23:00:10 -0500 (EST)
+	id 77F7D6B02E8; Thu, 22 Jan 2026 23:02:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00F7E6B0388; Thu, 22 Jan 2026 23:00:09 -0500 (EST)
+	id 6FD826B038A; Thu, 22 Jan 2026 23:02:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E88806B0389; Thu, 22 Jan 2026 23:00:09 -0500 (EST)
+	id 552176B038B; Thu, 22 Jan 2026 23:02:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D611D6B0386
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 23:00:09 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C3FC46B0389
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 23:02:25 -0500 (EST)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA1F3140147
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:22:15 +0000 (UTC)
-X-FDA: 84361780230.04.6B827F6
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2A574140006
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:22:11 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eXPMNHh9;
-	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9C071B32A0
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 02:44:38 +0000 (UTC)
+X-FDA: 84361685436.04.21001AC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 46FBC40003
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 02:44:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="YMybbAM/";
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769138534;
+	s=arc-20220608; t=1769136276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DpeJcCHVDm9aGgZT7fLJbUNNelWHXP+Bu4gd7TvaW7g=;
-	b=gXwMaIKWqA7ENETGxzB+skkk595qwO6VLILEfLqxGX9gMMrnFyUlTirSQVm17ZUZpfXS36
-	lNTpXRhqUoDk5r/pAM5jELhN7Otzqe+pONmlEXQOnI7ZFQeNCUp5f6CXuffb8p91gCq59z
-	4lGpv7NP+iv2fPNQ060AeN2oCPS5KeA=
+	bh=z1x2TAliqbAAIyc7FSM7yYyirZiPp9rXXlej+4BglAo=;
+	b=lsrzk2emr+ONw7V2TMugYxJUrhzR/h5qOnjR8DkXMDE3zKdSEl42deNlwu0tohPvZfjIgM
+	1qOhQh3iolnFrJICp7l6TMrfoScBHKbvra5TpOwAmK3XhZBv20y9KYwZ6X5Z4isv8mRCwo
+	6ZAKJQfn2xc5FwfxIO6ppJXXwYpfQfg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eXPMNHh9;
-	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769138534; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="YMybbAM/";
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769136276; a=rsa-sha256;
 	cv=none;
-	b=7H4VnakPI3p3JXHzMb/pQIat/yNffnK5aJ93V3Cu4KJqh3AwCZonW5pfqFoqI8D4APqC9J
-	ayKqExH6Km64B1VwMsDQVoCa4PnIHQE+UO/Lf7f/CqQr7CF9ONCqWigbScoHH6tBLc5chR
-	5TJq/J1cd/b5vDcMuvNWZ6b8LVsn1fE=
-Message-ID: <fd90c84b-9829-4699-b7df-c43020519ec9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769138529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DpeJcCHVDm9aGgZT7fLJbUNNelWHXP+Bu4gd7TvaW7g=;
-	b=eXPMNHh9ctUnhtpd2wXxPJprv0KOzhjIIb/JZN2sRw4sr1qJsj2GswbWUwjQC99xFlGN+J
-	QxtDjJNo/hWzlNu69ifrt1uEPxLsnWQciI1TqcX0DRrEmtCLkDY/tqkEIuT8fAicEwvtwZ
-	cI4zum4BNHwOopAuRPtAWL6yfr/S8g4=
-Date: Fri, 23 Jan 2026 11:21:50 +0800
+	b=VlxSlQFlIlFZcgMgAOZMjuza6dqOwpDZb1ZfXa5EeCrKkZc9GvNrUFk1Qrmbwtvd7vB1rB
+	bAUfHF2Rp5mLcezi50fRHpPBhx3rgoHzUokZrmw6EGYYZvia8NrENBY25BQPonRXzzPDqc
+	tRkAZUcMxfVAgIpOdN0N8/wbsGP86CU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769136276; x=1800672276;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8ndyNJikJsEpVSc9dj51nBXSlOB/gf6TZifRUHaN9w0=;
+  b=YMybbAM/ZuJZTECgxU4wwcfQK2ygZhYgRZxDDsY5WjXGSZ5coyacBJvP
+   suX14rgX9ADFDss5HdTcXx+i9Dp52XoMdsJ/HFbPsPWCTz0DlHtSUBl9I
+   49h1OLYyn+bDTerEf2+6mArnUf7nI2nLBIfWPZ67gIt+Miv+nqu1Aitmv
+   Rin7Vm6+mc6y5H1X8316NIqnF1dbxQDt54zJQPhZ062+dxDFJ1DpY9+fq
+   vrinXPVFDBwASNtmfFH2mJIjTTUJ8pV2fxNJXdbf757b7AxMoWXN4/+ef
+   LLncyz9GYQ0tuq7sPcDC1gwfS9vpz0g/H7mtFlgF+wT73Yx2kQJmpcT9V
+   w==;
+X-CSE-ConnectionGUID: djwxbGitRfy8Otoxzv0dKQ==
+X-CSE-MsgGUID: V7yiewg1RQCIhrDAzKD/Ig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70440023"
+X-IronPort-AV: E=Sophos;i="6.21,247,1763452800"; 
+   d="scan'208";a="70440023"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 18:44:34 -0800
+X-CSE-ConnectionGUID: /cURpc/CT/q72pVQuMgWrw==
+X-CSE-MsgGUID: VLZI25VOQ0uqjgYyO5JaEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,247,1763452800"; 
+   d="scan'208";a="211361570"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 22 Jan 2026 18:44:30 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vj79v-00000000TS2-33aC;
+	Fri, 23 Jan 2026 02:44:27 +0000
+Date: Fri, 23 Jan 2026 10:43:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thierry Reding <thierry.reding@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Cc: oe-kbuild-all@lists.linux.dev, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	"T . J . Mercier" <tjmercier@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>, Sumit Garg <sumit.garg@kernel.org>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-tegra@vger.kernel.org, linaro-mm-sig@lists.linaro.org
+Subject: Re: [PATCH v2 04/10] mm/cma: Allow dynamically creating CMA areas
+Message-ID: <202601231051.5GWCp3mt-lkp@intel.com>
+References: <20260122161009.3865888-5-thierry.reding@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-To: Wei Yang <richard.weiyang@gmail.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
- ioworker0@gmail.com, linmag7@gmail.com, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
- <20251231094243.zmjs7kgflm7q6k73@master>
- <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
- <20260101020715.45wqnjgcklvjcth3@master>
- <d38fcbe5-8b4a-40bc-b8c8-1c49ccaa9964@kernel.org>
- <20260122140034.ymigrfppzwvmcjkr@master>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260122140034.ymigrfppzwvmcjkr@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 7cqzdwbzgac4srexhfkwe1nhuu543keb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260122161009.3865888-5-thierry.reding@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 46FBC40003
+X-Stat-Signature: tc4itafagdohtsqdkhdm3w5f8ohrcn3e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2A574140006
-X-HE-Tag: 1769138531-323942
-X-HE-Meta: U2FsdGVkX18FMNlrfVcER1MjOyGAu3wOgh08doVzMz3HAT9RhDLLqNi6uWcg4jraayu05ObTJ5ecCecT4ivsPSc61JOeYrNq4jk2whyPXzCf5ETgC8cAhwxN/GiULlKiJK+t/0e1KUtuTo/UR+EtIZM8DzcyBd4y8LliY2ZcarxoFT2XgL9QlVZ3FMx1pSvuONZOq7OIn/OZEQnqcm89cpECT+xlCmyU4CIbgnt04J4rfbJ9lfNt3W9rcRj99AC+a0Af/TH9Kg4QcXehZb1ecOKpQQP112egLZbEZEfvq/s1zBvxValGZbngKBUL/uunuyjq1Sei/FTXjVljbjSy7oxux4rcOolf+jS3aWlVvXg/cvjo4rOTaDRVbbT5V/RpslvgINbsh430bFF7bM+Kzn65LP4xFhWZ3i7sNPHFJI/TjHZ+4G7vBNVGP0TO6rGDj5pLjvYX7vpWaVnaPI6754yjoiJ9oa45uv3Iv5HHtvbBhnohIPPlMuLMmEX59W3wn6GpTakl/z6IfmPSsUBjK2hiX/WTv2STEtCyxdZrvYmzHQduqsy/l/g75oarlcCMxepnt/DQCU6ZVCSqI65XECjFNmFstd3w82Bkg+gu0fM8Y4OGWar/VMPD6k8Vrs9lcNRsUuS58ADovoRvIsBELk6nrZtA4We5Qci1fBqbHNWrxw5TwTaBWmIbamti6qYguVXj9yUQ1Y2bA4inXm1I7XZ2V4mCRRF4i3OBAX0ju8cA7dE3ANw4dYueylWCQAMYnUXq2WLXcNaQa29rOL546x1itiC3GRTGUAWjpketXK8doZtflTdXucOR3JqlZ2fD9t4XE5Xh8FujJt5vcqBIIEg7azqGQTXdmKkB+TkttSHivWW5OP3lhke/w7/F0yfS6SpCxARl1nLsBFGFBF/V3IJRhcYHFbo0nbqboD0/QTs7yX19DBGihks7fKl4iBqkMtSEEhAdElK9d61t0/X
- tm+kFWwJ
- 90kAjCiLtwxCYM0eOLI8EgAw2kwRp0FS1x1Mq1OfmurMTVk+qlqMfdNOZu4yFI/ilSOxT9cIfibnwwzdup3C5Pj4Z6g7V5IRgBEUvI6LeArwCMsmb8pV4UoXLDyFalRsHUSj2OJXXL53eiZWFaw6dRNm3P1rYne/G/8FiVwCDbVanTLlFzBvWzNJRPKVc2rQucU5yiFRQfUHgekofhosSUoJyc6rsZXhovAuf2otvTxtpwC2SYnDWtVTHsqCnyJ+ZWPcsPx2WpJkqVQswfAK3eAWKLUX/28IQ0hLh2X+sbvWOWL5XeazSduo8pBiPsnbBbfX5r46g7c6RJmcWDLgX6a3Ltn1dKfYGn2Jg
+X-HE-Tag: 1769136276-407402
+X-HE-Meta: U2FsdGVkX1+vd5cEHzcwccss9LdFwyxEtF5fJFNmMRvrzw6oUrYzoCXSSNLg9kFXUdvdWsME8cEXugrfNR//WFaLQHzPxqVksaI5inxpk30ShkVbGnUmC21MNdab/bnIBVsBRM7SWTjbz/rn9l1/WJMSuSByrLKE2fR/TIGF80rQ+rJCuVV3XpJ8ccpmFpxCyRGDDbVasBP7CqAcGOJOITPx1JTzktHFxN74i8fMl6cRGqgY56D6DpPfTyyOPt4O8Azg1DvOTpzp3sX8HBwby1mZkjomV8fJjUxuzNdTXxHkvxYTmPwbfJy9JJkKNPfSYcWkLw3i0NFN7KG/OH3jCkjrSEChVwgfsUQxx9RHUDaOYSzKCjRAfrzHPdMHaP/sGkpKc1xXpvkQ7KytspO81Iwz+zl5rCdmVwsI/vrFk+wwzFL5y3qo9ibZvlnp/i8r709xcWAfKFt77srTrQ9/uSTtKoYb3xsGe8wGHyxAUWVhnYfww7KNyonqFuC9AgFlGv31rXkz2ospMIahDQUXH2OhmxNBP5SLrk/wn+0C6X2TVTwlxV6m4aNmpagiLYczgiyLxWoA3BB0GzzZ4Nd0uUpRbcRIzfyCNkxUoAL+PJXoim+nb4Rlj6zuNGHRT7T0eonhStG6GE+kCzR5yCDnuHAw5t5I+c6KE7mgRI9PXS7wooCo0y9T6Gy5+k4N80FuHxKTe/LUr7o6Y/4KA82LS2ksesYztbtTfE5OAbz3BOVpXsey+v+wTzUYHtFzwBGk2IIwYXzdJ5Gw5Eaeo8NP9w/LtGNHHlL38anlmUtF+p4XvGCdueBJrGhgF0s3TywouBqBfYGUAo20ZuSRmO1/XhG7mb00PfVf7mnpe5yaLBdRAozsYeOhm/2nVvJ62QbNXHjkbo2KQzD4EcI1HtkSPc7Xh8A2XK3ZmebLrXyYq03O/sE1EBV6L57UB5sRuKePrteAPQihC3Gcn/u1iuQ
+ r2R8VaoP
+ 0J56SrhxP3kMkCbBS2pZyDD+5MEOTJJJQR+2othIEgSjxGW0hYV0JYo+odwbcD62CLxHOWH+quJyOv8L8o2yrU/jW5715VAu+GJOZWBE+FH7gUz2AGF4Ufzv9WieQyu4gjobvK/eslveM/MOR96yhnuMYsdBaEwLZgj4azc+RFABews+uFCzANMgKFe4ICzk22iUxYTxSiGyoG6rB8+oILRmSDdU9MAfr9k4P01u/DRtHT/hkruwgc4zaioCDqQ9Ha6sn5e8Y+g70SNAi8d4t0nI8hhvvuz02sDsqPKLfnX2TCIOU+8HgQ2q/y07uIy41zqY/VjTdbxMOy1ZGzWznhOLA4yfItsc5nn87qFf3sLsVJkO9vt/K25794u+il4lh7hFr/C/hp/Ul7Cq7SUkdJ7R7iPVRtvUz6ToVUZjRbk1pJWE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,131 +120,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Thierry,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on next-20260122]
+[cannot apply to drm-misc/drm-misc-next robh/for-next linus/master v6.19-rc6]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Thierry-Reding/dt-bindings-reserved-memory-Document-Tegra-VPR/20260123-001244
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260122161009.3865888-5-thierry.reding%40kernel.org
+patch subject: [PATCH v2 04/10] mm/cma: Allow dynamically creating CMA areas
+config: i386-buildonly-randconfig-003-20260123 (https://download.01.org/0day-ci/archive/20260123/202601231051.5GWCp3mt-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260123/202601231051.5GWCp3mt-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601231051.5GWCp3mt-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/cma_debug.c: In function 'cma_debugfs_init':
+>> mm/cma_debug.c:207:25: error: 'cma_area_count' undeclared (first use in this function)
+     207 |         for (i = 0; i < cma_area_count; i++)
+         |                         ^~~~~~~~~~~~~~
+   mm/cma_debug.c:207:25: note: each undeclared identifier is reported only once for each function it appears in
+>> mm/cma_debug.c:208:38: error: 'cma_areas' undeclared (first use in this function); did you mean 'cma_free'?
+     208 |                 cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
+         |                                      ^~~~~~~~~
+         |                                      cma_free
 
 
-On 1/22/26 10:00 PM, Wei Yang wrote:
-> On Mon, Jan 19, 2026 at 11:18:52AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 1/1/26 03:07, Wei Yang wrote:
->>> On Wed, Dec 31, 2025 at 05:52:57PM +0800, Qi Zheng wrote:
->>>>
->>>>
->>>> On 12/31/25 5:42 PM, Wei Yang wrote:
->>>>> On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
->>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>>
->>>>>> The PT_RECLAIM can work on all architectures that support
->>>>>> MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
->>>>>> MMU_GATHER_RCU_TABLE_FREE.
->>>>>>
->>>>>> BTW, change PT_RECLAIM to be enabled by default, since nobody should want
->>>>>> to turn it off.
->>>>>>
->>>>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>> ---
->>>>>> arch/x86/Kconfig | 1 -
->>>>>> mm/Kconfig       | 9 ++-------
->>>>>> 2 files changed, 2 insertions(+), 8 deletions(-)
->>>>>>
->>>>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>>>>> index 80527299f859a..0d22da56a71b0 100644
->>>>>> --- a/arch/x86/Kconfig
->>>>>> +++ b/arch/x86/Kconfig
->>>>>> @@ -331,7 +331,6 @@ config X86
->>>>>> 	select FUNCTION_ALIGNMENT_4B
->>>>>> 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>>>>> 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->>>>>> -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->>>>>> 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->>>>>> 	select SCHED_SMT			if SMP
->>>>>> 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
->>>>>> diff --git a/mm/Kconfig b/mm/Kconfig
->>>>>> index bd0ea5454af82..fc00b429b7129 100644
->>>>>> --- a/mm/Kconfig
->>>>>> +++ b/mm/Kconfig
->>>>>> @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
->>>>>> 	  The architecture has hardware support for userspace shadow call
->>>>>>              stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->>>>>>
->>>>>> -config ARCH_SUPPORTS_PT_RECLAIM
->>>>>> -	def_bool n
->>>>>> -
->>>>>> config PT_RECLAIM
->>>>>> -	bool "reclaim empty user page table pages"
->>>>>> -	default y
->>>>>> -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->>>>>> -	select MMU_GATHER_RCU_TABLE_FREE
->>>>>> +	def_bool y
->>>>>> +	depends on MMU_GATHER_RCU_TABLE_FREE
->>>>>> 	help
->>>>>> 	  Try to reclaim empty user page table pages in paths other than munmap
->>>>>> 	  and exit_mmap path.
->>>>>
->>>>> Hi, Qi
->>>>>
->>>>> I am new to PT_RECLAIM, when reading related code I got one question.
->>>>>
->>>>> Before this patch,  we could have this config combination:
->>>>>
->>>>>        CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
->>>>>
->>>>> This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
->>>>> is semi rcu version.
->>>>>
->>>>> I am curious could we use rcu version tlb_remove_table_one() for this case?
->>>>> Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
->>>>> there some limitation here?
->>>>
->>>> I think there's no problem. The rcu version can also ensure that the
->>>> fast GUP works well.
->>>>
->>>
->>> Thanks for your quick response :-)
->>>
->>> And Happy New Year
->>>
->>> So my little suggestion is move the definition of __tlb_remove_table_one()
->>> under CONFIG_MMU_GATHER_RCU_TABLE_FREE. Do you thinks this would be more
->>> clear?
->>
->>
->> Do you mean
->>
->> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
->> index 2faa23d7f8d42..6aeba4bae68d2 100644
->> --- a/mm/mmu_gather.c
->> +++ b/mm/mmu_gather.c
->> @@ -319,7 +319,7 @@ static inline void tlb_table_invalidate(struct mmu_gather
->> *tlb)
->>         }
->> }
->>
->> -#ifdef CONFIG_PT_RECLAIM
->> +#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
->> static inline void __tlb_remove_table_one_rcu(struct rcu_head *head)
->> {
->>         struct ptdesc *ptdesc;
->>
->> ?
-> 
-> Sorry for the late reply.
-> 
-> Yes, and maybe we can move the definition to the
-> #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE code block above, then to be next to
-> tlb_remove_table_free().
-> 
-> So that we always have rcu version when CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+vim +/cma_area_count +207 mm/cma_debug.c
 
-LGTM, could you help submit an official patch?
+28b24c1fc8c22c Sasha Levin 2015-04-14  199  
+28b24c1fc8c22c Sasha Levin 2015-04-14  200  static int __init cma_debugfs_init(void)
+28b24c1fc8c22c Sasha Levin 2015-04-14  201  {
+5a7f1b2f2fbeb4 Yue Hu      2019-03-05  202  	struct dentry *cma_debugfs_root;
+28b24c1fc8c22c Sasha Levin 2015-04-14  203  	int i;
+28b24c1fc8c22c Sasha Levin 2015-04-14  204  
+28b24c1fc8c22c Sasha Levin 2015-04-14  205  	cma_debugfs_root = debugfs_create_dir("cma", NULL);
+28b24c1fc8c22c Sasha Levin 2015-04-14  206  
+28b24c1fc8c22c Sasha Levin 2015-04-14 @207  	for (i = 0; i < cma_area_count; i++)
+5a7f1b2f2fbeb4 Yue Hu      2019-03-05 @208  		cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
 
-Thanks,
-Qi
-
-> 
->>
->> -- 
->> Cheers
->>
->> David
-> 
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
