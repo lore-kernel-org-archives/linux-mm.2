@@ -4,84 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12FDD72347
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:26:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2B0D7234B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:32:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EB4D6B044E; Fri, 23 Jan 2026 03:26:00 -0500 (EST)
+	id 8BF0E6B0450; Fri, 23 Jan 2026 03:32:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AB4C6B0450; Fri, 23 Jan 2026 03:26:00 -0500 (EST)
+	id 8968E6B0452; Fri, 23 Jan 2026 03:32:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CF1D6B0451; Fri, 23 Jan 2026 03:26:00 -0500 (EST)
+	id 7BFF66B0453; Fri, 23 Jan 2026 03:32:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D9D46B044E
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:26:00 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 732B4B5C4B
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:25:59 +0000 (UTC)
-X-FDA: 84362545638.08.4D2443E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BA4481C000E
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:25:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6ADF46B0450
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:32:50 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B8821A0208
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:32:50 +0000 (UTC)
+X-FDA: 84362562900.28.1E39EAC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7449380004
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:32:48 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PA7PbPpE;
+	spf=pass (imf02.hostedemail.com: domain of mailhol@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mailhol@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769156757;
+	s=arc-20220608; t=1769157168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H+Ph4/HiAVNACiAQVzTRg9VZTx7FI1NIAhiZlTUmiMw=;
-	b=JYLBLUOBOykj1ncOxFCaidmgpRzVtv6WSpGlpeqcdscjFjFbFMUjxmrJvU8vyvOsHU1vrq
-	Kypesw8ehHQP7Tn4FnEJPBQNKEy4x38uTYhwa+y4HVMfqudmgAe0xL/KEtZrcx1w7MVApr
-	MKB2h3nJ4EByM0/9u1MDi+m6uKMtMvI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/lHEdB0GDc+U4hfN7ERlhy59AUwf8W+c4JgvLL/NHbk=;
+	b=UspAZ/9koqYX1SrcKnCOqmetJFU+v7KzOb4MhdMgR+FXT1naZx//fwk+2NUlKTCH3FkVC5
+	zUw3kuOyFUBqIG9ZOt7mtCs9CE00NOl3PxE7aDiWRREQdinKodScOewoEJf5tGDWUUKaMX
+	lgeC1YzOeDGPvWe484W2GpCqGXCwMFw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769156757; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PA7PbPpE;
+	spf=pass (imf02.hostedemail.com: domain of mailhol@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mailhol@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769157168; a=rsa-sha256;
 	cv=none;
-	b=klqag9NA9OKrp3SV9QBgNZszZFVztONP3IatDjUysPC9B+4BwGzvdcmnGo1mo7Q0c2lH5r
-	TQ5HumIMsFGvtsjDqu/oiH5zuSiMuJmHzO1ts2jZNG5UstF+8pEhQ1BXRUsF81o7mQeBFS
-	KOcyTbsDZxAt59QFfSCPBEwVUkzjchQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4FC481476;
-	Fri, 23 Jan 2026 00:25:50 -0800 (PST)
-Received: from [10.57.50.81] (unknown [10.57.50.81])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF7B63F740;
-	Fri, 23 Jan 2026 00:25:54 -0800 (PST)
-Message-ID: <cf0a3f62-5673-47b4-afa9-1f2daab5e0b5@arm.com>
-Date: Fri, 23 Jan 2026 09:25:52 +0100
+	b=KxveWvLeEAwBaHN0zr1WUgU5DlCvBZINGbMz5EJSknkhPpDEmMYWqYxtHwJ2aaBtDpeY0H
+	6h5zxQEgz/m+cUA2GQX7J9SRn/5vrcXYN5Qii4fqqJXxVvTqk+oD5574QVZjuhiM3iA7zA
+	eM93IS4u+p6gD5ECTr/W4MkhMkTOsZA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9070960131;
+	Fri, 23 Jan 2026 08:32:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3F7C4CEF1;
+	Fri, 23 Jan 2026 08:32:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769157167;
+	bh=RPXHsjJJodiBfwtnVTgxBFEggh4DJsOuIORgyKkLh64=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PA7PbPpEa1KvnGFm3KBSXJd1gzslvA7DmJdy6klvyzNAO0JpcYbj+FcaC1vmAWUyF
+	 eXK3jX00afgTm45yoCmEKnyZyglRywyWkJUrV/F+1KnoZmCC7MQwbdCtRz9zadPJN7
+	 NaqOeTCoJc7Qi2bhldmBjL06T0y+pKQv/2OME1kEzjqyxM91CY955pVN1L249o1KZb
+	 2IxcOO1jj/pavF6Mc9CqwQwbkXnyXs+4J5YGCUK5OHBGzLVpOe4AZtlGFB1v55lqtB
+	 r6woavprdaP+2FXoMf+WYX+0vum7rQEH3MozNwL1lfn8q9nYik4hBKTCpfidQ5GZHL
+	 CVRGdX/7D7fpQ==
+Message-ID: <f9fcd1c6-373c-4345-b413-9bb6c1cd2d3a@kernel.org>
+Date: Fri, 23 Jan 2026 09:32:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/9] selftests/mm: introduce helper to read every page
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Mark Brown <broonie@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>
-References: <20260122170224.4056513-1-kevin.brodsky@arm.com>
- <20260122170224.4056513-7-kevin.brodsky@arm.com>
- <a4c83b16-3307-497d-9690-0e31672f3202@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <a4c83b16-3307-497d-9690-0e31672f3202@kernel.org>
+Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
+ GENMASK() and BIT()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Chris Li <sparse@chrisli.org>
+Cc: Vincent Mailhol <mailhol@kernel.org>, Philip Li <philip.li@intel.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ kernel test robot <lkp@intel.com>, Nathan Chancellor <nathan@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
+ Jani Nikula <jani.nikula@intel.com>, Kees Cook <keescook@chromium.org>,
+ Andrew Morton <akpm@linux-foundation.org>, oe-kbuild-all@lists.linux.dev,
+ Linux Memory Management List <linux-mm@kvack.org>
+References: <20260121145731.3623-12-david.laight.linux@gmail.com>
+ <202601221237.soiAkwkN-lkp@intel.com> <20260122103337.26473d1c@pumpkin>
+ <aXIzpC6wpdv47cSH@smile.fi.intel.com> <aXLOELiIG8MHKcIO@rli9-mobl>
+ <b49c9993-7676-4d33-a2d6-9f6b77b0fd34@kernel.org>
+ <aXMtJ_JurQjvN4tU@smile.fi.intel.com> <20260123082027.GJ3183987@ZenIV>
+ <aXMwIcH7Zh-1yNq3@smile.fi.intel.com>
+From: Vincent Mailhol <mailhol@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=mailhol@kernel.org; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
+ fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
+ F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
+ 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
+ YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
+ dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
+ zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <aXMwIcH7Zh-1yNq3@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6mrgwrg7uekg3sjoa4hqp9d169oyxx1r
-X-Rspamd-Queue-Id: BA4481C000E
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8knginzed7otx86uwhr888e1ex4wc1nh
+X-Rspamd-Queue-Id: 7449380004
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1769156757-275400
-X-HE-Meta: U2FsdGVkX1+1TFTqAc14GOjr7XVQaX9GbtipAJbm7jRxSc5aRa8UTk5L+0CokHc5AtAwEXP2AinuwQDw5C7EhNdOgP+g/kpvCxKgthTe+yuHM803IBU3BuThIV58IjxmVQV0q8aWkdWwaa2jEDgpiOiDZIb0rCuUENsyxU3t/quBLKna5mXqEsRZuCk6/fTwTQSre8Lqu7grAx5/5KdHknXU+mdgzpU33NvwF6OBHeukvx6zIt5cRXMdqP6Szq9SxO/s4d4OOanoh7VX5nCy8u/n8P3GIJxDu3HO3lV1pc8AMRaj8Ob6tZuEUHEcW0jqSot5UgfIjPkkq6UOErQIQOhz2/q/xF7ik25gxE70Zsq4bZycCyGxKGlyqSPz6uQ72YX6twH7uL8vsbt+3/EAJsLlY3ENFp9fr448Lbi4uXaRl0HAFhxbZVZRBRbLTTxRju0OjdtlyCqbsTYUoOCL89TmNTtgD1R+ktuc/sLC1zsWKK6SiMrx/m8teA+GoxJ2acfgqMaN9fbaGMGBzClJAs1Q6Iofe4hW0R/vqjOaioH8/qUKZVTe+D5DRwKhtZmu389rVqBv39eLDaL3ro78BR8m66O4yMRdMc58PiWaTHWRWYeMrW+jNHSf3i+h/0FWCm4fTtx0VGHf4dTBkhPD6CpeQtLBuNBBM45HrsQIKFae3Na9B7Z6TR/uuD8PwXI92cVR9otcsfryBwYM59P/Gz08iJ/O0Njh7kJVmwArv8FUExjNSfEWIgpyebtL4HlVWP+mPmrw2SlpTd3+7A2OqkPdPuLdrDSph3EvYm1d78xfVbkVB3a9I4gh64KAkqxmfX/EKszKJQL24KrBDejpXXmystnlqkDALp096iOf67JDD8QHC4BKVmIq/QshCxxQw0uaU3YG6TYtRzDsTFfeofXFc4g4D4TLHDXDqopRXuNPrycqZ8KRUd8CZ4tVuScatCpXsFkS7lUu3ycAYam
- tx6r1yFL
- hzvHghfhEuUv9PCeXzbUiTluvWWetDkEZKW75AoDJTyv8gLcU96FlrZrqgtjgNQsdH3S2uG0LxSFUXyZOl87clCB9FphQTQzj8qXeskXsL+pPITI8kEMvE6aYzZ+FrwJdMasLfX0dFkPT164nl+TdWvRF8IgbZzJs39BTXO8tUlDdp40=
+X-HE-Tag: 1769157168-577039
+X-HE-Meta: U2FsdGVkX1972r7/rEm23H95JcqUNtpr5tyE9Th/tDhX3dcsrUQTn/ZpY22JtzYDDMPBuFxhwYeQ1L5GmyiiOew1+BzpdFaPyuVtoPBlcWG4JngSFCAZwfLdGWqLPsMbiAYo4QfFY7Ei/VZekgaNsWz14BnaqPF2uuQ/9pM2+4+xD65G2ORbCrYBuzoTtuGCMgF+eigGI/5kxV4y+EKAdNdnzrJt8vLJEuqIhI1gMnCO/FohALsnt7lo0xRwxT13sH7gL1j6HYF15Ke/a4CraymZNKFTKRdS1xq2hZ+dkuLGVcnh0MT8PRwd2EKCWLTm9XNXiIebOAgwMj/7VCQy20wSlhLkRRbA452SNN94wqrO6t1MB9mbGmvpyq1oKEVkdeW+4HjkTdyuN+8rZMe/MD4u0wJTU0Ca+O3fxOWIj+ic/lHe8fOfCNGTySu39PytizE6BbTHQiX9KwTmdJXNGtZfl+w5NcS0keKNnGvJSrr7gkxls3lYdEgAe3tOZ5TTexfEUYCJe5rDGKAAba6vH2feHJ1L2TEH3LUCICUIsAIabzEqPVrAlYe6/7rhyScRVUh0th0+nc7dvGzwPYE/zS5jCFC7Vp7BtahQ2OEnQOL9DduwtlTk3m3QrFym82pEjOcY93NejJc7jxJ2zUEpYxFrbV5AzLh+4Tr1DXWNPL0OcLxao350g+IQ/3sVQHAs2uUxKQXw1gXIIQpy+HxJndQQ3+8u0wVNIM8MBreVzW4IQxq0oSAJQOyxJB8J6gobO10PEoHtlhrm/tcjA83DedYD9ZJGJPT8XQSn+xOo22HQO6MoStRtaWb2G/uWmbObK6rTtu+qbvEm6kdE/zk7+wiQrUrRJYcW6BdXdDfnkVjtqx7SZRbctnkxICfa4fyxbRv35cxRxH9JvvakEfSyli+78LxL9BT2kiL623dai669m+pxfk/0faKNMzzXXP+lTYTsOguc2aWhE97Viz5
+ YIJ2N1rp
+ yOMOYrLknHDzkF5M+cV+Re8yQKZIDFJ8m8NP5lMOUpqqaqvCNs+8/pTEmytT/nSmz6AcBoz80TlAoftiQ+IM59BWKBfiHgCTCbT8U4vTLIOEDEYuOxL6wKkqcRfCSV2ALCvZKu/G+gQvM1bugKVriLblKUMOmxhCZvWBCeNgYMefRd1bKw5EOvSZvutJeVEzqw+i6jY9stms6KG9hVwGRdKRT18X5o7LfyRVsbU3mFXUvLaPLoeKINIEHsDjGDTFkFTD2pOVLhHLzylo+5pUtRhcVqd+QnAWIKJ1QlGzFxCj3D4VKhT0bFaOKPaZ5h+UQQY+S6awuWYscZKWR26LYorh00Jm6Ds3KFJCVlrEkfNKvC8Vt+gr7JFtHVw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,33 +120,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22/01/2026 23:20, David Hildenbrand (Red Hat) wrote:
->> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c
->> b/tools/testing/selftests/mm/hugetlb-madvise.c
->> index 05d9d2805ae4..5b12041fa310 100644
->> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
->> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
->> @@ -47,14 +47,7 @@ void write_fault_pages(void *addr, unsigned long
->> nr_pages)
->>     void read_fault_pages(void *addr, unsigned long nr_pages)
->>   {
->> -    unsigned long i;
->> -
->> -    for (i = 0; i < nr_pages; i++) {
->> -        unsigned long *addr2 =
->> -            ((unsigned long *)(addr + (i * huge_page_size)));
->> -        /* Prevent the compiler from optimizing out the entire loop: */
->> -        FORCE_READ(*addr2);
->> -    }
->> +    force_read_pages(addr, nr_pages, huge_page_size);
->>   }
->
-> Likely we could get rid of read_fault_pages() completely and simply
-> let the callers call force_read_pages() now?
+On 23/01/2026 at 09:24, Andy Shevchenko wrote:
+> On Fri, Jan 23, 2026 at 08:20:27AM +0000, Al Viro wrote:
+>> On Fri, Jan 23, 2026 at 10:11:19AM +0200, Andy Shevchenko wrote:
+>>
+>>>> Al Viro's fork just adds 8 commit on top of the upstream sparse repo.
+>>>> Wouldn't it be possible to just merge those?
+>>>
+>>> Ideally yes, but you also should kick the distro's asses to update it, and
+>>> the sparse should bump its version...
+>>>
+>>>> That would be much less confusing.
+>>>
+>>> Seems Al become a sparse maintainer de facto :-)
+>>
+>> Huh?  What happened to Chris?
 
-I considered it but since the test also has write_fault_pages() with the
-same arguments, I thought it was better to keep it for symmetry (neither
-takes the page size since huge_page_size is a global).
+After the project hiatus, I can imagine that there is some confusion :)
 
-- Kevin
+But Chris is back in his role of maintainer since September 2025. See:
+
+  - https://lore.kernel.org/linux-sparse/CACePvbXDO1ZybDu3RaFhED9D-9gC6LTMpWrxoh5xD+ZO5SLdzA@mail.gmail.com/
+  - https://git.kernel.org/pub/scm/devel/sparse/sparse.git/commit/?id=67f0a03cee4637e495151c48a02be642a158cbbb
+
+> I don't know, but upstream sparse haven't applied any solution for
+> MODULE*("FOO") stuff, nor reaction on my ping in that discussion
+> (I did it like week or so ago).
+
+I am out of context here, but were the correct people CCed?
+
+
+Yours sincerely,
+Vincent Mailhol
+
 
