@@ -4,72 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BAC7D625E5
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:54:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC7CED625E5
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:54:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E78A6B0418; Fri, 23 Jan 2026 01:54:11 -0500 (EST)
+	id 1ACFA6B041A; Fri, 23 Jan 2026 01:54:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C3416B041A; Fri, 23 Jan 2026 01:54:11 -0500 (EST)
+	id 17F1B6B041C; Fri, 23 Jan 2026 01:54:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C14F6B041B; Fri, 23 Jan 2026 01:54:11 -0500 (EST)
+	id 077C06B041D; Fri, 23 Jan 2026 01:54:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 141386B0418
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:54:11 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C65C614038D
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:54:10 +0000 (UTC)
-X-FDA: 84362314260.10.0F83DFA
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0D1D71C0007
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:54:07 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EE3716B041A
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:54:15 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A807C16036E
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:54:15 +0000 (UTC)
+X-FDA: 84362314470.29.4B874B1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 79F0F1C0007
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:54:13 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27Uk3vvZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JtJZs1kb;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27Uk3vvZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JtJZs1kb;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769151253; a=rsa-sha256;
+	cv=none;
+	b=ezj/oMppx2S6XnlxvcFo1qbEuRbjKdDRcBq9vI+FhePgez41JYmRytXtG+mWzEaF9NHn8w
+	GaEnOtdmzbvpczImKoWABrQWccTh/m73WmZ3jo55j2fc/C6petTNE9tp93nXzOjloAoHA/
+	udizs/47OLYfJq5mYeaIggtrVqNF3BE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27Uk3vvZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JtJZs1kb;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=27Uk3vvZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JtJZs1kb;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769151248;
+	s=arc-20220608; t=1769151253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WFAOzWfhPzGkFxwo51JGvuWwzN6El4GjSbI8LiKzML0=;
-	b=Va99eqaTx+V051IdGzIj1fwx34uCbGqtotCh1bT8lMoIfEnw4Hl/TjskDos19OnO9f4+HG
-	/StEW6SyseFz+pQl2G6WNKBh50egQNClJPdR8F/BdVme5SRLkxWSFZkNdddkaTbdCa2KIX
-	qQXPeIW3qg2oron0WMdkjOa5eJTITfU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769151248; a=rsa-sha256;
-	cv=none;
-	b=mmt0EuxhH/kXPwATveS0haVXbOwHa4l9DZJct8bBRUcVD3zYyvNAL+ilpnUDndeUmRbzp0
-	A+jEn6MBKApkJ8Xe4E0jMD9r4f5189SUaZ/DMVkfLtC9DMt1+GPyrVgdqshOC3bMRmCf2V
-	B6LEI86DnDIHIM225nilFy0pYMZHvvM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xSBhOPdL5sebK+aDhtX6/iV+qHkNH9ah4WZSL6is/IE=;
+	b=oixd4quAUqdjE3gywth1EV6OT4vmxPsRbPY874oswWi8AFrwwgyQk5aomhaso+NE7iQVjQ
+	3qRnoyaSCQGNul9AtD7AaPrczNBZKswCbOd65fxjPsLh1MIG+vBiUeIOT+HRS8QNJlGdnl
+	loDS35hhf9ujPmAFb9QszjnNmOl4k4Q=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2C50933779;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 600B95BCD7;
 	Fri, 23 Jan 2026 06:53:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769151191; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xSBhOPdL5sebK+aDhtX6/iV+qHkNH9ah4WZSL6is/IE=;
+	b=27Uk3vvZIfiU/vSZ3nJW8pVCR0fwz18zznV7LcWuQYal1NmYlXiuIfjC981V6w04AS+ZKo
+	3RFrrcR1KfnAiENMeYDFuX2JeFwX5/8uLt7JZbcaoRAb5oILHpCAIffRy75R72JX2hzlBU
+	phrUxg732baj/ER2XQSIo1in2EjJMn8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769151191;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xSBhOPdL5sebK+aDhtX6/iV+qHkNH9ah4WZSL6is/IE=;
+	b=JtJZs1kbHObd8fveITzrAnKn7NAI6Um7nVyW5cvUinKDkh+dIor6PZNDiltOxli1IrMjqX
+	R2dWEhOl/JyrKBCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769151191; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xSBhOPdL5sebK+aDhtX6/iV+qHkNH9ah4WZSL6is/IE=;
+	b=27Uk3vvZIfiU/vSZ3nJW8pVCR0fwz18zznV7LcWuQYal1NmYlXiuIfjC981V6w04AS+ZKo
+	3RFrrcR1KfnAiENMeYDFuX2JeFwX5/8uLt7JZbcaoRAb5oILHpCAIffRy75R72JX2hzlBU
+	phrUxg732baj/ER2XQSIo1in2EjJMn8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769151191;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xSBhOPdL5sebK+aDhtX6/iV+qHkNH9ah4WZSL6is/IE=;
+	b=JtJZs1kbHObd8fveITzrAnKn7NAI6Um7nVyW5cvUinKDkh+dIor6PZNDiltOxli1IrMjqX
+	R2dWEhOl/JyrKBCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 065801395E;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 38A441395E;
 	Fri, 23 Jan 2026 06:53:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YJ9FAdcac2k4YgAAD6G6ig
+	id wC+KDdcac2k4YgAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Fri, 23 Jan 2026 06:53:11 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 23 Jan 2026 07:52:56 +0100
-Subject: [PATCH v4 18/22] slab: refill sheaves from all nodes
+Date: Fri, 23 Jan 2026 07:52:58 +0100
+Subject: [PATCH v4 20/22] slab: remove frozen slab checks from
+ __slab_free()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-sheaves-for-all-v4-18-041323d506f7@suse.cz>
+Message-Id: <20260123-sheaves-for-all-v4-20-041323d506f7@suse.cz>
 References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 In-Reply-To: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
@@ -85,21 +130,14 @@ Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
  Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0D1D71C0007
-X-Stat-Signature: 6hsn5myjxw54hyahtyzrgioa6bjjn1cb
 X-Rspam-User: 
-X-HE-Tag: 1769151247-313230
-X-HE-Meta: U2FsdGVkX19LoUnKHIeEfA+Zr0mVu5NXl2dGgKiN212Z0Pxa9kef2VJ6Afd+MpYXxxWiQK8o1/xjJjVK2YcYKVM++d+NWH0EIQ/RbKDRqUmFGqrG5McxT5/KsS418WnLml+SPeWxzMWynp0LcoQjEjubpmNsOMZXqZaAw4LaFK3D8/lyL2wwlZSBNw9rH7jPGdwwbSvgZYUz8+yL4nGjV9vmbgnUdyObwuexTasnlq2To/2Q3XtItETcvdjZJZDxGvZt0XcxQ87ovmSIixcpGg71Gs0B8HWMwFV5SjWJxjrkZ3ifw7uDRIydQLZyX7bDxa8qXZrqU5NoZOASFTaQ9fQuZppXaa9av7umI5sTo5i+qErFpgvAexptl7OlUx2PAZKTNFXOjaEHWeFjlsoIiSJUs4GlYIkXiXl6rtuJDISvonj9mt9yUoZ+G4U/OW2xW8LEIkhb4QIAXyP9bkMMeJIh2+ua4qsDbSgOUmuI2LEzK5FIQHwYQBVFj9UurmDG5QN9MD+QfTNUwIx8mSPtDS8rbjvOm6y/gj6pOtgBfEDothFLLpBR5Qufw33Q+oMMzrKkuPcZw+1J+/9VXPI4mUzfYuWG50/lBa+nZM1mbAyIP4SjN+AWOi7NDK8mFX/H8/c9czTZg1P6mrt2oGwOZF71l0Kut7sy3+UyM29DYP+M5g4O/EksP3l4kZTtwW7rkLnYNIe7HhtB8Jy/iPSHl3Mbd4Z4MsfAXwo2bzyT3u1ZOKMBcPgHu98OCLJTuX8NrdBOXNB1LGrcuNz2vRLZLeZfEjSkx+p02AzzluezvSk1r0BodnhSfX7O2sZLBrL9ULKaveCi3W6yxRvUKwr7Hd1EUlu8tnrlz9hrdASJB8FrAhtldnOCcMgRST9vqQHrL9yL6peLdknHlrOHLGMUMzpxeoQV8H9qeB4ibYiRqx/QCvJ+4xCh/mxXsslx4yK26Lg9kCzlx10Qh372ImN
- gv+Od7wk
- 0sOoFX0xQ0OP5bYP7MZNPcWu8fjCHTMD03BaExusVCqImjvrUf18tHzbqyXj7W/VgiWEMKLC2BElSezTPyON89ho2lCAFTNcVT1pr6sxoSxw8v9Q=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 79F0F1C0007
+X-Stat-Signature: xjcnfax18ctc493syfheoafyzndaasrj
+X-HE-Tag: 1769151253-42628
+X-HE-Meta: U2FsdGVkX18dr4Tu2F99W5G3J8m7td9TXtDAj2PniLbx8Q0QB5xxdc7zs2uVplpXr/dfCELktboJBtQgoLHT7+9/7iAbC5EkUEgD21eODoowsa+XSolZvc6J2tA3UTLlY/KQ3wIh+e2PatFWbamN7y991iQwcQzBNjckyuKAwqfDUDrrW6O0IrP3YIRAZd+R9ii+L1OiUUibI3LzGKuPFRPxxvgzTQQbHGkC2JFP82gKZsnvuUqGXkj0izoSzJ8HKKP5Y+bCR1WqK3iip/3Hdt45Oc1cJqNI5kzxg3bhlo8sVD0s+gQ6SIm/oalowDmBfaqNoM8ryzgLmC35MeyPnX2R64v/16cGtKktQjvMSSRg9hNrCm0H/d59b4VGeWQLBbTlpt21T2sGy0Yq2pMcgKcI6EfAacQJVt9APxmo3L+q6FQ/ULwpg+pTbywVRuCvL+rY2pKujpw/IsKa4bwNALT2kWI8jNUspK7YKiLqnYgnoygOvxq7bihLdwihkR/cMMKYdcU65bfz/O4/MOXP9+8tiP/Mq/TTUTOZv+s55rYQXpcmiwaR/VIpq8kWXx7pBRR3nm9hElBFoa/m7ntfzBzr47Xkzy+4SnqrZnP2t8Lb5PVSEWbhGj42cBnp+VN520z6EUkzIyq8I8ev8c5+/W6Yg/gkEluya1rBvMr4eZ/Fl+oF/t9P/iSLhj9nx0u4A1EzsWrRkoah5j5QPVM90Ek9NN2K8qKZdCoTnd+VlnmYPiIrhLb+qiT4C3akxJglQ8RuPxbKvSh5AIEvKVnNaEUWU7Q5p0t+jKlR4kRns9mIYkHvOKLGJkv+g6zj8Yit1I4vxI1aa7xrYEvOsNiJooxzToXGDmLgafzFKyHGBQn3VPYEq4QRN302ExBaWTp+MBRFkWbgWiBrCvVLdqdUqM9kS99/V6Bx/ybPwVYPgUZY7JE624Lhvtt+Fv3dj2RFyG2rf5VZlZ6nGiDwbth
+ /v84UguH
+ 6vyvcCetPSxkxWgLLgS7bWVB0HhDgXUDUyQIm+tvNYIlFSkIbEpXTVvZ2hzFph7yzdpMA5yvR1wrU9ji4FHqKFfVVxO5xF6kDGqJTknvlSoUjtsHQvZWPCQuQ9LsZVTGsVqcYDn3j8OaZPbJlIh3xM9cBauTQq+DXk679SX7hP3gLpq1AFmAWhyhvL3vG7j1wf1RJ+DFI8xjU1dZqiIEoanss2sauA9nTAPsaKlAyd47Kpwr0DTLbxmlY5QtaeAY0Nzy04Zj77z9zTsM6og49wBfvIAqrPxxQeg5TbGgYEgEt5UOgKbIGcMspg65sRYGPbiOt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,252 +146,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__refill_objects() currently only attempts to get partial slabs from the
-local node and then allocates new slab(s). Expand it to trying also
-other nodes while observing the remote node defrag ratio, similarly to
-get_any_partial().
-
-This will prevent allocating new slabs on a node while other nodes have
-many free slabs. It does mean sheaves will contain non-local objects in
-that case. Allocations that care about specific node will still be
-served appropriately, but might get a slowpath allocation.
-
-Like get_any_partial() we do observe cpuset_zone_allowed(), although we
-might be refilling a sheaf that will be then used from a different
-allocation context.
-
-We can also use the resulting refill_objects() in
-__kmem_cache_alloc_bulk() for non-debug caches. This means
-kmem_cache_alloc_bulk() will get better performance when sheaves are
-exhausted. kmem_cache_alloc_bulk() cannot indicate a preferred node so
-it's compatible with sheaves refill in preferring the local node.
-Its users also have gfp flags that allow spinning, so document that
-as a requirement.
+Currently slabs are only frozen after consistency checks failed. This
+can happen only in caches with debugging enabled, and those use
+free_to_partial_list() for freeing. The non-debug operation of
+__slab_free() can thus stop considering the frozen field, and we can
+remove the FREE_FROZEN stat.
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Reviewed-by: Hao Li <hao.li@linux.dev>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 137 ++++++++++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 106 insertions(+), 31 deletions(-)
+ mm/slub.c | 22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 1d135baf5e9e..540e3c641d1e 100644
+index d9fc56122975..3009eb7bd8d2 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -2512,8 +2512,8 @@ static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
- }
+@@ -338,7 +338,6 @@ enum stat_item {
+ 	FREE_RCU_SHEAF_FAIL,	/* Failed to free to a rcu_free sheaf */
+ 	FREE_FASTPATH,		/* Free to cpu slab */
+ 	FREE_SLOWPATH,		/* Freeing not to cpu slab */
+-	FREE_FROZEN,		/* Freeing to frozen slab */
+ 	FREE_ADD_PARTIAL,	/* Freeing moves slab to partial list */
+ 	FREE_REMOVE_PARTIAL,	/* Freeing removes last object */
+ 	ALLOC_FROM_PARTIAL,	/* Cpu slab acquired from node partial list */
+@@ -5109,7 +5108,7 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+ 			unsigned long addr)
  
- static unsigned int
--__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
--		 unsigned int max);
-+refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-+	       unsigned int max);
- 
- static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
- 			 gfp_t gfp)
-@@ -2524,8 +2524,8 @@ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
- 	if (!to_fill)
- 		return 0;
- 
--	filled = __refill_objects(s, &sheaf->objects[sheaf->size], gfp,
--			to_fill, to_fill);
-+	filled = refill_objects(s, &sheaf->objects[sheaf->size], gfp, to_fill,
-+				to_fill);
- 
- 	sheaf->size += filled;
- 
-@@ -6550,29 +6550,22 @@ void kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
- EXPORT_SYMBOL(kmem_cache_free_bulk);
- 
- static unsigned int
--__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
--		 unsigned int max)
-+__refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-+		      unsigned int max, struct kmem_cache_node *n)
  {
- 	struct partial_bulk_context pc;
- 	struct slab *slab, *slab2;
- 	unsigned int refilled = 0;
+-	bool was_frozen, was_full;
++	bool was_full;
+ 	struct freelist_counters old, new;
+ 	struct kmem_cache_node *n = NULL;
  	unsigned long flags;
- 	void *object;
--	int node;
+@@ -5132,7 +5131,6 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+ 		old.counters = slab->counters;
  
- 	pc.flags = gfp;
- 	pc.min_objects = min;
- 	pc.max_objects = max;
+ 		was_full = (old.freelist == NULL);
+-		was_frozen = old.frozen;
  
--	node = numa_mem_id();
+ 		set_freepointer(s, tail, old.freelist);
+ 
+@@ -5145,7 +5143,7 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+ 		 * to (due to not being full anymore) the partial list.
+ 		 * Unless it's frozen.
+ 		 */
+-		if ((!new.inuse || was_full) && !was_frozen) {
++		if (!new.inuse || was_full) {
+ 
+ 			n = get_node(s, slab_nid(slab));
+ 			/*
+@@ -5164,20 +5162,10 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+ 	} while (!slab_update_freelist(s, slab, &old, &new, "__slab_free"));
+ 
+ 	if (likely(!n)) {
 -
--	if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
-+	if (!get_partial_node_bulk(s, n, &pc))
- 		return 0;
- 
--	/* TODO: consider also other nodes? */
--	if (!get_partial_node_bulk(s, get_node(s, node), &pc))
--		goto new_slab;
+-		if (likely(was_frozen)) {
+-			/*
+-			 * The list lock was not taken therefore no list
+-			 * activity can be necessary.
+-			 */
+-			stat(s, FREE_FROZEN);
+-		}
 -
- 	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
- 
- 		list_del(&slab->slab_list);
-@@ -6610,8 +6603,6 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+ 		/*
+-		 * In other cases we didn't take the list_lock because the slab
+-		 * was already on the partial list and will remain there.
++		 * We didn't take the list_lock because the slab was already on
++		 * the partial list and will remain there.
+ 		 */
+-
+ 		return;
  	}
  
- 	if (unlikely(!list_empty(&pc.slabs))) {
--		struct kmem_cache_node *n = get_node(s, node);
--
- 		spin_lock_irqsave(&n->list_lock, flags);
- 
- 		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
-@@ -6633,13 +6624,92 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
- 		}
- 	}
- 
-+	return refilled;
-+}
- 
--	if (likely(refilled >= min))
--		goto out;
-+#ifdef CONFIG_NUMA
-+static unsigned int
-+__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-+		     unsigned int max)
-+{
-+	struct zonelist *zonelist;
-+	struct zoneref *z;
-+	struct zone *zone;
-+	enum zone_type highest_zoneidx = gfp_zone(gfp);
-+	unsigned int cpuset_mems_cookie;
-+	unsigned int refilled = 0;
-+
-+	/* see get_from_any_partial() for the defrag ratio description */
-+	if (!s->remote_node_defrag_ratio ||
-+			get_cycles() % 1024 > s->remote_node_defrag_ratio)
-+		return 0;
-+
-+	do {
-+		cpuset_mems_cookie = read_mems_allowed_begin();
-+		zonelist = node_zonelist(mempolicy_slab_node(), gfp);
-+		for_each_zone_zonelist(zone, z, zonelist, highest_zoneidx) {
-+			struct kmem_cache_node *n;
-+			unsigned int r;
-+
-+			n = get_node(s, zone_to_nid(zone));
-+
-+			if (!n || !cpuset_zone_allowed(zone, gfp) ||
-+					n->nr_partial <= s->min_partial)
-+				continue;
-+
-+			r = __refill_objects_node(s, p, gfp, min, max, n);
-+			refilled += r;
-+
-+			if (r >= min) {
-+				/*
-+				 * Don't check read_mems_allowed_retry() here -
-+				 * if mems_allowed was updated in parallel, that
-+				 * was a harmless race between allocation and
-+				 * the cpuset update
-+				 */
-+				return refilled;
-+			}
-+			p += r;
-+			min -= r;
-+			max -= r;
-+		}
-+	} while (read_mems_allowed_retry(cpuset_mems_cookie));
-+
-+	return refilled;
-+}
-+#else
-+static inline unsigned int
-+__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-+		     unsigned int max)
-+{
-+	return 0;
-+}
-+#endif
-+
-+static unsigned int
-+refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
-+	       unsigned int max)
-+{
-+	int local_node = numa_mem_id();
-+	unsigned int refilled;
-+	struct slab *slab;
-+
-+	if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
-+		return 0;
-+
-+	refilled = __refill_objects_node(s, p, gfp, min, max,
-+					 get_node(s, local_node));
-+	if (refilled >= min)
-+		return refilled;
-+
-+	refilled += __refill_objects_any(s, p + refilled, gfp, min - refilled,
-+					 max - refilled);
-+	if (refilled >= min)
-+		return refilled;
- 
- new_slab:
- 
--	slab = new_slab(s, pc.flags, node);
-+	slab = new_slab(s, gfp, local_node);
- 	if (!slab)
- 		goto out;
- 
-@@ -6654,8 +6724,8 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
- 
- 	if (refilled < min)
- 		goto new_slab;
--out:
- 
-+out:
- 	return refilled;
- }
- 
-@@ -6665,18 +6735,20 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
- {
- 	int i;
- 
--	/*
--	 * TODO: this might be more efficient (if necessary) by reusing
--	 * __refill_objects()
--	 */
--	for (i = 0; i < size; i++) {
-+	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
-+		for (i = 0; i < size; i++) {
- 
--		p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
--				     s->object_size);
--		if (unlikely(!p[i]))
--			goto error;
-+			p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
-+					     s->object_size);
-+			if (unlikely(!p[i]))
-+				goto error;
- 
--		maybe_wipe_obj_freeptr(s, p[i]);
-+			maybe_wipe_obj_freeptr(s, p[i]);
-+		}
-+	} else {
-+		i = refill_objects(s, p, flags, size, size);
-+		if (i < size)
-+			goto error;
- 	}
- 
- 	return i;
-@@ -6687,7 +6759,10 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
- 
- }
- 
--/* Note that interrupts must be enabled when calling this function. */
-+/*
-+ * Note that interrupts must be enabled when calling this function and gfp
-+ * flags must allow spinning.
-+ */
- int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
- 				 void **p)
- {
+@@ -8753,7 +8741,6 @@ STAT_ATTR(FREE_RCU_SHEAF, free_rcu_sheaf);
+ STAT_ATTR(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail);
+ STAT_ATTR(FREE_FASTPATH, free_fastpath);
+ STAT_ATTR(FREE_SLOWPATH, free_slowpath);
+-STAT_ATTR(FREE_FROZEN, free_frozen);
+ STAT_ATTR(FREE_ADD_PARTIAL, free_add_partial);
+ STAT_ATTR(FREE_REMOVE_PARTIAL, free_remove_partial);
+ STAT_ATTR(ALLOC_FROM_PARTIAL, alloc_from_partial);
+@@ -8858,7 +8845,6 @@ static struct attribute *slab_attrs[] = {
+ 	&free_rcu_sheaf_fail_attr.attr,
+ 	&free_fastpath_attr.attr,
+ 	&free_slowpath_attr.attr,
+-	&free_frozen_attr.attr,
+ 	&free_add_partial_attr.attr,
+ 	&free_remove_partial_attr.attr,
+ 	&alloc_from_partial_attr.attr,
 
 -- 
 2.52.0
