@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71105D778B1
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 01:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 009A9D778B1
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 01:19:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 902026B0570; Fri, 23 Jan 2026 20:18:55 -0500 (EST)
+	id 66A036B009B; Fri, 23 Jan 2026 20:19:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 884A66B0572; Fri, 23 Jan 2026 20:18:55 -0500 (EST)
+	id 6551F6B00A1; Fri, 23 Jan 2026 20:19:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 766696B0573; Fri, 23 Jan 2026 20:18:55 -0500 (EST)
+	id 559566B009F; Fri, 23 Jan 2026 20:19:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61D746B0570
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:18:55 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8EF94D22F1
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:48:55 +0000 (UTC)
-X-FDA: 84364720230.20.F560A91
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D36D7140002
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:48:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IH9n5yfh;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 20BE26B0573
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:19:20 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3A0AC1602D9
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:29:29 +0000 (UTC)
+X-FDA: 84364368858.24.898BA14
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B47A81C000A
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:29:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=c6WZghwi;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769208534;
+	s=arc-20220608; t=1769200167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jVF2tmBG9ZVyWt8tDPMudTYSdHQAm+EgBpq4KTrshxc=;
-	b=EXRMRqmB+zb/9j5CYrOZZ4N3nF5KuFqBG/QyN/2NiENaz7HVv0UAPdiHRy5FASS0pxUasS
-	AvEVMbjoa0D+msAC10hC3q70hlMcvSRJZN+PWBSD6l7StH+kh6da4Oz1rF95mZsUvAZx9T
-	8JH/YqQQyxkKTRh8lQ7FJMNC+yDKVho=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IH9n5yfh;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769208534; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=LZJd2zPS7VAVVSYILczKvcfSTL42n05v0H0TTSN66wI=;
+	b=bFXguwpNPmkhE/Y1O5ftd7ex1oS9D3nJTuwEh4hs0mA6cD3bQlURIjk8Mo4KcWhzLN4mdi
+	MoQpBz+moqsDknOkNMC73v8pCkVkp5Mjka+dpArAvayrGPb1XJ4vU/vtiwpH4XXr11WG5C
+	F/HNWGUcMNpIYcaM454hDF7h3Gr3Q3g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769200167; a=rsa-sha256;
 	cv=none;
-	b=AQZpS86AKJvNjvI576pCl2jAlKsWHYuH2nSDby4Y9wLv6xLAVULMD84yIqN9qFLT66kgtv
-	DyNbwRQ2IkIHKs25IvDXz0LFY/nAR8CvgetFQyv4H4c+b9KUGhvzxpfM4IvKwPpEv9iAlg
-	pS5BHxBSdYpNRf0LAejUSDjeh1YMmyY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9CFF600C4;
-	Fri, 23 Jan 2026 22:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2ABC4CEF1;
-	Fri, 23 Jan 2026 22:48:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769208532;
-	bh=wxD197rE+/TtE4bXLv/ENQIJmjflr7nik+q61gsCPG0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IH9n5yfh1fh9c9KcsyWH/K4sWn/rfIoMa/QRgWK/5yCA84jcQhQCW0rvOsQnWO5OM
-	 7uuiemeF9bavSPx/6jEmax2D8LN72iocnE9vcbXOH2UclURVW/osuxLldFHLvkUCxr
-	 7wQQtHIuTkO8KwSHV5p3eNH/tscmFB+TFxGNfOeQ=
-Date: Fri, 23 Jan 2026 14:48:51 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@kernel.org>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn
- <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>, Ingo
- Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
- <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>, Sebastian Andrzej
- Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v4 00/10] mm: add and use vma_assert_stabilised() helper
-Message-Id: <20260123144851.f752d80db3c8f700df31aa84@linux-foundation.org>
-In-Reply-To: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
-References: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: aoedgyrhitjs4q7wgintn1jbxgb3g7jq
-X-Rspamd-Queue-Id: D36D7140002
+	b=N+mFlqLZnTTxz8gNUHhrRrEnc7JdoQhyBn1F66g1dBVbgLXB5KBOiOW69i0QKuBVOUIb4H
+	59giVYCge2H3u9ajjpjvyXgO+9D4wt+KF/6EtQLoPNxgnKYIEwQ6F89KVyt2gUBV91oFPz
+	KP2xQ1L3I96g1kZtOBYeOB/d90XT1w4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=c6WZghwi;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769200167; x=1800736167;
+  h=date:from:to:cc:subject:message-id;
+  bh=vOc/Zoka9Ymz7tzO3k14Ksu5+9P410R1+UPLRvofQVM=;
+  b=c6WZghwi5iETrB8fifb/P2bSMpv/Ik2LTQJeyUIBVhqioUZ/q9r0qgCG
+   ISowyQjY3B4zymnFzI45Mnsj7s/wI07Jth10NOP8WbH4OvKlZxS3B9fs0
+   DC/swyzRFNUvtxI6+C702PzfEv/bntq5W/hvHMC0j8oHlvdeBO44tH86d
+   koWtcgLy6bjVg59CVKmLUTNOSDJMTJwCTcRK1xJ8bXIbXSUWSGaOj02YT
+   HAp7UyYhTqI5OKMK5S/eUBbc3N3dwSxmg+hxRdWnFb2lkC5KZsMnHnGRA
+   Ems6PbFfXwYP9TYO8GjUTvz//cfzYPCAoJojb04JFwzwHjYcNDQsIhQCh
+   Q==;
+X-CSE-ConnectionGUID: f78ZtnRJR2mk4r/k1msp5g==
+X-CSE-MsgGUID: D570ejTDRx62hHC+30jCWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="73046316"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
+   d="scan'208";a="73046316"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 12:29:25 -0800
+X-CSE-ConnectionGUID: +D2YCxtHRCe2RlGYvzE8jg==
+X-CSE-MsgGUID: h/HOYLbEQFKwnWrbGB7juQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
+   d="scan'208";a="237768859"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 23 Jan 2026 12:29:23 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vjNmR-00000000UQy-2WpR;
+	Fri, 23 Jan 2026 20:29:19 +0000
+Date: Sat, 24 Jan 2026 04:29:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Raghavendra K T <raghavendra.kt@amd.com>
+Subject: [linux-next:master 7919/9290]
+ include/linux/compiler_types.h:631:38: error: call to
+ '__compiletime_assert_639' declared with attribute error: clamp() low limit
+ pg.start greater than high limit pg.end
+Message-ID: <202601240453.QCjgGdJa-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Queue-Id: B47A81C000A
+X-Stat-Signature: 3qkytryop5rfsd14hteogaqcbx1snkyt
 X-Rspam-User: 
-X-HE-Tag: 1769208533-84346
-X-HE-Meta: U2FsdGVkX1+xvqdt0iL2XhteArC22wUYxGyH07Y0JnmrX5Zbhp91ksEVFPrQYMIch8QlqtJkSVKDpIyIoKW2YnuQd2IH1UKHjwBhReApHyeZ6pgLism2qZPeu9Jx2i5JgwTq56A1DgDYwOevMJrEvDsIKk4AbmHo3cgiPniuXzbCHUiHsR9j2T7arGuJIDOItctxDUHQZ8BiyFwAkYPBDHyEeyBc3PnQskKHltEsj9TP0dgtLNLKp/aQq8fXz24VF0MThKCDqsX41/1TJUZdePiF+f7uIxGF4Ct7KDuFh0HqIvyJWXp5oHqCnGUvNtqpmklzBrs8ATUmW3x70WZRbVUAbJly3m3Ulu3VM7FPboM+s62HxA6zpiR+P4k1+f3mScl2x/pCJHanb9Y8gvR6w1EiDjoYNWY0F8IZD/dKp9x99H5iVN/3BaIEMJIG+AyLp1yuoWn3cFCgNasX4hmT2HxfPZpsx5qvvIpCVP4sP+KYxZ+HqRo8rAV6ZIwDxs8SsILeMJ4ydJXSte/DIzkQvLsKqVEvSl0+xJBVVjhrwrhHsvQzfcJDc54quuYPv3qtVMbcEkHL0l0Qd9TPKE/qO3mAeObjIAs0Htl/S/kQcEGZq5R2EcbHMoi7SWxkywg86nQntkmqf5rnfoTcVWl0SA2WRMWLpHWmkC5y6S69OAfwY6ht5leUX+kwH3x0khSJXPz8RM016fdJGfXtRfnI89gDBBej/+7oQcQZL0S8HoAWZsQh1fRov780QI68MM8rmqsd+qSmBnbeg+BfymVUrbl59MzKtkIC1LxhuSjhxves0lN+idKLOMaMLAG366KkVs3bvzazUCp7NbIu8FhY4CZvxOduxID1EkuLO/RBnIYGmAO2E6a9p1JmS/9CZmOVK9FnjzF0AnTJlWu3TATqRBRExu25aoxXdvmEt8r5Ji5+LrjrpGp681VH2CciaBgJeKWHBYPrDJX/+vk/8lo
- ZvuwWUpF
- rb1uAw1XHZ7qhxD1Ac6LDCu11rRZHbR30dn/velIEmpEAVbR4CEzgtkDWNSNdW88DLNiTil9FfU6Gtd4dgVasVd27llPN96sqcLY0TPMb0RReNGRpwV3cAKHEabl31rQOggw4Y/fjfnW0SlyWDTPs3fktOrOl6enG8L+hcYmP+3TVtYiRQ8OT4Oi9u6T4UPTQTIK76wS/JCMeO5D5HhHanUJxLYcNXwewmheZ7BJa+jZKvykS5ysa21hGKOU3TpQS8rEqzQ7yiingBPRvzKNcuSJorWYtTf9Z0hHdx9VRPPx7i4W0vaOkd1SxNQ3njQljVyDMz5CWS4bEuX3Jj99TTD0fFoRjt5FR46VaJx4LVxqNQ2qgM9gtaFFvPPnMfH3NAQYV2AIy8g0nFH4=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769200166-505496
+X-HE-Meta: U2FsdGVkX1/E4L8Mu3RyRn67b4MjofMGAKPXm5pgAUxqSox1VjKJQsiADBT79UQenBwjuqKlq9wr5QGQsrq6qfMt8vcVMi35yNLY2Qw76EcV2F9ziUB6C1NqT7Tz4pW27dgcToZQJBZE2XPwRfGwbyfdcOAYUCrH+uAENg4rih5CSGaCvOwc5WlBPp8K9y0Qb8czU9uMJB0gh1NSJtnSluu/W3Um7l/BPSUSTCrX21Rklkhyd9CiybgI/2EzM2sqPB6obf1/4K52bShymJR0HAlgPP6o/D1V36YZHwOz3ZyddN/ueOMJUu424B/Y64El+suJKaHSKj7UAgbtVvFKrjb7QjvxX9PG6bvTdp4Mvd9oD0lFhvkw5ZSGxGUtXmNQXUOlujeroV50i76G5pcap5T+oXprVejthohGj14XfchnmQKAkTqCYQe0+YBid71RtmcwCc/2gm8kwcezz23CROW6hLBa55FfFPTLjRuMn8kH7pijAzniE4pC1HB1+tgmaCVrQoA+mhNcP/GE9OvxYP4RSFUnbmUJDSARZcFRY+LPB+lOJJ50Z+B3KniKHvEeta3UH8D+AJTzI12YxnbDO2LxAUvuF2yWn5a4tZWBQ+7uVi0WchFR6B85lBtSNDidCVZv69ygiOQHAa5XslA9VSSDhSczHVGZv2lUI3jkQROf0y8G1JcsofkJR5WaT4pKZbZIop+VKeLgvlo7HTCSamFfk6geJhHU6svVpiFxxZrNrKdMfRCmi4MOfhDoJOO0qPwg1Os/gIJSAY2/RLk+Fi4qJmRcXqS+EzPBpO2qlNI9qxfDBbwn3VO2aoesWtmMkjy7leRTl6x6Jrfd6jaksNIuJASdrJt1tjVTLJmCpaq6HIuuC0P4aItYkeAeE85YHdwJ5B4C9gRSQs95W97i0frFgvYhfpD2aWW1JMSwj10AUAcHnMJUrvs2usrj+iAtNwkT0GVbvdOXEZ5+d+a
+ pkgPoCPn
+ 6K0l4a5YF2jRUAIgvqRGcCtIdXn+W045SQsw/NnBGc34KFhfHZSGpkGdev4yYdHid/1QNNwyGOWvRwHqLaYUr6y23fBeRijTr1JOjRZeADd6mQ3dxMe2Y2pu6mgICNWDOrq4A4e1gbP30fphxIWZhFQOvawICCRLSK0eefXCGcPBFjMkfDAmdr1xPVKiLzb9HWAks0MdfBh0SxDVj/hXf5rUn0H1d8XfQ4NIQZZKH5HjH0PTCCaoOKtjgL1S1e82QK0LBMKmbYUEtiE4LYLDO/Ghcb2gzbb3BZ7/S
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,508 +106,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 23 Jan 2026 20:12:10 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d
+commit: 93552c9a3350fff06543da18e4c80d3e804191ca [7919/9290] mm: folio_zero_user: cache neighbouring pages
+config: riscv-randconfig-002-20260124 (https://download.01.org/0day-ci/archive/20260124/202601240453.QCjgGdJa-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260124/202601240453.QCjgGdJa-lkp@intel.com/reproduce)
 
-> This series first introduces a series of refactorings, intended to
-> significantly improve readability and abstraction of the code.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601240453.QCjgGdJa-lkp@intel.com/
 
-I updated the mm-unstable branch with this, thanks.
+All errors (new ones prefixed by >>):
 
-> v4:
-> * Propagated tags (thanks Vlastimil, Suren!)
-> * Updated reference count documentation in 2/10 as per Vlastimil, Suren.
-> * Updated 7/10 to update the references in the reference count comment from
->   __vma_exit_locked() to __vma_end_exclude_readers().
-> * Renamed are_readers_excluded() to __vma_are_readers_excluded() as per
->   Vlastimil.
-> * Several more comment updates as per Vlastimil, Suren in 3/10.
-> * Updated 3/10 commit message as per Suren.
-> * Updated __vma_refcount_put() to just return the newcnt as per Suren.
-> * Renamed __vma_refcount_put() to __vma_refcount_put_return() as per Vlastimil.
-> * Made __vma_refcount_put_return() __must_check too.
-> * Comment fixups on 4/10 as per Vlastimil.
-> * Renamed __vma_enter_exclusive_locked() and __vma_exit_exclusive_locked()
->   to __vma_start_exclude_readers() and __vma_end_exclude_readers() as per
->   Vlastimil in 6/10.
-> * Reworked comment as per Suren in 6/10.
-> * Avoided WARN_ON_ONCE() function invocation as per Suren in 6/10.
-> * s/ves->locked/ves->exclusive/ as per Suren in 7/10.
-> * Removed confusing asserts in 7/10 as per Suren.
-> * Changed from !ves.detached to ves.exclusive in 7/10 as per Suren.
-> * Updated comments in 7/10 as per Suren.
-> * Removed broken assert in __vma_end_exclude_readers() in 7/10 as per
->   Vlastimil.
-> * Separated out vma_mark_detached() into static inline portion and unlikely
->   exclude readers in 7/10 as per Vlastimil.
-> * Removed mm seq num output parameter from __is_vma_write_locked() as per
->   Vlastimil in 8/10.
-> * Converted VM_BUG_ON_VMA() to VM_WARN_ON_ONCE() in 8/10 as per Vlastimil
->   (though he said it in reply to a future commit :).
-> * Added helper function __vma_raw_mm_seqnum() to aid the conversion of
->   __is_vma_write_locked() and updated the commit message accordingly.
-> * Moved mmap_assert_write_locked() to __vma_raw_mm_seqnum() is it is
->   required for this access to be valid.
-> * Replaced VM_BUG_ON_VMA() with VM_WARN_ON_ONCE_VMA() on 9/10 as per
->   Vlastiml.
-> * Renamed refs to refcnt in vma_assert_locked() to be consistent.
-> * Moved comment about reference count possible values above refcnt
->   assignment so it's not just weirdly at the top of the function.
-
-Below is how v4 altered mm.git:
+   In file included from include/linux/mm.h:18,
+                    from arch/riscv/include/asm/sections.h:9,
+                    from include/linux/interrupt.h:22,
+                    from include/linux/kernel_stat.h:8,
+                    from mm/memory.c:42:
+   mm/memory.c: In function 'folio_zero_user':
+>> include/linux/compiler_types.h:631:38: error: call to '__compiletime_assert_639' declared with attribute error: clamp() low limit pg.start greater than high limit pg.end
+     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+                                         ^
+   include/linux/range.h:46:11: note: in definition of macro 'DEFINE_RANGE'
+      .end = (_end),   \
+              ^~~~
+   include/linux/compiler_types.h:619:2: note: in expansion of macro '__compiletime_assert'
+     __compiletime_assert(condition, msg, prefix, suffix)
+     ^~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:631:2: note: in expansion of macro '_compiletime_assert'
+     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+     ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+                                        ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:188:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+     BUILD_BUG_ON_MSG(statically_true(ulo > uhi),    \
+     ^~~~~~~~~~~~~~~~
+   include/linux/minmax.h:195:2: note: in expansion of macro '__clamp_once'
+     __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+     ^~~~~~~~~~~~
+   include/linux/minmax.h:218:36: note: in expansion of macro '__careful_clamp'
+    #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
+                                       ^~~~~~~~~~~~~~~
+   mm/memory.c:7296:8: note: in expansion of macro 'clamp_t'
+           clamp_t(s64, fault_idx + radius, pg.start, pg.end));
+           ^~~~~~~
 
 
---- a/include/linux/mmap_lock.h~b
-+++ a/include/linux/mmap_lock.h
-@@ -87,10 +87,11 @@ static inline void mmap_assert_write_loc
-  *
-  * Write locks are acquired exclusively per-VMA, but released in a shared
-  * fashion, that is upon vma_end_write_all(), we update the mmap's seqcount such
-- * that write lock is de-acquired.
-+ * that write lock is released.
-  *
-  * We therefore cannot track write locks per-VMA, nor do we try. Mitigating this
-- * is the fact that, of course, we do lockdep-track the mmap lock rwsem.
-+ * is the fact that, of course, we do lockdep-track the mmap lock rwsem which
-+ * must be held when taking a VMA write lock.
-  *
-  * We do, however, want to indicate that during either acquisition of a VMA
-  * write lock or detachment of a VMA that we require the lock held be exclusive,
-@@ -152,14 +153,9 @@ static inline void vma_lock_init(struct
- 	vma->vm_lock_seq = UINT_MAX;
- }
- 
--/**
-- * are_readers_excluded() - Determine whether @refcnt describes a VMA which has
-- * excluded all VMA read locks.
-- * @refcnt: The VMA reference count obtained from vm_area_struct->vm_refcnt.
-- *
-- * We may be raced by other readers temporarily incrementing the reference
-- * count, though the race window is very small, this might cause spurious
-- * wakeups.
-+/*
-+ * This function determines whether the input VMA reference count describes a
-+ * VMA which has excluded all VMA read locks.
-  *
-  * In the case of a detached VMA, we may incorrectly indicate that readers are
-  * excluded when one remains, because in that scenario we target a refcount of
-@@ -170,7 +166,7 @@ static inline void vma_lock_init(struct
-  *
-  * Returns: true if readers are excluded, false otherwise.
-  */
--static inline bool are_readers_excluded(int refcnt)
-+static inline bool __vma_are_readers_excluded(int refcnt)
- {
- 	/*
- 	 * See the comment describing the vm_area_struct->vm_refcnt field for
-@@ -180,15 +176,21 @@ static inline bool are_readers_excluded(
- 		refcnt <= VM_REFCNT_EXCLUDE_READERS_FLAG + 1;
- }
- 
--static inline bool __vma_refcount_put(struct vm_area_struct *vma, int *refcnt)
-+/*
-+ * Actually decrement the VMA reference count.
-+ *
-+ * The function returns the reference count as it was immediately after the
-+ * decrement took place. If it returns zero, the VMA is now detached.
-+ */
-+static inline __must_check unsigned int
-+__vma_refcount_put_return(struct vm_area_struct *vma)
- {
- 	int oldcnt;
--	bool detached;
- 
--	detached = __refcount_dec_and_test(&vma->vm_refcnt, &oldcnt);
--	if (refcnt)
--		*refcnt = oldcnt - 1;
--	return detached;
-+	if (__refcount_dec_and_test(&vma->vm_refcnt, &oldcnt))
-+		return 0;
-+
-+	return oldcnt - 1;
- }
- 
- /**
-@@ -203,17 +205,21 @@ static inline void vma_refcount_put(stru
- {
- 	/* Use a copy of vm_mm in case vma is freed after we drop vm_refcnt. */
- 	struct mm_struct *mm = vma->vm_mm;
--	int refcnt;
--	bool detached;
-+	int newcnt;
- 
- 	__vma_lockdep_release_read(vma);
--	detached = __vma_refcount_put(vma, &refcnt);
-+	newcnt = __vma_refcount_put_return(vma);
-+
- 	/*
--	 * __vma_enter_exclusive_locked() may be sleeping waiting for readers to
-+	 * __vma_start_exclude_readers() may be sleeping waiting for readers to
- 	 * drop their reference count, so wake it up if we were the last reader
- 	 * blocking it from being acquired.
-+	 *
-+	 * We may be raced by other readers temporarily incrementing the
-+	 * reference count, though the race window is very small, this might
-+	 * cause spurious wakeups.
- 	 */
--	if (!detached && are_readers_excluded(refcnt))
-+	if (newcnt && __vma_are_readers_excluded(newcnt))
- 		rcuwait_wake_up(&mm->vma_writer_wait);
- }
- 
-@@ -252,6 +258,15 @@ static inline void vma_end_read(struct v
- 	vma_refcount_put(vma);
- }
- 
-+static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
-+{
-+	const struct mm_struct *mm = vma->vm_mm;
-+
-+	/* We must hold an exclusive write lock for this access to be valid. */
-+	mmap_assert_write_locked(vma->vm_mm);
-+	return mm->mm_lock_seq.sequence;
-+}
-+
- /*
-  * Determine whether a VMA is write-locked. Must be invoked ONLY if the mmap
-  * write lock is held.
-@@ -260,22 +275,13 @@ static inline void vma_end_read(struct v
-  *
-  * Note that mm_lock_seq is updated only if the VMA is NOT write-locked.
-  */
--static inline bool __is_vma_write_locked(struct vm_area_struct *vma,
--					 unsigned int *mm_lock_seq)
-+static inline bool __is_vma_write_locked(struct vm_area_struct *vma)
- {
--	struct mm_struct *mm = vma->vm_mm;
--	const unsigned int seq = mm->mm_lock_seq.sequence;
--
--	mmap_assert_write_locked(mm);
--
- 	/*
- 	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
- 	 * mm->mm_lock_seq can't be concurrently modified.
- 	 */
--	if (vma->vm_lock_seq == seq)
--		return true;
--	*mm_lock_seq = seq;
--	return false;
-+	return vma->vm_lock_seq == __vma_raw_mm_seqnum(vma);
- }
- 
- int __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq,
-@@ -288,12 +294,10 @@ int __vma_start_write(struct vm_area_str
-  */
- static inline void vma_start_write(struct vm_area_struct *vma)
- {
--	unsigned int mm_lock_seq;
--
--	if (__is_vma_write_locked(vma, &mm_lock_seq))
-+	if (__is_vma_write_locked(vma))
- 		return;
- 
--	__vma_start_write(vma, mm_lock_seq, TASK_UNINTERRUPTIBLE);
-+	__vma_start_write(vma, __vma_raw_mm_seqnum(vma), TASK_UNINTERRUPTIBLE);
- }
- 
- /**
-@@ -312,11 +316,10 @@ static inline void vma_start_write(struc
- static inline __must_check
- int vma_start_write_killable(struct vm_area_struct *vma)
- {
--	unsigned int mm_lock_seq;
--
--	if (__is_vma_write_locked(vma, &mm_lock_seq))
-+	if (__is_vma_write_locked(vma))
- 		return 0;
--	return __vma_start_write(vma, mm_lock_seq, TASK_KILLABLE);
-+
-+	return __vma_start_write(vma, __vma_raw_mm_seqnum(vma), TASK_KILLABLE);
- }
- 
- /**
-@@ -325,9 +328,7 @@ int vma_start_write_killable(struct vm_a
-  */
- static inline void vma_assert_write_locked(struct vm_area_struct *vma)
- {
--	unsigned int mm_lock_seq;
--
--	VM_BUG_ON_VMA(!__is_vma_write_locked(vma, &mm_lock_seq), vma);
-+	VM_WARN_ON_ONCE_VMA(!__is_vma_write_locked(vma), vma);
- }
- 
- /**
-@@ -337,12 +338,7 @@ static inline void vma_assert_write_lock
-  */
- static inline void vma_assert_locked(struct vm_area_struct *vma)
- {
--	unsigned int refs;
--
--	/*
--	 * See the comment describing the vm_area_struct->vm_refcnt field for
--	 * details of possible refcnt values.
--	 */
-+	unsigned int refcnt;
- 
- 	/*
- 	 * If read-locked or currently excluding readers, then the VMA is
-@@ -353,18 +349,22 @@ static inline void vma_assert_locked(str
- 		return;
- #endif
- 
--	refs = refcount_read(&vma->vm_refcnt);
-+	/*
-+	 * See the comment describing the vm_area_struct->vm_refcnt field for
-+	 * details of possible refcnt values.
-+	 */
-+	refcnt = refcount_read(&vma->vm_refcnt);
- 
- 	/*
- 	 * In this case we're either read-locked, write-locked with temporary
- 	 * readers, or in the midst of excluding readers, all of which means
- 	 * we're locked.
- 	 */
--	if (refs > 1)
-+	if (refcnt > 1)
- 		return;
- 
- 	/* It is a bug for the VMA to be detached here. */
--	VM_BUG_ON_VMA(!refs, vma);
-+	VM_WARN_ON_ONCE_VMA(!refcnt, vma);
- 
- 	/*
- 	 * OK, the VMA has a reference count of 1 which means it is either
-@@ -447,7 +447,28 @@ static inline void vma_mark_attached(str
- 	refcount_set_release(&vma->vm_refcnt, 1);
- }
- 
--void vma_mark_detached(struct vm_area_struct *vma);
-+void __vma_exclude_readers_for_detach(struct vm_area_struct *vma);
-+
-+static inline void vma_mark_detached(struct vm_area_struct *vma)
-+{
-+	vma_assert_write_locked(vma);
-+	vma_assert_attached(vma);
-+
-+	/*
-+	 * The VMA still being attached (refcnt > 0) - is unlikely, because the
-+	 * vma has been already write-locked and readers can increment vm_refcnt
-+	 * only temporarily before they check vm_lock_seq, realize the vma is
-+	 * locked and drop back the vm_refcnt. That is a narrow window for
-+	 * observing a raised vm_refcnt.
-+	 *
-+	 * See the comment describing the vm_area_struct->vm_refcnt field for
-+	 * details of possible refcnt values.
-+	 */
-+	if (likely(!__vma_refcount_put_return(vma)))
-+		return;
-+
-+	__vma_exclude_readers_for_detach(vma);
-+}
- 
- struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
- 					  unsigned long address);
---- a/include/linux/mm_types.h~b
-+++ a/include/linux/mm_types.h
-@@ -753,7 +753,7 @@ static inline struct anon_vma_name *anon
- #endif
- 
- /*
-- * WHile __vma_enter_locked() is working to ensure are no read-locks held on a
-+ * While __vma_enter_locked() is working to ensure are no read-locks held on a
-  * VMA (either while acquiring a VMA write lock or marking a VMA detached) we
-  * set the VM_REFCNT_EXCLUDE_READERS_FLAG in vma->vm_refcnt to indiciate to
-  * vma_start_read() that the reference count should be left alone.
-@@ -991,16 +991,19 @@ struct vm_area_struct {
- #endif
- #ifdef CONFIG_PER_VMA_LOCK
- 	/*
--	 * Used to keep track of the number of references taken by VMA read or
--	 * write locks. May have the VM_REFCNT_EXCLUDE_READERS_FLAG set
--	 * indicating that a thread has entered __vma_enter_locked() and is
--	 * waiting on any outstanding read locks to exit.
-+	 * Used to keep track of firstly, whether the VMA is attached, secondly,
-+	 * if attached, how many read locks are taken, and thirdly, if the
-+	 * VM_REFCNT_EXCLUDE_READERS_FLAG is set, whether any read locks held
-+	 * are currently in the process of being excluded.
- 	 *
- 	 * This value can be equal to:
- 	 *
--	 * 0 - Detached.
-+	 * 0 - Detached. IMPORTANT: when the refcnt is zero, readers cannot
-+	 * increment it.
- 	 *
--	 * 1 - Unlocked or write-locked.
-+	 * 1 - Attached and either unlocked or write-locked. Write locks are
-+	 * identified via __is_vma_write_locked() which checks for equality of
-+	 * vma->vm_lock_seq and mm->mm_lock_seq.
- 	 *
- 	 * >1, < VM_REFCNT_EXCLUDE_READERS_FLAG - Read-locked or (unlikely)
- 	 * write-locked with other threads having temporarily incremented the
-@@ -1008,19 +1011,19 @@ struct vm_area_struct {
- 	 * decrementing it again.
- 	 *
- 	 * VM_REFCNT_EXCLUDE_READERS_FLAG - Detached, pending
--	 * __vma_exit_locked() completion which will decrement the reference
--	 * count to zero. IMPORTANT - at this stage no further readers can
--	 * increment the reference count. It can only be reduced.
--	 *
--	 * VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - Either an attached VMA pending
--	 * __vma_exit_locked() completion which will decrement the reference
--	 * count to one, OR a detached VMA waiting on a single spurious reader
--	 * to decrement reference count. IMPORTANT - as above, no further
--	 * readers can increment the reference count.
--	 *
--	 * > VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - VMA is waiting on readers,
--	 * whether it is attempting to acquire a write lock or attempting to
--	 * detach. IMPORTANT - as above, no ruther readers can increment the
-+	 * __vma_exit_exclusive_locked() completion which will decrement the
-+	 * reference count to zero. IMPORTANT - at this stage no further readers
-+	 * can increment the reference count. It can only be reduced.
-+	 *
-+	 * VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - A thread is either write-locking
-+	 * an attached VMA and has yet to invoke __vma_exit_exclusive_locked(),
-+	 * OR a thread is detaching a VMA and is waiting on a single spurious
-+	 * reader in order to decrement the reference count. IMPORTANT - as
-+	 * above, no further readers can increment the reference count.
-+	 *
-+	 * > VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - A thread is either
-+	 * write-locking or detaching a VMA is waiting on readers to
-+	 * exit. IMPORTANT - as above, no ruther readers can increment the
- 	 * reference count.
- 	 *
- 	 * NOTE: Unstable RCU readers are allowed to read this.
---- a/mm/mmap_lock.c~b
-+++ a/mm/mmap_lock.c
-@@ -53,6 +53,7 @@ struct vma_exclude_readers_state {
- 	int state; /* TASK_KILLABLE or TASK_UNINTERRUPTIBLE. */
- 	bool detaching;
- 
-+	/* Output parameters. */
- 	bool detached;
- 	bool exclusive; /* Are we exclusively locked? */
- };
-@@ -60,15 +61,12 @@ struct vma_exclude_readers_state {
- /*
-  * Now that all readers have been evicted, mark the VMA as being out of the
-  * 'exclude readers' state.
-- *
-- * Returns true if the VMA is now detached, otherwise false.
-  */
--static void __vma_exit_exclusive_locked(struct vma_exclude_readers_state *ves)
-+static void __vma_end_exclude_readers(struct vma_exclude_readers_state *ves)
- {
- 	struct vm_area_struct *vma = ves->vma;
- 
- 	VM_WARN_ON_ONCE(ves->detached);
--	VM_WARN_ON_ONCE(!ves->exclusive);
- 
- 	ves->detached = refcount_sub_and_test(VM_REFCNT_EXCLUDE_READERS_FLAG,
- 					      &vma->vm_refcnt);
-@@ -93,27 +91,24 @@ static unsigned int get_target_refcnt(st
-  * where we wish the thread to sleep uninterruptibly or TASK_KILLABLE if a fatal
-  * signal is permitted to kill it.
-  *
-- * The function sets the ves->locked parameter to true if an exclusive lock was
-- * acquired, or false if the VMA was detached or an error arose on wait.
-+ * The function sets the ves->exclusive parameter to true if readers were
-+ * excluded, or false if the VMA was detached or an error arose on wait.
-  *
-  * If the function indicates an exclusive lock was acquired via ves->exclusive
-- * (or equivalently, returning 0 with !ves->detached), the caller is required to
-- * invoke __vma_exit_exclusive_locked() once the exclusive state is no longer
-- * required.
-+ * the caller is required to invoke __vma_end_exclude_readers() once the
-+ * exclusive state is no longer required.
-  *
-  * If ves->state is set to something other than TASK_UNINTERRUPTIBLE, the
-  * function may also return -EINTR to indicate a fatal signal was received while
-  * waiting.
-  */
--static int __vma_enter_exclusive_locked(struct vma_exclude_readers_state *ves)
-+static int __vma_start_exclude_readers(struct vma_exclude_readers_state *ves)
- {
- 	struct vm_area_struct *vma = ves->vma;
- 	unsigned int tgt_refcnt = get_target_refcnt(ves);
- 	int err = 0;
- 
- 	mmap_assert_write_locked(vma->vm_mm);
--	VM_WARN_ON_ONCE(ves->detached);
--	VM_WARN_ON_ONCE(ves->exclusive);
- 
- 	/*
- 	 * If vma is detached then only vma_mark_attached() can raise the
-@@ -132,7 +127,7 @@ static int __vma_enter_exclusive_locked(
- 		   refcount_read(&vma->vm_refcnt) == tgt_refcnt,
- 		   ves->state);
- 	if (err) {
--		__vma_exit_exclusive_locked(ves);
-+		__vma_end_exclude_readers(ves);
- 		return err;
- 	}
- 
-@@ -150,7 +145,7 @@ int __vma_start_write(struct vm_area_str
- 		.state = state,
- 	};
- 
--	err = __vma_enter_exclusive_locked(&ves);
-+	err = __vma_start_exclude_readers(&ves);
- 	if (err) {
- 		WARN_ON_ONCE(ves.detached);
- 		return err;
-@@ -164,8 +159,8 @@ int __vma_start_write(struct vm_area_str
- 	 */
- 	WRITE_ONCE(vma->vm_lock_seq, mm_lock_seq);
- 
--	if (!ves.detached) {
--		__vma_exit_exclusive_locked(&ves);
-+	if (ves.exclusive) {
-+		__vma_end_exclude_readers(&ves);
- 		/* VMA should remain attached. */
- 		WARN_ON_ONCE(ves.detached);
- 	}
-@@ -174,7 +169,7 @@ int __vma_start_write(struct vm_area_str
- }
- EXPORT_SYMBOL_GPL(__vma_start_write);
- 
--void vma_mark_detached(struct vm_area_struct *vma)
-+void __vma_exclude_readers_for_detach(struct vm_area_struct *vma)
- {
- 	struct vma_exclude_readers_state ves = {
- 		.vma = vma,
-@@ -183,16 +178,6 @@ void vma_mark_detached(struct vm_area_st
- 	};
- 	int err;
- 
--	vma_assert_write_locked(vma);
--	vma_assert_attached(vma);
--
--	/*
--	 * See the comment describing the vm_area_struct->vm_refcnt field for
--	 * details of possible refcnt values.
--	 */
--	if (likely(__vma_refcount_put(vma, NULL)))
--		return;
--
- 	/*
- 	 * Wait until the VMA is detached with no readers. Since we hold the VMA
- 	 * write lock, the only read locks that might be present are those from
-@@ -200,13 +185,13 @@ void vma_mark_detached(struct vm_area_st
- 	 * reference count before realising the write lock is held and
- 	 * decrementing it.
- 	 */
--	err = __vma_enter_exclusive_locked(&ves);
--	if (!err && !ves.detached) {
-+	err = __vma_start_exclude_readers(&ves);
-+	if (!err && ves.exclusive) {
- 		/*
- 		 * Once this is complete, no readers can increment the
- 		 * reference count, and the VMA is marked detached.
- 		 */
--		__vma_exit_exclusive_locked(&ves);
-+		__vma_end_exclude_readers(&ves);
- 	}
- 	/* If an error arose but we were detached anyway, we don't care. */
- 	WARN_ON_ONCE(!ves.detached);
-_
+vim +/__compiletime_assert_639 +631 include/linux/compiler_types.h
 
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  617  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  618  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  619  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  620  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  621  /**
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  622   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  623   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  624   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  625   *
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  626   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  627   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  628   * compiler has support to do so.
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  629   */
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  630  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21 @631  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  632  
+
+:::::: The code at line 631 was first introduced by commit
+:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
+
+:::::: TO: Will Deacon <will@kernel.org>
+:::::: CC: Will Deacon <will@kernel.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
