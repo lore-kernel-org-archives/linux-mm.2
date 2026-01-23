@@ -4,114 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2B0D7234B
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:32:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFEB1D7234B
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:34:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BF0E6B0450; Fri, 23 Jan 2026 03:32:50 -0500 (EST)
+	id 050C66B0452; Fri, 23 Jan 2026 03:34:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8968E6B0452; Fri, 23 Jan 2026 03:32:50 -0500 (EST)
+	id 028A66B0454; Fri, 23 Jan 2026 03:34:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BFF66B0453; Fri, 23 Jan 2026 03:32:50 -0500 (EST)
+	id EAAFA6B0455; Fri, 23 Jan 2026 03:34:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ADF46B0450
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:32:50 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B8821A0208
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:32:50 +0000 (UTC)
-X-FDA: 84362562900.28.1E39EAC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7449380004
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:32:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PA7PbPpE;
-	spf=pass (imf02.hostedemail.com: domain of mailhol@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mailhol@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D5A226B0452
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:34:04 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C1D28B949
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:34:04 +0000 (UTC)
+X-FDA: 84362566008.21.164F023
+Received: from out199-18.us.a.mail.aliyun.com (out199-18.us.a.mail.aliyun.com [47.90.199.18])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A268B180005
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:34:00 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iThvwSmC;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of alibuda@linux.alibaba.com designates 47.90.199.18 as permitted sender) smtp.mailfrom=alibuda@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769157168;
+	s=arc-20220608; t=1769157243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/lHEdB0GDc+U4hfN7ERlhy59AUwf8W+c4JgvLL/NHbk=;
-	b=UspAZ/9koqYX1SrcKnCOqmetJFU+v7KzOb4MhdMgR+FXT1naZx//fwk+2NUlKTCH3FkVC5
-	zUw3kuOyFUBqIG9ZOt7mtCs9CE00NOl3PxE7aDiWRREQdinKodScOewoEJf5tGDWUUKaMX
-	lgeC1YzOeDGPvWe484W2GpCqGXCwMFw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PA7PbPpE;
-	spf=pass (imf02.hostedemail.com: domain of mailhol@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mailhol@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769157168; a=rsa-sha256;
+	bh=hBm0JDk7EhK8byASx/pot4VMZ/7c5vuPMnvsfOBUnCE=;
+	b=e1tZOZg21OgdCIL6s+E2l33ORoOkat0G1JvAQbEgA1areStAKDv8qKO+P6R4QNikbe4OoI
+	XCjB3WyFeCMhujVG5aVZGtbs86biWbyzViGadRQdhprIiE7DqgdF04jM3PJVRI4/MvVX/h
+	n2ZYQGP8tb++DeYiGh4fPzO26wvZmRQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769157243; a=rsa-sha256;
 	cv=none;
-	b=KxveWvLeEAwBaHN0zr1WUgU5DlCvBZINGbMz5EJSknkhPpDEmMYWqYxtHwJ2aaBtDpeY0H
-	6h5zxQEgz/m+cUA2GQX7J9SRn/5vrcXYN5Qii4fqqJXxVvTqk+oD5574QVZjuhiM3iA7zA
-	eM93IS4u+p6gD5ECTr/W4MkhMkTOsZA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9070960131;
-	Fri, 23 Jan 2026 08:32:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3F7C4CEF1;
-	Fri, 23 Jan 2026 08:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769157167;
-	bh=RPXHsjJJodiBfwtnVTgxBFEggh4DJsOuIORgyKkLh64=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PA7PbPpEa1KvnGFm3KBSXJd1gzslvA7DmJdy6klvyzNAO0JpcYbj+FcaC1vmAWUyF
-	 eXK3jX00afgTm45yoCmEKnyZyglRywyWkJUrV/F+1KnoZmCC7MQwbdCtRz9zadPJN7
-	 NaqOeTCoJc7Qi2bhldmBjL06T0y+pKQv/2OME1kEzjqyxM91CY955pVN1L249o1KZb
-	 2IxcOO1jj/pavF6Mc9CqwQwbkXnyXs+4J5YGCUK5OHBGzLVpOe4AZtlGFB1v55lqtB
-	 r6woavprdaP+2FXoMf+WYX+0vum7rQEH3MozNwL1lfn8q9nYik4hBKTCpfidQ5GZHL
-	 CVRGdX/7D7fpQ==
-Message-ID: <f9fcd1c6-373c-4345-b413-9bb6c1cd2d3a@kernel.org>
-Date: Fri, 23 Jan 2026 09:32:39 +0100
+	b=2PprdnWMgxIg5KhQhy260pcU4vgX6UAfHBo51zf+TArVPB8OUL9Jr4eytgTZh0EbezTSqn
+	0rdY8pxFllLO6PlNdB+bu/fkuf17bcyawEtxOuur4GZgtDSoneAO6LoCpiVUc+ZdVQoDzM
+	LjKvCZcn9sRY2jpsnRuUIAkiY82ySDc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iThvwSmC;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of alibuda@linux.alibaba.com designates 47.90.199.18 as permitted sender) smtp.mailfrom=alibuda@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1769156636; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=hBm0JDk7EhK8byASx/pot4VMZ/7c5vuPMnvsfOBUnCE=;
+	b=iThvwSmCe9zTcBWIDB1rbrn1vrh94TL4bCYPVBTMxdUevCygeT6x8Ap5G17RYKMSlLRReGp2R8UqAnE7phsCgTiYhai58xbGeG+AmPziVjMEAehhoKQ657R1jkugzvEFLqyzGslvoDW0kLkkC43dLSCFwvE7a6wH59MhfBxNdaI=
+Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0Wxf8ovm_1769156634 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 23 Jan 2026 16:23:55 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	oliver.yang@linux.alibaba.com
+Subject: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
+Date: Fri, 23 Jan 2026 16:23:48 +0800
+Message-ID: <20260123082349.42663-3-alibuda@linux.alibaba.com>
+X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20260123082349.42663-1-alibuda@linux.alibaba.com>
+References: <20260123082349.42663-1-alibuda@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH next 11/14] bit: Strengthen compile-time tests in
- GENMASK() and BIT()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Chris Li <sparse@chrisli.org>
-Cc: Vincent Mailhol <mailhol@kernel.org>, Philip Li <philip.li@intel.com>,
- David Laight <david.laight.linux@gmail.com>,
- kernel test robot <lkp@intel.com>, Nathan Chancellor <nathan@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
- Jani Nikula <jani.nikula@intel.com>, Kees Cook <keescook@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>, oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>
-References: <20260121145731.3623-12-david.laight.linux@gmail.com>
- <202601221237.soiAkwkN-lkp@intel.com> <20260122103337.26473d1c@pumpkin>
- <aXIzpC6wpdv47cSH@smile.fi.intel.com> <aXLOELiIG8MHKcIO@rli9-mobl>
- <b49c9993-7676-4d33-a2d6-9f6b77b0fd34@kernel.org>
- <aXMtJ_JurQjvN4tU@smile.fi.intel.com> <20260123082027.GJ3183987@ZenIV>
- <aXMwIcH7Zh-1yNq3@smile.fi.intel.com>
-From: Vincent Mailhol <mailhol@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=mailhol@kernel.org; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
- fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
- F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
- 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
- YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
- dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
- zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <aXMwIcH7Zh-1yNq3@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8knginzed7otx86uwhr888e1ex4wc1nh
-X-Rspamd-Queue-Id: 7449380004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A268B180005
+X-Stat-Signature: 6bykzyms7pwesqg9okeepg3un61dsefq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769157168-577039
-X-HE-Meta: U2FsdGVkX1972r7/rEm23H95JcqUNtpr5tyE9Th/tDhX3dcsrUQTn/ZpY22JtzYDDMPBuFxhwYeQ1L5GmyiiOew1+BzpdFaPyuVtoPBlcWG4JngSFCAZwfLdGWqLPsMbiAYo4QfFY7Ei/VZekgaNsWz14BnaqPF2uuQ/9pM2+4+xD65G2ORbCrYBuzoTtuGCMgF+eigGI/5kxV4y+EKAdNdnzrJt8vLJEuqIhI1gMnCO/FohALsnt7lo0xRwxT13sH7gL1j6HYF15Ke/a4CraymZNKFTKRdS1xq2hZ+dkuLGVcnh0MT8PRwd2EKCWLTm9XNXiIebOAgwMj/7VCQy20wSlhLkRRbA452SNN94wqrO6t1MB9mbGmvpyq1oKEVkdeW+4HjkTdyuN+8rZMe/MD4u0wJTU0Ca+O3fxOWIj+ic/lHe8fOfCNGTySu39PytizE6BbTHQiX9KwTmdJXNGtZfl+w5NcS0keKNnGvJSrr7gkxls3lYdEgAe3tOZ5TTexfEUYCJe5rDGKAAba6vH2feHJ1L2TEH3LUCICUIsAIabzEqPVrAlYe6/7rhyScRVUh0th0+nc7dvGzwPYE/zS5jCFC7Vp7BtahQ2OEnQOL9DduwtlTk3m3QrFym82pEjOcY93NejJc7jxJ2zUEpYxFrbV5AzLh+4Tr1DXWNPL0OcLxao350g+IQ/3sVQHAs2uUxKQXw1gXIIQpy+HxJndQQ3+8u0wVNIM8MBreVzW4IQxq0oSAJQOyxJB8J6gobO10PEoHtlhrm/tcjA83DedYD9ZJGJPT8XQSn+xOo22HQO6MoStRtaWb2G/uWmbObK6rTtu+qbvEm6kdE/zk7+wiQrUrRJYcW6BdXdDfnkVjtqx7SZRbctnkxICfa4fyxbRv35cxRxH9JvvakEfSyli+78LxL9BT2kiL623dai669m+pxfk/0faKNMzzXXP+lTYTsOguc2aWhE97Viz5
- YIJ2N1rp
- yOMOYrLknHDzkF5M+cV+Re8yQKZIDFJ8m8NP5lMOUpqqaqvCNs+8/pTEmytT/nSmz6AcBoz80TlAoftiQ+IM59BWKBfiHgCTCbT8U4vTLIOEDEYuOxL6wKkqcRfCSV2ALCvZKu/G+gQvM1bugKVriLblKUMOmxhCZvWBCeNgYMefRd1bKw5EOvSZvutJeVEzqw+i6jY9stms6KG9hVwGRdKRT18X5o7LfyRVsbU3mFXUvLaPLoeKINIEHsDjGDTFkFTD2pOVLhHLzylo+5pUtRhcVqd+QnAWIKJ1QlGzFxCj3D4VKhT0bFaOKPaZ5h+UQQY+S6awuWYscZKWR26LYorh00Jm6Ds3KFJCVlrEkfNKvC8Vt+gr7JFtHVw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769157240-221142
+X-HE-Meta: U2FsdGVkX1+aZ4ElK/QqHS4XRXjt2d6+WJjNC4h1O/fvAgGXmk72/RNkp9Ug6KJYBGygKaCBZqOl1Kj0SBcrV1T7O8CHJXt4vW100Lhl/u/32M1DQl2iYG/qzkCWhpjrKzJqjlrsyhNwgEWdswRrXPYQ5X/k4P8QyzJ81P17Co5kG5E5+wdUoaZ7BfOb8Y6CDkkagD5lkgy8H3Pp7a43pZe9mRfrZbuphRpt/qU95y37C47GEiZ1bFnK/Xvcf481IenFx8nbU26yWHY+Ly/c45YtxuJmjF9yT736RdyDsHiDZPKo0CKSF5GM5GW7jDydmvnlgbRmwc/BX2/9QK1qj7HI24/ETtBLmi31LbDRGd+ddtm2ys+hw2q7WwvI+CCrxzxvw1mtk10BjbuaoED8LtWhcXY47GLko2rjPF4axqvckGnNjPCh7Hpvfq0q6HvEtpgvZhEa4DWUVoukf30BNY3v5aP1442Jl2Ud/dCfcKFo4/acB4QnxCN9U3MiiNctTbNpbBFRfA/Z7D5SZPBN3VxWt1zjjG4n2B2o9/QpvWO/PmCrQ78wkrnEM7Gq+vUtTdJUQ/rozaArfnsbxLcgzs7Jycl3GiZOsab4WGFnARvmpiLmOSJ5c6XbUwaoyU6tVFrsQaRNh9095pFciBjjJfKa7kyvNNOME/I2SBuyjvRm2moZtG7sknzvPOv4Tujv/8ak6XrRefvHL/xE9Aofhv8lx1Q/7JT7Gl9G/7tqXSgHNX0oOfhUESL0SdQ2UYYEsZxYi+QIL/Y5HZGvZOHX38J+bIgW2tMzxHGDaVt11kN96lsMRA+KNfWSbpB2RIqUl5y3KkWaCOlR4D2nH8c57mP7czJK+WgZAacAhZQ53teckX69nwzkw9GShOOVVQ7+HfzANwQwwZBGjYPrI/2B6kcz9s6zUvcL0TFm/LIl6vBsql4TtNgvJGOiOqFeEqSh3MoBEmQHboKhSN5z+u1
+ +5JIbWgH
+ E6LUA/D/EMncCImerICbt0e9kF9TOjSfIWCcCLaWER12y8aBN/3mJBFpPQPtkazOCIiQGg3dimD3Fv6jA2F61u7aFyY8ZsEjXHOm3L35ie0zmTqadj1ByfQkoszZ0pCGBzW3IXvPn93EgjXKUmUb2HvLY3o3R7hKDOsH+kAZ8FPjqcTCFvwZyrieaA2/gQhtvu0p72+53gF8J9uiXdS4zQv3gErH/nhTIPPutagla1WhgRqKRrIZXOetEs/dAWrVWCOA9O64BYQ9QT2r3b/+DYBzV5fh+ejPNWv2pvgcVaUqsNcL6+W3xGamvbI7iHrKqUAs5ipiQxbwMhPs+sjtzBcu/+n+s84QM/nvUwDNANr/FU1npr7DxfjkKJ72LQt8broqD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,37 +100,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23/01/2026 at 09:24, Andy Shevchenko wrote:
-> On Fri, Jan 23, 2026 at 08:20:27AM +0000, Al Viro wrote:
->> On Fri, Jan 23, 2026 at 10:11:19AM +0200, Andy Shevchenko wrote:
->>
->>>> Al Viro's fork just adds 8 commit on top of the upstream sparse repo.
->>>> Wouldn't it be possible to just merge those?
->>>
->>> Ideally yes, but you also should kick the distro's asses to update it, and
->>> the sparse should bump its version...
->>>
->>>> That would be much less confusing.
->>>
->>> Seems Al become a sparse maintainer de facto :-)
->>
->> Huh?  What happened to Chris?
+find_vm_area() provides a way to find the vm_struct associated with a
+virtual address. Export this symbol to modules so that modularized
+subsystems can perform lookups on vmalloc addresses.
 
-After the project hiatus, I can imagine that there is some confusion :)
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+---
+ mm/vmalloc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-But Chris is back in his role of maintainer since September 2025. See:
-
-  - https://lore.kernel.org/linux-sparse/CACePvbXDO1ZybDu3RaFhED9D-9gC6LTMpWrxoh5xD+ZO5SLdzA@mail.gmail.com/
-  - https://git.kernel.org/pub/scm/devel/sparse/sparse.git/commit/?id=67f0a03cee4637e495151c48a02be642a158cbbb
-
-> I don't know, but upstream sparse haven't applied any solution for
-> MODULE*("FOO") stuff, nor reaction on my ping in that discussion
-> (I did it like week or so ago).
-
-I am out of context here, but were the correct people CCed?
-
-
-Yours sincerely,
-Vincent Mailhol
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index ecbac900c35f..3eb9fe761c34 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3292,6 +3292,7 @@ struct vm_struct *find_vm_area(const void *addr)
+ 
+ 	return va->vm;
+ }
++EXPORT_SYMBOL_GPL(find_vm_area);
+ 
+ /**
+  * remove_vm_area - find and remove a continuous kernel virtual area
+-- 
+2.45.0
 
 
