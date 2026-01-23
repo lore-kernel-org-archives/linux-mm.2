@@ -4,116 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 322D1D62602
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32C2BD62602
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:53:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CC2A6B040C; Fri, 23 Jan 2026 01:53:51 -0500 (EST)
+	id 74EAF6B040E; Fri, 23 Jan 2026 01:53:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51E4F6B040E; Fri, 23 Jan 2026 01:53:51 -0500 (EST)
+	id 736AE6B0410; Fri, 23 Jan 2026 01:53:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38D296B040F; Fri, 23 Jan 2026 01:53:51 -0500 (EST)
+	id 638F96B0411; Fri, 23 Jan 2026 01:53:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E5116B040C
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:53:51 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D604216036F
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:50 +0000 (UTC)
-X-FDA: 84362313420.08.7D3E302
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A0C6B040E
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:53:57 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14516B835C
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:57 +0000 (UTC)
+X-FDA: 84362313714.17.D630370
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A4DA8140005
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:48 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Z2g9m/rc";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="u/P/pwZ9";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Z2g9m/rc";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="u/P/pwZ9";
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by imf20.hostedemail.com (Postfix) with ESMTP id DAA5F1C0002
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:53:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AenYz2Wq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2jAD4uRN;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AenYz2Wq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2jAD4uRN;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769151228;
+	s=arc-20220608; t=1769151235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lz6+CfboTVUMod3u7B664uLDJDmXudIqpgLE6OkuCxw=;
-	b=Dmf5C9ltgf9/RfUFuJ/pJZccfzzNPkVKfL1V366RiKCjk00IE2PO0DyIgS/uyB0Zc6TXf0
-	EE3ZMvGKL1L6we8mVqQdoal4p0IvBg9ezLKXJXzMemXZ1nbcp32oQFcNJNNSSEjwiFvvq2
-	D6svEdCa6nLoZPyhvW3i8XZuLti3EuY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769151228; a=rsa-sha256;
+	bh=rV01kHooLadLBYTqNh94OxZ2PfqtzMHrFv9yp7Y7yLs=;
+	b=ozLW1wznztD4WjIdGYpgQermOjn5nBP+YeP6hppFM/JHoAHx4Le2w8Uq6L5B5EM+ACWxOx
+	dUFnl+RKsIK9h3eoW1SOOIajJJy1g15qN+Z4QWIGDfjQZY0ktecTn+RB5uraz8+A1Hro5g
+	cUVBDwBeGHpHXTeIG7dUJdRiZpSsZTg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769151235; a=rsa-sha256;
 	cv=none;
-	b=7LxcacdxgOOkNZzTSr8wHE+PhEhwa+fSXUkmNg2ocEZNxKxRJg/LfVn4NtbMKLVtoyEdV8
-	X7Q+dIZEeVRA4I8HXJFboxUnJIm9y7PbhsMsAQn2fo/LnkdnTBrryImSJbjp6/WiMEZXJV
-	f5/clH8SBihKcIAwq6d+9+HpBdIMXsY=
+	b=3dYxtO/Q/KpodpQ3rhzbz10giOBo2g4CnfQCKSuIHl3JmnwSzimL4Vw1BKcvDa8c7fPqIg
+	Eh8GnDNje3D5rvHGM1zqlvwlKIKuob386iLC5A3eL/TPj+Rmm4LNiXqBUWon+7FxO3p389
+	AhvV9mCivdCZDMODz6XaDs90yjuBlKI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Z2g9m/rc";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="u/P/pwZ9";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Z2g9m/rc";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="u/P/pwZ9";
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AenYz2Wq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2jAD4uRN;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AenYz2Wq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2jAD4uRN;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C9F8033772;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C13383376E;
 	Fri, 23 Jan 2026 06:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1769151190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Lz6+CfboTVUMod3u7B664uLDJDmXudIqpgLE6OkuCxw=;
-	b=Z2g9m/rcdQXb7ha3+S6UqASNZmOJNr7F30VJDOieU1AGvt+srX1olSuMb2LtLW0vnUEl2Y
-	ZN/48UbRACPGgqHBdyew5JdSytha46m9hSDac//pLlIjia4RBo7098CZXcXccCRpXHDP7G
-	Vypc5k7Lzp7SYcx4wPLpp+7Ndn5klNk=
+	bh=rV01kHooLadLBYTqNh94OxZ2PfqtzMHrFv9yp7Y7yLs=;
+	b=AenYz2WqR3hKBS9aBpv7ivOXMmyu4wNyqUZbqps1NSt+kGHN+Hg4CM8nbtrz/G0/EMGZ0S
+	vRpMKgc0Np/hDHEYd/KCQs7N0AU3Xkw5B4rJWPDFkBNNZuAGNPGW7JJLK7sVtloXKSAbUS
+	GsjlCQpbQYItiBMXcTIDWjfRR+vPRPE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1769151190;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Lz6+CfboTVUMod3u7B664uLDJDmXudIqpgLE6OkuCxw=;
-	b=u/P/pwZ9ky+Ip6KENw9mi4Y3FkSM4RJB211LC5waIXA/I+Q4De3PBR+9IK/NaIAqDCm8GB
-	LJOLnePCSyAPYgCw==
+	bh=rV01kHooLadLBYTqNh94OxZ2PfqtzMHrFv9yp7Y7yLs=;
+	b=2jAD4uRN7yVkafUmQ6e2z6pai0Yh+Rxx1wcA+rdjuphJZY6YSliIksLbgBtXQJl+yDpbh3
+	VBY6BcesMhKRusBQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1769151190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Lz6+CfboTVUMod3u7B664uLDJDmXudIqpgLE6OkuCxw=;
-	b=Z2g9m/rcdQXb7ha3+S6UqASNZmOJNr7F30VJDOieU1AGvt+srX1olSuMb2LtLW0vnUEl2Y
-	ZN/48UbRACPGgqHBdyew5JdSytha46m9hSDac//pLlIjia4RBo7098CZXcXccCRpXHDP7G
-	Vypc5k7Lzp7SYcx4wPLpp+7Ndn5klNk=
+	bh=rV01kHooLadLBYTqNh94OxZ2PfqtzMHrFv9yp7Y7yLs=;
+	b=AenYz2WqR3hKBS9aBpv7ivOXMmyu4wNyqUZbqps1NSt+kGHN+Hg4CM8nbtrz/G0/EMGZ0S
+	vRpMKgc0Np/hDHEYd/KCQs7N0AU3Xkw5B4rJWPDFkBNNZuAGNPGW7JJLK7sVtloXKSAbUS
+	GsjlCQpbQYItiBMXcTIDWjfRR+vPRPE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1769151190;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Lz6+CfboTVUMod3u7B664uLDJDmXudIqpgLE6OkuCxw=;
-	b=u/P/pwZ9ky+Ip6KENw9mi4Y3FkSM4RJB211LC5waIXA/I+Q4De3PBR+9IK/NaIAqDCm8GB
-	LJOLnePCSyAPYgCw==
+	bh=rV01kHooLadLBYTqNh94OxZ2PfqtzMHrFv9yp7Y7yLs=;
+	b=2jAD4uRN7yVkafUmQ6e2z6pai0Yh+Rxx1wcA+rdjuphJZY6YSliIksLbgBtXQJl+yDpbh3
+	VBY6BcesMhKRusBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C249139F7;
-	Fri, 23 Jan 2026 06:53:10 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E6A43139EF;
+	Fri, 23 Jan 2026 06:53:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2McKHtYac2k4YgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 23 Jan 2026 06:53:10 +0000
+	id sH8GONUac2k4YgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 23 Jan 2026 06:53:09 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 23 Jan 2026 07:52:51 +0100
-Subject: [PATCH v4 13/22] slab: remove the do_slab_free() fastpath
+Date: Fri, 23 Jan 2026 07:52:46 +0100
+Subject: [PATCH v4 08/22] slab: make percpu sheaves compatible with
+ kmalloc_nolock()/kfree_nolock()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-sheaves-for-all-v4-13-041323d506f7@suse.cz>
+Message-Id: <20260123-sheaves-for-all-v4-8-041323d506f7@suse.cz>
 References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 In-Reply-To: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
@@ -129,14 +130,14 @@ Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
  Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Rspamd-Queue-Id: A4DA8140005
-X-Stat-Signature: r5g89dykopbcfd8f84e53zzjg87h53ec
+X-Rspamd-Queue-Id: DAA5F1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769151228-45005
-X-HE-Meta: U2FsdGVkX1/JrXjiJC+o0F1bEivjHTPKvX2VyTxCmj/pJ4je+LlJbv/LlbgMZiQ9JiVawqOyhca+RPrzMQdsarpPxXgFOrNkL4kcG+rR0LYlyg5HBahp/suCVUCiH2om/0VRZQChLfSNAWgK/+fmwzvIQX9uB8izWo/HC/gvC08Yb3IDL9v+yuYKPhSOOF79lQMU/qzyQoh/teFv5OIwGuGMXvcNAGE6TP7KarbDfUROnIcmWieUhDZR520UQjA67dnJ9GgJT35ZkpPQ2D4ZLRImFYaNO8t3rtiFm4/RkJDFH/CWPXUX3cs2XbZCzkbC9UQ1742mmhqYW+2j/rO5PqB6HT5UctGMmyS2kXh5YzA9O4VkeBqfnsMJo2Owp7xY69KUwUcF7xF66pZPGgzl50BWjwcku2hZw8quMZtzyZ67goOvkRiWhr97tXWMIvDhFQAUUmmfryRe4X38MMoFeeR6TF2S3Pa7P00se/N6LdRTypmfFf86IFUf0C5wyinwuOuG1Ijik/kgnqPnHbVMw0vOgUebQveVmjfMjhgXlfvlyc/aToiyEp9EEhwfAl/0/nL8g6rhQY/ZCVNl4m5xkrMtolbmCZVQfj1Q/zZCq3JBZ3fr7D9nmuesI97Hvw6fFjn5sYOLGvR4JocGdoGYt5GHRfOMz4qrGxzGBgr7qpdb9OzfUD1My+Vs2uaxkr9HUyO/fMtwb/pSZpWbnqxjvmaoDtH9kH3Y0kaZXb1OqdNBalef3G0T80+S+FVGjXDk4zgCzZZU2xKC2F2I+3GUWAr11HZWuJnYefblA2Sl1O7vKov+q0KXCvIvZlDfhWHzUY39F1KJMWQaw6f7xTGHJE6dZKDPN7P8n/HVNYxJED0C9nE3GL5mo/RSVrIMUBoJYexj/gw5fXGma2VFDK6yYx9UqJEaB2iB9tkBoupbJb3AdHLY6fS9tQKrWwP2Kq702WzrJw52LuKK76596Gp
- eNFiA6Yf
- IbWDGBSigJYbV0gEB0E5YFivuML+zgU8MCT7gWaYlVYl2ZnuQFxRK4l9wJYYFfcpY2aYLzc7DKLAvEaU6JlMSwGKvT1olCgfGgK0vBURU1P2iGL6psdyMhnucrM/OZACvtejMHnpZatxZRQhU/ABC+Y41eVWvXeuzqaNyUpk/FmsxxISiGX4SrtnAPH6z3IQj0fCTxrdw81IrC3ENvMYGIknYUhIf0ncrwSnAlM/swJaDGnwyzRvHJX2Ewy8BAUDo3dWB5Gjppbm+xAtR8J8Mn0dvbZkKpaVb+m3tXoJQWaMVuvnsWLrah3Gb9wi40IlS9NT9qip2ebfTKaiSyhnKC00QMy/Acd4xTGNo
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 79gm4834zxii568rgfk6umbd6qytrujy
+X-HE-Tag: 1769151234-959061
+X-HE-Meta: U2FsdGVkX19zz67TOBjQREhfD3TzMjUXDmcMfFSPSoo/kx3tZ7EK3wGre/W9fslcG9cSMHu2B7a5Tz2txMSVlcdv5WeHUmxdXAB8L+hKyfzLh9rf/v09RmbcAqk3YLIbIP8z3jMsEwQ5UuwVa/qDRjcIw73IE+SwqgqLrhoOFf4PBwPhGdZ1Jp52H9tYAKaZn6Ckig5Ud/8hQU9vP+1bopyxWKcXtNLb0hSQzCrNrRlgO7TI9B+cfrMfPgeMGj+gfvams3Moba6LyzAbxQYhsH5j1b8vRf3CbX2XPpBvcRYBtefIUnXmzmWThYlS+1FRJpqXUSECw/kLoThPhU0izR/wiU1NjwVZ79ehjr3bNEO7LT3kEPJDLDw3aO1irUI7kfkr4uLGjEyEdGzi+XkzDOsGawkSwAMt9jSvZyVGlAJjDjMLRYsbfNJS8g9WVv0tDzLLzB3smRyhUWO0mXv837n40CVHknEdmGIuFiGcNvXplDgZzJEzn3Yr38Txpxwj+qvNIW2KiQPalgfoiF6PKMk+tJujHpv02bUAGuv7b9wGOacV3t2+CcoerLEUSQqZZlx9oEoDYqe3W8qt26n0qAtE9LRokccNrEc1Mt+3V8ieeWhNz8ak4JPLdTU5HkdBdDDjo4MrzpJr/tr7txplBOrumpIt/QSEEA3burT1KEChYwKxxLU9NR+DpTKdn0ycCJ+ks32Wy/Dy8ODHQ+aQygCSz7G8dI8e1zV3acL5/Wc8np7/4aKO7Dshaj/iYfRtl5MDY5S6opB2Nocz93w+2JKOVyPULqT8RNftxBjsbReCroHyMBbTMgqPKoE9/g0Pfpdx0VB22eW41xxz9Smc9jFsPvjrS+XAKQZ/Nis/KZBf3ennM4xBnTeTkI3rOnWSqzrh48iOTb1x0DecqkiDUueQvUdWaoOtH3rtVE7J36isOto/WUzwbvdHsXrPz/h/gMLZA5Xf/2V4vlwRzJL
+ bX0e1OeZ
+ 5y3WB4jaIrpYqL05aGywa94fnJyhEd9kgv4HaXRx0+sFK7LpV5cy6Pkrx8a2lBv1XKK2EJREOn0GRPXpAyOkebogzqaKlazJFfpBdmG1NZiKIpvcB/0ABR/FGhtKE/Haad7MHXJs6r6Hr47LjOT4qvoMkeQZTHvSuS6CgNHLkT0AG1x2JT+QtpxsI+KeZDq2/R/XdwWAJhQan4hrQI6Dlq97AvWNCA4RnQWIZ6ZGJM6AUypJ4s2NGCB+gYxe3tHxSUfqUIB2wi/dwW+QZHY6CWo9afdRdx1EhvkM7petNZjiO6ibwW6HgIlKB729hdFgdb/diLJlFp06Ll9eHIOMDSUi/KA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,253 +146,295 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We have removed cpu slab usage from allocation paths. Now remove
-do_slab_free() which was freeing objects to the cpu slab when
-the object belonged to it. Instead call __slab_free() directly,
-which was previously the fallback.
+Before we enable percpu sheaves for kmalloc caches, we need to make sure
+kmalloc_nolock() and kfree_nolock() will continue working properly and
+not spin when not allowed to.
 
-This simplifies kfree_nolock() - when freeing to percpu sheaf
-fails, we can call defer_free() directly.
+Percpu sheaves themselves use local_trylock() so they are already
+compatible. We just need to be careful with the barn->lock spin_lock.
+Pass a new allow_spin parameter where necessary to use
+spin_trylock_irqsave().
 
-Also remove functions that became unused.
+In kmalloc_nolock_noprof() we can now attempt alloc_from_pcs() safely,
+for now it will always fail until we enable sheaves for kmalloc caches
+next. Similarly in kfree_nolock() we can attempt free_to_pcs().
 
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Reviewed-by: Hao Li <hao.li@linux.dev>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 149 ++++++--------------------------------------------------------
- 1 file changed, 13 insertions(+), 136 deletions(-)
+ mm/slub.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 60 insertions(+), 22 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 914b51aedb25..a63a0eed2c55 100644
+index 41e1bf35707c..4ca6bd944854 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -3678,29 +3678,6 @@ static inline unsigned int init_tid(int cpu)
- 	return cpu;
+@@ -2889,7 +2889,8 @@ static void pcs_destroy(struct kmem_cache *s)
+ 	s->cpu_sheaves = NULL;
  }
  
--static inline void note_cmpxchg_failure(const char *n,
--		const struct kmem_cache *s, unsigned long tid)
--{
--#ifdef SLUB_DEBUG_CMPXCHG
--	unsigned long actual_tid = __this_cpu_read(s->cpu_slab->tid);
--
--	pr_info("%s %s: cmpxchg redo ", n, s->name);
--
--	if (IS_ENABLED(CONFIG_PREEMPTION) &&
--	    tid_to_cpu(tid) != tid_to_cpu(actual_tid)) {
--		pr_warn("due to cpu change %d -> %d\n",
--			tid_to_cpu(tid), tid_to_cpu(actual_tid));
--	} else if (tid_to_event(tid) != tid_to_event(actual_tid)) {
--		pr_warn("due to cpu running other code. Event %ld->%ld\n",
--			tid_to_event(tid), tid_to_event(actual_tid));
--	} else {
--		pr_warn("for unknown reason: actual=%lx was=%lx target=%lx\n",
--			actual_tid, tid, next_tid(tid));
--	}
--#endif
--	stat(s, CMPXCHG_DOUBLE_CPU_FAIL);
--}
--
- static void init_kmem_cache_cpus(struct kmem_cache *s)
+-static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn)
++static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn,
++					       bool allow_spin)
  {
- #ifdef CONFIG_PREEMPT_RT
-@@ -4239,18 +4216,6 @@ static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags)
- 	return true;
+ 	struct slab_sheaf *empty = NULL;
+ 	unsigned long flags;
+@@ -2897,7 +2898,10 @@ static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn)
+ 	if (!data_race(barn->nr_empty))
+ 		return NULL;
+ 
+-	spin_lock_irqsave(&barn->lock, flags);
++	if (likely(allow_spin))
++		spin_lock_irqsave(&barn->lock, flags);
++	else if (!spin_trylock_irqsave(&barn->lock, flags))
++		return NULL;
+ 
+ 	if (likely(barn->nr_empty)) {
+ 		empty = list_first_entry(&barn->sheaves_empty,
+@@ -2974,7 +2978,8 @@ static struct slab_sheaf *barn_get_full_or_empty_sheaf(struct node_barn *barn)
+  * change.
+  */
+ static struct slab_sheaf *
+-barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty)
++barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty,
++			 bool allow_spin)
+ {
+ 	struct slab_sheaf *full = NULL;
+ 	unsigned long flags;
+@@ -2982,7 +2987,10 @@ barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty)
+ 	if (!data_race(barn->nr_full))
+ 		return NULL;
+ 
+-	spin_lock_irqsave(&barn->lock, flags);
++	if (likely(allow_spin))
++		spin_lock_irqsave(&barn->lock, flags);
++	else if (!spin_trylock_irqsave(&barn->lock, flags))
++		return NULL;
+ 
+ 	if (likely(barn->nr_full)) {
+ 		full = list_first_entry(&barn->sheaves_full, struct slab_sheaf,
+@@ -3003,7 +3011,8 @@ barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty)
+  * barn. But if there are too many full sheaves, reject this with -E2BIG.
+  */
+ static struct slab_sheaf *
+-barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full)
++barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full,
++			bool allow_spin)
+ {
+ 	struct slab_sheaf *empty;
+ 	unsigned long flags;
+@@ -3014,7 +3023,10 @@ barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full)
+ 	if (!data_race(barn->nr_empty))
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	spin_lock_irqsave(&barn->lock, flags);
++	if (likely(allow_spin))
++		spin_lock_irqsave(&barn->lock, flags);
++	else if (!spin_trylock_irqsave(&barn->lock, flags))
++		return ERR_PTR(-EBUSY);
+ 
+ 	if (likely(barn->nr_empty)) {
+ 		empty = list_first_entry(&barn->sheaves_empty, struct slab_sheaf,
+@@ -5008,7 +5020,8 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 		return NULL;
+ 	}
+ 
+-	full = barn_replace_empty_sheaf(barn, pcs->main);
++	full = barn_replace_empty_sheaf(barn, pcs->main,
++					gfpflags_allow_spinning(gfp));
+ 
+ 	if (full) {
+ 		stat(s, BARN_GET);
+@@ -5025,7 +5038,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 			empty = pcs->spare;
+ 			pcs->spare = NULL;
+ 		} else {
+-			empty = barn_get_empty_sheaf(barn);
++			empty = barn_get_empty_sheaf(barn, true);
+ 		}
+ 	}
+ 
+@@ -5165,7 +5178,8 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
  }
  
--static inline bool
--__update_cpu_freelist_fast(struct kmem_cache *s,
--			   void *freelist_old, void *freelist_new,
--			   unsigned long tid)
--{
--	struct freelist_tid old = { .freelist = freelist_old, .tid = tid };
--	struct freelist_tid new = { .freelist = freelist_new, .tid = next_tid(tid) };
--
--	return this_cpu_try_cmpxchg_freelist(s->cpu_slab->freelist_tid,
--					     &old.freelist_tid, new.freelist_tid);
--}
--
- /*
-  * Get the slab's freelist and do not freeze it.
-  *
-@@ -6185,99 +6150,6 @@ void defer_free_barrier(void)
- 		irq_work_sync(&per_cpu_ptr(&defer_free_objects, cpu)->work);
- }
- 
--/*
-- * Fastpath with forced inlining to produce a kfree and kmem_cache_free that
-- * can perform fastpath freeing without additional function calls.
-- *
-- * The fastpath is only possible if we are freeing to the current cpu slab
-- * of this processor. This typically the case if we have just allocated
-- * the item before.
-- *
-- * If fastpath is not possible then fall back to __slab_free where we deal
-- * with all sorts of special processing.
-- *
-- * Bulk free of a freelist with several objects (all pointing to the
-- * same slab) possible by specifying head and tail ptr, plus objects
-- * count (cnt). Bulk free indicated by tail pointer being set.
-- */
--static __always_inline void do_slab_free(struct kmem_cache *s,
--				struct slab *slab, void *head, void *tail,
--				int cnt, unsigned long addr)
--{
--	/* cnt == 0 signals that it's called from kfree_nolock() */
--	bool allow_spin = cnt;
--	struct kmem_cache_cpu *c;
--	unsigned long tid;
--	void **freelist;
--
--redo:
--	/*
--	 * Determine the currently cpus per cpu slab.
--	 * The cpu may change afterward. However that does not matter since
--	 * data is retrieved via this pointer. If we are on the same cpu
--	 * during the cmpxchg then the free will succeed.
--	 */
--	c = raw_cpu_ptr(s->cpu_slab);
--	tid = READ_ONCE(c->tid);
--
--	/* Same with comment on barrier() in __slab_alloc_node() */
--	barrier();
--
--	if (unlikely(slab != c->slab)) {
--		if (unlikely(!allow_spin)) {
--			/*
--			 * __slab_free() can locklessly cmpxchg16 into a slab,
--			 * but then it might need to take spin_lock
--			 * for further processing.
--			 * Avoid the complexity and simply add to a deferred list.
--			 */
--			defer_free(s, head);
--		} else {
--			__slab_free(s, slab, head, tail, cnt, addr);
--		}
--		return;
--	}
--
--	if (unlikely(!allow_spin)) {
--		if ((in_nmi() || !USE_LOCKLESS_FAST_PATH()) &&
--		    local_lock_is_locked(&s->cpu_slab->lock)) {
--			defer_free(s, head);
--			return;
--		}
--		cnt = 1; /* restore cnt. kfree_nolock() frees one object at a time */
--	}
--
--	if (USE_LOCKLESS_FAST_PATH()) {
--		freelist = READ_ONCE(c->freelist);
--
--		set_freepointer(s, tail, freelist);
--
--		if (unlikely(!__update_cpu_freelist_fast(s, freelist, head, tid))) {
--			note_cmpxchg_failure("slab_free", s, tid);
--			goto redo;
--		}
--	} else {
--		__maybe_unused unsigned long flags = 0;
--
--		/* Update the free list under the local lock */
--		local_lock_cpu_slab(s, flags);
--		c = this_cpu_ptr(s->cpu_slab);
--		if (unlikely(slab != c->slab)) {
--			local_unlock_cpu_slab(s, flags);
--			goto redo;
--		}
--		tid = c->tid;
--		freelist = c->freelist;
--
--		set_freepointer(s, tail, freelist);
--		c->freelist = head;
--		c->tid = next_tid(tid);
--
--		local_unlock_cpu_slab(s, flags);
--	}
--	stat_add(s, FREE_FASTPATH, cnt);
--}
--
  static __fastpath_inline
- void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
- 	       unsigned long addr)
-@@ -6294,7 +6166,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
- 			return;
- 	}
- 
--	do_slab_free(s, slab, object, object, 1, addr);
-+	__slab_free(s, slab, object, object, 1, addr);
- }
- 
- #ifdef CONFIG_MEMCG
-@@ -6303,7 +6175,7 @@ static noinline
- void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
+-unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
++unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, gfp_t gfp, size_t size,
++				 void **p)
  {
- 	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
--		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
-+		__slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
- }
- #endif
- 
-@@ -6318,7 +6190,7 @@ void slab_free_bulk(struct kmem_cache *s, struct slab *slab, void *head,
- 	 * to remove objects, whose reuse must be delayed.
- 	 */
- 	if (likely(slab_free_freelist_hook(s, &head, &tail, &cnt)))
--		do_slab_free(s, slab, head, tail, cnt, addr);
-+		__slab_free(s, slab, head, tail, cnt, addr);
- }
- 
- #ifdef CONFIG_SLUB_RCU_DEBUG
-@@ -6344,14 +6216,14 @@ static void slab_free_after_rcu_debug(struct rcu_head *rcu_head)
- 
- 	/* resume freeing */
- 	if (slab_free_hook(s, object, slab_want_init_on_free(s), true))
--		do_slab_free(s, slab, object, object, 1, _THIS_IP_);
-+		__slab_free(s, slab, object, object, 1, _THIS_IP_);
- }
- #endif /* CONFIG_SLUB_RCU_DEBUG */
- 
- #ifdef CONFIG_KASAN_GENERIC
- void ___cache_free(struct kmem_cache *cache, void *x, unsigned long addr)
- {
--	do_slab_free(cache, virt_to_slab(x), x, x, 1, addr);
-+	__slab_free(cache, virt_to_slab(x), x, x, 1, addr);
- }
- #endif
- 
-@@ -6557,7 +6429,12 @@ void kfree_nolock(const void *object)
- 			return;
- 	}
- 
--	do_slab_free(s, slab, x, x, 0, _RET_IP_);
-+	/*
-+	 * __slab_free() can locklessly cmpxchg16 into a slab, but then it might
-+	 * need to take spin_lock for further processing.
-+	 * Avoid the complexity and simply add to a deferred list.
-+	 */
-+	defer_free(s, x);
- }
- EXPORT_SYMBOL_GPL(kfree_nolock);
- 
-@@ -6983,7 +6860,7 @@ static void __kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
- 		if (kfence_free(df.freelist))
- 			continue;
- 
--		do_slab_free(df.s, df.slab, df.freelist, df.tail, df.cnt,
-+		__slab_free(df.s, df.slab, df.freelist, df.tail, df.cnt,
- 			     _RET_IP_);
- 	} while (likely(size));
- }
-@@ -7069,7 +6946,7 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
- 				cnt++;
- 				object = get_freepointer(s, object);
- 			} while (object);
--			do_slab_free(s, slab, head, tail, cnt, _RET_IP_);
-+			__slab_free(s, slab, head, tail, cnt, _RET_IP_);
+ 	struct slub_percpu_sheaves *pcs;
+ 	struct slab_sheaf *main;
+@@ -5199,7 +5213,8 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ 			return allocated;
  		}
  
- 		if (refilled >= max)
+-		full = barn_replace_empty_sheaf(barn, pcs->main);
++		full = barn_replace_empty_sheaf(barn, pcs->main,
++						gfpflags_allow_spinning(gfp));
+ 
+ 		if (full) {
+ 			stat(s, BARN_GET);
+@@ -5700,7 +5715,7 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
+ 	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_NOMEMALLOC | gfp_flags;
+ 	struct kmem_cache *s;
+ 	bool can_retry = true;
+-	void *ret = ERR_PTR(-EBUSY);
++	void *ret;
+ 
+ 	VM_WARN_ON_ONCE(gfp_flags & ~(__GFP_ACCOUNT | __GFP_ZERO |
+ 				      __GFP_NO_OBJ_EXT));
+@@ -5731,6 +5746,12 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
+ 		 */
+ 		return NULL;
+ 
++	ret = alloc_from_pcs(s, alloc_gfp, node);
++	if (ret)
++		goto success;
++
++	ret = ERR_PTR(-EBUSY);
++
+ 	/*
+ 	 * Do not call slab_alloc_node(), since trylock mode isn't
+ 	 * compatible with slab_pre_alloc_hook/should_failslab and
+@@ -5767,6 +5788,7 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
+ 		ret = NULL;
+ 	}
+ 
++success:
+ 	maybe_wipe_obj_freeptr(s, ret);
+ 	slab_post_alloc_hook(s, NULL, alloc_gfp, 1, &ret,
+ 			     slab_want_init_on_alloc(alloc_gfp, s), size);
+@@ -6087,7 +6109,8 @@ static void __pcs_install_empty_sheaf(struct kmem_cache *s,
+  * unlocked.
+  */
+ static struct slub_percpu_sheaves *
+-__pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
++__pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
++			bool allow_spin)
+ {
+ 	struct slab_sheaf *empty;
+ 	struct node_barn *barn;
+@@ -6111,7 +6134,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+ 	put_fail = false;
+ 
+ 	if (!pcs->spare) {
+-		empty = barn_get_empty_sheaf(barn);
++		empty = barn_get_empty_sheaf(barn, allow_spin);
+ 		if (empty) {
+ 			pcs->spare = pcs->main;
+ 			pcs->main = empty;
+@@ -6125,7 +6148,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+ 		return pcs;
+ 	}
+ 
+-	empty = barn_replace_full_sheaf(barn, pcs->main);
++	empty = barn_replace_full_sheaf(barn, pcs->main, allow_spin);
+ 
+ 	if (!IS_ERR(empty)) {
+ 		stat(s, BARN_PUT);
+@@ -6133,7 +6156,8 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+ 		return pcs;
+ 	}
+ 
+-	if (PTR_ERR(empty) == -E2BIG) {
++	/* sheaf_flush_unused() doesn't support !allow_spin */
++	if (PTR_ERR(empty) == -E2BIG && allow_spin) {
+ 		/* Since we got here, spare exists and is full */
+ 		struct slab_sheaf *to_flush = pcs->spare;
+ 
+@@ -6158,6 +6182,14 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+ alloc_empty:
+ 	local_unlock(&s->cpu_sheaves->lock);
+ 
++	/*
++	 * alloc_empty_sheaf() doesn't support !allow_spin and it's
++	 * easier to fall back to freeing directly without sheaves
++	 * than add the support (and to sheaf_flush_unused() above)
++	 */
++	if (!allow_spin)
++		return NULL;
++
+ 	empty = alloc_empty_sheaf(s, GFP_NOWAIT);
+ 	if (empty)
+ 		goto got_empty;
+@@ -6200,7 +6232,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+  * The object is expected to have passed slab_free_hook() already.
+  */
+ static __fastpath_inline
+-bool free_to_pcs(struct kmem_cache *s, void *object)
++bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
+ {
+ 	struct slub_percpu_sheaves *pcs;
+ 
+@@ -6211,7 +6243,7 @@ bool free_to_pcs(struct kmem_cache *s, void *object)
+ 
+ 	if (unlikely(pcs->main->size == s->sheaf_capacity)) {
+ 
+-		pcs = __pcs_replace_full_main(s, pcs);
++		pcs = __pcs_replace_full_main(s, pcs, allow_spin);
+ 		if (unlikely(!pcs))
+ 			return false;
+ 	}
+@@ -6333,7 +6365,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
+ 			goto fail;
+ 		}
+ 
+-		empty = barn_get_empty_sheaf(barn);
++		empty = barn_get_empty_sheaf(barn, true);
+ 
+ 		if (empty) {
+ 			pcs->rcu_free = empty;
+@@ -6453,7 +6485,7 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ 		goto no_empty;
+ 
+ 	if (!pcs->spare) {
+-		empty = barn_get_empty_sheaf(barn);
++		empty = barn_get_empty_sheaf(barn, true);
+ 		if (!empty)
+ 			goto no_empty;
+ 
+@@ -6467,7 +6499,7 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ 		goto do_free;
+ 	}
+ 
+-	empty = barn_replace_full_sheaf(barn, pcs->main);
++	empty = barn_replace_full_sheaf(barn, pcs->main, true);
+ 	if (IS_ERR(empty)) {
+ 		stat(s, BARN_PUT_FAIL);
+ 		goto no_empty;
+@@ -6719,7 +6751,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+ 
+ 	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())
+ 	    && likely(!slab_test_pfmemalloc(slab))) {
+-		if (likely(free_to_pcs(s, object)))
++		if (likely(free_to_pcs(s, object, true)))
+ 			return;
+ 	}
+ 
+@@ -6980,6 +7012,12 @@ void kfree_nolock(const void *object)
+ 	 * since kasan quarantine takes locks and not supported from NMI.
+ 	 */
+ 	kasan_slab_free(s, x, false, false, /* skip quarantine */true);
++
++	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())) {
++		if (likely(free_to_pcs(s, x, false)))
++			return;
++	}
++
+ 	do_slab_free(s, slab, x, x, 0, _RET_IP_);
+ }
+ EXPORT_SYMBOL_GPL(kfree_nolock);
+@@ -7532,7 +7570,7 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
+ 		size--;
+ 	}
+ 
+-	i = alloc_from_pcs_bulk(s, size, p);
++	i = alloc_from_pcs_bulk(s, flags, size, p);
+ 
+ 	if (i < size) {
+ 		/*
 
 -- 
 2.52.0
