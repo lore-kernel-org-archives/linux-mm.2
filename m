@@ -4,293 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A18F5D6CFD1
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 12:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F01C6D6CFD1
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 12:35:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD4B46B04BC; Fri, 23 Jan 2026 07:34:10 -0500 (EST)
+	id 444C06B04BD; Fri, 23 Jan 2026 07:35:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8EE96B04BE; Fri, 23 Jan 2026 07:34:10 -0500 (EST)
+	id 402826B04BE; Fri, 23 Jan 2026 07:35:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAAAE6B04BF; Fri, 23 Jan 2026 07:34:10 -0500 (EST)
+	id 2F19C6B04BF; Fri, 23 Jan 2026 07:35:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FD766B04BC
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 07:34:10 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 25585139D5D
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 12:34:10 +0000 (UTC)
-X-FDA: 84363171060.18.7628834
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5F6401C0004;
-	Fri, 23 Jan 2026 12:34:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FXBFaUhp;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=D0o+6nZ7;
-	spf=pass (imf20.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769171646;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BE226B04BD
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 07:35:15 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DF4FF139D61
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 12:35:14 +0000 (UTC)
+X-FDA: 84363173748.23.1B1F62B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 50C1418000A
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 12:35:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fjkcs5dm;
+	spf=pass (imf24.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769171713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a3WPNuN/W4/NN95F7VzNHcnkNUA1ILUqifETh9hmD2I=;
-	b=qr11cT9nCC4SuszVTRq5p1IplEjxCWnAhC2e9rxOtVvpLR8ou4Jo6ur8d+o+bQt4W/j94L
-	QfGVYYf5wGWn2Q8VK7ZBca798hYepESjui7XwyRuC6VM1ATgQ4yGjwk38gxqoidzqC4Go5
-	yvv5gDpV0RnUwKfFySqzjU9Jvl/w2Gw=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FXBFaUhp;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=D0o+6nZ7;
-	spf=pass (imf20.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769171646; a=rsa-sha256;
-	cv=pass;
-	b=uZgjcRBIL0sZfpRdOSYt+Wj4j0WpF7oypzcKOgh65digWsnXmD+5xyl9QzFoB5oauuv49u
-	yBvRlzXssucNxmTmt9UUO1tdehOO3UHvpdODPBtqKgViyCcSJxTdztEOewQRM1QusKuzti
-	aDG1ovFEPGX37WazXNObrDV3IKCci/k=
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60NBjsB31674936;
-	Fri, 23 Jan 2026 12:33:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=a3WPNuN/W4/NN95F7V
-	zNHcnkNUA1ILUqifETh9hmD2I=; b=FXBFaUhpblbZGSxWVJjHZ/O/gZpZwm48ti
-	6FCmBzAbH+ZIvazR4avb/N6vctLw7GzcfSBokubLP6VsPqbVw91FvvYGf4Jv/Tka
-	yCyf5FH3CJvWdR7QiIwwMm36tNt/39JgXbrLjUN+HX3SsfRGNgcK0PhVFBTdevz5
-	yr3MyXqQD9J0lW0J8KmF4JbAfQy0vL5SobZv47VT4a3pqYy1H+z1eoyQU7WhUJ/m
-	ag903gOQbM1eF4OWFol7SLen/VNUti6yNvCz+cCCY5l/pHaLd27WD5uvMl9mBeVD
-	uoG4G8hmAmdcRdDNH1Bzp1Xgit1/ilJoG1ktZ3GnRb1jclhw6SYA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br10w29ru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Jan 2026 12:33:42 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60N9x34P035863;
-	Fri, 23 Jan 2026 12:33:41 GMT
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011025.outbound.protection.outlook.com [52.101.52.25])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bux4y53r7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Jan 2026 12:33:41 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q8z9ZnUH6yPzg7wLCWxBwnNBF2c5MziuRoU5dS4oRQu90Pn3NblAqcE+tNsUrr2GMu0UOKeNHtZZ19aAeUtBBMhj3v7OkfS+sL2sYnS9Zl8paicnIMeSWUamEY/H8Qp5R1nRrpdfBSzmvAv2dHijQZDjDZ49oUbEjuX+2t9vrWBpF3jl9JZoTgBSl/F2yMU4GMdT1zDAo/aN/z332Et/mZqfhgFsarPkARWfAjfiY86KYSTvGxsKEyrGXji+6+ZzwGomqnj8aapERoit5DXsSXRrIHx8/ICedZg+LBRzBDxi9HdKOw+6HzN71OX0TO8OoceM3qS2c3lF0aTcnIXPuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a3WPNuN/W4/NN95F7VzNHcnkNUA1ILUqifETh9hmD2I=;
- b=MOzXFTiFjOJmzBCYNtqLiHcxHi545Ba/63iQvlEHygwfv3Lf9P00mCAHdGV41LCMvyAEr1LL9S2pvLrkWiSllGstDUm0nTm641vmWIF2bWoxHQSzUbQkqfKS0OYy422vi6iT1q/HKxq3wLXddqisrZQB/i6s2keUMv/eSPZ4TO7dMAvZXhd5hOL9GF3F9tW74KzvNa2FFvDuXDsjuZ6NbVvs5ku1WZ6fve8MfnMjKMemOZPvY8EC55XQyGyJlpgnAks/qPDqtqzxK6XvKQ9weRSCkMlaRGJB0ZQeFTMBgnjzrZzD3Zz1TQjaqZE1Qy4UzsWI3Z50bFCdnSqZI6GcqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a3WPNuN/W4/NN95F7VzNHcnkNUA1ILUqifETh9hmD2I=;
- b=D0o+6nZ79HsxCX84pTO8/DbR2bKQSBnpBHo2ZWhhGG22GaJnWrqdiXC+BsHDGx5LNx2S6t3shhiH5sR8mfT5cWuTYPqaVwFhNWKMyu2R0bzMr6fxvRfs/kNl/wq7YEHQJvo9ngCbKEC8Sk91107ZioW3R0bKNqMf7MNzHkA37I0=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by CO1PR10MB4786.namprd10.prod.outlook.com (2603:10b6:303:6d::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
- 2026 12:33:36 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Fri, 23 Jan 2026
- 12:33:36 +0000
-Date: Fri, 23 Jan 2026 12:33:27 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-        Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Sandeep Dhavale <dhavale@google.com>,
-        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Babu Moger <babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-sgx@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, linux-erofs@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
-        linux-xfs@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 08/13] mm: update shmem_[kernel]_file_*() functions to
- use vma_flags_t
-Message-ID: <d4acd230-562b-4e86-bb25-2410a7d07a33@lucifer.local>
-References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
- <736febd280eb484d79cef5cf55b8a6f79ad832d2.1769097829.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <736febd280eb484d79cef5cf55b8a6f79ad832d2.1769097829.git.lorenzo.stoakes@oracle.com>
-X-ClientProxiedBy: LO6P265CA0007.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:339::6) To CH3PR10MB8215.namprd10.prod.outlook.com
- (2603:10b6:610:1f5::7)
+	bh=fbdBoFrshhwhQwU+kNui3YMy8AiMuVDGypFhDxaoLlU=;
+	b=LhfZ/3aog2rUNX8WMNsseL5bB66HvtoJH0iJIEDXrZ7KSwHgBw3Pd23O4erTGjLoP1o1ui
+	wXDJx/SakxCZuskhS9OtAWu8XWFkJTH+ta5F9eSmN+IdsXOPxdn/aQSzpiqmiEYWibJsDa
+	Zp9yM/qhCpjLPPIBVLAyYAbwgCHKygs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fjkcs5dm;
+	spf=pass (imf24.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769171713; a=rsa-sha256;
+	cv=none;
+	b=7ldEEYDD2xMhgNxj4ZEE7JfI47XTgMyj/4ddLYtzB8XaZv5fqhPGdPk6UULFNAWZnEmGW9
+	swSlC8X1YcV+m0gt1ND+59kp+ervZWSodsQPq6DsxZfBxmyMUcVZ2/dcVabdVjpbgjAF37
+	w/9oFwJoxrwkNqlZ11Mf5MtGVXSPHuM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 08FD0435A4;
+	Fri, 23 Jan 2026 12:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F10C19423;
+	Fri, 23 Jan 2026 12:35:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769171711;
+	bh=Y0RUWLkH/P5b3HJWSokvO8jdgqHAxHs/mzXdH8gbm2w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fjkcs5dmq7GFL5PDSx0R7qRgmXWUsqdKC34r+wLQLZaDjzsZJIRuwTeKmkeGzD6bV
+	 llBbuEB/LKA8HIRCxb7QzD+LwUmWuP2LVag2WIcTpBBWkURJIIQ1pqXkHMvCrkbWfy
+	 u30Xy92fCCq97PV1ElaWQFKoZwWXsROHHbLBp2NBHBU+df/XRT/9vEMcnJAPaant9Z
+	 pahAYDZqYOPCTK1AnQijJVQcVEvLHRizwXAK2FkmOZYWbaZtfWUpO8CsWdaTdxmO7m
+	 7UOe9uLUCf+QFm7DT2uBN2B+gLWRWoEo7g+eX1Hs/HK8eRgYWRafbDwV1vjMXg/dbk
+	 fogiSRZ91D8Mw==
+Date: Fri, 23 Jan 2026 12:35:06 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: Have the harness run each test category
+ separately
+Message-ID: <56e2d214-fe48-48b0-88a2-287294520cb4@sirena.org.uk>
+References: <20260120-selftests-mm-run-suites-separately-v1-1-a4334f0cbb3a@kernel.org>
+ <897e1bf9-d29d-45da-926f-0c28558f8990@lucifer.local>
+ <99b95c45-7bd5-4fc8-892a-cf9c69335706@sirena.org.uk>
+ <04fc8a05-245a-4422-9e27-704ae2d2894a@lucifer.local>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|CO1PR10MB4786:EE_
-X-MS-Office365-Filtering-Correlation-Id: e403c11c-8ac9-4fa6-0d23-08de5a7ba088
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VHEpTUNpdySDS/spXaEpkO1gSs4kXmwIQFhrvWdNgD6gj4conY8W/Qu1E7wd?=
- =?us-ascii?Q?ZtUestVc9guX7JCG9GPtWPdc3P596xKe69MTNzmeeGd1teI+UB/LcyZEy9Om?=
- =?us-ascii?Q?PwlztY7iUFrJq/4buEcGVB2Ivv1O5zsmTmGmbZ5MMqCbkGZFWLlZHPNBcN05?=
- =?us-ascii?Q?yhU7y3RUQqLlIUdvQmJOcxwFoDEmotHjRTscs4QF08F1zjrDKWprIqyrPiTm?=
- =?us-ascii?Q?9BX9MsMs+tGe4brUOEpxMtdg2XDkpPYNHZTBiDeIzTLaIxOV+kfl5rrm2VTl?=
- =?us-ascii?Q?1dZwtXWHvOyC0MH816+O/jt8YOosJ8e796qajrWaBfMo4mSqYyjG0F6joYuk?=
- =?us-ascii?Q?mTkGS6l29T9N6M9Uz3ad9yEkIV+po9UHdN8Q49OLr+wzR/hdmJTjZ4tx4TJF?=
- =?us-ascii?Q?ZE00zoPpcTD/qASiZo/UHVprvQrVGNnhMahDTY/tOvOgpt0z0U/307k0ZQ+C?=
- =?us-ascii?Q?QXf7KUOJtxtw/otKjyMfw7FBJatrBOdD/8hqkZzCF5qN/3IBML7RGI/KkcDm?=
- =?us-ascii?Q?9B7gP8q+ffnQ5rORrP0k1rJ4wpwyt8WaeNxzLgEUBKfwip4ufooyfbwzOqWM?=
- =?us-ascii?Q?U7ZERSLHgiVmT/TzJZNOeflx55SllxxIKJPs1coTrgMjK6ryrhiXPgQEikXc?=
- =?us-ascii?Q?SVLnXd0SGHPCjwnC/B9Ndm2A/96BO69LpJZuLg/NEp8Z8p9z+84pFR7QmuWQ?=
- =?us-ascii?Q?Ac0wiGVnlv/tHEqhTyXgm1WvJKiLcmRvCsGn4k+CojeK7UGouNoHIN1PBRA3?=
- =?us-ascii?Q?tbKdfGp5+QGmXGwx5T2l5hQsMf690iaCrx7YKKixM+yQZkbU+quXx1cHHQz2?=
- =?us-ascii?Q?nLtXx9WcET3Aw+GkEUhSIEEzhdbWCr1lIEdMgAMeihcUvosH5dObnA41ZSYc?=
- =?us-ascii?Q?9QHT3/nurODHCw8pEluWEHcHa2vjjFORRJmhrQi12JgDvBqSZ+jKzhxQOmKH?=
- =?us-ascii?Q?g+mvYNnzpLeSNxht2RGhW8IYu1pmpI/sWIfRgr/UG1B1UtnAzUJ4Cb7GA5Xz?=
- =?us-ascii?Q?ireHW3EjaRvu+e+qf27WptVd7kszZmjt6SxDAW0vujlHao/mxjHY60n0ANFQ?=
- =?us-ascii?Q?1KTKVxHR/x1y9F1BYfuFuX+blc3YG7qVyHVu5Z7UjV1vqNU8ZiAe5PRbnG4V?=
- =?us-ascii?Q?Rp4dDiZlx0VAfMc5sRlibsb2AOZCiiXrobPu0QU5/EWJ/VdbRRJ4FL1/Kh2r?=
- =?us-ascii?Q?lZhrrrJ/qxPfSEwwQUHtRuSJ63dcLIbDEkbyfLv1leHZStx5Q7OdDB6SxjXb?=
- =?us-ascii?Q?gDgB04LjpKhFzABOdULm8R05UvTj8bcZa2pQ5JdKX8eDKkXz9nxO8rIjjBJV?=
- =?us-ascii?Q?VJlgCFcV2dbXe94a1kn7xu0+XCPOesPKmxRY0kT+JS66AevPMvRBInzkq/3W?=
- =?us-ascii?Q?HUxHvQBLXrrVwtJnrzGTHBvCK7vjbPU53x0DgR6+1BjAyUWawEUHMa6pfXr3?=
- =?us-ascii?Q?esOgJV7msstuCcUeMAhpRzplnPqvE+pgnpMfLCeJU5c8HTLkfpg7+Oo1t71C?=
- =?us-ascii?Q?TrfUUiyoHtsFmWo1KHJrIEhA3P5J78NiP/U28aroLY5zDjmgNx8Xazvf1pav?=
- =?us-ascii?Q?4mfZ3iglqLIcm/VuST8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VDGehMbKUCZ5UIWR9AB7c2SqdSEh1aMzpGU+BvxiL5MdtoamGnYC+I/c8XXo?=
- =?us-ascii?Q?q4xtRQc+LqDv5aUSmd1ODUAwH9CLGHMLCsHn9Txrg/bEOKKih1z0TC1bCR1Y?=
- =?us-ascii?Q?eEtHq/1GMrI5PvnrB+siM7vBRbF+vYyDbO83mvUfrVbM6QryzSGZPsKiO1Wl?=
- =?us-ascii?Q?spMlOqPkgvfdDrSJM9Tltr7MqVoijDb4XglJSOO64bP2sGOkL3XBmEFt70tf?=
- =?us-ascii?Q?cNrdqS5H9br4zV2bB1+BlCkhXGXvSLKiJ+Z6+Xd+ab6u9tk65V9fbgL73mtB?=
- =?us-ascii?Q?MwcXhGolt02Aln2X72MwbChwKJgJ9cCMDyx+ED1+R/2Yp6yYz1WtRviXQvKS?=
- =?us-ascii?Q?6TQpiTQK6Cjz9vd8f1zqaOknYqVl2nFuJn3P0tyQA/m7ve6rmO+X1bhqixxZ?=
- =?us-ascii?Q?qGfi+QS+OEp0l6jMjE6zbsQCoQxxHkfZ+cAwm+PObpsga2YiiNTiGN8PEuiO?=
- =?us-ascii?Q?V+f5bhXX0+AHZH12LFVMlw7liKVzSAjeTJdYZS2/9aqXphdQ9KNUaEdUKSRt?=
- =?us-ascii?Q?sdd2Kt1o/y5GbltyZ48mg1XsKLqLewR/a1MyTiVnHx6WUkWVzKvxQ2bOeNOF?=
- =?us-ascii?Q?eMBfP5lo1skI6FD7h+KKeaoofE648SJ57PiKXXSYqwwK2SaZ5BFh2Wmzg/cF?=
- =?us-ascii?Q?mxtunbKipCdYz1ffMSRb/4Ua6RnLoMzd8l8QfD40U7bSqktmNWMzZ3idqfi1?=
- =?us-ascii?Q?xaLdseUWGKkXTVZ2fNPF7/PleRJZcwC0QNoJb0O0XFgoHQQNf1WNu52a4iKB?=
- =?us-ascii?Q?28iRf1Lc+0Ir+ICM1NAwbRDLkElYcB/IkUHPR4BBls3D6g8G/nEsBT3+66a6?=
- =?us-ascii?Q?zrFroBr0+tc68pVbFyQRk4Xyz9/KqobZCgZleooGx9zu3dLj5/Czx4V+9Rpb?=
- =?us-ascii?Q?+MA1w/mAfRJ1LeWlyMyneQrRFT+7jol98mBmAQV93tOaI2UBw7xQmBsvIrQv?=
- =?us-ascii?Q?mLljhFMVMTE7jLzVMnF+qp4GQ64rVpgqJKXg6r+TSVrUQ3dxq6j1h4VgQ0yz?=
- =?us-ascii?Q?UwpOT0GNaaVAE9sSMfZp5rzHcSI9YNXajD0xPwNB2IctRr9A6yhNa+LL2uGG?=
- =?us-ascii?Q?dM7JgHoeWz3o7eiwfOPEZj4GFhCoiUWf9xHfn3q8ofqZI1xzsBEEzLDd1oyt?=
- =?us-ascii?Q?3AM/zox9fkSaeBzxW8NsfkDpZq5COG4arrKyYMrsHo7VTqicjVFiwpQndvoq?=
- =?us-ascii?Q?ZuvzGt3bR2FNy2oB6iR8HUL82DfpbeaniH5wzy1+4CQe2FWEykiLWaFwh6JI?=
- =?us-ascii?Q?K0vJKqgrzTT1M7CLk9i+csYDOl5TmIX1wuulez1b8rkBRTXIfupnA7la5anF?=
- =?us-ascii?Q?ZFtLL0iIjRrG92xxmXxtmiG0+pABov6kG6fr+8F6o8MCwwP7cJZ+7cml3XNP?=
- =?us-ascii?Q?goJX+zi+DaI/Fgj8mu6AKDwODXwGoS0YhqujIdorTsjophilPk/RFp2ok5Gw?=
- =?us-ascii?Q?sA4ZFn990lSATMiYidNHcEN/O6/str1Cvpngle7CuDi19cSoLnqEYSKr0bDC?=
- =?us-ascii?Q?B11farmy0n9cDdS/CzXNhHGJmExaveyMD0SMcEfnpSm6xhJL2AJXwdGbX4d4?=
- =?us-ascii?Q?Y0XigQEz9OlzWEg5jVwkiNVFeV0tIPVJ3lSKzxPfg8G8gvySjIzBljwVxzOz?=
- =?us-ascii?Q?DQhF9Mv/GZ6gzhwOBhXdZRNYMhqydfvQDLoOBx9etYcTJcclwdp8QZXFDOAN?=
- =?us-ascii?Q?E4gylV0/XLwKKAMHZL4QeVjdG0VbnsbZs/tIG/skHKEJP6aQ7nXzNqJm5RwM?=
- =?us-ascii?Q?c61zlNRBysCJrc4KjLpUok9kLLXqo6w=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	wTOZWIm/OVuEWWssX5Y6PLDrdltQN/tT5e2xH51FxvH2ncgUf/YHJHYD4GwzpOBi3SagLVfDccRDhHJjikB459jEwwm5twK1LZYcvPf57/0eD5Xdd7ioX0fzY5GlAn/b0Nj+QboKeuoq1Bj+dBTbG5rSOw/BA21xULmVQ2z/PwcZ1A3ocaz5SGMex6W6ILZ7wNQF5xHkmJEm7KRJ63y5N0Kilq1p0pZCvGhhrztZYq8RMPKiDr9RMFiq+vApzzDPy3d4vfHAWoyjkmm97LjlVgwABE8s+kuombQeXQsr95/iWr2JfZE1VHkhkalt14u5ufJJTdEXW8tQldkxQhWset+k+2RIuDEWR0j6AB7QYhXpnKmn377ICE96gmNNhb98QJTG0rLh/cXW7vcmFRnrHN85oYpLgG1Fj2BnfxOPquBN6HTu7UpjuJtw0TAO8BE5J1Ia1WMVxFne2HyzNyF1dU83dlNc4mRutHUyuSV6GzziVpxfgCD9OA9pHB3Mi0C5WF6heIv0fCz/c3qTuFwbk1BKciGufCzAKcAj0XrpJ00rno0wGst9K5CGd/UQULMzUp8E0+5Cck/U5WVBYB+hDhWyB4T1Uk8rqvjs8BSufK0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e403c11c-8ac9-4fa6-0d23-08de5a7ba088
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB8215.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 12:33:36.1911
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AxqmG2UpSIfcMFWJdrLRXTCumJ8TWSW85ZWoVdtV2V9KJq3kfMwC+pG2q7MGRPzE2k4wuvFm/c1HnhHB80bYHC9irrPJj2NZ8w34wecDdXc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4786
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-23_02,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 adultscore=0 phishscore=0
- bulkscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601230103
-X-Authority-Analysis: v=2.4 cv=H4nWAuYi c=1 sm=1 tr=0 ts=69736aa6 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=tRyWSp2Ri3fI7cgBtN0A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: Buur5JNA-k5OSPcLkVEev4xrzfbyG9ic
-X-Proofpoint-ORIG-GUID: Buur5JNA-k5OSPcLkVEev4xrzfbyG9ic
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIzMDEwMyBTYWx0ZWRfX/zIvTqFskhaD
- dJ4mfRF8vPbDEVWI/rdZF2ErIgbaY0GvX9XXVKnXrqkXR2fg6j+h2qmOL20rWle4XStCbZTGbWv
- NvqOI6mJ1uoJL3naCrthRL002WvAcemqAhNKe/tFmL6htau4MeEMGnelD6adIea63eipHq0uUAO
- yLRPQhYVwcOEuXwYC5k/en4/vzIZv9jKpjRLrg6zZKOvgnG51Z6s5skoZvl6oPs/5o9Hij9/50t
- rjMt4DiEssUlJDlKYk5Zsp2xc+gHW2Ymg+s0aAEyi3602adUOtGzgCkMsnyWpvQVOHbRIWoSAiv
- wnuuzSWJEGvHB28yNv8WBzNK8dch1jf5mgPdfcSjzB2ACQbcgEunNDMa476oIxOcdj6SdwOmT8v
- KMUKSqZNBAqt+PC6NsoFm/jvQfZvl80URlVQakmNlZBrL++6NOe6i+nKL2/op5YfuhJgQ7faA9J
- I3zezLepk0l4tAec/qg==
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5F6401C0004
-X-Stat-Signature: fq71g5h5opkz4p4x9pmpc8uijagrqt46
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Y3LPgYbgI7DEAkHz"
+Content-Disposition: inline
+In-Reply-To: <04fc8a05-245a-4422-9e27-704ae2d2894a@lucifer.local>
+X-Cookie: HAIR TONICS, please!!
+X-Stat-Signature: q9dnss1buw9srneij8fzgcbzf4a5ch7a
 X-Rspam-User: 
-X-HE-Tag: 1769171646-421402
-X-HE-Meta: U2FsdGVkX19ayqLQ/NUc1g0f+A69pCcBXfO7rLeJzhKl5rvUCwTTIg2cLpDhvjpD7VQMioXIdYmdawxsXoih5P9rLAl6WM+W8emwnIYZpo+m71CjDjXQ/zQf0XEo7lw4XnS7s6BOucxIRDKRel4+BIAQazA3KJpa6Ve05XdThsSZN17S41NvIgajFOD47hIGzNxCFcqdBT0AmGfG3f+yJ8L+Fk0WLf4llcTfi36Gds1zDt3Rn1IlOUi5WIgEjc1D7vOkQZnkJdBjvLr3lUBXKva4c4W0DF54ecmQ90ay9eLidWv0bZ9cZXBC5Ph/TCQOKahqLCmBEz6+tPMbQuLl3xDULkzpz0ClVjR/fnsIsCMtr5kpX6Uo5HPRw2K0UpFQi92at14EmYN9w7cw63jEh2yr5SpFwD/PZtigXwRriCtKZ5DKosKV3u9xabXoDTev8qu8eTqY7Un1S7UvmDYRxn5eHph0xnyOTFwoxteLYgQ8Pzxm1Tu+XGgX1kj9c8RSdT+5YSMji96oJ6/CEY1htwYxFCuc/5H0teWqwV9xNDTXq8yv7Us/bREStbe3OlV7+VxLSxxDLDbXyo8bSg/iZt/RiJd/qrnjuw7kLxGI2N5+eh3tAg8XXphzp9N1u2OCBvWTpnShkiBUCrOzLkBRh3+qgAQW46P90ccWgjuuC7pjD2znhQH1x/tQkVi/MeCn+yIUbxMXqp8iNxrwr3B73U71h4pA72xUCCj6RSfQqDXevPTcTwmcrs9NzbNPJ68rgm1fJBo5p+dZewwYEM3pyc20N3bLgzQhNS0wwk+UYzdURcfVZgQL7vQI5MCZ4RuLciqMctOVXsEqxG4uIBwZc11z5e5ix/jfk1U6WITpfSwhwI3DOBPY7yEyTtjm0/RZ76Z9MRYYqShG+yJoovlEreYzVhh7t2X68JL8m9CNaHVodiNdHzAya5yho9XbflDgvkwKpLIWoQEEpqi7hkO
- 9zb+OFQl
- F1PwUMXgx6I68zn/qmYdCF90oV/OSY4ZOQMAsJ0WNuJl7xAm5EdUcmyNu/Pkcd7UNbKtxhOg7fYAqU+LqFvXXRh/9VaI/yjnzjsc6QTKn4eKSgzjfGMGCWCvq8seISDH0hptZ1CcpOpkNGiqqF5fNYMDDg15lqFGcDqJtMjDaix3MwQ356QcCdtLCT8M+SMOyoSlyMp1JYKdOSycaDGswr7KfBf6B5NQFP1Ekaec20Nlyys71FrIPveRE4CYJL8xmNrSjCIU0i2pspLpjqpCb2z+tp9vq434ErodCyVyI1Lmnsf1h2BQgxXAYpg2q/L4hq7hE9nECc/GfHfo0eMkKpB4Fg0S7AlOXvevut6fupnzidCvJkUS0ydzpxcClAbnkzqpUD9D4aXitgav5x9MuvA/uYDDqrFEMDXB+u1Cu64kJrr4xQJRozFUnM46W4C9LuMWnC91mcvTapP8LTWyD850c9NTQ7hlkB4PHh7e9TnAl2ayABV1HinzATHJ9MYITMD74N86zQAxrGpHi+APrXSURpf75WiobtVnn/xafMpBQsBYZw4irds9iGJr9+SkbHQcUxYOAzE/ej7Med7uS2YzzFUBf4oMYc9OEwQkAZjqBARUt2/nAaLz8m1+/kTdKES9L4zzsmAOMCJlafYC4JAbOI2aTlllQ8Y2+MkQH2gg/cnkcpL9oin1WvLEscugh0zH+JKX2ouZ9+t72P3ssT2yJQjnuz1TJ00Uc
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 50C1418000A
+X-HE-Tag: 1769171713-342672
+X-HE-Meta: U2FsdGVkX18aZ268trlZRqyU/ZsF69Su5HE7T0InMYj7aYREWE/3WJ6HxyLNsvUbgi3sggIEEa0YWDeafP2qoe9pLpCqfOD8KzSZKEEJTGQkUAWggzKo038ChsN1fLKl+40OK+1OMny+JSAWqPcsCCb0ZTnUgmgFLOQvnzzfvfU1rfZ43SF1jRHHyLQ7t87X+2+dR4M0i3nRDKcJDrKQGReDyWlqjMdn6vw9lMtMrSptVlg6mCydJsoy54C/goDRdKCHqz4Oek0/K9LcSYEmyLIsDibn6UjD9S9SkSvd5E7uF9uyipdlhMIlRwo/kbD56dYMfP+h/vSdLkeSrb//bvWm0rinaRN5/wt3XuAZz/46MxoQ+wdwm80T+SVjvk+G+ICHJZwMcHrvoVq0XL+gjthBY8huywHfMzu8lMScrN2hFBZVLT4Z1yGe7LuPkV5ZfKM8T213gQgEBu43hmWZo5Cqxl7m/g0N07Z6HVvRGHW0WITfWW5R5zjOCGvhofzIGZdM6DA3AJCWiUJ85mvCvdEQXJpSFJFLq71opVH3nq36Xj5JYQBQsnfJeUQYzPKGl3AzzZuwiXL/unRrLVVGXrkpAU0GRJ9CR88fn3kKXp9CVsyZSwAtrKmjFvVjxXRrFoMzW6UiCj6rEz14L1A8x7T12Ksuc4u8vJD/bMZe4zRAp8UHh7MK45QweqrkswTS7alKWWhqBvnRwps3TZwKCKjJPTxnRz5RFgbBI0TDua0c35mpBchXTr2BeqOqNn3ItYCYVCdYZNPtJjECsTx1upFId1Ehq/j8ch7E4+3PFt3Gr74NUIib0mlITECNHIcLlNKpaoeNLmnOrkiW7ziYnuo7WEs3qw/o5apRBFeW7AbcvaG24AzVyb7LozE63QcnpHaaHnXnOpr/8AAtMg+LXnBRc6HbzwmrkVQt11fdk5arAr4XxAZOyW9sBbRPlvCaBzaRcNrT2wo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -299,46 +102,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
 
-Please apply this fix-patch which addresses some minor issues in the kdoc
-comments for this patch.
+--Y3LPgYbgI7DEAkHz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks, Lorenzo
+On Fri, Jan 23, 2026 at 12:09:52PM +0000, Lorenzo Stoakes wrote:
+> On Fri, Jan 23, 2026 at 11:21:39AM +0000, Mark Brown wrote:
+> > On Thu, Jan 22, 2026 at 07:13:06PM +0000, Lorenzo Stoakes wrote:
 
-----8<----
-From 0283ddb073248f00bfa9694901fcba25362bdc58 Mon Sep 17 00:00:00 2001
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Date: Fri, 23 Jan 2026 12:30:34 +0000
-Subject: [PATCH] fix
+> > > # IMPORTANT: If you add a new test CATEGORY please add a simple wrapp=
+er
+> > > # script so kunit knows to run it, and add it to the list below.
+> > > # If you do not YOUR TESTS WILL NOT RUN IN THE CI.
 
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
----
- mm/shmem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> > Is the Makefile the place for that or run_vmtests.sh?  You don't need to
+> > edit the Makefile to add a category.
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 97a8f55c7296..b9ddd38621a0 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -5869,7 +5869,7 @@ static struct file *__shmem_file_setup(struct vfsmount *mnt, const char *name,
-  *	checks are provided at the key or shm level rather than the inode.
-  * @name: name for dentry (to be seen in /proc/<pid>/maps)
-  * @size: size to be set for the file
-- * @vma_flags: VMA_NORESERVE_BIT suppresses pre-accounting of the entire object size
-+ * @flags: VMA_NORESERVE_BIT suppresses pre-accounting of the entire object size
-  */
- struct file *shmem_kernel_file_setup(const char *name, loff_t size,
- 				    vma_flags_t flags)
-@@ -5882,7 +5882,7 @@ EXPORT_SYMBOL_GPL(shmem_kernel_file_setup);
-  * shmem_file_setup - get an unlinked file living in tmpfs
-  * @name: name for dentry (to be seen in /proc/<pid>/maps)
-  * @size: size to be set for the file
-- * @flags: VM_NORESERVE suppresses pre-accounting of the entire object size
-+ * @flags: VMA_NORESERVE_BIT suppresses pre-accounting of the entire object size
-  */
- struct file *shmem_file_setup(const char *name, loff_t size, vma_flags_t flags)
- {
---
-2.52.0
+> As I said, you have to edit the Make file to _add a new test_.
+
+> The point being you will necessarily see this. It'd be fairly odd to add =
+a new
+> category without adding a new test.
+
+You do, but adding the category is actually done in run_vmtests.sh and I
+can see someone doing something like adding the test to the Makefile to
+build the test while still developing it, then going back and hooking it=20
+up to run_vmtests.sh when they're satisfied that things work and
+deciding at that point that it doesn't fit with any of the existing
+categories.
+
+> And since you'd need to update the Makefile, putting this comment at the =
+top of
+> the file immediately next to where you have to put it makes sense.
+
+I guess.  At the top of the Makefile or right next to where you have to
+add the tests?  There's about 50 lines of setup at the top of the
+Makefile before you get to all the TEST_GEN_FILES.
+
+> > > > +TEST_PROGS +=3D ksft_vmalloc.sh
+
+> > > Is this something that only kunit will interpret, or will it impact t=
+he
+> > > build in any other way?
+
+> > KUnit isn't involved here?  This is just how you specify which programs
+> > are run by kselftest, this is a Makefile in the kselftest framework.
+
+> s/kunit/kselftest/.
+
+> I use the mm selftests locally by running sudo ./run_vmtests.sh directly.=
+ So I
+> don't know how TEST_GEN_PROGS interacts with anything else.
+
+If you're not invoking any of the kselftest infrastructure it's not
+going to do anything, nothing execept make looks at the Makefile.  When
+you do a build it'll result in the specified binary being built (and
+installed if you ask for that) but not otherwise interacted with by the
+generic framework.  See:
+
+   https://docs.kernel.org/dev-tools/kselftest.html
+
+for the various variables that the build system has for suite Makefiles.
+
+--Y3LPgYbgI7DEAkHz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlzavkACgkQJNaLcl1U
+h9AJqwf/XS13Yx64IWDW4Hcgo/ro9qk0S/cUYSWCjBV39IKoIWwZUTMGgW7RTyhO
+GIoeTrdDasHzOUsbQlHXEn3ChdwjVIgVoHxYFj5iDajZNZMmFiCJK6p1CP/y5coQ
+mIyyr35LszVL6VsV0uFeL5byyzo/jTP3zi9KyarxdFi8zqQus5x9TqMOposdQzhC
+vFKCcZ2Fzg3DG/REUPfLhkw61fcdCbjIkGTsBElznV4NDauyfzfXy8jfUIL6tNva
+I2RZ6ghueb5AA4JcFQFzI4q6TvM9MIxG3YxLUQBc8vt+m1PLq53aSfokuKFARcw2
+LAWQs9o+tqrI82RsjS0A1Dbzs3vdSA==
+=3TvK
+-----END PGP SIGNATURE-----
+
+--Y3LPgYbgI7DEAkHz--
 
