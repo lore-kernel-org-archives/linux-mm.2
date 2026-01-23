@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EB1CD6CFC1
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 04:57:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B62D8D6CFC1
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 04:57:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99B646B03B7; Thu, 22 Jan 2026 23:57:50 -0500 (EST)
+	id 6F2796B03B9; Thu, 22 Jan 2026 23:57:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9737C6B03B9; Thu, 22 Jan 2026 23:57:50 -0500 (EST)
+	id 6E7C36B03BB; Thu, 22 Jan 2026 23:57:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BD466B03BA; Thu, 22 Jan 2026 23:57:50 -0500 (EST)
+	id 5D4026B03B9; Thu, 22 Jan 2026 23:57:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DDE26B03B7
-	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 23:57:50 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E52CD252A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4561F6B03B9
+	for <linux-mm@kvack.org>; Thu, 22 Jan 2026 23:57:52 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F1BD1A024D
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:57:52 +0000 (UTC)
+X-FDA: 84362021184.04.30DFC30
+Received: from mail-yx1-f65.google.com (mail-yx1-f65.google.com [74.125.224.65])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 242D51C0003
 	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:57:50 +0000 (UTC)
-X-FDA: 84362021100.09.BA594D6
-Received: from mail-yw1-f195.google.com (mail-yw1-f195.google.com [209.85.128.195])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6ECCA12000A
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:57:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="nBdf0/ON";
-	spf=pass (imf29.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.195 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Or4PTKl4;
+	spf=pass (imf20.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.65 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769144268;
+	s=arc-20220608; t=1769144270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W2Hj3YMXyp6jb16WaA5iRCtpYS8eji7c2VCvrHXWtMA=;
-	b=0F4jQf3lvxMgHGU+jp5yxqkamuqeGcps79Gl8wCHpXuJG4CHPIVm8KUA3cQH52qc8HJ/vJ
-	JQeql+z9F3uStElbN98V716l2x8KKZ3z7opslqTDdDRa9K9BfHaZ1WgaSockOs0FWO3ip5
-	USVvE0gqIZh+cyx7XB2MJMWzuHSGAsw=
+	bh=XZ4usUMGfNo7J4lew0QKMfQ7VuYcLUlFI2hm5aH3MjE=;
+	b=S7XxRYDSg5hkh5fS5mjp0IDMW6TRPvAzgdJF9Q15dePSs1vuGGDoLA62saKUWW+PlzfOxF
+	KIjktiaTtG7PCdFjuZxxaX4AraiemQuQtzp954oAT53QReHDeEHLAGyGRmut+S8AbrT8Q+
+	QwiMDHAWEE/PR+lL1zOBB8/NKNQ2ENE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="nBdf0/ON";
-	spf=pass (imf29.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.195 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Or4PTKl4;
+	spf=pass (imf20.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.65 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769144268; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769144270; a=rsa-sha256;
 	cv=none;
-	b=W3muACaNyU9YiyTixSG8gAgyCNplLVgoBpU7WrxcWL3ToWGDUYxv2sHDmOg3bFaI1ecmzk
-	DviN9a1qyDujvDxUixrrkV/jOsEvnrbIbfh/JPgpSQm88kR2vZMJIZKJJNz4C+OQ7Cce6F
-	idfrRagS0SFEL0D366crtUZ5iffMl5M=
-Received: by mail-yw1-f195.google.com with SMTP id 00721157ae682-78f89501423so27565287b3.1
-        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 20:57:48 -0800 (PST)
+	b=e8PHwXqywi6OxemIJpTJKDsat8AWdkwF1dZ0r8NFy9K4aIkZbzNkJvcW7qw0KuPhav/tc8
+	N1n9e2dQIBxRr14MOnp1YXDCvE2Z/gai1vJaSFBF+iQtyyBtkB3DgRn58NmYw+K5zKQLS9
+	V8b3tBhaafoyDN/hpqlTLJvXJm52G2c=
+Received: by mail-yx1-f65.google.com with SMTP id 956f58d0204a3-64931bbf70cso1667903d50.0
+        for <linux-mm@kvack.org>; Thu, 22 Jan 2026 20:57:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769144267; x=1769749067; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769144269; x=1769749069; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=W2Hj3YMXyp6jb16WaA5iRCtpYS8eji7c2VCvrHXWtMA=;
-        b=nBdf0/ONFu/W+gBN2JP6yzboYSXZhe7y6W9R9i8m6vTmy4PyAvSF5rxEj19AuUcCEB
-         0Jl8DQYTGWIHo0Q8AWiFP2CYaZ9fZV1lzBuwfoSY6Z8jVE7OoU/a5BsIvBLlZajm06ji
-         SUs0gNcWbVxpVbZlrmuwlNTEUJlHfp93gwMr0M7P1dZ7uv7F/rw1kPAQZSSMJUh2A0Vq
-         qAu+VAqshUgNzOEjwuQ7f/6QLJtgd/8j5kaB2S7uUELpaL/IUCzk8GdvAIIZZKuW8nFm
-         R3Dd7FCRylDpOQNpwDabN+isjNI4FE61qb5lhptmgDW7uXO5LLAq+kpL2nX6/uiIMCau
-         OPsw==
+        bh=XZ4usUMGfNo7J4lew0QKMfQ7VuYcLUlFI2hm5aH3MjE=;
+        b=Or4PTKl4rZTEXyHg3q2GbNaFhlGAQkX0kS9OcxET+5DcjCiLkcwFPGDnqlePgUysHZ
+         G7hMhxXwp6/mse+Hamj9Kf98E81+0RVtsD/kT8KNVQy5njb6PkQiTC7EZFtdIIv7Esc3
+         Fm2qcCRBhmWok1PxQ7IBg1K9Kj4LvySisbsO7nWApSc9h1YYIF/doLq1qBfPwZeQTAP4
+         /Eoub7G24CHF21QG2DdgGr8OM2kvRcVomJSyFa/CSr6+c9ofinqT1EHliJKWMgcy/eVd
+         raMuwG7CwcsSzvP//mWg2A/vYEt7avE5p3zhDaLh+T/9cLEXQMEiFCd1xLsvjLND1sK3
+         VUBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769144267; x=1769749067;
+        d=1e100.net; s=20230601; t=1769144269; x=1769749069;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=W2Hj3YMXyp6jb16WaA5iRCtpYS8eji7c2VCvrHXWtMA=;
-        b=SACF+Zy8lEGMsD9mLnYsYIEB7lRArcq7s/JsZi/lUrSV3Q4ZjMIDtWFhHANlijieZ+
-         MG8W8QFMprXaL8XQNFOtK1ofoFqIqL/TTtn+sA7HqUJmhLX4yX40L5pCuPH4bWXyjKso
-         piiMndponO8hGj8teF1TBXPJCB2Rx4hGVY5BeOH6YZoML3tQr/QmcYWHCvZ3A7b4bsO7
-         kcNCSLMoXDLF9IyJ4FaW9g/Z5KzIx/EnMp9CEJSVu5HerjjBtJFawiOUR+cNdI4MgEzT
-         tcPvHyMfE3SNQAONSGhlQY0y/lmrjg/vYZyuuNNMXMmXgul/IlebFQOQlrYK6DNH4RFR
-         8jmA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeo4sVGkuHrTYrkZTJyfu50UbWipn6kTVYBosAL33IDnjkFjJqU17UxxEdC+g6rKlcg61vU15o8w==@kvack.org
-X-Gm-Message-State: AOJu0YwsGkq50a5rKXumkGr+qnRf9R1ZZBOkwUmky3zuL20oeVXw9cxD
-	sQv45XRTsHYI3zm0WXmPS2aId/hY53R3tPelf2iMssYzbwitbQ8HQ0U=
-X-Gm-Gg: AZuq6aJO62oP2c8jBD7yv4D2UPrSt0kW7H0f2JaqZk3uo2IioQ75XI1DyevQukys1wx
-	binMmQ98yifty8REuR4yc0Xf0ffrEgnpn44RolfXmFQ6N4YU0jx5v5u6gH66l+0v/vSnvB74Vty
-	vVOyKqL1KyrjdDOGDF1lKy3WfNEqpwyCQplm24IIuy1NUBNdpF/p1mt3BXsRESRwKos/QuaUIWf
-	VOoI3B60JnC2vSC3EmvNwtiICUKpLpSZOlgMrC1tV/d+QgFEEXQ3VnAgkuKcJDr9GJB5bL3hmW3
-	OVJAmLUT2xGjnqVuskAjri+QbCI1tAv3eWoVgm5sWzZ7IRopqpWpu6qMKMfisRJo0jSBki03ZfG
-	uQZcg3IvBYwMOTpLLURbFCjfynGtiqQRsOd+gxIc6lCry1DnbZ52BEssFF9RNcUYPICb0dxCgQ3
-	QtT14WIvigD06J2CYDci4Xm38N3YpAieWBTgOkEOoI3KqUnhb6S5ZXUCi5vbJqZg==
-X-Received: by 2002:a05:690c:688f:b0:794:1f46:79eb with SMTP id 00721157ae682-7942a70b7dcmr45404977b3.5.1769144267450;
-        Thu, 22 Jan 2026 20:57:47 -0800 (PST)
+        bh=XZ4usUMGfNo7J4lew0QKMfQ7VuYcLUlFI2hm5aH3MjE=;
+        b=e4SJ7xBSGP4Z1MHQh/e1fNQaVHZ3p1Ti/geH1xemvFIzQaaQ/Dpa4u8dZmnFynS865
+         +JtsKSx0ZLdeXfbuOaWIiCi1GTfbhIXLrOdTnUBBNls2JscWhRljyAk/OXovr3jhZkpm
+         a5fnnFl3AgkhaSZ9GxLJyeYLc40ovmtdH3x3ny8vLm/RXP5vWGSj4oJCvc/0IDEUHBCR
+         LXtuhi+01nck3tcKpzjmO41y7KwaWwGT6qalx8rhNxCpKDnzT2vjK3KHCfBGT0Po827Z
+         HDTGE6gUU+mEyXV0phGOPPx+08Ew29VoQVq7ZzAkY8uA3DD5eERalQAA8daMKXnliqPx
+         2R+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVxW22cpfD+7X48ChUySHU68NxcNgoBTt6uGydkFt2aEOcyFWQWz6jfMnQ1stZe1G52bYrLmRFKsw==@kvack.org
+X-Gm-Message-State: AOJu0YyerIZ5Zz5BBUtu4MCT2ub+5DqsCNarvCQKez5C5moTG8jFZlYe
+	q/JX5vol0BVsX3yIdlkwQpgu1CEu17cRf72y1o8pmNO2in+/nbn1xTo=
+X-Gm-Gg: AZuq6aKPzyj1XhqKaBZKNFFUmR3Is1T86td2tWI/sao0kiFLmmyTpAJFfzMEIEJHHlJ
+	wPwSxF+09YdqogWQ9ToIGb/RFkj0hMYXhIHRvsqCPapfWLjX//Q0TSIzPoIbEAoFC/wbFIJnkcf
+	EI3912I5DHKD5MhrfddujaO3b+45oBLf9hZVQlIBoo5lMgCKby1L1RVgLrDwQ6/B/mjrZX4HFEn
+	F+3q2PWlsTqIR6QMUQYsQfGXm3u7coTXvhVMWvGfme00oIu6ZSciHCfJFk9b08Gk7vCwBVul9Y8
+	A58Sg/98sJANX2xliK1BPRXE+/+QqPaOlYHLD+ngzQbk9yWHGP+T+uZpZk9qrgDmt3YlZN+OtZ3
+	x2hq7IyKtK6+TC/wDJW4JlvV5oPH7o2qRRIJGajv/8LiBwiqbQrxfdJubxV22l2Cb9Im4aO1Ijv
+	X3ULnfZbsMW7n7Dz6atKIxQAg1MEg/SvChR8NriMCaeICOBC/45o4rUc63jMo/RQ==
+X-Received: by 2002:a05:690c:9693:b0:786:5afa:375c with SMTP id 00721157ae682-79439a09235mr29912047b3.67.1769144269171;
+        Thu, 22 Jan 2026 20:57:49 -0800 (PST)
 Received: from localhost (23-116-43-216.lightspeed.sntcca.sbcglobal.net. [23.116.43.216])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7943af14432sm6354717b3.8.2026.01.22.20.57.46
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7943af14427sm6466517b3.12.2026.01.22.20.57.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 20:57:47 -0800 (PST)
+        Thu, 22 Jan 2026 20:57:48 -0800 (PST)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: damon@lists.linux.dev,
 	linux-mm@kvack.org,
@@ -101,23 +101,23 @@ Cc: sj@kernel.org,
 	bijan311@gmail.com,
 	ajayjoshi@micron.com,
 	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Subject: [RFC PATCH 4/5] mm/damon/paddr: capacity clamp and directional early-exit for node_sys_bp
-Date: Thu, 22 Jan 2026 20:57:27 -0800
-Message-ID: <20260123045733.6954-5-ravis.opensrc@gmail.com>
+Subject: [RFC PATCH 5/5] mm/damon/sysfs-schemes: accept "node_sys_bp" in goal's target_metric
+Date: Thu, 22 Jan 2026 20:57:28 -0800
+Message-ID: <20260123045733.6954-6-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260123045733.6954-1-ravis.opensrc@gmail.com>
 References: <20260123045733.6954-1-ravis.opensrc@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: foktkdm5nygeqtq96m65h9cz4krqism9
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 242D51C0003
+X-Stat-Signature: w87azz4h49fjoc1nwq847fu7khe8sggi
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6ECCA12000A
-X-HE-Tag: 1769144268-833635
-X-HE-Meta: U2FsdGVkX19/QxALj36ffSWyWSIb+tmlLCHAJdl9qIxkKSm5KOBW1KBeORkBY5El0zxKXox7NzZaNJt2BwIVl1klGWuTskOpoCtc6NTdhZiUEnJggWWNgmzIwYvh6vMlxVunC4LmvUo+inl5JnlaM09x4ltVckpS495EhKKjrONCSVBgS9/jMh0fawShVKx2Eg/vyNTayMTvhtPzIkOdf5rbNSQKsAI3biliD1emRBZukRXkLJBZnOIlV/L+2/9jDXLB/DjdXEwAqq60C18NivIXM9H9gW+wvW+MazgRz/srk6VaWDI3i/tFP+Ijye8r5Sn9+YwvuzJ4mAwZeWBEllEQesQko8BgPeMiv7QsN8VhXIC2CvzPIxEdGFzuRnHwmBKNKLvE/HMhhIYPgGkINoGbWebPPvccMPEDhFQIkA1PA+FtQTd2IxC8Sm9GrA9AgL41QkqD4SbQnZIPD/qXA9YGb/RQB3XRf0NwuVWAH25u7JuP9yXmOGjBIaZq4Z3oFGt6wNGHa0x4Mus78tVRlilN55kJ1prO5DtuHh6r0o1cjrmL81Pjje3HeWr6Jk1O6t3/oKxWUzxm8aG2kdLGdd5uRNvHLWtRJLYVd2bT1zgKFEoS9kmJxHgjDa1UyQ0q/X6ZDNUOmUK0LEKdj44++LtZZEqp4p2+fLRFREkI/Hteo0nZ3rcF2HPLAELCSBWT9fiIgnlD91vpCfu9W0x5YhRsr2DkXpT3O2s3r2b0N3Wn4fGiDO7sEB+6BmQCU/9hSQfvYqsTIdRhWZCMLZy5gO85Ga0XdJwt/nMZDfUuuvgoT3BF6kGn30Y2JIA/t/dRMXADYAlHqrGXj7lVqCmFjIGBnRmM8Ixs2t5ZGgObsMCE0k4wMaZGGVBlle0qbUMl9rcbiWWOluV9gSlhcochcAzf+3iPO7fKGVllj5LTff8adY9MLyb9mgjn8J0trVrCOs1mhLEObjU92GTFZBx
- Tb9FV0cN
- DO/Gqmq1BoCim9gXxCLbymra9Pl38JcByK9l0MnCtzxV9CBPsdsXNs8XfEfRhblp94y67IIJHIVll3TswVOnflZaAP+/gX9XWl/mkLOacR70eUU71Veq8rlcGZSMROen1vUArumpyleuFPVyj2oj8scfdKBIlfr7YSHoIvg82SQqa0W3n8th7jEDmnBBk41V6Q6OHAQcs/wuJvnawQjISZkNqAvkcLTA2uRV9GGwttjhKyUDvySmmv5UZTTolFv9ehpNnxWa5XF7OfNg4IA6g3GCD3WvmyJypJ4P+76K3y2B6nO7rRFUemhQ+miZCIjZw7Qs1teCwxqPY2dsQXASOqvkDHuy2nmZDyXO0hC/RUoV3gfuQ7l4NMwYBjDMHVN83qSygA8Ji/cSTu5DrvBJb1tBMC9fINlAfn/URkKDCXiP0oP5PTBZoFDNpKeVSYDZxyWj7Y2AI9FMs8gN1X2gwIIBnUF5ezx5P2uN5Ri5hDkWZA9Q96qVPCH9wMn6nk3xnXCn1uRHWfJn2SzoDbZH/JA8xZATjTNTr/NNTRLXd7RSzo+MduxYAEbAb+EsjrCaesZZdOjD/HzrVVfCDljZo8fDFUTtYlrir8OkkDD2C45JE7t+s/sUuDeq3xmljiu6nOVxEr0Knr4mnTqYv+hiH1UP0wA==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-HE-Tag: 1769144269-71036
+X-HE-Meta: U2FsdGVkX1+oRjRiqk2kZmdh7aR2ME3SNCCSWe6a/cfaIIxue8+udlsWekWGwZT1MRA83fJsk7ZMtxuiHPl3H4PiMWHTeBhegy2Oml3Q80m7Jbec8GW9cNlzcjPjOx7jXU58tlPjrbNEnK+/MkDhGvz6IHtocojl3ZWCmYgKwoK3j1lV1V/Cflh6or8qOuadK4GF02yXQDB4LHVgoh7101k5WGzHyOkkAucLU3szVMv1FR8QKYEP0uefpjkGsQT3lgg0Zf+iEzVTAtzIGbmO7iCjroLGwCuCo5MO5TLgVQLtp5noYYPKmrA43+aWCWUvdw6+wF7YNc1VQ75DTgRmmtIx5B8KKLOVXAS8Br2wIjphMV1GzvTxsRueecAtFWCejZze3UoWxRiLsS8AcCnKK7UGw3rvfOwOsakk6cfMgNdqGiksR3zzCrEsQs6EJSgyxtJDUFJwcLo7lRsgd6tuqoYRE3E7s2hUZynwsCgDgpdY1us0VVNBYkr4s91jhWKvtehhLbpmtPxTnjiUsKHfK1morzPWAYicnt5C/jLjsnAjFeDzHziDOGhdd9n+ujVQD3nK62ueGCYBcUlinpMc+GRtTBGiq1NcB6x3CdHzVcrA1UusxJa4vOik7+CvNkY7BQvr3XkrjM8I+Kt9z1volee+O0eus2bmQIjmZcxB82uZpeqWqUoJ4uno1SVNDL8wDQQr2xKuG7eRDQHGVYsBK3ITeBxJwLhokii76QBm6KQXBaxeAwkuyI9t6wcCGjQ7kAJdcsYEszVJD4Q14SjER07gYok+AINzTksS+K5RRvb9FmeROC9XTgBQM9o8fa6bNHSrj1i7TRqABghwFv3laNzXgCaihpGwOW6Qxh4V3Vt3DZc0L+uueMNsHU/6xEBCHxyU1fEvPJMjRplIeF8nIGS8V3bolV+PGxnhZKy5LmQfsF8K31POGgKeUn3fF20zU4zfH+U6lgnyrMQi+Fg
+ qrCAo25A
+ IlTgD9InmbtQC55Fef6zcxz+Dvk5Y+erGJUWS7S1F8yB9uhRyumUpLJ51A13A5dOYFosAFaIw30efMTqQKFLifewd9h/wyKBlLs3DAbZHBKWdWuceG/UEBTW0Dphm8ZOOGOKV91LkULXggGLkV9pQ4NjrPSah5V2y3TQKcEdn/bMBJoOEXfN4YVS8U/AXLatGwvQRS3sY3iL/SmA0TgGeh41mthO99F0ut3Iq6B9MfSs3hmG/yshiFkQA0esZaU/XFsrFvwmQRSVYCYBcPZ8cL4EeENTXzZ5Gha7CSPzdhPzLTUTHRK7OKbHduMy6FJT550ztuKXNJxYymryo7Dsbknh8v9W4+SNINXhWAljMYz/LpS5+HLWXwYrNwCrBxF9N4BSIQi64+rV2FlbjQGm/RKFzJIz+QfCJhnWZx4rWpK+4dKrcUOLW9WMzkY8umRNR1rKNugLzCPeWllbZJrr8jo/UT+8HIWcTzc4Ojq3irkGlD8U3vhmMu1khoNg9WVZBU+KCnZ7T8fBIZynwRhMtSZRcUT2I8FoTGt8L3pY7HXrFhHcfIFKeb6TrCkrQZ3lRlhf55Z31sptR8+ecQTEx73av30uFuSFqhpR2
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,75 +125,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Clamp effective target to node capacity (bp) and skip in-migration if
-the node already meets/exceeds it. This avoids oscillation and
-unnecessary work in two-context DRAM/CXL setups when quota goals
-(e.g., node_sys_bp) are met.
+Allow userspace to select the new goal metric "node_sys_bp" by writing
+it to goals/<G>/target_metric. Also set goal->nid for this metric when
+committing goals from sysfs to the running schemes.
 
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- mm/damon/paddr.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ mm/damon/sysfs-schemes.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 30e4e5663dcb..64dbdd2196a5 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -300,10 +300,54 @@ static unsigned long damon_pa_deactivate_pages(struct damon_region *r,
- 			sz_filter_passed);
- }
- 
-+static unsigned long damon_pa_node_capacity_bp(int nid)
-+{
-+	struct pglist_data *pgdat;
-+	unsigned long sys_total = damon_pa_totalram_bytes();
-+	unsigned long node_pages, node_total;
-+
-+	if (nid < 0 || !sys_total)
-+		return 0;
-+	pgdat = NODE_DATA(nid);
-+	if (!pgdat)
-+		return 0;
-+	node_pages = pgdat->node_spanned_pages;
-+	node_total = node_pages << PAGE_SHIFT;
-+	return div64_u64((u64)node_total * 10000ULL, sys_total);
-+}
-+
- static unsigned long damon_pa_migrate(struct damon_region *r,
- 		unsigned long addr_unit, struct damos *s,
- 		unsigned long *sz_filter_passed)
- {
-+	/*
-+	 * Capacity clamp + directional early-exit for node_sys_bp goals:
-+	 * If we are migrating INTO g->nid and the current bp for that node is
-+	 * already >= min(target_bp, capacity_bp), skip work this interval.
-+	 */
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 3a699dcd5a7f..37cd5d715821 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -1038,6 +1038,10 @@ struct damos_sysfs_qgoal_metric_name damos_sysfs_qgoal_metric_names[] = {
+ 		.metric = DAMOS_QUOTA_NODE_MEMCG_FREE_BP,
+ 		.name = "node_memcg_free_bp",
+ 	},
 +	{
-+		struct damos_quota_goal *g;
-+
-+		list_for_each_entry(g, &s->quota.goals, list) {
-+			unsigned long cap_bp, effective_target_bp;
-+
-+			if (g->metric != DAMOS_QUOTA_NODE_SYS_BP)
-+				continue;
-+			if (g->nid < 0)
-+				continue;
-+
-+			cap_bp = damon_pa_node_capacity_bp(g->nid);
-+			if (!cap_bp)
-+				break;
-+
-+			effective_target_bp = min(g->target_value, cap_bp);
-+			if (s->target_nid == g->nid &&
-+			    g->current_value >= effective_target_bp)
-+				return 0;
++		.metric = DAMOS_QUOTA_NODE_SYS_BP,
++		.name = "node_sys_bp",
++	},
+ };
+ 
+ static ssize_t target_metric_show(struct kobject *kobj,
+@@ -2566,6 +2570,9 @@ static int damos_sysfs_add_quota_score(
+ 			}
+ 			goal->nid = sysfs_goal->nid;
+ 			break;
++		case DAMOS_QUOTA_NODE_SYS_BP:
++			goal->nid = sysfs_goal->nid;
 +			break;
-+		}
-+	}
-+
- 	phys_addr_t addr, applied;
- 	LIST_HEAD(folio_list);
- 	struct folio *folio;
+ 		default:
+ 			break;
+ 		}
 -- 
 2.43.0
 
