@@ -4,87 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E495D778AC
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 19:09:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 494FFD778AF
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 19:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F5E06B0543; Fri, 23 Jan 2026 14:09:13 -0500 (EST)
+	id A9A216B0545; Fri, 23 Jan 2026 14:12:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A2A66B0544; Fri, 23 Jan 2026 14:09:13 -0500 (EST)
+	id A47256B0546; Fri, 23 Jan 2026 14:12:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CBA46B0545; Fri, 23 Jan 2026 14:09:13 -0500 (EST)
+	id 953006B0547; Fri, 23 Jan 2026 14:12:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 76E836B0543
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 14:09:13 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1A75F1AED06
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 19:09:13 +0000 (UTC)
-X-FDA: 84364166586.15.1357AE3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7E10A40010
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 19:09:11 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Oxbkg5JS;
-	spf=pass (imf17.hostedemail.com: domain of tycho@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tycho@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 800566B0545
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 14:12:29 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 43563D18E8
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 19:12:29 +0000 (UTC)
+X-FDA: 84364174818.05.8086676
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6302C16000E
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 19:12:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Y2hMq5Z0;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769195351;
+	s=arc-20220608; t=1769195547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=S2S0WlaV4vxb0aJ8f8js9z0LgDKD8OgU/6Ktc0cMHIg=;
-	b=4Z9VCzH/bgC7DCC/clu8F6KjNa7V6LmoNj6+OK4DU5WYYWKg0FZibQ/JHvTaf7zY6t/Rd2
-	MZ7IX0WfwMpcuTUA+c1PXTtBWZhz0ZF+3qZlcpxUUJsMxBMGyRfRuaPAT6MSfnxyPR48rO
-	GQdCixVFpD2FWAYvHY7EhrJPbZiB13E=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iAb3V8FwAoFt+i7QIjKEQtHflVF/O2of2sgUimojvUA=;
+	b=ZLVBx2iJEUvv2yeaGu9rsuqqlxlbkaV6N4zXE9y7hOSbzSgiMxTwt5RG1ore6SMboRR7G7
+	hMqsICQDZ1aRsNdKXKEkePD53XLkbeZXSemWOfP30acVpfBdcnIBQabiBnm/4zohvBZBFe
+	X3y3W4gVJypo/qTV6GNdq5Q4KLjMmwE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Oxbkg5JS;
-	spf=pass (imf17.hostedemail.com: domain of tycho@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tycho@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769195351; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Y2hMq5Z0;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769195547; a=rsa-sha256;
 	cv=none;
-	b=XWJL4kQv9FRwkmVpjVrGkNG3RGC4HFEIyM3BMWRcr36bwv7h+u6tdgGjYPnCO3kl9KQE3U
-	4+vvseSCuHZqX30gutQm+wg7grzGowAdm9Fs3XJWOjiMErH8VVGsXQi1fmRmcKQX98DLkJ
-	gGiiIU0sWKd2Qe7TZvDFC94rRjx8riQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A01C43590;
-	Fri, 23 Jan 2026 19:09:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E6AC116D0;
-	Fri, 23 Jan 2026 19:09:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769195350;
-	bh=F+gMVw54pCVD3wiRysjyfpr+kXBpSogewadJH4cJlxw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Oxbkg5JSR7Js7ZkUqp86Towi+FnFS1jbUSlVzv1ReOaerdtWzEENi+05FvVEOJP6q
-	 LfZHb/XgiXcGeJ0ImbiPd5pt59Rwb78AgxikDCPoaenR+ceh/hNNP/vdF0DU+d6++D
-	 HxSgZWB5JSCZnJpYqYVlBVeiYuno9GxYQ54+rs/llNtJmTpKqSAgxQ3UvN2sP88FF/
-	 QYC3XU6W68sGmNqLzt4Uf0g6tWRvxbhUjBXP1lfK7eooteNthGafncTFUo9/xRkhzF
-	 Lj3Iu1hEMijTWoJi1A4iezrU54Pe/NZyg+VvxemPEV9t8/XAoM+GzdPjx5lEejIWHm
-	 UQ0zGcMA2rsYA==
-From: Tycho Andersen <tycho@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] kho: fix doc for kho_restore_pages()
-Date: Fri, 23 Jan 2026 12:05:06 -0700
-Message-ID: <20260123190506.1058669-1-tycho@kernel.org>
-X-Mailer: git-send-email 2.52.0
+	b=GNJmsPoEksJtX5qqbwc/KzFvXT7xNqMFxxl4FYrEREQJu26DKsj4xBly5OP5GVMV5174hO
+	rOf+8chxqwSRfoAuSvEKRLPvxL0WIpUgbTIc7RX6Com1e1O4m71lfuUEs18v/aAGMmj9RU
+	Xm6P5CuWN+I39mktS1h3R084cFcvw0w=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-894724bc5cbso39467316d6.1
+        for <linux-mm@kvack.org>; Fri, 23 Jan 2026 11:12:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1769195546; x=1769800346; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iAb3V8FwAoFt+i7QIjKEQtHflVF/O2of2sgUimojvUA=;
+        b=Y2hMq5Z0c4CXKoTZQC2xWsIv+EsPmTKQIhAhEGw4Ka8S9qbFiUrb+i3mmnzg8/Ze4C
+         8JE1LcHSqOYmTP3qS4yPRMNA18aKh95XqzVLwjuhgrYSpPWlikJqEEYPN9AVTJIoZHXE
+         h8oBL9Saoc+pC13n5WmknqC9BQDKz8jxSze+cH+LG3ZhABnFKTsABk14mEIbkezE4yYh
+         am6Jd9zW0Ac9aUx8BeKp7nrkAXbMMxykI7JY5gzctK0bVa3pM04Q3tyT3lzA9PXna6ax
+         cNys+MO08zqHnYt/0zbc26eepWQDIxPVn97CkX2kPnFsYZr1+uXNNMv3KJARxRmMUtNz
+         kOvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769195546; x=1769800346;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iAb3V8FwAoFt+i7QIjKEQtHflVF/O2of2sgUimojvUA=;
+        b=v6HuBaXjsUWGfYUe5jfMpnoh4BuChWKujulxmWWtVcJ+hWFOnp3HBtL3APiC/BY92/
+         s7MgMOmVDdo9oORTtmnSd90P83hr6LsLyXvFiY7BfnDY8oIbX9lOvxYPUUqh9W1SzSJC
+         f2hcDqHfSugzGyAw1UbM8LKlDXMPIgLvZB36LJ0GKJPp6zwuv4A/q1frvXWt5tLFy/NE
+         VKSt2YCOxEXXTHcaN+JSmHCjgnBIioSBfGH3nZO3XWzlsAIrsnvYJ4bD5wsodrYSWi1q
+         p80KkMQXrOM5FrXnIOlCKnXYenY+zRYNnDpkbl32Nf/b6VZQ8lFQrnDqeUwskHyB+nfl
+         qv7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXiId1FBfiCLTPTI7Gccz7MDq2brWsL9kgOmYy3FRAwt87VrFt0WHkzZupsNrFnCP8bwd+Z7vy/5A==@kvack.org
+X-Gm-Message-State: AOJu0YwGhHJrjLDkFn1SYD5mQrdEjI/GUGcVPq5OboVkhTJG9/n6jK7f
+	mCcPqdsgk0cN2XB7GiSwmWaiEqbBiU1gwJkKhcusM9uEdBV5ns4lZrsJTCnaVDLVF8M=
+X-Gm-Gg: AZuq6aKAbF5bAoeZ0h6vBAzVV6LNo/0eRw0AS+7lg0Av5K8UcCyll6Lb1i1AfVJuP+n
+	dmUtr7avsXIn35SF+TXvuYN2ja8setYCZI62A9PgBxiLPK057TvYe5+FU6MOalgk8reQFDC+pSC
+	k6Aj77i54SCaPfevs+O+6JshJHvshN8Ct2oh0Tip8VgDvDbqiacZWj3+fiFsf00C7uVwd3XVSca
+	ClS/pvFVhvrp8KrHBmdUEsE8WMpdSIRfL026ryUYvextXgmRTe3bNPgA9IS4RYtkqajTSUdUZne
+	RyFvQEG1g0tXTZyZR0csHjg+ffCtstdoK5rztYxYo9OAw51mv7a8cKvcUsr5LalZafLZ4Z7ncdF
+	11jZt1y6Bro/1BLI43fte7svf53TEPuc9OGer6uYgZyVAKPjFbxF9n+Rvmc8e7OR9/Hsi9HQqYQ
+	eNVyhG07VrNIA7A9Dqd1MAzCu0FHCBZwdE4zx0TpdNU7/nSUEUsWMhdNo5cL0qIDMY5kwSRPNct
+	CQwOHfz
+X-Received: by 2002:a05:6214:3008:b0:88a:2ac8:9b3 with SMTP id 6a1803df08f44-8947df771admr103884956d6.9.1769195546348;
+        Fri, 23 Jan 2026 11:12:26 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89491823cf0sm23001816d6.8.2026.01.23.11.12.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jan 2026 11:12:25 -0800 (PST)
+Date: Fri, 23 Jan 2026 14:12:24 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+	kernel-team@meta.com, dan.j.williams@intel.com,
+	vishal.l.verma@intel.com, dave.jiang@intel.com, mst@redhat.com,
+	jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, osalvador@suse.de, akpm@linux-foundation.org
+Subject: Re: [PATCH 3/8] mm/memory_hotplug: add APIs for explicit online type
+ control
+Message-ID: <aXPIGMVAvVEBgFhJ@gourry-fedora-PF4VCD3F>
+References: <20260114085201.3222597-1-gourry@gourry.net>
+ <20260114085201.3222597-4-gourry@gourry.net>
+ <b3d435d2-643f-4dad-9928-bc7fb5080181@kernel.org>
+ <aWfR86RIKEvyZsh6@gourry-fedora-PF4VCD3F>
+ <4520e7b0-8218-404d-8ede-e62d95c50825@kernel.org>
+ <aXLCAtwMkSMH3DNj@gourry-fedora-PF4VCD3F>
+ <20260123182526.00005ee8@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7E10A40010
-X-Stat-Signature: 87b4ww8quis5ybpaywp6o1h5q6wy1tpe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123182526.00005ee8@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1769195351-13640
-X-HE-Meta: U2FsdGVkX1+I3bjwpwfi3GRigbXqxQtXo5g+ODcp8Nsxp3XhaD7fsw7FUSgP4VXpY4/6mwPYnvJ2JIzgmkakKBs7m6IaJFwncBscUofKq/lB8GPCs5E4J0k60h41Hy5/MAKM1RXB1LBV7KHz56QdM2HTktOY5JE8NTw5P2CjS1xcaDULQ+AwCL5lKxv0u06dIZN4vYNJMMLWT0DxRMiFsMmVHeYD6MiEbAyT1XO4WejAoqft7wKxIuqDFZt+A7QUCkas29fXDdIb/ubbBF82zUNwkBqcc210U9lz+T8Rr8Bh6eQ75Gu+ohBAH+YaNmUaAEh2dZhI6guHo0ucsQoTem6cY/NWxN+7DHCra1uPlyipdZS2cIuWbT/8HJy4hezs1nyoN6+SQ5tbezwhwcBZ0sMPQBTPA2jLo5nHzud/5znMrrAzy7vQiUUvTlDiSNbI1Rkxf7ucufacMRlzvi1Op1h1Hooo37WzInNxIKalh7Cb1DDauYz27PX6kNNI/Z6FZMsmk/XoMQrle58LAM7z9iXdju/xSB8EeYKQj1FqYtk+GKtBOS5RuxRKRJTRX//6TI9OScT6OraRif7Qnij7A4e0l1a+7bWetgF8bxLheSs0CNKj0gY72mBV8pws8CsciFw4uwe7Dyh0pbn+G8w/nia8WLQy7VbRvKdJTa1l+xUi5qbA4QaMH2ow93om3kok+agqLAOlP/CR5rG5jm9gUZtt5yOGSYDdpLMsHGu5+OIluPg3HZApUrLE3wfABD/C8LEQDopd9yF3xWyR2ThiVAN/0K0woLluIPrkJZCoDJj8O714j4PD7Fh474qqekSyIxZ298b1MKGvF3mApw4tvYkij+fKjp67vnhLTuxqxZbaxSkRiH3U3NpJmuLRHibxKUkMGsSkpEBzy3DaU+YKrWRdj9aM9qEKe8h93yPAqpCysvVmerKYDA4Aw7sjaOOhBp6vO4jVVFj0rKdlu/J
- +EG0iAef
- AM56X+2h2ueCT7F8tstVoaMqgjJIvYh4nBwis72sy4xw/Dus1p/8zfCeiuAV5IMRJzu8jEnr6sVVZNGCRrPlg8hyg2NiTXhzB2bVoLh48pbPRGAtP+TqiQ0n4yqDuL63/HLgCThzC0vKAFtPygXuf98qbZKL7fHN9jev0Nl1JV9S4r5gTexgJ4E+9mlR+AnsYZJd8uE5XBrqSP18Bbwd/5p7Bjn6A678A8zXREidBoVO0y3FxBuSmOU+Pu19CwVMxyHctUqVSal7Vr3dfAkNdVzTDtQ==
+X-Rspamd-Queue-Id: 6302C16000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9oftid519rhjkijbohu9kxik6ytst4cz
+X-HE-Tag: 1769195547-174358
+X-HE-Meta: U2FsdGVkX19hgLGJWG+zT5Jdzj6J3zmdXelFgbnF43vOf9XQadCPl4RPrVQ+SPkCuqjiLmQU2SlViWkU0sHdCltnVMewEYU3Jhfhvtpqii4aob6qMSwBDr8W6v+L1hSb8bdz5uKCGMGkrOCsKRlyGMbAGhDWr4GALPbXDhskcbCweRuc2ZAD2iT7VcMFiefKNu5CHbwVBsrpPDPuzLEM9zKO8gSu2ejbaouUyqVHNU6jL+tTtk6sWnnYP4mwV7X7HQiZDa6OCPqXECd4nrmrqGerbF1dAzAWAVm92oAosIabWNllT0k92OHe2G0C1OH2RVSXRUNB3+U2MZexEfM2/8Ij3WHTHO1lJNVVlCsaQC/cw/KnJ/kztIFVPksMz9ORV5OQ3yASHpkaTh01IIiGD41uPGF3f1itjV/do2PXftUgRGKsXrtcS6WnFdbgU9GqmhynyP9BZZhmEH1feNAlE+loZUxMIZtzMWlMJvVaTrLeZxOlDzmIH9oFock1DVsjTib/kqL5uy0oE6MLkMbVe4hpLYk5+05iNIpYC+Lzo6yXRMgzC8j8u7ZfZgoifZ+m9sAWCfkjVucHGPB/p4R/6YYfJsmjqsFZ83bRpFrUuNW3icAOazXZGfvnnw87e1uCYznlxsaWjzJ8PFp1nlHdzB1Up49TJS+l6Pr9mz2kSKk9f7FgdOd2zDExQRIBjB8p0f+MaTGfLgY5k8c+J6/4oHOHBUdxOBN6gtmLEciXxzPo7TB3m23sGDXk4oRg6apmeMrzFj8NPGk5MH9PpNlosYfNXGv1sydxg9d+aVB6rgBDFdbPDX1pEpmt9ML4KdUSA+gBlFoZGM41M4rTlTaLK325wdUupDDhex1hgAvPzhixqSYHEJiIGUB7Q1Um9G2FDkJdU8pzynpDzq3E+r/bYSIuDhGzk03bVNAZvrfBsKSTsWToXlZcr9MX+0bxLq6J+7crMevNMz5H7evZOKK
+ RUt1EDwo
+ SGQZEO0ZVl5IwCQWiVwemAkXLZQPUiZDzvdxd6O8mcjeVSiV5qz0YsNE6DUrolVNlWzhsRJ8e0asyXVAwd68ZKFtrkxoZTuMKwpc3NI2/ef2dk9DsaHu99IXDfIUZyV8d5OYcBb59/ABtJnJQzHU1cItEG57jzEIuO2AmV76Yqvsl5FVcxGo8renOvhCsh0PQrkK+YKli4tXx29c59J6T41m+LmZDXJff0Tjxj8Lac79FYuB6NsnupBtfHKsDIOASgbx3JIW9MuYS3judEizerUHt/ZvDi6v874ID30DeoaopP3BOQBaMyqoUMiJBC4UUEQ6RqqaUujmGB3DDS4h9Qt+LTbd8xp+upTYLsjUm8GUJ084eV2I7BP+uE2YYRdeTPAnUOSpfjhoqbb54neGbXsdfZ5mucDJX7nSkDn78nKxXqUzovZefwG/Vxw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,32 +130,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Tycho Andersen (AMD)" <tycho@kernel.org>
+On Fri, Jan 23, 2026 at 06:25:26PM +0000, Jonathan Cameron wrote:
+> On Thu, 22 Jan 2026 19:34:10 -0500
+> Gregory Price <gourry@gourry.net> wrote:
+> 
+> > On Thu, Jan 22, 2026 at 11:41:24PM +0100, David Hildenbrand (Red Hat) wrote:
+> > > 
+> > > Right, but I don't want any other OOT kernel module to be able to make use
+> > > of add_memory_driver_managed() to do arbitrary things, because we don't know
+> > > if it's really user space setting the policy for that memory then.
+> > >   
+> > 
+> > Ah, this was lost on me.
+> > 
+> > > So either restrict add_memory_driver_managed() to kmem+virtio_mem
+> > > completely, or add another variant that will be kmem-only (or however that
+> > > dax/cxl module is called).  
+> > 
+> > unclear to me how to restrict a function to specific drivers, but i can
+> > add add_and_online_memory_driver_managed() trivially so no big issue.
+> 
+> Is EXPORT_SYMBOL_GPL_FOR_MODULE() enough?
+> 
 
-This function returns NULL if kho_restore_page() returns NULL, which
-happens in a couple of corner cases. It never returns an error code.
+Is the issue just that add_memory_driver_manage is `extern`?  If so
+yeah, i can just do the EXPORT_*_GPL path.
 
-Signed-off-by: Tycho Andersen (AMD) <tycho@kernel.org>
----
- kernel/liveupdate/kexec_handover.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+If you prefer FOR_MODULE, then yes I can do this.
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index d4482b6e3cae..4c38ea7987c8 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -281,7 +281,7 @@ EXPORT_SYMBOL_GPL(kho_restore_folio);
-  * Restore a contiguous list of order 0 pages that was preserved with
-  * kho_preserve_pages().
-  *
-- * Return: 0 on success, error code on failure
-+ * Return: the first page on success, NULL on failure.
-  */
- struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages)
- {
-
-base-commit: c072629f05d7bca1148ab17690d7922a31423984
--- 
-2.52.0
-
+~Gregory
 
