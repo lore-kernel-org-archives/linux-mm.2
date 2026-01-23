@@ -4,89 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1A70D6CFDC
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE93D6CFD5
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 06:23:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7D256B03CA; Fri, 23 Jan 2026 01:21:05 -0500 (EST)
+	id 3DC336B03C9; Fri, 23 Jan 2026 01:23:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E73016B03CC; Fri, 23 Jan 2026 01:21:05 -0500 (EST)
+	id 3B3486B03CC; Fri, 23 Jan 2026 01:23:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7F456B03CB; Fri, 23 Jan 2026 01:21:05 -0500 (EST)
+	id 301596B03CD; Fri, 23 Jan 2026 01:23:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C47896B03C9
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:21:05 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80A91586CF
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:21:05 +0000 (UTC)
-X-FDA: 84362230890.03.3415D26
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7E65C160004;
-	Fri, 23 Jan 2026 06:21:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ED57aQPb;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 188BB6B03C9
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 01:23:22 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D780B586E1
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:23:21 +0000 (UTC)
+X-FDA: 84362236602.18.A237379
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8BDC8C0006
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 06:23:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1DVL4SOT;
+	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769149263;
+	s=arc-20220608; t=1769149400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1870OwY7Yt3wtHMS4Kw5+Uzzq7JdVz48VXgwCaXXTJw=;
-	b=jspoQgg7MTpyEmNWSSh+bvvmHA65rUWChfLiAY1oZhH2FbI99DDKOqKC0M6nP+jMipNWHh
-	TLrW4a3Ai/mtLYdT10AVBS2P3P7PHJEbjUhXpP1yNskcakWFEDzMNdYy9YG58SoVToIXQ4
-	89kCN+hYV341xV40IPVvloSP41efS0o=
+	bh=GdDjpMtJaMtxsfKMwwQ9MmZp9yI8mEkOk82DglbID1k=;
+	b=WBhYCpbaysCvR4GhzRMEsRoVGFx3E8x+/yBKFFLAHgmzBn3pp4LKawULWs9W5Z1mQ4DL/y
+	vZoTg5Q2A+EG/kLiNqa+WxPtxPerHzBnGr17F5mx0ThY87VDfoeRIQ+zMRh3DRS+BxBq6y
+	xw/rpuHDJbKSJiJKxm72PqJ/OtCpUXg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ED57aQPb;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769149263; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1DVL4SOT;
+	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769149400; a=rsa-sha256;
 	cv=none;
-	b=kMZAgNEBbxNOaYvP/5970BZbHvJ7ScRxRJfgPCpP5NgTCVcpaPlT34N24MWT1cxWpw3tdU
-	6RmbI25xqfFETg1ZZhPvAMyxXFIUQEt2TSbLOQdx97GwZ28/N/1qTvCaFipA87noa6/p8b
-	PCJsv1ETtFOh7fsb4S+WFayNszG8d1k=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1769149257; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=1870OwY7Yt3wtHMS4Kw5+Uzzq7JdVz48VXgwCaXXTJw=;
-	b=ED57aQPb3NP6UeThPAkqaiTJl0IxDMAfCESU+LlSF+BB7cK4Crmx6DeDwhuGg+Jixk4O9AqWKkc2/T+uMMydFC2AY5p6j87aLZjVw71UrXCGEPT3586VpMnQoE0EOUnzuJ8iyF745z1G9WmMjM0O1SWUgKyf0dDhJwTbJvfFfZI=
-Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WxemimV_1769149254 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 23 Jan 2026 14:20:54 +0800
-Message-ID: <7ccc3447-3a39-4206-95c5-a6cd00e2bda6@linux.alibaba.com>
-Date: Fri, 23 Jan 2026 14:20:51 +0800
+	b=oEE4Mm5rTeATE5bEsL9+5C/qEJjsHHtC7s8aSNdsBHEO+Zxv8m5pgYumHj1F25v6IJD5qY
+	kh7RvEtc3IP44ZrxWPEL8yq4EgHnRPsQj3P10DpWpJ40A2K0QYStidA8KbzLz/n30ynQMf
+	efcLau9skpR/MBgg5RfQkpJQyg9MV/0=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=GdDjpMtJaMtxsfKMwwQ9MmZp9yI8mEkOk82DglbID1k=;
+	b=1DVL4SOTZysZoiqqOd2j1fbIMeAQFMQp7rfaipuCtqClyp2raTuipRBVMgyzg9f2x7/TdcgOa
+	6yy8SAQ89dQ5Leju/sCP8gcZCgZ+BYw+YF/cp7WHFUz+TlVpHXwcgEPVnofmXf8gX/GzJZKybL2
+	7H8ZdHgzqlQy+6xWhrDCdKE=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dy7752rs5zcb1V;
+	Fri, 23 Jan 2026 14:19:13 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 08B662016A;
+	Fri, 23 Jan 2026 14:23:14 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 23 Jan 2026 14:23:13 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 23 Jan 2026 14:23:13 +0800
+Subject: Re: [akpm-mm:mm-new 279/310] memory-failure.c:275:49: warning: format
+ specifies type 'unsigned long' but the argument has type '__fsword_t' (aka
+ 'int')
+To: Andrew Morton <akpm@linux-foundation.org>, kernel test robot
+	<lkp@intel.com>
+CC: <oe-kbuild-all@lists.linux.dev>, David Hildenbrand <david@kernel.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+References: <202601221142.mDWA1ucw-lkp@intel.com>
+ <20260122093240.ef007fed49c166ae5ff256c1@linux-foundation.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <3116e4e5-c1cd-27e2-69b4-6bf0fc0347c6@huawei.com>
+Date: Fri, 23 Jan 2026 14:23:12 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/13] mm: update shmem_[kernel]_file_*() functions to
- use vma_flags_t
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: x86@kernel.org, linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
- linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
- linux-mm@kvack.org, ntfs3@lists.linux.dev, devel@lists.orangefs.org,
- linux-xfs@vger.kernel.org, keyrings@vger.kernel.org,
- linux-security-module@vger.kernel.org
-References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
- <736febd280eb484d79cef5cf55b8a6f79ad832d2.1769097829.git.lorenzo.stoakes@oracle.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <736febd280eb484d79cef5cf55b8a6f79ad832d2.1769097829.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260122093240.ef007fed49c166ae5ff256c1@linux-foundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7E65C160004
-X-Stat-Signature: ja5xzrqf1ebw9odyku5mq3mbkh9xji5d
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam12
+X-Stat-Signature: w6k4cscu9wwc71oxtzpyz6nb4o7iui8i
+X-Rspamd-Queue-Id: 8BDC8C0006
 X-Rspam-User: 
-X-HE-Tag: 1769149261-157575
-X-HE-Meta: U2FsdGVkX18Z+rbvxI6pyuNR3O6pgTyV/KPUDDpiwDlul4zHh+PKk/ISAHCf7W2e/uDiHG/NMWFJrHrAUJ4M4o0KpB+Y5OVHUt96szCH/2oBaBASjwTlvAXSluTCP9fJpei5rUFAo7OC8yKNTemaIVf3jBgve0qufdkeWZB5DSfP3A25wHcrL6fMLuvwF4UjBh8uh6abuS3fr3Hnf00EF9EPqiT/eg5qu7Y6CceAbrmIsBEAfFc/BhSusEV1jEum3+UdWFwF5dfaPRORk6FxorfOUqdvxrJdkNQ6xrZHIiEjN+6rBTlg2npwDlC4t1D5aaInsRc4YHYNWYxnUXv+3p1Upz8AemVmSw7gUyiv7Wo54nXVwYh8/BdZx+GTGKm6VDATkuftQlsGEQ5vLlkdvDv31v3T2os30Vr+8MOW6H/iD2j5QZZkAF32W6i9cSZ+4PR7Er3sXlza6EPX3/n0nnmCF+93AP4ljc34u6jj63vZxuDw8AM/E3s187oXLztk+ww643BKZZr7rs5Mil1MmItNIu7KwBztC8iTU26GAhLxyYT/2DU8B7YbFx1V076w5bLtn+D0t+aqzO2e7tZpxzW3yqhxhS39q1EKs7J1NwdSGELfXukR9cSYHvWE+daAicS9vhbxH3rAjrZGdYFjzBXyNibbd3iS3nO3QaGMp51W00+rvQEdyiJS9/ZbkrKs7ZG6fuUyCqpqNv8mAvGNLgZisRIdHyRa+076mJdaDGCwWbLm3LkmnaXi62BCxjmfnrcoYMt9lZfJ+avY8S8XJMYzLXxZWRPRndw+81EE64kWJfWO7P6dFBw5YtiwQ8nn/QaJiQHvmDxMgX9ZWiHXFjCjGUlYVqMNf+/mKp2lC32hzq1jrvtd/ewFDb7PI2uinKzkRQJsF05idDL/5gg5EUdZxXsy7Ye+JCnX7zrufh9MwNtd/7RxiYIOmFiqdf0cod436VmArN1mhlh/CfK
- jOYDBlhz
- gvoeLQww4toG6mecU2oa0F7u7xJ4FP/eiI7iqHz/2KyVAqZK5+Vk/DlpQexArwvxnnoKxqX7n95MIiCLX+ZTh36NdLxYwjFVwvusB5zPCEQIJ0a3m01SzPacv+RjnSrDhTwqX1cHSI+lzj3nq1fkyo3mIOOqTn3x1UB+HBspPvfKFgLfGxLg+HVcEDww1N2nEIVxoaR/6xg3jiOYVyaBR11LCVkYuZTq6KExLqbDmZsM8dFvxvcFizjVl9IzqHOUHE8jpFwPQVcC+5kjUP/bweMvckjkv8xFcBxXIVcd39gGiZggDE9iMSpez5CJ1Uq7RliL+bKjUcMsf1ZsNdvpJIMqPuZ+vwFAbE04JUXs1MtMqMaO//iaJ0viJ/w==
+X-HE-Tag: 1769149398-746228
+X-HE-Meta: U2FsdGVkX19lnxvU5BQ4hXNK/knQ/uCtfsp7ZQdAT4mTBR+yvb9+ry6oqAoeVm0elBqdwHfMQ/1uU4hluThuEgfwctQcDu2glRnf2fjHLYCeA/DasQo9LV3WLRjpfuxI5hux4FRNKAp5m6sr2hHTDONuQhRa2WD4rf9/nUlfsmtNd5bAQRZdtIZNYtwYSxhtppri+3X7DAd3UDDnXlhXJg0GcJqOA63azKEWG/17NLr937wkFdTe+kMGerxiZVzFxZ3TXuJrL6ArFCY72sn4qYKHoi8hMq1iA5JEXlqa/TRWSiT0kNSWEUX4WV0rn2QD8XYX3EWMoK3p0vfwVdnyWyN47KO6+TsE94b9lHTORrAeB9p2vIGYeTQC6BRgvonfRlqkI8UQmmQBWc8825iEmL+g7krGlUw9NEbvBNZDrLu4JxVbQfXo/afQeuvGt/kdlBZyXTbXKPZ4lk5mQIUJ2aN0fD8vzDF8BhMDud5OpcHxF5L2t8/x+ge3tqpv0rSgI3exsPXi61ocI3QgxItXQkv51nlAA4fCjC5+/vSgYuPha3CbpTTwnpZ0sI3Kl3RaizYZ+4uZIUBivKCgtno3K/j8Bi6Zwf+FP6vYWReHPXEvye8d63qFaahvZZL56mStHLvDEpuUOQNlnx+ib3gaYf+fZIsaiHCALakpKS0SRKYik8SpAZvJZwkb6J2KMwG+bmb3nEVUU3j1APfYyLc3dpfSC+to5PaBBFIoGmWpIZIXkMVjP870tTilFdtM1dGcYozZlHd9mLipcM7y87FfmRLN7q7uRc4eYlirr3kfKvYUcaldq/kfJphIhVmPzOC7eJ1+vEAn4UMkcl19tssekrwXc5WPP2VhfAGYotwinKVbgtXmV4qW9u+Kxi7exT+dD8kbg+hBfcWLvRUuFRICj3Oc8e7YwywJi4nd8wj//+CgkfyzVl2cIEAVpi6ETX3QtBDr2FzOzvzS17ZdPoW
+ IYMro5am
+ YYkwU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,136 +108,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 1/23/26 12:06 AM, Lorenzo Stoakes wrote:
-> In order to be able to use only vma_flags_t in vm_area_desc we must adjust
-> shmem file setup functions to operate in terms of vma_flags_t rather than
-> vm_flags_t.
+On 2026/1/23 1:32, Andrew Morton wrote:
+> On Thu, 22 Jan 2026 12:00:08 +0100 kernel test robot <lkp@intel.com> wrote:
 > 
-> This patch makes this change and updates all callers to use the new
-> functions.
+>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+>> head:   dc4fe40a11269aead253fa0beb098b00417b8694
+>> commit: ce9b369feafe8c65aa134b0c8791bf7f19e463e2 [279/310] selftests/mm: add memory failure clean pagecache test
+>> config: i386-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260122/202601221142.mDWA1ucw-lkp@intel.com/config)
+>> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+>> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260122/202601221142.mDWA1ucw-lkp@intel.com/reproduce)
+>>
+>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <lkp@intel.com>
+>> | Closes: https://lore.kernel.org/oe-kbuild-all/202601221142.mDWA1ucw-lkp@intel.com/
+>>
+>> All warnings (new ones prefixed by >>):
+>>
+>>>> memory-failure.c:275:49: warning: format specifies type 'unsigned long' but the argument has type '__fsword_t' (aka 'int') [-Wformat]
+>>      275 |                 SKIP(return, "unsupported filesystem :%lx\n", fs_type);
+>>          |                                                       ~~~     ^~~~~~~
+>>          |                                                       %x
 > 
-> No functional changes intended.
+> Thanks.
 > 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> I don't think we can rely upon libc's __fsword_t being `int' in all
+> situations for all time?
+> 
+> We could add the typecast but perhaps it's better to change
+> get_fs_type() to return int?
 
-(reduced distribution list too)
+Yes, changing get_fs_type() to return int looks good to me. Will do it in v3.
 
-Thanks. The shmem part looks good to me with some nits below.
-
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
-> ---
->   arch/x86/kernel/cpu/sgx/ioctl.c           |  2 +-
->   drivers/gpu/drm/drm_gem.c                 |  5 +-
->   drivers/gpu/drm/i915/gem/i915_gem_shmem.c |  2 +-
->   drivers/gpu/drm/i915/gem/i915_gem_ttm.c   |  3 +-
->   drivers/gpu/drm/i915/gt/shmem_utils.c     |  3 +-
->   drivers/gpu/drm/ttm/tests/ttm_tt_test.c   |  2 +-
->   drivers/gpu/drm/ttm/ttm_backup.c          |  3 +-
->   drivers/gpu/drm/ttm/ttm_tt.c              |  2 +-
->   fs/xfs/scrub/xfile.c                      |  3 +-
->   fs/xfs/xfs_buf_mem.c                      |  2 +-
->   include/linux/shmem_fs.h                  |  8 ++-
->   ipc/shm.c                                 |  6 +--
->   mm/memfd.c                                |  2 +-
->   mm/memfd_luo.c                            |  2 +-
->   mm/shmem.c                                | 59 +++++++++++++----------
->   security/keys/big_key.c                   |  2 +-
->   16 files changed, 57 insertions(+), 49 deletions(-)
-
-[snip]
-
->   	inode->i_flags |= i_flags;
-> @@ -5864,9 +5869,10 @@ static struct file *__shmem_file_setup(struct vfsmount *mnt, const char *name,
->    *	checks are provided at the key or shm level rather than the inode.
->    * @name: name for dentry (to be seen in /proc/<pid>/maps)
->    * @size: size to be set for the file
-> - * @flags: VM_NORESERVE suppresses pre-accounting of the entire object size
-> + * @vma_flags: VMA_NORESERVE_BIT suppresses pre-accounting of the entire object size
-
-nit: s/vma_flags/flags
-
->    */
-> -struct file *shmem_kernel_file_setup(const char *name, loff_t size, unsigned long flags)
-> +struct file *shmem_kernel_file_setup(const char *name, loff_t size,
-> +				     vma_flags_t flags)
->   {
->   	return __shmem_file_setup(shm_mnt, name, size, flags, S_PRIVATE);
->   }
-> @@ -5878,7 +5884,7 @@ EXPORT_SYMBOL_GPL(shmem_kernel_file_setup);
->    * @size: size to be set for the file
->    * @flags: VM_NORESERVE suppresses pre-accounting of the entire object size
-
-nit: s/VM_NORESERVE/VMA_NORESERVE_BIT
-
->    */
-> -struct file *shmem_file_setup(const char *name, loff_t size, unsigned long flags)
-> +struct file *shmem_file_setup(const char *name, loff_t size, vma_flags_t flags)
->   {
->   	return __shmem_file_setup(shm_mnt, name, size, flags, 0);
->   }
-> @@ -5889,16 +5895,17 @@ EXPORT_SYMBOL_GPL(shmem_file_setup);
->    * @mnt: the tmpfs mount where the file will be created
->    * @name: name for dentry (to be seen in /proc/<pid>/maps)
->    * @size: size to be set for the file
-> - * @flags: VM_NORESERVE suppresses pre-accounting of the entire object size
-> + * @flags: VMA_NORESERVE_BIT suppresses pre-accounting of the entire object size
->    */
->   struct file *shmem_file_setup_with_mnt(struct vfsmount *mnt, const char *name,
-> -				       loff_t size, unsigned long flags)
-> +				       loff_t size, vma_flags_t flags)
->   {
->   	return __shmem_file_setup(mnt, name, size, flags, 0);
->   }
->   EXPORT_SYMBOL_GPL(shmem_file_setup_with_mnt);
->   
-> -static struct file *__shmem_zero_setup(unsigned long start, unsigned long end, vm_flags_t vm_flags)
-> +static struct file *__shmem_zero_setup(unsigned long start, unsigned long end,
-> +		vma_flags_t flags)
->   {
->   	loff_t size = end - start;
->   
-> @@ -5908,7 +5915,7 @@ static struct file *__shmem_zero_setup(unsigned long start, unsigned long end, v
->   	 * accessible to the user through its mapping, use S_PRIVATE flag to
->   	 * bypass file security, in the same way as shmem_kernel_file_setup().
->   	 */
-> -	return shmem_kernel_file_setup("dev/zero", size, vm_flags);
-> +	return shmem_kernel_file_setup("dev/zero", size, flags);
->   }
->   
->   /**
-> @@ -5918,7 +5925,7 @@ static struct file *__shmem_zero_setup(unsigned long start, unsigned long end, v
->    */
->   int shmem_zero_setup(struct vm_area_struct *vma)
->   {
-> -	struct file *file = __shmem_zero_setup(vma->vm_start, vma->vm_end, vma->vm_flags);
-> +	struct file *file = __shmem_zero_setup(vma->vm_start, vma->vm_end, vma->flags);
->   
->   	if (IS_ERR(file))
->   		return PTR_ERR(file);
-> @@ -5939,7 +5946,7 @@ int shmem_zero_setup(struct vm_area_struct *vma)
->    */
->   int shmem_zero_setup_desc(struct vm_area_desc *desc)
->   {
-> -	struct file *file = __shmem_zero_setup(desc->start, desc->end, desc->vm_flags);
-> +	struct file *file = __shmem_zero_setup(desc->start, desc->end, desc->vma_flags);
->   
->   	if (IS_ERR(file))
->   		return PTR_ERR(file);
-> diff --git a/security/keys/big_key.c b/security/keys/big_key.c
-> index d46862ab90d6..268f702df380 100644
-> --- a/security/keys/big_key.c
-> +++ b/security/keys/big_key.c
-> @@ -103,7 +103,7 @@ int big_key_preparse(struct key_preparsed_payload *prep)
->   					 0, enckey);
->   
->   		/* save aligned data to file */
-> -		file = shmem_kernel_file_setup("", enclen, 0);
-> +		file = shmem_kernel_file_setup("", enclen, EMPTY_VMA_FLAGS);
->   		if (IS_ERR(file)) {
->   			ret = PTR_ERR(file);
->   			goto err_enckey;
-
+Thanks.
+.
 
