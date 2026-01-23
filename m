@@ -4,88 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA71FD778B1
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 00:54:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32CC5D778B1
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 00:55:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29E706B056A; Fri, 23 Jan 2026 19:54:20 -0500 (EST)
+	id 7F32E6B056C; Fri, 23 Jan 2026 19:55:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24C006B056C; Fri, 23 Jan 2026 19:54:20 -0500 (EST)
+	id 7CB466B056E; Fri, 23 Jan 2026 19:55:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 178DB6B056D; Fri, 23 Jan 2026 19:54:20 -0500 (EST)
+	id 6CA326B056F; Fri, 23 Jan 2026 19:55:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0089E6B056A
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 19:54:19 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5274816012A
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 23:36:12 +0000 (UTC)
-X-FDA: 84364839384.01.FF00F02
-Received: from mail3-164.sinamail.sina.com.cn (mail3-164.sinamail.sina.com.cn [202.108.3.164])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 22949A0003
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 23:36:08 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 5992D6B056C
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 19:55:57 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BCE1C85538
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:28:46 +0000 (UTC)
+X-FDA: 84364669452.03.1237EC8
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D214BA0006
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:28:44 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=rBni7HNS;
-	spf=pass (imf15.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.164 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jtryQf8n;
+	spf=pass (imf15.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769211370;
+	s=arc-20220608; t=1769207324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qeRxzUMP9svcMWdDmykegfRAU5lDXzkoq901kD2a6LI=;
-	b=ojn2MDwDvcxhOO8x1EL4J35xy3X5mZ1ZSXuEsQ+F40+TujYqcGd4NoR0VZu4zZiIEx80cT
-	8FnjqjA+LY5mhsXCMwZ7ePJHOEF8cCtmLvpm6q19M0aKHN1PAhXBFufv8BKu+h4xY89C15
-	4ey5x2CpPENnThrSNx8cfypSDUnRgdc=
+	bh=6q7jSvteo768fX3RDKijF3HLXLbv8PUQY59d7KtxMqQ=;
+	b=loENSGP3FfYFj57nBwvQV8pEF6gfroDh4tj9WsKrhesh9JKnLJpldzMSzutWNJKwl176Lg
+	rJ9siBGjSGszP0nAlKa6l63ANO8gqMrqOx7xwor7M/jLBkm1ZEcOWaF6nyB8LbpWZlGf5K
+	ap6NTOUYD956gnJKlTJ2Yydy1anigNw=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=rBni7HNS;
-	spf=pass (imf15.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.164 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769211370; a=rsa-sha256;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jtryQf8n;
+	spf=pass (imf15.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769207324; a=rsa-sha256;
 	cv=none;
-	b=RZZS2eWOmk8LeuIRBxeGRgEiwb/5cx39o4LO6MxllNYLjj97p94g7/dhqRIAEXuaLJ7BO0
-	396eUEwPdaBs2hMH8+85WAISwbSE/OQMMoOk0kNt/fSgiiTLA1KLCIz035mQfGIl/yaE3L
-	6lXmP2ENoPC8OcPTyHoMxKqbr1RtYYA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1769211369;
-	bh=qeRxzUMP9svcMWdDmykegfRAU5lDXzkoq901kD2a6LI=;
-	h=From:Subject:Date:Message-ID;
-	b=rBni7HNSQkviegzmMIYKUKGnJC8M0h7y0hW3lthaKE3GKY7HjD00sKE8//f0Ed03h
-	 rxLxqdAJM/Dpq94DgrzvabDnAjBJ2352UAhi6SiZPcbqa2x5/Owwhlh/Iry68YUskO
-	 N1I//0Tt3wEte8QwrzsRX9ZWeNGhxEZgTrFFyMFg=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.160])
-	by sina.com (10.54.253.32) with ESMTP
-	id 697405E00000164D; Fri, 24 Jan 2026 07:36:03 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 4303764456699
-X-SMAIL-UIID: 3327A5830D0942A58BDDC99F01B85E9B-20260124-073603-1
-From: Hillf Danton <hdanton@sina.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Waiman Long <longman@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH RESEND v3 10/10] mm/vma: add and use vma_assert_stabilised()
-Date: Sat, 24 Jan 2026 07:35:48 +0800
-Message-ID: <20260123233550.2378-1-hdanton@sina.com>
-In-Reply-To: <43c90424ba0874a71bb7ab9d6423b3a2bf616f8e.1769086312.git.lorenzo.stoakes@oracle.com>
-References: <cover.1769086312.git.lorenzo.stoakes@oracle.com>
+	b=axALCxiJ+NzoWyhFk1w7zdahGe68TWxh85ovTJyH2eYaYb/Zf4E7bzjFDC/GdbLUbczUBn
+	JXJxk29QzOPWERUF95qFtN1355N2W7Y1rMYjbf/Lz2qh+g23qUHhQKdsWlM3fqtzZLsZ1y
+	GW9y2trceWU+ojM5maTCVhdhiywXFUw=
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-12332910300so3535073c88.0
+        for <linux-mm@kvack.org>; Fri, 23 Jan 2026 14:28:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769207324; x=1769812124; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6q7jSvteo768fX3RDKijF3HLXLbv8PUQY59d7KtxMqQ=;
+        b=jtryQf8nRrVmhKH3QY5z3uDd8/edqfKEmfwjX9KnMEk+6OCefbikGWC+TiIW3dvkzZ
+         L1FlcFG0BfmDCv2LBaZmOSUpZ388H7QXFh3HRjDcdI4OulDpWYXDjb4uG0ltpjgtxSGa
+         lnzZtWUAZDjiQSSZvEijGTrXuz5lOY4hXcVUW1tI1RNE9i3SOXeCBTDCt8YUxnY9VrW4
+         188HNTw3DT7XjnROuRNugZAp2KPD1/j26fbcTmckDxn/P4nvCpSpKjQksW3NQ5vdriDc
+         H8TSJyg0vkjX80zgcS4uHMqp6wCpNUc00jGoDoT60hza4JyenFB/T71QGR8N0MBnnYVy
+         N09A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769207324; x=1769812124;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6q7jSvteo768fX3RDKijF3HLXLbv8PUQY59d7KtxMqQ=;
+        b=KSvYYvZREQEDPGazMMKu9tm2J/bpf+Z9IKe92nodX3vsRXoO6KNtPTzEAyRsJKVyEA
+         CMJthJSphL7OIEO7ovOlxDtsIZbQR3xKMF9tjpNRUhzQGSL79wOgak/weLK06DIKq1zo
+         1MW5jobxlQP36CEYmIbUjSjMa0ddDl5QznGQzSOW/+ELH5vluhvCnDW+qT0PFQgxHYcX
+         oDRty9WQn/ymnSgyI/sGKG/uspctczTQ2z99o/iEw0wCkALiFTVk9gmFkdudpD7VfaWi
+         DWRfweq6acPtZgGQPkg/IOINxafk/+fC2kWKqTMD7fZmVX7vXOMq0CTFUWBYeHgWZ5Wp
+         SHBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbWTXIPHbk2MN22UxTbFrlZFYfXb6hxuAet//Q87r4Wdw7fmttgFWo7kynsLyVfXX5Awf3UJMRQg==@kvack.org
+X-Gm-Message-State: AOJu0Yz0sq1D9CF3ii9skacCLnJKLE8pp3pWNbkl38NG1U1EAodgLCpj
+	+T8aCY4WGbFbqEeGmmN9VrlhLQ6T14Atw35GoK2zovy1QPg4QyHtby95gYUvwQ==
+X-Gm-Gg: AZuq6aJ5Mm4ih5k1ojCW8Ipu+tmLzxDXztmbea4lT8Y1d5Yc5ACYJ/+J1I6tczz6L/Y
+	/T7EJzLm1yk64YHGi364lo6BIwGH0U9KBq06O8a8jnUAODBfpbwRMdo/rHhsIstaOIKv4roCmW9
+	yiNd9etNFzVbI5LThTYOF3IUpl6u02sC/r8/f/Z7UiwONr9mHydKCbLXgotkmh4G6LvnRiPEpON
+	hM2ZCNCOKdhh5WYaClW8NsD7deh0+NNixwqFgkBbW5BqU8IdH6gr8J5VTOqn90V3yeW0YKeN+xo
+	pIXL0PGLwcjYmpKVfWe7YP+4OvjasTunEKjkMtJ1DDhwl5MzOTBvJZaeYsajraS3NVWu6hG6Lko
+	4x1q4jJPirq043lF6CA/1duyvuc0I60T4MkQ5jeff5sIGPi6ENNTzhOHDQoYIJAsm7V1627HUu3
+	qJptP7qSET5PDe6eowqk38
+X-Received: by 2002:a05:7300:230a:b0:2af:674e:bc73 with SMTP id 5a478bee46e88-2b74274cff4mr1359399eec.7.1769201226027;
+        Fri, 23 Jan 2026 12:47:06 -0800 (PST)
+Received: from [192.168.4.196] ([73.222.117.172])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73a691b1esm4476320eec.3.2026.01.23.12.47.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jan 2026 12:47:05 -0800 (PST)
+Message-ID: <b90069a3-86b4-4fba-9ff3-fe5f6c4e425d@gmail.com>
+Date: Fri, 23 Jan 2026 12:47:02 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zqdxsrc4zibfwhe6xwpa3boaae7or84g
-X-Rspamd-Queue-Id: 22949A0003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH bpf-next v3 09/12] selftests/bpf: Add tests for
+ memcg_bpf_ops
+To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Jeff Xu <jeffxu@chromium.org>, mkoutny@suse.com,
+ Jan Hendrik Farr <kernel@jfarr.cc>, Christian Brauner <brauner@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Brian Gerst <brgerst@gmail.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, davem@davemloft.net,
+ Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ Willem de Bruijn <willemb@google.com>, Jason Xing
+ <kerneljasonxing@gmail.com>, Paul Chaignon <paul.chaignon@gmail.com>,
+ Anton Protopopov <a.s.protopopov@gmail.com>, Amery Hung
+ <ameryhung@gmail.com>, Chen Ridong <chenridong@huaweicloud.com>,
+ Lance Yang <lance.yang@linux.dev>, Jiayuan Chen <jiayuan.chen@linux.dev>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>, Geliang Tang <geliang@kernel.org>
+References: <cover.1769157382.git.zhuhui@kylinos.cn>
+ <c44accaaaebfc32be13234f82b501a3852ba3f0f.1769157382.git.zhuhui@kylinos.cn>
+Content-Language: en-US
+From: JP Kobryn <inwardvessel@gmail.com>
+In-Reply-To: <c44accaaaebfc32be13234f82b501a3852ba3f0f.1769157382.git.zhuhui@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1769211368-798635
-X-HE-Meta: U2FsdGVkX19tnqOT2SkupdZnQ7pdUhDELNWWU0C5oYpiYLTG1he8uLyYPKJmi26FDq1iZA/QHA7tAG2JZ0MgwxI/tN2qKmb7k7aAcvr0dZYMJK2FJ5OkQb3NDkGxnWKboDokyO8H6zO0qkxbo9rXfZtgNPrI/DGSl6oJs1/Ur04HtnAcpYCd7gaabaRkp1HQdCMto8OXSf5uSCp8aUJ8YOO3oZxHuCUR7lgIm3rXg1AscGNMfl7iJjOAwZsyQlgbzNe5lSn31Tc/WYJlZ96/1NAtRBJrWnsY4Ljl2q4/7jJvhWQveIn5E5QA5z3YpMDqCDABd2eis25VMjYL2r+OvTZlMqtMkWwlTU5Bd9vNKOjpUtasslINC+3sM4g5y9OPgUYaP6lwyjQwBwtofWY2zPwCT4FSDqqU+BLRzbRmzRma99BPEE60JtueJ5lYbagHbxwCbwsbbtqc5257H1maGyH8F17PXgqS2x4bkz7jb/xFi8fPOmgpGCwoCmdCOxkI9Eq5HuzHlM4TaNjtIyJidm7fL7Equ0qOVLbpUPX1kNVG6OWZNSut6A80jvqmY+RtNe475LzWXh1y9XcIUKklpmszWu7zctmHmAo0kKenqMFfw1TViy89F2j1Lq3AZSbg8ki8emBUc47/tp3DcbTlLDJlAVXv1fRxMrymcj8Pmg9TATKGTskKD6fYQggCfdfPZsAurRZ53Jgxg9RaHTFIfjHlxew8Y+j2v5AB7QbjXXOow5JOtd0cMtMqU/uSH4Ibn1L3/7wSEZ3YgUq56BYle9dtQf/C0xRTIWCWdPwY67sdXFCyfFos4Z4VZfuIvUJxJhU5Hrz4tjMZh8qHkdVevPf9Jk5++5KVaEdpFJoZCC7MfvqvMpb6+so3w+tqEaiKbFlAGbej9p16GHUc32PPzrOLr6EiIte+/w21YwtogRSQs2RjfIWYtmKXLEiP5eFQrHntNTq+1tr8cbpDmw8
- 0GVSSgcF
- vG7Z6bqMl2Xq5JSZbXjT+U6U/3bRy3BNtODWQO2DxsWwQnysHxlb6rhsQCiDjX8Xky0y2/sI/nNdE82hvVEMX21r59mUy8j6Jzaa3VInVbQaOS+9c9See1NrW/XICRUxX5MRq5bGYEtUcdBMjqx7l2nxzHkALGqQNm5Yks3k8UfHRQYwnmXfeqbNz95/cqAIxwhgsm0Qn6ULliPln9jwbhvJzfthmo5PlDOvu+I6mTcDN7jGXIY2vMr2GR1Xrd8e9s2AH24VtUBqevFjnSlKBO+SbMi7dEa5P8zXX7rsMWObDu+t4N0NQmEczC4OYyNEJS0dKpsq6lbiyqAYeZS6EBEmwmRY4F8hJVjXl61a3KRgKJ421DvUA+seGf+kt6FxuWW/ENsLGT1eUke1O3DaAMV8MOoQrs57VI+Ixjgj8j+DgtmsZgH4u4t2F/Q==
+X-Rspamd-Queue-Id: D214BA0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ibpmegbzgp9okp5bd38kj4cs8d9fm6is
+X-HE-Tag: 1769207324-388100
+X-HE-Meta: U2FsdGVkX193yZnU95Ue9vMR2caMIBLWTpsr0f5qkHiiGk8u7ebrpYV6ICAYtXNr5QQTccnqwzPQRkQxsbcLwhngxvED6FUSHh7ApIYGJwgbPmv1ePMj/9T1S7duLRqfPbcvU1fUxUPjd213icphsi+W3FNy53sD+HjvEyA/7ALb9pRhCqFbVTFBFiL3KJp8jrhx6570/zKif5KTquGkaGvMPwNxQr/dr1ZG+kZQ9Uz7I43dztFGmCqph0EyVjeJF5nvxMLKfT72c7oWn8OtwRC/8j678S/OZH81dqJIHUMrnCfCvc7L5C4uQbVrCe5VodCYDeSFdiij53o37Aa/U47jBbpDLrViT5ZCk3jscW7hFHj25I4SwnGJHO0gkXvCFCh58EQK50RLSZzvJ6L+aQTl5nkyyzRg8qjv/AUOi1i1xxsuuayTEzB/C1YS1KclRlRHc9e2/SzeQsmnw6rpRNQSmpqzUTsdFUgp6Xzt8vgHMiF4wlZ5M9gMN6Wt+lBYfmJVEPhHkOGeUdVLP4fJUU9hGOzbHBlYjDC407IeQhht1TYAULdqEV2dSC+9Z8cekCGcchQDf6xOnPPyA/t4A0dvQEGsGlcyOxqofolshd1Jd69OKXQBOPEebh96yBJqSfl7ryzEZ/5m+R+evCRriRTHeVO8zUCK6VcnYaqhgJM8RqrfeJ8TXXwh71EOMc1YKL3kaNekhy2yjq6m2RNKTQmI4voXTVx4fMk4Hjyg8TnImgMFNSOsxt5xZnjXfo8o7SC4epFCH6n/1pXDjWSn9qEYSkxYFauGc/U47UsUyk6mWdQD+c94C+9Hkh55uUKxNTwYpuqZRlZfPg9te8kDqExEOS41DMeW2yKp/XcAsOn1jEFqSqE/5hoF3nzBrWrMGI+RWUwP6t2WTWPwrj5HTwfV3bqwIFKV47JR/+aRJ3TBYs3ZWGrgKGCZyMNUTYKSagAf84w6/uNhFmJADio
+ KVA3ecD5
+ AmtRKi5qpkC1hXsBYxpmJ80Mo0pS923Gux186zOktZ2KiCa8SxOjN6Jq8nD7OcFyQ6dG35/eLzJVNO9YIcjYybH+HbF7Ecj+qMRRnn276SKKWij70JYQuuxFexoC7gbfn4ffkwe3VnSmuarYwApq3jhGnT4gY0RlzxRDVAHlH9QIU5oiHD/QuUnyuRBF1UYsNeNW44BnPDTRnKY3aKgPDcmZ/3s/Bzx/yu4RCi7XLL1aCW7JDK1v9q9c+ZeZC7PaJQc2jgJSIT2hGOU/Z/7kag4ZlGFJdO7OEOn5FBGhtwdKwpOrgfZN0B5frrMHRz2j+dMTYbgGYeXasyWmMD2DhVYXTdOZjgSvksF3eLyCJH2WhCGv0syHtJIES0BchBOq/+07lxXkdStg9BDmYqdatwZH6R0gxsHUr9hegFMJdunLGCJqcrOgQNcxUHP1IcFuzouruiyG5MzG5PcbGMOIfaUoVHLWhyARdC6s0H2Bjyub0H0IagYwXSjIgyqzMSFtjmwUXaJBGn+meXkJndDWCFPYaf0Buc+IjFHaptuot4bOR6fPpY+bs/xSze9Ig2cyevLAo5n018HckYLo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,57 +147,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 22 Jan 2026 13:02:02 +0000 Lorenzo Stoakes wrote:
-> +/**
-> + * vma_assert_stabilised() - assert that this VMA cannot be changed from
-> + * underneath us either by having a VMA or mmap lock held.
-> + * @vma: The VMA whose stability we wish to assess.
-> + *
-> + * If lockdep is enabled we can precisely ensure stability via either an mmap
-> + * lock owned by us or a specific VMA lock.
-> + *
-> + * With lockdep disabled we may sometimes race with other threads acquiring the
-> + * mmap read lock simultaneous with our VMA read lock.
-> + */
-> +static inline void vma_assert_stabilised(struct vm_area_struct *vma)
-> +{
-> +	/*
-> +	 * If another thread owns an mmap lock, it may go away at any time, and
-> +	 * thus is no guarantee of stability.
-> +	 *
-> +	 * If lockdep is enabled we can accurately determine if an mmap lock is
-> +	 * held and owned by us. Otherwise we must approximate.
-> +	 *
-> +	 * It doesn't necessarily mean we are not stabilised however, as we may
-> +	 * hold a VMA read lock (not a write lock as this would require an owned
-> +	 * mmap lock).
-> +	 *
-> +	 * If (assuming lockdep is not enabled) we were to assert a VMA read
-> +	 * lock first we may also run into issues, as other threads can hold VMA
-> +	 * read locks simlutaneous to us.
-> +	 *
-> +	 * Therefore if lockdep is not enabled we risk a false negative (i.e. no
-> +	 * assert fired). If accurate checking is required, enable lockdep.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_LOCKDEP)) {
-> +		if (lockdep_is_held(&vma->vm_mm->mmap_lock))
-> +			return;
-> +	} else {
-> +		if (rwsem_is_locked(&vma->vm_mm->mmap_lock))
-> +			return;
-> +	}
-In case of the mmap_lock, rwsem_is_locked has nothing to do with lockdep_is_held,
-as the latter is noop without lockdep enabled. And the former fails to match the
-us in "assert that this VMA cannot be changed from underneath us either by having
-a VMA or mmap lock held".
+Hi Hui,
 
-That said, you are adding confusion.
+On 1/23/26 1:00 AM, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> Add a comprehensive selftest suite for the `memcg_bpf_ops`
+> functionality. These tests validate that BPF programs can correctly
+> influence memory cgroup throttling behavior by implementing the new
+> hooks.
+> 
+> The test suite is added in `prog_tests/memcg_ops.c` and covers
+> several key scenarios:
+> 
+> 1. `test_memcg_ops_over_high`:
+>     Verifies that a BPF program can trigger throttling on a low-priority
+>     cgroup by returning a delay from the `get_high_delay_ms` hook when a
+>     high-priority cgroup is under pressure.
+> 
+> 2. `test_memcg_ops_below_low_over_high`:
+>     Tests the combination of the `below_low` and `get_high_delay_ms`
+>     hooks, ensuring they work together as expected.
+> 
+> 3. `test_memcg_ops_below_min_over_high`:
+>     Validates the interaction between the `below_min` and
+>     `get_high_delay_ms` hooks.
+> 
+> The test framework sets up a cgroup hierarchy with high and low
+> priority groups, attaches BPF programs, runs memory-intensive
+> workloads, and asserts that the observed throttling (measured by
+> workload execution time) matches expectations.
+> 
+> The BPF program (`progs/memcg_ops.c`) uses a tracepoint on
+> `memcg:count_memcg_events` (specifically PGFAULT) to detect memory
+> pressure and trigger the appropriate hooks in response. This test
+> suite provides essential validation for the new memory control
+> mechanisms.
+> 
+> Signed-off-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+[..]
+> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> new file mode 100644
+> index 000000000000..9a8d16296f2d
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> @@ -0,0 +1,537 @@
+[..]
 > +
-> +	/*
-> +	 * We're not stabilised by the mmap lock, so assert that we're
-> +	 * stabilised by a VMA lock.
-> +	 */
-> +	vma_assert_locked(vma);
+> +static void
+> +real_test_memcg_ops_child_work(const char *cgroup_path,
+> +			       char *data_filename,
+> +			       char *time_filename,
+> +			       int read_times)
+> +{
+> +	struct timeval start, end;
+> +	double elapsed;
+> +	FILE *fp;
+> +
+> +	if (!ASSERT_OK(join_parent_cgroup(cgroup_path), "join_parent_cgroup"))
+> +		goto out;
+> +
+> +	if (env.verbosity >= VERBOSE_NORMAL)
+> +		printf("%s %d begin\n", __func__, getpid());
+> +
+> +	gettimeofday(&start, NULL);
+> +
+> +	if (!ASSERT_OK(write_file(data_filename), "write_file"))
+> +		goto out;
+> +
+> +	if (env.verbosity >= VERBOSE_NORMAL)
+> +		printf("%s %d write_file done\n", __func__, getpid());
+> +
+> +	if (!ASSERT_OK(read_file(data_filename, read_times), "read_file"))
+> +		goto out;
+> +
+> +	gettimeofday(&end, NULL);
+> +
+> +	elapsed = (end.tv_sec - start.tv_sec) +
+> +		  (end.tv_usec - start.tv_usec) / 1000000.0;
+> +
+> +	if (env.verbosity >= VERBOSE_NORMAL)
+> +		printf("%s %d end %.6f\n", __func__, getpid(), elapsed);
+> +
+> +	fp = fopen(time_filename, "w");
+> +	if (!ASSERT_OK_PTR(fp, "fopen"))
+> +		goto out;
+> +	fprintf(fp, "%.6f", elapsed);
+> +	fclose(fp);
+> +
+> +out:
+> +	exit(0);
 > +}
 > +
+
+[..]
+
+> +static void real_test_memcg_ops(int read_times)
+> +{
+> +	int ret;
+> +	char data_file1[] = "/tmp/test_data_XXXXXX";
+> +	char data_file2[] = "/tmp/test_data_XXXXXX";
+> +	char time_file1[] = "/tmp/test_time_XXXXXX";
+> +	char time_file2[] = "/tmp/test_time_XXXXXX";
+> +	pid_t pid1, pid2;
+> +	double time1, time2;
+> +
+> +	ret = mkstemp(data_file1);
+> +	if (!ASSERT_GT(ret, 0, "mkstemp"))
+> +		return;
+> +	close(ret);
+> +	ret = mkstemp(data_file2);
+> +	if (!ASSERT_GT(ret, 0, "mkstemp"))
+> +		goto cleanup_data_file1;
+> +	close(ret);
+> +	ret = mkstemp(time_file1);
+> +	if (!ASSERT_GT(ret, 0, "mkstemp"))
+> +		goto cleanup_data_file2;
+> +	close(ret);
+> +	ret = mkstemp(time_file2);
+> +	if (!ASSERT_GT(ret, 0, "mkstemp"))
+> +		goto cleanup_time_file1;
+> +	close(ret);
+> +
+> +	pid1 = fork();
+> +	if (!ASSERT_GE(pid1, 0, "fork"))
+> +		goto cleanup;
+> +	if (pid1 == 0)
+> +		real_test_memcg_ops_child_work(CG_LOW_DIR,
+> +					       data_file1,
+> +					       time_file1,
+> +					       read_times);
+
+Would it be better to call exit() after real_test_memcg_ops_child_work()
+instead of within it? This way the fork/exit/wait logic is contained in
+the same scope making the lifetimes easier to track. I had to go back
+and search for the call to exit() since at a glance this function
+appears to proceed to call fork() and waitpid() from within both parent
+and child procs (though it really does not).
 
