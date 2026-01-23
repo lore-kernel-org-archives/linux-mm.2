@@ -4,90 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99588D7235E
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 09:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FA39D72361
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 09:37:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78B4B6B0496; Fri, 23 Jan 2026 04:36:26 -0500 (EST)
+	id C42366B0499; Fri, 23 Jan 2026 04:37:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5EB6B0498; Fri, 23 Jan 2026 04:36:26 -0500 (EST)
+	id C10056B049A; Fri, 23 Jan 2026 04:37:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50EEC6B0499; Fri, 23 Jan 2026 04:36:26 -0500 (EST)
+	id B3DFA6B049B; Fri, 23 Jan 2026 04:37:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 288476B0496
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:36:26 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C702913AD97
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:36:25 +0000 (UTC)
-X-FDA: 84362723130.26.BB52FBE
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8C23740006
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:36:22 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oufEqBUp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of pankaj.raghav@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769160984; a=rsa-sha256;
-	cv=none;
-	b=EK48OBjw24rubVW9EBCS5zgYHvy5K2yUAtS3fbCnZMAGFvoYE4GzNmXHGGgxm+wQusxGtu
-	qRnuHxrXKBCyuc8Mu7vv69RAcbtUPjM5KD5xrTkA4puBhB+oAWsxIcDsl5kMjxaaB+1xhI
-	qgDy/3udIb3XIynkW5/0MF4NCIQgS44=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oufEqBUp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of pankaj.raghav@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A34566B0499
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 04:37:48 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73E5913A336
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:37:48 +0000 (UTC)
+X-FDA: 84362726616.27.DE9CF55
+Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9E19040009
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 09:37:46 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=XPuf3GD3;
+	spf=pass (imf04.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.100 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769160984;
+	s=arc-20220608; t=1769161066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+raCG8SaitsTIi5zQQn9wM+Kv63F7dcRop2Be2n8BZ8=;
-	b=SEQdrTacmreb2impCxIZx5mzbulWf8/1ogOiZ7pOT7WymJIPZ/pLQu3LBaK9DvhHnGyM3i
-	QlqYlPK5LL55oAvxi+u5E3yGMSKityEEypiu1ACaDQVWZ0byzmZtAjt76swcKsnmRDRHJZ
-	jbwXYgPfbyiMzmw1mCIpstntWjXaEEw=
-Date: Fri, 23 Jan 2026 10:36:07 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769160980;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+raCG8SaitsTIi5zQQn9wM+Kv63F7dcRop2Be2n8BZ8=;
-	b=oufEqBUpveKXz9Nh2d6cKlwH+BjDtVHcS9ZSqv9FByEabAX9nSokfXDvQdt95Ox9bbeG1x
-	80qcTLshm81T8IUb72glXNWM/Fp0Ac79SH/DLLhbN/zurPao7LVaRJPX/FG5uVsw3onSMr
-	x5b+MPob0q36A5jrPwVgaudVpXFf30w=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: Brian Foster <bfoster@redhat.com>, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, jack@suse.cz, willy@infradead.org, mcgrof@kernel.org, 
-	clm@meta.com, david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk, 
-	hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net, 
-	cem@kernel.org, wangyufei@vivo.com, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-xfs@vger.kernel.org, gost.dev@samsung.com, 
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v3 0/6] AG aware parallel writeback for XFS
-Message-ID: <qkob3hnekz5wv3fkkjagwr5o2mr3rdplfzzmwutbhjwd34beez@hdgapt3jw7js>
-References: <CGME20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4@epcas5p1.samsung.com>
- <20260116100818.7576-1-kundan.kumar@samsung.com>
- <aXEvAD5Rf5QLp4Ma@bfoster>
- <ca048ecf-5aec-4a0d-8faf-ad9fcd310e21@samsung.com>
+	bh=Rp2VULi0fBLTwGA/yaOsvDnY5wjUVyKvQyK7cbRL0CY=;
+	b=z7o6oo66jOZ9C2MrFjZK+zJMDV4B4CY5zxvm+zz00NPXQ0KRuFzdAtu0tjvTcVGjlCTF39
+	70ib3KsGL0KavIPB9qrNvxXDhgJKKX/rXv3n/D/myVWoTYGgLC08yOTcFrTwdivHggg65b
+	QJtiyX3DrVqU8nJ0pSzmW2kRyQb1/0I=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=XPuf3GD3;
+	spf=pass (imf04.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.100 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769161066; a=rsa-sha256;
+	cv=none;
+	b=14pVrvCsCFq6feYSr9pQO7l7uIxIdl2voWSGURjOhoWfYGSg5Rwj/bzWygt1MiM4UUphRR
+	MUQy61r3wUnbUo3UZZg4JfkpbSB3k19fL0pBQtgFADTy2SM2YHlDL8fjK61tY4+TSP1kvO
+	8qU1XXS7XFjF9AzdErTyLP2BIzk1syI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1769161064; x=1769420264;
+	bh=Rp2VULi0fBLTwGA/yaOsvDnY5wjUVyKvQyK7cbRL0CY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=XPuf3GD3SuKsSc/v9LiPv5pLh9ApRBMe+Uxxgx+XrC2nOiqeBLEqxnTHo25QW0+4g
+	 bFiHP8gUTVtmizCYGudMPmsLIuH6COSg/TXAhCud5iYutrRYynGoIq8h3RsO+9Ec+P
+	 7zH0f0WoicQuUAT4DXqX8jO3g0Qg8NgJ9WOFfLfGfW83x5te6l/mipoHg30sHpvdkl
+	 PI+EFux1+Pv0i6UfB1e+C8xX1zcAh5wMZT5mky3Cd6YmubEJjT5jMLv13g0IuG+Y9H
+	 /Rk1wvOcCi6Mi9VaEIWcAuI8WQNYaS5VLa7Ws9q8tfzLx3QlGQKIQwXHsgYAcG9Ag5
+	 T95GrR+R1Nghg==
+Date: Fri, 23 Jan 2026 09:37:40 +0000
+To: Mike Rapoport <rppt@kernel.org>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Alexander Potapenko <glider@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 06/13] mm/execmem: Untag addresses in EXECMEM_ROX related pointer arithmetic
+Message-ID: <aXNBTJzIKeRjQM6O@wieczorr-mobl1.localdomain>
+In-Reply-To: <aXH8wQbyjFqlueNS@kernel.org>
+References: <cover.1768845098.git.m.wieczorretman@pm.me> <50701245bae3d2c543f518d206539ba71367075c.1768845098.git.m.wieczorretman@pm.me> <aXH8wQbyjFqlueNS@kernel.org>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 9c1f3083fa95ea7cc89356969f370676767d2ed7
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ca048ecf-5aec-4a0d-8faf-ad9fcd310e21@samsung.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8C23740006
-X-Stat-Signature: ccx1sge6hfqmw4g8ykdrq35j4hgyt8me
-X-HE-Tag: 1769160982-567017
-X-HE-Meta: U2FsdGVkX1+cb5/T/BtvhvESPYsoMUeZ0hLMu58rYeD2YUCQWX3Gfdf9E35VZNTomT/GX2MIpzA2tSWVdRE6gtV9UF6ckKAeDZS0LTRSwcLUoI36W0OXlAatmwv8+n/U12wL8r5iSCOtMgFe1GIAziIm1PXpUimVmE4CQY7NY+VSV8jq7KJDw45pQulAfNPMPJVsm7Q+YzttX7PRzDi+gdyTKT0OlMW2AVGtxLr+hYvAABn4w5XzJGxVZrn0MrN7l4ggSJ2eNkLvCTELLOFhQoKcYI+O/MoFpdGk/MHtHOg5iqsMCo66TPChRCmrkGhhcGNdpgRW4t79HapjBtNJkwgKJTMehaUYgI36vrXy2C/+yOEIi7TcLL7WAgzht+eiuVZXVLIDB3r3t3f7Cs5+j1qf7N/LvUQw5LGVBTkTo3fiFPzCdPlFBD+B0NSj8keEKlkfui0tBgi8r7aI0POE49yKjTnRSIXEF9ileVm8yCQ10+uvMurgfQr0aLJKfmRaNq9XP+z66MzSDrdl58drn7bpXKFP5hjTAcqLHOQu4GPoXCXAwT1lZj8TEvHZAPHwo0/agsIHQQuB2rGe0rqk4NTdr3y+oJyRp2xzK7ifQwUl3M4j+mkx+dDQWaWqYWjRNGkPnSdxivzm1LJcQarYFIWSFDZpxm0LPn6TWEaOwfy6/7zTcTco4nu99gVcV8chvtx0i3HzJbtFmZBWCBcj+eozoqmrpJpDHvvnLSuXbG5lDG8GPV1c7pYl8k3pWWFyrFv21sKniBFPZp3oNpPlOkNBkPOHbOMLjwTO9H8TyR6bOsS0WrY5QTVHuYfY1qlHW1H4JDIm8QnKkb5p8TugHgbhG2YmJj86P3e5kEgpm5uLSZPYymH/15YHqMonP9fGYbeOa/W04an8rMy5WtQc6g==
+X-Rspamd-Queue-Id: 9E19040009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ew6nc7xmfq6k3wyyk3kqttdj47qat1qx
+X-HE-Tag: 1769161066-256079
+X-HE-Meta: U2FsdGVkX18nG2xSrFTntCNyQlLpBR9LQNVm7UvRkswsBdyUSaHr09r8FouKQYP4jZbm+eawvYg8BnLzbCfWJbu6Hwe2Ww3poY597kMRyo16gYM+pkgB7EgTum4BBZDUdFFRJyqciPFPxqv6+WF2XZNZWF0jaSm3RQnOHSwm4fwkTuGiEKkGO6Bdo4vg6zG9t/Zf5ShY/ZVhsxmhBXqhbnXVPxz21c3xwqAyVisSV+H36wxvRZANtU5g74rrVNnta2OGGVM6wcBuXlpLbFPl5pT/Vh/rM34iHB4aSHsxltRqJSr0j++vXLEgZIR0PaF2xEUi1BZji9hc19Nk8V5xvp6GGYxMhaL8m+PUhdd03DuyMZvc3njbhpYZ4Y1FHli1OOp4MIX9MYqq8xgX0QN0rS4m1iU0GsjPxByG0L8a9LwU0nwjnjrSqo4C1aCnXt9IAdxDJOCMyWMo/UsrcOINDjV4k4MEEf8+6eDgRmPJZkrVrEwoC+vq2K4/vtJyQA3EHJ1Lptj67HxaTg/zQb7Cpn23MEJW2QFnkTMqt69xAeWE9R84LcQe9++znzrhMMb12pMFR7jo4mgJeKLR+1/3SH8tdtmLod7peCPYUs3BlGVDxCt6EuTufqBEm047LBYuAPXuZwAg+kcjlUHrNg7gm8aSYaMLHCKaBbz8JQFbUjhZDD9qRHNkX5ElyAkAOYSxgc4vwZbuG1/1v1Y5+eAsM1EvFkcBYwBpYDElqlIOPGSlZH8Kr9IqdE1A1wPesk4W8AstxhSqZzEHUiZDTqGiMAvXyYwPt1ok9XLsAhPr1xv8sSfvYQVfS2JAIOY7Kay/dmFOj/sTrnWZIcEe3sJF5YdsoZjMbW6hUi9kiTp81QnkSwbkN5hqwfi9/tTbPATz/r5bfd23+kaWpzNcySmX7kl7CGdpLf26VvqDgZo597mYSdxZwDFJuWbROGYrX/nn78rBORwVp/t5pXRP0sh
+ Xc58EqYl
+ ZXPvPX/FN2ywEoUVHbEL/r+caLXR/gf/NoTQ09SS/sv5vWBTKQiZkOKLl3acX/56B6CpyBBs0dRlNUfZwykFvy+TgJ+AOxLpMzplUJlrafwMR05ZwR3wi8HRahUpyhlZrfHJMp/4dUhX35CqVfmxgWK10UMoI0D+IfuBsPXCmzialvC6KY6vei31PEOyWgN7XVNYWe20t+5gtuovwM7LSwacCjGgoKBpUrlN9Sac5IE15V9GMPtjNTaPWP05r60YrwykhO4Toal+FcY1jBuKmqW7r6uDb1ZFQf0nX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,39 +90,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > So stepping back it kind of feels to me like the write time hinting has
-> > so much potential for inaccuracy and unpredictability of writeback time
-> > behavior (for the delalloc case), that it makes me wonder if we're
-> > effectively just enabling arbitrary concurrency at writeback time and
-> > perhaps seeing benefit from that. If so, that makes me wonder if the
-> > associated value can be gained by somehow simplifying this to not
-> > require write time hinting at all.
-> > 
-> > Have you run any experiments that perhaps rotors inodes to the
-> > individual wb workers based on the inode AG (i.e. basically ignoring all
-> > the write time stuff) by chance? Or anything that otherwise helps
-> > quantify the value of per-ag batching over just basic concurrency? I'd
-> > be interested to see if/how behavior changes with something like that.
-> 
-> Yes, inode-AG based routing has been explored as part of earlier
-> higher-level writeback work (link below), where inodes are affined to
-> writeback contexts based on inode AG. That effectively provides
-> generic concurrency and serves as a useful baseline.
-> https://lore.kernel.org/all/20251014120845.2361-1-kundan.kumar@samsung.com/
-> 
-> The motivation for this series is the complementary case where a
-> single inode’s dirty data spans multiple AGs on aged/fragmented
-> filesystems, where inode-AG affinity breaks down. The folio-level AG
-> hinting here is intended to explore whether finer-grained partitioning
-> provides additional benefit beyond inode-based routing.
-> 
+Thanks!
 
-One thing that would be useful to see in the cover letter is to see how
-these patches work on an aged XFS filesystem as that was the main reason
-you moved to a different approach. And given that you have completely
-changed the design, it would have been better to see this series as an
-RFC as well.
+Kind regards
+Maciej Wiecz=C3=B3r-Retman
 
---
-Pankaj
+On 2026-01-22 at 12:32:33 +0200, Mike Rapoport wrote:
+>On Tue, Jan 20, 2026 at 02:41:43PM +0000, Maciej Wieczor-Retman wrote:
+>> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>>=20
+>> ARCH_HAS_EXECMEM_ROX was re-enabled in x86 at Linux 6.14 release.
+>> vm_reset_perms() calculates range's start and end addresses using min()
+>> and max() functions. To do that it compares pointers but, with KASAN
+>> software tags mode enabled, some are tagged - addr variable is, while
+>> start and end variables aren't. This can cause the wrong address to be
+>> chosen and result in various errors in different places.
+>>=20
+>> Reset tags in the address used as function argument in min(), max().
+>>=20
+>> execmem_cache_add() adds tagged pointers to a maple tree structure,
+>> which then are incorrectly compared when walking the tree. That results
+>> in different pointers being returned later and page permission violation
+>> errors panicking the kernel.
+>>=20
+>> Reset tag of the address range inserted into the maple tree inside
+>> execmem_vmalloc() which then gets propagated to execmem_cache_add().
+>>=20
+>> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>> Acked-by: Alexander Potapenko <glider@google.com>
+>
+>Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>
+>--=20
+>Sincerely yours,
+>Mike.
+
 
