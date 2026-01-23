@@ -4,129 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9910ED72355
-	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:59:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6006D72355
+	for <linux-mm@archiver.kernel.org>; Fri, 23 Jan 2026 08:59:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E18F96B0472; Fri, 23 Jan 2026 03:59:12 -0500 (EST)
+	id 21A176B0474; Fri, 23 Jan 2026 03:59:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFAC16B0474; Fri, 23 Jan 2026 03:59:12 -0500 (EST)
+	id 1DA146B0476; Fri, 23 Jan 2026 03:59:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D19E06B0475; Fri, 23 Jan 2026 03:59:12 -0500 (EST)
+	id 12EF56B0477; Fri, 23 Jan 2026 03:59:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE44B6B0472
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:59:12 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48BDBB904D
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:59:12 +0000 (UTC)
-X-FDA: 84362629344.16.C7BAD91
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5AFA7C0002
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:59:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="a7IIP/Es";
-	spf=pass (imf10.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F1F0E6B0474
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 03:59:26 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B41FB52D60
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:59:26 +0000 (UTC)
+X-FDA: 84362629932.25.455BE92
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 57B5E140009
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 08:59:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769158750;
+	s=arc-20220608; t=1769158765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uLmLgIc/WysrcWe9//I7t11dZt4RG+riPvAd1pdlrBg=;
-	b=xEZBS3p7B+L3MKtXOTOLYjFDfhOv9sJwWLpNQm5E6akRbZF+8EntatWyQ6WMrrmAEsaXe+
-	ztaxOnovpjI8R7ywe9uBEUid7G0LygEbkix1okQPXnOO+cb+QFmNWvsUbPJprmbN4uH0cN
-	WZhoG1TqlOZ9L3Gqyn4uWBsIMW6giP4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="a7IIP/Es";
-	spf=pass (imf10.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769158750; a=rsa-sha256;
-	cv=none;
-	b=MIMLzcZO52db2tmcuHN329AIBpAe/bPYQk8xEZb2gTSxZuv1E6PRtnqfXJRh02k9zvN3Z6
-	zDGehkOp6rvvpNUmp7Pef7O0mwZbHVcVa39VIf/49814bORazD76l8ac2uSyiMfc0M5z0g
-	AUzgDd0we5YpK+bA/rT/Ahu42K3iZHk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769158746;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uLmLgIc/WysrcWe9//I7t11dZt4RG+riPvAd1pdlrBg=;
-	b=a7IIP/EsFUJnD3r7OnHIdd2/eiTbPkC3e6yHe7BggslKBJxB4oQ47RRY0b98uf/B/WTkxM
-	OQmGL1/JCv/S9EGgOwUTCr3OVVhK/BTpgiHN8sZ8WSgXM0gPOvPGTUX26n9gi3LG9mgpSZ
-	nAR6Ug/78D3j1Ymvcl56/aRR5+vBNjw=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jeff Xu <jeffxu@chromium.org>,
-	mkoutny@suse.com,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Christian Brauner <brauner@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	davem@davemloft.net,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Amery Hung <ameryhung@gmail.com>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	Geliang Tang <geliang@kernel.org>
-Subject: [RFC PATCH bpf-next v3 07/12] libbpf: Support passing user-defined flags for struct_ops
-Date: Fri, 23 Jan 2026 16:58:01 +0800
-Message-ID: <006635a13eeae0fe8da56447bc5131f6a80a48bf.1769157382.git.zhuhui@kylinos.cn>
-In-Reply-To: <cover.1769157382.git.zhuhui@kylinos.cn>
-References: <cover.1769157382.git.zhuhui@kylinos.cn>
+	bh=mNDdidm6tinVhHByr2zJoD9S2kdicahCGqDIgOC7Rhg=;
+	b=YuwcdTC4tROwRqKaTxnPXdGN7B/1Qnj6qDi3Uzuk6VSsnv24G5UfNs9L2kbiXCfLOdAlSp
+	0F4eYdU7sd1fal+LJ98DVERJRc7DfJ8TPi4bFC1rvIMcY/thkycEadnhROqfXO3+mTbLte
+	xO1nxa/8nEITg9s8EhvUjS0DovPjmng=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of cuichao1753@phytium.com.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=cuichao1753@phytium.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769158765; a=rsa-sha256;
+	cv=none;
+	b=1+iq33oyxeKeOMzpOBE+7rWaNvPEW7+I6c/U/Sa5wqNUKrbkqK19Ak3AksG11uolCr4UNb
+	Cl7EruGkpBWiilfvZ+e+4lLW8ImqNqyQ/P2L0iGBIlIHn2DIcDRQzDN20geDX4mBS0M3vl
+	Qs9NY2WxEzrU+CsgOjDM9LIy+pkaj9w=
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwD3_mJpOHNpwMQ7Bg--.591S2;
+	Fri, 23 Jan 2026 16:59:21 +0800 (CST)
+Received: from [10.22.77.56] (unknown [123.150.8.50])
+	by mail (Coremail) with SMTP id AQAAfwCH3eplOHNpQ_cVAA--.23981S2;
+	Fri, 23 Jan 2026 16:59:17 +0800 (CST)
+Message-ID: <7b3e1f2d-7a6b-43c4-bab8-cb34d2d57991@phytium.com.cn>
+Date: Fri, 23 Jan 2026 16:59:17 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5AFA7C0002
-X-Stat-Signature: wfzgdsem8yqqbgmwkb6u68nyuh8a6s4w
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID of
+ CFMW
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: dan.j.williams@intel.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Mike Rapoport <rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
+ <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
+ <20260108094812.8757ce3ad8370668eaafb29c@linux-foundation.org>
+ <9132054c-3017-4af0-84e0-e4359b0794a6@phytium.com.cn>
+ <20260115101858.85fd7b8e837c1c92a4fdc5f0@linux-foundation.org>
+ <696944eca1837_34d2a10056@dwillia2-mobl4.notmuch>
+ <2d1e23ad-7ec1-483b-88b3-70ce19b69106@phytium.com.cn>
+ <20260122132807.7204b83e97e33290f6eb7d82@linux-foundation.org>
+From: Cui Chao <cuichao1753@phytium.com.cn>
+In-Reply-To: <20260122132807.7204b83e97e33290f6eb7d82@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:AQAAfwCH3eplOHNpQ_cVAA--.23981S2
+X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAEAGlyhIsEfwAAsq
+X-Coremail-Antispam: 1Uk129KBjvJXoW7Zw1kWr45Xw47CFy5uw1UGFg_yoW8Aw13pa
+	y8Ka9YkFW5Gr1Syws2vw40qrWj9rs7GFyrXw15GryfA3s8Zr1ftr4xKFZ093WDWw4fJ342
+	q3WUXrW5tFW5ZaDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 57B5E140009
+X-Stat-Signature: uj5juwm19ni7g3n5hkfmjjykr863wa9p
 X-Rspam-User: 
-X-HE-Tag: 1769158750-49443
-X-HE-Meta: U2FsdGVkX19TFmSsw2PIwdc0qWIzc+N1pSP78/hxj/eaHiOsigpi/aIGg5YRtkD3v7tuOvAljZWZTuRP5UNlrCPl8Grtxo5fPZB7ZOOy3DB965C3IkEZ7ea2OIvQjfxJj0vkoymhhRk4rd3qDoGtn4oaZr6Ai0/LziPqiju9biroLeBw+l+zaQ7BlDjj/ZIvscql6Kwp7QLBWbM+PbSiEA1AS0eyCBpR1ndiQl64Hoth52OCEuJw/LrYIsjiROqCyhkJskors+L/o38EJXbLMeAfUXA+6pM5HGL3/6eDLWR3BHeQFTxvEqsqErKD7byjra1m8O12NTCgZp0WAxNDZG3143OeHZhmRyT7CnzMRTu2gop/BCrL02MwmUcneL/YX3AmZhMgL7S7mRmnINaAoEph07QLRZuXb8yOuzT15N1yNfhmHCgsv/J3L38vF02xSxVKjkf9fMwTlM0BuXJt2T2vYYCmVJdWR66P6xtJI28dnNGYcA1pGbHkYjWOTh+/Pvi+v7XbbMYJk4GOsUfsH8Uk3dG9kTXRmHpTWhHHfbZpKfxzVz3YznW8VVG4gZbKofv7DxLo7HFloxMeJtshfhMcNK7yDhuXehoUThx0gI7ItXTrSa2WaNWfGZdGBN2eJofLowzRmGk8ErufNgm0a5Ze/ftwWMG0iJLMTGTYpdOJJl5R8IcjwAFB+gypUw2QHLMrxSarJ0sKZKTO21nA71JyNDSeGJP1m54i70UMJOY4joBY7w2aY8HryyKoQoV+Pi5LNmzWpWE+ZNfdxHYy1o+Y4nNr4tM7lWgWeAgXtDkc0YfFDjCJIxCAfOFkqRk0NlUitBZjYK9txTMSmFxECQznCHtK9N1r5jW32U+zKmYIcdk7/s31+ghZghQoux6+AbaF3PxuIMBweg/oxvwtu7A0LkqVlZ/gwEfBVW2X++T1io9e8akQG6fh0/z6iW5AZtSHioF0vEGFVq9i1iX
- 8+mzxn9c
- JQFcsPju6GY5d4hdlMoInAqQIxUKSGB7AgMUU8UORfupCM1i03C+6TbH+T3gY+k0Dej9RfF6TUEp3OxTAnePK1Acst5B7+4GONSFdz1r5m9DW0FPit0A8aIQPLEIl1zFE0ao255HY/ZOEnxHa4hJRFczMuTuWW2NGTUsE0EtcVVpdrEV0GePkVT3A71B/P0txwdJ6mDRQwDX2l3gdcrASAHy06Bp7ezcDXklUUVI6hdvZF44wawiY/1bgnnXkUTh6lN5BMmfJvZqWquMlupIzGOkqdswz2nRGmWvGOkCMa0uEUh8=
+X-HE-Tag: 1769158764-363527
+X-HE-Meta: U2FsdGVkX1+aNarOhkQBZhcxigG8HU2f2xTUmYYcan5IfVlISrD4Iei3a4VWIdi0HtNw45GE7i8wTO46oTzKeXphmm0ltRaZ6ZkaFE8i3x7npvwDtXZowZg2UApDeCphAoZhFGMyPB3adWNqW6JXa8FKrx/DAFkRurARnu9GP+LUcqG4q3wqayof0pEeaPla8dRt/R98WUrCgDxCjedglyPFA9R47Zi3fLerc1xSzmxi3JjMQmdHQ/EE9fblcfbn3q9s8by6wEQc3xovOyXHaUuSAQlZp+PGARwdzsZMZZVhBDE6YJdm1SphFduQsUp65/95IsCrBgXRFuuoXf1906o+XgBQiWmhFe5ii1mj4I10ovOu9TaBmCuoVNQqY47H+0m9NiUqmIELC5sisIAa6SOnhSPVZskHVF4Hkvnxy0ChOWTsWW+9J6WJbcWmJpxOik2D+jyrhzQdAKBzU7S7uk9PP9JPzIQ4hDwxf3pPOJo3ojHwdnl+AZgSTRzsl2J93mhrfOfYw6426x8Tav7YZdTQUy14oeXAU/jN2z3B0/0w7YVUEWQGZHazcS4op8yrpRTM0vE0U2QjFHm/jeczXxKP5awri7ldJqxWhVXwe3yHWT6KtbhPOMR+/ME0vY1rgnrKXraD7DEfZDzJlkkkENOjpnPh0gn+f5wgFM0rI85Hd4B4olWXHzc7ZwEi5tmuxJsDdHG/MZwLr14oRvliEYfM8DaUjwquqFmUkhRSK4MPb+YViXe6DrAvN6XC9/9BRdQ0jVjJo15azBOuiUAG9D++WUpmvVJM/Was1S35RewzPNiJ8RkafbwY1TopMP7HhcD7D/ctoPkAw29QvAyjhOB043A4iCL8fBBF2JsD4UP2tsIo4k10Mod8g3qpLKIIGlk47SpVROR/02c58VogT52qb8C4jDAeWjWInffv/e7Z94Arr1eZU4rEp/6sodeUOLeuQPC+0Rwcwhk3Pe5
+ QFlVb6mr
+ uhcey1/p1r02HRjSFzGMsqdB8vD8blAOCBceXzC7PVyC2ydXiBN++2QH5D44CZ6Yo2gELEmmSTsqCkkTLMhePrWwXHvuwm9eDC5E04WG/IubeU6xgrwQXnB3tHczhJcVRVhe0VSFClLWYTHSDPEi+6BOm55fb/Zom+I1oDXwSQ8GEhdY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,39 +98,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
 
-Building on the previous change that added flags to the kernel's link
-creation path, this patch exposes this functionality through libbpf.
+On 1/23/2026 5:28 AM, Andrew Morton wrote:
+> On Thu, 22 Jan 2026 16:03:49 +0800 Cui Chao <cuichao1753@phytium.com.cn> wrote:
+>
+>>>> So please, tell us how much our users are hurting from this and please
+>>>> make a recommendation on the backporting decision.
+>>>>
+>>> To add on here, Cui, please describe which shipping hardware platforms
+>>> in the wild create physical address maps like this. For example, if this
+>>> is something that only occurs in QEMU configurations or similar, then
+>>> the urgency is low and it is debatable if Linux should even worry about
+>>> fixing it.
+>>>
+>>> I know that x86 platforms typically do not do this. It is also
+>>> within the realm of possibility for platform firmware to fix. So in
+>>> addition to platform impact please also clarify why folks can not just
+>>> ask for a firmware update to get this fixed without updating their
+>>> kernel.
+>> Andrew, Dan, thank you for your review.
+>>
+>> 1.Issue Impact and Backport Recommendation:
+>>
+>> ...
+>>
+>> Thus, I believe a kernel fix is necessary.
+> Thanks, I posted all that into the changelog.
+>
+>> Therefore, I recommend backporting this patch to all stable kernel
+>> series that support dynamic CXL region creation.
+> It's helpful if we can tell -stable maintainers which kernel versions
+> "support dynamic CXL region creation".  We communicate that by
+> providing a Fixes: tag in the changelog.  Are you able to help identify
+> a suitable commit for this?
+Although the modified code is not in this commit, it is possible that 
+since the beginning of support for dynamically creating CXL memory 
+regions, this physical address layout and the issue of incorrect NUMA ID 
+assignment needed to be considered and resolved.
 
-The `bpf_struct_ops_opts` struct is extended with a `flags` member,
-which is then passed to the `bpf_link_create` syscall within
-`bpf_map__attach_struct_ops_opts`.
+Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
 
-This enables userspace applications to pass flags, such as
-`BPF_F_ALLOW_OVERRIDE`, when attaching struct_ops to cgroups,
-providing more control over the attachment behavior in nested
-hierarchies.
-
-Signed-off-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- tools/lib/bpf/libbpf.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 37eb4f96b28e..089bd1325468 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -13508,6 +13508,7 @@ struct bpf_link *bpf_map__attach_struct_ops_opts(const struct bpf_map *map,
- 	}
- 
- 	link_opts.cgroup.relative_fd = OPTS_GET(opts, relative_fd, 0);
-+	link_opts.flags = OPTS_GET(opts, flags, 0);
- 
- 	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, &link_opts);
- 	if (fd < 0) {
 -- 
-2.43.0
+Best regards,
+Cui Chao.
 
 
