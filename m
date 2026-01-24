@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 009A9D778B1
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 01:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E9BFD778B1
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 01:21:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66A036B009B; Fri, 23 Jan 2026 20:19:20 -0500 (EST)
+	id C92276B0575; Fri, 23 Jan 2026 20:21:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6551F6B00A1; Fri, 23 Jan 2026 20:19:20 -0500 (EST)
+	id C5F986B0576; Fri, 23 Jan 2026 20:21:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 559566B009F; Fri, 23 Jan 2026 20:19:20 -0500 (EST)
+	id B80356B0577; Fri, 23 Jan 2026 20:21:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 20BE26B0573
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:19:20 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3A0AC1602D9
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:29:29 +0000 (UTC)
-X-FDA: 84364368858.24.898BA14
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B47A81C000A
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:29:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c6WZghwi;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A93976B0575
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 20:21:46 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72D771601A4
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 01:21:46 +0000 (UTC)
+X-FDA: 84365105412.30.8F2358E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8A5D8180009
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 01:21:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=igSrjhCO;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769200167;
+	s=arc-20220608; t=1769217704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=LZJd2zPS7VAVVSYILczKvcfSTL42n05v0H0TTSN66wI=;
-	b=bFXguwpNPmkhE/Y1O5ftd7ex1oS9D3nJTuwEh4hs0mA6cD3bQlURIjk8Mo4KcWhzLN4mdi
-	MoQpBz+moqsDknOkNMC73v8pCkVkp5Mjka+dpArAvayrGPb1XJ4vU/vtiwpH4XXr11WG5C
-	F/HNWGUcMNpIYcaM454hDF7h3Gr3Q3g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769200167; a=rsa-sha256;
-	cv=none;
-	b=N+mFlqLZnTTxz8gNUHhrRrEnc7JdoQhyBn1F66g1dBVbgLXB5KBOiOW69i0QKuBVOUIb4H
-	59giVYCge2H3u9ajjpjvyXgO+9D4wt+KF/6EtQLoPNxgnKYIEwQ6F89KVyt2gUBV91oFPz
-	KP2xQ1L3I96g1kZtOBYeOB/d90XT1w4=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dpCxV+RRWIvlr5NP30NBERy12MavEkaOfOLkpLkKCVw=;
+	b=pIKI4R0gjd4nHBpGlRwK04yX+JVhieHvGteNBSR+itmEbbGBj17b0Ss0rMupQlW6anQR2x
+	DmXGHVCePwtM01tJ74BFGddn3ug8VkFHXoSLBQKGkiB7KAx5OEi6Tp2BmS8KcHmWO9QrgT
+	Y00/egvq3T0phcCFRVndv5pwq2YcHnw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c6WZghwi;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769200167; x=1800736167;
-  h=date:from:to:cc:subject:message-id;
-  bh=vOc/Zoka9Ymz7tzO3k14Ksu5+9P410R1+UPLRvofQVM=;
-  b=c6WZghwi5iETrB8fifb/P2bSMpv/Ik2LTQJeyUIBVhqioUZ/q9r0qgCG
-   ISowyQjY3B4zymnFzI45Mnsj7s/wI07Jth10NOP8WbH4OvKlZxS3B9fs0
-   DC/swyzRFNUvtxI6+C702PzfEv/bntq5W/hvHMC0j8oHlvdeBO44tH86d
-   koWtcgLy6bjVg59CVKmLUTNOSDJMTJwCTcRK1xJ8bXIbXSUWSGaOj02YT
-   HAp7UyYhTqI5OKMK5S/eUBbc3N3dwSxmg+hxRdWnFb2lkC5KZsMnHnGRA
-   Ems6PbFfXwYP9TYO8GjUTvz//cfzYPCAoJojb04JFwzwHjYcNDQsIhQCh
-   Q==;
-X-CSE-ConnectionGUID: f78ZtnRJR2mk4r/k1msp5g==
-X-CSE-MsgGUID: D570ejTDRx62hHC+30jCWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="73046316"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="73046316"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 12:29:25 -0800
-X-CSE-ConnectionGUID: +D2YCxtHRCe2RlGYvzE8jg==
-X-CSE-MsgGUID: h/HOYLbEQFKwnWrbGB7juQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="237768859"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 23 Jan 2026 12:29:23 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vjNmR-00000000UQy-2WpR;
-	Fri, 23 Jan 2026 20:29:19 +0000
-Date: Sat, 24 Jan 2026 04:29:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ankur Arora <ankur.a.arora@oracle.com>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Raghavendra K T <raghavendra.kt@amd.com>
-Subject: [linux-next:master 7919/9290]
- include/linux/compiler_types.h:631:38: error: call to
- '__compiletime_assert_639' declared with attribute error: clamp() low limit
- pg.start greater than high limit pg.end
-Message-ID: <202601240453.QCjgGdJa-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: B47A81C000A
-X-Stat-Signature: 3qkytryop5rfsd14hteogaqcbx1snkyt
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=igSrjhCO;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769217704; a=rsa-sha256;
+	cv=none;
+	b=Txx/DBqrgfSi0ATQsnGn6BvGowH9dNSZI/9GbWTAlwSRZMq7U3bE0SZd6Hrf+gTmpEiAlX
+	n9gOCMzcYfVFym82JfDdVgh5mX+eiI9Z60M9gCJoGNmdsxh00FSsw1bXsGnExNvJmAK0PG
+	AnIAkX7GGmZAk4KYISF6GnfL1QHRBhk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A2B543E3B;
+	Sat, 24 Jan 2026 01:21:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7907C4CEF1;
+	Sat, 24 Jan 2026 01:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769217703;
+	bh=00WbMUzAQnN9I1jPeJC3yMlN67r8CEu8MJSgu37GGo4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=igSrjhCOt1C3ikvNK04MoxSamznh/YF7Ie010d2C03CG6lgk8Q05RVTMEPRA0Oov9
+	 clbV9O2XJiVuyt9Qpe6/2+s2l4ZDh2O8ynNGcdTbtIe1pIC6oFpIye1Nh29O874DGZ
+	 8kW5qmzywKEvjm4Qk2Qp0f3UhmGueNRJ2re/7UEU=
+Date: Fri, 23 Jan 2026 17:21:42 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: Dev Jain <dev.jain@arm.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+ <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Wei Yang <richard.weiyang@gmail.com>, Anshuman Khandual
+ <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V3 5/5] mm/khugepaged: make khugepaged_collapse_control
+ static
+Message-Id: <20260123172142.4bcdee865bc768d5c70b6a50@linux-foundation.org>
+In-Reply-To: <ba4502f7-0c35-460e-a42c-d32dea9ab9eb@amd.com>
+References: <20260118192253.9263-4-shivankg@amd.com>
+	<20260118192253.9263-14-shivankg@amd.com>
+	<6486c6dd-2702-4a4d-9662-09639532ce6f@arm.com>
+	<afc56f8f-0c22-4bac-a99b-b46df346334d@arm.com>
+	<ba4502f7-0c35-460e-a42c-d32dea9ab9eb@amd.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rkn5bbnreb6dbknkpxgwcegwwyenwk6i
+X-Rspamd-Queue-Id: 8A5D8180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769200166-505496
-X-HE-Meta: U2FsdGVkX1/E4L8Mu3RyRn67b4MjofMGAKPXm5pgAUxqSox1VjKJQsiADBT79UQenBwjuqKlq9wr5QGQsrq6qfMt8vcVMi35yNLY2Qw76EcV2F9ziUB6C1NqT7Tz4pW27dgcToZQJBZE2XPwRfGwbyfdcOAYUCrH+uAENg4rih5CSGaCvOwc5WlBPp8K9y0Qb8czU9uMJB0gh1NSJtnSluu/W3Um7l/BPSUSTCrX21Rklkhyd9CiybgI/2EzM2sqPB6obf1/4K52bShymJR0HAlgPP6o/D1V36YZHwOz3ZyddN/ueOMJUu424B/Y64El+suJKaHSKj7UAgbtVvFKrjb7QjvxX9PG6bvTdp4Mvd9oD0lFhvkw5ZSGxGUtXmNQXUOlujeroV50i76G5pcap5T+oXprVejthohGj14XfchnmQKAkTqCYQe0+YBid71RtmcwCc/2gm8kwcezz23CROW6hLBa55FfFPTLjRuMn8kH7pijAzniE4pC1HB1+tgmaCVrQoA+mhNcP/GE9OvxYP4RSFUnbmUJDSARZcFRY+LPB+lOJJ50Z+B3KniKHvEeta3UH8D+AJTzI12YxnbDO2LxAUvuF2yWn5a4tZWBQ+7uVi0WchFR6B85lBtSNDidCVZv69ygiOQHAa5XslA9VSSDhSczHVGZv2lUI3jkQROf0y8G1JcsofkJR5WaT4pKZbZIop+VKeLgvlo7HTCSamFfk6geJhHU6svVpiFxxZrNrKdMfRCmi4MOfhDoJOO0qPwg1Os/gIJSAY2/RLk+Fi4qJmRcXqS+EzPBpO2qlNI9qxfDBbwn3VO2aoesWtmMkjy7leRTl6x6Jrfd6jaksNIuJASdrJt1tjVTLJmCpaq6HIuuC0P4aItYkeAeE85YHdwJ5B4C9gRSQs95W97i0frFgvYhfpD2aWW1JMSwj10AUAcHnMJUrvs2usrj+iAtNwkT0GVbvdOXEZ5+d+a
- pkgPoCPn
- 6K0l4a5YF2jRUAIgvqRGcCtIdXn+W045SQsw/NnBGc34KFhfHZSGpkGdev4yYdHid/1QNNwyGOWvRwHqLaYUr6y23fBeRijTr1JOjRZeADd6mQ3dxMe2Y2pu6mgICNWDOrq4A4e1gbP30fphxIWZhFQOvawICCRLSK0eefXCGcPBFjMkfDAmdr1xPVKiLzb9HWAks0MdfBh0SxDVj/hXf5rUn0H1d8XfQ4NIQZZKH5HjH0PTCCaoOKtjgL1S1e82QK0LBMKmbYUEtiE4LYLDO/Ghcb2gzbb3BZ7/S
+X-HE-Tag: 1769217704-66838
+X-HE-Meta: U2FsdGVkX19DB7Mqzpraa7jtQ9SothXfU1uqIznEJpxn3/VP2BO6Y8dnCJbCgazV3innOJtN/zCKDjlXo/y4/264CcKWCqIASxGXIAHjnmGuOnQBjepiC6kbG84LnLChwd+/zcDVfnJpZb3bMKjmrPNShQPXmByLVTicBNdzHyCfcUNF7jjeF6yRQO74gt090mNAKrlHVI9ZucMr2LPrcFQ8aHGJPpB6YVFpKV7Vxfii6Tj8xdlz8N4HOQ0afzz3m55mkEuyuvSwR0jFoKDWNfdEDfLJUwK6B5reT/IfpF47wNzuG0H3ddGnkojdXke9BvfRUPk6AMV7Bn4g4e+5tmwkXRiwCZzKZXu6cd27R6nqnv5qKQmXHZa7m75e6Z+mJsXS/ZcJevs+0kQWf8RaGqtH4tHbozxAS0nawRieKPCxrEUOmaWSyNrhuCjGUD9lCMtDJMnsxSyL64VbhR/ZSOXv5TQx9616bltEWz66QTJm84hBwkk7k091zlz0o3uXI3XiBOehMFoXUKT7dF7P/VjWSkHhRuig676qkbWrU4CqXfAfftUVeokfLdsAaPVmRGjVRn9zAqXVM2MrJ4cTeImG7h6o5MTVY5ZjuF9lVs9VSctC6ouKQSzvZkh3UlfCWGUeuYceAhp1wlS7s0sbg0bHgWKZAbU/HhKK4tvIFgUZMcE8jqGyzXLkfNwoBExwMBw7HNhzedpzCTEwc5NIinahKUSv9oZwsrF08P5yQ9jQdNzHo5nFp9zY4e5NG5xvgfFs084v6ILwxZjKijSb+sTBjGqGxx1H+PnoQL9LXwUXSeuSTlWenN5VmRzULfZGLH6qhKM8J78U7Mj/kFoWyW1mZTX5H6OMKfHaSrkqgSgOLlZmm3KOSxU2et8OAvbdOQH3OH+ZnQaN8fSzKfiBKqpisHMQhhbWBpabB2E1bAZCxMb/hirO/cXmSG+l5xyWuyHY3mXCqcf3Daedxfl
+ lxMl7EAC
+ anNC+xqgIRwauOxn4IIbvkivNqqXoAVmLDTgXVPkWgUtEh3aI7+XC9vXFI+pdT4XY6FHenJymgHefTPfUmqfaA9icmBD3wXLrUZBe5MyBq15WFUjGTMrHl7Vvr5AOmHmWoVqL+wIbMvo32DNTeRsAImtuh2rNRzhC8aA26upc/O8RovPrWvhgxSKOeWiXXla91P8shuVtvLmT/O2AJU4jw7MrEipkGx1mjFWRjzQAUG5bp/f4U7hMOyU1sxZDON4+mVKnXuiD0O/iFRBXuLfPb1avqLbMBPLIOs72hSi1dE2NVN1ftjaGee5ogB+V+j2hwVVESG0sW3oIuVTNCRLgOXR3KMKPDkeALbeIsEalj325iq5tqU3OJ4wIruuIGl0HS8jTEd2v9j7TtPAQeMdpez4sowK4hdkL9VHUBL9eyBDknV20PhW7j7/M9IRbbYH13+n33n1zTraCK0ReM4LzK+vr9iRvqnwpmbXZ/fnJQaSnkJJl4OcbaZxlNf0aJJvP5GVaRdp51sSNUXTF8VMOij/C0CqzU6kA/hZMVWH6vhA5to1k9oLIMq2jjpgojGm45bWsppvryUcenwyhGpo37c0PCpGUAXmxBQ6jIfmnrI812d+jGgFkwrdnAi2Oo9yA0iD5/lIEG1GvAt6nfSo8ozkJWQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,81 +101,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d
-commit: 93552c9a3350fff06543da18e4c80d3e804191ca [7919/9290] mm: folio_zero_user: cache neighbouring pages
-config: riscv-randconfig-002-20260124 (https://download.01.org/0day-ci/archive/20260124/202601240453.QCjgGdJa-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260124/202601240453.QCjgGdJa-lkp@intel.com/reproduce)
+On Fri, 23 Jan 2026 15:03:58 +0530 "Garg, Shivank" <shivankg@amd.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601240453.QCjgGdJa-lkp@intel.com/
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -829,10 +829,6 @@ static void khugepaged_alloc_sleep(void)
+>  	remove_wait_queue(&khugepaged_wait, &wait);
+>  }
+>  
+> -static struct collapse_control khugepaged_collapse_control = {
+> -	.is_khugepaged = true,
+> -};
+> -
+>  static bool hpage_collapse_scan_abort(int nid, struct collapse_control *cc)
+>  {
+>  	int i;
+> @@ -2629,13 +2625,16 @@ static void khugepaged_wait_work(void)
+>  
+>  static int khugepaged(void *none)
+>  {
+> +	struct collapse_control cc = {
+> +		.is_khugepaged = true,
+> +	};
+>  	struct mm_slot *slot;
+>  
+>  	set_freezable();
+>  	set_user_nice(current, MAX_NICE);
+>  
+>  	while (!kthread_should_stop()) {
+> -		khugepaged_do_scan(&khugepaged_collapse_control);
+> +		khugepaged_do_scan(&cc);
+>  		khugepaged_wait_work();
+>  	}
+>  
 
-All errors (new ones prefixed by >>):
+lol, OK, I droppped $Subject and did this:
 
-   In file included from include/linux/mm.h:18,
-                    from arch/riscv/include/asm/sections.h:9,
-                    from include/linux/interrupt.h:22,
-                    from include/linux/kernel_stat.h:8,
-                    from mm/memory.c:42:
-   mm/memory.c: In function 'folio_zero_user':
->> include/linux/compiler_types.h:631:38: error: call to '__compiletime_assert_639' declared with attribute error: clamp() low limit pg.start greater than high limit pg.end
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-                                         ^
-   include/linux/range.h:46:11: note: in definition of macro 'DEFINE_RANGE'
-      .end = (_end),   \
-              ^~~~
-   include/linux/compiler_types.h:619:2: note: in expansion of macro '__compiletime_assert'
-     __compiletime_assert(condition, msg, prefix, suffix)
-     ^~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:631:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                        ^~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:188:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-     BUILD_BUG_ON_MSG(statically_true(ulo > uhi),    \
-     ^~~~~~~~~~~~~~~~
-   include/linux/minmax.h:195:2: note: in expansion of macro '__clamp_once'
-     __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-     ^~~~~~~~~~~~
-   include/linux/minmax.h:218:36: note: in expansion of macro '__careful_clamp'
-    #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-                                       ^~~~~~~~~~~~~~~
-   mm/memory.c:7296:8: note: in expansion of macro 'clamp_t'
-           clamp_t(s64, fault_idx + radius, pg.start, pg.end));
-           ^~~~~~~
+From: "Garg, Shivank" <shivankg@amd.com>
+Subject: mm/khugepaged: make khugepaged_collapse_control a local
+Date: Fri, 23 Jan 2026 15:03:58 +0530
 
+Make this collapse_control instance local to the only function which uses
+it.
 
-vim +/__compiletime_assert_639 +631 include/linux/compiler_types.h
+Link: https://lkml.kernel.org/r/ba4502f7-0c35-460e-a42c-d32dea9ab9eb@amd.com
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  617  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  618  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  619  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  620  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  621  /**
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  622   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  623   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  624   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  625   *
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  626   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  627   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  628   * compiler has support to do so.
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  629   */
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  630  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21 @631  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  632  
+ mm/khugepaged.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-:::::: The code at line 631 was first introduced by commit
-:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
+--- a/mm/khugepaged.c~mm-khugepaged-make-khugepaged_collapse_control-a-local
++++ a/mm/khugepaged.c
+@@ -827,10 +827,6 @@ static void khugepaged_alloc_sleep(void)
+ 	remove_wait_queue(&khugepaged_wait, &wait);
+ }
+ 
+-struct collapse_control khugepaged_collapse_control = {
+-	.is_khugepaged = true,
+-};
+-
+ static bool hpage_collapse_scan_abort(int nid, struct collapse_control *cc)
+ {
+ 	int i;
+@@ -2618,13 +2614,16 @@ static void khugepaged_wait_work(void)
+ 
+ static int khugepaged(void *none)
+ {
++	struct collapse_control cc = {
++		.is_khugepaged = true,
++	};
+ 	struct mm_slot *slot;
+ 
+ 	set_freezable();
+ 	set_user_nice(current, MAX_NICE);
+ 
+ 	while (!kthread_should_stop()) {
+-		khugepaged_do_scan(&khugepaged_collapse_control);
++		khugepaged_do_scan(&cc);
+ 		khugepaged_wait_work();
+ 	}
+ 
+_
 
-:::::: TO: Will Deacon <will@kernel.org>
-:::::: CC: Will Deacon <will@kernel.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
