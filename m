@@ -4,232 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B600ED715E3
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 10:54:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A57DFD715E3
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 10:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0ABD6B05A8; Sat, 24 Jan 2026 05:53:59 -0500 (EST)
+	id 076516B05AA; Sat, 24 Jan 2026 05:54:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE23E6B05AA; Sat, 24 Jan 2026 05:53:59 -0500 (EST)
+	id 040956B05AC; Sat, 24 Jan 2026 05:54:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8F856B05AB; Sat, 24 Jan 2026 05:53:59 -0500 (EST)
+	id EC3336B05AD; Sat, 24 Jan 2026 05:54:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 96A246B05A8
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 05:53:59 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E78E1A0265
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 10:53:59 +0000 (UTC)
-X-FDA: 84366547398.26.3A3A1BD
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C2818C0003
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 10:53:54 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=MHe2FPK0;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=s3sQkMe2;
-	spf=pass (imf28.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769252035;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DE1E36B05AA
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 05:54:35 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85CD71AF7DE
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 10:54:35 +0000 (UTC)
+X-FDA: 84366548910.21.292F64D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 55DC4180006
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 10:54:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769252073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8PlBMqGq5yWmEAktVtL7WVFbBL/+QNBiNnnrgkRrDmI=;
-	b=Ell2FMZFSX4ASkgJ3sEGUiwsozlAAz4TIibcu1cOxGpwpAsc2KFvwq4SsI/9d7N2PvYJaI
-	ehqf+dxiQtpQlWj6ry7z1SMlpc3U+fTCrj1ZPpjsr6ELn8YnQ0bNxJ8weAICmZM08Cu0SB
-	LDa/CcPmTuqklMd5jhJxc3vsvSev8b4=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=MHe2FPK0;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=s3sQkMe2;
-	spf=pass (imf28.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769252035; a=rsa-sha256;
-	cv=pass;
-	b=CUd8ZywFzX6MgTv/PxLM8hXfmwl1lXmHNN6aX+liV9/70kNG1zFRNMadIz2zvsVYbNZps8
-	Gv41gWvR5q0ubt9Nidp9ttcu5BZkL4jLDl6bdhunDRvPqc3GRN2xfPyOAEQZy4dZZ6VJUX
-	Sy0LD4p+Lm3os4ICZ0oiPkntf9K+Xs0=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60OAZ1Lv1040926;
-	Sat, 24 Jan 2026 10:53:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=8PlBMqGq5yWmEAktVt
-	L7WVFbBL/+QNBiNnnrgkRrDmI=; b=MHe2FPK0xr+vvBw7gEcXgA1nkYAkynKSgI
-	RA/wPf58GIoQnKRxV6tqq/K1tY6QlgR/8A4kc6/eodIAEifs6wLU0jlfdg79S7ge
-	RBtEllUAql6J6GAj9PoMVbq9oB1MsZNiL7CbikS8DVbLMqCJrHQJqcE2nVtzZSqy
-	6YDLFfauKsdIlBh1OuKRWfLjqdlPpT1fd7+uEaccvdesSWS3acMoYBPbP13TIulV
-	RnxcPZqDu+4oaCBdFQMr7Lg9224bhylT2ZCgg/4x6rATOyK6nYLm3dypyMb56aa/
-	vC++StyYveFvuLxJjMYE0GY+pMw3pS7J9nH70jk/AR/cNKVWWXQA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bvmv2r6c7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 24 Jan 2026 10:53:50 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60O88a94033649;
-	Sat, 24 Jan 2026 10:53:48 GMT
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012011.outbound.protection.outlook.com [52.101.53.11])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmh6bjn5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 24 Jan 2026 10:53:48 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wb+bAdExI3bAkWgbqqLf2u7OLnoZ5a35qECsZGfzdjRPz7S8vOUiS7/O1MzkdqkJfZQ/dlhM0JWa2DeW7gkN6RzRJytW1iLC4iGrL6AsUG3XmiZ+APoBtbypCML34WCIwpGIevkEp6Usthc0R8gklYFSZZJbv18h1JW1AsRQqS2JBoycIyvcF62GVIT2Xr0lV403fLpQvUTS/mCyGo6FZU+EakY30oQHmyGLxXMHMl72k5jiwyIufkPsjo8Bd73cn0dwKih+Ag6kh05Jvcw++93hTLo5XIe5Sfya01ekOAsQxPaP3H0e6hr4FG9sfVQIfcoazf6zhc6nL3L2nEj2zA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8PlBMqGq5yWmEAktVtL7WVFbBL/+QNBiNnnrgkRrDmI=;
- b=GB+8ncZqCeZn/POWO2Bfo7tLabFL6YYFFlA8VRlSSuyUtmOZ8qzYNVGcGZGW5Up/ucF8BtFw+LmHkZL2plm1oWKTrI1JRQoJtOo+SS6jnNt6hN3vVKyjRSnE6Poh5srZY5YJRmN9VZsPEYYgLecBHfyIX2WMIwLgilUoQMnPTyWq77H1XSpBhNsz/SfVWQkrFTwjlnI9Q80Us1wRdZ6QtW+SjS2bdJIwqdLBrkQX8UEV3QL3TOw0ryM+aTeKkFQhmoJjLGV/oPLI6M6NN/MinvCiHAia8yKQrM8bhNREBY3VIX/P+E5dspNnWnqaEMHhadkJpnyerzGjKZ40ObObgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8PlBMqGq5yWmEAktVtL7WVFbBL/+QNBiNnnrgkRrDmI=;
- b=s3sQkMe2RA43AcGMcTsf1xEusMeJ+Tw13Pb4nVMMem9iiV0kujJ4AbO7aXWWusgOK5uJ+uVDxcafWl/yxNaUlT70EDXl3leATPUBhb1Fg9kR2NqqSUnYLKXcvYPAotCfzKGOybEAY4GTNWS1FVbsOoUDuzqQTZvV73TxBu33f3s=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by BLAPR10MB4916.namprd10.prod.outlook.com (2603:10b6:208:326::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.14; Sat, 24 Jan
- 2026 10:53:45 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9542.010; Sat, 24 Jan 2026
- 10:53:45 +0000
-Date: Sat, 24 Jan 2026 19:53:39 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: akpm@linux-foundation.org, vbabka@suse.cz
-Cc: linux-mm@kvack.org, cl@gentwo.org, rientjes@google.com, surenb@google.com,
-        hao.li@linux.dev, kernel test robot <oliver.sang@intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own
- slab
-Message-ID: <aXSks_bGMIBa2OQw@hyeyoo>
-References: <20260124104614.9739-1-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260124104614.9739-1-harry.yoo@oracle.com>
-X-ClientProxiedBy: SL2PR03CA0018.apcprd03.prod.outlook.com
- (2603:1096:100:55::30) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fMAwNz0sojOEAi0asUtJ7iAY4xQLEoyU8P+hPSsqP98=;
+	b=bkcAVuv/WjSyTeYBy7QPhG5MClL/p8jO6k+99mhIfgj+guoE44p4e44/qPlNGiJpJRjQV0
+	COEQnBvs4bDfsp166RcjiqS5BArHrmMgAVrSReb8oiKAlr45vcc3vP4/k9mS4lKpmujxlM
+	UFowQAvp1NgbnQL54lelnEmloIx8Mec=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769252073; a=rsa-sha256;
+	cv=none;
+	b=rZxl9l5mDwIYySyaoxX9CUv3/tpkIEGvsxmF/lPI7s2QRrTtlGLmn0vw6HT6Iz8HKuNk6H
+	Qfl17qNuLJfGwUkS+qNFYsc+ITR2Cd3B1YA8A7tr7b3hBA8wpr2zgQ785nvInt6is81BVv
+	bKourukAoS24tgUdCLmd38+KHiSYNIc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BC13150C;
+	Sat, 24 Jan 2026 02:54:25 -0800 (PST)
+Received: from [10.164.10.250] (unknown [10.164.10.250])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B52993F73F;
+	Sat, 24 Jan 2026 02:54:27 -0800 (PST)
+Message-ID: <94c84a3c-8ed9-4bb5-8e64-69bcb8306aba@arm.com>
+Date: Sat, 24 Jan 2026 16:24:24 +0530
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|BLAPR10MB4916:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6a4bf9b-a0b1-443b-24f9-08de5b36d85a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HlP5W3DbFi1jpY76fOpaFS+BviVDJtF/1GweW5z6TaaqGL0nJZ2fLHBzsX0z?=
- =?us-ascii?Q?JyfwIp3CJjLXF0PRdD4PJd2fiS5IPBZaLKSiMyyYrvuhS/934Q2XcY7LwKEo?=
- =?us-ascii?Q?aR2QUP+k71PJwzvOt8vAxGg0nPRBBlwPqv9gZdSRHEzcdZRF4BLsm7tCgCU2?=
- =?us-ascii?Q?urLyJHKf47J5oTpFSWv1ClvienhNYUDOo0STB7SUR2ss0/ckltK7UnEvxrLl?=
- =?us-ascii?Q?MLCczCMy/1TJcRPGrkb9xfePfsJFNsPK98N+mxqAYnyoQ+qpvauX7MkWnA4A?=
- =?us-ascii?Q?DBepwV0YiqIaKVHQAkDgGC0PaaN6U6D1uoYGyjvQuiXurmELxkLdtw+YUDjl?=
- =?us-ascii?Q?330J+XlQPnMdInVwNVdf0HnvO7tv1N1ZljAlmgH0zVpr5MZRW4fELZ5L+0zq?=
- =?us-ascii?Q?0p3vl3K+pvf/3XOAs+MdMPjwCqOJPg0BFBosdAUGWnXQB58WeUKnx6wplsg3?=
- =?us-ascii?Q?frx/0fd7dLZdbEJvGpDO21Az9s9/rnPlIzfzz0OVN9UyJ26eA9PyTid4N5tE?=
- =?us-ascii?Q?ZVM2VhGoTO+PmNhDmPoOrASQ+mC31fH2UtmrrURnWRhxxpoFTS5Ub5UZhVwM?=
- =?us-ascii?Q?cMx1YXLcxGytbuOhmEIS+iMdqH9ZXKQbvKkB1eG4WYWavMhUPiy7I99iliep?=
- =?us-ascii?Q?DqyBaeCtAwAauJtZCN7Rky2PIaBmyGpIvfIpxpvZUNuI9Wis6D2L7bOW8+i+?=
- =?us-ascii?Q?j+PxHd+meD4aBs5npYsP9nBmu84v0IhwIkr4bt9+xNoWmMVWc8CIrID3A5rs?=
- =?us-ascii?Q?wC8pnLkfM8kW8shMQ5SwKqO7UcMJSEKoRu+SwkvxdyiIz+NOgTNmGb0pKRpg?=
- =?us-ascii?Q?o7MyYvJolwn067Jvd1z5fLKhYPIqIbTQWodoLLq0YTiPo+G7ycDPHtPTcRPp?=
- =?us-ascii?Q?TBg7+OsUaaPKkUjFk3oxYS0LxWmSiVkkMPUrIwH96h9+Pi1RB7P406VnJXBK?=
- =?us-ascii?Q?LCEk0VVHMREe9HqOCISglt8iC0qhFl0WunpGLS5SZeaVSjRpiPZO6ZmP6Xq9?=
- =?us-ascii?Q?HCuVP6YgOo/UbNFSQDs61gBVQB0CWfUh/tjZcFdja1YW/zJH9Ddl3lMgLeFo?=
- =?us-ascii?Q?gZdivUeoTSklu1LyAyvC60eceiaSFfIaLPvpU/zi60EUezQ4xcq7bMtwplTN?=
- =?us-ascii?Q?DPjG//zr2e9AyjclS9xOxXdnV+o1LgExSn4r3SsJGAmRCswduzIoKuskcOHZ?=
- =?us-ascii?Q?k8h9pnYd8Q3DP8j1zglcCHmptNbHtORbI8u059V9hlNWBhdbcDLttdnmH3ld?=
- =?us-ascii?Q?lIbHvjR3bHVvgzKXb7YCYPfdP6VjHV0xXSq9ZYEX+M4fPp2XMlJ0AsE2pUB1?=
- =?us-ascii?Q?E1UMrRIAiWaQnfVBySALSC47JHC8zPyWFBi6AaP9NPag2997ScvPQAPPNGQZ?=
- =?us-ascii?Q?rOPlf+fltJQedqq5CYLhCZ2QUipa4Cjy8Z4bxQWr9RBsV/PvBasg+nnHXZAW?=
- =?us-ascii?Q?ShPS43quTIob3kViDAr0IE0kK8nUW1G3Ml7/c3VdS+9CRS6RXGDfCf5p5oie?=
- =?us-ascii?Q?dK17aoR/iCdLlgmeCHcmQZKRr2VtgbsvUHR+0WIM4bUUY36p/ob4X0fcjFwi?=
- =?us-ascii?Q?NOM4tEQ8Tp0n0tKxajbTMfMIFk0TPKBX9nKdKwXH?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yQmdVSaFawfOu+HmyAopKS7lwDPFp/T2hDYV1WiKw1EXcfaYqW7z2MogqQwL?=
- =?us-ascii?Q?S78k1GJcECFVLC76LPVUl52UGFq5NoxxLkQm0ReU0At6APoz1OHwq9Y67amC?=
- =?us-ascii?Q?A6vs8D9k6BEb8iZc9DquMljdhRVqnfg69S0mRjAPDekD0ro6pug21j5CAI6w?=
- =?us-ascii?Q?5VSwMtsTGJrMm7Dr9w9LNhhOR6HiyFFFrB+uMxTbCpYRXsNSwDAfdgMR4HH6?=
- =?us-ascii?Q?ZqOqidvpFb1uwOFrIVCudyL+ZaWEr89wL+qy2s+ABLpdMFwY7/0AcUH584df?=
- =?us-ascii?Q?4GyAOlVt6UI+DL8MiYUmKexg9vcHUmOahYMuPlsd24Z+89ql4ys1rQegkXpd?=
- =?us-ascii?Q?ToY6WvCfGCukQMnLPZRAOkFkbLXlC/NAh4S3gopmxVvGjlSQI1FiUnMZ3tLS?=
- =?us-ascii?Q?gN0+vy4LwGJJExW4ObT6FBNj8cBmytkVw3vn8HOnEk6Rq33UOuW8O/VayM/i?=
- =?us-ascii?Q?h91YRWMy8/Q0ODHsOfvMDaUdJrZpHkT40tqINit2wZB2o0cahmQsPgA6iQRV?=
- =?us-ascii?Q?SMqpg1bcNjvporM7tmXC1/OEnT/2+/QuNjpsBXLr8+nUwANIBnddgZriMSmv?=
- =?us-ascii?Q?DC+PNxZ99hJYSY2EvSwsbk4RVPyxCPRSJefNmNHyWUO5AwRIznD+wWSLcxNn?=
- =?us-ascii?Q?PrJm1OP9Lk6RtHWT9b2sVCYeqqcLZbnHx0m/3/2xeB2DHfWQW2bxhME1sfa9?=
- =?us-ascii?Q?MrGrLMNqDB0KbkGMZbeuXaCwPQb+sGpSenMIN3sr6ZWErEFuztroV8MNHus3?=
- =?us-ascii?Q?oilzOAdtAHbVEb4NHh+Ot2X+YvdmZLYS7QdSazq7TnTMKwJX/TKN1DmDFAHU?=
- =?us-ascii?Q?0bffypc/dmQ5oexYaGitpgdA6T38lNE90WoX0mWl1JSjINWngeUtqe6CaiEE?=
- =?us-ascii?Q?VTa1zvOMFZb3KYtzhAhplvU2pIsEgBDLrY8APOZKmx+eO6d0GVaalYaKI6dZ?=
- =?us-ascii?Q?jAhUZUvn1PYwguKP11SNPqrRv3hBYRFfYQjFK03/KVDsLwS/NX5GUvOL7GbP?=
- =?us-ascii?Q?7O6qdQ8EpvS0GxK2p7k8gjwK2w4wWjfhYsSh35Or6PFIcvQwmGYI2dLrVYpb?=
- =?us-ascii?Q?9aIO9W1KFjUWcDsT8mV01Yyi/xYEppgVhEqpz1PHSjpWvIEjPUWp/4PTM2Va?=
- =?us-ascii?Q?MaoYCBJkDPBGtcFS4yQtfEIFZF6XRa8cMeFleBtEqOfpu0ot012nMKDgeDpP?=
- =?us-ascii?Q?aBTm10Qc0wdaEZ35WRHrjXX8KoEMQ3PC2xMIW5zzJf094rkpkS1EQPAaF0W5?=
- =?us-ascii?Q?9RLs78/bOe972nutquFBq+ZRbw6a5jxfyG0sC2iEjvw1BI1xeVwoz3WxiZRL?=
- =?us-ascii?Q?pZ0rVOo+/lcfF+kOYYU5H78eL+ivKxOmSR6ZCCSUDcDoyhS7DEbSfwTm+HFz?=
- =?us-ascii?Q?blBWPqQRG2SLUrBlpcNRRHMLBJhOQu3fjz8B1Jc71Luz33jxr5j1Ksnr8zmn?=
- =?us-ascii?Q?NWoTx7ab8x87l20Xa+w87xOZiUFKzbgAjHO0IA65V3jmCGofZc16Yhtw6wRa?=
- =?us-ascii?Q?qXugTXEws/re5jwsS5Hc9se9v/RxzToI/orFNiA05s0GbQYt65gGsAGxOdPB?=
- =?us-ascii?Q?6IZiB/StlAxNj8M18j55j4GXhIXlZbPJrjE1oKG6vwMzBnVIj6dHE1idN68E?=
- =?us-ascii?Q?3TtHM95I4TAh6BT1NAEMvm7KI/P5pODM+dnn6K3xhr1EqiaAbBYgFJbKE4Wd?=
- =?us-ascii?Q?j4FhyAdFOeqQRSR0w54HpFoFRhmk3ceLuRYncsEjzYQ5N1YWraBi9f1n0dst?=
- =?us-ascii?Q?yHoeeJ8wig=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	VOuPkYMr+c9caiueamavPGsOMhZqIjiIm541REaYCraPHVfuPWyoh1MbI2SuWanqh0jhJajdRkZsSbwj7mHx3c2sR73FhR14OIcDWUJnbqgXT61jfZQUChhZIyp13cSgyuFQ/MBooWmxe1Asen5ClVyaHzkmfJoel6Emvxz8oGekenmEx/TvB4deUkvk5AJc5sG7SMyCcQ6f8LrU48VzIx8aGcABJwa/6hYqddtcftPZGhUsn+NgQdlhfA1BEVXg5vYff6hwt68K5eY3NCmyRJVxCq08U4ddkOvMlKIYMCx3PFwNYsy0MViTB62ZzjDb+zPbjQzKPQySId3eNstPt6a6EeHfYlZ6fKNVlESMnsJcSm/Uzxmqt/rzdfcoohDfESj+xrZQfOh4MMrPpOIkJBhUhxdWAszFWOx+kGt0maSAndPgbp4yanbIwbs6atOEI00CsCtN56bPgf1Gu7CHvIHkdzJzp2hpQb76YQSfbzKtqLsF5pLnO5fzBFDtw8kJFSfmhoRV2TepZzAn7YNpyLMrYnRZ6OQYTgPO96moFKg81elsoeTwZ7Ku77AyGPlF5yU7TdBKuZAD9O92q0xVdVOJ8pcxEz+Xzn/CGjtRA74=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6a4bf9b-a0b1-443b-24f9-08de5b36d85a
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2026 10:53:45.2517
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B+fXnfnK0Ss5epuLeKaIL9rBKHSFrstBhDu7WtAZPKxIjlUyRmENV60aH0RYg095ZCkfzTGTlZeZliIEfXQHKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB4916
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-24_02,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 mlxlogscore=999
- adultscore=0 malwarescore=0 spamscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601240086
-X-Proofpoint-ORIG-GUID: e9ELoiUAf3ydz3NxCTmEg4KYnzV9qsTH
-X-Proofpoint-GUID: e9ELoiUAf3ydz3NxCTmEg4KYnzV9qsTH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI0MDA4NiBTYWx0ZWRfXwXouVVEfcEjI
- 7sKk3wV0JoFG2BOJaqzVGKCyC6RSRcoCOv0xU0JfZ31Xg7KjNfYIdsZTo8neFCuSYhaR4nI3E/G
- jbH/K3Px1iNVXFCK/XqDa/oRdN87MvnS84WehfEfyvi0yF+GflX64npOT8UAaqj0KyPWCmFlC4o
- pWj14DarU19ao63Oo5+mTOQUrpXJhLNporIGtC7xz2lq7gDyOHf7Mcv5rJIRiTc0w51y5QGx1Eq
- X8uYgtjjdRMrsWH+6ljk+J07QlV2gi7+OABLPaQ0e1lxAaktDJ4rtEOS5DDJDXPqRr8NiWbByqb
- MrxQwaYNasFQjd1xqysOcvvvscSwPoV7PWNoiicj+4M3M7ZOczojib9HSnKcisCWlB+axgWpr3w
- KMDERjPxEqkFnz7bEWlrOGF77Gvqn1WJbKklDXIsB5wz8O62NwySJnksjl8afi2y/XB6pf1+yji
- 2Jhf2EjL5KiMl1xmtzA==
-X-Authority-Analysis: v=2.4 cv=cPLtc1eN c=1 sm=1 tr=0 ts=6974a4be b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=yPCof4ZbAAAA:8 a=0xPqAKBWVPewZ0GJU-MA:9
- a=CjuIK1q_8ugA:10
-X-Stat-Signature: wbe7wz3pe7w1hyfereuxrh6nmbyb9m5p
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 5/5] mm/khugepaged: make khugepaged_collapse_control
+ static
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Garg, Shivank" <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Wei Yang <richard.weiyang@gmail.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+References: <20260118192253.9263-4-shivankg@amd.com>
+ <20260118192253.9263-14-shivankg@amd.com>
+ <6486c6dd-2702-4a4d-9662-09639532ce6f@arm.com>
+ <afc56f8f-0c22-4bac-a99b-b46df346334d@arm.com>
+ <ba4502f7-0c35-460e-a42c-d32dea9ab9eb@amd.com>
+ <50da84da-1cd6-4b8b-babd-b6dea405713b@lucifer.local>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <50da84da-1cd6-4b8b-babd-b6dea405713b@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: uhbcsif4nf64stg7cqbiwxuq719sy95k
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C2818C0003
-X-HE-Tag: 1769252034-749895
-X-HE-Meta: U2FsdGVkX18sRYp/o30mSgL8acN0f/6g/6D1Ec/17yfmgXbOAQHCjabb+si1fMWO+waYlF3xR2F4XOdxOzLRbaHXtw7hYwLQH5M/u4MC941Ui7kDj8pHbDTUfrUPgYCsq8LxbLtSQJzKkHtIFohZADLpmdEbrwkgRDIR+mtc3cKF5NpGjSbO4bCf/hUiKGY9TNH5Fa+pvuz1vLbiaItvsgH0RNfjptuseymQaT4ywPZLwEiGuCORIOM0G78FYeSy6WvNKD6UCFuCFTVxd136TMYkwvEhlsa93pgT+n/nZURv8gxyJUruqlSBetQGZd9GmGhOvBeb/rWT9XoH0QRfbY6vHgFu18Ap1QbxU1srQN4+kqVBjz9ZGOYWawTTLUj7beB98esNnn9cvc5qQZEkPMQBvai6qBUGKd9Fmkj+wFDW5avyhMcY0S1npPz1nw61EL8hltZq3TV9WEHOYPvwsBYQuBjqsqCsCn8vcA4VXLXQ4B49pjnN5sZoYgH2t1CY+mrKgEqTlQgZUHGSAoFFAxbX8MNfd+tNBLMHE/F8jkp98/65KxsHIDt/1aH/brbuhIkmVrjEGmmAGygJcxkMJpyj/tvM1AjqEk5ZIPvrUlcG55aeIuQib4sj63pEfOfAP/a8zlh+I4JTGKkjJHhbVPKxaa9GcA/BYOw77jXScYWDT/w0rCxueP9Udcm6d4y2x7wObxgUPBD2DDJMe+my7l9qY5+kkJk0ommsv9YZHGsxpeTR2o2xF4opKHldbJewKjIgSL96cnq6wyn9UgIta/j709hHjPzC2UWXsV9ZaU1AXxZmgujnWUvASZdZV/acIeoDEbQKh2J/JJyLX7zfnIj/+fV+l0kUmwUBpn0x12aNHFm/cVOIDy9GLIc0+OPGP9M6ouOVECeuZPkRHap8cRG4eC2NQUVcpd2bLJSoP8Nrr+hC/cmBj3P4rco72+jPtEo5c6NXdplmkxowBpt
- ROCgz/m7
- 1TUBSvWepS9zvQ1H+hBzJuCzpUzj+d9YKgpM7vBIXrbTB0QBOnVSWAHWB0p9KFrJlQGJZZ3/g+tQ7fMuQ6R6gYn+qPho8qf5I09GsFH85tHdQIDSpMUrlgZiUVy4abxnwFCosc7Fs3F2NU/GI81X8HvDQP/GgYhxAVCY0bDDSVsjoMnzucC+j8f9LOvwT2MNnItgwajXCkhCZwx1/dtnWswQGbRLH8trxBvo3E5fUgG5b30jqRTI9bxCmRaGXWP/y9OcN0RAT94HOgvp4Uc4UAem52cd4tmSpgE3tsXT7ZID3mz/H8Uu3IZEXEDV3k16Tf+LDSHJ/M2x7HRHReD0P+yjZrWdTcI+r8KZNUjb01B+5tknkkkIRk/9oAbOnGjUjZzlONmQTldlfSABUWn9ElfZ5L053PqweEFYrri0mGMjUslb4j2Q9R74mGA/obRtKkrAkx5c4CkPU78i3NQ8PSTj9Vdf2Yu7nFr7h5tXCJOi/P8epQqQjGJ+2uO6v6th/7bXW2a9SJIHJ38j2Pie6LHaRl8zuTMP83nZNkoY/egoHaZ14VZI9WCloVcSUyJ3nHL1ccLNJ5YcufvNIBrwr8chGt5VAyGa99nPUkyafnOH0Dj+pNx14o0qbAXpzCgQVQDC+LwYxd3gQ4An7uQIEcbDjXkw0i+s5WE8rEEg82XIM5Y0rid2Uvxsj1NxClUriZMAdiFmpZlaVNLo0oQpmpQnP1UFeOYkeBdIdOuiyfj/+R1+wQWcD4OEjPkyXJsK53NSpvMpTh+LYSI4=
+X-Rspamd-Queue-Id: 55DC4180006
+X-HE-Tag: 1769252073-817670
+X-HE-Meta: U2FsdGVkX19yZxNVmKLpgx4LRKyOzum0/GwODrFYah5tHWkGNwUy36VJ2mPgh224d7cQVnyiszVwLRQNjaSkjIv88Loy9ohxch2BeACQJemHTk2C4hXB4j2vlayAj/4Ll+hJLtZOkxdru/U61CyyXEXMG/q6gikUtAwv9iOhYCcR2M2vOVgd3wr3a4r8MApsoiEFSR544b7s4QBNBmiJZPsbPycYs2afmTgoo5rpr8UrU/CDFJA+i/Xw2v6all8TXPodFU/YW/ueWhEzSCTOk/MehKm8KjJVoNitURMZdGk8T5KEqGPmyf8Hz1rnE1opPqbWauc8sFvlfoQAIOagJkL9bwWHJCktE8J2EfALwjG1nvWTgYxqVqftqE7Gn6cgBoYKW516DEwyH7n+AXi97cO45izfgitYSOZRkP+Ju2/ROIjzHmDr6MrfRzP3LowroCEFVakSaJWpnvspcBS4fIpBrqOAlWcamMst83VdIjLq075eqhjJQh4iNO0ga8jU1/QNXeP4W0mYEmBas/rlw4xtyk3uq4/bnwZ2tp2DPl5dALlowVmMjPZxzICq7gSEANgAUfVlBl2lJGbjeglMwKMEq3igLCKPzxtM1Uf9aq9swhz3i3AcUTF2efc97qDSAeRNTE982VLy2dMZZ1slPY8JOfflXOyEdhiAZaQ5jLQq5Dtsci6HHiKDbH1jqW0/ILg4g5+Rzby2a3GXt+abzeQCE+YmMPkk/DgdH4HyMjs800F2eRhLgoUkrHDgJ+YZ07cLNZT+UoWCXYscI0Uwyqg/2c8dgSekiXafKl3/4DW6TERKQ5bo7xBLB8G2u/BWB8hWTOaZXpiTbW85BoWPQ3Vpp/Zm8XkbsaWbLesohYFIKP/gxexMhlI96yWbBKY2zALl0+VQag5ONu7DvVybY9nOXOqLXwrEamLN1t2wQBtULb87EjUAnmWPXUMYnjMAMcl2uzULlSCzngmyKKH
+ o7PJ6B69
+ Uj37ZNlJYN7MIQxBbFQuBXPb++OBk74niz6BhD+S0b8SfNWIFooor6PWBGw9EMlMKL81q0c1wklU6uS9MmJ50pu2sJEq8qh/yEMV3ZTT26slrzKMT3iL2n4UFKVgQKlqf0MtF6cSm6VCBrYcBuqQOtHTVw27UPqaXST2ozSVzaV6RowRPZL3pL4QiR6Pd0pnOgScW8Q3vF33MgMV3XkfU+eo3Vmapbz4O3Apox0nIMlWtZgJ/cHnl/6oUD1Ji0U99KCZJtRW1KtWUdRaoW0NYznfSfGoGhL7MeXlud4yRB0z8nBs23AFw5P7n8A4sFtQr/pi7X14UFGbt5lERtdPU0KWLC5tlUTPo8tBGtaXMvB6urJMQldovIQe9j26VlLjuORpRwo3QufDNdC5HYSYFQzyTF/B/HkY/fn8tZFwkylTshdevUMnCL2T26A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -238,40 +99,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 24, 2026 at 07:46:14PM +0900, Harry Yoo wrote:
-> When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
-> can be allocated from the same slab we're allocating the array for.
-> This led to obj_exts_in_slab() incorrectly returning true [1],
-> although the array is not allocated from wasted space of the slab.
-> 
-> Vlastimil Babka observed that this problem should be fixed even when
-> ignoring its incompatibility with obj_exts_in_slab(), because it creates
-> slabs that are never freed as there is always at least one allocated
-> object.
-> 
-> To avoid this, use the next kmalloc size or large kmalloc when
-> kmalloc_slab() returns the same cache we're allocating the array for.
-> 
-> In case of random kmalloc caches, there are multiple kmalloc caches for
-> the same size and the cache is selected based on the caller address.
-> Because it is fragile to ensure the same caller address is passed to
-> kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), fall back
-> to (s->object_size + 1) when the sizes are equal.
-> 
-> Note that this doesn't happen when memory allocation profiling is
-> disabled, as when the allocation of the array is triggered by memory
-> cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
-> 
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com [1]
-> Cc: stable@vger.kernel.org
-> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
 
-I don't think this is urgent enough to be fixed as part of -rcX,
-as it's been there since the introduction of memory allocation profiling.
+On 24/01/26 2:31 pm, Lorenzo Stoakes wrote:
+> NAK to this change....
+>
+> On Fri, Jan 23, 2026 at 03:03:58PM +0530, Garg, Shivank wrote:
+>>
+>> On 1/23/2026 1:18 PM, Dev Jain wrote:
+>>> On 22/01/26 2:58 pm, Dev Jain wrote:
+>>>> On 19/01/26 12:53 am, Shivank Garg wrote:
+>>>>> The global variable 'khugepaged_collapse_control' is not used outside of
+>>>>> mm/khugepaged.c. Make it static to limit its scope.
+>>>>>
+>>>>> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+>>>>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>>>> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>>>>> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>>>>> ---
+>>>>>  mm/khugepaged.c | 2 +-
+>>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>>> index 1667abae6d8d..fba6aea5bea6 100644
+>>>>> --- a/mm/khugepaged.c
+>>>>> +++ b/mm/khugepaged.c
+>>>>> @@ -827,7 +827,7 @@ static void khugepaged_alloc_sleep(void)
+>>>>>  	remove_wait_queue(&khugepaged_wait, &wait);
+>>>>>  }
+>>>>>
+>>>>> -struct collapse_control khugepaged_collapse_control = {
+>>>>> +static struct collapse_control khugepaged_collapse_control = {
+>>>>>  	.is_khugepaged = true,
+>>>>>  };
+>>>>>
+>>>> Will it not be better to just remove this variable? In madvise_collapse,
+>>>> we defined cc as a local variable and set .is_khugepaged = false. The
+>>>> same can be done in int khugepaged() - define a local variable and set
+>>>> .is_khugepaged = true.
+>>> Since this patch has been stabilized already by 4 R-bs, it may be a headache
+>>> to now remove this, we can do my suggestion later.
+>>>
+>>> Reviewed-by: Dev Jain <dev.jain@arm.com>
+>>>
+>>>>
+>> Thank you Dev for the feedback and review.
+>>
+>> I've attached the patch implementing your suggestion and sending this as a separate
+>> follow-up to avoid disrupting the current series.
+>>
+>> I’m happy to queue it for next cycle or if it’s acceptable now, please take it.
+>>
+>> Thanks for the suggestion!
+>>
+>> Regards,
+>> Shivank
+>>
+>> ---
+>> From: Shivank Garg <shivankg@amd.com>
+>> Date: Thu, 22 Jan 2026 12:36:28 +0000
+>> Subject: [PATCH] mm/khugepaged: convert khugepaged_collapse_control to local
+>>  variable in khugepaged()
+>>
+>> Make khugepaged_collapse_control a local variable in khugepaged() instead
+>> of static global, consistent with how madvise_collapse() handles its
+>> collapse_control. Static storage is unnecessary here as node_load and
+>> alloc_nmask are reset per-VMA during scanning.
+>>
+>> No functional change.
+>>
+>> Suggested-by: Dev Jain <dev.jain@arm.com>
+>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>> ---
+>>  mm/khugepaged.c | 9 ++++-----
+>>  1 file changed, 4 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 9f790ec34400..c18d2ce639b1 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -829,10 +829,6 @@ static void khugepaged_alloc_sleep(void)
+>>  	remove_wait_queue(&khugepaged_wait, &wait);
+>>  }
+>>
+>> -static struct collapse_control khugepaged_collapse_control = {
+>> -	.is_khugepaged = true,
+>> -};
+>> -
+>>  static bool hpage_collapse_scan_abort(int nid, struct collapse_control *cc)
+>>  {
+>>  	int i;
+>> @@ -2629,13 +2625,16 @@ static void khugepaged_wait_work(void)
+>>
+>>  static int khugepaged(void *none)
+>>  {
+>> +	struct collapse_control cc = {
+>> +		.is_khugepaged = true,
+>> +	};
+>>  	struct mm_slot *slot;
+>>
+>>  	set_freezable();
+>>  	set_user_nice(current, MAX_NICE);
+>>
+>>  	while (!kthread_should_stop()) {
+>> -		khugepaged_do_scan(&khugepaged_collapse_control);
+>> +		khugepaged_do_scan(&cc);
+>>  		khugepaged_wait_work();
+>>  	}
+>>
+>> --
+>> 2.43.0
+>>
+>>
+>>
+>>
+> Andrew's already commented but this is terribly mistaken.
+>
+> The argument against it (why did nobody check...) is that this struct is HUGE
+> and there's really no benefit to doing this.
+>
+> Nico's series makes this struct even bigger (...!)
+>
+> Dev - PLEASE use pahole or sizeof(...) or something before suggesting moving
+> things like this on to the stack, in future e.g.:
+>
+> $ pahole collapse_control
+> struct collapse_control {
+> 	bool                       is_khugepaged;        /*     0     1 */
+>
+> 	/* XXX 3 bytes hole, try to pack */
+>
+> 	u32                        node_load[1024];      /*     4  4096 */
+>
+> 	/* XXX 4 bytes hole, try to pack */
+>
+> 	/* --- cacheline 64 boundary (4096 bytes) was 8 bytes ago --- */
+> 	nodemask_t                 alloc_nmask;          /*  4104   128 */
+>
+> 	/* size: 4232, cachelines: 67, members: 3 */
+> 	/* sum members: 4225, holes: 2, sum holes: 7 */
+> 	/* last cacheline: 8 bytes */
+> };
+>
+> Making this static was fine. Leave it as-is.
 
-Perhaps it could be the first patch of slab/for-7.0/obj_metadata branch and
--stable folks will pick up after it lands mainline?
+I wasn't suggesting that! When I said
+
+"In madvise_collapse, we defined cc as a local variable and set .is_khugepaged = false. The
+same can be done in int khugepaged() - define a local variable and set .is_khugepaged = true."
+
+madvise_collapse does kmalloc() to allocate this large struct. I was suggesting to do the
+same for khugepaged, to enforce consistency.
+
+>
+> Thanks, Lorenzo
 
