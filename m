@@ -4,90 +4,269 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6005CD715DE
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 11:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E32D715DB
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 11:40:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F6236B05B1; Sat, 24 Jan 2026 06:32:10 -0500 (EST)
+	id 303756B05B3; Sat, 24 Jan 2026 06:40:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F5B66B05B2; Sat, 24 Jan 2026 06:32:10 -0500 (EST)
+	id 2DBF16B05B4; Sat, 24 Jan 2026 06:40:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27CF86B05B3; Sat, 24 Jan 2026 06:32:10 -0500 (EST)
+	id 193B46B05B5; Sat, 24 Jan 2026 06:40:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 002436B05B1
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 06:32:09 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7498E1A0278
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 11:32:09 +0000 (UTC)
-X-FDA: 84366643578.19.1BC0462
-Received: from smtp153-171.sina.com.cn (smtp153-171.sina.com.cn [61.135.153.171])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B26BDC0006
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 11:32:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b="E/NIEcrJ";
-	spf=pass (imf22.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.171 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769254327;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0016A6B05B3
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 06:40:43 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8296C570BC
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 11:40:43 +0000 (UTC)
+X-FDA: 84366665166.15.E103A81
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1594E40006
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 11:40:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HBvi6HjJ;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=mAYOfzgG;
+	spf=pass (imf04.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769254840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qkOEQgaEwy9leZy1ujQ4H2JefbzU2lHbydy/pVzpG10=;
-	b=KyBXbgkeVVHcXVWglXUuAUHlCr0IWjqi5f5ykzFnDm+0/f7ZGbWi1iUFUq0h9eNwA0Lr1Q
-	FcsixHDwxH7dsIoJezbS02H5C3GfMmoJxsrVFIfXZT6004C0LrCAnTOPPODrlLbz2CRBM9
-	DlzkEgEpxTOcwGY1gnES7cV5BbWHD48=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b="E/NIEcrJ";
-	spf=pass (imf22.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.171 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769254327; a=rsa-sha256;
-	cv=none;
-	b=54vlMBG43VLVg1LuDcT5vbQ2odT/qHN+4DfEbDdmXzOiqne4oCwOVpnkimo2f7MxpzdWpT
-	A2UN+rvVjVgs3pB70EjyDpW7G+F+QO4Slf1SroKf7tbwY2bn2wJ2TYWIG+/cip7W+du/TN
-	wQiFoLJ01aegtWQa78NLdYM1zGOBZEE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1769254326;
-	bh=qkOEQgaEwy9leZy1ujQ4H2JefbzU2lHbydy/pVzpG10=;
-	h=From:Subject:Date:Message-ID;
-	b=E/NIEcrJfk84TjDmBvvZc8snPGSDOJGX70Pt/MPSGWfYxAhU1sTnI7a385AsOprtw
-	 aRmwWXvxoGs1LRI11mawWiHTQ+Jz1QL/UM4ALl/RcW2fAq/ATTyF3Hd1mEKcbLX++e
-	 xXQHFtYw34W8WV75PZ4/IGNxvsWY8nc8XGIYI1+c=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.160])
-	by sina.com (10.54.253.34) with ESMTP
-	id 6974ADAE00002209; Sat, 24 Jan 2026 19:32:01 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 1296846291920
-X-SMAIL-UIID: 99F37E143FD540628EBE341A8B8EE97B-20260124-193201-1
-From: Hillf Danton <hdanton@sina.com>
-To: syzbot <syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com>
-Cc: axboe@kernel.dk,
-	linux-block@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [block?] possible deadlock in blkdev_read_iter
-Date: Sat, 24 Jan 2026 19:31:47 +0800
-Message-ID: <20260124113148.2398-1-hdanton@sina.com>
-In-Reply-To: <697400dc.a70a0220.35de72.000a.GAE@google.com>
-References: 
-MIME-Version: 1.0
+	bh=Est7CpZVd/d9y9ZjP4jdhuxlkt8Fmes4uLds5lmlzDo=;
+	b=xiawwzeRuiqBMyzkRt4Rwc2GQ8v/gG4sZ6QqlRWdM+2ZMEIk1R1CURk9od52FRLSgyIQH0
+	MpaNEBaw5NsvBBif1N644BzgNjCDPtL1GrOGNumcst0DoCaRVeDySP57tcButKhqfd1mkv
+	H1ar9RsyxqLHkLbz+sla/R4WGxjrgsY=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HBvi6HjJ;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=mAYOfzgG;
+	spf=pass (imf04.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769254840; a=rsa-sha256;
+	cv=pass;
+	b=4h+VZInvFh6Hh1j001/nwGQz91GoV3h2Z0UIHfCHbtgftA5Tm9BB3ZK4gihnvrmDXUgY+1
+	5e8tPkAZMy3f1WZJrFtPMXG4twx8G9gkEWHJwy5fXxM8x5i37VWvajApNrY8rPdHkaTCDT
+	6eIlp/+S/2VTwcgihWGnD65QJYzdLeg=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60OBAmxv960537;
+	Sat, 24 Jan 2026 11:40:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=Est7CpZVd/d9y9ZjP4jdhuxlkt8Fmes4uLds5lmlzDo=; b=
+	HBvi6HjJlB7I0RlyR6p5XtLGy9S9gjJsa/EDfJkOzO+E54iatFSZNYsrTSRwztir
+	DPGuW0WQ/nV/JZBe79g9pqiItdU5VRKBOkJ0SoanO+WRKK82An4vvCQhwfj2ukAm
+	uq5HmULcUKbDaIvzNEkMlYBv3k2n6lS8DcFTb2WdYxcSFobaBvvDh+G4Pq9H38lk
+	7her8gKJv+cODjR2PoSWLxQA68LXeyD5DehrxZx1uKTWSqDkOBXweXpKfW9e87dj
+	jqK7AGFk1colvqd3ieB9dYgVQUQZITARqP4CnyTNrZz3ezeSxfbBURpAXufMfQCc
+	9s0W8aJiN6n7cjz0gvtAKQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bvny6r5wr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 24 Jan 2026 11:40:28 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60O7euWV033453;
+	Sat, 24 Jan 2026 11:40:27 GMT
+Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010009.outbound.protection.outlook.com [52.101.46.9])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmh6c8ef-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 24 Jan 2026 11:40:27 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PqHMx+baoC5uwFBnMEi/VZyZWVjxmV9MmTtaQSTCJEYc3f/bwFw/ysYSv1hqJpuKIdlpp0GHrTQiCwvvfhvFNf3eG3IbyOiFEpcOTril5x73VMTO4FnKYAY+eGdMTVvpSoFoMusNg3ZUW82xLjPqm2JrwT0U/fyJlndLTru0SsNVrAprxH0I3Bu+2NYj4ce7I8AEwEZljm9NdC66hPL67J0CoQKHhmOa8A6wntPRRH4LDFhhMtgjJzkHL5Kd0thL+n2ase4exqtpRkStzPCcv6RL6BEP2Nrsin4nsv2pv6c5348mR9x+I4RlYADrtWW0bGEiecAJjZarEfgI6z/tKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Est7CpZVd/d9y9ZjP4jdhuxlkt8Fmes4uLds5lmlzDo=;
+ b=FjHnTXeaQ0nSD+lj9581OQl6gxDuZI4Lgk/l6wiirsk3m3COY3VEOHggltHCWcvj83+dzZSzWGsPknF4H2alQfbxQZ0rSDYep54fENk91VXj/v5EuI1ylDbYCcH//wxzJNFgHiXGNVUF9AYj+1tRwG7HI5VR/wS09TJVdrTG41xJCiGvpY+DcZFwJl6JBolkQODL4aoiCvhcXjxi4XpgfVoZ+nkM+4jaQw94vsA+1PbGV8wMk2CY7egSMKYlYVYARwt+P5JsyGa+DVB2+x8CAoCZ9bvJWWwmexGqmTR73hLvyyqWbWvPhKWH5uVVJHyorf0RpKGWJaNsEYSfEtwH+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Est7CpZVd/d9y9ZjP4jdhuxlkt8Fmes4uLds5lmlzDo=;
+ b=mAYOfzgGjU39k32zxAKUl4XEt5HpaaVn8qlH2e9KJgqlq4RSP7iTfLa4o+23ZDMr/0JHTIUL9MK5SV3CVxg6dGUjlw3iIa+ZATJtdb0GFUHK2uFTCbWRXOT0u3ocCBqQmEuM9aamVGfR19KAyVKSVwYqTBLrOpe3p5HVSus24P4=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by IA0PR10MB7580.namprd10.prod.outlook.com (2603:10b6:208:490::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Sat, 24 Jan
+ 2026 11:40:19 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Sat, 24 Jan 2026
+ 11:40:19 +0000
+Date: Sat, 24 Jan 2026 11:40:21 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: "Garg, Shivank" <shivankg@amd.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V3 5/5] mm/khugepaged: make khugepaged_collapse_control
+ static
+Message-ID: <7ac06a41-73c8-4089-873e-7bb4cc1b3e02@lucifer.local>
+References: <20260118192253.9263-4-shivankg@amd.com>
+ <20260118192253.9263-14-shivankg@amd.com>
+ <6486c6dd-2702-4a4d-9662-09639532ce6f@arm.com>
+ <afc56f8f-0c22-4bac-a99b-b46df346334d@arm.com>
+ <ba4502f7-0c35-460e-a42c-d32dea9ab9eb@amd.com>
+ <50da84da-1cd6-4b8b-babd-b6dea405713b@lucifer.local>
+ <94c84a3c-8ed9-4bb5-8e64-69bcb8306aba@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B26BDC0006
-X-Stat-Signature: 6wrwu1qo3tct8tbzuqcet84ef4cjrnm1
+In-Reply-To: <94c84a3c-8ed9-4bb5-8e64-69bcb8306aba@arm.com>
+X-ClientProxiedBy: LO4P123CA0167.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18a::10) To BL4PR10MB8229.namprd10.prod.outlook.com
+ (2603:10b6:208:4e6::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|IA0PR10MB7580:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39ccc4b6-9467-4094-c3a7-08de5b3d59f4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MklSdk9DSTIwSnVBQ1F0RzRUSUdRdTZiazNxM0Vwd1IydlJ6Z2FudFNvM0li?=
+ =?utf-8?B?R3doWkZnNWZpeXVSWHpqWmpnNnRNd3BqanZPU0tKUHhVRUUyWnFrY2kzdnEx?=
+ =?utf-8?B?TnpsVGdSak9CTndvakwvT1ZPZ3RwdFVyeSsxTm9PNVNXVE1tSlhJTHFWSTJo?=
+ =?utf-8?B?dHZDejRyRUs1Z0dKUWdySmNnSDlVNVVkc3V3L0laUEtCOU9kZlhZNUg3NXg3?=
+ =?utf-8?B?Ynh6TUpiZEFZcU9lM3FiZ1BiR3dTTWJua3Z4dk5udktxR1VCeUdBaFRoZlA5?=
+ =?utf-8?B?NFZTNnhjQ1NSdTdmTjY3ak9xb0NZWHhwVkZXck1sU0NRQ2lvRnl5SktSaWIw?=
+ =?utf-8?B?NzhrWVNrNVhybzV2WDNlTVdMdmdGcXJFa2tiejFaL2Fkd2xFMnV4Q0pGajJo?=
+ =?utf-8?B?OFRXa2RNU2crQkNzUlJ2VndLcEQ0VmNZRnFYcUhFK2xQQW1tZkFDalNtTkxB?=
+ =?utf-8?B?TmZzQjZ6ZW1Vd2dVVUNKSUZpR21hcklweU1FOFNUeW9mQVZpQVN0Nk56TlJB?=
+ =?utf-8?B?c3Y2a0lLS1NTZ0d2c3hsR1BPZVliNjRjQkg2enk4K24vek9TNTlmbUl4c0VS?=
+ =?utf-8?B?YWppdE5Tc2JJdHl4b2RoekRUQm5TV3hVZ09iQ1hwZktTZFJJM0piSUJLSkRJ?=
+ =?utf-8?B?OEZvTFdsRFY3OXZNejFiNFZDd1lFQjU3bUdMWEtLZzVyeU56SXB0dElKNTZn?=
+ =?utf-8?B?alFiTWc1cVhrTUhtTU5CRUlRWG5YYnRDR2pKZ2s5RFpqQUFsWWJtblZpVytD?=
+ =?utf-8?B?VGNxVC9Meis1N2dYU3JaWEdTeEcvRzFSc3J4OGVQVTh2cHpsOUVBcjhNb2Zq?=
+ =?utf-8?B?QzlBekNCcEU3WkV5TDQrd3hvdjhRK1BqNjA2QUVvMS9ySHl5MHhueHU3UXhq?=
+ =?utf-8?B?b1lKMW1DSkI0YXhkY05JV3VXMkZ1eGdSUWxxUC9HUmkyVXdxcitYTDBzaVBv?=
+ =?utf-8?B?cEpWcUx2SS9tVlNsamY3MW8xRzNDTWd5b3BIdlVaR1RPVHN3UGtJYmhjYzZS?=
+ =?utf-8?B?SW96U09yaFRnanpTU3dmY1J2bk5mdGFQM29Na2Y5ZlZkaEdmUEFqL3FtVzJL?=
+ =?utf-8?B?MEttR3lFRXU1SFBIRXhyNURnTWRUaE5lZXJsbUNjY1NaWXVjZ1YrdkVxMlFO?=
+ =?utf-8?B?YXg1d2tZbVZ1OUc5Q2dzNGNUR3Q4TlZmVnlaQUVqeGZXMUV5VGwxU2U0anFo?=
+ =?utf-8?B?NFdSdithWW5VcS8wQ3NVZ1RzZVdQUW9BTkNXaHNuMkZwd1kzV2xxR0NrTmtQ?=
+ =?utf-8?B?Z0ZDTGtmRG8yUHV1UFNTRlBtekQ4MUlXK3VSNnRIRmtBOHZPdldRWVFRT2JL?=
+ =?utf-8?B?cXd4SzhSUVNSdm1PWnRMdkYxbVY1SlV6VUxlcXBmNjNLSG1Rd2NpLzdCanpK?=
+ =?utf-8?B?QjljSVozeHRhVmw1bGtvcmpWVFA3c2pHS0tVckJ6OVFhRU03bmQ5alVVWkls?=
+ =?utf-8?B?QVVJRmozQUFFWlpXVUlOdXk2Q016NzZSWWw0K1I5V1dWbVVqQ0Z3QU85ZzB4?=
+ =?utf-8?B?TVdWYXB1SXZoTDZGcnpRdmczSmlMU2s1M2V0Q3lDQTgzQmp2ZVdQOFBlelI3?=
+ =?utf-8?B?Szkwc2p5aEJUWnp2N1IraUZOY0tpcXJLMmhrS0UySGl6Vmw2b1NJam84MElt?=
+ =?utf-8?B?N3FHVnpMWC9aZGJWYjZ0djRNN3R1ZHBEUncrbVlEelZqcWw1R2NBenpJTlYy?=
+ =?utf-8?B?dVZNMWFUQXBxMkVDQVM4MkZGZHo0U3FkUkJQOS9HYkVmZWpEMHNtVTRoTG5z?=
+ =?utf-8?B?akZrb1VMYnIybEx5QkRVT2hPMXVKdXc0Q2dlMU05T2FLM1dJKzBIckpLbkFr?=
+ =?utf-8?B?MVVpS1M5VWl6cDFGWXRHRG5JODM2VDVucVdTK2ZyQjZmaUVZdGVtQ3U1Z3Q3?=
+ =?utf-8?B?RXMrdWhOUW4xWDQyNkVKWEtvR05LUmtpbFJzMzR0Q2JkMURWRDNTZi96ak0x?=
+ =?utf-8?B?bFBNSzlVL1FDQm4zNEdzMHhKb1ZpZ05RaG9tVUNCUGswUDlmdHhVMFoyenFz?=
+ =?utf-8?B?TkFCd04wM1ZFajBDbDYxWVZBMG11a2E0K2VEbVlBVm1nbWFVVTBsQ1ZCMUlS?=
+ =?utf-8?B?QXlOWFBUV1E5OTF5RmMxQlVMWnpPV3hRWGVYOE9tMk1iWnpNSjU1VVlpTXpw?=
+ =?utf-8?Q?vM7A=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UHh2dG41djhjK1RBSmtaVnZSMWJCd0UrMmdTQ3F1Z1pHWEdIaG5ZZW93Ukdt?=
+ =?utf-8?B?TTRXbW5jbXZBLzdOZ3NkSlBmSFJESkRyMDFyMUxseVRIUjhMYTFrZWY1T0Nm?=
+ =?utf-8?B?VnlOY3VYQ2x5Yk9BeTRseTFCRlNtNVZteWNxOWc4aG9CazRuZm1qUy9yOEh3?=
+ =?utf-8?B?WFNCWkpIcnhZdGFnbTF1cG5QaHM0UWp0MUhMYU1vakFqL3BoNnkzNWVCYnVo?=
+ =?utf-8?B?bUoxWmJlLzF1T1paTFlsMDRHVE4zRHBraWcyMmpPMHB0Z1JWK1NnL1FpTDVs?=
+ =?utf-8?B?ek4zT0NZYktPL2NObTF5YWVBenNoSld1c3JLMHR4NHlWcWlNanp3bjVURkhi?=
+ =?utf-8?B?anZkVDJCNThaNzBqckQ0Y0M3KzJBMlJxWmFvU05aODV6RmhCOUFCK1ZFclhw?=
+ =?utf-8?B?em04MVdlOU1ZZHNVUXdqZmVwL3kweTBsV2dORnU4WFFLTkdITmZoTThMV2th?=
+ =?utf-8?B?bVk5V1R2L09pMXR4RDNhL21JNlhnNnFjTSs4cW4zTGF6Qm5xNkg2WFZCNHha?=
+ =?utf-8?B?RVg4SXgzYVJhRFhPUGVBQ2xwekhUMkJZalloSlZvZHhxRDBiNVB6K2ZjaDYw?=
+ =?utf-8?B?R28zcU55aDVibUt2Q25SQU9GWWcwZVQ2QzMxSVRMek8wQTJFbzU5VnVUS0gx?=
+ =?utf-8?B?RERIL2k3N25qSjRlV0RJdEU5dG8rR01PWTFCOFpvYk8vTkVXQjVwbWpVOHph?=
+ =?utf-8?B?TTJTQUlWSXVvWXN5UHhya0RYb1NLRHdoS2JHcHc2MlpUOThIcUwyTU91dllx?=
+ =?utf-8?B?aWZnSEM0RnljVmU5eEE2cGlybEtWK0RrdUtESGEyZkdJZUhTZ1NMaDJMT1dP?=
+ =?utf-8?B?SFQvTnY0RndZblBRK2U3Vzg2RXJjSVhLWVAxWVp2NTRHZmU5ZUNseEYwQTdB?=
+ =?utf-8?B?L0FRZTBOeEVRU1RxeWFYblZPNHI3SjdsV0RZNEVXNXdPR2E4K0pZb1N6Wlhr?=
+ =?utf-8?B?dlBQdDViRlVyZXFoc1YyN1ZrWU5VVkpPY2cwd2l5OThydHdEeDl2Mjgwc0lJ?=
+ =?utf-8?B?MlFrTE5JZ0NKWCtEc1dPT0JxU3RkOGQ1U1ZYbUo2NGUvTVQ1NlhUQ2NTa2tX?=
+ =?utf-8?B?ZXpoSnVWazA3bWgvdzBydmo3RkpCRjRNbGxJYjFpRS9xR3ZpMEJycXQzOEcv?=
+ =?utf-8?B?cm1WU2treUV4OU15MFZLcHFNamhNN2taK0JxYitNc0lqSnE2Q0dYTXlaVm1j?=
+ =?utf-8?B?YlRPc0VHV2tWREF6VkZLK1BDR3h2L1pPbC9MUjBadVJVbjR3R1Zpd2FSRUt2?=
+ =?utf-8?B?Wlp0cWptYnZoRi9LcVlyYmVMYWRENXNqOTYxa2NDWjNiWkx1K0ZScFJVdTlo?=
+ =?utf-8?B?aEw1Uy9YbWY3eHB0RzR5TWoxYXVFcUNXSUNYRFAycjYvd3ZTTlQ2cUgzMVNr?=
+ =?utf-8?B?OVVTRThXMXlwWnpQRG91MmNxQ2daSElSYVZ0UWxhNWsvenR4OFVxN0FzUmpN?=
+ =?utf-8?B?L05WTjlrVHNJbXRmM24yc1hIWjhRdHJTZVRHYXluc1B3UW5mQXdqREovYkVj?=
+ =?utf-8?B?WmphVlEzdVlzbE1uUkFJMGFVMkIyYkdaS3NWWERmdmh1VVRiWjdFV3p2SzVa?=
+ =?utf-8?B?OE84NEhaTmhZSEdnUUFnblZnaEFkWnlWTHN4RzRyMUttMWNWWk5nMnNMMTBj?=
+ =?utf-8?B?bjQxZ0J6YVlrWTlaWnVreHhxRVFOakd4M1lUZDd2cUlpK25LM3pzRkJWTC9G?=
+ =?utf-8?B?Z2lrYWhnZmtFRDZBRGRvZm5sVitmY2dpaTBPT1lwT0tDYlhQYXc5cFdYaWNm?=
+ =?utf-8?B?WGV2V2lXTFRudFNBcXh2TWQ4Mld6M0xyUTIzT0h3azVjK1lPV2ZiZTFaQTUr?=
+ =?utf-8?B?UXlWS0tMY2RvUS8weUNUQjQvZGFLbEltR2drdGdQdDZ1STJZL0VkZGpNM0E4?=
+ =?utf-8?B?SGJnRkYzRkRReG5XMzBoZDZrWUV5MDBhcjRnZHFGa2FVS2ZsTy9ZNFhPOU04?=
+ =?utf-8?B?R0l1VUc1ZVdMZHZaZ1M1SStDendMbE9MaWhNZjBrK3dSMi91TVFKYklhMCtv?=
+ =?utf-8?B?K2ZvZW0wZ2NFTHpxQ1NvekJkd3Jhbi9NWXNQSUFaVFpBMjVsQzR6YWxwTDZE?=
+ =?utf-8?B?SDViaEY0TUhoUUdqL2NiWUpVTnRrb1lnOG9aV01qREtETkMxTEhZYThBMTE3?=
+ =?utf-8?B?bUtnZFJEM2UwaHMyKzlVeUtNbjlWdGltQlFPMHVJc2VOd2RLS1JBc0JINzVC?=
+ =?utf-8?B?WmdkbUlJRnJQT1lWbzhwRWRHUjdFM3N6MnhrZFo2d1dPcWFFTE1WUkowamoz?=
+ =?utf-8?B?RzJoZEpONTJMYlROL0cvMnk4cVk3cnQ0ck9Zc1VJK2hiWUpEM3JsbFlCYVNU?=
+ =?utf-8?B?aHZ4K3MxdEE4bCtOb3pIU1JXT3IwcHdJalZPU0ZpU2gzOTB4VUNod1M0NDVZ?=
+ =?utf-8?Q?bSm4yRXGg7WQIrM4=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	j14ErSUwlUph1xaNdMJLrrHvjMHocxt52mKsXkMNTlWElAHcceYGkvqbedJSsAUhLjBv/pIIZpCSTDtBTD//kGam94ZQ2j9nYSQCF9PMPwvZc2JySB9tuDMaNXgdCF8Vmkfai7DiUf2ry7DUSQPvW9OIVjrY93FBSkyKnQzgwKIyPIkdqp6FDYGT5beG2BTG0nwRJTHadTWjRqEMhfOZNF3YkplNUon3kSpe2AGm8ReXOKanZBBmRG5iMj6yQE5/HF1sW1ufkhI/mrVJlMjHqU0pvGouaHdtzxvETtZZNLIYqRiuCBOmoNW7DXQdH1rOFUCkPxWPlJXxDhzVmwwXVegRG5/RgTjn5slpPXLPbj7vuGxB1TF4yQLnmjMxIhVW2Tsl42bWa6O+FPpwcDMIHBhx6B6rCKzRR/RkFisGrVlGeRaiANMVPMlnBS841xUMcRC5owR4/+uPf8NQ///fs03cqln6gv8zm6N6ah8KtAVGaBKEqXYU/TMHn47N5yzVcq8OgLHh9GfJB9D3rUx+BpXrcG6S7+hg2cPrVftCHcikhuzqa2CQtPPJqwSHm540rJvVPJnIuv4mRAyHoBEn5NdT3kp/QVUdpice8WWXuFY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39ccc4b6-9467-4094-c3a7-08de5b3d59f4
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jan 2026 11:40:19.4343
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G7Lj6WaVVzHFXeiQvC3n2uQBS/y6PbUhMgGBdi6mpUcuESqrV0fRDcZ25OAwaALNLDyzFhd6+1KG43t93UN+/4AP3mwBwj0VoQOcwpHluXY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7580
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-24_02,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 mlxlogscore=999
+ adultscore=0 malwarescore=0 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2601240092
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI0MDA5MyBTYWx0ZWRfX6JEGSC1k2V7q
+ O6z92cZGEbMCrCyLJu7+ribUJnag/h8NOgLVVUXwcxFDQCSn9s+C7xKlyqFVO5l1PKweCxSvEkt
+ 6dNZgebyWgw+fRALHCjjIPnujZ6KH/gOU1TRvp0l0HZ7DdgpjwyBoGfajFKj9FQRakH6i76N1ha
+ IGZ30DCXdMkYES/afEwwqHCh/Q7pdfQgkQBD7unS4SUB86aGPBcr3sLfOMfw30AcuOt/1tx3bLm
+ T+KX2MLqkbwD+cwE+Q6UdIUNrJQuRB4QdydThQ3BBF4l3InKiZr3MhdRBBXrXojxwkSkcgX0gqF
+ 1DESNB1MZ/AUIdVck6Ezw6dSF/Xr4mBqjvaif6TMt0lgFPG3Ot7xDk+4EEhIMCnBnCmKK43k1L8
+ tpI2jGLjVBwCHtpELY5uCkmZpYtEp7o73m5U18aItPZ1o7g2CfZfCuoirtFymjXIh4+FTGAme0R
+ jeaeKIhu2+uCZtpJ0dg==
+X-Authority-Analysis: v=2.4 cv=C+XkCAP+ c=1 sm=1 tr=0 ts=6974afac b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pGLkceISAAAA:8 a=Ikd4Dj_1AAAA:8 a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8
+ a=zd2uoN0lAAAA:8 a=K2x07VIehQ4J9c4nT1MA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-GUID: WzBvygOcEAarb0rVUigzVPR7iUK6PLXA
+X-Proofpoint-ORIG-GUID: WzBvygOcEAarb0rVUigzVPR7iUK6PLXA
 X-Rspam-User: 
-X-HE-Tag: 1769254325-826174
-X-HE-Meta: U2FsdGVkX1/dFzFsfZU2lkbRVWH2eMLfcBfm7IjUwPoKI0csHpuD6Dn1KwpErC7ZB7/vIXPhWwE4ePBV/NPYRjvs0iZwacv4BxtKv7xIIPFKxV4GwHsyK8AYYloo74YKbTwXkP8xqjHKZwsLOgFEIuJTNgZrNwMHpGvcv3dLa1xno8ecYvrhSBJpUX42qXrMm2M2hUYirV5WSokWKLnR26UvjB4NiZxQ/WJQuarTBzIsBWWTg4GE2SMF/hWD0lTArpShoiRTzxFhnSheelP5VfikJIcHyj6GQTIwSknElJFVx6tiC1uX7fZmFUEDPWwNYeVjWfOI0Nl6DjCPhpL/O1RC41n3TyAHHlIfad/420DIuBQB0Da8H3elskGs7zzeQ4u3HoTwOPHK1akXkH2AA769a8+Chcizv9nhqnBM6KfveoAWv9ptcu1Pp21Gh+oCouWk6rejLm3afJ0Mzh3hClSqVQmEfFaUWiRrdvkZP+yOwxt8NhE+HW0Jv63SXWY5iJHKulECEEcdvswbxpi0NubzheQci2Xlfv37WgcZpL5/7ysIJ+UWI7hYpNmNNnUcHfSwley/LvrBDDTckSXLl6R7cUQIdaHn+fUu+uMVx7iDFK4S9SR7rE6eO1ecx32QwK97CKYw350TleNYnxfjBBoGZ1pLI3RqJv7ffonbcDQpXmhzv7dNGpCmfEuKMHpqrkYfS1kpZMWmddU9jaNgwbdscwKJwQMU0nF1+YFKh4GR128pRGczLSPwkjHql5wbWtxe/mK/WyLiieFHz0CvXlFh7vePtpNCxFt0p2EjtyV98pJaL2biS4VwvgWu9aLNoNeNDi6Iadiq0QzQskV+RCUkuKAOgCvs0oBVOQXXJwSdQe77o5f5n2KjzJIY/RlkETBfPXnSs0p+/TEWl54T0WYMJ9Fo3hC5KKOszA6nn3ViodqZp8dEiuy/5z1ZW4MSb3S5wTM5rEwRs8Nqvgf
- u9B7+38Y
- 6Ce+auV2lP6fUCE20zofDc02cyre51iBcGsfNtbR+GEz2S6fhJu/qh6/6nRiMXm5Ad1GwkJ8Qf3zKuX4RPBqfSPEU9aZfmY5jM062aIF1ic/NM9merbwSJtqLQopoZlcaVDW+58jNeec7qgrT3fl4R1O0wapYpd22YnxmDM7KM6MOqJi+owFquaK8Z0w7pW+zX1Z3bgWehSTbvXoB/UGNGudHHnP6O/e0ozv9U7ClzdiIH477WPjUn0zFSYplB2WbP7mBkIooNDuRrwzUSPu053HVl+yxYykk/hTp+igejubNGzqLWi5HotF84mRGst7E41WPZ14CR5kXz75JYn+NJnNkqe1d0JKfHG4e/PgB/bP/e3hS5FAt9mWje+DUJ1wc6enFVjZr0v8Jr+JoXBdtLsk16OgZMTSxI4381yhjyHJBSWH0A+vLXpSRFrdd9rBIfrVtfzDuhU5dj6PqnYif18/dPa6P3zX7PzugNZLl+9nGaJg422ESxAPPFCAxfAFIQShKxlCvIRP0IFnFDGHRr0s1IGfEW1ShNNt11pApa/ksDTHqIDEDBCtkKCAl7y7WCXiXjR3dqlYN5obKICGOxAIT7stGELJBSwd6iarAgvzUkdAwxjPrn9aUAW6SBHiTv7Vl1QfHI68Ll6z48AbvIrv/9EE41m5eqpHV6r0YG85DwWJ/SXUDxzSMT4FFHbE00B6hsTgcks7TfcaShz83bCI/ixR+yYMV+UuDaUcJJV0hUuZfFPfprJsBnwGgOIrBTd40Z/SfpJyMuiRAgwj+aI9T6RU3qAVbTZsQ42g75xZtpy9yyLV/x+FaCA7irYv+rCcxw9kYIZbRbq785/H7p9pF0KiWHSd6cS/W00L4u7rZ0W/Pg3Zmo2bjL/6GRiNTYdr6Y1Gzr/00iNWe5PhYmK1jaUFqoX3PDqHqsRXOtfnYY+2MpRHzoJIksFB9ZNvOhuywPdLVVkVQ4yFSmSxPJDVCzNh0
- DDySuwRi
- xfW8+YhP7yz97DpB2TIxN9a0x+7BvVwAw9LbmgusIJsESzs1hJOoyF8iknXG0IHU
+X-Rspamd-Queue-Id: 1594E40006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bkhraxmu7zmuhamfmqf6ibk7hcyppkig
+X-HE-Tag: 1769254839-34741
+X-HE-Meta: U2FsdGVkX19DF/k662arRyFWiCzZ1zzhODtwe1acSiOtqjs2axzL3mg/AIXl5Ey2sKEJx8UzxFGMw8U6hX8CWVks9ly2rLgeyUe/VWxd4v7nxu2hACHnmBeI4qxMqX0dpltT9jKNHHVvIjum+BFoufQygOKEjWqgLsXsz/GNjBqQCTSnzX9raLJ+O1aO/QENP6xxi8j9Y4mQepOSjvoEigrj4GzO2vcjakaQPgGv2yKfH/4jlEErJkCNWEOTYW0ivxpKyq3NuCzp3WavQxyT/Fq3kaZBUvEjPooPmIbCyXrE2o5lFhy9hocDlx+UC1wbuYYUKqcfFGoLBA4uxjPz4YB3rA28ApnsAWBfBwcb4+G6G2GY1qpf/gpgDIVDjhl+YWvnVv5Ny0wf2xJixkWVtsl7+6KJcJMF1NT5iL8NNMBgCz9I1BCZI/TZiiI9qkl4Nd2H1HQe4d7PS7LIYGl8G3HZz3vk3KlzvumQgJRNXY91Fi7aaIKIPQMXv8t2A6zvl8Joh64Y6ptldHtyQGKBjlouN68z4gdRiRZzxqS4R9Xw+5RvXL0DxefnV+Dtop+0yW6fLbGbG7AnznnwB6+IAEOdQb4a+BOQPnoTdpCtRlv0uCGlD+cNawFKeCD7Qwp6zRNdCRtETbi31ZqyNOzlYRbBSp0wy+mzpfTe3l6sUiWkVIlvJWVyucAliomRgIahtpy5+4b5dNhFBx4tLSxoYK96RuQEQXX1ptvn1GYdlBR7JeSTcyedp6pyPKuA2jQwApONoYscPXhXyDjNE2zLDdhzbpacDzwM4Ds2gTqMUeGfAWh9mWQ4wzGRyvw2b7ras7bvTwHZS/ixdKPvV/lc695og/YZdI2YBEr6287JjXC+bTsJ94SItcwY/m3ikXgg5wzRN4XCbY0OJPHnwHkuVYHsxsqP6Yl81lmD0+lCwCEVlncpE9AMBVf8TEChFOLaxC/OppovJzKoey3VOlo
+ ktWOJdcX
+ 7hnr/D3l2UtaL1n8qtQR93gyFJb0cnBVPGKdUZaeQ/yDD86qkepA4t5zG/0H7+xrIP5xZjAQudYSJ0Oh7fkZo4HOvvPq5mugTox5feqLqSR4pZ01lTSVypNohdWg7JbYWnCHqG0FXJfFn8wKtmyCYo3pTZzO7WlCXEAQIB0UdELODqBXWL3Y//UYGn9PEqtUkuQhbPMe8+/7CopP42YtTIvHalUNQppEMcb+jHApv5LClJTzsX/mWK+3XjMeuYU6TbYqPJWeEnnS7tmrYJy8A87mE8MfkdwDRjmUYQxqJuaeK2erYuFENnitaEArvNP4mXTHsakpl9fHNFvuHdiaVnXLwCS8HafJnql5bTmohBn0zOP17We/P6mkCkj2n9q104ITz8rqNi75d1TSVqNg5mpUFQqdik5AsePm1C2caUy8TqdlqPnEqqy0p2DOOUbzbF+lX/Qlj8QYvsLnrUlU8LeOBy0bWVrJa8TburpONdB2Kgq+i4YdPa7EOsrBj6wV2YMPv94dEm0FAF7xdzTTXC13PREEMCMpJco+72lCrJu9Ua15vfY7iOebkxg6cMInvkPiw5Z68PnGgvlkj6GDNIcyq6h1y+czAwAkcOlNN3ZgvO9cSp+wl8mympscI+hEnksnJMP1q/LsIXmFXyIypqLUc/H4Z+EevbbeDH6Vzb7bD4pgt3UJr/rH4IZkKYuAI3CxWRbeMiJ2dUj5+9zLLoimZpJttKkz3cDa+p1bIBlkhzt58MK4m4RW/pBmfR2OLq8eAwZEpQokG3dLi8WhIbCr26zuNcfITah5roSqXLpKdpiPw1IvLUNF6FiLJavbK532kz/7ZLGb2RlmCQxxdKD0fSTftSz8lrl5HLR2gtMIHThOkTlc0eAQ9mDvW00dytiOGlh7DT9G9DW90wDp7UO1i2UOA7miI2Y+n
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,158 +275,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add Lorenzo and Suren
+On Sat, Jan 24, 2026 at 04:24:24PM +0530, Dev Jain wrote:
+>
+> On 24/01/26 2:31 pm, Lorenzo Stoakes wrote:
+> > NAK to this change....
+> >
+> > On Fri, Jan 23, 2026 at 03:03:58PM +0530, Garg, Shivank wrote:
+> >>
+> >> On 1/23/2026 1:18 PM, Dev Jain wrote:
+> >>> On 22/01/26 2:58 pm, Dev Jain wrote:
+> >>>> On 19/01/26 12:53 am, Shivank Garg wrote:
+> >>>>> The global variable 'khugepaged_collapse_control' is not used outside of
+> >>>>> mm/khugepaged.c. Make it static to limit its scope.
+> >>>>>
+> >>>>> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> >>>>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> >>>>> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> >>>>> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> >>>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> >>>>> ---
+> >>>>>  mm/khugepaged.c | 2 +-
+> >>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>>>
+> >>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >>>>> index 1667abae6d8d..fba6aea5bea6 100644
+> >>>>> --- a/mm/khugepaged.c
+> >>>>> +++ b/mm/khugepaged.c
+> >>>>> @@ -827,7 +827,7 @@ static void khugepaged_alloc_sleep(void)
+> >>>>>  	remove_wait_queue(&khugepaged_wait, &wait);
+> >>>>>  }
+> >>>>>
+> >>>>> -struct collapse_control khugepaged_collapse_control = {
+> >>>>> +static struct collapse_control khugepaged_collapse_control = {
+> >>>>>  	.is_khugepaged = true,
+> >>>>>  };
+> >>>>>
+> >>>> Will it not be better to just remove this variable? In madvise_collapse,
+> >>>> we defined cc as a local variable and set .is_khugepaged = false. The
+> >>>> same can be done in int khugepaged() - define a local variable and set
+> >>>> .is_khugepaged = true.
+> >>> Since this patch has been stabilized already by 4 R-bs, it may be a headache
+> >>> to now remove this, we can do my suggestion later.
+> >>>
+> >>> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> >>>
+> >>>>
+> >> Thank you Dev for the feedback and review.
+> >>
+> >> I've attached the patch implementing your suggestion and sending this as a separate
+> >> follow-up to avoid disrupting the current series.
+> >>
+> >> I’m happy to queue it for next cycle or if it’s acceptable now, please take it.
+> >>
+> >> Thanks for the suggestion!
+> >>
+> >> Regards,
+> >> Shivank
+> >>
+> >> ---
+> >> From: Shivank Garg <shivankg@amd.com>
+> >> Date: Thu, 22 Jan 2026 12:36:28 +0000
+> >> Subject: [PATCH] mm/khugepaged: convert khugepaged_collapse_control to local
+> >>  variable in khugepaged()
+> >>
+> >> Make khugepaged_collapse_control a local variable in khugepaged() instead
+> >> of static global, consistent with how madvise_collapse() handles its
+> >> collapse_control. Static storage is unnecessary here as node_load and
+> >> alloc_nmask are reset per-VMA during scanning.
+> >>
+> >> No functional change.
+> >>
+> >> Suggested-by: Dev Jain <dev.jain@arm.com>
+> >> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> >> ---
+> >>  mm/khugepaged.c | 9 ++++-----
+> >>  1 file changed, 4 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >> index 9f790ec34400..c18d2ce639b1 100644
+> >> --- a/mm/khugepaged.c
+> >> +++ b/mm/khugepaged.c
+> >> @@ -829,10 +829,6 @@ static void khugepaged_alloc_sleep(void)
+> >>  	remove_wait_queue(&khugepaged_wait, &wait);
+> >>  }
+> >>
+> >> -static struct collapse_control khugepaged_collapse_control = {
+> >> -	.is_khugepaged = true,
+> >> -};
+> >> -
+> >>  static bool hpage_collapse_scan_abort(int nid, struct collapse_control *cc)
+> >>  {
+> >>  	int i;
+> >> @@ -2629,13 +2625,16 @@ static void khugepaged_wait_work(void)
+> >>
+> >>  static int khugepaged(void *none)
+> >>  {
+> >> +	struct collapse_control cc = {
+> >> +		.is_khugepaged = true,
+> >> +	};
+> >>  	struct mm_slot *slot;
+> >>
+> >>  	set_freezable();
+> >>  	set_user_nice(current, MAX_NICE);
+> >>
+> >>  	while (!kthread_should_stop()) {
+> >> -		khugepaged_do_scan(&khugepaged_collapse_control);
+> >> +		khugepaged_do_scan(&cc);
+> >>  		khugepaged_wait_work();
+> >>  	}
+> >>
+> >> --
+> >> 2.43.0
+> >>
+> >>
+> >>
+> >>
+> > Andrew's already commented but this is terribly mistaken.
+> >
+> > The argument against it (why did nobody check...) is that this struct is HUGE
+> > and there's really no benefit to doing this.
+> >
+> > Nico's series makes this struct even bigger (...!)
+> >
+> > Dev - PLEASE use pahole or sizeof(...) or something before suggesting moving
+> > things like this on to the stack, in future e.g.:
+> >
+> > $ pahole collapse_control
+> > struct collapse_control {
+> > 	bool                       is_khugepaged;        /*     0     1 */
+> >
+> > 	/* XXX 3 bytes hole, try to pack */
+> >
+> > 	u32                        node_load[1024];      /*     4  4096 */
+> >
+> > 	/* XXX 4 bytes hole, try to pack */
+> >
+> > 	/* --- cacheline 64 boundary (4096 bytes) was 8 bytes ago --- */
+> > 	nodemask_t                 alloc_nmask;          /*  4104   128 */
+> >
+> > 	/* size: 4232, cachelines: 67, members: 3 */
+> > 	/* sum members: 4225, holes: 2, sum holes: 7 */
+> > 	/* last cacheline: 8 bytes */
+> > };
+> >
+> > Making this static was fine. Leave it as-is.
+>
+> I wasn't suggesting that! When I said
+>
+> "In madvise_collapse, we defined cc as a local variable and set .is_khugepaged = false. The
+> same can be done in int khugepaged() - define a local variable and set .is_khugepaged = true."
 
-> Date: Fri, 23 Jan 2026 15:14:36 -0800
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    24d479d26b25 Linux 6.19-rc6
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=100033fa580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=1859476832863c41
-> dashboard link: https://syzkaller.appspot.com/bug?extid=4e70c8e0a2017b432f7a
-> compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11451b9a580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1045e852580000
-> 
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-24d479d2.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/d0f3c47f6869/vmlinux-24d479d2.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/800231513703/bzImage-24d479d2.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com
-> 
-> WARNING: possible circular locking dependency detected
-> syzkaller #0 Not tainted
-> ------------------------------------------------------
-> syz.0.17/6091 is trying to acquire lock:
-> ffff8881061287a8 (
-> &sb->s_type->i_mutex_key#8){++++}-{4:4}, at: inode_lock_shared include/linux/fs.h:1042 [inline]
-> &sb->s_type->i_mutex_key#8){++++}-{4:4}, at: blkdev_read_iter+0x19e/0x500 block/fops.c:855
-> 
-> but task is already holding lock:
-> ffff888012aa0448 (vm_lock){++++}-{0:0}, at: lock_next_vma+0x10e/0xed0 mm/mmap_lock.c:334
-> 
-> which lock already depends on the new lock.
-> 
-> 
-> the existing dependency chain (in reverse order) is:
-> 
-> -> #2 (vm_lock){++++}-{0:0}:
->        __vma_enter_locked+0x260/0x770 mm/mmap_lock.c:72
->        __vma_start_write+0x21/0x160 mm/mmap_lock.c:104
->        vma_start_write include/linux/mmap_lock.h:213 [inline]
->        mprotect_fixup+0x4e3/0xb80 mm/mprotect.c:768
->        setup_arg_pages+0x4a2/0xbb0 fs/exec.c:670
->        load_elf_binary+0xb5b/0x4fe0 fs/binfmt_elf.c:1028
->        search_binary_handler fs/exec.c:1669 [inline]
->        exec_binprm fs/exec.c:1701 [inline]
->        bprm_execve fs/exec.c:1753 [inline]
->        bprm_execve+0x8c2/0x1620 fs/exec.c:1729
->        kernel_execve+0x2ef/0x3b0 fs/exec.c:1919
->        try_to_run_init_process init/main.c:1506 [inline]
->        kernel_init+0x14a/0x2b0 init/main.c:1634
->        ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
->        ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-> 
-> -> #1 (&mm->mmap_lock){++++}-{4:4}:
->        __might_fault mm/memory.c:7174 [inline]
->        __might_fault+0x113/0x190 mm/memory.c:7168
->        _copy_to_iter+0x1c2/0x1710 lib/iov_iter.c:196
->        copy_page_to_iter lib/iov_iter.c:374 [inline]
->        copy_page_to_iter+0x12a/0x1e0 lib/iov_iter.c:361
->        copy_folio_to_iter include/linux/uio.h:204 [inline]
->        filemap_read+0x6b1/0xe40 mm/filemap.c:2851
->        blkdev_read_iter+0x1ac/0x500 block/fops.c:856
->        new_sync_read fs/read_write.c:491 [inline]
->        vfs_read+0x8bf/0xcf0 fs/read_write.c:572
->        ksys_read+0x12a/0x250 fs/read_write.c:715
->        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->        do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
->        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> -> #0 (&sb->s_type->i_mutex_key#8){++++}-{4:4}:
->        check_prev_add kernel/locking/lockdep.c:3165 [inline]
->        check_prevs_add kernel/locking/lockdep.c:3284 [inline]
->        validate_chain kernel/locking/lockdep.c:3908 [inline]
->        __lock_acquire+0x1669/0x2890 kernel/locking/lockdep.c:5237
->        lock_acquire kernel/locking/lockdep.c:5868 [inline]
->        lock_acquire+0x179/0x330 kernel/locking/lockdep.c:5825
->        down_read+0x9b/0x460 kernel/locking/rwsem.c:1537
->        inode_lock_shared include/linux/fs.h:1042 [inline]
->        blkdev_read_iter+0x19e/0x500 block/fops.c:855
->        __kernel_read+0x3f3/0xbf0 fs/read_write.c:530
->        freader_fetch+0x1d7/0x9d0 lib/buildid.c:100
->        __build_id_parse.isra.0+0xdd/0x6c0 lib/buildid.c:297
->        do_procmap_query+0xb0e/0x1080 fs/proc/task_mmu.c:733
->        procfs_procmap_ioctl+0x9d/0xe0 fs/proc/task_mmu.c:813
->        vfs_ioctl fs/ioctl.c:51 [inline]
->        __do_sys_ioctl fs/ioctl.c:597 [inline]
->        __se_sys_ioctl fs/ioctl.c:583 [inline]
->        __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
->        do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->        do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
->        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> other info that might help us debug this:
-> 
-> Chain exists of:
->   &sb->s_type->i_mutex_key#8 --> &mm->mmap_lock --> vm_lock
-> 
->  Possible unsafe locking scenario:
-> 
->        CPU0                    CPU1
->        ----                    ----
->   rlock(vm_lock);
->                                lock(&mm->mmap_lock);
->                                lock(vm_lock);
->   rlock(&sb->s_type->i_mutex_key#8);
-> 
->  *** DEADLOCK ***
-> 
-> 1 lock held by syz.0.17/6091:
->  #0: ffff888012aa0448 (vm_lock){++++}-{0:0}, at: lock_next_vma+0x10e/0xed0 mm/mmap_lock.c:334
-> 
-> stack backtrace:
-> CPU: 2 UID: 0 PID: 6091 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:94 [inline]
->  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
->  print_circular_bug+0x275/0x340 kernel/locking/lockdep.c:2043
->  check_noncircular+0x146/0x160 kernel/locking/lockdep.c:2175
->  check_prev_add kernel/locking/lockdep.c:3165 [inline]
->  check_prevs_add kernel/locking/lockdep.c:3284 [inline]
->  validate_chain kernel/locking/lockdep.c:3908 [inline]
->  __lock_acquire+0x1669/0x2890 kernel/locking/lockdep.c:5237
->  lock_acquire kernel/locking/lockdep.c:5868 [inline]
->  lock_acquire+0x179/0x330 kernel/locking/lockdep.c:5825
->  down_read+0x9b/0x460 kernel/locking/rwsem.c:1537
->  inode_lock_shared include/linux/fs.h:1042 [inline]
->  blkdev_read_iter+0x19e/0x500 block/fops.c:855
->  __kernel_read+0x3f3/0xbf0 fs/read_write.c:530
->  freader_fetch+0x1d7/0x9d0 lib/buildid.c:100
->  __build_id_parse.isra.0+0xdd/0x6c0 lib/buildid.c:297
->  do_procmap_query+0xb0e/0x1080 fs/proc/task_mmu.c:733
->  procfs_procmap_ioctl+0x9d/0xe0 fs/proc/task_mmu.c:813
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:597 [inline]
->  __se_sys_ioctl fs/ioctl.c:583 [inline]
->  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7ff1a238f7c9
-> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007ffebbe538b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 00007ff1a25e5fa0 RCX: 00007ff1a238f7c9
-> RDX: 0000200000000180 RSI: 00000000c0686611 RDI: 0000000000000004
-> RBP: 00007ff1a2413f91 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007ff1a25e5fa0 R14: 00007ff1a25e5fa0 R15: 0000000000000003
->  </TASK>
+Yeah I would suggest more precision in your language in future :) 'as a local
+variable' and set . not -> is_khugepaged true... I can see why Shivank
+interpreted it at as a stack variable.
+
+>
+> madvise_collapse does kmalloc() to allocate this large struct. I was suggesting to do the
+> same for khugepaged, to enforce consistency.
+
+As I said in reply to Andrew, NAK to the kmalloc idea too.
+
+This consistency argument is nonsense, madvise_collapse() does that because
+_there can be multiple instances_ of the cc around for different processes, you
+literally _have_ to kmalloc there.
+
+For khugepaged this isn't the case. We're good as we are.
+
+Thanks, Lorenzo
 
