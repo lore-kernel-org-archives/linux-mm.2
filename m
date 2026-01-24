@@ -4,136 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007F5D77898
-	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 03:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB6B9D7237A
+	for <linux-mm@archiver.kernel.org>; Sat, 24 Jan 2026 04:42:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00ACE6B0574; Fri, 23 Jan 2026 22:22:43 -0500 (EST)
+	id 742F36B0585; Fri, 23 Jan 2026 23:42:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1DEF6B0583; Fri, 23 Jan 2026 22:22:42 -0500 (EST)
+	id 6F0826B0586; Fri, 23 Jan 2026 23:42:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E02E76B0584; Fri, 23 Jan 2026 22:22:42 -0500 (EST)
+	id 5F2CD6B0587; Fri, 23 Jan 2026 23:42:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CE16C6B0574
-	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 22:22:42 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46BDEB6AFF
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 03:22:42 +0000 (UTC)
-X-FDA: 84365410164.09.1B9926C
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3DF691C0008
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 03:22:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gEh4blQF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf18.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769224960; a=rsa-sha256;
-	cv=pass;
-	b=syOcr09bjT5MuYmfatfSEMbdUxv3NK53NDGZO9Vv/4Iu2r/Bf8RaSAZk2iPJqmI8RYPDDx
-	FAka1nCz5I7BHN71oCtBwdRHtFF3tygGVA+ge8BEhHgiTgmCsL6NkqMx8vTN/4ftEm0tIe
-	cR+IV5pHoTDt8xEaqdUF2rJMcrPLVs0=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gEh4blQF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf18.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769224960;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BDAF6B0585
+	for <linux-mm@kvack.org>; Fri, 23 Jan 2026 23:42:22 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E6091AF544
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 04:42:21 +0000 (UTC)
+X-FDA: 84365610882.26.3030E46
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 69D9180005
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 04:42:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Is5GcrxK;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769229739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nJnEhsYobRa7Nq/ouTP7DPdDgpq0nPHFcvwZsXoSYNo=;
-	b=r2ZzNzRWHvG+H+1GXW6GQIJ5ialiM6xIuN895Zm+IiCnhBDlVT7v49WKrFtjvqo1wFyf31
-	XTSpaT15d7tAHVQot4isR6XgIlQcY/g1gaS5ZnNK0l8aqlU9+EKbT7v/mtD+hSutNRYpe/
-	46MYNmZIKplzOf4o/36fbUfFTqFFS/c=
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-385b9be0759so24854411fa.3
-        for <linux-mm@kvack.org>; Fri, 23 Jan 2026 19:22:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769224958; cv=none;
-        d=google.com; s=arc-20240605;
-        b=J5bxpUxmggQyeg9QObb9XGWsXZohLygKdakA/Kx3m90h7a19kS7Px8+VdAFRG73/wC
-         65P5DjDZQZasG6EdZMRQZ/iva9VxHfsz0n/gOb5uKMPsp7w1F89d4tC6nUB7fu8obqCo
-         tU1kKVzJIvf7UGjr2/5ycFgGlA6jCeoVVTdGTqUjFO46gyaepFY1S11OBxlrSeGRuvhn
-         COQpehMN/ai8tk5WBkLBmS9TQrReZIraaHkSTbPPKRGOOOCpcfi4uoZmsUzASULflZVN
-         M7swNHw/UZwwHUNxdkFtyJAg2IL0EQ+Qb6J/WSDEa4perLjIxhaVmWLnCbkvivhXjSoJ
-         xkMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nJnEhsYobRa7Nq/ouTP7DPdDgpq0nPHFcvwZsXoSYNo=;
-        fh=vA/l8JOwgilqBIR6e3NS1jmKBy3N9ghIBLmU3wEnAFc=;
-        b=bttrqOvtJVtiwSbMencwQFUUvfZpCRzbpVifxrv1zE8zYzwgy1HCWtVms5ruGpjV4A
-         4PUkfSBinTCQHYic4A/Bqsl4UPZlFPmcHhwjHggShyrZen0pLBsncHg14/aLQ/yh55uW
-         zG1xOu6KIVTnxe7qQ44Y9yjT18lBHLwzPN/Ts6xMskIkz6BmYw8K0G2jcuCDeXP9uNSn
-         P04t51cnzxA9V/7fls58Axja1npIi4hgrZhDjGygOkKR280cj9F9hibziChOLde6Vacn
-         5EL0ZWK9CRJV8WM+xwJE64YusaCiDPkL6TFVAv9rmXfc3Lb/IuKF5LjZAvkPWylFTtGH
-         5Tbw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769224958; x=1769829758; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nJnEhsYobRa7Nq/ouTP7DPdDgpq0nPHFcvwZsXoSYNo=;
-        b=gEh4blQFr3iVgVJ3kqUSTzp8/4IwNWvphTv9qDBUMJMjGpqSnxxgK8d43ATJozzGVK
-         eqvJENsjf2okiusxqmDW6dYbO+Y49CLiQ00uGIopkbomEKq+U2+zJTJcF6xbWFGeq+YH
-         9vHCTGRC3kpzSPAOCrpnltS+Rs9p4rPL5u5l1Huo/FdQ28I+PWs79k1XSnG2Y8Gn9qvT
-         6nD8GXTrzTDOgjfE0iD0tpn0JQClMyluCpi1qlS2TNcWHFCrrdba0BhEGao6s1fwPY+x
-         THmeHlg7Ne3dBZVcotuwsrUW+uiWFzed/g/Kk4dq1xHOX6Miq5GaSgKhpp/YOEz3hCI+
-         BAtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769224958; x=1769829758;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nJnEhsYobRa7Nq/ouTP7DPdDgpq0nPHFcvwZsXoSYNo=;
-        b=WxeOk91ejCRItX9fc3dUWTiZ8HOLGlGzQFxujmhOedcQJI42j2iYJwbJtBDGwIcnkW
-         xpLZimLMoXk5B/6ZSGVrnbV3th+XWHhhUBZDSG46QX+eFqSdhjdzkXtnCchpOxY4/T1W
-         fdmZBoAsW9O2yRZ4E/ndgAUaD1wAtEDHSQNk8MAxe98WWmBq5p9QXkIjK8BlPj8E4hBy
-         rR1xgXDkOs3xsO9BiOsXNf5q7JzAgjhkC4q5LD6tHgJSLp2Ja3EddoY4e7U4zdWCh3WK
-         YmtppBlmppk2xv6kyC4ks5nmE5h5xEU5xQCWPLcTCW6FJuLARPRYF5bLp49VrNrzj8qh
-         QL6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXN6IPZwAe891Hp7BpYnOc+9u9/fjV7487Cy6XXUz5sgfzf85IWkpTKO2nelfszolo4QUj95UPgUw==@kvack.org
-X-Gm-Message-State: AOJu0Yw7kGAgZqMAfpEiRPiZmmVoHYQe1H6WGjOE9guRYjqaJRX2MJ0B
-	MzKi3ghQwi4WjSMecnqmEF5GXydgYRKB6ItpZ3biTuqqWJUJfOtqY2JLF43K6nIVUiOJlNQsy4w
-	TaNDeiGI7ayDoxT02vwJj/KuNaEYCC0Y=
-X-Gm-Gg: AZuq6aLj1TkB00XTQ/h2DEA0dHcTBhcUHq7cVJo09q4GJBNgrxfaf+u+2zV+Tu3wsEY
-	2pJu1wWMeGC4z9UHE2tLFfIBBLWfJny7fv9PG79ZuGCF7LB8vxdLJ9LX0yovXW7oJOqswbJKfeo
-	bGxLbB9QdQ40myzCk9EHH9up0r3snVhHv9B+sFt5UcnnLgQvNxFvWZ3qPuwHU67e4ANB89efiIl
-	Zy9uvN2ociUEtrcoGO/ljbYsMg/tzJCzzDa86ajV5oNp+L3DEARmEqdVOeRk4rKC055W/M=
-X-Received: by 2002:a05:651c:198e:b0:383:1704:21ef with SMTP id
- 38308e7fff4ca-385da028beamr17202181fa.25.1769224957961; Fri, 23 Jan 2026
- 19:22:37 -0800 (PST)
+	bh=N28XyEumzJ4C6/nJsTg39lZr66Au6UdaMVxCJ6MAmKQ=;
+	b=Rcl1Llr6A5IEaSKQ9MszXiTDru7vDt9PfrpdUkohAGNMEJuuF4XhYIKhKDjtkGHxHmzflL
+	O7aTXn1ac1WqxUNkQKyWSENe4F81wwl1S4zu4/xP0VzPSLRE4ANI6rH8WNRlXuoz8r2qEH
+	DloCebXmDkaAx06/lKukiJt+Qu+9vXA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Is5GcrxK;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769229739; a=rsa-sha256;
+	cv=none;
+	b=HLoMS71NeFgaNjLc2qw64sKx5xX4aphzhRezJ2I+YFGxBe2JWtGl/dE+sPQvDL7zSN3bXh
+	krFNJmD0XCP5Xp1ecE7Iu0CUV5SrtQQPbNnckexBVed3E/2Kyy8e25jTmbFLhNzIED6vDj
+	prxguTpgrlIdCXAdYO17671wESekSSk=
+Message-ID: <34a68374-35d7-4d2f-9e2c-59a1c60c7ce7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769229735;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N28XyEumzJ4C6/nJsTg39lZr66Au6UdaMVxCJ6MAmKQ=;
+	b=Is5GcrxKYJfPEV1RcfsL1QZbOnEPGgEHB78T15sGHRwM4Kf6XxyRoDutWB3C4n1e+YANF3
+	tt9TfDxaUgC/Ag/0WxEN7oJpPUzBA98goCBvqr9HnbULeF50VgLb2iE+LFn8Wowq81lKzd
+	e6YUTley/tJXdCmZE1glISedRzPzl/o=
+Date: Sat, 24 Jan 2026 12:41:58 +0800
 MIME-Version: 1.0
-References: <20260123082232.16413-1-vernon2gm@gmail.com> <20260123082232.16413-5-vernon2gm@gmail.com>
- <5820b1e9-3c45-432c-84aa-638cf92fd240@linux.dev> <CACZaFFPCZfxG+FK9rrefFi1UmtWxiOf2j6KXx+9JDJfcHBz8ww@mail.gmail.com>
- <8fb6cba3-681a-4e63-9409-d35ab628d42c@linux.dev>
-In-Reply-To: <8fb6cba3-681a-4e63-9409-d35ab628d42c@linux.dev>
-From: Vernon Yang <vernon2gm@gmail.com>
-Date: Sat, 24 Jan 2026 11:22:26 +0800
-X-Gm-Features: AZwV_Qg5ILLAiNHXPpfsTwNfAhLAAwJGVM0zEQgcC0ZPGpvZ2LG36Z_uTgIgCfA
-Message-ID: <CACZaFFNY8+UKLzBGnmB3ij9amzBdKJgytcSNtA8fLCake8Ua=A@mail.gmail.com>
-Subject: Re: [PATCH mm-new v5 4/5] mm: khugepaged: skip lazy-free folios
-To: david@kernel.org, Lance Yang <lance.yang@linux.dev>, baohua@kernel.org, 
-	dev.jain@arm.com
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>, 
-	akpm@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH mm-unstable v14 03/16] introduce collapse_single_pmd to
+ unify khugepaged and madvise_collapse
+Content-Language: en-US
+To: Nico Pache <npache@redhat.com>, "Garg, Shivank" <shivankg@amd.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, linux-kernel@vger.kernel.org,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com,
+ hannes@cmpxchg.org, willy@infradead.org, peterx@redhat.com,
+ wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
+ vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
+ yang@os.amperecomputing.com, kas@kernel.org, aarcange@redhat.com,
+ raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com,
+ tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
+ cl@gentwo.org, jglisse@google.com, zokeefe@google.com, rientjes@google.com,
+ rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
+ David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+References: <20260122192841.128719-1-npache@redhat.com>
+ <20260122192841.128719-4-npache@redhat.com>
+ <65dcf7ab-1299-411f-9cbc-438ae72ff757@linux.dev>
+ <CAA1CXcDm75=hM_g0x7ox05nGrGykE8ry_+NbryYu=T+TY114MQ@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <CAA1CXcDm75=hM_g0x7ox05nGrGykE8ry_+NbryYu=T+TY114MQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 1n6uoqgzdi73nx7a1ia31dh6wpis9gdp
+X-Rspamd-Queue-Id: 69D9180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3DF691C0008
-X-Stat-Signature: 1idwixu3z3rj1s434dnuejbg8ub79csd
-X-HE-Tag: 1769224959-153689
-X-HE-Meta: U2FsdGVkX1/QWe4t1hZh8VaCZP6OBDBPGo4K/artql9KdhrC/p1pJ0fvAnbK/HFTV/rsvg91yeaGpij/70NUh+xjrpdpb6VOyu5KPT07nGM0CqBCf0/XcqAuiNUXOz1yeH6vXc07usvG86/IE3iNpZwQwEtVEbKZqAt6dKIvgF5ZEJ0kUaWFWTILCfHB/X2/kXocQn4d8Qz4eXILAGmhdR/CFOlU9bwT2BNI3OcYg80JDF4N1WiKkqJlyi/nmKgcuBxiyhtReTlP4gOdYZXW3BBd+N3+JP3KJ7Tw5GEWj3mtQNNMVsD0fxQhQR53VMU978fXQSt2cP9rxBcTmpvG8Wq5LXhBYxnqvei46kCmQm8tkecMTzDimr90rGfL7zUZuZz/pq7rd2oDxSrt/Hu1PMKmCwWHpXHU888J49jd5zWoDnpVTzgRJ2isnp+/IqM/n5lyohOiz4n7WIieAQFnv0zpQ6pGGsUieNmruRB30h9qQr/Y+lKtQcwSGv2b4zGFMDKQJU/hNYj3f+VChhp+rneHGoW24m8/st7b1AfpyWYQF0w4hrO7N6irTH3px9+DqPkPVAuZ3W9CDXyNb/T0EdvTWDxHKvY2ioe3KuNRMt8EbKlwcqLxfogNtmmKLPKD0L+33ac4vAbwHGGm4OUs8KFX2FEiUPQcbS8Mo0jX6rfy/4uwnhQJflLXQjNlLrcROT/PnQy1GibAGXD8Si191wDt1R4xwp9LCOH2mCyLM8ZsrA862u9CxSdha6TuT2dH49uAeA4nqCldwjEzQJPMTnd/d2SiPTFdO+TQsDeN58tYhk13nHY02PkSYmNvJOPvx328PXm7HKukIsHiMOQN/lHPJKCd9R68gQ3tgb8P+LdqRVsp6+21nBq9Tm7wcSE/pBCJFiMvW2rbAgKdkpvUM6+730L7hgL+NIuvbILQnbALO1Zhr8ZOt7zGdf79NsF2aFGI57nUOOnwp/U8R0N
- 7baKI+uN
- oOcNIZ2xklVh/JdZdAZj3V7BbD4Vh04Ma7Ez7GOAOIUnNfq/nP0snscmMmJXrQz8iAwCJ3PuoJv6WGuBAAFx2Mk5wIPEeTvNGaNbemlFYjVtTHVz6IqY4IxgcoA6py0L4QjgNs3Z4QCv7iFtoReL0Q+rxaafOr2CmmNWQCWkncMOpQZ2NMwKh/pkvArLJCY9Mj9FYJYQfTi9STuM4XTxtzYLh3SdTEzdqFg8GEXhsAIm2TupEvyrmMflo5WT6IPSoShieyHopH36eQk5G930UN5mHH8mrJskwds5KZ7Y0OkAakT6rCvZB2KyqcIJFXxOHRCpcZ7peWUmQwlJi5vNi0DYAxTO16+pYXkkEMohCDxt0dASmR2VZiguTMQFvER9fQ6vvx1cfLF0lRfBo1TlUCsRLcw==
+X-HE-Tag: 1769229739-3275
+X-HE-Meta: U2FsdGVkX19SLx2Czu7YgQpZT1uJIgUHNxN4k/HNbaGhES37qJIBdPhnQhHCW8GCHZJqQN0At/G/4qi9+slaxj4rpHpsNTDTZ7AOrh0BSe0mzGB3UOdLWOIZV8gftlu58Ii5DF4CdQZqt2Ur5TumC7/1stZFu3MLpWfbPVwdE4jsZCkfbDuUt4X9nQWkj5D8Cw2Dm2F7nlTBLJCyZKkXTf20UNHE1+y7gjzqX3J7C/kBR4xaqi4pf1QdGZWgT8keR8XXyAMM12mfkL/18Zgel53t2mqFwxjXVcKKLaGIDBLOcGG194aiBRRTpsXI005qJi7bd7GA98AwlSRtQHESWygRtepv3NTZRdNvOhVnrrmIH/IjNI9hRRPUW01fL/mV2yxMEwGoJn9ZxoKg6CMMS5bgN53CHEW58jJYNwlzZuW9BAJ3WC8uyZFsIV9fUkNkVshA1PshlLELLOzqPmnA6cxEkYVhUNOF9BoDtXClBKCTYV6WeAC3O5K4256UANaqdlCHwmh/t3BZM93NaM72gjyWx822euZbib/GZrkdBB+g1wkK0DapMHUIcqmKxQCmKen+sf7JzB/v0KqLl9A2GNsP9lcMh0IcXLGieCOCZ+IpxUYJj02WB1PDjleDvlacVY5nKfoc+dWUwEsMlDnjkA4zHwAtuJrwJSdAtGWL6qsR3BzGYCbqKLgeXweoDgf+So60S90ru3mL81HmErayNnJGX79BVG0QehFNhTqAqHYd36x3etPyPZMINZjlSqAIDk/qPyvLZJNGFyyGpbDQxd5nBLSpQw17eHW6Q9TcWy5dLhPo3np6n9SW7c4f0ftu96elXdix4fcM9h6SKMBbwlmBgxx5QDNZsDWWCYJxmGgOZZWAICHeab5Fdhty2I44oEcnNRJvguhAJ/oD/z+iIuZrtdzWhRWN71CA+x/VX2xiVflnYR2TfWmOIraB1SGisOlrHxmEDbZ01/sG65R
+ Vb8yvLyf
+ kj1WizkIYoNdSXtka7IAMxiIUTmdGRR6ye6nsmjm7OkXVjRb1A3kGPr05HFJaQmwZqdE/3imQA7wkXcNpRtp/w3vAwbP9ye74sAWXJiuuAypGGeIVhU6QYnwioPO44D51GH+4Q9OcWr4hgcxVLerxY+SX3V50M4s2Hn5vV89ZTxZ7Aq3vh9ZPn4h35he6hykFj887g6x0cuaUqpAwPRSh7waBSW2DTQQshaicNGiHeNW9wgNQGKYtVQvBhpkkZuG97NlQFZshKW1bGvHvcj2JgHPVZlKXuxLxZ6ytzxAbwLiRLd6x/xWPDZNIJuqZtVr0zV8wqoNClqXH+EmBezL+/NKEzZ/ODi9M5Ec67u3qdmCcP0l3xlyrrAB0xZQVBjTaXbuw2uBhhuimQ8NdWePClrF6Ime6VPsBR//zQ3XUtPvagpOYIzo2nz8fmKw3lMnZWuLauD03Iuw8rve8idS4vpn3VxnWcGm3yHFI1k3F1TdpuVcTSGFlKGCQQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,92 +111,263 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 24, 2026 at 12:32=E2=80=AFAM Lance Yang <lance.yang@linux.dev> =
-wrote:
->
-> On 2026/1/23 23:08, Vernon Yang wrote:
-> > On Fri, Jan 23, 2026 at 5:09=E2=80=AFPM Lance Yang <lance.yang@linux.de=
-v> wrote:
-> >>
-> >> On 2026/1/23 16:22, Vernon Yang wrote:
-> >>> From: Vernon Yang <yanglincheng@kylinos.cn>
-> >>>
->
-> [...]
->
-> >>> @@ -583,6 +584,11 @@ static enum scan_result __collapse_huge_page_iso=
-late(struct vm_area_struct *vma,
-> >>>                folio =3D page_folio(page);
-> >>>                VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
-> >>>
-> >>> +             if (!pte_dirty(pteval) && folio_test_lazyfree(folio)) {
-> >>
-> >> I'm wondering if we need "cc->is_khugepaged &&" as well here?
-> >>
-> >> We should allow users to enforce collapse via the madvise_collapse()
-> >> path even if pages are marked lazyfree, IMHO.
-> >
-> > $ man madvise
-> > MADV_COLLAPSE
-> >          Perform a best-effort synchronous collapse of the native pages
-> >          mapped by the memory range into Transparent Huge Pages (THPs).
-> >
-> > The semantics of MADV_COLLAPSE are best-effort and do not imply to enfo=
-rce
-> > collapsing, so we don't need "cc->is_khugepaged" here.
-> >
-> > We can imagine that if a user simultaneously uses MADV_FREE and
-> > MADV_COLLAPSE, it indicates a misunderstanding of their semantics.
-> > As the kernel, we need to safeguard the baseline.
->
-> No. Afraid I don't think so.
->
-> To be clear, what I meant by "enforce":
->
-> Yep, MADV_COLLAPSE is best-effort - it can fail. But when users
-> call MADV_COLLAPSE, they're explicitly asking for collapse.
->
-> Compared to khugepaged just scanning around, that's already "enforce"
-> - users are actively requesting it, not passively waiting for.
->
-> Note that you're *breaking* userspace. Users would not be able
-> to collapse the range where there are any lazyfree pages anymore,
-> even when they explicitly call MADV_COLLAPSE.
->
-> For khugepaged, skipping lazyfree makes sense.
 
-I got your meaning, this is equivalent to two questions:
 
-1. Does the semantics of best-effort imply any "enforce" meaning?
-2. When madvise(MADV_FREE| MADV_COLLAPSE), do we want to collapse
-   lazyfree folios?
+On 2026/1/24 07:26, Nico Pache wrote:
+> On Thu, Jan 22, 2026 at 10:08 PM Lance Yang <lance.yang@linux.dev> wrote:
+>>
+>>
+>>
+>> On 2026/1/23 03:28, Nico Pache wrote:
+>>> The khugepaged daemon and madvise_collapse have two different
+>>> implementations that do almost the same thing.
+>>>
+>>> Create collapse_single_pmd to increase code reuse and create an entry
+>>> point to these two users.
+>>>
+>>> Refactor madvise_collapse and collapse_scan_mm_slot to use the new
+>>> collapse_single_pmd function. This introduces a minor behavioral change
+>>> that is most likely an undiscovered bug. The current implementation of
+>>> khugepaged tests collapse_test_exit_or_disable before calling
+>>> collapse_pte_mapped_thp, but we weren't doing it in the madvise_collapse
+>>> case. By unifying these two callers madvise_collapse now also performs
+>>> this check. We also modify the return value to be SCAN_ANY_PROCESS which
+>>> properly indicates that this process is no longer valid to operate on.
+>>>
+>>> We also guard the khugepaged_pages_collapsed variable to ensure its only
+>>> incremented for khugepaged.
+>>>
+>>> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+>>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>> Signed-off-by: Nico Pache <npache@redhat.com>
+>>> ---
+>>
+>> I think this patch introduces some functional changes compared to previous
+>> version[1] ...
+>>
+>> Maybe we should drop the r-b tags and let folks take another look?
+>>
+>> There might be an issue with the vma access in madvise_collapse(). See
+>> below:
+>>
+>> [1]
+>> https://lore.kernel.org/linux-mm/20251201174627.23295-3-npache@redhat.com/
+>>
+>>>    mm/khugepaged.c | 106 +++++++++++++++++++++++++++---------------------
+>>>    1 file changed, 60 insertions(+), 46 deletions(-)
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index fefcbdca4510..59e5a5588d85 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -2394,6 +2394,54 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm, unsigned long a
+>>>        return result;
+>>>    }
+>>>
+>>> +/*
+>>> + * Try to collapse a single PMD starting at a PMD aligned addr, and return
+>>> + * the results.
+>>> + */
+>>> +static enum scan_result collapse_single_pmd(unsigned long addr,
+>>> +             struct vm_area_struct *vma, bool *mmap_locked,
+>>> +             struct collapse_control *cc)
+>>> +{
+>>> +     struct mm_struct *mm = vma->vm_mm;
+>>> +     enum scan_result result;
+>>> +     struct file *file;
+>>> +     pgoff_t pgoff;
+>>> +
+>>> +     if (vma_is_anonymous(vma)) {
+>>> +             result = collapse_scan_pmd(mm, vma, addr, mmap_locked, cc);
+>>> +             goto end;
+>>> +     }
+>>> +
+>>> +     file = get_file(vma->vm_file);
+>>> +     pgoff = linear_page_index(vma, addr);
+>>> +
+>>> +     mmap_read_unlock(mm);
+>>> +     *mmap_locked = false;
+>>> +     result = collapse_scan_file(mm, addr, file, pgoff, cc);
+>>> +     fput(file);
+>>> +
+>>> +     if (result != SCAN_PTE_MAPPED_HUGEPAGE)
+>>> +             goto end;
+>>> +
+>>> +     mmap_read_lock(mm);
+>>> +     *mmap_locked = true;
+>>> +     if (collapse_test_exit_or_disable(mm)) {
+>>> +             mmap_read_unlock(mm);
+>>> +             *mmap_locked = false;
+>>> +             return SCAN_ANY_PROCESS;
+>>> +     }
+>>> +     result = try_collapse_pte_mapped_thp(mm, addr, !cc->is_khugepaged);
+>>> +     if (result == SCAN_PMD_MAPPED)
+>>> +             result = SCAN_SUCCEED;
+>>> +     mmap_read_unlock(mm);
+>>> +     *mmap_locked = false;
+>>> +
+>>> +end:
+>>> +     if (cc->is_khugepaged && result == SCAN_SUCCEED)
+>>> +             ++khugepaged_pages_collapsed;
+>>> +     return result;
+>>> +}
+>>> +
+>>>    static unsigned int collapse_scan_mm_slot(unsigned int pages, enum scan_result *result,
+>>>                                            struct collapse_control *cc)
+>>>        __releases(&khugepaged_mm_lock)
+>>> @@ -2466,34 +2514,9 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, enum scan_result *
+>>>                        VM_BUG_ON(khugepaged_scan.address < hstart ||
+>>>                                  khugepaged_scan.address + HPAGE_PMD_SIZE >
+>>>                                  hend);
+>>> -                     if (!vma_is_anonymous(vma)) {
+>>> -                             struct file *file = get_file(vma->vm_file);
+>>> -                             pgoff_t pgoff = linear_page_index(vma,
+>>> -                                             khugepaged_scan.address);
+>>> -
+>>> -                             mmap_read_unlock(mm);
+>>> -                             mmap_locked = false;
+>>> -                             *result = collapse_scan_file(mm,
+>>> -                                     khugepaged_scan.address, file, pgoff, cc);
+>>> -                             fput(file);
+>>> -                             if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+>>> -                                     mmap_read_lock(mm);
+>>> -                                     if (collapse_test_exit_or_disable(mm))
+>>> -                                             goto breakouterloop;
+>>> -                                     *result = try_collapse_pte_mapped_thp(mm,
+>>> -                                             khugepaged_scan.address, false);
+>>> -                                     if (*result == SCAN_PMD_MAPPED)
+>>> -                                             *result = SCAN_SUCCEED;
+>>> -                                     mmap_read_unlock(mm);
+>>> -                             }
+>>> -                     } else {
+>>> -                             *result = collapse_scan_pmd(mm, vma,
+>>> -                                     khugepaged_scan.address, &mmap_locked, cc);
+>>> -                     }
+>>> -
+>>> -                     if (*result == SCAN_SUCCEED)
+>>> -                             ++khugepaged_pages_collapsed;
+>>>
+>>> +                     *result = collapse_single_pmd(khugepaged_scan.address,
+>>> +                                                   vma, &mmap_locked, cc);
+>>>                        /* move to next address */
+>>>                        khugepaged_scan.address += HPAGE_PMD_SIZE;
+>>>                        progress += HPAGE_PMD_NR;
+>>> @@ -2799,6 +2822,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>>>                        cond_resched();
+>>>                        mmap_read_lock(mm);
+>>>                        mmap_locked = true;
+>>> +                     *lock_dropped = true;
+>>>                        result = hugepage_vma_revalidate(mm, addr, false, &vma,
+>>>                                                         cc);
+>>>                        if (result  != SCAN_SUCCEED) {
+>>> @@ -2809,17 +2833,17 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>>>                        hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
+>>>                }
+>>>                mmap_assert_locked(mm);
+>>> -             if (!vma_is_anonymous(vma)) {
+>>> -                     struct file *file = get_file(vma->vm_file);
+>>> -                     pgoff_t pgoff = linear_page_index(vma, addr);
+>>>
+>>> -                     mmap_read_unlock(mm);
+>>> -                     mmap_locked = false;
+>>> +             result = collapse_single_pmd(addr, vma, &mmap_locked, cc);
+>>> +
+>>> +             if (!mmap_locked)
+>>>                        *lock_dropped = true;
+>>> -                     result = collapse_scan_file(mm, addr, file, pgoff, cc);
+>>>
+>>> -                     if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
+>>> -                         mapping_can_writeback(file->f_mapping)) {
+>>> +             if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb) {
+>>> +                     struct file *file = get_file(vma->vm_file);
+>>> +                     pgoff_t pgoff = linear_page_index(vma, addr);
+>>
+>>
+>> After collapse_single_pmd() returns, mmap_lock might have been released.
+>> Between
+>> that unlock and here, another thread could unmap/remap the VMA, making
+>> the vma
+>> pointer stale when we access vma->vm_file?
+> 
+> + Shivank, I thought they were on the CC list.
+> 
+> Hey! I thought of this case, but then figured it was no different than
+> what is currently implemented for the writeback-retry logic, since the
+> mmap lock is dropped and not revalidated. BUT I failed to consider
+> that the file reference is held throughout that time.
+> 
+> I thought of moving the functionality into collapse_single_pmd(), but
+> figured I'd keep it in madvise_collapse() as it's the sole user of
+> that functionality. Given the potential file ref issue, that may be
+> the best solution, and I dont think it should be too difficult. I'll
+> queue that up, and also drop the r-b tags as you suggested.
+> 
+> Ok, here's my solution, does this look like the right approach?:
 
-This is a semantic warning, and I'd like to hear others' opinions.
+Hey! Thanks for the quick fix!
 
-> >
-> >>> +                     result =3D SCAN_PAGE_LAZYFREE;
-> >>> +                     goto out;
-> >>> +             }
-> >>> +
-> >>>                /* See hpage_collapse_scan_pmd(). */
-> >>>                if (folio_maybe_mapped_shared(folio)) {
-> >>>                        ++shared;
-> >>> @@ -1330,6 +1336,11 @@ static enum scan_result hpage_collapse_scan_pm=
-d(struct mm_struct *mm,
-> >>>                }
-> >>>                folio =3D page_folio(page);
-> >>>
-> >>> +             if (!pte_dirty(pteval) && folio_test_lazyfree(folio)) {
-> >>
-> >> Ditto.
-> >>
-> >>> +                     result =3D SCAN_PAGE_LAZYFREE;
-> >>> +                     goto out_unmap;
-> >>> +             }
-> >>> +
-> >>>                if (!folio_test_anon(folio)) {
-> >>>                        result =3D SCAN_PAGE_ANON;
-> >>>                        goto out_unmap;
-> >>
->
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 59e5a5588d85..dda9fdc35767 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2418,6 +2418,14 @@ static enum scan_result
+> collapse_single_pmd(unsigned long addr,
+>          mmap_read_unlock(mm);
+>          *mmap_locked = false;
+>          result = collapse_scan_file(mm, addr, file, pgoff, cc);
+> +
+> +       if (!cc->is_khugepaged && result == SCAN_PAGE_DIRTY_OR_WRITEBACK &&
+> +           mapping_can_writeback(file->f_mapping)) {
+> +               loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
+> +               loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
+> +
+> +               filemap_write_and_wait_range(file->f_mapping, lstart, lend);
+> +       }
+>          fput(file);
+> 
+>          if (result != SCAN_PTE_MAPPED_HUGEPAGE)
+> @@ -2840,19 +2848,8 @@ int madvise_collapse(struct vm_area_struct
+> *vma, unsigned long start,
+>                          *lock_dropped = true;
+> 
+>                  if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb) {
+> -                       struct file *file = get_file(vma->vm_file);
+> -                       pgoff_t pgoff = linear_page_index(vma, addr);
+> -
+> -                       if (mapping_can_writeback(file->f_mapping)) {
+> -                               loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
+> -                               loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
+> -
+> -
+> filemap_write_and_wait_range(file->f_mapping, lstart, lend);
+> -                               triggered_wb = true;
+> -                               fput(file);
+> -                               goto retry;
+> -                       }
+> -                       fput(file);
+> +                       triggered_wb = true;
+> +                       goto retry;
+>                  }
+> 
+>                  switch (result) {
+> 
+> 
+> 
+> -- Nico
+
+ From a quick glimpse, that looks good to me ;)
+
+Only madvise needs writeback and then retry once, and khugepaged just
+skips dirty pages and moves on.
+
+Now, we grab the file reference before dropping mmap_lock, then only
+use the file pointer during writeback - no vma access after unlock.
+
+So even if the VMA gets unmapped, we're safe, IIUC.
+
+[...]
 
