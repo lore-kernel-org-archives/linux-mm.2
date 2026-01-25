@@ -4,118 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 061EBD7237B
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 22:45:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 360C0E63CA4
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 22:46:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04A946B0005; Sun, 25 Jan 2026 17:45:56 -0500 (EST)
+	id 6C0CC6B0089; Sun, 25 Jan 2026 17:46:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3A616B0089; Sun, 25 Jan 2026 17:45:55 -0500 (EST)
+	id 653F26B008A; Sun, 25 Jan 2026 17:46:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1BD86B008A; Sun, 25 Jan 2026 17:45:55 -0500 (EST)
+	id 577626B008C; Sun, 25 Jan 2026 17:46:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D17E66B0005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 17:45:55 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A8FBD32AC
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:45:55 +0000 (UTC)
-X-FDA: 84371970270.24.BA3DC44
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 148AE8000A
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:45:53 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bqJjGl8d;
-	spf=pass (imf30.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 48EFE6B0089
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 17:46:04 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0F0113B246
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:46:03 +0000 (UTC)
+X-FDA: 84371970606.14.63D4CD4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 333A140003
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:46:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FIWgU7+p;
+	spf=pass (imf07.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769381154;
+	s=arc-20220608; t=1769381162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KHDLLePAqkz6NbXL8RNmHMi3VnthXTVysTGEVg0CEEE=;
-	b=6ih+MuufMrqrsatkamdX49LlqAr0mrC5CtLVrGfDudsFRR/p5a+u2zJLakzBT5dVTJwvBs
-	nO6ZDwupSiBWM8Bp0eDJMVteKBvVbdktXnM+6WlfEKuVK+slw3MMFfIBcMDKteeXFV1/t4
-	n5faU9BUt+9GzXYR4wmL0J6Oazmn8IE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YcdTkE927g+/FfCgvHIRPU5ZO1R359X5YDI7SQf4OO4=;
+	b=A6dPWA6LPNjo//0zyQF4MJkn7kCm8saPy8QO8DrgUqd2yBc1+BpPbsZXYa1KXvI0AwfbAK
+	qpK6LNrtutEpDIoZuX34hkwVDWOgreJZtKXTGG718Ke3cCBJRBIPwU9rDF3A25RO7ZRVGE
+	ILYF0N/gVYv/ZDOSui1pfBJbG4fUDV4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bqJjGl8d;
-	spf=pass (imf30.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FIWgU7+p;
+	spf=pass (imf07.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769381154; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769381162; a=rsa-sha256;
 	cv=none;
-	b=5hizAfIsEeTDG9wHIG5k0YIVjzW3MMGQGQNTbg468gu5+8kHyi1DSXxZB41tU2WPDodmIU
-	g3WHxdrBJYSujK62SQrZ+/F3ltz7598nzZb6gDXdZjkDLU7suPij2u3uCdUmgMsSrVhO17
-	U8VmXThwhSLz7phtaVU+JOX0Ssmv7mg=
+	b=nRJl5fSpSpxEWMjFjyU49u+2ANfsdurzMz/xQaN8tnPLYOEasr2GCBmOsDrDRDPmiOKoIP
+	Zd4fx2YKcwRbK1MROmCpbXLTX5gL9U9WogMUQazJbmG9qLNk6Pz3/TaSP1AwkGY3XMxauI
+	kb78gYfrS2E52UJHPNKTRdCWEF5zvWs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 10E89600C3;
+	by sea.source.kernel.org (Postfix) with ESMTP id 04A00408D2;
+	Sun, 25 Jan 2026 22:46:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A88EC16AAE;
 	Sun, 25 Jan 2026 22:45:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E9CC4CEF1;
-	Sun, 25 Jan 2026 22:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769381152;
-	bh=S9vFWXhyg0MkV+tLx10WmLW7gf6qdVccxzNBP8JiVGU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bqJjGl8d8RkkxkNvm/b5FIs/lRTASegJ/2eEoGWhYNy0srWYwoejNbrqxkPu2klYU
-	 YVq84UWjZ3KVHkLb3wiIOu7FCgNo9VHkTwG0W5/o3u0kyD0fL7JbFhVEcrQng2LmLu
-	 GVLMOXatTuZeWFep6DqNIoVnejZ4E/K2VMt5H8ZAnwsZqEtHinrP8j40M6aXuquMs/
-	 N9lYLDQOFUPXs0x7iEoCWmgFUKARoa0cHptC3IKwrxOrHarVuA9cjNpuHWpvl5jM3u
-	 NSMHi06NAeCcQIlPkr7hsC+VTZfuiOtGbaerDSPBNtMwoBS2MYvO7k1/vIxRHuoYi2
-	 Y3KSPEiKGXnXA==
+	s=k20201202; t=1769381160;
+	bh=vPL8EzXKWq9iiIp5kuYoia41/85wMoYaNYnO6c8sEhk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FIWgU7+pr7+ckwb83DyKxDiWT8xbe7CLrxGuGRjBUui3ebqjTplaAEWc1SnTKrjOG
+	 tUx+pdCeJFih0IMyujpdXJcHTYc5m6E+TsbZUkcYq0FjizUFEUOr5uKfn1ANgV8x3c
+	 iVZKrZlS1Txl44jkj+YbP5PDaSiE866VyLyaP3azWSwzmGZ8ZkjD5zVumV8c6k8I2E
+	 br5lPpen+XXuYE5ErnUP87vKq0rH5MzUQOK/Wzr6hGKGNE5Rz+Nyoss94n5SFzlEft
+	 rkDsNXhbh/uSNRerB1QWLMq7i4T11QBlyJZ2emnty4QgtX4wjKvHxpfQ7H7fWu5r3J
+	 +QCJLEqLO6GZw==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
 	Marco Crivellari <marco.crivellari@suse.com>,
 	Michal Hocko <mhocko@suse.com>,
-	cgroups@vger.kernel.org,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Michal Koutny <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	linux-pci@vger.kernel.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chen Ridong <chenridong@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
 	Muchun Song <muchun.song@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	linux-arm-kernel@lists.infradead.org,
-	Jens Axboe <axboe@kernel.dk>,
 	Paolo Abeni <pabeni@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Phil Auld <pauld@redhat.com>,
-	linux-block@vger.kernel.org,
 	Peter Zijlstra <peterz@infradead.org>,
+	Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 00/33 v7] cpuset/isolation: Honour kthreads preferred affinity
-Date: Sun, 25 Jan 2026 23:45:07 +0100
-Message-ID: <20260125224541.50226-1-frederic@kernel.org>
+Subject: [PATCH 01/33] PCI: Prepare to protect against concurrent isolated cpuset change
+Date: Sun, 25 Jan 2026 23:45:08 +0100
+Message-ID: <20260125224541.50226-2-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20260125224541.50226-1-frederic@kernel.org>
+References: <20260125224541.50226-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: t6a9sscajkczxpgmy6qbxpcia44t1ebn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 148AE8000A
-X-HE-Tag: 1769381153-954131
-X-HE-Meta: U2FsdGVkX1/kjLf75usOuD1boWUEbXpaTOJ2CRQPXeVnrhy024vBhjgCIi0aNWN6+qhjSEIh+9K51OSangnVrZVypmg+ydHJyi9W8vEQHzxBXNl7S/uG2/dHIq7k/h9u0RkwPrD7XrMp550t0Zgvfc5l+TgscGzH+gmccN4t9xd7qmBZMT0wsACvvYkAAGykr0d9jvxqntjstPb6a2Ihr4XLdnSuhYpmlIXphLnTfsYL6CSGKAh/WLSuZrqO2DAyeRqsGXwhgbHeK2rKHzetPIEzafI1/vsAI+lTV+RTEWZq3b5GUh5ahuSbAVF8AMNEXSlOVbvu1Ih9lAUbxHWlAlx5S2+2fJvBsxPZTUF8j/jaluMzxvzAiZlBMJ1emJTYZ3yu+sQXQI1M7rYfRHXxOHs8c5ijAmOtkdbi1xFbSKS7H8ygewBteh883GeBZXOGR4Pf5ppybVXMRDPD6zN+twnymrtS5sgYH0CE04jtwKxyAC7aDMgpEulEnnAkFNppGpQE65uoRFugtGsZ5Pgebx91ZGJBd2eroIXwRxutS5OO2btN/cAFWHu7S3yg8VhsIHs2tuPIemFi2/dmDq67Mepcb5aDzF7DU1og+5dAQ85KoGaHgrj8SPR3GtEKXgtdUmgo8zoz0lzBAGj9wWt6Z0vFqM00ZPbEfZ3qQB+wJzSVLvcEEKKqOsh3rfiRI8TjDhQEb10LZsIblqeyjTHHNpFO0G9rG5K6rKnIW3dHtB5aJNvnRFLkhd2ROIDKof5O5vE4duAdyxH3i1ktyoZ8aWhdIeVcX0iJ8LRI3zN78+QWE74dZD5DnUcFkmomtKRy7k7T2eCaDQ1joB6pR9kHLKArTpg1VrN3SQAj+Rbup9kCT3nbpPcosaLedugWXfOGh4GuQJmtEV1CRJZnowvarhgWf29ZGaowGq00cSbC3awbTqVDZzLrW/b0SI7i21vblwMa8trg5uUaAqisHzC
- UoHnKMD6
- WDP4cscucBb9zW086FSKScxAid8ZX+jYrxhE2em/wvljSilbfpZe4uuanPCx4K6VHf40X1/VnYlYgD3STs3QAH6nxwncgn/tnQ30KoA1G51CqokdRhWDVM0PKcL29gXDRzBkk+T+wO/FnsN+B1vBFciWuI7v6MyUB0lq6fDD2BmhiiWfpld4h1aYWT2NEoPopsFeM
+X-Rspamd-Queue-Id: 333A140003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1qhdonc3c4s7mh6aakuuiirsnfgf14sf
+X-HE-Tag: 1769381162-869413
+X-HE-Meta: U2FsdGVkX1+NR6VZ8s21u6ZMkLlEcmUNXGYhtpnRSUHVbupRWEd0mKK5b8eeWFKjmhoWZFZk1URIvSMAJYDOLWTOvZcFMD9/DgkD61ZoW///ivb8Al/7X6JcSB9eTsWEk4rV8kIlbUK7cjl5GiVg+N4VmCN5aJ3euFgt8rFilQ6pGwRXoZsJSTkVlgXL0pMZgod8V8+yqvMK7ift399spylif2vcAsTe+ldKMALVg68DoKnGGAJ7Xk0xmkUaQs2KBjh5ZUOZEbkDXZwD/Wp5EeQIxmqDOlA0TC7NAc9jYB++oCHC2iF2MGfIRMZ7rg+xzThVEwKpjX3ozAtI806+E2f/25K5K0eZJVzhox+P//x3WPq30GtrkyU619vxX3r2cV7UAOi4YGsXWOBZkxU5gTnQuF0iyzFUCRWz9ZldGKf6F1FheRKmKUpUCcOCNWzTnZ8rhYmxlB71I8ntxq41rfHKeiSXILgFHlh+Xoi88O0T+3mZTGXarKwiCmrRYkE3v4RatgaexlapP3/ZOOeiHf8S+BV8ni5JaKZGwE0c6eYgAKWjY/L8aVMbyST8CTrcZzn8y2Y+tkDC2o6OB0BQPIoydCEEuNLCNE3FgPZDj1rtXgmRvT7H4NOWLcLghIA61zG3wp3YpBtzSphQpXQDkcvtJWaaf2hdtUXaks2DSaQFqcSL5NlwEwXAqYkKw+bbqTxhDQ4jitRsdtHCUfM7OC1Y3AJ2VNzESgjU4J0wq9O320uk8HGPM3GZ5yvINiU2SBIS2Um1VGRPPfaW8uECfAKdYMP0gH3FB3SoR3geZ70KViD5sEiTc63XaGiZNQBY8mn2w0Dy5ZAtRWjpKM/YDXVdaSdp+Ql/X01Ywtkmso4DpOLDtoV1RmLD7lGqEulu1WXj97jbWRoP+gvG0y9PmliDb9SkX6SYAGFMVafLUW6b5OuA1zJZ4KFreFET20kYAu4j+APhq1Tui+MSPQ+
+ jT8on16i
+ Wf8nyMVgrM2Ac1xNNqR5lB5j7iRHd9NjAHeumTzROmFhmlEcobF0K3a7KKnlSTBrBCtdv65aTB6zrC/cVgioSsST/vTPEViz99+Af+1c7HNHsnlsKjurEOkcZ1k1qYzoiiK8k7h+KP6PQBq4DrzCx3VouFYfpWjDKvryeHM2J8LWWFXBHZIx109zRRyUdQUqUTNqHvLUasbgYmLXu3lfqRsSHEdMvxPRdGrQCO54rz1Kx3L+38vPbVj0KcNOM9QxYpsjD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,96 +126,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+HK_TYPE_DOMAIN will soon integrate cpuset isolated partitions and
+therefore be made modifiable at runtime. Synchronize against the cpumask
+update using RCU.
 
-Here is just a few changes sinces v6:
+The RCU locked section includes both the housekeeping CPU target
+election for the PCI probe work and the work enqueue.
 
-- More tags
+This way the housekeeping update side will simply need to flush the
+pending related works after updating the housekeeping mask in order to
+make sure that no PCI work ever executes on an isolated CPU. This part
+will be handled in a subsequent patch.
 
-- Fix raw access to __rcu pointer (Simon Horman, Waiman)
-
-- Fix cpu_hotplug_lock deadlock and use correct static branch API
-  (Chen Ridong)
-
-- Fix a few changelogs that got the set rules between HK_TYPE_DOMAIN
-  HL_TYPE_KERNEL_NOISE wrong.
-
-- Simplify arm64 mismatched 32 bits support (Will Deacon)
-
-If all goes well, my plan is to make the pull request myself for the
-upcoming merge window.
-
-git://git.kernel.org/pub/scm/linux/kernel/git/frederic/linux-dynticks.git
-	kthread/core-v7
-
-HEAD: dcbe41f43e2cb32fbdbaf73b7745739e018b35dc
-
-Thanks,
-	Frederic
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
+ drivers/pci/pci-driver.c | 47 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 38 insertions(+), 9 deletions(-)
 
-Frederic Weisbecker (33):
-      PCI: Prepare to protect against concurrent isolated cpuset change
-      cpu: Revert "cpu/hotplug: Prevent self deadlock on CPU hot-unplug"
-      memcg: Prepare to protect against concurrent isolated cpuset change
-      mm: vmstat: Prepare to protect against concurrent isolated cpuset change
-      sched/isolation: Save boot defined domain flags
-      cpuset: Convert boot_hk_cpus to use HK_TYPE_DOMAIN_BOOT
-      driver core: cpu: Convert /sys/devices/system/cpu/isolated to use HK_TYPE_DOMAIN_BOOT
-      net: Keep ignoring isolated cpuset change
-      block: Protect against concurrent isolated cpuset change
-      timers/migration: Prevent from lockdep false positive warning
-      cpu: Provide lockdep check for CPU hotplug lock write-held
-      cpuset: Provide lockdep check for cpuset lock held
-      sched/isolation: Convert housekeeping cpumasks to rcu pointers
-      cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
-      sched/isolation: Flush memcg workqueues on cpuset isolated partition change
-      sched/isolation: Flush vmstat workqueues on cpuset isolated partition change
-      PCI: Flush PCI probe workqueue on cpuset isolated partition change
-      cpuset: Propagate cpuset isolation update to workqueue through housekeeping
-      cpuset: Propagate cpuset isolation update to timers through housekeeping
-      timers/migration: Remove superfluous cpuset isolation test
-      cpuset: Remove cpuset_cpu_is_isolated()
-      sched/isolation: Remove HK_TYPE_TICK test from cpu_is_isolated()
-      PCI: Remove superfluous HK_TYPE_WQ check
-      kthread: Refine naming of affinity related fields
-      kthread: Include unbound kthreads in the managed affinity list
-      kthread: Include kthreadd to the managed affinity list
-      kthread: Rely on HK_TYPE_DOMAIN for preferred affinity management
-      sched: Switch the fallback task allowed cpumask to HK_TYPE_DOMAIN
-      sched/arm64: Move fallback task cpumask to HK_TYPE_DOMAIN
-      kthread: Honour kthreads preferred affinity after cpuset changes
-      kthread: Comment on the purpose and placement of kthread_affine_node() call
-      kthread: Document kthread_affine_preferred()
-      doc: Add housekeeping documentation
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 7c2d9d596258..a6111140755c 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -302,9 +302,8 @@ struct drv_dev_and_id {
+ 	const struct pci_device_id *id;
+ };
+ 
+-static long local_pci_probe(void *_ddi)
++static int local_pci_probe(struct drv_dev_and_id *ddi)
+ {
+-	struct drv_dev_and_id *ddi = _ddi;
+ 	struct pci_dev *pci_dev = ddi->dev;
+ 	struct pci_driver *pci_drv = ddi->drv;
+ 	struct device *dev = &pci_dev->dev;
+@@ -338,6 +337,19 @@ static long local_pci_probe(void *_ddi)
+ 	return 0;
+ }
+ 
++struct pci_probe_arg {
++	struct drv_dev_and_id *ddi;
++	struct work_struct work;
++	int ret;
++};
++
++static void local_pci_probe_callback(struct work_struct *work)
++{
++	struct pci_probe_arg *arg = container_of(work, struct pci_probe_arg, work);
++
++	arg->ret = local_pci_probe(arg->ddi);
++}
++
+ static bool pci_physfn_is_probed(struct pci_dev *dev)
+ {
+ #ifdef CONFIG_PCI_IOV
+@@ -362,34 +374,51 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
+ 	dev->is_probed = 1;
+ 
+ 	cpu_hotplug_disable();
+-
+ 	/*
+ 	 * Prevent nesting work_on_cpu() for the case where a Virtual Function
+ 	 * device is probed from work_on_cpu() of the Physical device.
+ 	 */
+ 	if (node < 0 || node >= MAX_NUMNODES || !node_online(node) ||
+ 	    pci_physfn_is_probed(dev)) {
+-		cpu = nr_cpu_ids;
++		error = local_pci_probe(&ddi);
+ 	} else {
+ 		cpumask_var_t wq_domain_mask;
++		struct pci_probe_arg arg = { .ddi = &ddi };
+ 
+ 		if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
+ 			error = -ENOMEM;
+ 			goto out;
+ 		}
++
++		INIT_WORK_ONSTACK(&arg.work, local_pci_probe_callback);
++
++		/*
++		 * The target election and the enqueue of the work must be within
++		 * the same RCU read side section so that when the workqueue pool
++		 * is flushed after a housekeeping cpumask update, further readers
++		 * are guaranteed to queue the probing work to the appropriate
++		 * targets.
++		 */
++		rcu_read_lock();
+ 		cpumask_and(wq_domain_mask,
+ 			    housekeeping_cpumask(HK_TYPE_WQ),
+ 			    housekeeping_cpumask(HK_TYPE_DOMAIN));
+ 
+ 		cpu = cpumask_any_and(cpumask_of_node(node),
+ 				      wq_domain_mask);
++		if (cpu < nr_cpu_ids) {
++			schedule_work_on(cpu, &arg.work);
++			rcu_read_unlock();
++			flush_work(&arg.work);
++			error = arg.ret;
++		} else {
++			rcu_read_unlock();
++			error = local_pci_probe(&ddi);
++		}
++
+ 		free_cpumask_var(wq_domain_mask);
++		destroy_work_on_stack(&arg.work);
+ 	}
+-
+-	if (cpu < nr_cpu_ids)
+-		error = work_on_cpu(cpu, local_pci_probe, &ddi);
+-	else
+-		error = local_pci_probe(&ddi);
+ out:
+ 	dev->is_probed = 0;
+ 	cpu_hotplug_enable();
+-- 
+2.51.1
 
- Documentation/arch/arm64/asymmetric-32bit.rst |  12 +-
- Documentation/core-api/housekeeping.rst       | 111 ++++++++++++++++++
- Documentation/core-api/index.rst              |   1 +
- arch/arm64/kernel/cpufeature.c                |   6 +-
- block/blk-mq.c                                |   6 +-
- drivers/base/cpu.c                            |   2 +-
- drivers/pci/pci-driver.c                      |  71 +++++++++---
- include/linux/cpuhplock.h                     |   1 +
- include/linux/cpuset.h                        |   8 +-
- include/linux/kthread.h                       |   1 +
- include/linux/memcontrol.h                    |   4 +
- include/linux/mmu_context.h                   |   2 +-
- include/linux/pci.h                           |   3 +
- include/linux/percpu-rwsem.h                  |   1 +
- include/linux/sched/isolation.h               |  16 ++-
- include/linux/vmstat.h                        |   2 +
- include/linux/workqueue.h                     |   2 +-
- init/Kconfig                                  |   1 +
- kernel/cgroup/cpuset.c                        |  53 +++------
- kernel/cpu.c                                  |  42 +++----
- kernel/kthread.c                              | 160 +++++++++++++++++---------
- kernel/sched/isolation.c                      | 145 ++++++++++++++++++-----
- kernel/sched/sched.h                          |   4 +
- kernel/time/timer_migration.c                 |  25 ++--
- kernel/workqueue.c                            |  17 +--
- mm/memcontrol.c                               |  31 ++++-
- mm/vmstat.c                                   |  15 ++-
- net/core/net-sysfs.c                          |   2 +-
- 28 files changed, 538 insertions(+), 206 deletions(-)
 
