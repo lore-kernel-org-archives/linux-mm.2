@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF788E63CA0
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 14:45:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68338E63CA0
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 14:47:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80D856B0005; Sun, 25 Jan 2026 09:45:38 -0500 (EST)
+	id 81C656B0088; Sun, 25 Jan 2026 09:47:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BB866B0088; Sun, 25 Jan 2026 09:45:38 -0500 (EST)
+	id 7F2D56B0089; Sun, 25 Jan 2026 09:47:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BD606B0089; Sun, 25 Jan 2026 09:45:38 -0500 (EST)
+	id 6FF5F6B008A; Sun, 25 Jan 2026 09:47:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AC7A6B0005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 09:45:38 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDF8C8BEF7
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 14:45:37 +0000 (UTC)
-X-FDA: 84370759914.28.62AB770
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BF306B0088
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 09:47:05 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6FA413A185
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 14:47:04 +0000 (UTC)
+X-FDA: 84370763568.27.59BC77C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 492C4A0008
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 14:45:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m6oL/QRk";
-	spf=pass (imf15.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id F33F614000F
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 14:47:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Aw0t/T1+";
+	spf=pass (imf23.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769352336;
+	s=arc-20220608; t=1769352423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lg7/BHFKZKaH/OFm7kz0P2wH0svnx96Z2AwgLQCV9mg=;
-	b=63PqfJbEryNgLwG2NqksXHsereBAzDqnyLZ/DSqwzBmcWnsThvTYYE9z1hyL4nlLxK/Byb
-	7+S5VqXDZIUkUzL0Edc6c+9n4GGNZdaXS50FfMEFFkw7bmhFtqa4A5tVM2ngxZXYuxUxIX
-	wN8UHg2pcHrTEL4+7stXusDGMMU0FfU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769352336; a=rsa-sha256;
-	cv=none;
-	b=KipNr/DGMCWjYavwhwqSAAkuMaM6CsxEKXRIzWI7bUS5l7UCP4oeRpaDMr+XnC3ZdLw3V4
-	ZZ0mteE2f/fCzOt2VrOLx51UznGho3vQo3rp5KLJ7LmvKoU6bTFDQEad7wOBXFfgWJPXds
-	LO7XTc6mPmi3cJLC3Q43bTT1R3JxPs4=
+	bh=pFt68Q4+goK93Nz3JR6DyVM6cbjS7yaqJz3AamnIoVE=;
+	b=mT5BFypbATVI546uGUml9sIGlQfbm9cNhWr0WtHMF8AerA4SKeZwFaN0NRp1WKYJC5PetQ
+	gY4z7ehVunlZTSPsmhOVpIYn7bPbB5jXW3LkSmKxbr8Pbq4d1eOOZKJr//QPPYkHb7XZvi
+	XYdRhX/9japukyUxncBapCizLMf6y7k=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m6oL/QRk";
-	spf=pass (imf15.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Aw0t/T1+";
+	spf=pass (imf23.hostedemail.com: domain of jarkko@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jarkko@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769352423; a=rsa-sha256;
+	cv=none;
+	b=Un46QyUmfqy4IY9PdWBZwO2d0inbIkcnaBATFRjJIo4z2QUIT/HgS3ijRyn/NMztqOVmwC
+	WJzp67oIrpAl582Hz2R5wU3IbhAA7ZXOxGSfahQt3ScJ8FsdToiYTGm97sQdJFfEXs2ndo
+	Gxxij46rB4sJOFb6SsVqGbXSt48nE2w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3484D404BD;
-	Sun, 25 Jan 2026 14:45:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B9AC4CEF1;
-	Sun, 25 Jan 2026 14:45:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E653E404A0;
+	Sun, 25 Jan 2026 14:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A86AC4CEF1;
+	Sun, 25 Jan 2026 14:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769352335;
-	bh=pgkOQSEjB2Sw/CI7QDlrl9YkRcVaVCAeiqMx1e8wmAw=;
+	s=k20201202; t=1769352421;
+	bh=D4rZHek649r38ZMrKc0EUETSxogBTg6UND5Vy7tJuco=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m6oL/QRkuZtbyX55NjTdA/RX5Y8/r2M89CoYdUfLcpFzRoA0K7F7eNjkfN+GGx7uv
-	 CM81trUqYgE9bH+7riIh4MBDGYKNwTZEYnFMMchLfwMWMc4ejzUdTimZLhM04amSRW
-	 8YklSov1f57soG7M7qGS+w7RlLZ9xoCDPvT3eNDbGj3Q16Nov9tz9C4XR8MbOROy0k
-	 OelfTp7OoEQ2kpOl5k5LgFVEC8IEdxih7mu4RRxB5Q0gTPG+HnjaPrjT9TyMYbzIEw
-	 vy8il94ydSnTfHxu0DVX8rQpMDEARexPb26zQ9vGiPpwyc1KAGe6okjYiATBngqAgW
-	 CWVXecugvd3cg==
-Date: Sun, 25 Jan 2026 16:45:30 +0200
+	b=Aw0t/T1+o7fdk6QYLzKKJivljnur6v67ACKvC4S8H+eVALhS5z2OftpOca/2ip1vT
+	 mP+TErWLDAgv4hW1xmsBzRU9yZ8M/uOn87tjE5IDCqBOPPzvzbIsxsMl6EV+UL80Dy
+	 tvJgIjkGAOSxz10G9q4hE52kHSfGRvpZwvs6p03OPaUGL00W6878lBlhoz0e1t0EAO
+	 EMS3+DJHEjMUhiW5+resBf0NdRY49WZT2DFOKwn5xjHU3oaqq5kBOpu6IO3rDCwwHs
+	 EIboBUhJdwLQr8OWBqzpJqvfpNrzLdLbP1dmo7BjOdCsX2AZ/I614TVnqN2xNKHVXk
+	 TzdzzUx/4SWKA==
+Date: Sun, 25 Jan 2026 16:46:57 +0200
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: Wentong Tian <tianwentong2000@gmail.com>
 Cc: dave.hansen@linux.intel.com, tglx@kernel.org, mingo@redhat.com,
 	bp@alien8.de, x86@kernel.org, linux-sgx@vger.kernel.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/sgx: use vm_flags_t for vm_prot_bits
-Message-ID: <aXYsikbf-2yMnJ1F@kernel.org>
-References: <20260122055435.95911-1-tianwentong2000@gmail.com>
+Subject: Re: [PATCH v2] x86/sgx: use vm_flags_t for vm_prot_bits
+Message-ID: <aXYs4QyRrnDc_iDj@kernel.org>
+References: <20260122133633.79792-1-tianwentong2000@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260122055435.95911-1-tianwentong2000@gmail.com>
-X-Rspamd-Queue-Id: 492C4A0008
+In-Reply-To: <20260122133633.79792-1-tianwentong2000@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F33F614000F
+X-Stat-Signature: 4xy71itijcq16qnkgya3p4cazgb57f6t
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: p6yefd6s6n7a713ukdf8ri1cyza7nnft
-X-HE-Tag: 1769352336-891405
-X-HE-Meta: U2FsdGVkX1+pvP82VrtA1WstjbV4hvgoPYmn83oEsBQIqTxB6ZpC9+ICySMnGsOIyZB3AJBn4zLUY0y+rXzN8UgPhux+cffmrkbh+HdK4xo640Ct4z6qP7nAjSoemXGfcdBitw+rg62itzIbsrN4lS3REYAjvjBCUVOgTv00KHyBP63cj8SZ/XAJVhHH7sgliKAcyfxEtG9MA17urQZYObrC8cer7irgAFzwAJmt2HosAHSUNajAsOePOiwx2LAd3TpJZr75ODZj57egjwqMkR8424FrLbLUkQEY7UKiyH6gpFIKNiRxdD4gldbL/GdsrZByUkwm5u/Z236IyjKXT2f0UI1OGdfFYwUuScaeVr8RsQ8k2/Vquw6NzH30m1tch3GWe0AU3uoqdbbnjIa6oWEu4nRAqIRUD7CLlM029w7cGalv8ux9ifozp8Y3Jwy60btPKkMnjkeSSGiLB1p1VsVNHZ0+70t7Pn1sgn1AzKpHLHPno4TmYGWGbtCC5X+zsG0PFxUlulXrz0rNlcGoYbSCbJ2MBsKj4vtRRFI1UHVhg5D93izrA0eBsL8uj1pVo2e86h+kDJODBd6Ieja4rKsSs5+1jGufdOhiHqLyy/+jQwbHEt3HRWHGR8PrfvM9WykFx8nzaPzrGxOZJ2FrHMDowP2d8vDCE9euuqpZ4ykgox64sBhZyqX0T6wbMKp5kmBPJ5ukbhmshO1q+BCaSdgbvkQ8GnE1cfmusaib22UbchuT8ZdGNVvl3OpK7CtFQMYBcdI/c+G2ByaEqbqj5bN/I49Yl6X8vtIy9ecL3L3Zs8rxiY/3bhHTDqyukGIt9iGP5J9CEe2QOfkipiiFizWcRPWqfCATc2FB0ZICdbktC6cyMjitPzgz+tWGFdRHpJEMdJ1om/5gegLj9uuLvQSjl6okJBIMqFVaitXPJxMPKVo2SJZHw0E+SOR437TZ67ryu7lm6eDW58niKk+
- AxykPnLf
- Ozh9iN3BVwGDNrUo+H/+DJzEvYtPFIA22smG2rzJMuYpdo0p2GW2vVPMyMVK9AOMXAQBbDIqTkFpU/gWe+aAQsTryKxi49fQNlC7fMG51xdwPqOwHYlIBFHa56WEE9gye+jKvZTufUK3C5SopoIid0taK/bvlpckAPNW1DoUq4OkSBBn783yJe+e43mZaGmbEjUNls/kfq3eN26KiH+DL8SY3HWsSSv3qsU3Yx1lx2S7c0gjK0ZofBa1jvuV7jY7/8y/3Yzmv2LG6dMepxlLMUj+6qnjt4Vt3rbJEWiblkampgFSkpE4NFnGpToCjkhPejX/I2Ct/hvp7tv4iFwd3LG48+gGRiAf7vq6J
+X-HE-Tag: 1769352422-791600
+X-HE-Meta: U2FsdGVkX1/NeqQJmEImcyLLU6Q5sYgPv92VxGKKUwJDEonyxdu3u1V63Qzq5LgOUQ7CZetPf2PyfZgSQ4AE8pCPIxzA2g2B3UUXGiJsWpNID00W3acObc7kcYwV+RAZay0fsjeneT9T9kIXHJP44Y0RH0xUR2/YzNegn4scmUThphDUhWpT3FgOu0prvKYAEaPklpbxe4Z9LswvcqfMp2TzZTfFjjcWdL5W1D7726ic6RbYNVo+lfldPGnG6FWD8pjRGn4x0qYISwdiZG5AE9nmaIDwYcs5Adq9N1zd/ELLo1Pw2OxNy4gXC51r+zEit/GbzVPFkPcmBXVT1W0nn2V1jf/epQs5IgOaEmzFsecG+NbJOhAjUq/gs3gk51fbEMkb/q+2hCtmN6J35pU6SwhToBj56/l53F3oAPbJkR4eM9+x8vYKtVDILIJrXM88vDScL5UceQJ1pS4VXjBHHPB1IuoO08gBUzdjprf8HX47K/jE3OW1wpLHJNe4TFcZ9FNxOfUk2whiFLDS4o7R8duafA5EmXgIL6BuXC6dZebcs7rm6Xt2YJs5pzXtE7fA3zP+PRxKZLnxhiLe/vAFw+CD2XPkEufBt2MU4WImTNFvQmA9MbfND+LaqcWxV6ihlERr/2AOpawqf6iv785Em9vChpCB5r4qAfzWRZpz3GMXP1Xu/W/UdQQ47kMKIb/gQCMWZ/RG1EAjX5P5edwEh8isnOygvIeDjtfJBin2HA4O9/eInqmvdPEjuredSmdkOq8zJUOQHWA74XDD71ok+IzRFvhYvZP5VfllJnAfbsHjRwMeQnb94vvx5QcTjWMmGFhDwnAs2rTf5OZD6NniFdyC3i772iokXcomPefDvp3zQAkPgJG2AHw89EuJBS6gwHwrlWpI1zpa3m9a7q89Q/vKvvDGQuyLRbbf4hdLQ/+An8OzB5199YPBnK4rLMlx3GhM6X2kRFgEdp4tbqz
+ S1925H73
+ pisZmJPM8NHGxhzJZAXMBe84rDUaH0Cmgz4HT5WeEXoL85PbQbI+NWk0t4pe1Cp1v3kVsmkXXS3er1uyT/W6DTrNp0eaeZc3sXeG9+rEq1dtUAtFZQ6jZvkwgieN9UiVuHTP7swdEqZoVk8MbSaOuR6b0xV2lNUfVbxLKuoWD1rj3pULc00o6ahWzO/iNshbYF9jy0HJrstQzoMMaiFGfBg89RBrcx9tHtbafilLm/dYBojgnbjEYVabBJOqcR12Lp2+/vaEZzwzvdSG58PspLRjXjyjfK9fwE8vmGK+QBTuCbSsxHF3ikz8XJSTLX6e6p2OYWwjixfFKz2Ko1oK1qss9cUGkZmFhb2S6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,7 +92,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 01:54:35PM +0800, Wentong Tian wrote:
+On Thu, Jan 22, 2026 at 09:36:33PM +0800, Wentong Tian wrote:
 > The vm_flags_t type is the dedicated type for virtual memory flags.
 > Architecture and driver code should use this type instead of assuming
 > vm_flags is an unsigned long, as the underlying type may change in the
@@ -100,14 +100,20 @@ On Thu, Jan 22, 2026 at 01:54:35PM +0800, Wentong Tian wrote:
 > 
 > This follows the cleanup in commit d75fa3c94750 ("mm: update
 > architecture and driver code to use vm_flags_t") by converting the
-> remaining vm_prot_bits usage in SGX code.
+> remaining vm_prot_bits usage in SGX code. Also, update the vm_max_prot_bits
+> type in struct sgx_encl_page to vm_flags_t for consistency.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Wentong Tian <tianwentong2000@gmail.com>
 > ---
+> v2:
+>  - Also convert the type of vm_max_prot_bits in struct sgx_encl_page
+>    to vm_flags_t, as suggested.
+> 
 >  arch/x86/kernel/cpu/sgx/encl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/x86/kernel/cpu/sgx/encl.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
 > diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
 > index cf149b9f4916..814edcde225d 100644
@@ -122,9 +128,27 @@ On Thu, Jan 22, 2026 at 01:54:35PM +0800, Wentong Tian wrote:
 >  	struct sgx_encl_page *entry;
 >  
 >  	entry = xa_load(&encl->page_array, PFN_DOWN(addr));
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
+> index 8ff47f6652b9..0e0b97e91905 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.h
+> +++ b/arch/x86/kernel/cpu/sgx/encl.h
+> @@ -27,7 +27,7 @@
+>  
+>  struct sgx_encl_page {
+>  	unsigned long desc;
+> -	unsigned long vm_max_prot_bits:8;
+> +	vm_flags_t vm_max_prot_bits:8;
+>  	enum sgx_page_type type:16;
+>  	struct sgx_epc_page *epc_page;
+>  	struct sgx_encl *encl;
+
+OK, I missed the remark from Kai, but it is acceptable.
+
 > -- 
 > 2.34.1
 > 
+
+So again:
 
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
