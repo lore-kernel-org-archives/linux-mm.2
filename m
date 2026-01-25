@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9375EE63C85
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 03:36:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5C60E63C81
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 03:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E055A6B00B6; Sat, 24 Jan 2026 22:36:15 -0500 (EST)
+	id B89106B00B9; Sat, 24 Jan 2026 22:36:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D24BF6B00B7; Sat, 24 Jan 2026 22:36:15 -0500 (EST)
+	id B621E6B00BA; Sat, 24 Jan 2026 22:36:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3DB96B00B8; Sat, 24 Jan 2026 22:36:15 -0500 (EST)
+	id 928986B00BB; Sat, 24 Jan 2026 22:36:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 916DD6B00B6
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 22:36:15 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FACAD317D
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:36:15 +0000 (UTC)
-X-FDA: 84369073110.03.6223616
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AA946B00B9
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 22:36:16 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D8888B645
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:36:16 +0000 (UTC)
+X-FDA: 84369073152.02.1DF2AB9
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1769E180005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:36:12 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RFb8037b;
-	spf=pass (imf06.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3A6EC140007
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:36:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MRjaqdIk;
+	spf=pass (imf23.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769312173;
+	s=arc-20220608; t=1769312174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bQ2TJO7rV45A+H5gHp0oOffqkb1+cIKkKDPj5aXjdz0=;
-	b=miACn0atj76U1tEBcnufuwNgvx3ks770TAQGMwLLZpLGKSwOWMz1/MbOGu5Lx7zGoTIGOi
-	URuMV3Lwein/i3lMeXEO5V0SwtuBBdZIOy9UJG/Mpn+QtU9tAJMVVY1z4AXJX6RSzNOifs
-	xo2Jxg9Evilcg+ppyQEcbjVBoviqu6k=
+	bh=xMFiyVWXMbLUuHRaUvPqestNlQdyliKOVIoiLlpiwgw=;
+	b=bPuUAU5VudMNH9U/VInnf1Mo/RGXHq+7vK+ZOsGdAqadanHGn/BLvFPBwXxAC0FQeKWzjk
+	2Av87myB4M4lHNr1BL7oDljbIwOHVyHr0ijxfaVwLn6Ay6axH9d9ZBUzVGDfV2PWfryGuC
+	ZOd/TuI8FOLP+yzEYK6JOio9Dgu3mI0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RFb8037b;
-	spf=pass (imf06.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MRjaqdIk;
+	spf=pass (imf23.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769312173; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769312174; a=rsa-sha256;
 	cv=none;
-	b=pfFWkANoJbC5cpa3+6Jy4sHOaBrbV833ADBjqIxkk9PppOk0HHT2Q8xlB4Jl472Lrgawvl
-	pF1SVCmyRXqv88PupmF4qpsyxhJbyrewBQa/Ul1lX7KLoVbpSB7S75rRYWsV8a095k3XAg
-	cwqgirHb8aJc+hWaZwFM/ONuU0Rlvoc=
+	b=JiPSr11b8fMH6H4YZ7Mab/mGxWsqFC6M/r2bIq1wo2UYx2aVqHpq6z8l9fAm+v2CU/ZofF
+	TGj0YTX+Q4fX1xj7GgSUBZAZKBSDMFl4D8JtC+Tq8ckms8V+em+w+rjj7MHgmpC/FT3Y/K
+	wUWuFCpHq/Tw7A7fOP9smoYfAbUUZpw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769312173; x=1800848173;
+  t=1769312174; x=1800848174;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=F2hMlOD13E70gvDD2tTetaQxnB+fdFV6/4gQEa5Hk+c=;
-  b=RFb8037boQCv7yqepwTOnCiGctpQflneB1GNPq333YRMa9LeURO+fHki
-   027OCpgSHapHMG7amJU4J7VwDJcGRL4v+JYHQ8OT7iNUIJZ0hSpjXx09i
-   xO2kzYXWDnmvPH65u9BZA+UY+MWenX4OHYNUSG229Mji5oHAusPfmFWke
-   Vayq/dIaVJL9N7b9cHxZ2C91BpUq2CtkMx/XaMEmgru17IZ+PgZfkArRx
-   Hq5FpKpbq+3K/iM1b38YKK7EcKWog4ejHr0wabhipEvS+jezHzE+iW7Ta
-   PimeDOKJas96q+uI0GQDCL1AafJZXFsZ3xcILAdj43Qf/8xWqSVmLeVGr
-   w==;
-X-CSE-ConnectionGUID: uixr+zZ+Q3anUuHyS9oQwg==
-X-CSE-MsgGUID: rh+GcsPUQuCS1Qfa1mM0bQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11681"; a="81887652"
+  bh=vi7CJVPg5ib5wpU/YN0OFZ5h4huVEalzAff2p9W8l+Q=;
+  b=MRjaqdIkJtsRBTiVVZHcvC2LrCF38Jpe5l9OXByr778QI5B5LrUME5bR
+   SJtl4ce3UfbltLGdOuDGTWJRtblQ3z25ELWM4Dkj/KMJ0A/b3PAE2nhCU
+   lDHxysNIps+oeP+zC4MAj8AQZ6KtMhmewpZ8Wh2RJSoU+IULzNXiXyE1j
+   qHMuy+ma7bhcsXmvRWr8dCxfQ9xtTUwVwmZMcmLotnbsdFOw/LsEZJc8Y
+   IFcuGDa7eGHxCh5s3JzUYOrRodt6OdUoQew5IYLXffDZESj0TAlozWJwp
+   MkCiKNu1WNXdXo/wO2BNCrh9Xzd2BtfNQbPU3UYUCNJXUEOAMHGfEo0B7
+   g==;
+X-CSE-ConnectionGUID: BnD+GsfESA+7UWQtAHb8Nw==
+X-CSE-MsgGUID: F/VqyG+SRjupUIK9e0CuDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11681"; a="81887667"
 X-IronPort-AV: E=Sophos;i="6.21,252,1763452800"; 
-   d="scan'208";a="81887652"
+   d="scan'208";a="81887667"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2026 19:36:12 -0800
-X-CSE-ConnectionGUID: 7h1tBnv/Qv2oZ2BK/yZBEQ==
-X-CSE-MsgGUID: T1LoO/gHSf2TxYUbPWWROA==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2026 19:36:13 -0800
+X-CSE-ConnectionGUID: 8Rp86VFiTkeopzt3pAIreg==
+X-CSE-MsgGUID: aj7MA65OQcOUK2WmnkvQ4A==
 X-ExtLoop1: 1
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
-  by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2026 19:36:11 -0800
+  by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2026 19:36:12 -0800
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -100,22 +100,22 @@ To: linux-kernel@vger.kernel.org,
 	giovanni.cabiddu@intel.com
 Cc: wajdi.k.feghali@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v14 23/26] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
-Date: Sat, 24 Jan 2026 19:35:34 -0800
-Message-Id: <20260125033537.334628-24-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v14 24/26] mm: zswap: Consistently use IS_ERR_OR_NULL() to check acomp_ctx resources.
+Date: Sat, 24 Jan 2026 19:35:35 -0800
+Message-Id: <20260125033537.334628-25-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
 References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3A6EC140007
+X-Stat-Signature: eg7txw5d5fjn6z1y3atdqadpii1axje6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1769E180005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: sb4k86m1w9sqbpn9w1q7zfzmontpytpn
-X-HE-Tag: 1769312172-778356
-X-HE-Meta: U2FsdGVkX1+72zYw93SzpUrIwa5VIwx8vekvKc056tSr2c7tJslz/D8hnaHYMzyxpgGCPt70L8TvxRlpwphN5kZpE1d/f6PtP1VEQ/wJ+2gtUanmQWA87Gj0yFyxV2d32uZy5/FDj6MahIRgGC3c7a/WuV0UU8GXoTjNsv49yd6ttjHifLJTTEbyt0bSECoxnc5sIvHNNm2KA2Xy29M8w5aioLdjTHxqwUgo5ndmTWfMK7WbM+/gLUgz/TOI3PyLHPCIGPrxkPrUEZ6LkVYHDfZ9jyE0Vjz3fYSFbuTShqvgB+DisRd9BZpniNvUn7T4eH+Kdu2c1v9Kf55LdHO5tVkbTGeHAQ0OPar75HaGPOy6AFW7QTJOOtC5kQhLc9nEsju9FyPWFQSQRw4IepuqHGeU2EMgqTZcVPlOrRm7qDEovOKwh+oNxn7bmG/R3CRIPrLsqoTPlKeqR/GxCrYDviZ65VcxCHpOwdQux/TT9YxEsF27dHgkrTOLChWpZpbLGotjRkzmvjI4IQ4OTnbtg9bj7cLaOQOfCvQ1YJrKrfq+MU798lrows16hghoXU/MPs17qA5p5VCwGNxSorgdNCiLM+g2IQlk02wogDTZVb/uXaZnmNnaJlAbptp7Y4e5LTYh4Z3wzPZPbcFm57dR6miWiay/XDG6s5M+fYL9kVSQ52AmEZDbRMjuO7mMiNxHJ/uIsnF1G6C8APenmaDIqgNq5o2JKQb4wNe0TErZpGznqC2KYkFTC31pi50AgY+mdSpuitfhlZnJmZFOJQG1AbbM/MNw3mI++adG7qthgjJdMJI3y22UOoYdElFx1wMU4Kjvr+h16SsMOmYRncf+sRVOhBhY5Lip91f+1pN16Zeimqy1GxUkdc260Sbr/BTUIWP13T3zJICeqMSppo0bhR9QWgg52LYhnIY8GbHKzbbVqWhFRBhmZV/z+NAavFcte8+luZZa8MPQIAN3r8t
- 4eHMuWtZ
- qTqLYkCvoTfP8YGilmPT/yNGnyUN0U+9MUZnBkPmMPrNx1WaReNN5wbzeo4wVKNWceJFRcZZo/kmwYkMzQNhXFGcJ0CfPwlPWbGACI4zZ6ZDtGGJmR7ELR8T8wuzXFFhX58gAYsRW+qL1vneQvXFn/Pkl+FDoe5NpOdxwLxSLC1ADrBJpKjHOUhaoNSlHoEw7nlRJahXaqqqJ3b/8GeaUBJY9HO/sFCO9fhf0
+X-HE-Tag: 1769312174-991309
+X-HE-Meta: U2FsdGVkX1800d0k+gN7k7aC8p6d6XOH+UEoKtiqmcWp0zAtiTNhOxHwurJf7yW1jTg4wd1SpmBICL0LpjJSIzIELBAfW++NrpasJn7KgBYArJMEf+/Wi9CVcjV8fVFIantjP5akFtw/ie0asjCfgugH/szdlY2R0LZD5yvENEb0+Ee8fzxFkF4VnS4TyMYXwlkZnn66eu/Ubeba/9JsE3iHF41YXVyXki+8PfGGuvP9nYlvBmdQ9M6lpVv0enkoGNTBmtKKjms24VoOHoLL3im2p4QrZfgH59TPaIQdqoowdi9vbrKWBjEG0x1ZktWW1c3sLnV3N/9tjg2nHgB0eQQ0iGrSJGWcLU6sywcku8Rm1Z/4zHtSNfTNJGzQYfJ7/SdTZHbtLC+vlfDtXDlFaW3waDSMJE8jc/F6aHaUSOraUt10JmeRwX0Yw3FkQWYQf1X1l42tzwx3isp9XdmmIbtZHk4FxX45qFavORVsHobC0z7ME1MZ8lsrEr4/XgTilfVMGSvVoMUiNf98URISX7AHqyX6ZCTNDm/dSmPymDMa8rZWYqUw90EWkausJFhyAUf5Z9T17qjFX+041e+6DvBcOfltMkLqdlGc/t1/eR4WxyEBlcEMXCdNhTotYimeZ/+kmZPkoXI0whHJXg7E2XaB+b8sF6ZTXZ7JFhfN9rSc9+Fcd2w6RXBfuaXvjthwwU+sNUrT+Ds4bVAxpQTk8hp/bqI+lYvs+8deh6PnKCnPz7aEXsfGsZGLwNNrql/WoTs220/Pj4fqIuR2lEMjbWu6C7wnUsLYyIrKUhcqBQVxlfJbbUJdY+QZcfk769wfcyrJ4FDKxHtzewVYYUMLy6c7GP+mg7RHIONbPz8YbpNQlTC/6z9x70nAmz9Q5TYqs0ff3cwPUOP/X646gXPIZLwduIQHIyJScqsLdy2Ny0w10z4VSY3L6a2Hey8SRtnFXkf3ae8eipOnjf6krjp
+ slWN0/lS
+ WWmPlwN/ZYfU7S1PiaWs9hdIJMr+MLXmH9594X1K2s2p0o0xyRbzKayH7aSClMLXR6y+x007qdK6TezIlEm3YUflr+xXCHYD5IAekbYFpRoSp7wXQDxQwLFGHXN0sL9rUu3+3137BNQruDIIl6xvorTl2q5elY4qGQZ2mhtfeXxqoGqbtZLF5ONdCD8woUiLxE2zzfdJzhZohW/wmY4PMU46L8Y7pKaXqcCSu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,402 +124,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, per-CPU acomp_ctx are allocated on pool creation and/or CPU
-hotplug, and destroyed on pool destruction or CPU hotunplug. This
-complicates the lifetime management to save memory while a CPU is
-offlined, which is not very common.
-
-Simplify lifetime management by allocating per-CPU acomp_ctx once on
-pool creation (or CPU hotplug for CPUs onlined later), and keeping them
-allocated until the pool is destroyed.
-
-Refactor cleanup code from zswap_cpu_comp_dead() into
-acomp_ctx_dealloc() to be used elsewhere.
-
-The main benefit of using the CPU hotplug multi state instance startup
-callback to allocate the acomp_ctx resources is that it prevents the
-cores from being offlined until the multi state instance addition call
-returns.
-
-  From Documentation/core-api/cpu_hotplug.rst:
-
-    "The node list add/remove operations and the callback invocations are
-     serialized against CPU hotplug operations."
-
-Furthermore, zswap_[de]compress() cannot contend with
-zswap_cpu_comp_prepare() because:
-
-  - During pool creation/deletion, the pool is not in the zswap_pools
-    list.
-
-  - During CPU hot[un]plug, the CPU is not yet online, as Yosry pointed
-    out. zswap_cpu_comp_prepare() will be run on a control CPU,
-    since CPUHP_MM_ZSWP_POOL_PREPARE is in the PREPARE section of "enum
-    cpuhp_state".
-
-  In both these cases, any recursions into zswap reclaim from
-  zswap_cpu_comp_prepare() will be handled by the old pool.
-
-The above two observations enable the following simplifications:
-
- 1) zswap_cpu_comp_prepare():
-
-    a) acomp_ctx mutex locking:
-
-       If the process gets migrated while zswap_cpu_comp_prepare() is
-       running, it will complete on the new CPU. In case of failures, we
-       pass the acomp_ctx pointer obtained at the start of
-       zswap_cpu_comp_prepare() to acomp_ctx_dealloc(), which again, can
-       only undergo migration. There appear to be no contention
-       scenarios that might cause inconsistent values of acomp_ctx's
-       members. Hence, it seems there is no need for
-       mutex_lock(&acomp_ctx->mutex) in zswap_cpu_comp_prepare().
-
-    b) acomp_ctx mutex initialization:
-
-       Since the pool is not yet on zswap_pools list, we don't need to
-       initialize the per-CPU acomp_ctx mutex in
-       zswap_pool_create(). This has been restored to occur in
-       zswap_cpu_comp_prepare().
-
-    c) Subsequent CPU offline-online transitions:
-
-       zswap_cpu_comp_prepare() checks upfront if acomp_ctx->acomp is
-       valid. If so, it returns success. This should handle any CPU
-       hotplug online-offline transitions after pool creation is done.
-
- 2) CPU offline vis-a-vis zswap ops:
-
-    Let's suppose the process is migrated to another CPU before the
-    current CPU is dysfunctional. If zswap_[de]compress() holds the
-    acomp_ctx->mutex lock of the offlined CPU, that mutex will be
-    released once it completes on the new CPU. Since there is no
-    teardown callback, there is no possibility of UAF.
-
- 3) Pool creation/deletion and process migration to another CPU:
-
-    During pool creation/deletion, the pool is not in the zswap_pools
-    list. Hence it cannot contend with zswap ops on that CPU. However,
-    the process can get migrated.
-
-    a) Pool creation --> zswap_cpu_comp_prepare()
-                                --> process migrated:
-                                    * Old CPU offline: no-op.
-                                    * zswap_cpu_comp_prepare() continues
-                                      to run on the new CPU to finish
-                                      allocating acomp_ctx resources for
-                                      the offlined CPU.
-
-    b) Pool deletion --> acomp_ctx_dealloc()
-                                --> process migrated:
-                                    * Old CPU offline: no-op.
-                                    * acomp_ctx_dealloc() continues
-                                      to run on the new CPU to finish
-                                      de-allocating acomp_ctx resources
-                                      for the offlined CPU.
-
- 4) Pool deletion vis-a-vis CPU onlining:
-
-    The call to cpuhp_state_remove_instance() cannot race with
-    zswap_cpu_comp_prepare() because of hotplug synchronization.
-
-The current acomp_ctx_get_cpu_lock()/acomp_ctx_put_unlock() are
-deleted. Instead, zswap_[de]compress() directly call
-mutex_[un]lock(&acomp_ctx->mutex).
-
-The per-CPU memory cost of not deleting the acomp_ctx resources upon CPU
-offlining, and only deleting them when the pool is destroyed, is as
-follows, on x86_64:
-
-    IAA with 8 dst buffers for batching:    64.34 KB
-    Software compressors with 1 dst buffer:  8.28 KB
-
-This cost is only paid when a CPU is offlined, until it is onlined
-again.
+Use IS_ERR_OR_NULL() in zswap_cpu_comp_prepare() to check for valid
+acomp/req, making it consistent with acomp_ctx_dealloc().
 
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- mm/zswap.c | 164 +++++++++++++++++++++--------------------------------
- 1 file changed, 66 insertions(+), 98 deletions(-)
+ mm/zswap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 038e240c03dd..9480d54264e4 100644
+index 9480d54264e4..0d56390342b7 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -241,6 +241,20 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
- **********************************/
- static void __zswap_pool_empty(struct percpu_ref *ref);
+@@ -783,7 +783,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 		return ret;
  
-+static void acomp_ctx_dealloc(struct crypto_acomp_ctx *acomp_ctx)
-+{
-+	if (IS_ERR_OR_NULL(acomp_ctx))
-+		return;
-+
-+	if (!IS_ERR_OR_NULL(acomp_ctx->req))
-+		acomp_request_free(acomp_ctx->req);
-+
-+	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
-+		crypto_free_acomp(acomp_ctx->acomp);
-+
-+	kfree(acomp_ctx->buffer);
-+}
-+
- static struct zswap_pool *zswap_pool_create(char *compressor)
- {
- 	struct zswap_pool *pool;
-@@ -262,19 +276,27 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
- 
- 	strscpy(pool->tfm_name, compressor, sizeof(pool->tfm_name));
- 
--	pool->acomp_ctx = alloc_percpu(*pool->acomp_ctx);
-+	/* Many things rely on the zero-initialization. */
-+	pool->acomp_ctx = alloc_percpu_gfp(*pool->acomp_ctx,
-+					   GFP_KERNEL | __GFP_ZERO);
- 	if (!pool->acomp_ctx) {
- 		pr_err("percpu alloc failed\n");
- 		goto error;
- 	}
- 
--	for_each_possible_cpu(cpu)
--		mutex_init(&per_cpu_ptr(pool->acomp_ctx, cpu)->mutex);
--
-+	/*
-+	 * This is serialized against CPU hotplug operations. Hence, cores
-+	 * cannot be offlined until this finishes.
-+	 */
- 	ret = cpuhp_state_add_instance(CPUHP_MM_ZSWP_POOL_PREPARE,
- 				       &pool->node);
-+
-+	/*
-+	 * cpuhp_state_add_instance() will not cleanup on failure since
-+	 * we don't register a hotunplug callback.
-+	 */
- 	if (ret)
--		goto error;
-+		goto cpuhp_add_fail;
- 
- 	/* being the current pool takes 1 ref; this func expects the
- 	 * caller to always add the new pool as the current pool
-@@ -291,6 +313,10 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
- 
- ref_fail:
- 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
-+
-+cpuhp_add_fail:
-+	for_each_possible_cpu(cpu)
-+		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
- error:
- 	if (pool->acomp_ctx)
- 		free_percpu(pool->acomp_ctx);
-@@ -321,9 +347,15 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
- 
- static void zswap_pool_destroy(struct zswap_pool *pool)
- {
-+	int cpu;
-+
- 	zswap_pool_debug("destroying", pool);
- 
- 	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
-+
-+	for_each_possible_cpu(cpu)
-+		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
-+
- 	free_percpu(pool->acomp_ctx);
- 
- 	zs_destroy_pool(pool->zs_pool);
-@@ -735,39 +767,36 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
--	struct crypto_acomp *acomp = NULL;
--	struct acomp_req *req = NULL;
--	u8 *buffer = NULL;
--	int ret;
-+	int ret = -ENOMEM;
- 
--	buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
--	if (!buffer) {
--		ret = -ENOMEM;
--		goto fail;
-+	/*
-+	 * To handle cases where the CPU goes through online-offline-online
-+	 * transitions, we return if the acomp_ctx has already been initialized.
-+	 */
-+	if (acomp_ctx->acomp) {
-+		WARN_ON_ONCE(IS_ERR(acomp_ctx->acomp));
-+		return 0;
- 	}
- 
--	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
--	if (IS_ERR(acomp)) {
-+	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
-+	if (!acomp_ctx->buffer)
-+		return ret;
-+
-+	acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
-+	if (IS_ERR(acomp_ctx->acomp)) {
+ 	acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
+-	if (IS_ERR(acomp_ctx->acomp)) {
++	if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
  		pr_err("could not alloc crypto acomp %s : %ld\n",
--				pool->tfm_name, PTR_ERR(acomp));
--		ret = PTR_ERR(acomp);
-+				pool->tfm_name, PTR_ERR(acomp_ctx->acomp));
-+		ret = PTR_ERR(acomp_ctx->acomp);
- 		goto fail;
+ 				pool->tfm_name, PTR_ERR(acomp_ctx->acomp));
+ 		ret = PTR_ERR(acomp_ctx->acomp);
+@@ -791,7 +791,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
  	}
  
--	req = acomp_request_alloc(acomp);
--	if (!req) {
-+	acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
-+	if (!acomp_ctx->req) {
+ 	acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
+-	if (!acomp_ctx->req) {
++	if (IS_ERR_OR_NULL(acomp_ctx->req)) {
  		pr_err("could not alloc crypto acomp_request %s\n",
  		       pool->tfm_name);
--		ret = -ENOMEM;
  		goto fail;
- 	}
- 
--	/*
--	 * Only hold the mutex after completing allocations, otherwise we may
--	 * recurse into zswap through reclaim and attempt to hold the mutex
--	 * again resulting in a deadlock.
--	 */
--	mutex_lock(&acomp_ctx->mutex);
- 	crypto_init_wait(&acomp_ctx->wait);
- 
- 	/*
-@@ -775,83 +804,19 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
- 	 * won't be called, crypto_wait_req() will return without blocking.
- 	 */
--	acomp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-+	acomp_request_set_callback(acomp_ctx->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
- 				   crypto_req_done, &acomp_ctx->wait);
- 
--	acomp_ctx->buffer = buffer;
--	acomp_ctx->acomp = acomp;
--	acomp_ctx->req = req;
--
- 	acomp_request_set_unit_size(acomp_ctx->req, PAGE_SIZE);
- 
--	mutex_unlock(&acomp_ctx->mutex);
-+	mutex_init(&acomp_ctx->mutex);
- 	return 0;
- 
- fail:
--	if (!IS_ERR_OR_NULL(acomp))
--		crypto_free_acomp(acomp);
--	kfree(buffer);
-+	acomp_ctx_dealloc(acomp_ctx);
- 	return ret;
- }
- 
--static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
--{
--	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
--	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
--	struct acomp_req *req;
--	struct crypto_acomp *acomp;
--	u8 *buffer;
--
--	if (IS_ERR_OR_NULL(acomp_ctx))
--		return 0;
--
--	mutex_lock(&acomp_ctx->mutex);
--	req = acomp_ctx->req;
--	acomp = acomp_ctx->acomp;
--	buffer = acomp_ctx->buffer;
--	acomp_ctx->req = NULL;
--	acomp_ctx->acomp = NULL;
--	acomp_ctx->buffer = NULL;
--	mutex_unlock(&acomp_ctx->mutex);
--
--	/*
--	 * Do the actual freeing after releasing the mutex to avoid subtle
--	 * locking dependencies causing deadlocks.
--	 */
--	if (!IS_ERR_OR_NULL(req))
--		acomp_request_free(req);
--	if (!IS_ERR_OR_NULL(acomp))
--		crypto_free_acomp(acomp);
--	kfree(buffer);
--
--	return 0;
--}
--
--static struct crypto_acomp_ctx *acomp_ctx_get_cpu_lock(struct zswap_pool *pool)
--{
--	struct crypto_acomp_ctx *acomp_ctx;
--
--	for (;;) {
--		acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
--		mutex_lock(&acomp_ctx->mutex);
--		if (likely(acomp_ctx->req))
--			return acomp_ctx;
--		/*
--		 * It is possible that we were migrated to a different CPU after
--		 * getting the per-CPU ctx but before the mutex was acquired. If
--		 * the old CPU got offlined, zswap_cpu_comp_dead() could have
--		 * already freed ctx->req (among other things) and set it to
--		 * NULL. Just try again on the new CPU that we ended up on.
--		 */
--		mutex_unlock(&acomp_ctx->mutex);
--	}
--}
--
--static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
--{
--	mutex_unlock(&acomp_ctx->mutex);
--}
--
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
- {
-@@ -864,7 +829,9 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	u8 *dst;
- 	bool mapped = false;
- 
--	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
-+	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+	mutex_lock(&acomp_ctx->mutex);
-+
- 	dst = acomp_ctx->buffer;
- 	sg_init_table(&input, 1);
- 	sg_set_page(&input, page, PAGE_SIZE, 0);
-@@ -927,7 +894,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	else if (alloc_ret)
- 		zswap_reject_alloc_fail++;
- 
--	acomp_ctx_put_unlock(acomp_ctx);
-+	mutex_unlock(&acomp_ctx->mutex);
- 	return comp_ret == 0 && alloc_ret == 0;
- }
- 
-@@ -939,7 +906,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	int decomp_ret = 0, dlen = PAGE_SIZE;
- 	u8 *src, *obj;
- 
--	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
-+	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
-+	mutex_lock(&acomp_ctx->mutex);
- 	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, entry->length,
- 				acomp_ctx->buffer);
- 
-@@ -971,7 +939,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 
- read_done:
- 	zs_obj_read_end(pool->zs_pool, entry->handle, entry->length, obj);
--	acomp_ctx_put_unlock(acomp_ctx);
-+	mutex_unlock(&acomp_ctx->mutex);
- 
- 	if (!decomp_ret && dlen == PAGE_SIZE)
- 		return true;
-@@ -1797,7 +1765,7 @@ static int zswap_setup(void)
- 	ret = cpuhp_setup_state_multi(CPUHP_MM_ZSWP_POOL_PREPARE,
- 				      "mm/zswap_pool:prepare",
- 				      zswap_cpu_comp_prepare,
--				      zswap_cpu_comp_dead);
-+				      NULL);
- 	if (ret)
- 		goto hp_fail;
- 
 -- 
 2.27.0
 
