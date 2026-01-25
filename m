@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B078E63C85
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 03:36:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D22C9E63C81
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 03:36:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F9656B00A1; Sat, 24 Jan 2026 22:35:57 -0500 (EST)
+	id 4EAE66B00A2; Sat, 24 Jan 2026 22:35:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B86D6B00A2; Sat, 24 Jan 2026 22:35:57 -0500 (EST)
+	id 468CC6B00A3; Sat, 24 Jan 2026 22:35:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6288A6B00A3; Sat, 24 Jan 2026 22:35:57 -0500 (EST)
+	id 2E0E26B00A4; Sat, 24 Jan 2026 22:35:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4643B6B00A1
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 22:35:57 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1BBBD1B01D2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 110A96B00A2
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 22:35:58 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CB5EF13AD2B
 	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:35:57 +0000 (UTC)
-X-FDA: 84369072354.09.3FD5C6C
+X-FDA: 84369072354.04.7CB0BC5
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0897E140010
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:35:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FsKDj2bp;
-	spf=pass (imf23.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id B8403180005
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:35:55 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DwlWLcKV;
+	spf=pass (imf06.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769312155;
+	s=arc-20220608; t=1769312156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ikZjRnCGDQf2OO/1H0XKXqhRfCUF8rGchlGRRA9b7Oo=;
-	b=CSAFOYM2DgRXelVQUVccS8PK2lqWeWeqOkzNB/qPTWR5X75SGDMVcPR70aUf0w68uDdkv7
-	IruKX8+7uAKYlXTYuj/baFBUdZmPCifbeYOD+by54fYYbj+Z3TSxP27tsEOqJcFDSzpxKa
-	YvhK0sfUmpIYn1v+dKssfBthOcdSvl8=
+	bh=qTctHNEfD3FZRBilJ87zXFdfNfnTIbipX2+UsCQyDpc=;
+	b=qJwwmIiPTuoGsgxecNiQM6mUgdQtGWDHN8W8k+YwfldN5CxJphWeJ8AVXEDsY8c/IdFypR
+	EdptLVMA0Dnnn2HvRTz/ZK/bQMMlbDxVfIKIVPxdCNaXEbah5PPlAyQ0SqTTvYrHi1ONUf
+	SNrC4Mk6eeT1Nq9ORMLpO6BbSh9WMb4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FsKDj2bp;
-	spf=pass (imf23.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DwlWLcKV;
+	spf=pass (imf06.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769312155; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769312156; a=rsa-sha256;
 	cv=none;
-	b=ym5LZ0tqgdQT3A76T/ND+MNczQVSSMQiyl6Qb5P9fkQ51nC5FwLyjaN4iQ8lxC8aH+vk4F
-	SaavkdAT70FSKQrWgXMFfoTOnUf2j3GM5REKVtYJWZdCWoeGzTZF+5wbJn0HNRCO3j5Yjh
-	fdo5SCIw+A41fV2GAc8q2HV2g3a1H4g=
+	b=fenKxHlrmLN4+i3r1KE8wUcvVdAuNNuQzbgdKWOWuIb1K860rrjPt28cEnrc/SOulp+1qM
+	U08vFB74w1Pwj28beEzUcTZu3AAcy3tclh9DkIk0zJyzoCQuJiQToKHpoUSjQn2biSgDV5
+	2Ld9po5zGKtMWdxW/KMb8GlrDklSHZg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1769312155; x=1800848155;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XyBt7r+Eb/CYW6xzj2tc3tA7d69o/dOC+UBy7xbkrX8=;
-  b=FsKDj2bpMgiLpmYbPF1dGzmvOMq7m5jgXb0Cajdp2L1TLFnbMGWmyqDb
-   lZFjONgWEkT941pMndLZoD2am1+v9ti/53eP3AIPY7CWlVIQzYNasXMon
-   7kXi7yIvRxfXRTOzcNnFOyy2vVeOaz7xyw0hoQZKA27sNZEdxC4ye4+Q9
-   pmIoMn6iYK3jidm4Rl+p5bqXb9atT7L1kXmJHIiLEwA1EZ6APSrnLn4o+
-   a6Xu/lDDeqviWTobr41Td9WLm4R0q6Uj4H3YHnDbQK1N/wtsLUEdWcqOC
-   4PCq77htj/WhL8spC6K6jbQOl9CCJPA1XrAyDXpfBWOx+hTVyRJWEMl9v
-   Q==;
-X-CSE-ConnectionGUID: W3Jc50oSQfadUK6WwFTlPw==
-X-CSE-MsgGUID: K266MBwiTJyW+03j4sKKVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11681"; a="81887452"
+  bh=GQ14vRAHcbbj8om56GF25rYzFUWGSeE2wTidcEC1vZU=;
+  b=DwlWLcKVgU+fsnwLA9YP5fj4m4th3vEdAii2TPoXyPfmYsN9wzTl/NFp
+   FNF+tVy2FA3wHhSSCtwGMJXR+4SnODhC6EbyR7Esle/I4SF7BmhqKXjKc
+   oXCH4yNCzLLDtXHXgYZxPBIS5tiCs1VYiA8Q7EJ6msa8UxgQbqpDBBR01
+   ARUqN3dBK3MwamFfs51b0fNNlnMPtj99v4/3wQJrozFxMq8pDhqCl7D2t
+   lIkU3mn/6Gp2VQQGXHS0/ZdRNzJ9YoxbldY/PB1JmJ0f8Ut0DdVYQ83Oq
+   LpRcAbJSOm3TVvtyQplEwc7wVW5RgR7m/fQar/BE47pmO5uJuQhwHPfMU
+   A==;
+X-CSE-ConnectionGUID: wbvtKPWjQk2anSI0/tC5Kw==
+X-CSE-MsgGUID: d3cJfU24RxOa2YpGmkAiyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11681"; a="81887467"
 X-IronPort-AV: E=Sophos;i="6.21,252,1763452800"; 
-   d="scan'208";a="81887452"
+   d="scan'208";a="81887467"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2026 19:35:53 -0800
-X-CSE-ConnectionGUID: 8ztUVJHXT8GZ08qRPJ5kqg==
-X-CSE-MsgGUID: t76tzkzVRW2oXqaAnEWu3A==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2026 19:35:55 -0800
+X-CSE-ConnectionGUID: lns0XCV+TNODYDu1Ja0FCA==
+X-CSE-MsgGUID: 91AaHQWjQ+GzdFYQIBIm0A==
 X-ExtLoop1: 1
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
-  by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2026 19:35:52 -0800
+  by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2026 19:35:53 -0800
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -100,22 +100,22 @@ To: linux-kernel@vger.kernel.org,
 	giovanni.cabiddu@intel.com
 Cc: wajdi.k.feghali@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v14 10/26] crypto: iaa - Deprecate exporting add/remove IAA compression modes.
-Date: Sat, 24 Jan 2026 19:35:21 -0800
-Message-Id: <20260125033537.334628-11-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v14 11/26] crypto: iaa - Expect a single scatterlist for a [de]compress request's src/dst.
+Date: Sat, 24 Jan 2026 19:35:22 -0800
+Message-Id: <20260125033537.334628-12-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
 References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0897E140010
-X-Stat-Signature: bycsu45wr3jaxc338miysjyokgyraiy1
 X-Rspam-User: 
-X-HE-Tag: 1769312154-688679
-X-HE-Meta: U2FsdGVkX19erd1wShWCyY2OSWrYqAqsbgTGEO4tM3ayYmDz8KbXP/lfv/bc0Ihke6x9tDB+GMQiQtJxDRFStpxlLvXHI16YGqh1gDLUyE3mNbBbm8Gw3fkNqg7nQgr7ZN5tppyRQ549a9uFfcpB5yfMGIZ3hXUoCOLGj/SD3K2nLNgsRxtPxjfv8A6ZTCjSQoNE1+GhETbZ77G35SLan4r3Roj9xgmF/oT7CBwEvY5mn/KNWN2R0N3ACMYaiaOJqO0Ah8+r39lg+Sh+Os29QbGPXf9WseJMKWVEo7LC2tNwOWkD24Tqss+kGKA8wbxx/BD/yT4q9f6DGLjokVGw+BA+cZ4Gl5JZnEjw1/a7/fn+mKqb6D/bu0Y5NcBNckZBWqMilziOh9D2hbf02e88Imccx7md5R7D0FxmBtkYsWrP0RTyGV17FTm2w1wAc8/L3mTt+fQETAetXhKUk2hh86fUhhe3uAIx2L3XafeoZwW6+FCiaqdBj0DRUEnc5gZ8OKLEOQaUgr8g9mKJrjExmQTAyd1N5L+ncSq0Vmx0762dRv9ourBx4zGqrBsahH821dATz6/M7YMxBn3V4FTJGaw69qIWozeYAWo1svTGvun68z2znozDshzh+3jHFpJBFDA2O0kjkYkgaDJuuHnciK/G1T/FdFqMWociDcAe6BM9pFKImC+tPQvnoNkLncSdSY5Yb0YOO4lzpAy4MftQTSmzRcYz9Tct/TTGXlJjpew6unTElPGeiYpApXF7xtH9YHOo32JksVEiHMySDMEQ+Pu2yhHDEqK82zyzPwBuw6mIOAHDYq3XRdwe03hdVkU6QTpji+elIWSiUbDewY/JgPxSAarWnwH4H1Xj3rrIJlzdxkFisc/vFbLus4I4dTvaW0Mp3v86Il4iPVr23bQYIs9uo93qJxA1CXhIzhhmLR61NmJlY8fGGDi8zU22otF618ilpxs/Enueqybly6E
- /Bee9aV1
- URLXuJuRNYFPN9V+Qkp/ej9BUtlvr341Qyx7L/L3o0qz+qDTg4G9E/4YmDhYPkaeUFR6soH7WyiFB+T2EyU8tmrZIaeu0XnO+xuYlyAbkaGC9aZEzjuLVWL3x8JIJeQGJ8WgiHk8PaJDNgxUMwst9IGhCHf8KoKWWLJaAv33Q0J7bYTG5uAcQ9jma7Q==
+X-Rspamd-Queue-Id: B8403180005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: nw9rjpzxixy5hmsnorggmu7nn4crkpru
+X-HE-Tag: 1769312155-160583
+X-HE-Meta: U2FsdGVkX1+2sOwCOeCJAqzARfwubaBXckT09uULEHX5aGrub1OG13ZM/JO0+LV15SvMLhDeBi2/pQ9yCN9nuAoThATWG091y1GVVvhaiad1KByyYG8Y2oJBTN2OoVR28ag0/pd6xskpRsfHAhBQPXwZXucTvnadaDPtcYGJ85sjGh399CZrF03se6A17zZIm9dM4T3Hi/PIgDQ2c55hFf01NlZZ0WjNa/xNqMYb5KlhDemuJjXyJKepjvCTfgw31Elmf16EZvh6u4X8Z2FqmrDqvpCAEHo6whJ0YnxlpDDgV/yN48/4BKoo1RpzPP+pgeA3Qp8teAs+ma+/12RDt/4iAB1+7xkerRFKzbZNVh0CGGTmPUEcuIYOprA9uqjf4ppM2Nsh8GwxImUn7pgEVZAiF/DxvmT2ZEdHdP5Y+mK0vC2/iO19izoNiD07DU1AfmyDC44evzvnH2n/58aQ0onwWG35Otcyh+eEY4d7ljif4C8AYLT4vH2hu+Q1SY1+eZtWHakOs/oc4y47+FaFm8OQelic9jgt4id3E9TNsTrtAzUxhPQknLNvVBgW3YR5z1GXJofsN5bpfEsoGa0PCIKLh/xLutwWq0/E6u2Xga+EMLxRMvyhiBKa8AbYscpCA1rpwK66yWyPiHk740yG11dI+MaFpZjJEnN+b88874ijr8+b74ifL/h+iJvwb0Ju7P+NkgftYYrnOPZ5rDxmLZHvIwxO6QbMnIuNkHCIpuk0eTdxm046zYkvBJqd/gnDazvu3GyLg131fBvwqh9tftRhu8Y46QSYyw/jijvAo0bPi7O8W7tzZ0g/jNsyqpQsxS6hIM54m2u7s9wEY5O/UPph7zlBunaEpjCdurOAQ0GWOr67Zb7N7KvC0m9UyQttRpV+Fj0R1VnvwhVgFobKDNK73Lek5Qj/MkViQAV1OrUObzYotLQ9AN2C8UhtwTI342h1LBfzBiofzrwrbxf
+ Cyb2cC8I
+ LH+nrIslylivyyGXrts8g3yPDsay1CLArUApop4a7WhEPqwITQCC/zTLQJFd3TpGP4Thg5gVdb9K6SNgbHIjNF6ssxLfy4MJZ4z9DXkzcsQUJSMrSd4jkriXfP4LNyRkWpPLmwKcBTHlHRtNV9GbdGWvlDQ2u/XfngtL8ycOTCy/Om3bCNW4c1AO2yEvpob766iW8bQZiXXDarbPxv8lq9Mk6P4QYPLQ+CPJ2pjV3cvkCqexsCvA8FuoevTN12Ne3shyn0NYWnLTVqnY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,51 +124,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is no use case right now for kernel users to dynamically
-add/remove IAA compression modes; hence this commit deletes the symbol
-exports of add_iaa_compression_mode() and remove_iaa_compression_mode().
+The calls to dma_map_sg() were passing sg_nents() for the @nents
+parameter, then error-ing out if more than one @nr_sgs were
+returned. Furthermore, there are no use-cases for iaa_crypto that allow
+multiple SG lists to be mapped for dma at once.
 
-The only supported usage model of IAA compression modes is for the code
-to be statically linked during the iaa_crypto module build,
-e.g. iaa_crypto_comp_fixed.c, and for available modes to be registered
-when the first IAA device wq is probed.
+Moreover, as per Herbert's direction in [1] for the batching API from
+higher mm layers to interface with crypto using SG lists, batching
+within iaa_crypto will rely on there being exactly one SG list per
+"unit" of [de]compression in a batch, where the component SG lists are
+obtained by breaking down the @req->src and @req->dst.
+
+Given all of the above, this patch simplifies the design by expecting
+only 1 @nents in req->src and req->dst, which aligns with current and
+batching use cases that will be developed in subsequent patches.
+
+This alleviates the latency penalty of calling sg_nents() per
+[de]compress op submitted to the hardware.
+
+Some unlikely() annotations are added to conditionals in the core
+[de]compress routines to further improve latency per op.
+
+[1]: https://lore.kernel.org/all/aJ7Fk6RpNc815Ivd@gondor.apana.org.au/T/#m99aea2ce3d284e6c5a3253061d97b08c4752a798
 
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 54 +++++++++++-----------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
 diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index 4b275cc09404..1b44c0524692 100644
+index 1b44c0524692..aafa8d4afcf4 100644
 --- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
 +++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -368,10 +368,6 @@ static void free_iaa_compression_mode(struct iaa_compression_mode *mode)
-  * These tables are typically generated and captured using statistics
-  * collected from running actual compress/decompress workloads.
-  *
-- * A module or other kernel code can add and remove compression modes
-- * with a given name using the exported @add_iaa_compression_mode()
-- * and @remove_iaa_compression_mode functions.
-- *
-  * When a new compression mode is added, the tables are saved in a
-  * global compression mode list.  When IAA devices are added, a
-  * per-IAA device dma mapping is created for each IAA device, for each
-@@ -405,7 +401,6 @@ void remove_iaa_compression_mode(const char *name)
+@@ -1521,11 +1521,11 @@ static int iaa_remap_for_verify(struct device *dev, struct iaa_wq *iaa_wq,
+ 	int ret = 0;
+ 	int nr_sgs;
+ 
+-	dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
+-	dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
++	dma_unmap_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
++	dma_unmap_sg(dev, req->src, 1, DMA_TO_DEVICE);
+ 
+-	nr_sgs = dma_map_sg(dev, req->src, sg_nents(req->src), DMA_FROM_DEVICE);
+-	if (nr_sgs <= 0 || nr_sgs > 1) {
++	nr_sgs = dma_map_sg(dev, req->src, 1, DMA_FROM_DEVICE);
++	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
+ 		dev_dbg(dev, "verify: couldn't map src sg for iaa device %d,"
+ 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
+ 			iaa_wq->wq->id, ret);
+@@ -1537,13 +1537,13 @@ static int iaa_remap_for_verify(struct device *dev, struct iaa_wq *iaa_wq,
+ 		" req->slen %d, sg_dma_len(sg) %d\n", *src_addr, nr_sgs,
+ 		req->src, req->slen, sg_dma_len(req->src));
+ 
+-	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_TO_DEVICE);
+-	if (nr_sgs <= 0 || nr_sgs > 1) {
++	nr_sgs = dma_map_sg(dev, req->dst, 1, DMA_TO_DEVICE);
++	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
+ 		dev_dbg(dev, "verify: couldn't map dst sg for iaa device %d,"
+ 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
+ 			iaa_wq->wq->id, ret);
+ 		ret = -EIO;
+-		dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_FROM_DEVICE);
++		dma_unmap_sg(dev, req->src, 1, DMA_FROM_DEVICE);
+ 		goto out;
+ 	}
+ 	*dst_addr = sg_dma_address(req->dst);
+@@ -1711,14 +1711,14 @@ static void iaa_desc_complete(struct idxd_desc *idxd_desc,
+ 			err = -EIO;
+ 		}
+ 
+-		dma_unmap_sg(dev, ctx->req->dst, sg_nents(ctx->req->dst), DMA_TO_DEVICE);
+-		dma_unmap_sg(dev, ctx->req->src, sg_nents(ctx->req->src), DMA_FROM_DEVICE);
++		dma_unmap_sg(dev, ctx->req->dst, 1, DMA_TO_DEVICE);
++		dma_unmap_sg(dev, ctx->req->src, 1, DMA_FROM_DEVICE);
+ 
+ 		goto out;
+ 	}
+ err:
+-	dma_unmap_sg(dev, ctx->req->dst, sg_nents(ctx->req->dst), DMA_FROM_DEVICE);
+-	dma_unmap_sg(dev, ctx->req->src, sg_nents(ctx->req->src), DMA_TO_DEVICE);
++	dma_unmap_sg(dev, ctx->req->dst, 1, DMA_FROM_DEVICE);
++	dma_unmap_sg(dev, ctx->req->src, 1, DMA_TO_DEVICE);
  out:
- 	mutex_unlock(&iaa_devices_lock);
- }
--EXPORT_SYMBOL_GPL(remove_iaa_compression_mode);
+ 	if (ret != 0)
+ 		dev_dbg(dev, "asynchronous %s failed ret=%d\n",
+@@ -2022,8 +2022,8 @@ static int iaa_comp_acompress(struct acomp_req *req)
  
- /**
-  * add_iaa_compression_mode - Add an IAA compression mode
-@@ -482,7 +477,6 @@ int add_iaa_compression_mode(const char *name,
- 	free_iaa_compression_mode(mode);
- 	goto out;
- }
--EXPORT_SYMBOL_GPL(add_iaa_compression_mode);
+ 	dev = &wq->idxd->pdev->dev;
  
- static void free_device_compression_mode(struct iaa_device *iaa_device,
- 					 struct iaa_device_compression_mode *device_mode)
+-	nr_sgs = dma_map_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
+-	if (nr_sgs <= 0 || nr_sgs > 1) {
++	nr_sgs = dma_map_sg(dev, req->src, 1, DMA_TO_DEVICE);
++	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
+ 		dev_dbg(dev, "couldn't map src sg for iaa device %d,"
+ 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
+ 			iaa_wq->wq->id, ret);
+@@ -2032,8 +2032,8 @@ static int iaa_comp_acompress(struct acomp_req *req)
+ 	}
+ 	src_addr = sg_dma_address(req->src);
+ 
+-	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
+-	if (nr_sgs <= 0 || nr_sgs > 1) {
++	nr_sgs = dma_map_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
++	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
+ 		dev_dbg(dev, "couldn't map dst sg for iaa device %d,"
+ 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
+ 			iaa_wq->wq->id, ret);
+@@ -2059,18 +2059,18 @@ static int iaa_comp_acompress(struct acomp_req *req)
+ 		if (ret)
+ 			dev_dbg(dev, "asynchronous compress verification failed ret=%d\n", ret);
+ 
+-		dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_TO_DEVICE);
+-		dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_FROM_DEVICE);
++		dma_unmap_sg(dev, req->dst, 1, DMA_TO_DEVICE);
++		dma_unmap_sg(dev, req->src, 1, DMA_FROM_DEVICE);
+ 
+ 		goto out;
+ 	}
+ 
+-	if (ret)
++	if (unlikely(ret))
+ 		dev_dbg(dev, "asynchronous compress failed ret=%d\n", ret);
+ 
+-	dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
++	dma_unmap_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
+ err_map_dst:
+-	dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
++	dma_unmap_sg(dev, req->src, 1, DMA_TO_DEVICE);
+ out:
+ 	percpu_ref_put(&iaa_wq->ref);
+ 
+@@ -2103,8 +2103,8 @@ static int iaa_comp_adecompress(struct acomp_req *req)
+ 
+ 	dev = &wq->idxd->pdev->dev;
+ 
+-	nr_sgs = dma_map_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
+-	if (nr_sgs <= 0 || nr_sgs > 1) {
++	nr_sgs = dma_map_sg(dev, req->src, 1, DMA_TO_DEVICE);
++	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
+ 		dev_dbg(dev, "couldn't map src sg for iaa device %d,"
+ 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
+ 			iaa_wq->wq->id, ret);
+@@ -2113,8 +2113,8 @@ static int iaa_comp_adecompress(struct acomp_req *req)
+ 	}
+ 	src_addr = sg_dma_address(req->src);
+ 
+-	nr_sgs = dma_map_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
+-	if (nr_sgs <= 0 || nr_sgs > 1) {
++	nr_sgs = dma_map_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
++	if (unlikely(nr_sgs <= 0 || nr_sgs > 1)) {
+ 		dev_dbg(dev, "couldn't map dst sg for iaa device %d,"
+ 			" wq %d: ret=%d\n", iaa_wq->iaa_device->idxd->id,
+ 			iaa_wq->wq->id, ret);
+@@ -2128,12 +2128,12 @@ static int iaa_comp_adecompress(struct acomp_req *req)
+ 	if (ret == -EINPROGRESS)
+ 		return ret;
+ 
+-	if (ret != 0)
++	if (unlikely(ret != 0))
+ 		dev_dbg(dev, "asynchronous decompress failed ret=%d\n", ret);
+ 
+-	dma_unmap_sg(dev, req->dst, sg_nents(req->dst), DMA_FROM_DEVICE);
++	dma_unmap_sg(dev, req->dst, 1, DMA_FROM_DEVICE);
+ err_map_dst:
+-	dma_unmap_sg(dev, req->src, sg_nents(req->src), DMA_TO_DEVICE);
++	dma_unmap_sg(dev, req->src, 1, DMA_TO_DEVICE);
+ out:
+ 	percpu_ref_put(&iaa_wq->ref);
+ 
 -- 
 2.27.0
 
