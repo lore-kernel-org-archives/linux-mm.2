@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E9CD7237B
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 22:49:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A3BE63CA4
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 22:49:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B1E26B00BE; Sun, 25 Jan 2026 17:49:10 -0500 (EST)
+	id B44136B00C0; Sun, 25 Jan 2026 17:49:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87D416B00C0; Sun, 25 Jan 2026 17:49:10 -0500 (EST)
+	id B0EA56B00C1; Sun, 25 Jan 2026 17:49:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 772186B00C1; Sun, 25 Jan 2026 17:49:10 -0500 (EST)
+	id A0D896B00C2; Sun, 25 Jan 2026 17:49:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 634216B00BE
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 17:49:10 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2F063C2060
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:49:10 +0000 (UTC)
-X-FDA: 84371978460.24.F503D2B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 939FA6B00C0
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 17:49:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6DA461405AB
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:49:18 +0000 (UTC)
+X-FDA: 84371978796.08.D53D352
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 77384140007
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:49:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cQouXDHb;
-	spf=pass (imf23.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id AA92E20002
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:49:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UgViSQhG;
+	spf=pass (imf13.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769381348;
+	s=arc-20220608; t=1769381356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Ta9Qma4wwycxicKBPaHTDueDxthkRH6/qUe89KkYso=;
-	b=E7QqsmWMagARoy6Sv4BdW0FPrv+SNAuKRuqCPxpBxI1aOwW8oaLYO7G/n23yz9w3+Rb/Fq
-	xdDjdEPd0JLVIPv2AOtr3MnY9zv0TwS++SK16ttkeM/DXmVqgZ/AwkWQ/6aUXfRW3+fVSV
-	7MImRVTLassZeQNAKjlixa52ZM4W+EQ=
+	bh=Qz+DGGx2ncZ3Mxc9/jgxTMCGdzAmp3ATkT9oSs7t3lw=;
+	b=pEyoasTVMB1YZiiEDB4pUlywXt/08I4LDo6w2gwt+2gufJ1pgDIrqMBk84EfTsMF4KA2SR
+	TwAOaWt4/MjDYSSWRsVIKMHBaM+otLJGxEQcwGHHOZG/4FNv4VrQqrxA+1fFX/e8ujV5R8
+	uvC8V6EPf0eAuMORgNACgHWKUu7gbyo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cQouXDHb;
-	spf=pass (imf23.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UgViSQhG;
+	spf=pass (imf13.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769381348; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769381356; a=rsa-sha256;
 	cv=none;
-	b=O1hVEnRxhtQXPWNFUVaWlhVcv6inOHAR5ezYSX/2HHBG816W9FNnHUYUGJwn+3jkRvwqcp
-	ygYrkcipTVOUKJetkopzGzHoenvvNJfnbE24ELYWCgIczIp9Ea2LnxTmnTVwi32cZCqnKl
-	wBMGPNLLY2xuR6u4OS5nfHxoDuWNkz0=
+	b=Fq9D/+iiWVM+KDIgxVFpp1yVM5sRsVpZ9mHtcDe8NNePtNY8n2pnN5MQ0s8ClNVAxZyu5Z
+	Ri7ndIcUzJ2M3pkxkHNbj3SJGdWn4bkp43jp2toOKQtueCGOIQxgXx346yJmRd1pSyTxAw
+	MSdhAlvnoJqP8r/Tx4uAzK5NWXS8Fzw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9EB4841957;
+	by sea.source.kernel.org (Postfix) with ESMTP id E1881443D8;
+	Sun, 25 Jan 2026 22:49:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ECDC2BC87;
 	Sun, 25 Jan 2026 22:49:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9561C2BC86;
-	Sun, 25 Jan 2026 22:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769381347;
-	bh=9wXcGCZqYAJGFwoghpjYmoH+2WL5WXQJ0azxL3BmHRY=;
+	s=k20201202; t=1769381355;
+	bh=FQiUYX134QuRdMK2UHqgCPVDFLi7Mj4zGAJtAEtu0Bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQouXDHboX2piB9wKNa/rwB+1F8SE/r3ji8PH2PfYH+Ao9MzAGQkY75UpLFHDMnzX
-	 LU3p6BhhfDe5PRwyQs0ilEtyiExo1MxmhHXrWDm1yM1a+rBpQGGWW8IDZ/5WG+ppbJ
-	 GUGs13jkP/5BZozejUS8/83/9Q7ctbohhB0rZcTDdkfDQSDBgUwCERxUPpOoySLZmv
-	 dQZzqTBKEAiaC9Aoew9VslxlGUKZpc/Ikdw/1bVZZ8Yym0cbtFhFh1fm++2z3FKcPy
-	 HMGXY6hMpoxGfgGHnh61TDuP3lkTJ84dHJmT6QzFjgotcCPgCnYhnlfh26DqeebYYC
-	 aeD0u+uricWXw==
+	b=UgViSQhGT3Wuke/Yit+vSr4vsPQsGUB9TksMilPkbw8ucPH88dnfcU8EQRgMLb06e
+	 lN2gyJnxemaInoGQz3B75xDql7Evl1TQQ4zZmMsXAnbD1Urr7NwOnt6wOnaYCOQeeQ
+	 sgfXCryqqyMrpzQwx8K3coFYao2XKspATR/APoqQUbITIoNDoEi47ehdm2MK1mENnZ
+	 ywxEht8+8pss3W8QMkb/rQLYybf1dBhLQUt9LxeRxUkMJZvTICvHfAVqI24kffYkw6
+	 adk3FM+FdCMT9PgkO4j8TJQKImvmwOStO+j50JTiTr4NKwPRgOc7x/stxI36amWxYC
+	 ikhAsOpNxxM2A==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,22 +102,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 24/33] kthread: Refine naming of affinity related fields
-Date: Sun, 25 Jan 2026 23:45:31 +0100
-Message-ID: <20260125224541.50226-25-frederic@kernel.org>
+Subject: [PATCH 25/33] kthread: Include unbound kthreads in the managed affinity list
+Date: Sun, 25 Jan 2026 23:45:32 +0100
+Message-ID: <20260125224541.50226-26-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260125224541.50226-1-frederic@kernel.org>
 References: <20260125224541.50226-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 77384140007
-X-Stat-Signature: uph4doh46brry6jdysxy3iyapy4jr3n3
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AA92E20002
+X-Stat-Signature: nt8z3wpyzfd4q4pxzyoqucgw4e3st5xu
 X-Rspam-User: 
-X-HE-Tag: 1769381348-829141
-X-HE-Meta: U2FsdGVkX19h07v+/ki5C3eq4+2jJWZ04dHw2Ezf//SYRMrDF24nYWwWa5GPowgzsR2lfRpPi1lsj5rYpj4FxbFcMCKNmeJgKvt4E9Po/1wab8iP0gPjvYIOUneyZpYUIMuZl7kYgiDkWMHUZgag+62TvZZ62+7zTmF44WNJ5OQ0IedEqIySH283ztzpdlLhJvLK4z66Ofy+bynUG/jKR3asKtHhuXo+ViPXU14KhS33pINVD+Tx2jsOXL04pkxwiHPWliS49yUIMLr8qk/yQ/nM0PuV6/KWL6sc1xL592DmwybomVUhHvFUJWcKYf7l+1KZRG4ZyWOlF09E3uH0hmNW2SiZwxTzQxSpJx7CeYPjbK/U6Q3YEzySUE219ssXtddF6SitvPdBtc2WkVyl8+VvGKrK0VhtqI5MakstJl4jggDcET17czIdSvxWM4i3k1GbLawpMH5Oi4BVMiOssQvdKZ+ji5oxr8ThGG2TRcEfggHZFTS4NNa0cMhvP3zkPZbC+Isrg8W7xwbExPFNubjUq/A6IkfDP3a7z2nGb1ENGGyCV8LFyPrr+9Wvvk8PfChO3tMCfQsn6bspNv2fmaFVEjFQbE2MfSOpz0OOZyYNk9W+UHO8eVIPKLsuBDYy9zmCjXGp4PzpiLNf04F0yjtz+vtnu55ypvdHRPASJ7C0efetdEj/SlYAWFZGZcEZGFezzF2IN30FGOoTQkd4RbbzZl1n/nWWiNxl5/3qN+JvxRHJIxzwbEagIRtKOTfWi3j/0FCWDkjBihd/XuhOmSNuGnxZFthIwRyo68agrBMjvbuzr3CFLeLRGLuaO7/xjYHBSP/Odx1xJ8ai4ptny7vOfiVEl+4VcJqRn8/f/TZeG/VAUnIAYm98FrMaFphoL4ZForu/0exLVCwwhyh1JcdErvY6c5fItifvSE+kU+AN2VZuP6Mt2UAVe728vQrQUsOB1sS6r+fLxWrxYyp
- m/xYPGN9
- eDKEgR2cXVuxnvieLVaaYR4ft21L3/9o1rhIGgKsQ5S8fYWgEa3OCqFv79u4u+Gf/xvxC9XenbUJJrQmYWEfKDINHmiFP7NPLKkmU1406wwHAz8XSgKBv0XTUyBperfPanPPj4nPlcfHEo098sGu4qt1jyggzMKM6fPmxlBJM/GIlUi9KPBjy+QxSN/jPmo4ZX9SkE+nuoFnZ7dpwHzofgfYYrl4u1t/yZHpC
+X-HE-Tag: 1769381356-362430
+X-HE-Meta: U2FsdGVkX1/ynLJ0zKoH73ndBS3mzBMuiC4MY39mhFCXwSBfh1fDlGWBQABpbDdh89S8QZU4yXX9Lh5vpbjNLj+RmJWKaC6KbbIOy9OgnLIZdmg58GpXQ9rXivhyt9Gjv4Baa95790aLMmo/PpWTVnl2j8EFZOnlUDLdtjnX8YcouSRpw/yDI1K1J7E0jbaoUFDMZrA9J0z5FzmYyNrYu1Mbm/V71rlDYQTla8LKoYPjgB+wmNH2UmFuKmSa3h25afm8D1zA3rm5va9z8/9ryGuT1URt0kBO+2fO143zVjDswhy0eTWOr6/92ppCKIYXR1UO8hK2p8lKV6JWJ86P7MTlkAAmCW4XphLizgWtKjrANQtPcncsSQb6WKATlBB8rAWtw3h1fPejne04+7KIPpuDqy65sxIwOwDbC3fCiFImVqUY8v5xl/Mpxhx/4lmK4fF/oXy5ZIiADu77VtMzHCps4/PM7skQIAKA5yNpJU9dro8xs9Z76WNTvSRvR3UR++ykilI0B+7vRROi6ZftRDrfGNpEY3oCpOibheQbnuKlA8yDV9E0igrUWDVNh9RA0+4wBtXja+unz5a+amDY3yJmNwNWQJEcxwzTnsW7hHqDJNFk0D+yOEbtnuQiTzYoJ+5Hs8NIZuP+6jgIsqH7kf9LOtGmv8oXCooua1OpFdb3PeSS2MzEnx1W8fMv2zhJp4I7D4SOxIbdF0KYz2DUCAOeeN1V5Jl1P6oRaeI41qx4KxzM3eN1VohlTRC/f3iidWrImp3xmrTLTLGFnWkS2Q+ha2MSlOAtXGn+eZ/daC5EzrZ5r7bEvmAtrZHp/2LemVZwDaDMCsh312qxQSaPG+t1u8wCOm9FfxFkoL6Y6p//v/sKlUybDIvG8eB8rnZQYsODQTDKR3/6nynkTQ0xBNSSxUZMIK8Rj+HHWZMJoD7McvX8idGhOHs6Y+fo8KrPvj2cm7+ijcyrzRQL+FL
+ 6wqYaU8N
+ 5/U7DAGBd2P7DDBaOxZtcdXQyu+YGHicUWT0r8+cXw2U5ddqIqXmPvxRqzBX518RgTV786qQJgYIXawnNP/3qaZIC1AnWSqbaRrVD+XWG4158lOBk6JmfIuJqG9lffXoWWJIoxwT/77ep1Z41muJgt8KpZgVXZvqYZyx+R2lAptSR8um1OeW+GrOC49DTDqapY5Zb8lINjz9F/vngok4PmtNe8Q0sYofgYuRkK3zrRqhBDSQ2ADXX3IkPUbLANCx7lquK/4tYmeiqSfQbnU12ssAU//M5/ytMvVMs4ISQJEhx0R4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,133 +126,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kthreads preferred affinity related fields use "hotplug" as the base
-of their naming because the affinity management was initially deemed to
-deal with CPU hotplug.
+The managed affinity list currently contains only unbound kthreads that
+have affinity preferences. Unbound kthreads globally affine by default
+are outside of the list because their affinity is automatically managed
+by the scheduler (through the fallback housekeeping mask) and by cpuset.
 
-The scope of this role is going to broaden now and also deal with
-cpuset isolated partition updates.
+However in order to preserve the preferred affinity of kthreads, cpuset
+will delegate the isolated partition update propagation to the
+housekeeping and kthread code.
 
-Switch the naming accordingly.
+Prepare for that with including all unbound kthreads in the managed
+affinity list.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
 ---
- kernel/kthread.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ kernel/kthread.c | 70 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 41 insertions(+), 29 deletions(-)
 
 diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 99a3808d086f..f1e4f1f35cae 100644
+index f1e4f1f35cae..51c0908d3d02 100644
 --- a/kernel/kthread.c
 +++ b/kernel/kthread.c
-@@ -35,8 +35,8 @@ static DEFINE_SPINLOCK(kthread_create_lock);
- static LIST_HEAD(kthread_create_list);
- struct task_struct *kthreadd_task;
+@@ -365,9 +365,10 @@ static void kthread_fetch_affinity(struct kthread *kthread, struct cpumask *cpum
+ 	if (kthread->preferred_affinity) {
+ 		pref = kthread->preferred_affinity;
+ 	} else {
+-		if (WARN_ON_ONCE(kthread->node == NUMA_NO_NODE))
+-			return;
+-		pref = cpumask_of_node(kthread->node);
++		if (kthread->node == NUMA_NO_NODE)
++			pref = housekeeping_cpumask(HK_TYPE_KTHREAD);
++		else
++			pref = cpumask_of_node(kthread->node);
+ 	}
  
--static LIST_HEAD(kthreads_hotplug);
--static DEFINE_MUTEX(kthreads_hotplug_lock);
-+static LIST_HEAD(kthread_affinity_list);
-+static DEFINE_MUTEX(kthread_affinity_lock);
- 
- struct kthread_create_info
- {
-@@ -69,7 +69,7 @@ struct kthread {
- 	/* To store the full name if task comm is truncated. */
- 	char *full_name;
- 	struct task_struct *task;
--	struct list_head hotplug_node;
-+	struct list_head affinity_node;
- 	struct cpumask *preferred_affinity;
- };
- 
-@@ -128,7 +128,7 @@ bool set_kthread_struct(struct task_struct *p)
- 
- 	init_completion(&kthread->exited);
- 	init_completion(&kthread->parked);
--	INIT_LIST_HEAD(&kthread->hotplug_node);
-+	INIT_LIST_HEAD(&kthread->affinity_node);
- 	p->vfork_done = &kthread->exited;
- 
- 	kthread->task = p;
-@@ -323,10 +323,10 @@ void __noreturn kthread_exit(long result)
- {
+ 	cpumask_and(cpumask, pref, housekeeping_cpumask(HK_TYPE_KTHREAD));
+@@ -380,32 +381,29 @@ static void kthread_affine_node(void)
  	struct kthread *kthread = to_kthread(current);
- 	kthread->result = result;
--	if (!list_empty(&kthread->hotplug_node)) {
--		mutex_lock(&kthreads_hotplug_lock);
--		list_del(&kthread->hotplug_node);
--		mutex_unlock(&kthreads_hotplug_lock);
-+	if (!list_empty(&kthread->affinity_node)) {
-+		mutex_lock(&kthread_affinity_lock);
-+		list_del(&kthread->affinity_node);
-+		mutex_unlock(&kthread_affinity_lock);
+ 	cpumask_var_t affinity;
  
- 		if (kthread->preferred_affinity) {
- 			kfree(kthread->preferred_affinity);
-@@ -390,9 +390,9 @@ static void kthread_affine_node(void)
- 			return;
- 		}
+-	WARN_ON_ONCE(kthread_is_per_cpu(current));
++	if (WARN_ON_ONCE(kthread_is_per_cpu(current)))
++		return;
  
--		mutex_lock(&kthreads_hotplug_lock);
--		WARN_ON_ONCE(!list_empty(&kthread->hotplug_node));
--		list_add_tail(&kthread->hotplug_node, &kthreads_hotplug);
-+		mutex_lock(&kthread_affinity_lock);
-+		WARN_ON_ONCE(!list_empty(&kthread->affinity_node));
-+		list_add_tail(&kthread->affinity_node, &kthread_affinity_list);
- 		/*
- 		 * The node cpumask is racy when read from kthread() but:
- 		 * - a racing CPU going down will either fail on the subsequent
-@@ -402,7 +402,7 @@ static void kthread_affine_node(void)
- 		 */
- 		kthread_fetch_affinity(kthread, affinity);
- 		set_cpus_allowed_ptr(current, affinity);
--		mutex_unlock(&kthreads_hotplug_lock);
-+		mutex_unlock(&kthread_affinity_lock);
- 
- 		free_cpumask_var(affinity);
+-	if (kthread->node == NUMA_NO_NODE) {
+-		housekeeping_affine(current, HK_TYPE_KTHREAD);
+-	} else {
+-		if (!zalloc_cpumask_var(&affinity, GFP_KERNEL)) {
+-			WARN_ON_ONCE(1);
+-			return;
+-		}
+-
+-		mutex_lock(&kthread_affinity_lock);
+-		WARN_ON_ONCE(!list_empty(&kthread->affinity_node));
+-		list_add_tail(&kthread->affinity_node, &kthread_affinity_list);
+-		/*
+-		 * The node cpumask is racy when read from kthread() but:
+-		 * - a racing CPU going down will either fail on the subsequent
+-		 *   call to set_cpus_allowed_ptr() or be migrated to housekeepers
+-		 *   afterwards by the scheduler.
+-		 * - a racing CPU going up will be handled by kthreads_online_cpu()
+-		 */
+-		kthread_fetch_affinity(kthread, affinity);
+-		set_cpus_allowed_ptr(current, affinity);
+-		mutex_unlock(&kthread_affinity_lock);
+-
+-		free_cpumask_var(affinity);
++	if (!zalloc_cpumask_var(&affinity, GFP_KERNEL)) {
++		WARN_ON_ONCE(1);
++		return;
  	}
-@@ -873,16 +873,16 @@ int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
- 		goto out;
- 	}
- 
--	mutex_lock(&kthreads_hotplug_lock);
++
 +	mutex_lock(&kthread_affinity_lock);
- 	cpumask_copy(kthread->preferred_affinity, mask);
--	WARN_ON_ONCE(!list_empty(&kthread->hotplug_node));
--	list_add_tail(&kthread->hotplug_node, &kthreads_hotplug);
 +	WARN_ON_ONCE(!list_empty(&kthread->affinity_node));
 +	list_add_tail(&kthread->affinity_node, &kthread_affinity_list);
- 	kthread_fetch_affinity(kthread, affinity);
- 
- 	scoped_guard (raw_spinlock_irqsave, &p->pi_lock)
- 		set_cpus_allowed_force(p, affinity);
- 
--	mutex_unlock(&kthreads_hotplug_lock);
++	/*
++	 * The node cpumask is racy when read from kthread() but:
++	 * - a racing CPU going down will either fail on the subsequent
++	 *   call to set_cpus_allowed_ptr() or be migrated to housekeepers
++	 *   afterwards by the scheduler.
++	 * - a racing CPU going up will be handled by kthreads_online_cpu()
++	 */
++	kthread_fetch_affinity(kthread, affinity);
++	set_cpus_allowed_ptr(current, affinity);
 +	mutex_unlock(&kthread_affinity_lock);
- out:
- 	free_cpumask_var(affinity);
++
++	free_cpumask_var(affinity);
+ }
  
-@@ -903,9 +903,9 @@ static int kthreads_online_cpu(unsigned int cpu)
- 	struct kthread *k;
- 	int ret;
- 
--	guard(mutex)(&kthreads_hotplug_lock);
-+	guard(mutex)(&kthread_affinity_lock);
- 
--	if (list_empty(&kthreads_hotplug))
-+	if (list_empty(&kthread_affinity_list))
- 		return 0;
- 
- 	if (!zalloc_cpumask_var(&affinity, GFP_KERNEL))
-@@ -913,7 +913,7 @@ static int kthreads_online_cpu(unsigned int cpu)
- 
- 	ret = 0;
- 
--	list_for_each_entry(k, &kthreads_hotplug, hotplug_node) {
-+	list_for_each_entry(k, &kthread_affinity_list, affinity_node) {
- 		if (WARN_ON_ONCE((k->task->flags & PF_NO_SETAFFINITY) ||
- 				 kthread_is_per_cpu(k->task))) {
+ static int kthread(void *_create)
+@@ -919,8 +917,22 @@ static int kthreads_online_cpu(unsigned int cpu)
  			ret = -EINVAL;
+ 			continue;
+ 		}
+-		kthread_fetch_affinity(k, affinity);
+-		set_cpus_allowed_ptr(k->task, affinity);
++
++		/*
++		 * Unbound kthreads without preferred affinity are already affine
++		 * to housekeeping, whether those CPUs are online or not. So no need
++		 * to handle newly online CPUs for them.
++		 *
++		 * But kthreads with a preferred affinity or node are different:
++		 * if none of their preferred CPUs are online and part of
++		 * housekeeping at the same time, they must be affine to housekeeping.
++		 * But as soon as one of their preferred CPU becomes online, they must
++		 * be affine to them.
++		 */
++		if (k->preferred_affinity || k->node != NUMA_NO_NODE) {
++			kthread_fetch_affinity(k, affinity);
++			set_cpus_allowed_ptr(k->task, affinity);
++		}
+ 	}
+ 
+ 	free_cpumask_var(affinity);
 -- 
 2.51.1
 
