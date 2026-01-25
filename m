@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D24B4E63C8E
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 12:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A80E4E63C8E
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 12:10:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01CFF6B0005; Sun, 25 Jan 2026 07:03:41 -0500 (EST)
+	id 11F606B0005; Sun, 25 Jan 2026 07:10:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0CEC6B0088; Sun, 25 Jan 2026 07:03:40 -0500 (EST)
+	id 0CDD36B0088; Sun, 25 Jan 2026 07:10:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEED86B0089; Sun, 25 Jan 2026 07:03:40 -0500 (EST)
+	id EF1126B0089; Sun, 25 Jan 2026 07:10:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CF53A6B0005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 07:03:40 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0AE4C160572
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 12:03:40 +0000 (UTC)
-X-FDA: 84370351800.02.B4CD2B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4E0921A0008
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 12:03:38 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X4kzUMsF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DEFB66B0005
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 07:10:24 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8DAD91B0493
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 12:10:24 +0000 (UTC)
+X-FDA: 84370368768.07.EF752D4
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 78D05140014
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 12:10:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ipdmt3Fx;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769342618;
+	s=arc-20220608; t=1769343023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iqNzYgcK682OGBzEU/mbNTmwKAsTKy2bpCfAaVM9lTw=;
-	b=Xu65suzaeF69bjQYfuQV0hrvzwJj1hi+fTluTdEuZJturAmtOCCwaHefdwCjvWdF5s4mqU
-	zz5dVFOkrqA3VYPEyHFc4JczzMRDCmpw6FcZU6IT+ENaVJysrgUD8KYX/4ogKBEsNTYs2L
-	/H6ntZ37x8mcKIPKllo0Mp14+YxYpt8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769342618; a=rsa-sha256;
-	cv=none;
-	b=2eqosY4eQJrlhaw0zTDnFNN/TZ/2mP3weELCW7IenNz0SaNVyVejvhEwEockBhhl55Yr/w
-	sTca3gQa4y92FxAKorWY+s9n/Y5qUhhwdbgz/Z6QzWULg4IewT47S2JMHCYbeqDN1WQHyP
-	JyX8/8YNwoTIVFnnQwlB4LKsLS4h4yE=
+	bh=pdh1TAQMYWo4B4FTcZIJrahTI6XAf3PsxQELr4l8rg4=;
+	b=bdlNfKTFobLSfxGVOv5VlF0HkWQ2tlP1fJ9mWgbXCl+t41+8Ke6ukKnocl8ivE23HBZNkv
+	XPdwrPh/UPWYxNbGbmlRE9Ngb+tu0VPKYhxeuj2zgePPGZ9KPjeN5DXiIqWWeoDCJL0Qzp
+	kt+ThL+MeBMyej+hO8uKwtxF4h/H5Uc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X4kzUMsF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 49EF242BB2;
-	Sun, 25 Jan 2026 12:03:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4209AC4CEF1;
-	Sun, 25 Jan 2026 12:03:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769342617;
-	bh=VgoxmZlbv0mSVt43gxyu4AMX9q5s+p+eQWF9sR0Ddes=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X4kzUMsFpCh/ex88C06+BH3I+aBZEdkYLS8o7XjZ7xGsN0h4N0RX6P76iOt2kl2vI
-	 d0qIEYPI+bPyahOl9Y5rMTOzV4tk4scT80WhLCzBvK0IAytDzkk3piase1AAB3Q7YY
-	 NSqGHdrlU6VItCS5c+sQwlkX2UCaAm6WDS4t8do5WQHuK1VDCr+cOVwP2ZgesTR+jf
-	 QXWvdXxiKx+I6tlaqA2y8o9hmK5xn4BuHND6zQC/5JDluqBaffrJ4CPDctaSYm8e9t
-	 tvl8SnaPQwhURaMNc6uD1DKZ+Ww3uY8qP8mpYksXUfxX/55ZiB9d8VR6hNxIQdLdMA
-	 9Jy3wZK1W56oQ==
-Date: Sun, 25 Jan 2026 14:03:29 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm: memfd_luo: preserve file seals
-Message-ID: <aXYGkb-QtYNaWYw4@kernel.org>
-References: <20260123095854.535058-1-pratyush@kernel.org>
- <20260123095854.535058-3-pratyush@kernel.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ipdmt3Fx;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769343023; a=rsa-sha256;
+	cv=none;
+	b=sjh7mSc0CFcjLY7++sFVD9fEneVKolvuwGm/fn+f/xfs5L4ppNf4faOHGG7stKds5OgWGO
+	dxF8q1x7V1EzYWa7R1vnhuSfa0eTP2otyL1GPH7qqgp55m2gcJ1RmPmcgDp6lsAgpqOdeM
+	5UkWGBxahBH1hxNPk0AWg6h/XtYLQnQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769343019;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pdh1TAQMYWo4B4FTcZIJrahTI6XAf3PsxQELr4l8rg4=;
+	b=Ipdmt3FxTs1DByvHiuNGivi3qJdRmZwgEJNN20DVHX/uBDjlXfvfEptoPpmxt5iHGHQVuh
+	e/yYIHuYgjfb6EkH4aJaE3eeWZlQQ4e/vfN/FYjCQo44s7htzyKoY/YqZWqvXga55bGhPJ
+	fG1SQ94+igE8o8C1307HRXGOmAS/ysY=
+From: Lance Yang <lance.yang@linux.dev>
+To: willy@infradead.org
+Cc: syzbot+bf6e6a6ca143afea5ca2@syzkaller.appspotmail.com,
+	Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	syzkaller-bugs@googlegroups.com,
+	ziy@nvidia.com
+Subject: Re: [syzbot] [mm?] kernel BUG in hpage_collapse_scan_file (2)
+Date: Sun, 25 Jan 2026 20:10:01 +0800
+Message-ID: <20260125121001.32733-1-lance.yang@linux.dev>
+In-Reply-To: <69757ea0.a00a0220.33ccc7.0017.GAE@google.com>
+References: <69757ea0.a00a0220.33ccc7.0017.GAE@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260123095854.535058-3-pratyush@kernel.org>
-X-Rspamd-Queue-Id: 4E0921A0008
-X-Stat-Signature: 78of5gimgfc6xmj7r5mxbunpqnwrsjyi
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: up6bmx1fart9fd9r9e5bqxucrykbzgik
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769342618-455995
-X-HE-Meta: U2FsdGVkX1+Jmn8aquvZ4njMUQIqm37FKhiAnvhPQMX+yrV3datrwGfWmHQdoAF8D2ZIHf68Dl654RFUqFaVOxP43MtY5apxOm/GyyccqPlus0qOBmbFQUJ1UroPLUejcr9Z/eyeJ+VF8zKYk+5ErZhYRTgSvVYAF+P0xnUdgbSjwY66blqqQoS5J+sfo/9t9Qg5+kFmiNUPtqcRRR+l39qPo16fLR80p0BrBaHmG4KZ4CX3wpc2w1EdYnc0DrOYlMtk8PuLMFFLpwsaOUVhgS0v0Ws8vAYCeK14Fm5Hkkkin6ZVjAfR3WMxhleK3TLG1xH+2BBRfJ0XE+a1HPXirpMCmVF2NET22m0UH4Fn9OU4PxjoVqXitNVwMvWIvQm/3yfQPDsfcWbd0CFpTdGK6EqndAN/airV8mdA06N8OvuuVGgZd0I0QMlnNh4RZ6zDWQQeVT9wQv8PvELZxAfhq9WSKDb6b/1I6B3+HU6Gje8ZF9jI6IqKKEa9xa/Vr970EyNfG2wmwVNWgHdurmby2fLZTEFVsmc73yWs4xgMud0dDXjlNtIbfDof1EWWDoSGQoG2EJj6yXs3AFBSVk4uj+LUlc4jTiBCmAFp7SEpkzPXgQZNda1X7uZYUu4TYUP7341MMluvyMVz8LSfT7U5EI37Sn18F4lwq+uxlt5FckcMm0Onpl020Fnx9PPZpFQBpHC/gT95JHPqoWIN7KuyHDvjAuBJHYXQB7YmESin023ZcREmGGbjtGamXjUkoIuUoTUr0s+hgCT5xs4sInFtUiouu/uKLrKz0mgQ0Y2t13eG7JpP+4TcxH6/j6kKhvVQJ4ncMs64f0RSWvMWww328bTD1IpiGB7IDcyCo5F/73FYEe5vPFEE2rffTSI5gzUVpWA7jd1I76CNmGQRXlHSsribdtuvKppKQBNgkONGAqrR/LVgoiXZpM8hdiZHj/nbLjIDfBrnypNH+jfeEQt
- Qc166sY7
- RB9Q8EcGVdX5O9l+ArJ/rgYVJmoIAh10XdtD5oniXIBGjV5Un63cpoIHONlMfOOzYP1bN0WIRQ2Y4TwEh60UKWaXXoqJEW5Mc0kthrPrbvDCS/Yxi92CYfuGxmBHHnMCdLnf3OacwBpgcYC6pEufFAM6p9pV1CgjiX/at91klK+lN253wFc2NC60jL/KOUcGgASq/X0NbW9lBPd6wQ54fvaxrHv5ooj9jX+uEHBU63VtkDTfSSqSkl7ZZiQfVIVE3bz+XgDgrlH3ufVKyFPRmRR6IVCAuxpg7Lqv61IH6P6Ry/MHb649JM82fXcSy1EZ1El0NMs3mdcE03g1TQjI6HweI8LdHnzls6dsV3kke2fiAcJI=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 78D05140014
+X-HE-Tag: 1769343022-473562
+X-HE-Meta: U2FsdGVkX1/yTy1w5XSTnUlR7nHdAK8eHo0BNir3mJIjXc8RPOXAC8JsSv9Lp766XviPCBQLpbRC/SNcSPvpogdKElnNumOB9ot8mqv+9+GKjOg75OS8VIFh3NjtWy9AIv29B4C50m4Lp/JycGA2e9xpHvQxp5Qo7aF6GePYn+sMTwQ5e9FntavNnG5tD1jxCp+Lh5U2kG5zhrtunkYuQf+l54XozDCX/cWGvmu2WhAX+9Qge+seiaiFN3L7FLR1RskyUmQE9ZphzqjZxEm80ozUj3YVdjux/LNh7xMZbZMOSAG1VxDs4rKWMk3YI5k4wVghYIF2Z1j80z8hohEgkcNIRH9rntb0hJTQryltmIoN3fk3qDIbq6BVw0otItIGXoXeAyqcZR7idz8CPqF9mmrTfp3IFW6PgmaCWJKLjkquBRyP6psPNP1DZ0wE1H8dHvGBGlwFVtRuOTngwAVpX1ZeiUh0x6VKVodkZ9zrBFJVPKSiFapDwKfSiedP6Y93rSG1rZhJmt3Hh6NclE0H/YjrDoZcNt4BsqBhiYi3cuggNUCTUcQvJHbC9He353PFBl59IHhFtkakUvAqLNAfMIftfld1pAh3Z4VG3QkGpopUc9fOGDKgPes3rhmvujERpRQxYYTzJ/Az1P4vUKQFlJYkjrnZzgwdlAqZEO0dfO9cG0W2CRXxFuIIsCrxdGPooWZ+L1A1kHFZIaPoVQn0KT9En0X8gOnMYCXuH+Ji8Lwoj5YXoNAgDKeMycYGWqk9qjHWHyclFK85M0SqkkJA37W/gsOUcfoKnM+A2ZVq5zJ12KYAuC+lGhJnTLKnMMqIaQ08gyVqfRmoEfJz5cHHoHOu3wM+x4ltKvNHiUulEWYtqF443O81UMRcaEHPF6vm/EogHCd1wZwasDECCtoWwl29S1UH/n9r3B+VZV607cVGP6ZtTevpP3cK7Ka9mpGQ/llQFzXH9TJOliYl1+1
+ hYcSf1Ch
+ 1juBx1Wie0Wux1BxJTGfwkSJWU4jyCIbLiuftb+rqYjPS1rPsdwywvwjLAvPHbSG6GL2u7LTOMH3DnSt/aPJRYJitNvHmeCoMOd0m6Sc10S9QPOqI8HK9jjuR5vdp37EYLjZR1PK3w/JYHk87QtRSfc0OMqWKBdSpE0JDeWtT5bY0C+0ND6cAOWyjc1VcEYnzMsY22GpUqhExeMELd7OB99xk1LS1Ja0ckA1rom8+B7w0itpVTS9jNhX82HFo338LO/LZe6PQBET5mUt5/3KYqGDmMIT0cn3Bhcvsog0WMSJ2PPx2D3nYMMXuY5jr9vS4TThcMh3l8E+HSUVoKYT6pukMIust4+PJyQvYe/hwQCGqL1eAwBu1Tsp8ez4YqpdMMJY5WdzDkfCflhlojAXU7F+/Er7N5hf3oXKC3kCt2Huiz1JQ+PDp8Ko9QJTZcU9kc4pWXudJBeXgvW+zGPmVGsN0w6mIOfVORsl/qij1q81hqBIvYjW/0PtEVU0K1wBplozmRl9o0YWTv9IB3LCk9dCKVIZa0T3hMveHfYF7nEdF1XljHl5toHjjTQ9xtTuo1FT/BRrPKAmXUq0ygd03h/xO8yT8Vfn+lSHsg6cenFH4YhGPtzq4MOq8hQ9/abnDkNY09zp5tRa0+3TS+shgl6UtAQhLH0/Z61ln1AnDeNf2ViWLr9namfr+D48CExyMdYMydaK/WuJ4Dk0OZJDPnutzIK4WNGRsCUsuRTGQ9jMXqg9ad5Hjv+cEYL0gkSkodQ8VB1Yfb/DMqDBHeS5wxVufFy41j3DZLrQnbOfsiR8OWwm9NidyHUMM9gWVrV6A8aVIxj3XAlV4vCiAql1iODm93kXW10Vv13ifbDNk2maVTp9Ivg2HwEaAnFZ08JhCOzfpHxvOU4DoDoCTpSjel9hd9Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,154 +100,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 23, 2026 at 10:58:51AM +0100, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> File seals are used on memfd for making shared memory communication with
-> untrusted peers safer and simpler. Seals provide a guarantee that
-> certain operations won't be allowed on the file such as writes or
-> truncations. Maintaining these guarantees across a live update will help
-> keeping such use cases secure.
-> 
-> These guarantees will also be needed for IOMMUFD preservation with LUO.
-> Normally when IOMMUFD maps a memfd, it pins all its pages to make sure
-> any truncation operations on the memfd don't lead to IOMMUFD using freed
-> memory. This doesn't work with LUO since the preserved memfd might have
-> completely different pages after a live update, and mapping them back to
-> the IOMMUFD will cause all sorts of problems. Using and preserving the
-> seals allows IOMMUFD preservation logic to trust the memfd.
-> 
-> Preserve the seals by introducing a new 8-bit-wide bitfield. There are
-> currently only 6 possible seals but 2 extra bits are used to provide
-> room for future expansion. Since the seals are UAPI, it is safe to use
-> them directly in the ABI.
-> 
-> Back the 8-bit field with a u64, leaving 56 unused bits. This is done to
-> keep the struct nice and aligned. The unused bits can be used to add new
-> flags later, potentially without even needing to bump the version
-> number.
-> 
-> Since the serialization structure is changed, bump the version number to
-> "memfd-v2".
-> 
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
->  include/linux/kho/abi/memfd.h |  9 ++++++++-
->  mm/memfd_luo.c                | 23 +++++++++++++++++++++--
->  2 files changed, 29 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-> index 68cb6303b846..bd549c81f1d2 100644
-> --- a/include/linux/kho/abi/memfd.h
-> +++ b/include/linux/kho/abi/memfd.h
-> @@ -60,6 +60,11 @@ struct memfd_luo_folio_ser {
->   * struct memfd_luo_ser - Main serialization structure for a memfd.
->   * @pos:       The file's current position (f_pos).
->   * @size:      The total size of the file in bytes (i_size).
-> + * @seals:     The seals present on the memfd. The seals are UAPI so it is safe
-> + *             to directly use them in the ABI. Note: currently there are 6
-> + *             seals possible but this field is 8 bits to leave room for future
-> + *             expansion.
-> + * @__reserved: Reserved bits. May be used later to add more flags.
->   * @nr_folios: Number of folios in the folios array.
->   * @folios:    KHO vmalloc descriptor pointing to the array of
->   *             struct memfd_luo_folio_ser.
-> @@ -67,11 +72,13 @@ struct memfd_luo_folio_ser {
->  struct memfd_luo_ser {
->  	u64 pos;
->  	u64 size;
-> +	u64 seals:8;
+Ccing Willy.
 
-Kernel uABI defines seals as unsigned int, I think we can spare u32 for
-them and reserve a u32 flags for other memfd flags (MFD_CLOEXEC,
-MFD_HUGETLB etc).
-
-> +	u64 __reserved:56;
->  	u64 nr_folios;
->  	struct kho_vmalloc folios;
->  } __packed;
->  
->  /* The compatibility string for memfd file handler */
-> -#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v1"
-> +#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
->  
->  #endif /* _LINUX_KHO_ABI_MEMFD_H */
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index a34fccc23b6a..eb68e0b5457f 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-> @@ -79,6 +79,8 @@
->  #include <linux/shmem_fs.h>
->  #include <linux/vmalloc.h>
->  #include <linux/memfd.h>
-> +#include <uapi/linux/memfd.h>
-> +
->  #include "internal.h"
->  
->  static int memfd_luo_preserve_folios(struct file *file,
-> @@ -222,7 +224,7 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
->  	struct memfd_luo_folio_ser *folios_ser;
->  	struct memfd_luo_ser *ser;
->  	u64 nr_folios;
-> -	int err = 0;
-> +	int err = 0, seals;
->  
->  	inode_lock(inode);
->  	shmem_freeze(inode, true);
-> @@ -234,8 +236,15 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
->  		goto err_unlock;
->  	}
->  
-> +	seals = memfd_get_seals(args->file);
-> +	if (seals < 0) {
-> +		err = seals;
-> +		goto err_free_ser;
-> +	}
-> +
->  	ser->pos = args->file->f_pos;
->  	ser->size = i_size_read(inode);
-> +	ser->seals = seals;
->  
->  	err = memfd_luo_preserve_folios(args->file, &ser->folios,
->  					&folios_ser, &nr_folios);
-> @@ -444,13 +453,23 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
->  	if (!ser)
->  		return -EINVAL;
->  
-> -	file = memfd_alloc_file("", 0);
-> +	/*
-> +	 * The seals are preserved. Allow sealing here so they can be added
-> +	 * later.
-> +	 */
-> +	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
-
-I think we should select flags passed to memfd_alloc_file() based on
-ser->seals (and later based on ser->seals and ser->flags).
-
->  	if (IS_ERR(file)) {
->  		pr_err("failed to setup file: %pe\n", file);
->  		err = PTR_ERR(file);
->  		goto free_ser;
->  	}
->  
-> +	err = memfd_add_seals(file, ser->seals);
-
-I'm not sure using MFD_ALLOW_SEALING is enough if there was F_SEAL_EXEC in
-seals.
-
-> +	if (err) {
-> +		pr_err("failed to add seals: %pe\n", ERR_PTR(err));
-> +		goto put_file;
-> +	}
-> +
->  	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
->  	file->f_inode->i_size = ser->size;
->  
-> -- 
-> 2.52.0.457.g6b5491de43-goog
+On Sat, 24 Jan 2026 18:23:28 -0800, syzbot wrote:
+> Hello,
 > 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    ca3a02fda4da Add linux-next specific files for 20260123
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=10c42452580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=10f2b64f8f12b9a4
+> dashboard link: https://syzkaller.appspot.com/bug?extid=bf6e6a6ca143afea5ca2
+> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17f7cbfa580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=112d405a580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/291ebca63a31/disk-ca3a02fd.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/b2112a214b54/vmlinux-ca3a02fd.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/77d1ae437e07/bzImage-ca3a02fd.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+bf6e6a6ca143afea5ca2@syzkaller.appspotmail.com
+> 
+> node ffff888148816ec0 offset 0 parent ffff888148817700 shift 0 count 64 values 0 array ffff88807be6b0f0 list ffff888148816ed8 ffff888148816ed8 marks 0 0 0
+> ------------[ cut here ]------------
+> kernel BUG at ./include/linux/xarray.h:1441!
+> Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+> CPU: 0 UID: 0 PID: 6017 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/13/2026
+> RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
 
--- 
-Sincerely yours,
-Mike.
+Seems like that is:
+
+```
+static inline struct xa_state *XAS_INVALID(struct xa_state *xas)
+{
+	XA_NODE_BUG_ON(xas->xa_node, xas_valid(xas));
+	return xas;
+}
+```
+
+Which was added by commit 43b00759f21b (not land upstream yet):
+
+```
+commit 43b00759f21b10142094d1ae5ff65cbb368953a3
+Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+Date:   Sun Dec 14 10:53:31 2025 -0500
+
+    XArray: Add extra debugging check to xas_lock and friends
+
+    While tracking down a recent bug, we discovered somewhere that had
+    forgotten to call xas_reset() before calling xas_lock().  Add a debug
+    check to be sure that doesn't happen in future and fix all the places in
+    the test suite which were carelessly doing just this.
+
+    Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+    Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+```
+
+which catches places that forget to reset xas before locking.
+
+> RIP: 0010:collapse_file mm/khugepaged.c:2041 [inline]
+
+Yeah, maybe it caught a bug in collapse_file() ...
+
+When we lock again with xas_lock_irq(), xas->xa_node is still pointing
+at a node from the earlier xas_load(), so the BUG_ON fires, IIUC.
+
+Fix it by calling xas_set() before xas_lock_irq() to reset the state.
+And one spot in rollback doesn't actually need xas at all, just changed
+it to xa_lock_irq() directly.
+
+---8<---
+commit 2003255c52846ab10cad6c2e57cda4d17dddadbe
+Author: Lance Yang <lance.yang@linux.dev>
+Date:   Sun Jan 25 19:37:56 2026 +0800
+
+    HACK
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index fba6aea5bea6..3656ae491385 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2038,6 +2038,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 			try_to_unmap(folio,
+ 					TTU_IGNORE_MLOCK | TTU_BATCH_FLUSH);
+
++		xas_set(&xas, index);
+ 		xas_lock_irq(&xas);
+
+ 		VM_BUG_ON_FOLIO(folio != xa_load(xas.xa, index), folio);
+@@ -2140,9 +2141,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 		int nr_none_check = 0;
+
+ 		i_mmap_lock_read(mapping);
+-		xas_lock_irq(&xas);
+-
+ 		xas_set(&xas, start);
++		xas_lock_irq(&xas);
+ 		for (index = start; index < end; index++) {
+ 			if (!xas_next(&xas)) {
+ 				xas_store(&xas, XA_RETRY_ENTRY);
+@@ -2192,6 +2192,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 			goto rollback;
+ 		}
+ 	} else {
++		xas_set(&xas, start);
+ 		xas_lock_irq(&xas);
+ 	}
+
+@@ -2250,9 +2251,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ rollback:
+ 	/* Something went wrong: roll back page cache changes */
+ 	if (nr_none) {
+-		xas_lock_irq(&xas);
++		xa_lock_irq(&mapping->i_pages);
+ 		mapping->nrpages -= nr_none;
+-		xas_unlock_irq(&xas);
++		xa_unlock_irq(&mapping->i_pages);
+ 		shmem_uncharge(mapping->host, nr_none);
+ 	}
+---
+
+Tested with the syzbot reproducer[1], no more crashes :)
+
+[1] https://syzkaller.appspot.com/x/repro.c?x=112d405a580000
+
+Cheers,
+Lance
+
+[...]
 
