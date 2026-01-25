@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D532E63C81
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 03:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B078E63C85
+	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 03:36:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB9136B009F; Sat, 24 Jan 2026 22:35:55 -0500 (EST)
+	id 7F9656B00A1; Sat, 24 Jan 2026 22:35:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA3036B00A0; Sat, 24 Jan 2026 22:35:55 -0500 (EST)
+	id 7B86D6B00A2; Sat, 24 Jan 2026 22:35:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C6F46B00A1; Sat, 24 Jan 2026 22:35:55 -0500 (EST)
+	id 6288A6B00A3; Sat, 24 Jan 2026 22:35:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FDFB6B009F
-	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 22:35:55 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36F6F140423
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:35:55 +0000 (UTC)
-X-FDA: 84369072270.21.7F5AB97
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4643B6B00A1
+	for <linux-mm@kvack.org>; Sat, 24 Jan 2026 22:35:57 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1BBBD1B01D2
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:35:57 +0000 (UTC)
+X-FDA: 84369072354.09.3FD5C6C
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1E3F5180006
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:35:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X3YI5ACt;
-	spf=pass (imf06.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0897E140010
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 03:35:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FsKDj2bp;
+	spf=pass (imf23.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769312153;
+	s=arc-20220608; t=1769312155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8joqye1NuAlUu1PgUnsLrO7saLHzX4wJaterBiHYh2I=;
-	b=LsEtNWeofuwFwGwNrA3hzBsJ4QLWAWUKmqlclz5aEjfkydMaXetLiuvCez+XMLKV/yEypO
-	bpcD+QugXGO23rjydYrQ17srszrQ34iS6SCwI4dHlTPWor/iCBjJqQ18m4WBFvV1oP5Wvn
-	t7R61KWuSKyXSJg6R2u3/+M5dslhj2o=
+	bh=ikZjRnCGDQf2OO/1H0XKXqhRfCUF8rGchlGRRA9b7Oo=;
+	b=CSAFOYM2DgRXelVQUVccS8PK2lqWeWeqOkzNB/qPTWR5X75SGDMVcPR70aUf0w68uDdkv7
+	IruKX8+7uAKYlXTYuj/baFBUdZmPCifbeYOD+by54fYYbj+Z3TSxP27tsEOqJcFDSzpxKa
+	YvhK0sfUmpIYn1v+dKssfBthOcdSvl8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X3YI5ACt;
-	spf=pass (imf06.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FsKDj2bp;
+	spf=pass (imf23.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769312153; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769312155; a=rsa-sha256;
 	cv=none;
-	b=TG0jQ70ttTkosBem6ZPcURpw8PXUEYZc/y/cGSRTNzJfBnVQM2maHGRKUZ64TkYZALa1Bs
-	q0XwZSu/fzReh48UV0VjXM7rtE7MzbHcbBXQ1jMx0jA5OM9nXhYzskIJxFsA81K7C53D9w
-	WdYepsUfxQv85UOgtuE93ZEg6W0hYac=
+	b=ym5LZ0tqgdQT3A76T/ND+MNczQVSSMQiyl6Qb5P9fkQ51nC5FwLyjaN4iQ8lxC8aH+vk4F
+	SaavkdAT70FSKQrWgXMFfoTOnUf2j3GM5REKVtYJWZdCWoeGzTZF+5wbJn0HNRCO3j5Yjh
+	fdo5SCIw+A41fV2GAc8q2HV2g3a1H4g=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769312153; x=1800848153;
+  t=1769312155; x=1800848155;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TXS6CTscafJd3lQMfTmunv6KR6knJ1F1wFy/sJU25Y8=;
-  b=X3YI5ACtCQ0Ytapa3kHWDhbVWytgdDNXebiL8mFYZuVAyt9PwQxi7CFR
-   am+mtjjwXranYarUstfW1OrOahIF3xmYUNeLnZf4Sb/RWFxFdPEQlrQ69
-   4fiqViCgDa46+fyp2/yr6aufgOatG97NxidUkQ496ARBANWdWP9gARe6y
-   HVU3l1vipXI7p5UdHrYCwlhbagXrdNgXK5uVmU5pm6U00dzWn62fL7f4m
-   8rCbD8u0JVeEWtmvTdmo6Viqm62nGl0oqhGKn+EW6ZQDCmIzBghHDrZF2
-   hLfeHqFovhwyd29gKWuJzRWHSKxhNfQrUmvW3lm+CA7jYjy86OfANCd2E
-   A==;
-X-CSE-ConnectionGUID: p+9t6Wt9SJK6HoZg3lncFg==
-X-CSE-MsgGUID: ZuB3Tm10RySHZfgGkpOAWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11681"; a="81887437"
+  bh=XyBt7r+Eb/CYW6xzj2tc3tA7d69o/dOC+UBy7xbkrX8=;
+  b=FsKDj2bpMgiLpmYbPF1dGzmvOMq7m5jgXb0Cajdp2L1TLFnbMGWmyqDb
+   lZFjONgWEkT941pMndLZoD2am1+v9ti/53eP3AIPY7CWlVIQzYNasXMon
+   7kXi7yIvRxfXRTOzcNnFOyy2vVeOaz7xyw0hoQZKA27sNZEdxC4ye4+Q9
+   pmIoMn6iYK3jidm4Rl+p5bqXb9atT7L1kXmJHIiLEwA1EZ6APSrnLn4o+
+   a6Xu/lDDeqviWTobr41Td9WLm4R0q6Uj4H3YHnDbQK1N/wtsLUEdWcqOC
+   4PCq77htj/WhL8spC6K6jbQOl9CCJPA1XrAyDXpfBWOx+hTVyRJWEMl9v
+   Q==;
+X-CSE-ConnectionGUID: W3Jc50oSQfadUK6WwFTlPw==
+X-CSE-MsgGUID: K266MBwiTJyW+03j4sKKVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11681"; a="81887452"
 X-IronPort-AV: E=Sophos;i="6.21,252,1763452800"; 
-   d="scan'208";a="81887437"
+   d="scan'208";a="81887452"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2026 19:35:52 -0800
-X-CSE-ConnectionGUID: k99u/6GAQNWgvmrs5Y/PeQ==
-X-CSE-MsgGUID: d5166B6RSsGzE7qv4gQMbw==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2026 19:35:53 -0800
+X-CSE-ConnectionGUID: 8ztUVJHXT8GZ08qRPJ5kqg==
+X-CSE-MsgGUID: t76tzkzVRW2oXqaAnEWu3A==
 X-ExtLoop1: 1
 Received: from jf5300-b11a338t.jf.intel.com ([10.242.51.115])
-  by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2026 19:35:51 -0800
+  by fmviesa003.fm.intel.com with ESMTP; 24 Jan 2026 19:35:52 -0800
 From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -100,22 +100,22 @@ To: linux-kernel@vger.kernel.org,
 	giovanni.cabiddu@intel.com
 Cc: wajdi.k.feghali@intel.com,
 	kanchana.p.sridhar@intel.com
-Subject: [PATCH v14 09/26] crypto: iaa - Simplified, efficient job submissions for non-irq mode.
-Date: Sat, 24 Jan 2026 19:35:20 -0800
-Message-Id: <20260125033537.334628-10-kanchana.p.sridhar@intel.com>
+Subject: [PATCH v14 10/26] crypto: iaa - Deprecate exporting add/remove IAA compression modes.
+Date: Sat, 24 Jan 2026 19:35:21 -0800
+Message-Id: <20260125033537.334628-11-kanchana.p.sridhar@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
 References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0897E140010
+X-Stat-Signature: bycsu45wr3jaxc338miysjyokgyraiy1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1E3F5180006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dpuyi74x6tqs84mcb1gstue3p7eks8og
-X-HE-Tag: 1769312152-964016
-X-HE-Meta: U2FsdGVkX19S98UFXi3V0DTBNXbZ8hjtTv4NLs4d8zMetjrYFMTJ9cOOWc46aGkkxroGXDJhYrWtktGpKWf1pID7ExSmo/c+SItRc9esKSWD2AcWo8A8c7UMtPMD/OgD5XNh6pPTSoW0CBL02YV0u/TlUVFIr3gBiRuS4w20yFZxqhQktDQjeXkPdPrhDHBxBPq39wKL4iedhGGWMWlqaQh+UOV6CuiR8zssN7HKdmU2nOcTeC+KfOzKISIk9F/I80e0Jzw/Z5kyD/ShOU9NwFveN7kQT7aLpwXCIZRUKwx7Z6IP9KbJLhlr/OhntxFRZF6vBtzHQ3IZB/4KDIx4O147DptdgmZpEtC3kbcDopFqMArvw7BzadQTRxCQbY4Y4yJ28npwg4DUchDJPscJaT7QhFVNEnZbuP1D+X5gKL8B+VeP5Il4u1pv6/1x1TVWWL5v9x4I945nGH4rOHPl51QB3WklLEVxkAUFbvBTlGTv+OpviI0u3qUTXUAhb1ZFUN2lQF2tDPDdGOOgDPp8JIwM/vElzC3mdKs7FmHY2o7dsXKhG+dwz0rnWP2w5StwLdBV/X0lpU6zb5hKhU6HjnOstgwUiXwomTBPr2K0ix6gvgXf6L7xMIhwpkaJKZQZU/ptwpLIfdMn5ujzYWFRh0py1a7pigZJwSSVj6Uf4tDQ+CyuGmTMz+rgVSwwTxb//DFLNqm0WBU8YWCyn69sGy6M4iucoiG7+LVKCsSwKHqHZCY583s03wepZrPjhMchuJcIq98vn3K1DU4bcqNR5mmkfFDcglw+RdqsguSce2KPLaeqYOwmIzLfzIeBtHprrzZdymtRnzYO++kEfNmnhiGZOCpkzNFuERW3wJXOjqdi2N73/yS2qhM6ADrc9eKr652+srojZNxMkg4e3lbz0eDo2QChrUnWgZ472FccSSytxfxdc2PXhMDQjGHR/6gCyElA/QwrHeznBoDsbh0
- JyICdBWz
- KTNlA8dTDcB6McqvDptITtc4CdNKHr9B8/g8S+a1VLP7P2jlWUD47uN41Sx4RAFaNsv1egipm5sJlZ2LVEXhvXjTzLSqXqwGKCLjm6cxDbMBmYxAjnGoTJGCL/IPLjSMuKuGVYKSUQNBvTsg67drA6WCu0Zr+pqoId+8tvS8JEIsWnm8/gY+q33x1aQ==
+X-HE-Tag: 1769312154-688679
+X-HE-Meta: U2FsdGVkX19erd1wShWCyY2OSWrYqAqsbgTGEO4tM3ayYmDz8KbXP/lfv/bc0Ihke6x9tDB+GMQiQtJxDRFStpxlLvXHI16YGqh1gDLUyE3mNbBbm8Gw3fkNqg7nQgr7ZN5tppyRQ549a9uFfcpB5yfMGIZ3hXUoCOLGj/SD3K2nLNgsRxtPxjfv8A6ZTCjSQoNE1+GhETbZ77G35SLan4r3Roj9xgmF/oT7CBwEvY5mn/KNWN2R0N3ACMYaiaOJqO0Ah8+r39lg+Sh+Os29QbGPXf9WseJMKWVEo7LC2tNwOWkD24Tqss+kGKA8wbxx/BD/yT4q9f6DGLjokVGw+BA+cZ4Gl5JZnEjw1/a7/fn+mKqb6D/bu0Y5NcBNckZBWqMilziOh9D2hbf02e88Imccx7md5R7D0FxmBtkYsWrP0RTyGV17FTm2w1wAc8/L3mTt+fQETAetXhKUk2hh86fUhhe3uAIx2L3XafeoZwW6+FCiaqdBj0DRUEnc5gZ8OKLEOQaUgr8g9mKJrjExmQTAyd1N5L+ncSq0Vmx0762dRv9ourBx4zGqrBsahH821dATz6/M7YMxBn3V4FTJGaw69qIWozeYAWo1svTGvun68z2znozDshzh+3jHFpJBFDA2O0kjkYkgaDJuuHnciK/G1T/FdFqMWociDcAe6BM9pFKImC+tPQvnoNkLncSdSY5Yb0YOO4lzpAy4MftQTSmzRcYz9Tct/TTGXlJjpew6unTElPGeiYpApXF7xtH9YHOo32JksVEiHMySDMEQ+Pu2yhHDEqK82zyzPwBuw6mIOAHDYq3XRdwe03hdVkU6QTpji+elIWSiUbDewY/JgPxSAarWnwH4H1Xj3rrIJlzdxkFisc/vFbLus4I4dTvaW0Mp3v86Il4iPVr23bQYIs9uo93qJxA1CXhIzhhmLR61NmJlY8fGGDi8zU22otF618ilpxs/Enueqybly6E
+ /Bee9aV1
+ URLXuJuRNYFPN9V+Qkp/ej9BUtlvr341Qyx7L/L3o0qz+qDTg4G9E/4YmDhYPkaeUFR6soH7WyiFB+T2EyU8tmrZIaeu0XnO+xuYlyAbkaGC9aZEzjuLVWL3x8JIJeQGJ8WgiHk8PaJDNgxUMwst9IGhCHf8KoKWWLJaAv33Q0J7bYTG5uAcQ9jma7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,89 +124,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch adds a new procedure, iaa_submit_desc_movdir64b(), that
-directly calls movdir64b. The core iaa_crypto routines that submit
-compress and decompress jobs now invoke iaa_submit_desc_movdir64b() in
-non-irq driver modes, instead of idxd_submit_desc().
+There is no use case right now for kernel users to dynamically
+add/remove IAA compression modes; hence this commit deletes the symbol
+exports of add_iaa_compression_mode() and remove_iaa_compression_mode().
 
-idxd_submit_desc() is called only in irq mode.
-
-This improves latency for the most commonly used iaa_crypto usage
-(i.e., async non-irq) in zswap by eliminating redundant computes
-that would otherwise be incurred in idxd_submit_desc():
-
-For a single-threaded madvise-based workload with the Silesia.tar
-dataset, these are the before/after batch compression latencies for a
-compress batch of 8 pages:
-
-     ==================================
-                   p50 (ns)    p99 (ns)
-     ==================================
-     before           5,568       6,056
-     after            5,472       5,848
-     Change             -96        -208
-     ==================================
+The only supported usage model of IAA compression modes is for the code
+to be statically linked during the iaa_crypto module build,
+e.g. iaa_crypto_comp_fixed.c, and for available modes to be registered
+when the first IAA device wq is probed.
 
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c | 30 ++++++++++++++--------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-index f0e9eb52eec4..4b275cc09404 100644
+index 4b275cc09404..1b44c0524692 100644
 --- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
 +++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -1790,6 +1790,24 @@ iaa_setup_decompress_hw_desc(struct idxd_desc *idxd_desc,
- 	return desc;
+@@ -368,10 +368,6 @@ static void free_iaa_compression_mode(struct iaa_compression_mode *mode)
+  * These tables are typically generated and captured using statistics
+  * collected from running actual compress/decompress workloads.
+  *
+- * A module or other kernel code can add and remove compression modes
+- * with a given name using the exported @add_iaa_compression_mode()
+- * and @remove_iaa_compression_mode functions.
+- *
+  * When a new compression mode is added, the tables are saved in a
+  * global compression mode list.  When IAA devices are added, a
+  * per-IAA device dma mapping is created for each IAA device, for each
+@@ -405,7 +401,6 @@ void remove_iaa_compression_mode(const char *name)
+ out:
+ 	mutex_unlock(&iaa_devices_lock);
  }
+-EXPORT_SYMBOL_GPL(remove_iaa_compression_mode);
  
-+/*
-+ * Call this for non-irq, non-enqcmds job submissions.
-+ */
-+static __always_inline void iaa_submit_desc_movdir64b(struct idxd_wq *wq,
-+						     struct idxd_desc *desc)
-+{
-+	void __iomem *portal = idxd_wq_portal_addr(wq);
-+
-+	/*
-+	 * The wmb() flushes writes to coherent DMA data before
-+	 * possibly triggering a DMA read. The wmb() is necessary
-+	 * even on UP because the recipient is a device.
-+	 */
-+	wmb();
-+
-+	iosubmit_cmds512(portal, desc->hw, 1);
-+}
-+
- static int iaa_compress(struct crypto_tfm *tfm, struct acomp_req *req,
- 			struct idxd_wq *wq,
- 			dma_addr_t src_addr, unsigned int slen,
-@@ -1828,11 +1846,7 @@ static int iaa_compress(struct crypto_tfm *tfm, struct acomp_req *req,
- 					  ctx->mode, iaa_device->compression_modes[ctx->mode]);
+ /**
+  * add_iaa_compression_mode - Add an IAA compression mode
+@@ -482,7 +477,6 @@ int add_iaa_compression_mode(const char *name,
+ 	free_iaa_compression_mode(mode);
+ 	goto out;
+ }
+-EXPORT_SYMBOL_GPL(add_iaa_compression_mode);
  
- 	if (likely(!ctx->use_irq)) {
--		ret = idxd_submit_desc(wq, idxd_desc);
--		if (ret) {
--			dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
--			goto out;
--		}
-+		iaa_submit_desc_movdir64b(wq, idxd_desc);
- 
- 		/* Update stats */
- 		update_total_comp_calls();
-@@ -1920,11 +1934,7 @@ static int iaa_decompress(struct crypto_tfm *tfm, struct acomp_req *req,
- 	desc = iaa_setup_decompress_hw_desc(idxd_desc, src_addr, slen, dst_addr, *dlen);
- 
- 	if (likely(!ctx->use_irq)) {
--		ret = idxd_submit_desc(wq, idxd_desc);
--		if (ret) {
--			dev_dbg(dev, "submit_desc failed ret=%d\n", ret);
--			goto fallback_software_decomp;
--		}
-+		iaa_submit_desc_movdir64b(wq, idxd_desc);
- 
- 		/* Update stats */
- 		update_total_decomp_calls();
+ static void free_device_compression_mode(struct iaa_device *iaa_device,
+ 					 struct iaa_device_compression_mode *device_mode)
 -- 
 2.27.0
 
