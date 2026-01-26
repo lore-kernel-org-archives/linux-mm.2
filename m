@@ -4,91 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C6ED13C00
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 13:45:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E34D13C0D
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 13:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C45A6B0089; Mon, 26 Jan 2026 08:45:16 -0500 (EST)
+	id 8DA3E6B0089; Mon, 26 Jan 2026 08:46:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 172416B008A; Mon, 26 Jan 2026 08:45:16 -0500 (EST)
+	id 870AF6B008A; Mon, 26 Jan 2026 08:46:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06ABE6B008C; Mon, 26 Jan 2026 08:45:16 -0500 (EST)
+	id 773926B008C; Mon, 26 Jan 2026 08:46:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA1CF6B0089
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:45:15 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F444C27E2
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:45:15 +0000 (UTC)
-X-FDA: 84374236590.01.A7FB1C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CEBCC14000A
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:45:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TkAdyOGK;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 68DA66B0089
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:46:51 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 344B38C340
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:46:51 +0000 (UTC)
+X-FDA: 84374240622.13.6E97BBB
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C40924000D
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:46:48 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=G9j7PuKI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IVAo7WKy;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=G9j7PuKI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IVAo7WKy;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769435114;
+	s=arc-20220608; t=1769435209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3xMCDXBK98svIEGqHcH03JamawrF+kxK5yFNzprmhnA=;
-	b=Auj1xc9XwwXedj0h5FL9f27h5dGGp3ehwWWCIT7s5UsjRwJVNOZutrK7dRQAWd0HNU0IDu
-	I7ZLFSFAx6TENTLHxkPKTl0QH9vfiCVOCK0yy80NJlaRzGJpc4n3lOJvs3L+clNPUuK28P
-	k5jFO0a3uSqFSRtplCJdfrCEp7wew6Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769435114; a=rsa-sha256;
-	cv=none;
-	b=5e0bl5xreRFAGq+NjgwJXUrAxNZzZFhEQWe1kPvtW9qqnh4w3ZKf8ZWrDtD4JOjQ5hViu5
-	g/BrfAX3HV5eKPiSnch4jpGrzVi/f81BvEW9cllAz7sLUDmj/NpZUFGgYiD3/uFewUqxiE
-	9f0CBDwmV9buTncWWbXsFMNVp2n3cz4=
+	bh=b86wKgoVZSbHaNoR6wnTHea67tcH+NoNebqRg4aWBg0=;
+	b=pRGPnAOHtEVJNHgPclIUu3V4PdfPmbFkGvDv1QZzkIPuUsynAl/+dOAoZzgvhsMeEynlRv
+	QelWKwtRIjg9za+mJMYayBQp9ktdATRnTdI0DgyW4l9ICzE7ulnuOGesmAQAmOyOwqRmLs
+	aoCptI8M3eG8hnt4PG4iHalDf3y4MBo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TkAdyOGK;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF5B543F3E;
-	Mon, 26 Jan 2026 13:45:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4B5C116C6;
-	Mon, 26 Jan 2026 13:45:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769435112;
-	bh=xw/pUvk0u6PtIzlKi8yZZbG6CWAdPi59b0ZTMCQ7GRk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TkAdyOGKRNfLrHFPNYnuEp0JpEW6/EaLKUJQJBigmpBHdQAGGppWEQnDahgzi2aM9
-	 uXJJxPso/zn9Ve99t7pA9o8rSjNLOKFJB0jMkdkaqpjzrP9OV/9gAxNYVjF7EXeDTo
-	 a95nQc92RLuYffzFjH0sj98HsI71PudpADIrTXuENU5arMt2gn5NasA7Xdk75IgSAH
-	 iaSQ98xzLIRTRR5KoXrUqdTWiTzFTO1EYz+N14ywCdwb76dNzpaeMa3pFmPZ2Bt0VB
-	 qOjfbtaJshhAiDiUtxiFKhvuQO57iNsft+yN35w+UoTSl01UK4ZsqpS0wTJ11n5EJO
-	 2Du5t4HtuADxw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>,  Alexander Graf <graf@amazon.com>,
-  Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,  usamaarif642@gmail.com,
-  rmikey@meta.com,  clm@fb.com,  riel@surriel.com,  kernel-team@meta.com,
-  SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH v4] kho: kexec-metadata: track previous kernel chain
-In-Reply-To: <2vxzikcoa4g1.fsf@kernel.org> (Pratyush Yadav's message of "Mon,
-	26 Jan 2026 14:28:30 +0100")
-References: <20260121-kho-v4-1-5c8fe77b6804@debian.org>
-	<aXdTEzsm88JKu9zY@gmail.com> <2vxzikcoa4g1.fsf@kernel.org>
-Date: Mon, 26 Jan 2026 14:45:08 +0100
-Message-ID: <2vxza4y0a3ob.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=G9j7PuKI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IVAo7WKy;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=G9j7PuKI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IVAo7WKy;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769435209; a=rsa-sha256;
+	cv=none;
+	b=SpszxIsCm5Q8/7WJ9jVhSp8k6ApYfYccgo+sKQiPCxCWVYvZxJ+sECGWrc49yS0ZI3B3Go
+	gTY3LgPANAG+CnLo3XOVTV/Ak0fPLDvahfWMW2iofN8KZ1IhSiZwNWVR5aOpMdxQdXSB9V
+	TyB131P4nbGNwTs8rP4J+3KFmaX563I=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4CADF5BCDF;
+	Mon, 26 Jan 2026 13:46:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769435207; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=b86wKgoVZSbHaNoR6wnTHea67tcH+NoNebqRg4aWBg0=;
+	b=G9j7PuKIh7NXQRMmQNLNK3hIUurSeNCwg46GGyc3nX5lY0wwrgphsCdz+/RWdrwK8M6bfp
+	TtmnGAx1lASRWj0gVUOlRjXmdaA5ggawWLOMutir2vwK/YizTEOKZ12L3JOPbBzCJ2u7uw
+	fpCyc5auJQXC3AS23YWQuGEjDv55v9E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769435207;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=b86wKgoVZSbHaNoR6wnTHea67tcH+NoNebqRg4aWBg0=;
+	b=IVAo7WKywD8H/zeu5CkhipATELpVwhmr9iBvzXei8hafiDEx4WjKjd9rUVt/D/RQuHbTy3
+	/YlEAnp1qoK2WGAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769435207; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=b86wKgoVZSbHaNoR6wnTHea67tcH+NoNebqRg4aWBg0=;
+	b=G9j7PuKIh7NXQRMmQNLNK3hIUurSeNCwg46GGyc3nX5lY0wwrgphsCdz+/RWdrwK8M6bfp
+	TtmnGAx1lASRWj0gVUOlRjXmdaA5ggawWLOMutir2vwK/YizTEOKZ12L3JOPbBzCJ2u7uw
+	fpCyc5auJQXC3AS23YWQuGEjDv55v9E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769435207;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=b86wKgoVZSbHaNoR6wnTHea67tcH+NoNebqRg4aWBg0=;
+	b=IVAo7WKywD8H/zeu5CkhipATELpVwhmr9iBvzXei8hafiDEx4WjKjd9rUVt/D/RQuHbTy3
+	/YlEAnp1qoK2WGAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2F363139E9;
+	Mon, 26 Jan 2026 13:46:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id f1wyC0dwd2mPagAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 26 Jan 2026 13:46:47 +0000
+Message-ID: <795a4294-001f-4462-8afc-7310e9059943@suse.cz>
+Date: Mon, 26 Jan 2026 14:46:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: CEBCC14000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] mm/slab: avoid allocating slabobj_ext array from its
+ own slab
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, cl@gentwo.org, rientjes@google.com,
+ surenb@google.com, hao.li@linux.dev,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
+References: <20260126125714.88008-1-harry.yoo@oracle.com>
+ <aXdmN1jUR5bZ6rK8@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aXdmN1jUR5bZ6rK8@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: sreqmegogibdchjpt5akx4m1mfawfg3u
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 5phpnzey4zuz6ddx3b9we8up98e8hzk4
-X-HE-Tag: 1769435113-253401
-X-HE-Meta: U2FsdGVkX18hIYAMNnFcNJOYME7cx0vrkRSswvFsXhhTNpQX9t2cKZqAAjZ/Bc+sBl+ckttym155yrSTm01m9dtKjC/zkD6p/2xBEnTDzQ0c34JfJlRYCHd+atW9K2fb/9sow/mcJZO9Y5yZ8eXt3b0eoFyqvDgEXqkt3uMKVfV2iq/J6EsHffOjRY7E2N8VAiEOz98tTWZ8sU7XPLgCQ4TjxN0ceUOssUvOW4oDFQ8m0E532Us6So4V3e43W9aUM7l72F5PwGy0Ol/QVJsBehXkBQ2kqR7WR6V5I3QGw32HDIH+FbMU1WtvhzJ6fLcgslOuvBbN1vziuhPshQjF9gFMQFVBsEN85sdRLcIU44/rXp/H12E+X3GxvT/0gr6oFKjtohsjOR21GWirpEkkZhTdWWjjP4g6WXbgk1hsAtvwUxJdRBiLMYAf6eyijxOSduvXVPSae6EEeBEphJQAnoaGZaiMVXupbGqMVZFBMOw9kzWOR7DWf4dleH/lK1bfibWt7A4MxjUuFp6z82I+SvpScZRKsE/3FZULmsI6vvtzjTEYp3S2U/FKcgysBy+AbKNZSNFINs7fWo2CgSwzqrrX6VQ3BjVrpc9j3XWRdxCVVh3LVKC+r8lraXsL1hIyUS3jyGhC/W3M8H0sooIdzQvCr3N14/YfChe/Sod+I5oJ8J+tqch71rwfbVETLO9lId+QlfQY3hQJM+3FdW3ySlF/GYFk+5eyGROpPRSQ5sE4Ewm9umB94okrJNTp0/Hpy1ZYEpb2zW8+glqDPLurPgYTwTo0SV95MsSxcBDklXzYsYqIBgfxCPNBz9qahy1VM3NeMacLO3UHSpqXLpM5a3HWVxe/aGBJ8fkvPc+e9JN+hoek7gpYokj2WYFl8aU43UmgjOtDjdPJj1AELNQEAoXXE0twyBHRr0Ht5e9uNDhW2HXaJCjuhCuxDUx7w34GZC1EWduaRUeZI1xA8Bo
- ytsvHV3H
- fdkdfgD4C4bwWPHQsDXFdA5y0StD2F30tXI6WfPQl3gpcptn8YUu9O149j+EBoDtNeA1T6v9jl3YL9wsUAGfNTwYKCyvfvCLBj0zVtSo1F5hjDNFOK1W/EAXkfhNJkTmQH/sgNZxPviM3RVLTzOAIMPCWZ8jRkkcRhuj1xx6afMmXndY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C40924000D
+X-HE-Tag: 1769435208-513535
+X-HE-Meta: U2FsdGVkX19hyGbPFBFp+YuRjRT2USxOts7c02zkkpwEZvLGxRRVlY3vhf2lDyDoroNEU/t3qzipYdbLNYpG9knCoThy/fCL9PM1h9Y6Pev9LVWZGZejjVSzHW+XyCY7AV5pXeIE0uXysPzwSY35CGfqGgkP+56IsAMmyrSwU94t0AedXOt9w1NR+P/KBxC+BzLrsvrGvlLrwDw8sScxg63G4sq+FpfrXzarjtChVxR0DWbp0eV1nHuYDyAmOx2CjhivwO/hi5BparOc3VwUUyIr+aUWLnjxsNIZUue0pKBtTthkf8Q1z0U5mSVQBSyteZG3kcEfqAcA1vAXeJcLFGfIlnpVVKzSAFnktjeYKnxHrsEzxicFEIMqj0x8/MgZtKOo54WIm1LzKFzDEXeGQpC8ugddZ7rIuVGR2o53Yhiiu2tnmSgmeNQAWClYxifKw2uC1ZKmRMUQQkMUr/VKYMOPlFxXIT7la4wO9pTcHnzmMSUkf2M8AtzmCKqgVS1HNjIdM8gWCJOsI3wn0Wbi4/Rf5g0aUNsRhix80Onz6GnJkFYpAYlCJemVzlSCRpuffbAFSPSc/jkKxutOhBOwgY0jf9hzRUATJe9J7d8ZQJRLjWSCNuVPHvF0P/TA2zZcc3PKzGG7vEb8yAhc0K2ibJl0zJaNjqVMCWmSutPjoUSF5eCZauvr7mCE4SFGCnUSUnmVBWlYd4cs9p0OEX7lzvRQThf3UmRgO82c+xXaMkFihgdSMFFbc7ftlmPSZkI75/pxWpEOs70NBOu4hPeRRRsU2naxeIEJh7XTMHjEKYyWNoFVrXcugoinKSNxNZCoJv6zIKPRAvlyVYGJB7bB7l9CcHogPUV0aajd9fG8C3mhDcJESVSH551cpHXbuy7Wnb5GfW/0cJzcAR9v1/mBnU8FOSULh8qshLI04hTEFr8CFhn5F3YnIzylvmsiCxLcFuA8nT2lfWcoLlijSZr
+ wnfW8Q2Y
+ Ddj9Wc+kb82zRCsOF0fZUrD9qEvvs1/6lBDhAleMw3Nvn8zJsSKBzTzTKIdH1g7iqTMkafjVQtDtJDnA30dNOCLnzRsFr1y/qJ3Zt8Vo3uZtkaF5ua+qovGepEsUBqNM54dS3SMC3+aaugIgvspqLEtAICddLYaY80XCdKBUON8IOQiaMDG8pEEDqnqX3r2bN+ElLIgFUAqmA+FK5mZnPyF65t8O0xev/Wxth2xWf7iNpv9IM0uO6RKXDDOGYf0CNQBpKBugbOaX5Me/2rpWWhpFCsLmViUlG0zKwLbh2Zl/yGwkMe23/cMaxMam/1Q8aqkSPe0+3PVXzcUBFWh5zh5Cto677E7e55s8sbFuZppIZb6BARIrNthkiVgLA4G0RpmmsN/v3n2hqsstLUgYiL/ZFyw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,95 +180,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 26 2026, Pratyush Yadav wrote:
+On 1/26/26 14:03, Harry Yoo wrote:
+> On Mon, Jan 26, 2026 at 09:57:14PM +0900, Harry Yoo wrote:
+>> When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
+>> can be allocated from the same slab we're allocating the array for.
+>> This led to obj_exts_in_slab() incorrectly returning true [1],
+>> although the array is not allocated from wasted space of the slab.
+>> 
+>> Vlastimil Babka observed that this problem should be fixed even when
+>> ignoring its incompatibility with obj_exts_in_slab(), because it creates
+>> slabs that are never freed as there is always at least one allocated
+>> object.
+>> 
+>> To avoid this, use the next kmalloc size or large kmalloc when
+>> the array can be allocated from the same cache we're allocating
+>> the array for.
+>> 
+>> In case of random kmalloc caches, there are multiple kmalloc caches
+>> for the same size and the cache is selected based on the caller address.
+>> Because it is fragile to ensure the same caller address is passed to
+>> kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), bump the
+>> size to (s->object_size + 1) when the sizes are equal, instead of
+>> directly comparing the kmem_cache pointers.
+>> 
+>> Note that this doesn't happen when memory allocation profiling is
+>> disabled, as when the allocation of the array is triggered by memory
+>> cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
+>> 
+>> Reported-by: kernel test robot <oliver.sang@intel.com>
+>> Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com [1]
+>> Cc: stable@vger.kernel.org
+>> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+>> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+>> ---
+>> 
+>> V1 -> V2:
+>> - Simplified implementation based on Vlastimil's comment
+>> - added virt_to_slab() != NULL check before dereferencing it - because
+>>   (in theory) it may be allocated via large kmalloc.
+>> 
+>>  mm/slub.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+>>  1 file changed, 53 insertions(+), 7 deletions(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index f21b2f0c6f5a..5b4a3b9b7826 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -2095,6 +2095,49 @@ static inline void init_slab_obj_exts(struct slab *slab)
+>>  	slab->obj_exts = 0;
+>>  }
+>>  
+>> +/*
+>> + * Calculate the allocation size for slabobj_ext array.
+>> + *
+>> + * When memory allocation profiling is enabled, the obj_exts array
+>> + * could be allocated from the same slab cache it's being allocated for.
+>> + * This would prevent the slab from ever being freed because it would
+>> + * always contain at least one allocated object (its own obj_exts array).
+>> + *
+>> + * To avoid this, increase the allocation size when we detect the array
+>> + * may come from the same cache, forcing it to use a different cache.
+>> + */
+>> +static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+>> +					 struct slab *slab, gfp_t gfp)
+>> +{
+>> +	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
+>> +	struct kmem_cache *obj_exts_cache;
+>> +
+>> +	/*
+>> +	 * slabobj_ext array for KMALLOC_CGROUP allocations
+>> +	 * are served from KMALLOC_NORMAL caches.
+>> +	 */
+>> +	if (!mem_alloc_profiling_enabled())
+>> +		return sz;
+> 
+> Hmm maybe we don't need this as there's !is_kmalloc_normal(s) check,
+> but this allows optimizing out the checks below when
+> CONFIG_MEM_ALLOC_PROFILING is not enabled.
+> 
+> So probably worth keeping it.
 
-> Hi Breno,
->
-> On Mon, Jan 26 2026, Breno Leitao wrote:
->
->> On Wed, Jan 21, 2026 at 06:50:38AM -0800, Breno Leitao wrote:
->>> +static __init int kho_populate_kexec_metadata(void)
->>> +{
->>> +	struct kho_kexec_metadata *metadata;
->>> +	int err;
->>> +
->>> +	metadata = kho_alloc_preserve(sizeof(*metadata));
->>> +	if (IS_ERR(metadata))
->>> +		return PTR_ERR(metadata);
->>> +
->>> +	strscpy(metadata->previous_release, init_uts_ns.name.release,
->>> +		sizeof(metadata->previous_release));
->>> +	/* kho_in.kexec_count is set to 0 on cold boot */
->>> +	metadata->kexec_count = kho_in.kexec_count + 1;
->>> +
->>> +	err = kho_add_subtree(KHO_METADATA_NODE_NAME, metadata);
->>
->> There is a hidden bug in here when CONFIG_KEXEC_HANDOVER_DEBUGFS is set.
->
-> Good catch!
->
->>
->> kho_add_subtree() expects a fdt as the second argument, and we are
->> passing a pure C struct. That works fine, except for debugfs, which
->> does:
->>
->>  1. kho_add_subtree() calls kho_debugfs_fdt_add()
->>  2. kho_debugfs_fdt_add() calls __kho_debugfs_fdt_add()
->>  3. __kho_debugfs_fdt_add() executes fdt_totalsize(fdt)
->>
->> The fdt_totalsize() macro reads bytes 4-7 of the input as a big-endian u32, and
->> this will hit struct kho_kexec_metadata, given I am passing a C struct instead
->> of a FDT.
->>
->>   struct kho_kexec_metadata {
->>       char previous_release[__NEW_UTS_LEN + 1];  // 65 bytes
->>       u32 kexec_count;
->>   } __packed;
->>
->> Bytes 4-7 would be characters from previous_release (e.g., "0-rc" from
->> "6.19.0-rc4..."). Interpreted as big-endian u32, this gives a garbage size
->> value.
->>
->> The alternatives I see here are:
->>
->>  1) Come back to FDT instead of plain C struct, similarly to the previous
->>     version [1]
->>  2) Created some helpers to treat C struct fields specially just for this
->>     feature, and we can do it later if we have more users.
->>  3) Move this kexec_metadata to work on top of LUO (similarly to memfd), but
->>     that would be an unnecessary dependency just to have this kexec_metadata.
->>
->> That said, for the next version, I am coming back to to FDT.
->
-> Please, no. Don't go back to it just for the sake of this bug.
->
-> I think KHO's assumption that the subtree will always point to an FDT is
-> broken, and we should fix that. I think KHO should expose the blob of
-> serialized data and let userspace figure out what the format is and how
-> to decode it.
->
-> To do that, we would need to update kho_add_subtree() to take a size
-> parameter from callers, and pass that down to debugfs code. I count 3
-> callers of kho_add_subtree() - memblock, LUO, and test_kho. I think all
-> 3 should be fairly easy to update, but I am happy to help out if you
-> need.
+Right.
 
-As an example, I'd do something along the lines of:
+Thanks, added to slab/for-next as the first commit of the obj_metadata branch.
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 905d06b16348..c06d6b9e390b 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2512,7 +2512,7 @@ static int __init prepare_kho_fdt(void)
- 	if (err)
- 		goto err_unpreserve_fdt;
- 
--	err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
-+	err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt, fdt_totalsize(fdt));
- 	if (err)
- 		goto err_unpreserve_fdt;
-
--- 
-Regards,
-Pratyush Yadav
 
