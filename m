@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3FEAC88E52
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 12:47:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3325EC88E7C
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 12:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8F226B0088; Mon, 26 Jan 2026 07:47:27 -0500 (EST)
+	id 892716B0088; Mon, 26 Jan 2026 07:48:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E39266B0089; Mon, 26 Jan 2026 07:47:27 -0500 (EST)
+	id 83C066B0089; Mon, 26 Jan 2026 07:48:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D696D6B008A; Mon, 26 Jan 2026 07:47:27 -0500 (EST)
+	id 77F926B008A; Mon, 26 Jan 2026 07:48:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C5A786B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 07:47:27 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75A0F1AFF2D
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 12:47:27 +0000 (UTC)
-X-FDA: 84374090934.06.31525F8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 17ABC160005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 12:47:25 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KfvbgkvC;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 66A596B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 07:48:46 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 015D81406CD
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 12:48:45 +0000 (UTC)
+X-FDA: 84374094252.18.502971B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5924940008
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 12:48:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZImDQmkF;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769431646;
+	s=arc-20220608; t=1769431724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0yWEB3MC/IwOdZRTqjXn596FY/5KcgKt/UNJOXmLQQk=;
-	b=ZcB0KALOwFyXAEyLgI62omIl09jjEGKI94+OBGNCSIfgsZGx0STbAsZrYcF7RFZi+Npp12
-	0gYsB98wWnuhU2jl8J1CUipQlCoXBQ5FGlol7St3F/zwbkZ7Ftj72VDW7+PrpQDBUHWjiK
-	YFPw38oLwPs5pyKETTYTGRuMZJb4CyI=
+	bh=yC9dNYMx8a3aPFHGUz1eG+4PftVW8uXalOORr96sP88=;
+	b=wG7gYfRzjgz3eC0ICKF0MohI86y4NrHCm7y1LNrjn/xdFjnrhuxXgJMwyiXfbXwlfFCjE0
+	1UgWVJxEGIY1kwsclAV5v2/Z4YiK/1GJSbMJOUigPC9sJcYAvwyZCeDEcfx3vkqBaIjqp3
+	mzhvjIx/s38DdkYVv4uVI8dFfd49HMg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KfvbgkvC;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZImDQmkF;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769431646; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769431724; a=rsa-sha256;
 	cv=none;
-	b=szxHlw/IFzucupDkqlfVIIwHorMdnX3qlatRUF3dy8lDW8bt6rFmkhbwCgU2ynVBdI19du
-	U7JoNGaFxetQm2mKtbZOXPn3GS5bL2H8CbRrstGPM9nuizqJkGKH0Kq61MvvDN6UpQf6Lp
-	+qDpZZxmfIlwkWHJhIGYooW/gSl4C2I=
+	b=se9vweGdA+UTZZDpdiyQU59w7VMb4+MHNsWvajdZVgKXG4C6TufvKWH9qW4AKM82v1C44c
+	QOJUcKkJgU26sCNLS4w8m1hkpb60hRSfXSuAYKP/IcuEfohDMTMBfuJ+2vIUjUxuSe8Cuv
+	/C+CIVUse1N95dbpSJee5XO5xmg2v64=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8761160051;
-	Mon, 26 Jan 2026 12:47:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E1AC116C6;
-	Mon, 26 Jan 2026 12:47:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BF554442E;
+	Mon, 26 Jan 2026 12:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCDAC116C6;
+	Mon, 26 Jan 2026 12:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769431645;
-	bh=6wAT8ti4QCa4aLuMEWb3Z0RxEKoJVGK3uZ0wJAMvvnQ=;
+	s=k20201202; t=1769431723;
+	bh=A7DYWrpyfHFVWltF6mJpprzDHTr2ZLlsNkHc14svh3s=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KfvbgkvCznk1tlJ4lZzsg2eEdrMAvgO7UG8TYLAUCLREEOBLo49BuFec7Tqa2OdsC
-	 AUY10n5LHMRvMmsZ4eZnNHSzvfjn79Wt2sm/OPIGlvBUsZj41efLMT1PJFH8bVRKnq
-	 cZGM0WpMCyMM+9RYv2LoPzNGLAjatqnehL8W4mX3pbDKRv/JKwP3GxFZnJ5Fz+LDs4
-	 lKGF1QioOvg/9OfZjRUvozT4QixNbDT3ic07rT9uDqg2LyaxehJnhoUleUepQLw1N+
-	 ph9v8qTWtLAd6IDK8XQZdfD12svL9ITDrwsSknk9Z4p5YI0bNOJGKbdXmB0ps9n3kp
-	 iUusOazWScZ1Q==
+	b=ZImDQmkFknNM/HRBpo4EztcpeaH7C9U7edLdMLwrMUzW5tMc6aD4a4cD9kKPx6KVS
+	 yYEVGeBS9+Od1AEmxQNT/EduaKcUqJn48kvyxE2OWJhDsWEen2ms81KLOS9psdMaeD
+	 tnuMOZWNRt5DnpznBPLfjh22VmjBSHp67wJKxmhM+wDxbrK6IbraqkfO2TWx1btfHx
+	 Q66+YWuUunra8vVBGHbJvO+CMoPWe3yf1aABV68/mwK3zASIx6v2Mzjpj0ed0wz73A
+	 aM9/e7Fz8sM5JrGJ2ZRUcNwlr/QRkw9XNSHqTDyVRE/Nt0dMkX3/3kktFEcKn3sSy4
+	 VYZeYe+ZOB9Yw==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  Hugh Dickins
- <hughd@google.com>,  Baolin Wang <baolin.wang@linux.alibaba.com>,  Andrew
- Morton <akpm@linux-foundation.org>,  Jason Gunthorpe <jgg@nvidia.com>,
-  Samiullah Khawaja <skhawaja@google.com>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm: memfd_luo: preserve file seals
-In-Reply-To: <aXYGkb-QtYNaWYw4@kernel.org> (Mike Rapoport's message of "Sun,
-	25 Jan 2026 14:03:29 +0200")
-References: <20260123095854.535058-1-pratyush@kernel.org>
-	<20260123095854.535058-3-pratyush@kernel.org>
-	<aXYGkb-QtYNaWYw4@kernel.org>
-Date: Mon, 26 Jan 2026 13:47:21 +0100
-Message-ID: <2vxzqzrca6cm.fsf@kernel.org>
+To: Tycho Andersen <tycho@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kho: fix doc for kho_restore_pages()
+In-Reply-To: <20260123190506.1058669-1-tycho@kernel.org> (Tycho Andersen's
+	message of "Fri, 23 Jan 2026 12:05:06 -0700")
+References: <20260123190506.1058669-1-tycho@kernel.org>
+Date: Mon, 26 Jan 2026 13:48:39 +0100
+Message-ID: <2vxzms20a6ag.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 17ABC160005
-X-Stat-Signature: 3ocacghy55n314x6f8ijim53ns5p5175
+X-Rspamd-Server: rspam11
+X-Stat-Signature: wt3awzfb3q5niimtzdztewffba38zprk
 X-Rspam-User: 
-X-HE-Tag: 1769431645-271035
-X-HE-Meta: U2FsdGVkX18Gn/L3wvvzgUH4xf3+Ff0Urnd8Oybf2fGOn+PSPebouv06QwYrNkurvWDyANeqL8uNZeIIBbk0rqs48Kuj6H5YyZaHkSTai30THGK+mvU2tB2ipCYJ3nO31IbTJkAfrkoax8J8HnxlvJrhxRkrd5J3AgLjODz9muBYm0cvAdZGSuiW+uk/2BobVW5psrxat/AfW8g53Al3EPX6KRFfEY87gmegieRExeWC0jKGS7ut/AtSryPWPV655TPsXYRWcpXVHdzM9EwVjVisFVKT83YSf63eZbO+SUnZgkPI8vCdlUQUqYKrhJSg86H34LBANS7i92/Hp5CZPfX02LYBHjBFHkAJAYFuDc9nIOooLwUnoIinZsSWrOLW3oWbWP6wpzl4InMk12nWU8IwuVbwEk0QRbYCc6o2w6pFrbf0vZi84k8vteBvlnrOVvg0sM65LJYjrC4FmO+3rd9WKojGweLizzU7jV6GEBDuqOuf8FXBCqY5bFPPBr2XXonpFEFFuE45pzag2rFlVFdvQeq1Tm9RJf34KcA/dzVGpN3z6jcV+Vhf3Tb2/AdjQndhZ02oqZKSF5WJbQYhyYYVHhCUycgI1TH3QhKCDqbiCmDw6OyKzyXKMsLpp/ezo02EkHXV+ZKMd8l6Ak0A8oNq3vRID7sIrHzvuC0sMnC/NItkd0QHA0XWEXScv6qbtvu3oPfG346MeZrW8A/Cf86vYubkS017LwtY7gktJjXEqFmBPy+vz39o4HZjQJueftwwlTlca4FJECmC6RTautorSBdvo9BpbThMeeUfEuQNDsHBqhvXY9ck3RnX48JyIluR6QrMzShkpdrkUCmwnQamqzd9RXMDTSg71qM5cf9Z+ytvDJJbIrgme8DCk91WjcRiF9TdVb+wb/dMtnYiCZ2LUeNDwa6QjXe60liD/WNOQehCcmeRR/OxNhg9RONE
+X-Rspamd-Queue-Id: 5924940008
+X-HE-Tag: 1769431724-659375
+X-HE-Meta: U2FsdGVkX18v+SpRM4Pe146XW+9r4c+wfp5EOA4LITUdE9UmCUL4PdCFNrH94eutp4gBE69l8C/FMIGrSRdydeySTIY5swu0qoMxo2nltYw/uEL7VzcjXb3ez7N9Lt/L0pTxbkqVw/WTNjGGRk1ZhiZRJ1ZndMraIhvbufS61mE11z+aAsQWmj+BA+Kvqwzz5NaLxfMWWINVdx66QbQ0CDdiIqeatWX9ZRHleFMqprSA8Mb2LfLcxjrwMxDmO4H0LM8UQsBOay8Ojfeyl8qdhmbnLq0IVdnmizge4ArezB7TjMZLkCqJzBirUx0dzcal2ViKqdPI3xwgTl+7vPM6oQFRo8+ammW0loMTPAC20jvU1OIK+GJG4hw86o+9vlNefgwgsqjJq5jNtd/WmtEofo08rur3wlL3uxfTfLVd7ilcVol0MjSFcrFEPXL9R5pBNPiAyykOvzZoG+PgjsJSUtX6GiKdy7vnG6SiAjF+ztQAXt/rAx1LNmRehZ7zdULhcs7wcA5VO/RPT8iNc6e81KwbfX6n6aWYwgQuDuJCSWd3FYr8eBh1G6YKs7SoDyMQiyUxkzuTvwA0qnLTWcGEO2YBZYGxGkl69LBP1SZaEHlLYKTqvZR4N2dIevml8qeWTbScZmiXrroWgCMfNleOyt9HmAaIjSTDKc/u/MK8qXgPDraUVKY/OUtK6DDpaubPQP4OTKfQiFILsZaggwlC4nYBokHreDCLRQIj2rENbbblVRvvehPQB75/Vf4+pfPvPnFjtH4BHV4fap+nRCXUAHPcJiKXVLo9TShgswjlJhjzFynQWFtCvyqGpSDBaZ3FIzxTE+IhqhRbU51BeSAqlC2BeTztPXPKJ2ATz1sHbYXTZgneJ/37/Nb72TS636d6BqmtsGAglaJgErIkSexd6UEW5sXMeF81HxfjHgZTgRsYW4zA6BD9KxTDh3VHpRweTWz0JCsyJS2Qvg/k7uY
+ QmcCJsun
+ liSRsMMpPw8qh7FU8Qom0s93x7YmbSOANnK6hEpXbcTrdS0tNSPAHoutNrEi/3Q0ZOwqgor+g6Rhi0b6hdy+R5GJ9w8zBdu7HyWaMCvuO45W+jhhVnbjp9B7JEZH7EFBjNb1Sk9k/X43vGWMExD8+55raN7jJx2Mj03vVzMwvp3dFVSaqgLVoYpOGvAUo7y4PCY4Y8zDyOS4xmioYl8YU8ADNfZaGK6bzT11PYZbYEp1bWx6eatJTxnZoCg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,177 +94,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+On Fri, Jan 23 2026, Tycho Andersen wrote:
 
-On Sun, Jan 25 2026, Mike Rapoport wrote:
-
-> On Fri, Jan 23, 2026 at 10:58:51AM +0100, Pratyush Yadav wrote:
->> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->> 
->> File seals are used on memfd for making shared memory communication with
->> untrusted peers safer and simpler. Seals provide a guarantee that
->> certain operations won't be allowed on the file such as writes or
->> truncations. Maintaining these guarantees across a live update will help
->> keeping such use cases secure.
->> 
->> These guarantees will also be needed for IOMMUFD preservation with LUO.
->> Normally when IOMMUFD maps a memfd, it pins all its pages to make sure
->> any truncation operations on the memfd don't lead to IOMMUFD using freed
->> memory. This doesn't work with LUO since the preserved memfd might have
->> completely different pages after a live update, and mapping them back to
->> the IOMMUFD will cause all sorts of problems. Using and preserving the
->> seals allows IOMMUFD preservation logic to trust the memfd.
->> 
->> Preserve the seals by introducing a new 8-bit-wide bitfield. There are
->> currently only 6 possible seals but 2 extra bits are used to provide
->> room for future expansion. Since the seals are UAPI, it is safe to use
->> them directly in the ABI.
->> 
->> Back the 8-bit field with a u64, leaving 56 unused bits. This is done to
->> keep the struct nice and aligned. The unused bits can be used to add new
->> flags later, potentially without even needing to bump the version
->> number.
->> 
->> Since the serialization structure is changed, bump the version number to
->> "memfd-v2".
->> 
->> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
->> ---
->>  include/linux/kho/abi/memfd.h |  9 ++++++++-
->>  mm/memfd_luo.c                | 23 +++++++++++++++++++++--
->>  2 files changed, 29 insertions(+), 3 deletions(-)
->> 
->> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
->> index 68cb6303b846..bd549c81f1d2 100644
->> --- a/include/linux/kho/abi/memfd.h
->> +++ b/include/linux/kho/abi/memfd.h
->> @@ -60,6 +60,11 @@ struct memfd_luo_folio_ser {
->>   * struct memfd_luo_ser - Main serialization structure for a memfd.
->>   * @pos:       The file's current position (f_pos).
->>   * @size:      The total size of the file in bytes (i_size).
->> + * @seals:     The seals present on the memfd. The seals are UAPI so it is safe
->> + *             to directly use them in the ABI. Note: currently there are 6
->> + *             seals possible but this field is 8 bits to leave room for future
->> + *             expansion.
->> + * @__reserved: Reserved bits. May be used later to add more flags.
->>   * @nr_folios: Number of folios in the folios array.
->>   * @folios:    KHO vmalloc descriptor pointing to the array of
->>   *             struct memfd_luo_folio_ser.
->> @@ -67,11 +72,13 @@ struct memfd_luo_folio_ser {
->>  struct memfd_luo_ser {
->>  	u64 pos;
->>  	u64 size;
->> +	u64 seals:8;
+> From: "Tycho Andersen (AMD)" <tycho@kernel.org>
 >
-> Kernel uABI defines seals as unsigned int, I think we can spare u32 for
-> them and reserve a u32 flags for other memfd flags (MFD_CLOEXEC,
-> MFD_HUGETLB etc).
-
-Sure, will do.
-
+> This function returns NULL if kho_restore_page() returns NULL, which
+> happens in a couple of corner cases. It never returns an error code.
 >
->> +	u64 __reserved:56;
->>  	u64 nr_folios;
->>  	struct kho_vmalloc folios;
->>  } __packed;
->>  
->>  /* The compatibility string for memfd file handler */
->> -#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v1"
->> +#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
->>  
->>  #endif /* _LINUX_KHO_ABI_MEMFD_H */
->> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
->> index a34fccc23b6a..eb68e0b5457f 100644
->> --- a/mm/memfd_luo.c
->> +++ b/mm/memfd_luo.c
->> @@ -79,6 +79,8 @@
->>  #include <linux/shmem_fs.h>
->>  #include <linux/vmalloc.h>
->>  #include <linux/memfd.h>
->> +#include <uapi/linux/memfd.h>
->> +
->>  #include "internal.h"
->>  
->>  static int memfd_luo_preserve_folios(struct file *file,
->> @@ -222,7 +224,7 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
->>  	struct memfd_luo_folio_ser *folios_ser;
->>  	struct memfd_luo_ser *ser;
->>  	u64 nr_folios;
->> -	int err = 0;
->> +	int err = 0, seals;
->>  
->>  	inode_lock(inode);
->>  	shmem_freeze(inode, true);
->> @@ -234,8 +236,15 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
->>  		goto err_unlock;
->>  	}
->>  
->> +	seals = memfd_get_seals(args->file);
->> +	if (seals < 0) {
->> +		err = seals;
->> +		goto err_free_ser;
->> +	}
->> +
->>  	ser->pos = args->file->f_pos;
->>  	ser->size = i_size_read(inode);
->> +	ser->seals = seals;
->>  
->>  	err = memfd_luo_preserve_folios(args->file, &ser->folios,
->>  					&folios_ser, &nr_folios);
->> @@ -444,13 +453,23 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
->>  	if (!ser)
->>  		return -EINVAL;
->>  
->> -	file = memfd_alloc_file("", 0);
->> +	/*
->> +	 * The seals are preserved. Allow sealing here so they can be added
->> +	 * later.
->> +	 */
->> +	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
->
-> I think we should select flags passed to memfd_alloc_file() based on
-> ser->seals (and later based on ser->seals and ser->flags).
+> Signed-off-by: Tycho Andersen (AMD) <tycho@kernel.org>
 
-Not sure what you mean.
+Thanks.
 
-I think the only seal we can set via memfd_alloc_file() flags is
-MFD_NOEXEC_SEAL, which is really a F_SEAL_EXEC and plus a change of the
-inode's mode. And now that I think of it, that is a valid use case that
-we might as well support. But I think that should be done by preserving
-the mode of the inode directly, and then copying the seals back. The
-main reason for that is that the mode can be changed after the memfd is
-created too.
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-Other than that, all other seals are set by fcntl (via
-memfd_add_seals()), so I don't see what else we can pass to
-memfd_alloc_file().
-
->
->>  	if (IS_ERR(file)) {
->>  		pr_err("failed to setup file: %pe\n", file);
->>  		err = PTR_ERR(file);
->>  		goto free_ser;
->>  	}
->>  
->> +	err = memfd_add_seals(file, ser->seals);
->
-> I'm not sure using MFD_ALLOW_SEALING is enough if there was F_SEAL_EXEC in
-> seals.
-
-Why not? memfd_add_seals() can handle F_SEAL_EXEC as far as I can tell.
-
->
->> +	if (err) {
->> +		pr_err("failed to add seals: %pe\n", ERR_PTR(err));
->> +		goto put_file;
->> +	}
->> +
->>  	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
->>  	file->f_inode->i_size = ser->size;
->>  
->> -- 
->> 2.52.0.457.g6b5491de43-goog
->> 
+[...]
 
 -- 
 Regards,
