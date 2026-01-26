@@ -4,128 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C549D19502
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 18:55:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E523CD19502
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 18:57:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C8646B0005; Mon, 26 Jan 2026 13:55:21 -0500 (EST)
+	id 53D336B0089; Mon, 26 Jan 2026 13:57:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94C1D6B0089; Mon, 26 Jan 2026 13:55:21 -0500 (EST)
+	id 4EB746B008A; Mon, 26 Jan 2026 13:57:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 824796B008A; Mon, 26 Jan 2026 13:55:21 -0500 (EST)
+	id 3E9D66B008C; Mon, 26 Jan 2026 13:57:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7168E6B0005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:55:21 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18D5713BB23
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:55:21 +0000 (UTC)
-X-FDA: 84375018042.25.CEDEBC3
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1095A40007
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:55:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=4b+R0ix5;
-	spf=pass (imf07.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769453719;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E4676B0089
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:57:33 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DDC321608AA
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:57:32 +0000 (UTC)
+X-FDA: 84375023544.12.28B9BD6
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DD6371C0016
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:57:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QrCeF2lv;
+	spf=pass (imf18.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769453851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lrmRnMiS7e8oDqS8sJHadbKNaRE4y8/9HerN9jURAnw=;
-	b=FgYJwnAw5hYylGEmrV7KmhNAI/UnvhYycZWIQ5UQcK/I6O+nJvwkSHsY63v7RdXROVTdtY
-	gFOvhCaEH/aR9pKw/OySoaMCLo4EXQxbrI6G/zZvuOoQmLEE9EORnWZAvs5wL93kJzIQl2
-	Ou198uPdFURiqL4a4DNqjUsjzufHTKE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=acm.org header.s=mr01 header.b=4b+R0ix5;
-	spf=pass (imf07.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
-	dmarc=pass (policy=reject) header.from=acm.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769453719; a=rsa-sha256;
-	cv=none;
-	b=SnERUcSR0gVl6e8R6qQX8vA13ju/IJeGwyHDlB/NLbLqkzlv8+EBAh6mshVhIo7UiuhVna
-	Vrajxi5bMjLw68W7AjBiCsOp25tXDyl1JAb8bluWvEQwfY9L/S/3DM8Q6yfzYoWNq1l4+p
-	KDbfkAgFl1yjOamik1qI4jR99jJ8aRU=
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4f0Hm56kBhzlgyGr;
-	Mon, 26 Jan 2026 18:55:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1769453709; x=1772045710; bh=lrmRnMiS7e8oDqS8sJHadbKN
-	aRE4y8/9HerN9jURAnw=; b=4b+R0ix5+Os0UdymHVdPefR75pAjuePHzZSBDv1T
-	PhKFA4FAC8OQc9TuXgMxSrv6ALYLM26zsK043txlRzxnGUh1OQAsqSN0foShyawt
-	pgoA82i8a3e56Az+c5yQ/FRzJRlVVV9ONPOmo5QZvE0Q0R6BZlDabDdSvqRaIrWq
-	5qv/o/SAv+5/3fRLam45SzREjjV6pc62GFn6nBiQJg3JMywlrNKvmQ7VlMyrTxAH
-	T23+3S/pU978iX4yw8ahY2EFo/8Xq0lczgH+hEk7oD3ExiVmcFff0tai2SlH7PR7
-	9U/uiA5vPsPPUdDSnrYljSKcp1+NnDZMaTuY+V/YB+pCTQ==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id vhOvcRL97NLm; Mon, 26 Jan 2026 18:55:09 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4f0Hlj4MJNzlh1T6;
-	Mon, 26 Jan 2026 18:54:57 +0000 (UTC)
-Message-ID: <8c1bbab4-4615-4518-b773-a006d1402b8b@acm.org>
-Date: Mon, 26 Jan 2026 10:54:56 -0800
+	bh=X2Nt6k2L4eZl/SWEw98vmqFsh/LJST5rQhrTBW6429k=;
+	b=s/IGIkDsuMWPEOG6NYOXsvPRgFTVu9Xv8G/H1it1CvT3wkzcZtc9ZosLAueD9E5GmwfQGB
+	Bz8DSxqbiR3obxfl44TIlodhDXMSewogygKaDfYnW8Opd8w3i5hJBE/80xgKQfXJvuF3/d
+	xjmVkKyyerXwoVrvgs86KD/6u4s8a5U=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QrCeF2lv;
+	spf=pass (imf18.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769453851; a=rsa-sha256;
+	cv=pass;
+	b=GNVxtQTIJs3FI/oYlKwg1lF/WBfN7sEH53NEj7sXkFyUIYdTvztTKfTNT24dU2aSVq7Dhr
+	yhwt6FFGhyr34Kv8b4D9cCGJgZV+g+SRQ/Gmh9XONJdSZggkFS2D6BTZX05rk886qpsx0g
+	1cVzlKHMO0BsFIbKhDoG1A52eOWXm58=
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b872cfd35cfso69121066b.1
+        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 10:57:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769453849; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T/VF67MHpEstYwAjHjiD8rHYC7aOJvmKijWVdFJLz+T+MChRPO4kzqhx8ELgXdpgDr
+         NPrlFHnjyGAScAtPf/NlnCS31Jjew/UJzRc/ZAoz0jFJd8mBXdl2dj6DFp9jkHWb6wJG
+         y+/MIL85YwjbLsWTquRwwl7+uxoAIZPz3KoUOl6FPRbVdL2iuLgGdInJ7RRnI5iC61CC
+         TUDnD1rlF7AM2bZ8LBFu3egz9srnXWzvUZtRqy3DuKXvk7/MgpfXhZpQuHUlyP28gPnt
+         I4KpguGkYgxkwdwdE0x40M5XESrdZy4Aj3AUc1rcRRYmXY6Oc8GBYep1elYZ2Ea4y0kT
+         NkMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=X2Nt6k2L4eZl/SWEw98vmqFsh/LJST5rQhrTBW6429k=;
+        fh=IBfPfWDovVTTveeyU5qbgaarhCZEqIUFAZBCAf7e6bE=;
+        b=hXt+ZIKGiOpEuEBxJ49nPnWk68p/1pv3P+n0VfxQHUguZqY50Flf2P7YQZkmf3w/vu
+         qw4dCjVaTxHA8Tx2lmMROFoX5pOTh1T/C58A1kPBHxFlS/4nnTf1TFQHgXGQXfcv7J73
+         EhmxpxUI5sFfit48MEfb1IgvMxFuaYkETJlNPKQGm1oadzbE9TsRs/plFRAgiLPfduqP
+         1j3M9NzbCQD59MWum1njY5CAROJQlB6vcfJqVmW69MPdQkHkV6ww6B3em5poqlUq3S2D
+         klZNHlf15KH6rTzWUgXETFxr+K6fenZCeXQ5srw1fPlGXchQ5NOp12hhPjITkC/BckzQ
+         JFfg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769453849; x=1770058649; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=X2Nt6k2L4eZl/SWEw98vmqFsh/LJST5rQhrTBW6429k=;
+        b=QrCeF2lvSXMtz/SFuF4Lmr+rwMYcqhF2x5BpVakwnccG5sS8NGZzsteiJdz2lr3eOX
+         r2EY8xJ61pOe0sPjib5jEyvaQoWq30TO/35mku1033cqDc28rBIbCuyyMryvCvajrgn6
+         E5G7isR6lvqulYydf456vYZouRY13CKqFH4piQLfNqRRC05u6eP7usuwxrOvCpX14wP2
+         CDi72EtW1k2hx80LnPC9ZCysnZaq8fAaD13ReRq83PVf9NSJt+2PTeUMVPuyHqk271ya
+         48K7CnOCsMg+BDaudZ5aeVu4CtYRBJW1EyRCEVPAWvwIKIw73GcxzrXhc9NpZ+5k4rnK
+         sG6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769453849; x=1770058649;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X2Nt6k2L4eZl/SWEw98vmqFsh/LJST5rQhrTBW6429k=;
+        b=xGYn0C1JIfXwwI8khW5vyz/6Sh9kITPpOMoe+iMzPGdZdWjsE7PX9TSk7rI8j32wGA
+         LVqZFSgh5IV4Y+vnoVUTkAXqGs2j1PfQ7QkHJ4CMYO9ArdKcqAC5Y0WGV7VoRhK8QMY4
+         jy9JZbR717SyeG+tErLhpSmbFYU2CMvhQ/q/F0dW4fW32uVvjZvwKS6iBzpRdli5Yr8B
+         rkRlm2Lz274otbh6uqGO6x4xu0/UpyuPW//1OBB45J+PwieNseR9FejB5kK9FV9AhOkT
+         T2GfeF2dEW7EhB1GHZ0GVwi96sZWANXAw/wIJlDw6Ef0sGbCjz4puqEQ6p4vsPIcm2Xg
+         CDvw==
+X-Forwarded-Encrypted: i=1; AJvYcCU99dpq+ZdyVQi9LpFwOhbviXzn6qC2b5MGUVsCXyme8svLEaO2z6tM/AytMg5xIsQe0Gy8hxJROw==@kvack.org
+X-Gm-Message-State: AOJu0YzNLFzpCMTW1lJHzaJsRr3tICJy0o/1ShDlhKAP8iBXA16s044B
+	1jUj/4cv0OkSJzmG+wbKesT9T1dM/K+csLYU+clbHVjtriAmPd5Hjw3t4BeCe6t+wVIEf2YyjbE
+	j9ZoZZ0I0g2uJQh/1pOqnMGKX2+GrPiQ=
+X-Gm-Gg: AZuq6aJZYrqvKHexQou0tEKTO11sIFp3vpSJ2g7BT1qY4zSpCYfKqZWIBbIwPnsexpW
+	DBvMnslI7J2tgXeJOcoOMIgOYtKoWzZz9k/PwoaR+CcgcrVfOCG3iKjQ+7bokKmuFRrtdqu8Z8F
+	u9SasZ4M/tPlTMIbxgtz+mWjv1r4g6n25Jyl8ILrLvDnCz/SRGuZ8rpCl+YWAwYdPDuJ7sydJYv
+	GQiyQHJDkwO2KIF2JpfRXN6E/9DW4n3DXo58PstYtKIeLW+xsRCMw0UIcpqGmh85AtlIVA=
+X-Received: by 2002:a17:907:7fa6:b0:b8a:f365:f2f4 with SMTP id
+ a640c23a62f3a-b8d20b42330mr228465366b.0.1769453849055; Mon, 26 Jan 2026
+ 10:57:29 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 15/36] srcu: Support Clang's context analysis
-To: Marco Elver <elver@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-16-elver@google.com>
- <dd65bb7b-0dac-437a-a370-38efeb4737ba@acm.org>
- <aXez9fSxdfu5-Boo@elver.google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <aXez9fSxdfu5-Boo@elver.google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bepzuhoz3karkiwpa6uzeew43pbgb7uz
-X-Rspamd-Queue-Id: 1095A40007
+References: <6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de>
+ <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de> <CADVatmM_mRnkDX=hpUjbyKkZnGynxJfRSujGxm2LaWWMEL_2ew@mail.gmail.com>
+ <ef9223ee-0a4e-468c-bfd0-0cf190d262f1@molgen.mpg.de> <aVgjpWaIRkerdgCa@eldamar.lan>
+ <49cdd663-bcbd-48b4-ac38-77ce94ef0c8d@molgen.mpg.de> <aVj-mz8vaw53TWtX@debian>
+ <aXHeLGr1n-W-Ay44@eldamar.lan>
+In-Reply-To: <aXHeLGr1n-W-Ay44@eldamar.lan>
+From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Date: Mon, 26 Jan 2026 18:56:52 +0000
+X-Gm-Features: AZwV_QhUnyzIrspUJHMl5wxPaQZIKc2UPXxov3UABxIDoJiLKH6ZmgxeZIssq8Y
+Message-ID: <CADVatmNzTyUAr8UBvm6pHFsKz8xZpqUXh5NQR641JXsCWaPg8g@mail.gmail.com>
+Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, 
+	Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, regressions@lists.linux.dev, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Giuseppe Sacco <eppesuig@debian.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fod3kg8r7ex1p4g9brn68yymfh4ox3ws
+X-Rspamd-Queue-Id: DD6371C0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769453718-502169
-X-HE-Meta: U2FsdGVkX18bOrkffV1Jgnl2tWFsCktixvXn3EPl9sj1KiGGON89g56h7UH481m4K2CpWq8RpmORNu5cpFV61O15hZGPXLfbWmwI0z+dQMs2uT67RnTb+JYqk9b3MTOzxUJ6H5fOwsBohl7YrdA7mEYUNGcLnXngdEYqyJOt5lkG1yhb0Djh5FdjaxWH+21LILjpeHxRUNCjlKEV6KcBrfQ3tw0paX1w57eH3YQcGqeuiCGRc3MJIrfik2DAo4cxqvDZMp342t1xD0Zi8LnOSHPKJ1FoTtXiZv4oCdO/83UcfbcU0ZSZGN+RC22Jdh6N3hWPQxZmXl58dGeTGCGoiy2aDvQ4jFQM/kSdjUPBkTV6xm0Cf8HmRvPHVIRJcwmWsJ+YGYhZVhfTTVVSRulJJXoE5X+iJCPtPkOZZQYdd3kvTwMUQ+uDARe+Z/1b2hvpdL0q7lyJcQKMrJrunB3w6gtozqP4p21g1JGWSGraPp/cYi/M46h1Pr53rXXiVeSQ9DVLs+Lc0VVXIJSf9o1oVF6jdYSQQcYDFBpWodiAo/c9oTdcb0TFMs7bDpp7ZeZZ4JvsI5fGSICaGwYwh0STh7yG8mHuSKuUO2TX1GAk6IVO++BaJqcnS7Kl/sLfCdwQDARsh9uGIgiy4Icj7Yvw/PJrF1VTenePBkRDOT4Nn6tmG+k9Mtqhjsna7ZLCAhO33Gt51/NEktly/t8uIWFVyHCdlj3AA+w9EAwWp0Jp+AreOzWt2av/+nIFD1/kcodtsTG+s2m+9kNfiTI6tsoxIv6khQk4506DtzCEKBen9BP+4P0M7Z5+ZN7kZov046ePVJpARXTVMORo0I+OIRq7yaxSwVIriuFrJVahTlAawsWQMc6Iv5i9OeY47p/5H8sz6N5BdqAr2j1cZHYrB8dgc06SNnLsO23i7zWzXDoNqF561/Vy831jcgSR3yDNqJArgDtj/oZBadigOxx7ZOM
- XjORCCSG
- iTNc0PoEL5o6Njz2IaaOiBsBVBBSQJNzZmhqc/Rw0chBFBxVMjlE1lsIEOGbR+hX2RpibjD+d0Bx8l9fdPnFYgnoWHUKAbhBMpXLbxIuxZLFVX+ahTJ6WIZa1z+sabMe0kmRYm7rFp0tjGIiZn+HQkBtaDtKkb3BPMVVQtauB6yDnDD36Kyy24dtEcdE8dhcbrisdbaOD00SdNxsePrKkE+GsdcTYxuipQzIXxFbF9ac/wpCs0kSnsR2cPin632EFSNb848abRKOIgVxLh/zfcMzmVygvHr+9Fs417MpfZ4DIaxjK7T85sm7tsv60ZwCYwoUJSP8QIJTZVsRTu/DrHRexiQIE9XDzmqbCxnjCgD145wQ=
+X-HE-Tag: 1769453850-649148
+X-HE-Meta: U2FsdGVkX18EiNBBkwMyL3vyIbKh35nrI8PRnprLcQfP0NjCWTbxIl7TnlXX0PD4Bwb0ufauWWpUP1DIwE1AyZH+loF2cW7hugUHI12vXxvk2OM4s8DoPengqES3BEXoAr63ZOK1RNY0Fh1ILSfqtnQO1k4vod+Lnay4je6AeyI6KQ5WkRzw4eL+oHZWtdoWj36yfp+SCwC395sj5aBlbDCtJW09Bh64Arjs4Fm3uXKiuGXbeLu8DOGPHR0vDEaHwOeeSFB8U7fZDHesbqUqbUgkhql9gl7ZcixXwbdq/zK5xoe5++vRlS+LN6Xfh+ScXTA7QX2fUPj0Nz34gzIWu8pro1EiRun42J3Nxb1ktKgPl0AGyLtF3A/xOf4ccY3y2b78iFqE9vs1SnKWRJFRo6RFm1nC6D/hfyXNJ76JgYfUJFFcmHdio4yjKgFcgsBbwZaCWQrBFegkyYQMn6WnjW38UTXrml4B1eKajqjNzrodo8QwFLvWnV0G9crte1pzJngXv0afJ9DPt74Yg8f5W253iNricLIWtX8RektE+s5d9Wj00LSXTH+VXp2v2iYVe0YYd1Iiu68U2lLx1c/5Jbw9/M4q6aKFJbl3HarloeOSuumW0Zh8iTuHCw1T5nHy5pEA/lRJdeoCpopjQmUWaj4qqjK3qEcJy4mEc5gFrYm87XXlF56b35Ky3aARGKTXXhNQUwFM3FKLZPges6zqVrIE+IMerU0vwMjSigDAqVgqDOYaoLoF7xMDcIxo7+8xyW/dDkjV53edvTrVma6TB1YVdJHdEJqhY6MrboQQWKuTO5Koxb96D0NvIkmdDJV+g+yZYfTbEXgQ2Ugq3kweU5p6htFpYPJwrDizrtlgIGrjRaPH4e12JuiYXaKRgwEk0RcvE5OihAC9UEzmfrY2UybiSGQRYEJ8Lu1ACLHEY28RdvKQXfwaLnTjt5CFbHcll1izaEn25P8wumXf9e3
+ FSGvnGjh
+ x7yeoZ9bzG60lDJvH953Yu9qu3xup9AB36/EZHMB1vGB17YR2tfklxQk0+Sf0MphyTCXuJtbjYtiMYkVLKZ10h0xWw+ia1yOZEzxkqPXnhqpK0HbI7wwOHoz1aPw1ioKWELkTALMRJKc/oVxYBO2aBqlq3A+4TqzGe6YeiNOM6MxO6hX3eYCMsqqvE9jSjZlXbCSjFkmQNJ0mhLdrnsF1y65D/WgLRQ19cIAdXH6qFh8GNQGeY9GqI4jXF12gbuvHmBUaUf7nj76zkZqczozJxpqYMMmRt3rQzsWcRgiJupxwAtONUWTBSwsOT5rafs5lxqHXBjamfW/+9BdsgH7g1uUWbAA9rMSnG6DXl+5f0sMc41v5GtttuXwGjugXz6G+Q+N6js2erlgubdS3l4E2qD7jR3RjMDBZ0y74Kd32nKmeOGJmc+r0NI3/U6O+RxeNPgfnyZFxDVLSph0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,53 +144,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/26/26 10:35 AM, Marco Elver wrote:
-> That being said, I don't think it's wrong to write e.g.:
-> 
-> 	spin_lock(&updater_lock);
-> 	__acquire_shared(ssp);
-> 	...
-> 	// writes happen through rcu_assign_pointer()
-> 	// reads can happen through srcu_dereference_check()
-> 	...
-> 	__release_shared(ssp);
-> 	spin_unlock(&updater_lock);
-> 
-> , given holding the updater lock implies reader access.
-> 
-> And given the analysis is opt-in (CONTEXT_ANALYSIS := y), I think
-> it's a manageable problem.
+Hi Salvatore,
 
-I'd like to make context-analysis mandatory for the entire kernel tree.
+On Thu, 22 Jan 2026 at 09:59, Salvatore Bonaccorso <carnil@debian.org> wrote:
+>
+> Hi Sudip,
+>
+> On Sat, Jan 03, 2026 at 11:33:47AM +0000, Sudip Mukherjee wrote:
+> > On Sat, Jan 03, 2026 at 12:01:19PM +0600, Paul Menzel wrote:
+> > > Dear Salvatore,
+> > >
+> > >
+> > > Thank you for the follow-up.
+> > >
+<snip>
+>
+> We had another report (https://bugs.debian.org/1126128_ but the
+> problem remains here as well the reproducibilty. Uppon several reboots
+> only the first one so far showed the problem and was not reproducible
+> afterwards.
 
-> If you have a different idea how we can solve this, please let us know.
-> 
-> One final note, usage of srcu_dereference_check() is rare enough:
-> 
-> 	arch/x86/kvm/hyperv.c:	irq_rt = srcu_dereference_check(kvm->irq_routing, &kvm->irq_srcu,
-> 	arch/x86/kvm/x86.c:	kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
-> 	arch/x86/kvm/x86.c:	kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
-> 	drivers/gpio/gpiolib.c:	label = srcu_dereference_check(desc->label, &desc->gdev->desc_srcu,
-> 	drivers/hv/mshv_irq.c:	girq_tbl = srcu_dereference_check(partition->pt_girq_tbl,
-> 	drivers/hwtracing/stm/core.c:	link = srcu_dereference_check(src->link, &stm_source_srcu, 1);
-> 	drivers/infiniband/hw/hfi1/user_sdma.c:	pq = srcu_dereference_check(fd->pq, &fd->pq_srcu,
-> 	fs/quota/dquot.c:			struct dquot *dquot = srcu_dereference_check(
-> 	fs/quota/dquot.c:				struct dquot *dquot = srcu_dereference_check(
-> 	fs/quota/dquot.c:		put[cnt] = srcu_dereference_check(dquots[cnt], &dquot_srcu,
-> 	fs/quota/dquot.c:		transfer_from[cnt] = srcu_dereference_check(dquots[cnt],
-> 	include/linux/kvm_host.h:	return srcu_dereference_check(kvm->memslots[as_id], &kvm->srcu,
-> 	virt/kvm/irqchip.c:	irq_rt = srcu_dereference_check(kvm->irq_routing, &kvm->irq_srcu,
-> 
-> , that I think it's easy enough to annotate these places with the above
-> suggestions in case you're trying out global enablement.
+I was going to post the patch today but since you have asked the
+reporter of the last bug to test it so lets wait for few more days.
 
-Has it ever been considered to add support in the clang compiler for a
-variant of __must_hold() that expresses that one of two capabilities
-must be held by the caller? I think that would remove the need to
-annotate SRCU update-side code with __acquire_shared(ssp) and
-__release_shared(ssp).
+About the problem showing on the first boot, does that mean that its
+only seen on a cold boot ? and not seen on reboots (reboots without
+power cycle) ?
+Can it be reproduced if the system is powered-off and then powering it on ?
 
-Thanks,
 
-Bart.
+-- 
+Regards
+Sudip
 
