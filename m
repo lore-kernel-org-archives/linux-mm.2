@@ -4,88 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03AF1D13C0D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 13:47:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22097D13C0F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 13:52:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6741A6B0088; Mon, 26 Jan 2026 08:47:22 -0500 (EST)
+	id 824E46B0089; Mon, 26 Jan 2026 08:52:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 648716B008A; Mon, 26 Jan 2026 08:47:22 -0500 (EST)
+	id 7D2166B008A; Mon, 26 Jan 2026 08:52:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54AC26B008C; Mon, 26 Jan 2026 08:47:22 -0500 (EST)
+	id 6B3C56B008C; Mon, 26 Jan 2026 08:52:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 40A006B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:47:22 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CAECBBB2A7
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:47:21 +0000 (UTC)
-X-FDA: 84374241882.05.57693CA
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 11C8C40002
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:47:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PTW8Tqhg
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BD746B0089
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:52:18 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EAA7BBB163
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:52:17 +0000 (UTC)
+X-FDA: 84374254314.12.E953397
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 596781C000D
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:52:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVVmZvFr;
+	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769435240;
+	s=arc-20220608; t=1769435536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aa1DMzjW5ihMgg92YYEEvi+hVWZtO1QQ1kl6+AaoZvQ=;
-	b=V1WkDgRbxsSTtgC/P/GHpgHqnvL122Y6M8kh1huZSDUUzp6+phf9V5Max0TC/f8IdZtN4i
-	0TY+bnMeriDqeLiR02E2SYPLbrWRaiQNk04/6uTGFbIgdz0gAqvnPttzGtK3uMe3ky81OT
-	pp398QN+/7ZdXvpIEOgiataeO9U3D4A=
+	bh=Ky62GUwPERN/e0pyAb7yB0pYqm86UmimVZKdDJ3jtbo=;
+	b=FZbbTxqlukQPSHiiSjV+RXWmDbJ/Fe+JP2YgzZHRm+1a7ZUneApdrjmnrr3ilPP2e9lTKm
+	IgS40xKxkPnAD78gshRjU32jJi86RdRI2rgrneUQ+eI0CsK/y1J2+gR/Xa0fdgLUBiDVW7
+	xLkj5Aoh4j6jzd/qnkdGnmC/cVg3tf0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PTW8Tqhg;
-	spf=none (imf12.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769435240; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVVmZvFr;
+	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769435536; a=rsa-sha256;
 	cv=none;
-	b=eLqCWF549yP9Adts+jdxIlTsl3J+ntYM862c7yIsH9F9VjGbCSFkqYoNzvTcD4vQF3trpM
-	1+WZbSMysw+zJ0kMgwmvV5uyXeUOkqsDMececSE7XNbAyJp/EKyf90JG7IMcMg0oSqevBq
-	oFH2sPkKP8kULRrwYAgrCs8w7JhZnLY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=aa1DMzjW5ihMgg92YYEEvi+hVWZtO1QQ1kl6+AaoZvQ=; b=PTW8TqhgFvvUWcRC3HJM028fcP
-	M7Vxisjv/gGMNmxFO/SLOgwXfepfwBg8TfKn2bhZf1AVDlJkcvSDMbJLwOpj10bTWKE3kluom+K+N
-	/L0DHiSRwa7TItLibUQbsjIgw5OQ5QBdu/vN9mLeWAu9Bt2yyDrmdLewyCBzHo1Q9fkJfSQdJfOka
-	MCN20eKZFSUeIVHI1U2iyeA/KMrVnyztbocEcxEPWBtKFAZcXb76eg90AIrS+9ZSs2PscROltDqCp
-	YsKRS5aiepm+1WZlSQvL1/1oDp0bVAyFumjQytrDAxjxZyw7mUrB54GxuaxhmlLkyF1ke7ddLpjHE
-	Ynk/aOxg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vkMvr-00GDT2-Op; Mon, 26 Jan 2026 13:47:08 +0000
-Date: Mon, 26 Jan 2026 05:47:02 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
-	riel@surriel.com, kernel-team@meta.com, SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH v4] kho: kexec-metadata: track previous kernel chain
-Message-ID: <aXdwObCI5z6qbuwE@gmail.com>
-References: <20260121-kho-v4-1-5c8fe77b6804@debian.org>
- <aXdTEzsm88JKu9zY@gmail.com>
- <2vxzikcoa4g1.fsf@kernel.org>
+	b=peDqUuRx+ys5ILbykslfaArimJR+EMQnOwyo3YJcxyTqTRNFCAsh9Fo0HakrHkMy0EqNVe
+	IVferuNlcXkkP8OFoYFhO0oTEZ3J9QKKFkWhjirGUo3tjJlCbME75rCBmnI1p01+oxJQmN
+	gKijB/SSgolxKwEd+MFbE3R2B6nsS24=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ADA94600C3;
+	Mon, 26 Jan 2026 13:52:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D689CC116C6;
+	Mon, 26 Jan 2026 13:52:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769435535;
+	bh=kcA2cPiJEC19HBEstbYBifZWvAw98I0XK00+8H10mco=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kVVmZvFr+CRLz0dBd5XLWyUavbW8nCgjkNtfsZ68viSoUlQzfs77mgqO6yT/jpeN8
+	 pg7kQkZ+GT9I3gBbH5KSW1N19v6LZBDwYGLOWXiqcQylBZ5g4+KO6kKGQcqEiAcp10
+	 ausowbCOUHsZ9bfKrKj7R3xBLNET1yxkp9J+5MLTEWX7f4No1SfT5XTL6aSPrTfT+N
+	 bCZy9asASdQMt42TI+gLu+rK/RLraHfA4D5BqFAPeAolk0a/hyw0wdylU0k19HWyrL
+	 x4wXKWwVwt8GOfxwvDBurrXf2OyecnDAn/Q+0+zLdQYHvjvwQgg6PufPEP9PU1/i/q
+	 WOFYplVNvnCcg==
+Date: Mon, 26 Jan 2026 13:52:05 +0000
+From: Will Deacon <will@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 29/33] sched/arm64: Move fallback task cpumask to
+ HK_TYPE_DOMAIN
+Message-ID: <aXdxhfVLqyv-2SDX@willie-the-truck>
+References: <20260125224541.50226-1-frederic@kernel.org>
+ <20260125224541.50226-30-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2vxzikcoa4g1.fsf@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 11C8C40002
-X-Stat-Signature: nbd4hgwfxjtzgng89ytdxnnrxk95hrdx
+In-Reply-To: <20260125224541.50226-30-frederic@kernel.org>
+X-Stat-Signature: xhcwwrf18myeg5546otojrd65s7fc11x
 X-Rspam-User: 
-X-HE-Tag: 1769435239-723989
-X-HE-Meta: U2FsdGVkX18ifOsnGc0Ddt8mMuEJbNEIzakhgKTlkY3Hi5J/cmc4r3F66+NE3Q1P8i7O3vzVAVZaWpJ3Jx6or5sehMR6giPTl6vdGlvUejxkpZKGnGqmvu86+DFufB6k0jcDAnszg9I7EyLNVy202IliXyDpciIB3y9v5ZcESSA09eoS4t6mlwzm9o2uNFFNvBdW5xXrF4CbEdl+Gyaos3VWBe4Osqtf6Qc6YrsYh8YMBIAUrI9XNqq/Wd++eEITb64nVhBaed8G2jfavKKwuTU8xUUnTKZlO7BaBVoeOfvhw3IOGqouZCkGW88RaA7Vqs2ta+nr7bJv+3q2zcCPYVOokMxDqlviYfxeCFPN5/mPoa2CYITAGdQ9oHLAJk2jVrzj8vBpa88tdXcRizjrGWjcDPCweIRLN/htsl+XvW2ZMx6uLAq5WRK2RJohnUPw+mPAZ6K9LGkq93ZMzo/dmNJKXcqT6p0HrEltVtEjjHX2ejufgExF/IO9dAoMAWnNp7y5Dw7eEx9SzSP8zjotDoxV8Ozbe9YCC1F/PD0YPPDAhGfv0HGHrUdAgyf3jYtB/3OSs5fZm03Pe8FfVk54QsS84KQzH48JM5gfvh9lk/YWhH+6uQcR/wWHg5d4tXVJu5akxBYteVdaNRur1aKQrKT+sVtBpjXutrUceNKP3Th/lsk/j9KkW0iOicMZSpTy1wR9g8xb5NMTdK8IjGPUDmkO30kLU8K/EHeB2/D7xFooyGqXKfC7bwboMI0DYPfB6HHtpXGdgsY4nEEi53Pz5xp9wB2PjQ0Fe8pKxPW2zOc6rn0cjwQg0Z8aWHnOXCVPKvaJHCQ62C0DdMo+oTPPaF+eZybHJo3rGL8bYdoc1lO1EYa3ur/iLltubZ9FrGao8AsHeBxWtF0o7i1vahTJwvw7P9JS5n96qEkU2gN4EoblSfOZimA6FSMzEen6KCcty7lDNF1wKh61IirxTqI
- IaYsbQzG
- jqQwnbePwxfoURxmosQ+qvIAsYOQK17od+/Fo3MXmVz5fDUxYX2NtS5hJXok8c4GcojF+ITZFh7/Uq/lFsRLd0heu9UojaQ3LVB2mjwK/SbLsDr+XzSQshX90L3JrUIsdJ1uB
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 596781C000D
+X-HE-Tag: 1769435536-467048
+X-HE-Meta: U2FsdGVkX1878V5AXIC+JQe2VLsVv2PYIm88UMY+KDnMCTXEybI36/a6xUL6yxVUE1E62ojZo6jaQvFm10/v9FsbnzjoxXmU4wao65HuMtBHc1JPWEv5+2Dos/hOMH9IB2VXMNFPI5o4bf4OijjI2R+5y6nIDYzbcLrDvlWDwwEQ3XyCLWqHeLi0mWiuh6C2N7NUHVhMs2vovEoprWkhrAAn5UDNQJ8pDMolqz4GK81Tt6cflMwKigCuD+WRCJXk/GeBCDerH2ZP6bXHTHsOYeEeFHeKW9JM4p6SWMjn/IkmzzAxpBUfLLThPFchReYBV2ylDOCwB2nmUNeLowlKFicCmpgnZajs90mPCs3MOMX+9Rie5w655Y0j8pYzF1+5Bpwm4XN/FS4lfmjIUhweJK2IktBEf3cZbpJVk9paeoZaTefnRIU6ts2KgQWWAdj+11V5GzW+RkSCyVaHeX4SbjNtTiMyqEtko1Rv3uDeEAzKY9npk92Cvf6PYS5qaa86zbVJ5WJLZQ0U3Z5n7GPv3tb08RuYP1Vb2Utt46eMxdupjgMkGN9FjWZx6PQbl9am2JQJDo8IKk2j1YykncIVd3r67SLJ1SXJijy59zi4hQ1p95006n/GCJF9FDHUKaBOzYQSY77kM2/07ZmzJ97j0rLFabBYxUSF2PAezv9OkQsx3SzDbqtMnIZHRTi02/hwBnO3FxKtauLTnK0hI5P1d9QM19fs0En5w8q7X6swunMZZ/NfPLLyGY+xpeorQ0Wcv3Yzroqpn8lrFtdpyacvMduOUY3YA3zpYl7iCA6VdDfoffh0J02G3tr1pXvbHyyR0rLfUoyRLxxlHXiPPkYjGNMODhfSdZZriaYrFpoOG3/fvk1LONQYZJO/N+hfxLQYuDqybhi7DyJrQqiyyv2xizdO+Oj6AQw9KhQKgPe8TESkyCcB6z2Eekbmtli5b2cXDJWLczPp8Hf5tMwPkMt
+ FWLm5B15
+ KJIZAXpPaCpe3jvdN+8U5fIcSektB3HD9fhn4mEIH6IW5YjwwxAfHoQ9u5eVOEoWk6KeOiGT7UZtRJmZJVptwvPxVJucEtAKGdVU40XTuCjPkJMPGaIY4pIZMYWLovuRfS1zUdEI2w8IfwRB7yfehmPRoqb+dUPYl2D0g0RNsOwBlJthK176c6ZBVHKIH14yqJhJk/wXE1Vnp8hhj8PCoYkSezEAvHJbaPQ7Wl3m51YIGUZXc85QaSDmwY7QOC7dl46m5oM/5CCCTzqlrCeD8DYsAyI6gRSer09sE1fPBDKdCtmUCxNNLUVIGD2H6/iZynvW2OJc3zpf6yowLib+soDTWVw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,76 +118,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 26, 2026 at 02:28:30PM +0100, Pratyush Yadav wrote:
-> > On Wed, Jan 21, 2026 at 06:50:38AM -0800, Breno Leitao wrote:
-> >> +static __init int kho_populate_kexec_metadata(void)
-> >> +{
-> >> +	struct kho_kexec_metadata *metadata;
-> >> +	int err;
-> >> +
-> >> +	metadata = kho_alloc_preserve(sizeof(*metadata));
-> >> +	if (IS_ERR(metadata))
-> >> +		return PTR_ERR(metadata);
-> >> +
-> >> +	strscpy(metadata->previous_release, init_uts_ns.name.release,
-> >> +		sizeof(metadata->previous_release));
-> >> +	/* kho_in.kexec_count is set to 0 on cold boot */
-> >> +	metadata->kexec_count = kho_in.kexec_count + 1;
-> >> +
-> >> +	err = kho_add_subtree(KHO_METADATA_NODE_NAME, metadata);
-> >
-> > There is a hidden bug in here when CONFIG_KEXEC_HANDOVER_DEBUGFS is set.
+On Sun, Jan 25, 2026 at 11:45:36PM +0100, Frederic Weisbecker wrote:
+> When none of the allowed CPUs of a task are online, it gets migrated
+> to the fallback cpumask which is all the non nohz_full CPUs.
 > 
-> Good catch!
+> However just like nohz_full CPUs, domain isolated CPUs don't want to be
+> disturbed by tasks that have lost their CPU affinities.
 > 
-> >
-> > kho_add_subtree() expects a fdt as the second argument, and we are
-> > passing a pure C struct. That works fine, except for debugfs, which
-> > does:
-> >
-> >  1. kho_add_subtree() calls kho_debugfs_fdt_add()
-> >  2. kho_debugfs_fdt_add() calls __kho_debugfs_fdt_add()
-> >  3. __kho_debugfs_fdt_add() executes fdt_totalsize(fdt)
-> >
-> > The fdt_totalsize() macro reads bytes 4-7 of the input as a big-endian u32, and
-> > this will hit struct kho_kexec_metadata, given I am passing a C struct instead
-> > of a FDT.
-> >
-> >   struct kho_kexec_metadata {
-> >       char previous_release[__NEW_UTS_LEN + 1];  // 65 bytes
-> >       u32 kexec_count;
-> >   } __packed;
-> >
-> > Bytes 4-7 would be characters from previous_release (e.g., "0-rc" from
-> > "6.19.0-rc4..."). Interpreted as big-endian u32, this gives a garbage size
-> > value.
-> >
-> > The alternatives I see here are:
-> >
-> >  1) Come back to FDT instead of plain C struct, similarly to the previous
-> >     version [1]
-> >  2) Created some helpers to treat C struct fields specially just for this
-> >     feature, and we can do it later if we have more users.
-> >  3) Move this kexec_metadata to work on top of LUO (similarly to memfd), but
-> >     that would be an unnecessary dependency just to have this kexec_metadata.
-> >
-> > That said, for the next version, I am coming back to to FDT.
+> And since nohz_full rely on domain isolation to work correctly, the
+> housekeeping mask of domain isolated CPUs should always be a subset of
+> the housekeeping mask of nohz_full CPUs (there can be CPUs that are
+> domain isolated but not nohz_full, OTOH there shouldn't be nohz_full
+> CPUs that are not domain isolated):
 > 
-> Please, no. Don't go back to it just for the sake of this bug.
+> 	HK_TYPE_DOMAIN & HK_TYPE_KERNEL_NOISE == HK_TYPE_DOMAIN
 > 
-> I think KHO's assumption that the subtree will always point to an FDT is
-> broken, and we should fix that. I think KHO should expose the blob of
-> serialized data and let userspace figure out what the format is and how
-> to decode it.
+> Therefore use HK_TYPE_DOMAIN as the appropriate fallback target for
+> tasks. Note that cpuset isolated partitions are not supported on those
+> systems and may result in undefined behaviour.
 > 
-> To do that, we would need to update kho_add_subtree() to take a size
-> parameter from callers, and pass that down to debugfs code. I count 3
-> callers of kho_add_subtree() - memblock, LUO, and test_kho. I think all
-> 3 should be fairly easy to update, but I am happy to help out if you
-> need.
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> Reviewed-by: Waiman Long <longman@redhat.com>
+> ---
+>  Documentation/arch/arm64/asymmetric-32bit.rst | 12 ++++++++----
+>  arch/arm64/kernel/cpufeature.c                |  6 +++---
+>  2 files changed, 11 insertions(+), 7 deletions(-)
 
-Sure, let me hack and see what I can get here.
+Thanks, Frederic, this looks much better to me. I also chucked my old
+tests at it and it looked good, so:
 
-Thanks for the direction,
---breno
+Acked-by: Will Deacon <will@kernel.org>
+Tested-by: Will Deacon <will@kernel.org>
+
+Will
 
