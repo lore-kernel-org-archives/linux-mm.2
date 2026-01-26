@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A707D19502
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 16:50:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21DAD19502
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 16:50:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A0056B0005; Mon, 26 Jan 2026 11:50:04 -0500 (EST)
+	id 51A476B0093; Mon, 26 Jan 2026 11:50:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74EA86B008C; Mon, 26 Jan 2026 11:50:04 -0500 (EST)
+	id 4D17F6B0099; Mon, 26 Jan 2026 11:50:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 605E96B009B; Mon, 26 Jan 2026 11:50:04 -0500 (EST)
+	id 3A9BE6B009D; Mon, 26 Jan 2026 11:50:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DDC86B0005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 11:50:04 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB9EC8C57E
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:50:03 +0000 (UTC)
-X-FDA: 84374702286.04.CC9FE1B
-Received: from fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.72.182.33])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6412C8000B
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:50:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="g/IsneiZ";
-	spf=pass (imf30.hostedemail.com: domain of "prvs=479813157=kalyazin@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=479813157=kalyazin@amazon.co.uk";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A9276B0093
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 11:50:31 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C78E5D3167
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:50:30 +0000 (UTC)
+X-FDA: 84374703420.14.E82CF14
+Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2F90140009
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:50:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="Ve1Cb//j";
+	spf=pass (imf11.hostedemail.com: domain of "prvs=479813157=kalyazin@amazon.co.uk" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=479813157=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769446201;
+	s=arc-20220608; t=1769446228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YM73eY307YaRwo6+pc3v4qdEPN5NgqCcavRDYEf/Quc=;
-	b=UYTkGsTR2P5OEsiVa9rpOPCjDSdlzDLh8ERuwklNR7xzcO/4XGc1RvHHhowu9Ogvw5B+lZ
-	orcZK3FuJgOKYxSBTP1jKW+ICsrcYv4uHG/zU8o3itFT+L5dngki+bsgqdAX8yLepmN6w0
-	tbaHnTcc+Q1JrTBw2WI3MTD1hcLAumA=
+	bh=Z+0YCRdTDnWSs97jpjMZOSlIedfR2zbQnGU/yn7jp+s=;
+	b=qzcvXQOMWZR1G8RpPPNW5oTARYkjWuqUIHUgQqg5rLIIShyHi1RSwYXEsvIpuFlBoIIFRK
+	u2i1nC0RTh12SPxwZHFEhwkBk0uYYtQrjck0EqwisPFy6gKvaZzN3o5D7V5AkXTmNOrdX8
+	x91mh/SKSU7OLIfp+FWRvE7SDj4qqG0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="g/IsneiZ";
-	spf=pass (imf30.hostedemail.com: domain of "prvs=479813157=kalyazin@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=479813157=kalyazin@amazon.co.uk";
+	imf11.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="Ve1Cb//j";
+	spf=pass (imf11.hostedemail.com: domain of "prvs=479813157=kalyazin@amazon.co.uk" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=479813157=kalyazin@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769446201; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769446228; a=rsa-sha256;
 	cv=none;
-	b=1YCu1v71xtW1R1Oj8rN4teUFLIOYOO72OCawWRny/br39/lPSUMjuvPB05Fd6zb9JDqKJF
-	uRi3dCOFRgHeRLRYt38ci5cj/8XpzEEHfYJSxPKvZtibu9DDdLLwGdaXHL76gGtbrj3ItI
-	O7Lmb3LUAXsxd1H1NA4az2iP+SgM1Hc=
+	b=Ij5CsfVAopM/P8JitJZ4gi3dBr0gWkS+kbg843qJpi8HvGRch7hDClrhcD52Br18PtEXqa
+	QoYzdQS5OM2JQ5XMc0VPEkX7RRLRMimk6qkm4z9phQcwruUrZ3gN28Vavr89usiOkEDQS5
+	daCAYcCbe8a8tN7/0dRyUIerPPETXRI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1769446201; x=1800982201;
+  s=amazoncorp2; t=1769446228; x=1800982228;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=YM73eY307YaRwo6+pc3v4qdEPN5NgqCcavRDYEf/Quc=;
-  b=g/IsneiZmJ2IZBjZiUhwQh0001TAVkEBxZTiKeBUMyLezQHLjm9OSA/w
-   Hq4dnA8MAqY8NQIMbHFF/SOdweiOzOcmq5urX/6WecJl0mkjB4dGp80Qm
-   DYMGx2lSLtvnDIn8MUnvwMQ7hJiuLa2nwjiuZc003N3P0l8n3lRRj5Wu0
-   1NkX8bSb8Wbow53cDspRZnbRNGghqD6taiAdANOgO6Ap1hkyVrP/LgnhE
-   AT3Dh3EDaNVVDxPO0WMmyb+12fAyWnt7j4hld/H2i2ICom6jVaQCnFVSn
-   PkUY4ytB5G21R6mlnhsCGpXbTioWKbnIBTmu/XKPknDcp+WVdAM98GMH/
-   A==;
-X-CSE-ConnectionGUID: tsOMHVQVRZ65NfTX5SQhRg==
-X-CSE-MsgGUID: naQRpPAmQfq37MsuRHHn/w==
+  bh=Z+0YCRdTDnWSs97jpjMZOSlIedfR2zbQnGU/yn7jp+s=;
+  b=Ve1Cb//jLIyrIAmNQNE1rGNo9cvkS6PsNqcrJgMh36OJ8cTghDVhxm3H
+   Q+3RcBK9wrFemhjw3oLnXpOWg+rW6esG1u39BjxeO1RNM0ASytfCQqkT9
+   s15slnBnghozynKNRC1yGUyxYAslSYlCW8IszYJIQIlyUiw4OptjY4Dpa
+   4fPmvceNyHEUQewwA8l5s5L+UPn5heOkcD7AFnvIPRWTJuEzglJgomYCb
+   E5AQ4uV3SzI5FDVJziW08bn+kgGCb+btirP8sYAXLdGQhV/Gw5/gdKDlJ
+   u9TbPV1JfU9I3IOs4/bWl81N8mGyEJiFilFTF5dnpTpQ8sKfREi/3rXJb
+   g==;
+X-CSE-ConnectionGUID: u2oaZC4NS1OsnhY1SRBC7A==
+X-CSE-MsgGUID: Pxs/ngYXSYK56Rj63xFgrw==
 X-IronPort-AV: E=Sophos;i="6.21,255,1763424000"; 
-   d="scan'208";a="8451376"
+   d="scan'208";a="8462653"
 Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 16:49:59 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:21144]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.9.185:2525] with esmtp (Farcaster)
- id 54af3da5-7ca2-4763-b9d2-1af04fc03c99; Mon, 26 Jan 2026 16:49:59 +0000 (UTC)
-X-Farcaster-Flow-ID: 54af3da5-7ca2-4763-b9d2-1af04fc03c99
+  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 16:50:21 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.224:11258]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.13.191:2525] with esmtp (Farcaster)
+ id 0c98ffad-9331-4293-9e93-229526262b2a; Mon, 26 Jan 2026 16:50:21 +0000 (UTC)
+X-Farcaster-Flow-ID: 0c98ffad-9331-4293-9e93-229526262b2a
 Received: from EX19D005EUB002.ant.amazon.com (10.252.51.103) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
+ EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Mon, 26 Jan 2026 16:49:57 +0000
+ Mon, 26 Jan 2026 16:50:21 +0000
 Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
  EX19D005EUB002.ant.amazon.com (10.252.51.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Mon, 26 Jan 2026 16:49:57 +0000
+ Mon, 26 Jan 2026 16:50:20 +0000
 Received: from EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c]) by
  EX19D005EUB003.ant.amazon.com ([fe80::b825:becb:4b38:da0c%3]) with mapi id
- 15.02.2562.035; Mon, 26 Jan 2026 16:49:57 +0000
+ 15.02.2562.035; Mon, 26 Jan 2026 16:50:20 +0000
 From: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
 To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
 	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
@@ -156,13 +156,13 @@ CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
 	<jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
 	"Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
 	<xmarcalx@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
-Subject: [PATCH v10 06/15] KVM: guest_memfd: Add stub for
- kvm_arch_gmem_invalidate
-Thread-Topic: [PATCH v10 06/15] KVM: guest_memfd: Add stub for
- kvm_arch_gmem_invalidate
-Thread-Index: AQHcjuOFjtfKI2gu60qkE1RI1hTM5Q==
-Date: Mon, 26 Jan 2026 16:49:57 +0000
-Message-ID: <20260126164445.11867-7-kalyazin@amazon.com>
+Subject: [PATCH v10 08/15] KVM: arm64: define
+ kvm_arch_gmem_supports_no_direct_map()
+Thread-Topic: [PATCH v10 08/15] KVM: arm64: define
+ kvm_arch_gmem_supports_no_direct_map()
+Thread-Index: AQHcjuPbS80kQwcCmUC50XT6X/2MWg==
+Date: Mon, 26 Jan 2026 16:50:20 +0000
+Message-ID: <20260126164445.11867-9-kalyazin@amazon.com>
 References: <20260126164445.11867-1-kalyazin@amazon.com>
 In-Reply-To: <20260126164445.11867-1-kalyazin@amazon.com>
 Accept-Language: en-GB, en-US
@@ -173,14 +173,14 @@ x-originating-ip: [172.19.103.116]
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 3o6y1tmu3s56xg9amgmnrzom7bta44ms
+X-Stat-Signature: 1i47mu8q8ejmkounbsabnuj1zf5n7oyk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6412C8000B
-X-HE-Tag: 1769446201-506960
-X-HE-Meta: U2FsdGVkX199IjXIumgLDGiP7K1BdJ+KZHwqZDIgzNY/e4ykcreNYMvoFqKA+pPx9xsPIZDVZ5aan0UkfTYUvBL8/WOFkrrBaJswckHKNKlTX2L8nxanORVX8Wvzjx4b/7kLit39mnkfYb3+C3RzrS7ky8rc87kkpQ5DXG7BVrtLk/0Sv+Y5nXiffZjPo0SHfUSTcXCklAwcC6Sbvo39A//ywoUXbArxlkraRXfsEmmGe427SoDIu51ocAQ/vDYHyVBuwiI+u+icCF2zRlf2znel6jeyfVHkwt7ofjnS2QJ7TxbtnV+ohEZ89KCBXewBsT25iymNbZFIJ3c4H0/gVx1LGgrFVHdF6mkw6tPJ8KRJQbZ2af32QxmMfYixqkcgFqz/YHObQ+TsGQv5cAAnkiy/3FT6k1ngoc6O/9efET3As9ITaXt1U6mCSuhpcsw92s/prd0wn1KoFmWDjpmX7FTJ6oBYhb0YGvM+2rIy8evh6Pa8vN2KXiUWBgQpi5QIlI8Jya7fOn3emSpK2yxgdA2yEgU1y03hR2VAS/pZcJ8xnqeQRw/VQX1ZsmeQTRPgP1yGLide52SYH47Gj/s2uBhMCl2jQuSBi8zQfrq/gXS2B39sL1X6RWuSJ8V6jTWCXdRZTN3zRLrc8mbkdRpwcg+1HCI32jYDJ/P/2fzWd/BOQtDKVZreK5TcYJuxHFul7x5mhlJm7EmMIA8srNWZsvvgyIlhc5+5bAbEokA44nwaoa/KF8cHC+58pVaMzdfQht1yqi4JeO9Md2s6z7Bb45sHHFwDCawISqNpsMREymEX0YK8nYbQaTLCfYbT5wxmmO3XEsyIc3YUWXfWP5dpDLU4a2oJWiWF31s8Lf6kc8wMhTnOuR1l6zeqImjqMi3nYFQJ1ahf0ccocmyXk4HfQXX9TJV8KpHPM6AaNl6c2hpfPQB29RyxC3vNBSoJ7t3F7LAzUm8nhBghScxxhgv
- NMO+2xPE
- DnFaWJ3isFSK/yb6/HyTh3LoK3bBonS0e6z/t5PM1mkzDhP1HlAgnAjVDBYodObJ4SOHUWkszFPZXdnrhCDPew0U5TCoGCFsN/PHpw8t6L7bK5903IkWCJxvAY4HY3DKD6D5GU1oa17Q8ZvFMQTbduTrmN80GYJPvclk/oKh4QOLyJH7iy6/mld6VF16zEZqOuCLOMOX3Z1nSJNOW0fITTzdqJRuZ1PcusMTD+QN0UPbPQQsNnbS0NCPhLAGlDbxGUVKXZ3eZn+NIkBm1UPHQj/TlIVvr4uxHCFGzWElp/LAznNiTDPpW7n77w1HFjhSKPQ/tjgsWubOWxHDVZSWeVDyto2ndnVG2SgmNDznpWohKa2mtjQ3Ne20DGVYtorKshwH5y9yHGQ9bYLRFwbfCEMtKGPgqXjR7K3lR9fzl6zsij+H4K6fNT630/aQxb0y69KNqgWPs0gXoKUzjFq20AA7f2ms9RSMYfLU+upmBYt9va+yyyOvV9XeohgBUkhExr0Jk5d7lFpKYej7KW39r67efH3tFcfQXwzCn+F+6DJhBOjyj1dmtmk/1L9f4Rt9johnIhj+dpDu7W33ln5igA6NzNt1nzrmS6BzsdzXXhTtYq/Uzo1Bupk1sKawJ+r4uZklxrERnm/elUYJgXbl+JRjSPHXB0qF2DK0rZPlPg8msKIJff8IavfOB0Lh9xZyxqsrQIxchcDOChsUzgVBbhmi3csi5gPQXwyS9qCZb859b95X603O/dNBVTPaDpC/sJx4R63OwETNkBdnG7wpCdl63xDo13k3X+3MGhXqVmvBfMeu4cwF3kgrmbw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2F90140009
+X-HE-Tag: 1769446227-743946
+X-HE-Meta: U2FsdGVkX1+ZijeFpneLcdSMCCgGtJX5AwkRIxPI9q5TUUyxMnWUQ1I0JHAb687ZiyCMjWRIPa6Xzm5EUccMhDvn5ZedV1aobBobPHWpsmNV3rQ+Z/beZc+ZJJTd9H2YEXpPPsaaJLsTULOCCf5WwhwzlHYW2KFnjawBmy6kEHhL5FDZEcGBLK4rDeOBJ2pg3TRb2N3ot2+oWEgDrmB+pwN1qkDiDG9F2mhJjoxpvrbmqGW4vwqTREED0t8O6f92pBjvh9Y+g6dmo2Y69/ievrVIeee5VFg1PJsOY5slNJwTx4hhAnsD3iVeDE9yO8JUssqkqJVPHBzUwH/fxxdJdYZPFhfD4LNohbz9kMPvWFkJkvFqqqj4jduryZnHitmkAHtrFBkKb9CbCYCOGl6oijc0DZYNiVXq7t9ASVLc6Zm3AzEoqcyW4qm65M82rVRkgMkNdbH90reKDN6SO1+FWDkVuxEAeO2NOb6wxBhPfHlO9lILxQXYw64VJjsgEz2njYGkqjl6hiBW29RC8DQeGty2D350Lw/s8ux9sHdB6e2qVO75eE9v1mGrVpBWrT8K0fxwe0fQWRCBlT1Lp4t6akW72SHiTgCJXuS5yF6HDwxpIgo1FpM6Rr2O9eII8gm7V2icP3l7Yv6y25OzjZu5k1C4HR3oSyzfP4zUsafLRckI1nDFRecI/cnjOWL0gszPfjBDsPnQMDsaN/z3wlS3lzoV/nGh3F5X85r46lr1utn3PGU8FS6iPzfq7RXl3bcut3/Gr7sODcOSVZB5TrBh8Goi0oV0zW577RZyUbbh2whW+nI7Z2T7JPFZFke/Ev16JCspMlS5Vhq0exUI5nq3hQtBpKJH14ddese9yMTvnKn7vUAnS5SFNgP4JtmGeJPOqO2yBidH6vQJOLuEkaRmsZSh+ZAUQ+s+11zyd/2Z+fb4JQtwYysL7keDwuevpGyGz5e2hrkcHjjKlS3FHix
+ SshLiWBq
+ gLAgDZ2qWx63xzlZZhMVa4K6yLpo4gdindnGdiYi5R3LpWfRCnOJXx4utvwaZprN8groN57nq7VpsfSx1PGm5KEC9xjEJqxUv4DgsDC1rz24E59Pq40GZodTK4MkkKW80+wnIYVb+aT3ULj6RyYKfFvcM77ynSSH6kkj5WNVp1YEPZgCdPgPUcPBwD80m9CLiY25l7ADxUMYmhPwQPwk9TZYskID8qLhYQypFdyr1YI7yl2g4JkPYSbuTB+flPZ6ZMd7PtheXF8sVD4jwVa3ChZ3mPV/vQq2oBL/bsbub/UipGINdov8BFKwevXu/mK8je9T+WSDh2HVzs/vc3/U1bjGsra/0fSyVfT4nnrQtfdoX+X2OFbCqkGVVHdkmNGa2lvs6zPO8xtoBmi89yhZn1vXyeinscLG4MnhE3FQOX0uNhuoyiTJ96orheVc+oVaFuwAqld8HAis0G21w8OB+EMjF4o6by6GuLxVW25W02d09g9BQpAfh5iBGc1thHS93JN+4mdndcWfq3D3NaSswa8cc9XBtbTJk9jVDvN7dIfdXFx1ihDt/xdrG3Fk4Qdtwr5jPD5a+2RBzBDN9p2yr2CAgu6VO3NQQ8iA1A5Af9XPpnmAMVkQx5YrA54TFUWr7X4yiwv6M0LyG68zOx3WO3b3E8fdEm1IORlrkZ5qd/mgnE/tnyN3zES2xnFGrcIECijfwsqsw4DwD/S0dQsQUXxEGkcs3czTu4jJUcYb1FQd9HkDr9k8g004UQncmKVFZ7jl5/7RTiRBfCW3SuN1SpEPFlplt8xXpghtKEg20F2cVSko=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,68 +191,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Patrick Roy <patrick.roy@linux.dev>=0A=
 =0A=
-Add a no-op stub for kvm_arch_gmem_invalidate if=0A=
-CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=3Dn. This allows defining=0A=
-kvm_gmem_free_folio without ifdef-ery, which allows more cleanly using=0A=
-guest_memfd's free_folio callback for non-arch-invalidation related=0A=
-code.=0A=
+Support for GUEST_MEMFD_FLAG_NO_DIRECT_MAP on arm64 depends on 1) direct=0A=
+map manipulations at 4k granularity being possible, and 2) FEAT_S2FWB.=0A=
 =0A=
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>=0A=
+1) is met whenever the direct map is set up at 4k granularity (e.g. not=0A=
+ with huge/gigantic pages) at boottime, as due to ARM's=0A=
+break-before-make semantics, breaking huge mappings into 4k mappings in=0A=
+the direct map is not possible (BBM would require temporary invalidation=0A=
+of the entire huge mapping, even if only a 4k subrange should be zapped,=0A=
+which will probably crash the kernel). However, the current default for=0A=
+rodata_full is true, which forces a 4k direct map.=0A=
+=0A=
+2) is required to allow KVM to elide cache coherency operations when=0A=
+installing stage 2 page tables, which require the direct map to be=0A=
+entry for the newly mapped memory to be present (which it will not be,=0A=
+as guest_memfd would have removed direct map entries in=0A=
+kvm_gmem_get_pfn()).=0A=
+=0A=
+Cc: Will Deacon <will@kernel.org>=0A=
 Signed-off-by: Patrick Roy <patrick.roy@linux.dev>=0A=
-Acked-by: Vlastimil Babka <vbabka@suse.cz>=0A=
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>=0A=
 Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>=0A=
 ---=0A=
- include/linux/kvm_host.h | 2 ++=0A=
- virt/kvm/guest_memfd.c   | 4 ----=0A=
- 2 files changed, 2 insertions(+), 4 deletions(-)=0A=
+ arch/arm64/include/asm/kvm_host.h | 13 +++++++++++++=0A=
+ 1 file changed, 13 insertions(+)=0A=
 =0A=
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h=0A=
-index d93f75b05ae2..27796a09d29b 100644=0A=
---- a/include/linux/kvm_host.h=0A=
-+++ b/include/linux/kvm_host.h=0A=
-@@ -2589,6 +2589,8 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, vo=
-id __user *src, long npages=0A=
- =0A=
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=0A=
- void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);=0A=
-+#else=0A=
-+static inline void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end=
-) { }=0A=
- #endif=0A=
- =0A=
- #ifdef CONFIG_KVM_GENERIC_PRE_FAULT_MEMORY=0A=
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c=0A=
-index fdaea3422c30..92e7f8c1f303 100644=0A=
---- a/virt/kvm/guest_memfd.c=0A=
-+++ b/virt/kvm/guest_memfd.c=0A=
-@@ -527,7 +527,6 @@ static int kvm_gmem_error_folio(struct address_space *m=
-apping, struct folio *fol=0A=
- 	return MF_DELAYED;=0A=
- }=0A=
- =0A=
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=0A=
- static void kvm_gmem_free_folio(struct folio *folio)=0A=
- {=0A=
- 	struct page *page =3D folio_page(folio, 0);=0A=
-@@ -536,15 +535,12 @@ static void kvm_gmem_free_folio(struct folio *folio)=
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm=
+_host.h=0A=
+index ac7f970c7883..d431ca7d4fc9 100644=0A=
+--- a/arch/arm64/include/asm/kvm_host.h=0A=
++++ b/arch/arm64/include/asm/kvm_host.h=0A=
+@@ -19,6 +19,7 @@=0A=
+ #include <linux/maple_tree.h>=0A=
+ #include <linux/percpu.h>=0A=
+ #include <linux/psci.h>=0A=
++#include <linux/set_memory.h>=0A=
+ #include <asm/arch_gicv3.h>=0A=
+ #include <asm/barrier.h>=0A=
+ #include <asm/cpufeature.h>=0A=
+@@ -1654,5 +1655,17 @@ static __always_inline enum fgt_group_id __fgt_reg_t=
+o_group_id(enum vcpu_sysreg=0A=
+ 									\=0A=
+ 		p;							\=0A=
+ 	})=0A=
++#ifdef CONFIG_KVM_GUEST_MEMFD=0A=
++static inline bool kvm_arch_gmem_supports_no_direct_map(void)=0A=
++{=0A=
++	/*=0A=
++	 * Without FWB, direct map access is needed in kvm_pgtable_stage2_map(),=
 =0A=
++	 * as it calls dcache_clean_inval_poc().=0A=
++	 */=0A=
++	return can_set_direct_map() && cpus_have_final_cap(ARM64_HAS_STAGE2_FWB);=
+=0A=
++}=0A=
++#define kvm_arch_gmem_supports_no_direct_map kvm_arch_gmem_supports_no_dir=
+ect_map=0A=
++#endif /* CONFIG_KVM_GUEST_MEMFD */=0A=
++=0A=
  =0A=
- 	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));=0A=
- }=0A=
--#endif=0A=
- =0A=
- static const struct address_space_operations kvm_gmem_aops =3D {=0A=
- 	.dirty_folio =3D noop_dirty_folio,=0A=
- 	.migrate_folio	=3D kvm_gmem_migrate_folio,=0A=
- 	.error_remove_folio =3D kvm_gmem_error_folio,=0A=
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=0A=
- 	.free_folio =3D kvm_gmem_free_folio,=0A=
--#endif=0A=
- };=0A=
- =0A=
- static int kvm_gmem_setattr(struct mnt_idmap *idmap, struct dentry *dentry=
-,=0A=
+ #endif /* __ARM64_KVM_HOST_H__ */=0A=
 -- =0A=
 2.50.1=0A=
 =0A=
