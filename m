@@ -4,150 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40942D19519
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 20:43:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 976F7D1951A
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 21:36:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D4F26B0088; Mon, 26 Jan 2026 15:43:30 -0500 (EST)
+	id 791896B0088; Mon, 26 Jan 2026 16:36:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 958DF6B0089; Mon, 26 Jan 2026 15:43:30 -0500 (EST)
+	id 75F4A6B0089; Mon, 26 Jan 2026 16:36:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 830CB6B008A; Mon, 26 Jan 2026 15:43:30 -0500 (EST)
+	id 6955C6B008A; Mon, 26 Jan 2026 16:36:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 736446B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 15:43:30 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21E65BB9FF
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 20:43:30 +0000 (UTC)
-X-FDA: 84375290580.05.CA0E025
-Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5A65F4000F
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 20:43:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=gflIu1Fn;
-	spf=pass (imf17.hostedemail.com: domain of debug@rivosinc.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 58E466B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:36:20 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 095B8D3A98
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 21:36:19 +0000 (UTC)
+X-FDA: 84375423720.18.F011B0B
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3BC7A1A0002
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 21:36:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=J6iAAvmt;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf19.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769463378; a=rsa-sha256;
+	cv=none;
+	b=HkS67vym2A+IyK3aVgb2orN2hpEYwy+GT5X6+PsEjfkP45VyFWbJw7Mu9U8gEccoCB9xc3
+	xJ8p2cg879369a4/QUcSghcAem4wKMUtTYYI88lLxFJ3no34FAeNC/Bbe0hgy3ikbUMgpe
+	sK2CfrEpJvdAH4FyoXZiQyS5wUYwaiA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=J6iAAvmt;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf19.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769460208;
+	s=arc-20220608; t=1769463378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s0UipC5QHyJnTmDWXctjUpxhkNyTA6jh9RjXD3Q3T9M=;
-	b=77/LWEyAbUrcu68m0rDbLk/Z2yf5zDCYEeA8OXWCBy5rQpXe095EBj4MOECiHih9sbRtso
-	VEvWYvipkoxYO3hfJ0sL91jX6s00CtAjzNJyrkKpbemAOtR9UodK1cH62kHbCJ034FPNiE
-	5a0x1sTiw2pZW4yGs9exzOxFrKM6NZw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=gflIu1Fn;
-	spf=pass (imf17.hostedemail.com: domain of debug@rivosinc.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769460208; a=rsa-sha256;
-	cv=none;
-	b=gbHJ0bAkuWqeTcqfc6Y8rgyeCxtAlR1kJJlZ8HzxAPVOV0b79jl97smJ9bjBhmpcLkRwFO
-	0OFYbCG7daY/rg0YJ+mqKfLO7I8VY/swy++kLg94ZR8a2y7RmxCSVHA60Ikd0gSvK4Si+m
-	UaKaIwdG7Z14ldtYTiJRffA0KC3qYrY=
-Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2b6fd5bec41so595073eec.1
-        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 12:43:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1769460207; x=1770065007; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=s0UipC5QHyJnTmDWXctjUpxhkNyTA6jh9RjXD3Q3T9M=;
-        b=gflIu1FnnP8IWuVAkIvKoxl6BlF2gqkv4rRdTJrKFBiT/wvhPgucmKH645gopSxoNf
-         B9DCdSpCo+LU/WDWlyxrFo2yKORSXIBdCqDJteSp+G1dyxRi4oVVLZEpEes4HmnXDSYs
-         oiJOoNHTbn4GRO7NtRVXetKYgZdel34ICBpFAKnrlfWL/WfjSJSjlPMDVouttIMAfaxX
-         ChvrhPq0mFEJbKGfILvrCe0G41BjJmuiVMbHw0gyebAYN1rfXt8jSp0AYN6/lhkLzeNw
-         /zzxgAoRJHEgdK6hZWqo6k7FD9C/XVmBPXh6Nm2HuU8IlCj+1X2CX4xwvyQn8XDDRFMc
-         ucRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769460207; x=1770065007;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s0UipC5QHyJnTmDWXctjUpxhkNyTA6jh9RjXD3Q3T9M=;
-        b=DzNLYRGX4rr6/IAMD/Awv6vsPdRfE1IOoxhfbopwe/xWOBSll45sY7IQtShkcv1VYq
-         tVYyNiBRJlACB6jTXW5v1KMVHRM9WTsuIOjWl20A7WHVHQ01hotGOwMnrHRGI6Y3SPp8
-         PYvvBUGACDko+YVSLF8bydXu/Mh5igzdEsj/2/mKYy6fnyuVSmPZGRa4nUq3ahjv2ky0
-         8bFp8V5lsVgQwXCEuF2j0oX+h8Yj6SfDjcEDQzY+1fT22aA6wipIKx0z4pCDzCC2E/KV
-         q/foNQpXt8BEExQlXm7OJhVnx7/iQirmHR6kiGozgKnpPAVZ2CLre0O012oKYjtN1aDg
-         Daug==
-X-Forwarded-Encrypted: i=1; AJvYcCWSijjPgC1fbsYi6roVC5w5/Btsspvw5PPK+rUmDoTUpMwFj2azpeBK7H2phRfU6js7bueyePEd6A==@kvack.org
-X-Gm-Message-State: AOJu0Yw9fb/WIfLQlmaLKS5G7V15FUmu9hjGV7jbTmw+0EyhSYsPO/Yh
-	j2Zelt28mBqtGWiDqpC7np5Fd4mctNP5aK3ayjvIYC3Xvk2htPA2D+QAyEZYEgwzi4c=
-X-Gm-Gg: AZuq6aJIBjiZy8Tauqi1Xs4Z/Ww+yXsUztFA1dI87L4LV7e1HAHkHu5/LF+6ntMioLJ
-	tHD9BoJ9kBkvPsx/yaF9uWGFt459wKujOgD/3NrqVHwesxbBpVX1HKDZNgh5UksBVPjV5iduXH+
-	wFS1LZJWMUMdt8SqRpUQYveiEDlDoY7zwJ4KFHSiXL4zIntWkvvMGK+Sw7AF8gR3Iw2J/liYci4
-	J5QEy5CPvNbgESa2WuQNrsOu2OetwNfokAh2pDUStiliTJDzx9MTYp3TTXiVA9zaoMjb5by6Z50
-	XumAFl8f1te0bwECN6wtJ3VmQk5s9S+mvq2Wqr+4wlEhBiH7nVWk1SEJSAg09GW//OXipIS/nFJ
-	oMrB20Ejpp7yO09g2LNIbieEmcyPXapP8LbggdaSUT9LmscwFsZDFYIJi8stMMmo6p0IVzBVN21
-	1lvErmV3sHmJx0hRYgwxBE
-X-Received: by 2002:a05:7301:d16:b0:2af:7ee:5300 with SMTP id 5a478bee46e88-2b7643466e8mr2954218eec.14.1769460207055;
-        Mon, 26 Jan 2026 12:43:27 -0800 (PST)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73aa08964sm14741354eec.28.2026.01.26.12.43.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 12:43:26 -0800 (PST)
-Date: Mon, 26 Jan 2026 12:43:24 -0800
-From: Deepak Gupta <debug@rivosinc.com>
-To: Zong Li <zong.li@sifive.com>
-Cc: Paul Walmsley <pjw@kernel.org>, x86@kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
+	bh=IDX9AjD0dwjrQefXov9k2MtCld60dtQxGUUAV2j1WjI=;
+	b=VP+6CrmLcIEOngMs8V9yl7m8VnvIwFOrtQpwEuCxX0QFbiIcK1YpumgZzWn0wBCQlma0qZ
+	An+a65xrNEqtYXjNOsd33+t79G5mtUU6G8q3pJc8C62U2JuaFmhNKXJwNov6W7U7pw5S+O
+	QIc16SLoBuNBM+8aOep36Fd/XZQaYvI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=IDX9AjD0dwjrQefXov9k2MtCld60dtQxGUUAV2j1WjI=; b=J6iAAvmtrgFJs9ze2z/3mvNozn
+	PZeYeQkBMpOoy6bARHpR02WAfbtaa7iTf6HiFwZskZHm4oN6foztXD1WXqeuhwHMSXWyJAFJbhTD5
+	qQ1+R5XWwGM3j+QSkNI1Q+zMTANXKoioCJJ8PtGwpUGGIcze5nZNWEXu1YR5X4maU7pfNt0Anyji+
+	GXAcVEho74qSXcSeKj2Ko+V9+LTubj1o43do861nH82B/ld1Fn3lt07jwKJr3drbI6UK0q+LPwinM
+	WYBkEgblZCF12DZiFoTwjzgiGipNv2h33OJAsRML39oXnwDKn1Bq0tULsElknva+RF0gidO6QOh3u
+	4kZob4og==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vkUFZ-00000005tyU-07kL;
+	Mon, 26 Jan 2026 21:35:57 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 41718300756; Mon, 26 Jan 2026 22:35:56 +0100 (CET)
+Date: Mon, 26 Jan 2026 22:35:56 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Marco Elver <elver@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Chris Li <sparse@chrisli.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com,
-	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com,
-	cleger@rivosinc.com, alexghiti@rivosinc.com,
-	samitolvanen@google.com, broonie@kernel.org,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	Andreas Korb <andreas.korb@aisec.fraunhofer.de>,
-	Valentin Haudiquet <valentin.haudiquet@canonical.com>,
-	Charles Mirabile <cmirabil@redhat.com>,
-	Jesse Huang <jesse.huang@sifive.com>
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-Message-ID: <aXfR7NhAxHlND3z9@debug.ba.rivosinc.com>
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
- <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org>
- <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
- <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
- <CANXhq0rpjSvOThACrB6_MMc8S34--xJsUYZ+HtMu1GUNyk8zOg@mail.gmail.com>
+	Nathan Chancellor <nathan@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
+	llvm@lists.linux.dev, rcu@vger.kernel.org
+Subject: Re: [PATCH v5 15/36] srcu: Support Clang's context analysis
+Message-ID: <20260126213556.GQ171111@noisy.programming.kicks-ass.net>
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-16-elver@google.com>
+ <dd65bb7b-0dac-437a-a370-38efeb4737ba@acm.org>
+ <aXez9fSxdfu5-Boo@elver.google.com>
+ <8c1bbab4-4615-4518-b773-a006d1402b8b@acm.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANXhq0rpjSvOThACrB6_MMc8S34--xJsUYZ+HtMu1GUNyk8zOg@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5A65F4000F
-X-Stat-Signature: jex4twe7pfr55gf5rgkrs8by4g1s6nzd
+In-Reply-To: <8c1bbab4-4615-4518-b773-a006d1402b8b@acm.org>
 X-Rspam-User: 
-X-HE-Tag: 1769460208-483017
-X-HE-Meta: U2FsdGVkX18xkmCoJnNutl0uormPWWrHpgWewchlvGk9bnUO/3SAvmvlyVPWN9Btm+caE0EuQE5YLWsoWY7L/gI/PMLxzC3tABFGHsn4Sm8mBrGKEaXrk+dLnVV/f54hWIIrXj0ICqoL+AQ8RnIywvDP2OuC1sdx6ii/l87sJVdpKJ3tYKMYPEUzQzG7y/FGGzhjuon+GVFUMnyef2XGD0go6MkJBW3fODGqO080xzyfMUoYg/txy+WooA4J939jLLR/PP+uo3LFCoqJl8UPtZQ87lzdQGGvkngOdZo3Cs30u+OcvCbbouNQyS1WN9KikyIFBnd74VgErKhrqGqQ2nblD5Wt7MXe7xjeT4mmscG5nB/79EV2Cz5kuBxd1b3XVgvNCkMXzpgTF/E0cy8tlZK1wNoYLal07Ypr5980n+YE5CZmpBHYdn/ydl1OFlYmMqgitenEZVkiDR9jQztwm7NE8Wk4CkWYDBEabAPC3aX8fGzqeMrHBhXQ+HIevn7swlnmoloL3ZKPCxSwHDnmc0leV7rJr9Xyy4KyCPfEO+XDjkyGsxkw7Jk2WEbWuzwgBpBgr1sdBu79aw3SoOZDkmM0G8muDZ9/s7vVYIw1VkxyOdf8q/9tmYNT6LlB6QBWJbSSODAB7h8fQhvJS0pSvK8O3kLcVpcBD6aj1v82n1wmrGWeBeaHrtGJ7VDYzuaQVgU1c1l0sXei0O2RvpeXmT7qlflqmq+parsbGdi1ER1QLlbbxSJFKLFKSri2G45ElUHuriA27oLV+bmKeEqBu8ejc88uaQ/CyOGC7irvNi+vrl74cdNCrtIKm9c/OilhKYVIY9Vf5QaVXTIv8mF2VbVm5WXffWKlo7+W+HixIyl7fG/iLINfe3P/0H+Nmuw0pM3pFPmghJAOvjqwhKLG7JgHsqEZrdCjq4pQ33OdN75W/uVDV3pHNyv7cYzh4GqJiyD7X6AmoMg50yqBCRf
- f4wBtgfV
- olbGkbuUo7nOi/hXAxMXOueXqI82/AKv8W6V5o2SiumasrUP4Qvy6RgRhJ+vAGnwGYxYBQtTEjMZUYPq9Kf/7WRHWvU1qTlGFNcku1Vw8LVxxdcd34/T+mg4Igt4DZ/W/IjxnufZ0cyYBrKOSwiz/K+ElHAEPFRpPKPLgtLCWb2bIL/R0XY0s08MNXQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3BC7A1A0002
+X-Stat-Signature: miyb8hjjy861z46ypiaorkimy8azz9su
+X-HE-Tag: 1769463377-485615
+X-HE-Meta: U2FsdGVkX18f8g/1doI2ZtHLbx0RbA5vc6/FfIjzr40v6/a/3EeNQQHuM7/+Jhd0vrBxya0h21PoSB3jedqJqVL/HyT+SR1Q24LHQ1++mKHI9jIQrMtEELZp4e/ZT7uqmqUlEbsoYtDydidpKLQdGd8ltlYetFxmKXE6cyWxcTCUV/Pc99eNnIiP72F3oUNXXksMDyauhIC19FpwARlJO5KTd74jsJKdVNPhzOIP7gifgQQIRTelWp03J6FqlYJtTNMcGf0chMDpx8i8z+BbSWBmNOax84TpeNwQ705GmRnUFqRpt9oRacQDBU8Wqk/ik5b2mMu3Ejwntjevd3HNCM7g0KNp+MjJnAFDVcsvnvrghcacF9PMsbhWKiLGCkV4LWsnlaV7OAWuj5sey6iD5GqD6U8YU8CQWJY4Nn6g3K/6uWWPeo+WUruNKbldqsiJWARSHKTHVu0yEEkwxFrxEGoH5+p/t1pXwTH1ZtDCycB+qg4t80NsYOSMVs0EU/+vYj5Mo8eoDjHbTTyo2M+eiOuOx9/6tmPC9XSHbvD/Y87d/ZLVrXWr1LE8bMiilXv3tBGe+73wP17eh6j2VoSdhAF+0h0o2R0B9E+TXWIg6df/RH6CvRXNHB/pmTiUD6q0ploIjG1U8kSuj+0D4sOahzGL8qyweqxNe0wueKKnbaYDsaXbxhqWVXJlmQMSHXC6v3wpSfUQCp0XBMBZUAjTG6FnLftf8VY6pPyJMfXOiGZqPNkDIACYPB1tWZliYs43AXhKYz1pYxEg8JL4f9aTZWEOWENT1FJDBjpKZDSTaYbm7RL7sYdj0cMs0TuAanJV5JXirCqeYmjFwp7sQw+zb2fKehV3q4parCJUfeufuqsaDhF1REkYDn1TZSCczY+DESN7iEz6G48TbZGFL/61/5eNxmw1X+BOlejmso0FyEKwOfDe0SU7bVB7tTThTo5IOmdmN6YKsQMDJuTGhzt
+ v3Saa2JW
+ 8yRcmJVdjk0rCWH3/j5mNyv7g5Rck1PEHSGcQNtrWRnzXyNCfpyNjlNfCaTULkjU3HNiNn1Ust5IeIw9wMcNYsEpG8jDz1/G7kGivG+flNqoL7BdebcXSqh8Mz5tqyZkANus5bOK1w5ywXxEchGDEIK/lh6wk2MLQSXgD/Mht092fQY0Kb0ULFKzQCh2Xj/U2OY1FtrZOyVQEQOh04MKBwoKe+3sK6ChweeaoGsrLpavchr4HHPBP7rVnZj+4jV1AiyO9IA1CVCCwdvPRvgdoimD9BN1OYtL1U9rAkiErgh/G/kpLsWej/vSfog==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,92 +131,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 21, 2026 at 09:32:20AM +0800, Zong Li wrote:
->On Thu, Jan 8, 2026 at 11:10 PM Deepak Gupta <debug@rivosinc.com> wrote:
->>
->> Hi Paul,
->>
->> I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
->> implementation of `map_shadow_stack`.
->>
->> Should I send a new series or only the bugfix-patch for implementation
->> of `map_shadow_stack`
->>
->
->Hi Deepak,
->Not sure if I missed the bugfix patch, I couldn't find it on the
->mailing list. Could I know have you submitted it? If so, could you
->please point me where the patch is?
->Thanks
+On Mon, Jan 26, 2026 at 10:54:56AM -0800, Bart Van Assche wrote:
 
-No you didn't miss anything. I had been busy with job change and even though
-change was small. I wanted to do some basic testing before sending fix. I just
-sent the fix on this v26 series, patch #10/28.
+> Has it ever been considered to add support in the clang compiler for a
+> variant of __must_hold() that expresses that one of two capabilities
+> must be held by the caller? I think that would remove the need to
+> annotate SRCU update-side code with __acquire_shared(ssp) and
+> __release_shared(ssp).
 
-Sorry about the delay here.
+Right, I think I've asked for logical operators like that. Although I
+think it was in the __guarded_by() clause rather than the __must_hold().
+Both || and && would be nice to have ;-)
 
->
->> Let me know. Thanks.
->>
->> -Deepak
->>
->> -Deepak
->>
->>
->>
->> On Fri, Dec 12, 2025 at 10:33 AM Deepak Gupta <debug@rivosinc.com> wrote:
->> >
->> > On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
->> > >On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
->> > >
->> > >> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow stack
->> > >> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks. Fixing it
->> > >
->> > >Deepak: I'm now (at least) the third person to tell you to stop resending
->> > >this entire series over and over again.
->> >
->> > To be very honest I also feel very bad doing and DOSing the lists. Sorry to you
->> > and everyone else.
->> >
->> > But I have been sitting on this patch series for last 3-4 merge windows with
->> > patches being exactly same/similar. So I have been a little more than desperate
->> > to get it in.
->> >
->> > I really haven't had any meaningful feedback on patch series except stalling
->> > just before each merge window for reasons which really shouldn't stall its
->> > merge. Sure that's the nature of open source development and it's maintainer's
->> > call at the end of the day. And I am new to this. I'll improve.
->> >
->> > >
->> > >First, a modified version of the CFI v23 series was ALREADY SITTING IN
->> > >LINUX-NEXT.  So there's no reason you should be resending the entire
->> > >series, UNLESS your intention for me is to drop the entire existing series
->> > >and wait for another merge window.
->> > >
->> > >Second: when someone asks you questions about an individual patch, and you
->> > >want to answer those questions, it's NOT GOOD for you to resend the entire
->> > >28 series as the response!  You are DDOSing a bunch of lists and E-mail
->> > >inboxes.  Just answer the question in a single E-mail.  If you want to
->> > >update a single patch, just send that one patch.
->> >
->> > Noted. I wasn't sure about it. I'll explicitly ask next time if you want me to
->> > send another one.
->> >
->> > >
->> > >If you don't start paying attention to these rules then people are going
->> > >to start ignoring you -- at best! -- and it's going to give the entire
->> > >community a bad reputation.
->> >
->> > Even before this, this patch series has been ignored largely. I don't know
->> > how to get attention. All I wanted was either feedback or get it in. And as I
->> > said I've been desparate to get it in. Also as I said, I'll improve.
->> >
->> > >
->> > >Please acknowledge that you understand this,
->> >
->> > ACKed.
->> >
->> > >
->> > >
->> > >- Paul
+Specifically, I think I asked for something like:
+
+        cpumask_t       cpus_allowed __guarded_by(pi_lock && rq->__lock)
+                                     __guarded_shared_by(pi_lock || rq->__lock);
+
+
+I think Marco's suggestion was to use 'fake' locks to mimic those
+semantics.
 
