@@ -4,141 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5BB9D1950F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 17:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FA3AD1950F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 18:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 137D46B0005; Mon, 26 Jan 2026 12:47:12 -0500 (EST)
+	id 3894B6B0005; Mon, 26 Jan 2026 13:15:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E2C46B0089; Mon, 26 Jan 2026 12:47:12 -0500 (EST)
+	id 336D96B0089; Mon, 26 Jan 2026 13:15:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFCE16B008A; Mon, 26 Jan 2026 12:47:11 -0500 (EST)
+	id 20E8C6B008A; Mon, 26 Jan 2026 13:15:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE8A76B0005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 12:47:11 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 946FE1A080D
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 17:47:11 +0000 (UTC)
-X-FDA: 84374846262.09.CE537D4
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 79405180007
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 17:47:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bBtTcyXY;
-	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769449629;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F94D6B0005
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:15:34 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B48691A0894
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:15:33 +0000 (UTC)
+X-FDA: 84374917746.24.B7E8BED
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C377340015
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:15:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tQh27Aqe;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769451331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mb/leG6Ch5DsFFPtx2vrqbxxpTr3aeU3kEJMHwQ4pjU=;
-	b=IEvv5nR7/Bamo+ogHoa4wcc7n7OS0qcTcDFTYtAm/46Wr+jGHs1pPGOdf5SFitdgHNskiA
-	1HaMJsl1yMSU8SuWp7FCbXnYyn/H9GGuw3tsTozVhJI2oO6dO63HIQICM04jv2o6cfjxBO
-	I5hHQeF4XfxE6HYfvfoL+fhDPVsD7MA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769449629; a=rsa-sha256;
-	cv=none;
-	b=YaaLoDLXKSzsY/4Xl3iHzUU2xD32cGo0n+QyQuMVLX3LEQCpMsfFXBiuFdJvaVSrTq3rkO
-	Hwdp/J4YFdq5DhA/7TJ/58begU42XCfvs3c645BolCIjanfWN0XHk6E+L0aeADC822Dihj
-	O+PiAZcUqJhOBkEzA0L3kRZEGidfaRE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bBtTcyXY;
-	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-47edffe5540so54717485e9.0
-        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:47:09 -0800 (PST)
+	bh=vypNXdAlh9xtr/sInNFux3fIr3gyK1o+LAzNlNFXqsw=;
+	b=UVmyX3gRECH+MRHlZDK9Kj08QlhGeVjwGvvq/72SNxyZF4TV6CYXtfDRSpoP+4XUk+05Vj
+	5K8+JKQUWX4gtvUizw1NcF0mtKipMiV+Z/cGy9pVCl6Ps9nQ+g1GgHC0LI05XuNDluBlk4
+	4TMVvhQ9BonWNwciENlQvYCR1FOIXv0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769451331; a=rsa-sha256;
+	cv=pass;
+	b=fMG7wfpgbl+X/RegeLynhfwF+YCTF/ld8dptGOSbGZzNdfEFxn35i82LzEM9KCZ1Oc28rW
+	Q27FYkNQWuiF65AeMmLHUGwSBuRQDEBtvDQo4aX5gsWd7Meghu+YQh4+l3nYV+W2bv1WiJ
+	CvBOEtHNF8MZgEteGUG7PFBU8m8oQ+o=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tQh27Aqe;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5014acad6f2so17191cf.1
+        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 10:15:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769451331; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dbRxQip/uguCCAe1J4aqLlVglu0WA0eOdS1DyGtDu7oqsls25E62qIEwqqwhduGtDL
+         Jfu0C7t5dF6HPw0nzvohqOgb5QKd/4DrDoBmcyWlapzmff7hHWAA1VZpRNAVXD7hdzAW
+         foRPzE7QqTQuruDUUBOOU8WV0q2KmGZZRvkkmUCQxo8vFpBH3I4vbOzhBZejw92yOxjO
+         YEVkSvia3zmiBkv8T8OCS7ngthILBVuWiokUObF4Y+HeWKFD/OnO+GsfWu+EkC02Ze74
+         sEhmIgJfV5LE8Q8G8t6pKikkitkbh+HpZTG7RdRMvVmizcigouCt/ocio/lA4TZ0AODb
+         3jew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vypNXdAlh9xtr/sInNFux3fIr3gyK1o+LAzNlNFXqsw=;
+        fh=/pQ0HE0oYFt/0ljAGQiWtuL2FOi7/f/XeniN45hMYOU=;
+        b=ai5SGStIMcDvNHjMX1Q7p4B2e8MCgyWBA/uhLJXlxiAwcz90bHncY1UBZtaNFMR8QH
+         F95X54ISHMJMn3saX8mjB/5KHTBGvRhLvYUZ7iHbD9I3O8qoQgy5cnsONaLwdq0qO+N9
+         VrcGvErawU40iSnu1TBMVVcloto1oVzeDoHQ9HSK8hFhAX+LFeVo6Swhv0n1Tpq8sEbm
+         YqExLSCJOYYIDlvq+4fgxNKGfAjsD8sLA22Zl4eHhZlk0O7MzwfXBkR9bab1VsbkdU/g
+         XEmcvOZBJCr9o030RRcP8DiZWKLDwgGGtFzHvaAuBzRGLXkR8JFp8kYVHzljLGgJHZrj
+         Balw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769449628; x=1770054428; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mb/leG6Ch5DsFFPtx2vrqbxxpTr3aeU3kEJMHwQ4pjU=;
-        b=bBtTcyXYXjMu3aKXqdockNs58HBl2C95Gyv/m8/Ov9WQ7v9IOVO2MeJtaGSVxTqD70
-         N+GSzeD9aQ/EUutA9fWfgRPtpbUfpAmGxERsNMO6O/JmY2aCz1SI3QyKusjY9H5sgUX9
-         dxaz/3BtodXahUihieOvUEF9k4iLBh+HxBx1EwdOfZ3ZeGeljnNpfXaCRLouaRVZshvz
-         lEQzA7ctRUxGx6AgkI9HmiSvZoFUWApbjFkzQflTlObnWBspqJ9ar1uZrnTaULe+KRUC
-         MDYAD5JtGu8uBrVVmNI1ryIfZr+I82sfP86U5kn6K93Wlls8heShvfZiVuPNh5cKzLF6
-         WHYA==
+        d=google.com; s=20230601; t=1769451331; x=1770056131; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vypNXdAlh9xtr/sInNFux3fIr3gyK1o+LAzNlNFXqsw=;
+        b=tQh27AqeB2eSFay06TruHq279kAGNF8oJ4kjAQNPQsQbVKKTkwQugmNSW2l7KCoNr5
+         YqPUhgNZxRsSvLcaJkqSEzPXQvoS/zBX9APm8fPhrCCSreI3CBORSz0zAGi8q8ns6uy7
+         LPGx4eIJZFGLmEXjJgEF5j4wKkstj/90TtFtu98i4h6cmuFedBHndPasqeJRqnsH8DU5
+         Mibqiym0dNbPM+hUaODGM2lGTAeD3KD/3PraUbZ8hMwFH39k3Ru8RJy+Fk0GsnKuVwm7
+         2g+NMtHYlXk08xtLSYlbyrjFHhoKJjuNUwyCmjes63fS55QUtBGt49wiB7ZdQ1bPTYDZ
+         jSPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769449628; x=1770054428;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mb/leG6Ch5DsFFPtx2vrqbxxpTr3aeU3kEJMHwQ4pjU=;
-        b=if5vBIOhIXdj30tN5QLjThnqtYKopvAUr5P3A9wvnWIsUekTBmsgHug7we6OpD+Qqb
-         n552IT1vd/p4wTKbE8N+68wDW5dsYJF1tKAjV/TD+Yh86vm1Uy8SpcYW/07fBpa/CyB0
-         vkfyGGi8BV0vgzIadBDxkPv7f+VsfLDzDTsjU3csubqLYNsWyPPAM3VbyBuclD6DxYB0
-         zhx6r3JyqZcmvN6OSO7QaJrn7yvSekzd6WPg/IdCc27cRE4eaF604ITt/1I2euQTns3Y
-         9UFJd0pxNBda1cU+xjzCXq+5fJ493ka0fs6Wed4KtmjObqZFdfy8/x2SyogliBIaARHM
-         XFuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUH5OLi1jOc+ZjXy8Rw+YhZuaEe4o0qqfuZD5+7JyZySxqflPyylEWfklLXB8dn9Q/a7ZueJNa4UQ==@kvack.org
-X-Gm-Message-State: AOJu0YwlaePrCgyG8HtllLhY8ugvnYiJJUvMQh4ZGV6Kom9Xo7uSiSbM
-	h9Lz2zLw3Ssf5a1Bqu7+lVTduvnA9G3yDlDRd9Irg83an98NA+EmP7g3LR2LDu5QE2o=
-X-Gm-Gg: AZuq6aJKDXM7r0f1RuMYQW+rEE63NMT/ycNWRfZh7kGqKghN8If1aCattQCoUbCNDRC
-	sEPWF8qyMfBkrxScXAW5Rs3Gp41gx86sDBJZQrUpDqPFzNWxyJd15+qCifdNi1iqPZwG4DFWQFH
-	p/sQQrcsF3n3oRsHHR8zF6vakmhrO7IPXjx9pehdWLBaRPp89hfTlBsNZFzG4jySwDXLn7innvd
-	Cl8ds3lACmtcGp6myLcV+V9M7JOjqKji9ExC+StY02knOmKqQDLlfH0srp6Dk/2Qas9WVi+Tl/Z
-	F7CoxxtbVu6YPQZ5ukcv2DOsZByhO7OOFSk48g8Hpw2WfVaaaM56NUkYNYvp35CKJ5TRxdzyfVT
-	3ycOLKhxsy0XOqRA+OR4uc6lqxhE6N3Ni5lO887t0xsTbKoVJBimtu0yeLMDBBRhiDjW+4xIUoM
-	BPDoHWGN/N+2Z55JJCKMwtZlkE
-X-Received: by 2002:a05:600c:8b11:b0:47e:e2ec:9960 with SMTP id 5b1f17b1804b1-4805d06cdadmr105139335e9.35.1769449627682;
-        Mon, 26 Jan 2026 09:47:07 -0800 (PST)
-Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066bee000sm3831515e9.4.2026.01.26.09.47.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 09:47:07 -0800 (PST)
-Date: Mon, 26 Jan 2026 18:47:06 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	SeongJae Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v16 3/3] mm: Reduce latency of OOM killer task selection
- with 2-pass algorithm
-Message-ID: <aXeommbTq_KNpUZa@tiehlicka>
-References: <20260114145915.49926-1-mathieu.desnoyers@efficios.com>
- <20260114145915.49926-4-mathieu.desnoyers@efficios.com>
- <aWfNMKCoEp2LuA2v@tiehlicka>
- <a46b298b-baa3-4998-8715-0568b5b186e6@efficios.com>
- <aWpfbSJe5vREzzyd@tiehlicka>
- <0079bc61-5655-4677-a421-1a61f4c52d59@efficios.com>
+        d=1e100.net; s=20230601; t=1769451331; x=1770056131;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vypNXdAlh9xtr/sInNFux3fIr3gyK1o+LAzNlNFXqsw=;
+        b=hD+b7vVw+2fLpCsr1fpX4745pEfQdyFgx0ZdLwGsV2tKfRdOQhx9pTX2vkop2mdBJv
+         oqlAPqmjceuwpob1ocxp4i8CeHeWUKEdIyNsqnfzYfffmZddePOrmMUAjfe64fmI9U9r
+         79s9lt+AvoDH3HwKKmpMnlthhcoWf3jf1kPNhgBektcVsyfhiU7QvzOjW62LVcmlcgt5
+         yzbkt7sQ3+fqA5Z44RGSorhq5SNxqcjAGOHAn4wgtBNFXaeZxCZ0wwOzNwwhILso5ymg
+         HMJrsf4p38g8NXCLuAIgXeTZ2nrrKzuzQ5I06EIcvUXBSIRCWDy2d3/qLQoIG6TFRJQC
+         s75g==
+X-Forwarded-Encrypted: i=1; AJvYcCX4pMEy9WH4wwLnasmsxN56ZB/gJeQD3nK9KBv6hQWDPMScXc+5VUPXyEylE+OzXP5hs+16JyjDJw==@kvack.org
+X-Gm-Message-State: AOJu0YzD+gKskHPWRCrwsHK7p1Bv0HnmakE8UqaOfgOWns425eXoU/yg
+	8KUfEp0N77Ix/aUE4dYx+3cmgqos401jzhCoRbAMDe52oC9cycFklTixmIxd4gGAaOO3OfW+Nxo
+	U96FUTbMSF3a1II4Ok2hJxnreGOdz3BWgbxWUW1ls
+X-Gm-Gg: AZuq6aI9vGnre9uJpvPYZfPkA4hMxPn4MMZ/wZjMVvIBFzclIXGgYL0nk2kM46cdXH2
+	h/LRzFWqFEa6nAjV8X+v8kzWLvKni1xflalUgybqOEjQXkxXNu3GaReSKjeAirRonhbk7EqQNkA
+	yeJVunS4MlvRpfKfZLUUvRQT3Fb9ivNzDBE6baY9vS/esvmeT4EOsYq4UHdjKibow6wcA5Xsvlu
+	bhW90qweErfP85Lth7WU+elhmZkknxY8GpNZGk2Q3cGE91jeqK2Xlp0aprJjJM0vxDUrA==
+X-Received: by 2002:ac8:7d55:0:b0:502:f1e0:dd3b with SMTP id
+ d75a77b69052e-503142fd12bmr14244281cf.7.1769451330395; Mon, 26 Jan 2026
+ 10:15:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0079bc61-5655-4677-a421-1a61f4c52d59@efficios.com>
-X-Rspamd-Queue-Id: 79405180007
+References: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
+ <7d3084d596c84da10dd374130a5055deba6439c0.1769198904.git.lorenzo.stoakes@oracle.com>
+ <ba27d41a-2109-4c89-83ce-00ba8b78d249@suse.cz>
+In-Reply-To: <ba27d41a-2109-4c89-83ce-00ba8b78d249@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 26 Jan 2026 10:15:19 -0800
+X-Gm-Features: AZwV_QgyKFOWHTjmvluDsVSs8ymtZTUXuwqayAi8HRabjZVKe2RBfgyVhhCTGtQ
+Message-ID: <CAJuCfpEkmMT9Bi6=46pvpezb3xMNnJgEKdKSQEm6Ky=Ygb2hAw@mail.gmail.com>
+Subject: Re: [PATCH v4 07/10] mm/vma: introduce helper struct + thread through
+ exclusive lock fns
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Waiman Long <longman@redhat.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C377340015
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: 14myt8au6jokf6a9qpimre4ddpbapj6t
-X-HE-Tag: 1769449629-678100
-X-HE-Meta: U2FsdGVkX18Nn5DzdE4q2SxlLxkEP1dz1l5jdIhD6oU2Y/lLXu4t8yVsICgZSd+ApKXBcdKPpOn+Cgc6b9ebOuRxh8PPXlxLD7lhjaJ21FvNxqNgmHdMUUXn9dF6+QL8Zlm0D3zku9FEL7ijClnqYVQIOrmJLl2Az1DNV4ttTvaDijHDpfoO3uPhmtDC9lpBKOEfLJCvQWyVc4QrC2bKtMh/G+fo4v95CyGYB15VMFLPZKBWs24ZQSl9TF+zodcVLMgsg4lipoxTqLZfugXSz2dvUwQXnaQAlDgfxY9ROnLM1XGutzi9ZjH6eUEgQwsG5nioe0AzNqyOFVr+L+godq4XBhM5N43UtEeB8dlGtDTwEde8nG4UJzFsO9CxLBT45EOD9HQO6tSfxAXemjIZRdGPNEM0GuuKuA5Wn/30yuj8ephjok3nzGSFOwY0RF6vET6b5qy8RalD+sT2uOGU4z3k3uEBM3MZGG7detizJ9pWx5Zx1Z9dXOBlw2wTM1u0grlnOpuIP6BOoL0CmsvO2gtD9xMCXhV9xXb3WUgc3C4E40ll1MmSMCU0a5w+NZ1Koy4gR7Ijtk9HyVgjZdGZUrPJgHKIfKnpa29lpiJIoTdWHG3sQ7ECx4k8zwR2gOI9ESz7VoDLyZVHGAkoA6gBE+LhTrQTeZQAqZOCK6x3Sw5g8bRFmxNeu/4F/cbLUNPKwprpsURVdBymoPwWYKAODr6BTLMgoBUQpMBHEiVZ5IiV6N4VWtIVL6yGcUHbDIKxm0nKy3wJrJWVFQwp++BxpgQK5khYNWZOt3rO3YEQVPRBH1ARvznM80SS2JG+fe4pJK3DLxeXmSj9UvEHB12XMqIPtybXkjuU6+DK/Fs5GnlEbsBS9lwUoCnsKbVqFK7vJVB6jmVNeetSDeoKToOVcoym2hsprwqgUHHC8k0Wmz4WlDwdc8nraOMQYiE9AMSD3Baed460c6C/fOCt4QS
- JOVtxLFv
- jX4ynPgrv54D7tt5Mo4JkVwFr+MU2SnnNkYv6rCR/PtH/hwD8+7UHtlvNcDj532z/R+h2wZTGdqKKqPjyeKUv8QAocasqZ8HluQTn+KwUEM3zUsYVI6eFqN6gMEdetFnurEq0jBBgOHkflT112Yot6u7EdrN5U2i1pdaTGbuitvW9ACLEC8Fo0xWwm/z6cs0vO8N/84ToL6DKC1T0akVNL1sPTBnvJUqewnXJuSGjJdDjT2JztrsD63wkVDj+IzEYPfqeHht0Kf5GiijxPZKays6WxQIOZ6jfTonu5PLHtGvB+kmz7WL6VrW1TwtbtHZG67sNVbbub2LQWX5lFwFtcmDHkhkajUjDamky3Nq+eg9fDvZkrECnzsfK0QKwR4ReXeI8+fSOgiZZ4erkHajVw30s5oe16vVBQRK4G7Mjocy9iC3cIkHis1FSJaZYjGIC1eGgLotjRT6XblZlfZHPvYy5R575SKdGcmunw6aogmbOH93d3ysWDzAtTXAE2NHauBy/9unjvwD9fHg=
+X-Stat-Signature: a637n6me7eycbin5kt4ro9p6mebs3a1p
+X-HE-Tag: 1769451331-148753
+X-HE-Meta: U2FsdGVkX1/em/iJSq91TX0/KqQKYiwFYOwQBrWF5rNIbLsvCEBAwxoDn+whm4OEGS2prScMlU8LsEQ77zp3P/AeMd+JejROYqyZkOgiL9CtMYTRQhk1BwZru2vlwu0fEhcnq9yhmn+LoMZuBTaihX38y2l65Rb8qyXpn+WgfqhxmlIYmkXGovVEBccfOBfgdApmow9g17WyQsutypIno0hHNzTSbCh4MXlB2XxufRlfBM5jjd03SZA0FgJAf61RNJ/rDNU/GMsRzCfdvkR3dIDIh+0ILFtScBDjlpOIKi3XjOoWv3Oi5vz0KuA+Of7TOLeuGFi4Pg0iMsoyjwe5/5BtmeV63//yzQDWJSAu3XcEfkqtLsGAfPbObRUp5mMHG1Lk0NwQX3eJzWosYlebRlZZjQV7TT0EZa9Hl9H6IUsq5yNFwiUYjGGPYeVBxMp7ZdwIGaMqddbN6bQ7O55xs7FPXtocfzFKKVWlxbTUyKJoEcU95e6B8K0ZeLASQ0+plUAe6HZftdju4LBiotXUC5rYvQc2UwkdAxP4n8eXdg0LEcg3QStvjKUUsZP9abcVDBNfSd5Nmv5X7virYTtcsT/Sqo7j/tYQEWMSCJmfD9s+nkLasRaeqH/mcT5Tna8jSuLsNuVvGT50T6N0tt9jo0fH4ncRPB1tWz+sFe0ePdoewrHYYr6QN7zubMHaFL7lRDvUQLUlBYcaIKBp2btdtiJLlbe2O4nZnNewRXrazTzvscx1fqqBJHa6hLqya58RDrQK8/7bKtRqVp0OHu+DUt2hsCIOgYDPwhWNJwtUrOwZEdq8sEcBARB8PXtuOUXj/bRqaYA7+tYm8q179QPOIQWohYfiipuCH7iW4wAllDQ9v4Aclo/ZlOmSImzlfCtGVB8Al+kNnhoNMeB7HqwapxVK1vQWLMX2JGJ8AB8Vz7wVMrjshAXGq8KoJGW2t8RizzFlNNe9JCsUnVxJyns
+ yeGvUXVE
+ lI/SEZZ5VYPWFKhVcop4z4hjF0m01HBdxi+mQN9Y6cutbF0JfjWQkX7U0QPZjbu7vfcZQ9ne9nKSKYjPJsnAZkl9yN7POdWT9lHA3e96HkgTbnDaXIbmjjuSjFdDgec/LllLDktDjQ0FZ5IRzVZIfWBCtMBSDJvdbaVpAYMGYHpbAxE+RWM5SCWFlS9aofotFU3tPlrX3TNVh2Td53Q9f/vvW3PK3SmBJkN+nlZAzTelb8PHXSApupyZqhRIRJ5ORVJ0B1nnGhgMOuIfytTC/07K3n2e8QJS1AqZ/2VSZIepW/4Ge3Y8nlk3N/uhItxnG9Jo4DNXk1OaCVQGKCgyip+L1uwHYXsjOFfrcgkcVWseaha4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,58 +147,284 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 26-01-26 11:39:33, Mathieu Desnoyers wrote:
-> On 2026-01-16 16:55, Michal Hocko wrote:
-> > On Wed 14-01-26 14:36:44, Mathieu Desnoyers wrote:
-> > > On 2026-01-14 12:06, Michal Hocko wrote:
-> > > > On Wed 14-01-26 09:59:15, Mathieu Desnoyers wrote:
-> > [...]
-> > Thanks to those clarifications
-> > > > My overall impression is that the implementation is really involved and
-> > > > at this moment I do not really see a big benefit of all the complexity.
-> > > 
-> > > Note that we can get the proc ABI RSS accuracy improvements with the
-> > > previous 2 patches without this 2-pass algo. Do you see more value in
-> > > the RSS accuracy improvements than in the oom killer latency reduction ?
-> > 
-> > Yes, TBH I do not see oom latency as a big problem. As already mention
-> > this is a slow path and we are not talking about a huge latency anyway.
-> > proc numbers are much more sensitive to latency as they are regularly
-> > read by user space tools and accuracy for those matters as well (being
-> > off by 100s MB or GBs is simply making those numbers completely bogus).
-> 
-> It makes sense.
-> 
-> > > > It would help to explicitly mention what is the the overall imprecision
-> > > > of the oom victim selection with the new data structure (maybe this is
-> > > > good enough[*]). What if we go with exact precision with the new data
-> > > > structure comparing to the original pcp counters.
-> > > 
-> > > Do you mean comparing using approximate sums with the new data
-> > > structure (which has a bounded accuracy of O(nr_cpus*log(nr_cpus)))
-> > > compared to the old data structure which had an inaccuracy of
-> > > O(nr_cpus^2) ? So if the inaccuracy provided by the new data structure
-> > > is good enough for OOM task selection, we could go from precise sum
-> > > back to an approximation and just use that with the new data
-> > > structure.
-> > 
-> > Exactly!
-> OK, so based on your feedback, I plan to remove this 2-pass algo
-> from the series, and simply keep using the precise sum for the OOM
-> killer. If people complain about its latency, then we can eventually
-> use the approximation provided by the hierarchical counters. But let's
-> wait until someone asks for it rather than add this complexity when
-> there is no need.
-> 
-> The hierarchical counters are still useful as they increase the
-> accuracy of approximations exported through /proc.
-> 
-> How does that sound ?
+On Mon, Jan 26, 2026 at 3:16=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> On 1/23/26 21:12, Lorenzo Stoakes wrote:
+> > It is confusing to have __vma_enter_exclusive_locked() return 0, 1 or a=
+n
+>
+> It's now __vma_start_exclude_readers()
+>
+> > error (but only when waiting for readers in TASK_KILLABLE state), and
+> > having the return value be stored in a stack variable called 'locked' i=
+s
+> > further confusion.
+> >
+> > More generally, we are doing a lock of rather finnicky things during th=
+e
+>
+>                                  ^ lot?
+>
+> > acquisition of a state in which readers are excluded and moving out of =
+this
+> > state, including tracking whether we are detached or not or whether an
+> > error occurred.
+> >
+> > We are implementing logic in __vma_enter_exclusive_locked() that
+>
+> again __vma_start_exclude_readers()
+>
+> > effectively acts as if 'if one caller calls us do X, if another then do=
+ Y',
+> > which is very confusing from a control flow perspective.
+> >
+> > Introducing the shared helper object state helps us avoid this, as we c=
+an
+> > now handle the 'an error arose but we're detached' condition correctly =
+in
+> > both callers - a warning if not detaching, and treating the situation a=
+s if
+> > no error arose in the case of a VMA detaching.
+> >
+> > This also acts to help document what's going on and allows us to add so=
+me
+> > more logical debug asserts.
+> >
+> > Also update vma_mark_detached() to add a guard clause for the likely
+> > 'already detached' state (given we hold the mmap write lock), and add a
+> > comment about ephemeral VMA read lock reference count increments to cla=
+rify
+> > why we are entering/exiting an exclusive locked state here.
+> >
+> > Finally, separate vma_mark_detached() into its fast-path component and =
+make
+> > it inline, then place the slow path for excluding readers in mmap_lock.=
+c.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-Works for me.
+With Vlastimil's nits fixed,
 
-Thanks!
--- 
-Michal Hocko
-SUSE Labs
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+
+>
+> Great improvement, thanks.
+
+Indeed, looks very clean now. Thanks!
+
+>
+> Just some more nits wrt naming.
+>
+> > ---
+> >  include/linux/mm_types.h  |  14 ++--
+> >  include/linux/mmap_lock.h |  23 +++++-
+> >  mm/mmap_lock.c            | 152 +++++++++++++++++++++-----------------
+> >  3 files changed, 112 insertions(+), 77 deletions(-)
+> >
+> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> > index 12281a1128c9..ca47a5d3d71e 100644
+> > --- a/include/linux/mm_types.h
+> > +++ b/include/linux/mm_types.h
+> > @@ -1011,15 +1011,15 @@ struct vm_area_struct {
+> >        * decrementing it again.
+> >        *
+> >        * VM_REFCNT_EXCLUDE_READERS_FLAG - Detached, pending
+> > -      * __vma_exit_locked() completion which will decrement the refere=
+nce
+> > -      * count to zero. IMPORTANT - at this stage no further readers ca=
+n
+> > -      * increment the reference count. It can only be reduced.
+> > +      * __vma_exit_exclusive_locked() completion which will decrement =
+the
+>
+> __vma_end_exclude_readers()
+>
+> > +      * reference count to zero. IMPORTANT - at this stage no further =
+readers
+> > +      * can increment the reference count. It can only be reduced.
+> >        *
+> >        * VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - A thread is either write-=
+locking
+> > -      * an attached VMA and has yet to invoke __vma_exit_locked(), OR =
+a
+> > -      * thread is detaching a VMA and is waiting on a single spurious =
+reader
+> > -      * in order to decrement the reference count. IMPORTANT - as abov=
+e, no
+> > -      * further readers can increment the reference count.
+> > +      * an attached VMA and has yet to invoke __vma_exit_exclusive_loc=
+ked(),
+>
+> __vma_end_exclude_readers()
+>
+> (also strictly speaking, these would belong to the previous patch, but no=
+t
+> worth the trouble moving)
+>
+> > +      * OR a thread is detaching a VMA and is waiting on a single spur=
+ious
+> > +      * reader in order to decrement the reference count. IMPORTANT - =
+as
+> > +      * above, no further readers can increment the reference count.
+> >        *
+> >        * > VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - A thread is either
+> >        * write-locking or detaching a VMA is waiting on readers to
+> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> > index d6df6aad3e24..678f90080fa6 100644
+> > --- a/include/linux/mmap_lock.h
+> > +++ b/include/linux/mmap_lock.h
+> > @@ -358,7 +358,28 @@ static inline void vma_mark_attached(struct vm_are=
+a_struct *vma)
+> >       refcount_set_release(&vma->vm_refcnt, 1);
+> >  }
+> >
+> > -void vma_mark_detached(struct vm_area_struct *vma);
+> > +void __vma_exclude_readers_for_detach(struct vm_area_struct *vma);
+> > +
+> > +static inline void vma_mark_detached(struct vm_area_struct *vma)
+> > +{
+> > +     vma_assert_write_locked(vma);
+> > +     vma_assert_attached(vma);
+> > +
+> > +     /*
+> > +      * The VMA still being attached (refcnt > 0) - is unlikely, becau=
+se the
+> > +      * vma has been already write-locked and readers can increment vm=
+_refcnt
+> > +      * only temporarily before they check vm_lock_seq, realize the vm=
+a is
+> > +      * locked and drop back the vm_refcnt. That is a narrow window fo=
+r
+> > +      * observing a raised vm_refcnt.
+> > +      *
+> > +      * See the comment describing the vm_area_struct->vm_refcnt field=
+ for
+> > +      * details of possible refcnt values.
+> > +      */
+> > +     if (likely(!__vma_refcount_put_return(vma)))
+> > +             return;
+> > +
+> > +     __vma_exclude_readers_for_detach(vma);
+> > +}
+> >
+> >  struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+> >                                         unsigned long address);
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index 72f15f606093..b523a3fe110c 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -46,20 +46,38 @@ EXPORT_SYMBOL(__mmap_lock_do_trace_released);
+> >  #ifdef CONFIG_MMU
+> >  #ifdef CONFIG_PER_VMA_LOCK
+> >
+> > +/* State shared across __vma_[enter, exit]_exclusive_locked(). */
+>
+> __vma_[start,end]_exclude_readers
+>
+> > +struct vma_exclude_readers_state {
+> > +     /* Input parameters. */
+> > +     struct vm_area_struct *vma;
+> > +     int state; /* TASK_KILLABLE or TASK_UNINTERRUPTIBLE. */
+> > +     bool detaching;
+> > +
+> > +     /* Output parameters. */
+> > +     bool detached;
+> > +     bool exclusive; /* Are we exclusively locked? */
+> > +};
+> > +
+> >  /*
+> >   * Now that all readers have been evicted, mark the VMA as being out o=
+f the
+> >   * 'exclude readers' state.
+> > - *
+> > - * Returns true if the VMA is now detached, otherwise false.
+> >   */
+> > -static bool __must_check __vma_end_exclude_readers(struct vm_area_stru=
+ct *vma)
+> > +static void __vma_end_exclude_readers(struct vma_exclude_readers_state=
+ *ves)
+> >  {
+> > -     bool detached;
+> > +     struct vm_area_struct *vma =3D ves->vma;
+> >
+> > -     detached =3D refcount_sub_and_test(VM_REFCNT_EXCLUDE_READERS_FLAG=
+,
+> > -                                      &vma->vm_refcnt);
+> > +     VM_WARN_ON_ONCE(ves->detached);
+> > +
+> > +     ves->detached =3D refcount_sub_and_test(VM_REFCNT_EXCLUDE_READERS=
+_FLAG,
+> > +                                           &vma->vm_refcnt);
+> >       __vma_lockdep_release_exclusive(vma);
+> > -     return detached;
+> > +}
+> > +
+> > +static unsigned int get_target_refcnt(struct vma_exclude_readers_state=
+ *ves)
+> > +{
+> > +     const unsigned int tgt =3D ves->detaching ? 0 : 1;
+> > +
+> > +     return tgt | VM_REFCNT_EXCLUDE_READERS_FLAG;
+> >  }
+> >
+> >  /*
+> > @@ -69,32 +87,29 @@ static bool __must_check __vma_end_exclude_readers(=
+struct vm_area_struct *vma)
+> >   * Note that this function pairs with vma_refcount_put() which will wa=
+ke up this
+> >   * thread when it detects that the last reader has released its lock.
+> >   *
+> > - * The state parameter ought to be set to TASK_UNINTERRUPTIBLE in case=
+s where we
+> > - * wish the thread to sleep uninterruptibly or TASK_KILLABLE if a fata=
+l signal
+> > - * is permitted to kill it.
+> > + * The ves->state parameter ought to be set to TASK_UNINTERRUPTIBLE in=
+ cases
+> > + * where we wish the thread to sleep uninterruptibly or TASK_KILLABLE =
+if a fatal
+> > + * signal is permitted to kill it.
+> >   *
+> > - * The function will return 0 immediately if the VMA is detached, or w=
+ait for
+> > - * readers and return 1 once they have all exited, leaving the VMA exc=
+lusively
+> > - * locked.
+> > + * The function sets the ves->exclusive parameter to true if readers w=
+ere
+> > + * excluded, or false if the VMA was detached or an error arose on wai=
+t.
+> >   *
+> > - * If the function returns 1, the caller is required to invoke
+> > - * __vma_end_exclude_readers() once the exclusive state is no longer r=
+equired.
+> > + * If the function indicates an exclusive lock was acquired via ves->e=
+xclusive
+> > + * the caller is required to invoke __vma_end_exclude_readers() once t=
+he
+> > + * exclusive state is no longer required.
+> >   *
+> > - * If state is set to something other than TASK_UNINTERRUPTIBLE, the f=
+unction
+> > - * may also return -EINTR to indicate a fatal signal was received whil=
+e waiting.
+> > + * If ves->state is set to something other than TASK_UNINTERRUPTIBLE, =
+the
+> > + * function may also return -EINTR to indicate a fatal signal was rece=
+ived while
+> > + * waiting.
+>
+> It says "may also return..." but now doesn't say anywhere that otherwise
+> it's always 0.
+>
+> >   */
+> > -static int __vma_start_exclude_readers(struct vm_area_struct *vma,
+> > -             bool detaching, int state)
+> > +static int __vma_start_exclude_readers(struct vma_exclude_readers_stat=
+e *ves)
 
