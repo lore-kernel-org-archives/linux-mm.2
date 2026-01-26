@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05647D19510
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 19:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7DC9D1950F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 20:04:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AE2D6B0088; Mon, 26 Jan 2026 14:38:10 -0500 (EST)
+	id C51626B0088; Mon, 26 Jan 2026 15:04:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15C016B0089; Mon, 26 Jan 2026 14:38:10 -0500 (EST)
+	id BFF396B0089; Mon, 26 Jan 2026 15:04:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0693C6B008A; Mon, 26 Jan 2026 14:38:10 -0500 (EST)
+	id B0B0C6B008A; Mon, 26 Jan 2026 15:04:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E5EE46B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 14:38:09 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D1781408B1
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:38:09 +0000 (UTC)
-X-FDA: 84375125898.17.F9D616A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 162F71A0007
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:38:07 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YkOaj0qE;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0C66B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 15:04:55 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EFC9DBBC2B
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 20:04:54 +0000 (UTC)
+X-FDA: 84375193308.03.4B86C4E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 276CC14000E
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 20:04:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hu6UvO5x;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769456288;
+	s=arc-20220608; t=1769457893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tHTeqDUB2gh/CQfkj2zxMXfvAoeqsGGyUjMjxOv0Sn0=;
-	b=lvJ77d9FK19O0q9dHdv6kE+ixe4bZz/n89Rkd4AtjvZmygDyTXkoNuQpp+RKgcmLsgfVRO
-	0hDRiiqS1XZ7R2qU0CXTQb2rZpnvzTsliMLQsTl80NS1G0dNojXUCrZ75HipeVAXQrIloT
-	H+YS5v4HpVwE7qm+5QZlpzsLFtJFDX4=
+	bh=e9/XfxEbKxo6jfBMokoUrz0wkeQKzvvz9k65eKTKgPw=;
+	b=m67ag/6HIeYHmrqZ9DW1FqKeJti7M7pr0DiLEsuQuJ3daTWfRtTeryRpPR5kgDpb2uQkNH
+	nEvnrlKYfxsv/XPWtV42Tvy+7dQmcjdfWvhFRITAxgSYnxwtWEAGSW03KOQgmzDctR7bn4
+	SjCjf9Qfbl2ZzwI3OIjAIwVK/bPxHOE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YkOaj0qE;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hu6UvO5x;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769456288; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769457893; a=rsa-sha256;
 	cv=none;
-	b=u6hzh9VQVuzRfFMCSZ3q+UrVB5Dpmc3gkULmtYPv1ecqERbT4oTKG/g7OUumt55cj7eD+6
-	ca4YQcUPAy/BEgDPic5RQik84OGG0u5cCs7FpBFHvNG+lMLSHCDAAVm/nDKBcOARuEGwEw
-	u1hZu5dvfa16nuBygQlaUSvt6qSyPUk=
+	b=Njbl9X1VJyvI2FXx7omnHUk6xx8vX5TflqHWuVpkUpL8b5y0ztPcYhCZgn5KrQ9xVVOWT3
+	nB2S0oDfKhKKCnVU1E6uDea3GjkbXsvSPXyk2fwyHN85XKQqaTRDMqLNGwszdroa0hauhP
+	dgOIdKDbNGf3x+z0kmVd9Ykk4JRwjH4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5EA9360121;
-	Mon, 26 Jan 2026 19:38:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5B9C116C6;
-	Mon, 26 Jan 2026 19:38:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2488F441A1;
+	Mon, 26 Jan 2026 20:04:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FE5C19422;
+	Mon, 26 Jan 2026 20:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769456287;
-	bh=R9PbN9ntS2LDukuVYwI34djTXDghM47LTWOybDJ3vlQ=;
+	s=korg; t=1769457892;
+	bh=Qgitda7HeemsJndbjdX5t1c7WSfPT3w4xoT/j8RNL44=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YkOaj0qEK+Bj67GnpQv4Jl03pawuX3A8+7L9FQ86c8qsWyl/hI7VAjvGfW9K61tLj
-	 QzzneJTYBFhga2+e0+BUXvjQsxlT2WILRSNokESaiSJsDlcNWNcxm5XabjH5Yf+Al/
-	 /HaCH5yeko51GgcUsOKs9LpWNrcQ0q1UKf725TYo=
-Date: Mon, 26 Jan 2026 11:38:06 -0800
+	b=hu6UvO5xnqQiH3CnmvkFr/5tCKZy2ceKq0jxtcpi559Chj5lkWBPtWjnW19p3MWQV
+	 6InR5lpiDQaQBKzN0eQbX5GAAcHMnXNdbsZRmtsH6vHgNPcpGxQu2d0nGAbSJQ7FIp
+	 dxN7nzl45vL1Yoj24Tx89+XNVu2RCmvl/mXP84Bk=
+Date: Mon, 26 Jan 2026 12:04:51 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn
- <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>, Ingo
- Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
- <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>, Sebastian Andrzej
- Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v4 07/10] mm/vma: introduce helper struct + thread
- through exclusive lock fns
-Message-Id: <20260126113806.5b0942a6fd0a3554ae5e21fd@linux-foundation.org>
-In-Reply-To: <c09f2c10-516c-43b9-81a6-cc77e5f78ba8@lucifer.local>
-References: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
-	<7d3084d596c84da10dd374130a5055deba6439c0.1769198904.git.lorenzo.stoakes@oracle.com>
-	<ba27d41a-2109-4c89-83ce-00ba8b78d249@suse.cz>
-	<c09f2c10-516c-43b9-81a6-cc77e5f78ba8@lucifer.local>
+To: Shardul B <shardul.b@mpiricsoftware.com>
+Cc: <willy@infradead.org>, <linux-mm@kvack.org>,
+ <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <dev.jain@arm.com>, <david@kernel.org>, <janak@mpiricsoftware.com>,
+ <tujinjiang@huawei.com>, <shardulsb08@gmail.com>
+Subject: Re: [PATCH v4] lib: xarray: free unused spare node in
+ xas_create_range()
+Message-Id: <20260126120451.0c28a6deb3ab532dfae40a24@linux-foundation.org>
+In-Reply-To: <19bf8d68cdb.ae2c0d37126486.8380742359510867201@mpiricsoftware.com>
+References: <20251204142625.1763372-1-shardul.b@mpiricsoftware.com>
+	<b2b99877afef36d9c79777846d19beeb14c81159.camel@mpiricsoftware.com>
+	<19bf8d68cdb.ae2c0d37126486.8380742359510867201@mpiricsoftware.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 162F71A0007
-X-Stat-Signature: egaadxc31c1ok55fe7n5x68sdeh9a8mw
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 84u5csrn8pp4oa4i5sr5s9o8ecskc9r4
 X-Rspam-User: 
-X-HE-Tag: 1769456287-292560
-X-HE-Meta: U2FsdGVkX1/qUQxl8nadhfH89pmleRwvzVJ1I7eejbffDPFN+gsQOK64AYz15Uw/PXsMD0UuA0eBFou/Y6AlsSTKNykzzh9r68lY16A/9Ok/obq5//o171voFM/uNeKwvrSgkk7Yy8swI36BBxoCbP2z8W6WglpXwtmbe0TEVzNz0G28+iJS+gLKIzXNGd5zp65VaXVly33cWL4nHpq87P8Uyl7R1Bhka3WuIGQPnMGRiabRL8Eqg+4lzY9tcIiMtXj1zH6GDir6OjeTlfgpCS7tAg6OOuwUay9QGzLug5EAdFY9jNXpJ/5FXmnyj61gm0uQEbznzeRplcnU99wAJOdkanhgKpte4q3w67wsnbL49eI6Rs6vRyjdwyA4rb7B35tixKg84GISGOaqD4uyHhof7k/2vygykP/CB/6kRt/gUMdBbRt3el3GnXnBUnBDQCkPRNf5/h+n2TEl+96WU+Zzu3GROnePGDl2vVBukfzI7YfXoHmxMarjxKMBHnGwDFiUguADfFwIM0rsYysY+b3Vd3QeJMf6XlInsv0oClfpwsYs2mz+qv4VPo1ZLFFUp6u4x/ab0LIkDxq1a9AV8iVhsXUQR1ZZOHSLN0gk6Sov0W8wRHjcV38ebIXGgmaZz6/f0vxoNW7vRkDU8OH3ZkL6BAL84oQH/GPnPL9au0SHiAAxE96x6b3BlVjuHeEJ3OQXKA6OrfXWJdlohGnFmHXLjMh2oFThxLkEC8n8XKb0sMFIeBcyXq5E96Tm5jj4juqtyaiXZkyqVexhSmQjsnrNaK5RW5IlhLS3rxQbToSFUC8lCxNMjSwxpvb+7eV0dcoJy2qEf4fMT0NgjlvO4FH1S7Ho9V+fwxbvTH503CizGMrF10H2hiiWddWGz4YuyAizrHe49P0Ls/JmlUeEK+G153v/KAdkyTPeOlYPDuOvBn5I+FYpiurEQtDpZkWTcSvagssn5RirAHJhWMn
- 1WNTWyK2
- zMvBhj1HvzIYbfzxeca5vJSEJ6w==
+X-Rspamd-Queue-Id: 276CC14000E
+X-HE-Tag: 1769457892-433586
+X-HE-Meta: U2FsdGVkX1+BjZ8ZThuY53QFN4dvmK9Kg/fRpV8O9vSui5Sba1nAFiCNWLPgIRpK772/oMlcTGvXXKD72iu1NIJpVf1ljQKvrHHCvY+xvFnD3Z6k/hCZg4M8i0HqcdeOLbmNJLJD16lTTByZahqEYkogh4n8vWYTfwkdUzAT6a8/9ysoYcMffEBErC27vbeMutRxuTdB7/mtzlujxCZe5wHKzp4Rsaz+ol7Lh5hlSvgQMcgTWPbGFr+UDhH6tTGgec3jRRsa5GAUa+kEsS5tMOO1+Fq4DMLtaXr8V9xCfCwW4cPXBGsfYot+KIojkhj+XYqh5T6zzBJeT4ikRhXbyKZg6NbB3ZC653/YE6zC75KKhDHG46CQ9DRvIvYrD5889ac6Aj7Usc/pc3OHYcx3VXjxdxfPcjx81LoPmAA0TzzuAq6s4AHDxSObs6O7BJUufj105+a2RofjMMfUa1qiq6+8GzKzI8csDGEjVp3dGVfVtnJJVJVpcWo64Na5pFPHbFSFkmsE8QjmGdA9W2Cpwo44ZssoC/T9EZtoxa2kzkXS6Dx+HsnZt/ZP9wCVV63QLEs/KDGoI2MhMW6+XvDuGyhFypBWt6xzw331yX91in5Y6lM5V2VpgHo2zQ/Yen3fUSQoxR6oTE31U3d5vg14CaJoOjw3km64aBAaoaZazaW8XGZZhsX5We/hrJZkLgVx/A0K1ZCuSan8Nlo7SW2upvwj+g3q3OzNlXUM2k1N0zogDOveSsmOlzfHWdSznQrz2WTgdnnBus39d7/x6eSreT64Box2mAHZdSej2cXbAx3h4LuF1I5SWI4ClKqZ3atsDlV5FUjMnfVjDE06gZVFuSwn4+IWRsRvfP2OWAUXIa9AzPDijkHUZscb7l5oQzbLHy25lBtQ7o7bFnSwGuqjiv7KotnHRhH0kzxkcri2EPwBGaPqQHzds2pst6GAf/U+1WrooT3wbiPioEXVnlf
+ yiCjJGAq
+ 78I1Vab2e6TbJUgCC+TBwmJ+hTLr2/yqI+mKPROR6+5iJ/hdH02MAkblp4DnLL1/GDk9oKlzGEXhBzh/X/UEWxD2DqfzrBkXwHmu99yicxa6kWZcDrVVztkeCzWnY6gCaGpCIeZ9Fhoo2PbABL3TzZcJxEms/7Due1of8FBCoNybH2HcRd0/KxIzZzjC0PIMdGaFyAcC4P5MI99jB5e6bv5e/pn83Bx917GsqFULhmsBFN3XnmckkE2Un//UeOtljGQa1oG0Ga/Mde/sqWo0kOQu0EXUPDhsbjHLELhmMhbJNxJrzmywXCQimZDxr4mJ0gN2uoOLUg9/oSye8ZYxRlcQAzQT/3tmYR0JUQzlt4Nn5QHVCqYssiqQGy1H92KhR0S8oT3TqiVvGMzi8e1lXqeTwxA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,123 +95,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 26 Jan 2026 16:09:24 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Mon, 26 Jan 2026 11:16:08 +0530 Shardul B <shardul.b@mpiricsoftware.com> wrote:
 
-> Andrew - could we change the commit message to:
+> Hi Matthew, Andrew,
 > 
-> -->
 > 
-> It is confusing to have __vma_start_exclude_readers() return 0, 1 or an
-> error (but only when waiting for readers in TASK_KILLABLE state), and
-> having the return value be stored in a stack variable called 'locked' is
-> further confusion.
+> Gently pinging this patch. I’ve checked the latest linux-next (next-20260123) and the akpm-unstable branches, and it doesn't appear to have been picked up yet.
 > 
-> More generally, we are doing a lot of rather finnicky things during the
-> acquisition of a state in which readers are excluded and moving out of this
-> state, including tracking whether we are detached or not or whether an
-> error occurred.
 > 
-> We are implementing logic in __vma_start_exclude_readers() that effectively
-> acts as if 'if one caller calls us do X, if another then do Y', which is
-> very confusing from a control flow perspective.
+> The patch has a Reviewed-by from David Hildenbrand and fixes a memory leak in the XArray library identified by syzbot.
 > 
-> Introducing the shared helper object state helps us avoid this, as we can
-> now handle the 'an error arose but we're detached' condition correctly in
-> both callers - a warning if not detaching, and treating the situation as if
-> no error arose in the case of a VMA detaching.
 > 
-> This also acts to help document what's going on and allows us to add some
-> more logical debug asserts.
-> 
-> Also update vma_mark_detached() to add a guard clause for the likely
-> 'already detached' state (given we hold the mmap write lock), and add a
-> comment about ephemeral VMA read lock reference count increments to clarify
-> why we are entering/exiting an exclusive locked state here.
-> 
-> Finally, separate vma_mark_detached() into its fast-path component and make
-> it inline, then place the slow path for excluding readers in mmap_lock.c.
-> 
-> No functional change intended.
+> If there are no further concerns, could you please let me know if this is queued for the next cycle?
 
-Pasted in.
+There are comments from Jinjiang Tu and Dev Jain which remain
+unaddressed, please.
 
-> <--
-> 
-> Please as per Vlasta's comments below? Thanks!
-> 
-> Also could you sed the patch with:
-> 
-> s/__vma_exit_exclusive_locked/__vma_end_exclude_readers/
-> s/__vma_[enter, exit]_exclusive_locked/__vma_[start, end]_exclude_readers/
-> 
-> As per Vlasta's comments below?
->
-> As I have clearly forgotten to do this bit myself... doh!
-> 
-> Also at the bottom there is one small correction to a comment there too.
+The leak is a rare and this is a minor problem, I believe?
 
-I added this -fix:
-
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm-vma-introduce-helper-struct-thread-through-exclusive-lock-fns-fix
-Date: Fri, 23 Jan 2026 20:12:17 +0000
-
-fix function naming in comments, add comment per Vlastimil per Lorenzo
-
-Link: https://lkml.kernel.org/r/7d3084d596c84da10dd374130a5055deba6439c0.1769198904.git.lorenzo.stoakes@oracle.com
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Waiman Long <longman@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/mm_types.h |    4 ++--
- mm/mmap_lock.c           |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
---- a/include/linux/mm_types.h~mm-vma-introduce-helper-struct-thread-through-exclusive-lock-fns-fix
-+++ a/include/linux/mm_types.h
-@@ -1011,12 +1011,12 @@ struct vm_area_struct {
- 	 * decrementing it again.
- 	 *
- 	 * VM_REFCNT_EXCLUDE_READERS_FLAG - Detached, pending
--	 * __vma_exit_exclusive_locked() completion which will decrement the
-+	 * __vma_end_exclude_readers() completion which will decrement the
- 	 * reference count to zero. IMPORTANT - at this stage no further readers
- 	 * can increment the reference count. It can only be reduced.
- 	 *
- 	 * VM_REFCNT_EXCLUDE_READERS_FLAG + 1 - A thread is either write-locking
--	 * an attached VMA and has yet to invoke __vma_exit_exclusive_locked(),
-+	 * an attached VMA and has yet to invoke __vma_end_exclude_readers(),
- 	 * OR a thread is detaching a VMA and is waiting on a single spurious
- 	 * reader in order to decrement the reference count. IMPORTANT - as
- 	 * above, no further readers can increment the reference count.
---- a/mm/mmap_lock.c~mm-vma-introduce-helper-struct-thread-through-exclusive-lock-fns-fix
-+++ a/mm/mmap_lock.c
-@@ -46,7 +46,7 @@ EXPORT_SYMBOL(__mmap_lock_do_trace_relea
- #ifdef CONFIG_MMU
- #ifdef CONFIG_PER_VMA_LOCK
- 
--/* State shared across __vma_[enter, exit]_exclusive_locked(). */
-+/* State shared across __vma_[start, end]_exclude_readers. */
- struct vma_exclude_readers_state {
- 	/* Input parameters. */
- 	struct vm_area_struct *vma;
-@@ -100,7 +100,7 @@ static unsigned int get_target_refcnt(st
-  *
-  * If ves->state is set to something other than TASK_UNINTERRUPTIBLE, the
-  * function may also return -EINTR to indicate a fatal signal was received while
-- * waiting.
-+ * waiting.  Otherwise, the function returns 0.
-  */
- static int __vma_start_exclude_readers(struct vma_exclude_readers_state *ves)
- {
-_
-
+I'll queue the patch for some exposure and testing but it appears that
+some additional consideration is needed before it should be progressed
+further.
 
