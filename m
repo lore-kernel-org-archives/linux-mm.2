@@ -4,122 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D889EC88E76
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 08:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 009ECC88E78
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 08:39:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 260CA6B0088; Mon, 26 Jan 2026 03:37:35 -0500 (EST)
+	id 673ED6B0088; Mon, 26 Jan 2026 03:39:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20F0A6B0089; Mon, 26 Jan 2026 03:37:35 -0500 (EST)
+	id 6221E6B0089; Mon, 26 Jan 2026 03:39:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C60C6B008A; Mon, 26 Jan 2026 03:37:35 -0500 (EST)
+	id 4F9B16B008A; Mon, 26 Jan 2026 03:39:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F05866B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 03:37:34 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 84461561A5
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:37:34 +0000 (UTC)
-X-FDA: 84373461228.28.7ED1ACF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EB4E6B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 03:39:27 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D709EBAEB0
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:39:26 +0000 (UTC)
+X-FDA: 84373465932.30.FD689D8
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 043581C0005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:37:31 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nOtrzNVo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5HuaIWBT;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WaKuCiJh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ALuzgEkT;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 65A8218000B
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:39:24 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="t/waB+j2";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KAJM9FFC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CSkTefY0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ay+WlyzK;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769416652;
+	s=arc-20220608; t=1769416764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ItVJe7EX5a0KaCp3PFewhzHNmoMV6IH1mvEqTdGuR2U=;
-	b=rC2ODmDUw4b9o9aH45UzaLfyDmH4kNK42ntuuxbZX4+U9uoIM46/y36S7z2Ah1xnZYXJil
-	ykLnBP5S+Ljw3tUVhphehAWLQfbyOAGZWV83phrmD5tdqzFipNNxS0cOb2ECZfemFXjJ2b
-	wpGmGrOwCIOdkwl0+zSd4e1/HNT5/cE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nOtrzNVo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5HuaIWBT;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WaKuCiJh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ALuzgEkT;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769416652; a=rsa-sha256;
+	bh=C8apTRjaXyVloWrbPyJGXpF6txJlbz3ZAwUoAcFkvk4=;
+	b=MKE7pMg0DYfXbjWmNkSLi1nQjXsvJglXKQQqrrnDSWxwB2uR0q636dA+FnLxWYDOzgsE3t
+	jbaqqieIXui8EkwopV11D3ltjlZvPjKX+QHscbiRdVnT+q03346Ir4FDWSAbiVWTdxBqBz
+	Z3r/bL580h2KDMADMFqyQQQrp9Lr0cc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769416764; a=rsa-sha256;
 	cv=none;
-	b=Dv0+Hs0fGemhawMVYmMuhum/G0CQkdmuit1+dfosVP6Vi12xGwEcDgzKTrww8xQK2NyTvs
-	Idze8zUDp93aoKyo0ajrv7M5fI2Ad/qaLaSMblc/o8OohfZLRae8h9CV8UkPur/gv/8fSa
-	20cEAffl2fstDAZioWQPWPe27no//gQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=vs0DAbAarYn7RE5eIvO7Id+5D9zJHpziLFVbfxfB+nSK6VROYwBcRC6LgEu/B5qLG+H3nk
+	s3cYU0446RAdJI92NyVe505ynJU+hajis5MgJmJWKmkhooK5F2kkm0ESGgIhLxmq03KM78
+	QZ+jAuZ9kjXBAOlbwCCvp9aVv6KOqfQ=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="t/waB+j2";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KAJM9FFC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CSkTefY0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ay+WlyzK;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EBE01336B9;
-	Mon, 26 Jan 2026 08:37:29 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9CCB9336CE;
+	Mon, 26 Jan 2026 08:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769416650; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769416762; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ItVJe7EX5a0KaCp3PFewhzHNmoMV6IH1mvEqTdGuR2U=;
-	b=nOtrzNVobZK+SmtfDIVfqP4FAtD5jH15w7xyDXOFUXOPwKHLAkL3nPyJF1lV7a2kRpfC02
-	9VgCfDl0xi01UmUyMtS7Zk/crXtXFt9CQHtqhRVY+WNpmBtFJZgLOlz5+x7YG+1SlObpcI
-	7EUHdTQcV6BMhpTqEpG7v08KYJM6WDg=
+	bh=C8apTRjaXyVloWrbPyJGXpF6txJlbz3ZAwUoAcFkvk4=;
+	b=t/waB+j2ugV/tWl5MMCbqMEiDGV2/8OWeqP1lMsNsoyr7XYYrabD1q63Qrt+YzS/xntYLp
+	uqmzDOPOpm4CcZpVQTNKq5eY6EpB5060+fNL85HPvmq6O/jedg8OixvM0LNGk3qv8sHqNT
+	oiAExgQgiqLT7+XZ92wosPyJHoqtieg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769416650;
+	s=susede2_ed25519; t=1769416762;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ItVJe7EX5a0KaCp3PFewhzHNmoMV6IH1mvEqTdGuR2U=;
-	b=5HuaIWBT4KU85Ffu6GJp2V4mZtgm1hHGgGxaSxBIvlHI4jyIQGGu/rw2Lf9TsZ+Cak10q0
-	mLc4oCna6zy+sIAA==
+	bh=C8apTRjaXyVloWrbPyJGXpF6txJlbz3ZAwUoAcFkvk4=;
+	b=KAJM9FFCbjI3pCIjlEWM4MdjpYMCIfm/y9cM/AqSHhRHzFZ7xEt7yu59sjIHqNuundCHvW
+	qGYN2b6wDG+kQ6Bg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769416649; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769416761; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ItVJe7EX5a0KaCp3PFewhzHNmoMV6IH1mvEqTdGuR2U=;
-	b=WaKuCiJh4yqZaIGkrbgJFPBU3aWVrWGUdejtXJ1CqJO1CGoOomyo/cN2K+1pf+fqqsWrX/
-	FF9MHrJl0p2hbq2VJ2XHLsHJ+dW79wCFqhHgVRHHP1QU4AvxnhWVPOnxKJVLmZYrN5B+OV
-	7UODzNNZaV/wVDKebqeGV+rwk/2Krec=
+	bh=C8apTRjaXyVloWrbPyJGXpF6txJlbz3ZAwUoAcFkvk4=;
+	b=CSkTefY0MtsKYl/YIoaFrr3CrzzcmiqngjVEdMT0IfdKG8vyVRZP11B/IWxSeS/9wUGSK/
+	fwoQkmi9GlscBcA2n9l8MidPVBEZxmGVCAJVm2lDx2tQMapyA2El+/50h2DC0AL32XEuTM
+	Oin6fzOlpiijum3Q7CzT/Smxqy2Ydjw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769416649;
+	s=susede2_ed25519; t=1769416761;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ItVJe7EX5a0KaCp3PFewhzHNmoMV6IH1mvEqTdGuR2U=;
-	b=ALuzgEkTkHJBPgrue4sgK/GLUhPIxnEz5rui0w0fuYcbzYLq7g+8rWjNCSHt94T7Kiu6wq
-	I2sGHLZGuIKFJ7Cg==
+	bh=C8apTRjaXyVloWrbPyJGXpF6txJlbz3ZAwUoAcFkvk4=;
+	b=Ay+WlyzKYc6OzkOkBiej4kLCmNO4otuwfsO4hlMvmj2poBFHgU950+6yktW12kS1VkJH/U
+	BY/VJOSO/yGv8KAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE620139F0;
-	Mon, 26 Jan 2026 08:37:29 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 729C6139F0;
+	Mon, 26 Jan 2026 08:39:21 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G8kKMsknd2lbJQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 26 Jan 2026 08:37:29 +0000
-Message-ID: <55ab1a9b-1d7a-4e7e-b6bc-ee327197dc4b@suse.cz>
-Date: Mon, 26 Jan 2026 09:37:29 +0100
+	id XSH7Gjkod2kQJwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 26 Jan 2026 08:39:21 +0000
+Message-ID: <ff10180f-0b9e-43c0-93ff-b421ff1454c6@suse.cz>
+Date: Mon, 26 Jan 2026 09:39:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own
- slab
+Subject: Re: [PATCH v4 06/22] slab: add sheaves to most caches
 Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cl@gentwo.org,
- rientjes@google.com, surenb@google.com, hao.li@linux.dev,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-References: <20260124104614.9739-1-harry.yoo@oracle.com>
- <2b116198-b27a-4b20-90b2-951343f9fff1@suse.cz> <aXcmGMlH3sWO03rv@hyeyoo>
+To: Hao Li <hao.li@linux.dev>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <20260123-sheaves-for-all-v4-6-041323d506f7@suse.cz>
+ <7tds765fsicczreeqckiuwpny2tolotfrnbz6jhpjrch6x5pg3@5irfwnohvsli>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -160,17 +168,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <aXcmGMlH3sWO03rv@hyeyoo>
+In-Reply-To: <7tds765fsicczreeqckiuwpny2tolotfrnbz6jhpjrch6x5pg3@5irfwnohvsli>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: i6955jqju335ywn1uocgw5xyffihbmyj
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 65A8218000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 043581C0005
-X-HE-Tag: 1769416651-437096
-X-HE-Meta: U2FsdGVkX1+BUVdWOXoK/6XDWFtH6lVQr5YCmcbB/mKwJwti/Ygh9oapdaIzXrQx6FeTcIu8OgO8HuHwvr8gMFHOzFlIwvO3O2LIPMl4NoepXP6TzlJpgZTtq74K24EhnjjgAh/TfN4XgDywkPXsfRgt3HUg7WlwhYnIkm9q8rmYmU8lhvNHuOrVcB5lfl/rYK0z8NIyImtqfrxZS5SFRaIJMsyIvwK2xesQFHAHTJ+iHoNT8CDOoPHl1knRcVcsYxgOB5C+3w1S2yamCkAfx5AQbTDi87hYEFijASPc9hWSi1WdrXwOgLJ+Ob//vjEckdCWr/h+YXq6EEp2XYimbbnD/b8hjNGa4XIhzknVioF+EsO6UByACyGha6oeAutSgPzFF90huVdFR2OlwhvKQ4MgWIsIuF4EMa3zsTEpt5WMzpTZNacwjwRd+LHd6XOyPoSGKozR1R+3ebxPbXQJyGagK3Cwr6WSVTpul/BY1w4jLvSLKlS8h0Ul3E6d4xShwJhcgxYafJhfn/QR8oDFQWlNTTcY0I3fnwkvZTjM5ZQM59Jamz7n+ADu20leVLWYXi0bFKxKChW7/QPGCDHrF8Um/OU5hj9PYqFESLQnwGu5xQ61o/Ocp66LcZj8D3oP0/Gpad5fLvkLdQIgUF5yN75oBlqfE3kjs+qGWkRVOyQaaH2zb/9Gl8C0DM8854K8OeocPve+gi+2ze4GYEKj8st31kbn9Ama7/zszvfVjKTHJZ3kC2kX3uQ4E3wYYqWQOvzPiMm35ZhtSBK6OThHWZCgp0ks2BROtAY7q4T+epvY1NmnN28UbslbOcbgxi5NFO9D3qJ2SXWanBqjQs+/na51v2TTrfhkqVFsxg4+cH5kATTuCZAQGq36TfgRnNvBHBS37auhqVND7SKtIuoB7DePc8K9UQdoeYGkv0mxYkoQqJ0P2iaENVu1rbzTIwh3CymXKhD6TixiBLiRErp
- eVGz8oOI
- AbFwE9+qpsO7XveF273UnmudaEaUVoWHeaRiI5gCYE1nnpJLrE6sT7QLdGZy722rzb+8/6/IWBSytqZJnM11qNaArKA+dr+TWf+9OiB6K6fYCGnrKo6k+cLUuXewpBhgsSACRQ7dh13brgq26w5YHRUlNvDkGwz5bw/ADzRmukkm5FAahyX5/cpQicJzvU7v/kOtXNsKnzVh/AySViDZxfCTEYkZ5WcbSC0UlWTJmxL+sW4h9E6OKKCY/nMKlh2OrwoXXDcuc6ydrSZygepIc7hfC6JbKPVh2FEt1Cd1w708U9gAKHfNR+0wHjtQ/IGW9lz1WGJt8GStUEI0=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: nrfcp6feq3qxij3jkskgm65secrtbm8b
+X-HE-Tag: 1769416764-368161
+X-HE-Meta: U2FsdGVkX1+Sc+r8sD/DrT9FgAtoKy03S1joSbP25wLZ7088Cc6Bn4V0CW8hdurG70GoCs7pMNwigc7mak0h7O7czWyxkUX/2IjSFUBK50wgl++JzHoMoDLqTklpSvGhau80AJ79ilH9vib95Vkmqdozm03jU2eI5iwu/hxD4LGy+/u3pwn9Vyyd2GpzF3Wb2Oc937G0txAXWAEA1DKmIQ4heyEfa75vlQlGr7oKtUEsv/+9GJ8qt4fYrEEhtkjdK7UXS7lFNx/2qREPFs5ZUdMkWUO0p5bv6PTno4lHYC8VaKh/FbVHz+5Fc07+RMW4fTWeBFabVaT7bOdIT94IwsLj4wasc7aKwujCgrZFZbiZow5DuQvxcrf8/ojs76IB2tpJMpNgdazNju3jZNXxcz651r3s3OV+Ecrz4lNs/HzkeKJUVdWeC10+5vezBHB/6ViE/sYK8iq8XqexaRE+Jl84jukllO1HK8DpUTSgSh/dMA/aknWFWXT8fr+PpvXOeR50FLfvDLbUDGW7sNAiy/Xa5xWeWCSpFb1gUMmFT0OGRlMjGzDafA1L8nnC0Vo18aPV35kNkviY7c/zKu0RgzWyAw6S2da+DrW+bkm5Ptdc9KUoCnkTQWCmyqs+CMk2YKfQU1Wyh+LrtmtnGo128G7QzFIUxkmGYnPsYN5vE8Zd9pAxkSKbYfcMqL0WoeiMpf3770f9sSZbvA4tZFVQ7/x2fzIirCgb/wX5bTMyP/z2W9U27EHBCbpHnpTDdCi+IZS97ORhtzTK5SopBfUpYYeqLaur9wkTY1VfeN17n4oyQX5i6wjWg6P9fvJ8SQsyrG7egjC/BGSIqsmWxmLt2VwnpA711jThGT36qc79iSQxsSCQM+0fA/t1UgFfJ8affsr4+5q69aFQj4Jj6lQePIg8DFQ5R91NtiZjbwO6j3uXCMfPZAEeVaMyVPfgiLIuZTKx2l/Ag7PBYuQHUTr
+ xdrkNTPW
+ c0YBZnLoSb17fe+S+MV8LemUq3L45JeWCLHoiI+zrmrgqlwC9hQsIMvns2elTWAsorSjOAxFVvgnB0utUwERTiXDWOceX32Vt8vvJTWWXok3NI8Z6h9xwXtBiWukYpRbIoREG/KKHcJDXGab+NHE5oveBDQN+bemiPGig++BEcWbiujSXnthQb+rO7Xi1vxu/xN8aYZKH10Tqz5Sh9yvjsBwWxk1Hb1x32vI7qZ6lhsWlHw7ocGAq1z4nuOkqsXzgAVGp2/cBwqJijuAAivboeP0aMGPyxZzhOIDrS2ZEkwxBuijN0bP8i+my/I+qzcIOLHS23GNK/s3HQdiswkjhsg1cgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,62 +188,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/26/26 09:30, Harry Yoo wrote:
-> On Mon, Jan 26, 2026 at 08:36:16AM +0100, Vlastimil Babka wrote:
-> /*
->  * Calculate the allocation size for slabobj_ext array.
->  *
->  * When memory allocation profiling is enabled, the obj_exts array
->  * could be allocated from the same slab it's being allocated for.
->  * This would prevent the slab from ever being freed because it would
->  * always contain at least one allocated object (its own obj_exts array).
->  *
->  * To avoid this, increase the allocation size when we detect the array
->  * would come from the same cache, forcing it to use a different cache.
->  */
-> static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
->                                          struct slab *slab, gfp_t gfp)
-> {
->         size_t sz = sizeof(struct slabobj_ext) * slab->objects;
->         struct kmem_cache *obj_exts_cache;
+On 1/26/26 07:36, Hao Li wrote:
+> On Fri, Jan 23, 2026 at 07:52:44AM +0100, Vlastimil Babka wrote:
+>> In the first step to replace cpu (partial) slabs with sheaves, enable
+>> sheaves for almost all caches. Treat args->sheaf_capacity as a minimum,
+>> and calculate sheaf capacity with a formula that roughly follows the
+>> formula for number of objects in cpu partial slabs in set_cpu_partial().
+>> 
+>> This should achieve roughly similar contention on the barn spin lock as
+>> there's currently for node list_lock without sheaves, to make
+>> benchmarking results comparable. It can be further tuned later.
+>> 
+>> Don't enable sheaves for bootstrap caches as that wouldn't work. In
+>> order to recognize them by SLAB_NO_OBJ_EXT, make sure the flag exists
+>> even for !CONFIG_SLAB_OBJ_EXT.
+>> 
+>> This limitation will be lifted for kmalloc caches after the necessary
+>> bootstrapping changes.
+>> 
+>> Also do not enable sheaves for SLAB_NOLEAKTRACE caches to avoid
+>> recursion with kmemleak tracking (thanks to Breno Leitao).
+>> 
+>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > 
->         /*
->          * slabobj_ext array for KMALLOC_CGROUP allocations
->          * are served from KMALLOC_NORMAL caches.
->          */
->         if (!mem_alloc_profiling_enabled())
->                 return sz;
+> Also, looks good to me.
 > 
->         if (sz > KMALLOC_MAX_CACHE_SIZE)
->                 return sz;
+> As a side node, while looking into the test results reported by Zhao Liu [1], I
+> ran a quick test of the current patchset with the will-it-scale mmap2 workload.
+> In my runs, tuning capacity up or down did indeed have a noticeable impact on
+> performance. Hopefully we can make this tuning even smarter in follow-up work.
+
+Right, thanks for checking that.
+
+> [1] https://lore.kernel.org/linux-mm/aWi9nAbIkTfYFoMM@intel.com/
 > 
->         if (!is_kmalloc_normal(s))
->                 return sz;
-> 
->         obj_exts_cache = kmalloc_slab(sz, NULL, gfp, 0);
->         /*
->          * Random kmalloc caches have multiple caches per size, and the cache
+> Reviewed-by: Hao Li <hao.li@linux.dev>
 
-Maybe start with something like "We can't simply compare s with
-obj_exts_cache, because..."
-
->          * is selected by the caller address. Since caller address may differ
->          * between kmalloc_slab() and actual allocation, bump size when both
->          * are normal kmalloc caches of same size.
-
-As we don't test the other for normal kmalloc(), anymore this now reads as
-if we forgot to.
-
->          */
->         if (s->size == obj_exts_cache->size)
->                 return s->object_size + 1;
-
-Why switch to size from object_size for the checks? I'd be worried that due
-to debugging etc this can yield wrong results?
-
-> 
->         return sz;
-> }
-> 
+Thanks!
 
 
