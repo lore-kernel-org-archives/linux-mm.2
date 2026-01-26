@@ -4,138 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E523CD19502
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 18:57:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ACB6D1950F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 19:05:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53D336B0089; Mon, 26 Jan 2026 13:57:33 -0500 (EST)
+	id 7B8356B0005; Mon, 26 Jan 2026 14:05:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EB746B008A; Mon, 26 Jan 2026 13:57:33 -0500 (EST)
+	id 765BC6B0089; Mon, 26 Jan 2026 14:05:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9D66B008C; Mon, 26 Jan 2026 13:57:33 -0500 (EST)
+	id 647356B008A; Mon, 26 Jan 2026 14:05:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E4676B0089
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:57:33 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DDC321608AA
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:57:32 +0000 (UTC)
-X-FDA: 84375023544.12.28B9BD6
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DD6371C0016
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:57:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 54F516B0005
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 14:05:55 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FA3FD3B57
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:05:55 +0000 (UTC)
+X-FDA: 84375044670.30.A0E4271
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3DF371C0013
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:05:53 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QrCeF2lv;
-	spf=pass (imf18.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769453851;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DnHvLCpS;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769454353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X2Nt6k2L4eZl/SWEw98vmqFsh/LJST5rQhrTBW6429k=;
-	b=s/IGIkDsuMWPEOG6NYOXsvPRgFTVu9Xv8G/H1it1CvT3wkzcZtc9ZosLAueD9E5GmwfQGB
-	Bz8DSxqbiR3obxfl44TIlodhDXMSewogygKaDfYnW8Opd8w3i5hJBE/80xgKQfXJvuF3/d
-	xjmVkKyyerXwoVrvgs86KD/6u4s8a5U=
-ARC-Authentication-Results: i=2;
+	bh=IrviM5JEv15u9h1WFEBLoI3Ys6ROAu3GtjcwsmuxKQ0=;
+	b=CbFqqc1MQn6BNq2/5FFv+FJJAigcHqON8N8P/6l2lGSCquGFBI5wReuBoAs7/BdJYpaJim
+	X4Tv2dVjQStwWK16iewE3OUxZBjFPoBcs+TjEUaXQAhnwAah84M7cycdUxpTNNXKOItsyL
+	aK8VxPg1QBd28ExQIBR1m1SEVYNneuI=
+ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QrCeF2lv;
-	spf=pass (imf18.hostedemail.com: domain of sudipm.mukherjee@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=sudipm.mukherjee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769453851; a=rsa-sha256;
-	cv=pass;
-	b=GNVxtQTIJs3FI/oYlKwg1lF/WBfN7sEH53NEj7sXkFyUIYdTvztTKfTNT24dU2aSVq7Dhr
-	yhwt6FFGhyr34Kv8b4D9cCGJgZV+g+SRQ/Gmh9XONJdSZggkFS2D6BTZX05rk886qpsx0g
-	1cVzlKHMO0BsFIbKhDoG1A52eOWXm58=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b872cfd35cfso69121066b.1
-        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 10:57:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769453849; cv=none;
-        d=google.com; s=arc-20240605;
-        b=T/VF67MHpEstYwAjHjiD8rHYC7aOJvmKijWVdFJLz+T+MChRPO4kzqhx8ELgXdpgDr
-         NPrlFHnjyGAScAtPf/NlnCS31Jjew/UJzRc/ZAoz0jFJd8mBXdl2dj6DFp9jkHWb6wJG
-         y+/MIL85YwjbLsWTquRwwl7+uxoAIZPz3KoUOl6FPRbVdL2iuLgGdInJ7RRnI5iC61CC
-         TUDnD1rlF7AM2bZ8LBFu3egz9srnXWzvUZtRqy3DuKXvk7/MgpfXhZpQuHUlyP28gPnt
-         I4KpguGkYgxkwdwdE0x40M5XESrdZy4Aj3AUc1rcRRYmXY6Oc8GBYep1elYZ2Ea4y0kT
-         NkMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=X2Nt6k2L4eZl/SWEw98vmqFsh/LJST5rQhrTBW6429k=;
-        fh=IBfPfWDovVTTveeyU5qbgaarhCZEqIUFAZBCAf7e6bE=;
-        b=hXt+ZIKGiOpEuEBxJ49nPnWk68p/1pv3P+n0VfxQHUguZqY50Flf2P7YQZkmf3w/vu
-         qw4dCjVaTxHA8Tx2lmMROFoX5pOTh1T/C58A1kPBHxFlS/4nnTf1TFQHgXGQXfcv7J73
-         EhmxpxUI5sFfit48MEfb1IgvMxFuaYkETJlNPKQGm1oadzbE9TsRs/plFRAgiLPfduqP
-         1j3M9NzbCQD59MWum1njY5CAROJQlB6vcfJqVmW69MPdQkHkV6ww6B3em5poqlUq3S2D
-         klZNHlf15KH6rTzWUgXETFxr+K6fenZCeXQ5srw1fPlGXchQ5NOp12hhPjITkC/BckzQ
-         JFfg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769453849; x=1770058649; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=X2Nt6k2L4eZl/SWEw98vmqFsh/LJST5rQhrTBW6429k=;
-        b=QrCeF2lvSXMtz/SFuF4Lmr+rwMYcqhF2x5BpVakwnccG5sS8NGZzsteiJdz2lr3eOX
-         r2EY8xJ61pOe0sPjib5jEyvaQoWq30TO/35mku1033cqDc28rBIbCuyyMryvCvajrgn6
-         E5G7isR6lvqulYydf456vYZouRY13CKqFH4piQLfNqRRC05u6eP7usuwxrOvCpX14wP2
-         CDi72EtW1k2hx80LnPC9ZCysnZaq8fAaD13ReRq83PVf9NSJt+2PTeUMVPuyHqk271ya
-         48K7CnOCsMg+BDaudZ5aeVu4CtYRBJW1EyRCEVPAWvwIKIw73GcxzrXhc9NpZ+5k4rnK
-         sG6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769453849; x=1770058649;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X2Nt6k2L4eZl/SWEw98vmqFsh/LJST5rQhrTBW6429k=;
-        b=xGYn0C1JIfXwwI8khW5vyz/6Sh9kITPpOMoe+iMzPGdZdWjsE7PX9TSk7rI8j32wGA
-         LVqZFSgh5IV4Y+vnoVUTkAXqGs2j1PfQ7QkHJ4CMYO9ArdKcqAC5Y0WGV7VoRhK8QMY4
-         jy9JZbR717SyeG+tErLhpSmbFYU2CMvhQ/q/F0dW4fW32uVvjZvwKS6iBzpRdli5Yr8B
-         rkRlm2Lz274otbh6uqGO6x4xu0/UpyuPW//1OBB45J+PwieNseR9FejB5kK9FV9AhOkT
-         T2GfeF2dEW7EhB1GHZ0GVwi96sZWANXAw/wIJlDw6Ef0sGbCjz4puqEQ6p4vsPIcm2Xg
-         CDvw==
-X-Forwarded-Encrypted: i=1; AJvYcCU99dpq+ZdyVQi9LpFwOhbviXzn6qC2b5MGUVsCXyme8svLEaO2z6tM/AytMg5xIsQe0Gy8hxJROw==@kvack.org
-X-Gm-Message-State: AOJu0YzNLFzpCMTW1lJHzaJsRr3tICJy0o/1ShDlhKAP8iBXA16s044B
-	1jUj/4cv0OkSJzmG+wbKesT9T1dM/K+csLYU+clbHVjtriAmPd5Hjw3t4BeCe6t+wVIEf2YyjbE
-	j9ZoZZ0I0g2uJQh/1pOqnMGKX2+GrPiQ=
-X-Gm-Gg: AZuq6aJZYrqvKHexQou0tEKTO11sIFp3vpSJ2g7BT1qY4zSpCYfKqZWIBbIwPnsexpW
-	DBvMnslI7J2tgXeJOcoOMIgOYtKoWzZz9k/PwoaR+CcgcrVfOCG3iKjQ+7bokKmuFRrtdqu8Z8F
-	u9SasZ4M/tPlTMIbxgtz+mWjv1r4g6n25Jyl8ILrLvDnCz/SRGuZ8rpCl+YWAwYdPDuJ7sydJYv
-	GQiyQHJDkwO2KIF2JpfRXN6E/9DW4n3DXo58PstYtKIeLW+xsRCMw0UIcpqGmh85AtlIVA=
-X-Received: by 2002:a17:907:7fa6:b0:b8a:f365:f2f4 with SMTP id
- a640c23a62f3a-b8d20b42330mr228465366b.0.1769453849055; Mon, 26 Jan 2026
- 10:57:29 -0800 (PST)
-MIME-Version: 1.0
-References: <6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de>
- <db387081-345f-423a-a0ff-e13f3bec2d51@molgen.mpg.de> <CADVatmM_mRnkDX=hpUjbyKkZnGynxJfRSujGxm2LaWWMEL_2ew@mail.gmail.com>
- <ef9223ee-0a4e-468c-bfd0-0cf190d262f1@molgen.mpg.de> <aVgjpWaIRkerdgCa@eldamar.lan>
- <49cdd663-bcbd-48b4-ac38-77ce94ef0c8d@molgen.mpg.de> <aVj-mz8vaw53TWtX@debian>
- <aXHeLGr1n-W-Ay44@eldamar.lan>
-In-Reply-To: <aXHeLGr1n-W-Ay44@eldamar.lan>
-From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date: Mon, 26 Jan 2026 18:56:52 +0000
-X-Gm-Features: AZwV_QhUnyzIrspUJHMl5wxPaQZIKc2UPXxov3UABxIDoJiLKH6ZmgxeZIssq8Y
-Message-ID: <CADVatmNzTyUAr8UBvm6pHFsKz8xZpqUXh5NQR641JXsCWaPg8g@mail.gmail.com>
-Subject: Re: BUG: kernel NULL pointer dereference, address: 0000000000000000
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>, 
-	Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, regressions@lists.linux.dev, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Giuseppe Sacco <eppesuig@debian.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fod3kg8r7ex1p4g9brn68yymfh4ox3ws
-X-Rspamd-Queue-Id: DD6371C0016
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DnHvLCpS;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769454353; a=rsa-sha256;
+	cv=none;
+	b=tcPEPJKHtemb7LECdl9GLyeKsp9VDUb6tQLsSzaZ4ntRMuoFJUdwfU0Z7LfIPg63bW6tbC
+	kpIm0SDL2FlRI752Y4sMk9h1VqTyp/e0F5SRFNcydMnTi5fiHvPf7WGgX8TFJ/sG+D5K1M
+	J+AR5F/eQUFf1hQO5WbGAEID2PEwjE8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0818042DE3;
+	Mon, 26 Jan 2026 19:05:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D80EC116C6;
+	Mon, 26 Jan 2026 19:05:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769454351;
+	bh=Qh0o6frWdN7mJ02mqItx1PK4gLJtn94sv0Eb3M1IpVg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DnHvLCpSUmJ1NeZ/lqAsck/JGOrOhc99RsJ8vee97FxOXDShBzBieIEHn9D/AHByJ
+	 O5Pn7WgIrD4GVrsvG2b01PUBk7TQIeCksLVBVe9p+nAnyY7JyWLxPYAb3yPtOC6RD6
+	 8R18iPoBEbQ9d0sQgTstl8BkrooE8OeWeQlyV2Vk=
+Date: Mon, 26 Jan 2026 11:05:50 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+ david@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+ mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
+ tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
+ chleroy@kernel.org, ioworker0@gmail.com, lizhe.67@bytedance.com,
+ boris.ostrovsky@oracle.com, konrad.wilk@oracle.com, kernel test robot
+ <lkp@intel.com>
+Subject: Re: [PATCH] mm: folio_zero_user: open code range computation in
+ folio_zero_user()
+Message-Id: <20260126110550.0df8f68ea232a745c187b2a6@linux-foundation.org>
+In-Reply-To: <20260126183212.2366596-1-ankur.a.arora@oracle.com>
+References: <20260107072009.1615991-9-ankur.a.arora@oracle.com>
+	<20260126183212.2366596-1-ankur.a.arora@oracle.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3DF371C0013
+X-Stat-Signature: eu7iqyi5uihubsqrm5ww8hqexme9eaig
 X-Rspam-User: 
-X-HE-Tag: 1769453850-649148
-X-HE-Meta: U2FsdGVkX18EiNBBkwMyL3vyIbKh35nrI8PRnprLcQfP0NjCWTbxIl7TnlXX0PD4Bwb0ufauWWpUP1DIwE1AyZH+loF2cW7hugUHI12vXxvk2OM4s8DoPengqES3BEXoAr63ZOK1RNY0Fh1ILSfqtnQO1k4vod+Lnay4je6AeyI6KQ5WkRzw4eL+oHZWtdoWj36yfp+SCwC395sj5aBlbDCtJW09Bh64Arjs4Fm3uXKiuGXbeLu8DOGPHR0vDEaHwOeeSFB8U7fZDHesbqUqbUgkhql9gl7ZcixXwbdq/zK5xoe5++vRlS+LN6Xfh+ScXTA7QX2fUPj0Nz34gzIWu8pro1EiRun42J3Nxb1ktKgPl0AGyLtF3A/xOf4ccY3y2b78iFqE9vs1SnKWRJFRo6RFm1nC6D/hfyXNJ76JgYfUJFFcmHdio4yjKgFcgsBbwZaCWQrBFegkyYQMn6WnjW38UTXrml4B1eKajqjNzrodo8QwFLvWnV0G9crte1pzJngXv0afJ9DPt74Yg8f5W253iNricLIWtX8RektE+s5d9Wj00LSXTH+VXp2v2iYVe0YYd1Iiu68U2lLx1c/5Jbw9/M4q6aKFJbl3HarloeOSuumW0Zh8iTuHCw1T5nHy5pEA/lRJdeoCpopjQmUWaj4qqjK3qEcJy4mEc5gFrYm87XXlF56b35Ky3aARGKTXXhNQUwFM3FKLZPges6zqVrIE+IMerU0vwMjSigDAqVgqDOYaoLoF7xMDcIxo7+8xyW/dDkjV53edvTrVma6TB1YVdJHdEJqhY6MrboQQWKuTO5Koxb96D0NvIkmdDJV+g+yZYfTbEXgQ2Ugq3kweU5p6htFpYPJwrDizrtlgIGrjRaPH4e12JuiYXaKRgwEk0RcvE5OihAC9UEzmfrY2UybiSGQRYEJ8Lu1ACLHEY28RdvKQXfwaLnTjt5CFbHcll1izaEn25P8wumXf9e3
- FSGvnGjh
- x7yeoZ9bzG60lDJvH953Yu9qu3xup9AB36/EZHMB1vGB17YR2tfklxQk0+Sf0MphyTCXuJtbjYtiMYkVLKZ10h0xWw+ia1yOZEzxkqPXnhqpK0HbI7wwOHoz1aPw1ioKWELkTALMRJKc/oVxYBO2aBqlq3A+4TqzGe6YeiNOM6MxO6hX3eYCMsqqvE9jSjZlXbCSjFkmQNJ0mhLdrnsF1y65D/WgLRQ19cIAdXH6qFh8GNQGeY9GqI4jXF12gbuvHmBUaUf7nj76zkZqczozJxpqYMMmRt3rQzsWcRgiJupxwAtONUWTBSwsOT5rafs5lxqHXBjamfW/+9BdsgH7g1uUWbAA9rMSnG6DXl+5f0sMc41v5GtttuXwGjugXz6G+Q+N6js2erlgubdS3l4E2qD7jR3RjMDBZ0y74Kd32nKmeOGJmc+r0NI3/U6O+RxeNPgfnyZFxDVLSph0=
+X-HE-Tag: 1769454353-506350
+X-HE-Meta: U2FsdGVkX18kkgJ4PZ41W2gc8AaFXd6RsNgtOfa1rb3ggWO/QWZrAUI0KA1/JGFmWyHjig/+XyHICJ71FsDbwPy+zyPjw7LxYJDz742zsm5SGYozt1s2DrOuhRoo6gDbQLQFTPDdTf7P2QgWTdNFLtV54m8lisw0yv9xnMBhK/B0ry2DpAtT/Rv+/Xt3akGG+lN089BB2s9QeY3RVH+IZm8L+G758UJkkjfZ2AytkRkUDYArTKXjSEpsQuEfBRfOVMQzbmo9Ll1YAlSxV8OyQDNaA6wq/zEX1FM4f3YWEaBSiAr+CYn58S+vUMrDgGnrE6BqF+GmLtQaXV/JFh/yQg5CxH9SDtc0tXMzRPJlw0Rc2iW5HbgB0C9ADte6PC4Yp+7sTPcaQA8wFSZga9FLpAlknAbSeEzs5kMgjoMF/MQi+FGaFrqMAJAiDmkrWxFD/JG9YYYthbJKkzi6tSt0F1xU1n5n2j8HTgwDxmkb0eIB+hAf+HpvvCTsoiTCgp2AMA3H5pS3YwgKhN0zt8wNuCWnS060lYgEYtz6jCeZ2kN8YdPIhmKDEif1oe70qu6tSB2Xz/qkMRZjk+azIzaaPFe4uI7OZ/NKrioXjbd8hnB8I998OkwFSlYYHky3qo25tHvlT+0UFhfqKVN4CAXqLHtyMVR7lGlpF9pzwrsEp4AOpsF6qSUZYKuGWmg0CuVIOeJ8qYsgzDDEyAcd9+7QVReiDgjlb/1v5P8JK5YUNv6QHoVBH60uqkGjQitFe9JqxkDqsxfQoisGTB/RfGh/KqiWbIMdTX655014CUQCLX5qIA7CJRiRE0d5Iidi79i91Jj88BYSwoxZTqUZJYJ1AcSYHxbrfO2tjqKU3FfS1vNftoDY2Ay2afJ/kicIsCcqCj9DW/eU0Tu7ihaMxcGdqeZqIKDuxJbU3JCaV/M+MTdfyN1lkRmwWXVeJk3KuAUXq6ROeZJJzvkrBd+xNYM
+ JpRAFPDv
+ 6LiKRvOax++Uy3ZzRfj5DTTml3U9mvt8tdpAEtwW7nk/oeP/Y5XBfZ5jIriUDEwzD6a94kHpEOLX8AvkiRMudLGX0HDDTghgqsDe9nMmGmaGpo2ucAlOU/9xBbNq38F5Fg+Uq3aP1H3+GvqRYFnc4tmAoRUNUupA7kGXZO30h9DTavQVooU7BDi3kQse/pN0LaJtu9JvAhgYPxWNra1YV4PUpyxE4tWTcwPws5X0uUrlrOeJ7WYiUTVyv21qmYHrtW3bzp0gf7pIub8QrKjkJv2uDSaQY45Fewr5YVaiFq8r36TI8UyLQMX6GoU95VkFgC/JN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,36 +97,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Salvatore,
+On Mon, 26 Jan 2026 10:32:12 -0800 Ankur Arora <ankur.a.arora@oracle.com> wrote:
 
-On Thu, 22 Jan 2026 at 09:59, Salvatore Bonaccorso <carnil@debian.org> wrote:
->
-> Hi Sudip,
->
-> On Sat, Jan 03, 2026 at 11:33:47AM +0000, Sudip Mukherjee wrote:
-> > On Sat, Jan 03, 2026 at 12:01:19PM +0600, Paul Menzel wrote:
-> > > Dear Salvatore,
-> > >
-> > >
-> > > Thank you for the follow-up.
-> > >
-<snip>
->
-> We had another report (https://bugs.debian.org/1126128_ but the
-> problem remains here as well the reproducibilty. Uppon several reboots
-> only the first one so far showed the problem and was not reproducible
-> afterwards.
+> riscv64-gcc-linux-gnu (v8.5) reports a compile time assert in:
+> 
+>    r[2] = DEFINE_RANGE(clamp_t(s64, fault_idx - radius, pg.start, pg.end),
+>  		       clamp_t(s64, fault_idx + radius, pg.start, pg.end));
+> 
+> where it decides that pg.start > pg.end in:
+>   clamp_t(s64, fault_idx + radius, pg.start, pg.end));
+> 
+> where pg comes from:
+>   const struct range pg = DEFINE_RANGE(0, folio_nr_pages(folio) - 1);
+> 
+> That does not seem like it could be true. Even for pg.start == pg.end,
+> we would need folio_test_large() to evaluate to false at compile time:
+> 
+>   static inline unsigned long folio_nr_pages(const struct folio *folio)
+>   {
+> 	if (!folio_test_large(folio))
+> 		return 1;
+> 	return folio_large_nr_pages(folio);
+>   }
+> 
+> Workaround by open coding the range computation. Also, simplify the type
+> declarations for the relevant variables.
 
-I was going to post the patch today but since you have asked the
-reporter of the last bug to test it so lets wait for few more days.
+Thanks.  It's a shame.
 
-About the problem showing on the first boot, does that mean that its
-only seen on a cold boot ? and not seen on reboots (reboots without
-power cycle) ?
-Can it be reproduced if the system is powered-off and then powering it on ?
+gcc-8.50 is five years old.  Documentation/Changes says we support 8.1.
 
+> I'm not certain about linux-next rebasing protocol, but I'm guessing
+> this patch will be squashed in patch-8 ("mm: folio_zero_user: cache
+> neighbouring pages").
 
--- 
-Regards
-Sudip
+If the base patch was in mm-unstable then I'd squash.  But it is now in
+the allegedly non-rebasing mm-stable so I'll queue this into
+mm-unstable->mm-stable as a separate thing, with
+
+Fixes: 93552c9a3350 ("mm: folio_zero_user: cache neighbouring pages")
+
+So there will be a bisection hole for riscv people who use an ancient
+compiler, shrug.
+
+>  mm/memory.c | 23 +++++++++++------------
+>  1 file changed, 11 insertions(+), 12 deletions(-)
+
+We could of course revert this when we're able to confirm that the
+currently-supported gcc versions all handle it OK.
+
 
