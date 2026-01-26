@@ -4,88 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA2A6D1951B
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 23:03:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F649D19523
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 23:47:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED28C6B0092; Mon, 26 Jan 2026 18:03:20 -0500 (EST)
+	id 552DB6B0088; Mon, 26 Jan 2026 18:47:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E52876B008C; Mon, 26 Jan 2026 18:03:20 -0500 (EST)
+	id 513946B0089; Mon, 26 Jan 2026 18:47:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D13976B0092; Mon, 26 Jan 2026 18:03:20 -0500 (EST)
+	id 41F656B008A; Mon, 26 Jan 2026 18:47:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C1F366B008A
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:03:20 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88E75BBFD9
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 23:03:20 +0000 (UTC)
-X-FDA: 84375642960.19.1A84515
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D2E66A0016
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 23:03:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KfjKV6Tw;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769468599;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EFDA6B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:47:29 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF63113BE0A
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 23:47:28 +0000 (UTC)
+X-FDA: 84375754176.09.65169B7
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D4046C0004
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 23:47:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=23sbsjIP;
+	spf=pass (imf28.hostedemail.com: domain of elver@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769471246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KILleqMqR7YEI0QmJcScarkcVA1DeIi7Ekw1JqlPjiw=;
-	b=pHV99wD+HZnU6dN1oGli5f6LH72MH8UtWUHZFg556r7NlTLhh8SfQD4B08566Ws3qu0ZLh
-	MwXwrhLT/A9BnJOnP7Ksfo55i7I+HqgX4dCg/ZsQVtxYxJcEvZiTrpjorpVwQRm9BHg5dz
-	Rs2N3C+3YHC3lrMLvqTVVfd+qq18NzY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KfjKV6Tw;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769468599; a=rsa-sha256;
-	cv=none;
-	b=65gLPQu4CEG6gKBC7zW5XC57Q+BehoH53khKoRqshJ2V+yVMzhpy2on/hqm3wpCam9KTfU
-	ZQONqd492+ukF81KFRy628ofmrNmDwUi5+RG+7mAECNjfWJeM5M7HakoX54jgc1r/F8wso
-	371AU7mlj6gguwJcFGE0W83DEfAtydc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6874444B0;
-	Mon, 26 Jan 2026 23:03:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC43C116C6;
-	Mon, 26 Jan 2026 23:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769468597;
-	bh=90DvFCi3zMuXdUi5plIxqndw6Xsg6xyFIhBnu4feXwc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfjKV6Twh01q8uGSY9sQx98QO+lL29jXatucMnVHcz80uw7Lq4btEHGodgOivS6Li
-	 P1n90vvA2MwJLRbyslE/KZMGsqzUVGuT7xMPuXb7R8c95UcIR1sAotbgaICiT1QuvF
-	 eVyKuszZLSN+gnaw+O1tNwH9jFLoXiv4YezklZLEbGHmrsgh7N7Xq1V+TT7km2dtk3
-	 ybAyrLSHmtOwstf8g4ao143cEiMWL4GN9dyyKQ7Xdd6+IKtmPnwjfMVX0wA63iioBx
-	 wWFIQQycJNDEzLQctgmyJDe5/aSlB4Ue8j+YKLIua24jo4tBMzth1+dJB6S/T5dnCa
-	 Cx0ZTfqsYLrMQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 2/2] liveupdate: luo_file: remember retrieve() status
-Date: Tue, 27 Jan 2026 00:02:53 +0100
-Message-ID: <20260126230302.2936817-3-pratyush@kernel.org>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-In-Reply-To: <20260126230302.2936817-1-pratyush@kernel.org>
-References: <20260126230302.2936817-1-pratyush@kernel.org>
+	bh=X34tjfxPPMupW8WHmEJAIsWdH0Oem6uch60iKqedEdc=;
+	b=bg05XztRPApXAlT+FWU4vk5zBvIyQJabaMNvYq+OW4iklS+B6/i8H+mZwzmDL6e78AvczN
+	dBOv9mm+1vALGm9ao58dNU8Y7jz1g6BIRA2a9VzC+A8QXqzLLr4xCWVE3EQbz0FyQiaBuG
+	kBCVtp1G7W87RhfG/PCK14loaPjzSI4=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=23sbsjIP;
+	spf=pass (imf28.hostedemail.com: domain of elver@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769471246; a=rsa-sha256;
+	cv=pass;
+	b=GiMVe6+MWBE0U3ZIhqSaN0pktttiKn3Ux0hByE+yACDr+x5gEuAwaZBBiJSw3oxYR13Z2A
+	VaV0msKJpuPOn8a8UIKu58l7+SDXGWUZuv1u3WX4Kl0Nzn38cBhBC4opTLc0o9gWjQs3ln
+	Wclq4LNJ50gRATpiYFS9rXcA57rpK7w=
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1249b9f5703so1040968c88.0
+        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 15:47:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769471245; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eihUJBvwEN2wOfg+fTN8rpAyKKS33XFCQdZp0zQHl9EmW53eArSnKH6yjp99bc3iKW
+         1EnUFPnWhEu5TQMmQEsCE66WHHPGt0KrVHAqUAHcgF/zKVuZ5EsY77qG/fvv1pMiyDVU
+         xG68OvucQL++A4c8OJBhBqBnnT7aeApD6uUSdixYg0g1Zt1DXnG0oecNbcNlYjd2LM6M
+         e6fS/7a582eNqwl0O7JiY7HbTG0adgptDak/M5J9DijcNRYD7tUUWqCTcfjUoq9aJsgr
+         XOMlJIkNmng8opXbWzhiZwCDqgo2QvVIOrL4v+q/u5jrDjs1AkSXMnprIUXar6CVskbV
+         gR3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=X34tjfxPPMupW8WHmEJAIsWdH0Oem6uch60iKqedEdc=;
+        fh=tUMiR/44plqaTAB8uB8/B4lSjfg15mxY2UhBj3p1+BE=;
+        b=IuuWyhQ7XRNKA4Wum9AUbYgKbrX3/NdWmmFWCidPBi8uQTb4q/IL/qmrYkcs604PxL
+         aB9ZElCbLA9Vd8YaGrHKqQsyYoOozl2GJUIworxagBRHkY0SjoFjqj+hz2lGmflRBS5a
+         LE0Eu/q56MC31DXmEpm3G3UQxYdDxCSxOtZGEa6X+jx7e1vERnoQR6IoJX5lMOnq1JA+
+         OITYjDURFgPjDaYhOEK5nxPzRwyE2jJWk7gXg3HX3hVtpRjD6EPItpe2JV4SrxyxCDch
+         nPyt+up23fWDzkDuTB8IoqgTxcZpG+K1gCEufVBRFdvbsEyB2RcWhLdPq2x/qMV/W25w
+         1quA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769471245; x=1770076045; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=X34tjfxPPMupW8WHmEJAIsWdH0Oem6uch60iKqedEdc=;
+        b=23sbsjIPNRRmtHDrMQf90KineomsjQi93J27oQs6BXvfqV9C2JZcAhw5jIDfMbdphC
+         8pNBVbHGL3vhNTKQ5YXsJmUteZ2Bf6aakVurS4+EabSvqm1e4xBroKgM+onOgMdyTRXh
+         RbTLo5scrG5yKs8sMNAfxCCrzLARlhORZ69PZj8TD9slcWoykafpC7SCXSIhwpn4QohV
+         iuOaEHAHdmVVGs43PLV3pQQ+xEm+OGM5OH6eAsI0d5L7mL48xP0itAwClJm1Ym/6bkvS
+         7lI9hwIqX/JJGDM/C9V16vGJmzrGXv+hosbrWOMMBzXBvu+WN0xh9v4OkXDSL+t9rhv6
+         Mjgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769471245; x=1770076045;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X34tjfxPPMupW8WHmEJAIsWdH0Oem6uch60iKqedEdc=;
+        b=CQbDN8RPoldO0NFrgDcACz4rgw7GA5IERerp/GQP5zPJBsCa8IWzKk4Uce1yy8ZxOc
+         CPeulud/yLNFt8QDEeqFkoVmoTNh7n7DBl64eHE5b5xi1/EUwWCNFE9ixi6jTPWwlupy
+         4n70aYipEOY8wSIno8CvsSArtard3etgoQR8zZO1OZPYU0yNx+Fzx2PEoh6gTLijCZGG
+         xv2uKb71FwB5PrQH9UvZ44PW8RCw1PU3x+7lMOWOwrDV3zGtySiLE6MeVobplgKcpbFv
+         zD6hnkIDSTR/nh8Gpi26XDdVV46GM7Ew9fd5erNFwzhMCu6x3+6Vg72pyQPPmouBxxyx
+         1pPw==
+X-Forwarded-Encrypted: i=1; AJvYcCWlDToOthLBjb55P0xQQn49xDYrzju7M1I9PvR2snXQWK2CzAZIbPjJU5MvM6qu+/7kz91FLwWVPw==@kvack.org
+X-Gm-Message-State: AOJu0Yw5zshtxYgOxQ5YxbCzYPmIMrmSERcqVrxW3dlt2N366q73NFs8
+	icugKN/zVP20JI25X+E6bJjswpvspl5puSm9TRj8ILa2eOa470IHpvDUSelwKPX3i+esznDBwsx
+	2ip3by82pxEYFGpAMXYufAO5Qyr7pV6oLOOZqJpzP
+X-Gm-Gg: AZuq6aJFI754C+avC58uGuVTxhuXs2ofX8yqd/xwAJweuFgOZy2wqdA7Q7hP9ONPYjx
+	x5C6T7fmBVXEe8rVGiIs985mXvcZ5B71/9nItxdCIeavdQ5aRYT/X1DJWZ0WYRH0+jOZOL7V8l/
+	wLM0DW+hsiYjIBV9eD2+XXUnUDjbXCubFkcGoHIL7yJbYpA32n4iqVYEneErIW8hqmnYmlvwqbV
+	/Y5F0GsrGtx96410PeuEu6N08806G+o34Y/iTdVstzCwlvyT1S2vlLBrCINaLt+w2OhJFVpUWuh
+	Q1Jhz5utgZK1iU0fAUfCbzJ40n8vJAigOHb+Vw==
+X-Received: by 2002:a05:7022:eb46:20b0:124:9e46:82fb with SMTP id
+ a92af1059eb24-1249e468815mr157327c88.38.1769471245289; Mon, 26 Jan 2026
+ 15:47:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D2E66A0016
-X-Stat-Signature: 1m3x49qxcxj43jk7aponu4o6ok4bs567
+References: <20251219154418.3592607-1-elver@google.com> <20251219154418.3592607-16-elver@google.com>
+ <dd65bb7b-0dac-437a-a370-38efeb4737ba@acm.org> <aXez9fSxdfu5-Boo@elver.google.com>
+ <8c1bbab4-4615-4518-b773-a006d1402b8b@acm.org> <20260126213556.GQ171111@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260126213556.GQ171111@noisy.programming.kicks-ass.net>
+From: Marco Elver <elver@google.com>
+Date: Tue, 27 Jan 2026 00:46:49 +0100
+X-Gm-Features: AZwV_QgcknJe0PlLV-z7bksgFQT7uSnaZ1B5QvyI9tPRocr5FzcCAIEUg9yCt-Y
+Message-ID: <CANpmjNPs9CtY1w1-MqL1-CnHVFLxXoA2rbd6d2w4wfxT8AP0ew@mail.gmail.com>
+Subject: Re: [PATCH v5 15/36] srcu: Support Clang's context analysis
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Bart Van Assche <bvanassche@acm.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
+	Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>, 
+	Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
+	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Triplett <josh@joshtriplett.org>, Justin Stitt <justinstitt@google.com>, 
+	Kees Cook <kees@kernel.org>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
+	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
+	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1769468598-155589
-X-HE-Meta: U2FsdGVkX1+ysNmv6Qigmwyc3W1V8bbQ21AUaKcUxXIOXsuzniATRgskrED+0fYPmm7GrysbX3rUlLX9SM1aeRE0wAUG7ViQeYiLjJM03sBEknB3QKA3eQaMdY4Y/yCs9DISFy4lA0GzVr2tbwANd9EHqIcj8u7IpPcVtouzEUzt+1+r2gX1DKsg4tSJxVNaJqyaBoKmFvartPgDGnk6t7/ahpt8RcjoDhhkXcSsb/dXJQfTqQWvQoNzmtWoVTxyS1gIi7Qn7oB7of4BFl2+M41O3sGSqdwaGuE61Bq5c0W5bCxqp8iW6hJhe11jPB/jm9CQFsbiIMOhN56N7z7IyQZD9XE40qo1ewR5CM1hHF8PIXWF2dJBJ4dJtTGLaJShID0nES8XLf1liHDY7/T0p/lgyu3Bwb9e7Xfb4DFWeFjL9tV6L6W+25laBS0vYTJgprJFbrs+doQa+LMtZHIRo9CU7tgXCU70LoJi7mv5JzAVn4xzrZJ+EcF5OZ4OZYWC2Wk13hTL7UGmjDfhftAZ2oR2rYS0BAbyZk6qIrFE5Fczz2IKog1wZOQvacEToZ7sn+F/qobFHIqY7uXaDqzA+u/IzVOFR4uyMti1PJXgRSn0G9v23UIdUr64J191soFVF/eQ3/Zyhe034ubr9rJJuHFuHhAbvIlmmD+nGOmtN8EXDr0Tw5sAIpOQvi3o+cmgDXaXEzEklm7tKkm2c0qKKoo92VvH8gXjXk6LAH4kY1o5/VxB0pFDeX72+h/3uhTD1Ypa9vQYVibVC+8rCUCK/7REOGscr995ERCKJDpSnHVZjg/HPkWvpEiJIdDPeABd1mDbF3uYoR0cnHHTLl8+PVK8aeZSDTlsqO9g/LtrX3RyZXvv7+0kIX8v3yv09TP70IbiCiEo1A4Vq5Iks7Ko5stl4JTclOn+VjAl8Qs71XOX20xXF3XnnOTRjsQLuXDeAidsqLvaUYeUm95QGS5
- 8YHumiOx
- 1eT6Kh6/3GkWLiRp89dji2VLgc2LYkj16ffAQgeiICoQ5yeOi+czpTBJDs1/AnRVzBWvPbrbLvWwLlylv1kNE3wVK1jRVZvviDM5BWzE0e7kWgUfLCeHczbS4bbKlmZbnE3y8NKf/RdU2a6qcc182lijNMBvRM+XiuyRjVF5xlRROodk5usi6SynuJI7gP3jtCgGn3HwFnXQEYL11FvIWfYmYhRDjFvPsdTmv3B7wCTkYAIkdgWN2hpPpDA/VKhSX5gUYP2uqlqNyju+2Kww6aNNW0A==
+X-Rspamd-Queue-Id: D4046C0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cruftbag8ru3yjezqd8dwaberwmam8o9
+X-HE-Tag: 1769471246-602739
+X-HE-Meta: U2FsdGVkX1/jam5pWZ8MyF5Ypwm1Bcz4VWMtWPtUflLsGkONuNQCJyWpohTAP4hF1+1q9Ru0FDGDRTK+8suph627Aao17F95qifqxPpxtgQPxCLVNIQIsKZAk9De3Z9JVG3jPeXjNnkJEvdY3VZMazrNsK7jSO9ZxB6hv3lTtbpXPOVN58raFSkrCyA/plFYnoWNQMvap7e2uwsoIPzqvFzg9ZzxpWnUPAVKZSGtLD3Ssi0jdtqTLIAdvOrTtQy9WlhGp4Vt1twbEninCOjICbAWqupbMnRw/aTU+1/qYsKXpaqAacbmG1L/R2zXGGr8wlmH35LeqYfSdcFTu19Efx1gWoSsjL/7q/jJRPM1yddruFs2X7WIYDzz8QC+bItor6FOZr8UzkAMSpA5ffWGTx9754q30NjVFwd0xcbdF8XOyzf0wCdJsUMoZcl4mVuKXTP28FOxxtrO7V99U9EQoIBHB0mUfIOwvaPJd1grzeelhMr87CftOWcD8k3zsqIzSWofkojQPz/0cKo1UhZr3VnXkwoWwPbS7pFkHk+MxqP+fuFhRomumdoYLzhlbSxy1IahPtfdrhczYDRhl4UvYW0RaMmqbizZzf6A/JpkCUL4btMFlHPwqhVPBpRAeuO0cEZPcwtnlGt698/c/4AGWImNPimxoP0nzXuBSXV3dsJhMY9kjTuxCpTIvQRP9lc0w6UTuMSl/b/MAdlWCFbg6OABIfAyc6v0zKx15RutSgXg3vKT7PQaCeJiDGPSpsgbaKnhg0tEhymTrQg4jr40cVz0GLYCXddxUkALTP1uSu2mqCEgHNDLXw0SGqDn/OYZZwsiZ2rH/Lv4vX9uE5wGVo5H9V7/2LrS5Cdw/anKO0iehuSl9rQZbQgZo8ANLcNpTUMcl0tF3CEpUSpVy//Kqb7OtqdDde8viMPOWYhV4m8+EyyzRaV4QgiCCHI5NfxBhnd2MBsG3jKA5teZpca
+ Q0WFM669
+ hSEnA+IfVrpbCNQZYJuD3DukxB5MdSsuIXa+XoD/Gjf3qb4Vannf0h7R436YoKEmwOY88vBGKTEFiukczUlt/qZKHQwCDW642xUAJQVUjpH2sD8E1cqHJUitFFkyfUzwROk4ELjVTo/8vOZj7NJTCRdxLDGVjP1bao+ERtGOki+/u+/rD57lefCTqrfn8CF3VEbVPPjPUAekoLcSSJkQKpTM+2T3MERITW4i5n23B2/LZ5MOVB1IWXwbzlqCS5ChZfOUlriLK9a/Ndv1L6QQpEfK1x2ThK8VKnfPxdeU9scAhtEzfbQu+BUMhcWLCQXHwT3j7WVujw2R47PtKmOn5oNkgfwzhYZYBHCb+k4kiAG7xHfC7WbV6z7BE+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,211 +159,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Mon, 26 Jan 2026 at 22:36, Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> On Mon, Jan 26, 2026 at 10:54:56AM -0800, Bart Van Assche wrote:
+>
+> > Has it ever been considered to add support in the clang compiler for a
+> > variant of __must_hold() that expresses that one of two capabilities
+> > must be held by the caller? I think that would remove the need to
+> > annotate SRCU update-side code with __acquire_shared(ssp) and
+> > __release_shared(ssp).
+>
+> Right, I think I've asked for logical operators like that. Although I
+> think it was in the __guarded_by() clause rather than the __must_hold().
+> Both || and && would be nice to have ;-)
 
-LUO keeps track of successful retrieve attempts on a LUO file. It does
-so to avoid multiple retrievals of the same file. Doing so will cause
-problems because once the file is retrieved, the serialized data
-structures are likely freed and the file is likely in a very different
-state from what the code expects.
+Some attributes take multiple arguments (__must_hold does), though
+__guarded_by doesn't. Yet, && can still be had with adding it multiple
+times e.g. '__guarded_by(pi_lock) __guarded_by(rq->__lock)'.
 
-This is kept track of by the retrieved boolean in struct luo_file, and
-is passed to the finish callback so it knows what work was already done
-and what it has left to do.
+Only thing that doesn't exist is ||. I think the syntax you ask for
+won't fly, but I can add it to the backlog to investigate an _any
+variant of these attributes. Don't hold your breath though, given the
+time it takes to land all that in a released Clang version.
 
-All this works well when retrieve succeeds. When it fails,
-luo_retrieve_file() returns the error immediately, without ever storing
-anywhere that a retrieve was attempted or what its error code was. This
-results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
-but nothing prevents it from trying this again.
-
-The retry is problematic for much of the same reasons listed above. The
-file is likely in a very different state than what the retrieve logic
-normally expects, and it might even have freed some serialization data
-structures. Attempting to access them or free them again is going to
-break things.
-
-For example, if memfd managed to restore 8 of its 10 folios, but fails
-on the 9th, a subsequent retrieve attempt will try to call
-kho_restore_folio() on the first folio again, and that will fail with a
-warning since it is an invalid operation.
-
-Apart from the retry, finish() also breaks. Since on failure the
-retrieved bool in luo_file is never touched, the finish() call on
-session close will tell the file handler that retrieve was never
-attempted, and it will try to access or free the data structures that
-might not exist, much in the same way as the retry attempt.
-
-There is no sane way of attempting the retrieve again. Remember the
-error retrieve returned and directly return it on a retry. Also pass
-this status code to finish() so it can make the right decision on the
-work it needs to do.
-
-This is done by changing the bool to an integer. A value of 0 means
-retrieve was never attempted, a positive value means it succeeded, and a
-negative value means it failed and the error code is the value.
-
-Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
- include/linux/liveupdate.h   |  7 ++++--
- kernel/liveupdate/luo_file.c | 41 ++++++++++++++++++++++--------------
- mm/memfd_luo.c               |  7 +++++-
- 3 files changed, 36 insertions(+), 19 deletions(-)
-
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index a7f6ee5b6771..a543a3a8e837 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -21,7 +21,10 @@ struct file;
-  * struct liveupdate_file_op_args - Arguments for file operation callbacks.
-  * @handler:          The file handler being called.
-  * @retrieved:        The retrieve status for the 'can_finish / finish'
-- *                    operation.
-+ *                    operation. A value of 0 means the retrieve has not been
-+ *                    attempted, a positive value means the retrieve was
-+ *                    successful, and a negative value means the retrieve failed,
-+ *                    and the value is the error code of the call.
-  * @file:             The file object. For retrieve: [OUT] The callback sets
-  *                    this to the new file. For other ops: [IN] The caller sets
-  *                    this to the file being operated on.
-@@ -37,7 +40,7 @@ struct file;
-  */
- struct liveupdate_file_op_args {
- 	struct liveupdate_file_handler *handler;
--	bool retrieved;
-+	bool retrieve_sts;
- 	struct file *file;
- 	u64 serialized_data;
- 	void *private_data;
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index 9f7283379ebc..82577b4cca2b 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -133,9 +133,12 @@ static LIST_HEAD(luo_file_handler_list);
-  *                 state that is not preserved. Set by the handler's .preserve()
-  *                 callback, and must be freed in the handler's .unpreserve()
-  *                 callback.
-- * @retrieved:     A flag indicating whether a user/kernel in the new kernel has
-+ * @retrieve_sts:  Status code indicating whether a user/kernel in the new kernel has
-  *                 successfully called retrieve() on this file. This prevents
-- *                 multiple retrieval attempts.
-+ *                 multiple retrieval attempts. A value of 0 means a retrieve()
-+ *                 has not been attempted, a positive value means the retrieve()
-+ *                 was successful, and a negative value means the retrieve()
-+ *                 failed, and the value is the error code of the call.
-  * @mutex:         A mutex that protects the fields of this specific instance
-  *                 (e.g., @retrieved, @file), ensuring that operations like
-  *                 retrieving or finishing a file are atomic.
-@@ -160,7 +163,7 @@ struct luo_file {
- 	struct file *file;
- 	u64 serialized_data;
- 	void *private_data;
--	bool retrieved;
-+	int retrieve_sts;
- 	struct mutex mutex;
- 	struct list_head list;
- 	u64 token;
-@@ -293,7 +296,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
- 	luo_file->file = file;
- 	luo_file->fh = fh;
- 	luo_file->token = token;
--	luo_file->retrieved = false;
-+	luo_file->retrieve_sts = 0;
- 	mutex_init(&luo_file->mutex);
- 
- 	args.handler = fh;
-@@ -569,7 +572,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
- 		return -ENOENT;
- 
- 	guard(mutex)(&luo_file->mutex);
--	if (luo_file->retrieved) {
-+	if (luo_file->retrieve_sts > 0) {
- 		/*
- 		 * Someone is asking for this file again, so get a reference
- 		 * for them.
-@@ -577,21 +580,27 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
- 		get_file(luo_file->file);
- 		*filep = luo_file->file;
- 		return 0;
-+	} else if (luo_file->retrieve_sts < 0) {
-+		/* Retrieve was attempted and it failed. Return the error code. */
-+		return luo_file->retrieve_sts;
- 	}
- 
- 	args.handler = luo_file->fh;
- 	args.serialized_data = luo_file->serialized_data;
- 	err = luo_file->fh->ops->retrieve(&args);
--	if (!err) {
--		luo_file->file = args.file;
--
--		/* Get reference so we can keep this file in LUO until finish */
--		get_file(luo_file->file);
--		*filep = luo_file->file;
--		luo_file->retrieved = true;
-+	if (err) {
-+		/* Keep the error code for later use. */
-+		luo_file->retrieve_sts = err;
-+		return err;
- 	}
- 
--	return err;
-+	luo_file->file = args.file;
-+	/* Get reference so we can keep this file in LUO until finish */
-+	get_file(luo_file->file);
-+	*filep = luo_file->file;
-+	luo_file->retrieve_sts = 1;
-+
-+	return 0;
- }
- 
- static int luo_file_can_finish_one(struct luo_file_set *file_set,
-@@ -607,7 +616,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
- 		args.handler = luo_file->fh;
- 		args.file = luo_file->file;
- 		args.serialized_data = luo_file->serialized_data;
--		args.retrieved = luo_file->retrieved;
-+		args.retrieve_sts = luo_file->retrieve_sts;
- 		can_finish = luo_file->fh->ops->can_finish(&args);
- 	}
- 
-@@ -624,7 +633,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
- 	args.handler = luo_file->fh;
- 	args.file = luo_file->file;
- 	args.serialized_data = luo_file->serialized_data;
--	args.retrieved = luo_file->retrieved;
-+	args.retrieve_sts = luo_file->retrieve_sts;
- 
- 	luo_file->fh->ops->finish(&args);
- }
-@@ -779,7 +788,7 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- 		luo_file->file = NULL;
- 		luo_file->serialized_data = file_ser[i].data;
- 		luo_file->token = file_ser[i].token;
--		luo_file->retrieved = false;
-+		luo_file->retrieve_sts = 0;
- 		mutex_init(&luo_file->mutex);
- 		list_add_tail(&luo_file->list, &file_set->files_list);
- 	}
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index a34fccc23b6a..ffc9f879833b 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -326,7 +326,12 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	struct memfd_luo_folio_ser *folios_ser;
- 	struct memfd_luo_ser *ser;
- 
--	if (args->retrieved)
-+	/*
-+	 * If retrieve was successful, nothing to do. If it failed, retrieve()
-+	 * already cleaned up everything it could. So nothing to do there
-+	 * either. Only need to clean up when retrieve was not called.
-+	 */
-+	if (args->retrieve_sts)
- 		return;
- 
- 	ser = phys_to_virt(args->serialized_data);
--- 
-2.52.0.457.g6b5491de43-goog
-
+> Specifically, I think I asked for something like:
+>
+>         cpumask_t       cpus_allowed __guarded_by(pi_lock && rq->__lock)
+>                                      __guarded_shared_by(pi_lock || rq->__lock);
+>
+>
+> I think Marco's suggestion was to use 'fake' locks to mimic those
+> semantics.
 
