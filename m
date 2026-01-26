@@ -4,234 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DAA0C88E78
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 08:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62A38C88E75
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 09:03:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33DFE6B0088; Mon, 26 Jan 2026 03:58:13 -0500 (EST)
+	id A4C936B0088; Mon, 26 Jan 2026 04:03:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EB6D6B0089; Mon, 26 Jan 2026 03:58:13 -0500 (EST)
+	id A37B06B0089; Mon, 26 Jan 2026 04:03:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A2D76B008A; Mon, 26 Jan 2026 03:58:13 -0500 (EST)
+	id 9369D6B008A; Mon, 26 Jan 2026 04:03:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 07C0A6B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 03:58:13 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AD56113B883
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:58:12 +0000 (UTC)
-X-FDA: 84373513224.05.8C02CA5
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 26DD21A0002
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:58:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FneBvUIJ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=qAOqdTCL;
-	spf=pass (imf19.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769417889;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C2526B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:03:09 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 33F451A0758
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:03:09 +0000 (UTC)
+X-FDA: 84373525698.14.BD8D2DC
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1603E20015
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:03:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xa6EFDgh;
+	spf=pass (imf03.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769418187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F3i6FolrEZKvTkiSfQ015kG1rZ21w5mqAyvQev7K0yk=;
-	b=DEU1SW+P7A4C5NSFXaiVxa8UQkD7uKJil/riC4NwdRLV/cYZOPqfKDzCU5k8ozbyRj2Uwx
-	3ZEHk5ubLd7XKUflo9yZ1p7ygtvk2u8cBwPwQJg8D6JNKa1VDqUmeY4GQ5hTb5XYsqqLHo
-	PsopRgXaeoEqHskvaGodjGHiZ1Z72hs=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FneBvUIJ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=qAOqdTCL;
-	spf=pass (imf19.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769417889; a=rsa-sha256;
-	cv=pass;
-	b=cXYZe1+dBnhm8udyt08tMEUmZymXX4ot8JzLwRsEXQeyQsFHItdcozY3O92p8idllF9WHG
-	JdFtKZn3Ztoqkg7/c284vBPoa3eaGwIe/1lqkUhNChTPRcoQNKQ6Pl1doPip43H9ShANZE
-	EyIJv8P/RExysjMqeytfDLUEQSnN5Y8=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60Q3gKBm142226;
-	Mon, 26 Jan 2026 08:58:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=F3i6FolrEZKvTkiSfQ
-	015kG1rZ21w5mqAyvQev7K0yk=; b=FneBvUIJWeRtUWTpCribkVdeFNU24ewVk+
-	oRv62JY74bNU6cL9tFgw+w45tSJT9lJxcg636RiGwvDUpUg1g5LoPNbwA1EI1984
-	JoKDSkF3y/w/bGrk6jlMFek8dRSk7kWoqt5BFCckHYaXc43RPgxeu+u4K6PvS4NZ
-	zESPyVqGY2aj1q+MW3RgBQaLt78hcoRyW+DCST7uJtvzrdlBUeuyiYHKS3joPuVl
-	qtl/eqs2gAi4wxwy02cyGUKCHCsdhgf3U47Ds0zrLvx+B+smlFPL0yaRc7AiNj10
-	e+W3EuHRLCKPE633IoX1eM1XlLIzbnI1aXbt0RoeGLFjsrMynD5Q==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bvpmr9gv4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Jan 2026 08:58:04 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60Q65VI4019823;
-	Mon, 26 Jan 2026 08:58:03 GMT
-Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012071.outbound.protection.outlook.com [52.101.43.71])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmhd0k3h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Jan 2026 08:58:03 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A9JPMXdzucuelpUjprsVsG8Vue/YHESDF+cwSZHIvrEy/2MLaw6E/IeL74G3grw5IpK5lnIoDk5fuyOzKI7D6gNI+Q/zFFrvNupwhJ8ZOHVhmIy+4emIBtzLk2ToclcdeW6I1cwzyMQf8xUv0tCPoDsDRC/+3B6+dsYS4ZRculTx9vzq0KHuriRxdMK7ysz0tVlrZSgPlgQLBvb/aWIsw/6P3n7vOERHJ1AfqKnfRfeG2aJUf9LszoffarE9Nr15l4iblHCrIC4wK0QgKYO+Yab5B3u95ftlW+dDmr9vFqLKXTXqyLZg81NIw618WcO7Zj6OL74r4vj+iomKArToMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F3i6FolrEZKvTkiSfQ015kG1rZ21w5mqAyvQev7K0yk=;
- b=MgmXkS+GaGNQcIYT11lbDCZoWbRIvKwg0Sdu564m3e/Rp8ixfJQDDhj86jKOTCt7x+mvXCI0w7c5L62xNAN97TUOZskqsXyWFVoWW3R3bJMkTPotN47uxzBsv25vqlaagtntYBhd0rIq0Q0vhP1vuZhUaMIJ2Ui7v5agHRQxPrYmCX9c9DQ20XWYS9cVDQAUKZyQBpqQ1z+j/h9U9uzp28j1jULOn5nTyeZHwJ2/mtiQ9PbIhNECvbptbNjt39xIsBpBIII4RA1SMhHKIOH1g+oUoHE7I0xOyQfNWLIptsoLnUNN9Tvwnsi5L57qd1mGYJdiHbeM8Z6mvh7zyen9pg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F3i6FolrEZKvTkiSfQ015kG1rZ21w5mqAyvQev7K0yk=;
- b=qAOqdTCLDKRp3ASFkTKF7+TrEwaqmyYj5A1CyQHwGLZpHvGp4aDinKT/yBlSumOpQbdtZ9MVjg3+qHjrxkAfuFqV9U5vf/qSolPKNsrhj4i0i/Cj6Al0cj/0zomxBz5Nk9Wy0LC/xS8Y8GIoEvtlKZyVvqnwyhXt4+zTelVanRE=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by SA1PR10MB5781.namprd10.prod.outlook.com (2603:10b6:806:23e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Mon, 26 Jan
- 2026 08:57:59 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9542.010; Mon, 26 Jan 2026
- 08:57:56 +0000
-Date: Mon, 26 Jan 2026 17:57:51 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cl@gentwo.org,
-        rientjes@google.com, surenb@google.com, hao.li@linux.dev,
-        kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own
- slab
-Message-ID: <aXcsjyKFsmeVggp5@hyeyoo>
-References: <20260124104614.9739-1-harry.yoo@oracle.com>
- <2b116198-b27a-4b20-90b2-951343f9fff1@suse.cz>
- <aXcmGMlH3sWO03rv@hyeyoo>
- <55ab1a9b-1d7a-4e7e-b6bc-ee327197dc4b@suse.cz>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55ab1a9b-1d7a-4e7e-b6bc-ee327197dc4b@suse.cz>
-X-ClientProxiedBy: SL2P216CA0181.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:1a::7) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gFr3YlD/FrQ5KpFJY2fbuprM3uE6y+2ho/7y/E4qt6c=;
+	b=6s5JnDq1oe93OoW2ePbCKIrM1h1Dma6oqyMjFCoug+j0m9XF+eKaR9LXcJFpYtGNlgTcIb
+	ESh/xX5OVosCvrujB/3AWTYXJZpjyM1hJL8KSWuD/jPX3C3dCQZt7EdzJO+aIR0mLx9ERd
+	1nbCP1Muf+kPoMp0HRDaM3OJh4KzH3g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769418187; a=rsa-sha256;
+	cv=none;
+	b=twvvtmbEEh/sJPS0hI47Atu3zYka+4+wQtErF7twPIbq5c+8i7XMEK/chQ24JCLICnBRVM
+	/QEPXS86i1dlTH6dYqiQCOvclYO7MjiUn3kcC7wFHaxvXmz7pRbmUfAY2zuoyEYrFUM5gt
+	HQMh9LeKp6JiFSZUaMpZgnhuaJoRmAw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xa6EFDgh;
+	spf=pass (imf03.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769418184;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gFr3YlD/FrQ5KpFJY2fbuprM3uE6y+2ho/7y/E4qt6c=;
+	b=Xa6EFDghdPtPPeaPmdck+ruV9B57Bb32pkkRJ/zJSbAsevQ6855WdTp5jvcB75IVRlEZXZ
+	J6UfsoznsXT4WH5lKLXkgc3wB8zzSliTyO4WclOeEucWwvwtUhvKwSE3PVZA1OXCAhdd71
+	aEjqyD9Xdmxvk8R78HFXfUgbVAq1/wY=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	mkoutny@suse.com,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	davem@davemloft.net,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [RFC PATCH bpf-next v4 00/12] mm: memcontrol: Add BPF hooks for memory controller
+Date: Mon, 26 Jan 2026 17:02:24 +0800
+Message-ID: <cover.1769417588.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SA1PR10MB5781:EE_
-X-MS-Office365-Filtering-Correlation-Id: d395ce8e-b51f-4614-8a57-08de5cb8ff46
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c685807VYQr1sekWP4tci3fD8qgvik8IKT61tks+c8lpxvq2tKoy2tzvVC2P?=
- =?us-ascii?Q?ym9vhsk7Ux3KSnTzn6GAR1uj2BAOzu7RwBZ7FpeDDjZoTvBGVY0oFMRKTH6g?=
- =?us-ascii?Q?73YWt679ai1kYTiAegl3y7NVjryQ6WkbcJbV7TG5GYt3/gYndLFtkdUGYGtX?=
- =?us-ascii?Q?TPf/uyAXKc8UgHHzdjsRUBH4zX8lTfVOcLYKoIZW/ielUSEm8BuGpAv1mavF?=
- =?us-ascii?Q?eBYV+hVlEteaYD4ezHNnrt5II+OBq/Qs6Zj0aPfMJeYauyEoCR57lUXu5zLn?=
- =?us-ascii?Q?7zK1bnIIGHjyj90NhdVVvxmuO9F9/UeUyqAlY5YFSSP0H+BpC3pOD/fqESVw?=
- =?us-ascii?Q?3lgTLa8ZCv4ElZGUSiqqbZtPUXyPo3nwwjlsRGklpZ4rleOD0Fm6F6ozFaRk?=
- =?us-ascii?Q?OHtmgphfyaqsPo45LiICtMiQi4ZLzSBEzljjjXzOe40yXf9woHS+Y3mY5HXK?=
- =?us-ascii?Q?fQ7pwG9vKeaEivKjuaJFG2pHuWhvJUKb6qjE2goytIdb+mrGZ7dE89vGv55J?=
- =?us-ascii?Q?9RlrF4DnzUqMwuw5kOH48GNS9Kuofr7C/2NQP4HsIglWPX/fnqVq+Zx/dbqw?=
- =?us-ascii?Q?Ie14GSE9lv7kpmVYxxJr9gCU/P8ehsWPxAX9rgwZZAfLNO2LjQqpi8R79+yj?=
- =?us-ascii?Q?o3kx1TkA+JjvWvhVaAWGiyJxsrqAQ6ZvD+KcBx+zxyMsuy2GT9S6DFbcx9uB?=
- =?us-ascii?Q?6KHcVHrES5wh5+hFSr4nAnHhbHbkCyzrIg2I4wp9HDK4L8lWZIuIGqjnTZOt?=
- =?us-ascii?Q?i7gwfQTaxe41ab16agzSloLAUXN+BLeiyBct6miz9Vbo/KGEXdurfGhRzW8Y?=
- =?us-ascii?Q?907meMHAqrWTOrNRhgJ5PMgRDsaHPNvh4oZmtINl9L63nRwQrEIAIQAKOWyZ?=
- =?us-ascii?Q?Thg4o9BwSV5og8Jo1B9n9MOoBw8o4imFUD0L703cnXr+ujjT8MhXfpLkH80k?=
- =?us-ascii?Q?AuXIT8WEoKQ/IStVLVAs+DKSju4rN0HYBDhAylt5VbqBtRXaxQj0EoU1UlIo?=
- =?us-ascii?Q?GPfR1VSEd+H59JhT0BZJgLtt5gnGwOPrGsg/fxsPGG1cXXyFDOTNXsJcfNEP?=
- =?us-ascii?Q?mRkiQ4kfs5HdhA6VCquxC8nXG7U4WduSHGMbBV88SZDVoIanzR2kpd3qdio0?=
- =?us-ascii?Q?p3iG96kZMXiQRmRNvWm5Z1r3Rp9Kv+oQQbdNiQG3Mch+D9xpzFaN+wIB3Agx?=
- =?us-ascii?Q?6cbgztCc/N9kRQ8WQIUEc2PconkWkzm3TQ6rVcrnXu+U4F8svnJcWr1qhnOy?=
- =?us-ascii?Q?Pi32TpNAkXfT/gF+PBiKinp06nP0YCOZ7MG6jw0nFMNiIHsMJY2i/K7LUvVp?=
- =?us-ascii?Q?PZsR5FzDrzeQ/PPKsE1Tnj1LUH65CcZyObCGTDue+MKBNomQQuZMj6FTwOJo?=
- =?us-ascii?Q?Prl6LPXRadKZMffSXNFdbJ8M0EJEKyGzu7h5eX8Kn6U0nITK7r3kE8qyKRxX?=
- =?us-ascii?Q?wOsz27VxSRxBYujc7WqnLEY73WKM7E8xEE37hlDjuf7M/tSF+UAPq2H02LxL?=
- =?us-ascii?Q?ueOFREnWBe5kGnSDKLqdHaZXE9TOWKFTq7/uUBq4gSwej6G90efcxWRd/xWU?=
- =?us-ascii?Q?rB3udw9cEei0se8BQzQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?w+NW4KG5z6lJPYtHa2IXuLIq2WJ1OgCeX3ADuoBufkP7M7vu67KB4mcTdgK3?=
- =?us-ascii?Q?2k/70dQaNuUQ5NjAqqMGfnUYVtRP2uuZV/W0v1TsjNODHYFxZJPFo7VnYefQ?=
- =?us-ascii?Q?nfjIE+NGNy8MJYOkQmkJ1t0jFiw7dhhTy6KD0MxB7B/xZQZGx+sTdiVvrFGW?=
- =?us-ascii?Q?7gwinLQJo5TKhFYcKn9xwHRNdNbNobxhl7Ds/BC2YxJMmD2GKNjpRCEN07xa?=
- =?us-ascii?Q?HVLjP1jZZB4/bDMdnRF1fFMa1tlNEftO48dZTvthPH/4Jg3KVaRRa0deEUln?=
- =?us-ascii?Q?vwvsKpqiVsyqxHyZBADk0y9GI/+qSCC0HjSMROzemH2oPLbeGgLdEZyMxRX8?=
- =?us-ascii?Q?NarQqfHbGQEXi/jwrahJHvgbW7gFMhb7LaPpVYoar1QYlpBS3/QCeQoTmWbj?=
- =?us-ascii?Q?JNUkHK7xiXnkYevoCq+17h154pNCrvJNbpHYOF0W7SatXpGGgXBnktngKRAL?=
- =?us-ascii?Q?Nbf+XFtl/QxpxTW8CxTCbSHdRpRAuQ8PJX+CgLe5qj84WV4nIFet3Jf9Pix9?=
- =?us-ascii?Q?z7XQmnjUQoJcEadMfI91CWb+uTDmSMMI90oVJ2+F2rmN4xLyKva+jngZA/cJ?=
- =?us-ascii?Q?FcgZTbsAj5iPLMjcf/aycJUikoLii4gN50zW4C/9M9fGrPzHxWrln8kmPFXk?=
- =?us-ascii?Q?h2sgsNWspzwMQ1xiNPjSN36p21ngt29lVTdlARrIzj1xO9xXa5fT4/GXM6We?=
- =?us-ascii?Q?knLUMVqGAClodOY0nx2IIYzGVTNo+BiDcui2UpzmdVRguvGgEO47gaRhdid+?=
- =?us-ascii?Q?xgXmpe80VtN+pPbCI4AQtkBPcO6RKyTjigPGY6nogkfNF0itSZNKXquIwdJU?=
- =?us-ascii?Q?z0D7k+fVydt6GSyBnAuBAa5i2JpB2GsFI4cwV4OnQEAVUEbiQ4iJv86vN++g?=
- =?us-ascii?Q?Mtu2N7SU2PAYFTq2+x3vFvQLyAtATkxjjKHzDcX5Jv48EczW6fIwkNbrjoJV?=
- =?us-ascii?Q?VdBtd6lqJjuPrSIntU1anisfQEU4WzvuADPyYl7C3dtVv1OJ/iN42ZtFu266?=
- =?us-ascii?Q?XJ3WfylIT0uFXShZ6t4Pvh+OIMslPkcnK1iFSjZJV8G5Td3ESSty2iJ/p3Zr?=
- =?us-ascii?Q?KoDgCmkwVfJDeUltaKDTJ4oZDnZTJ3tTh6RgQBExyGQaqvhEpHGcItPWeiZ6?=
- =?us-ascii?Q?Yi+m9LIz0vFqbBmXi9vP4vHG+eeLV9rOUSFFCLlvXkEko1Qcp/Y2btgz1gJq?=
- =?us-ascii?Q?H1bQBCojT0iKyyjbz/L4ySfuMUVYWlm19XTU0VV9aI4UOBZBlWV3WtjQon1t?=
- =?us-ascii?Q?Mz5HXXVzQsyLi6ZsXY36JSYBsFFeS3zV22TOoQPboPdbEAIHPfgn+7wIG1DT?=
- =?us-ascii?Q?geXUmhSzy99KBZ+4CfT9Nu56Ccbv269FVTFgHNum5g6t19/4TnjW4ky30pJn?=
- =?us-ascii?Q?ksA4aI+i9hsUXDxHTfC34WiyHPmQJD1qEE/GnrO7UnutXiteYBLO/IapBIDd?=
- =?us-ascii?Q?fR3aVJYYPHn9/ZrJGypUs+g2sW136SvsAl8uwxcjM3YugIgFQoPP4HQwkdm4?=
- =?us-ascii?Q?b9jSYYawev+dhzDTHumRbjXL//fCGfWUVVJRXOu+RjfrdJL0B68lx/EEeTp2?=
- =?us-ascii?Q?7NNkUq0yWvu0i9b5vOF9s9kU4ve8cVwMHF5y/0BDT/0038ZYiNS3/J5RZrbn?=
- =?us-ascii?Q?G0tLuNroR6jsznmzAvXJ9A3LDbPSvzT7iuVpv9L+QB1AAlbi9oJYUWH8xtxO?=
- =?us-ascii?Q?Q9n5tZ6oAdLBDaRo0zBN8ChXUq6ttl8hZn9f68sieCJm/k1kZcPyMWtsjwQQ?=
- =?us-ascii?Q?mcuPd8An2A=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	5+K61oKLRydKHi7x30f1t5mxRHjJZUGOinLRMZd3fB1zVnbeLU+OBzkhBpnNrZ09Id9g0+X+hEihJ330HozQoUiQBSjU1WXzmR38TZiMr0ewGYGAIvA4LOrLXar8QmGdhyFgbcdAOW+k3sRBmoP791xHECTsb1X3IzJk+MbZwLvwGlBKTKSkzKiPyodhulSWnKKfz1NB8t9s/HJ1t7rDDmc6O9obGkNrlDcD5Nq9VYQccUmOrHGiN2K93jUWKKN8UFMjjnahk7HVho2mU2OzZrB3Xr4NtSp+RXUxPmDc9yBCAmccv8w3JyTGUeY1TDHDi1i1n73709Kh2FAEJGOS7DAwwF7Xf3MKJzc7hgLY+MvTiZsL/HbaQJ/1Sr1Q8O+xtLcthqsMJTtFQFczWg1BXmHaU+Ppv1PzVht7fl9mu3WEe2f2lMJbWFghbXpoUSK9pw47ZFrBEB93G6dZ8dMfMcey/9U8IFHOgD4XeLuYWhhGG76ZWJSaXfzcPopAiwqTQGBsJsVTauMb9o0kZH9oowuJWdHBRgFmMQBl/yKfyoA+wx7emnbnHdgg9N5q2RSw4t7Fo3lBpw5DeRBOVVZ8JRQ8pqRgtnw1etCbcybLNbA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d395ce8e-b51f-4614-8a57-08de5cb8ff46
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 08:57:56.2564
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O8y1PRwQqOCuivrDHgUe9xhKtF7cioEihch0wh+jP2PMZC5/d+N37V2SO1YdkqaZbo1saI1OPtkVunjJoJ5PwQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5781
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-26_02,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 phishscore=0
- mlxlogscore=850 mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601260076
-X-Authority-Analysis: v=2.4 cv=Q//fIo2a c=1 sm=1 tr=0 ts=69772c9d b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Qx8tcVzxNuVNlklqwQwA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12103
-X-Proofpoint-ORIG-GUID: moau7tZIyHcylWJAO4uVQ1VECsjgoMeQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI2MDA3NiBTYWx0ZWRfX6SwotNEVhiB4
- +FQm9Q7nr+VmpSBcNFsGQjD/nVwHoDY5EFqlNBZmO/ykiIll8HH40SmFz4MZ1wEIWsz/RjtelrJ
- sUQI43CJnxp10UXYpXPjFLbAe1kp32nak4PmJg0ivJi9R/1sEOgyuiF/tBgQ81peCAP6Ljtflfj
- /buMZ1p2ywx5ae50jUFSevKunKfZmNFg9jpYKVsU6/hfGWsxnpStGkWjXbpv7Q9JScrPih6YgWJ
- ln0pq4vGUs1lvqbWci55XBgVOtCNrZ0rCkKMSnxCp43vJSH5Q8D8nJkRYwr8FdJMTEPovjTP7xR
- jokX0S+tyBUu7Xg6b5evGHEHuDFhEjg2+D8TO5vUj8y1PF9TOedI0i4B4+/ZbA8mtcMKiqqbOqd
- 3sEnikblY3aZfINHd7orSfwzr9FqsPhEx+FDJsHZ+ZaeBiKaxK3GXh9kXKIyNCsZ0a4ThzflQnu
- PahzPHBXUfhYuPKqXGy04jTO9jJHSHr8kg1aoK5A=
-X-Proofpoint-GUID: moau7tZIyHcylWJAO4uVQ1VECsjgoMeQ
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 26DD21A0002
-X-Stat-Signature: dt9ceaqf474n3zgeg37fh4xhy577d6j1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 1603E20015
 X-Rspam-User: 
-X-HE-Tag: 1769417888-2787
-X-HE-Meta: U2FsdGVkX1/m1WdhcawfBgjxCS3THzrl0GqmJSQi0YnJd4JD6oq1EVQvIy93FTaHrTx/bWGwF2d7XnT4SY2mrD3c/4c11W5RROa1D8iC9sRpIV8eJZRlzcm2HuLtBZD7rCVeMuvMu03U91ZHx8PIYkNu0lUhjXW91t2AWB9ejv9mnhlMkpAPn5IUKPL/HmG/rwoKK/k7aBi+djtsMjuBYPXqavDVykLPZ5Hsphm4ULdEDY9tCQaNc5NoXwZvNnmZFcUTG/xX48e9rI5Itl8y1AfhUVOT4Uu+NIZ66sqJl2zD6YtYTR0wulldOGVpuvVd/60DXIJmlw8Rrdt/hBU49eAJY5TLyqbU9ZP6VsYv5w+5uWTbxcvEdiWwgd4glkVAeNAk07RZm2TB3BFx2RkO3DLe0L+z4MEBq32GtWplciZ7DDvDJ7tUG6diaQEBDvJfY6OqZ3vAd4gv03aQj0zJux2i8zt/+7QMPPCA2d0aEWU5Qgs30S86jPf6MwoYp/1QHsg//ISS8LTrkOWV2DGHQSaC6Az89UBhRNvS/Qs1W6GpZxBHGW/GcbeVtuGhRXXFempPTbPxQaxG6qqckH9azEuDl2tAosMSfHNQ8e+ye1eY1hTSz6LbE9Ig7jtM44Ug5AXje/NLQsGTD+RDWqQDRfqaYtoCi9HAF1P8smin2nzm/b/8/efIKr2YvM+BQVJ20GWwwTNB5TKLKGozKjPP26sdh4QfDnXei5M6eyUIR33eg/26ps6v8lb1vnBhlVB/QwH3lll/swqIh6Ki5E0508/fpx5ueAY7wuXZqWC9E0M4DzqdRpgurLo0zQO1kHURtPIZRJT2yg6jpL2xCfg/4pCckbWtgaz+OsFx5pwWrWOUq0whSanFj5LKD2jENLtvkwjUGRetieFffeSW2Fhr4Dcacr1hEhLpAfQPebux93JF2MdZ/Qui9ps9QDiASB3QKDOz4G5/vVekHtGy+3Z
- Ew9+IgrD
- PI40KKLrte7I3SgHFX/LCKDgaNiOOpUUJjMNxo+DDKOp0nQxNWTZ7SM6XtsJWorSWg8WOwAS7O8dsK8nlvPdvXQH9OlRuOYWY3K4PiDcgAnfy14SCKSTK/2tlEmVGAEJSVwmh2CMLAc9UvXycbUoJcrEGxhDrrcPTkTAF/f6jzoNEBR/vcTtoSnFjB150Xjgw1L1FVwgv46Wf7QjnnNKaRmeaudYft5D0vNx2Td10RRHCjp/WJ7OpzzW6hRqzCO6Lz1Jo12/HNnTbyhBsnTCWs+Yj96CNqwDnoj4lSImE5h6IzmXs9rJ9oRAD3NcApRZ/H/HNaJICUyy5wMWZWjxwkdU7CEhWnZbkWX/51kcf+gmrfXdd4crWs7dDnBItKTkbQE5iCUCYZOk1vaTQ5dvjatGbqIz091w4ZZPzsdflSnqgv9fF0Er78JMXykO6NGqXzVDQo11p4sPBzMGlrVoi4jFpMxABnMCgj/wCkbTyTYJJM1plwigFwVEWJ31cB4XpRXNkIn/Lt9+bmKVlorVv3UJ+1fjf8kqONvtSfQCiHQ4PDUazlPRYCx6ysLX0Qmjcx6eXyNB+3EW3pIGhb73l+6qGbn8wzXGvnWmhwYhJ75S7wsACrGaq81+oNRJ9ER1+B97lNTjWDJVxbAKovxSZqNnZ15EXpsChRpD+I5R2Nzew4Z1wUk2w8qM2LxpCQ4SO/s03/hDCj/BX8m0=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: yf3kazn9nefkjjqbn8jgmentejppq5zd
+X-HE-Tag: 1769418186-728285
+X-HE-Meta: U2FsdGVkX18CiiJfsNoaooSU/ugWDWfjdY60kkcSD/bmyp66w1r+LCyjVI4oE7egcVSEbh+0DHOst18hv1QEI1fn+E1UmQ2KVjgzQ7aW1QF0kyFnKc42Ksxwucd+2HAkX0LJQb2MUg4q3bHRJ5dn6qED5vSUR3PaA9m/JZ+iYFMYD9hXVdQVPqGvFY1HWE5XA8FhLoKolOaj0fnQcTaclFpqBYq22/S68k9OpIRKBtbBzz3fta3DTfJv2mDmdCAFt/Hnq5G1qp6UwNJj55TeV70q/xkMuFoo+xS7vakJ4F/smYeMBfwIpOM3E2fMZjxLGtYPWvBUIAmE/QHixr/qEMbUdFJevF5kBzs0Py0c65Wp+EeZEiwHedoZD9oynl6L/9+EQkEpHs2QC0NwwHOWq/ZJwrtmudkOamWGbPL0J6aBycLzh9rVYHfhSTenSH0eI34Uo+EPQ3KsD/HKdpMTFOkmYL8hXia0/jcd6G/OKygzSPbYFNSH87bE0DZJszNO+01bZ534tcDUBtSL8xG2qFtpMZ4YWoGqnGQy9nctv5cmuj0qQn29BRSGUNO+fhE0/TKzHueYj4AM/vDbLQVws33SwXzb5bwfnCdDCn6USNOyYph4rCS17b5a9qQae33kH5bhDg1w9MFZX3rxRUKedQNcSrHvHjZ2mHCzzEdDvMk63Vdj5eqe7iK6ipXjPTFO9I8mDPp8V3VD1oh+qpjIeUNIBsYp9RfaZUI+kBVEO1r3mrIBgFitK+kpzla7N8vsISDhZdJ3MUqOidqeWviqrj7Ks7TEtLeXzgUbmMTFf+QtIgVDkh4EWaIdpvbFuRwTTguzZHkOBQMmpgrnNz811w0gNZNyNnCgrTLvPv1yEJlKo2oL6O6uBzpCZnQLRGnvoyxPpzVvTNyDFs2RZCeywIhe7gj07wUT7wnh5kGUR8rgQJaxfq07JtV1zlMaxgbAFV/dZmD0/o5pFav/O6T
+ mfd+GVyL
+ APBVah6kWRt8QDCtCWlLqdIDz9wGS23KTM+Bpo00VB8EfVJEjvj9fOxLSjpTZV7E7TkSgXR5hclH2eHQOvnEuLWWlveJqH7qUnzroMInVX90+V016nvILjVlXWkrWGlxkAlTOFFb9b74jFlaiRFIn4sbfJ3gUJ+uTu73U31nuyI/Q75anQOqnDP5VAI17k8piLpO/M7LuQ9X5ZrolNtag8fGWUe9Bf1yGBZEgd653+7S+4yltlrVKLCNJzUYB/fg8BAOQ36NaCLUm1cU8Y3tM0tn7omc2FIf/yu2y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -240,76 +132,249 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 26, 2026 at 09:37:29AM +0100, Vlastimil Babka wrote:
-> On 1/26/26 09:30, Harry Yoo wrote:
-> > On Mon, Jan 26, 2026 at 08:36:16AM +0100, Vlastimil Babka wrote:
-> > /*
-> >  * Calculate the allocation size for slabobj_ext array.
-> >  *
-> >  * When memory allocation profiling is enabled, the obj_exts array
-> >  * could be allocated from the same slab it's being allocated for.
-> >  * This would prevent the slab from ever being freed because it would
-> >  * always contain at least one allocated object (its own obj_exts array).
-> >  *
-> >  * To avoid this, increase the allocation size when we detect the array
-> >  * would come from the same cache, forcing it to use a different cache.
-> >  */
-> > static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
-> >                                          struct slab *slab, gfp_t gfp)
-> > {
-> >         size_t sz = sizeof(struct slabobj_ext) * slab->objects;
-> >         struct kmem_cache *obj_exts_cache;
-> > 
-> >         /*
-> >          * slabobj_ext array for KMALLOC_CGROUP allocations
-> >          * are served from KMALLOC_NORMAL caches.
-> >          */
-> >         if (!mem_alloc_profiling_enabled())
-> >                 return sz;
-> > 
-> >         if (sz > KMALLOC_MAX_CACHE_SIZE)
-> >                 return sz;
-> > 
-> >         if (!is_kmalloc_normal(s))
-> >                 return sz;
-> > 
-> >         obj_exts_cache = kmalloc_slab(sz, NULL, gfp, 0);
-> >         /*
-> >          * Random kmalloc caches have multiple caches per size, and the cache
-> 
-> Maybe start with something like "We can't simply compare s with
-> obj_exts_cache, because..."
-> 
-> >          * is selected by the caller address. Since caller address may differ
-> >          * between kmalloc_slab() and actual allocation, bump size when both
-> >          * are normal kmalloc caches of same size.
-> 
-> As we don't test the other for normal kmalloc(), anymore this now reads as
-> if we forgot to.
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Ok, something like this:
+eBPF infrastructure provides rich visibility into system performance
+metrics through various tracepoints and statistics.
+This patch series introduces BPF struct_ops for the memory controller.
+Then the eBPF program can help the system control the memory controller
+based on system performance metrics, thereby improving the utilization
+of system memory resources while ensuring memory limits are respected.
 
-"We can't simply compare s with obj_exts_cache, because random kmalloc
-caches have multiple caches per size, selected by caller address.
-Since caller address may differ between kmalloc_slab() and actual
-allocation, bump size when sizes are equal."
+The following example illustrates how memcg eBPF can improve memory
+utilization in some scenarios.
+The example running on x86_64 QEMU (10 CPUs, 4GB RAM), using a
+file in tmpfs on the host as a swap device to reduce I/O impact.
+root@ubuntu:~# cat /proc/sys/vm/swappiness
+60
+This the high priority memcg.
+root@ubuntu:~# mkdir /sys/fs/cgroup/high
+This the low priority memcg.
+root@ubuntu:~# mkdir /sys/fs/cgroup/low
+root@ubuntu:~# free
+               total        used        free      shared  buff/cache   available
+Mem:         4007276      392320     3684940         908      101476     3614956
+Swap:       10485756           0    10485756
 
-> >          */
-> >         if (s->size == obj_exts_cache->size)
-> >                 return s->object_size + 1;
-> 
-> Why switch to size from object_size for the checks? I'd be worried that due
-> to debugging etc this can yield wrong results?
+First, The following test uses memory.low to reduce the likelihood of tasks in
+high-priority memory cgroups being reclaimed.
+root@ubuntu:~# echo $((3 * 1024 * 1024 * 1024)) > /sys/fs/cgroup/high/memory.low
+root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60 \
+& cgexec -g memory:high stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60
+[1] 1176
+stress-ng: info:  [1177] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1176] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1177] dispatching hogs: 4 vm
+stress-ng: info:  [1176] dispatching hogs: 4 vm
+stress-ng: metrc: [1177] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1177]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1177] vm             27047770     60.07    217.79      8.87    450289.91      119330.63        94.34        886936
+stress-ng: info:  [1177] skipped: 0
+stress-ng: info:  [1177] passed: 4: vm (4)
+stress-ng: info:  [1177] failed: 0
+stress-ng: info:  [1177] metrics untrustworthy: 0
+stress-ng: info:  [1177] successful run completed in 1 min, 0.07 secs
+stress-ng: metrc: [1176] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1176]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1176] vm               679754     60.12     11.82     72.78     11307.18        8034.42        35.18        469884
+stress-ng: info:  [1176] skipped: 0
+stress-ng: info:  [1176] passed: 4: vm (4)
+stress-ng: info:  [1176] failed: 0
+stress-ng: info:  [1176] metrics untrustworthy: 0
+stress-ng: info:  [1176] successful run completed in 1 min, 0.13 secs
+[1]+  Done                    cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes $((3 * 1024 * 1024 * 1024)) --vm-method all --seed 2025 --metrics -t 60
 
-Oops, sorry. copied from wrong version of the patch.
-Yeah I initially compared size and then switched to object_size for the
-reason you mentioned.
 
-> > 
-> >         return sz;
-> > }
+The following test continues to use memory.low to reduce the likelihood
+of tasks in high-priority memory cgroups (memcg) being reclaimed.
+In this scenario, a Python script within the high-priority memcg simulates
+a low-load task.
+As a result, the Python script's performance is not affected by memory
+reclamation (as it sleeps after allocating memory).
+However, the performance of stress-ng is still impacted due to
+the memory.low setting.
+
+root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60 \
+& cgexec -g memory:high python3 -c \
+"import time; a = bytearray(3*1024*1024*1024); time.sleep(62)"
+[1] 1196
+stress-ng: info:  [1196] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1196] dispatching hogs: 4 vm
+stress-ng: metrc: [1196] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1196]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1196] vm               886893     60.10     17.76     56.61     14756.92       11925.69        30.94        788676
+stress-ng: info:  [1196] skipped: 0
+stress-ng: info:  [1196] passed: 4: vm (4)
+stress-ng: info:  [1196] failed: 0
+stress-ng: info:  [1196] metrics untrustworthy: 0
+stress-ng: info:  [1196] successful run completed in 1 min, 0.10 secs
+[1]+  Done                    cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes $((3 * 1024 * 1024 * 1024)) --vm-method all --seed 2025 --metrics -t 60
+root@ubuntu:~# echo 0 > /sys/fs/cgroup/high/memory.low
+
+Now, we switch to using the memcg eBPF program for memory priority control.
+memcg is a test program added to samples/bpf in this patch series.
+It loads memcg.bpf.c into the kernel.
+memcg.bpf.c monitors PGFAULT events in the high-priority memory cgroup.
+When the number of events triggered within one second exceeds a predefined
+threshold, the eBPF hook for the memory cgroup activates its control for
+one second.
+
+The following command configures the high-priority memory cgroup to
+return below_min during memory reclamation if the number of PGFAULT
+events per second exceeds one.
+root@ubuntu:~# ./memcg --low_path=/sys/fs/cgroup/low \
+     --high_path=/sys/fs/cgroup/high \
+     --threshold=1 --use_below_min
+Successfully attached!
+
+root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60 \
+& cgexec -g memory:high stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60
+[1] 1220
+stress-ng: info:  [1220] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1221] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1220] dispatching hogs: 4 vm
+stress-ng: info:  [1221] dispatching hogs: 4 vm
+stress-ng: metrc: [1221] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1221]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1221] vm             24295240     60.08    221.36      7.64    404392.49      106095.60        95.29        886684
+stress-ng: info:  [1221] skipped: 0
+stress-ng: info:  [1221] passed: 4: vm (4)
+stress-ng: info:  [1221] failed: 0
+stress-ng: info:  [1221] metrics untrustworthy: 0
+stress-ng: info:  [1221] successful run completed in 1 min, 0.11 secs
+stress-ng: metrc: [1220] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1220]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1220] vm               685732     60.13     11.69     75.98     11403.88        7822.30        36.45        496496
+stress-ng: info:  [1220] skipped: 0
+stress-ng: info:  [1220] passed: 4: vm (4)
+stress-ng: info:  [1220] failed: 0
+stress-ng: info:  [1220] metrics untrustworthy: 0
+stress-ng: info:  [1220] successful run completed in 1 min, 0.14 secs
+[1]+  Done                    cgexec -g memory:low stress-ng --vm 4 --vm-keep --vm-bytes $((3 * 1024 * 1024 * 1024)) --vm-method all --seed 2025 --metrics -t 60
+
+This test demonstrates that because the Python process within the
+high-priority memory cgroup is sleeping after memory allocation, 
+no page fault events occur.
+As a result, the stress-ng process in the low-priority memory cgroup
+achieves normal memory performance.
+root@ubuntu:~# cgexec -g memory:low stress-ng --vm 4 --vm-keep \
+--vm-bytes $((3 * 1024 * 1024 * 1024)) \
+--vm-method all --seed 2025 --metrics -t 60 \
+& cgexec -g memory:high python3 -c \
+"import time; a = bytearray(3*1024*1024*1024); time.sleep(62)"
+[1] 1238
+stress-ng: info:  [1238] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [1238] dispatching hogs: 4 vm
+stress-ng: metrc: [1238] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s CPU used per       RSS Max
+stress-ng: metrc: [1238]                           (secs)    (secs)    (secs)   (real time) (usr+sys time) instance (%)          (KB)
+stress-ng: metrc: [1238] vm             33107485     60.08    205.41     13.19    551082.91      151448.44        90.97        886064
+stress-ng: info:  [1238] skipped: 0
+stress-ng: info:  [1238] passed: 4: vm (4)
+stress-ng: info:  [1238] failed: 0
+stress-ng: info:  [1238] metrics untrustworthy: 0
+stress-ng: info:  [1238] successful run completed in 1 min, 0.09 secs
+
+In this patch series, I've incorporated a portion of Roman's patch in
+[1] to ensure the entire series can be compiled cleanly with bpf-next.
+I made some modifications to bpf_struct_ops_link_create
+in "bpf: Pass flags in bpf_link_create for struct_ops" and
+"libbpf: Support passing user-defined flags for struct_ops" to allow
+the flags parameter to be passed into the kernel.
+With this change, patch "mm/bpf: Add BPF_F_ALLOW_OVERRIDE support for
+memcg_bpf_ops" enables BPF_F_ALLOW_OVERRIDE support for memcg_bpf_ops.
+
+Patch "mm: memcontrol: Add BPF struct_ops for memory controller"
+introduces BPF struct_ops support to the memory controller, enabling
+custom and dynamic control over memory pressure. This is achieved
+through a new struct_ops type, `memcg_bpf_ops`.
+The `memcg_bpf_ops` struct provides the following hooks:
+- `get_high_delay_ms`: Returns a custom throttling delay in
+  milliseconds for a cgroup that has breached its `memory.high`
+  limit. This is the primary mechanism for BPF-driven throttling.
+- `below_low`: Overrides the `memory.low` protection check. If this
+  hook returns true, the cgroup is considered to be protected by its
+  `memory.low` setting, regardless of its actual usage.
+- `below_min`: Similar to `below_low`, this overrides the `memory.min`
+  protection check.
+- `handle_cgroup_online`/`offline`: Callbacks invoked when a cgroup
+  with an attached program comes online or goes offline, allowing for
+  state management.
+
+Patch "samples/bpf: Add memcg priority control example" introduces
+the programs memcg.c and memcg.bpf.c that were used in the previous
+examples.
+
+Changelog:
+v4:
+Fix the issues acccording to the comments of bot+bof-ci.
+According to the comments of JP Kobryn, move exit(0) from
+real_test_memcg_ops_child_work to real_test_memcg_ops.
+Fix the issues in the function bpf_memcg_ops_reg.
+v3:
+According to the comments of Michal Koutný and Chen Ridong, update hooks
+to get_high_delay_ms, below_low, below_min, handle_cgroup_online and
+handle_cgroup_offline.
+According to the comments of Michal Koutný, add BPF_F_ALLOW_OVERRIDE
+support to memcg_bpf_ops.
+v2:
+According to the comments of Tejun Heo, rebased on Roman Gushchin's BPF
+OOM patch series [1] and added hierarchical delegation support.
+According to the comments of Roman Gushchin and Michal Hocko, Designed
+concrete use case scenarios and provided test results.
+
+[1] https://lore.kernel.org/lkml/20251027231727.472628-1-roman.gushchin@linux.dev/
+
+Hui Zhu (7):
+  bpf: Pass flags in bpf_link_create for struct_ops
+  libbpf: Support passing user-defined flags for struct_ops
+  mm: memcontrol: Add BPF struct_ops for memory controller
+  selftests/bpf: Add tests for memcg_bpf_ops
+  mm/bpf: Add BPF_F_ALLOW_OVERRIDE support for memcg_bpf_ops
+  selftests/bpf: Add test for memcg_bpf_ops hierarchies
+  samples/bpf: Add memcg priority control example
+
+Roman Gushchin (5):
+  bpf: move bpf_struct_ops_link into bpf.h
+  bpf: initial support for attaching struct ops to cgroups
+  bpf: mark struct oom_control's memcg field as TRUSTED_OR_NULL
+  mm: define mem_cgroup_get_from_ino() outside of CONFIG_SHRINKER_DEBUG
+  libbpf: introduce bpf_map__attach_struct_ops_opts()
+
+ MAINTAINERS                                   |   4 +
+ include/linux/bpf.h                           |   8 +
+ include/linux/memcontrol.h                    | 111 +++-
+ kernel/bpf/bpf_struct_ops.c                   |  22 +-
+ kernel/bpf/verifier.c                         |   5 +
+ mm/bpf_memcontrol.c                           | 276 +++++++-
+ mm/memcontrol.c                               |  34 +-
+ samples/bpf/.gitignore                        |   1 +
+ samples/bpf/Makefile                          |   8 +-
+ samples/bpf/memcg.bpf.c                       | 129 ++++
+ samples/bpf/memcg.c                           | 327 ++++++++++
+ tools/include/uapi/linux/bpf.h                |   2 +-
+ tools/lib/bpf/bpf.c                           |   8 +
+ tools/lib/bpf/libbpf.c                        |  19 +-
+ tools/lib/bpf/libbpf.h                        |  14 +
+ tools/lib/bpf/libbpf.map                      |   1 +
+ .../selftests/bpf/prog_tests/memcg_ops.c      | 611 ++++++++++++++++++
+ tools/testing/selftests/bpf/progs/memcg_ops.c | 129 ++++
+ 18 files changed, 1682 insertions(+), 27 deletions(-)
+ create mode 100644 samples/bpf/memcg.bpf.c
+ create mode 100644 samples/bpf/memcg.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_ops.c
 
 -- 
-Cheers,
-Harry / Hyeonggon
+2.43.0
+
 
