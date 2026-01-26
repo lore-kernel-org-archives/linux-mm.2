@@ -4,112 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22097D13C0F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 13:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8743CD13C0F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 13:59:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 824E46B0089; Mon, 26 Jan 2026 08:52:18 -0500 (EST)
+	id B96776B0088; Mon, 26 Jan 2026 08:59:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D2166B008A; Mon, 26 Jan 2026 08:52:18 -0500 (EST)
+	id B43BD6B0089; Mon, 26 Jan 2026 08:59:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B3C56B008C; Mon, 26 Jan 2026 08:52:18 -0500 (EST)
+	id A4FFB6B008A; Mon, 26 Jan 2026 08:59:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BD746B0089
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:52:18 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EAA7BBB163
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:52:17 +0000 (UTC)
-X-FDA: 84374254314.12.E953397
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 596781C000D
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:52:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVVmZvFr;
-	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 967936B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:59:55 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3BA4EB9573
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:59:55 +0000 (UTC)
+X-FDA: 84374273550.03.0D3468B
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6B9CDA0008
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:59:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Q7sbxvHC
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769435536;
+	s=arc-20220608; t=1769435993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ky62GUwPERN/e0pyAb7yB0pYqm86UmimVZKdDJ3jtbo=;
-	b=FZbbTxqlukQPSHiiSjV+RXWmDbJ/Fe+JP2YgzZHRm+1a7ZUneApdrjmnrr3ilPP2e9lTKm
-	IgS40xKxkPnAD78gshRjU32jJi86RdRI2rgrneUQ+eI0CsK/y1J2+gR/Xa0fdgLUBiDVW7
-	xLkj5Aoh4j6jzd/qnkdGnmC/cVg3tf0=
+	bh=CA7ZM6arGeM7G5r4XYd+i+HkxrAcrO5ouJ48DYGWkxk=;
+	b=wdlBOQ6lXCJVfe8vp1R0u40jNyU/NxxNziT+xzd668TCJMnAkNeQd+6MsKgB2G7QxQfRJX
+	6979sExmDszvHo63csI4VYV4Nss2mLj85QlTss7KQ/boJ3m2iiQdxqUbkOV1VAFVfW9bXj
+	dMgh3p5JaL+sIlLqCE+zYJAoxEypskA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kVVmZvFr;
-	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769435536; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Q7sbxvHC;
+	spf=none (imf25.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769435993; a=rsa-sha256;
 	cv=none;
-	b=peDqUuRx+ys5ILbykslfaArimJR+EMQnOwyo3YJcxyTqTRNFCAsh9Fo0HakrHkMy0EqNVe
-	IVferuNlcXkkP8OFoYFhO0oTEZ3J9QKKFkWhjirGUo3tjJlCbME75rCBmnI1p01+oxJQmN
-	gKijB/SSgolxKwEd+MFbE3R2B6nsS24=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ADA94600C3;
-	Mon, 26 Jan 2026 13:52:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D689CC116C6;
-	Mon, 26 Jan 2026 13:52:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769435535;
-	bh=kcA2cPiJEC19HBEstbYBifZWvAw98I0XK00+8H10mco=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kVVmZvFr+CRLz0dBd5XLWyUavbW8nCgjkNtfsZ68viSoUlQzfs77mgqO6yT/jpeN8
-	 pg7kQkZ+GT9I3gBbH5KSW1N19v6LZBDwYGLOWXiqcQylBZ5g4+KO6kKGQcqEiAcp10
-	 ausowbCOUHsZ9bfKrKj7R3xBLNET1yxkp9J+5MLTEWX7f4No1SfT5XTL6aSPrTfT+N
-	 bCZy9asASdQMt42TI+gLu+rK/RLraHfA4D5BqFAPeAolk0a/hyw0wdylU0k19HWyrL
-	 x4wXKWwVwt8GOfxwvDBurrXf2OyecnDAn/Q+0+zLdQYHvjvwQgg6PufPEP9PU1/i/q
-	 WOFYplVNvnCcg==
-Date: Mon, 26 Jan 2026 13:52:05 +0000
-From: Will Deacon <will@kernel.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 29/33] sched/arm64: Move fallback task cpumask to
- HK_TYPE_DOMAIN
-Message-ID: <aXdxhfVLqyv-2SDX@willie-the-truck>
-References: <20260125224541.50226-1-frederic@kernel.org>
- <20260125224541.50226-30-frederic@kernel.org>
+	b=1j1kvgmEhl0TrbiwhyudpKVcYhJ2V9LySf5oNB8PYiu4eFWBzUva6dFW9A3asGJxoYNh29
+	0QA2Aes3h+J+kh+KDrDcvPAHORbpdFSv6FWcAmGw8xq2sjEiU/bjE905VQ/IbrwjS6lNJW
+	TQAL8Zhr9DEn85FZxJCLIdzAPUD/s5o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CA7ZM6arGeM7G5r4XYd+i+HkxrAcrO5ouJ48DYGWkxk=; b=Q7sbxvHCpdJlOA8+0uz3927nIV
+	KNaaEpbu0uDEYOC7QS+Zsyy5x2BGTRKzrowzUL3FKnt5t/IUy9oI/eDR5hKyY71LyrAPNfoCM6Pi8
+	4N+4PiyYyDXCiRBrYAZnlsG2H2PofaRBU1DaJiOdtIumZ6/XHerpclx/I9lBDhVhrcavjvUTglMGM
+	Aa2ychCEXyVFuE1KrRmDjZgSzJC1T8VHtw8tHRGvVdgGHHCnPG3AWncsMuyJ+Dzz139qym9F7UrdT
+	tX77nPTY9Tl6MFne75lIndVhuZjUdk03NffssHw7WyF2nJZbOyytPo1c2eJeozzpZKtOlfBbITWJv
+	BYbM6vVA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vkN7t-00GDx9-Lb; Mon, 26 Jan 2026 13:59:33 +0000
+Date: Mon, 26 Jan 2026 05:59:28 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
+	kasan-dev@googlegroups.com
+Subject: Re: [PATCH v4 06/22] slab: add sheaves to most caches
+Message-ID: <aXdzLk010qbTNbUh@gmail.com>
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <20260123-sheaves-for-all-v4-6-041323d506f7@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260125224541.50226-30-frederic@kernel.org>
-X-Stat-Signature: xhcwwrf18myeg5546otojrd65s7fc11x
+In-Reply-To: <20260123-sheaves-for-all-v4-6-041323d506f7@suse.cz>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam11
+X-Stat-Signature: f5x4gz5nny8jkpkufuqwocbem9d6znjh
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 596781C000D
-X-HE-Tag: 1769435536-467048
-X-HE-Meta: U2FsdGVkX1878V5AXIC+JQe2VLsVv2PYIm88UMY+KDnMCTXEybI36/a6xUL6yxVUE1E62ojZo6jaQvFm10/v9FsbnzjoxXmU4wao65HuMtBHc1JPWEv5+2Dos/hOMH9IB2VXMNFPI5o4bf4OijjI2R+5y6nIDYzbcLrDvlWDwwEQ3XyCLWqHeLi0mWiuh6C2N7NUHVhMs2vovEoprWkhrAAn5UDNQJ8pDMolqz4GK81Tt6cflMwKigCuD+WRCJXk/GeBCDerH2ZP6bXHTHsOYeEeFHeKW9JM4p6SWMjn/IkmzzAxpBUfLLThPFchReYBV2ylDOCwB2nmUNeLowlKFicCmpgnZajs90mPCs3MOMX+9Rie5w655Y0j8pYzF1+5Bpwm4XN/FS4lfmjIUhweJK2IktBEf3cZbpJVk9paeoZaTefnRIU6ts2KgQWWAdj+11V5GzW+RkSCyVaHeX4SbjNtTiMyqEtko1Rv3uDeEAzKY9npk92Cvf6PYS5qaa86zbVJ5WJLZQ0U3Z5n7GPv3tb08RuYP1Vb2Utt46eMxdupjgMkGN9FjWZx6PQbl9am2JQJDo8IKk2j1YykncIVd3r67SLJ1SXJijy59zi4hQ1p95006n/GCJF9FDHUKaBOzYQSY77kM2/07ZmzJ97j0rLFabBYxUSF2PAezv9OkQsx3SzDbqtMnIZHRTi02/hwBnO3FxKtauLTnK0hI5P1d9QM19fs0En5w8q7X6swunMZZ/NfPLLyGY+xpeorQ0Wcv3Yzroqpn8lrFtdpyacvMduOUY3YA3zpYl7iCA6VdDfoffh0J02G3tr1pXvbHyyR0rLfUoyRLxxlHXiPPkYjGNMODhfSdZZriaYrFpoOG3/fvk1LONQYZJO/N+hfxLQYuDqybhi7DyJrQqiyyv2xizdO+Oj6AQw9KhQKgPe8TESkyCcB6z2Eekbmtli5b2cXDJWLczPp8Hf5tMwPkMt
- FWLm5B15
- KJIZAXpPaCpe3jvdN+8U5fIcSektB3HD9fhn4mEIH6IW5YjwwxAfHoQ9u5eVOEoWk6KeOiGT7UZtRJmZJVptwvPxVJucEtAKGdVU40XTuCjPkJMPGaIY4pIZMYWLovuRfS1zUdEI2w8IfwRB7yfehmPRoqb+dUPYl2D0g0RNsOwBlJthK176c6ZBVHKIH14yqJhJk/wXE1Vnp8hhj8PCoYkSezEAvHJbaPQ7Wl3m51YIGUZXc85QaSDmwY7QOC7dl46m5oM/5CCCTzqlrCeD8DYsAyI6gRSer09sE1fPBDKdCtmUCxNNLUVIGD2H6/iZynvW2OJc3zpf6yowLib+soDTWVw==
+X-Rspamd-Queue-Id: 6B9CDA0008
+X-HE-Tag: 1769435993-527996
+X-HE-Meta: U2FsdGVkX1+45X9nW2M4Z5XEDs5J33wExzobktmCHhcwG8ZfHKQZQ0na/bwvLwCY+63S5uEPOuh/g9VdsGj64X+8wVANdJr1nKJUtxtHXb5U02qDfhgxFf3jXA/9zEYL6UxNFF2LMw1dGDsuGGI/noIH99POSMhDcJrD2sAMjINWZE4fTYGqJgoVFJJpjMvmrwAzMqtGHpKRwRvDI1o580MScAZLgdEuCbHck8CY71fWoMQbRizlFGNUVMy0ZPMtMS8F/mN+tGminYpqVAAL2aaziOFK6WZBvwQDpKc8wN/yvpsPSKD3FsLbOxoPi825/AeNwdL2dkUqaXxkXJQfYTfp/ZhLi3ASbTTJzfY2zQXQn5/fK/huZQuwNOmxdbDhRVTTIvumVGiJXzyAcei37DSxrCvfGfiiFPhFAEnsMjBDfDn3wlaRZZw8v8MBn/SyR6g1wN5G+PJvKd+11QThpWAl+uDAEzspYRnPZjtAmNTNlOfgjr1lQ9TdVC0MmGPBRgRd9pr/5JGX68KFihVFzDqP/pVo9pN6KA/Kw2YU7LVv/i6S1FqZkRcbEuOP+bZ7yAyhRSCLEZACwvGgyce8RylNXJ5hbKh67ej48GRGI800vIThT8yDtHzDjeZL0JruidOB0+ria5iS8M0peMDIdAJEhEl51iXJZYssaYn0fQ3wXgUJ7EosSKMYrp9B8oREO20u5JbMND5k5KKiu4e0I+DG/RId2ECC/5mJIU1a4otYKayhyRx25W4B2uUEgbBLNOkEKNUYfPhs/z2yrHpQAIyv6+88ETFZoiUaVigbFc/zA5EBebmaiX8MPSOV8ypYcDuxWc3q1I/30D8n7pOK2LOixjcXOsG8H3vSEfTbSjUDSzxDcseqkDHkNWj/qeK3AUW/k0ENZP6o8Fxwv7Le7UqoOu0PU9H7NjzM39VCcemXIsuhc1QHsvXKmghxTI5cfhYDVfk8S/Iczy+vRfK
+ xFzCYG+K
+ Ji4EblrS9US+p/VhHD6Okml2sE8TW3ph0H3bdXx28KUjsA9qrvVWLSX3cJTtyOqVlp1A3rgpCo/Ewkjp96HI7lAD8zZoS6eDDrP2c99XOWKXjapq7ksqSBsTSZHiK1pO52OJKx0St+CbPDb5shOex06EGBS5LQPbbFESH6tDD8oYpfhsbnrMO/DJ+cLPVNcZvf8zWVm4TqeOSTyI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,37 +97,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 25, 2026 at 11:45:36PM +0100, Frederic Weisbecker wrote:
-> When none of the allowed CPUs of a task are online, it gets migrated
-> to the fallback cpumask which is all the non nohz_full CPUs.
+On Fri, Jan 23, 2026 at 07:52:44AM +0100, Vlastimil Babka wrote:
+> In the first step to replace cpu (partial) slabs with sheaves, enable
+> sheaves for almost all caches. Treat args->sheaf_capacity as a minimum,
+> and calculate sheaf capacity with a formula that roughly follows the
+> formula for number of objects in cpu partial slabs in set_cpu_partial().
 > 
-> However just like nohz_full CPUs, domain isolated CPUs don't want to be
-> disturbed by tasks that have lost their CPU affinities.
+> This should achieve roughly similar contention on the barn spin lock as
+> there's currently for node list_lock without sheaves, to make
+> benchmarking results comparable. It can be further tuned later.
 > 
-> And since nohz_full rely on domain isolation to work correctly, the
-> housekeeping mask of domain isolated CPUs should always be a subset of
-> the housekeeping mask of nohz_full CPUs (there can be CPUs that are
-> domain isolated but not nohz_full, OTOH there shouldn't be nohz_full
-> CPUs that are not domain isolated):
+> Don't enable sheaves for bootstrap caches as that wouldn't work. In
+> order to recognize them by SLAB_NO_OBJ_EXT, make sure the flag exists
+> even for !CONFIG_SLAB_OBJ_EXT.
 > 
-> 	HK_TYPE_DOMAIN & HK_TYPE_KERNEL_NOISE == HK_TYPE_DOMAIN
+> This limitation will be lifted for kmalloc caches after the necessary
+> bootstrapping changes.
 > 
-> Therefore use HK_TYPE_DOMAIN as the appropriate fallback target for
-> tasks. Note that cpuset isolated partitions are not supported on those
-> systems and may result in undefined behaviour.
+> Also do not enable sheaves for SLAB_NOLEAKTRACE caches to avoid
+> recursion with kmemleak tracking (thanks to Breno Leitao).
 > 
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> Reviewed-by: Waiman Long <longman@redhat.com>
-> ---
->  Documentation/arch/arm64/asymmetric-32bit.rst | 12 ++++++++----
->  arch/arm64/kernel/cpufeature.c                |  6 +++---
->  2 files changed, 11 insertions(+), 7 deletions(-)
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-Thanks, Frederic, this looks much better to me. I also chucked my old
-tests at it and it looked good, so:
-
-Acked-by: Will Deacon <will@kernel.org>
-Tested-by: Will Deacon <will@kernel.org>
-
-Will
+Tested-by: Breno Leitao <leitao@debian.org>
 
