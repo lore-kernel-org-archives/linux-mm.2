@@ -4,113 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B6AD778BE
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 01:40:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6AF5C88E40
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 01:52:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8C476B0005; Sun, 25 Jan 2026 20:40:22 -0500 (EST)
+	id 9D3056B0005; Sun, 25 Jan 2026 20:52:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3A106B0088; Sun, 25 Jan 2026 20:40:22 -0500 (EST)
+	id 956A56B0088; Sun, 25 Jan 2026 20:52:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1BB26B0089; Sun, 25 Jan 2026 20:40:22 -0500 (EST)
+	id 838916B0089; Sun, 25 Jan 2026 20:52:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCCF46B0005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 20:40:22 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D02BD2D1A
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:40:22 +0000 (UTC)
-X-FDA: 84372409884.16.0F86F59
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6F0E4A0003
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:40:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JtIvEjky;
-	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769391620;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 704396B0005
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 20:52:18 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 093D7140620
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:52:18 +0000 (UTC)
+X-FDA: 84372439956.26.633F54D
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0F9D710000B
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:52:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IXE6+RkP;
+	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769392336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qOS/I3qY1vByTUV0rzQTBMazz/yNAmJFWVeZH3R10+Y=;
-	b=BXNREKK6HDucKQUEi6FIhHgjywuWtw/WkWfemYEAN1Ye8QQ5KZlWwM15SrngZe3GyJCK3l
-	AQ7gs2Z45HsZPhakvy2DLJMB1F0o+X9iJ/mcJ5KF+6Fb4KUZL6JWMIBti/tO2ePkzl/amx
-	Yj7dTgB/5y0MDWP4b0RagUYMA1ulfPY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769391620; a=rsa-sha256;
-	cv=none;
-	b=nOhn5ka1nFcskLvZxttVThoO3NAZmkJoK15zrTLnsggc43ksBUIj0CL1rrUsKGmOvWhxV4
-	2f7q3ECH27MTtt1Nh0L9fz1qBLIyIG9whg0CKW3if15tC8pM/Y0GgVJBBhwAtrRkeagu7Y
-	5B4eDtrsBqkyslUSLREIzxRrlAFebkU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JtIvEjky;
-	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=YEuwFDX8sEOyQ+L13hC6tPbYMALYNZgElkJ1Rv7U2Yo=;
+	b=M3+ntMWeZyhWLgkp2ej3ogb1pUxLRrIZX0LvgMOK8M1V0EG0F8/VAxd0NDMN97HtEmImwV
+	HBHZntX7FmacQ6NbRwVlhpQL6yTXs0Uuql8rf23Coy03aWRcTJo+E4etSYDeVwcEqD5cMd
+	wJFZ7242MyUGdPCUWilLL/Z/lB6g8GY=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IXE6+RkP;
+	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769392336; a=rsa-sha256;
+	cv=pass;
+	b=DUIhK2spvb6rlUq4/6QmrIk+BYSCVlheHLS0QVzctWXMguAclrWJJJJRnV9uvXHVlvG8vB
+	siahJEocWf/GKZMcqFaC+SW19LZGBErhXgWcF6MbKunEy75G9A/MNPxes7ldpJaWI2nXKB
+	6ksDtGybgJYbgSBPOGMoK3dWE+H67fU=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-888bd3bd639so57114456d6.1
+        for <linux-mm@kvack.org>; Sun, 25 Jan 2026 17:52:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769392335; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lqNZGHE/+LVrlYsyuzBE2NaM01lItTL48jiFs2Q3I9CNlWHBzUqver8/MtlSAoqilW
+         z5S2yYLlhinCx/9Zj1X2Y/r5F3zuI+R7MsSYR64ClUO8GSBqbLOptpW61u7nAWnx4vvg
+         msNUUw0Q5pp+vch9gNuec8/nPTjT3PUPqiLKQT8mx3lSoHiHYN1NdMUgrLzbzTkC0h9N
+         NYdhty8uf+CsjhXAV93dN3g8KlEJkvNvm3hwf7fWgc7NkBBWiX66oaHMa230kDi2PKNe
+         5KQjPIFk4YTH2acxGohNXl8K2GriavZknNwbXqoh9aY6doUn//h1+R/2MJYxSZwxNA49
+         uyvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YEuwFDX8sEOyQ+L13hC6tPbYMALYNZgElkJ1Rv7U2Yo=;
+        fh=nrT59npFV3RN7Bd/bRiRmF3HMNbUVgnSbX5vcwymPfY=;
+        b=HyP2Wxfp2TAH8sinm705Tx4VU9P+O77nEJ3xd+GMQ8kE+2fXRXQAJu6tmM4lg3RE/h
+         oiKMImmOeGgD3LoGF4b/EYKw+VZWmoM4XtfTuoQrZal71LfQlVeF/QUeJmTlMGFzEX4+
+         5Cz/WneJxHaFue9+XBYaUFSqyfsi+j5t5UMvkq1qlrSf9jW4X1l2NLfe/zea+bIg1sY2
+         iUI29h+81ayav70GVqBvsOrCZfeHpiPqTX4963GXPDfUrnJW9FdF6/cvfb4D+fNcjtMr
+         nrKejfLTy6n3/QRPK2xLKqxkejh6w5nnbfTyWS4pkRz8+G0yWk1cPpzT1p2h/Q1M+WaS
+         J/4w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769392335; x=1769997135; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YEuwFDX8sEOyQ+L13hC6tPbYMALYNZgElkJ1Rv7U2Yo=;
+        b=IXE6+RkPsUWbRQK1cSp86wiqTHhknZVK+heLezuzYqah0y9LRQykKNgaHelEyW95sa
+         a8uWiIrUNtg2910rdTbZ5uGYL57UKXrI8zF18XcP57Ku4UXv0pMqfU/l229YVmLzYrGo
+         Ay62CZ0P/7c3Mi/xQjdIAFTfNCVQ8QXWc/HDrVARrZk/oZK32eqhVodUpDz7wuX66Muu
+         R/lgdLvWlMAaRIT+z/KOdg1MeoMt7uODlP9KGWmR2M/IaChu7dZ/R7Q9C/vKD1C/cU3Z
+         7cS8AtyPF7a1qZUNbofQuBOJKm8vdQNDUD5l7RCoJo94F4FKgB/ivtmeFMktFNDe5TZx
+         +fHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769392335; x=1769997135;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YEuwFDX8sEOyQ+L13hC6tPbYMALYNZgElkJ1Rv7U2Yo=;
+        b=CF0bECs3/5usL7IKAqj0a55IgWF9qZ1SuJDrcxDEVqSmIY1kNGKk9uYd0vKgVx59wA
+         cUtslTDwYtHGs9sX252JeHirliXwLI0ckkWRKSKvP7EkWgusfs9hirhNeLOy/MwsFfYu
+         I2FEJjoE5AXjm2RCRw6HR/049Ccia/BoN/K/MX2MyDfTZHuf59JcifZ3ha7cJWFdA+i9
+         lrd+4QGS0nIkymYM0xh++m8emuav0XY5aQjD5UR8vKmf1jjDSF7dFCU7LHZ+YKcmCNFg
+         LbcLpfGF+3X97nuGfPOjlruDP023I6fFxsWeShjceDUtsnCs4ga1t4w+usVs37SFpgBa
+         /RlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXW2e6L9WIWET2U5bJhMqUokWspjFBPrfx4y3dKfpFRT5rznBzD9gBiVWye6phKJ3H4vvMbyXVpMw==@kvack.org
+X-Gm-Message-State: AOJu0Yxs65mUB7NAuqM11KM+lEeYNfIvmGvSS2Q+z0bDe9yHSH8x/uTd
+	9tkDFTaU/Sf7RZOVJfEugcR4JLZwsGVLXz8P3uoLHxCyKL2gWk8AkYTLfrvWSh2QvCK8LGAM+CB
+	xGS96gI0DHQe75wB2RO6YyvwuqFBs7p0=
+X-Gm-Gg: AZuq6aJVXztr2w4YP5o7uqPO9HJpoafp30I0IQU296ZhFaplwt6c6Nek32KgJGvwE5k
+	KpvKQCKflAw58otFllVnrbojgs7AVBZ2L0rtkVuPdHc8d5dxZ+ckVgXPkjEuH2gG+Rxh+miAr4M
+	ju1DAZHMbgTzUZE9I67/5GLVJpjclHVG3EG68aDCz1QBulNVmlN8L/n3/j0JhvmFbPOAop4N1BD
+	2+2er65j8OWUyssyHJrgp9OMS4UQyF+X2HDTNeDzBHJmAO92/y0b/wpV+qEkhw/waG69o/rwQ==
+X-Received: by 2002:ad4:4ee8:0:b0:88a:2ed6:252 with SMTP id
+ 6a1803df08f44-894b02fa802mr41091466d6.5.1769392334857; Sun, 25 Jan 2026
+ 17:52:14 -0800 (PST)
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769391617;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qOS/I3qY1vByTUV0rzQTBMazz/yNAmJFWVeZH3R10+Y=;
-	b=JtIvEjkyz6fJcB1qcAm9UeGr45TrQiuC4U97SwoSQWERAEd26ARBHVe7+Pw+4xl7KifCNB
-	9NYXe7CylOwE4gcUYajwfyysJZAzkYijiu3765UOhj/R84ibbkDA0AHNiazLN02H6fY7JY
-	Q2NWiGJKpBl1suunAWTwKhLgjyy1ZxU=
-Date: Mon, 26 Jan 2026 01:40:13 +0000
-Content-Type: text/plain; charset="utf-8"
+References: <20260123082232.16413-1-vernon2gm@gmail.com> <20260123082232.16413-4-vernon2gm@gmail.com>
+In-Reply-To: <20260123082232.16413-4-vernon2gm@gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 26 Jan 2026 09:52:04 +0800
+X-Gm-Features: AZwV_Qh5bgP0Jx6crHpdoAw6kuaMsRIT_RsAgKYV6FioMbn9angxUXx75lO9Wzs
+Message-ID: <CAGsJ_4xMvjS3Ya+pdCX7giQGtvvNyPYd5pexeaT8vZZEwuKiqQ@mail.gmail.com>
+Subject: Re: [PATCH mm-new v5 3/5] mm: add folio_test_lazyfree helper
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	ziy@nvidia.com, dev.jain@arm.com, lance.yang@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: hui.zhu@linux.dev
-Message-ID: <8ee851c5676facd43c45cdd5d434d92d85628e43@linux.dev>
-TLS-Required: No
-Subject: Re: [RFC PATCH bpf-next v3 09/12] selftests/bpf: Add tests for
- memcg_bpf_ops
-To: "JP Kobryn" <inwardvessel@gmail.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
- "Muchun Song" <muchun.song@linux.dev>, "Alexei Starovoitov"
- <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
- Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
- "Eduard Zingerman" <eddyz87@gmail.com>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "John Fastabend"
- <john.fastabend@gmail.com>, "KP Singh" <kpsingh@kernel.org>, "Stanislav
- Fomichev" <sdf@fomichev.me>, "Hao Luo" <haoluo@google.com>, "Jiri Olsa"
- <jolsa@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "Peter Zijlstra"
- <peterz@infradead.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Nathan
- Chancellor" <nathan@kernel.org>, "Kees Cook" <kees@kernel.org>, "Tejun
- Heo" <tj@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>, mkoutny@suse.com,
- "Jan Hendrik Farr" <kernel@jfarr.cc>, "Christian Brauner"
- <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Brian
- Gerst" <brgerst@gmail.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
- davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
- Brouer" <hawk@kernel.org>, "Willem de Bruijn" <willemb@google.com>,
- "Jason Xing" <kerneljasonxing@gmail.com>, "Paul Chaignon"
- <paul.chaignon@gmail.com>, "Anton Protopopov" <a.s.protopopov@gmail.com>,
- "Amery Hung" <ameryhung@gmail.com>, "Chen Ridong"
- <chenridong@huaweicloud.com>, "Lance Yang" <lance.yang@linux.dev>,
- "Jiayuan Chen" <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: "Hui Zhu" <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>
-In-Reply-To: <b90069a3-86b4-4fba-9ff3-fe5f6c4e425d@gmail.com>
-References: <cover.1769157382.git.zhuhui@kylinos.cn>
- <c44accaaaebfc32be13234f82b501a3852ba3f0f.1769157382.git.zhuhui@kylinos.cn>
- <b90069a3-86b4-4fba-9ff3-fe5f6c4e425d@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6F0E4A0003
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0F9D710000B
+X-Stat-Signature: s8w49p4wg8pbcfbd96zbm8ueextfffdd
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: g6up8gjsdgss5dzxpkrzii39nfx9wrk7
-X-HE-Tag: 1769391620-455695
-X-HE-Meta: U2FsdGVkX1+vWF6bGiy0Y8yEn0+dpqq0n+vazjQeAmbI0dFhK2QAOsGkOUR6q84JT78fL2VnjgU4Z73PXbfn9KVDZ8CJO3904kAML/l9UB9fe1PSUAPtX9QBy+HYfduY2UsCEMl/HoUXWe/tDHKPvNspW/qZSNqPoGEPXpPpsIZmWWhCL2V7HtDxiFSs6qB+4XeHb5aTROGMHPZs89HdjaK6BDvlo4yaKPAVpPyJE+8GMji3ZW/tAXvMifjz52plWTtaPiFXIPGdAAzzZwifYlvlW5pSipF3iq14gB66/zfLnhB5xqDF+C4nveZfAfjJFHjgdV35r804toMwSZ+2kOmXVQSmY68e7vJyGCIXK/MPQ/tUsgThmvMye+V/p7xdLeMibdXAM65W8ZJFi/U+B0Yk01X89519QHRi8tUzeHnBZWcCDnhvQMXQerG140cRAaRr9HZfUEKRcq49iSlcP+tWsnCT7GhclJj1bkp4A9Z20dwytRT45YYgRDFo6F3qd5tVOAphIcPWuN65vjooUo6geSXt6pM0oLaHxpwYXZ90B0ksVgBSqIBFLcTY7c0vHtDlcZTYSFL1T7/F/EJp/N8hSfxjoje5RHC+tRr8JPx4CoB2ZZRiTdAaDyOUCH5/1GOqR/TFNw55EI8evbjp7yfOXwIuho5lSyHg/OlyeMdgfbeCsgI7YjQzHu/Z+BUGJj8+NAP8LFUnspCRdNumPbpZFENQUyFX7iG9P/35nOIE5Nk+u+9NyWEKtWKlSDDqD31k3UrHY9L0CCO3gFLv14WckqArbgRCcvORgtcYuFOXpcJAQ/ISH7pNzg3VP6oi68Beoz0df10MPZ/TGcXHyNhX0JDqWRkUuARbdGv1B8CBr+4EvRg5+FcZ96On3zWYu540jIAa8g8mTswBDfvmyD6o0cVHjwQ1ade4sGgnkIz0L4GeVNV2AaqUD/Jpi2bWIMKH30Tju6gtjVYJgUH
- J3c3bnFd
- HOoCSiX/zIWRyM3IvtG02Nuwmn3B/7AyJDNfNtW0N9M6oMHEZKoAwsaNpPyAbQbdhWnhH8TMz2Af0hjZF37NV7VTpsZEHvQpuYMBNMeVoDg4i4x2/eEKm/SephHMnCo3M2Vg3GhB1pIqadWxSpGJ2MH+F+MnpcNHWM1/k84g6EAnb7xr3HElBOVYLiudYImyGOFFHkOOuWgGv1igaXv004KRF/cJJG0D10GqXQrGywgTbADapVxrVq9ZMEOjGxi5+A65l7l+4E7nwaUnK4VX2vqjJ859PbJY3ghdWFu6PH22VzGwLnTqI6ymWHFm6NuURK3IPj3bwOvK3eCGFDUx226wpXEjrme6u+2crVo2yYHk8uARITgP7HWQ4lw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1769392335-297594
+X-HE-Meta: U2FsdGVkX19ueHCMvvPypZ7wlCDUiWYi9wmilNpOmeqIvS7+VVXMQNNzwn/xKLqdszQTjYRM0Wirgy8tJ4mBoM+B2OtgpUXyKUK1p1FKbxk4sPAN6b0qpElxNEjhUtlq4A4Rb8PZURXTnvxkTipf4XRVlyFo62L+/fQo3e5eGNGhKSiwu7Wtztj8qTblrJGpQav51gd+eYCsOEPO9QadmxsK39J6AvhM9lX7ZKbIjIO0dFddfM83kv+/gZqzYIKYeRPC3uAOb6BDFUUoXHhaCPF8yZ9hFyvYP7/dUkoD0gl1OyasCUtrjAGZPgH0xfss2oI0n7sIKHoUQqDq0LeIohFEox0jPgcPc4AtwvidlWzlDJPwLMbCKFvbL9aNX/b06GwUOLbyN8Ez5CJ/XpJqQq3YOcen390IHKngaxv2GxtCCsHYToNGhoXJ3kjqp+HEbu63trU/wd9InmfZMgnWTYdK7wLU9Ax6wsw7XR5CV3fFu7zP5ceqwspsUt9DrAJcHXBQWwDiVglIHkCm4R4H4aMqZBslVv0VJykh4P6f3XBl1cAt05azv5J8jGwY86Oo5O+2A5c41+FtxBFa+m5gLEI8QILinLYQjM9IQ+ozlkZ0rksdGYFMp2hjoxjK4Zybd/qUeeZGvNQOBt3gqoadQVCF0m3GR+J0Zs4RVge+knWtNEpsGELZ7h8x7wWrXHwugRGYYdxc6BjhtUA6WWjQJTnze4hjAJJAXX9lGioqG7QRwBsSFY9QMX3hfKv+SqrMGEqXdaHAsi9pASom3O4aN7UVTU4QwHRqZArDbV3IFlQFFTBxA3/zbS94GoGieruyZIWgCbeUciziJjKXIAqaOavDeSy+tDbDJAW0bfMlXB+j9MAImyj5J7BOcSWjKEdZgP9QOHVzUlzlNZBECLBiJh0P42MWTDRsPxMM97bNSZQB1kY9G17Ey49fgeJnDLcYZnL9JThfSgUlHhT3rG5
+ BD7Bn3Sj
+ hP8Se7gyH58TRUBp7CZKuG9PqopbYGL5VvvAmqpHWeZ9l4YOERGccgHsiRKeSQZhlJglRQT6cje7SmBIX3tCdUAsmX2t6x3cDwBn4ZjWJ+Hyzj+r6gTYQxq2RuMin1F3/PDEIPcNYgmbch8Dc7t4w3V+GYywxNeWJiZomv5ikIsftNd6E+KPQBZkvht/Z7xrKN+EU3IctCe9GSiUxSN5JC1tbDfu89wwlw0vyZ6GbprVtOlgmt5GbZMtu4bqaMTmXHqeCA+dDCpFuBD3cYMoxOScmo0HoVsr/4LkhkHamGoi5yoo9U12Yn1OrYdELcY15VSAFG5frfJQzkJ4LCNyrgzTjHqoWM9ISRHLhmKYnAlBddyxy4Nu4SlRovf+WUsuotof8H6IBnrcZhqoPM0ChE3C/4LYZutalaOHIRPVzCnNak1iZzSSKaNpRVCJOm2fWGM4jHTS49p0Txhn2VO5otpsmsD0+hKc+s3z7glJ8ngfnfqCiatXsPCauCg==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000004, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,159 +139,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=E5=B9=B41=E6=9C=8824=E6=97=A5 04:47, "JP Kobryn" <inwardvessel@gmail=
-.com mailto:inwardvessel@gmail.com?to=3D%22JP%20Kobryn%22%20%3Cinwardvess=
-el%40gmail.com%3E > =E5=86=99=E5=88=B0:
-
-
->=20
->=20Hi Hui,
->=20
->=20On 1/23/26 1:00 AM, Hui Zhu wrote:
->=20
->=20>=20
->=20> From: Hui Zhu <zhuhui@kylinos.cn>
-> >  Add a comprehensive selftest suite for the `memcg_bpf_ops`
-> >  functionality. These tests validate that BPF programs can correctly
-> >  influence memory cgroup throttling behavior by implementing the new
-> >  hooks.
-> >  The test suite is added in `prog_tests/memcg_ops.c` and covers
-> >  several key scenarios:
-> >  1. `test_memcg_ops_over_high`:
-> >  Verifies that a BPF program can trigger throttling on a low-priority
-> >  cgroup by returning a delay from the `get_high_delay_ms` hook when a
-> >  high-priority cgroup is under pressure.
-> >  2. `test_memcg_ops_below_low_over_high`:
-> >  Tests the combination of the `below_low` and `get_high_delay_ms`
-> >  hooks, ensuring they work together as expected.
-> >  3. `test_memcg_ops_below_min_over_high`:
-> >  Validates the interaction between the `below_min` and
-> >  `get_high_delay_ms` hooks.
-> >  The test framework sets up a cgroup hierarchy with high and low
-> >  priority groups, attaches BPF programs, runs memory-intensive
-> >  workloads, and asserts that the observed throttling (measured by
-> >  workload execution time) matches expectations.
-> >  The BPF program (`progs/memcg_ops.c`) uses a tracepoint on
-> >  `memcg:count_memcg_events` (specifically PGFAULT) to detect memory
-> >  pressure and trigger the appropriate hooks in response. This test
-> >  suite provides essential validation for the new memory control
-> >  mechanisms.
-> >  Signed-off-by: Geliang Tang <geliang@kernel.org>
-> >  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> >  ---
-> >=20
->=20[..]
->=20
->=20>=20
->=20> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/t=
-ools/testing/selftests/bpf/prog_tests/memcg_ops.c
-> >  new file mode 100644
-> >  index 000000000000..9a8d16296f2d
-> >  --- /dev/null
-> >  +++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-> >  @@ -0,0 +1,537 @@
-> >=20
->=20[..]
->=20
->=20>=20
->=20> +
-> >  +static void
-> >  +real_test_memcg_ops_child_work(const char *cgroup_path,
-> >  + char *data_filename,
-> >  + char *time_filename,
-> >  + int read_times)
-> >  +{
-> >  + struct timeval start, end;
-> >  + double elapsed;
-> >  + FILE *fp;
-> >  +
-> >  + if (!ASSERT_OK(join_parent_cgroup(cgroup_path), "join_parent_cgrou=
-p"))
-> >  + goto out;
-> >  +
-> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
-> >  + printf("%s %d begin\n", __func__, getpid());
-> >  +
-> >  + gettimeofday(&start, NULL);
-> >  +
-> >  + if (!ASSERT_OK(write_file(data_filename), "write_file"))
-> >  + goto out;
-> >  +
-> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
-> >  + printf("%s %d write_file done\n", __func__, getpid());
-> >  +
-> >  + if (!ASSERT_OK(read_file(data_filename, read_times), "read_file"))
-> >  + goto out;
-> >  +
-> >  + gettimeofday(&end, NULL);
-> >  +
-> >  + elapsed =3D (end.tv_sec - start.tv_sec) +
-> >  + (end.tv_usec - start.tv_usec) / 1000000.0;
-> >  +
-> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
-> >  + printf("%s %d end %.6f\n", __func__, getpid(), elapsed);
-> >  +
-> >  + fp =3D fopen(time_filename, "w");
-> >  + if (!ASSERT_OK_PTR(fp, "fopen"))
-> >  + goto out;
-> >  + fprintf(fp, "%.6f", elapsed);
-> >  + fclose(fp);
-> >  +
-> >  +out:
-> >  + exit(0);
-> >  +}
-> >  +
-> >=20
->=20[..]
->=20
->=20>=20
->=20> +static void real_test_memcg_ops(int read_times)
-> >  +{
-> >  + int ret;
-> >  + char data_file1[] =3D "/tmp/test_data_XXXXXX";
-> >  + char data_file2[] =3D "/tmp/test_data_XXXXXX";
-> >  + char time_file1[] =3D "/tmp/test_time_XXXXXX";
-> >  + char time_file2[] =3D "/tmp/test_time_XXXXXX";
-> >  + pid_t pid1, pid2;
-> >  + double time1, time2;
-> >  +
-> >  + ret =3D mkstemp(data_file1);
-> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
-> >  + return;
-> >  + close(ret);
-> >  + ret =3D mkstemp(data_file2);
-> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
-> >  + goto cleanup_data_file1;
-> >  + close(ret);
-> >  + ret =3D mkstemp(time_file1);
-> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
-> >  + goto cleanup_data_file2;
-> >  + close(ret);
-> >  + ret =3D mkstemp(time_file2);
-> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
-> >  + goto cleanup_time_file1;
-> >  + close(ret);
-> >  +
-> >  + pid1 =3D fork();
-> >  + if (!ASSERT_GE(pid1, 0, "fork"))
-> >  + goto cleanup;
-> >  + if (pid1 =3D=3D 0)
-> >  + real_test_memcg_ops_child_work(CG_LOW_DIR,
-> >  + data_file1,
-> >  + time_file1,
-> >  + read_times);
-> >=20
->=20Would it be better to call exit() after real_test_memcg_ops_child_wor=
-k()
-> instead of within it? This way the fork/exit/wait logic is contained in
-> the same scope making the lifetimes easier to track. I had to go back
-> and search for the call to exit() since at a glance this function
-> appears to proceed to call fork() and waitpid() from within both parent
-> and child procs (though it really does not).
+On Fri, Jan 23, 2026 at 4:23=E2=80=AFPM Vernon Yang <vernon2gm@gmail.com> w=
+rote:
 >
+> From: Vernon Yang <yanglincheng@kylinos.cn>
+>
+> Add folio_test_lazyfree() function to identify lazy-free folios to improv=
+e
+> code readability.
+>
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-I will fix it.
+LGTM,
 
-Best,
-Hui
+Reviewed-by: Barry Song <baohua@kernel.org>
 
