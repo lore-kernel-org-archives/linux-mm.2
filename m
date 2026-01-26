@@ -4,115 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C6CC88E41
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 03:11:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92138C88E47
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 04:04:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B28A96B0005; Sun, 25 Jan 2026 22:11:50 -0500 (EST)
+	id 7B7B46B0088; Sun, 25 Jan 2026 23:04:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAC386B0088; Sun, 25 Jan 2026 22:11:50 -0500 (EST)
+	id 765A16B0089; Sun, 25 Jan 2026 23:04:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AB526B0089; Sun, 25 Jan 2026 22:11:50 -0500 (EST)
+	id 672106B008A; Sun, 25 Jan 2026 23:04:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 894D86B0005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:11:50 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A8C41B069A
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 03:11:49 +0000 (UTC)
-X-FDA: 84372640338.17.D70274E
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7D8E1100007
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 03:11:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nrn0BHm0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769397107; a=rsa-sha256;
-	cv=none;
-	b=l1FEzg89p4SpSG2JqfMnLcndfBetJwnq2GdmPTGmTpRTQtSmLxv373CL0dC2qFmG2K2tn9
-	km4UIXgZRC/C4/CmJYPTricWScpVkXLAndb42aT7+jY2g9xf6kP7cnFCseLRs6sijfb+HI
-	SUGqi0FrPP3YGOYlamtWnTtY9kfjYvY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nrn0BHm0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 52D956B0088
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 23:04:24 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECE69C23AF
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:04:23 +0000 (UTC)
+X-FDA: 84372772806.24.B7B0F2C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BE5614000B
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:04:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hqIFCS+A;
+	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769397107;
+	s=arc-20220608; t=1769400262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zhlapqH4ikiODVcmKIYx08XtjNQj8jB08PiPoS1TveU=;
-	b=oUTwseOW48fA9kvZMurSShVzD5k1oZ6L0rVk+UMEhQrG1DeyUF+S4w740fKz2ymCNgG69r
-	qi7AW8vlyxzyO+D3tn1Kvr+ox01+A62GxHCTra7JPVr449JDW0uVmNRcOzcp9aHNXb91Ux
-	dFdprNgmGCh0pD0+YEe0EccZuHwG6Jc=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-81f5381d168so3830847b3a.2
-        for <linux-mm@kvack.org>; Sun, 25 Jan 2026 19:11:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769397106; x=1770001906; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zhlapqH4ikiODVcmKIYx08XtjNQj8jB08PiPoS1TveU=;
-        b=nrn0BHm0kfY/4SQzHlbZ4Q0eQz8lqxOuys1ZIRd2c4Vst/OkZNcEx3ENgH7ldZ4BT0
-         rI2NdWZ59ashg/qNM1UQHgWN+LuC/zzkhAe+GpsDOZ7vm8pmwefWkksDBLsqLF5BOQe3
-         9A40k1RvPKBcgNuV1Q8W28g9DkmWJP9pO9ygLmgp0mep0HAL1t2Sg+i8PYgw/SM0Gi4b
-         1Z4vn1JAFjxHTFUltulOEja91JhQJ6LFKDyCBcvY8cYSfombBt2dt2aJFZoriiddxJdr
-         MaWwBMhiIv+dP4OJ3bDWRA0N7INcjyqrecLFWw+LCelimLMb73KFmF6PdKYjBdSLS1e/
-         Ih3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769397106; x=1770001906;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zhlapqH4ikiODVcmKIYx08XtjNQj8jB08PiPoS1TveU=;
-        b=Ppq6GJdkBmpIkO1ww9DpOpJG4jsqsyWHrNLpijiepM/3AUmOVbyaIlp6SaQisH0qaN
-         hPbTFW9IY1bvLsTaxVn30QuR9NMS1SkC9LnB2VOrhS5cwxfu+MJpfI2WY4Cqs/ObGONX
-         9dQ2hpH0aPlg/lnHWTBkeuUP17xwE2VRU3HGGEk8WwOO3yUr5Bc8BaI4rQhaZJavIJgB
-         oVTJfwwr7fbK5fPB9tVKiXUKlK6EXNrYVCopIVpt8BPefqgUGy8ceHliAIqMKj6kdQiN
-         gujLjPWa8W5DbsigNwgrg1ZDtYfUwtAl2wB5pNkQJMus3vdxq/1GkKitzcL1PMADH2gB
-         kJsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQc8WjpQfgwiAK1HCSpvvuShZJdjLVb+mWQj7iRYpXpbuVebaR9eYvofuTY8aO2kuc4oqhlw2nbw==@kvack.org
-X-Gm-Message-State: AOJu0Ywpbe6nj/4C4JCcGZxxyFetmvZ096gjXQncZhL6FMOb8+deSdxX
-	nlRqMat6VEFw5JILwb27ID9lsJhl8iuGG1SVFSX8xCQNUlpQ1be1TSUH
-X-Gm-Gg: AZuq6aIhLP0WyDL35jTkB5DDdWeQ+Rz25ww/+ITYCbzFRiqytYh6qW9C/mWmQJ5z9lJ
-	VpHWC7jI2AnjVm2vbwN6AUIzbo+C/6lUljVmszJlgar8chQj5WnstyFLCFd+0Lepb/TQVF7w/wK
-	h+URIDZLyvYp8zh/s7AbCke5KAwTX+nUMVZuadbdB62+7rHIJhZ+Ab5agVzrO5Eda1MfJTVqyL/
-	IVuWMT8MaAf0JIo1djQIqhuQsB1G5B6fdhqsFTOQagvCNyvv3wUtsx9unY3M/PLCYiW8JmtQ4a3
-	6gdd6D8PeXqm/38q6UFtBje8HiUqE9Aia9AMRJrz2sTwdgsFC6jU4+PjT8SESvZltBsuz2H47Nh
-	DTLB1icok/1tlSFNddRCfTrBdEHq72Z2OzEUM3WOfVlFO0kHqNCvaYQbEuY6cHnY3DLK0ZOSKV2
-	JqdBFo2D45p7uqq5bI9De2mzD03ucFlNyZzObTB6drlkrza4dCoQDwTfEA
-X-Received: by 2002:aa7:888b:0:b0:81f:52d9:5f5 with SMTP id d2e1a72fcca58-823411b7b78mr3026632b3a.10.1769397106186;
-        Sun, 25 Jan 2026 19:11:46 -0800 (PST)
-Received: from KASONG-MC4 ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8231876e5d0sm7996541b3a.61.2026.01.25.19.11.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 19:11:45 -0800 (PST)
-Date: Mon, 26 Jan 2026 11:11:37 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: syzbot ci <syzbot+cie25b4769e5d96875@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, baohua@kernel.org, bhe@redhat.com, 
-	chrisl@kernel.org, david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, syzbot@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot ci] Re: mm, swap: swap table phase III: remove swap_map
-Message-ID: <aXbbCQ3Pibj-T_fN@KASONG-MC4>
-References: <20260126-swap-table-p3-v1-0-a74155fab9b0@tencent.com>
- <69769595.a00a0220.33ccc7.002b.GAE@google.com>
+	bh=SDFQX22Xsj4R11AZviXolGUDrXgB8YyswvyJesUQ5sc=;
+	b=2z+8v4As+DiQPA9YVx7oDBrmCndUnp3SJiKibLkpSCXz3k5RCbD5FwCRCPjLc2oyYzGIpL
+	vY0aq3/aGZgHfUie3OE/9vj3ectO4SOd9IFPdWilG7p/HjAy7kwwF4Hp2/r+SBKyMpfDKu
+	qs1hkN7/5lj9o8U7VewSdiE/S7G1eJg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hqIFCS+A;
+	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769400262; a=rsa-sha256;
+	cv=none;
+	b=zVq8+4flzXVR6Q81qn9XmdUG2R5+d68QVZxFrQkmrkLSN/jRRGkNUpIRU/ezxXmCZVfZ/1
+	rJIeNPsl+TiWLAiYqqs3cTfmjgikLbC17Wj13mq07E9cgv7qzV5VziKJLbQMRBwyUbcGwv
+	dP8pDV0nBdfwXvf/jDyOIac7pG43gJ8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769400260; x=1800936260;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a3iNMLit+kMe8I/F8jE2AjXgR+027BbglltsU6VKmIY=;
+  b=hqIFCS+Am/Wi/oAR8t+EohUfqYQaFg2UbU7Tjy6PeuC+r0Vx8ORzNjwh
+   6xjgR8+JBOL4SvjCIvVV3NGru+AmSjpImkz/v2XhPpps05KxnHgOwQRAH
+   Z5fq1+6USwXgcaL18GXEn0hkoBFbNkNxrCWPyfsUOWxwJwDOY84TQM3so
+   RsHP66pDkcOEs8yKir480o5NLT/Pgne0/wSmwhwpW2X5Z1jEtP9FEsOmJ
+   +gluN0zK6qxYM0uCy/1N/rXah3ZhVZt/Dwbb+uPV93mALZgZwhPeQ/3b9
+   4cAePF27ods3lZ6jqLOlPHMJkbc0MetxTNn2//dCiy10N7D0CulfCrsGS
+   Q==;
+X-CSE-ConnectionGUID: /01UE98kSt29bqkzGmncSQ==
+X-CSE-MsgGUID: wNvyuv08Sx+S8fxXqNt+5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11682"; a="74419165"
+X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
+   d="scan'208";a="74419165"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2026 20:04:19 -0800
+X-CSE-ConnectionGUID: UBFIBXBgSiqj3cvyZeQyPQ==
+X-CSE-MsgGUID: W4KPQ00FRW2czCeSyjnQdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
+   d="scan'208";a="206814354"
+Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
+  by orviesa010.jf.intel.com with ESMTP; 25 Jan 2026 20:04:16 -0800
+Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vkDpl-000000001Pp-1XbH;
+	Mon, 26 Jan 2026 04:04:13 +0000
+Date: Mon, 26 Jan 2026 05:04:04 +0100
+From: kernel test robot <lkp@intel.com>
+To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH 09/12] mm, swap: use the swap table to track the swap
+ count
+Message-ID: <202601260524.qYN30lLA-lkp@intel.com>
+References: <20260126-swap-table-p3-v1-9-a74155fab9b0@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69769595.a00a0220.33ccc7.002b.GAE@google.com>
+In-Reply-To: <20260126-swap-table-p3-v1-9-a74155fab9b0@tencent.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 36hza5ricbrytp11d5or6mn7pwhcbj6y
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7D8E1100007
-X-Stat-Signature: jxa4uwux3phbkz9z99scx16g74mkk6u9
-X-HE-Tag: 1769397107-41561
-X-HE-Meta: U2FsdGVkX1/RE3/1+1Tk48WLFa0+i3zqFaRV4yFi4QqJJorf62DdO4mfZK4P79XB6CNmrm+Nynij4B7zoVLw367J5AqoYHyg0M+ZwVkRg/BFTeIWSkW2ArNy2zLbTo6KIsa9k9PpKzdZdEpD2DGsX193BMTryZyDqDBe9P2xKsxAr0NOppWavNP4oNzCNoq39DBCfL0ZApQsAtaDxSfndp9rW/F148DQobeQw/bYyrAVhmi5JbGY/qi6CT4FJKeJCpXJuLlX1xirJT6AdXXa1nyejZTJ7Pf5fmSH4CSjA73CGwdlllwqPo3bLdDHRsBoWJnxDrjH2Prv3QJ1J+j3t8aX0qqxGpb/Lhi+6faVX3aBz90T1Jc03Ug/Bk5YWrNiPRyp0C4PREH9WkJqtGC2jjikSMM/UV3RQpDAXErJX7VPiI8cmJpX8DUjglFdSWzagwN8TKaYudNxG1O4pl7u3Xk0y9vm0C+93c09c7WfZplbx+pgIacDgp0Xu0StlnKy/8oEw4t6WaX0TwEbXsA2XYmMgnQX9a5YJl8HKs6X3/oLUEkIGPTdIK+Ix4M79p+jcKLfzi/iCB3b4FqC9DZw3pwtCpd5i9rMP5v9FRr2O5/laoPLLvjiX4Rnu7ecofsmCGbTVSlnDEqUEq3VDAk1N+/Vm7hWb263CwBa86pDN5Aal7i5uqfHZeJDdTsDvvrd7H6pEYNo4GGaCGY1+2PcxPKDtaEglfFIbE2xMqLe5yVEj2imFPClLRK7U+JuXXHM9UMP/O/4WvUrFbFh8eTkZiZ/HWLfuE7cCJUx4d7jXps+ghHLVtjFn3nbIAA7OJbeDaMsKL0GFKQ/M7uJgFMVlBoQdvJ4BKKGmAAeMjPlrXyPQ3ApNgmcPU8MwK7WY1u/1WEgi3yypkPg7lY2vo8wJF/2j2WU6AUG7zP24N+nwqM/O77vsPqaEWjA9Ul39ddepujhyl7/puMNNM9M70J
- jqgYd/Ct
- B7l6lzCdj32ydj/5Gw4taMVTAp/TccHtodXVIwoVnIPnMHs/cCvsYpCSTnKJQ1MOd7bRBiEat5+R2L636vtO8CRpieZTsoU2go4v16I5HxjGxu05eO2qHgaAuUeApVtrUQ0zg7bcc5+xVXLEeGcoxQldecIO4BIIYadvJnlb+u5kqPV9P7uNPOP6O9vJP8/V5U7yLbqn3OnonFW3SDu7nQzU+3KbPyMFKbpDnQyrGDi9zIFlP+8DRMAlNnbepvtfMnyaBFSKu5TuNsk9qtrIuHjxRecidQJGWbcH82GQ80zQilvvQcf0elJKqdVAKm65ctOVcyWxv/CqxbvD1ZjsaVwPUoP1F/fGa7a9m69d0QUUIODm+vUwB1sW2AcWjFwCl+AK77d6Kc58RzhUcJDkD3DVR7lC2s9qlVhPDjg+HMCw4gQP1842oYKyuJAr+imVnbFJ2C2TGr9Qxp2+VlNRzz2TRHSXT0gaUgUdN8wyIPSpUGhVfgJJSHJBmBqDyAyPctabPPcB5XGn7vG9oFnnYF7/XnbWasV8eNZhHdYe1RWPfk6hxOMn0xxaJVHuBCG/t9Gju3xee146q2Hxji7k5ubXzv0XP6X4vMlB1jPi5tFXTueMcUT6mUOLwKqwF4I7T5u2Ik8zy49pxcf506XAtnevyEejJF/lBMpSPrA/7NvDXz0sHi5xcw05MauwfTz3m4BUyWxUERyEivVoqpc3b1nJFotNV3SqmMcWCFxnXk7zew/v2KAUt7K2gZ2/H7/4rtzRtGJIGgnRa3UIVRCcMmxQh38g93Fhj/2UiLTF6vK89pykDq47YMfNWU01o5D04ElpAW/fFmKQpjYQ=
+X-Rspamd-Queue-Id: BE5614000B
+X-HE-Tag: 1769400260-833139
+X-HE-Meta: U2FsdGVkX18MAWVJpZPxAcb9aMx/e3zJt0e+w0FbjjMAVBrVICIsNEf+r3E6AXcEtuN28opodK2/GpHUOzW8SMkqMrixp/BylE3E1OrDyES9a+BRk1Qj97/EEUMeYO+SGz68IKIHGFV8LbLI/N/00/+BKz86lso1F/rhiAVDdDQGxKPbQChAMBl3fM/fswM88/F963K1TG/3mi78AVoIjnhv9DcxB1TwS7L7OzNqjZhyU05DHdVvLHoIp7O1jYLYiX6KCgPPtr5I/fsmTiVwcls+C/J2zeK7KmQSnBcsgg+SKKkuz2qedi9LEgNCHObcmmnF+EUVDeKgofHxiWb55/JQIdOkebMscz0HPZtGq00CRHi69DEbaI05LAR7SEdUUPhvEwjCqHVHk7ycHZnE2stl/rbCxCebS3L13m3HBIKYB2B0/ffS19+qLLj1rC3Aup7Kzmw5LwH97yBvkKgysgR7Kg/O/rlfflXGZ1eJsLfAPl8HTSEhq2fSODC6lpXzjUrRGXgO5Z22xIJRkuKxuRoCVcBGniljOgpo4YWDyvmafHoJQffC1SeItk0dPFUWFkT45ag6U+mTFSqJ2vJCA/d7pkUi0mmUa110XB2SpcGNlFCt3KTQhWEBrQSp1Z/k9K4KV5ZS8n8SnlJ7Qp7WmlaZdPp0Ah8ov3qucrBCeZr2Mx1JtIFYqVPc7c73uLu/dFXoSeXtuwqSOu1IvOF7daJ/EBxNuUmReMrp7FDSHAzEYNxOzWq/fchiW9yPZOy7PcPzReL0bubTOQnoA4FkSlCI44n4JE+5C9VyqCufM/3oKv0plcrJScqxd8OWQm3m7xUqlYIudfGM/23+Ie/7c18W7fMt9N26yF02nX3DV26HO051WrrGv4NHN6YIXp+2ocSu6vGjXO2W1UqDerW3HbhCticCrLMTfM3Mpr1PNW8FtMHR6vfJHQCMDWZxh/hSiJEDr15dSM0SbVD4vq1
+ w/mWZECa
+ GQ1ARCqFATPA6W6/jxQryaLpQo2nVxPbC+KmB+qAeCvDYdHfz55rNRoTZejxB4HpJmUuWR1GOaz4dosiRO3NLTpYFY8bsJMbxXBFPkx0DtOkB2OAi7xvQQfaVfUgY/KyJ73v4g4fSCBOegxOwZVh2uI6wzLLS9RDMADYWjyIVbUF67NlprwfKWkzf8n7pbH7CZ4VfjOf0Mm00GFrDTA2vxrrLApvYYGo0WN1gDHm2guRTi2MbctUlGNJo1WPMjRzjdGEIolXk1KgxLrA15UipYO5DuG/WERDlXB/E5JiqofSDju1ZBtRBKi6rp9iQf/DwJqTXU+ot3iTGLyR5Zu1kS8TtA/m+Lm1a0Mp0CqhEnOh+YAn3nGFbhl+WuGVo6fQ7Hm1O
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,63 +117,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jan 25, 2026 at 02:13:41PM +0800, syzbot ci wrote:
-> syzbot ci has tested the following series
-> 
-> [v1] mm, swap: swap table phase III: remove swap_map
-> https://lore.kernel.org/all/20260126-swap-table-p3-v1-0-a74155fab9b0@tencent.com
-> * [PATCH 01/12] mm, swap: protect si->swap_file properly and use as a mount indicator
-> * [PATCH 02/12] mm, swap: clean up swapon process and locking
-> * [PATCH 03/12] mm, swap: remove redundant arguments and locking for enabling a device
-> * [PATCH 04/12] mm, swap: consolidate bad slots setup and make it more robust
-> * [PATCH 05/12] mm/workingset: leave highest bits empty for anon shadow
-> * [PATCH 06/12] mm, swap: implement helpers for reserving data in the swap table
-> * [PATCH 07/12] mm, swap: mark bad slots in swap table directly
-> * [PATCH 08/12] mm, swap: simplify swap table sanity range check
-> * [PATCH 09/12] mm, swap: use the swap table to track the swap count
-> * [PATCH 10/12] mm, swap: no need to truncate the scan border
-> * [PATCH 11/12] mm, swap: simplify checking if a folio is swapped
-> * [PATCH 12/12] mm, swap: no need to clear the shadow explicitly
-> 
-> and found the following issue:
-> WARNING in swap_cluster_lock
-> 
-> Full report is available here:
-> https://ci.syzbot.org/series/3f6169fc-e24a-4a19-ba56-e5907b448edc
-> 
-> ***
-> 
-> WARNING in swap_cluster_lock
-> 
-> tree:      mm-new
-> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-> base:      5a3704ed2dce0b54a7f038b765bb752b87ee8cc2
-> arch:      amd64
-> compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> config:    https://ci.syzbot.org/builds/0eabd97a-86d8-4606-9d94-dbe4e7fd7c07/config
-> C repro:   https://ci.syzbot.org/findings/5b039fd0-70da-4954-817d-8bf86315c684/c_repro
-> syz repro: https://ci.syzbot.org/findings/5b039fd0-70da-4954-817d-8bf86315c684/syz_repro
-> 
-> ------------[ cut here ]------------
-> offset >= si->max
-> WARNING: mm/swap.h:88 at __swap_offset_to_cluster mm/swap.h:88 [inline], CPU#1: syz.0.548/6508
-> WARNING: mm/swap.h:88 at __swap_cluster_lock mm/swap.h:101 [inline], CPU#1: syz.0.548/6508
-> WARNING: mm/swap.h:88 at swap_cluster_lock+0xef/0x130 mm/swap.h:132, CPU#1: syz.0.548/6508
+Hi Kairui,
 
-This is a good catch from the bot. It's caused by the patch "[PATCH 10/12] mm, swap: no need to truncate the scan border", however that patch is not wrong, it just have to update the debug check too:
+kernel test robot noticed the following build warnings:
 
-diff --git a/mm/swap.h b/mm/swap.h
-index 087cef49cf69..386a289ef8e7 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -85,7 +85,7 @@ static inline struct swap_cluster_info *__swap_offset_to_cluster(
-                struct swap_info_struct *si, pgoff_t offset)
- {
-        VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swapoff */
--       VM_WARN_ON_ONCE(offset >= si->max);
-+       VM_WARN_ON_ONCE(offset >= roundup(si->max, SWAPFILE_CLUSTER));
-        return &si->cluster_info[offset / SWAPFILE_CLUSTER];
- }
+[auto build test WARNING on 10de4550639e9df9242e32e9affc90ed75a27c7d]
 
-I'll update this in V2.
+url:    https://github.com/intel-lab-lkp/linux/commits/Kairui-Song/mm-swap-protect-si-swap_file-properly-and-use-as-a-mount-indicator/20260126-020149
+base:   10de4550639e9df9242e32e9affc90ed75a27c7d
+patch link:    https://lore.kernel.org/r/20260126-swap-table-p3-v1-9-a74155fab9b0%40tencent.com
+patch subject: [PATCH 09/12] mm, swap: use the swap table to track the swap count
+config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20260126/202601260524.qYN30lLA-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260126/202601260524.qYN30lLA-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601260524.qYN30lLA-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   mm/swapfile.c: In function 'unuse_pte_range':
+>> mm/swapfile.c:2351:31: warning: variable 'offset' set but not used [-Wunused-but-set-variable]
+    2351 |                 unsigned long offset;
+         |                               ^~~~~~
+>> mm/swapfile.c:2346:34: warning: variable 'si' set but not used [-Wunused-but-set-variable]
+    2346 |         struct swap_info_struct *si;
+         |                                  ^~
+
+
+vim +/offset +2351 mm/swapfile.c
+
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2340  
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2341  static int unuse_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2342  			unsigned long addr, unsigned long end,
+10a9c496789fe2 Christoph Hellwig       2022-01-21  2343  			unsigned int type)
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2344  {
+d850fa72987378 Hugh Dickins            2023-06-08  2345  	pte_t *pte = NULL;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05 @2346  	struct swap_info_struct *si;
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2347  
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2348  	si = swap_info[type];
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2349  	do {
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2350) 		struct folio *folio;
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02 @2351) 		unsigned long offset;
+0177fe675b3916 Kairui Song             2026-01-26  2352  		unsigned long swp_tb;
+3f79b187ad2f67 Kairui Song             2022-12-20  2353  		unsigned char swp_count;
+06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2354  		softleaf_t entry;
+d850fa72987378 Hugh Dickins            2023-06-08  2355  		int ret;
+c33c794828f212 Ryan Roberts            2023-06-12  2356  		pte_t ptent;
+d850fa72987378 Hugh Dickins            2023-06-08  2357  
+d850fa72987378 Hugh Dickins            2023-06-08  2358  		if (!pte++) {
+d850fa72987378 Hugh Dickins            2023-06-08  2359  			pte = pte_offset_map(pmd, addr);
+d850fa72987378 Hugh Dickins            2023-06-08  2360  			if (!pte)
+d850fa72987378 Hugh Dickins            2023-06-08  2361  				break;
+d850fa72987378 Hugh Dickins            2023-06-08  2362  		}
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2363) 
+c33c794828f212 Ryan Roberts            2023-06-12  2364  		ptent = ptep_get_lockless(pte);
+06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2365  		entry = softleaf_from_pte(ptent);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2366) 
+06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2367  		if (!softleaf_is_swap(entry))
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2368  			continue;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2369  		if (swp_type(entry) != type)
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2370  			continue;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2371  
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2372  		offset = swp_offset(entry);
+044d66c1d2b1c5 Hugh Dickins            2008-02-07  2373  		pte_unmap(pte);
+d850fa72987378 Hugh Dickins            2023-06-08  2374  		pte = NULL;
+d850fa72987378 Hugh Dickins            2023-06-08  2375  
+f28124617f3415 Kairui Song             2025-09-17  2376  		folio = swap_cache_get_folio(entry);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2377) 		if (!folio) {
+8c63ca5bc3e19f Will Deacon             2021-01-14  2378  			struct vm_fault vmf = {
+8c63ca5bc3e19f Will Deacon             2021-01-14  2379  				.vma = vma,
+8c63ca5bc3e19f Will Deacon             2021-01-14  2380  				.address = addr,
+824ddc601adc2c Nadav Amit              2022-03-22  2381  				.real_address = addr,
+8c63ca5bc3e19f Will Deacon             2021-01-14  2382  				.pmd = pmd,
+8c63ca5bc3e19f Will Deacon             2021-01-14  2383  			};
+8c63ca5bc3e19f Will Deacon             2021-01-14  2384  
+94dc8bffd8b7fe Matthew Wilcox (Oracle  2024-08-07  2385) 			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE,
+ebc5951eea4993 Andrea Righi            2020-06-01  2386  						&vmf);
+ebc5951eea4993 Andrea Righi            2020-06-01  2387  		}
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2388) 		if (!folio) {
+0177fe675b3916 Kairui Song             2026-01-26  2389  			swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
+0177fe675b3916 Kairui Song             2026-01-26  2390  						  swp_cluster_offset(entry));
+0177fe675b3916 Kairui Song             2026-01-26  2391  			swp_count = swp_tb_get_count(swp_tb);
+0177fe675b3916 Kairui Song             2026-01-26  2392  			if (swp_count <= 0)
+d850fa72987378 Hugh Dickins            2023-06-08  2393  				continue;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2394  			return -ENOMEM;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2395  		}
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2396  
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2397) 		folio_lock(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2398) 		folio_wait_writeback(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2399) 		ret = unuse_pte(vma, pmd, addr, entry, folio);
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2400  		if (ret < 0) {
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2401) 			folio_unlock(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2402) 			folio_put(folio);
+d850fa72987378 Hugh Dickins            2023-06-08  2403  			return ret;
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2404  		}
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2405  
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2406) 		folio_free_swap(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2407) 		folio_unlock(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2408) 		folio_put(folio);
+d850fa72987378 Hugh Dickins            2023-06-08  2409  	} while (addr += PAGE_SIZE, addr != end);
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2410  
+d850fa72987378 Hugh Dickins            2023-06-08  2411  	if (pte)
+d850fa72987378 Hugh Dickins            2023-06-08  2412  		pte_unmap(pte);
+d850fa72987378 Hugh Dickins            2023-06-08  2413  	return 0;
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2414  }
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2415  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
