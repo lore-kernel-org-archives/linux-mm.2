@@ -4,85 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED2E5D13C20
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 14:32:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5921ED13C1E
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 14:37:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5CFD6B0088; Mon, 26 Jan 2026 09:32:29 -0500 (EST)
+	id 7DA046B0089; Mon, 26 Jan 2026 09:37:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0B736B0089; Mon, 26 Jan 2026 09:32:29 -0500 (EST)
+	id 75D196B008A; Mon, 26 Jan 2026 09:37:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B16376B008A; Mon, 26 Jan 2026 09:32:29 -0500 (EST)
+	id 65F396B008C; Mon, 26 Jan 2026 09:37:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A14766B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:32:29 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4B09416081B
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 14:32:29 +0000 (UTC)
-X-FDA: 84374355618.05.430897E
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6786BC0008
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 14:32:27 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iK5OL59v;
-	spf=pass (imf28.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 53C8C6B0089
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:37:33 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8F98C26A4
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 14:37:32 +0000 (UTC)
+X-FDA: 84374368344.02.93CDE98
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4B2C2140015
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 14:37:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rf6nge47;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769437947;
+	s=arc-20220608; t=1769438251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yauI0tcgo0+gYANQoQ4SC/6g3xcV7IYqYM+9jpJfB40=;
-	b=vJ7/dla/gEqyId4JL8ocCDpbhtXkWFx7pC34ScK1z2WWEFJyh7ZCHSQv6FS5or47LHt6ld
-	dCvO2B6JfhotiaOL8mmFw6rhdKck4IjL/j1/eefao3XQKLNzS8GmW41iCPCrc57XZJuS4I
-	AiQkZRTc452XjPbjpb+NJNjpCECGIs4=
+	bh=yuekLC8en0td7oT7zIqcqIdKfiM7LVatOtq67QDUGkE=;
+	b=2HMA+wDzscH0fgjRnwBo4ZoFL24vkwHijDWSIuObfwOAySaQONVXWbipIRpTN/xTuUs9Ok
+	XlrTEJcZvMCTat5WpGJNkfWJ+SeteFIbn4iRQqSo6sGbOZkKMPIocEntYQH8cfVpW8TEZx
+	zO8a9qXq1g2KyTIdDRi8jbHOBEv0JdE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iK5OL59v;
-	spf=pass (imf28.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769437947; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rf6nge47;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769438251; a=rsa-sha256;
 	cv=none;
-	b=qeGsyNbuoMWGt5elJE6jFx1yeZInuj84IqJZwoRilzgNE15kKD9uEFcbEFJ9yoycwqaMWD
-	rnb7rdOvHqiOpb68axejnjgMmYK40UMJ7N4Fdrhvm1VxlqhvdUAVUqJfKHQqMbtFvzi8Gy
-	79pooB5XjzobAwjZOUDD8ddNCAEvvmM=
-Date: Mon, 26 Jan 2026 22:31:53 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769437945;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yauI0tcgo0+gYANQoQ4SC/6g3xcV7IYqYM+9jpJfB40=;
-	b=iK5OL59vC4WO+lI0NZoy2qozlsKaEVfF1lppmUeqPmFleXMViYrOi5L3wsDbk57Yaa2yu7
-	S9wvsBgQuCZB18JkmqjUutFUVkjOxGJvXW0VHlGOorNk48Lq27MCADCz5ImzidSW46tQpx
-	9LAdk0Sk4OD+h/vyrrmccmuPbWC7eDU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, linux-mm@kvack.org, 
-	cl@gentwo.org, rientjes@google.com, surenb@google.com, 
-	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own
- slab
-Message-ID: <74km7ybuexsentai3jvf5wfbd3k7cf4mflyd2zgth2dzkxcfp6@l77gkdbpfcic>
-References: <20260124104614.9739-1-harry.yoo@oracle.com>
- <bbhrcvqbwuvf6l4xwv7ax6w5iwuixaivvuknvlgutnavxyllme@r5zkvsh7mwtw>
- <aXdlheky-H2a29Uk@hyeyoo>
+	b=waI/mQkJ64n1vNuiJizydHiF9lQ49zs5Z7TknRdBJA74WuNgHfgC2nj2I7ojuxaIbevqSf
+	Hy8GqzRnTaZzCd6utzWj+yX+rPxwo37kPFdHyu7s5y6PZAsHodisAC6G+ZTupFsv3K2Utd
+	I/NVaZJXp4Kwq3vDhcG5FJjsqW0MxCE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9CA1660136;
+	Mon, 26 Jan 2026 14:37:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CDDC116C6;
+	Mon, 26 Jan 2026 14:37:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769438250;
+	bh=gdfx2feLN6TCXDpAa4ggnSeI5KqTW3J3K6FBc2yfOFE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rf6nge473dxjqTDe76VCvV99QZTDzBZNcuE4AVsvRCx1tVdM4YvKftbA0xuh1CZ63
+	 iVw1pHZyedxQSBviJM/DhVKJzpNTb25ztptjSIqJv/oD1AfIzNakztu1716jOz++yv
+	 FRkE8N4q762X+u0hBJQlN1daImLdQ4h+qGCSlSjfEVTnS+dpfVnkM0LsFkMVerHwiy
+	 /K25y+D3H/rD9K+QXYDiF4Z/y/NOiPEqicW6qbDLZ6tS9GbZSybVTjprj65FtqeaCB
+	 hZdClXbebcJoi9B+cRjIMeYgpJS8aCMazKmgbhPli7JipLNWZZCLJKE2MJqzutD9Fs
+	 llFvM0qNIaMUw==
+Date: Mon, 26 Jan 2026 16:37:23 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm: memfd_luo: preserve file seals
+Message-ID: <aXd8I4czYUpl72qq@kernel.org>
+References: <20260123095854.535058-1-pratyush@kernel.org>
+ <20260123095854.535058-3-pratyush@kernel.org>
+ <aXYGkb-QtYNaWYw4@kernel.org>
+ <2vxzqzrca6cm.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aXdlheky-H2a29Uk@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <2vxzqzrca6cm.fsf@kernel.org>
+X-Stat-Signature: i78z99kuta14ykfmnjw5j44xe341c4mk
+X-Rspamd-Queue-Id: 4B2C2140015
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6786BC0008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ph765g3a338x7tei9bxi5izi3w1c5a8i
-X-HE-Tag: 1769437947-668663
-X-HE-Meta: U2FsdGVkX18PCQA2sJTnHAtaOlG0ETxF7MT4MIY1pp+l7RnvDeBi6SfusOPJFcvssxYHu20mUROhGwWskpOvgU1GwifSn9P67goXuDpHL5A5E+osnh+UERdKzEryrlrfysOND1TAgTH/O1v3FbWMfrxUFJdXWPHD1KGTbIqAEdh6k77hduWdqebXMUAfBAr7WNAxNlDJW6p4Yk8ShKQUYMdOVrr7cacA1dQseWVvIFZVEhidesOysqdkiFUs+PgtXgYEEwyZabtwyKyMyJTt/wTVCW2geJZbnaCSIrEDR4P4BCgk0acDtBY5cCFhaCNXdzMRZD6EmdqPJxj/uxt6ktk0XKzCUSlFPePjuPOQhXfbGhRXHDuKZJH9ErQ3oeBRFLyyrMo8yhe+jBjMVJEAbS7Pf/IyFOLO+QE20aF5goO1vbXPyNWfK5QLAloBuhIUtomsCprZfDtlKVdvmeW5YsrvJ0Qo/lJ4Hh5hhvbpKc1SlfJ1CcfuOt//+5d8FeYZLI4VLaRm19n6sDIUZCqsAAOZSbtLbYfq6yH8fgDg5NpGgbyUlTq0ipGgAm+rkC3BR4T0VCnQ0acwpww76H6J0bd9O1m4KdsadevFoQyHSxa2H3IzJRpSLC5K7PpaOEe6Jg7KnGPWJukE1K65uAGf50fWo8gTDIlauNU9JFnL31gMorir16fmG72BYqKp18BRY57CQRABpC8w330yy5jQ+CpLQx1rZptrsSLzR/6EJQfoZL2CeGpb9u9G4Iw0ZcYzxfaCFEugQwJz8WGncIMnRnP6ZeUhsuWfBSNc+gcmpDyH1K5LpSGGko1Yu85qjzlyeCdnGhgPCE/tKhuwovTCAJAHFggNiv7I8eVS3euMMwgb/TGI48G7Y3BkByygsXkl170enkhLUPyt81hONxujyNvs4cdJ41ljz2yZKHgBbK0hueTSN44TxFKm7ezgYcI3IWW05P2BbBJXRbNKekK
- t/ndsbDc
- 7U4nVdaWPJzI6ruCAzMfUGwQ2wMCCQc0IOESZk7/7tJkNsUlHQZ2AzndCyqdj5rrYJJ/KzEfY8wJHVneNXM0XWqb7PB0qmz9CAO7c6ycHpQcJfmC1LtdhLMpBNbpp+V7nvhNNNfIOLiWPrTJ9P3B8aG3eNPdoPW94NouUYbJ16ltGnMx9Ote04BYu4A7bNk+8a/6Cr14NmBBxjNeoLo4WtSZ7IwhaMXh2RujY0KYqZIqOoiI8DYHThoTjzO7GZ/rl7nR1lQEXJSrs1vYPIt0g0XkTNOmzRZjeObKCNndelKRCw3uOstJ9tDzGnNwR/KtbARWI
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769438251-522072
+X-HE-Meta: U2FsdGVkX1+WrU5dC4Savrtu5VijS1QNCAcPxzqJslUzr3ftkl8tKWMNUHhWvBWxl1pgDH5kl9cEI4ZkR0WQAE2pQRx3sLad7a5mfUnlK+Lt/eHdGRBgs2+fGj6j5KTwm+CSZ1Runw3C5mA5zNR+9iaW5thR/8fB53hcOc9yMF2P/lDB5MsS8fllygHW6Jow0/3l5aFTfXEmi58rfHiP+ivcYGRh9JAHV05/jgd1GLaGD4owqRQD5UyNFwplVkV1xYsQ/f6m0IRiiag9yW4WpJzIpXyLCMxiwC/HSRpovq6rEI2TZodPT57PQcfAUfwELqoJggckItdCxODBCW/MjiulhofgXP+kzGA35l31juKdbWX90EtmNKBmN4OkkglI1CCs2pizkJXdsVPHkfMznUjWDdD2nJ4Mw8aaDWVX4cAW0gl8taEqLJ6LWKUiBX7yTDksf5A7DJxZMOmPtDBrK6Ral33aZP8UBQowlCC22mtCKBVyxX+NJLscgCvDtrKabn78yG0UqWqcH08hXqLkmLcZfP0Yr37hA5wKVGQEnvqoVpwh4H2YsM0I+FCOR5j+jrwgpr5p0Y4i3/CMj+0+VSkRSba6FF+7KEfd0l7vKrXh8+BlhOQKmQuPqWZvB9Vns8NiQoD60j1yLBDRCBdZ+x6q7gQkZJe5g/vmPc+uVKwP8Ic8QbxwSpsG0LqgvXJxXVUlNYz642ZKx2KTvYW/YC+iLlsv2gAmOgG4xqNYlh5Jaeap3KADlDUZjJuKaR5yXMuhHb32e87XV6G8BDlY1XgTW0A+n04JqkQd5HxuRPlP2tB2bw3rZomPG7eUdbexDhiBdLy+1+kI+uFSI1LMMJIPgBKudessqfaJzHuhS8qReELI29VYldVLqMTeuvJblRXtIPqIEFcOukcyn6zEFlVsC2xLaAMg8qEcx47Pw8ALZZsH8DCsBvgogAb8te9zuzWg5XXZbvzjV2IWiHn
+ t5fBB6xG
+ Fwh+euNlv63MCsMGgx1+N97xlJEn3WdGfY+YO9R8c285K7XYXhvOx7NAWAIJqdByGgobmVksVX4G9RMbe41VvBf0a4X7kWmYQmEwP11uKtrQqSYcbR8h6SietMKSZO0hX0wWO0rA/xsqGAmQ1IqeBkGbWSwUq773e/Qtq0hl+XGkwWF+hzfYG5qi35u8sI9uyL7tBV63jjnmSF/6U/OVvwpf1CY5ZKA2gx62XFTDwAj18oKT+8XGRl1KPeezfqXp1hUpVR4SLixcuBTJBNT+pS/fIC7+cHi1RsnASvuoCwKQEPFc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,70 +100,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 26, 2026 at 10:00:53PM +0900, Harry Yoo wrote:
-> On Mon, Jan 26, 2026 at 08:51:10AM +0800, Hao Li wrote:
-> > On Sat, Jan 24, 2026 at 07:46:14PM +0900, Harry Yoo wrote:
-> > > When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
-> > > can be allocated from the same slab we're allocating the array for.
-> > > This led to obj_exts_in_slab() incorrectly returning true [1],
-> > > although the array is not allocated from wasted space of the slab.
-> > 
-> > This is indeed a tricky issue to uncover.
-> > 
-> > > 
-> > > Vlastimil Babka observed that this problem should be fixed even when
-> > > ignoring its incompatibility with obj_exts_in_slab(), because it creates
-> > > slabs that are never freed as there is always at least one allocated
-> > > object.
-> > > 
-> > > To avoid this, use the next kmalloc size or large kmalloc when
-> > > kmalloc_slab() returns the same cache we're allocating the array for.
-> > 
-> > Nice approach.
-> > 
-> > > 
-> > > In case of random kmalloc caches, there are multiple kmalloc caches for
-> > > the same size and the cache is selected based on the caller address.
-> > > Because it is fragile to ensure the same caller address is passed to
-> > > kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), fall back
-> > > to (s->object_size + 1) when the sizes are equal.
-> > 
-> > Good catch on this corner case!
-> > 
-> > > 
-> > > Note that this doesn't happen when memory allocation profiling is
-> > > disabled, as when the allocation of the array is triggered by memory
-> > > cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
-> > > 
-> > > Reported-by: kernel test robot <oliver.sang@intel.com>
-> > > Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
-> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > 
-> > Looks good to me!
-> > Reviewed-by: Hao Li <hao.li@linux.dev>
+Hi Pratyush,
+
+On Mon, Jan 26, 2026 at 01:47:21PM +0100, Pratyush Yadav wrote:
+> Hi Mike,
 > 
-> Hi Hao, thanks a lot for reviewing!
+> On Sun, Jan 25 2026, Mike Rapoport wrote:
+> > On Fri, Jan 23, 2026 at 10:58:51AM +0100, Pratyush Yadav wrote:
+
+...
+
+> >> -	file = memfd_alloc_file("", 0);
+> >> +	/*
+> >> +	 * The seals are preserved. Allow sealing here so they can be added
+> >> +	 * later.
+> >> +	 */
+> >> +	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
+> >
+> > I think we should select flags passed to memfd_alloc_file() based on
+> > ser->seals (and later based on ser->seals and ser->flags).
 > 
-> I was tempted to add your R-b tag, but since the implementation has
-> changed a bit, 
-
-Hi Harry,
-
-Thanks for letting me know!
-
-> could you please provide R-b again if V2 [1] still looks
-> good to you?
+> Not sure what you mean.
 > 
-> [1] https://lore.kernel.org/linux-mm/20260126125714.88008-1-harry.yoo@oracle.com
+> I think the only seal we can set via memfd_alloc_file() flags is
+> MFD_NOEXEC_SEAL, which is really a F_SEAL_EXEC and plus a change of the
+> inode's mode. And now that I think of it, that is a valid use case that
+> we might as well support. But I think that should be done by preserving
+> the mode of the inode directly, and then copying the seals back. The
+> main reason for that is that the mode can be changed after the memfd is
+> created too.
+>
+> Other than that, all other seals are set by fcntl (via
+> memfd_add_seals()), so I don't see what else we can pass to
+> memfd_alloc_file().
 
-Sure - I've reviewed v2 and it's still LGTM.
-I'll send my Reviewed-by on the v2 thread.
-Thanks!
+Hmm, "using ser->seals" was bad phrasing :)
 
+Now we add support for creating memfd with MFD_ALLOW_SEALING and at some
+point we'd want MFD_HUGETLB and huge page size.
+So I think we should have a field in ser that will define what flags should
+be used for creation of memfd and based on the value of that field pass the
+flags to memfd_alloc_file().
+
+For seals support this field can be hardwired to MFD_ALLOW_SEALING at preserve
+time.
+
+> >>  	if (IS_ERR(file)) {
+> >>  		pr_err("failed to setup file: %pe\n", file);
+> >>  		err = PTR_ERR(file);
+> >>  		goto free_ser;
+> >>  	}
+> >>  
+> >> +	err = memfd_add_seals(file, ser->seals);
+> >
+> > I'm not sure using MFD_ALLOW_SEALING is enough if there was F_SEAL_EXEC in
+> > seals.
 > 
+> Why not? memfd_add_seals() can handle F_SEAL_EXEC as far as I can tell.
+
+I just noticed it behaved differently :)
+Looks like F_SEAL_EXEC indeed can handle it.
+
 > -- 
-> Cheers,
-> Harry / Hyeonggon
+> Regards,
+> Pratyush Yadav
+
+-- 
+Sincerely yours,
+Mike.
 
