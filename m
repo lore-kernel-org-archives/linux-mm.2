@@ -4,83 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C58D778B1
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 00:51:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D13D778B1
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 01:04:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 576F56B0005; Sun, 25 Jan 2026 19:51:28 -0500 (EST)
+	id 3BABD6B0005; Sun, 25 Jan 2026 20:04:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52E116B0088; Sun, 25 Jan 2026 19:51:28 -0500 (EST)
+	id 391ED6B0088; Sun, 25 Jan 2026 20:04:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45ABA6B0089; Sun, 25 Jan 2026 19:51:28 -0500 (EST)
+	id 2674B6B0089; Sun, 25 Jan 2026 20:04:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 324B76B0005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 19:51:28 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE687C229B
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 00:51:27 +0000 (UTC)
-X-FDA: 84372286614.05.9BB69B3
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D434E1A0003
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 00:51:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bFK+0C+5;
-	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 12D576B0005
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 20:04:16 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF2421B026B
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:04:15 +0000 (UTC)
+X-FDA: 84372318870.22.ABF1A5B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C9CBB4000F
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:04:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NUbHtmEM;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769388686;
+	s=arc-20220608; t=1769389453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ZMWMY+mIk/ZareEAhb040770CIAQtwMX6nJgk+aGIU=;
-	b=Dr25ieA6gExArEFpaXvPf6iQ42haIjtmc5KzFQAxs6azrBCj7G9m6CUDDgb94Kwaqree0y
-	m+rMZeUSoH2emj+MoW+9CKUMp0A9MoPXcRwvZKH9cCDyHm7QIJRgJphA5SYJOwHXjNzNeq
-	rA4aftl5JdB5Q8TM/1uy+y2bycsarMo=
+	bh=4gyLmNV3bcrq7q/Q7KM/2N3tSNKpRfMHW6e6aWOb+xQ=;
+	b=zePe/CEx22fzMygmSboFlRplpA/qK/6VfbdnahZMakSPA5ZjLu6rDtAMDLNcwT4fKcdSul
+	wrHqb6vYwgxVfJ86KPp7MpNZSYUcDL25udkT9LHXorMsIgeH2HSwUyz82lO0LnuqAQt28H
+	NNmWOVFnP+bqjy7/sHz+Y0Cng803TVk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bFK+0C+5;
-	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769388686; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NUbHtmEM;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769389453; a=rsa-sha256;
 	cv=none;
-	b=zRoLqtt1alBXZkzJCNGxk0dQHs9xfIqSRPqzcZXvJ0ztz051JuoFfieEWp4sqp/Z2CkXDW
-	5wFIqvFlkFbTEu6hFGDPyVIlhxEbrFdXfFWh94Pn8Azd+Pz5QIKQVPF3T0YOhApyC9O40m
-	ag0ZEaYePn+//vo8aBl1f9RCHAw6elU=
-Date: Mon, 26 Jan 2026 08:51:10 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769388683;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ZMWMY+mIk/ZareEAhb040770CIAQtwMX6nJgk+aGIU=;
-	b=bFK+0C+5whH7UFfoZq2PpP2omZlJpjnJVw3beo5c1GjYSQwSAmvXbbUO0Vqyjhnoh7R+gl
-	oTG8DkvXS2jFMZdX1S1N04KpvYEr8TClJJU4t0RN//4AzCu9JigQ4LOx7N/uTsR87osS1B
-	L6KVhQVKrWBg/Y+xonW68axjnb/FHug=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, linux-mm@kvack.org, 
-	cl@gentwo.org, rientjes@google.com, surenb@google.com, 
-	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own
- slab
-Message-ID: <bbhrcvqbwuvf6l4xwv7ax6w5iwuixaivvuknvlgutnavxyllme@r5zkvsh7mwtw>
-References: <20260124104614.9739-1-harry.yoo@oracle.com>
+	b=wBpxIUr640DUvW2XOGYEe5ANMl42DkNcJHTL7sc6aiYboog2wsZZzTMBhQpmVEBwxc7r/f
+	OylrSthKEUaEqHemOEe+fK+JvEESlMlfoXiuTRC65zK5pT+vC7GDg/o2/M03pyAdjCXJ4r
+	nDHC5nn0aO82kvYDIqXsNUScneWl2K4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769389453; x=1800925453;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XRcP8IljFz66L9N9RGSap4tlNSAvDJZfAmf2dxUz7QY=;
+  b=NUbHtmEMY6SxDK3Ii0x6bOTvGEM/KQ29+1saIe+iiy6ONPxC+y3mZ8SO
+   m+ghvNZs1extwlLmyF9z4DYmw+n88hfaD8Vk9IQih2RWKsvo1swi4RUht
+   lQGRbIwDGkvPCHGm8QSi0Vivk+LmQ6tJTp4NjwB0fL+aywgnxkR9bixew
+   K23PAMVhH7NDUP/f/s6BrvEGV2B/aHrr7E3pI7CnOh8WK9fvZTMvW8cRW
+   3qvtWyrBKWcp6kuJt4HsLj+68P48fh35DWvDhHBCwnEAufGROOQKA0BRw
+   VmebWtVbpov0wXUrYoW1KMY1k0XMdvICyiKScdurcUMyswGA/ippSh5g7
+   g==;
+X-CSE-ConnectionGUID: 2rxVR24IQkui8axk3zrRXg==
+X-CSE-MsgGUID: TznJ/yQeQuuQgPRXJd9JeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11682"; a="58144409"
+X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
+   d="scan'208";a="58144409"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2026 17:04:11 -0800
+X-CSE-ConnectionGUID: /40tp3fYT8OGyAs5b86fQw==
+X-CSE-MsgGUID: /C8LUwolQhCXGWCwo23Ptg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
+   d="scan'208";a="207150278"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 25 Jan 2026 17:04:08 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vkB1R-00000000Wms-3NtU;
+	Mon, 26 Jan 2026 01:04:05 +0000
+Date: Mon, 26 Jan 2026 09:03:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH 09/12] mm, swap: use the swap table to track the swap
+ count
+Message-ID: <202601260934.Lhdzyzmg-lkp@intel.com>
+References: <20260126-swap-table-p3-v1-9-a74155fab9b0@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260124104614.9739-1-harry.yoo@oracle.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Stat-Signature: zc5goea95i4yrjdtx8rqr7kachbthjox
+In-Reply-To: <20260126-swap-table-p3-v1-9-a74155fab9b0@tencent.com>
+X-Stat-Signature: t4zxfporazrdiqza3kahq6f6hxw1xxfq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D434E1A0003
-X-HE-Tag: 1769388685-27832
-X-HE-Meta: U2FsdGVkX1/7ujArIseZhYtZS3jBrKnO9KAK8uxKAEr6vlHQ6PwXbHQSG4dUOs/sIn6osXYBH1FQV0Gt/l7rj/+nBZKLq4EbwyjLCGgQPagp0O4J88+LiGz+VehMw4ab7WWzTw9EERy0MWdlijGfrKWMelCPKLssgYcvRwX89PrZuRdTe9u/5TI5Op0jdNeUirnWhM1sPGG7Ln4hp27Gv2YzCHvRpsYA/X9PkX7oIlQSo3tlV9Wl8cXU1hIxgNsDcAuwZdRNPb3+53acqIpxXm75KZueLhm4XiWDNo0mufuvIvWMc+SpFDtnIrSlFoQrpRzPOyeBp0WkQdIyFzdXx0j8BBsSGjA8socNSyUbGECjRlaeqSQRmmqdKuzsfnKnoA2TVdUb4cJaqm+OIlray2Fk2DEkKJpnjRGOIkeQFglReaQ8lQ7RQJXQ8+vdBOis/dgjUNozJyQkNc7RPl31L1aO8s/sces46SbzePwFYlpSFQJKjd3cr15TVMcTtB3EHIc7W2HXGhueN4Qf40NMsw11YQUt6QS4gLmf39LhyAtVDVlsjRYExMXIYV6sGEG7fEfSs+JnWQybPONBWZlMn+XmfFmfmtSp2MiAvgdGxQiBGjtZdyYSzXg2NcEssr1Js9R9CKPaZhlUYL7L/ns3o4yilAvtayEf2KdpGckXqcgenhG6FDChrAcvOG8MhPmgRcW9xV7cvJULB6s5/TP02RdhZ0mt377K5NsPOfvLo4uhTuE0/ZQMxNVBxY3tOtJIXqDtsNvUSV6YtAiu+2zOssCevvO7GpRfJmC0VTY7RLn/NEBWtfZjukHD3jm1TlH9n+0ilGPVDWBYIIA4S1CkPisW4WrIBLEpp4pe6hcJ81grM8UEqLiN8fWO+WlhLxXSBC2qd70poemFkC9zLy2FISyXrH6QKcZHz1Jj/RzV7JOUaYvwd22sHPT+hPN7NCXF7bWBy/bJa3rfjSu4mNI
- Bywz550m
- HWD8Sqv0vvNi0mhNQcum0wa+62aK0MblKEuXcs4/xwLGjzLVPSZMbNeyZ7UTlSAt1PSRZierphv+SjsGakHPZxagugzjd0IjQ+59omO/e+B/97jUY/RBqzR8Etle730n8rR7Hs+V7evoIPqlY/hj9pvQdw8aGN4BjIhQZHmBRGqeuXc5zkOcWLUomshhIYlgwNtX4+SmMXs+tunQwe5CJS0zYUvO0MfJhskCDw8u9AezRGkZSWk6if0JUQSIoOsh52rerVyGhxxplGBOsblAgEYksCsHScarhlF4XtHv+1ZmiYvZh+ewXQ9RSy2T7m9L+aLZH
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C9CBB4000F
+X-HE-Tag: 1769389452-787462
+X-HE-Meta: U2FsdGVkX19GJ+4+9yAB/bborzkHJeRJHjfVvgmh83ZxlaEAQbYRQ61vAc88tZSMN9CwidnfxhaoTBtDf/exZbqkiftYqLR0INu9yYyzQ23KOWmgPfkUK5RojQ2lSTN4T+PyLvttogoiCrw/98C+TF0HCTZy3Q2vmH6oS6YgfpiXRp2HZRpA23Ai9csn33/hoJTjoyzTb8ha7ZwpU7nHVN/78RRyXJMqOMkMfQLLjNUMms/FvqEkPJ9kNf599psrEZa8/sKsIWKgty+AF9PNT3XaynSyvd+YevSDYlOYq3P/ipj62a+yT6EvDrWVhqO4N7M4I4zsxNwvzOkh6c0PeCYV+mVq4C1PaU12FRVE5NEnb6QZCheCqVWGSSJrbdFkn47kfrgoDgSaM5ijayGTbUsgzVjux4v7DocfzLfUe0NYSJaLLWsAE78ujcownD6rChHD2D2fAto+s9ho4vkX2L6sPirIM2AoaDTTylysJtnH8ULj+gNLEDJdwMgtxiKBNrMKUbt1Q2e9+Pi7pnijw46QHcTtCt8eB9jKq/GjU34uIviIdNpKwD7oI3VjuIxvN2tJP33pmsHFjwzcgElaraw8wXf5KP/3c4oUTH+0bFYvWMK+omXzHka3o+G8EvcbrObfnbG/o14jtmHH2jDOgyXhRNJMQp2qzpNRpSTE93Oynqa/QEbPKJF2Zdx8S/tmATGXbCx0D/QagB6eIkbmBtW+uBvyTJ3CZIdSKMxIHIhCqE8HOuI8F0WK76elw42AzWmpYX/1hDwKFzn7UL8DDT4qIL+2vRDsCb3oRHhPsW5InI692hxGbQL4u//CQUqpU8r7W8eWAunlJBRTsaXQcqGqsFQZE+wosGm+daUSpXQ1Wz1bOTTjdeYR1oJKuDPvRS+W7T8yalnyH2pcWKjre/1OHhfcYGMydABWUGQH2aXka3D/CrXCAoTZJrlr5pAyqELbvQ/IX/uNNr3Vf/5
+ hmdlC4OP
+ bB8JoC7CTXgAI4Dz2KIDBLDl+xJzxpXo0vRkJN53XvCMVO26uJ7BtrngH9quYOd4VceaCf+isrmPczR42p4vAfguGdVpIbNPRCFZDCoeuclGF8vQBvc2Ku2QISKmMveNDu8cYvq6fR+NoFh03G6LTb1jjVfBDwd8uBSw+iuRdlZJwr0Yda079D5GgjKwHUZy0fTYUUumqtNPTy4mj7TP1Y8bGDr4YaUlqpzvK8WJe2Rbk8yEKXV6ytCLyTEemmAg8odl8QJcwpWvTokwEMHE34MWztLFrJkypX/2OJfgFDimUGZOyGimgfb8u+DSXRMioHcL+Zh9kgzfRBu2t5BX8e+iZZLSIEaeskC89H1AZHB0Kj8irVysxhfcjxEFWeTjfhS8b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,157 +117,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 24, 2026 at 07:46:14PM +0900, Harry Yoo wrote:
-> When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
-> can be allocated from the same slab we're allocating the array for.
-> This led to obj_exts_in_slab() incorrectly returning true [1],
-> although the array is not allocated from wasted space of the slab.
+Hi Kairui,
 
-This is indeed a tricky issue to uncover.
+kernel test robot noticed the following build warnings:
 
-> 
-> Vlastimil Babka observed that this problem should be fixed even when
-> ignoring its incompatibility with obj_exts_in_slab(), because it creates
-> slabs that are never freed as there is always at least one allocated
-> object.
-> 
-> To avoid this, use the next kmalloc size or large kmalloc when
-> kmalloc_slab() returns the same cache we're allocating the array for.
+[auto build test WARNING on 10de4550639e9df9242e32e9affc90ed75a27c7d]
 
-Nice approach.
+url:    https://github.com/intel-lab-lkp/linux/commits/Kairui-Song/mm-swap-protect-si-swap_file-properly-and-use-as-a-mount-indicator/20260126-020149
+base:   10de4550639e9df9242e32e9affc90ed75a27c7d
+patch link:    https://lore.kernel.org/r/20260126-swap-table-p3-v1-9-a74155fab9b0%40tencent.com
+patch subject: [PATCH 09/12] mm, swap: use the swap table to track the swap count
+config: parisc-allyesconfig (https://download.01.org/0day-ci/archive/20260126/202601260934.Lhdzyzmg-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260126/202601260934.Lhdzyzmg-lkp@intel.com/reproduce)
 
-> 
-> In case of random kmalloc caches, there are multiple kmalloc caches for
-> the same size and the cache is selected based on the caller address.
-> Because it is fragile to ensure the same caller address is passed to
-> kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), fall back
-> to (s->object_size + 1) when the sizes are equal.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601260934.Lhdzyzmg-lkp@intel.com/
 
-Good catch on this corner case!
+All warnings (new ones prefixed by >>):
 
-> 
-> Note that this doesn't happen when memory allocation profiling is
-> disabled, as when the allocation of the array is triggered by memory
-> cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
-> 
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com [1]
-> Cc: stable@vger.kernel.org
-> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+   mm/swapfile.c: In function 'unuse_pte_range':
+>> mm/swapfile.c:2351:31: warning: variable 'offset' set but not used [-Wunused-but-set-variable]
+    2351 |                 unsigned long offset;
+         |                               ^~~~~~
+>> mm/swapfile.c:2346:34: warning: variable 'si' set but not used [-Wunused-but-set-variable]
+    2346 |         struct swap_info_struct *si;
+         |                                  ^~
 
-Looks good to me!
-Reviewed-by: Hao Li <hao.li@linux.dev>
+
+vim +/offset +2351 mm/swapfile.c
+
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2340  
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2341  static int unuse_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2342  			unsigned long addr, unsigned long end,
+10a9c496789fe2 Christoph Hellwig       2022-01-21  2343  			unsigned int type)
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2344  {
+d850fa72987378 Hugh Dickins            2023-06-08  2345  	pte_t *pte = NULL;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05 @2346  	struct swap_info_struct *si;
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2347  
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2348  	si = swap_info[type];
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2349  	do {
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2350) 		struct folio *folio;
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02 @2351) 		unsigned long offset;
+0177fe675b3916 Kairui Song             2026-01-26  2352  		unsigned long swp_tb;
+3f79b187ad2f67 Kairui Song             2022-12-20  2353  		unsigned char swp_count;
+06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2354  		softleaf_t entry;
+d850fa72987378 Hugh Dickins            2023-06-08  2355  		int ret;
+c33c794828f212 Ryan Roberts            2023-06-12  2356  		pte_t ptent;
+d850fa72987378 Hugh Dickins            2023-06-08  2357  
+d850fa72987378 Hugh Dickins            2023-06-08  2358  		if (!pte++) {
+d850fa72987378 Hugh Dickins            2023-06-08  2359  			pte = pte_offset_map(pmd, addr);
+d850fa72987378 Hugh Dickins            2023-06-08  2360  			if (!pte)
+d850fa72987378 Hugh Dickins            2023-06-08  2361  				break;
+d850fa72987378 Hugh Dickins            2023-06-08  2362  		}
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2363) 
+c33c794828f212 Ryan Roberts            2023-06-12  2364  		ptent = ptep_get_lockless(pte);
+06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2365  		entry = softleaf_from_pte(ptent);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2366) 
+06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2367  		if (!softleaf_is_swap(entry))
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2368  			continue;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2369  		if (swp_type(entry) != type)
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2370  			continue;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2371  
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2372  		offset = swp_offset(entry);
+044d66c1d2b1c5 Hugh Dickins            2008-02-07  2373  		pte_unmap(pte);
+d850fa72987378 Hugh Dickins            2023-06-08  2374  		pte = NULL;
+d850fa72987378 Hugh Dickins            2023-06-08  2375  
+f28124617f3415 Kairui Song             2025-09-17  2376  		folio = swap_cache_get_folio(entry);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2377) 		if (!folio) {
+8c63ca5bc3e19f Will Deacon             2021-01-14  2378  			struct vm_fault vmf = {
+8c63ca5bc3e19f Will Deacon             2021-01-14  2379  				.vma = vma,
+8c63ca5bc3e19f Will Deacon             2021-01-14  2380  				.address = addr,
+824ddc601adc2c Nadav Amit              2022-03-22  2381  				.real_address = addr,
+8c63ca5bc3e19f Will Deacon             2021-01-14  2382  				.pmd = pmd,
+8c63ca5bc3e19f Will Deacon             2021-01-14  2383  			};
+8c63ca5bc3e19f Will Deacon             2021-01-14  2384  
+94dc8bffd8b7fe Matthew Wilcox (Oracle  2024-08-07  2385) 			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE,
+ebc5951eea4993 Andrea Righi            2020-06-01  2386  						&vmf);
+ebc5951eea4993 Andrea Righi            2020-06-01  2387  		}
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2388) 		if (!folio) {
+0177fe675b3916 Kairui Song             2026-01-26  2389  			swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
+0177fe675b3916 Kairui Song             2026-01-26  2390  						  swp_cluster_offset(entry));
+0177fe675b3916 Kairui Song             2026-01-26  2391  			swp_count = swp_tb_get_count(swp_tb);
+0177fe675b3916 Kairui Song             2026-01-26  2392  			if (swp_count <= 0)
+d850fa72987378 Hugh Dickins            2023-06-08  2393  				continue;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2394  			return -ENOMEM;
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2395  		}
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2396  
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2397) 		folio_lock(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2398) 		folio_wait_writeback(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2399) 		ret = unuse_pte(vma, pmd, addr, entry, folio);
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2400  		if (ret < 0) {
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2401) 			folio_unlock(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2402) 			folio_put(folio);
+d850fa72987378 Hugh Dickins            2023-06-08  2403  			return ret;
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2404  		}
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2405  
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2406) 		folio_free_swap(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2407) 		folio_unlock(folio);
+f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2408) 		folio_put(folio);
+d850fa72987378 Hugh Dickins            2023-06-08  2409  	} while (addr += PAGE_SIZE, addr != end);
+b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2410  
+d850fa72987378 Hugh Dickins            2023-06-08  2411  	if (pte)
+d850fa72987378 Hugh Dickins            2023-06-08  2412  		pte_unmap(pte);
+d850fa72987378 Hugh Dickins            2023-06-08  2413  	return 0;
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2414  }
+^1da177e4c3f41 Linus Torvalds          2005-04-16  2415  
 
 -- 
-Thanks,
-Hao
-
-> ---
->  mm/slub.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 55 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 3ff1c475b0f1..43ddb96c4081 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2104,6 +2104,52 @@ static inline void init_slab_obj_exts(struct slab *slab)
->  	slab->obj_exts = 0;
->  }
->  
-> +/*
-> + * Calculate the allocation size for slabobj_ext array.
-> + *
-> + * When memory allocation profiling is enabled, the obj_exts array
-> + * could be allocated from the same slab cache it's being allocated for.
-> + * This would prevent the slab from ever being freed because it would
-> + * always contain at least one allocated object (its own obj_exts array).
-> + *
-> + * To avoid this, increase the allocation size when we detect the array
-> + * would come from the same cache, forcing it to use a different cache.
-> + */
-> +static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
-> +					 struct slab *slab, gfp_t gfp)
-> +{
-> +	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
-> +	struct kmem_cache *obj_exts_cache;
-> +
-> +	/*
-> +	 * slabobj_ext array for KMALLOC_CGROUP allocations
-> +	 * are served from KMALLOC_NORMAL caches.
-> +	 */
-> +	if (!mem_alloc_profiling_enabled())
-> +		return sz;
-> +
-> +	if (sz > KMALLOC_MAX_CACHE_SIZE)
-> +		return sz;
-> +
-> +	obj_exts_cache = kmalloc_slab(sz, NULL, gfp, 0);
-> +	if (s == obj_exts_cache)
-> +		return obj_exts_cache->object_size + 1;
-> +
-> +	/*
-> +	 * Random kmalloc caches have multiple caches per size, and the cache
-> +	 * is selected by the caller address. Since caller address may differ
-> +	 * between kmalloc_slab() and actual allocation, bump size when both
-> +	 * are normal kmalloc caches of same size.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_RANDOM_KMALLOC_CACHES) &&
-> +			is_kmalloc_normal(s) &&
-> +			is_kmalloc_normal(obj_exts_cache) &&
-> +			(s->object_size == obj_exts_cache->object_size))
-> +		return obj_exts_cache->object_size + 1;
-> +
-> +	return sz;
-> +}
-> +
->  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		        gfp_t gfp, bool new_slab)
->  {
-> @@ -2112,26 +2158,26 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  	unsigned long new_exts;
->  	unsigned long old_exts;
->  	struct slabobj_ext *vec;
-> +	size_t sz;
->  
->  	gfp &= ~OBJCGS_CLEAR_MASK;
->  	/* Prevent recursive extension vector allocation */
->  	gfp |= __GFP_NO_OBJ_EXT;
->  
-> +	sz = obj_exts_alloc_size(s, slab, gfp);
-> +
->  	/*
->  	 * Note that allow_spin may be false during early boot and its
->  	 * restricted GFP_BOOT_MASK. Due to kmalloc_nolock() only supporting
->  	 * architectures with cmpxchg16b, early obj_exts will be missing for
->  	 * very early allocations on those.
->  	 */
-> -	if (unlikely(!allow_spin)) {
-> -		size_t sz = objects * sizeof(struct slabobj_ext);
-> -
-> +	if (unlikely(!allow_spin))
->  		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
->  				     slab_nid(slab));
-> -	} else {
-> -		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
-> -				   slab_nid(slab));
-> -	}
-> +	else
-> +		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
-> +
->  	if (!vec) {
->  		/*
->  		 * Try to mark vectors which failed to allocate.
-> @@ -2145,6 +2191,8 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		return -ENOMEM;
->  	}
->  
-> +	VM_WARN_ON_ONCE(virt_to_slab(vec)->slab_cache == s);
-> +
->  	new_exts = (unsigned long)vec;
->  	if (unlikely(!allow_spin))
->  		new_exts |= OBJEXTS_NOSPIN_ALLOC;
-> -- 
-> 2.43.0
-> 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
