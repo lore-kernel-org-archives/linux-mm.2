@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ACB6D1950F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 19:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51794D1950F
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 19:09:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B8356B0005; Mon, 26 Jan 2026 14:05:55 -0500 (EST)
+	id ADB2B6B0005; Mon, 26 Jan 2026 14:09:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 765BC6B0089; Mon, 26 Jan 2026 14:05:55 -0500 (EST)
+	id A888D6B0089; Mon, 26 Jan 2026 14:09:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 647356B008A; Mon, 26 Jan 2026 14:05:55 -0500 (EST)
+	id 995016B008A; Mon, 26 Jan 2026 14:09:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 54F516B0005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 14:05:55 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FA3FD3B57
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:05:55 +0000 (UTC)
-X-FDA: 84375044670.30.A0E4271
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3DF371C0013
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:05:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DnHvLCpS;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 848176B0005
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 14:09:40 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E2728C653
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:09:40 +0000 (UTC)
+X-FDA: 84375054120.06.6000C13
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 87DB74000C
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:09:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="vlvTX/uu";
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769454353;
+	s=arc-20220608; t=1769454578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IrviM5JEv15u9h1WFEBLoI3Ys6ROAu3GtjcwsmuxKQ0=;
-	b=CbFqqc1MQn6BNq2/5FFv+FJJAigcHqON8N8P/6l2lGSCquGFBI5wReuBoAs7/BdJYpaJim
-	X4Tv2dVjQStwWK16iewE3OUxZBjFPoBcs+TjEUaXQAhnwAah84M7cycdUxpTNNXKOItsyL
-	aK8VxPg1QBd28ExQIBR1m1SEVYNneuI=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DnHvLCpS;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769454353; a=rsa-sha256;
+	bh=QKUXWY8s2H68X09JCO3IXuOYYvV4y4UJBW60F3i8Ntw=;
+	b=4/7ghmxIMn9ZeYxzUDPkhiwZ5lQYXqlCOjVnEHQMJuzTV+RFLHlZzYTdMFySu6NgDu2HKW
+	ba6VmdgG6WzBdbtO8DMOkjXNqmKJDmG/26mwFJ17Fkp0INkHEjBbEDzOdUD2b9L+8hfhFC
+	QoK1fZ9zH9i/S4rh1o6pQOykzDJWBxc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769454578; a=rsa-sha256;
 	cv=none;
-	b=tcPEPJKHtemb7LECdl9GLyeKsp9VDUb6tQLsSzaZ4ntRMuoFJUdwfU0Z7LfIPg63bW6tbC
-	kpIm0SDL2FlRI752Y4sMk9h1VqTyp/e0F5SRFNcydMnTi5fiHvPf7WGgX8TFJ/sG+D5K1M
-	J+AR5F/eQUFf1hQO5WbGAEID2PEwjE8=
+	b=03Rb+6YXLGKWnL2U2PRbWH/VGYXoCL+wd5P3ODYUKycBuCPOqvgKXawy49cEVjDJDDK8bL
+	vXkUpU23n9S3HAbCGdXZiMX8EWTzJ9S+UYoHAEO5wISbqsgKHPEy59XUHNTQPaDmA1bBWf
+	3sg135n+/B0DKiJf3LGsk3zzUd6IKO4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="vlvTX/uu";
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0818042DE3;
-	Mon, 26 Jan 2026 19:05:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D80EC116C6;
-	Mon, 26 Jan 2026 19:05:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B46160121;
+	Mon, 26 Jan 2026 19:09:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC125C116C6;
+	Mon, 26 Jan 2026 19:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769454351;
-	bh=Qh0o6frWdN7mJ02mqItx1PK4gLJtn94sv0Eb3M1IpVg=;
+	s=korg; t=1769454577;
+	bh=cLFcy6Z9Pdtecg2U9FAo2ddua3xRPw/vDkzI2/8JyD8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DnHvLCpSUmJ1NeZ/lqAsck/JGOrOhc99RsJ8vee97FxOXDShBzBieIEHn9D/AHByJ
-	 O5Pn7WgIrD4GVrsvG2b01PUBk7TQIeCksLVBVe9p+nAnyY7JyWLxPYAb3yPtOC6RD6
-	 8R18iPoBEbQ9d0sQgTstl8BkrooE8OeWeQlyV2Vk=
-Date: Mon, 26 Jan 2026 11:05:50 -0800
+	b=vlvTX/uunId+50ZKm4OCK+Dh/JaILoGTR/N8IWJY+mw+dQCFvc9MxpH2VBs635lbi
+	 bWhlQ2uouXYSN4xshSrHocqOt6eRIr3E8Ijqq0P+gO8YP6Ezb0xUcqVjsyOzGJmll0
+	 RndRO61fpRG1JTW2KfQfYCFKrFktfXO+lJGklub8=
+Date: Mon, 26 Jan 2026 11:09:36 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Ankur Arora <ankur.a.arora@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- david@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
- chleroy@kernel.org, ioworker0@gmail.com, lizhe.67@bytedance.com,
- boris.ostrovsky@oracle.com, konrad.wilk@oracle.com, kernel test robot
- <lkp@intel.com>
-Subject: Re: [PATCH] mm: folio_zero_user: open code range computation in
- folio_zero_user()
-Message-Id: <20260126110550.0df8f68ea232a745c187b2a6@linux-foundation.org>
-In-Reply-To: <20260126183212.2366596-1-ankur.a.arora@oracle.com>
-References: <20260107072009.1615991-9-ankur.a.arora@oracle.com>
-	<20260126183212.2366596-1-ankur.a.arora@oracle.com>
+To: Andreas Larsson <andreas@gaisler.com>
+Cc: chengkaitao <pilgrimtao@gmail.com>, davem@davemloft.net,
+ david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ kevin.brodsky@arm.com, dave.hansen@linux.intel.com, ziy@nvidia.com,
+ chengkaitao@kylinos.cn, willy@infradead.org, zhengqi.arch@bytedance.com,
+ sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v5 1/2] sparc: Use vmemmap_populate_hugepages for
+ vmemmap_populate
+Message-Id: <20260126110936.4e47e1b0820198e342339038@linux-foundation.org>
+In-Reply-To: <aaf30e1e-be55-4212-b096-69f71bafd406@gaisler.com>
+References: <20260111074453.66728-1-pilgrimtao@gmail.com>
+	<20260111074453.66728-2-pilgrimtao@gmail.com>
+	<aaf30e1e-be55-4212-b096-69f71bafd406@gaisler.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3DF371C0013
-X-Stat-Signature: eu7iqyi5uihubsqrm5ww8hqexme9eaig
+X-Rspamd-Queue-Id: 87DB74000C
+X-Stat-Signature: w9ibm7ta4dzdw3in4sxdtk5bwd44ts5g
 X-Rspam-User: 
-X-HE-Tag: 1769454353-506350
-X-HE-Meta: U2FsdGVkX18kkgJ4PZ41W2gc8AaFXd6RsNgtOfa1rb3ggWO/QWZrAUI0KA1/JGFmWyHjig/+XyHICJ71FsDbwPy+zyPjw7LxYJDz742zsm5SGYozt1s2DrOuhRoo6gDbQLQFTPDdTf7P2QgWTdNFLtV54m8lisw0yv9xnMBhK/B0ry2DpAtT/Rv+/Xt3akGG+lN089BB2s9QeY3RVH+IZm8L+G758UJkkjfZ2AytkRkUDYArTKXjSEpsQuEfBRfOVMQzbmo9Ll1YAlSxV8OyQDNaA6wq/zEX1FM4f3YWEaBSiAr+CYn58S+vUMrDgGnrE6BqF+GmLtQaXV/JFh/yQg5CxH9SDtc0tXMzRPJlw0Rc2iW5HbgB0C9ADte6PC4Yp+7sTPcaQA8wFSZga9FLpAlknAbSeEzs5kMgjoMF/MQi+FGaFrqMAJAiDmkrWxFD/JG9YYYthbJKkzi6tSt0F1xU1n5n2j8HTgwDxmkb0eIB+hAf+HpvvCTsoiTCgp2AMA3H5pS3YwgKhN0zt8wNuCWnS060lYgEYtz6jCeZ2kN8YdPIhmKDEif1oe70qu6tSB2Xz/qkMRZjk+azIzaaPFe4uI7OZ/NKrioXjbd8hnB8I998OkwFSlYYHky3qo25tHvlT+0UFhfqKVN4CAXqLHtyMVR7lGlpF9pzwrsEp4AOpsF6qSUZYKuGWmg0CuVIOeJ8qYsgzDDEyAcd9+7QVReiDgjlb/1v5P8JK5YUNv6QHoVBH60uqkGjQitFe9JqxkDqsxfQoisGTB/RfGh/KqiWbIMdTX655014CUQCLX5qIA7CJRiRE0d5Iidi79i91Jj88BYSwoxZTqUZJYJ1AcSYHxbrfO2tjqKU3FfS1vNftoDY2Ay2afJ/kicIsCcqCj9DW/eU0Tu7ihaMxcGdqeZqIKDuxJbU3JCaV/M+MTdfyN1lkRmwWXVeJk3KuAUXq6ROeZJJzvkrBd+xNYM
- JpRAFPDv
- 6LiKRvOax++Uy3ZzRfj5DTTml3U9mvt8tdpAEtwW7nk/oeP/Y5XBfZ5jIriUDEwzD6a94kHpEOLX8AvkiRMudLGX0HDDTghgqsDe9nMmGmaGpo2ucAlOU/9xBbNq38F5Fg+Uq3aP1H3+GvqRYFnc4tmAoRUNUupA7kGXZO30h9DTavQVooU7BDi3kQse/pN0LaJtu9JvAhgYPxWNra1YV4PUpyxE4tWTcwPws5X0uUrlrOeJ7WYiUTVyv21qmYHrtW3bzp0gf7pIub8QrKjkJv2uDSaQY45Fewr5YVaiFq8r36TI8UyLQMX6GoU95VkFgC/JN
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769454578-35283
+X-HE-Meta: U2FsdGVkX19JihEbl6WuYw0PRQTeAy7EdjPdqeBNIIOi/XM7Sk8EnZjZF1M0Sp8pEFQL7ErySD/TvNdBbMcxV/yWlHaKf9pxGYGxq08B87ugEhN8g2nyx0Ht1JjQjBBCS4kJZlm7sXKWTPqNCCRw9t5v51fq6dn3hHkZhxHep1sS2uA63d1pJVYFHGso1BVa59g/Vfke3jZrqolPVvUbWWaYqNnCCoin8mI0OvdjxM51dAtXj/mNhs+3H0fNhK5U2qqN/KyeMeEe7HPfpfYxUEXOsLg7vavIAlyrKJYucnu+XnD6WJ9VG2EtwdI7GS40V1PLyFRIN8Hy4S2KOPo/P8oOEYE86/d8b2+5j38FIlW51Dkkr0aeI5oRE1PxwvlUzyZgNqu5RYKTQeI4dVfcwH7anJRDv84rQ3arPtYzvznWio0K9siOHLxwMGzdoo0hgcqyIrBQyUpi43zrWdDhXFeHJ/bKSP6Dd56g7dspu1e4KlX/WwmcDOqgGhPdp/mA6us34tZAI0M/Rej2g4gl/xoMdzO+OZCAHfROckLQyxa/2m8g47Sw8zgayEUzcUExKY6HheCCej3jwg2Sz4iTawRO/9EmH8Si0vrROOAqOtkKZbRkxLIlwXBykvhke5H+wtS7IAX7lW0q3SPnaL1CHYhaUaH/fEm3dNN+KdX3qH91X9CWKPLxegNRWa6e6Zhfn7vmOmw2iy2B2SERPMq6r7/Bfij/42u/OXTE1ex5JQMMffDH1F0ubux5XGHR5ic2x3seEYN9qLbywqRc+y8A5Nflr8p4g8mGbtE7oyegJ+yUms+qPpkFeRjC1hwH3upPA06M0qXmkoylLesa7EokBCxYQIkGeW4iLgsWdxa+MK+H6Ib3mSzXjX7nSzz7b3vNhOFRdxZerTj/IUGVepgntIf4rssLxO5ZsRMBpCYvKr+d25hCuBq3Fj00pxi2PnzP5JrhBRmUu9kmvL5hKsL
+ ulMq0Sxg
+ 1aboOTr6V8Tja37BzZDIY3szZlTfjr1+RxqEXnqO9tK3qWDLc012O/0yjhCuXW3Mt3KVDaFn0kXevilXryeKdnVJfD2ZT1ActGYjVDJkOdJqkbL2Z9xomjWrDc7bAnpvl24P871+zE5u/5vZsVrjaMnwLEcqfmPtQQ6MEo1B+eqF5BNSSQGi2n45vPc3IYB9PQXBYWCJyIEpuOaXtzpwlUwgojW7v9nLR+kCwTt2ydGLgmlK8rzxjxb0HCrovNE7ojo9sUSc32/JSZnxuVKKRGiES9UUVAN0kfwc5TSCqjq6BleO/dTDzTJwGEmaOAPwSZ0SoOarHK7XOLLW8OyrxDoIASHYLPn2vyqAJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,53 +98,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 26 Jan 2026 10:32:12 -0800 Ankur Arora <ankur.a.arora@oracle.com> wrote:
+On Mon, 26 Jan 2026 15:50:34 +0100 Andreas Larsson <andreas@gaisler.com> wrote:
 
-> riscv64-gcc-linux-gnu (v8.5) reports a compile time assert in:
+> On 2026-01-11 08:44, chengkaitao wrote:
+> > From: Chengkaitao <chengkaitao@kylinos.cn>
+> > 
+> > 1. In the SPARC architecture, reimplemented vmemmap_populate using
+> > vmemmap_populate_hugepages.
+> > 2. Allow the SPARC arch to fallback to vmemmap_populate_basepages(),
+> > when vmemmap_alloc_block returns NULL.
 > 
->    r[2] = DEFINE_RANGE(clamp_t(s64, fault_idx - radius, pg.start, pg.end),
->  		       clamp_t(s64, fault_idx + radius, pg.start, pg.end));
+> This patch seems to potentially make more functional changes than what
+> the descriptions gives impression of.
 > 
-> where it decides that pg.start > pg.end in:
->   clamp_t(s64, fault_idx + radius, pg.start, pg.end));
+> Given the amount of changes this seems to introduce, more on that below,
+> I'd like to see more description on the changes and why they can be done
+> than this.
 > 
-> where pg comes from:
->   const struct range pg = DEFINE_RANGE(0, folio_nr_pages(folio) - 1);
-> 
-> That does not seem like it could be true. Even for pg.start == pg.end,
-> we would need folio_test_large() to evaluate to false at compile time:
-> 
->   static inline unsigned long folio_nr_pages(const struct folio *folio)
->   {
-> 	if (!folio_test_large(folio))
-> 		return 1;
-> 	return folio_large_nr_pages(folio);
->   }
-> 
-> Workaround by open coding the range computation. Also, simplify the type
-> declarations for the relevant variables.
+> Nit: use active language, "reimplement", not "reimplemented".
 
-Thanks.  It's a shame.
-
-gcc-8.50 is five years old.  Documentation/Changes says we support 8.1.
-
-> I'm not certain about linux-next rebasing protocol, but I'm guessing
-> this patch will be squashed in patch-8 ("mm: folio_zero_user: cache
-> neighbouring pages").
-
-If the base patch was in mm-unstable then I'd squash.  But it is now in
-the allegedly non-rebasing mm-stable so I'll queue this into
-mm-unstable->mm-stable as a separate thing, with
-
-Fixes: 93552c9a3350 ("mm: folio_zero_user: cache neighbouring pages")
-
-So there will be a bisection hole for riscv people who use an ancient
-compiler, shrug.
-
->  mm/memory.c | 23 +++++++++++------------
->  1 file changed, 11 insertions(+), 12 deletions(-)
-
-We could of course revert this when we're able to confirm that the
-currently-supported gcc versions all handle it OK.
-
+Thanks, I'll drop the v5 version of this patchset.
 
