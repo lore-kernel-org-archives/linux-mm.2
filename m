@@ -4,111 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92138C88E47
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 04:04:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01368C88E42
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 04:22:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B7B46B0088; Sun, 25 Jan 2026 23:04:24 -0500 (EST)
+	id 6A6A76B0088; Sun, 25 Jan 2026 23:22:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 765A16B0089; Sun, 25 Jan 2026 23:04:24 -0500 (EST)
+	id 62AC46B0089; Sun, 25 Jan 2026 23:22:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 672106B008A; Sun, 25 Jan 2026 23:04:24 -0500 (EST)
+	id 536436B008A; Sun, 25 Jan 2026 23:22:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 52D956B0088
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 23:04:24 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECE69C23AF
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:04:23 +0000 (UTC)
-X-FDA: 84372772806.24.B7B0F2C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BE5614000B
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:04:20 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FC836B0088
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 23:22:02 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C5AA1B0721
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:22:01 +0000 (UTC)
+X-FDA: 84372817242.17.C65291B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 826494000B
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:21:59 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hqIFCS+A;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mx3khty3;
+	spf=pass (imf11.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769400262;
+	s=arc-20220608; t=1769401319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SDFQX22Xsj4R11AZviXolGUDrXgB8YyswvyJesUQ5sc=;
-	b=2z+8v4As+DiQPA9YVx7oDBrmCndUnp3SJiKibLkpSCXz3k5RCbD5FwCRCPjLc2oyYzGIpL
-	vY0aq3/aGZgHfUie3OE/9vj3ectO4SOd9IFPdWilG7p/HjAy7kwwF4Hp2/r+SBKyMpfDKu
-	qs1hkN7/5lj9o8U7VewSdiE/S7G1eJg=
+	bh=sLUqjxXZv7lWAxSUjPYCz/KXL/xFyVEfhNPKReA43tI=;
+	b=KxQ2KR+VozeHEXOYhYSEfdsc0Bm1OB09v+XAqPKktYKwuMOvdbWIyWz+4teyfjl/JAumsa
+	+rE5aj1Oa4sBfREHcw9hYwJHk1yPxFv9CpaB5tuTkPuU0HYBKEsKOO/G/ULgNHL+KeGDrA
+	bOXjbmzrXyQ8MV1MC24gQJExY6lLlkw=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hqIFCS+A;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769400262; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mx3khty3;
+	spf=pass (imf11.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769401319; a=rsa-sha256;
 	cv=none;
-	b=zVq8+4flzXVR6Q81qn9XmdUG2R5+d68QVZxFrQkmrkLSN/jRRGkNUpIRU/ezxXmCZVfZ/1
-	rJIeNPsl+TiWLAiYqqs3cTfmjgikLbC17Wj13mq07E9cgv7qzV5VziKJLbQMRBwyUbcGwv
-	dP8pDV0nBdfwXvf/jDyOIac7pG43gJ8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769400260; x=1800936260;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=a3iNMLit+kMe8I/F8jE2AjXgR+027BbglltsU6VKmIY=;
-  b=hqIFCS+Am/Wi/oAR8t+EohUfqYQaFg2UbU7Tjy6PeuC+r0Vx8ORzNjwh
-   6xjgR8+JBOL4SvjCIvVV3NGru+AmSjpImkz/v2XhPpps05KxnHgOwQRAH
-   Z5fq1+6USwXgcaL18GXEn0hkoBFbNkNxrCWPyfsUOWxwJwDOY84TQM3so
-   RsHP66pDkcOEs8yKir480o5NLT/Pgne0/wSmwhwpW2X5Z1jEtP9FEsOmJ
-   +gluN0zK6qxYM0uCy/1N/rXah3ZhVZt/Dwbb+uPV93mALZgZwhPeQ/3b9
-   4cAePF27ods3lZ6jqLOlPHMJkbc0MetxTNn2//dCiy10N7D0CulfCrsGS
-   Q==;
-X-CSE-ConnectionGUID: /01UE98kSt29bqkzGmncSQ==
-X-CSE-MsgGUID: wNvyuv08Sx+S8fxXqNt+5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11682"; a="74419165"
-X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
-   d="scan'208";a="74419165"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2026 20:04:19 -0800
-X-CSE-ConnectionGUID: UBFIBXBgSiqj3cvyZeQyPQ==
-X-CSE-MsgGUID: W4KPQ00FRW2czCeSyjnQdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
-   d="scan'208";a="206814354"
-Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
-  by orviesa010.jf.intel.com with ESMTP; 25 Jan 2026 20:04:16 -0800
-Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vkDpl-000000001Pp-1XbH;
-	Mon, 26 Jan 2026 04:04:13 +0000
-Date: Mon, 26 Jan 2026 05:04:04 +0100
-From: kernel test robot <lkp@intel.com>
-To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH 09/12] mm, swap: use the swap table to track the swap
- count
-Message-ID: <202601260524.qYN30lLA-lkp@intel.com>
-References: <20260126-swap-table-p3-v1-9-a74155fab9b0@tencent.com>
+	b=cQFz7XtmpvWzkxx8d9YEOw2gO1wAukZ4G78/UDo6s3vA6j1vnOCezPCdbNnlLy0fJz8ECW
+	7MC0qLZwurtcwc6ays1QENZivvJCVfCZbUnxhZRguf+hggX4ocZ8wogdn1Et1hrMAyhetq
+	Favd/oPCYQuHvklI7rDVZCC3bCs5vhQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 38FED44180;
+	Mon, 26 Jan 2026 04:21:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 163A3C116C6;
+	Mon, 26 Jan 2026 04:21:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769401318;
+	bh=u2mZjtT2ef63nBRxN806PtRnf8Sp48BSpzrnucxNvLM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=mx3khty3+dTGClMOSsm4TCGURDjhMxIJ6Hr1bO+Hbm7pIDDMRiqqUI60/PSBokAlS
+	 XDKfB/qj+L3xyJ2qvyINgs0wD1pWn95s+Rkn2LpKpDZVb3Qm6E11lRb6+gmxfXX2fp
+	 Y0puJp0SfTExJAn/+KhCOy5Bb/Cb4Wib65mAZItqOyzuEp0PMSk2hQ9F8YHBPAhLUl
+	 4OkRVSJbQNM9okPoSdnbRH4h5yxkAZi8MRJuUoppDD2ti/3VZX6AQcX0/6q4RJB+hX
+	 BoyEqXvgV5dn4f1qXwsNoEWqJw9JT7awjVq+tpfrUMGLV8dNWUCboeRZP7SRPsDOMP
+	 iCanGpQICOKlg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 11B303809A22;
+	Mon, 26 Jan 2026 04:21:54 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260126-swap-table-p3-v1-9-a74155fab9b0@tencent.com>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 36hza5ricbrytp11d5or6mn7pwhcbj6y
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v7] mm/hugetlb: ignore hugepage kernel args if hugepages
+ are
+ unsupported
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <176940131284.4057692.12950572087692218599.git-patchwork-notify@kernel.org>
+Date: Mon, 26 Jan 2026 04:21:52 +0000
+References: <20251224115524.1272010-1-sourabhjain@linux.ibm.com>
+In-Reply-To: <20251224115524.1272010-1-sourabhjain@linux.ibm.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, bp@alien8.de, christophe.leroy@csgroup.eu,
+ hca@linux.ibm.com, mingo@redhat.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ muchun.song@linux.dev, osalvador@suse.de, tglx@linutronix.de,
+ gor@linux.ibm.com, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, x86@kernel.org, david@kernel.org,
+ ritesh.list@gmail.com
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 826494000B
+X-Stat-Signature: 4bhsq995er1yp1ri4r16zd3furo6ruuc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BE5614000B
-X-HE-Tag: 1769400260-833139
-X-HE-Meta: U2FsdGVkX18MAWVJpZPxAcb9aMx/e3zJt0e+w0FbjjMAVBrVICIsNEf+r3E6AXcEtuN28opodK2/GpHUOzW8SMkqMrixp/BylE3E1OrDyES9a+BRk1Qj97/EEUMeYO+SGz68IKIHGFV8LbLI/N/00/+BKz86lso1F/rhiAVDdDQGxKPbQChAMBl3fM/fswM88/F963K1TG/3mi78AVoIjnhv9DcxB1TwS7L7OzNqjZhyU05DHdVvLHoIp7O1jYLYiX6KCgPPtr5I/fsmTiVwcls+C/J2zeK7KmQSnBcsgg+SKKkuz2qedi9LEgNCHObcmmnF+EUVDeKgofHxiWb55/JQIdOkebMscz0HPZtGq00CRHi69DEbaI05LAR7SEdUUPhvEwjCqHVHk7ycHZnE2stl/rbCxCebS3L13m3HBIKYB2B0/ffS19+qLLj1rC3Aup7Kzmw5LwH97yBvkKgysgR7Kg/O/rlfflXGZ1eJsLfAPl8HTSEhq2fSODC6lpXzjUrRGXgO5Z22xIJRkuKxuRoCVcBGniljOgpo4YWDyvmafHoJQffC1SeItk0dPFUWFkT45ag6U+mTFSqJ2vJCA/d7pkUi0mmUa110XB2SpcGNlFCt3KTQhWEBrQSp1Z/k9K4KV5ZS8n8SnlJ7Qp7WmlaZdPp0Ah8ov3qucrBCeZr2Mx1JtIFYqVPc7c73uLu/dFXoSeXtuwqSOu1IvOF7daJ/EBxNuUmReMrp7FDSHAzEYNxOzWq/fchiW9yPZOy7PcPzReL0bubTOQnoA4FkSlCI44n4JE+5C9VyqCufM/3oKv0plcrJScqxd8OWQm3m7xUqlYIudfGM/23+Ie/7c18W7fMt9N26yF02nX3DV26HO051WrrGv4NHN6YIXp+2ocSu6vGjXO2W1UqDerW3HbhCticCrLMTfM3Mpr1PNW8FtMHR6vfJHQCMDWZxh/hSiJEDr15dSM0SbVD4vq1
- w/mWZECa
- GQ1ARCqFATPA6W6/jxQryaLpQo2nVxPbC+KmB+qAeCvDYdHfz55rNRoTZejxB4HpJmUuWR1GOaz4dosiRO3NLTpYFY8bsJMbxXBFPkx0DtOkB2OAi7xvQQfaVfUgY/KyJ73v4g4fSCBOegxOwZVh2uI6wzLLS9RDMADYWjyIVbUF67NlprwfKWkzf8n7pbH7CZ4VfjOf0Mm00GFrDTA2vxrrLApvYYGo0WN1gDHm2guRTi2MbctUlGNJo1WPMjRzjdGEIolXk1KgxLrA15UipYO5DuG/WERDlXB/E5JiqofSDju1ZBtRBKi6rp9iQf/DwJqTXU+ot3iTGLyR5Zu1kS8TtA/m+Lm1a0Mp0CqhEnOh+YAn3nGFbhl+WuGVo6fQ7Hm1O
+X-HE-Tag: 1769401319-715506
+X-HE-Meta: U2FsdGVkX1+hbnuU+kQKtkHEZzQlp7Q6jHzoYyTbNHNJseTVazNvjFh9zGUdnWBGJO7Vd7hR1pZjs+6qex10vxq/L/2uHJ8GEE2//AsEREZ8sxiqnRdQ7xd4Rbp0up4BmOImfQQA3UHS3kEHHywoqtroAUmew3HtTwF5CnlyltLUiqv5eI/NoTzMxJsolArhnAH+HO9yNUrUTSGBOTqPZTohixkt2t56SZMFnVVXhGpJSjP3M2GtUa64BQTQEEsIPqeo3yWJXKsK821hQwqUySZpGeEwVfjAOdyVYVHxFGQ2Y0iKyvhAkpuE7TyKoRfw4buR0mkWLkgV72UlTPhQS80R0WZYFB95QxPr6hKLlMt3hj7+QxaKgPnJrOUPslKoMMoCtu1yjYaD9ULAnSi79B2N0AAlrFAWNOUEMfmtOBz+3aP6mO0gp3RiGUY2nQpVrO4jxDcaFM6VxHfY2TG5mgodHnhWxW7dXMJpRtbtViHWqQsD6rZN257jBO3zhGiSNPp/xcptml/OcAfjUbIFLRPF25Tqa0IeZDVWiddmBX5GYVAkPfyFi5K8UotE5MeyZqzs2MblmYtKhEbUm1G5Zd2tdLlUwbfaiTsWIZrLAnx+9DShHqE1zUi+UEQ2FIfj09hzRl5bocAe8At+En32clwBzcOpCES2ewtbhcfSJEcpy6GgHZhin0VaXqxr8gnIKwl9ql68MlieNaK7mQaqJdmnbwDzJzOKT2dHTr/blPm6XYg5T6MN1XrZLAUhVOWqQrmxe9T27xhV1B+Y843cnnBUiwS81rkksT+fjRo2Lc8m6rPQRu51sqw4Y/rwTfBejcKos7oyVgGLN9T8FRNlnTXvSKH7Id0anvi0MZ380pt4Dx9YaZWK2VRicjZQSmd2HBa1APX7dFOf07wKipB4i21buD7eC1/VfanitCO8ZveDg7RKojCJ8BLDh8zow2wzrCgpi/OcoxJ4SLdjrV/
+ 3qesDLDx
+ 9/br+ux2e00wVGkopIlGKgGLPPfVXWmjjK4tYVW1Vuk3l7hXTLwq3wMJfRMsMFCoZLapoD6702rkCvUnaR36dkk1zDSz8RUWEi2Wcj8WkUE16bRBKVVfHKafDIPegna4vgnm9PzPSQ7RwV3ZvyxMxzBVUqxdhYsGzu9PczlHG2ojUHRQ4OJOV4+mrGFJXZDufCNBGeo+dg+VgExEKZmfSDMyowX3brHEBIOhWs7dZCZL7X/N7h2U21PM9ConF5AOVt6jZVPfCdsi0trohNFXwjQ55OGJmW95QovBdA/8eivheEMF5SDZlbrgN0Lyf/+S4vbf1XjGr1GHFTGih80Z2dCl6ZMq9IrrosrBwznH2ZPp4NlKOOEs/TxGlK+aHe/kRUspOpPf5MLzcWTeCgtrH4eoDCdwUgJHWJgbvRumUNGLyYczyuS5FFmBcspxZX8QQCHELFR93ukfFfgVzxlGjeEDy8/3967erLhN0LBQcsKfwaRnmd6W2zlPW/o18DBIwCIF9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,116 +103,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kairui,
+Hello:
 
-kernel test robot noticed the following build warnings:
+This patch was applied to riscv/linux.git (fixes)
+by Andrew Morton <akpm@linux-foundation.org>:
 
-[auto build test WARNING on 10de4550639e9df9242e32e9affc90ed75a27c7d]
+On Wed, 24 Dec 2025 17:25:24 +0530 you wrote:
+> Skip processing hugepage kernel arguments (hugepagesz, hugepages, and
+> default_hugepagesz) when hugepages are not supported by the
+> architecture.
+> 
+> Some architectures may need to disable hugepages based on conditions
+> discovered during kernel boot. The hugepages_supported() helper allows
+> architecture code to advertise whether hugepages are supported.
+> 
+> [...]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kairui-Song/mm-swap-protect-si-swap_file-properly-and-use-as-a-mount-indicator/20260126-020149
-base:   10de4550639e9df9242e32e9affc90ed75a27c7d
-patch link:    https://lore.kernel.org/r/20260126-swap-table-p3-v1-9-a74155fab9b0%40tencent.com
-patch subject: [PATCH 09/12] mm, swap: use the swap table to track the swap count
-config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20260126/202601260524.qYN30lLA-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260126/202601260524.qYN30lLA-lkp@intel.com/reproduce)
+Here is the summary with links:
+  - [v7] mm/hugetlb: ignore hugepage kernel args if hugepages are unsupported
+    https://git.kernel.org/riscv/c/b02019169284
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601260524.qYN30lLA-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   mm/swapfile.c: In function 'unuse_pte_range':
->> mm/swapfile.c:2351:31: warning: variable 'offset' set but not used [-Wunused-but-set-variable]
-    2351 |                 unsigned long offset;
-         |                               ^~~~~~
->> mm/swapfile.c:2346:34: warning: variable 'si' set but not used [-Wunused-but-set-variable]
-    2346 |         struct swap_info_struct *si;
-         |                                  ^~
-
-
-vim +/offset +2351 mm/swapfile.c
-
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2340  
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2341  static int unuse_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2342  			unsigned long addr, unsigned long end,
-10a9c496789fe2 Christoph Hellwig       2022-01-21  2343  			unsigned int type)
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2344  {
-d850fa72987378 Hugh Dickins            2023-06-08  2345  	pte_t *pte = NULL;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05 @2346  	struct swap_info_struct *si;
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2347  
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2348  	si = swap_info[type];
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2349  	do {
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2350) 		struct folio *folio;
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02 @2351) 		unsigned long offset;
-0177fe675b3916 Kairui Song             2026-01-26  2352  		unsigned long swp_tb;
-3f79b187ad2f67 Kairui Song             2022-12-20  2353  		unsigned char swp_count;
-06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2354  		softleaf_t entry;
-d850fa72987378 Hugh Dickins            2023-06-08  2355  		int ret;
-c33c794828f212 Ryan Roberts            2023-06-12  2356  		pte_t ptent;
-d850fa72987378 Hugh Dickins            2023-06-08  2357  
-d850fa72987378 Hugh Dickins            2023-06-08  2358  		if (!pte++) {
-d850fa72987378 Hugh Dickins            2023-06-08  2359  			pte = pte_offset_map(pmd, addr);
-d850fa72987378 Hugh Dickins            2023-06-08  2360  			if (!pte)
-d850fa72987378 Hugh Dickins            2023-06-08  2361  				break;
-d850fa72987378 Hugh Dickins            2023-06-08  2362  		}
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2363) 
-c33c794828f212 Ryan Roberts            2023-06-12  2364  		ptent = ptep_get_lockless(pte);
-06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2365  		entry = softleaf_from_pte(ptent);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2366) 
-06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2367  		if (!softleaf_is_swap(entry))
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2368  			continue;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2369  		if (swp_type(entry) != type)
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2370  			continue;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2371  
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2372  		offset = swp_offset(entry);
-044d66c1d2b1c5 Hugh Dickins            2008-02-07  2373  		pte_unmap(pte);
-d850fa72987378 Hugh Dickins            2023-06-08  2374  		pte = NULL;
-d850fa72987378 Hugh Dickins            2023-06-08  2375  
-f28124617f3415 Kairui Song             2025-09-17  2376  		folio = swap_cache_get_folio(entry);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2377) 		if (!folio) {
-8c63ca5bc3e19f Will Deacon             2021-01-14  2378  			struct vm_fault vmf = {
-8c63ca5bc3e19f Will Deacon             2021-01-14  2379  				.vma = vma,
-8c63ca5bc3e19f Will Deacon             2021-01-14  2380  				.address = addr,
-824ddc601adc2c Nadav Amit              2022-03-22  2381  				.real_address = addr,
-8c63ca5bc3e19f Will Deacon             2021-01-14  2382  				.pmd = pmd,
-8c63ca5bc3e19f Will Deacon             2021-01-14  2383  			};
-8c63ca5bc3e19f Will Deacon             2021-01-14  2384  
-94dc8bffd8b7fe Matthew Wilcox (Oracle  2024-08-07  2385) 			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE,
-ebc5951eea4993 Andrea Righi            2020-06-01  2386  						&vmf);
-ebc5951eea4993 Andrea Righi            2020-06-01  2387  		}
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2388) 		if (!folio) {
-0177fe675b3916 Kairui Song             2026-01-26  2389  			swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
-0177fe675b3916 Kairui Song             2026-01-26  2390  						  swp_cluster_offset(entry));
-0177fe675b3916 Kairui Song             2026-01-26  2391  			swp_count = swp_tb_get_count(swp_tb);
-0177fe675b3916 Kairui Song             2026-01-26  2392  			if (swp_count <= 0)
-d850fa72987378 Hugh Dickins            2023-06-08  2393  				continue;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2394  			return -ENOMEM;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2395  		}
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2396  
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2397) 		folio_lock(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2398) 		folio_wait_writeback(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2399) 		ret = unuse_pte(vma, pmd, addr, entry, folio);
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2400  		if (ret < 0) {
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2401) 			folio_unlock(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2402) 			folio_put(folio);
-d850fa72987378 Hugh Dickins            2023-06-08  2403  			return ret;
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2404  		}
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2405  
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2406) 		folio_free_swap(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2407) 		folio_unlock(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2408) 		folio_put(folio);
-d850fa72987378 Hugh Dickins            2023-06-08  2409  	} while (addr += PAGE_SIZE, addr != end);
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2410  
-d850fa72987378 Hugh Dickins            2023-06-08  2411  	if (pte)
-d850fa72987378 Hugh Dickins            2023-06-08  2412  		pte_unmap(pte);
-d850fa72987378 Hugh Dickins            2023-06-08  2413  	return 0;
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2414  }
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2415  
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
