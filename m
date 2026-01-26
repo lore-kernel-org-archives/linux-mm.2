@@ -4,134 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6AF5C88E40
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 01:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8594C88E42
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 01:54:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D3056B0005; Sun, 25 Jan 2026 20:52:18 -0500 (EST)
+	id 3A1676B0088; Sun, 25 Jan 2026 20:54:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 956A56B0088; Sun, 25 Jan 2026 20:52:18 -0500 (EST)
+	id 34B926B0089; Sun, 25 Jan 2026 20:54:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 838916B0089; Sun, 25 Jan 2026 20:52:18 -0500 (EST)
+	id 278176B008A; Sun, 25 Jan 2026 20:54:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 704396B0005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 20:52:18 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 14E0B6B0088
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 20:54:30 -0500 (EST)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 093D7140620
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:52:18 +0000 (UTC)
-X-FDA: 84372439956.26.633F54D
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0F9D710000B
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:52:15 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IXE6+RkP;
-	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769392336;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AA7961B0610
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:54:29 +0000 (UTC)
+X-FDA: 84372445458.26.E2F2940
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 428021C000A
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:54:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lNTomWoT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769392468; a=rsa-sha256;
+	cv=none;
+	b=CpD68YMo1CS6f4dGU4DZStLwTDsFPfaWuRIwtYS0DYoG9BOGxxqv5DXzSxaf+S5Jx3ttc/
+	uFird7qZml8XtbWxDNcaT3UR9BvTH4BmSXPniNBpmDBLWd2nmyrncFes7CDVOydB9mFKX5
+	aU1I6Bptpj+c5qnVhXACKlzsNTDG9c0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lNTomWoT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769392468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YEuwFDX8sEOyQ+L13hC6tPbYMALYNZgElkJ1Rv7U2Yo=;
-	b=M3+ntMWeZyhWLgkp2ej3ogb1pUxLRrIZX0LvgMOK8M1V0EG0F8/VAxd0NDMN97HtEmImwV
-	HBHZntX7FmacQ6NbRwVlhpQL6yTXs0Uuql8rf23Coy03aWRcTJo+E4etSYDeVwcEqD5cMd
-	wJFZ7242MyUGdPCUWilLL/Z/lB6g8GY=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IXE6+RkP;
-	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769392336; a=rsa-sha256;
-	cv=pass;
-	b=DUIhK2spvb6rlUq4/6QmrIk+BYSCVlheHLS0QVzctWXMguAclrWJJJJRnV9uvXHVlvG8vB
-	siahJEocWf/GKZMcqFaC+SW19LZGBErhXgWcF6MbKunEy75G9A/MNPxes7ldpJaWI2nXKB
-	6ksDtGybgJYbgSBPOGMoK3dWE+H67fU=
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-888bd3bd639so57114456d6.1
-        for <linux-mm@kvack.org>; Sun, 25 Jan 2026 17:52:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769392335; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lqNZGHE/+LVrlYsyuzBE2NaM01lItTL48jiFs2Q3I9CNlWHBzUqver8/MtlSAoqilW
-         z5S2yYLlhinCx/9Zj1X2Y/r5F3zuI+R7MsSYR64ClUO8GSBqbLOptpW61u7nAWnx4vvg
-         msNUUw0Q5pp+vch9gNuec8/nPTjT3PUPqiLKQT8mx3lSoHiHYN1NdMUgrLzbzTkC0h9N
-         NYdhty8uf+CsjhXAV93dN3g8KlEJkvNvm3hwf7fWgc7NkBBWiX66oaHMa230kDi2PKNe
-         5KQjPIFk4YTH2acxGohNXl8K2GriavZknNwbXqoh9aY6doUn//h1+R/2MJYxSZwxNA49
-         uyvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YEuwFDX8sEOyQ+L13hC6tPbYMALYNZgElkJ1Rv7U2Yo=;
-        fh=nrT59npFV3RN7Bd/bRiRmF3HMNbUVgnSbX5vcwymPfY=;
-        b=HyP2Wxfp2TAH8sinm705Tx4VU9P+O77nEJ3xd+GMQ8kE+2fXRXQAJu6tmM4lg3RE/h
-         oiKMImmOeGgD3LoGF4b/EYKw+VZWmoM4XtfTuoQrZal71LfQlVeF/QUeJmTlMGFzEX4+
-         5Cz/WneJxHaFue9+XBYaUFSqyfsi+j5t5UMvkq1qlrSf9jW4X1l2NLfe/zea+bIg1sY2
-         iUI29h+81ayav70GVqBvsOrCZfeHpiPqTX4963GXPDfUrnJW9FdF6/cvfb4D+fNcjtMr
-         nrKejfLTy6n3/QRPK2xLKqxkejh6w5nnbfTyWS4pkRz8+G0yWk1cPpzT1p2h/Q1M+WaS
-         J/4w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769392335; x=1769997135; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YEuwFDX8sEOyQ+L13hC6tPbYMALYNZgElkJ1Rv7U2Yo=;
-        b=IXE6+RkPsUWbRQK1cSp86wiqTHhknZVK+heLezuzYqah0y9LRQykKNgaHelEyW95sa
-         a8uWiIrUNtg2910rdTbZ5uGYL57UKXrI8zF18XcP57Ku4UXv0pMqfU/l229YVmLzYrGo
-         Ay62CZ0P/7c3Mi/xQjdIAFTfNCVQ8QXWc/HDrVARrZk/oZK32eqhVodUpDz7wuX66Muu
-         R/lgdLvWlMAaRIT+z/KOdg1MeoMt7uODlP9KGWmR2M/IaChu7dZ/R7Q9C/vKD1C/cU3Z
-         7cS8AtyPF7a1qZUNbofQuBOJKm8vdQNDUD5l7RCoJo94F4FKgB/ivtmeFMktFNDe5TZx
-         +fHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769392335; x=1769997135;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YEuwFDX8sEOyQ+L13hC6tPbYMALYNZgElkJ1Rv7U2Yo=;
-        b=CF0bECs3/5usL7IKAqj0a55IgWF9qZ1SuJDrcxDEVqSmIY1kNGKk9uYd0vKgVx59wA
-         cUtslTDwYtHGs9sX252JeHirliXwLI0ckkWRKSKvP7EkWgusfs9hirhNeLOy/MwsFfYu
-         I2FEJjoE5AXjm2RCRw6HR/049Ccia/BoN/K/MX2MyDfTZHuf59JcifZ3ha7cJWFdA+i9
-         lrd+4QGS0nIkymYM0xh++m8emuav0XY5aQjD5UR8vKmf1jjDSF7dFCU7LHZ+YKcmCNFg
-         LbcLpfGF+3X97nuGfPOjlruDP023I6fFxsWeShjceDUtsnCs4ga1t4w+usVs37SFpgBa
-         /RlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXW2e6L9WIWET2U5bJhMqUokWspjFBPrfx4y3dKfpFRT5rznBzD9gBiVWye6phKJ3H4vvMbyXVpMw==@kvack.org
-X-Gm-Message-State: AOJu0Yxs65mUB7NAuqM11KM+lEeYNfIvmGvSS2Q+z0bDe9yHSH8x/uTd
-	9tkDFTaU/Sf7RZOVJfEugcR4JLZwsGVLXz8P3uoLHxCyKL2gWk8AkYTLfrvWSh2QvCK8LGAM+CB
-	xGS96gI0DHQe75wB2RO6YyvwuqFBs7p0=
-X-Gm-Gg: AZuq6aJVXztr2w4YP5o7uqPO9HJpoafp30I0IQU296ZhFaplwt6c6Nek32KgJGvwE5k
-	KpvKQCKflAw58otFllVnrbojgs7AVBZ2L0rtkVuPdHc8d5dxZ+ckVgXPkjEuH2gG+Rxh+miAr4M
-	ju1DAZHMbgTzUZE9I67/5GLVJpjclHVG3EG68aDCz1QBulNVmlN8L/n3/j0JhvmFbPOAop4N1BD
-	2+2er65j8OWUyssyHJrgp9OMS4UQyF+X2HDTNeDzBHJmAO92/y0b/wpV+qEkhw/waG69o/rwQ==
-X-Received: by 2002:ad4:4ee8:0:b0:88a:2ed6:252 with SMTP id
- 6a1803df08f44-894b02fa802mr41091466d6.5.1769392334857; Sun, 25 Jan 2026
- 17:52:14 -0800 (PST)
+	bh=nyu57uSYb5lGmRQqv2IuaFGLa8ntALrsc6QD6O349Fw=;
+	b=7HOW9MWnEKt5s5hfhVM0EgAacxsW+hT8Wz10x+p+4HEflCLJLV09Yyq0TnEiNXoXI3IK4M
+	7pqAxEX/8h8zoMfuiqlqjrTmJbvkBXNSwI0SQ1GXk0A5CsK4xwxNrHU0NhdqSpX7Ok4YMv
+	aHNxxmotLMsksnL7E6GgYz/B4mx6OsY=
+Message-ID: <35fb4fc8-8ca7-4ca1-9528-630ed4d1e782@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769392463;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nyu57uSYb5lGmRQqv2IuaFGLa8ntALrsc6QD6O349Fw=;
+	b=lNTomWoT2Ne//HsqXqvGPIBNj+Z5zT2ZjR8uJZR20bL+g77EPlFf828kyzEJ21+x3LmEG8
+	P2lRdPazbVJFpigPaPzuvGn4juFyU5zSv9ub4ESdtm6aCilDzhTBdTCyzF6TtB+fQDowq8
+	Uemnq5i0BxAaDfu1FDMEgBeffATSTd8=
+Date: Mon, 26 Jan 2026 09:54:17 +0800
 MIME-Version: 1.0
-References: <20260123082232.16413-1-vernon2gm@gmail.com> <20260123082232.16413-4-vernon2gm@gmail.com>
-In-Reply-To: <20260123082232.16413-4-vernon2gm@gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 26 Jan 2026 09:52:04 +0800
-X-Gm-Features: AZwV_Qh5bgP0Jx6crHpdoAw6kuaMsRIT_RsAgKYV6FioMbn9angxUXx75lO9Wzs
-Message-ID: <CAGsJ_4xMvjS3Ya+pdCX7giQGtvvNyPYd5pexeaT8vZZEwuKiqQ@mail.gmail.com>
-Subject: Re: [PATCH mm-new v5 3/5] mm: add folio_test_lazyfree helper
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	ziy@nvidia.com, dev.jain@arm.com, lance.yang@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0F9D710000B
-X-Stat-Signature: s8w49p4wg8pbcfbd96zbm8ueextfffdd
+Subject: Re: [syzbot] [mm?] kernel BUG in hpage_collapse_scan_file (2)
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, willy@infradead.org
+Cc: syzbot+bf6e6a6ca143afea5ca2@syzkaller.appspotmail.com,
+ Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ syzkaller-bugs@googlegroups.com, ziy@nvidia.com
+References: <69757ea0.a00a0220.33ccc7.0017.GAE@google.com>
+ <20260125121001.32733-1-lance.yang@linux.dev>
+ <7bce9231-714c-424a-a4e3-dd42734fb767@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <7bce9231-714c-424a-a4e3-dd42734fb767@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1769392335-297594
-X-HE-Meta: U2FsdGVkX19ueHCMvvPypZ7wlCDUiWYi9wmilNpOmeqIvS7+VVXMQNNzwn/xKLqdszQTjYRM0Wirgy8tJ4mBoM+B2OtgpUXyKUK1p1FKbxk4sPAN6b0qpElxNEjhUtlq4A4Rb8PZURXTnvxkTipf4XRVlyFo62L+/fQo3e5eGNGhKSiwu7Wtztj8qTblrJGpQav51gd+eYCsOEPO9QadmxsK39J6AvhM9lX7ZKbIjIO0dFddfM83kv+/gZqzYIKYeRPC3uAOb6BDFUUoXHhaCPF8yZ9hFyvYP7/dUkoD0gl1OyasCUtrjAGZPgH0xfss2oI0n7sIKHoUQqDq0LeIohFEox0jPgcPc4AtwvidlWzlDJPwLMbCKFvbL9aNX/b06GwUOLbyN8Ez5CJ/XpJqQq3YOcen390IHKngaxv2GxtCCsHYToNGhoXJ3kjqp+HEbu63trU/wd9InmfZMgnWTYdK7wLU9Ax6wsw7XR5CV3fFu7zP5ceqwspsUt9DrAJcHXBQWwDiVglIHkCm4R4H4aMqZBslVv0VJykh4P6f3XBl1cAt05azv5J8jGwY86Oo5O+2A5c41+FtxBFa+m5gLEI8QILinLYQjM9IQ+ozlkZ0rksdGYFMp2hjoxjK4Zybd/qUeeZGvNQOBt3gqoadQVCF0m3GR+J0Zs4RVge+knWtNEpsGELZ7h8x7wWrXHwugRGYYdxc6BjhtUA6WWjQJTnze4hjAJJAXX9lGioqG7QRwBsSFY9QMX3hfKv+SqrMGEqXdaHAsi9pASom3O4aN7UVTU4QwHRqZArDbV3IFlQFFTBxA3/zbS94GoGieruyZIWgCbeUciziJjKXIAqaOavDeSy+tDbDJAW0bfMlXB+j9MAImyj5J7BOcSWjKEdZgP9QOHVzUlzlNZBECLBiJh0P42MWTDRsPxMM97bNSZQB1kY9G17Ey49fgeJnDLcYZnL9JThfSgUlHhT3rG5
- BD7Bn3Sj
- hP8Se7gyH58TRUBp7CZKuG9PqopbYGL5VvvAmqpHWeZ9l4YOERGccgHsiRKeSQZhlJglRQT6cje7SmBIX3tCdUAsmX2t6x3cDwBn4ZjWJ+Hyzj+r6gTYQxq2RuMin1F3/PDEIPcNYgmbch8Dc7t4w3V+GYywxNeWJiZomv5ikIsftNd6E+KPQBZkvht/Z7xrKN+EU3IctCe9GSiUxSN5JC1tbDfu89wwlw0vyZ6GbprVtOlgmt5GbZMtu4bqaMTmXHqeCA+dDCpFuBD3cYMoxOScmo0HoVsr/4LkhkHamGoi5yoo9U12Yn1OrYdELcY15VSAFG5frfJQzkJ4LCNyrgzTjHqoWM9ISRHLhmKYnAlBddyxy4Nu4SlRovf+WUsuotof8H6IBnrcZhqoPM0ChE3C/4LYZutalaOHIRPVzCnNak1iZzSSKaNpRVCJOm2fWGM4jHTS49p0Txhn2VO5otpsmsD0+hKc+s3z7glJ8ngfnfqCiatXsPCauCg==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000004, version=1.2.4
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 428021C000A
+X-Stat-Signature: h74mg77bt9fph68hf9kda4tj6b4toh3j
+X-HE-Tag: 1769392466-112541
+X-HE-Meta: U2FsdGVkX1+EQxESi5wC0c/jKcelJFL8UBizihGdQMnePnpkbGP+uvX/GSegxrE3ogMNX8CRaWYmkOF/McCLsrPNiTZ/DFSRnPJfbhQky2FrZB4nKpcBijj/rN1ORqMw7EUSZ57SDZ2AQZyH155fnX+Vykkl8RJuouvJh3pF9zd33C+desD+dxXGoLnUy0vX2yiwaT+bkvDZHl9yUxpDeyCpOOhqtBtzwNUiP2HIHXUpbpCQC97L8ew1UnBY1t48IsvMrDBGzeHbxb7mGnZ4pHhrs8X3Ryyob3qgiI/3r5s8FzVbgw4mlJQ4CnwVaPolPQjLdgQAETKrriVgbivATJ3KC1myiahs/rHw7wNJ1G0Rfo0txGf4CBzkyropuvitqTEC5f5uG949neiDq3kZVPrKe8C0TQcvf0umE5rpBHam0hQAZMBAkALyBcw9CUAYQDjsXnvd86bIid2dw+ilPpWSsqQwFRxxjxh96LvF+4eJUqH5M+Hd6MjYAxP1cr0B2M+dEzJivVWnSh0UVxH/XKatJtU4notjHiAQK1+7cSuE5Z+XeJSGW5GT5XfQrltDrXTkD8NUWCHiDVAODhLjLvWG5rMXOmig5zmGc7qlPmNT1e/C0RHT7xvwJAsFksblouA+vV/k4hfsimcm9+Bc1kmbH4eQBBeTQVNTO+4jJ97/zZISTZARDwOlr+FiIOoEJa7NPJQKIgObiEeQDnycxOPpq9jvBDbbx1uw4E3zQjObk8JlNsAzWksw/2CQeL1eZUGuh71Q5vm3mHngOhoXbDoi+OcKVMenQ2IBQgsmXM4yGXVkt0C0nq0WffnnLltvLs9csSpmX9iwEUIqBPHhSIygQZKAfyp8iDZkeQweWL8j5DPq4HRt/zGzhe4GjjGc3fAcMWYMuP4Sc8qCugq7KAMI5QdrP/C/hi8Kcd7t9TXjVbapoXS2xiLwZev6+IjW3E2EiBOWKIdFJNCRxIH
+ JOazV6+2
+ cAUX6byGLke5r1e1kGh6oPsDEUw6Yhz8nYUyusE2LMayBIKYiWIz5waJ3R3c0Y+nZf1V0YUjgchVfVx2cEwn20M/b1KC64BH2rZlkZspVW/QRKRL7XytIenZ+sX74xSCMqN2mwLFgjCcfhxOCQttUSS41JVYcgRGC3xy2tuescpBSCJfwrye/IZiFDFMKK9WdUuPwShHKL1yZmLCC8BC3G+JnStmOtNnUVXZPC/rGN74L8QGjyMdVr/Sq76MJu433dJACQUu73rQs/hw/+qjHFCeXdSFBGonraKGVydOcayHnbECwHxwVMp100QFOp/3RaWr0Im8odcmcp+QZOo5roGffsO4PUFctkO4kkpXL9q8/G9zJPg6kM14ttHOVlUVxC+fy/qzldwCbSRJTIwFUzRP0i3v/fl6Wi/dbBfg8/cEgip+eQydKHU5q1hPRk1dl3v/ch0cTa49mHo1egZrqFPm8eCmuY30ynMvXef+7vOKseFK4R6H6LMlMCn+TG4d0cncZWkPTB/dI72WJcG1sCWdrXx0UPrdcdqPu7jOch9bCZp2A4kMvXheQXDLyJEXDLMkojl/t4buZdsv9/kRX8dlkC+tzps/Zzcs8IN1W4NwgfSfCh+2d4sfHbN6eHKron2mPFVTYiNyT5So9OP2gfysAI1vmpJ2q+So48tmvdztUsrIdORQEkWzj/W7AwNsDYwoaw3OCeLNRj+ACqGfs39RbupuR3wNAm7fWEsTW1vdlSMdupfhGADSESCf/0BjoszXITmXsnQGZ94NWi0G7BpMKi92rsYLYHLy7QAfDcj6U7S0z3nT5VxVxkP4z3KOhFco4kTOSMZIu2k8WD7EyY5BcEUcc26InSlEHrych+Y0zlJrY+V1BkRqOpQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,20 +96,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 23, 2026 at 4:23=E2=80=AFPM Vernon Yang <vernon2gm@gmail.com> w=
-rote:
->
-> From: Vernon Yang <yanglincheng@kylinos.cn>
->
-> Add folio_test_lazyfree() function to identify lazy-free folios to improv=
-e
-> code readability.
->
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-LGTM,
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+On 2026/1/26 02:13, David Hildenbrand (Red Hat) wrote:
+> On 1/25/26 13:10, Lance Yang wrote:
+>> Ccing Willy.
+>>
+>> On Sat, 24 Jan 2026 18:23:28 -0800, syzbot wrote:
+>>> Hello,
+>>>
+>>> syzbot found the following issue on:
+>>>
+>>> HEAD commit:    ca3a02fda4da Add linux-next specific files for 20260123
+>>> git tree:       linux-next
+>>> console output: https://syzkaller.appspot.com/x/log.txt?x=10c42452580000
+>>> kernel config:  https://syzkaller.appspot.com/x/.config? 
+>>> x=10f2b64f8f12b9a4
+>>> dashboard link: https://syzkaller.appspot.com/bug? 
+>>> extid=bf6e6a6ca143afea5ca2
+>>> compiler:       Debian clang version 21.1.8 (+ 
+>>> +20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 
+>>> 21.1.8
+>>> syz repro:      https://syzkaller.appspot.com/x/repro.syz? 
+>>> x=17f7cbfa580000
+>>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=112d405a580000
+>>>
+>>> Downloadable assets:
+>>> disk image: https://storage.googleapis.com/syzbot- 
+>>> assets/291ebca63a31/disk-ca3a02fd.raw.xz
+>>> vmlinux: https://storage.googleapis.com/syzbot-assets/b2112a214b54/ 
+>>> vmlinux-ca3a02fd.xz
+>>> kernel image: https://storage.googleapis.com/syzbot- 
+>>> assets/77d1ae437e07/bzImage-ca3a02fd.xz
+>>>
+>>> IMPORTANT: if you fix the issue, please add the following tag to the 
+>>> commit:
+>>> Reported-by: syzbot+bf6e6a6ca143afea5ca2@syzkaller.appspotmail.com
+>>>
+>>> node ffff888148816ec0 offset 0 parent ffff888148817700 shift 0 count 
+>>> 64 values 0 array ffff88807be6b0f0 list ffff888148816ed8 
+>>> ffff888148816ed8 marks 0 0 0
+>>> ------------[ cut here ]------------
+>>> kernel BUG at ./include/linux/xarray.h:1441!
+>>> Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+>>> CPU: 0 UID: 0 PID: 6017 Comm: syz.0.17 Not tainted syzkaller #0 
+>>> PREEMPT(full)
+>>> Hardware name: Google Google Compute Engine/Google Compute Engine, 
+>>> BIOS Google 01/13/2026
+>>> RIP: 0010:XAS_INVALID include/linux/xarray.h:1441 [inline]
+>>
+>> Seems like that is:
+>>
+>> ```
+>> static inline struct xa_state *XAS_INVALID(struct xa_state *xas)
+>> {
+>>     XA_NODE_BUG_ON(xas->xa_node, xas_valid(xas));
+>>     return xas;
+>> }
+>> ```
+> 
+> I think there was recently already a discussion about this.
+> 
+> See
+> 
+> https://lore.kernel.org/linux-mm/aVvz3tYdu49TGkjI@mozart.vkv.me/
+> 
+> 
+> And where Willy said that likely it needs more thought:
+> 
+> https://lore.kernel.org/linux-mm/aVwm3MQ_ZDa_kU8c@casper.infradead.org/
+
+Ah, I see. Thanks for the pointer!
 
