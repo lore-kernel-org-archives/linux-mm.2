@@ -4,136 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6BAFD13C39
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 15:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBD7DD13C3C
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 16:08:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 854826B0005; Mon, 26 Jan 2026 10:43:37 -0500 (EST)
+	id 5D2196B0089; Mon, 26 Jan 2026 11:08:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8021E6B0089; Mon, 26 Jan 2026 10:43:37 -0500 (EST)
+	id 5A8F56B008A; Mon, 26 Jan 2026 11:08:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 704116B008A; Mon, 26 Jan 2026 10:43:37 -0500 (EST)
+	id 40C9D6B008C; Mon, 26 Jan 2026 11:08:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 613A16B0005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 10:43:37 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 03BD21A0828
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 15:43:36 +0000 (UTC)
-X-FDA: 84374534874.09.DF239B2
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AF2A240010
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 15:43:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XIwhfHYe;
-	spf=pass (imf01.hostedemail.com: domain of marco.crivellari@suse.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=marco.crivellari@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769442215;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F13D6B0089
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 11:08:01 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9F9F1140855
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:08:00 +0000 (UTC)
+X-FDA: 84374596320.22.CC240C1
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A9C7540018
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:07:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=bjOAzm9v
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769443678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=syuEs8QARhmjr0ad7z3aeMN6tixAFbRn00lc7K2yoNk=;
-	b=eL1Wyb539p1dYbcahdFd2EUdGPtKGyZcqIp5Wp7/kyhAaDXi49eOMjcy5myAJ1fQ80InVS
-	qCSEnc7//Y9++Lvr6qShrLuTYgV3c63G2AJWjptj2e0N1p53GHNtqC8ZVxOvWw3zU7vuUF
-	74AjoA2inAxB7xzKr7l5dToIBguz0Ug=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XIwhfHYe;
-	spf=pass (imf01.hostedemail.com: domain of marco.crivellari@suse.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=marco.crivellari@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769442215; a=rsa-sha256;
-	cv=pass;
-	b=O+IL2q8t5h0nfMEQoIwn+EWaEgJi5H365iJC/MI94bLgXC8hBb1MQ1BaAynN+lpnwJMPrs
-	kt8YCribNJU0C9ZN4DhUZXjpvJkX0w7H3a9gkZxRGb+7DsgyrT8yGGiFf9GO+i4ZZR///P
-	bnFWCQdpuz94+gtCnHEiXArH8KBzo1E=
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-59b6f04cae6so4799521e87.2
-        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 07:43:34 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769442213; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JsFaIcWUP6B/QjqqdBoRjPkinkvB34EWrAekkKBSC4P9Lfqv0nr1Lf4qh0EPqhK0Mb
-         GZfZ89o4yYVh2+Dx1jdfcTPr+g95SeHzzGzZP4myuoF27cYWfXOughIOV3OZ/StFZoFP
-         Y9g/k2ChtzTnI+BB90jg2DdLXIpl38QlqC0DIH/YvcAXtO0czF4psdSAaUWGHR8bDI7y
-         FlrcIuS30CMtXdpbDQSqEQqESeocLHp1aHKAG6kqYOW1J5cEEn5BANoHyU4pok7bn8mZ
-         K/xyCcp1ujo1upF9Nil1/uZj0PJnx6qLQlkoIgp0vW2HwFenNWfnYNuiiNf51lpqBkhC
-         NV2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=syuEs8QARhmjr0ad7z3aeMN6tixAFbRn00lc7K2yoNk=;
-        fh=F0n2gXGDHCMLqj8NRrIiwgWnFtR2gLDBFLqt6vKd2H8=;
-        b=JZKtlZCPfEJLEomDbtp54X/uqC8QTD5+Q1bdPkN75ZJiG6SBGZAAkJcH4WNdOVVb/w
-         9clU9MkQ+2b967Ahjt8BUDDc7DnT1IbmJXYy4LmhNfvhnMMiQsqurUQw8OCQLyZj8+1e
-         HR/vaFybj6UmZ2eSc1SBnaEKx26Id40nhQ5laJiaZ/z9lh9hxzCQi6+n8Mkxr8Ljgvev
-         INRELBDgfB/md5YyS3UnQmo/cskdJ/XQiN1f0hlJBuuzt9S31Ig2uaFayssUiERFM2rq
-         o6XjgNXKCyLSXVZGLZJ5/2iiacSituBUcey5uAHGIgDTkOrZbcyHi8ryZKOrPYFdNFoE
-         6y8Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769442213; x=1770047013; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=syuEs8QARhmjr0ad7z3aeMN6tixAFbRn00lc7K2yoNk=;
-        b=XIwhfHYeyzNdY0w9TIrZ3JRYndJSCobFnb8G9CfwxSxR9UInM/r9dM2lIyyb+5pu/p
-         X6KcN/MLI4YUknP6wPrIhKEmzY6eJp6NfwtSf/Eh9IGxuDtLkbURca5Ip1UDHtVcifxr
-         hgoiYXWdeanyCqmkLPPjJ2aQnT/s6xPGSCCMThiRBBA2HpnRE9B/0UALFtFDjH+g9A5/
-         lBArjmmKUy2F56pHDQ4cSu864LJJ5VPC7ZVj2+xPVHVHuGA3y5RJjVbB7AeH4f5B5Nj2
-         tkk4mJ6zn0EB8q/1XNFhoz/DPseDM1mca6r3gHjUxdTMZU/5RFToVMCiYuZTMJ8iG+mu
-         vGuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769442213; x=1770047013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=syuEs8QARhmjr0ad7z3aeMN6tixAFbRn00lc7K2yoNk=;
-        b=vsepI1oBxTrGCIsOGg9OiD84+YRgl7MqDgX7CPJTDIaGz1nRoMZtGzU0PKYSFlFY63
-         Vs609i02eplrnzRJVCN75FYVmcCnh+uZ70vtnVqBq4vFeEre7annKHxMxRxwy33vqRMz
-         TdWN/PQG+0BEFjq0JKYz3gdQvgJbW1hLCyXMDsegxtVTmTbcxS5VY6L1UxkbRUs2HhlJ
-         1dOk6jF/u2w3tUl8f+XQHa7oEtCmOztQ66x2j7UDJLBGUR8zN9/lqDqqBTa/sGH0vkIn
-         L1zA9z6z1irFM8hDHybl7zlt+7q8bjjQVumclTHLq7plDhZjIA51kFHZmi6Brxbzrooq
-         qprg==
-X-Forwarded-Encrypted: i=1; AJvYcCXuEsNPKOVfc0/Ei4ek2awiPQZ+BAo17O6zk+hcIB/sgZGIgEJKvz2S/s/Z5KLkYHdFIRVuGrPI6w==@kvack.org
-X-Gm-Message-State: AOJu0YzlGSqwHiZi95fqOvLIe/4p50XN0nB5VL8fDGSrQCt7KbQyrI2x
-	1Bjww8bJUjmzTYNogS5zKrSij5Sn3j0PSOrk1ZBKR8gQt7hNst1ltAKTS3IXN0j6FQR8DBRJGWY
-	+AhhsxM09Mdd18DzHErc8EqmeuNiJhbqfuLLIOZRmRg==
-X-Gm-Gg: AZuq6aIXTywIfdWtXQhfdJgQkHDpEnuKr9CkDCWfq4F3LVi0ec+qLufusx4gnHOQJrI
-	LUKU4cWfenUEtpGAZbFDJbqPeWswzBGqKOOHzP4hDL/N9z9hRAz9BQkczaI9QagLpyXhzOoD7lV
-	hPzyDnoZihivmdudO2aj/0rq82fuaABxHEBp23x11ddlHD86VSFjMl/ISR/2ebzjrMw/d7kV+3/
-	zOG1CKDhS/A3MpVddJHRFWFknz5ccoQXbcjhSi3baiawQpPwfDCbYWiUnNgCWQFdwgR7be9/Zju
-	1Dd56uy6NeBkTtqe6UdphHnuo66WrwL/ErEZ94g=
-X-Received: by 2002:a05:6512:33c8:b0:59d:e350:3c45 with SMTP id
- 2adb3069b0e04-59df3a8878amr1649750e87.52.1769442212690; Mon, 26 Jan 2026
- 07:43:32 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZW3LbSobBIE/Z2jyZt9UDCEFz8BsV1FxKWKSGSxyUDY=;
+	b=16CTJ1a3+qW/suAZ5Sz4rqY3j7M15ZIGZ5BZ+vCR/K1OW0LyE8/U4FQsZ2NQDm7TW+EZmu
+	rahidlUoWbKo9vv1jfpk9c7uZeig94CQT7o/DV/SolBG2P2uI92aZH8yxzkdFOIN5lJCa3
+	EPbj44PyM/bp9ksZzJN5oCoIg75+XXs=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=bjOAzm9v;
+	spf=none (imf27.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769443678; a=rsa-sha256;
+	cv=none;
+	b=JkrWDu+cfvn59rIPCV5Qzmvm3MGjuQwZXncosc4F7meTeH3v5J4VWHIqKAkwfQz9TOL6NQ
+	RMFSxckrpdM5h/T0OMQTxeZZmOk2TsFhnOnKGkJQ8TrtxRgWFooY3oE+XcOAf4CGkeTDmA
+	CpfFQDYfBlFrJAne+84R2sZUxvKUI4c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=ZW3LbSobBIE/Z2jyZt9UDCEFz8BsV1FxKWKSGSxyUDY=; b=bjOAzm9vtMP4ZEvMIyGT7p/ZhZ
+	PUYSRaZMfuRvucznOxAUu+r681bLgJy/lNIaR2sWRxecSiry1S5qz2dd0A3xFPeXGZwWihg+qYxLu
+	/SZYN27qRIVAoiI344B5c88grbzkFucPeH6bw7+Tm8YHuN8xDMoHn11/NQ9fqNrEu+UwMkQCESpBb
+	QTKZcNAtXhJPAai/MScpmksAWbMh/WA4DFYyBpVRWdNAwgKMpOpMDMVqbpPoUCaCBQk75aqDmXDZD
+	eq4ugJonxrY/MbajRrAjtDhMjg7soNyF2/d+VY9hsx1WaN6OIDZkfM1bjrCMTBnCnCyjDjl2lRpKX
+	N32Vcdzg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vkP7y-00GI7A-Gp; Mon, 26 Jan 2026 16:07:47 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH v5 0/4] kho: history: track previous kernel version and
+ kexec boot count
+Date: Mon, 26 Jan 2026 08:07:22 -0800
+Message-Id: <20260126-kho-v5-0-7cd0f69ab204@debian.org>
 MIME-Version: 1.0
-References: <20260113114630.152942-1-marco.crivellari@suse.com>
- <20260113114630.152942-4-marco.crivellari@suse.com> <20260124222135.XyGv6OqY@linutronix.de>
-In-Reply-To: <20260124222135.XyGv6OqY@linutronix.de>
-From: Marco Crivellari <marco.crivellari@suse.com>
-Date: Mon, 26 Jan 2026 16:43:20 +0100
-X-Gm-Features: AZwV_QhWwQeAe8qxxRUOhm1FgDlS7o5tMx2lt48Rhb8O1nebFZlywwUCr4WAx-s
-Message-ID: <CAAofZF49yM4UN36-kQsux7LM3YrV4PwEoWMZ_Rv1-_RTNZCH+w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] mm: add WQ_PERCPU to alloc_workqueue users
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADuRd2kC/2XNwWrDMAzG8VcxOlfDkp3YyWnvMXawY6XxBsmwu
+ 7BR8u4jDYOWHgXf768rVClZKvTqCkXWXPMyQ6+ak4JhCvNZMCfoFbDmhtho/JwWdE478YFlJIG
+ Tgq8iY/65Vd7ej7t+xw8ZLjvdF1Oul6X83t6stO8eiyshoU2uawLbFDp5TRJzmF+WcoY9ufI/a
+ jVpPhCjRnLWRQomUGqfkLlH/kAGNUZKbXTBd8byE7J3iOlAFgmbwY/iXGy9tg9o27Y/TIt1Z0g
+ BAAA=
+X-Change-ID: 20251230-kho-7707e8a2ef1e
+To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
+ riel@surriel.com, Breno Leitao <leitao@debian.org>, 
+ SeongJae Park <sj@kernel.org>, kernel-team@meta.com
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3984; i=leitao@debian.org;
+ h=from:subject:message-id; bh=JWdN5ALVSvxCTZbbbffDLUHfmxM4JPZ0+lFI+jYhOZ4=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpd5FNHy0h/eLhMvXQCGWmb1NJbB7x3fo6neNCf
+ 8MoHIQ4O8CJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXeRTQAKCRA1o5Of/Hh3
+ bZ3BD/oCW6ztbhlFifriebt2pOEFjOqQAlQE72skmOP+bELWcyV2ekcnoA47N/lKLa+38GAZKoz
+ M1PceiHLa7+u0CMdNQB748zGAmRaan3JkEaCohbf4t92peLFxxiEpp0mhvH91ORLANMlLTqZUrd
+ B8tUobTUWtfdnPkNwJRz0Q/O7r+vG4VWpDLUUKxcGftFtmyFlfLLGT6IfuFLud2NNb+pkEVQXLA
+ OZYqKvvTHCTALkoK0Wf9eqxVAAZhYVRkeZzEKXGjH0Q8B4+TRNINyDf8HBD2QOMueHLCqzEVHug
+ SPDVOrZtAtV+VAWdKdn1EO792tu51g+nJc2V84ws5PNFZWQHGDCLXAZXgq71vDhy/ARx+fZ1jB1
+ lT3CWLtkipozqTvBHXZqK7Pu/26Chn+krcrs5dRLJLo50Wb06NCJJUQbB8vnynILtSpC76chEwR
+ aNA2DbqgOLZi2IBURmEUjnzNhJfbc6YmtwmE40C+zBL6vzjaYFUTccD2y1L47BBmU+gQ940aQRF
+ J2ZDA6OhYV6m3d3yYoqChrUiUb7rfTuP1o/jVcachXeRdckn2f7VN1WL1MaBxb2pAKgCHh6PxeE
+ ApWGp+CvRlOSkIwwsp/8wiGU01P6bmPP2Z4d9N3QnydqcGatXEcQTmsll5byCDSIKH5qcyQPj5B
+ GDfBkwWURN9TyLg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A9C7540018
+X-Stat-Signature: uy76aajh4n8u5bffzzajs3qbo5ukwagh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF2A240010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: o1hqu1n73uq5mesrbaxcq9ogsajft4b9
-X-HE-Tag: 1769442214-653400
-X-HE-Meta: U2FsdGVkX1+OE99zUTbkKWakIAYw6zPnu2pdL0zlimNtPYGEvd3Ed06x/rXljzVixTUtU7jbR3Zo9mfo8lB5w2y0r67HTx7OWOk1p9lwZspSygcY0dt4j1SbDtcWz/AW1L75BWS6Xvrv7wdLq4rwKCjYrwPx2/fn7PyClyEBF9nEa0TaMqVZ9ECQoxkfRYVJwOkWrycuDSB5KZd/CvW5qcprYfG2IgudcuHwm9mA+0yNCJ7j0A7b21gI0RQHzMbPx7qc4VSU/hIgcXRdFVgV8yMy01lyYrw3dS54tAfhzCiq7dJyogRwXvwhJxnCWvz67dGx46tJHSZWLfaVvgHEM/ZXL8Rs8pzd7+7vD0MudMidpjMC8BFcUs49c45a6aXl3wtwNUit7O9vNeRbPugW7wC3yaO8t8p4+dt38QLd2vbDItVCjO1lPD+Gk4J5hQLPDJKFcXPZDaiQXQnaOXN4muoECnItpcqrVoMREgM46VV0HMv9yuaHLvDsd9FH+e9ej7RZrjZ7q5Pq8PqtJXsakxVRiAYr6rPRqUkVQLG0dEWaC610C4FF4ML1JkwndySfjUIGUzhuCw7O47r/hKALrkkHq+RpL1AUutm1rUcv0DjDnkBhh0WTpoTkqIJHDut9tnT7i89pqUfgv8D/NsGBfyoJ1ii/eiESpXkyplL/3tIy+4EHzOZdSRQpTWtLm46Df9P1UlAZdEDmc7qSIiIqGpzpQs6n7QPA9sa77C6oI7Hd5vMs/fSP5O7MCT8vHqGdmmG5k40srAFOSbIIrZoZ94W8D/2RWkGCNBofpAJA9jB9M19WjqBWKiXiOnMDntaoZHp7fdZF/U8F3Yr0jR7oIjKPkA1kJonXeitF00OX/EEyYvv4a5mrtCDTFBTBuWqETS1s3eVmgIa0NKSzcm4MMVl/j+7s0KoGauIOHMGXpJaojbEr9MQX/PeH4uYtatmufJkgM6yvUdReSO+Gzpz
- NJlhORuG
- EM0vHYlM72MkbGuBLMbkEayhexNS/bHSSc3wkm07SFDAEYo9u5NlSDYNMNNdMVGElGzlb7ZYOIOaEjQ50tgv+1XJ5WvksEkLE+im3+9pO9KVWDB6Rp9iekBM6HoKdtKPzX9d/Bvo1o7qBDxe/HqTaSnD/fLXuhFg7oL1stzVZ+RvpBt/rJOJFG+CBVzvFiMF4Oh9wPWJiUCjKuv2jGcZWbtv/fDI6clSW7U28eXet65eqNVMrUbwIKURSNQFUR0sLb8iFlSpa1xvW7dCK+DuM21pneA==
+X-HE-Tag: 1769443678-684616
+X-HE-Meta: U2FsdGVkX1/A3vbTsr1NrU2PN6LGidDgZwor5k2DrXx/GzKRqhpIoWuOWtHyTl+5xodws4SwJwpuADI2dRTstNQ2oxG9o9oRLSpwDIdBeql0meBXP8LOgT+45wd1AiTtdrKZHyKMxTjH5hE76PkIlFPnR7TNkA65iRGLyiMvW4ihumL+hpxf7Asu86MUIygrn1f4QqLoRQtnsRRbBf/k57dm4vN3lWusy4tRSjuBI6Vh2KQzGd7jAzlzKBIlmY6jQPsL/Gp1WYg8mUIPMjd2Lh9F/bvUKbj7nPPINOdsfCaIhmI5yRd21QPWMxWy6FGsrhnJqFucME9dd9Ba4igZb6r4mW8tFqeJDsTeZvSa1moZm1k5E3h2ZnbT8mf/C4KbX52EHriSNWQzzmljlxK9S4IeT6D5xZFEFCojzqOXpLghftiydPCFgG6/WvBf/DhCgbyaPjHv5QJYaOe0+ceeV5X4fywngj69ZMyvFFlI8NWHT8GuRcdDUhr0G1LRhyQGbj6whIQW4eAT6f1ejlnHwnBcUb6sKjcNtOLOamXzXavrSNO2kicys9WWP0M/TE9yjl1FSwNO30VhbLk0mU4IW72tO1wei4aksR0AZweUV1aw2Izq1x6NymUirLvjbhHtHc/h/khoD0obW+PSl6TEMeEDY2NziEIQSpGTb9q/V+V1vLgc5n9rDDdlA+2KvVCd2eyzC86PTpfh373uXKi60YVvEzSJ3QFPsF3zy4NfhbecJvMrw6TgbwXg3+QNKPSSbcKUCcfiroFcWY4KyT4M39V4DlL3JDYCXa+h9K9qsRYGVNienx2Eyv6+LnxhpgKvO1b/aQRiPaaLUYSahFobkse+ELWR+kD7K0nUDUKMLDpt2xogzIa2GEyX8khiFfbe8Vf9aHfA+Z6bqHvDvhejsE+4vYCauGDjZJnQoadxAihI+yh3nR7LoInokYgTLE5mMOIpJ6PSWvW8/1krSLI
+ ALvdooRs
+ RyKXcksA5hREKGhP+xrTRzSlZy8WaJ6aBcmftE3vg8dFHcQUvNmbARfN/14ZlZOya/5+GfEautDPxO7cBOrc1TY7WzgYTKa8/mdFuD4uTC5Jj5ogyiCg5UL+9KiANO3A6INT5Ew8gVBiwqUqUg4zcyzuiY2FquzEvGZv1prKFjpCn63abQE5Tp8RiSS1IiCCEtd1pRfxV62WbRZOLv2roz1oM94tt3NitSkQrwvgCzAi/VAmOTyf+6TlJSVzFcD67MbtsH2zsQl1EiW8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,31 +116,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 24, 2026 at 11:21=E2=80=AFPM Sebastian Andrzej Siewior
-<bigeasy@linutronix.de> wrote:
-> [..]
-> >  void __init kmem_cache_init_late(void)
-> >  {
-> > -     flushwq =3D alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM, 0);
-> > +#ifndef CONFIG_SLUB_TINY
->
-> This ifndef does not belong here.
->
-> > +     flushwq =3D alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_P=
-ERCPU,
-> > +                               0);
-> >       WARN_ON(!flushwq);
-> >  }
->
-> Without the ifndef above I am happy with
-> Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Use Kexec Handover (KHO) to pass the previous kernel's version string
+and the number of kexec reboots since the last cold boot to the next
+kernel, and print it at boot time.
 
-Thanks, it seems like I messed up the thing when I rebased...
+Example
+=======
+	[    0.000000] Linux version 6.19.0-rc3-upstream-00047-ge5d992347849
+	...
+	[    0.000000] KHO: exec from: 6.19.0-rc4-next-20260107upstream-00004-g3071b0dc4498 (count 1)
 
+Motivation
+==========
 
---=20
+Bugs that only reproduce when kexecing from specific kernel versions
+are difficult to diagnose. These issues occur when a buggy kernel
+kexecs into a new kernel, with the bug manifesting only in the second
+kernel.
 
-Marco Crivellari
+Recent examples include:
 
-L3 Support Engineer
+ * eb2266312507 ("x86/boot: Fix page table access in 5-level to 4-level paging transition")
+ * 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption")
+ * 64b45dd46e15 ("x86/efi: skip memattr table on kexec boot")
+
+As kexec-based reboots become more common, these version-dependent bugs
+are appearing more frequently. At scale, correlating crashes to the
+previous kernel version is challenging, especially when issues only
+occur in specific transition scenarios.
+
+Some bugs manifest only after multiple consecutive kexec reboots.
+Tracking the kexec count helps identify these cases (this metric is
+already used by live update sub-system).
+
+KHO provides a reliable mechanism to pass information between kernels.
+By carrying the previous kernel's release string and kexec count
+forward, we can print this context at boot time to aid debugging.
+
+The goal of this feature is to have this information being printed in
+early boot, so, users can trace back kernel releases in kexec. Systemd
+is not helpful because we cannot assume that the previous kernel has
+systemd or even write access to the disk (common when using Linux as
+bootloaders)
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: SeongJae Park <sj@kernel.org>
+---
+Changes in v5:
+- Add a patch to document the new feature.
+- Change kho_add_subtree() to receive the size instad of guessing it.
+- reworked some code path to make it more standard.
+- Link to v4: https://patch.msgid.link/20260121-kho-v4-1-5c8fe77b6804@debian.org
+
+Changes in v4:
+- Squashed everything in a single commit
+- Moved from FDT to C structs (Pratyush)
+- Usage of subtress intead of FDT directly (Pratyush)
+- Renamed a bunch of variables and functions.
+- Link to v3: https://patch.msgid.link/20260108-kho-v3-0-b1d6b7a89342@debian.org
+
+Changes in v3:
+- Remove the extra CONFIG for this feature.
+- Reworded some identifiers, properties and printks.
+- Better documented the questions raised during v2.
+- Link to v2: https://patch.msgid.link/20260102-kho-v2-0-1747b1a3a1d6@debian.org
+
+Changes from v2 to v1 (RFC)
+- Track the number of kexecs since cold boot (Pasha)
+- Change the printk() order compared to KHO
+- Rewording of the commit summary
+- Link to RFC: https://patch.msgid.link/20251230-kho-v1-1-4d795a24da9e@debian.org
+
+---
+Breno Leitao (4):
+      kho: add size parameter to kho_add_subtree()
+      kho: rename fdt parameter to blob in kho_add/remove_subtree()
+      kho: kexec-metadata: track previous kernel chain
+      kho: document kexec-metadata tracking feature
+
+ Documentation/admin-guide/mm/kho.rst        | 39 ++++++++++++
+ include/linux/kexec_handover.h              |  8 +--
+ include/linux/kho/abi/kexec_handover.h      | 31 ++++++++++
+ kernel/liveupdate/kexec_handover.c          | 96 ++++++++++++++++++++++++++---
+ kernel/liveupdate/kexec_handover_debugfs.c  | 15 +++--
+ kernel/liveupdate/kexec_handover_internal.h |  5 +-
+ kernel/liveupdate/luo_core.c                |  3 +-
+ lib/test_kho.c                              |  3 +-
+ mm/memblock.c                               |  2 +-
+ 9 files changed, 177 insertions(+), 25 deletions(-)
+---
+base-commit: ca3a02fda4da8e2c1cb6baee5d72352e9e2cfaea
+change-id: 20251230-kho-7707e8a2ef1e
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
