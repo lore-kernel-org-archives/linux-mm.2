@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D54D19520
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 23:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08E12D1951B
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 23:03:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EF886B0088; Mon, 26 Jan 2026 18:03:18 -0500 (EST)
+	id 61C7E6B0089; Mon, 26 Jan 2026 18:03:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 672CE6B0089; Mon, 26 Jan 2026 18:03:18 -0500 (EST)
+	id 58F306B008A; Mon, 26 Jan 2026 18:03:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57F6B6B008A; Mon, 26 Jan 2026 18:03:18 -0500 (EST)
+	id 4C90B6B008C; Mon, 26 Jan 2026 18:03:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 455896B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:03:18 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E05868C750
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 39E9F6B0089
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:03:19 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB7F7D3CB5
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 23:03:18 +0000 (UTC)
+X-FDA: 84375642876.29.1547561
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6FF571C0002
 	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 23:03:17 +0000 (UTC)
-X-FDA: 84375642834.09.645D34A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 58CF020005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 23:03:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NfiIg12R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769468596; a=rsa-sha256;
-	cv=none;
-	b=xPrmRW611rwERqlGal97wh6aCggYfAG+hj7aBDcn6j0xZh5i2Rbvv/vu62/lSiHZX3olMw
-	qdAaonY+Ohr04RNBxY7XPTV6rKVe33mroDYevsgsvbPxfYaBtWnztwHoWPBMcUul07gO8u
-	Zd8ACu2ed9yeLm9USEEro9mAeQVh40s=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NfiIg12R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FCV6O+SF;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769468596;
+	s=arc-20220608; t=1769468597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WhgejczCrG0z6+ypE13rND30AZEwJhEVDQn8CR3noYY=;
-	b=GUHbLKbZujM301sD+3fJ7BTfYLt1rPcTWbHL3xxLaLzPqW56/sMGEg+OJdrvg3FjYPENTb
-	Upen7+q7pFGMGIksJkOeX3QNOwMp1NjHlZ0wYWwu46l9twFnimCFODsK+Sqw8GZpUiEPbX
-	e/iRb0703ltiplVk54hXIT+KlMKGBJM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ba99+BHF2nhNQb3Q/k8nH+M0McCg2V+eqTHNmm440LQ=;
+	b=fsiD4m1Hap6/AIwuvfmC0u4GElctJlMsDCd9FVH4ntfn0rIVSAgTR/qxj8UuTmnC7d/cOs
+	7tFPFCHP0VaPY+zDRl+yjWKrpyxRL2ZfFmVjl6XzTmbTbtYX0h9HkTJsqiE5u1LpEr/879
+	dR7kaLnXE9y+ouazMQixINLjZ9d4wWw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FCV6O+SF;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769468597; a=rsa-sha256;
+	cv=none;
+	b=C5mpmWUFWWxgup0g1awyXFtlSYgF3ynYYtFZjEme9h4AkB6pUmFrZDaHZpDMOIvBrUpbR3
+	8q2PNPN0cik9Yawa9gaVBcJV9NLD3yW4w4o+m842fQK7l9HNgh9VXBgb6NK/X2oTryjKk4
+	pdR+3wPU+IYkhGUJEELf5MM0XWb1EsA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05AB643532;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9DFD060051;
+	Mon, 26 Jan 2026 23:03:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE2EC19422;
 	Mon, 26 Jan 2026 23:03:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD07FC116C6;
-	Mon, 26 Jan 2026 23:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769468594;
-	bh=tnkGgklz3TfkwbdTv4/4KPFnQf9ngexNju9cYOwAffc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NfiIg12R2d8nWus0tAjQD+vXkAREoCcqoz1/Pt3GvQLJ+U2SUNGh6W/xa67A0zd7+
-	 Jvi523FXVXq/ariuErLivct83sImqpUOAiESDojqRO2QX/Otne/ft2KabsyqAhQPsb
-	 tv6OOaoEm9OmTQnd5dXjMIjiRCwHsHu2i3LDNCbuWiVgVqwq5xz6AN64EdUrNlATKd
-	 YZeKCZOF7GFry3lbfVZZcZVjajBvQSvDcIb4G6D98sfnUiSBuq9FLg2Oh9bVMh1u4s
-	 UpjpvsDgdkOFdrfxzBU52HVxzjr1pVES+8I+cO4OXaBlVutWeSSLy4bWWregdgbIfW
-	 V9WkkkkyJ71GA==
+	s=k20201202; t=1769468596;
+	bh=aWlSs1QnR62xNLtigN3Liyq3kVc1pzDFOlsqird+/cc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FCV6O+SFK07souvAqzjLyiDnTe9poLJbhqeZIzzTR2zs+qoyCfx59s0uXMaN9S/vp
+	 yMFLFF8jg3p+4dai6tPBARnBYbF0CbgZmjMACRaniJ2zA8oLu1BcJU3zKDWZOLx62/
+	 haJSAWs2bRGWLf8NnF2gl/DJUKJS25ygfYG+F2m7ka+FZgaXIGphoBWyrkHno9x49e
+	 XCh3Tfx8LMwU2wBbXoYr1BIIe4JN4x+4bJf58PG26DsXzuwdw7URh1Ne5gNaFCKDPn
+	 UexVxNBzUjH4wH72//khKCUkk8R0SCw/RlL53WEUtuVSIYmp6/m38QFjUy3RnqM/+x
+	 J6c812wty8Dxg==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -70,20 +70,22 @@ To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/2] liveupdate: fixes in error handling
-Date: Tue, 27 Jan 2026 00:02:51 +0100
-Message-ID: <20260126230302.2936817-1-pratyush@kernel.org>
+Subject: [PATCH 1/2] liveupdate: luo_file: do not clear serialized_data on unfreeze
+Date: Tue, 27 Jan 2026 00:02:52 +0100
+Message-ID: <20260126230302.2936817-2-pratyush@kernel.org>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+In-Reply-To: <20260126230302.2936817-1-pratyush@kernel.org>
+References: <20260126230302.2936817-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: im61mouj1diiad8e9f39qgpgqd8egmfs
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 58CF020005
-X-Stat-Signature: 1hrsn561uhedaxruiic5fkywuyzd5n66
-X-HE-Tag: 1769468596-63189
-X-HE-Meta: U2FsdGVkX19Br3z2KxISO9kl/VCO5o08+UOo+4srNz3ey4Dxsh5z54akz0aQXryXKIUk8y1TVspt0JUhIH1Vf5OrOxx55TDD5105AxKBokbuw1tnBvy5gMHpm1D1yk+/GYCPaEPUZ2WxiHUNVtxBKBzxjVqzFkoMj/mZ2EUu9RMIrngBZrog74lv/vWJDSg2i5LugrpVu/UQHxGX1x/tQ+9zEjCHQAusQZJFbx3Vbn9V12UR4rtHajlfDZwVna7+DWQJMUuPB5RPtT8nyPNcD/fxT8Eio7MQP1WTcOxolHLlyQEXgqvB9YGZvV8L6lTJnjMLSRtcrzR/A0BP8WxvwL9+Sn2dt8d2RfdGZeg1VozwfEedkQ30HqnLrX43vwNYcN5m9aHlwR8u5leeVh7rhMGjWqh+1CsfuB4E28JGzdlUp2bSgR4JdEo1OAWNRVJBG4RI5U61ybtSYaewUcFpOiq/4o9Ks80t52iIIPYCsTKjyG9x9YyPUb4h00VbwI15Yywsuy3BD1K9Sos+s+a02mmVdPuA8Nkw4H8WALSfu80//aNSd15HgBUTlKfamu2mGZKB4U2+rSCMmFz50AbipH+gLfRSYtWw/TnpevEeRr4AGNRoI+r3QYUmQ6XQx6e9gSXHMWQZKG1m4kU3HGFzIutJAs8OWs4dRyIcj5uoxCRnqfff5UmuqLRN/EJlac2qpufWfU6j4bKvXKDGDbJXhbG0zEM0PwlJgsO7J19oeW7GXRBwmIGBPZrIZ7lfH0D1vkoEe0933GcVfZebKefQaNfcAQYoB+TWBq6whqXOdwmLEiATazfA1VML+lXq/+xMzrQs5/YVhAoJkDcILWjsjVqAaAPs9DigOj4KrjIXN9EoqiwSM7KWwed6K37zhZR7a6er07zuRjiOUrcocNre/GHZdWk9/3NMz+kDSzqOHtSR9lfx7bGqicT/P4CyglOiLHFrqpEHgZZD2aB70ZZ
- jQ3+uodz
- 2BmI2Ni9VhucwOAAEyC2GBhcSGjs4IxY8TUrbmLs0mnfASPvNyD8m187QCo07i8yryzoSYLJCEyb7WbBsXwn3Y2PQM/A5rExzJXi5gLtybHE+GFaIGxRWQDDGsj7zyFMW9c5lDP/2Mn9pJQeclfPWVHTkgUoh1gnvo/fnhNw1VA2aVCUs36gO+bqltDu0C9bh7VDvsW60r+T9XzOcf3T5lwae/GBhZEpCGLz64wG8HA17yiI=
+X-Rspamd-Queue-Id: 6FF571C0002
+X-HE-Tag: 1769468597-656688
+X-HE-Meta: U2FsdGVkX1/m2zy+H/AwplVX5RVdhWHrR+ZZDG8HJdDlc7xcTCSdrTqm5GvPmzI2eT7M3e/8J+wvUZjTbZ0Gx/TEyF1Xy/MB4+5X9XDSB7ixr9b0DOn8LWo1rkzDpq3a5Agv0Wrk16cmUMzA4wUT9Xk+95Yi29x9hbKG1nPk4+rmQFtkQE0+aqI2+N6i7pW7xJm743SLbzG94zTQaU5RXH2ITvjwLaRcMiWwE5hhhEtOkPpX0c5UTeXYxEUwO9wM0F+1l1r65aQNynfm9cf27xQXvFDjvYDhvPbw01erJIKvxi0q54ARwtAvp8TfXC6Zaf6EogRD9QOKH7VsfKfXeTP3utfc5EN32xkijdf6JXq0Ilhp+/fdp0DKPImFN49V/pNFpqvOcPBmHk24Ld1lV0jRNFNIv7QUeg1L5WDAKkjYjnwl8VHTVfElWsnNtIDsK1spMRrL9a/T93omGhvtrN6X7UwqHgjA1l3XUQPP3jgVumTwm9+1Iw1oMJOvsvu80utCixMCEaGl30mflN9HZX5I/rfGBQe+3rJwOSX10LyB23qDm8CaZ98ZBwbsmdjGnsq/2YTxjIcX+qctVhxJ+h9AF97EgpnspCz761wGu9bQi1ML5Hb1ektcnc0qGnxgx9wOlC1PCdiNPTjP+y5JitMdfsCwTc7Ri2tlmDY3wdxaOFqF8fqLzS0Vx8THmsOYlBTu1bS860n88j0/zOfoN+JfHaJQ/oLcP9fvm6ZbsKS5dZpnmpldugUZGXK3tKHNiqiP4EQec6sxcxXnjy6rEU2YzOQZd6a6dkks/ghshZyg6Bi+z7eFYFtltOWLgSER96rStjG0TcMH+L7NPXMxIHux+JFxRkdwIrqBQ7P40FpfMDm/AlKXE104/wGdM9ZiYKYaLfXy7N9zr17ts4ULJNWePcRRWkjdnJ5bLVL5nwDIJjoAsmHIVH1Jp47oCWjrCNSUTWEkS50ZbJOLZzI
+ mFIZWUpP
+ ChckdxvNgZcTZQFCCkHmaYud1g5MWBSqqA7JcFzVEB78ryxphqHlkZncIbdFcXMukXjI1LakyQumwyjk5fnh7flspIL+k17FEDXVIdqDdxeZOHRA+oNbMl8vUeZ/zJX3dyrczodSys6fDyBlaFHDyyu3yKP8v6qGqAeC5JPWwgXRdISoqzkONnpU0oI4SyNZJbwuP7U2xIRVFZAQstMynY3LTN5Z3wajmF5c9H8njsFR9XqE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,43 +96,43 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Hi Andrew,
+The unfreeze operation is supposed to undo the effects of the freeze
+operation. serialized_data is not set by freeze, but by preserve.
+Consequently, the unpreserve operation needs to access serialized_data
+to undo the effects of the preserve operation. This includes freeing
+the serialized data structures for example.
 
-This series contains some fixes in LUO's error handling paths.
+If a freeze callback fails, unfreeze is called for all frozen files.
+This would clear serialized_data for them. Since live update has failed,
+it can be expected that userspace aborts, releasing all sessions. When
+the sessions are released, unpreserve will be called for all files. The
+unfrozen files will see 0 in their serialized_data. This is not expected
+by file handlers, and they might either fail, leaking data and state, or
+might even crash or cause invalid memory access.
 
-The first patch deals with failed freeze() attempts. The cleanup path
-calls unfreeze, and that clears some data needed by later unpreserve
-calls.
+Do not clear serialized_data on unfreeze so it gets passed on to
+unpreserve. There is no need to clear it on unpreserve since luo_file
+will be freed immediately after.
 
-The second patch is a bit more involved. It deals with failed retrieve()
-attempts. To do so properly, it reworks some of the error handling logic
-in luo_file core.
+Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+ kernel/liveupdate/luo_file.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Both these fixes are "theoretical" -- in the sense that I have not been
-able to reproduce either of them in normal operation. The only supported
-file type right now is memfd, and there is nothing userspace can do
-right now to make it fail its retrieve or freeze. I need to make the
-retrieve or freeze fail by artificially injecting errors. The injected
-errors trigger a use-after-free and a double-free.
-
-That said, once more complex file handlers are added or memfd
-preservation is used in ways not currently expected or covered by the
-tests, we will be able to see them on real systems.
-
-Regards,
-Pratyush Yadav
-
-Pratyush Yadav (Google) (2):
-  liveupdate: luo_file: do not clear serialized_data on unfreeze
-  liveupdate: luo_file: remember retrieve() status
-
- include/linux/liveupdate.h   |  7 ++++--
- kernel/liveupdate/luo_file.c | 43 +++++++++++++++++++++---------------
- mm/memfd_luo.c               |  7 +++++-
- 3 files changed, 36 insertions(+), 21 deletions(-)
-
-
-base-commit: 2e833046d66a40f9ad3de2948e6ecd791939fa59
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index a32a777f6df8..9f7283379ebc 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -402,8 +402,6 @@ static void luo_file_unfreeze_one(struct luo_file_set *file_set,
+ 
+ 		luo_file->fh->ops->unfreeze(&args);
+ 	}
+-
+-	luo_file->serialized_data = 0;
+ }
+ 
+ static void __luo_file_unfreeze(struct luo_file_set *file_set,
 -- 
 2.52.0.457.g6b5491de43-goog
 
