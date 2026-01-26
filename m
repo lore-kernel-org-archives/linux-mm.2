@@ -4,182 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CB31CF65D3
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 10:25:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DF02CF65D5
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 10:28:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CB066B0088; Mon, 26 Jan 2026 05:25:56 -0500 (EST)
+	id B88036B008A; Mon, 26 Jan 2026 05:28:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 578BE6B0089; Mon, 26 Jan 2026 05:25:56 -0500 (EST)
+	id B35716B008C; Mon, 26 Jan 2026 05:28:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 430DC6B008A; Mon, 26 Jan 2026 05:25:56 -0500 (EST)
+	id A41B86B0092; Mon, 26 Jan 2026 05:28:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 319AC6B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 05:25:56 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D49DA1B0796
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 10:25:55 +0000 (UTC)
-X-FDA: 84373734270.05.364917E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 50DF11C0002
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 10:25:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="VJeg+/aK";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3+uD1OrF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="VJeg+/aK";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3+uD1OrF;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769423153; a=rsa-sha256;
-	cv=none;
-	b=khWa2hQFzTllGBIwUUvB3gLiT1wumw0vAAhgx6fZoWthlgYYCYtc3uYtuE3fD80d+TGWF8
-	7+r6g2MhwkCetbmw3Bh9dDAb331wlDRHXXE4CaA4iPPwkunh+4GOPQXxB7ztBlXeiY3fgK
-	FuCHWrBfSYRutPQsonsyv1X25Oc74jY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="VJeg+/aK";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3+uD1OrF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="VJeg+/aK";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3+uD1OrF;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F0996B008A
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 05:28:53 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31B8AB7A19
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 10:28:53 +0000 (UTC)
+X-FDA: 84373741746.29.175615A
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 47DA7A0006
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 10:28:51 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CH62mXe5;
+	spf=pass (imf25.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769423153;
+	s=arc-20220608; t=1769423331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WrreC9Aa5mIt2Nw/HfIy8WgG30xAVRkrNKue5+B5Jms=;
-	b=0pG9YMZVKZWeMJcZQ03ppGkCS4eQF/bGPlQHuY7s++EAM5Hv0ldJzyW4PlYyQzbvpruv6i
-	idNUqa1NvFimr4AVbyDspJMl/4vQAKwbfgm+llp/COd4s2VP6nydPOLaNwMU8k7umPXUVV
-	uMMrrFDcL90lIS2v5F3blkB/Af/oXDk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B45F53374C;
-	Mon, 26 Jan 2026 10:25:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769423151; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WrreC9Aa5mIt2Nw/HfIy8WgG30xAVRkrNKue5+B5Jms=;
-	b=VJeg+/aKqOZomXAACB9FUDzVrm/k1watp+pan1kzkKzwTgL7T8MnhMR0KQxGIiOHA2x60B
-	yR5S6lDRIognyjJcYB5ijRyxVZgaUA5xZS1EoJq/c5KxhfVVCID/vvZ9ILNxNjAYHIu7+E
-	8NuHam5+qGq/9AavrHwThdf3Kugen2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769423151;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WrreC9Aa5mIt2Nw/HfIy8WgG30xAVRkrNKue5+B5Jms=;
-	b=3+uD1OrF35UP1NRW5WQBG8WdSsgjQQ5GqI4OGmt5rPzle1nHmGae6EOAG9QdNljsgDFfXW
-	pKDy6tjqKUK9cxAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769423151; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WrreC9Aa5mIt2Nw/HfIy8WgG30xAVRkrNKue5+B5Jms=;
-	b=VJeg+/aKqOZomXAACB9FUDzVrm/k1watp+pan1kzkKzwTgL7T8MnhMR0KQxGIiOHA2x60B
-	yR5S6lDRIognyjJcYB5ijRyxVZgaUA5xZS1EoJq/c5KxhfVVCID/vvZ9ILNxNjAYHIu7+E
-	8NuHam5+qGq/9AavrHwThdf3Kugen2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769423151;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WrreC9Aa5mIt2Nw/HfIy8WgG30xAVRkrNKue5+B5Jms=;
-	b=3+uD1OrF35UP1NRW5WQBG8WdSsgjQQ5GqI4OGmt5rPzle1nHmGae6EOAG9QdNljsgDFfXW
-	pKDy6tjqKUK9cxAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 83852139F0;
-	Mon, 26 Jan 2026 10:25:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fHTIHy9Bd2kiGAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 26 Jan 2026 10:25:51 +0000
-Message-ID: <a71b7529-bf1b-477b-8e66-644f38b0c32d@suse.cz>
-Date: Mon, 26 Jan 2026 11:25:51 +0100
+	bh=auhtqvKNqSuy3B8gISIK2h86XPLcfd95W6hmGc7ctWo=;
+	b=XtIxetVVyUt3XVs/5Jnc5761xOZ3ucUt8LOG+mf1lIoGhf/Pjt6Ljbgrawz/d43zsF4fkN
+	Zv4V+J9MZOeIyvP3CQNUvoX67dwbOgjfAENO4dnXE5TajrbO6d6MSrtKOkFTE5Q9UsBPdA
+	Y3ZBhyK6CzD6JGxDURTNSpIECVkiksU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CH62mXe5;
+	spf=pass (imf25.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769423331; a=rsa-sha256;
+	cv=none;
+	b=goCANvMMyIUYTgv8ofVEyGswZsIqWzpFMk3m1MyIIe52krYVEwZZc34JFriIuypz+SikZw
+	cwxeFKmfiGdOESAdb0wdU8HOqGBoYtIQf60DehXx2OiIOPSDo+GQ6V80Kzr0bWsswMHVeX
+	tVzC6ziF2/ENBpVUCIddM9OUgx9PdU0=
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-59dcd9b89ecso5208055e87.1
+        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 02:28:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769423329; x=1770028129; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=auhtqvKNqSuy3B8gISIK2h86XPLcfd95W6hmGc7ctWo=;
+        b=CH62mXe5+NOI0jjloMjdRdOXyM4cOtsZ9ipxBG9muRgvcSE7sIDQBwaSZGKtlgeJOL
+         CP4C6Cr/yta8PeFHj+yayQdmQwetvHepCWIF3lFuAQTsxs8ctwHIPJfZ+Jx8i/vlPwhp
+         MdjM8GcWYDclvZ9Ynx9oZp40vsGir4ddtHSovU5PEA3bM0UMGAKXVX6jxGVW1igZm6uw
+         iAclRmfb2cUI81QOAI9b+OZXzWWMGeY2qSfeNNjMhPVHRvUDo8WyOCDQeeTV+EGS94bU
+         5DYoWfuzS+DUHdmzCqBGLMv3jiL0yf+pqE7fDIA0M7Rykfl0ovweoZrxUCcalNsPgsUk
+         OF6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769423329; x=1770028129;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=auhtqvKNqSuy3B8gISIK2h86XPLcfd95W6hmGc7ctWo=;
+        b=eMnJKJZy5B1ZFwNVeB6aCNacZPtwyJNGrto7yk035fdxlFF/Bbra2Iu7/CrGHe6VTx
+         LFbpcdS9/zbg1pecgrJRQkfayDjQET3o4W6mX44nF6x75SBlfCQBwIFtOG6Thcxtul9N
+         JUsIY2k/rpLQghk7geSKzvV6QWXBxmheAzeQyVCv/mdUdJGuUXTUR1F7taEeuZ7P5gxo
+         epoIJsCujce+MVZLHd97KetfNQaccnzCEzYkNXHARiSokbgwS/oxqeEO1YCeHtxSvGrz
+         ZpEy7OIcWjElP5c3koFtpV9ld4FH1nL9qVJiVG6qCUaFhcvMl3OvcbYNDyIJfBUIcUDG
+         hN7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWyWj45Q2rMX1wbYr7mVigHyFIhAbrtFLTAz9vxmCh5Cd5U2LjY0VPx7ghkEytvHGXCPSPbKi+qiA==@kvack.org
+X-Gm-Message-State: AOJu0Yw1f0eYM/+OvTgvDPw98ly189NoHeew2NAsWLxCvCauoJP9w26M
+	WMabCT4OuPFzaxxoWSWGb+gDFxDzBpaDFpYYSBbG6DWViysNTR7vrog3
+X-Gm-Gg: AZuq6aLznrsttnEJEn9um0PRNLozLpLNiOiBs0n+KETvT8vzmqvcq43P1jst4jSPLyS
+	gSXSFyeJ56o+2pm1hs8M8voxAVpOfN5Ttzz/mhp/6x8pcowdCJjfnicbR3L2RSZsC6HCUrUnoHa
+	KdvK8/bDeSmuvr8L7Q47+CwPqsG+eM1CAvgl0hpxc4Ug8bN7IQSt74MLxurQQUqCX2/S6c/O8+z
+	2PxJCW3QVl6bakYk/+64mwVBFxlH2FHsa7tEoU1McIaYo+qCXmTxlUGGxwVibAiF81fALD7F5MY
+	4+hYjrGbg9072CHZCHfmh9tk9fXpU929w0Ofg5DXr3MSt59NjAANx+lU/S2tAFnxEORCMJTDzjC
+	jVm9KGDYgkR7ZnInsUL4E1EBWFUt0au2ac+7t3F4vKtHLJhoMGSoDrQiFZbz4G98=
+X-Received: by 2002:ac2:4bd6:0:b0:59d:f5ad:1267 with SMTP id 2adb3069b0e04-59df5ad12a3mr1093590e87.9.1769423328970;
+        Mon, 26 Jan 2026 02:28:48 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59de491f8b9sm2596674e87.68.2026.01.26.02.28.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 02:28:48 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 26 Jan 2026 11:28:46 +0100
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	oliver.yang@linux.alibaba.com
+Subject: Re: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
+Message-ID: <aXdB3lsm3w0fJT3Q@milan>
+References: <20260123082349.42663-1-alibuda@linux.alibaba.com>
+ <20260123082349.42663-3-alibuda@linux.alibaba.com>
+ <aXPEFdEdtSmd6AzF@milan>
+ <20260124093505.GA98529@j66a10360.sqa.eu95>
+ <aXSjm1DXm6yP62tD@pc636>
+ <20260124145754.GA57116@j66a10360.sqa.eu95>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/10] mm/vma: clean up __vma_enter/exit_locked()
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Jann Horn <jannh@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Waiman Long <longman@redhat.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
- <33273be9389712347d69987c408ca7436f0c1b22.1769198904.git.lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <33273be9389712347d69987c408ca7436f0c1b22.1769198904.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260124145754.GA57116@j66a10360.sqa.eu95>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 50DF11C0002
-X-Stat-Signature: aq4tomtezbd5nrac4xawf5q6irmfpsh1
-X-HE-Tag: 1769423153-157635
-X-HE-Meta: U2FsdGVkX183vnSLsykL7cFYK1FMh6JHJmCaKNd1i/P5aGzNu+qtaGobmdV7R1CgtY7imgEgYqY/c5IOJhDOIIZ/hk45DZauRg5V2UdKNenV1QezP6AbNBLrfqcBWqvMBNPuhNHIbl5pRzr4hePU3cC7/8lJtdu39mhmEpVeN00ZFLruD9UtsSpRsKCvDD2xrCHsGD+g+iu5H9xj36QI7NvagNe5B/g50HA0NmYXtlQBmzUYoRUdnrWc/GS0JqNmNj7TEBSEhClAfCJjkbeGJmYdJiCGf5LEGzNFOXgj1+mKLRIqSW6N/v+rZ4GfZ5U/Va/6RHhn75EBIXRYAugXqGviZzMn55rBNelAPOR7lnGb5Owci1MCtXbtgftcOD4daezn819GQVtuCaDTR+0mpKivQopc3q48/ydYOzCt7muzrdikjlpaXjqDBlXCfOmnQDXkXY6H1V2C+PKDk/IeBpxtLRZnL3U8YofjwtSy/nzRlnXYC5LP8jUi12XqFGG3jlRxa/QfWEaevb3YsBNvXKxPnB1PQOA7lVeS6aSEq5Nc1QvS/ln9w41OS4xTHnWjHQUrsOqPzTMqlcRX6ixZbyHMapH1SxmupeD9hinldOgHObM5A4L7spbfuZpaoEund2O9ZgFVJtlNURY82jQ4LMLSCInk0xpFuw3b7arxbBdzQ34Fcyloh5OkZE98g45gFFkmgbaXuy6tl+/eZ/1OLwVbveUSRSdoY46un+wx4GJx1kROhskq7jT//ffOU04lZgN9kRVUhShK+VPvQKe1u7shCaSKpMUfJUGyLM5zQO3nxToxTzVlHKEnT94m2dHR2PTyrKULGXicGNN5dDqtRcu8ae/OznFgu4E6ieMncC4CVc35nvYdx2ohBsC8DwYm6pbFINYTczm2U/xRmRbbuciHbIznffriOF/CTXp/TzJWMIoYFErTdvrVeXY1uZQQEyXpR98PrNJD5mdSWg6
- SJyKxDn5
- eWDtrVu7K4j7y6wD8nhzKk9+a3Gas4TxXTxq+8wzOlBiDVIFRs3B8dKXTjt20CR5PkvY4T2XW00DUM0k+sYdDcG6CHntTXnkMckEulZeshTjPeOnHo9KmrWB1g6N/urSCkAX/Sg5uYIT0oMVQMMOER9a8DvNBxavKmSHixi/+z2o9WrdsuQlrMMT4ulPk3Q5qCseR+ASoqD9p5pvbTQvZN+hTntvBk3ZR0FUOkTGL3uRuhbdgK2IN+1+rp6TTFwWg8VBDoIYheIZXkBK1OxcQ3hEozBSsX3f1fFSRBCxzKdoM1e/YgRGDUOlnVbUU2KCCfIiy1D2fmWM0JuN9pQzkBx8dcXIrCKlOsgxrID3C2NOGgPlNlnBUSJtyTlCWiAbX9r3OPZ0Zm7Wcqu/5XQWOIvjN0G/UCoUqapEP7znCwopsGKQ=
+X-Rspamd-Queue-Id: 47DA7A0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: iwqa1ejk8bpbsym7hkrnad61j6s3ucaz
+X-HE-Tag: 1769423331-519720
+X-HE-Meta: U2FsdGVkX19PGvAnEBJ+jg+ljaYTTV/YYcUDAbIIErRREp2PgOoHnUwLmL5ZQzJgR5CTNQEHau0Kb39HljdjNQ/cRMjmXTpBPCn0xtSyBI0avsRm22a85OQpqb5kmVyvbSKXmKyQ3sLSNtUE/5x7xQbgfuQQGWxp4KDuYwXENJN5IavZTwF6pFjTGFn/4E5/UL1HWRHsLBWZ6eLgT1odGGFthWbZr86wBPLHGQzyucTO6I/ytwk/6Q8k9zU1/cOKJrDx5E63EJ8qXuiKJkeZxrA0f+xHV3PsUtHWfmvRBtTOc1Y98/zafnggyYLw95IYRgcKVn5BstCejtLwOS8jGVz5Q5gbmqGNXbUsN+mexm20n6qAXDPGlbhMm+bSSX8pZPNAtdMFD23eAM0a7UoXMnFLbReRB8jbAjhyR9SWNcwKb94PBXF1uuF9YJpxuCHZYP2RdeWXm/Fs/rTsZreL1022HXbcoomh2A8dwVnfPjnqk1mRh+Qrn1PFaT8IscqYq7p6BodlQ/LeSsb9HsTuVxnsG/tO0L7BnlkcD4lkw5ttn4g5T9JLxF2ajmEt65Zi1TxeWklK3YM7Kff/uhr8rFr+r2ZBq8ocpeAP3jsPblhO3r3lOONQp8ZO9SgOf7F5vsJEnR5pNDqyU+PIhM+EoQJdA0kImc+bOiUADxcs8jl8mdwjpcRCQHAgr7WKVb6nJh5FkE/yw6CxiEY9XOdr+lXlM8bD+o0s/y2Vb6vyy0rk19ztRsIuEZZDCHghUZY4cDO9uabpzAZTDKHs7k8LaR0tP52ALf4vr/jXbqdyufzbZjqmzupaD4B0v2UgBoydBtRsSoGNFMeLu7DnbjZw45T+EXRpZnPqhKtCwR9Ry5k84Qba1ISLc4RES/H0wU7tp4ni6tDQMEg6J2Ywy9lNyhQcdD3t2/oMB1jnLJT0PZbFpYiQbl8QATsUDXADEPjIcNDrGY31QOgyHBlT1Qy
+ 3qxVuQNp
+ aMBc//R9dm9gT08a87YqSSrQXLzV/i2fP4kw+4UHzCxkRHsbMGaAm4qJO2v4b7OB1SpUCzpw0bd03wyDKEMQkcfnUaAybnJRiYQ/Q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,30 +134,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/23/26 21:12, Lorenzo Stoakes wrote:
-> These functions are very confusing indeed. 'Entering' a lock could be
-> interpreted as acquiring it, but this is not what these functions are
-> interacting with.
-> 
-> Equally they don't indicate at all what kind of lock we are 'entering' or
-> 'exiting'. Finally they are misleading as we invoke these functions when we
-> already hold a write lock to detach a VMA.
-> 
-> These functions are explicitly simply 'entering' and 'exiting' a state in
-> which we hold the EXCLUSIVE lock in order that we can either mark the VMA
-> as being write-locked, or mark the VMA detached.
-> 
-> Rename the functions accordingly, and also update
-> __vma_end_exclude_readers() to return detached state with a __must_check
-> directive, as it is simply clumsy to pass an output pointer here to
-> detached state and inconsistent vs. __vma_start_exclude_readers().
-> 
-> Finally, remove the unnecessary 'inline' directives.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Hello, D. Wythe!
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> > > On Fri, Jan 23, 2026 at 07:55:17PM +0100, Uladzislau Rezki wrote:
+> > > > On Fri, Jan 23, 2026 at 04:23:48PM +0800, D. Wythe wrote:
+> > > > > find_vm_area() provides a way to find the vm_struct associated with a
+> > > > > virtual address. Export this symbol to modules so that modularized
+> > > > > subsystems can perform lookups on vmalloc addresses.
+> > > > > 
+> > > > > Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+> > > > > ---
+> > > > >  mm/vmalloc.c | 1 +
+> > > > >  1 file changed, 1 insertion(+)
+> > > > > 
+> > > > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > > > > index ecbac900c35f..3eb9fe761c34 100644
+> > > > > --- a/mm/vmalloc.c
+> > > > > +++ b/mm/vmalloc.c
+> > > > > @@ -3292,6 +3292,7 @@ struct vm_struct *find_vm_area(const void *addr)
+> > > > >  
+> > > > >  	return va->vm;
+> > > > >  }
+> > > > > +EXPORT_SYMBOL_GPL(find_vm_area);
+> > > > >  
+> > > > This is internal. We can not just export it.
+> > > > 
+> > > > --
+> > > > Uladzislau Rezki
+> > > 
+> > > Hi Uladzislau,
+> > > 
+> > > Thank you for the feedback. I agree that we should avoid exposing
+> > > internal implementation details like struct vm_struct to external
+> > > subsystems.
+> > > 
+> > > Following Christoph's suggestion, I'm planning to encapsulate the page
+> > > order lookup into a minimal helper instead:
+> > > 
+> > > unsigned int vmalloc_page_order(const void *addr){
+> > > 	struct vm_struct *vm;
+> > >  	vm = find_vm_area(addr);
+> > > 	return vm ? vm->page_order : 0;
+> > > }
+> > > EXPORT_SYMBOL_GPL(vmalloc_page_order);
+> > > 
+> > > Does this approach look reasonable to you? It would keep the vm_struct
+> > > layout private while satisfying the optimization needs of SMC.
+> > > 
+> > Could you please clarify why you need info about page_order? I have not
+> > looked at your second patch.
+> > 
+> > Thanks!
+> > 
+> > --
+> > Uladzislau Rezki
+> 
+> Hi Uladzislau,
+> 
+> This stems from optimizing memory registration in SMC-R. To provide the
+> RDMA hardware with direct access to memory buffers, we must register
+> them with the NIC. During this process, the hardware generates one MTT
+> entry for each physically contiguous block. Since these hardware entries
+> are a finite and scarce resource, and SMC currently defaults to a 4KB
+> registration granularity, a single 2MB buffer consumes 512 entries. In
+> high-concurrency scenarios, this inefficiency quickly exhausts NIC
+> resources and becomes a major bottleneck for system scalability.
+> 
+> To address this, we intend to use vmalloc_huge(). When it successfully
+> allocates high-order pages, the vmalloc area is backed by a sequence of
+> physically contiguous chunks (e.g., 2MB each). If we know this
+> page_order, we can register these larger physical blocks instead of
+> individual 4KB pages, reducing MTT consumption from 512 entries down to
+> 1 for every 2MB of memory (with page_order == 9).
+> 
+> However, the result of vmalloc_huge() is currently opaque to the caller.
+> We cannot determine whether it successfully allocated huge pages or fell
+> back to 4KB pages based solely on the returned pointer. Therefore, we
+> need a helper function to query the actual page order, enabling SMC-R to
+> adapt its registration logic to the underlying physical layout.
+> 
+> I hope this clarifies our design motivation!
+> 
+Appreciate for the explanation. Yes it clarifies an intention.
 
+As for proposed patch above:
+
+- A page_order is available if CONFIG_HAVE_ARCH_HUGE_VMALLOC is defined;
+- It makes sense to get a node, grab a spin-lock and find VM, save
+  page_order and release the lock.
+
+You can have a look at the vmalloc_dump_obj(void *object) function.
+We try-spinlock there whereas you need just spin-lock. But the idea
+is the same.
+
+--
+Uladzislau Rezki
 
