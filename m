@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D13D778B1
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 01:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B6AD778BE
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 01:40:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BABD6B0005; Sun, 25 Jan 2026 20:04:16 -0500 (EST)
+	id E8C476B0005; Sun, 25 Jan 2026 20:40:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 391ED6B0088; Sun, 25 Jan 2026 20:04:16 -0500 (EST)
+	id E3A106B0088; Sun, 25 Jan 2026 20:40:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2674B6B0089; Sun, 25 Jan 2026 20:04:16 -0500 (EST)
+	id D1BB26B0089; Sun, 25 Jan 2026 20:40:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 12D576B0005
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 20:04:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF2421B026B
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:04:15 +0000 (UTC)
-X-FDA: 84372318870.22.ABF1A5B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C9CBB4000F
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:04:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NUbHtmEM;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BCCF46B0005
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 20:40:22 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D02BD2D1A
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:40:22 +0000 (UTC)
+X-FDA: 84372409884.16.0F86F59
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6F0E4A0003
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 01:40:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JtIvEjky;
+	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769389453;
+	s=arc-20220608; t=1769391620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4gyLmNV3bcrq7q/Q7KM/2N3tSNKpRfMHW6e6aWOb+xQ=;
-	b=zePe/CEx22fzMygmSboFlRplpA/qK/6VfbdnahZMakSPA5ZjLu6rDtAMDLNcwT4fKcdSul
-	wrHqb6vYwgxVfJ86KPp7MpNZSYUcDL25udkT9LHXorMsIgeH2HSwUyz82lO0LnuqAQt28H
-	NNmWOVFnP+bqjy7/sHz+Y0Cng803TVk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NUbHtmEM;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769389453; a=rsa-sha256;
+	bh=qOS/I3qY1vByTUV0rzQTBMazz/yNAmJFWVeZH3R10+Y=;
+	b=BXNREKK6HDucKQUEi6FIhHgjywuWtw/WkWfemYEAN1Ye8QQ5KZlWwM15SrngZe3GyJCK3l
+	AQ7gs2Z45HsZPhakvy2DLJMB1F0o+X9iJ/mcJ5KF+6Fb4KUZL6JWMIBti/tO2ePkzl/amx
+	Yj7dTgB/5y0MDWP4b0RagUYMA1ulfPY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769391620; a=rsa-sha256;
 	cv=none;
-	b=wBpxIUr640DUvW2XOGYEe5ANMl42DkNcJHTL7sc6aiYboog2wsZZzTMBhQpmVEBwxc7r/f
-	OylrSthKEUaEqHemOEe+fK+JvEESlMlfoXiuTRC65zK5pT+vC7GDg/o2/M03pyAdjCXJ4r
-	nDHC5nn0aO82kvYDIqXsNUScneWl2K4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769389453; x=1800925453;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XRcP8IljFz66L9N9RGSap4tlNSAvDJZfAmf2dxUz7QY=;
-  b=NUbHtmEMY6SxDK3Ii0x6bOTvGEM/KQ29+1saIe+iiy6ONPxC+y3mZ8SO
-   m+ghvNZs1extwlLmyF9z4DYmw+n88hfaD8Vk9IQih2RWKsvo1swi4RUht
-   lQGRbIwDGkvPCHGm8QSi0Vivk+LmQ6tJTp4NjwB0fL+aywgnxkR9bixew
-   K23PAMVhH7NDUP/f/s6BrvEGV2B/aHrr7E3pI7CnOh8WK9fvZTMvW8cRW
-   3qvtWyrBKWcp6kuJt4HsLj+68P48fh35DWvDhHBCwnEAufGROOQKA0BRw
-   VmebWtVbpov0wXUrYoW1KMY1k0XMdvICyiKScdurcUMyswGA/ippSh5g7
-   g==;
-X-CSE-ConnectionGUID: 2rxVR24IQkui8axk3zrRXg==
-X-CSE-MsgGUID: TznJ/yQeQuuQgPRXJd9JeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11682"; a="58144409"
-X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
-   d="scan'208";a="58144409"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2026 17:04:11 -0800
-X-CSE-ConnectionGUID: /40tp3fYT8OGyAs5b86fQw==
-X-CSE-MsgGUID: /C8LUwolQhCXGWCwo23Ptg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
-   d="scan'208";a="207150278"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 25 Jan 2026 17:04:08 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vkB1R-00000000Wms-3NtU;
-	Mon, 26 Jan 2026 01:04:05 +0000
-Date: Mon, 26 Jan 2026 09:03:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH 09/12] mm, swap: use the swap table to track the swap
- count
-Message-ID: <202601260934.Lhdzyzmg-lkp@intel.com>
-References: <20260126-swap-table-p3-v1-9-a74155fab9b0@tencent.com>
+	b=nOhn5ka1nFcskLvZxttVThoO3NAZmkJoK15zrTLnsggc43ksBUIj0CL1rrUsKGmOvWhxV4
+	2f7q3ECH27MTtt1Nh0L9fz1qBLIyIG9whg0CKW3if15tC8pM/Y0GgVJBBhwAtrRkeagu7Y
+	5B4eDtrsBqkyslUSLREIzxRrlAFebkU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JtIvEjky;
+	spf=pass (imf15.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260126-swap-table-p3-v1-9-a74155fab9b0@tencent.com>
-X-Stat-Signature: t4zxfporazrdiqza3kahq6f6hxw1xxfq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769391617;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qOS/I3qY1vByTUV0rzQTBMazz/yNAmJFWVeZH3R10+Y=;
+	b=JtIvEjkyz6fJcB1qcAm9UeGr45TrQiuC4U97SwoSQWERAEd26ARBHVe7+Pw+4xl7KifCNB
+	9NYXe7CylOwE4gcUYajwfyysJZAzkYijiu3765UOhj/R84ibbkDA0AHNiazLN02H6fY7JY
+	Q2NWiGJKpBl1suunAWTwKhLgjyy1ZxU=
+Date: Mon, 26 Jan 2026 01:40:13 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: hui.zhu@linux.dev
+Message-ID: <8ee851c5676facd43c45cdd5d434d92d85628e43@linux.dev>
+TLS-Required: No
+Subject: Re: [RFC PATCH bpf-next v3 09/12] selftests/bpf: Add tests for
+ memcg_bpf_ops
+To: "JP Kobryn" <inwardvessel@gmail.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
+ <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
+ "Muchun Song" <muchun.song@linux.dev>, "Alexei Starovoitov"
+ <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
+ Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Eduard Zingerman" <eddyz87@gmail.com>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "John Fastabend"
+ <john.fastabend@gmail.com>, "KP Singh" <kpsingh@kernel.org>, "Stanislav
+ Fomichev" <sdf@fomichev.me>, "Hao Luo" <haoluo@google.com>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Nathan
+ Chancellor" <nathan@kernel.org>, "Kees Cook" <kees@kernel.org>, "Tejun
+ Heo" <tj@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>, mkoutny@suse.com,
+ "Jan Hendrik Farr" <kernel@jfarr.cc>, "Christian Brauner"
+ <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Brian
+ Gerst" <brgerst@gmail.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
+ davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
+ Brouer" <hawk@kernel.org>, "Willem de Bruijn" <willemb@google.com>,
+ "Jason Xing" <kerneljasonxing@gmail.com>, "Paul Chaignon"
+ <paul.chaignon@gmail.com>, "Anton Protopopov" <a.s.protopopov@gmail.com>,
+ "Amery Hung" <ameryhung@gmail.com>, "Chen Ridong"
+ <chenridong@huaweicloud.com>, "Lance Yang" <lance.yang@linux.dev>,
+ "Jiayuan Chen" <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: "Hui Zhu" <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>
+In-Reply-To: <b90069a3-86b4-4fba-9ff3-fe5f6c4e425d@gmail.com>
+References: <cover.1769157382.git.zhuhui@kylinos.cn>
+ <c44accaaaebfc32be13234f82b501a3852ba3f0f.1769157382.git.zhuhui@kylinos.cn>
+ <b90069a3-86b4-4fba-9ff3-fe5f6c4e425d@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 6F0E4A0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C9CBB4000F
-X-HE-Tag: 1769389452-787462
-X-HE-Meta: U2FsdGVkX19GJ+4+9yAB/bborzkHJeRJHjfVvgmh83ZxlaEAQbYRQ61vAc88tZSMN9CwidnfxhaoTBtDf/exZbqkiftYqLR0INu9yYyzQ23KOWmgPfkUK5RojQ2lSTN4T+PyLvttogoiCrw/98C+TF0HCTZy3Q2vmH6oS6YgfpiXRp2HZRpA23Ai9csn33/hoJTjoyzTb8ha7ZwpU7nHVN/78RRyXJMqOMkMfQLLjNUMms/FvqEkPJ9kNf599psrEZa8/sKsIWKgty+AF9PNT3XaynSyvd+YevSDYlOYq3P/ipj62a+yT6EvDrWVhqO4N7M4I4zsxNwvzOkh6c0PeCYV+mVq4C1PaU12FRVE5NEnb6QZCheCqVWGSSJrbdFkn47kfrgoDgSaM5ijayGTbUsgzVjux4v7DocfzLfUe0NYSJaLLWsAE78ujcownD6rChHD2D2fAto+s9ho4vkX2L6sPirIM2AoaDTTylysJtnH8ULj+gNLEDJdwMgtxiKBNrMKUbt1Q2e9+Pi7pnijw46QHcTtCt8eB9jKq/GjU34uIviIdNpKwD7oI3VjuIxvN2tJP33pmsHFjwzcgElaraw8wXf5KP/3c4oUTH+0bFYvWMK+omXzHka3o+G8EvcbrObfnbG/o14jtmHH2jDOgyXhRNJMQp2qzpNRpSTE93Oynqa/QEbPKJF2Zdx8S/tmATGXbCx0D/QagB6eIkbmBtW+uBvyTJ3CZIdSKMxIHIhCqE8HOuI8F0WK76elw42AzWmpYX/1hDwKFzn7UL8DDT4qIL+2vRDsCb3oRHhPsW5InI692hxGbQL4u//CQUqpU8r7W8eWAunlJBRTsaXQcqGqsFQZE+wosGm+daUSpXQ1Wz1bOTTjdeYR1oJKuDPvRS+W7T8yalnyH2pcWKjre/1OHhfcYGMydABWUGQH2aXka3D/CrXCAoTZJrlr5pAyqELbvQ/IX/uNNr3Vf/5
- hmdlC4OP
- bB8JoC7CTXgAI4Dz2KIDBLDl+xJzxpXo0vRkJN53XvCMVO26uJ7BtrngH9quYOd4VceaCf+isrmPczR42p4vAfguGdVpIbNPRCFZDCoeuclGF8vQBvc2Ku2QISKmMveNDu8cYvq6fR+NoFh03G6LTb1jjVfBDwd8uBSw+iuRdlZJwr0Yda079D5GgjKwHUZy0fTYUUumqtNPTy4mj7TP1Y8bGDr4YaUlqpzvK8WJe2Rbk8yEKXV6ytCLyTEemmAg8odl8QJcwpWvTokwEMHE34MWztLFrJkypX/2OJfgFDimUGZOyGimgfb8u+DSXRMioHcL+Zh9kgzfRBu2t5BX8e+iZZLSIEaeskC89H1AZHB0Kj8irVysxhfcjxEFWeTjfhS8b
+X-Rspamd-Server: rspam05
+X-Stat-Signature: g6up8gjsdgss5dzxpkrzii39nfx9wrk7
+X-HE-Tag: 1769391620-455695
+X-HE-Meta: U2FsdGVkX1+vWF6bGiy0Y8yEn0+dpqq0n+vazjQeAmbI0dFhK2QAOsGkOUR6q84JT78fL2VnjgU4Z73PXbfn9KVDZ8CJO3904kAML/l9UB9fe1PSUAPtX9QBy+HYfduY2UsCEMl/HoUXWe/tDHKPvNspW/qZSNqPoGEPXpPpsIZmWWhCL2V7HtDxiFSs6qB+4XeHb5aTROGMHPZs89HdjaK6BDvlo4yaKPAVpPyJE+8GMji3ZW/tAXvMifjz52plWTtaPiFXIPGdAAzzZwifYlvlW5pSipF3iq14gB66/zfLnhB5xqDF+C4nveZfAfjJFHjgdV35r804toMwSZ+2kOmXVQSmY68e7vJyGCIXK/MPQ/tUsgThmvMye+V/p7xdLeMibdXAM65W8ZJFi/U+B0Yk01X89519QHRi8tUzeHnBZWcCDnhvQMXQerG140cRAaRr9HZfUEKRcq49iSlcP+tWsnCT7GhclJj1bkp4A9Z20dwytRT45YYgRDFo6F3qd5tVOAphIcPWuN65vjooUo6geSXt6pM0oLaHxpwYXZ90B0ksVgBSqIBFLcTY7c0vHtDlcZTYSFL1T7/F/EJp/N8hSfxjoje5RHC+tRr8JPx4CoB2ZZRiTdAaDyOUCH5/1GOqR/TFNw55EI8evbjp7yfOXwIuho5lSyHg/OlyeMdgfbeCsgI7YjQzHu/Z+BUGJj8+NAP8LFUnspCRdNumPbpZFENQUyFX7iG9P/35nOIE5Nk+u+9NyWEKtWKlSDDqD31k3UrHY9L0CCO3gFLv14WckqArbgRCcvORgtcYuFOXpcJAQ/ISH7pNzg3VP6oi68Beoz0df10MPZ/TGcXHyNhX0JDqWRkUuARbdGv1B8CBr+4EvRg5+FcZ96On3zWYu540jIAa8g8mTswBDfvmyD6o0cVHjwQ1ade4sGgnkIz0L4GeVNV2AaqUD/Jpi2bWIMKH30Tju6gtjVYJgUH
+ J3c3bnFd
+ HOoCSiX/zIWRyM3IvtG02Nuwmn3B/7AyJDNfNtW0N9M6oMHEZKoAwsaNpPyAbQbdhWnhH8TMz2Af0hjZF37NV7VTpsZEHvQpuYMBNMeVoDg4i4x2/eEKm/SephHMnCo3M2Vg3GhB1pIqadWxSpGJ2MH+F+MnpcNHWM1/k84g6EAnb7xr3HElBOVYLiudYImyGOFFHkOOuWgGv1igaXv004KRF/cJJG0D10GqXQrGywgTbADapVxrVq9ZMEOjGxi5+A65l7l+4E7nwaUnK4VX2vqjJ859PbJY3ghdWFu6PH22VzGwLnTqI6ymWHFm6NuURK3IPj3bwOvK3eCGFDUx226wpXEjrme6u+2crVo2yYHk8uARITgP7HWQ4lw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,116 +118,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kairui,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on 10de4550639e9df9242e32e9affc90ed75a27c7d]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Kairui-Song/mm-swap-protect-si-swap_file-properly-and-use-as-a-mount-indicator/20260126-020149
-base:   10de4550639e9df9242e32e9affc90ed75a27c7d
-patch link:    https://lore.kernel.org/r/20260126-swap-table-p3-v1-9-a74155fab9b0%40tencent.com
-patch subject: [PATCH 09/12] mm, swap: use the swap table to track the swap count
-config: parisc-allyesconfig (https://download.01.org/0day-ci/archive/20260126/202601260934.Lhdzyzmg-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260126/202601260934.Lhdzyzmg-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601260934.Lhdzyzmg-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   mm/swapfile.c: In function 'unuse_pte_range':
->> mm/swapfile.c:2351:31: warning: variable 'offset' set but not used [-Wunused-but-set-variable]
-    2351 |                 unsigned long offset;
-         |                               ^~~~~~
->> mm/swapfile.c:2346:34: warning: variable 'si' set but not used [-Wunused-but-set-variable]
-    2346 |         struct swap_info_struct *si;
-         |                                  ^~
+2026=E5=B9=B41=E6=9C=8824=E6=97=A5 04:47, "JP Kobryn" <inwardvessel@gmail=
+.com mailto:inwardvessel@gmail.com?to=3D%22JP%20Kobryn%22%20%3Cinwardvess=
+el%40gmail.com%3E > =E5=86=99=E5=88=B0:
 
 
-vim +/offset +2351 mm/swapfile.c
+>=20
+>=20Hi Hui,
+>=20
+>=20On 1/23/26 1:00 AM, Hui Zhu wrote:
+>=20
+>=20>=20
+>=20> From: Hui Zhu <zhuhui@kylinos.cn>
+> >  Add a comprehensive selftest suite for the `memcg_bpf_ops`
+> >  functionality. These tests validate that BPF programs can correctly
+> >  influence memory cgroup throttling behavior by implementing the new
+> >  hooks.
+> >  The test suite is added in `prog_tests/memcg_ops.c` and covers
+> >  several key scenarios:
+> >  1. `test_memcg_ops_over_high`:
+> >  Verifies that a BPF program can trigger throttling on a low-priority
+> >  cgroup by returning a delay from the `get_high_delay_ms` hook when a
+> >  high-priority cgroup is under pressure.
+> >  2. `test_memcg_ops_below_low_over_high`:
+> >  Tests the combination of the `below_low` and `get_high_delay_ms`
+> >  hooks, ensuring they work together as expected.
+> >  3. `test_memcg_ops_below_min_over_high`:
+> >  Validates the interaction between the `below_min` and
+> >  `get_high_delay_ms` hooks.
+> >  The test framework sets up a cgroup hierarchy with high and low
+> >  priority groups, attaches BPF programs, runs memory-intensive
+> >  workloads, and asserts that the observed throttling (measured by
+> >  workload execution time) matches expectations.
+> >  The BPF program (`progs/memcg_ops.c`) uses a tracepoint on
+> >  `memcg:count_memcg_events` (specifically PGFAULT) to detect memory
+> >  pressure and trigger the appropriate hooks in response. This test
+> >  suite provides essential validation for the new memory control
+> >  mechanisms.
+> >  Signed-off-by: Geliang Tang <geliang@kernel.org>
+> >  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> >  ---
+> >=20
+>=20[..]
+>=20
+>=20>=20
+>=20> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/t=
+ools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> >  new file mode 100644
+> >  index 000000000000..9a8d16296f2d
+> >  --- /dev/null
+> >  +++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> >  @@ -0,0 +1,537 @@
+> >=20
+>=20[..]
+>=20
+>=20>=20
+>=20> +
+> >  +static void
+> >  +real_test_memcg_ops_child_work(const char *cgroup_path,
+> >  + char *data_filename,
+> >  + char *time_filename,
+> >  + int read_times)
+> >  +{
+> >  + struct timeval start, end;
+> >  + double elapsed;
+> >  + FILE *fp;
+> >  +
+> >  + if (!ASSERT_OK(join_parent_cgroup(cgroup_path), "join_parent_cgrou=
+p"))
+> >  + goto out;
+> >  +
+> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
+> >  + printf("%s %d begin\n", __func__, getpid());
+> >  +
+> >  + gettimeofday(&start, NULL);
+> >  +
+> >  + if (!ASSERT_OK(write_file(data_filename), "write_file"))
+> >  + goto out;
+> >  +
+> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
+> >  + printf("%s %d write_file done\n", __func__, getpid());
+> >  +
+> >  + if (!ASSERT_OK(read_file(data_filename, read_times), "read_file"))
+> >  + goto out;
+> >  +
+> >  + gettimeofday(&end, NULL);
+> >  +
+> >  + elapsed =3D (end.tv_sec - start.tv_sec) +
+> >  + (end.tv_usec - start.tv_usec) / 1000000.0;
+> >  +
+> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
+> >  + printf("%s %d end %.6f\n", __func__, getpid(), elapsed);
+> >  +
+> >  + fp =3D fopen(time_filename, "w");
+> >  + if (!ASSERT_OK_PTR(fp, "fopen"))
+> >  + goto out;
+> >  + fprintf(fp, "%.6f", elapsed);
+> >  + fclose(fp);
+> >  +
+> >  +out:
+> >  + exit(0);
+> >  +}
+> >  +
+> >=20
+>=20[..]
+>=20
+>=20>=20
+>=20> +static void real_test_memcg_ops(int read_times)
+> >  +{
+> >  + int ret;
+> >  + char data_file1[] =3D "/tmp/test_data_XXXXXX";
+> >  + char data_file2[] =3D "/tmp/test_data_XXXXXX";
+> >  + char time_file1[] =3D "/tmp/test_time_XXXXXX";
+> >  + char time_file2[] =3D "/tmp/test_time_XXXXXX";
+> >  + pid_t pid1, pid2;
+> >  + double time1, time2;
+> >  +
+> >  + ret =3D mkstemp(data_file1);
+> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
+> >  + return;
+> >  + close(ret);
+> >  + ret =3D mkstemp(data_file2);
+> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
+> >  + goto cleanup_data_file1;
+> >  + close(ret);
+> >  + ret =3D mkstemp(time_file1);
+> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
+> >  + goto cleanup_data_file2;
+> >  + close(ret);
+> >  + ret =3D mkstemp(time_file2);
+> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
+> >  + goto cleanup_time_file1;
+> >  + close(ret);
+> >  +
+> >  + pid1 =3D fork();
+> >  + if (!ASSERT_GE(pid1, 0, "fork"))
+> >  + goto cleanup;
+> >  + if (pid1 =3D=3D 0)
+> >  + real_test_memcg_ops_child_work(CG_LOW_DIR,
+> >  + data_file1,
+> >  + time_file1,
+> >  + read_times);
+> >=20
+>=20Would it be better to call exit() after real_test_memcg_ops_child_wor=
+k()
+> instead of within it? This way the fork/exit/wait logic is contained in
+> the same scope making the lifetimes easier to track. I had to go back
+> and search for the call to exit() since at a glance this function
+> appears to proceed to call fork() and waitpid() from within both parent
+> and child procs (though it really does not).
+>
 
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2340  
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2341  static int unuse_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2342  			unsigned long addr, unsigned long end,
-10a9c496789fe2 Christoph Hellwig       2022-01-21  2343  			unsigned int type)
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2344  {
-d850fa72987378 Hugh Dickins            2023-06-08  2345  	pte_t *pte = NULL;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05 @2346  	struct swap_info_struct *si;
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2347  
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2348  	si = swap_info[type];
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2349  	do {
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2350) 		struct folio *folio;
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02 @2351) 		unsigned long offset;
-0177fe675b3916 Kairui Song             2026-01-26  2352  		unsigned long swp_tb;
-3f79b187ad2f67 Kairui Song             2022-12-20  2353  		unsigned char swp_count;
-06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2354  		softleaf_t entry;
-d850fa72987378 Hugh Dickins            2023-06-08  2355  		int ret;
-c33c794828f212 Ryan Roberts            2023-06-12  2356  		pte_t ptent;
-d850fa72987378 Hugh Dickins            2023-06-08  2357  
-d850fa72987378 Hugh Dickins            2023-06-08  2358  		if (!pte++) {
-d850fa72987378 Hugh Dickins            2023-06-08  2359  			pte = pte_offset_map(pmd, addr);
-d850fa72987378 Hugh Dickins            2023-06-08  2360  			if (!pte)
-d850fa72987378 Hugh Dickins            2023-06-08  2361  				break;
-d850fa72987378 Hugh Dickins            2023-06-08  2362  		}
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2363) 
-c33c794828f212 Ryan Roberts            2023-06-12  2364  		ptent = ptep_get_lockless(pte);
-06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2365  		entry = softleaf_from_pte(ptent);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2366) 
-06fb61462bdea3 Lorenzo Stoakes         2025-11-10  2367  		if (!softleaf_is_swap(entry))
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2368  			continue;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2369  		if (swp_type(entry) != type)
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2370  			continue;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2371  
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2372  		offset = swp_offset(entry);
-044d66c1d2b1c5 Hugh Dickins            2008-02-07  2373  		pte_unmap(pte);
-d850fa72987378 Hugh Dickins            2023-06-08  2374  		pte = NULL;
-d850fa72987378 Hugh Dickins            2023-06-08  2375  
-f28124617f3415 Kairui Song             2025-09-17  2376  		folio = swap_cache_get_folio(entry);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2377) 		if (!folio) {
-8c63ca5bc3e19f Will Deacon             2021-01-14  2378  			struct vm_fault vmf = {
-8c63ca5bc3e19f Will Deacon             2021-01-14  2379  				.vma = vma,
-8c63ca5bc3e19f Will Deacon             2021-01-14  2380  				.address = addr,
-824ddc601adc2c Nadav Amit              2022-03-22  2381  				.real_address = addr,
-8c63ca5bc3e19f Will Deacon             2021-01-14  2382  				.pmd = pmd,
-8c63ca5bc3e19f Will Deacon             2021-01-14  2383  			};
-8c63ca5bc3e19f Will Deacon             2021-01-14  2384  
-94dc8bffd8b7fe Matthew Wilcox (Oracle  2024-08-07  2385) 			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE,
-ebc5951eea4993 Andrea Righi            2020-06-01  2386  						&vmf);
-ebc5951eea4993 Andrea Righi            2020-06-01  2387  		}
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2388) 		if (!folio) {
-0177fe675b3916 Kairui Song             2026-01-26  2389  			swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
-0177fe675b3916 Kairui Song             2026-01-26  2390  						  swp_cluster_offset(entry));
-0177fe675b3916 Kairui Song             2026-01-26  2391  			swp_count = swp_tb_get_count(swp_tb);
-0177fe675b3916 Kairui Song             2026-01-26  2392  			if (swp_count <= 0)
-d850fa72987378 Hugh Dickins            2023-06-08  2393  				continue;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2394  			return -ENOMEM;
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2395  		}
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2396  
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2397) 		folio_lock(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2398) 		folio_wait_writeback(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2399) 		ret = unuse_pte(vma, pmd, addr, entry, folio);
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2400  		if (ret < 0) {
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2401) 			folio_unlock(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2402) 			folio_put(folio);
-d850fa72987378 Hugh Dickins            2023-06-08  2403  			return ret;
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2404  		}
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2405  
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2406) 		folio_free_swap(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2407) 		folio_unlock(folio);
-f102cd8b173e06 Matthew Wilcox (Oracle  2022-09-02  2408) 		folio_put(folio);
-d850fa72987378 Hugh Dickins            2023-06-08  2409  	} while (addr += PAGE_SIZE, addr != end);
-b56a2d8af9147a Vineeth Remanan Pillai  2019-03-05  2410  
-d850fa72987378 Hugh Dickins            2023-06-08  2411  	if (pte)
-d850fa72987378 Hugh Dickins            2023-06-08  2412  		pte_unmap(pte);
-d850fa72987378 Hugh Dickins            2023-06-08  2413  	return 0;
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2414  }
-^1da177e4c3f41 Linus Torvalds          2005-04-16  2415  
+I will fix it.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best,
+Hui
 
