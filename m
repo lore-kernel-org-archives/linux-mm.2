@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB860C88E75
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 09:05:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0092C88E78
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 09:05:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61EAB6B0093; Mon, 26 Jan 2026 04:05:38 -0500 (EST)
+	id 656106B0092; Mon, 26 Jan 2026 04:05:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 600046B0095; Mon, 26 Jan 2026 04:05:38 -0500 (EST)
+	id 60DDB6B0095; Mon, 26 Jan 2026 04:05:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5269D6B0096; Mon, 26 Jan 2026 04:05:38 -0500 (EST)
+	id 52D206B0096; Mon, 26 Jan 2026 04:05:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 401366B0093
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:05:38 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E00C61A076F
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:05:37 +0000 (UTC)
-X-FDA: 84373531914.20.5E58036
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0F8C38000D
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:05:35 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="uy/RXibV";
-	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4247C6B0092
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 04:05:50 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB8B58C3A7
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:05:49 +0000 (UTC)
+X-FDA: 84373532418.07.F3129C8
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2670B100003
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 09:05:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w4Gy5WcZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769418336;
+	s=arc-20220608; t=1769418348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOthmRQx1S9k8S+lynuRz8PEGmhPgopf4vkxZNGup6E=;
-	b=eO398RxfiHZUO6ZA6QwmzXXVZyj44IjONW/eBWxZp7xdrJQZg9vIDFAfudkvzjHpfpNiqA
-	VlMcx0ZIaWYDBaFhmSA5tyZJ6hKSAYAUUStTYHt+Wp0tOtPTKBxGi94vaUGghQRzwvDVFW
-	QmLAXk9b/5ZQosfzYXZYXE01gFIr89Q=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="uy/RXibV";
-	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769418336; a=rsa-sha256;
+	bh=qJzfS1JLGvEK+FxWqw8ITpq79hNz1KKD0GGXddU0FBc=;
+	b=scw1Zt96lGhx6TgYLJCrD3KnmWe6+fD34WksgLGp60v+SyIVMILqANH9aJmcF8lpwq+qbt
+	vMVKn+zmOaSbgWA2qb4CFifBXwZMIL2KULv3s/BlhEJlWrZEdnG35cGQCOxu/dBBb5OVGo
+	EvAAcnB+l0tEPqQALs//Up54K2APWEI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769418348; a=rsa-sha256;
 	cv=none;
-	b=qe/REQloXnSbHCeWV4zd6X7I1SaGD9KwEfQnKutkhah+7CstLmDnDQdT626iqIZI/gYUZx
-	JOCSnR1Io9HkGbjwtD+xaPQ3HQ51d+rWXuTk23mYd9z3QnkvASBhe08l5zLym8VmfPNbjQ
-	6gwi/v75GTB4EU4B2XZGkvm96WnfZGw=
+	b=bq/9uowMhZHEf753LEpuQ2xkP4gfkeJsfnNG/frHpx88tLK/wtjpvIScvlc9uUzcuT3wCW
+	ungrdNjHKJBsgVPumjKSee+Nlizy97nMMvnPQSdYpjqEg2WYFJp7IAFWbmJuqeAgZzRBQr
+	dU0QvTbTisDgNDQ/+IIMJ2zlJd5kJ3w=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w4Gy5WcZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769418333;
+	t=1769418346;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FOthmRQx1S9k8S+lynuRz8PEGmhPgopf4vkxZNGup6E=;
-	b=uy/RXibVJ3oVqmHcuUREIO42g9J6ZAIDsRa75aGhZMOzYi44E9zdwYLQ+penjI2tSnOZ+w
-	LYhshtEuxxm3yPmlrUhEurCZH+tgHpic1Git0dNeJokwkgNF4kbjIyW7g7HRcL6RogvQ/w
-	Xf01C8a/HuO2jBXWYYLKTeQ+JOUbD78=
+	bh=qJzfS1JLGvEK+FxWqw8ITpq79hNz1KKD0GGXddU0FBc=;
+	b=w4Gy5WcZtlDZYkEO2TO4A9miXEi+bQ9j+mJmKZdHyxjM/yyMcz17Hm145nGY64rLCBLjEZ
+	OaItV++yLzC5YIxcjk5+oVLXZKp0JTibbA0TJipVv9n5lFyJwMExVco1S5jtLB8/LsxqW7
+	xJQRKPMULmQa2T7sm/1Q/DaH5knBswc=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
@@ -109,22 +109,24 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	bpf@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [RFC PATCH bpf-next v4 05/12] libbpf: introduce bpf_map__attach_struct_ops_opts()
-Date: Mon, 26 Jan 2026 17:04:48 +0800
-Message-ID: <635923ceadf1899672e4f7727ddc52554c11a3ac.1769417588.git.zhuhui@kylinos.cn>
+Cc: Hui Zhu <zhuhui@kylinos.cn>,
+	Geliang Tang <geliang@kernel.org>
+Subject: [RFC PATCH bpf-next v4 06/12] bpf: Pass flags in bpf_link_create for struct_ops
+Date: Mon, 26 Jan 2026 17:04:49 +0800
+Message-ID: <6b2d4fa8e5209d363f553d7851d5a1156137d9fb.1769417588.git.zhuhui@kylinos.cn>
 In-Reply-To: <cover.1769417588.git.zhuhui@kylinos.cn>
 References: <cover.1769417588.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: r85ejkt3ngg7brne3ubgiowiumxkm9hy
+X-Rspamd-Queue-Id: 2670B100003
+X-Stat-Signature: of8y71u66qett7iuh8i8o3txdkhp396b
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0F8C38000D
-X-HE-Tag: 1769418335-722214
-X-HE-Meta: U2FsdGVkX1/gX+DTTAPjmfYXu69HV5nAssaiqAtBV73RJWrDBeWu/JSaENXNALD1I4H7SWcTyaGS0ref47CqYUz3eB1BVKayPeSfMHH6vTUsng4lIe1A7W6/JwCvocEFZAg5/0g7Q4Qsq8hRl7vztzAb3WrHQXnll2GZVEUdpoCXLhhBeCUY2PpYNtfvZWA6dIyh6u9zi+rd8eLbAnYW8rN+/XrlprQoxVN2kMRwyB+3oXLl74jVCJ2FQKEAUgHBaUhLBRuhcQZMZXiG1TcN+VvspLbUOqcpQQWdDuLX0ieuF231jn6OnPO0rzqMv0zMtZOhsiArabwz3dU0ViphcuG1j0jwgawWT3xbh1WnAjtXGbLEepCzCHNtZsbOiDtzBx4D28xDCMog0ZLjPb1xdBkROPT5cj5GjxAWAfZrVo3lUeuIj/slYa6/Ky5hc2XZPvSXtXdlPodbD7Xj6f5kwB29egxa5TTO/7W6+QtsTYjvbINS6HpzCX09QfuEur7Z2voLfxsAPzuF9249IJ4PpBqS4gKehEE6MtBmNXG/CW0QwxkQC72Q7tuTK622Q4yDTzJcRleED906pP4XgEBWrjwmP/4yD8cZBcvbWwHD8opHBbyAPOrBqQ7iySOCazwYbvaChz+3vF2tvwZlNJWZOl0AFjmaW8QubhNKqAW1DdNVBONX1NG3dUiNW2bLZ6OSSp5jvvoro7hMK5bBUSBKTHHalcMy9Z9RjcNE7hPNbxm5itE3UVeYfTeyG3fNcPis16/BlBQaCV5FZlehgernSh1YRc38XBOpELULevd0lSE1dCIA0Nf6kxKwoMo3Ai1zZrb/c4cTjc6h8FSdBpPn0dKF+e/yIhIN/1w9/HNkPp7dyzIBSSeUNc7rl8+v/Ydo5UKAJvzn6o/iqqzfv833YAJQOPxHKma032x5kKmImlZKL9TNUXQyRiQXwtmRLOTk+vOY2xm393AtecN5CEv
- kHYtE5T1
- UsjlpYvXOY6NvVm4C8eMhqmlv8uDUKL02ASfIuBcksShNrVScF2BhJx0Lv56rKwXvQzzLzETdb+k9BsPU0H5oZbuSmtymqAdt9LwbSQFY/4jny1Evkc8cjgoL2tNPbsqROUErAEfneBBfNkXxK/d9X2FW0qmbt2vESq2KoK4i4uc40dppMQLMfendJcjPIOkdSAnUAFuTqp3f3v5WLAU1ZtOSui6R/gvqn2uYaq7BP8ClUxLACGjfIL8bAPm0tlRnu3XquGXaMtgnKrKGnVz4QSuioA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769418347-315678
+X-HE-Meta: U2FsdGVkX1/IHDQhvQgNDjLu2uwMjmouAMbS1aXytQxylw/eVEGmBxQdlM7GH60a4eDD4rufOvkkn+IIh17AXIgvlS+fM66NgXKJQSpLi4Gh++lrM0FWZYGQwoy9JG7mIC1CZEmGeQw+uv+rod6h3z+DhkFa/AZPkVphxmTUaNDYKz1mUh9NBWoYFbSQ1G9/4KBVytjbviixpHLjtmRVQbr+7EicbN6/Rgab7YrlKqzSwFnXTFtclJ0CfCRXigxSZ65bFBUCoK2UyJYiAtoZZaJt0F4/lkofIi1FNARXt70OhKUYcvCl7NB/ZrY30VGCBb93106i9U6BBHc2CTn00sk43ObRNuJmTEKD0XRMqT4DjSThj0Cm+xjrYRfiNFGuEKPY/zrYEYVS7tJgmkScOYtqGRdkiWn4eAadTC52Ru+Q6n/07kG07usADwUTb6JBM2exUdiiqH1hrnBAFag1vZP5X/wbMEmF/xK6pboZbpHIYYy0yb4FUaiO/h6uZFHWaeAK2aw9+cQJY80vifgafDStFqVvhWYi0OC0zTRkEEaMSRtfJEKaVLGBGS9n7fm7lYas44mVio7Xsp0WfZXLHKnO6v5qtRuWPgseTT4mNHa1kombynyLrOYgX5/TZ/vpz58yL85g3Em6A2t9DyXYEbbSXVkVUR3EiS5o0e50ln/D8niLTbNNEONfL2jVGL62jkeqtmPC0yepcXk0iJhjjNHFkx43j5pSUrUrBgmCnmAQ8aHARUohBpSB9ZAkulJ6dwsudofp3Qbisbglmex1U/XN6gExP1zxFxalWdHv659wTsMfjsPjxgFph/YB8mZxxGBDWjI/4ZR/jNY6NkrfIXeRNCqsk2ps7Yc1snkyCMBIX5imoJmcj5s0G9EIYFYqHN5lZ4ZG/zF/DVDPyfzd2Ogco8H1L1wqNPei+1I1YH2hH83xq1COTRxV+qXg4ZXIBVOqmLo1CsXiYQE88xZ
+ PNi3/UVO
+ EZkowJbpy/B0tbqO5j+HtiSYyWhrIkvT1lBElmlIf0BCEKj8xRgmdIn1I+GMj80cDpv/z7p+MWLdTSrh0rQEyRTI5qPs1gdtLkKAAQiJpyV+1Rs5effOAlAKfhsBjszR8T4qkUKZkP7b2yG4pZ7Nfh5spRpOhVjv9Y8e8vgFoqqXg0g5u3equkvLTllqNGhF8LX7NR2Is4YInbPNU8ex7/G8wCiHFngHuOTTTi2Ul8D+1B0oZWyEy6uEWFYYOXThYOFa3NOhNzPcJ5AqAS9DBUKdVGQbnnQGJ7ohXlFgvAb/LPyXD9p8XXCAAPk4X8IMy007b8idI7rysRKkJeNtj/topug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,126 +135,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Roman Gushchin <roman.gushchin@linux.dev>
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Introduce bpf_map__attach_struct_ops_opts(), an extended version of
-bpf_map__attach_struct_ops(), which takes additional struct
-bpf_struct_ops_opts argument.
+To support features like allowing overrides in cgroup hierarchies,
+we need a way to pass flags from userspace to the kernel when
+attaching a struct_ops.
 
-struct bpf_struct_ops_opts has the relative_fd member, which allows
-to pass an additional file descriptor argument. It can be used to
-attach struct ops maps to cgroups.
+Extend `bpf_struct_ops_link` to include a `flags` field. This field
+is populated from `attr->link_create.flags` during link creation. This
+will allow struct_ops implementations, such as the upcoming memory
+controller ops, to interpret these flags and modify their attachment
+behavior accordingly.
 
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Signed-off-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- tools/lib/bpf/bpf.c      |  8 ++++++++
- tools/lib/bpf/libbpf.c   | 18 ++++++++++++++++--
- tools/lib/bpf/libbpf.h   | 14 ++++++++++++++
- tools/lib/bpf/libbpf.map |  1 +
- 4 files changed, 39 insertions(+), 2 deletions(-)
+ include/linux/bpf.h            | 1 +
+ kernel/bpf/bpf_struct_ops.c    | 1 +
+ tools/include/uapi/linux/bpf.h | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/bpf.c b/tools/lib/bpf/bpf.c
-index 5846de364209..84a53c594f48 100644
---- a/tools/lib/bpf/bpf.c
-+++ b/tools/lib/bpf/bpf.c
-@@ -884,6 +884,14 @@ int bpf_link_create(int prog_fd, int target_fd,
- 		if (!OPTS_ZEROED(opts, cgroup))
- 			return libbpf_err(-EINVAL);
- 		break;
-+	case BPF_STRUCT_OPS:
-+		relative_fd = OPTS_GET(opts, cgroup.relative_fd, 0);
-+		attr.link_create.cgroup.relative_fd = relative_fd;
-+		attr.link_create.cgroup.expected_revision =
-+			OPTS_GET(opts, cgroup.expected_revision, 0);
-+		if (!OPTS_ZEROED(opts, cgroup))
-+			return libbpf_err(-EINVAL);
-+		break;
- 	default:
- 		if (!OPTS_ZEROED(opts, flags))
- 			return libbpf_err(-EINVAL);
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 0c8bf0b5cce4..70a00da54ff5 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -13462,12 +13462,19 @@ static int bpf_link__detach_struct_ops(struct bpf_link *link)
- 	return close(link->fd);
- }
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 720055d1dbce..13c933cfc614 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1896,6 +1896,7 @@ struct bpf_struct_ops_link {
+ 	struct bpf_map __rcu *map;
+ 	wait_queue_head_t wait_hup;
+ 	u64 cgroup_id;
++	u32 flags;
+ };
  
--struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
-+struct bpf_link *bpf_map__attach_struct_ops_opts(const struct bpf_map *map,
-+						 const struct bpf_struct_ops_opts *opts)
- {
-+	DECLARE_LIBBPF_OPTS(bpf_link_create_opts, link_opts);
- 	struct bpf_link_struct_ops *link;
- 	__u32 zero = 0;
- 	int err, fd;
- 
-+	if (!OPTS_VALID(opts, bpf_struct_ops_opts)) {
-+		pr_warn("map '%s': invalid opts\n", map->name);
-+		return libbpf_err_ptr(-EINVAL);
-+	}
-+
- 	if (!bpf_map__is_struct_ops(map)) {
- 		pr_warn("map '%s': can't attach non-struct_ops map\n", map->name);
- 		return libbpf_err_ptr(-EINVAL);
-@@ -13503,7 +13510,9 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
- 		return &link->link;
+ struct bpf_link_primer {
+diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+index c807793e7633..0df608c88403 100644
+--- a/kernel/bpf/bpf_struct_ops.c
++++ b/kernel/bpf/bpf_struct_ops.c
+@@ -1392,6 +1392,7 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
+ 		cgroup_put(cgrp);
  	}
+ #endif /* CONFIG_CGROUPS */
++	link->flags = attr->link_create.flags;
  
--	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, NULL);
-+	link_opts.cgroup.relative_fd = OPTS_GET(opts, relative_fd, 0);
-+
-+	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, &link_opts);
- 	if (fd < 0) {
- 		free(link);
- 		return libbpf_err_ptr(fd);
-@@ -13515,6 +13524,11 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
- 	return &link->link;
- }
+ 	err = bpf_link_prime(&link->link, &link_primer);
+ 	if (err)
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 3ca7d76e05f0..4e1c5d6d91ae 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -1185,7 +1185,7 @@ enum bpf_perf_event_type {
+ 	BPF_PERF_EVENT_EVENT = 6,
+ };
  
-+struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
-+{
-+	return bpf_map__attach_struct_ops_opts(map, NULL);
-+}
-+
- /*
-  * Swap the back struct_ops of a link with a new struct_ops map.
-  */
-diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
-index dfc37a615578..5aef44bcfcc2 100644
---- a/tools/lib/bpf/libbpf.h
-+++ b/tools/lib/bpf/libbpf.h
-@@ -920,6 +920,20 @@ bpf_program__attach_cgroup_opts(const struct bpf_program *prog, int cgroup_fd,
- struct bpf_map;
- 
- LIBBPF_API struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map);
-+
-+struct bpf_struct_ops_opts {
-+	/* size of this struct, for forward/backward compatibility */
-+	size_t sz;
-+	__u32 flags;
-+	__u32 relative_fd;
-+	__u64 expected_revision;
-+	size_t :0;
-+};
-+#define bpf_struct_ops_opts__last_field expected_revision
-+
-+LIBBPF_API struct bpf_link *
-+bpf_map__attach_struct_ops_opts(const struct bpf_map *map,
-+				const struct bpf_struct_ops_opts *opts);
- LIBBPF_API int bpf_link__update_map(struct bpf_link *link, const struct bpf_map *map);
- 
- struct bpf_iter_attach_opts {
-diff --git a/tools/lib/bpf/libbpf.map b/tools/lib/bpf/libbpf.map
-index d18fbcea7578..4779190c97b6 100644
---- a/tools/lib/bpf/libbpf.map
-+++ b/tools/lib/bpf/libbpf.map
-@@ -454,4 +454,5 @@ LIBBPF_1.7.0 {
- 		bpf_prog_assoc_struct_ops;
- 		bpf_program__assoc_struct_ops;
- 		btf__permute;
-+		bpf_map__attach_struct_ops_opts;
- } LIBBPF_1.6.0;
+-/* cgroup-bpf attach flags used in BPF_PROG_ATTACH command
++/* cgroup-bpf attach flags used in BPF_PROG_ATTACH and BPF_LINK_CREATE command
+  *
+  * NONE(default): No further bpf programs allowed in the subtree.
+  *
 -- 
 2.43.0
 
