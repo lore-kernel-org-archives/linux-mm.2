@@ -4,109 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA6F9D1950F
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 18:49:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C549D19502
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 18:55:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E29DB6B008A; Mon, 26 Jan 2026 13:49:34 -0500 (EST)
+	id 9C8646B0005; Mon, 26 Jan 2026 13:55:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA8136B008C; Mon, 26 Jan 2026 13:49:34 -0500 (EST)
+	id 94C1D6B0089; Mon, 26 Jan 2026 13:55:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C56696B0092; Mon, 26 Jan 2026 13:49:34 -0500 (EST)
+	id 824796B008A; Mon, 26 Jan 2026 13:55:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A7B7F6B008A
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:49:34 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D006D393D
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:49:34 +0000 (UTC)
-X-FDA: 84375003468.12.59A48FD
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2E450180005
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:49:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="mTv74+D/";
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7168E6B0005
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:55:21 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18D5713BB23
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:55:21 +0000 (UTC)
+X-FDA: 84375018042.25.CEDEBC3
+Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1095A40007
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 18:55:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=4b+R0ix5;
+	spf=pass (imf07.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769453372;
+	s=arc-20220608; t=1769453719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eO9iVzdfx9FAUt5UjIn8X0pjFgbCELsa4Cryyg3cRGY=;
-	b=aSWWnpUmhjStvaHfDFVHTbmkXOiB51cWzGotMDY5/7AMgJj3C0kO4aw8UE19n+qjhEwhSd
-	R9MdDo/yQsnrwt6DzapgBNphTrUFp/hl8UA4RZ2Y99e48jCQ7blIAO/MW1ND2U5gBk/+HQ
-	vHzB6OWyNJhkLGmlRcr6m+APUgVa7+o=
+	bh=lrmRnMiS7e8oDqS8sJHadbKNaRE4y8/9HerN9jURAnw=;
+	b=FgYJwnAw5hYylGEmrV7KmhNAI/UnvhYycZWIQ5UQcK/I6O+nJvwkSHsY63v7RdXROVTdtY
+	gFOvhCaEH/aR9pKw/OySoaMCLo4EXQxbrI6G/zZvuOoQmLEE9EORnWZAvs5wL93kJzIQl2
+	Ou198uPdFURiqL4a4DNqjUsjzufHTKE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="mTv74+D/";
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769453372; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=acm.org header.s=mr01 header.b=4b+R0ix5;
+	spf=pass (imf07.hostedemail.com: domain of bvanassche@acm.org designates 199.89.1.16 as permitted sender) smtp.mailfrom=bvanassche@acm.org;
+	dmarc=pass (policy=reject) header.from=acm.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769453719; a=rsa-sha256;
 	cv=none;
-	b=GZYjv+JaJPVrCt6PKmHWXA/vWN/xMtBFUuFWilAPVQP60lSK4JS0D5fEYM4k6f+mI4FDVE
-	BeAYJnPxoMyZ7ivsf0N361XL3PCJDW+mhy/WfYhmbO5S3nWMyuk25RI+y+2o2JJmSQ2yxZ
-	8PiZQN8b7XHBOQyR6/nI8oEi6b5Ug2Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769453372; x=1800989372;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SXbUQi/mPjILsJLm7/839nCdVVFUVngbGnAYOD7YVNs=;
-  b=mTv74+D//abuK7zoqG+GIm96DYqTCz7I5DGMn4seqTp8PPxBcMEMHhxX
-   Ir2AoLlX3ZevL3UXSAwSkbl4f9e5q+is1oI8eyocEMzX5Py7OsK30ZuCo
-   8EORwSEe7NBEtXrK5Ig+Od6SLqF/h7sbayA+ctb6OBlOUp2sYVsn7hF19
-   wjM2PmFRBl76BoHn9xNQpjN5LlrEiOsvm4/RD9l7NyuynIld9EraG6Q2o
-   eF3rFnB5quI1tBw2GOH7xVD401zqLIaWblhHIVwijpMiqFUgVd7Lk954x
-   tHJnC7uFVI5Fhjfd5ryky8NW+IaJP69F2BdLclwdWm+s5RA305ez60CeS
-   g==;
-X-CSE-ConnectionGUID: Yk8w7e6pSWithOYLHHLK1w==
-X-CSE-MsgGUID: 2Qh1SuIwQ1+j7w8q5A6ltw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="96100246"
-X-IronPort-AV: E=Sophos;i="6.21,255,1763452800"; 
-   d="scan'208";a="96100246"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 10:49:28 -0800
-X-CSE-ConnectionGUID: Ec9Xcv1mReqcQU5/+wEU7g==
-X-CSE-MsgGUID: RY3/mLDzQ1Smoy4+ign3qw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,255,1763452800"; 
-   d="scan'208";a="207361135"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 26 Jan 2026 10:49:25 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vkReM-00000000Xaw-3Vju;
-	Mon, 26 Jan 2026 18:49:22 +0000
-Date: Tue, 27 Jan 2026 02:48:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: mpenttil@redhat.com, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH v3 1/3] mm: unified hmm fault and migrate device pagewalk
- paths
-Message-ID: <202601270202.cL2IcE86-lkp@intel.com>
-References: <20260126111939.1332983-2-mpenttil@redhat.com>
+	b=SnERUcSR0gVl6e8R6qQX8vA13ju/IJeGwyHDlB/NLbLqkzlv8+EBAh6mshVhIo7UiuhVna
+	Vrajxi5bMjLw68W7AjBiCsOp25tXDyl1JAb8bluWvEQwfY9L/S/3DM8Q6yfzYoWNq1l4+p
+	KDbfkAgFl1yjOamik1qI4jR99jJ8aRU=
+Received: from localhost (localhost [127.0.0.1])
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4f0Hm56kBhzlgyGr;
+	Mon, 26 Jan 2026 18:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1769453709; x=1772045710; bh=lrmRnMiS7e8oDqS8sJHadbKN
+	aRE4y8/9HerN9jURAnw=; b=4b+R0ix5+Os0UdymHVdPefR75pAjuePHzZSBDv1T
+	PhKFA4FAC8OQc9TuXgMxSrv6ALYLM26zsK043txlRzxnGUh1OQAsqSN0foShyawt
+	pgoA82i8a3e56Az+c5yQ/FRzJRlVVV9ONPOmo5QZvE0Q0R6BZlDabDdSvqRaIrWq
+	5qv/o/SAv+5/3fRLam45SzREjjV6pc62GFn6nBiQJg3JMywlrNKvmQ7VlMyrTxAH
+	T23+3S/pU978iX4yw8ahY2EFo/8Xq0lczgH+hEk7oD3ExiVmcFff0tai2SlH7PR7
+	9U/uiA5vPsPPUdDSnrYljSKcp1+NnDZMaTuY+V/YB+pCTQ==
+X-Virus-Scanned: by MailRoute
+Received: from 013.lax.mailroute.net ([127.0.0.1])
+ by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id vhOvcRL97NLm; Mon, 26 Jan 2026 18:55:09 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4f0Hlj4MJNzlh1T6;
+	Mon, 26 Jan 2026 18:54:57 +0000 (UTC)
+Message-ID: <8c1bbab4-4615-4518-b773-a006d1402b8b@acm.org>
+Date: Mon, 26 Jan 2026 10:54:56 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260126111939.1332983-2-mpenttil@redhat.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2E450180005
-X-Stat-Signature: csph1zt4kw3x1j716wybhron3qpthat4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 15/36] srcu: Support Clang's context analysis
+To: Marco Elver <elver@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+ Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
+ Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+ Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
+ Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+ Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Josh Triplett <josh@joshtriplett.org>, Justin Stitt
+ <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+ Kentaro Takeda <takedakn@nttdata.co.jp>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+ Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
+ kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
+ linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-16-elver@google.com>
+ <dd65bb7b-0dac-437a-a370-38efeb4737ba@acm.org>
+ <aXez9fSxdfu5-Boo@elver.google.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <aXez9fSxdfu5-Boo@elver.google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bepzuhoz3karkiwpa6uzeew43pbgb7uz
+X-Rspamd-Queue-Id: 1095A40007
 X-Rspam-User: 
-X-HE-Tag: 1769453372-350419
-X-HE-Meta: U2FsdGVkX198XXEeZzle80+pynnMhv1dMO6KlW9T8LYYaTXZTue4b23SUXZce1SW2+I+0OJ1KBWqlhJCP+4dOpt4ro+aKiWnhcQI1wgqVQ7WxOGhnZE7YKg8EmUImv3rZDbIMwJRnKssAwWcwEZCSz+lmEmI5FtRoYSM62PCLtUSwSOpFp4P6jyOnu6ZYwUuMxmDE9zxOkYCb016MLKRj5WIf4e52FKWvTcwxUESFg8e5SKlS2JXJ3CD/CdnUYQK/46h7yYxuAmrwgwmy4yV3Kkg2KaPsDNhETkRn6nTpvolrFoKJkqkci/St7Yz1+A9o6HiBU4phqtjOa2yylL11yMrpATco6B091xm/D6QyezchRbUM7XEmOUssLli64WgJjW89huimOdcNXCu84f1egZ9jVJGm+JMCO7vIbkj4f7jhiK7gsflMZ3kXb6j32xDMeWwb9mKI7hTIBB3S69jIrFxsJT5xprBunR1XkIEIJUeXOuXQBj8OgxS7hL0mVR+CRPJ1nviCeiE+wAd3Rn2yD++s4wtY2aAPrzVtNcroMvdiwZtPmQZTl2EITs5HcquYMq8aNAUDx5szwFCmPuTobXa1V5csAwgFZm6zjw9If1Zm/DeIdDjENwM8aWMOnJka1gMTEByRJYCBH0uiusRbZeQyvVhDGXOLbj5rgUXhghdwFi2BlzIq+eT8bzqc/DgqD1DqMmTh6OIESqXKF5vnrMT3Nvx79EFSRr08/Rww6+H8xbIouM4VNv+FNnSSnek7bFQtJe7FUu2SbalJrxcqKxyMJXZcCsZdx2Ct6CIisekeUzUzGN0wkM0zIryfEhY64Wq1JSAjzkdl7dlH9V9CqmtqA/XlZExby2lxVRPH4FEssRK6vxAih2MbrN4Zc9TGBamwTdtNil+tlX/o8tTddrAnc+XY2HIPRr7jZcjgiQ59FT2sd3hTvobK1jE104MeuIo/ZaC8TXc7Vf3icB
- xauGRKsd
- dmyywM8fs+amEETxDUo5KxyBpQT/WcJepNkMdgSOl2YKHmkPIKtGC8dLG/bs3ZLswU3yZXE6ib5pWxK9wbnP6Hs6raLQxwOuLt0WUQ7xHolsTFy1mG3kOmZfXshJ2Q6D+ZgMPJXOUu/Bi0bppa70b//EqmDaSlAgXxAidAPtt925c19aFDomp0fWHTZ3Zyr87RbYNoMQ1Fkp04EDV2hj8sdV8odxOHFuz6YW79JvmIffqIJlJhLSxLTR8sUdf9ZnY7/IXujHakmdw9e6KptMZm2QIAQrH4YL0eZtEkhv3fasCAgpUMeCzENbk08KzZWbfgsU9JH80A4C/4B9FEzVZDRsERoYvgWbJfAZU
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769453718-502169
+X-HE-Meta: U2FsdGVkX18bOrkffV1Jgnl2tWFsCktixvXn3EPl9sj1KiGGON89g56h7UH481m4K2CpWq8RpmORNu5cpFV61O15hZGPXLfbWmwI0z+dQMs2uT67RnTb+JYqk9b3MTOzxUJ6H5fOwsBohl7YrdA7mEYUNGcLnXngdEYqyJOt5lkG1yhb0Djh5FdjaxWH+21LILjpeHxRUNCjlKEV6KcBrfQ3tw0paX1w57eH3YQcGqeuiCGRc3MJIrfik2DAo4cxqvDZMp342t1xD0Zi8LnOSHPKJ1FoTtXiZv4oCdO/83UcfbcU0ZSZGN+RC22Jdh6N3hWPQxZmXl58dGeTGCGoiy2aDvQ4jFQM/kSdjUPBkTV6xm0Cf8HmRvPHVIRJcwmWsJ+YGYhZVhfTTVVSRulJJXoE5X+iJCPtPkOZZQYdd3kvTwMUQ+uDARe+Z/1b2hvpdL0q7lyJcQKMrJrunB3w6gtozqP4p21g1JGWSGraPp/cYi/M46h1Pr53rXXiVeSQ9DVLs+Lc0VVXIJSf9o1oVF6jdYSQQcYDFBpWodiAo/c9oTdcb0TFMs7bDpp7ZeZZ4JvsI5fGSICaGwYwh0STh7yG8mHuSKuUO2TX1GAk6IVO++BaJqcnS7Kl/sLfCdwQDARsh9uGIgiy4Icj7Yvw/PJrF1VTenePBkRDOT4Nn6tmG+k9Mtqhjsna7ZLCAhO33Gt51/NEktly/t8uIWFVyHCdlj3AA+w9EAwWp0Jp+AreOzWt2av/+nIFD1/kcodtsTG+s2m+9kNfiTI6tsoxIv6khQk4506DtzCEKBen9BP+4P0M7Z5+ZN7kZov046ePVJpARXTVMORo0I+OIRq7yaxSwVIriuFrJVahTlAawsWQMc6Iv5i9OeY47p/5H8sz6N5BdqAr2j1cZHYrB8dgc06SNnLsO23i7zWzXDoNqF561/Vy831jcgSR3yDNqJArgDtj/oZBadigOxx7ZOM
+ XjORCCSG
+ iTNc0PoEL5o6Njz2IaaOiBsBVBBSQJNzZmhqc/Rw0chBFBxVMjlE1lsIEOGbR+hX2RpibjD+d0Bx8l9fdPnFYgnoWHUKAbhBMpXLbxIuxZLFVX+ahTJ6WIZa1z+sabMe0kmRYm7rFp0tjGIiZn+HQkBtaDtKkb3BPMVVQtauB6yDnDD36Kyy24dtEcdE8dhcbrisdbaOD00SdNxsePrKkE+GsdcTYxuipQzIXxFbF9ac/wpCs0kSnsR2cPin632EFSNb848abRKOIgVxLh/zfcMzmVygvHr+9Fs417MpfZ4DIaxjK7T85sm7tsv60ZwCYwoUJSP8QIJTZVsRTu/DrHRexiQIE9XDzmqbCxnjCgD145wQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,74 +134,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 1/26/26 10:35 AM, Marco Elver wrote:
+> That being said, I don't think it's wrong to write e.g.:
+> 
+> 	spin_lock(&updater_lock);
+> 	__acquire_shared(ssp);
+> 	...
+> 	// writes happen through rcu_assign_pointer()
+> 	// reads can happen through srcu_dereference_check()
+> 	...
+> 	__release_shared(ssp);
+> 	spin_unlock(&updater_lock);
+> 
+> , given holding the updater lock implies reader access.
+> 
+> And given the analysis is opt-in (CONTEXT_ANALYSIS := y), I think
+> it's a manageable problem.
 
-kernel test robot noticed the following build errors:
+I'd like to make context-analysis mandatory for the entire kernel tree.
 
-[auto build test ERROR on 63804fed149a6750ffd28610c5c1c98cce6bd377]
+> If you have a different idea how we can solve this, please let us know.
+> 
+> One final note, usage of srcu_dereference_check() is rare enough:
+> 
+> 	arch/x86/kvm/hyperv.c:	irq_rt = srcu_dereference_check(kvm->irq_routing, &kvm->irq_srcu,
+> 	arch/x86/kvm/x86.c:	kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
+> 	arch/x86/kvm/x86.c:	kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
+> 	drivers/gpio/gpiolib.c:	label = srcu_dereference_check(desc->label, &desc->gdev->desc_srcu,
+> 	drivers/hv/mshv_irq.c:	girq_tbl = srcu_dereference_check(partition->pt_girq_tbl,
+> 	drivers/hwtracing/stm/core.c:	link = srcu_dereference_check(src->link, &stm_source_srcu, 1);
+> 	drivers/infiniband/hw/hfi1/user_sdma.c:	pq = srcu_dereference_check(fd->pq, &fd->pq_srcu,
+> 	fs/quota/dquot.c:			struct dquot *dquot = srcu_dereference_check(
+> 	fs/quota/dquot.c:				struct dquot *dquot = srcu_dereference_check(
+> 	fs/quota/dquot.c:		put[cnt] = srcu_dereference_check(dquots[cnt], &dquot_srcu,
+> 	fs/quota/dquot.c:		transfer_from[cnt] = srcu_dereference_check(dquots[cnt],
+> 	include/linux/kvm_host.h:	return srcu_dereference_check(kvm->memslots[as_id], &kvm->srcu,
+> 	virt/kvm/irqchip.c:	irq_rt = srcu_dereference_check(kvm->irq_routing, &kvm->irq_srcu,
+> 
+> , that I think it's easy enough to annotate these places with the above
+> suggestions in case you're trying out global enablement.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/mpenttil-redhat-com/mm-unified-hmm-fault-and-migrate-device-pagewalk-paths/20260126-192236
-base:   63804fed149a6750ffd28610c5c1c98cce6bd377
-patch link:    https://lore.kernel.org/r/20260126111939.1332983-2-mpenttil%40redhat.com
-patch subject: [PATCH v3 1/3] mm: unified hmm fault and migrate device pagewalk paths
-config: x86_64-randconfig-013-20260126 (https://download.01.org/0day-ci/archive/20260127/202601270202.cL2IcE86-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260127/202601270202.cL2IcE86-lkp@intel.com/reproduce)
+Has it ever been considered to add support in the clang compiler for a
+variant of __must_hold() that expresses that one of two capabilities
+must be held by the caller? I think that would remove the need to
+annotate SRCU update-side code with __acquire_shared(ssp) and
+__release_shared(ssp).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601270202.cL2IcE86-lkp@intel.com/
+Thanks,
 
-All errors (new ones prefixed by >>):
-
->> mm/hmm.c:927:31: error: no member named 'owner' in 'struct mmu_notifier_range'
-     927 |         if (!hmm_vma_walk->mmu_range.owner) {
-         |              ~~~~~~~~~~~~~~~~~~~~~~~ ^
-   mm/hmm.c:1343:24: error: call to undeclared function 'mmu_interval_check_retry'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1343 |                 if (is_fault_path && mmu_interval_check_retry(range->notifier,
-         |                                      ^
-   mm/hmm.c:1361:29: error: no member named 'owner' in 'struct mmu_notifier_range'
-    1361 |             hmm_vma_walk.mmu_range.owner) {
-         |             ~~~~~~~~~~~~~~~~~~~~~~ ^
-   3 errors generated.
-
-
-vim +927 mm/hmm.c
-
-   906	
-   907	static int hmm_vma_capture_migrate_range(unsigned long start,
-   908						 unsigned long end,
-   909						 struct mm_walk *walk)
-   910	{
-   911		struct hmm_vma_walk *hmm_vma_walk = walk->private;
-   912		struct hmm_range *range = hmm_vma_walk->range;
-   913	
-   914		if (!hmm_select_migrate(range))
-   915			return 0;
-   916	
-   917		if (hmm_vma_walk->vma && (hmm_vma_walk->vma != walk->vma))
-   918			return -ERANGE;
-   919	
-   920		hmm_vma_walk->vma = walk->vma;
-   921		hmm_vma_walk->start = start;
-   922		hmm_vma_walk->end = end;
-   923	
-   924		if (end - start > range->end - range->start)
-   925			return -ERANGE;
-   926	
- > 927		if (!hmm_vma_walk->mmu_range.owner) {
-   928			mmu_notifier_range_init_owner(&hmm_vma_walk->mmu_range, MMU_NOTIFY_MIGRATE, 0,
-   929						      walk->vma->vm_mm, start, end,
-   930						      range->dev_private_owner);
-   931			mmu_notifier_invalidate_range_start(&hmm_vma_walk->mmu_range);
-   932		}
-   933	
-   934		return 0;
-   935	}
-   936	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Bart.
 
