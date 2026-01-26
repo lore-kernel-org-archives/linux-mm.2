@@ -4,120 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9CBD7237B
-	for <linux-mm@archiver.kernel.org>; Sun, 25 Jan 2026 22:50:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D90F4E63CB7
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 00:46:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F6606B00CE; Sun, 25 Jan 2026 17:50:23 -0500 (EST)
+	id AB7B36B0005; Sun, 25 Jan 2026 19:46:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A97F6B00CF; Sun, 25 Jan 2026 17:50:23 -0500 (EST)
+	id A65DA6B0088; Sun, 25 Jan 2026 19:46:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76BB56B00D0; Sun, 25 Jan 2026 17:50:23 -0500 (EST)
+	id 9715F6B0089; Sun, 25 Jan 2026 19:46:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 617B96B00CE
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 17:50:23 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B4AFBA312
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:50:23 +0000 (UTC)
-X-FDA: 84371981526.13.02EA08D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A61471C0007
-	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 22:50:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O9eNU6FB;
-	spf=pass (imf20.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 823A26B0005
+	for <linux-mm@kvack.org>; Sun, 25 Jan 2026 19:46:10 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C152D1A019D
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 00:46:09 +0000 (UTC)
+X-FDA: 84372273258.08.A998329
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 05F2B180008
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 00:46:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c5y6Z29q;
+	spf=pass (imf16.hostedemail.com: domain of thorsten.blum@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=thorsten.blum@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769381421;
+	s=arc-20220608; t=1769388368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iMEZtpjkMJvKy0j2B2A5Z2PL6g1rPUGZICiE2R96ChU=;
-	b=7cvf48HSx94isCSJgfvZDLHbKxyWbQZLSG5nalw5W8MtM1r6qyR7tTfKfPA+hgcJmvtYeb
-	od8mZu+YNv+0Vc8hXV1SoIfJVJMGyRd8/nX9TPEGwb54utIQOEf+1u3DLaRvUZ+5Tukc3P
-	vgsyqEn/mP3vxemBfPXe3Pq5s06EQfM=
+	 in-reply-to:references:dkim-signature;
+	bh=7feh2aXWBxrideFwkWvNMaR1KAOwbyjbP/tYcnRktzM=;
+	b=ne5mzWHuhnENTd3MBvsTDpkCnrlP+gOYqtVIjafINc1QTvrR3hYzqT4aGb5pHhnUUvVwjI
+	DpxLSyytih/Mt7m28d7/UqOHuNW0J3h5ftVlm/mS/rG39ems1YafC0heTog5WwtmcH0H3B
+	r+9e5oAnsAFqJ07jxbmBT14W81T2y5k=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O9eNU6FB;
-	spf=pass (imf20.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769381421; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c5y6Z29q;
+	spf=pass (imf16.hostedemail.com: domain of thorsten.blum@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=thorsten.blum@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769388368; a=rsa-sha256;
 	cv=none;
-	b=FFVZCQn1V7fTFQ9lsaNj5DA+RGXl6am39BDz4ikEgRTyyak2Zh7y/FuCQGttzyr5zIqB0D
-	cnqrkBr99uTTfmbeWkg7ssnJvhqPoHnYgjVb19TYzTuLJUHsumlWBnwpVqOQswYrJp0qVa
-	iOBZUjOWmZh+hBzJcD0r3C6hWoM1EvM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 32A1460127;
-	Sun, 25 Jan 2026 22:50:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F9BC16AAE;
-	Sun, 25 Jan 2026 22:50:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769381420;
-	bh=soOg+pSguRYShDvlBT6z+CExBTh9mpEwKqBDpU+MvVA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9eNU6FBgsG9hyVi/+uWzwzBcb3jcShb7uOmQsjIIjUrQdwd6h2E2hlOYXFcXB/ql
-	 qdKPPIOMoMFnsXK4JR327RdmvVp12tzAKc3mdCuECy36dJ+ULwoOd7XxIR96MFfnRS
-	 Tf/BhWFSthB4dknZzQT+VDMKWaiGk1piYc4/1SvoEyWQPVWOMbGzCOX50wyM0HhBgo
-	 zQY6jjB6xI7BeQI9xaby26nk/VdbQlcrksM8alFh3VGgf4VPNgHrdrPRTG1yHtNs6B
-	 LJOghmDwx1hiHEaoiXnunqOam5DBew91Q1zeucjxGqoQn4ndm/rwNY/R4fMGcCaLal
-	 ZHqk/ey3wxMIw==
-From: Frederic Weisbecker <frederic@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	b=O0UiKhOtbOenjtZD0r42NsODjrpD5jz7KtHlhYB+9V5fqkDQy7XwKN4+vzNXcOMcO38Jkx
+	4VhEUDd26ThZu3GWMNyaaPjlxvYTQzUKCpCfTd+Ps/TzjIK+OmPwAyHXv4IWS/+jg5R9Ou
+	bVOYmBauT4rYL0K56J6uE+L7Ogk3Raw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769388365;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7feh2aXWBxrideFwkWvNMaR1KAOwbyjbP/tYcnRktzM=;
+	b=c5y6Z29qa3CAHrEpo/GhBtIE5XvRNsLTcDbFECieKrsbNLtlDneWlL9RMa1Aph7v/vS9AK
+	xQbhoAmVzWbLTPHn6vXOBgL+8qyRqfONX+fNx9bEGIGhxvaJ4nsaVTTPbs6B+NTHELmHGY
+	3V7D+tm8hTcQG9PBbJDOPSO0eP7Qeyc=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Kees Cook <kees@kernel.org>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
 	linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 33/33] doc: Add housekeeping documentation
-Date: Sun, 25 Jan 2026 23:45:40 +0100
-Message-ID: <20260125224541.50226-34-frederic@kernel.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20260125224541.50226-1-frederic@kernel.org>
-References: <20260125224541.50226-1-frederic@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND] fork: Replace simple_strtoul with kstrtoul in coredump_filter_setup
+Date: Mon, 26 Jan 2026 01:45:58 +0100
+Message-ID: <20260126004558.210609-1-thorsten.blum@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A61471C0007
-X-Stat-Signature: d7e8qnqyodzq8wkyxg5k79e5w7csypy7
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1769381421-886136
-X-HE-Meta: U2FsdGVkX19MUYW+OCcj5q//bIHV2ePdolKSCgGvlxwZeRv9v9LqMbmOBhzFmcajXi0/21M2c0gVQrFBb3nKtcsOj1zCJxo1jyscepP4XAKClnlHjeqMVoSn9naAr11cxkXWMKZtZdt8yD8fqwOk9He7jAH0+AeNDkNRkT2YeQLGJq1ClVbNMalVDotXaCmpuFsFogr4F6k1tOEQhREtIE77qgExTxyvY6hsgJ09hqDJvljOjbsNaQSVcpfdsGA71BLOOQq0az/BY0CWdoUkcv8oRKrge2KmDvJ2bjFmbP9azXGnpreHToVsv7d1L0yjeEFZ7ZlCCsWrry1PZ2Y1folj7iTD4n1lSnzP2sPSC6XRUqy90h3A35bjM12mhipd7pGvtX3ucQ1LuMjouE9I6gIepOC9mjmr6EAP14MdGI/krpqul2CFfw2StlAsCTk8dwYYBEdkg9cXiBDJ/y14823q06Ot7+UHkytATh9Hf+1NPooolwSpU6ARIVC1Z5UjBEUN72H9KUt5oE6/Rc/IkWREcSuu7UQ1kZOdLvHvFSROT/+zXU0vc+4+xrEEVEmBPjjmpChzobXXFgJzXzKqe/6/Mkprxts/UTha6eIqCqgzWF3LYpJGLw4+eXyxDLXvbn3f0RvYQZhpXZyGYGfqrCAYS9M087qyYPEVJf1S8ljip175Bf5PB2ya6wFuf07yjFcwX9H/8FzCv+sV6+R4niMe0hbK11q8eO0kVFfu4PVlc8NnJr+8HlnKab3gBPDIcflyKT8bX41R9xlmU1E5/XNRqojny8ScwCzo625PrslYqXpEgbU1eE5m7j6t/EUIl6MDs7pOVmyu3PkFdZ7s+V4SlgyRexbb5qZik/Lr7NwNZy+VAK9hwjdmfAEuXBVqdwJurQnmb/CDlV6YP094qSWpbYou+Tx8p+FrABdzByHJ9zFpkfhJRSJfQl1Q7m+rk38gHpuxDAR8PiRL3g0
- agnuKDDR
- /3V/M2fAlZp9nt+GBnp/2BCDT221VDaTrz+01oyDI81uggVihmjGbbxHIGhMaVMzqk49qyriGqzvREShQ8y7+LOCAIxITg86c5aJ5if7kR8p9XZ0Ria9h2a1J3RcGCtHPdu06evqgTuPjXBvxnU6Q/pZCRdiiEmEt4nfw/p6MZU0y4DIfNzCb7pjaZ8xMlnl7Z8n+1iZ3vx6+QaZd5JSVKG1/HGht0T5w3vGS
+X-Rspamd-Queue-Id: 05F2B180008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8gi45obdxddubbrfbpt5qoa37si171pr
+X-HE-Tag: 1769388367-724146
+X-HE-Meta: U2FsdGVkX1/SwxZWuDxiyA8oFssH/bPHtQ5xx1ZqQPa+9S/SAKteN4cyn9yAjJulBpYh9b5okPW/cZ/8dzkrqdN9UbrF/tJOD+q3QSy2uKVBwNTo+MIYEC57PbVZBJfLTRMh2cgF0FX85sOeehmlswgd2ZWy4sbsEVctIq836muIxCnXjoEQjg/qkf0OVPMZEwmlQFTn4NMqIo++E9HggMEmWAhpXOIrYt5hrNMvQDRfLa2TWe/ba1NP0oP+tPrdghbJ6TDGKdWzQ7ieBAOv9jx3Sw7zwysTWDE/Nvy/akHDofEkUC1MWvI7aQK4K+TRCL4Pl9N2wJS1cQ7UM0xr/nbaCJl6IWOpKe7eCFBUG8P9yM73EQvK29TJEKQsikKuQNwdlZrEtk/BG+CbT5o1JeaR8uqXVP9PjlpVfnSR62GRI3Ivh1OKIpnHd7Zx7Xhkju4i7CSuwaoNj6YNC5o7d4yBqrJpLhe6FY0tIy7P7FqBipbALSQFGQlHF2W2ps8XYEOkLkxNtP9DSpDod41fiWl2F81kLt0NwtWX5jLkiGaxDrc3AGgVqv8SAUUqwWDUaIty7PnrHlsoh4hexEeCDim+3IiBiz60MgpYBX3zaQ8BX4n+BXfrPKORNLn2v9+LHRPldK5K7x0xztbAOlujwDowpO6NAFciLRROl/6hyRjPSiLK25GdKwUnvRfoAHJMuHmSWlm0HwOz14l5xxODiFv4bSq60Nv9OzkoKnadn1ttGF7EQnesnrxwilMwqe8U9ergOWTQzDH0acRIcP5zup7zM99x0ww0WDI7lbKD3aVM/7VuZSmtdpbOa3zcIATdQYF47U/lXLViXY/4EuSnkzem9aIU33wj83gkWavdpS595gmvVPqWBM2inJf2sfeUvrIwH03IMd73fnUPZiqy+IlFvLgEep45rrm4Py047KRiEnqfpdaQMUa1tUln+j5ehq8w8SJb42bHTMnLiMd
+ hIjdeToO
+ PjTljWR2WGgvA2pUD3wAgFrcuLCGC7hFI+05gJV9RkeQQHCiy5khMXa8FYU//Sj8gNCx+izS5kiLaiBPbN1AFjTCm3cJUJ1sBpnoH+sdwdYnNXzRIICdx8/8KrJ6Pb33ye4l/KtCScE0S8Twj1cU6rP/prrdKJcXK4wjSeQohyfbHrVidJonUPyT8qSKWubyNMTjL5uvebM23RnVHY8M0barCnI8tRuq4vn8ueA9zT5hgRhfrdHMv/90usVjL5e0cea0feRSZRU2y8Hnh4BU0aTS4MWWNtnPssFYLtO7YCzjhUyH6djcK3XSixQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,144 +102,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
----
- Documentation/core-api/housekeeping.rst | 111 ++++++++++++++++++++++++
- Documentation/core-api/index.rst        |   1 +
- 2 files changed, 112 insertions(+)
- create mode 100644 Documentation/core-api/housekeeping.rst
+Replace simple_strtoul() with the recommended kstrtoul() for parsing the
+'coredump_filter=' boot parameter.
 
-diff --git a/Documentation/core-api/housekeeping.rst b/Documentation/core-api/housekeeping.rst
-new file mode 100644
-index 000000000000..e5417302774c
---- /dev/null
-+++ b/Documentation/core-api/housekeeping.rst
-@@ -0,0 +1,111 @@
-+======================================
-+Housekeeping
-+======================================
-+
-+
-+CPU Isolation moves away kernel work that may otherwise run on any CPU.
-+The purpose of its related features is to reduce the OS jitter that some
-+extreme workloads can't stand, such as in some DPDK usecases.
-+
-+The kernel work moved away by CPU isolation is commonly described as
-+"housekeeping" because it includes ground work that performs cleanups,
-+statistics maintainance and actions relying on them, memory release,
-+various deferrals etc...
-+
-+Sometimes housekeeping is just some unbound work (unbound workqueues,
-+unbound timers, ...) that gets easily assigned to non-isolated CPUs.
-+But sometimes housekeeping is tied to a specific CPU and requires
-+elaborated tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
-+scheduler tick, etc...).
-+
-+Thus, a housekeeping CPU can be considered as the reverse of an isolated
-+CPU. It is simply a CPU that can execute housekeeping work. There must
-+always be at least one online housekeeping CPU at any time. The CPUs that
-+are not	isolated are automatically assigned as housekeeping.
-+
-+Housekeeping is currently divided in four features described
-+by the ``enum hk_type type``:
-+
-+1.	HK_TYPE_DOMAIN matches the work moved away by scheduler domain
-+	isolation performed through ``isolcpus=domain`` boot parameter or
-+	isolated cpuset partitions in cgroup v2. This includes scheduler
-+	load balancing, unbound workqueues and timers.
-+
-+2.	HK_TYPE_KERNEL_NOISE matches the work moved away by tick isolation
-+	performed through ``nohz_full=`` or ``isolcpus=nohz`` boot
-+	parameters. This includes remote scheduler tick, vmstat and lockup
-+	watchdog.
-+
-+3.	HK_TYPE_MANAGED_IRQ matches the IRQ handlers moved away by managed
-+	IRQ isolation performed through ``isolcpus=managed_irq``.
-+
-+4.	HK_TYPE_DOMAIN_BOOT matches the work moved away by scheduler domain
-+	isolation performed through ``isolcpus=domain`` only. It is similar
-+	to HK_TYPE_DOMAIN except it ignores the isolation performed by
-+	cpusets.
-+
-+
-+Housekeeping cpumasks
-+=================================
-+
-+Housekeeping cpumasks include the CPUs that can execute the work moved
-+away by the matching isolation feature. These cpumasks are returned by
-+the following function::
-+
-+	const struct cpumask *housekeeping_cpumask(enum hk_type type)
-+
-+By default, if neither ``nohz_full=``, nor ``isolcpus``, nor cpuset's
-+isolated partitions are used, which covers most usecases, this function
-+returns the cpu_possible_mask.
-+
-+Otherwise the function returns the cpumask complement of the isolation
-+feature. For example:
-+
-+With isolcpus=domain,7 the following will return a mask with all possible
-+CPUs except 7::
-+
-+	housekeeping_cpumask(HK_TYPE_DOMAIN)
-+
-+Similarly with nohz_full=5,6 the following will return a mask with all
-+possible CPUs except 5,6::
-+
-+	housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
-+
-+
-+Synchronization against cpusets
-+=================================
-+
-+Cpuset can modify the HK_TYPE_DOMAIN housekeeping cpumask while creating,
-+modifying or deleting an isolated partition.
-+
-+The users of HK_TYPE_DOMAIN cpumask must then make sure to synchronize
-+properly against cpuset in order to make sure that:
-+
-+1.	The cpumask snapshot stays coherent.
-+
-+2.	No housekeeping work is queued on a newly made isolated CPU.
-+
-+3.	Pending housekeeping work that was queued to a non isolated
-+	CPU which just turned isolated through cpuset must be flushed
-+	before the related created/modified isolated partition is made
-+	available to userspace.
-+
-+This synchronization is maintained by an RCU based scheme. The cpuset update
-+side waits for an RCU grace period after updating the HK_TYPE_DOMAIN
-+cpumask and before flushing pending works. On the read side, care must be
-+taken to gather the housekeeping target election and the work enqueue within
-+the same RCU read side critical section.
-+
-+A typical layout example would look like this on the update side
-+(``housekeeping_update()``)::
-+
-+	rcu_assign_pointer(housekeeping_cpumasks[type], trial);
-+	synchronize_rcu();
-+	flush_workqueue(example_workqueue);
-+
-+And then on the read side::
-+
-+	rcu_read_lock();
-+	cpu = housekeeping_any_cpu(HK_TYPE_DOMAIN);
-+	queue_work_on(cpu, example_workqueue, work);
-+	rcu_read_unlock();
-diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-index 5eb0fbbbc323..79fe7735692e 100644
---- a/Documentation/core-api/index.rst
-+++ b/Documentation/core-api/index.rst
-@@ -25,6 +25,7 @@ it.
-    symbol-namespaces
-    asm-annotations
-    real-time/index
-+   housekeeping.rst
+Check the return value of kstrtoul() and reject invalid values. This
+adds error handling while preserving behavior for existing values, and
+removes use of the deprecated simple_strtoul() helper. The current code
+silently sets 'default_dump_filter = 0' if parsing fails, instead of
+leaving the default value (MMF_DUMP_FILTER_DEFAULT) unchanged.
+
+Rename the static variable 'default_dump_filter' to 'coredump_filter'
+since it does not necessarily contain the default value and the current
+name can be misleading.
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ kernel/fork.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/kernel/fork.c b/kernel/fork.c
+index b1f3915d5f8e..f33ee7fe53ad 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1012,13 +1012,14 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
  
- Data structures and low-level utilities
- =======================================
+ __cacheline_aligned_in_smp DEFINE_SPINLOCK(mmlist_lock);
+ 
+-static unsigned long default_dump_filter = MMF_DUMP_FILTER_DEFAULT;
++static unsigned long coredump_filter = MMF_DUMP_FILTER_DEFAULT;
+ 
+ static int __init coredump_filter_setup(char *s)
+ {
+-	default_dump_filter =
+-		(simple_strtoul(s, NULL, 0) << MMF_DUMP_FILTER_SHIFT) &
+-		MMF_DUMP_FILTER_MASK;
++	if (kstrtoul(s, 0, &coredump_filter))
++		return 0;
++	coredump_filter <<= MMF_DUMP_FILTER_SHIFT;
++	coredump_filter &= MMF_DUMP_FILTER_MASK;
+ 	return 1;
+ }
+ 
+@@ -1104,7 +1105,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+ 		__mm_flags_overwrite_word(mm, mmf_init_legacy_flags(flags));
+ 		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
+ 	} else {
+-		__mm_flags_overwrite_word(mm, default_dump_filter);
++		__mm_flags_overwrite_word(mm, coredump_filter);
+ 		mm->def_flags = 0;
+ 	}
+ 
 -- 
-2.51.1
+Thorsten Blum <thorsten.blum@linux.dev>
+GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
 
 
