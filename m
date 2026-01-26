@@ -4,182 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89F69D13C0D
-	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 13:42:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C6ED13C00
+	for <linux-mm@archiver.kernel.org>; Mon, 26 Jan 2026 13:45:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48F96B0088; Mon, 26 Jan 2026 08:42:05 -0500 (EST)
+	id 1C45A6B0089; Mon, 26 Jan 2026 08:45:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF6ED6B0089; Mon, 26 Jan 2026 08:42:05 -0500 (EST)
+	id 172416B008A; Mon, 26 Jan 2026 08:45:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CEFB6B008A; Mon, 26 Jan 2026 08:42:05 -0500 (EST)
+	id 06ABE6B008C; Mon, 26 Jan 2026 08:45:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B4C96B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:42:05 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1B4651602E2
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:42:05 +0000 (UTC)
-X-FDA: 84374228610.11.A51980A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9A8C7C0002
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:42:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=owfdidsi;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="FGq94/7w";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vBJZc1qc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/FC07lqM";
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA1CF6B0089
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 08:45:15 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F444C27E2
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:45:15 +0000 (UTC)
+X-FDA: 84374236590.01.A7FB1C1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CEBCC14000A
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 13:45:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TkAdyOGK;
+	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769434923;
+	s=arc-20220608; t=1769435114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rfZY7YT/x2O6vUyq6hh8AAEHXXvrurd7nwEreYarD3k=;
-	b=5XssFcS0XN31tvieJGZyghjUoSpVxQWBzVwdIVtm/4/+GhT5PxcWNlR8/n5rVBnGOONh3X
-	Fwvc8EqXo09PpyacPC0JkRvFJl3DjS76krYyfhVpnnyNIIG2il+19OVXxBvkW661SVqYhL
-	GQ3pwqERmf3lQ2KLve5LnTqJ5iyeuyY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=owfdidsi;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="FGq94/7w";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vBJZc1qc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/FC07lqM";
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769434923; a=rsa-sha256;
+	bh=3xMCDXBK98svIEGqHcH03JamawrF+kxK5yFNzprmhnA=;
+	b=Auj1xc9XwwXedj0h5FL9f27h5dGGp3ehwWWCIT7s5UsjRwJVNOZutrK7dRQAWd0HNU0IDu
+	I7ZLFSFAx6TENTLHxkPKTl0QH9vfiCVOCK0yy80NJlaRzGJpc4n3lOJvs3L+clNPUuK28P
+	k5jFO0a3uSqFSRtplCJdfrCEp7wew6Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769435114; a=rsa-sha256;
 	cv=none;
-	b=W6lciZQg8NVpJxWw8ACnu6Gf8oWcSm5Jo7DX/f3LH3lde8V1C7mqvZJIYK4Yx2gCW7+wHa
-	NJkvRC8HGUaqjF8Efj0iLHQ68WyY6oNQQot8Kf4hTVXyDN2+HkGtBQElE9vd/R6LxPoJzH
-	FhUMlfVswEkaNmxJBPq9wm0I+BnNBpQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EAFF15BCE3;
-	Mon, 26 Jan 2026 13:42:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769434921; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rfZY7YT/x2O6vUyq6hh8AAEHXXvrurd7nwEreYarD3k=;
-	b=owfdidsiAmgz4uaYDiwOPZl3b7eKSyNSjSov9V0zdULg3flxl1Og9Ivmvm08nlnmeIkYm6
-	jGVmiTe92MzZFejn8ggjTIIBfi9KtxIZhH32cUGEj9odq5m2xlRSNp48YvxLbjt16LbxJ1
-	0ZKTy7mqeEeKVx31KUhmOb7k6g0Ipzc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769434921;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rfZY7YT/x2O6vUyq6hh8AAEHXXvrurd7nwEreYarD3k=;
-	b=FGq94/7wl9b3dpgRVN7WQP5VrnrYmORbHJSxGPc6/lpwbodJfSLdM4UlpA/oV63SQaxAtW
-	wrkmBVn4A3TUkaCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769434920; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rfZY7YT/x2O6vUyq6hh8AAEHXXvrurd7nwEreYarD3k=;
-	b=vBJZc1qcWGxeu3m8UNysIJ79bLRuEC7OlIi8BIYreJyaRVVlRApRdg+yefSrKx4+GtFi/m
-	OAO9R2kt45EJ1YKGfF4ifZhpWDYu+ke60+3zCecAPz6QrMDDJcjVKk681DDyZboyMVXKhq
-	DZJEMhqfqM/xXsmYQICykuFFMfFmeT8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769434920;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rfZY7YT/x2O6vUyq6hh8AAEHXXvrurd7nwEreYarD3k=;
-	b=/FC07lqMVMDwYRUpJn4PljxAxODnKS6oyJEXM42BukOgoOHgxU7PtrY1DtP3wGUwSrRTc1
-	ma8M172qRtLTzwAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BCC91139E9;
-	Mon, 26 Jan 2026 13:42:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8lTDLShvd2nIZAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 26 Jan 2026 13:42:00 +0000
-Message-ID: <6c4162c5-1703-45db-b9ca-96ecd8ce551f@suse.cz>
-Date: Mon, 26 Jan 2026 14:42:00 +0100
+	b=5e0bl5xreRFAGq+NjgwJXUrAxNZzZFhEQWe1kPvtW9qqnh4w3ZKf8ZWrDtD4JOjQ5hViu5
+	g/BrfAX3HV5eKPiSnch4jpGrzVi/f81BvEW9cllAz7sLUDmj/NpZUFGgYiD3/uFewUqxiE
+	9f0CBDwmV9buTncWWbXsFMNVp2n3cz4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TkAdyOGK;
+	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CF5B543F3E;
+	Mon, 26 Jan 2026 13:45:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4B5C116C6;
+	Mon, 26 Jan 2026 13:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769435112;
+	bh=xw/pUvk0u6PtIzlKi8yZZbG6CWAdPi59b0ZTMCQ7GRk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=TkAdyOGKRNfLrHFPNYnuEp0JpEW6/EaLKUJQJBigmpBHdQAGGppWEQnDahgzi2aM9
+	 uXJJxPso/zn9Ve99t7pA9o8rSjNLOKFJB0jMkdkaqpjzrP9OV/9gAxNYVjF7EXeDTo
+	 a95nQc92RLuYffzFjH0sj98HsI71PudpADIrTXuENU5arMt2gn5NasA7Xdk75IgSAH
+	 iaSQ98xzLIRTRR5KoXrUqdTWiTzFTO1EYz+N14ywCdwb76dNzpaeMa3pFmPZ2Bt0VB
+	 qOjfbtaJshhAiDiUtxiFKhvuQO57iNsft+yN35w+UoTSl01UK4ZsqpS0wTJ11n5EJO
+	 2Du5t4HtuADxw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>,  Alexander Graf <graf@amazon.com>,
+  Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,  usamaarif642@gmail.com,
+  rmikey@meta.com,  clm@fb.com,  riel@surriel.com,  kernel-team@meta.com,
+  SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH v4] kho: kexec-metadata: track previous kernel chain
+In-Reply-To: <2vxzikcoa4g1.fsf@kernel.org> (Pratyush Yadav's message of "Mon,
+	26 Jan 2026 14:28:30 +0100")
+References: <20260121-kho-v4-1-5c8fe77b6804@debian.org>
+	<aXdTEzsm88JKu9zY@gmail.com> <2vxzikcoa4g1.fsf@kernel.org>
+Date: Mon, 26 Jan 2026 14:45:08 +0100
+Message-ID: <2vxza4y0a3ob.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/10] mm/vma: update vma_assert_locked() to use
- lockdep
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Jann Horn <jannh@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Waiman Long <longman@redhat.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
- <538762f079cc4fa76ff8bf30a8a9525a09961451.1769198904.git.lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <538762f079cc4fa76ff8bf30a8a9525a09961451.1769198904.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: w4fdpfgscwdkchwb5u757zoabjcwqm5c
-X-Rspamd-Queue-Id: 9A8C7C0002
+Content-Type: text/plain
+X-Rspamd-Queue-Id: CEBCC14000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769434922-539066
-X-HE-Meta: U2FsdGVkX1/tkxODyA5TYqLKy17NdVPUCzW57h/jTWOhgls5IU3huayg/ed3TvPiDll7NEEjvdrby/6ROQfwjwRG5f/xZxSZqtb1CUDVXvCSyqYwFtZlg5yHr811bTHWETu53HjfG8DmZ4tes49m9tjlxS1lwtz9B1i+25W7486taV/5ZcWqYbUvpnAP7fqvz3Y0dISoprEvmGmKBVYTy+bW/Z8ZIippoxOehXK1EStbF0YQO4R4o4KiM+xwQetWzOtrQuLyLeYv0N7WjOiDWLWfCQSpJEgosUUbalphWUR9FUMAJ3YorWDqvuy/MqbUJuNRWp4YbrEALhkgjNWQSI9tfnMr5jt+E6Yuwta/g6M/ZsCcm+Lz+wc2hXBkMP3S5c84E2e+RUu2ORn/74cTFtnHVyovw6UYn8s4Ot1q4h6TXm4yr3STid7nrqXhMCMSbfis/A1OzVyxCf5SFwf6BvxaqIfPBDAN192ovels7WpgVFmN9PAnG8H3mmx0CI1lsarYCfvd+d0GVaFaPGIHw22yNO4YNfPScweShkWJTE1a0weUU5QoQAmDM9Ox4uIUvdsRe1eIpTp7eDSrvBBsVyXJfEZYn2uGlNwP6xeqU3P0lUxAH1AYwA3zosOifeLlDAgPA0KEJnhMQDWrlEqhKbYzOXKh7wDHXyCMQadbid7aSiolxtrU+zGPkSk9AzcUTgLxC/59LCysMT2EhA0rRSSCw5HlyR76AJ1YYV3vc8BCRcEmCBHip9N2uacKwgCPI4Me7CzYrCXAigIXnvRPiguuDosVZF7rnel/Up1NNJc/MDF2HomNXex7vPfP79bcnU/gWH35mtPvzfs0NFDYEMUynp6kwnui88VSEHiKt220U7XNenn+UYX/dYNUSsHhnAAuT6gi0MIGArrETozcRafK4uM0C/WjUTkYguvsI8euItMVhCxvz3NdtPWx40AsMYb9LpQdN4Yf4Xxv/Tq
- CxL3Ak4g
- CylQm0wBog29wL3VdbdGCkHsgwd+PEVaiG9Cvp4W63OHMDkDQii3rLcJu5OCPwefg8wy5za5vQZ9UQI69g1egyHv+e8tpk0V1bD45BT1z7pexg0z4HJpQ8mWenMl/w9C/CUBBHrNbFRHQJZJUS4Jw8hhwn8PQga3daKqeExlExiS4RowkaAoo48odepetnz5yMO5SXA77niWPW7EZ99yLVTycYUl/asYUhTfIRWZ0urb97wqa5cXSX15XYxFRIUOrvEx0uWmJrgHyqeTbAlutnU4ijLZRy1HNQvEefnf33jmswA7L8vDlGkUb2P6JEh1XpKMpCneZGJYCDOhYcdsymeFZpglydvZ0r8rclWdKrEjc7Dx1COkHKKv7n+6MAU6+v5622/leHix8SLyN+iTSOIa3Pp5S9kzYTRMAIYSJF1sAY+F0AV1yWLC6famK8v7JXrPOhtqedBMQeWk=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 5phpnzey4zuz6ddx3b9we8up98e8hzk4
+X-HE-Tag: 1769435113-253401
+X-HE-Meta: U2FsdGVkX18hIYAMNnFcNJOYME7cx0vrkRSswvFsXhhTNpQX9t2cKZqAAjZ/Bc+sBl+ckttym155yrSTm01m9dtKjC/zkD6p/2xBEnTDzQ0c34JfJlRYCHd+atW9K2fb/9sow/mcJZO9Y5yZ8eXt3b0eoFyqvDgEXqkt3uMKVfV2iq/J6EsHffOjRY7E2N8VAiEOz98tTWZ8sU7XPLgCQ4TjxN0ceUOssUvOW4oDFQ8m0E532Us6So4V3e43W9aUM7l72F5PwGy0Ol/QVJsBehXkBQ2kqR7WR6V5I3QGw32HDIH+FbMU1WtvhzJ6fLcgslOuvBbN1vziuhPshQjF9gFMQFVBsEN85sdRLcIU44/rXp/H12E+X3GxvT/0gr6oFKjtohsjOR21GWirpEkkZhTdWWjjP4g6WXbgk1hsAtvwUxJdRBiLMYAf6eyijxOSduvXVPSae6EEeBEphJQAnoaGZaiMVXupbGqMVZFBMOw9kzWOR7DWf4dleH/lK1bfibWt7A4MxjUuFp6z82I+SvpScZRKsE/3FZULmsI6vvtzjTEYp3S2U/FKcgysBy+AbKNZSNFINs7fWo2CgSwzqrrX6VQ3BjVrpc9j3XWRdxCVVh3LVKC+r8lraXsL1hIyUS3jyGhC/W3M8H0sooIdzQvCr3N14/YfChe/Sod+I5oJ8J+tqch71rwfbVETLO9lId+QlfQY3hQJM+3FdW3ySlF/GYFk+5eyGROpPRSQ5sE4Ewm9umB94okrJNTp0/Hpy1ZYEpb2zW8+glqDPLurPgYTwTo0SV95MsSxcBDklXzYsYqIBgfxCPNBz9qahy1VM3NeMacLO3UHSpqXLpM5a3HWVxe/aGBJ8fkvPc+e9JN+hoek7gpYokj2WYFl8aU43UmgjOtDjdPJj1AELNQEAoXXE0twyBHRr0Ht5e9uNDhW2HXaJCjuhCuxDUx7w34GZC1EWduaRUeZI1xA8Bo
+ ytsvHV3H
+ fdkdfgD4C4bwWPHQsDXFdA5y0StD2F30tXI6WfPQl3gpcptn8YUu9O149j+EBoDtNeA1T6v9jl3YL9wsUAGfNTwYKCyvfvCLBj0zVtSo1F5hjDNFOK1W/EAXkfhNJkTmQH/sgNZxPviM3RVLTzOAIMPCWZ8jRkkcRhuj1xx6afMmXndY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,94 +97,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/23/26 21:12, Lorenzo Stoakes wrote:
-> We can use lockdep to avoid unnecessary work here, otherwise update the
-> code to logically evaluate all pertinent cases and share code with
-> vma_assert_write_locked().
-> 
-> Make it clear here that we treat the VMA being detached at this point as a
-> bug, this was only implicit before.
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+On Mon, Jan 26 2026, Pratyush Yadav wrote:
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> Hi Breno,
+>
+> On Mon, Jan 26 2026, Breno Leitao wrote:
+>
+>> On Wed, Jan 21, 2026 at 06:50:38AM -0800, Breno Leitao wrote:
+>>> +static __init int kho_populate_kexec_metadata(void)
+>>> +{
+>>> +	struct kho_kexec_metadata *metadata;
+>>> +	int err;
+>>> +
+>>> +	metadata = kho_alloc_preserve(sizeof(*metadata));
+>>> +	if (IS_ERR(metadata))
+>>> +		return PTR_ERR(metadata);
+>>> +
+>>> +	strscpy(metadata->previous_release, init_uts_ns.name.release,
+>>> +		sizeof(metadata->previous_release));
+>>> +	/* kho_in.kexec_count is set to 0 on cold boot */
+>>> +	metadata->kexec_count = kho_in.kexec_count + 1;
+>>> +
+>>> +	err = kho_add_subtree(KHO_METADATA_NODE_NAME, metadata);
+>>
+>> There is a hidden bug in here when CONFIG_KEXEC_HANDOVER_DEBUGFS is set.
+>
+> Good catch!
+>
+>>
+>> kho_add_subtree() expects a fdt as the second argument, and we are
+>> passing a pure C struct. That works fine, except for debugfs, which
+>> does:
+>>
+>>  1. kho_add_subtree() calls kho_debugfs_fdt_add()
+>>  2. kho_debugfs_fdt_add() calls __kho_debugfs_fdt_add()
+>>  3. __kho_debugfs_fdt_add() executes fdt_totalsize(fdt)
+>>
+>> The fdt_totalsize() macro reads bytes 4-7 of the input as a big-endian u32, and
+>> this will hit struct kho_kexec_metadata, given I am passing a C struct instead
+>> of a FDT.
+>>
+>>   struct kho_kexec_metadata {
+>>       char previous_release[__NEW_UTS_LEN + 1];  // 65 bytes
+>>       u32 kexec_count;
+>>   } __packed;
+>>
+>> Bytes 4-7 would be characters from previous_release (e.g., "0-rc" from
+>> "6.19.0-rc4..."). Interpreted as big-endian u32, this gives a garbage size
+>> value.
+>>
+>> The alternatives I see here are:
+>>
+>>  1) Come back to FDT instead of plain C struct, similarly to the previous
+>>     version [1]
+>>  2) Created some helpers to treat C struct fields specially just for this
+>>     feature, and we can do it later if we have more users.
+>>  3) Move this kexec_metadata to work on top of LUO (similarly to memfd), but
+>>     that would be an unnecessary dependency just to have this kexec_metadata.
+>>
+>> That said, for the next version, I am coming back to to FDT.
+>
+> Please, no. Don't go back to it just for the sake of this bug.
+>
+> I think KHO's assumption that the subtree will always point to an FDT is
+> broken, and we should fix that. I think KHO should expose the blob of
+> serialized data and let userspace figure out what the format is and how
+> to decode it.
+>
+> To do that, we would need to update kho_add_subtree() to take a size
+> parameter from callers, and pass that down to debugfs code. I count 3
+> callers of kho_add_subtree() - memblock, LUO, and test_kho. I think all
+> 3 should be fairly easy to update, but I am happy to help out if you
+> need.
 
-Nit:
+As an example, I'd do something along the lines of:
 
-> ---
->  include/linux/mmap_lock.h | 41 +++++++++++++++++++++++++++++++++++++--
->  1 file changed, 39 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index 23bde4bd5a85..4a0aafc66c5d 100644
-> --- a/include/linux/mmap_lock.h
-> +++ b/include/linux/mmap_lock.h
-> @@ -322,19 +322,56 @@ int vma_start_write_killable(struct vm_area_struct *vma)
->  	return __vma_start_write(vma, __vma_raw_mm_seqnum(vma), TASK_KILLABLE);
->  }
->  
-> +/**
-> + * vma_assert_write_locked() - assert that @vma holds a VMA write lock.
-> + * @vma: The VMA to assert.
-> + */
->  static inline void vma_assert_write_locked(struct vm_area_struct *vma)
->  {
->  	VM_WARN_ON_ONCE_VMA(!__is_vma_write_locked(vma), vma);
->  }
->  
-> +/**
-> + * vma_assert_locked() - assert that @vma holds either a VMA read or a VMA write
-> + * lock and is not detached.
-> + * @vma: The VMA to assert.
-> + */
->  static inline void vma_assert_locked(struct vm_area_struct *vma)
->  {
-> +	unsigned int refcnt;
-> +
-> +	/*
-> +	 * If read-locked or currently excluding readers, then the VMA is
-> +	 * locked.
-> +	 */
-> +#ifdef CONFIG_LOCKDEP
-> +	if (lock_is_held(&vma->vmlock_dep_map))
-> +		return;
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 905d06b16348..c06d6b9e390b 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2512,7 +2512,7 @@ static int __init prepare_kho_fdt(void)
+ 	if (err)
+ 		goto err_unpreserve_fdt;
+ 
+-	err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
++	err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt, fdt_totalsize(fdt));
+ 	if (err)
+ 		goto err_unpreserve_fdt;
 
-Wouldn't this work a tiny bit better?
-
-	if (!lock_is_held(&vma->vmlock_dep_map))
-		vma_assert_write_locked(vma);
-	return;
-
-> +#endif
-> +
->  	/*
->  	 * See the comment describing the vm_area_struct->vm_refcnt field for
->  	 * details of possible refcnt values.
->  	 */
-> -	VM_WARN_ON_ONCE_VMA(refcount_read(&vma->vm_refcnt) <= 1 &&
-> -			    !__is_vma_write_locked(vma), vma);
-> +	refcnt = refcount_read(&vma->vm_refcnt);
-> +
-> +	/*
-> +	 * In this case we're either read-locked, write-locked with temporary
-> +	 * readers, or in the midst of excluding readers, all of which means
-> +	 * we're locked.
-> +	 */
-> +	if (refcnt > 1)
-> +		return;
-> +
-> +	/* It is a bug for the VMA to be detached here. */
-> +	VM_WARN_ON_ONCE_VMA(!refcnt, vma);
-> +
-> +	/*
-> +	 * OK, the VMA has a reference count of 1 which means it is either
-> +	 * unlocked and attached or write-locked, so assert that it is
-> +	 * write-locked.
-> +	 */
-> +	vma_assert_write_locked(vma);
->  }
->  
->  static inline bool vma_is_attached(struct vm_area_struct *vma)
-
+-- 
+Regards,
+Pratyush Yadav
 
