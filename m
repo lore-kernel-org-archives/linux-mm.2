@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E7FD2F000
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 12:16:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CDE3D2F005
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 12:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAA476B008A; Tue, 27 Jan 2026 07:16:24 -0500 (EST)
+	id E65D66B008C; Tue, 27 Jan 2026 07:16:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7E526B008C; Tue, 27 Jan 2026 07:16:24 -0500 (EST)
+	id E26A46B0092; Tue, 27 Jan 2026 07:16:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1726B0092; Tue, 27 Jan 2026 07:16:24 -0500 (EST)
+	id D5D796B0093; Tue, 27 Jan 2026 07:16:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C9C416B008A
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 07:16:24 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 58FB51A0B75
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 12:16:24 +0000 (UTC)
-X-FDA: 84377641488.08.71732FC
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AD940140013
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 12:16:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eTvSU3ZC;
-	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C795C6B008C
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 07:16:31 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87412BD4D7
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 12:16:31 +0000 (UTC)
+X-FDA: 84377641782.26.82533AF
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9ADDD40005
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 12:16:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xO2ohnEJ;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769516182;
+	s=arc-20220608; t=1769516189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqzAgJ4OlgcGBu7aVY4MnPgaTUGUmQkYyYjl0T7Jjfo=;
-	b=Gmcea7DxZdqDSlB2MS7j2A6QK3Bl1xaTSH9XdymrqybxfOUAXNsstFai9ZytnGOJbO9AGS
-	W0isOOmpdFNaaJF/Y5y6j5ogUivfCRKDZgiUalKnt7lACDZ89CR0dfDZcJtvqVR1e6dMc5
-	2bk/e9VKHCRbfzpmtKQ/2hOkyqe1SxY=
+	bh=WjvVUE6PLFuQKn8iudCm/UQAhzXxbds5MAnD30p0biw=;
+	b=41JnXlCBc7mnGgu5/CwmZOzJ79fXSxRadFLfz0k/Q2hccr49CLdLdU2/MSBmz27b9Pj44V
+	Zx6VVik4jXH4bQ5wDDKy62TlnLkPImkcK3geAGVpjlWV0EywK7HeUWgGiNkFbdjnvuxVL5
+	6sKVlbsTCtyWsHNGo9x0lLlWE14/JPg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eTvSU3ZC;
-	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xO2ohnEJ;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769516182; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769516189; a=rsa-sha256;
 	cv=none;
-	b=vmHMM3LSlgo0bHvt2mQyOAR6J4ZiJ802pR7bpdTiHzEKcEpUBV67Y7BOH3CM5dalbnXB1R
-	7DNsdwT5hqLnxrVOkqrsJCGXmPadtutbvwDYti4KwEEackmw5JDsHoVYmsajVCt/j6J96t
-	PNmUTKK7RPuFsfxjf3FNKaw1qZiaPF8=
+	b=glogQoRYECLYevY6Bk4/CqnGfvUzfeqtbG/NnkOGgbHvqZ3aewFb/kYhP8NZhBNWjbdjpx
+	m59308OpQo9gze2H0uDV2FEb0JbO2Q+oBn9VzGjFF3XwShX3HgiytOOX2veZnoGQkDAR7g
+	KRVaaFna2Vt2ba1OqN/EffRuUBGeijo=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769516181;
+	t=1769516188;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nqzAgJ4OlgcGBu7aVY4MnPgaTUGUmQkYyYjl0T7Jjfo=;
-	b=eTvSU3ZCpnyKbhQnuvuO2jr6hynLePtUm7AFB1uPj+vAJuTy9oTT2MVhYeJqwJohWAIjgB
-	dugNI+BBRhHolFR11/lct21SCQbz4v6oxO18CXjq56Rn7h5liJp+VIMbmFDxZ6gUEE54yO
-	8pDwFthpkMeWcWpvHLph/yKF79EaL1M=
+	bh=WjvVUE6PLFuQKn8iudCm/UQAhzXxbds5MAnD30p0biw=;
+	b=xO2ohnEJgOKRyNkG4Cwbt6Lp5Pd3P0WQhApWwjUgIK9wbWMLtrc5Kj+Sv2UwYxk+CDb3Ad
+	KWmqiGgfLYLHLuqZQ8nKUidTKDgFbIO+JI75wDJ6MO926YTSF3yH8RoAp0rLN3hGVlvVlD
+	FKkbFSoSRhVTR41853D/W5ny0Ls+MK4=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: david@kernel.org,
 	andreas@gaisler.com,
@@ -81,24 +81,24 @@ Cc: linux-arch@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	sparclinux@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>
-Subject: [PATCH v4 2/8] alpha: mm: enable MMU_GATHER_RCU_TABLE_FREE
-Date: Tue, 27 Jan 2026 20:12:55 +0800
-Message-ID: <3380f40a89b73c488202c85f9a8abf99fb08543b.1769515122.git.zhengqi.arch@bytedance.com>
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>
+Subject: [PATCH v4 3/8] LoongArch: mm: enable MMU_GATHER_RCU_TABLE_FREE
+Date: Tue, 27 Jan 2026 20:12:56 +0800
+Message-ID: <bd1b11bc1a13686aeba81a40194f87b369d62661.1769515122.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1769515122.git.zhengqi.arch@bytedance.com>
 References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AD940140013
-X-Stat-Signature: 8qnub4uqmioc5uhrse665ae4ybyiyyg7
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9ADDD40005
+X-Stat-Signature: 83r5t4w6qjcicwnk3ujto6jc3p4fkwu4
 X-Rspam-User: 
-X-HE-Tag: 1769516182-127800
-X-HE-Meta: U2FsdGVkX18MVSV6RE13ep6XR5vVRU566AzlsE+899kbii/eFTYCAeKFxOVDTaB4jJXlYUb4TYF3pLJo2Rq+3PnR9Avw08Qjl26U668wxVGLMrSyDIxdL/nKLuPHD4UzaFj1HtMImrp1NpJsfRn/4p6vfhZqc/xq+Y99y8ddFS/gtFfvX0sVgpKy9himsuc7gKr7dMa27cDUa6EcDjnU4bfePu64IoOh6O+pNUnJTqxfIymPxRyA1uKGiCVhPHNHrnB1k22xFVoPEnBqSdgg+yBM0lvuLeWBhUfWasW4YrU7X8UNvrKSsaaHf8d4UYIAoodNr3oiNHvJ5HO1EwLF6yxcB26bdxm+lsbT5+uYjJ0BjSKZip3Q9quSqYhITIgYiOw0pY3w+eR1+piFQvFVhs42EKY2kDR50eeIMOXTvGtAvGp3yzCsqiXDcU+/GTR2DIaP4k5N6/bBNqNBGijTS7HVHR83OPt1Bmr2nEZs0MOYjmkCVYj4NimGTdPzBVy/RkEaoT7JYVNvj5CXApFo1LEhLwap5/w1qTDCkpTc8o1vJmWGfhymGK+dD6SYOgSRl1GXLnw8bOx4NJqk2ZfMZK7Yq10TUU0oVE4i7dv5uGMHihkj/nWsusnqR9HRtU3ZmTvbI0tC61iTKQgwAZqDr03LUjqaY+LR94j2y0x+Gv/cClWBzRjSy2CnrnQot7cb9viNS+l06hAi9ICDf7suxGZH0ydF+3AnHSKf5T5EO9b+kEyF6FKpERYdGCndmvT/rYjvf96LkezE0lFZ3MZ9J/yLBWv9Xe86lhU6cORti2R7MGuIr/OCzVXuemBSiOJMYX6hNc7nO1HpizPbxqQrghwRb1B/kdY+5Ak13kV1ggC2wTb9/vvyOzz/65FwgoXrTQgKkOUL5fROTmyUkQ/gU2xqjR2TPJ8h4G0Dw6Zu+IJ3njempWF/zWh4Up4QuyONVmB2BoB82Z2LAI7/4u9
- 5PAZ7Ucd
- DkP61bCkSsxvVZ58p9DhH1gD5p31v+3HT4jGjmZp3EiMMkBC8P/dC8iUwNPMeG/Dl6rdMMLfjj7amQL06in5Tw4cg4ivPoO95T2prOUlsYx5z9F/rQz2WicZ9nUwjPCwKJYGlkJfa5s05Se+pUJBSXA9M/RPAZ8X0sVYJCED6/CRFonTR+MxPQ0AyGtTAICfaZ0rMyfOiM5RYf3RTgsel2DSzD5bGzPjKC6M2WdOk9AP0WsZtrpUKb/trcuA4VBYn8vXQySLKPExGUyrjHUwOk8t4g6gkMIJX6IytPNj2L5b/btrPcd/FqbgogrPPe1gWG2nlwOV4/lqNDiOzm5efN1eWTrnnJN9M1Lx0Y+lPUmnSjlCWvOmvcUwplSOvn4az64ZE
+X-HE-Tag: 1769516189-53643
+X-HE-Meta: U2FsdGVkX182AHskGBBI0KQlcX+LV/+wGEkZV/8ffBVEmtY0I4BLuziUtB5EP20FTBD3ki4KTHjG3mTBVLLYDsQlwl2YhJlbpzSNE9nPNirVJn50CkwBX/B/ME2NbMRQBi7jCmeSSix9ZzlNT2taghilQnDmwqXEL1J7RK6j3hrnTfd0OauUqhgBvqMi6+7IKWx83YSqvtumoPinQBEbpFIu+V/GfzPimo3K1vQOzj2T2+htJEtTfUKvTs7HfIvIwnnIvVxOMQ63wA4CQgYRR7jQj4wTyib4o8zNc8sLtOBQp5xZnwtMceN5ga7H/enpFc73bW6cfYx0Yh0Mj/+XMyZlk+z/FtdfreTZKjzNXUxtc1SDq0pg4xWdsf0Q2NOfQJ2c9pCHGvUT2ocVFU53XIx2Oi5vfySlmBYNyj2h6TcEyYs7fjoxju1FhNLEuf5ZLVIjgHt5zmq0boMZvYuXHBDss1B2AhwCET3Q9gtF2mHCsS43fNyfxD/it/1NlF6CnGlu3QyxGGYYcGn+7UjT6vkTywHrsebUgfMLV4cZ3IzUqPlefcCLbvnjX7/mKKrIhYqiF2dkthQosdn0YlkVlXlsXpjgFNGnLwNZ0sGKxJnFig2FB3yTY4kgvXMtRT1w+w3hFA6RRqzp7H1ereePmhP6ofes5wqgiI9uw5KOCmFNzfUJzM3Md6USE/gNLuXAfFb/VDrYCtaUkjBtyWRePdY+tqNtqT/0r+q5WED2NV1HG+uZHZo83xxAqQOm0UaEKzTY8narTuIrTUAI5iMYQcPqmOkk8yeAQrmzsFOhBzZ8OyftAqC31B56enD19Ts6LyNuhLujzYVvEhZ6Fy0Fc6xfQ0nfT1m72276zPqEaCLahsXUh+WH3Etx1NFZ15oJ0Q/4DbNXXbdvmfWxi3xRxL6yrbztgboJnN4glOeXt36Z0JUSop7bFsaCtj6VQmL94RPH9RkFRRQlCHol7Rz
+ sJvCcFG2
+ naqQweLT85whTLnBevjgbFajCQGgwd0/kdrk/M/jmrGOwYautqinkonCZzBZL65rUpqIenwQgq+UR+PSb4M1vG7t0X06UXyZxvO6NtKc9asmT7HXtFUmzcTruiNKBhu9ktCQ/02k3KuDQ1Af8xT0/O4AzWLhumHNL5/F7OCnkB2YrMi7MpO4HzsMsrHHvoB/SvfgDyaX3WGQfEInCzyDhM2xXGq5MTdtEsgKUdP6OERY+j2u3Z4Xt43phr2FV/Hhk3nbPe5j5cDwpIgNmu4bh4nXwre+FvAR+b25AD9j0TW49ECjwewVNJKFvftTQC28YTF4l
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,40 +115,57 @@ first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
 PT_RECLAIM feature, which resolves this problem.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Matt Turner <mattst88@gmail.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
 ---
- arch/alpha/Kconfig           | 1 +
- arch/alpha/include/asm/tlb.h | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ arch/loongarch/Kconfig               | 1 +
+ arch/loongarch/include/asm/pgalloc.h | 7 +++----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-index 80367f2cf821c..6c7dbf0adad62 100644
---- a/arch/alpha/Kconfig
-+++ b/arch/alpha/Kconfig
-@@ -38,6 +38,7 @@ config ALPHA
- 	select OLD_SIGSUSPEND
- 	select CPU_NO_EFFICIENT_FFS if !ALPHA_EV67
- 	select MMU_GATHER_NO_RANGE
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index 730f342145197..43d5b863e1fb2 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -187,6 +187,7 @@ config LOONGARCH
+ 	select IRQ_LOONGARCH_CPU
+ 	select LOCK_MM_AND_FIND_VMA
+ 	select MMU_GATHER_MERGE_VMAS if MMU
 +	select MMU_GATHER_RCU_TABLE_FREE
- 	select SPARSEMEM_EXTREME if SPARSEMEM
- 	select ZONE_DMA
- 	help
-diff --git a/arch/alpha/include/asm/tlb.h b/arch/alpha/include/asm/tlb.h
-index 4f79e331af5ea..ad586b898fd6b 100644
---- a/arch/alpha/include/asm/tlb.h
-+++ b/arch/alpha/include/asm/tlb.h
-@@ -4,7 +4,7 @@
+ 	select MODULES_USE_ELF_RELA if MODULES
+ 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+ 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+diff --git a/arch/loongarch/include/asm/pgalloc.h b/arch/loongarch/include/asm/pgalloc.h
+index 08dcc698ec184..248f62d0b590e 100644
+--- a/arch/loongarch/include/asm/pgalloc.h
++++ b/arch/loongarch/include/asm/pgalloc.h
+@@ -55,8 +55,7 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+ 	return pte;
+ }
  
- #include <asm-generic/tlb.h>
- 
--#define __pte_free_tlb(tlb, pte, address)		pte_free((tlb)->mm, pte)
--#define __pmd_free_tlb(tlb, pmd, address)		pmd_free((tlb)->mm, pmd)
-- 
+-#define __pte_free_tlb(tlb, pte, address)	\
+-	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
 +#define __pte_free_tlb(tlb, pte, address)	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
-+#define __pmd_free_tlb(tlb, pmd, address)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
-+
+ 
+ #ifndef __PAGETABLE_PMD_FOLDED
+ 
+@@ -79,7 +78,7 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+ 	return pmd;
+ }
+ 
+-#define __pmd_free_tlb(tlb, x, addr)	pmd_free((tlb)->mm, x)
++#define __pmd_free_tlb(tlb, x, addr)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(x))
+ 
  #endif
+ 
+@@ -99,7 +98,7 @@ static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long address)
+ 	return pud;
+ }
+ 
+-#define __pud_free_tlb(tlb, x, addr)	pud_free((tlb)->mm, x)
++#define __pud_free_tlb(tlb, x, addr)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(x))
+ 
+ #endif /* __PAGETABLE_PUD_FOLDED */
+ 
 -- 
 2.20.1
 
