@@ -4,127 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C67D1953D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 14:51:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B00BED2F03E
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 14:53:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73AAC6B0092; Tue, 27 Jan 2026 09:51:56 -0500 (EST)
+	id 1A7CF6B0088; Tue, 27 Jan 2026 09:53:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E4976B0093; Tue, 27 Jan 2026 09:51:56 -0500 (EST)
+	id 156146B0098; Tue, 27 Jan 2026 09:53:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 612116B0098; Tue, 27 Jan 2026 09:51:56 -0500 (EST)
+	id 023D76B0099; Tue, 27 Jan 2026 09:53:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 52A1A6B0092
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:51:56 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0867956B7B
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:51:56 +0000 (UTC)
-X-FDA: 84378033432.02.241ABAE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id EDC7D40006
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:51:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qdcig6Dm;
-	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E36496B0088
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:53:45 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A032FC09E7
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:53:45 +0000 (UTC)
+X-FDA: 84378038010.05.244E7F7
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 518B61C0007
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:53:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SEekw7BU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmp1gJ0b;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SEekw7BU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmp1gJ0b;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf21.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769525514;
+	s=arc-20220608; t=1769525623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JnZIKhAlSNkv7FkbJ5fFeXrPtnhy5SM6pV1QxQ7BvXc=;
-	b=PwtxxLIKyNpR5z8/UlE+M4v9lM9E2EJO6FulZcak9TKla5xDIpFKER73s0mQNv+PFXVxD7
-	YiYCFZ3Yh6iBk8YMfVexZdX5W4EL6/AzYCYsz5RQTQU+49qwDtEMON8CigqqsbUR0zmNGN
-	DIEPOb0rTx6kLTssUuxeyMghxdGQJmg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qdcig6Dm;
-	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769525514; a=rsa-sha256;
+	bh=IRIApCgKGYxC2DppFnFx5NvIXuyDk1qFzdf/rcXhHGE=;
+	b=PiiE/mt0KwsFq3Nf08H5Vo8/4K9AQhSQldyD0fcaRjnlwsIZX1AoRJx0Ajrrp5WoXECIu1
+	kO8lZ8y0OOo3Lxef+Ke5dVTLVVG1qJn/I+mG0JBr/2RYSFzXzqhW+ArJRwujsiceVXCKpI
+	7YcX7kTdm/HwcKA+zKdPrrBfvoypZNM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769525623; a=rsa-sha256;
 	cv=none;
-	b=pQLscflGI/NjwG86VDMDkPFOyN3qcfc3NFPCjfKMc1mCD6kenX22HOi0q5VQKtjgHV+zgE
-	UYAAWaZigdbImVJVVrvjCFpzs6H1Yc7HQT4hsE51enYo0zUwlIoUmJcYvjLd7G3EwDES2W
-	LstElkPYoyekrrkTeeZApQEgjxp8Mz8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3EEB44514;
-	Tue, 27 Jan 2026 14:51:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE33C4AF0B;
-	Tue, 27 Jan 2026 14:51:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769525512;
-	bh=5QkDTL6egAnUB1nGC9oZeltVJm7ADFUMjzrh7J9CPm0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qdcig6Dm2T7kkQUYhrTQEhj/vQIsZok6gZ5kAyNcIppTfVTZvUMEM6Odge7NHZ4AR
-	 W6wDPaOjR/hXuuOw0oacWd+48Q7WkMoxQqvnpC7NF3Ik7P27KVq+rwUumfeo3HeNE6
-	 F90zs7LTS6s1lD6jfm9g26Tvigbbci8t1++dKB+9aN7AMG3mU/EVcx+9k2MVfl53z7
-	 EQ46/P7pXvhoPW3y/oQlQazC24wvOr5ua01xhT6ibuwTZfP6Y3Wcgt2stpz3SxxwyZ
-	 Z+evKf+2aYpCcpxvnBrntdUQEj7/DwAWuqkfpzLg3NwtW5sbnCYEFltfCFNavHTW2s
-	 OU6wj0460ZYuQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DF9ECF4006A;
-	Tue, 27 Jan 2026 09:51:50 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 27 Jan 2026 09:51:50 -0500
-X-ME-Sender: <xms:BtF4aZX7ZGvL60aSOai63pDHfU-w0OOc0qiHKoFnwzE96cRkQXXFYA>
-    <xme:BtF4aU8borUUIgTSMCu75bhRo807gqcrK3kDr3UTPHAmBRZsUR9jf4Xpol8LO_3xl
-    XMbkQ57PvIDKE5TgOuI6AgWWjur1jN1Mv1C8EjK6IhPMhyyzRbfEr4>
-X-ME-Received: <xmr:BtF4aeygE9YPhnLQCzWM7vpz9RMu5WOw_L9MKlQnmdlYG8tcBnb5XTo4cOh9Aw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduiedtkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehmuhgthhhunhdrshhonhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepohhsrg
-    hlvhgrughorhesshhushgvrdguvgdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhrtghpthhtoheplhhorh
-    gvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihies
-    nhhvihguihgrrdgtohhmpdhrtghpthhtohepsghhvgesrhgvughhrghtrdgtohhmpdhrtg
-    hpthhtohepmhhhohgtkhhosehsuhhsvgdrtghomhdprhgtphhtthhopehhrghnnhgvshes
-    tghmphigtghhghdrohhrgh
-X-ME-Proxy: <xmx:BtF4aUHU6j0lgE0w0xbQ1DS3XW57Jy6NPAYThyEByjs8bgTEcO2Rkw>
-    <xmx:BtF4afKwQ2c7u2-NxxXOBr6iK0-mP1Rt3CvZpGGFi405w2V2e31U-A>
-    <xmx:BtF4af7sSGKl5Sl0uGoJTAIqslThNJxjOeixVhXomvAq2ELC5d-IvQ>
-    <xmx:BtF4aXTmQuSjg9HPM5kKkE_iCu7gYHojZT0N4n6zqvH1qXEa24q8IQ>
-    <xmx:BtF4aRCy3CmU27FBHhnA2ROT2GBD1KPdwnAL7q09pdyo5F-BQlznYvxT>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 27 Jan 2026 09:51:48 -0500 (EST)
-Date: Tue, 27 Jan 2026 14:51:43 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>
-Subject: Re: [PATCHv4 09/14] mm/hugetlb: Remove fake head pages
-Message-ID: <aXjPf_fIWX74YVWD@thinkstation>
-References: <20260121162253.2216580-1-kas@kernel.org>
- <20260121162253.2216580-10-kas@kernel.org>
- <ffe9811b-d7f8-4924-9ad6-96057a16b693@linux.dev>
+	b=ouHut/Rfpebby0lEXvbqC8ngGRaJgAMFwenakFhozY6ZE+EttUy5C09yaPEKwO20ZAto70
+	xxyWQHT5zHtvaIsHFpy4jjEr1htFUXD2V+7hdhiJyz8dTk2JhBkUa7s2oT+zFfumCUZ6mI
+	OhPeJ1QAaWGjhJkLQmtXhG+sU+bMNio=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SEekw7BU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmp1gJ0b;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SEekw7BU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmp1gJ0b;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf21.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BC34A5BCC3;
+	Tue, 27 Jan 2026 14:53:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769525621; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IRIApCgKGYxC2DppFnFx5NvIXuyDk1qFzdf/rcXhHGE=;
+	b=SEekw7BUT+gh8ltKvxV08Rc67bXN/9nbrQaOHAVxCt5t+MOKNE3T/mq4ArGPCqRy7pniBW
+	r85kFKf3wX3OrWCKD/u2Ot8MGFt7Fo2BUm/PqSbcHhpPgapXZCUc+qTm/4+6K3tkV4/O8Y
+	SGwPH5adQK7l6jLCZzM3hP9GTw9Fkxc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769525621;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IRIApCgKGYxC2DppFnFx5NvIXuyDk1qFzdf/rcXhHGE=;
+	b=zmp1gJ0bswcoRvW93hZJGL4sU15PL3jxp2NHycxHZwA+NLx6CpAqZcB1/CMnlf7OjpkWZQ
+	yLxzcDc0wfU2QtBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769525621; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IRIApCgKGYxC2DppFnFx5NvIXuyDk1qFzdf/rcXhHGE=;
+	b=SEekw7BUT+gh8ltKvxV08Rc67bXN/9nbrQaOHAVxCt5t+MOKNE3T/mq4ArGPCqRy7pniBW
+	r85kFKf3wX3OrWCKD/u2Ot8MGFt7Fo2BUm/PqSbcHhpPgapXZCUc+qTm/4+6K3tkV4/O8Y
+	SGwPH5adQK7l6jLCZzM3hP9GTw9Fkxc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769525621;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IRIApCgKGYxC2DppFnFx5NvIXuyDk1qFzdf/rcXhHGE=;
+	b=zmp1gJ0bswcoRvW93hZJGL4sU15PL3jxp2NHycxHZwA+NLx6CpAqZcB1/CMnlf7OjpkWZQ
+	yLxzcDc0wfU2QtBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 634473EA61;
+	Tue, 27 Jan 2026 14:53:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8R3NFnXReGmgXAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 27 Jan 2026 14:53:41 +0000
+Message-ID: <2bcc0da5-e3b8-4980-8e26-d8215ae53120@suse.de>
+Date: Tue, 27 Jan 2026 15:53:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ffe9811b-d7f8-4924-9ad6-96057a16b693@linux.dev>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EDC7D40006
-X-Stat-Signature: krhf55txmq5sgp6ka61xtmd4xincnasw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] drm/gem-shmem: Map pages in mmap fault handler
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: loic.molinari@collabora.com, willy@infradead.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch, frank.binns@imgtec.com, matt.coster@imgtec.com,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260127132938.429288-1-tzimmermann@suse.de>
+ <20260127132938.429288-2-tzimmermann@suse.de>
+ <20260127154511.6e2b9008@fedora>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260127154511.6e2b9008@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 518B61C0007
+X-Stat-Signature: jtnry775c3z38bwono6znp7dx6awu6kz
 X-Rspam-User: 
-X-HE-Tag: 1769525513-872833
-X-HE-Meta: U2FsdGVkX1+MPQGdPST2PJmrqsQ2MvZANyQtnd94GXVG5nzr+BM2k2F+6sfcsQD09Bpf0WjCinpjfimlX54XR1q2r5Y63GXLVUYIemlc/JSAVxex8WYoIpxYs8+M+xb0+NxjHH09ZAOcVtec1uvBnC3gnCv1QiyzJxYkDihO8yRbCew6UYialjHPueCcDnNjSQHKCjX9M05avax9vkueRyx7KgFWfox33r4x1n2jnDrRTUUCd/Kwwky+nqPy2j+JCBJbEmmhdGQjXwPwmpkMfL9aEWXIbvVtj/e0A8xGXlxFkraCSV4LnPOqleh8uIxmM099Q7vXsK/WyCbwBF7I0UCWHTg+x1acs1RxXhVXLUISI3NvdJM/DUwWjwRCghM3giaDKwvRObGAAIFQhuXvbRpI+R8OQgfCkOOrMdMQ8I1OOYg+jLziODk5u3ParRuM5c4+ejbSytYSRXttnNow5Xh4KrqEXOAN4AdfOmtSq6ng+QHdl95rO7ceuhqfThBYaieYHpAHRAydBCrQxjXbcI5dLBTwBlBd9+kxivVzAEPkjPfaZ+eZxFYwiUBeYnd/AY3sMvbhwXNBPmCk/Ff2nMV6Mx9ZvyZiDUb6cwXpoO3F8BsN+cagZubIV6mcD8LaYF3aiW8IUXs4e2Mc87cOun+TbLdvPXhTJc0u8RRkVRRmY8tsAM/hpOCEj0ImkaKn8/grJ7EYuRxZdlNKDVCJvc8bAcWMz47Z09tvBFS7jZMKBeQfWOCG9WyRD0i2LAXOVOH4nxccvSMEha/RBx+nSoHEKN1HMtNOiuAk6n8AN8l5E6R3dxGZzs9QwbD2lEa3QvcuTSWL3m1F19FYDzKADpv9QgKa/qtkhpEsz9ytgALD4mTM7mRcXaoO0v+OVsDng0Fbqb7sI0RSKO366mY9Yv37yT8L+VWpFCYY5EtskPEocrTFEVEziEa1b1sTEkKAKN5uEeHyQh8+qmptWtJ
- v9l7IEgC
- 2L3z8yq7C+ADdygiLXzzAt+wIGfOys5Ysw894mGAmEKg1PKOo5FIhwqo8qkFf6lenJuhtVz3lhtTWdXAGei8+b5NLBuvAvY1gTWN5a2OrJ1+8n6qmorZao6GSfl6Rg0YFkssHvOk2HwgY7i3X1cs8tQRGAjsfe6GiOYB8RrRouJ3K1IozCKwHznWEKAROtYMguUR0s/4mBZ5S2unuSwFY7b6XkazShf6NK87hQkEOBNvVATYPPYSb1EnaAh9cNTcdzC1B1vPRrgy6mjbfMN2qnoYswg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769525623-540753
+X-HE-Meta: U2FsdGVkX1+rlsgtl0dKj3G+IMsxMtoFIBfheYzA8TAfFfigyE2TYZdbnFB98hIN4UL+AbTbkiLVa5SARFP1ERKTGu/rvI7aUaKV3PO13f8TPX9D8A4cfAA6DPuhmxKAgo2MtnWZdhBxhRL2UumviVnNwoZAzMvGNTSCMrAd++8n36SRyOi34J7q4389P1llOM7xOyVFOuFf4X+hFptXzTbwJxN9LM79i4Swhy1tMRAK560EuJf97pp9S6bhgJMCGLqeY0qa0OnFFG2mbwoosOifgGsVl6wOkcg+4GWx4j8D77WwhOrlI5sSZinfSy+0VvuwoXhTFi7zBOlG1lL6zi+4whZFs4NHeGzYtVIEEgiyxHOcuJnEpyZAscMy+hfFZFw/98UAdXXxrX3Tfw2Cq0uBfivcynGkMckoVWYZAyXmwkH+Zthap2T+3NHN5dKZrSEhLcfHyfPjt/JWcLM6QWZklyvzzrSSC50sxFgt/Y1qmcokaRtkwpAzP4yaJwoS9xf3NYM6YWq5+5TccyoX7hZJaYBRmFsyfQxtOweqM1SxHzA2QsSeYr8vKWrEAYjaQqmW1EszM/4d/0qnkuaJ7KTQt4F+2N8N9OnJ9mDOJnjYkV4RIzmNuwlcm5IXKPMBZFiFxp8wABGQWdclr2hDLBmosjo+4LoVkh9xATTUWBurgi3wZA0Yt3gawX6pkGNbydXg9YYnmHNFqbY6UvlAIj51fD1iHcUDaYekOKEyk3mtfuxf9noGY5OzOFyO4M3UaqI3Wv7NsqEklcLIt8oAEUkTg8rqMYIqDF0lQVZsrWOXZ99whREhkVFqMkoWVrp1Bcj6a85ijkL7oTzx4zwNrwj82pyA+qPzZ3D/BhDMH8qXYet6br4NCjWnbg+ue1AS9EMagozZ7rFBXkpA1LCRe9smZx6i31256MOzhvE7zngF9gxjfS5DDnkT+VA2Jk2K/uvJFlE8Q5I5L2qA9fc
+ ofZdWEbl
+ SLL72loTkpv/JtsaoL+ZmYMvhhRp89sh7eVplyosR0txun2zxG9o1Zk7gcQ/vE6dXFAeobnm0VTKplgeiFPCs1H+8YGu4L5u3MktyyXRAN4f6J2SiMyDeZAn5pBjBJoKWHvw0ex4oQvC2KCZyl7VYlW+dYXxF8qm20l+YNCDFu1UMayusCKI8lFTSS3pgcwA+2YTLL4eCHAlxMR1H7pxQZ+O/5aJ9ECGw5kayNx0rH10oqeMCNqr8zP7iAkE1+75V7yWwDOrVwu8mTc/sSCpaT0csSF183XvQoRQIuG5D8tb/OPscu4QJo1aEz1lehL7LGbuELNt2cLKzKwc9WHzdKPkMSro/chaXwrmBlTgBBUfWb6TGDFRsXWRKw8iO1pxp/ju5pXpaRQmsNVU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,30 +165,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 03:00:03PM +0800, Muchun Song wrote:
-> > +	if (pfn)
-> > +		return pfn_to_page(pfn);
-> > +
-> > +	tail = alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 0);
-> > +	if (!tail)
-> > +		return NULL;
-> > +
-> > +	p = page_to_virt(tail);
-> > +	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
-> > +		prep_compound_tail(p + i, NULL, order);
-> > +
-> > +	spin_lock(&hugetlb_lock);
-> 
-> hugetlb_lock is considered a contended lock, better not to abuse it.
-> cmpxchg() is enought in this case.
+Hi,
 
-We hit the lock once per node (excluding races). Its contribution to the
-lock contention is negligible. spin_lock() is easier to follow. I will
-keep it.
+thanks for reviewing.
 
-Ack for the rest of your comments.
+Am 27.01.26 um 15:45 schrieb Boris Brezillon:
+> Hello Thomas,
+>
+> On Tue, 27 Jan 2026 14:16:36 +0100
+> Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>
+>> Gem-shmem operates on pages instead of I/O memory ranges, so use them
+>> for mmap. This will allow for tracking page dirty/accessed flags. If
+>> hugepage support is available, insert the page's folio if possible.
+>> Otherwise fall back to mapping individual pages.
+>>
+>> As the PFN is no longer required for hugepage mappings, simplify the
+>> related code and make it depend on CONFIG_TRANSPARENT_HUGEPAGE. Prepare
+>> for tracking folio status.
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> ---
+>>   drivers/gpu/drm/drm_gem_shmem_helper.c | 58 ++++++++++++++++----------
+>>   1 file changed, 35 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>> index 3871a6d92f77..b6ddabbfcc52 100644
+>> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+>> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>> @@ -553,17 +553,18 @@ EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
+>>   static bool drm_gem_shmem_try_map_pmd(struct vm_fault *vmf, unsigned long addr,
+>>   				      struct page *page)
+>>   {
+>> -#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+>> -	unsigned long pfn = page_to_pfn(page);
+>> -	unsigned long paddr = pfn << PAGE_SHIFT;
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> +	phys_addr_t paddr = page_to_phys(page);
+>>   	bool aligned = (addr & ~PMD_MASK) == (paddr & ~PMD_MASK);
+>>   
+>> -	if (aligned &&
+>> -	    pmd_none(*vmf->pmd) &&
+>> -	    folio_test_pmd_mappable(page_folio(page))) {
+>> -		pfn &= PMD_MASK >> PAGE_SHIFT;
+>> -		if (vmf_insert_pfn_pmd(vmf, pfn, false) == VM_FAULT_NOPAGE)
+>> -			return true;
+>> +	if (aligned && pmd_none(*vmf->pmd)) {
+>> +		struct folio *folio = page_folio(page);
+>> +
+>> +		if (folio_test_pmd_mappable(folio)) {
+>> +			/* Read-only mapping; split upon write fault */
+>> +			if (vmf_insert_folio_pmd(vmf, folio, false) == VM_FAULT_NOPAGE)
+>> +				return true;
+>> +		}
+>>   	}
+>>   #endif
+>>   
+>> @@ -576,13 +577,10 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+>>   	struct drm_gem_object *obj = vma->vm_private_data;
+>>   	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+>>   	loff_t num_pages = obj->size >> PAGE_SHIFT;
+>> -	vm_fault_t ret;
+>>   	struct page **pages = shmem->pages;
+>> -	pgoff_t page_offset;
+>> -	unsigned long pfn;
+>> -
+>> -	/* Offset to faulty address in the VMA. */
+>> -	page_offset = vmf->pgoff - vma->vm_pgoff;
+>> +	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
+>> +	struct page *page = pages[page_offset];
+>> +	vm_fault_t ret;
+>>   
+>>   	dma_resv_lock(shmem->base.resv, NULL);
+>>   
+>> @@ -590,21 +588,35 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+>>   	    drm_WARN_ON_ONCE(obj->dev, !shmem->pages) ||
+>>   	    shmem->madv < 0) {
+>>   		ret = VM_FAULT_SIGBUS;
+>> -		goto out;
+>> +		goto err_dma_resv_unlock;
+>>   	}
+>>   
+>> -	if (drm_gem_shmem_try_map_pmd(vmf, vmf->address, pages[page_offset])) {
+>> -		ret = VM_FAULT_NOPAGE;
+>> -		goto out;
+>> +	page = pages[page_offset];
+>> +	if (!page) {
+>> +		ret = VM_FAULT_SIGBUS;
+>> +		goto err_dma_resv_unlock;
+>>   	}
+>>   
+>> -	pfn = page_to_pfn(pages[page_offset]);
+>> -	ret = vmf_insert_pfn(vma, vmf->address, pfn);
+>> +	if (drm_gem_shmem_try_map_pmd(vmf, vmf->address, page)) {
+>> +		ret = VM_FAULT_NOPAGE;
+>> +	} else {
+>> +		struct folio *folio = page_folio(page);
+>> +
+>> +		get_page(page);
+>> +
+>> +		folio_lock(folio);
+>> +
+>> +		vmf->page = page;
+>> +		ret = VM_FAULT_LOCKED;
+>> +	}
+>>   
+>> - out:
+>>   	dma_resv_unlock(shmem->base.resv);
+>>   
+>>   	return ret;
+>> +
+>> +err_dma_resv_unlock:
+>> +	dma_resv_unlock(shmem->base.resv);
+>> +	return ret;
+> Why do we need an error path that's exactly the same as the success
+> path?
 
+I just found the explicit roll-back code easier to work with. But the 
+other style does it as well. Noted for the next iteration.
+
+Best regards
+Thomas
+
+>
+>>   }
+>>   
+>>   static void drm_gem_shmem_vm_open(struct vm_area_struct *vma)
+>> @@ -691,7 +703,7 @@ int drm_gem_shmem_mmap(struct drm_gem_shmem_object *shmem, struct vm_area_struct
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> -	vm_flags_set(vma, VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
+>> +	vm_flags_mod(vma, VM_DONTEXPAND | VM_DONTDUMP, VM_PFNMAP);
+>>   	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+>>   	if (shmem->map_wc)
+>>   		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
+> The rest looks reasonable, if everyone is happy with the less
+> restrictive aspect that !PFNMAP implies, as mentioned by Matthew.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
 
