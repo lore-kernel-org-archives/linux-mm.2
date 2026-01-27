@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA9C2D2D8D8
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 09:46:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68CA9D2D8DA
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 09:46:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BED66B009D; Tue, 27 Jan 2026 04:46:37 -0500 (EST)
+	id CC47C6B009F; Tue, 27 Jan 2026 04:46:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A98B6B009F; Tue, 27 Jan 2026 04:46:37 -0500 (EST)
+	id C85C46B00A1; Tue, 27 Jan 2026 04:46:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AC9A6B00A0; Tue, 27 Jan 2026 04:46:37 -0500 (EST)
+	id BB1E96B00A2; Tue, 27 Jan 2026 04:46:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A9E86B009D
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 04:46:37 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A6CE46B009F
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 04:46:48 -0500 (EST)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1095140B2E
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:46:36 +0000 (UTC)
-X-FDA: 84377263992.01.F581E51
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2C5B7120003
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:46:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GybHeuHi;
-	spf=pass (imf29.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A9981B1086
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:46:48 +0000 (UTC)
+X-FDA: 84377264496.01.36DFEDC
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9150D40013
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:46:46 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ye3jWQBK;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769507195;
+	s=arc-20220608; t=1769507206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=li2p2tnFJJjJ5INNx6uZKzhFQ5sqAQSEauna4Y+cr5o=;
-	b=Z4YHFUTeZ3xAjPYBarRKIyEOhRlfva00WlVxrjGlySXB557A42VaRFhxu+tkJWnMmlHCIB
-	3ZIKh6PZfRXhRae6Wn2LQpO/Nd1fiECaDktYgDeZePPmo1LLxb5YUeqdD13c/+YRoZ4FXs
-	yJAA6Q6RDL56SaJApnCkx4slnzKYKTA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769507195; a=rsa-sha256;
+	bh=TlOrsGmE89AzNqFkY/W+yKrUCs36fwQ3YYkQ5KYGK94=;
+	b=kipHuR6DeuW5tDymRCHxU+6dS3wp1HrNQNp1+jrGVB/Vik7qNeNIYdZtlZm4dH+swfi5wo
+	0Ut6A2nuS+mnKgeLohIOrM5528kGkdNbuqwehXsp59EAGSzIwK9N2xd8tiiH5NdoQ2oNvx
+	iUZazOdRkI2Y2K3Cd2N91AuAwD9TP8c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769507206; a=rsa-sha256;
 	cv=none;
-	b=z5slnZGRHL4CbseSP3vhAZSOkdzmGdghQopW5zSx6C56idCZNLsE9xLBOzx+t6GlCdETJK
-	lcL4HWx0NwGG7vlIdFutTBAAx/0r2lUOSatc5MSjqyzEjnMkRDE9ObGDgle5Lft652eMDP
-	2YR+53YBAEkAsUa+jkbMhdDlJap21Bk=
+	b=hYrYerYHhzHMktnMMtNtqtA5oHRONySIhzYKhmDGO+4VHtst4QBOc+gVFBXpJpmIUDR0UO
+	oJRw+wjQWvura11bJR3dkWRIowSq6BHvbTtEozGNL8FTGVD3s5JJwgTQDkUcOynK2ZEmz4
+	Y67PuF9gXcdE0LjYft1ziFVx5YH/+A4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GybHeuHi;
-	spf=pass (imf29.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ye3jWQBK;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769507191;
+	t=1769507204;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=li2p2tnFJJjJ5INNx6uZKzhFQ5sqAQSEauna4Y+cr5o=;
-	b=GybHeuHiFgFrkJ7AI5shcktmPnd9xH64DeeRqlQBhSV0NblYrsh06r9lIa9PvDUqRdVvH8
-	G3IBrJjSqgSsbon2DrgvqkcEKLa3thyT+3AQ0GiRVk7tXtDpinuyKvLRIKacq4yEPFwPrZ
-	d2++W8afsihpFC/CQhgMyILVg9H3cic=
+	bh=TlOrsGmE89AzNqFkY/W+yKrUCs36fwQ3YYkQ5KYGK94=;
+	b=Ye3jWQBKsWmroCQ6+jdiYjHI3u5VE2K6ZT/XHil364iLGKjePoXqtlLro69f6mlIkm8zsE
+	L7r9ErMNQBZloJAO3OF0GrZfRkDShw3BQmpd6+uuQobQip2oyLCcF6NtXNtA8aw6MLUr/5
+	rfxsVZ6fSjHAIexpXtIjzEumuSClMxo=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
@@ -111,22 +111,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kselftest@vger.kernel.org
 Cc: Hui Zhu <zhuhui@kylinos.cn>,
 	Geliang Tang <geliang@kernel.org>
-Subject: [RFC PATCH bpf-next v5 07/12] libbpf: Support passing user-defined flags for struct_ops
-Date: Tue, 27 Jan 2026 17:45:51 +0800
-Message-ID: <63d543aec9ade803afcd95461e3089e3d44caca6.1769506741.git.zhuhui@kylinos.cn>
+Subject: [RFC PATCH bpf-next v5 08/12] mm: memcontrol: Add BPF struct_ops for memory controller
+Date: Tue, 27 Jan 2026 17:45:52 +0800
+Message-ID: <f14f1ad53f742f993a7ac5cb5ba6eaee26bebd91.1769506741.git.zhuhui@kylinos.cn>
 In-Reply-To: <cover.1769506741.git.zhuhui@kylinos.cn>
 References: <cover.1769506741.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 2C5B7120003
+X-Rspamd-Queue-Id: 9150D40013
+X-Stat-Signature: 359er6cykfo7wmzw1y6e39ufy3snf3ub
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: kzqgipbexr89ja73xpkdp5cgxwmcjt39
-X-HE-Tag: 1769507194-26713
-X-HE-Meta: U2FsdGVkX1943ERgZbGECbkzgrwcHlBEoylIgwePP0ctErJNghu3ic/WhNDRnaE11Ud7ct11TFS5G5blwRrLX5DBYdrcaQEhAZxKAfs0phrLLVP4IbS2b/OIMLnPDI9g1omKwmP7Ag8WJQ3Xyi+t9gntgLkvmcbPacivW+Ukhv0B4JfDAueNmdo2WZURjz1ByyRk7zwCp5EgxQRXVi98W5bqjgXYeJlgdZOuly5ZNX647D81xH3nEZjJPr3bIYiF6cflaQp1kpAr3TTy8X1QVcL7HyqtcL2MmuSlkYxmSXCL9D8P2ZrnQz/BiyhP1PEZsYOKxmXDI5ua7SRl3ml9lM320iwv4RzZtznuNijBP0LCN1eo6UBqHWWCa+z7p9cB5YF0l+i2C7yUFs1TZvLJNFG8siS/yHovIxuJuMqLq9IrkSnyGoY7uEzMYXefU3oVX90VAIVQe0jtOqeMpsuJCm/0GgNQX3ejoGRC4fHW0nO5XnEGEOa1KSMcF5mrkZvCoTa0zZON8O/UW/FonMlUUi+aj8/F0MX1w/Mana98YwwkhSGq8GR4axyEXl6j0mZA4Vaj40e3zKz1bq75XbcwiEbYzUgiXkx0R/6VTsPZhpll21tgy3zLIsh8HHIDAxMoqXzQuhtJ4cRy/HXsPHznrJD+jP8Uj5MIuMm8t//hQZG7ZGIltvIq3KP7scEn0sdpnk5h3WJuvgclrlGWieYFvio7fUElj5Vlih6tIy9Y2Lz2B/S0i27LA06lfq6ot0q8GCrMNyULpLxDwB9ATU8jQhrXb1kaxdO3GOKurNInOANLmWiUugBntNAJB9knwwFub8N+oKgToDMGNkC/jtL6PPzh44ZpnuqCLi5aeOMZ+VotXyXxCnp3CFon8MfZVIs3Dulgf7SIh/oo7CveJFxGTlEPJxK1gMPzIoPeSSsy3iyOgNKSRw1t6XhwCoNBgwMFeIT30s2tdGPVZddvtnr
- 76kycUSo
- zfbGP+woDwU22meI=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769507206-466203
+X-HE-Meta: U2FsdGVkX18pO+uZ9MPQd/YkxhZBnGIQfI6PD2o4G540gmUVEA8c2/ZO5iLl8JT9wKIzXsl+8y08FNmSV48TsF/TSVrVNwGYl4nofMrp18sxLs77IkH/AIoV3jTEyV+RAXe1S+kbWCO5ls5CQv+pai4UzSMw0hUnGS1FcXWOsXHHQJXODf0jFCQ91e81KHEr7i3y4MvxVv637cGgbqcQ066vpPryKgL74KlVOGMjRJkZOcmNHbO+gQ+mX5xERJbU6HpOwoHjP6B12aLo41NAzTqVkUDIALUw8la0b5h6yoYJjX7+bwqlGYs583ydLQZPgkjq8aowxZmWLH8FWq29QE8aunadBsS67qSs3d5LD+GZCL1YXkzmseSlgyZVo5CgjaHR/+/R4ar/nisPOHKNeA7kbMXHaVyEKKGqeHYLyiA8E1rQOQifxhnG7xkVkNp0P+7awlSnDah/RIBkvTz4rdrN9xzn43GAPJZ8JEXiz6gdGj8iEZVXlMqOBurBX71CyEIzDwOheoOI9Jw6k4eixbI/THTJMRPV22XprhiSNZosrgB8po/wnIhwcSKWM1U3XYfFOM6kzhHG8Y+Hr1Gt5Tiao9YhjZO3ATXALBetkbR6NbE8bfqE61HQVw5CuUAC0Vg8fx3ZoNK5wnoqeuJrMEK2boMYNTOiXna0tBL56SlRIYYqV0G7kWaUD5o0reFcmt+iSS5xjDx2DzYzSn2jRYntaidtg/ER6U7PeJhgSODExiI5Uu/ocr4V/qCrCDH+osGbiXiqtRugzAZHsc95K8/36gK2vhf4a4cOUMUinIMRdZF1D8Z1HpHGHrLHn0Qz+XwT4Jo+3hJ8m4IGLgMlcFnBDewwS6H98+kPoNfKyKRaY/krsTPOzcDPflbhIGQLZ++G8w7HNksUyDnQEliPqTeAHMc9TUljAsbOuZ1VSWcAgeUObQd8Ug9JWme7U/EpKhknc5R5LI5atOvJklG
+ gyWhHft3
+ 5dNvKIvYWsurP7URLOPyxg/H8AetJ4b45wQRh3T0LfWYJ1Aha1N84SUuwdYRSVCF66SwnwD+uUbeVNXbwvfVUVQ95iL0NTe/Q5hVSvvqY95tmSCq4VuemMyEhvGvXS7nk6U8CbZmhaHnm3XvWM2zJbh6kl21P5m+jo5mfqxFC5+e7BraQgVIFoHBOUehoAuBxI12guJDFVZiT22+Cx1nCz+5RPotKE6NuziLrgEyoQuollDkDqMFz6g0Cl2f4N1etohFYu7Ew50cE4NOtCZ2kdI/waw+3z1O6P8TM9bekshl13fs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,36 +137,567 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-Building on the previous change that added flags to the kernel's link
-creation path, this patch exposes this functionality through libbpf.
+Introduce BPF struct_ops support to the memory controller, enabling
+custom and dynamic control over memory pressure. This is achieved
+through a new struct_ops type, `memcg_bpf_ops`.
 
-The `bpf_struct_ops_opts` struct is extended with a `flags` member,
-which is then passed to the `bpf_link_create` syscall within
-`bpf_map__attach_struct_ops_opts`.
+This new interface allows a BPF program to implement hooks that
+influence a memory cgroup's behavior. The `memcg_bpf_ops` struct
+provides the following hooks:
 
-This enables userspace applications to pass flags, such as
-`BPF_F_ALLOW_OVERRIDE`, when attaching struct_ops to cgroups,
-providing more control over the attachment behavior in nested
-hierarchies.
+- `get_high_delay_ms`: Returns a custom throttling delay in
+  milliseconds for a cgroup that has breached its `memory.high`
+  limit. This is the primary mechanism for BPF-driven throttling.
+
+- `below_low`: Overrides the `memory.low` protection check. If this
+  hook returns true, the cgroup is considered to be protected by its
+  `memory.low` setting, regardless of its actual usage.
+
+- `below_min`: Similar to `below_low`, this overrides the `memory.min`
+  protection check.
+
+- `handle_cgroup_online`/`offline`: Callbacks invoked when a cgroup
+  with an attached program comes online or goes offline, allowing for
+  state management.
+
+This patch integrates these hooks into the core memory control logic.
+The `get_high_delay_ms` value is incorporated into charge paths like
+`try_charge_memcg` and the high-limit handler
+`__mem_cgroup_handle_over_high`. The `below_low` and `below_min`
+hooks are checked within their respective protection functions.
+
+Lifecycle management is handled to ensure BPF programs are correctly
+inherited by child cgroups and cleaned up on detachment. SRCU is used
+to protect concurrent access to the `memcg->bpf_ops` pointer.
 
 Signed-off-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- tools/lib/bpf/libbpf.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/memcontrol.h | 108 +++++++++++++++-
+ mm/bpf_memcontrol.c        | 251 ++++++++++++++++++++++++++++++++++++-
+ mm/memcontrol.c            |  32 +++--
+ 3 files changed, 378 insertions(+), 13 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 70a00da54ff5..06c936bad211 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -13511,6 +13511,7 @@ struct bpf_link *bpf_map__attach_struct_ops_opts(const struct bpf_map *map,
- 	}
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index f3b8c71870d8..24c4df864401 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -181,6 +181,37 @@ struct obj_cgroup {
+ 	};
+ };
  
- 	link_opts.cgroup.relative_fd = OPTS_GET(opts, relative_fd, 0);
-+	link_opts.flags = OPTS_GET(opts, flags, 0);
++#ifdef CONFIG_BPF_SYSCALL
++/**
++ * struct memcg_bpf_ops - BPF callbacks for memory cgroup operations
++ * @handle_cgroup_online: Called when a cgroup comes online
++ * @handle_cgroup_offline: Called when a cgroup goes offline
++ * @below_low: Override memory.low protection check. If this callback returns
++ *             true, mem_cgroup_below_low() will return true immediately without
++ *             performing the standard comparison. If it returns false, the
++ *             original memory.low threshold comparison will proceed normally.
++ * @below_min: Override memory.min protection check. If this callback returns
++ *             true, mem_cgroup_below_min() will return true immediately without
++ *             performing the standard comparison. If it returns false, the
++ *             original memory.min threshold comparison will proceed normally.
++ * @get_high_delay_ms: Return custom throttle delay in milliseconds
++ *
++ * This structure defines the interface for BPF programs to customize
++ * memory cgroup behavior through struct_ops programs.
++ */
++struct memcg_bpf_ops {
++	void (*handle_cgroup_online)(struct mem_cgroup *memcg);
++
++	void (*handle_cgroup_offline)(struct mem_cgroup *memcg);
++
++	bool (*below_low)(struct mem_cgroup *memcg);
++
++	bool (*below_min)(struct mem_cgroup *memcg);
++
++	unsigned int (*get_high_delay_ms)(struct mem_cgroup *memcg);
++};
++#endif /* CONFIG_BPF_SYSCALL */
++
+ /*
+  * The memory controller data structure. The memory controller controls both
+  * page cache and RSS per cgroup. We would eventually like to provide
+@@ -321,6 +352,10 @@ struct mem_cgroup {
+ 	spinlock_t event_list_lock;
+ #endif /* CONFIG_MEMCG_V1 */
  
- 	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, &link_opts);
- 	if (fd < 0) {
++#ifdef CONFIG_BPF_SYSCALL
++	struct memcg_bpf_ops *bpf_ops;
++#endif
++
+ 	struct mem_cgroup_per_node *nodeinfo[];
+ };
+ 
+@@ -554,6 +589,68 @@ static inline bool mem_cgroup_disabled(void)
+ 	return !cgroup_subsys_enabled(memory_cgrp_subsys);
+ }
+ 
++#ifdef CONFIG_BPF_SYSCALL
++
++/* SRCU for protecting concurrent access to memcg->bpf_ops */
++extern struct srcu_struct memcg_bpf_srcu;
++
++/**
++ * BPF_MEMCG_CALL - Safely invoke a BPF memcg callback
++ * @memcg: The memory cgroup
++ * @op: The operation name (struct member)
++ * @default_val: Default return value if no BPF program attached
++ *
++ * This macro safely calls a BPF callback under SRCU protection.
++ */
++#define BPF_MEMCG_CALL(memcg, op, default_val) ({		\
++	typeof(default_val) __ret = (default_val);		\
++	struct memcg_bpf_ops *__ops;				\
++	int __idx;						\
++								\
++	__idx = srcu_read_lock(&memcg_bpf_srcu);		\
++	__ops = READ_ONCE((memcg)->bpf_ops);			\
++	if (__ops && __ops->op)					\
++		__ret = __ops->op(memcg);			\
++	srcu_read_unlock(&memcg_bpf_srcu, __idx);		\
++	__ret;							\
++})
++
++static inline bool bpf_memcg_below_low(struct mem_cgroup *memcg)
++{
++	return BPF_MEMCG_CALL(memcg, below_low, false);
++}
++
++static inline bool bpf_memcg_below_min(struct mem_cgroup *memcg)
++{
++	return BPF_MEMCG_CALL(memcg, below_min, false);
++}
++
++static inline unsigned long bpf_memcg_get_high_delay(struct mem_cgroup *memcg)
++{
++	unsigned int ret;
++
++	ret = BPF_MEMCG_CALL(memcg, get_high_delay_ms, 0U);
++	return msecs_to_jiffies(ret);
++}
++
++#undef BPF_MEMCG_CALL
++
++extern void memcontrol_bpf_online(struct mem_cgroup *memcg);
++extern void memcontrol_bpf_offline(struct mem_cgroup *memcg);
++
++#else /* CONFIG_BPF_SYSCALL */
++
++static inline unsigned long
++bpf_memcg_get_high_delay(struct mem_cgroup *memcg) { return 0; }
++static inline bool
++bpf_memcg_below_low(struct mem_cgroup *memcg) { return false; }
++static inline bool
++bpf_memcg_below_min(struct mem_cgroup *memcg) { return false; }
++static inline void memcontrol_bpf_online(struct mem_cgroup *memcg) { }
++static inline void memcontrol_bpf_offline(struct mem_cgroup *memcg) { }
++
++#endif /* CONFIG_BPF_SYSCALL */
++
+ static inline void mem_cgroup_protection(struct mem_cgroup *root,
+ 					 struct mem_cgroup *memcg,
+ 					 unsigned long *min,
+@@ -625,6 +722,9 @@ static inline bool mem_cgroup_below_low(struct mem_cgroup *target,
+ 	if (mem_cgroup_unprotected(target, memcg))
+ 		return false;
+ 
++	if (bpf_memcg_below_low(memcg))
++		return true;
++
+ 	return READ_ONCE(memcg->memory.elow) >=
+ 		page_counter_read(&memcg->memory);
+ }
+@@ -635,6 +735,9 @@ static inline bool mem_cgroup_below_min(struct mem_cgroup *target,
+ 	if (mem_cgroup_unprotected(target, memcg))
+ 		return false;
+ 
++	if (bpf_memcg_below_min(memcg))
++		return true;
++
+ 	return READ_ONCE(memcg->memory.emin) >=
+ 		page_counter_read(&memcg->memory);
+ }
+@@ -909,12 +1012,13 @@ unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
+ 	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
+ }
+ 
+-void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
++void __mem_cgroup_handle_over_high(gfp_t gfp_mask,
++				   unsigned long bpf_high_delay);
+ 
+ static inline void mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ {
+ 	if (unlikely(current->memcg_nr_pages_over_high))
+-		__mem_cgroup_handle_over_high(gfp_mask);
++		__mem_cgroup_handle_over_high(gfp_mask, 0);
+ }
+ 
+ unsigned long mem_cgroup_get_max(struct mem_cgroup *memcg);
+diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+index 716df49d7647..e746eb9cbd56 100644
+--- a/mm/bpf_memcontrol.c
++++ b/mm/bpf_memcontrol.c
+@@ -8,6 +8,9 @@
+ #include <linux/memcontrol.h>
+ #include <linux/bpf.h>
+ 
++/* Protects memcg->bpf_ops pointer for read and write. */
++DEFINE_SRCU(memcg_bpf_srcu);
++
+ __bpf_kfunc_start_defs();
+ 
+ /**
+@@ -179,15 +182,259 @@ static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
+ 	.set            = &bpf_memcontrol_kfuncs,
+ };
+ 
++/**
++ * memcontrol_bpf_online - Inherit BPF programs for a new online cgroup.
++ * @memcg: The memory cgroup that is coming online.
++ *
++ * When a new memcg is brought online, it inherits the BPF programs
++ * attached to its parent. This ensures consistent BPF-based memory
++ * control policies throughout the cgroup hierarchy.
++ *
++ * After inheriting, if the BPF program has an online handler, it is
++ * invoked for the new memcg.
++ */
++void memcontrol_bpf_online(struct mem_cgroup *memcg)
++{
++	int idx;
++	struct memcg_bpf_ops *ops;
++	struct mem_cgroup *parent_memcg;
++
++	/* The root cgroup does not inherit from a parent. */
++	if (mem_cgroup_is_root(memcg))
++		return;
++
++	parent_memcg = parent_mem_cgroup(memcg);
++
++	idx = srcu_read_lock(&memcg_bpf_srcu);
++
++	/* Inherit the BPF program from the parent cgroup. */
++	ops = READ_ONCE(parent_memcg->bpf_ops);
++	if (!ops)
++		goto out;
++
++	WRITE_ONCE(memcg->bpf_ops, ops);
++
++	/*
++	 * If the BPF program implements it, call the online handler to
++	 * allow the program to perform setup tasks for the new cgroup.
++	 */
++	if (!ops->handle_cgroup_online)
++		goto out;
++
++	ops->handle_cgroup_online(memcg);
++
++out:
++	srcu_read_unlock(&memcg_bpf_srcu, idx);
++}
++
++/**
++ * memcontrol_bpf_offline - Run BPF cleanup for an offline cgroup.
++ * @memcg: The memory cgroup that is going offline.
++ *
++ * If a BPF program is attached and implements an offline handler,
++ * it is invoked to perform cleanup tasks before the memcg goes
++ * completely offline.
++ */
++void memcontrol_bpf_offline(struct mem_cgroup *memcg)
++{
++	int idx;
++	struct memcg_bpf_ops *ops;
++
++	idx = srcu_read_lock(&memcg_bpf_srcu);
++
++	ops = READ_ONCE(memcg->bpf_ops);
++	if (!ops || !ops->handle_cgroup_offline)
++		goto out;
++
++	ops->handle_cgroup_offline(memcg);
++
++out:
++	srcu_read_unlock(&memcg_bpf_srcu, idx);
++}
++
++static int memcg_ops_btf_struct_access(struct bpf_verifier_log *log,
++					const struct bpf_reg_state *reg,
++					int off, int size)
++{
++	return -EACCES;
++}
++
++static bool memcg_ops_is_valid_access(int off, int size, enum bpf_access_type type,
++	const struct bpf_prog *prog,
++	struct bpf_insn_access_aux *info)
++{
++	return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
++}
++
++const struct bpf_verifier_ops bpf_memcg_verifier_ops = {
++	.get_func_proto = bpf_base_func_proto,
++	.btf_struct_access = memcg_ops_btf_struct_access,
++	.is_valid_access = memcg_ops_is_valid_access,
++};
++
++static void cfi_handle_cgroup_online(struct mem_cgroup *memcg)
++{
++}
++
++static void cfi_handle_cgroup_offline(struct mem_cgroup *memcg)
++{
++}
++
++static bool cfi_below_low(struct mem_cgroup *memcg)
++{
++	return false;
++}
++
++static bool cfi_below_min(struct mem_cgroup *memcg)
++{
++	return false;
++}
++
++static unsigned int cfi_get_high_delay_ms(struct mem_cgroup *memcg)
++{
++	return 0;
++}
++
++static struct memcg_bpf_ops cfi_bpf_memcg_ops = {
++	.handle_cgroup_online = cfi_handle_cgroup_online,
++	.handle_cgroup_offline = cfi_handle_cgroup_offline,
++	.below_low = cfi_below_low,
++	.below_min = cfi_below_min,
++	.get_high_delay_ms = cfi_get_high_delay_ms,
++};
++
++static int bpf_memcg_ops_init(struct btf *btf)
++{
++	return 0;
++}
++
++static int bpf_memcg_ops_check_member(const struct btf_type *t,
++				const struct btf_member *member,
++				const struct bpf_prog *prog)
++{
++	u32 moff = __btf_member_bit_offset(t, member) / 8;
++
++	switch (moff) {
++	case offsetof(struct memcg_bpf_ops, handle_cgroup_online):
++	case offsetof(struct memcg_bpf_ops, handle_cgroup_offline):
++	case offsetof(struct memcg_bpf_ops, below_low):
++	case offsetof(struct memcg_bpf_ops, below_min):
++	case offsetof(struct memcg_bpf_ops, get_high_delay_ms):
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	if (prog->sleepable)
++		return -EINVAL;
++
++	return 0;
++}
++
++static int bpf_memcg_ops_init_member(const struct btf_type *t,
++				const struct btf_member *member,
++				void *kdata, const void *udata)
++{
++	return 0;
++}
++
++/**
++ * clean_memcg_bpf_ops - Clear BPF ops from a memory cgroup hierarchy
++ * @memcg: Root memory cgroup to start from
++ * @ops: The specific BPF ops to remove
++ *
++ * Walks the cgroup hierarchy and clears bpf_ops for any cgroup that
++ * matches @ops.
++ */
++static void clean_memcg_bpf_ops(struct mem_cgroup *memcg,
++				struct memcg_bpf_ops *ops)
++{
++	struct mem_cgroup *iter = NULL;
++
++	while ((iter = mem_cgroup_iter(memcg, iter, NULL))) {
++		if (READ_ONCE(iter->bpf_ops) == ops)
++			WRITE_ONCE(iter->bpf_ops, NULL);
++	}
++}
++
++static int bpf_memcg_ops_reg(void *kdata, struct bpf_link *link)
++{
++	struct bpf_struct_ops_link *ops_link
++		= container_of(link, struct bpf_struct_ops_link, link);
++	struct memcg_bpf_ops *ops = kdata;
++	struct mem_cgroup *memcg, *iter = NULL;
++	int err = 0;
++
++	memcg = mem_cgroup_get_from_ino(ops_link->cgroup_id);
++	if (!memcg)
++		return -ENOENT;
++	if (IS_ERR(memcg))
++		return PTR_ERR(memcg);
++
++	cgroup_lock();
++	while ((iter = mem_cgroup_iter(memcg, iter, NULL))) {
++		if (READ_ONCE(iter->bpf_ops)) {
++			mem_cgroup_iter_break(memcg, iter);
++			err = -EBUSY;
++			break;
++		}
++		WRITE_ONCE(iter->bpf_ops, ops);
++	}
++	if (err)
++		clean_memcg_bpf_ops(memcg, ops);
++	cgroup_unlock();
++
++	mem_cgroup_put(memcg);
++	return err;
++}
++
++/* Unregister the struct ops instance */
++static void bpf_memcg_ops_unreg(void *kdata, struct bpf_link *link)
++{
++	struct bpf_struct_ops_link *ops_link
++		= container_of(link, struct bpf_struct_ops_link, link);
++	struct memcg_bpf_ops *ops = kdata;
++	struct mem_cgroup *memcg;
++
++	memcg = mem_cgroup_get_from_ino(ops_link->cgroup_id);
++	if (IS_ERR_OR_NULL(memcg))
++		goto out;
++
++	cgroup_lock();
++	clean_memcg_bpf_ops(memcg, ops);
++	cgroup_unlock();
++
++	mem_cgroup_put(memcg);
++
++out:
++	synchronize_srcu(&memcg_bpf_srcu);
++}
++
++static struct bpf_struct_ops bpf_memcg_bpf_ops = {
++	.verifier_ops = &bpf_memcg_verifier_ops,
++	.init = bpf_memcg_ops_init,
++	.check_member = bpf_memcg_ops_check_member,
++	.init_member = bpf_memcg_ops_init_member,
++	.reg = bpf_memcg_ops_reg,
++	.unreg = bpf_memcg_ops_unreg,
++	.name = "memcg_bpf_ops",
++	.owner = THIS_MODULE,
++	.cfi_stubs = &cfi_bpf_memcg_ops,
++};
++
+ static int __init bpf_memcontrol_init(void)
+ {
+-	int err;
++	int err, err2;
+ 
+ 	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
+ 					&bpf_memcontrol_kfunc_set);
+ 	if (err)
+ 		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
+ 
+-	return err;
++	err2 = register_bpf_struct_ops(&bpf_memcg_bpf_ops, memcg_bpf_ops);
++	if (err2)
++		pr_warn("error while registering memcontrol bpf ops: %d", err2);
++
++	return err ? err : err2;
+ }
+ late_initcall(bpf_memcontrol_init);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 1f74fce27677..8d90575aa77d 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2252,7 +2252,8 @@ static unsigned long calculate_high_delay(struct mem_cgroup *memcg,
+  * try_charge() (context permitting), as well as from the userland
+  * return path where reclaim is always able to block.
+  */
+-void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
++void
++__mem_cgroup_handle_over_high(gfp_t gfp_mask, unsigned long bpf_high_delay)
+ {
+ 	unsigned long penalty_jiffies;
+ 	unsigned long pflags;
+@@ -2294,11 +2295,15 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ 	 * memory.high is breached and reclaim is unable to keep up. Throttle
+ 	 * allocators proactively to slow down excessive growth.
+ 	 */
+-	penalty_jiffies = calculate_high_delay(memcg, nr_pages,
+-					       mem_find_max_overage(memcg));
++	if (nr_pages) {
++		penalty_jiffies = calculate_high_delay(
++			memcg, nr_pages, mem_find_max_overage(memcg));
+ 
+-	penalty_jiffies += calculate_high_delay(memcg, nr_pages,
+-						swap_find_max_overage(memcg));
++		penalty_jiffies += calculate_high_delay(
++			memcg, nr_pages, swap_find_max_overage(memcg));
++	} else
++		penalty_jiffies = 0;
++	penalty_jiffies = max(penalty_jiffies, bpf_high_delay);
+ 
+ 	/*
+ 	 * Clamp the max delay per usermode return so as to still keep the
+@@ -2356,6 +2361,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	bool raised_max_event = false;
+ 	unsigned long pflags;
+ 	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
++	struct mem_cgroup *orig_memcg;
+ 
+ retry:
+ 	if (consume_stock(memcg, nr_pages))
+@@ -2481,6 +2487,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	if (batch > nr_pages)
+ 		refill_stock(memcg, batch - nr_pages);
+ 
++	orig_memcg = memcg;
+ 	/*
+ 	 * If the hierarchy is above the normal consumption range, schedule
+ 	 * reclaim on returning to userland.  We can perform reclaim here
+@@ -2530,10 +2537,14 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	 * kernel. If this is successful, the return path will see it
+ 	 * when it rechecks the overage and simply bail out.
+ 	 */
+-	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
+-	    !(current->flags & PF_MEMALLOC) &&
+-	    gfpflags_allow_blocking(gfp_mask))
+-		__mem_cgroup_handle_over_high(gfp_mask);
++	if (gfpflags_allow_blocking(gfp_mask)) {
++		unsigned long bpf_high_delay;
++
++		bpf_high_delay = bpf_memcg_get_high_delay(orig_memcg);
++		if (bpf_high_delay ||
++		    current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH)
++			__mem_cgroup_handle_over_high(gfp_mask, bpf_high_delay);
++	}
+ 	return 0;
+ }
+ 
+@@ -3906,6 +3917,8 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	 */
+ 	xa_store(&mem_cgroup_ids, memcg->id.id, memcg, GFP_KERNEL);
+ 
++	memcontrol_bpf_online(memcg);
++
+ 	return 0;
+ offline_kmem:
+ 	memcg_offline_kmem(memcg);
+@@ -3925,6 +3938,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+ 
+ 	zswap_memcg_offline_cleanup(memcg);
+ 
++	memcontrol_bpf_offline(memcg);
+ 	memcg_offline_kmem(memcg);
+ 	reparent_deferred_split_queue(memcg);
+ 	reparent_shrinker_deferred(memcg);
 -- 
 2.43.0
 
