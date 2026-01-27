@@ -4,121 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C84CD2F037
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 14:29:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3513D2F038
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 14:38:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB65D6B0088; Tue, 27 Jan 2026 09:29:06 -0500 (EST)
+	id B95AB6B0088; Tue, 27 Jan 2026 09:38:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C64096B0089; Tue, 27 Jan 2026 09:29:06 -0500 (EST)
+	id B775D6B0089; Tue, 27 Jan 2026 09:38:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B456A6B008A; Tue, 27 Jan 2026 09:29:06 -0500 (EST)
+	id A79C46B008A; Tue, 27 Jan 2026 09:38:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A0B5A6B0088
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:29:06 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A3381359C3
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:29:06 +0000 (UTC)
-X-FDA: 84377975892.30.47122CD
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 58826180004
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:29:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NSyrXHGb;
-	spf=pass (imf16.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 94F746B0088
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:38:32 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 428B41401A6
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:38:32 +0000 (UTC)
+X-FDA: 84377999664.03.365ED39
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7CBFE10000F
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:38:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ecNE2xXx
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769524144;
+	s=arc-20220608; t=1769524710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RzsSYm6I8uueV/iFR6SlAY5cx6+4mIHkGt73AMjJd/E=;
-	b=PLw5BsfimhAGP7RKfDYmI7P1I7aSy2dFXfl0r7VZTo8hd2BWs4iXd678BzjtGK65sC36TG
-	0MkjRjFcwDZCrrUKQpuVJtE161JRXukzwCbPwBZ6WATDHrIkuQ+53xUYU1oLQc17DLWq1V
-	za2S6Vts6A9Us3EgqVZ3bDDB1QG3yv8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=QgONMmf4BXh7xFRKkGrygm3gsVIDoPskYWG8ACHeq6w=;
+	b=qNJCNrAUIw6bJlxLDw+cdZ+Z2kO0J9JQjDpIrc9uUQBochDlCaQ9TCvp4gYwPdSRVec6dt
+	0H89RX4vD4Wavm8mRTEdShchbrXUP6wEY1cceGwwicsesrOzMtWFEn9vlS3i/GR/Q8iFyc
+	uqEWFEZM49hrs8mjXqbSLZJbGRLrN5k=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NSyrXHGb;
-	spf=pass (imf16.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769524144; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ecNE2xXx;
+	spf=none (imf14.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769524710; a=rsa-sha256;
 	cv=none;
-	b=a/MP3e+tCI6ZH8pBfzcl3N3iwcLJSgG7zORFo2Rn63mB/jTRHRU1/erwYMkFeZX0gsB5tt
-	X0+AZOsVFExbqQZe3hAxvmYtNAH99d22Lo5ZtbZ1G5AY7tICZSfkEp86k4CaBkQAQr0DHG
-	dLGa9f9rJ7M8Borf7Zfu8+rszACGhDQ=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4359a16a400so5154705f8f.1
-        for <linux-mm@kvack.org>; Tue, 27 Jan 2026 06:29:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769524143; x=1770128943; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RzsSYm6I8uueV/iFR6SlAY5cx6+4mIHkGt73AMjJd/E=;
-        b=NSyrXHGbpmet72kG8ZqT9LSw+ljzW7QrU/K2IdBNfyjMAGsETdyiAd/Pv9fgllbm0w
-         mBj1xqA5GjN7lZ5S7fQJ3B227SJ+6uWZm8ipHrZtwck8Nv4P5Y5p3F9SKSIZXa6NibYK
-         oPcA2J1DSfWtyz+gjZRLjC2hkQAnSygSX2C4/wdu8Xc0SqekVHRPRDvO8ExqVF9Rohj7
-         LxaGR6Hmh6OcjzkXdmYHaXhCLlt2s/3H9QiLewMnoQqAPujPywWJMHK2z3ysHqkfDDZ9
-         G1y7C7V8ASQAIej9SvHFZCfndcs6HKxuN8iWI0IBHv//zwM2zxa19Na2saTeaRkDWrGY
-         IgXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769524143; x=1770128943;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RzsSYm6I8uueV/iFR6SlAY5cx6+4mIHkGt73AMjJd/E=;
-        b=g/CR3ZR+PIseAYrU6k/0JAQ5DAsdMlqoNel2d9naAJhmD3yth4n8gd1HZdrs+gTos0
-         CFUefiB3LFdVdO69zBQVWhKJOz5gmkGaBh6IOmdMYcnRcV4yZ6iR6szJsQufae1BBj4H
-         2MTtdTlxE+gYuiPK+BOIr19wKRq2xXplM7GMNzQMMWlb5CtR+a9AH8IsLUvlI/GDHJGy
-         ujTX92+HCPS8R8CjASDyYcPfpJRc9KyW64TUzNAzHkDII1fFyfauyJtGY67Nb5dbNq33
-         XIDGeomRgVMZDDtCwc2chsQBfWjSDzfyEnq+3IFSsqeK+fguZz83+5gTmIOsLZGOTVtn
-         6vJg==
-X-Forwarded-Encrypted: i=1; AJvYcCWA3UuB/cc7D2R1HguQc9j8ByV2cPVBSlDV4wfOCao2i3dIgJzWDu0dwWU0TlKKCNTDS/TR8nF1lg==@kvack.org
-X-Gm-Message-State: AOJu0YwIsgZnslALVfXh5DCc7kIcgS9zmIT+Hky/ZHtzBkIiqBcL4l47
-	ZzM2U+eYi3B71rPiySW+OK7vnhH4m0qfn+2N3OBUklKSHH0TqAf5pTnI
-X-Gm-Gg: AZuq6aIcoSrbYl+yzkqxyRpITl1bA02P2+QHYnmtsb7jr7tRGSkxKKjRGYbBo0EA6q+
-	gyWtXyCq9TzrTv20qTHZiGGyCd0QX4ZqUtVE3/UdIDT05JJ+j3dj2nDzIYadJum/qQ9rzwZYxtK
-	mlKFp/IMrBJOacE4s3roE4OyhvKak00JagK5iz5J4z40ZvEMXt9yAhmOSKeSlYJZ7wHKJwg1R7J
-	RsN0OGVIaJz6kA+J43VMtvwMvaoPjZLRptlQygh1C7N1wCWDes2yC8w71Qe9EE5tXNg2DA9Xf0o
-	lj/eyPmjQKFYQ6kZbIQnSdp+6SAxLd0MUPR4ZaEOyAjP+9M1UXdS3Q3SLptEhYXYFjxNineFw/X
-	TVdXXnPI8vIcF/DfUvyMsfXzzMUB1SKGLijPybQPnM3GAkphhP8bXhbJgzLJITFqE888wHcaUIZ
-	8c06LaSBoNcoZLhvKH2KBfJPqGYEuh+UcEHUjQdhVqri8ZRRkU3bxS2X539+Y=
-X-Received: by 2002:a05:6000:2082:b0:435:a9c9:159 with SMTP id ffacd0b85a97d-435dd05aba3mr2633501f8f.18.1769524142351;
-        Tue, 27 Jan 2026 06:29:02 -0800 (PST)
-Received: from f (cst-prg-85-136.cust.vodafone.cz. [46.135.85.136])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c02ba3sm37600235f8f.2.2026.01.27.06.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 06:29:01 -0800 (PST)
-Date: Tue, 27 Jan 2026 15:28:53 +0100
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
-	kasan-dev@googlegroups.com
-Subject: Re: [PATCH v4 18/22] slab: refill sheaves from all nodes
-Message-ID: <cburjqy3r73ojiaathpxwayvq7up263m3lvrikicrkkybdj2iz@vefohvamiqr4>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <20260123-sheaves-for-all-v4-18-041323d506f7@suse.cz>
+	b=nu7Suxg6wy8zcMSorc3WOIEsTnzS183vkBwNFHIoal1TKQinDRWOTv//mJixNkoA/f2cDM
+	bZRpYHTq4ScGzQTsZclya09NPWnSccTM2eJQ2TkQiqsDcuORxxIxX/t0J+1jqOgn39xr+9
+	IxCyKwWOK6JB2UOpJz1pZaFG4pQMBZo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=QgONMmf4BXh7xFRKkGrygm3gsVIDoPskYWG8ACHeq6w=; b=ecNE2xXxfNF4vHKPx2DbAXENAM
+	ayBMBpOWZkQGDoGn9035mWq5C7bgXeHltn67+UTx31WGsaLZO41JeCdIqX4vVivQSKcM9aoWtDmaa
+	9fcEENKc8QN1OIbYA9pOnHdE0ZgwRFpmOh3J2etGkgFYtdd4ZqgZTrib0GG+n8Gck8H9/jw02sudU
+	uiSIw2gqFDLHY6RYh5+SwrTCUMOzyFnXp2CX5g28AQXII8dHWOFAjpYkBblzf/3kwSzqHCsel3EQe
+	+kJrARgt/AFa0/2Q249IjDbriMlwfh+H5yjPxPrxUqOznVvhCRPOZokLjrhiNsWz0uQ2GL+YhjVgI
+	IQHrQTjg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vkkCy-00H3b7-G5; Tue, 27 Jan 2026 14:38:21 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH v6 0/4] kho: history: track previous kernel version and
+ kexec boot count
+Date: Tue, 27 Jan 2026 06:37:35 -0800
+Message-Id: <20260127-kho-v6-0-56f9396681c2@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260123-sheaves-for-all-v4-18-041323d506f7@suse.cz>
-X-Stat-Signature: 4qb3nhpqb9xq91zru48e7tb344fqw7fu
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALDNeGkC/2XNwWqEMBDG8VcJc94pmTEm0VPfo/SQmHFNC1riV
+ loW3724UrD1OPD9/nOHWUqWGVp1hyJLnvM0QqvsRUE3hPEqmBO0ClhzTVxpfB8mdE478YGlJ4G
+ Lgo8iff56VF5e93v+jG/S3Ta6LYY836by/Xiz0Lb7W1wICU1yTR3YpNDIc5KYw/g0lStsyYV/k
+ dWkeUeMGskZFylUgZI9oeqI/I4q1Bgp2eiCbyrDJ2QOiGlHBgnrzvfiXLRemxOqj8juqEaNrku
+ 6t02I/A+t6/oDjHZbI30BAAA=
+X-Change-ID: 20251230-kho-7707e8a2ef1e
+To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
+ riel@surriel.com, Breno Leitao <leitao@debian.org>, 
+ SeongJae Park <sj@kernel.org>, kernel-team@meta.com
+X-Mailer: b4 0.15-dev-f4305
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4183; i=leitao@debian.org;
+ h=from:subject:message-id; bh=K/gjwc3dmtHGoO3mUbyViJhw/1HKsI1mVxpRQ7XIlp4=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpeM3WtZ0BK88k5/Abjvky0EFVZjtM1JFEayb4F
+ nZ/hrNKLyCJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXjN1gAKCRA1o5Of/Hh3
+ bUQnD/wLmAoHoJ0uyREnAb2E/ciYIfTlYAxD/+eRVjHVtzNW1tW9le0JnXWRjvBg3agGwRNAERZ
+ keqccybJhJ8Qlp3jitnj2hjy+VbM9vIGIi0jXwJHvBVapP07fMwJzmMVUqqIEN+t9Uep+30yynx
+ jNbjEo7UCo7AGYE4tCoDmw9i98Cv2LrU32QIy8j1MZn775zSmmKw6Q8NMJLsA4x+cQLcrTEOD8N
+ XF/jA59MG2BElxCedYkYxGwoIyT94+VAfS7RUhGFlXk7W2SQWyqUdTDV/xeVLDjy5VWPMPGQcVS
+ lHzuqaSl7Wyv2ENMTCHGDkUvYB4GNyo8F8lHEUfgAwEPqFz7l7NnMOZqsd6TWREhSLVrY169p1/
+ 91lhAiC+GO8FRjmbywvczlbiURLg5v+HRiYjerjhNpLX26F8haIgeUHNAFxBmPMd642oHJ2yXgl
+ ikobrlyZZgWJV1Ad/iMJKh/OK2b/4URdffTLXiKmBcVzby6MCaiVylW3jkaNS6/yMFDUBxJiPky
+ vOQnlHdDR5S0qpwmVkR0a/Gcempv7NDEyiyCM9w76KPBSS3GBo+vuTOZEfzahD+QC3dO2MRrd0J
+ A3ovdh8K+WAv3kfZSI/nCJlzhIrpHiE2qAKda/GO2NrZfL0YfX4BHliet+AQac9xGhki0bnvjUF
+ CEJMYWseepXi5PQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7CBFE10000F
+X-Stat-Signature: 1tr7o4o3zzi4kfhcmetzx3x1puxqabas
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 58826180004
-X-HE-Tag: 1769524144-436376
-X-HE-Meta: U2FsdGVkX192I9K+53f3q+bivuuppq0ulfgJwdPALsYxU+Qt2Ya4k19MRkxrva5HxYiCyGLXsa0+EIBXAJkIl5rjPL9+3Ib41ewFnaz6zsOvq1e9ZldCCKmS6tYIKAnTwancrCpVAZpbdIKSneB8HeuqoiytSIZXjoD4sQmI+JFxKDFrThBBGV2faHRYnkYCTbJSMpOS+JI/mYdafUTxdvZ4tnAeNjpRvAZ115Nq/w/FyboIckoPVr60p9aDT6hj+zorL6pXMaY/mNO3WIXONUG8bHAbAbd2BkNhp0LAcW/qy3Yoa7Nt6KcjYyXbdwVz9siVPYrlY9YRpN3hnBCcwOB7zGo34KG3M1qIB8N3gax5gu5qL8ZBUHH81ifWhJYBUougC8h2AmsFLN1K+Y1dWxx+ykgJBxjE5A7+DM5kFjn7O6lRX9+/uk9RI6NoLbvhyEo52Srg9q/kt1YsiW4dNDMqrVCfwW9yc/ymF9X1gUDnarlez7IyjukfDp6CD4Bq0xCghS/QUtQ2YhZpiWmo9+iXGILFoRV4tfUNm0lD55WkprpdTGdH1QMyRWMC+rK6go/HOQUTJ+VRxVIL2NgSlQCo5EQ3xj7PL0tnKkOQ2UQIUxdm2zkKeNjy/dOyLMCJIj5MI8QHRI/9X3gTiduLLvPgCWPZRFO2q5MDvwdVPgyifpqbV2qJqqXhckAjtQdcxLk9rZ7JkLVWg1yDm18RHLwaht/HdlEhlhakdnGAeCMITHRdY3BM4/bmYqDZcZc1loZsQhpmheG0Lpefjtrac1pDPp3CLcgio9ac/mRr4eEpdNZTQ/e2VFoI6uj7cIfssqPD9++0u5kxzmXEsGIpTiEnt/C+v8qKo30QUbGi2hu2vWIkfAEnnYHDRZqZ+Pa0qeeXtZr5yMiat2pVBIJGtMH7KC4sIv2rtSrq+FpIIYYrBIpJavsNWnysSNoehXYYVLe/i9/hWICU6aXHlF1
- /LGm2Pj0
- ms8LPngg+oQ3SReGaxCytbVYTMngW1RcKnMm0Vov6wobnKU1/SGda8w23IbbBBWEtVkJoQUgZnTowdV8ufKX3WWgbryGJ2uugUfri5PGGL/f24ZGXzTL0i0E5RFRmRT9Pl5l/0yURvXdgMr55nNxzyRXXRHh7WXiS/X4v30G9JCl9wPHXtVQp1P5jib4oG3hoseO/e7LKZ7rI3pGoTLf3a08ZP4gd8Dejrx4R+0lSHwCZHaX7rwXKrrL/cm96AYT6CGziWDxJuUKVf3LZGYgKQeotzFCW+BFrDc+V88c7SmZMA9PHp2kUdePJCRf+/GAkdYjMDdtnnid+C+z9ANndaopO0TrIiw6F06O9/xLyEq+rcs7YpNVtwZHfO2wBdcSffdt5QGhY+rX111vo6+QW/vCoU+wDOGzvsd50J8i/i8UXdlLU+oJFMyHTKjc1bm6gvNYcWLYPhFxbXAL6XQprgVHfzTkW/vaQHuzkcA1GPZ3h+YBaMpJrbhUCuCh3Hp5Lr6J0
+X-HE-Tag: 1769524710-737418
+X-HE-Meta: U2FsdGVkX1+mGDuS610ySOu1QiAlZ7rRVPYnHy7gxi17VAODI4xrcLW0oQm5QvpRjQucwhQ4XVm7qfMmaf8gWfTib7Drdkm/4ZY93HZVDMVIRuY8Q3GQZhtWL6KmW8lYjVzVTBxa+PXaTxPV2GWeb2CVQHabx+Aj9+agpp/o0ayIhhBy9QEVQAB22A5KvVexCF2iq6u8hfJkIRtaE8kaG7fsoVizh9I9ZRDr+2S3SmqgMg5kAEmOQ6m4L3RZkGlU+lNC4aixs2TqNPWjd/PcyATC1olmbrGfXebbHL1QwUNkIxdiDuCGgy3EMNMIOqH3e1GglFfW8egSTItGfSwhbgGdGX/he/qbm6pZR/8hRQ9UVszVpcA4x1kPvBkSSohhFU0rwNbdgfcEFomm5eSGPSIhJBxd1hrBFHo1A5Ks3MszPu4AVT9HuXz542UKAJOG5RKETJ7ptZwl8IE8LNCL+PQvXbi6cfMI1NaSgobypfRym7Lfrvx0CAY7NwJfH7BR0MLnKHxbJCs3TwGhzQ68VXL7NMH0qrOJZoBlow1Hhl1cbkRzqul7c2trclwQzFW8IDVjmP3l1/6Jr2EosAZhjCl5VNulkFAVngr0tqvrppSQENRqAzjfKPScopaca+qYzZH8dEbdBBf0qoGwu5mafxa9MKehxU+Qp4cy2CSM8Qz7grHm6QQJitkVgNCFT04pv+Ahx1YTZvbcXnJ+NBWpAeE6GCLyeFBR7K5wGEiwmTgZBOAYQ5xwVUEKMCUv7ZjGk3pTLqZ2A/VTHs8HgqUQt9ZJ6JWuexEKpeMXkMIagmt94Xt8+r+siw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,69 +114,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 23, 2026 at 07:52:56AM +0100, Vlastimil Babka wrote:
-> __refill_objects() currently only attempts to get partial slabs from the
-> local node and then allocates new slab(s). Expand it to trying also
-> other nodes while observing the remote node defrag ratio, similarly to
-> get_any_partial().
-> 
-> This will prevent allocating new slabs on a node while other nodes have
-> many free slabs. It does mean sheaves will contain non-local objects in
-> that case. Allocations that care about specific node will still be
-> served appropriately, but might get a slowpath allocation.
+Use Kexec Handover (KHO) to pass the previous kernel's version string
+and the number of kexec reboots since the last cold boot to the next
+kernel, and print it at boot time.
 
-While I can agree pulling memory from other nodes is necessary in some
-cases, I believe the patch as proposed is way too agressive and the
-commit message does not justify it.
+Example
+=======
+	[    0.000000] Linux version 6.19.0-rc3-upstream-00047-ge5d992347849
+	...
+	[    0.000000] KHO: exec from: 6.19.0-rc4-next-20260107upstream-00004-g3071b0dc4498 (count 1)
 
-Interestingly there were already reports concerning this, for example:
-https://lore.kernel.org/oe-lkp/202601132136.77efd6d7-lkp@intel.com/T/#u
+Motivation
+==========
 
-quoting:
-* [vbabka:b4/sheaves-for-all-rebased] [slab]  aa8fdb9e25: will-it-scale.per_process_ops 46.5% regression
+Bugs that only reproduce when kexecing from specific kernel versions
+are difficult to diagnose. These issues occur when a buggy kernel
+kexecs into a new kernel, with the bug manifesting only in the second
+kernel.
 
-The system at hand has merely 2 nodes and it already got:
+Recent examples include:
 
-         %stddev     %change         %stddev
-             \          |                \  
-      7274 ± 13%     -27.0%       5310 ± 16%  perf-c2c.DRAM.local
-      1458 ± 14%    +272.3%       5431 ± 10%  perf-c2c.DRAM.remote
-     77502 ±  9%     -58.6%      32066 ± 11%  perf-c2c.HITM.local
-    150.83 ± 12%   +2150.3%       3394 ± 12%  perf-c2c.HITM.remote
-     77653 ±  9%     -54.3%      35460 ± 10%  perf-c2c.HITM.total
+ * eb2266312507 ("x86/boot: Fix page table access in 5-level to 4-level paging transition")
+ * 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption")
+ * 64b45dd46e15 ("x86/efi: skip memattr table on kexec boot")
 
-As in a significant increase in traffic.
+As kexec-based reboots become more common, these version-dependent bugs
+are appearing more frequently. At scale, correlating crashes to the
+previous kernel version is challenging, especially when issues only
+occur in specific transition scenarios.
 
-Things have to be way worse on systems with 4 and more nodes.
+Some bugs manifest only after multiple consecutive kexec reboots.
+Tracking the kexec count helps identify these cases (this metric is
+already used by live update sub-system).
 
-This is not a microbenchmark-specific problem either -- any cache miss
-on memory allocated like that induces interconnect traffic. That's a
-real slowdown in real workloads.
+KHO provides a reliable mechanism to pass information between kernels.
+By carrying the previous kernel's release string and kexec count
+forward, we can print this context at boot time to aid debugging.
 
-Admittedly I don't know what the policy is at the moment, it may be
-things already suck.
+The goal of this feature is to have this information being printed in
+early boot, so, users can trace back kernel releases in kexec. Systemd
+is not helpful because we cannot assume that the previous kernel has
+systemd or even write access to the disk (common when using Linux as
+bootloaders)
 
-A basic test for sanity is this: suppose you have a process whose all
-threads are bound to one node. absent memory shortage in the local
-node and allocations which somehow explicitly request a different node,
-is it going to get local memory from kmalloc et al?
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: SeongJae Park <sj@kernel.org>
+---
+Changes in v6:
+- s/UAPI/uABI (Mike)
+- Expanded the rename of s/fdt/blob to kho_debugfs_* calls also (Mike)
+- Link to v5: https://patch.msgid.link/20260126-kho-v5-0-7cd0f69ab204@debian.org
 
-To my understanding with the patch at hand the answer is no.
+Changes in v5:
+- Add a patch to document the new feature.
+- Change kho_add_subtree() to receive the size instad of guessing it.
+- reworked some code path to make it more standard.
+- Link to v4: https://patch.msgid.link/20260121-kho-v4-1-5c8fe77b6804@debian.org
 
-Then not only this particular process is penalized for its lifetime, but
-everything else is penalized on top -- even ignoring straight up penalty
-for interconnect traffic, there is only so much it can handle to begin
-with.
+Changes in v4:
+- Squashed everything in a single commit
+- Moved from FDT to C structs (Pratyush)
+- Usage of subtress intead of FDT directly (Pratyush)
+- Renamed a bunch of variables and functions.
+- Link to v3: https://patch.msgid.link/20260108-kho-v3-0-b1d6b7a89342@debian.org
 
-Readily usable slabs in other nodes should be of no significance as long
-as there are enough resources locally.
+Changes in v3:
+- Remove the extra CONFIG for this feature.
+- Reworded some identifiers, properties and printks.
+- Better documented the questions raised during v2.
+- Link to v2: https://patch.msgid.link/20260102-kho-v2-0-1747b1a3a1d6@debian.org
 
-If you are looking to reduce total memory usage, I would instead check
-how things work out for resuing the same backing pages for differently
-sizes objects (I mean is it even implemented?) and would investigate if
-additional kmalloc slab sizes would help -- there are power-of-2 jumps
-all the way to 8k. Chances are decent sizes like 384 and 768 bytes would
-in fact drop real memory requirement.
+Changes from v2 to v1 (RFC)
+- Track the number of kexecs since cold boot (Pasha)
+- Change the printk() order compared to KHO
+- Rewording of the commit summary
+- Link to RFC: https://patch.msgid.link/20251230-kho-v1-1-4d795a24da9e@debian.org
 
-iow, I think this patch should be dropped at least for the time being
+---
+Breno Leitao (4):
+      kho: add size parameter to kho_add_subtree()
+      kho: rename fdt parameter to blob in kho_add/remove_subtree()
+      kho: kexec-metadata: track previous kernel chain
+      kho: document kexec-metadata tracking feature
+
+ Documentation/admin-guide/mm/kho.rst        | 39 ++++++++++++
+ include/linux/kexec_handover.h              |  8 +--
+ include/linux/kho/abi/kexec_handover.h      | 31 +++++++++
+ kernel/liveupdate/kexec_handover.c          | 99 +++++++++++++++++++++++++----
+ kernel/liveupdate/kexec_handover_debugfs.c  | 28 ++++----
+ kernel/liveupdate/kexec_handover_internal.h | 15 +++--
+ kernel/liveupdate/luo_core.c                |  3 +-
+ lib/test_kho.c                              |  3 +-
+ mm/memblock.c                               |  2 +-
+ 9 files changed, 191 insertions(+), 37 deletions(-)
+---
+base-commit: ca3a02fda4da8e2c1cb6baee5d72352e9e2cfaea
+change-id: 20251230-kho-7707e8a2ef1e
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
