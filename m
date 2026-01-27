@@ -4,160 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 606E6D1953D
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 15:07:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26ACAD1953D
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 15:08:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A3736B00A0; Tue, 27 Jan 2026 10:06:54 -0500 (EST)
+	id 85E1A6B0088; Tue, 27 Jan 2026 10:08:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 985026B00A1; Tue, 27 Jan 2026 10:06:54 -0500 (EST)
+	id 811366B00AB; Tue, 27 Jan 2026 10:08:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E7A06B00A2; Tue, 27 Jan 2026 10:06:54 -0500 (EST)
+	id 709C86B00AC; Tue, 27 Jan 2026 10:08:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 69D006B00A0
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:06:54 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F0911401CC
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:06:54 +0000 (UTC)
-X-FDA: 84378071148.23.3EDD4C6
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9F5B240015
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:06:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Fr558ciq;
-	spf=pass (imf11.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C5376B0088
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:08:09 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D7071A027C
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:08:08 +0000 (UTC)
+X-FDA: 84378074256.26.10A0D43
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 308DB100003
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:08:04 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=Cou97s3W;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf05.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769526411;
+	s=arc-20220608; t=1769526486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jLRo5dWQOH/PXS2/HPYSVLJpM/ceW9sy18PSHcPjkr4=;
-	b=8KxhEcfxmhbgmm5mu7V380bqvlTZiizqlfrT8YdzXLpA1gHuHfdiiv/U5J8Ssi3eru/dkV
-	cVO3ZLZJ6gBRQKPCZ+cSLOzwssYt6mUkXbfCfxQmMbWR0NtJmmUFk61AwIPZKhk4Wpgar8
-	iEdJ1k1x+tjqaQ+9u/DaUL9A048bKXE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Fr558ciq;
-	spf=pass (imf11.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769526411; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bI7n7EMbVTLXkomvFX5EEgGQqwrIiq4zfj25LpKIMGc=;
+	b=29av0z7/9Kx4sMIDHkQ0QFVPq4YFz2RROJT3qpcEA/xjD9gsULvh94cpNqX/0ePILdMItJ
+	Qml3TXoEPKIkhR2CobR7lVQkURqhisfbjhkf1uho/RxotLifyTW9IGFznxI1LLwpcedgDq
+	13w15BU/g8KYQCl2TXhcQ9eTF5IEsW0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769526486; a=rsa-sha256;
 	cv=none;
-	b=Igz5bd3PBe+0v0YPIu6fI7UQwDYUhtiYhaVC+g5AvW3qrNuUKcfNdm7GTKu4biJkiWh4qw
-	tOmF2/Kk4TiRnCP33KQb38r9cdV1xIaxx0sL+byUbfnGYKC5xhjf8MlZxry3Cyl3eN6wN5
-	KmN+DFVVkhpNQQLiDDNQF8ZB6/DWFu8=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R53102015526;
-	Tue, 27 Jan 2026 15:06:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=jLRo5dWQOH/PXS2/HPYSVLJpM/ceW9sy18PSHcPjk
-	r4=; b=Fr558ciqPqwWIGFX1x0Mzd3ZFIKBntnf1/Xcz5N6In7QPtx9ylxFv6D9o
-	cK4J2JP5Y8JzHPArHbw/BcJPyDpGKgDJSOY5FfBqcnMXb0iEiDQyn33BQWVoMjvh
-	EkNVbsap+UYsom4RG7FoT3dxuItFFlTOTRLy9X69fBQbtuWt20KUGWckx/P+YkUG
-	trGPNzSX3qeb7fRPGQ6BhXb+Xg1Eos/Gr3rjUsC3g1/ABq77Unbao/Qb3JDT1irV
-	UgYQ0wMYSXqNgkISNRjPCL7lzeC6hm1nHEifZ7hGe+AnnMz3N8GVPUjTGGQ1MtgB
-	qmqN/IlZeDjNbu/lYKQHVNQ/fGPzA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnr646q9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:06:02 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60REknqZ027971;
-	Tue, 27 Jan 2026 15:06:01 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnr646q4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:06:01 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60REgU5d023624;
-	Tue, 27 Jan 2026 15:06:00 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bwamjrwhn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:06:00 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60RF5uQK27328946
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Jan 2026 15:05:57 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D065E2004D;
-	Tue, 27 Jan 2026 15:05:56 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A19020049;
-	Tue, 27 Jan 2026 15:05:56 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 27 Jan 2026 15:05:56 +0000 (GMT)
-From: Jens Remus <jremus@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH v13 00/18] unwind_deferred: Implement sframe handling
-Date: Tue, 27 Jan 2026 16:05:35 +0100
-Message-ID: <20260127150554.2760964-1-jremus@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	b=dONhod8wbmW+kU6EdqjeEapgHLltgtZdF1U5sOPFZqVZijE8QevkXmIi0VVrmuBRaz06yL
+	ljcc6ivc8YTbr2EzcLuhHw3RJ0cPEkjGlAv6Khaxa1Nlqg+bjxJNioGRR8M7/KHGlkAV48
+	A4CfWbzTS4IcgVIdTdthmTssYgYrEjM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=Cou97s3W;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf05.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260127150802euoutp02f3c2362e9dbc193c9bc948297b5ac05f~OnvXqoD130435104351euoutp02X
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:08:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260127150802euoutp02f3c2362e9dbc193c9bc948297b5ac05f~OnvXqoD130435104351euoutp02X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1769526482;
+	bh=bI7n7EMbVTLXkomvFX5EEgGQqwrIiq4zfj25LpKIMGc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=Cou97s3WqBllpiKXMOmS6E6nyHX8cyRUsq+55z/ymrDXGb3vTEKta+8e89QekioTA
+	 hTEyh28KTJ1noDj/M0ONRFNqgVHWLXgHkTH4fJY5Wm+oHflOHeujbfGYiUXK0hbH0O
+	 7c6E9uFgQksYxE8gHL1gHsnKGGI2iNTxwrlD5b9E=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260127150802eucas1p15c9f15f01f36d46c5d109e71c41ebad7~OnvXOxVPF1522415224eucas1p1K;
+	Tue, 27 Jan 2026 15:08:02 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260127150800eusmtip28d6317572cc161355f75102851645d8e~OnvV-5j8K0406604066eusmtip2u;
+	Tue, 27 Jan 2026 15:08:00 +0000 (GMT)
+Message-ID: <4df6023e-310b-4da7-95bd-f2952f40a873@samsung.com>
+Date: Tue, 27 Jan 2026 16:08:00 +0100
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] of: reserved_mem: Allow reserved_mem framework detect
+ "cma=" kernel param
+To: Rob Herring <robh@kernel.org>, Oreoluwa Babatunde
+	<oreoluwa.babatunde@oss.qualcomm.com>
+Cc: ye.li@oss.nxp.com, kernel@oss.qualcomm.com, saravanak@google.com,
+	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, robin.murphy@arm.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, iommu@lists.linux.dev,
+	quic_c_gdjako@quicinc.com
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <CAL_JsqKWd2H0bV9Z8REMBYd2hPMTjDO1T4dYehM-QvemB9zrDg@mail.gmail.com>
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEyMSBTYWx0ZWRfX7qcpMQXHZrCz
- PJDHpcN9CMWtPiFxoQ2uYjYvStMx/x7IrXGTbCzzJxlJISHpQPpQTaIRatPScBGb25OmQBDISKl
- ZsJvW1BCfmWS/59bh65URFDXa1xFDfigc5VBrLzZ7voV7PuzqQypCXGyKPUhuvfWD1HUXKGIp2X
- ZPNx6uco2W3q4Wi33j2IM1A2EWuFC8ZHKL+dUxNcwNSpHuOgcbxR/PVqUVW2nAykQnNj/XEqpOz
- o/x5WEKMZNo2ZQDSp02A1eXMgdJzih2kpuoQTbomsesKZsez1YCdF+f5/0ZijV/GBz6NV5yS0Wy
- Z6Qcm/XGcq3mxx3tPhhEl6EFthgEzuG4yfmhSNEo1W7toPF2YdHuHll+Zo3n+FaJy+2F0O3TaTl
- zUFxPHi57PayA0Ae7vP5x8uKIiNN/XxVSUalmVi182X6osY4Di+51NWjl4hMbtck9Xs2uJhiPvn
- 3WHYzx3MCiRJ4WzAxng==
-X-Proofpoint-GUID: Cnghv0JLFjVoOT4Cw5u3lEHG0lpNgECq
-X-Proofpoint-ORIG-GUID: lk9wg6AvcZr5GoAnEkF26dxZ3DFbx60e
-X-Authority-Analysis: v=2.4 cv=X+Vf6WTe c=1 sm=1 tr=0 ts=6978d45a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=CCpqsmhAAAAA:8
- a=98J7bzRMxkTV7QTXyM4A:9 a=ul9cdbp4aOFLsgKbc677:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-27_03,2026-01-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 impostorscore=0 lowpriorityscore=0
- clxscore=1011 spamscore=0 adultscore=0 malwarescore=0 bulkscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2601270121
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9F5B240015
-X-Stat-Signature: 89rt4rpoqtiz3mg4pnr55eghnzi58wgq
+X-CMS-MailID: 20260127150802eucas1p15c9f15f01f36d46c5d109e71c41ebad7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395
+X-EPHeader: CA
+X-CMS-RootMailID: 20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395
+References: <CGME20251210002053eucas1p1d1408ad0fb49a49bf4371687f8df7395@eucas1p1.samsung.com>
+	<20251210002027.1171519-1-oreoluwa.babatunde@oss.qualcomm.com>
+	<X-TH#1.CAL_JsqL6VVQ7K_ZAbHJ8Gb7ei_jusLx6wRn=AdOVgV50dX0ejQ@mail.gmail.com>
+	<99dc91c9-59fd-47c5-b1d9-157bda86ad59@samsung.com>
+	<CAL_JsqK5QEZfyRTDY4z88mX_eYENibea1ZM8H_bEfCCsOOwY4A@mail.gmail.com>
+	<89f8895f-436d-4a73-a2c8-d61a2f4ee41a@samsung.com>
+	<CAL_JsqKWd2H0bV9Z8REMBYd2hPMTjDO1T4dYehM-QvemB9zrDg@mail.gmail.com>
+X-Rspamd-Queue-Id: 308DB100003
+X-Stat-Signature: dux5m1zk4c3j5s5d3gazsgmb3u5wsprp
 X-Rspam-User: 
-X-HE-Tag: 1769526411-841990
-X-HE-Meta: U2FsdGVkX1/RJbSOJ8lHMmsWAD70m1q536dMOykpwagBw6wu8kfZqcEl6UEtdJzx44JvP93OPFKSULuRa8l/Oj6DFcA3g4jwzbMXTn0YChLnIInr1y22MxNN0ktgMtJuPH0zMajzrj3IAwNkokxWF+7LgsLNOJQAuWzR07N5YUHywh8+q45OQJ7PVw/4Go2JnEBi2pXyjlQQSzrA7wIhJjS3dhr9V+Qfw83ItLrbEEyHvqbEt2ySOWd/0LAGOBcB+ogf2nKQhuuXozyeHrzBrzVFAmfNbJms4HTdKYJ3Z4g2xz57XA2jspEvl9lKasse5nk1kf3hxG+lgDgZkCD1U7JvkTRR19akdNsC1H7TkuSfd2w53mkQ6T5DNClGWrLnC2fKZTGyS8uqCcRNXEXGWzuJOg/bWidYqs/EaAuUgJ7YUMKyDpf6iZ0UloMsVbQ/aUD5L04wCRYsnUuJ1hJEh9oLEUf4GFwtIczCb+YjDKg58qutTRQrye3O604NPJkz4kVchaics6xanhft6MmXbb6tlibWWGNZZNkJN4BKZEvyP/9cAuiy8HQ43jXqAR5IGVxn/OwuyCsoiQBc85eWwxcn6rsrCX1vkassvifOTDRFrFn7fDGcBY/Fb1lr3lKStY47vas8soS7Ubuphcjw/PzRG1uT3y44WlNZ04fVTX8AarFayevjUNHqR9SnS/NRKLhX3JXX6mrVaxSdTCIXHmAPBpltlD9pRJAmbXAuMrq6QtdtcHT9iGg2bR5vcbZTiMogkW4nyJmOQzH2Mqv8WMl9z5odMobMTqISh115IOUCIg0Hs7QJ0pZuJcVjzPBYOseyNvzL4dXU0yhX/SUBjtAB36UXmOId4PTuaGshGDbwNW/XYYYqy2z30BTBqtXGs17cmWdKniW7CEA//F9x3ykASJVgp4IkfU0f+pPg9qXD1GJ9siuEI9b6umHgh+2YozoIBML2iEPlKLPk08m
- 2Y/g8TMv
- /R+1O3ie8pf3OfD2KjnPCKpGn8yNxAEgSM3mGeUaNEQR35RfbZmgFbk0nq+8ir9FulR5KwAQOIoaa2QYLK+AkQ6XC7KEFQrZ/mQ+wehNLa6+1oq3ZC3q4Zo/wPsxdm+DPOmqlsC4SPQVGPWQT+A+4gZyOW/qL8DiuVgAsKEoJKeMIKwb+N8bVDDSVMAAbKeaFnwDxa03yTpCyljs2fu3tt/0SdBPqtgPuie/nebxvFiHFvaZv2Hmw8lQ+AiT9a7E7SYUQmeDpE0GEiu74Ttd1iuqZj+AQoXvx60MYhCQfZCLrbGJt6UjeuJ7/Q/lt58NLg605weHWuB1rvy4xTqbYjQorXwcFo8JqrcCgsJ9+0OsvzJabW8ehCLW8XZXBKQaHRgJaZvfC9CmDaE4a2/80h3WVDQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769526484-167260
+X-HE-Meta: U2FsdGVkX18j0y/xb5/hJFFZgYXxQCqzH/uHYSUm8vMDKK3Urca8NtV4ezM9PEy8B0EZ7o4DbvMVAuffLJndhqm5kQScHz6bzqdy8Vu4n6KnhpUSJFYjVPhGshW/nzrzUWs57OjReHq/UY8M0Ccxzl4v/cxyXUWZUds7HGcFwJa5O2X725T/I5OzW0xjT15BD+qJbVkV8wV7bB9I/bU76LkcKYhkXxEcnUAnuZ7lTAXdO1bvbJHoxCf3IJTUDUDYbWdq0BSkL6u36AQaYF3ZxsIqmWR6gjptzWiABdUiBTIZN3jXBSyl7TnurVobr3NiFQHQ0nwqtPv8XYCe1FQp7V+tvdHjfXy4JvMxI9r1Uo+9M9Gtmiwt8ror2h2zR2+Vb1wjruCq71cTxZxhyPgzNhQlMboOsfRnTp/I8uewzNTKHvCSa54skAL1bz75piu7DBRF3MHLPOzlpCUVdBYyQwS7+4oP+ZjRnDKR3m679pl+/fWkbOR2PdqNoB1oyTg6+wRGHfycBGaTfPu83IagQBAwNpFBuRe8JlvM1Ibc2MNOEtOwADzo+/HIh2ZGN8gb3tQaxbHz1crmjxa5WhHDdVGxhKyfhL77nl/um0OkDRkcb570hwvI4oAeR+0SET1MZtIKMrtp9uuuhjwuaCwc/MCNofCNUwQ93avb9clxFyBNAPdVIOE5V+5FXVLRn4doXmAPkk1zjVOK5vGQ67lXFL6nJCWR7efDfE+rojPhij3QorXt4BcDKfffOcz1V+fRcRs/kUrCqKcfBmnQV86wN8BdKetgYifNxIdo3BxYBs9JJwC7HPprIa8SPT2kUI7VOYlv4B4jwDBBceCY2/M5jlVBcwm5Cs18TL5dcmjpa8OXT11ByZ4mouju/PsjOJ2bGkWjWrUTXiwfw/A38/Olf8muf2QvLf7tcTcNdoTugP4f5Lyy0YHOPb9lFWQpGOljQj1gzbgb6wQbBXuUyd+
+ +S8jgf5E
+ 6vYciPfjGphMt648FVTrepxhZDDzobJmHMwx8ZtbJj689EMjv/UwoJyHke4pZ0yPfgtgvGDj92IEk3shAdrCUVoIcArtyt2nI/xydjatsMf5PyrT4ZDTw68FHcUiMJ7xuPD/etRgqdudTKULeVLHNTLujseHnGQTfQdeoFxHBTBeQ9uH5iNqyR9U3Iw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -166,160 +115,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is the implementation of parsing the SFrame V3 stack trace information
-from an .sframe section in an ELF file.  It's a continuation of Josh's and
-Steve's work that can be found here:
+On 26.01.2026 17:33, Rob Herring wrote:
+> On Mon, Jan 19, 2026 at 4:38 AM Marek Szyprowski
+> <m.szyprowski@samsung.com> wrote:
+>> On 18.12.2025 15:42, Rob Herring wrote:
+>>> On Thu, Dec 18, 2025 at 3:55 AM Marek Szyprowski
+>>> <m.szyprowski@samsung.com> wrote:
+>>>> On 10.12.2025 15:07, Rob Herring wrote:
+>>>>> On Tue, Dec 9, 2025 at 6:20 PM Oreoluwa Babatunde
+>>>>> <oreoluwa.babatunde@oss.qualcomm.com> wrote:
+>>>>>> When initializing the default cma region, the "cma=" kernel parameter
+>>>>>> takes priority over a DT defined linux,cma-default region. Hence, give
+>>>>>> the reserved_mem framework the ability to detect this so that the DT
+>>>>>> defined cma region can skip initialization accordingly.
+>>>>> Please explain here why this is a new problem. Presumably the
+>>>>> RESERVEDMEM_OF_DECLARE hook after commit xxxx gets called before the
+>>>>> early_param hook. And why is it now earlier?
+>>>>>
+>>>>> I don't really like the state/ordering having to be worried about in 2 places.
+>>>> I also don't like this spaghetti, but it originates from
+>>>> commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved
+>>>> memory regions are processed") and the first fixup for it: 2c223f7239f3
+>>>> ("of: reserved_mem: Restructure call site for
+>>>> dma_contiguous_early_fixup()").
+>>> Honestly, this code wasn't great before. Every time it is touched it
+>>> breaks someone.
+>> Indeed it got a bit complicated and needs some improvement, but first I
+>> want to fix the the reported regression. This patch does this and it
+>> looks that there are no ideas how to fix this in a different way. Rob,
+>> could I apply it via dma-mapping-fixes?
+> Sigh, yes.
+>
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-   https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
-   https://lore.kernel.org/all/20250827201548.448472904@kernel.org/
+Thanks! It's very late in this kernel rc cycle, but I will try to merge 
+it to v6.19, as this issue is really a problem on some systems, see 
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1116251
 
-Currently the only way to get a user space stack trace from a stack
-walk (and not just copying large amount of user stack into the kernel
-ring buffer) is to use frame pointers. This has a few issues. The biggest
-one is that compiling frame pointers into every application and library
-has been shown to cause performance overhead.
+I've rebased this patch onto v6.19-rc1, fixed the build break reported 
+by kernel test robot by adding a stub for 
+cma_skip_dt_default_reserved_mem() if no CONFIG_DMA_CMA is set and added 
+following fixes tags:
 
-Another issue is that the format of the frames may not always be consistent
-between different compilers and some architectures (s390) has no defined
-format to do a reliable stack walk. The only way to perform user space
-profiling on these architectures is to copy the user stack into the kernel
-buffer.
+Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved 
+memory regions are processed")
+Fixes: 2c223f7239f3 ("of: reserved_mem: Restructure call site for 
+dma_contiguous_early_fixup()")
 
-SFrame [1] is now supported in binutils (x86-64, ARM64, and s390). There is
-discussions going on about supporting SFrame in LLVM. SFrame acts more like
-ORC, and lives in the ELF executable file as its own section. Like ORC it
-has two tables where the first table is sorted by instruction pointers (IP)
-and using the current IP and finding it's entry in the first table, it will
-take you to the second table which will tell you where the return address
-of the current function is located and then you can use that address to
-look it up in the first table to find the return address of that function,
-and so on. This performs a user space stack walk.
+With the above mentioned changes I've applied it to my 
+dma-mappping-fixes branch. Let's give it a day or two in the linux-next 
+for tests and, if nothing explodes, I will send it at the last minute 
+for the merge.
 
-Now because the .sframe section lives in the ELF file it needs to be faulted
-into memory when it is used. This means that walking the user space stack
-requires being in a faultable context. As profilers like perf request a stack
-trace in interrupt or NMI context, it cannot do the walking when it is
-requested. Instead it must be deferred until it is safe to fault in user
-space. One place this is known to be safe is when the task is about to return
-back to user space.
+I will try to untangle this spaghetti a bit and cleanup the code in the 
+next release cycle.
 
-This series makes the deferred unwind user code implement SFrame format V3
-and enables it on x86-64.
-
-[1]: https://sourceware.org/binutils/wiki/sframe
-
-
-This series applies on top of the tip perf/core branch:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  perf/core
-
-The to be stack-traced user space programs (and libraries) need to be
-built with the recent SFrame stack trace information format V3, as
-generated by the upcoming binutils 2.46 with assembler option --gsframe.
-It can be built from source from the binutils-2_46-branch branch:
-
-  git://sourceware.org/git/binutils-gdb.git  binutils-2_46-branch
-
-Namhyung Kim's related perf tools deferred callchain support can be used
-for testing ("perf record --call-graph fp,defer" and "perf report/script").
-
-
-Changes since v12 (see patch notes for details):
-- Rebase on tip perf/core branch (d55c571e4333).
-- Add support for SFrame V3, including its new flexible FDEs.  SFrame V2
-  is not supported.
-
-Changes since v11 (see patch notes for details):
-- Rebase on tip master branch (f8fdee44bf2f) with Namhyung Kim's
-  perf/defer-callchain-v4 branch merged on top.
-- Adjust to Peter's latest undwind user enhancements.
-- Simplify logic by using an internal SFrame FDE representation, whose
-  FDE function start address field is an address instead of a PC-relative
-  offset (from FDE).
-- Rename struct sframe_fre to sframe_fre_internal to align with
-  struct sframe_fde_internal.
-- Remove unused pt_regs from unwind_user_next_common() and its
-  callers. (Peter)
-- Simplify unwind_user_next_sframe(). (Peter)
-- Fix a few checkpatch errors and warnings.
-- Minor cleanups (e.g. move includes, fix indentation).
-
-Changes since v10:
-- Support for SFrame V2 PC-relative FDE function start address.
-- Support for SFrame V2 representing RA undefined as indication for
-  outermost frames.
-
-
-Patches 1, 4, 11, and 17 have been updated to exclusively support the
-latest SFrame V3 stack trace information format, that is generated by
-the upcoming binutils 2.46 release.  Old SFrame V2 sections get rejected
-with dynamic debug message "bad/unsupported sframe header".
-
-Patches 7 and 8 add support to unwind user (sframe) for outermost frames.
-
-Patches 12-15 add support to unwind user (sframe) for the new SFrame V3
-flexible FDEs.
-
-Patch 16 improves the performance of searching the SFrame FRE for an IP.
-
-Regards,
-Jens
-
-
-Jens Remus (7):
-  unwind_user: Stop when reaching an outermost frame
-  unwind_user/sframe: Add support for outermost frame indication
-  unwind_user: Enable archs that pass RA in a register
-  unwind_user: Flexible FP/RA recovery rules
-  unwind_user: Flexible CFA recovery rules
-  unwind_user/sframe: Add support for SFrame V3 flexible FDEs
-  unwind_user/sframe: Separate reading of FRE from reading of FRE data
-    words
-
-Josh Poimboeuf (11):
-  unwind_user/sframe: Add support for reading .sframe headers
-  unwind_user/sframe: Store .sframe section data in per-mm maple tree
-  x86/uaccess: Add unsafe_copy_from_user() implementation
-  unwind_user/sframe: Add support for reading .sframe contents
-  unwind_user/sframe: Detect .sframe sections in executables
-  unwind_user/sframe: Wire up unwind_user to sframe
-  unwind_user/sframe: Remove .sframe section on detected corruption
-  unwind_user/sframe: Show file name in debug output
-  unwind_user/sframe: Add .sframe validation option
-  unwind_user/sframe/x86: Enable sframe unwinding on x86
-  unwind_user/sframe: Add prctl() interface for registering .sframe
-    sections
-
- MAINTAINERS                               |   1 +
- arch/Kconfig                              |  23 +
- arch/x86/Kconfig                          |   1 +
- arch/x86/include/asm/mmu.h                |   2 +-
- arch/x86/include/asm/uaccess.h            |  39 +-
- arch/x86/include/asm/unwind_user.h        |  69 +-
- arch/x86/include/asm/unwind_user_sframe.h |  12 +
- fs/binfmt_elf.c                           |  48 +-
- include/linux/mm_types.h                  |   3 +
- include/linux/sframe.h                    |  60 ++
- include/linux/unwind_user.h               |  18 +
- include/linux/unwind_user_types.h         |  46 +-
- include/uapi/linux/elf.h                  |   1 +
- include/uapi/linux/prctl.h                |   6 +-
- kernel/fork.c                             |  10 +
- kernel/sys.c                              |   9 +
- kernel/unwind/Makefile                    |   3 +-
- kernel/unwind/sframe.c                    | 840 ++++++++++++++++++++++
- kernel/unwind/sframe.h                    |  87 +++
- kernel/unwind/sframe_debug.h              |  68 ++
- kernel/unwind/user.c                      | 105 ++-
- mm/init-mm.c                              |   2 +
- 22 files changed, 1414 insertions(+), 39 deletions(-)
- create mode 100644 arch/x86/include/asm/unwind_user_sframe.h
- create mode 100644 include/linux/sframe.h
- create mode 100644 kernel/unwind/sframe.c
- create mode 100644 kernel/unwind/sframe.h
- create mode 100644 kernel/unwind/sframe_debug.h
-
+Best regards
 -- 
-2.51.0
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
