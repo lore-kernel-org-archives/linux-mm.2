@@ -4,83 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F48CD25924
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 03:08:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46EDED25932
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 03:48:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B01C36B00A0; Mon, 26 Jan 2026 22:08:53 -0500 (EST)
+	id 1B8C26B0088; Mon, 26 Jan 2026 22:48:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A954A6B00A1; Mon, 26 Jan 2026 22:08:53 -0500 (EST)
+	id 166D06B0089; Mon, 26 Jan 2026 22:48:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CB726B00A2; Mon, 26 Jan 2026 22:08:53 -0500 (EST)
+	id 09CE76B008A; Mon, 26 Jan 2026 22:48:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88A7F6B00A0
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 22:08:53 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3BF3DC33AA
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 03:08:53 +0000 (UTC)
-X-FDA: 84376261746.12.01D8341
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 79658180005
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 03:08:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JKQEOq7c;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769483331; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EB5156B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 22:48:29 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 235158CCB1
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 03:48:29 +0000 (UTC)
+X-FDA: 84376361538.05.BBE00C5
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B0A131C0004
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 03:48:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hjeMWgTV;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769485707; a=rsa-sha256;
 	cv=none;
-	b=URu9w6w8ok1eSe+JJuOE6rC0hS63+IDiwEjoRqhdomQSewQRyorfRCWk1doBRx1W+BPNwz
-	z3G3kUiXGdk1alWcR/Kc1fqIhKYdf4fqatqAaVncBE9mDHDydt4X+mj82VhVBbT68PmBGx
-	M/MhklVnF72eoCFJb0cF5Mh+Kj8/sG4=
+	b=xBm5stiNdk8vJ/MwLopWBRkJCvbYaH2bjXK7pzSqNgDPzUqPdq/Etg67y/fEZbc9Mg8fJk
+	QNE0QSYMZ9x0NuY7Grh5tfHHj5w00R0SjuZiPp9++rgSmGDwYuLcmqyv7gsioYmdO83alz
+	xn3VaDkjSTs8Vjr5z1gwFtr8Gkz4meM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JKQEOq7c;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hjeMWgTV;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769483331;
+	s=arc-20220608; t=1769485707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hpAMABF6aWHZNDNBxjlyF5dQr2lpDWiDtRrX+anFGt8=;
-	b=JmaCjH/dOpo4nE3s9yxshr9RKzRE0HYApaKVSpdLBHW1j3gHrrIGpSLIF0b/THhfbAnsuI
-	9ZEGn8hXqDkc+jSXMbYRpxoW3CiCkWuN2OWswsNZGjBVSfvRgnIDarXpLCaSBv0oQZ49Wq
-	MDO/KXOaiFEJyKlb9ZiDYPPhBrQA2IY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BC3244202;
-	Tue, 27 Jan 2026 03:08:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF41C19421;
-	Tue, 27 Jan 2026 03:08:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769483330;
-	bh=a4VyBzG5dwslC57qu5s+IUxQjhwEMBgmA6+b7sDs1Lc=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=JKQEOq7cowOtLsJ4Z1TMDc7IHAQnmYrT/AGgqI8Cs8Ldn9Gg1LtTEkevR/3S0yBi2
-	 wQubFz8NKQSakKV3FU862ym939s/n/gQP8rbolxCSW9cbVFGPsAVHtx3KY8865X6Qd
-	 6hTXPWzehMbrocWt4M5AvBupot9x5oyGcIvbgN0BChRAw/aSvYk03yufwemo7st1lE
-	 cE4f+W2lETLsuUqcf89RRUxe6WjkG0Mp4zlK9XgRlu9k2yS7qT45UTcG5C9Zni7Mhd
-	 7Y7m70FQ5Yg3A7lO2wRcH9dA8zVMKjSkS6/eyzT9EgNcqsPGhgi9MgR3mzMLIj4nQe
-	 hsqaQhvimHCYg==
-Content-Type: multipart/mixed; boundary="===============2565306889531042229=="
+	bh=WGjFBW4UN91d6sFxGyKPtDlxiJ4aYX6kwreoynEpBAY=;
+	b=a2rsgZpTmgUqmxithUgZ/HH3dKmwnEyXIm8GRqhOZIDknb4KWnVSCeK7+5B5KIYxWLBvzb
+	sj7NVh+qrIwV4YMz2IeSDTLGELKTgThYuQXnVFBE3hs8/LJd83FoaG1h110zFLgcUCjIAn
+	K9debyDdZTVrHS1wzCcbv288qR2QhL8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WGjFBW4UN91d6sFxGyKPtDlxiJ4aYX6kwreoynEpBAY=; b=hjeMWgTV22fZUAZwE27itRCxD+
+	rtlt+wm6zSG+VYG0E2W4hr5sbzO39jo/6PcHISQJY8DsF88UdFJTrqUlsxcZaelxUOFnWDzqq2xBI
+	astHLOsQfRU41v6TnSwweoNASgKosrwY8Ca+WaRqM0oWlbVnqCyk5WB9ltnrXc5ftd5bErplyNLCx
+	hpYaRtJTdIe14VuIK/Wd8InP12+FAhgDccCrlqQKSeEry8IabZcB4Wc2u16HCKLnQPqko2hIkqAv4
+	5wFfYi++r39VIc6ZsegNDsgVPTtOfZj1UnmIHudFxSmuKPkax55lhOu2S7TqOsB6g7pGyqgRFV2Jp
+	/aDpQT6A==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vka3w-00000006sUP-48dQ;
+	Tue, 27 Jan 2026 03:48:21 +0000
+Date: Tue, 27 Jan 2026 03:48:20 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dev.jain@arm.com, david@kernel.org, janak@mpiricsoftware.com,
+	shardulsb08@gmail.com, tujinjiang@huawei.com
+Subject: Re: [PATCH v4] lib: xarray: free unused spare node in
+ xas_create_range()
+Message-ID: <aXg1hHkvHbd62W0z@casper.infradead.org>
+References: <20251204142625.1763372-1-shardul.b@mpiricsoftware.com>
+ <b2b99877afef36d9c79777846d19beeb14c81159.camel@mpiricsoftware.com>
 MIME-Version: 1.0
-Message-Id: <3af5210f45be4a508e584263a5517781ca762d28d4f6b831b987795662715e61@mail.kernel.org>
-In-Reply-To: <20260127024421.494929-5-roman.gushchin@linux.dev>
-References: <20260127024421.494929-5-roman.gushchin@linux.dev>
-Subject: Re: [PATCH bpf-next v3 04/17] libbpf: introduce bpf_map__attach_struct_ops_opts()
-From: bot+bpf-ci@kernel.org
-To: roman.gushchin@linux.dev,bpf@vger.kernel.org
-Cc: mhocko@suse.com,ast@kernel.org,mattbobrowski@google.com,shakeel.butt@linux.dev,inwardvessel@gmail.com,linux-kernel@vger.kernel.org,linux-mm@kvack.org,surenb@google.com,hannes@cmpxchg.org,akpm@linux-foundation.org,roman.gushchin@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 27 Jan 2026 03:08:49 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2b99877afef36d9c79777846d19beeb14c81159.camel@mpiricsoftware.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 79658180005
-X-Stat-Signature: jub6aakp4f5fq8qkkpiactztredi9yd4
-X-HE-Tag: 1769483331-741140
-X-HE-Meta: U2FsdGVkX19WpR4+GyA+zkA9T0h0dl/vEoI3mKMCtWZNneN4uqbVMHCG0Bo2X3s2JIPyi93pWb0XViJgqvXVNESX2K9CheOwjRbaEIat3/dZvS8PZ96OZ0Xezus5XKAgdp5WJeAUV/JxHEgrK4eqPXYzj6r0nOV8QYfllYZSEFhAUHyXUfs3qteooXfOiwlFIqlWF+J3cQVRf+wSxBgtqfXIEeC/4lvVI2GB0lP9fUw8sW7jlwO9nl1CgRaxYNdQHaeOPUY0GNlA8XbtiESQ/k4EeV4LxHx1/XQNHl0Z6YEHma1Sm9YPmOj3ZafIfuNSSeWd/vDsiiMngv2FMG/EM3ebOrd+8Z2zgeC4u1wDpapxbhuO5m6e1aNhalbNKyuKb8sFZMscdGPb4QKORvOdlSeMA6dFK0ptE+f8HYiw8Wp/ALuvWAcorZ+pudULP/y6Qv1rMe6CfQaKOhEZQp3sVCZ3wNn/ZNQ9kfais83jjjGEf+ybGjtEWuyFmClZL6fxoj9A4TmB5iSzYuEBzdiMIcWdZhl8Iu6CVqm15XTtOybJPqFzmcczfkjM2uPxTjhoJRN2gVTCus3sENjMQ1LCA7U9toH66ehyXNmp0Y4JtTV5zmp6SgPoTLS5lVzEyhzf1Y4Cs4lAj1fLwLHcwf0p/8ilTZG5USTww47GH0BSGrP9cX2rBIrFUucT8t4fPQcvSig3dTf+w+A6QnTNq1NDMXbknDuKi9tlibMsxiaoGmMjcCpHMe31Ut9sU20z0GYN5Yb+Nec/Nnaj01/CYczNjr74giFQO1Y7ZltqP2PVSjJspdqPDRhGwYdqqZW5erCJNkBYkqHq6pylYb1dkSdxKeQ/gVbGHHxEO06EWXmSMg6lM7O2b1no3B5UJVkcNm5YEtPP8tOCprYh/sh4WXYrj//p2u+TCZh9at+SoRSIb9ayPzxvhQdcUSUGzm85Zme/UdH7OjzERh7bHfAb7av
- vJSx90Q3
- 8f0h/KM+hsjObZcHcQC+1iDA0TlkJtlht7k3zWPNrko97Dq7DF8BuQOowYU0CqpbpN3W7kdzaQGDLccYPfHQIrGAoa0y18VNTndoUii3Q0Fcn9Iul99F8O4z0EW9psSX/3H936ZVSXt4xg6xr4zPXpwWHpAUEoFY/SUYcFJ/fpbEv8gybEc6JOyrUW0/kYP1eVJbwckAgjurN4rMr6qI22mr9dPBU2WAaTrdqb6MJ4dr9jXzZKVZ7OUjPlHH+dhJnl8kUZEof/YwDQSr59xWJ6OCHkBt7z6dNlnae0mYWfCzz8siX5/cRdvu0IOIDNOvVi/AnYVLT4uMLe7J4ydSsfwCtSxktaGjTePS9X8Gx7AT159Yjd0nssdPAVvo+MVKS3DKYVhYe/yCQMShaEmYDvJj2e0CV38D8nyY8f9Scha0dml3ifpQmpXxZlhGJrGygLLM1Lp7NFbeUqPwURNvsPOm/6w==
+X-Rspamd-Queue-Id: B0A131C0004
+X-Stat-Signature: 5gqqd5m4puhmp3eocgzohps4npo4s4af
+X-HE-Tag: 1769485706-41582
+X-HE-Meta: U2FsdGVkX19zZtQBJe754QuTSQML4fX9QFRKRpyC50/wNxPBVULyUGtqdo7OT84xXoQcHRZOdL5X+uPdjUXEQnYelKpVNedpt78Z5VmUcdOLW2gOxkmW36nlZkNlJgGqs+LBXL8G8fIMk45WzbUIWu5iFGaGu9nw6LwSl+cZ8AcZ5fwG2cAyE14buI982wRH+eCAHwNLKIgdgDTOYhTrFaqv8ocrqPAGY1MPXnXEwGmrXtPeUAGmC5qUeFAYHcrgWvinTTngwauT4+TakPBPVuzJJezCAKxxedWQrNoESQtn4r1mFWOoI1smzwdZNoEYrQIQjwIPaCPzqrgxP1rqDeMkd++ONc7SDNLEENSvw+29e9rLhTLU0DjYrvHhQQHzu2Jwaawb3cwe9qS2yR3G8ff2H08KqcZD8iMfR5di3AOCBUfRqdi3e5JQEh+IwcODxADybRNfqOW8S3r7y2nuwCOX5y7oBcpU2pjiigeTOweyBkJ4ancK76o/yneuxrImz1uuefpxP0nxoPOL9DcFCzX6nRWZfg68HxYAgAcEMHjpo+3vqDqa6AqAnN2Vs7PDbKnG47IgsB+me99qO6ET5wSnHayY4R3Y0s1SDNNqtdxaZwmZ+wwt1SQnpGTHYjOLyC0ziB/tdLClqvX+gqTsXZsQmXt+MGqLpmGKXHFouuMC8A6xGeuYNhi3e7Gy3oaLc19nj7XDL4x1FtiGRWXg+Ekw5MEeYFANIQHK22DONNUtykqEco7Mx3EvvSt7PQ5pzsPzS8jBnYyOkQ0PV+50v32gENV0P8RGr1TU3bLcEBctQCPhbBjbNV649/6QmZHAhuW1962V2Px64d+awmxOAe5PdcuzPYECK5qI/oo82G+pAxLlY9wBzaRnKcFAGWPkkoyHyv70IRIGiport9rd/V+D/KeRePEAJiUqjIOYdzQ+bOGURaj2HZliLnLcbp2PT1RfZFDh8M1mHCebsIf
+ JeFm/aCD
+ u3ww8+vO9SfPR906ovFfdXcGRnapBRihVvukUB6D+haqs8IPW1eEDKMLkmnZjTwbF79egmkSdlk29ffIzwU2+zhbZWMsQRuINPa32CQMrt3pkD+Y4rZt07smV+TRIcWo3As5l/1r510LywPFV6R8BLSs4wuREiLo5QlVqyEI8MLVjM0ri6KB+0TTXBYcw+pegttTHjkn2Jn/cp6oBguv/UZBJeboiFacZS0gUftodW8ZjJ1ffEJyfiMghO2WMOS6Kb+6JOFEUB6AtRDBiubH4IJGdAJV6eT4YPigXlu1ViEgNj7U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,85 +93,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============2565306889531042229==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Dec 31, 2025 at 11:59:42AM +0530, Shardul Bankar wrote:
+> Hi Matthew, Andrew,
 
-> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> index 46d2762f5993..9ba67089bf9d 100644
-> --- a/tools/lib/bpf/libbpf.c
-> +++ b/tools/lib/bpf/libbpf.c
-
-[ ... ]
-
-> @@ -13503,7 +13510,9 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
->  		return &link->link;
->  	}
->
-> -	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, NULL);
-> +	link_opts.flags = OPTS_GET(opts, flags, 0);
-> +	target_fd = OPTS_GET(opts, target_fd, 0);
-> +	fd = bpf_link_create(map->fd, target_fd, BPF_STRUCT_OPS, &link_opts);
-
-The code reads flags and target_fd from opts, but the expected_revision field
-declared in struct bpf_struct_ops_opts is never read. Looking at similar opts
-structures (bpf_cgroup_opts, bpf_tcx_opts, bpf_netkit_opts), they all pass
-expected_revision to bpf_link_create_opts. For example:
-
-    link_create_opts.cgroup.expected_revision = OPTS_GET(opts, expected_revision, 0);
-
-However, bpf_link_create_opts has no struct_ops sub-struct to receive
-expected_revision, and the kernel's bpf_attr link_create union has no
-struct_ops.expected_revision field either.
-
-Is expected_revision in bpf_struct_ops_opts intentionally unused? If so,
-should the field be removed from the struct to avoid user confusion? If users
-set expected_revision expecting it to be honored, the value is silently
-ignored.
-
-[ ... ]
-
-> diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
-> index dfc37a615578..2c28cf80e7fe 100644
-> --- a/tools/lib/bpf/libbpf.h
-> +++ b/tools/lib/bpf/libbpf.h
-> @@ -920,6 +920,20 @@ bpf_program__attach_cgroup_opts(const struct bpf_program *prog, int cgroup_fd,
->  struct bpf_map;
->
->  LIBBPF_API struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map);
-> +
-> +struct bpf_struct_ops_opts {
-> +	/* size of this struct, for forward/backward compatibility */
-> +	size_t sz;
-> +	__u32 flags;
-> +	__u32 target_fd;
-> +	__u64 expected_revision;
-                 ^^^^^^^^^^^^^^^^^
-
-The expected_revision field is declared here, matching the pattern used in
-bpf_cgroup_opts, bpf_tcx_opts, and bpf_netkit_opts. However, unlike those
-structures where expected_revision is read and passed through, this field
-has no corresponding code path in bpf_map__attach_struct_ops_opts().
-
-> +	size_t :0;
-> +};
-> +#define bpf_struct_ops_opts__last_field expected_revision
-
-[ ... ]
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21382620878
-
-AI-authorship-score: low
-AI-authorship-explanation: The commit follows kernel conventions and existing code patterns, with an oversight (unused expected_revision field) more typical of human development than AI-generated code.
-issues-found: 1
-issue-severity-score: low
-issue-severity-explanation: The expected_revision field in bpf_struct_ops_opts is declared but never used, causing silent data loss if users set this field expecting it to be honored.
-
---===============2565306889531042229==--
+pinging on december 31st is an entirely ineffective thing to do.
+for one, oracle is in shutdown.
 
