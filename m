@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11E9D25921
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 02:44:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 299B6D25921
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 02:44:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36E5F6B0093; Mon, 26 Jan 2026 21:44:49 -0500 (EST)
+	id 93B396B0096; Mon, 26 Jan 2026 21:44:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E80E6B0095; Mon, 26 Jan 2026 21:44:49 -0500 (EST)
+	id 908FF6B0098; Mon, 26 Jan 2026 21:44:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C6AD6B0096; Mon, 26 Jan 2026 21:44:49 -0500 (EST)
+	id 8493B6B0099; Mon, 26 Jan 2026 21:44:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 06BE06B0093
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 21:44:49 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CF6C0D3C48
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:44:48 +0000 (UTC)
-X-FDA: 84376201056.13.D2C7C2F
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 281D2C0008
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:44:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=e7K+ACi9;
-	spf=pass (imf10.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 701D16B0096
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 21:44:52 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B064C2AD4
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:44:52 +0000 (UTC)
+X-FDA: 84376201224.28.7582A2B
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9ADBF40004
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:44:50 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Rhts6mQM;
+	spf=pass (imf07.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769481887;
+	s=arc-20220608; t=1769481890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p7vIbktSHcqXA79Byy9E+tFFPUOD4j27CypvW5n/XGM=;
-	b=LAJRhq+SzVpLSMW04Xt9oLCtiR4YF3370O1QzDpIYeLpoZ9tc6WzrtjRx/YEhHURiBmp+6
-	/lLEvAc2rW3UO0TgkcJ1B7FQOH7pDWCT5e//zLmLeMmGFO9F1a1MvhcvRu/eyp7rUTbWZU
-	dc7n2/xW7NYtUWa3MQVBIQ8M1JEfx4A=
+	bh=NPd+QwwbuEzKgn4FQGSv0lyG+/wois/P4FfQeHoWF5A=;
+	b=LbrNH+DnMURJoYpfXo3HODd0eWdE5IfIRHc8Ji8SX2G4MqYMOkNSx5p+PwyEPcCijOajzo
+	2iUnDjDjf1+zGpJYvL46boiyofBkUYdrGPJe4XagkjhVhw/Y6QogQQe3ik+ayvbS6BZdNU
+	VMK3KKnkOZwu0ohuOiV1HyfYOy1KgxA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=e7K+ACi9;
-	spf=pass (imf10.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Rhts6mQM;
+	spf=pass (imf07.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769481887; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769481890; a=rsa-sha256;
 	cv=none;
-	b=T7j4u3qRZSiQAQu9S6RSi17Vd6OQc7j8fcitbIMxk4hX2r9cbgzvu/kk9YovFawotWGaj5
-	TD6MPclw6HWjyM41XRpTiNGQoI8VHt76+wwNZBaccXo+gyQhM3YsndR8e9rgZ3hYss755N
-	SWuxkNcDujxAO9Ktz9EXcQQzTo5Eh3I=
+	b=7DwAZlLjXsT0LgE7+Dfx1DeeFsPZDwqCQSbfjBbb2ftu2lCL3n9JKLzTRnX0fRoJ6REJyd
+	sG/2HMFVHJvXAoqBgPg22ISbUcM28AXhna0PnDp7z4xu7wCECSnKWlHEoiSAg0/fX2P+/i
+	pqeGxnp3TBK/MSp5GWOcLCcOXvfOc1w=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769481885;
+	t=1769481889;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p7vIbktSHcqXA79Byy9E+tFFPUOD4j27CypvW5n/XGM=;
-	b=e7K+ACi9n83DQDrLs2gEyZxviqSCTioKtYK/6R2Y1KGkxiJq+PltmgZRjD4uPP2dmip1bI
-	5902E3TbHB9SilvMJ5/obvDx/18kyu4hDGILzd0QyuPZgSHy2rJZ3wkN4vN0jsDOwK+s+p
-	Y0PamNzRWNBsZqAdHYuRvLH9MSXAFkA=
+	bh=NPd+QwwbuEzKgn4FQGSv0lyG+/wois/P4FfQeHoWF5A=;
+	b=Rhts6mQMQZZxrxw8Xk9BEvbK6o44XNbmmhK472cmB7CuGwjezMpdne9VbrgkQ78D+ePRvh
+	iuPRgl1aJc5D7xd+Q2FexArub5LkM4xpCa1vLG6jo2/FLTi+r5RqwIX/LUa/N5Y2AuZ03I
+	Ls4PTjaEgPnGCW19UOoQ6xc+pTAwkPg=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: bpf@vger.kernel.org
 Cc: Michal Hocko <mhocko@suse.com>,
@@ -71,24 +71,23 @@ Cc: Michal Hocko <mhocko@suse.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Subject: [PATCH bpf-next v3 05/17] bpf: mark struct oom_control's memcg field as TRUSTED_OR_NULL
-Date: Mon, 26 Jan 2026 18:44:08 -0800
-Message-ID: <20260127024421.494929-6-roman.gushchin@linux.dev>
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: [PATCH bpf-next v3 06/17] mm: define mem_cgroup_get_from_ino() outside of CONFIG_SHRINKER_DEBUG
+Date: Mon, 26 Jan 2026 18:44:09 -0800
+Message-ID: <20260127024421.494929-7-roman.gushchin@linux.dev>
 In-Reply-To: <20260127024421.494929-1-roman.gushchin@linux.dev>
 References: <20260127024421.494929-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 281D2C0008
-X-Stat-Signature: 6isrzy5ja9ds19rzhfwnh7xd7he3xx7m
+X-Rspamd-Server: rspam12
+X-Stat-Signature: yrwok633rshc8f3dkf6bgkdoq49npi8g
+X-Rspamd-Queue-Id: 9ADBF40004
 X-Rspam-User: 
-X-HE-Tag: 1769481886-74156
-X-HE-Meta: U2FsdGVkX1/2pIVmhMDiaVE7s9hANkq7dXRFpaXUOHmIVz/5h0q2E38bMaLvD0nvTJ76GjsUDyJFugFFjOHIL7mpqvJwqXaU3EJTBMTS72EsGAhgQ1/QQtFz8nysjv9iIS2y1nBrdFtN0OSJDbhrRyWexoLidRAdvhfGUpbvBUlJN80MnXt9lPwHnc7hxNkeh5/2n8vhwH2lg42LFeLqYEnvK1q3+tFg5oCIKt4FFEMuOBTJqiWD1gZfdS8nnCzCLvLls720SuyJUckzZlHQOBNdful7p/l220uYWAirXGOKOOk8oDIrCr8D3TQzTDE5XaVz6QiAOLJL+uxMT8BvNP+Hk4+VqAhxn7ntNRVpCObgv/GVa5ga/ZLQtT1Hp3ArA9qhIakFDFtCkFZ+b2Y2F1WkzxE0R00vZmYhreRQTHbkwmlcdY5bpPR/v4XHFinCLozKIbYH0+FyfXbpkuRPeDFlmL1CwY458V6G5vnP5vAoS5YVZ6GySNJYkUCHXhhB5OCztEM4d5DmZtkxgPax0Vwo42czJkzhSziSV/gqQxrMTxbdpjkDni9BmdgyVe3uGAiG7948eHTJ6m8XxwcSrl340GsRaRqXekLk8PPqUg36SjSUN8Dc1otxayGFx4cko+SL7YdM/qjfMNw4HyIpyDSSUtT167Ycf67aj91MBokSrvIsUUPGeRVVDDD5HyOGFGvSSKfiWF1gD/3tJBXQdcvNzPh3yjbuBRmrf3Hqqqy9aMpHYXxC7mX2E6pH6y9omrIoAOd2FK7VM5dYLPtti+SJT/zHDIXVZiF9biq6PmLu2P+3ctCKObYPJWR6nuneJl4xDaWT2T/vNXPto0CUSdnJNsF6YKbbXIuJUTl+qLU2rV2loHyGEa+evFtC42IzoawnLabcbB10TZAeGlO5Oq8mOrS04+NRt0TFGffDeJC0reA4NMgN0m+rXlCshzxY9XQiWWuQRCjhBRNA+VK
- To1V3COw
- yNpal3e9NsRbl7jI+mJWrNKSFCIx0GhNjdyHBVXMa6jY0FRbIrYKm1espIXUakNuuKOt67E1xMa8X6khlKDudCXXa1zbXbhfk7ysvHDoA5udcLbaKXiCa8mwGhiIuoArLYmRKm/rQrC2lf3EI+ZCyIqHFlM23vg0SrhZhrn+LA1aHNF9Okpx7IL7ygpPeCb9/Z0/eIP2hwhhZSTAO7qbhUQj7Y/YtvqsMJFlUC9ytvuF/cLK0ZaB90you5KRvFzrHAAqUJfCavsI4QLRARpXH41PsEA==
+X-HE-Tag: 1769481890-788249
+X-HE-Meta: U2FsdGVkX18gDLv//O9RBpIsbEmEaNluKoY2K79y2DDfTldHmEu3s2jPVaqdO8lxjJ/VBTWbMCw3LlKj/wsCFxy1kmLp3NnNCMrr/M7dKSPwPuhOd6cjXTTJOKalONfIof+oVz6jszoFV1j7apcuCmchnwg51MxuAHEG7mVUItCKERd3Lge1WkYmjD8Z6wAfZeOFpbqdH0/yJ5p62+GnLKPVNlGdl9JYqq4MrIYh5rALJGW4N7m8yxbghRHyRONe06CrjO3/ZFM1aOVWMkgVsdfzDNySuVJvcb2a7T8X2knTkZDx62iUuN8rxVjw1FRI6U5N7Axqjlg4GlOEnO2eRtvm9dmwgLmg5SiyQSkKah04GmXfkP0U/3nXj3SF92fageKwKqosAeYUQ0bT1FTCOso0T88cj6s2ezpbffoUBVfgWxe0t6JU41An4xDsxuf/OMJxytsv78sIJ2+biKrRL69q3tuaZIZ/F0StHKsNsqRU+0eDy7yQo19y3G3KTkMcr4Rsurte7lUtfePNfTlk/H/6LCWQxyajGb/0d68VlEJvU4M7gXUa68Rux94/NLdrOzQYkf1cQgdwzZIS4UCB5f2q6pzY1wgg+qlIr2FCHD0S7SJNEzanmVVtaJcTWUVu3B1tibZx0WzDkr/YJfKwwXDM+4wCXqTH3774QqQ24OPasctmvelOHWEvOYISmEJ2AcoAuRsNFqIwp7R/UiTClNnerK1imYRb9vNKb2Gs4Z6/wees6f0brEDFBuLh7Pss0A0BazU+p/hWCXpJGl/BZXO6xDnF6cTYzMQ15w/QZkVW6CT2d+7Iarvl1X/Le4ufbC4/fb7/BQMqmGzgpHnwuqR+TdHax+79O/klTzG4MpKukkt5dvWMyNi+E3iBbU1WAjD1tFNC/3FxzvVxD96pUUFIqj77S4s/Iztf0azn752PzynwiR6jp0qmUbTuUP2Yc/bDYo+ls4DON1xShtN
+ 0b4iZTsO
+ Bzr9zqKHk0tVmNhYS3hGQY9KzRgraJ+GpUXzZKFS0Sgg8MTRbSgp2xRErW4qfAocABwMKl6VHUO/ngyvJ6CnYq6oIgwZleexjrgct3RK5tMO0HbZj6Ln6xlhbdytZMA7qMVUBfc2TOZYw991FX7CoIJxjg+lbQrQLrBoSAHbEqYAVWZigKJ7RtaWCYq1hRPdgpe60nKlAXNovmyEKsI+IFezXVeBRrMkTpT85xOlxJxwmXqExUvj9pNvt4ts2fAPx3DhR+Hb/VJjxgJGVimjD5fbrnv1uqWtiT3H06saf0YyyFQ6S73G83XkHMXhIBTL89VbeWEz1QWVoqk5x6Zr8ishfUA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,42 +96,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Struct oom_control is used to describe the OOM context.
-It's memcg field defines the scope of OOM: it's NULL for global
-OOMs and a valid memcg pointer for memcg-scoped OOMs.
-Teach bpf verifier to recognize it as trusted or NULL pointer.
-It will provide the bpf OOM handler a trusted memcg pointer,
-which for example is required for iterating the memcg's subtree.
+mem_cgroup_get_from_ino() can be reused by the BPF OOM implementation,
+but currently depends on CONFIG_SHRINKER_DEBUG. Remove this dependency.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
 ---
- kernel/bpf/verifier.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/memcontrol.h | 4 ++--
+ mm/memcontrol.c            | 2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index c2f2650db9fd..cca36edb460d 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7242,6 +7242,10 @@ BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct) {
- 	struct file *vm_file;
- };
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 229ac9835adb..f3b8c71870d8 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -833,9 +833,9 @@ static inline unsigned long mem_cgroup_ino(struct mem_cgroup *memcg)
+ {
+ 	return memcg ? cgroup_ino(memcg->css.cgroup) : 0;
+ }
++#endif
  
-+BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct oom_control) {
-+	struct mem_cgroup *memcg;
-+};
-+
- static bool type_is_rcu(struct bpf_verifier_env *env,
- 			struct bpf_reg_state *reg,
- 			const char *field_name, u32 btf_id)
-@@ -7284,6 +7288,7 @@ static bool type_is_trusted_or_null(struct bpf_verifier_env *env,
- 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket));
- 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry));
- 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct));
-+	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct oom_control));
+ struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino);
+-#endif
  
- 	return btf_nested_type_is_trusted(&env->log, reg, field_name, btf_id,
- 					  "__safe_trusted_or_null");
+ static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
+ {
+@@ -1298,12 +1298,12 @@ static inline unsigned long mem_cgroup_ino(struct mem_cgroup *memcg)
+ {
+ 	return 0;
+ }
++#endif
+ 
+ static inline struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
+ {
+ 	return NULL;
+ }
+-#endif
+ 
+ static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
+ {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 3808845bc8cc..1f74fce27677 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3658,7 +3658,6 @@ struct mem_cgroup *mem_cgroup_from_id(unsigned short id)
+ 	return xa_load(&mem_cgroup_ids, id);
+ }
+ 
+-#ifdef CONFIG_SHRINKER_DEBUG
+ struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
+ {
+ 	struct cgroup *cgrp;
+@@ -3679,7 +3678,6 @@ struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
+ 
+ 	return memcg;
+ }
+-#endif
+ 
+ static void free_mem_cgroup_per_node_info(struct mem_cgroup_per_node *pn)
+ {
 -- 
 2.52.0
 
