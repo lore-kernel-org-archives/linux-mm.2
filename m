@@ -4,137 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB206D2FEE7
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 22:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3594AD2FEF3
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 22:04:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A59286B0005; Tue, 27 Jan 2026 17:00:08 -0500 (EST)
+	id 8890A6B0005; Tue, 27 Jan 2026 17:04:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DC166B0089; Tue, 27 Jan 2026 17:00:08 -0500 (EST)
+	id 837246B0089; Tue, 27 Jan 2026 17:04:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B39D6B008A; Tue, 27 Jan 2026 17:00:08 -0500 (EST)
+	id 6C3986B008A; Tue, 27 Jan 2026 17:04:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 751226B0005
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 17:00:08 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2689E55D2F
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 22:00:08 +0000 (UTC)
-X-FDA: 84379112496.29.227CDAF
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7C58C18000D
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 22:00:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NURPhp79;
-	spf=pass (imf16.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 594576B0005
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 17:04:58 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC1C358A30
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 22:04:57 +0000 (UTC)
+X-FDA: 84379124634.20.525EC57
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7B78A1C000E
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 22:04:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jwwlCpHX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qRYhtdXU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jwwlCpHX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qRYhtdXU;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769551206;
+	s=arc-20220608; t=1769551495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IjM130EplqqQ/xeoUk9+p55WLFrsTBothNzba4XDkwI=;
-	b=zoB37OneVNIoJKl/v50rpRIkHXyb2kpMaTvEA2F4YX1NYm16E2n3DWpOqMW8WdSoIMrg4K
-	eqFmGzk1bWpxiv0duxesbglWznxnYHst3Y38neiXIAm9HE3+IyEF4fWIU/F6n0G5W/9eLf
-	FIxrunuTmcj2QVAFvwo0y/O6pJipnlo=
+	bh=UymD9quzWShDqRhhHiV4+B6IAQlknYB8RVGTscXzVK0=;
+	b=YtU7oyWpOaTM616ET2Sj7ZIB8ugjGthjhsH5i5IZHvZBAUI8OgNudgcrxCuOZlRm1OVhyl
+	wFxBD2hExuptiiyvCbPiXSYfpZ6ixWD7aBIZDkE2l3+1huA6ZG6l+VlSLTCLn5Uld9auOg
+	w+EV7im+Tp5Q9uemUChNrUvZ/R0DOC8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NURPhp79;
-	spf=pass (imf16.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769551206; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jwwlCpHX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qRYhtdXU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jwwlCpHX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qRYhtdXU;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769551495; a=rsa-sha256;
 	cv=none;
-	b=JlVnP2u9xZ6VK3iHpGUy0BpAKbO/Qd0Y7B3iS8ZtMS3jfOcJlE9s+LOlEHhi/ubmy+p4od
-	0B2b1KdE3tiHSpLnDZ0Phn4kLdeZVw1tDblesbiBxH7LBtYvjUnrBVFONclQCNqTnqfDoc
-	SXCLAqzuEVENAEnnN+gebKZGeWTrv74=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7942b9663f8so55766807b3.2
-        for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:00:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769551205; x=1770156005; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IjM130EplqqQ/xeoUk9+p55WLFrsTBothNzba4XDkwI=;
-        b=NURPhp79niS1Gw2+WSXv6bY9djSrEGLYBgrETOZ4mbeXAITDAAYpR9F8pbLyJlEKDl
-         Wus9L/9JeMoAQ+cuZGYfTTiykbZSqDSoz9u3LVvzKNi7Q8B0jq1qAPMXggBht5MQsZF5
-         i354Cjazv2zTxMnshkDYMCBa0XvfnR7eweXozyBVgISol7k948/ZOxjzXnc4o8q4oEKt
-         QYA6TJbWbuA+32v3IVawNDotKhL3AfXqDiuACMmU/DX0QrnfWQDAyxOkuQtF+RAUVlCg
-         cQcguDEjIuEgnCoRgAiEl6LV+QXTgYSq6hGtWBbQ+/TwOQNeN28sR6YkoSaLr23u8Tds
-         htIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769551205; x=1770156005;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IjM130EplqqQ/xeoUk9+p55WLFrsTBothNzba4XDkwI=;
-        b=rKRdK+eQmjeDTeOreEDHCuSlJAzcHgCizy2cP309WIw5Rhf5godhEReac+8F5S0sGQ
-         mS/+Z9Oc3ikSclWo7lEvE0lwUxTjw6jQnS6jE6IJzOmC5TkPx8xbG08ugza6sPZrxJS4
-         LQSLo/QmPp88H6M9I1/Rj89yc77ZI2jXII7gU+FfbBnbWl571JP2CnVp6b3tGwWHN8Md
-         3Du4siI8fnwPnAnb8huXDGQ5oa6ZER4XnVuDlyK04zeESXTuOj36cgKpaLBmmRB9YnOs
-         nOJdNNm49az9GEGRqZGMRtckoPAw4+o119MyZaRYJdUNaMFBpFBsJPTjtUMTG/Tzdwsl
-         egiw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqlqlrIKIQkYpeeuufhLwBs302LvixwwBoTn62cp+6DKjdT6TKxmi8l+gxy/MISL7vp+wO9HSINA==@kvack.org
-X-Gm-Message-State: AOJu0YxJwayeJWw69kCFfPPAJK20/fIuUOrNUxQjgL7LEnr1uY0ENl4u
-	dwbfPasdQmo555R6CGULof8HgN6ZxLve533/3FqSa/p/FdKTJs56DpAL
-X-Gm-Gg: AZuq6aI7/VjjwlnVuncApczJCN+sw1Uar7oGuMBT1xmsv/JK7trKCjiJ51rSzVNRkvM
-	Sq7CwV7bOpf8hQ4ZhXIqoJYouT7Cp45/A1SNrVC8eOxwie7fjKQheWepdtl4/msXOPHtLyauvLK
-	zjZBdOuLGwpxcVhxLQUhLcvbGCrNQsiWqkoXPMxrRTiXYVmeI8eGhLx0D39YSsXamuAtT5dghGR
-	pqKVmi8zSRDk758goRnQ/ZRwYEDB+4ey0aptTPmlqa5q5T1giHN8LOlZ0dK8Yp0BiizL6Wonjsu
-	gDBHNiQrxk3gL/wRQshIED21cVt/As6ApFqHRRwE9aFOEuOE7p8kzJhMXQGRU1betBolgRB9D+0
-	IhaulKzCmGldvhDOBJaiIvD76V1IZptPQxBpy3Jp8+RpnBO/GayKEpM7+6dhtQd7qdgPKkQWeye
-	KHRVQT9YTnlucsTj1dnJ5z
-X-Received: by 2002:a05:690c:6982:b0:793:a94d:4fd2 with SMTP id 00721157ae682-7947ab1d0b8mr25216387b3.6.1769551205384;
-        Tue, 27 Jan 2026 14:00:05 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:11::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-794828ab4c6sm3043037b3.34.2026.01.27.14.00.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 14:00:04 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Akinobu Mita <akinobu.mita@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	david@kernel.org,
-	zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	bingjiao@google.com,
-	jonathan.cameron@huawei.com,
-	pratyush.brahma@oss.qualcomm.com
-Subject: Re: [PATCH v4 3/3] mm/vmscan: don't demote if there is not enough free memory in the lower memory tier
-Date: Tue, 27 Jan 2026 17:00:02 -0500
-Message-ID: <20260127220003.3993576-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAC5umygEq6xvpDFnVnDLYLyqJV7qChEsJ_+W-KCBJ+EXj1948g@mail.gmail.com>
-References: 
+	b=iFUoocWUqNF2ISlULlMxMWhSENcIhUTWQ30G4CnvLUe4lS50p3SKdi4ZvdgZzI+CSEwQsZ
+	cgBMwEC4Q68/APrfvU33KLhR5caGv5isFqjYL3UivDIvC1gYpZo7J+ktqTZyaO9zd3Onjb
+	wYlo5osmXUh5g6QnRgwwKKG6rURr3ak=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 83A6133917;
+	Tue, 27 Jan 2026 22:04:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769551493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UymD9quzWShDqRhhHiV4+B6IAQlknYB8RVGTscXzVK0=;
+	b=jwwlCpHXqQvZ+xeE7q1WMNZx23iXgfToEMhs9vMC+zhHwOgkknhtoHOVX5aBe8RjP6aCtE
+	djlkYIX/FYqLjbnkz/n870bp9ADNfHXTtSaB3qZj4G55p1eNabkEQ1lETfKUUe1fNpRlum
+	5qjVtnMm8HdO41qKn/O9xz765T38FfA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769551493;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UymD9quzWShDqRhhHiV4+B6IAQlknYB8RVGTscXzVK0=;
+	b=qRYhtdXUeVcMtk5qL9w+YPxMbAe8lE0NycJT0O/5x9v4erawUvhg5/fSvMLC2PTVQTHE4E
+	Ht1xp224+E4FXjCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769551493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UymD9quzWShDqRhhHiV4+B6IAQlknYB8RVGTscXzVK0=;
+	b=jwwlCpHXqQvZ+xeE7q1WMNZx23iXgfToEMhs9vMC+zhHwOgkknhtoHOVX5aBe8RjP6aCtE
+	djlkYIX/FYqLjbnkz/n870bp9ADNfHXTtSaB3qZj4G55p1eNabkEQ1lETfKUUe1fNpRlum
+	5qjVtnMm8HdO41qKn/O9xz765T38FfA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769551493;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UymD9quzWShDqRhhHiV4+B6IAQlknYB8RVGTscXzVK0=;
+	b=qRYhtdXUeVcMtk5qL9w+YPxMbAe8lE0NycJT0O/5x9v4erawUvhg5/fSvMLC2PTVQTHE4E
+	Ht1xp224+E4FXjCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 526383EA61;
+	Tue, 27 Jan 2026 22:04:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id n56cE4U2eWnjcQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 27 Jan 2026 22:04:53 +0000
+Message-ID: <85d872a3-8192-4668-b5c4-c81ffadc74da@suse.cz>
+Date: Tue, 27 Jan 2026 23:04:52 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 18/22] slab: refill sheaves from all nodes
+Content-Language: en-US
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <20260123-sheaves-for-all-v4-18-041323d506f7@suse.cz>
+ <cburjqy3r73ojiaathpxwayvq7up263m3lvrikicrkkybdj2iz@vefohvamiqr4>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <cburjqy3r73ojiaathpxwayvq7up263m3lvrikicrkkybdj2iz@vefohvamiqr4>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7C58C18000D
-X-Stat-Signature: hkhfteq4hf9fmjo1wya75ke78twuoaiu
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7B78A1C000E
+X-Stat-Signature: reim8ss3dw6kbfdfikgnix68ocgidotf
 X-Rspam-User: 
-X-HE-Tag: 1769551206-595199
-X-HE-Meta: U2FsdGVkX18NFQ/dVCGm5MqiYWQCztRxvT4hXFcD7PcrEgoEDe8V1ILT8wY0topZ6Dbla2tltMRL+rqA7w7gC0Ziw4rmQzvp8tgiab4IYcvF1YwZKd0xdNnDU0wTom+gLUAz+Iape9jafEDc6CMeRmt88geRvwAVp26yasrUY9z93MZ6/+gEi8zH3Zdocwy4Mh/MUrOB1X04PvGw++jAEedfrRnIkXNle+rwy7aIZNck0kMMzfnQ8QXF+I/YbGIxYo8i3ICGXT4TNfymUayO5IA9ok8+3hVjSlR7Q4Z7hcg3ydsKSplda9+gRDk4jEaHtKdA74AMe44EXWqwXt5Wqexs0Xq61FyHT9QvD4NAonR+1uRg/Q1whmFoJJZIej3ZxZWqd1jG196dXblX71qb89qACch7WmMM6gyuRsV4h0/Hjlx7ulyJXN2GNpr+qCWHarnsPWKeNps0hGB8sKBIu5nuyqTUnjwE6P41ippM/4+DUXKUtmPpUfwswFPXo/v4U5ryOJUF+5vEG0pyuoHkMRp0KjS04Ax99UvG2Eyii23toBsLw/Skzh3mBLSAeTbFhZOexZZgbG48lcjvSbIblzbYLLGo+uYs1AQ6mDxxHg47ZeBG18g6FKxPG6WfQbDgzd84aubiDNQHa4fE1QnVHT+9fRaaywXBgeXI9muKZpkgjcH5dpon53RjZec6m7LsdXPALYeTX2/SMpHFfdMzNsiQiIjizat2Zk0N1cYxoKUfvJpwY7NWWkM5Qozn03PUTC3Qoh1XGOrWIFnXMxs0ydF/6y0cGUz7raIxpJq7fhVBHmlJ5h89tqdgNQwouk+aIe088+Mi5m+H5Rj/W/g4i8JRw9k7DMpDe6ZqssDkBowbGZK/sLjL9BmFMrWu9tcAb9zAAWzOdxgXO+JL1sPM7N7wHIxCjLCg30m3A6CWqCfd36fvNbljZkzXPGCFoBgXSuIQOmDZUw9I3ypj6QY
- p3LGAYyM
- zdf9/5xOhA12rpNuCQJS9+F5JTk/42QqxsaRds4EUhH05xrJ7ECrh87p45ZHlmZssksBdM82cLKVwPYBuDKQ21J0gP694muvWx8ycZIdSlnHZjld0Xa7RRUlt3/wO3gq0phj7VGcu2j2+Q+BMrQGl2cAy1hqjfUeBNIh/YLBnbJSwLo1FAsnxbOdoxszC2yeXRDNmCPHlSJfBkHDS1916vECHiA==
+X-HE-Tag: 1769551495-844299
+X-HE-Meta: U2FsdGVkX1+W8HVcycsX74JjH+N1uXWPB+G/eLpVrMrQEuXVw9LMzmoWCVZGoDiQYZUWoOqsdORzX6Se5gr5BTg7QQa0GBBdgfMVS7XURm8GeR4kkTQxq51Xbht6qb7N+SrdglVQmETbaiXNkkZvzUxn9Q1gmOEA1t7v7y+gicojOKxGh0S4nYkpW8N3ujw1bPziV632qy1C6GvU90GII5tdMknwnfFmEipSymbWhdW6Q2CR2v9loLkuZr8m0quCzVL19baLVkrrVabh5ySeAjT5WP0mUoDntBFdrPhI6BVDTmBhaWpH0KhDQ+6u4pwhPnVzrAD5B//hZ5hR4n29OaC8dCG3gyKEDbzlTtW4IuKjEfwfKJOZ024d7dNHraFUuCVkF8zbXI47lbBS0c0gfBncvsGYzovFlvzns0mkudShBMfvEj91WLOe2Uvu21Dn9hpsdit6b37oLF/68FQ0JbKy+EqzxA/kRAhzOoeWvqkd7k+kd9SAG7lKExPHNq1HhdDNV9+r4X9b6TjI+2Y/Qsgn+33ZODmSyQ0xu1rBQXrYEn8ZHneaOL4kD/2O3K25E5ZrnOIAdhKnx7acHRILtPVfUAJG0DWOM8Jk1AxHf6PC/iepp131d5vbRhIiO/T4dlxTPOCjLGlYEDSEmH5osihxRqYhXU6M7IC0aCcfugRfLf5bk1Y0RCFukYbhA5VxCoFEGL9TTsd+cJhFVXFpICgWX33OazMuJFommmqotd8HfVdvkm8V9RBPOEQvpdCew98V/TnIm3M74xr8bQiZxUuHwEjeXW+gWyUIjjCOIZeFfJnEXI7zxVhB2a+59BhUqgMg96qsIr1p1MD00jfGE8ubT2lHMvxMirZ2MMMdpAjQWoE3zj/uJxezPiYddsG1YgJGYAvfYTs35kCITDRe7/IoLGsENOn/gynVxWwX7s0wCosjCA6y8g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,88 +186,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > > Therefore, it appears that the behavior of get_swappiness() is important
-> > > in this issue.
-> >
-> > This is quite mysterious.
-> >
-> > Especially because get_swappiness() is an MGLRU exclusive function, I find
-> > it quite strange that the issue you mention above occurs regardless of whether
-> > MGLRU is enabled or disabled. With MGLRU disabled, did you see the same hangs
-> > as before? Were these hangs similarly fixed by modifying the callsite in
-> > get_swappiness?
+On 1/27/26 15:28, Mateusz Guzik wrote:
+> On Fri, Jan 23, 2026 at 07:52:56AM +0100, Vlastimil Babka wrote:
+>> __refill_objects() currently only attempts to get partial slabs from the
+>> local node and then allocates new slab(s). Expand it to trying also
+>> other nodes while observing the remote node defrag ratio, similarly to
+>> get_any_partial().
+>> 
+>> This will prevent allocating new slabs on a node while other nodes have
+>> many free slabs. It does mean sheaves will contain non-local objects in
+>> that case. Allocations that care about specific node will still be
+>> served appropriately, but might get a slowpath allocation.
 > 
-> Good point.
-> When MGLRU is disabled, changing only the behavior of can_demote()
-> called by get_swappiness() did not solve the problem.
+> While I can agree pulling memory from other nodes is necessary in some
+> cases, I believe the patch as proposed is way too agressive and the
+> commit message does not justify it.
+
+OK it's not elaborated on much, but "similarly to get_any_partial()" means
+we try to behave similarly to how this was handled before sheaves, where the
+very same decisions were used to obtain cpu (partial) slabs from the remote
+node.
+
+The reason is that the bots can then hopefully compare before/after sheaves
+based on the real differences between those caching approaches, and not such
+subtle side-effects as different numa tradeoffs.
+
+But for bisecting performance regressions, it seems it was a mistake that I
+did this part as a standalone patch and not immediately as part of patch 10
+- because it was already doing too much.
+
+> Interestingly there were already reports concerning this, for example:
+> https://lore.kernel.org/oe-lkp/202601132136.77efd6d7-lkp@intel.com/T/#u
 > 
-> Instead, the problem was avoided by changing only the behavior of
-> can_demote() called by can_reclaim_anon_page(), without changing the
-> behavior of can_demote() called from other places.
+> quoting:
+> * [vbabka:b4/sheaves-for-all-rebased] [slab]  aa8fdb9e25: will-it-scale.per_process_ops 46.5% regression
+
+And that's the problem as it's showing before/after this commit only. But it
+should also mean that patch 10 could have improved things by effectively
+removing the remote numa refill aspect temporarily. Maybe it was too noisy
+for a benefit report. It would be interesting to see the before/after whole
+series.
+
+> The system at hand has merely 2 nodes and it already got:
 > 
-> > On a separate note, I feel a bit uncomfortable for making this the default
-> > setting, regardless of whether there is swap space or not. Just as it is
-> > easy to create a degenerate scenario where all memory is unreclaimable
-> > and the system starts going into (wasteful) reclaim on the lower tiers,
-> > it is equally easy to create a scenario where all memory is very easily
-> > reclaimable (say, clean pagecache) and we OOM without making any attempt to
-> > free up memory on the lower tiers.
-> >
-> > Reality is likely somewhere in between. And from my perspective, as long as
-> > we have some amount of easily reclaimable memory, I don't think immediately
-> > OOMing will be helpful for the system (and even if none of the memory is
-> > easily reclaimable, we should still try doing something before killing).
-> >
-> > > > > The reason for this issue is that memory allocations do not directly
-> > > > > trigger the oom-killer, assuming that if the target node has an underlying
-> > > > > memory tier, it can always be reclaimed by demotion.
-> >
-> > This patch enforces that the opposite of this assumption is true; that even
-> > if a target node has an underlying memory tier, it can never be reclaimed by
-> > demotion.
-> >
-> > Certainly for systems with swap and some compression methods (z{ram, swap}),
-> > this new enforcement could be harmful to the system. What do you think?
+>          %stddev     %change         %stddev
+>              \          |                \  
+>       7274 ± 13%     -27.0%       5310 ± 16%  perf-c2c.DRAM.local
+>       1458 ± 14%    +272.3%       5431 ± 10%  perf-c2c.DRAM.remote
+>      77502 ±  9%     -58.6%      32066 ± 11%  perf-c2c.HITM.local
+>     150.83 ± 12%   +2150.3%       3394 ± 12%  perf-c2c.HITM.remote
+>      77653 ±  9%     -54.3%      35460 ± 10%  perf-c2c.HITM.total
 > 
-> Thank you for the detailed explanation.
+> As in a significant increase in traffic.
+
+I however doubt the regression would be so severe if this was only about "we
+allocated more remote objects so we are now accessing them more slower". But
+more on that later.
+
+> Things have to be way worse on systems with 4 and more nodes.
 > 
-> I understand the concern regarding the current patch, which only
-> checks the free memory of the demotion target node.
-> I will explore a solution.
+> This is not a microbenchmark-specific problem either -- any cache miss
+> on memory allocated like that induces interconnect traffic. That's a
+> real slowdown in real workloads.
 
-Hello Akinobu, I hope you had a great weekend!
+Sure, but that bad?
 
-I noticed something that I thought was worth flagging. It seems like the
-primary addition of this patch, which is to check for zone_watermark_ok
-across the zones, is already a part of should_reclaim_retry():
+> Admittedly I don't know what the policy is at the moment, it may be
+> things already suck.
 
-    /*
-     * Keep reclaiming pages while there is a chance this will lead
-     * somewhere.  If none of the target zones can satisfy our allocation
-     * request even if all reclaimable pages are considered then we are
-     * screwed and have to go OOM.
-     */
-    for_each_zone_zonelist_nodemask(zone, z, ac->zonelist,
-                ac->highest_zoneidx, ac->nodemask) {
+As I was saying, basically the same as before sheaves, just via different
+caching mechanism.
+BTW there's a tunable for this -
+/sys/kernel/slab/xx/remote_node_defrag_ratio
 
-	[...snip...]
+> A basic test for sanity is this: suppose you have a process whose all
+> threads are bound to one node. absent memory shortage in the local
+> node and allocations which somehow explicitly request a different node,
+> is it going to get local memory from kmalloc et al?
 
-        /*
-         * Would the allocation succeed if we reclaimed all
-         * reclaimable pages?
-         */
-        wmark = __zone_watermark_ok(zone, order, min_wmark,
-                ac->highest_zoneidx, alloc_flags, available);
+All memory local? Not guaranteed.
 
-        if (wmark) {
-            ret = true;
-            break;
-        }
-    }
+> To my understanding with the patch at hand the answer is no.
 
-... which is called in __alloc_pages_slowpath. I wonder why we don't already
-hit this. It seems to do the same thing your patch is doing?
+Which is not a new thing.
 
-What do you think? I hope you have a great day!
-Joshua
+> Then not only this particular process is penalized for its lifetime, but
+> everything else is penalized on top -- even ignoring straight up penalty
+> for interconnect traffic, there is only so much it can handle to begin
+> with.
+> 
+> Readily usable slabs in other nodes should be of no significance as long
+> as there are enough resources locally.
+
+Note that in general this approach can easily bite us in the end, as when
+there are no more enough resources locally, it might be too late. Not
+completely fitting example, but see
+
+https://lore.kernel.org/all/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz/
+ 
+> If you are looking to reduce total memory usage, I would instead check
+> how things work out for resuing the same backing pages for differently
+> sizes objects (I mean is it even implemented?) and would investigate if
+
+This would be too complex and contrary to the basic slab design.
+
+> additional kmalloc slab sizes would help -- there are power-of-2 jumps
+> all the way to 8k. Chances are decent sizes like 384 and 768 bytes would
+> in fact drop real memory requirement.
+I don't think it's about trading off minimizing memory requirements
+elsewhere to allow excessive per-node waste here. Sure we can tune the
+decisions here to only go for remote nodes when the amount of slabs there is
+more out of balance than currently, etc. But we should not eliminate it
+completely.
+
+> iow, I think this patch should be dropped at least for the time being
+
+Because it's not introducing new behavior, I think it shouldn't.
+
+However I think I found a possible improvement that should not be a tradeoff
+but a reasonable win. Because I noticed in the profiles also:
+
+     54.93           +17.5       72.46        perf-profile.self.cycles-pp.native_queued_spin_lock_slowpath
+
+And part of it is likely due to contending on the list_lock due to the
+remote refills. So we could make those trylock only and see if it helps.
+
+
+----8<----
+
+From 5ac96a0bde0c3ea5cecfb4e478e49c9f6deb9c19 Mon Sep 17 00:00:00 2001
+From: Vlastimil Babka <vbabka@suse.cz>
+Date: Tue, 27 Jan 2026 22:40:26 +0100
+Subject: [PATCH] slub: avoid list_lock contention from __refill_objects_any()
+
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+ mm/slub.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 7d7e1ae1922f..3458dfbab85d 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3378,7 +3378,8 @@ static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags);
+ 
+ static bool get_partial_node_bulk(struct kmem_cache *s,
+ 				  struct kmem_cache_node *n,
+-				  struct partial_bulk_context *pc)
++				  struct partial_bulk_context *pc,
++				  bool allow_spin)
+ {
+ 	struct slab *slab, *slab2;
+ 	unsigned int total_free = 0;
+@@ -3390,7 +3391,10 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
+ 
+ 	INIT_LIST_HEAD(&pc->slabs);
+ 
+-	spin_lock_irqsave(&n->list_lock, flags);
++	if (allow_spin)
++		spin_lock_irqsave(&n->list_lock, flags);
++	else if (!spin_trylock_irqsave(&n->list_lock, flags))
++		return false;
+ 
+ 	list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
+ 		struct freelist_counters flc;
+@@ -6544,7 +6548,8 @@ EXPORT_SYMBOL(kmem_cache_free_bulk);
+ 
+ static unsigned int
+ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+-		      unsigned int max, struct kmem_cache_node *n)
++		      unsigned int max, struct kmem_cache_node *n,
++		      bool allow_spin)
+ {
+ 	struct partial_bulk_context pc;
+ 	struct slab *slab, *slab2;
+@@ -6556,7 +6561,7 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 	pc.min_objects = min;
+ 	pc.max_objects = max;
+ 
+-	if (!get_partial_node_bulk(s, n, &pc))
++	if (!get_partial_node_bulk(s, n, &pc, allow_spin))
+ 		return 0;
+ 
+ 	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+@@ -6650,7 +6655,8 @@ __refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min
+ 					n->nr_partial <= s->min_partial)
+ 				continue;
+ 
+-			r = __refill_objects_node(s, p, gfp, min, max, n);
++			r = __refill_objects_node(s, p, gfp, min, max, n,
++						  /* allow_spin = */ false);
+ 			refilled += r;
+ 
+ 			if (r >= min) {
+@@ -6691,7 +6697,8 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+ 		return 0;
+ 
+ 	refilled = __refill_objects_node(s, p, gfp, min, max,
+-					 get_node(s, local_node));
++					 get_node(s, local_node),
++					 /* allow_spin = */ true);
+ 	if (refilled >= min)
+ 		return refilled;
+ 
+-- 
+2.52.0
+
+
+
+
+
 
