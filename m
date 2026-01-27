@@ -4,167 +4,252 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9D32D3409C
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 16:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC411D34097
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 16:17:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 433866B0088; Tue, 27 Jan 2026 11:13:10 -0500 (EST)
+	id C4B5B6B0089; Tue, 27 Jan 2026 11:17:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E10E6B0089; Tue, 27 Jan 2026 11:13:10 -0500 (EST)
+	id BF81E6B008A; Tue, 27 Jan 2026 11:17:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26E6F6B008A; Tue, 27 Jan 2026 11:13:10 -0500 (EST)
+	id AA9FB6B008C; Tue, 27 Jan 2026 11:17:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1470A6B0088
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 11:13:10 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B0BFAD2FF7
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 16:13:09 +0000 (UTC)
-X-FDA: 84378238098.06.8FDA0C9
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 89FA7100010
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 16:13:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=GsStQhwG;
-	spf=pass (imf14.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769530387;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 959716B0089
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 11:17:31 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5C27E8AD0B
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 16:17:31 +0000 (UTC)
+X-FDA: 84378249102.05.A38A1CC
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B8B9D40009
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 16:17:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TXOmsv3l;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=opTNLmen;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769530648; a=rsa-sha256;
+	cv=pass;
+	b=CNPLcT5GNaFz6Yvn9Ir2SpdaUfHimVXfIU/jRuRhMRSDl8FVo/3tjJXuReAFU0SgJT2O8d
+	6F2z9fGeV/O89/orbfDHhCC7A/p7sVRIF60YfWDRrK0ZaQQO73zk5MAxLZzzSuuPvI5kts
+	Q+s19bqBqzyb5bOWFzkV7Sd/7Gak4Wk=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TXOmsv3l;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=opTNLmen;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769530648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DbpoU7V6wjGl7C19uQ9e9DVJpWOU0+bGfyvDPjd+U9U=;
-	b=KEgAmq/Lx8Ka7RROLy0Ks2dQ8eItvxSaNGd5J4VAAEwbCOZFjIbHHmY74ARZNo4P8Hs454
-	KSFXHoepZqvYsrmJlGSpWnwNanjAhf3w+vtrzRUX/43P9WUBoQugMbJO/6X8s/kLccozVf
-	6BSWojPFcroR6ZIUWvRStn8Ws0hv8KY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=GsStQhwG;
-	spf=pass (imf14.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769530387; a=rsa-sha256;
-	cv=none;
-	b=knR1ifIjxu5xSsyubqouUpjGJuBCehv1LV+2ViULSDhri/Red1t1r/3e0mx1qzYqT30Aet
-	gtVn20JCtEA5jAGmjdZ7VkuVGsAiDp3KQD911LOUWnxI4ZgRpltZwcWj0W0E1HbVDYhXlo
-	n1x6gk04z5gmNrPpRgvql56UgKMD32w=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R7589N000453;
-	Tue, 27 Jan 2026 15:06:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=DbpoU7V6wjGl7C19u
-	Q9e9DVJpWOU0+bGfyvDPjd+U9U=; b=GsStQhwGs70N2hzjvI9EcXMrhXrTg4xFz
-	qZnDzNVtWyeDCFi7hQyAkGpuCapI0g7Z0zeuhFVinXJpkC6EZLqB18Qih5JUUXsx
-	PqC0zKswa+Aq8rNBkdH4rGqmC3wJgKzsyO4coLyicESpxocRM5reJYMut19aXDjc
-	ceaI9Lt60Ga1cAdwC5ij44YT/pkzerOqRMtD4cRXoqMqpCLIG2kxVLdC3wX5Ew/9
-	pZRUYVI0kaXf+W/MQw6V5R5Dymdh2D8IwaJgENqskOLXvMIGlWJsxqXUP5yNVo9P
-	H2ggT/yVLS08Wvzuo2iiIFgsLbxZi4mjPD3ABBenDAG8i0Rt02pYw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvkgmmhhq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:06:04 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60REv2n7016679;
-	Tue, 27 Jan 2026 15:06:03 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvkgmmhhj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:06:03 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60RF43I4018045;
-	Tue, 27 Jan 2026 15:06:02 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bwb41ru3u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:06:02 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60RF5whg34013604
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Jan 2026 15:05:58 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8EB1F20040;
-	Tue, 27 Jan 2026 15:05:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2508820049;
-	Tue, 27 Jan 2026 15:05:58 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 27 Jan 2026 15:05:58 +0000 (GMT)
-From: Jens Remus <jremus@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+	bh=OKHSLDxRoTP0O21CGrHG30PQSZORZgUK3s69kGq/Nq8=;
+	b=4mgygXD+ydF6Ui19YLx+i3/0/Y980zN74MvtMSsuFxzRsdLqdHJogfZKrUpWcXs6TArIFY
+	4QLCD+kiFR7RQ4wkIvlgaW7laAU2V/toMBdSUUw2uZJzAYcjUkUa0BKwUG/4O8gmaMcsXO
+	c9ftXc+eMfUMOXf2oMbARuKJsb57Dko=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60RBELSw3280520;
+	Tue, 27 Jan 2026 16:17:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=OKHSLDxRoTP0O21CGr
+	HG30PQSZORZgUK3s69kGq/Nq8=; b=TXOmsv3lIjuwSByiKJUWOTBUI9QSX1ryHs
+	sVIrV4KZETm/5YDsU+7guwzc3tMngN4Bwt4OzwM0DM0BozcIVCYItUYECqauF0JR
+	X/xxhDBmnqTxv4P6hBHYPaop8QHoghJlrRDF/s7eH4hoAKBOIaJ3CWhuZKhYbyI4
+	KTM1AiXhodxMY1+LXJRNO3nrwxvA4SM+QSLI+O0vt/vDPTbfrscoucy0EGeSmiWu
+	cCsxB5DW9q1LzzpAfQgJWczCs5/rrwCS0mI3ThfZw6aGgAlf23OFUgIHpx194FRJ
+	EbYiQSYwsw/j1iRP6sBdkCtKo/nCqjAPyIYTeesr7kRZzHM1fZ8g==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bvpmrc9vs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Jan 2026 16:17:20 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60RExua7036177;
+	Tue, 27 Jan 2026 16:17:18 GMT
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010063.outbound.protection.outlook.com [52.101.193.63])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmhnwgde-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Jan 2026 16:17:18 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YawpJ07oEZ8w4HQLCIh2LJGHr+EGQK5YHUKU3UjpKV4U1GM/H0bZpWOb/Dj7yWEIyxKCCC43D7a14i5WcS+bLLMyYNoLRJAkbuT3HpjhY5GTAVXAnEBrnNwumw3hcWTtVXIHETPmwCf24hhigbDyvEX2vMPjgEbCxXYQZGILNyOGqDHhUxS/7c+1vWMdeoMn9hk/fsWfHri2zGqVRB9aACEs8myPARVUOuuPxiJqUkxeMQaRg5U1awpn5iidDbobgSPqD8JGx+Lk6HQWi/cHZvBCg4yF8XNgGzBcmQY+Nu7N1Dg0+Raf/sw2AzidllOsiwehMD7nRANw8ZCYHie0+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OKHSLDxRoTP0O21CGrHG30PQSZORZgUK3s69kGq/Nq8=;
+ b=Lk25NjNaFfDOYdHFQldPIwXm83WwATULBV2NK8cFZOVzCfCBo3UHkREblIenqJzB3M9m7yLquaP6E0fnnXsnHnbyBkp+kfLNGWmh+fELolCZetdKJHu9dNvXbwrSNaRKVR4J/STH1rDJSBF5KxytvubUGJs0xr7jtu/qH/8wMEXiH0+r4UIyXAxOoyMiEt3wpS/nv35/fAMCtUtAm0Ol6qLI7/x3wR4CSBKn27fcKPRcJlwRtse8Q30wt0j4grCF79o5eLPjdVoTi5NWdvEFKj15LaLvCgUSFTexn0w1VfbFopN24cP1EL803LrlCQ2Zg/zotr+Z4xAQp1+x6dTKsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OKHSLDxRoTP0O21CGrHG30PQSZORZgUK3s69kGq/Nq8=;
+ b=opTNLmen3QahGL5zBV3o0hvEcHFu+gReF8hjgzeCiejbD3VsJazTeSH49MbFIUmo3noxLEfsJCuM54AB4uqE7KHgLCuADtwyQKQYZH0szYL981nZ/XbwohBSja4zCa0vsqAI/YTgsHbibtYK4sGMr0AZTT/CcW9O2tZc2aPMBAE=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by IA3PR10MB8300.namprd10.prod.outlook.com (2603:10b6:208:582::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Tue, 27 Jan
+ 2026 16:17:15 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9542.015; Tue, 27 Jan 2026
+ 16:17:14 +0000
+Date: Tue, 27 Jan 2026 11:17:11 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+        Christoph Lameter <cl@gentwo.org>,
+        David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
         Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v13 04/18] unwind_user/sframe: Add support for reading .sframe contents
-Date: Tue, 27 Jan 2026 16:05:39 +0100
-Message-ID: <20260127150554.2760964-5-jremus@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260127150554.2760964-1-jremus@linux.ibm.com>
-References: <20260127150554.2760964-1-jremus@linux.ibm.com>
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+        bpf@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v4 04/22] mm/slab: move and refactor __kmem_cache_alias()
+Message-ID: <xvdhietnpfl6ait3kjwxu3nrrzdpwvt3zp5ui4l6o7t7yps55g@wygbtepochfg>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
+	Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, 
+	kasan-dev@googlegroups.com
+References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
+ <20260123-sheaves-for-all-v4-4-041323d506f7@suse.cz>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123-sheaves-for-all-v4-4-041323d506f7@suse.cz>
+User-Agent: NeoMutt/20250905
+X-ClientProxiedBy: YT1PR01CA0140.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2f::19) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Gr1PO01C c=1 sm=1 tr=0 ts=6978d45c cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=7d_E57ReAAAA:8 a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8 a=mDV3o1hIAAAA:8
- a=yMhMjlubAAAA:8 a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=7mOBRU54AAAA:8
- a=meVymXHHAAAA:8 a=YuDcBBqGAAAA:8 a=W06K4fExuwiiLY1qHd8A:9
- a=jhqOcbufqs7Y1TYCrUUU:22 a=1CNFftbPRP8L7MoqJWF3:22 a=HkZW87K1Qel5hWWM3VKY:22
- a=wa9RWnbW_A1YIeRBVszw:22 a=2JgSa4NbpEOStq-L5dxp:22 a=V9_jqlfyBUA7Gw2gN5zN:22
-X-Proofpoint-GUID: bxllR8V2cfKsLY4uc8NmlESMOL4FGHqT
-X-Proofpoint-ORIG-GUID: gvUXawCUsZyo0XByjQUvWCrzApMOkwsV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEyMSBTYWx0ZWRfX6r4Qq0mN6reT
- hCqK4ruC0Kcg4mwPHv94OdEXmw7sdbKDtv3DlS/Xcrxwgh+nhuHWO+RZwflYa7et9LxYDh6aqzc
- Onba562M5N24b57by3HX+gqnc18WV8vGfMHv6AMPLpT8TC6Mwc3ensAgLgmMHDni5FmFlTXTUmy
- LXsuZA/6CEU4wG96J20bAdDNbufh+xCb8jcOEvGTIMmtesHm0J7Zk7fHjiaUkMwPAJAssK5lTGR
- Zhfe01EuQOYdwW8UVrCHNgu1v9QQZwcC+MlkwhL7x6zT6Dq0CMmAgkDGrLXnuIe7AUsOrxULuzk
- hfZFLnRaPixf1x8n2L4ExA5sEDbkWIrl1rnqsYmfgj/VjBX2dNXZYN+FUvo8GCBFmWHa4vChrSI
- 8149JQeria7C3c4BJh0VA/WwTuAuyqHRlqZSLxdv/u+81Uy3xsO4qTfPv36TAI6SGa6T4Tgc/qa
- 01oLkX4XUtm/AtNiBsw==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|IA3PR10MB8300:EE_
+X-MS-Office365-Filtering-Correlation-Id: b904aac4-cdf7-4ecd-54d0-08de5dbf88be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007|27256017;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?CLSm88rvjDbI8AFOM0VzqMW63wzQOouBYfEXFt5YxHMT9mrdtb2Vq2grXDJq?=
+ =?us-ascii?Q?Adb/YSB6jpP7S+1nJLsIkXILETD5ubxDb/Sybi+FVHaScALTdHpUWon4eac9?=
+ =?us-ascii?Q?ntEKlKzOsPzhJyy/+KKE1p7p/v/BtHakQWO+unpJuwtcMg0Oy+X1MDcKM4rp?=
+ =?us-ascii?Q?Cj1Gxqni0iDCeaVBZ//WohTeP5Z6Wsu3kx/9pFp0mNF2en0kvZa8patWTO9N?=
+ =?us-ascii?Q?2w4qqCfR1M08MJaxFjqKaBHsPeLGhiQRHpfH1JAhbdYrnSASxjNurj8uVnlt?=
+ =?us-ascii?Q?D9wVZC94QOZrIw3d+OqqWRtrL9kMLItZLzc6j3ncu+sknsuwm8DEi1lxxA7t?=
+ =?us-ascii?Q?YpVq7cZeqX+Q1+zQYITQWx8FCr7JMl/iJ5BAbWl6Ib6IL2ekCfTptEz2qwxs?=
+ =?us-ascii?Q?GbkvBTZTA3ELRK6XRAoGKhcebz8eMaL9evEOHdV18DDikkgxXmYeZd/zBFtS?=
+ =?us-ascii?Q?l0Jtu5yhUiwmAj8sdKkGR/fh6MLVbl1E/BXsaR2rNjNEhbWl2JcL8+bymnrv?=
+ =?us-ascii?Q?DsiDLZse5wp24G+ljncCwUYtUSRay42k1exyKgVeVDJi9eoB5IyHPknz7KFF?=
+ =?us-ascii?Q?+u7lzE/vGtnOM39hQnMeYGvV2kE+NmL3Xra6BfS0hCtxo641Fhm+f7FuKWYO?=
+ =?us-ascii?Q?NNaDLpcWhtbW83MNC9qm6oiFLtkWWbJaHzHZinIXYaipcXdsvlVu6sE5XqtW?=
+ =?us-ascii?Q?+U601R3yi4bRDQNB6NL98Y342NS0etSCCYSckPAdf2G4hBeB4ZWBvf7PyVWc?=
+ =?us-ascii?Q?JfrAdkSInREh/D8ZMzMQDzRqllXCf5L5+18XrUkSbe06ZXI7T5wQI6/yzvAz?=
+ =?us-ascii?Q?+i7XDiyQ/9adsdt0KhMiSL4UXWkwCOW3YmjOvVgXK3AhbSCLY4UoQVPQR/sh?=
+ =?us-ascii?Q?iZ0bZwfThTEYLYB3CimGgCkP6Uf0K7RNB0qOygvOCLWJ1neu4PZ1WgSf1v96?=
+ =?us-ascii?Q?v3qHbC/oqMO3gxHExbEKl8Uik42VTVfKvmumilFGA3GT5DYTwAgdk9mkZH2Q?=
+ =?us-ascii?Q?V+Al1w0BbfJj7HOxtmthEQWF1kIsQUYQxJiVOgop/Y8dQm/x/+tQwc6IJ/xa?=
+ =?us-ascii?Q?tbsLWxk4XjSjG5fn2mkKKvNRDNVmWXqZqv+89vezB2Z5QYY7LbBG1BbOPx+T?=
+ =?us-ascii?Q?IhG1wrI/HdPnLSGJhEyOTEB4a54VttY/gBqjXNR+pa30ZrTPZjEZxzBGfJcW?=
+ =?us-ascii?Q?Ra0QCiS6m7cV3yD32qQ5mm3/ehBF8gvpCiLop3y3stwCEcVRZPIANzH9vhqX?=
+ =?us-ascii?Q?c89e4XK1h1fPHWnh50UOn/i41D+RExY+JsgjnyYcsiuknLWYZKWn11Pw7dM/?=
+ =?us-ascii?Q?Ct9ElXqJV7S0VqKisbWJomCFq5ke4Iafnuo80vXoW/5kY4ZYIEeI70ZvDz58?=
+ =?us-ascii?Q?gFGy5b+tuxxQ+yG3sXPB8Yw1rYwmbU6fCbuDr5+MaOwqc+df0TkkClHE6S8k?=
+ =?us-ascii?Q?X4mHkCi6+1LbLX/AqIVwiGmks1Q8X/fwq85Ej+DbQQF56T7SrtvCD+ucFLI0?=
+ =?us-ascii?Q?ejiqC2eCK8FvvJeIOwy1vwceq28WbQPq4IkvSebYyj5NPYm4t/bJSW0dRifW?=
+ =?us-ascii?Q?tzIVwxCLIVwuuHifC0eLff2gYxkUB5hLaHL+WvErkMlpaJt7V74LgZrpy5DK?=
+ =?us-ascii?Q?Pk33ZijlWrVRw0R/FxMBMHg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007)(27256017);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?X1DIaSVUmv7JaTRLD24gJKabYAzTwIotewX+s8R4CY+R/8z3WkLORvyDhwuz?=
+ =?us-ascii?Q?M/LRGebkOpu4p2ENPq7CCtkLsgwOCfb+O+sPoDBuxpkME0+5YPOMg6D4lZc8?=
+ =?us-ascii?Q?7gMsM/z+rXbqU69BsgPcLt+t7YQRr4IyRwlU4/rYNqCwAABhkGbKWe/2+7hc?=
+ =?us-ascii?Q?6umT+lU6p+yy4p51Xn+oU+csxCiFoiIf1baZecU1TXSyQLNuFxHzBGKU/83Q?=
+ =?us-ascii?Q?eMbrKQV5IwMiE3P+ip/4SevrLSlMuJMuDIJNucnrTlfzO83e3Qoa9CbQCMF5?=
+ =?us-ascii?Q?VSPhtjJh6Cip4nmFo1FjQ7G3L+jw3dXziVUyM/arMv6as192ggPgZjWypS5k?=
+ =?us-ascii?Q?8cPawipWOVkx7yMAs37KiY1Oo7GD/H1MiCkWh3W1iPhP8BfZaqv5KSQGUh+g?=
+ =?us-ascii?Q?LNkskiz+TLD0gm6/g1dxSJob0OdPQo6qUeQXK1nAEqAYJxadDXhP6Zj6a6Kt?=
+ =?us-ascii?Q?MzGF0kEnrt16OCV0qz4RDABJ3qlimkhE8PipuQdzTbyHs/xjknE/LlFcykli?=
+ =?us-ascii?Q?rX8w5vsh8ke6luE/Yim9wZHz8PiJmKrY6ZdEjCNvx7OFRfsVym5mLlRiUz2K?=
+ =?us-ascii?Q?7wqRKCcnU0idATfNHB7LMFX68oV+U2W4eCuqEvZOyjjD/cXEyUkqPrlyY5Wg?=
+ =?us-ascii?Q?sUtRuIjO57fVZsAam+9RgdkPgDeTjw5WOGeMj08t0EUfjznVpDnQwQGJpAyV?=
+ =?us-ascii?Q?tT65KC2cQYqb7JmCX6ByLNqcJXw3Wsr0ONOjRHxZNlgDT115HYzDeXAlLzgA?=
+ =?us-ascii?Q?KsVz5XIhxFCo+/kj48LbShI2kg5zgT/f/Sw5QXjO0BGDyLxY0V6VZtS+bVEO?=
+ =?us-ascii?Q?VolgQyob/7uS4dDO9Z8da4xSg7N+CkN9LeV/CYyvdENav7/SbcF/Ks07o2Q0?=
+ =?us-ascii?Q?zcPc9Yq8G61dM+rssyC+xZTBYNrxzEMtMMmMH4p2JVOgiWZJPpVRTGYVFYcs?=
+ =?us-ascii?Q?CT3rHfxCtogMw0K9CqlMeVrR7GkzaDgnJPnG98IGOl5alZ5XKRhAQci4P/OT?=
+ =?us-ascii?Q?25rNxeW6q2Gi+/xIt9V1bvx4fMsO8OpBE9qZQwpwz1elSwXez6UMmGe9uIqt?=
+ =?us-ascii?Q?swWjXTS5ac3jun+LoGCV81V8AmVPeXfIaxEN+C9xyExjmEIAKYtBUlZqclHK?=
+ =?us-ascii?Q?zE9Xxe7YWJ5XvP2D3an7FxqtAv43LVNk9as0WIZ7sCn3H8WGjAmXYskTMLqv?=
+ =?us-ascii?Q?8WmeqLNfNshwfmQnIY7wA7cEWBUJLjjLlP82B7DaV97UnHeXUu+Md7A+p2xQ?=
+ =?us-ascii?Q?yZRSjyEVHcdPngV06PdE1Y/YoNGpgeiFnMNyYMDnpVT9YEAFwKx+VMEJYgEC?=
+ =?us-ascii?Q?iBrymvHG3cOXeMcvBbYQDYPVkMcv7tojkvmK/6q8RBOBRiN6zUX0k2z5HEgm?=
+ =?us-ascii?Q?SRzJ1YTWmgC1ISFh/8yqNFTLxPXYkFeBFp6jhOCPtggcMrvHKkIZsZI9oJvF?=
+ =?us-ascii?Q?NdGednQlVoP+HCvsBrUAxcgF+TqvtMl76+0jhLydwmznExECGyYGlKkfPLY2?=
+ =?us-ascii?Q?B/HKeJnirW9S215bsEKORDarJ/gxdWNceD13LX97RvxIfSh0gOdMWbSUrXI3?=
+ =?us-ascii?Q?0D/b/t4nenuBTMKZ/UzHBttdu8J1zZ+Ytq+XpgeE4cIP3OW3L36DakPqLnwZ?=
+ =?us-ascii?Q?dl/AZaUC4+94hHIMKMEkkfaI4xplZaNpGxruOdb2WMSKfpGIx7B99poTEPKt?=
+ =?us-ascii?Q?farINXQgG40mik1r41L8OZZBhSiG9QA+hIfZEBvWlbEc/PTo87cU0l8hPh4p?=
+ =?us-ascii?Q?kfzZXmO8zA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	79E2T0mM17ycWCBlF0Xo0nUyvC1BkoldEZUc26/JapnMghSE4BwzXein76GT03DM57pP0FK8XfiFZmXTlKf9wULU2NqO8PPo/egNu6bGJUOEr5zY4P13uxLFNNLoMNQDjuN5PWQFzpuVZaGxUxHnX7UiNRb+M2teHkjju19bHHQ6Sm/LER6HUTRbWfB2nwf+RON4UvEL+pnJyT9oVFBkqKwbDlgoNsMKv6eDD98+PZsa0RmKJj4Ik3H04ssM97PuD0uP3Y0lT4sUsSxcRqtbndF1DX/1w6lEhKq76PdMCWxbfp3FSQ0jVJ5GdcJq5P03uWYgNR0TUfS10YDT/eYJHMF2WOIHohztrG749JWZHfwfNQ8Hycq13ZvpE0v6MBkW0WKFMquyJAV8+3HeBz7tt+/mYisfKicT2Aja1NvAJcfNUCA034Tqt3NnlMRcKBQJZ7cgdGeHf3X0lGpPFzuSp9Q0yY29NfSL29RiQRzXoQpnkdH9yj6VRwPGnFEebLzxuNsw6Tw3SDb+6f8F7Sdh5DxZdIZYKeIOlKyMRcgQDMKltss2PUx3SW4LaG9HMVmTwVLFuXfbCx9q5LYHMJkpYPRb+9efmYXmKVcH4Vy/YJA=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b904aac4-cdf7-4ecd-54d0-08de5dbf88be
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2026 16:17:14.9336
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8hVZiDPtViPjN1GvBat+NZIBCeHviwCGPxmXAyRI9KM3f8vpEh1vihz9x5XS76S4GiYT6ChFpTUNZabm78Fxsw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8300
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-27_03,2026-01-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1011 lowpriorityscore=0 suspectscore=0
- impostorscore=0 phishscore=0 malwarescore=0 adultscore=0 spamscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2601270121
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 89FA7100010
-X-Stat-Signature: t6mramzu9otxfpyqi1bqoid1xjyzphw7
+ definitions=2026-01-27_03,2026-01-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 bulkscore=0
+ mlxscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2601270132
+X-Authority-Analysis: v=2.4 cv=Q//fIo2a c=1 sm=1 tr=0 ts=6978e510 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=vatuI3SuysR0fGYlY6kA:9 a=CjuIK1q_8ugA:10
+ cc=ntf awl=host:12104
+X-Proofpoint-ORIG-GUID: HnipPC-KP78po4qnQT616jaAQ50kq0R8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEzMyBTYWx0ZWRfX6koh6F11Aai4
+ 8UjWztBHQ0oUzszz+nIKgKUGPJhrWNDcRvZIFcJiMTA39owXPW2v0pVkv2NtVvS41/uDeFxKaOO
+ VjSK9QwElWLUjcA/3NZIh/rnBB0vJATKj+uCbdDUcXvLEogVfBxFeuDipUHeJK5qtxJpzU63uKn
+ FWrhOqU0z60OHX5pwtot9C0IAEsyPrfWeve+wFLAnj+bZ3xMOeorLXyF58+yDTWr4IFrkV6dspY
+ G7wkHhiI4VpREdQuhoMh975/qN3R4Fy1TVnuNj9tb7i8NbBYsBnR+zsU9ZRlsMF1Yi6swlUb4h1
+ 2VKy4mf3BpFEKvh0ecT7FYI2Tlglv23eWukrv1eT5M31NuDkF4YNT3A8O+AYN/4mDy9P5+6hC3B
+ QyVgyswmCq8pEcGe5IvGI/C1uJ1t38zFMRb73BYSp/cPDnsklhjT77HMgJxc1jZzakQclhiCZk7
+ OeRBnki1KPzKEIImxMAtGDGelgL2jdXPF5cUgWyA=
+X-Proofpoint-GUID: HnipPC-KP78po4qnQT616jaAQ50kq0R8
 X-Rspam-User: 
-X-HE-Tag: 1769530387-851218
-X-HE-Meta: U2FsdGVkX1/eVgdHhxdnLIwKSXvfwJli3CPLr6+KKXxCEaDTiJMiG7otxSf0nxvlQ0hKeyRLraYi+jarfQFp3FLOgykFOxiP9qE3sPM8bv5ANR2Ghsd5p+02YyECS4gcRbHr5x29plvmrK/OHcz7LHBJ9FrPkD5LK5CjPZZ6Ccwn/fmcjkaa1j03uIhcoCnLx4T4qY9kElEWIeiRE4vIEH/IDX/kMq8QN2yPpB4DCGXyhZ4bJUNz9OvB+GJzyY9hpyIR5yEkVMLNZfqpbMu0Z71QZhlWnSmaKaToLgeol1SirWFXNyonm/0fXcl4jWKp/A1XRCTYcpC7WQeYYHLbqjGStQLIiFScCkRLcv/aS82DTZuTL8WAdXxA78HLzdxP7Q5pLgnG99XdQugNYoB96Ht29G2zvfmI1iduWSBHFyA7ixm4VAS5gn6Yztj/u+tK2ty2bKrGwBSH25C4VJn2f8KS2xx/l1jkztiAvtkfDfRA9RZfEsbwK1i5dX0Msd0WJksvX+2vN4vaiv3dNQ73ajcdEvI1Qw5q4LZaWB7nOFBjvHY/N4gxIsoh/I2Pk48AT5wJ9y0rWJYDYiC17beQyErKKkBLKPyb98r8vmJ8LX7vGIDCXw9MPKYlsjjEODUBz6J/AhUIucRqvf1zCV6VIaZa0f5o3QIGiU61RlM6W2lhQe5TYvA6KwbOCWrFBm08jvS631sCzRyTM5US8gOeSabhGHeFuFW1RBxKn6P5EjBzaTasLCp/R9cDFOPgFNedBqeRASafpcnp/yI7SrDjbKqZyoBFKJpUxj/uq0KOU/DMhwQKIqkacLd1CrtprSyDt6II5qCBJwt8wjZe3WXnKqdg2HXEGOE2y1kG5Ud0XNRIIngG65bldR05DenphdXFLKnvgdoc/xVlpr7SgGM76czffMzrxZpIzF1Jas/vfK4mrjR8JrMie6q4GEvKj2qr8g0A9bd5eDyolARb88M
- CjT+Do/a
- LkSofIaRz8bexIxDn19SHhPWj5+sHhVNgABwl
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B8B9D40009
+X-Stat-Signature: sdc8ziua5pgi4amgt61sc9qp59x45m1r
+X-HE-Tag: 1769530647-50967
+X-HE-Meta: U2FsdGVkX1+4iCXv6B565ne5+J2YmF90WNbnT7URgH9RGgWx1pUWvymFg8rmaQk6efNMlZKD4/Izr4mhob3zkHAPCiPQisdr/M9kZV9kXbIsUsS/fXg3943HiRByTz97Tk1dAtAWmXxEHmJfVgsc2Y4IXr4VELIHFBNr3vUU5WGfZBwvrw3e8MRIQamDhJ4dQ+Y+2qcDxOzj9GWBtmD8FIy2GMLUT/MfV94bY2Do/6b0r/UBzBg2gFVmMcIKGuqUMW3nHiOWUM6UuibLJp4uzrUeihLrzELa2uxkO8txwPAV0t1gQ9eZcKiniHK2ZUumbbFiHEmcLr07V9puUbSsvcvqwdidMQ4yTrDoggKjugjsDr5fKHhTwsF7z1iden67JVeiAUrWb9bnLkPtLP5zAQmYXaTaAEEQ6RRMFuHNO/Uem8ZV3X+NyfmFxwpCw7PrqrI2/8gmEqB5Q+aybUrspBrnVWk9XC4mDvjOriNxXLbsrD7ISuSbmoT4qqBErPENClZd1bywqK539SLp8hU6NDGR5lDb5hqlDResdLD8VoU/rhX1/j1lBZIYEe3YdekxiRctc7ViAHCItU0SL/HR3JeT9ZTCkCyqKHT3DSmFPKAA/dNxR/aP9GiBDxVA3ZlL7V5gqMVBGauu0Z40YhkUlzeZEDStQ543j+sl9ZxymKvXf+dkJ22C7sdJxl2h1uFHfUcA0LWTPc7f/UIw7+pt290eAKo7EczOFMOQEVMBpRgA51drlVrgkMa5HuRUo0dDk9E3mDJP4V0D4QnY5tzqHvMCGtUCqux4LSYS+eqcIN072eOf6EGVEinoe9ojB/bQ2U3ecGleZb39jewjPRJNrzVbOyOKeHpzsC38+imxLiRLGss8PtmQL0KHUekWb0zue4y8L9/nEY0Bdye2aR+Kl7FuCV6tu5e2C/v5Z/u45FBeNvMn2nws5yslrD6GzWvIIFSgnzf89oNd65re2Nv
+ St0vFf/H
+ R07DsqKzapjyeNXPSs+K2V1xYx9kdOxxSwXD869XsXzFUPuAv/rEIx2YYN2YcGtG2M7lecLFZgYAx++4zrumwmm5qhRWewZSFCbv0yIgUPWZkIH7B56egnvL2ZTu2iY+lSCw0MCeEcYLP8RbecLJVefS8eG6P8eHdK/eRLTuJdK9drLKTZDPwGgt8HH1deH3oijrniQRn5i0pPfhO466ew/+ke0XYU+HHwDPpbjBkEJ/Ud1MB2pX/8/F8h6qzam515AM+7eCB7667ElUz7LJo93nvCbtYnAmD/eNGLlhrqYU/gBi41R4R5R2cQmaHQqjBt9e7YKkL/qkhnUmS03wcLZFjnMAn64K21TZXVtHeGab9hSHMh9vp2w845Y16WPEANRcBIn5YII8W4cgGYy1P01OtUaGOupEfaDqMT+wejLSak3V1S6PUvCEju/235C2ag/JqgbqA/L6EHa8b3vLdSTGmXrjJsia4AYadvH1y8cSvLqEqhF3RUgzQFPqcqd8Z547FHHh0o/1AlUjU+zZ9bYMkdmHMWA5yvd8/9zu/jUHy0rlp7gGWZ0DQY6PNsFNxkKkDCg1y+VIr84pMrst1cQT/OuiJoXOkhqTrMuxZpicf7ie3btn1DSsDQkmJc76+LbRivPqi2FNW/USOjYRQfaA0Utp3sFBlPQBr823RnsS+b4GK9ElRd1cUDGB/OKm0LKbdsARsP7rdhRFdCugvdkrkWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -173,533 +258,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+* Vlastimil Babka <vbabka@suse.cz> [260123 01:53]:
+> Move __kmem_cache_alias() to slab_common.c since it's called by
+> __kmem_cache_create_args() and calls find_mergeable() that both
+> are in this file. We can remove two slab.h declarations and make
+> them static. Instead declare sysfs_slab_alias() from slub.c so
+> that __kmem_cache_alias() can keep calling it.
+> 
+> Add args parameter to __kmem_cache_alias() and find_mergeable() instead
+> of align and ctor. With that we can also move the checks for usersize
+> and sheaf_capacity there from __kmem_cache_create_args() and make the
+> result more symmetric with slab_unmergeable().
+> 
+> No functional changes intended.
+> 
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-In preparation for using sframe to unwind user space stacks, add an
-sframe_find() interface for finding the sframe information associated
-with a given text address.
+One nit.
 
-For performance, use user_read_access_begin() and the corresponding
-unsafe_*() accessors.  Note that use of pr_debug() in uaccess-enabled
-regions would break noinstr validation, so there aren't any debug
-messages yet.  That will be added in a subsequent commit.
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-Link: https://lore.kernel.org/all/77c0d1ec143bf2a53d66c4ecb190e7e0a576fbfd.1737511963.git.jpoimboe@kernel.org/
-Link: https://lore.kernel.org/all/b35ca3a3-8de5-4d32-8d30-d4e562f6b0de@linux.ibm.com/
+> ---
+>  mm/slab.h        |  8 +++-----
+>  mm/slab_common.c | 44 +++++++++++++++++++++++++++++++++++++-------
+>  mm/slub.c        | 30 +-----------------------------
+>  3 files changed, 41 insertions(+), 41 deletions(-)
+> 
+> diff --git a/mm/slab.h b/mm/slab.h
+> index e767aa7e91b0..cb48ce5014ba 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -281,9 +281,12 @@ struct kmem_cache {
+>  #define SLAB_SUPPORTS_SYSFS 1
+>  void sysfs_slab_unlink(struct kmem_cache *s);
+>  void sysfs_slab_release(struct kmem_cache *s);
+> +int sysfs_slab_alias(struct kmem_cache *, const char *);
 
-[ Jens Remus: Add initial support for SFrame V3 (limited to regular
-FDEs).  Add support for PC-relative FDE function start offset.  Simplify
-logic by using an internal FDE representation.  Rename struct sframe_fre
-to sframe_fre_internal to align with struct sframe_fde_internal.
-Cleanup includes.  Fix checkpatch errors "spaces required around that
-':'". ]
+nit: the names of the variables are missing.  I guess because they were
+missing before.  *s and *name,  I guess, although they are *s and *p
+in the other declaration.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Indu Bhagat <indu.bhagat@oracle.com>
-Cc: "Jose E. Marchesi" <jemarch@gnu.org>
-Cc: Beau Belgrave <beaub@linux.microsoft.com>
-Cc: Jens Remus <jremus@linux.ibm.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Florian Weimer <fweimer@redhat.com>
-Cc: Sam James <sam@gentoo.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: "Carlos O'Donell" <codonell@redhat.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
----
-
-Notes (jremus):
-    Changes in v13:
-    - Update to SFrame V3:
-      - Adjust to SFRAME_V3_*() macros and macro/define renames.
-      - Adjust to struct sframe_fde_v3 rename.
-      - Adjust to s64 FDE function start offset.
-      - Rename local variables fde_type to fde_pctype.
-      - Add and maintain struct sframe_fde_internal field u8 info2.
-      - Adjust to FDE split into function descriptor entry
-        (struct sframe_fde_v3) and attributes (struct sframe_fde_v3).
-      - Rename offset_count/offset_size to dataword_count/dataword_count.
-      - Limit __read_fre() to SFrame V3 regular FDEs (FDE_TYPE_REGULAR).  A
-        subsequent patch will add support for flexible FDEs (FDE_TYPE_FLEX).
-    - Rename struct sframe_fde_internal field func_start_addr to func_addr.
-    - Add support u64/s64 in UNSAFE_GET_USER_INC() for s64 FDE function
-      start offset.
-    - Reduce indentation of assignments to fre.
-    - Reword commit message (my changes).
-
- include/linux/sframe.h       |   6 +
- kernel/unwind/sframe.c       | 346 ++++++++++++++++++++++++++++++++++-
- kernel/unwind/sframe_debug.h |  35 ++++
- 3 files changed, 383 insertions(+), 4 deletions(-)
- create mode 100644 kernel/unwind/sframe_debug.h
-
-diff --git a/include/linux/sframe.h b/include/linux/sframe.h
-index 7ea6a97ed8af..9a72209696f9 100644
---- a/include/linux/sframe.h
-+++ b/include/linux/sframe.h
-@@ -3,10 +3,14 @@
- #define _LINUX_SFRAME_H
- 
- #include <linux/mm_types.h>
-+#include <linux/srcu.h>
-+#include <linux/unwind_user_types.h>
- 
- #ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
- 
- struct sframe_section {
-+	struct rcu_head	rcu;
-+
- 	unsigned long	sframe_start;
- 	unsigned long	sframe_end;
- 	unsigned long	text_start;
-@@ -27,6 +31,7 @@ extern void sframe_free_mm(struct mm_struct *mm);
- extern int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 			      unsigned long text_start, unsigned long text_end);
- extern int sframe_remove_section(unsigned long sframe_addr);
-+extern int sframe_find(unsigned long ip, struct unwind_user_frame *frame);
- 
- static inline bool current_has_sframe(void)
- {
-@@ -45,6 +50,7 @@ static inline int sframe_add_section(unsigned long sframe_start, unsigned long s
- 	return -ENOSYS;
- }
- static inline int sframe_remove_section(unsigned long sframe_addr) { return -ENOSYS; }
-+static inline int sframe_find(unsigned long ip, struct unwind_user_frame *frame) { return -ENOSYS; }
- static inline bool current_has_sframe(void) { return false; }
- 
- #endif /* CONFIG_HAVE_UNWIND_USER_SFRAME */
-diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
-index fdb2a4908563..9b3779924395 100644
---- a/kernel/unwind/sframe.c
-+++ b/kernel/unwind/sframe.c
-@@ -15,9 +15,338 @@
- #include <linux/unwind_user_types.h>
- 
- #include "sframe.h"
-+#include "sframe_debug.h"
-+
-+struct sframe_fde_internal {
-+	unsigned long	func_addr;
-+	u32		func_size;
-+	u32		fda_off;
-+	u32		fres_off;
-+	u32		fres_num;
-+	u8		info;
-+	u8		info2;
-+	u8		rep_size;
-+};
-+
-+struct sframe_fre_internal {
-+	unsigned int	size;
-+	u32		ip_off;
-+	s32		cfa_off;
-+	s32		ra_off;
-+	s32		fp_off;
-+	u8		info;
-+};
-+
-+DEFINE_STATIC_SRCU(sframe_srcu);
-+
-+static __always_inline unsigned char fre_type_to_size(unsigned char fre_type)
-+{
-+	if (fre_type > 2)
-+		return 0;
-+	return 1 << fre_type;
-+}
-+
-+static __always_inline unsigned char dataword_size_enum_to_size(unsigned char dataword_size)
-+{
-+	if (dataword_size > 2)
-+		return 0;
-+	return 1 << dataword_size;
-+}
-+
-+static __always_inline int __read_fde(struct sframe_section *sec,
-+				      unsigned int fde_num,
-+				      struct sframe_fde_internal *fde)
-+{
-+	unsigned long fde_addr, fda_addr, func_addr;
-+	struct sframe_fde_v3 _fde;
-+	struct sframe_fda_v3 _fda;
-+
-+	fde_addr = sec->fdes_start + (fde_num * sizeof(struct sframe_fde_v3));
-+	unsafe_copy_from_user(&_fde, (void __user *)fde_addr,
-+			      sizeof(struct sframe_fde_v3), Efault);
-+
-+	func_addr = fde_addr + _fde.func_start_off;
-+	if (func_addr < sec->text_start || func_addr > sec->text_end)
-+		return -EINVAL;
-+
-+	fda_addr = sec->fres_start + _fde.fres_off;
-+	if (fda_addr + sizeof(struct sframe_fda_v3) > sec->fres_end)
-+		return -EINVAL;
-+	unsafe_copy_from_user(&_fda, (void __user *)fda_addr,
-+			      sizeof(struct sframe_fda_v3), Efault);
-+
-+	fde->func_addr	= func_addr;
-+	fde->func_size	= _fde.func_size;
-+	fde->fda_off	= _fde.fres_off;
-+	fde->fres_off	= _fde.fres_off + sizeof(struct sframe_fda_v3);
-+	fde->fres_num	= _fda.fres_num;
-+	fde->info	= _fda.info;
-+	fde->info2	= _fda.info2;
-+	fde->rep_size	= _fda.rep_size;
-+
-+	return 0;
-+
-+Efault:
-+	return -EFAULT;
-+}
-+
-+static __always_inline int __find_fde(struct sframe_section *sec,
-+				      unsigned long ip,
-+				      struct sframe_fde_internal *fde)
-+{
-+	unsigned long func_addr_low = 0, func_addr_high = ULONG_MAX;
-+	struct sframe_fde_v3 __user *first, *low, *high, *found = NULL;
-+	int ret;
-+
-+	first = (void __user *)sec->fdes_start;
-+	low = first;
-+	high = first + sec->num_fdes - 1;
-+
-+	while (low <= high) {
-+		struct sframe_fde_v3 __user *mid;
-+		s64 func_off;
-+		unsigned long func_addr;
-+
-+		mid = low + ((high - low) / 2);
-+
-+		unsafe_get_user(func_off, (s64 __user *)mid, Efault);
-+		func_addr = (unsigned long)mid + func_off;
-+
-+		if (ip >= func_addr) {
-+			if (func_addr < func_addr_low)
-+				return -EFAULT;
-+
-+			func_addr_low = func_addr;
-+
-+			found = mid;
-+			low = mid + 1;
-+		} else {
-+			if (func_addr > func_addr_high)
-+				return -EFAULT;
-+
-+			func_addr_high = func_addr;
-+
-+			high = mid - 1;
-+		}
-+	}
-+
-+	if (!found)
-+		return -EINVAL;
-+
-+	ret = __read_fde(sec, found - first, fde);
-+	if (ret)
-+		return ret;
-+
-+	/* make sure it's not in a gap */
-+	if (ip < fde->func_addr || ip >= fde->func_addr + fde->func_size)
-+		return -EINVAL;
-+
-+	return 0;
-+
-+Efault:
-+	return -EFAULT;
-+}
-+
-+#define ____UNSAFE_GET_USER_INC(to, from, type, label)			\
-+({									\
-+	type __to;							\
-+	unsafe_get_user(__to, (type __user *)from, label);		\
-+	from += sizeof(__to);						\
-+	to = __to;							\
-+})
-+
-+#define __UNSAFE_GET_USER_INC(to, from, size, label, u_or_s)		\
-+({									\
-+	switch (size) {							\
-+	case 1:								\
-+		____UNSAFE_GET_USER_INC(to, from, u_or_s##8, label);	\
-+		break;							\
-+	case 2:								\
-+		____UNSAFE_GET_USER_INC(to, from, u_or_s##16, label);	\
-+		break;							\
-+	case 4:								\
-+		____UNSAFE_GET_USER_INC(to, from, u_or_s##32, label);	\
-+		break;							\
-+	default:							\
-+		return -EFAULT;						\
-+	}								\
-+})
-+
-+#define UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label)		\
-+	__UNSAFE_GET_USER_INC(to, from, size, label, u)
-+
-+#define UNSAFE_GET_USER_SIGNED_INC(to, from, size, label)		\
-+	__UNSAFE_GET_USER_INC(to, from, size, label, s)
-+
-+#define UNSAFE_GET_USER_INC(to, from, size, label)				\
-+	_Generic(to,								\
-+		 u8 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
-+		 u16 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
-+		 u32 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
-+		 u64 :	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
-+		 s8 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
-+		 s16 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
-+		 s32 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
-+		 s64 :	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label))
-+
-+static __always_inline int __read_fre(struct sframe_section *sec,
-+				      struct sframe_fde_internal *fde,
-+				      unsigned long fre_addr,
-+				      struct sframe_fre_internal *fre)
-+{
-+	unsigned char fde_type = SFRAME_V3_FDE_TYPE(fde->info2);
-+	unsigned char fde_pctype = SFRAME_V3_FDE_PCTYPE(fde->info);
-+	unsigned char fre_type = SFRAME_V3_FDE_FRE_TYPE(fde->info);
-+	unsigned char dataword_count, dataword_size;
-+	s32 cfa_off, ra_off, fp_off;
-+	unsigned long cur = fre_addr;
-+	unsigned char addr_size;
-+	u32 ip_off;
-+	u8 info;
-+
-+	addr_size = fre_type_to_size(fre_type);
-+	if (!addr_size)
-+		return -EFAULT;
-+
-+	if (fre_addr + addr_size + 1 > sec->fres_end)
-+		return -EFAULT;
-+
-+	UNSAFE_GET_USER_INC(ip_off, cur, addr_size, Efault);
-+	if (fde_pctype == SFRAME_FDE_PCTYPE_INC && ip_off > fde->func_size)
-+		return -EFAULT;
-+
-+	UNSAFE_GET_USER_INC(info, cur, 1, Efault);
-+	dataword_count = SFRAME_V3_FRE_DATAWORD_COUNT(info);
-+	dataword_size  = dataword_size_enum_to_size(SFRAME_V3_FRE_DATAWORD_SIZE(info));
-+	if (!dataword_count || !dataword_size)
-+		return -EFAULT;
-+
-+	if (cur + (dataword_count * dataword_size) > sec->fres_end)
-+		return -EFAULT;
-+
-+	/* TODO: Support for flexible FDEs not implemented yet. */
-+	if (fde_type != SFRAME_FDE_TYPE_REGULAR)
-+		return -EFAULT;
-+
-+	UNSAFE_GET_USER_INC(cfa_off, cur, dataword_size, Efault);
-+	dataword_count--;
-+
-+	ra_off = sec->ra_off;
-+	if (!ra_off) {
-+		if (!dataword_count--)
-+			return -EFAULT;
-+
-+		UNSAFE_GET_USER_INC(ra_off, cur, dataword_size, Efault);
-+	}
-+
-+	fp_off = sec->fp_off;
-+	if (!fp_off && dataword_count) {
-+		dataword_count--;
-+		UNSAFE_GET_USER_INC(fp_off, cur, dataword_size, Efault);
-+	}
-+
-+	if (dataword_count)
-+		return -EFAULT;
-+
-+	fre->size	= addr_size + 1 + (dataword_count * dataword_size);
-+	fre->ip_off	= ip_off;
-+	fre->cfa_off	= cfa_off;
-+	fre->ra_off	= ra_off;
-+	fre->fp_off	= fp_off;
-+	fre->info	= info;
-+
-+	return 0;
-+
-+Efault:
-+	return -EFAULT;
-+}
-+
-+static __always_inline int __find_fre(struct sframe_section *sec,
-+				      struct sframe_fde_internal *fde,
-+				      unsigned long ip,
-+				      struct unwind_user_frame *frame)
-+{
-+	unsigned char fde_pctype = SFRAME_V3_FDE_PCTYPE(fde->info);
-+	struct sframe_fre_internal *fre, *prev_fre = NULL;
-+	struct sframe_fre_internal fres[2];
-+	unsigned long fre_addr;
-+	bool which = false;
-+	unsigned int i;
-+	u32 ip_off;
-+
-+	ip_off = ip - fde->func_addr;
-+
-+	if (fde_pctype == SFRAME_FDE_PCTYPE_MASK)
-+		ip_off %= fde->rep_size;
-+
-+	fre_addr = sec->fres_start + fde->fres_off;
-+
-+	for (i = 0; i < fde->fres_num; i++) {
-+		int ret;
-+
-+		/*
-+		 * Alternate between the two fre_addr[] entries for 'fre' and
-+		 * 'prev_fre'.
-+		 */
-+		fre = which ? fres : fres + 1;
-+		which = !which;
-+
-+		ret = __read_fre(sec, fde, fre_addr, fre);
-+		if (ret)
-+			return ret;
-+
-+		fre_addr += fre->size;
-+
-+		if (prev_fre && fre->ip_off <= prev_fre->ip_off)
-+			return -EFAULT;
-+
-+		if (fre->ip_off > ip_off)
-+			break;
-+
-+		prev_fre = fre;
-+	}
-+
-+	if (!prev_fre)
-+		return -EINVAL;
-+	fre = prev_fre;
-+
-+	frame->cfa_off = fre->cfa_off;
-+	frame->ra_off  = fre->ra_off;
-+	frame->fp_off  = fre->fp_off;
-+	frame->use_fp  = SFRAME_V3_FRE_CFA_BASE_REG_ID(fre->info) == SFRAME_BASE_REG_FP;
-+
-+	return 0;
-+}
-+
-+int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
-+{
-+	struct mm_struct *mm = current->mm;
-+	struct sframe_section *sec;
-+	struct sframe_fde_internal fde;
-+	int ret;
-+
-+	if (!mm)
-+		return -EINVAL;
-+
-+	guard(srcu)(&sframe_srcu);
-+
-+	sec = mtree_load(&mm->sframe_mt, ip);
-+	if (!sec)
-+		return -EINVAL;
-+
-+	if (!user_read_access_begin((void __user *)sec->sframe_start,
-+				    sec->sframe_end - sec->sframe_start))
-+		return -EFAULT;
- 
--#define dbg(fmt, ...)							\
--	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
-+	ret = __find_fde(sec, ip, &fde);
-+	if (ret)
-+		goto end;
-+
-+	ret = __find_fre(sec, &fde, ip, frame);
-+end:
-+	user_read_access_end();
-+	return ret;
-+}
- 
- static void free_section(struct sframe_section *sec)
- {
-@@ -120,8 +449,10 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 	sec->text_end		= text_end;
- 
- 	ret = sframe_read_header(sec);
--	if (ret)
-+	if (ret) {
-+		dbg_print_header(sec);
- 		goto err_free;
-+	}
- 
- 	ret = mtree_insert_range(sframe_mt, sec->text_start, sec->text_end, sec, GFP_KERNEL);
- 	if (ret) {
-@@ -137,6 +468,13 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
- 	return ret;
- }
- 
-+static void sframe_free_srcu(struct rcu_head *rcu)
-+{
-+	struct sframe_section *sec = container_of(rcu, struct sframe_section, rcu);
-+
-+	free_section(sec);
-+}
-+
- static int __sframe_remove_section(struct mm_struct *mm,
- 				   struct sframe_section *sec)
- {
-@@ -145,7 +483,7 @@ static int __sframe_remove_section(struct mm_struct *mm,
- 		return -EINVAL;
- 	}
- 
--	free_section(sec);
-+	call_srcu(&sframe_srcu, &sec->rcu, sframe_free_srcu);
- 
- 	return 0;
- }
-diff --git a/kernel/unwind/sframe_debug.h b/kernel/unwind/sframe_debug.h
-new file mode 100644
-index 000000000000..36352124cde8
---- /dev/null
-+++ b/kernel/unwind/sframe_debug.h
-@@ -0,0 +1,35 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _SFRAME_DEBUG_H
-+#define _SFRAME_DEBUG_H
-+
-+#include <linux/sframe.h>
-+#include "sframe.h"
-+
-+#ifdef CONFIG_DYNAMIC_DEBUG
-+
-+#define dbg(fmt, ...)							\
-+	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
-+
-+static __always_inline void dbg_print_header(struct sframe_section *sec)
-+{
-+	unsigned long fdes_end;
-+
-+	fdes_end = sec->fdes_start + (sec->num_fdes * sizeof(struct sframe_fde_v3));
-+
-+	dbg("SEC: sframe:0x%lx-0x%lx text:0x%lx-0x%lx "
-+	    "fdes:0x%lx-0x%lx fres:0x%lx-0x%lx "
-+	    "ra_off:%d fp_off:%d\n",
-+	    sec->sframe_start, sec->sframe_end, sec->text_start, sec->text_end,
-+	    sec->fdes_start, fdes_end, sec->fres_start, sec->fres_end,
-+	    sec->ra_off, sec->fp_off);
-+}
-+
-+#else /* !CONFIG_DYNAMIC_DEBUG */
-+
-+#define dbg(args...)			no_printk(args)
-+
-+static inline void dbg_print_header(struct sframe_section *sec) {}
-+
-+#endif /* !CONFIG_DYNAMIC_DEBUG */
-+
-+#endif /* _SFRAME_DEBUG_H */
--- 
-2.51.0
-
+>  #else
+>  static inline void sysfs_slab_unlink(struct kmem_cache *s) { }
+>  static inline void sysfs_slab_release(struct kmem_cache *s) { }
+> +static inline int sysfs_slab_alias(struct kmem_cache *s, const char *p)
+> +							{ return 0; }
+>  #endif
+>  
+>  void *fixup_red_left(struct kmem_cache *s, void *p);
+> @@ -400,11 +403,6 @@ extern void create_boot_cache(struct kmem_cache *, const char *name,
+>  			unsigned int useroffset, unsigned int usersize);
+>  
+>  int slab_unmergeable(struct kmem_cache *s);
+> -struct kmem_cache *find_mergeable(unsigned size, unsigned align,
+> -		slab_flags_t flags, const char *name, void (*ctor)(void *));
+> -struct kmem_cache *
+> -__kmem_cache_alias(const char *name, unsigned int size, unsigned int align,
+> -		   slab_flags_t flags, void (*ctor)(void *));
+>  
+>  slab_flags_t kmem_cache_flags(slab_flags_t flags, const char *name);
+>  
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index e691ede0e6a8..ee245a880603 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -174,15 +174,22 @@ int slab_unmergeable(struct kmem_cache *s)
+>  	return 0;
+>  }
+>  
+> -struct kmem_cache *find_mergeable(unsigned int size, unsigned int align,
+> -		slab_flags_t flags, const char *name, void (*ctor)(void *))
+> +static struct kmem_cache *find_mergeable(unsigned int size, slab_flags_t flags,
+> +		const char *name, struct kmem_cache_args *args)
+>  {
+>  	struct kmem_cache *s;
+> +	unsigned int align;
+>  
+>  	if (slab_nomerge)
+>  		return NULL;
+>  
+> -	if (ctor)
+> +	if (args->ctor)
+> +		return NULL;
+> +
+> +	if (IS_ENABLED(CONFIG_HARDENED_USERCOPY) && args->usersize)
+> +		return NULL;
+> +
+> +	if (args->sheaf_capacity)
+>  		return NULL;
+>  
+>  	flags = kmem_cache_flags(flags, name);
+> @@ -191,7 +198,7 @@ struct kmem_cache *find_mergeable(unsigned int size, unsigned int align,
+>  		return NULL;
+>  
+>  	size = ALIGN(size, sizeof(void *));
+> -	align = calculate_alignment(flags, align, size);
+> +	align = calculate_alignment(flags, args->align, size);
+>  	size = ALIGN(size, align);
+>  
+>  	list_for_each_entry_reverse(s, &slab_caches, list) {
+> @@ -252,6 +259,31 @@ static struct kmem_cache *create_cache(const char *name,
+>  	return ERR_PTR(err);
+>  }
+>  
+> +static struct kmem_cache *
+> +__kmem_cache_alias(const char *name, unsigned int size, slab_flags_t flags,
+> +		   struct kmem_cache_args *args)
+> +{
+> +	struct kmem_cache *s;
+> +
+> +	s = find_mergeable(size, flags, name, args);
+> +	if (s) {
+> +		if (sysfs_slab_alias(s, name))
+> +			pr_err("SLUB: Unable to add cache alias %s to sysfs\n",
+> +			       name);
+> +
+> +		s->refcount++;
+> +
+> +		/*
+> +		 * Adjust the object sizes so that we clear
+> +		 * the complete object on kzalloc.
+> +		 */
+> +		s->object_size = max(s->object_size, size);
+> +		s->inuse = max(s->inuse, ALIGN(size, sizeof(void *)));
+> +	}
+> +
+> +	return s;
+> +}
+> +
+>  /**
+>   * __kmem_cache_create_args - Create a kmem cache.
+>   * @name: A string which is used in /proc/slabinfo to identify this cache.
+> @@ -323,9 +355,7 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+>  		    object_size - args->usersize < args->useroffset))
+>  		args->usersize = args->useroffset = 0;
+>  
+> -	if (!args->usersize && !args->sheaf_capacity)
+> -		s = __kmem_cache_alias(name, object_size, args->align, flags,
+> -				       args->ctor);
+> +	s = __kmem_cache_alias(name, object_size, flags, args);
+>  	if (s)
+>  		goto out_unlock;
+>  
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 4eb60e99abd7..9d86c0505dcd 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -350,11 +350,8 @@ enum track_item { TRACK_ALLOC, TRACK_FREE };
+>  
+>  #ifdef SLAB_SUPPORTS_SYSFS
+>  static int sysfs_slab_add(struct kmem_cache *);
+> -static int sysfs_slab_alias(struct kmem_cache *, const char *);
+>  #else
+>  static inline int sysfs_slab_add(struct kmem_cache *s) { return 0; }
+> -static inline int sysfs_slab_alias(struct kmem_cache *s, const char *p)
+> -							{ return 0; }
+>  #endif
+>  
+>  #if defined(CONFIG_DEBUG_FS) && defined(CONFIG_SLUB_DEBUG)
+> @@ -8570,31 +8567,6 @@ void __init kmem_cache_init_late(void)
+>  	WARN_ON(!flushwq);
+>  }
+>  
+> -struct kmem_cache *
+> -__kmem_cache_alias(const char *name, unsigned int size, unsigned int align,
+> -		   slab_flags_t flags, void (*ctor)(void *))
+> -{
+> -	struct kmem_cache *s;
+> -
+> -	s = find_mergeable(size, align, flags, name, ctor);
+> -	if (s) {
+> -		if (sysfs_slab_alias(s, name))
+> -			pr_err("SLUB: Unable to add cache alias %s to sysfs\n",
+> -			       name);
+> -
+> -		s->refcount++;
+> -
+> -		/*
+> -		 * Adjust the object sizes so that we clear
+> -		 * the complete object on kzalloc.
+> -		 */
+> -		s->object_size = max(s->object_size, size);
+> -		s->inuse = max(s->inuse, ALIGN(size, sizeof(void *)));
+> -	}
+> -
+> -	return s;
+> -}
+> -
+>  int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+>  			 unsigned int size, struct kmem_cache_args *args,
+>  			 slab_flags_t flags)
+> @@ -9827,7 +9799,7 @@ struct saved_alias {
+>  
+>  static struct saved_alias *alias_list;
+>  
+> -static int sysfs_slab_alias(struct kmem_cache *s, const char *name)
+> +int sysfs_slab_alias(struct kmem_cache *s, const char *name)
+>  {
+>  	struct saved_alias *al;
+>  
+> 
+> -- 
+> 2.52.0
+> 
 
