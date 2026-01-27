@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DFEDCF65E2
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 00:51:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE031D1951B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 00:51:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 712DE6B0088; Mon, 26 Jan 2026 19:51:55 -0500 (EST)
+	id 31E4F6B0089; Mon, 26 Jan 2026 19:51:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C0B66B0089; Mon, 26 Jan 2026 19:51:55 -0500 (EST)
+	id 2C8EB6B008A; Mon, 26 Jan 2026 19:51:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A2166B008A; Mon, 26 Jan 2026 19:51:55 -0500 (EST)
+	id 1C1886B008C; Mon, 26 Jan 2026 19:51:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A9316B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:51:55 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2295C2E39
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:51:54 +0000 (UTC)
-X-FDA: 84375916548.08.CB4D388
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3CDD74000C
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:51:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEotvvZF;
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0D8CF6B0089
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:51:58 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DDD5ABBF93
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:51:57 +0000 (UTC)
+X-FDA: 84375916674.23.3FBFA92
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1D46F4000C
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:51:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YqEHTf4Z;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769475113;
+	s=arc-20220608; t=1769475116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=VPcButAP/UZ901ko67k+uVch1acSmoZ0yMY7vXyJSOk=;
-	b=v0khVLpqPxYFIOkzWFgjSuTZ/KL7JCELuYvtPG5kJksWEe5uECvCDJsEBH67HR7ZdlIBqM
-	zyBg1qdU1AyPsnpgVl5IsnhGbTZYq5HiGZjyu84FJkElYJEeo1gLSpxAQCN8ZfG8hOIbKQ
-	PNiI1Qr4sfyWHd5jMaCPWHPi25twvtM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769475113; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T7a9RbCOrROWoP016V3+zUrjci7rmnK6fuyJb7ZGpEk=;
+	b=7hcF9F8rrlZCIdoJgdSoXMYYJcEtjhnOsvyvyjmFRudzjOf6FH/+7R14ZxRElKgZB5meqW
+	YnCpORBhAP6+DfDThTFrQH8mGPWJDK/uFXh99rwxkT3/jOgMUnYjzGFa2fprH4z3/QaKEW
+	/awBw5gZfBF4IMLCdP0pE/NmrIAk4r0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769475116; a=rsa-sha256;
 	cv=none;
-	b=xMp2Yj3kDwHBaRMhfcmFNXaBiRdhwKNJMqpawv4O2y9FuCR97q4rYLKfYgIGQLfkz1EihA
-	ZWg7FMmoDBivLz/OHqBtYQLWwuGMJqLn2CKjGbdAV0oxpkoX1mwKpRi6ZW8VkK4JoG5rUQ
-	4sQtnvZXR8yrkccyQCshrIC7JM0cmXc=
+	b=EBkU/AZNrmroMZxQpX9xz8C6uIAxBANuRe5/MMR5VOrFMlo3UnSqnFpNtJakJGi/vhTeMT
+	1TyBh9WKx+dLG2JfJtPiyQwohOl+WlX2gowhxTfbM7XhqDqQtuhA6ZunyXA0dUxrJpTMJc
+	6yUMjMoG7jQyYQqPjccbipgDabz6zto=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEotvvZF;
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1233702afd3so6836345c88.0
-        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:51:52 -0800 (PST)
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YqEHTf4Z;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-11f36012fb2so7266636c88.1
+        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:51:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769475112; x=1770079912; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VPcButAP/UZ901ko67k+uVch1acSmoZ0yMY7vXyJSOk=;
-        b=aEotvvZF/37OR36IHTm50SVuNaAHz8TRnyeCLjDfyjLHexf90jMW0CMSr1V97EtVXL
-         ms9QCc3mpU5anyFqhOcN8cJhJBIUOzQLTG/3/cLIe/1zkslJf+VIMK+xKvF6FibBjirP
-         NHC3ZAmA9BWmqTU9YySX/sWHAYdC6BepAxS8IcWuYyI9ztWF0r4qaYldXZnIwTfD0nW2
-         maXNgj0+NCGgAgbKCcFLoZSLDtaRGhYUM9x2S4ld8hXzNKfTFhL9R4205JgcNcFPgxH2
-         a1gKAu2MF10LoGoUVwhJYQxlJ6OublFBxgQhIUk1pwWIbA5RS88p26xmaAiiO2rvY8re
-         /Mrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769475112; x=1770079912;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769475115; x=1770079915; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VPcButAP/UZ901ko67k+uVch1acSmoZ0yMY7vXyJSOk=;
-        b=kXte/8h5Egc58O6cgJdWWub9htw1cyXKlgzVMoCXWrI2HM4GTdOyfg42vtpbAGEXIA
-         x2/341bImQdZIWWs/xxLVq/CmaaIR4S+5YZKdDgvaDN+oSM7p/7OdYQcKMhrmfjeREVe
-         2PajBkarqozdCkocwsCTgbsNZ2yZsZo82rsMhQHKXWbY2O9xELNRp/eCy1DWzVCqAhFt
-         AmOywCXPP3cmsE+sKG3ipzUX4sV+flbbzW/DWXOQBpaAxicOQ5MuLJyp/sEfRgg2kaq0
-         XIPHS5LcaCpSTMOTU0g+wGirwyGKY4+NLffGlI0LlhXVG7vE4SuPOdTuB9n4X2wbJO3a
-         Wzuw==
-X-Forwarded-Encrypted: i=1; AJvYcCXFXZuKIEX7sdIhEPWFmdoVg6HqdmYif+ICs3h9PiZppMHc5jnzZVvyFZb5ESRdZBVOaGl0p/6tag==@kvack.org
-X-Gm-Message-State: AOJu0YxZZlES5EJ989CUDXpgMIcfJzbqN4ViRepVoAUm30lfEWYoulM1
-	mqHxc9JTOcgDahncFJ8k/zYFLbEzMz5QTI3qblA5xGcblaAOa2YFxTqM
-X-Gm-Gg: AZuq6aLX3lBpFIsdc7jk7tQn1pGH3dUhfwBaWmWW9Lb+0ua8aPcFzYDyAn8JyTZ/bOS
-	Uh4/yllhO+kIhry4BMa+Q8bkl9S59ZdoxZpJZg315D9/LmD+fuTg5XtleFiGRgM1Eznqb//VXZr
-	J+xLzUgSunkv0oakmLU5nNXgULyT9rPs7H4fNj8eQDMmN9VISdItoXYnoLCgCHS+T/dfWuWloA2
-	rb01GDOMIlT2R3tjv0Q++i1CyITbykOd18wne3VkC4X4gaOTmf/yYD5CgxN/PCVqCpFjO+e31Q6
-	2c3yt1iK4rKeLmM6ifKnzZIk0zNFysVHg1hmr26CtOkTB9VvXOClw21dm9AQIc4Sy4sjUmKHeYB
-	X1lGQwg5XxV0S0A6OGWQlvSM41qh1W/yJnnIGYM+3j3zaM8tJEacZ40ekda3WcW8qAHGJaplZOo
-	DYsgwwVW6zEO3kvnGH98hohcUYfuLoQkvYIPPmJEkz+OM=
-X-Received: by 2002:a05:7022:6189:b0:11b:9e5e:1a66 with SMTP id a92af1059eb24-1248ec0542amr2982851c88.14.1769475111776;
-        Mon, 26 Jan 2026 16:51:51 -0800 (PST)
+        bh=T7a9RbCOrROWoP016V3+zUrjci7rmnK6fuyJb7ZGpEk=;
+        b=YqEHTf4ZFXeTl+q23fY4apbG0jC5nfTL2hZJ1piAccOvQ/WhdxBpu5GI4l3gx+h/La
+         t5PyM/TSbzV4VNSbaQtas5DMv94ZXnvJGoNtDKFYIMJnNEUYHTrryqHaolDvQKIsQA+8
+         oLrJ7V52/lE0CzC0fE1iC9xY+HU0lv3E+/NbjW+ROmq0BG+N9r6XYylceEJMkXF23YA0
+         +gubmouY5zfWidvFvdafdODc7XYdxzU251Fl2Kn6rRlJOrcFtFKIT8RrlSduiO2EhDKb
+         voNsAh6yElUx4AOYYFI1JZCSUEJPYodRt+4ScuBczkauPP3DLFz3zLFXurMKOraPrZA9
+         97OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769475115; x=1770079915;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=T7a9RbCOrROWoP016V3+zUrjci7rmnK6fuyJb7ZGpEk=;
+        b=h9955cGXEDnzXUaRrLxEbSfSX7lUMcTTlCBfiISC/d1qU8bhfDUvfUwhz9UgoNMSaV
+         5z49auYIkce/lWdjB5YPP7lMv0017EhgmCRSOEcomDqOFKjI3MpdfSEQHcXZOO0DVz5K
+         SLHCcLBQT2Hfu5Ik+7jL5lIIZw7vFqE8HSaZWIalisK2t0MbWB8QHPitKQOgKzTJ9gJ1
+         7C3bj6Li0PnRTVLVn1MaRe+8rnEoyqACEsg9MCSBnjSiVCdgg8XByZ6DSV6ZfYxoYPGK
+         WlQMzmsT3j12WrMVVyxbFFOo6NTWOirBLo+KxcNv3PCEAX1cipLIzaFBmvaTyJH69vmw
+         0New==
+X-Forwarded-Encrypted: i=1; AJvYcCVRl910t/PQNDlhkQlRI89a88UDqM6z0Krm76H7aag1da8NxG/bvV22IsJcDSfUSB676Ft9OZsngA==@kvack.org
+X-Gm-Message-State: AOJu0YzjnS1aCigwnhO7qFqsTftGrdzPd9pBF8EOQPc4HpuusO3BQrR+
+	BX6Mxt/MBgXu7SBpQWp2tZ9o6c3RjzFInxla0srSkKpqUhfHx4CvEhor
+X-Gm-Gg: AZuq6aIDsP5Pkic5S3kUFMD25gWYatrKepVG9VyIgXCle/aVih6c2uVAvYwFpEDntXS
+	tX9bZFW4ITk8MHPztT8yf1NVTMHvbb/eFaTuGOEXJ6IhKxloi1AVOFhhmij7SS7EI+0yGQsFWjW
+	WqliUDdbUrL+XcaHgru58oWebwSQHLXwNAtMbd7sSqA27UszCoM3mion5bR4abRh6hY5ww6iYUP
+	URIX6S3CcdMajnEbpt+4xB/LBfYrwKDfG41BZMa59QWXjRvHFdltKFlwx67f+E7H+DgZPa9lgY3
+	zY2czuiOi+2S9VBiOI8lLWKSBNhCEtoKicVnRqZS9TdiMktm5/kqEAKpGobyxGZQgIW3RNDYilM
+	v97KKQxabOLIf4EckKKciQewXISSlrcuPyid31Uf9e/QBZkcK5lhu3MG7I+1tL18RP0fCTOJRQ2
+	POKLxQyEe/Fq3PoXbHEqvNc6OpZDkIZ+mlDYBeXroIwfs=
+X-Received: by 2002:a05:7022:4194:b0:11b:a8e3:847d with SMTP id a92af1059eb24-124a005f2ebmr4510c88.10.1769475113324;
+        Mon, 26 Jan 2026 16:51:53 -0800 (PST)
 Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-1247d91b9e1sm22185065c88.5.2026.01.26.16.51.50
+        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-1247d91b9e1sm22185065c88.5.2026.01.26.16.51.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 16:51:51 -0800 (PST)
+        Mon, 26 Jan 2026 16:51:52 -0800 (PST)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -100,20 +101,22 @@ Cc: akpm@linux-foundation.org,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: [PATCH 0/3] Convert x86/mm/pat to ptdescs
-Date: Mon, 26 Jan 2026 16:51:37 -0800
-Message-ID: <20260127005140.197847-1-vishal.moola@gmail.com>
+Subject: [PATCH 1/3] x86/mm/pat: Convert pte code to use ptdescs
+Date: Mon, 26 Jan 2026 16:51:38 -0800
+Message-ID: <20260127005140.197847-2-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260127005140.197847-1-vishal.moola@gmail.com>
+References: <20260127005140.197847-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3CDD74000C
+X-Rspamd-Queue-Id: 1D46F4000C
+X-Stat-Signature: idaodx6eaihyga5fnxjbx5h3a78dr84p
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: h8emxpk7g88n4fsspx4z3o366mdgd4aj
-X-HE-Tag: 1769475112-910445
-X-HE-Meta: U2FsdGVkX1+WGNbTfoejMJm3HZNouQSfQAAtC4wtvWDblkITm/ryFb2Y6npWm49IyagLduzEu/kSD/O4B07K/bUaCmdng8snURtjQtDchTlxMkjveHU0udHL1fC1NbeQYQp/OOglrhabER7wRcmmy3t0x7HZsTd1yVpCXwTZMzxMta+oIOrjcbtpwfN4LI+KqxUh+fHd92dt9st04U6bpNS8kjZ+m+hpUfv3hfqq9AlNFkwVvkbrIJQ/IvhajsClfnw9ms6fhGgnQYwcZa5VS5VczIi3uszhvZsyBxEK5zFkOlov5tGHa3MWWeYZC4Gfs/MOqcCPpebIcLbG3VtjYO3f95u+NIv2smFDfKzwVHqAHjyD5j/kOzIf/z0mEKgouLhL4AP4N/4/NSdDYTwD6QIv5EltnfpaODg7M6F40YPVyvWQ7cuuKpPGPGc4sIMZdCdAPwteUYUxSnX18cokgfksBBeGMwglRpR/QRyKbM7SAcfCygN6Hnq00hGHBFYzr6OSI6x/dCmVwTdC/xtkAOwd/lvqp6O+/5D2Zcw060Ucd6N7rzRvlJAw4Mappxoo6GUiRlGf6bFe4oyJ40IXAWyJ2elVQlWRzjW7hGWat6NuK1+hj/8vCnOb2KGU5TP7JsGk6TQ/P1AUa0ArO4Wb67m3SNXQZnyhErvJBOEXxc7f+r/6l3WepVx5S/Le/TtJTWgWGkPyihHEapIpx660Cmrh7RivG4rZ8AEkJc9iGO5rDYs92KYJ8ECLVneeNh5FRvzh+3dUTEJuQaJEzOzwAHL42clzg2PLfG3ATG8bpvxYDAYiFpwHoAynHFWSL7osH9ZWzbZShSSybsyDZWfW4XOEJ64HirjjB0wY7UbYnWuaXPeQukIgsTBmiQkfG0gaNWqcdw6fzQeJGAqhkuZzqk8d89ikwncuF0vrYsipyftrndpKaGfxP+o0BP25OYQAzGulSpaLK6MJQQkoyXd
- IG5a8VcB
- s+9BvIhJgJsWYmMvLDf59i0y4qr2F899cmcgDDXynr2wqKBk4cIbrgCqpE560WNfeMCli49e+DdNiye3mqS74kriI5mK5HoMkHzqKoxPjmsi3ShlA4jKKUcMVu8FPiyw8Pk3014mVIvudQIcO9hVPcd26arsl5v3emQbL
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769475115-508618
+X-HE-Meta: U2FsdGVkX1+UkKOp6CKSwIgw2BccRJE57kTNZlQ0qNVwvEmjfpzIQ41Tm/rvUsq3aXpvqHcvaqIA4llnp7OwYd8L20y41f2EqJqTkfQ50wu/ildPql+OYNtAxf/9E72dLWHsHaFz99RCzRJdh7rBzE/OpATb+ijAy2Ld/BSXHCNB50Oc7OpPMmrGVETnLHmSsTsqXNXI/V0ujyLT1zGcNZFnOFGTjvmIc3xx8PlGLxENn7TABDT/Kndb8NtyQZBHJzz3FNzaqsa02PuO3OGwDnNCGaz2iUR/s+70+LUQeKNeCpflHmR7guO3hyYLUEBwFRJb53lZOJN4r8WZhKzoJrg5UDx9FtFazYhkfCF6rZbhCAtxXAOgDnhSIHgaFQbrj1mDjBuyq9rLd1fKXNRD7mB56+uA3SelvDDmJzcVg6yOUJgdRE/v9xOhugr9rAfxMzU0RxJESP0hnOsETMdFw+3dUIsqg0FdnydMgYLWlFN7HkVMmI9htSx67dYrNPjkFplTdvHcNA+RmzvmbQkwqH1CIjZZhSfHLWXEG4mkAWkcVCpm8iaTTeJ5kZSki409PWcmuOMCD/0Q1ImN704sCfdL+bcjGHlMQldXV0W0KvwxiZvPP5yCCENisUzgn6SoOdpB/qb8ye4p6iXeFGsg3DUbGn7JoNIZEin2HlkN2R+yHT48kHqWbSqdmJRyTRj8dVvZeUjZ2qo20571ojKaPkTdFQ2hnh8ERRmOhIixAYc78WUTHX2mnC6okzhIqgQj42wVlVL6SfM2RfJzju/G4/fiEPpFVDTf7jj5z2/pV6EcespFMwqIN69qOOeVtZmbFsNjMapeXs4s/Sv4+zpFaSkCMRnYkCMU1EjfMN60uH9veuBfaQvaw/2PGs2epOL9+oBqouvjqzhLzZDlj6QT13gKdNA/VcYAf7IbDpUl/2/oEAM4nqx5K4wyBW7IBpszrdiJr9L50Dh022wXPT7
+ 67u27EkX
+ BmguGDRwS5aY81ps/QudFxAYRdawEM5cuKENU/x7l3m3Blk5cOwGWQTeZkfh9yAKYxQMCMkZ0HtoGpruILceREcdMxeimnCK9iJ4OZ6l1/km2PfARDXyxYSJt9E7Ewjrx9fU0qnrJhDfMGg8Le8B4yagzFwoCKfG0FMopocutXaXjOcWUb4XPLGgPERWa5tzIJwMpGZd0XZd8tn7ih53dO2dlHS9keHk/1ZKRcJMBdVU8/PC+f56pgZukuyFtlBAN4KRxBqksN/KFxGZ2SU4OFkGEtNrXvQhfdLPgaAX8dfgiAzCjAzzL+he9WAbErcgM0tFjzAAg+E4hEDDW6Xno3o7Htt5QYxbWt4wu6WiPmfqWhUhILmHp0CylwR1MNAfo9jiVw37sudNHYVDZ61YOcsE5ca30WJSU1MZsNhve+dBaB5+UE1MeeQH+WwWUDxAbVk4AivtQrLOonZyF6ucWRTngMAalAL8iVL9OL+don0wEWRcYQNDNDG8TwrBApEhIqwkV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,28 +125,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-x86/mm/pat should be using ptdescs. One line has already been
-converted to pagetable_free(), while the allocation sites use
-get_free_pages(). This causes issues separately allocating ptdescs
-from struct page.
+In order to separately allocate ptdescs from pages, we need all allocation
+and free sites to use the appropriate functions. Convert these pte
+allocation/free sites to use ptdescs.
 
-These patches convert the allocation/free sites to use ptdescs. In
-the short term, this helps enable Matthew's work to allocate frozen
-pagetables. And in the long term, this will help us cleanly split
-ptdesc allocations from struct page.
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+---
+ arch/x86/mm/pat/set_memory.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-------
-
-Based on current mm-new.
-
-Vishal Moola (Oracle) (3):
-  x86/mm/pat: Convert pte code to use ptdescs
-  x86/mm/pat: Convert pmd code to use ptdescs
-  x86/mm/pat: Convert split_large_page() to use ptdescs
-
- arch/x86/mm/pat/set_memory.c | 37 +++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 17 deletions(-)
-
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 6c6eb486f7a6..2dcb565d8f9b 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -1408,7 +1408,7 @@ static bool try_to_free_pte_page(pte_t *pte)
+ 		if (!pte_none(pte[i]))
+ 			return false;
+ 
+-	free_page((unsigned long)pte);
++	pagetable_free(virt_to_ptdesc((void *)pte));
+ 	return true;
+ }
+ 
+@@ -1537,9 +1537,10 @@ static void unmap_pud_range(p4d_t *p4d, unsigned long start, unsigned long end)
+ 	 */
+ }
+ 
+-static int alloc_pte_page(pmd_t *pmd)
++static int alloc_pte_ptdesc(pmd_t *pmd)
+ {
+-	pte_t *pte = (pte_t *)get_zeroed_page(GFP_KERNEL);
++	pte_t *pte = (pte_t *) ptdesc_address(
++			pagetable_alloc(GFP_KERNEL | __GFP_ZERO, 0));
+ 	if (!pte)
+ 		return -1;
+ 
+@@ -1600,7 +1601,7 @@ static long populate_pmd(struct cpa_data *cpa,
+ 		 */
+ 		pmd = pmd_offset(pud, start);
+ 		if (pmd_none(*pmd))
+-			if (alloc_pte_page(pmd))
++			if (alloc_pte_ptdesc(pmd))
+ 				return -1;
+ 
+ 		populate_pte(cpa, start, pre_end, cur_pages, pmd, pgprot);
+@@ -1641,7 +1642,7 @@ static long populate_pmd(struct cpa_data *cpa,
+ 	if (start < end) {
+ 		pmd = pmd_offset(pud, start);
+ 		if (pmd_none(*pmd))
+-			if (alloc_pte_page(pmd))
++			if (alloc_pte_ptdesc(pmd))
+ 				return -1;
+ 
+ 		populate_pte(cpa, start, end, num_pages - cur_pages,
 -- 
 2.52.0
 
