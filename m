@@ -4,90 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC130D25922
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 02:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4B39D25923
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 03:08:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6076C6B00B1; Mon, 26 Jan 2026 21:46:18 -0500 (EST)
+	id D042C6B009E; Mon, 26 Jan 2026 22:08:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AB106B00B3; Mon, 26 Jan 2026 21:46:18 -0500 (EST)
+	id CE5BA6B009F; Mon, 26 Jan 2026 22:08:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B3E96B00B4; Mon, 26 Jan 2026 21:46:18 -0500 (EST)
+	id C120A6B00A0; Mon, 26 Jan 2026 22:08:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 385196B00B1
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 21:46:18 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 086F1D3D77
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:46:18 +0000 (UTC)
-X-FDA: 84376204836.30.0E0A8D5
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5D0E020002
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:46:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GKEdwOF6;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769481976; a=rsa-sha256;
-	cv=none;
-	b=gxy4V89Sp70UYgxOTe/aMffiR5C70P62f3B3gsNTJobeMgO3hGNaFKz5YbBFShqetlmk0K
-	8ZzwPx1qKcjxxJAH1cPjWntKRDlJQ/T8RmTQiSRNcIYnsrB/U/GRTrIp+okPdK8CsPOVdQ
-	tZ8bGcgqp2NIWtPl1Bghdq4KszODDg0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GKEdwOF6;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE8AC6B009E
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 22:08:49 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6AD28BCD47
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 03:08:49 +0000 (UTC)
+X-FDA: 84376261578.26.9D46237
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E9AE680004
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 03:08:47 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EWYFjNUg;
+	spf=pass (imf02.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769481976;
+	s=arc-20220608; t=1769483327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VXv6g7uPf7qxRkkIiMBqCwgrrYFAEGJ5DOUNMycRfvU=;
-	b=KVRvv31ovc1C3qu1YAoUxooIMDU5fiYYIBQ6KdurVODJrCh0KQ2hwdNjjSH3NIh+hHqLAB
-	++HOojyhet+v//GNDJtlhPt5QqL7EgW8lvpo9q6fTOGQm66/65kvDSCYgvUzPnRHKxPtzP
-	6YYoheLIwUo8MwEzZU5SkVMthL4pMfo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769481975;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VXv6g7uPf7qxRkkIiMBqCwgrrYFAEGJ5DOUNMycRfvU=;
-	b=GKEdwOF6C3Mk469brs7wCG8M6vexvZC8GeGdIk5y8J9fSliXRiLQvf9qXcrBfqw+shmBOi
-	sCo4oW3bBHSkLZnwIhro3QagwKL9z04keACu+/jphZ7u4EVEKzJk4fE0C8CYat8xniqq5S
-	smCemBHDBexxL9q8cWq06X2bDN8qSkM=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Michal Hocko <mhocko@suse.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH bpf-next v3 17/17] bpf: selftests: PSI struct ops test
-Date: Mon, 26 Jan 2026 18:46:04 -0800
-Message-ID: <20260127024604.495018-2-roman.gushchin@linux.dev>
-In-Reply-To: <20260127024604.495018-1-roman.gushchin@linux.dev>
-References: <20260127024604.495018-1-roman.gushchin@linux.dev>
+	bh=+iIk24yWejml0i9ywY8UvQx+ATbXyYw6cNWx0ZiGanI=;
+	b=Uay6ATMnHee93TrfvsOjrVUcy4BR3uic+8cmhmTgkJKWqC6MII2vae9OOnCsWjlrivHYZd
+	oiOjAMLlcFEna/bH0VieE+V2h+a0uJEWbSvz65p3Inrf6L28/J8PgJRje8chMZTxtgxJJ8
+	mKexLcwvSsN2mhlryUoCBobjAhHYJ8E=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EWYFjNUg;
+	spf=pass (imf02.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769483327; a=rsa-sha256;
+	cv=none;
+	b=270QGdPTZJeF2KzPUZz8YVTRJK7x9A39nKyqED1pbkzlbcYw3c758KtSvJIyb+/3X2AQuP
+	Kmcm8CWvsFafVLO42MhswkcfEvjqFqQH0bEAKqUrRP3LrNC1wnMMl0UN32UbtAJ9eiiYHN
+	QcgOsinImJez+I1ijqj2bSn9YBuGZtU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 17F7160051;
+	Tue, 27 Jan 2026 03:08:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B66FC116C6;
+	Tue, 27 Jan 2026 03:08:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769483326;
+	bh=r2VRHW3WxWnawAiIF9XP8PHtMz4QMDWUBEXOXvY8H2U=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=EWYFjNUg75mYuAauRKChhRpUjAEjA+2PP0uoHx+vXt9zaOPOzFiGq7Dv2dntKzOn5
+	 AqKQnuKIa0oj6WLjNNHdhfmSptSHipYNrlTLhbMZOhBvYynMdlYOa/QHukZJv0l1iy
+	 mtdAJ96k6bZ8QvNEwJVhfAlOOgG99x3aWbS6ztRUaeIsHlzb2WGskT27+p4welYoKB
+	 VZZPS0mMvmehf8Q3Wwjdv6tARtahUqmREThO3MaR2Haybg7Sb6+dmiUQEKRN2yxH6z
+	 oByMCB6gH9W9DYUuiw+WP1OMLhJB0rhPeSslPGmKe6Emm3G4eb61YhoTBzHPrmIqVy
+	 m+cjo2vtu1pYQ==
+Content-Type: multipart/mixed; boundary="===============1477226859959415716=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Message-Id: <11e47e72d311eb7a7a69fd74e1701c3563ac2f9d7e4fd4f7a94d49e83885ff22@mail.kernel.org>
+In-Reply-To: <20260127024421.494929-12-roman.gushchin@linux.dev>
+References: <20260127024421.494929-12-roman.gushchin@linux.dev>
+Subject: Re: [PATCH bpf-next v3 11/17] bpf: selftests: introduce read_cgroup_file() helper
+From: bot+bpf-ci@kernel.org
+To: roman.gushchin@linux.dev,bpf@vger.kernel.org
+Cc: mhocko@suse.com,ast@kernel.org,mattbobrowski@google.com,shakeel.butt@linux.dev,inwardvessel@gmail.com,linux-kernel@vger.kernel.org,linux-mm@kvack.org,surenb@google.com,hannes@cmpxchg.org,akpm@linux-foundation.org,roman.gushchin@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 27 Jan 2026 03:08:46 +0000 (UTC)
+X-Stat-Signature: ayfsdoqp7bhjgrfm8dqbdwp9rmi7eqsf
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5D0E020002
-X-Stat-Signature: yahnuokdix67pmhfkn4tdqg5hkqu5d1h
-X-HE-Tag: 1769481976-279647
-X-HE-Meta: U2FsdGVkX188DiXvVHTVimgmGkCQjxVF2uGENQUwf/GAdY1nOgN9gYBl5PMbtEy8XehvwpfqR/g33W1i1v9GptssvQ8q0+GGgmXiYe+gTHO1WN1JkzvwG/QVrksdiEiHBjKKncNx5l1Qw/yqIZDBofjDpsj3DFvyZz3Hj1C+nI7xgbsJpZif4cvtF7SW7hhU/MOtxzYJPpZH5D7uHpyJ86E7I3JSHoHsrngrohM5NCQEPHUt7Cy4snmLER93kvS4PmfXVXtEtxxt6KmsaESPwmkJ/nwxIXRe9zOSwSntNOxMb/WiOFNnlx9/zFGiD8j0vs1KmwbpfYlfb0YLvmKyPJeTWbuZueBINkWFRXf6bMp7iu1volWEu9XKJ508UNmz0RQ6D6a3Th217LCXRuC0hj6OfOPQ+kGE2+p7HgWCsdB0ZvaP0HOvOIEPA4uBpgcPgEz4+xsSdgBZmh9OVM8UlXF+OesSYJuuPmlD4qVsd/b0SHmb+BgTlkj0/sm336K/6dSU84lA/8FV5RvIBcceJrNeZs7qhSTRVvJE3xBw+CqLrZhji7y/hsMaLCT6i5RO60H8SNsqwoJDt2ojFRrOG7eo5z2tGSIcPiiZdj/kbHfuk1J8JGurjJlRwQuloVvy2q5/otXFJCSp2CLgaU+dvFZzn3a71AHUETmHtFhog8Pp9SmfxkfAVyuPlAZ5EKocz0EQnN0pqsVHXiJKiF0J6vnkFzRqy28ouZUKkWN68bZ3DiNm5vgfse7PTQXt+vFVEVWeUpt+D/UHhFjESuWpkKmShI+VIQkuO5LvtfA+liaYXb3P1fEcfhik8rAtFXnd6jiR8ZRcpEX3eoFCB/PkUnGmkpAhQ7WMP8SWTk8UKsBV2XF4FU4ivoJr80bYgb34AgxvJqJk4cSSKZRuCi8XkLO8/5yrezCrwwpWeBHpP4jvP4y0jOnEX7QGZiezb/LLwyKL+9LswYCiYvE9FCB
- oEpJ9zcW
- 2kcnJaV0NurgpxKJGhq6nywI5txxhRMpiElLHPg0MOx4qhdsP9Fg5blA0+OlmXzCLV+9s5tsN4qDa9pThvgck9z0L1IgOeQHKOQqbde+GSKgom/VnXjmUbo+07D27yRfbSSzqz9Swz2Rx58mtjZ3x4DaMJ4kaoBLQoGgEcoEjd5pwStT0qTqLIakZz+MZaIZpGRv3UcodppgckxA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E9AE680004
+X-HE-Tag: 1769483327-209137
+X-HE-Meta: U2FsdGVkX19KZjPvmE3dMzkDjh5YRLhVKts46oKsqThuShYgRcLNoFwjmGRR04wO9xvecJjeIbFZfq22IlnVgWBBM9bNU2va5U1FlXB/cKAYLxL3OlZujOM1nOPXrhp4viuRrcFNtDmefUhdl3Tho3NNJKmfv5hVC3psXwzsWeXEpA5NUzF1O5Vm4cofQFH1lKN+ugAjlNTc/QzDzyIAz/368hWCxtM8jHbRLoH4ui7nEQK0UZCKddWsnn55oxDqzG3Z4NG5cTv0HbcEk3/VNO0cBnhtwMnO35fqPfZmSwjxhkMGZz2oGN5Nn3umpjbMCDx8GhQzkPur589PkB+FzTCJtIKzOHuc7npsxb1mbH9qwTWXcrU7+sL+9DQONXuGkM1sBGgikxOKMMjIIDx3QXLNkZyL+WvFfPczPAh43sMk3mIrF9GSqVtbDMkabcohVBKqMv9ArUM1hAVzZV5nbYhKpZZEz6oa0/XaM1HeP8m+OZOS2yRXQme2EcAUwLFaMuJ8lwqP417L0N06P171CLZ9TdGJ9Z5eD1lVKKMxsTrYB9oHoCrX+9B3RfiMV/KjmgU4sY0RykDzusd29HZxPfBFlAsEonJfsMoNnuhOZQgagjg6NRGmXwlptd3DwM0giwqNFqkV6jrU+D74SjZ5v+4gga2oazYNHcwcxGl2ATETQPqyYf7TQzKe0mImXlDiCbYeq3qqFg5KmFisoOxwmEuQ4lN+FMsrNYTFcBiartrPOK9P06J7ifMQE3M0XEwGPdcpP5dAI0eMFpGTAvJ4jD74yc5y1R70nQ1kARledpldTc1hBIePEJTSy4NxNE324v1JEDSwxB/eftY47XGiViRNnDYQ8z453hKtlSRidvlm+WQpwj2Zsl6j68NmU+YaMrygPVE8N7IYLw795l31O3+QeqD22LZIASQA2s8/NY960NtRIA88iVMIH1/MuBIK1PzONZjSAV4df9s0CLi
+ DD6aA11A
+ zVl9LwaZcNIBuJnyHvSRuJtto5A4qDdIDRZlZXdImYlCWDTdW1hyyOBqd+fLaeTcrUBbqNwHtO0Og5gk8ZPYzVSDtLsp6cEhlP2QcNEhouHW7u2ws9e+ZW5U/1LYPJKD9OR+yPXISasGqKl+KXhazAs/olUUI7KpQjQ/IgVY0kFGCZOOrWoLkdJCUirK8fDPp2IydJhuSHkdAYdDOcCmGv+nRAdAbgC+xJjrqFdkC73KsktOMUTuzwqCJT5j0vZPzasYM+BCpVlvTMI2IXWPVnFLbitdxtik00ZC5o3570vRKQ/+mOVgMuIZvmrtAHsej7KTyO4ODpCIW3AfGqBZIS284y76d7Zv0NW+VV1Hbn+hYiVcs7SBVxexlfO6p1Oy07uLhgF5swauET3jAlh887WKmdHyU51TPDY17IzVrMItGJKxEUbp4njWbE5ZnPJwn0xX7XzaKldm5vx3M1Qhs4MDl6Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,352 +89,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a PSI struct ops test.
+--===============1477226859959415716==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The test creates a cgroup with two child sub-cgroups, sets up
-memory.high for one of those and puts there a memory hungry
-process (initially frozen).
+> diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
+> index 20cede4db3ce..fc5f22409ce5 100644
+> --- a/tools/testing/selftests/bpf/cgroup_helpers.c
+> +++ b/tools/testing/selftests/bpf/cgroup_helpers.c
 
-The memory hungry task is creating a high memory pressure in one
-memory cgroup, which triggers a PSI event. The PSI BPF handler
-declares a memcg oom in the corresponding cgroup.
+[ ... ]
 
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> +/**
+> + * read_cgroup_file() - Read from a cgroup file
+> + * @relative_path: The cgroup path, relative to the workdir
+> + * @file: The name of the file in cgroupfs to read from
+> + * @buf: Buffer to read from the file
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+
+This isn't a bug, but should this say "Buffer to store data read from the
+file" or "Buffer to read into"? The current wording suggests data is read
+from the buffer, but the code reads from the file into the buffer. Compare
+with write_cgroup_file() which says "Buffer to write to the file" - that
+phrasing works for writes but the inverse doesn't quite work for reads.
+
+> + * @size: Size of the buffer
+> + *
+> + * Read from a file in the given cgroup's directory.
+> + *
+> + * If successful, the number of read bytes is returned.
+> + */
+
+[ ... ]
+
+
 ---
- .../selftests/bpf/prog_tests/test_psi.c       | 225 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/test_psi.c  |  90 +++++++
- 2 files changed, 315 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/test_psi.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_psi.c
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_psi.c b/tools/testing/selftests/bpf/prog_tests/test_psi.c
-new file mode 100644
-index 000000000000..170c6f6a1a35
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/test_psi.c
-@@ -0,0 +1,225 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <test_progs.h>
-+#include <bpf/btf.h>
-+#include <bpf/bpf.h>
-+
-+#include "cgroup_helpers.h"
-+#include "test_psi.skel.h"
-+
-+enum psi_res {
-+	PSI_IO,
-+	PSI_MEM,
-+	PSI_CPU,
-+	PSI_IRQ,
-+	NR_PSI_RESOURCES,
-+};
-+
-+struct cgroup_desc {
-+	const char *path;
-+	unsigned long long id;
-+	int pid;
-+	int fd;
-+	size_t target;
-+	size_t high;
-+	bool victim;
-+};
-+
-+#define MB (1024 * 1024)
-+
-+static struct cgroup_desc cgroups[] = {
-+	{ .path = "/psi_test" },
-+	{ .path = "/psi_test/cg1" },
-+	{ .path = "/psi_test/cg2", .target = 500 * MB,
-+	  .high = 40 * MB, .victim = true },
-+};
-+
-+static int spawn_task(struct cgroup_desc *desc)
-+{
-+	char *ptr;
-+	int pid;
-+
-+	pid = fork();
-+	if (pid < 0)
-+		return pid;
-+
-+	if (pid > 0) {
-+		/* parent */
-+		desc->pid = pid;
-+		return 0;
-+	}
-+
-+	/* child */
-+	ptr = (char *)malloc(desc->target);
-+	if (!ptr)
-+		_exit(ENOMEM);
-+
-+	memset(ptr, 'a', desc->target);
-+
-+	while (1)
-+		sleep(1000);
-+
-+	return 0;
-+}
-+
-+static void setup_environment(void)
-+{
-+	int i, err;
-+
-+	err = setup_cgroup_environment();
-+	if (!ASSERT_OK(err, "setup_cgroup_environment"))
-+		goto cleanup;
-+
-+	for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
-+		cgroups[i].fd = create_and_get_cgroup(cgroups[i].path);
-+		if (!ASSERT_GE(cgroups[i].fd, 0, "create_and_get_cgroup"))
-+			goto cleanup;
-+
-+		cgroups[i].id = get_cgroup_id(cgroups[i].path);
-+		if (!ASSERT_GT(cgroups[i].id, 0, "get_cgroup_id"))
-+			goto cleanup;
-+
-+		/* Freeze the top-level cgroup and enable the memory controller */
-+		if (i == 0) {
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.freeze", "1");
-+			if (!ASSERT_OK(err, "freeze cgroup"))
-+				goto cleanup;
-+
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.subtree_control",
-+						"+memory");
-+			if (!ASSERT_OK(err, "enable memory controller"))
-+				goto cleanup;
-+		}
-+
-+		/* Set memory.high */
-+		if (cgroups[i].high) {
-+			char buf[256];
-+
-+			snprintf(buf, sizeof(buf), "%lu", cgroups[i].high);
-+			err = write_cgroup_file(cgroups[i].path, "memory.high", buf);
-+			if (!ASSERT_OK(err, "set memory.high"))
-+				goto cleanup;
-+
-+			snprintf(buf, sizeof(buf), "0");
-+			write_cgroup_file(cgroups[i].path, "memory.swap.max", buf);
-+		}
-+
-+		/* Spawn tasks creating memory pressure */
-+		if (cgroups[i].target) {
-+			char buf[256];
-+
-+			err = spawn_task(&cgroups[i]);
-+			if (!ASSERT_OK(err, "spawn task"))
-+				goto cleanup;
-+
-+			snprintf(buf, sizeof(buf), "%d", cgroups[i].pid);
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.procs", buf);
-+			if (!ASSERT_OK(err, "put child into a cgroup"))
-+				goto cleanup;
-+		}
-+	}
-+
-+	return;
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+}
-+
-+static int run_and_wait_for_oom(void)
-+{
-+	int ret = -1;
-+	bool first = true;
-+	char buf[4096] = {};
-+	ssize_t size;
-+
-+	/* Unfreeze the top-level cgroup */
-+	ret = write_cgroup_file(cgroups[0].path, "cgroup.freeze", "0");
-+	if (!ASSERT_OK(ret, "unfreeze cgroup"))
-+		return -1;
-+
-+	for (;;) {
-+		int i, status;
-+		pid_t pid = wait(&status);
-+
-+		if (pid == -1) {
-+			if (errno == EINTR)
-+				continue;
-+			/* ECHILD */
-+			break;
-+		}
-+
-+		if (!first)
-+			continue;
-+		first = false;
-+
-+		/* Check which process was terminated first */
-+		for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
-+			if (!ASSERT_OK(cgroups[i].victim !=
-+				       (pid == cgroups[i].pid),
-+				       "correct process was killed")) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			if (!cgroups[i].victim)
-+				continue;
-+
-+			/* Check the memcg oom counter */
-+			size = read_cgroup_file(cgroups[i].path, "memory.events",
-+						buf, sizeof(buf));
-+			if (!ASSERT_OK(size <= 0, "read memory.events")) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			if (!ASSERT_OK(strstr(buf, "oom_kill 1") == NULL,
-+				       "oom_kill count check")) {
-+				ret = -1;
-+				break;
-+			}
-+		}
-+
-+		/* Kill all remaining tasks */
-+		for (i = 0; i < ARRAY_SIZE(cgroups); i++)
-+			if (cgroups[i].pid && cgroups[i].pid != pid)
-+				kill(cgroups[i].pid, SIGKILL);
-+	}
-+
-+	return ret;
-+}
-+
-+void test_psi(void)
-+{
-+	struct test_psi *skel;
-+	int cgroup_fd;
-+	int err;
-+
-+	setup_environment();
-+
-+	skel = test_psi__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto cleanup;
-+
-+	skel->bss->high_pressure_cgroup_id = cgroups[2].id;
-+	skel->bss->my_pid = getpid();
-+
-+	err = test_psi__attach(skel);
-+	if (CHECK_FAIL(err))
-+		goto cleanup;
-+
-+	/* Delete the first cgroup, it used to trigger offline handler */
-+	remove_cgroup(cgroups[1].path);
-+
-+	/* Create new cgroup */
-+	cgroup_fd = create_and_get_cgroup("/psi_test_new");
-+	if (!ASSERT_GT(cgroup_fd, 0, "create_and_get_cgroup"))
-+		goto cleanup;
-+
-+	/* Unfreeze all child tasks and create the memory pressure */
-+	err = run_and_wait_for_oom();
-+	CHECK_FAIL(err);
-+
-+	close(cgroup_fd);
-+cleanup:
-+	cleanup_cgroup_environment();
-+	test_psi__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_psi.c b/tools/testing/selftests/bpf/progs/test_psi.c
-new file mode 100644
-index 000000000000..6efd5c995ce0
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_psi.c
-@@ -0,0 +1,90 @@
-+#include "vmlinux.h"
-+#include "bpf_experimental.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+#include <bpf/bpf_core_read.h>
-+
-+char _license[] SEC("license") = "GPL";
-+
-+/* cgroup which will experience the high memory pressure */
-+u64 high_pressure_cgroup_id;
-+u32 my_pid = 0;
-+
-+/* last total full memory pressure value */
-+u64 last_mem_full_total = 0;
-+
-+extern struct task_struct *bpf_task_from_pid(s32 pid) __ksym;
-+extern void bpf_task_release(struct task_struct *p) __ksym;
-+
-+struct elem {
-+	struct bpf_task_work tw;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_ARRAY);
-+	__uint(max_entries, 1);
-+	__type(key, int);
-+	__type(value, struct elem);
-+} tw_map SEC(".maps");
-+
-+static int psi_oom_work(struct bpf_map *map, void *key, void *value)
-+{
-+	struct cgroup *cgrp;
-+	struct mem_cgroup *memcg;
-+
-+	cgrp = bpf_cgroup_from_id(high_pressure_cgroup_id);
-+	if (!cgrp)
-+		return 0;
-+
-+	memcg = bpf_get_mem_cgroup(&cgrp->self);
-+	if (memcg) {
-+		bpf_out_of_memory(memcg, 0, BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK);
-+		bpf_put_mem_cgroup(memcg);
-+	}
-+
-+	bpf_cgroup_release(cgrp);
-+	return 0;
-+}
-+
-+static void schedule_oom_work(void)
-+{
-+	struct task_struct *task;
-+	struct elem *val;
-+	int key = 0;
-+
-+	task = bpf_task_from_pid(my_pid);
-+	if (task) {
-+		val = bpf_map_lookup_elem(&tw_map, &key);
-+		if (val)
-+			bpf_task_work_schedule_signal(task, &val->tw,
-+						      &tw_map, psi_oom_work);
-+		bpf_task_release(task);
-+	}
-+}
-+
-+SEC("tp_btf/psi_avgs_work")
-+int BPF_PROG(psi_avgs, struct psi_group *group)
-+{
-+	u64 current_total;
-+	u64 growth;
-+
-+	/* Monitor only a single target cgroup */
-+	if (group->cgroup_id != high_pressure_cgroup_id)
-+		return 0;
-+
-+	/* Check for memory pressure */
-+	current_total = BPF_CORE_READ(group, total[PSI_MEM_FULL]);
-+	if (last_mem_full_total == 0) {
-+		last_mem_full_total = current_total;
-+		return 0;
-+	}
-+
-+	growth = current_total - last_mem_full_total;
-+	last_mem_full_total = current_total;
-+
-+	/* Declare an OOM if growth > 50ms within the update period */
-+	if (growth > 50000000)
-+		schedule_oom_work();
-+
-+	return 0;
-+}
--- 
-2.52.0
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21382620878
 
+AI-authorship-score: low
+AI-authorship-explanation: The code closely follows existing patterns in the file with a minor documentation error typical of copy-paste adaptation, suggesting human authorship.
+issues-found: 1
+issue-severity-score: low
+issue-severity-explanation: Minor documentation error in test code where @buf description says the opposite of what the code does.
+
+--===============1477226859959415716==--
 
