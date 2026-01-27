@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85B25D2FECD
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 18:11:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6D3DD2FED5
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 18:21:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C7546B0088; Tue, 27 Jan 2026 13:11:41 -0500 (EST)
+	id B4AA66B0088; Tue, 27 Jan 2026 13:21:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 574966B0089; Tue, 27 Jan 2026 13:11:41 -0500 (EST)
+	id AF8606B0089; Tue, 27 Jan 2026 13:21:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 455816B008A; Tue, 27 Jan 2026 13:11:41 -0500 (EST)
+	id A04936B008A; Tue, 27 Jan 2026 13:21:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 33EC16B0088
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 13:11:41 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99906C182E
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:11:40 +0000 (UTC)
-X-FDA: 84378536760.12.1FED591
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 12A8040016
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:11:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ByaWjtsS;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DD636B0088
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 13:21:17 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 419A0C182E
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:21:17 +0000 (UTC)
+X-FDA: 84378560994.26.83779B6
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2B93E4000C
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:21:15 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=tSyAeuuc;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769537499;
+	s=arc-20220608; t=1769538075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2GTgDTMSjRtu9XA/FLPKOljq2ml0hMhzhLI6yqYD4CI=;
-	b=EFb9qxQUV3czWI3Y+abwyULuvLxNnwWcSU1jJcX8Q+sGUzIDHwbgt7U08WiRO8ZGOMBkul
-	awfNCx61DSrlU1nZT1OTQDfCxpiioXZnDOmQRkk2iRTzbwKwT4leWYjVmQe+zcmr8CpIV5
-	J0I9KODb8Ij1dFybDhVtdXsjU4xVcIw=
+	bh=KRKi3EtRrwoq8B+JttyIY07IcL3E2jj6n+oY1r/9jo8=;
+	b=PdX6V2r6xxLTiY05ox3PcQOc1X0tgoD34StV2sm4aM83ugv6dofbkUjQylyvwj/wbbtxKa
+	5tmQZEy8EDftjysKZU4gOGdWf9dlmrUZDGiMd+6Kc6OJGCxfBWbN2/42m+cts5sxx63aSG
+	OBtySNGhEeNE26Rs0yixSwONUDhXP38=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ByaWjtsS;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769537499; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=tSyAeuuc;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769538075; a=rsa-sha256;
 	cv=none;
-	b=X+opd8ByNKvaiF09HJiFEhdAZ2aUfzqTd4+x7Gkl/QGMR90SZqeclWmou4dzVGzAZHWmuG
-	1RiBEE7dckmCqbpc2ziqqhQG4Qaj5gkCQx70fP/fUoG6vUWSCCc2dkkBojDrBOUJxOveF9
-	wu4c8KtqgABRvd/lo/Bd0buEYvVVRF0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 503606013B;
-	Tue, 27 Jan 2026 18:11:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4A5C116C6;
-	Tue, 27 Jan 2026 18:11:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769537498;
-	bh=esR6CFIdT2IldE04x541sMjzg2hM0kwiBu50M1Q4i6U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ByaWjtsSvwoLSW/kNH7xWLyVjxxz5GlRC8jYXsgV/gqb4/lcnR/DbPtvL6ZsfFpSk
-	 UMuJqyvtKtohQKsmQxoM99rDtG1O4GqRTw9ZhQsEmWLSfLiBrUcxYInGfM89HyeRgM
-	 CxuZITcoVajun6fKU8J38DnbH8BoWcjGzNDWtXdHngn0Bx8YWSVtKYdo5/nJpd1YVl
-	 JH22ZwPPk16pgnbMx9Vr3rouzXVb84WvDBKXKk6PK90HPv2OIOvHU6AimhWntYIXkX
-	 +GnE9E9QwmWlr81X+KXfieSH8beDfJtCHQfJLkjpSxZ2STIQw2Fz3NkhSNYKoguw1h
-	 QmmKWVv1yE1UQ==
-Date: Tue, 27 Jan 2026 20:11:19 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Andreas Larsson <andreas@gaisler.com>
+	b=Q661r+fxsZTK7Sv8FOJrgQyWIfQRWDgsLqz6yhg7kyKjBo+O4x3S5LBm+C9zWs3thZxUg1
+	Lk/+wE6Mo7LNAPHPPaVG9mQrNKd/B6egYMgUTcj/UXlNZuaU3lcylspH3qghVH5TCsYR2u
+	5adZhzOxBzKvxB1yxjetxFGHGOwMPZY=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8c52c67f64cso590888185a.0
+        for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:21:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1769538074; x=1770142874; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KRKi3EtRrwoq8B+JttyIY07IcL3E2jj6n+oY1r/9jo8=;
+        b=tSyAeuucLhaFVwRRcng0bnA1mzrLFAYtdXhRyn7m8CULaRCCpsgJc3s2FwOmc//1Mz
+         CGt68cZ/0fA0CFGn3JF2cJCbWbBIKHBAuuSrm5Hu7tR4ffLeu1fmEyVX+AzJixWxTcM/
+         MucLnuO5SABSek+tXpn5gU4a/YUDxd7jKrVOmmU9l5HZ7DMDmlpVs6i2t8ByVGoH47AX
+         Ox9aH+KaoC50p/+h9stnZ1ReWEw0PimP2J/Nh+g+LSKUN7jiDTRzyntZq++Ba5ob8gKA
+         eTMjeB5bW0BOVATnnXLk8gAwGV9krtVSgqH5jWisS66W8Q8F3Pou+nBX+wTtjaz37Idz
+         Zy5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769538074; x=1770142874;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KRKi3EtRrwoq8B+JttyIY07IcL3E2jj6n+oY1r/9jo8=;
+        b=Wqlv0KPLWBK+/f0a3zSAda7/c5e3MPwm3C/VPcEcoQH8bvvedXi8K/pZkMwtQfZSNi
+         LnwTyZRUQVAXD8uM3litu8DIxx4TLM3/m0JTdu2Iufg9FGGlnartFUIGxcoIBemfNbcm
+         +AmMPzmGFEEjW42fL72N+RioJJhtcQzO4sSKmPMLLPyegUEQRUEXZHxAjG26NE65vx0B
+         8zOy8mkYqNnLokEgpRLoYnmeWlYmwqq6OUMteNsHEu4H6CqHnJOuitZkkKVhjxbwjz0s
+         2qXD+g3ZtDfytjUpDCdmAhPBh0/ykMsCGAUl4i2zj7JE2YGVngnLfUyujI0SBOQkpxH+
+         N2Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCXmE5WaAzbvhEDoWE3X3xbCuPrHy48Y7UbnO9IlhSX1iJSh3L/YfVXUbzF9RK8BpieZoXv5Yoah8A==@kvack.org
+X-Gm-Message-State: AOJu0YxrHrRkXBztzaFdp9uauaxG5AufXZ2BHutgxj266dJJA8f2KnMq
+	Dj4gQBI3mKfOWl+rxiMfMftmMsvR38KvzUZ0s7JC6C2BQzJlfNuoXByWdxY/5J8BmN8=
+X-Gm-Gg: AZuq6aK+ZLdu8H7HGK0xu1p2snzNEyLcxueJG+zwde1mWukQBg128b2DO5LVM8V1pBU
+	PWhZxgtOieu8ALoTaiHCdn7PMdUZf4T5yyEF2fhbh4vXBfwf4RyAZS0fFQM93TH9R2EbSwsxEYK
+	v3gbNd7FuKvE/7JrpqtRdhoJgZAfHq0lF9ChSWyP0YAlkTUMfhJ+Wz9AP6H2pgh4k5cv1nDBt76
+	gz+/uUiSqgzBZsGVFCzdKplMpVc8qJEjbdP4OzWQr0fj6Bgw9oU4EwynsRNrq7SZuST7u7QiaaZ
+	7Nd0NWzG3Fjll6a1VhHKv9h8vgQeC2F2iUyj+DOXJjdPkPbdX70jpVWOtDjmOV8xgjV+NQ9mndz
+	c1Fe/4zhCE0f5pXi9u/niNvarY2S/Kw4ACHRP2xqclq+Bc8o6SXE2XV30UvynSZSXss35J8blB7
+	VIEhzcWwhb3g==
+X-Received: by 2002:a05:620a:f0d:b0:8c5:2b63:2d21 with SMTP id af79cd13be357-8c70b930124mr339909485a.88.1769538074072;
+        Tue, 27 Jan 2026 10:21:14 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711d49c2bsm21564685a.46.2026.01.27.10.21.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jan 2026 10:21:13 -0800 (PST)
+Date: Tue, 27 Jan 2026 13:21:09 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Harry Yoo <harry.yoo@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Stafford Horne <shorne@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Vineet Gupta <vgupta@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH mm-unstable] arch, mm: consolidate empty_zero_page
-Message-ID: <aXj_x5CyUeys7ONM@kernel.org>
-References: <20260124095628.668870-1-rppt@kernel.org>
- <2157220c-0394-40fa-9918-a8514171bd10@gaisler.com>
+	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>, Hai Li <hao.li@linux.dev>,
+	linux-mm@kvack.org
+Subject: Re: [PATCH V1 0/2] Only allow SLAB_OBJ_EXT_IN_OBJ for unmergeable
+ caches
+Message-ID: <aXkCFYWvbpZB_5oZ@cmpxchg.org>
+References: <20260127103151.21883-1-harry.yoo@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2157220c-0394-40fa-9918-a8514171bd10@gaisler.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 12A8040016
-X-Stat-Signature: khxst6ie8phgxku5xxwabptz8y5nhjss
+In-Reply-To: <20260127103151.21883-1-harry.yoo@oracle.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: tdojd7uc1z3sc94o5u5aq6u8z3s4xhmj
 X-Rspam-User: 
-X-HE-Tag: 1769537498-878693
-X-HE-Meta: U2FsdGVkX1/J+OoNo9TqXLmwv/Q5LWCkGExCqfGzprhoT2d/KVb3o4azXSTEzJ+wyYwTCvMR6mWL3ldSHg8dNotRjN3y4yWrUIn17SyYrZCHpESraluQlBb93cbXQ4lnuPFAVkvXgVWC7uegxpoJVldIXSSQC+CCWRM6N+ny6RRseGPTnh3v/EeQMiTseZkllUXNwDDdR3V7QN9EPB16Zqt7zJARzXwwUFLoIAosH8nL+LXOcZR33fAluoIqKoQYcNOJFKosDZMlI7JYPtjr4Rc6+UWZ2xRhUhfYsy8PqWgo392eExZQhtqzSSbRSFhJzvln67ow1fQc+MTKmJ8MAN2LePYlfSa0yNBMDy/pBm4hzXU6lcDX2mMqORn2EjKxnKvoKZEJd1Ub+3dRIcwNKK95vJ7reKMwrGli0TvQAj6ZxkuWljkVIIPGNvxv8TzNiHZewAx8gX6MlBOzFjDBvnBGR7jgmfomN7n3dQR9wXdP6tM1Z6qenUc7lqP4gi2jtFNO8bz6IXbshKpvBkuChluWo7q1EKkbdDjmKzQbmD8pwMFAu5+q0CG1x/99+NwI6ujYHjteKVwz8Oe+vC0HcfT/rrNIQHAjV3J1EXcx0xDP5EKSPXGYlU4YQklGK1eoXeHAelnmva1JryUdp0LfkC+mnzqBYZiM6+3IwIgTuZn8WWvTaBmcLfzz7i+HSaiRSunXI4k5tRfaisCB0HjwSc9IU3F1q1RNEGtM0UJSzqP+Y+H05x5tOXN8897jj9Hobksx1BxzrykrW23bOQn0/C2kFkjEEdhtJr2EtrzQZzJw8Ig6vUpmYA2SS1P3DHmtnqlJSpIyNsv7Gy0ER/1L3mpPxizTrahW10G4cBZkKu7kLoYI2fhXR0oUkbDMXtgZqKgWNYRkjmt5S06cZxUmX6J18FlujS73xqsgSJ0d5vDYvea/4rHWtVp+MIwq3fotlxZfNiMIMnemKOGLjjQ
- 5Qbi/8gq
- 0quUJ
+X-Rspamd-Queue-Id: 2B93E4000C
+X-HE-Tag: 1769538075-21894
+X-HE-Meta: U2FsdGVkX19HCZIFcKpSc8dsdWQRoe86XKUIgOTej33TnDQRbQ0eXkwtmeit9ddJVeUFL6J6McENAt8tZHmYgwrSVi42SVxRcvzcAZJ5CRx2epqkk1oonVVYksIB93gOW6XVq+PRbjbHz4il09dr4SywsS/Ga3Bb5sNnpYpp/AdCQELZshb09uoF4dQigbCK0ad2+3QNeBRHBiaPw4mEm1eiGBQPrRBl9S+ceDqdcH7P3JahxX9WEx0ePgJ63q9xwpko4/w/Rx3YBdoHcrrZ7K+OGELQPsG/1VtjCu8CbEg5grJny5W3YCSrOdPxd/ZETNamHJRgOIucsMCQu8SYMoDMzczwclE1hxx/l6srlruSQ/o8BmKLUN+hhSaDn2vkN8PzjY4q4nq+2EpD86aixZC29+9eQwyhAFd6dzrR5+VA3p1U/GO7xR6zyLGFM19p8zYLp4MYljufyY8dQCxHLIYWDHlWRITV4/L7ygJR0tTdL0vH9J8RC5agYrrClevTiZbWclC2jcJTj7j0sYSCC/O3nx5/uZWtdE2Bb3fKj0rQCBMIJUVQfmdJtZzXwa22kKmM7SQsvkVjVzY9yYlLa8VMV1LK6gp6NiRQdi/akK0ssOP7ETzEsIL+vF+xIHityD8z4HWiwoBDNgyWrrBqfdkrUzZU7o8+HaDSYF85ELHr/96IvE+RiXzA1XaYou5fxMNs8sr/p+1p3RZ4XFNjzHCLKjp6J4fSymSFrWgznZMwOg6z1GhByj72jufS3GAaZHEqRixv0cTgipyKpHIbEYnrSlSBN6PYheRL6aFuM2E3rOKOMtNeVv6xXg38JAFSTAUodrQdTcj+Dh1ALcRwqdolhQ0PJpGQ7Xys5Ayt++0V1UBqQtl9yP6lQm2Ezhy/P6N2it4+2noH0pX9+JRXBISaEtfRSXtQpLWHO0Yc6zfvebiR5R+DR7mRc7xLD1vhiCHO4w0l+3MzBp/V1eq
+ 3U9VaL5M
+ vusZUgyoiNbU57EDuzJhOIh+DbiZrWv4cBLQaumrlV0XKDsdv3n4lC3gQC4EmBQJQs04p9FHXDro0oFy30JO+FWcQ6gnmm1Rb2VUb8eWfbDlEkfxOYux9XpOyMzSY3yfXMeSFPSdBOu/Sc5n0eFPKRcQyla/0OK/Ka/dqWyDu/O1bSU0TfhFVwTeDTF0du/FH5us0uzhiddiNRP6TCuyIe9Oi8bDRSl7VD+A4xZNCqbRZrjqFpJ2NP22/Czgf+FU9n4yt2sdCQN7EMGpL/23m733bghyRlP/6vnfCuT2k11hoNs/KvJ6iPbK/jixuY6d91XkFybALUXIQ+hgw1ApqsmqxzJThTsmDeUbhV26mf/5tJno2bpWko8vyzmLE5aCpDtzVbiIm+tVeAAdpxL6myIG5VH1xEypBCz0GkruP393Ztn16VSJWRRMsQWZ8yX5wuJuD+3c3tqUXK5w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,104 +125,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Tue, Jan 27, 2026 at 05:02:39PM +0100, Andreas Larsson wrote:
-> On 2026-01-24 10:56, Mike Rapoport wrote:
+On Tue, Jan 27, 2026 at 07:31:49PM +0900, Harry Yoo wrote:
+> While SLAB_OBJ_EXT_IN_OBJ allows to reduce memory overhead to account
+> slab objects, it prevents slab merging because merging can change
+> the metadata layout.
 >
-> > Every architecture defines empty_zero_page that way or another, but for the
-> > most of them it is always a page aligned page in BSS and most definitions
-> > of ZERO_PAGE do virt_to_page(empty_zero_page).
-> 
-> Running this in an LDOM on an UltraSparc T4 sparc64, the entire LDOM
-> hangs after a while during boot.
-> 
-> > diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> > index c2d19c9a9244..2bd99944176d 100644
-> > --- a/arch/sparc/mm/init_64.c
-> > +++ b/arch/sparc/mm/init_64.c
-> > @@ -177,9 +177,6 @@ extern unsigned long sparc_ramdisk_image64;
-> >  extern unsigned int sparc_ramdisk_image;
-> >  extern unsigned int sparc_ramdisk_size;
-> >  
-> > -struct page *mem_map_zero __read_mostly;
-> > -EXPORT_SYMBOL(mem_map_zero);
-> > -
-> >  unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
-> >  
-> >  unsigned long sparc64_kern_pri_context __read_mostly;
-> > @@ -2506,18 +2503,6 @@ void __init mem_init(void)
-> >  	 */
-> >  	register_page_bootmem_info();
-> >  
-> > -	/*
-> > -	 * Set up the zero page, mark it reserved, so that page count
-> > -	 * is not manipulated when freeing the page from user ptes.
-> > -	 */
-> > -	mem_map_zero = alloc_pages(GFP_KERNEL|__GFP_ZERO, 0);
-> > -	if (mem_map_zero == NULL) {
-> > -		prom_printf("paging_init: Cannot alloc zero page.\n");
-> > -		prom_halt();
-> > -	}
-> > -	mark_page_reserved(mem_map_zero);
-> > -
-> > -
-> >  	if (tlb_type == cheetah || tlb_type == cheetah_plus)
-> >  		cheetah_ecache_flush_init();
-> >  }
-> 
-> This just removes the mark_page_reserved(mem_map_zero) without 
-> replacing it with something corresponding to that. Perhaps part
-> of the problem?
+> As pointed out Vlastimil Babka, disabling merging solely for this memory
+> optimization may not be a net win, because disabling slab merging tends
+> to increase overall memory usage.
 
-I don't think so, empty_zero_page is in BSS now an it's reserved as a part
-of the kernel image.
+Is this motivated by a production issue or a more a correctness thing?
 
-I suspect that virt_to_page() does not work BSS symbols on sparc64. Can you
-please try with this patch:
+It's somewhat tangential, but we've had practical problems with slab
+merging and ended up disabling it in the Meta fleet. It makes it
+difficult to identify culprits when there is a footprint regression in
+merged caches. IIRC there was at least one instance where it merged
+wildly different lifetimes, which raises fragmentation concerns. In
+the end we turned it off and noted no meaningful usage difference.
 
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index 74ede706fb32..0578c5172d4e 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -22,6 +22,7 @@
- #include <asm/adi.h>
- #include <asm/page.h>
- #include <asm/processor.h>
-+#include <asm/vaddrs.h>
- 
- /* The kernel image occupies 0x4000000 to 0x6000000 (4MB --> 96MB).
-  * The page copy blockops can use 0x6000000 to 0x8000000.
-@@ -210,6 +211,11 @@ extern unsigned long _PAGE_CACHE;
- extern unsigned long pg_iobits;
- extern unsigned long _PAGE_ALL_SZ_BITS;
- 
-+extern unsigned long kern_base;
-+#define ZERO_PAGE(vaddr)						   \
-+	(virt_to_page(empty_zero_page + ((unsigned long)__va(kern_base)) - \
-+		      ((unsigned long)KERNBASE)))
-+
- /* PFNs are real physical page numbers.  However, mem_map only begins to record
-  * per-page information starting at pfn_base.  This is to handle systems where
-  * the first physical page in the machine is at some huge physical address,
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 2bd99944176d..d2d724ba4f83 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -170,6 +170,8 @@ static void __init read_obp_memory(const char *property,
- 
- /* Kernel physical address base and size in bytes.  */
- unsigned long kern_base __read_mostly;
-+EXPORT_SYMBOL(kern_base);
-+
- unsigned long kern_size __read_mostly;
- 
- /* Initial ramdisk setup */
- 
-> Cheers,
-> Andreas
-
--- 
-Sincerely yours,
-Mike.
+So I'm curious if there are cases where it tangibly helps. And I
+wonder whether default y makes sense given its observability and
+predictability implications.
 
