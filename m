@@ -4,149 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4484DD34093
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 15:51:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CA79D34094
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 15:52:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4ECDF6B0088; Tue, 27 Jan 2026 10:51:54 -0500 (EST)
+	id 638A86B0088; Tue, 27 Jan 2026 10:52:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49AA76B0089; Tue, 27 Jan 2026 10:51:54 -0500 (EST)
+	id 602C56B0089; Tue, 27 Jan 2026 10:52:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36FBF6B008A; Tue, 27 Jan 2026 10:51:54 -0500 (EST)
+	id 525DE6B008A; Tue, 27 Jan 2026 10:52:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 242FE6B0088
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:51:54 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6E20B16017E
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:51:53 +0000 (UTC)
-X-FDA: 84378184506.19.F919AE0
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1A8594000D
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:51:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=R2OZ3tNd;
-	spf=pass (imf01.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CE1B6B0088
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:52:50 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5F19B6C0E
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:52:49 +0000 (UTC)
+X-FDA: 84378186858.03.DF5E403
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 936A0A0017
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:52:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="Q/qL2+gL";
+	spf=pass (imf25.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769529111;
+	s=arc-20220608; t=1769529168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0OxxS5n1xieZUpH8YohdiA+9VRXqomSLAoDHyJVmPjo=;
-	b=cnXUQexdx4Phr7MFes0/MoMZIXv5F7Q8L+T/Psrt4jllFzgBZA9O/qT/Px0DXAgyyjdHNP
-	ekq8ctp6qwthzgoSLIdQapxGsp15xNO98I0JZzafTNdSf0Tq9kGgG2WNFgulkEKWhPwd2Z
-	Mk77Th6jt7zqcQzE4euod2DadnSQ578=
+	bh=H0iUHH7hrzY92UrriF0Zwe3VNDVROGGmufPatJJpiJs=;
+	b=5Pmpz4OD6BEMmG1AisQwFL77Mx5RI++1H5TcsGrjXQyqUDUWG5YiB7GJoIshf33h7PPSsu
+	wE2K1Z1HEQ4iaSzw97xuoP3Uv/rO+CuoCAWtetGx1v+Txjn0q0PtjBMqObqwzj+yMLRL/W
+	/alHGsUmWii1gOitdbZ4b1CxYpb0JBk=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=R2OZ3tNd;
-	spf=pass (imf01.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769529111; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="Q/qL2+gL";
+	spf=pass (imf25.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769529168; a=rsa-sha256;
 	cv=none;
-	b=kzT5fFuqT1QzxiftGXf3PMItm4lT1jUId9b9vDXFKG5otgPvsyVX9fX5nBNTaVgaXEMxYJ
-	VNzQdeSbHRqX7JRMnUo5vg3hsU0bA2FZ4XsGIX37OJ5JSdTOKIx3A4zfuMM9sYzhe2xppD
-	RJVfLMBs8aO4n6nM84oxG5fwRateeZo=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R7WMWC008927;
-	Tue, 27 Jan 2026 15:51:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=0OxxS5n1xieZUpH8YohdiA+9VRXqom
-	SLAoDHyJVmPjo=; b=R2OZ3tNd9SFjbhgmya+gAkR1LeSUyxH/4qTui9x0/Uant4
-	+He/E+9jhq17CXdAWqvn5tlXSBsBIY0k423Lv7jq6+YfHZeVMd54Yo78qQxKVPuq
-	dd6+jAI5VodjgFmoPT7n1593r1Fb9KKf6vYGR1TGJZ3ta6ySO2jEKN+/Q8hmskV6
-	M8b11DKp4JlY2KTeW8cYzln1cfyON+Phmgew57hSVAbypNIaxaMdvoh0QMqa7FG9
-	hBGIKEIipRzww0uYI0TSD1KqYz0ocdD/Bq8GtccsOZugDFGRaiamzsY71sb3mD3g
-	D02I83U0zVNelxPrFSiVffd8VmGWOQFku/D27YOQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnr64dmr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:51:44 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60RFhAPC013427;
-	Tue, 27 Jan 2026 15:51:43 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnr64dmn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:51:43 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60RD696c019647;
-	Tue, 27 Jan 2026 15:51:42 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw9dn18ec-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 15:51:42 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60RFpc0B25821738
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Jan 2026 15:51:38 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4FDCE20040;
-	Tue, 27 Jan 2026 15:51:38 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F2062004B;
-	Tue, 27 Jan 2026 15:51:38 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 27 Jan 2026 15:51:38 +0000 (GMT)
-Date: Tue, 27 Jan 2026 16:51:36 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>, Rohan McLure <rmclure@nvidia.com>,
-        Christophe Leroy <chleroy@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
-        x86@kernel.org, Nicholas Miehlbradt <nicholas@linux.ibm.com>,
-        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-        Andrew Donnellan <andrew+kernel@donnellan.id.au>,
-        Srish Srinivasan <ssrish@linux.ibm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v18 10/12] powerpc/mm: Implement *_user_accessible_page()
- for ptes
-Message-ID: <20260127155136.2808076Add-agordeev@linux.ibm.com>
-References: <20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
- <20251219-pgtable_check_v18rebase-v18-10-755bc151a50b@linux.ibm.com>
+	b=Ouc0JGHZCoEvHXWfp7ShzK2XgcaGVM4BRTLCTjOCuJVrt+8PErpoYEzOWFCv7qJ8t3+/ku
+	q1e5xAFR3j27IfgEp7oFzNhoLEYP5yRSqzLeLxDVgXfTel9tshj9zoT4VqSti8uTPfiLn2
+	zyQPYAvG6L360A1c75Po3ae5uiB7qDI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1769529164;
+	bh=Ma9DUQK/UE5KKiJVITo3EgKsfU16YIafflssOe2kpFk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Q/qL2+gLej/GQpukA/veuC+5qzdUsML/gqM+1q8cw8b+dcy1RhJb6HbGJumTlmiw4
+	 fWyvYjHkwS2hNODt1/xc4m1QGf2BN441uY3RDzIQp3c2/oPL/y+imFySjWNiXORJXF
+	 32gsNg3wa3d/M8jGCmmU4W+wbOIzehGzxclt9IG2YmJ4sF18nECXULAicvq4E3kv36
+	 myQ5kilkTToaX13twmBXrfSFaVYtVQgcJjKMk24FzheJgd0u3zg88M0gd5aUDYPFPk
+	 95E5ssq/GWaAlad4AVoOKV0tSr/T+S3/7iUv9grTzTVjmu17xOFYNDFArFk7TEVoz6
+	 J5IBpGjDh5SqQ==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0B0D717E012E;
+	Tue, 27 Jan 2026 16:52:44 +0100 (CET)
+Date: Tue, 27 Jan 2026 16:52:39 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: loic.molinari@collabora.com, willy@infradead.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch, frank.binns@imgtec.com, matt.coster@imgtec.com,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] drm/gem-shmem: Track folio accessed/dirty status in
+ mmap
+Message-ID: <20260127165239.78f3dde6@fedora>
+In-Reply-To: <20260127132938.429288-3-tzimmermann@suse.de>
+References: <20260127132938.429288-1-tzimmermann@suse.de>
+	<20260127132938.429288-3-tzimmermann@suse.de>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219-pgtable_check_v18rebase-v18-10-755bc151a50b@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEyOSBTYWx0ZWRfXxChMywYP3CXN
- le5d6yn3Qq6MfjN6zC+Z+DQqleCzkUqKSkhMwpJSnn1Mj3zS2dO0nICsNnXEMtWsE3vyb83rzjQ
- 6kso4VpQ4wBoGpfXa+uDicwe3s/Tx9G27+lBkSjIdnBpBe924kovkU2wInK8zp4fCnVcBOZS31H
- BJ3DIi34TvoRR/5d3SQODO1mtpcggsmfvH/oLD96EUws0DAq+gksrBtgsBJS82RwOsHFmTzrNBL
- CNwOe0QD3sOFuH+hrRzC0HuLjsyg7NKVHQVFym8CqHd55vAIbLaoGLE/k7/e/ZOrw+hMYWVP7oQ
- 3uUxUrs0HYHgzU6E9dLRct4A1ePYLRq2MVcmQ4XlAiQw0ogB0VlRgK8V/qrltGoxEmwPlQvaIpZ
- oDSvwJEhdafxFukf2IRJrEZNbsOh1QhzlSOcS3BDkUFas4hDHNqKbsmPKpZG1pCe2JqB0joy895
- KqtIgfb/A4B51Vjsq2g==
-X-Proofpoint-GUID: 8EJeeV34r0_XNIY9EmhfW46Wh100FMUs
-X-Proofpoint-ORIG-GUID: Bk5rloqyZadRkxusHYTPbD17s7SpVN9w
-X-Authority-Analysis: v=2.4 cv=X+Vf6WTe c=1 sm=1 tr=0 ts=6978df10 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=cPWeadVanShsLn6B-a8A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-27_03,2026-01-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 impostorscore=0 lowpriorityscore=0
- clxscore=1011 spamscore=0 adultscore=0 malwarescore=0 bulkscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2601270129
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1A8594000D
-X-Stat-Signature: 7pth1to5za5kexeojxgsqs1wtyj88srs
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 936A0A0017
+X-Stat-Signature: h4nm4s4axtki9q5x9hen4p1j9un4wi77
 X-Rspam-User: 
-X-HE-Tag: 1769529110-147261
-X-HE-Meta: U2FsdGVkX18DKEKHnz9GU24IciWXGptani6R3t5WH9fZ6/KG2l9EEpaN/vF7Xg1sneEuH5xEfnfepaG9G1VgIUdqZHDephe/BaLKSamO0NSgllP3SJwzRJpFs6JQN7Vv9kinmke2SHNxaaWt2TwzxLkD4l5FdWDuTAW5QOHxXFhZvVev4K+fxQ9Rdubq9LcQWkGhCd8sY04q3ov4my3gCHQVTW8PWjW/Bc61DuJZSE3W9hq0FXz3Ium1pkmq9TRy/RGft+7LboYMW7ff3wADx6tydvXNLTskdegbh1R0VOYbASDqFxsZH1gdKjhS4cHYh8TOik2fYr0r61S113eMmgwMPi7YKTloDO+fngHRH+i+AC8ZnaKBYdiRoKRy4uZr7LFcdShiLkMpFCAjuzHZeKGgOqq59BcBqK9TMLtDwUQj5oM0AhMfBAqK3yJKC7pvKm3tUFdDuDSX9LPNzQltJZYzGku8UQUvoTr9dkrfBjJ39DeIBVzAP4TbZdDDfzTeDnh2YCG8xLKsQKDPTqwuP05MRfmN4unHz+ixp32RMaZbipaSSAbSw1X666nGjehAFmlWw0wjcXJ9rlY0Ufpg5DYmNHsCOdoWamB4ov78yNjyYhTg36a1PWxwdyrLZMar3w0nfx606Pj8p7ECekIueoETCGx8CsVULQUBNVNsDyHsR041746AcHNH50EjQ5bgBp8qc1t3bl50DWQPzPwO2WzVJFSyjkYWVCW5NArcVkui3a8StZMHi9vmLuwg8FPnHJhG0hnrN5JX4qTk+WRuCI2Ne7mIYziChtBVtDf7D0RFQFOPm3V3jnG8TeGTD7KFUpgZXiB89jB6K/jHdhiF68+HQzyVzkh6qt1Hf/gBXYZTfSO/JaeoqSOHIFMv79Q2/2yfTvOA3m8Fhlyp+RHb6TtVa8iQjSgsMLuNzAcnMhVQu+aHsPhOWBy0JEUIVK1GYdHbqs/YHoeDgeFe5Wp
- w931Z57k
- GAAsVEjPuinvvSVDz7kMpOKKaLMNQOHKvlPmzsOhvTHhJwt1naT4eyWFc12KSFYPXB3JMrMKeliFeil82pakB/MHw9NO6BqBnzeF9b9u/Kk7Mu1zN8Cxm7bgeXy3c7UfjQD47bPPLQax4g7x0Ovh7KktdfBzNplL5QM+Mk5YJs6vJPxLu0ktC0ui3dVxd6VBIB5ZbehE1LBu7Jst8owZ6wpHetCepFtvROhwBdfDEPMfB/X7adrwstsckJl2nFpKkZHx4+fr/WxGPfp+VPxqBuPu7mDN67muH/PKARXWz2gmYvZf3C+AW23jc6YyxhfEfk3gQ/m/QTclqOlmHcV4/dyVTPp/zGabD8lOz
+X-HE-Tag: 1769529167-403959
+X-HE-Meta: U2FsdGVkX1/Cz4byZpFIyUOnET4MCWyccYI2NrjWzsUyLEqQg8nGjk9YeD4rJGKdQeZSNbpAl8iiCJE3IL/qLO0zYMog2V1TZO2Wmmli1YXhZ//NhkF7QXVV0j45Eu92HT9nAJwq9PwXhsMcPbX/2g6eZ+5wfxRyk180v1Z1RKujbket/DhvTYec+wQDuMn0a7LPlZOnJy91ntUyQi9jabkqIx82GqXlpuD7iGGXz/fQt/ntDcWGvYFrJGOaU9AFv5Fjd3+uCPdz1rzMvykpKCf6jSlygIMeIdBD2ZsRiVVlYNMfy59L3VPBiQtBJZdbloqHQqHPasdOX0B11oWOZxGaCsIt2uwhKZYeoM6M1aA6YIQsCtWC72QvmITtDgk6Q4QjOBiQXK5H0iGZImfyaSyXZV1MPYv7gj2de59Rqy396QT+eUyTXKWnAO9iOGYocZeXsimYLY8F49oaUyxu37euFFhs6ADOygAY/HjLTHNLgkzpnxTUdbDCrHy9XeKJMhvhECVB3vcZmfGJ3NaaHneGj6f40onfmQiaCrNxZookje4Anx5QcnVMqOnzFAX7sQEwYhHAG2FMne26Z4yLxPYmC82TCTSAKv1Sf27YgDTkfdx1bm/6JM3m12LSLmb9lOFmYgJSiNOPcrUXY0FvpWFzbU73V64Lo8Ngd/fGeKTlqUp62aJftnac7p68+a0f5rmiXG3c53Awvg1WW9D8z3f4Acvs0DEFKTgFElOjd+MnDaOAcliMO66RYewiIGfMANOzffJ6HzSw/1Hvt6nGfzISVmMGBfwzmAu2v49lEMy7p6PD2EIGqBYn543Ypp93+vKDZjc+I9v4bdTYq65NIxdUyAY5z3sPGrbiZXGQpJr+bPg7vBX0u9n+wf+bM4INl0FCtnlv2lqsbX9T0aiTpgfTEOZSsRRBOGTywfFBHbtmqXCFWuerjSONTRT7Og0gOVSimfG2Y9e0sI+US+W
+ BrRiwPoa
+ Rmn7u9TZ7KtWkGZ+oSw8EdluhZzlPV9Ga/U9X3KY3V0jcAQAnv/gK1zWx9yMOWCKr4OkTnzXnrQtVH7eg8dPpm5kGVNvycuW8NqaP+xZbP8zxVbCJ4aqJcE0AzMkYVCxDumw5ckQthfySycNz6ye96ayTdjIKYAZF0mLtbLnenRTHCV90VX/dnxd35mMvU3c3bOO6URe2hJ6V11/RHmbBqhw1M8qa6iIWBiBuZMlnOQSkHwWC1v+hibM4qQAVvNQmBBg8VHloBCDEe2K6W24LbvJ85Nsn5++F83Ol59iyXH3XG+veF1nZxLKZ7TK9gw+YI5BbeQhPWzMEJWb+A+E1x8Au/5DXjJ3i/GESpUEpkdG8MuADVs+Czmkwqo9DAlqPXVWtcWxkCoFkojC/AXnVqXjntA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,49 +100,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Dec 19, 2025 at 04:09:42AM +1100, Andrew Donnellan wrote:
+On Tue, 27 Jan 2026 14:16:37 +0100
+Thomas Zimmermann <tzimmermann@suse.de> wrote:
 
-Hi All,
+> Invoke folio_mark_accessed() in mmap page faults to add the folio to
+> the memory manager's LRU list. Userspace invokes mmap to get the memory
+> for software rendering. Later compositors will do the same to create the
+> final on-screen image, so keeping the pages in LRU makes sense. Avoids
+> paging out graphics buffers when under memory pressure.
+> 
+> In page_mkwrite, further invoke the folio_mark_dirty() to add the folio
+> for writeback, should the underlying file be paged out from system memory.
+> This rarely happens in practice, yet it would corrupt the buffer content.
+> 
+> This has little effect on a system's hardware-accelerated rendering, which
+> only mmaps for an initial setup of textures, meshes, shaders, etc.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-...
-> Page table checking depends on architectures providing an
-> implementation of p{te,md,ud}_user_accessible_page.
-...
-> +static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+
+> ---
+>  drivers/gpu/drm/drm_gem_shmem_helper.c | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> index b6ddabbfcc52..30cd34d3a111 100644
+> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> @@ -562,8 +562,10 @@ static bool drm_gem_shmem_try_map_pmd(struct vm_fault *vmf, unsigned long addr,
+>  
+>  		if (folio_test_pmd_mappable(folio)) {
+>  			/* Read-only mapping; split upon write fault */
+> -			if (vmf_insert_folio_pmd(vmf, folio, false) == VM_FAULT_NOPAGE)
+> +			if (vmf_insert_folio_pmd(vmf, folio, false) == VM_FAULT_NOPAGE) {
+> +				folio_mark_accessed(folio);
+>  				return true;
+> +			}
+>  		}
+>  	}
+>  #endif
+> @@ -605,6 +607,7 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+>  		get_page(page);
+>  
+>  		folio_lock(folio);
+> +		folio_mark_accessed(folio);
+>  
+>  		vmf->page = page;
+>  		ret = VM_FAULT_LOCKED;
+> @@ -653,10 +656,23 @@ static void drm_gem_shmem_vm_close(struct vm_area_struct *vma)
+>  	drm_gem_vm_close(vma);
+>  }
+>  
+> +static vm_fault_t drm_gem_shmem_page_mkwrite(struct vm_fault *vmf)
 > +{
-> +	return pte_present(pte) && !is_kernel_addr(addr);
+> +	struct folio *folio = page_folio(vmf->page);
+> +
+> +	file_update_time(vmf->vma->vm_file);
+> +
+> +	folio_lock(folio);
+> +	folio_mark_dirty(folio);
+> +
+> +	return VM_FAULT_LOCKED;
 > +}
+> +
+>  const struct vm_operations_struct drm_gem_shmem_vm_ops = {
+>  	.fault = drm_gem_shmem_fault,
+>  	.open = drm_gem_shmem_vm_open,
+>  	.close = drm_gem_shmem_vm_close,
+> +	.page_mkwrite = drm_gem_shmem_page_mkwrite,
+>  };
+>  EXPORT_SYMBOL_GPL(drm_gem_shmem_vm_ops);
+>  
 
-We looked into implementing this for s390 and for us the only possible
-user vs kernel entry attribute is comparing mm to init_mm. The generic
-code already does that, but I am not sure whether such check alone is
-enough.
-
-But it occured to me that we could implement e.g. ARCH_SUPPORTS_PTC_USER_PAGE
-that adds an extra field to struct page_table_check:
-
-struct page_table_check {
-	atomic_t anon_map_count;
-	atomic_t file_map_count;
-#ifdef CONFIG_ARCH_SUPPORTS_PTC_USER_PAGE
-	bool user_page;
-#endif
-};
-
-Page Table Extensions already used by PTC, so that would fit pretty natural.
-Once a page is mapped into a user process it would be marked as user_page,
-while p{te,md,ud}_user_accessible_page() could go generic:
-
-static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
-{
-	return pte_present(pte) && page_table_check_is_user_page(pte);
-}
-...
-
-I guess, many architectures without viable p.._user() support could benefit
-from that.
-
-But I am not sure whether is it doable, so opinions are very welcomed!
-
-Thanks!
 
