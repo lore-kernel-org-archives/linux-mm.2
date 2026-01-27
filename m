@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB0F0D2F004
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 12:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F00D5D2F000
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 12:17:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 602D36B0096; Tue, 27 Jan 2026 07:16:53 -0500 (EST)
+	id 5B85E6B009F; Tue, 27 Jan 2026 07:17:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C0076B0098; Tue, 27 Jan 2026 07:16:53 -0500 (EST)
+	id 575CE6B00A0; Tue, 27 Jan 2026 07:17:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F9E66B0099; Tue, 27 Jan 2026 07:16:53 -0500 (EST)
+	id 485166B00A1; Tue, 27 Jan 2026 07:17:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F9D46B0096
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 07:16:53 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10DFE531C8
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 12:16:52 +0000 (UTC)
-X-FDA: 84377642706.17.92B38FB
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 497D04000E
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 12:16:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wc/LzcSY";
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 36F756B009F
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 07:17:02 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 605548CF1D
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 12:17:01 +0000 (UTC)
+X-FDA: 84377643042.14.F0D7657
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 72A761C0013
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 12:16:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jSGS7Oe7;
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769516211;
+	s=arc-20220608; t=1769516219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e0pQYHM1jhSwp9PHWAhzAtLgw7dAo1EQ0j0b9Rhu8lM=;
-	b=8rLXP4felfbgnioZ7Cdow2bGfkbHWr6FPW/va/9/Zv70TXiRkRP1pNYTdKL2FHhmiGWdrB
-	uPMQlo+EEcXDR0n29sUG7/77ybSz+MDFqnspW1xhwEphtQjLVayNM2zjw/q1ChrtBxC5VZ
-	WSzHQeFMz8fHC1mSvwTzAzb7QOq6WlU=
+	bh=cQBzLGwNWLhDwXoP+ZRSwxq1ZRzbrKmRMjKOPlq54sI=;
+	b=TNzgyKXuAzNLrYTI4gnJbWPWNpD/o3LdgKTZbVIkw1NO1m2COveE/wQoVBdb/5E1nL/jl3
+	71KS4Tc2NbWOrXLP/GRlNG6iC7pLNaIBcB40SvqzcUf8PnyDJ42cTvO60lb0qjpdualbB2
+	5yIiQdLxv8tvds2u6gN2iEmk+qkUJro=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wc/LzcSY";
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jSGS7Oe7;
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769516211; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769516219; a=rsa-sha256;
 	cv=none;
-	b=lBF1Y/Zwbmux3ZsP6B4Sc5L2tPRZlNIPOSN1xqSKwYqzFnS83p2Cas36CR10M3osHkg9Fr
-	IrqirJb83o0CkHA9fIo4zCuj2EujY9OAeMmiSswnuP+ibU1gnNHvIn16RB7/ceUwN5G5Gv
-	rj4FC8iYdVrq2iz7scd/jWEa7QOxiQw=
+	b=BWOqSaMr9j2KsOZRfNU3eJSONBEN/EWOXSBAVS3TO3JUPDCcQDbFHLSpiqHlAjqL4rBp3V
+	pQXxg+Q1RX2NMsZwuEeszOGVxLtkewQbjDwInY2RWuc1j67dIOassL+bwt9eQQP1n2n08u
+	xWKpy2cCQ3dNL3vnvnR/LylbakobMHU=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769516209;
+	t=1769516217;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=e0pQYHM1jhSwp9PHWAhzAtLgw7dAo1EQ0j0b9Rhu8lM=;
-	b=wc/LzcSY84XUN/M01s5VcIBtD1/lXhQlVZzRwxMLJY1XGT2wxJOzGUzWA5oPCfbPCsb1/O
-	ht9YXkU/ZBWYV/j9FZpfqWjqnjxWaip5QHGmFskLEMQc1kWqyHjiSkHOF+suDP3tIX1G7K
-	JeMpI6zZYGFo3G12ozp0269DFGB3g9I=
+	bh=cQBzLGwNWLhDwXoP+ZRSwxq1ZRzbrKmRMjKOPlq54sI=;
+	b=jSGS7Oe7flEf1a3jjawW71oBSQhZPtzIf1jHxOLDpEaGXg/8H0JQMtgOEgm1lxSI0nFjif
+	CMLoz1yjkN0nwmCjWOwy4dWfqN8+bvppy0gq8toChP4Uc6ASbK4hQf7zJ4fTJfyy7Xu7HL
+	RfqIvb9PoL98f2B3qx4iqWkzECkNTi0=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: david@kernel.org,
 	andreas@gaisler.com,
@@ -80,26 +80,23 @@ Cc: linux-arch@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	sparclinux@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>
-Subject: [PATCH v4 6/8] um: mm: enable MMU_GATHER_RCU_TABLE_FREE
-Date: Tue, 27 Jan 2026 20:12:59 +0800
-Message-ID: <e2217546504668b8a87a39eb0e378839339a1bb4.1769515122.git.zhengqi.arch@bytedance.com>
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
+Date: Tue, 27 Jan 2026 20:13:00 +0800
+Message-ID: <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1769515122.git.zhengqi.arch@bytedance.com>
 References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 75wt1x6aipmzjnr3nwittei4f9jkr6q1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 497D04000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: n6txyfwugwanz5w3eym8z4feydtz5c1i
-X-HE-Tag: 1769516211-300186
-X-HE-Meta: U2FsdGVkX19u6ws1uwh2yv5xNQ5ooZGIbir31/pKwU7IhdayXP0/KTpDOp3OdeSQUfijxTikoGKcGWD7Fcmeg2K9CQTv/ghqShIwkbG2iMoxQK/m9WvIGVdpc4DGkx/yNP+4E/UNTHwTNoK+UHMPoVpk70t1/eqBbFnD076slJ2v0LPgNn5uakVaBk3F7emct+74LhyIzAHGasyDJcA7qVtxLOA6IBR5+KKxCQ/KbNaAC3cHznkQQiHgVTzZ6xG2L0OazhlPpxvUsY1whhLYG3Tsdlaq1h37NVfmv5HSV8YA4OAIAVokClhSMUwO4MvAqVWwDjjKB1ywQJDapJ25o7u54cUhNOnVlwOgodM4c1tuNVaB8JZAMkEm6fmPPTQaPLQwTlxsC+T5XqDttWS4tX166OI57HJ7VKwcLokFuRWKaLUwS+bwxGvkbnlJtls8jawGaAvprglrujKWJWXJKi75Hw8vieGbh61DKLN0OWysCmn0PnmBGU6a5WimBvrBMht5ckjIpXZ0kby/+x3NsDPmIBQUCBohfkvfFjdiAK7E6XHsmUxTVmJdYpoqrEVDwtZMKMPLrn4GUocNPGq7sLoGrpm1ulQJublv80mSYA/yDt0EP8WiOR34chncxWZ4+s8/qHn2LaP2wSGlQXdjQrJKbA+OOO8dXepQ6Ezo73BMU7a4R1mKvYQgUmQu03ym0fnf9o83d+TuNjcwwAB1QtsO0XgyuGgtOeJLPP68TDyfQ75QGBc4oAoQoxz3fFF4I6sNgYzQRu5CjP1v+EgtiTHJWbh+QNMMaMil4cdV6cLBukZroQwlyDL455oU0j3cFNZvX8SMZr7Fka4FjOjCR0Uc57vKfiw2fvEn6Su1UpDvdcoJ54wt8K+IBwHr7cBtS1SUvjnxYgU0hI8i+2sGsjfDk5b/p0LQ6RSvWqmwMDTIpmSe5Ds83Xb+V3DgJycFrxzR5TDE+glXauZVhWy
- Y6nHzL+3
- Tkfi3wVoBsmYEQuE1N4D9n5Upl89r2VNhtPXA0NiQ9bp/liWqEujQ2Y7G0RB2VNLRKl5bHtazVjEjLee0Xr1gbNQYtB/ydNZSv0P5c1PVsv4wdf/QEC0xrNsFPrbbFBK3fgxBBaMx3wr9RkAxSZePodT/b9KmMVrkX1dapd24UmbAabpxRBO1fW1dmuJ9k0qbHlbvnD8vn5X+1hGYR7FS6djdaaAE2GBG1K2Q9YsHRpS9XG4Akt8CWwDNrF//c30RDYphOpSAxJAY0me0XKuBW9ZJXS2B8mtcRU5YD6hh4v8gjXU8z4nC5OTyFOIk4GGY8KNkUZT7wIWggXsmU8LiNgq00LAAI7cKg1abhYTpRDfkQhQkG9fHygukZYMNMYCMYPHRWsvBs2MFPnwdNm+hCushwByoFtnu8R69
+X-Rspamd-Queue-Id: 72A761C0013
+X-HE-Tag: 1769516219-88898
+X-HE-Meta: U2FsdGVkX1/FkuNSlUufZGNOQVcCvP3IaKzMWgHsxi291QywXEUhMn9NeZGZsZlPFZ1YPq5PrUIUq8V2c4f727+g44jVuNa4HkxS5oCsasrR6Yt0yy78n1LkycZ/0HJlenfxi8LuzFkFwZ/rTuG10HkuQdxxAbyG4Gi1M/WNlm4mIHbcbdpbp94DOZ1xySFxkUf6fTBgeolY4plajMGdqBY4ITSYF9mwgeBp5+h1+DC4KizdliRG1r8NCNpV94ivdKG7+7EM6A/V/onBogSKOXsl0jxzizXtod0R9xt+gysukZmTfBv42uaIhurLTvTaP3vGeIQtAIP/1HY38B5NQ7GTrlyaLecAeEr5CUVceAwmVTLMrHNcRghO/CLkYjq9br7dFxQvjOzUpXbiEoXESQYbOWFwyaC3RzLnzVGeV4Cf0yu0G6qIvwmAyQ+7iHh8P9hGphwBwcAQRgu21W0ZNGC0CM7hfS53AZJhtijFUnlAoIwwTOIriunb1duYD0PiiVMu/46PDDPo5zK7utR6p4lx2vb+N/EdZpGcaLfFK6wLzoHj2hyXY3i2EN5w+I8/h0uXBRFS+73Y3BXQMV+iM+P2WR0OVLCFInNzTZnybqnfyhsGdz9zyqzUigC8KtKQ7hz7lKSPVWY22DV3FVd/i9V9vXOteLTnbkQI3nreLHJgjld715+Ow+tZc8n4UkG9IVB+hyL5hseNhI+1RKwnf1wJ9hTRaqq35pBOuhoeOptJ1Bbrpb5TkoDQg9vk+pvizSU91HSr1YOaIVv1p/wz+woLpR7VMI1lIwmXMChiOMlfGy8dIXLWfXboHYRjRWWTlAmpwL+WYOHcbpuR/7zkDwIViQohcxfsSu/GJsHtHJ23FgZHdYkats1OHM3AbDwTJiLG+eT+xH1lQA03v6OfQVRMBrB0fFek0qRL7DSVc4pMf4+WHbFNilVFrVXQR1Hj3TL/xo+QcXsXMq5wLpq
+ sAOKgNtU
+ 2jzkrkBFs/xNrLBN6sQWJ3CtLiW3k2XiyJJnu+VmnPCelwAlbbTQwrbFUatXhEaey/yvB3ogTfPOSR4mmMsyw4a/GIDtGlE17oxR22qSfAdK8f50bJ+GHvWtOCraIlJV6y6ATKWzUL06u1BPfzdzQeDbFKTjo1TUOpjOH81mhl7+3SrSCCeST5LVvQGFgXGUp4++LUaciWhKvwPlBY1SOmx6tGlqMKRa4zvrlT0ZMXCmfriA1MFfVYoGwbmBdRS+4n1fIpe+6IfITCM5bTM7lFjZituAwriv5XceB9O5YSnISGr9Ykk8ZBzwZ0aWzp+fDcotWlavAfrj7OnVKZ+gt4aDK3A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,31 +107,100 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-On a 64-bit system, madvise(MADV_DONTNEED) may cause a large number of
-empty PTE page table pages (such as 100GB+). To resolve this problem,
-first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
-PT_RECLAIM feature, which resolves this problem.
+For architectures that define __HAVE_ARCH_TLB_REMOVE_TABLE, the page
+tables at the pmd/pud level are generally not of struct ptdesc type, and
+do not have pt_rcu_head member, thus these architectures cannot support
+PT_RECLAIM.
+
+In preparation for enabling PT_RECLAIM on more architectures, convert
+__HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config,
+so that we can make conditional judgments in Kconfig.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
 ---
- arch/um/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/Kconfig            | 1 +
+ arch/powerpc/include/asm/tlb.h  | 1 -
+ arch/sparc/Kconfig              | 1 +
+ arch/sparc/include/asm/tlb_64.h | 1 -
+ include/asm-generic/tlb.h       | 2 +-
+ mm/Kconfig                      | 3 +++
+ 6 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-index 8415d39b0d430..098cda44db225 100644
---- a/arch/um/Kconfig
-+++ b/arch/um/Kconfig
-@@ -42,6 +42,7 @@ config UML
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select THREAD_INFO_IN_TASK
- 	select SPARSE_IRQ
-+	select MMU_GATHER_RCU_TABLE_FREE
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 9537a61ebae02..b47aa8fd62742 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -304,6 +304,7 @@ config PPC
+ 	select LOCK_MM_AND_FIND_VMA
+ 	select MMU_GATHER_PAGE_SIZE
+ 	select MMU_GATHER_RCU_TABLE_FREE
++	select HAVE_ARCH_TLB_REMOVE_TABLE
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select MMU_LAZY_TLB_SHOOTDOWN		if PPC_BOOK3S_64
+ 	select MODULES_USE_ELF_RELA
+diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/tlb.h
+index 2058e8d3e0138..1ca7d4c4b90db 100644
+--- a/arch/powerpc/include/asm/tlb.h
++++ b/arch/powerpc/include/asm/tlb.h
+@@ -37,7 +37,6 @@ extern void tlb_flush(struct mmu_gather *tlb);
+  */
+ #define tlb_needs_table_invalidate()	radix_enabled()
  
- config MMU
- 	bool
+-#define __HAVE_ARCH_TLB_REMOVE_TABLE
+ /* Get the generic bits... */
+ #include <asm-generic/tlb.h>
+ 
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index a630d373e6453..25fa2908d6152 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -74,6 +74,7 @@ config SPARC64
+ 	select HAVE_KRETPROBES
+ 	select HAVE_KPROBES
+ 	select MMU_GATHER_RCU_TABLE_FREE if SMP
++	select HAVE_ARCH_TLB_REMOVE_TABLE if SMP
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select MMU_GATHER_NO_FLUSH_CACHE
+ 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+diff --git a/arch/sparc/include/asm/tlb_64.h b/arch/sparc/include/asm/tlb_64.h
+index 1a6e694418e39..3037187482db7 100644
+--- a/arch/sparc/include/asm/tlb_64.h
++++ b/arch/sparc/include/asm/tlb_64.h
+@@ -33,7 +33,6 @@ void flush_tlb_pending(void);
+ #define tlb_needs_table_invalidate()	(false)
+ #endif
+ 
+-#define __HAVE_ARCH_TLB_REMOVE_TABLE
+ #include <asm-generic/tlb.h>
+ 
+ #endif /* _SPARC64_TLB_H */
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index 4d679d2a206b4..3427b8036ba33 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -213,7 +213,7 @@ struct mmu_table_batch {
+ #define MAX_TABLE_BATCH		\
+ 	((PAGE_SIZE - sizeof(struct mmu_table_batch)) / sizeof(void *))
+ 
+-#ifndef __HAVE_ARCH_TLB_REMOVE_TABLE
++#ifndef CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE
+ static inline void __tlb_remove_table(void *table)
+ {
+ 	struct ptdesc *ptdesc = (struct ptdesc *)table;
+diff --git a/mm/Kconfig b/mm/Kconfig
+index a992f2203eb91..456e9eaedca39 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1451,6 +1451,9 @@ config ARCH_HAS_USER_SHADOW_STACK
+ 	  The architecture has hardware support for userspace shadow call
+           stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+ 
++config HAVE_ARCH_TLB_REMOVE_TABLE
++	def_bool n
++
+ config ARCH_SUPPORTS_PT_RECLAIM
+ 	def_bool n
+ 
 -- 
 2.20.1
 
