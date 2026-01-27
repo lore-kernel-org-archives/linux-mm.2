@@ -4,116 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C828ECA6CB6
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 09:02:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF00DCA6CAA
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 09:06:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4CE96B0088; Tue, 27 Jan 2026 04:02:44 -0500 (EST)
+	id 185A56B0088; Tue, 27 Jan 2026 04:06:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0E066B0089; Tue, 27 Jan 2026 04:02:44 -0500 (EST)
+	id 133856B0089; Tue, 27 Jan 2026 04:06:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E62C6B008A; Tue, 27 Jan 2026 04:02:44 -0500 (EST)
+	id 00B436B008A; Tue, 27 Jan 2026 04:06:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF2566B0088
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 04:02:43 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 735B4C35C6
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:02:43 +0000 (UTC)
-X-FDA: 84377153406.07.916642C
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 66B4412000D
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:02:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Om3xUMQN;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E142A6B0088
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 04:06:22 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 821C613C093
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:06:22 +0000 (UTC)
+X-FDA: 84377162604.25.2096B29
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7070940005
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 09:06:19 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1WgzOlZV;
+	spf=pass (imf17.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769504561;
+	s=arc-20220608; t=1769504780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LKDWo0DZ7WSwFHUHcIcu30uUFge5ch1xyNfI86/sLVY=;
-	b=LkSU4qobug71hJjSdTnrbVPRYpQC+VB62Mev5EF+Z3NtoYNMmHVIwyYSPehKOE3MwRvDy0
-	eDW2XBiTLElNabnMO++igyfZn3TJJdml8U9diAwy/2udcVjsgkUbADF3Dkzp0dJETnb8bh
-	nh2DS/UDyLp2U7SGwxg+TPBzArUTZ1A=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uJeg8f4t2zYbqXiq32TpqT6FSOTJrwTSh1OSPxciUMU=;
+	b=c72arhAmKN1763kQ5srKKLJiRoK2ihJ4q3b5Ud/dL0EfAX1aWToi46eJlp0PRh0bPnO/Hz
+	aUiYJ0rqe5alYa6wGannMG+RAIARB9FexDQpod+bT4lmMJIcEd8cAp5HhI7Adx9zg7uXYg
+	smxD4fMy5BF4cbJf9kcWCVGB3lcoQQ0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Om3xUMQN;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769504561; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1WgzOlZV;
+	spf=pass (imf17.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769504780; a=rsa-sha256;
 	cv=none;
-	b=mxdnzrTxzUbyjSRlgZ6yP/BZ6mvRiWLiY6iJ3LcZcxvi4fc3wve5gDNd/rLjCU3J5NQo6U
-	KCl5e9Wdrb6egJ/R/g+QqwjC/ESSA+hEijFfmOBUVHIJ2mlN6+ysDeegCKDGAqYtfum4Lh
-	CxX7N01oc85V+NZAojf391rGYB0EhB0=
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43284ed32a0so3193314f8f.3
-        for <linux-mm@kvack.org>; Tue, 27 Jan 2026 01:02:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769504560; x=1770109360; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LKDWo0DZ7WSwFHUHcIcu30uUFge5ch1xyNfI86/sLVY=;
-        b=Om3xUMQNs79dGLuoKu72iBq0f2v1rNgSultajZz80qTVMMwVi4Pd8KTImwwthZX1KV
-         8KZhVrj/OiV1FI2iEs00fC0GGb+B/GYMLj7ofUVY5xOxNk3NheOyfgzk6YUEObripPTD
-         JiK1koOP4XgJTJxe9G7aORF5zEC6oc9yvDVyTDmDAz/Yu299xh4JAcyVcjzI2hCdm5vi
-         KWxykroH/b/7EN6s3W385Qyk/W4sObT5PRzW8d3zOVIP56kWFf0UA3RPDY7uID4zUXK5
-         dwJ2451kAsmZlRxIh0KmazruRfBVDJ7qVMdIVnZsFjSVALWwcXJ2HWY6OHKITmIksT92
-         tOiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769504560; x=1770109360;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LKDWo0DZ7WSwFHUHcIcu30uUFge5ch1xyNfI86/sLVY=;
-        b=KoTpZZ9027jQExw0f8XyTvbAaYBWX4VK+KsdeP63DDGRRHar87SFvZrjtB7mtZsvaQ
-         J8LoYGWVmUWFYFZEX5R+y/qjSoXuYm47rqWRuSsBOqBabGmKQj3t7A5mUYy10NwOpR71
-         EG4yM7WP8Gv4dUyflDazesuuSkJ2ZLX434A7RXL5AeVUloSVTgwDFch6DRhLrF01VRO5
-         y+t2cNUYMit4fU6xu7s3rZOVojUJB4stKqNFO5lablT0RPxeCI65oHXdjjRjIF/XhNoT
-         6Oo2GIipcRI/5ii1CxOOoEFjIwTRShPSfC+V7uOzIMvclDf4bDOcHxCkpMxOHL1Bng6F
-         1teA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjWsJCl56yEMJNhIX2UP4VwI4v8/nanNR9WLrnHLju9on3zZirco04AtjenT7HTDEyL4QI0rXSdA==@kvack.org
-X-Gm-Message-State: AOJu0YxUWFFk9ZyO4qOwtr16mbDz2m4mCLQtvmbeLUpSeIJKRwcLiBMm
-	BR75exJt2uCFT89M9MZbGGBa1ZG5nAoHBautwiFBIo7lVuRzgNaQX6qkbl7ff/APWPE=
-X-Gm-Gg: AZuq6aIFW1jp2m2xeJssOBnh1fJiIQd68WMhh63gyGDAl+GEs1WoiHURzPQmP0mhrKU
-	ky4qfdyv1COm1GR+hnfBokb++CEK6Oj7e9OFBmUlZzVmTf/uHHmOLI5Fkp9yW9OPp+BF8FMQktK
-	5BONW7TJgHYOecGUX/f3J0Mhz/jFOH1cXnZaGqStzJQp7UOQ/qVuM2f8L9H1nIyviqj8jFcRSxG
-	h5SJS+sNezRlDhsWXEztK6QAiSESJBGfuZLa1sxsr2z0VWl/WfUSSoFr2b3Z7jpw6iJeWNCxTaG
-	WUdHj+0/4nxgcKwNYueTWtr/nrt5iKgfC8KlAAMuCrXOp1+1W57FTOlBEJW5CGIeKQo7HCz09ZE
-	X2Rgl65cxaW2KvNNyZUqq8+TW4VfrzXW1SPgEhHuczKOeATOfcoSqZ/u7AaCAqXvzRI+qQr5yib
-	sW8XO9zou0G91eO0+sLdm0xmP9
-X-Received: by 2002:a05:6000:4282:b0:431:752:672b with SMTP id ffacd0b85a97d-435dd05a81amr1236447f8f.14.1769504559686;
-        Tue, 27 Jan 2026 01:02:39 -0800 (PST)
-Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c24ac1sm36402707f8f.14.2026.01.27.01.02.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 01:02:39 -0800 (PST)
-Date: Tue, 27 Jan 2026 10:02:38 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 00/17] mm: BPF OOM
-Message-ID: <aXh_LpTzDhvv20uB@tiehlicka>
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+	b=VFYShhb8K/jISzszMJ93ZiNigkV/i/7xDjVkw8BxqEH5QyKimTUJPSJGisPnBz2dvA2MC0
+	SsNIOBkffP5llIQ04vN6Jvseh0Y99OSfj3NWjLC6AGl6/QFpkJESzCpMP0XlZ4+OZAwCqc
+	O7PVBfZCJkAE0Ri79tQXKCHP8QHm4Wc=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=uJeg8f4t2zYbqXiq32TpqT6FSOTJrwTSh1OSPxciUMU=;
+	b=1WgzOlZVb3RhIr0gJ0+4zvdAXrt0bQGHzNlwLwiW9Q8bozduzVQwbzsRFjtQFKE3feyowtUhr
+	q76H4m0x8zdMxWUjrZ6FMVNheNLVHs/AVTwiu5P6OQqTF3D/bmdmA/o3aMQ9H+iJTMRygj2qpAV
+	QKkfjanKarkhFarmx6ZNbvA=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4f0fYz4vHtzmVB2;
+	Tue, 27 Jan 2026 17:02:47 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id AAD0040566;
+	Tue, 27 Jan 2026 17:06:15 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 27 Jan
+ 2026 17:06:14 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <zengheng4@huawei.com>,
+	<ryan.roberts@arm.com>, <anshuman.khandual@arm.com>,
+	<wangkefeng.wang@huawei.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mm@kvack.org>
+CC: <tujinjiang@huawei.com>
+Subject: [PATCH v2] arm64: mm: fix pass user prot to ioremap_prot in generic_access_phys
+Date: Tue, 27 Jan 2026 17:01:29 +0800
+Message-ID: <20260127090129.412084-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127024421.494929-1-roman.gushchin@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 66B4412000D
-X-Stat-Signature: siye953mtpdar1fzpu7r3ordwmg3o6k6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Server: rspam12
+X-Stat-Signature: dcmocg8p6kug6tc76j5abqtnaycwctt3
+X-Rspamd-Queue-Id: 7070940005
 X-Rspam-User: 
-X-HE-Tag: 1769504561-375314
-X-HE-Meta: U2FsdGVkX1/Pj/zwKgYSQpNjLZuTbCiCfMC6Eo5jUNksW/fK/szwXgUWTKUpi+N3hQWi4lqLcewsOzFdjwd73Rqaku9hPlVZpbgiRX7ve3wx8bHJHG6lNR/nhYmEKTnak8Z8H824OvlRxk8fNecbirZpVqzn/zZDM6b9lh1taO3uvFzfl7MJ5Y6vyQ9r18cnAFVcFnkMrWKUBDupwCRo8fspQ444eG++vjYm/ZcYT9dAJnVNw53QlKxWpfdH0JyWVdo32L7DumMFOYFm8zxzDYMAsErd9MH7/+5+QEwzvT36tjCdecpRQKmnNBYp8hqREUdUovT+WHjMz18/zso2wSLob25eMFvKLwiIbLPE1L3Hra+mH5waoder4eZZoAzNHW8w5VgA+CxH7zNnlWJBgz5rBEzpvSYFNBixsRQjLcFzNm2zCr8oV7S4kcHylj1YMWHUIDaqZQFPszISdGlM2mtoKXZCqzStmZ3GzK2CTTBGKf4yi0a9Cy6C8MKWHgb3AlEIQaCcEPy8AonjpXvPmPTQDtRthL46dc+infSEsUz1KTvGBGf14P5EGMKPUOvtyXwRYeNK1GoI1jY7IIBNGJjwFgk8GN5kuHQ2gby9UMESHVyiuOGq7qxCteTQQd6VijrStLg8+ohgrxoImwd/YtJHxdAtYqs3N8SQ8aKF4KDfb5VcjsIQTuZLJ1KQiDMX43sKsGqkZVWvkR8PqWCr7ixjQSpe7Q1jv3u+9XW8MqZnr51qIUUpFnWZupzgMPNGar449T4j8rCNViVybCmGiRW08GxSFCzZcH2neg+l0nzFu7CsbWFh3E5PPGamW2bSqTS7GU4+SZXBvRggtxWisWZX40h+AENq9Hl+/X9CEiiNbz14yjGbAo6TQ/nC7UzW7UgmJ6pf+r9aaAxWMBV4PiZtrPTcV/ALyVrLu31fzOvgrLo+mCO8n1GChBCWfASXvQu0I364Q6Pn1Ftcjgh
- kWamj9v2
- BF+/Y9FFsgMnCRdZ85L+hUnfzvpLMmRhYu7I78iSG9VFZj3HYULImGFs5s5lVmLS9TcKyn6Mlu6anzJrfsvp4NQa3nQtJJc3a2bJ1ufhsmpaQseFvYPiz/fhOl6AJCINWNK9aZoh+UI8jqpJ2mIlzgF58T3rjDBFYtv/rgBA/yGMVTQx/rbUmJDlDlcabnbvtj6nTGBNMeDL3lAuFTfQWwWwcMF8QRjNZmsi8ov5/zd8BlmUWLz5+sfw0NzRcYRF4wNAyvhsrPcz4LWalghrThMieSRXD7XEVFA6K6D6M64LVwVzYBF73Mo/Yawph8RjqvVV4y7uxqK78tI3jOIpclFWCzNkgvrwlf00JnmAImt8HKNQ=
+X-HE-Tag: 1769504779-751537
+X-HE-Meta: U2FsdGVkX18hvQRWMotthAkSLxV/+fmRBnAOlYjO1TndFHfhtKP/zKRfLzjMSU6CGZtnK3gLcGttd6mJOWX+ndbERabWJPrWoJQHMw+FddHxv89gU/4lxlcy1Gax/CEDXJ6ozI7HiNKqsLpUHMTvrmHhEAc4s6Nic5IdcKTthbglhs3SB5q7slAONlMa6rO9U3v7nDkAZuqRyKVNN2jXOLHlksA8r8ab5FgtGKmXBcB965T9JCbokwTWKcFNifEXwCBQauuCGkHIGK/9FDO7iItD2szJXnDR6UrZwcqmR1OJL4bMWvYT5g9EYbf2jfrmK1cWizILh1FRzaYxfr4gHoTyh911GWdE0IZKVhtqFUHGGp/aFxOYdjoU24OtlY9eu8p5ofo7LB9Jr4pwQgG+i/37DrQZ7pUgXUrupvbMRlyRYr7sm+JU9tbC9UVB4z1CaK2P2CMFiEKz9YXEALQN+oI09gH4jcx4D9/olK38cTaCCaFgMVErq5MkpGI4oD3aliY3n94/27ZRVvYvKpgKABT0wGbA+UkU8+J2d8ycxqcf2xFZpybaIlT5BwGTAI+oYABRrwIs850BgbOybCiUNU2Gq99JGLJaVPE+uaBmLiYf12Q1EEP6YuHWfLe2IHRHCx2MALWW/jz+qdHRnlCbZeAdgE9igU9kuRfmD+SMqgUePPgmFbV2JwT0PknPL3fe9X6QQw7YeBDVMmCngRm035f0BY8KTg5sVd3NqGzV+vjsh9cEjDj+hlKOzMGG0i1qAco1Aw80i0GrfjZnmIIkvweur164ZeImFZ/ByOLYTB2tfRt4z2qBDFw3DlxmJPvwZjRh1iCdVvcBJjq+/KnHFpb8BrNVlb0DdVpR9YVhI/cMjP6whhNKs3V1XTGGThgUuIi1EWgDBCUnj4m1XYBOG75eMiUM8th8d6ulEP+F2R4CpMBNf19xrjVH2ZVLzEPo5nwiGzY4iPRGElxcF24
+ iZsugAAq
+ 3/qEHP95wJwb350rqIwH3tghor8ijpYDLNWuH3E8eSc5a6Gh00KDlulg/dwBRYg+mx5vqSNgvCTFVvgGQhlQWzLH/BK1/jgSs0LMZPukuJd2c7hnDqxvfcyECofk50nznWdf9xXc7vIToSUIAGbDVjJ0BT1X9PSs8e6azdgERHtvl6OzFC6MF0Id0sVopM+0NhGPUyABJwr4RIk6mDF6qWWYGV651+zzKat1OJITFCiLIEQ8FYkm1om/pQ827lv3bl5S8QeQrob7SosLlVZvR3v7wOyuv3/67/C4HIHzxVzx7pccre42MOjOSbhvTdJ7LBxDPyOUXrVPqn6yUX4na5QgscQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,29 +98,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 26-01-26 18:44:03, Roman Gushchin wrote:
-> This patchset adds an ability to customize the out of memory
-> handling using bpf.
-> 
-> It focuses on two parts:
-> 1) OOM handling policy,
-> 2) PSI-based OOM invocation.
-> 
-> The idea to use bpf for customizing the OOM handling is not new, but
-> unlike the previous proposal [1], which augmented the existing task
-> ranking policy, this one tries to be as generic as possible and
-> leverage the full power of the modern bpf.
-> 
-> It provides a generic interface which is called before the existing OOM
-> killer code and allows implementing any policy, e.g. picking a victim
-> task or memory cgroup or potentially even releasing memory in other
-> ways, e.g. deleting tmpfs files (the last one might require some
-> additional but relatively simple changes).
+Here is a syzkaller error log:
+  [0000000020ffc000] pgd=080000010598d403, p4d=080000010598d403, pud=0800000125ddb403,
+                     pmd=080000007833c403, pte=01608000007fcfcf
+  Unable to handle kernel read from unreadable memory at virtual address ffff80008ea89000
+  KASAN: probably user-memory-access in range [0x0000000475448000-0x0000000475448007]
+  Mem abort info:
+    ESR = 0x000000009600000f
+    EC = 0x25: DABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x0f: level 3 permission fault
+  Data abort info:
+    ISV = 0, ISS = 0x0000000f, ISS2 = 0x00000000
+    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+  swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000001244aa000
+  [ffff80008ea89000] pgd=100000013ffff403, p4d=100000013ffff403, pud=100000013fffe403,
+		     pmd=100000010a453403, pte=01608000007fcfcf
+  Internal error: Oops: 000000009600000f [#1] SMP
+  Modules linked in: team
+  CPU: 1 PID: 10840 Comm: syz.9.83 Kdump: loaded Tainted: G
+  Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+  pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : __memcpy_fromio+0x80/0xf8
+  lr : generic_access_phys+0x20c/0x2b8
+  sp : ffff8000a0507960
+  x29: ffff8000a0507960 x28: 1ffff000140a0f44 x27: ffff00003833cfe0
+  x26: 0000000000000000 x25: 0000000000001000 x24: 0010000000000001
+  x23: ffff80008ea89000 x22: ffff00004ea63000 x21: 0000000000001000
+  x20: ffff80008ea89000 x19: ffff00004ea62000 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000806f1e3c
+  x14: ffff8000806f1d44 x13: 0000000041b58ab3 x12: ffff7000140a0f23
+  x11: 1ffff000140a0f22 x10: ffff7000140a0f22 x9 : ffff800080579d24
+  x8 : 0000000000000004 x7 : 0000000000000003 x6 : 0000000000000001
+  x5 : ffff8000a0507910 x4 : ffff7000140a0f22 x3 : dfff800000000000
+  x2 : 0000000000001000 x1 : ffff80008ea89000 x0 : ffff00004ea62000
+  Call trace:
+    __memcpy_fromio+0x80/0xf8
+    generic_access_phys+0x20c/0x2b8
+    __access_remote_vm+0x46c/0x5b8
+    access_remote_vm+0x18/0x30
+    environ_read+0x238/0x3e8
+    vfs_read+0xe4/0x2b0
+    ksys_read+0xcc/0x178
+    __arm64_sys_read+0x4c/0x68
+    invoke_syscall+0x68/0x1a0
+    el0_svc_common.constprop.0+0x11c/0x150
+    do_el0_svc+0x38/0x50
+    el0_svc+0x50/0x258
+    el0t_64_sync_handler+0xc0/0xc8
+    el0t_64_sync+0x1a4/0x1a8
+  Code: 91002339 aa1403f7 8b190276 d503201f (f94002f8)
 
-Are you planning to write any highlevel documentation on how to use the
-existing infrastructure to implement proper/correct OOM handlers with
-these generic interfaces?
+The local syzkaller first maps I/O address from /dev/mem to userspace,
+overiding the stack vma with MAP_FIXED flag. As a result, when reading
+/proc/$pid/environ, generic_access_phys() is called to access the region,
+which triggers a PAN permission-check fault and causes a kernel access
+fault.
+
+The root cause is that generic_access_phys() passes a user pte to
+ioremap_prot(), the user pte sets PTE_USER and PTE_NG bits.  Consequently,
+any subsequent kernel-mode access to the remapped address raises a fault.
+
+To fix it, define arch_mk_kernel_prot() to convert user prot to kernel
+prot for arm64, and call arch_mk_kernel_prot() in generic_access_phys(),
+so that a user prot is passed to ioremap_prot().
+
+Fixes: 893dea9ccd08 ("arm64: Add HAVE_IOREMAP_PROT support")
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
+Change since v1:
+ * fix in ther caller generic_access_phys(), suggested by Catalin Marinas.
+
+ arch/arm64/include/asm/io.h | 11 +++++++++++
+ mm/memory.c                 | 12 +++++++++++-
+ 2 files changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
+index 83e03abbb2ca..fe8607eafab6 100644
+--- a/arch/arm64/include/asm/io.h
++++ b/arch/arm64/include/asm/io.h
+@@ -267,6 +267,17 @@ int arm64_ioremap_prot_hook_register(const ioremap_prot_hook_t hook);
+ 
+ #define ioremap_prot ioremap_prot
+ 
++#define arch_mk_kernel_prot arch_mk_kernel_prot
++static inline pgprot_t arch_mk_kernel_prot(pgprot_t user_prot)
++{
++	unsigned long kernel_prot_val;
++
++	kernel_prot_val = _PAGE_KERNEL & ~(PTE_WRITE | PTE_ATTRINDX_MASK);
++	kernel_prot_val |= pgprot_val(user_prot) & (PTE_WRITE | PTE_ATTRINDX_MASK);
++
++	return __pgprot(kernel_prot_val);
++}
++
+ #define _PAGE_IOREMAP PROT_DEVICE_nGnRE
+ 
+ #define ioremap_wc(addr, size)	\
+diff --git a/mm/memory.c b/mm/memory.c
+index da360a6eb8a4..68fcfc3bbad8 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6836,6 +6836,14 @@ void follow_pfnmap_end(struct follow_pfnmap_args *args)
+ EXPORT_SYMBOL_GPL(follow_pfnmap_end);
+ 
+ #ifdef CONFIG_HAVE_IOREMAP_PROT
++#ifndef arch_mk_kernel_prot
++#define arch_mk_kernel_prot arch_mk_kernel_prot
++static inline pgprot_t arch_mk_kernel_prot(pgprot_t user_prot)
++{
++	return user_prot;
++}
++#endif
++
+ /**
+  * generic_access_phys - generic implementation for iomem mmap access
+  * @vma: the vma to access
+@@ -6853,6 +6861,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ {
+ 	resource_size_t phys_addr;
+ 	pgprot_t prot = __pgprot(0);
++	pgprot_t kernel_prot;
+ 	void __iomem *maddr;
+ 	int offset = offset_in_page(addr);
+ 	int ret = -EINVAL;
+@@ -6870,7 +6879,8 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ 	if ((write & FOLL_WRITE) && !writable)
+ 		return -EINVAL;
+ 
+-	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
++	kernel_prot = arch_mk_kernel_prot(prot);
++	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), kernel_prot);
+ 	if (!maddr)
+ 		return -ENOMEM;
+ 
 -- 
-Michal Hocko
-SUSE Labs
+2.43.0
+
 
