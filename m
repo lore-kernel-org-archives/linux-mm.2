@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57DD9D25920
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 02:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BD3D25922
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 02:45:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE1B36B009D; Mon, 26 Jan 2026 21:45:06 -0500 (EST)
+	id EB3816B009E; Mon, 26 Jan 2026 21:45:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCC316B009E; Mon, 26 Jan 2026 21:45:06 -0500 (EST)
+	id E74996B009F; Mon, 26 Jan 2026 21:45:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5F46B009F; Mon, 26 Jan 2026 21:45:06 -0500 (EST)
+	id D7D906B00A0; Mon, 26 Jan 2026 21:45:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E4906B009D
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 21:45:06 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41C4DD3C6D
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:45:06 +0000 (UTC)
-X-FDA: 84376201812.08.09FFFA5
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 87AE640005
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:45:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QbI4wHPQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C80676B009E
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 21:45:09 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 90FF014092E
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:45:09 +0000 (UTC)
+X-FDA: 84376201938.30.BD82BCC
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DBA0A160010
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:45:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MVYbxj8b;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769481904;
+	s=arc-20220608; t=1769481908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c1BqMEOY9X0l6L8QNWTbBYeaa++beJxlVBc9vvQg0ZY=;
-	b=2NywX+MySbLGwBdgsvaAZ8fdfBOYyzKOaHEI9ZfWUFfRwIeyXP6BGApjZ3OUMSFa+A8YlR
-	10YtGPM5wCcrrGENS95NCqmsraseeXelp8D7aDe8U5jFmUzeo/O4ypitXDviZd0+s0+1EM
-	doPBvfzH7Csq5VW8tBfaaqFvjz2FVFY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769481904; a=rsa-sha256;
+	bh=5kycmWS+Mn50NTNG9vDPdXnOmThXS8tkuWasjOZWHyE=;
+	b=IUA/4nL4pGXJnrcpPeNxIBlnc8LG4tJlHEaEUZKIw1eo0QovR0Z/PKZgylZOZihvifUm6w
+	RHPy0DvzcHMnanpBPC/DSO5Rv/wcwSAucw3Gk1j55/7lulHwcXQyK0BJkrFCpf/h8mebkM
+	WF1nzhl7lpiixrWsxKSgyncX47x1FtA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769481908; a=rsa-sha256;
 	cv=none;
-	b=2f3j/j1m7dURV710xXlLoUZd84ktolwKrX16g9uF7WVk5iJjc7nBtyHLKjkJ4CLrZp1pEs
-	NMnuFHi+WnZhzmtAj5S6DNF/s667nfWoWlKSdnVkpwZOcla5OPlE70eV+00ieTIK910DVL
-	wZTyg0ahWbwQkK67azkhQglUzeTUfHo=
+	b=ab+xwfE4s0x0fk5rDXSgmx74w9HnD8CwSqLbxwrAzFQCwHNsocTNNtcEOgsb6vPEwOAtEh
+	vaaNmeaLIwsRzTV74wrj/2l1LJBqATQ75vQ0PghO02Ul5qSsomTS9qLJbcSNyVdRVvZP3D
+	EEWxX8oVe7x/zRGvDUbqT6jaVM91t24=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QbI4wHPQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MVYbxj8b;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769481903;
+	t=1769481906;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c1BqMEOY9X0l6L8QNWTbBYeaa++beJxlVBc9vvQg0ZY=;
-	b=QbI4wHPQfRxt8LfCF+viV3xkrlBU6NP5bBWY35N/NkqWng0zJlvecrQMEa1z3u7pww2PWr
-	Tv5enAhdzVLQfRrxGb4aYKamVhrbRnhLb2bC3PaWMu7jqL3WSp44XVhQf5aLobBHS07fRT
-	yO6H6ZRa3Mi6o/210cWpFLKHLzbagDY=
+	bh=5kycmWS+Mn50NTNG9vDPdXnOmThXS8tkuWasjOZWHyE=;
+	b=MVYbxj8bguPU/jWUxphCtMV2M4pyasjfYogGFJ2vNcT1KF2goib3pEeYc8kLCil+Me1cqA
+	A+YE5JjAKsshrTPbuVZ0E9j1WggR0qhRanDpJE3AsiU2VhodIOexFViw0YdvUqPvkcyoBD
+	IpQB4/liQnnBeuM18rgJmTEtSMseg/k=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: bpf@vger.kernel.org
 Cc: Michal Hocko <mhocko@suse.com>,
@@ -72,22 +72,22 @@ Cc: Michal Hocko <mhocko@suse.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH bpf-next v3 10/17] mm: introduce bpf_task_is_oom_victim() kfunc
-Date: Mon, 26 Jan 2026 18:44:13 -0800
-Message-ID: <20260127024421.494929-11-roman.gushchin@linux.dev>
+Subject: [PATCH bpf-next v3 11/17] bpf: selftests: introduce read_cgroup_file() helper
+Date: Mon, 26 Jan 2026 18:44:14 -0800
+Message-ID: <20260127024421.494929-12-roman.gushchin@linux.dev>
 In-Reply-To: <20260127024421.494929-1-roman.gushchin@linux.dev>
 References: <20260127024421.494929-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 87AE640005
-X-Stat-Signature: 1ywmc8p8dugjx7p3t4n1qki4ppwykj75
+X-Rspamd-Queue-Id: DBA0A160010
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769481904-415258
-X-HE-Meta: U2FsdGVkX1+KT9FSvfsk5tTufNziyW8R1kiGihCIAohMFFS1UWhsch0lebGuhQYp99sfAlp+ub7tzXX0Vr4tkyzjdVQ5xqsysHs/n+hhzdMOuUZUrRUhMAuRm7vRJ29vHtFVgohrHbWh19YXiKdt6cV0bRlATwcSe66KcJ8yk+GDIg3jBIj5+Hh76KqtgD0orky7hRJg/A3b5ek9Jng6f3nIZRpvbMiKph/UAz6msN5n7uWQwGWFtp8wkhwBzpGajSOLEFiaEIbfvQo2yw6WpSyNprmn07vo7/NZJNe2iDWpHrEl9qq/DPbBkU9XKrO9DnC5aANGTQgc5F29oskoxtV+M8C9+azYF0VTxVejJEt5exzHPSCSa9uB2C3dlM8dEY1sDYmTP4N8D4FkrCN1HpUjwDAXAemH4foVmzPvcIDwPQSN5UTATrCUd5J86C6a/oiBxBvHg2b6jjD59NzrLFDhYkU2FOv6cU7I5J3dRcXFkN5Vvcy+aQOTBim+kKT3y/h3HMZS6Zkw/9wtuW0GPJ86fsvD4s49WVaXGrGiNM8JHUHutGbu3zmclTNYIZUz6PGfI6vP0TSIXBStyS92uRA2p5jYBVjFQjeL0kNBG53YAXo9Pyj2tCRDH/MqUOO43ezeqfni13hnuZ+40hoFj5BjL4juGfdngO6tS5h7IgGsb5NIXpMer6xRKcLM3ULmiDi0TCCSuzibaLz3f7OI9lsSu9Qga26YB9NfGeJETH4jLFh3jJO9QfNidzWPNbdkvwqNC8yWuj84k6TWvx8LCl6dqodMxY2kFTb6e+3NP6MSWVEWnkM8DHCOzkw2TYjJ9Q63FGOB0AXWKp298b5s4cv3HlZQMpWhkXXG7Id2njhZt4pIYdPBDr+vy7Av/82SA3FGW7hzC/Y35bwYt/INshSgj/S2+rqjUooWh7OFJJKwVLTjAfdWbIKkoZZp+EDWDvhhucYBBsMkDpDMkju
- S+TFoWtW
- VZUL0JV0ZJ4SwqSKJiweRQvCUnaG2KOSz+hWU708OJ3BZs83Od0ICtnIQWJBtlAs6JB02Ad9SbzNXrbCd28db4eBBdR7cNAfijULv7zKhOjDfePRYNivzlnFj94tOzMMca3bcruO13XfPHQMuisQHMNL/lEd1WqkSgATriNnakSRZbGxkfC68E877ob3bRbFaVnZ6w0e93iUdaZ+H1sjZZgDEUqAn+CZJs2N6xaAqiGEzT2pgP3y1UNWzAr8cTsIB6Xr2m/+uvEj+CWfEPDWj8hp6IjGJJWAbYaOe1lXeMFmEctAGA8TFVqvAQQ==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: e7gmwdngf3aop3sbkawn3rqtimqhwq5b
+X-HE-Tag: 1769481907-579445
+X-HE-Meta: U2FsdGVkX1/yEf6AzPC4hASBvN9yZtN4pElGc0uk/NGcq0s52dt2GGhDuZRgkufvafuLH7qT8x28BlktAMJ1gD0yIF+2cvPXz0RO5ZaXnu6K8ce6l1zCqjrTGl7gxCN/bK4E+8Tjy67pO2FoGi5xHIbFIJxU6Dl4bw1p7iYDpX/SuFEWANs/68gO4vFACFUG+Oh5eXtnSv4ndcexjrxu3dGdObDXyybmQasLhc0/j0Z5MDqwXnONmQb5HKr52cT320IXh4BUYD5l7XRGE/VWs7H61iV73HY879uNzjHiLLZvIBsGPo9pskfupVso7mc3JIMniaetVW0y+n/RbEZfGjXa3UL3Llc05UBm/6BluzYluuq3VemnL7i4n9a0ByQF1TVi7jxZ4LgEWWQwNBykZvTFjaohIBcZLcWGqnZsfK6CJPbzB2PiXYXkVPFh+Bfa9ujR0No2hkb9FMfNvlRVbgrU3HGBY9z3+4aNutngJyEJtXmTOo5C6rUddPGhmxYyQMUvMhsuwcJ0PaP4QQr07f8XUqfu7QZ1dJUQErIwFDZm0wT2Kk38MMGpq4m0Rvk+cRy52GrRQzYH+Whhk+ssE8+yg22uxTfwE59ad1RzNd7wffy0DHORGPE8njqRxCva3oNxVgMHoVbMzi4Axw44Wf76NNZqdPrG6RtfwYZYWsA2jDcwAhC4N2AIYJKUNPdwMjfK7Th9O85QVMBv8JXRWfWknvisVW7zg4hNTxd44hDrCQZapW/OpXnDnO7fAtMfI6vEhvu+ieb9+7o0sTdAvGQPYQ/OWzkLm4UhnX07IUpMZtL9ecsDSq3HGdloQIxSVkBSEIGcJMEXn57k5bTFAHT0DZIM45LDjnl+Y8syAw5n3wx5njrwZBaLfyhVLJNOk31/gAaKCICOu7AACCTF4yuTBJ44zM84n2HDRFLwmwmM21eBte6ensk2Slagq10KPYN8vka4mQX+enKLNDK
+ ATIyWS9j
+ 4LLSyjY1NLfibseVYobeeF2GWPOHWRyJQ6Nx9T7tTWCNHX5hf2ygI5qBnF4x/a71lm9RruxTJgxNiLCNgpjlgfwP+Y6hU50E6KDD135aS1OZ5UHpSU46Q0tSP9kof2s+spmX3Er7fL649Un+k/GzWyFuk26rMi8ZGqTu8FxmH7frakZu/lzP0ryEZDZnENF2rECkUCVmk+1IGFU16JRx2ajBBpriREYUowcdADpqB3/LCs+sdQrRjgl5Vzw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,44 +96,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Export tsk_is_oom_victim() helper as a BPF kfunc.
-It's very useful to avoid redundant oom kills.
+Implement read_cgroup_file() helper to read from cgroup control files,
+e.g. statistics.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Suggested-by: Michal Hocko <mhocko@suse.com>
 ---
- mm/oom_kill.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tools/testing/selftests/bpf/cgroup_helpers.c | 45 ++++++++++++++++++++
+ tools/testing/selftests/bpf/cgroup_helpers.h |  3 ++
+ 2 files changed, 48 insertions(+)
 
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 8f63a370b8f5..53f9f9674658 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -1381,10 +1381,24 @@ __bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
- 	return ret;
+diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
+index 20cede4db3ce..fc5f22409ce5 100644
+--- a/tools/testing/selftests/bpf/cgroup_helpers.c
++++ b/tools/testing/selftests/bpf/cgroup_helpers.c
+@@ -126,6 +126,51 @@ int enable_controllers(const char *relative_path, const char *controllers)
+ 	return __enable_controllers(cgroup_path, controllers);
  }
  
-+/**
-+ * bpf_task_is_oom_victim - Check if the task has been marked as an OOM victim
-+ * @task: task to check
-+ *
-+ * Returns true if the task has been previously selected by the OOM killer
-+ * to be killed. It's expected that the task will be destroyed soon and some
-+ * memory will be freed, so maybe no additional actions required.
-+ */
-+__bpf_kfunc bool bpf_task_is_oom_victim(struct task_struct *task)
++static ssize_t __read_cgroup_file(const char *cgroup_path, const char *file,
++				 char *buf, size_t size)
 +{
-+	return tsk_is_oom_victim(task);
++	char file_path[PATH_MAX + 1];
++	ssize_t ret;
++	int fd;
++
++	snprintf(file_path, sizeof(file_path), "%s/%s", cgroup_path, file);
++	fd = open(file_path, O_RDONLY);
++	if (fd < 0) {
++		log_err("Opening %s", file_path);
++		return -1;
++	}
++
++	ret = read(fd, buf, size);
++	if (ret < 0) {
++		close(fd);
++		log_err("Reading %s", file_path);
++		return -1;
++	}
++
++	close(fd);
++	return ret;
 +}
 +
- __bpf_kfunc_end_defs();
++/**
++ * read_cgroup_file() - Read from a cgroup file
++ * @relative_path: The cgroup path, relative to the workdir
++ * @file: The name of the file in cgroupfs to read from
++ * @buf: Buffer to read from the file
++ * @size: Size of the buffer
++ *
++ * Read from a file in the given cgroup's directory.
++ *
++ * If successful, the number of read bytes is returned.
++ */
++ssize_t read_cgroup_file(const char *relative_path, const char *file,
++			 char *buf, size_t size)
++{
++	char cgroup_path[PATH_MAX - 24];
++
++	format_cgroup_path(cgroup_path, relative_path);
++	return __read_cgroup_file(cgroup_path, file, buf, size);
++}
++
+ static int __write_cgroup_file(const char *cgroup_path, const char *file,
+ 			       const char *buf)
+ {
+diff --git a/tools/testing/selftests/bpf/cgroup_helpers.h b/tools/testing/selftests/bpf/cgroup_helpers.h
+index 3857304be874..66a08b64838b 100644
+--- a/tools/testing/selftests/bpf/cgroup_helpers.h
++++ b/tools/testing/selftests/bpf/cgroup_helpers.h
+@@ -4,6 +4,7 @@
  
- BTF_KFUNCS_START(bpf_oom_kfuncs)
- BTF_ID_FLAGS(func, bpf_oom_kill_process, KF_SLEEPABLE)
-+BTF_ID_FLAGS(func, bpf_task_is_oom_victim)
- BTF_KFUNCS_END(bpf_oom_kfuncs)
+ #include <errno.h>
+ #include <string.h>
++#include <sys/types.h>
  
- BTF_ID_LIST_SINGLE(bpf_oom_ops_ids, struct, bpf_oom_ops)
+ #define clean_errno() (errno == 0 ? "None" : strerror(errno))
+ #define log_err(MSG, ...) fprintf(stderr, "(%s:%d: errno: %s) " MSG "\n", \
+@@ -11,6 +12,8 @@
+ 
+ /* cgroupv2 related */
+ int enable_controllers(const char *relative_path, const char *controllers);
++ssize_t read_cgroup_file(const char *relative_path, const char *file,
++			char *buf, size_t size);
+ int write_cgroup_file(const char *relative_path, const char *file,
+ 		      const char *buf);
+ int write_cgroup_file_parent(const char *relative_path, const char *file,
 -- 
 2.52.0
 
