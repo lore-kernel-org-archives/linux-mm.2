@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70889D25959
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 07:32:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71678D25959
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 07:33:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB7F16B0088; Tue, 27 Jan 2026 02:32:02 -0500 (EST)
+	id D9D876B0089; Tue, 27 Jan 2026 02:32:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A65C46B0089; Tue, 27 Jan 2026 02:32:02 -0500 (EST)
+	id D3E4B6B008A; Tue, 27 Jan 2026 02:32:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 971D06B008A; Tue, 27 Jan 2026 02:32:02 -0500 (EST)
+	id C82216B008C; Tue, 27 Jan 2026 02:32:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 86E766B0088
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:32:02 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 062F7160B8F
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 07:32:01 +0000 (UTC)
-X-FDA: 84376924884.13.19689EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 70F89C0003
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 07:32:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e6woip7n;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B76076B0089
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 02:32:59 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6138E8BC19
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 07:32:59 +0000 (UTC)
+X-FDA: 84376927278.22.0012A63
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B61E6180004
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 07:32:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hWkAIVI6;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769499120;
+	s=arc-20220608; t=1769499177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JMs202ls6I1mHL4u4/keg5ULSM/qkR7dvbuMz1TL4NU=;
-	b=SQjLGLzylG+qK8F+7EsdXWPI/yfGt3z+/NZYRwL096O1VfBQO/Mu2KeDJ63BWDEVfd8qZq
-	UZYnHImtkWVS/WqpMm7gEho2KogzttcBbeYsdUnIvTO80z3SyMrEWD5hqFX6NNuBuEKX/U
-	3aqUxZb2R2BQajWXETw8LxMfF657qSs=
+	bh=l1IAoLAKw2Vg0PzPanaLKZXBk7NDv+OxvP+pKfiIL5A=;
+	b=gWOq8J66AhNpxrDzzQVf5FyHhZvctUuzQdZeRtDQ9ZOl77p83h+A1MthPmG2qsjQd1XCj3
+	jC+zLiq+z8R3kftq7M4W7VTBfZli0Yi1DB3CZSR6CuikHgLp4dfehHyM1z383D7Pn1e+sl
+	McYVCDWMLUyaWD+KZ0dt4VzxiHcndjA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e6woip7n;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hWkAIVI6;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769499120; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769499177; a=rsa-sha256;
 	cv=none;
-	b=BxHiR449TZRdinAOTgbVlUVS1OeTs4dl5Nml2exSLCsE0VNvc6jdtP0dZ5loTWh2xZangj
-	OIZPSXV2Lfdz5p3+Msi31ZuCxZfq7Opkgz6/Sh2zd5kW5NK7k7HzXr3uT/wqRkVADkzBSs
-	8coktnON6c3OfOaMJqpmJ+Sewdyu7BE=
+	b=rM/JYVTq045WNefi8p25FZJod/AeuBIZEEus78RP6/GctsMn5avgnvXBpQRXjvzNHOVrok
+	aLPCiQGCDlo/IX/Ao7fQDqJXfBZ0lZen73FcIbSLi+TG/Xq0h7DMhBxxiTcPvmd81vsCWv
+	M7PWecq+5wZ/sqDsmHgRVaa+fEw5waM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB8F660097;
-	Tue, 27 Jan 2026 07:31:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC3CC116C6;
-	Tue, 27 Jan 2026 07:31:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B029241976;
+	Tue, 27 Jan 2026 07:32:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938F7C116C6;
+	Tue, 27 Jan 2026 07:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769499119;
-	bh=RlBJGa1qa6Olo8efDWcRWJLbj1v7PDFyAEadNj37KbQ=;
+	s=k20201202; t=1769499176;
+	bh=mcYw49oBRDHwBRsps1hLbRA9pNvVL7ckmnD/EZWaycg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e6woip7ntNeXOmzDiTKg3LLAfc1enMO4l8ZkLD2IKmLhRIaGTQOQvYA4CiXPXZjgt
-	 DKWYmoaCFW2rn8hQv4qzVYcYbjcxYtm8BG6fUH9hG4h6J0lUe4qAC/FXmwMbZz+oCC
-	 ElqCSjF48IHd2ul9DumyOGhjWSUQ35xOnKmcJ42LGz0iRulL+3QdTsqWqnPYyKapgo
-	 5ZRWCtHBfmzCk3skHSDMXACnzFSoAnMo89jW0zHKUdNqIhG3oiQ6SEpjP+jaeGQipI
-	 H7XuBMPcU/m+fredxnl0Xo8advRkI/i9Ks8cVRNHAWeh9R8M27F1Nkx2Y5Idvo+0C+
-	 e2gk+E5OQwEvw==
-Date: Tue, 27 Jan 2026 09:31:49 +0200
+	b=hWkAIVI6JJWgtjMbliTTZz7rAATFbBOFtk2u9m62j90Alz0nkLkJ/kF5uCEnurD1B
+	 71YoP9EcyxM0LL0aKZykj6W+rkSAU2mwAg9ZAdb6TWZpTwL/tX3L9iUcrmUsK2rSoq
+	 jATETtGfv+CbT368L+hBw9M7bByOThCQtxZLXV+O1qYzVNrsdVKRcgTsSKyLmPaYTy
+	 Kc/VG8gWLWdUH+/WzkNnkYSUdE3QcGpFoizlS2cJ+gCC1RXOsnKwmuhw8aPXJWdmpD
+	 5M7xTWGttZ/l3rb0Kcg557rRf/UWWMacrdpmTv3mZa4SZvn5Dg/bufstnzNx1NITjh
+	 KhAKErT+Ag2tg==
+Date: Tue, 27 Jan 2026 09:32:48 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Breno Leitao <leitao@debian.org>
 Cc: Alexander Graf <graf@amazon.com>,
@@ -73,22 +73,22 @@ Cc: Alexander Graf <graf@amazon.com>,
 	usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com,
 	riel@surriel.com, SeongJae Park <sj@kernel.org>,
 	kernel-team@meta.com
-Subject: Re: [PATCH v5 3/4] kho: kexec-metadata: track previous kernel chain
-Message-ID: <aXhp5ZDKtXG5n9sB@kernel.org>
+Subject: Re: [PATCH v5 4/4] kho: document kexec-metadata tracking feature
+Message-ID: <aXhqIDAPKdoXYme4@kernel.org>
 References: <20260126-kho-v5-0-7cd0f69ab204@debian.org>
- <20260126-kho-v5-3-7cd0f69ab204@debian.org>
+ <20260126-kho-v5-4-7cd0f69ab204@debian.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260126-kho-v5-3-7cd0f69ab204@debian.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 70F89C0003
-X-Stat-Signature: aijsasmj3eruymjgzda79pzd7d493cjs
+In-Reply-To: <20260126-kho-v5-4-7cd0f69ab204@debian.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B61E6180004
+X-Stat-Signature: rqhjsgctdcai8ug7ae76i31bi7dsqono
 X-Rspam-User: 
-X-HE-Tag: 1769499120-985842
-X-HE-Meta: U2FsdGVkX19QxhyhcFchm7wNEWyw6Sph/oIpCg7IoB16UVLD927tIkhFo/VdtM+HX5geu9dM/dMI36JM7/q++kjRkm6rawNS59Gthl91lfexDAwK/Q3y8LUewWvw5hqdCeNqVjTEkqx6rBWmg1vhh4NMA872ped/d/esZC5XcYo8u9fhopqYvdq9BPtvXnhDlCpxO/fBWtLa8hUePmFcSzGXh2MBM0eYFBC+Pcl4EiFbqAfkx6oLVcaNwKKi0kpMvVa9OWzhPB87GSefeORYqjjTtcHiim3WGmcKbiAK2vlM/2Qm9N45LJHlV5EUZHxePT74sh0CelfTNEc3YrHO5wdG7/mTWryVMHr7bUp9QfupFW5tAOYLLyAvObdRhIwITel6vcXG3Jx/bHCI3uC1ZOENj1IeBp0xukr2IHYAw6nZUxow55JHTlMiI3yvoy0h7TyhA0x8w9gEQfzMmETIQtPKGxR63zELvwLTlFOKNHI4xv5oygIjuuVJKm1NAQWHTBzOrwlwRo4wEgDrC75XJm5bAoK3y6VIqfTMDYh2LNkhKCxHV1yPUbxbmhn/id1irA6/jbC9vUICgYkzrqSbTMFt7zFf9W+smJNKlMwpw+j+2AjvpYHykUrgF1gJaYzrNhqv4NUUK4ZyHIXipeJm+0s0TrUaGrxVZZ2CknIzd0q/V29ZA/FPg544FNDdIdpMQ2Osit5FD4rdnpRI5jGo66WlsXbcTHxrf0iuacdhAHqraFgcxbmRLmg0QooYFt7L4URcDGWe5IFhav2vwXbEBO/cJbNOSBAYYw5rbMCXP3+f+cJwc0bI5PtKfAClMciCQnbp2kNLF5O5XZjXqXgx3vHOZolRMQ5iovsWJbcop4xaVLX1OEpnthCC2s3phARbZD7gTC3WRf76kIKBKpi6Za29jRSK3ZDlzPj/pztyz8C8GfGbpHlrKZpNI/Q5r02Ew6KyMqVrNEoyS7p/Eo2
- kCVVIWkV
- x5TdfwuOAbTFEkvjK8V+YkNLL5sv3YIl425znSxL0YTKmpZdQ22iCkeDIr+lp6couvka+EZBhYTstf2ad2/ZjfyLAEhlvUmgu/7ljinfcudHR79ADo90D0ortpqVrUNxkjoVeYDx2CAAHspIgo1LNOkp6qAI2VfhulYwVdGXutD+FKJ6S8pcZ/uX07+B5Cq+cMvQMqMsASaimF9btrXY6KC5ItzNoXTesGpb6jlet5o+xVkCrRFTfMNEoF397Ywl7endUEUqlJTxTB/B5lWIHfkZWoyfYQrAce9U70KfSca9wDhI=
+X-HE-Tag: 1769499177-988872
+X-HE-Meta: U2FsdGVkX1+WK4G2AXrCMKuEHqGnM7lbWwmesDIvl5s3ZYLwNbxE3s9I7Ab8V0qPKzU/VxQRysLGFLg5ukuqsKXDwyblThKc6k8tJIQi2qTOzQLBAfyhu6/tHhSQlWqn/hvvX75a0fZkEcm0XxJFTwMb8bFRCnhCnqrJGeS1o0oNJIaa+saAWSbFy4KjC6z8KKMFwwpGnv9wcDeFqEpWTb3l4+C+NfeF+1D8tZuXXiL7/gl1beifoWBSKgytscJlnKtVem/UcDzvU+IZd9DfCQD2OeXPpJ21A2DGYf2sdUM4VbgRNqPJGRDXnjYXUH72s188aJ6Qg5Id9ygT3Jp9vl8oAIVVVc5MRnNIiX+qMZ+AYm0xnbcHgCLQAOMdlZryibR8YCzzxdezZUytnRaPUc5Hy5HfZFQXsHhBly01E6hvh9l17HX0lEIqmN7JdTqiNlI05lylhD9B7/0G6aQW4nxqHNZ5X0s0vMwUAqoo+MO1Nwa+Wv2yPDp0ETRQ9kGQOmyr5Y9voA1THEeXJSWbcacrG01O0lwzkLYyDvueEMU1JZ34xMv53nuB+aBJJ5MqZ9K8uDtOfRBqimznAslyN1OwHiXMZPsdLdl/aMG7iILhLFtvmAj6bxeozOpi0RH+5DTGDzjhPJKi0DnRTGeEI2fx2juXRB3RxfCMrR9YK3wkQlzqSxdJXpka1mWNojzcH/wKkFAd0kp9Et7RNWZhNChrMkkd8aSrveTYRFlkjKcKLN8NJ0lrPW1M4A/L/mxKxgwP53nTAHkL/08pquita+XAqb4sRQqiy7Pj2kJ4WF07dKX7MT4TpM8sy38KBVDwKRMRVI48BURkgSs26XtCNi1jJWCJqBDyvV0N/g5K6e3V/xIYHvkKHpaNL5cEdtQw/j3clRlEck4AJU9Q2HVEQKql0gVSxM1ry3uuBk6gzyIIADXXCPzhkK56x0pDzdCVPAnxx8LGLCGfcpDcIKO
+ 5uomN/iH
+ WiMYMMFZoJzi0w92XITSeRdx/wuNvi/7r32KOOLpYjamnBj1vj4ZcpRJBUtI1ffhafVIbizPy471CqpAl0NG+Qdz61G7IwHuWsvWRJ147PA5/dW3chwtTY7dxKwX7F7fO/U8noIqBy6rvtKqlhxxB4w/egMt07MAEV7ItbisxduUSqxuXoM8OfROVHfpiFIpD7yOqdgeha2wukxP0bt0pAQRRxArRecS3XejlIxRW3HY/KGeG03noWVmgzo+wsgiPq8gp7LK98YjOwK5u4S8VFvkMYkDhw+8mp1iNXBjRK+MoksM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,118 +97,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 26, 2026 at 08:07:25AM -0800, Breno Leitao wrote:
-> Use Kexec Handover (KHO) to pass the previous kernel's version string
-> and the number of kexec reboots since the last cold boot to the next
-> kernel, and print it at boot time.
+On Mon, Jan 26, 2026 at 08:07:26AM -0800, Breno Leitao wrote:
+> Add documentation for the kexec-metadata feature that tracks the
+> previous kernel version and kexec boot count across kexec reboots.
+> This helps diagnose bugs that only reproduce when kexecing from
+> specific kernel versions.
 > 
-> Example output:
->     [    0.000000] KHO: exec from: 6.19.0-rc4-next-20260107 (count 1)
-> 
-> Motivation
-> ==========
-> 
-> Bugs that only reproduce when kexecing from specific kernel versions
-> are difficult to diagnose. These issues occur when a buggy kernel
-> kexecs into a new kernel, with the bug manifesting only in the second
-> kernel.
-> 
-> Recent examples include the following commits:
-> 
->  * eb2266312507 ("x86/boot: Fix page table access in 5-level to 4-level paging transition")
->  * 77d48d39e991 ("efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption")
->  * 64b45dd46e15 ("x86/efi: skip memattr table on kexec boot")
-> 
-> As kexec-based reboots become more common, these version-dependent bugs
-> are appearing more frequently. At scale, correlating crashes to the
-> previous kernel version is challenging, especially when issues only
-> occur in specific transition scenarios.
-> 
-> Implementation
-> ==============
-> 
-> The kexec metadata is stored as a plain C struct (struct kho_kexec_metadata)
-> rather than FDT format, for simplicity and direct field access. It is
-> registered via kho_add_subtree() as a separate subtree, keeping it
-> independent from the core KHO ABI. This design choice:
-> 
->  - Keeps the core KHO ABI minimal and stable
->  - Allows the metadata format to evolve independently
->  - Avoids requiring version bumps for all KHO consumers (LUO, etc.)
->    when the metadata format changes
-> 
-> The struct kho_metadata contains two fields:
->  - previous_release: The kernel version that initiated the kexec
->  - kexec_count: Number of kexec boots since last cold boot
-> 
-> On cold boot, kexec_count starts at 0 and increments with each kexec.
-> The count helps identify issues that only manifest after multiple
-> consecutive kexec reboots.
-> 
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
 > Signed-off-by: Breno Leitao <leitao@debian.org>
-> Acked-by: SeongJae Park <sj@kernel.org>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-with a small nit below
-
-> ---
->  include/linux/kho/abi/kexec_handover.h | 31 ++++++++++++++
->  kernel/liveupdate/kexec_handover.c     | 74 ++++++++++++++++++++++++++++++++++
->  2 files changed, 105 insertions(+)
-> 
-> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
-> index 2201a0d2c159a..1f017756e9991 100644
-> --- a/include/linux/kho/abi/kexec_handover.h
-> +++ b/include/linux/kho/abi/kexec_handover.h
-> @@ -11,6 +11,7 @@
->  #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
->  
->  #include <linux/types.h>
-> +#include <linux/utsname.h>
->  
->  /**
->   * DOC: Kexec Handover ABI
-> @@ -84,6 +85,36 @@
->  /* The FDT property for sub-FDTs. */
->  #define KHO_FDT_SUB_TREE_PROP_NAME "fdt"
->  
-> +/**
-> + * DOC: Kexec Metadata ABI
-> + *
-> + * The "kexec-metadata" subtree stores optional metadata about the kexec chain.
-> + * It is registered via kho_add_subtree(), keeping it independent from the core
-> + * KHO ABI. This allows the metadata format to evolve without affecting other
-> + * KHO consumers.
-> + *
-> + * The metadata is stored as a plain C struct rather than FDT format for
-> + * simplicity and direct field access.
-> + */
-> +
-> +/**
-> + * struct kho_kexec_metadata - Kexec metadata passed between kernels
-> + * @previous_release: Kernel version string that initiated the kexec
-> + * @kexec_count: Number of kexec boots since last cold boot
-> + *
-> + * This structure is preserved across kexec and allows the new kernel to
-> + * identify which kernel it was booted from and how many kexec reboots
-> + * have occurred.
-> + *
-> + * __NEW_UTS_LEN is part of UAPI, so it safe to use it in here.
-
-Nit: it's usually referred to as uABI.
-
-> + */
-> +struct kho_kexec_metadata {
-> +	char previous_release[__NEW_UTS_LEN + 1];
-> +	u32 kexec_count;
-> +} __packed;
-> +
-> +#define KHO_METADATA_NODE_NAME "kexec-metadata"
-> +
->  /**
->   * DOC: Kexec Handover ABI for vmalloc Preservation
->   *
 
 -- 
 Sincerely yours,
