@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FE1DD2FED9
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 19:29:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88C35D2FED9
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 19:29:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C8C06B0005; Tue, 27 Jan 2026 14:29:51 -0500 (EST)
+	id DD6666B0089; Tue, 27 Jan 2026 14:29:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4767D6B0089; Tue, 27 Jan 2026 14:29:51 -0500 (EST)
+	id D9E026B008A; Tue, 27 Jan 2026 14:29:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 382786B008A; Tue, 27 Jan 2026 14:29:51 -0500 (EST)
+	id CA0506B008C; Tue, 27 Jan 2026 14:29:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 232B26B0005
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:29:51 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACE9C16028C
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 19:29:50 +0000 (UTC)
-X-FDA: 84378733740.20.D900AFC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BAEC418000B
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 19:29:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SKv6WAS+;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BD2896B0089
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:29:56 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 66C8E160216
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 19:29:56 +0000 (UTC)
+X-FDA: 84378733992.03.EF2EFF8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D90094000F
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 19:29:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uzu2dY0F;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769542188;
+	s=arc-20220608; t=1769542194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=M8gSpq8kWEXUikKZM44JkwlAM1OPA/CSO8Mvg9xzXxM=;
-	b=b95FLOFlvZrMK6iz1oMT1fZlFXrOKs8/hhek0XJFOLmFR0XjNmJGQizM70dLKzpr/0cZ+Z
-	2i6V5ao0L3Kd2ujSDGLulbl8b2ErkW07TMabgQc3z0VzctZtLExDEtEDvfBs+7y5CjTu70
-	zJzrudYbZ+n/QaY7S/6UliokI7aLXPM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kLseMfE2LRuo3JxDLOr0OXcWO0lmhSYypQgOjOmlOCg=;
+	b=KQQjuFGvv+I0Eifr+NAqhXOCUXZ7GSAyj+QCQN1fkkzvgDV5S3Z7HUkHFEel1wEAaRAmZp
+	J4OQh5hOF/wel/Bxvvw9XiRVYa41GnTFK16QuCNRs1vTn5H3w+px6lj08oQlBGP77MhSw2
+	yvoG0ndrTSe5FTPtMmRsiJbQUobpy9c=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SKv6WAS+;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uzu2dY0F;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769542188; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769542194; a=rsa-sha256;
 	cv=none;
-	b=yHW8yyrolyStbHb6j3uCMWMhurBIKXZvVnlr88i60NeNKI1Ri1zVhygQTN/RWRhX9RZXVt
-	PA1ltJPKryyIuZ/dnddHId4+FYd0tC40Jch3ebHLZ/5YRMkrL1G2dUVL/N9oZ0tNhlkfp0
-	ZAwU4kZkoBszY2Jv7fDvgXqsBdYwEo4=
+	b=QcsIxPg/301NQ2EcerE2SuNrhU6KmXiU6lM+ngOiXNmpUQoX9bAZ4OwS7tN/wWbKbCoCPt
+	T/DVVtR6Ys6Obhso9K6D55bCjNXLosFDybwCgN8YsIsum4EF2/ogByms/vcewyYjtVZbnW
+	f01RCt1oZpGqVggezCmOIGIi0fZXIrc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7EFB743C32;
+	by tor.source.kernel.org (Postfix) with ESMTP id D9F5C601EB;
+	Tue, 27 Jan 2026 19:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53D3C19425;
 	Tue, 27 Jan 2026 19:29:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDA1C116C6;
-	Tue, 27 Jan 2026 19:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769542187;
-	bh=mpVeGCYsLiNY/UK6lKg9GGRaTRVOTOvc32/dwDOYLMA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SKv6WAS+1yy/6CAdsN6erxvRRsIsbUo+OGhqi4iWXCmDkaR33qEO5lAk4xu5teO2O
-	 +J7lknBZban67bcny3JrQNfctgd7R3Lhl4ej+2uTLVXE1PDaxncoEM9TPfXZGXALSZ
-	 FDNoZ2b18Z38m9F1hQGvR8xECcIlWnUqmMD1w0f1lK6vuP9rxfFuHYDPSIc8H5OwEs
-	 9auA6iIlZNyevSsNBPW+B/2kSH+bmVO40izpG/ivDprGyAGssi1G8I2uFXnyRgSaXg
-	 p7FE6FSu6eRBYHJNHa23BPrU5iySD+4/tktqLRfXkiBOyPwPi0OIbQmV4ggh/FhMKz
-	 REg8RZsU6xmRg==
+	s=k20201202; t=1769542193;
+	bh=aI4WO62kph2VvKe2gJ7QoMhXLXNy49H9C+58Y9P8ebA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uzu2dY0FD8NP7vGfp5IudjeX8x6QiJOSfV1oxxuPXDUvu4rBKpUTNA49h5T9Wohpy
+	 pfEABMoxK6o/yC7roNa0yXjcHxBqwtIkm+UYpNDDQd1qRNy4ch60sgcDSqaVtG27wK
+	 K+UqBFc5dhddJewp0K/vzuLPF2PxpQi8HyATmV0Xi9XEzGTqVFNmA9w4LSuWcFXoVg
+	 QrYaAotmrdV0CDUshJOjvcVA2VrJFYEjysfOFyw5eFeR2wtvfX00eoewjFdNTtWcua
+	 +mBnHhBZ1o53N7kxZ4CnCivm92wleRp8YgLjcWxCGw1GfNjWI6wCViPGzu/VwKzk7f
+	 /HCrBMvTm8PjQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-mm@kvack.org
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -88,20 +88,22 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH RFC 00/17] mm, kvm: allow uffd suppot in guest_memfd
-Date: Tue, 27 Jan 2026 21:29:19 +0200
-Message-ID: <20260127192936.1250096-1-rppt@kernel.org>
+Subject: [PATCH RFC 01/17] userfaultfd: introduce mfill_copy_folio_locked() helper
+Date: Tue, 27 Jan 2026 21:29:20 +0200
+Message-ID: <20260127192936.1250096-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260127192936.1250096-1-rppt@kernel.org>
+References: <20260127192936.1250096-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BAEC418000B
-X-Stat-Signature: p45m14aeeub7tnci5kwooqyqpcqhd1e8
+X-Stat-Signature: zcz5xecbmj9xttyhhxsfem3a1hwrqhyk
 X-Rspam-User: 
-X-HE-Tag: 1769542188-886710
-X-HE-Meta: U2FsdGVkX1+u8DUePLsf1wHKmKIyVXSpCp9J0f2A8q5paiDwnTznNXxbtex8BynM2o5up3829H3sE9PqEXi72DneNBFf35rL9/Hg0dME8/njxlryZFiZ23AuvCNFWu46IxMXrt9tzHOrz0LkM52bGKTJvgACT6LaerB9GL7OrPUqO82I7bZSLDqq6jHfoHI101GxUFMeYjbPS2KXlVI5bTlOy9yWPI5VJfEBdmizNzZdL5/ClqgVGbnQ2OX9TkrTO8x4iNuCjHEiadNy6IYD1ZH1ARRjVIA4LrgsG8b+LfI9ma2/yt+i9vC6PLo2ccoGXHFKEaD3FI6ih7/V8Eu+oRuD+HKyw5LHo8jDhHCTDSpAsnXWC3bB6D6VdDl0isa4Lq2Siat673BaawJ2LeE2LQCrD1tMF6AbyhB3A65D1Bwtg7hWM/GaPeac3MjtrVc38ZYut3JuVkzpMrdTBC+OuSJewRoYaL+21B+sABEpwHiu+rVYmD7w/dTlnXFf2XZNxEMrEd6Wz0YmCh4yWTtAM4HqT81m0uj3cyp8V/PLkfn4Q8bvmzAWnxX/6MOiBP/radqjqJVh7m7+lVpk+yulSzGGTJIUOp7TgTIx4uOENU2Eh1tylf1KgUZRkYkSyIRxXOEk1bLFrUmgMGqCAlXqjj6SP1KUT+RPhdpSuxjzyCJFxMdToW6dx+cldYGJLu3ZchFvrb3Ib5x0yl5ctOc7KI6nRoOUkXY/9nvlPSPtOLPGZoqnqTmReBNf233VSjdb2wuMLyr/h2nahlOa0vllY74KPNDzlsz9lShC3lfWkbhr9nsPPcUYctseXwR4ZvM9e2Tx+E0ugsvY92ds//jFHnJSGBnCVzzeE1oZ29SPnqBXPhYT+N6d3bGIOKcB0RfiOLUo0ZhdLmtP9id3XoaRoTULoqemzH8jYA7RSWA7iz1XOu8OMwMlx0kJeT4PulWRSU+zgmA3Kz2mHjjOrVL
- lQcpnXID
- ReU63Gz9ol+wYC9UNiXfx6VsP9BNRsQotcdZjLGTiYOl2gaP/zTvwhSlceMZm26XUvmlZeM7O8CxeUzutEf0S7aQoheA1YlY2DIkQ1YkRgNgCrOdueTx3g12M+OFf2vmEZQpFh/0iQaiu6m8WkHSWFWIsmgLHu88FYOFomR7d1GeIUdVc54qVunguLx3TwPVz6dcHeGNGpTGiqXLYiy5onrSNMRh6sz0Ogo0rzaP4Dr4Mmu81VBgIt5GAC9/bKrXMBqtcQ1fN09pZycNMZRxPSX3Ciw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D90094000F
+X-HE-Tag: 1769542194-929160
+X-HE-Meta: U2FsdGVkX1/hgOesDML+afmARZj7haFujYlUiXTbpoWpG48FMLoERndBFAcFIowqUmpbcRyeuG3bLWg3Slad/kGsFR0iUaSRLSJ/A1tp3jqH9jCY61fhaWcBtpryw7ZAwVKgvaCEnlaTzqHbkF3zLYueUZlrgLpWv+1LcT5/qpxtuuM9s7w7T9tKItuVt9N/kEHCqrVAqTSRa/GwlZozDFmdZTcM1h3Z7zcDdTc/DvCc9lfiUR/qjy6rF9SRIyblRMEbiSqTgwNDpwKcd7xKNF8hTYRM7MOS3wn2iIxT1ZPJUbxirT0gt3lbjn5X8fkD8VfkbK2BD6lWLVTFCo5HDLrm2czi3p6JK1+LK2YnuHqlQ22gDjBei/IjffdVU/tbFFs8tE9qr/zVuk6LIIDEpAn/uqtI23C5ZarE6wVJ+z/BmQj0GF7HPypnzoUzTAaQx+sb/v0kVJdSll2HlusPM570HfaDnmf9vv679sswPymzj/mghG7JsfvfCHvjq0bVIkdThMPWWKJsdOVgJ5zvOHltWM6OSdLCmplWnzmoA4EtR5ZdZcbwp9x4KlwYr0JNPLH55yvEAnvAnUFzADXQ7WwXoDLnqCTt7S0KBQ4Jv0bUa+sl0cdQYD0NHl3z0JyRqTE6ZcYeRp0+gMGAmToCHVzGsAp/fyL3IvR+agLm2ZiNUTwGQCW6Al5FzctbwlDlj7Pw8/4fiCQDSxMKKFgHOhGNifm2d3XoB+AuLD+nTcACsxPuFjzrnJbPu1bqvms/w3rb5FkdR1edmjrQjBhM3c5Higs6pY4rUv35iZUHVBA5NIxPNQs/F5RETJcu4gFER10LdSdeyqZMLYxljiZNAFMsHgfa8b8zNk8KHDC9Yj/eOV4kUwO15hXLp7/rWKyhwKXxOL/Xc0/8tlFHw7uUJBzo+CJsiyp+L/+8+cyHBPw8dD5vQnwQX1/c2B3ggPm2XSZCWWibqtP8AuBK3tv
+ S3RAcSZ6
+ H5PRiI6n93Kl3/9vJSDBkDqXxsnwWUAAXlAuVK1Pq+52DHPjuZzWFrYUH8PqPbUMCe90tQ8hyJ4ynwpf/ydAFaGlyYhIOeiKERG082nV9xA15yPArWT+7Avzlr4rpk5DAx2W4WKliM4j6SLpt1ZSI4HHgLGIzooKWQJ+n2vFW481xnvrJi6LPgxGTyNgzrGlMauRHhHWip0Qzb49PAjs7U7ycPC5w3KHZ/7qNRw8qzhkOEiXNyD/ZjqNqHhOV7amXUDk2SCE1aDnlXtGiDCy88KCXvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,74 +114,111 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi,
+Split copying of data when locks held from mfill_atomic_pte_copy() into
+a helper function mfill_copy_folio_locked().
 
-These patches enable support for userfaultfd in guest_memfd.
-They are quite different from the latest posting [1] so I'm restarting the
-versioning. As there was a lot of tension around the topic, this is an RFC
-to get some feedback and see how we can move forward.
+This makes improves code readability and makes complex
+mfill_atomic_pte_copy() function easier to comprehend.
 
-As the ground work I refactored userfaultfd handling of PTE-based memory types
-(anonymous and shmem) and converted them to use vm_uffd_ops for allocating a
-folio or getting an existing folio from the page cache. shmem also implements
-callbacks that add a folio to the page cache after the data passed in
-UFFDIO_COPY was copied and remove the folio from the page cache if page table
-update fails.
+No functional change.
 
-In order for guest_memfd to notify userspace about page faults, there are new
-VM_FAULT_UFFD_MINOR and VM_FAULT_UFFD_MISSING that a ->fault() handler can
-return to inform the page fault handler that it needs to call
-handle_userfault() to complete the fault.
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ mm/userfaultfd.c | 59 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 35 insertions(+), 24 deletions(-)
 
-Nikita helped to plumb these new goodies into guest_memfd and provided basic
-tests to verify that guest_memfd works with userfaultfd.
-
-I deliberately left hugetlb out, at least for the most part.
-hugetlb handles acquisition of VMA and more importantly establishing of parent
-page table entry differently than PTE-based memory types. This is a different
-abstraction level than what vm_uffd_ops provides and people objected to
-exposing such low level APIs as a part of VMA operations.
-
-Also, to enable uffd in guest_memfd refactoring of hugetlb is not needed and I
-prefer to delay it until the dust settles after the changes in this set.
-
-[1] https://lore.kernel.org/all/20251130111812.699259-1-rppt@kernel.org
-
-Mike Rapoport (Microsoft) (12):
-  userfaultfd: introduce mfill_copy_folio_locked() helper
-  userfaultfd: introduce struct mfill_state
-  userfaultfd: introduce mfill_get_pmd() helper.
-  userfaultfd: introduce mfill_get_vma() and mfill_put_vma()
-  userfaultfd: retry copying with locks dropped in mfill_atomic_pte_copy()
-  userfaultfd: move vma_can_userfault out of line
-  userfaultfd: introduce vm_uffd_ops
-  userfaultfd, shmem: use a VMA callback to handle UFFDIO_CONTINUE
-  userfaultfd: introduce vm_uffd_ops->alloc_folio()
-  shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops
-  userfaultfd: mfill_atomic() remove retry logic
-  mm: introduce VM_FAULT_UFFD_MINOR fault reason
-
-Nikita Kalyazin (5):
-  mm: introduce VM_FAULT_UFFD_MISSING fault reason
-  KVM: guest_memfd: implement userfaultfd minor mode
-  KVM: guest_memfd: implement userfaultfd missing mode
-  KVM: selftests: test userfaultfd minor for guest_memfd
-  KVM: selftests: test userfaultfd missing for guest_memfd
-
- include/linux/mm.h                            |   5 +
- include/linux/mm_types.h                      |  15 +-
- include/linux/shmem_fs.h                      |  14 -
- include/linux/userfaultfd_k.h                 |  74 +-
- mm/hugetlb.c                                  |  21 +
- mm/memory.c                                   |   8 +-
- mm/shmem.c                                    | 188 +++--
- mm/userfaultfd.c                              | 671 ++++++++++--------
- .../testing/selftests/kvm/guest_memfd_test.c  | 191 +++++
- virt/kvm/guest_memfd.c                        | 134 +++-
- 10 files changed, 871 insertions(+), 450 deletions(-)
-
-
-base-commit: f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
---
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index e6dfd5f28acd..a0885d543f22 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -238,6 +238,40 @@ int mfill_atomic_install_pte(pmd_t *dst_pmd,
+ 	return ret;
+ }
+ 
++static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
++{
++	void *kaddr;
++	int ret;
++
++	kaddr = kmap_local_folio(folio, 0);
++	/*
++	 * The read mmap_lock is held here.  Despite the
++	 * mmap_lock being read recursive a deadlock is still
++	 * possible if a writer has taken a lock.  For example:
++	 *
++	 * process A thread 1 takes read lock on own mmap_lock
++	 * process A thread 2 calls mmap, blocks taking write lock
++	 * process B thread 1 takes page fault, read lock on own mmap lock
++	 * process B thread 2 calls mmap, blocks taking write lock
++	 * process A thread 1 blocks taking read lock on process B
++	 * process B thread 1 blocks taking read lock on process A
++	 *
++	 * Disable page faults to prevent potential deadlock
++	 * and retry the copy outside the mmap_lock.
++	 */
++	pagefault_disable();
++	ret = copy_from_user(kaddr, (const void __user *) src_addr,
++			     PAGE_SIZE);
++	pagefault_enable();
++	kunmap_local(kaddr);
++
++	if (ret)
++		return -EFAULT;
++
++	flush_dcache_folio(folio);
++	return ret;
++}
++
+ static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
+ 				 struct vm_area_struct *dst_vma,
+ 				 unsigned long dst_addr,
+@@ -245,7 +279,6 @@ static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
+ 				 uffd_flags_t flags,
+ 				 struct folio **foliop)
+ {
+-	void *kaddr;
+ 	int ret;
+ 	struct folio *folio;
+ 
+@@ -256,27 +289,7 @@ static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
+ 		if (!folio)
+ 			goto out;
+ 
+-		kaddr = kmap_local_folio(folio, 0);
+-		/*
+-		 * The read mmap_lock is held here.  Despite the
+-		 * mmap_lock being read recursive a deadlock is still
+-		 * possible if a writer has taken a lock.  For example:
+-		 *
+-		 * process A thread 1 takes read lock on own mmap_lock
+-		 * process A thread 2 calls mmap, blocks taking write lock
+-		 * process B thread 1 takes page fault, read lock on own mmap lock
+-		 * process B thread 2 calls mmap, blocks taking write lock
+-		 * process A thread 1 blocks taking read lock on process B
+-		 * process B thread 1 blocks taking read lock on process A
+-		 *
+-		 * Disable page faults to prevent potential deadlock
+-		 * and retry the copy outside the mmap_lock.
+-		 */
+-		pagefault_disable();
+-		ret = copy_from_user(kaddr, (const void __user *) src_addr,
+-				     PAGE_SIZE);
+-		pagefault_enable();
+-		kunmap_local(kaddr);
++		ret = mfill_copy_folio_locked(folio, src_addr);
+ 
+ 		/* fallback to copy_from_user outside mmap_lock */
+ 		if (unlikely(ret)) {
+@@ -285,8 +298,6 @@ static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
+ 			/* don't free the page */
+ 			goto out;
+ 		}
+-
+-		flush_dcache_folio(folio);
+ 	} else {
+ 		folio = *foliop;
+ 		*foliop = NULL;
+-- 
 2.51.0
+
 
