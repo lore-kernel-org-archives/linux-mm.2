@@ -4,137 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1062D25948
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 06:07:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91C4BD25948
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 06:12:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63F136B0089; Tue, 27 Jan 2026 01:07:00 -0500 (EST)
+	id C20C46B0088; Tue, 27 Jan 2026 01:12:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F6546B008A; Tue, 27 Jan 2026 01:07:00 -0500 (EST)
+	id BE1B06B0089; Tue, 27 Jan 2026 01:12:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5233F6B008C; Tue, 27 Jan 2026 01:07:00 -0500 (EST)
+	id AE3856B008A; Tue, 27 Jan 2026 01:12:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 414186B0089
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 01:07:00 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E6ABCD4031
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 06:06:59 +0000 (UTC)
-X-FDA: 84376710558.01.386E9FB
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E7708120004
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 06:06:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HYTcC3ep;
-	spf=pass (imf29.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B3116B0088
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 01:12:56 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3039A8C602
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 06:12:56 +0000 (UTC)
+X-FDA: 84376725552.28.A9E6A8B
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 323C820004
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 06:12:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YiRp1gSZ;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf13.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769494018;
+	s=arc-20220608; t=1769494374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bJWAZY6LKfo7RbXkh5+gjEfMAbkq0ijn5lP4/KwobQ8=;
-	b=hyzx8HtEN/bjoD5Ms1lkTh12mQsWnq220ALHhB5q7wPL/J9y+5h1jYTBq0LfXBW2u4MZcl
-	j2zavYUO33wSVWBe9AbCRUC2PcJsEAutcTZgENgQi7Lv0AfKQB5p/Fgea6MdtaqMFuqiYh
-	86fScHNGzTxW/hLa/JxSTQf4s17RW9s=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HYTcC3ep;
-	spf=pass (imf29.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769494018; a=rsa-sha256;
+	bh=fw77OHCmQi/THnFtNAgXJIoS/IUJlX4GxEekn+APIKU=;
+	b=Xa54yhqDeL3uJGv7qa0gZGpLfb441tYRjIVV+R3YyNCDH/7fZ2IxNBjxl9txiLl26IQl+s
+	vJgo4vqtfIJToMktWCESunBgZ96knYDvDtW00ILWktN7fFK+SHR1+OY7IatCX+oXtWiy4m
+	8QsCpiNNrjEW6ZkxbDg+H431np2nT/4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769494374; a=rsa-sha256;
 	cv=pass;
-	b=Yzl3BgxRAhloKgoCk5m8w695kVv5bVCoGkNTQalSBsSiViEYBBUV2KDpBGoxECh02+751D
-	1+9cik918GogVL0lD+GcyUkD0q0XT2Uae5mr4CWJ75LTRNMrGgd4VdXD6j+mrL14N3AhSe
-	slMyYl4DDvHic5sSBhJzpTNEakmHRig=
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-649488dc7bdso4981584d50.0
-        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 22:06:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769494017; cv=none;
+	b=XnkI+FvFHz2uTVBIzR4Ec/kDeYEDI/fKLas+Zv7CezjSXDC/XlWU0DsCV+HAuRz+uVZ5V8
+	urdEL1r9X7jxcG05Ia+fdP30bWe75SzJTUksPzajZMoYK9+sYKcX4rj0g5rll2JMadusFR
+	XR/DzsNfESR26Y4K9miRthHIldyiH74=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YiRp1gSZ;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf13.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-78fba1a1b1eso79549817b3.1
+        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 22:12:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769494373; cv=none;
         d=google.com; s=arc-20240605;
-        b=awpIQJri4JEWnEP426YWK/yKpbkTuIsVDYTgpYf7XWtTXO29IaKRRqLju2nMWLmQ2D
-         qAvX/ngrBZfGZwHssRQfNeuDryfBITR0NdJOkS/HhUMT92lS2M3/vge6KSUp9qDum8cu
-         hSW6c1Iuu25dQXkCyhcYm4E90fzejEADKVE/IgzU3MWM5LDFFS8xsFhG3jP3nHkU8HWi
-         v1K7hKA5VzV4iczYruDm77vhQMfNMKvF7vKGKscnro6n97oLLGuUvFm1mkvyxCGTjDPk
-         x4leAB8fwTRh/DxaGwq1tWSxrJL01Nt7UHOBR1x9v4wA51X4trFKdrRf8CfH6oQDRgxC
-         NVpA==
+        b=SvXETUJqju4J7SUoynhSbha5rDDD5/RPvnF+BecPHoaOj26yEwSwH2aDH4lyRiXwyI
+         ituMWAYhNpgj4NSgJ4OATfZ+glqprUvQGVTjDBr80dYi8H2cmkZPBAjSwDDD2zNt/Wd7
+         Dfpu4+TA81SV21/xacybMrLRFAKzagFa3x0QPXM+eQPWlLybpuXHTgpitbOQRO+UHAaj
+         I7XHza8tyqOFiKee/geKUbeRYP+jrMLAzsJAvJEQRUTK4BFPHBd1o6spiXdOdJq2bJe8
+         kmqmlsbCOqDvWkq6vaBvRGTfOcqkxfZQC8230K5YLiOFSRPvdYbc8PzWW/ym1/VygW4A
+         hDUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=bJWAZY6LKfo7RbXkh5+gjEfMAbkq0ijn5lP4/KwobQ8=;
-        fh=1DVZUTVf0xhIwmn3QrH3mHUFydA43HicHUOaFixtKPo=;
-        b=Yt8Q4sOlNJoMpTcW+++tx77Zv+Wf82iajDuk1yV/0kYe72lN/MmxWGETZeXoTKWJPJ
-         WG4UhNqQDNddJiS8feBYaLUpFfXaMCE8jJ2En/KmBk0pmNMPEhxTqWBR9zkOOo6N63/v
-         Zb0ShUsB73+k9W01AjF/WdBpVQbaJnJxVE0rLhKrXVZJlW3/dc5n1TQz8XG7bipW5z/f
-         raTNAcIQ5xI6rbmqhKsYSrZq4a9HjFtY7pNjMQxhdWZjb3EE24MdovEVZ/tER/lT4+ZB
-         v83NicnWowWkR/SOx7MMYbCJQ/w1nkWmHf62LZeZhAJggO+qHU7+m9Jov+3+ilbXPy8f
-         orzw==;
+        bh=fw77OHCmQi/THnFtNAgXJIoS/IUJlX4GxEekn+APIKU=;
+        fh=8pS/Pph1mDuPl98PI1vr9G2xZSe23M2jkT07Sn9m7Sg=;
+        b=VHNZXk3CWQrLDkaNby6QEtSIPiKLNWC3imTrfJnSHXaECHb84BHNA9EuZNo9+1LEFG
+         IckKF9Wb5sYvfD05fQTJ+6UGWgd7vCn2khVg3+gkBtJOmTi1+ef2wmKSRxphbLH2B7CR
+         vj3fo2w9xPJ+c5F8PZx3ZVz4tJJqqArtsCtZ/vkVHa9re1iICjdBsJf2lObOfzSnc/qk
+         UwRlSoktI4X5Ov4Diks4a+aJbflO2qAe24C+B4DrmLrTOusTRRTAtWw9VFucIZzVeJ5O
+         Lzi6KP+eVNJLltwTZngusEudrXbVSfyKnELcoP6aYK5QWLS4pbTy4XAj0CUR7Aez+vOJ
+         51gg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769494017; x=1770098817; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769494373; x=1770099173; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bJWAZY6LKfo7RbXkh5+gjEfMAbkq0ijn5lP4/KwobQ8=;
-        b=HYTcC3epsu1bSu1go6caveUZDzWKNuJt+Z1257o6fXPl99A0bSN2p/eo7o+FkneTR+
-         UX3ZV0i7XTRQvfQiLj0UcTVEYkUlb7PT2p/3O+F/xnHqJJC567SngdewZ1VtxCkEt3tn
-         t1A7GAJhIzw7s9xtnETiaa6WW7r6uzLCddaBas+KyWl7Oc9J93gl36tq5sDTPqIw8J0r
-         X/jKNR8j6HTVi2e5zHeBqlOJvf7NDI8MsusoREnaeCELvI3ZiVeexLEMAvNPYAVkUnP5
-         G2YpFz01UZRKO/UyaTrgvjTwpRJUDSvN2R6Yi3N59V4xzqqpB81kcjCmbmKZRRhIqvuk
-         GYUQ==
+        bh=fw77OHCmQi/THnFtNAgXJIoS/IUJlX4GxEekn+APIKU=;
+        b=YiRp1gSZf8AQIVifhlQSxrAhWbKuzPtGg7hq/adFE9t8ijRMB0Bw0EqM1VFC1JM6SM
+         nYqYq4aCPBIOALTwNkbd/XJMpH+MZAVjlsu7OgYvM4tc2VrBVpVOBNACywSFmHZs1rHG
+         Qa+5We8OhNh9vyhyO9IZytkdTyWODdYqdXgWGpIC+YImUbuJwTg/thzdFcFd4OsSQFN1
+         nuQJkhTX+ARqVLetKt6fGt100E+oaLZORtbLRzmLtho6VyhTFsLW82DC9s4lbPRTHWw7
+         YyUg4aCZiLt/d8GthOS5PCusWB72BcpWAk/LUp191Glrrw19U0mCjOxkPJNu1ael9H8e
+         qQgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769494017; x=1770098817;
+        d=1e100.net; s=20230601; t=1769494373; x=1770099173;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bJWAZY6LKfo7RbXkh5+gjEfMAbkq0ijn5lP4/KwobQ8=;
-        b=G+8GE17pYXF48PFO+IgnHy+O9n5ZRMvpDf5J9RbdiC6i9CDZ3O+D46o22AGiBQwRk+
-         LRT0jN/ljjJ6Bfn2sUZhw5pUhfYMOt7nhYeM+MIL57ZOFE9omSOwRuCmdUc+Jnt23qgG
-         a1Bi3uvyUD1Dmp2ixQjrwn7TCH4y09nh46BVIzBuUdpAU50Tk+nFp6lfFYBzLqKS74iq
-         LMYGSny0YKaFIYBTXsNZqJaQw8128GC6i9J0pzltHg36aqwOprI5gfGcfeVnsWmRfjVb
-         yM4Kt/W+KJ4n3wejeGp0fWPP0ReqkJtn4AR11RgAvlqyEBdektyhSYbDgg+hlslxv/Us
-         zR3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUN83Ob0MBKG9JD+0oU+fXs6pevH4U8dkMdjd1BxEtqgldCul1IIIBBQQnnPg8q1oLXLeC5ivpkow==@kvack.org
-X-Gm-Message-State: AOJu0YzQ5LL7BVx339Zy4dI9gu0bjcpY15Oo0iWkGDV5VsyHbgVBVGWY
-	nYO1oY52JIfWje8K577Tp24fHKZRv8zKaGWN0rQOJ0mIxBmwULCA4hhjhSZ7SKHRquZCf3APPkn
-	/vqrch/d4ilZs8RynuIJK1ulsn4jdulc=
-X-Gm-Gg: AZuq6aKXDZHYiPtlztpxd07/+fbfhanN/hei+266lRz18XNee8x+ZdhubjRhtoXFIad
-	hyKeeuimE1/5qLkGItcYCMO2mxtk1YnRUGx/kv3GdNWY/6NmVPaAbudsoVm+jafrKqqb7gQqWRD
-	9rgt2/VuPNevvybfyEQiMozLcnvRcsBE6x9Auc+L1bBdGSkomfM53B3FBA28/u2Xd9AjQDah2S7
-	xLnOOW4k7+fQDUXbkSSKpKXIb6bZyopdX6hHHY6xJ+w+cHUzVv27LuqQJlsoopd29F9Q4ce
-X-Received: by 2002:a05:690c:6b03:b0:794:baf:3fab with SMTP id
- 00721157ae682-7947acac299mr3946817b3.68.1769494016915; Mon, 26 Jan 2026
- 22:06:56 -0800 (PST)
+        bh=fw77OHCmQi/THnFtNAgXJIoS/IUJlX4GxEekn+APIKU=;
+        b=wN8SnwZGfTdK7yB2iLpr91bvtCX7KsLTa7cgDwzwX3zHBlMOY9BXX1gpcMFXABciwL
+         qbZGk0eDofJby6CpL911arq2yBHwISCONZM7+oyhNXS8RbaLgaUp9rMG01erepq9DVMg
+         BQo0HKiFlCGyHTMo1QJGB8TVgtDowioce8Bxih1RbOjFMQ/8rpb64WMuCtjjMVxgxYU7
+         faTsa7P8rSyXca3gXlZFcHFO35KuHFQgVDtMJu6Tt1A7Sqb/FDICqgiDShkILvq+dQVW
+         znS+Xaapy/4ECgm2vvh5pqyUfg+sOseIQU1wppYttRCfE6MFa9t0mq/uy+eMviJz4Ax+
+         KM4g==
+X-Forwarded-Encrypted: i=1; AJvYcCX52avnDKrSiGbLu2xm9Q3GoKZy+xJUbP5Tb/m2zeonmJCdTAi8WA/3GmfiDB1U8sZ3I7Nj7E3y+w==@kvack.org
+X-Gm-Message-State: AOJu0Yw3/KS56GNeaV7mSxFQK2PsVfdAwtiFzlC6cdi2cnZi2lCt9mtq
+	pmkS+T5enEcYFg2rStCQn+t7mBWd0Joz6DT/0QxkUXRwkLP5YU+pr1vI1NaPUc7H89dGwD/Pcs6
+	CYdciO1yyj/7bDAc+MfFpdKxyB0RxLII=
+X-Gm-Gg: AZuq6aJAoGHlP6jXBrIGjzNra4jiUVH8f0bdwuiTW1HPW58Dt4S9z6zvArTFU6PJRbw
+	5DyLiMuyQyNqqYjNkVDyuPrsadaugjytl7Co0brmFBw0fH8rIqjLUWXYqBD/vgp5XKGj+lSIV7Z
+	nAizYFqZBG1clPAQqGdGXkUUid8nXdr+u9Q70YsinKge7+U/ZyqdBUn0OlvcUc75a27F5+Szk+9
+	IiR0ZaBiek3CBaFsjx2ohxjfvfQGeqMuXecI6q5bvMvxI8nvoXbqLG8OULEKZoFbUsBy1jL
+X-Received: by 2002:a05:690c:62ca:b0:78c:7ed3:f71a with SMTP id
+ 00721157ae682-7947abd5bb2mr3471687b3.3.1769494373226; Mon, 26 Jan 2026
+ 22:12:53 -0800 (PST)
 MIME-Version: 1.0
-References: <20260127024421.494929-1-roman.gushchin@linux.dev> <20260127024421.494929-6-roman.gushchin@linux.dev>
-In-Reply-To: <20260127024421.494929-6-roman.gushchin@linux.dev>
+References: <20260127024421.494929-1-roman.gushchin@linux.dev> <20260127024421.494929-7-roman.gushchin@linux.dev>
+In-Reply-To: <20260127024421.494929-7-roman.gushchin@linux.dev>
 From: Yafang Shao <laoar.shao@gmail.com>
-Date: Tue, 27 Jan 2026 14:06:20 +0800
-X-Gm-Features: AZwV_Qj0tcw7ghLMqT45W5nW3bVQqI4tEqlqFj0ly-h4dN4f18uzS8wj7Qlnsj0
-Message-ID: <CALOAHbBLEqqs3iP=QFCs7BMX-YZXu6p+D-vmQg12S2Kyq12Frw@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 05/17] bpf: mark struct oom_control's memcg
- field as TRUSTED_OR_NULL
+Date: Tue, 27 Jan 2026 14:12:17 +0800
+X-Gm-Features: AZwV_Qjjzszi0Mx9DzI_P6xCYJ0ZjBXRqXPfR5mshB_NJEXLUa8A6Gcf5JTSmA8
+Message-ID: <CALOAHbAkxp-wvXpk7uM+y6Q46U6g44Z+SauPtCpY_otL=a-vrQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 06/17] mm: define mem_cgroup_get_from_ino()
+ outside of CONFIG_SHRINKER_DEBUG
 To: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: bpf@vger.kernel.org, Michal Hocko <mhocko@suse.com>, 
 	Alexei Starovoitov <ast@kernel.org>, Matt Bobrowski <mattbobrowski@google.com>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
+	Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: uzrpz5kouioek4bmxtakxb74miokpwfo
-X-Rspamd-Queue-Id: E7708120004
+X-Rspamd-Queue-Id: 323C820004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769494017-933468
-X-HE-Meta: U2FsdGVkX1+OyUYJEb3UawCbVDsdXr8QXBIMQal19qQl8Mq2rYRutMxnKT1wFdZwVD9/JbnfS4JEW2N5lre9IsYnMXxR6znGHclmrhLp5mtb7yAIPZIX9hDty0F9KN+YpgnLVWLM+y/TsGYG2yEuhh/NuwQp+7VcJeOtnK3duW6XiaISyjuEFEqwesMKmcvscXcYzGGWyt5OX2TY+NQS2qLFvc4cegRoP0Fdj33a1RlmehXLOB1ofAwMOmnaoVw0WumH07DEITrgAi43RYdCYA1PaBou8waUUwX7W2irvRUT9/9XOE/aUv0xns/gbP+X41aEfOIyHNpcpvJgWAj0i70ZtOG0nawR4eaVfrHX7MyJXnp8IUiw0/QNVp29/74RFf18Z1v60zPfpzHROaN/zt2f+HNCvmGY5HDAOU1WqhiIsEV6J/mPCJBjpqpKK4X1soOxjzFIHnSusY7TlqLq92lns9etvKfI+fjd6j1fkNJSONlGfkwI0PlTeN1lq2KdttlOMIcL0lWFVkfA6uGCfw1u7CuAYj4CaqcnxkrydRNhGv1kXYZkE+VR6fbAzdbAy1lLbw5Nrsu7xd2fWTv5RtgzruW9iudl0eKKj7bDDnAMkWhFLlMm76JhotFUT9njFrjouKQS5EQWS4GUeWfCqxf7gKeUdyDidyAWFoT+wMP7z6UPN6cxDiiqTnwZGQesmCk/Js59+l13zzW1G3qUTIUmtfvuHxW074moCqF394vXRQuIl3k/cdSrIcvTeuldQ+69+lfjqvK+oXY/lurudJydFApvQkZlNqUZW2E2GKE/wbPmtbYnxb7zrYAPGlfKNxydXUUspCQxYFaGWj73i046KzXd8LAOe7rsUueL8HxOGa3y1uR0W0/gvtQ8ZZvdJPA0rCI8+g3qh4WR9I9Gfk3j1QEHOyqAdRPP05AjkH1mHF1oeaUnPoF7oLR0QtPo1J+Z0TZ5J+ZpQSe4yHJ
- 5e7wxpjg
- zYrLUQXpJFhWTS+UBHvz+jHByMBWYrwv8ijwp/twhtC3DHWEImi3vuWUclnpdUqO/dt49qjNpkxUK6VNCLNIUMdDNPP79LQGhaNXZ56YQtqz9Jonnl0kkzYDcyAXeTcIwZL1zXvf5KDLFMeQTnR/m9M6/OOUdZ8LXSe9LQFWVLZGiXYeI88hHhG62j23lfAXoO6YsfnM6GhJA3yHf8ImwinroEGdFlQhWe/soqTfQD24maRcw278nzMrtLIzjkjP3fcUpgMkaaftJDzdPW/bdhusCEDlLaN7weCclcVOFZg2X0NQoiD7FOYaAngHk+ysBSAzHCHQ6qp2klpz6KZTn5/S8z46eEaKPejcfkUQGfgTq2wteHaBkYZyKM+rc56qQmvE1dK1CH1vGA333eAzrlooHKN/9B4EjryghtaWuud61UM9vE+ekkL6Fdf7EO4HFoRHUUBaCLPsUb9RDT+U5TH/cUUqCTSkQxpRX6lPCT/5poNUcXf/ESX5+yDxOn+6rfCPv8N6ULVMH7YdZ4XCEYg7SoBuT35QsyGiH
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ob6ua47tr4xugm99wd5zfcaxnm8dgpeo
+X-HE-Tag: 1769494373-29427
+X-HE-Meta: U2FsdGVkX18cOT2yPxiH28ULcWP+qEAeq5f1nCNze0723W6nKB5x5lyWs13qmOnDsQgzeqYStqfeX2VOoEHk+DJOAonX5V1+7muECCTEmeRUR3MyH/ew07fQoFCaFBNZ5+a1hRQKXui0pVbJ0l9+kgPp+hsL8sC/L6M300NvQy4pJtGeV6Svv/uTEm/9pS9v4XFXv9UFdc+RtucfZUbdNM7teKr9vcHW9Fy6hOl9WT9BpHjKvvyuqFynfgP8Fdf2hi9+RSO5KcIox54mDT1nimilV+vgITHA7VJMPIXofJJ+9CK4RtH6PvuCYwMG2JXBz4n9KmHUyggJo6atiHMwUJKh/o1kfvs0WoCjNuKoal4gLTT00rtZZp8lIUlrDi+Bx8E211+iEhgKHsKdyL7k1L0z+Qf57Iat87IpB773bYcLXooCsXcCLzxC78uMBYQhpWNYPI3TQNCmv0Exx+Ef1XB8bqlwxoRcAmpBLR66YBVChHglyxuSkWm8ateyuktasrqHAwTdVtqqA6o770eXIr7ClKxJtCdmvpB+rQrn35GOWQUTKhiZUjZzyik6aBNzye1YBvvEsyCIg9Xjrv/s3gO7/eCIKu6fXPdlHjb/hsc7+rEhWHqlsCVcmljVU5KOGJF2afD87+NvV+LvPTv2rtzP8ojBnKqRVYiM4W7FYeywXYkkSmefCYurTe2tw+yqP68LDF+P8QcjVdo8X0YStnVW1fYv8iCgJAf3WlKkaiDa2C/FAtwaURFofCFgFgt0Ibkk8T/yjcg1XsFm4FC8iM6GR9zhwT+3uaRuDiPO1U7KzjnrQZCl9YEgXG09ls5utDtaDAzDiNk94eRW2LHUDlSXzFW+aJwIoneox2YTuii4ELKq7ShGaFbyn7fyg7W0csKxpSMxZdopw5DBnkEMgar3rJNpEiles67AqSewdo089maUg1vqm/OgfYzaaIWROxV9KE6ahV5Ve8NmPmz
+ yIp75NhR
+ fklntAd6RGc29mBG5Hn7AOezIl0bpH36lgfn8p1JZXexolLeRPMlqNdU2wcTaji35IYQvlHkubSVIrNz9/SmC1BYxM28SQCicWdkF/MMlAif+3gZNW7GIxvFq+ndaDdkdmXiYJ4GPn5DdwiNRgYISPmqvjUTpiE7yh2dzV9tFT5O2LeYvTikm30Lyv7KQrVSW8rOFpVFigwGX2J+NKUehV4pPMn0myutY2yOB5G4Spdc3PUcD75VrmeiSCgHPpg3tzYzlIJtMmsJUaQhipTmPdJZ3x+GJ/qKJW1+CSuPz0EZsaki8Nypy7BV2Y0Flniqyg3gSxxKImC6djHzL6xRho060y2G5cwxvG5eyOd1j0oe03w9MuR/ih5a1QUGWXeOaRwhCCUtjDtQ+juGN6rI1cjU1LQ2nxyzs7B/EMmToWfr9J87YL+MJEqzLo9b2n+QHB+n8iYzWsfuzt+QdVZ11fpkyrKHCqL3b7SzwPjPBYSi6If3aOZWWlvHINZ+Krg4kxw5Ib9yeHx7PRFMl1PIZBJ7qnis/c8GJrDmfo3mRoQkd6sUmSc++yAO0JS8+X8eC0NU+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,54 +146,49 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Tue, Jan 27, 2026 at 10:49=E2=80=AFAM Roman Gushchin
 <roman.gushchin@linux.dev> wrote:
 >
-> Struct oom_control is used to describe the OOM context.
-> It's memcg field defines the scope of OOM: it's NULL for global
-> OOMs and a valid memcg pointer for memcg-scoped OOMs.
-> Teach bpf verifier to recognize it as trusted or NULL pointer.
-> It will provide the bpf OOM handler a trusted memcg pointer,
-> which for example is required for iterating the memcg's subtree.
+> mem_cgroup_get_from_ino() can be reused by the BPF OOM implementation,
+> but currently depends on CONFIG_SHRINKER_DEBUG. Remove this dependency.
 >
 > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-
-Acked-by: Yafang Shao <laoar.shao@gmail.com>
-
+> Acked-by: Michal Hocko <mhocko@suse.com>
 > ---
->  kernel/bpf/verifier.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  include/linux/memcontrol.h | 4 ++--
+>  mm/memcontrol.c            | 2 --
+>  2 files changed, 2 insertions(+), 4 deletions(-)
 >
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index c2f2650db9fd..cca36edb460d 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -7242,6 +7242,10 @@ BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struc=
-t) {
->         struct file *vm_file;
->  };
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 229ac9835adb..f3b8c71870d8 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -833,9 +833,9 @@ static inline unsigned long mem_cgroup_ino(struct mem=
+_cgroup *memcg)
+>  {
+>         return memcg ? cgroup_ino(memcg->css.cgroup) : 0;
+>  }
+> +#endif
 >
-> +BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct oom_control) {
-> +       struct mem_cgroup *memcg;
-> +};
-> +
->  static bool type_is_rcu(struct bpf_verifier_env *env,
->                         struct bpf_reg_state *reg,
->                         const char *field_name, u32 btf_id)
-> @@ -7284,6 +7288,7 @@ static bool type_is_trusted_or_null(struct bpf_veri=
-fier_env *env,
->         BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket));
->         BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry));
->         BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct=
-));
-> +       BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct oom_control));
+>  struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino);
+> -#endif
 >
->         return btf_nested_type_is_trusted(&env->log, reg, field_name, btf=
-_id,
->                                           "__safe_trusted_or_null");
-> --
-> 2.52.0
->
->
+>  static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
+>  {
+> @@ -1298,12 +1298,12 @@ static inline unsigned long mem_cgroup_ino(struct=
+ mem_cgroup *memcg)
+>  {
+>         return 0;
+>  }
+> +#endif
 
+Given that mem_cgroup_ino() pairs with mem_cgroup_get_from_ino(),
+should we also define mem_cgroup_ino() outside CONFIG_SHRINKER_DEBUG?
+
+>
+>  static inline struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long i=
+no)
+>  {
+>         return NULL;
+>  }
+> -#endif
 
 --=20
 Regards
