@@ -4,247 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E31FD2F031
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 13:54:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D440D2F031
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 13:55:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACBEE6B0095; Tue, 27 Jan 2026 08:53:59 -0500 (EST)
+	id 8DFA46B0088; Tue, 27 Jan 2026 08:55:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A283C6B008A; Tue, 27 Jan 2026 08:53:59 -0500 (EST)
+	id 8C1636B008A; Tue, 27 Jan 2026 08:55:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80E8F6B0092; Tue, 27 Jan 2026 08:53:59 -0500 (EST)
+	id 7F8576B008C; Tue, 27 Jan 2026 08:55:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DCCE6B008A
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 08:53:59 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2F060B61ED
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 13:53:59 +0000 (UTC)
-X-FDA: 84377887398.28.92559A5
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013029.outbound.protection.outlook.com [40.107.201.29])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 925AF180014;
-	Tue, 27 Jan 2026 13:53:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rEQuxTfL;
-	spf=pass (imf24.hostedemail.com: domain of ynorov@nvidia.com designates 40.107.201.29 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769522036;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EF496B0088
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 08:55:19 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 425511AEC91
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 13:55:19 +0000 (UTC)
+X-FDA: 84377890758.30.6061AB0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 97D3F4000B
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 13:55:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="s/3eI0M+";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769522117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zp7r66ObLQb0uIcsfYchKUCHoARYZLzJSdw5YZym29E=;
-	b=4CnkSUD8ith8LOknp3hMGHi9p0dWj/oRSX1wpEMKFy4gXGjSRTEtIAUdQJqLLPcyon7TeL
-	bT/OJ4uo22vJTVZFwkdUcZ2zBhFqxjd+32MaK/wsZN7FIV1xT39TaJlvd/qbGXichRIt1+
-	Wxltb2n/Wzr1Hub3oRQ4rqSRplTycIg=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rEQuxTfL;
-	spf=pass (imf24.hostedemail.com: domain of ynorov@nvidia.com designates 40.107.201.29 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769522036; a=rsa-sha256;
-	cv=pass;
-	b=MtPv7cvgGJ5KFpmkwErXCZCTgaIysicreLBvjLRoS05A/7UR7eM3nJaWsEVucehTKZ6ROJ
-	ZZoiI6KWWRGgXkiuVWgfatWhxH8EtTT78IY2Dlsp/nnYTk69QvMD7Ny0qh2AYAbXk04R7G
-	EsjDM91Lyb1ll3yzkbtOIOCI3LUodvg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LoJSBm+KCKFpH+/YERTFRm9qpvrSgblyoWTqR5N4ypYrMyxGsNPuKhw28ga/dQSWFHivndYkGabEyocTpxWeJnDQFpU+UrCUEo3X+1UiXO4wbfKju7caDqEBjEiFfHO2lR7lNMXA7Z7KOaealXoSGh6gt4Idrrh7aoV7tD5LPdeRheuDurTrP0Xb0bZ+otpu/vZ4PvvIpLqVAAqzKWIukUiMTKZHolkbsN1YgXNtTlBIbxvEZW+9wZ4jn1F7+CZU/bmPCkpQZ/8loUJhLBBqNJOWCk368gu1Id6fqXY4H9bmlEgNyWJOMIb+7rNofNhFsj/IE/4uGXydchgBnpWm/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zp7r66ObLQb0uIcsfYchKUCHoARYZLzJSdw5YZym29E=;
- b=yc/McpkpE40/U1EIDkQhwuSazZVcfjtylRVRT67RNC8pxe6WMp4jsDWsqqpGDIdfrB46X5IpEyO9rg5ms0fSxvX4Gc+xMrs64bTiFVOfDX32VTmkGE6mfTXoui4y7vV2G/s7nJnqkg0egXRboYiuOkLsV37tVJudX6jZljihbFtnUPIQ5Nh1QqdMzH1OUnFURBVHlTr/rDzpgjJIlOWBV5aAgpatxKzZ02+nReE23ut9lryj/8nn9m5KpxsYTUcgNvzZ9F1L57NYlqGrVssLQdzYfgb6pQrGXrZsMSe85msXglRgqwbduBlQkg9QsS1k3lN1FyBR6TAeJYfUjI9nfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zp7r66ObLQb0uIcsfYchKUCHoARYZLzJSdw5YZym29E=;
- b=rEQuxTfLSa3ej3dyz/LwMaY8zCZWuS/7Uj5hrA2fGjIx24GDHRHTaYGKIidmhfn2dnnZ6sOO86SPFxv/wVDMaVhVu+pZT6BxcpZm/aNMffFFeaoMVZqQCawL6sZvQVeBGDaOPTxlnN9p1bpXb1B0eksF6vacn+fC2CkHOWm5iVtAQrDLFmtD0OnOsgFrOBKBic/YTgPEGcdB34nZ+C/DlHDDM/OOSdThSQVToHuU9hQwswOjC70q36PoAKZuvF+XRp4HrtrdjBxVFBG8JX97hOq+3y9Gny7S9vd+FdOxfkiyiZw3wo6tEzHEsARh5NrL/B1txQWbB5mzVvOydnINKw==
-Received: from PH0PR12MB8800.namprd12.prod.outlook.com (2603:10b6:510:26f::12)
- by PH8PR12MB6698.namprd12.prod.outlook.com (2603:10b6:510:1cd::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Tue, 27 Jan
- 2026 13:53:47 +0000
-Received: from PH0PR12MB8800.namprd12.prod.outlook.com
- ([fe80::f79d:ddc5:2ad7:762d]) by PH0PR12MB8800.namprd12.prod.outlook.com
- ([fe80::f79d:ddc5:2ad7:762d%4]) with mapi id 15.20.9542.010; Tue, 27 Jan 2026
- 13:53:47 +0000
-Date: Tue, 27 Jan 2026 08:53:44 -0500
-From: Yury Norov <ynorov@nvidia.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
-	Carlos Maiolino <cem@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E . Hallyn" <serge@hallyn.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-mm@kvack.org, ntfs3@lists.linux.dev, devel@lists.orangefs.org,
-	linux-xfs@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 00/13] mm: add bitmap VMA flag helpers and convert all
- mmap_prepare to use them
-Message-ID: <aXjDaN4pwEyyBy-I@yury>
-References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
-X-ClientProxiedBy: BN0PR10CA0003.namprd10.prod.outlook.com
- (2603:10b6:408:143::35) To PH0PR12MB8800.namprd12.prod.outlook.com
- (2603:10b6:510:26f::12)
+	bh=/Pf3eP8CHXDi8tNLjjn+imZ5xLmyEQR8t0w5VOyVez4=;
+	b=bLJGF0+D317/vDumnbAMvTykjBOicqaKCpx8cxHxI3oERzr/PQOBCEbDeSmPFciwSwNdtm
+	LJbelF8uiQRGCfgFjgaE2ufSJXYeCDSEpCo+FUsiuRGnCN9OrCismbXQdOqRwoZ3qcULGu
+	WjzunXgKLx2gP1x0oSLAq/kX0chUPKw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769522117; a=rsa-sha256;
+	cv=none;
+	b=L24R3QdFoO0tQz8hix3KQ0rL3un+f3BpT6soreoN1KGDv7q8EAWtth3YRrAJJVuFxLDSO1
+	SEXjOgY+gth8SFoASljnYhNYqD3plsqGJLuAllC1zQK+D6Yjiu2gN5iGnKlMkHs++Rd4Tx
+	7A1BjaW1T3RCaZdrUsCS0Q63qPQiE6U=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="s/3eI0M+";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D72EE6012A;
+	Tue, 27 Jan 2026 13:55:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDEAC116C6;
+	Tue, 27 Jan 2026 13:55:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769522116;
+	bh=XCH8Wz4CI5ZglnNIsHiUejB2LHfmUzbG247xBvpyHnc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s/3eI0M+Oeb//gY6t9o2cY1DgUv36AL1K2WjuI/a3klNxzb+xW37AZ0xqQNVs9amO
+	 J59ysBBq4mvMXPI23DPmKG2r063lZZiKt1cL082uI2PzKioV9r+7xCW0caM77GbEJW
+	 F7HK0SOT0usLeqgBm/hps7nl+SYxTJzku72e2fVPHtQ9FIi8ILIqm8hC3sh3dC0X8O
+	 +Uw8rE+O7ajoL5MuYC+mGfQMyz6u2DPa61zr8v4cVbvzC18L9CMNdLT3q4FQPj8dm9
+	 KN1O+A7v97wIDBaU6o0BG0IAAdXVKeLPHCfJO5Tjyj1mJBvKpJxIF4RXNwoFHjuxt7
+	 lgFAE05RPAXQw==
+Date: Tue, 27 Jan 2026 14:55:13 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v2 3/3] mm: add WQ_PERCPU to alloc_workqueue users
+Message-ID: <aXjDwUpXRdn_JgVZ@localhost.localdomain>
+References: <20260113114630.152942-1-marco.crivellari@suse.com>
+ <20260113114630.152942-4-marco.crivellari@suse.com>
+ <20260124222135.XyGv6OqY@linutronix.de>
+ <20260124152241.d97b8b525c1d67ad2b0423f7@linux-foundation.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB8800:EE_|PH8PR12MB6698:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54efb381-a22a-4dcb-5551-08de5dab7da7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?K1Z3sdgypy98NySAh7VUz1YFlwyjsRQpJrTrqge9OT4LxBhFw1ZHWhwA0kn1?=
- =?us-ascii?Q?EdWdIv9zU1js6p6Pp2iGl4JWRZcrxuwSPLiz1pysjXk0XhR8x6+ODtUcNvUO?=
- =?us-ascii?Q?QYqkeVk5EuibIcjCueohuHzciywhjCpUuSLFtSiAQth0S2QFfqLVk8epQxlB?=
- =?us-ascii?Q?P+uNJBRyQKfuPsrOlAnC1mJQKgyWEcbL1omRs9OmRxPB/empTErC2+XMQjf9?=
- =?us-ascii?Q?viZpoyBhoh8SYLsH39TVxkZ1dlA/8uKvCH3lH96OkFkpnucXxvgfrDrGK93p?=
- =?us-ascii?Q?QoVbm9hoD3zO0s+FPgcMi2vyeFYoIQL6TepBk2fW45ghkNYjJvm03IZyZd+U?=
- =?us-ascii?Q?hsaTkus/O2xO5rstKBjQ/VG9fJMPS48nLM8xbitOB2JT3XGUcVIb1Ov48zqN?=
- =?us-ascii?Q?+YiX9vKbWRibPsF7ypn6cCDkRK+i4PvZWQ9XO0Pk6KqE4rlgiC5XjPWu4TMI?=
- =?us-ascii?Q?QlkQs4+9PBRMJNhTtpdcLchatsugmyu1I+a5QDijQ/BeO6Xcpx95K8vbTNdL?=
- =?us-ascii?Q?EUg123AXJNKh/swYOE87Yk06VOX+cUI07BZXOo41ZYXGB9fwQ9Yz8mRheoGW?=
- =?us-ascii?Q?YLThRouxAjfTrOFJnwYOQu4myR6liFhUEjsBUrCZxp9rbbyDfSb++LNoNeu+?=
- =?us-ascii?Q?7SA48RlXXBP3ZaGQr1/xYMdob/lyY1k5K7IQOM36vvi4QJpYsm8ZYuZsyXfR?=
- =?us-ascii?Q?RWF5CyQ5QFHheivpot7YAX5p/FbqiCuTxJU2e/1apVu/c2BwaU7qHds+2GV2?=
- =?us-ascii?Q?E8Fg4AAre46CRr0YBycL1GnSMfBtakl59DhxM3ObThuJbSqg/NjOUN7uAF9E?=
- =?us-ascii?Q?2rQnTqF1/Y7h+GhiA20369Mv++0epzdq2y5yF0P9rO9ORWuC/bgSSInm3a5E?=
- =?us-ascii?Q?aKv5AEgVySzB4jdHnHDmojAoGKQ2FwFM46k5tvEwXRvQNVQNmc7/J7aqbUrT?=
- =?us-ascii?Q?QBlEr52LXZPjpvUEy7F4rKhqI8fKIa85f2FjYqL31TKyy2Y0l5lKbJGdW+rO?=
- =?us-ascii?Q?qxMfeLzb6RRN2WA+2JiD/XqQCL+plCFdhn815t/N78+bhkY5qnLaOa5/4ItZ?=
- =?us-ascii?Q?IjNbQQKguRED7KlFOpVfiYz1Frk47rernMsI3jrLIHqIl4ZXecypKlR5vmXD?=
- =?us-ascii?Q?ey+2Ru3PPYbxN0KMY7p7KDJQTxFZ03FSG8yluYGtyhDFowL1rl+Bl0RtHS3u?=
- =?us-ascii?Q?KG7zi+/txZ+JtWsnhOP56mLkt3lY2wLTYQu9ER5jn/9cimUIxjBzIQ7t0ua8?=
- =?us-ascii?Q?SvUpyozlDeNlSjlKH1u1jp3s/y7iu96fMLEETvrIqAcDUEXuU5MAa695DUU6?=
- =?us-ascii?Q?w80zgF0Mm8PHW2ScKrgKVY1lJ3N+Kx7W4RUjOjGRxPtKMuS/IBIH07tk0kg9?=
- =?us-ascii?Q?AwJcx1VEtkd5T4HiypcslGYET99M32oON/n09O0XH/5+5k/CQvuCme7IsvHV?=
- =?us-ascii?Q?7QfLpwHxYRGXqMK+P+f9pulFKt7Km3ymMz7kQu9M5Jz0FUGFOGy/JSwToDPg?=
- =?us-ascii?Q?53OQPSw6aYdIrsciIVNmuYaUlVaoW9nOQ8OS72obrDfIyPcpQ7E6Nb57R+4B?=
- =?us-ascii?Q?H016jP3M7mGMnVfDajw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB8800.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?o9+6Fz9IQu1u9yFAziFzK3yyroCvzjZUZ91LbxNzlY9aItC4HbHrRA5L/GrL?=
- =?us-ascii?Q?eBXzf1q15dhNY6aIaeaYq9K1lMkNk4RcSeyDF6C00Z/SSGsMQJlsK6UklzzB?=
- =?us-ascii?Q?r8FwlqMBcIpKe7YOQ4sF40N3QhOmQRcBo/ayDPJDZwSZL4ZoPSV1Ah4MS9oc?=
- =?us-ascii?Q?7itM1LSW0lYVeCH/wguHMJu0l3Xf3NDGkY33I4MknGd4Iwod6QzON971rSZQ?=
- =?us-ascii?Q?aY8p4Bd63rhKwZbOCfEy1spWInuJyRpdNyArgd8lWZ3KzmcXwkwnABQc4Iiw?=
- =?us-ascii?Q?SaLXhoFwMfJre7B2oOfgtwxbgOnhYeOr/c7oXIJhgbTJK9idx+eEJkmY5F9O?=
- =?us-ascii?Q?ikuQe6OAvIwQt5A/gdFePo4rEHXbjI4yRCeSSJNVOfSotsYm6/8wjKon3kso?=
- =?us-ascii?Q?5wdnldELIATp//HBQhwEM+21WESDrUUgREr+xoTRFPn1eDRzyFn/eoEA4+xF?=
- =?us-ascii?Q?ZveILnVv2YYlB6yqZw6EqM60+VdrhFfEqKWcdUaaoo0gN+KRnkKjAueqBb5l?=
- =?us-ascii?Q?g9qQhqoAPj9lF9XmhuJJgdUdoRpzMT1JK4Qc1YeiaHo6dgkye1kTsiOPjtEx?=
- =?us-ascii?Q?KAuJj1iBPcO1PIdYVSKD8SeWs1mDfDmP5GsoWrjaHY2HO6YdgwrVqKFIyzbt?=
- =?us-ascii?Q?TXrZpvYLzeFlD/tzOlb9B6US/3n3S5hLtkKTWa1b0zV9vV/f/T66eJq8+10Y?=
- =?us-ascii?Q?/9vjrgu4GmmVul9BW/m8/vC3UD1azefKU4zkHb3tUjp3y73/cbxSjNIFtufz?=
- =?us-ascii?Q?+nPo8O2PsJ/aXLlkURmNljGfhUL3Ko9T3Q/+By8RcwLat2a/NgbV3BgsCRI/?=
- =?us-ascii?Q?f5uSBvN7zeMROhDy6Sc92KUfk7rR4GFvFxGXAAs277jXTLPtlss3kJFyZlvK?=
- =?us-ascii?Q?MahHhH51uz/MEm2hMcpzhfwwtfd+aPcOVItP25UdKBkTP4FBoumS+aGt7Umy?=
- =?us-ascii?Q?INFGi8JQgYTfEfQnLRQDFH07YEtMMUeqNyjsh0+W5UPWH9ygIHMRHogCCKTv?=
- =?us-ascii?Q?Ws8i06glyPrB7CzfB9i4iAcnuFreOu8iRusgo3kpPTZrZK90c3odwlHhns6N?=
- =?us-ascii?Q?vsR3fbHB8tGWmaTYtmPtgI/BMbaamPCAynCGFhzbxzNVt8tAzIt36f1zgvr/?=
- =?us-ascii?Q?5VjnybLjtoX4bFBDU5uKqyl8BnQzgUWN/UMDqZYEuJY+5XLlKyr7qFEhWzoy?=
- =?us-ascii?Q?/opH+kNjzMN/pZ9Q1VAcp7+mR6Xoe4GulNm2ID47CbWhe54WDqdgRuJ01xY5?=
- =?us-ascii?Q?aS7S7MtoMWYzlJfodvUofJjmweshr+HPFB2yJ26YwIAWiE58VnQ6XHo8pumL?=
- =?us-ascii?Q?Pm1AQQsp76yYfYitM6mpAV1Q5ou/2OfzzmHPLNXcWC/xX4SiGqvjt4VVeYWg?=
- =?us-ascii?Q?SgL8Tg/u55/hoajnKbRBWURVhmUY1JEO+DlC9TyE7U4qSLlQxKXHW6Hf5+KO?=
- =?us-ascii?Q?DaFSptzO9A0utOKzeCXepfigOp985wD1jjKV3hJf6Jo4zQ947nn2WzTzitqI?=
- =?us-ascii?Q?X9iQ2F/ykOC4YSTExqY2YrCQwz8K8NylmwA6WnUBLI5YteIJKxSLlB3SZVm5?=
- =?us-ascii?Q?tje/gLefKg+VWoqsqXqQdelfw+WHwhUNyXavSNzq/CGd7oMDuN3XQogbljzQ?=
- =?us-ascii?Q?0XB56sMEwv1NTGayQGu9ibQNXfmQtYLoyds8T9dXzpkTk54Ruhu77zFydOZZ?=
- =?us-ascii?Q?cj+/e8NwwBpAo0oXEFd2P8xArwe3MDGMsymtbVNFkHbBCBCYiVxkiCudGzmT?=
- =?us-ascii?Q?UbtUphY1zlA1geR8FyDDB2YyadDjTxZl8qRF2nrqPmv/ueujTMlz?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54efb381-a22a-4dcb-5551-08de5dab7da7
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB8800.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2026 13:53:46.7166
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7NnDDl3DNBs283dtEngBrphLoIRRxNKNUyR7drzZ0Sm+AZ0f3G/bwfnAnW+UP+fBRdsrWGUZY2LUBFZmPZqp6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6698
-X-Stat-Signature: by3pribycw5x5scsawdo8b8u4un1nets
-X-Rspamd-Queue-Id: 925AF180014
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260124152241.d97b8b525c1d67ad2b0423f7@linux-foundation.org>
+X-Rspamd-Queue-Id: 97D3F4000B
+X-Stat-Signature: whupgyfs3yejc1b55cyp93uexeu6tx4c
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769522035-170587
-X-HE-Meta: U2FsdGVkX19Uz86beCGKUvz1qG0zGBqCKM5k3nw0rCXr23hTeUYRN/g0sbAldfb3RIdyWq73yq9krGp9A4+A93euYg01lpttWCcFWWhzQQARniUd+BFG3dDqOtx+/TTGqe02qnizjusUa/LGPg/NaCWzjZNbAoyObTeOklpYp9KzVccdehey88YHFWklxjYUoy6y0CTZJ0e0Zt3hlCTVA4A0A5T1hBEuwkj6s1M1aBNjvuwuENamXFAFMmLGmOy9LdE1WWclUpVFKY5Ct0hcgiElcmQeie8qS5DBi0ftr4ItNRjUSAtcZAz6QtHxT31TA0iEEBh/mg1myOZ+i8e1+tv3VyxDl2quQOH0dk8Eszr9HujsgEWK8q4f9RTvojxT0gBeGVWpmEeuIxTdlGAdw5H+um2R5Bjne853V5litVhCsuB+UlLRCcyYi7h/YfpKSW2Tkk7p/OT0BPlcXROYPpbJuJ7CIWRmj8YqxzghV1Y2zVLR2sE4/Hozhyshl/dJYlHlw4FG4+oAYY1Zf1mDJ+fYhuSs2dUDazZFvSyvfG0wk+W/fW3W7tqMmWqrKk9u44cV0WLlFkiMIct358CrdfMwn6SFTFSG+bPNEfFVBTFQbmo29LdagY7kmqK1EHbHPQycDoWfCvAkf1q5lkV4tpxV71RQaJy+O7Rl0Sweo0YfsNiaBRpYz211DEB1Lw+0O5R9AD4ykeq1hU5nA5HziwndV9SOzmJkdcgjePB9fnIsQXiNbYKe2K1N+1kl/feYq0qSsoC02ARxEKevj/kmNQUS+vkHaZP0uPbjEQbCPgkjflWLWbWI1dnSoZkP07LP2bfFth236Nud2PuBztf4yj0abtMLnZg4E5ICX9XQfZSXIk6XB+s/SGK+CO5z9DhvpEYEmBgF7lwbtfCBWKDkdDiryWIWxRzvI00wijn9w9yVOdBlRlW+BYt61KHEKuTa2cE/5CrbrsJ2KshS2UL
- L5vhjQfH
- 6PTV71xsztmfXdOL37HBBYZjTfVMAz+EzkNvKyGoDvCUL8NtC5oXmJtLuGgVYOrMBPahw7llLsLIK1Vw8Yj2+RjnxI+E30JLjaB2U7Zj1b203PDRW8WJ9n7PkelIZ7IrPXAEIvIhjFoLAcX/5lZsSJGfwMFjKTxlNqFBTZ/sAEnzrsTHKZ5eLNb8uWmVWNIXejfdV2khFc/m3L8VvSmV1Yvt9C8HNW6QGBMtrtzJztLHfoAu9RnaSa5JFl8U5i9jMH12ySKaHsgAlyZehw82jxv3Nenmnwdr1ezwaQ8AtljqbAMjBcspsRCSBOd2BlkQjsT77aAlmhyejy6YuIIGy2U86teWuBh3HfZHbneeJUp0tMsBy8FvfXsV7E0dlHg6oOHGV1MKfYtfXFBndgAZQ7IGRDDhux6n22BZ6QZTTFvRLslUmVjXrEE8ThM3cCa4WDGN85RohlunvPr7sJPbBEvmPrzOIXGJzVNhL3JBlpPtluqsU4eVHcIJlOK5ZQnGby15hQbQuuXl8bEEPqc8w97gK8JYTGU/E4PHd3+82BHZpszHfCVNbwsAn17MxeeyvaAi6
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769522117-481036
+X-HE-Meta: U2FsdGVkX1/m20MHir1BuWeSfcLbpwaq67xEdGGAgI3Cs9zZ3NHG/8Vfnu6AvNiI59F4Fl7RAX1Y9yGYUulbkZjtNLoz+zuDQu6Ktn650jqXE7tpnWV+As3fEtxgsEkMrmxkNUSTNQlBCw9RIY0lhfvsQjBHk7NDfJ+J3NSxOnpsUj8Q6fO/AL5JcppGEgXKBt/Liys7e3m+sl9XMi3rI2DmfnHrF8Mw4h8ep4Ey4HBclgWb5nu/U+QYXX4i9AZf6Cc/K9MDSDLkgxqlOdYCHcslaFfu7ErDP8Yq+I7FB+IDLcxCvUoV9ql+7iBdHeAULgSj1GmHz35caGbBZy3tESBTEqmM1xPIUU/9Ai6Z3tDCTQxOfY3KLAZpxQDQtGPuc3dyTqYLy+rAoCQ9PJn32/Wi+kFTLOawBmFbG4FIR7Bh0b+Eaz6234EZ04w4BvCImaQbtVZyVBd2nARDEROp0xIQppEy4x6dlQ5+oh0kjymi66OxuGpA64cb2hHgiRI6L+/7LSmpNyyHeuLzoSIF1olSxlBiQ2Ooy4uwI2Chxii3N38h+JTY5vwHT9uzqiDedQV/XQBEP8RxnIQocPLl8r1u7U0QeocTstdSUZRxb3ZBHXeBuvAqP0qKuDk5It1UtCkEdRWS29UwGgkRHyyT5J+/9fVTsXAfuKBR9iAkd9NTi1md1Zwq7WtPkNCt5K7VlpoFDAzqec2MGDdjxsNuTOxHjbjygoN5ikRupH2zCDymL8FDm9BQW3E24jDbYJfRweLizqBOQEfB5Z8HTxR3lP2Yd9vx5G5lCidRnxwrOHi/a+NIkj/9jTtfI2EEMvcjMPITSnh22GQKUtDh7Qim0yH5rrbTvlAAin5U8WAGTSlFhl+c2Bt2KOjWpUZChjO+cxmFO3qXE8yjzVFolCmL8tj14mASD0xddiWuIHxbtBXA7QphE/4bsWSPuCjcnqptJRkSF+Y+zLxUbeFjTb6
+ qpBYDuwm
+ qAH7wKivDPaX2rVP53z4u6enI/27Fj/Bm/1Mx6L76LWfgS6H3XyGQaY18uiUD4XjsOWywi0tnceuJg7gHdHMmvqCRU7WxoBtRCDxVbYasRbDRdjhahOaVltphYj1gCuKj8SE2ZxOis6Sqr0g8uRYTksxeGDhCUu8dER3f9Cd0gqGN2lB2AavdMatMzGny072F/wklIHGB9MgxFLvaAMJwlu3lbPvq79poDIIAdIPThxXT2E7O1B/rSVvOa/KZDF4zH543nzbLDlHXu8dft2jzEopkS0uwKo/oxt9FbVOFC9+kQ1pqoSxUGzSZA2iJdCV2bfmNfU33WFMQygvGfxvHqEbrncWufD3HqSc4rhAOnrPF4Rgua8pUfmKAjHFECMJ1GonA4RZ0AlclooYp3/dPcwD9Zbx9lIpdCQ/e2vxVUr+K0x0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -253,153 +99,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 04:06:09PM +0000, Lorenzo Stoakes wrote:
-> We introduced the bitmap VMA type vma_flags_t in the aptly named commit
-> 9ea35a25d51b ("mm: introduce VMA flags bitmap type") in order to permit
-> future growth in VMA flags and to prevent the asinine requirement that VMA
-> flags be available to 64-bit kernels only if they happened to use a bit
-> number about 32-bits.
+Le Sat, Jan 24, 2026 at 03:22:41PM -0800, Andrew Morton a écrit :
+> On Sat, 24 Jan 2026 23:21:35 +0100 Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
 > 
-> This is a long-term project as there are very many users of VMA flags
-> within the kernel that need to be updated in order to utilise this new
-> type.
+> > On 2026-01-13 12:46:30 [+0100], Marco Crivellari wrote:
+> > > --- a/mm/slub.c
+> > > +++ b/mm/slub.c
+> > > @@ -8542,7 +8542,9 @@ void __init kmem_cache_init(void)
+> > >  
+> > >  void __init kmem_cache_init_late(void)
+> > >  {
+> > > -	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM, 0);
+> > > +#ifndef CONFIG_SLUB_TINY
+> > 
+> > This ifndef does not belong here.
+> > 
+> > > +	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
+> > > +				  0);
+> > >  	WARN_ON(!flushwq);
+> > >  }
 > 
-> In order to further this aim, this series adds a number of helper functions
-> to enable ordinary interactions with VMA flags - that is testing, setting
-> and clearing them.
+> Yup, thanks, mm.git is carrying a -fix patch, which is actually wrong.
 > 
-> In order to make working with VMA bit numbers less cumbersome this series
-> introduces the mk_vma_flags() helper macro which generates a vma_flags_t
-> from a variadic parameter list, e.g.:
 > 
-> 	vma_flags_t flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-> 					 VMA_EXEC_BIT);
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: mm-add-wq_percpu-to-alloc_workqueue-users-fix
+> Date: Tue Jan 13 05:59:13 PM PST 2026
+> 
+> fix mm/slub.c
+> 
+> Cc: Marco Crivellari <marco.crivellari@suse.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+> 
+>  mm/slub.c |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> --- a/mm/slub.c~mm-add-wq_percpu-to-alloc_workqueue-users-fix
+> +++ a/mm/slub.c
+> @@ -8546,6 +8546,7 @@ void __init kmem_cache_init_late(void)
+>  	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
+>  				  0);
+>  	WARN_ON(!flushwq);
+> +#endif
+>  }
+>  
+>  struct kmem_cache *
+> 
+> 
+> 
+> I'll add this:
+> 
+> --- a/mm/slub.c~mm-add-wq_percpu-to-alloc_workqueue-users-fix-fix
+> +++ a/mm/slub.c
+> @@ -8542,11 +8542,9 @@ void __init kmem_cache_init(void)
+>  
+>  void __init kmem_cache_init_late(void)
+>  {
+> -#ifndef CONFIG_SLUB_TINY
+>  	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
+>  				  0);
+>  	WARN_ON(!flushwq);
+> -#endif
 
-This should go on the bitmaps level. There's at least one another
-possible client for this function - mm_flags_t. Maybe another generic
-header bitmap_flags.h?
+With that as a fixup, looks good:
 
-> It turns out that the compiler optimises this very well to the point that
-> this is just as efficient as using VM_xxx pre-computed bitmap values.
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 
-It turns out, it's not a compiler - it's people writing code well. :)
-Can you please mention the test_bitmap_const_eval() here and also
-discuss configurations that break compile-time evaluation, like
-KASAN+GCOV?
-
-> This series then introduces the following functions:
-> 
-> 	bool vma_flags_test_mask(vma_flags_t flags, vma_flags_t to_test);
-> 	bool vma_flags_test_all_mask(vma_flags_t flags, vma_flags_t to_test);
-> 	void vma_flags_set_mask(vma_flags_t *flags, vma_flags_t to_set);
-> 	void vma_flags_clear_mask(vma_flags_t *flags, vma_flags_t to_clear);
-> 
-> Providing means of testing any flag, testing all flags, setting, and clearing a
-> specific vma_flags_t mask.
-> 
-> For convenience, helper macros are provided - vma_flags_test(),
-> vma_flags_set() and vma_flags_clear(), each of which utilise mk_vma_flags()
-> to make these operations easier, as well as an EMPTY_VMA_FLAGS macro to
-> make initialisation of an empty vma_flags_t value easier, e.g.:
-> 
-> 	vma_flags_t flags = EMPTY_VMA_FLAGS;
-> 
-> 	vma_flags_set(&flags, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
-> 	...
-> 	if (vma_flags_test(flags, VMA_READ_BIT)) {
-> 		...
-> 	}
-> 	...
-> 	if (vma_flags_test_all_mask(flags, VMA_REMAP_FLAGS)) {
-> 		...
-> 	}
-> 	...
-> 	vma_flags_clear(&flags, VMA_READ_BIT);
-> 
-> Since callers are often dealing with a vm_area_struct (VMA) or vm_area_desc
-> (VMA descriptor as used in .mmap_prepare) object, this series further
-> provides helpers for these - firstly vma_set_flags_mask() and vma_set_flags() for a
-> VMA:
-> 
-> 	vma_flags_t flags = EMPTY_VMA_FLAGS:
-> 
-> 	vma_flags_set(&flags, VMA_READ_BIT, VMA_WRITE_BIT, VMA_EXEC_BIT);
-> 	...
-> 	vma_set_flags_mask(&vma, flags);
-> 	...
-> 	vma_set_flags(&vma, VMA_DONTDUMP_BIT);
-
-Having both vma_set_flags() and vma_flags_set() looks confusing...
-
-> Note that these do NOT ensure appropriate locks are taken and assume the
-> callers takes care of this.
-> 
-> For VMA descriptors this series adds vma_desc_[test, set,
-> clear]_flags_mask() and vma_desc_[test, set, clear]_flags() for a VMA
-> descriptor, e.g.:
-> 
-> 	static int foo_mmap_prepare(struct vm_area_desc *desc)
-> 	{
-> 		...
-> 		vma_desc_set_flags(desc, VMA_SEQ_READ_BIT);
-> 		vma_desc_clear_flags(desc, VMA_RAND_READ_BIT);
-> 		...
-> 		if (vma_desc_test_flags(desc, VMA_SHARED_BIT) {
-> 			...
-> 		}
-> 		...
-> 	}
-> 
-> With these helpers introduced, this series then updates all mmap_prepare
-> users to make use of the vma_flags_t vm_area_desc->vma_flags field rather
-> than the legacy vm_flags_t vm_area_desc->vm_flags field.
-> 
-> In order to do so, several other related functions need to be updated, with
-> separate patches for larger changes in hugetlbfs, secretmem and shmem
-> before finally removing vm_area_desc->vm_flags altogether.
-> 
-> This lays the foundations for future elimination of vm_flags_t and
-> associated defines and functionality altogether in the long run, and
-> elimination of the use of vm_flags_t in f_op->mmap() hooks in the near term
-> as mmap_prepare replaces these.
-> 
-> There is a useful synergy between the VMA flags and mmap_prepare work here
-> as with this change in place, converting f_op->mmap() to f_op->mmap_prepare
-> naturally also converts use of vm_flags_t to vma_flags_t in all drivers
-> which declare mmap handlers.
-> 
-> This accounts for the majority of the users of the legacy vm_flags_*()
-> helpers and thus a large number of drivers which need to interact with VMA
-> flags in general.
-> 
-> This series also updates the userland VMA tests to account for the change,
-> and adds unit tests for these helper functions to assert that they behave
-> as expected.
-> 
-> In order to faciliate this change in a sensible way, the series also
-> separates out the VMA unit tests into - code that is duplicated from the
-> kernel that should be kept in sync, code that is customised for test
-> purposes and code that is stubbed out.
-> 
-> We also separate out the VMA userland tests into separate files to make it
-> easier to manage and to provide a sensible baseline for adding the userland
-> tests for these helpers.
-> 
-> 
-> REVIEWS NOTE: I rebased this on
-> https://lore.kernel.org/linux-mm/cover.1769086312.git.lorenzo.stoakes@oracle.com/
-> in order to make life easier with conflict resolutions.
-
-Before I deep into implementation details, can you share more background?
-
-It seems you're implementing an arbitrary-length flags for VMAs, but the
-length that you actually set is unconditionally 64. So why just not use
-u64 for this?
-
-Even if you expect adding more flags, u128 would double your capacity,
-and people will still be able to use language-supported operation on
-the bits in flag. Which looks simpler to me...
-
-Thanks,
-Yury
+-- 
+Frederic Weisbecker
+SUSE Labs
 
