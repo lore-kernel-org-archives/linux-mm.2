@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C660D2D8E4
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 10:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D39C0D2D8E3
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 10:08:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1EEF6B0092; Tue, 27 Jan 2026 05:08:31 -0500 (EST)
+	id 490DA6B0093; Tue, 27 Jan 2026 05:08:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA2316B0093; Tue, 27 Jan 2026 05:08:31 -0500 (EST)
+	id 3F9946B0096; Tue, 27 Jan 2026 05:08:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA44C6B0095; Tue, 27 Jan 2026 05:08:31 -0500 (EST)
+	id 266E86B0093; Tue, 27 Jan 2026 05:08:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A9D886B0092
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 05:08:31 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 528B01B0E7C
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:08:31 +0000 (UTC)
-X-FDA: 84377319222.26.FD8D71C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 12EDC6B0093
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 05:08:33 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8579D40E6
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:08:32 +0000 (UTC)
+X-FDA: 84377319264.24.82E849E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C155D1C0016
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:08:29 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=O77Lqwib;
-	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8264140005
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 10:08:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=Miit5XPl;
+	spf=pass (imf17.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769508509;
+	s=arc-20220608; t=1769508511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=os8osd3jvx2xfkK+VO61Vv+HBfrsYJdHZDl+6HTfF2w=;
-	b=pzv6XvfQ5LY6UQBDh8+vkNdF4HV3vkGiwWm0Yeup6DYiqyziARk82qLrXt9OzmGuDniUHe
-	lCrGJt01eiOV2Mq7GDg2Bb9/s+1SRy6uOPKZGzw1kf+lJq+kz2ouIFxWkolp1nNqwk1iDc
-	GQKBAJlAldqoyToKLHZuXctQmYvNsC0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769508509; a=rsa-sha256;
-	cv=none;
-	b=BsjcNq/Ni/EcjyDvwe4bHkMUrxmMIj+mFVlvYGMP8vVGpzxZyCuQezY/zUgUMkuS2t4QaG
-	wBnmIPuPeUTq9mOEqwtByZsbdAE9PAThYlwrcKB6jiMDoBwxL/nWczplTWhQbl9vmrRAG8
-	8wrR+mBTTKOPO13aMNFl92k14sXD0H4=
+	bh=47QHZ5pc0q5xFkBsrfHtzB6AffOJUCsTsbjDL63EBtc=;
+	b=FVkVn/t3K8Clo4Vby8wOz2+is5fGa3FkHtaLnJUGDmmMorTMtspBlPmSoXTyBkZKRQ/bi+
+	wPpg9P4A9gTlxRomboDTMf29ZSsMHB3i7tDtvbVbpJvSHcpQ28UALr3NODuCzLOpPYarkS
+	LaEipkApKdTMh7zBMbJd21T2I4PlYUI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=O77Lqwib;
-	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf17.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=Miit5XPl;
+	spf=pass (imf17.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769508511; a=rsa-sha256;
+	cv=none;
+	b=1DwccoP43gmH2VKvPCoxWOAzfqA5G9olk89Oxv9+20RKAW5Wyqq/Pg7DENgdY4mZ6pwipk
+	oXa1gog1SE9v6aM/36vpd+zA/G4hRXMgGlXsBzmmEVW5x/TpuurecvT/B72mjjMwPciizR
+	/wEVXUYRUs/FGdcamzHUzjGuML24XzQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B96E160007;
-	Tue, 27 Jan 2026 10:08:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93118C116C6;
-	Tue, 27 Jan 2026 10:08:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 05D0560127;
+	Tue, 27 Jan 2026 10:08:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A086EC116C6;
+	Tue, 27 Jan 2026 10:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769508508;
-	bh=eXH7LTpBzt1Nf5PxVt/Zw5NAmsupLUnjjKZooxxdMvw=;
+	s=k20201202; t=1769508510;
+	bh=YzokodqmRv7baDmZfSZRrm1pBfaNJEn2jzrXGQM+254=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=O77LqwibsgbYXv0sPD4MPA6EMA9pdPtxYNvTmdpyBaPZO3JR9RX/r9DQXxVe/yrQT
-	 zlfOBASL3XdUncbooj9HoX4VQ0r4dWQfGK1fJCtOOjH8L6Kbu0EkPeF40wAJK65kKk
-	 BrHXV23nDTtyCLnyhC8Ht6V+PquWe3ZQ6ueqZ9eIi91cHkd6HfX3WugtNcxzDAYsQM
-	 gbg06EV0f5oa32Z3/1n7eXZnQ9KCxAUzcPlGsIKSpLxX1wmSI3IhWlHv6Gqb4aubrT
-	 z2jQS0azW95V10FADHw+ibbhTtxXkWyVFhUn2ShVFrIlY9ulYiRMG1smlKXVmaPZuL
-	 HGrjvItPTNinQ==
-Content-Type: multipart/mixed; boundary="===============4938179612018120319=="
+	b=Miit5XPld5MLyihi4exevpHeI+AjmN2+wmSrfG28Uw6DBocXcUTH5DWZNBbFNeuXj
+	 yoHBAcucJ/42ARYyBUhwwVSn47ytuFHXJ/RlBtyCtWh/q/WBj3zzCmOA+h6riy191D
+	 s6rS0C9mUgE0xPPu2NaUa5+vdCpDZGlzWT86CTkqgHL0Mih7pJLCUle1biVayEGoTS
+	 YrZ2+fJ2Qxx2Ie3yEmAiilU9FI2AcfC7zG/Sq1bl5va3BmHOgu/iU7R4XUA7cZJwHc
+	 bCJQtJgDYqyMO4lqWjnmlmVClDSorbh0lSUCQfVuIMZuhQjtQ6drF8+R5nBixvP3p3
+	 QdQg8Q9FqpUfg==
+Content-Type: multipart/mixed; boundary="===============2579571787754050133=="
 MIME-Version: 1.0
-Message-Id: <12bedb9d4fc0676edf3812bfcc8ff7c761286fc6d2e8ae4ca457a6602ec98dfe@mail.kernel.org>
-In-Reply-To: <4a1ad099a2db96b92318cb924d2a7b76ee530209.1769506741.git.zhuhui@kylinos.cn>
-References: <4a1ad099a2db96b92318cb924d2a7b76ee530209.1769506741.git.zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH bpf-next v5 10/12] mm/bpf: Add BPF_F_ALLOW_OVERRIDE support for memcg_bpf_ops
+Message-Id: <25d7b7ce5d8358f2d2dd9fc50e74596872b86aae1488b67cea6f85715e8f91de@mail.kernel.org>
+In-Reply-To: <ef784786a2e38c2effca5f331f11658eeafd5f3e.1769506741.git.zhuhui@kylinos.cn>
+References: <ef784786a2e38c2effca5f331f11658eeafd5f3e.1769506741.git.zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH bpf-next v5 12/12] samples/bpf: Add memcg priority control example
 From: bot+bpf-ci@kernel.org
 To: hui.zhu@linux.dev, akpm@linux-foundation.org, hannes@cmpxchg.org,
 	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
@@ -89,15 +89,15 @@ To: hui.zhu@linux.dev, akpm@linux-foundation.org, hannes@cmpxchg.org,
 	linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
 	netdev@vger.kernel.org, linu@kvack.org, x-kselftest@vger.kernel.org
 Cc: zhuhui@kylinos.cn,geliang@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 27 Jan 2026 10:08:27 +0000 (UTC)
-X-Rspamd-Queue-Id: C155D1C0016
+Date: Tue, 27 Jan 2026 10:08:29 +0000 (UTC)
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 7qpozcah4swffnnfnqfoqkcbzeqq56ms
-X-HE-Tag: 1769508509-321772
-X-HE-Meta: U2FsdGVkX1+501P5VPM7rHUZr5WDdK2WfDVaFPU6vI09qJDCd9xvcvU+veVvczhO0oMyEFFp44aVs7Zz8PAK2OLxzdapUWuMLMKFkkDbroZm9T47epzk2XpC5ieK/LSLgh9HbLCURzvCOX6eZ6cYx2LubHsqXShEBKvsR2q0qzMT9erWjusKjzf5cf3YQ5Z+PJQ7FwLLs9bfgsznCNZwDJFE3ECMul3WZtGeckVZ4NpEYY3xGf+wZefa10Mvnn72ouJwEgQTXZVdCp/yQj75RUkNIFaeU1ZbpQj4HIm5I9vPKWT7bIO4GfIGU2o1VADNhCTEQ36xjdp10sslrxbpb5P1wmfgjQwuGszh7mdyamn8l83X8NUYeiER6HyaXOb1hY49qJqAuUWgJru26a4SaO+ZkoXBvHGqdw3cvt/sb1h44BpA3V9QqrIpjlp6Sngt1HvFipDV0nCk8nnHBVDcuEpW5PyL7r/T6UpDanI94GPX+jPU039Jqd6XF2DU1/ED0/5Hdi3HOb0aOtSfbDbsbQRGyq7sneD0WsDg4IG3+rvkNfgMdmt48Q6OVVyTtBZ5LBeczX931jb4ApoD5mxhokjgyV5LwVrRa79se1HjUQW8lj+y7aLuABKF/MTnuzyUpox3suauQNB5pSL7nf0+yxb2JBbFyPdSdoB0w4mQROwWRKK5PvqMjabmqdM20//4kKGVUQSYcoMzl2e4UvJWLtNIYcuvqu1dEvFsJ29A5sZUV5+m61fV7tp7Xrgl+fC2ZCBP0sU0XLRr2AxWtwIK5JSDrZcXa0be3HPKjGIShNGgViTV3rFlcx+HU4Mer99CCbniVd48QpgBqOynkp7C40dJRqUhEJHKYdBaNpdK5oGDQv7U5Ifrk5CKvlnGgxDS6nJRMpcG3HgaOoNYY/Q8c4NH6zn/NijMm9NBkzXZ/5MfyHZH47b7Ti0qgehDOVndXOLwHG4KQyqr/nVrZ/n
- vCo+oSjI
- P6jACfnz8ltm8xJrFrKgt4Wi9jJI10/4PF+NGQOhjzdQNEuSGCTy7+Qq1490o+nYFrBgTfaq5yUiLuwNR5RZCxJbsxEmV8z220togy9C2NXKNAscSnNhsI+3I63FJ8fvLoqGoOl92+Mp7Eax2+9kfPevf3kj6H1uuRXmayiRc4oAex+A7rSOPItz4w57aahZEE/n8LuUs3pcBUX2jm5H/j51IgyfTlxQWYkyz7h0ODRU3bbrLMYlw4MMDTSn9clTt88aLMxkvGZ9lw2FSMNkc8dloc/rROMVuGcLueJxFt1IneLHYgwHwARdbiQ5ResKeWV9lBAokIPzTFWFuowR9Tts89bfJufmG+koO7pXRX5XuLcPgKjfuGbn8bYwFvHiQBcnHZlN1vbJ8ZqVU+sw7nIXiKqXpf9jR/Oko34STk2SJFPzKflxoA7PL5QzQH5T9cn9pXWbBHEfm/f9NTmyDS442bwBc/LLEmJB6J44BFE9u5C5TXsnMugQo+37kVwh+QyV9VCleTrL3drq5mQP+xwuFc8zkN/vBdty0qRwFqoR61dVGM0OP2epr8A==
+X-Rspamd-Queue-Id: 8264140005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: s6n5x8ouc4fdhhdfykch6d8m71ktyrtw
+X-HE-Tag: 1769508511-499297
+X-HE-Meta: U2FsdGVkX1829bDADg1F0PIjhKxoshGCTGXlvNEdGV+UzqDvtfNtLT8F3UPvq9rw3u0LmGXsL2G9iuW5Mpw2uEKmh667ywzrYi2YfImu3vLM4jDIQWiZYEi4tA1JInhDmxz91VRfBliE97XVYQcH8MRDCap/bcFvDfQXcXW8/+SfIUrugzR9H19a5p/ncd1aHGvkyIt6aTqyT+P4CfwfBDGSkOssN2DlagRqLuGs7oEHzvPjZqrOtOdrAFNGDfE+VCfyeCOjtnvAp6ryNGqtdBYNWmCXC3Q4wNbZulY/b77VmRwP1w15szEF7wUDrtK9RYjqmPYJjm438ZqlQFKHy1Ixhuw2B8NZvadJlhy4ahpsr5pRO/IpAGk/+H2nawTUEmvqM2AWoXLT3xYxhjJx1PU+EfXSGuewHd0fERhFU2jqe3O5oxmcYpB/VQlSP1Ny+sNfNdNP9V4ag4niHwASi3Eyzoy5BjkfRVLL0IBsn1tQIiUL99W6SSjsGJjUMBVdejAkSPVfqqJaTID51DWI4SML6i9NLzNnaRCgIdyusbDMiPzbuoxbjqeN/O3FX/62Xr1ciVDMjCaXWwaku6Rzm19xWXQ1emNvce5PNRcczYUtavGkfFrH+zTd6khQCk0cAUkHHX/EOQ0Ckd1ndmORraDlkeF8KOPJgtGduRtejF2blm9lVKe7lx4L/dMkxnqqGBRo/MPZ90H+3/nQOLztzIJxE2cT1ZsPVZSDH3QiFoyUK34zO3fzSIKZaGpfoGy0JIjAlotX1AVPDqoWmiC3qAH7RhXjjI2uzSu6L04rxCGXjcaiixRUwP5C9lI3AqE2bpsUy1uQ3qZ6+9yI7pnMbAL3ygCohzRmGmH8hJGdog4HAUu+Viyh2LdL4hEmASoV26K5EZ2fKRM3OkXodyY+vaoPFc1kqFS5XS6vrq7Fpe38G6MbU3V9pX/tz5TW6yeV67NQcTpeIbmQ5fARxef
+ NTFV1yps
+ IrPB0YDA9Zm5i+RrYedl1NldFAm42808/lBfdDWY9aZZ5wOb1EWzc8X8L93gGfRDGj73vbL1xOBUBWgOgAL6nqe6f0IELviXgorTaQGIswpZ3+qF8R5JRkUc2C/PVijXdbPGkn07row4mO0UvMRB0mOGzf9VebYOLBl4RTpSUzaBnMWJ5Bu9r4BDrTnvLVe7nS6E7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,73 +106,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============4938179612018120319==
+--===============2579571787754050133==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> index e746eb9cbd56..7cd983e350d7 100644
-> --- a/mm/bpf_memcontrol.c
-> +++ b/mm/bpf_memcontrol.c
+> diff --git a/samples/bpf/memcg.bpf.c b/samples/bpf/memcg.bpf.c
+> new file mode 100644
+> index 000000000000..e611ac0e641a
+> --- /dev/null
+> +++ b/samples/bpf/memcg.bpf.c
 
 [ ... ]
 
-> static int bpf_memcg_ops_reg(void *kdata, struct bpf_link *link)
-> {
-> 	struct bpf_struct_ops_link *ops_link
-> 		= container_of(link, struct bpf_struct_ops_link, link);
->-	struct memcg_bpf_ops *ops = kdata;
->+	struct memcg_bpf_ops *ops = kdata, *old_ops;
-> 	struct mem_cgroup *memcg, *iter = NULL;
-> 	int err = 0;
+> +SEC("tp/memcg/count_memcg_events")
+> +int
+> +handle_count_memcg_events(struct trace_event_raw_memcg_rstat_events *ctx)
+> +{
+> +	u32 key = 0;
+> +	struct AggregationData *data;
+> +	u64 current_ts;
+> +
+> +	if (ctx->id != local_config.high_cgroup_id ||
+> +	    (ctx->item != PGFAULT))
+                         ^^^^^^^
+
+The BPF code monitors PGFAULT events here.
+
+> diff --git a/samples/bpf/memcg.c b/samples/bpf/memcg.c
+> new file mode 100644
+> index 000000000000..0c47ed53f6ae
+> --- /dev/null
+> +++ b/samples/bpf/memcg.c
 
 [ ... ]
 
->+	/* Check for incompatible bpf_ops in descendants. */
-> 	while ((iter = mem_cgroup_iter(memcg, iter, NULL))) {
->-		if (READ_ONCE(iter->bpf_ops)) {
->-			mem_cgroup_iter_break(memcg, iter);
->+		struct memcg_bpf_ops *iter_ops = READ_ONCE(iter->bpf_ops);
->+
->+		if (iter_ops && iter_ops != old_ops) {
->+			/* cannot override existing bpf_ops of sub-cgroup. */
-> 			err = -EBUSY;
->-			break;
->+			goto unlock_out;
-                        ^^^^
-
-It looks like this error path leaks a CSS reference. The original code
-called mem_cgroup_iter_break(memcg, iter) before breaking out of the loop,
-which releases the CSS reference held on iter. The new code jumps directly
-to unlock_out without releasing this reference.
-
-mem_cgroup_iter() acquires a reference on each returned memcg via
-css_tryget() in mm/memcontrol.c. When breaking out of the loop early,
-mem_cgroup_iter_break() must be called to release that reference.
-
-Should this be:
-
-    if (iter_ops && iter_ops != old_ops) {
-        mem_cgroup_iter_break(memcg, iter);
-        err = -EBUSY;
-        goto unlock_out;
-    }
-
-> 		}
->+	}
->+
->+	while ((iter = mem_cgroup_iter(memcg, iter, NULL))) {
-> 		WRITE_ONCE(iter->bpf_ops, ops);
->+		iter->bpf_ops_flags = ops_link->flags;
-> 	}
->-	if (err)
->-		clean_memcg_bpf_ops(memcg, ops);
->+
->+unlock_out:
-> 	cgroup_unlock();
+> +static void usage(char *name)
+> +{
 
 [ ... ]
+
+> +	fprintf(stderr,
+> +		"  -t, --threshold=VALUE  The sum of 'val' PGSCAN of\n");
+                                                     ^^^^^^
+
+Should this say PGFAULT instead of PGSCAN? The commit message and the BPF
+code in memcg.bpf.c both indicate that the program monitors PGFAULT events,
+but the help text here mentions PGSCAN.
 
 
 ---
@@ -182,10 +162,10 @@ See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21392729810
 
 AI-authorship-score: low
-AI-authorship-explanation: The commit follows standard kernel documentation patterns without distinctive AI markers.
+AI-authorship-explanation: Code is a straightforward adaptation of existing selftest code with standard kernel patterns; documentation error is more consistent with human copy-paste mistake than AI generation.
 issues-found: 1
-issue-severity-score: medium
-issue-severity-explanation: CSS reference leak in error path leads to memcg lifetime issues but does not cause immediate system instability.
+issue-severity-score: low
+issue-severity-explanation: Documentation mismatch in help text (PGSCAN vs PGFAULT) could cause user confusion but has no runtime impact.
 
---===============4938179612018120319==--
+--===============2579571787754050133==--
 
