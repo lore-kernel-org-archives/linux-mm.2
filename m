@@ -4,207 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33DF6D1951B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 00:29:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E891AD1951B
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 00:47:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3FB26B0088; Mon, 26 Jan 2026 19:29:47 -0500 (EST)
+	id 04D676B0088; Mon, 26 Jan 2026 19:47:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEC306B0089; Mon, 26 Jan 2026 19:29:47 -0500 (EST)
+	id F3CEB6B0089; Mon, 26 Jan 2026 19:47:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A79296B008A; Mon, 26 Jan 2026 19:29:47 -0500 (EST)
+	id E1EA06B008A; Mon, 26 Jan 2026 19:47:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95DD56B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:29:47 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1BBB0BB9E9
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:29:47 +0000 (UTC)
-X-FDA: 84375860814.29.A44C9AD
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012037.outbound.protection.outlook.com [52.101.48.37])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2074740005
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:29:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PBlfIdIU;
-	spf=pass (imf17.hostedemail.com: domain of jniethe@nvidia.com designates 52.101.48.37 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769473784;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D30B36B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:47:33 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 799DD1B0AF7
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:47:33 +0000 (UTC)
+X-FDA: 84375905586.25.537A582
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 106184000C
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:47:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HvpsxbeY;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769474852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6uIBMm6tW15nT7uZEYoMvvV0I2V5C9SX5PBIm8Eay2Y=;
-	b=p4BlHjH9puSkQup7fbR5YqmdbTQGOHMA821vHgEU1qDv+faVkpA7+p6bk7+SUGXbQm+OEA
-	br0H4NcXXfaXhYABYgCg/+RyRMzIsN9qcGDWdT6hhDyn1Nf7FihlweTuQbcBNSRfJV+Oos
-	EAq5fw7hrqL21OFth+Z6MUGUTuNhcdE=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PBlfIdIU;
-	spf=pass (imf17.hostedemail.com: domain of jniethe@nvidia.com designates 52.101.48.37 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769473784; a=rsa-sha256;
-	cv=pass;
-	b=Fl75iWrVsmiPLiMRuZ9O2Z1gUgcGZYyXKk2d7SVWz0Hy67FdnZzGSrjMUnO4c4MsbHnspE
-	Mq5PNp1riE6GwDMZVyyP/sdUk9TEM7m8D533aQZmRmTxoScpRB08v+KF4alrO5+3coYpuI
-	YlMKsOkRLKYkT8gzzOaO5TLsDulojOk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zCrU7PiKsuL0cc6Rm2bI9dMtX1L9FZFl2CW/6WnKUZyju+yzg7bvHni7aNlornB2SrSLWjZ+pjVR5HSa0112phAxTSdcdiX8yeYaNmqFJ96GG4d+A3NTpTnsnSQiX3NRU2wWDgTRLqcoUkEd6fjaDOLZr5mDqdOk56w2RZAUC+ohGWhhT1LMvmEUV2FrDB7uQGFiaUc9Zhr42XGEW/nOc/e7EfWWMk4SrEheUsSvgYAWUvILLSDIbl1fIsy6ct4opWEQcI+/6slTKYox2i+mNSmHaLugnzprVTx1ZzdOz7XbMn/5bQ7LM7V37G3uJGC6CWswHD9QHbIwo5eRItHUZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6uIBMm6tW15nT7uZEYoMvvV0I2V5C9SX5PBIm8Eay2Y=;
- b=Kt76KJ0jIXuQnbMbTKNR/nEMLUlpCOtvQSfoD2TMeFzi268ZrnkKyNaEcCUfn/jOd1MeVkwmRAylJq3cmClPTA759d54jbOvjZisyZUZOmkED9N2KX23SQyXIEZ1B/I1ZIntorJPOiH1vRtd7YINKQt6Xn2eJczUmqeIBJ+UmzrKwMQwPausTR9q47UKLBYumWrWFNAqLAanTQb5OEuSCnHWp6IbXIWHyz9yRCZ5Pn1Bzq0lV9DV+pKXCh9rocJ/T9avZyipgLq+a7KXXGfN/MJpUwr2UScAtvI7/47CZX4Ie4wVXQu984jBOv4FCUJhuPXazfisbORD0MByZ3vTrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6uIBMm6tW15nT7uZEYoMvvV0I2V5C9SX5PBIm8Eay2Y=;
- b=PBlfIdIU8wPHbH9WcaHD62yP5Y5OXBy/xd+YiD8UwVeNFSANChitj4ThFbwGzPmLgPiJcIhYymfHmp1c8XKpm576zF5qe6lgG4RNAYsqbDiMNHrpdjc5LYP4mjruWZg8XdeYv3LnNIjrngw10QPNCYdkyPzBYFt9s7BvW+JXemvZRtqQjs+Wq9DhvU+VZelv9ACA9q4NBjGdvLgMwFFmzesavZweYPcDSn53qzIPpYrjBaYgxL0qrFj98Z5u/tN0p1Mq/K4kvEPium6f2wznvxglQUu/9O1k4Zyw3duUXY1vyEjOkpWfdtOTakcUzS/EegYYMO/T7eefR9Huh/ZsHg==
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) by
- BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Tue, 27 Jan
- 2026 00:29:39 +0000
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1]) by DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1%5]) with mapi id 15.20.9542.010; Tue, 27 Jan 2026
- 00:29:39 +0000
-Message-ID: <413d265f-9ffc-499b-8dbc-26f92bdff6d8@nvidia.com>
-Date: Tue, 27 Jan 2026 11:29:30 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/13] mm: Remove device private pages from the
- physical address space
-To: linux-mm@kvack.org
-Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
- lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
- airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
- mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
- linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, jgg@ziepe.ca,
- Felix.Kuehling@amd.com, jhubbard@nvidia.com
-References: <20260123062309.23090-1-jniethe@nvidia.com>
- <20260123062309.23090-14-jniethe@nvidia.com>
-Content-Language: en-US
-From: Jordan Niethe <jniethe@nvidia.com>
-In-Reply-To: <20260123062309.23090-14-jniethe@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR03CA0026.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::36) To DM4PR12MB9072.namprd12.prod.outlook.com
- (2603:10b6:8:be::6)
+	bh=7JIAOWoTOVVgS0apUA0EQDBlj7SL1Z6Y9hKPAsx01xE=;
+	b=Yb9AZMF9WOSujyiywz0jhXS4+7RpV6VYshh39XgNepmArYJ+atRw5LckE/Sg9YpKNlqbst
+	dZ/mNlTFtoVkb7TZyBD7A8wnyadGMbvjR6x7SypIWmjwr4nXIrdcsXDRhFG9tsZMqdSV+S
+	c2J2yZwF7HGZzUOgSr8P1/xKjQ0RyX0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HvpsxbeY;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769474852; a=rsa-sha256;
+	cv=none;
+	b=OJWO4wiYa6nVg8EF6jzTepSVco8YJWoK/2FZnxW5cj+lh3N6WgRJ/YjwAk3qZl8bfhP+yz
+	z2GfIdLyC7QhNqzbMRZCxI8ItAzySiAPT9VpVSg8tjxGVGfWa5DESzeBMXLlXcZxlXQo4M
+	2HSouYfPd6XwTlE4m/dG8ar2kp8OT8Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7707D60051;
+	Tue, 27 Jan 2026 00:47:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA882C116C6;
+	Tue, 27 Jan 2026 00:47:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769474851;
+	bh=o4cpQ2rr6KeMaWgY+0sspntwm5GM5tEpAhU7E40caqY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HvpsxbeYxiMgxSUL11CwhU52txRzTU2qIG2m3opA1l1AT6SI+JhguSAdsFzbWhYEf
+	 dafvZQ+KG8HXw35DCitqpQOlI1JMdCsNBlDzN6BvbgPveKjRVS8YEXQhJO2W5YaiAh
+	 qZyaki7kf5wOaYxPRRpSbh47j+yPU4xp5czI/HzKWsdeHrW/2Ge8c+9KcDvMRELAku
+	 8Zmg3C/Qt8goOgMpQhaVfqetZSzm30Y5YNTaN+aFmtkXQM9iMWW972e9HuPBlJ/+EZ
+	 lmgixTDm0Ba0tooxa2SQa12xZZBpAafteMFa+Ix0U02jnXXdTspuRi3gPp27KeL+4L
+	 nEaw9Bzp8li5w==
+From: SeongJae Park <sj@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/cma: Replace snprintf with strscpy in cma_new_area
+Date: Mon, 26 Jan 2026 16:47:22 -0800
+Message-ID: <20260127004723.74422-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260126174516.236968-1-thorsten.blum@linux.dev>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB9072:EE_|BY5PR12MB4116:EE_
-X-MS-Office365-Filtering-Correlation-Id: 427dbc75-b2de-4896-3e35-08de5d3b2818
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MlZsWis2dnJ6YitlcWFrVzY4TCt3bmNHQ09UTlpMS0pVT29EaGlUMG4wQWFu?=
- =?utf-8?B?Qk9JOU9OUExxSHlzTTdhMDhiU2NrWUNrWERmU2g0dDZId3VpOTVEaWVpN0xD?=
- =?utf-8?B?REd5OXR0ZVNTZVVPZy9nQ1BtNjhzZ2svTmdPa2tNdVArWXVJUks4b3RZbkVV?=
- =?utf-8?B?enpXdm4xMERnZjY1VjdlM2tYdXE2Y0h4Z2I1UGFESTY1VGVaMmZZOGp2dUF5?=
- =?utf-8?B?Q2RBSG1yeTB6TkNBdDBCbUZjTEN4MG1GcFdWbkNxWFNOQ0diaFlpNEFEK3Zv?=
- =?utf-8?B?MHY4OXBxMGYrNVdKa1ZZdVl3eEpCWmRzSmtnWlRNOGpDczBWL1hPTkduaHJy?=
- =?utf-8?B?Y1hnZ0VTZm9aY2hmdlhaYWwza3NmVE1yOGt2dVY5VTJ5bnNtRGljTndGT3Fo?=
- =?utf-8?B?MXByby9EdTQxQXQzeGRQbEQ2UUtJYTZrRUJsV3pRUGdSWGpNSDRZd3p5Q2oy?=
- =?utf-8?B?RWVGaTl2RVUzaFBISExRc3JHV0pzclhSMWlhSzFjaWEyZ1dmcG85NUpHUVlv?=
- =?utf-8?B?REJKV0k3NXVPV1lMTzFRWFNETWhWSmJxQ0NST2FKMzkzTHZhY1hIdXRPNkEr?=
- =?utf-8?B?TXpTNnBhUHE3aUpWNlhvcUhCL3dWM3VQK1B4U2pkMlNGeDVKZkFjTmd0UFBP?=
- =?utf-8?B?bXh1STYrQzAzSFFZam9TMkgwMWsvSURtaG9hcEVHT2dKR0xSZTVEUUs1cURt?=
- =?utf-8?B?MXlsdzZsSng0NENPcGFFZVZGWG1UdU9rQWZMbFYycXRTZ01BemhrQmxqQlQ2?=
- =?utf-8?B?c3pKWS9jUTFyZy9nOFk2SEFIV0JLY2hnZkpycHpwczYwckNLb3RQM3EzQWs2?=
- =?utf-8?B?WUlhQ29OZWF3NjdSQ3VTSVkxdkJ2MHY4N01HUWs2a3FKL2xFdkZzVTlMbDdx?=
- =?utf-8?B?ZUJzYmdLTlBDVlZNS1Eva3pnclpMdE50VzJPcmFPRU11alpEcjArOUZDSXVs?=
- =?utf-8?B?TjBEVHVGRGJtcWZkOG9sbkJyVmRYRXNQMzZpZ0E1SFp4ckFlY0dKT2lDM1FT?=
- =?utf-8?B?cDRNMWtuckJoc3NPYnRYNVVDMnA5SVltRjQ5MDhuejFyU0JXMGxHUTFEQ3ZL?=
- =?utf-8?B?MExja0RHa0E5MlhPZTlkRnV3dk4xZGNCUlpnQ2ExNFhUak1KYTM3OFRmazla?=
- =?utf-8?B?cHdpVVRXZVdIaWNXTkZVQ1E3UDk4TzNaTmJ5UE9NcmY2UFFLSy85cm01cGU2?=
- =?utf-8?B?T1FhRG5CMlNzdVl0TkQwbDRoMGxVV24xVnoyM283dS9BQ1QzenNVV1A1WTZM?=
- =?utf-8?B?YkQxeFIrdGpoTUJHbFBDSXRZRFVMc01xcVo3ZHEzSytDUlE1dlk1SVVMY0FQ?=
- =?utf-8?B?b0U2NHJFVG9VUkNmaXdsbC9TUnFwTlFkajdZTlk3dE9wWG1SYkNYNUVrVFlH?=
- =?utf-8?B?SW9BTmN3SkpFSVpCQWlTNmlibnFlNTV5MmpsVUg2M2JwUmcvU0YwMGxxcGtY?=
- =?utf-8?B?aHF3NDFBVnVwbXROOWgrNXBXeXpReDEwd3dQZDFLK2dWajFSbFd3a0ZmWG1i?=
- =?utf-8?B?d0lvVTcrRVBIL21zcXZvRmRGd0c3c0ZmR2lZcWJBU3hRZ1pWQmhzdE5Kb2Vz?=
- =?utf-8?B?Qk5SdmNKM0RKNGl1NVoyN21ZeE02bDFYVUt6VG9MZ0ZMQi9FdHl2cDVwKzJQ?=
- =?utf-8?B?cG5iWkhxY2cvOE0waTJGUWRScUUxNGNNK1ltaC9oOVdHOXMwOERTcHBZaWtS?=
- =?utf-8?B?a0wxamZSYm1FV0cvRkF3d2Zkb2Eyd05rRCtzZHhjRFAxYTVvbW50RW8vNlFn?=
- =?utf-8?B?TDRHNVlRNFozVU1kb04yRUNrNC9FM0hHVU9RalVJN3FnTHAyM09PdndOek45?=
- =?utf-8?B?Qk5hbXVDQ2JURFhJeVFoaFZLS2E5ZXpyZ0pLZG11SW5teWcwOWdWQklndk1h?=
- =?utf-8?B?MGxUY2RlOHY3eURHQUhVWlE2ZjlNVlhSSzl3S0g2dEJvTHpJaHc2UW1CVnFa?=
- =?utf-8?B?K0hhb0Y5RVREYnFMK1NuV0d6OE9zQ295b0xGZUwxZTlsSGxPVXd4Z01GUkov?=
- =?utf-8?B?TlpJVmx2WUVTbExQZThpdmlIdFBCN2xBa01rUVd3NU1nY1FsRkJ2UzYyaEtm?=
- =?utf-8?B?cndveWVZb2d3Nzl3ZUlPSzdHSXptTFQ5ckdRM1FBNlVYK3VLNkI2VFVBcFNy?=
- =?utf-8?Q?CLeiWCMWVpqeMlUK3RGk05rhF?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB9072.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aWhOLy9lNkEyWVBDZTBHZGRRZXNQaHRYUGVrZGJhalQvY2wxQU5yMjJjTWtj?=
- =?utf-8?B?SEVnZWM1NmFTNURSbzEyVS90WXRGWU1odjFSVnVhUVNGM3pYRWVJQy9weEVq?=
- =?utf-8?B?aGdGSWx5UEx5bHo2TXFMZGQ3dU5JanlKbzZsUnZDYjNndmYrcU9KdGNTS1c5?=
- =?utf-8?B?KzFuMnBDU3lUbUJlRFZ3SURlYlNYakI0V2xUTXRObWppODFZMWxLYy9lT1o3?=
- =?utf-8?B?TzV5UGtTN2xqSDRZQnJFUHlwcGFQVzg2TGorRXFZRG1FN2kzTTJjQzlScHVC?=
- =?utf-8?B?MmtlUm45dWdEMURFZVdlUThGKzZqNm5zYTJHM0RLRDMvZ1Roc3pJejFmOEJV?=
- =?utf-8?B?ak5Xc2hrUHBmOFVyMWs0QVpSTkl1dTllUCtlWnNDekorRGcwMEllcjV6SFYv?=
- =?utf-8?B?bWlGT01jelJFNHN2YlY3N2hLZmw0R3JwbjFRSVhyZHF2T0tzRkFkOUJ6bjBx?=
- =?utf-8?B?a1lrTkg2SCtKbGZIUXRmdVNmK3NKT1YwNTRXT1RoR3R3cGI2MzdBakF2anZn?=
- =?utf-8?B?WlZGM3FpTkpmdUxscVhHSUh0MkVPYThyckFnUW40QUJIZFhBa2xGZE9kbHQz?=
- =?utf-8?B?VFZhUGhZNWdFSW5EbEdFR3JOUEtjTWhWMnk2YUJoQ2tuUXdPK1JrSGlnMUFj?=
- =?utf-8?B?ZmtzUFo0c2FoelNMaEFJNHVNZ0F3MWNlSzNDOWhYNXkvUm1sQ1NXd09ZU2Y4?=
- =?utf-8?B?ZTJXN1lOU2RIRXhDcFBLQ2ppS2NWUm1YcXpzSmZWL2l2SVNBc2hvMEVUOFRC?=
- =?utf-8?B?Q3UySnQzRVhpaHI3NGFQalhkQU55U2JERDVpUTlqUnV4dnJzL2E0ZnBzZytY?=
- =?utf-8?B?M0p0bzdDOXJRNlVCdk9XcXowbUJrVzl2SFlLZXIvU09sZnJpTFdmRHRHSDJ2?=
- =?utf-8?B?c0dSOGFOanlTU1B3R05uYk52U1ZMVldjc1JOZDVYZzFwTU5QWG5wbnpkSFJZ?=
- =?utf-8?B?NnNVQlUyRFZRVFU3SDlxSE9ZVWlrRGtLeHhhRVF1TXB1SUZ5cnQ0MTdvWGZV?=
- =?utf-8?B?SFlFMWxRSWkrRlAwb3BmNGFsWVMrRVBEWFNjcXlkd2VIT1htekR5cGE2WFJT?=
- =?utf-8?B?NGJuK21Rayt1Rml4cmc5RzlWRUlXc0o2b0NIZlo2MjBUQWg0QjBXTzU5TUE0?=
- =?utf-8?B?dk9YYkpsSVNmcjNndVE4T1NNdWVHWDhiZDg1SU56akEybnZ3UkRycGgwbEpv?=
- =?utf-8?B?S0MwSnU1a3hJOFNUWUxFNFRENjRDVXphWnc0aThPWk5IbWJCNzZ1UTd5L0tR?=
- =?utf-8?B?bDQ3bFRzaXdDbytNSG5BOE1SN2h2cmtMd0xaOWlkbzZDQzVad3ByYjBQZVhs?=
- =?utf-8?B?U3hBMTZmb1g3clQydDM5dFBDMzlpRlRlN3M5RXEyV08yQnFqdTJ1djdMRmFr?=
- =?utf-8?B?SElya3R1VkFJaFhGMUpNWkwxNkN3ejFZY0I3L1RvandKcEJJS1k3UzczRDBm?=
- =?utf-8?B?YkoycW91NTRZMW9sYlozRnFGK2JmeThhaWdydmtVekJiYzRJYkdxTzVkRUgr?=
- =?utf-8?B?Tkluc21rY2twVnFFamZXRmFrbVNHZlo1VS9tczdsb2toLzJ2R2J1NXJDZ1h2?=
- =?utf-8?B?QlhvTmpKN0MzSGNBcDRML2U2M08xZ1FlQ3h2SU5hRThMS0wrNTZjNzVpTDE3?=
- =?utf-8?B?dE4ybWEvb1RXSml6M3RxVTVLcUNkdnlNZ081dDltNml6WGRENXJnNEJGUGRX?=
- =?utf-8?B?S1BabFl0VmFMZ0QrU004ajZEZ21rYUtTKy81MFNmdXdKSFFXZnBGVEtGT2RR?=
- =?utf-8?B?ZS9CaGE4UERNdkR4RHp0KzJER0ZNZnZqbjY4ZEVabWtINU1OTlhIa1NWMk1u?=
- =?utf-8?B?V1A4dCtua3hNU3h1VmtqSkZzaVRkYWc4MXI0YjVyQWlWNjMzZjdrb2NHODAv?=
- =?utf-8?B?Ynhlc0NERU1ZaEEzWU92K0o5NzZBbUx5QXZ3dEpRMWhIN1Z1bUs0UDFoZU1y?=
- =?utf-8?B?VWZaVmVDWVd0eEpSdHdUWXhYc2s4S1BsY2o2MHNzbG1CWUV6WjdzcThITTQr?=
- =?utf-8?B?THVybDRycmJwRmlYc3ZoTTJKaUVERmJGV0o4dlpuZnRRTnQxTXl3RUc4Tyt3?=
- =?utf-8?B?TGRhYnNCanRwQUV0Nlc2bFk2NC9WR3V6RGE2L2ZmZU1JaTc1cnZKUnU0WnRu?=
- =?utf-8?B?MUdnd05vOUxQUWxZQlo3a2dBcFNGWHhpdENwaVlIZDRRbnBtSlE4V2RLSUE4?=
- =?utf-8?B?WDdoM3VuV1dJd3hGWm9qZFNtMVZFaFYvbjN6RS9uNnRoallTa29yTFN1Z1Av?=
- =?utf-8?B?Q0Zyc0lYMGN0dE1EQlgzVURjYXVTZDJiWHdHY1k3WEIrN0tqUjQ1UVpoWkND?=
- =?utf-8?B?alB3TkdiOUNsOWdhbTl3eTd6NjJmVVlWUlBSZXBFNm9zb0ppTXBuZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 427dbc75-b2de-4896-3e35-08de5d3b2818
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB9072.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2026 00:29:39.3008
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d9Z//NPYROGfbnjXZtInvdGDxWkf/My7w9XAlvjcHqRHT56nfne141jx1yFvYi1PoTUNPvjY9uUVBBmo/ywIMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4116
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2074740005
+X-Rspamd-Queue-Id: 106184000C
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 7wrqy7dndygbn5zrmgmskm6oktdqn3wt
-X-HE-Tag: 1769473783-796795
-X-HE-Meta: U2FsdGVkX1/gQGtJ6LTctS+sHWrOsAn2ZhA2am5cN9axhcU3LPp2arcdSTQVcY0PgpO1QvLtdH+MMFTYM2Vt/O7WHZ/MN7tCqqzDr/qU/Gxy1m87Gs7i7p4QR1AKz+UJ3v3xoDtZC++FPXZvBQCg8ZuoOCvXPTsUeMjs2s4u1bXZ9Dcat5IWEcUsfnUpm8D8KGkiRX6xaIHTeWEwOL2fgdSCDtgyGUUD2Amz1j473r1yB/SXy0ErACH98ddRANXlwSGZ5otREMbKBQcFkqtgKMjLYQdqHt+90SN1KE974p9kA5dbyLnZ96ITbR8BlBK78l1Yhcc2SSUvpGg31k4HoTZcXS1PWngYkLswPtb4AhT5M/sDjozXyWH/k7fzYhLNmRJ+Y0uNU/XttBLyoBImU72k+O32MntxQtg4z58g7JjDd+syY5CcHHE2vdIdrhyHhuGrH5fNzViWZ2E8BD336BzPaI564rVy5j2jsSsoRqeuYgo+RTdrjNewV7M+kt4OjAa6xjUyDBVLNSeVZ76QNvfo1tj8uMCOKiu81JEMRmEAps0FfZ2+nQZ8oPfgX+DJGx7Gzbf6c0NykfDe3Dx2z+E2ySddTzGzvftfpVh+6fmCc1wIohrcKZZgUUtW4VQSGjZAnFHUL0tdfI7TzKnTqrYnSbfpu/EbMOI0CZrMY49xWzIOt4D3bOuNDNL4iB38mye9z+Kq6phAJWEmh2Y1TBus5zpGsLlTBU4WPuflkBLoDUnDpEQqK/GD3z0ms7xnfOeLcK/FXZdgu8+X1+lI13I0TYrJaTsTZKRk60ZP8cRteomWl9A7OFUU6N8FVMvukbV2L3h+HckVcvZfUpNGlfq9dQPqUS+m3x2qs5aEVVWkAewDZNsvOHEg5kvIaewb51YxqWeW+Bj4fVzL6CNp+KkpXX85Fs+c5W3/mIuTuctyGKbihdhowzdlUVklMtlTD/N1+aSzJNJUwBQaKgN
- 0qv9WsY9
- dzAu+Tha1+H80poXnJq5SD8Vy+oiXHaoYFrfUaQ+yOmCK+IgB+2iF8PCexPIJ+Sm0W+cLVk+d1V7IGW5H3mtTZ1iLm7gOfUgZE2Jr0quh8V8QN+uNJ55X8C97edWCvvS0zoy0sSsw6tqkAzDsRtIAc4u/XYLXhJ4dQha8cGdakP6l7jgPY/jbLe1Cu70qczkVo0yffdWM2/rCLrhdRQqpSAI4Yt3xH7PpZiCSf0XlPAgSCXvjJGwc2MeodXLZOBwnsHczLocRezfER9YCCx31wUGIUKropb4BSl9+wgqoKAkTf+DDSJp5ckabhZz4J7m8YBzfleXcTmvCHt/Bcn4AwADiaQAAQSFEyRi3dQTHOb/hJGGzcczXtA9ixqSK0HsX0Y6rWCKRGLCmF13QqKbwQBPfFD2GACvLh82GKsAZfbywLJsj+knK02aasgKWqaeXfAA93yc5S2phm+Ao6x9CG9ZsvdUUdi41c4+D
+X-Stat-Signature: gswr5kbw9b1uezymhrkxc7eeo9dtaxc5
+X-HE-Tag: 1769474851-554544
+X-HE-Meta: U2FsdGVkX18mT8baSjnqvc0yvDpO4afPsiOSJAOuTUFgUYsfAtKjt+q9VQzvPbo2ZFxeVyv2GsLXjIQou81xykrLkERPXa7F3wzr6KdefYbD8btxQx3pi6FLuvmLp5iCrjByQJvEaExgfi+ZSB9DomcxtlPZfTxRi+Fi7/orNU525xCiPZs72NlAOZ/Jjf4xOwGkvA4ZfZNJpphArC6XGybNGSpLiu5zD9KXEs5fS0/KLAbv42d0Z/AeVqADoxfKUMaLQJWrujNJxuxXK4YTjkQOW6xITZgq7HP2SiQZdxo4180ipcEwDh50qLmFJmuse/C+8ZbqG74Vonvp73K3h7IjYP1v6UhBsGM+74zweiZ8pMrvk1VY2Jt+wCUlpA0yCK8sUjiqMW4bkl+QiIHAX4t/k8JBpfCsBK6ewcai9EeFGKWTig2QbVF/Ssv8N1O3ULgXmXeWy78OHBEtSxji/XeUOCEniJxd1hWrg6YQ0WqQ3UhrqOc8szj0vYvVkSmtJ24tlGfhNkrk9TwmK9N56wxcXRkMqSlfuxDLgUzXihTe5Culhd5CrJ/U0kBSCW5lZFiwMqJ2j5g6vUNhIoi3GUzsomnwLcpGcEzAVX88Vgs9BN3qhdU6M1XljbnVLCOc5Fd7hqhQxlwnKqhwPXB+x/xIabCop1AfTuqQ3rRh7E86GF4ZM27GCB+Q54rN6FTVnfXZ3is40LMMHO6q/MGB8Bfv8eILC8JWZ3gxtJAFj4JdfFBbvh3pxvjwtrOUGwHQZewUj0T4ac9P0ZT/Smi8860QHc2o/X9zLcR5dPnzfemGwbY7bzxGE91iuitaBeAeg/1WVDam7+nVGKiT0TbcqrOtQgyZQ691pJpFOWxGKFhHMOoAOZ6rYkqN/aDxAS9i0y9vac6+sVWagiSPb77c/FgmJgBmlhgipv5j+26TF2HOinShic+BTporGy5JcXBn5Sd46gw8zdyZ2u4yBea
+ dbAwGdM+
+ cyTDhTjxYeom3CMWVJscEGfIxWgHuPTqXV+uyHhpWUmOHZrY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -213,105 +100,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Hello Thorsten,
 
-On 23/1/26 17:23, Jordan Niethe wrote:
+On Mon, 26 Jan 2026 18:45:15 +0100 Thorsten Blum <thorsten.blum@linux.dev> wrote:
 
-> diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
-> index a8aad9e0b1fb..ac3da24b2aac 100644
-> --- a/drivers/gpu/drm/xe/xe_svm.c
-> +++ b/drivers/gpu/drm/xe/xe_svm.c
-> @@ -452,7 +452,7 @@ static u64 xe_page_to_dpa(struct page *page)
->   	struct xe_pagemap *xpagemap = xe_page_to_pagemap(page);
->   	struct xe_vram_region *vr = xe_pagemap_to_vr(xpagemap);
->   	u64 hpa_base = xpagemap->hpa_base;
-> -	u64 pfn = page_to_pfn(page);
-> +	u64 pfn = device_private_page_to_offset(page);
->   	u64 offset;
->   	u64 dpa;
->   
-> @@ -1700,8 +1700,6 @@ static void xe_pagemap_destroy_work(struct work_struct *work)
->   	 */
->   	if (drm_dev_enter(drm, &idx)) {
->   		devm_memunmap_pages(drm->dev, pagemap);
-> -		devm_release_mem_region(drm->dev, pagemap->range.start,
-> -					pagemap->range.end - pagemap->range.start + 1);
->   		drm_dev_exit(idx);
->   	}
+> Replace snprintf("%s", ...) with the faster and more direct strscpy().
+> 
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  mm/cma.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/cma.c b/mm/cma.c
+> index 813e6dc7b095..44b43de28c13 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -22,6 +22,7 @@
+>  #include <linux/mm.h>
+>  #include <linux/sizes.h>
+>  #include <linux/slab.h>
+> +#include <linux/string.h>
+>  #include <linux/string_choices.h>
+>  #include <linux/log2.h>
+>  #include <linux/cma.h>
+> @@ -233,7 +234,7 @@ static int __init cma_new_area(const char *name, phys_addr_t size,
+>  	cma_area_count++;
+>  
+>  	if (name)
+> -		snprintf(cma->name, CMA_MAX_NAME, "%s", name);
+> +		strscpy(cma->name, name);
 
-There's some new failures on the intel-xe CI run: https://patchwork.freedesktop.org/series/159738/#rev5
-Looks like the issue is a missing update to call devm_memunmap_device_private_pagemap():
-
-diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
-index ac3da24b2aac..aadc73b6f951 100644
---- a/drivers/gpu/drm/xe/xe_svm.c
-+++ b/drivers/gpu/drm/xe/xe_svm.c
-@@ -1699,7 +1699,7 @@ static void xe_pagemap_destroy_work(struct work_struct *work)
-          * will do shortly.
-          */
-         if (drm_dev_enter(drm, &idx)) {
--               devm_memunmap_pages(drm->dev, pagemap);
-+               devm_memunmap_device_private_pagemap(drm->dev, pagemap);
-                 drm_dev_exit(idx);
-         }
-  
+Any reason to drop CMA_MAX_NAME protection?  You can pass the size of
+destination buffer as the third argument of strscpy().
 
 
 Thanks,
-Jordan.
+SJ
 
->   
-> @@ -1745,8 +1743,6 @@ static struct xe_pagemap *xe_pagemap_create(struct xe_device *xe, struct xe_vram
->   	struct xe_pagemap *xpagemap;
->   	struct dev_pagemap *pagemap;
->   	struct drm_pagemap *dpagemap;
-> -	struct resource *res;
-> -	void *addr;
->   	int err;
->   
->   	xpagemap = kzalloc(sizeof(*xpagemap), GFP_KERNEL);
-> @@ -1763,36 +1759,24 @@ static struct xe_pagemap *xe_pagemap_create(struct xe_device *xe, struct xe_vram
->   	if (err)
->   		goto out_no_dpagemap;
->   
-> -	res = devm_request_free_mem_region(dev, &iomem_resource,
-> -					   vr->usable_size);
-> -	if (IS_ERR(res)) {
-> -		err = PTR_ERR(res);
-> -		goto out_err;
-> -	}
-> -
->   	err = drm_pagemap_acquire_owner(&xpagemap->peer, &xe_owner_list,
->   					xe_has_interconnect);
->   	if (err)
-> -		goto out_no_owner;
-> +		goto out_err;
->   
->   	pagemap->type = MEMORY_DEVICE_PRIVATE;
-> -	pagemap->range.start = res->start;
-> -	pagemap->range.end = res->end;
->   	pagemap->nr_range = 1;
-> +	pagemap->nr_pages = vr->usable_size / PAGE_SIZE;
->   	pagemap->owner = xpagemap->peer.owner;
->   	pagemap->ops = drm_pagemap_pagemap_ops_get();
-> -	addr = devm_memremap_pages(dev, pagemap);
-> -	if (IS_ERR(addr)) {
-> -		err = PTR_ERR(addr);
-> +	err = devm_memremap_device_private_pagemap(dev, pagemap);
-> +	if (err)
->   		goto out_no_pages;
-> -	}
-> -	xpagemap->hpa_base = res->start;
-> +	xpagemap->hpa_base = pagemap->range.start;
->   	return xpagemap;
->   
->   out_no_pages:
->   	drm_pagemap_release_owner(&xpagemap->peer);
-> -out_no_owner:
-> -	devm_release_mem_region(dev, res->start, res->end - res->start + 1);
->   out_err:
->   	drm_pagemap_put(dpagemap);
->   	return ERR_PTR(err);
-> diff --git a/include/linux/hmm.h b/include/linux/hmm.h
-> index d8756c341620..25bb4df298f7 100644
+[...]
 
