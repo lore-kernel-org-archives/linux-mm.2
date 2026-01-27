@@ -4,94 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E891AD1951B
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 00:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DFEDCF65E2
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 00:51:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04D676B0088; Mon, 26 Jan 2026 19:47:34 -0500 (EST)
+	id 712DE6B0088; Mon, 26 Jan 2026 19:51:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3CEB6B0089; Mon, 26 Jan 2026 19:47:33 -0500 (EST)
+	id 6C0B66B0089; Mon, 26 Jan 2026 19:51:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1EA06B008A; Mon, 26 Jan 2026 19:47:33 -0500 (EST)
+	id 5A2166B008A; Mon, 26 Jan 2026 19:51:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D30B36B0088
-	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:47:33 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 799DD1B0AF7
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:47:33 +0000 (UTC)
-X-FDA: 84375905586.25.537A582
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 106184000C
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:47:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HvpsxbeY;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9316B0088
+	for <linux-mm@kvack.org>; Mon, 26 Jan 2026 19:51:55 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2295C2E39
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:51:54 +0000 (UTC)
+X-FDA: 84375916548.08.CB4D388
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3CDD74000C
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 00:51:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEotvvZF;
+	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769474852;
+	s=arc-20220608; t=1769475113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7JIAOWoTOVVgS0apUA0EQDBlj7SL1Z6Y9hKPAsx01xE=;
-	b=Yb9AZMF9WOSujyiywz0jhXS4+7RpV6VYshh39XgNepmArYJ+atRw5LckE/Sg9YpKNlqbst
-	dZ/mNlTFtoVkb7TZyBD7A8wnyadGMbvjR6x7SypIWmjwr4nXIrdcsXDRhFG9tsZMqdSV+S
-	c2J2yZwF7HGZzUOgSr8P1/xKjQ0RyX0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HvpsxbeY;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769474852; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=VPcButAP/UZ901ko67k+uVch1acSmoZ0yMY7vXyJSOk=;
+	b=v0khVLpqPxYFIOkzWFgjSuTZ/KL7JCELuYvtPG5kJksWEe5uECvCDJsEBH67HR7ZdlIBqM
+	zyBg1qdU1AyPsnpgVl5IsnhGbTZYq5HiGZjyu84FJkElYJEeo1gLSpxAQCN8ZfG8hOIbKQ
+	PNiI1Qr4sfyWHd5jMaCPWHPi25twvtM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769475113; a=rsa-sha256;
 	cv=none;
-	b=OJWO4wiYa6nVg8EF6jzTepSVco8YJWoK/2FZnxW5cj+lh3N6WgRJ/YjwAk3qZl8bfhP+yz
-	z2GfIdLyC7QhNqzbMRZCxI8ItAzySiAPT9VpVSg8tjxGVGfWa5DESzeBMXLlXcZxlXQo4M
-	2HSouYfPd6XwTlE4m/dG8ar2kp8OT8Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7707D60051;
-	Tue, 27 Jan 2026 00:47:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA882C116C6;
-	Tue, 27 Jan 2026 00:47:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769474851;
-	bh=o4cpQ2rr6KeMaWgY+0sspntwm5GM5tEpAhU7E40caqY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HvpsxbeYxiMgxSUL11CwhU52txRzTU2qIG2m3opA1l1AT6SI+JhguSAdsFzbWhYEf
-	 dafvZQ+KG8HXw35DCitqpQOlI1JMdCsNBlDzN6BvbgPveKjRVS8YEXQhJO2W5YaiAh
-	 qZyaki7kf5wOaYxPRRpSbh47j+yPU4xp5czI/HzKWsdeHrW/2Ge8c+9KcDvMRELAku
-	 8Zmg3C/Qt8goOgMpQhaVfqetZSzm30Y5YNTaN+aFmtkXQM9iMWW972e9HuPBlJ/+EZ
-	 lmgixTDm0Ba0tooxa2SQa12xZZBpAafteMFa+Ix0U02jnXXdTspuRi3gPp27KeL+4L
-	 nEaw9Bzp8li5w==
-From: SeongJae Park <sj@kernel.org>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
+	b=xMp2Yj3kDwHBaRMhfcmFNXaBiRdhwKNJMqpawv4O2y9FuCR97q4rYLKfYgIGQLfkz1EihA
+	ZWg7FMmoDBivLz/OHqBtYQLWwuGMJqLn2CKjGbdAV0oxpkoX1mwKpRi6ZW8VkK4JoG5rUQ
+	4sQtnvZXR8yrkccyQCshrIC7JM0cmXc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aEotvvZF;
+	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1233702afd3so6836345c88.0
+        for <linux-mm@kvack.org>; Mon, 26 Jan 2026 16:51:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769475112; x=1770079912; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VPcButAP/UZ901ko67k+uVch1acSmoZ0yMY7vXyJSOk=;
+        b=aEotvvZF/37OR36IHTm50SVuNaAHz8TRnyeCLjDfyjLHexf90jMW0CMSr1V97EtVXL
+         ms9QCc3mpU5anyFqhOcN8cJhJBIUOzQLTG/3/cLIe/1zkslJf+VIMK+xKvF6FibBjirP
+         NHC3ZAmA9BWmqTU9YySX/sWHAYdC6BepAxS8IcWuYyI9ztWF0r4qaYldXZnIwTfD0nW2
+         maXNgj0+NCGgAgbKCcFLoZSLDtaRGhYUM9x2S4ld8hXzNKfTFhL9R4205JgcNcFPgxH2
+         a1gKAu2MF10LoGoUVwhJYQxlJ6OublFBxgQhIUk1pwWIbA5RS88p26xmaAiiO2rvY8re
+         /Mrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769475112; x=1770079912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VPcButAP/UZ901ko67k+uVch1acSmoZ0yMY7vXyJSOk=;
+        b=kXte/8h5Egc58O6cgJdWWub9htw1cyXKlgzVMoCXWrI2HM4GTdOyfg42vtpbAGEXIA
+         x2/341bImQdZIWWs/xxLVq/CmaaIR4S+5YZKdDgvaDN+oSM7p/7OdYQcKMhrmfjeREVe
+         2PajBkarqozdCkocwsCTgbsNZ2yZsZo82rsMhQHKXWbY2O9xELNRp/eCy1DWzVCqAhFt
+         AmOywCXPP3cmsE+sKG3ipzUX4sV+flbbzW/DWXOQBpaAxicOQ5MuLJyp/sEfRgg2kaq0
+         XIPHS5LcaCpSTMOTU0g+wGirwyGKY4+NLffGlI0LlhXVG7vE4SuPOdTuB9n4X2wbJO3a
+         Wzuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFXZuKIEX7sdIhEPWFmdoVg6HqdmYif+ICs3h9PiZppMHc5jnzZVvyFZb5ESRdZBVOaGl0p/6tag==@kvack.org
+X-Gm-Message-State: AOJu0YxZZlES5EJ989CUDXpgMIcfJzbqN4ViRepVoAUm30lfEWYoulM1
+	mqHxc9JTOcgDahncFJ8k/zYFLbEzMz5QTI3qblA5xGcblaAOa2YFxTqM
+X-Gm-Gg: AZuq6aLX3lBpFIsdc7jk7tQn1pGH3dUhfwBaWmWW9Lb+0ua8aPcFzYDyAn8JyTZ/bOS
+	Uh4/yllhO+kIhry4BMa+Q8bkl9S59ZdoxZpJZg315D9/LmD+fuTg5XtleFiGRgM1Eznqb//VXZr
+	J+xLzUgSunkv0oakmLU5nNXgULyT9rPs7H4fNj8eQDMmN9VISdItoXYnoLCgCHS+T/dfWuWloA2
+	rb01GDOMIlT2R3tjv0Q++i1CyITbykOd18wne3VkC4X4gaOTmf/yYD5CgxN/PCVqCpFjO+e31Q6
+	2c3yt1iK4rKeLmM6ifKnzZIk0zNFysVHg1hmr26CtOkTB9VvXOClw21dm9AQIc4Sy4sjUmKHeYB
+	X1lGQwg5XxV0S0A6OGWQlvSM41qh1W/yJnnIGYM+3j3zaM8tJEacZ40ekda3WcW8qAHGJaplZOo
+	DYsgwwVW6zEO3kvnGH98hohcUYfuLoQkvYIPPmJEkz+OM=
+X-Received: by 2002:a05:7022:6189:b0:11b:9e5e:1a66 with SMTP id a92af1059eb24-1248ec0542amr2982851c88.14.1769475111776;
+        Mon, 26 Jan 2026 16:51:51 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-1247d91b9e1sm22185065c88.5.2026.01.26.16.51.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 16:51:51 -0800 (PST)
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/cma: Replace snprintf with strscpy in cma_new_area
-Date: Mon, 26 Jan 2026 16:47:22 -0800
-Message-ID: <20260127004723.74422-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260126174516.236968-1-thorsten.blum@linux.dev>
-References: 
+	x86@kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: akpm@linux-foundation.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Subject: [PATCH 0/3] Convert x86/mm/pat to ptdescs
+Date: Mon, 26 Jan 2026 16:51:37 -0800
+Message-ID: <20260127005140.197847-1-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3CDD74000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 106184000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: gswr5kbw9b1uezymhrkxc7eeo9dtaxc5
-X-HE-Tag: 1769474851-554544
-X-HE-Meta: U2FsdGVkX18mT8baSjnqvc0yvDpO4afPsiOSJAOuTUFgUYsfAtKjt+q9VQzvPbo2ZFxeVyv2GsLXjIQou81xykrLkERPXa7F3wzr6KdefYbD8btxQx3pi6FLuvmLp5iCrjByQJvEaExgfi+ZSB9DomcxtlPZfTxRi+Fi7/orNU525xCiPZs72NlAOZ/Jjf4xOwGkvA4ZfZNJpphArC6XGybNGSpLiu5zD9KXEs5fS0/KLAbv42d0Z/AeVqADoxfKUMaLQJWrujNJxuxXK4YTjkQOW6xITZgq7HP2SiQZdxo4180ipcEwDh50qLmFJmuse/C+8ZbqG74Vonvp73K3h7IjYP1v6UhBsGM+74zweiZ8pMrvk1VY2Jt+wCUlpA0yCK8sUjiqMW4bkl+QiIHAX4t/k8JBpfCsBK6ewcai9EeFGKWTig2QbVF/Ssv8N1O3ULgXmXeWy78OHBEtSxji/XeUOCEniJxd1hWrg6YQ0WqQ3UhrqOc8szj0vYvVkSmtJ24tlGfhNkrk9TwmK9N56wxcXRkMqSlfuxDLgUzXihTe5Culhd5CrJ/U0kBSCW5lZFiwMqJ2j5g6vUNhIoi3GUzsomnwLcpGcEzAVX88Vgs9BN3qhdU6M1XljbnVLCOc5Fd7hqhQxlwnKqhwPXB+x/xIabCop1AfTuqQ3rRh7E86GF4ZM27GCB+Q54rN6FTVnfXZ3is40LMMHO6q/MGB8Bfv8eILC8JWZ3gxtJAFj4JdfFBbvh3pxvjwtrOUGwHQZewUj0T4ac9P0ZT/Smi8860QHc2o/X9zLcR5dPnzfemGwbY7bzxGE91iuitaBeAeg/1WVDam7+nVGKiT0TbcqrOtQgyZQ691pJpFOWxGKFhHMOoAOZ6rYkqN/aDxAS9i0y9vac6+sVWagiSPb77c/FgmJgBmlhgipv5j+26TF2HOinShic+BTporGy5JcXBn5Sd46gw8zdyZ2u4yBea
- dbAwGdM+
- cyTDhTjxYeom3CMWVJscEGfIxWgHuPTqXV+uyHhpWUmOHZrY=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: h8emxpk7g88n4fsspx4z3o366mdgd4aj
+X-HE-Tag: 1769475112-910445
+X-HE-Meta: U2FsdGVkX1+WGNbTfoejMJm3HZNouQSfQAAtC4wtvWDblkITm/ryFb2Y6npWm49IyagLduzEu/kSD/O4B07K/bUaCmdng8snURtjQtDchTlxMkjveHU0udHL1fC1NbeQYQp/OOglrhabER7wRcmmy3t0x7HZsTd1yVpCXwTZMzxMta+oIOrjcbtpwfN4LI+KqxUh+fHd92dt9st04U6bpNS8kjZ+m+hpUfv3hfqq9AlNFkwVvkbrIJQ/IvhajsClfnw9ms6fhGgnQYwcZa5VS5VczIi3uszhvZsyBxEK5zFkOlov5tGHa3MWWeYZC4Gfs/MOqcCPpebIcLbG3VtjYO3f95u+NIv2smFDfKzwVHqAHjyD5j/kOzIf/z0mEKgouLhL4AP4N/4/NSdDYTwD6QIv5EltnfpaODg7M6F40YPVyvWQ7cuuKpPGPGc4sIMZdCdAPwteUYUxSnX18cokgfksBBeGMwglRpR/QRyKbM7SAcfCygN6Hnq00hGHBFYzr6OSI6x/dCmVwTdC/xtkAOwd/lvqp6O+/5D2Zcw060Ucd6N7rzRvlJAw4Mappxoo6GUiRlGf6bFe4oyJ40IXAWyJ2elVQlWRzjW7hGWat6NuK1+hj/8vCnOb2KGU5TP7JsGk6TQ/P1AUa0ArO4Wb67m3SNXQZnyhErvJBOEXxc7f+r/6l3WepVx5S/Le/TtJTWgWGkPyihHEapIpx660Cmrh7RivG4rZ8AEkJc9iGO5rDYs92KYJ8ECLVneeNh5FRvzh+3dUTEJuQaJEzOzwAHL42clzg2PLfG3ATG8bpvxYDAYiFpwHoAynHFWSL7osH9ZWzbZShSSybsyDZWfW4XOEJ64HirjjB0wY7UbYnWuaXPeQukIgsTBmiQkfG0gaNWqcdw6fzQeJGAqhkuZzqk8d89ikwncuF0vrYsipyftrndpKaGfxP+o0BP25OYQAzGulSpaLK6MJQQkoyXd
+ IG5a8VcB
+ s+9BvIhJgJsWYmMvLDf59i0y4qr2F899cmcgDDXynr2wqKBk4cIbrgCqpE560WNfeMCli49e+DdNiye3mqS74kriI5mK5HoMkHzqKoxPjmsi3ShlA4jKKUcMVu8FPiyw8Pk3014mVIvudQIcO9hVPcd26arsl5v3emQbL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,42 +122,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Thorsten,
+x86/mm/pat should be using ptdescs. One line has already been
+converted to pagetable_free(), while the allocation sites use
+get_free_pages(). This causes issues separately allocating ptdescs
+from struct page.
 
-On Mon, 26 Jan 2026 18:45:15 +0100 Thorsten Blum <thorsten.blum@linux.dev> wrote:
+These patches convert the allocation/free sites to use ptdescs. In
+the short term, this helps enable Matthew's work to allocate frozen
+pagetables. And in the long term, this will help us cleanly split
+ptdesc allocations from struct page.
 
-> Replace snprintf("%s", ...) with the faster and more direct strscpy().
-> 
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
->  mm/cma.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index 813e6dc7b095..44b43de28c13 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -22,6 +22,7 @@
->  #include <linux/mm.h>
->  #include <linux/sizes.h>
->  #include <linux/slab.h>
-> +#include <linux/string.h>
->  #include <linux/string_choices.h>
->  #include <linux/log2.h>
->  #include <linux/cma.h>
-> @@ -233,7 +234,7 @@ static int __init cma_new_area(const char *name, phys_addr_t size,
->  	cma_area_count++;
->  
->  	if (name)
-> -		snprintf(cma->name, CMA_MAX_NAME, "%s", name);
-> +		strscpy(cma->name, name);
+------
 
-Any reason to drop CMA_MAX_NAME protection?  You can pass the size of
-destination buffer as the third argument of strscpy().
+Based on current mm-new.
 
+Vishal Moola (Oracle) (3):
+  x86/mm/pat: Convert pte code to use ptdescs
+  x86/mm/pat: Convert pmd code to use ptdescs
+  x86/mm/pat: Convert split_large_page() to use ptdescs
 
-Thanks,
-SJ
+ arch/x86/mm/pat/set_memory.c | 37 +++++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 17 deletions(-)
 
-[...]
+-- 
+2.52.0
+
 
