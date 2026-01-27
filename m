@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF134D2FED9
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 20:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 427BBD2FED9
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 20:47:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDAF16B0005; Tue, 27 Jan 2026 15:46:47 -0500 (EST)
+	id 9A94D6B0089; Tue, 27 Jan 2026 15:47:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C88956B0089; Tue, 27 Jan 2026 15:46:47 -0500 (EST)
+	id 986F16B008A; Tue, 27 Jan 2026 15:47:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B69CE6B008A; Tue, 27 Jan 2026 15:46:47 -0500 (EST)
+	id 85F876B008C; Tue, 27 Jan 2026 15:47:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A64E86B0005
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:46:47 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C3258B549
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 20:46:47 +0000 (UTC)
-X-FDA: 84378927654.09.1F87692
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BC2EC120002
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 20:46:45 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PFrp9aEN;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769546805; a=rsa-sha256;
-	cv=none;
-	b=U/VtpCWyYIZKLjTNVoJZ+z6UkdSQCZ7IgrXeR9OzxXW4/YgSVVphPE/cQTb3YgCSHA6LMJ
-	fhvppXM/uUfv3A4KGEpXu9ixctBIvtsiQfserv9uUiMXw55gnWNB3PEz9TB85aDTBvRzwO
-	CxrX4na6YZHo5ZrKK02YbumLzqpEjgs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PFrp9aEN;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7302D6B0089
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:47:34 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 043BD85E48
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 20:47:33 +0000 (UTC)
+X-FDA: 84378929628.02.7AEB234
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2E65D20007
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 20:47:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MXrV5wPR;
+	spf=pass (imf03.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769546805;
+	s=arc-20220608; t=1769546852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QNEa4mYWEczHBci/mwpJ7O9nUgvSIDfRjPeADRaPwjc=;
-	b=51avaMRZdL9+fNX3GjjQ/UalSim7xZ3uy7+4IfVpsb4A61Rp3oHVqhVYrZYsnJjjyjvU1r
-	l8YS/AEDhXuTctnTXQ7f4Nxk21OqMl8ecEEWnQkKbN4m1vLCzq5jP15jydzgpYbZTSOYzr
-	VBIxzvuraXy/oK0nblbFEIWA6XuEzGw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B50DE601DE;
-	Tue, 27 Jan 2026 20:46:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA31C116C6;
-	Tue, 27 Jan 2026 20:46:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769546804;
-	bh=dPe4WO5V5xGcqbRrtLSrAnb6cZI7NA2TSDIlxEHcMg0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PFrp9aENn8GkO3oMV5uU3fw/sDFm4fOIgmG6lOGNP6rxP54wuO7jQTZJOTnpGqGTk
-	 NB3Sv2FHYDDBA3dsblyvixrcw3tZ4kXXeRIcFlqab7TMCcctx5uC+lfxG1L0MdwWzA
-	 L7gQdZ4FA8nw9mzJUh2KfWM9LIGY8FgBJ+uk9/GM=
-Date: Tue, 27 Jan 2026 12:46:42 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: david@kernel.org, andreas@gaisler.com, richard.weiyang@gmail.com,
- will@kernel.org, peterz@infradead.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, dev.jain@arm.com, ioworker0@gmail.com,
- linmag7@gmail.com, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, sparclinux@vger.kernel.org, Qi Zheng
- <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v4 0/8] enable PT_RECLAIM on more 64-bit architectures
-Message-Id: <20260127124642.480123beb01ebb487f986a09@linux-foundation.org>
-In-Reply-To: <cover.1769515122.git.zhengqi.arch@bytedance.com>
-References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=p62oMbD2WGIl31iE58AjJBexIFrmv0YyTyX0OQvm33U=;
+	b=Wae5nuJZuIJ0kFy9xxPMn3ngHxQfMD3Z3D62xTl8eeQzO3EcTRKwLD3XqP2HcQrKj9NvYo
+	JcMF2sJiriAM0mpk7RraMWJ+dVhNV+01LsZS5e+3KO5NkFF4dqSN/jYoQ6mBw62NQ3ErCF
+	7YzvRisws3Vh/raTNm8l/Cv9oYdG9q8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MXrV5wPR;
+	spf=pass (imf03.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769546852; a=rsa-sha256;
+	cv=none;
+	b=n5aKMeSEI/c39GmuntpMHLvlJF4hK9m3DEw0EUeqxTIImEgMItQrGzwIVS+ZE3yWJ559Jy
+	hMEY3qRPfT6VF/EGNbUApwnU+MiHGQfcBYLq4izrTLZ29vFIauOrqgi/41hOoHxKtnulqI
+	zUWx1HT9AYeVo90vEa/A2+WvUFa+kHk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769546849;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p62oMbD2WGIl31iE58AjJBexIFrmv0YyTyX0OQvm33U=;
+	b=MXrV5wPR59IDMmslYF9So3TZUiPFv26eBfOnddXc6nMgRjMhB+pPURPChm0vE2CuMcyCMe
+	TivIEtPADaLv6IkiwsRuiagd892Hf21vczCj5R9zqXFJFBfDwlb7Uvj2u7I0qDsgo1EeRD
+	oxHDJcrrjld+4Lxv4mpaOFiYGYO71jw=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>,  Alexei Starovoitov <ast@kernel.org>,
+  Matt Bobrowski <mattbobrowski@google.com>,  Shakeel Butt
+ <shakeel.butt@linux.dev>,  JP Kobryn <inwardvessel@gmail.com>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  Suren Baghdasaryan
+ <surenb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  bpf@vger.kernel.org
+Subject: Re: [PATCH bpf-next v3 08/17] mm: introduce bpf_oom_kill_process()
+ bpf kfunc
+In-Reply-To: <9a2c5f29-b45c-4ff3-a8f4-51d207a82d38@linux.dev> (Martin KaFai
+	Lau's message of "Tue, 27 Jan 2026 12:21:03 -0800")
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+	<20260127024421.494929-9-roman.gushchin@linux.dev>
+	<9a2c5f29-b45c-4ff3-a8f4-51d207a82d38@linux.dev>
+Date: Tue, 27 Jan 2026 20:47:11 +0000
+Message-ID: <7ia48qdilr5c.fsf@castle.c.googlers.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2E65D20007
+X-Stat-Signature: jap7m1n3uzdzpza1a5wz6tbqe3w76yn1
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BC2EC120002
-X-Stat-Signature: yne99a6isb4tqi7zmid7nh9npbqw7hfk
-X-HE-Tag: 1769546805-126704
-X-HE-Meta: U2FsdGVkX18sbh17UyQmqX/gSEIFf4QHzigTEGv/4y/0XvOASlMP3J4PNJPegA0fm/ZqBk9xtgTlDKBbP0GIXfg1knST8XtWueOeoB/sHSRJv+XvcjLFHRq1wPQIu+/pryUxiiVY99A0b0qD6xj+V4UyQNa3V0NtY5YHlusmOARIbXqA9rHnNeBh+lxv9QDHlDxpZ7x06QOo8JPW+0HUjykJtdzKW0FH2lpWwN5ns/lY3nKYpaID6pYyN5qy1TjD6xT8x3Vz7DkZJRwhqyw3b2l8bkFilFNTf4PaCO6DjplFi/OW6q/+JXv2ByPqY3/m65kG+Z0hTzpXOClN2/UFbCuqd5qImbxqETWUVcAmACwY/es66Pi7TIrFWbb5W5668trjq7bA5DX2c6xg5gmiXk8MnJxBQoe4XiiycpN1LMiolLoeEw1jRL5es6k96tQ/S0AJQty3+A6ELFOaZ05DHDpXTakUfr8KunZ+m7T1GjchK3oeMjCd6ZDNRM76HxQ+RKw+DQYEyp3Z32uu56mC4yXklP8rTm1JyyaVoT1WCeq9sDf4IiFIUz188CNF4/pro8FXNGSEZLRtWdp+5W7jy/xs0R8VlRF/GouXEWd/DOs41oSciAurBSWf8tHwGHsKNZXRHItmpLzsOL3GqhNli5W8leVUykyhRj4oleQX8Qgqde6uKIAZiJddm0/LHcQRGUZlQ+4tSkrCioZrZ5GLpGhVZCw8xd2RnugVnbpCxpTpytaD3MA87e6Az/dvSRmr5AJc1mUPSTNzdJrxxGL5OmGuaqTuYAHFeueTtGL7TZAC10MIse4jrZmw7+bs1QqPnj5bFtIt8t+kHjpuBevaxK4xTxA+fTMRoSUeX1wsmeYPQHIVvZcIuwI3kGXxg1MKbCL3/l+RmddEVnuqT7dqH8OhEtXBZKGiBeFjyVR5tOpsbVYsXFnQq01c1FZtIgijWb6idavDIto/Z6cHXQB
- StZRgRbK
- O9cWrBPE0u78y9+7rcc7KHHw3Q1HBJLU/CDVJvxifTcdyKrfD27LYZAkK1iIwo5dxQaOjH/THCHOImiGEcap2qKzSZXDaYmxpcA1bvJlgMYc2qAojUjlAMxiq0CARkwW5NO7SrpYTAK5xgwu4wN3CZgKaTxA/AchEU2/T/xlVPMSUTTnIZLdpdlr1gIkMp6cyoHAOyeHdgPTtWq0WVckFyk39VxE/nsnQSky8OiDhy8sbvOIO3Icbpez5Hn44ooYfqTnsm/xhekffF+tbZhTxI+ESaK4NCbhi66hEUbfouGHkS5QGvUejb4b/kewY/n3efiiXu+u+z4qOsPaARQzvQX4uEVc++eTasgCU4oZoXb+Bl6j4giSxoYF+tQ==
+X-HE-Tag: 1769546851-415191
+X-HE-Meta: U2FsdGVkX1++GUska3yClXRI+jr4Lm8YwIRh/2Hoo1X8LB64b6+DtIeu6/l6gVH/QJ5wT7WGUhaYanRrciVV3LQLqtQ5Ick+USFu/VpgBhgj/npL9BEyY00vE097CBsc3piNM5oqQXroOT4/61YU0ykE0+kMObsk3JKZWmlOvSNSCzgkPga7cVF5qgaGY4KuM+LKVb/DmJwbEm2KRoqBsxjDAHo7RS/SdA8+i4AStCfDWw7s2Vz6ybV0MR0Tj2QGd0AEGG6gEZ5PCjmgHyBaZhKddwMbMBkrGmH1/rErxuSHmzdmY/EvEG3k7FRJOqEtkLrEGC4Fwq/ZDeODxda/1q1EOH9EP1AaQlae9XsQoefGP0FzA3WTM+yyF3W+xfRzkRu14L5zneYyRloqZDQpSBnTR+8EI9kZOPm/E4MVzrV9uyX2jzwvklpRHpOZqTNDvkT5QgxEYBO2tHBkDJd8iSfpiZ/J11NE/D141oh4xvGHv06cXhaBMNvNU7/icx2WZTd9ta8YLpD8hQW70VwUU5yIqsVo+vvIRkWVFRgNMXtucDrWC1Z/eNDmH7051XhzwqcOsICu1tpXTBcPC1dbj8MGFSAe+CYrMFLMKenaXO+geJ9Kl7tHJAxzuq6aQs6n/8KSSOuxREJgeXyKFPBtZgJePC/sqM834cXlaeYq9Opga1Pfws59AVAtp/+W9XqITQacw9TAYkzcAA+wDo2zzgiDr01wcggcW3/kxtf4/8Zu3tQoAd1WsWw3dnSCzXZKK+QJ9YXV6lRtgW5eIq6icaPAo2Mw9RIYHw7ye2aN+e4Yc1RnKrR8tIMJvMVPQ3p1ryK3htD6UIP2nXGTOw2quYS4Lrso1r4YrtqxEsyMBzMJ6/GkEJd68r6TgO1thWo8pQjG7BWTzQdvstv8NHwNtAnlqqxnAEFnxN8MZa/beS5Q9eH0MWy5CwhCFMdolOsK2ap7fNmXJPFBPqiuJ6A
+ 4IMbSu0o
+ YJN6uC5RnPh06E5cCgfRgz6HExOfVAp1gF/vDdvKaNXHUMWEkW8nApuifVlxbvS03CIo0a6B+/HDMPXwE8oo5MRqgFZl6dL6u/mDAomXTfbndKIM/xgBGslyoJzM3X8tVBkFTjRLS6ohiLOA+W+U+fH71Ow6b7dLsaH4eYvy993rQUCo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,94 +94,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 27 Jan 2026 20:12:53 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+Martin KaFai Lau <martin.lau@linux.dev> writes:
 
-> This series aims to enable PT_RECLAIM on more 64-bit architectures.
+> On 1/26/26 6:44 PM, Roman Gushchin wrote:
+>> +static int bpf_oom_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
+>
+> The filter callback is registered for BPF_PROG_TYPE_STRUCT_OPS. It is
+> checking if a kfunc_id is allowed for other struct_ops progs also,
+> e.g. the bpf-tcp-cc struct_ops progs.
+>
+>
+>> +{
+>> +	if (prog->type != BPF_PROG_TYPE_STRUCT_OPS ||
+>> +	    prog->aux->attach_btf_id != bpf_oom_ops_ids[0])
+>> +		return -EACCES;
+>
+> The 'return -EACCES' should be the cause of the "calling kernel
+> function XXX is not allowed" error reported by the CI. Take a look at
+> btf_kfunc_is_allowed().
+>
+> Take a look at bpf_qdisc_kfunc_filter(). I suspect it should be
+> something like this, untested:
+>
+>         if (btf_id_set8_contains(&bpf_oom_kfuncs, kfunc_id) &&
+> 	    prog->aux->st_ops != &bpf_oom_bpf_ops)
+>                 return -EACCES;
+>
+>         return 0;
 
-Thanks, I updated mm.git's mm-unstable branch to v4.
+Oh, I see.. It's a bit surprising that these .filter() functions
+have non-local effects...
 
-> Changes in v4:
->  - convert __HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
->  - fix a WARN_ON_ONCE() on sparc64 (and on ppc)
->    (reported by Andreas Larsson)
->  - collect Acked-by (Hi David, I've kept your Acked-by, feel free to drop it)
->  - rebase onto the v6.19-rc7
-> 
+Will fix in v4.
 
-Below is how v4 altered mm.git.
-
-I'm not seeing the WARN_ON_ONCE() fix.  I assume that was due to the
-Kconfig alterations?
-
-
-
---- a/arch/powerpc/include/asm/tlb.h~b
-+++ a/arch/powerpc/include/asm/tlb.h
-@@ -37,7 +37,6 @@ extern void tlb_flush(struct mmu_gather
-  */
- #define tlb_needs_table_invalidate()	radix_enabled()
- 
--#define __HAVE_ARCH_TLB_REMOVE_TABLE
- /* Get the generic bits... */
- #include <asm-generic/tlb.h>
- 
---- a/arch/powerpc/Kconfig~b
-+++ a/arch/powerpc/Kconfig
-@@ -305,6 +305,7 @@ config PPC
- 	select LOCK_MM_AND_FIND_VMA
- 	select MMU_GATHER_PAGE_SIZE
- 	select MMU_GATHER_RCU_TABLE_FREE
-+	select HAVE_ARCH_TLB_REMOVE_TABLE
- 	select MMU_GATHER_MERGE_VMAS
- 	select MMU_LAZY_TLB_SHOOTDOWN		if PPC_BOOK3S_64
- 	select MODULES_USE_ELF_RELA
---- a/arch/sparc/include/asm/tlb_64.h~b
-+++ a/arch/sparc/include/asm/tlb_64.h
-@@ -33,7 +33,6 @@ void flush_tlb_pending(void);
- #define tlb_needs_table_invalidate()	(false)
- #endif
- 
--#define __HAVE_ARCH_TLB_REMOVE_TABLE
- #include <asm-generic/tlb.h>
- 
- #endif /* _SPARC64_TLB_H */
---- a/arch/sparc/Kconfig~b
-+++ a/arch/sparc/Kconfig
-@@ -74,6 +74,7 @@ config SPARC64
- 	select HAVE_KRETPROBES
- 	select HAVE_KPROBES
- 	select MMU_GATHER_RCU_TABLE_FREE if SMP
-+	select HAVE_ARCH_TLB_REMOVE_TABLE if SMP
- 	select MMU_GATHER_MERGE_VMAS
- 	select MMU_GATHER_NO_FLUSH_CACHE
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
---- a/include/asm-generic/tlb.h~b
-+++ a/include/asm-generic/tlb.h
-@@ -213,7 +213,7 @@ struct mmu_table_batch {
- #define MAX_TABLE_BATCH		\
- 	((PAGE_SIZE - sizeof(struct mmu_table_batch)) / sizeof(void *))
- 
--#ifndef __HAVE_ARCH_TLB_REMOVE_TABLE
-+#ifndef CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE
- static inline void __tlb_remove_table(void *table)
- {
- 	struct ptdesc *ptdesc = (struct ptdesc *)table;
---- a/mm/Kconfig~b
-+++ a/mm/Kconfig
-@@ -1448,9 +1448,12 @@ config ARCH_HAS_USER_SHADOW_STACK
- 	  The architecture has hardware support for userspace shadow call
-           stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
- 
-+config HAVE_ARCH_TLB_REMOVE_TABLE
-+	def_bool n
-+
- config PT_RECLAIM
- 	def_bool y
--	depends on MMU_GATHER_RCU_TABLE_FREE
-+	depends on MMU_GATHER_RCU_TABLE_FREE && !HAVE_ARCH_TLB_REMOVE_TABLE
- 	help
- 	  Try to reclaim empty user page table pages in paths other than munmap
- 	  and exit_mmap path.
-_
-
+Thank you, Martin!
 
