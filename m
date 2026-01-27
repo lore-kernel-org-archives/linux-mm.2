@@ -4,124 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F502D2FEF4
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 23:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6EDDD2FEF4
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 23:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B955C6B0089; Tue, 27 Jan 2026 18:44:05 -0500 (EST)
+	id 5AD606B008A; Tue, 27 Jan 2026 18:44:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B810D6B008A; Tue, 27 Jan 2026 18:44:05 -0500 (EST)
+	id 598906B008C; Tue, 27 Jan 2026 18:44:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5AD66B008C; Tue, 27 Jan 2026 18:44:05 -0500 (EST)
+	id 4CE696B0092; Tue, 27 Jan 2026 18:44:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FF876B0089
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:44:05 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2403813AB2D
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:44:05 +0000 (UTC)
-X-FDA: 84379374450.07.6E4AD6E
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 511911A0008
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:44:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=IZxTBb4i;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769557443; a=rsa-sha256;
-	cv=none;
-	b=KG+1VxogRiAH8vWGjLl2xv6Qc084YdA7g8H6mQLT/P7GwwgC/5e51tuQcBZwwcdMBBoW3A
-	6Uq4EqnBz0zSPvk84FYTEiQ87NwynNjiiOYBvqBfUnmwtYSHfenjGUyO/0rRstzXYELoZX
-	r01rnJZ4zmetMmT+F4e1jcceDBA0rSI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=IZxTBb4i;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 40B736B008A
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:44:27 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5A0CD3532
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:44:26 +0000 (UTC)
+X-FDA: 84379375332.28.CB59E8F
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 17A751C0013
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:44:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rw9aTQfc;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769557443;
+	s=arc-20220608; t=1769557465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v1qRlmFFKOqQW1uayanhd5aQp7S6yFTJSXPtSSKOmMM=;
-	b=b5Wdnhe/1EW2grMH36Du9f8SB10RuLHM7u2wnHNdyKeXSI41GskZzwuLnJXzzztAAcvd7p
-	WXpPpq5j/Fe5d19U60xR2uU3OdiIcv5OJSWRjxg2EcLabK0V5niWfqqCcorG6pg2D67g7t
-	sBWUyfmkpwjYqIrwKVo9Yyi4zIGvES8=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5014f383df6so53377821cf.1
-        for <linux-mm@kvack.org>; Tue, 27 Jan 2026 15:44:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1769557442; x=1770162242; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v1qRlmFFKOqQW1uayanhd5aQp7S6yFTJSXPtSSKOmMM=;
-        b=IZxTBb4ic/mgt/P/phOzogCmRefVytLou6RjJ7FUHHNkbwuZ7RHuSFvTBrko2Rr5B4
-         TUMuONLo4ezqc5KWdjSJ5ZwTtEbabjPgdHbW9KC8Q4rvczWP0reySy8487jSnu58wso+
-         YOWuAfHete/GsY6qTebYuSKwFsTBFoo7/45RodcqHuBU0uorU6JJFZrqCoqUwtlDFJc/
-         3ICvBhbamli2gpod1Arr5Wz0SALWpNqQNiHnbq6zGW0qnhBhBvUQ1dQwjMTE1egF2OYa
-         gmXI1oLeCauAB5P/nM595RQZPZthu5duFuCIveh5I3kDl28Oj66JnzZeQbbFmMMjCF7p
-         XwIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769557442; x=1770162242;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v1qRlmFFKOqQW1uayanhd5aQp7S6yFTJSXPtSSKOmMM=;
-        b=ohotC9AGcCOzYx3t/Grmi2zEl44uMwPkhjSRth/xrzVpAsRx3i7uJ8Q9lIdINfuRMf
-         H/+j8IUh+BEqezdskabrm5yFcR7vrIJDjKjCp3IVYPb0JfDtnlTVPO04PkDJid7DYuDb
-         lZKPLEHuAeWILtq77yDhmgL1P3j1w2rWuYAliEkMlhvnVOBN1+3D46ryKpQa7jm2xt5Y
-         Ymzt8W8EacUty1JgEMnWlt5Whxh9ajxePQ9UOAXoKZ/UxF1R4dYDpsyuF0EW4+tIRwTx
-         rxRWK3WtZYsFkcZFMWCVG+3HZG2x0lYkCuw79TBCbivTCZM3Q2kC0I4DCZju0CN/sAcZ
-         sP4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXnCDWZvHqdakdBduZF1UcjkM2D+cOUjPN6kwswE4c1P8uMu6rzgyl0k1KERb5T6WS2CxM+WccJrg==@kvack.org
-X-Gm-Message-State: AOJu0YzVoISpRF9AGcwIKCI+TByOFo3D/yUmFC58CbyroUoqamSEXlha
-	9V5HNXALc/0qqTgjQWI6q3UZYX24UkVTZV+5h7PLYEk9UYEAjMKtFzlZ5YbyyjMTkRI=
-X-Gm-Gg: AZuq6aIsrByANLnK9gRFiHEHjaS9L961+Z6mM9bRfGDg6cKPGcD7xdppBD3edNTtr8V
-	Dw3Kej0UhOLUcWbgCHE2rgS0twPuAVspNEbzAYa3h+U82vu2hKYaf2RBUAdmTB96ZSRuxwqvdWl
-	i38scHH88jyzWGnLdLE2aitAQTE1CiynGwpqgdMPzijBSW0XoSwvGRcvdHyVM79/Qgaqkq1z8/x
-	szjafykmtljzJv2kZEVQk0iA1lFnGUqTAfUSkMTaF4oxTpjau1jdnu0Fw5h4AlcxnhdgRpxGiTZ
-	k+12hAHpvc2gCOxk/WBKBmlpiFWD0fyOMzb8jaq4J/asDGTgmchD0Lr284wMbumTLAcOz2oTaFs
-	VCzDR2xayWiHG9Sn46ITb8dfMqy8ZzQl0Eb+dSNM08scsumC/jQjlMXx+cl9dxTHmV5JsRqDmQA
-	X+/lQWnY+t9uLsGN9chDK6Te76OVLm7GkDiw8A4cfA2A2WEv8qw8XoTbSJ4R+7CGMWP8pEwteM4
-	88PO2zW
-X-Received: by 2002:ac8:5902:0:b0:4ee:2074:4b6e with SMTP id d75a77b69052e-5032fa034e6mr45336511cf.45.1769557442464;
-        Tue, 27 Jan 2026 15:44:02 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d36a9bdbsm6298466d6.11.2026.01.27.15.44.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 15:44:01 -0800 (PST)
-Date: Tue, 27 Jan 2026 18:43:58 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Bing Jiao <bingjiao@google.com>
-Cc: Akinobu Mita <akinobu.mita@gmail.com>, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	akpm@linux-foundation.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
-	david@kernel.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com
-Subject: Re: [PATCH v3 3/3] mm/vmscan: don't demote if there is not enough
- free memory in the lower memory tier
-Message-ID: <aXlNvgS1CsU0JoE_@gourry-fedora-PF4VCD3F>
-References: <20260108101535.50696-1-akinobu.mita@gmail.com>
- <20260108101535.50696-4-akinobu.mita@gmail.com>
- <aWEn2ODG0gyej0Xr@gourry-fedora-PF4VCD3F>
- <CAC5umyhoMi_J_Ford2M_1fB-qCuPEDopAK1OF=AisZyDZ8duJQ@mail.gmail.com>
- <aXkfBF5bdnTZ7t7e@gourry-fedora-PF4VCD3F>
- <aXlKOxGGI9zne8sl@google.com>
+	bh=rWKhogrgDYfP+mABM+WRRO2AR1U7gX8ZMeWgwNxCK2g=;
+	b=z6/LsTQnndYycPMAEj6te3V+1rErnZk2k7fz73SRsPSkr/KCTf7dFu2ETJ4jNUuYfjm9on
+	QdUuj7h99gy2PAhia09fY7iBirCGptucHN3tQQCEZmgrw5OUOJSpTSKV2JTtfj4wkmxk0D
+	rSxaevsfteX7fQC6bRi6n7pvdKsCCmM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rw9aTQfc;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769557465; a=rsa-sha256;
+	cv=none;
+	b=5b4CtoaH0tfealShMKqrxjeDtLfxs5eDnyRSM3ULEeqAXQ7ZXAyqgOBZl/INeXPWV/keOk
+	OxnFJDGcNZDltdMXaZU8KlXdTbef/UFCaR+w9lUsYq4bgwNO8N8fllt8VnWIsFvRoMLrib
+	FVkaHLfyZ/08HikRxCz1oOWpzASKu3s=
+Date: Tue, 27 Jan 2026 15:43:48 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769557459;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rWKhogrgDYfP+mABM+WRRO2AR1U7gX8ZMeWgwNxCK2g=;
+	b=rw9aTQfc5op4FjU7TIB4ogB5HvPbv6+K9tFpTKVOMNNTq+wuLOzHxn/AwqXIUdIJfwh0EP
+	vf9lOCmrG/fbwLR+XksFm2jGheXRIHpI2rhdPmI7jwKFktW71NT14UIRhDa/RST2DoJk9x
+	Z5rtR9lqFbL5d0piShKOUCbpRXzVoSk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Thomas Ballasi <tballasi@linux.microsoft.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, mhiramat@kernel.org, rostedt@goodmis.org
+Subject: Re: [PATCH v5 2/3] mm: vmscan: add cgroup IDs to vmscan tracepoints
+Message-ID: <aXlM7KqRIkerP8Pa@linux.dev>
+References: <20260115123809.2257-1-tballasi@linux.microsoft.com>
+ <20260122182510.2126-1-tballasi@linux.microsoft.com>
+ <20260122182510.2126-3-tballasi@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aXlKOxGGI9zne8sl@google.com>
+In-Reply-To: <20260122182510.2126-3-tballasi@linux.microsoft.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 47s7gek49e94jqbq8n5pdjyr6in6g976
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 511911A0008
-X-Stat-Signature: de6ijy15pqy7h7y581hsjjwq4mnze4g4
-X-HE-Tag: 1769557443-657420
-X-HE-Meta: U2FsdGVkX1/SBez7tfWLk/fsiWdckmlqh2oKEQrqSZ7wj6VHt3/B+rquz5nCMMySjsXgJe0K7hN1pXsdEhdN8hAS3Kl54NN2zr1z2siHwzr7aAVEQxBVnl0/CNjDly0jr9LTH+1jDzvtjchjqeGTJytFOclMkkPemi4o6UOtPQg7ta36NCwnSPObqj6/7pZp9/hX3ptgB5zn4O+Zv/7RAt44wiy1kAX0x4MVmEN05OORyD0+igKWamKSriQRtSvMGn6i48585urx2vrCVPxCZvUbVc13z26pMex1MADKXuv/00YbPyPGdhyExsr/0Zafv0NCx9mhhiSHSgCa2+imUJ8L3d4WKpgUAmC5RZtqAMGtnpnNs8LOkclB/l2N5JMEQrmJBEgzT93iMVjMZxLrTwS2xtgEq8olyrVdxwDdiD+DrHg8auKXVsOoQGMlM8YzvcxyU3IA+L2ZUjEx/VbU/WUbeCVVUnEs06sTfad5mAgcvmzX7aC3N/g7XX/YpicwKFGZxSkP5/ut/oji0ZEKYt2Ua9H6fHeXchCBxrICsY8qhLl7lbJ76x4Ad/TVGpVgYIukeuWs15TMabPcBnyUCUDsKj9JNGNl5CfLwoKDWVBeyhtHWMhHJgokgQX5D0O7M0RStyhb51qDITF4LtxU3+QFVO4kjAeUO1KxizC8pavAyICNEZdI885YdPjKoUfHO4pUO8IrRiwpa2I1K++S/XrK3YxUlx4rI/JTUtKL3lgE0uFF4jkB33nzr7EXs3dkJQUbJpsVGeNg0EcReF3IWOsKOzVRLHF3w1GDMwW0Pvc6lJR3Q9fy2lNf3KUIceeagVYvV2Jt9t81bLuNNXRzQhIavtZmBRrH/H2iLf0X80OpxE4q2r5NPrwT3NgmsZOav1jL7+MDbzdDTTn/8HicCpDs2JB/z1CnZA9bxtkoy5woUuu5bpL1KMgaQPJPmc9AuSJSwPlW0FJBlwGsZ1v
- kItWtFrQ
- XtB+DmNS/SuBB0PjADagrvQlBgl58kNf53m7AtKHOQ6wa/Atg1K+Spu9nyVfbH4wjWgYOR7yFOV6LJeWJDlNSviT6Y9/pRkxD8zgbHbEbK2dW5RdgoazHw4FW5CEu5F1Hso0aFtTgjKC4XkLgi39lsBbCIZcfe98bz8ZHxLvXTj69xQeaW+woq4YEk31wxY6hetqqQPzPxO7I7enRDHa4GZ+D1a11jPSi4fxw8ShplH4H4IYwEzJdaChf5ZkdtpOi/iUf+TDLdSGE0bumdPpmrp4Wpr0oPt3H/QYmPv71NhfiOkOscC1wC48dDTXtmIRfsps+YxIoxPgjDJacAAo9Fml+NohTAIoycUPxB8QtcVPB4FKT4brSukUTlrVUiN/iKDmPZW5VLKEMnhikRKS6265/I7I8X7YC0B5jZOwyOB4NAv8=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 17A751C0013
+X-HE-Tag: 1769557464-75487
+X-HE-Meta: U2FsdGVkX1+E780owT6RHXhjqng181hnRBqFAgN2BNc+6jui5PSPdmCP7MR8mdwx/my3vLiJfRaiyHVFcwGVJfuQjqTWxl31L+vzEV/ytjPVesoIQTA2C+e4IBcV+fA2gxk+F2QYDXUQwnJbFak0TL/EddUGJp+QRhW1ChERjRYUrjUsxILFYU0jmH+zZ3TLINRI55lWhAqz8S4iis9kEMAdpZracMXLaIlzJ7RD87NjsEPJ2gwydXyeFzj5Pz23gREzTD3SqtmATeTwALCE1n9XqzV2nV2ro70/cVhc+0HaCtx2sqiJUmu9XmMnGYt9YzHdCsBy0sdFYumMKwH9eWFOPblW4WK/UFaKKeF6UEwC6F/CW3sSoyiOc/4z72dW5l9my3rrEKoKU3lfpVYqhillHyqD1Lt4rvX6KRmeFU11L5gfQygK/wbS7RVkhHjDlgpBUN9M6e/D8Js8kyHWU3V6UQv8CdxCpIeVrl1fcSXgYvRoHZtTEoQmX2SarIbG6kplld6CoJ+V0HPUT61r7OL955YQKFb0z1Lov+uD48XqrXH+r5sYTzYzw3bhD3IYaeI1GRXevvZo0Sk7+51PvwxX5Ik4wFpKSQBhar4fH0c5SgFxcfZpTmZEX2mDY2YRgc6vuJ4K9L56NY5uzj3rfx6YjQ0bQWGnq0d43KCXUZuPUhu6dkOF6zZTJhZTW0759PIm26FSxGZqgbzq56CwEMhe26aw9IrfPJR/g/CY87XjRgjlgyRZQYpVac0JyPnu2652DE5QTv/I6FFXgtVYNJeKLB+TzsG4OkBAUZWKVovGh5Ilvs63DrG82Yz3QA3hY8SfbwjtTZ5AuJEsS/wxaoQSaNsbaha/3atBYUILFttZUwDCrmwnMzfW8s7iz2MmOB8SPB3cReCy7Uol/LLrQFvBzUusoO5mGRkql63C8pjmY6Z3+FYvVMEMOngI+7uiZWGhE3kKrdDnWkv3Daf
+ uvO6ajBV
+ sT7LKrOvIMAQ1D0DaLKn5SluriisCxWn9CBOaY5KwAq0XChG/hDLdye6Gi6BhfXIpitXMuXYUYu77fMLjBe0SrDD+nsb6iILkihiGcE3HLSsGoL95NuNdii35TLZVL/NgUYqfLD7aiIZlsh3cNjQCJKtLY96uLha+zc+lhE7a93uym5ridXSMlNoVp8c2oYCCAGPJC9h9EMQ1MCuWkR5AaniVQMlo2GqzNSmi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,34 +89,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 27, 2026 at 11:28:59PM +0000, Bing Jiao wrote:
-> Hi, Gregory, hope you are doing well.
+On Thu, Jan 22, 2026 at 10:25:09AM -0800, Thomas Ballasi wrote:
+> Memory reclaim events are currently difficult to attribute to
+> specific cgroups, making debugging memory pressure issues
+> challenging.  This patch adds memory cgroup ID (memcg_id) to key
+> vmscan tracepoints to enable better correlation and analysis.
 > 
-> I observed that during the allocation of a large folio,
-> alloc_migration_target() cleans __GFP_RECLAIM but subsequently applies
-> GFP_TRANSHUGE. Given that GFP_TRANSHUGE includes __GFP_DIRECT_RECLAIM,
-> I am wondering if this triggers a form of reclamation that should be
-> avoided during demotion.
+> For operations not associated with a specific cgroup, the field
+> is defaulted to 0.
 > 
-> struct folio *alloc_migration_target(struct folio *src, unsigned long private)
-> ...
-> 	if (folio_test_large(src)) {
-> 		/*
-> 		 * clear __GFP_RECLAIM to make the migration callback
-> 		 * consistent with regular THP allocations.
-> 		 */
-> 		gfp_mask &= ~__GFP_RECLAIM;
-> 		gfp_mask |= GFP_TRANSHUGE;
-> 		order = folio_order(src);
-> 	}
+> Signed-off-by: Thomas Ballasi <tballasi@linux.microsoft.com>
+> ---
+>  include/trace/events/vmscan.h | 83 ++++++++++++++++++++---------------
+>  mm/shrinker.c                 |  6 ++-
+>  mm/vmscan.c                   | 17 +++----
+>  3 files changed, 61 insertions(+), 45 deletions(-)
 > 
-> #define GFP_TRANSHUGE	(GFP_TRANSHUGE_LIGHT | __GFP_DIRECT_RECLAIM)
-> 
+> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+> index 490958fa10dee..20160e79eb0d7 100644
+> --- a/include/trace/events/vmscan.h
+> +++ b/include/trace/events/vmscan.h
+> @@ -114,85 +114,92 @@ TRACE_EVENT(mm_vmscan_wakeup_kswapd,
+>  
+>  DECLARE_EVENT_CLASS(mm_vmscan_direct_reclaim_begin_template,
+>  
+> -	TP_PROTO(int order, gfp_t gfp_flags),
+> +	TP_PROTO(gfp_t gfp_flags, int order, u64 memcg_id),
+>  
+> -	TP_ARGS(order, gfp_flags),
+> +	TP_ARGS(gfp_flags, order, memcg_id),
+>  
+>  	TP_STRUCT__entry(
+> -		__field(	int,	order		)
+>  		__field(	unsigned long,	gfp_flags	)
+> +		__field(	u64,	memcg_id	)
+> +		__field(	int,	order		)
+>  	),
+>  
+>  	TP_fast_assign(
+> -		__entry->order		= order;
+>  		__entry->gfp_flags	= (__force unsigned long)gfp_flags;
+> +		__entry->order		= order;
+> +		__entry->memcg_id	= memcg_id;
 
-I think the answer is that the demotion code is a mess and no one
-actually knows what it's doing.  We probably need to rework this
-entirely because we've now found at least 2 paths which clean and then
-add reclaim.
+Please pass memcg pointer to tracepoints and call mem_cgroup_id(memcg)
+here.
 
-~Gregory
 
