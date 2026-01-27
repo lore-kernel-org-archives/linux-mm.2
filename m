@@ -4,98 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEC40D2FEFA
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 23:05:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D43E1D2FEF9
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 23:06:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC4AB6B0005; Tue, 27 Jan 2026 18:05:57 -0500 (EST)
+	id 398086B0089; Tue, 27 Jan 2026 18:06:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C726E6B0089; Tue, 27 Jan 2026 18:05:57 -0500 (EST)
+	id 375836B008A; Tue, 27 Jan 2026 18:06:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B545E6B008A; Tue, 27 Jan 2026 18:05:57 -0500 (EST)
+	id 2780D6B008C; Tue, 27 Jan 2026 18:06:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A5A326B0005
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:05:57 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3ACD51A02C6
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:05:57 +0000 (UTC)
-X-FDA: 84379278354.17.4E7C445
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 16D0B6B0089
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:06:11 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2460C1AC9
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:06:10 +0000 (UTC)
+X-FDA: 84379278900.12.2DF1850
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8DC991C0003
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:05:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nGE7l3qY;
-	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id DBDF8140008
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:06:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lbORS222;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769555155;
+	s=arc-20220608; t=1769555168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EJ3is6mgWGK4kXak5oUg+68xbPi7fZ6qOv0IXaHf0/0=;
-	b=vxcH2rBZC3awJnVYmAUKbi/CYfzpMCeZlk0JCgzG1QXc3rWIvUn972Jw8O/ypz7eDzKnuF
-	tVjiho6yQFPsGnaicw/5sA1gAxbbFJxW0UvYsl6Myg3ebs9NIjCwhngQlCHDG7qh/5KU7V
-	veQZUWf09JQx+orKQ3hV/ht0M2Quqmc=
+	bh=c/SRkukJ6tppv0DBe3kVqUWicjzex62Inmnt+2ix6yg=;
+	b=Igqr8tvu17yrAPqNr9/E2K0hDQQVl3rf33T+ELC9UfaFTTJ+W162hgaS2eKekdWepj5KGH
+	a5fN0pZiNoRMujLh2FKNlfjLXASQglfKtJeWG1E1RTPYYaE70UMDfPNm8Bslx177CajpAp
+	PzF12Hxsyjt7q2eyn5QdgfWqY188pj4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nGE7l3qY;
-	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lbORS222;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769555155; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769555168; a=rsa-sha256;
 	cv=none;
-	b=wh4QANHLBQq58EqRxrOF1CC8EM2RaRHPaD0RbvzTQZBTbhJhsljPBJZJa107ATyRWAwKBo
-	Tyeq8mfS6XRHCBv9QAMsLNx623Ct7RMWRZdDmujxE5EuDF6dMFEHBdvDkbQdPHmom2slSG
-	SZhzYwVUlkO8jaISM0YAoghHmyupHtE=
+	b=oHTUSa8/iOPdhQt+znN56lK7Z+mCt2cailoRnuAqPLoo+qnRppqe8xUqkj1e1LGualjq4R
+	D1H12cD4nPbnE+yLIwzeUr616kxXxyrqmKljwFVAzTm190EAImgblnk4kwUOw8j5u1mFYH
+	daGGrWDAIgSKKqVticMO2IlmMqXnpf8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD47B60007;
-	Tue, 27 Jan 2026 23:05:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676BCC116C6;
-	Tue, 27 Jan 2026 23:05:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6438760007;
+	Tue, 27 Jan 2026 23:06:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3E1C116C6;
+	Tue, 27 Jan 2026 23:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769555154;
-	bh=8HE9ck1rMupu0yFyzoFwAZwML557gOYr9BIByUseff0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nGE7l3qYK2KJQW0bHK3UT/9rHgv8YTaqXMmRp/LEFU7u41IhlFc+GfdBUtH/UszYO
-	 rjj3iubZXDnJr04n5qPx2GXHlXHI9dGnMBghyGDF3eVIMhOLTztyGhHatT/fJ0vCEn
-	 CqiOk8XfWlcaox9Q2q1lHMaGKkjKHokSfJ5pdtlrpGjcrIEex5FGRot6b5KZuhKWwD
-	 1yVk0TNBP5UOEZ41922Vn74RTDXugH/bz7km091u9hLP3df3+276sU/IuzyQ7B4nLQ
-	 rPxzSuYdGorBQhGIF1jW3jSxxEyvemopb8kxaCD2sclhTCnI2PdlKCNYPCw+ueVrwb
-	 7HX61WaaW8wAw==
-Date: Tue, 27 Jan 2026 23:05:48 +0000
-From: Mark Brown <broonie@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	maple-tree@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Alice Ryhl <aliceryhl@google.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Kujau <lists@nerdbynature.de>, Aishwarya.TCV@arm.com
-Subject: Re: [PATCH v2 22/29] maple_tree: Use maple copy node for
- mas_wr_rebalance() operation
-Message-ID: <bd1c3356-11a1-4d0b-bf58-47eb21bfd24d@sirena.org.uk>
-References: <20260121164526.2093265-1-Liam.Howlett@oracle.com>
- <20260121164526.2093265-23-Liam.Howlett@oracle.com>
+	s=k20201202; t=1769555168;
+	bh=GZx2go61irl/yrU3n13wEmtTxxomni09R+ySI530Rio=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lbORS2221mW4UB7Lc78M075DHdbfBzuAOnIJOGnqtOVAb1UBVbld5xFTahgT2k+4y
+	 xyOEhvem8/S2x+iQxNzPgoRodqPGLzza1t781oLP2BVOdW8so6NHogSdOSZp4nOL9V
+	 aIzFDiQ8s0swPdHCwrDK9jiCJrAm7jeoXWKv42pOcvPGRACH1HX4BLqyro+ASH+LL8
+	 mo9mDnsMMorr9I86BPO77e4aMCdK6YPxhZttnWgwTL8ETXBSzs5KCqFtVq9hFZp3XP
+	 d9+/vnbUvZWv91I7tfhhBFSKcihw4RepYQXh/3Aex++BEDr4q2uNSi5JLiMwybcI5n
+	 RzEMzYINQ/Fkw==
+Message-ID: <793fb531-1fda-4de4-b73f-fb46444ca613@kernel.org>
+Date: Wed, 28 Jan 2026 00:06:01 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NN5iOyM+vcCcTCTW"
-Content-Disposition: inline
-In-Reply-To: <20260121164526.2093265-23-Liam.Howlett@oracle.com>
-X-Cookie: Nothing is but what is not.
-X-Stat-Signature: 7y7sowpckpn5ssg8nggj6nenrzjpbz6x
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/8] mm/memory_hotplug: add APIs for explicit online type
+ control
+To: Gregory Price <gourry@gourry.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+ kernel-team@meta.com, dan.j.williams@intel.com, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, mst@redhat.com, jasowang@redhat.com,
+ xuanzhuo@linux.alibaba.com, eperezma@redhat.com, osalvador@suse.de,
+ akpm@linux-foundation.org
+References: <20260114085201.3222597-1-gourry@gourry.net>
+ <20260114085201.3222597-4-gourry@gourry.net>
+ <b3d435d2-643f-4dad-9928-bc7fb5080181@kernel.org>
+ <aWfR86RIKEvyZsh6@gourry-fedora-PF4VCD3F>
+ <4520e7b0-8218-404d-8ede-e62d95c50825@kernel.org>
+ <aXLCAtwMkSMH3DNj@gourry-fedora-PF4VCD3F>
+ <20260123182526.00005ee8@huawei.com>
+ <aXPIGMVAvVEBgFhJ@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <aXPIGMVAvVEBgFhJ@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DBDF8140008
+X-Stat-Signature: kmkwfeocwyg4jq8zma89cyeej6ngmsn3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8DC991C0003
-X-HE-Tag: 1769555155-797733
-X-HE-Meta: U2FsdGVkX19JJJL87GyjGFIZNr5L6q3ykmooLd9Cb78i3NK1OqQ1rrL16U9IGrW39CjtdbCaPYG2kEdPAb3zNU2P1MhpDbUUlDiIdu7SGcsUtPiQLk+AGHgsQPfzcTg+diiro7hjjtRQ8C2ZalIZur3IIqA7bFwMXViEAlMti52Latat0sbGjZO5ykNv9JVE2Lrc2OYiUaVrXKPH9FLrXv0ZDB9OoDbGVNu6PjtaQVAq4Z9W0lCDxJic/HGsXArTfKDkWmIGCSSvLOJdE2JmSThFkMNwlhcZ51cweYSbGprrmSiZrY41I5y6w9vmkIgOm8FNMGAdKusQKZxLom6ddURtqLFYqsFFy+Luiz2i3kxveXqUmCyOQkVfHwjJGrxhBCKXYPfhZK1y3Kq805g+kjsel87VK4M/C5LXC87ehTfMHZC8bvF9THy/bEaVBlMjdwqEoSjTv2JkRRnjzYb11x8pYfdOOdC24ARV35OP8+BkJ5MnKq3Z/t5xSNniCSVz9uZaWxyTfGFGoXbdiPuaJtsbimW7hqLPdefaEdarexo5koJWMNtnG71iFnvwLDDZvratc/oSDJLnt3ndpkLvLZRbtUxjqGEfKFPd2KWyqD+ruihKQrj5bxEh2SMXyJYpKW3cAojjstHGZoW2ZYZ5CMSP6FNLEAiNhEGEONgYeT0p649a0zDYU1R0373xysPzuqDc0zh+CNAlZFdK/YnPiLz+Sl4UC4wBYakv3ormpo+POL19WHCCDiItbnMw6l9hHZ9lFJuGgWNl60lotwR1S2HGRC2Dqy3SZKX6u6b+D2FxakOCZJgtNslAdRESyzaA/tmFCgP7kser5FERGS3+jlkeetjL+blVDK5Q6EhKAdJRRabRFjnXAP1o+FwvoVMhWO1A8jkMII5KR/mV99WBP5F3Zi0kGCOJkmb06w9d38DOh4SomfPJsqSd/nCJq2qiNwcxWr9tcyxUCZUaUJn
- yYfJNEXB
- k6hvjWGLhbhi0TluQhhm/uHv6paeZjX82r+58spcCPhGj1ggdAl//Lcqhyd895E/X87NV+dMX8apoBmeC/8WymPjAKWUwHBK8KcHTKR5mv9A8emtzBzMfg21i9yeY6G++XPpQumplsuS7/Iz+Fq+gPBzOCM9byJ9x/0hXkc8hQjxim2URxhiYcAzfh312/B8jObvZDYK+iF+H3fKYDuIXTLKtoWXbnEzgDCxGXXiMAbgiczoF61Yonw/TMogkzJJv/5jT2a/2vkIUmw41vMH6P6Ct3n97kyX88rXdQ7n2454m66T5644nS4C933AlCtThzVVGMWcrJSHZOdz+UWrviiM0JoO0m39YjXb3Lg1vK8uvS4vMhNNpkAF6jMPkeXwKxwFDbflZoGauUEI6pAGlkb8KKwC9xpFo6FjgclYocq0fDDFun9Fvoz3mso4gFzWbO3vwU4ygEZoImJJH+ZKogTt29tWKcrn5m9G7pYWTC+J3w91ybTfRku3ICXHq7loKo+IlFbqEccuE5w3v5LJhqX1D3Q==
+X-HE-Tag: 1769555168-261294
+X-HE-Meta: U2FsdGVkX18oc2gwuE5+tIOHx0R9rxPGabcjVecSw4S1yXw00Pjpx3YvJw71Z8OsrQy1CTxYAvp27lXOUm822ysieBAa09MVxXSfDRQ8DVqvNQlszL4QVgWPXXLp9tFtMu1s9oR4vB5y9UAivNyNETeR/rV6JsNzcw1GGhXHAKlYpHQmWBeAal52rJS6EuuJPQrbdecMBpayvX5jwcgrI+/zyNc+cZQPq7UGVqrVYSnN520Lud/JbI0ad8vncYFVIWFnUPX3wONktypyn6JYHO9iS64xFT/aumb2CZBxLTT/cfnNawmG6GCtbTLZbc6RwW9L0jD6ZezsJj/6q7ANP75jnSgdXXiGppJGaV2bOYwcRp3KjgG0CvAUOFVxfkz5Poj34NEskWqU81Z0hWvJj9YjWbR65ApKVpKeqTQ4QQvRhIJ2skQERJuNoDBG0P6kSLhRx6SHOylHlgcPCZIaCdu4Rwko6quZvh3g6yNgAQ1NZSeCFn2rVorxqBh9wgVJNFE13MK+q4THyviJmej7SlHVazjSWaZhDXeJXz/tAPbSKLD7ychofC++rcUsgzuB40b1owt/34baeoo89tVfm/OSzIiML6IfQ4nBhjGDuSyV1uyOh8v9R2NfXmDfGIavUJvG4mg5LIsmdBe6FaiR4/jWRwj8sRtmRlHlhcHytX+NsKpQRnsd++vkBJW9WAH8dFXU/klK+EQruo2s0f5eMFgcGTHRIGhuU0vKDlC/N9TTLhTATfo8JmrXPOR1rB0KSkEq9x/6aHYy+1PTlow4dbyB0s6bggzO2wNEQ05PACSS/QAmQK+6P64R4jvr6E7NGLOCiHCNDkiSwvq12roT+BE6n6Zi3SdPUgEp56RJMBZ/mPT/pJ1T5+uV5MiYxRKvqG6CljNh6YbmmtTsvq/WWsDzsPljSvG3rp1+djHssCG6DJ5yFMiEG2SADccdswG85DwJudsvZZ2b8eUu7zm
+ eojFTuS9
+ xddtX18J7mylJPGY/dDSb1vvsfYPcGz+5bCCt0vi7pvCh0h6cAROU4oXMrLUtmptT9zGrwfnEO4Rl3aJlg3yxobHLqGiWD3FwT8l7aGi1FrtBGcuOgjOOUgHIcA4F0E/Tzb6SULv2AnJbSDaUdhMWK4fH4+SlggNSUawpTHLMt5bFgE1GyVIPaXZYDMHbQncnQ75avW0PSALFI8Xv36hylq+qVCYlhC8UyAmdxjGmypzdascsQv/GYjTlXnOCGalDoPCVeNCbOYHMevaqGfHvQJU4zj4+uyX2bQT8s6W4jejDPc047g0qBhC51kFXyXcyKZAwAWpw/8XHyQfB1OyuQPNGGAWOEEvYQ8QYrYXP2iuGEQ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,149 +150,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 1/23/26 20:12, Gregory Price wrote:
+> On Fri, Jan 23, 2026 at 06:25:26PM +0000, Jonathan Cameron wrote:
+>> On Thu, 22 Jan 2026 19:34:10 -0500
+>> Gregory Price <gourry@gourry.net> wrote:
+>>
+>>>
+>>> Ah, this was lost on me.
+>>>
+>>>
+>>> unclear to me how to restrict a function to specific drivers, but i can
+>>> add add_and_online_memory_driver_managed() trivially so no big issue.
+>>
+>> Is EXPORT_SYMBOL_GPL_FOR_MODULE() enough?
 
---NN5iOyM+vcCcTCTW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It's also fine for me to just limit add_memory_driver_managed() to 
+in-tree driver by using EXPORT_SYMBOL_FOR_MODULES.
 
-On Wed, Jan 21, 2026 at 11:45:19AM -0500, Liam R. Howlett wrote:
-> Stop using the maple big node for rebalance operations by changing to
-> more align with spanning store.  The rebalance operation needs its own
-> data calculation in rebalance_data().
->=20
-> In the event of too much data, the rebalance tries to push the data
-> using push_data_sib().  If there is insufficient data, the rebalance
-> operation will rebalance against a sibling (found with rebalance_sib()).
+But it might make nvidia unhappy :)
 
-I'm seeing a test failure in the LTP linkat02 test on arm64 which we're
-also seeing on a range of platforms in the Arm lab.  A NULL pointer
-deference is generated handling the syscall in the updated code (log for
-the actual next-20260126 commit):
+So maybe just adding a __add_memory_driver_managed() that gives us more 
+control and using EXPORT_SYMBOL_FOR_MODULES is being a bit nicer for OOT 
+modules.
 
-[  361.882849] /opt/kirk/kirk[432]: linkat02: start (command: linkat02)
 
-=2E...
+(I guess __add_memory_driver_managed is a better name than 
+add_and_online_memory_driver_managed, thinking about it)
 
-[  362.680362] Unable to handle kernel NULL pointer dereference at virtual =
-address 0000000000000000
+>>
+> 
+> Is the issue just that add_memory_driver_manage is `extern`?  
 
-=2E..
+Heh, the "extern" is simply not necessary and can be dropped from all 
+such functions. Not related to this. It's all about EXPORT_SYMBOL_GPL 
+allowing anything that claims to be a GPL module to use this functionality.
 
-[  362.917911]  __pi_memset_generic (arch/arm64/lib/memset.S:198) (P)
-[  362.922582]  mas_wr_rebalance (lib/maple_tree.c:3497)
-[  362.926723]  mas_wr_store_entry (lib/maple_tree.c:3534)
-[  362.930953]  mas_erase (lib/maple_tree.c:1125 lib/maple_tree.c:4981 lib/=
-maple_tree.c:5590)
-[  362.934390]  mtree_erase (lib/maple_tree.c:5916)
-[  362.937827]  simple_offset_remove (fs/libfs.c:260 fs/libfs.c:335)
-[  362.942057]  shmem_unlink (mm/shmem.c:3999)
-[  362.945583]  vfs_unlink (fs/namei.c:5470)
-[  362.949020]  filename_unlinkat (fs/namei.c:5540 (discriminator 1))
-[  362.953162]  __arm64_sys_unlinkat (fs/namei.c:5569 (discriminator 1) fs/=
-namei.c:5561 (discriminator 1) fs/namei.c:5561 (discriminator 1))
-[  362.957391]  invoke_syscall (arch/arm64/include/asm/current.h:19 arch/ar=
-m64/kernel/syscall.c:54)
+> If so
+> yeah, i can just do the EXPORT_*_GPL path.
+> 
+> If you prefer FOR_MODULE, then yes I can do this.
 
-Full log:
+I'd go for
 
-   https://lava.sirena.org.uk/scheduler/job/2407192#L3795
+	EXPORT_SYMBOL_FOR_MODULES(__add_memory_driver_managed, "dax")
 
-These appear to bisect to this commit, there were some issues with the
-setup of the bisect which fortunately don't seem to have confused things
-and some timeouts stopped the last couple of jobs completing but we've
-got adjacent commits showing passes and fails and of the two candidates
-the other is a refactoring that doesn't look at all plausible.  I'm
-rerunning a clean bisect but expect it to confirm this result.
+(or would it be the kmem module?)
 
-# good: [50814c5ce8d8f6751fd49c818abeb8853f8be2df] Merge branch 'for-linux-=
-next-fixes' of https://gitlab.freedesktop.org/drm/misc/kernel.git
+-- 
+Cheers
 
-=2E..
-
-# bad: [a85cfbd09f2d2f3bfab8fbe8246d0ae43a0c1628] Merge branch 'master' of =
-https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git
-git bisect bad a85cfbd09f2d2f3bfab8fbe8246d0ae43a0c1628
-# test job: [75fe66db9e85a2fd9743f7598a2aaea9eb5fbfd7] https://lava.sirena.=
-org.uk/scheduler/job/2407316
-# bad: [75fe66db9e85a2fd9743f7598a2aaea9eb5fbfd7] Merge branch 'xtensa-for-=
-next' of https://github.com/jcmvbkbc/linux-xtensa.git
-git bisect bad 75fe66db9e85a2fd9743f7598a2aaea9eb5fbfd7
-# test job: [0578997f52fb9a1b9adfc5fe5a95ceab4bb331d2] https://lava.sirena.=
-org.uk/scheduler/job/2407382
-# bad: [0578997f52fb9a1b9adfc5fe5a95ceab4bb331d2] Merge branch 'soc_fsl' of=
- https://git.kernel.org/pub/scm/linux/kernel/git/chleroy/linux.git
-git bisect bad 0578997f52fb9a1b9adfc5fe5a95ceab4bb331d2
-# test job: [a85886367078a64dcffefe0ccd9054f6237b791a] https://lava.sirena.=
-org.uk/scheduler/job/2407432
-# bad: [a85886367078a64dcffefe0ccd9054f6237b791a] Merge branch 'mm-unstable=
-' of https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-git bisect bad a85886367078a64dcffefe0ccd9054f6237b791a
-# test job: [3b545d6116fcf6d257bf2d50e7607351fdc81b76] https://lava.sirena.=
-org.uk/scheduler/job/2407463
-# good: [3b545d6116fcf6d257bf2d50e7607351fdc81b76] mm/memory: add tree limi=
-t to free_pgtables()
-git bisect good 3b545d6116fcf6d257bf2d50e7607351fdc81b76
-# test job: [8d2b3ef6f7d7b0a531c4c733224583af946a424b] https://lava.sirena.=
-org.uk/scheduler/job/2407522
-# good: [8d2b3ef6f7d7b0a531c4c733224583af946a424b] maple_tree: inline mas_w=
-r_spanning_rebalance()
-git bisect good 8d2b3ef6f7d7b0a531c4c733224583af946a424b
-# test job: [b75bed193d677f6ae26df8851f4d5546fb7d3599] https://lava.sirena.=
-org.uk/scheduler/job/2407554
-# good: [b75bed193d677f6ae26df8851f4d5546fb7d3599] tsacct: skip all kernel =
-threads
-git bisect good b75bed193d677f6ae26df8851f4d5546fb7d3599
-# test job: [4aededd81f86a8090ea8c294071425aa12116ef8] https://lava.sirena.=
-org.uk/scheduler/job/2407597
-# good: [4aededd81f86a8090ea8c294071425aa12116ef8] Merge branch 'pin-init-n=
-ext' of https://github.com/Rust-for-Linux/linux.git
-git bisect good 4aededd81f86a8090ea8c294071425aa12116ef8
-# test job: [201b27d852d1aecf3abce28721c6004ec2690b8d] https://lava.sirena.=
-org.uk/scheduler/job/2407634
-# good: [201b27d852d1aecf3abce28721c6004ec2690b8d] Merge branch 'mm-nonmm-s=
-table' of https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-git bisect good 201b27d852d1aecf3abce28721c6004ec2690b8d
-# test job: [7bc25a7aa0443b3beb3610e505d3147eece02766] https://lava.sirena.=
-org.uk/scheduler/job/2407673
-# bad: [7bc25a7aa0443b3beb3610e505d3147eece02766] maple_tree: add cp_conver=
-ged() helper
-git bisect bad 7bc25a7aa0443b3beb3610e505d3147eece02766
-# test job: [a2c17a4f4db66772701547fc30f66d1df2fceafb] https://lava.sirena.=
-org.uk/scheduler/job/2407724
-# good: [a2c17a4f4db66772701547fc30f66d1df2fceafb] maple_tree: add cp_is_ne=
-w_root() helper
-git bisect good a2c17a4f4db66772701547fc30f66d1df2fceafb
-# test job: [525e5511c009c0d6725e534134ec31eeba148da0] https://lava.sirena.=
-org.uk/scheduler/job/2407765
-# bad: [525e5511c009c0d6725e534134ec31eeba148da0] maple_tree: add copy_tree=
-_location() helper
-git bisect bad 525e5511c009c0d6725e534134ec31eeba148da0
-# test job: [6ad069085c621d39fad4d1835af7e563975dcf7e] https://lava.sirena.=
-org.uk/scheduler/job/2407822
-# skip: [6ad069085c621d39fad4d1835af7e563975dcf7e] maple_tree: use maple co=
-py node for mas_wr_rebalance() operation
-git bisect skip 6ad069085c621d39fad4d1835af7e563975dcf7e
-# only skipped commits left to test
-# possible first bad commit: [525e5511c009c0d6725e534134ec31eeba148da0] map=
-le_tree: add copy_tree_location() helper
-# possible first bad commit: [6ad069085c621d39fad4d1835af7e563975dcf7e] map=
-le_tree: use maple copy node for mas_wr_rebalance() operation
-
---NN5iOyM+vcCcTCTW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAml5RMsACgkQJNaLcl1U
-h9Aoqwf/b/A73xKoY5WnIDdh6X8UBmES6YP3sTkPMgfdtVi0igL8IWf1B5/UKtLM
-xRU/++CPgIGr9BuTeTdwpInsyv9ec71pqWkpJwcQXYBXOkYZkpazbVEowsWu5DMt
-0Vtj380JKL0Mex1KObF8XPivBetTQeYQvimprDgd1vHeZYpuaY25RXdxgiqi1azB
-9CgLz2izmpG6J9cF/nkRyUS/q6/h5o0fOzO1YQbFBUjFn08S2yUkCFz/NwPoZ5Yl
-Jvv/ztcsQEl0/Yu1cIJr9hB0WIk9glsNvpPsJ55lmgc0b7o5OwQNG+5+EaUvsHfZ
-D4gHkn48MmppcoGtGA5nMvI3w52aFg==
-=pKb2
------END PGP SIGNATURE-----
-
---NN5iOyM+vcCcTCTW--
+David
 
