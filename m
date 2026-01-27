@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D43E1D2FEF9
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 23:06:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DAD4D2FEFA
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 23:07:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 398086B0089; Tue, 27 Jan 2026 18:06:11 -0500 (EST)
+	id 5B4D46B008C; Tue, 27 Jan 2026 18:07:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 375836B008A; Tue, 27 Jan 2026 18:06:11 -0500 (EST)
+	id 53EE56B0092; Tue, 27 Jan 2026 18:07:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2780D6B008C; Tue, 27 Jan 2026 18:06:11 -0500 (EST)
+	id 441B56B0093; Tue, 27 Jan 2026 18:07:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 16D0B6B0089
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:06:11 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2460C1AC9
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:06:10 +0000 (UTC)
-X-FDA: 84379278900.12.2DF1850
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DBDF8140008
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:06:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lbORS222;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 321266B008C
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 18:07:07 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BAE608B678
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:07:06 +0000 (UTC)
+X-FDA: 84379281252.13.5772F0C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D644CA000A
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 23:07:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vr9Fpvs6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769555225; a=rsa-sha256;
+	cv=none;
+	b=b5gmEtMiFtrZu2hU9cniOv/Gnxg8M/cgOgJn6DlaCs161rqsmcH/Pvwz+c6Txo4fESpQqB
+	ZTflw5N9dyTrGJMwLaSeR6WU0z2Fc0scnjX1uzf4c2E6guz5qMqDOPbGr9Lu2hT1bO/eFs
+	/HE37Zpp0baPmJrE8IoT79xtv+pIgoo=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vr9Fpvs6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769555168;
+	s=arc-20220608; t=1769555225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c/SRkukJ6tppv0DBe3kVqUWicjzex62Inmnt+2ix6yg=;
-	b=Igqr8tvu17yrAPqNr9/E2K0hDQQVl3rf33T+ELC9UfaFTTJ+W162hgaS2eKekdWepj5KGH
-	a5fN0pZiNoRMujLh2FKNlfjLXASQglfKtJeWG1E1RTPYYaE70UMDfPNm8Bslx177CajpAp
-	PzF12Hxsyjt7q2eyn5QdgfWqY188pj4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lbORS222;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769555168; a=rsa-sha256;
-	cv=none;
-	b=oHTUSa8/iOPdhQt+znN56lK7Z+mCt2cailoRnuAqPLoo+qnRppqe8xUqkj1e1LGualjq4R
-	D1H12cD4nPbnE+yLIwzeUr616kxXxyrqmKljwFVAzTm190EAImgblnk4kwUOw8j5u1mFYH
-	daGGrWDAIgSKKqVticMO2IlmMqXnpf8=
+	bh=4gAbzJORaevWihXfnTOpdgdgK4mH/RoVtZbdN9W6P/A=;
+	b=p7F0ya5lTEezWkW4UR96CFM8DW2ACHEK3WQyNpSJuRBdMQIAz1rC9ObF8M3hNFlNy6If0X
+	MlBbI3GMLqm90IMLgpXJjrqPK4DjcLZIjoHepK4M7ZUsEKE3C3C8c6j5GhTwI8TP4W3vLY
+	gdyFDhPzgpvgT37Hommr7ulZj4IveRI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6438760007;
-	Tue, 27 Jan 2026 23:06:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3E1C116C6;
-	Tue, 27 Jan 2026 23:06:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 81A9B43A24;
+	Tue, 27 Jan 2026 23:07:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96402C116C6;
+	Tue, 27 Jan 2026 23:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769555168;
-	bh=GZx2go61irl/yrU3n13wEmtTxxomni09R+ySI530Rio=;
+	s=k20201202; t=1769555223;
+	bh=JySjp5riAZLd6mmNMgHnUjqyKf0qlSv7WXkRBVPO1CI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lbORS2221mW4UB7Lc78M075DHdbfBzuAOnIJOGnqtOVAb1UBVbld5xFTahgT2k+4y
-	 xyOEhvem8/S2x+iQxNzPgoRodqPGLzza1t781oLP2BVOdW8so6NHogSdOSZp4nOL9V
-	 aIzFDiQ8s0swPdHCwrDK9jiCJrAm7jeoXWKv42pOcvPGRACH1HX4BLqyro+ASH+LL8
-	 mo9mDnsMMorr9I86BPO77e4aMCdK6YPxhZttnWgwTL8ETXBSzs5KCqFtVq9hFZp3XP
-	 d9+/vnbUvZWv91I7tfhhBFSKcihw4RepYQXh/3Aex++BEDr4q2uNSi5JLiMwybcI5n
-	 RzEMzYINQ/Fkw==
-Message-ID: <793fb531-1fda-4de4-b73f-fb46444ca613@kernel.org>
-Date: Wed, 28 Jan 2026 00:06:01 +0100
+	b=Vr9Fpvs6d0EEFlm4bRch6d4FLbnrB3uR9XUZB+6kxeIh5Gyst9s6dSw4NXLPzopYt
+	 XqwJV7Wnspg5pXLZXLnpM8u4tvMBkIHTJQ0Aa3TC6l4+NEAAe1TuLq2A/SZ5fW4hAk
+	 WOU1kcDPd8jgY+iJMdpEDFzhp/MyYRYBHKb4IRwaBLT+kDwRFKonaMqzzJQKkF9bnJ
+	 APJREuhAfnpqpBlGU+Rkz97qWBM2pG6xxczmOQoPtRgLSjvvmt5sCjqKuowoH188gw
+	 rNcWsvHbSVi1cMu6+i1La2I3jhMb8sceN1rhUwVuotOIbsT7MpMCO0oKxYQesQrl6P
+	 qIrKq5h/E13Ag==
+Message-ID: <684f11a3-1958-4562-880c-7e0afd3ae3b5@kernel.org>
+Date: Wed, 28 Jan 2026 00:06:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] mm/memory_hotplug: add APIs for explicit online type
- control
-To: Gregory Price <gourry@gourry.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: Re: [PATCH 7/8] dax/kmem: add sysfs interface for runtime hotplug
+ state control
+To: Gregory Price <gourry@gourry.net>
 Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
  linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
  kernel-team@meta.com, dan.j.williams@intel.com, vishal.l.verma@intel.com,
@@ -79,13 +78,11 @@ Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
  xuanzhuo@linux.alibaba.com, eperezma@redhat.com, osalvador@suse.de,
  akpm@linux-foundation.org
 References: <20260114085201.3222597-1-gourry@gourry.net>
- <20260114085201.3222597-4-gourry@gourry.net>
- <b3d435d2-643f-4dad-9928-bc7fb5080181@kernel.org>
- <aWfR86RIKEvyZsh6@gourry-fedora-PF4VCD3F>
- <4520e7b0-8218-404d-8ede-e62d95c50825@kernel.org>
- <aXLCAtwMkSMH3DNj@gourry-fedora-PF4VCD3F>
- <20260123182526.00005ee8@huawei.com>
- <aXPIGMVAvVEBgFhJ@gourry-fedora-PF4VCD3F>
+ <20260114085201.3222597-8-gourry@gourry.net>
+ <3555385d-23de-492c-8192-a991f91d4343@kernel.org>
+ <aWfcYjZVrROHfGyh@gourry-fedora-PF4VCD3F>
+ <57c5f44f-3921-478b-843b-877fae536591@kernel.org>
+ <aXLEOjgVyGYAU_zk@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <aXPIGMVAvVEBgFhJ@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aXLEOjgVyGYAU_zk@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DBDF8140008
-X-Stat-Signature: kmkwfeocwyg4jq8zma89cyeej6ngmsn3
 X-Rspam-User: 
-X-HE-Tag: 1769555168-261294
-X-HE-Meta: U2FsdGVkX18oc2gwuE5+tIOHx0R9rxPGabcjVecSw4S1yXw00Pjpx3YvJw71Z8OsrQy1CTxYAvp27lXOUm822ysieBAa09MVxXSfDRQ8DVqvNQlszL4QVgWPXXLp9tFtMu1s9oR4vB5y9UAivNyNETeR/rV6JsNzcw1GGhXHAKlYpHQmWBeAal52rJS6EuuJPQrbdecMBpayvX5jwcgrI+/zyNc+cZQPq7UGVqrVYSnN520Lud/JbI0ad8vncYFVIWFnUPX3wONktypyn6JYHO9iS64xFT/aumb2CZBxLTT/cfnNawmG6GCtbTLZbc6RwW9L0jD6ZezsJj/6q7ANP75jnSgdXXiGppJGaV2bOYwcRp3KjgG0CvAUOFVxfkz5Poj34NEskWqU81Z0hWvJj9YjWbR65ApKVpKeqTQ4QQvRhIJ2skQERJuNoDBG0P6kSLhRx6SHOylHlgcPCZIaCdu4Rwko6quZvh3g6yNgAQ1NZSeCFn2rVorxqBh9wgVJNFE13MK+q4THyviJmej7SlHVazjSWaZhDXeJXz/tAPbSKLD7ychofC++rcUsgzuB40b1owt/34baeoo89tVfm/OSzIiML6IfQ4nBhjGDuSyV1uyOh8v9R2NfXmDfGIavUJvG4mg5LIsmdBe6FaiR4/jWRwj8sRtmRlHlhcHytX+NsKpQRnsd++vkBJW9WAH8dFXU/klK+EQruo2s0f5eMFgcGTHRIGhuU0vKDlC/N9TTLhTATfo8JmrXPOR1rB0KSkEq9x/6aHYy+1PTlow4dbyB0s6bggzO2wNEQ05PACSS/QAmQK+6P64R4jvr6E7NGLOCiHCNDkiSwvq12roT+BE6n6Zi3SdPUgEp56RJMBZ/mPT/pJ1T5+uV5MiYxRKvqG6CljNh6YbmmtTsvq/WWsDzsPljSvG3rp1+djHssCG6DJ5yFMiEG2SADccdswG85DwJudsvZZ2b8eUu7zm
- eojFTuS9
- xddtX18J7mylJPGY/dDSb1vvsfYPcGz+5bCCt0vi7pvCh0h6cAROU4oXMrLUtmptT9zGrwfnEO4Rl3aJlg3yxobHLqGiWD3FwT8l7aGi1FrtBGcuOgjOOUgHIcA4F0E/Tzb6SULv2AnJbSDaUdhMWK4fH4+SlggNSUawpTHLMt5bFgE1GyVIPaXZYDMHbQncnQ75avW0PSALFI8Xv36hylq+qVCYlhC8UyAmdxjGmypzdascsQv/GYjTlXnOCGalDoPCVeNCbOYHMevaqGfHvQJU4zj4+uyX2bQT8s6W4jejDPc047g0qBhC51kFXyXcyKZAwAWpw/8XHyQfB1OyuQPNGGAWOEEvYQ8QYrYXP2iuGEQ0=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D644CA000A
+X-Stat-Signature: ho8wwxieg96hn13bk6ofer6xstrn74dk
+X-HE-Tag: 1769555224-214606
+X-HE-Meta: U2FsdGVkX19YdReAdZqdRLyMW1thaXmQcOoqWfZCypqoYccT3pnX1D++s3H9iYC/sdNEEaf2jFWvZvI2aq1AO8+uwflkkCBBdD0/o5HR9d4Y7LNpUjlIGo4lnUNyPlVv3XohYq/OOS6kCoNxV385I4aDNu1/jyP+vacRaB4cDNsqRSnAe2sLR3w9s+s7cUq67glajrhZ/EWCcrt+enCbOiW7/J3tF4QOee8jmqERq87jgqucu2P03bsCaUDU7vuGd2sBmhwj//4yTN3CDjujUnKKmoJ9jqdKJaT/uGzRj6iQUEQJtNDTJ1KQ2VVkJ0z21C4ILIpPt9aL306cUVErQkBeDEX4A++XHDYRdkB7ZLhV1uFWR8zRhDF0T4eQByS2ne1ZfCdP9ptZiQ8COxekSW81RXn1z0090lmBPyDSXv1kSiWovb4QZZxSX63/U+su5+ttNb9KJEH5WL+OZ7GrzNLhSxv7UcisropXhBeXuTkt0+GCdRLy0hKoil1KRU5p2OXDVfCeO8Bl+iFkNsG9geWNqRO+yTaDJBwCIqTqfR3enE9IZE8iuiBKk7VnWvZ1r4KbbZd8djOWQ+QkLJ+ctDLCkaEBfVZ00Fzi7QWV6VPr3PA2Xw9rW80MBXfzuj46bHyN1ijFRG7BHfG8JrdxSQ6jzpAAxzzwAgEDiLNlnu220oiEJ3DmLDz2bvc3zqQnZEviYjceUb2HzWSQebznTSeAjXYA3LHNQAnVRz/WKTHDIkUBMHVVSPY+6REA+nFRQ995rtkcHmDAQw3W+xVF1ap9omEtI2TzQwcObKM74zO4LvEkbFx0ZXnhlgXfQ9icR6LAPYsbVeUYF+1g56YiRIFp+v5i551EoMAy13S0wvL/iAKE9Zf7+v3SXCq/a+6qKDifAIiqFuIEDAuBCJ685N5LULs/dqVqn3s6Aakp5uQ2FGl/m/FSLa03Eap8bLwVu/uHfdmovB8nsbNSKyJ
+ 8C8+GaZ9
+ 8r9DkvpvzfIFRDPfTDaR+m088liwvMhXuV+HYOcx8kwqi2XRqzmVbALQ/VaD+84e6Id1O8aOvPZl1INrFxgHo4o+xs/JJaj17GsDdzEY0bes9Nc9k9Wok895JrttWgSy3MTNIb6gdOjz8a7sxT3iCL7Kh2OJFzZybdn6x+N5bdeyYRI3i8CfGnCamGdxwNR1+aoTqIymb0SycCptaBjzSEtk1tcKSqhZjgChxpUY0nFdJv/gsjobZ6sM5WMxH/h2JFKa7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,51 +147,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/23/26 20:12, Gregory Price wrote:
-> On Fri, Jan 23, 2026 at 06:25:26PM +0000, Jonathan Cameron wrote:
->> On Thu, 22 Jan 2026 19:34:10 -0500
->> Gregory Price <gourry@gourry.net> wrote:
+On 1/23/26 01:43, Gregory Price wrote:
+> On Thu, Jan 22, 2026 at 11:49:48PM +0100, David Hildenbrand (Red Hat) wrote:
 >>
->>>
->>> Ah, this was lost on me.
->>>
->>>
->>> unclear to me how to restrict a function to specific drivers, but i can
->>> add add_and_online_memory_driver_managed() trivially so no big issue.
+>> I'm merely wondering why, in the new world, you would even want the offline
+>> state.
 >>
->> Is EXPORT_SYMBOL_GPL_FOR_MODULE() enough?
-
-It's also fine for me to just limit add_memory_driver_managed() to 
-in-tree driver by using EXPORT_SYMBOL_FOR_MODULES.
-
-But it might make nvidia unhappy :)
-
-So maybe just adding a __add_memory_driver_managed() that gives us more 
-control and using EXPORT_SYMBOL_FOR_MODULES is being a bit nicer for OOT 
-modules.
-
-
-(I guess __add_memory_driver_managed is a better name than 
-add_and_online_memory_driver_managed, thinking about it)
-
+>> So what are the use cases for that?
 >>
 > 
-> Is the issue just that add_memory_driver_manage is `extern`?  
-
-Heh, the "extern" is simply not necessary and can be dropped from all 
-such functions. Not related to this. It's all about EXPORT_SYMBOL_GPL 
-allowing anything that claims to be a GPL module to use this functionality.
-
-> If so
-> yeah, i can just do the EXPORT_*_GPL path.
+> I don't have one, and in the 5-patch series I killed it.  You are right,
+> it makes no sense.
 > 
-> If you prefer FOR_MODULE, then yes I can do this.
+> However:
+> 
+>> Why would user space possibly want that? [plugged-in offline blocks]
+>>
+> 
+> I don't think anyone does.
+> 
+> This is baggage.
+> 
+> The CXL driver auto-creates dax_kmem w/ offline memory blocks
+> 
+> Changing this behavior breaks existing systems :[
+> 
+>> Can't ndctl just use the old (existing) interface if such an operation is
+>> requested, and the new one (you want to add) when we want to do something
+>> reasonable (actually use system ram? :) ).
+> 
+> I think we're in agreement, I think I'm doing a poor job of explaining
+> the interconnected issues.
+> 
+> summarizing the long email:
+> 
+>     cxl/region + dax/cxl.c + dax/bus.c auto-probe baggage for
+>     BIOS-configured regions prevents any userland policy from
+>     from being plumbed from cxl to dax.  There's no interposition step.
+> 
+> So yes - new interfaces would resolve this and the old interfaces
+> could be left for compat.
 
-I'd go for
-
-	EXPORT_SYMBOL_FOR_MODULES(__add_memory_driver_managed, "dax")
-
-(or would it be the kmem module?)
+Great!
 
 -- 
 Cheers
