@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34A17D2FEDB
-	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 19:31:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B47FD2FEDB
+	for <linux-mm@archiver.kernel.org>; Tue, 27 Jan 2026 19:31:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2D5E6B00AD; Tue, 27 Jan 2026 14:31:24 -0500 (EST)
+	id 1BF8C6B00AF; Tue, 27 Jan 2026 14:31:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D02426B00AF; Tue, 27 Jan 2026 14:31:24 -0500 (EST)
+	id 194436B00B1; Tue, 27 Jan 2026 14:31:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C24D86B00B0; Tue, 27 Jan 2026 14:31:24 -0500 (EST)
+	id 08CC16B00B2; Tue, 27 Jan 2026 14:31:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AF13F6B00AD
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:31:24 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 37292D345F
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 19:31:24 +0000 (UTC)
-X-FDA: 84378737688.30.64B4B55
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7A199100017
-	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 19:31:22 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZW1wjmlE;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E6D006B00AF
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 14:31:30 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE42258742
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 19:31:30 +0000 (UTC)
+X-FDA: 84378737940.29.61EDF30
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F15CE40013
+	for <linux-mm@kvack.org>; Tue, 27 Jan 2026 19:31:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RB3nfRHp;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769542282;
+	s=arc-20220608; t=1769542289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GK6FcCZqutIrcHddWUJKNqBG/F2MzjZiycOC39ZF6KQ=;
-	b=fpU81uvxUzzCOHoIMJdK1N6aoA/pJxv9/JWBOuqV8SFnfk2PukU5mGud1RJ8qDUcQmKuV/
-	8QjvdjjfrFAuebc7f0vJRh26qhIzdfeTH69c3CZfleU8hyzZcyi2ASZOgVRHjajPNYM7JD
-	TCDX4XtbIxGKTjuxUHYrMuyUKdkYELM=
+	bh=gEwaujY6J6vCjiupHvoj6lNk/LN3RzPL4/YsvQ2ZPZI=;
+	b=WrCYTAtIJdjYKloonMVUlRX0nzb3hMzv9mXXvQ3WZ3tyVuEKnEMXipjhh8aOGAuH0+QW4/
+	IAihq4PcXgi/3ZiyAPZZbEcVD43xzpBp5/vgzV9Qx9jJQ2qk+ziiLANoAhSKw+UBIvWxrV
+	+BgJLxfeqIY6AQoFrnodQ1euqHZRwJg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZW1wjmlE;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RB3nfRHp;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769542282; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769542289; a=rsa-sha256;
 	cv=none;
-	b=FJKJEcPlPnHT9a2d7m85sit7ncSbODEhYi9K/shSsCHnW3xagF4PPVsT9aluBh7iS5Iw+e
-	o2qIbg+LARVytZsLdlcyM7akKtVtUdT1hBgarpEc6qkzpj1mqqYVZSBZAZYNmj0GAjjMPH
-	RSXLlmqRLSigorS0oUBN/gIaUALKYdE=
+	b=obGox+fM52oNlnQe5m9jg13Utqg/4uY8Q/qyeuzDFNlNnk7mQkQrTAlnWULncyaadZVdXF
+	oEchRg+ddb6FBXyiUm38+LSD78evj83viqbl0MupdVaIW8sPAKuftqpWGqajJdA9XIegvW
+	mTzY91HnrfIqfAShtN1xLH6tCUQVbSA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F3703601E8;
-	Tue, 27 Jan 2026 19:31:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF23CC116C6;
-	Tue, 27 Jan 2026 19:31:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 16F7A43E64;
+	Tue, 27 Jan 2026 19:31:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39806C19422;
+	Tue, 27 Jan 2026 19:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769542281;
-	bh=96EEwJcWySxO2R/2KP/gCzA6SPsvcN9sMFGfwSmvv8I=;
+	s=k20201202; t=1769542287;
+	bh=rG3XSy87LBPK/+pmM3kvRr3VcKC4P6b5lnQZUhRBOEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZW1wjmlEaWOSdy5FnqJJ6HOmgWV7pu0s4MRk84xlIeo88QjzOqjdIYlrG7ljWeU0v
-	 MeVT/1r5gvKQ8hwIT2RBtV0wKCMd8ov24qkrjcRy4Vfh/Y21OxTvvwPWedf28sTtpo
-	 suFN5ZKjXWM1NKIUy+6Dpr+0RTJ2rjrKbQS/lNK/SjFllGnjxzucAuckujiOyB+4U9
-	 ccJBVk/3++oHxXEHSESsxUT5xJTAVOyEPse6JLGhtLLEhZZ/XVVi8U9wBHMb6IXpTH
-	 /5+0b26eHzpI8qMV5AnhQOxvJp1yjrHIWrURA/5Ndiprz3rlpr6hJnVNc2kD2LXCFh
-	 tOhezlpGaLTpQ==
+	b=RB3nfRHpGiNvOqxgpNiZzo3iMscL/p4GfrLZS4edKXp9deTKvngWQ5yIEGQy0e/5F
+	 O11XOAS9zwA6WwsoT5yGilgWcmyGjht22jVBfE4D1zPSTO4Lh29c0kFGZKshLmP6KU
+	 PjQLJdYQfcKIxrcRWATTIx/t8rhoV5ZQlgVt047UW/54jrp0GBag8tfnI1+HZy+7NB
+	 nkhOJ+iWIM8WROA3H4dahP0y9fxV4wT8efsNK6Viw+ggJHFqJrxDQq2fYuWUuN2X+S
+	 sHd7xyeTtYygAw8GtnHJxxga0bCx/Vc+eS/AblKFNnTFaa/PSOraMhjSU3JAzWMVbi
+	 VPiCBLnWztFEg==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-mm@kvack.org
 Cc: Andrea Arcangeli <aarcange@redhat.com>,
@@ -88,22 +88,22 @@ Cc: Andrea Arcangeli <aarcange@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH RFC 15/17] KVM: guest_memfd: implement userfaultfd missing mode
-Date: Tue, 27 Jan 2026 21:29:34 +0200
-Message-ID: <20260127192936.1250096-16-rppt@kernel.org>
+Subject: [PATCH RFC 16/17] KVM: selftests: test userfaultfd minor for guest_memfd
+Date: Tue, 27 Jan 2026 21:29:35 +0200
+Message-ID: <20260127192936.1250096-17-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260127192936.1250096-1-rppt@kernel.org>
 References: <20260127192936.1250096-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7A199100017
-X-Stat-Signature: ogjp8indc3irrd5jq3p7a1t47ea36xgm
+X-Stat-Signature: njo59rshxgwtpq85d3ebz5uzc11xoz3o
 X-Rspam-User: 
-X-HE-Tag: 1769542282-577075
-X-HE-Meta: U2FsdGVkX18soTb9VEGd3ZCpn4IaTdlresdz05ZCVtUcETfVxw+sQgViqljXuZJfQpidSoXbxW13W+xQnECOf4j1DIB0r33sNc6Kt/q0wpC6WzStI5nF/tfAnrjM777yRC/w5MFgG1MRblYYR5mjU5WzaDkZtvo7aYv37Lh0/C82fxwAcffnW72Hr0jERb9ajgDXKB7Qy3R1AWHi9e7VkhHxwDLVzLL+A/Clj4K8KFas53y2JYGbfmsIkv/LZqWD+fuyDLars6wcVPqjv2/thyX2eV//B136X5iuAEjvY2hT99NUo1n1N7b1Yqw8lVhYa0HyiurS9YsKpIMwxQtmxJNpoc80k75fxX4/8D2XnMJnzKZ8Qq+l+O5aXndMm0ShZ1nj47bQShVTik5rWplrtCYpm5Ov9SmWVfoVB8KDRSoIjA5n8mix6L1+JrpHMjXt8FCxptzWB8Zwj8nyoAEr1kSBpdvmovfBVYEyZEiLCCE7UfLUsKZkvYqySikl0BiiKcRWvpbWg87yfV62w1JprGMy1cXWWcOjq2rpLJDMtYgVQvwll+c9TkLbInCfmOp36buTUpy/gYsX7NZOlj1e4metRHcRf39tGfKKv3DcIIInL69OxvYoe3iTuub7tIddJZP5Zu/wH78YyVMkNB2y6ngUmwUccFC7KR06zOFHvnEVHnF8awr90Z8k2vJDoM5c/BQkTNqEDoWL9vsNWFKJWzq5OZD4tMHzuRxoBoCGPk1KGtETwJUyrH62dWMiiZ4ck1cbzLFNtjnJEtfUX6eZ+oylL0PDaq1UQ1fv9WjEfq+HMJnAeD2hV9wK36hqpA94HCKlqtYbngkQ5kpZ/E0d3F8aUDDULqiB/CYsn8vNhtzZz0rCMZjlNDtMb37o3vezmUDVzOMl7Jfo5VYlJNVqJ1S/6DigV1d5m7tsCw3c3Dv+wJouWb9IpG8zATGEi6lfM+CyFyUlbZ+DKnTy6lo
- rQE/bU5a
- oKvYVbUXGxOIhiXX+OPRnvXZc0WFPo0ddX6Bte/Id6e/QnS+KQkGiKtP6vFOrVlo8T+KYEaGAjMMFk9X3dItm5eQvHj1b42sRmR3bhT7ZzALamvQg1aE7WtxCLQvE2fELJB1gLV3jSuDuUlBwOzKn4zDB5aEhnHtJrQ0b6IBMrpMbhzyQ7K6vCsY6KUKtxlaqzJEeav9Ne6qoUa0QZ9xWD2RTWxoG6ici2DvCadh+3pOYkmfXujP1JOeKdaFiJeg+iG5yLgi6CIiRIVQYhMjmoJaf7e3dBDeeN+MMXZTiYEi3xkI=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F15CE40013
+X-HE-Tag: 1769542288-618851
+X-HE-Meta: U2FsdGVkX1+dgfVQ6zckmIDMhBEPWpLE/owvRCrH49wq5koMFjs2XkrElgfnS/Mh0GsazHVKQzymivrI4qAQ54JyrXOhNAFd3jAUpS0DoLMOS/kZ7Y+oepxpHWeiB8qvYwPsQgYAKeLRkoEZOF2oaQHq8fQZhPtvOKHkLj98Wp/ILMx+IAJBuVHOxwVNfPUlwYXrDH1OMY3Zb4pXd08+PZEfOf7FWls708/aez7VJuBvKcrOA+0D4q3WXkLWImwzsZXsmbEm0WWAZFwnUKTd/nbBTyEm7DUddv0sZJcj3G/1RpZEE5xnmrf459bN7qT5aoL9IG2aNcYWSeD8uGH3JccHc3ZkK18Oqb2JI9AdaYArBqYaMQH7oeEEg8hmkWeHvg4a+2g3NVMXTrAGcwbvaFYY9sWs1vrjAp9PwJ4lDA3d5suh/6muGejBzcJUHO2dRPYdpYCi1rThfJHS5UfP0Sk9CBduIfKnW0stOES1qePLvkP5GUyOXnZcaabNpPyJaXg7D5MBzx2Z1WCvoInf9uDXxpBtqeRIrteFp5+hu2P7yy3oUblQSbm/fvCpSPjXaDFvZD3RPORet7nxbw0NDFPdZBSdRUXZ0UV/83mwlB457BJ4f2VLNHc9fRsKRbTy1rAUQMmhfW8GL+Lr/R57Q8KBye2uTmsjXLAW2N4aGO7cDoTFWoZ6740cMvccAOSMUmygwY3ScHeX3NVyhIx0cyktUKWu4HJpfSkECfwnDXaq7Bw4DAgAby44w+tAJTznC6u6s+tHhR/ZDReh70rvWoDcHvFjR8LXud/phrnYbHQRiYlFl8tt+4FZKCkZbEJ9fQU628VN+ZsqvowHxawt8GRTcL/YZrKNyIIqfNTPpzTLwaT7gm5XPRD81G7gqB80Q7d9aJf0Po8EsaJSI62A3yUzR3QIJ8bFoJX896LUXUc4SlFTIRXbtQOBNtzZGx9GRczvYbO2dotLiLnwsKf
+ IGvnL/JI
+ PnOsRhx329sdY9jga70lK0ddA3/HwFzqiOfaDMJJ9jX65fMItLLDl3PAxNwxc5qzp/AQgb6G11LJTuKmQzNR9xGXd6XFWUDZiZBMMaELY5qb9l77kxA1CDhynPzGveWOTIwKxHYWlRq7v/w5CauVp9V2RPWLwjvuDNAXx74ijFGPiaEjX59JT/PlfFQ/MVjOl2yV1V4NQlYA6Ud1xNgR6G976iCMHwPWeZ0SKysw+crvUig3zNE7nkw4Q3AlJVt7e0ncUfuU77VuKnm5vso/FoKuJXcIWi1AxnGUK+oGsJW96j78IVLDH4LqT0Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,99 +114,160 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Nikita Kalyazin <kalyazin@amazon.com>
 
-userfaultfd missing mode allows populating guest memory with the content
-supplied by userspace on demand.
-
-Extend guest_memfd implementation of vm_uffd_ops to support MISSING
-mode.
+The test demonstrates that a minor userfaultfd event in guest_memfd can
+be resolved via a memcpy followed by a UFFDIO_CONTINUE ioctl.
 
 Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- virt/kvm/guest_memfd.c | 60 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 59 insertions(+), 1 deletion(-)
+ .../testing/selftests/kvm/guest_memfd_test.c  | 113 ++++++++++++++++++
+ 1 file changed, 113 insertions(+)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 087e7632bf70..14cca057fc0e 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -431,6 +431,14 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
- 			ret = VM_FAULT_UFFD_MINOR;
- 			goto out_folio;
- 		}
-+
-+		/*
-+		 * Check if userfaultfd is registered in missing mode. If so,
-+		 * check if a folio exists in the page cache. If not, return
-+		 * VM_FAULT_UFFD_MISSING to trigger the userfaultfd handler.
-+		 */
-+		if (userfaultfd_missing(vmf->vma) && IS_ERR_OR_NULL(folio))
-+			return VM_FAULT_UFFD_MISSING;
- 	}
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 618c937f3c90..7612819e340a 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -10,13 +10,17 @@
+ #include <errno.h>
+ #include <stdio.h>
+ #include <fcntl.h>
++#include <pthread.h>
  
- 	/* folio not in the pagecache, try to allocate */
-@@ -507,9 +515,59 @@ static bool kvm_gmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_fla
- 	return true;
+ #include <linux/bitmap.h>
+ #include <linux/falloc.h>
+ #include <linux/sizes.h>
++#include <linux/userfaultfd.h>
+ #include <sys/mman.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/syscall.h>
++#include <sys/ioctl.h>
+ 
+ #include "kvm_util.h"
+ #include "numaif.h"
+@@ -329,6 +333,112 @@ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
+ 	close(fd1);
  }
  
-+static struct folio *kvm_gmem_folio_alloc(struct vm_area_struct *vma,
-+					  unsigned long addr)
++struct fault_args {
++	char *addr;
++	char value;
++};
++
++static void *fault_thread_fn(void *arg)
 +{
-+	struct inode *inode = file_inode(vma->vm_file);
-+	pgoff_t pgoff = linear_page_index(vma, addr);
-+	struct mempolicy *mpol;
-+	struct folio *folio;
-+	gfp_t gfp;
++	struct fault_args *args = arg;
 +
-+	if (unlikely(pgoff >= (i_size_read(inode) >> PAGE_SHIFT)))
-+		return NULL;
-+
-+	gfp = mapping_gfp_mask(inode->i_mapping);
-+	mpol = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
-+	mpol = mpol ?: get_task_policy(current);
-+	folio = folio_alloc_mpol(gfp, 0, mpol, pgoff, numa_node_id());
-+	mpol_cond_put(mpol);
-+
-+	return folio;
++	/* Trigger page fault */
++	args->value = *args->addr;
++	return NULL;
 +}
 +
-+static int kvm_gmem_filemap_add(struct folio *folio,
-+				struct vm_area_struct *vma,
-+				unsigned long addr)
++static void test_uffd_minor(int fd, size_t total_size)
 +{
-+	struct inode *inode = file_inode(vma->vm_file);
-+	struct address_space *mapping = inode->i_mapping;
-+	pgoff_t pgoff = linear_page_index(vma, addr);
-+	int err;
++	struct uffdio_register uffd_reg;
++	struct uffdio_continue uffd_cont;
++	struct uffd_msg msg;
++	struct fault_args args;
++	pthread_t fault_thread;
++	void *mem, *mem_nofault, *buf = NULL;
++	int uffd, ret;
++	off_t offset = page_size;
++	void *fault_addr;
++	const char test_val = 0xcd;
 +
-+	__folio_set_locked(folio);
-+	err = filemap_add_folio(mapping, folio, pgoff, GFP_KERNEL);
-+	if (err) {
-+		folio_unlock(folio);
-+		return err;
-+	}
++	ret = posix_memalign(&buf, page_size, total_size);
++	TEST_ASSERT_EQ(ret, 0);
++	memset(buf, test_val, total_size);
 +
-+	return 0;
++	uffd = syscall(__NR_userfaultfd, O_CLOEXEC);
++	TEST_ASSERT(uffd != -1, "userfaultfd creation should succeed");
++
++	struct uffdio_api uffdio_api = {
++		.api = UFFD_API,
++		.features = 0,
++	};
++	ret = ioctl(uffd, UFFDIO_API, &uffdio_api);
++	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_API) should succeed");
++
++	/* Map the guest_memfd twice: once with UFFD registered, once without */
++	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
++
++	mem_nofault = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	TEST_ASSERT(mem_nofault != MAP_FAILED, "mmap should succeed");
++
++	/* Register UFFD_MINOR on the first mapping */
++	uffd_reg.range.start = (unsigned long)mem;
++	uffd_reg.range.len = total_size;
++	uffd_reg.mode = UFFDIO_REGISTER_MODE_MINOR;
++	ret = ioctl(uffd, UFFDIO_REGISTER, &uffd_reg);
++	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_REGISTER) should succeed");
++
++	/*
++	 * Populate the page in the page cache first via mem_nofault.
++	 * This is required for UFFD_MINOR - the page must exist in the cache.
++	 * Write test data to the page.
++	 */
++	memcpy(mem_nofault + offset, buf + offset, page_size);
++
++	/*
++	 * Now access the same page via mem (which has UFFD_MINOR registered).
++	 * Since the page exists in the cache, this should trigger UFFD_MINOR.
++	 */
++	fault_addr = mem + offset;
++	args.addr = fault_addr;
++
++	ret = pthread_create(&fault_thread, NULL, fault_thread_fn, &args);
++	TEST_ASSERT(ret == 0, "pthread_create should succeed");
++
++	ret = read(uffd, &msg, sizeof(msg));
++	TEST_ASSERT(ret != -1, "read from userfaultfd should succeed");
++	TEST_ASSERT(msg.event == UFFD_EVENT_PAGEFAULT, "event type should be pagefault");
++	TEST_ASSERT((void *)(msg.arg.pagefault.address & ~(page_size - 1)) == fault_addr,
++		    "pagefault should occur at expected address");
++	TEST_ASSERT(msg.arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_MINOR,
++		    "pagefault should be minor fault");
++
++	/* Resolve the minor fault with UFFDIO_CONTINUE */
++	uffd_cont.range.start = (unsigned long)fault_addr;
++	uffd_cont.range.len = page_size;
++	uffd_cont.mode = 0;
++	ret = ioctl(uffd, UFFDIO_CONTINUE, &uffd_cont);
++	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_CONTINUE) should succeed");
++
++	/* Wait for the faulting thread to complete */
++	ret = pthread_join(fault_thread, NULL);
++	TEST_ASSERT(ret == 0, "pthread_join should succeed");
++
++	/* Verify the thread read the correct value */
++	TEST_ASSERT(args.value == test_val,
++		    "memory should contain the value that was written");
++	TEST_ASSERT(*(char *)(mem + offset) == test_val,
++		    "no further fault is expected");
++
++	ret = munmap(mem_nofault, total_size);
++	TEST_ASSERT(!ret, "munmap should succeed");
++
++	ret = munmap(mem, total_size);
++	TEST_ASSERT(!ret, "munmap should succeed");
++	free(buf);
++	close(uffd);
 +}
 +
-+static void kvm_gmem_filemap_remove(struct folio *folio,
-+				    struct vm_area_struct *vma)
-+{
-+	filemap_remove_folio(folio);
-+	folio_unlock(folio);
-+}
+ static void test_guest_memfd_flags(struct kvm_vm *vm)
+ {
+ 	uint64_t valid_flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
+@@ -383,6 +493,9 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+ 	gmem_test(file_size, vm, flags);
+ 	gmem_test(fallocate, vm, flags);
+ 	gmem_test(invalid_punch_hole, vm, flags);
 +
- static const struct vm_uffd_ops kvm_gmem_uffd_ops = {
--	.can_userfault = kvm_gmem_can_userfault,
-+	.can_userfault     = kvm_gmem_can_userfault,
- 	.get_folio_noalloc = kvm_gmem_get_folio_noalloc,
-+	.alloc_folio       = kvm_gmem_folio_alloc,
-+	.filemap_add       = kvm_gmem_filemap_add,
-+	.filemap_remove    = kvm_gmem_filemap_remove,
- };
- #endif /* CONFIG_USERFAULTFD */
++	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED)
++		gmem_test(uffd_minor, vm, flags);
+ }
  
+ static void test_guest_memfd(unsigned long vm_type)
 -- 
 2.51.0
 
