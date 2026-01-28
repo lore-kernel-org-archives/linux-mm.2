@@ -4,140 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC491D35676
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 05:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F1DD3567B
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 06:08:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F3606B0088; Wed, 28 Jan 2026 00:21:00 -0500 (EST)
+	id AE5776B0088; Wed, 28 Jan 2026 01:08:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A0886B0089; Wed, 28 Jan 2026 00:21:00 -0500 (EST)
+	id A930C6B0089; Wed, 28 Jan 2026 01:08:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E99D06B008A; Wed, 28 Jan 2026 00:20:59 -0500 (EST)
+	id 99F496B008A; Wed, 28 Jan 2026 01:08:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D5E606B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 00:20:59 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 87BAC1A0465
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 05:20:59 +0000 (UTC)
-X-FDA: 84380223438.23.3C0D1E0
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7B04C20006
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 05:20:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=L7U96Aml;
-	spf=pass (imf13.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769577657;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 805BD6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:08:25 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4A591B0861
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:08:24 +0000 (UTC)
+X-FDA: 84380342928.22.814766A
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A21A7C0003
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:08:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kL20DfIo;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769580502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V1J5+mim67A7RbbplsiEoQN/uCVwUx2jWg1suf/tpgM=;
-	b=tcqyO9yXg4xWtuFxqSZgsOu3IiTWMMxOAovlLd4cDut5cqtWAozH2b9QhFSrUgFcqS+ffE
-	j0p9tiqMa7sKiQKOyIUraYWbbVw9uITTeuBKO27LBuvKeR2v9UzzebO4RcMwPGQa7S2h+s
-	AZgNj5sixflCdxiqPoVVsO0zEP+/RGw=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=L7U96Aml;
-	spf=pass (imf13.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769577657; a=rsa-sha256;
-	cv=pass;
-	b=ghzHubUxEex9ZIBxhSZaHjnVKF4yFraOAY1Wy+qpWjfPZp67vL451KOTmAnJ4SLtHWfEsv
-	aS82c+Acl9qRL+PwA3SeCOqAPD4Mb0hquDeA80m8Qk4NXTVJOMOJQIUYj01Wz/iqPe0uLK
-	h+rWAYVWKRmDqAXFbViYHn8kC5omkps=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so27925e9.0
-        for <linux-mm@kvack.org>; Tue, 27 Jan 2026 21:20:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769577656; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CBtSn0ztzm+8QKp3e6+M8Q1U6vtck/CGY4bqWZUPIRnPbd4QUE5kcw4nvs7UXAlBmF
-         Vfoz/LDbrmW6nt0V05B2rpySIlLzx+gelLdycgkC63WrIhCRqOALpNqnmOMUztMlIqhG
-         xYxhjZJvH54pAscPDIW5tTsOWYPKa7kaR6xUbH4rDtN5i7/vpuEPTc/qjD8WLxyGikAs
-         6i6sIY9yDrUvxEB8eacflly0Or/5sKBdhti+H5T73UT50dUvVaNpGGfXOWuLp6b6RVt5
-         Prit/nR2evyE/rhpbN7hoNEEa4dHmcfV2qZ2Z9haD2Yb8dQ/3ed7tRflJHfNo5vVnBmz
-         LOxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=V1J5+mim67A7RbbplsiEoQN/uCVwUx2jWg1suf/tpgM=;
-        fh=ZJW7YCy54jBfy0r4sRFTJlTOITigsXyZvuu63cJaG3Q=;
-        b=MyMEh+TSmTLVYwc31XdPxYvGgEjdrYyAtpUnR8Vb9kvEPjLfk3qWJSt+1J3WMhSO2L
-         bJe1/3+SrNTKlHjLK9TbxqyFUMEpSK5oZXawitgbHdUVVcVcemgE1LlNuSC+6wr1HoSZ
-         PT8tKciaLi5avCuIGJnVbHnY0MeWRN/5OARqzgOIXuEixmEG0++3skqvQAqfWYF+hSw4
-         VPMNR+muavbTKk8Ib1JPggwh+OiktqppNc25BaTGgcO2eGAmZi11RhyioIqL8ysBxCUp
-         n+gK6vXgstWlRPrH3s6gMIJW0XuReyBueKpUdPlpLJevj56qlBLvIQFFYnI6u1pvfYZY
-         DkAQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769577656; x=1770182456; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V1J5+mim67A7RbbplsiEoQN/uCVwUx2jWg1suf/tpgM=;
-        b=L7U96Aml/kGWPgRsavFj6d0S3dSKCAOdD5AO15RQ/MRB8x0x6ScVidLQgGcxAA2+Aw
-         bR5RaJgS2KYiDtP6tAew43WzOJEJxHkJw3RlfhUPDsBJs13wts3lZ5E6Yxq6S7zmxHh0
-         6kqI3zbht7fpK7NnU/Ys1o53CW47lyxAVwP45tINSDx5IgEwbT4TvMRU/0n3B7GkhcKf
-         HpVA9IjfpEaGYD6bbpreOHNcm0pk+hulzRjBgsiyVCUxSn+hDP6UquwdHFS11APOEzO8
-         SDW5grY5E/nyufcAXu/iV63qf5WKK69FsWYSXwXKSc0m++yB0Qw8zN0U+JI5aQJlbfLg
-         O4hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769577656; x=1770182456;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=V1J5+mim67A7RbbplsiEoQN/uCVwUx2jWg1suf/tpgM=;
-        b=Hu2af/dQG5jR/FTxB9+X9MYD6o9Ak0Rlq6Pbv5hTvPctX4K1i07Bwahq4jfxnsQ8E2
-         Iw/C7WGYaipctqDST/OEGoXAt9OLHEtci0aTLfKon0ww6HhM9DQFufMh5u1SaHxYStb7
-         ZV713PjN+eVt8TkToZ++V8f6XhUSSVKPPaOUFXuW8D9JYS/6V9gkkP4RO9RLmf3e39o2
-         NcBbTfEoVqnSI0QLpiM9lwxoFmfEq6iLeida8gBL4zZ8Jy75qi9n44Rvp7zCAdo8LRVk
-         XNtZ0di7XyltR5XKegtyTpkJ2wFE2O6N9y2wbhwOQtMhis4X65j8gpd3zP+ODD9inWpS
-         E27g==
-X-Forwarded-Encrypted: i=1; AJvYcCUaHuRHpi0KhdeZTyy0RlBSW91Dmeh07GWaYsTwcPVFJAgOnJ1/zZWDiFYxiOVSIb6M+bL4m0OqCg==@kvack.org
-X-Gm-Message-State: AOJu0YzDUuBVM2rt/pg474gt1yzEMHnkeYpG3Bqbr0+FCrwS3UOgWatg
-	Mi4k7AbMpI+IlYB/mGE8t/WfGiXWyGluHdBKVyxspjDzKqeFVTRBQsffAY2t9AweXaULueIRC5s
-	4yusG82aMJkbrwfxLNTW+qahAfygc+WtPWY0Zh85C
-X-Gm-Gg: AZuq6aICss9dQL64NajDJaY2vMv4i17Zss+DUDJDB4//MahRr5WKYQEygZ1/74fNL7N
-	B0EoBk5sLjGnBIHzzJEHv2bLrUnXAcWNHjUEMCUGozw9vvy3RQx9tSzeBC9gZxrlnhD+MjM6FkS
-	JDUAXOwvzqpbyQiSDI/VCS/BAk7f7fs9O3DFJFDibnzy5ivt1qyPmbAYTg516t0WB0NKnG2uEwd
-	SXIlMYIEhOoK7kQKQvDuyFZiJvIM42S92OjV4YXJEPRS1uTX0g3H0Qd6h+rQZlWQnrn/r3tztDs
-	8/43UDV3PZaquJwSov9uB/Es48Y=
-X-Received: by 2002:a05:600c:8208:b0:47e:de3a:a929 with SMTP id
- 5b1f17b1804b1-48069b29697mr1219695e9.12.1769577655513; Tue, 27 Jan 2026
- 21:20:55 -0800 (PST)
-MIME-Version: 1.0
-References: <20260112004923.888429-1-jiaqiyan@google.com> <20260112004923.888429-4-jiaqiyan@google.com>
- <e996cec7-f2ed-38ae-3f8a-c89ef61ffa49@huawei.com>
-In-Reply-To: <e996cec7-f2ed-38ae-3f8a-c89ef61ffa49@huawei.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Tue, 27 Jan 2026 21:20:44 -0800
-X-Gm-Features: AZwV_QjuK27ce0rpc2m79Hh_DIJ3F66eHcfvNwrwezMP7n1QVH2QRK6h1XL-oy8
-Message-ID: <CACw3F51xvzo1YHW9OtUTcR2Yji1TR8_DkKyWR6AAsPaERZhVAQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] mm/memory-failure: refactor page_handle_poison()
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: nao.horiguchi@gmail.com, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	william.roche@oracle.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
-	jane.chu@oracle.com, akpm@linux-foundation.org, osalvador@suse.de, 
-	muchun.song@linux.dev, rientjes@google.com, duenwen@google.com, 
-	jthoughton@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-	harry.yoo@oracle.com, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: eff77qopnujmmjtdbgso8im5fp8ye1ya
-X-Rspamd-Queue-Id: 7B04C20006
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=RF13WLcdL+aIa/dQbshUzDQr/ZuH3QEgMinnDId4SwE=;
+	b=0IpfRbtgziiN5nQihH4zKylN8OM6/olDGQagxxiu+tMPVajDLiA+xQeC60bfRtaPAivX5d
+	UHcIXPrY4rMiOpFSmeg2ovRArnedpcyBwB7elT4gezzDwbO1lVq5pPHRr5MJgoEKVx62zu
+	+JkWYEnJK6zlzV0qCQulkzOudsG0aUs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kL20DfIo;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769580502; a=rsa-sha256;
+	cv=none;
+	b=oYywSIUb93ixrcpqJqNnSzhINHkGODGqQxyZrNj8DEaJ+y+utwtpUlyJmj7Cs6jcuhkUNs
+	NxyJ2bMv9apoQDHcHXj5Kba74FHnnJ6Igyhfc1HaCenuec3U7RTdRzNmVQKLWkCoTcxUS7
+	LPSIdSqzqSRw+QihVd6UzdcISmv9yFM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769580502; x=1801116502;
+  h=date:from:to:cc:subject:message-id;
+  bh=Q5TBIyxj0l3uLuc/PhuON6fKLuuFucT+2K83SU8bRTs=;
+  b=kL20DfIojG8dKmIQA8iGtkt2f0ui8KwzQYdCE19yFgSZTpAHh71Jju+L
+   n6i0wGaoQF1fKUpsO1AXVXQbHdJh8gF/nM/3Byja+7bpsrMp785rJ/gKl
+   FodV1DY4xahIRbBSJge0R4eU8T/vW6J1/tzSy8/yYXnb4unYdfOQ7kqVl
+   edZXhq3/fK7wdhcuqFIX0JRZ1KCI9cnf2qYIngLHpVAyyZNbP6hFw6XtD
+   oOWaFXZPFhNvgU5va/X3FvEHQH8DHSQsB4y6p+RcZCm3ASFNQlkUWmsEX
+   CqEpbWGj1vqbTwFESfQhQNs/z/pWePai+3jJdq47AqNh0v5ytaJ4fjCzQ
+   g==;
+X-CSE-ConnectionGUID: fViGep4aQDC5Voh1kh8KWg==
+X-CSE-MsgGUID: PTgKkWj2SOSPMdnLxK7LaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="88205656"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="88205656"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 22:08:20 -0800
+X-CSE-ConnectionGUID: ZbPBUbyZTFiU3WmT3BQGaQ==
+X-CSE-MsgGUID: VFvoi7l4QFCLdupup7CJKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="207315811"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 27 Jan 2026 22:08:18 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vkyit-00000000ZMG-44bf;
+	Wed, 28 Jan 2026 06:08:15 +0000
+Date: Wed, 28 Jan 2026 14:07:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 4f938c7d3b25d87b356af4106c2682caf8c835a2
+Message-ID: <202601281448.YLU9aTIM-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam11
+X-Stat-Signature: tbchikbrhm4rgdkrrnoxn3bo35swpapy
 X-Rspam-User: 
-X-HE-Tag: 1769577657-800318
-X-HE-Meta: U2FsdGVkX1/9Rv7UCofgwihIWiNj4b4/fLatJ5XE0UhwY9PT4907PaAzW7b1L4v55/z+oU6nFxozUhI98eEfNbcQ2505IGM4zjfp72v1+QNec3ROkzvbbnOlGjXOuMWTdXGaF01/wLdSNuKtMaVkU8MqHAVbFMtnHNj1Gf5hNSiZiln3wgOWt5IyyuI0B8O17gTcSQaX+kfMW7e3yo1sEsnGai2EA0OsmSL9xgWbi3zM4ONdY08zIaBCrMCLC8mK7SLhLHjzVJcQu0MGnVPUiZAzQdiyX1TR++uWFutw0dU77OMftnijJHeUYXxIIhffdXLmLJlX43BfpOEh40t27cO5AD7JBOihBuiGLQKwXn6WwfgSIBA0YT09d2eFBECqZwyc3Yt+7rA/T2/EJcR2ffmjicTSK+zPs3eceyYfFWwiq7VQa31WzJUFmIufRVjKQi+Y2sM1SzqgAulxo3kXP6buUY+O6rgq2ISHfRsZwrRd/WQ2UpzKMRozWT+WzxLpRHv/CCen/s5bSPrvAN2VQIjyeNGrU2h2tQc0ljo9OZzIEPdpSA5lhrck98uVPFLho7OHbfbKxZBut49mIa7ZU8tC63AEK/GM+iTKXqaoarX+mA7cW0/atMy99ZUWyNX5dtUj6lZBL+/fP2m/mn4O9RD3PzoeL2o2AlrZgMEf5jnGQYFd5Pne8wfIHRKOkgtIWkO/cS/7h4K3o2iBWmHqSm7KJjvW7P3lThJdIEdng3cwFHBh7Vg29hu5V7XfRw2efJfAA7Mtjq1Jv9GFIeZryJdUKLZ9qFs/AqCkmfknQhKaIGT6l1gpeuFPNJKjMOPU8nwrTKVMflBIN2WYXyE8e8AkCStQh16QF6XQl8Nu8V8O2DRzLbtamkHjh1SqzeG0yudpQ1fl6SW8FPtHP496vthTWycy1W2QA6oyM5a122lov9YOBF+K4jaLsNAysUx/AKLSB5dlOM5OBameVC/
- oUC0rrGp
- tF2fsck+nXC5i8DZUBmfEscUAmctniVmlwlT4QRDm6huUYy5ng9kgmazyCEKR8+PPGEbAUvE6CP+HI6L32hjZdYPlx74p6Xvz6C9uHCiBrEf8quPOvUq7XytXtpINBHV8fxnPrOlO8lXD//jtQLSOOojvM/wFWe46UoYrLWDG91nhpNjfdurzP/oKoTdvvxT4Yl0+TZeoNxT4fKlt4sP/djLDOp7cxlS6i+CgMH7myj20HlfaIBj+G4mZ2e7RKkH4xVuC7UcdBeEwJJSpo7vv5xVtmfYgAY0VLhtC1oVJvQH5vs1SqbRpOl3rZPN8iYTTRSfIij5CPXLjBOtcQdL0iOPp4SlPtElsC7S/yiDexXrbU2n68OTAHZWITJRS4Dod2Oc1ijwzHVFKREGvgFajX+UfOQ==
+X-Rspamd-Queue-Id: A21A7C0003
+X-HE-Tag: 1769580501-92341
+X-HE-Meta: U2FsdGVkX18ineXzJjd1Hq+2XIGZpzvOECEILFHgsbc4uVcV1rzBNgUwfuyb9pbG3NJ0Xsbz/UnSBH8fnYr7SbpYSVyLWkEnEOcI4chktEvVvwKDNhDTIxLZWy+0UZK9+EyzTe0bEqOqiYNnW+V87eeFwFxtGmXV3YM7z3YYy2i/UHi/LksJR3KX5fanlZz509qv0zPfalxNnvU2SvN5Ed6D6S1mji5qeq2+gQZxj2mffxBUQz/reHYQqefxQHmkKfekwoCqWPhu1GmdJrhMyUKPYHV/FsOzIUwPGBgFVfHhNG3SGsGS6pHEzWWAkd20Dwz8ClhB0grQt9aNf1fbY+8nOTxXn38O+bcY6Fn2tlz9h5/41rcBViOGBFzAUWBZVPOLwbBHCFajTWZp2zh48aoCurn+7An+Uh6s2VEXc5MYcap+SO+4MhQml3q/UaXz/o51PdVS/hGRABP6h+sw+6wx6TU0pWTYyaNx4f2xwMV9783IqYpc4THokNiMvLVJvZCmHTGYqpDsQqlFXoRU9vbuYLRVDw8LvPTskhG0EM346013k75w77VKLLZCeSeY4MSnkjFREASn17ejgs+RbbUa5JoV+pMBK+M9Cs3oGT1ZorBrxLbNErmHarg9BdAfBLvL1MXURTPN5fKOyblWRKNoWyhv5uZWLBfCAKcw+BsxpfFuA32OBTnCRw6c1OP30amj/SrxiUrwz0c+OOPBwBwIp/am4z0TLzI63QdXUc/G9xgAiI3kZpSQN4115PTKtzHlqnkje3Ar3ypAGX42NCShBARxI3GeU3YUi1Sj0z/6H1jqLVQruIicOnG/X/Xd/c15olDXuDkLdRn1Y/hverrMDOj0y8irF/fI9DzBDYoYfzkp6pLhfsUD9zTSzESCr+n8vwijiGgk95G3aLdAE6Wrr4f6wRgFEQUTl4LF3dfvRkeD8QaxuyYU3Hfo4zOKlaee6Gp6KfKAD2Wzax3
+ Q7hKm0Wl
+ vb0iqt1eHc7zzL36pf7nJaUkbPl27i/XcD3QsX9ZpxySSzIyJDR3ciDHtQdW78dUjO7Kde1qr8wqo8zySFHmykh4ofSdFDLWEuJra27gJXgF9tJ/lIffTJf0eUPbmNTjCwWTEsdtLWVDLkYFU8FzFkvdPq06S73NiN6fXUzLzUzJZ/TyoRA1g/wyJ2w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,296 +102,282 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 7:41=E2=80=AFPM Miaohe Lin <linmiaohe@huawei.com> w=
-rote:
->
-> On 2026/1/12 8:49, Jiaqi Yan wrote:
-> > Now that HWPoison page(s) within HugeTLB page will be rejected by
-> > buddy allocator during dissolve_free_hugetlb_folio(), there is no
-> > need to drain_all_pages() and take_page_off_buddy() anymore. In fact,
-> > calling take_page_off_buddy() after dissolve_free_hugetlb_folio()
-> > succeeded returns false, making caller think page_handl_poion() failed.
->
-> s/page_handl_poion/page_handle_poison/
->
-> >
-> > On the other hand, for hardware corrupted pages in buddy allocator,
-> > take_page_off_buddy() is still a must-have.
-> >
-> > Given hugepage and free buddy page should be treated differently,
-> > refactor page_handle_poison() and __page_handle_poison():
-> >
-> > - __page_handle_poison() is unwind into page_handle_poison().
-> >
-> > - Callers of page_handle_poison() also need to explicitly tell if
-> >   page is HugeTLB hugepage or free buddy page.
-> >
-> > - Add helper hugepage_handle_poison() for several existing HugeTLB
-> >   specific callsites.
-> >
-> > Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
-> > ---
-> >  mm/memory-failure.c | 84 ++++++++++++++++++++++-----------------------
-> >  1 file changed, 41 insertions(+), 43 deletions(-)
-> >
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index d204de6c9792a..1fdaee1e48bb8 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -162,54 +162,48 @@ static struct rb_root_cached pfn_space_itree =3D =
-RB_ROOT_CACHED;
-> >
-> >  static DEFINE_MUTEX(pfn_space_lock);
-> >
-> > -/*
-> > - * Return values:
-> > - *   1:   the page is dissolved (if needed) and taken off from buddy,
-> > - *   0:   the page is dissolved (if needed) and not taken off from bud=
-dy,
-> > - *   < 0: failed to dissolve.
-> > +/**
-> > + * Handle the HugeTLB hugepage that @page belongs to. Return values:
-> > + *   =3D 0: the hugepage is free hugepage and is dissolved.
->
-> In soft offline scene, dissolve_free_hugetlb_folio would return 0 when th=
-e page becomes
-> a normal page due to race.
->
-> > + *   < 0: hugepage is in-use or failed to dissolve.
-> >   */
-> > -static int __page_handle_poison(struct page *page)
-> > +static int hugepage_handle_poison(struct page *page)
-> >  {
-> > -     int ret;
-> > +     return dissolve_free_hugetlb_folio(page_folio(page));
-> > +}
-> > +
-> > +/**
-> > + * Helper at the end of handling @page having hardware errors.
-> > + * @huge: @page is part of a HugeTLB hugepage.
-> > + * @free: @page is free buddy page.
-> > + * @release: memory-failure module should release a pending refcount.
-> > + */
-> > +static bool page_handle_poison(struct page *page, bool huge, bool free=
-,
-> > +                            bool release)
-> > +{
-> > +     int ret =3D 0;
-> >
-> >       /*
-> > -      * zone_pcp_disable() can't be used here. It will
-> > -      * hold pcp_batch_high_lock and dissolve_free_hugetlb_folio() mig=
-ht hold
-> > -      * cpu_hotplug_lock via static_key_slow_dec() when hugetlb vmemma=
-p
-> > -      * optimization is enabled. This will break current lock dependen=
-cy
-> > -      * chain and leads to deadlock.
-> > -      * Disabling pcp before dissolving the page was a deterministic
-> > -      * approach because we made sure that those pages cannot end up i=
-n any
-> > -      * PCP list. Draining PCP lists expels those pages to the buddy s=
-ystem,
-> > -      * but nothing guarantees that those pages do not get back to a P=
-CP
-> > -      * queue if we need to refill those.
-> > +      * Buddy allocator will exclude the HWPoison page after hugepage
-> > +      * is successfully dissolved.
-> >        */
-> > -     ret =3D dissolve_free_hugetlb_folio(page_folio(page));
-> > -     if (!ret) {
-> > +     if (huge)
-> > +             ret =3D hugepage_handle_poison(page);
-> > +
-> > +     if (free) {
->
-> Nit: huge and free won't be both true. So we could write it as:
->         if (huge) {
->                 ...
->         } else if (free) {
->
-> >               drain_all_pages(page_zone(page));
-> > -             ret =3D take_page_off_buddy(page);
-> > +             ret =3D take_page_off_buddy(page) ? 0 : -1;
-> >       }
-> >
-> > -     return ret;
-> > -}
-> > -
-> > -static bool page_handle_poison(struct page *page, bool hugepage_or_fre=
-epage, bool release)
-> > -{
-> > -     if (hugepage_or_freepage) {
-> > +     if ((huge || free) && ret < 0)
->
-> Nit: ret won't be <0 if both huge and free are false. So I think we might=
- simplify it as:
->
->         if (ret < 0)
->
-> >               /*
-> > -              * Doing this check for free pages is also fine since
-> > -              * dissolve_free_hugetlb_folio() returns 0 for non-hugetl=
-b folios as well.
-> > +              * We could fail to take off the target page from buddy
-> > +              * for example due to racy page allocation, but that's
-> > +              * acceptable because soft-offlined page is not broken
-> > +              * and if someone really want to use it, they should
-> > +              * take it.
-> >                */
-> > -             if (__page_handle_poison(page) <=3D 0)
-> > -                     /*
-> > -                      * We could fail to take off the target page from=
- buddy
-> > -                      * for example due to racy page allocation, but t=
-hat's
-> > -                      * acceptable because soft-offlined page is not b=
-roken
-> > -                      * and if someone really want to use it, they sho=
-uld
-> > -                      * take it.
-> > -                      */
-> > -                     return false;
-> > -     }
-> > +             return false;
-> >
-> >       SetPageHWPoison(page);
-> >       if (release)
-> > @@ -1174,7 +1168,7 @@ static int me_huge_page(struct page_state *ps, st=
-ruct page *p)
-> >                * subpages.
-> >                */
-> >               folio_put(folio);
-> > -             if (__page_handle_poison(p) > 0) {
-> > +             if (!hugepage_handle_poison(p)) {
-> >                       page_ref_inc(p);
-> >                       res =3D MF_RECOVERED;
-> >               } else {
-> > @@ -2067,7 +2061,7 @@ static int try_memory_failure_hugetlb(unsigned lo=
-ng pfn, int flags, int *hugetlb
-> >        */
-> >       if (res =3D=3D 0) {
-> >               folio_unlock(folio);
-> > -             if (__page_handle_poison(p) > 0) {
-> > +             if (!hugepage_handle_poison(p)) {
-> >                       page_ref_inc(p);
-> >                       res =3D MF_RECOVERED;
-> >               } else {
-> > @@ -2815,7 +2809,7 @@ static int soft_offline_in_use_page(struct page *=
-page)
-> >
-> >       if (ret) {
-> >               pr_info("%#lx: invalidated\n", pfn);
-> > -             page_handle_poison(page, false, true);
-> > +             page_handle_poison(page, false, false, true);
-> >               return 0;
-> >       }
-> >
-> > @@ -2836,7 +2830,7 @@ static int soft_offline_in_use_page(struct page *=
-page)
-> >               if (!ret) {
-> >                       bool release =3D !huge;
-> >
-> > -                     if (!page_handle_poison(page, huge, release))
-> > +                     if (!page_handle_poison(page, huge, false, releas=
-e))
->
-> This might not work for soft offline. PageHWPoison is not yet set so foli=
-o_clear_hugetlb_hwpoison
-> won't be called when dissolve hugetlb hugepages...
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 4f938c7d3b25d87b356af4106c2682caf8c835a2  Add linux-next specific files for 20260127
 
-Thanks for pointing this problem (and the later problem) out, Miaohe!
-You are right, and I think the reason for both problems is, soft
-offline is a totally different case than memory_failure(): there is no
-PG_HWPoison until the end of page_handle_poison(). So
-free_has_hwpoisoned() can't help dissolve_free_hugetlb_folio() to
-exclude the page that triggered soft_offline_page().
+Error/Warning (recently discovered and may have been fixed):
 
-For free_has_hwpoisoned(), I should only change the call sites in the
-memory_failure() path, and leave
-soft_offline_page()/page_handle_poison()/__ __page_handle_poison()
-alone. Looking at the current code, HWPoison hugetlb pages happens to
-be handled by __page_handle_poison() in either me_huge_page() or
-try_memory_failure_hugetlb(). So I think I can replace them with a new
-function that doesn't do take_page_off_buddy(), something like:
+    https://lore.kernel.org/oe-kbuild/202601280352.HxU02ziv-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202601280742.mvDCU5qE-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202601281037.5Eik5saE-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202601281347.J8rVE0kj-lkp@intel.com
 
- /*
-+ * Only for a HugeTLB page being handled by memory_failure(). The key
-+ * difference to soft_offline() is that, no HWPoison subpage will make
-+ * into buddy allocator after a successful dissolve_free_hugetlb_folio(),
-+ * so take_page_off_buddy() is unnecessary.
-+ */
-+static int __hugepage_handle_poison(struct page *page)
-+{
-+       struct folio *folio =3D page_folio(page);
-+
-+       VM_WARN_ON_FOLIO(!folio_test_hwpoison(folio), folio);
-+
-+       /*
-+        * Can't use dissolve_free_hugetlb_folio() without a reliable
-+        * raw_hwp_list telling which subpage is HWPoison.
-+        */
-+       if (folio_test_hugetlb_raw_hwp_unreliable(folio))
-+               /* raw_hwp_list becomes unreliable when kmalloc() fails. */
-+               return -ENOMEM;
-+
-+       return dissolve_free_hugetlb_folio(folio);
-+}
-+
+    include/linux/compiler_types.h:630:45: error: call to '__compiletime_assert_409' declared with attribute error: min(((pos + len - 1) >> 12) - (pos >> 12) + 1, max_pages) signedness error
+    ld: drivers/gpu/drm/bridge/lontium-lt9611uxc.c:448:(.text+0x1cf8eed): undefined reference to `drm_connector_hdmi_audio_plugged_notify'
 
-On the other hand, just leave __page_handle_poison() and
-page_handle_poison() as is to do take_page_off_buddy() for soft
-offline case.
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
->
-> >                               ret =3D -EBUSY;
-> >               } else {
-> >                       if (!list_empty(&pagelist))
-> > @@ -2884,6 +2878,8 @@ int soft_offline_page(unsigned long pfn, int flag=
-s)
-> >  {
-> >       int ret;
-> >       bool try_again =3D true;
-> > +     bool huge;
-> > +     bool free;
-> >       struct page *page;
-> >
-> >       if (!pfn_valid(pfn)) {
-> > @@ -2929,7 +2925,9 @@ int soft_offline_page(unsigned long pfn, int flag=
-s)
-> >       if (ret > 0) {
-> >               ret =3D soft_offline_in_use_page(page);
-> >       } else if (ret =3D=3D 0) {
-> > -             if (!page_handle_poison(page, true, false)) {
-> > +             huge =3D folio_test_hugetlb(page_folio(page));
->
-> folio_test_hugetlb check is racy because there's no guarantee that hugetl=
-b hugepage won't
-> be dissolved before calling page_handle_poison. That will lead to problem=
-...
->
-> soft_offline_page
->   folio_test_hugetlb -- true now
->   page_handle_poison
->   /* Hugepage is dissolved somewhere. */
->     hugepage_handle_poison -- return 0 because page is normal page or fre=
-e buddy page.
->     SetPageHWPoison(page);
->     page_ref_inc(page); -- refcnt is increased while page might be on bud=
-dy...
->
-> > +             free =3D is_free_buddy_page(page);
-> > +             if (!page_handle_poison(page, huge, free, false)) {
->
-> We assume free is always true due to ret is 0. So we can write it as:
->         if (!page_handle_poison(page, huge, true, false)) {
->
-> >                       if (try_again) {
-> >                               try_again =3D false;
-> >                               flags &=3D ~MF_COUNT_INCREASED;
-> >
->
-> Thanks.
-> .
->
+    drivers/iio/adc/ad4062.c:817:1: sparse: sparse: bad integer constant expression
+    drivers/iio/adc/nxp-sar-adc.c:1014:1: sparse: sparse: bad integer constant expression
+    drivers/pinctrl/microchip/pinctrl-mpfs-iomux0.c:276:1: sparse: sparse: bad integer constant expression
+    drivers/pinctrl/microchip/pinctrl-mpfs-mssio.c:735:1: sparse: sparse: bad integer constant expression
+    drivers/pinctrl/microchip/pinctrl-pic64gx-gpio2.c:354:1: sparse: sparse: bad integer constant expression
+    drivers/platform/wmi/tests/marshalling_kunit.c:449:1: sparse: sparse: bad integer constant expression
+    powerpc-linux-ld: drivers/gpu/drm/bridge/lontium-lt9611uxc.c:448:(.text+0xb40): undefined reference to `drm_connector_hdmi_audio_plugged_notify'
+
+Error/Warning ids grouped by kconfigs:
+
+recent_errors
+|-- arm-randconfig-r051-20260128
+|   `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:min(((pos-len-)-)-(pos-)-max_pages)-signedness-error
+|-- i386-randconfig-062-20260128
+|   `-- drivers-platform-wmi-tests-marshalling_kunit.c:sparse:sparse:bad-integer-constant-expression
+|-- openrisc-randconfig-r133-20260128
+|   |-- drivers-pinctrl-microchip-pinctrl-mpfs-iomux0.c:sparse:sparse:bad-integer-constant-expression
+|   |-- drivers-pinctrl-microchip-pinctrl-mpfs-mssio.c:sparse:sparse:bad-integer-constant-expression
+|   `-- drivers-pinctrl-microchip-pinctrl-pic64gx-gpio2.c:sparse:sparse:bad-integer-constant-expression
+|-- parisc-randconfig-r132-20260128
+|   `-- drivers-iio-adc-nxp-sar-adc.c:sparse:sparse:bad-integer-constant-expression
+|-- powerpc-randconfig-r123-20260127
+|   `-- powerpc-linux-ld:drivers-gpu-drm-bridge-lontium-lt9611uxc.c:(.text):undefined-reference-to-drm_connector_hdmi_audio_plugged_notify
+|-- powerpc64-randconfig-r132-20260127
+|   `-- drivers-iio-adc-ad4062.c:sparse:sparse:bad-integer-constant-expression
+`-- x86_64-randconfig-015-20260127
+    `-- ld:drivers-gpu-drm-bridge-lontium-lt9611uxc.c:(.text):undefined-reference-to-drm_connector_hdmi_audio_plugged_notify
+
+elapsed time: 727m
+
+configs tested: 225
+configs skipped: 3
+
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                     haps_hs_smp_defconfig    clang-22
+arc                            hsdk_defconfig    clang-22
+arc                   randconfig-001-20260128    gcc-9.5.0
+arc                   randconfig-002-20260128    gcc-8.5.0
+arm                               allnoconfig    clang-22
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    gcc-15.2.0
+arm                       aspeed_g4_defconfig    clang-22
+arm                         at91_dt_defconfig    clang-22
+arm                                 defconfig    clang-22
+arm                                 defconfig    gcc-15.2.0
+arm                   randconfig-001-20260128    gcc-15.2.0
+arm                   randconfig-002-20260128    gcc-15.2.0
+arm                   randconfig-003-20260128    gcc-8.5.0
+arm                   randconfig-004-20260128    gcc-8.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260128    clang-22
+arm64                 randconfig-002-20260128    gcc-12.5.0
+arm64                 randconfig-003-20260128    gcc-14.3.0
+arm64                 randconfig-004-20260128    gcc-13.4.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260128    gcc-15.2.0
+csky                  randconfig-002-20260128    gcc-14.3.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    clang-22
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    clang-22
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260128    clang-20
+hexagon               randconfig-002-20260128    clang-20
+i386                             allmodconfig    clang-20
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260128    clang-20
+i386        buildonly-randconfig-001-20260128    gcc-14
+i386        buildonly-randconfig-002-20260128    clang-20
+i386        buildonly-randconfig-003-20260128    clang-20
+i386        buildonly-randconfig-003-20260128    gcc-14
+i386        buildonly-randconfig-004-20260128    clang-20
+i386        buildonly-randconfig-005-20260128    clang-20
+i386        buildonly-randconfig-005-20260128    gcc-14
+i386        buildonly-randconfig-006-20260128    clang-20
+i386                                defconfig    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260128    gcc-14
+i386                  randconfig-002-20260128    gcc-14
+i386                  randconfig-003-20260128    gcc-14
+i386                  randconfig-004-20260128    gcc-14
+i386                  randconfig-005-20260128    gcc-14
+i386                  randconfig-006-20260128    gcc-14
+i386                  randconfig-007-20260128    gcc-14
+i386                  randconfig-011-20260128    clang-20
+i386                  randconfig-012-20260128    clang-20
+i386                  randconfig-012-20260128    gcc-14
+i386                  randconfig-013-20260128    clang-20
+i386                  randconfig-013-20260128    gcc-14
+i386                  randconfig-014-20260128    clang-20
+i386                  randconfig-015-20260128    clang-20
+i386                  randconfig-016-20260128    clang-20
+i386                  randconfig-016-20260128    gcc-14
+i386                  randconfig-017-20260128    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260128    clang-22
+loongarch             randconfig-002-20260128    clang-20
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.2.0
+m68k                       m5275evb_defconfig    clang-22
+m68k                        mvme147_defconfig    gcc-15.2.0
+m68k                           virt_defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                           xway_defconfig    clang-22
+nios2                            allmodconfig    clang-22
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260128    gcc-8.5.0
+nios2                 randconfig-002-20260128    gcc-11.5.0
+openrisc                         allmodconfig    clang-22
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-22
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+openrisc                  or1klitex_defconfig    clang-22
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-22
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    clang-19
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260128    gcc-11.5.0
+parisc                randconfig-002-20260128    gcc-12.5.0
+parisc64                            defconfig    clang-19
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-22
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                      chrp32_defconfig    clang-19
+powerpc                     ep8248e_defconfig    gcc-15.2.0
+powerpc                 linkstation_defconfig    clang-22
+powerpc               randconfig-001-20260128    clang-22
+powerpc               randconfig-002-20260128    gcc-8.5.0
+powerpc                     tqm8555_defconfig    gcc-15.2.0
+powerpc64             randconfig-001-20260128    clang-22
+powerpc64             randconfig-002-20260128    clang-22
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    clang-22
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260128    gcc-13.4.0
+riscv                 randconfig-002-20260128    gcc-15.2.0
+s390                             allmodconfig    clang-18
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-22
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260128    gcc-13.4.0
+s390                  randconfig-002-20260128    gcc-8.5.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-22
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    clang-19
+sh                               allyesconfig    gcc-15.2.0
+sh                        apsh4ad0a_defconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.2.0
+sh                               j2_defconfig    gcc-15.2.0
+sh                    randconfig-001-20260128    gcc-15.2.0
+sh                    randconfig-002-20260128    gcc-15.2.0
+sparc                             allnoconfig    clang-22
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260128    gcc-8.5.0
+sparc                 randconfig-002-20260128    gcc-8.5.0
+sparc64                          allmodconfig    clang-22
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260128    gcc-12.5.0
+sparc64               randconfig-002-20260128    gcc-10.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    clang-22
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260128    gcc-12
+um                    randconfig-002-20260128    clang-22
+um                           x86_64_defconfig    clang-22
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-22
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260128    gcc-14
+x86_64      buildonly-randconfig-002-20260128    gcc-14
+x86_64      buildonly-randconfig-003-20260128    gcc-14
+x86_64      buildonly-randconfig-004-20260128    gcc-12
+x86_64      buildonly-randconfig-005-20260128    clang-20
+x86_64      buildonly-randconfig-006-20260128    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260128    clang-20
+x86_64                randconfig-002-20260128    clang-20
+x86_64                randconfig-003-20260128    clang-20
+x86_64                randconfig-004-20260128    gcc-14
+x86_64                randconfig-005-20260128    gcc-13
+x86_64                randconfig-006-20260128    gcc-14
+x86_64                randconfig-011-20260128    clang-20
+x86_64                randconfig-012-20260128    gcc-14
+x86_64                randconfig-013-20260128    clang-20
+x86_64                randconfig-014-20260128    clang-20
+x86_64                randconfig-015-20260128    gcc-14
+x86_64                randconfig-016-20260128    clang-20
+x86_64                randconfig-071-20260128    clang-20
+x86_64                randconfig-072-20260128    clang-20
+x86_64                randconfig-073-20260128    gcc-12
+x86_64                randconfig-074-20260128    gcc-14
+x86_64                randconfig-075-20260128    gcc-14
+x86_64                randconfig-076-20260128    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-22
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    clang-22
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260128    gcc-8.5.0
+xtensa                randconfig-002-20260128    gcc-11.5.0
+xtensa                    xip_kc705_defconfig    clang-22
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
