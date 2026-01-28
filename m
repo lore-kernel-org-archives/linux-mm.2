@@ -4,87 +4,239 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B056CD46BF5
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 19:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEB1D46BF4
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 19:20:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0853F6B0005; Wed, 28 Jan 2026 14:18:52 -0500 (EST)
+	id B01986B0005; Wed, 28 Jan 2026 14:20:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05DA16B0089; Wed, 28 Jan 2026 14:18:52 -0500 (EST)
+	id AB8876B0089; Wed, 28 Jan 2026 14:20:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECBD06B008A; Wed, 28 Jan 2026 14:18:51 -0500 (EST)
+	id 990606B008A; Wed, 28 Jan 2026 14:20:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D992F6B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 14:18:51 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F7051B0C4B
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:18:51 +0000 (UTC)
-X-FDA: 84382334862.07.E674804
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5B2AC140005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:18:49 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w8CN0m3J;
-	spf=pass (imf09.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769627930;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 814936B0005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 14:20:44 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2C3D3BB4A1
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:20:44 +0000 (UTC)
+X-FDA: 84382339608.18.637B919
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D83514000E
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:20:40 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=IMgsUXA2;
+	spf=pass (imf01.hostedemail.com: domain of "prvs=048834cd31=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=048834cd31=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769628041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WlevcV+s/Akx87IZT0lp1ZcnLiIY5tgyZl3WZ+5t1Bg=;
-	b=KVHNnHUy5Z9xY1W0kVnB6CDUP3TJjImNBxUER7HqJ5knb9Rk8uOiBByqVx3+wV5ANT33jw
-	jXPiohiYzYR3TJSP+jdDG/nWSc10zBD/Nkt5qZhAV3OizdLk+x9eJwgIgb+Z+REvboFqly
-	+T0r6kCCHNX9qE3oN/cyrw1HJYA6LCI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w8CN0m3J;
-	spf=pass (imf09.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769627930; a=rsa-sha256;
-	cv=none;
-	b=A+WgZ0n2InFSr61fHxybfa1ri6cyZZOj7K0suRy1WFk9qMLqaCbQqUJji6toedCQz0icwU
-	xgKOmhQItgQ8e7OK06buh5kYTtuqtNpr5K+RfZsPIQrvoO1ErEoGw3oOI3akFFzHJr/YhX
-	PA3MpXHpyBYWUv0/M1SHRYDbIYSZUJ0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769627927;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WlevcV+s/Akx87IZT0lp1ZcnLiIY5tgyZl3WZ+5t1Bg=;
-	b=w8CN0m3Ju240SyX0s68sp64BVQ7qbMjsgdzT4R0XLdDqgi+es2vRzkfCFkf58/hI2VWQk6
-	h6vjyoAzx2SVJKgfSd9aEBK/Sn/6AnVrx+LgNcSCAXu/BBk2BvFsvhLIBwYXzWLUJBfRL+
-	YZ9Byu9GXWh1VQNU4IZvmBD/pRqi2a8=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Matt Bobrowski <mattbobrowski@google.com>
-Cc: bpf@vger.kernel.org,  Michal Hocko <mhocko@suse.com>,  Alexei
- Starovoitov <ast@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,  JP
- Kobryn <inwardvessel@gmail.com>,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org,  Suren Baghdasaryan <surenb@google.com>,  Johannes
- Weiner <hannes@cmpxchg.org>,  Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 02/17] bpf: allow attaching struct_ops to
- cgroups
-In-Reply-To: <aXnyKw5sRt_MB-8A@google.com> (Matt Bobrowski's message of "Wed,
-	28 Jan 2026 11:25:31 +0000")
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
-	<20260127024421.494929-3-roman.gushchin@linux.dev>
-	<aXnyKw5sRt_MB-8A@google.com>
-Date: Wed, 28 Jan 2026 11:18:36 -0800
-Message-ID: <87tsw5y29f.fsf@linux.dev>
+	bh=3Jrc4de4LgyczWTzCdak00725+38ZlOAXDjASx1f2/E=;
+	b=H0lwuFBHOJX38GdKrhBesaY3tBbXjEgn6SR/DCN58EAM1+Au8IdtHz7fXld1j5IrGRn40U
+	mUmVYEoWGkiC1L9F8FOo9UkBt5XpoYzRWbGuN3wFE7IAKV3Q4cGI24oyW5FDuFq4WZOXP1
+	ifdZm3mH8UezhNXuE8v5j4XP/NMDpr0=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=IMgsUXA2;
+	spf=pass (imf01.hostedemail.com: domain of "prvs=048834cd31=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=048834cd31=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769628041; a=rsa-sha256;
+	cv=pass;
+	b=UT8XtiegXYxL9/o3GWTgQpUZPXBgUGWG9G44IKQgs3BlsvGT4RDEKSGfBS5DQD1HLyAxjg
+	qA1ZbH89zr1dVq5bpi8ahdISZuuTHQPX7AHetNy3BLRALl9xm5+6Nxx73ykScZTJumhmeP
+	x4akn/NeVTco4cwrsxnhmNVtT79FbIc=
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 60SJF4Z32248256;
+	Wed, 28 Jan 2026 11:20:27 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=3Jrc4de4LgyczWTzCdak00725+38ZlOAXDjASx1f2/E=; b=IMgsUXA2Da6S
+	dFip02RIHz34b+IBTJjNLqIfHsGn1GnA2JFkU1iqcQi2o0h5brdsRcVJ3tyY8q7j
+	Ng+kwweeN3jkiekLRQphw2Dhknf2IKGAiyl6/8fvWImbyAAmT1eUaAuSG/Ny+ioG
+	Ly76uNv3ZXhte/Cay9e1mOJXDfV2vL5ZpMDVxgDnUGIHruEDdCcEWafx5D1B6BfI
+	fLp4cYqsXcT8gPk4aHX/wOnvRzSI2jeaGvVuEn6VhQdW4SIz8MGsEEwZuroLaw0c
+	5IUFnD0pKPLWI1P3AShxWSCd7qZ1m7b93EUJBgL8Lpa/ICfw+T8uO74Br949Krrs
+	xH4YBLHGbw==
+Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013068.outbound.protection.outlook.com [40.93.196.68])
+	by m0089730.ppops.net (PPS) with ESMTPS id 4bykbwc55h-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 28 Jan 2026 11:20:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OIwa+jJzdT7s6olY5FK3bRmpDtLc1gyj2So6hgkM1kCFiJX7iNT1jHwv5fPDnzemU8k+8knsyPSlecfjOTCZkMruTh6zCQSjk0nYgMxqGoI13oQHn6xf7wEor5/CTQ4rr7qIj0uNvEE+a/4ERJ7i4tUU7tdhZRxrvU/JSsQA1iEhk1vj4qpFl+XULoj4XFvmCvgFZ5NVy35+kup1b8WptXG8is2K7rQ4zhgKRSGStpLtKz7J5XWfoUkYolUkWjaf2tLev+7XAHeY4bjx/c68P9eoyGcrOxq5bHDPEeq69Mtd03wE26oA8OiZo9pz0cByyn/Bsl0GI7+gwbQH8iDesA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3Jrc4de4LgyczWTzCdak00725+38ZlOAXDjASx1f2/E=;
+ b=j7JGnPcdAIZxnZ9j91fa1G388YC/uMhTJpd5Jw6cQW+zWaNNVLuyjWiIqe41C9iJz4gy0zbVF/dyg3PjcqykUorhZgMlqzzFux/lFMKvD/FJ808ywCg/fFCQ5EyMWjOkZLpw4mXaW3gGfvVSRRyMVNMIIJ5jseq/bjSQr5RMMw+kzPleewh31lK1QY3M/SzM75NpKwq2JtUwxvsOl+4bzX4wEYQH88kgUcbSVxfIeSOtLjDqKcvpJeMYHQf+V5qvSu6Rb/1RMFWUDWoIN3MTZbPT9Sd7EaNHYdS+3eWIdlW+r7Opw5d5u43mvXBzLWysDo63+EotIPxF/FqmDA+DkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=meta.com; dmarc=pass action=none header.from=meta.com;
+ dkim=pass header.d=meta.com; arc=none
+Received: from LV3PR15MB6455.namprd15.prod.outlook.com (2603:10b6:408:1ad::10)
+ by DM4PR15MB6273.namprd15.prod.outlook.com (2603:10b6:8:18c::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
+ 2026 19:20:23 +0000
+Received: from LV3PR15MB6455.namprd15.prod.outlook.com
+ ([fe80::444a:f42c:1d70:40b5]) by LV3PR15MB6455.namprd15.prod.outlook.com
+ ([fe80::444a:f42c:1d70:40b5%4]) with mapi id 15.20.9564.007; Wed, 28 Jan 2026
+ 19:20:23 +0000
+Message-ID: <32a7c9a6-0844-4dd1-b092-badca305546a@meta.com>
+Date: Wed, 28 Jan 2026 14:20:14 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry
+ split
+To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org,
+        Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Hugh Dickins <hughd@google.com>,
+        Andrew Morton
+ <akpm@linux-foundation.org>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>,
+        Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
+        Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
+References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
+ <20260128130336.727049-1-clm@meta.com> <aXo6ltB5iqAKJzY8@KASONG-MC4>
+Content-Language: en-US
+From: Chris Mason <clm@meta.com>
+In-Reply-To: <aXo6ltB5iqAKJzY8@KASONG-MC4>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN0PR05CA0013.namprd05.prod.outlook.com
+ (2603:10b6:208:52c::7) To LV3PR15MB6455.namprd15.prod.outlook.com
+ (2603:10b6:408:1ad::10)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5B2AC140005
-X-Stat-Signature: b1rno3ohw15b5iwrc4zacdikoyrf84xa
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR15MB6455:EE_|DM4PR15MB6273:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb0bd036-2b35-4764-aae8-08de5ea248be
+X-FB-Source: Internal
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZGlhbW8yelFkbGdkcUU2V00wL3psbVJzLzVzV0pFT3NWdG9WcDBRZW1za0F6?=
+ =?utf-8?B?M0xGd1JZdkpuS2tFWnlkUnF0UFRSNUR2SFdmcTVCTjRBQnNzbitqWWtodk4v?=
+ =?utf-8?B?Y0Q0Mnl3L05odzMyUkYyYjBhd3BVdHNjbjF1Wkw5dU44dW1ET0V1bGw4TW9p?=
+ =?utf-8?B?bk1TRmRha050UHpoQnAxaGpWUUxGRVduUXEyQVVSejBacDlIMkRSdWJnQjI2?=
+ =?utf-8?B?QkxhTEVPTXBodXZjanZhVkc0TGg4QmhzZk5zV1dQZHFHNWpOL2ZtUWwzMEZm?=
+ =?utf-8?B?YVVIRnloWjRnSXFseno2WW41YzNkdE41Q1kyUXZIdzRqZlc2WHQ2QkxBYzA2?=
+ =?utf-8?B?Y2VpZGlNNjE0MGZmd3pzb3JxeElaVjd6RVYrWW9DaU5pNkQ4amtNaWg3V3JT?=
+ =?utf-8?B?RVcydHBzU2lCUUtHOFFCcEZiQ2NHYVZTQTAxUTNuTDJIeWMzbGljNW1hSVFK?=
+ =?utf-8?B?WlZTZlp2U2JmQ2o2N2t1Tm9QK01hTTNPS1ErVEQ5VGg3MzFuWDRMMGxqUGNT?=
+ =?utf-8?B?ZmdSaGVSbGR3cHNja1VrdUIzZDc4MFdFbnJxWkllNjhJTHhVb2JhZnlmN2Ja?=
+ =?utf-8?B?M3RSNmZRTmlKc004Sk9Sc0tYS0JGai96NzN0Y2IxQ0hvdVg5TlVVTTl0andj?=
+ =?utf-8?B?M0pnQ3VrRG9hTDNnZTQ5VTJJRzFQNy8wTW5JbFEzZS9UcGNoN2pIbktIT0VX?=
+ =?utf-8?B?cUZySEVoWUVtUGhtQWtVMGluUVFKV0l2QnA3RWFFRXIvQTB6cFhpaXhTYjha?=
+ =?utf-8?B?NjdEVGpTdjMwdTdsZTFkT2JRaWNPZTdlaW0zckJ5ZG9Bb3FrUkRpaGNXUnpN?=
+ =?utf-8?B?c0ZlYWFhSVZCSDQxQnFpMUhmT0ZJUWF1K0Q0bHd0dy9KK1VhV1BOYUZMUll1?=
+ =?utf-8?B?a2pvV1c2bEgwMkRpWWZYeWdaRWsva2tJNXI5cFNlQWE3R0J0a2lNRjVhNUcy?=
+ =?utf-8?B?UWZLd0pEbkdpK3RHeEFDaE5Cajd2U1lxN0hydGM2TFBkbG5UcklFQm04SWNk?=
+ =?utf-8?B?Z0dKYXNKNitMVHB2dVpsS1A2Q05ZSVIvaFN6UE9SajF6bG1QZXVDNHp6SSs5?=
+ =?utf-8?B?M0o2ZlNrY1N3TTYwUUQxM0duaTUxSlFyZzBCdWE0Zm9nZnUzWEpNZzFWeGVy?=
+ =?utf-8?B?YTVtQUFzVC8rNVZEMlR1eS85QW52OXpzalpDZjNiNWd2OUdlS2d3RndBWm1Y?=
+ =?utf-8?B?Ymw1emg4c2ZrOUR0eUhIRVIxSEV0aHdOZTlYWE1US0MrOCt5YnM1aGxjKzE0?=
+ =?utf-8?B?YkZ5MkpCRXdKM3QxdWpnMmdyZlBHS2tHMExxWHVtK3BkZkV1Z0laZng3YlRC?=
+ =?utf-8?B?WVBmaFVHeTVFTHkzM0RrL2g1MHpXcDRJYXRTK1VlbjF3bVp4Tk4xVjZVam83?=
+ =?utf-8?B?dEwzQ0svc3MwOFdWMWcyZ0ZSaFhDQWU2a1pYUDZnWkVBelNqQkd3anlkbXgx?=
+ =?utf-8?B?eTRyT3VzSElPRDBnRDBxb2xvSUhHeUx1MHIyWjZkeVRnRzJEcjhUcFpBZmsy?=
+ =?utf-8?B?UktwL1BaV0g4L3J2d3RLVjZZdkQ1bXpYbEs2QVNkN2I4UzNGS3R1Q1I0NkQ3?=
+ =?utf-8?B?TkhMSnF2VXBGdStUL2RYeCtpcnMyajVEQkpiVzhEVFB0OTFWTjRlS0NKdkV3?=
+ =?utf-8?B?UG5IT1BTVE9ZRWkvU3l1NGpodERQdUExd1F5Q0ViR0VmNi9KRXc3RnZXaW1t?=
+ =?utf-8?B?dlFzcDJXaktQSDl6TndBdGdaQmNsdUloT0tLR2dVWFZtaFRLV2lKeVJLUVZa?=
+ =?utf-8?B?OG9oZ2xNS3VnK29BRmIxdTB1RjhQcWFOWW1uZis1ZFhweDA0V2UyYjFmZXps?=
+ =?utf-8?B?NWhBZFd3MUVhZGNsRzQ2NFJOaDVuOCs4UUswb2o1TnkwdEhaWnBJMHVxNTVL?=
+ =?utf-8?B?eDdkRTNveTFNck5LL0lzRW5uNTRWL3JRakw5N2lHZ0gyQVArcWRRS3A2VUh2?=
+ =?utf-8?B?NkRKWDNveWwzc3FWVjB0RHdpWEM5LzBPWHppR1FDb1U5NW5kTVh2NE1hSlln?=
+ =?utf-8?B?V2EzZ3dMcEpEc01uY3RQbm5iR2UxMUdCNXdsQmdkczhOQWV1Zi9ya0lUQlo3?=
+ =?utf-8?B?MThYd2xCdloxRXZzRHJRbHpTRzd3ajFBQkNJV0IxTnNhZk5DTDJnTTFSZjgw?=
+ =?utf-8?Q?Pmaw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR15MB6455.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MkJUNi9laDhIZEFpTVJGOWY3VE1jczdiVTVQbWY1ajJkYVlhSmZqdjRML0d6?=
+ =?utf-8?B?RG50T0dxV1lhWWQ4Q0N6Z2l0bnFJRVhLcmFZVWNRb1p4cUtrc1A5N1FCaWpt?=
+ =?utf-8?B?N0ZGN3JaYXBNeFRXVW1lOFlSQXV5d1NpdVV1Rlp6R0VMM0N3d3VPbThsb0lG?=
+ =?utf-8?B?aTZHTE5BQmZkVjRiemVWdnJwbmVlRG9ISHpCL2dOdFBESnM5UjZUVEVRWkJI?=
+ =?utf-8?B?Qk0xekZ0Qi8vN0pNcFp4VStacnpNemZWSkIvSlF1TTJndDkvSHVkdC9KV20x?=
+ =?utf-8?B?N0ZRUlh6UXUwQ3hSbTlTZlV4SjVabm9PNC80eldQcWJTWWZQMUdrL3VKZGZL?=
+ =?utf-8?B?SGhiTVk3T0kxM3p4KzR1S0M2cWE3V0JQVFRrS2xwZ21vcmczcjZoUDJYT3Nk?=
+ =?utf-8?B?YSs3WTVRQ2VHbEIzWE8zM1kxNnFFUlRRV2Z5VUVvS0tqQ0lCcTFRMm0zNk1S?=
+ =?utf-8?B?STZzNW1XdUVNR1A1Z3FMNzIrK0F4K29GWkNzSkRDMzd0VTM3YjExVWhycXVB?=
+ =?utf-8?B?UlpxeGg3Z3lTd2laMkdDRGRYNzJINU40M0VkTysrc2pucW1JeVBGY0VYTFhl?=
+ =?utf-8?B?QmhQRk1rTEh3R1Jjd0hUSFFOVnNPRFdpNnNSR1F3QkRiQmI0VE1zQjlYcWdH?=
+ =?utf-8?B?aXk5b2lUVlNLNTJiMk1SaS9PK1VKS0tCZkdGazY3bExVQk1Oa0pFcnhpWmpi?=
+ =?utf-8?B?RUZTa1lzVEx1ajl1SDBLdzVVK3ZHRWl1RFFHdWVjcFYzdDNvRTJEWnFUNlZ0?=
+ =?utf-8?B?MjR1UFNiUkxkTmhZRGdGTDhEQnpINEVwSEtUNERPZDB4U2tja3h0Q2dUR2U1?=
+ =?utf-8?B?dVNXTzljUEY3dnJpNUNHKzJad0dsUG96Uy85eko0NVpWdHZ6dG43T2tGcHRR?=
+ =?utf-8?B?UXhWS2VobmpYVGdpSEFuQ0NzQlRDejFqUU52eFFYNDd4R0NabFc4cTUxbnBX?=
+ =?utf-8?B?eTRQL05DeGhzQkg4dTNGZDZHVDlrTVRJYjhmYm9WVGozQmFJV2o5Tit4STht?=
+ =?utf-8?B?UEp5ZWdMT1ZUbHg3M3FqYTlJTkF6NjlmdGVucFpVbmw1blM4a1ZPQmlvYTl2?=
+ =?utf-8?B?dlNjcWg4V2creDIvTUorSzdUUWJKeEZhUVpvMFpiTlZoUXVtSzdZNEczMzFY?=
+ =?utf-8?B?T05KSWNvd1E1Z0lkTDkwdm1lMkFVMlMyMEhTSlhlY21xa01wT2djY0o1S25V?=
+ =?utf-8?B?c0JLQ2RqTmhjQUtqb2pncUEyWVhEN3F4TnhiNzdQR2Q0NzJYWjZud3E4di9I?=
+ =?utf-8?B?TGprL09FOUxqSUE3c3hSK3dJaFM2K0wyN001elZaZmozOWtJeEdqNEptVW5h?=
+ =?utf-8?B?RUE1ZzBWakJzVndHNVRqUWgxRHk5czNjeHVVYis1Q2hlK3JuL1VoVm0wUU01?=
+ =?utf-8?B?U2dUdEcrTStrNnoyMmVMaXJFZVBnb3dmeFNvSzFhbnNUeE8xUzRiTnhDYUgv?=
+ =?utf-8?B?amtvZ1lTaFkyOUJJdGYxbEgyMUU0UnkybTFqRHh0ZDkyU3VGRzY5bERmQ29z?=
+ =?utf-8?B?ODhQT1lxYTNxTC84eVRaV2lqTWpEY0YvQlZpTkxYNDIrV2dFeXl2WDh5WThN?=
+ =?utf-8?B?QmdNS0Z2SzZwazA2b1BaVHpIL3ZwSGdkYW5PMXh5bGpVdG9iQVRnNzYraEpT?=
+ =?utf-8?B?OTVHaXhKaDRzMDZ2V0MzUGxDOXgxWm91cEJqU25hd0JvS2JqYlVZVXNTMkRQ?=
+ =?utf-8?B?TUY0OEE4VDNUNTVzRXU2ajZISVFOZlNaRHVrSFdkbkNjOHIyTENNSWtmcTA5?=
+ =?utf-8?B?ckFIYjdwU3dDNTJ5NFJNdDN4TmgwdnA3clpvZHBFdC8zTUhuS3VsOWV2aDNl?=
+ =?utf-8?B?MXczaWhyK1JZdFozOWlkRUhvVHduL2ZIMUM3ZGE2bVJpTW1ZaFdTcUpndDZE?=
+ =?utf-8?B?SHNaMStVQmJFMWhzbFNTMDBreDFLVk5zajBZMmVhNU56d1FPVllvMDlNWk8z?=
+ =?utf-8?B?T3NBSEhPbUg0dk11Z0xYL2lPazZrSUZMUTBLYUx3aWR4QmxFZUxSYzV2RGFy?=
+ =?utf-8?B?Y2IxdGZrNXFham5vYnQ1VStydzRGWmoxRGhvMlpWOXhmTWc0V202bk5IREgz?=
+ =?utf-8?B?MGZtY21yZW9ZanVheUVyWElBNmpPK0EvZDhubjBORDQwSGF4VG0vSjRuQ3V6?=
+ =?utf-8?B?T0Y5cXJEU0N0NGdIeHhTTXVLNFc5UlRvM0w5cmpyRzZuZkVUWEhwQXdYYys0?=
+ =?utf-8?B?b1BrSlVqNUY3VDJYeWxmTktqeE5JWHB0MzFZcnVPNEErM1dGWm1NVU8zWGkr?=
+ =?utf-8?B?NmM0Y0pGWkxDRkFlWnZMRCsyTEFGOEwxakREK1RrNG00YkV3ZUNCeVlMd1NI?=
+ =?utf-8?Q?9w8rYI4mxAKZaFELl0?=
+X-OriginatorOrg: meta.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb0bd036-2b35-4764-aae8-08de5ea248be
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR15MB6455.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 19:20:23.3145
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /EohBzTPi0L63LFdU5wyOpPrcy1PXt2q7Q9GK4u9coABavTF1UH1Q/XXpx/fPz/h
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR15MB6273
+X-Authority-Analysis: v=2.4 cv=O6Q0fR9W c=1 sm=1 tr=0 ts=697a617a cx=c_pps
+ a=0JRlrhwbVVPmsaj0kffiDg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=GvQkQWPkAAAA:8 a=qGJZMtbXaoSNzlnTLp4A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: fqAA-znrdSvvdx7iNpMSc_rVs_PjnvZH
+X-Proofpoint-GUID: fqAA-znrdSvvdx7iNpMSc_rVs_PjnvZH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDE1OCBTYWx0ZWRfX6ehjUQPLOkJT
+ hIW7hs7Q4v9ww/HLG2Eu1jG0ioGc8zw3Wn7T6uhe9Hh3EtQeRVmsCzjwdiGB/s9I0Xo7c4jgCUw
+ 0+Ir19Ng1bUB5f5UivaNxbYw5FzDQHy8lBy9IvtOeN4d/3Oda6dbOf5Md31A37dIREqUK2IWeoO
+ aNe0VyY8tqXTve1hDYLPq7CJEHYboo7g25aVjoG8QCH9S/wJrcu1vhoMnfUMqnMAcopxeRHXZ++
+ 75mTQVO6KFISTSfjRTJlKvbHp95zHyv5hTpU6TBb4Q+RYDt8Aqf/jBziUwHYlwTOQdgiR8ieQqh
+ 22XBYOgN8DvQ2wbTx6ifiUtBJVcp1zSKzxpQ9efXEkNn7mAnFNbGKYHlveKs+hb8yGfjJSa1WKD
+ 1sXaXSMXrrxR4e1nk7rBSP2CCzBOTQQjn9+wDodY542sIbTLQmyjxBVJt6BSG6zQFeKNfBDX+HB
+ 56d/vZveD4EZ2UDvdoA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-28_04,2026-01-28_03,2025-10-01_01
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rnmwma1rim153eqctuwftn4gsr8uox7g
+X-Rspamd-Queue-Id: D83514000E
 X-Rspam-User: 
-X-HE-Tag: 1769627929-845364
-X-HE-Meta: U2FsdGVkX1/AT12gwcYRbrgyjYGXqQ9dNfI8h9zFHu0MxW7QgyTEW9CmAIiuEyNTkafc+5o3rGO3UYmzkfyRTYS6zDMBO7ckcY5xF2YQBSmjKDqsyPvDyKRTCsMS1T++IGMClSYUS9NzjLD4c+CPb+lPPJ69ZlnckSO2tdB687xAgyzlR8D0uyoqBkFEy6hECTXy+ZrfHaAvjGl8FmMcTSA++8/Yb63ACZWjC73XWxbbDr2OCFs+eAB5GvCtD6ccs9xEjYbCSxL+o344siCb1U6nPJOzPiU6aJdpbkyTnrzQwpwXjdiHCuL/9ja4U/vuinyK9l5YjCyOey1au6oa9Q6jwmYuCxPVQMg6YfMty1+Qxgoori+zID48Bw+ZlJ9fMFJV9xQAUkP5zvXGQKC66z9MOMCJplmiP0AK+Z6TX67JjopwmgpdrjPlkFc6odBGFR0LZtuu5qOkh1lVWHXXjDq7ssRrnySCA43M9qBBCOAP0mwaAeQLtBtzSlgrXWnbv8oia7LXQeSBJ9UHT+dlOlsoTFW0WvAtvNl3c66kJGMe74NmgYx3Fm09R1YLcVwkZ50OnZjc18yjMCSCybO40MGqlHtl6ABphfOnx9G8CxYscQMQ+7xWPebzgr/zFEf2ThlYVJln64JLFMqizrmSaOx3F32Z4ZdgjazxU65rU828O3mt4DI3kcrD59clItck1wrdHnkoxOGFsK/slam3gdrtGauhXJ2CWGvdCZ6GZz6eqzyqrKJgJ1XieuYS1ft9ZmYjkwa8UF52jgX7OFl/CJq9spLZH3I/RqM7bmv+RFE+ybym5ltrPaKq6vh/kGDTCIRcNFpXUR78wtT2Aqq+GbBGWTjPelYm84UWDgZuikqiYk/l1rNKKF0hHmHGHY8GdA3cy0h4e4i7kd7rvY6SJ7Znxocq56CrPrb5vf8UBF7ECi4GBLWpbUqLTqHKh558Z9vGx7OorJLPdcVzrb+
- a8d7Zq62
- eIv12uVDjkZwVxEGqitckDcFpZnJu5ulYAKH+Q9sZXD+HHDgx+bYFTik471yJmqpq09g8UVr0h7xf4+zPutC/2gf3kjKQdAKcjSyl9kIzrZ9UsfSD5CYl5YIITqXHOU5QBzay2KgAmb6XJG5SmMsuGQ7OlWXSB6aNHL4H1guGW01gJ4QhRnoY1wWnBC5kXLtV911WXMvcFuFQxg1r6TLQzhxMZgA9MW2O/bheL1VeVAunro/BLdGKn2MBkooD/jKqSmLMVK1lCKUPmyg=
+X-HE-Tag: 1769628040-856854
+X-HE-Meta: U2FsdGVkX1821FwaETrgmdhp2BKhBllQFwazgNTweWWSnzxc04if4Ktf7w8cZsFU4bC1qEcf+Ep28ttSrq8uacbFuXI0aCGlp6QUAdBFBSxLrA9Sdd1X0DLnv6KT4NAUfene2ziESp+EhFvo7YRy9YEsVicoPUDhTFBEmlQZX7xM1llRhgPxB1jkumzlmHEIGx2zVSL99FvPfah1uMt7+tIjfFEoU061QVFRLGeuuZAFuWisGIj/Op1VzHtTLiA1U7BUVC5SNrguAFB2el9iMcrTFFkec7R391zrM9fz6EHms34Dl53LCbIfZVKOKSPtUQTxZ5Abr3l09iwyTBw32GxF5sT7WQ7+Rcmfwuf28VlfIHj2Ct7TFkzhF3fD2lN2pIiBoClxBYFXhVjtYgp8IVB6j6hF/a+Nl3k4DjRqKdO2Bruat1OsKEH4WzydVNK4/lBTIiGRvJNlQ+kXUU/Vk8n11lgEj1i5KBSQQGEsTLUKcJqRXQbK6D+Jltuj3PPQ0f0cvg3sgOwr3R70uUgzxOVepoCjDxW3pFenFeJU4WQ5VQr3l2oO9D0mOuuRCRc1VNTrbhzht7taY+zpd0KcVmHxUAa8ETMJax+XeGGCvRcKBZWrl9ayjrFCsDA3YpyN1rE2YdEtYGNFV8LDS/AfN7Yh/PgFyW8d2KfsRX04vSPhQM2xQWHooaWPknlQO1Or/09zwXM6oi9enCJRB7rYWrGQxOjv2Fnyt85ZiuYahB68Qy8LjfrKZJjarml6SuzdSKxA7WQXVnXQncugnBFCFShDPMxXoWcvlT7FWVO4iDxcZ4+qHsb+6J18FkitLtI0i/J5Nl/y6DmQUYFxrH3xyWbiooRseFuXz3hXAgyirm34f5/J1/Przxxe6jhu9a5POnX9EhdyAUHE+U5c9E6DxW3l65ukVEDhRdb/px27fGgq+bNk0CEzglwZ2dkGJOrqNUCOfgP0B0iEsV6EuQ8
+ DgIaUJiJ
+ B9kTWnHEgvmyMjaqnOwLqbjdfbP4CwNnYQogUSaLN1VlLyQklyMBVdxn3ClyvCPJGcZ3fBnQPcJWc2eijpf+zpMgfEL2GlN1jiJjDvJPMLgF4a5KeEu/hpm7LRq2dtHl/h1s7WPx0ZlDkCzWXAcgDerdwHPsgqIAWRstwSzg0j8YzGoSoB7KGxbDflQ6yFcx3cRb57o0jY/oTIlRXv2BnMORCPXln3x1JqOK5R7dxR4FcBgBa9c2kG9HGsZ/g6MH6/XcXwduSS5UTjbsaTMqzNAk8lixmqW7q4z/IXneuM6+SOy0C3hq7qkBs4/47MhbeIU2vkzdbxgvjVZ+OiwBm1cp2RKEgwQ+LejodQ2ta15kD80AitSfkwbN3xa87yWivSZKe+q1jHxN9cu7I3lW4t5LlaxBYvcYYvq7sbEsrXYOrl1b6Z8MSFEZ+EFEig1Mmvu0rfaWKPsVuUwJQpkn4D7Ue2Btr5u16SCAWdRK924JKHt4Dntj1X1k+H4FYn5jtjJYPsNImbF5FmaTtssGWuJnnF+syCIa3ctBhFD5b6YCcRAzgG1ZKD4ubtqmtlG+CjP57GpZ1mNUPEGw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,439 +245,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Matt Bobrowski <mattbobrowski@google.com> writes:
+On 1/28/26 11:52 AM, Kairui Song wrote:
+> On Wed, Jan 28, 2026 at 05:02:34AM +0800, Chris Mason wrote:
+>>
+>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>> --- a/mm/shmem.c
+>>> +++ b/mm/shmem.c
+>>
+>> [ ... ]
+>>
+>>> @@ -1191,12 +1203,23 @@
+>>>  		folio = fbatch.folios[i];
+>>>
+>>>  		if (xa_is_value(folio)) {
+>>> +			int order;
+>>>  			long swaps_freed;
+>>>
+>>>  			if (unfalloc)
+>>>  				continue;
+>>> -			swaps_freed = shmem_free_swap(mapping, indices[i], folio);
+>>> +			swaps_freed = shmem_free_swap(mapping, indices[i],
+>>> +						      end - 1, folio);
+>>>  			if (!swaps_freed) {
+>>> +				/*
+>>> +				 * If found a large swap entry cross the end border,
+>>> +				 * skip it as the truncate_inode_partial_folio above
+>>> +				 * should have at least zerod its content once.
+>>> +				 */
+>>> +				order = shmem_confirm_swap(mapping, indices[i],
+>>> +							   radix_to_swp_entry(folio));
+>>> +				if (order > 0 && indices[i] + (1 << order) > end)
+>>> +					continue;
+>>>  				/* Swap was replaced by page: retry */
+>>>  				index = indices[i];
+>>>  				break;
+>>
+>> Could this code infinite loop if a large swap entry crosses the START
+>> boundary instead of the END boundary?
+> 
+> Thanks for the review! It's really helpful :)
+> 
+>> When shmem_free_swap() returns 0, it could be either because:
+>> (a) The entry was replaced by a page, or
+>> (b) The entry failed the boundary check (base < index ||
+>>     base + nr_pages - 1 > end)
+>>
+>> The boundary check here only handles case (b) for entries crossing the
+>> END boundary:
+>>
+>>     if (order > 0 && indices[i] + (1 << order) > end)
+>>         continue;
+>>
+>> But what happens if the entry crosses the START boundary? If
+>> find_get_entries() returns a large swap entry at indices[i] where
+>> the entry's base (calculated as indices[i] & ~((1 << order) - 1)) is
+>> less than the truncation start point, then shmem_free_swap() will
+>> return 0 due to the "base < index" check. The code will then call
+>> shmem_confirm_swap(), get the order, check if it crosses the END
+>> boundary (which it doesn't), and retry with the same index:
+>>
+>>     index = indices[i];
+>>     break;
+>>
+>> The next iteration will find the same entry again at the same index,
+>> leading to an infinite loop. For example:
+>>
+>> - Truncating range [18, 30]
+>> - Large swap entry at [16, 23] (order 3, 8 pages)
+>> - indices[i] = 18
+>> - shmem_free_swap() sees base=16 < index=18, returns 0
+>> - Check: 18 + 8 > 30 is false (26 <= 30)
+>> - Retries with index=18
+>> - Loop repeats indefinitely
+> 
+> I think this is a valid issue. And it's worse than that, during the `while (index < end)` loop a new large entry can land anywhere in the range, if one interaction's starting `index` points to the middle of any large entry, an infinite loop will occur: indices[0] are always equal to the `index` iteration value of that moments, shmem_free_swap will fail because the swap entry's index doesn't match indices[0], and so the `index = indices[i]; break;` keep it loop forever.
+> 
+> The chance seems very low though.
+> 
+>> Should the boundary check also handle the START case, perhaps:
+>>
+>>     if (order > 0) {
+>>         pgoff_t base = indices[i] & ~((1UL << order) - 1);
+>>         if (base + (1 << order) - 1 > end || base < start)
+>>             continue;
+>>     }
+> 
+> This still doesn't cover the case when a new large entry somehow lands in the range during the loop.
 
-> On Mon, Jan 26, 2026 at 06:44:05PM -0800, Roman Gushchin wrote:
->> Introduce an ability to attach bpf struct_ops'es to cgroups.
->> 
->> From user's standpoint it works in the following way:
->> a user passes a BPF_F_CGROUP_FD flag and specifies the target cgroup
->> fd while creating a struct_ops link. As the result, the bpf struct_ops
->> link will be created and attached to a cgroup.
->> 
->> The cgroup.bpf structure maintains a list of attached struct ops links.
->> If the cgroup is getting deleted, attached struct ops'es are getting
->> auto-detached and the userspace program gets a notification.
->> 
->> This change doesn't answer the question how bpf programs belonging
->> to these struct ops'es will be executed. It will be done individually
->> for every bpf struct ops which supports this.
->> 
->> Please, note that unlike "normal" bpf programs, struct ops'es
->> are not propagated to cgroup sub-trees.
->> 
->> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
->> ---
->>  include/linux/bpf-cgroup-defs.h |  3 ++
->>  include/linux/bpf-cgroup.h      | 16 +++++++++
->>  include/linux/bpf.h             |  3 ++
->>  include/uapi/linux/bpf.h        |  3 ++
->>  kernel/bpf/bpf_struct_ops.c     | 59 ++++++++++++++++++++++++++++++---
->>  kernel/bpf/cgroup.c             | 46 +++++++++++++++++++++++++
->>  tools/include/uapi/linux/bpf.h  |  1 +
->>  7 files changed, 127 insertions(+), 4 deletions(-)
->> 
->> diff --git a/include/linux/bpf-cgroup-defs.h b/include/linux/bpf-cgroup-defs.h
->> index c9e6b26abab6..6c5e37190dad 100644
->> --- a/include/linux/bpf-cgroup-defs.h
->> +++ b/include/linux/bpf-cgroup-defs.h
->> @@ -71,6 +71,9 @@ struct cgroup_bpf {
->>  	/* temp storage for effective prog array used by prog_attach/detach */
->>  	struct bpf_prog_array *inactive;
->>  
->> +	/* list of bpf struct ops links */
->> +	struct list_head struct_ops_links;
->> +
->>  	/* reference counter used to detach bpf programs after cgroup removal */
->>  	struct percpu_ref refcnt;
->>  
->> diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
->> index 2f535331f926..a6c327257006 100644
->> --- a/include/linux/bpf-cgroup.h
->> +++ b/include/linux/bpf-cgroup.h
->> @@ -423,6 +423,11 @@ int cgroup_bpf_link_attach(const union bpf_attr *attr, struct bpf_prog *prog);
->>  int cgroup_bpf_prog_query(const union bpf_attr *attr,
->>  			  union bpf_attr __user *uattr);
->>  
->> +int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
->> +				 struct bpf_struct_ops_link *link);
->> +void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
->> +				  struct bpf_struct_ops_link *link);
->> +
->>  const struct bpf_func_proto *
->>  cgroup_common_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog);
->>  #else
->> @@ -451,6 +456,17 @@ static inline int cgroup_bpf_link_attach(const union bpf_attr *attr,
->>  	return -EINVAL;
->>  }
->>  
->> +static inline int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
->> +					       struct bpf_struct_ops_link *link)
->> +{
->> +	return -EINVAL;
->> +}
->> +
->> +static inline void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
->> +						struct bpf_struct_ops_link *link)
->> +{
->> +}
->> +
->>  static inline int cgroup_bpf_prog_query(const union bpf_attr *attr,
->>  					union bpf_attr __user *uattr)
->>  {
->> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
->> index 899dd911dc82..391888eb257c 100644
->> --- a/include/linux/bpf.h
->> +++ b/include/linux/bpf.h
->> @@ -1894,6 +1894,9 @@ struct bpf_raw_tp_link {
->>  struct bpf_struct_ops_link {
->>  	struct bpf_link link;
->>  	struct bpf_map __rcu *map;
->> +	struct cgroup *cgroup;
->> +	bool cgroup_removed;
->> +	struct list_head list;
->>  	wait_queue_head_t wait_hup;
->>  };
->>  
->> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
->> index 44e7dbc278e3..28544e8af1cd 100644
->> --- a/include/uapi/linux/bpf.h
->> +++ b/include/uapi/linux/bpf.h
->> @@ -1237,6 +1237,7 @@ enum bpf_perf_event_type {
->>  #define BPF_F_AFTER		(1U << 4)
->>  #define BPF_F_ID		(1U << 5)
->>  #define BPF_F_PREORDER		(1U << 6)
->> +#define BPF_F_CGROUP_FD		(1U << 7)
->>  #define BPF_F_LINK		BPF_F_LINK /* 1 << 13 */
->>  
->>  /* If BPF_F_STRICT_ALIGNMENT is used in BPF_PROG_LOAD command, the
->> @@ -6775,6 +6776,8 @@ struct bpf_link_info {
->>  		} xdp;
->>  		struct {
->>  			__u32 map_id;
->> +			__u32 :32;
->> +			__u64 cgroup_id;
->>  		} struct_ops;
->>  		struct {
->>  			__u32 pf;
->> diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
->> index de01cf3025b3..2e361e22cfa0 100644
->> --- a/kernel/bpf/bpf_struct_ops.c
->> +++ b/kernel/bpf/bpf_struct_ops.c
->> @@ -13,6 +13,8 @@
->>  #include <linux/btf_ids.h>
->>  #include <linux/rcupdate_wait.h>
->>  #include <linux/poll.h>
->> +#include <linux/bpf-cgroup.h>
->> +#include <linux/cgroup.h>
->>  
->>  struct bpf_struct_ops_value {
->>  	struct bpf_struct_ops_common_value common;
->> @@ -1220,6 +1222,10 @@ static void bpf_struct_ops_map_link_dealloc(struct bpf_link *link)
->>  		st_map->st_ops_desc->st_ops->unreg(&st_map->kvalue.data, link);
->>  		bpf_map_put(&st_map->map);
->>  	}
->> +
->> +	if (st_link->cgroup)
->> +		cgroup_bpf_detach_struct_ops(st_link->cgroup, st_link);
->> +
->>  	kfree(st_link);
->>  }
->>  
->> @@ -1228,6 +1234,7 @@ static void bpf_struct_ops_map_link_show_fdinfo(const struct bpf_link *link,
->>  {
->>  	struct bpf_struct_ops_link *st_link;
->>  	struct bpf_map *map;
->> +	u64 cgrp_id = 0;
->
-> Assigning 0 to cgrp_id would technically be incorrect, right? Like,
-> cgroup_id() for !CONFIG_CGROUPS default to returning 1, and for
-> CONFIG_CGROUPS the ID allocation is done via the idr_alloc_cyclic()
-> API using a range between 1 and INT_MAX. Perhaps here it serves as a
-> valid sentinel value? Is that the rationale?
+FWIW, I'd have been really surprised if claude actually fixed the
+bug...I haven't stopped the prompt from making the suggestions just
+because I think it helps explain the potential issue.
 
-Yes. Idk, maybe (u64)-1 works better here, I don't have a strong
-opinion. Realistically I doubt there are too many bpf users with
-!CONFIG_CGROUPS. Alexei even suggested in the past to make CONFIG_MEMCG
-mandatory, which implies CONFIG_CGROUPS.
+> 
+>> where 'start' is preserved from before the loop?
+> 
+> How about following patch:
+> 
+> From 863f38c757ee0898b6b7f0f8c695f551a1380ce8 Mon Sep 17 00:00:00 2001
+> From: Kairui Song <kasong@tencent.com>
+> Date: Thu, 29 Jan 2026 00:19:23 +0800
+> Subject: [PATCH] mm, shmem: prevent infinite loop on truncate race
+> 
 
-> In general, shouldn't all the cgroup related logic within this source
-> file be protected by a CONFIG_CGROUPS ifdef? For example, both
-> cgroup_get_from_fd() and cgroup_put() lack stubs when building with
-> !CONFIG_CGROUPS.
->
->>  	st_link = container_of(link, struct bpf_struct_ops_link, link);
->>  	rcu_read_lock();
->> @@ -1235,6 +1242,14 @@ static void bpf_struct_ops_map_link_show_fdinfo(const struct bpf_link *link,
->>  	if (map)
->>  		seq_printf(seq, "map_id:\t%d\n", map->id);
->>  	rcu_read_unlock();
->> +
->> +	cgroup_lock();
->> +	if (st_link->cgroup)
->> +		cgrp_id = cgroup_id(st_link->cgroup);
->> +	cgroup_unlock();
->> +
->> +	if (cgrp_id)
->> +		seq_printf(seq, "cgroup_id:\t%llu\n", cgrp_id);
->
-> Probably could introduce a simple inline helper for the
-> cgroup_lock()/cgroup_id()/cgroup_unlock() dance that's going on in
-> here and bpf_struct_ops_map_link_fill_link_info() below.
+I ran this incremental through and it didn't flag any issues, thanks!
 
-I'll try, thanks!
+-chris
 
->
->>  }
->>  
->>  static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
->> @@ -1242,6 +1257,7 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
->>  {
->>  	struct bpf_struct_ops_link *st_link;
->>  	struct bpf_map *map;
->> +	u64 cgrp_id = 0;
->>  
->>  	st_link = container_of(link, struct bpf_struct_ops_link, link);
->>  	rcu_read_lock();
->> @@ -1249,6 +1265,13 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
->>  	if (map)
->>  		info->struct_ops.map_id = map->id;
->>  	rcu_read_unlock();
->> +
->> +	cgroup_lock();
->> +	if (st_link->cgroup)
->> +		cgrp_id = cgroup_id(st_link->cgroup);
->> +	cgroup_unlock();
->> +
->> +	info->struct_ops.cgroup_id = cgrp_id;
->
-> As mentioned above a simple inline helper could simply yield the
-> following here:
->
-> ...
-> 	  info->struct_ops.cgroup_id = bpf_struct_ops_lin_cgroup_id();
-> ...
->
->>  	return 0;
->>  }
->>  
->> @@ -1327,6 +1350,9 @@ static int bpf_struct_ops_map_link_detach(struct bpf_link *link)
->>  
->>  	mutex_unlock(&update_mutex);
->>  
->> +	if (st_link->cgroup)
->> +		cgroup_bpf_detach_struct_ops(st_link->cgroup, st_link);
->> +
->>  	wake_up_interruptible_poll(&st_link->wait_hup, EPOLLHUP);
->>  
->>  	return 0;
->> @@ -1339,6 +1365,9 @@ static __poll_t bpf_struct_ops_map_link_poll(struct file *file,
->>  
->>  	poll_wait(file, &st_link->wait_hup, pts);
->>  
->> +	if (st_link->cgroup_removed)
->> +		return EPOLLHUP;
->> +
->>  	return rcu_access_pointer(st_link->map) ? 0 : EPOLLHUP;
->>  }
->>  
->> @@ -1357,8 +1386,12 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
->>  	struct bpf_link_primer link_primer;
->>  	struct bpf_struct_ops_map *st_map;
->>  	struct bpf_map *map;
->> +	struct cgroup *cgrp;
->>  	int err;
->>  
->> +	if (attr->link_create.flags & ~BPF_F_CGROUP_FD)
->> +		return -EINVAL;
->> +
->
-> BPF_F_CGROUP_FD is dependent on the cgroup subsystem, therefore it
-> probably makes some sense to only accept BPF_F_CGROUP_FD when
-> CONFIG_BPF_CGROUP is enabled, otherwise -EOPNOTSUPP?
->
-> I'd also probably rewrite this such that we do:
->
-> ...
-> 	struct cgroup *cgrp = NULL;
-> 	...
-> 	if (attr->link_create.flags & ~BPF_F_CGROUP_FD) {
-> #if IS_ENABLED(CONFIG_CGROUP_BPF)
-> 	cgrp = cgroup_get_from_fd(attr->link_create.target_fd);
-> 	if (IS_ERR(cgrp))
-> 		return PTR_ERR(cgrp);
-> #else
-> 	return -EOPNOTSUPP;
-> #endif
-> 	}
-> ...
-> 	if (cgrp) {
-> 		link->cgroup = cgrp;
-> 		if (cgroup_bpf_attach_struct_ops(cgrp, link)) {
-> 		   cgroup_put(cgrp);
-> 		   goto err_out;
-> 		}
-> 	}
->
-> IMO the code is cleaner and reads better too.
->
->>  	map = bpf_map_get(attr->link_create.map_fd);
->>  	if (IS_ERR(map))
->>  		return PTR_ERR(map);
->> @@ -1378,11 +1411,26 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
->>  	bpf_link_init(&link->link, BPF_LINK_TYPE_STRUCT_OPS, &bpf_struct_ops_map_lops, NULL,
->>  		      attr->link_create.attach_type);
->>  
->> +	init_waitqueue_head(&link->wait_hup);
->> +
->> +	if (attr->link_create.flags & BPF_F_CGROUP_FD) {
->> +		cgrp = cgroup_get_from_fd(attr->link_create.target_fd);
->> +		if (IS_ERR(cgrp)) {
->> +			err = PTR_ERR(cgrp);
->> +			goto err_out;
->> +		}
->> +		link->cgroup = cgrp;
->> +		err = cgroup_bpf_attach_struct_ops(cgrp, link);
->> +		if (err) {
->> +			cgroup_put(cgrp);
->> +			link->cgroup = NULL;
->> +			goto err_out;
->> +		}
->> +	}
->> +
->>  	err = bpf_link_prime(&link->link, &link_primer);
->>  	if (err)
->> -		goto err_out;
->> -
->> -	init_waitqueue_head(&link->wait_hup);
->> +		goto err_put_cgroup;
->>  
->>  	/* Hold the update_mutex such that the subsystem cannot
->>  	 * do link->ops->detach() before the link is fully initialized.
->> @@ -1393,13 +1441,16 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
->>  		mutex_unlock(&update_mutex);
->>  		bpf_link_cleanup(&link_primer);
->>  		link = NULL;
->> -		goto err_out;
->> +		goto err_put_cgroup;
->>  	}
->>  	RCU_INIT_POINTER(link->map, map);
->>  	mutex_unlock(&update_mutex);
->>  
->>  	return bpf_link_settle(&link_primer);
->>  
->> +err_put_cgroup:
->> +	if (link && link->cgroup)
->> +		cgroup_bpf_detach_struct_ops(link->cgroup, link);
->>  err_out:
->>  	bpf_map_put(map);
->>  	kfree(link);
->> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
->> index 69988af44b37..7b1903be6f69 100644
->> --- a/kernel/bpf/cgroup.c
->> +++ b/kernel/bpf/cgroup.c
->> @@ -16,6 +16,7 @@
->>  #include <linux/bpf-cgroup.h>
->>  #include <linux/bpf_lsm.h>
->>  #include <linux/bpf_verifier.h>
->> +#include <linux/poll.h>
->>  #include <net/sock.h>
->>  #include <net/bpf_sk_storage.h>
->>  
->> @@ -307,12 +308,23 @@ static void cgroup_bpf_release(struct work_struct *work)
->>  					       bpf.release_work);
->>  	struct bpf_prog_array *old_array;
->>  	struct list_head *storages = &cgrp->bpf.storages;
->> +	struct bpf_struct_ops_link *st_link, *st_tmp;
->>  	struct bpf_cgroup_storage *storage, *stmp;
->> +	LIST_HEAD(st_links);
->>  
->>  	unsigned int atype;
->>  
->>  	cgroup_lock();
->>  
->> +	list_splice_init(&cgrp->bpf.struct_ops_links, &st_links);
->> +	list_for_each_entry_safe(st_link, st_tmp, &st_links, list) {
->> +		st_link->cgroup = NULL;
->> +		st_link->cgroup_removed = true;
->> +		cgroup_put(cgrp);
->> +		if (IS_ERR(bpf_link_inc_not_zero(&st_link->link)))
->> +			list_del(&st_link->list);
->> +	}
->> +
->>  	for (atype = 0; atype < ARRAY_SIZE(cgrp->bpf.progs); atype++) {
->>  		struct hlist_head *progs = &cgrp->bpf.progs[atype];
->>  		struct bpf_prog_list *pl;
->> @@ -346,6 +358,11 @@ static void cgroup_bpf_release(struct work_struct *work)
->>  
->>  	cgroup_unlock();
->>  
->> +	list_for_each_entry_safe(st_link, st_tmp, &st_links, list) {
->> +		st_link->link.ops->detach(&st_link->link);
->> +		bpf_link_put(&st_link->link);
->> +	}
->> +
->>  	for (p = cgroup_parent(cgrp); p; p = cgroup_parent(p))
->>  		cgroup_bpf_put(p);
->>  
->> @@ -525,6 +542,7 @@ static int cgroup_bpf_inherit(struct cgroup *cgrp)
->>  		INIT_HLIST_HEAD(&cgrp->bpf.progs[i]);
->>  
->>  	INIT_LIST_HEAD(&cgrp->bpf.storages);
->> +	INIT_LIST_HEAD(&cgrp->bpf.struct_ops_links);
->>  
->>  	for (i = 0; i < NR; i++)
->>  		if (compute_effective_progs(cgrp, i, &arrays[i]))
->> @@ -2759,3 +2777,31 @@ cgroup_common_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
->>  		return NULL;
->>  	}
->>  }
->> +
->> +int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
->> +				 struct bpf_struct_ops_link *link)
->> +{
->> +	int ret = 0;
->> +
->> +	cgroup_lock();
->> +	if (percpu_ref_is_zero(&cgrp->bpf.refcnt)) {
->> +		ret = -EBUSY;
->
-> If the cgroup is dying, then perhaps -EINVAL would be more appropriate
-> here, no? I'd argue that -EBUSY implies a temporary or transient
-> state.
-
-Idk, I thought about it and settled on -EBUSY to highlight the
-transient nature of the issue. ENOENT is another option.
-I don't really think EINVAL is the best choice here.
-
->
->> +		goto out;
->> +	}
->> +	list_add_tail(&link->list, &cgrp->bpf.struct_ops_links);
->> +out:
->> +	cgroup_unlock();
->> +	return ret;
->> +}
->> +
->> +void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
->> +				  struct bpf_struct_ops_link *link)
->> +{
->> +	cgroup_lock();
->> +	if (link->cgroup == cgrp) {
->> +		list_del(&link->list);
->> +		link->cgroup = NULL;
->> +		cgroup_put(cgrp);
->> +	}
->> +	cgroup_unlock();
->> +}
->
-> Within cgroup_bpf_attach_struct_ops() and
-> cgroup_bpf_detach_struct_ops() the cgrp pointer appears to be
-> superfluous? Both should probably only operate on link->cgroup
-> instead? A !link->cgroup when calling either should be considered as
-> -EINVAL.
-
-Ack.
-
-Thank you for the review!
 
