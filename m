@@ -4,96 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F1DD3567B
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 06:08:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7928DD35687
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 07:13:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE5776B0088; Wed, 28 Jan 2026 01:08:25 -0500 (EST)
+	id 5453D6B0088; Wed, 28 Jan 2026 02:13:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A930C6B0089; Wed, 28 Jan 2026 01:08:25 -0500 (EST)
+	id 4F2F06B0089; Wed, 28 Jan 2026 02:13:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99F496B008A; Wed, 28 Jan 2026 01:08:25 -0500 (EST)
+	id 3CADC6B008A; Wed, 28 Jan 2026 02:13:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 805BD6B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:08:25 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4A591B0861
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:08:24 +0000 (UTC)
-X-FDA: 84380342928.22.814766A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A21A7C0003
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:08:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kL20DfIo;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2971D6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 02:13:08 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61241C1D96
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:13:07 +0000 (UTC)
+X-FDA: 84380506014.30.92E7179
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 100F840006
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:13:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=GNnmKJXM;
+	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769580502;
+	s=arc-20220608; t=1769584385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=RF13WLcdL+aIa/dQbshUzDQr/ZuH3QEgMinnDId4SwE=;
-	b=0IpfRbtgziiN5nQihH4zKylN8OM6/olDGQagxxiu+tMPVajDLiA+xQeC60bfRtaPAivX5d
-	UHcIXPrY4rMiOpFSmeg2ovRArnedpcyBwB7elT4gezzDwbO1lVq5pPHRr5MJgoEKVx62zu
-	+JkWYEnJK6zlzV0qCQulkzOudsG0aUs=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lDrDHaxzPUqDOGHtSAjw8UIOY7PPSYbUnoNgzHvr5I0=;
+	b=DOU4pk43tW8XGwHdvmoZ4FNkBoMMN+1j9+toa1ux69qbMeNVt0JOdwEVj6vA+P/CDMsc0g
+	HQ2lBgvGj0gbgyuMxtnci/O9XMTP52KDvfY0PESSo3BRD6aOWnKtlFQ2ODKAAb+m974avg
+	MPSGNRxWGiOe81cxkJ2ItXMOq/ZNGxI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kL20DfIo;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769580502; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=GNnmKJXM;
+	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769584385; a=rsa-sha256;
 	cv=none;
-	b=oYywSIUb93ixrcpqJqNnSzhINHkGODGqQxyZrNj8DEaJ+y+utwtpUlyJmj7Cs6jcuhkUNs
-	NxyJ2bMv9apoQDHcHXj5Kba74FHnnJ6Igyhfc1HaCenuec3U7RTdRzNmVQKLWkCoTcxUS7
-	LPSIdSqzqSRw+QihVd6UzdcISmv9yFM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769580502; x=1801116502;
-  h=date:from:to:cc:subject:message-id;
-  bh=Q5TBIyxj0l3uLuc/PhuON6fKLuuFucT+2K83SU8bRTs=;
-  b=kL20DfIojG8dKmIQA8iGtkt2f0ui8KwzQYdCE19yFgSZTpAHh71Jju+L
-   n6i0wGaoQF1fKUpsO1AXVXQbHdJh8gF/nM/3Byja+7bpsrMp785rJ/gKl
-   FodV1DY4xahIRbBSJge0R4eU8T/vW6J1/tzSy8/yYXnb4unYdfOQ7kqVl
-   edZXhq3/fK7wdhcuqFIX0JRZ1KCI9cnf2qYIngLHpVAyyZNbP6hFw6XtD
-   oOWaFXZPFhNvgU5va/X3FvEHQH8DHSQsB4y6p+RcZCm3ASFNQlkUWmsEX
-   CqEpbWGj1vqbTwFESfQhQNs/z/pWePai+3jJdq47AqNh0v5ytaJ4fjCzQ
-   g==;
-X-CSE-ConnectionGUID: fViGep4aQDC5Voh1kh8KWg==
-X-CSE-MsgGUID: PTgKkWj2SOSPMdnLxK7LaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="88205656"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="88205656"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 22:08:20 -0800
-X-CSE-ConnectionGUID: ZbPBUbyZTFiU3WmT3BQGaQ==
-X-CSE-MsgGUID: VFvoi7l4QFCLdupup7CJKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="207315811"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 27 Jan 2026 22:08:18 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vkyit-00000000ZMG-44bf;
-	Wed, 28 Jan 2026 06:08:15 +0000
-Date: Wed, 28 Jan 2026 14:07:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 4f938c7d3b25d87b356af4106c2682caf8c835a2
-Message-ID: <202601281448.YLU9aTIM-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam11
-X-Stat-Signature: tbchikbrhm4rgdkrrnoxn3bo35swpapy
+	b=4/6HuKxyY91Cd7VcE3WVvbWDHhvU8v4HpVRGwxv+jCqapEWt8pofLS8v0owha3+4nAodpA
+	1qUQzJViHslxEwGF4rHZN8m2+/E8JQ5DtOn1n6zax3WfEUX7Sxh3NmwQUKH0TGWUYNZLKG
+	aVcLE/PwLHhcEyYJFhwAQ5uZOgBYCL4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=lDrDHaxzPUqDOGHtSAjw8UIOY7PPSYbUnoNgzHvr5I0=;
+	b=GNnmKJXMOHfYxhNgVBD7aQXjjtZO1CwYmiFKicdhYA6iwUIQjplxkGPLDZ4VvWG0Au+0kgJ/6
+	3bLirJmYGft9AUlO4U5m2sXFWL3IYjb1AgWi1zrTFAJ+M5YnT1v5GjvmtbE3GozIddRJ9kXs2Vk
+	cBVcPYqEiLnA567zo+XIgzo=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4f1D0H4cJyz12LDP;
+	Wed, 28 Jan 2026 15:09:03 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id E85124056C;
+	Wed, 28 Jan 2026 15:12:57 +0800 (CST)
+Received: from [10.174.179.179] (10.174.179.179) by
+ kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 28 Jan 2026 15:12:57 +0800
+Message-ID: <c78b76c5-8709-44d0-85c3-feccd41b2ddd@huawei.com>
+Date: Wed, 28 Jan 2026 15:12:56 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: mm: fix pass user prot to ioremap_prot in
+ generic_access_phys
+To: <akpm@linux-foundation.org>, <david@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <zengheng4@huawei.com>,
+	<ryan.roberts@arm.com>, <anshuman.khandual@arm.com>,
+	<wangkefeng.wang@huawei.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mm@kvack.org>
+References: <20260127090129.412084-1-tujinjiang@huawei.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <20260127090129.412084-1-tujinjiang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.179]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 100F840006
+X-Stat-Signature: 1dw9aksaty5agf1mx3i6wb9pznbzmskz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A21A7C0003
-X-HE-Tag: 1769580501-92341
-X-HE-Meta: U2FsdGVkX18ineXzJjd1Hq+2XIGZpzvOECEILFHgsbc4uVcV1rzBNgUwfuyb9pbG3NJ0Xsbz/UnSBH8fnYr7SbpYSVyLWkEnEOcI4chktEvVvwKDNhDTIxLZWy+0UZK9+EyzTe0bEqOqiYNnW+V87eeFwFxtGmXV3YM7z3YYy2i/UHi/LksJR3KX5fanlZz509qv0zPfalxNnvU2SvN5Ed6D6S1mji5qeq2+gQZxj2mffxBUQz/reHYQqefxQHmkKfekwoCqWPhu1GmdJrhMyUKPYHV/FsOzIUwPGBgFVfHhNG3SGsGS6pHEzWWAkd20Dwz8ClhB0grQt9aNf1fbY+8nOTxXn38O+bcY6Fn2tlz9h5/41rcBViOGBFzAUWBZVPOLwbBHCFajTWZp2zh48aoCurn+7An+Uh6s2VEXc5MYcap+SO+4MhQml3q/UaXz/o51PdVS/hGRABP6h+sw+6wx6TU0pWTYyaNx4f2xwMV9783IqYpc4THokNiMvLVJvZCmHTGYqpDsQqlFXoRU9vbuYLRVDw8LvPTskhG0EM346013k75w77VKLLZCeSeY4MSnkjFREASn17ejgs+RbbUa5JoV+pMBK+M9Cs3oGT1ZorBrxLbNErmHarg9BdAfBLvL1MXURTPN5fKOyblWRKNoWyhv5uZWLBfCAKcw+BsxpfFuA32OBTnCRw6c1OP30amj/SrxiUrwz0c+OOPBwBwIp/am4z0TLzI63QdXUc/G9xgAiI3kZpSQN4115PTKtzHlqnkje3Ar3ypAGX42NCShBARxI3GeU3YUi1Sj0z/6H1jqLVQruIicOnG/X/Xd/c15olDXuDkLdRn1Y/hverrMDOj0y8irF/fI9DzBDYoYfzkp6pLhfsUD9zTSzESCr+n8vwijiGgk95G3aLdAE6Wrr4f6wRgFEQUTl4LF3dfvRkeD8QaxuyYU3Hfo4zOKlaee6Gp6KfKAD2Wzax3
- Q7hKm0Wl
- vb0iqt1eHc7zzL36pf7nJaUkbPl27i/XcD3QsX9ZpxySSzIyJDR3ciDHtQdW78dUjO7Kde1qr8wqo8zySFHmykh4ofSdFDLWEuJra27gJXgF9tJ/lIffTJf0eUPbmNTjCwWTEsdtLWVDLkYFU8FzFkvdPq06S73NiN6fXUzLzUzJZ/TyoRA1g/wyJ2w==
+X-HE-Tag: 1769584383-41772
+X-HE-Meta: U2FsdGVkX18roOjvZY9UT7TV1nEFJlyRCB4UBVSm/bPk/0bv5hpBoCO3NQKpC1XG0E3t4PeyoEkqz5S0iPFgGsUjrGdScvz4A6KWg35VMa5OaGG3mSZSy/4ymeLeNE74O3/2n3oXOQjpuEyhFYhss1Y+wcTZYQ/BVP1hZU5Yx5YXOivm/SibonX2QsUx+VqRcu81zP0dfUrbbg1XkFjgbmgiWKjDkl5AKRrs9+vgY6d27G8K/e/pT8olmbm9guCvH0TrqfdTtXCCw4ARZQqVvEcWop5zg7owHe8My2V6D4Ru+BW+4CLKHcke8SURWUQKO28hspmeZ53kvzQNx4sFBngpCqO7PM16TLGfGWEgOtQ5dR38ToK/d5cz9wKRJCHaeL9tYkiivsyLoaWubYRhwxI5sV2haSLIjDx6fHCxZWh4rN1TOmpATWL5u1022UQ15e2XxOr40c8xq3x6A4KD3B4zm9po4qSxrRfOylcFn10z+rlEOc3Vx3KiYK0rQC4nw6Yf6/UWY/3dkDl7PSN1lrMZNcXuaP1rNvaJFoWZUCtWV1uzhpZ5KN8Fl9+2uMvvZ4zbJf576TQ54vxbQwpdpyFG9WPvtSnkBsh/bpub+7MD1mjHaxDnCdiyIQ5E4GriJydi4rHG79U+nGK0fThNONxQ8R9uy7XrDQpV1BfO63CxQWSfPiqqt0vq9wDTejpkwCKbLayhNxZz/ew2BHfvSZQKTNF1umlSYRLx1T9/CrpCW23n/Mq/fsNpPTSwZ8QKKFNk87O4Lb5aB9X9sfoLNqSFgJrYyOQarV9f52D3sWjmvJdGOc/PcJt5pTulhmapCBBqBtsIWwAbZQX5C3sqNGIgwZ+emTBxGOc8pJoQVBpXIr6GeTjDT3977HQdJ3bVAcb46Ke5D4N2r0t8bhiav3WK1I+oAlF5BBoK3EsCGffszv+7XxBJ1TmihV+FJOAcHXw1XjCT/XG9ydslHqq
+ ggpbfgaC
+ W0Wd2Sw8aHwF3hE1nJtqX42osQpf2GcH8DtUHafC184JPcax94b7HoESXaKFtNH2900rssMs6K+w+TZvcEYAYGCLD6P3aah4qLdBQROV2CkPvmguyelYIPmBNTbCO0PZcZyJJgjPQBT5yW+pW0aF9yIvdyuAGvk5aAAmOrMlz9tT8cNuHVSwj8qTgWnOUw6O61MJW4tDLlGWOFgxK9OBlH5L+cytKv6m0ahp0dlBNYyyyLPrFXrcS2FSTp0FOoUCrZLIiluFNOnW9M6DHILnHSFR6YQgpziwwpd/qj7CzAGG3CgF/dNaDOUs4l24MQpx75+ryD+1IyC+jThA5G9quJCzOaaUkk8JqhFZRPpf4IJ0otU8BhP6BYXVN/vG9Fr9345hREMVUMXHRZ85ibiuS9qs/yPJz02lo3L5/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,282 +101,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 4f938c7d3b25d87b356af4106c2682caf8c835a2  Add linux-next specific files for 20260127
 
-Error/Warning (recently discovered and may have been fixed):
+在 2026/1/27 17:01, Jinjiang Tu 写道:
+> Here is a syzkaller error log:
+>    [0000000020ffc000] pgd=080000010598d403, p4d=080000010598d403, pud=0800000125ddb403,
+>                       pmd=080000007833c403, pte=01608000007fcfcf
+>    Unable to handle kernel read from unreadable memory at virtual address ffff80008ea89000
+>    KASAN: probably user-memory-access in range [0x0000000475448000-0x0000000475448007]
+>    Mem abort info:
+>      ESR = 0x000000009600000f
+>      EC = 0x25: DABT (current EL), IL = 32 bits
+>      SET = 0, FnV = 0
+>      EA = 0, S1PTW = 0
+>      FSC = 0x0f: level 3 permission fault
+>    Data abort info:
+>      ISV = 0, ISS = 0x0000000f, ISS2 = 0x00000000
+>      CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+>      GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+>    swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000001244aa000
+>    [ffff80008ea89000] pgd=100000013ffff403, p4d=100000013ffff403, pud=100000013fffe403,
+> 		     pmd=100000010a453403, pte=01608000007fcfcf
+>    Internal error: Oops: 000000009600000f [#1] SMP
+>    Modules linked in: team
+>    CPU: 1 PID: 10840 Comm: syz.9.83 Kdump: loaded Tainted: G
+>    Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+>    pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>    pc : __memcpy_fromio+0x80/0xf8
+>    lr : generic_access_phys+0x20c/0x2b8
+>    sp : ffff8000a0507960
+>    x29: ffff8000a0507960 x28: 1ffff000140a0f44 x27: ffff00003833cfe0
+>    x26: 0000000000000000 x25: 0000000000001000 x24: 0010000000000001
+>    x23: ffff80008ea89000 x22: ffff00004ea63000 x21: 0000000000001000
+>    x20: ffff80008ea89000 x19: ffff00004ea62000 x18: 0000000000000000
+>    x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000806f1e3c
+>    x14: ffff8000806f1d44 x13: 0000000041b58ab3 x12: ffff7000140a0f23
+>    x11: 1ffff000140a0f22 x10: ffff7000140a0f22 x9 : ffff800080579d24
+>    x8 : 0000000000000004 x7 : 0000000000000003 x6 : 0000000000000001
+>    x5 : ffff8000a0507910 x4 : ffff7000140a0f22 x3 : dfff800000000000
+>    x2 : 0000000000001000 x1 : ffff80008ea89000 x0 : ffff00004ea62000
+>    Call trace:
+>      __memcpy_fromio+0x80/0xf8
+>      generic_access_phys+0x20c/0x2b8
+>      __access_remote_vm+0x46c/0x5b8
+>      access_remote_vm+0x18/0x30
+>      environ_read+0x238/0x3e8
+>      vfs_read+0xe4/0x2b0
+>      ksys_read+0xcc/0x178
+>      __arm64_sys_read+0x4c/0x68
+>      invoke_syscall+0x68/0x1a0
+>      el0_svc_common.constprop.0+0x11c/0x150
+>      do_el0_svc+0x38/0x50
+>      el0_svc+0x50/0x258
+>      el0t_64_sync_handler+0xc0/0xc8
+>      el0t_64_sync+0x1a4/0x1a8
+>    Code: 91002339 aa1403f7 8b190276 d503201f (f94002f8)
+>
+> The local syzkaller first maps I/O address from /dev/mem to userspace,
+> overiding the stack vma with MAP_FIXED flag. As a result, when reading
+> /proc/$pid/environ, generic_access_phys() is called to access the region,
+> which triggers a PAN permission-check fault and causes a kernel access
+> fault.
+>
+> The root cause is that generic_access_phys() passes a user pte to
+> ioremap_prot(), the user pte sets PTE_USER and PTE_NG bits.  Consequently,
+> any subsequent kernel-mode access to the remapped address raises a fault.
+>
+> To fix it, define arch_mk_kernel_prot() to convert user prot to kernel
+> prot for arm64, and call arch_mk_kernel_prot() in generic_access_phys(),
+> so that a user prot is passed to ioremap_prot().
+>
+> Fixes: 893dea9ccd08 ("arm64: Add HAVE_IOREMAP_PROT support")
+> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> ---
+> Change since v1:
+>   * fix in ther caller generic_access_phys(), suggested by Catalin Marinas.
+>
+>   arch/arm64/include/asm/io.h | 11 +++++++++++
+>   mm/memory.c                 | 12 +++++++++++-
+>   2 files changed, 22 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
+> index 83e03abbb2ca..fe8607eafab6 100644
+> --- a/arch/arm64/include/asm/io.h
+> +++ b/arch/arm64/include/asm/io.h
+> @@ -267,6 +267,17 @@ int arm64_ioremap_prot_hook_register(const ioremap_prot_hook_t hook);
+>   
+>   #define ioremap_prot ioremap_prot
+>   
+> +#define arch_mk_kernel_prot arch_mk_kernel_prot
+> +static inline pgprot_t arch_mk_kernel_prot(pgprot_t user_prot)
+> +{
+> +	unsigned long kernel_prot_val;
+> +
+> +	kernel_prot_val = _PAGE_KERNEL & ~(PTE_WRITE | PTE_ATTRINDX_MASK);
+> +	kernel_prot_val |= pgprot_val(user_prot) & (PTE_WRITE | PTE_ATTRINDX_MASK);
+> +
+> +	return __pgprot(kernel_prot_val);
+> +}
 
-    https://lore.kernel.org/oe-kbuild/202601280352.HxU02ziv-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202601280742.mvDCU5qE-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202601281037.5Eik5saE-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202601281347.J8rVE0kj-lkp@intel.com
+I found I misunderstand the READ/WRITE permisson here.
+If the pte is writeale, the PTE_WRITE is 1, and PTE_RDONLY means dirty or not (With DBM).
+If the pte is read-only, the PTE_WRITE is 0, and PTE_RDONLY is 1.
 
-    include/linux/compiler_types.h:630:45: error: call to '__compiletime_assert_409' declared with attribute error: min(((pos + len - 1) >> 12) - (pos >> 12) + 1, max_pages) signedness error
-    ld: drivers/gpu/drm/bridge/lontium-lt9611uxc.c:448:(.text+0x1cf8eed): undefined reference to `drm_connector_hdmi_audio_plugged_notify'
+Since generic_access_phys() have checked if the user can write with:
 
-Unverified Error/Warning (likely false positive, kindly check if interested):
+		if ((write & FOLL_WRITE) && !pte_write(pte))
+		return -EINVAL;
 
-    drivers/iio/adc/ad4062.c:817:1: sparse: sparse: bad integer constant expression
-    drivers/iio/adc/nxp-sar-adc.c:1014:1: sparse: sparse: bad integer constant expression
-    drivers/pinctrl/microchip/pinctrl-mpfs-iomux0.c:276:1: sparse: sparse: bad integer constant expression
-    drivers/pinctrl/microchip/pinctrl-mpfs-mssio.c:735:1: sparse: sparse: bad integer constant expression
-    drivers/pinctrl/microchip/pinctrl-pic64gx-gpio2.c:354:1: sparse: sparse: bad integer constant expression
-    drivers/platform/wmi/tests/marshalling_kunit.c:449:1: sparse: sparse: bad integer constant expression
-    powerpc-linux-ld: drivers/gpu/drm/bridge/lontium-lt9611uxc.c:448:(.text+0xb40): undefined reference to `drm_connector_hdmi_audio_plugged_notify'
+So, maybe we could always grant writable permission, just as x86's ioremap() does?
 
-Error/Warning ids grouped by kconfigs:
+Thanks.
 
-recent_errors
-|-- arm-randconfig-r051-20260128
-|   `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:min(((pos-len-)-)-(pos-)-max_pages)-signedness-error
-|-- i386-randconfig-062-20260128
-|   `-- drivers-platform-wmi-tests-marshalling_kunit.c:sparse:sparse:bad-integer-constant-expression
-|-- openrisc-randconfig-r133-20260128
-|   |-- drivers-pinctrl-microchip-pinctrl-mpfs-iomux0.c:sparse:sparse:bad-integer-constant-expression
-|   |-- drivers-pinctrl-microchip-pinctrl-mpfs-mssio.c:sparse:sparse:bad-integer-constant-expression
-|   `-- drivers-pinctrl-microchip-pinctrl-pic64gx-gpio2.c:sparse:sparse:bad-integer-constant-expression
-|-- parisc-randconfig-r132-20260128
-|   `-- drivers-iio-adc-nxp-sar-adc.c:sparse:sparse:bad-integer-constant-expression
-|-- powerpc-randconfig-r123-20260127
-|   `-- powerpc-linux-ld:drivers-gpu-drm-bridge-lontium-lt9611uxc.c:(.text):undefined-reference-to-drm_connector_hdmi_audio_plugged_notify
-|-- powerpc64-randconfig-r132-20260127
-|   `-- drivers-iio-adc-ad4062.c:sparse:sparse:bad-integer-constant-expression
-`-- x86_64-randconfig-015-20260127
-    `-- ld:drivers-gpu-drm-bridge-lontium-lt9611uxc.c:(.text):undefined-reference-to-drm_connector_hdmi_audio_plugged_notify
-
-elapsed time: 727m
-
-configs tested: 225
-configs skipped: 3
-
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                     haps_hs_smp_defconfig    clang-22
-arc                            hsdk_defconfig    clang-22
-arc                   randconfig-001-20260128    gcc-9.5.0
-arc                   randconfig-002-20260128    gcc-8.5.0
-arm                               allnoconfig    clang-22
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    gcc-15.2.0
-arm                       aspeed_g4_defconfig    clang-22
-arm                         at91_dt_defconfig    clang-22
-arm                                 defconfig    clang-22
-arm                                 defconfig    gcc-15.2.0
-arm                   randconfig-001-20260128    gcc-15.2.0
-arm                   randconfig-002-20260128    gcc-15.2.0
-arm                   randconfig-003-20260128    gcc-8.5.0
-arm                   randconfig-004-20260128    gcc-8.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260128    clang-22
-arm64                 randconfig-002-20260128    gcc-12.5.0
-arm64                 randconfig-003-20260128    gcc-14.3.0
-arm64                 randconfig-004-20260128    gcc-13.4.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260128    gcc-15.2.0
-csky                  randconfig-002-20260128    gcc-14.3.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-22
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    clang-22
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260128    clang-20
-hexagon               randconfig-002-20260128    clang-20
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260128    clang-20
-i386        buildonly-randconfig-001-20260128    gcc-14
-i386        buildonly-randconfig-002-20260128    clang-20
-i386        buildonly-randconfig-003-20260128    clang-20
-i386        buildonly-randconfig-003-20260128    gcc-14
-i386        buildonly-randconfig-004-20260128    clang-20
-i386        buildonly-randconfig-005-20260128    clang-20
-i386        buildonly-randconfig-005-20260128    gcc-14
-i386        buildonly-randconfig-006-20260128    clang-20
-i386                                defconfig    clang-20
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260128    gcc-14
-i386                  randconfig-002-20260128    gcc-14
-i386                  randconfig-003-20260128    gcc-14
-i386                  randconfig-004-20260128    gcc-14
-i386                  randconfig-005-20260128    gcc-14
-i386                  randconfig-006-20260128    gcc-14
-i386                  randconfig-007-20260128    gcc-14
-i386                  randconfig-011-20260128    clang-20
-i386                  randconfig-012-20260128    clang-20
-i386                  randconfig-012-20260128    gcc-14
-i386                  randconfig-013-20260128    clang-20
-i386                  randconfig-013-20260128    gcc-14
-i386                  randconfig-014-20260128    clang-20
-i386                  randconfig-015-20260128    clang-20
-i386                  randconfig-016-20260128    clang-20
-i386                  randconfig-016-20260128    gcc-14
-i386                  randconfig-017-20260128    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260128    clang-22
-loongarch             randconfig-002-20260128    clang-20
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-m68k                                defconfig    gcc-15.2.0
-m68k                       m5275evb_defconfig    clang-22
-m68k                        mvme147_defconfig    gcc-15.2.0
-m68k                           virt_defconfig    gcc-15.2.0
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-microblaze                          defconfig    gcc-15.2.0
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                           xway_defconfig    clang-22
-nios2                            allmodconfig    clang-22
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260128    gcc-8.5.0
-nios2                 randconfig-002-20260128    gcc-11.5.0
-openrisc                         allmodconfig    clang-22
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-22
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-openrisc                  or1klitex_defconfig    clang-22
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-22
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260128    gcc-11.5.0
-parisc                randconfig-002-20260128    gcc-12.5.0
-parisc64                            defconfig    clang-19
-parisc64                            defconfig    gcc-15.2.0
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-22
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc                      chrp32_defconfig    clang-19
-powerpc                     ep8248e_defconfig    gcc-15.2.0
-powerpc                 linkstation_defconfig    clang-22
-powerpc               randconfig-001-20260128    clang-22
-powerpc               randconfig-002-20260128    gcc-8.5.0
-powerpc                     tqm8555_defconfig    gcc-15.2.0
-powerpc64             randconfig-001-20260128    clang-22
-powerpc64             randconfig-002-20260128    clang-22
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    clang-22
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-22
-riscv                               defconfig    gcc-15.2.0
-riscv                 randconfig-001-20260128    gcc-13.4.0
-riscv                 randconfig-002-20260128    gcc-15.2.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    clang-22
-s390                                defconfig    gcc-15.2.0
-s390                  randconfig-001-20260128    gcc-13.4.0
-s390                  randconfig-002-20260128    gcc-8.5.0
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-22
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.2.0
-sh                        apsh4ad0a_defconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                                  defconfig    gcc-15.2.0
-sh                               j2_defconfig    gcc-15.2.0
-sh                    randconfig-001-20260128    gcc-15.2.0
-sh                    randconfig-002-20260128    gcc-15.2.0
-sparc                             allnoconfig    clang-22
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260128    gcc-8.5.0
-sparc                 randconfig-002-20260128    gcc-8.5.0
-sparc64                          allmodconfig    clang-22
-sparc64                             defconfig    clang-20
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260128    gcc-12.5.0
-sparc64               randconfig-002-20260128    gcc-10.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    clang-22
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260128    gcc-12
-um                    randconfig-002-20260128    clang-22
-um                           x86_64_defconfig    clang-22
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-22
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20260128    gcc-14
-x86_64      buildonly-randconfig-002-20260128    gcc-14
-x86_64      buildonly-randconfig-003-20260128    gcc-14
-x86_64      buildonly-randconfig-004-20260128    gcc-12
-x86_64      buildonly-randconfig-005-20260128    clang-20
-x86_64      buildonly-randconfig-006-20260128    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260128    clang-20
-x86_64                randconfig-002-20260128    clang-20
-x86_64                randconfig-003-20260128    clang-20
-x86_64                randconfig-004-20260128    gcc-14
-x86_64                randconfig-005-20260128    gcc-13
-x86_64                randconfig-006-20260128    gcc-14
-x86_64                randconfig-011-20260128    clang-20
-x86_64                randconfig-012-20260128    gcc-14
-x86_64                randconfig-013-20260128    clang-20
-x86_64                randconfig-014-20260128    clang-20
-x86_64                randconfig-015-20260128    gcc-14
-x86_64                randconfig-016-20260128    clang-20
-x86_64                randconfig-071-20260128    clang-20
-x86_64                randconfig-072-20260128    clang-20
-x86_64                randconfig-073-20260128    gcc-12
-x86_64                randconfig-074-20260128    gcc-14
-x86_64                randconfig-075-20260128    gcc-14
-x86_64                randconfig-076-20260128    gcc-14
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-22
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-22
-xtensa                           allyesconfig    gcc-15.2.0
-xtensa                randconfig-001-20260128    gcc-8.5.0
-xtensa                randconfig-002-20260128    gcc-11.5.0
-xtensa                    xip_kc705_defconfig    clang-22
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +
+>   #define _PAGE_IOREMAP PROT_DEVICE_nGnRE
+>   
+>   #define ioremap_wc(addr, size)	\
+> diff --git a/mm/memory.c b/mm/memory.c
+> index da360a6eb8a4..68fcfc3bbad8 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -6836,6 +6836,14 @@ void follow_pfnmap_end(struct follow_pfnmap_args *args)
+>   EXPORT_SYMBOL_GPL(follow_pfnmap_end);
+>   
+>   #ifdef CONFIG_HAVE_IOREMAP_PROT
+> +#ifndef arch_mk_kernel_prot
+> +#define arch_mk_kernel_prot arch_mk_kernel_prot
+> +static inline pgprot_t arch_mk_kernel_prot(pgprot_t user_prot)
+> +{
+> +	return user_prot;
+> +}
+> +#endif
+> +
+>   /**
+>    * generic_access_phys - generic implementation for iomem mmap access
+>    * @vma: the vma to access
+> @@ -6853,6 +6861,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+>   {
+>   	resource_size_t phys_addr;
+>   	pgprot_t prot = __pgprot(0);
+> +	pgprot_t kernel_prot;
+>   	void __iomem *maddr;
+>   	int offset = offset_in_page(addr);
+>   	int ret = -EINVAL;
+> @@ -6870,7 +6879,8 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+>   	if ((write & FOLL_WRITE) && !writable)
+>   		return -EINVAL;
+>   
+> -	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
+> +	kernel_prot = arch_mk_kernel_prot(prot);
+> +	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), kernel_prot);
+>   	if (!maddr)
+>   		return -ENOMEM;
+>   
 
